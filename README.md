@@ -1,2 +1,2 @@
 # PaddleOCR
-OCR algorithms with PaddlePaddle （still under deveclop)
+OCR algorithms with PaddlePaddle （still under develop)
