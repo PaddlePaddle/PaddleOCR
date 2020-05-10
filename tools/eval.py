@@ -79,9 +79,8 @@ def main():
             'fetch_varname_list':eval_fetch_varname_list}
         metrics = eval_det_run(exe, config, eval_info_dict, "test")
     else:
-        dataset = config['Global']['dataset']
-        assert dataset in ['lmdb', 'common']
-        if dataset == 'common':
+        reader_type = config['Global']['reader_yml']
+        if "chinese" in reader_type:
             eval_reader = reader_main(config=config, mode="eval")
             eval_info_dict = {'program': eval_program, \
                               'reader': eval_reader, \

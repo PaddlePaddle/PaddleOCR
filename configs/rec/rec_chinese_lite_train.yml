@@ -1,6 +1,5 @@
 Global:
   algorithm: CRNN
-  dataset: common
   use_gpu: true
   epoch_num: 300
   log_smooth_window: 20
