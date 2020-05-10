@@ -1,0 +1,35 @@
+-   repo: https://github.com/PaddlePaddle/mirrors-yapf.git
+    sha: 0d79c0c469bab64f7229c9aca2b1186ef47f0e37
+    hooks:
+    -   id: yapf
+        files: \.py$
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    sha: a11d9314b22d8f8c7556443875b731ef05965464
+    hooks:
+    -   id: check-merge-conflict
+    -   id: check-symlinks
+    -   id: detect-private-key
+        files: (?!.*paddle)^.*$
+    -   id: end-of-file-fixer
+        files: \.md$
+    -   id: trailing-whitespace
+        files: \.md$
+-   repo: https://github.com/Lucas-C/pre-commit-hooks
+    sha: v1.0.1
+    hooks:
+    -   id: forbid-crlf
+        files: \.md$
+    -   id: remove-crlf
+        files: \.md$
+    -   id: forbid-tabs
+        files: \.md$
+    -   id: remove-tabs
+        files: \.md$
+-   repo: local
+    hooks:
+    -   id: clang-format
+        name: clang-format
+        description: Format files with ClangFormat
+        entry: bash .clang_format.hook -i
+        language: system
+        files: \.(c|cc|cxx|cpp|cu|h|hpp|hxx|cuh|proto)$

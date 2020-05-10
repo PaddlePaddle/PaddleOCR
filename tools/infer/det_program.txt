@@ -1,0 +1,1 @@
+<paddle.fluid.core_avx.ProgramDesc object at 0x10d15fab0>
