@@ -143,8 +143,9 @@ class SimpleReader(object):
             self.num_workers = 1
         else:
             self.num_workers = params['num_workers']
-        self.img_set_dir = params['img_set_dir']
-        self.label_file_path = params['label_file_path']
+        if params['mode'] != 'test':
+            self.img_set_dir = params['img_set_dir']
+            self.label_file_path = params['label_file_path']
         self.char_ops = params['char_ops']
         self.image_shape = params['image_shape']
         self.loss_type = params['loss_type']
@@ -164,10 +165,17 @@ class SimpleReader(object):
 
         def sample_iter_reader():
             if self.mode == 'test':
-                print("infer_img:", self.infer_img)
-                img = cv2.imread(self.infer_img)
-                norm_img = process_image(img, self.image_shape)
-                yield norm_img
+                image_file_list = []
+                if os.path.isfile(self.infer_img):
+                    image_file_list = [self.infer_img]
+                elif os.path.isdir(self.infer_img):
+                    for single_file in os.listdir(self.infer_img):
+                        if single_file.endswith('png') or single_file.endswith('jpg'):
+                            image_file_list.append(os.path.join(self.infer_img, single_file))
+                for single_img in image_file_list:
+                    img = cv2.imread(single_img)
+                    norm_img = process_image(img, self.image_shape)
+                    yield norm_img
             with open(self.label_file_path, "rb") as fin:
                 label_infor_list = fin.readlines()
             img_num = len(label_infor_list)
@@ -179,6 +187,7 @@ class SimpleReader(object):
                 img_path = self.img_set_dir + "/" + substr[0]
                 img = cv2.imread(img_path)
                 if img is None:
+                    logger.info("{} does not exist!".format(img_path))
                     continue
                 label = substr[1]
                 outs = process_image(img, self.image_shape, label,
@@ -198,4 +207,6 @@ class SimpleReader(object):
             if len(batch_outs) != 0:
                 yield batch_outs
 
-        return batch_iter_reader
+        if self.mode != 'test':
+            return batch_iter_reader
+        return sample_iter_reader

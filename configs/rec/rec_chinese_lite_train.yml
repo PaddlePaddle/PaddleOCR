@@ -15,8 +15,9 @@ Global:
   character_dict_path: ./ppocr/utils/ppocr_keys_v1.txt
   loss_type: ctc
   reader_yml: ./configs/rec/rec_chinese_reader.yml
-  pretrain_weights:
-  
+  pretrain_weights: best_accuracy
+  infer_img: ./infer_img 
+
 Architecture:
   function: ppocr.modeling.architectures.rec_model,RecModel
 
