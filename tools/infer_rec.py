@@ -79,7 +79,11 @@ def main():
     init_model(config, eval_prog, exe)
 
     blobs = reader_main(config, 'test')()
-    infer_list = os.listdir(config['Global']['infer_img'])
+    infer_img = config['Global']['infer_img']
+    if os.path.isfile(infer_img):
+        infer_list = [infer_img]
+    elif os.path.isdir(infer_img):
+        infer_list = os.listdir(config['Global']['infer_img'])
     max_img_num = len(infer_list)
     if len(infer_list) == 0:
         logger.info("Can not find img in infer_img dir.")

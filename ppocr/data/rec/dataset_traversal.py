@@ -170,10 +170,14 @@ class SimpleReader(object):
                     image_file_list = [self.infer_img]
                 elif os.path.isdir(self.infer_img):
                     for single_file in os.listdir(self.infer_img):
-                        if single_file.endswith('png') or single_file.endswith('jpg'):
-                            image_file_list.append(os.path.join(self.infer_img, single_file))
+                        if single_file.split('.')[
+                            -1] not in ['bmp', 'jpg', 'jpeg', 'png', 'JPEG', 'JPG', 'PNG']:
+                            continue
+                        image_file_list.append(os.path.join(self.infer_img, single_file))
                 for single_img in image_file_list:
                     img = cv2.imread(single_img)
+                    if img.shape[-1]==1 or len(list(img.shape))==2:
+                        img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
                     norm_img = process_image(img, self.image_shape)
                     yield norm_img
             with open(self.label_file_path, "rb") as fin:
