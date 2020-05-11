@@ -185,22 +185,6 @@ def build(config, main_prog, startup_prog, mode):
 
 def build_export(config, main_prog, startup_prog):
     """
-    Build a program using a model and an optimizer
-        1. create feeds
-        2. create a dataloader
-        3. create a model
-        4. create fetchs
-        5. create an optimizer
-
-    Args:
-        config(dict): config
-        main_prog(): main program
-        startup_prog(): startup program
-        is_train(bool): train or valid
-
-    Returns:
-        dataloader(): a bridge between the model and the data
-        fetchs(dict): dict of model outputs(included loss and measures)
     """
     with fluid.program_guard(main_prog, startup_prog):
         with fluid.unique_name.guard():

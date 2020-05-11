@@ -32,8 +32,8 @@ json.dumps编码前的图像标注信息是包含多个字典的list，字典中
 
 ## 3.2 快速启动训练
 
-首先下载pretrain model，目前支持两种backbone，分别是MobileNetV3、ResNet50，您可以根据需求使用PaddleClas中的模型更换
-backbone。
+首先下载pretrain model，PaddleOCR的检测模型目前支持两种backbone，分别是MobileNetV3、ResNet50_vd，
+您可以根据需求使用[PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/master/ppcls/modeling/architectures)中的模型更换backbone。
 ```
 # 下载MobileNetV3的预训练模型
 wget -P /PaddleOCR/pretrained_model/ 模型链接
@@ -63,7 +63,17 @@ PaddleOCR计算三个OCR检测相关的指标，分别是：Precision、Recall�
 运行如下代码，根据配置文件det_db_mv3.yml中save_res_path指定的测试集检测结果文件，计算评估指标。
 
 ```
-python3 tools/eval.py -c configs/det/det_db_mv3.yml  -o checkpoints ./output/best_accuracy
+python3 tools/eval.py -c configs/det/det_db_mv3.yml  -o checkpoints="./output/best_accuracy"
 ```
 
 ## 3.4 测试检测效果
+
+测试单张图像的检测效果
+```
+python3 tools/infer_det.py -c config/det/det_db_mv3.yml -o TestReader.single_img_path="./demo.jpg"
+```
+
+测试文件夹下所有图像的检测效果
+```
+python3 tools/infer_det.py -c config/det/det_db_mv3.yml -o TestReader.single_img_path="./demo_img/"
+```

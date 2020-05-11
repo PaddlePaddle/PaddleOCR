@@ -99,15 +99,7 @@ def create_predictor(args, mode):
         config.disable_gpu()
 
     config.disable_glog_info()
-    # config.switch_ir_optim(args.ir_optim)
 
-    #     if args.use_tensorrt:
-    #         config.enable_tensorrt_engine(
-    #             precision_mode=AnalysisConfig.Precision.Half
-    #             if args.use_fp16 else AnalysisConfig.Precision.Float32,
-    #             max_batch_size=args.batch_size)
-
-    # config.enable_memory_optim()
     # use zero copy
     config.switch_use_feed_fetch_ops(False)
     predictor = create_paddle_predictor(config)

@@ -3,6 +3,10 @@
 from collections import namedtuple
 import numpy as np
 from shapely.geometry import Polygon
+"""
+reference from :
+https://github.com/MhLiao/DB/blob/3c32b808d4412680310d3d28eeb6a2d5bf1566c5/concern/icdar2015_eval/detection/iou.py#L8
+"""
 
 
 class DetectionIoUEvaluator(object):

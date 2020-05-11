@@ -98,6 +98,14 @@ def load_label_infor(label_file_path, do_ignore=False):
 
 
 def cal_det_metrics(gt_label_path, save_res_path):
+    """
+    calculate the detection metrics
+    Args:
+        gt_label_path(string): The groundtruth detection label file path
+        save_res_path(string): The saved predicted detection label path
+    return:
+        claculated metrics including Hmean、precision and recall
+    """
     evaluator = DetectionIoUEvaluator()
     gt_label_infor = load_label_infor(gt_label_path, do_ignore=True)
     dt_label_infor = load_label_infor(save_res_path)

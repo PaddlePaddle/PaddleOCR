@@ -34,7 +34,7 @@ def set_paddle_flags(**kwargs):
 
 # NOTE(paddle-dev): All of these flags should be
 # set before `import paddle`. Otherwise, it would
-# not take any effect. 
+# not take any effect.
 set_paddle_flags(
     FLAGS_eager_delete_tensor_gb=0,  # enable GC to save memory
 )
@@ -44,6 +44,7 @@ from ppocr.utils.utility import create_module
 import program
 from ppocr.utils.save_load import init_model
 from ppocr.data.reader_main import reader_main
+import cv2
 
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
@@ -65,6 +66,50 @@ def draw_det_res(dt_boxes, config, img_name, ino):
         save_path = os.path.join(save_det_path, "det_{}.jpg".format(img_name))
         cv2.imwrite(save_path, src_im)
         logger.info("The detected Image saved in {}".format(save_path))
+
+
+def simple_reader(img_file, config):
+    imgs_lists = []
+    if img_file is None or not os.path.exists(img_file):
+        raise Exception("not found any img file in {}".format(img_file))
+
+    img_end = ['jpg', 'png', 'jpeg', 'JPEG', 'JPG', 'bmp']
+    if os.path.isfile(img_file) and img_file.split('.')[-1] in img_end:
+        imgs_lists.append(img_file)
+    elif os.path.isdir(img_file):
+        for single_file in os.listdir(img_file):
+            if single_file.split('.')[-1] in img_end:
+                imgs_lists.append(os.path.join(img_file, single_file))
+    if len(imgs_lists) == 0:
+        raise Exception("not found any img file in {}".format(img_file))
+
+    batch_size = config['Global']['test_batch_size_per_card']
+    global_params = config['Global']
+    params = deepcopy(config['TestReader'])
+    params.update(global_params)
+    reader_function = params['process_function']
+    process_function = create_module(reader_function)(params)
+
+    def batch_iter_reader():
+        batch_outs = []
+        for img_path in imgs_lists:
+            img = cv2.imread(img_path)
+            if img.shape[-1] == 1 or len(list(img.shape)) == 2:
+                img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+            if img is None:
+                logger.info("load image error:" + img_path)
+                continue
+            outs = process_function(img)
+            outs.append(os.path.basename(img_path))
+            print(outs[0].shape, outs[2])
+            batch_outs.append(outs)
+            if len(batch_outs) == batch_size:
+                yield batch_outs
+                batch_outs = []
+        if len(batch_outs) != 0:
+            yield batch_outs
+
+    return batch_iter_reader
 
 
 def main():
@@ -103,7 +148,9 @@ def main():
 
     save_res_path = config['Global']['save_res_path']
     with open(save_res_path, "wb") as fout:
-        test_reader = reader_main(config=config, mode='test')
+        # test_reader = reader_main(config=config, mode='test')
+        single_img_path = config['TestReader']['single_img_path']
+        test_reader = simple_reader(img_file=single_img_path, config=config)
         tackling_num = 0
         for data in test_reader():
             img_num = len(data)
@@ -116,6 +163,7 @@ def main():
                 img_list.append(data[ino][0])
                 ratio_list.append(data[ino][1])
                 img_name_list.append(data[ino][2])
+
             img_list = np.concatenate(img_list, axis=0)
             outs = exe.run(eval_prog,\
                 feed={'image': img_list},\
@@ -126,7 +174,7 @@ def main():
             postprocess_params.update(global_params)
             postprocess = create_module(postprocess_params['function'])\
                 (params=postprocess_params)
-            dt_boxes_list = postprocess(outs, ratio_list)
+            dt_boxes_list = postprocess({"maps": outs[0]}, ratio_list)
             for ino in range(img_num):
                 dt_boxes = dt_boxes_list[ino]
                 img_name = img_name_list[ino]
