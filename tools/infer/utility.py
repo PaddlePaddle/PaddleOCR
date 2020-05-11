@@ -106,7 +106,7 @@ def create_predictor(args, mode):
     #             if args.use_fp16 else AnalysisConfig.Precision.Float32,
     #             max_batch_size=args.batch_size)
 
-    config.enable_memory_optim()
+    # config.enable_memory_optim()
     # use zero copy
     config.switch_use_feed_fetch_ops(False)
     predictor = create_paddle_predictor(config)
@@ -136,12 +136,16 @@ if __name__ == '__main__':
     args.det_model_dir = root_path + "test_models/public_v1/ch_det_mv3_db"
 
     predictor, input_tensor, output_tensors = create_predictor(args, mode='det')
-    print(predictor.get_input_names())
-    print(predictor.get_output_names())
-    print(predictor.program(), file=open("det_program.txt", 'w'))
+    print("det input", predictor.get_input_names())
+    print("det output", predictor.get_output_names())
+    # print(predictor.program(), file=open("det_program.txt", 'w'))
+    outputs = []
+    for output_tensor in output_tensors:
+        output = output_tensor.copy_to_cpu()
+        outputs.append(output)
 
     args.rec_model_dir = root_path + "test_models/public_v1/ch_rec_mv3_crnn/"
     rec_predictor, input_tensor, output_tensors = create_predictor(
         args, mode='rec')
-    print(rec_predictor.get_input_names())
-    print(rec_predictor.get_output_names())
+    print("rec input", rec_predictor.get_input_names())
+    print("rec output", rec_predictor.get_output_names())
