@@ -20,7 +20,6 @@ import os
 import time
 import multiprocessing
 import numpy as np
-import glob
 
 def set_paddle_flags(**kwargs):
     for key, value in kwargs.items():
