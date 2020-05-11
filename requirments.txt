@@ -1,3 +1,4 @@
 shapely
 imgaug
 pyclipper
+lmdb

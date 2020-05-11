@@ -55,7 +55,6 @@ python3 tools/train.py -c configs/det/det_db_mv3.yml
 python3 tools/train.py -c configs/det/det_db_mv3.yml -o Optimizer.base_lr=0.0001
 ```
 
-
 ## 3.3 指标评估
 
 PaddleOCR计算三个OCR检测相关的指标，分别是：Precision、Recall、Hmean。
