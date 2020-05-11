@@ -99,7 +99,8 @@ def create_predictor(args, mode):
         config.disable_gpu()
 
     config.disable_glog_info()
-    config.switch_ir_optim(args.ir_optim)
+    # config.switch_ir_optim(args.ir_optim)
+
     #     if args.use_tensorrt:
     #         config.enable_tensorrt_engine(
     #             precision_mode=AnalysisConfig.Precision.Half
@@ -127,25 +128,3 @@ def draw_text_det_res(dt_boxes, img_path):
         cv2.polylines(src_im, [box], True, color=(255, 255, 0), thickness=2)
     img_name_pure = img_path.split("/")[-1]
     cv2.imwrite("./output/%s" % img_name_pure, src_im)
-
-
-if __name__ == '__main__':
-    args = parse_args()
-    args.use_gpu = False
-    root_path = "/Users/liuweiwei06/Desktop/TEST_CODES/icode/baidu/personal-code/PaddleOCR/"
-    args.det_model_dir = root_path + "test_models/public_v1/ch_det_mv3_db"
-
-    predictor, input_tensor, output_tensors = create_predictor(args, mode='det')
-    print("det input", predictor.get_input_names())
-    print("det output", predictor.get_output_names())
-    # print(predictor.program(), file=open("det_program.txt", 'w'))
-    outputs = []
-    for output_tensor in output_tensors:
-        output = output_tensor.copy_to_cpu()
-        outputs.append(output)
-
-    args.rec_model_dir = root_path + "test_models/public_v1/ch_rec_mv3_crnn/"
-    rec_predictor, input_tensor, output_tensors = create_predictor(
-        args, mode='rec')
-    print("rec input", rec_predictor.get_input_names())
-    print("rec output", rec_predictor.get_output_names())
