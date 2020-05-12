@@ -14,6 +14,7 @@ Global:
   pretrain_weights: ./pretrain_models/MobileNetV3_pretrained/MobileNetV3_large_x0_5_pretrained/
   checkpoints:
   save_res_path: ./output/predicts_db.txt
+  save_inference_dir:
   
 Architecture:
   function: ppocr.modeling.architectures.det_model,DetModel

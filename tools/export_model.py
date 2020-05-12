@@ -71,14 +71,19 @@ def main():
 
     init_model(config, eval_program, exe)
 
+    save_inference_dir = config['Global']['save_inference_dir']
+    if not os.path.exists(save_inference_dir):
+        os.makedirs(save_inference_dir)
     fluid.io.save_inference_model(
-        dirname="./output/",
+        dirname=save_inference_dir,
         feeded_var_names=feeded_var_names,
         main_program=eval_program,
         target_vars=target_vars,
         executor=exe,
         model_filename='model',
         params_filename='params')
+    print("inference model saved in {}/model and {}/params".format(
+        save_inference_dir, save_inference_dir))
     print("save success, output_name_list:", fetches_var_name)
 
 

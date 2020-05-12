@@ -15,39 +15,63 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 ## 文档教程
 - [快速安装](./doc/installation.md)
-- [快速开始]()
 - [文本识别模型训练/评估/预测](./doc/detection.md)
 - [文本预测模型训练/评估/预测](./doc/recognition.md)
 - [基于inference model预测](./doc/)
+
+### **快速开始**
+
+下载inference模型
+```
+# 创建inference模型保存目录
+mkdir inference && cd inference && mkdir det && mkdir rec
+# 下载检测inference模型
+wget -P ./inference/det 检测inference模型链接
+# 下载识别inference模型
+wget -P ./inferencee/rec 识别inference模型链接
+```
+
+实现文本检测、识别串联推理，预测$image_dir$指定的单张图像：
+```
+export PYTHONPATH=.
+python tools/infer/predict_eval.py --image_dir="/Demo.jpg" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
+```
+在执行预测时，通过参数det_model_dir以及rec_model_dir设置存储inference 模型的路径。
+
+实现文本检测、识别串联推理，预测$image_dir$指指定文件夹下的所有图像：
+```
+python tools/infer/predict_eval.py --image_dir="/test_imgs/" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
+```
+
 
 
 ## 文本检测算法:
 
 PaddleOCR开源的文本检测算法列表：
-- [x] [EAST](https://arxiv.org/abs/1704.03155)
-- [x] [DB](https://arxiv.org/abs/1911.08947)
-- [x] [SAST](https://arxiv.org/abs/1908.05498)
-- []
+- [x]  [EAST](https://arxiv.org/abs/1704.03155)
+- [x]  [DB](https://arxiv.org/abs/1911.08947)
+- [ ]  [SAST](https://arxiv.org/abs/1908.05498)
 
 
 算法效果：
 |模型|骨干网络|Hmean|
 |-|-|-|
-|EAST^[1]^|ResNet50_vd|85.85%|
-|EAST^[1]^|MobileNetV3|79.08%|
-|DB^[2]^|ResNet50_vd|83.30%|
-|DB^[2]^|MobileNetV3|73.00%|
+|EAST|ResNet50_vd|85.85%|
+|EAST|MobileNetV3|79.08%|
+|DB|ResNet50_vd|83.30%|
+|DB|MobileNetV3|73.00%|
 
 PaddleOCR文本检测算法的训练与使用请参考[文档](./doc/detection.md)。
 
 ## 文本识别算法:
 
 PaddleOCR开源的文本识别算法列表：
-- [CRNN](https://arxiv.org/abs/1507.05717)
-- [Rosetta](https://arxiv.org/abs/1910.05085)
-- [STAR-Net](http://www.bmva.org/bmvc/2016/papers/paper043/index.html)
-- [RARE](https://arxiv.org/abs/1603.03915v1)
-- [SRN]((https://arxiv.org/abs/2003.12294))(百度自研)
+- [x]  [CRNN](https://arxiv.org/abs/1507.05717)
+- [x]  [DTRB](https://arxiv.org/abs/1904.01906)
+- [ ]  [Rosetta](https://arxiv.org/abs/1910.05085)
+- [ ]  [STAR-Net](http://www.bmva.org/bmvc/2016/papers/paper043/index.html)
+- [ ]  [RARE](https://arxiv.org/abs/1603.03915v1)
+- [ ]  [SRN]((https://arxiv.org/abs/2003.12294))(百度自研)
 
 算法效果如下表所示，精度指标是在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上的评测结果的平均值。
 
@@ -67,7 +91,7 @@ PaddleOCR文本识别算法的训练与使用请参考[文档](./doc/recognition
 ## TODO
 **端到端OCR算法**
 PaddleOCR即将开源百度自研端对端OCR模型[End2End-PSL](https://arxiv.org/abs/1909.07808)，敬请关注。
-- End2End-PSL (comming soon)
+- [ ]  End2End-PSL (comming soon)
 
 
 

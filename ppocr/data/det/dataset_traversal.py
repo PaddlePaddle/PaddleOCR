@@ -22,7 +22,7 @@ import string
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
 from ppocr.utils.utility import create_module
-from tools.infer.utility import get_image_file_list
+from ppocr.utils.utility import get_image_file_list
 import time
 
 
