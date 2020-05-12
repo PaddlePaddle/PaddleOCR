@@ -22,6 +22,7 @@ import string
 import lmdb
 
 from ppocr.utils.utility import initial_logger
+from ppocr.utils.utility import get_image_file_list
 logger = initial_logger()
 
 from .img_tools import process_image, get_img_data
@@ -143,8 +144,9 @@ class SimpleReader(object):
             self.num_workers = 1
         else:
             self.num_workers = params['num_workers']
-        self.img_set_dir = params['img_set_dir']
-        self.label_file_path = params['label_file_path']
+        if params['mode'] != 'test':
+            self.img_set_dir = params['img_set_dir']
+            self.label_file_path = params['label_file_path']
         self.char_ops = params['char_ops']
         self.image_shape = params['image_shape']
         self.loss_type = params['loss_type']
@@ -164,29 +166,34 @@ class SimpleReader(object):
 
         def sample_iter_reader():
             if self.mode == 'test':
-                print("infer_img:", self.infer_img)
-                img = cv2.imread(self.infer_img)
-                norm_img = process_image(img, self.image_shape)
-                yield norm_img
-            with open(self.label_file_path, "rb") as fin:
-                label_infor_list = fin.readlines()
-            img_num = len(label_infor_list)
-            img_id_list = list(range(img_num))
-            random.shuffle(img_id_list)
-            for img_id in range(process_id, img_num, self.num_workers):
-                label_infor = label_infor_list[img_id_list[img_id]]
-                substr = label_infor.decode('utf-8').strip("\n").split("\t")
-                img_path = self.img_set_dir + "/" + substr[0]
-                img = cv2.imread(img_path)
-                if img is None:
-                    continue
-                label = substr[1]
-                outs = process_image(img, self.image_shape, label,
-                                     self.char_ops, self.loss_type,
-                                     self.max_text_length)
-                if outs is None:
-                    continue
-                yield outs
+                image_file_list = get_image_file_list(self.infer_img)
+                for single_img in image_file_list:
+                    img = cv2.imread(single_img)
+                    if img.shape[-1]==1 or len(list(img.shape))==2:
+                        img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+                    norm_img = process_image(img, self.image_shape)
+                    yield norm_img
+            else:
+                with open(self.label_file_path, "rb") as fin:
+                    label_infor_list = fin.readlines()
+                img_num = len(label_infor_list)
+                img_id_list = list(range(img_num))
+                random.shuffle(img_id_list)
+                for img_id in range(process_id, img_num, self.num_workers):
+                    label_infor = label_infor_list[img_id_list[img_id]]
+                    substr = label_infor.decode('utf-8').strip("\n").split("\t")
+                    img_path = self.img_set_dir + "/" + substr[0]
+                    img = cv2.imread(img_path)
+                    if img is None:
+                        logger.info("{} does not exist!".format(img_path))
+                        continue
+                    label = substr[1]
+                    outs = process_image(img, self.image_shape, label,
+                                         self.char_ops, self.loss_type,
+                                         self.max_text_length)
+                    if outs is None:
+                        continue
+                    yield outs
 
         def batch_iter_reader():
             batch_outs = []
@@ -198,4 +205,6 @@ class SimpleReader(object):
             if len(batch_outs) != 0:
                 yield batch_outs
 
-        return batch_iter_reader
+        if self.mode != 'test':
+            return batch_iter_reader
+        return sample_iter_reader
