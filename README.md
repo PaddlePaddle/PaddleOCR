@@ -2,7 +2,6 @@
 # 简介
 PaddleOCR旨在打造一套丰富、领先、且实用的文字检测、识别模型/工具库，助力使用者训练出更好的模型，并应用落地。
 
-【这里加上效果图】
 
 ## 文档教程
 - [快速安装](./doc/installation.md)
@@ -11,7 +10,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的文字检测、识别�
 
 ## 特性：
 - 超轻量级模型
-    -（检测模型4.1M + 识别模型4.5M = 8.6M）
+    - (检测模型4.1M + 识别模型4.5M = 8.6M)
 - 支持竖排文字
     - (单模型同时支持横排和竖排文字识别)
 - 支持长文本识别
@@ -21,7 +20,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的文字检测、识别�
 
 ## 文本检测算法:
 
-PaddleOCR提供的文本检测算法列表：
+PaddleOCR开源的文本检测算法列表：
 - [EAST](https://arxiv.org/abs/1704.03155)
 - [DB](https://arxiv.org/abs/1911.08947)
 - [SAST](https://arxiv.org/abs/1908.05498)
@@ -38,16 +37,14 @@ PaddleOCR文本检测算法的训练与使用请参考[文档](./doc/detection.m
 
 ## 文本识别算法:
 
-PaddleOCR提供的文本识别算法列表：
+PaddleOCR开源的文本识别算法列表：
 - (CRNN)[https://arxiv.org/abs/1507.05717]
 - [Rosetta](https://arxiv.org/abs/1910.05085)
 - [STAR-Net](http://www.bmva.org/bmvc/2016/papers/paper043/index.html)
 - [RARE](https://arxiv.org/abs/1603.03915v1)
 - [SRN]((https://arxiv.org/abs/2003.12294))(百度自研)
 
-算法效果：
-
-以下指标是在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上的评测结果的平均。
+算法效果如下表所示，精度指标是在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上的评测结果的平均值。
 
 |模型|骨干网络|ACC|
 |-|-|-|

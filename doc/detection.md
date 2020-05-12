@@ -2,7 +2,7 @@
 
 本节以icdar15数据集为例，介绍PaddleOCR中检测模型的使用方式。
 
-## 3.1 数据准备
+## 数据准备
 icdar2015数据集可以从[官网](https://rrc.cvc.uab.es/?ch=4&com=downloads)下载到，首次下载需注册。
 
 将下载到的数据集解压到工作目录下，假设解压在/PaddleOCR/train_data/ 下。另外，PaddleOCR将零散的标注文件整理成单独的标注文件
@@ -30,7 +30,7 @@ json.dumps编码前的图像标注信息是包含多个字典的list，字典中
 可以按照上述形式构建标注文件。
 
 
-## 3.2 快速启动训练
+## 快速启动训练
 
 首先下载pretrain model，PaddleOCR的检测模型目前支持两种backbone，分别是MobileNetV3、ResNet50_vd，
 您可以根据需求使用[PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/master/ppcls/modeling/architectures)中的模型更换backbone。
@@ -55,7 +55,7 @@ python3 tools/train.py -c configs/det/det_db_mv3.yml
 python3 tools/train.py -c configs/det/det_db_mv3.yml -o Optimizer.base_lr=0.0001
 ```
 
-## 3.3 指标评估
+## 指标评估
 
 PaddleOCR计算三个OCR检测相关的指标，分别是：Precision、Recall、Hmean。
 
@@ -65,7 +65,7 @@ PaddleOCR计算三个OCR检测相关的指标，分别是：Precision、Recall�
 python3 tools/eval.py -c configs/det/det_db_mv3.yml  -o checkpoints="./output/best_accuracy"
 ```
 
-## 3.4 测试检测效果
+## 测试检测效果
 
 测试单张图像的检测效果
 ```
