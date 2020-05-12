@@ -80,7 +80,7 @@ def main():
         metrics = eval_det_run(exe, config, eval_info_dict, "test")
     else:
         reader_type = config['Global']['reader_yml']
-        if "chinese" in reader_type:
+        if "benchmark" not in reader_type:
             eval_reader = reader_main(config=config, mode="eval")
             eval_info_dict = {'program': eval_program, \
                               'reader': eval_reader, \
