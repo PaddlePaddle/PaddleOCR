@@ -46,7 +46,7 @@ from ppocr.data.reader_main import reader_main
 from ppocr.utils.save_load import init_model
 from ppocr.utils.character import CharacterOps
 from ppocr.utils.utility import create_module
-from tools.infer.utility import get_image_file_list
+from ppocr.utils.utility import get_image_file_list
 logger = initial_logger()
 
 

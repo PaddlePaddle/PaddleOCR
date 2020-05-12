@@ -22,7 +22,7 @@ import string
 import lmdb
 
 from ppocr.utils.utility import initial_logger
-from tools.infer.utility import get_image_file_list
+from ppocr.utils.utility import get_image_file_list
 logger = initial_logger()
 
 from .img_tools import process_image, get_img_data
@@ -173,26 +173,27 @@ class SimpleReader(object):
                         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
                     norm_img = process_image(img, self.image_shape)
                     yield norm_img
-            with open(self.label_file_path, "rb") as fin:
-                label_infor_list = fin.readlines()
-            img_num = len(label_infor_list)
-            img_id_list = list(range(img_num))
-            random.shuffle(img_id_list)
-            for img_id in range(process_id, img_num, self.num_workers):
-                label_infor = label_infor_list[img_id_list[img_id]]
-                substr = label_infor.decode('utf-8').strip("\n").split("\t")
-                img_path = self.img_set_dir + "/" + substr[0]
-                img = cv2.imread(img_path)
-                if img is None:
-                    logger.info("{} does not exist!".format(img_path))
-                    continue
-                label = substr[1]
-                outs = process_image(img, self.image_shape, label,
-                                     self.char_ops, self.loss_type,
-                                     self.max_text_length)
-                if outs is None:
-                    continue
-                yield outs
+            else:
+                with open(self.label_file_path, "rb") as fin:
+                    label_infor_list = fin.readlines()
+                img_num = len(label_infor_list)
+                img_id_list = list(range(img_num))
+                random.shuffle(img_id_list)
+                for img_id in range(process_id, img_num, self.num_workers):
+                    label_infor = label_infor_list[img_id_list[img_id]]
+                    substr = label_infor.decode('utf-8').strip("\n").split("\t")
+                    img_path = self.img_set_dir + "/" + substr[0]
+                    img = cv2.imread(img_path)
+                    if img is None:
+                        logger.info("{} does not exist!".format(img_path))
+                        continue
+                    label = substr[1]
+                    outs = process_image(img, self.image_shape, label,
+                                         self.char_ops, self.loss_type,
+                                         self.max_text_length)
+                    if outs is None:
+                        continue
+                    yield outs
 
         def batch_iter_reader():
             batch_outs = []
