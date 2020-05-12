@@ -64,13 +64,37 @@ class TextSystem(object):
         if dt_boxes is None:
             return None, None
         img_crop_list = []
+
+        dt_boxes = sorted_boxes(dt_boxes)
+
         for bno in range(len(dt_boxes)):
             tmp_box = copy.deepcopy(dt_boxes[bno])
             img_crop = self.get_rotate_crop_image(ori_im, tmp_box)
             img_crop_list.append(img_crop)
         rec_res, elapse = self.text_recognizer(img_crop_list)
-        #         self.print_draw_crop_rec_res(img_crop_list, rec_res)
+        # self.print_draw_crop_rec_res(img_crop_list, rec_res)
         return dt_boxes, rec_res
+
+
+def sorted_boxes(dt_boxes):
+    """
+    Sort text boxes in order from top to bottom, left to right
+    args:
+        dt_boxes(array)：detected text boxes with shape [4, 2]
+    return:
+        sorted boxes(array) with shape [4, 2]
+    """
+    num_boxes = dt_boxes.shape[0]
+    sorted_boxes = sorted(dt_boxes, key=lambda x: x[0][1])
+    _boxes = list(sorted_boxes)
+
+    for i in range(num_boxes - 1):
+        if abs(_boxes[i+1][0][1] - _boxes[i][0][1]) < 10 and \
+            (_boxes[i + 1][0][0] < _boxes[i][0][0]):
+            tmp = _boxes[i]
+            _boxes[i] = _boxes[i + 1]
+            _boxes[i + 1] = tmp
+    return _boxes
 
 
 if __name__ == "__main__":

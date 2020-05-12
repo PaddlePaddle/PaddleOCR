@@ -124,9 +124,6 @@ class DBProcessTest(object):
     def resize_image_type0(self, im):
         """
         resize image to a size multiple of 32 which is required by the network
-        :param im: the resized image
-        :param max_side_len: limit of max image size to avoid out of memory in gpu
-        :return: the resized image and the resize ratio
         """
         max_side_len = self.max_side_len
         h, w, _ = im.shape

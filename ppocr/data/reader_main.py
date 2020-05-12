@@ -73,9 +73,3 @@ def reader_main(config=None, mode=None):
         return paddle.reader.multiprocess_reader(readers, False)
     else:
         return function(mode)
-
-
-def test_reader(image_shape, img_path):
-    img = cv2.imread(img_path)
-    norm_img = process_image(img, image_shape)
-    return norm_img

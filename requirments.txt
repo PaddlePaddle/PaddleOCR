@@ -1,0 +1,4 @@
+shapely
+imgaug
+pyclipper
+lmdb
