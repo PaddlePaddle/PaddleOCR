@@ -61,16 +61,21 @@ def parse_args():
     return parser.parse_args()
 
 
-def get_image_file_list(image_dir):
-    image_file_list = []
-    if image_dir is None:
-        return image_file_list
-    if os.path.isfile(image_dir):
-        image_file_list = [image_dir]
-    elif os.path.isdir(image_dir):
-        for single_file in os.listdir(image_dir):
-            image_file_list.append(os.path.join(image_dir, single_file))
-    return image_file_list
+def get_image_file_list(img_file):
+    imgs_lists = []
+    if img_file is None or not os.path.exists(img_file):
+        raise Exception("not found any img file in {}".format(img_file))
+
+    img_end = ['jpg', 'png', 'jpeg', 'JPEG', 'JPG', 'bmp']
+    if os.path.isfile(img_file) and img_file.split('.')[-1] in img_end:
+        imgs_lists.append(img_file)
+    elif os.path.isdir(img_file):
+        for single_file in os.listdir(img_file):
+            if single_file.split('.')[-1] in img_end:
+                imgs_lists.append(os.path.join(img_file, single_file))
+    if len(imgs_lists) == 0:
+        raise Exception("not found any img file in {}".format(img_file))
+    return imgs_lists
 
 
 def create_predictor(args, mode):

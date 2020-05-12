@@ -1,6 +1,6 @@
 # 文字检测
 
-本节以icdar15数据集为例，介绍PaddleOCR中检测模型的使用方式。
+本节以icdar15数据集为例，介绍PaddleOCR中检测模型的训练、评估与测试。
 
 ## 数据准备
 icdar2015数据集可以从[官网](https://rrc.cvc.uab.es/?ch=4&com=downloads)下载到，首次下载需注册。
@@ -26,8 +26,9 @@ wget -P /PaddleOCR/train_data/  测试标注文件链接
 " 图像文件名                    json.dumps编码的图像标注信息"
 ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]], ...}]
 ```
-json.dumps编码前的图像标注信息是包含多个字典的list，字典中的points表示文本框的位置，如果您想在其他数据集上训练PaddleOCR,
-可以按照上述形式构建标注文件。
+json.dumps编码前的图像标注信息是包含多个字典的list，字典中的$points$表示文本框的四个点的坐标(x, y)，从左上角的点开始顺时针排列。
+$transcription$表示当前文本框的文字，在文本检测任务中并不需要这个信息。
+如果您想在其他数据集上训练PaddleOCR，可以按照上述形式构建标注文件。
 
 
 ## 快速启动训练
@@ -62,7 +63,7 @@ PaddleOCR计算三个OCR检测相关的指标，分别是：Precision、Recall�
 运行如下代码，根据配置文件det_db_mv3.yml中save_res_path指定的测试集检测结果文件，计算评估指标。
 
 ```
-python3 tools/eval.py -c configs/det/det_db_mv3.yml  -o checkpoints="./output/best_accuracy"
+python3 tools/eval.py -c configs/det/det_db_mv3.yml  -o Gloabl.checkpoints="./output/best_accuracy"
 ```
 
 ## 测试检测效果

@@ -22,6 +22,7 @@ import string
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
 from ppocr.utils.utility import create_module
+from tools.infer.utility import get_image_file_list
 import time
 
 
@@ -72,16 +73,8 @@ class EvalTestReader(object):
             self.params)
         batch_size = self.params['test_batch_size_per_card']
 
-        flag_test_single_img = False
-        if mode == "test":
-            single_img_path = self.params['single_img_path']
-            if single_img_path is not None:
-                flag_test_single_img = True
-
         img_list = []
-        if flag_test_single_img:
-            img_list.append([single_img_path, single_img_path])
-        else:
+        if mode != "test":
             img_set_dir = self.params['img_set_dir']
             img_name_list_path = self.params['label_file_path']
             with open(img_name_list_path, "rb") as fin:
@@ -90,6 +83,9 @@ class EvalTestReader(object):
                     img_name = line.decode().strip("\n").split("\t")[0]
                     img_path = img_set_dir + "/" + img_name
                     img_list.append([img_path, img_name])
+        else:
+            img_path = self.params['single_img_path']
+            img_list = get_image_file_list(img_path)
 
         def batch_iter_reader():
             batch_outs = []

@@ -25,10 +25,3 @@ cd PaddleOCR
 pip3 install --upgrade pip
 pip3 install -r requirements.txt
 ```
-
-## 快速运行
-
-```
-python3 tools/infer/predict_eval.py --image_file="./"
-```
-【可视化运行结果】

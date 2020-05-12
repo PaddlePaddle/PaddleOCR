@@ -68,50 +68,6 @@ def draw_det_res(dt_boxes, config, img_name, ino):
         logger.info("The detected Image saved in {}".format(save_path))
 
 
-def simple_reader(img_file, config):
-    imgs_lists = []
-    if img_file is None or not os.path.exists(img_file):
-        raise Exception("not found any img file in {}".format(img_file))
-
-    img_end = ['jpg', 'png', 'jpeg', 'JPEG', 'JPG', 'bmp']
-    if os.path.isfile(img_file) and img_file.split('.')[-1] in img_end:
-        imgs_lists.append(img_file)
-    elif os.path.isdir(img_file):
-        for single_file in os.listdir(img_file):
-            if single_file.split('.')[-1] in img_end:
-                imgs_lists.append(os.path.join(img_file, single_file))
-    if len(imgs_lists) == 0:
-        raise Exception("not found any img file in {}".format(img_file))
-
-    batch_size = config['Global']['test_batch_size_per_card']
-    global_params = config['Global']
-    params = deepcopy(config['TestReader'])
-    params.update(global_params)
-    reader_function = params['process_function']
-    process_function = create_module(reader_function)(params)
-
-    def batch_iter_reader():
-        batch_outs = []
-        for img_path in imgs_lists:
-            img = cv2.imread(img_path)
-            if img.shape[-1] == 1 or len(list(img.shape)) == 2:
-                img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-            if img is None:
-                logger.info("load image error:" + img_path)
-                continue
-            outs = process_function(img)
-            outs.append(os.path.basename(img_path))
-            print(outs[0].shape, outs[2])
-            batch_outs.append(outs)
-            if len(batch_outs) == batch_size:
-                yield batch_outs
-                batch_outs = []
-        if len(batch_outs) != 0:
-            yield batch_outs
-
-    return batch_iter_reader
-
-
 def main():
     config = program.load_config(FLAGS.config)
     program.merge_config(FLAGS.opt)
@@ -148,9 +104,7 @@ def main():
 
     save_res_path = config['Global']['save_res_path']
     with open(save_res_path, "wb") as fout:
-        # test_reader = reader_main(config=config, mode='test')
-        single_img_path = config['TestReader']['single_img_path']
-        test_reader = simple_reader(img_file=single_img_path, config=config)
+        test_reader = reader_main(config=config, mode='test')
         tackling_num = 0
         for data in test_reader():
             img_num = len(data)
