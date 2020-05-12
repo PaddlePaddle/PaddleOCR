@@ -46,7 +46,7 @@ from ppocr.data.reader_main import reader_main
 from ppocr.utils.save_load import init_model
 from ppocr.utils.character import CharacterOps
 from ppocr.utils.utility import create_module
-
+from tools.infer.utility import get_image_file_list
 logger = initial_logger()
 
 
@@ -79,11 +79,8 @@ def main():
     init_model(config, eval_prog, exe)
 
     blobs = reader_main(config, 'test')()
-    infer_img = config['Global']['infer_img']
-    if os.path.isfile(infer_img):
-        infer_list = [infer_img]
-    elif os.path.isdir(infer_img):
-        infer_list = os.listdir(config['Global']['infer_img'])
+    infer_img = config['TestReader']['infer_img']
+    infer_list = get_image_file_list(infer_img)
     max_img_num = len(infer_list)
     if len(infer_list) == 0:
         logger.info("Can not find img in infer_img dir.")

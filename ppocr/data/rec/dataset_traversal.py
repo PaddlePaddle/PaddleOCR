@@ -22,6 +22,7 @@ import string
 import lmdb
 
 from ppocr.utils.utility import initial_logger
+from tools.infer.utility import get_image_file_list
 logger = initial_logger()
 
 from .img_tools import process_image, get_img_data
@@ -165,15 +166,7 @@ class SimpleReader(object):
 
         def sample_iter_reader():
             if self.mode == 'test':
-                image_file_list = []
-                if os.path.isfile(self.infer_img):
-                    image_file_list = [self.infer_img]
-                elif os.path.isdir(self.infer_img):
-                    for single_file in os.listdir(self.infer_img):
-                        if single_file.split('.')[
-                            -1] not in ['bmp', 'jpg', 'jpeg', 'png', 'JPEG', 'JPG', 'PNG']:
-                            continue
-                        image_file_list.append(os.path.join(self.infer_img, single_file))
+                image_file_list = get_image_file_list(self.infer_img)
                 for single_img in image_file_list:
                     img = cv2.imread(single_img)
                     if img.shape[-1]==1 or len(list(img.shape))==2:

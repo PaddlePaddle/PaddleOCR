@@ -5,8 +5,8 @@ Global:
   log_smooth_window: 20
   print_batch_step: 10
   save_model_dir: output_ic15
-  save_epoch_step: 3
-  eval_batch_step: 2000
+  save_epoch_step: 300
+  eval_batch_step: 200
   train_batch_size_per_card: 256
   test_batch_size_per_card: 256
   image_shape: [3, 32, 100]
@@ -14,9 +14,8 @@ Global:
   character_type: ch
   character_dict_path: ./ppocr/utils/ic15_dict.txt
   loss_type: ctc
-  reader_yml: ./configs/rec/rec_ic15_reader.yml
-  pretrain_weights: ./pretrain_models/best_accuracy 
-  infer_img: ./infer_img 
+  reader_yml: ./configs/rec/rec_icdar15_reader.yml
+  pretrain_weights: ./pretrain_models/CRNN/best_accuracy 
 
 Architecture:
   function: ppocr.modeling.architectures.rec_model,RecModel
