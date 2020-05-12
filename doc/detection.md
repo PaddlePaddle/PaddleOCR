@@ -35,15 +35,15 @@ json.dumps编码前的图像标注信息是包含多个字典的list，字典中
 首先下载pretrain model，PaddleOCR的检测模型目前支持两种backbone，分别是MobileNetV3、ResNet50_vd，
 您可以根据需求使用[PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/master/ppcls/modeling/architectures)中的模型更换backbone。
 ```
+cd PaddleOCR/
 # 下载MobileNetV3的预训练模型
-wget -P /PaddleOCR/pretrained_model/ 模型链接
+wget -P /PaddleOCR/pretrain_models/ 模型链接
 # 下载ResNet50的预训练模型
-wget -P /PaddleOCR/pretrained_model/ 模型链接
+wget -P /PaddleOCR/pretrain_models/ 模型链接
 ```
 
 **启动训练**
 ```
-cd PaddleOCR/
 python3 tools/train.py -c configs/det/det_db_mv3.yml
 ```
 
