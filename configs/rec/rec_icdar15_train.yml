@@ -16,7 +16,8 @@ Global:
   loss_type: ctc
   reader_yml: ./configs/rec/rec_icdar15_reader.yml
   pretrain_weights: ./pretrain_models/CRNN/best_accuracy 
-  checkpoints: 
+  checkpoints:
+  save_inference_dir:
 Architecture:
   function: ppocr.modeling.architectures.rec_model,RecModel
 
