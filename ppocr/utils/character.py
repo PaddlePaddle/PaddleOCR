@@ -64,7 +64,7 @@ class CharacterOps(object):
                     [sum(text_lengths)] = [text_index_0 + text_index_1 + ... + text_index_(n - 1)]
             length: length of each text. [batch_size]
         """
-        if self.character_type == "en":
+        if self.character_type == "en" or text.encode( 'UTF-8' ).isalpha():
             text = text.lower()
 
         text_list = []
