@@ -65,11 +65,10 @@ PaddleOCR文本检测算法的训练与使用请参考[文档](./doc/detection.m
 
 PaddleOCR开源的文本识别算法列表：
 - [x]  [CRNN](https://arxiv.org/abs/1507.05717)
-- [x]  [DTRB](https://arxiv.org/abs/1904.01906)
-- [ ]  [Rosetta](https://arxiv.org/abs/1910.05085)
-- [ ]  [STAR-Net](http://www.bmva.org/bmvc/2016/papers/paper043/index.html)
-- [ ]  [RARE](https://arxiv.org/abs/1603.03915v1)
-- [ ]  [SRN]((https://arxiv.org/abs/2003.12294))(百度自研)
+- [x]  [Rosetta](https://arxiv.org/abs/1910.05085)
+- [x]  [STAR-Net](http://www.bmva.org/bmvc/2016/papers/paper043/index.html)
+- [x]  [RARE](https://arxiv.org/abs/1603.03915v1)
+- [ ]  [SRN]((https://arxiv.org/abs/2003.12294))(百度自研, comming soon)
 
 算法效果如下表所示，精度指标是在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上的评测结果的平均值。
 
@@ -89,7 +88,7 @@ PaddleOCR文本识别算法的训练与使用请参考[文档](./doc/recognition
 ## TODO
 **端到端OCR算法**
 PaddleOCR即将开源百度自研端对端OCR模型[End2End-PSL](https://arxiv.org/abs/1909.07808)，敬请关注。
-- [ ]  End2End-PSL (comming soon)
+- [ ]  End2End-PSL (百度自研, comming soon)
 
 
 
