@@ -13,7 +13,6 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - 支持模型部署
 
 ![](./doc/imgs_draw/11.jpg)
-<img width="500" height="300" src="https://github.com/PaddlePaddle/PaddleOCR/doc/imgs_draw/11.jpg"/>
 
 注：更多效果展示请见文末。
 
@@ -96,15 +95,15 @@ PaddleOCR即将开源百度自研端对端OCR模型[End2End-PSL](https://arxiv.o
 - [ ]  End2End-PSL (百度自研, comming soon)
 
 ## 效果展示
+![](./doc/imgs_draw/1.jpg)
+![](./doc/imgs_draw/4.jpg)
+![](./doc/imgs_draw/6.jpg)
+![](./doc/imgs_draw/7.jpg)
+![](./doc/imgs_draw/9.jpg)
+![](./doc/imgs_draw/12.jpg)
+![](./doc/imgs_draw/16.jpg)
+![](./doc/imgs_draw/22.jpg)
 
-<img width="500" height="300" src="https://github.com/PaddlePaddle/PaddleOCR/doc/imgs_draw/1.jpg"/>
-<img width="500" height="300" src="https://github.com/PaddlePaddle/PaddleOCR/doc/imgs_draw/4.jpg"/>
-<img width="500" height="300" src="https://github.com/PaddlePaddle/PaddleOCR/doc/imgs_draw/6.jpg"/>
-<img width="500" height="300" src="https://github.com/PaddlePaddle/PaddleOCR/doc/imgs_draw/7.jpg"/>
-<img width="500" height="300" src="https://github.com/PaddlePaddle/PaddleOCR/doc/imgs_draw/9.jpg"/>
-<img width="500" height="300" src="https://github.com/PaddlePaddle/PaddleOCR/doc/imgs_draw/12.jpg"/>
-<img width="500" height="300" src="https://github.com/PaddlePaddle/PaddleOCR/doc/imgs_draw/16.jpg"/>
-<img width="500" height="300" src="https://github.com/PaddlePaddle/PaddleOCR/doc/imgs_draw/22.jpg"/>
 
 # 参考文献
 ```
