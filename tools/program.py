@@ -284,6 +284,10 @@ def train_eval_rec_run(config, exe, train_info_dict, eval_info_dict):
     eval_batch_step = config['Global']['eval_batch_step']
     save_epoch_step = config['Global']['save_epoch_step']
     save_model_dir = config['Global']['save_model_dir']
+    if save_model_dir[-1] == "/":
+        save_model_dir = save_model_dir[:-1]
+    if not os.path.exists(save_model_dir + config['Global']['algorithm']):
+        os.makedirs(save_model_dir)
     train_stats = TrainingStats(log_smooth_window, ['loss', 'acc'])
     best_eval_acc = -1
     best_batch_id = 0
