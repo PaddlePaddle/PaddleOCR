@@ -52,7 +52,8 @@ def main():
 
     # check if set use_gpu=True in paddlepaddle cpu version
     use_gpu = config['Global']['use_gpu']
-    program.check_gpu(True)
+    # program.check_gpu(True)
+    use_gpu = False
 
     alg = config['Global']['algorithm']
     assert alg in ['EAST', 'DB', 'Rosetta', 'CRNN', 'STARNet', 'RARE']

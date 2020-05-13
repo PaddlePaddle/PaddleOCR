@@ -38,6 +38,8 @@ if __name__ == "__main__":
     total_time_all = 0
     count = 0
     save_path = "./inference_output/predict.txt"
+    if not os.path.exists(os.path.dirname(save_path)):
+        os.makedirs(os.path.dirname(save_path))
     fout = open(save_path, "wb")
     for image_name in image_file_list:
         image_file = image_name
@@ -77,7 +79,10 @@ if __name__ == "__main__":
         draw_img_save = os.path.join(
             os.path.dirname(save_path), "inference_draw",
             os.path.basename(image_file))
-        cv2.imwrite(draw_img_save, new_img)
+        if not os.path.exists(os.path.dirname(draw_img_save)):
+            os.makedirs(os.path.dirname(draw_img_save))
+        cv2.imwrite(draw_img_save, new_img[:, :, ::-1])
+        print("drawed img saved in {}".format(draw_img_save))
         # save predicted results in txt file
         otstr = image_name + "\t" + json.dumps(bbox_list) + "\n"
         fout.write(otstr.encode('utf-8'))

@@ -109,6 +109,8 @@ class RecModel(object):
                 decoded_out, 'label':label}
             return loader, outputs
         elif mode == "export":
-            return [image, {'decoded_out': decoded_out}]
+            predict = predicts['predict']
+            predict = fluid.layers.softmax(predict)
+            return [image, {'decoded_out': decoded_out, 'predicts': predict}]
         else:
             return loader, {'decoded_out': decoded_out}

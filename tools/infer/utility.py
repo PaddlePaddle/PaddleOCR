@@ -138,7 +138,7 @@ def draw_ocr(image, boxes, txts, scores, draw_txt):
 
         for i, txt in enumerate(txts):
             font = ImageFont.truetype(
-                "/simfang.TTF", font_size, encoding="utf-8")
+                "./doc/simfang.TTF", font_size, encoding="utf-8")
             new_txt = str(i) + ':  ' + txt + '    ' + str(scores[i])
             draw_txt.text((20, gap * (i + 1)), new_txt, txt_color, font=font)
 
