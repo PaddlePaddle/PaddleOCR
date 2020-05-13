@@ -21,6 +21,8 @@ from paddle.fluid.core import AnalysisConfig
 from paddle.fluid.core import create_paddle_predictor
 import cv2
 import numpy as np
+import json
+from PIL import Image, ImageDraw, ImageFont
 
 
 def parse_args():
@@ -108,3 +110,59 @@ def draw_text_det_res(dt_boxes, img_path):
         cv2.polylines(src_im, [box], True, color=(255, 255, 0), thickness=2)
     img_name_pure = img_path.split("/")[-1]
     cv2.imwrite("./output/%s" % img_name_pure, src_im)
+
+
+def draw_ocr(image, boxes, txts, scores, draw_txt):
+    from PIL import Image, ImageDraw, ImageFont
+
+    w, h = image.size
+    img = image.copy()
+    draw = ImageDraw.Draw(img)
+
+    for (box, txt) in zip(boxes, txts):
+
+        draw.line([(box[0][0], box[0][1]), (box[1][0], box[1][1])], fill='red')
+        draw.line([(box[1][0], box[1][1]), (box[2][0], box[2][1])], fill='red')
+        draw.line([(box[2][0], box[2][1]), (box[3][0], box[3][1])], fill='red')
+        draw.line([(box[3][0], box[3][1]), (box[0][0], box[0][1])], fill='red')
+
+    if draw_txt:
+        txt_color = (0, 0, 0)
+
+        blank_img = np.ones(shape=[h, 800], dtype=np.int8) * 255
+        blank_img = Image.fromarray(blank_img).convert("RGB")
+        draw_txt = ImageDraw.Draw(blank_img)
+
+        font_size = 30
+        gap = 40 if h // len(txts) >= font_size else h // len(txts)
+
+        for i, txt in enumerate(txts):
+            font = ImageFont.truetype(
+                "/simfang.TTF", font_size, encoding="utf-8")
+            new_txt = str(i) + ':  ' + txt + '    ' + str(scores[i])
+            draw_txt.text((20, gap * (i + 1)), new_txt, txt_color, font=font)
+
+        img = np.concatenate([np.array(img), np.array(blank_img)], axis=1)
+    return img
+
+
+if __name__ == '__main__':
+    test_img = "./doc/test_v2"
+    predict_txt = "./doc/predict.txt"
+    f = open(predict_txt, 'r')
+    data = f.readlines()
+    img_path, anno = data[0].strip().split('\t')
+    img_name = os.path.basename(img_path)
+    img_path = os.path.join(test_img, img_name)
+    image = Image.open(img_path)
+
+    data = json.loads(anno)
+    boxes, txts, scores = [], [], []
+    for dic in data:
+        boxes.append(dic['points'])
+        txts.append(dic['transcription'])
+        scores.append(round(dic['scores'], 3))
+
+    new_img = draw_ocr(image, boxes, txts, scores, draw_txt=True)
+
+    cv2.imwrite(img_name, new_img)
