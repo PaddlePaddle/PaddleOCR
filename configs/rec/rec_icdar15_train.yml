@@ -4,7 +4,7 @@ Global:
   epoch_num: 3000
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/rec
+  save_model_dir: ./output/rec_CRNN
   save_epoch_step: 300
   eval_batch_step: 500
   train_batch_size_per_card: 256
@@ -37,6 +37,6 @@ Loss:
 
 Optimizer:
   function: ppocr.optimizer,AdamDecay
-  base_lr: 0.0001
+  base_lr: 0.0005
   beta1: 0.9
   beta2: 0.999
