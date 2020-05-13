@@ -105,7 +105,7 @@ PaddleOCR即将开源百度自研端对端OCR模型[End2End-PSL](https://arxiv.o
 ![](./doc/imgs_draw/22.jpg)
 
 
-# 参考文献
+## 参考文献
 ```
 1. EAST:
 @inproceedings{zhou2017east,
