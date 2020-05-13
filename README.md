@@ -18,7 +18,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 ## **快速运行**
 
-快速运行前请先参考[快速安装](./doc/installation.md)配置PaddleOCR工作环境。
+运行前请先参考[快速安装](./doc/installation.md)配置PaddleOCR运行环境。
 
 下载inference模型
 ```
