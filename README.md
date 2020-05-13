@@ -12,6 +12,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - 提供训练代码
 - 支持模型部署
 
+![](./doc/imgs_draw/11.jpg)
+
 ## **快速运行**
 
 下载inference模型
