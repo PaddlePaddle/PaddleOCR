@@ -143,12 +143,16 @@ class DBProcessTest(object):
         resize_w = int(resize_w * ratio)
         if resize_h % 32 == 0:
             resize_h = resize_h
+        elif resize_h // 32 <= 1:
+            resize_h = 32
         else:
-            resize_h = (resize_h // 32 + 1) * 32
+            resize_h = (resize_h // 32 - 1) * 32
         if resize_w % 32 == 0:
             resize_w = resize_w
+        elif resize_w // 32 <= 1:
+            resize_w = 32
         else:
-            resize_w = (resize_w // 32 + 1) * 32
+            resize_w = (resize_w // 32 - 1) * 32
         try:
             if int(resize_w) <= 0 or int(resize_h) <= 0:
                 return None, (None, None)
