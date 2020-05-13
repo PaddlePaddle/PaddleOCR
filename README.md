@@ -159,3 +159,11 @@ PaddleOCR即将开源百度自研端对端OCR模型[End2End-PSL](https://arxiv.o
   year={2019}
 }
 ```
+
+## 许可证书
+本项目的发布受<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/master/LICENSE">Apache 2.0 license</a>许可认证。
+
+## 版本更新
+
+## 如何贡献代码
+我们非常欢迎你为PaddleOCR贡献代码，也十分感谢你的反馈。
