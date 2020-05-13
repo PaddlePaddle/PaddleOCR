@@ -219,6 +219,8 @@ def train_eval_det_run(config, exe, train_info_dict, eval_info_dict):
     eval_batch_step = config['Global']['eval_batch_step']
     save_epoch_step = config['Global']['save_epoch_step']
     save_model_dir = config['Global']['save_model_dir']
+    if not os.path.exists(save_model_dir):
+        os.makedirs(save_model_dir)
     train_stats = TrainingStats(log_smooth_window,
                                 train_info_dict['fetch_name_list'])
     best_eval_hmean = -1

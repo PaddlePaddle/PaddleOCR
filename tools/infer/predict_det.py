@@ -24,6 +24,7 @@ import copy
 import numpy as np
 import math
 import time
+import sys
 
 
 class TextDetector(object):
@@ -52,10 +53,10 @@ class TextDetector(object):
             utility.create_predictor(args, mode="det")
 
     def order_points_clockwise(self, pts):
-        #######
-        ## https://github.com/jrosebr1/imutils/blob/master/imutils/perspective.py
-        ########
+        """
+        reference from: https://github.com/jrosebr1/imutils/blob/master/imutils/perspective.py
         # sort the points based on their x-coordinates
+        """
         xSorted = pts[np.argsort(pts[:, 0]), :]
 
         # grab the left-most and right-most points from the sorted
@@ -141,7 +142,7 @@ class TextDetector(object):
             outs_dict['f_score'] = outputs[0]
             outs_dict['f_geo'] = outputs[1]
         else:
-            outs_dict['maps'] = [outputs[0]]
+            outs_dict['maps'] = outputs[0]
         dt_boxes_list = self.postprocess_op(outs_dict, [ratio_list])
         dt_boxes = dt_boxes_list[0]
         dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
