@@ -12,14 +12,13 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - 提供训练代码
 - 支持模型部署
 
-
 ## 文档教程
 - [快速安装](./doc/installation.md)
 - [文本识别模型训练/评估/预测](./doc/detection.md)
 - [文本预测模型训练/评估/预测](./doc/recognition.md)
 - [基于inference model预测](./doc/)
 
-### **快速开始**
+## **快速运行**
 
 下载inference模型
 ```
@@ -40,8 +39,6 @@ python tools/infer/predict_eval.py --image_dir="/Demo.jpg" --det_model_dir="./in
 ```
 python tools/infer/predict_eval.py --image_dir="/test_imgs/" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
 ```
-
-
 
 ## 文本检测算法:
 
