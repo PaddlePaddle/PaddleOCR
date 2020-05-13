@@ -4,7 +4,7 @@ Global:
   epoch_num: 100000
   log_smooth_window: 20
   print_batch_step: 5
-  save_model_dir: output
+  save_model_dir: ./output/det_east/
   save_epoch_step: 200
   eval_batch_step: 5000
   train_batch_size_per_card: 16
@@ -12,7 +12,9 @@ Global:
   image_shape: [3, 512, 512]
   reader_yml: ./configs/det/det_east_icdar15_reader.yml
   pretrain_weights: ./pretrain_models/MobileNetV3_pretrained/MobileNetV3_large_x0_5_pretrained/
-  save_res_path: ./output/predicts_east.txt
+  checkpoints:
+  save_res_path: ./output/det_east/predicts_east.txt
+  save_inference_dir:
   
 Architecture:
   function: ppocr.modeling.architectures.det_model,DetModel

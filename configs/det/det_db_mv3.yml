@@ -4,7 +4,7 @@ Global:
   epoch_num: 1200
   log_smooth_window: 20
   print_batch_step: 2
-  save_model_dir: output
+  save_model_dir: ./output/det_db/
   save_epoch_step: 200
   eval_batch_step: 5000
   train_batch_size_per_card: 16
@@ -13,7 +13,7 @@ Global:
   reader_yml: ./configs/det/det_db_icdar15_reader.yml
   pretrain_weights: ./pretrain_models/MobileNetV3_pretrained/MobileNetV3_large_x0_5_pretrained/
   checkpoints:
-  save_res_path: ./output/predicts_db.txt
+  save_res_path: ./output/det_db/predicts_db.txt
   save_inference_dir:
   
 Architecture:

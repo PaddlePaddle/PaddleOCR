@@ -128,6 +128,7 @@ class DBPostProcess(object):
 
     def __call__(self, outs_dict, ratio_list):
         pred = outs_dict['maps']
+
         pred = pred[:, 0, :, :]
         segmentation = pred > self.thresh
 
