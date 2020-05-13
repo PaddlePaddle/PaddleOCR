@@ -185,7 +185,6 @@ class SimpleReader(object):
                     img_path = self.img_set_dir + "/" + substr[0]
                     img = cv2.imread(img_path)
                     if img.shape[-1]==1 or len(list(img.shape))==2:
-                        print("this is a gry")
                         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
                     if img is None:
                         logger.info("{} does not exist!".format(img_path))
