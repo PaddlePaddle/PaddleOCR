@@ -116,10 +116,10 @@ class TextDetector(object):
             rect_height = int(np.linalg.norm(box[0] - box[3]))
             if rect_width <= 10 or rect_height <= 10:
                 continue
-            if diffh <= 10 and diffw <= 10:
-                box = self.expand_det_res(
-                    copy.deepcopy(box), bbox_height, bbox_width, img_height,
-                    img_width)
+            # if diffh <= 10 and diffw <= 10:
+            #     box = self.expand_det_res(
+            #         copy.deepcopy(box), bbox_height, bbox_width, img_height,
+            #         img_width)
             dt_boxes_new.append(box)
         dt_boxes = np.array(dt_boxes_new)
         return dt_boxes

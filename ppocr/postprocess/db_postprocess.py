@@ -81,7 +81,7 @@ class DBPostProcess(object):
             scores[index] = score
         return boxes, scores
 
-    def unclip(self, box, unclip_ratio=1.5):
+    def unclip(self, box, unclip_ratio=2.0):
         poly = Polygon(box)
         distance = poly.area * unclip_ratio / poly.length
         offset = pyclipper.PyclipperOffset()
