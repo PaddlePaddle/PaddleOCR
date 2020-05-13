@@ -8,8 +8,8 @@ icdar2015数据集可以从[官网](https://rrc.cvc.uab.es/?ch=4&com=downloads)�
 将下载到的数据集解压到工作目录下，假设解压在/PaddleOCR/train_data/ 下。另外，PaddleOCR将零散的标注文件整理成单独的标注文件
 ，您可以通过wget的方式进行下载。
 ```
-wget -P /PaddleOCR/train_data/  训练标注文件链接
-wget -P /PaddleOCR/train_data/  测试标注文件链接
+wget -P /PaddleOCR/train_data/  https://paddleocr.bj.bcebos.com/dataset%2Ftrain_icdar2015_label.txt
+wget -P /PaddleOCR/train_data/  https://paddleocr.bj.bcebos.com/dataset%2Ftest_icdar2015_label.txt
 ```
 
 解压数据集和下载标注文件后，/PaddleOCR/train_data/ 有两个文件夹和两个文件，分别是：
@@ -38,9 +38,9 @@ $transcription$表示当前文本框的文字，在文本检测任务中并不�
 ```
 cd PaddleOCR/
 # 下载MobileNetV3的预训练模型
-wget -P /PaddleOCR/pretrain_models/ 模型链接
+wget -P /PaddleOCR/pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/MobileNetV3_large_x0_5_pretrained.tar
 # 下载ResNet50的预训练模型
-wget -P /PaddleOCR/pretrain_models/ 模型链接
+wget -P /PaddleOCR/pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/ResNet50_vd_ssld_pretrained.tar
 ```
 
 **启动训练**
@@ -49,7 +49,7 @@ python3 tools/train.py -c configs/det/det_db_mv3.yml
 ```
 
 上述指令中，通过-c 选择训练使用configs/det/det_db_mv3.yml配置文件。
-有关配置文件的详细解释，请参考[链接]()。
+有关配置文件的详细解释，请参考[链接](./doc/config.md)。
 
 您也可以通过-o参数在不需要修改yml文件的情况下，改变训练的参数，比如，调整训练的学习率为0.0001
 ```
