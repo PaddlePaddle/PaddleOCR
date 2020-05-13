@@ -11,12 +11,11 @@ Global:
   test_batch_size_per_card: 256
   image_shape: [3, 32, 100]
   max_text_length: 25
-  character_type: ch
-  #character_dict_path: ./ppocr/utils/ic15_dict.txt
+  character_type: en
   character_dict_path: /workspace/PaddleOCR/train_data/ic15_dict.txt
   loss_type: ctc
   reader_yml: ./configs/rec/rec_icdar15_reader.yml
-  pretrain_weights: /workspace/PaddleOCR/pretrain_models/rec_mv3_none_bilstm_ctc/best_accuracy 
+  pretrain_weights: ./pretrain_models/CRNN/best_accuracy 
   checkpoints:
   save_inference_dir:
 Architecture:
