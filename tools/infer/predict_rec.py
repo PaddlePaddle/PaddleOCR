@@ -36,8 +36,9 @@ class TextRecognizer(object):
         char_ops_params['loss_type'] = 'ctc'
         self.char_ops = CharacterOps(char_ops_params)
 
-    def resize_norm_img(self, img):
+    def resize_norm_img(self, img, max_wh_ratio):
         imgC, imgH, imgW = self.rec_image_shape
+        imgW = int(32 * max_wh_ratio)
         h = img.shape[0]
         w = img.shape[1]
         ratio = w / float(h)
@@ -56,14 +57,19 @@ class TextRecognizer(object):
 
     def __call__(self, img_list):
         img_num = len(img_list)
-        batch_num = 15
+        batch_num = 30
         rec_res = []
         predict_time = 0
         for beg_img_no in range(0, img_num, batch_num):
             end_img_no = min(img_num, beg_img_no + batch_num)
             norm_img_batch = []
+            max_wh_ratio = 0
             for ino in range(beg_img_no, end_img_no):
-                norm_img = self.resize_norm_img(img_list[ino])
+                h, w = img_list[ino].shape[0:2]
+                wh_ratio = w * 1.0 / h
+                max_wh_ratio = max(max_wh_ratio, wh_ratio)
+            for ino in range(beg_img_no, end_img_no):
+                norm_img = self.resize_norm_img(img_list[ino], max_wh_ratio)
                 norm_img = norm_img[np.newaxis, :]
                 norm_img_batch.append(norm_img)
             norm_img_batch = np.concatenate(norm_img_batch)
