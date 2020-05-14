@@ -11,7 +11,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 ## **超轻量级中文OCR体验**
 
-![](./doc/imgs_draw/11.jpg)
+![](doc/imgs_results/11.jpg)
 
 上图是超轻量级中文OCR模型效果展示，更多效果图请见文末[效果展示](#效果展示)。
 
@@ -97,14 +97,14 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 
 <a name="效果展示"></a>
 ## 效果展示
-![](./doc/imgs_draw/1.jpg)
-![](./doc/imgs_draw/7.jpg)
-![](./doc/imgs_draw/12.jpg)
-![](./doc/imgs_draw/4.jpg)
-![](./doc/imgs_draw/6.jpg)
-![](./doc/imgs_draw/9.jpg)
-![](./doc/imgs_draw/16.png)
-![](./doc/imgs_draw/22.jpg)
+![](doc/imgs_results/1.jpg)
+![](doc/imgs_results/7.jpg)
+![](doc/imgs_results/12.jpg)
+![](doc/imgs_results/4.jpg)
+![](doc/imgs_results/6.jpg)
+![](doc/imgs_results/9.jpg)
+![](doc/imgs_results/16.png)
+![](doc/imgs_results/22.jpg)
 
 
 ## 参考文献

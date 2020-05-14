@@ -112,36 +112,70 @@ def draw_text_det_res(dt_boxes, img_path):
     cv2.imwrite("./output/%s" % img_name_pure, src_im)
 
 
-def draw_ocr(image, boxes, txts, scores, draw_txt):
+def resize_img(img, input_size=600):
+    """
+    """
+    img = np.array(img)
+    im_shape = img.shape
+    im_size_min = np.min(im_shape[0:2])
+    im_size_max = np.max(im_shape[0:2])
+    im_scale = float(input_size) / float(im_size_max)
+    im = cv2.resize(img, None, None, fx=im_scale, fy=im_scale)
+    return im
+
+
+def draw_ocr(image, boxes, txts, scores, draw_txt=True, drop_score=0.5):
     from PIL import Image, ImageDraw, ImageFont
 
     w, h = image.size
     img = image.copy()
     draw = ImageDraw.Draw(img)
 
-    for (box, txt) in zip(boxes, txts):
-
+    for (box, score) in zip(boxes, scores):
+        if score < drop_score:
+            continue
         draw.line([(box[0][0], box[0][1]), (box[1][0], box[1][1])], fill='red')
         draw.line([(box[1][0], box[1][1]), (box[2][0], box[2][1])], fill='red')
         draw.line([(box[2][0], box[2][1]), (box[3][0], box[3][1])], fill='red')
         draw.line([(box[3][0], box[3][1]), (box[0][0], box[0][1])], fill='red')
+        draw.line(
+            [(box[0][0] - 1, box[0][1] + 1), (box[1][0] - 1, box[1][1] + 1)],
+            fill='red')
+        draw.line(
+            [(box[1][0] - 1, box[1][1] + 1), (box[2][0] - 1, box[2][1] + 1)],
+            fill='red')
+        draw.line(
+            [(box[2][0] - 1, box[2][1] + 1), (box[3][0] - 1, box[3][1] + 1)],
+            fill='red')
+        draw.line(
+            [(box[3][0] - 1, box[3][1] + 1), (box[0][0] - 1, box[0][1] + 1)],
+            fill='red')
 
     if draw_txt:
         txt_color = (0, 0, 0)
-
-        blank_img = np.ones(shape=[h, 800], dtype=np.int8) * 255
+        img = np.array(resize_img(img))
+        _h = img.shape[0]
+        blank_img = np.ones(shape=[_h, 600], dtype=np.int8) * 255
         blank_img = Image.fromarray(blank_img).convert("RGB")
         draw_txt = ImageDraw.Draw(blank_img)
 
-        font_size = 30
-        gap = 40 if h // len(txts) >= font_size else h // len(txts)
+        font_size = 20
+        gap = 20
+        title = "index           text           score"
+        font = ImageFont.truetype(
+            "./doc/simfang.ttf", font_size, encoding="utf-8")
 
-        for i, txt in enumerate(txts):
+        draw_txt.text((20, 0), title, txt_color, font=font)
+        count = 0
+        for idx, txt in enumerate(txts):
+            if scores[idx] < drop_score:
+                continue
             font = ImageFont.truetype(
-                "./doc/simfang.TTF", font_size, encoding="utf-8")
-            new_txt = str(i) + ':  ' + txt + '    ' + str(scores[i])
-            draw_txt.text((20, gap * (i + 1)), new_txt, txt_color, font=font)
-
+                "./doc/simfang.ttf", font_size, encoding="utf-8")
+            new_txt = str(count) + ':  ' + txt + '    ' + str(scores[count])
+            draw_txt.text(
+                (20, gap * (count + 1)), new_txt, txt_color, font=font)
+            count += 1
         img = np.concatenate([np.array(img), np.array(blank_img)], axis=1)
     return img
 
