@@ -10,14 +10,17 @@
 
 ## 配置文件 Global 参数介绍 
 
+以 `rec_chinese_lite_train.yml` 为例
+
+
 |         字段             |            用途                |      默认值       |            备注            |
 | :----------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
-|      algorithm           |    设置算法                    |       CRNN        |     选择模型，支持模型请参考[简介](../../README.md) |
+|      algorithm           |    设置算法                    |  与配置文件同步   |     选择模型，支持模型请参考[简介](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/README.md) |
 |      use_gpu             |    设置代码运行场所            |       true        |                \                 |
 |      epoch_num           |    最大训练epoch数             |       3000        |                \                 |
 |      log_smooth_window   |    滑动窗口大小            |       20          |                \                 |
 |      print_batch_step    |    设置打印log间隔         |       10          |                \                 |
-|      save_model_dir      |    设置模型保存路径        |  output/rec_CRNN  |                \                 |
+|      save_model_dir      |    设置模型保存路径        |  output/{算法名称}  |                \                 |
 |      save_epoch_step     |    设置模型保存间隔        |       3           |                \                 |
 |      eval_batch_step     |    设置模型评估间隔        |       2000        |                \                 |
 |train_batch_size_per_card |  设置训练时单卡batch size    |         256         |                \                 |
@@ -29,7 +32,18 @@
 |      loss_type           |    设置 loss 类型              |       ctc         |    支持两种loss： ctc / attention |
 |      reader_yml          |    设置reader配置文件          |  ./configs/rec/rec_icdar15_reader.yml  |  \          |
 |      pretrain_weights    |    加载预训练模型路径      |  ./pretrain_models/CRNN/best_accuracy  |  \          |
-|      checkpoints         |    加载模型参数路径            |       None        |    用于中断后重新训练 |
+|      checkpoints         |    加载模型参数路径            |       None        |    用于中断后加载参数继续训练 |
 |      save_inference_dir  |    inference model 保存路径 |          None        |    用于保存inference model |
 
+## 配置文件 Reader 系列参数介绍
+
+以 `rec_chinese_reader.yml` 为例
+
+|         字段             |            用途                |      默认值       |            备注            |
+| :----------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
+|      reader_function     |    选择数据读取方式        |  ppocr.data.rec.dataset_traversal,SimpleReader  | 支持SimpleReader / LMDBReader 两种数据读取方式 |
+|      num_workers             |    设置数据读取线程数            |       8        |                \                 |
+|      img_set_dir          |    数据集路径             |       ./train_data        |                \                 |
+|      label_file_path      |    数据标签路径           |       ./train_data/rec_gt_train.txt| \    |
+|      infer_img            |    预测图像文件夹路径     |       ./infer_img | \|
 
