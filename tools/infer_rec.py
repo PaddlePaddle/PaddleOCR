@@ -37,7 +37,6 @@ set_paddle_flags(
 from paddle import fluid
 
 # from ppocr.utils.utility import load_config, merge_config
-from ppocr.data.reader_main import test_reader
 import program
 from paddle import fluid
 from ppocr.utils.utility import initial_logger

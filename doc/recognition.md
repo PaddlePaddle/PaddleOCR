@@ -39,12 +39,13 @@ train_data/train_0002.jpg   用科技让复杂的世界更简单
 
 ```
 |-train_data
-    |- rec_gt_train.txt
-    |- train_imags
-        |- train_001.jpg
-        |- train_002.jpg
-        |- train_003.jpg
-        | ...
+    |-ic15_data
+        |- rec_gt_train.txt
+        |- train_imags
+            |- train_001.jpg
+            |- train_002.jpg
+            |- train_003.jpg
+            | ...
 ```
 
 - 评估集
@@ -53,12 +54,13 @@ train_data/train_0002.jpg   用科技让复杂的世界更简单
 
 ```
 |-train_data
-    |- rec_gt_eval.txt
-    |- eval_imags
-        |- eval_001.jpg
-        |- eval_002.jpg
-        |- eval_003.jpg
-        | ...
+    |-ic15_data
+        |- rec_gt_eval.txt
+        |- eval_imags
+            |- eval_001.jpg
+            |- eval_002.jpg
+            |- eval_003.jpg
+            | ...
 ```
 
 - 字典
@@ -120,16 +122,16 @@ PaddleOCR 提供了训练好的中文模型，可以[下载](todo: add)进行快
 默认预测图片存储在 `infer_img` 里，通过 `-o Global.checkpoints` 指定权重：
 
 ```
-python tools/infer_rec.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy
+python tools/infer_rec.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy TestReader.infer_img=doc/imgs_word/word_1.jpg
 ```
+预测图片：
 
+![](./doc/imgs_words/word_1.jpg)
 得到输入图像的预测结果：
 
 ```
-infer_img: infer_img/328_4.jpg
-# 字符在字典中的索引
-[1863  921   55  155 1863 4209 3344  486  914 1863 4918]
-# 预测结果
-冷库专用冷冻液/载冷剂
+infer_img: doc/imgs_words/word_1.jpg
+     index: [2092  177  312 2503]
+     word : 韩国小馆
 ```
 
