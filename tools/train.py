@@ -36,7 +36,7 @@ set_paddle_flags(
     FLAGS_eager_delete_tensor_gb=0,  # enable GC to save memory
 )
 
-import program
+from tools import program
 from paddle import fluid
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
