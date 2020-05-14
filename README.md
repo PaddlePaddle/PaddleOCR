@@ -58,10 +58,10 @@ PaddleOCR开源的文本检测算法列表：
 算法效果：
 |模型|骨干网络|Hmean|
 |-|-|-|
-|EAST|[ResNet50_vd](https://paddleocr.bj.bcebos.com/det_r50_vd_east.tar)|85.85%|
-|EAST|[MobileNetV3](https://paddleocr.bj.bcebos.com/det_mv3_east.tar)|79.08%|
-|DB|[ResNet50_vd](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar)|83.30%|
-|DB|[MobileNetV3](https://paddleocr.bj.bcebos.com/det_mv3_db.tar)|73.00%|
+|[EAST](https://paddleocr.bj.bcebos.com/det_r50_vd_east.tar)|ResNet50_vd|85.85%|
+|[EAST](https://paddleocr.bj.bcebos.com/det_mv3_east.tar)|MobileNetV3|79.08%|
+|[DB](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar)|ResNet50_vd|83.30%|
+|[DB](https://paddleocr.bj.bcebos.com/det_mv3_db.tar)|MobileNetV3|73.00%|
 
 PaddleOCR文本检测算法的训练与使用请参考[文档](./doc/detection.md)。
 
@@ -78,14 +78,14 @@ PaddleOCR开源的文本识别算法列表：
 
 |模型|骨干网络|ACC|
 |-|-|-|
-|Rosetta|[Resnet34_vd](https://paddleocr.bj.bcebos.com/rec_r34_vd_none_none_ctc.tar)|80.24%|
-|Rosetta|[MobileNetV3](https://paddleocr.bj.bcebos.com/rec_mv3_none_none_ctc.tar)|78.16%|
-|CRNN|[Resnet34_vd](https://paddleocr.bj.bcebos.com/rec_r34_vd_none_bilstm_ctc.tar)|82.20%|
-|CRNN|[MobileNetV3](https://paddleocr.bj.bcebos.com/rec_mv3_none_bilstm_ctc.tar)|79.37%|
-|STAR-Net|[Resnet34_vd](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_ctc.tar)|83.93%|
-|STAR-Net|[MobileNetV3](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_ctc.tar)|81.56%|
-|RARE|[Resnet34_vd](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_attn.tar)|84.90%|
-|RARE|[MobileNetV3](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_attn.tar)|83.32%|
+|[Rosetta](https://paddleocr.bj.bcebos.com/rec_r34_vd_none_none_ctc.tar)|Resnet34_vd|80.24%|
+|[Rosetta](https://paddleocr.bj.bcebos.com/rec_mv3_none_none_ctc.tar)|MobileNetV3|78.16%|
+|[CRNN](https://paddleocr.bj.bcebos.com/rec_r34_vd_none_bilstm_ctc.tar)|Resnet34_vd|82.20%|
+|[CRNN](https://paddleocr.bj.bcebos.com/rec_mv3_none_bilstm_ctc.tar)|MobileNetV3|79.37%|
+|[STAR-Net](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_ctc.tar)|Resnet34_vd|83.93%|
+|[STAR-Net](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_ctc.tar)|MobileNetV3|81.56%|
+|[RARE](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_attn.tar)|Resnet34_vd|84.90%|
+|[RARE](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_attn.tar)|MobileNetV3|83.32%|
 
 PaddleOCR文本识别算法的训练与使用请参考[文档](./doc/recognition.md)。
 
