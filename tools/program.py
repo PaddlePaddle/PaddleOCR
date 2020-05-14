@@ -40,6 +40,7 @@ class ArgsParser(ArgumentParser):
             formatter_class=RawDescriptionHelpFormatter)
         self.add_argument("-c", "--config", help="configuration file to use")
         self.add_argument(
+            # nargs='+' 代表参数可以是1个或者是多个，并且默认用 空格 来分隔参数
             "-o", "--opt", nargs='+', help="set configuration options")
 
     def parse_args(self, argv=None):
@@ -56,6 +57,7 @@ class ArgsParser(ArgumentParser):
         for s in opts:
             s = s.strip()
             k, v = s.split('=')
+            # 通过yaml自动进行类型适配，牛逼，注意是"false"转False
             config[k] = yaml.load(v, Loader=yaml.Loader)
         return config
 
@@ -109,6 +111,7 @@ def merge_config(config):
     for key, value in config.items():
         if "." not in key:
             if isinstance(value, dict) and key in global_config:
+                # 用 '=' 也是可以的呀
                 global_config[key].update(value)
             else:
                 global_config[key] = value
@@ -180,7 +183,7 @@ def build(config, main_prog, startup_prog, mode):
                 global_lr.persistable = True
                 fetch_name_list.insert(0, "lr")
                 fetch_varname_list.insert(0, global_lr.name)
-    return (dataloader, fetch_name_list, fetch_varname_list, opt_loss_name)
+    return dataloader, fetch_name_list, fetch_varname_list, opt_loss_name
 
 
 def build_export(config, main_prog, startup_prog):

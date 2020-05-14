@@ -1,0 +1,2 @@
+1. fluid.is_compiled_with_cuda()  --- 和torch.cuda.is_available()是一个意思
+2. fluid.CUDAPlace(${gpu_id}) 或者 fluid.CPUPlace() --- 和torch.device('cuda:${id}') 以及 torch.device('cpu')是一样的
