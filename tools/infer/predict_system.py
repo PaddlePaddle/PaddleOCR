@@ -84,7 +84,7 @@ def sorted_boxes(dt_boxes):
     """
     Sort text boxes in order from top to bottom, left to right
     args:
-        dt_boxes(array)：detected text boxes with shape [4, 2]
+        dt_boxes(array):detected text boxes with shape [4, 2]
     return:
         sorted boxes(array) with shape [4, 2]
     """
@@ -108,6 +108,7 @@ if __name__ == "__main__":
     is_visualize = True
     for image_file in image_file_list:
         img = cv2.imread(image_file)
+        print(img.shape)
         if img is None:
             logger.info("error in loading image:{}".format(image_file))
             continue
