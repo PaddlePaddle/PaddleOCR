@@ -59,7 +59,7 @@ PaddleOCR开源的文本检测算法列表：
 
 在ICDAR2015文本检测公开数据集上，算法效果如下：
 
-|模型|骨干网络|Hmean|下载|
+|模型|骨干网络|Hmean|下载链接|
 |-|-|-|-|
 |EAST|ResNet50_vd|85.85%|[下载链接](https://paddleocr.bj.bcebos.com/det_r50_vd_east.tar)|
 |EAST|MobileNetV3|79.08%|[下载链接](https://paddleocr.bj.bcebos.com/det_mv3_east.tar)|
@@ -79,7 +79,7 @@ PaddleOCR开源的文本识别算法列表：
 
 参考[DTRB](https://arxiv.org/abs/1904.01906)文字识别训练和评估流程，使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估，算法效果如下：
 
-|模型|骨干网络|Avg Accuracy|下载|
+|模型|骨干网络|Avg Accuracy|下载链接|
 |-|-|-|-|
 |Rosetta|Resnet34_vd|80.24%|[下载链接](https://paddleocr.bj.bcebos.com/rec_r34_vd_none_none_ctc.tar)|
 |Rosetta|MobileNetV3|78.16%|[下载链接](https://paddleocr.bj.bcebos.com/rec_mv3_none_none_ctc.tar)|
