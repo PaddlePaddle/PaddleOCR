@@ -13,7 +13,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 ![](./doc/imgs_draw/11.jpg)
 
-上图是超轻量级中文OCR模型效果展示，更多效果图请见文末效果展示。
+上图是超轻量级中文OCR模型效果展示，更多效果图请见文末[效果展示](# 效果展示)。
 
 #### 1.运行环境配置
 
@@ -97,6 +97,7 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 ## 端到端OCR算法
 - [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(百度自研, comming soon)
 
+<a name="效果展示"></a>
 ## 效果展示
 ![](./doc/imgs_draw/1.jpg)
 ![](./doc/imgs_draw/4.jpg)
