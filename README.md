@@ -42,13 +42,13 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_mode
 # 预测image_dir指定的图像集合
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
 ```
-更多的文本检测、识别串联推理使用方式请参考文档教程中[基于推理引擎预测](./doc/inference.md)。
+更多的文本检测、识别串联推理使用方式请参考文档教程中[基于预测引擎推理](./doc/inference.md)。
 
 ## 文档教程
 - [快速安装](./doc/installation.md)
 - [文本检测模型训练/评估/预测](./doc/detection.md)
 - [文本识别模型训练/评估/预测](./doc/recognition.md)
-- [基于推理引擎预测](./doc/inference.md)
+- [基于预测引擎推理](./doc/inference.md)
 
 ## 文本检测算法
 
