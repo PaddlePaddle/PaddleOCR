@@ -12,7 +12,6 @@ Global:
   image_shape: [3, 32, 100]
   max_text_length: 25
   character_type: en
-  character_dict_path: /workspace/PaddleOCR/train_data/ic15_dict.txt
   loss_type: ctc
   reader_yml: ./configs/rec/rec_icdar15_reader.yml
   pretrain_weights: ./pretrain_models/CRNN/best_accuracy 
