@@ -100,11 +100,11 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 <a name="效果展示"></a>
 ## 效果展示
 ![](./doc/imgs_draw/1.jpg)
+![](./doc/imgs_draw/7.jpg)
+![](./doc/imgs_draw/12.jpg)
 ![](./doc/imgs_draw/4.jpg)
 ![](./doc/imgs_draw/6.jpg)
-![](./doc/imgs_draw/7.jpg)
 ![](./doc/imgs_draw/9.jpg)
-![](./doc/imgs_draw/12.jpg)
 ![](./doc/imgs_draw/16.jpg)
 ![](./doc/imgs_draw/22.jpg)
 
