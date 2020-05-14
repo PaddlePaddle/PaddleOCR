@@ -1,12 +1,12 @@
 
-# 基于inference model的推理
+# 基于预测引擎推理
 
 inference 模型（fluid.io.save_inference_model保存的模型）
 一般是模型训练完成后保存的固化模型，多用于预测部署。
 训练过程中保存的模型是checkpoints模型，保存的是模型的参数，多用于恢复训练等。
-与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越。
+与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合与实际系统集成。更详细的介绍请参考文档[分类预测框架](https://paddleclas.readthedocs.io/zh_CN/latest/extension/paddle_inference.html).
 
-PaddleOCR提供了将checkpoints转换成inference model的实现。
+接下来将依次介绍文本检测、文本识别以及两者串联基于预测引擎推理。与此同时也会介绍checkpoints转换成inference model的实现。
 
 
 ## 文本检测模型推理
