@@ -1,61 +1,64 @@
 
-# 简介
+## 简介
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力使用者训练出更好的模型，并应用落地。
 
-## 特性：
-- 超轻量级模型
-    - (检测模型4.1M + 识别模型4.5M = 8.6M)
-- 支持竖排文字识别
-    - (单模型同时支持横排和竖排文字识别)
-- 支持长文本识别
-- 支持中英文数字组合识别
-- 提供训练代码
-- 支持模型部署
+## 特性
+- 超轻量级中文OCR：支持中英文数字组合识别、竖排文本识别、长文本识别，总模型仅8.6M，其中检测模型DB（4.1M）+识别模型CRNN（4.5M）
+- 多种文本检测训练算法，EAST、DB
+- 多种文本识别训练算法，Rosetta、CRNN、STAR-Net、RARE
+
+## **超轻量级中文OCR体验**
 
 ![](./doc/imgs_draw/11.jpg)
 
-注：更多效果展示请见文末。
+上图是超轻量级中文OCR模型效果展示，该模型更多效果图请见文末。
 
-## **快速运行**
+#### 1.运行环境配置
 
-运行前请先参考[快速安装](./doc/installation.md)配置PaddleOCR运行环境。
+前请先参考[快速安装](./doc/installation.md)配置PaddleOCR运行环境。
 
-下载inference模型
+#### 2.模型下载
+
 ```
-# 创建inference模型保存目录
+# 创建模型保存目录
 mkdir inference && cd inference && mkdir det && mkdir rec
-# 下载检测inference模型/ 识别 inference 模型
+# 下载inference模型文件包
 wget -P ./inference https://paddleocr.bj.bcebos.com/inference.tar
+# inference模型文件包解压
+tar -xf ./inference/inference.tar
 ```
 
-实现文本检测、识别串联推理，预测$image_dir$指定的单张图像：
+#### 3.单张图像或者图像集合预测
+
+实现文本检测、识别串联推理，在执行预测时，需要通过参数image_dir指定单张图像或者图像集合的路径、参数det_model_dir指定检测inference模型的路径和参数rec_model_dir指定识别inference模型的路径。
+
 ```
+# 设置PYTHONPATH环境变量
 export PYTHONPATH=.
-python tools/infer/predict_eval.py --image_dir="/Demo.jpg" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
-```
-在执行预测时，通过参数det_model_dir以及rec_model_dir设置存储inference 模型的路径。
 
-实现文本检测、识别串联推理，预测$image_dir$指指定文件夹下的所有图像：
+# 预测image_dir指定的单张图像
+python tools/infer/predict_system.py --image_dir="/Demo.jpg" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
+
+# 预测image_dir指定的图像集合
+python tools/infer/predict_system.py --image_dir="/test_imgs/" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
 ```
-python tools/infer/predict_eval.py --image_dir="/test_imgs/" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
-```
+更多的文本检测、识别串联推理使用方式请参考文档教程中[基于推理引擎预测](./doc/inference.md)。
 
 ## 文档教程
 - [快速安装](./doc/installation.md)
-- [文本识别模型训练/评估/预测](./doc/detection.md)
-- [文本预测模型训练/评估/预测](./doc/recognition.md)
-- [基于inference model预测](./doc/)
+- [文本检测模型训练/评估/预测](./doc/detection.md)
+- [文本识别模型训练/评估/预测](./doc/recognition.md)
+- [基于推理引擎预测](./doc/inference.md)
 
-
-## 文本检测算法:
+## 文本检测算法
 
 PaddleOCR开源的文本检测算法列表：
 - [x]  [EAST](https://arxiv.org/abs/1704.03155)
 - [x]  [DB](https://arxiv.org/abs/1911.08947)
-- [ ]  [SAST](https://arxiv.org/abs/1908.05498)
+- [ ]  [SAST](https://arxiv.org/abs/1908.05498)(百度自研, comming soon)
 
+在ICDAR2015文本检测公开数据集上，算法效果如下：
 
-算法效果：
 |模型|骨干网络|Hmean|
 |-|-|-|
 |EAST|[ResNet50_vd](https://paddleocr.bj.bcebos.com/det_r50_vd_east.tar)|85.85%|
@@ -63,9 +66,9 @@ PaddleOCR开源的文本检测算法列表：
 |DB|[ResNet50_vd](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar)|83.30%|
 |DB|[MobileNetV3](https://paddleocr.bj.bcebos.com/det_mv3_db.tar)|73.00%|
 
-PaddleOCR文本检测算法的训练与使用请参考[文档](./doc/detection.md)。
+PaddleOCR文本检测算法的训练和使用请参考文档教程中[文本检测模型训练/评估/预测](./doc/detection.md)。
 
-## 文本识别算法:
+## 文本识别算法
 
 PaddleOCR开源的文本识别算法列表：
 - [x]  [CRNN](https://arxiv.org/abs/1507.05717)
@@ -74,7 +77,7 @@ PaddleOCR开源的文本识别算法列表：
 - [x]  [RARE](https://arxiv.org/abs/1603.03915v1)
 - [ ]  [SRN]((https://arxiv.org/abs/2003.12294))(百度自研, comming soon)
 
-算法效果如下表所示，精度指标是在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上的评测结果的平均值。
+参考[DTRB](https://arxiv.org/abs/1904.01906)文字识别训练和评估流程，使用MJSynth和SynthText两个文字识别合成数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行效果评估，算法效果如下：
 
 |模型|骨干网络|ACC|
 |-|-|-|
@@ -87,12 +90,10 @@ PaddleOCR开源的文本识别算法列表：
 |RARE|[Resnet34_vd](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_attn.tar)|84.90%|
 |RARE|[MobileNetV3](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_attn.tar)|83.32%|
 
-PaddleOCR文本识别算法的训练与使用请参考[文档](./doc/recognition.md)。
+PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识别模型训练/评估/预测](./doc/recognition.md)。
 
-## TODO
-**端到端OCR算法**
-PaddleOCR即将开源百度自研端对端OCR模型[End2End-PSL](https://arxiv.org/abs/1909.07808)，敬请关注。
-- [ ]  End2End-PSL (百度自研, comming soon)
+## 端到端OCR算法
+- [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(百度自研, comming soon)
 
 ## 效果展示
 ![](./doc/imgs_draw/1.jpg)
