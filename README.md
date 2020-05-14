@@ -77,7 +77,7 @@ PaddleOCR开源的文本识别算法列表：
 - [x]  [Rosetta](https://arxiv.org/abs/1910.05085)
 - [x]  [STAR-Net](http://www.bmva.org/bmvc/2016/papers/paper043/index.html)
 - [x]  [RARE](https://arxiv.org/abs/1603.03915v1)
-- [ ]  [SRN]((https://arxiv.org/abs/2003.12294))(百度自研, comming soon)
+- [ ]  [SRN](https://arxiv.org/abs/2003.12294)(百度自研, comming soon)
 
 参考[DTRB](https://arxiv.org/abs/1904.01906)文字识别训练和评估流程，使用MJSynth和SynthText两个文字识别合成数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行效果评估，算法效果如下：
 
