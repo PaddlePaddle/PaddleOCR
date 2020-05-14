@@ -137,6 +137,6 @@ if __name__ == "__main__":
                 os.makedirs(draw_img_save)
             cv2.imwrite(
                 os.path.join(draw_img_save, os.path.basename(image_file)),
-                draw_img)
+                draw_img[:, :, -1])
             print("The visualized image saved in {}".format(
                 os.path.join(draw_img_save, os.path.basename(image_file))))
