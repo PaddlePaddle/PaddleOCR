@@ -108,7 +108,6 @@ if __name__ == "__main__":
     is_visualize = True
     for image_file in image_file_list:
         img = cv2.imread(image_file)
-        print(img.shape)
         if img is None:
             logger.info("error in loading image:{}".format(image_file))
             continue
