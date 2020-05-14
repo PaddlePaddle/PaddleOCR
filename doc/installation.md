@@ -10,7 +10,7 @@ cd /home/Projects
 sudo nvidia-docker run --name ppocr -v $PWD:/paddle --network=host -it  hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev  /bin/bash
 
 # ctrl+P+Q可退出docker，重新进入docker使用如下命令
-sudo nvidia-docker container exec -it pdocr /bin/bash
+sudo nvidia-docker container exec -it ppocr /bin/bash
 
 ```
 
