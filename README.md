@@ -37,10 +37,10 @@ tar -xf inference.tar
 export PYTHONPATH=.
 
 # 预测image_dir指定的单张图像
-python tools/infer/predict_system.py --image_dir="/Demo.jpg" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
+python3 tools/infer/predict_system.py --image_dir="./demo.jpg" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
 
 # 预测image_dir指定的图像集合
-python tools/infer/predict_system.py --image_dir="/test_imgs/" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
+python3 tools/infer/predict_system.py --image_dir="./infer_imgs/" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
 ```
 更多的文本检测、识别串联推理使用方式请参考文档教程中[基于推理引擎预测](./doc/inference.md)。
 
