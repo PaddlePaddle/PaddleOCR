@@ -126,7 +126,7 @@ python tools/infer_rec.py -c configs/rec/rec_chinese_lite_train.yml -o Global.ch
 ```
 预测图片：
 
-![](./doc/imgs_words/word_1.jpg)
+![](./imgs_words/word_1.jpg)
 得到输入图像的预测结果：
 
 ```
