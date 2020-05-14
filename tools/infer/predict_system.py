@@ -132,9 +132,11 @@ if __name__ == "__main__":
 
             draw_img = draw_ocr(
                 image, boxes, txts, scores, draw_txt=True, drop_score=0.5)
-            draw_img_save = "./doc/imgs_results/"
+            draw_img_save = "./inference_results/"
             if not os.path.exists(draw_img_save):
                 os.makedirs(draw_img_save)
             cv2.imwrite(
                 os.path.join(draw_img_save, os.path.basename(image_file)),
                 draw_img)
+            print("The visualized image saved in {}".format(
+                os.path.join(draw_img_save, os.path.basename(image_file))))
