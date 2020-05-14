@@ -54,8 +54,8 @@ python tools/infer/predict_system.py --image_dir="/test_imgs/" --det_model_dir="
 
 PaddleOCR开源的文本检测算法列表：
 - [x]  EAST([paper](https://arxiv.org/abs/1704.03155))
-- [x]  DB([paper]((https://arxiv.org/abs/1911.08947)))
-- [ ]  SAST([paper]((https://arxiv.org/abs/1908.05498)))(百度自研, comming soon)
+- [x]  DB([paper](https://arxiv.org/abs/1911.08947))
+- [ ]  SAST([paper](https://arxiv.org/abs/1908.05498))(百度自研, comming soon)
 
 在ICDAR2015文本检测公开数据集上，算法效果如下：
 
