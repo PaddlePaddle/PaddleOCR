@@ -103,7 +103,7 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 ![](./doc/imgs_draw/4.jpg)
 ![](./doc/imgs_draw/6.jpg)
 ![](./doc/imgs_draw/9.jpg)
-![](./doc/imgs_draw/16.jpg)
+![](./doc/imgs_draw/16.png)
 ![](./doc/imgs_draw/22.jpg)
 
 
