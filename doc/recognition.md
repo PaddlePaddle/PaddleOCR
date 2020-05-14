@@ -98,6 +98,18 @@ word_dict.txt 每行有一个单字，将字符与数字索引映射在一起，
 
 PaddleOCR提供了训练脚本、评估脚本和预测脚本，本节将以 CRNN 识别模型为例：
 
+首先下载pretrain model，您可以下载训练好的模型在 icdar2015 数据上进行finetune
+``
+cd PaddleOCR/
+# 下载MobileNetV3的预训练模型
+wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/rec_mv3_none_bilstm_ctc.tar
+# 解压模型参数
+cd pretrain_models
+tar -xf rec_mv3_none_bilstm_ctc.tar && rm -rf rec_mv3_none_bilstm_ctc.tar
+```
+
+开始训练:
+
 ```
 # 设置PYTHONPATH路径
 export PYTHONPATH=$PYTHONPATH:.
@@ -106,7 +118,7 @@ export CUDA_VISIBLE_DEVICES=0,1,2,3
 python3 tools/train.py -c configs/rec/rec_icdar15_train.yml
 ```
 
-PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_train.yml` 中修改 `eval_batch_step` 设置评估频率，默认每2000个iter评估一次。评估过程中默认将最佳acc模型，保存为 `output/rec_CRNN/best_accuracy` 。
+PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_train.yml` 中修改 `eval_batch_step` 设置评估频率，默认每500个iter评估一次。评估过程中默认将最佳acc模型，保存为 `output/rec_CRNN/best_accuracy` 。
 
 如果验证集很大，测试将会比较耗时，建议减少评估次数，或训练完再进行评估。
 
