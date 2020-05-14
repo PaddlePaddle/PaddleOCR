@@ -22,12 +22,10 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 #### 2.模型下载
 
 ```
-# 创建模型保存目录
-mkdir inference && cd inference && mkdir det && mkdir rec
 # 下载inference模型文件包
-wget -P ./inference https://paddleocr.bj.bcebos.com/inference.tar
+wget https://paddleocr.bj.bcebos.com/inference.tar
 # inference模型文件包解压
-tar -xf ./inference/inference.tar
+tar -xf inference.tar
 ```
 
 #### 3.单张图像或者图像集合预测
