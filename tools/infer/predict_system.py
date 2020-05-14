@@ -22,6 +22,10 @@ import copy
 import numpy as np
 import math
 import time
+from ppocr.utils.utility import get_image_file_list
+from PIL import Image
+from tools.infer.utility import draw_ocr
+import os
 
 
 class TextSystem(object):
@@ -99,8 +103,9 @@ def sorted_boxes(dt_boxes):
 
 if __name__ == "__main__":
     args = utility.parse_args()
-    image_file_list = utility.get_image_file_list(args.image_dir)
+    image_file_list = get_image_file_list(args.image_dir)
     text_sys = TextSystem(args)
+    is_visualize = True
     for image_file in image_file_list:
         img = cv2.imread(image_file)
         if img is None:
@@ -114,8 +119,22 @@ if __name__ == "__main__":
         dt_boxes_final = []
         for dno in range(dt_num):
             text, score = rec_res[dno]
-            if score >= 0:
+            if score >= 0.5:
                 text_str = "%s, %.3f" % (text, score)
                 print(text_str)
                 dt_boxes_final.append(dt_boxes[dno])
-        utility.draw_text_det_res(dt_boxes_final, image_file)
+
+        if is_visualize:
+            image = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+            boxes = dt_boxes
+            txts = [rec_res[i][0] for i in range(len(rec_res))]
+            scores = [rec_res[i][1] for i in range(len(rec_res))]
+
+            draw_img = draw_ocr(
+                image, boxes, txts, scores, draw_txt=True, drop_score=0.5)
+            draw_img_save = "./doc/imgs_results/"
+            if not os.path.exists(draw_img_save):
+                os.makedirs(draw_img_save)
+            cv2.imwrite(
+                os.path.join(draw_img_save, os.path.basename(image_file)),
+                draw_img)
