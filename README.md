@@ -53,42 +53,42 @@ python tools/infer/predict_system.py --image_dir="/test_imgs/" --det_model_dir="
 ## 文本检测算法
 
 PaddleOCR开源的文本检测算法列表：
-- [x]  [EAST](https://arxiv.org/abs/1704.03155)
-- [x]  [DB](https://arxiv.org/abs/1911.08947)
-- [ ]  [SAST](https://arxiv.org/abs/1908.05498)(百度自研, comming soon)
+- [x]  EAST([paper](https://arxiv.org/abs/1704.03155))
+- [x]  DB([paper]((https://arxiv.org/abs/1911.08947)))
+- [ ]  SAST([paper]((https://arxiv.org/abs/1908.05498)))(百度自研, comming soon)
 
 在ICDAR2015文本检测公开数据集上，算法效果如下：
 
-|模型|骨干网络|Hmean|
-|-|-|-|
-|[EAST](https://paddleocr.bj.bcebos.com/det_r50_vd_east.tar)|ResNet50_vd|85.85%|
-|[EAST](https://paddleocr.bj.bcebos.com/det_mv3_east.tar)|MobileNetV3|79.08%|
-|[DB](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar)|ResNet50_vd|83.30%|
-|[DB](https://paddleocr.bj.bcebos.com/det_mv3_db.tar)|MobileNetV3|73.00%|
+|模型|骨干网络|Hmean|下载|
+|-|-|-|-|
+|EAST|ResNet50_vd|85.85%|[下载链接](https://paddleocr.bj.bcebos.com/det_r50_vd_east.tar)|
+|EAST|MobileNetV3|79.08%|[下载链接](https://paddleocr.bj.bcebos.com/det_mv3_east.tar)|
+|DB|ResNet50_vd|83.30%|[下载链接](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar)|
+|DB|MobileNetV3|73.00%|[下载链接](https://paddleocr.bj.bcebos.com/det_mv3_db.tar)|
 
 PaddleOCR文本检测算法的训练和使用请参考文档教程中[文本检测模型训练/评估/预测](./doc/detection.md)。
 
 ## 文本识别算法
 
 PaddleOCR开源的文本识别算法列表：
-- [x]  [CRNN](https://arxiv.org/abs/1507.05717)
-- [x]  [Rosetta](https://arxiv.org/abs/1910.05085)
-- [x]  [STAR-Net](http://www.bmva.org/bmvc/2016/papers/paper043/index.html)
-- [x]  [RARE](https://arxiv.org/abs/1603.03915v1)
-- [ ]  [SRN](https://arxiv.org/abs/2003.12294)(百度自研, comming soon)
+- [x]  CRNN([paper](https://arxiv.org/abs/1507.05717))
+- [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))
+- [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))
+- [x]  RARE([paper](https://arxiv.org/abs/1603.03915v1))
+- [ ]  SRN([paper](https://arxiv.org/abs/2003.12294))(百度自研, comming soon)
 
 参考[DTRB](https://arxiv.org/abs/1904.01906)文字识别训练和评估流程，使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估，算法效果如下：
 
-|模型|骨干网络|Avg Accuracy|
-|-|-|-|
-|[Rosetta](https://paddleocr.bj.bcebos.com/rec_r34_vd_none_none_ctc.tar)|Resnet34_vd|80.24%|
-|[Rosetta](https://paddleocr.bj.bcebos.com/rec_mv3_none_none_ctc.tar)|MobileNetV3|78.16%|
-|[CRNN](https://paddleocr.bj.bcebos.com/rec_r34_vd_none_bilstm_ctc.tar)|Resnet34_vd|82.20%|
-|[CRNN](https://paddleocr.bj.bcebos.com/rec_mv3_none_bilstm_ctc.tar)|MobileNetV3|79.37%|
-|[STAR-Net](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_ctc.tar)|Resnet34_vd|83.93%|
-|[STAR-Net](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_ctc.tar)|MobileNetV3|81.56%|
-|[RARE](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_attn.tar)|Resnet34_vd|84.90%|
-|[RARE](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_attn.tar)|MobileNetV3|83.32%|
+|模型|骨干网络|Avg Accuracy|下载|
+|-|-|-|-|
+|Rosetta|Resnet34_vd|80.24%|[下载链接](https://paddleocr.bj.bcebos.com/rec_r34_vd_none_none_ctc.tar)|
+|Rosetta|MobileNetV3|78.16%|[下载链接](https://paddleocr.bj.bcebos.com/rec_mv3_none_none_ctc.tar)|
+|CRNN|Resnet34_vd|82.20%|[下载链接](https://paddleocr.bj.bcebos.com/rec_r34_vd_none_bilstm_ctc.tar)|
+|CRNN|MobileNetV3|79.37%|[下载链接](https://paddleocr.bj.bcebos.com/rec_mv3_none_bilstm_ctc.tar)|
+|STAR-Net|Resnet34_vd|83.93%|[下载链接](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_ctc.tar)|
+|STAR-Net|MobileNetV3|81.56%|[下载链接](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_ctc.tar)|
+|RARE|Resnet34_vd|84.90%|[下载链接](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_attn.tar)|
+|RARE|MobileNetV3|83.32%|[下载链接](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_attn.tar)|
 
 PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识别模型训练/评估/预测](./doc/recognition.md)。
 
