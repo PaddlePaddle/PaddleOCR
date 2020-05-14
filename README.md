@@ -32,7 +32,7 @@ tar -xf ./inference/inference.tar
 
 #### 3.单张图像或者图像集合预测
 
-实现文本检测、识别串联推理，在执行预测时，需要通过参数image_dir指定单张图像或者图像集合的路径、参数det_model_dir指定检测inference模型的路径和参数rec_model_dir指定识别inference模型的路径。
+以下代码实现了文本检测、识别串联推理，在执行预测时，需要通过参数image_dir指定单张图像或者图像集合的路径、参数det_model_dir指定检测inference模型的路径和参数rec_model_dir指定识别inference模型的路径。
 
 ```
 # 设置PYTHONPATH环境变量
