@@ -34,6 +34,14 @@ ln -sf <path/to/dataset> <path/to/paddle_detection>/train_data/dataset
 train_data/train_0001.jpg   简单可依赖
 train_data/train_0002.jpg   用科技让复杂的世界更简单
 ```
+PaddleOCR 提供了一份用于训练 icdar2015 数据集的标签文件，通过以下方式下载：
+
+```
+# 训练集标签
+wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_train.txt
+# 测试集标签
+wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_test.txt 
+```
 
 最终训练集应有如下文件结构：
 
@@ -41,25 +49,25 @@ train_data/train_0002.jpg   用科技让复杂的世界更简单
 |-train_data
     |-ic15_data
         |- rec_gt_train.txt
-        |- train_imags
-            |- train_001.jpg
-            |- train_002.jpg
-            |- train_003.jpg
+        |- train
+            |- word_001.png
+            |- word_002.jpg
+            |- word_003.jpg
             | ...
 ```
 
-- 评估集
+- 测试集
 
-同训练集类似，评估集也需要提供一个包含所有图片的文件夹（eval_images）和一个rec_gt_eval.txt，评估集的结构如下所示：
+同训练集类似，测试集也需要提供一个包含所有图片的文件夹（test）和一个rec_gt_test.txt，测试集的结构如下所示：
 
 ```
 |-train_data
     |-ic15_data
-        |- rec_gt_eval.txt
-        |- eval_imags
-            |- eval_001.jpg
-            |- eval_002.jpg
-            |- eval_003.jpg
+        |- rec_gt_test.txt
+        |- test
+            |- word_001.jpg
+            |- word_002.jpg
+            |- word_003.jpg
             | ...
 ```
 
@@ -82,8 +90,9 @@ word_dict.txt 每行有一个单字，将字符与数字索引映射在一起，
 
 `ppocr/utils/ppocr_keys_v1.txt` 是一个包含6623个字符的中文字典，
 `ppocr/utils/ic15_dict.txt` 是一个包含36个字符的英文字典，
-您可以按需使用。如需自定义dic文件，请修改 `configs/rec/rec_icdar15_train.yml` 中的 `character_dict_path` 字段。
+您可以按需使用。
 
+如需自定义dic文件，请修改 `configs/rec/rec_icdar15_train.yml` 中的 `character_dict_path` 字段, 并将 `character_type` 设置为 `ch`。
 
 ### 启动训练
 
@@ -94,7 +103,7 @@ PaddleOCR提供了训练脚本、评估脚本和预测脚本，本节将以 CRNN
 export PYTHONPATH=$PYTHONPATH:.
 # GPU训练 支持单卡，多卡训练，通过CUDA_VISIBLE_DEVICES指定卡号
 export CUDA_VISIBLE_DEVICES=0,1,2,3
-python tools/train.py -c configs/rec/rec_icdar15_train.yml
+python3 tools/train.py -c configs/rec/rec_icdar15_train.yml
 ```
 
 PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_train.yml` 中修改 `eval_batch_step` 设置评估频率，默认每2000个iter评估一次。评估过程中默认将最佳acc模型，保存为 `output/rec_CRNN/best_accuracy` 。
@@ -110,7 +119,7 @@ PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_t
 ```
 export CUDA_VISIBLE_DEVICES=0
 # GPU 评估， Global.checkpoints 为待测权重
-python tools/eval.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy
+python3 tools/eval.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
 ### 预测
@@ -122,7 +131,7 @@ PaddleOCR 提供了训练好的中文模型，可以[下载](todo: add)进行快
 默认预测图片存储在 `infer_img` 里，通过 `-o Global.checkpoints` 指定权重：
 
 ```
-python tools/infer_rec.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy TestReader.infer_img=doc/imgs_word/word_1.jpg
+python3 tools/infer_rec.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy TestReader.infer_img=doc/imgs_word/word_1.jpg
 ```
 预测图片：
 
