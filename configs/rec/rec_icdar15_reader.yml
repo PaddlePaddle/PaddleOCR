@@ -2,12 +2,12 @@ TrainReader:
   reader_function: ppocr.data.rec.dataset_traversal,SimpleReader
   num_workers: 8
   img_set_dir: ./train_data
-  label_file_path: ./train_data/rec_gt_train.txt
+  label_file_path: ./train_data/ic15_data/rec_gt_train.txt
   
 EvalReader:
   reader_function: ppocr.data.rec.dataset_traversal,SimpleReader
   img_set_dir: ./train_data
-  label_file_path: ./train_data/rec_gt_test.txt
+  label_file_path: ./train_data/ic15_data/rec_gt_test.txt
 
 TestReader:
   reader_function: ppocr.data.rec.dataset_traversal,SimpleReader
