@@ -5,14 +5,16 @@
 ## 数据准备
 icdar2015数据集可以从[官网](https://rrc.cvc.uab.es/?ch=4&com=downloads)下载到，首次下载需注册。
 
-将下载到的数据集解压到工作目录下，假设解压在/PaddleOCR/train_data/ 下。另外，PaddleOCR将零散的标注文件整理成单独的标注文件
+将下载到的数据集解压到工作目录下，假设解压在 PaddleOCR/train_data/ 下。另外，PaddleOCR将零散的标注文件整理成单独的标注文件
 ，您可以通过wget的方式进行下载。
 ```
-wget -P /PaddleOCR/train_data/  https://paddleocr.bj.bcebos.com/dataset%2Ftrain_icdar2015_label.txt
-wget -P /PaddleOCR/train_data/  https://paddleocr.bj.bcebos.com/dataset%2Ftest_icdar2015_label.txt
+# 在PaddleOCR路径下
+cd PaddleOCR/
+wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dataset/train_icdar2015_label.txt
+wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dataset/test_icdar2015_label.txt
 ```
 
-解压数据集和下载标注文件后，/PaddleOCR/train_data/ 有两个文件夹和两个文件，分别是：
+解压数据集和下载标注文件后，PaddleOCR/train_data/ 有两个文件夹和两个文件，分别是：
 ```
 /PaddleOCR/train_data/  
   └─ icdar_c4_train_imgs/         icdar数据集的训练数据
@@ -26,8 +28,8 @@ wget -P /PaddleOCR/train_data/  https://paddleocr.bj.bcebos.com/dataset%2Ftest_i
 " 图像文件名                    json.dumps编码的图像标注信息"
 ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]], ...}]
 ```
-json.dumps编码前的图像标注信息是包含多个字典的list，字典中的$points$表示文本框的四个点的坐标(x, y)，从左上角的点开始顺时针排列。
-$transcription$表示当前文本框的文字，在文本检测任务中并不需要这个信息。
+json.dumps编码前的图像标注信息是包含多个字典的list，字典中的 `points` 表示文本框的四个点的坐标(x, y)，从左上角的点开始顺时针排列。
+`transcription` 表示当前文本框的文字，在文本检测任务中并不需要这个信息。
 如果您想在其他数据集上训练PaddleOCR，可以按照上述形式构建标注文件。
 
 
@@ -38,9 +40,9 @@ $transcription$表示当前文本框的文字，在文本检测任务中并不�
 ```
 cd PaddleOCR/
 # 下载MobileNetV3的预训练模型
-wget -P /PaddleOCR/pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/MobileNetV3_large_x0_5_pretrained.tar
+wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/MobileNetV3_large_x0_5_pretrained.tar
 # 下载ResNet50的预训练模型
-wget -P /PaddleOCR/pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/ResNet50_vd_ssld_pretrained.tar
+wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/ResNet50_vd_ssld_pretrained.tar
 ```
 
 **启动训练**
