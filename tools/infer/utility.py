@@ -91,6 +91,7 @@ def create_predictor(args, mode):
     config.disable_glog_info()
 
     # use zero copy
+    config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
     config.switch_use_feed_fetch_ops(False)
     predictor = create_paddle_predictor(config)
     input_names = predictor.get_input_names()
