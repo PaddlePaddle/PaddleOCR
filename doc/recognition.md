@@ -116,6 +116,7 @@ tar -xf rec_mv3_none_bilstm_ctc.tar && rm -rf rec_mv3_none_bilstm_ctc.tar
 export PYTHONPATH=$PYTHONPATH:.
 # GPU训练 支持单卡，多卡训练，通过CUDA_VISIBLE_DEVICES指定卡号
 export CUDA_VISIBLE_DEVICES=0,1,2,3
+# 训练icdar15英文数据
 python3 tools/train.py -c configs/rec/rec_icdar15_train.yml
 ```
 
@@ -123,7 +124,7 @@ PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_t
 
 如果验证集很大，测试将会比较耗时，建议减少评估次数，或训练完再进行评估。
 
-* 提示： 可通过 -c 参数选择 `configs/rec/` 路径下的多种模型配置进行训练
+* 提示： 可通过 -c 参数选择 `configs/rec/` 路径下的多种模型配置进行训练，例如中文 9M 配置文件为 `rec_chinese_lite_train.yml`
 
 ### 评估
 
@@ -139,21 +140,43 @@ python3 tools/eval.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkp
 
 * 训练引擎的预测
 
-使用 PaddleOCR 训练好的中文模型，可以通过以下脚本进行快速预测。
+使用 PaddleOCR 训练好的模型，可以通过以下脚本进行快速预测。
 
 默认预测图片存储在 `infer_img` 里，通过 `-o Global.checkpoints` 指定权重：
 
 ```
-python3 tools/infer_rec.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy TestReader.infer_img=doc/imgs_word/word_1.jpg
+# 预测英文结果
+python3 tools/infer_rec.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy TestReader.infer_img=doc/imgs_word/en/word_1.jpg
 ```
+
 预测图片：
 
-![](./imgs_words/word_1.jpg)
+![](./imgs_words/en/word_1.png)
 
 得到输入图像的预测结果：
 
 ```
-infer_img: doc/imgs_words/word_1.jpg
+infer_img: infer_img/en/word_1.png
+     index: [19 24 18 23 29]
+     word : joint
+```
+
+预测使用的配置文件必须与训练一致，如您通过 `python3 tools/train.py -c configs/rec/rec_chinese_lite_train.yml` 完成了中文模型的训练，
+您可以使用如下命令进行中文模型预测。
+
+```
+# 预测中文结果
+python3 tools/infer_rec.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy TestReader.infer_img=doc/imgs_word/ch/word_1.jpg
+```
+
+预测图片：
+
+![](./imgs_words/ch/word_1.jpg)
+
+得到输入图像的预测结果：
+
+```
+infer_img: doc/imgs_words/ch/word_1.jpg
      index: [2092  177  312 2503]
      word : 韩国小馆
 ```
