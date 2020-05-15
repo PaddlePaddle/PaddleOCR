@@ -6,51 +6,155 @@ inference 模型（fluid.io.save_inference_model保存的模型）
 训练过程中保存的模型是checkpoints模型，保存的是模型的参数，多用于恢复训练等。
 与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合与实际系统集成。更详细的介绍请参考文档[分类预测框架](https://paddleclas.readthedocs.io/zh_CN/latest/extension/paddle_inference.html). 接下来将依次介绍文本检测、文本识别以及两者串联基于预测引擎推理。与此同时也会介绍checkpoints转换成inference model的实现。
 
-
 ## 文本检测模型推理
 
-将文本检测模型训练过程中保存的模型，转换成inference model，可以使用如下命令：
+下面将介绍超轻量中文检测模型推理、DB文本检测模型推理和EAST文本检测模型推理。默认配置是根据DB文本检测模型推理设置的。由于EAST和DB算法差别很大，在推理时，需要通过传入相应的参数适配EAST文本检测算法。
+
+### 1.超轻量中文检测模型推理
+
+超轻量中文检测模型推理，可以执行如下命令：
 
 ```
-python tools/export_model.py -c configs/det/det_db_mv3.yml -o Global.checkpoints="./output/best_accuracy" \
-        Global.save_inference_dir="./inference/det/"
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det/"
 ```
 
-推理模型保存在$./inference/det/model$, $./inference/det/params$
+可视化文本检测结果默认保存到 ./inference_results 文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
 
-使用保存的inference model实现在单张图像上的预测：
+![](imgs_results/det_res_2.jpg)
+
+通过设置参数det_max_side_len的大小，改变检测算法中图片规范化的最大值。当图片的长宽都小于det_max_side_len，则使用原图预测，否则将图片等比例缩放到最大值，进行预测。该参数默认设置为det_max_side_len=960. 如果输入图片的分辨率比较大，而且想使用更大的分辨率预测，可以执行如下命令：
 
 ```
-python  tools/infer/predict_det.py --image_dir="/demo.jpg" --det_model_dir="./inference/det/"
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/" --det_model_dir="./inference/det/" --det_max_side_len=1200
 ```
+
+### 2.DB文本检测模型推理
+
+首先将DB文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar))，可以使用如下命令进行转换：
+
+```
+# -c后面设置训练算法的yml配置文件
+# Global.checkpoints参数设置待转换的训练模型地址，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
+# Global.save_inference_dir参数设置转换的模型将保存的地址。
+
+python3 tools/export_model.py -c configs/det/det_db_r50_vd.yml -o Global.checkpoints="./models/det_r50_vd_db/best_accuracy" Global.save_inference_dir="./inference/det_db"
+```
+
+DB文本检测模型推理，可以执行如下命令：
+
+```
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_db/"
+```
+
+可视化文本检测结果默认保存到 ./inference_results 文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
+
+![](imgs_results/det_res_img_10_db.jpg)
+
+**注意**：由于ICDAR2015数据集只有1000张训练图像，主要针对英文场景，所以上述模型对中文文本图像检测效果非常差。
+
+### 3.EAST文本检测模型推理
+
+首先将EAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/det_r50_vd_east.tar))，可以使用如下命令进行转换：
+
+```
+# -c后面设置训练算法的yml配置文件
+# Global.checkpoints参数设置待转换的训练模型地址，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
+# Global.save_inference_dir参数设置转换的模型将保存的地址。
+
+python3 tools/export_model.py -c configs/det/det_east_r50_vd.yml -o Global.checkpoints="./models/det_r50_vd_east/best_accuracy" Global.save_inference_dir="./inference/det_east"
+```
+
+EAST文本检测模型推理，需要设置参数det_algorithm，指定检测算法类型为EAST，可以执行如下命令：
+
+```
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_east/" --det_algorithm="EAST"
+```
+可视化文本检测结果默认保存到 ./inference_results 文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
+
+![](imgs_results/det_res_img_10_east.jpg)
+
+**注意**：本代码库中EAST后处理中NMS采用的Python版本，所以预测速度比较耗时。如果采用C++版本，会有明显加速。
 
 
 ## 文本识别模型推理
 
-将文本识别模型训练过程中保存的模型，转换成inference model，可以使用如下命令：
+下面将介绍超轻量中文检测模型推理和基于CTC损失的识别模型推理。而基于Attention损失的识别模型推理还在调试中。对于中文文本识别，建议优先选择基于CTC损失的识别模型，实践中也发现基于Attention损失的效果不如基于CTC损失的识别模型。
+
+
+### 1.超轻量中文识别模型推理
+
+超轻量中文识别模型推理，可以执行如下命令：
 
 ```
-python tools/export_model.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints="./output/best_accuracy" \
-        Global.save_inference_dir="./inference/rec/"
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/word_4.jpg" --rec_model_dir="./inference/rec/"
 ```
 
-推理模型保存在$./inference/rec/model$, $./inference/rec/params$
+![](imgs_words/word_4.jpg)
 
-使用保存的inference model实现在单张图像上的预测：
+执行命令后，上面图像的预测结果（识别的文本和得分）会打印到屏幕上，示例如下：
+
+Predicts of ./doc/imgs_words/word_4.jpg:['实力活力', 0.9504319]
+
+
+### 2.基于CTC损失的识别模型推理
+
+我们以STAR-Net为例，介绍基于CTC损失的识别模型推理。 CRNN和Rosetta使用方式类似，不用设置识别算法参数rec_algorithm。
+
+首先将STAR-Net文本识别训练过程中保存的模型，转换成inference model。以基于Resnet34_vd骨干网络，使用MJSynth和SynthText两个英文文本识别合成数据集训练
+的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_ctc.tar))，可以使用如下命令进行转换：
 
 ```
-python  tools/infer/predict_rec.py --image_dir="/demo.jpg" --rec_model_dir="./inference/rec/"
+# -c后面设置训练算法的yml配置文件
+# Global.checkpoints参数设置待转换的训练模型地址，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
+# Global.save_inference_dir参数设置转换的模型将保存的地址。
+
+python3 tools/export_model.py -c configs/rec/rec_r34_vd_tps_bilstm_ctc.yml -o Global.checkpoints="./models/rec_r34_vd_tps_bilstm_ctc/best_accuracy" Global.save_inference_dir="./inference/starnet"
+```
+
+STAR-Net文本识别模型推理，可以执行如下命令：
+
+```
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_401.png" --rec_model_dir="./inference/starnet/" --rec_image_shape="3, 32, 100" --rec_char_type="en"
+```
+![](imgs_words_en/word_401.png)
+
+执行命令后，上面图像的识别结果如下：
+
+Predicts of ./doc/imgs_words_en/word_401.png:['burgen', 0.9008867]
+
+**注意**：由于上述模型是参考[DTRB](https://arxiv.org/abs/1904.01906)文本识别训练和评估流程，与超轻量级中文识别模型训练有两方面不同：
+
+- 训练时采用的图像分辨率不同，训练上述模型采用的图像分辨率是[3，32，100]，而中文模型训练时，为了保证长文本的识别效果，训练时采用的图像分辨率是[3, 32, 320]。预测推理程序默认的的形状参数是训练中文采用的图像分辨率，即[3, 32, 320]。因此，这里推理上述英文模型时，需要通过参数rec_image_shape设置识别图像的形状。
+
+- 字符列表，DTRB论文中实验只是针对26个小写英文本母和10个数字进行实验，总共36个字符。所有大小字符都转成了小写字符，不在上面列表的字符都忽略，认为是空格。因此这里没有输入字符字典，而是通过如下命令生成字典.因此在推理时需要设置参数rec_char_type，指定为英文"en"。
+
+```
+self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
+dict_character = list(self.character_str)
 ```
 
 ## 文本检测、识别串联推理
 
-实现文本检测、识别串联推理，预测$image_dir$指定的单张图像：
-```
-python tools/infer/predict_eval.py --image_dir="/Demo.jpg" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
-```
+### 1.超轻量中文OCR模型推理
 
-实现文本检测、识别串联推理，预测$image_dir$指指定文件夹下的所有图像：
+在执行预测时，需要通过参数image_dir指定单张图像或者图像集合的路径、参数det_model_dir指定检测inference模型的路径和参数rec_model_dir指定识别inference模型的路径。可视化识别结果默认保存到 ./inference_results 文件夹里面。
 
 ```
-python tools/infer/predict_eval.py --image_dir="/test_imgs/" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
 ```
+
+执行命令后，识别结果图像如下：
+
+![](imgs_results/2.jpg)
+
+### 2.其他模型推理
+
+如果想尝试使用其他检测算法或者识别算法，请参考上述文本检测模型推理和文本识别模型推理，更新相应配置和模型，下面给出基于EAST文本检测和STAR-Net文本识别执行命令：
+
+```
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_east/" --det_algorithm="EAST" --rec_model_dir="./inference/rec/" --rec_model_dir="./inference/starnet/" --rec_image_shape="3, 32, 100" --rec_char_type="en"
+```
+
+执行命令后，识别结果图像如下：
+
+![](imgs_results/img_10.jpg)

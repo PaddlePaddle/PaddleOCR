@@ -41,6 +41,9 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_mode
 
 # 预测image_dir指定的图像集合
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
+
+# 如果想使用CPU进行预测，执行命令如下
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/" --use_gpu=False
 ```
 更多的文本检测、识别串联推理使用方式请参考文档教程中[基于预测引擎推理](./doc/inference.md)。
 
