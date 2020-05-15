@@ -47,7 +47,7 @@ wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/Res
 
 **启动训练**
 ```
-python3 tools/train.py -c configs/det/det_db_mv3.yml
+python3 tools/train.py -c configs/det/det_mv3_db.yml
 ```
 
 上述指令中，通过-c 选择训练使用configs/det/det_db_mv3.yml配置文件。
@@ -55,7 +55,7 @@ python3 tools/train.py -c configs/det/det_db_mv3.yml
 
 您也可以通过-o参数在不需要修改yml文件的情况下，改变训练的参数，比如，调整训练的学习率为0.0001
 ```
-python3 tools/train.py -c configs/det/det_db_mv3.yml -o Optimizer.base_lr=0.0001
+python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
 ```
 
 ## 指标评估
@@ -65,17 +65,17 @@ PaddleOCR计算三个OCR检测相关的指标，分别是：Precision、Recall�
 运行如下代码，根据配置文件det_db_mv3.yml中save_res_path指定的测试集检测结果文件，计算评估指标。
 
 ```
-python3 tools/eval.py -c configs/det/det_db_mv3.yml  -o Gloabl.checkpoints="./output/best_accuracy"
+python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Gloabl.checkpoints="./output/best_accuracy"
 ```
 
 ## 测试检测效果
 
 测试单张图像的检测效果
 ```
-python3 tools/infer_det.py -c config/det/det_db_mv3.yml -o TestReader.single_img_path="./demo.jpg"
+python3 tools/infer_det.py -c config/det/det_mv3_db.yml -o TestReader.single_img_path="./demo.jpg"
 ```
 
 测试文件夹下所有图像的检测效果
 ```
-python3 tools/infer_det.py -c config/det/det_db_mv3.yml -o TestReader.single_img_path="./demo_img/"
+python3 tools/infer_det.py -c config/det/det_mv3_db.yml -o TestReader.single_img_path="./demo_img/"
 ```
