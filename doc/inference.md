@@ -28,7 +28,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_di
 python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det/" --det_max_side_len=1200
 ```
 
-# 如果想使用CPU进行预测，执行命令如下
+如果想使用CPU进行预测，执行命令如下
 ```
 python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det/" --use_gpu=False
 ```
