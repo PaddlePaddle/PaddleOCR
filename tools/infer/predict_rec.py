@@ -15,8 +15,8 @@
 import utility
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
+from ppocr.utils.utility import get_image_file_list
 import cv2
-
 import copy
 import numpy as np
 import math
@@ -30,6 +30,7 @@ class TextRecognizer(object):
             utility.create_predictor(args, mode="rec")
         image_shape = [int(v) for v in args.rec_image_shape.split(",")]
         self.rec_image_shape = image_shape
+        self.character_type = args.rec_char_type
         char_ops_params = {}
         char_ops_params["character_type"] = args.rec_char_type
         char_ops_params["character_dict_path"] = args.rec_char_dict_path
@@ -38,7 +39,8 @@ class TextRecognizer(object):
 
     def resize_norm_img(self, img, max_wh_ratio):
         imgC, imgH, imgW = self.rec_image_shape
-        imgW = int(32 * max_wh_ratio)
+        if self.character_type == "ch":
+            imgW = int(32 * max_wh_ratio)
         h = img.shape[0]
         w = img.shape[1]
         ratio = w / float(h)
@@ -102,7 +104,7 @@ class TextRecognizer(object):
 
 if __name__ == "__main__":
     args = utility.parse_args()
-    image_file_list = utility.get_image_file_list(args.image_dir)
+    image_file_list = get_image_file_list(args.image_dir)
     text_recognizer = TextRecognizer(args)
     valid_image_file_list = []
     img_list = []
@@ -113,6 +115,7 @@ if __name__ == "__main__":
             continue
         valid_image_file_list.append(image_file)
         img_list.append(img)
+    rec_res, predict_time = text_recognizer(img_list)
     rec_res, predict_time = text_recognizer(img_list)
     for ino in range(len(img_list)):
         print("Predicts of %s:%s" % (valid_image_file_list[ino], rec_res[ino]))
