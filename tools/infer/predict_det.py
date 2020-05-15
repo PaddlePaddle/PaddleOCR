@@ -139,6 +139,8 @@ if __name__ == "__main__":
             total_time += elapse
         count += 1
         print("Predict time of %s:" % image_file, elapse)
-        utility.draw_text_det_res(dt_boxes, image_file)
+        src_im = utility.draw_text_det_res(dt_boxes, image_file)
+        img_name_pure = image_file.split("/")[-1]
+        cv2.imwrite("./inference_results/det_res_%s" % img_name_pure, src_im)
     if count > 1: 
     	print("Avg Time:", total_time / (count - 1))
