@@ -114,7 +114,6 @@ if __name__ == "__main__":
         valid_image_file_list.append(image_file)
         img_list.append(img)
     rec_res, predict_time = text_recognizer(img_list)
-    rec_res, predict_time = text_recognizer(img_list)
     for ino in range(len(img_list)):
         print("Predicts of %s:%s" % (valid_image_file_list[ino], rec_res[ino]))
     print("Total predict time for %d images:%.3f" %

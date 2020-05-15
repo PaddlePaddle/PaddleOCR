@@ -142,8 +142,8 @@ class TextDetector(object):
             outputs.append(output)
         outs_dict = {}
         if self.det_algorithm == "EAST":
-            outs_dict['f_score'] = outputs[0]
-            outs_dict['f_geo'] = outputs[1]
+            outs_dict['f_geo'] = outputs[0]
+            outs_dict['f_score'] = outputs[1]
         else:
             outs_dict['maps'] = outputs[0]
         dt_boxes_list = self.postprocess_op(outs_dict, [ratio_list])
@@ -169,14 +169,7 @@ if __name__ == "__main__":
             total_time += elapse
         count += 1
         print("Predict time of %s:" % image_file, elapse)
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        draw_img = draw_ocr(img, dt_boxes, None, None, False)
-        draw_img_save = "./inference_results/"
-        if not os.path.exists(draw_img_save):
-            os.makedirs(draw_img_save)
-        cv2.imwrite(
-            os.path.join(draw_img_save, os.path.basename(image_file)),
-            draw_img[:, :, ::-1])
-        print("The visualized image saved in {}".format(
-            os.path.join(draw_img_save, os.path.basename(image_file))))
+        """
+        add visualized code
+        """
     print("Avg Time:", total_time / (count - 1))

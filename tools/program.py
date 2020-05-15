@@ -191,8 +191,8 @@ def build_export(config, main_prog, startup_prog):
             func_infor = config['Architecture']['function']
             model = create_module(func_infor)(params=config)
             image, outputs = model(mode='export')
-            fetches_var = [outputs[name] for name in outputs]
-            fetches_var_name = [name for name in outputs]
+            fetches_var = sorted([outputs[name] for name in outputs])
+            fetches_var_name = [name for name in fetches_var]
     feeded_var_names = [image.name]
     target_vars = fetches_var
     return feeded_var_names, target_vars, fetches_var_name
