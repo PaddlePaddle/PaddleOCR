@@ -114,13 +114,13 @@ python3 tools/export_model.py -c configs/rec/rec_r34_vd_tps_bilstm_ctc.yml -o Gl
 STAR-Net文本识别模型推理，可以执行如下命令：
 
 ```
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_401.png" --rec_model_dir="./inference/starnet/" --rec_image_shape="3, 32, 100" --rec_char_type="en"
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./inference/starnet/" --rec_image_shape="3, 32, 100" --rec_char_type="en"
 ```
-![](imgs_words_en/word_401.png)
+![](imgs_words_en/word_336.png)
 
 执行命令后，上面图像的识别结果如下：
 
-Predicts of ./doc/imgs_words_en/word_401.png:['burgen', 0.9008867]
+Predicts of ./doc/imgs_words_en/word_336.png:['super', 0.9999555]
 
 **注意**：由于上述模型是参考[DTRB](https://arxiv.org/abs/1904.01906)文本识别训练和评估流程，与超轻量级中文识别模型训练有两方面不同：
 
