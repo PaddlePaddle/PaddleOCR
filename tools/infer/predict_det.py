@@ -20,11 +20,14 @@ from ppocr.data.det.east_process import EASTProcessTest
 from ppocr.data.det.db_process import DBProcessTest
 from ppocr.postprocess.db_postprocess import DBPostProcess
 from ppocr.postprocess.east_postprocess import EASTPostPocess
+from ppocr.utils.utility import get_image_file_list
+from tools.infer.utility import draw_ocr
 import copy
 import numpy as np
 import math
 import time
 import sys
+import os
 
 
 class TextDetector(object):
@@ -152,7 +155,7 @@ class TextDetector(object):
 
 if __name__ == "__main__":
     args = utility.parse_args()
-    image_file_list = utility.get_image_file_list(args.image_dir)
+    image_file_list = get_image_file_list(args.image_dir)
     text_detector = TextDetector(args)
     count = 0
     total_time = 0
@@ -166,5 +169,14 @@ if __name__ == "__main__":
             total_time += elapse
         count += 1
         print("Predict time of %s:" % image_file, elapse)
-        utility.draw_text_det_res(dt_boxes, image_file)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        draw_img = draw_ocr(img, dt_boxes, None, None, False)
+        draw_img_save = "./inference_results/"
+        if not os.path.exists(draw_img_save):
+            os.makedirs(draw_img_save)
+        cv2.imwrite(
+            os.path.join(draw_img_save, os.path.basename(image_file)),
+            draw_img[:, :, ::-1])
+        print("The visualized image saved in {}".format(
+            os.path.join(draw_img_save, os.path.basename(image_file))))
     print("Avg Time:", total_time / (count - 1))
