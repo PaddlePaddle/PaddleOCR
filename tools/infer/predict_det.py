@@ -153,6 +153,8 @@ class TextDetector(object):
         return dt_boxes, elapse
 
 
+from tools.infer.utility import draw_text_det_res
+
 if __name__ == "__main__":
     args = utility.parse_args()
     image_file_list = get_image_file_list(args.image_dir)
@@ -169,7 +171,9 @@ if __name__ == "__main__":
             total_time += elapse
         count += 1
         print("Predict time of %s:" % image_file, elapse)
-        """
-        add visualized code
-        """
+        img_draw = draw_text_det_res(dt_boxes, image_file, return_img=True)
+        save_path = os.path.join("./inference_det/",
+                                 os.path.basename(image_file))
+        print("The visualized image saved in {}".format(save_path))
+
     print("Avg Time:", total_time / (count - 1))

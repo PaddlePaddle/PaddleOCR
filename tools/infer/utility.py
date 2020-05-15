@@ -103,13 +103,12 @@ def create_predictor(args, mode):
     return predictor, input_tensor, output_tensors
 
 
-def draw_text_det_res(dt_boxes, img_path):
+def draw_text_det_res(dt_boxes, img_path, return_img=True):
     src_im = cv2.imread(img_path)
     for box in dt_boxes:
         box = np.array(box).astype(np.int32).reshape(-1, 2)
         cv2.polylines(src_im, [box], True, color=(255, 255, 0), thickness=2)
-    img_name_pure = img_path.split("/")[-1]
-    cv2.imwrite("./output/%s" % img_name_pure, src_im)
+    return src_im
 
 
 def resize_img(img, input_size=600):
