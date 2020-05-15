@@ -93,7 +93,7 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/word_4.jpg" --r
 
 执行命令后，上面图像的预测结果（识别的文本和得分）会打印到屏幕上，示例如下：
 
-Predicts of ./doc/imgs_words/word_4.jpg:['实力活力', 0.9504319]
+Predicts of ./doc/imgs_words/word_4.jpg:['实力活力', 0.89552695]
 
 
 ### 2.基于CTC损失的识别模型推理
