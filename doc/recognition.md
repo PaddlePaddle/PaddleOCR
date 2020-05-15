@@ -139,7 +139,7 @@ python3 tools/eval.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkp
 
 * 训练引擎的预测
 
-PaddleOCR 提供了训练好的中文模型，可以[下载](todo: add)进行快速预测。
+使用 PaddleOCR 训练好的中文模型，可以通过以下脚本进行快速预测。
 
 默认预测图片存储在 `infer_img` 里，通过 `-o Global.checkpoints` 指定权重：
 
