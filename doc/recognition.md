@@ -3,7 +3,7 @@
 ### 数据准备
 
 
-PaddleOCR 支持两种数据格式: `lmdb` 用于训练公开数据，调试算法; `通用数据` 训练自己的数据: 
+PaddleOCR 支持两种数据格式: `lmdb` 用于训练公开数据，调试算法; `通用数据` 训练自己的数据:
 
 请按如下步骤设置数据集：
 
@@ -40,7 +40,7 @@ PaddleOCR 提供了一份用于训练 icdar2015 数据集的标签文件，通�
 # 训练集标签
 wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_train.txt
 # 测试集标签
-wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_test.txt 
+wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_test.txt
 ```
 
 最终训练集应有如下文件结构：
@@ -99,7 +99,8 @@ word_dict.txt 每行有一个单字，将字符与数字索引映射在一起，
 PaddleOCR提供了训练脚本、评估脚本和预测脚本，本节将以 CRNN 识别模型为例：
 
 首先下载pretrain model，您可以下载训练好的模型在 icdar2015 数据上进行finetune
-``
+
+```
 cd PaddleOCR/
 # 下载MobileNetV3的预训练模型
 wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/rec_mv3_none_bilstm_ctc.tar
@@ -156,4 +157,3 @@ infer_img: doc/imgs_words/word_1.jpg
      index: [2092  177  312 2503]
      word : 韩国小馆
 ```
-
