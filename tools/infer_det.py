@@ -40,7 +40,7 @@ set_paddle_flags(
 )
 
 from paddle import fluid
-from ppocr.utils.utility import create_module
+from ppocr.utils.utility import create_module, get_image_file_list
 import program
 from ppocr.utils.save_load import init_model
 from ppocr.data.reader_main import reader_main
@@ -50,20 +50,18 @@ from ppocr.utils.utility import initial_logger
 logger = initial_logger()
 
 
-def draw_det_res(dt_boxes, config, img_name, ino):
+def draw_det_res(dt_boxes, config, img, img_name):
     if len(dt_boxes) > 0:
-        img_set_path = config['TestReader']['img_set_dir']
-        img_path = img_set_path + img_name
         import cv2
-        src_im = cv2.imread(img_path)
+        src_im = img
         for box in dt_boxes:
             box = box.astype(np.int32).reshape((-1, 1, 2))
             cv2.polylines(src_im, [box], True, color=(255, 255, 0), thickness=2)
-        save_det_path = os.path.basename(config['Global'][
+        save_det_path = os.path.dirname(config['Global'][
             'save_res_path']) + "/det_results/"
         if not os.path.exists(save_det_path):
             os.makedirs(save_det_path)
-        save_path = os.path.join(save_det_path, "det_{}.jpg".format(img_name))
+        save_path = os.path.join(save_det_path, os.path.basename(img_name))
         cv2.imwrite(save_path, src_im)
         logger.info("The detected Image saved in {}".format(save_path))
 
@@ -103,8 +101,12 @@ def main():
         raise Exception("{} not exists!".format(checkpoints))
 
     save_res_path = config['Global']['save_res_path']
+    if not os.path.exists(os.path.dirname(save_res_path)):
+        os.makedirs(os.path.dirname(save_res_path))
     with open(save_res_path, "wb") as fout:
+
         test_reader = reader_main(config=config, mode='test')
+        # image_file_list = get_image_file_list(args.image_dir)
         tackling_num = 0
         for data in test_reader():
             img_num = len(data)
@@ -128,7 +130,13 @@ def main():
             postprocess_params.update(global_params)
             postprocess = create_module(postprocess_params['function'])\
                 (params=postprocess_params)
-            dt_boxes_list = postprocess({"maps": outs[0]}, ratio_list)
+            if config['Global']['algorithm'] == 'EAST':
+                dic = {'f_score': outs[0], 'f_geo': outs[1]}
+            elif config['Global']['algorithm'] == 'DB':
+                dic = {'maps': outs[0]}
+            else:
+                raise Exception("only support algorithm: ['EAST', 'BD']")
+            dt_boxes_list = postprocess(dic, ratio_list)
             for ino in range(img_num):
                 dt_boxes = dt_boxes_list[ino]
                 img_name = img_name_list[ino]
@@ -139,7 +147,8 @@ def main():
                     dt_boxes_json.append(tmp_json)
                 otstr = img_name + "\t" + json.dumps(dt_boxes_json) + "\n"
                 fout.write(otstr.encode())
-                draw_det_res(dt_boxes, config, img_name, ino)
+                src_img = cv2.imread(img_name)
+                draw_det_res(dt_boxes, config, src_img, img_name)
 
     logger.info("success!")
 

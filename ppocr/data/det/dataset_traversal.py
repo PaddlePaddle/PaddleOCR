@@ -89,13 +89,13 @@ class EvalTestReader(object):
 
         def batch_iter_reader():
             batch_outs = []
-            for img_path, img_name in img_list:
+            for img_path in img_list:
                 img = cv2.imread(img_path)
                 if img is None:
                     logger.info("load image error:" + img_path)
                     continue
                 outs = process_function(img)
-                outs.append(img_name)
+                outs.append(img_path)
                 batch_outs.append(outs)
                 if len(batch_outs) == batch_size:
                     yield batch_outs

@@ -127,10 +127,10 @@ def resize_img(img, input_size=600):
 def draw_ocr(image, boxes, txts, scores, draw_txt=True, drop_score=0.5):
     from PIL import Image, ImageDraw, ImageFont
 
-    w, h = image.size
     img = image.copy()
     draw = ImageDraw.Draw(img)
-
+    if scores is None:
+        scores = [1] * len(boxes)
     for (box, score) in zip(boxes, scores):
         if score < drop_score:
             continue
