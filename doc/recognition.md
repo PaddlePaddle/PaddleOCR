@@ -156,7 +156,7 @@ python3 tools/infer_rec.py -c configs/rec/rec_chinese_lite_train.yml -o Global.c
 得到输入图像的预测结果：
 
 ```
-infer_img: infer_img/en/word_1.png
+infer_img: doc/imgs_words/en/word_1.png
      index: [19 24 18 23 29]
      word : joint
 ```

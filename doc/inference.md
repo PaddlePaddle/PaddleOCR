@@ -91,14 +91,14 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_
 超轻量中文识别模型推理，可以执行如下命令：
 
 ```
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/word_4.jpg" --rec_model_dir="./inference/rec/"
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --rec_model_dir="./inference/rec/"
 ```
 
-![](imgs_words/word_4.jpg)
+![](imgs_words/ch/word_4.jpg)
 
 执行命令后，上面图像的预测结果（识别的文本和得分）会打印到屏幕上，示例如下：
 
-Predicts of ./doc/imgs_words/word_4.jpg:['实力活力', 0.89552695]
+Predicts of ./doc/imgs_words/ch/word_4.jpg:['实力活力', 0.89552695]
 
 
 ### 2.基于CTC损失的识别模型推理
