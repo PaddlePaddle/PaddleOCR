@@ -124,7 +124,45 @@ PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_t
 
 如果验证集很大，测试将会比较耗时，建议减少评估次数，或训练完再进行评估。
 
-* 提示： 可通过 -c 参数选择 `configs/rec/` 路径下的多种模型配置进行训练，例如中文 9M 配置文件为 `rec_chinese_lite_train.yml`
+* 提示： 可通过 -c 参数选择 `configs/rec/` 路径下的多种模型配置进行训练，PaddleOCR支持的识别算法有：
+
+
+| 配置文件 |  算法名称 |   backbone |   trans   |   seq      |     pred     |
+| :--------: |  :-------:   | :-------:  |   :-------:   |   :-----:   |  :-----:   |
+| rec_chinese_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  |
+| rec_icdar15_train.yml |  CRNN |   Mobilenet_v3 large 0.5 |  None   |  BiLSTM |  ctc  |
+| rec_mv3_none_bilstm_ctc.yml |  CRNN |   Mobilenet_v3 large 0.5 |  None   |  BiLSTM |  ctc  |
+| rec_mv3_none_none_ctc.yml |  Rosetta |   Mobilenet_v3 large 0.5 |  None   |  None |  ctc  |
+| rec_mv3_tps_bilstm_ctc.yml |  STARNet |   Mobilenet_v3 large 0.5 |  tps   |  BiLSTM |  ctc  |
+| rec_mv3_tps_bilstm_attn.yml |  RARE |   Mobilenet_v3 large 0.5 |  tps   |  BiLSTM |  attention  |
+| rec_r34_vd_none_bilstm_ctc.yml |  CRNN |   Resnet34_vd |  None   |  BiLSTM |  ctc  |
+| rec_r34_vd_none_none_ctc.yml |  Rosetta |   Resnet34_vd |  None   |  None |  ctc  |
+| rec_r34_vd_tps_bilstm_attn.yml | RARE | Resnet34_vd | tps | BiLSTM | attention |
+| rec_r34_vd_tps_bilstm_ctc.yml | STARNet | Resnet34_vd | tps | BiLSTM | ctc |
+
+训练中文数据，推荐使用`rec_chinese_lite_train.yml`，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：
+
+以 `rec_mv3_none_none_ctc.yml` 为例：
+```
+Global:
+  ...
+  # 修改 image_shape 以适应长文本
+  image_shape: [3, 32, 320]
+  ...
+  # 修改字符类型
+  character_type: ch
+  # 添加自定义字典，如修改字典请将路径指向新字典
+  character_dict_path: ./ppocr/utils/ppocr_keys_v1.txt
+  ...
+  # 修改reader类型
+  reader_yml: ./configs/rec/rec_chinese_reader.yml
+  ...
+
+...
+```
+**注意，预测时的配置文件请务必与训练一致。**
+
+
 
 ### 评估
 
