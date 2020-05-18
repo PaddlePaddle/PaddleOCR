@@ -65,7 +65,7 @@ PaddleOCR计算三个OCR检测相关的指标，分别是：Precision、Recall�
 运行如下代码，根据配置文件det_db_mv3.yml中save_res_path指定的测试集检测结果文件，计算评估指标。
 
 ```
-python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Gloabl.checkpoints="./output/best_accuracy"
+python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="./output/best_accuracy"
 ```
 
 ## 测试检测效果
