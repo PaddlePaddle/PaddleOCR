@@ -81,8 +81,8 @@ class EvalTestReader(object):
                 lines = fin.readlines()
                 for line in lines:
                     img_name = line.decode().strip("\n").split("\t")[0]
-                    img_path = img_set_dir + "/" + img_name
-                    img_list.append([img_path, img_name])
+                    img_path = os.path.join(img_set_dir, img_name)
+                    img_list.append([img_path])
         else:
             img_path = self.params['single_img_path']
             img_list = get_image_file_list(img_path)
