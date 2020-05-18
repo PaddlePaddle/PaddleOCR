@@ -65,17 +65,24 @@ PaddleOCR计算三个OCR检测相关的指标，分别是：Precision、Recall�
 运行如下代码，根据配置文件det_db_mv3.yml中save_res_path指定的测试集检测结果文件，计算评估指标。
 
 ```
-python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Gloabl.checkpoints="./output/best_accuracy"
+python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="{path/to/weights}/best_accuracy"
 ```
+训练中模型参数默认保存在Global.save_model_dir目录下。在评估指标时，需要设置Global.checkpoints指向保存的参数文件。
+
+比如：
+```
+python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="./output/det_db/best_accuracy"
+```
+
 
 ## 测试检测效果
 
 测试单张图像的检测效果
 ```
-python3 tools/infer_det.py -c config/det/det_mv3_db.yml -o TestReader.single_img_path="./demo.jpg"
+python3 tools/infer_det.py -c config/det/det_mv3_db.yml -o TestReader.single_img_path="./doc/imgs_en/img_10.jpg"
 ```
 
 测试文件夹下所有图像的检测效果
 ```
-python3 tools/infer_det.py -c config/det/det_mv3_db.yml -o TestReader.single_img_path="./demo_img/"
+python3 tools/infer_det.py -c config/det/det_mv3_db.yml -o TestReader.single_img_path="./doc/imgs_en/"
 ```
