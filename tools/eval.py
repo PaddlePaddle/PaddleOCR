@@ -72,12 +72,12 @@ def main():
     init_model(config, eval_program, exe)
 
     if alg in ['EAST', 'DB']:
-        eval_reader = reader_main(config=config, mode="test")
+        eval_reader = reader_main(config=config, mode="eval")
         eval_info_dict = {'program':eval_program,\
             'reader':eval_reader,\
             'fetch_name_list':eval_fetch_name_list,\
             'fetch_varname_list':eval_fetch_varname_list}
-        metrics = eval_det_run(exe, config, eval_info_dict, "test")
+        metrics = eval_det_run(exe, config, eval_info_dict, "eval")
     else:
         reader_type = config['Global']['reader_yml']
         if "benchmark" not in reader_type:
