@@ -47,6 +47,8 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_mode
 ```
 更多的文本检测、识别串联推理使用方式请参考文档教程中[基于预测引擎推理](./doc/inference.md)。
 
+
+
 ## 文档教程
 - [快速安装](./doc/installation.md)
 - [文本检测模型训练/评估/预测](./doc/detection.md)（持续更新中）

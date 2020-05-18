@@ -4,7 +4,50 @@
 inference 模型（fluid.io.save_inference_model保存的模型）
 一般是模型训练完成后保存的固化模型，多用于预测部署。
 训练过程中保存的模型是checkpoints模型，保存的是模型的参数，多用于恢复训练等。
-与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合与实际系统集成。更详细的介绍请参考文档[分类预测框架](https://paddleclas.readthedocs.io/zh_CN/latest/extension/paddle_inference.html). 接下来将依次介绍文本检测、文本识别以及两者串联基于预测引擎推理。与此同时也会介绍checkpoints转换成inference model的实现。
+与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合与实际系统集成。更详细的介绍请参考文档[分类预测框架](https://paddleclas.readthedocs.io/zh_CN/latest/extension/paddle_inference.html).
+
+接下来首先介绍如何将训练的模型转换成inference模型，然后将依次介绍文本检测、文本识别以及两者串联基于预测引擎推理。
+
+## 训练模型转inference模型
+### 检测模型转inference模型
+
+下载超轻量级中文检测模型：
+```
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/det_mv3_db.tar && tar xf ch_lite/det_mv3_db.tar -C ch_lite
+```
+上述模型是以MobileNetV3为backbone训练的DB算法，将训练好的模型转换成inference模型只需要运行如下命令：
+```
+python3 tools/export_model.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./ch_lite/det_mv3_db/best_accuracy Global.save_inference_dir=./inference_model/det_db/
+```
+转inference模型时，使用的配置文件和训练时使用的配置文件相同。另外，还需要设置配置文件中的Global.checkpoints、Global.save_inference_dir参数。
+其中Global.checkpoints指向训练中保存的模型参数文件，Global.save_inference_dir是生成的inference模型要保存的目录。
+转换成功后，在save_inference_dir 目录下有两个文件：
+```
+inference_model/det_db/
+  └─  model     检测inference模型的program文件
+  └─  params    检测inference模型的参数文件
+```
+
+### 识别模型转inference模型
+
+下载超轻量中文识别模型：
+```
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/rec_crnn.tar && tar xf ch_lite/rec_crnn.tar -C .ch_lite/
+```
+
+识别模型转inference模型与检测的方式相同，如下：
+```
+python3 tools/export_model.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints=./ch_lite/rec_crnn/best_accuracy \
+        Global.save_inference_dir=./inference_model/rec_crnn/
+```
+如果您是在自己的数据集上训练的模型，并且调整了中文字符的字典文件，请注意修改配置文件中的character_dict_path是否是所需要的字典文件。
+
+转换成功后，在目录下有两个文件：
+```
+/inference_model/rec_crnn/
+  └─  model     识别inference模型的program文件
+  └─  params    识别inference模型的参数文件
+```
 
 ## 文本检测模型推理
 
