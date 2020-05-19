@@ -31,7 +31,7 @@ def set_paddle_flags(**kwargs):
 
 # NOTE(paddle-dev): All of these flags should be
 # set before `import paddle`. Otherwise, it would
-# not take any effect. 
+# not take any effect.
 set_paddle_flags(
     FLAGS_eager_delete_tensor_gb=0,  # enable GC to save memory
 )
@@ -52,7 +52,7 @@ def main():
 
     # check if set use_gpu=True in paddlepaddle cpu version
     use_gpu = config['Global']['use_gpu']
-    program.check_gpu(True)
+    program.check_gpu(use_gpu)
 
     alg = config['Global']['algorithm']
     assert alg in ['EAST', 'DB', 'Rosetta', 'CRNN', 'STARNet', 'RARE']
