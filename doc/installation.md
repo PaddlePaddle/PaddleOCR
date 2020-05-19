@@ -20,7 +20,7 @@ sudo nvidia-docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidu
 sudo nvidia-docker container exec -it ppocr /bin/bash
 ```
 
-2. 安装PaddlePaddle Fluid v1.7或更高版本
+2. 安装PaddlePaddle Fluid v1.7(暂不支持更高版本,适配工作进行中)
 ```
 pip3 install --upgrade pip
 
