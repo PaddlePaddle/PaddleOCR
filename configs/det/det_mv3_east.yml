@@ -11,7 +11,7 @@ Global:
   test_batch_size_per_card: 16
   image_shape: [3, 512, 512]
   reader_yml: ./configs/det/det_east_icdar15_reader.yml
-  pretrain_weights: ./pretrain_models/MobileNetV3_pretrained/MobileNetV3_large_x0_5_pretrained/
+  pretrain_weights: ./pretrain_models/MobileNetV3_large_x0_5_pretrained/
   checkpoints:
   save_res_path: ./output/det_east/predicts_east.txt
   save_inference_dir:

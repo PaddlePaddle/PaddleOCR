@@ -11,7 +11,7 @@ Global:
   test_batch_size_per_card: 16
   image_shape: [3, 640, 640]
   reader_yml: ./configs/det/det_db_icdar15_reader.yml
-  pretrain_weights: ./pretrain_models/ResNet50_vd_pretrained/
+  pretrain_weights: ./pretrain_models/ResNet50_vd_ssld_pretrained/
   save_res_path: ./output/det_db/predicts_db.txt
   checkpoints:
   save_inference_dir:

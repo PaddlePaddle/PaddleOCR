@@ -269,7 +269,9 @@ def train_eval_det_run(config, exe, train_info_dict, eval_info_dict):
 
         except fluid.core.EOFException:
             train_loader.reset()
-
+        if epoch == 0 and save_epoch_step == 1:
+            save_path = save_model_dir + "/iter_epoch_0"
+            save_model(train_info_dict['train_program'],save_path)
         if epoch > 0 and epoch % save_epoch_step == 0:
             save_path = save_model_dir + "/iter_epoch_%d" % (epoch)
             save_model(train_info_dict['train_program'], save_path)
@@ -346,7 +348,9 @@ def train_eval_rec_run(config, exe, train_info_dict, eval_info_dict):
 
         except fluid.core.EOFException:
             train_loader.reset()
-
+        if epoch == 0 and save_epoch_step == 1:
+            save_path = save_model_dir + "/iter_epoch_0"
+            save_model(train_info_dict['train_program'],save_path)
         if epoch > 0 and epoch % save_epoch_step == 0:
             save_path = save_model_dir + "/iter_epoch_%d" % (epoch)
             save_model(train_info_dict['train_program'], save_path)
