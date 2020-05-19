@@ -16,7 +16,7 @@ wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dataset/test_icdar2015_la
 
 解压数据集和下载标注文件后，PaddleOCR/train_data/ 有两个文件夹和两个文件，分别是：
 ```
-/PaddleOCR/train_data/  
+/PaddleOCR/train_data/icdar2015/text_localization/
   └─ icdar_c4_train_imgs/         icdar数据集的训练数据
   └─ ch4_test_images/             icdar数据集的测试数据
   └─ train_icdar2015_label.txt    icdar数据集的训练标注
@@ -79,10 +79,10 @@ python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="./ou
 
 测试单张图像的检测效果
 ```
-python3 tools/infer_det.py -c config/det/det_mv3_db.yml -o TestReader.single_img_path="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy"
+python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o TestReader.single_img_path="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy"
 ```
 
 测试文件夹下所有图像的检测效果
 ```
-python3 tools/infer_det.py -c config/det/det_mv3_db.yml -o TestReader.single_img_path="./doc/imgs_en/" Global.checkpoints="./output/det_db/best_accuracy"
+python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o TestReader.single_img_path="./doc/imgs_en/" Global.checkpoints="./output/det_db/best_accuracy"
 ```
