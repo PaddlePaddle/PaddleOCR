@@ -89,7 +89,7 @@ def sorted_boxes(dt_boxes):
         sorted boxes(array) with shape [4, 2]
     """
     num_boxes = dt_boxes.shape[0]
-    sorted_boxes = sorted(dt_boxes, key=lambda x: x[0][1])
+    sorted_boxes = sorted(dt_boxes, key=lambda x: (x[0][1], x[0][0]))
     _boxes = list(sorted_boxes)
 
     for i in range(num_boxes - 1):
