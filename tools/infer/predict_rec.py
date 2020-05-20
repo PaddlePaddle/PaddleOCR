@@ -59,7 +59,7 @@ class TextRecognizer(object):
 
     def __call__(self, img_list):
         img_num = len(img_list)
-        batch_num = 30
+        batch_num = 12
         rec_res = []
         predict_time = 0
         for beg_img_no in range(0, img_num, batch_num):
