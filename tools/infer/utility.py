@@ -56,6 +56,7 @@ def parse_args():
     parser.add_argument("--rec_model_dir", type=str)
     parser.add_argument("--rec_image_shape", type=str, default="3, 32, 320")
     parser.add_argument("--rec_char_type", type=str, default='ch')
+    parser.add_argument("--rec_batch_num", type=int, default=30)
     parser.add_argument(
         "--rec_char_dict_path",
         type=str,
@@ -172,7 +173,8 @@ def draw_ocr(image, boxes, txts, scores, draw_txt=True, drop_score=0.5):
                 continue
             font = ImageFont.truetype(
                 "./doc/simfang.ttf", font_size, encoding="utf-8")
-            new_txt = str(count) + ':  ' + txt + '    ' + '%.3f' % (scores[count])
+            new_txt = str(count) + ':  ' + txt + '    ' + '%.3f' % (
+                scores[count])
             draw_txt.text(
                 (20, gap * (count + 1)), new_txt, txt_color, font=font)
             count += 1
