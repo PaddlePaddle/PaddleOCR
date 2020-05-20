@@ -20,14 +20,22 @@ import sys
 
 
 class CharacterOps(object):
-    """ Convert between text-label and text-index """
+    """
+    Convert between text-label and text-index
+
+    Args:
+        config: config from yaml file
+
+    """
 
     def __init__(self, config):
         self.character_type = config['character_type']
         self.loss_type = config['loss_type']
+        # use the default dictionary(36 char)
         if self.character_type == "en":
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
+        # use the custom dictionary
         elif self.character_type == "ch":
             character_dict_path = config['character_dict_path']
             self.character_str = ""
@@ -47,26 +55,29 @@ class CharacterOps(object):
             "Nonsupport type of the character: {}".format(self.character_str)
         self.beg_str = "sos"
         self.end_str = "eos"
+        # add start and end str for attention
         if self.loss_type == "attention":
             dict_character = [self.beg_str, self.end_str] + dict_character
+        # create char dict
         self.dict = {}
         for i, char in enumerate(dict_character):
             self.dict[char] = i
         self.character = dict_character
 
     def encode(self, text):
-        """convert text-label into text-index.
-        input:
+        """
+        convert text-label into text-index.
+
+        Args:
             text: text labels of each image. [batch_size]
 
-        output:
+        Reture:
             text: concatenated text index for CTCLoss.
                     [sum(text_lengths)] = [text_index_0 + text_index_1 + ... + text_index_(n - 1)]
-            length: length of each text. [batch_size]
         """
+        # Ignore capital
         if self.character_type == "en":
             text = text.lower()
-
         text_list = []
         for char in text:
             if char not in self.dict:
@@ -76,7 +87,15 @@ class CharacterOps(object):
         return text
 
     def decode(self, text_index, is_remove_duplicate=False):
-        """ convert text-index into text-label. """
+        """
+        convert text-index into text-label.
+        Args:
+            text_index: text index for each image
+            is_remove_duplicate: Whether to remove duplicate characters,
+                                 The default is False
+        Return:
+            text: text label
+        """
         char_list = []
         char_num = self.get_char_num()
 
@@ -98,6 +117,9 @@ class CharacterOps(object):
         return text
 
     def get_char_num(self):
+        """
+        Get character num
+        """
         return len(self.character)
 
     def get_beg_end_flag_idx(self, beg_or_end):
@@ -122,6 +144,19 @@ def cal_predicts_accuracy(char_ops,
                           labels,
                           labels_lod,
                           is_remove_duplicate=False):
+    """
+    Calculate predicts accrarcy
+    Args:
+        char_ops: CharacterOps
+        preds: preds result,text index
+        preds_lod:
+        labels:
+        labels_lod:
+        is_remove_duplicate:
+
+    Return:
+
+    """
     acc_num = 0
     img_num = 0
     for ino in range(len(labels_lod) - 1):
