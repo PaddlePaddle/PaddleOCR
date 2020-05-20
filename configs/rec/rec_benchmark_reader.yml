@@ -10,3 +10,4 @@ EvalReader:
 TestReader:
   reader_function: ppocr.data.rec.dataset_traversal,LMDBReader
   lmdb_sets_dir: ./train_data/data_lmdb_release/evaluation/
+  infer_img: ./infer_img

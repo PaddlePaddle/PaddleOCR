@@ -96,7 +96,7 @@ def load_label_infor(label_file_path, do_ignore=False):
                 if text == "###" and do_ignore:
                     ignore = True
                 bbox_infor[bno]['ignore'] = ignore
-            img_name_label_dict[substr[0]] = bbox_infor
+            img_name_label_dict[os.path.basename(substr[0])] = bbox_infor
     return img_name_label_dict
 
 

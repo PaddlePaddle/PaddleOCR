@@ -15,7 +15,7 @@ EvalReader:
 TestReader:
   reader_function: ppocr.data.det.dataset_traversal,EvalTestReader
   process_function: ppocr.data.det.db_process,DBProcessTest
-  single_img_path: 
+  infer_img:
   img_set_dir: ./train_data/icdar2015/text_localization/
   label_file_path: ./train_data/icdar2015/text_localization/test_icdar2015_label.txt
   test_image_shape: [736, 1280]

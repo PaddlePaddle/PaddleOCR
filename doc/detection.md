@@ -79,10 +79,10 @@ python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="./ou
 
 测试单张图像的检测效果
 ```
-python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o TestReader.single_img_path="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy"
+python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o TestReader.infer_img="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy"
 ```
 
 测试文件夹下所有图像的检测效果
 ```
-python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o TestReader.single_img_path="./doc/imgs_en/" Global.checkpoints="./output/det_db/best_accuracy"
+python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o TestReader.infer_img="./doc/imgs_en/" Global.checkpoints="./output/det_db/best_accuracy"
 ```
