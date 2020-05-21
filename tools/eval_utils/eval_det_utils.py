@@ -34,6 +34,7 @@ import json
 from copy import deepcopy
 import cv2
 from ppocr.data.reader_main import reader_main
+import os
 
 
 def cal_det_res(exe, config, eval_info_dict):
@@ -43,6 +44,8 @@ def cal_det_res(exe, config, eval_info_dict):
     postprocess_params.update(global_params)
     postprocess = create_module(postprocess_params['function']) \
         (params=postprocess_params)
+    if not os.path.exists(os.path.dirname(save_res_path)):
+        os.makedirs(os.path.dirname(save_res_path))
     with open(save_res_path, "wb") as fout:
         tackling_num = 0
         for data in eval_info_dict['reader']():
@@ -93,7 +96,7 @@ def load_label_infor(label_file_path, do_ignore=False):
                 if text == "###" and do_ignore:
                     ignore = True
                 bbox_infor[bno]['ignore'] = ignore
-            img_name_label_dict[substr[0]] = bbox_infor
+            img_name_label_dict[os.path.basename(substr[0])] = bbox_infor
     return img_name_label_dict
 
 

@@ -106,7 +106,6 @@ def main():
     with open(save_res_path, "wb") as fout:
 
         test_reader = reader_main(config=config, mode='test')
-        # image_file_list = get_image_file_list(args.image_dir)
         tackling_num = 0
         for data in test_reader():
             img_num = len(data)
@@ -135,7 +134,7 @@ def main():
             elif config['Global']['algorithm'] == 'DB':
                 dic = {'maps': outs[0]}
             else:
-                raise Exception("only support algorithm: ['EAST', 'BD']")
+                raise Exception("only support algorithm: ['EAST', 'DB']")
             dt_boxes_list = postprocess(dic, ratio_list)
             for ino in range(img_num):
                 dt_boxes = dt_boxes_list[ino]

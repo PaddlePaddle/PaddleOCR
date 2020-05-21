@@ -84,7 +84,7 @@ class EvalTestReader(object):
                     img_path = os.path.join(img_set_dir, img_name)
                     img_list.append(img_path)
         else:
-            img_path = self.params['single_img_path']
+            img_path = self.params['infer_img']
             img_list = get_image_file_list(img_path)
 
         def batch_iter_reader():

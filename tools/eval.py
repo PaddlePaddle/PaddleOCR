@@ -78,6 +78,7 @@ def main():
             'fetch_name_list':eval_fetch_name_list,\
             'fetch_varname_list':eval_fetch_varname_list}
         metrics = eval_det_run(exe, config, eval_info_dict, "eval")
+        print("Eval result", metrics)
     else:
         reader_type = config['Global']['reader_yml']
         if "benchmark" not in reader_type:

@@ -31,6 +31,7 @@ class TextRecognizer(object):
         image_shape = [int(v) for v in args.rec_image_shape.split(",")]
         self.rec_image_shape = image_shape
         self.character_type = args.rec_char_type
+        self.rec_batch_num = args.rec_batch_num
         char_ops_params = {}
         char_ops_params["character_type"] = args.rec_char_type
         char_ops_params["character_dict_path"] = args.rec_char_dict_path
@@ -59,8 +60,8 @@ class TextRecognizer(object):
 
     def __call__(self, img_list):
         img_num = len(img_list)
-        batch_num = 30
         rec_res = []
+        batch_num = self.rec_batch_num
         predict_time = 0
         for beg_img_no in range(0, img_num, batch_num):
             end_img_no = min(img_num, beg_img_no + batch_num)
