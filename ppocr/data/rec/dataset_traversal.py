@@ -13,6 +13,7 @@
 #limitations under the License.
 
 import os
+import sys
 import math
 import random
 import numpy as np
@@ -191,16 +192,21 @@ class SimpleReader(object):
                 img_num = len(label_infor_list)
                 img_id_list = list(range(img_num))
                 random.shuffle(img_id_list)
+                if sys.platform=="win32":
+                    print("multiprocess is not fully compatible with Windows."
+                          "num_workers will be 1.")
+                    self.num_workers = 1
                 for img_id in range(process_id, img_num, self.num_workers):
                     label_infor = label_infor_list[img_id_list[img_id]]
                     substr = label_infor.decode('utf-8').strip("\n").split("\t")
                     img_path = self.img_set_dir + "/" + substr[0]
                     img = cv2.imread(img_path)
-                    if img.shape[-1]==1 or len(list(img.shape))==2:
-                        img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
                     if img is None:
                         logger.info("{} does not exist!".format(img_path))
                         continue
+                    if img.shape[-1]==1 or len(list(img.shape))==2:
+                        img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+
                     label = substr[1]
                     outs = process_image(img, self.image_shape, label,
                                          self.char_ops, self.loss_type,
