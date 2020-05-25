@@ -63,14 +63,14 @@ PaddleOCR开源的文本检测算法列表：
 
 在ICDAR2015文本检测公开数据集上，算法效果如下：
 
-|模型|骨干网络|Hmean|precision|recall|下载链接|
+|模型|骨干网络|precision|recall|Hmean|下载链接|
 |-|-|-|-|
-|EAST|ResNet50_vd|86.82%|88.18%|85.51|[下载链接](https://paddleocr.bj.bcebos.com/det_r50_vd_east.tar)|
-|EAST|MobileNetV3|80.74%|81.67%|79.83%|[下载链接](https://paddleocr.bj.bcebos.com/det_mv3_east.tar)|
-|DB|ResNet50_vd|82.19%|83.79%|80.65%|[下载链接](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar)|
-|DB|MobileNetV3|74.53%|75.92%|73.18%|[下载链接](https://paddleocr.bj.bcebos.com/det_mv3_db.tar)|
+|EAST|ResNet50_vd|88.18%|85.51|86.82%|[下载链接](https://paddleocr.bj.bcebos.com/det_r50_vd_east.tar)|
+|EAST|MobileNetV3|81.67%|79.83%|80.74%|[下载链接](https://paddleocr.bj.bcebos.com/det_mv3_east.tar)|
+|DB|ResNet50_vd|83.79%|80.65%|82.19%|[下载链接](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar)|
+|DB|MobileNetV3|75.92%|73.18%|74.53%|[下载链接](https://paddleocr.bj.bcebos.com/det_mv3_db.tar)|
 
-* 注： 上述模型的训练和评估，设置后处理参数box_thresh=0.6，unclip_ratio=1.5，使用不同数据集、不同模型训练时，可调整这两个参数进行优化
+* 注： 上述模型的训练和评估，设置后处理参数box_thresh=0.6，unclip_ratio=1.5，使用不同数据集、不同模型训练，可调整这两个参数进行优化
 
 PaddleOCR文本检测算法的训练和使用请参考文档教程中[文本检测模型训练/评估/预测](./doc/detection.md)。
 
