@@ -75,6 +75,7 @@ python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="{pat
 python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="./output/det_db/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
 ```
 
+* 注：box_thresh、unclip_ratio是DB后处理所需要的参数，在评估EAST模型时不需要设置
 
 ## 测试检测效果
 
@@ -82,6 +83,12 @@ python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="./ou
 ```
 python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o TestReader.infer_img="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy"
 ```
+
+测试DB模型时，调整后处理阈值，
+```
+python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o TestReader.infer_img="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
+```
+
 
 测试文件夹下所有图像的检测效果
 ```

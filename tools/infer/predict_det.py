@@ -39,6 +39,7 @@ class TextDetector(object):
             postprocess_params["thresh"] = args.det_db_thresh
             postprocess_params["box_thresh"] = args.det_db_box_thresh
             postprocess_params["max_candidates"] = 1000
+            postprocess_params["unclip_ratio"] = args.det_db_unclip_ratio
             self.postprocess_op = DBPostProcess(postprocess_params)
         elif self.det_algorithm == "EAST":
             self.preprocess_op = EASTProcessTest(preprocess_params)
@@ -142,5 +143,5 @@ if __name__ == "__main__":
         src_im = utility.draw_text_det_res(dt_boxes, image_file)
         img_name_pure = image_file.split("/")[-1]
         cv2.imwrite("./inference_results/det_res_%s" % img_name_pure, src_im)
-    if count > 1: 
-    	print("Avg Time:", total_time / (count - 1))
+    if count > 1:
+        print("Avg Time:", total_time / (count - 1))
