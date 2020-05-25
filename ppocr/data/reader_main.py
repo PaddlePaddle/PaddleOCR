@@ -66,6 +66,8 @@ def reader_main(config=None, mode=None):
     reader_function = params['reader_function']
     function = create_module(reader_function)(params)
     if mode == "train":
+        if sys.platform == "win32":
+            return function(0)
         readers = []
         num_workers = params['num_workers']
         for process_id in range(num_workers):
