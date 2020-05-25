@@ -176,6 +176,12 @@ def draw_ocr(image, boxes, txts, scores, draw_txt=True, drop_score=0.5):
                 "./doc/simfang.ttf", font_size, encoding="utf-8")
             new_txt = str(count) + ':  ' + txt + '    ' + '%.3f' % (
                 scores[count])
+            while len(new_txt) > 25:
+                tmp = new_txt
+                new_txt = tmp[:25]
+                draw_txt.text(
+                    (20, gap * (count + 1)), new_txt, txt_color, font=font)
+                new_txt = tmp[25:]
             draw_txt.text(
                 (20, gap * (count + 1)), new_txt, txt_color, font=font)
             count += 1
