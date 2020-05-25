@@ -1,7 +1,14 @@
 ## 快速安装
 
+经测试PaddleOCR可在glibc 2.23上运行，您也可以测试其他glibc版本或安装glic 2.23
+PaddleOCR 工作环境
+- PaddlePaddle1.7
+- python3
+- glibc 2.23
+
 建议使用我们提供的docker运行PaddleOCR，有关docker使用请参考[链接](https://docs.docker.com/get-started/)。
-1. 准备docker环境。第一次使用这个镜像，会自动下载该镜像，请耐心等待。
+
+1. （建议）准备docker环境。第一次使用这个镜像，会自动下载该镜像，请耐心等待。
 ```
 # 切换到工作目录下
 cd /home/Projects
@@ -18,6 +25,20 @@ sudo nvidia-docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidu
 
 # ctrl+P+Q可退出docker，重新进入docker使用如下命令
 sudo nvidia-docker container exec -it ppocr /bin/bash
+```
+
+注意：如果docker pull过慢，可以按照如下步骤手动下载后加载docker,以cuda9 docker为例，使用cuda10 docker只需要将cuda9改为cuda10即可。
+```
+# 下载CUDA9 docker的压缩文件，并解压
+wget https://paddleocr.bj.bcebos.com/docker/docker_pdocr_cuda9.tar.gz
+# 为减少下载时间，上传的docker image是压缩过的，需要解压使用
+tar zxf docker_pdocr_cuda9.tar.gz
+# 创建image
+docker load < docker_pdocr_cuda9.tar
+# 完成上述步骤后通过docker images检查是否加载了下载的镜像
+docker images
+# 执行docker images后如果有下面的输出，即可按照按照 步骤1 创建docker环境。
+hub.baidubce.com/paddlepaddle/paddle   latest-gpu-cuda9.0-cudnn7-dev    f56310dcc829
 ```
 
 2. 安装PaddlePaddle Fluid v1.7(暂不支持更高版本,适配工作进行中)
