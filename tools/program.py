@@ -191,7 +191,7 @@ def build_export(config, main_prog, startup_prog):
             func_infor = config['Architecture']['function']
             model = create_module(func_infor)(params=config)
             image, outputs = model(mode='export')
-            fetches_var_name = sorted([name for name in outputs])
+            fetches_var_name = sorted([name for name in outputs.keys()])
             fetches_var = [outputs[name] for name in fetches_var_name]
     feeded_var_names = [image.name]
     target_vars = fetches_var
@@ -271,7 +271,7 @@ def train_eval_det_run(config, exe, train_info_dict, eval_info_dict):
             train_loader.reset()
         if epoch == 0 and save_epoch_step == 1:
             save_path = save_model_dir + "/iter_epoch_0"
-            save_model(train_info_dict['train_program'],save_path)
+            save_model(train_info_dict['train_program'], save_path)
         if epoch > 0 and epoch % save_epoch_step == 0:
             save_path = save_model_dir + "/iter_epoch_%d" % (epoch)
             save_model(train_info_dict['train_program'], save_path)
@@ -350,7 +350,7 @@ def train_eval_rec_run(config, exe, train_info_dict, eval_info_dict):
             train_loader.reset()
         if epoch == 0 and save_epoch_step == 1:
             save_path = save_model_dir + "/iter_epoch_0"
-            save_model(train_info_dict['train_program'],save_path)
+            save_model(train_info_dict['train_program'], save_path)
         if epoch > 0 and epoch % save_epoch_step == 0:
             save_path = save_model_dir + "/iter_epoch_%d" % (epoch)
             save_model(train_info_dict['train_program'], save_path)

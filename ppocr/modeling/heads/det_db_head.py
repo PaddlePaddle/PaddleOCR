@@ -196,7 +196,7 @@ class DBHead(object):
         fuse = fluid.layers.concat(input=[p5, p4, p3, p2], axis=1)
         shrink_maps = self.binarize(fuse)
         if mode != "train":
-            return {"maps", shrink_maps}
+            return {"maps": shrink_maps}
         threshold_maps = self.thresh(fuse)
         binary_maps = self.step_function(shrink_maps, threshold_maps)
         y = fluid.layers.concat(
