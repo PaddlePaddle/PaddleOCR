@@ -226,8 +226,7 @@ def text_visual(texts, scores, img_h=400, img_w=600, threshold=0.):
 
     font_size = 20
     txt_color = (0, 0, 0)
-    font = ImageFont.truetype(
-        "../../doc/simfang.ttf", font_size, encoding="utf-8")
+    font = ImageFont.truetype("./doc/simfang.ttf", font_size, encoding="utf-8")
 
     gap = font_size + 5
     txt_img_list = []
