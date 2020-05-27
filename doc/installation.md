@@ -15,6 +15,9 @@ cd /home/Projects
 # 首次运行需创建一个docker容器，再次运行时不需要运行当前命令
 # 创建一个名字为ppocr的docker容器，并将当前目录映射到容器的/paddle目录下
 
+如果您希望在CPU环境下使用docker，使用docker而不是nvidia-docker创建docker
+sudo docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev /bin/bash
+
 如果您的机器安装的是CUDA9，请运行以下命令创建容器
 sudo nvidia-docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev /bin/bash
 
@@ -24,7 +27,7 @@ sudo nvidia-docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidu
 您也可以访问[DockerHub](https://hub.docker.com/r/paddlepaddle/paddle/tags/)获取与您机器适配的镜像。
 
 # ctrl+P+Q可退出docker，重新进入docker使用如下命令
-sudo nvidia-docker container exec -it ppocr /bin/bash
+sudo docker container exec -it ppocr /bin/bash
 ```
 
 注意：如果docker pull过慢，可以按照如下步骤手动下载后加载docker,以cuda9 docker为例，使用cuda10 docker只需要将cuda9改为cuda10即可。
