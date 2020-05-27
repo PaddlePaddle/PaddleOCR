@@ -276,14 +276,6 @@ def text_visual(texts, scores, img_h=400, img_w=600, threshold=0.):
 
 
 if __name__ == '__main__':
-    text = [
-        "旨在打造一套丰富领先、且实用的工具库助力使、用者训练出更好的模型，并应用落地",
-        "以下代码实现了文本检测、识别串联推理，在执行预测时，需要通过参数image_dir指定单张图像或者图像集合",
-        "上述DB模型的训练和评估，需设置后处理参数box_thresh=0.6，unclip_ratio=1.5，使用不同数据集"
-    ]
-    img = text_visual(text, scores=[0.999, 0.999, 0.999], img_h=100)
-    cv2.imwrite("./draw_txt.jpg", np.array(img))
-    """
     test_img = "./doc/test_v2"
     predict_txt = "./doc/predict.txt"
     f = open(predict_txt, 'r')
@@ -303,4 +295,3 @@ if __name__ == '__main__':
     new_img = draw_ocr(image, boxes, txts, scores, draw_txt=True)
 
     cv2.imwrite(img_name, new_img)
-    """
