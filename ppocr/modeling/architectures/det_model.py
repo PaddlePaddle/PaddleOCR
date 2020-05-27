@@ -109,7 +109,10 @@ class DetModel(object):
         """
         image, labels, loader = self.create_feed(mode)
         conv_feas = self.backbone(image)
-        predicts = self.head(conv_feas)
+        if self.algorithm == "DB":
+            predicts = self.head(conv_feas, mode)
+        else:
+            predicts = self.head(conv_feas)
         if mode == "train":
             losses = self.loss(predicts, labels)
             return loader, losses
