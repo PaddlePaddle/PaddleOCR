@@ -140,22 +140,21 @@ def draw_ocr(image, boxes, txts, scores, draw_txt=True, drop_score=0.5):
     return(array):
         the visualized img
     """
-    img = image
     if scores is None:
         scores = [1] * len(boxes)
     for (box, score) in zip(boxes, scores):
         if score < drop_score or math.isnan(score):
             continue
         box = np.reshape(np.array(box), [-1, 1, 2]).astype(np.int64)
-        img = cv2.polylines(np.array(image), [box], True, (255, 0, 0), 3)
+        image = cv2.polylines(np.array(image), [box], True, (255, 0, 0), 2)
 
     if draw_txt:
-        img = np.array(resize_img(img, input_size=600))
+        img = np.array(resize_img(image, input_size=600))
         txt_img = text_visual(
             txts, scores, img_h=img.shape[0], img_w=600, threshold=drop_score)
         img = np.concatenate([np.array(img), np.array(txt_img)], axis=1)
-
-    return img
+        return img
+    return image
 
 
 def str_count(s):
@@ -213,7 +212,7 @@ def text_visual(texts, scores, img_h=400, img_w=600, threshold=0.):
 
     gap = font_size + 5
     txt_img_list = []
-    count, index = 0, 0
+    count, index = 1, 0
     for idx, txt in enumerate(texts):
         index += 1
         if scores[idx] < threshold or math.isnan(scores[idx]):
@@ -230,24 +229,22 @@ def text_visual(texts, scores, img_h=400, img_w=600, threshold=0.):
                 new_txt = '    ' + txt
             draw_txt.text((0, gap * (count + 1)), new_txt, txt_color, font=font)
             txt = tmp[img_w // font_size - 4:]
-            count += 1
             if count >= img_h // gap - 1:
                 txt_img_list.append(np.array(blank_img))
                 blank_img, draw_txt = create_blank_img()
                 count = 0
-
+            count += 1
         if first_line:
             new_txt = str(index) + ': ' + txt + '   ' + '%.3f' % (scores[idx])
         else:
             new_txt = "  " + txt + "  " + '%.3f' % (scores[idx])
-        draw_txt.text((0, gap * (count + 1)), new_txt, txt_color, font=font)
-        count += 1
+        draw_txt.text((0, gap * count), new_txt, txt_color, font=font)
         # whether add new blank img or not
-        if count > img_h // gap - 1 and idx + 1 < len(texts):
+        if count >= img_h // gap - 1 and idx + 1 < len(texts):
             txt_img_list.append(np.array(blank_img))
             blank_img, draw_txt = create_blank_img()
             count = 0
-
+        count += 1
     txt_img_list.append(np.array(blank_img))
     if len(txt_img_list) == 1:
         blank_img = np.array(txt_img_list[0])
