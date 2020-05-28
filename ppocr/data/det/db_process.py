@@ -25,6 +25,10 @@ from .make_border_map import MakeBorderMap
 
 
 class DBProcessTrain(object):
+    """
+    DB pre-process for Train mode
+    """
+
     def __init__(self, params):
         self.img_set_dir = params['img_set_dir']
         self.image_shape = params['image_shape']
@@ -109,6 +113,10 @@ class DBProcessTrain(object):
 
 
 class DBProcessTest(object):
+    """
+    DB pre-process for Test mode
+    """
+
     def __init__(self, params):
         super(DBProcessTest, self).__init__()
         self.resize_type = 0
@@ -124,6 +132,10 @@ class DBProcessTest(object):
     def resize_image_type0(self, im):
         """
         resize image to a size multiple of 32 which is required by the network
+        args:
+            img(array): array with shape [h, w, c]
+        return(tuple):
+            img, (ratio_h, ratio_w)
         """
         max_side_len = self.max_side_len
         h, w, _ = im.shape
