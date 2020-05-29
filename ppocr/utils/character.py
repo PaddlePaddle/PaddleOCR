@@ -71,7 +71,7 @@ class CharacterOps(object):
         Args:
             text: text labels of each image. [batch_size]
 
-        Reture:
+        Return:
             text: concatenated text index for CTCLoss.
                     [sum(text_lengths)] = [text_index_0 + text_index_1 + ... + text_index_(n - 1)]
         """
