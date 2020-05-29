@@ -13,17 +13,17 @@ inference 模型（fluid.io.save_inference_model保存的模型）
 
 下载超轻量级中文检测模型：
 ```
-wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/det_mv3_db.tar && tar xf ch_lite/det_mv3_db.tar -C ch_lite
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar && tar xf ch_lite/ch_det_mv3_db.tar -C .ch_lite/
 ```
 上述模型是以MobileNetV3为backbone训练的DB算法，将训练好的模型转换成inference模型只需要运行如下命令：
 ```
-python3 tools/export_model.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./ch_lite/det_mv3_db/best_accuracy Global.save_inference_dir=./inference_model/det_db/
+python3 tools/export_model.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./ch_lite/ch_det_mv3_db/best_accuracy Global.save_inference_dir=./inference/det_db/
 ```
 转inference模型时，使用的配置文件和训练时使用的配置文件相同。另外，还需要设置配置文件中的Global.checkpoints、Global.save_inference_dir参数。
 其中Global.checkpoints指向训练中保存的模型参数文件，Global.save_inference_dir是生成的inference模型要保存的目录。
 转换成功后，在save_inference_dir 目录下有两个文件：
 ```
-inference_model/det_db/
+inference/det_db/
   └─  model     检测inference模型的program文件
   └─  params    检测inference模型的参数文件
 ```
@@ -32,19 +32,20 @@ inference_model/det_db/
 
 下载超轻量中文识别模型：
 ```
-wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/rec_crnn.tar && tar xf ch_lite/rec_crnn.tar -C .ch_lite/
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/rec_mv3_crnn.tar && tar xf ch_lite/rec_mv3_crnn.tar -C .ch_lite/
 ```
 
 识别模型转inference模型与检测的方式相同，如下：
 ```
-python3 tools/export_model.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints=./ch_lite/rec_crnn/best_accuracy \
-        Global.save_inference_dir=./inference_model/rec_crnn/
+python3 tools/export_model.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints=./ch_lite/rec_mv3_crnn/best_accuracy \
+        Global.save_inference_dir=./inference/rec_crnn/
 ```
+
 如果您是在自己的数据集上训练的模型，并且调整了中文字符的字典文件，请注意修改配置文件中的character_dict_path是否是所需要的字典文件。
 
 转换成功后，在目录下有两个文件：
 ```
-/inference_model/rec_crnn/
+/inference/rec_crnn/
   └─  model     识别inference模型的program文件
   └─  params    识别inference模型的参数文件
 ```
@@ -58,7 +59,7 @@ python3 tools/export_model.py -c configs/rec/rec_chinese_lite_train.yml -o Globa
 超轻量中文检测模型推理，可以执行如下命令：
 
 ```
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det/"
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/"
 ```
 
 可视化文本检测结果默认保存到 ./inference_results 文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
@@ -68,12 +69,12 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_di
 通过设置参数det_max_side_len的大小，改变检测算法中图片规范化的最大值。当图片的长宽都小于det_max_side_len，则使用原图预测，否则将图片等比例缩放到最大值，进行预测。该参数默认设置为det_max_side_len=960. 如果输入图片的分辨率比较大，而且想使用更大的分辨率预测，可以执行如下命令：
 
 ```
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det/" --det_max_side_len=1200
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --det_max_side_len=1200
 ```
 
 如果想使用CPU进行预测，执行命令如下
 ```
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det/" --use_gpu=False
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --use_gpu=False
 ```
 
 ### 2.DB文本检测模型推理
@@ -134,7 +135,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_
 超轻量中文识别模型推理，可以执行如下命令：
 
 ```
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --rec_model_dir="./inference/rec/"
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --rec_model_dir="./inference/rec_crnn/"
 ```
 
 ![](imgs_words/ch/word_4.jpg)
@@ -188,7 +189,7 @@ dict_character = list(self.character_str)
 在执行预测时，需要通过参数image_dir指定单张图像或者图像集合的路径、参数det_model_dir指定检测inference模型的路径和参数rec_model_dir指定识别inference模型的路径。可视化识别结果默认保存到 ./inference_results 文件夹里面。
 
 ```
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/"  --rec_model_dir="./inference/rec_crnn/"
 ```
 
 执行命令后，识别结果图像如下：
