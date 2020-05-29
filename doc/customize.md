@@ -8,7 +8,7 @@ PaddleOCR提供了EAST、DB两种文本检测算法，均支持MobileNetV3、Res
 ```
 python3 tools/train.py -c configs/det/det_mv3_db.yml
 ```
-更详细的数据准备和训练教程参考文档教程中[文本检测模型训练/评估/预测](./doc/detection.md)。
+更详细的数据准备和训练教程参考文档教程中[文本检测模型训练/评估/预测](./detection.md)。
 
 ## step2：训练文本检测模型
 
@@ -16,7 +16,7 @@ PaddleOCR提供了CRNN、Rosetta、STAR-Net、RARE四种文本识别算法，均
 ```
 python3 tools/train.py -c configs/rec/rec_chinese_lite_train.yml
 ```
-更详细的数据准备和训练教程参考文档教程中[文本识别模型训练/评估/预测](./doc/recognition.md)。
+更详细的数据准备和训练教程参考文档教程中[文本识别模型训练/评估/预测](./recognition.md)。
 
 ## step3：模型串联预测
 
