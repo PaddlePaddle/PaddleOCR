@@ -149,12 +149,16 @@ def cal_predicts_accuracy(char_ops,
     Args:
         char_ops: CharacterOps
         preds: preds result,text index
-        preds_lod:
-        labels:
-        labels_lod:
-        is_remove_duplicate:
+        preds_lod: lod tensor of preds
+        labels: label of input image, text index
+        labels_lod:  lod tensor of label
+        is_remove_duplicate: Whether to remove duplicate characters,
+                                 The default is False
 
     Return:
+        acc: The accuracy of test set
+        acc_num: The correct number of samples predicted
+        img_num: The total sample number of the test set
 
     """
     acc_num = 0
@@ -178,6 +182,16 @@ def cal_predicts_accuracy(char_ops,
 
 
 def convert_rec_attention_infer_res(preds):
+    """
+    Convert recognition attention predict result with lod information
+
+    Args:
+        preds: the output of the model
+
+    Return:
+        convert_ids: A 1-D Tensor represents all the predicted results.
+        target_lod: The lod information of the predicted results
+    """
     img_num = preds.shape[0]
     target_lod = [0]
     convert_ids = []
@@ -195,6 +209,16 @@ def convert_rec_attention_infer_res(preds):
 
 
 def convert_rec_label_to_lod(ori_labels):
+    """
+    Convert recognition label to lod tensor
+
+    Args:
+        ori_labels: origin labels of total images
+    Return:
+        convert_ids: A 1-D Tensor represents all labels
+        target_lod: The lod information of the labels
+
+    """
     img_num = len(ori_labels)
     target_lod = [0]
     convert_ids = []

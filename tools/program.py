@@ -35,6 +35,10 @@ from ppocr.utils.character import cal_predicts_accuracy
 
 
 class ArgsParser(ArgumentParser):
+    """
+    Parase arguments
+    """
+
     def __init__(self):
         super(ArgsParser, self).__init__(
             formatter_class=RawDescriptionHelpFormatter)
@@ -61,7 +65,9 @@ class ArgsParser(ArgumentParser):
 
 
 class AttrDict(dict):
-    """Single level attribute dict, NOT recursive"""
+    """
+    Single level attribute dict, NOT recursive
+    """
 
     def __init__(self, **kwargs):
         super(AttrDict, self).__init__()
@@ -146,21 +152,22 @@ def check_gpu(use_gpu):
 def build(config, main_prog, startup_prog, mode):
     """
     Build a program using a model and an optimizer
-        1. create feeds
-        2. create a dataloader
-        3. create a model
-        4. create fetchs
-        5. create an optimizer
+        1. create a dataloader
+        2. create a model
+        3. create fetchs
+        4. create an optimizer
 
     Args:
         config(dict): config
         main_prog(): main program
         startup_prog(): startup program
-        is_train(bool): train or valid
+        mode(str): train or valid
 
     Returns:
         dataloader(): a bridge between the model and the data
-        fetchs(dict): dict of model outputs(included loss and measures)
+        fetch_name_list(dict): dict of model outputs(included loss and measures)
+        fetch_varname_list(list): list of outputs' varname
+        opt_loss_name(str): name of loss
     """
     with fluid.program_guard(main_prog, startup_prog):
         with fluid.unique_name.guard():
@@ -185,6 +192,19 @@ def build(config, main_prog, startup_prog, mode):
 
 def build_export(config, main_prog, startup_prog):
     """
+    Build a program for export model
+        1. create a model
+        2. create fetchs
+
+    Args:
+        config(dict): config
+        main_prog(): main program
+        startup_prog(): startup program
+
+    Returns:
+        feeded_var_names(list): list of feeded var names
+        target_vars(list): list of output[fetches_var]
+        fetches_var_name(list): list of fetch var name
     """
     with fluid.program_guard(main_prog, startup_prog):
         with fluid.unique_name.guard():
@@ -212,6 +232,16 @@ def create_multi_devices_program(program, loss_var_name):
 
 
 def train_eval_det_run(config, exe, train_info_dict, eval_info_dict):
+    """
+    Feed data to the model and fetch the measures and loss for detection
+
+    Args:
+        config: config
+        exe:
+        train_info_dict: information dict for training
+        eval_info_dict: information dict for evaluation
+
+    """
     train_batch_id = 0
     log_smooth_window = config['Global']['log_smooth_window']
     epoch_num = config['Global']['epoch_num']
@@ -277,6 +307,16 @@ def train_eval_det_run(config, exe, train_info_dict, eval_info_dict):
 
 
 def train_eval_rec_run(config, exe, train_info_dict, eval_info_dict):
+    """
+    Feed data to the model and fetch the measures and loss for recognition
+
+    Args:
+        config: config
+        exe:
+        train_info_dict: information dict for training
+        eval_info_dict: information dict for evaluation
+
+    """
     train_batch_id = 0
     log_smooth_window = config['Global']['log_smooth_window']
     epoch_num = config['Global']['epoch_num']
