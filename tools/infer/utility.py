@@ -227,7 +227,7 @@ def text_visual(texts, scores, img_h=400, img_w=600, threshold=0.):
                 first_line = False
             else:
                 new_txt = '    ' + txt
-            draw_txt.text((0, gap * (count + 1)), new_txt, txt_color, font=font)
+            draw_txt.text((0, gap * count), new_txt, txt_color, font=font)
             txt = tmp[img_w // font_size - 4:]
             if count >= img_h // gap - 1:
                 txt_img_list.append(np.array(blank_img))
