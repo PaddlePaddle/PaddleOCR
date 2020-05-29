@@ -10,7 +10,7 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml
 ```
 更详细的数据准备和训练教程参考文档教程中[文本检测模型训练/评估/预测](./detection.md)。
 
-## step2：训练文本检测模型
+## step2：训练文本识别模型
 
 PaddleOCR提供了CRNN、Rosetta、STAR-Net、RARE四种文本识别算法，均支持MobileNetV3、ResNet34_vd两种骨干网络，根据需要选择相应的配置文件，启动训练。例如，训练使用MobileNetV3作为骨干网络的CRNN识别模型（即超轻量模型使用的配置）：
 ```
