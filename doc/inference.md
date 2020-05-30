@@ -13,11 +13,11 @@ inference 模型（fluid.io.save_inference_model保存的模型）
 
 下载超轻量级中文检测模型：
 ```
-wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar && tar xf ch_lite/ch_det_mv3_db.tar -C .ch_lite/
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar && tar xf ./ch_lite/ch_det_mv3_db.tar -C ./ch_lite/
 ```
 上述模型是以MobileNetV3为backbone训练的DB算法，将训练好的模型转换成inference模型只需要运行如下命令：
 ```
-python3 tools/export_model.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./ch_lite/ch_det_mv3_db/best_accuracy Global.save_inference_dir=./inference/det_db/
+python3 tools/export_model.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./ch_lite/det_mv3_db/best_accuracy Global.save_inference_dir=./inference/det_db/
 ```
 转inference模型时，使用的配置文件和训练时使用的配置文件相同。另外，还需要设置配置文件中的Global.checkpoints、Global.save_inference_dir参数。
 其中Global.checkpoints指向训练中保存的模型参数文件，Global.save_inference_dir是生成的inference模型要保存的目录。
@@ -32,7 +32,7 @@ inference/det_db/
 
 下载超轻量中文识别模型：
 ```
-wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/rec_mv3_crnn.tar && tar xf ch_lite/rec_mv3_crnn.tar -C .ch_lite/
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar && tar xf ./ch_lite/ch_rec_mv3_crnn.tar -C ./ch_lite/
 ```
 
 识别模型转inference模型与检测的方式相同，如下：
