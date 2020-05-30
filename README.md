@@ -140,7 +140,7 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 - [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(百度自研, comming soon)
 
 <a name="效果展示"></a>
-## 效果展示
+## 超轻量级中文OCR效果展示
 ![](doc/imgs_results/1.jpg)
 ![](doc/imgs_results/7.jpg)
 ![](doc/imgs_results/12.jpg)
