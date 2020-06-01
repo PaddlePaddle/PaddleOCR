@@ -65,7 +65,7 @@ python3 -m pip install paddlepaddle-gpu==1.7.2.post107 -i https://pypi.tuna.tsin
 
 git clone https://gitee.com/paddlepaddle/PaddleOCR
 
-注：码云托管代码可能无法实时同步本github项目更新，存在几天延时，请优先使用推荐方式。
+注：码云托管代码可能无法实时同步本github项目更新，存在3~5天延时，请优先使用推荐方式。
 ```
 
 4. 安装第三方库
