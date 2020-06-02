@@ -81,11 +81,6 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_mode
 
 更多的文本检测、识别串联推理使用方式请参考文档教程中[基于预测引擎推理](./doc/inference.md)。
 
-## 更新
-- 2020.5.30，模型预测、训练支持Windows系统，识别结果的显示进行了优化
-- 2020.5.30，开源通用中文OCR模型
-- 2020.5.30，提供超轻量级中文OCR在线体验
-
 ## 文档教程
 - [快速安装](./doc/installation.md)
 - [文本检测模型训练/评估/预测](./doc/detection.md)
@@ -150,6 +145,10 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 ![](doc/imgs_results/16.png)
 ![](doc/imgs_results/22.jpg)
 
+## 更新
+- 2020.5.30，模型预测、训练支持Windows系统，识别结果的显示进行了优化
+- 2020.5.30，开源通用中文OCR模型
+- 2020.5.30，提供超轻量级中文OCR在线体验
 
 ## 参考文献
 ```
