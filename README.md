@@ -174,7 +174,7 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 ## 欢迎加入PaddleOCR技术交流群
 <div align="center">
 <img
-src="./doc/WeChat.jpeg" width="300">
+src="./doc/WeChat.jpeg" width="200">
 </div>
 
 ## 更新
