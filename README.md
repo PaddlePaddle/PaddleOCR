@@ -172,7 +172,10 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
     自研算法SAST、SRN、End2End-PSL都将在6-7月陆续发布，敬请期待。
 
 ## 欢迎加入PaddleOCR技术交流群
-![](doc/WeChat.jpeg)
+<div align="center">
+<img
+src="./doc/WeChat.jpeg" width="300">
+</div>
 
 ## 更新
 - 2020.5.30，模型预测、训练支持Windows系统，识别结果的显示进行了优化
