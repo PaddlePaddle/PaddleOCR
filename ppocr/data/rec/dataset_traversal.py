@@ -48,6 +48,7 @@ class LMDBReader(object):
         elif params['mode'] == "test":
             self.batch_size = 1
             self.infer_img = params["infer_img"]
+            
     def load_hierarchical_lmdb_dataset(self):
         lmdb_sets = {}
         dataset_idx = 0

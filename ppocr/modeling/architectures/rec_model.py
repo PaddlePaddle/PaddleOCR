@@ -110,7 +110,11 @@ class RecModel(object):
             return loader, outputs
         elif mode == "export":
             predict = predicts['predict']
-            predict = fluid.layers.softmax(predict)
+            if self.loss_type == "ctc":
+                predict = fluid.layers.softmax(predict)
             return [image, {'decoded_out': decoded_out, 'predicts': predict}]
         else:
-            return loader, {'decoded_out': decoded_out}
+            predict = predicts['predict']
+            if self.loss_type == "ctc":
+                predict = fluid.layers.softmax(predict)
+            return loader, {'decoded_out': decoded_out, 'predicts': predict}
