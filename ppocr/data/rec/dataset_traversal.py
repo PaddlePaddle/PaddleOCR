@@ -105,7 +105,10 @@ class LMDBReader(object):
                     img = cv2.imread(single_img)
                     if img.shape[-1] == 1 or len(list(img.shape)) == 2:
                         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-                    norm_img = process_image(img, self.image_shape)
+                    norm_img = process_image(
+                        img=img,
+                        image_shape=self.image_shape,
+                        char_ops=self.char_ops)
                     yield norm_img
             else:
                 lmdb_sets = self.load_hierarchical_lmdb_dataset()
@@ -182,7 +185,10 @@ class SimpleReader(object):
                     img = cv2.imread(single_img)
                     if img.shape[-1] == 1 or len(list(img.shape)) == 2:
                         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-                    norm_img = process_image(img, self.image_shape)
+                    norm_img = process_image(
+                        img=img,
+                        image_shape=self.image_shape,
+                        char_ops=self.char_ops)
                     yield norm_img
             else:
                 with open(self.label_file_path, "rb") as fin:

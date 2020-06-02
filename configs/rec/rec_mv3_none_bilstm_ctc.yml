@@ -1,6 +1,6 @@
 Global:
   algorithm: CRNN
-  use_gpu: false
+  use_gpu: true
   epoch_num: 72
   log_smooth_window: 20
   print_batch_step: 10
@@ -17,6 +17,7 @@ Global:
   pretrain_weights: ./output/rec_CRNN/rec_mv3_none_bilstm_ctc/best_accuracy
   checkpoints:
   save_inference_dir:
+  infer_img:
   
 Architecture:
   function: ppocr.modeling.architectures.rec_model,RecModel
