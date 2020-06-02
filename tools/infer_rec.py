@@ -21,6 +21,7 @@ import time
 import multiprocessing
 import numpy as np
 
+
 def set_paddle_flags(**kwargs):
     for key, value in kwargs.items():
         if os.environ.get(key, None) is None:
@@ -78,13 +79,13 @@ def main():
     init_model(config, eval_prog, exe)
 
     blobs = reader_main(config, 'test')()
-    infer_img = config['TestReader']['infer_img']
+    infer_img = config['Global']['infer_img']
     infer_list = get_image_file_list(infer_img)
     max_img_num = len(infer_list)
     if len(infer_list) == 0:
         logger.info("Can not find img in infer_img dir.")
     for i in range(max_img_num):
-        print("infer_img:",infer_list[i])
+        print("infer_img:", infer_list[i])
         img = next(blobs)
         predict = exe.run(program=eval_prog,
                           feed={"image": img},
@@ -105,8 +106,8 @@ def main():
             preds_text = preds_text.reshape(-1)
             preds_text = char_ops.decode(preds_text)
 
-        print("\t index:",preds)
-        print("\t word :",preds_text)
+        print("\t index:", preds)
+        print("\t word :", preds_text)
 
     # save for inference model
     target_var = []

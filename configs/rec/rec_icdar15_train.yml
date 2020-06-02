@@ -17,6 +17,8 @@ Global:
   pretrain_weights: ./pretrain_models/rec_mv3_none_bilstm_ctc/best_accuracy 
   checkpoints:
   save_inference_dir:
+  infer_img:
+
 Architecture:
   function: ppocr.modeling.architectures.rec_model,RecModel
 

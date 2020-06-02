@@ -17,6 +17,8 @@ Global:
   pretrain_weights:
   checkpoints:
   save_inference_dir:
+  infer_img:
+
 
 Architecture:
   function: ppocr.modeling.architectures.rec_model,RecModel

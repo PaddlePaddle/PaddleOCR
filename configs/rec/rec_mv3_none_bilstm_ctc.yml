@@ -1,6 +1,6 @@
 Global:
   algorithm: CRNN
-  use_gpu: true
+  use_gpu: false
   epoch_num: 72
   log_smooth_window: 20
   print_batch_step: 10
@@ -14,7 +14,7 @@ Global:
   character_type: en
   loss_type: ctc
   reader_yml: ./configs/rec/rec_benchmark_reader.yml
-  pretrain_weights:
+  pretrain_weights: ./output/rec_CRNN/rec_mv3_none_bilstm_ctc/best_accuracy
   checkpoints:
   save_inference_dir:
   
