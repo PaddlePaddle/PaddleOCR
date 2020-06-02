@@ -145,6 +145,11 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 ![](doc/imgs_results/16.png)
 ![](doc/imgs_results/22.jpg)
 
+## 通用中文OCR效果展示
+![](doc/imgs_results/chinese_db_crnn_server/11.jpg)
+![](doc/imgs_results/chinese_db_crnn_server/2.jpg)
+![](doc/imgs_results/chinese_db_crnn_server/8.jpg)
+
 ## 更新
 - 2020.5.30，模型预测、训练支持Windows系统，识别结果的显示进行了优化
 - 2020.5.30，开源通用中文OCR模型
