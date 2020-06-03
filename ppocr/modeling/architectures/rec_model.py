@@ -31,6 +31,7 @@ class RecModel(object):
         char_num = global_params['char_ops'].get_char_num()
         global_params['char_num'] = char_num
         self.char_type = global_params['character_type']
+        self.infer_img = global_params['infer_img']
         if "TPS" in params:
             tps_params = deepcopy(params["TPS"])
             tps_params.update(global_params)
@@ -87,7 +88,7 @@ class RecModel(object):
                 use_double_buffer=True,
                 iterable=False)
         else:
-            if self.char_type == "ch":
+            if self.char_type == "ch" and self.infer_img:
                 image_shape[-1] = -1
                 if self.tps != None:
                     logger.info(
@@ -96,8 +97,7 @@ class RecModel(object):
                         "We set default shape=[3,32,320], it may affect the inference effect"
                     )
                     image_shape[-1] = 320
-                image = fluid.data(
-                    name='image', shape=image_shape, dtype='float32')
+            image = fluid.data(name='image', shape=image_shape, dtype='float32')
             labels = None
             loader = None
         return image, labels, loader

@@ -41,6 +41,7 @@ class LMDBReader(object):
         self.loss_type = params['loss_type']
         self.max_text_length = params['max_text_length']
         self.mode = params['mode']
+        self.drop_last = False
         if "tps" in params:
             self.tps = True
         if params['mode'] == 'train':
@@ -112,7 +113,8 @@ class LMDBReader(object):
                         img=img,
                         image_shape=self.image_shape,
                         char_ops=self.char_ops,
-                        tps=self.tps)
+                        tps=self.tps,
+                        infer_mode=True)
                     yield norm_img
             else:
                 lmdb_sets = self.load_hierarchical_lmdb_dataset()
@@ -132,9 +134,13 @@ class LMDBReader(object):
                             if sample_info is None:
                                 continue
                             img, label = sample_info
-                            outs = process_image(img, self.image_shape, label,
-                                                 self.char_ops, self.loss_type,
-                                                 self.max_text_length)
+                            outs = process_image(
+                                img=img,
+                                image_shape=self.image_shape,
+                                label=label,
+                                char_ops=self.char_ops,
+                                loss_type=self.loss_type,
+                                max_text_length=self.max_text_length)
                             if outs is None:
                                 continue
                             yield outs
@@ -154,7 +160,7 @@ class LMDBReader(object):
                 if len(batch_outs) != 0:
                     yield batch_outs
 
-        if self.mode != 'train' and self.infer_img is None:
+        if self.infer_img is None:
             return batch_iter_reader
         return sample_iter_reader
 
@@ -174,6 +180,7 @@ class SimpleReader(object):
         self.max_text_length = params['max_text_length']
         self.mode = params['mode']
         self.infer_img = params['infer_img']
+        self.drop_last = False
         if params['mode'] == 'train':
             self.batch_size = params['train_batch_size_per_card']
             self.drop_last = params['drop_last']

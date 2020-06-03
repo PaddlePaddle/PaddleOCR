@@ -93,11 +93,12 @@ def process_image(img,
                   char_ops=None,
                   loss_type=None,
                   max_text_length=None,
-                  tps=None):
-    if char_ops.character_type == "en":
+                  tps=None,
+                  infer_mode=False):
+    if not infer_mode or char_ops.character_type == "en":
         norm_img = resize_norm_img(img, image_shape)
     else:
-        if tps:
+        if tps != None and char_ops.character_type == "ch":
             image_shape = [3, 32, 320]
             norm_img = resize_norm_img(img, image_shape)
         else:
