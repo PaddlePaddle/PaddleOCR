@@ -80,26 +80,43 @@ class TextRecognizer(object):
             starttime = time.time()
             self.input_tensor.copy_from_cpu(norm_img_batch)
             self.predictor.zero_copy_run()
-            rec_idx_batch = self.output_tensors[0].copy_to_cpu()
-            rec_idx_lod = self.output_tensors[0].lod()[0]
-            predict_batch = self.output_tensors[1].copy_to_cpu()
-            predict_lod = self.output_tensors[1].lod()[0]
-            elapse = time.time() - starttime
-            predict_time += elapse
-            starttime = time.time()
-            for rno in range(len(rec_idx_lod) - 1):
-                beg = rec_idx_lod[rno]
-                end = rec_idx_lod[rno + 1]
-                rec_idx_tmp = rec_idx_batch[beg:end, 0]
-                preds_text = self.char_ops.decode(rec_idx_tmp)
-                beg = predict_lod[rno]
-                end = predict_lod[rno + 1]
-                probs = predict_batch[beg:end, :]
-                ind = np.argmax(probs, axis=1)
-                blank = probs.shape[1]
-                valid_ind = np.where(ind != (blank - 1))[0]
-                score = np.mean(probs[valid_ind, ind[valid_ind]])
-                rec_res.append([preds_text, score])
+
+            if args.rec_algorithm != "RARE":
+                rec_idx_batch = self.output_tensors[0].copy_to_cpu()
+                rec_idx_lod = self.output_tensors[0].lod()[0]
+                predict_batch = self.output_tensors[1].copy_to_cpu()
+                predict_lod = self.output_tensors[1].lod()[0]
+                elapse = time.time() - starttime
+                predict_time += elapse
+                for rno in range(len(rec_idx_lod) - 1):
+                    beg = rec_idx_lod[rno]
+                    end = rec_idx_lod[rno + 1]
+                    rec_idx_tmp = rec_idx_batch[beg:end, 0]
+                    preds_text = self.char_ops.decode(rec_idx_tmp)
+                    beg = predict_lod[rno]
+                    end = predict_lod[rno + 1]
+                    probs = predict_batch[beg:end, :]
+                    ind = np.argmax(probs, axis=1)
+                    blank = probs.shape[1]
+                    valid_ind = np.where(ind != (blank - 1))[0]
+                    score = np.mean(probs[valid_ind, ind[valid_ind]])
+                    rec_res.append([preds_text, score])
+            else:
+                rec_idx_batch = self.output_tensors[0].copy_to_cpu()
+                predict_batch = self.output_tensors[1].copy_to_cpu()
+                for rno in range(len(rec_idx_batch)):
+                    end_pos = np.where(rec_idx_batch[rno, :] == 1)[0]
+                    if len(end_pos) <= 1:
+                        preds = rec_idx_batch[rno, 1:]
+                        score = np.mean(predict_batch[rno, 1:])
+                    else:
+                        preds = rec_idx_batch[rno, 1:end_pos[1]]
+                        score = np.mean(predict_batch[rno, 1:end_pos[1]])
+                    #todo: why index has 2 offset
+                    preds = preds - 2
+                    preds_text = self.char_ops.decode(preds)
+                    rec_res.append([preds_text, score])
+
         return rec_res, predict_time
 
 
@@ -116,7 +133,13 @@ if __name__ == "__main__":
             continue
         valid_image_file_list.append(image_file)
         img_list.append(img)
-    rec_res, predict_time = text_recognizer(img_list)
+    try:
+        rec_res, predict_time = text_recognizer(img_list)
+    except:
+        logger.info(
+            "ERROR!! \nInput image shape is not equal with config. TPS does not support variable shape.\n"
+            "Please set --rec_image_shape=input_shape and --rec_char_type='ch' ")
+        exit()
     for ino in range(len(img_list)):
         print("Predicts of %s:%s" % (valid_image_file_list[ino], rec_res[ino]))
     print("Total predict time for %d images:%.3f" %

@@ -55,6 +55,7 @@ def main():
     program.merge_config(FLAGS.opt)
     logger.info(config)
     char_ops = CharacterOps(config['Global'])
+    loss_type = config['Global']['loss_type']
     config['Global']['char_ops'] = char_ops
 
     # check if set use_gpu=True in paddlepaddle cpu version
@@ -85,29 +86,38 @@ def main():
     if len(infer_list) == 0:
         logger.info("Can not find img in infer_img dir.")
     for i in range(max_img_num):
-        print("infer_img:", infer_list[i])
+        print("infer_img:%s" % infer_list[i])
         img = next(blobs)
         predict = exe.run(program=eval_prog,
                           feed={"image": img},
                           fetch_list=fetch_varname_list,
                           return_numpy=False)
-
-        preds = np.array(predict[0])
-        if preds.shape[1] == 1:
+        if loss_type == "ctc":
+            preds = np.array(predict[0])
             preds = preds.reshape(-1)
             preds_lod = predict[0].lod()[0]
             preds_text = char_ops.decode(preds)
-        else:
+            probs = np.array(predict[1])
+            ind = np.argmax(probs, axis=1)
+            blank = probs.shape[1]
+            valid_ind = np.where(ind != (blank - 1))[0]
+            score = np.mean(probs[valid_ind, ind[valid_ind]])
+        elif loss_type == "attention":
+            preds = np.array(predict[0])
+            probs = np.array(predict[1])
             end_pos = np.where(preds[0, :] == 1)[0]
             if len(end_pos) <= 1:
-                preds_text = preds[0, 1:]
+                preds = preds[0, 1:]
+                score = np.mean(probs[0, 1:])
             else:
-                preds_text = preds[0, 1:end_pos[1]]
-            preds_text = preds_text.reshape(-1)
-            preds_text = char_ops.decode(preds_text)
+                preds = preds[0, 1:end_pos[1]]
+                score = np.mean(probs[0, 1:end_pos[1]])
+            preds = preds.reshape(-1)
+            preds_text = char_ops.decode(preds)
 
         print("\t index:", preds)
         print("\t word :", preds_text)
+        print("\t score :", score)
 
     # save for inference model
     target_var = []

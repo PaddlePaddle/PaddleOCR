@@ -8,13 +8,14 @@ Global:
   save_epoch_step: 300
   eval_batch_step: 500
   train_batch_size_per_card: 256
+  drop_last: true
   test_batch_size_per_card: 256
   image_shape: [3, 32, 100]
   max_text_length: 25
   character_type: en
   loss_type: ctc
   reader_yml: ./configs/rec/rec_icdar15_reader.yml
-  pretrain_weights: ./pretrain_models/rec_mv3_none_bilstm_ctc/best_accuracy 
+  pretrain_weights:
   checkpoints:
   save_inference_dir:
   infer_img:

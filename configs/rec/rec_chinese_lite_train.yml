@@ -1,6 +1,6 @@
 Global:
   algorithm: CRNN
-  use_gpu: true
+  use_gpu: false
   epoch_num: 3000
   log_smooth_window: 20
   print_batch_step: 10
@@ -8,6 +8,7 @@ Global:
   save_epoch_step: 3
   eval_batch_step: 2000
   train_batch_size_per_card: 256
+  drop_last: true
   test_batch_size_per_card: 256
   image_shape: [3, 32, 320]
   max_text_length: 25
@@ -15,7 +16,7 @@ Global:
   character_dict_path: ./ppocr/utils/ppocr_keys_v1.txt
   loss_type: ctc
   reader_yml: ./configs/rec/rec_chinese_reader.yml
-  pretrain_weights: 
+  pretrain_weights: output/rec_CRNN/rec_mv3_crnn/best_accuracy
   checkpoints:
   save_inference_dir:
   infer_img:

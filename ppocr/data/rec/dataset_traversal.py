@@ -43,6 +43,7 @@ class LMDBReader(object):
         self.mode = params['mode']
         if params['mode'] == 'train':
             self.batch_size = params['train_batch_size_per_card']
+            self.drop_last = params['drop_last']
         else:
             self.batch_size = params['test_batch_size_per_card']
         self.infer_img = params['infer_img']
@@ -99,7 +100,7 @@ class LMDBReader(object):
             process_id = 0
 
         def sample_iter_reader():
-            if self.infer_img is not None:
+            if self.mode != 'train' and self.infer_img is not None:
                 image_file_list = get_image_file_list(self.infer_img)
                 for single_img in image_file_list:
                     img = cv2.imread(single_img)
@@ -146,10 +147,11 @@ class LMDBReader(object):
                 if len(batch_outs) == self.batch_size:
                     yield batch_outs
                     batch_outs = []
-            if len(batch_outs) != 0:
-                yield batch_outs
+            if not self.drop_last:
+                if len(batch_outs) != 0:
+                    yield batch_outs
 
-        if self.infer_img is None:
+        if self.mode != 'train' and self.infer_img is None:
             return batch_iter_reader
         return sample_iter_reader
 
@@ -171,6 +173,7 @@ class SimpleReader(object):
         self.infer_img = params['infer_img']
         if params['mode'] == 'train':
             self.batch_size = params['train_batch_size_per_card']
+            self.drop_last = params['drop_last']
         else:
             self.batch_size = params['test_batch_size_per_card']
 
@@ -226,8 +229,9 @@ class SimpleReader(object):
                 if len(batch_outs) == self.batch_size:
                     yield batch_outs
                     batch_outs = []
-            if len(batch_outs) != 0:
-                yield batch_outs
+            if not self.drop_last:
+                if len(batch_outs) != 0:
+                    yield batch_outs
 
         if self.infer_img is None:
             return batch_iter_reader

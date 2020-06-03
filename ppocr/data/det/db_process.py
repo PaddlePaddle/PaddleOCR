@@ -17,6 +17,8 @@ import cv2
 import numpy as np
 import json
 import sys
+from ppocr.utils.utility import initial_logger
+logger = initial_logger()
 
 from .data_augment import AugmentData
 from .random_crop_data import RandomCropData
@@ -100,6 +102,7 @@ class DBProcessTrain(object):
         img_path, gt_label = self.convert_label_infor(label_infor)
         imgvalue = cv2.imread(img_path)
         if imgvalue is None:
+            logger.info("{} does not exist!".format(img_path))
             return None
         data = self.make_data_dict(imgvalue, gt_label)
         data = AugmentData(data)
