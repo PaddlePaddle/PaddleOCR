@@ -92,11 +92,16 @@ def process_image(img,
                   label=None,
                   char_ops=None,
                   loss_type=None,
-                  max_text_length=None):
+                  max_text_length=None,
+                  tps=None):
     if char_ops.character_type == "en":
         norm_img = resize_norm_img(img, image_shape)
     else:
-        norm_img = resize_norm_img_chinese(img, image_shape)
+        if tps:
+            image_shape = [3, 32, 320]
+            norm_img = resize_norm_img(img, image_shape)
+        else:
+            norm_img = resize_norm_img_chinese(img, image_shape)
     norm_img = norm_img[np.newaxis, :]
     if label is not None:
         char_num = char_ops.get_char_num()

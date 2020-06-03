@@ -41,6 +41,8 @@ class LMDBReader(object):
         self.loss_type = params['loss_type']
         self.max_text_length = params['max_text_length']
         self.mode = params['mode']
+        if "tps" in params:
+            self.tps = True
         if params['mode'] == 'train':
             self.batch_size = params['train_batch_size_per_card']
             self.drop_last = params['drop_last']
@@ -109,7 +111,8 @@ class LMDBReader(object):
                     norm_img = process_image(
                         img=img,
                         image_shape=self.image_shape,
-                        char_ops=self.char_ops)
+                        char_ops=self.char_ops,
+                        tps=self.tps)
                     yield norm_img
             else:
                 lmdb_sets = self.load_hierarchical_lmdb_dataset()

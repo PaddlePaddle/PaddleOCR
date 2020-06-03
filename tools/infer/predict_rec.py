@@ -112,7 +112,7 @@ class TextRecognizer(object):
                     else:
                         preds = rec_idx_batch[rno, 1:end_pos[1]]
                         score = np.mean(predict_batch[rno, 1:end_pos[1]])
-                    #todo: why index has 2 offset
+                    #attenton index has 2 offset: beg and end
                     preds = preds - 2
                     preds_text = self.char_ops.decode(preds)
                     rec_res.append([preds_text, score])
@@ -138,7 +138,7 @@ if __name__ == "__main__":
     except:
         logger.info(
             "ERROR!! \nInput image shape is not equal with config. TPS does not support variable shape.\n"
-            "Please set --rec_image_shape=input_shape and --rec_char_type='ch' ")
+            "Please set --rec_image_shape=input_shape and --rec_char_type='en' ")
         exit()
     for ino in range(len(img_list)):
         print("Predicts of %s:%s" % (valid_image_file_list[ino], rec_res[ino]))

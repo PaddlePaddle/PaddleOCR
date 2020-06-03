@@ -14,6 +14,7 @@ Global:
   max_text_length: 25
   character_type: en
   loss_type: ctc
+  tps: true
   reader_yml: ./configs/rec/rec_benchmark_reader.yml
   pretrain_weights:
   checkpoints:

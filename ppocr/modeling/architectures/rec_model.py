@@ -30,6 +30,7 @@ class RecModel(object):
         global_params = params['Global']
         char_num = global_params['char_ops'].get_char_num()
         global_params['char_num'] = char_num
+        self.char_type = global_params['character_type']
         if "TPS" in params:
             tps_params = deepcopy(params["TPS"])
             tps_params.update(global_params)
@@ -60,8 +61,8 @@ class RecModel(object):
     def create_feed(self, mode):
         image_shape = deepcopy(self.image_shape)
         image_shape.insert(0, -1)
-        image = fluid.data(name='image', shape=image_shape, dtype='float32')
         if mode == "train":
+            image = fluid.data(name='image', shape=image_shape, dtype='float32')
             if self.loss_type == "attention":
                 label_in = fluid.data(
                     name='label_in',
@@ -86,6 +87,17 @@ class RecModel(object):
                 use_double_buffer=True,
                 iterable=False)
         else:
+            if self.char_type == "ch":
+                image_shape[-1] = -1
+                if self.tps != None:
+                    logger.info(
+                        "WARNRNG!!!\n"
+                        "TPS does not support variable shape in chinese!"
+                        "We set default shape=[3,32,320], it may affect the inference effect"
+                    )
+                    image_shape[-1] = 320
+                image = fluid.data(
+                    name='image', shape=image_shape, dtype='float32')
             labels = None
             loader = None
         return image, labels, loader
