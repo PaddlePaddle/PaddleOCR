@@ -42,6 +42,7 @@ class LMDBReader(object):
         self.max_text_length = params['max_text_length']
         self.mode = params['mode']
         self.drop_last = False
+        self.tps = False
         if "tps" in params:
             self.tps = True
         if params['mode'] == 'train':
@@ -180,6 +181,9 @@ class SimpleReader(object):
         self.max_text_length = params['max_text_length']
         self.mode = params['mode']
         self.infer_img = params['infer_img']
+        self.tps = False
+        if "tps" in params:
+            self.tps = True
         self.drop_last = False
         if params['mode'] == 'train':
             self.batch_size = params['train_batch_size_per_card']
@@ -192,7 +196,7 @@ class SimpleReader(object):
             process_id = 0
 
         def sample_iter_reader():
-            if self.infer_img is not None:
+            if self.mode != 'train' and self.infer_img is not None:
                 image_file_list = get_image_file_list(self.infer_img)
                 for single_img in image_file_list:
                     img = cv2.imread(single_img)
@@ -201,7 +205,9 @@ class SimpleReader(object):
                     norm_img = process_image(
                         img=img,
                         image_shape=self.image_shape,
-                        char_ops=self.char_ops)
+                        char_ops=self.char_ops,
+                        tps=self.tps,
+                        infer_mode=True)
                     yield norm_img
             else:
                 with open(self.label_file_path, "rb") as fin:
