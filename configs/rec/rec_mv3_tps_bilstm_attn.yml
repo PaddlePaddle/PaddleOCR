@@ -1,6 +1,6 @@
 Global:
   algorithm: RARE
-  use_gpu: false
+  use_gpu: true
   epoch_num: 72
   log_smooth_window: 20
   print_batch_step: 10
@@ -12,8 +12,7 @@ Global:
   test_batch_size_per_card: 256
   image_shape: [3, 32, 100]
   max_text_length: 25
-  character_type: ch
-  character_dict_path: ./ppocr/utils/ppocr_keys_v1.txt
+  character_type: en
   loss_type: attention
   tps: true
   reader_yml: ./configs/rec/rec_benchmark_reader.yml

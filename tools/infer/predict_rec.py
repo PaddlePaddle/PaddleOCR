@@ -32,10 +32,14 @@ class TextRecognizer(object):
         self.rec_image_shape = image_shape
         self.character_type = args.rec_char_type
         self.rec_batch_num = args.rec_batch_num
+        self.rec_algorithm = args.rec_algorithm
         char_ops_params = {}
         char_ops_params["character_type"] = args.rec_char_type
         char_ops_params["character_dict_path"] = args.rec_char_dict_path
-        char_ops_params['loss_type'] = 'ctc'
+        if self.rec_algorithm != "RARE":
+            char_ops_params['loss_type'] = 'ctc'
+        else:
+            char_ops_params['loss_type'] = 'attention'
         self.char_ops = CharacterOps(char_ops_params)
 
     def resize_norm_img(self, img, max_wh_ratio):
@@ -81,7 +85,7 @@ class TextRecognizer(object):
             self.input_tensor.copy_from_cpu(norm_img_batch)
             self.predictor.zero_copy_run()
 
-            if args.rec_algorithm != "RARE":
+            if self.rec_algorithm != "RARE":
                 rec_idx_batch = self.output_tensors[0].copy_to_cpu()
                 rec_idx_lod = self.output_tensors[0].lod()[0]
                 predict_batch = self.output_tensors[1].copy_to_cpu()
@@ -104,6 +108,8 @@ class TextRecognizer(object):
             else:
                 rec_idx_batch = self.output_tensors[0].copy_to_cpu()
                 predict_batch = self.output_tensors[1].copy_to_cpu()
+                elapse = time.time() - starttime
+                predict_time += elapse
                 for rno in range(len(rec_idx_batch)):
                     end_pos = np.where(rec_idx_batch[rno, :] == 1)[0]
                     if len(end_pos) <= 1:
@@ -112,8 +118,6 @@ class TextRecognizer(object):
                     else:
                         preds = rec_idx_batch[rno, 1:end_pos[1]]
                         score = np.mean(predict_batch[rno, 1:end_pos[1]])
-                    #attenton index has 2 offset: beg and end
-                    preds = preds - 2
                     preds_text = self.char_ops.decode(preds)
                     rec_res.append([preds_text, score])
 

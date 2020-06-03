@@ -1,6 +1,6 @@
 Global:
   algorithm: CRNN
-  use_gpu: false
+  use_gpu: true
   epoch_num: 72
   log_smooth_window: 20
   print_batch_step: 10
