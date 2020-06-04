@@ -1,96 +1,96 @@
-# 文字检测
+# Text detection
 
-本节以icdar15数据集为例，介绍PaddleOCR中检测模型的训练、评估与测试。
+This section uses the icdar15 dataset as an example to introduce the training, evaluation, and testing of the detection model in PaddleOCR.
 
-## 数据准备
-icdar2015数据集可以从[官网](https://rrc.cvc.uab.es/?ch=4&com=downloads)下载到，首次下载需注册。
+## Data preparation
+The icdar2015 dataset can be obtained from [official website](https://rrc.cvc.uab.es/?ch=4&com=downloads). Registration is required for downloading.
 
-将下载到的数据集解压到工作目录下，假设解压在 PaddleOCR/train_data/ 下。另外，PaddleOCR将零散的标注文件整理成单独的标注文件
-，您可以通过wget的方式进行下载。
+Decompress the downloaded dataset to the working directory, assuming it is decompressed under PaddleOCR/train_data/. In addition, PaddleOCR organizes scattered annotation files into separate annotation files. You can download by wget:
 ```
-# 在PaddleOCR路径下
+# Under the PaddleOCR path
 cd PaddleOCR/
 wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dataset/train_icdar2015_label.txt
 wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dataset/test_icdar2015_label.txt
 ```
 
-解压数据集和下载标注文件后，PaddleOCR/train_data/ 有两个文件夹和两个文件，分别是：
+After decompressing the data set and downloading the annotation file, PaddleOCR/train_data/ has two folders and two files, which are:
 ```
 /PaddleOCR/train_data/icdar2015/text_localization/
-  └─ icdar_c4_train_imgs/         icdar数据集的训练数据
-  └─ ch4_test_images/             icdar数据集的测试数据
-  └─ train_icdar2015_label.txt    icdar数据集的训练标注
-  └─ test_icdar2015_label.txt     icdar数据集的测试标注
+  └─ icdar_c4_train_imgs/         Training data of icdar dataset
+  └─ ch4_test_images/             Testing data of icdar dataset
+  └─ train_icdar2015_label.txt    Training annotation of icdar dataset
+  └─ test_icdar2015_label.txt     Test annotation of icdar dataset
 ```
 
-提供的标注文件格式为：
+The label file format provided is:
 ```
-" 图像文件名                    json.dumps编码的图像标注信息"
+" Image file name                    Image annotation information encoded by json.dumps"
 ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]], ...}]
 ```
-json.dumps编码前的图像标注信息是包含多个字典的list，字典中的 `points` 表示文本框的四个点的坐标(x, y)，从左上角的点开始顺时针排列。
-`transcription` 表示当前文本框的文字，在文本检测任务中并不需要这个信息。
-如果您想在其他数据集上训练PaddleOCR，可以按照上述形式构建标注文件。
+The image annotation information before json.dumps encoding is a list containing multiple dictionaries. The `points` in the dictionary represent the coordinates (x, y) of the four points of the text box, arranged clockwise from the point in the upper left corner.
+
+`transcription` represents the text of the current text box, and this information is not needed in the text detection task.
+If you want to train PaddleOCR on other datasets, you can build the annotation file according to the above format。
 
 
-## 快速启动训练
+## Quickstart training
 
-首先下载pretrain model，PaddleOCR的检测模型目前支持两种backbone，分别是MobileNetV3、ResNet50_vd，
-您可以根据需求使用[PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/master/ppcls/modeling/architectures)中的模型更换backbone。
+First download the pretrained model. The detection model of PaddleOCR currently supports two backbones, namely MobileNetV3 and ResNet50_vd. You can use the model in [PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/master/ppcls/modeling/architectures) to replace backbone according to your needs.
 ```
 cd PaddleOCR/
-# 下载MobileNetV3的预训练模型
+# Download the pre-trained model of MobileNetV3
 wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/MobileNetV3_large_x0_5_pretrained.tar
-# 下载ResNet50的预训练模型
+# Download the pre-trained model of ResNet50
 wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/ResNet50_vd_ssld_pretrained.tar
 ```
 
-**启动训练**
+**Start training**
 ```
 python3 tools/train.py -c configs/det/det_mv3_db.yml
 ```
 
-上述指令中，通过-c 选择训练使用configs/det/det_db_mv3.yml配置文件。
-有关配置文件的详细解释，请参考[链接](./doc/config.md)。
+In the above instruction, use -c to select the training to use the configs/det/det_db_mv3.yml configuration file.
+For a detailed explanation of the configuration file, please refer to [link](./doc/config.md).
 
-您也可以通过-o参数在不需要修改yml文件的情况下，改变训练的参数，比如，调整训练的学习率为0.0001
+You can also use the -o parameter to change the training parameters without modifying the yml file. For example, adjust the training learning rate to 0.0001
 ```
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
 ```
 
-## 指标评估
+## Index evaluation
 
-PaddleOCR计算三个OCR检测相关的指标，分别是：Precision、Recall、Hmean。
+PaddleOCR calculates three indicators related to OCR detection: Precision, Recall, and Hmean.
 
-运行如下代码，根据配置文件det_db_mv3.yml中save_res_path指定的测试集检测结果文件，计算评估指标。
+Run the following code to calculate the evaluation index based on the test result file specified by save_res_path in the configuration file det_db_mv3.yml
 
-评估时设置后处理参数box_thresh=0.6，unclip_ratio=1.5，使用不同数据集、不同模型训练，可调整这两个参数进行优化
+When evaluating, set post-processing parameters box_thresh=0.6, unclip_ratio=1.5, use different data sets, different models for training, these two parameters can be adjusted for optimization.
+
 ```
 python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="{path/to/weights}/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
 ```
-训练中模型参数默认保存在Global.save_model_dir目录下。在评估指标时，需要设置Global.checkpoints指向保存的参数文件。
+The model parameters during training are saved in the Global.save_model_dir directory by default. When evaluating indicators, you need to set Global.checkpoints to point to the saved parameter file.
 
-比如：
+Such as:
 ```
 python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="./output/det_db/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
 ```
 
-* 注：box_thresh、unclip_ratio是DB后处理所需要的参数，在评估EAST模型时不需要设置
+* Note: box_thresh and unclip_ratio are parameters required for DB post-processing, and do not need to be set when evaluating the EAST model.
 
-## 测试检测效果
+## Test detection result
 
-测试单张图像的检测效果
+Test the detection result on a single image:
 ```
 python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o TestReader.infer_img="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy"
 ```
 
-测试DB模型时，调整后处理阈值，
+When testing the DB model, adjust the post-processing threshold:
 ```
 python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o TestReader.infer_img="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
 ```
 
 
-测试文件夹下所有图像的检测效果
+Test the detection effect of all images in the folder:
 ```
 python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o TestReader.infer_img="./doc/imgs_en/" Global.checkpoints="./output/det_db/best_accuracy"
 ```

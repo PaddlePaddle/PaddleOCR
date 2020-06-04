@@ -1,138 +1,138 @@
 
-# 基于预测引擎推理
+# Inference based on prediction engine
 
-inference 模型（fluid.io.save_inference_model保存的模型）
-一般是模型训练完成后保存的固化模型，多用于预测部署。
-训练过程中保存的模型是checkpoints模型，保存的是模型的参数，多用于恢复训练等。
-与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合与实际系统集成。更详细的介绍请参考文档[分类预测框架](https://paddleclas.readthedocs.io/zh_CN/latest/extension/paddle_inference.html).
+inference model (model saved by fluid.io.save_inference_model)
+It is generally the solidified model saved after the model training is completed, which is mostly used to predict deployment.
+The model saved during the training process is the checkpoints model, which saves the parameters of the model and is mostly used to resume training.
+Compared with the checkpoints model, the inference model will additionally save the structural information of the model. It has superior performance in predicting deployment and accelerating reasoning, is flexible and convenient, and is suitable for integration with actual systems. For more detailed introduction, please refer to the document [Classification prediction framework](https://paddleclas.readthedocs.io/zh_CN/latest/extension/paddle_inference.html).
 
-接下来首先介绍如何将训练的模型转换成inference模型，然后将依次介绍文本检测、文本识别以及两者串联基于预测引擎推理。
+Next, we first introduce how to convert the trained model into an inference model, and then we will introduce text detection, text recognition, and the connection of the two based on prediction engine inference.
 
-## 训练模型转inference模型
-### 检测模型转inference模型
+## Training model to inference model
+### Detection model to inference model
 
-下载超轻量级中文检测模型：
+Download the super lightweight Chinese detection model:
 ```
 wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar && tar xf ./ch_lite/ch_det_mv3_db.tar -C ./ch_lite/
 ```
-上述模型是以MobileNetV3为backbone训练的DB算法，将训练好的模型转换成inference模型只需要运行如下命令：
+The above model is a DB algorithm trained with MobileNetV3 as the backbone. To convert the trained model into an inference model, just run the following command:
 ```
 python3 tools/export_model.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./ch_lite/det_mv3_db/best_accuracy Global.save_inference_dir=./inference/det_db/
 ```
-转inference模型时，使用的配置文件和训练时使用的配置文件相同。另外，还需要设置配置文件中的Global.checkpoints、Global.save_inference_dir参数。
-其中Global.checkpoints指向训练中保存的模型参数文件，Global.save_inference_dir是生成的inference模型要保存的目录。
-转换成功后，在save_inference_dir 目录下有两个文件：
+When transferring an inference model, the configuration file used is the same as the configuration file used during training. In addition, you also need to set the Global.checkpoints and Global.save_inference_dir parameters in the configuration file.
+Global.checkpoints points to the model parameter file saved in training, and Global.save_inference_dir is the directory where the generated inference model is to be saved.
+After the conversion is successful, there are two files in the `save_inference_dir` directory:
 ```
 inference/det_db/
-  └─  model     检测inference模型的program文件
-  └─  params    检测inference模型的参数文件
+  └─  model     Check the program file of inference model
+  └─  params    Check the parameter file of the inference model
 ```
 
-### 识别模型转inference模型
+### Recognition model to inference model
 
-下载超轻量中文识别模型：
+Download the ultra-lightweight Chinese recognition model:
 ```
 wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar && tar xf ./ch_lite/ch_rec_mv3_crnn.tar -C ./ch_lite/
 ```
 
-识别模型转inference模型与检测的方式相同，如下：
+The identification model is converted to the inference model in the same way as the detection, as follows:
 ```
 python3 tools/export_model.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints=./ch_lite/rec_mv3_crnn/best_accuracy \
         Global.save_inference_dir=./inference/rec_crnn/
 ```
 
-如果您是在自己的数据集上训练的模型，并且调整了中文字符的字典文件，请注意修改配置文件中的character_dict_path是否是所需要的字典文件。
+If you are a model trained on your own data set and you have adjusted the dictionary file of Chinese characters, please pay attention to whether the character_dict_path in the configuration file is the required dictionary file.
 
-转换成功后，在目录下有两个文件：
+After the conversion is successful, there are two files in the directory:
 ```
 /inference/rec_crnn/
-  └─  model     识别inference模型的program文件
-  └─  params    识别inference模型的参数文件
+  └─  model     Identify the program file of the inference model
+  └─  params    Identify the parameter file of the inference model
 ```
 
-## 文本检测模型推理
+## Text detection model inference
 
-下面将介绍超轻量中文检测模型推理、DB文本检测模型推理和EAST文本检测模型推理。默认配置是根据DB文本检测模型推理设置的。由于EAST和DB算法差别很大，在推理时，需要通过传入相应的参数适配EAST文本检测算法。
+The following will introduce the ultra-lightweight Chinese detection model reasoning, DB text detection model reasoning and EAST text detection model reasoning. The default configuration is based on the inference setting of the DB text detection model. Because EAST and DB algorithms are very different, when inference, it is necessary to adapt the EAST text detection algorithm by passing in corresponding parameters.
 
-### 1.超轻量中文检测模型推理
+### 1.Ultra-lightweight Chinese detection model inference
 
-超轻量中文检测模型推理，可以执行如下命令：
+Super lightweight Chinese detection model inference, you can execute the following commands:
 
 ```
 python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/"
 ```
 
-可视化文本检测结果默认保存到 ./inference_results 文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
+The visual text detection results are saved to the ./inference_results folder by default, and the name of the result file is prefixed with'det_res'. Examples of results are as follows:
 
 ![](imgs_results/det_res_2.jpg)
 
-通过设置参数det_max_side_len的大小，改变检测算法中图片规范化的最大值。当图片的长宽都小于det_max_side_len，则使用原图预测，否则将图片等比例缩放到最大值，进行预测。该参数默认设置为det_max_side_len=960. 如果输入图片的分辨率比较大，而且想使用更大的分辨率预测，可以执行如下命令：
+By setting the size of the parameter det_max_side_len, the maximum value of picture normalization in the detection algorithm is changed. When the length and width of the picture are less than det_max_side_len, the original picture is used for prediction, otherwise the picture is scaled to the maximum value for prediction. This parameter is set to det_max_side_len=960 by default. If the resolution of the input picture is relatively large and you want to use a larger resolution for prediction, you can execute the following command:
 
 ```
 python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --det_max_side_len=1200
 ```
 
-如果想使用CPU进行预测，执行命令如下
+If you want to use the CPU for prediction, execute the command as follows
 ```
 python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --use_gpu=False
 ```
 
-### 2.DB文本检测模型推理
+### 2.DB text detection model inference
 
-首先将DB文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar))，可以使用如下命令进行转换：
+First, convert the model saved in the DB text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the ICDAR2015 English dataset as an example ([model download link](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar)), you can use the following command to convert:
 
 ```
-# -c后面设置训练算法的yml配置文件
-# Global.checkpoints参数设置待转换的训练模型地址，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
-# Global.save_inference_dir参数设置转换的模型将保存的地址。
+# Set the yml configuration file of the training algorithm after -c
+# The Global.checkpoints parameter sets the address of the training model to be converted without adding the file suffix .pdmodel, .pdopt or .pdparams.
+# The Global.save_inference_dir parameter sets the address where the converted model will be saved.
 
 python3 tools/export_model.py -c configs/det/det_r50_vd_db.yml -o Global.checkpoints="./models/det_r50_vd_db/best_accuracy" Global.save_inference_dir="./inference/det_db"
 ```
 
-DB文本检测模型推理，可以执行如下命令：
+DB text detection model inference, you can execute the following command:
 
 ```
 python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_db/"
 ```
 
-可视化文本检测结果默认保存到 ./inference_results 文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
+The visual text detection results are saved to the ./inference_results folder by default, and the name of the result file is prefixed with'det_res'. Examples of results are as follows:
 
 ![](imgs_results/det_res_img_10_db.jpg)
 
-**注意**：由于ICDAR2015数据集只有1000张训练图像，主要针对英文场景，所以上述模型对中文文本图像检测效果非常差。
+**Note**: Since the ICDAR2015 dataset has only 1,000 training images, mainly for English scenes, the above model has very poor detection effect on Chinese text images.
 
-### 3.EAST文本检测模型推理
+### 3.EAST text detection model inference
 
-首先将EAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/det_r50_vd_east.tar))，可以使用如下命令进行转换：
+First, convert the model saved in the EAST text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the ICDAR2015 English data set as an example ([model download link](https://paddleocr.bj.bcebos.com/det_r50_vd_east.tar)), you can use the following command to convert:
 
 ```
-# -c后面设置训练算法的yml配置文件
-# Global.checkpoints参数设置待转换的训练模型地址，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
-# Global.save_inference_dir参数设置转换的模型将保存的地址。
+# Set the yml configuration file of the training algorithm after -c
+# The Global.checkpoints parameter sets the address of the training model to be converted without adding the file suffix .pdmodel, .pdopt or .pdparams.
+# The Global.save_inference_dir parameter sets the address where the converted model will be saved.
 
 python3 tools/export_model.py -c configs/det/det_r50_vd_east.yml -o Global.checkpoints="./models/det_r50_vd_east/best_accuracy" Global.save_inference_dir="./inference/det_east"
 ```
 
-EAST文本检测模型推理，需要设置参数det_algorithm，指定检测算法类型为EAST，可以执行如下命令：
+EAST text detection model inference, you need to set the parameter det_algorithm, specify the detection algorithm type as EAST, you can execute the following command:
 
 ```
 python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_east/" --det_algorithm="EAST"
 ```
-可视化文本检测结果默认保存到 ./inference_results 文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
+The visual text detection results are saved to the ./inference_results folder by default, and the name of the result file is prefixed with'det_res'. Examples of results are as follows:
 
 ![](imgs_results/det_res_img_10_east.jpg)
 
-**注意**：本代码库中EAST后处理中NMS采用的Python版本，所以预测速度比较耗时。如果采用C++版本，会有明显加速。
+**Note**: The Python version of NMS used in EAST post-processing in this codebase, so the prediction speed is time-consuming. If you use the C++ version, there will be a significant speedup.
 
 
-## 文本识别模型推理
+## Text recognition model inference
 
-下面将介绍超轻量中文识别模型推理和基于CTC损失的识别模型推理。**而基于Attention损失的识别模型推理还在调试中**。对于中文文本识别，建议优先选择基于CTC损失的识别模型，实践中也发现基于Attention损失的效果不如基于CTC损失的识别模型。
+The following will introduce the ultra-lightweight Chinese recognition model reasoning and CTC loss-based recognition model reasoning. **The recognition model reasoning based on Attention loss is still being debugged**. For Chinese text recognition, it is recommended to prefer the recognition model based on CTC loss. In practice, it is also found that the effect based on Attention loss is not as good as the recognition model based on CTC loss.
 
 
-### 1.超轻量中文识别模型推理
+### 1.Ultra-lightweight Chinese recognition model inference
 
-超轻量中文识别模型推理，可以执行如下命令：
+Super lightweight Chinese recognition model inference, you can execute the following commands:
 
 ```
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --rec_model_dir="./inference/rec_crnn/"
@@ -140,70 +140,70 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" 
 
 ![](imgs_words/ch/word_4.jpg)
 
-执行命令后，上面图像的预测结果（识别的文本和得分）会打印到屏幕上，示例如下：
+After executing the command, the prediction results (recognized text and score) of the above image will be printed on the screen.
 
 Predicts of ./doc/imgs_words/ch/word_4.jpg:['实力活力', 0.89552695]
 
 
-### 2.基于CTC损失的识别模型推理
+### 2.Identification model reasoning based on CTC loss
 
-我们以STAR-Net为例，介绍基于CTC损失的识别模型推理。 CRNN和Rosetta使用方式类似，不用设置识别算法参数rec_algorithm。
+Taking STAR-Net as an example, we introduce the identification model reasoning based on CTC loss. CRNN and Rosetta are used in a similar way, without setting the recognition algorithm parameter rec_algorithm.
 
-首先将STAR-Net文本识别训练过程中保存的模型，转换成inference model。以基于Resnet34_vd骨干网络，使用MJSynth和SynthText两个英文文本识别合成数据集训练
-的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_ctc.tar))，可以使用如下命令进行转换：
+First, convert the model saved in the STAR-Net text recognition training process into an inference model. Based on Resnet34_vd backbone network, using MJSynth and SynthText two English text recognition synthetic data set training
+The example of the model ([model download address](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_ctc.tar))
 
 ```
-# -c后面设置训练算法的yml配置文件
-# Global.checkpoints参数设置待转换的训练模型地址，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
-# Global.save_inference_dir参数设置转换的模型将保存的地址。
+# Set the yml configuration file of the training algorithm after -c
+# The Global.checkpoints parameter sets the address of the training model to be converted without adding the file suffix .pdmodel, .pdopt or .pdparams.
+# The Global.save_inference_dir parameter sets the address where the converted model will be saved.
 
 python3 tools/export_model.py -c configs/rec/rec_r34_vd_tps_bilstm_ctc.yml -o Global.checkpoints="./models/rec_r34_vd_tps_bilstm_ctc/best_accuracy" Global.save_inference_dir="./inference/starnet"
 ```
 
-STAR-Net文本识别模型推理，可以执行如下命令：
+STAR-Net text recognition model inference can execute the following commands:
 
 ```
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./inference/starnet/" --rec_image_shape="3, 32, 100" --rec_char_type="en"
 ```
 ![](imgs_words_en/word_336.png)
 
-执行命令后，上面图像的识别结果如下：
+After executing the command, the recognition result of the above image is as follows:
 
 Predicts of ./doc/imgs_words_en/word_336.png:['super', 0.9999555]
 
-**注意**：由于上述模型是参考[DTRB](https://arxiv.org/abs/1904.01906)文本识别训练和评估流程，与超轻量级中文识别模型训练有两方面不同：
+**Note**：Since the above model refers to [DTRB] (https://arxiv.org/abs/1904.01906) text recognition training and evaluation process, it is different from the training of ultra-lightweight Chinese recognition model in two aspects:
 
-- 训练时采用的图像分辨率不同，训练上述模型采用的图像分辨率是[3，32，100]，而中文模型训练时，为了保证长文本的识别效果，训练时采用的图像分辨率是[3, 32, 320]。预测推理程序默认的的形状参数是训练中文采用的图像分辨率，即[3, 32, 320]。因此，这里推理上述英文模型时，需要通过参数rec_image_shape设置识别图像的形状。
+- The image resolution used in training is different, and the image resolution used in training the above model is [3，32，100], While the Chinese model training, in order to ensure the recognition effect of long text, the image resolution used in training is [3, 32, 320]. The default shape parameter of the predictive inference program is the image resolution used in training Chinese, that is [3, 32, 320]. Therefore, when reasoning the above English model here, you need to set the shape of the recognition image through the parameter rec_image_shape.
 
-- 字符列表，DTRB论文中实验只是针对26个小写英文本母和10个数字进行实验，总共36个字符。所有大小字符都转成了小写字符，不在上面列表的字符都忽略，认为是空格。因此这里没有输入字符字典，而是通过如下命令生成字典.因此在推理时需要设置参数rec_char_type，指定为英文"en"。
+- Character list, the experiment in the DTRB paper is only for 26 lowercase English mothers and 10 numbers, a total of 36 characters. All upper and lower case characters are converted to lower case characters, and characters not in the above list are ignored and considered as spaces. Therefore, no character dictionary is entered here, but a dictionary is generated by the following command. Therefore, the parameter rec_char_type needs to be set during inference, which is specified as "en" in English.
 
 ```
 self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
 dict_character = list(self.character_str)
 ```
 
-## 文本检测、识别串联推理
+## Text detection, recognition tandem reasoning
 
-### 1.超轻量中文OCR模型推理
+### 1.Ultra-lightweight Chinese OCR model reasoning
 
-在执行预测时，需要通过参数image_dir指定单张图像或者图像集合的路径、参数det_model_dir指定检测inference模型的路径和参数rec_model_dir指定识别inference模型的路径。可视化识别结果默认保存到 ./inference_results 文件夹里面。
+When performing prediction, you need to specify the path of a single image or a collection of images through the parameter image_dir, the parameter det_model_dir specifies the path to detect the inference model, and the parameter rec_model_dir specifies the path to identify the inference model. The visual recognition results are saved to the ./inference_results folder by default.
 
 ```
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/"  --rec_model_dir="./inference/rec_crnn/"
 ```
 
-执行命令后，识别结果图像如下：
+After executing the command, the recognition result image is as follows:
 
 ![](imgs_results/2.jpg)
 
-### 2.其他模型推理
+### 2.Other model reasoning
 
-如果想尝试使用其他检测算法或者识别算法，请参考上述文本检测模型推理和文本识别模型推理，更新相应配置和模型，下面给出基于EAST文本检测和STAR-Net文本识别执行命令：
+If you want to try other detection algorithms or recognition algorithms, please refer to the above text detection model inference and text recognition model inference, update the corresponding configuration and model, the following gives the EAST text detection and STAR-Net text recognition execution commands:
 
 ```
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_east/" --det_algorithm="EAST" --rec_model_dir="./inference/starnet/" --rec_image_shape="3, 32, 100" --rec_char_type="en"
 ```
 
-执行命令后，识别结果图像如下：
+After executing the command, the recognition result image is as follows:
 
 ![](imgs_results/img_10.jpg)

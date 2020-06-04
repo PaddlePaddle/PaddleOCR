@@ -1,49 +1,49 @@
-## 文字识别
+## Text recognition
 
-### 数据准备
+### Data preparation
 
 
-PaddleOCR 支持两种数据格式: `lmdb` 用于训练公开数据，调试算法; `通用数据` 训练自己的数据:
+PaddleOCR pupports two data formats: `lmdb` used to train public data and debug algorithms; `General Data` to train your own data:
 
-请按如下步骤设置数据集：
+Please set the dataset as follows:
 
-训练数据的默认存储路径是 `PaddleOCR/train_data`,如果您的磁盘上已有数据集，只需创建软链接至数据集目录：
+The default storage path for training data is `PaddleOCR/train_data`, if you already have a data set on your disk, just create a soft link to the data set directory:
 
 ```
 ln -sf <path/to/dataset> <path/to/paddle_detection>/train_data/dataset
 ```
 
 
-* 数据下载
+* Data download
 
-若您本地没有数据集，可以在官网下载 [icdar2015](http://rrc.cvc.uab.es/?ch=4&com=downloads) 数据，用于快速验证。也可以参考[DTRB](https://github.com/clovaai/deep-text-recognition-benchmark#download-lmdb-dataset-for-traininig-and-evaluation-from-here)，下载 benchmark 所需的lmdb格式数据集。
+If you do not have a data set locally, you can download it on the official website [icdar2015](http://rrc.cvc.uab.es/?ch=4&com=downloads). Also refer to [DTRB](https://github.com/clovaai/deep-text-recognition-benchmark#download-lmdb-dataset-for-traininig-and-evaluation-from-here)，download the lmdb format dataset required by benchmark
 
-* 使用自己数据集：
+* Use your own dataset:
 
-若您希望使用自己的数据进行训练，请参考下文组织您的数据。
+If you want to use your own data for training, please refer to the following to organize your data.
 
-- 训练集
+- Training set
 
-首先请将训练图片放入同一个文件夹（train_images），并用一个txt文件（rec_gt_train.txt）记录图片路径和标签。
+First put the training pictures in the same folder (train_images), and use a txt file (rec_gt_train.txt) to record the picture path and label.
 
-* 注意： 默认请将图片路径和图片标签用 \t 分割，如用其他方式分割将造成训练报错
+* Note: by default, please split the image path and image label with \t, if you use other methods to split, it will cause training error
 
 ```
-" 图像文件名                 图像标注信息 "
+" Image file name           Image annotation "
 
 train_data/train_0001.jpg   简单可依赖
 train_data/train_0002.jpg   用科技让复杂的世界更简单
 ```
-PaddleOCR 提供了一份用于训练 icdar2015 数据集的标签文件，通过以下方式下载：
+PaddleOCR provides a label file for training the icdar2015 dataset, which can be downloaded in the following ways:
 
 ```
-# 训练集标签
+# Training set label
 wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_train.txt
-# 测试集标签
+# Test Set Label
 wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_test.txt
 ```
 
-最终训练集应有如下文件结构：
+The final training set should have the following file structure:
 
 ```
 |-train_data
@@ -56,9 +56,9 @@ wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_t
             | ...
 ```
 
-- 测试集
+- Test set
 
-同训练集类似，测试集也需要提供一个包含所有图片的文件夹（test）和一个rec_gt_test.txt，测试集的结构如下所示：
+Similar to the training set, the test set also needs to provide a folder containing all pictures (test) and a rec_gt_test.txt. The structure of the test set is as follows:
 
 ```
 |-train_data
@@ -71,11 +71,11 @@ wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_t
             | ...
 ```
 
-- 字典
+- Dictionary
 
-最后需要提供一个字典（{word_dict_name}.txt），使模型在训练时，可以将所有出现的字符映射为字典的索引。
+Finally, a dictionary ({word_dict_name}.txt) needs to be provided so that when the model is trained, all the characters that appear can be mapped to the dictionary index.
 
-因此字典需要包含所有希望被正确识别的字符，{word_dict_name}.txt需要写成如下格式，并以 `utf-8` 编码格式保存：
+Therefore, the dictionary needs to contain all the characters that you want to be recognized correctly. {word_dict_name}.txt needs to be written in the following format and saved in the `utf-8` encoding format:
 
 ```
 l
@@ -86,48 +86,50 @@ r
 n
 ```
 
-word_dict.txt 每行有一个单字，将字符与数字索引映射在一起，“and” 将被映射成 [2 5 1]
+word_dict.txt There is a single word in each line, which maps characters and numeric indexes together, and "and" will be mapped to [2 5 1]
 
-`ppocr/utils/ppocr_keys_v1.txt` 是一个包含6623个字符的中文字典，
-`ppocr/utils/ic15_dict.txt` 是一个包含36个字符的英文字典，
-您可以按需使用。
+`ppocr/utils/ppocr_keys_v1.txt` is a Chinese dictionary with 6623 characters,
 
-如需自定义dic文件，请修改 `configs/rec/rec_icdar15_train.yml` 中的 `character_dict_path` 字段, 并将 `character_type` 设置为 `ch`。
+`ppocr/utils/ic15_dict.txt` is an English dictionary with 36 characters,
 
-### 启动训练
+You can use them as needed.
 
-PaddleOCR提供了训练脚本、评估脚本和预测脚本，本节将以 CRNN 识别模型为例：
+To customize the dic file, please modify the `character_dict_path` field in `configs/rec/rec_icdar15_train.yml` and set `character_type` to `ch`.。
 
-首先下载pretrain model，您可以下载训练好的模型在 icdar2015 数据上进行finetune
+### Start training
+
+PaddleOCR provides training scripts, evaluation scripts, and prediction scripts. In this section, the CRNN recognition model will be used as an example:
+
+First download the pretrain model, you can download the trained model to finetune on the icdar2015 data
 
 ```
 cd PaddleOCR/
-# 下载MobileNetV3的预训练模型
+# Download the pre-trained model of MobileNetV3
 wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/rec_mv3_none_bilstm_ctc.tar
-# 解压模型参数
+# Decompress model parameters
 cd pretrain_models
 tar -xf rec_mv3_none_bilstm_ctc.tar && rm -rf rec_mv3_none_bilstm_ctc.tar
 ```
 
-开始训练:
+Start training:
 
 ```
-# 设置PYTHONPATH路径
+# Set PYTHONPATH path
 export PYTHONPATH=$PYTHONPATH:.
-# GPU训练 支持单卡，多卡训练，通过CUDA_VISIBLE_DEVICES指定卡号
+# GPU training Support single card and multi-card training, specify the card number through CUDA_VISIBLE_DEVICES
 export CUDA_VISIBLE_DEVICES=0,1,2,3
-# 训练icdar15英文数据
+# Training icdar15 English data
 python3 tools/train.py -c configs/rec/rec_icdar15_train.yml
 ```
 
-PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_train.yml` 中修改 `eval_batch_step` 设置评估频率，默认每500个iter评估一次。评估过程中默认将最佳acc模型，保存为 `output/rec_CRNN/best_accuracy` 。
+PaddleOCR supports alternating training and evaluation. You can modify `eval_batch_step` in `configs/rec/rec_icdar15_train.yml` to set the evaluation frequency. By default, it is evaluated every 500 iter. By default, the best acc model is saved as `output/rec_CRNN/best_accuracy` during the evaluation process.
 
-如果验证集很大，测试将会比较耗时，建议减少评估次数，或训练完再进行评估。
+If the verification set is large, the test will be time-consuming. It is recommended to reduce the number of evaluations, or evaluate after training.
 
-* 提示： 可通过 -c 参数选择 `configs/rec/` 路径下的多种模型配置进行训练，PaddleOCR支持的识别算法有：
+* Tip: You can use the `-c` parameter to select multiple model configurations under the `configs/rec/` path for training. The recognition algorithms supported by PaddleOCR are:
 
 
-| 配置文件 |  算法名称 |   backbone |   trans   |   seq      |     pred     |
+| Configuration file |  Algorithm name |   backbone |   trans   |   seq      |     pred     |
 | :--------: |  :-------:   | :-------:  |   :-------:   |   :-----:   |  :-----:   |
 | rec_chinese_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  |
 | rec_icdar15_train.yml |  CRNN |   Mobilenet_v3 large 0.5 |  None   |  BiLSTM |  ctc  |
@@ -140,58 +142,58 @@ PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_t
 | rec_r34_vd_tps_bilstm_attn.yml | RARE | Resnet34_vd | tps | BiLSTM | attention |
 | rec_r34_vd_tps_bilstm_ctc.yml | STARNet | Resnet34_vd | tps | BiLSTM | ctc |
 
-训练中文数据，推荐使用`rec_chinese_lite_train.yml`，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：
+For training Chinese data, it is recommended to use `rec_chinese_lite_train.yml`. If you want to try the effect of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:
 
-以 `rec_mv3_none_none_ctc.yml` 为例：
+Take `rec_mv3_none_none_ctc.yml` as an example:
 ```
 Global:
   ...
-  # 修改 image_shape 以适应长文本
+  # Modify image_shape to fit long text
   image_shape: [3, 32, 320]
   ...
-  # 修改字符类型
+  # Modify character type
   character_type: ch
-  # 添加自定义字典，如修改字典请将路径指向新字典
+  # Add a custom dictionary, such as modify the dictionary, please point the path to the new dictionary
   character_dict_path: ./ppocr/utils/ppocr_keys_v1.txt
   ...
-  # 修改reader类型
+  # Modify reader type
   reader_yml: ./configs/rec/rec_chinese_reader.yml
   ...
 
 ...
 ```
-**注意，预测/评估时的配置文件请务必与训练一致。**
+**Note that the configuration file for prediction/evaluation must be consistent with the training.**
 
 
 
-### 评估
+### Evaluation
 
-评估数据集可以通过 `configs/rec/rec_icdar15_reader.yml`  修改EvalReader中的 `label_file_path` 设置。
+The evaluation data set can be modified via `configs/rec/rec_icdar15_reader.yml` setting of `label_file_path` in EvalReader.
 
 ```
 export CUDA_VISIBLE_DEVICES=0
-# GPU 评估， Global.checkpoints 为待测权重
+# GPU evaluation, Global.checkpoints is the weight to be tested
 python3 tools/eval.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
-### 预测
+### prediction
 
-* 训练引擎的预测
+* Training engine prediction
 
-使用 PaddleOCR 训练好的模型，可以通过以下脚本进行快速预测。
+The model trained using PaddleOCR can be quickly predicted by the following script.
 
-默认预测图片存储在 `infer_img` 里，通过 `-o Global.checkpoints` 指定权重：
+The default prediction picture is stored in `infer_img`, and the weight is specified via `-o Global.checkpoints`:
 
 ```
-# 预测英文结果
+# Predict English results
 python3 tools/infer_rec.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy TestReader.infer_img=doc/imgs_words/en/word_1.jpg
 ```
 
-预测图片：
+Input image:
 
 ![](./imgs_words/en/word_1.png)
 
-得到输入图像的预测结果：
+Get the prediction result of the input image:
 
 ```
 infer_img: doc/imgs_words/en/word_1.png
@@ -199,19 +201,19 @@ infer_img: doc/imgs_words/en/word_1.png
      word : joint
 ```
 
-预测使用的配置文件必须与训练一致，如您通过 `python3 tools/train.py -c configs/rec/rec_chinese_lite_train.yml` 完成了中文模型的训练，
-您可以使用如下命令进行中文模型预测。
+The configuration file used for prediction must be consistent with the training. For example, you completed the training of the Chinese model through `python3 tools/train.py -c configs/rec/rec_chinese_lite_train.yml`,
+You can use the following command to predict the Chinese model.
 
 ```
-# 预测中文结果
+# Predict Chinese results
 python3 tools/infer_rec.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy TestReader.infer_img=doc/imgs_words/ch/word_1.jpg
 ```
 
-预测图片：
+Input image:
 
 ![](./imgs_words/ch/word_1.jpg)
 
-得到输入图像的预测结果：
+Get the prediction result of the input image:
 
 ```
 infer_img: doc/imgs_words/ch/word_1.jpg

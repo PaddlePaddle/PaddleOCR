@@ -1,74 +1,77 @@
-## 快速安装
+## Quick installation
 
-经测试PaddleOCR可在glibc 2.23上运行，您也可以测试其他glibc版本或安装glic 2.23
-PaddleOCR 工作环境
+After testing PaddleOCR can run on glibc 2.23, you can also test other glibc versions or install glic 2.23
+PaddleOCR working environment
 - PaddlePaddle1.7
 - python3
 - glibc 2.23
 
-建议使用我们提供的docker运行PaddleOCR，有关docker使用请参考[链接](https://docs.docker.com/get-started/)。
+It is recommended to use the docker provided by us to run PaddleOCR, please refer to the use of docker [link](https://docs.docker.com/get-started/).
 
-1. （建议）准备docker环境。第一次使用这个镜像，会自动下载该镜像，请耐心等待。
+1. (Recommended) Prepare a docker environment. The first time you use this image, it will be downloaded automatically. Please be patient.
 ```
-# 切换到工作目录下
+# Switch to the working directory
 cd /home/Projects
-# 首次运行需创建一个docker容器，再次运行时不需要运行当前命令
-# 创建一个名字为ppocr的docker容器，并将当前目录映射到容器的/paddle目录下
+# You need to create a docker container for the first run, and do not need to run the current command when you run it again
+# Create a docker container named ppocr and map the current directory to the /paddle directory of the container
 
-如果您希望在CPU环境下使用docker，使用docker而不是nvidia-docker创建docker
+If you want to use docker in a CPU environment, use docker instead of nvidia-docker to create docker
 sudo docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev /bin/bash
-
-如果您的机器安装的是CUDA9，请运行以下命令创建容器
+```
+If your machine is installed CUDA9, please run the following command to create a container
+```
 sudo nvidia-docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev /bin/bash
-
-如果您的机器安装的是CUDA10，请运行以下命令创建容器
+```
+If your machine is installed with CUDA10, please run the following command to create a container
+```
 sudo nvidia-docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda10.0-cudnn7-dev /bin/bash
-
-您也可以访问[DockerHub](https://hub.docker.com/r/paddlepaddle/paddle/tags/)获取与您机器适配的镜像。
-
-# ctrl+P+Q可退出docker，重新进入docker使用如下命令
+```
+You can also visit [DockerHub](https://hub.docker.com/r/paddlepaddle/paddle/tags/) to get the image that fits your machine.
+```
+# ctrl+P+Q can exit docker and re-enter docker using the following command
 sudo docker container exec -it ppocr /bin/bash
 ```
 
-注意：如果docker pull过慢，可以按照如下步骤手动下载后加载docker,以cuda9 docker为例，使用cuda10 docker只需要将cuda9改为cuda10即可。
+Note: if docker pull is too slow, you can manually download and load docker according to the following steps. Taking cuda9 docker as an example, using cuda10 docker only needs to change cuda9 to cuda10
 ```
-# 下载CUDA9 docker的压缩文件，并解压
+# Download the CUDA9 docker compressed file and unzip it
 wget https://paddleocr.bj.bcebos.com/docker/docker_pdocr_cuda9.tar.gz
-# 为减少下载时间，上传的docker image是压缩过的，需要解压使用
+# To reduce download time, the uploaded docker image is compressed and needs to be decompressed
 tar zxf docker_pdocr_cuda9.tar.gz
-# 创建image
+# Create image
 docker load < docker_pdocr_cuda9.tar
-# 完成上述步骤后通过docker images检查是否加载了下载的镜像
+# After completing the above steps, check whether the downloaded image is loaded through docker images
 docker images
-# 执行docker images后如果有下面的输出，即可按照按照 步骤1 创建docker环境。
+# If you have the following output after executing docker images, you can follow step 1 to create a docker environment.
 hub.baidubce.com/paddlepaddle/paddle   latest-gpu-cuda9.0-cudnn7-dev    f56310dcc829
 ```
 
-2. 安装PaddlePaddle Fluid v1.7(暂不支持更高版本,适配工作进行中)
+2. Install PaddlePaddle Fluid v1.7 (the higher version is not supported yet, the adaptation work is in progress)
 ```
 pip3 install --upgrade pip
 
-如果您的机器安装的是CUDA9，请运行以下命令安装
+# If your machine is installed CUDA9, please run the following command to install
 python3 -m pip install paddlepaddle-gpu==1.7.2.post97 -i https://pypi.tuna.tsinghua.edu.cn/simple
 
-如果您的机器安装的是CUDA10，请运行以下命令安装
+# If your machine is installed CUDA10, please run the following command to install
 python3 -m pip install paddlepaddle-gpu==1.7.2.post107 -i https://pypi.tuna.tsinghua.edu.cn/simple
-
-更多的版本需求，请参照[安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
 ```
+For more version requirements, please refer to the instructions in [Installation Document](https://www.paddlepaddle.org.cn/install/quick) for operation.
 
-3. 克隆PaddleOCR repo代码
+
+3. Clone PaddleOCR repo code
 ```
-【推荐】git clone https://github.com/PaddlePaddle/PaddleOCR
+# Recommend
+git clone https://github.com/PaddlePaddle/PaddleOCR
 
-如果因为网络问题无法pull成功，也可选择使用码云上的托管：
+# If you cannot pull because of network problems, you can also choose to use the hosting on the code cloud:
 
 git clone https://gitee.com/paddlepaddle/PaddleOCR
 
-注：码云托管代码可能无法实时同步本github项目更新，存在3~5天延时，请优先使用推荐方式。
+# Note: Code cloud hosting code may not be able to synchronize this github project update in real time, there is a delay of 3~5 days, please use the recommended method first.
 ```
 
-4. 安装第三方库
+4. Install third-party libraries
 ```
 cd PaddleOCR
 pip3 install -r requirments.txt
