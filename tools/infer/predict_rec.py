@@ -38,8 +38,10 @@ class TextRecognizer(object):
         char_ops_params["character_dict_path"] = args.rec_char_dict_path
         if self.rec_algorithm != "RARE":
             char_ops_params['loss_type'] = 'ctc'
+            self.loss_type = 'ctc'
         else:
             char_ops_params['loss_type'] = 'attention'
+            self.loss_type = 'attention'
         self.char_ops = CharacterOps(char_ops_params)
 
     def resize_norm_img(self, img, max_wh_ratio):
@@ -85,7 +87,7 @@ class TextRecognizer(object):
             self.input_tensor.copy_from_cpu(norm_img_batch)
             self.predictor.zero_copy_run()
 
-            if self.rec_algorithm != "RARE":
+            if self.loss_type == "ctc":
                 rec_idx_batch = self.output_tensors[0].copy_to_cpu()
                 rec_idx_lod = self.output_tensors[0].lod()[0]
                 predict_batch = self.output_tensors[1].copy_to_cpu()
@@ -139,9 +141,13 @@ if __name__ == "__main__":
         img_list.append(img)
     try:
         rec_res, predict_time = text_recognizer(img_list)
-    except:
+    except Exception as e:
+        print(e)
         logger.info(
-            "ERROR!! \nInput image shape is not equal with config. TPS does not support variable shape.\n"
+            "ERROR!!!! \n"
+            "Please read the FAQ：https://github.com/PaddlePaddle/PaddleOCR#faq \n"
+            "If your model has tps module:  "
+            "TPS does not support variable shape.\n"
             "Please set --rec_image_shape=input_shape and --rec_char_type='en' ")
         exit()
     for ino in range(len(img_list)):

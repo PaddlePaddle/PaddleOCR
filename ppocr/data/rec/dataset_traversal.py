@@ -42,14 +42,15 @@ class LMDBReader(object):
         self.max_text_length = params['max_text_length']
         self.mode = params['mode']
         self.drop_last = False
-        self.tps = False
+        self.use_tps = False
         if "tps" in params:
-            self.tps = True
+            self.ues_tps = True
         if params['mode'] == 'train':
             self.batch_size = params['train_batch_size_per_card']
-            self.drop_last = params['drop_last']
+            self.drop_last = True
         else:
             self.batch_size = params['test_batch_size_per_card']
+            self.drop_last = False
         self.infer_img = params['infer_img']
 
     def load_hierarchical_lmdb_dataset(self):
@@ -114,7 +115,7 @@ class LMDBReader(object):
                         img=img,
                         image_shape=self.image_shape,
                         char_ops=self.char_ops,
-                        tps=self.tps,
+                        tps=self.use_tps,
                         infer_mode=True)
                     yield norm_img
             else:
@@ -181,15 +182,15 @@ class SimpleReader(object):
         self.max_text_length = params['max_text_length']
         self.mode = params['mode']
         self.infer_img = params['infer_img']
-        self.tps = False
+        self.use_tps = False
         if "tps" in params:
-            self.tps = True
-        self.drop_last = False
+            self.ues_tps = True
         if params['mode'] == 'train':
             self.batch_size = params['train_batch_size_per_card']
-            self.drop_last = params['drop_last']
+            self.drop_last = True
         else:
             self.batch_size = params['test_batch_size_per_card']
+            self.drop_last = False
 
     def __call__(self, process_id):
         if self.mode != 'train':
@@ -206,7 +207,7 @@ class SimpleReader(object):
                         img=img,
                         image_shape=self.image_shape,
                         char_ops=self.char_ops,
-                        tps=self.tps,
+                        tps=self.use_tps,
                         infer_mode=True)
                     yield norm_img
             else:

@@ -36,6 +36,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 #### 2.inference模型下载
 
+*windows 环境下没有如果没有安装wget,下载模型时可将链接复制到浏览器中下载，并解压放置在相应目录下*
+
 #### (1)超轻量级中文OCR模型下载
 ```
 mkdir inference && cd inference
@@ -62,6 +64,9 @@ cd ..
 ```
 # 设置PYTHONPATH环境变量
 export PYTHONPATH=.
+
+# windows下设置环境变量
+SET PYTHONPATH=.
 
 # 预测image_dir指定的单张图像
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_det_mv3_db/"  --rec_model_dir="./inference/ch_rec_mv3_crnn/"

@@ -41,6 +41,8 @@ PaddleOCR 提供了一份用于训练 icdar2015 数据集的标签文件，通�
 wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_train.txt
 # 测试集标签
 wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_test.txt
+
+
 ```
 
 最终训练集应有如下文件结构：
@@ -168,10 +170,11 @@ Global:
 
 评估数据集可以通过 `configs/rec/rec_icdar15_reader.yml`  修改EvalReader中的 `label_file_path` 设置。
 
+*注意* 评估时必须确保配置文件中 infer_img 字段为空
 ```
 export CUDA_VISIBLE_DEVICES=0
 # GPU 评估， Global.checkpoints 为待测权重
-python3 tools/eval.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy
+python3 tools/eval.py -c configs/rec/rec_icdar15_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
 ### 预测
@@ -184,7 +187,7 @@ python3 tools/eval.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkp
 
 ```
 # 预测英文结果
-python3 tools/infer_rec.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy Global.infer_img=doc/imgs_words/en/word_1.png
+python3 tools/infer_rec.py -c configs/rec/rec_icdar15_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy Global.infer_img=doc/imgs_words/en/word_1.png
 ```
 
 预测图片：
