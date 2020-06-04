@@ -32,7 +32,6 @@ class TrainReader(object):
         self.num_workers = params['num_workers']
         self.label_file_path = params['label_file_path']
         self.batch_size = params['train_batch_size_per_card']
-        self.drop_last = params['drop_last']
         assert 'process_function' in params,\
             "absence process_function in Reader"
         self.process = create_module(params['process_function'])(params)
@@ -62,9 +61,6 @@ class TrainReader(object):
                 if len(batch_outs) == self.batch_size:
                     yield batch_outs
                     batch_outs = []
-            if not self.drop_last:
-                if len(batch_outs) != 0:
-                    yield batch_outs
 
         return batch_iter_reader
 

@@ -94,9 +94,9 @@ class RecModel(object):
                     logger.info(
                         "WARNRNG!!!\n"
                         "TPS does not support variable shape in chinese!"
-                        "We set default shape=[3,32,320], it may affect the inference effect"
+                        "We set img_shape to be the same , it may affect the inference effect"
                     )
-                    image_shape[-1] = 320
+                    image_shape = deepcopy(self.image_shape)
             image = fluid.data(name='image', shape=image_shape, dtype='float32')
             labels = None
             loader = None

@@ -9,7 +9,6 @@ Global:
   eval_batch_step: 5000
   train_batch_size_per_card: 16
   test_batch_size_per_card: 16
-  drop_last: false
   image_shape: [3, 640, 640]
   reader_yml: ./configs/det/det_db_icdar15_reader.yml
   pretrain_weights: ./pretrain_models/MobileNetV3_large_x0_5_pretrained/

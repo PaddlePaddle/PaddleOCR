@@ -1,14 +1,14 @@
 Global:
   algorithm: RARE
-  use_gpu: true
+  use_gpu: false
   epoch_num: 72
   log_smooth_window: 20
   print_batch_step: 10
   save_model_dir: output/rec_RARE
   save_epoch_step: 3
   eval_batch_step: 2000
-  train_batch_size_per_card: 256
-  test_batch_size_per_card: 256
+  train_batch_size_per_card: 2
+  test_batch_size_per_card: 2
   image_shape: [3, 32, 100]
   max_text_length: 25
   character_type: en
