@@ -48,7 +48,7 @@ def eval_rec_run(exe, config, eval_info_dict, mode):
     total_sample_num = 0
     total_acc_num = 0
     total_batch_num = 0
-    if mode == "test":
+    if mode == "eval":
         is_remove_duplicate = False
     else:
         is_remove_duplicate = True
@@ -91,11 +91,11 @@ def test_rec_benchmark(exe, config, eval_info_dict):
     total_correct_number = 0
     eval_data_acc_info = {}
     for eval_data in eval_data_list:
-        config['EvalReader']['lmdb_sets_dir'] = \
+        config['TestReader']['lmdb_sets_dir'] = \
             eval_data_dir + "/" + eval_data
-        eval_reader = reader_main(config=config, mode="eval")
+        eval_reader = reader_main(config=config, mode="test")
         eval_info_dict['reader'] = eval_reader
-        metrics = eval_rec_run(exe, config, eval_info_dict, "eval")
+        metrics = eval_rec_run(exe, config, eval_info_dict, "test")
         total_evaluation_data_number += metrics['total_sample_num']
         total_correct_number += metrics['total_acc_num']
         eval_data_acc_info[eval_data] = metrics

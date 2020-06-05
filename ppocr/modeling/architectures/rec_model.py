@@ -30,6 +30,8 @@ class RecModel(object):
         global_params = params['Global']
         char_num = global_params['char_ops'].get_char_num()
         global_params['char_num'] = char_num
+        self.char_type = global_params['character_type']
+        self.infer_img = global_params['infer_img']
         if "TPS" in params:
             tps_params = deepcopy(params["TPS"])
             tps_params.update(global_params)
@@ -60,8 +62,8 @@ class RecModel(object):
     def create_feed(self, mode):
         image_shape = deepcopy(self.image_shape)
         image_shape.insert(0, -1)
-        image = fluid.data(name='image', shape=image_shape, dtype='float32')
         if mode == "train":
+            image = fluid.data(name='image', shape=image_shape, dtype='float32')
             if self.loss_type == "attention":
                 label_in = fluid.data(
                     name='label_in',
@@ -86,6 +88,16 @@ class RecModel(object):
                 use_double_buffer=True,
                 iterable=False)
         else:
+            if self.char_type == "ch" and self.infer_img:
+                image_shape[-1] = -1
+                if self.tps != None:
+                    logger.info(
+                        "WARNRNG!!!\n"
+                        "TPS does not support variable shape in chinese!"
+                        "We set img_shape to be the same , it may affect the inference effect"
+                    )
+                    image_shape = deepcopy(self.image_shape)
+            image = fluid.data(name='image', shape=image_shape, dtype='float32')
             labels = None
             loader = None
         return image, labels, loader
@@ -110,7 +122,11 @@ class RecModel(object):
             return loader, outputs
         elif mode == "export":
             predict = predicts['predict']
-            predict = fluid.layers.softmax(predict)
+            if self.loss_type == "ctc":
+                predict = fluid.layers.softmax(predict)
             return [image, {'decoded_out': decoded_out, 'predicts': predict}]
         else:
-            return loader, {'decoded_out': decoded_out}
+            predict = predicts['predict']
+            if self.loss_type == "ctc":
+                predict = fluid.layers.softmax(predict)
+            return loader, {'decoded_out': decoded_out, 'predicts': predict}
