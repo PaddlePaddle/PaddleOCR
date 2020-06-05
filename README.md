@@ -1,5 +1,5 @@
 ## Introduction
-PaddleOCR aims to create a rich, leading, and practical OCR tool library to help users train better models and apply them.
+PaddleOCR aims to create a rich, leading, and practical OCR tools that help users train better models and apply them into practice.
 
 **Recent updates**
 - 2020.5.30，Model prediction and training support Windows systems, and the display of recognition results is optimized
@@ -23,13 +23,13 @@ PaddleOCR aims to create a rich, leading, and practical OCR tool library to help
 
 For testing our Chinese OCR online：https://www.paddlepaddle.org.cn/hub/scene/ocr
 
-**You can also quickly experience the Ultra-lightweight Chinese OCR and general Chinese OCR models as follows:**
+**You can also quickly experience the Ultra-lightweight Chinese OCR and General Chinese OCR models as follows:**
 
 ## **Ultra-lightweight Chinese OCR and General Chinese OCR inference**
 
 ![](doc/imgs_results/11.jpg)
 
-The picture above is the result of our Ultra-lightweight Chinese OCR model. For more testing results, please see the end of the article [Ultra-lightweight Chinese OCR results](#超轻量级中文OCR效果展示) and [General Chinese OCR results](#通用中文OCR效果展示).
+The picture above is the result of our Ultra-lightweight Chinese OCR model. For more testing results, please see the end of the article [Ultra-lightweight Chinese OCR results](#Ultra-lightweight-Chinese-OCR-results) and [General Chinese OCR results](#General-Chinese-OCR-results).
 
 #### 1. Environment configuration
 
@@ -58,25 +58,25 @@ cd ..
 
 #### 3. Single image and batch image prediction
 
-The following code implements text detection and recognition inference tandemly. When performing prediction, you need to specify the path of a single image or image folder through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to detect the inference model, and the parameter `rec_model_dir` specifies the path to identify the inference model. The visual recognition results are saved to the `./inference_results` folder by default.
+The following code implements text detection and recognition inference tandemly. When performing prediction, you need to specify the path of a single image or image folder through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to detection model, and the parameter `rec_model_dir` specifies the path to the recognition model. The visual prediction results are saved to the `./inference_results` folder by default.
 
 ```
 # Set PYTHONPATH environment variable
 export PYTHONPATH=.
 
-# Predict a single image by specifying image path to image_dir
+# Prediction on a single image by specifying image path to image_dir
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_det_mv3_db/"  --rec_model_dir="./inference/ch_rec_mv3_crnn/"
 
-# Predict a batch of images by specifying image folder path to image_dir
+# Prediction on a batch of images by specifying image folder path to image_dir
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/" --det_model_dir="./inference/ch_det_mv3_db/"  --rec_model_dir="./inference/ch_rec_mv3_crnn/"
 
-# If you want to use the CPU for prediction, you need to set the use_gpu parameter to False
+# If you want to use CPU for prediction, you need to set the use_gpu parameter to False
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_det_mv3_db/"  --rec_model_dir="./inference/ch_rec_mv3_crnn/" --use_gpu=False
 ```
 
 To run inference of the Generic Chinese OCR model, follow these steps above to download the corresponding models and update the relevant parameters. Examples are as follows:
 ```
-# Predict a single image by specifying image path to image_dir
+# Prediction on a single image by specifying image path to image_dir
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_det_r50_vd_db/"  --rec_model_dir="./inference/ch_rec_r34_vd_crnn/"
 ```
 
@@ -90,12 +90,12 @@ For more text detection and recognition models, please refer to the document [In
 
 ## Text detection algorithm
 
-PaddleOCR open source text detection algorithm list:
+PaddleOCR open source text detection algorithms list:
 - [x]  EAST([paper](https://arxiv.org/abs/1704.03155))
 - [x]  DB([paper](https://arxiv.org/abs/1911.08947))
 - [ ]  SAST([paper](https://arxiv.org/abs/1908.05498))(Baidu Self-Research, comming soon)
 
-On the ICDAR2015 text detection public dataset, the detection result is as follows:
+On the ICDAR2015 dataset, the text detection result is as follows:
 
 |Model|Backbone|precision|recall|Hmean|Download link|
 |-|-|-|-|-|-|
@@ -106,11 +106,11 @@ On the ICDAR2015 text detection public dataset, the detection result is as follo
 
 * Note: For the training and evaluation of the above DB model, post-processing parameters box_thresh=0.6 and unclip_ratio=1.5 need to be set. If using different datasets and different models for training, these two parameters can be adjusted for better result.
 
-For the training guide and use of PaddleOCR text detection algorithm, please refer to the document [Text detection model training/evaluation/prediction](./doc/detection.md)
+For the training guide and use of PaddleOCR text detection algorithms, please refer to the document [Text detection model training/evaluation/prediction](./doc/detection.md)
 
 ## Text recognition algorithm
 
-PaddleOCR open-source text recognition algorithm list:
+PaddleOCR open-source text recognition algorithms list:
 - [x]  CRNN([paper](https://arxiv.org/abs/1507.05717))
 - [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))
 - [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))
@@ -130,13 +130,13 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 |RARE|Resnet34_vd|84.90%|rec_r34_vd_tps_bilstm_attn|[Download link](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_attn.tar)|
 |RARE|MobileNetV3|83.32%|rec_mv3_tps_bilstm_attn|[Download link](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_attn.tar)|
 
-Please refer to the document for training guide and use of PaddleOCR text recognition algorithm [Text recognition model training/evaluation/prediction](./doc/recognition.md)
+Please refer to the document for training guide and use of PaddleOCR text recognition algorithms [Text recognition model training/evaluation/prediction](./doc/recognition.md)
 
 ## End-to-end OCR algorithm
 - [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(Baidu Self-Research, comming soon)
 
-<a name="超轻量级中文OCR效果展示"></a>
-## Ultra-lightweight Chinese OCR result
+<a name="Ultra-lightweight Chinese OCR results"></a>
+## Ultra-lightweight Chinese OCR results
 ![](doc/imgs_results/1.jpg)
 ![](doc/imgs_results/7.jpg)
 ![](doc/imgs_results/12.jpg)
@@ -146,35 +146,35 @@ Please refer to the document for training guide and use of PaddleOCR text recogn
 ![](doc/imgs_results/16.png)
 ![](doc/imgs_results/22.jpg)
 
-<a name="通用中文OCR效果展示"></a>
-## 通用中文OCR效果展示
+<a name="General Chinese OCR results"></a>
+## General Chinese OCR results
 ![](doc/imgs_results/chinese_db_crnn_server/11.jpg)
 ![](doc/imgs_results/chinese_db_crnn_server/2.jpg)
 ![](doc/imgs_results/chinese_db_crnn_server/8.jpg)
 
 ## FAQ
-1. 预测报错：got an unexpected keyword argument 'gradient_clip'
+1. Prediction error：got an unexpected keyword argument 'gradient_clip'
 
-    The installed paddle version is not correct. At present, this project only supports paddle1.7, which will be adapted to 1.8 in the near future.。
+    The installed paddle version is not correct. At present, this project only supports paddle1.7, which will be adapted to 1.8 in the near future.
     
-2. 转换attention识别模型时报错：KeyError: 'predict'
+2. Error when using attention-based recognition model: KeyError: 'predict'
 
-    基于Attention损失的识别模型推理还在调试中。对于中文文本识别，建议优先选择基于CTC损失的识别模型，实践中也发现基于Attention损失的效果不如基于CTC损失的识别模型。
+    The inference of recognition model based on attention loss is still being debugged. For Chinese text recognition, it is recommended to choose the recognition model based on CTC loss first. In practice, it is also found that the recognition model based on attention loss is not as effective as the one based on CTC loss.
     
-3. 关于推理速度
+3. About inference speed
 
-    图片中的文字较多时，预测时间会增，可以使用--rec_batch_num设置更小预测batch num，默认值为30，可以改为10或其他数值。
+    When there are a lot of texts in the picture, the prediction time will increase. You can use `--rec_batch_num` to set a smaller prediction batch size. The default value is 30, which can be changed to 10 or other values.
 
-4. 服务部署与移动端部署
+4. Service deployment and mobile deployment
 
-    预计6月中下旬会先后发布基于Serving的服务部署方案和基于Paddle Lite的移动端部署方案，欢迎持续关注。
+    It is expected that the service deployment based on Serving and the mobile deployment based on Paddle Lite will be released successively in mid-to-late June. Stay tuned for more updates.
     
-5. 自研算法发布时间
+5. Release time of self-developed algorithm
 
-    自研算法SAST、SRN、End2End-PSL都将在6-7月陆续发布，敬请期待。
+    Baidu Self-developed algorithms such as SAST, SRN and end2end PSL will be released in June or July. Please be patient.
 
 ## Welcome to the PaddleOCR technical exchange group
-加微信：paddlehelp，备注OCR，小助手拉你进群～
+Add Wechat: paddlehelp, remark OCR, small assistant will pull you into the group ~
 
 
 ## References
@@ -236,4 +236,4 @@ Please refer to the document for training guide and use of PaddleOCR text recogn
 This project is released under <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/master/LICENSE">Apache 2.0 license</a>
 
 ## Contribution
-We welcome your contribution to PaddleOCR and thank you for your feedback.
+We welcome all the contributions to PaddleOCR and appreciate for your feedback very much.
