@@ -184,7 +184,7 @@ class SimpleReader(object):
         self.infer_img = params['infer_img']
         self.use_tps = False
         if "tps" in params:
-            self.ues_tps = True
+            self.use_tps = True
         if params['mode'] == 'train':
             self.batch_size = params['train_batch_size_per_card']
             self.drop_last = True
