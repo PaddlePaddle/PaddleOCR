@@ -1,7 +1,7 @@
 TrainReader:
   reader_function: ppocr.data.rec.dataset_traversal,LMDBReader
   num_workers: 8
-  lmdb_sets_dir: ./train_data/data_lmdb_release/evaluation/
+  lmdb_sets_dir: ./train_data/data_lmdb_release/training/
   
 EvalReader:
   reader_function: ppocr.data.rec.dataset_traversal,LMDBReader

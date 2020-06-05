@@ -113,6 +113,8 @@ tar -xf rec_mv3_none_bilstm_ctc.tar && rm -rf rec_mv3_none_bilstm_ctc.tar
 
 开始训练:
 
+*如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false*
+
 ```
 # 设置PYTHONPATH路径
 export PYTHONPATH=$PYTHONPATH:.
