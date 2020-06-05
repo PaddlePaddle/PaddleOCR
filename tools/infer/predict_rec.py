@@ -148,7 +148,7 @@ if __name__ == "__main__":
             "Please read the FAQ：https://github.com/PaddlePaddle/PaddleOCR#faq \n"
             "If your model has tps module:  "
             "TPS does not support variable shape.\n"
-            "Please set --rec_image_shape=input_shape and --rec_char_type='en' ")
+            "Please set --rec_image_shape='3,32,100' and --rec_char_type='en' ")
         exit()
     for ino in range(len(img_list)):
         print("Predicts of %s:%s" % (valid_image_file_list[ino], rec_res[ino]))
