@@ -30,7 +30,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 ![](doc/imgs_results/11.jpg)
 
-上图是超轻量级中文OCR模型效果展示，更多效果图请见文末[效果展示](#效果展示)。
+上图是超轻量级中文OCR模型效果展示，更多效果图请见文末[超轻量级中文OCR效果展示](#超轻量级中文OCR效果展示)和[通用中文OCR效果展示](#通用中文OCR效果展示)。
 
 #### 1.环境配置
 
@@ -142,7 +142,7 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 ## 端到端OCR算法
 - [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(百度自研, comming soon)
 
-<a name="效果展示"></a>
+<a name="超轻量级中文OCR效果展示"></a>
 ## 超轻量级中文OCR效果展示
 ![](doc/imgs_results/1.jpg)
 ![](doc/imgs_results/7.jpg)
@@ -153,10 +153,35 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 ![](doc/imgs_results/16.png)
 ![](doc/imgs_results/22.jpg)
 
+<a name="通用中文OCR效果展示"></a>
 ## 通用中文OCR效果展示
 ![](doc/imgs_results/chinese_db_crnn_server/11.jpg)
 ![](doc/imgs_results/chinese_db_crnn_server/2.jpg)
 ![](doc/imgs_results/chinese_db_crnn_server/8.jpg)
+
+## FAQ
+1. 预测报错：got an unexpected keyword argument 'gradient_clip'
+
+    安装的paddle版本不对，目前本项目仅支持paddle1.7，近期会适配到1.8。
+    
+2. 转换attention识别模型时报错：KeyError: 'predict'
+
+    基于Attention损失的识别模型推理还在调试中。对于中文文本识别，建议优先选择基于CTC损失的识别模型，实践中也发现基于Attention损失的效果不如基于CTC损失的识别模型。
+    
+3. 关于推理速度
+
+    图片中的文字较多时，预测时间会增，可以使用--rec_batch_num设置更小预测batch num，默认值为30，可以改为10或其他数值。
+
+4. 服务部署与移动端部署
+
+    预计6月中下旬会先后发布基于Serving的服务部署方案和基于Paddle Lite的移动端部署方案，欢迎持续关注。
+    
+5. 自研算法发布时间
+
+    自研算法SAST、SRN、End2End-PSL都将在6-7月陆续发布，敬请期待。
+
+## 欢迎加入PaddleOCR技术交流群
+加微信：paddlehelp，备注OCR，小助手拉你进群～
 
 ## 更新
 - 2020.5.30，模型预测、训练支持Windows系统，识别结果的显示进行了优化

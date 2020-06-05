@@ -1,0 +1,18 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+inference/
+inference_results/
+output/
+
+*.DS_Store
+*.vs
+*.user
+*~
+*.vscode
+*.idea
