@@ -2,11 +2,11 @@
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力使用者训练出更好的模型，并应用落地。
 
 **近期更新**
+- 2020.6.8 添加[数据集](./doc/datasets.md)，并保持持续更新
 - 2020.6.5 支持 `attetnion` 模型导出 `inference_model`
 - 2020.6.5 支持单独预测识别时，输出结果得分
 - 2020.5.30 提供超轻量级中文OCR在线体验
 - 2020.5.30 模型预测、训练支持Windows系统
-- 2020.5.30 开源通用中文OCR模型
 - [more](./doc/update.md)
 
 ## 特性
@@ -95,6 +95,7 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_mode
 - [文本检测模型训练/评估/预测](./doc/detection.md)
 - [文本识别模型训练/评估/预测](./doc/recognition.md)
 - [基于预测引擎推理](./doc/inference.md)
+- [数据集](./doc/datasets.md)
 
 ## 文本检测算法
 
@@ -161,25 +162,22 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 ![](doc/imgs_results/chinese_db_crnn_server/8.jpg)
 
 ## FAQ
-1. 预测报错：got an unexpected keyword argument 'gradient_clip'
+1. **预测报错：got an unexpected keyword argument 'gradient_clip'**  
+安装的paddle版本不对，目前本项目仅支持paddle1.7，近期会适配到1.8。  
 
-    安装的paddle版本不对，目前本项目仅支持paddle1.7，近期会适配到1.8。
+2. **转换attention识别模型时报错：KeyError: 'predict'**  
+基于Attention损失的识别模型推理还在调试中。对于中文文本识别，建议优先选择基于CTC损失的识别模型，实践中也发现基于Attention损失的效果不如基于CTC损失的识别模型。  
 
-2. 转换attention识别模型时报错：KeyError: 'predict'
+3. **关于推理速度**  
+图片中的文字较多时，预测时间会增，可以使用--rec_batch_num设置更小预测batch num，默认值为30，可以改为10或其他数值。  
 
-    基于Attention损失的识别模型推理还在调试中。对于中文文本识别，建议优先选择基于CTC损失的识别模型，实践中也发现基于Attention损失的效果不如基于CTC损失的识别模型。
+4. **服务部署与移动端部署**  
+预计6月中下旬会先后发布基于Serving的服务部署方案和基于Paddle Lite的移动端部署方案，欢迎持续关注。  
 
-3. 关于推理速度
+5. **自研算法发布时间**  
+自研算法SAST、SRN、End2End-PSL都将在6-7月陆续发布，敬请期待。  
 
-    图片中的文字较多时，预测时间会增，可以使用--rec_batch_num设置更小预测batch num，默认值为30，可以改为10或其他数值。
-
-4. 服务部署与移动端部署
-
-    预计6月中下旬会先后发布基于Serving的服务部署方案和基于Paddle Lite的移动端部署方案，欢迎持续关注。
-
-5. 自研算法发布时间
-
-    自研算法SAST、SRN、End2End-PSL都将在6-7月陆续发布，敬请期待。
+[more](./doc/FAQ.md)
 
 ## 欢迎加入PaddleOCR技术交流群
 加微信：paddlehelp，备注OCR，小助手拉你进群～
