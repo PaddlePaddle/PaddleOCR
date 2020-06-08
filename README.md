@@ -113,11 +113,11 @@ PaddleOCR开源的文本检测算法列表：
 |DB|ResNet50_vd|83.79%|80.65%|82.19%|[下载链接](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar)|
 |DB|MobileNetV3|75.92%|73.18%|74.53%|[下载链接](https://paddleocr.bj.bcebos.com/det_mv3_db.tar)|
 
-使用[LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/datasets.md#1icdar2019-lsvt)街景数据集共3w张训练中文检测模型，相关配置和预训练文件如下：
+使用[LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/datasets.md#1icdar2019-lsvt)街景数据集共3w张数据，训练中文检测模型的相关配置和预训练文件如下：
 |模型|骨干网络|配置文件|预训练模型|
 |-|-|-|-|
-|超轻量中文模型|MobileNetV3|det_mv3_db|[下载链接](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar)|
-|通用中文OCR模型|ResNet50_vd|det_r50_vd_db|[下载链接](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db.tar)|
+|超轻量中文模型|MobileNetV3|det_mv3_db.yml|[下载链接](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar)|
+|通用中文OCR模型|ResNet50_vd|det_r50_vd_db.yml|[下载链接](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db.tar)|
 
 * 注： 上述DB模型的训练和评估，需设置后处理参数box_thresh=0.6，unclip_ratio=1.5，使用不同数据集、不同模型训练，可调整这两个参数进行优化
 
@@ -148,8 +148,8 @@ PaddleOCR开源的文本识别算法列表：
 使用[LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/datasets.md#1icdar2019-lsvt)街景数据集根据真值将图crop出来30w数据，进行位置校准。此外基于LSVT语料生成500w合成数据训练中文模型，相关配置和预训练文件如下：
 |模型|骨干网络|配置文件|预训练模型|
 |-|-|-|-|
-|超轻量中文模型|MobileNetV3|rec_chinese_lite_train|[下载链接](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|
-|通用中文OCR模型|Resnet34_vd|rec_chinese_common_train|[下载链接](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn.tar)|
+|超轻量中文模型|MobileNetV3|rec_chinese_lite_train.yml|[下载链接](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|
+|通用中文OCR模型|Resnet34_vd|rec_chinese_common_train.yml|[下载链接](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn.tar)|
 
 PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识别模型训练/评估/预测](./doc/recognition.md)。
 
