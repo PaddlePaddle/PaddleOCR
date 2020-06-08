@@ -21,7 +21,8 @@ PaddleOCR已完成Windows和Mac系统适配，运行时注意两点：1、在[�
 7. **超轻量模型和通用OCR模型的区别**  
 目前PaddleOCR开源了2个中文模型，分别是8.6M超轻量中文模型和通用中文OCR模型。两者对比信息如下：
     - 相同点：两者使用相同的**算法**和**训练数据**；  
-    - 不同点：不同之处在于**骨干网络**和**通道参数**，超轻量模型使用MobileNetV3作为骨干网络，通用模型使用Resnet50_vd作为检测模型backbone，Resnet34_vd作为识别模型backbone，具体参数差异可对比两种模型训练的配置文件。
+    - 不同点：不同之处在于**骨干网络**和**通道参数**，超轻量模型使用MobileNetV3作为骨干网络，通用模型使用Resnet50_vd作为检测模型backbone，Resnet34_vd作为识别模型backbone，具体参数差异可对比两种模型训练的配置文件.
+    
 |模型|骨干网络|检测训练配置|识别训练配置|
 |-|-|-|-|
 |8.6M超轻量中文OCR模型|MobileNetV3+MobileNetV3|det_mv3_db.yml|rec_chinese_lite_train.yml|
