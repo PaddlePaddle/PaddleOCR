@@ -61,8 +61,6 @@ class TrainReader(object):
                 if len(batch_outs) == self.batch_size:
                     yield batch_outs
                     batch_outs = []
-            if len(batch_outs) != 0:
-                yield batch_outs
 
         return batch_iter_reader
 

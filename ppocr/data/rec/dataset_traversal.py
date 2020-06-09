@@ -41,13 +41,18 @@ class LMDBReader(object):
         self.loss_type = params['loss_type']
         self.max_text_length = params['max_text_length']
         self.mode = params['mode']
+        self.drop_last = False
+        self.use_tps = False
+        if "tps" in params:
+            self.ues_tps = True
         if params['mode'] == 'train':
             self.batch_size = params['train_batch_size_per_card']
-        elif params['mode'] == "eval":
+            self.drop_last = True
+        else:
             self.batch_size = params['test_batch_size_per_card']
-        elif params['mode'] == "test":
-            self.batch_size = 1
-            self.infer_img = params["infer_img"]
+            self.drop_last = False
+        self.infer_img = params['infer_img']
+
     def load_hierarchical_lmdb_dataset(self):
         lmdb_sets = {}
         dataset_idx = 0
@@ -100,13 +105,18 @@ class LMDBReader(object):
             process_id = 0
 
         def sample_iter_reader():
-            if self.mode == 'test':
+            if self.mode != 'train' and self.infer_img is not None:
                 image_file_list = get_image_file_list(self.infer_img)
                 for single_img in image_file_list:
                     img = cv2.imread(single_img)
-                    if img.shape[-1]==1 or len(list(img.shape))==2:
+                    if img.shape[-1] == 1 or len(list(img.shape)) == 2:
                         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-                    norm_img = process_image(img, self.image_shape)
+                    norm_img = process_image(
+                        img=img,
+                        image_shape=self.image_shape,
+                        char_ops=self.char_ops,
+                        tps=self.use_tps,
+                        infer_mode=True)
                     yield norm_img
             else:
                 lmdb_sets = self.load_hierarchical_lmdb_dataset()
@@ -126,9 +136,13 @@ class LMDBReader(object):
                             if sample_info is None:
                                 continue
                             img, label = sample_info
-                            outs = process_image(img, self.image_shape, label,
-                                                 self.char_ops, self.loss_type,
-                                                 self.max_text_length)
+                            outs = process_image(
+                                img=img,
+                                image_shape=self.image_shape,
+                                label=label,
+                                char_ops=self.char_ops,
+                                loss_type=self.loss_type,
+                                max_text_length=self.max_text_length)
                             if outs is None:
                                 continue
                             yield outs
@@ -136,6 +150,7 @@ class LMDBReader(object):
                     if finish_read_num == len(lmdb_sets):
                         break
                 self.close_lmdb_dataset(lmdb_sets)
+
         def batch_iter_reader():
             batch_outs = []
             for outs in sample_iter_reader():
@@ -143,10 +158,11 @@ class LMDBReader(object):
                 if len(batch_outs) == self.batch_size:
                     yield batch_outs
                     batch_outs = []
-            if len(batch_outs) != 0:
-                yield batch_outs
+            if not self.drop_last:
+                if len(batch_outs) != 0:
+                    yield batch_outs
 
-        if self.mode != 'test':
+        if self.infer_img is None:
             return batch_iter_reader
         return sample_iter_reader
 
@@ -165,26 +181,34 @@ class SimpleReader(object):
         self.loss_type = params['loss_type']
         self.max_text_length = params['max_text_length']
         self.mode = params['mode']
+        self.infer_img = params['infer_img']
+        self.use_tps = False
+        if "tps" in params:
+            self.use_tps = True
         if params['mode'] == 'train':
             self.batch_size = params['train_batch_size_per_card']
-        elif params['mode'] == 'eval':
-            self.batch_size = params['test_batch_size_per_card']
+            self.drop_last = True
         else:
-            self.batch_size = 1
-            self.infer_img = params['infer_img']
+            self.batch_size = params['test_batch_size_per_card']
+            self.drop_last = False
 
     def __call__(self, process_id):
         if self.mode != 'train':
             process_id = 0
 
         def sample_iter_reader():
-            if self.mode == 'test':
+            if self.mode != 'train' and self.infer_img is not None:
                 image_file_list = get_image_file_list(self.infer_img)
                 for single_img in image_file_list:
                     img = cv2.imread(single_img)
-                    if img.shape[-1]==1 or len(list(img.shape))==2:
+                    if img.shape[-1] == 1 or len(list(img.shape)) == 2:
                         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-                    norm_img = process_image(img, self.image_shape)
+                    norm_img = process_image(
+                        img=img,
+                        image_shape=self.image_shape,
+                        char_ops=self.char_ops,
+                        tps=self.use_tps,
+                        infer_mode=True)
                     yield norm_img
             else:
                 with open(self.label_file_path, "rb") as fin:
@@ -192,7 +216,7 @@ class SimpleReader(object):
                 img_num = len(label_infor_list)
                 img_id_list = list(range(img_num))
                 random.shuffle(img_id_list)
-                if sys.platform=="win32":
+                if sys.platform == "win32":
                     print("multiprocess is not fully compatible with Windows."
                           "num_workers will be 1.")
                     self.num_workers = 1
@@ -204,7 +228,7 @@ class SimpleReader(object):
                     if img is None:
                         logger.info("{} does not exist!".format(img_path))
                         continue
-                    if img.shape[-1]==1 or len(list(img.shape))==2:
+                    if img.shape[-1] == 1 or len(list(img.shape)) == 2:
                         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
 
                     label = substr[1]
@@ -222,9 +246,10 @@ class SimpleReader(object):
                 if len(batch_outs) == self.batch_size:
                     yield batch_outs
                     batch_outs = []
-            if len(batch_outs) != 0:
-                yield batch_outs
+            if not self.drop_last:
+                if len(batch_outs) != 0:
+                    yield batch_outs
 
-        if self.mode != 'test':
+        if self.infer_img is None:
             return batch_iter_reader
         return sample_iter_reader

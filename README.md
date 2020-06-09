@@ -2,9 +2,12 @@
 PaddleOCR aims to create a rich, leading, and practical OCR tools that help users train better models and apply them into practice.
 
 **Recent updates**
-- 2020.5.30，Model prediction and training support Windows systems, and the display of recognition results is optimized
-- 2020.5.30，Open source general Chinese OCR model
-- 2020.5.30，Provide Ultra-lightweight Chinese OCR model inference
+- 2020.6.8 Add [dataset](./doc/datasets.md) and keep updating
+- 2020.6.5 Add `attention` model in `inference_model`
+- 2020.6.5 Support separate prediction and recognition, output result score
+- 2020.5.30 Provide ultra-lightweight Chinese OCR online experience
+- 2020.5.30 Model prediction and training supported on Windows system
+- [more](./doc/update.md)
 
 ## Features
 - Ultra-lightweight Chinese OCR model, total model size is only 8.6M
@@ -38,6 +41,8 @@ Please see [Quick installation](./doc/installation.md)
 #### 2. Download inference models
 
 #### (1) Download Ultra-lightweight Chinese OCR models
+*If wget is not installed in the windows system, you can copy the link to the browser to download the model. After model downloaded, unzip it and place it in the corresponding directory*
+
 ```
 mkdir inference && cd inference
 # Download the detection part of the Ultra-lightweight Chinese OCR and decompress it
@@ -64,6 +69,9 @@ The following code implements text detection and recognition inference tandemly.
 # Set PYTHONPATH environment variable
 export PYTHONPATH=.
 
+# Setting environment variable in Windows
+SET PYTHONPATH=.
+
 # Prediction on a single image by specifying image path to image_dir
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_det_mv3_db/"  --rec_model_dir="./inference/ch_rec_mv3_crnn/"
 
@@ -87,6 +95,7 @@ For more text detection and recognition models, please refer to the document [In
 - [Text detection model training/evaluation/prediction](./doc/detection.md)
 - [Text recognition model training/evaluation/prediction](./doc/recognition.md)
 - [Inference](./doc/inference.md)
+- [Dataset](./doc/datasets.md)
 
 ## Text detection algorithm
 
@@ -103,6 +112,12 @@ On the ICDAR2015 dataset, the text detection result is as follows:
 |EAST|MobileNetV3|81.67%|79.83%|80.74%|[Download link](https://paddleocr.bj.bcebos.com/det_mv3_east.tar)|
 |DB|ResNet50_vd|83.79%|80.65%|82.19%|[Download link](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar)|
 |DB|MobileNetV3|75.92%|73.18%|74.53%|[Download link](https://paddleocr.bj.bcebos.com/det_mv3_db.tar)|
+
+For use of [LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/datasets.md#1icdar2019-lsvt) street view dataset with a total of 3w training data，the related configuration and pre-trained models for Chinese detection task are as follows:
+|Model|Backbone|Configuration file|Pre-trained model|
+|-|-|-|-|
+|Ultra-lightweight Chinese model|MobileNetV3|det_mv3_db.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar)|
+|General Chinese OCR model|ResNet50_vd|det_r50_vd_db.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db.tar)|
 
 * Note: For the training and evaluation of the above DB model, post-processing parameters box_thresh=0.6 and unclip_ratio=1.5 need to be set. If using different datasets and different models for training, these two parameters can be adjusted for better result.
 
@@ -129,6 +144,12 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 |STAR-Net|MobileNetV3|81.56%|rec_mv3_tps_bilstm_ctc|[Download link](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_ctc.tar)|
 |RARE|Resnet34_vd|84.90%|rec_r34_vd_tps_bilstm_attn|[Download link](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_attn.tar)|
 |RARE|MobileNetV3|83.32%|rec_mv3_tps_bilstm_attn|[Download link](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_attn.tar)|
+
+We use [LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/datasets.md#1icdar2019-lsvt) dataset and cropout 30w  traning data from original photos by using position groundtruth and make some calibration needed. In addition, based on the LSVT corpus, 500w synthetic data is generated to train the Chinese model. The related configuration and pre-trained models are as follows:
+|Model|Backbone|Configuration file|Pre-trained model|
+|-|-|-|-|
+|Ultra-lightweight Chinese model|MobileNetV3|rec_chinese_lite_train.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|
+|General Chinese OCR model|Resnet34_vd|rec_chinese_common_train.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn.tar)|
 
 Please refer to the document for training guide and use of PaddleOCR text recognition algorithms [Text recognition model training/evaluation/prediction](./doc/recognition.md)
 
@@ -172,6 +193,8 @@ Please refer to the document for training guide and use of PaddleOCR text recogn
 5. Release time of self-developed algorithm
 
     Baidu Self-developed algorithms such as SAST, SRN and end2end PSL will be released in June or July. Please be patient.
+    
+[more](./doc/FAQ.md)
 
 ## Welcome to the PaddleOCR technical exchange group
 Add Wechat: paddlehelp, remark OCR, small assistant will pull you into the group ~
