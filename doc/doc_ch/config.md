@@ -8,7 +8,7 @@
 |          -o              |      ALL       |  设置配置文件里的参数内容  |  None  |  使用-o配置相较于-c选择的配置文件具有更高的优先级。例如：`-o Global.use_gpu=false`  |  
 
 
-## 配置文件 Global 参数介绍 
+## 配置文件 Global 参数介绍
 
 以 `rec_chinese_lite_train.yml` 为例
 
@@ -46,4 +46,3 @@
 |      img_set_dir          |    数据集路径             |       ./train_data        |                \                 |
 |      label_file_path      |    数据标签路径           |       ./train_data/rec_gt_train.txt| \    |
 |      infer_img            |    预测图像文件夹路径     |       ./infer_img | \|
-

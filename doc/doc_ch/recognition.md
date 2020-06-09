@@ -194,7 +194,7 @@ python3 tools/infer_rec.py -c configs/rec/rec_icdar15_train.yml -o Global.checkp
 
 预测图片：
 
-![](./imgs_words/en/word_1.png)
+![](../imgs_words/en/word_1.png)
 
 得到输入图像的预测结果：
 
@@ -214,7 +214,7 @@ python3 tools/infer_rec.py -c configs/rec/rec_chinese_lite_train.yml -o Global.c
 
 预测图片：
 
-![](./imgs_words/ch/word_1.jpg)
+![](../imgs_words/ch/word_1.jpg)
 
 得到输入图像的预测结果：
 

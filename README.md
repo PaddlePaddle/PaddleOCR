@@ -1,13 +1,15 @@
+[English](README_en.md) | 简体中文
+
 ## 简介
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力使用者训练出更好的模型，并应用落地。
 
 **近期更新**
-- 2020.6.8 添加[数据集](./doc/datasets.md)，并保持持续更新
+- 2020.6.8 添加[数据集](./doc/doc_ch/datasets.md)，并保持持续更新
 - 2020.6.5 支持 `attetnion` 模型导出 `inference_model`
 - 2020.6.5 支持单独预测识别时，输出结果得分
 - 2020.5.30 提供超轻量级中文OCR在线体验
 - 2020.5.30 模型预测、训练支持Windows系统
-- [more](./doc/update.md)
+- [more](./doc/doc_ch/update.md)
 
 ## 特性
 - 超轻量级中文OCR，总模型仅8.6M
@@ -35,7 +37,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 #### 1.环境配置
 
-请先参考[快速安装](./doc/installation.md)配置PaddleOCR运行环境。
+请先参考[快速安装](./doc/doc_ch/installation.md)配置PaddleOCR运行环境。
 
 #### 2.inference模型下载
 
@@ -88,14 +90,14 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_mode
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_det_r50_vd_db/"  --rec_model_dir="./inference/ch_rec_r34_vd_crnn/"
 ```
 
-更多的文本检测、识别串联推理使用方式请参考文档教程中[基于预测引擎推理](./doc/inference.md)。
+更多的文本检测、识别串联推理使用方式请参考文档教程中[基于预测引擎推理](./doc/doc_ch/inference.md)。
 
 ## 文档教程
-- [快速安装](./doc/installation.md)
-- [文本检测模型训练/评估/预测](./doc/detection.md)
-- [文本识别模型训练/评估/预测](./doc/recognition.md)
-- [基于预测引擎推理](./doc/inference.md)
-- [数据集](./doc/datasets.md)
+- [快速安装](./doc/doc_ch/installation.md)
+- [文本检测模型训练/评估/预测](./doc/doc_ch/detection.md)
+- [文本识别模型训练/评估/预测](./doc/doc_ch/recognition.md)
+- [基于预测引擎推理](./doc/doc_ch/inference.md)
+- [数据集](./doc/doc_ch/datasets.md)
 
 ## 文本检测算法
 
@@ -121,7 +123,7 @@ PaddleOCR开源的文本检测算法列表：
 
 * 注： 上述DB模型的训练和评估，需设置后处理参数box_thresh=0.6，unclip_ratio=1.5，使用不同数据集、不同模型训练，可调整这两个参数进行优化
 
-PaddleOCR文本检测算法的训练和使用请参考文档教程中[文本检测模型训练/评估/预测](./doc/detection.md)。
+PaddleOCR文本检测算法的训练和使用请参考文档教程中[文本检测模型训练/评估/预测](./doc/doc_ch/detection.md)。
 
 ## 文本识别算法
 
@@ -151,7 +153,7 @@ PaddleOCR开源的文本识别算法列表：
 |超轻量中文模型|MobileNetV3|rec_chinese_lite_train.yml|[下载链接](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|
 |通用中文OCR模型|Resnet34_vd|rec_chinese_common_train.yml|[下载链接](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn.tar)|
 
-PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识别模型训练/评估/预测](./doc/recognition.md)。
+PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识别模型训练/评估/预测](./doc/doc_ch/recognition.md)。
 
 ## 端到端OCR算法
 - [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(百度自研, comming soon)
@@ -189,7 +191,7 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 5. **自研算法发布时间**  
 自研算法SAST、SRN、End2End-PSL都将在6-7月陆续发布，敬请期待。  
 
-[more](./doc/FAQ.md)
+[more](./doc/doc_ch/FAQ.md)
 
 ## 欢迎加入PaddleOCR技术交流群
 加微信：paddlehelp，备注OCR，小助手拉你进群～

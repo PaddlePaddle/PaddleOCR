@@ -8,7 +8,7 @@ The following list can be viewed via `--help`
 |          -o              |      ALL       |  set configuration options  |  None  |  Configuration using -o has higher priority than the configuration file selected with -c. E.g: `-o Global.use_gpu=false`  |  
 
 
-## Introduction to Global Parameters of Configuration File 
+## Introduction to Global Parameters of Configuration File
 
 Take `rec_chinese_lite_train.yml` as an example
 
@@ -46,4 +46,3 @@ Take `rec_chinese_reader.yml` as an example:
 |      img_set_dir          |    Image folder path             |       ./train_data        |                \                 |
 |      label_file_path      |    Groundtruth file path           |       ./train_data/rec_gt_train.txt| \    |
 |      infer_img            |    Result folder path     |       ./infer_img | \|
-

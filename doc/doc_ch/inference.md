@@ -97,7 +97,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_
 
 可视化文本检测结果默认保存到 ./inference_results 文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
 
-![](imgs_results/det_res_img_10_db.jpg)
+![](../imgs_results/det_res_img_10_db.jpg)
 
 **注意**：由于ICDAR2015数据集只有1000张训练图像，主要针对英文场景，所以上述模型对中文文本图像检测效果非常差。
 
@@ -120,7 +120,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_
 ```
 可视化文本检测结果默认保存到 ./inference_results 文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
 
-![](imgs_results/det_res_img_10_east.jpg)
+![](../imgs_results/det_res_img_10_east.jpg)
 
 **注意**：本代码库中EAST后处理中NMS采用的Python版本，所以预测速度比较耗时。如果采用C++版本，会有明显加速。
 
@@ -138,7 +138,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --rec_model_dir="./inference/rec_crnn/"
 ```
 
-![](imgs_words/ch/word_4.jpg)
+![](../imgs_words/ch/word_4.jpg)
 
 执行命令后，上面图像的预测结果（识别的文本和得分）会打印到屏幕上，示例如下：
 
@@ -175,7 +175,7 @@ RARE 文本识别模型推理，可以执行如下命令：
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./inference/rare/" --rec_image_shape="3, 32, 100" --rec_char_type="en" --rec_algorithm="RARE"
 ```
 
-![](imgs_words_en/word_336.png)
+![](../imgs_words_en/word_336.png)
 
 执行命令后，上面图像的识别结果如下：
 
@@ -204,7 +204,7 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model
 
 执行命令后，识别结果图像如下：
 
-![](imgs_results/2.jpg)
+![](../imgs_results/2.jpg)
 
 ### 2.其他模型推理
 
@@ -216,4 +216,4 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_10.jpg" --d
 
 执行命令后，识别结果图像如下：
 
-![](imgs_results/img_10.jpg)
+![](../imgs_results/img_10.jpg)

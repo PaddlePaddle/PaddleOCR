@@ -191,7 +191,7 @@ python3 tools/infer_rec.py -c configs/rec/rec_chinese_lite_train.yml -o Global.c
 
 Input image:
 
-![](./imgs_words/en/word_1.png)
+![](../imgs_words/en/word_1.png)
 
 Get the prediction result of the input image:
 
@@ -210,7 +210,7 @@ python3 tools/infer_rec.py -c configs/rec/rec_chinese_lite_train.yml -o Global.c
 
 Input image:
 
-![](./imgs_words/ch/word_1.jpg)
+![](../imgs_words/ch/word_1.jpg)
 
 Get the prediction result of the input image:
 

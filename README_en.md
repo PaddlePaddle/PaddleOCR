@@ -1,13 +1,15 @@
+English | [简体中文](README.md)
+
 ## Introduction
 PaddleOCR aims to create a rich, leading, and practical OCR tools that help users train better models and apply them into practice.
 
 **Recent updates**
-- 2020.6.8 Add [dataset](./doc/datasets_en.md) and keep updating
+- 2020.6.8 Add [dataset](./doc/doc_en/datasets_en.md) and keep updating
 - 2020.6.5 Support exporting `attention` model to `inference_model`
 - 2020.6.5 Support separate prediction and recognition, output result score
 - 2020.5.30 Provide ultra-lightweight Chinese OCR online experience
 - 2020.5.30 Model prediction and training supported on Windows system
-- [more](./doc/update_en.md)
+- [more](./doc/doc_en/update_en.md)
 
 ## Features
 - Ultra-lightweight Chinese OCR model, total model size is only 8.6M
@@ -36,7 +38,7 @@ The picture above is the result of our Ultra-lightweight Chinese OCR model. For 
 
 #### 1. Environment configuration
 
-Please see [Quick installation](./doc/installation_en.md)
+Please see [Quick installation](./doc/doc_en/installation_en.md)
 
 #### 2. Download inference models
 
@@ -88,14 +90,14 @@ To run inference of the Generic Chinese OCR model, follow these steps above to d
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_det_r50_vd_db/"  --rec_model_dir="./inference/ch_rec_r34_vd_crnn/"
 ```
 
-For more text detection and recognition models, please refer to the document [Inference](./doc/inference_en.md)
+For more text detection and recognition models, please refer to the document [Inference](./doc/doc_en/inference_en.md)
 
 ## Documentation
-- [Quick installation](./doc/installation_en.md)
-- [Text detection model training/evaluation/prediction](./doc/detection_en.md)
-- [Text recognition model training/evaluation/prediction](./doc/recognition_en.md)
-- [Inference](./doc/inference_en.md)
-- [Dataset](./doc/datasets_en.md)
+- [Quick installation](./doc/doc_en/installation_en.md)
+- [Text detection model training/evaluation/prediction](./doc/doc_en/detection_en.md)
+- [Text recognition model training/evaluation/prediction](./doc/doc_en/recognition_en.md)
+- [Inference](./doc/doc_en/inference_en.md)
+- [Dataset](./doc/doc_en/datasets_en.md)
 
 ## Text detection algorithm
 
@@ -121,7 +123,7 @@ For use of [LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/dat
 
 * Note: For the training and evaluation of the above DB model, post-processing parameters box_thresh=0.6 and unclip_ratio=1.5 need to be set. If using different datasets and different models for training, these two parameters can be adjusted for better result.
 
-For the training guide and use of PaddleOCR text detection algorithms, please refer to the document [Text detection model training/evaluation/prediction](./doc/detection.md)
+For the training guide and use of PaddleOCR text detection algorithms, please refer to the document [Text detection model training/evaluation/prediction](./doc/doc_en/detection.md)
 
 ## Text recognition algorithm
 
@@ -194,10 +196,10 @@ Please refer to the document for training guide and use of PaddleOCR text recogn
 
     Baidu Self-developed algorithms such as SAST, SRN and end2end PSL will be released in June or July. Please be patient.
 
-[more](./doc/FAQ_en.md)
+[more](./doc/doc_en/FAQ_en.md)
 
 ## Welcome to the PaddleOCR technical exchange group
-Add Wechat: paddlehelp, remark OCR, small assistant will pull you into the group ~
+WeChat: paddlehelp . remarks OCR, the assistant will invite you to join the group~
 
 
 ## References
