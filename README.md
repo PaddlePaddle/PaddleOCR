@@ -3,7 +3,7 @@ PaddleOCR aims to create a rich, leading, and practical OCR tools that help user
 
 **Recent updates**
 - 2020.6.8 Add [dataset](./doc/datasets.md) and keep updating
-- 2020.6.5 Add `attention` model in `inference_model`
+- 2020.6.5 Support exporting `attention` model to `inference_model`
 - 2020.6.5 Support separate prediction and recognition, output result score
 - 2020.5.30 Provide ultra-lightweight Chinese OCR online experience
 - 2020.5.30 Model prediction and training supported on Windows system
