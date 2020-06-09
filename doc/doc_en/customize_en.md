@@ -8,7 +8,7 @@ PaddleOCR provides two text detection algorithms: EAST and DB. Both support Mobi
 ```
 python3 tools/train.py -c configs/det/det_mv3_db.yml
 ```
-For more details about data preparation and training tutorials, refer to the documentation [Text detection model training/evaluation/prediction](./detection.md)
+For more details about data preparation and training tutorials, refer to the documentation [Text detection model training/evaluation/prediction](./detection_en.md)
 
 ## step2: Train text recognition model
 
@@ -16,7 +16,7 @@ PaddleOCR provides four text recognition algorithms: CRNN, Rosetta, STAR-Net, an
 ```
 python3 tools/train.py -c configs/rec/rec_chinese_lite_train.yml
 ```
-For more details about data preparation and training tutorials, refer to the documentation [Text recognition model training/evaluation/prediction](./recognition.md)
+For more details about data preparation and training tutorials, refer to the documentation [Text recognition model training/evaluation/prediction](./recognition_en.md)
 
 ## step3: Concatenate predictions
 
@@ -27,4 +27,4 @@ When performing prediction, you need to specify the path of a single image or a 
 ```
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
 ```
-For more details about text detection and recognition concatenation, please refer to the document [Inference](./inference.md)
+For more details about text detection and recognition concatenation, please refer to the document [Inference](./inference_en.md)

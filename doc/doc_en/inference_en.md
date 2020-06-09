@@ -65,7 +65,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_di
 
 The visual text detection results are saved to the ./inference_results folder by default, and the name of the result file is prefixed with'det_res'. Examples of results are as follows:
 
-![](imgs_results/det_res_2.jpg)
+![](../imgs_results/det_res_2.jpg)
 
 By setting the size of the parameter `det_max_side_len`, the maximum value of picture normalization in the detection algorithm is changed. When the length and width of the picture are less than det_max_side_len, the original picture is used for prediction, otherwise the picture is scaled to the maximum value for prediction. This parameter is set to det_max_side_len=960 by default. If the resolution of the input picture is relatively large and you want to use a larger resolution for prediction, you can execute the following command:
 
@@ -98,7 +98,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_
 
 The visualized text detection results are saved to the `./inference_results` folder by default, and the name of the result file is prefixed with 'det_res'. Examples of results are as follows:
 
-![](imgs_results/det_res_img_10_db.jpg)
+![](../imgs_results/det_res_img_10_db.jpg)
 
 **Note**: Since the ICDAR2015 dataset has only 1,000 training images, mainly for English scenes, the above model has very poor detection result on Chinese text images.
 
@@ -121,7 +121,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_
 ```
 The visualized text detection results are saved to the `./inference_results` folder by default, and the name of the result file is prefixed with 'det_res'. Examples of results are as follows:
 
-![](imgs_results/det_res_img_10_east.jpg)
+![](../imgs_results/det_res_img_10_east.jpg)
 
 **Note**: The Python version of NMS in EAST post-processing used in this codebase so the prediction speed is quite slow. If you use the C++ version, there will be a significant speedup.
 
@@ -139,7 +139,7 @@ For ultra-lightweight Chinese recognition model inference, you can execute the f
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --rec_model_dir="./inference/rec_crnn/"
 ```
 
-![](imgs_words/ch/word_4.jpg)
+![](../imgs_words/ch/word_4.jpg)
 
 After executing the command, the prediction results (recognized text and score) of the above image will be printed on the screen.
 
@@ -165,7 +165,7 @@ For STAR-Net text recognition model inference, execute the following commands:
 ```
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./inference/starnet/" --rec_image_shape="3, 32, 100" --rec_char_type="en"
 ```
-![](imgs_words_en/word_336.png)
+![](../imgs_words_en/word_336.png)
 
 After executing the command, the recognition result of the above image is as follows:
 
@@ -194,7 +194,7 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model
 
 After executing the command, the recognition result image is as follows:
 
-![](imgs_results/2.jpg)
+![](../imgs_results/2.jpg)
 
 ### 2. Other model inference
 
@@ -206,4 +206,4 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_10.jpg" --d
 
 After executing the command, the recognition result image is as follows:
 
-![](imgs_results/img_10.jpg)
+![](../imgs_results/img_10.jpg)

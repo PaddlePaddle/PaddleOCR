@@ -14,15 +14,15 @@
 
 5. **自研算法发布时间**  
 自研算法SAST、SRN、End2End-PSL都将在6-7月陆续发布，敬请期待。
-    
+
 6. **如何在Windows或Mac系统上运行**  
-PaddleOCR已完成Windows和Mac系统适配，运行时注意两点：1、在[快速安装](installation.md)时，如果不想安装docker，可跳过第一步，直接从第二步安装paddle开始。2、inference模型下载时，如果没有安装wget，可直接点击模型链接或将链接地址复制到浏览器进行下载，并解压放置到相应目录。
+PaddleOCR已完成Windows和Mac系统适配，运行时注意两点：1、在[快速安装](./installation.md)时，如果不想安装docker，可跳过第一步，直接从第二步安装paddle开始。2、inference模型下载时，如果没有安装wget，可直接点击模型链接或将链接地址复制到浏览器进行下载，并解压放置到相应目录。
 
 7. **超轻量模型和通用OCR模型的区别**  
 目前PaddleOCR开源了2个中文模型，分别是8.6M超轻量中文模型和通用中文OCR模型。两者对比信息如下：
     - 相同点：两者使用相同的**算法**和**训练数据**；  
     - 不同点：不同之处在于**骨干网络**和**通道参数**，超轻量模型使用MobileNetV3作为骨干网络，通用模型使用Resnet50_vd作为检测模型backbone，Resnet34_vd作为识别模型backbone，具体参数差异可对比两种模型训练的配置文件.
-    
+
 |模型|骨干网络|检测训练配置|识别训练配置|
 |-|-|-|-|
 |8.6M超轻量中文OCR模型|MobileNetV3+MobileNetV3|det_mv3_db.yml|rec_chinese_lite_train.yml|
@@ -40,4 +40,4 @@ PaddleOCR已完成Windows和Mac系统适配，运行时注意两点：1、在[�
     英文数据集，MJSynth和SynthText合成数据，数据量上千万。  
     中文数据集，LSVT街景数据集根据真值将图crop出来，并进行位置校准，总共30w张图像。此外基于LSVT的语料，合成数据500w。
 
-    其中，公开数据集都是开源的，用户可自行搜索下载，也可参考[中文数据集](datasets.md)，合成数据暂不开源，用户可使用开源合成工具自行合成，可参考的合成工具包括[text_renderer](https://github.com/Sanster/text_renderer)、[SynthText](https://github.com/ankush-me/SynthText)、[TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator)等。
+    其中，公开数据集都是开源的，用户可自行搜索下载，也可参考[中文数据集](./datasets.md)，合成数据暂不开源，用户可使用开源合成工具自行合成，可参考的合成工具包括[text_renderer](https://github.com/Sanster/text_renderer)、[SynthText](https://github.com/ankush-me/SynthText)、[TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator)等。
