@@ -2,12 +2,12 @@
 PaddleOCR aims to create a rich, leading, and practical OCR tools that help users train better models and apply them into practice.
 
 **Recent updates**
-- 2020.6.8 Add [dataset](./doc/datasets.md) and keep updating
+- 2020.6.8 Add [dataset](./doc/datasets_en.md) and keep updating
 - 2020.6.5 Support exporting `attention` model to `inference_model`
 - 2020.6.5 Support separate prediction and recognition, output result score
 - 2020.5.30 Provide ultra-lightweight Chinese OCR online experience
 - 2020.5.30 Model prediction and training supported on Windows system
-- [more](./doc/update.md)
+- [more](./doc/update_en.md)
 
 ## Features
 - Ultra-lightweight Chinese OCR model, total model size is only 8.6M
@@ -36,7 +36,7 @@ The picture above is the result of our Ultra-lightweight Chinese OCR model. For 
 
 #### 1. Environment configuration
 
-Please see [Quick installation](./doc/installation.md)
+Please see [Quick installation](./doc/installation_en.md)
 
 #### 2. Download inference models
 
@@ -88,14 +88,14 @@ To run inference of the Generic Chinese OCR model, follow these steps above to d
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_det_r50_vd_db/"  --rec_model_dir="./inference/ch_rec_r34_vd_crnn/"
 ```
 
-For more text detection and recognition models, please refer to the document [Inference](./doc/inference.md)
+For more text detection and recognition models, please refer to the document [Inference](./doc/inference_en.md)
 
-## Documentation 
-- [Quick installation](./doc/installation.md)
-- [Text detection model training/evaluation/prediction](./doc/detection.md)
-- [Text recognition model training/evaluation/prediction](./doc/recognition.md)
-- [Inference](./doc/inference.md)
-- [Dataset](./doc/datasets.md)
+## Documentation
+- [Quick installation](./doc/installation_en.md)
+- [Text detection model training/evaluation/prediction](./doc/detection_en.md)
+- [Text recognition model training/evaluation/prediction](./doc/recognition_en.md)
+- [Inference](./doc/inference_en.md)
+- [Dataset](./doc/datasets_en.md)
 
 ## Text detection algorithm
 
@@ -177,11 +177,11 @@ Please refer to the document for training guide and use of PaddleOCR text recogn
 1. Prediction error：got an unexpected keyword argument 'gradient_clip'
 
     The installed paddle version is not correct. At present, this project only supports paddle1.7, which will be adapted to 1.8 in the near future.
-    
+
 2. Error when using attention-based recognition model: KeyError: 'predict'
 
     The inference of recognition model based on attention loss is still being debugged. For Chinese text recognition, it is recommended to choose the recognition model based on CTC loss first. In practice, it is also found that the recognition model based on attention loss is not as effective as the one based on CTC loss.
-    
+
 3. About inference speed
 
     When there are a lot of texts in the picture, the prediction time will increase. You can use `--rec_batch_num` to set a smaller prediction batch size. The default value is 30, which can be changed to 10 or other values.
@@ -189,12 +189,12 @@ Please refer to the document for training guide and use of PaddleOCR text recogn
 4. Service deployment and mobile deployment
 
     It is expected that the service deployment based on Serving and the mobile deployment based on Paddle Lite will be released successively in mid-to-late June. Stay tuned for more updates.
-    
+
 5. Release time of self-developed algorithm
 
     Baidu Self-developed algorithms such as SAST, SRN and end2end PSL will be released in June or July. Please be patient.
-    
-[more](./doc/FAQ.md)
+
+[more](./doc/FAQ_en.md)
 
 ## Welcome to the PaddleOCR technical exchange group
 Add Wechat: paddlehelp, remark OCR, small assistant will pull you into the group ~
