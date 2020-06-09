@@ -1,163 +1,163 @@
-## Introduction
-PaddleOCR aims to create a rich, leading, and practical OCR tools that help users train better models and apply them into practice.
+## 简介
+PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力使用者训练出更好的模型，并应用落地。
 
-**Recent updates**
-- 2020.6.8 Add [dataset](./doc/datasets.md) and keep updating
-- 2020.6.5 Support exporting `attention` model to `inference_model`
-- 2020.6.5 Support separate prediction and recognition, output result score
-- 2020.5.30 Provide ultra-lightweight Chinese OCR online experience
-- 2020.5.30 Model prediction and training supported on Windows system
+**近期更新**
+- 2020.6.8 添加[数据集](./doc/datasets.md)，并保持持续更新
+- 2020.6.5 支持 `attetnion` 模型导出 `inference_model`
+- 2020.6.5 支持单独预测识别时，输出结果得分
+- 2020.5.30 提供超轻量级中文OCR在线体验
+- 2020.5.30 模型预测、训练支持Windows系统
 - [more](./doc/update.md)
 
-## Features
-- Ultra-lightweight Chinese OCR model, total model size is only 8.6M
-    - Single model supports Chinese and English numbers combination recognition, vertical text recognition, long text recognition
-    - Detection model DB (4.1M) + recognition model CRNN (4.5M)
-- Various text detection algorithms: EAST, DB
-- Various text recognition algorithms: Rosetta, CRNN, STAR-Net, RARE
+## 特性
+- 超轻量级中文OCR，总模型仅8.6M
+    - 单模型支持中英文数字组合识别、竖排文本识别、长文本识别
+    - 检测模型DB（4.1M）+识别模型CRNN（4.5M）
+- 多种文本检测训练算法，EAST、DB
+- 多种文本识别训练算法，Rosetta、CRNN、STAR-Net、RARE
 
-### Supported Chinese models list:
+### 支持的中文模型列表:
 
-|Model Name|Description |Detection Model link|Recognition Model link|
+|模型名称|模型简介|检测模型地址|识别模型地址|
 |-|-|-|-|
-|chinese_db_crnn_mobile|Ultra-lightweight Chinese OCR model|[inference model](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db_infer.tar) & [pre-trained model](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar)|[inference model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar) & [pre-trained model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|
-|chinese_db_crnn_server|General Chinese OCR model|[inference model](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db_infer.tar) & [pre-trained model](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db.tar)|[inference model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_infer.tar) & [pre-trained model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn.tar)|
+|chinese_db_crnn_mobile|超轻量级中文OCR模型|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db_infer.tar) & [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar)|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar) & [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|
+|chinese_db_crnn_server|通用中文OCR模型|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db_infer.tar) & [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db.tar)|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_infer.tar) & [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn.tar)|
 
+超轻量级中文OCR在线体验地址：https://www.paddlepaddle.org.cn/hub/scene/ocr
 
-For testing our Chinese OCR online：https://www.paddlepaddle.org.cn/hub/scene/ocr
+**也可以按如下教程快速体验超轻量级中文OCR和通用中文OCR模型。**
 
-**You can also quickly experience the Ultra-lightweight Chinese OCR and General Chinese OCR models as follows:**
-
-## **Ultra-lightweight Chinese OCR and General Chinese OCR inference**
+## **超轻量级中文OCR以及通用中文OCR体验**
 
 ![](doc/imgs_results/11.jpg)
 
-The picture above is the result of our Ultra-lightweight Chinese OCR model. For more testing results, please see the end of the article [Ultra-lightweight Chinese OCR results](#Ultra-lightweight-Chinese-OCR-results) and [General Chinese OCR results](#General-Chinese-OCR-results).
+上图是超轻量级中文OCR模型效果展示，更多效果图请见文末[超轻量级中文OCR效果展示](#超轻量级中文OCR效果展示)和[通用中文OCR效果展示](#通用中文OCR效果展示)。
 
-#### 1. Environment configuration
+#### 1.环境配置
 
-Please see [Quick installation](./doc/installation.md)
+请先参考[快速安装](./doc/installation.md)配置PaddleOCR运行环境。
 
-#### 2. Download inference models
+#### 2.inference模型下载
 
-#### (1) Download Ultra-lightweight Chinese OCR models
-*If wget is not installed in the windows system, you can copy the link to the browser to download the model. After model downloaded, unzip it and place it in the corresponding directory*
+*windows 环境下如果没有安装wget,下载模型时可将链接复制到浏览器中下载，并解压放置在相应目录下*
 
+
+#### (1)超轻量级中文OCR模型下载
 ```
 mkdir inference && cd inference
-# Download the detection part of the Ultra-lightweight Chinese OCR and decompress it
+# 下载超轻量级中文OCR模型的检测模型并解压
 wget https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db_infer.tar && tar xf ch_det_mv3_db_infer.tar
-# Download the recognition part of the Ultra-lightweight Chinese OCR and decompress it
+# 下载超轻量级中文OCR模型的识别模型并解压
 wget https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar xf ch_rec_mv3_crnn_infer.tar
 cd ..
 ```
-#### (2) Download General Chinese OCR models
+#### (2)通用中文OCR模型下载
 ```
 mkdir inference && cd inference
-# Download the detection part of the general Chinese OCR model and decompress it
+# 下载通用中文OCR模型的检测模型并解压
 wget https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db_infer.tar && tar xf ch_det_r50_vd_db_infer.tar
-# Download the recognition part of the generic Chinese OCR model and decompress it
+# 下载通用中文OCR模型的识别模型并解压
 wget https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_infer.tar && tar xf ch_rec_r34_vd_crnn_infer.tar
 cd ..
 ```
 
-#### 3. Single image and batch image prediction
+#### 3.单张图像或者图像集合预测
 
-The following code implements text detection and recognition inference tandemly. When performing prediction, you need to specify the path of a single image or image folder through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to detection model, and the parameter `rec_model_dir` specifies the path to the recognition model. The visual prediction results are saved to the `./inference_results` folder by default.
+以下代码实现了文本检测、识别串联推理，在执行预测时，需要通过参数image_dir指定单张图像或者图像集合的路径、参数det_model_dir指定检测inference模型的路径和参数rec_model_dir指定识别inference模型的路径。可视化识别结果默认保存到 ./inference_results 文件夹里面。
 
 ```
-# Set PYTHONPATH environment variable
+# 设置PYTHONPATH环境变量
 export PYTHONPATH=.
 
-# Setting environment variable in Windows
+# windows下设置环境变量
 SET PYTHONPATH=.
 
-# Prediction on a single image by specifying image path to image_dir
+# 预测image_dir指定的单张图像
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_det_mv3_db/"  --rec_model_dir="./inference/ch_rec_mv3_crnn/"
 
-# Prediction on a batch of images by specifying image folder path to image_dir
+# 预测image_dir指定的图像集合
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/" --det_model_dir="./inference/ch_det_mv3_db/"  --rec_model_dir="./inference/ch_rec_mv3_crnn/"
 
-# If you want to use CPU for prediction, you need to set the use_gpu parameter to False
+# 如果想使用CPU进行预测，需设置use_gpu参数为False
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_det_mv3_db/"  --rec_model_dir="./inference/ch_rec_mv3_crnn/" --use_gpu=False
 ```
 
-To run inference of the Generic Chinese OCR model, follow these steps above to download the corresponding models and update the relevant parameters. Examples are as follows:
+通用中文OCR模型的体验可以按照上述步骤下载相应的模型，并且更新相关的参数，示例如下：
 ```
-# Prediction on a single image by specifying image path to image_dir
+# 预测image_dir指定的单张图像
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_det_r50_vd_db/"  --rec_model_dir="./inference/ch_rec_r34_vd_crnn/"
 ```
 
-For more text detection and recognition models, please refer to the document [Inference](./doc/inference.md)
+更多的文本检测、识别串联推理使用方式请参考文档教程中[基于预测引擎推理](./doc/inference.md)。
 
-## Documentation 
-- [Quick installation](./doc/installation.md)
-- [Text detection model training/evaluation/prediction](./doc/detection.md)
-- [Text recognition model training/evaluation/prediction](./doc/recognition.md)
-- [Inference](./doc/inference.md)
-- [Dataset](./doc/datasets.md)
+## 文档教程
+- [快速安装](./doc/installation.md)
+- [文本检测模型训练/评估/预测](./doc/detection.md)
+- [文本识别模型训练/评估/预测](./doc/recognition.md)
+- [基于预测引擎推理](./doc/inference.md)
+- [数据集](./doc/datasets.md)
 
-## Text detection algorithm
+## 文本检测算法
 
-PaddleOCR open source text detection algorithms list:
+PaddleOCR开源的文本检测算法列表：
 - [x]  EAST([paper](https://arxiv.org/abs/1704.03155))
 - [x]  DB([paper](https://arxiv.org/abs/1911.08947))
-- [ ]  SAST([paper](https://arxiv.org/abs/1908.05498))(Baidu Self-Research, comming soon)
+- [ ]  SAST([paper](https://arxiv.org/abs/1908.05498))(百度自研, comming soon)
 
-On the ICDAR2015 dataset, the text detection result is as follows:
+在ICDAR2015文本检测公开数据集上，算法效果如下：
 
-|Model|Backbone|precision|recall|Hmean|Download link|
+|模型|骨干网络|precision|recall|Hmean|下载链接|
 |-|-|-|-|-|-|
-|EAST|ResNet50_vd|88.18%|85.51%|86.82%|[Download link](https://paddleocr.bj.bcebos.com/det_r50_vd_east.tar)|
-|EAST|MobileNetV3|81.67%|79.83%|80.74%|[Download link](https://paddleocr.bj.bcebos.com/det_mv3_east.tar)|
-|DB|ResNet50_vd|83.79%|80.65%|82.19%|[Download link](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar)|
-|DB|MobileNetV3|75.92%|73.18%|74.53%|[Download link](https://paddleocr.bj.bcebos.com/det_mv3_db.tar)|
+|EAST|ResNet50_vd|88.18%|85.51%|86.82%|[下载链接](https://paddleocr.bj.bcebos.com/det_r50_vd_east.tar)|
+|EAST|MobileNetV3|81.67%|79.83%|80.74%|[下载链接](https://paddleocr.bj.bcebos.com/det_mv3_east.tar)|
+|DB|ResNet50_vd|83.79%|80.65%|82.19%|[下载链接](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar)|
+|DB|MobileNetV3|75.92%|73.18%|74.53%|[下载链接](https://paddleocr.bj.bcebos.com/det_mv3_db.tar)|
 
-For use of [LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/datasets.md#1icdar2019-lsvt) street view dataset with a total of 3w training data，the related configuration and pre-trained models for Chinese detection task are as follows:
-|Model|Backbone|Configuration file|Pre-trained model|
+使用[LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/datasets.md#1icdar2019-lsvt)街景数据集共3w张数据，训练中文检测模型的相关配置和预训练文件如下：
+|模型|骨干网络|配置文件|预训练模型|
 |-|-|-|-|
-|Ultra-lightweight Chinese model|MobileNetV3|det_mv3_db.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar)|
-|General Chinese OCR model|ResNet50_vd|det_r50_vd_db.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db.tar)|
+|超轻量中文模型|MobileNetV3|det_mv3_db.yml|[下载链接](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar)|
+|通用中文OCR模型|ResNet50_vd|det_r50_vd_db.yml|[下载链接](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db.tar)|
 
-* Note: For the training and evaluation of the above DB model, post-processing parameters box_thresh=0.6 and unclip_ratio=1.5 need to be set. If using different datasets and different models for training, these two parameters can be adjusted for better result.
+* 注： 上述DB模型的训练和评估，需设置后处理参数box_thresh=0.6，unclip_ratio=1.5，使用不同数据集、不同模型训练，可调整这两个参数进行优化
 
-For the training guide and use of PaddleOCR text detection algorithms, please refer to the document [Text detection model training/evaluation/prediction](./doc/detection.md)
+PaddleOCR文本检测算法的训练和使用请参考文档教程中[文本检测模型训练/评估/预测](./doc/detection.md)。
 
-## Text recognition algorithm
+## 文本识别算法
 
-PaddleOCR open-source text recognition algorithms list:
+PaddleOCR开源的文本识别算法列表：
 - [x]  CRNN([paper](https://arxiv.org/abs/1507.05717))
 - [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))
 - [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))
 - [x]  RARE([paper](https://arxiv.org/abs/1603.03915v1))
-- [ ]  SRN([paper](https://arxiv.org/abs/2003.12294))(Baidu Self-Research, comming soon)
+- [ ]  SRN([paper](https://arxiv.org/abs/2003.12294))(百度自研, comming soon)
 
-Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation result of these above text recognition (using MJSynth and SynthText for training, evaluate on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE) is as follow:
+参考[DTRB](https://arxiv.org/abs/1904.01906)文字识别训练和评估流程，使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估，算法效果如下：
 
-|Model|Backbone|Avg Accuracy|Module combination|Download link|
+|模型|骨干网络|Avg Accuracy|模型存储命名|下载链接|
 |-|-|-|-|-|
-|Rosetta|Resnet34_vd|80.24%|rec_r34_vd_none_none_ctc|[Download link](https://paddleocr.bj.bcebos.com/rec_r34_vd_none_none_ctc.tar)|
-|Rosetta|MobileNetV3|78.16%|rec_mv3_none_none_ctc|[Download link](https://paddleocr.bj.bcebos.com/rec_mv3_none_none_ctc.tar)|
-|CRNN|Resnet34_vd|82.20%|rec_r34_vd_none_bilstm_ctc|[Download link](https://paddleocr.bj.bcebos.com/rec_r34_vd_none_bilstm_ctc.tar)|
-|CRNN|MobileNetV3|79.37%|rec_mv3_none_bilstm_ctc|[Download link](https://paddleocr.bj.bcebos.com/rec_mv3_none_bilstm_ctc.tar)|
-|STAR-Net|Resnet34_vd|83.93%|rec_r34_vd_tps_bilstm_ctc|[Download link](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_ctc.tar)|
-|STAR-Net|MobileNetV3|81.56%|rec_mv3_tps_bilstm_ctc|[Download link](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_ctc.tar)|
-|RARE|Resnet34_vd|84.90%|rec_r34_vd_tps_bilstm_attn|[Download link](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_attn.tar)|
-|RARE|MobileNetV3|83.32%|rec_mv3_tps_bilstm_attn|[Download link](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_attn.tar)|
+|Rosetta|Resnet34_vd|80.24%|rec_r34_vd_none_none_ctc|[下载链接](https://paddleocr.bj.bcebos.com/rec_r34_vd_none_none_ctc.tar)|
+|Rosetta|MobileNetV3|78.16%|rec_mv3_none_none_ctc|[下载链接](https://paddleocr.bj.bcebos.com/rec_mv3_none_none_ctc.tar)|
+|CRNN|Resnet34_vd|82.20%|rec_r34_vd_none_bilstm_ctc|[下载链接](https://paddleocr.bj.bcebos.com/rec_r34_vd_none_bilstm_ctc.tar)|
+|CRNN|MobileNetV3|79.37%|rec_mv3_none_bilstm_ctc|[下载链接](https://paddleocr.bj.bcebos.com/rec_mv3_none_bilstm_ctc.tar)|
+|STAR-Net|Resnet34_vd|83.93%|rec_r34_vd_tps_bilstm_ctc|[下载链接](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_ctc.tar)|
+|STAR-Net|MobileNetV3|81.56%|rec_mv3_tps_bilstm_ctc|[下载链接](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_ctc.tar)|
+|RARE|Resnet34_vd|84.90%|rec_r34_vd_tps_bilstm_attn|[下载链接](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_attn.tar)|
+|RARE|MobileNetV3|83.32%|rec_mv3_tps_bilstm_attn|[下载链接](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_attn.tar)|
 
-We use [LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/datasets.md#1icdar2019-lsvt) dataset and cropout 30w  traning data from original photos by using position groundtruth and make some calibration needed. In addition, based on the LSVT corpus, 500w synthetic data is generated to train the Chinese model. The related configuration and pre-trained models are as follows:
-|Model|Backbone|Configuration file|Pre-trained model|
+使用[LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/datasets.md#1icdar2019-lsvt)街景数据集根据真值将图crop出来30w数据，进行位置校准。此外基于LSVT语料生成500w合成数据训练中文模型，相关配置和预训练文件如下：
+|模型|骨干网络|配置文件|预训练模型|
 |-|-|-|-|
-|Ultra-lightweight Chinese model|MobileNetV3|rec_chinese_lite_train.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|
-|General Chinese OCR model|Resnet34_vd|rec_chinese_common_train.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn.tar)|
+|超轻量中文模型|MobileNetV3|rec_chinese_lite_train.yml|[下载链接](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|
+|通用中文OCR模型|Resnet34_vd|rec_chinese_common_train.yml|[下载链接](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn.tar)|
 
-Please refer to the document for training guide and use of PaddleOCR text recognition algorithms [Text recognition model training/evaluation/prediction](./doc/recognition.md)
+PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识别模型训练/评估/预测](./doc/recognition.md)。
 
-## End-to-end OCR algorithm
-- [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(Baidu Self-Research, comming soon)
+## 端到端OCR算法
+- [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(百度自研, comming soon)
 
-<a name="Ultra-lightweight Chinese OCR results"></a>
-## Ultra-lightweight Chinese OCR results
+<a name="超轻量级中文OCR效果展示"></a>
+## 超轻量级中文OCR效果展示
 ![](doc/imgs_results/1.jpg)
 ![](doc/imgs_results/7.jpg)
 ![](doc/imgs_results/12.jpg)
@@ -167,40 +167,34 @@ Please refer to the document for training guide and use of PaddleOCR text recogn
 ![](doc/imgs_results/16.png)
 ![](doc/imgs_results/22.jpg)
 
-<a name="General Chinese OCR results"></a>
-## General Chinese OCR results
+<a name="通用中文OCR效果展示"></a>
+## 通用中文OCR效果展示
 ![](doc/imgs_results/chinese_db_crnn_server/11.jpg)
 ![](doc/imgs_results/chinese_db_crnn_server/2.jpg)
 ![](doc/imgs_results/chinese_db_crnn_server/8.jpg)
 
 ## FAQ
-1. Prediction error：got an unexpected keyword argument 'gradient_clip'
+1. **预测报错：got an unexpected keyword argument 'gradient_clip'**  
+安装的paddle版本不对，目前本项目仅支持paddle1.7，近期会适配到1.8。  
 
-    The installed paddle version is not correct. At present, this project only supports paddle1.7, which will be adapted to 1.8 in the near future.
-    
-2. Error when using attention-based recognition model: KeyError: 'predict'
+2. **转换attention识别模型时报错：KeyError: 'predict'**  
+基于Attention损失的识别模型推理还在调试中。对于中文文本识别，建议优先选择基于CTC损失的识别模型，实践中也发现基于Attention损失的效果不如基于CTC损失的识别模型。  
 
-    The inference of recognition model based on attention loss is still being debugged. For Chinese text recognition, it is recommended to choose the recognition model based on CTC loss first. In practice, it is also found that the recognition model based on attention loss is not as effective as the one based on CTC loss.
-    
-3. About inference speed
+3. **关于推理速度**  
+图片中的文字较多时，预测时间会增，可以使用--rec_batch_num设置更小预测batch num，默认值为30，可以改为10或其他数值。  
 
-    When there are a lot of texts in the picture, the prediction time will increase. You can use `--rec_batch_num` to set a smaller prediction batch size. The default value is 30, which can be changed to 10 or other values.
+4. **服务部署与移动端部署**  
+预计6月中下旬会先后发布基于Serving的服务部署方案和基于Paddle Lite的移动端部署方案，欢迎持续关注。  
 
-4. Service deployment and mobile deployment
+5. **自研算法发布时间**  
+自研算法SAST、SRN、End2End-PSL都将在6-7月陆续发布，敬请期待。  
 
-    It is expected that the service deployment based on Serving and the mobile deployment based on Paddle Lite will be released successively in mid-to-late June. Stay tuned for more updates.
-    
-5. Release time of self-developed algorithm
-
-    Baidu Self-developed algorithms such as SAST, SRN and end2end PSL will be released in June or July. Please be patient.
-    
 [more](./doc/FAQ.md)
 
-## Welcome to the PaddleOCR technical exchange group
-Add Wechat: paddlehelp, remark OCR, small assistant will pull you into the group ~
+## 欢迎加入PaddleOCR技术交流群
+加微信：paddlehelp，备注OCR，小助手拉你进群～
 
-
-## References
+## 参考文献
 ```
 1. EAST:
 @inproceedings{zhou2017east,
@@ -255,8 +249,8 @@ Add Wechat: paddlehelp, remark OCR, small assistant will pull you into the group
 }
 ```
 
-## License
-This project is released under <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/master/LICENSE">Apache 2.0 license</a>
+## 许可证书
+本项目的发布受<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/master/LICENSE">Apache 2.0 license</a>许可认证。
 
-## Contribution
-We welcome all the contributions to PaddleOCR and appreciate for your feedback very much.
+## 如何贡献代码
+我们非常欢迎你为PaddleOCR贡献代码，也十分感谢你的反馈。
