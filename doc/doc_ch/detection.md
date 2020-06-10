@@ -43,6 +43,18 @@ cd PaddleOCR/
 wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/MobileNetV3_large_x0_5_pretrained.tar
 # 下载ResNet50的预训练模型
 wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/ResNet50_vd_ssld_pretrained.tar
+
+# 解压预训练模型文件，以MobileNetV3为例
+tar xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_models/
+
+# 注：正确解压backbone预训练权重文件后，文件夹下包含众多以网络层命名的权重文件，格式如下：
+./pretrain_models/MobileNetV3_large_x0_5_pretrained/
+  └─ conv_last_bn_mean
+  └─ conv_last_bn_offset
+  └─ conv_last_bn_scale
+  └─ conv_last_bn_variance
+  └─ ......
+
 ```
 
 **启动训练**

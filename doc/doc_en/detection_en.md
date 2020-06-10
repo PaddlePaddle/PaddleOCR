@@ -42,6 +42,18 @@ cd PaddleOCR/
 wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/MobileNetV3_large_x0_5_pretrained.tar
 # Download the pre-trained model of ResNet50
 wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/ResNet50_vd_ssld_pretrained.tar
+
+# decompressing the pre-training model file, take MobileNetV3 as an example
+tar xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_models/
+
+# Note: After decompressing the backbone pre-training weight file correctly, the file list in the folder is as follows:
+./pretrain_models/MobileNetV3_large_x0_5_pretrained/
+  └─ conv_last_bn_mean
+  └─ conv_last_bn_offset
+  └─ conv_last_bn_scale
+  └─ conv_last_bn_variance
+  └─ ......
+
 ```
 
 **Start training**
