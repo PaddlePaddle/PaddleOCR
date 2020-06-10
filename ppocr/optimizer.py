@@ -28,6 +28,16 @@ def AdamDecay(params, parameter_list=None):
     base_lr = params['base_lr']
     beta1 = params['beta1']
     beta2 = params['beta2']
+    if 'decay' in params:
+        params = params['decay']
+        decay_mode = params['function']
+        step_each_epoch = params['step_each_epoch']
+        total_epoch = params['total_epoch']
+        if decay_mode == "cosine_decay":
+            base_lr = fluid.layers.cosine_decay(
+                learning_rate=base_lr,
+                step_each_epoch=step_each_epoch,
+                epochs=total_epoch)
     optimizer = fluid.optimizer.Adam(
         learning_rate=base_lr,
         beta1=beta1,
