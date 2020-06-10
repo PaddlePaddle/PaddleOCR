@@ -262,3 +262,5 @@ This project is released under <a href="https://github.com/PaddlePaddle/PaddleOC
 
 ## Contribution
 We welcome all the contributions to PaddleOCR and appreciate for your feedback very much.
+
+- Many thanks to [Khanh Tran](https://github.com/xxxpsyduck) for contributing the English documentation.

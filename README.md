@@ -256,3 +256,5 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 
 ## 如何贡献代码
 我们非常欢迎你为PaddleOCR贡献代码，也十分感谢你的反馈。
+
+- 非常感谢 [Khanh Tran](https://github.com/xxxpsyduck) 贡献了英文文档。
