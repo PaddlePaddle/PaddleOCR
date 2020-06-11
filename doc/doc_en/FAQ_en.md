@@ -4,7 +4,7 @@
 The installed version of paddle is incorrect. Currently, this project only supports paddle1.7, which will be adapted to 1.8 in the near future.
 
 2. **Error when converting attention recognition model: KeyError: 'predict'**  
-The inference of recognition model based on attention loss is still in debugging. For Chinese text recognition, it is recommended to choose the recognition model based on CTC loss first. In practice, it is also found that the recognition model based on attention loss is not as effective as that based on CTC loss.
+Solved. Please update to the latest version of the code.
 
 3. **About inference speed**  
 When there are many words in the picture, the prediction time will increase. You can use `--rec_batch_num` to set a smaller prediction batch num. The default value is 30, which can be changed to 10 or other values.
@@ -43,3 +43,9 @@ At present, the open source model, dataset and magnitude are as follows:
     Chinese dataset: LSVT street view dataset with cropped text area, a total of 30w images. In addition, the synthesized data based on LSVT corpus is 500w.
 
     Among them, the public datasets are opensourced, users can search and download by themselves, or refer to [Chinese data set](./datasets_en.md), synthetic data is not opensourced, users can use open-source synthesis tools to synthesize data themselves. Current available synthesis tools include [text_renderer](https://github.com/Sanster/text_renderer), [SynthText](https://github.com/ankush-me/SynthText), [TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator), etc.
+
+10. **Error in using the model with TPS module for prediction**
+
+Error message: Input(X) dims[3] and Input(Grid) dims[2] should be equal, but received X dimension[3](108) != Grid dimension[2](100)
+
+Solution：TPS does not support variable shape. Please set --rec_image_shape='3,32,100' and --rec_char_type='en'
