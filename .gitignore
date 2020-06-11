@@ -16,3 +16,5 @@ output/
 *~
 *.vscode
 *.idea
+
+*.log
