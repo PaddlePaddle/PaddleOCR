@@ -4,7 +4,7 @@
 安装的paddle版本不对，目前本项目仅支持paddle1.7，近期会适配到1.8。
 
 2. **转换attention识别模型时报错：KeyError: 'predict'**  
-基于Attention损失的识别模型推理还在调试中。对于中文文本识别，建议优先选择基于CTC损失的识别模型，实践中也发现基于Attention损失的效果不如基于CTC损失的识别模型。
+问题已解决，请更新到最新代码。
 
 3. **关于推理速度**  
 图片中的文字较多时，预测时间会增，可以使用--rec_batch_num设置更小预测batch num，默认值为30，可以改为10或其他数值。
@@ -41,3 +41,8 @@ PaddleOCR已完成Windows和Mac系统适配，运行时注意两点：1、在[�
     中文数据集，LSVT街景数据集根据真值将图crop出来，并进行位置校准，总共30w张图像。此外基于LSVT的语料，合成数据500w。
 
     其中，公开数据集都是开源的，用户可自行搜索下载，也可参考[中文数据集](./datasets.md)，合成数据暂不开源，用户可使用开源合成工具自行合成，可参考的合成工具包括[text_renderer](https://github.com/Sanster/text_renderer)、[SynthText](https://github.com/ankush-me/SynthText)、[TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator)等。
+
+10. **使用带TPS的识别模型预测报错**
+
+报错信息：Input(X) dims[3] and Input(Grid) dims[2] should be equal, but received X dimension[3](320) != Grid dimension[2](100)
+原因：TPS模块暂时无法支持变长的输入，请设置 --rec_image_shape='3,32,100' --rec_char_type='en' 固定输入shape
