@@ -4,7 +4,7 @@
 The installed version of paddle is incorrect. Currently, this project only supports paddle1.7, which will be adapted to 1.8 in the near future.
 
 2. **Error when converting attention recognition model: KeyError: 'predict'**  
-The inference of recognition model based on attention loss is still in debugging. For Chinese text recognition, it is recommended to choose the recognition model based on CTC loss first. In practice, it is also found that the recognition model based on attention loss is not as effective as that based on CTC loss.
+Solved. Please update to the latest version of the code.
 
 3. **About inference speed**  
 When there are many words in the picture, the prediction time will increase. You can use `--rec_batch_num` to set a smaller prediction batch num. The default value is 30, which can be changed to 10 or other values.
