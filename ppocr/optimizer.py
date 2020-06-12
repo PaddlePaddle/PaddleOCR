@@ -15,6 +15,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 import paddle.fluid as fluid
+from ppocr.utils.utility import initial_logger
+
+logger = initial_logger()
 
 
 def AdamDecay(params, parameter_list=None):
@@ -38,6 +41,8 @@ def AdamDecay(params, parameter_list=None):
                 learning_rate=base_lr,
                 step_each_epoch=step_each_epoch,
                 epochs=total_epoch)
+        else:
+            logger.info("Only support Cosine decay currently")
     optimizer = fluid.optimizer.Adam(
         learning_rate=base_lr,
         beta1=beta1,
