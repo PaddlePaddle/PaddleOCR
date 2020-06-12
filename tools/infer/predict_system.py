@@ -16,12 +16,13 @@ import sys
 __dir__ = os.path.dirname(__file__)
 sys.path.append(__dir__)
 sys.path.append(os.path.join(__dir__, '../..'))
-import utility
+
+import tools.infer.utility as utility
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
 import cv2
-import predict_det
-import predict_rec
+import tools.infer.predict_det as predict_det
+import tools.infer.predict_rec as predict_rec
 import copy
 import numpy as np
 import math

@@ -69,11 +69,6 @@ The following code implements text detection and recognition inference tandemly.
 
 ```bash
 
-# Set PYTHONPATH environment variable
-export PYTHONPATH=.
-# Setting environment variable in Windows
-SET PYTHONPATH=.
-
 # Prediction on a single image by specifying image path to image_dir
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_det_mv3_db/"  --rec_model_dir="./inference/ch_rec_mv3_crnn/"
 

@@ -16,10 +16,12 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import os
-import time
-import multiprocessing
 import numpy as np
+import os
+import sys
+__dir__ = os.path.dirname(__file__)
+sys.path.append(__dir__)
+sys.path.append(os.path.join(__dir__, '..'))
 
 
 def set_paddle_flags(**kwargs):
@@ -35,10 +37,7 @@ set_paddle_flags(
     FLAGS_eager_delete_tensor_gb=0,  # enable GC to save memory
 )
 
-from paddle import fluid
-
-# from ppocr.utils.utility import load_config, merge_config
-import program
+import tools.program as program
 from paddle import fluid
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
@@ -47,7 +46,6 @@ from ppocr.utils.save_load import init_model
 from ppocr.utils.character import CharacterOps
 from ppocr.utils.utility import create_module
 from ppocr.utils.utility import get_image_file_list
-logger = initial_logger()
 
 
 def main():
