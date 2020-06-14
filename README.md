@@ -176,19 +176,16 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 ![](doc/imgs_results/chinese_db_crnn_server/8.jpg)
 
 ## FAQ
-1. **预测报错：got an unexpected keyword argument 'gradient_clip'**  
-安装的paddle版本不对，目前本项目仅支持paddle1.7，近期会适配到1.8。  
-
-2. **转换attention识别模型时报错：KeyError: 'predict'**  
+1. **转换attention识别模型时报错：KeyError: 'predict'**  
 问题已解，请更新到最新代码。  
 
-3. **关于推理速度**  
+2. **关于推理速度**  
 图片中的文字较多时，预测时间会增，可以使用--rec_batch_num设置更小预测batch num，默认值为30，可以改为10或其他数值。  
 
-4. **服务部署与移动端部署**  
+3. **服务部署与移动端部署**  
 预计6月中下旬会先后发布基于Serving的服务部署方案和基于Paddle Lite的移动端部署方案，欢迎持续关注。  
 
-5. **自研算法发布时间**  
+4. **自研算法发布时间**  
 自研算法SAST、SRN、End2End-PSL都将在6-7月陆续发布，敬请期待。  
 
 [more](./doc/doc_ch/FAQ.md)

@@ -115,7 +115,6 @@ class DBHead(object):
         initializer = fluid.initializer.Uniform(-stdv, stdv)
         bias_attr = fluid.ParamAttr(
             regularizer=regularizer,
-            gradient_clip=gradient_clip,
             initializer=initializer,
             name=name + "_b_attr")
         return bias_attr
