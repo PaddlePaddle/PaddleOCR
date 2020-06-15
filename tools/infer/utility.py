@@ -157,6 +157,38 @@ def draw_ocr(image, boxes, txts, scores, draw_txt=True, drop_score=0.5):
     return image
 
 
+def draw_ocr_box_txt(image, boxes, txts, drop_score=0.5):
+    img_show = Image.new('RGB', (image.width * 2, image.height), (255, 255, 255))
+    img_show.paste(image, (image.width, 0, image.width * 2, image.height))
+    img_show_bak = img_show.copy()
+    height, width = image.height, image.width
+
+    import random
+    random.seed(12345)
+    draw = ImageDraw.Draw(img_show)
+    for (box, txt) in zip(boxes, txts):
+        color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        draw.polygon(box, outline=color)
+        draw.polygon([width + box[0][0], box[0][1], width + box[1][0], box[1][1], width + box[2][0], box[2][1], width + box[3][0], box[3][1]],
+                     fill=color)
+        box_height = math.sqrt((box[0][0] - box[3][0]) ** 2 + (box[0][1] - box[3][1]) ** 2)
+        box_width = math.sqrt((box[0][0] - box[1][0]) ** 2 + (box[0][1] - box[1][1]) ** 2)
+        if box_height > 2 * box_width:
+            font_size = max(int(box_width * 0.9), 10)
+            font = ImageFont.truetype("./doc/simfang.ttf", font_size, encoding="utf-8")
+            cur_y = box[0][1]
+            for c in txt:
+                char_size = font.getsize(c)
+                draw.text((box[0][0] + 3, cur_y), c, fill=(0, 0, 255), font=font)
+                cur_y += char_size[1]
+        else:
+            font_size = max(int(box_height * 0.8), 10)
+            font = ImageFont.truetype("./doc/simfang.ttf", font_size, encoding="utf-8")
+            draw.text(box[0], txt, fill=(255, 0, 0), font=font)
+    img_show = Image.blend(img_show_bak, img_show, 0.75)
+    return np.array(img_show)
+
+
 def str_count(s):
     """
     Count the number of Chinese characters,
