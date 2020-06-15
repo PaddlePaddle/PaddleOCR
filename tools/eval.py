@@ -17,7 +17,6 @@ from __future__ import division
 from __future__ import print_function
 
 import os
-import os
 import sys
 __dir__ = os.path.dirname(__file__)
 sys.path.append(__dir__)
