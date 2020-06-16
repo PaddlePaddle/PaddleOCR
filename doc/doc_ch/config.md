@@ -46,3 +46,18 @@
 |      img_set_dir          |    数据集路径             |       ./train_data        |                \                 |
 |      label_file_path      |    数据标签路径           |       ./train_data/rec_gt_train.txt| \    |
 |      infer_img            |    预测图像文件夹路径     |       ./infer_img | \|
+
+## 配置文件 Optimizer 系列参数介绍
+
+以 `rec_icdar15_train.yml` 为例
+
+|         字段             |            用途            |      默认值        |            备注             |
+| :---------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
+|         function        |         选择优化器          |  pocr.optimizer,AdamDecay  |  目前只支持Adam方式  |
+|         base_lr         |      设置初始学习率          |       0.0005      |               \             |
+|         beta1           |    设置一阶矩估计的指数衰减率  |       0.9         |               \             |
+|         beta2           |    设置二阶矩估计的指数衰减率  |     0.999         |               \             |
+|         decay           |         是否使用decay       |    \              |               \             |
+|      function(decay)    |         设置decay方式       |   cosine_decay    |       目前只支持cosin_decay  |
+|      step_each_epoch    |      每个epoch包含多少次迭代  |         20       | 计算方式：total_image_num / (batch_size_per_card * card_size) |
+|        total_epoch      |    总共迭代多少个epoch        |       1000      | 与Global.epoch_num 一致        |

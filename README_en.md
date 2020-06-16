@@ -171,23 +171,19 @@ Please refer to the document for training guide and use of PaddleOCR text recogn
 ![](doc/imgs_results/chinese_db_crnn_server/8.jpg)
 
 ## FAQ
-1. Prediction error：got an unexpected keyword argument 'gradient_clip'
-
-    The installed paddle version is not correct. At present, this project only supports paddle1.7, which will be adapted to 1.8 in the near future.
-
-2. Error when using attention-based recognition model: KeyError: 'predict'
+1. Error when using attention-based recognition model: KeyError: 'predict'
 
     The inference of recognition model based on attention loss is still being debugged. For Chinese text recognition, it is recommended to choose the recognition model based on CTC loss first. In practice, it is also found that the recognition model based on attention loss is not as effective as the one based on CTC loss.
 
-3. About inference speed
+2. About inference speed
 
     When there are a lot of texts in the picture, the prediction time will increase. You can use `--rec_batch_num` to set a smaller prediction batch size. The default value is 30, which can be changed to 10 or other values.
 
-4. Service deployment and mobile deployment
+3. Service deployment and mobile deployment
 
     It is expected that the service deployment based on Serving and the mobile deployment based on Paddle Lite will be released successively in mid-to-late June. Stay tuned for more updates.
 
-5. Release time of self-developed algorithm
+4. Release time of self-developed algorithm
 
     Baidu Self-developed algorithms such as SAST, SRN and end2end PSL will be released in June or July. Please be patient.
 

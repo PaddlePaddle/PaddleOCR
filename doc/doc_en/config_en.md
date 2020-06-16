@@ -46,3 +46,18 @@ Take `rec_chinese_reader.yml` as an example:
 |      img_set_dir          |    Image folder path             |       ./train_data        |                \                 |
 |      label_file_path      |    Groundtruth file path           |       ./train_data/rec_gt_train.txt| \    |
 |      infer_img            |    Result folder path     |       ./infer_img | \|
+
+## Introduction to Optimizer parameters of Configuration file
+
+Take `rec_icdar15_train.yml` as an example:
+
+|         Parameter             |            Use          |      Default        |            None             |
+| :---------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
+|         function        |         Select Optimizer function          |  pocr.optimizer,AdamDecay  |  Only support Adam  |
+|         base_lr         |      Set the base lr          |       0.0005      |               \             |
+|         beta1           |    Set the exponential decay rate for the 1st moment estimates  |       0.9         |               \             |
+|         beta2           |    Set the exponential decay rate for the 2nd moment estimates  |     0.999         |               \             |
+|         decay           |         Whether to use decay       |    \              |               \             |
+|      function(decay)    |         Set the decay function       |   cosine_decay    |           Only support cosine_decay            |
+|      step_each_epoch    |      The number of steps in an epoch.  |         20       | Calculation ：total_image_num / (batch_size_per_card * card_size) |
+|        total_epoch      |    The number of epochs      |       1000      | Consistent with Global.epoch_num      |

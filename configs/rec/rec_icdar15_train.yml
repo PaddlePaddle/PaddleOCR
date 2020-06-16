@@ -41,3 +41,7 @@ Optimizer:
   base_lr: 0.0005
   beta1: 0.9
   beta2: 0.999
+  decay:
+    function: cosine_decay
+    step_each_epoch: 20
+    total_epoch: 1000
