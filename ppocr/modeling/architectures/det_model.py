@@ -32,7 +32,6 @@ class DetModel(object):
             params (dict): the super parameters for detection module.
         """
         global_params = params['Global']
-        self.global_params = global_params
         self.algorithm = global_params['algorithm']
 
         backbone_params = deepcopy(params["Backbone"])
