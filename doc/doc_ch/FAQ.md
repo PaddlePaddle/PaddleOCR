@@ -48,4 +48,5 @@ PaddleOCR已完成Windows和Mac系统适配，运行时注意两点：1、在[�
 原因：TPS模块暂时无法支持变长的输入，请设置 --rec_image_shape='3,32,100' --rec_char_type='en' 固定输入shape
 
 11. **自定义字典训练的模型，识别结果出现字典里没出现的字**
+
 预测时没有设置采用的自定义字典路径。设置方法是在预测时，通过增加输入参数rec_char_dict_path来设置。
