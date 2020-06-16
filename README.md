@@ -69,11 +69,6 @@ cd ..
 
 ```bash
 
-# 设置PYTHONPATH环境变量
-export PYTHONPATH=.
-# windows下设置环境变量
-SET PYTHONPATH=.
-
 # 预测image_dir指定的单张图像
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_det_mv3_db/"  --rec_model_dir="./inference/ch_rec_mv3_crnn/"
 

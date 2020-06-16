@@ -18,9 +18,9 @@ from __future__ import print_function
 
 import os
 import sys
-import time
-import multiprocessing
-import numpy as np
+__dir__ = os.path.dirname(__file__)
+sys.path.append(__dir__)
+sys.path.append(os.path.join(__dir__, '..'))
 
 
 def set_paddle_flags(**kwargs):
