@@ -39,7 +39,6 @@ def parse_args():
 
     #params for text detector
     parser.add_argument("--image_dir", type=str)
-    parser.add_argument("--out_dir", type=str, default='./inference_results/')
     parser.add_argument("--det_algorithm", type=str, default='DB')
     parser.add_argument("--det_model_dir", type=str)
     parser.add_argument("--det_max_side_len", type=float, default=960)
