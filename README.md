@@ -246,8 +246,8 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 ## 许可证书
 本项目的发布受<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/master/LICENSE">Apache 2.0 license</a>许可认证。
 
-## 如何贡献代码
+## 贡献代码
 我们非常欢迎你为PaddleOCR贡献代码，也十分感谢你的反馈。
 
 - 非常感谢 [Khanh Tran](https://github.com/xxxpsyduck) 贡献了英文文档。
-- 非常感谢 [zhangxin](https://github.com/ZhangXinNan) 贡献新的可视化方式、添加.gitgnore、处理手动设置PYTHONPATH环境变量的问题
+- 非常感谢 [zhangxin](https://github.com/ZhangXinNan)([Blog](https://blog.csdn.net/sdlypyzq)) 贡献新的可视化方式、添加.gitgnore、处理手动设置PYTHONPATH环境变量的问题
