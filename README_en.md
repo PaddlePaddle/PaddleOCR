@@ -255,3 +255,4 @@ This project is released under <a href="https://github.com/PaddlePaddle/PaddleOC
 We welcome all the contributions to PaddleOCR and appreciate for your feedback very much.
 
 - Many thanks to [Khanh Tran](https://github.com/xxxpsyduck) for contributing the English documentation.
+- Many thanks to [zhangxin](https://github.com/ZhangXinNan) for contributing the new visualize function、add .gitgnore and discard set PYTHONPATH manually.
