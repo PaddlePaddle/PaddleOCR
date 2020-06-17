@@ -182,6 +182,13 @@ self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
 dict_character = list(self.character_str)
 ```
 
+### 4.Recognition model inference using custom text dictionary file
+If the text dictionary is replaced during training, you need to specify the text dictionary path by setting the parameter `rec_char_dict_path` when using your inference model to predict.
+
+```
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="en" --rec_char_dict_path="your text dict path"
+```
+
 ## Text detection and recognition inference concatenation
 
 ### 1. Ultra-lightweight Chinese OCR model inference

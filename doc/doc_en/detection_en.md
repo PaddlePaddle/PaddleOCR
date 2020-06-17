@@ -69,6 +69,17 @@ You can also use the `-o` parameter to change the training parameters without mo
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
 ```
 
+**load trained model and conntinue training**
+If you expect to load trained model and continue the training again, you can specify the `Global.checkpoints` parameter as the model path to be loaded.
+
+For example:
+```
+python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./your/trained/model
+```
+
+**Note**:The priority of Global.checkpoints is higher than the priority of Global.pretrain_weights, that is, when two parameters are specified at the same time, the model specified by Global.checkpoints will be loaded first. If the model path specified by Global.checkpoints is wrong, the one specified by Global.pretrain_weights will be loaded.
+
+
 ## Evaluation Indicator
 
 PaddleOCR calculates three indicators for evaluating performance of OCR detection task: Precision, Recall, and Hmean.
