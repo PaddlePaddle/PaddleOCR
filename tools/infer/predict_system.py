@@ -30,6 +30,7 @@ import time
 from ppocr.utils.utility import get_image_file_list
 from PIL import Image
 from tools.infer.utility import draw_ocr
+from tools.infer.utility import draw_ocr_box_txt
 
 
 class TextSystem(object):
