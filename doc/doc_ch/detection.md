@@ -23,7 +23,7 @@ wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dataset/test_icdar2015_la
   └─ test_icdar2015_label.txt     icdar数据集的测试标注
 ```
 
-提供的标注文件格式为：
+提供的标注文件格式为，其中中间是"\t"分隔：
 ```
 " 图像文件名                    json.dumps编码的图像标注信息"
 ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]], ...}]
