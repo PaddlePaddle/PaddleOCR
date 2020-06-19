@@ -125,8 +125,8 @@ class DBProcessTest(object):
     def __init__(self, params):
         super(DBProcessTest, self).__init__()
         self.resize_type = 0
-        if 'det_image_shape' in params:
-            self.image_shape = params['det_image_shape']
+        if 'test_image_shape' in params:
+            self.image_shape = params['test_image_shape']
             # print(self.image_shape)
             self.resize_type = 1
         if 'max_side_len' in params:

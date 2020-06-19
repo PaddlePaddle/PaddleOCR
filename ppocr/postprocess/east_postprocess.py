@@ -20,6 +20,13 @@ import numpy as np
 from .locality_aware_nms import nms_locality
 import cv2
 
+import os
+import sys
+__dir__ = os.path.dirname(__file__)
+sys.path.append(__dir__)
+sys.path.append(os.path.join(__dir__, '..'))
+import lanms
+
 
 class EASTPostPocess(object):
     """
@@ -66,7 +73,8 @@ class EASTPostPocess(object):
         boxes = np.zeros((text_box_restored.shape[0], 9), dtype=np.float32)
         boxes[:, :8] = text_box_restored.reshape((-1, 8))
         boxes[:, 8] = score_map[xy_text[:, 0], xy_text[:, 1]]
-        boxes = nms_locality(boxes.astype(np.float64), nms_thresh)
+        # boxes = nms_locality(boxes.astype(np.float64), nms_thresh)
+        boxes = lanms.merge_quadrangle_n9(boxes, nms_thresh)
         if boxes.shape[0] == 0:
             return []
         # Here we filter some low score boxes by the average score map, 
