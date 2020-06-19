@@ -57,8 +57,9 @@ https://aistudio.baidu.com/aistudio/datasetdetail/8429
     ![](../datasets/ArT.jpg)
 - **下载地址**：https://ai.baidu.com/broad/download?dataset=art
 
+## 参考文献
+```
 ICDAR 2019-LSVT Challenge:
-
 @article{sun2019icdar,
   title={ICDAR 2019 Competition on Large-scale Street View Text with Partial Labeling--RRC-LSVT},
   author={Sun, Yipeng and Ni, Zihan and Chng, Chee-Kheng and Liu, Yuliang and Luo, Canjie and Ng, Chun Chet and Han, Junyu and Ding, Errui and Liu, Jingtuo and Karatzas, Dimosthenis and others},
@@ -73,3 +74,4 @@ ICDAR 2019-ArT challenge
   journal={arXiv preprint arXiv:1909.07145},
   year={2019}
 }
+```
