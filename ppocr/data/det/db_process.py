@@ -104,7 +104,7 @@ class DBProcessTrain(object):
         if imgvalue is None:
             logger.info("{} does not exist!".format(img_path))
             return None
-        if len(list(imgvalue.shape)) == 2 or imgvalue.shape[2] == 1:
+        elif len(list(imgvalue.shape)) == 2 or imgvalue.shape[2] == 1:
             imgvalue = cv2.cvtColor(imgvalue, cv2.COLOR_GRAY2BGR)
         data = self.make_data_dict(imgvalue, gt_label)
         data = AugmentData(data)
