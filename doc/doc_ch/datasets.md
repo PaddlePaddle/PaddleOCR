@@ -56,3 +56,20 @@ https://aistudio.baidu.com/aistudio/datasetdetail/8429
 - **数据简介**：共包含10,166张图像，训练集5603图，测试集4563图。由Total-Text、SCUT-CTW1500、Baidu Curved Scene Text三部分组成，包含水平、多方向和弯曲等多种形状的文本。
     ![](../datasets/ArT.jpg)
 - **下载地址**：https://ai.baidu.com/broad/download?dataset=art
+
+ICDAR 2019-LSVT Challenge:
+
+@article{sun2019icdar,
+  title={ICDAR 2019 Competition on Large-scale Street View Text with Partial Labeling--RRC-LSVT},
+  author={Sun, Yipeng and Ni, Zihan and Chng, Chee-Kheng and Liu, Yuliang and Luo, Canjie and Ng, Chun Chet and Han, Junyu and Ding, Errui and Liu, Jingtuo and Karatzas, Dimosthenis and others},
+  journal={arXiv preprint arXiv:1909.07741},
+  year={2019}
+}
+
+ICDAR 2019-ArT challenge
+@article{chng2019icdar2019,
+  title={ICDAR2019 Robust Reading Challenge on Arbitrary-Shaped Text (RRC-ArT)},
+  author={Chng, Chee-Kheng and Liu, Yuliang and Sun, Yipeng and Ng, Chun Chet and Luo, Canjie and Ni, Zihan and Fang, ChuanMing and Zhang, Shuaitao and Han, Junyu and Ding, Errui and others},
+  journal={arXiv preprint arXiv:1909.07145},
+  year={2019}
+}
