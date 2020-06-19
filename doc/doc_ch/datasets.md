@@ -59,7 +59,7 @@ https://aistudio.baidu.com/aistudio/datasetdetail/8429
 
 ## 参考文献
 ```
-ICDAR 2019-LSVT Challenge:
+**ICDAR 2019-LSVT Challenge**
 @article{sun2019icdar,
   title={ICDAR 2019 Competition on Large-scale Street View Text with Partial Labeling--RRC-LSVT},
   author={Sun, Yipeng and Ni, Zihan and Chng, Chee-Kheng and Liu, Yuliang and Luo, Canjie and Ng, Chun Chet and Han, Junyu and Ding, Errui and Liu, Jingtuo and Karatzas, Dimosthenis and others},
@@ -67,7 +67,7 @@ ICDAR 2019-LSVT Challenge:
   year={2019}
 }
 
-ICDAR 2019-ArT challenge
+**ICDAR 2019-ArT Challenge**
 @article{chng2019icdar2019,
   title={ICDAR2019 Robust Reading Challenge on Arbitrary-Shaped Text (RRC-ArT)},
   author={Chng, Chee-Kheng and Liu, Yuliang and Sun, Yipeng and Ng, Chun Chet and Luo, Canjie and Ni, Zihan and Fang, ChuanMing and Zhang, Shuaitao and Han, Junyu and Ding, Errui and others},
