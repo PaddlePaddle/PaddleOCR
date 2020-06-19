@@ -15,6 +15,8 @@
 import math
 import cv2
 import numpy as np
+from ppocr.utils.utility import initial_logger
+logger = initial_logger()
 
 
 def get_bounding_box_rect(pos):
@@ -101,9 +103,13 @@ def process_image(img,
         norm_img = resize_norm_img_chinese(img, image_shape)
     norm_img = norm_img[np.newaxis, :]
     if label is not None:
-        char_num = char_ops.get_char_num()
+        # char_num = char_ops.get_char_num()
         text = char_ops.encode(label)
         if len(text) == 0 or len(text) > max_text_length:
+            logger.info(
+                "Warning in ppocr/data/rec/img_tools.py:line106: Wrong data type."
+                "Excepted string with length between 0 and {}, but "
+                "got '{}' ".format(max_text_length, label))
             return None
         else:
             if loss_type == "ctc":

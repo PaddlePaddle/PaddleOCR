@@ -23,7 +23,7 @@ wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dataset/test_icdar2015_la
   └─ test_icdar2015_label.txt     icdar数据集的测试标注
 ```
 
-提供的标注文件格式为：
+提供的标注文件格式为，其中中间是"\t"分隔：
 ```
 " 图像文件名                    json.dumps编码的图像标注信息"
 ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]], ...}]
@@ -35,7 +35,7 @@ json.dumps编码前的图像标注信息是包含多个字典的list，字典中
 
 ## 快速启动训练
 
-首先下载pretrain model，PaddleOCR的检测模型目前支持两种backbone，分别是MobileNetV3、ResNet50_vd，
+首先下载模型backbone的pretrain model，PaddleOCR的检测模型目前支持两种backbone，分别是MobileNetV3、ResNet50_vd，
 您可以根据需求使用[PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/master/ppcls/modeling/architectures)中的模型更换backbone。
 ```
 cd PaddleOCR/
@@ -62,7 +62,7 @@ tar xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_models
 *如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false*
 
 ```
-python3 tools/train.py -c configs/det/det_mv3_db.yml
+python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained/
 ```
 
 上述指令中，通过-c 选择训练使用configs/det/det_db_mv3.yml配置文件。
@@ -72,6 +72,15 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml
 ```
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
 ```
+
+**断点训练**
+
+如果训练程序中断，如果希望加载训练中断的模型从而恢复训练，可以通过指定Global.checkpoints指定要加载的模型路径：
+```
+python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./your/trained/model
+```
+
+**注意**：Global.checkpoints的优先级高于Global.pretrain_weights的优先级，即同时指定两个参数时，优先加载Global.checkpoints指定的模型，如果Global.checkpoints指定的模型路径有误，会加载Global.pretrain_weights指定的模型。
 
 ## 指标评估
 

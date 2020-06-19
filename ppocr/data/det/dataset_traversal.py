@@ -95,8 +95,10 @@ class EvalTestReader(object):
             for img_path in img_list:
                 img = cv2.imread(img_path)
                 if img is None:
-                    logger.info("load image error:" + img_path)
+                    logger.info("{} does not exist!".format(img_path))
                     continue
+                elif len(list(img.shape)) == 2 or img.shape[2] == 1:
+                    img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
                 outs = process_function(img)
                 outs.append(img_path)
                 batch_outs.append(outs)
