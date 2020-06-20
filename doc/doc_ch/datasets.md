@@ -26,9 +26,9 @@
 - **下载地址**：https://rctw.vlrlab.net/dataset/
 
 <a name="中文街景文字识别"></a>
-#### 3、中文街景文字识别
+#### 3、中文街景文字识别 
 - **数据来源**：https://aistudio.baidu.com/aistudio/competition/detail/8
-- **数据简介**：共包括29万张图片，其中21万张图片作为训练集（带标注），8万张作为测试集（无标注）。数据集采自中国街景，并由街景图片中的文字行区域（例如店铺标牌、地标等等）截取出来而形成。所有图像都经过一些预处理，将文字区域利用仿射变化，等比映射为一张高为48像素的图片，如图所示：
+- **数据简介**：ICDAR2019-LSVT行识别任务，共包括29万张图片，其中21万张图片作为训练集（带标注），8万张作为测试集（无标注）。数据集采自中国街景，并由街景图片中的文字行区域（例如店铺标牌、地标等等）截取出来而形成。所有图像都经过一些预处理，将文字区域利用仿射变化，等比映射为一张高为48像素的图片，如图所示：
     ![](../datasets/ch_street_rec_1.png)  
     (a) 标注：魅派集成吊顶  
     ![](../datasets/ch_street_rec_2.png)  
@@ -53,6 +53,27 @@ https://aistudio.baidu.com/aistudio/datasetdetail/8429
 <a name="ICDAR2019-ArT"></a>
 #### 5、ICDAR2019-ArT
 - **数据来源**：https://ai.baidu.com/broad/introduction?dataset=art
-- **数据简介**：共包含10,166张图像，训练集5603图，测试集4563图。由Total-Text、SCUT-CTW1500、Baidu Curved Scene Text三部分组成，包含水平、多方向和弯曲等多种形状的文本。
+- **数据简介**：共包含10,166张图像，训练集5603图，测试集4563图。由Total-Text、SCUT-CTW1500、Baidu Curved Scene Text (ICDAR2019-LSVT部分弯曲数据) 三部分组成，包含水平、多方向和弯曲等多种形状的文本。
     ![](../datasets/ArT.jpg)
 - **下载地址**：https://ai.baidu.com/broad/download?dataset=art
+
+## 参考文献
+**ICDAR 2019-LSVT Challenge**
+```
+@article{sun2019icdar,
+  title={ICDAR 2019 Competition on Large-scale Street View Text with Partial Labeling--RRC-LSVT},
+  author={Sun, Yipeng and Ni, Zihan and Chng, Chee-Kheng and Liu, Yuliang and Luo, Canjie and Ng, Chun Chet and Han, Junyu and Ding, Errui and Liu, Jingtuo and Karatzas, Dimosthenis and others},
+  journal={arXiv preprint arXiv:1909.07741},
+  year={2019}
+}
+```
+
+**ICDAR 2019-ArT Challenge**
+```
+@article{chng2019icdar2019,
+  title={ICDAR2019 Robust Reading Challenge on Arbitrary-Shaped Text (RRC-ArT)},
+  author={Chng, Chee-Kheng and Liu, Yuliang and Sun, Yipeng and Ng, Chun Chet and Luo, Canjie and Ni, Zihan and Fang, ChuanMing and Zhang, Shuaitao and Han, Junyu and Ding, Errui and others},
+  journal={arXiv preprint arXiv:1909.07145},
+  year={2019}
+}
+```
