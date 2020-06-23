@@ -37,6 +37,11 @@ class EASTPostPocess(object):
         self.score_thresh = params['score_thresh']
         self.cover_thresh = params['cover_thresh']
         self.nms_thresh = params['nms_thresh']
+        
+        # c++ la-nms is faster, but only support python 3.5
+        self.is_python35 = False
+        if sys.version_info.major == 3 and sys.version_info.minor == 5:
+            self.is_python35 = True
 
     def restore_rectangle_quad(self, origin, geometry):
         """
@@ -73,8 +78,10 @@ class EASTPostPocess(object):
         boxes = np.zeros((text_box_restored.shape[0], 9), dtype=np.float32)
         boxes[:, :8] = text_box_restored.reshape((-1, 8))
         boxes[:, 8] = score_map[xy_text[:, 0], xy_text[:, 1]]
-        # boxes = nms_locality(boxes.astype(np.float64), nms_thresh)
-        boxes = lanms.merge_quadrangle_n9(boxes, nms_thresh)
+        if self.is_python35:
+            boxes = lanms.merge_quadrangle_n9(boxes, nms_thresh)
+        else:
+            boxes = nms_locality(boxes.astype(np.float64), nms_thresh)
         if boxes.shape[0] == 0:
             return []
         # Here we filter some low score boxes by the average score map, 
