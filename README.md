@@ -93,6 +93,9 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_mode
 - [文本识别模型训练/评估/预测](./doc/doc_ch/recognition.md)
 - [基于预测引擎推理](./doc/doc_ch/inference.md)
 - [数据集](./doc/doc_ch/datasets.md)
+- [FAQ](#FAQ)
+- [联系我们](#欢迎加入PaddleOCR技术交流群)
+- [参考文献](#参考文献)
 
 ## 文本检测算法
 
@@ -170,6 +173,7 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 ![](doc/imgs_results/chinese_db_crnn_server/2.jpg)
 ![](doc/imgs_results/chinese_db_crnn_server/8.jpg)
 
+<a name="FAQ"></a>
 ## FAQ
 1. **转换attention识别模型时报错：KeyError: 'predict'**  
 问题已解，请更新到最新代码。  
@@ -185,9 +189,12 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 
 [more](./doc/doc_ch/FAQ.md)
 
+<a name="欢迎加入PaddleOCR技术交流群"></a>
 ## 欢迎加入PaddleOCR技术交流群
-加微信：paddlehelp，备注OCR，小助手拉你进群～
+扫描二维码或者加微信：paddlehelp，备注OCR，小助手拉你进群～  
+<img src="./doc/paddlehelp.jpg"  width = "200" height = "200" />
 
+<a name="参考文献"></a>
 ## 参考文献
 ```
 1. EAST:

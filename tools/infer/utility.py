@@ -88,10 +88,10 @@ def create_predictor(args, mode):
 
     if args.use_gpu:
         config.enable_use_gpu(args.gpu_mem, 0)
-        config.enable_memory_optim()
     else:
         config.disable_gpu()
 
+    config.enable_memory_optim()
     config.disable_glog_info()
 
     # use zero copy
