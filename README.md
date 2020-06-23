@@ -94,8 +94,8 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_mode
 - [基于预测引擎推理](./doc/doc_ch/inference.md)
 - [数据集](./doc/doc_ch/datasets.md)
 - [FAQ](#FAQ)
-- [参考文献](#参考文献)
 - [联系我们](#欢迎加入PaddleOCR技术交流群)
+- [参考文献](#参考文献)
 
 ## 文本检测算法
 
