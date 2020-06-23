@@ -18,6 +18,7 @@ from __future__ import print_function
 
 import paddle.fluid as fluid
 from ..common_functions import conv_bn_layer, deconv_bn_layer
+from collections import OrderedDict
 
 
 class EASTHead(object):
@@ -110,7 +111,7 @@ class EASTHead(object):
     def __call__(self, inputs):
         f_common = self.unet_fusion(inputs)
         f_score, f_geo = self.detector_header(f_common)
-        predicts = {}
+        predicts = OrderedDict()
         predicts['f_score'] = f_score
         predicts['f_geo'] = f_geo
         return predicts
