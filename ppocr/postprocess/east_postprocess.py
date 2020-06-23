@@ -25,7 +25,6 @@ import sys
 __dir__ = os.path.dirname(__file__)
 sys.path.append(__dir__)
 sys.path.append(os.path.join(__dir__, '..'))
-import lanms
 
 
 class EASTPostPocess(object):
@@ -79,6 +78,7 @@ class EASTPostPocess(object):
         boxes[:, :8] = text_box_restored.reshape((-1, 8))
         boxes[:, 8] = score_map[xy_text[:, 0], xy_text[:, 1]]
         if self.is_python35:
+            import lanms
             boxes = lanms.merge_quadrangle_n9(boxes, nms_thresh)
         else:
             boxes = nms_locality(boxes.astype(np.float64), nms_thresh)
