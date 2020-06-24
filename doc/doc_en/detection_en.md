@@ -33,7 +33,7 @@ The image annotation after json.dumps() encoding is a list containing multiple d
 If you want to train PaddleOCR on other datasets, you can build the annotation file according to the above format.
 
 
-## QUICKSTART
+## TRAINING
 
 First download the pretrained model. The detection model of PaddleOCR currently supports two backbones, namely MobileNetV3 and ResNet50_vd. You can use the model in [PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/master/ppcls/modeling/architectures) to replace backbone according to your needs.
 ```

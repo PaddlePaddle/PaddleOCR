@@ -1,5 +1,5 @@
 
-# Prediction from inference model
+# PREDICTION FROM INFERENCE MODEL
 
 The inference model (the model saved by fluid.io.save_inference_model) is generally a solidified model saved after the model training is completed, and is mostly used to give prediction in deployment.
 
@@ -9,7 +9,7 @@ Compared with the checkpoints model, the inference model will additionally save 
 
 Next, we first introduce how to convert a trained model into an inference model, and then we will introduce text detection, text recognition, and the concatenation of them based on inference model.
 
-## Convert training model to inference model
+## CONVERT TRAINING MODEL TO INFERENCE MODEL
 ### Convert detection model to inference model
 
 Download the lightweight Chinese detection model:
@@ -51,11 +51,11 @@ After the conversion is successful, there are two files in the directory:
   └─  params    Identify the parameter files of the inference model
 ```
 
-## Text detection model inference
+## TEXT DETECTION MODEL INFERENCE
 
 The following will introduce the lightweight Chinese detection model inference, DB text detection model inference and EAST text detection model inference. The default configuration is based on the inference setting of the DB text detection model. Because EAST and DB algorithms are very different, when inference, it is necessary to adapt the EAST text detection algorithm by passing in corresponding parameters.
 
-### 1. lightweight Chinese detection model inference
+### 1. LIGHTWEIGHT CHINESE DETECTION MODEL INFERENCE
 
 For lightweight Chinese detection model inference, you can execute the following commands:
 
@@ -78,7 +78,7 @@ If you want to use the CPU for prediction, execute the command as follows
 python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --use_gpu=False
 ```
 
-### 2. DB text detection model inference
+### 2. DB TEXT DETECTION MODEL INFERENCE
 
 First, convert the model saved in the DB text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the ICDAR2015 English dataset as an example ([model download link](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar)), you can use the following command to convert:
 
@@ -102,7 +102,7 @@ The visualized text detection results are saved to the `./inference_results` fol
 
 **Note**: Since the ICDAR2015 dataset has only 1,000 training images, mainly for English scenes, the above model has very poor detection result on Chinese text images.
 
-### 3. EAST text detection model inference
+### 3. EAST TEXT DETECTION MODEL INFERENCE
 
 First, convert the model saved in the EAST text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the ICDAR2015 English dataset as an example ([model download link](https://paddleocr.bj.bcebos.com/det_r50_vd_east.tar)), you can use the following command to convert:
 
@@ -126,7 +126,7 @@ The visualized text detection results are saved to the `./inference_results` fol
 **Note**: The Python version of NMS in EAST post-processing used in this codebase so the prediction speed is quite slow. If you use the C++ version, there will be a significant speedup.
 
 
-## Text recognition model inference
+## TEXT RECOGNITION MODEL INFERENCE
 
 The following will introduce the lightweight Chinese recognition model inference, other CTC-based and Attention-based text recognition models inference. For Chinese text recognition, it is recommended to choose the recognition model based on CTC loss. In practice, it is also found that the result of the model based on Attention loss is not as good as the one based on CTC loss. In addition, if the characters dictionary is modified during training, make sure that you use the same characters set during inferencing. Please check below for details.
 
