@@ -59,7 +59,13 @@ def cal_det_res(exe, config, eval_info_dict):
                 img_list.append(data[ino][0])
                 ratio_list.append(data[ino][1])
                 img_name_list.append(data[ino][2])
-            img_list = np.concatenate(img_list, axis=0)
+            try:
+                img_list = np.concatenate(img_list, axis=0)
+            except:
+                err = "concatenate error usually caused by different input image shapes.\n \
+                Please set \"test_batch_size_per_card\" in main yml as 1\n \
+                or add \"test_image_shape: [h, w]\" in reader yml for EvalReader."
+                raise Exception(err)
             outs = exe.run(eval_info_dict['program'], \
                            feed={'image': img_list}, \
                            fetch_list=eval_info_dict['fetch_varname_list'])
