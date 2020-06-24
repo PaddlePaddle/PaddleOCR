@@ -62,7 +62,7 @@ def cal_det_res(exe, config, eval_info_dict):
             try:
                 img_list = np.concatenate(img_list, axis=0)
             except:
-                err = "concatenate error usually caused by different input image shapes.\n \
+                err = "concatenate error usually caused by different input image shapes in evaluation or testing.\n \
                 Please set \"test_batch_size_per_card\" in main yml as 1\n \
                 or add \"test_image_shape: [h, w]\" in reader yml for EvalReader."
                 raise Exception(err)
