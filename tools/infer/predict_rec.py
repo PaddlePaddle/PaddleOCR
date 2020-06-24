@@ -64,11 +64,11 @@ class TextRecognizer(object):
 
     def __call__(self, img_list):
         img_num = len(img_list)
-        # 统计所有文本条的宽高比
+        # Calculate the aspect ratio of all text bars
         width_list = []
         for img in img_list:
             width_list.append(img.shape[1] / float(img.shape[0]))
-        # 对于文本框比较多且长短差异较大的情况下，通过排序再组合batch可以明显加速识别
+        # Sorting can be accelerated
         indices = np.argsort(np.array(width_list))
 
         # rec_res = []
@@ -80,13 +80,13 @@ class TextRecognizer(object):
             norm_img_batch = []
             max_wh_ratio = 0
             for ino in range(beg_img_no, end_img_no):
-                h, w = img_list[ino].shape[0:2]
-                # h, w = img_list[indices[ino]].shape[0:2]
+                # h, w = img_list[ino].shape[0:2]
+                h, w = img_list[indices[ino]].shape[0:2]
                 wh_ratio = w * 1.0 / h
                 max_wh_ratio = max(max_wh_ratio, wh_ratio)
             for ino in range(beg_img_no, end_img_no):
-                norm_img = self.resize_norm_img(img_list[ino], max_wh_ratio)
-                # norm_img = self.resize_norm_img(img_list[indices[ino]], max_wh_ratio)
+                # norm_img = self.resize_norm_img(img_list[ino], max_wh_ratio)
+                norm_img = self.resize_norm_img(img_list[indices[ino]], max_wh_ratio)
                 norm_img = norm_img[np.newaxis, :]
                 norm_img_batch.append(norm_img)
             norm_img_batch = np.concatenate(norm_img_batch)
