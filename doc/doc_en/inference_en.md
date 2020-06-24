@@ -5,14 +5,14 @@ The inference model (the model saved by fluid.io.save_inference_model) is genera
 
 The model saved during the training process is the checkpoints model, which saves the parameters of the model and is mostly used to resume training.
 
-Compared with the checkpoints model, the inference model will additionally save the structural information of the model. It has superior performance in predicting in deployment and accelerating inferencing, is flexible and convenient, and is suitable for integration with actual systems. For more details, please refer to the document [Classification prediction framework](https://paddleclas.readthedocs.io/zh_CN/latest/extension/paddle_inference.html).
+Compared with the checkpoints model, the inference model will additionally save the structural information of the model. It has superior performance in predicting in deployment and accelerating inferencing, is flexible and convenient, and is suitable for integration with actual systems. For more details, please refer to the document [Classification Framework](https://paddleclas.readthedocs.io/zh_CN/latest/extension/paddle_inference.html).
 
 Next, we first introduce how to convert a trained model into an inference model, and then we will introduce text detection, text recognition, and the concatenation of them based on inference model.
 
-## Training model to inference model
-### Detection model to inference model
+## Convert training model to inference model
+### Convert detection model to inference model
 
-Download the ultra-lightweight Chinese detection model:
+Download the lightweight Chinese detection model:
 ```
 wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar && tar xf ./ch_lite/ch_det_mv3_db.tar -C ./ch_lite/
 ```
@@ -29,9 +29,9 @@ inference/det_db/
   └─  params    Check the parameter file of the inference model
 ```
 
-### Recognition model to inference model
+### Convert recognition model to inference model
 
-Download the ultra-lightweight Chinese recognition model:
+Download the lightweight Chinese recognition model:
 ```
 wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar && tar xf ./ch_lite/ch_rec_mv3_crnn.tar -C ./ch_lite/
 ```
@@ -53,11 +53,11 @@ After the conversion is successful, there are two files in the directory:
 
 ## Text detection model inference
 
-The following will introduce the ultra-lightweight Chinese detection model inference, DB text detection model inference and EAST text detection model inference. The default configuration is based on the inference setting of the DB text detection model. Because EAST and DB algorithms are very different, when inference, it is necessary to adapt the EAST text detection algorithm by passing in corresponding parameters.
+The following will introduce the lightweight Chinese detection model inference, DB text detection model inference and EAST text detection model inference. The default configuration is based on the inference setting of the DB text detection model. Because EAST and DB algorithms are very different, when inference, it is necessary to adapt the EAST text detection algorithm by passing in corresponding parameters.
 
-### 1.Ultra-lightweight Chinese detection model inference
+### 1. lightweight Chinese detection model inference
 
-For ultra-lightweight Chinese detection model inference, you can execute the following commands:
+For lightweight Chinese detection model inference, you can execute the following commands:
 
 ```
 python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/"
@@ -78,7 +78,7 @@ If you want to use the CPU for prediction, execute the command as follows
 python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --use_gpu=False
 ```
 
-### 2.DB text detection model inference
+### 2. DB text detection model inference
 
 First, convert the model saved in the DB text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the ICDAR2015 English dataset as an example ([model download link](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar)), you can use the following command to convert:
 
@@ -102,7 +102,7 @@ The visualized text detection results are saved to the `./inference_results` fol
 
 **Note**: Since the ICDAR2015 dataset has only 1,000 training images, mainly for English scenes, the above model has very poor detection result on Chinese text images.
 
-### 3.EAST text detection model inference
+### 3. EAST text detection model inference
 
 First, convert the model saved in the EAST text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the ICDAR2015 English dataset as an example ([model download link](https://paddleocr.bj.bcebos.com/det_r50_vd_east.tar)), you can use the following command to convert:
 
@@ -128,12 +128,12 @@ The visualized text detection results are saved to the `./inference_results` fol
 
 ## Text recognition model inference
 
-The following will introduce the ultra-lightweight Chinese recognition model inference and CTC loss-based recognition model inference. **The recognition model inference based on Attention loss is still being debugged**. For Chinese text recognition, it is recommended to choose the recognition model based on CTC loss. In practice, it is also found that the result of the model based on Attention loss is not as good as the one based on CTC loss.
+The following will introduce the lightweight Chinese recognition model inference, other CTC-based and Attention-based text recognition models inference. For Chinese text recognition, it is recommended to choose the recognition model based on CTC loss. In practice, it is also found that the result of the model based on Attention loss is not as good as the one based on CTC loss. In addition, if the characters dictionary is modified during training, make sure that you use the same characters set during inferencing. Please check below for details.
 
 
-### 1. Ultra-lightweight Chinese recognition model inference
+### 1. LIGHTWEIGHT CHINESE TEXT RECOGNITION MODEL REFERENCE
 
-For ultra-lightweight Chinese recognition model inference, you can execute the following commands:
+For lightweight Chinese recognition model inference, you can execute the following commands:
 
 ```
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --rec_model_dir="./inference/rec_crnn/"
@@ -146,7 +146,7 @@ After executing the command, the prediction results (recognized text and score) 
 Predicts of ./doc/imgs_words/ch/word_4.jpg:['实力活力', 0.89552695]
 
 
-### 2. Recognition model inference based on CTC loss
+### 2. CTC-BASED TEXT RECOGNITION MODEL INFERENCE
 
 Taking STAR-Net as an example, we introduce the recognition model inference based on CTC loss. CRNN and Rosetta are used in a similar way, by setting the recognition algorithm parameter `rec_algorithm`.
 
@@ -165,13 +165,15 @@ For STAR-Net text recognition model inference, execute the following commands:
 ```
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./inference/starnet/" --rec_image_shape="3, 32, 100" --rec_char_type="en"
 ```
+
+### 3. ATTENTION-BASED TEXT RECOGNITION MODEL INFERENCE
 ![](../imgs_words_en/word_336.png)
 
 After executing the command, the recognition result of the above image is as follows:
 
 Predicts of ./doc/imgs_words_en/word_336.png:['super', 0.9999555]
 
-**Note**：Since the above model refers to [DTRB](https://arxiv.org/abs/1904.01906) text recognition training and evaluation process, it is different from the training of ultra-lightweight Chinese recognition model in two aspects:
+**Note**：Since the above model refers to [DTRB](https://arxiv.org/abs/1904.01906) text recognition training and evaluation process, it is different from the training of lightweight Chinese recognition model in two aspects:
 
 - The image resolution used in training is different: the image resolution used in training the above model is [3，32，100], while during our Chinese model training, in order to ensure the recognition effect of long text, the image resolution used in training is [3, 32, 320]. The default shape parameter of the inference stage is the image resolution used in training phase, that is [3, 32, 320]. Therefore, when running inference of the above English model here, you need to set the shape of the recognition image through the parameter `rec_image_shape`.
 
@@ -182,18 +184,18 @@ self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
 dict_character = list(self.character_str)
 ```
 
-### 4.Recognition model inference using custom text dictionary file
-If the text dictionary is replaced during training, you need to specify the text dictionary path by setting the parameter `rec_char_dict_path` when using your inference model to predict.
+### 4. TEXT RECOGNITION MODEL INFERENCE USING CUSTOM CHARACTERS DICTIONARY
+If the chars dictionary is modified during training, you need to specify the new dictionary path by setting the parameter `rec_char_dict_path` when using your inference model to predict.
 
 ```
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="en" --rec_char_dict_path="your text dict path"
 ```
 
-## Text detection and recognition inference concatenation
+## TEXT DETECTION AND RECOGNITION INFERENCE CONCATENATION
 
-### 1. Ultra-lightweight Chinese OCR model inference
+### 1. LIGHTWEIGHT CHINESE MODEL
 
-When performing prediction, you need to specify the path of a single image or a collection of images through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to detect the inference model, and the parameter `rec_model_dir` specifies the path to identify the inference model. The visual recognition results are saved to the `./inference_results` folder by default.
+When performing prediction, you need to specify the path of a single image or a folder of images through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to detect the inference model, and the parameter `rec_model_dir` specifies the path to identify the inference model. The visualized recognition results are saved to the `./inference_results` folder by default.
 
 ```
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/"  --rec_model_dir="./inference/rec_crnn/"
@@ -203,7 +205,7 @@ After executing the command, the recognition result image is as follows:
 
 ![](../imgs_results/2.jpg)
 
-### 2. Other model inference
+### 2. OTHER MODELS
 
 If you want to try other detection algorithms or recognition algorithms, please refer to the above text detection model inference and text recognition model inference, update the corresponding configuration and model, the following command uses the combination of the EAST text detection and STAR-Net text recognition:
 

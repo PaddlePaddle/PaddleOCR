@@ -190,8 +190,9 @@ Please refer to the document for training guide and use of PaddleOCR text recogn
 [more](./doc/doc_en/FAQ_en.md)
 
 ## Welcome to the PaddleOCR technical exchange group
-WeChat: paddlehelp . remarks OCR, the assistant will invite you to join the group~
+WeChat: paddlehelp, note OCR, our assistant will get you into the group~
 
+<img src="./doc/paddlehelp.jpg"  width = "200" height = "200" />
 
 ## References
 ```

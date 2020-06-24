@@ -49,3 +49,7 @@ At present, the open source model, dataset and magnitude are as follows:
 Error message: Input(X) dims[3] and Input(Grid) dims[2] should be equal, but received X dimension[3](108) != Grid dimension[2](100)
 
 Solution：TPS does not support variable shape. Please set --rec_image_shape='3,32,100' and --rec_char_type='en'
+
+11. **Custom dictionary used during training, the recognition results show that words do not appear in the dictionary**
+
+The used custom dictionary path is not set when making prediction. The solution is setting parameter `rec_char_dict_path` to the corresponding dictionary file.

@@ -1,4 +1,4 @@
-## Quick installation
+## QUICK INSTALLATION
 
 After testing, paddleocr can run on glibc 2.23. You can also test other glibc versions or install glic 2.23 for the best compatibility.
 
@@ -60,7 +60,7 @@ python3 -m pip install paddlepaddle-gpu==1.7.2.post107 -i https://pypi.tuna.tsin
 For more software version requirements, please refer to the instructions in [Installation Document](https://www.paddlepaddle.org.cn/install/quick) for operation.
 
 
-3. Clone PaddleOCR repo code
+3. Clone PaddleOCR repo
 ```
 # Recommend
 git clone https://github.com/PaddlePaddle/PaddleOCR

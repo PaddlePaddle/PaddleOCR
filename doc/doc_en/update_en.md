@@ -1,4 +1,4 @@
-# Recent updates
+# RECENT UPDATES
 
 - 2020.6.5 Support exporting `attention` model to `inference_model`
 - 2020.6.5 Support separate prediction and recognition, output result score

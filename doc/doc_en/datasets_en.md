@@ -1,4 +1,4 @@
-## Dataset
+## DATASET
 This is a collection of commonly used Chinese datasets, which is being updated continuously. You are welcome to contribute to this list～
 - [ICDAR2019-LSVT](#ICDAR2019-LSVT)
 - [ICDAR2017-RCTW-17](#ICDAR2017-RCTW-17)
