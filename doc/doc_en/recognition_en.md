@@ -10,7 +10,7 @@ Please organize the dataset as follows:
 The default storage path for training data is `PaddleOCR/train_data`, if you already have a dataset on your disk, just create a soft link to the dataset directory:
 
 ```
-ln -sf <path/to/dataset> <path/to/paddle_detection>/train_data/dataset
+ln -sf <path/to/dataset> <path/to/paddle_ocr>/train_data/dataset
 ```
 
 
