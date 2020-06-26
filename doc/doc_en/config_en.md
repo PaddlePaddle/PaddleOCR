@@ -1,4 +1,4 @@
-# Optional parameters list
+# OPTIONAL PARAMETERS LIST
 
 The following list can be viewed via `--help`
 
@@ -8,7 +8,7 @@ The following list can be viewed via `--help`
 |          -o              |      ALL       |  set configuration options  |  None  |  Configuration using -o has higher priority than the configuration file selected with -c. E.g: `-o Global.use_gpu=false`  |  
 
 
-## Introduction to Global Parameters of Configuration File
+## INTRODUCTION TO GLOBAL PARAMETERS OF CONFIGURATION FILE
 
 Take `rec_chinese_lite_train.yml` as an example
 
@@ -35,7 +35,7 @@ Take `rec_chinese_lite_train.yml` as an example
 |      checkpoints         |    Load saved model path            |       None        |    Used to load saved parameters to continue training after interruption |
 |      save_inference_dir  |   path to save model for inference |          None        |   Use to save inference model |
 
-## Introduction to Reader parameters of Configuration file
+## INTRODUCTION TO READER PARAMETERS OF CONFIGURATION FILE
 
 Take `rec_chinese_reader.yml` as an example:
 
@@ -47,7 +47,7 @@ Take `rec_chinese_reader.yml` as an example:
 |      label_file_path      |    Groundtruth file path           |       ./train_data/rec_gt_train.txt| \    |
 |      infer_img            |    Result folder path     |       ./infer_img | \|
 
-## Introduction to Optimizer parameters of Configuration file
+## INTRODUCTION TO OPTIMIZER PARAMETERS OF CONFIGURATION FILE
 
 Take `rec_icdar15_train.yml` as an example:
 

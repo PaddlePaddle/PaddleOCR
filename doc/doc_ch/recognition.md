@@ -10,7 +10,7 @@ PaddleOCR 支持两种数据格式: `lmdb` 用于训练公开数据，调试算�
 训练数据的默认存储路径是 `PaddleOCR/train_data`,如果您的磁盘上已有数据集，只需创建软链接至数据集目录：
 
 ```
-ln -sf <path/to/dataset> <path/to/paddle_detection>/train_data/dataset
+ln -sf <path/to/dataset> <path/to/paddle_ocr>/train_data/dataset
 ```
 
 

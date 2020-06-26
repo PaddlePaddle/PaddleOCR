@@ -83,7 +83,7 @@ def eval_rec_run(exe, config, eval_info_dict, mode):
 
 
 def test_rec_benchmark(exe, config, eval_info_dict):
-    " 评估lmdb 数据"
+    " Evaluate lmdb dataset "
     eval_data_list = ['IIIT5k_3000', 'SVT', 'IC03_860', 'IC03_867', \
                       'IC13_857', 'IC13_1015', 'IC15_1811', 'IC15_2077', 'SVTP', 'CUTE80']
     eval_data_dir = config['TestReader']['lmdb_sets_dir']

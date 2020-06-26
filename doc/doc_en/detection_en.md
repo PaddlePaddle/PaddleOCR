@@ -1,8 +1,8 @@
-# Text detection
+# TEXT DETECTION
 
 This section uses the icdar15 dataset as an example to introduce the training, evaluation, and testing of the detection model in PaddleOCR.
 
-## Data preparation
+## DATA PREPARATION
 The icdar2015 dataset can be obtained from [official website](https://rrc.cvc.uab.es/?ch=4&com=downloads). Registration is required for downloading.
 
 Decompress the downloaded dataset to the working directory, assuming it is decompressed under PaddleOCR/train_data/. In addition, PaddleOCR organizes many scattered annotation files into two separate annotation files for train and test respectively, which can be downloaded by wget:
@@ -27,13 +27,13 @@ The provided annotation file format is as follow:
 " Image file name             Image annotation information encoded by json.dumps"
 ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]], ...}]
 ```
-The image annotation information before json.dumps encoding is a list containing multiple dictionaries. The `points` in the dictionary represent the coordinates (x, y) of the four points of the text box, arranged clockwise from the point at the upper left corner.
+The image annotation after json.dumps() encoding is a list containing multiple dictionaries. The `points` in the dictionary represent the coordinates (x, y) of the four points of the text box, arranged clockwise from the point at the upper left corner.
 
 `transcription` represents the text of the current text box, and this information is not needed in the text detection task.
 If you want to train PaddleOCR on other datasets, you can build the annotation file according to the above format.
 
 
-## Quickstart training
+## TRAINING
 
 First download the pretrained model. The detection model of PaddleOCR currently supports two backbones, namely MobileNetV3 and ResNet50_vd. You can use the model in [PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/master/ppcls/modeling/architectures) to replace backbone according to your needs.
 ```
@@ -56,7 +56,7 @@ tar xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_models
 
 ```
 
-**Start training**
+**START TRAINING**
 ```
 python3 tools/train.py -c configs/det/det_mv3_db.yml
 ```
@@ -80,7 +80,7 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./you
 **Note**:The priority of Global.checkpoints is higher than the priority of Global.pretrain_weights, that is, when two parameters are specified at the same time, the model specified by Global.checkpoints will be loaded first. If the model path specified by Global.checkpoints is wrong, the one specified by Global.pretrain_weights will be loaded.
 
 
-## Evaluation Indicator
+## EVALUATION
 
 PaddleOCR calculates three indicators for evaluating performance of OCR detection task: Precision, Recall, and Hmean.
 
@@ -100,7 +100,7 @@ python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="./ou
 
 * Note: box_thresh and unclip_ratio are parameters required for DB post-processing, and not need to be set when evaluating the EAST model.
 
-## Test detection result
+## TEST DETECTION RESULT
 
 Test the detection result on a single image:
 ```

@@ -1,18 +1,18 @@
 English | [简体中文](README.md)
 
-## Introduction
+## INTRODUCTION
 PaddleOCR aims to create a rich, leading, and practical OCR tools that help users train better models and apply them into practice.
 
 **Recent updates**
 - 2020.6.8 Add [dataset](./doc/doc_en/datasets_en.md) and keep updating
 - 2020.6.5 Support exporting `attention` model to `inference_model`
 - 2020.6.5 Support separate prediction and recognition, output result score
-- 2020.5.30 Provide ultra-lightweight Chinese OCR online experience
+- 2020.5.30 Provide lightweight Chinese OCR online experience
 - 2020.5.30 Model prediction and training supported on Windows system
 - [more](./doc/doc_en/update_en.md)
 
-## Features
-- Ultra-lightweight Chinese OCR model, total model size is only 8.6M
+## FEATURES
+- Lightweight Chinese OCR model, total model size is only 8.6M
     - Single model supports Chinese and English numbers combination recognition, vertical text recognition, long text recognition
     - Detection model DB (4.1M) + recognition model CRNN (4.5M)
 - Various text detection algorithms: EAST, DB
@@ -22,34 +22,34 @@ PaddleOCR aims to create a rich, leading, and practical OCR tools that help user
 
 |Model Name|Description |Detection Model link|Recognition Model link|
 |-|-|-|-|
-|chinese_db_crnn_mobile|Ultra-lightweight Chinese OCR model|[inference model](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db_infer.tar) & [pre-trained model](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar)|[inference model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar) & [pre-trained model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|
+|chinese_db_crnn_mobile|lightweight Chinese OCR model|[inference model](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db_infer.tar) & [pre-trained model](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar)|[inference model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar) & [pre-trained model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|
 |chinese_db_crnn_server|General Chinese OCR model|[inference model](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db_infer.tar) & [pre-trained model](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db.tar)|[inference model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_infer.tar) & [pre-trained model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn.tar)|
 
 
 For testing our Chinese OCR online：https://www.paddlepaddle.org.cn/hub/scene/ocr
 
-**You can also quickly experience the Ultra-lightweight Chinese OCR and General Chinese OCR models as follows:**
+**You can also quickly experience the lightweight Chinese OCR and General Chinese OCR models as follows:**
 
-## **Ultra-lightweight Chinese OCR and General Chinese OCR inference**
+## **LIGHTWEIGHT CHINESE OCR AND GENERAL CHINESE OCR INFERENCE**
 
 ![](doc/imgs_results/11.jpg)
 
-The picture above is the result of our Ultra-lightweight Chinese OCR model. For more testing results, please see the end of the article [Ultra-lightweight Chinese OCR results](#Ultra-lightweight-Chinese-OCR-results) and [General Chinese OCR results](#General-Chinese-OCR-results).
+The picture above is the result of our lightweight Chinese OCR model. For more testing results, please see the end of the article [lightweight Chinese OCR results](#lightweight-Chinese-OCR-results) and [General Chinese OCR results](#General-Chinese-OCR-results).
 
-#### 1. Environment configuration
+#### 1. ENVIRONMENT CONFIGURATION
 
 Please see [Quick installation](./doc/doc_en/installation_en.md)
 
-#### 2. Download inference models
+#### 2. DOWNLOAD INFERENCE MODELS
 
-#### (1) Download Ultra-lightweight Chinese OCR models
+#### (1) Download lightweight Chinese OCR models
 *If wget is not installed in the windows system, you can copy the link to the browser to download the model. After model downloaded, unzip it and place it in the corresponding directory*
 
 ```
 mkdir inference && cd inference
-# Download the detection part of the Ultra-lightweight Chinese OCR and decompress it
+# Download the detection part of the lightweight Chinese OCR and decompress it
 wget https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db_infer.tar && tar xf ch_det_mv3_db_infer.tar
-# Download the recognition part of the Ultra-lightweight Chinese OCR and decompress it
+# Download the recognition part of the lightweight Chinese OCR and decompress it
 wget https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar xf ch_rec_mv3_crnn_infer.tar
 cd ..
 ```
@@ -63,7 +63,7 @@ wget https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_infer.tar && t
 cd ..
 ```
 
-#### 3. Single image and batch image prediction
+#### 3. SINGLE IMAGE AND BATCH PREDICTION
 
 The following code implements text detection and recognition inference tandemly. When performing prediction, you need to specify the path of a single image or image folder through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to detection model, and the parameter `rec_model_dir` specifies the path to the recognition model. The visual prediction results are saved to the `./inference_results` folder by default.
 
@@ -87,14 +87,14 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_mode
 
 For more text detection and recognition models, please refer to the document [Inference](./doc/doc_en/inference_en.md)
 
-## Documentation
+## DOCUMENTATION
 - [Quick installation](./doc/doc_en/installation_en.md)
 - [Text detection model training/evaluation/prediction](./doc/doc_en/detection_en.md)
 - [Text recognition model training/evaluation/prediction](./doc/doc_en/recognition_en.md)
 - [Inference](./doc/doc_en/inference_en.md)
 - [Dataset](./doc/doc_en/datasets_en.md)
 
-## Text detection algorithm
+## TEXT DETECTION ALGORITHM
 
 PaddleOCR open source text detection algorithms list:
 - [x]  EAST([paper](https://arxiv.org/abs/1704.03155))
@@ -113,14 +113,14 @@ On the ICDAR2015 dataset, the text detection result is as follows:
 For use of [LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/datasets_en.md#1-icdar2019-lsvt) street view dataset with a total of 3w training data，the related configuration and pre-trained models for Chinese detection task are as follows:
 |Model|Backbone|Configuration file|Pre-trained model|
 |-|-|-|-|
-|Ultra-lightweight Chinese model|MobileNetV3|det_mv3_db.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar)|
+|lightweight Chinese model|MobileNetV3|det_mv3_db.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar)|
 |General Chinese OCR model|ResNet50_vd|det_r50_vd_db.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db.tar)|
 
 * Note: For the training and evaluation of the above DB model, post-processing parameters box_thresh=0.6 and unclip_ratio=1.5 need to be set. If using different datasets and different models for training, these two parameters can be adjusted for better result.
 
 For the training guide and use of PaddleOCR text detection algorithms, please refer to the document [Text detection model training/evaluation/prediction](./doc/doc_en/detection_en.md)
 
-## Text recognition algorithm
+## TEXT RECOGNITION ALGORITHM
 
 PaddleOCR open-source text recognition algorithms list:
 - [x]  CRNN([paper](https://arxiv.org/abs/1507.05717))
@@ -145,16 +145,16 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 We use [LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/datasets_en.md#1-icdar2019-lsvt) dataset and cropout 30w  traning data from original photos by using position groundtruth and make some calibration needed. In addition, based on the LSVT corpus, 500w synthetic data is generated to train the Chinese model. The related configuration and pre-trained models are as follows:
 |Model|Backbone|Configuration file|Pre-trained model|
 |-|-|-|-|
-|Ultra-lightweight Chinese model|MobileNetV3|rec_chinese_lite_train.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|
+|lightweight Chinese model|MobileNetV3|rec_chinese_lite_train.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|
 |General Chinese OCR model|Resnet34_vd|rec_chinese_common_train.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn.tar)|
 
 Please refer to the document for training guide and use of PaddleOCR text recognition algorithms [Text recognition model training/evaluation/prediction](./doc/doc_en/recognition_en.md)
 
-## End-to-end OCR algorithm
+## END-TO-END OCR ALGORITHM
 - [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(Baidu Self-Research, comming soon)
 
-<a name="Ultra-lightweight Chinese OCR results"></a>
-## Ultra-lightweight Chinese OCR results
+<a name="lightweight Chinese OCR results"></a>
+## LIGHTWEIGHT CHINESE OCR RESULTS
 ![](doc/imgs_results/1.jpg)
 ![](doc/imgs_results/7.jpg)
 ![](doc/imgs_results/12.jpg)
@@ -189,11 +189,12 @@ Please refer to the document for training guide and use of PaddleOCR text recogn
 
 [more](./doc/doc_en/FAQ_en.md)
 
-## Welcome to the PaddleOCR technical exchange group
-WeChat: paddlehelp . remarks OCR, the assistant will invite you to join the group~
+## WELCOME TO THE PaddleOCR TECHNICAL EXCHANGE GROUP
+WeChat: paddlehelp, note OCR, our assistant will get you into the group~
 
+<img src="./doc/paddlehelp.jpg"  width = "200" height = "200" />
 
-## References
+## REFERENCES
 ```
 1. EAST:
 @inproceedings{zhou2017east,
@@ -248,10 +249,10 @@ WeChat: paddlehelp . remarks OCR, the assistant will invite you to join the grou
 }
 ```
 
-## License
+## LICENSE
 This project is released under <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/master/LICENSE">Apache 2.0 license</a>
 
-## Contribution
+## CONTRIBUTION
 We welcome all the contributions to PaddleOCR and appreciate for your feedback very much.
 
 - Many thanks to [Khanh Tran](https://github.com/xxxpsyduck) for contributing the English documentation.
