@@ -37,8 +37,10 @@ class TextRecognizer(object):
         self.character_type = args.rec_char_type
         self.rec_batch_num = args.rec_batch_num
         self.rec_algorithm = args.rec_algorithm
-        char_ops_params = {"character_type": args.rec_char_type,
-                           "character_dict_path": args.rec_char_dict_path}
+        char_ops_params = {
+            "character_type": args.rec_char_type,
+            "character_dict_path": args.rec_char_dict_path
+        }
         if self.rec_algorithm != "RARE":
             char_ops_params['loss_type'] = 'ctc'
             self.loss_type = 'ctc'
@@ -58,7 +60,7 @@ class TextRecognizer(object):
             resized_w = imgW
         else:
             resized_w = int(math.ceil(imgH * ratio))
-        resized_image = cv2.resize(img, (resized_w, imgH), interpolation=cv2.INTER_CUBIC)
+        resized_image = cv2.resize(img, (resized_w, imgH))
         resized_image = resized_image.astype('float32')
         resized_image = resized_image.transpose((2, 0, 1)) / 255
         resized_image -= 0.5
@@ -91,7 +93,8 @@ class TextRecognizer(object):
                 max_wh_ratio = max(max_wh_ratio, wh_ratio)
             for ino in range(beg_img_no, end_img_no):
                 # norm_img = self.resize_norm_img(img_list[ino], max_wh_ratio)
-                norm_img = self.resize_norm_img(img_list[indices[ino]], max_wh_ratio)
+                norm_img = self.resize_norm_img(img_list[indices[ino]],
+                                                max_wh_ratio)
                 norm_img = norm_img[np.newaxis, :]
                 norm_img_batch.append(norm_img)
             norm_img_batch = np.concatenate(norm_img_batch)
