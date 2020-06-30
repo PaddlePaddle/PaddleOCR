@@ -53,6 +53,7 @@ def resize_norm_img(img, image_shape):
 def resize_norm_img_chinese(img, image_shape):
     imgC, imgH, imgW = image_shape
     # todo: change to 0 and modified image shape
+    imgC = 3
     max_wh_ratio = 0
     h, w = img.shape[0], img.shape[1]
     ratio = w * 1.0 / h
@@ -97,10 +98,11 @@ def process_image(img,
                   max_text_length=None,
                   tps=None,
                   infer_mode=False):
-    if not infer_mode and (char_ops.character_type == "en" or tps != None):
-        norm_img = resize_norm_img(img, image_shape)
-    else:
+    if infer_mode and char_ops.character_type == "ch" and not tps:
         norm_img = resize_norm_img_chinese(img, image_shape)
+    else:
+        norm_img = resize_norm_img(img, image_shape)
+
     norm_img = norm_img[np.newaxis, :]
     if label is not None:
         # char_num = char_ops.get_char_num()
