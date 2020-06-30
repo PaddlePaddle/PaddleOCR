@@ -53,7 +53,6 @@ def resize_norm_img(img, image_shape):
 def resize_norm_img_chinese(img, image_shape):
     imgC, imgH, imgW = image_shape
     # todo: change to 0 and modified image shape
-    imgC = 3
     max_wh_ratio = 0
     h, w = img.shape[0], img.shape[1]
     ratio = w * 1.0 / h
