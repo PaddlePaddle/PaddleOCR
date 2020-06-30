@@ -12,10 +12,10 @@
 #### 1、ICDAR2019-LSVT
 - **数据来源**：https://ai.baidu.com/broad/introduction?dataset=lsvt
 - **数据简介**： 共45w中文街景图像，包含5w（2w测试+3w训练）全标注数据（文本坐标+文本内容），40w弱标注数据（仅文本内容），如下图所示：  
-    ![](../datasets/LSVT_1.jpg)
-    (a) 全标注数据
-    ![](../datasets/LSVT_2.jpg)
-    (b) 弱标注数据
+    ![](../datasets/LSVT_1.jpg)  
+    (a) 全标注数据  
+    ![](../datasets/LSVT_2.jpg)  
+    (b) 弱标注数据  
 - **下载地址**：https://ai.baidu.com/broad/download?dataset=lsvt
 
 <a name="ICDAR2017-RCTW-17"></a>
