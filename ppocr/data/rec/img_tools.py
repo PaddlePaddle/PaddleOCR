@@ -97,7 +97,7 @@ def process_image(img,
                   max_text_length=None,
                   tps=None,
                   infer_mode=False):
-    if not infer_mode or char_ops.character_type == "en" or tps != None:
+    if not infer_mode and (char_ops.character_type == "en" or tps != None):
         norm_img = resize_norm_img(img, image_shape)
     else:
         norm_img = resize_norm_img_chinese(img, image_shape)
@@ -109,7 +109,8 @@ def process_image(img,
             logger.info(
                 "Warning in ppocr/data/rec/img_tools.py:line106: Wrong data type."
                 "Excepted string with length between 1 and {}, but "
-                "got '{}'. Label is '{}'".format(max_text_length, len(text),label))
+                "got '{}'. Label is '{}'".format(max_text_length,
+                                                 len(text), label))
             return None
         else:
             if loss_type == "ctc":
