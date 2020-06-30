@@ -53,7 +53,7 @@ class TextRecognizer(object):
         imgC, imgH, imgW = self.rec_image_shape
         assert imgC == img.shape[2]
         if self.character_type == "ch":
-            imgW = int(math.ceil(32 * max_wh_ratio))
+            imgW = int((32 * max_wh_ratio))
         h, w = img.shape[:2]
         ratio = w / float(h)
         if math.ceil(imgH * ratio) > imgW:
