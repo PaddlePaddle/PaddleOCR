@@ -99,7 +99,7 @@ def main():
             ind = np.argmax(probs, axis=1)
             blank = probs.shape[1]
             valid_ind = np.where(ind != (blank - 1))[0]
-            if not valid_ind:
+            if len(valid_ind) == 0:
                 continue
             score = np.mean(probs[valid_ind, ind[valid_ind]])
         elif loss_type == "attention":
