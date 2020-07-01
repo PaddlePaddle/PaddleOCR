@@ -36,7 +36,7 @@ set_paddle_flags(
     FLAGS_eager_delete_tensor_gb=0,  # enable GC to save memory
 )
 
-import program
+import tools.program as program
 from paddle import fluid
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
@@ -104,6 +104,26 @@ def main():
         program.train_eval_det_run(config, exe, train_info_dict, eval_info_dict)
     else:
         program.train_eval_rec_run(config, exe, train_info_dict, eval_info_dict)
+
+
+def test_reader():
+    config = program.load_config(FLAGS.config)
+    program.merge_config(FLAGS.opt)
+    print(config)
+    train_reader = reader_main(config=config, mode="train")
+    import time
+    starttime = time.time()
+    count = 0
+    try:
+        for data in train_reader():
+            count += 1
+            if count % 1 == 0:
+                batch_time = time.time() - starttime
+                starttime = time.time()
+                print("reader:", count, len(data), batch_time)
+    except Exception as e:
+        logger.info(e)
+    logger.info("finish reader: {}, Success!".format(count))
 
 
 if __name__ == '__main__':
