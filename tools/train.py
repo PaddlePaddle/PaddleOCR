@@ -122,9 +122,8 @@ def test_reader():
                 starttime = time.time()
                 print("reader:", count, len(data), batch_time)
     except Exception as e:
-        print(e)
-    print("finish reader:", count)
-    print("success")
+        logger.info(e)
+    logger.info("finish reader: {}, Success!".format(count))
 
 
 if __name__ == '__main__':
