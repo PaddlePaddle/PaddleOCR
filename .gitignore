@@ -18,3 +18,4 @@ output/
 *.idea
 
 *.log
+.clang-format
