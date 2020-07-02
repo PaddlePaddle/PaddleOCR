@@ -26,6 +26,7 @@ PaddleOCR是集训练、预测、部署于一体的实用OCR工具库。本教�
 ```
 git clone https://github.com/PaddlePaddle/Paddle-Lite.git
 cd Paddle-Lite
+git checkout release/2.6.0
 ./lite/tools/build_android.sh  --arch=armv8  --with_cv=ON --with_extra=ON
 ```
 
@@ -103,7 +104,7 @@ cd build.opt/lite/api/
 |--valid_targets|指定模型可执行的backend，默认为arm。目前可支持x86、arm、opencl、npu、xpu，可以同时指定多个backend(以空格分隔)，Model Optimize Tool将会自动选择最佳方式。如果需要支持华为NPU（Kirin 810/990 Soc搭载的达芬奇架构NPU），应当设置为npu, arm|
 |--record_tailoring_info|当使用 根据模型裁剪库文件 功能时，则设置该选项为true，以记录优化后模型含有的kernel和OP信息，默认为false|
 
---model_dir适用于待优化的模型是非combined方式，PaddleOCR的inference模型是combined方式，即模型结构和模型参数使用单独一个文件存储。
+`--model_dir`适用于待优化的模型是非combined方式，PaddleOCR的inference模型是combined方式，即模型结构和模型参数使用单独一个文件存储。
 
 下面以PaddleOCR的超轻量中文模型为例，介绍使用编译好的opt文件完成inference模型到Paddle-Lite优化模型的转换。
 
@@ -127,7 +128,7 @@ wget  https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar
 
 首先需要进行一些准备工作。
  1. 准备一台arm8的安卓手机，如果编译的预测库和opt文件是armv7，则需要arm7的手机。
- 2. 打开手机的USB调试选项，选择文件传输模式，连接电脑
+ 2. 打开手机的USB调试选项，选择文件传输模式，连接电脑。
  3. 电脑上安装adb工具，用于调试。在电脑终端中输入`adb devices`，如果有类似以下输出，则表示安装成功。
 ```
     List of devices attached
@@ -158,6 +159,7 @@ demo/cxx/ocr/
  make
  # 将编译的可执行文件移动到debug文件夹中
  mv ocr_db_crnn ./debug/
+ cp ../../../cxx/lib/libpaddle_light_api_shared.so ./debug/
  ```
  准备测试图像，以`PaddleOCR/doc/imgs/12.jpg`为例，将测试的图像复制到`demo/cxx/ocr/debug/`文件夹下。
  准备字典文件，将`PaddleOCR/ppocr/utils/ppocr_keys_v1.txt`复制到`demo/cxx/ocr/debug/`文件夹下。
