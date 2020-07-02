@@ -130,47 +130,62 @@ wget  https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar
 首先需要进行一些准备工作。
  1. 准备一台arm8的安卓手机，如果编译的预测库和opt文件是armv7，则需要arm7的手机。
  2. 打开手机的USB调试选项，选择文件传输模式，连接电脑。
- 3. 电脑上安装adb工具，用于调试。在电脑终端中输入`adb devices`，如果有类似以下输出，则表示安装成功。
+ 3. 电脑上安装adb工具，用于调试。在电脑终端中输入`adb devices`，如果有类似以下输出，则表示adb安装成功。
 ```
     List of devices attached
     744be294    device
 ```
 
- 4. 准备预测库、模型和预测文件，在预测库`inference_lite_lib.android.armv8/demo/cxx/`下新建一个`ocr/`文件夹，并将转换后的nb模型、
- PaddleOCR repo中`PaddleOCR/deploy/lite/` 下的所有文件放在新建的ocr文件夹下。执行完成后，ocr文件夹下将有如下文件格式：
+ 4. 准备优化后的模型、预测库文件、测试图像和使用的字典文件。
+ 在预测库`inference_lite_lib.android.armv8/demo/cxx/`下新建一个`ocr/`文件夹，
+ 将PaddleOCR repo中`PaddleOCR/deploy/lite/` 下的除`readme.md`所有文件放在新建的ocr文件夹下。在`ocr`文件夹下新建一个`debug`文件夹，
+ 将C++预测库so文件复制到debug文件夹下。
+  ```
+ # 进入OCR demo的工作目录
+ cd demo/cxx/ocr/
+ # 将C++预测动态库so文件复制到debug文件夹中
+ cp ../../../cxx/lib/libpaddle_light_api_shared.so ./debug/
+ ```
+ 准备测试图像，以`PaddleOCR/doc/imgs/12.jpg`为例，将测试的图像复制到`demo/cxx/ocr/debug/`文件夹下。
+ 准备字典文件，中文超轻量模型的字典文件是`PaddleOCR/ppocr/utils/ppocr_keys_v1.txt`，将其复制到`demo/cxx/ocr/debug/`文件夹下。
+ 
+ 执行完成后，ocr文件夹下将有如下文件格式：
 
 ```
 demo/cxx/ocr/
-|-- debug/                      新建debug文件夹存放模型文件
-|   |--ch_det_mv3_db_opt.nb     优化后的检测模型文件
-|   |--ch_rec_mv3_crnn_opt.nb   优化后的识别模型文件
+|-- debug/                              
+|   |--ch_det_mv3_db_opt.nb             优化后的检测模型文件
+|   |--ch_rec_mv3_crnn_opt.nb           优化后的识别模型文件
+|   |--12.jpg                           待测试图像
+|   |--ppocr_keys_v1.txt                字典文件
+|   |--libpaddle_light_api_shared.so    C++预测库文件
 |-- utils/  
 |   |-- clipper.cpp             Clipper库的cpp文件
 |   |-- clipper.hpp             Clipper库的hpp文件
 |   |-- crnn_process.cpp        识别模型CRNN的预处理和后处理cpp文件
 |   |-- db_post_process.cpp     检测模型DB的后处理cpp文件
 |-- Makefile                    编译文件
-|-- ocr_db_crnn.cc              C++预测文件
+|-- ocr_db_crnn.cc              C++预测源文件
 ```
 
- 5. 编译C++预测文件，准备测试图像，准备字典文件
+ 5. 启动调试
+
+ 上述步骤完成后就可以使用adb将文件push到手机上运行，步骤如下：
+ 
  ```
- cd demo/cxx/ocr/
- # 执行编译
+ # 执行编译，得到可执行文件ocr_db_crnn
+ # ocr_db_crnn可执行文件的使用方式为:
+ # ./ocr_db_crnn  检测模型文件  识别模型文件  测试图像路径
  make
  # 将编译的可执行文件移动到debug文件夹中
  mv ocr_db_crnn ./debug/
- # 将C++预测动态库so文件复制到debug文件夹中
- cp ../../../cxx/lib/libpaddle_light_api_shared.so ./debug/
- ```
- 准备测试图像，以`PaddleOCR/doc/imgs/12.jpg`为例，将测试的图像复制到`demo/cxx/ocr/debug/`文件夹下。
- 准备字典文件，将`PaddleOCR/ppocr/utils/ppocr_keys_v1.txt`复制到`demo/cxx/ocr/debug/`文件夹下。
- 上述步骤完成后就可以使用adb将文件push到手机上运行，步骤如下：
- ```
+ # 将debug文件夹push到手机上
  adb push debug /data/local/tmp/
  adb shell
  cd /data/local/tmp/debug
  export LD_LIBRARY_PATH=/data/local/tmp/debug:$LD_LIBRARY_PATH
  ./ocr_db_crnn ch_det_mv3_db_opt.nb  ch_rec_mv3_crnn_opt.nb ./12.jpg
  ```
+
  如果对代码做了修改，则需要重新编译并push到手机上。
+ 
