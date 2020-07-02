@@ -11,35 +11,35 @@ PaddleOCR是集训练、预测、部署于一体的实用OCR工具库。本教�
 
 ### 1.1 准备交叉编译环境
 交叉编译环境用于编译[Paddle-Lite](https://github.com/PaddlePaddle/Paddle-Lite)和PaddleOCR的C++ demo。
-支持多种开发环境，不同开发环境的编译流程请参考对应文档。：
+支持多种开发环境，不同开发环境的编译流程请参考对应文档。
 1. [Docker](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#docker)
 2. [Linux](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#android)
 3. [MAC OS](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#id13)
 4. [Windows](https://paddle-lite.readthedocs.io/zh/latest/demo_guides/x86.html#windows)
 
-### 1.2 准备预编译库
+### 1.2 准备预测库
 
-预编译库有两种获取方式：
+预测库有两种获取方式：
 - 1. 直接下载，下载[链接](https://paddle-lite.readthedocs.io/zh/latest/user_guides/release_lib.html#android-toolchain-gcc).
     注意选择`with_extra=ON，with_cv=ON`的下载链接。
 - 2. 编译Paddle-Lite得到，Paddle-Lite的编译方式如下：
 ```
 git clone https://github.com/PaddlePaddle/Paddle-Lite.git
 cd Paddle-Lite
-git checkout release/2.6.0
+git checkout 2.6.1
 ./lite/tools/build_android.sh  --arch=armv8  --with_cv=ON --with_extra=ON
 ```
 
-注意：编译Paddle-Lite获得预编译库时，需要打开`--with_cv=ON --with_extra=ON`两个选项，`--arch`表示`arm`版本，这里指定为armv8，
+注意：编译Paddle-Lite获得预测库时，需要打开`--with_cv=ON --with_extra=ON`两个选项，`--arch`表示`arm`版本，这里指定为armv8，
 更多编译命令
 介绍请参考[链接](https://paddle-lite.readthedocs.io/zh/latest/user_guides/Compile/Android.html#id2)。
 
-直接下载预编译库并解压后，可以得到`inference_lite_lib.android.armv8/`文件夹，通过编译Paddle-Lite得到的预编译库位于
+直接下载预测库并解压后，可以得到`inference_lite_lib.android.armv8/`文件夹，通过编译Paddle-Lite得到的预测库位于
 `Paddle-Lite/build.lite.android.armv8.gcc/inference_lite_lib.android.armv8/`文件夹下。
-预编译库的文件目录如下：
+预测库的文件目录如下：
 ```
 inference_lite_lib.android.armv8/
-|-- cxx                           C++ 预测库和头文件
+|-- cxx                                        C++ 预测库和头文件
 |   |-- include                                C++ 头文件
 |   |   |-- paddle_api.h
 |   |   |-- paddle_image_preprocess.h
@@ -48,16 +48,16 @@ inference_lite_lib.android.armv8/
 |   |   |-- paddle_use_kernels.h
 |   |   |-- paddle_use_ops.h
 |   |   `-- paddle_use_passes.h
-|   `-- lib                                    C++预测库
+|   `-- lib                                           C++预测库
 |       |-- libpaddle_api_light_bundled.a             C++静态库
 |       `-- libpaddle_light_api_shared.so             C++动态库
-|-- java                          Java预测库
+|-- java                                     Java预测库
 |   |-- jar
 |   |   `-- PaddlePredictor.jar
 |   |-- so
 |   |   `-- libpaddle_lite_jni.so
 |   `-- src
-|-- demo                          C++和Java示例代码
+|-- demo                                     C++和Java示例代码
 |   |-- cxx                                  C++  预测库demo
 |   `-- java                                 Java 预测库demo
 ```
@@ -71,9 +71,9 @@ Paddle-Lite 提供了多种策略来自动优化原始的模型，其中包括�
 
 下述表格中提供了优化好的超轻量中文模型：
 
-|模型简介|检测模型|识别模型|
-|-|-|-|
-|超轻量级中文OCR opt优化模型|[下载地址](https://paddleocr.bj.bcebos.com/deploy/lite/ch_det_mv3_db_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/deploy/lite/ch_rec_mv3_crnn_opt.nb)|
+|模型简介|检测模型|识别模型|Paddle-Lite版本|
+|-|-|-|-|
+|超轻量级中文OCR opt优化模型|[下载地址](https://paddleocr.bj.bcebos.com/deploy/lite/ch_det_mv3_db_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/deploy/lite/ch_rec_mv3_crnn_opt.nb)|2.6.1|
 
 如果直接使用上述表格中的模型进行部署，可略过下述步骤，直接阅读 [2.2节](###2.2与手机联调)。
 
@@ -84,6 +84,7 @@ Paddle-Lite 提供了多种策略来自动优化原始的模型，其中包括�
 # 如果准备环境时已经clone了Paddle-Lite，则不用重新clone Paddle-Lite
 git clone https://github.com/PaddlePaddle/Paddle-Lite.git
 cd Paddle-Lite
+git checkout 2.6.1
 # 启动编译
 ./lite/tools/build.sh build_optimize_tool
 ```
@@ -159,6 +160,7 @@ demo/cxx/ocr/
  make
  # 将编译的可执行文件移动到debug文件夹中
  mv ocr_db_crnn ./debug/
+ # 将C++预测动态库so文件复制到debug文件夹中
  cp ../../../cxx/lib/libpaddle_light_api_shared.so ./debug/
  ```
  准备测试图像，以`PaddleOCR/doc/imgs/12.jpg`为例，将测试的图像复制到`demo/cxx/ocr/debug/`文件夹下。
