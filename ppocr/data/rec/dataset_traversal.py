@@ -45,6 +45,7 @@ class LMDBReader(object):
         self.use_tps = False
         if "tps" in params:
             self.ues_tps = True
+        self.use_distort = False
         if "distort" in params:
             self.use_distort = params['distort'] and params['use_gpu']
             if not params['use_gpu']:
@@ -192,6 +193,7 @@ class SimpleReader(object):
         self.use_tps = False
         if "tps" in params:
             self.use_tps = True
+        self.use_distort = False
         if "distort" in params:
             self.use_distort = params['distort'] and params['use_gpu']
             if not params['use_gpu']:
