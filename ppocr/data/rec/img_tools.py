@@ -119,9 +119,9 @@ def blur(img):
         return img
 
 
-def doudong(img):
+def jitter(img):
     """
-    doudong
+    jitter
     """
     w, h, _ = img.shape
     if h > 10 and w > 10:
@@ -198,7 +198,7 @@ class Config:
         self.affine = False
         self.reverse = True
         self.noise = True
-        self.dou = False
+        self.jitter = True
         self.blur = True
         self.color = True
 
@@ -323,8 +323,8 @@ def warp(img, ang):
         tp = random.randint(1, 100)
         if tp >= 50:
             new_img = cvtColor(new_img)
-    if config.dou:
-        new_img = doudong(new_img)
+    if config.jitter:
+        new_img = jitter(new_img)
     if config.noise:
         tp = random.randint(1, 100)
         if tp >= 50:
