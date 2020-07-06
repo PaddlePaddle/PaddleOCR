@@ -3,7 +3,8 @@ English | [简体中文](README.md)
 ## INTRODUCTION
 PaddleOCR aims to create a rich, leading, and practical OCR tools that help users train better models and apply them into practice.
 
-**Recent updates**
+**Recent updates**、
+- 2020.7.9 Add recognition model to support space, [recognition result](#space Chinese OCR results)
 - 2020.6.8 Add [dataset](./doc/doc_en/datasets_en.md) and keep updating
 - 2020.6.5 Support exporting `attention` model to `inference_model`
 - 2020.6.5 Support separate prediction and recognition, output result score
@@ -169,6 +170,17 @@ Please refer to the document for training guide and use of PaddleOCR text recogn
 ![](doc/imgs_results/chinese_db_crnn_server/11.jpg)
 ![](doc/imgs_results/chinese_db_crnn_server/2.jpg)
 ![](doc/imgs_results/chinese_db_crnn_server/8.jpg)
+
+<a name="Chinese OCR results"></a>
+## space Chinese OCR results
+
+### LIGHTWEIGHT CHINESE OCR RESULTS
+
+![](doc/imgs_results/img_11.jpg)
+
+### General Chinese OCR results
+![](doc/imgs_results/chinese_db_crnn_server/en_paper.jpg)
+
 
 ## FAQ
 1. Error when using attention-based recognition model: KeyError: 'predict'
