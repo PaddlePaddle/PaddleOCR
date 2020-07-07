@@ -22,7 +22,7 @@ Take `rec_chinese_lite_train.yml` as an example
 |      print_batch_step    |    Set print log interval         |       10          |                \                 |
 |      save_model_dir      |    Set model save path        |  output/{model_name}  |                \                 |
 |      save_epoch_step     |    Set model save interval        |       3           |                \                 |
-|      eval_batch_step     |    Set the model evaluation interval        |       2000        |                \                 |
+|      eval_batch_step     |    Set the model evaluation interval        |2000 or [1000, 2000] |runing evaluation every 2000 iters or evaluation is run every 2000 iterations after the 1000th iteration  |
 |train_batch_size_per_card |  Set the batch size during training   |         256         |                \                 |
 | test_batch_size_per_card |  Set the batch size during testing    |         256         |                \                 |
 |      image_shape         |    Set input image size        |   [3, 32, 100]    |                \                 |

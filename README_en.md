@@ -92,7 +92,9 @@ For more text detection and recognition models, please refer to the document [In
 - [Text detection model training/evaluation/prediction](./doc/doc_en/detection_en.md)
 - [Text recognition model training/evaluation/prediction](./doc/doc_en/recognition_en.md)
 - [Inference](./doc/doc_en/inference_en.md)
+- [Introduction of yml file](./doc/doc_en/config_en.md)
 - [Dataset](./doc/doc_en/datasets_en.md)
+- [FAQ]((#FAQ)
 
 ## TEXT DETECTION ALGORITHM
 
@@ -170,6 +172,7 @@ Please refer to the document for training guide and use of PaddleOCR text recogn
 ![](doc/imgs_results/chinese_db_crnn_server/2.jpg)
 ![](doc/imgs_results/chinese_db_crnn_server/8.jpg)
 
+<a name="FAQ"></a>
 ## FAQ
 1. Error when using attention-based recognition model: KeyError: 'predict'
 
