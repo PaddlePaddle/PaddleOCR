@@ -15,7 +15,7 @@ Global:
   character_dict_path: ./ppocr/utils/ppocr_keys_v1.txt
   loss_type: ctc
   distort: false
-  add_space: false
+  use_space_char: false
   reader_yml: ./configs/rec/rec_chinese_reader.yml
   pretrain_weights:
   checkpoints:

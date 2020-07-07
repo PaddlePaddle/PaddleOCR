@@ -31,8 +31,8 @@ class CharacterOps(object):
         elif self.character_type == "ch":
             character_dict_path = config['character_dict_path']
             add_space = False
-            if 'add_space' in config:
-                add_space = config['add_space']
+            if 'use_space_char' in config:
+                add_space = config['use_space_char']
             self.character_str = ""
             with open(character_dict_path, "rb") as fin:
                 lines = fin.readlines()

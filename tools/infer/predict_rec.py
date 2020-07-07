@@ -40,7 +40,7 @@ class TextRecognizer(object):
         char_ops_params = {
             "character_type": args.rec_char_type,
             "character_dict_path": args.rec_char_dict_path,
-            "add_space": args.rec_add_space
+            "use_space_char": args.use_space_char
         }
         if self.rec_algorithm != "RARE":
             char_ops_params['loss_type'] = 'ctc'
