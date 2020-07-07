@@ -12,13 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "db_post_process.h"  // NOLINT
+#include "db_post_process.h" // NOLINT
 #include <algorithm>
 #include <utility>
 
-void GetContourArea(std::vector<std::vector<float>> box,
-                    float unclip_ratio,
-                    float& distance) {
+void GetContourArea(std::vector<std::vector<float>> box, float unclip_ratio,
+                    float &distance) {
   int pts_num = 4;
   float area = 0.0f;
   float dist = 0.0f;
@@ -78,34 +77,38 @@ std::vector<std::vector<float>> Mat2Vector(cv::Mat mat) {
 }
 
 bool XsortFp32(std::vector<float> a, std::vector<float> b) {
-  if (a[0] != b[0]) return a[0] < b[0];
+  if (a[0] != b[0])
+    return a[0] < b[0];
   return false;
 }
 
 bool XsortInt(std::vector<int> a, std::vector<int> b) {
-  if (a[0] != b[0]) return a[0] < b[0];
+  if (a[0] != b[0])
+    return a[0] < b[0];
   return false;
 }
 
-std::vector<std::vector<int>> OrderPointsClockwise(
-    std::vector<std::vector<int>> pts) {
+std::vector<std::vector<int>>
+OrderPointsClockwise(std::vector<std::vector<int>> pts) {
   std::vector<std::vector<int>> box = pts;
   std::sort(box.begin(), box.end(), XsortInt);
 
   std::vector<std::vector<int>> leftmost = {box[0], box[1]};
   std::vector<std::vector<int>> rightmost = {box[2], box[3]};
 
-  if (leftmost[0][1] > leftmost[1][1]) std::swap(leftmost[0], leftmost[1]);
+  if (leftmost[0][1] > leftmost[1][1])
+    std::swap(leftmost[0], leftmost[1]);
 
-  if (rightmost[0][1] > rightmost[1][1]) std::swap(rightmost[0], rightmost[1]);
+  if (rightmost[0][1] > rightmost[1][1])
+    std::swap(rightmost[0], rightmost[1]);
 
-  std::vector<std::vector<int>> rect = {
-      leftmost[0], rightmost[0], rightmost[1], leftmost[1]};
+  std::vector<std::vector<int>> rect = {leftmost[0], rightmost[0], rightmost[1],
+                                        leftmost[1]};
   return rect;
 }
 
-std::vector<std::vector<float>> GetMiniBoxes(cv::RotatedRect box, float& ssid) {
-  ssid = box.size.width >= box.size.height ? box.size.height : box.size.width;
+std::vector<std::vector<float>> GetMiniBoxes(cv::RotatedRect box, float &ssid) {
+  ssid = std::max(box.size.width, box.size.height);
 
   cv::Mat points;
   cv::boxPoints(box, points);
@@ -146,14 +149,14 @@ float BoxScoreFast(std::vector<std::vector<float>> box_array, cv::Mat pred) {
   float box_x[4] = {array[0][0], array[1][0], array[2][0], array[3][0]};
   float box_y[4] = {array[0][1], array[1][1], array[2][1], array[3][1]};
 
-  int xmin = clamp(
-      int(std::floorf(*(std::min_element(box_x, box_x + 4)))), 0, width - 1);
-  int xmax = clamp(
-      int(std::ceilf(*(std::max_element(box_x, box_x + 4)))), 0, width - 1);
-  int ymin = clamp(
-      int(std::floorf(*(std::min_element(box_y, box_y + 4)))), 0, height - 1);
-  int ymax = clamp(
-      int(std::ceilf(*(std::max_element(box_y, box_y + 4)))), 0, height - 1);
+  int xmin = clamp(int(std::floorf(*(std::min_element(box_x, box_x + 4)))), 0,
+                   width - 1);
+  int xmax = clamp(int(std::ceilf(*(std::max_element(box_x, box_x + 4)))), 0,
+                   width - 1);
+  int ymin = clamp(int(std::floorf(*(std::min_element(box_y, box_y + 4)))), 0,
+                   height - 1);
+  int ymax = clamp(int(std::ceilf(*(std::max_element(box_y, box_y + 4)))), 0,
+                   height - 1);
 
   cv::Mat mask;
   mask = cv::Mat::zeros(ymax - ymin + 1, xmax - xmin + 1, CV_8UC1);
@@ -163,7 +166,7 @@ float BoxScoreFast(std::vector<std::vector<float>> box_array, cv::Mat pred) {
   root_point[1] = cv::Point(int(array[1][0]) - xmin, int(array[1][1]) - ymin);
   root_point[2] = cv::Point(int(array[2][0]) - xmin, int(array[2][1]) - ymin);
   root_point[3] = cv::Point(int(array[3][0]) - xmin, int(array[3][1]) - ymin);
-  const cv::Point* ppt[1] = {root_point};
+  const cv::Point *ppt[1] = {root_point};
   int npt[] = {4};
   cv::fillPoly(mask, ppt, npt, 1, cv::Scalar(1));
 
@@ -175,10 +178,9 @@ float BoxScoreFast(std::vector<std::vector<float>> box_array, cv::Mat pred) {
   return score;
 }
 
-std::vector<std::vector<std::vector<int>>> BoxesFromBitmap(
-    const cv::Mat pred,
-    const cv::Mat bitmap,
-    std::map<std::string, double> Config) {
+std::vector<std::vector<std::vector<int>>>
+BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
+                std::map<std::string, double> Config) {
   const int min_size = 3;
   const int max_candidates = 1000;
   const float box_thresh = float(Config["det_db_box_thresh"]);
@@ -190,8 +192,8 @@ std::vector<std::vector<std::vector<int>>> BoxesFromBitmap(
   std::vector<std::vector<cv::Point>> contours;
   std::vector<cv::Vec4i> hierarchy;
 
-  cv::findContours(
-      bitmap, contours, hierarchy, cv::RETR_LIST, cv::CHAIN_APPROX_SIMPLE);
+  cv::findContours(bitmap, contours, hierarchy, cv::RETR_LIST,
+                   cv::CHAIN_APPROX_SIMPLE);
 
   int num_contours =
       contours.size() >= max_candidates ? max_candidates : contours.size();
@@ -213,7 +215,8 @@ std::vector<std::vector<std::vector<int>>> BoxesFromBitmap(
     float score;
     score = BoxScoreFast(array, pred);
     // end box_score_fast
-    if (score < box_thresh) continue;
+    if (score < box_thresh)
+      continue;
 
     // start for unclip
     cv::RotatedRect points = Unclip(box_for_unclip, unclip_ratio);
@@ -222,35 +225,31 @@ std::vector<std::vector<std::vector<int>>> BoxesFromBitmap(
     cv::RotatedRect clipbox = points;
     auto cliparray = GetMiniBoxes(clipbox, ssid);
 
-    if (ssid < min_size + 2) continue;
+    if (ssid < min_size + 2)
+      continue;
 
     int dest_width = pred.cols;
     int dest_height = pred.rows;
     std::vector<std::vector<int>> intcliparray;
 
     for (int num_pt = 0; num_pt < 4; num_pt++) {
-      std::vector<int> a{
-          int(clamp(
-              roundf(cliparray[num_pt][0] / float(width) * float(dest_width)),
-              float(0),
-              float(dest_width))),
-          int(clamp(
-              roundf(cliparray[num_pt][1] / float(height) * float(dest_height)),
-              float(0),
-              float(dest_height)))};
+      std::vector<int> a{int(clamp(roundf(cliparray[num_pt][0] / float(width) *
+                                          float(dest_width)),
+                                   float(0), float(dest_width))),
+                         int(clamp(roundf(cliparray[num_pt][1] / float(height) *
+                                          float(dest_height)),
+                                   float(0), float(dest_height)))};
       intcliparray.push_back(a);
     }
     boxes.push_back(intcliparray);
 
-  }  // end for
+  } // end for
   return boxes;
 }
 
-std::vector<std::vector<std::vector<int>>> FilterTagDetRes(
-    std::vector<std::vector<std::vector<int>>> boxes,
-    float ratio_h,
-    float ratio_w,
-    cv::Mat srcimg) {
+std::vector<std::vector<std::vector<int>>>
+FilterTagDetRes(std::vector<std::vector<std::vector<int>>> boxes, float ratio_h,
+                float ratio_w, cv::Mat srcimg) {
   int oriimg_h = srcimg.rows;
   int oriimg_w = srcimg.cols;
 
@@ -272,7 +271,8 @@ std::vector<std::vector<std::vector<int>>> FilterTagDetRes(
                           pow(boxes[n][0][1] - boxes[n][1][1], 2)));
     rect_height = int(sqrt(pow(boxes[n][0][0] - boxes[n][3][0], 2) +
                            pow(boxes[n][0][1] - boxes[n][3][1], 2)));
-    if (rect_width <= 10 || rect_height <= 10) continue;
+    if (rect_width <= 10 || rect_height <= 10)
+      continue;
     root_points.push_back(boxes[n]);
   }
   return root_points;

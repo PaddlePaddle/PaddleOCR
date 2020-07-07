@@ -1,6 +1,6 @@
 # PaddleOCR 模型部署
 
-PaddleOCR是集训练、预测、部署于一体的实用OCR工具库。本教程将介绍在安卓移动端部署PaddleOCR超轻量中文检测、识别模型的主要流程。
+PaddleOCR是集训练、预测、端侧部署于一体的实用OCR工具库。本教程将介绍在安卓移动端部署PaddleOCR超轻量中文检测、识别模型的主要流程。
 
 
 ## 1. 准备环境
@@ -144,9 +144,9 @@ wget  https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar
  # 进入OCR demo的工作目录
  cd demo/cxx/ocr/
  # 将C++预测动态库so文件复制到debug文件夹中
- cp ../../../cxx/lib/libpaddle_light_api_shared.so ./debug/
+ cp ../../../../cxx/lib/libpaddle_light_api_shared.so ./debug/
  ```
- 准备测试图像，以`PaddleOCR/doc/imgs/12.jpg`为例，将测试的图像复制到`demo/cxx/ocr/debug/`文件夹下。
+ 准备测试图像，以`PaddleOCR/doc/imgs/11.jpg`为例，将测试的图像复制到`demo/cxx/ocr/debug/`文件夹下。
  准备字典文件，中文超轻量模型的字典文件是`PaddleOCR/ppocr/utils/ppocr_keys_v1.txt`，将其复制到`demo/cxx/ocr/debug/`文件夹下。
 
  执行完成后，ocr文件夹下将有如下文件格式：
@@ -156,16 +156,17 @@ demo/cxx/ocr/
 |-- debug/  
 |   |--ch_det_mv3_db_opt.nb             优化后的检测模型文件
 |   |--ch_rec_mv3_crnn_opt.nb           优化后的识别模型文件
-|   |--12.jpg                           待测试图像
+|   |--11.jpg                           待测试图像
 |   |--ppocr_keys_v1.txt                字典文件
 |   |--libpaddle_light_api_shared.so    C++预测库文件
-|-- utils/  
-|   |-- clipper.cpp             Clipper库的cpp文件
-|   |-- clipper.hpp             Clipper库的hpp文件
-|   |-- crnn_process.cpp        识别模型CRNN的预处理和后处理cpp文件
-|   |-- db_post_process.cpp     检测模型DB的后处理cpp文件
+|-- config.txt                  DB-CRNN超参数配置
+|-- crnn_process.cc             识别模型CRNN的预处理和后处理文件
+|-- crnn_process.h
+|-- db_post_process.cc          检测模型DB的后处理文件
+|-- db_post_process.h
 |-- Makefile                    编译文件
 |-- ocr_db_crnn.cc              C++预测源文件
+
 ```
 
  5. 启动调试
@@ -184,7 +185,10 @@ demo/cxx/ocr/
  adb shell
  cd /data/local/tmp/debug
  export LD_LIBRARY_PATH=/data/local/tmp/debug:$LD_LIBRARY_PATH
- ./ocr_db_crnn ch_det_mv3_db_opt.nb  ch_rec_mv3_crnn_opt.nb ./12.jpg
+ ./ocr_db_crnn ch_det_mv3_db_opt.nb  ch_rec_mv3_crnn_opt.nb ./11.jpg  ppocr_keys_v1.txt
  ```
 
  如果对代码做了修改，则需要重新编译并push到手机上。
+
+ 运行效果如下：
+ ![](..imgs/demo.png)
