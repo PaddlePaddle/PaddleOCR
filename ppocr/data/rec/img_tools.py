@@ -136,6 +136,9 @@ def jitter(img):
 
 
 def add_gasuss_noise(image, mean=0, var=0.1):
+    """
+    Gasuss noise
+    """
 
     noise = np.random.normal(mean, var**0.5, image.shape)
     out = image + 0.5 * noise
@@ -152,9 +155,8 @@ def get_crop(image):
     top_min = 1
     top_max = 8
     top_crop = int(random.randint(top_min, top_max))
-
+    top_crop = min(top_crop, h - 1)
     crop_img = image.copy()
-
     ratio = random.randint(0, 1)
     if ratio:
         crop_img = crop_img[top_crop:h, :, :]
@@ -249,13 +251,13 @@ def get_warpR(config):
     dst2 = r.dot(p2)
     dst3 = r.dot(p3)
     dst4 = r.dot(p4)
-    list_dst = [dst1, dst2, dst3, dst4]
+    list_dst = np.array([dst1, dst2, dst3, dst4])
     org = np.array([[0, 0], [w, 0], [0, h], [w, h]], np.float32)
     dst = np.zeros((4, 2), np.float32)
     # Project onto the image plane
-    for i in range(4):
-        dst[i, 0] = list_dst[i][0] * z / (z - list_dst[i][2]) + pcenter[0]
-        dst[i, 1] = list_dst[i][1] * z / (z - list_dst[i][2]) + pcenter[1]
+    dst[:, 0] = list_dst[:, 0] * z / (z - list_dst[:, 2]) + pcenter[0]
+    dst[:, 1] = list_dst[:, 1] * z / (z - list_dst[:, 2]) + pcenter[1]
+
     warpR = cv2.getPerspectiveTransform(org, dst)
 
     dst1, dst2, dst3, dst4 = dst

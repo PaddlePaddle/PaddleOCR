@@ -94,7 +94,7 @@ word_dict.txt 每行有一个单字，将字符与数字索引映射在一起，
 `ppocr/utils/ic15_dict.txt` 是一个包含36个字符的英文字典，
 您可以按需使用。
 
-如需自定义dic文件，请修改 `configs/rec/rec_icdar15_train.yml` 中的 `character_dict_path` 字段, 并将 `character_type` 设置为 `ch`。
+如需自定义dic文件，请在 `configs/rec/rec_icdar15_train.yml` 中添加 `character_dict_path` 字段, 并将 `character_type` 设置为 `ch`。
 
 ### 启动训练
 
@@ -157,12 +157,26 @@ Global:
   character_type: ch
   # 添加自定义字典，如修改字典请将路径指向新字典
   character_dict_path: ./ppocr/utils/ppocr_keys_v1.txt
+  # 训练时添加数据增强
+  distort: true
+  # 识别空格
+  add_space: true
   ...
   # 修改reader类型
   reader_yml: ./configs/rec/rec_chinese_reader.yml
   ...
 
 ...
+
+Optimizer:
+  ...
+  # 添加学习率衰减策略
+  decay:
+    function: cosine_decay
+    # 每个 epoch 包含 iter 数
+    step_each_epoch: 20
+    # 总共训练epoch数
+    total_epoch: 1000
 ```
 **注意，预测/评估时的配置文件请务必与训练一致。**
 

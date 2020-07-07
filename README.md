@@ -5,6 +5,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 **近期更新**
 - 2020.7.9 添加支持空格的识别模型，[识别效果](#支持空格的中文OCR效果展示)
+- 2020.7.9 添加数据增强、学习率衰减策略,具体参考[配置文件](./doc/doc_ch/config.md)
 - 2020.6.8 添加[数据集](./doc/doc_ch/datasets.md)，并保持持续更新
 - 2020.6.5 支持 `attetnion` 模型导出 `inference_model`
 - 2020.6.5 支持单独预测识别时，输出结果得分
@@ -51,6 +52,8 @@ mkdir inference && cd inference
 wget https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db_infer.tar && tar xf ch_det_mv3_db_infer.tar
 # 下载超轻量级中文OCR模型的识别模型并解压
 wget https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar xf ch_rec_mv3_crnn_infer.tar
+# 下载支持空格的超轻量级中文OCR模型的识别模型并解压
+wget https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_enhance_infer.tar && tar xf ch_rec_mv3_crnn_enhance_infer.tar
 cd ..
 ```
 #### (2)通用中文OCR模型下载
@@ -60,6 +63,8 @@ mkdir inference && cd inference
 wget https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db_infer.tar && tar xf ch_det_r50_vd_db_infer.tar
 # 下载通用中文OCR模型的识别模型并解压
 wget https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_infer.tar && tar xf ch_rec_r34_vd_crnn_infer.tar
+# 下载支持空格的通用中文OCR模型的识别模型并解压
+wget https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_enhance_infer.tar && tar xf ch_rec_r34_vd_crnn_enhance_infer.tar
 cd ..
 ```
 
@@ -83,6 +88,13 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_mode
 ```
 # 预测image_dir指定的单张图像
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_det_r50_vd_db/"  --rec_model_dir="./inference/ch_rec_r34_vd_crnn/"
+```
+
+带空格的通用中文OCR模型的体验可以按照上述步骤下载相应的模型，并且更新相关的参数，示例如下：
+
+```
+# 预测image_dir指定的单张图像
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_12.jpg" --det_model_dir="./inference/ch_det_r50_vd_db/"  --rec_model_dir="./inference/ch_rec_r34_vd_crnn_enhance/"
 ```
 
 更多的文本检测、识别串联推理使用方式请参考文档教程中[基于预测引擎推理](./doc/doc_ch/inference.md)。

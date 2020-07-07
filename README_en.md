@@ -5,6 +5,7 @@ PaddleOCR aims to create a rich, leading, and practical OCR tools that help user
 
 **Recent updates**、
 - 2020.7.9 Add recognition model to support space, [recognition result](#space Chinese OCR results)
+- 2020.7.9 Add data auguments and learning rate decay strategies,please read [config](./doc/doc_en/config_en.md)
 - 2020.6.8 Add [dataset](./doc/doc_en/datasets_en.md) and keep updating
 - 2020.6.5 Support exporting `attention` model to `inference_model`
 - 2020.6.5 Support separate prediction and recognition, output result score
@@ -52,6 +53,9 @@ mkdir inference && cd inference
 wget https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db_infer.tar && tar xf ch_det_mv3_db_infer.tar
 # Download the recognition part of the lightweight Chinese OCR and decompress it
 wget https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar xf ch_rec_mv3_crnn_infer.tar
+# Download the space-recognized part of the lightweight Chinese OCR and decompress it
+wget https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_enhance_infer.tar && tar xf ch_rec_mv3_crnn_enhance_infer.tar
+
 cd ..
 ```
 #### (2) Download General Chinese OCR models
@@ -61,6 +65,8 @@ mkdir inference && cd inference
 wget https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db_infer.tar && tar xf ch_det_r50_vd_db_infer.tar
 # Download the recognition part of the generic Chinese OCR model and decompress it
 wget https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_infer.tar && tar xf ch_rec_r34_vd_crnn_infer.tar
+# Download the space-recognition part of the generic Chinese OCR model and decompress it
+wget https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_enhance_infer.tar && tar xf ch_rec_r34_vd_crnn_enhance_infer.tar
 cd ..
 ```
 
@@ -84,6 +90,13 @@ To run inference of the Generic Chinese OCR model, follow these steps above to d
 ```
 # Prediction on a single image by specifying image path to image_dir
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_det_r50_vd_db/"  --rec_model_dir="./inference/ch_rec_r34_vd_crnn/"
+```
+
+To run inference of the space-Generic Chinese OCR model, follow these steps above to download the corresponding models and update the relevant parameters. Examples are as follows:
+
+```
+# Prediction on a single image by specifying image path to image_dir
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_12.jpg" --det_model_dir="./inference/ch_det_r50_vd_db/"  --rec_model_dir="./inference/ch_rec_r34_vd_crnn_enhance/"
 ```
 
 For more text detection and recognition models, please refer to the document [Inference](./doc/doc_en/inference_en.md)

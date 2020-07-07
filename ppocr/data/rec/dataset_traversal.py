@@ -58,6 +58,7 @@ class LMDBReader(object):
         else:
             self.batch_size = params['test_batch_size_per_card']
             self.drop_last = False
+            self.use_distort = False
         self.infer_img = params['infer_img']
 
     def load_hierarchical_lmdb_dataset(self):
@@ -206,6 +207,7 @@ class SimpleReader(object):
         else:
             self.batch_size = params['test_batch_size_per_card']
             self.drop_last = False
+            self.use_distort = False
 
     def __call__(self, process_id):
         if self.mode != 'train':
