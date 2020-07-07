@@ -161,7 +161,7 @@ Global:
   # Whether to use data augmentation
   distort: true
   # Whether to recognize spaces
-  add_space: true
+  use_space_char: true
   ...
 
 ...

@@ -160,7 +160,7 @@ Global:
   # 训练时添加数据增强
   distort: true
   # 识别空格
-  add_space: true
+  use_space_char: true
   ...
   # 修改reader类型
   reader_yml: ./configs/rec/rec_chinese_reader.yml
