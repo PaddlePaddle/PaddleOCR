@@ -19,3 +19,4 @@ output/
 
 *.log
 .clang-format
+.clang_format.hook

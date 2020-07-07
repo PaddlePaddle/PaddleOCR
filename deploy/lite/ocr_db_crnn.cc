@@ -12,19 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "paddle_api.h" // NOLINT
 #include <chrono>
-#include "paddle_api.h"  // NOLINT
 
 #include "crnn_process.h"
 #include "db_post_process.h"
 
-using namespace paddle::lite_api;  // NOLINT
+using namespace paddle::lite_api; // NOLINT
 using namespace std;
 
 // fill tensor with mean and scale and trans layout: nhwc -> nchw, neon speed up
-void neon_mean_scale(const float* din,
-                     float* dout,
-                     int size,
+void neon_mean_scale(const float *din, float *dout, int size,
                      const std::vector<float> mean,
                      const std::vector<float> scale) {
   if (mean.size() != 3 || scale.size() != 3) {
@@ -38,9 +36,9 @@ void neon_mean_scale(const float* din,
   float32x4_t vscale1 = vdupq_n_f32(scale[1]);
   float32x4_t vscale2 = vdupq_n_f32(scale[2]);
 
-  float* dout_c0 = dout;
-  float* dout_c1 = dout + size;
-  float* dout_c2 = dout + size * 2;
+  float *dout_c0 = dout;
+  float *dout_c1 = dout + size;
+  float *dout_c2 = dout + size * 2;
 
   int i = 0;
   for (; i < size - 3; i += 4) {
@@ -68,9 +66,8 @@ void neon_mean_scale(const float* din,
 }
 
 // resize image to a size multiple of 32 which is required by the network
-cv::Mat DetResizeImg(const cv::Mat img,
-                     int max_size_len,
-                     std::vector<float>& ratio_hw) {
+cv::Mat DetResizeImg(const cv::Mat img, int max_size_len,
+                     std::vector<float> &ratio_hw) {
   int w = img.cols;
   int h = img.rows;
 
@@ -108,12 +105,10 @@ cv::Mat DetResizeImg(const cv::Mat img,
   return resize_img;
 }
 
-void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes,
-                 cv::Mat img,
+void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
                  std::shared_ptr<PaddlePredictor> predictor_crnn,
-                 std::string dict_path,
-                 std::vector<std::string>& rec_text,
-                 std::vector<float>& rec_text_score) {
+                 std::string dict_path, std::vector<std::string> &rec_text,
+                 std::vector<float> &rec_text_score) {
   std::vector<float> mean = {0.5f, 0.5f, 0.5f};
   std::vector<float> scale = {1 / 0.5f, 1 / 0.5f, 1 / 0.5f};
 
@@ -132,22 +127,22 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes,
     resize_img = CrnnResizeImg(crop_img, wh_ratio);
     resize_img.convertTo(resize_img, CV_32FC3, 1 / 255.f);
 
-    const float* dimg = reinterpret_cast<const float*>(resize_img.data);
+    const float *dimg = reinterpret_cast<const float *>(resize_img.data);
 
     std::unique_ptr<Tensor> input_tensor0(
         std::move(predictor_crnn->GetInput(0)));
     input_tensor0->Resize({1, 3, resize_img.rows, resize_img.cols});
-    auto* data0 = input_tensor0->mutable_data<float>();
+    auto *data0 = input_tensor0->mutable_data<float>();
 
-    neon_mean_scale(
-        dimg, data0, resize_img.rows * resize_img.cols, mean, scale);
+    neon_mean_scale(dimg, data0, resize_img.rows * resize_img.cols, mean,
+                    scale);
     //// Run CRNN predictor
     predictor_crnn->Run();
 
     // Get output and run postprocess
     std::unique_ptr<const Tensor> output_tensor0(
         std::move(predictor_crnn->GetOutput(0)));
-    auto* rec_idx = output_tensor0->data<int>();
+    auto *rec_idx = output_tensor0->data<int>();
 
     auto rec_idx_lod = output_tensor0->lod();
     auto shape_out = output_tensor0->shape();
@@ -158,7 +153,8 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes,
       pred_idx.push_back(int(rec_idx[n]));
     }
 
-    if (pred_idx.size() < 1e-3) continue;
+    if (pred_idx.size() < 1e-3)
+      continue;
 
     index += 1;
     std::string pred_txt = "";
@@ -170,7 +166,7 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes,
     ////get score
     std::unique_ptr<const Tensor> output_tensor1(
         std::move(predictor_crnn->GetOutput(1)));
-    auto* predict_batch = output_tensor1->data<float>();
+    auto *predict_batch = output_tensor1->data<float>();
     auto predict_shape = output_tensor1->shape();
 
     auto predict_lod = output_tensor1->lod();
@@ -198,10 +194,9 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes,
   }
 }
 
-std::vector<std::vector<std::vector<int>>> RunDetModel(
-    std::shared_ptr<PaddlePredictor> predictor,
-    cv::Mat img,
-    std::map<std::string, double> Config) {
+std::vector<std::vector<std::vector<int>>>
+RunDetModel(std::shared_ptr<PaddlePredictor> predictor, cv::Mat img,
+            std::map<std::string, double> Config) {
   // Read img
   int max_side_len = int(Config["max_side_len"]);
 
@@ -216,11 +211,11 @@ std::vector<std::vector<std::vector<int>>> RunDetModel(
   // Prepare input data from image
   std::unique_ptr<Tensor> input_tensor0(std::move(predictor->GetInput(0)));
   input_tensor0->Resize({1, 3, img_fp.rows, img_fp.cols});
-  auto* data0 = input_tensor0->mutable_data<float>();
+  auto *data0 = input_tensor0->mutable_data<float>();
 
   std::vector<float> mean = {0.485f, 0.456f, 0.406f};
   std::vector<float> scale = {1 / 0.229f, 1 / 0.224f, 1 / 0.225f};
-  const float* dimg = reinterpret_cast<const float*>(img_fp.data);
+  const float *dimg = reinterpret_cast<const float *>(img_fp.data);
   neon_mean_scale(dimg, data0, img_fp.rows * img_fp.cols, mean, scale);
 
   // Run predictor
@@ -229,14 +224,8 @@ std::vector<std::vector<std::vector<int>>> RunDetModel(
   // Get output and post process
   std::unique_ptr<const Tensor> output_tensor(
       std::move(predictor->GetOutput(0)));
-  auto* outptr = output_tensor->data<float>();
+  auto *outptr = output_tensor->data<float>();
   auto shape_out = output_tensor->shape();
-
-  int64_t out_numl = 1;
-  double sum = 0;
-  for (auto i : shape_out) {
-    out_numl *= i;
-  }
 
   // Save output
   float pred[shape_out[2]][shape_out[3]];
@@ -248,8 +237,8 @@ std::vector<std::vector<std::vector<int>>> RunDetModel(
         (unsigned char)((outptr[i]) * 255);
   }
 
-  cv::Mat cbuf_map(shape_out[2], shape_out[3], CV_8UC1, (unsigned char*)cbuf);
-  cv::Mat pred_map(shape_out[2], shape_out[3], CV_32F, (float*)pred);
+  cv::Mat cbuf_map(shape_out[2], shape_out[3], CV_8UC1, (unsigned char *)cbuf);
+  cv::Mat pred_map(shape_out[2], shape_out[3], CV_32F, (float *)pred);
 
   const double threshold = double(Config["det_db_thresh"]) * 255;
   const double maxvalue = 255;
@@ -284,28 +273,28 @@ cv::Mat Visualization(cv::Mat srcimg,
   cv::Mat img_vis;
   srcimg.copyTo(img_vis);
   for (int n = 0; n < boxes.size(); n++) {
-    const cv::Point* ppt[1] = {rook_points[n]};
+    const cv::Point *ppt[1] = {rook_points[n]};
     int npt[] = {4};
     cv::polylines(img_vis, ppt, npt, 1, 1, CV_RGB(0, 255, 0), 2, 8, 0);
   }
 
-  cv::imwrite("./imgs/vis.jpg", img_vis);
-  std::cout << "The detection visualized image saved in ./imgs/vis.jpg"
-            << std::endl;
+  cv::imwrite("./vis.jpg", img_vis);
+  std::cout << "The detection visualized image saved in ./vis.jpg" << std::endl;
   return img_vis;
 }
 
-std::vector<std::string> split(const std::string& str,
-                               const std::string& delim) {
+std::vector<std::string> split(const std::string &str,
+                               const std::string &delim) {
   std::vector<std::string> res;
-  if ("" == str) return res;
-  char* strs = new char[str.length() + 1];
+  if ("" == str)
+    return res;
+  char *strs = new char[str.length() + 1];
   std::strcpy(strs, str.c_str());
 
-  char* d = new char[delim.length() + 1];
+  char *d = new char[delim.length() + 1];
   std::strcpy(d, delim.c_str());
 
-  char* p = std::strtok(strs, d);
+  char *p = std::strtok(strs, d);
   while (p) {
     string s = p;
     res.push_back(s);
@@ -326,7 +315,7 @@ std::map<std::string, double> LoadConfigTxt(std::string config_path) {
   return dict;
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   if (argc < 5) {
     std::cerr << "[ERROR] usage: " << argv[0]
               << " det_model_file rec_model_file image_path\n";
@@ -350,8 +339,8 @@ int main(int argc, char** argv) {
 
   std::vector<std::string> rec_text;
   std::vector<float> rec_text_score;
-  RunRecModel(
-      boxes, srcimg, rec_predictor, dict_path, rec_text, rec_text_score);
+  RunRecModel(boxes, srcimg, rec_predictor, dict_path, rec_text,
+              rec_text_score);
 
   auto end = std::chrono::system_clock::now();
   auto duration =
