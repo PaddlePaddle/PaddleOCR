@@ -128,7 +128,7 @@ wget  https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar
 ### 2.2 与手机联调
 
 首先需要进行一些准备工作。
- 1. 准备一台arm8的安卓手机，如果编译的预测库和opt文件是armv7，则需要arm7的手机。
+ 1. 准备一台arm8的安卓手机，如果编译的预测库和opt文件是armv7，则需要arm7的手机，并修改Makefile中`ARM_ABI = arm7`。
  2. 打开手机的USB调试选项，选择文件传输模式，连接电脑。
  3. 电脑上安装adb工具，用于调试。在电脑终端中输入`adb devices`，如果有类似以下输出，则表示adb安装成功。
 ```
@@ -148,12 +148,12 @@ wget  https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar
  ```
  准备测试图像，以`PaddleOCR/doc/imgs/12.jpg`为例，将测试的图像复制到`demo/cxx/ocr/debug/`文件夹下。
  准备字典文件，中文超轻量模型的字典文件是`PaddleOCR/ppocr/utils/ppocr_keys_v1.txt`，将其复制到`demo/cxx/ocr/debug/`文件夹下。
- 
+
  执行完成后，ocr文件夹下将有如下文件格式：
 
 ```
 demo/cxx/ocr/
-|-- debug/                              
+|-- debug/  
 |   |--ch_det_mv3_db_opt.nb             优化后的检测模型文件
 |   |--ch_rec_mv3_crnn_opt.nb           优化后的识别模型文件
 |   |--12.jpg                           待测试图像
@@ -171,7 +171,7 @@ demo/cxx/ocr/
  5. 启动调试
 
  上述步骤完成后就可以使用adb将文件push到手机上运行，步骤如下：
- 
+
  ```
  # 执行编译，得到可执行文件ocr_db_crnn
  # ocr_db_crnn可执行文件的使用方式为:
@@ -188,4 +188,3 @@ demo/cxx/ocr/
  ```
 
  如果对代码做了修改，则需要重新编译并push到手机上。
- 
