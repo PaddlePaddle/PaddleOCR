@@ -98,7 +98,7 @@ class CharacterOps(object):
             if is_remove_duplicate:
                 if idx > 0 and text_index[idx - 1] == text_index[idx]:
                     continue
-            char_list.append(self.character[text_index[idx]])
+            char_list.append(self.character[int(text_index[idx])])
         text = ''.join(char_list)
         return text
 
