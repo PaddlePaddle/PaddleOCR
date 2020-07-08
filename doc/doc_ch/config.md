@@ -22,7 +22,7 @@
 |      print_batch_step    |    设置打印log间隔         |       10          |                \                 |
 |      save_model_dir      |    设置模型保存路径        |  output/{算法名称}  |                \                 |
 |      save_epoch_step     |    设置模型保存间隔        |       3           |                \                 |
-|      eval_batch_step     |    设置模型评估间隔        |       2000        |                \                 |
+|      eval_batch_step     |    设置模型评估间隔        | 2000 或 [1000, 2000]        | 2000 表示每2000次迭代评估一次，[1000， 2000]表示从1000次迭代开始，每2000次评估一次   |
 |train_batch_size_per_card |  设置训练时单卡batch size    |         256         |                \                 |
 | test_batch_size_per_card |  设置评估时单卡batch size    |         256         |                \                 |
 |      image_shape         |    设置输入图片尺寸        |   [3, 32, 100]    |                \                 |

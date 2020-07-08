@@ -119,6 +119,7 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_12.jpg" --d
 - [文本检测模型训练/评估/预测](./doc/doc_ch/detection.md)
 - [文本识别模型训练/评估/预测](./doc/doc_ch/recognition.md)
 - [基于预测引擎推理](./doc/doc_ch/inference.md)
+- [yml配置文件参数介绍](./doc/doc_ch/config_ch.md)
 - [数据集](./doc/doc_ch/datasets.md)
 - [FAQ](#FAQ)
 - [联系我们](#欢迎加入PaddleOCR技术交流群)
