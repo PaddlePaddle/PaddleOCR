@@ -18,6 +18,7 @@ from __future__ import print_function
 
 import os
 import sys
+from paddle.fluid.contrib.model_stat import summary
 __dir__ = os.path.dirname(__file__)
 sys.path.append(__dir__)
 sys.path.append(os.path.join(__dir__, '..'))
@@ -100,6 +101,7 @@ def main():
         'fetch_name_list':eval_fetch_name_list,\
         'fetch_varname_list':eval_fetch_varname_list}
 
+    summary(train_program)
     if alg in ['EAST', 'DB']:
         program.train_eval_det_run(config, exe, train_info_dict, eval_info_dict)
     else:
