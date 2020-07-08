@@ -142,14 +142,13 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
     // Get output and run postprocess
     std::unique_ptr<const Tensor> output_tensor0(
         std::move(predictor_crnn->GetOutput(0)));
-    auto *rec_idx = output_tensor0->data<int>();
+    auto *rec_idx = output_tensor0->data<int64>();
 
     auto rec_idx_lod = output_tensor0->lod();
     auto shape_out = output_tensor0->shape();
 
     std::vector<int> pred_idx;
-    for (int n = int(rec_idx_lod[0][0]); n < int(rec_idx_lod[0][1] * 2);
-         n += 2) {
+    for (int n = int(rec_idx_lod[0][0]); n < int(rec_idx_lod[0][1]); n += 1) {
       pred_idx.push_back(int(rec_idx[n]));
     }
 
