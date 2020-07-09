@@ -4,11 +4,11 @@
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力使用者训练出更好的模型，并应用落地。
 
 **近期更新**
+- 2020.7.9 添加支持空格的识别模型，[识别效果](#支持空格的中文OCR效果展示)
+- 2020.7.9 添加数据增强、学习率衰减策略,具体参考[配置文件](./doc/doc_ch/config.md)
 - 2020.6.8 添加[数据集](./doc/doc_ch/datasets.md)，并保持持续更新
 - 2020.6.5 支持 `attetnion` 模型导出 `inference_model`
 - 2020.6.5 支持单独预测识别时，输出结果得分
-- 2020.5.30 提供超轻量级中文OCR在线体验
-- 2020.5.30 模型预测、训练支持Windows系统
 - [more](./doc/doc_ch/update.md)
 
 ## 特性
@@ -18,22 +18,24 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - 多种文本检测训练算法，EAST、DB
 - 多种文本识别训练算法，Rosetta、CRNN、STAR-Net、RARE
 
+<a name="支持的中文模型列表"></a>
 ### 支持的中文模型列表:
 
-|模型名称|模型简介|检测模型地址|识别模型地址|
-|-|-|-|-|
-|chinese_db_crnn_mobile|超轻量级中文OCR模型|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db_infer.tar) & [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar)|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar) & [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|
-|chinese_db_crnn_server|通用中文OCR模型|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db_infer.tar) & [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db.tar)|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_infer.tar) & [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn.tar)|
+|模型名称|模型简介|检测模型地址|识别模型地址|支持空格的识别模型地址|
+|-|-|-|-|-|
+|chinese_db_crnn_mobile|超轻量级中文OCR模型|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar)|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_enhance_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_enhance_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_enhance.tar)
+|chinese_db_crnn_server|通用中文OCR模型|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db.tar)|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn.tar)|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_enhance_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_enhance.tar)
 
 超轻量级中文OCR在线体验地址：https://www.paddlepaddle.org.cn/hub/scene/ocr
 
-**也可以按如下教程快速体验超轻量级中文OCR和通用中文OCR模型。**
+**也可以按如下教程快速体验中文OCR模型。**
 
 ## **超轻量级中文OCR以及通用中文OCR体验**
 
 ![](doc/imgs_results/11.jpg)
 
-上图是超轻量级中文OCR模型效果展示，更多效果图请见文末[超轻量级中文OCR效果展示](#超轻量级中文OCR效果展示)和[通用中文OCR效果展示](#通用中文OCR效果展示)。
+上图是超轻量级中文OCR模型效果展示，更多效果图请见文末[超轻量级中文OCR效果展示](#超轻量级中文OCR效果展示)、
+[通用中文OCR效果展示](#通用中文OCR效果展示)、[支持空格的中文OCR效果展示](#支持空格的中文OCR效果展示)。
 
 #### 1.环境配置
 
@@ -44,7 +46,21 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 *windows 环境下如果没有安装wget,下载模型时可将链接复制到浏览器中下载，并解压放置在相应目录下*
 
 
-#### (1)超轻量级中文OCR模型下载
+#### 下载检测/识别模型并解压
+
+复制[中文模型列表](#支持的中文模型列表) 中的检测和识别 `inference模型` 地址，下载并解压：
+
+```
+mkdir inference && cd inference
+# 下载检测模型并解压
+wget {url/of/detection/inference_model} && tar xf {name/of/detection/inference_model/package}
+# 下载识别模型并解压
+wget {url/of/recognition/inference_model} && tar xf {name/of/recognition/inference_model/package}
+cd ..
+```
+
+以超轻量级模型为例：
+
 ```
 mkdir inference && cd inference
 # 下载超轻量级中文OCR模型的检测模型并解压
@@ -53,14 +69,18 @@ wget https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db_infer.tar && tar xf
 wget https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar xf ch_rec_mv3_crnn_infer.tar
 cd ..
 ```
-#### (2)通用中文OCR模型下载
+
+解压完毕后应有如下文件结构：
+
 ```
-mkdir inference && cd inference
-# 下载通用中文OCR模型的检测模型并解压
-wget https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db_infer.tar && tar xf ch_det_r50_vd_db_infer.tar
-# 下载通用中文OCR模型的识别模型并解压
-wget https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_infer.tar && tar xf ch_rec_r34_vd_crnn_infer.tar
-cd ..
+|-inference
+    |-ch_rec_mv3_crnn
+        |- model
+        |- params
+    |-ch_det_mv3_db
+        |- model
+        |- params
+    ...
 ```
 
 #### 3.单张图像或者图像集合预测
@@ -83,6 +103,13 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_mode
 ```
 # 预测image_dir指定的单张图像
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_det_r50_vd_db/"  --rec_model_dir="./inference/ch_rec_r34_vd_crnn/"
+```
+
+带空格的通用中文OCR模型的体验可以按照上述步骤下载相应的模型，并且更新相关的参数，示例如下：
+
+```
+# 预测image_dir指定的单张图像
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_12.jpg" --det_model_dir="./inference/ch_det_r50_vd_db/"  --rec_model_dir="./inference/ch_rec_r34_vd_crnn_enhance/"
 ```
 
 更多的文本检测、识别串联推理使用方式请参考文档教程中[基于预测引擎推理](./doc/doc_ch/inference.md)。
@@ -159,6 +186,7 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 
 <a name="超轻量级中文OCR效果展示"></a>
 ## 超轻量级中文OCR效果展示
+
 ![](doc/imgs_results/1.jpg)
 ![](doc/imgs_results/7.jpg)
 ![](doc/imgs_results/12.jpg)
@@ -173,6 +201,15 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 ![](doc/imgs_results/chinese_db_crnn_server/11.jpg)
 ![](doc/imgs_results/chinese_db_crnn_server/2.jpg)
 ![](doc/imgs_results/chinese_db_crnn_server/8.jpg)
+
+<a name="支持空格的中文OCR效果展示"></a>
+## 支持空格的中文OCR效果展示
+
+### 轻量级模型
+![](doc/imgs_results/img_11.jpg)
+
+### 通用模型
+![](doc/imgs_results/chinese_db_crnn_server/en_paper.jpg)
 
 <a name="FAQ"></a>
 ## FAQ

@@ -63,6 +63,7 @@ def parse_args():
         "--rec_char_dict_path",
         type=str,
         default="./ppocr/utils/ppocr_keys_v1.txt")
+    parser.add_argument("--use_space_char", type=bool, default=True)
     return parser.parse_args()
 
 

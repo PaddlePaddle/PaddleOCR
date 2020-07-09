@@ -30,6 +30,8 @@ Take `rec_chinese_lite_train.yml` as an example
 |      character_type      |    Set character type            |       ch          |    en/ch, the default dict will be used for en, and the custom dict will be used for ch|
 |      character_dict_path |    Set dictionary path            |  ./ppocr/utils/ic15_dict.txt  |    \                 |
 |      loss_type           |    Set loss type              |       ctc         |    Supports two types of loss: ctc / attention |
+|       distort            |    Set use distort          |       false       |  Support distort type ,read [img_tools.py](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/rec/img_tools.py)                 |
+|      use_space_char          |    Wether to recognize space             |        false      |         Only support in character_type=ch mode                 |
 |      reader_yml          |    Set the reader configuration file          |  ./configs/rec/rec_icdar15_reader.yml  |  \          |
 |      pretrain_weights    |    Load pre-trained model path      |  ./pretrain_models/CRNN/best_accuracy  |  \          |
 |      checkpoints         |    Load saved model path            |       None        |    Used to load saved parameters to continue training after interruption |

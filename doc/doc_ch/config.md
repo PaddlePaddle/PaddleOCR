@@ -30,6 +30,8 @@
 |      character_type      |    设置字符类型            |       ch          |    en/ch, en时将使用默认dict，ch时使用自定义dict|
 |      character_dict_path |    设置字典路径            |  ./ppocr/utils/ic15_dict.txt  |    \                 |
 |      loss_type           |    设置 loss 类型              |       ctc         |    支持两种loss： ctc / attention |
+|       distort            |    设置是否使用数据增强          |       false       |  设置为true时，将在训练时随机进行扰动，支持的扰动操作可阅读[img_tools.py](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/rec/img_tools.py)                 |
+|       use_space_char     |    设置是否识别空格             |        false      |          仅在 character_type=ch 时支持空格                 |
 |      reader_yml          |    设置reader配置文件          |  ./configs/rec/rec_icdar15_reader.yml  |  \          |
 |      pretrain_weights    |    加载预训练模型路径      |  ./pretrain_models/CRNN/best_accuracy  |  \          |
 |      checkpoints         |    加载模型参数路径            |       None        |    用于中断后加载参数继续训练 |
