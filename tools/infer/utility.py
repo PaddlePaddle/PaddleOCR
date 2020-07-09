@@ -91,7 +91,8 @@ def create_predictor(args, mode):
         config.enable_use_gpu(args.gpu_mem, 0)
     else:
         config.disable_gpu()
-
+        config.enable_mkldnn()
+        config.set_cpu_math_library_num_threads(4)
     #config.enable_memory_optim()
     config.disable_glog_info()
 
