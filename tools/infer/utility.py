@@ -302,6 +302,25 @@ def text_visual(texts, scores, img_h=400, img_w=600, threshold=0.):
     return np.array(blank_img)
 
 
+def base64_to_cv2(b64str):
+    import base64
+    data = base64.b64decode(b64str.encode('utf8'))
+    data = np.fromstring(data, np.uint8)
+    data = cv2.imdecode(data, cv2.IMREAD_COLOR)
+    return data
+
+
+def draw_boxes(image, boxes, scores=None, drop_score=0.5):
+    if scores is None:
+        scores = [1] * len(boxes)
+    for (box, score) in zip(boxes, scores):
+        if score < drop_score:
+            continue
+        box = np.reshape(np.array(box), [-1, 1, 2]).astype(np.int64)
+        image = cv2.polylines(np.array(image), [box], True, (255, 0, 0), 2)
+    return image
+
+
 if __name__ == '__main__':
     test_img = "./doc/test_v2"
     predict_txt = "./doc/predict.txt"
