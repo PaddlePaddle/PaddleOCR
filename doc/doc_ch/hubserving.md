@@ -1,7 +1,7 @@
 # 服务部署
 
 PaddleOCR提供2种服务部署方式：
-- 基于HubServing的部署：已集成到PaddleOCR中（[code](https://github.com/PaddlePaddle/PaddleOCR/tree/develop/deploy/hubserving)），按照本教程使用；
+- 基于HubServing的部署：已集成到PaddleOCR中（[code](https://github.com/PaddlePaddle/PaddleOCR/tree/develop/deploy/ocr_hubserving)），按照本教程使用；
 - 基于PaddleServing的部署：详见PaddleServing官网[demo](https://github.com/PaddlePaddle/Serving/tree/develop/python/examples/ocr)，后续也将集成到PaddleOCR。  
 
 服务部署目录下包括检测、识别、2阶段串联三种服务包，根据需求选择相应的服务包进行安装和启动。目录如下：
@@ -26,11 +26,14 @@ deploy/hubserving/ocr_system/
 ```pip3 install paddlehub --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple```
 
 ### 2. 安装服务模块
-PaddleOCR提供3种服务模块，根据需要安装所需模块。如：  
+PaddleOCR提供3种服务模块，根据需要安装所需模块。如： 
+
 安装检测服务模块：  
 ```hub install deploy/hubserving/ocr_det/```  
+
 或，安装识别服务模块：  
 ```hub install deploy/hubserving/ocr_rec/```  
+
 或，安装检测+识别串联服务模块：  
 ```hub install deploy/hubserving/ocr_system/```  
 
