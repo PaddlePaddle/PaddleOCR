@@ -1,0 +1,14 @@
+{
+    "modules_info": {
+        "ocr_det": {
+            "init_args": {
+                "version": "1.0.0",
+                "det_model_dir": "./inference/ch_det_mv3_db/",
+                "use_gpu": true
+            },
+            "predict_args": {
+                "visualization": false
+            }
+        }
+    }
+}
