@@ -359,11 +359,6 @@ def process_image(img,
         # char_num = char_ops.get_char_num()
         text = char_ops.encode(label)
         if len(text) == 0 or len(text) > max_text_length:
-            logger.info(
-                "Warning in ppocr/data/rec/img_tools.py:line106: Wrong data type."
-                "Excepted string with length between 1 and {}, but "
-                "got '{}'. Label is '{}'".format(max_text_length,
-                                                 len(text), label))
             return None
         else:
             if loss_type == "ctc":
