@@ -1,5 +1,5 @@
 
-# 基于预测引擎推理
+# 基于Python预测引擎推理
 
 inference 模型（fluid.io.save_inference_model保存的模型）
 一般是模型训练完成后保存的固化模型，多用于预测部署。
