@@ -360,7 +360,7 @@ def process_image(img,
         text = char_ops.encode(label)
         if len(text) == 0 or len(text) > max_text_length:
             logger.info(
-                "Warning in ppocr/data/rec/img_tools.py:line106: Wrong data type."
+                "Warning in ppocr/data/rec/img_tools.py:line362: Wrong data type."
                 "Excepted string with length between 1 and {}, but "
                 "got '{}'. Label is '{}'".format(max_text_length,
                                                  len(text), label))
