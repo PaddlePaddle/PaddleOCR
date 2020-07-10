@@ -130,11 +130,30 @@ wget  https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar
 首先需要进行一些准备工作。
  1. 准备一台arm8的安卓手机，如果编译的预测库和opt文件是armv7，则需要arm7的手机，并修改Makefile中`ARM_ABI = arm7`。
  2. 打开手机的USB调试选项，选择文件传输模式，连接电脑。
- 3. 电脑上安装adb工具，用于调试。在电脑终端中输入`adb devices`，如果有类似以下输出，则表示adb安装成功。
-```
-    List of devices attached
-    744be294    device
-```
+ 3. 电脑上安装adb工具，用于调试。 adb安装方式如下：
+
+    3.1. MAC电脑安装ADB:
+    ```
+    brew cask install android-platform-tools
+    ```
+    3.2. Linux安装ADB
+    ```
+    sudo apt update
+    sudo apt install -y wget adb
+    ```
+    3.3. Window安装ADB
+
+    win上安装需要去谷歌的安卓平台下载adb软件包进行安装：[链接](https://developer.android.com/studio)
+
+    打开终端，手机连接电脑，在终端中输入
+    ```
+    adb devices
+    ```
+    如果有device输出，则表示安装成功。
+    ```
+       List of devices attached
+       744be294    device
+    ```
 
  4. 准备优化后的模型、预测库文件、测试图像和使用的字典文件。
  在预测库`inference_lite_lib.android.armv8/demo/cxx/`下新建一个`ocr/`文件夹，
