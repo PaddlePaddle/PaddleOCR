@@ -45,12 +45,20 @@ class LMDBReader(object):
         self.use_tps = False
         if "tps" in params:
             self.ues_tps = True
+        self.use_distort = False
+        if "distort" in params:
+            self.use_distort = params['distort'] and params['use_gpu']
+            if not params['use_gpu']:
+                logger.info(
+                    "Distort operation can only support in GPU. Distort will be set to False."
+                )
         if params['mode'] == 'train':
             self.batch_size = params['train_batch_size_per_card']
             self.drop_last = True
         else:
             self.batch_size = params['test_batch_size_per_card']
             self.drop_last = False
+            self.use_distort = False
         self.infer_img = params['infer_img']
 
     def load_hierarchical_lmdb_dataset(self):
@@ -142,7 +150,8 @@ class LMDBReader(object):
                                 label=label,
                                 char_ops=self.char_ops,
                                 loss_type=self.loss_type,
-                                max_text_length=self.max_text_length)
+                                max_text_length=self.max_text_length,
+                                distort=self.use_distort)
                             if outs is None:
                                 continue
                             yield outs
@@ -185,12 +194,20 @@ class SimpleReader(object):
         self.use_tps = False
         if "tps" in params:
             self.use_tps = True
+        self.use_distort = False
+        if "distort" in params:
+            self.use_distort = params['distort'] and params['use_gpu']
+            if not params['use_gpu']:
+                logger.info(
+                    "Distort operation can only support in GPU.Distort will be set to False."
+                )
         if params['mode'] == 'train':
             self.batch_size = params['train_batch_size_per_card']
             self.drop_last = True
         else:
             self.batch_size = params['test_batch_size_per_card']
             self.drop_last = False
+            self.use_distort = False
 
     def __call__(self, process_id):
         if self.mode != 'train':
@@ -232,9 +249,14 @@ class SimpleReader(object):
                         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
 
                     label = substr[1]
-                    outs = process_image(img, self.image_shape, label,
-                                         self.char_ops, self.loss_type,
-                                         self.max_text_length)
+                    outs = process_image(
+                        img=img,
+                        image_shape=self.image_shape,
+                        label=label,
+                        char_ops=self.char_ops,
+                        loss_type=self.loss_type,
+                        max_text_length=self.max_text_length,
+                        distort=self.use_distort)
                     if outs is None:
                         continue
                     yield outs

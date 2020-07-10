@@ -30,12 +30,17 @@ class CharacterOps(object):
             dict_character = list(self.character_str)
         elif self.character_type == "ch":
             character_dict_path = config['character_dict_path']
+            add_space = False
+            if 'use_space_char' in config:
+                add_space = config['use_space_char']
             self.character_str = ""
             with open(character_dict_path, "rb") as fin:
                 lines = fin.readlines()
                 for line in lines:
                     line = line.decode('utf-8').strip("\n").strip("\r\n")
                     self.character_str += line
+            if add_space:
+                self.character_str += " "
             dict_character = list(self.character_str)
         elif self.character_type == "en_sensitive":
             # same with ASTER setting (use 94 char).
@@ -93,7 +98,7 @@ class CharacterOps(object):
             if is_remove_duplicate:
                 if idx > 0 and text_index[idx - 1] == text_index[idx]:
                     continue
-            char_list.append(self.character[text_index[idx]])
+            char_list.append(self.character[int(text_index[idx])])
         text = ''.join(char_list)
         return text
 

@@ -22,7 +22,7 @@
 |      print_batch_step    |    设置打印log间隔         |       10          |                \                 |
 |      save_model_dir      |    设置模型保存路径        |  output/{算法名称}  |                \                 |
 |      save_epoch_step     |    设置模型保存间隔        |       3           |                \                 |
-|      eval_batch_step     |    设置模型评估间隔        |       2000        |                \                 |
+|      eval_batch_step     |    设置模型评估间隔        | 2000 或 [1000, 2000]        | 2000 表示每2000次迭代评估一次，[1000， 2000]表示从1000次迭代开始，每2000次评估一次   |
 |train_batch_size_per_card |  设置训练时单卡batch size    |         256         |                \                 |
 | test_batch_size_per_card |  设置评估时单卡batch size    |         256         |                \                 |
 |      image_shape         |    设置输入图片尺寸        |   [3, 32, 100]    |                \                 |
@@ -30,6 +30,8 @@
 |      character_type      |    设置字符类型            |       ch          |    en/ch, en时将使用默认dict，ch时使用自定义dict|
 |      character_dict_path |    设置字典路径            |  ./ppocr/utils/ic15_dict.txt  |    \                 |
 |      loss_type           |    设置 loss 类型              |       ctc         |    支持两种loss： ctc / attention |
+|       distort            |    设置是否使用数据增强          |       false       |  设置为true时，将在训练时随机进行扰动，支持的扰动操作可阅读[img_tools.py](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/rec/img_tools.py)                 |
+|       use_space_char     |    设置是否识别空格             |        false      |          仅在 character_type=ch 时支持空格                 |
 |      reader_yml          |    设置reader配置文件          |  ./configs/rec/rec_icdar15_reader.yml  |  \          |
 |      pretrain_weights    |    加载预训练模型路径      |  ./pretrain_models/CRNN/best_accuracy  |  \          |
 |      checkpoints         |    加载模型参数路径            |       None        |    用于中断后加载参数继续训练 |

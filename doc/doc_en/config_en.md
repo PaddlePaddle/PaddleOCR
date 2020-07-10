@@ -22,7 +22,7 @@ Take `rec_chinese_lite_train.yml` as an example
 |      print_batch_step    |    Set print log interval         |       10          |                \                 |
 |      save_model_dir      |    Set model save path        |  output/{model_name}  |                \                 |
 |      save_epoch_step     |    Set model save interval        |       3           |                \                 |
-|      eval_batch_step     |    Set the model evaluation interval        |       2000        |                \                 |
+|      eval_batch_step     |    Set the model evaluation interval        |2000 or [1000, 2000] |runing evaluation every 2000 iters or evaluation is run every 2000 iterations after the 1000th iteration  |
 |train_batch_size_per_card |  Set the batch size during training   |         256         |                \                 |
 | test_batch_size_per_card |  Set the batch size during testing    |         256         |                \                 |
 |      image_shape         |    Set input image size        |   [3, 32, 100]    |                \                 |
@@ -30,6 +30,8 @@ Take `rec_chinese_lite_train.yml` as an example
 |      character_type      |    Set character type            |       ch          |    en/ch, the default dict will be used for en, and the custom dict will be used for ch|
 |      character_dict_path |    Set dictionary path            |  ./ppocr/utils/ic15_dict.txt  |    \                 |
 |      loss_type           |    Set loss type              |       ctc         |    Supports two types of loss: ctc / attention |
+|       distort            |    Set use distort          |       false       |  Support distort type ,read [img_tools.py](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/rec/img_tools.py)                 |
+|      use_space_char          |    Wether to recognize space             |        false      |         Only support in character_type=ch mode                 |
 |      reader_yml          |    Set the reader configuration file          |  ./configs/rec/rec_icdar15_reader.yml  |  \          |
 |      pretrain_weights    |    Load pre-trained model path      |  ./pretrain_models/CRNN/best_accuracy  |  \          |
 |      checkpoints         |    Load saved model path            |       None        |    Used to load saved parameters to continue training after interruption |

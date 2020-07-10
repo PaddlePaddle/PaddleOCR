@@ -6,16 +6,16 @@
 - [中文文档文字识别](#中文文档文字识别)
 - [ICDAR2019-ArT](#ICDAR2019-ArT)
 
-除了开源数据，用户还可使用合成工具自行合成，可参考的合成工具包括[text_renderer](https://github.com/Sanster/text_renderer)、[SynthText](https://github.com/ankush-me/SynthText)、[TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator)等。
+除了开源数据，用户还可使用合成工具自行合成，可参考的合成工具包括[text_renderer](https://github.com/Sanster/text_renderer)、[SynthText](https://github.com/ankush-me/SynthText)、[SynthText_Chinese_version](https://github.com/JarveeLee/SynthText_Chinese_version)、[TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator)等。
 
 <a name="ICDAR2019-LSVT"></a>
 #### 1、ICDAR2019-LSVT
 - **数据来源**：https://ai.baidu.com/broad/introduction?dataset=lsvt
-- **数据简介**： 共45w中文街景图像，包含5w（2w测试+3w训练）全标注数据（文本坐标+文本内容），40w弱标注数据（仅文本内容），如下图所示：
-    ![](../datasets/LSVT_1.jpg)
-    (a) 全标注数据
-    ![](../datasets/LSVT_2.jpg)
-    (b) 弱标注数据
+- **数据简介**： 共45w中文街景图像，包含5w（2w测试+3w训练）全标注数据（文本坐标+文本内容），40w弱标注数据（仅文本内容），如下图所示：  
+    ![](../datasets/LSVT_1.jpg)  
+    (a) 全标注数据  
+    ![](../datasets/LSVT_2.jpg)  
+    (b) 弱标注数据  
 - **下载地址**：https://ai.baidu.com/broad/download?dataset=lsvt
 
 <a name="ICDAR2017-RCTW-17"></a>
@@ -28,7 +28,7 @@
 <a name="中文街景文字识别"></a>
 #### 3、中文街景文字识别 
 - **数据来源**：https://aistudio.baidu.com/aistudio/competition/detail/8
-- **数据简介**：ICDAR2019-LSVT行识别任务，共包括29万张图片，其中21万张图片作为训练集（带标注），8万张作为测试集（无标注）。数据集采自中国街景，并由街景图片中的文字行区域（例如店铺标牌、地标等等）截取出来而形成。所有图像都经过一些预处理，将文字区域利用仿射变化，等比映射为一张高为48像素的图片，如图所示：
+- **数据简介**：ICDAR2019-LSVT行识别任务，共包括29万张图片，其中21万张图片作为训练集（带标注），8万张作为测试集（无标注）。数据集采自中国街景，并由街景图片中的文字行区域（例如店铺标牌、地标等等）截取出来而形成。所有图像都经过一些预处理，将文字区域利用仿射变化，等比映射为一张高为48像素的图片，如图所示：  
     ![](../datasets/ch_street_rec_1.png)  
     (a) 标注：魅派集成吊顶  
     ![](../datasets/ch_street_rec_2.png)  
