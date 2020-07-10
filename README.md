@@ -105,7 +105,7 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 - 模型训练/评估/预测
     - [文本检测](./doc/doc_ch/detection.md)
     - [文本识别](./doc/doc_ch/recognition.md)
-    - [yml参数配置文件介绍](./doc/doc_ch/config_ch.md)
+    - [yml参数配置文件介绍](./doc/doc_ch/config.md)
 - 预测部署
     - [基于Python预测引擎推理](./doc/doc_ch/inference.md)
     - 基于C++预测引擎推理(comming soon)
