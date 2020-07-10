@@ -122,19 +122,19 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 - [许可证书](#许可证书)
 - [贡献代码](#贡献代码)
 
-## 效果展示 [more](./doc/doc_ch/visualization.md)
+## 效果展示
 
 <a name="超轻量级中文OCR效果展示"></a>
-### 1.超轻量级中文OCR效果展示
+### 1.超轻量级中文OCR效果展示  [more](./doc/doc_ch/visualization.md)
 
 ![](doc/imgs_results/7.jpg)
 
 <a name="通用中文OCR效果展示"></a>
-### 2.通用中文OCR效果展示
+### 2.通用中文OCR效果展示  [more](./doc/doc_ch/visualization.md)
 ![](doc/imgs_results/chinese_db_crnn_server/11.jpg)
 
 <a name="支持空格的中文OCR效果展示"></a>
-### 3.支持空格的中文OCR效果展示
+### 3.支持空格的中文OCR效果展示  [more](./doc/doc_ch/visualization.md)
 
 ![](doc/imgs_results/chinese_db_crnn_server/en_paper.jpg)
 
