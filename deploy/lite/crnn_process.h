@@ -21,14 +21,12 @@
 #include <string>
 #include <vector>
 
-#include "math.h"  //NOLINT
+#include "math.h" //NOLINT
 #include "opencv2/core.hpp"
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/imgproc.hpp"
 
-cv::Mat CrnnResizeNormImg(cv::Mat img, float wh_ratio);
-
-cv::Mat CrnnResizeImg(cv::Mat img, float wh_ratio);
+cv::Mat CrnnResizeNormImg(cv::Mat img, float wh_ratio, bool is_norm);
 
 std::vector<std::string> ReadDict(std::string path);
 

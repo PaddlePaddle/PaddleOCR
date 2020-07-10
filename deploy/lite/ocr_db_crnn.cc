@@ -107,8 +107,9 @@ cv::Mat DetResizeImg(const cv::Mat img, int max_size_len,
 
 void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
                  std::shared_ptr<PaddlePredictor> predictor_crnn,
-                 std::string dict_path, std::vector<std::string> &rec_text,
-                 std::vector<float> &rec_text_score) {
+                 std::vector<std::string> &rec_text,
+                 std::vector<float> &rec_text_score,
+                 std::vector<std::string> charactor_dict) {
   std::vector<float> mean = {0.5f, 0.5f, 0.5f};
   std::vector<float> scale = {1 / 0.5f, 1 / 0.5f, 1 / 0.5f};
 
@@ -117,14 +118,12 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
   cv::Mat crop_img;
   cv::Mat resize_img;
 
-  auto charactor_dict = ReadDict(dict_path);
-
   int index = 0;
   for (int i = boxes.size() - 1; i >= 0; i--) {
     crop_img = GetRotateCropImage(srcimg, boxes[i]);
     float wh_ratio = float(crop_img.cols) / float(crop_img.rows);
 
-    resize_img = CrnnResizeImg(crop_img, wh_ratio);
+    resize_img = CrnnResizeNormImg(crop_img, wh_ratio, false);
     resize_img.convertTo(resize_img, CV_32FC3, 1 / 255.f);
 
     const float *dimg = reinterpret_cast<const float *>(resize_img.data);
@@ -227,13 +226,12 @@ RunDetModel(std::shared_ptr<PaddlePredictor> predictor, cv::Mat img,
   auto shape_out = output_tensor->shape();
 
   // Save output
-  float pred[shape_out[2]][shape_out[3]];
-  unsigned char cbuf[shape_out[2]][shape_out[3]];
+  float pred[shape_out[2] * shape_out[3]];
+  unsigned char cbuf[shape_out[2] * shape_out[3]];
 
   for (int i = 0; i < int(shape_out[2] * shape_out[3]); i++) {
-    pred[int(i / int(shape_out[3]))][int(i % shape_out[3])] = float(outptr[i]);
-    cbuf[int(i / int(shape_out[3]))][int(i % shape_out[3])] =
-        (unsigned char)((outptr[i]) * 255);
+    pred[i] = float(outptr[i]);
+    cbuf[i] = (unsigned char)((outptr[i]) * 255);
   }
 
   cv::Mat cbuf_map(shape_out[2], shape_out[3], CV_8UC1, (unsigned char *)cbuf);
@@ -333,13 +331,15 @@ int main(int argc, char **argv) {
   auto det_predictor = loadModel(det_model_file);
   auto rec_predictor = loadModel(rec_model_file);
 
+  auto charactor_dict = ReadDict(dict_path);
+
   cv::Mat srcimg = cv::imread(img_path, cv::IMREAD_COLOR);
   auto boxes = RunDetModel(det_predictor, srcimg, Config);
 
   std::vector<std::string> rec_text;
   std::vector<float> rec_text_score;
-  RunRecModel(boxes, srcimg, rec_predictor, dict_path, rec_text,
-              rec_text_score);
+  RunRecModel(boxes, srcimg, rec_predictor, rec_text, rec_text_score,
+              charactor_dict);
 
   auto end = std::chrono::system_clock::now();
   auto duration =

@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "crnn_process.h"  //NOLINT
+#include "crnn_process.h" //NOLINT
 #include <algorithm>
 #include <memory>
 #include <string>
 
 const std::vector<int> rec_image_shape{3, 32, 320};
 
-cv::Mat CrnnResizeNormImg(cv::Mat img, float wh_ratio) {
+cv::Mat CrnnResizeNormImg(cv::Mat img, float wh_ratio, bool is_norm) {
   int imgC, imgH, imgW;
   imgC = rec_image_shape[0];
   imgW = rec_image_shape[2];
@@ -34,54 +34,31 @@ cv::Mat CrnnResizeNormImg(cv::Mat img, float wh_ratio) {
   else
     resize_w = int(ceilf(imgH * ratio));
   cv::Mat resize_img;
-  cv::resize(
-      img, resize_img, cv::Size(resize_w, imgH), 0.f, 0.f, cv::INTER_CUBIC);
+  cv::resize(img, resize_img, cv::Size(resize_w, imgH), 0.f, 0.f,
+             cv::INTER_LINEAR);
 
-  resize_img.convertTo(resize_img, CV_32FC3, 1 / 255.f);
+  if (!is_norm) {
+    return resize_img;
+  } else {
+    resize_img.convertTo(resize_img, CV_32FC3, 1 / 255.f);
 
-  for (int h = 0; h < resize_img.rows; h++) {
-    for (int w = 0; w < resize_img.cols; w++) {
-      resize_img.at<cv::Vec3f>(h, w)[0] =
-          (resize_img.at<cv::Vec3f>(h, w)[0] - 0.5) * 2;
-      resize_img.at<cv::Vec3f>(h, w)[1] =
-          (resize_img.at<cv::Vec3f>(h, w)[1] - 0.5) * 2;
-      resize_img.at<cv::Vec3f>(h, w)[2] =
-          (resize_img.at<cv::Vec3f>(h, w)[2] - 0.5) * 2;
+    for (int h = 0; h < resize_img.rows; h++) {
+      for (int w = 0; w < resize_img.cols; w++) {
+        resize_img.at<cv::Vec3f>(h, w)[0] =
+            (resize_img.at<cv::Vec3f>(h, w)[0] - 0.5) * 2;
+        resize_img.at<cv::Vec3f>(h, w)[1] =
+            (resize_img.at<cv::Vec3f>(h, w)[1] - 0.5) * 2;
+        resize_img.at<cv::Vec3f>(h, w)[2] =
+            (resize_img.at<cv::Vec3f>(h, w)[2] - 0.5) * 2;
+      }
     }
+
+    cv::Mat dist;
+    cv::copyMakeBorder(resize_img, dist, 0, 0, 0, int(imgW - resize_w),
+                       cv::BORDER_CONSTANT, {0, 0, 0});
+
+    return dist;
   }
-
-  cv::Mat dist;
-  cv::copyMakeBorder(resize_img,
-                     dist,
-                     0,
-                     0,
-                     0,
-                     int(imgW - resize_w),
-                     cv::BORDER_CONSTANT,
-                     {0, 0, 0});
-
-  return dist;
-}
-
-cv::Mat CrnnResizeImg(cv::Mat img, float wh_ratio) {
-  int imgC, imgH, imgW;
-  imgC = rec_image_shape[0];
-  imgW = rec_image_shape[2];
-  imgH = rec_image_shape[1];
-
-  imgW = int(32 * wh_ratio);
-
-  float ratio = float(img.cols) / float(img.rows);
-  int resize_w, resize_h;
-  if (ceilf(imgH * ratio) > imgW)
-    resize_w = imgW;
-  else
-    resize_w = int(ceilf(imgH * ratio));
-  cv::Mat resize_img;
-  cv::resize(
-      img, resize_img, cv::Size(resize_w, imgH), 0.f, 0.f, cv::INTER_LINEAR);
-
-  return resize_img;
 }
 
 std::vector<std::string> ReadDict(std::string path) {
@@ -140,9 +117,7 @@ cv::Mat GetRotateCropImage(cv::Mat srcimage,
   cv::Mat M = cv::getPerspectiveTransform(pointsf, pts_std);
 
   cv::Mat dst_img;
-  cv::warpPerspective(img_crop,
-                      dst_img,
-                      M,
+  cv::warpPerspective(img_crop, dst_img, M,
                       cv::Size(img_crop_width, img_crop_height),
                       cv::BORDER_REPLICATE);
 

@@ -1,6 +1,6 @@
-# PaddleOCR 模型部署
+# PaddleOCR 端侧模型部署
 
-PaddleOCR是集训练、预测、端侧部署于一体的实用OCR工具库。本教程将介绍在安卓移动端部署PaddleOCR超轻量中文检测、识别模型的主要流程。
+本教程将介绍在移动端部署PaddleOCR超轻量中文检测、识别模型的详细步骤。
 
 
 ## 1. 准备环境
@@ -159,6 +159,7 @@ demo/cxx/ocr/
 |   |--11.jpg                           待测试图像
 |   |--ppocr_keys_v1.txt                字典文件
 |   |--libpaddle_light_api_shared.so    C++预测库文件
+|   |--config.txt                       DB-CRNN超参数配置
 |-- config.txt                  DB-CRNN超参数配置
 |-- crnn_process.cc             识别模型CRNN的预处理和后处理文件
 |-- crnn_process.h
