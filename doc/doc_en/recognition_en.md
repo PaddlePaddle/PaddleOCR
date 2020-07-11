@@ -158,9 +158,23 @@ Global:
   ...
   # Modify reader type
   reader_yml: ./configs/rec/rec_chinese_reader.yml
+  # Whether to use data augmentation
+  distort: true
+  # Whether to recognize spaces
+  use_space_char: true
   ...
 
 ...
+
+Optimizer:
+  ...
+  # Add learning rate decay strategy
+  decay:
+    function: cosine_decay
+    # Each epoch contains iter number
+    step_each_epoch: 20
+    # Total epoch number
+    total_epoch: 1000
 ```
 **Note that the configuration file for prediction/evaluation must be consistent with the training.**
 

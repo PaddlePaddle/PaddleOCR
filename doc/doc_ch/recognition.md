@@ -94,7 +94,10 @@ word_dict.txt 每行有一个单字，将字符与数字索引映射在一起，
 `ppocr/utils/ic15_dict.txt` 是一个包含36个字符的英文字典，
 您可以按需使用。
 
-如需自定义dic文件，请修改 `configs/rec/rec_icdar15_train.yml` 中的 `character_dict_path` 字段, 并将 `character_type` 设置为 `ch`。
+如需自定义dic文件，请在 `configs/rec/rec_icdar15_train.yml` 中添加 `character_dict_path` 字段, 并将 `character_type` 设置为 `ch`。
+
+*如果希望支持识别"空格"类别, 请将yml文件中的 `use_space_char` 字段设置为 `true`。`use_space_char` 仅在 `character_type=ch` 时生效*
+
 
 ### 启动训练
 
@@ -123,6 +126,18 @@ export CUDA_VISIBLE_DEVICES=0,1,2,3
 # 训练icdar15英文数据
 python3 tools/train.py -c configs/rec/rec_icdar15_train.yml
 ```
+
+- 数据增强
+
+PaddleOCR提供了多种数据增强方式，如果您希望在训练时加入扰动，请在配置文件中设置 `distort: true`。
+
+默认的扰动方式有：颜色空间转换(cvtColor)、模糊(blur)、抖动(jitter)、噪声(Gasuss noise)、随机切割(random crop)、透视(perspective)、颜色反转(reverse)。
+
+训练过程中每种扰动方式以50%的概率被选择，具体代码实现请参考：[img_tools.py](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/rec/img_tools.py)
+
+*由于OpenCV的兼容性问题，扰动操作暂时只支持GPU*
+
+- 训练
 
 PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_train.yml` 中修改 `eval_batch_step` 设置评估频率，默认每500个iter评估一次。评估过程中默认将最佳acc模型，保存为 `output/rec_CRNN/best_accuracy` 。
 
@@ -157,12 +172,26 @@ Global:
   character_type: ch
   # 添加自定义字典，如修改字典请将路径指向新字典
   character_dict_path: ./ppocr/utils/ppocr_keys_v1.txt
+  # 训练时添加数据增强
+  distort: true
+  # 识别空格
+  use_space_char: true
   ...
   # 修改reader类型
   reader_yml: ./configs/rec/rec_chinese_reader.yml
   ...
 
 ...
+
+Optimizer:
+  ...
+  # 添加学习率衰减策略
+  decay:
+    function: cosine_decay
+    # 每个 epoch 包含 iter 数
+    step_each_epoch: 20
+    # 总共训练epoch数
+    total_epoch: 1000
 ```
 **注意，预测/评估时的配置文件请务必与训练一致。**
 

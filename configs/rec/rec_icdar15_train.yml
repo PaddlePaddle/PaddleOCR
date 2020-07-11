@@ -13,6 +13,7 @@ Global:
   max_text_length: 25
   character_type: en
   loss_type: ctc
+  distort: true
   reader_yml: ./configs/rec/rec_icdar15_reader.yml
   pretrain_weights: ./pretrain_models/rec_mv3_none_bilstm_ctc/best_accuracy
   checkpoints:

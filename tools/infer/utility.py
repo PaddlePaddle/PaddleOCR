@@ -63,6 +63,7 @@ def parse_args():
         "--rec_char_dict_path",
         type=str,
         default="./ppocr/utils/ppocr_keys_v1.txt")
+    parser.add_argument("--use_space_char", type=bool, default=True)
     return parser.parse_args()
 
 
@@ -90,8 +91,9 @@ def create_predictor(args, mode):
         config.enable_use_gpu(args.gpu_mem, 0)
     else:
         config.disable_gpu()
-
-    config.enable_memory_optim()
+        config.enable_mkldnn()
+        config.set_cpu_math_library_num_threads(4)
+    #config.enable_memory_optim()
     config.disable_glog_info()
 
     # use zero copy
@@ -169,26 +171,35 @@ def draw_ocr_box_txt(image, boxes, txts):
     draw_left = ImageDraw.Draw(img_left)
     draw_right = ImageDraw.Draw(img_right)
     for (box, txt) in zip(boxes, txts):
-        color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        color = (random.randint(0, 255), random.randint(0, 255),
+                 random.randint(0, 255))
         draw_left.polygon(box, fill=color)
-        draw_right.polygon([box[0][0], box[0][1],
-                            box[1][0], box[1][1],
-                            box[2][0], box[2][1],
-                            box[3][0], box[3][1]], outline=color)
-        box_height = math.sqrt((box[0][0] - box[3][0]) ** 2 + (box[0][1] - box[3][1]) ** 2)
-        box_width = math.sqrt((box[0][0] - box[1][0]) ** 2 + (box[0][1] - box[1][1]) ** 2)
+        draw_right.polygon(
+            [
+                box[0][0], box[0][1], box[1][0], box[1][1], box[2][0],
+                box[2][1], box[3][0], box[3][1]
+            ],
+            outline=color)
+        box_height = math.sqrt((box[0][0] - box[3][0])**2 + (box[0][1] - box[3][
+            1])**2)
+        box_width = math.sqrt((box[0][0] - box[1][0])**2 + (box[0][1] - box[1][
+            1])**2)
         if box_height > 2 * box_width:
             font_size = max(int(box_width * 0.9), 10)
-            font = ImageFont.truetype("./doc/simfang.ttf", font_size, encoding="utf-8")
+            font = ImageFont.truetype(
+                "./doc/simfang.ttf", font_size, encoding="utf-8")
             cur_y = box[0][1]
             for c in txt:
                 char_size = font.getsize(c)
-                draw_right.text((box[0][0] + 3, cur_y), c, fill=(0, 0, 0), font=font)
+                draw_right.text(
+                    (box[0][0] + 3, cur_y), c, fill=(0, 0, 0), font=font)
                 cur_y += char_size[1]
         else:
             font_size = max(int(box_height * 0.8), 10)
-            font = ImageFont.truetype("./doc/simfang.ttf", font_size, encoding="utf-8")
-            draw_right.text([box[0][0], box[0][1]], txt, fill=(0, 0, 0), font=font)
+            font = ImageFont.truetype(
+                "./doc/simfang.ttf", font_size, encoding="utf-8")
+            draw_right.text(
+                [box[0][0], box[0][1]], txt, fill=(0, 0, 0), font=font)
     img_left = Image.blend(image, img_left, 0.5)
     img_show = Image.new('RGB', (w * 2, h), (255, 255, 255))
     img_show.paste(img_left, (0, 0, w, h))
@@ -290,6 +301,25 @@ def text_visual(texts, scores, img_h=400, img_w=600, threshold=0.):
     else:
         blank_img = np.concatenate(txt_img_list, axis=1)
     return np.array(blank_img)
+
+
+def base64_to_cv2(b64str):
+    import base64
+    data = base64.b64decode(b64str.encode('utf8'))
+    data = np.fromstring(data, np.uint8)
+    data = cv2.imdecode(data, cv2.IMREAD_COLOR)
+    return data
+
+
+def draw_boxes(image, boxes, scores=None, drop_score=0.5):
+    if scores is None:
+        scores = [1] * len(boxes)
+    for (box, score) in zip(boxes, scores):
+        if score < drop_score:
+            continue
+        box = np.reshape(np.array(box), [-1, 1, 2]).astype(np.int64)
+        image = cv2.polylines(np.array(image), [box], True, (255, 0, 0), 2)
+    return image
 
 
 if __name__ == '__main__':
