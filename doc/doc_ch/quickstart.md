@@ -83,4 +83,4 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_12.jpg" --d
 此外，文档教程中也提供了中文OCR模型的其他预测部署方式：
 - 基于C++预测引擎推理(comming soon)
 - [服务部署](./doc/doc_ch/serving.md)
-- 端测部署(comming soon)
+- 端侧部署(comming soon)
