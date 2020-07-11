@@ -43,6 +43,7 @@ logger = initial_logger()
 from ppocr.data.reader_main import reader_main
 from ppocr.utils.save_load import init_model
 from ppocr.utils.character import CharacterOps
+from paddle.fluid.contrib.model_stat import summary
 
 
 def main():
@@ -87,6 +88,14 @@ def main():
     # compile program for multi-devices
     train_compile_program = program.create_multi_devices_program(
         train_program, train_opt_loss_name)
+
+    # dump mode structure
+    if config['Global']['debug']:
+        if 'Attention' in config['Head'].keys():
+            logger.warning('Does not suport dump attention...')
+        else:
+            summary(train_program)
+
     init_model(config, train_program, exe)
 
     train_info_dict = {'compile_program':train_compile_program,\
