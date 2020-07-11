@@ -109,7 +109,7 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[模型训�
     - [基于Python预测引擎推理](./doc/doc_ch/inference.md)
     - 基于C++预测引擎推理(comming soon)
     - [服务部署](./doc/doc_ch/serving.md)
-    - 端测部署(comming soon)
+    - 端侧部署(comming soon)
 - [数据集](./doc/doc_ch/datasets.md)
 - [FAQ](#FAQ)
 - 效果展示
