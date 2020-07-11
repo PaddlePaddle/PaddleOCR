@@ -25,8 +25,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 ![](doc/imgs_results/11.jpg)
 
-上图是超轻量级中文OCR模型效果展示，更多效果图请见文末[超轻量级中文OCR效果展示](#超轻量级中文OCR效果展示)、
-[通用中文OCR效果展示](#通用中文OCR效果展示)、[支持空格的中文OCR效果展示](#支持空格的中文OCR效果展示)。
+上图是超轻量级中文OCR模型效果展示，更多效果图请见[效果展示页面](./doc/doc_ch/visualization.md)。
 
 - 超轻量级中文OCR在线体验地址：https://www.paddlepaddle.org.cn/hub/scene/ocr
 
