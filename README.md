@@ -63,7 +63,7 @@ PaddleOCR开源的文本检测算法列表：
 
 * 注： 上述DB模型的训练和评估，需设置后处理参数box_thresh=0.6，unclip_ratio=1.5，使用不同数据集、不同模型训练，可调整这两个参数进行优化
 
-PaddleOCR文本检测算法的训练和使用请参考文档教程中[文本检测模型训练/评估/预测](./doc/doc_ch/detection.md)。
+PaddleOCR文本检测算法的训练和使用请参考文档教程中[模型训练/评估中的文本检测部分](./doc/doc_ch/detection.md)。
 
 ### 2.文本识别算法
 
@@ -93,7 +93,7 @@ PaddleOCR开源的文本识别算法列表：
 |超轻量中文模型|MobileNetV3|rec_chinese_lite_train.yml|[下载链接](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|
 |通用中文OCR模型|Resnet34_vd|rec_chinese_common_train.yml|[下载链接](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn.tar)|
 
-PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识别模型训练/评估/预测](./doc/doc_ch/recognition.md)。
+PaddleOCR文本识别算法的训练和使用请参考文档教程中[模型训练/评估中的文本识别部分](./doc/doc_ch/recognition.md)。
 
 ### 3.端到端OCR算法
 - [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(百度自研, comming soon)
@@ -101,7 +101,7 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[文本识�
 ## 文档教程
 - [快速安装](./doc/doc_ch/installation.md)
 - [中文OCR模型快速开始](./doc/doc_ch/quickstart.md)
-- 模型训练/评估/预测
+- 模型训练/评估
     - [文本检测](./doc/doc_ch/detection.md)
     - [文本识别](./doc/doc_ch/recognition.md)
     - [yml参数配置文件介绍](./doc/doc_ch/config.md)
