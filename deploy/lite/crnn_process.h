@@ -26,7 +26,7 @@
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/imgproc.hpp"
 
-cv::Mat CrnnResizeNormImg(cv::Mat img, float wh_ratio, bool is_norm);
+cv::Mat CrnnResizeImg(cv::Mat img, float wh_ratio);
 
 std::vector<std::string> ReadDict(std::string path);
 

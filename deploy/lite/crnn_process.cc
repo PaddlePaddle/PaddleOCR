@@ -19,7 +19,7 @@
 
 const std::vector<int> rec_image_shape{3, 32, 320};
 
-cv::Mat CrnnResizeNormImg(cv::Mat img, float wh_ratio, bool is_norm) {
+cv::Mat CrnnResizeImg(cv::Mat img, float wh_ratio) {
   int imgC, imgH, imgW;
   imgC = rec_image_shape[0];
   imgW = rec_image_shape[2];
@@ -37,28 +37,7 @@ cv::Mat CrnnResizeNormImg(cv::Mat img, float wh_ratio, bool is_norm) {
   cv::resize(img, resize_img, cv::Size(resize_w, imgH), 0.f, 0.f,
              cv::INTER_LINEAR);
 
-  if (!is_norm) {
-    return resize_img;
-  } else {
-    resize_img.convertTo(resize_img, CV_32FC3, 1 / 255.f);
-
-    for (int h = 0; h < resize_img.rows; h++) {
-      for (int w = 0; w < resize_img.cols; w++) {
-        resize_img.at<cv::Vec3f>(h, w)[0] =
-            (resize_img.at<cv::Vec3f>(h, w)[0] - 0.5) * 2;
-        resize_img.at<cv::Vec3f>(h, w)[1] =
-            (resize_img.at<cv::Vec3f>(h, w)[1] - 0.5) * 2;
-        resize_img.at<cv::Vec3f>(h, w)[2] =
-            (resize_img.at<cv::Vec3f>(h, w)[2] - 0.5) * 2;
-      }
-    }
-
-    cv::Mat dist;
-    cv::copyMakeBorder(resize_img, dist, 0, 0, 0, int(imgW - resize_w),
-                       cv::BORDER_CONSTANT, {0, 0, 0});
-
-    return dist;
-  }
+  return resize_img;
 }
 
 std::vector<std::string> ReadDict(std::string path) {

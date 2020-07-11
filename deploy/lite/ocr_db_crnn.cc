@@ -123,7 +123,7 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
     crop_img = GetRotateCropImage(srcimg, boxes[i]);
     float wh_ratio = float(crop_img.cols) / float(crop_img.rows);
 
-    resize_img = CrnnResizeNormImg(crop_img, wh_ratio, false);
+    resize_img = CrnnResizeImg(crop_img, wh_ratio);
     resize_img.convertTo(resize_img, CV_32FC3, 1 / 255.f);
 
     const float *dimg = reinterpret_cast<const float *>(resize_img.data);
