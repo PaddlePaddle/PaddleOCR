@@ -79,7 +79,8 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_12.jpg" --d
 ```
 
 更多的文本检测、识别串联推理使用方式请参考文档教程中[基于Python预测引擎推理](./inference.md)。
-此外，文档教程中的预测部署章节提供了中文OCR模型的其他预测部署方式：
+
+此外，文档教程中也提供了中文OCR模型的其他预测部署方式：
 - 基于C++预测引擎推理(comming soon)
 - [服务部署](./doc/doc_ch/serving.md)
 - 端测部署(comming soon)
