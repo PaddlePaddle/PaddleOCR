@@ -29,7 +29,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 - 超轻量级中文OCR在线体验地址：https://www.paddlepaddle.org.cn/hub/scene/ocr
 
-- [快速使用](./doc/doc_ch/quickstart.md) 
+- [中文OCR模型快速使用](./doc/doc_ch/quickstart.md) 
 
 ## 中文OCR模型列表
 
@@ -40,7 +40,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 ## 文档教程
 - [快速安装](./doc/doc_ch/installation.md)
-- [快速使用](./doc/doc_ch/quickstart.md)
+- [中文OCR模型快速使用](./doc/doc_ch/quickstart.md)
 - [算法介绍](#算法介绍)
 - 模型训练/评估
     - [文本检测](./doc/doc_ch/detection.md)
