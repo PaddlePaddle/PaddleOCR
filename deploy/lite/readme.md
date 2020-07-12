@@ -75,7 +75,7 @@ Paddle-Lite 提供了多种策略来自动优化原始的模型，其中包括�
 |-|-|-|-|
 |超轻量级中文OCR opt优化模型|[下载地址](https://paddleocr.bj.bcebos.com/deploy/lite/ch_det_mv3_db_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/deploy/lite/ch_rec_mv3_crnn_opt.nb)|2.6.1|
 
-如果直接使用上述表格中的模型进行部署，可略过下述步骤，直接阅读 [2.2节](###2.2与手机联调)。
+如果直接使用上述表格中的模型进行部署，可略过下述步骤，直接阅读 [2.2节](#2.2与手机联调)。
 
 如果要部署的模型不在上述表格中，则需要按照如下步骤获得优化后的模型。
 
@@ -125,6 +125,7 @@ wget  https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar
 
 注意：使用paddle-lite部署时，需要使用opt工具优化后的模型。 opt 转换的输入模型是paddle保存的inference模型
 
+<a name="2.2与手机联调"></a>
 ### 2.2 与手机联调
 
 首先需要进行一些准备工作。
