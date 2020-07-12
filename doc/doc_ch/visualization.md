@@ -26,14 +26,17 @@
     <img src="../imgs_results/6.jpg" width="800">
 </div>
 
-![](../imgs_results/1.jpg)
-![](../imgs_results/7.jpg)
-![](../imgs_results/12.jpg)
-![](../imgs_results/4.jpg)
-![](../imgs_results/6.jpg)
-![](../imgs_results/9.jpg)
-![](../imgs_results/16.png)
-![](../imgs_results/22.jpg)
+<div align="center">
+    <img src="../imgs_results/9.jpg" width="800">
+</div>
+
+<div align="center">
+    <img src="../imgs_results/16.png" width="800">
+</div>
+
+<div align="center">
+    <img src="../imgs_results/22.jpg" width="800">
+</div>
 
 <a name="通用中文OCR"></a>
 ## 通用中文OCR效果展示
