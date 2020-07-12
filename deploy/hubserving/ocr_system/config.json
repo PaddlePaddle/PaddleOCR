@@ -1,13 +1,17 @@
 {
     "modules_info": {
-        "ocr_rec": {
+        "ocr_system": {
             "init_args": {
                 "version": "1.0.0",
-                "det_model_dir": "./inference/ch_rec_mv3_crnn/",
                 "use_gpu": true
             },
             "predict_args": {
+                "visualization": false
             }
         }
-    }
+    },
+    "port": 8868,
+    "use_multiprocess": false,
+    "workers": 2
 }
+
