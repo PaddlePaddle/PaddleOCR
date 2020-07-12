@@ -24,7 +24,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## 快速体验
 
 <div align="center">
-    <img src="doc/imgs_results/11.jpg" width="700">
+    <img src="doc/imgs_results/11.jpg" width="800">
 </div>
 
 上图是超轻量级中文OCR模型效果展示，更多效果图请见[效果展示页面](./doc/doc_ch/visualization.md)。
@@ -130,16 +130,23 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[模型训�
 <a name="超轻量级中文OCR效果展示"></a>
 ### 1.超轻量级中文OCR效果展示  [more](./doc/doc_ch/visualization.md)
 
-![](doc/imgs_results/7.jpg)
+<div align="center">
+    <img src="doc/imgs_results/7.jpg" width="800">
+</div>
 
 <a name="通用中文OCR效果展示"></a>
 ### 2.通用中文OCR效果展示  [more](./doc/doc_ch/visualization.md)
-![](doc/imgs_results/chinese_db_crnn_server/11.jpg)
+
+<div align="center">
+    <img src="doc/imgs_results/chinese_db_crnn_server/11.jpg" width="800">
+</div>
 
 <a name="支持空格的中文OCR效果展示"></a>
 ### 3.支持空格的中文OCR效果展示  [more](./doc/doc_ch/visualization.md)
 
-![](doc/imgs_results/chinese_db_crnn_server/en_paper.jpg)
+<div align="center">
+    <img src="doc/imgs_results/chinese_db_crnn_server/en_paper.jpg" width="800">
+</div>
 
 <a name="FAQ"></a>
 ## FAQ
