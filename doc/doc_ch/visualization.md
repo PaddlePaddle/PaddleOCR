@@ -6,6 +6,10 @@
 <a name="超轻量级中文OCR"></a>
 ## 超轻量级中文OCR效果展示
 
+<div align="center">
+    <img src="../imgs_results/1.jpg" width="700">
+</div>
+
 ![](../imgs_results/1.jpg)
 ![](../imgs_results/7.jpg)
 ![](../imgs_results/12.jpg)
