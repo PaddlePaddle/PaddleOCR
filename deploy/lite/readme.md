@@ -211,4 +211,7 @@ demo/cxx/ocr/
  如果对代码做了修改，则需要重新编译并push到手机上。
 
  运行效果如下：
- ![](../imgs/demo.png)
+
+<div align="center">
+    <img src="../imgs/demo.png" width="600">
+</div>
