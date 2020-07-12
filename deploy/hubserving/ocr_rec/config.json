@@ -1,14 +1,15 @@
 {
     "modules_info": {
-        "ocr_det": {
+        "ocr_rec": {
             "init_args": {
                 "version": "1.0.0",
-                "det_model_dir": "./inference/ch_det_mv3_db/",
                 "use_gpu": true
             },
             "predict_args": {
-                "visualization": false
             }
         }
-    }
+    },
+    "port": 8867,
+    "use_multiprocess": false,
+    "workers": 2
 }

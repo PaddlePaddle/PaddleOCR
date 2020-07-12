@@ -22,8 +22,6 @@ import paddlehub as hub
 from tools.infer.utility import draw_boxes, base64_to_cv2
 from tools.infer.predict_det import TextDetector
 
-class Config(object):
-    pass
 
 @moduleinfo(
     name="ocr_det",
@@ -33,43 +31,28 @@ class Config(object):
     author_email="paddle-dev@baidu.com",
     type="cv/text_recognition")
 class OCRDet(hub.Module):
-    def _initialize(self, 
-                    det_model_dir="",
-                    det_algorithm="DB",
-                    use_gpu=False
-                    ):
+    def _initialize(self, use_gpu=False):
         """
         initialize with the necessary elements
         """
-        self.config = Config()
-        self.config.use_gpu = use_gpu
+        from ocr_det.params import read_params
+        cfg = read_params()
+
+        cfg.use_gpu = use_gpu
         if use_gpu:
             try:
                 _places = os.environ["CUDA_VISIBLE_DEVICES"]
                 int(_places[0])
                 print("use gpu: ", use_gpu)
                 print("CUDA_VISIBLE_DEVICES: ", _places)
+                cfg.gpu_mem = 8000
             except:
                 raise RuntimeError(
                     "Environment Variable CUDA_VISIBLE_DEVICES is not set correctly. If you wanna use gpu, please set CUDA_VISIBLE_DEVICES via export CUDA_VISIBLE_DEVICES=cuda_device_id."
                 )
-        self.config.ir_optim = True
-        self.config.gpu_mem = 8000
+        cfg.ir_optim = True
 
-        #params for text detector
-        self.config.det_algorithm = det_algorithm
-        self.config.det_model_dir = det_model_dir
-        # self.config.det_model_dir = "./inference/det/"
-
-        #DB parmas
-        self.config.det_db_thresh =0.3
-        self.config.det_db_box_thresh =0.5
-        self.config.det_db_unclip_ratio =2.0
-
-        #EAST parmas
-        self.config.det_east_score_thresh = 0.8
-        self.config.det_east_cover_thresh = 0.1
-        self.config.det_east_nms_thresh = 0.2
+        self.text_detector = TextDetector(cfg)
 
     def read_images(self, paths=[]):
         images = []
@@ -83,10 +66,9 @@ class OCRDet(hub.Module):
             images.append(img)
         return images
 
-    def det_text(self,
+    def predict(self,
                 images=[],
                 paths=[],
-                det_max_side_len=960,
                 draw_img_save='ocr_det_result',
                 visualization=False):
         """
@@ -94,10 +76,8 @@ class OCRDet(hub.Module):
         Args:
             images (list(numpy.ndarray)): images data, shape of each is [H, W, C]. If images not paths
             paths (list[str]): The paths of images. If paths not images
-            use_gpu (bool): Whether to use gpu. Default false.
-            output_dir (str): The directory to store output images.
+            draw_img_save (str): The directory to store output images.
             visualization (bool): Whether to save image or not.
-            box_thresh(float): the threshold of the detected text box's confidence
         Returns:
             res (list): The result of text detection box and save path of images.
         """
@@ -111,8 +91,6 @@ class OCRDet(hub.Module):
 
         assert predicted_data != [], "There is not any image to be predicted. Please check the input data."
         
-        self.config.det_max_side_len = det_max_side_len
-        text_detector = TextDetector(self.config)
         all_results = []
         for img in predicted_data:
             result = {'save_path': ''}
@@ -121,7 +99,7 @@ class OCRDet(hub.Module):
                 result['data'] = []
                 all_results.append(result)
                 continue
-            dt_boxes, elapse = text_detector(img)
+            dt_boxes, elapse = self.text_detector(img)
             print("Predict time : ", elapse)
             result['data'] = dt_boxes.astype(np.int).tolist()
 
@@ -146,7 +124,7 @@ class OCRDet(hub.Module):
         Run as a service.
         """
         images_decode = [base64_to_cv2(image) for image in images]
-        results = self.det_text(images_decode, **kwargs)
+        results = self.predict(images_decode, **kwargs)
         return results
 
    
@@ -156,5 +134,5 @@ if __name__ == '__main__':
         './doc/imgs/11.jpg',
         './doc/imgs/12.jpg',
     ]
-    res = ocr.det_text(paths=image_path, visualization=True)
+    res = ocr.predict(paths=image_path, visualization=True)
     print(res)

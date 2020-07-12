@@ -22,8 +22,6 @@ import paddlehub as hub
 from tools.infer.utility import base64_to_cv2
 from tools.infer.predict_rec import TextRecognizer
 
-class Config(object):
-    pass
 
 @moduleinfo(
     name="ocr_rec",
@@ -33,41 +31,28 @@ class Config(object):
     author_email="paddle-dev@baidu.com",
     type="cv/text_recognition")
 class OCRRec(hub.Module):
-    def _initialize(self, 
-                    rec_model_dir="",
-                    rec_algorithm="CRNN",
-                    rec_char_dict_path="./ppocr/utils/ppocr_keys_v1.txt",
-                    rec_batch_num=30,
-                    use_gpu=False
-                    ):
+    def _initialize(self, use_gpu=False):
         """
         initialize with the necessary elements
         """
-        self.config = Config()
-        self.config.use_gpu = use_gpu
+        from ocr_rec.params import read_params
+        cfg = read_params()
+
+        cfg.use_gpu = use_gpu
         if use_gpu:
             try:
                 _places = os.environ["CUDA_VISIBLE_DEVICES"]
                 int(_places[0])
                 print("use gpu: ", use_gpu)
                 print("CUDA_VISIBLE_DEVICES: ", _places)
+                cfg.gpu_mem = 8000
             except:
                 raise RuntimeError(
                     "Environment Variable CUDA_VISIBLE_DEVICES is not set correctly. If you wanna use gpu, please set CUDA_VISIBLE_DEVICES via export CUDA_VISIBLE_DEVICES=cuda_device_id."
                 )
-        self.config.ir_optim = True
-        self.config.gpu_mem = 8000
+        cfg.ir_optim = True
 
-        #params for text recognizer
-        self.config.rec_algorithm = rec_algorithm
-        self.config.rec_model_dir = rec_model_dir
-        # self.config.rec_model_dir = "./inference/rec/"
-        
-        self.config.rec_image_shape = "3, 32, 320"
-        self.config.rec_char_type = 'ch'
-        self.config.rec_batch_num = rec_batch_num
-        self.config.rec_char_dict_path = rec_char_dict_path
-        self.config.use_space_char = True
+        self.text_recognizer = TextRecognizer(cfg)
 
     def read_images(self, paths=[]):
         images = []
@@ -81,7 +66,7 @@ class OCRRec(hub.Module):
             images.append(img)
         return images
 
-    def rec_text(self,
+    def predict(self,
                 images=[],
                 paths=[]):
         """
@@ -102,14 +87,13 @@ class OCRRec(hub.Module):
 
         assert predicted_data != [], "There is not any image to be predicted. Please check the input data."
         
-        text_recognizer = TextRecognizer(self.config)
         img_list = []
         for img in predicted_data:
             if img is None:
                 continue
             img_list.append(img)
         try:
-            rec_res, predict_time = text_recognizer(img_list)
+            rec_res, predict_time = self.text_recognizer(img_list)
         except Exception as e:
             print(e)
             return []
@@ -121,7 +105,7 @@ class OCRRec(hub.Module):
         Run as a service.
         """
         images_decode = [base64_to_cv2(image) for image in images]
-        results = self.det_text(images_decode, **kwargs)
+        results = self.predict(images_decode, **kwargs)
         return results
 
    
@@ -132,5 +116,5 @@ if __name__ == '__main__':
         './doc/imgs_words/ch/word_2.jpg',
         './doc/imgs_words/ch/word_3.jpg',
     ]
-    res = ocr.rec_text(paths=image_path)
+    res = ocr.predict(paths=image_path)
     print(res)
