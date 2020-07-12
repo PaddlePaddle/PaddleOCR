@@ -27,11 +27,8 @@ if(NOT DEFINED DEMO_NAME)
   message(FATAL_ERROR "please set DEMO_NAME with -DDEMO_NAME=demo_name")
 endif()
 
-# user ze
-# find_package(OpenCV)
 
-
-set(OPENCV_DIR "/paddle/libs/opencv-3.4.7/opencv3")
+set(OPENCV_DIR ${OPENCV_DIR})
 find_package(OpenCV REQUIRED PATHS ${OPENCV_DIR}/share/OpenCV NO_DEFAULT_PATH)
 include_directories(${OpenCV_INCLUDE_DIRS})
 

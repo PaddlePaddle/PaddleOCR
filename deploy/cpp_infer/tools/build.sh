@@ -1,4 +1,5 @@
 
+OPENCV_DIR=/paddle/libs/opencv-3.4.7/opencv3
 LIB_DIR=/paddle/code/gry/Paddle/build/fluid_inference_install_dir/
 CUDA_LIB_DIR=/usr/local/cuda/lib64
 CUDNN_LIB_DIR=/usr/lib/x86_64-linux-gnu/
@@ -15,6 +16,7 @@ cmake .. \
     -DWITH_GPU=OFF \
     -DWITH_STATIC_LIB=OFF \
     -DUSE_TENSORRT=OFF \
+    -DOPENCV_DIR=${OPENCV_DIR} \
     -DCUDNN_LIB=${CUDNN_LIB_DIR} \
     -DCUDA_LIB=${CUDA_LIB_DIR} \
     -DTENSORRT_ROOT=YOUR_TENSORRT_ROOT_DIR
