@@ -48,3 +48,31 @@ PaddleOCR已完成Windows和Mac系统适配，运行时注意两点：1、在[�
 
 11. **自定义字典训练的模型，识别结果出现字典里没出现的字**  
 预测时没有设置采用的自定义字典路径。设置方法是在预测时，通过增加输入参数rec_char_dict_path来设置。
+
+12. **服务器CPU预测时内存一直涨**
+主要有由于开启了MKL数学库和多线程加速导致的问题，该问题我们已经在跟进修复。
+临时解决方案有两种：
+（1）注释掉数学库的使用，但是速度慢一倍，注释方法，https://github.com/PaddlePaddle/PaddleOCR/blob/develop/tools/infer/utility.py 文件中，注释掉94，95行
+![image](https://user-images.githubusercontent.com/10047064/87238071-5c0c3680-c430-11ea-93ef-f21ad80cfbed.png)
+
+（2）定期释放和初始化TextSystem这个类，速度略微受影响。
+可以参考如下代码，修改 https://github.com/PaddlePaddle/PaddleOCR/blob/develop/tools/infer/predict_system.py 中main函数代码，
+
+```
+def main(args):
+    image_file_list = get_image_file_list(args.image_dir)
+    text_sys = TextSystem(args)
+    is_visualize = True
+    count = 0
+    for image_file in image_file_list:
+        img = cv2.imread(image_file)
+        if img is None:
+            logger.info("error in loading image:{}".format(image_file))
+            continue
+        count += 1
+        if count % 10 == 0:
+            text_sys = TextSystem(args)
+        starttime = time.time()
+        dt_boxes, rec_res = text_sys(img)
+        elapse = time.time() - starttime
+```
