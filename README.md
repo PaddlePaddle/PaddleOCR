@@ -38,6 +38,31 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 |chinese_db_crnn_mobile|超轻量级中文OCR模型|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar)|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_enhance_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_enhance.tar)
 |chinese_db_crnn_server|通用中文OCR模型|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db.tar)|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn.tar)|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_enhance_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_enhance.tar)
 
+## 文档教程
+- [快速安装](./doc/doc_ch/installation.md)
+- [中文OCR模型快速使用](./doc/doc_ch/quickstart.md)
+- [算法介绍](#算法介绍)
+- 模型训练/评估
+    - [文本检测](./doc/doc_ch/detection.md)
+    - [文本识别](./doc/doc_ch/recognition.md)
+    - [yml参数配置文件介绍](./doc/doc_ch/config.md)
+- 预测部署
+    - [基于Python预测引擎推理](./doc/doc_ch/inference.md)
+    - 基于C++预测引擎推理(comming soon)
+    - [服务部署](./doc/doc_ch/serving.md)
+    - 端侧部署(comming soon)
+- [数据集](./doc/doc_ch/datasets.md)
+- [FAQ](#FAQ)
+- 效果展示
+    - [超轻量级中文OCR效果展示](#超轻量级中文OCR效果展示)
+    - [通用中文OCR效果展示](#通用中文OCR效果展示)
+    - [支持空格的中文OCR效果展示](#支持空格的中文OCR效果展示)
+- [技术交流群](#欢迎加入PaddleOCR技术交流群)
+- [参考文献](./doc/doc_ch/reference.md)
+- [许可证书](#许可证书)
+- [贡献代码](#贡献代码)
+
+<a name="算法介绍"></a>
 ## 算法介绍
 ### 1.文本检测算法
 
@@ -97,29 +122,6 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[模型训�
 
 ### 3.端到端OCR算法
 - [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(百度自研, comming soon)
-
-## 文档教程
-- [快速安装](./doc/doc_ch/installation.md)
-- [中文OCR模型快速使用](./doc/doc_ch/quickstart.md)
-- 模型训练/评估
-    - [文本检测](./doc/doc_ch/detection.md)
-    - [文本识别](./doc/doc_ch/recognition.md)
-    - [yml参数配置文件介绍](./doc/doc_ch/config.md)
-- 预测部署
-    - [基于Python预测引擎推理](./doc/doc_ch/inference.md)
-    - 基于C++预测引擎推理(comming soon)
-    - [服务部署](./doc/doc_ch/serving.md)
-    - 端侧部署(comming soon)
-- [数据集](./doc/doc_ch/datasets.md)
-- [FAQ](#FAQ)
-- 效果展示
-    - [超轻量级中文OCR效果展示](#超轻量级中文OCR效果展示)
-    - [通用中文OCR效果展示](#通用中文OCR效果展示)
-    - [支持空格的中文OCR效果展示](#支持空格的中文OCR效果展示)
-- [技术交流群](#欢迎加入PaddleOCR技术交流群)
-- [参考文献](./doc/doc_ch/reference.md)
-- [许可证书](#许可证书)
-- [贡献代码](#贡献代码)
 
 ## 效果展示
 
