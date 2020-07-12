@@ -7,7 +7,23 @@
 ## 超轻量级中文OCR效果展示
 
 <div align="center">
-    <img src="../imgs_results/1.jpg" width="700">
+    <img src="../imgs_results/1.jpg" width="800">
+</div>
+
+<div align="center">
+    <img src="../imgs_results/7.jpg" width="800">
+</div>
+
+<div align="center">
+    <img src="../imgs_results/12.jpg" width="800">
+</div>
+
+<div align="center">
+    <img src="../imgs_results/4.jpg" width="800">
+</div>
+
+<div align="center">
+    <img src="../imgs_results/6.jpg" width="800">
 </div>
 
 ![](../imgs_results/1.jpg)
