@@ -23,7 +23,9 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 ## 快速体验
 
-![](doc/imgs_results/11.jpg)
+<div align="center">
+    <img src="doc/imgs_results/11.jpg" width="700">
+</div>
 
 上图是超轻量级中文OCR模型效果展示，更多效果图请见[效果展示页面](./doc/doc_ch/visualization.md)。
 
