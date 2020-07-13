@@ -69,24 +69,7 @@ opencv3/
 
 * 有2种方式获取Paddle预测库，下面进行详细介绍。
 
-#### 1.2.1 直接下载安装
-
-* [Paddle预测库官网](https://www.paddlepaddle.org.cn/documentation/docs/zh/advanced_guide/inference_deployment/inference/build_and_install_lib_cn.html)上提供了不同cuda版本的Linux预测库，可以直接下载使用。
-  * 如果cuda版本为cuda9.0，1.8.2版本的Paddle预测库可以从这里下载：[下载地址](https://paddle-inference-lib.bj.bcebos.com/1.8.2-gpu-cuda9-cudnn7-avx-mkl/fluid_inference.tgz)。
-  * 如果cuda版本为cuda10.0，1.8.2版本的Paddle预测库可以从这里下载：[下载地址](https://paddle-inference-lib.bj.bcebos.com/1.8.2-gpu-cuda10-cudnn7-avx-mkl/fluid_inference.tgz)。
-  * 更多版本的预测库可以在官网查看下载。
-
-* 下载之后使用下面的方法解压
-
-```
-tar -xf fluid_inference.tgz
-```
-
-最终会在当前的文件夹中生成`fluid_inference/`的子文件夹。
-
-
-
-#### 1.2.2 预测库源码编译
+#### 1.2.1 预测库源码编译
 * 如果希望获取最新预测库特性，可以从Paddle github上克隆最新代码，源码编译预测库。
 * 可以参考[Paddle预测库官网](https://www.paddlepaddle.org.cn/documentation/docs/zh/advanced_guide/inference_deployment/inference/build_and_install_lib_cn.html)的说明，从github上获取Paddle代码，然后进行编译，生成最新的预测库。使用git获取代码方法如下。
 
@@ -110,7 +93,7 @@ cmake  .. \
     -DWITH_INFERENCE_API_TEST=OFF \
     -DON_INFER=ON \
     -DWITH_PYTHON=ON
-make -j16
+make -j
 make inference_lib_dist
 ```
 
@@ -128,6 +111,18 @@ build/fluid_inference_install_dir/
 ```
 
 其中`paddle`就是之后进行C++预测时所需的Paddle库，`version.txt`中包含当前预测库的版本信息。
+
+#### 1.2.2 直接下载安装
+
+* [Paddle预测库官网](https://www.paddlepaddle.org.cn/documentation/docs/zh/advanced_guide/inference_deployment/inference/build_and_install_lib_cn.html)上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本。
+
+* 下载之后使用下面的方法解压。
+
+```
+tar -xf fluid_inference.tgz
+```
+
+最终会在当前的文件夹中生成`fluid_inference/`的子文件夹。
 
 
 ## 2 开始运行
@@ -159,7 +154,27 @@ sh tools/build.sh
 具体地，`tools/build.sh`中内容如下。
 
 ```shell
-c
+OPENCV_DIR=your_opencv_dir
+LIB_DIR=your_paddle_inference_dir
+CUDA_LIB_DIR=your_cuda_lib_dir
+CUDNN_LIB_DIR=/your_cudnn_lib_dir
+
+BUILD_DIR=build
+rm -rf ${BUILD_DIR}
+mkdir ${BUILD_DIR}
+cd ${BUILD_DIR}
+cmake .. \
+    -DPADDLE_LIB=${LIB_DIR} \
+    -DWITH_MKL=ON \
+    -DDEMO_NAME=ocr_system \
+    -DWITH_GPU=OFF \
+    -DWITH_STATIC_LIB=OFF \
+    -DUSE_TENSORRT=OFF \
+    -DOPENCV_DIR=${OPENCV_DIR} \
+    -DCUDNN_LIB=${CUDNN_LIB_DIR} \
+    -DCUDA_LIB=${CUDA_LIB_DIR} \
+
+make -j
 ```
 
 `OPENCV_DIR`为opencv编译安装的地址；`LIB_DIR`为下载(`fluid_inference`文件夹)或者编译生成的Paddle预测库地址(`build/fluid_inference_install_dir`文件夹)；`CUDA_LIB_DIR`为cuda库文件地址，在docker中；为`/usr/local/cuda/lib64`；`CUDNN_LIB_DIR`为cudnn库文件地址，在docker中为`/usr/lib/x86_64-linux-gnu/`。
