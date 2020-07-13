@@ -91,7 +91,7 @@ def main():
 
     # dump mode structure
     if config['Global']['debug']:
-        if 'Attention' in config['Head'].keys():
+        if 'attention' in config['Global']['loss_type']:
             logger.warning('Does not suport dump attention...')
         else:
             summary(train_program)
