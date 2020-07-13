@@ -34,6 +34,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 <div align="center">
     <img src="./doc/mobile_demo_qrcode.png"  width = "300" height = "160" />
 </div>
+
 - [**中文OCR模型快速使用**](./doc/doc_ch/quickstart.md)
 
 
