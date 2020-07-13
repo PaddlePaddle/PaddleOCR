@@ -16,8 +16,8 @@
 
 namespace PaddleOCR {
 
-void PostProcessor::GetContourArea(float **box, float unclip_ratio,
-                                   float &distance) {
+void PostProcessor::GetContourArea(const std::vector<std::vector<float>> &box,
+                                   float unclip_ratio, float &distance) {
   int pts_num = 4;
   float area = 0.0f;
   float dist = 0.0f;
@@ -34,7 +34,8 @@ void PostProcessor::GetContourArea(float **box, float unclip_ratio,
   distance = area * unclip_ratio / dist;
 }
 
-cv::RotatedRect PostProcessor::UnClip(float **box, const float &unclip_ratio) {
+cv::RotatedRect PostProcessor::UnClip(std::vector<std::vector<float>> box,
+                                      const float &unclip_ratio) {
   float distance = 1.0;
 
   GetContourArea(box, unclip_ratio, distance);
@@ -74,53 +75,11 @@ float **PostProcessor::Mat2Vec(cv::Mat mat) {
   return array;
 }
 
-void PostProcessor::quickSort(float **s, int l, int r) {
-  if (l < r) {
-    int i = l, j = r;
-    float x = s[l][0];
-    float *xp = s[l];
-    while (i < j) {
-      while (i < j && s[j][0] >= x)
-        j--;
-      if (i < j)
-        std::swap(s[i++], s[j]);
-      while (i < j && s[i][0] < x)
-        i++;
-      if (i < j)
-        std::swap(s[j--], s[i]);
-    }
-    s[i] = xp;
-    quickSort(s, l, i - 1);
-    quickSort(s, i + 1, r);
-  }
-}
-
-void PostProcessor::quickSort_vector(std::vector<std::vector<int>> &box, int l,
-                                     int r, int axis) {
-  if (l < r) {
-    int i = l, j = r;
-    int x = box[l][axis];
-    std::vector<int> xp(box[l]);
-    while (i < j) {
-      while (i < j && box[j][axis] >= x)
-        j--;
-      if (i < j)
-        std::swap(box[i++], box[j]);
-      while (i < j && box[i][axis] < x)
-        i++;
-      if (i < j)
-        std::swap(box[j--], box[i]);
-    }
-    box[i] = xp;
-    quickSort_vector(box, l, i - 1, axis);
-    quickSort_vector(box, i + 1, r, axis);
-  }
-}
-
 std::vector<std::vector<int>>
-PostProcessor::order_points_clockwise(std::vector<std::vector<int>> pts) {
+PostProcessor::OrderPointsClockwise(std::vector<std::vector<int>> pts) {
   std::vector<std::vector<int>> box = pts;
-  quickSort_vector(box, 0, int(box.size() - 1), 0);
+  std::sort(box.begin(), box.end(), XsortInt);
+
   std::vector<std::vector<int>> leftmost = {box[0], box[1]};
   std::vector<std::vector<int>> rightmost = {box[2], box[3]};
 
@@ -135,16 +94,44 @@ PostProcessor::order_points_clockwise(std::vector<std::vector<int>> pts) {
   return rect;
 }
 
-float **PostProcessor::GetMiniBoxes(cv::RotatedRect box, float &ssid) {
-  ssid = box.size.width >= box.size.height ? box.size.height : box.size.width;
+std::vector<std::vector<float>> PostProcessor::Mat2Vector(cv::Mat mat) {
+  std::vector<std::vector<float>> img_vec;
+  std::vector<float> tmp;
+
+  for (int i = 0; i < mat.rows; ++i) {
+    tmp.clear();
+    for (int j = 0; j < mat.cols; ++j) {
+      tmp.push_back(mat.at<float>(i, j));
+    }
+    img_vec.push_back(tmp);
+  }
+  return img_vec;
+}
+
+bool PostProcessor::XsortFp32(std::vector<float> a, std::vector<float> b) {
+  if (a[0] != b[0])
+    return a[0] < b[0];
+  return false;
+}
+
+bool PostProcessor::XsortInt(std::vector<int> a, std::vector<int> b) {
+  if (a[0] != b[0])
+    return a[0] < b[0];
+  return false;
+}
+
+std::vector<std::vector<float>> PostProcessor::GetMiniBoxes(cv::RotatedRect box,
+                                                            float &ssid) {
+  ssid = std::max(box.size.width, box.size.height);
 
   cv::Mat points;
   cv::boxPoints(box, points);
-  // sorted box points
-  auto array = Mat2Vec(points);
-  quickSort(array, 0, 3);
 
-  float *idx1 = array[0], *idx2 = array[1], *idx3 = array[2], *idx4 = array[3];
+  auto array = Mat2Vector(points);
+  std::sort(array.begin(), array.end(), XsortFp32);
+
+  std::vector<float> idx1 = array[0], idx2 = array[1], idx3 = array[2],
+                     idx4 = array[3];
   if (array[3][1] <= array[2][1]) {
     idx2 = array[3];
     idx3 = array[2];
@@ -168,7 +155,8 @@ float **PostProcessor::GetMiniBoxes(cv::RotatedRect box, float &ssid) {
   return array;
 }
 
-float PostProcessor::BoxScoreFast(float **box_array, cv::Mat pred) {
+float PostProcessor::BoxScoreFast(std::vector<std::vector<float>> box_array,
+                                  cv::Mat pred) {
   auto array = box_array;
   int width = pred.cols;
   int height = pred.rows;
@@ -280,7 +268,7 @@ PostProcessor::FilterTagDetRes(std::vector<std::vector<std::vector<int>>> boxes,
 
   std::vector<std::vector<std::vector<int>>> root_points;
   for (int n = 0; n < boxes.size(); n++) {
-    boxes[n] = order_points_clockwise(boxes[n]);
+    boxes[n] = OrderPointsClockwise(boxes[n]);
     for (int m = 0; m < boxes[0].size(); m++) {
       boxes[n][m][0] /= ratio_w;
       boxes[n][m][1] /= ratio_h;

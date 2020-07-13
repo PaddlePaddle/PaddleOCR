@@ -13,7 +13,7 @@ det_model_dir  ./inference/det_db
 
 # rec config
 rec_model_dir  ./inference/rec_crnn
-char_list_file ./tools/ppocr_keys_v1.txt
+char_list_file ../../ppocr/utils/ppocr_keys_v1.txt
 img_path  ../../doc/imgs/11.jpg
 
 # show the detection results

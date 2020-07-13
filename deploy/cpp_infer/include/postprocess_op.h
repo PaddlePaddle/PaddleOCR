@@ -36,21 +36,21 @@ namespace PaddleOCR {
 
 class PostProcessor {
 public:
-  void GetContourArea(float **box, float unclip_ratio, float &distance);
+  void GetContourArea(const std::vector<std::vector<float>> &box,
+                      float unclip_ratio, float &distance);
 
-  cv::RotatedRect UnClip(float **box, const float &unclip_ratio);
+  cv::RotatedRect UnClip(std::vector<std::vector<float>> box,
+                         const float &unclip_ratio);
 
   float **Mat2Vec(cv::Mat mat);
 
-  void quickSort_vector(std::vector<std::vector<int>> &box, int l, int r,
-                        int axis);
-
   std::vector<std::vector<int>>
-  order_points_clockwise(std::vector<std::vector<int>> pts);
+  OrderPointsClockwise(std::vector<std::vector<int>> pts);
 
-  float **GetMiniBoxes(cv::RotatedRect box, float &ssid);
+  std::vector<std::vector<float>> GetMiniBoxes(cv::RotatedRect box,
+                                               float &ssid);
 
-  float BoxScoreFast(float **box_array, cv::Mat pred);
+  float BoxScoreFast(std::vector<std::vector<float>> box_array, cv::Mat pred);
 
   std::vector<std::vector<std::vector<int>>>
   BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
@@ -61,7 +61,11 @@ public:
                   float ratio_h, float ratio_w, cv::Mat srcimg);
 
 private:
-  void quickSort(float **s, int l, int r);
+  static bool XsortInt(std::vector<int> a, std::vector<int> b);
+
+  static bool XsortFp32(std::vector<float> a, std::vector<float> b);
+
+  std::vector<std::vector<float>> Mat2Vector(cv::Mat mat);
 
   inline int _max(int a, int b) { return a >= b ? a : b; }
 

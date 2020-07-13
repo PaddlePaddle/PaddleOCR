@@ -12,22 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "opencv2/core.hpp"
-#include "opencv2/imgcodecs.hpp"
-#include "opencv2/imgproc.hpp"
-#include "paddle_api.h"
-#include "paddle_inference_api.h"
-#include <chrono>
-#include <iomanip>
-#include <iostream>
-#include <ostream>
-#include <vector>
-
-#include <cstring>
-#include <fstream>
-#include <numeric>
-
 #include <include/ocr_det.h>
+#include <stdlib.h>
 
 namespace PaddleOCR {
 

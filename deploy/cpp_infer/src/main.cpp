@@ -46,8 +46,6 @@ int main(int argc, char **argv) {
 
   std::string img_path(argv[2]);
 
-  auto start = std::chrono::system_clock::now();
-
   cv::Mat srcimg = cv::imread(img_path, cv::IMREAD_COLOR);
 
   DBDetector det(config.det_model_dir, config.use_gpu, config.gpu_id,
@@ -59,6 +57,7 @@ int main(int argc, char **argv) {
                      config.gpu_mem, config.cpu_math_library_num_threads,
                      config.char_list_file);
 
+  auto start = std::chrono::system_clock::now();
   std::vector<std::vector<std::vector<int>>> boxes;
   det.Run(srcimg, boxes);
 

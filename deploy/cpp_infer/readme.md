@@ -22,7 +22,7 @@ tar -xf 3.4.7.tar.gz
 * 编译opencv，设置opencv源码路径(`root_path`)以及安装路径(`install_path`)。进入opencv源码路径下，按照下面的方式进行编译。
 
 ```shell
-root_path=/paddle/libs/opencv-3.4.7
+root_path=your_opencv_root_path
 install_path=${root_path}/opencv3
 
 rm -rf build
@@ -51,6 +51,9 @@ make -j
 make install
 ```
 
+
+其中`root_path`为下载的opencv源码路径，`install_path`为opencv的安装路径，`make install`完成之后，会在该文件夹下生成opencv头文件和库文件，用于后面的OCR代码编译。
+
 最终在安装路径下的文件结构如下所示。
 
 ```
@@ -62,8 +65,29 @@ opencv3/
 |-- share
 ```
 
-### 1.2 编译Paddle预测库
+### 1.2 下载或者编译Paddle预测库
 
+* 有2种方式获取Paddle预测库，下面进行详细介绍。
+
+#### 1.2.1 直接下载安装
+
+* [Paddle预测库官网](https://www.paddlepaddle.org.cn/documentation/docs/zh/advanced_guide/inference_deployment/inference/build_and_install_lib_cn.html)上提供了不同cuda版本的Linux预测库，可以直接下载使用。
+  * 如果cuda版本为cuda9.0，1.8.2版本的Paddle预测库可以从这里下载：[下载地址](https://paddle-inference-lib.bj.bcebos.com/1.8.2-gpu-cuda9-cudnn7-avx-mkl/fluid_inference.tgz)。
+  * 如果cuda版本为cuda10.0，1.8.2版本的Paddle预测库可以从这里下载：[下载地址](https://paddle-inference-lib.bj.bcebos.com/1.8.2-gpu-cuda10-cudnn7-avx-mkl/fluid_inference.tgz)。
+  * 更多版本的预测库可以在官网查看下载。
+
+* 下载之后使用下面的方法解压
+
+```
+tar -xf fluid_inference.tgz
+```
+
+最终会在当前的文件夹中生成`fluid_inference/`的子文件夹。
+
+
+
+#### 1.2.2 预测库源码编译
+* 如果希望获取最新预测库特性，可以从Paddle github上克隆最新代码，源码编译预测库。
 * 可以参考[Paddle预测库官网](https://www.paddlepaddle.org.cn/documentation/docs/zh/advanced_guide/inference_deployment/inference/build_and_install_lib_cn.html)的说明，从github上获取Paddle代码，然后进行编译，生成最新的预测库。使用git获取代码方法如下。
 
 ```shell
@@ -80,7 +104,7 @@ cd build
 cmake  .. \
     -DWITH_CONTRIB=OFF \
     -DWITH_MKL=ON \
-    -DWITH_MKLDNN=OFF  \
+    -DWITH_MKLDNN=ON  \
     -DWITH_TESTING=OFF \
     -DCMAKE_BUILD_TYPE=Release \
     -DWITH_INFERENCE_API_TEST=OFF \
@@ -131,6 +155,15 @@ inference/
 ```shell
 sh tools/build.sh
 ```
+
+具体地，`tools/build.sh`中内容如下。
+
+```shell
+c
+```
+
+`OPENCV_DIR`为opencv编译安装的地址；`LIB_DIR`为下载(`fluid_inference`文件夹)或者编译生成的Paddle预测库地址(`build/fluid_inference_install_dir`文件夹)；`CUDA_LIB_DIR`为cuda库文件地址，在docker中；为`/usr/local/cuda/lib64`；`CUDNN_LIB_DIR`为cudnn库文件地址，在docker中为`/usr/lib/x86_64-linux-gnu/`。
+
 
 * 编译完成之后，会在`build`文件夹下生成一个名为`ocr_system`的可执行文件。
 

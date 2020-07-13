@@ -36,16 +36,13 @@ namespace PaddleOCR {
 
 class DBDetector {
 public:
-  explicit DBDetector(const std::string &model_dir, const bool &use_gpu = false,
-                      const int &gpu_id = 0, const int &gpu_mem = 4000,
-                      const int &cpu_math_library_num_threads = 4,
-                      const int &max_side_len = 960,
-                      const double &det_db_thresh = 0.3,
-                      const double &det_db_box_thresh = 0.5,
-                      const double &det_db_unclip_ratio = 2.0,
-                      const bool &visualize = true) {
-    LoadModel(model_dir);
-
+  explicit DBDetector(const std::string &model_dir, const bool &use_gpu,
+                      const int &gpu_id, const int &gpu_mem,
+                      const int &cpu_math_library_num_threads,
+                      const int &max_side_len, const double &det_db_thresh,
+                      const double &det_db_box_thresh,
+                      const double &det_db_unclip_ratio,
+                      const bool &visualize) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
@@ -58,6 +55,8 @@ public:
     this->det_db_unclip_ratio_ = det_db_unclip_ratio;
 
     this->visualize_ = visualize;
+
+    LoadModel(model_dir);
   }
 
   // Load Paddle inference model

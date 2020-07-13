@@ -35,19 +35,18 @@ namespace PaddleOCR {
 
 class CRNNRecognizer {
 public:
-  explicit CRNNRecognizer(
-      const std::string &model_dir, const bool &use_gpu = false,
-      const int &gpu_id = 0, const int &gpu_mem = 4000,
-      const int &cpu_math_library_num_threads = 4,
-      const string &label_path = "./tools/ppocr_keys_v1.txt") {
-    LoadModel(model_dir);
-
+  explicit CRNNRecognizer(const std::string &model_dir, const bool &use_gpu,
+                          const int &gpu_id, const int &gpu_mem,
+                          const int &cpu_math_library_num_threads,
+                          const string &label_path) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
     this->cpu_math_library_num_threads_ = cpu_math_library_num_threads;
 
     this->label_list_ = Utility::ReadDict(label_path);
+
+    LoadModel(model_dir);
   }
 
   // Load Paddle inference model
