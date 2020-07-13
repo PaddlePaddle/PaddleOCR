@@ -27,12 +27,12 @@ cv::Mat CrnnResizeImg(cv::Mat img, float wh_ratio) {
 
   imgW = int(32 * wh_ratio);
 
-  float ratio = float(img.cols) / float(img.rows);
+  float ratio = static_cast<float>(img.cols) / static_cast<float>(img.rows);
   int resize_w, resize_h;
   if (ceilf(imgH * ratio) > imgW)
     resize_w = imgW;
   else
-    resize_w = int(ceilf(imgH * ratio));
+    resize_w = static_cast<int>(ceilf(imgH * ratio));
   cv::Mat resize_img;
   cv::resize(img, resize_img, cv::Size(resize_w, imgH), 0.f, 0.f,
              cv::INTER_LINEAR);
@@ -76,10 +76,12 @@ cv::Mat GetRotateCropImage(cv::Mat srcimage,
     points[i][1] -= top;
   }
 
-  int img_crop_width = int(sqrt(pow(points[0][0] - points[1][0], 2) +
-                                pow(points[0][1] - points[1][1], 2)));
-  int img_crop_height = int(sqrt(pow(points[0][0] - points[3][0], 2) +
-                                 pow(points[0][1] - points[3][1], 2)));
+  int img_crop_width =
+      static_cast<int>(sqrt(pow(points[0][0] - points[1][0], 2) +
+                            pow(points[0][1] - points[1][1], 2)));
+  int img_crop_height =
+      static_cast<int>(sqrt(pow(points[0][0] - points[3][0], 2) +
+                            pow(points[0][1] - points[3][1], 2)));
 
   cv::Point2f pts_std[4];
   pts_std[0] = cv::Point2f(0., 0.);
@@ -100,7 +102,9 @@ cv::Mat GetRotateCropImage(cv::Mat srcimage,
                       cv::Size(img_crop_width, img_crop_height),
                       cv::BORDER_REPLICATE);
 
-  if (float(dst_img.rows) >= float(dst_img.cols) * 1.5) {
+  const float ratio = 1.5;
+  if (static_cast<float>(dst_img.rows) >=
+      static_cast<float>(dst_img.cols) * ratio) {
     cv::Mat srcCopy = cv::Mat(dst_img.rows, dst_img.cols, dst_img.depth());
     cv::transpose(dst_img, srcCopy);
     cv::flip(srcCopy, srcCopy, 0);

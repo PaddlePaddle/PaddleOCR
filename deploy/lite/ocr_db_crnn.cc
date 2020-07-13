@@ -22,9 +22,9 @@ using namespace paddle::lite_api; // NOLINT
 using namespace std;
 
 // fill tensor with mean and scale and trans layout: nhwc -> nchw, neon speed up
-void neon_mean_scale(const float *din, float *dout, int size,
-                     const std::vector<float> mean,
-                     const std::vector<float> scale) {
+void NeonMeanScale(const float *din, float *dout, int size,
+                   const std::vector<float> mean,
+                   const std::vector<float> scale) {
   if (mean.size() != 3 || scale.size() != 3) {
     std::cerr << "[ERROR] mean or scale size must equal to 3\n";
     exit(1);
@@ -75,14 +75,14 @@ cv::Mat DetResizeImg(const cv::Mat img, int max_size_len,
   int max_wh = w >= h ? w : h;
   if (max_wh > max_size_len) {
     if (h > w) {
-      ratio = float(max_size_len) / float(h);
+      ratio = static_cast<float>(max_size_len) / static_cast<float>(h);
     } else {
-      ratio = float(max_size_len) / float(w);
+      ratio = static_cast<float>(max_size_len) / static_cast<float>(w);
     }
   }
 
-  int resize_h = int(float(h) * ratio);
-  int resize_w = int(float(w) * ratio);
+  int resize_h = static_cast<int>(float(h) * ratio);
+  int resize_w = static_cast<int>(float(w) * ratio);
   if (resize_h % 32 == 0)
     resize_h = resize_h;
   else if (resize_h / 32 < 1 + 1e-5)
@@ -100,8 +100,8 @@ cv::Mat DetResizeImg(const cv::Mat img, int max_size_len,
   cv::Mat resize_img;
   cv::resize(img, resize_img, cv::Size(resize_w, resize_h));
 
-  ratio_hw.push_back(float(resize_h) / float(h));
-  ratio_hw.push_back(float(resize_w) / float(w));
+  ratio_hw.push_back(static_cast<float>(resize_h) / static_cast<float>(h));
+  ratio_hw.push_back(static_cast<float>(resize_w) / static_cast<float>(w));
   return resize_img;
 }
 
@@ -121,7 +121,8 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
   int index = 0;
   for (int i = boxes.size() - 1; i >= 0; i--) {
     crop_img = GetRotateCropImage(srcimg, boxes[i]);
-    float wh_ratio = float(crop_img.cols) / float(crop_img.rows);
+    float wh_ratio =
+        static_cast<float>(crop_img.cols) / static_cast<float>(crop_img.rows);
 
     resize_img = CrnnResizeImg(crop_img, wh_ratio);
     resize_img.convertTo(resize_img, CV_32FC3, 1 / 255.f);
@@ -133,8 +134,7 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
     input_tensor0->Resize({1, 3, resize_img.rows, resize_img.cols});
     auto *data0 = input_tensor0->mutable_data<float>();
 
-    neon_mean_scale(dimg, data0, resize_img.rows * resize_img.cols, mean,
-                    scale);
+    NeonMeanScale(dimg, data0, resize_img.rows * resize_img.cols, mean, scale);
     //// Run CRNN predictor
     predictor_crnn->Run();
 
@@ -147,8 +147,9 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
     auto shape_out = output_tensor0->shape();
 
     std::vector<int> pred_idx;
-    for (int n = int(rec_idx_lod[0][0]); n < int(rec_idx_lod[0][1]); n += 1) {
-      pred_idx.push_back(int(rec_idx[n]));
+    for (int n = static_cast<int>(rec_idx_lod[0][0]);
+         n < static_cast<int>(rec_idx_lod[0][1]); n += 1) {
+      pred_idx.push_back(static_cast<int>(rec_idx[n]));
     }
 
     if (pred_idx.size() < 1e-3)
@@ -169,16 +170,15 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
 
     auto predict_lod = output_tensor1->lod();
 
-    int argmax_idx;
     int blank = predict_shape[1];
     float score = 0.f;
     int count = 0;
-    float max_value = 0.0f;
 
     for (int n = predict_lod[0][0]; n < predict_lod[0][1] - 1; n++) {
-      argmax_idx = int(Argmax(&predict_batch[n * predict_shape[1]],
-                              &predict_batch[(n + 1) * predict_shape[1]]));
-      max_value =
+      int argmax_idx =
+          static_cast<int>(Argmax(&predict_batch[n * predict_shape[1]],
+                                  &predict_batch[(n + 1) * predict_shape[1]]));
+      float max_value =
           float(*std::max_element(&predict_batch[n * predict_shape[1]],
                                   &predict_batch[(n + 1) * predict_shape[1]]));
 
@@ -214,7 +214,7 @@ RunDetModel(std::shared_ptr<PaddlePredictor> predictor, cv::Mat img,
   std::vector<float> mean = {0.485f, 0.456f, 0.406f};
   std::vector<float> scale = {1 / 0.229f, 1 / 0.224f, 1 / 0.225f};
   const float *dimg = reinterpret_cast<const float *>(img_fp.data);
-  neon_mean_scale(dimg, data0, img_fp.rows * img_fp.cols, mean, scale);
+  NeonMeanScale(dimg, data0, img_fp.rows * img_fp.cols, mean, scale);
 
   // Run predictor
   predictor->Run();
@@ -230,12 +230,14 @@ RunDetModel(std::shared_ptr<PaddlePredictor> predictor, cv::Mat img,
   unsigned char cbuf[shape_out[2] * shape_out[3]];
 
   for (int i = 0; i < int(shape_out[2] * shape_out[3]); i++) {
-    pred[i] = float(outptr[i]);
-    cbuf[i] = (unsigned char)((outptr[i]) * 255);
+    pred[i] = static_cast<float>(outptr[i]);
+    cbuf[i] = static_cast<unsigned char>((outptr[i]) * 255);
   }
 
-  cv::Mat cbuf_map(shape_out[2], shape_out[3], CV_8UC1, (unsigned char *)cbuf);
-  cv::Mat pred_map(shape_out[2], shape_out[3], CV_32F, (float *)pred);
+  cv::Mat cbuf_map(shape_out[2], shape_out[3], CV_8UC1,
+                   reinterpret_cast<unsigned char *> cbuf);
+  cv::Mat pred_map(shape_out[2], shape_out[3], CV_32F,
+                   reinterpret_cast<float *> pred);
 
   const double threshold = double(Config["det_db_thresh"]) * 255;
   const double maxvalue = 255;
@@ -264,7 +266,8 @@ cv::Mat Visualization(cv::Mat srcimg,
   cv::Point rook_points[boxes.size()][4];
   for (int n = 0; n < boxes.size(); n++) {
     for (int m = 0; m < boxes[0].size(); m++) {
-      rook_points[n][m] = cv::Point(int(boxes[n][m][0]), int(boxes[n][m][1]));
+      rook_points[n][m] = cv::Point(static_cast<int>(boxes[n][m][0]),
+                                    static_cast<int>(boxes[n][m][1]));
     }
   }
   cv::Mat img_vis;
