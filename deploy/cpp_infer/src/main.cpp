@@ -25,6 +25,7 @@
 #include <fstream>
 #include <numeric>
 
+#include <include/config.h>
 #include <include/ocr_det.h>
 #include <include/ocr_rec.h>
 
@@ -33,21 +34,29 @@ using namespace cv;
 using namespace PaddleOCR;
 
 int main(int argc, char **argv) {
-  if (argc < 4) {
+  if (argc < 3) {
     std::cerr << "[ERROR] usage: " << argv[0]
-              << " det_model_file rec_model_file image_path\n";
+              << " configure_filepath image_path\n";
     exit(1);
   }
-  std::string det_model_file = argv[1];
-  std::string rec_model_file = argv[2];
-  std::string img_path = argv[3];
+
+  Config config(argv[1]);
+
+  config.PrintConfigInfo();
+
+  std::string img_path(argv[2]);
 
   auto start = std::chrono::system_clock::now();
 
   cv::Mat srcimg = cv::imread(img_path, cv::IMREAD_COLOR);
 
-  DBDetector det(det_model_file);
-  CRNNRecognizer rec(rec_model_file);
+  DBDetector det(config.det_model_dir, config.use_gpu, config.gpu_id,
+                 config.gpu_mem, config.cpu_math_library_num_threads,
+                 config.max_side_len, config.det_db_thresh,
+                 config.det_db_box_thresh, config.det_db_unclip_ratio);
+  CRNNRecognizer rec(config.rec_model_dir, config.use_gpu, config.gpu_id,
+                     config.gpu_mem, config.cpu_math_library_num_threads,
+                     config.char_list_file);
 
   std::vector<std::vector<std::vector<int>>> boxes;
   det.Run(srcimg, boxes);

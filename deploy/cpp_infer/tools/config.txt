@@ -1,0 +1,17 @@
+# model load config
+use_gpu  0
+gpu_id  0
+gpu_mem  4000
+cpu_math_library_num_threads  1
+
+# det config
+max_side_len  960
+det_db_thresh  0.3
+det_db_box_thresh  0.5
+det_db_unclip_ratio  2.0
+det_model_dir  ./inference/det_db
+
+# rec config
+rec_model_dir  ./inference/rec_crnn
+char_list_file ./tools/ppocr_keys_v1.txt
+img_path  ../../doc/imgs/11.jpg

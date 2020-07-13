@@ -36,16 +36,29 @@ namespace PaddleOCR {
 
 class DBDetector {
 public:
-  explicit DBDetector(const std::string &model_dir, bool use_gpu = false,
-                      const int gpu_id = 0, const int max_side_len = 960) {
-    LoadModel(model_dir, use_gpu);
+  explicit DBDetector(const std::string &model_dir, const bool &use_gpu = false,
+                      const int &gpu_id = 0, const int &gpu_mem = 4000,
+                      const int &cpu_math_library_num_threads = 4,
+                      const int &max_side_len = 960,
+                      const double &det_db_thresh = 0.3,
+                      const double &det_db_box_thresh = 0.5,
+                      const double &det_db_unclip_ratio = 2.0) {
+    LoadModel(model_dir);
+
+    this->use_gpu_ = use_gpu;
+    this->gpu_id_ = gpu_id;
+    this->gpu_mem_ = gpu_mem;
+    this->cpu_math_library_num_threads_ = cpu_math_library_num_threads;
+
     this->max_side_len_ = max_side_len;
+
+    this->det_db_thresh_ = det_db_thresh;
+    this->det_db_box_thresh_ = det_db_box_thresh;
+    this->det_db_unclip_ratio_ = det_db_unclip_ratio;
   }
 
   // Load Paddle inference model
-  void LoadModel(const std::string &model_dir, bool use_gpu,
-                 const int min_subgraph_size = 3, const int batch_size = 1,
-                 const int gpu_id = 0);
+  void LoadModel(const std::string &model_dir);
 
   // Run predictor
   void Run(cv::Mat &img, std::vector<std::vector<std::vector<int>>> &boxes);
@@ -53,7 +66,16 @@ public:
 private:
   std::shared_ptr<PaddlePredictor> predictor_;
 
+  bool use_gpu_ = false;
+  int gpu_id_ = 0;
+  int gpu_mem_ = 4000;
+  int cpu_math_library_num_threads_ = 4;
+
   int max_side_len_ = 960;
+
+  double det_db_thresh_ = 0.3;
+  double det_db_box_thresh_ = 0.5;
+  double det_db_unclip_ratio_ = 2.0;
 
   std::vector<float> mean_ = {0.485f, 0.456f, 0.406f};
   std::vector<float> scale_ = {1 / 0.229f, 1 / 0.224f, 1 / 0.225f};

@@ -31,29 +31,28 @@
 
 namespace PaddleOCR {
 
-void DBDetector::LoadModel(const std::string &model_dir, bool use_gpu,
-                           const int gpu_id, const int min_subgraph_size,
-                           const int batch_size) {
+void DBDetector::LoadModel(const std::string &model_dir) {
   AnalysisConfig config;
   config.SetModel(model_dir + "/model", model_dir + "/params");
 
-  // for cpu
-  config.DisableGpu();
-  config.EnableMKLDNN(); // 开启MKLDNN加速
-  config.SetCpuMathLibraryNumThreads(10);
+  if (this->use_gpu_) {
+    config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
+  } else {
+    config.DisableGpu();
+    config.EnableMKLDNN(); // 开启MKLDNN加速
+    config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
+  }
 
-  // 使用ZeroCopyTensor，此处必须设置为false
+  // false for zero copy tensor
   config.SwitchUseFeedFetchOps(false);
-  // 若输入为多个，此处必须设置为true
+  // true for multiple input
   config.SwitchSpecifyInputNames(true);
-  // config.SwitchIrDebug(true); //
-  // 可视化调试选项，若开启，则会在每个图优化过程后生成dot文件
-  // config.SwitchIrOptim(false);// 默认为true。如果设置为false，关闭所有优化
-  config.EnableMemoryOptim(); // 开启内存/显存复用
+
+  config.SwitchIrOptim(true);
+
+  config.EnableMemoryOptim();
 
   this->predictor_ = CreatePaddlePredictor(config);
-  //   predictor_ = std::move(CreatePaddlePredictor(config)); // PaddleDetection
-  //   usage
 }
 
 void DBDetector::Run(cv::Mat &img,
@@ -69,13 +68,13 @@ void DBDetector::Run(cv::Mat &img,
   this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
                           this->is_scale_);
 
-  float *input = new float[1 * 3 * resize_img.rows * resize_img.cols];
-  this->permute_op_.Run(&resize_img, input);
+  std::vector<float> input(1 * 3 * resize_img.rows * resize_img.cols, 0.0f);
+  this->permute_op_.Run(&resize_img, input.data());
 
   auto input_names = this->predictor_->GetInputNames();
   auto input_t = this->predictor_->GetInputTensor(input_names[0]);
   input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
-  input_t->copy_from_cpu(input);
+  input_t->copy_from_cpu(input.data());
 
   this->predictor_->ZeroCopyRun();
 
@@ -93,25 +92,26 @@ void DBDetector::Run(cv::Mat &img,
   int n3 = output_shape[3];
   int n = n2 * n3;
 
-  float *pred = new float[n];
-  unsigned char *cbuf = new unsigned char[n];
+  std::vector<float> pred(n, 0.0);
+  std::vector<unsigned char> cbuf(n, ' ');
 
   for (int i = 0; i < n; i++) {
     pred[i] = float(out_data[i]);
     cbuf[i] = (unsigned char)((out_data[i]) * 255);
   }
 
-  cv::Mat cbuf_map(n2, n3, CV_8UC1, (unsigned char *)cbuf);
-  cv::Mat pred_map(n2, n3, CV_32F, (float *)pred);
+  cv::Mat cbuf_map(n2, n3, CV_8UC1, (unsigned char *)cbuf.data());
+  cv::Mat pred_map(n2, n3, CV_32F, (float *)pred.data());
 
-  const double threshold = 0.3 * 255;
+  const double threshold = this->det_db_thresh_ * 255;
   const double maxvalue = 255;
   cv::Mat bit_map;
   cv::threshold(cbuf_map, bit_map, threshold, maxvalue, cv::THRESH_BINARY);
 
-  boxes = post_processor_.boxes_from_bitmap(pred_map, bit_map);
+  boxes = post_processor_.BoxesFromBitmap(
+      pred_map, bit_map, this->det_db_box_thresh_, this->det_db_unclip_ratio_);
 
-  boxes = post_processor_.filter_tag_det_res(boxes, ratio_h, ratio_w, srcimg);
+  boxes = post_processor_.FilterTagDetRes(boxes, ratio_h, ratio_w, srcimg);
 
   //// visualization
   cv::Point rook_points[boxes.size()][4];
@@ -133,10 +133,6 @@ void DBDetector::Run(cv::Mat &img,
 
   std::cout << "The detection visualized image saved in ./det_res.png"
             << std::endl;
-
-  delete[] input;
-  delete[] pred;
-  delete[] cbuf;
 }
 
 } // namespace PaddleOCR

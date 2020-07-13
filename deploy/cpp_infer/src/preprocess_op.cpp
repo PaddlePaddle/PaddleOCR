@@ -97,7 +97,7 @@ void ResizeImgType0::Run(const cv::Mat &img, cv::Mat &resize_img,
 }
 
 void CrnnResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img, float wh_ratio,
-                        const std::vector<int> rec_image_shape) {
+                        const std::vector<int> &rec_image_shape) {
   int imgC, imgH, imgW;
   imgC = rec_image_shape[0];
   imgH = rec_image_shape[1];

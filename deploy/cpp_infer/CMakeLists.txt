@@ -57,7 +57,8 @@ link_directories("${PADDLE_LIB}/third_party/install/xxhash/lib")
 link_directories("${PADDLE_LIB}/paddle/lib")
 
 
-add_executable(${DEMO_NAME} src/main.cpp src/ocr_det.cpp src/ocr_rec.cpp src/preprocess_op.cpp src/clipper.cpp src/postprocess_op.cpp )
+AUX_SOURCE_DIRECTORY(./src SRCS)
+add_executable(${DEMO_NAME} ${SRCS})
 
 if(WITH_MKL)
   include_directories("${PADDLE_LIB}/third_party/install/mklml/include")
@@ -81,9 +82,6 @@ else()
       ${PADDLE_LIB}/paddle/lib/libpaddle_fluid${CMAKE_SHARED_LIBRARY_SUFFIX})
 endif()
 
-# user ze
-# set(EXTERNAL_LIB "-lrt -ldl -lpthread -lm -lopencv_world")
-# gry
 set(EXTERNAL_LIB "-lrt -ldl -lpthread -lm")
 
 set(DEPS ${DEPS}

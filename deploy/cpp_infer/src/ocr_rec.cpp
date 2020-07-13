@@ -41,7 +41,7 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
   std::cout << "The predicted text is :" << std::endl;
   int index = 0;
   for (int i = boxes.size() - 1; i >= 0; i--) {
-    crop_img = get_rotate_crop_image(srcimg, boxes[i]);
+    crop_img = GetRotateCropImage(srcimg, boxes[i]);
 
     float wh_ratio = float(crop_img.cols) / float(crop_img.rows);
 
@@ -50,14 +50,14 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
     this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
                             this->is_scale_);
 
-    float *input = new float[1 * 3 * resize_img.rows * resize_img.cols];
+    std::vector<float> input(1 * 3 * resize_img.rows * resize_img.cols, 0.0f);
 
-    this->permute_op_.Run(&resize_img, input);
+    this->permute_op_.Run(&resize_img, input.data());
 
     auto input_names = this->predictor_->GetInputNames();
     auto input_t = this->predictor_->GetInputTensor(input_names[0]);
     input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
-    input_t->copy_from_cpu(input);
+    input_t->copy_from_cpu(input.data());
 
     this->predictor_->ZeroCopyRun();
 
@@ -104,7 +104,8 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
     float max_value = 0.0f;
 
     for (int n = predict_lod[0][0]; n < predict_lod[0][1] - 1; n++) {
-      argmax_idx = int(argmax(&predict_batch[n * predict_shape[1]],
+      argmax_idx =
+          int(Utility::argmax(&predict_batch[n * predict_shape[1]],
                               &predict_batch[(n + 1) * predict_shape[1]]));
       max_value =
           float(*std::max_element(&predict_batch[n * predict_shape[1]],
@@ -116,37 +117,35 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
     }
     score /= count;
     std::cout << "\tscore: " << score << std::endl;
-
-    delete[] input;
   }
 }
 
-void CRNNRecognizer::LoadModel(const std::string &model_dir, bool use_gpu,
-                               const int gpu_id, const int min_subgraph_size,
-                               const int batch_size) {
+void CRNNRecognizer::LoadModel(const std::string &model_dir) {
   AnalysisConfig config;
   config.SetModel(model_dir + "/model", model_dir + "/params");
 
-  // for cpu
-  config.DisableGpu();
-  config.EnableMKLDNN(); // 开启MKLDNN加速
-  config.SetCpuMathLibraryNumThreads(10);
+  if (this->use_gpu_) {
+    config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
+  } else {
+    config.DisableGpu();
+    config.EnableMKLDNN(); // 开启MKLDNN加速
+    config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
+  }
 
-  // 使用ZeroCopyTensor，此处必须设置为false
+  // false for zero copy tensor
   config.SwitchUseFeedFetchOps(false);
-  // 若输入为多个，此处必须设置为true
+  // true for multiple input
   config.SwitchSpecifyInputNames(true);
-  // config.SwitchIrDebug(true); //
-  // 可视化调试选项，若开启，则会在每个图优化过程后生成dot文件
-  // config.SwitchIrOptim(false);// 默认为true。如果设置为false，关闭所有优化
-  config.EnableMemoryOptim(); // 开启内存/显存复用
+
+  config.SwitchIrOptim(true);
+
+  config.EnableMemoryOptim();
 
   this->predictor_ = CreatePaddlePredictor(config);
 }
 
-cv::Mat
-CRNNRecognizer::get_rotate_crop_image(const cv::Mat &srcimage,
-                                      std::vector<std::vector<int>> box) {
+cv::Mat CRNNRecognizer::GetRotateCropImage(const cv::Mat &srcimage,
+                                           std::vector<std::vector<int>> box) {
   cv::Mat image;
   srcimage.copyTo(image);
   std::vector<std::vector<int>> points = box;
@@ -198,21 +197,6 @@ CRNNRecognizer::get_rotate_crop_image(const cv::Mat &srcimage,
   } else {
     return dst_img;
   }
-}
-
-std::vector<std::string> CRNNRecognizer::ReadDict(const std::string &path) {
-  std::ifstream in(path);
-  std::string filename;
-  std::string line;
-  std::vector<std::string> m_vec;
-  if (in) {
-    while (getline(in, line)) {
-      m_vec.push_back(line);
-    }
-  } else {
-    std::cout << "no such file" << std::endl;
-  }
-  return m_vec;
 }
 
 } // namespace PaddleOCR

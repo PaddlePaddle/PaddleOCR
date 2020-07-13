@@ -29,28 +29,39 @@
 
 #include <include/postprocess_op.h>
 #include <include/preprocess_op.h>
+#include <include/utility.h>
 
 namespace PaddleOCR {
 
 class CRNNRecognizer {
 public:
-  explicit CRNNRecognizer(const std::string &model_dir,
-                          const string label_path = "./tools/ppocr_keys_v1.txt",
-                          bool use_gpu = false, const int gpu_id = 0) {
-    LoadModel(model_dir, use_gpu);
+  explicit CRNNRecognizer(
+      const std::string &model_dir, const bool &use_gpu = false,
+      const int &gpu_id = 0, const int &gpu_mem = 4000,
+      const int &cpu_math_library_num_threads = 4,
+      const string &label_path = "./tools/ppocr_keys_v1.txt") {
+    LoadModel(model_dir);
 
-    this->label_list_ = ReadDict(label_path);
+    this->use_gpu_ = use_gpu;
+    this->gpu_id_ = gpu_id;
+    this->gpu_mem_ = gpu_mem;
+    this->cpu_math_library_num_threads_ = cpu_math_library_num_threads;
+
+    this->label_list_ = Utility::ReadDict(label_path);
   }
 
   // Load Paddle inference model
-  void LoadModel(const std::string &model_dir, bool use_gpu,
-                 const int gpu_id = 0, const int min_subgraph_size = 3,
-                 const int batch_size = 1);
+  void LoadModel(const std::string &model_dir);
 
   void Run(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat &img);
 
 private:
   std::shared_ptr<PaddlePredictor> predictor_;
+
+  bool use_gpu_ = false;
+  int gpu_id_ = 0;
+  int gpu_mem_ = 4000;
+  int cpu_math_library_num_threads_ = 4;
 
   std::vector<std::string> label_list_;
 
@@ -66,15 +77,8 @@ private:
   // post-process
   PostProcessor post_processor_;
 
-  cv::Mat get_rotate_crop_image(const cv::Mat &srcimage,
-                                std::vector<std::vector<int>> box);
-
-  std::vector<std::string> ReadDict(const std::string &path);
-
-  template <class ForwardIterator>
-  inline size_t argmax(ForwardIterator first, ForwardIterator last) {
-    return std::distance(first, std::max_element(first, last));
-  }
+  cv::Mat GetRotateCropImage(const cv::Mat &srcimage,
+                             std::vector<std::vector<int>> box);
 
 }; // class CrnnRecognizer
 

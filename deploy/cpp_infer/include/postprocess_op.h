@@ -28,36 +28,17 @@
 #include <numeric>
 
 #include "include/clipper.h"
+#include "include/utility.h"
 
 using namespace std;
 
 namespace PaddleOCR {
 
-inline std::vector<std::string> ReadDict(std::string path) {
-  std::ifstream in(path);
-  std::string filename;
-  std::string line;
-  std::vector<std::string> m_vec;
-  if (in) {
-    while (getline(in, line)) {
-      m_vec.push_back(line);
-    }
-  } else {
-    std::cout << "no such file" << std::endl;
-  }
-  return m_vec;
-}
-
-template <class ForwardIterator>
-inline size_t Argmax(ForwardIterator first, ForwardIterator last) {
-  return std::distance(first, std::max_element(first, last));
-}
-
 class PostProcessor {
 public:
   void GetContourArea(float **box, float unclip_ratio, float &distance);
 
-  cv::RotatedRect unclip(float **box);
+  cv::RotatedRect UnClip(float **box, const float &unclip_ratio);
 
   float **Mat2Vec(cv::Mat mat);
 
@@ -67,23 +48,17 @@ public:
   std::vector<std::vector<int>>
   order_points_clockwise(std::vector<std::vector<int>> pts);
 
-  float **get_mini_boxes(cv::RotatedRect box, float &ssid);
+  float **GetMiniBoxes(cv::RotatedRect box, float &ssid);
 
-  float box_score_fast(float **box_array, cv::Mat pred);
-
-  std::vector<std::vector<std::vector<int>>>
-  boxes_from_bitmap(const cv::Mat pred, const cv::Mat bitmap);
+  float BoxScoreFast(float **box_array, cv::Mat pred);
 
   std::vector<std::vector<std::vector<int>>>
-  filter_tag_det_res(std::vector<std::vector<std::vector<int>>> boxes,
-                     float ratio_h, float ratio_w, cv::Mat srcimg);
+  BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
+                  const float &box_thresh, const float &det_db_unclip_ratio);
 
-  template <class ForwardIterator>
-  inline size_t argmax(ForwardIterator first, ForwardIterator last) {
-    return std::distance(first, std::max_element(first, last));
-  }
-
-  // CRNN
+  std::vector<std::vector<std::vector<int>>>
+  FilterTagDetRes(std::vector<std::vector<std::vector<int>>> boxes,
+                  float ratio_h, float ratio_w, cv::Mat srcimg);
 
 private:
   void quickSort(float **s, int l, int r);
@@ -99,6 +74,7 @@ private:
       return min;
     return x;
   }
+
   inline float clampf(float x, float min, float max) {
     if (x > max)
       return max;

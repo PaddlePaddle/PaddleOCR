@@ -34,8 +34,7 @@ void PostProcessor::GetContourArea(float **box, float unclip_ratio,
   distance = area * unclip_ratio / dist;
 }
 
-cv::RotatedRect PostProcessor::unclip(float **box) {
-  float unclip_ratio = 2.0;
+cv::RotatedRect PostProcessor::UnClip(float **box, const float &unclip_ratio) {
   float distance = 1.0;
 
   GetContourArea(box, unclip_ratio, distance);
@@ -136,7 +135,7 @@ PostProcessor::order_points_clockwise(std::vector<std::vector<int>> pts) {
   return rect;
 }
 
-float **PostProcessor::get_mini_boxes(cv::RotatedRect box, float &ssid) {
+float **PostProcessor::GetMiniBoxes(cv::RotatedRect box, float &ssid) {
   ssid = box.size.width >= box.size.height ? box.size.height : box.size.width;
 
   cv::Mat points;
@@ -169,7 +168,7 @@ float **PostProcessor::get_mini_boxes(cv::RotatedRect box, float &ssid) {
   return array;
 }
 
-float PostProcessor::box_score_fast(float **box_array, cv::Mat pred) {
+float PostProcessor::BoxScoreFast(float **box_array, cv::Mat pred) {
   auto array = box_array;
   int width = pred.cols;
   int height = pred.rows;
@@ -207,10 +206,11 @@ float PostProcessor::box_score_fast(float **box_array, cv::Mat pred) {
 }
 
 std::vector<std::vector<std::vector<int>>>
-PostProcessor::boxes_from_bitmap(const cv::Mat pred, const cv::Mat bitmap) {
+PostProcessor::BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
+                               const float &box_thresh,
+                               const float &det_db_unclip_ratio) {
   const int min_size = 3;
   const int max_candidates = 1000;
-  const float box_thresh = 0.5;
 
   int width = bitmap.cols;
   int height = bitmap.rows;
@@ -229,7 +229,7 @@ PostProcessor::boxes_from_bitmap(const cv::Mat pred, const cv::Mat bitmap) {
   for (int _i = 0; _i < num_contours; _i++) {
     float ssid;
     cv::RotatedRect box = cv::minAreaRect(contours[_i]);
-    auto array = get_mini_boxes(box, ssid);
+    auto array = GetMiniBoxes(box, ssid);
 
     auto box_for_unclip = array;
     // end get_mini_box
@@ -239,17 +239,16 @@ PostProcessor::boxes_from_bitmap(const cv::Mat pred, const cv::Mat bitmap) {
     }
 
     float score;
-    score = box_score_fast(array, pred);
-    // end box_score_fast
+    score = BoxScoreFast(array, pred);
     if (score < box_thresh)
       continue;
 
     // start for unclip
-    cv::RotatedRect points = unclip(box_for_unclip);
+    cv::RotatedRect points = UnClip(box_for_unclip, det_db_unclip_ratio);
     // end for unclip
 
     cv::RotatedRect clipbox = points;
-    auto cliparray = get_mini_boxes(clipbox, ssid);
+    auto cliparray = GetMiniBoxes(clipbox, ssid);
 
     if (ssid < min_size + 2)
       continue;
@@ -273,9 +272,9 @@ PostProcessor::boxes_from_bitmap(const cv::Mat pred, const cv::Mat bitmap) {
   return boxes;
 }
 
-std::vector<std::vector<std::vector<int>>> PostProcessor::filter_tag_det_res(
-    std::vector<std::vector<std::vector<int>>> boxes, float ratio_h,
-    float ratio_w, cv::Mat srcimg) {
+std::vector<std::vector<std::vector<int>>>
+PostProcessor::FilterTagDetRes(std::vector<std::vector<std::vector<int>>> boxes,
+                               float ratio_h, float ratio_w, cv::Mat srcimg) {
   int oriimg_h = srcimg.rows;
   int oriimg_w = srcimg.cols;
 
