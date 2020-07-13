@@ -34,7 +34,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - [基于EasyEdge的**移动端demo**体验](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)(点击本链接或直接扫描如下二维码)
 
 <div align="center">
-    <img src="./doc/mobile_demo_qrcode.png"  width = "300" height = "200" />
+    <img src="./doc/mobile_demo_qrcode.png"  width = "300" height = "160" />
 </div>
 
 - [**中文OCR模型快速使用**](./doc/doc_ch/quickstart.md)
