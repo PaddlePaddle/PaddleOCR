@@ -65,17 +65,23 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/" --det_model_dir=
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_det_mv3_db/"  --rec_model_dir="./inference/ch_rec_mv3_crnn/" --use_gpu=False
 ```
 
-通用中文OCR模型的体验可以按照上述步骤下载相应的模型，并且更新相关的参数，示例如下：
+- 通用中文OCR模型
+
+请按照上述步骤下载相应的模型，并且更新相关的参数，示例如下：
 ```
 # 预测image_dir指定的单张图像
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_det_r50_vd_db/"  --rec_model_dir="./inference/ch_rec_r34_vd_crnn/"
 ```
 
-带空格的通用中文OCR模型的体验可以按照上述步骤下载相应的模型，并且更新相关的参数，示例如下：
+- 支持空格的通用中文OCR模型
+
+请按照上述步骤下载相应的模型，并且更新相关的参数，示例如下：
+
+*注意：请将代码更新到最新版本，并添加参数 `--use_space_char=True` *
 
 ```
 # 预测image_dir指定的单张图像
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_12.jpg" --det_model_dir="./inference/ch_det_r50_vd_db/"  --rec_model_dir="./inference/ch_rec_r34_vd_crnn_enhance/"
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_12.jpg" --det_model_dir="./inference/ch_det_r50_vd_db/"  --rec_model_dir="./inference/ch_rec_r34_vd_crnn_enhance/" --use_space_char=True
 ```
 
 更多的文本检测、识别串联推理使用方式请参考文档教程中[基于Python预测引擎推理](./inference.md)。
