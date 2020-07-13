@@ -57,7 +57,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - 基于C++预测引擎推理(comming soon)
     - [服务化部署](./doc/doc_ch/serving.md)
     - [端侧部署](./deploy/lite/readme.md)
-    - benchmark
+    - Benchmark
 - 数据集
     - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
     - 垂类多语言OCR数据集
