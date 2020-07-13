@@ -114,25 +114,9 @@ void DBDetector::Run(cv::Mat &img,
   boxes = post_processor_.FilterTagDetRes(boxes, ratio_h, ratio_w, srcimg);
 
   //// visualization
-  cv::Point rook_points[boxes.size()][4];
-  for (int n = 0; n < boxes.size(); n++) {
-    for (int m = 0; m < boxes[0].size(); m++) {
-      rook_points[n][m] = cv::Point(int(boxes[n][m][0]), int(boxes[n][m][1]));
-    }
+  if (this->visualize_) {
+    Utility::VisualizeBboxes(srcimg, boxes);
   }
-
-  cv::Mat img_vis;
-  srcimg.copyTo(img_vis);
-  for (int n = 0; n < boxes.size(); n++) {
-    const cv::Point *ppt[1] = {rook_points[n]};
-    int npt[] = {4};
-    cv::polylines(img_vis, ppt, npt, 1, 1, CV_RGB(0, 255, 0), 2, 8, 0);
-  }
-
-  imwrite("./det_res.png", img_vis);
-
-  std::cout << "The detection visualized image saved in ./det_res.png"
-            << std::endl;
 }
 
 } // namespace PaddleOCR

@@ -42,7 +42,8 @@ public:
                       const int &max_side_len = 960,
                       const double &det_db_thresh = 0.3,
                       const double &det_db_box_thresh = 0.5,
-                      const double &det_db_unclip_ratio = 2.0) {
+                      const double &det_db_unclip_ratio = 2.0,
+                      const bool &visualize = true) {
     LoadModel(model_dir);
 
     this->use_gpu_ = use_gpu;
@@ -55,6 +56,8 @@ public:
     this->det_db_thresh_ = det_db_thresh;
     this->det_db_box_thresh_ = det_db_box_thresh;
     this->det_db_unclip_ratio_ = det_db_unclip_ratio;
+
+    this->visualize_ = visualize;
   }
 
   // Load Paddle inference model
@@ -76,6 +79,8 @@ private:
   double det_db_thresh_ = 0.3;
   double det_db_box_thresh_ = 0.5;
   double det_db_unclip_ratio_ = 2.0;
+
+  bool visualize_ = true;
 
   std::vector<float> mean_ = {0.485f, 0.456f, 0.406f};
   std::vector<float> scale_ = {1 / 0.229f, 1 / 0.224f, 1 / 0.225f};

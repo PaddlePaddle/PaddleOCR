@@ -52,6 +52,8 @@ public:
     this->rec_model_dir.assign(config_map_["rec_model_dir"]);
 
     this->char_list_file.assign(config_map_["char_list_file"]);
+
+    this->visualize = bool(stoi(config_map_["visualize"]));
   }
 
   bool use_gpu = false;
@@ -75,6 +77,8 @@ public:
   std::string rec_model_dir;
 
   std::string char_list_file;
+
+  bool visualize = true;
 
   void PrintConfigInfo();
 
