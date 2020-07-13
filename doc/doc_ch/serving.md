@@ -23,8 +23,14 @@ deploy/hubserving/ocr_system/
 
 ## 快速启动服务
 以下步骤以检测+识别2阶段串联服务为例，如果只需要检测服务或识别服务，替换相应文件路径即可。
-### 1. 安装paddlehub
-```pip3 install paddlehub --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple```
+### 1. 准备环境
+```shell
+# 安装paddlehub  
+pip3 install paddlehub --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+# 设置环境变量  
+export PYTHONPATH=.
+```   
 
 ### 2. 安装服务模块
 PaddleOCR提供3种服务模块，根据需要安装所需模块。如： 
@@ -75,7 +81,6 @@ $ hub serving start --modules [Module1==Version1, Module2==Version2, ...] \
                 "use_gpu": true
             },
             "predict_args": {
-                "visualization": false
             }
         }
     },
@@ -99,32 +104,21 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 ```  
 
 ## 发送预测请求
-配置好服务端，以下数行代码即可实现发送预测请求，获取预测结果:
+配置好服务端，可使用以下命令发送预测请求，获取预测结果:  
 
-```python
-import requests
-import json
-import cv2
-import base64
+```python tools/test_hubserving.py server_url image_path```  
 
-def cv2_to_base64(image):
-    return base64.b64encode(image).decode('utf8')
+需要给脚本传递2个参数：  
+- **server_url**：服务地址，格式为  
+`http://[ip_address]:[port]/predict/[module_name]`  
+例如，如果使用配置文件启动检测、识别、检测+识别2阶段服务，那么发送请求的url将分别是：  
+`http://127.0.0.1:8866/predict/ocr_det`  
+`http://127.0.0.1:8867/predict/ocr_rec`  
+`http://127.0.0.1:8868/predict/ocr_system`  
+- **image_path**：测试图像路径，可以是单张图片路径，也可以是图像集合目录路径  
 
-# 发送HTTP请求
-data = {'images':[cv2_to_base64(open("./doc/imgs/11.jpg", 'rb').read())]}
-headers = {"Content-type": "application/json"}
-# url = "http://127.0.0.1:8866/predict/ocr_det"
-# url = "http://127.0.0.1:8866/predict/ocr_rec"
-url = "http://127.0.0.1:8866/predict/ocr_system"
-r = requests.post(url=url, headers=headers, data=json.dumps(data))
-
-# 打印预测结果
-print(r.json()["results"])
-```
-
-你可能需要根据实际情况修改`url`字符串中的端口号和服务模块名称。  
-
-上面所示代码都已写入测试脚本，可直接运行命令：```python tools/test_hubserving.py```
+访问示例：  
+```python tools/test_hubserving.py http://127.0.0.1:8868/predict/ocr_system ./doc/imgs/```
 
 ## 自定义修改服务模块
 如果需要修改服务逻辑，你一般需要操作以下步骤（以修改`ocr_system`为例）：  
