@@ -128,7 +128,7 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
     config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
   } else {
     config.DisableGpu();
-    config.EnableMKLDNN(); // 开启MKLDNN加速
+    // config.EnableMKLDNN(); // not sugesteed to use for now
     config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
   }
 
