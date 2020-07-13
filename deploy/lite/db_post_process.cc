@@ -42,10 +42,14 @@ cv::RotatedRect Unclip(std::vector<std::vector<float>> box,
 
   ClipperLib::ClipperOffset offset;
   ClipperLib::Path p;
-  p << ClipperLib::IntPoint(int(box[0][0]), int(box[0][1]))
-    << ClipperLib::IntPoint(int(box[1][0]), int(box[1][1]))
-    << ClipperLib::IntPoint(int(box[2][0]), int(box[2][1]))
-    << ClipperLib::IntPoint(int(box[3][0]), int(box[3][1]));
+  p << ClipperLib::IntPoint(static_cast<int>(box[0][0]),
+                            static_cast<int>(box[0][1]))
+    << ClipperLib::IntPoint(static_cast<int>(box[1][0]),
+                            static_cast<int>(box[1][1]))
+    << ClipperLib::IntPoint(static_cast<int>(box[2][0]),
+                            static_cast<int>(box[2][1]))
+    << ClipperLib::IntPoint(static_cast<int>(box[3][0]),
+                            static_cast<int>(box[3][1]));
   offset.AddPath(p, ClipperLib::jtRound, ClipperLib::etClosedPolygon);
 
   ClipperLib::Paths soln;
@@ -149,23 +153,31 @@ float BoxScoreFast(std::vector<std::vector<float>> box_array, cv::Mat pred) {
   float box_x[4] = {array[0][0], array[1][0], array[2][0], array[3][0]};
   float box_y[4] = {array[0][1], array[1][1], array[2][1], array[3][1]};
 
-  int xmin = clamp(int(std::floorf(*(std::min_element(box_x, box_x + 4)))), 0,
-                   width - 1);
-  int xmax = clamp(int(std::ceilf(*(std::max_element(box_x, box_x + 4)))), 0,
-                   width - 1);
-  int ymin = clamp(int(std::floorf(*(std::min_element(box_y, box_y + 4)))), 0,
-                   height - 1);
-  int ymax = clamp(int(std::ceilf(*(std::max_element(box_y, box_y + 4)))), 0,
-                   height - 1);
+  int xmin = clamp(
+      static_cast<int>(std::floorf(*(std::min_element(box_x, box_x + 4)))), 0,
+      width - 1);
+  int xmax =
+      clamp(static_cast<int>(std::ceilf(*(std::max_element(box_x, box_x + 4)))),
+            0, width - 1);
+  int ymin = clamp(
+      static_cast<int>(std::floorf(*(std::min_element(box_y, box_y + 4)))), 0,
+      height - 1);
+  int ymax =
+      clamp(static_cast<int>(std::ceilf(*(std::max_element(box_y, box_y + 4)))),
+            0, height - 1);
 
   cv::Mat mask;
   mask = cv::Mat::zeros(ymax - ymin + 1, xmax - xmin + 1, CV_8UC1);
 
   cv::Point root_point[4];
-  root_point[0] = cv::Point(int(array[0][0]) - xmin, int(array[0][1]) - ymin);
-  root_point[1] = cv::Point(int(array[1][0]) - xmin, int(array[1][1]) - ymin);
-  root_point[2] = cv::Point(int(array[2][0]) - xmin, int(array[2][1]) - ymin);
-  root_point[3] = cv::Point(int(array[3][0]) - xmin, int(array[3][1]) - ymin);
+  root_point[0] = cv::Point(static_cast<int>(array[0][0]) - xmin,
+                            static_cast<int>(array[0][1]) - ymin);
+  root_point[1] = cv::Point(static_cast<int>(array[1][0]) - xmin,
+                            static_cast<int>(array[1][1]) - ymin);
+  root_point[2] = cv::Point(static_cast<int>(array[2][0]) - xmin,
+                            static_cast<int>(array[2][1]) - ymin);
+  root_point[3] = cv::Point(static_cast<int>(array[3][0]) - xmin,
+                            static_cast<int>(array[3][1]) - ymin);
   const cv::Point *ppt[1] = {root_point};
   int npt[] = {4};
   cv::fillPoly(mask, ppt, npt, 1, cv::Scalar(1));
@@ -183,8 +195,8 @@ BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
                 std::map<std::string, double> Config) {
   const int min_size = 3;
   const int max_candidates = 1000;
-  const float box_thresh = float(Config["det_db_box_thresh"]);
-  const float unclip_ratio = float(Config["det_db_unclip_ratio"]);
+  const float box_thresh = static_cast<float>(Config["det_db_box_thresh"]);
+  const float unclip_ratio = static_cast<float>(Config["det_db_unclip_ratio"]);
 
   int width = bitmap.cols;
   int height = bitmap.rows;
@@ -233,12 +245,13 @@ BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
     std::vector<std::vector<int>> intcliparray;
 
     for (int num_pt = 0; num_pt < 4; num_pt++) {
-      std::vector<int> a{int(clamp(roundf(cliparray[num_pt][0] / float(width) *
-                                          float(dest_width)),
-                                   float(0), float(dest_width))),
-                         int(clamp(roundf(cliparray[num_pt][1] / float(height) *
-                                          float(dest_height)),
-                                   float(0), float(dest_height)))};
+      std::vector<int> a{
+          static_cast<int>(clamp(
+              roundf(cliparray[num_pt][0] / float(width) * float(dest_width)),
+              float(0), float(dest_width))),
+          static_cast<int>(clamp(
+              roundf(cliparray[num_pt][1] / float(height) * float(dest_height)),
+              float(0), float(dest_height)))};
       intcliparray.push_back(a);
     }
     boxes.push_back(intcliparray);
@@ -254,23 +267,27 @@ FilterTagDetRes(std::vector<std::vector<std::vector<int>>> boxes, float ratio_h,
   int oriimg_w = srcimg.cols;
 
   std::vector<std::vector<std::vector<int>>> root_points;
-  for (int n = 0; n < boxes.size(); n++) {
+  for (int n = 0; n < static_cast<int>(boxes.size()); n++) {
     boxes[n] = OrderPointsClockwise(boxes[n]);
-    for (int m = 0; m < boxes[0].size(); m++) {
+    for (int m = 0; m < static_cast<int>(boxes[0].size()); m++) {
       boxes[n][m][0] /= ratio_w;
       boxes[n][m][1] /= ratio_h;
 
-      boxes[n][m][0] = int(std::min(std::max(boxes[n][m][0], 0), oriimg_w - 1));
-      boxes[n][m][1] = int(std::min(std::max(boxes[n][m][1], 0), oriimg_h - 1));
+      boxes[n][m][0] =
+          static_cast<int>(std::min(std::max(boxes[n][m][0], 0), oriimg_w - 1));
+      boxes[n][m][1] =
+          static_cast<int>(std::min(std::max(boxes[n][m][1], 0), oriimg_h - 1));
     }
   }
 
   for (int n = 0; n < boxes.size(); n++) {
     int rect_width, rect_height;
-    rect_width = int(sqrt(pow(boxes[n][0][0] - boxes[n][1][0], 2) +
-                          pow(boxes[n][0][1] - boxes[n][1][1], 2)));
-    rect_height = int(sqrt(pow(boxes[n][0][0] - boxes[n][3][0], 2) +
-                           pow(boxes[n][0][1] - boxes[n][3][1], 2)));
+    rect_width =
+        static_cast<int>(sqrt(pow(boxes[n][0][0] - boxes[n][1][0], 2) +
+                              pow(boxes[n][0][1] - boxes[n][1][1], 2)));
+    rect_height =
+        static_cast<int>(sqrt(pow(boxes[n][0][0] - boxes[n][3][0], 2) +
+                              pow(boxes[n][0][1] - boxes[n][3][1], 2)));
     if (rect_width <= 10 || rect_height <= 10)
       continue;
     root_points.push_back(boxes[n]);
