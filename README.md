@@ -33,6 +33,11 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 - [**中文OCR模型快速使用**](./doc/doc_ch/quickstart.md)
 
+- [基于EasyEdge的**移动端demo**体验](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)(点击本链接或直接扫描如下二维码)
+<img src="./doc/mobile_demo_qrcode.png"  width = "300" height = "160" />
+
+
+
 ## 中文OCR模型列表
 
 |模型名称|模型简介|检测模型地址|识别模型地址|支持空格的识别模型地址|
@@ -57,7 +62,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - 基于C++预测引擎推理(comming soon)
     - [服务化部署](./doc/doc_ch/serving.md)
     - [端侧部署](./deploy/lite/readme.md)
-    - Benchmark
+    - [Benchmark](./doc/doc_ch/benchmark.md)
 - 数据集
     - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
     - 垂类多语言OCR数据集
@@ -126,7 +131,8 @@ PaddleOCR开源的文本识别算法列表：
 |RARE|Resnet34_vd|84.90%|rec_r34_vd_tps_bilstm_attn|[下载链接](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_attn.tar)|
 |RARE|MobileNetV3|83.32%|rec_mv3_tps_bilstm_attn|[下载链接](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_attn.tar)|
 
-使用[LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/datasets.md#1icdar2019-lsvt)街景数据集根据真值将图crop出来30w数据，进行位置校准。此外基于LSVT语料生成500w合成数据训练中文模型，相关配置和预训练文件如下：
+使用[LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/datasets.md#1icdar2019-lsvt)街景数据集根据真值将图crop出来30w数据，进行位置校准。此外基于LSVT语料生成500w合成数据训练中文模型，相关配置和预训练文件如下：  
+
 |模型|骨干网络|配置文件|预训练模型|
 |-|-|-|-|
 |超轻量中文模型|MobileNetV3|rec_chinese_lite_train.yml|[下载链接](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|
