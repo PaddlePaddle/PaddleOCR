@@ -6,7 +6,6 @@
                 "use_gpu": true
             },
             "predict_args": {
-                "visualization": false
             }
         }
     },

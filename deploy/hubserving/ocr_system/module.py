@@ -19,7 +19,7 @@ import numpy as np
 import paddle.fluid as fluid
 import paddlehub as hub
 
-from tools.infer.utility import draw_ocr, base64_to_cv2
+from tools.infer.utility import base64_to_cv2
 from tools.infer.predict_system import TextSystem
 
 
@@ -68,18 +68,12 @@ class OCRSystem(hub.Module):
 
     def predict(self,
                        images=[],
-                       paths=[],
-                       draw_img_save='ocr_result',
-                       visualization=False,
-                       text_thresh=0.5):
+                       paths=[]):
         """
         Get the chinese texts in the predicted images.
         Args:
             images (list(numpy.ndarray)): images data, shape of each is [H, W, C]. If images not paths
             paths (list[str]): The paths of images. If paths not images
-            draw_img_save (str): The directory to store output images.
-            visualization (bool): Whether to save image or not.
-            text_thresh(float): the threshold of the recognize chinese texts' confidence
         Returns:
             res (list): The result of chinese texts and save path of images.
         """
@@ -93,53 +87,30 @@ class OCRSystem(hub.Module):
 
         assert predicted_data != [], "There is not any image to be predicted. Please check the input data."
 
-        cnt = 0
         all_results = []
         for img in predicted_data:
-            result = {'save_path': ''}
             if img is None:
                 logger.info("error in loading image")
-                result['data'] = []
-                all_results.append(result)
+                all_results.append([])
                 continue
             starttime = time.time()
             dt_boxes, rec_res = self.text_sys(img)
             elapse = time.time() - starttime
-            cnt += 1
-            print("Predict time of image %d: %.3fs" % (cnt, elapse))
+            logger.info("Predict time: {}".format(elapse))
+
             dt_num = len(dt_boxes)
             rec_res_final = []
+
             for dno in range(dt_num):
                 text, score = rec_res[dno]
-                # if the recognized text confidence score is lower than text_thresh, then drop it
-                if score >= text_thresh:
-                    # text_str = "%s, %.3f" % (text, score)
-                    # print(text_str)
-                    rec_res_final.append(
-                        {
-                            'text': text,
-                            'confidence': float(score),
-                            'text_box_position': dt_boxes[dno].astype(np.int).tolist()
-                        }
-                    )
-            result['data'] = rec_res_final
-
-            if visualization:
-                image = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-                boxes = dt_boxes
-                txts = [rec_res[i][0] for i in range(len(rec_res))]
-                scores = [rec_res[i][1] for i in range(len(rec_res))]
-
-                draw_img = draw_ocr(image, boxes, txts, scores, draw_txt=True, drop_score=0.5)
-                if not os.path.exists(draw_img_save):
-                    os.makedirs(draw_img_save)
-                saved_name = 'ndarray_{}.jpg'.format(time.time())
-                save_file_path = os.path.join(draw_img_save, saved_name)
-                cv2.imwrite(save_file_path, draw_img[:, :, ::-1])
-                print("The visualized image saved in {}".format(save_file_path))
-                result['save_path'] = save_file_path
-
-            all_results.append(result)
+                rec_res_final.append(
+                    {
+                        'text': text,
+                        'confidence': float(score),
+                        'text_region': dt_boxes[dno].astype(np.int).tolist()
+                    }
+                )
+            all_results.append(rec_res_final)
         return all_results
 
     @serving
@@ -158,5 +129,5 @@ if __name__ == '__main__':
         './doc/imgs/11.jpg',
         './doc/imgs/12.jpg',
     ]
-    res = ocr.predict(paths=image_path, visualization=False)
+    res = ocr.predict(paths=image_path)
     print(res)

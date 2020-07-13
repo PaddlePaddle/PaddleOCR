@@ -92,12 +92,24 @@ class OCRRec(hub.Module):
             if img is None:
                 continue
             img_list.append(img)
+            
+        rec_res_final = []
         try:
             rec_res, predict_time = self.text_recognizer(img_list)
+            for dno in range(len(rec_res)):
+                text, score = rec_res[dno]
+                rec_res_final.append(
+                    {
+                        'text': text,
+                        'confidence': float(score),
+                    }
+                )
         except Exception as e:
             print(e)
-            return []
-        return rec_res
+            return [[]]
+
+        return [rec_res_final]
+
 
     @serving
     def serving_method(self, images, **kwargs):

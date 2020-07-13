@@ -117,16 +117,12 @@ def main(args):
     image_file_list = get_image_file_list(args.image_dir)
     text_sys = TextSystem(args)
     is_visualize = True
-    tackle_img_num = 0
     for image_file in image_file_list:
         img = cv2.imread(image_file)
         if img is None:
             logger.info("error in loading image:{}".format(image_file))
             continue
         starttime = time.time()
-        tackle_img_num += 1
-        if not args.use_gpu and tackle_img_num % 30 == 0:
-            text_sys = TextSystem(args)
         dt_boxes, rec_res = text_sys(img)
         elapse = time.time() - starttime
         print("Predict time of %s: %.3fs" % (image_file, elapse))

@@ -19,7 +19,7 @@ import numpy as np
 import paddle.fluid as fluid
 import paddlehub as hub
 
-from tools.infer.utility import draw_boxes, base64_to_cv2
+from tools.infer.utility import base64_to_cv2
 from tools.infer.predict_det import TextDetector
 
 
@@ -68,16 +68,12 @@ class OCRDet(hub.Module):
 
     def predict(self,
                 images=[],
-                paths=[],
-                draw_img_save='ocr_det_result',
-                visualization=False):
+                paths=[]):
         """
         Get the text box in the predicted images.
         Args:
             images (list(numpy.ndarray)): images data, shape of each is [H, W, C]. If images not paths
             paths (list[str]): The paths of images. If paths not images
-            draw_img_save (str): The directory to store output images.
-            visualization (bool): Whether to save image or not.
         Returns:
             res (list): The result of text detection box and save path of images.
         """
@@ -93,29 +89,21 @@ class OCRDet(hub.Module):
         
         all_results = []
         for img in predicted_data:
-            result = {'save_path': ''}
             if img is None:
                 logger.info("error in loading image")
-                result['data'] = []
-                all_results.append(result)
+                all_results.append([])
                 continue
             dt_boxes, elapse = self.text_detector(img)
-            print("Predict time : ", elapse)
-            result['data'] = dt_boxes.astype(np.int).tolist()
+            logger.info("Predict time : {}".format(elapse))
 
-            if visualization:
-                image = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-                draw_img = draw_boxes(image, dt_boxes)
-                draw_img = np.array(draw_img)
-                if not os.path.exists(draw_img_save):
-                    os.makedirs(draw_img_save)
-                saved_name = 'ndarray_{}.jpg'.format(time.time())
-                save_file_path = os.path.join(draw_img_save, saved_name)
-                cv2.imwrite(save_file_path, draw_img[:, :, ::-1])
-                print("The visualized image saved in {}".format(save_file_path))
-                result['save_path'] = save_file_path
-
-            all_results.append(result)
+            rec_res_final = []
+            for dno in range(len(dt_boxes)):
+                rec_res_final.append(
+                    {
+                        'text_region': dt_boxes[dno].astype(np.int).tolist()
+                    }
+                )
+            all_results.append(rec_res_final)
         return all_results
 
     @serving
@@ -134,5 +122,5 @@ if __name__ == '__main__':
         './doc/imgs/11.jpg',
         './doc/imgs/12.jpg',
     ]
-    res = ocr.predict(paths=image_path, visualization=True)
+    res = ocr.predict(paths=image_path)
     print(res)
