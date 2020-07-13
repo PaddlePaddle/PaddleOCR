@@ -43,17 +43,26 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## 文档教程
 - [快速安装](./doc/doc_ch/installation.md)
 - [中文OCR模型快速使用](./doc/doc_ch/quickstart.md)
-- [算法介绍](#算法介绍)
+- 算法介绍
+    - [文本检测](#文本检测算法)
+    - [文本识别](#文本识别算法)
+    - [端到端OCR](#端到端OCR算法)
 - 模型训练/评估
     - [文本检测](./doc/doc_ch/detection.md)
     - [文本识别](./doc/doc_ch/recognition.md)
     - [yml参数配置文件介绍](./doc/doc_ch/config.md)
+    - 中文OCR训练预测技巧
 - 预测部署
     - [基于Python预测引擎推理](./doc/doc_ch/inference.md)
     - 基于C++预测引擎推理(comming soon)
-    - [服务部署](./doc/doc_ch/serving.md)
+    - [服务化部署](./doc/doc_ch/serving.md)
     - [端侧部署](./deploy/lite/readme.md)
-- [数据集](./doc/doc_ch/datasets.md)
+- 数据集
+    - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
+    - 垂类多语言OCR数据集
+    - 手写中文OCR数据集
+    - 常用数据标注工具
+    - 常用数据合成工具
 - [FAQ](#FAQ)
 - 效果展示
     - [超轻量级中文OCR效果展示](#超轻量级中文OCR效果展示)
@@ -66,6 +75,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 <a name="算法介绍"></a>
 ## 算法介绍
+<a name="文本检测算法"></a>
 ### 1.文本检测算法
 
 PaddleOCR开源的文本检测算法列表：
@@ -92,6 +102,7 @@ PaddleOCR开源的文本检测算法列表：
 
 PaddleOCR文本检测算法的训练和使用请参考文档教程中[模型训练/评估中的文本检测部分](./doc/doc_ch/detection.md)。
 
+<a name="文本识别算法"></a>
 ### 2.文本识别算法
 
 PaddleOCR开源的文本识别算法列表：
@@ -122,6 +133,7 @@ PaddleOCR开源的文本识别算法列表：
 
 PaddleOCR文本识别算法的训练和使用请参考文档教程中[模型训练/评估中的文本识别部分](./doc/doc_ch/recognition.md)。
 
+<a name="端到端OCR算法"></a>
 ### 3.端到端OCR算法
 - [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(百度自研, comming soon)
 
