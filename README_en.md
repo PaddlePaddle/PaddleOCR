@@ -4,7 +4,7 @@ English | [简体中文](README.md)
 PaddleOCR aims to create a rich, leading, and practical OCR tools that help users train better models and apply them into practice.
 
 **Recent updates**、
-- 2020.7.9 Add recognition model to support space, [recognition result](#space Chinese OCR results),[Training](./doc/doc_ch/recognition.md)及[Inference](./doc/doc_ch/quickstart.md)
+- 2020.7.9 Add recognition model to support space, [recognition result](#space Chinese OCR results). For more information: [Recognition](./doc/doc_ch/recognition.md) and [quickstart](./doc/doc_ch/quickstart.md)
 - 2020.7.9 Add data auguments and learning rate decay strategies,please read [config](./doc/doc_en/config_en.md)
 - 2020.6.8 Add [dataset](./doc/doc_en/datasets_en.md) and keep updating
 - 2020.6.5 Support exporting `attention` model to `inference_model`

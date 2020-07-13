@@ -94,9 +94,16 @@ word_dict.txt 每行有一个单字，将字符与数字索引映射在一起，
 `ppocr/utils/ic15_dict.txt` 是一个包含36个字符的英文字典，
 您可以按需使用。
 
-如需自定义dic文件，请在 `configs/rec/rec_icdar15_train.yml` 中添加 `character_dict_path` 字段, 并将 `character_type` 设置为 `ch`。
+- 自定义字典
 
-*如果希望支持识别"空格"类别, 请将yml文件中的 `use_space_char` 字段设置为 `true`。`use_space_char` 仅在 `character_type=ch` 时生效*
+如需自定义dic文件，请在 `configs/rec/rec_icdar15_train.yml` 中添加 `character_dict_path` 字段, 指向您的字典路径。
+并将 `character_type` 设置为 `ch`。
+
+- 添加空格类别
+
+如果希望支持识别"空格"类别, 请将yml文件中的 `use_space_char` 字段设置为 `true`。
+
+**注意：`use_space_char` 仅在 `character_type=ch` 时生效**
 
 
 ### 启动训练
