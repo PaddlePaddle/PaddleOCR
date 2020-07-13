@@ -4,7 +4,7 @@
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力使用者训练出更好的模型，并应用落地。
 
 **近期更新**
-- 2020.7.9 添加支持空格的识别模型，[识别效果](#支持空格的中文OCR效果展示)，预测及训练方式请参考[快速开始](./doc/doc_ch/quickstart.md) [文本识别](./doc/doc_ch/recognition.md)
+- 2020.7.9 添加支持空格的识别模型，[识别效果](#支持空格的中文OCR效果展示)，预测及训练方式请参考[快速开始](./doc/doc_ch/quickstart.md)和[文本识别训练](./doc/doc_ch/recognition.md)相关文档
 - 2020.7.9 添加数据增强、学习率衰减策略,具体参考[配置文件](./doc/doc_ch/config.md)
 - 2020.6.8 添加[数据集](./doc/doc_ch/datasets.md)，并保持持续更新
 - 2020.6.5 支持 `attetnion` 模型导出 `inference_model`
