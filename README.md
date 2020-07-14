@@ -61,8 +61,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [Benchmark](./doc/doc_ch/benchmark.md)
 - 数据集
     - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
+    - [手写中文OCR数据集](./doc/doc_ch/handwritten_datasets.md)
     - 垂类多语言OCR数据集
-    - 手写中文OCR数据集
     - 常用数据标注工具
     - 常用数据合成工具
 - [FAQ](#FAQ)
