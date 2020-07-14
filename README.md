@@ -185,6 +185,8 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[模型训�
 
 <a name="欢迎加入PaddleOCR技术交流群"></a>
 ## 欢迎加入PaddleOCR技术交流群
+请扫下面二维码，填问卷获取加群二维码
+
 <div align="center">
 <img src="./doc/joinus.jpg"  width = "200" height = "200" />
 </div>
