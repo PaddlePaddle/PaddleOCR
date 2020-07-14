@@ -39,6 +39,8 @@ public:
     this->cpu_math_library_num_threads =
         stoi(config_map_["cpu_math_library_num_threads"]);
 
+    this->use_mkldnn = bool(stoi(config_map_["use_mkldnn"]));
+
     this->max_side_len = stoi(config_map_["max_side_len"]);
 
     this->det_db_thresh = stod(config_map_["det_db_thresh"]);
@@ -63,6 +65,8 @@ public:
   int gpu_mem = 4000;
 
   int cpu_math_library_num_threads = 1;
+
+  bool use_mkldnn = false;
 
   int max_side_len = 960;
 

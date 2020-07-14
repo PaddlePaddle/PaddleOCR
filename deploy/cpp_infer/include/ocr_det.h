@@ -39,7 +39,8 @@ public:
   explicit DBDetector(const std::string &model_dir, const bool &use_gpu,
                       const int &gpu_id, const int &gpu_mem,
                       const int &cpu_math_library_num_threads,
-                      const int &max_side_len, const double &det_db_thresh,
+                      const bool &use_mkldnn, const int &max_side_len,
+                      const double &det_db_thresh,
                       const double &det_db_box_thresh,
                       const double &det_db_unclip_ratio,
                       const bool &visualize) {
@@ -47,6 +48,7 @@ public:
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
     this->cpu_math_library_num_threads_ = cpu_math_library_num_threads;
+    this->use_mkldnn_ = use_mkldnn;
 
     this->max_side_len_ = max_side_len;
 
@@ -72,6 +74,7 @@ private:
   int gpu_id_ = 0;
   int gpu_mem_ = 4000;
   int cpu_math_library_num_threads_ = 4;
+  bool use_mkldnn_ = false;
 
   int max_side_len_ = 960;
 
