@@ -32,7 +32,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - 超轻量级中文OCR在线体验地址：https://www.paddlepaddle.org.cn/hub/scene/ocr
 - [基于EasyEdge和Paddle-Lite的**移动端demo**体验](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)(点击链接或直接扫描如下二维码)
 <div align="center">
-    <img src="./doc/mobile_demo_qrcode.png"  width = "300" height = "160" />
+    <img src="./doc/mobile_demo_qrcode.png"  width = "600" height = "160" />
 </div>
 
 - [**中文OCR模型快速使用**](./doc/doc_ch/quickstart.md)
@@ -185,7 +185,7 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[模型训�
 
 <a name="欢迎加入PaddleOCR技术交流群"></a>
 ## 欢迎加入PaddleOCR技术交流群
-请扫下面二维码，填问卷获取加群二维码
+请扫下面二维码，完成问卷填写获取加群二维码
 
 <div align="center">
 <img src="./doc/joinus.jpg"  width = "200" height = "200" />
