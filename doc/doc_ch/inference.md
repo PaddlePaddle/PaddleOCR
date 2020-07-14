@@ -17,6 +17,11 @@ wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar &
 ```
 上述模型是以MobileNetV3为backbone训练的DB算法，将训练好的模型转换成inference模型只需要运行如下命令：
 ```
+# -c后面设置训练算法的yml配置文件
+# -o配置可选参数
+# Global.checkpoints参数设置待转换的训练模型地址，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
+# Global.save_inference_dir参数设置转换的模型将保存的地址。
+
 python3 tools/export_model.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./ch_lite/det_mv3_db/best_accuracy Global.save_inference_dir=./inference/det_db/
 ```
 转inference模型时，使用的配置文件和训练时使用的配置文件相同。另外，还需要设置配置文件中的Global.checkpoints、Global.save_inference_dir参数。
@@ -37,6 +42,11 @@ wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar
 
 识别模型转inference模型与检测的方式相同，如下：
 ```
+# -c后面设置训练算法的yml配置文件
+# -o配置可选参数
+# Global.checkpoints参数设置待转换的训练模型地址，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
+# Global.save_inference_dir参数设置转换的模型将保存的地址。
+
 python3 tools/export_model.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints=./ch_lite/rec_mv3_crnn/best_accuracy \
         Global.save_inference_dir=./inference/rec_crnn/
 ```
