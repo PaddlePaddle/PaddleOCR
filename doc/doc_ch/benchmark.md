@@ -17,5 +17,13 @@
 
 说明： 
 - 评估耗时阶段为图像输入到结果输出的完整阶段，包括了图像的预处理和后处理。
-- `Intel至强6148`为服务器端CPU型号，测试中使用Intel MKL-DNN 加速CPU预测速度，需要更新到飞桨latest版本。
-- `骁龙855`为移动端处理平台型号。
+- `Intel至强6148`为服务器端CPU型号，测试中使用Intel MKL-DNN 加速CPU预测速度，使用该操作需要：  
+    - 更新到飞桨latest版本：https://www.paddlepaddle.org.cn/documentation/docs/zh/install/Tables.html#whl-dev ，请根据自己环境的CUDA版本和Python版本选择相应的mkl版wheel包，如，CUDA10、Python3.7环境，应操作：
+    ```shell
+    # 获取安装包
+    wget https://paddle-wheel.bj.bcebos.com/0.0.0-gpu-cuda10-cudnn7-mkl/paddlepaddle_gpu-0.0.0-cp37-cp37m-linux_x86_64.whl
+    # 安装
+    pip3.7 install paddlepaddle_gpu-0.0.0-cp37-cp37m-linux_x86_64.whl
+    ```
+    - 预测时使用参数打开加速开关： `--enable_mkldnn True`
+- `骁龙855`为移动端处理平台型号。  
