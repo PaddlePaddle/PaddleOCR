@@ -3,6 +3,7 @@ use_gpu  0
 gpu_id  0
 gpu_mem  4000
 cpu_math_library_num_threads  10
+use_mkldnn 0
 
 # det config
 max_side_len  960

@@ -13,7 +13,6 @@
 // limitations under the License.
 
 #include <include/ocr_det.h>
-#include <stdlib.h>
 
 namespace PaddleOCR {
 
@@ -25,7 +24,9 @@ void DBDetector::LoadModel(const std::string &model_dir) {
     config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
   } else {
     config.DisableGpu();
-    // config.EnableMKLDNN(); // not sugesteed to use for now
+    if (this->use_mkldnn_) {
+      config.EnableMKLDNN();
+    }
     config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
   }
 

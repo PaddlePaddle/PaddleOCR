@@ -12,21 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "opencv2/core.hpp"
-#include "opencv2/imgcodecs.hpp"
-#include "opencv2/imgproc.hpp"
-#include "paddle_api.h"
-#include "paddle_inference_api.h"
-#include <chrono>
-#include <iomanip>
-#include <iostream>
-#include <ostream>
-#include <vector>
-
-#include <cstring>
-#include <fstream>
-#include <numeric>
-
 #include <include/ocr_rec.h>
 
 namespace PaddleOCR {
@@ -128,7 +113,9 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
     config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
   } else {
     config.DisableGpu();
-    // config.EnableMKLDNN(); // not sugesteed to use for now
+    if (this->use_mkldnn_) {
+      config.EnableMKLDNN();
+    }
     config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
   }
 
