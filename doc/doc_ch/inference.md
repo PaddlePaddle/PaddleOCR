@@ -8,7 +8,7 @@ inference 模型（fluid.io.save_inference_model保存的模型）
 
 接下来首先介绍如何将训练的模型转换成inference模型，然后将依次介绍文本检测、文本识别以及两者串联基于预测引擎推理。
 
-## 训练模型转inference模型
+## 一、训练模型转inference模型
 ### 检测模型转inference模型
 
 下载超轻量级中文检测模型：
@@ -50,7 +50,7 @@ python3 tools/export_model.py -c configs/rec/rec_chinese_lite_train.yml -o Globa
   └─  params    识别inference模型的参数文件
 ```
 
-## 文本检测模型推理
+## 二、文本检测模型推理
 
 下面将介绍超轻量中文检测模型推理、DB文本检测模型推理和EAST文本检测模型推理。默认配置是根据DB文本检测模型推理设置的。由于EAST和DB算法差别很大，在推理时，需要通过传入相应的参数适配EAST文本检测算法。
 
@@ -125,7 +125,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_
 **注意**：本代码库中EAST后处理中NMS采用的Python版本，所以预测速度比较耗时。如果采用C++版本，会有明显加速。
 
 
-## 文本识别模型推理
+## 三、文本识别模型推理
 
 下面将介绍超轻量中文识别模型推理、基于CTC损失的识别模型推理和基于Attention损失的识别模型推理。对于中文文本识别，建议优先选择基于CTC损失的识别模型，实践中也发现基于Attention损失的效果不如基于CTC损失的识别模型。此外，如果训练时修改了文本的字典，请参考下面的自定义文本识别字典的推理。
 
@@ -199,7 +199,7 @@ dict_character = list(self.character_str)
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="en" --rec_char_dict_path="your text dict path"
 ```
 
-## 文本检测、识别串联推理
+## 四、文本检测、识别串联推理
 
 ### 1.超轻量中文OCR模型推理
 
