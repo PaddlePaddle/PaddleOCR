@@ -8,7 +8,7 @@
 
 除了开源数据，用户还可使用合成工具自行合成，可参考[数据合成工具](./data_synthesis.md)；
 
-如果需要标注自己的数据，可参考[数据标注工具](./data_annotation.md).  
+如果需要标注自己的数据，可参考[数据标注工具](./data_annotation.md)。  
 
 <a name="ICDAR2019-LSVT"></a>
 #### 1、ICDAR2019-LSVT
