@@ -59,7 +59,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - 中文OCR训练预测技巧
 - 预测部署
     - [基于Python预测引擎推理](./doc/doc_ch/inference.md)
-    - 基于C++预测引擎推理(comming soon)
+    - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
     - [服务化部署](./doc/doc_ch/serving.md)
     - [端侧部署](./deploy/lite/readme.md)
     - [Benchmark](./doc/doc_ch/benchmark.md)
