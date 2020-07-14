@@ -198,7 +198,7 @@ demo/cxx/ocr/
  # 执行编译，得到可执行文件ocr_db_crnn
  # ocr_db_crnn可执行文件的使用方式为:
  # ./ocr_db_crnn  检测模型文件  识别模型文件  测试图像路径
- make
+ make -j
  # 将编译的可执行文件移动到debug文件夹中
  mv ocr_db_crnn ./debug/
  # 将debug文件夹push到手机上
