@@ -30,7 +30,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 上图是超轻量级中文OCR模型效果展示，更多效果图请见[效果展示页面](./doc/doc_ch/visualization.md)。
 
 - 超轻量级中文OCR在线体验地址：https://www.paddlepaddle.org.cn/hub/scene/ocr
-- **移动端DEMO**体验(基于EasyEdge和Paddle-Lite):[安装二维码获取地址](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)  
+- **移动端DEMO**体验(基于EasyEdge和Paddle-Lite): 支持IOS和Android系统, [安装体验二维码获取地址](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)  
 - [**中文OCR模型快速使用**](./doc/doc_ch/quickstart.md)
 
 
