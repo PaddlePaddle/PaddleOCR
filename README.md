@@ -185,8 +185,9 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[模型训�
 
 <a name="欢迎加入PaddleOCR技术交流群"></a>
 ## 欢迎加入PaddleOCR技术交流群
-扫描二维码或者加微信：paddlehelp，备注OCR，小助手拉你进群～  
-<img src="./doc/paddlehelp.jpg"  width = "200" height = "200" />
+<div align="center">
+<img src="./doc/joinus.jpg"  width = "200" height = "200" />
+</div>
 
 <a name="许可证书"></a>
 ## 许可证书
