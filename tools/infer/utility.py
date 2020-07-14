@@ -64,6 +64,7 @@ def parse_args():
         type=str,
         default="./ppocr/utils/ppocr_keys_v1.txt")
     parser.add_argument("--use_space_char", type=bool, default=True)
+    parser.add_argument("--enable_mkldnn", type=bool, default=False)
     return parser.parse_args()
 
 
@@ -91,8 +92,10 @@ def create_predictor(args, mode):
         config.enable_use_gpu(args.gpu_mem, 0)
     else:
         config.disable_gpu()
-        # config.enable_mkldnn()
-        config.set_cpu_math_library_num_threads(4)
+        config.set_cpu_math_library_num_threads(6)
+        if args.enable_mkldnn:
+            config.enable_mkldnn()
+            
     #config.enable_memory_optim()
     config.disable_glog_info()
 
