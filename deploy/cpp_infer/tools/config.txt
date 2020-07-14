@@ -2,7 +2,7 @@
 use_gpu  0
 gpu_id  0
 gpu_mem  4000
-cpu_math_library_num_threads  1
+cpu_math_library_num_threads  10
 
 # det config
 max_side_len  960
@@ -17,5 +17,5 @@ char_list_file ../../ppocr/utils/ppocr_keys_v1.txt
 img_path  ../../doc/imgs/11.jpg
 
 # show the detection results
-visualize 1
+visualize 0
 
