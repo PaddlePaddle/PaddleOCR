@@ -195,3 +195,8 @@ sh tools/run.sh
 <div align="center">
     <img src="../imgs/cpp_infer_pred_12.png" width="600">
 </div>
+
+
+### 2.3 注意
+
+* C++预测默认未开启MKLDNN(`tools/config.txt`中的`use_mkldnn`设置为0)，如果需要使用MKLDNN进行预测加速，则需要将`use_mkldnn`修改为1，同时使用最新版本的Paddle源码编译预测库。在使用MKLDNN进行CPU预测时，如果同时预测多张图像，则会出现内存泄露的问题（不打开MKLDNN则没有该问题），目前该问题正在修复中，临时解决方案为：预测多张图片时，每隔30张图片左右对识别(`CRNNRecognizer`)和检测类(`DBDetector`)重新初始化一次。
