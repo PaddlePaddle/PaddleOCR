@@ -6,7 +6,9 @@
 - [中文文档文字识别](#中文文档文字识别)
 - [ICDAR2019-ArT](#ICDAR2019-ArT)
 
-除了开源数据，用户还可使用合成工具自行合成，可参考的合成工具包括[text_renderer](https://github.com/Sanster/text_renderer)、[SynthText](https://github.com/ankush-me/SynthText)、[SynthText_Chinese_version](https://github.com/JarveeLee/SynthText_Chinese_version)、[TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator)等。
+除了开源数据，用户还可使用合成工具自行合成，可参考[数据合成工具](./data_synthesis.md)；
+
+如果需要标注自己的数据，可参考[数据标注工具](./data_annotation.md).  
 
 <a name="ICDAR2019-LSVT"></a>
 #### 1、ICDAR2019-LSVT
