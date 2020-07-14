@@ -2,7 +2,7 @@
 
 经测试PaddleOCR可在glibc 2.23上运行，您也可以测试其他glibc版本或安装glic 2.23
 PaddleOCR 工作环境
-- PaddlePaddle1.8
+- PaddlePaddle1.7
 - python3
 - glibc 2.23
 
