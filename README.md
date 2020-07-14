@@ -30,7 +30,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 上图是超轻量级中文OCR模型效果展示，更多效果图请见[效果展示页面](./doc/doc_ch/visualization.md)。
 
 - 超轻量级中文OCR在线体验地址：https://www.paddlepaddle.org.cn/hub/scene/ocr
-- [基于EasyEdge的**移动端demo**体验](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)(点击链接或直接扫描如下二维码)
+- [基于EasyEdge和Paddle-Lite的**移动端demo**体验](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)(点击链接或直接扫描如下二维码)
 <div align="center">
     <img src="./doc/mobile_demo_qrcode.png"  width = "300" height = "160" />
 </div>
