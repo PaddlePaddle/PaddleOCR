@@ -116,7 +116,7 @@ python3 tools/export_model.py -c configs/det/det_r50_vd_east.yml -o Global.check
 EAST文本检测模型推理，需要设置参数det_algorithm，指定检测算法类型为EAST，可以执行如下命令：
 
 ```
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_east/" --det_algorithm="EAST"
+python3 tools/infer/predict_det.py --det_algorithm="EAST" --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_east/"
 ```
 可视化文本检测结果默认保存到 ./inference_results 文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
 
