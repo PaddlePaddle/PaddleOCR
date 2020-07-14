@@ -1,17 +1,20 @@
 # 端侧部署
 
-本教程将介绍基于Paddle-Lite在移动端部署PaddleOCR超轻量中文检测、识别模型的详细步骤。
+本教程将介绍基于[Paddle Lite](https://github.com/PaddlePaddle/Paddle-Lite) 在移动端部署PaddleOCR超轻量中文检测、识别模型的详细步骤。
+
+Paddle Lite是飞桨轻量化推理引擎，为手机、IOT端提供高效推理能力，并广泛整合跨平台硬件，为端侧部署及应用落地问题提供轻量化的部署方案。
 
 
 ## 1. 准备环境
 
 ### 运行准备
-- 电脑（编译Paddle-Lite）
+- 电脑（编译Paddle Lite）
 - 安卓手机（armv7或armv8）
 
 ### 1.1 准备交叉编译环境
-交叉编译环境用于编译[Paddle-Lite](https://github.com/PaddlePaddle/Paddle-Lite)和PaddleOCR的C++ demo。
+交叉编译环境用于编译 Paddle Lite 和 PaddleOCR 的C++ demo。
 支持多种开发环境，不同开发环境的编译流程请参考对应文档。
+
 1. [Docker](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#docker)
 2. [Linux](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#android)
 3. [MAC OS](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#id13)
@@ -21,7 +24,7 @@
 
 预测库有两种获取方式：
 - 1. 直接下载，下载[链接](https://paddle-lite.readthedocs.io/zh/latest/user_guides/release_lib.html#android-toolchain-gcc).
-    注意选择`with_extra=ON，with_cv=ON`的下载链接。
+      注意选择`with_extra=ON，with_cv=ON`的下载链接。
 - 2. 编译Paddle-Lite得到，Paddle-Lite的编译方式如下：
 ```
 git clone https://github.com/PaddlePaddle/Paddle-Lite.git
@@ -165,7 +168,7 @@ wget  https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar
  cd demo/cxx/ocr/
  # 将C++预测动态库so文件复制到debug文件夹中
  cp ../../../../cxx/lib/libpaddle_light_api_shared.so ./debug/
- ```
+  ```
  准备测试图像，以`PaddleOCR/doc/imgs/11.jpg`为例，将测试的图像复制到`demo/cxx/ocr/debug/`文件夹下。
  准备字典文件，中文超轻量模型的字典文件是`PaddleOCR/ppocr/utils/ppocr_keys_v1.txt`，将其复制到`demo/cxx/ocr/debug/`文件夹下。
 
