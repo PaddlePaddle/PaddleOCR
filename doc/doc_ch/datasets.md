@@ -17,6 +17,7 @@
     ![](../datasets/LSVT_2.jpg)  
     (b) 弱标注数据  
 - **下载地址**：https://ai.baidu.com/broad/download?dataset=lsvt
+- **说明**：其中，test数据集的label目前没有开源，如要评估结果，可以去官网提交：https://rrc.cvc.uab.es/?ch=16
 
 <a name="ICDAR2017-RCTW-17"></a>
 #### 2、ICDAR2017-RCTW-17
