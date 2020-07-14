@@ -125,7 +125,7 @@ def main(args):
             continue
         starttime = time.time()
         tackle_img_num += 1	
-        if not args.use_gpu and tackle_img_num % 30 == 0:	
+        if not args.use_gpu and args.enable_mkldnn and tackle_img_num % 30 == 0:	
             text_sys = TextSystem(args)
         dt_boxes, rec_res = text_sys(img)
         elapse = time.time() - starttime
