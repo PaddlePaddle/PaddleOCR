@@ -5,7 +5,6 @@
 - [中文街景文字识别](#中文街景文字识别)
 - [中文文档文字识别](#中文文档文字识别)
 - [ICDAR2019-ArT](#ICDAR2019-ArT)
-- [中科院自动化研究所-手写中文数据集](#中科院自动化研究所-手写中文数据集)
 
 除了开源数据，用户还可使用合成工具自行合成，可参考的合成工具包括[text_renderer](https://github.com/Sanster/text_renderer)、[SynthText](https://github.com/ankush-me/SynthText)、[SynthText_Chinese_version](https://github.com/JarveeLee/SynthText_Chinese_version)、[TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator)等。
 
@@ -57,12 +56,6 @@ https://aistudio.baidu.com/aistudio/datasetdetail/8429
 - **数据简介**：共包含10,166张图像，训练集5603图，测试集4563图。由Total-Text、SCUT-CTW1500、Baidu Curved Scene Text (ICDAR2019-LSVT部分弯曲数据) 三部分组成，包含水平、多方向和弯曲等多种形状的文本。
     ![](../datasets/ArT.jpg)
 - **下载地址**：https://ai.baidu.com/broad/download?dataset=art
-
-<a name="中科院自动化研究所-手写中文数据集"></a>
-#### 6、中科院自动化研究所-手写中文数据集
-- **数据来源**：http://www.nlpr.ia.ac.cn/databases/handwriting/Download.html
-- **数据简介**：包含在线和离线两类手写单字数据，包含GB2312-80中的3755个一级汉字，共由720人手写完成。在线部分(HWDB)总共包含约210万个训练样本，53万个测试样本；离线部分(OLHWDB)总共包含约210万个训练样本，53万个测试样本。
-- **下载地址**：http://www.nlpr.ia.ac.cn/databases/handwriting/Download.html
 
 ## 参考文献
 **ICDAR 2019-LSVT Challenge**

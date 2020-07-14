@@ -6,8 +6,8 @@
 #### 6、中科院自动化研究所-手写中文数据集
 - **数据来源**：http://www.nlpr.ia.ac.cn/databases/handwriting/Download.html
 - **数据简介**：包含在线和离线两类手写单字数据，包含GB2312-80中的3755个一级汉字，共由720人手写完成。在线部分(HWDB)总共包含约210万个训练样本，53万个测试样本；离线部分(OLHWDB)总共包含约210万个训练样本，53万个测试样本。
-    ![](../datasets/CASIA_0.jpg)
-    (a) 五张单字图片样例 
+    ![](../datasets/CASIA_0.jpg)  
+    (a) 五张单字图片样例  
 - **下载地址**：http://www.nlpr.ia.ac.cn/databases/handwriting/Download.html
 - **使用建议**：数据为单字，白色背景，可以大量合成文字行进行训练。白色背景可以处理成透明状态，方便添加各种背景。对于需要语义的情况，建议从真实语料出发，抽取单字组成文字行
 
