@@ -46,7 +46,7 @@ docker images
 hub.baidubce.com/paddlepaddle/paddle   latest-gpu-cuda9.0-cudnn7-dev    f56310dcc829
 ```
 
-2. 安装PaddlePaddle Fluid v1.7(暂不支持更高版本,适配工作进行中)
+2. 安装PaddlePaddle Fluid v1.7
 ```
 pip3 install --upgrade pip
 
