@@ -10,7 +10,8 @@ class Config(object):
 
 def read_params():
     cfg = Config()
-    
+
+    cfg.enable_mkldnn = False
     # #params for text detector
     # cfg.det_algorithm = "DB"
     # cfg.det_model_dir = "./inference/ch_det_mv3_db/"
