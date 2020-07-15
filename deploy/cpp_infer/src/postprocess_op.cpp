@@ -57,8 +57,12 @@ cv::RotatedRect PostProcessor::UnClip(std::vector<std::vector<float>> box,
       points.emplace_back(soln[j][i].X, soln[j][i].Y);
     }
   }
-  cv::RotatedRect res = cv::minAreaRect(points);
-
+  cv::RotatedRect res;
+  if (points.size() <= 0) {
+    res = cv::RotatedRect(cv::Point2f(0, 0), cv::Size2f(1, 1), 0);
+  } else {
+    res = cv::minAreaRect(points);
+  }
   return res;
 }
 
@@ -215,6 +219,9 @@ PostProcessor::BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
   std::vector<std::vector<std::vector<int>>> boxes;
 
   for (int _i = 0; _i < num_contours; _i++) {
+    if (contours[_i].size() <= 0) {
+      continue;
+    }
     float ssid;
     cv::RotatedRect box = cv::minAreaRect(contours[_i]);
     auto array = GetMiniBoxes(box, ssid);
@@ -233,6 +240,9 @@ PostProcessor::BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
 
     // start for unclip
     cv::RotatedRect points = UnClip(box_for_unclip, det_db_unclip_ratio);
+    if (points.size.height < 1.001 && points.size.width < 1.001) {
+      continue;
+    }
     // end for unclip
 
     cv::RotatedRect clipbox = points;
