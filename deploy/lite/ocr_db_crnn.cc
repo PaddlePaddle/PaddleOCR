@@ -235,9 +235,9 @@ RunDetModel(std::shared_ptr<PaddlePredictor> predictor, cv::Mat img,
   }
 
   cv::Mat cbuf_map(shape_out[2], shape_out[3], CV_8UC1,
-                   reinterpret_cast<unsigned char *> cbuf);
+                   reinterpret_cast<unsigned char *>(cbuf));
   cv::Mat pred_map(shape_out[2], shape_out[3], CV_32F,
-                   reinterpret_cast<float *> pred);
+                   reinterpret_cast<float *>(pred));
 
   const double threshold = double(Config["det_db_thresh"]) * 255;
   const double maxvalue = 255;
@@ -335,6 +335,7 @@ int main(int argc, char **argv) {
   auto rec_predictor = loadModel(rec_model_file);
 
   auto charactor_dict = ReadDict(dict_path);
+  charactor_dict.push_back(" ");
 
   cv::Mat srcimg = cv::imread(img_path, cv::IMREAD_COLOR);
   auto boxes = RunDetModel(det_predictor, srcimg, Config);
