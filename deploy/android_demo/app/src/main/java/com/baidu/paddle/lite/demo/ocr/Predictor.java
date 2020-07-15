@@ -23,7 +23,7 @@ public class Predictor {
     public boolean isLoaded = false;
     public int warmupIterNum = 1;
     public int inferIterNum = 1;
-    public int cpuThreadNum = 1;
+    public int cpuThreadNum = 4;
     public String cpuPowerMode = "LITE_POWER_HIGH";
     public String modelPath = "";
     public String modelName = "";
@@ -127,10 +127,12 @@ public class Predictor {
     }
 
     public void releaseModel() {
-        paddlePredictor.release();
-        paddlePredictor = null;
+        if (paddlePredictor != null){
+            paddlePredictor.release();
+            paddlePredictor = null;
+        }
         isLoaded = false;
-        cpuThreadNum = 1;
+        cpuThreadNum = 4;
         cpuPowerMode = "LITE_POWER_HIGH";
         modelPath = "";
         modelName = "";
