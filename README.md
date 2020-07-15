@@ -183,7 +183,7 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[模型训�
 预计6月中下旬会先后发布基于Serving的服务部署方案和基于Paddle Lite的移动端部署方案，欢迎持续关注。  
 
 4. **自研算法发布时间**  
-自研算法SAST、SRN、End2End-PSL都将在6-8月陆续发布，敬请期待。  
+自研算法SAST、SRN、End2End-PSL都将在7-8月陆续发布，敬请期待。  
 
 [more](./doc/doc_ch/FAQ.md)
 
