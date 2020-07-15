@@ -154,7 +154,7 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[模型训�
 ### 1.超轻量级中文OCR效果展示  [more](./doc/doc_ch/visualization.md)
 
 <div align="center">
-    <img src="doc/imgs_results/7.jpg" width="800">
+    <img src="doc/imgs_results/1.jpg" width="800">
 </div>
 
 <a name="通用中文OCR效果展示"></a>
