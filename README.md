@@ -59,18 +59,18 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [文本检测](./doc/doc_ch/detection.md)
     - [文本识别](./doc/doc_ch/recognition.md)
     - [yml参数配置文件介绍](./doc/doc_ch/config.md)
-    - 中文OCR训练预测技巧
+    - [中文OCR训练预测技巧](./doc/doc_ch/tricks.md)
 - 预测部署
     - [基于Python预测引擎推理](./doc/doc_ch/inference.md)
     - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
     - [服务化部署](./doc/doc_ch/serving.md)
     - [端侧部署](./deploy/lite/readme.md)
-    - 模型量化压缩
+    - 模型量化压缩（coming soon）
     - [Benchmark](./doc/doc_ch/benchmark.md)
 - 数据集
     - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
     - [手写中文OCR数据集](./doc/doc_ch/handwritten_datasets.md)
-    - 垂类多语言OCR数据集
+    - [垂类多语言OCR数据集](./doc/doc_ch/vertical_and_multilingual_datasets.md)
     - [常用数据标注工具](./doc/doc_ch/data_annotation.md)
     - [常用数据合成工具](./doc/doc_ch/data_synthesis.md)
 - [FAQ](#FAQ)
@@ -91,7 +91,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 PaddleOCR开源的文本检测算法列表：
 - [x]  EAST([paper](https://arxiv.org/abs/1704.03155))
 - [x]  DB([paper](https://arxiv.org/abs/1911.08947))
-- [ ]  SAST([paper](https://arxiv.org/abs/1908.05498))(百度自研, comming soon)
+- [ ]  SAST([paper](https://arxiv.org/abs/1908.05498))(百度自研, coming soon)
 
 在ICDAR2015文本检测公开数据集上，算法效果如下：
 
@@ -120,7 +120,7 @@ PaddleOCR开源的文本识别算法列表：
 - [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))
 - [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))
 - [x]  RARE([paper](https://arxiv.org/abs/1603.03915v1))
-- [ ]  SRN([paper](https://arxiv.org/abs/2003.12294))(百度自研, comming soon)
+- [ ]  SRN([paper](https://arxiv.org/abs/2003.12294))(百度自研, coming soon)
 
 参考[DTRB](https://arxiv.org/abs/1904.01906)文字识别训练和评估流程，使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估，算法效果如下：
 
@@ -146,7 +146,7 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[模型训�
 
 <a name="端到端OCR算法"></a>
 ### 3.端到端OCR算法
-- [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(百度自研, comming soon)
+- [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(百度自研, coming soon)
 
 ## 效果展示
 
