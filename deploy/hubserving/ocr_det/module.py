@@ -31,7 +31,7 @@ from tools.infer.predict_det import TextDetector
     author_email="paddle-dev@baidu.com",
     type="cv/text_recognition")
 class OCRDet(hub.Module):
-    def _initialize(self, use_gpu=False):
+    def _initialize(self, use_gpu=False, enable_mkldnn=False):
         """
         initialize with the necessary elements
         """
@@ -51,6 +51,7 @@ class OCRDet(hub.Module):
                     "Environment Variable CUDA_VISIBLE_DEVICES is not set correctly. If you wanna use gpu, please set CUDA_VISIBLE_DEVICES via export CUDA_VISIBLE_DEVICES=cuda_device_id."
                 )
         cfg.ir_optim = True
+        cfg.enable_mkldnn = enable_mkldnn
 
         self.text_detector = TextDetector(cfg)
 

@@ -31,7 +31,7 @@ from tools.infer.predict_system import TextSystem
     author_email="paddle-dev@baidu.com",
     type="cv/text_recognition")
 class OCRSystem(hub.Module):
-    def _initialize(self, use_gpu=False):
+    def _initialize(self, use_gpu=False, enable_mkldnn=False):
         """
         initialize with the necessary elements
         """
@@ -51,7 +51,8 @@ class OCRSystem(hub.Module):
                     "Environment Variable CUDA_VISIBLE_DEVICES is not set correctly. If you wanna use gpu, please set CUDA_VISIBLE_DEVICES via export CUDA_VISIBLE_DEVICES=cuda_device_id."
                 )
         cfg.ir_optim = True
-
+        cfg.enable_mkldnn = enable_mkldnn
+        
         self.text_sys = TextSystem(cfg)
 
     def read_images(self, paths=[]):
