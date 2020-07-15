@@ -5,3 +5,4 @@
 - [SynthText_Chinese_version](https://github.com/JarveeLee/SynthText_Chinese_version)
 - [TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator)
 - [SynthText3D](https://github.com/MhLiao/SynthText3D)
+- [UnrealText](https://github.com/Jyouhou/UnrealText/)
