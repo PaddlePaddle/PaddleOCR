@@ -46,6 +46,7 @@ public:
     this->use_mkldnn_ = use_mkldnn;
 
     this->label_list_ = Utility::ReadDict(label_path);
+    this->label_list_.push_back(" ");
 
     LoadModel(model_dir);
   }
