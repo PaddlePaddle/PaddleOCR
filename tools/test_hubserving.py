@@ -87,7 +87,7 @@ def main(url, image_path):
         total_time += elapse
         print("Predict time of %s: %.3fs" % (image_file, elapse))
         res = r.json()["results"][0]
-        # print(res)
+        print(res)
 
         if is_visualize:
             draw_img = draw_server_result(image_file, res)
