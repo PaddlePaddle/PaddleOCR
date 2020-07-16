@@ -219,7 +219,7 @@ PostProcessor::BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
   std::vector<std::vector<std::vector<int>>> boxes;
 
   for (int _i = 0; _i < num_contours; _i++) {
-    if (contours[_i].size() <= 0) {
+    if (contours[_i].size() <= 2) {
       continue;
     }
     float ssid;
