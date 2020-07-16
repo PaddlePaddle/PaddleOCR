@@ -118,7 +118,7 @@ def main():
 def test_reader():
     config = program.load_config(FLAGS.config)
     program.merge_config(FLAGS.opt)
-    print(config)
+    logger.info(config)
     train_reader = reader_main(config=config, mode="train")
     import time
     starttime = time.time()
@@ -129,7 +129,7 @@ def test_reader():
             if count % 1 == 0:
                 batch_time = time.time() - starttime
                 starttime = time.time()
-                print("reader:", count, len(data), batch_time)
+                logger.info("reader:", count, len(data), batch_time)
     except Exception as e:
         logger.info(e)
     logger.info("finish reader: {}, Success!".format(count))

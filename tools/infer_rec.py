@@ -84,7 +84,7 @@ def main():
     if len(infer_list) == 0:
         logger.info("Can not find img in infer_img dir.")
     for i in range(max_img_num):
-        print("infer_img:%s" % infer_list[i])
+        logger.info("infer_img:%s" % infer_list[i])
         img = next(blobs)
         predict = exe.run(program=eval_prog,
                           feed={"image": img},
@@ -115,9 +115,9 @@ def main():
             preds = preds.reshape(-1)
             preds_text = char_ops.decode(preds)
 
-        print("\t index:", preds)
-        print("\t word :", preds_text)
-        print("\t score :", score)
+        logger.info("\t index: {}".format(preds))
+        logger.info("\t word : {}".format(preds_text))
+        logger.info("\t score: {}".format(score))
 
     # save for inference model
     target_var = []
