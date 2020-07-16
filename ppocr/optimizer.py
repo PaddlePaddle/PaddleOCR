@@ -15,6 +15,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 import paddle.fluid as fluid
+from paddle.fluid.regularizer import L2Decay
+
 from ppocr.utils.utility import initial_logger
 
 logger = initial_logger()
@@ -31,6 +33,8 @@ def AdamDecay(params, parameter_list=None):
     base_lr = params['base_lr']
     beta1 = params['beta1']
     beta2 = params['beta2']
+    l2_decay = params.get("l2_decay", 0.0)
+
     if 'decay' in params:
         params = params['decay']
         decay_mode = params['function']
@@ -47,5 +51,6 @@ def AdamDecay(params, parameter_list=None):
         learning_rate=base_lr,
         beta1=beta1,
         beta2=beta2,
+        regularization=L2Decay(regularization_coeff=l2_decay),
         parameter_list=parameter_list)
     return optimizer
