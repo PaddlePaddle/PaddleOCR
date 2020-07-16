@@ -43,7 +43,7 @@ class MobileNetV3():
                 [5, 72, 40, True, 'relu', (2, 1)],
                 [5, 120, 40, True, 'relu', 1],
                 [5, 120, 40, True, 'relu', 1],
-                [3, 240, 80, False, 'hard_swish', 1],
+                [3, 240, 80, False, 'hard_swish', 2],
                 [3, 200, 80, False, 'hard_swish', 1],
                 [3, 184, 80, False, 'hard_swish', 1],
                 [3, 184, 80, False, 'hard_swish', 1],
