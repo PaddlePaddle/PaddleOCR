@@ -138,7 +138,7 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 |confidence||✔|✔| 
 |text_region|✔||✔| 
 
-**说明：**如果需要增加、删除、修改返回字段，可在相应模块的`module.py`文件中进行修改，完整流程参考下一节自定义修改服务模块。
+**说明：** 如果需要增加、删除、修改返回字段，可在相应模块的`module.py`文件中进行修改，完整流程参考下一节自定义修改服务模块。
 
 ## 自定义修改服务模块
 如果需要修改服务逻辑，你一般需要操作以下步骤（以修改`ocr_system`为例）：  
