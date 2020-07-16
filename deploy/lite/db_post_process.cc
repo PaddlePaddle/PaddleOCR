@@ -214,6 +214,9 @@ BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
 
   for (int i = 0; i < num_contours; i++) {
     float ssid;
+    if (contours[i].size() <= 2)
+      continue;
+
     cv::RotatedRect box = cv::minAreaRect(contours[i]);
     auto array = GetMiniBoxes(box, ssid);
 
@@ -232,6 +235,8 @@ BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
 
     // start for unclip
     cv::RotatedRect points = Unclip(box_for_unclip, unclip_ratio);
+    if (points.size.height < 1.001 && points.size.width < 1.001)
+      continue;
     // end for unclip
 
     cv::RotatedRect clipbox = points;
