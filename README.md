@@ -16,7 +16,7 @@ PaddleOCR aims to create rich, leading, and practical OCR tools that help users 
 
 ## Features
 - Ultra-lightweight OCR model, total model size is only 8.6M
-    - Single model supports Chinese and English numbers combination recognition, vertical text recognition, long text recognition
+    - Single model supports Chinese/English numbers combination recognition, vertical text recognition, long text recognition
     - Detection model DB (4.1M) + recognition model CRNN (4.5M)
 - Various text detection algorithms: EAST, DB
 - Various text recognition algorithms: Rosetta, CRNN, STAR-Net, RARE
