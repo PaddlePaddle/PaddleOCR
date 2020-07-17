@@ -10,7 +10,7 @@ There are the commonly used data annotation tools, which will be continuously up
 
 * Sketch diagram:
 
-  ![labelimg](C:\Users\USER\Desktop\labelimg.jpg)
+  ![labelimg](../datasets/labelimg.jpg)
 
 
 
@@ -20,7 +20,7 @@ There are the commonly used data annotation tools, which will be continuously up
 
 * Tool address:   https://github.com/cgvict/roLabelImg
 
-* Sketch diagram:![roLabelImg](C:\Users\USER\Desktop\roLabelImg.png)
+* Sketch diagram:![roLabelImg](../datasets/roLabelImg.png)
 
 
 
@@ -32,4 +32,4 @@ There are the commonly used data annotation tools, which will be continuously up
 
 * Sketch diagram:
 
-  ![labelme](C:\Users\USER\Desktop\labelme.jpg)
+  ![labelme](../datasets/labelme.jpg)
