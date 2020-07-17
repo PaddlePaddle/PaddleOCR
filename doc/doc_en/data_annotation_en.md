@@ -2,7 +2,7 @@
 
 There are the commonly used data annotation tools, which will be continuously updated. Welcome to contribute tools~
 
-1.**labelImg**
+## 1. labelImg
 
 * Tool description: Rectangular label
 
@@ -14,7 +14,7 @@ There are the commonly used data annotation tools, which will be continuously up
 
 
 
-2.**roLabelImg**
+## 2. roLabelImg
 
 * Tool description: Label tool rewritten based on labelImg, supporting rotating rectangular label
 
@@ -24,7 +24,7 @@ There are the commonly used data annotation tools, which will be continuously up
 
 
 
-3.**labelme**
+## 3. labelme
 
 * Tool description: Support four points, polygons, circles and other labels
 
