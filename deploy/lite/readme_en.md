@@ -1,5 +1,5 @@
 
-# Tutorial of Deploy PaddleOCR on Mobile
+# Tutorial of PaddleOCR Mobile deployment
 
 This tutorial will introduce how to use paddle-lite to deploy paddleOCR ultra-lightweight Chinese and English detection models on mobile phones.
 
@@ -8,9 +8,9 @@ It provides efficient inference capabilities for mobile phones and IOTs,
 and extensively integrates cross-platform hardware to provide lightweight
 deployment solutions for end-side deployment issues.
 
-## 1. PREPARATION
+## 1. Preparation
 
-- Computer (for Complie PaddleLite)
+- Computer (for Compiling Paddle Lite)
 - Mobile phone (arm7 or arm8)
 
 ## 2. Build ncnn library
@@ -32,8 +32,8 @@ The structure of the prediction library is as follows:
 
 ```
 inference_lite_lib.android.armv8/
-|-- cxx                                        C++ 预测库和头文件
-|   |-- include                                C++ 头文件
+|-- cxx                                        C++ prebuild library
+|   |-- include                                C++
 |   |   |-- paddle_api.h
 |   |   |-- paddle_image_preprocess.h
 |   |   |-- paddle_lite_factory_helper.h
@@ -41,18 +41,18 @@ inference_lite_lib.android.armv8/
 |   |   |-- paddle_use_kernels.h
 |   |   |-- paddle_use_ops.h
 |   |   `-- paddle_use_passes.h
-|   `-- lib                                           C++预测库
-|       |-- libpaddle_api_light_bundled.a             C++静态库
-|       `-- libpaddle_light_api_shared.so             C++动态库
-|-- java                                     Java预测库
+|   `-- lib  
+|       |-- libpaddle_api_light_bundled.a             C++ static library
+|       `-- libpaddle_light_api_shared.so             C++ dynamic library
+|-- java                                     Java predict library
 |   |-- jar
 |   |   `-- PaddlePredictor.jar
 |   |-- so
 |   |   `-- libpaddle_lite_jni.so
 |   `-- src
-|-- demo                                     C++和Java示例代码
-|   |-- cxx                                  C++  预测库demo
-|   `-- java                                 Java 预测库demo
+|-- demo                                     C++ and java demo
+|   |-- cxx  
+|   `-- java  
 ```
 
 
