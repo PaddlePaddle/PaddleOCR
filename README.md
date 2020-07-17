@@ -26,7 +26,7 @@ PaddleOCR aims to create rich, leading, and practical OCR tools that help users 
 
 ![](doc/imgs_results/11.jpg)
 
-![](doc/imgs_results/10.jpg)
+![](doc/imgs_results/img_10.jpg)
 
 [More visualization](./doc/doc_en/visualization_en.md)
 
