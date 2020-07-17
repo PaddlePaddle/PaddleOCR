@@ -125,19 +125,49 @@ When the above code command is completed, there will be two more files `ch_det_m
 
     If there is `device` output, it means the installation was successful.
 
-4. Prepare optimized models, prediction library files, test images and dictionary files used. Create a new `ocr/` folder under the prediction library `inference_lite_lib.android.armv8/demo/cxx/`, and place all the files under `PaddleOCR/deploy/lite/` in the PaddleOCR repo except `readme.md` under the newly created ocr folder. Create a new debug folder under the ocr folder, and copy the C++ prediction library so file to the debug folder
+4. Prepare optimized models, prediction library files, test images and dictionary files used.
+
+```
+ git clone https://github.com/PaddlePaddle/PaddleOCR.git
+ cd PaddleOCR/deploy/lite/
+ # run prepare.sh
+ sh prepare.sh /{lite prediction library path}/inference_lite_lib.android.armv8
+
+ #
+ cd /{lite prediction library path}/inference_lite_lib.android.armv8/
+ cd demo/cxx/ocr/
+ # copy paddle-lite C++ .so file to debug/ directory
+ cp ../../../cxx/lib/libpaddle_light_api_shared.so ./debug/
+
+ cd inference_lite_lib.android.armv8/demo/cxx/ocr/
+ cp ../../../cxx/lib/libpaddle_light_api_shared.so ./debug/
 
 ```
 
-cd inference_lite_lib.android.armv8/demo/cxx/ocr/
-cp ../../../cxx/lib/libpaddle_light_api_shared.so ./debug/
+Prepare the test image, taking `PaddleOCR/doc/imgs/11.jpg` as an example, copy the image file to the `demo/cxx/ocr/debug/` folder.
+Prepare the model files optimized by the lite opt tool, `ch_det_mv3_db_opt.nb, ch_rec_mv3_crnn_opt.nb`,
+and place them under the `demo/cxx/ocr/debug/` folder.
+
+
+The structure of the OCR demo is as follows after the above command is executed:
+```
+demo/cxx/ocr/
+|-- debug/  
+|   |--ch_det_mv3_db_opt.nb             Detection model
+|   |--ch_rec_mv3_crnn_opt.nb           Recognition model
+|   |--11.jpg                           image for OCR
+|   |--ppocr_keys_v1.txt                Dictionary file
+|   |--libpaddle_light_api_shared.so    C++ .so file
+|   |--config.txt                       Config file
+|-- config.txt  
+|-- crnn_process.cc  
+|-- crnn_process.h
+|-- db_post_process.cc  
+|-- db_post_process.h
+|-- Makefile  
+|-- ocr_db_crnn.cc  
 
 ```
-
-Prepare the test image, taking `PaddleOCR/doc/imgs/11.jpg` as an example, copy the image file to the `demo/cxx/ocr/debug/` folder. The dictionary file for the Chinese super lightweight model is `PaddleOCR/ppocr/utils/ppocr_keys_v1.txt`, and copy it to the `demo/cxx/ocr/debug/` folder.
-
-After the execution is completed, the following file formats will be in the ocr folder:
-
 
 5. Run Model on phone
 
