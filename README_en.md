@@ -60,13 +60,13 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
 - Model training/evaluation
     - [Text Detection](./doc/doc_en/detection_en.md)
     - [Text Recognition](./doc/doc_en/recognition_en.md)
-    - [Yml configuration](./doc/doc_en/config_en.md)
+    - [Yml Configuration](./doc/doc_en/config_en.md)
     - [Tricks](./doc/doc_en/tricks_en.md)
 - 预测部署
     - [Python Inference](./doc/doc_en/inference_en.md)
     - [C++ Inference](./deploy/cpp_infer/readme_en.md)
     - [Serving](./doc/doc_en/serving_en.md)
-    - [Moile](./deploy/lite/readme_en.md)
+    - [Mobile](./deploy/lite/readme_en.md)
     - Model Quantization and Compression (coming soon)
     - [Benchmark](./doc/doc_en/benchmark_en.md)
 - 数据集
