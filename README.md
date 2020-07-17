@@ -26,6 +26,8 @@ PaddleOCR aims to create rich, leading, and practical OCR tools that help users 
 
 ![](doc/imgs_results/11.jpg)
 
+![](doc/imgs_results/10.jpg)
+
 [More visualization](./doc/doc_en/visualization_en.md)
 
 You can also quickly experience the ultra-lightweight OCR : [Online Experience](https://www.paddlepaddle.org.cn/hub/scene/ocr)
