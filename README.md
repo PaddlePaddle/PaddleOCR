@@ -1,7 +1,7 @@
 English | [简体中文](README_cn.md)
 
 ## INTRODUCTION
-PaddleOCR aims to create a rich, leading, and practical OCR tools that help users train better models and apply them into practice.
+PaddleOCR aims to create a rich, leading, and practical OCR tool that help users train better models and apply them into practice.
 
 **Live stream on coming day**:  July 21, 2020 at 8 pm BiliBili station live stream
 
