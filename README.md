@@ -62,14 +62,14 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
     - [Text Recognition](./doc/doc_en/recognition_en.md)
     - [Yml Configuration](./doc/doc_en/config_en.md)
     - [Tricks](./doc/doc_en/tricks_en.md)
-- 预测部署
+- Deployment
     - [Python Inference](./doc/doc_en/inference_en.md)
     - [C++ Inference](./deploy/cpp_infer/readme_en.md)
     - [Serving](./doc/doc_en/serving_en.md)
     - [Mobile](./deploy/lite/readme_en.md)
     - Model Quantization and Compression (coming soon)
     - [Benchmark](./doc/doc_en/benchmark_en.md)
-- 数据集
+- Datasets
     - [General OCR Datasets(Chinese/English)](./doc/doc_en/datasets_en.md)
     - [HandWritten_OCR_Datasets(Chinese)](./doc/doc_en/handwritten_datasets_en.md)
     - [Various OCR Datasets(multilingual)](./doc/doc_en/vertical_and_multilingual_datasets_en.md)
