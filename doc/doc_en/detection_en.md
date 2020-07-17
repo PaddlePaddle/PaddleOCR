@@ -62,8 +62,8 @@ tar xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_models
 python3 tools/train.py -c configs/det/det_mv3_db.yml
 ```
 
-In the above instruction, use `-c` to select the training to use the configs/det/det_db_mv3.yml configuration file.
-For a detailed explanation of the configuration file, please refer to [link](./config_en.md).
+In the above instruction, use `-c` to select the training to use the `configs/det/det_db_mv3.yml` configuration file.
+For a detailed explanation of the configuration file, please refer to [config](./config_en.md).
 
 You can also use `-o` to change the training parameters without modifying the yml file. For example, adjust the training learning rate to 0.0001
 ```
