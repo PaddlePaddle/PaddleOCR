@@ -1,6 +1,6 @@
 English | [简体中文](README_cn.md)
 
-## INTRODUCTION
+## Introduction
 PaddleOCR aims to create rich, leading, and practical OCR tools that help users train better models and apply them into practice.
 
 **Live stream on coming day**:  July 21, 2020 at 8 pm BiliBili station live stream
@@ -14,7 +14,7 @@ PaddleOCR aims to create rich, leading, and practical OCR tools that help users 
 - 2020.7.9 Add the data augument and learning rate decay strategies during training.
 - [more](./doc/doc_en/update_en.md)
 
-## FEATURES
+## Features
 - Ultra-lightweight Chinese OCR model, total model size is only 8.6M
     - Single model supports Chinese and English numbers combination recognition, vertical text recognition, long text recognition
     - Detection model DB (4.1M) + recognition model CRNN (4.5M)
@@ -80,10 +80,10 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
     - [Ultra-lightweight Chinese/English OCR Visualization](#UCOCRVIS)
     - [General Chinese/English OCR Visualization](#GeOCRVIS)
     - [Chinese/English OCR Visualization (Support Space Recognization )](#SpaceOCRVIS)
-- [COMMUNITY](#Community)
-- [REFERENCES](./doc/doc_en/reference_en.md)
-- [LICENSE](#LICENSE)
-- [CONTRIBUTION](#CONTRIBUTION)
+- [Community](#Community)
+- [References](./doc/doc_en/reference_en.md)
+- [License](#LICENSE)
+- [Contribution](#CONTRIBUTION)
 
 <a name="TEXTDETECTIONALGORITHM"></a>
 ## Text Detection Algorithm
@@ -192,7 +192,7 @@ Please refer to the document for training guide and use of PaddleOCR text recogn
 [more](./doc/doc_en/FAQ_en.md)
 
 <a name="Community"></a>
-## COMMUNITY
+## Community
 Scan  the QR code below with your wechat and completing the questionnaire, you can access to offical technical exchange group.
 
 <div align="center">
@@ -200,11 +200,11 @@ Scan  the QR code below with your wechat and completing the questionnaire, you c
 </div>
 
 <a name="LICENSE"></a>
-## LICENSE
+## License
 This project is released under <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/master/LICENSE">Apache 2.0 license</a>
 
 <a name="CONTRIBUTION"></a>
-## CONTRIBUTION
+## Contribution
 We welcome all the contributions to PaddleOCR and appreciate for your feedback very much.
 
 - Many thanks to [Khanh Tran](https://github.com/xxxpsyduck) for contributing the English documentation.
