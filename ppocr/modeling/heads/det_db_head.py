@@ -115,7 +115,6 @@ class DBHead(object):
         initializer = fluid.initializer.Uniform(-stdv, stdv)
         bias_attr = fluid.ParamAttr(
             regularizer=regularizer,
-            gradient_clip=gradient_clip,
             initializer=initializer,
             name=name + "_b_attr")
         return bias_attr
@@ -196,7 +195,7 @@ class DBHead(object):
         fuse = fluid.layers.concat(input=[p5, p4, p3, p2], axis=1)
         shrink_maps = self.binarize(fuse)
         if mode != "train":
-            return {"maps", shrink_maps}
+            return {"maps": shrink_maps}
         threshold_maps = self.thresh(fuse)
         binary_maps = self.step_function(shrink_maps, threshold_maps)
         y = fluid.layers.concat(

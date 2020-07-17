@@ -14,10 +14,14 @@ Global:
   character_type: ch
   character_dict_path: ./ppocr/utils/ppocr_keys_v1.txt
   loss_type: ctc
+  distort: false
+  use_space_char: false
   reader_yml: ./configs/rec/rec_chinese_reader.yml
-  pretrain_weights: 
+  pretrain_weights:
   checkpoints:
   save_inference_dir:
+  infer_img:
+
 Architecture:
   function: ppocr.modeling.architectures.rec_model,RecModel
 

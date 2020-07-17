@@ -6,7 +6,7 @@ Global:
   print_batch_step: 5
   save_model_dir: ./output/det_east/
   save_epoch_step: 200
-  eval_batch_step: 5000
+  eval_batch_step: [5000, 5000]
   train_batch_size_per_card: 8
   test_batch_size_per_card: 16
   image_shape: [3, 512, 512]

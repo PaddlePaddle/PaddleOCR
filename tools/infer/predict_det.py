@@ -11,8 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import os
+import sys
+__dir__ = os.path.dirname(__file__)
+sys.path.append(__dir__)
+sys.path.append(os.path.join(__dir__, '../..'))
 
-import utility
+import tools.infer.utility as utility
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
 from ppocr.utils.utility import get_image_file_list
@@ -39,6 +44,7 @@ class TextDetector(object):
             postprocess_params["thresh"] = args.det_db_thresh
             postprocess_params["box_thresh"] = args.det_db_box_thresh
             postprocess_params["max_candidates"] = 1000
+            postprocess_params["unclip_ratio"] = args.det_db_unclip_ratio
             self.postprocess_op = DBPostProcess(postprocess_params)
         elif self.det_algorithm == "EAST":
             self.preprocess_op = EASTProcessTest(preprocess_params)
@@ -142,5 +148,5 @@ if __name__ == "__main__":
         src_im = utility.draw_text_det_res(dt_boxes, image_file)
         img_name_pure = image_file.split("/")[-1]
         cv2.imwrite("./inference_results/det_res_%s" % img_name_pure, src_im)
-    if count > 1: 
-    	print("Avg Time:", total_time / (count - 1))
+    if count > 1:
+        print("Avg Time:", total_time / (count - 1))

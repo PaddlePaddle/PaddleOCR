@@ -15,6 +15,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 import paddle.fluid as fluid
+from paddle.fluid.regularizer import L2Decay
+
+from ppocr.utils.utility import initial_logger
+
+logger = initial_logger()
 
 
 def AdamDecay(params, parameter_list=None):
@@ -28,9 +33,24 @@ def AdamDecay(params, parameter_list=None):
     base_lr = params['base_lr']
     beta1 = params['beta1']
     beta2 = params['beta2']
+    l2_decay = params.get("l2_decay", 0.0)
+
+    if 'decay' in params:
+        params = params['decay']
+        decay_mode = params['function']
+        step_each_epoch = params['step_each_epoch']
+        total_epoch = params['total_epoch']
+        if decay_mode == "cosine_decay":
+            base_lr = fluid.layers.cosine_decay(
+                learning_rate=base_lr,
+                step_each_epoch=step_each_epoch,
+                epochs=total_epoch)
+        else:
+            logger.info("Only support Cosine decay currently")
     optimizer = fluid.optimizer.Adam(
         learning_rate=base_lr,
         beta1=beta1,
         beta2=beta2,
+        regularization=L2Decay(regularization_coeff=l2_decay),
         parameter_list=parameter_list)
     return optimizer

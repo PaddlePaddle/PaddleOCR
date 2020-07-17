@@ -75,6 +75,8 @@ class AttrDict(dict):
 
 global_config = AttrDict()
 
+default_config = {'Global': {'debug': False, }}
+
 
 def load_config(file_path):
     """
@@ -85,6 +87,7 @@ def load_config(file_path):
 
     Returns: global config
     """
+    merge_config(default_config)
     _, ext = os.path.splitext(file_path)
     assert ext in ['.yml', '.yaml'], "only support yaml files for now"
     merge_config(yaml.load(open(file_path), Loader=yaml.Loader))
@@ -114,7 +117,10 @@ def merge_config(config):
                 global_config[key] = value
         else:
             sub_keys = key.split('.')
-            assert (sub_keys[0] in global_config)
+            assert (
+                sub_keys[0] in global_config
+            ), "the sub_keys can only be one of global_config: {}, but get: {}, please check your running command".format(
+                global_config.keys(), sub_keys[0])
             cur = global_config[sub_keys[0]]
             for idx, sub_key in enumerate(sub_keys[1:]):
                 assert (sub_key in cur)
@@ -177,7 +183,6 @@ def build(config, main_prog, startup_prog, mode):
                 optimizer.minimize(opt_loss)
                 opt_loss_name = opt_loss.name
                 global_lr = optimizer._global_learning_rate()
-                global_lr.persistable = True
                 fetch_name_list.insert(0, "lr")
                 fetch_varname_list.insert(0, global_lr.name)
     return (dataloader, fetch_name_list, fetch_varname_list, opt_loss_name)
@@ -191,7 +196,7 @@ def build_export(config, main_prog, startup_prog):
             func_infor = config['Architecture']['function']
             model = create_module(func_infor)(params=config)
             image, outputs = model(mode='export')
-            fetches_var_name = sorted([name for name in outputs])
+            fetches_var_name = sorted([name for name in outputs.keys()])
             fetches_var = [outputs[name] for name in fetches_var_name]
     feeded_var_names = [image.name]
     target_vars = fetches_var
@@ -217,6 +222,13 @@ def train_eval_det_run(config, exe, train_info_dict, eval_info_dict):
     epoch_num = config['Global']['epoch_num']
     print_batch_step = config['Global']['print_batch_step']
     eval_batch_step = config['Global']['eval_batch_step']
+    start_eval_step = 0
+    if type(eval_batch_step) == list and len(eval_batch_step) >= 2:
+        start_eval_step = eval_batch_step[0]
+        eval_batch_step = eval_batch_step[1]
+        logger.info(
+            "During the training process, after the {}th iteration, an evaluation is run every {} iterations".
+            format(start_eval_step, eval_batch_step))
     save_epoch_step = config['Global']['save_epoch_step']
     save_model_dir = config['Global']['save_model_dir']
     if not os.path.exists(save_model_dir):
@@ -244,15 +256,15 @@ def train_eval_det_run(config, exe, train_info_dict, eval_info_dict):
                 t2 = time.time()
                 train_batch_elapse = t2 - t1
                 train_stats.update(stats)
-                if train_batch_id > 0 and train_batch_id \
+                if train_batch_id > 0 and train_batch_id  \
                     % print_batch_step == 0:
                     logs = train_stats.log()
                     strs = 'epoch: {}, iter: {}, {}, time: {:.3f}'.format(
                         epoch, train_batch_id, logs, train_batch_elapse)
                     logger.info(strs)
 
-                if train_batch_id > 0 and\
-                    train_batch_id % eval_batch_step == 0:
+                if train_batch_id > start_eval_step and\
+                    (train_batch_id - start_eval_step) % eval_batch_step == 0:
                     metrics = eval_det_run(exe, config, eval_info_dict, "eval")
                     hmean = metrics['hmean']
                     if hmean >= best_eval_hmean:
@@ -271,7 +283,7 @@ def train_eval_det_run(config, exe, train_info_dict, eval_info_dict):
             train_loader.reset()
         if epoch == 0 and save_epoch_step == 1:
             save_path = save_model_dir + "/iter_epoch_0"
-            save_model(train_info_dict['train_program'],save_path)
+            save_model(train_info_dict['train_program'], save_path)
         if epoch > 0 and epoch % save_epoch_step == 0:
             save_path = save_model_dir + "/iter_epoch_%d" % (epoch)
             save_model(train_info_dict['train_program'], save_path)
@@ -284,6 +296,13 @@ def train_eval_rec_run(config, exe, train_info_dict, eval_info_dict):
     epoch_num = config['Global']['epoch_num']
     print_batch_step = config['Global']['print_batch_step']
     eval_batch_step = config['Global']['eval_batch_step']
+    start_eval_step = 0
+    if type(eval_batch_step) == list and len(eval_batch_step) >= 2:
+        start_eval_step = eval_batch_step[0]
+        eval_batch_step = eval_batch_step[1]
+        logger.info(
+            "During the training process, after the {}th iteration, an evaluation is run every {} iterations".
+            format(start_eval_step, eval_batch_step))
     save_epoch_step = config['Global']['save_epoch_step']
     save_model_dir = config['Global']['save_model_dir']
     if not os.path.exists(save_model_dir):
@@ -322,7 +341,7 @@ def train_eval_rec_run(config, exe, train_info_dict, eval_info_dict):
                 train_batch_elapse = t2 - t1
                 stats = {'loss': loss, 'acc': acc}
                 train_stats.update(stats)
-                if train_batch_id > 0 and train_batch_id \
+                if train_batch_id > start_eval_step and (train_batch_id - start_eval_step) \
                     % print_batch_step == 0:
                     logs = train_stats.log()
                     strs = 'epoch: {}, iter: {}, lr: {:.6f}, {}, time: {:.3f}'.format(
@@ -350,7 +369,7 @@ def train_eval_rec_run(config, exe, train_info_dict, eval_info_dict):
             train_loader.reset()
         if epoch == 0 and save_epoch_step == 1:
             save_path = save_model_dir + "/iter_epoch_0"
-            save_model(train_info_dict['train_program'],save_path)
+            save_model(train_info_dict['train_program'], save_path)
         if epoch > 0 and epoch % save_epoch_step == 0:
             save_path = save_model_dir + "/iter_epoch_%d" % (epoch)
             save_model(train_info_dict['train_program'], save_path)

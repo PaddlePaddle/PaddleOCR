@@ -17,6 +17,10 @@ from __future__ import division
 from __future__ import print_function
 
 import os
+import sys
+__dir__ = os.path.dirname(__file__)
+sys.path.append(__dir__)
+sys.path.append(os.path.join(__dir__, '..'))
 
 
 def set_paddle_flags(**kwargs):
@@ -78,7 +82,7 @@ def main():
             'fetch_name_list':eval_fetch_name_list,\
             'fetch_varname_list':eval_fetch_varname_list}
         metrics = eval_det_run(exe, config, eval_info_dict, "eval")
-        print("Eval result", metrics)
+        logger.info("Eval result: {}".format(metrics))
     else:
         reader_type = config['Global']['reader_yml']
         if "benchmark" not in reader_type:
@@ -88,7 +92,7 @@ def main():
                               'fetch_name_list': eval_fetch_name_list, \
                               'fetch_varname_list': eval_fetch_varname_list}
             metrics = eval_rec_run(exe, config, eval_info_dict, "eval")
-            print("Eval result:", metrics)
+            logger.info("Eval result: {}".format(metrics))
         else:
             eval_info_dict = {'program':eval_program,\
                 'fetch_name_list':eval_fetch_name_list,\

@@ -16,10 +16,13 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import os
-import time
-import multiprocessing
 import numpy as np
+import os
+import sys
+__dir__ = os.path.dirname(__file__)
+sys.path.append(__dir__)
+sys.path.append(os.path.join(__dir__, '..'))
+
 
 def set_paddle_flags(**kwargs):
     for key, value in kwargs.items():
@@ -34,10 +37,7 @@ set_paddle_flags(
     FLAGS_eager_delete_tensor_gb=0,  # enable GC to save memory
 )
 
-from paddle import fluid
-
-# from ppocr.utils.utility import load_config, merge_config
-import program
+import tools.program as program
 from paddle import fluid
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
@@ -46,7 +46,6 @@ from ppocr.utils.save_load import init_model
 from ppocr.utils.character import CharacterOps
 from ppocr.utils.utility import create_module
 from ppocr.utils.utility import get_image_file_list
-logger = initial_logger()
 
 
 def main():
@@ -54,6 +53,7 @@ def main():
     program.merge_config(FLAGS.opt)
     logger.info(config)
     char_ops = CharacterOps(config['Global'])
+    loss_type = config['Global']['loss_type']
     config['Global']['char_ops'] = char_ops
 
     # check if set use_gpu=True in paddlepaddle cpu version
@@ -78,35 +78,46 @@ def main():
     init_model(config, eval_prog, exe)
 
     blobs = reader_main(config, 'test')()
-    infer_img = config['TestReader']['infer_img']
+    infer_img = config['Global']['infer_img']
     infer_list = get_image_file_list(infer_img)
     max_img_num = len(infer_list)
     if len(infer_list) == 0:
         logger.info("Can not find img in infer_img dir.")
     for i in range(max_img_num):
-        print("infer_img:",infer_list[i])
+        logger.info("infer_img:%s" % infer_list[i])
         img = next(blobs)
         predict = exe.run(program=eval_prog,
                           feed={"image": img},
                           fetch_list=fetch_varname_list,
                           return_numpy=False)
-
-        preds = np.array(predict[0])
-        if preds.shape[1] == 1:
+        if loss_type == "ctc":
+            preds = np.array(predict[0])
             preds = preds.reshape(-1)
             preds_lod = predict[0].lod()[0]
             preds_text = char_ops.decode(preds)
-        else:
+            probs = np.array(predict[1])
+            ind = np.argmax(probs, axis=1)
+            blank = probs.shape[1]
+            valid_ind = np.where(ind != (blank - 1))[0]
+            if len(valid_ind) == 0:
+                continue
+            score = np.mean(probs[valid_ind, ind[valid_ind]])
+        elif loss_type == "attention":
+            preds = np.array(predict[0])
+            probs = np.array(predict[1])
             end_pos = np.where(preds[0, :] == 1)[0]
             if len(end_pos) <= 1:
-                preds_text = preds[0, 1:]
+                preds = preds[0, 1:]
+                score = np.mean(probs[0, 1:])
             else:
-                preds_text = preds[0, 1:end_pos[1]]
-            preds_text = preds_text.reshape(-1)
-            preds_text = char_ops.decode(preds_text)
+                preds = preds[0, 1:end_pos[1]]
+                score = np.mean(probs[0, 1:end_pos[1]])
+            preds = preds.reshape(-1)
+            preds_text = char_ops.decode(preds)
 
-        print("\t index:",preds)
-        print("\t word :",preds_text)
+        logger.info("\t index: {}".format(preds))
+        logger.info("\t word : {}".format(preds_text))
+        logger.info("\t score: {}".format(score))
 
     # save for inference model
     target_var = []

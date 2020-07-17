@@ -11,13 +11,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import os
+import sys
+__dir__ = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(__dir__)
+sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 
-import utility
+import tools.infer.utility as utility
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
 import cv2
-import predict_det
-import predict_rec
+import tools.infer.predict_det as predict_det
+import tools.infer.predict_rec as predict_rec
 import copy
 import numpy as np
 import math
@@ -25,7 +30,7 @@ import time
 from ppocr.utils.utility import get_image_file_list
 from PIL import Image
 from tools.infer.utility import draw_ocr
-import os
+from tools.infer.utility import draw_ocr_box_txt
 
 
 class TextSystem(object):
@@ -34,6 +39,7 @@ class TextSystem(object):
         self.text_recognizer = predict_rec.TextRecognizer(args)
 
     def get_rotate_crop_image(self, img, points):
+        '''
         img_height, img_width = img.shape[0:2]
         left = int(np.min(points[:, 0]))
         right = int(np.max(points[:, 0]))
@@ -42,15 +48,19 @@ class TextSystem(object):
         img_crop = img[top:bottom, left:right, :].copy()
         points[:, 0] = points[:, 0] - left
         points[:, 1] = points[:, 1] - top
-        img_crop_width = int(np.linalg.norm(points[0] - points[1]))
-        img_crop_height = int(np.linalg.norm(points[0] - points[3]))
-        pts_std = np.float32([[0, 0], [img_crop_width, 0],\
-            [img_crop_width, img_crop_height], [0, img_crop_height]])
+        '''
+        img_crop_width = int(max(np.linalg.norm(points[0] - points[1]),
+                                 np.linalg.norm(points[2] - points[3])))
+        img_crop_height = int(max(np.linalg.norm(points[0] - points[3]),
+                                  np.linalg.norm(points[1] - points[2])))
+        pts_std = np.float32([[0, 0],
+                              [img_crop_width, 0],
+                              [img_crop_width, img_crop_height],
+                              [0, img_crop_height]])
         M = cv2.getPerspectiveTransform(points, pts_std)
-        dst_img = cv2.warpPerspective(
-            img_crop,
-            M, (img_crop_width, img_crop_height),
-            borderMode=cv2.BORDER_REPLICATE)
+        dst_img = cv2.warpPerspective(img, M, (img_crop_width, img_crop_height),
+                                      borderMode=cv2.BORDER_REPLICATE,
+                                      flags=cv2.INTER_CUBIC)
         dst_img_height, dst_img_width = dst_img.shape[0:2]
         if dst_img_height * 1.0 / dst_img_width >= 1.5:
             dst_img = np.rot90(dst_img)
@@ -65,6 +75,7 @@ class TextSystem(object):
     def __call__(self, img):
         ori_im = img.copy()
         dt_boxes, elapse = self.text_detector(img)
+        print("dt_boxes num : {}, elapse : {}".format(len(dt_boxes), elapse))
         if dt_boxes is None:
             return None, None
         img_crop_list = []
@@ -76,6 +87,7 @@ class TextSystem(object):
             img_crop = self.get_rotate_crop_image(ori_im, tmp_box)
             img_crop_list.append(img_crop)
         rec_res, elapse = self.text_recognizer(img_crop_list)
+        print("rec_res num  : {}, elapse : {}".format(len(rec_res), elapse))
         # self.print_draw_crop_rec_res(img_crop_list, rec_res)
         return dt_boxes, rec_res
 
@@ -101,17 +113,20 @@ def sorted_boxes(dt_boxes):
     return _boxes
 
 
-if __name__ == "__main__":
-    args = utility.parse_args()
+def main(args):
     image_file_list = get_image_file_list(args.image_dir)
     text_sys = TextSystem(args)
     is_visualize = True
+    tackle_img_num = 0
     for image_file in image_file_list:
         img = cv2.imread(image_file)
         if img is None:
             logger.info("error in loading image:{}".format(image_file))
             continue
         starttime = time.time()
+        tackle_img_num += 1	
+        if not args.use_gpu and args.enable_mkldnn and tackle_img_num % 30 == 0:	
+            text_sys = TextSystem(args)
         dt_boxes, rec_res = text_sys(img)
         elapse = time.time() - starttime
         print("Predict time of %s: %.3fs" % (image_file, elapse))
@@ -140,3 +155,7 @@ if __name__ == "__main__":
                 draw_img[:, :, ::-1])
             print("The visualized image saved in {}".format(
                 os.path.join(draw_img_save, os.path.basename(image_file))))
+
+
+if __name__ == "__main__":
+    main(utility.parse_args())

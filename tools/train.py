@@ -18,9 +18,9 @@ from __future__ import print_function
 
 import os
 import sys
-import time
-import multiprocessing
-import numpy as np
+__dir__ = os.path.dirname(__file__)
+sys.path.append(__dir__)
+sys.path.append(os.path.join(__dir__, '..'))
 
 
 def set_paddle_flags(**kwargs):
@@ -36,13 +36,14 @@ set_paddle_flags(
     FLAGS_eager_delete_tensor_gb=0,  # enable GC to save memory
 )
 
-import program
+import tools.program as program
 from paddle import fluid
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
 from ppocr.data.reader_main import reader_main
 from ppocr.utils.save_load import init_model
 from ppocr.utils.character import CharacterOps
+from paddle.fluid.contrib.model_stat import summary
 
 
 def main():
@@ -87,6 +88,14 @@ def main():
     # compile program for multi-devices
     train_compile_program = program.create_multi_devices_program(
         train_program, train_opt_loss_name)
+
+    # dump mode structure
+    if config['Global']['debug']:
+        if 'attention' in config['Global']['loss_type']:
+            logger.warning('Does not suport dump attention...')
+        else:
+            summary(train_program)
+
     init_model(config, train_program, exe)
 
     train_info_dict = {'compile_program':train_compile_program,\
@@ -104,6 +113,26 @@ def main():
         program.train_eval_det_run(config, exe, train_info_dict, eval_info_dict)
     else:
         program.train_eval_rec_run(config, exe, train_info_dict, eval_info_dict)
+
+
+def test_reader():
+    config = program.load_config(FLAGS.config)
+    program.merge_config(FLAGS.opt)
+    logger.info(config)
+    train_reader = reader_main(config=config, mode="train")
+    import time
+    starttime = time.time()
+    count = 0
+    try:
+        for data in train_reader():
+            count += 1
+            if count % 1 == 0:
+                batch_time = time.time() - starttime
+                starttime = time.time()
+                logger.info("reader:", count, len(data), batch_time)
+    except Exception as e:
+        logger.info(e)
+    logger.info("finish reader: {}, Success!".format(count))
 
 
 if __name__ == '__main__':

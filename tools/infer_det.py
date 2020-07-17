@@ -16,14 +16,15 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import os
-import sys
-import time
 import numpy as np
 from copy import deepcopy
 import json
 
-# from paddle.fluid.contrib.model_stat import summary
+import os
+import sys
+__dir__ = os.path.dirname(__file__)
+sys.path.append(__dir__)
+sys.path.append(os.path.join(__dir__, '..'))
 
 
 def set_paddle_flags(**kwargs):
@@ -69,7 +70,7 @@ def draw_det_res(dt_boxes, config, img, img_name):
 def main():
     config = program.load_config(FLAGS.config)
     program.merge_config(FLAGS.opt)
-    print(config)
+    logger.info(config)
 
     # check if set use_gpu=True in paddlepaddle cpu version
     use_gpu = config['Global']['use_gpu']

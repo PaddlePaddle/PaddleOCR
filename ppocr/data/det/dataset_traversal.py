@@ -13,6 +13,7 @@
 #limitations under the License.
 
 import os
+import sys
 import math
 import random
 import functools
@@ -42,6 +43,10 @@ class TrainReader(object):
             img_num = len(label_infor_list)
             img_id_list = list(range(img_num))
             random.shuffle(img_id_list)
+            if sys.platform == "win32":
+                print("multiprocess is not fully compatible with Windows."
+                      "num_workers will be 1.")
+                self.num_workers = 1
             for img_id in range(process_id, img_num, self.num_workers):
                 label_infor = label_infor_list[img_id_list[img_id]]
                 outs = self.process(label_infor)
@@ -56,8 +61,6 @@ class TrainReader(object):
                 if len(batch_outs) == self.batch_size:
                     yield batch_outs
                     batch_outs = []
-            if len(batch_outs) != 0:
-                yield batch_outs
 
         return batch_iter_reader
 
@@ -92,8 +95,10 @@ class EvalTestReader(object):
             for img_path in img_list:
                 img = cv2.imread(img_path)
                 if img is None:
-                    logger.info("load image error:" + img_path)
+                    logger.info("{} does not exist!".format(img_path))
                     continue
+                elif len(list(img.shape)) == 2 or img.shape[2] == 1:
+                    img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
                 outs = process_function(img)
                 outs.append(img_path)
                 batch_outs.append(outs)
