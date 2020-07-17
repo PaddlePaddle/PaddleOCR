@@ -96,6 +96,16 @@ You can use them if needed.
 
 To customize the dict file, please modify the `character_dict_path` field in `configs/rec/rec_icdar15_train.yml` and set `character_type` to `ch`.
 
+- Custom dictionary
+
+If you need to customize dic file, please add character_dict_path field in configs/rec/rec_icdar15_train.yml to point to your dictionary path. And set character_type to ch.
+
+- Add space category
+
+If you want to support the recognition of the `space` category, please set the `use_space_char` field in the yml file to `true`.
+
+**Note: use_space_char only takes effect when character_type=ch**
+
 ### TRAINING
 
 PaddleOCR provides training scripts, evaluation scripts, and prediction scripts. In this section, the CRNN recognition model will be used as an example:
@@ -121,6 +131,17 @@ export CUDA_VISIBLE_DEVICES=0,1,2,3
 # Training icdar15 English data
 python3 tools/train.py -c configs/rec/rec_icdar15_train.yml
 ```
+
+- Data Augmentation
+
+PaddleOCR provides a variety of data augmentation methods. If you want to add disturbance during training, please set `distort: true` in the configuration file.
+
+The default perturbation methods are: cvtColor, blur, jitter, Gasuss noise, random crop, perspective, color reverse.
+
+Each disturbance method is selected with a 50% probability during the training process. For specific code implementation, please refer to: [img_tools.py](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/rec/img_tools.py)
+
+
+- Training
 
 PaddleOCR supports alternating training and evaluation. You can modify `eval_batch_step` in `configs/rec/rec_icdar15_train.yml` to set the evaluation frequency. By default, it is evaluated every 500 iter and the best acc model is saved under `output/rec_CRNN/best_accuracy` during the evaluation process.
 

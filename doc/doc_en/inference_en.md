@@ -1,5 +1,5 @@
 
-# PREDICTION FROM INFERENCE MODEL
+# Reasoning based on Python prediction engine
 
 The inference model (the model saved by fluid.io.save_inference_model) is generally a solidified model saved after the model training is completed, and is mostly used to give prediction in deployment.
 
@@ -18,7 +18,13 @@ wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar &
 ```
 The above model is a DB algorithm trained with MobileNetV3 as the backbone. To convert the trained model into an inference model, just run the following command:
 ```
-python3 tools/export_model.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./ch_lite/det_mv3_db/best_accuracy Global.save_inference_dir=./inference/det_db/
+# -c Set the training algorithm yml configuration file
+# -o Set optional parameters
+#  Global.checkpoints parameter Set the training model address to be converted without adding the file suffix .pdmodel, .pdopt or .pdparams.
+#  Global.save_inference_dir Set the address where the converted model will be saved.
+
+python3 tools/export_model.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./ch_lite/det_mv3_db/best_accuracy \
+        Global.save_inference_dir=./inference/det_db/
 ```
 When converting to an inference model, the configuration file used is the same as the configuration file used during training. In addition, you also need to set the `Global.checkpoints` and `Global.save_inference_dir` parameters in the configuration file.
 `Global.checkpoints` points to the model parameter file saved during training, and `Global.save_inference_dir` is the directory where the generated inference model is saved.
@@ -38,6 +44,11 @@ wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar
 
 The recognition model is converted to the inference model in the same way as the detection, as follows:
 ```
+# -c Set the training algorithm yml configuration file
+# -o Set optional parameters
+#  Global.checkpoints parameter Set the training model address to be converted without adding the file suffix .pdmodel, .pdopt or .pdparams.
+#  Global.save_inference_dir Set the address where the converted model will be saved.
+
 python3 tools/export_model.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints=./ch_lite/rec_mv3_crnn/best_accuracy \
         Global.save_inference_dir=./inference/rec_crnn/
 ```
@@ -53,7 +64,8 @@ After the conversion is successful, there are two files in the directory:
 
 ## TEXT DETECTION MODEL INFERENCE
 
-The following will introduce the lightweight Chinese detection model inference, DB text detection model inference and EAST text detection model inference. The default configuration is based on the inference setting of the DB text detection model. Because EAST and DB algorithms are very different, when inference, it is necessary to adapt the EAST text detection algorithm by passing in corresponding parameters.
+The following will introduce the lightweight Chinese detection model inference, DB text detection model inference and EAST text detection model inference. The default configuration is based on the inference setting of the DB text detection model.
+Because EAST and DB algorithms are very different, when inference, it is necessary to **adapt the EAST text detection algorithm by passing in corresponding parameters**.
 
 ### 1. LIGHTWEIGHT CHINESE DETECTION MODEL INFERENCE
 
