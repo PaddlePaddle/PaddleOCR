@@ -57,7 +57,7 @@ tar xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_models
 ```
 
 **START TRAINING**  
-*If CPU version installed, please set the parameter `use_gpu` in the configuration to `false`.*
+*If CPU version installed, please set the parameter `use_gpu` to `false` in the configuration.*
 ```
 python3 tools/train.py -c configs/det/det_mv3_db.yml
 ```
