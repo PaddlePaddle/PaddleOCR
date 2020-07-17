@@ -1,5 +1,13 @@
 # RECENT UPDATES
 
+- 2020.7.15, Add mobile App demo , support both iOS and  Android  ( based on easyedge and Paddle Lite)
+- 2020.7.15, Improve the  deployment ability, add the C + +  inference , serving deployment. In addtion, the benchmarks of the ultra-lightweight Chinese OCR model are provided.
+- 2020.7.15, Add several related datasets, data annotation and synthesis tools.
+- 2020.7.9 Add a new model to support recognize the  character "space".
+- 2020.7.9 Add the data augument and learning rate decay strategies during training.
+- 2020.6.8 Add [datasets](./doc/doc_en/datasets_en.md) and keep updating
+- 2020.6.5 Support exporting `attention` model to `inference_model`
+- 2020.6.5 Support separate prediction and recognition, output result score
 - 2020.6.5 Support exporting `attention` model to `inference_model`
 - 2020.6.5 Support separate prediction and recognition, output result score
 - 2020.5.30 Provide Lightweight Chinese OCR online experience

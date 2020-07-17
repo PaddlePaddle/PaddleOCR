@@ -1,4 +1,4 @@
-## Tricks of Chinese OCR
+## Tricks
 Here we have sorted out some Chinese OCR training and prediction tricks, which are being updated continuously. You are welcome to contribute more OCR tricks ~
 
 - [Replace Backbone Network](#ReplaceBackboneNetwork)
