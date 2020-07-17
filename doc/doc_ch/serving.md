@@ -96,6 +96,7 @@ $ hub serving start --modules [Module1==Version1, Module2==Version2, ...] \
 **注意:**  
 - 使用配置文件启动服务时，其他参数会被忽略。
 - 如果使用GPU预测(即，`use_gpu`置为`true`)，则需要在启动服务之前，设置CUDA_VISIBLE_DEVICES环境变量，如：```export CUDA_VISIBLE_DEVICES=0```，否则不用设置。
+- **`use_gpu`不可与`use_multiprocess`同时为`true`**。
 
 如，使用GPU 3号卡启动串联服务：  
 ```shell
@@ -119,6 +120,25 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 
 访问示例：  
 ```python tools/test_hubserving.py http://127.0.0.1:8868/predict/ocr_system ./doc/imgs/```
+
+## 返回结果格式说明
+返回结果为列表（list），列表中的每一项为词典（dict），词典一共可能包含3种字段，信息如下：
+
+|字段名称|数据类型|意义| 
+|-|-|-|
+|text|str|文本内容|
+|confidence|float| 文本识别置信度|
+|text_region|list|文本位置坐标|
+
+不同模块返回的字段不同，如，文本识别服务模块返回结果不含`text_region`字段，具体信息如下：
+
+|字段名/模块名|ocr_det|ocr_rec|ocr_system|
+|-|-|-|-|  
+|text||✔|✔| 
+|confidence||✔|✔| 
+|text_region|✔||✔| 
+
+**说明：** 如果需要增加、删除、修改返回字段，可在相应模块的`module.py`文件中进行修改，完整流程参考下一节自定义修改服务模块。
 
 ## 自定义修改服务模块
 如果需要修改服务逻辑，你一般需要操作以下步骤（以修改`ocr_system`为例）：  

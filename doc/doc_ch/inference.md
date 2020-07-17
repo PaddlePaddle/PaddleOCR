@@ -74,7 +74,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_di
 
 可视化文本检测结果默认保存到 ./inference_results 文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
 
-![](imgs_results/det_res_2.jpg)
+![](../imgs_results/det_res_2.jpg)
 
 通过设置参数det_max_side_len的大小，改变检测算法中图片规范化的最大值。当图片的长宽都小于det_max_side_len，则使用原图预测，否则将图片等比例缩放到最大值，进行预测。该参数默认设置为det_max_side_len=960. 如果输入图片的分辨率比较大，而且想使用更大的分辨率预测，可以执行如下命令：
 

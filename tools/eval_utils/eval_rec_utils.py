@@ -75,6 +75,7 @@ def eval_rec_run(exe, config, eval_info_dict, mode):
             char_ops, preds, preds_lod, labels, labels_lod, is_remove_duplicate)
         total_acc_num += acc_num
         total_sample_num += sample_num
+        logger.info("eval batch id: {}, acc: {}".format(total_batch_num, acc))
         total_batch_num += 1
     avg_acc = total_acc_num * 1.0 / total_sample_num
     metrics = {'avg_acc': avg_acc, "total_acc_num": total_acc_num, \

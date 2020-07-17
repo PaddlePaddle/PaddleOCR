@@ -70,7 +70,7 @@ def draw_det_res(dt_boxes, config, img, img_name):
 def main():
     config = program.load_config(FLAGS.config)
     program.merge_config(FLAGS.opt)
-    print(config)
+    logger.info(config)
 
     # check if set use_gpu=True in paddlepaddle cpu version
     use_gpu = config['Global']['use_gpu']

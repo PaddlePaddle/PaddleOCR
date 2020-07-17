@@ -13,7 +13,7 @@
 预计6月中下旬会先后发布基于Serving的服务部署方案和基于Paddle Lite的移动端部署方案，欢迎持续关注。
 
 5. **自研算法发布时间**  
-自研算法SAST、SRN、End2End-PSL都将在6-7月陆续发布，敬请期待。
+自研算法SAST、SRN、End2End-PSL都将在7-8月陆续发布，敬请期待。
 
 6. **如何在Windows或Mac系统上运行**  
 PaddleOCR已完成Windows和Mac系统适配，运行时注意两点：1、在[快速安装](./installation.md)时，如果不想安装docker，可跳过第一步，直接从第二步安装paddle开始。2、inference模型下载时，如果没有安装wget，可直接点击模型链接或将链接地址复制到浏览器进行下载，并解压放置到相应目录。

@@ -9,6 +9,8 @@ PaddleOCR working environment:
 
 It is recommended to use the docker provided by us to run PaddleOCR, please refer to the use of docker [link](https://docs.docker.com/get-started/).
 
+*If you want to directly run the prediction code on mac or windows, you can start from step 2.*
+
 1. (Recommended) Prepare a docker environment. The first time you use this image, it will be downloaded automatically. Please be patient.
 ```
 # Switch to the working directory
@@ -56,6 +58,9 @@ python3 -m pip install paddlepaddle-gpu==1.7.2.post97 -i https://pypi.tuna.tsing
 
 # If you have cuda10 installed on your machine, please run the following command to install
 python3 -m pip install paddlepaddle-gpu==1.7.2.post107 -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+# If you only have cpu on your machine, please run the following command to install
+python3 -m pip install paddlepaddle==1.7.2 -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 For more software version requirements, please refer to the instructions in [Installation Document](https://www.paddlepaddle.org.cn/install/quick) for operation.
 
