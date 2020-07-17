@@ -121,7 +121,7 @@ python tools/test_hubserving.py server_url image_path
 Two parameters need to be passed to the script:
 - **server_url**：service address，format of which is 
 `http://[ip_address]:[port]/predict/[module_name]`  
-For example, if the detection, recognition and 2-stage serial services are started with provided configuration files, the respective `server_url` would be:
+For example, if the detection, recognition and 2-stage serial services are started with provided configuration files, the respective `server_url` would be:  
 `http://127.0.0.1:8866/predict/ocr_det`  
 `http://127.0.0.1:8867/predict/ocr_rec`  
 `http://127.0.0.1:8868/predict/ocr_system`  
@@ -154,7 +154,7 @@ The fields returned by different modules are different. For example, the results
 ## User defined service module modification
 If you need to modify the service logic, the following steps are generally required (take the modification of `ocr_system` for example):
 
-- 1. Stop service  
+- 1. Stop service
 ```shell
 hub serving stop --port/-p XXXX
 ```  
@@ -162,17 +162,17 @@ hub serving stop --port/-p XXXX
 - 2. Modify the code in the corresponding files, like `module.py` and `params.py`, according to the actual needs.  
 For example, if you need to replace the model used by the deployed service, you need to modify model path parameters `det_model_dir` and `rec_model_dir` in `params.py`. Of course, other related parameters may need to be modified at the same time. Please modify and debug according to the actual situation. It is suggested to run `module.py` directly for debugging after modification before starting the service test.  
 
-- 3. Uninstall old service module  
+- 3. Uninstall old service module
 ```shell
 hub uninstall ocr_system
 ```
 
-- 4. Install modified service module  
+- 4. Install modified service module
 ```shell
 hub install deploy/hubserving/ocr_system/
 ```  
 
-- 5. Restart service  
+- 5. Restart service
 ```shell
 hub serving start -m ocr_system
 ```  
