@@ -39,22 +39,28 @@ std::vector<std::string> Utility::ReadDict(const std::string &path) {
 void Utility::VisualizeBboxes(
     const cv::Mat &srcimg,
     const std::vector<std::vector<std::vector<int>>> &boxes) {
-  cv::Point rook_points[boxes.size()][4];
-  for (int n = 0; n < boxes.size(); n++) {
-    for (int m = 0; m < boxes[0].size(); m++) {
-      rook_points[n][m] = cv::Point(int(boxes[n][m][0]), int(boxes[n][m][1]));
-    }
-  }
+  //   cv::Point rook_points[boxes.size()][4];
+  //   for (int n = 0; n < boxes.size(); n++) {
+  //     for (int m = 0; m < boxes[0].size(); m++) {
+  //       rook_points[n][m] = cv::Point(int(boxes[n][m][0]),
+  //       int(boxes[n][m][1]));
+  //     }
+  //   }
   cv::Mat img_vis;
   srcimg.copyTo(img_vis);
   for (int n = 0; n < boxes.size(); n++) {
-    const cv::Point *ppt[1] = {rook_points[n]};
+    cv::Point rook_points[4];
+    for (int m = 0; m < boxes[n].size(); m++) {
+      rook_points[m] = cv::Point(int(boxes[n][m][0]), int(boxes[n][m][1]));
+    }
+
+    const cv::Point *ppt[1] = {rook_points};
     int npt[] = {4};
     cv::polylines(img_vis, ppt, npt, 1, 1, CV_RGB(0, 255, 0), 2, 8, 0);
   }
 
   cv::imwrite("./ocr_vis.png", img_vis);
-  std::cout << "The detection visualized image saved in ./ocr_vis.png.pn"
+  std::cout << "The detection visualized image saved in ./ocr_vis.png"
             << std::endl;
 }
 

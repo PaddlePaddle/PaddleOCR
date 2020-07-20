@@ -44,7 +44,7 @@ Config::LoadConfig(const std::string &config_path) {
   std::map<std::string, std::string> dict;
   for (int i = 0; i < config.size(); i++) {
     // pass for empty line or comment
-    if (config[i].size() <= 1 or config[i][0] == '#') {
+    if (config[i].size() <= 1 || config[i][0] == '#') {
       continue;
     }
     std::vector<std::string> res = split(config[i], " ");
