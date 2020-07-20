@@ -5,6 +5,8 @@ PaddleOCR aims to create rich, leading, and practical OCR tools that help users 
 
 **Live stream on coming day**:  July 21, 2020 at 8 pm BiliBili station live stream
 
+Live address：https://live.bilibili.com/h5/21689802
+
 **Recent updates**
 
 - 2020.7.15, Add mobile App demo , support both iOS and  Android  ( based on easyedge and Paddle Lite)
