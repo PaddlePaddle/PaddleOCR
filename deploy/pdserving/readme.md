@@ -1,6 +1,6 @@
 # Paddle Serving 服务部署
 
-本教程将介绍基于[Paddle Serving](https://github.com/PaddlePaddle/Serving)部署在线预测服务的详细步骤。
+本教程将介绍基于[Paddle Serving](https://github.com/PaddlePaddle/Serving)部署PaddleOCR在线预测服务的详细步骤。
 
 ## 快速启动服务
 
