@@ -168,17 +168,21 @@ wget  https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar
     ```
 
  4. 准备优化后的模型、预测库文件、测试图像和使用的字典文件。
- 在预测库`inference_lite_lib.android.armv8/demo/cxx/`下新建一个`ocr/`文件夹，
- 将PaddleOCR repo中`PaddleOCR/deploy/lite/` 下的除`readme.md`所有文件放在新建的ocr文件夹下。在`ocr`文件夹下新建一个`debug`文件夹，
- 将C++预测库so文件复制到debug文件夹下。
-  ```
+ ```
+ git clone https://github.com/PaddlePaddle/PaddleOCR.git
+ cd PaddleOCR/deploy/lite/
+ # 运行prepare.sh，准备预测库文件、测试图像和使用的字典文件，并放置在预测库中的demo/cxx/ocr文件夹下
+ sh prepare.sh /{lite prediction library path}/inference_lite_lib.android.armv8
+
  # 进入OCR demo的工作目录
+ cd /{lite prediction library path}/inference_lite_lib.android.armv8/
  cd demo/cxx/ocr/
  # 将C++预测动态库so文件复制到debug文件夹中
  cp ../../../cxx/lib/libpaddle_light_api_shared.so ./debug/
-  ```
+ ```
+
  准备测试图像，以`PaddleOCR/doc/imgs/11.jpg`为例，将测试的图像复制到`demo/cxx/ocr/debug/`文件夹下。
- 准备字典文件，中文超轻量模型的字典文件是`PaddleOCR/ppocr/utils/ppocr_keys_v1.txt`，将其复制到`demo/cxx/ocr/debug/`文件夹下。
+ 准备lite opt工具优化后的模型文件，`ch_det_mv3_db_opt.nb，ch_rec_mv3_crnn_opt.nb`，放置在`demo/cxx/ocr/debug/`文件夹下。
 
  执行完成后，ocr文件夹下将有如下文件格式：
 
