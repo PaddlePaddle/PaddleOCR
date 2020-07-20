@@ -99,8 +99,6 @@ def main():
 
 
 def test_reader():
-    config = program.load_config(FLAGS.config)
-    program.merge_config(FLAGS.opt)
     logger.info(config)
     train_reader = reader_main(config=config, mode="train")
     import time
