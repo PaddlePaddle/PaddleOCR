@@ -39,13 +39,6 @@ std::vector<std::string> Utility::ReadDict(const std::string &path) {
 void Utility::VisualizeBboxes(
     const cv::Mat &srcimg,
     const std::vector<std::vector<std::vector<int>>> &boxes) {
-  //   cv::Point rook_points[boxes.size()][4];
-  //   for (int n = 0; n < boxes.size(); n++) {
-  //     for (int m = 0; m < boxes[0].size(); m++) {
-  //       rook_points[n][m] = cv::Point(int(boxes[n][m][0]),
-  //       int(boxes[n][m][1]));
-  //     }
-  //   }
   cv::Mat img_vis;
   srcimg.copyTo(img_vis);
   for (int n = 0; n < boxes.size(); n++) {

@@ -1,8 +1,9 @@
 project(ocr_system CXX C)
 
-option(WITH_MKL        "Compile demo with MKL/OpenBlas support, default use MKL."       OFF)
+option(WITH_MKL        "Compile demo with MKL/OpenBlas support, default use MKL."       ON)
 option(WITH_GPU        "Compile demo with GPU/CPU, default use CPU."                    OFF)
 option(WITH_STATIC_LIB "Compile demo with static/shared library, default use static."   ON)
+option(WITH_TENSORRT "Compile demo with TensorRT."   OFF)
 
 SET(PADDLE_LIB "" CACHE PATH "Location of libraries")
 SET(OPENCV_DIR "" CACHE PATH "Location of libraries")
