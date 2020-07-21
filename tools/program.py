@@ -375,7 +375,7 @@ def train_eval_rec_run(config, exe, train_info_dict, eval_info_dict):
             save_model(train_info_dict['train_program'], save_path)
     return
 
-def preProcess():
+def preprocess():
     FLAGS = ArgsParser().parse_args()
     config = load_config(FLAGS.config)
     merge_config(FLAGS.opt)
@@ -398,4 +398,4 @@ def preProcess():
     if alg in ['EAST', 'DB']:
         isContain_det = True
 
-    return startup_program, train_program, place, config, isContain_det
+    return startup_program, train_program, place, config, contain_det
