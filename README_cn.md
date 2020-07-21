@@ -1,11 +1,11 @@
 [English](README.md) | 简体中文
 
+## **直播：2020年7月21日晚8点B站直播，PaddleOCR开源大礼包全面解读**
+
+**直播地址：https://live.bilibili.com/21689802**
+
 ## 简介
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力使用者训练出更好的模型，并应用落地。
-
-**直播预告：2020年7月21日晚8点B站直播，PaddleOCR开源大礼包全面解读**
-
-直播地址：https://live.bilibili.com/21689802
 
 **近期更新**
 - 2020.7.15 添加基于EasyEdge和Paddle-Lite的移动端DEMO，支持iOS和Android系统
