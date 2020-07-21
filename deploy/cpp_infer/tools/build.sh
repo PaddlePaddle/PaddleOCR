@@ -1,8 +1,7 @@
-
 OPENCV_DIR=your_opencv_dir
 LIB_DIR=your_paddle_inference_dir
 CUDA_LIB_DIR=your_cuda_lib_dir
-CUDNN_LIB_DIR=/your_cudnn_lib_dir
+CUDNN_LIB_DIR=your_cudnn_lib_dir
 
 BUILD_DIR=build
 rm -rf ${BUILD_DIR}
@@ -11,7 +10,6 @@ cd ${BUILD_DIR}
 cmake .. \
     -DPADDLE_LIB=${LIB_DIR} \
     -DWITH_MKL=ON \
-    -DDEMO_NAME=ocr_system \
     -DWITH_GPU=OFF \
     -DWITH_STATIC_LIB=OFF \
     -DUSE_TENSORRT=OFF \
