@@ -8,8 +8,8 @@
 我们先安装Paddle Serving相关组件
 我们推荐用户使用GPU来做Paddle Serving的OCR服务部署 
 
-**CUDA版本：9.0以上**
-**CUDNN版本：7.0以上**
+**CUDA版本：9.0**
+**CUDNN版本：7.0**
 **操作系统版本：CentOS 6以上**
 
 ```
