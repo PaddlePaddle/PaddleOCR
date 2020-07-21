@@ -67,7 +67,7 @@ python ocr_web_client.py
 
 ## 自定义修改服务逻辑
 
-在`ocr_web_server.py`或是`ocr_debugger_server.py`当中的`preprocess`函数里面做了检测服务和识别服务的前处理，·`postprocess`函数里面做了识别的后处理服务，可以在相应的函数中做修改。调用了`paddle_serving_app`库提供的常见CV模型的前处理/后处理库。
+在`ocr_web_server.py`或是`ocr_local_server.py`当中的`preprocess`函数里面做了检测服务和识别服务的前处理，`postprocess`函数里面做了识别的后处理服务，可以在相应的函数中做修改。调用了`paddle_serving_app`库提供的常见CV模型的前处理/后处理库。
 
 如果想要单独启动Paddle Serving的检测服务和识别服务，参见下列表格, 执行对应的脚本即可。
 
