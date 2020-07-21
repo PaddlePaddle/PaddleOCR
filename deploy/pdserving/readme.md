@@ -16,8 +16,8 @@
 #以下提供beta版本的paddle serving whl包，欢迎试用，正式版会在7月底正式上线
 wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_server_gpu-0.3.2-py2-none-any.whl
 wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_app-0.1.2-py2-none-any.whl
-python -m pip install paddle_serving_app-0.1.2-py2-none-any.whl paddle_serving_server_gpu-0.3.2-py2-none-any.whl
-python -m pip install paddle_serving_client 
+wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_client-0.3.2-cp27-none-any.whl
+python -m pip install paddle_serving_app-0.1.2-py2-none-any.whl paddle_serving_server_gpu-0.3.2-py2-none-any.whl paddle_serving_client-0.3.2-cp27-none-any.whl
 ```
 
 ### 2. 模型转换
