@@ -45,7 +45,7 @@ from ppocr.utils.save_load import init_model
 
 
 def main():
-    startup_prog, eval_program, place, config, _ = program. preprocess()
+    startup_prog, eval_program, place, config, _ = program.preprocess()
 
     feeded_var_names, target_vars, fetches_var_name = program.build_export(
         config, eval_program, startup_prog)
