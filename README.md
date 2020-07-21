@@ -1,11 +1,11 @@
 English | [简体中文](README_cn.md)
 
+## **Live stream**:  July 21, 2020 at 8 pm BiliBili station
+
+**Live address：https://live.bilibili.com/h5/21689802**
+
 ## Introduction
 PaddleOCR aims to create rich, leading, and practical OCR tools that help users train better models and apply them into practice.
-
-**Live stream on coming day**:  July 21, 2020 at 8 pm BiliBili station live stream
-
-Live address：https://live.bilibili.com/h5/21689802
 
 **Recent updates**
 
