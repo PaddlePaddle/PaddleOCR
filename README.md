@@ -1,6 +1,6 @@
 English | [简体中文](README_cn.md)
 
-## **Live stream**:  July 21, 2020 at 8 pm BiliBili station
+## **Live stream**:  July 21, 2020 at 8 pm BiliBili station，PaddleOCR Introduction
 
 **Live address：https://live.bilibili.com/h5/21689802**
 
