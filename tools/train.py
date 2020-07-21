@@ -92,7 +92,7 @@ def main():
         'fetch_name_list':eval_fetch_name_list,\
         'fetch_varname_list':eval_fetch_varname_list}
 
-    if isContain_det:
+    if contain_det:
         program.train_eval_det_run(config, exe, train_info_dict, eval_info_dict)
     else:
         program.train_eval_rec_run(config, exe, train_info_dict, eval_info_dict)
