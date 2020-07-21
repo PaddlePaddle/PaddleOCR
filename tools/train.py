@@ -117,6 +117,6 @@ def test_reader():
 
 
 if __name__ == '__main__':
-    startup_program, train_program, place, config, isContain_det = program.preProcess()
+    startup_program, train_program, place, config, isContain_det = program.preprocess()
     main()
 #     test_reader()
