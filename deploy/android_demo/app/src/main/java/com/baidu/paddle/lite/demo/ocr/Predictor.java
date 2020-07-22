@@ -127,12 +127,12 @@ public class Predictor {
     }
 
     public void releaseModel() {
-        if (paddlePredictor != null){
+        if (paddlePredictor != null) {
             paddlePredictor.release();
             paddlePredictor = null;
         }
         isLoaded = false;
-        cpuThreadNum = 4;
+        cpuThreadNum = 1;
         cpuPowerMode = "LITE_POWER_HIGH";
         modelPath = "";
         modelName = "";
@@ -287,9 +287,7 @@ public class Predictor {
         if (image == null) {
             return;
         }
-        // Scale image to the size of input tensor
-        Bitmap rgbaImage = image.copy(Bitmap.Config.ARGB_8888, true);
-        this.inputImage = rgbaImage;
+        this.inputImage = image.copy(Bitmap.Config.ARGB_8888, true);
     }
 
     private ArrayList<OcrResultModel> postprocess(ArrayList<OcrResultModel> results) {
@@ -310,7 +308,7 @@ public class Predictor {
 
     private void drawResults(ArrayList<OcrResultModel> results) {
         StringBuffer outputResultSb = new StringBuffer("");
-        for (int i=0;i<results.size();i++) {
+        for (int i = 0; i < results.size(); i++) {
             OcrResultModel result = results.get(i);
             StringBuilder sb = new StringBuilder("");
             sb.append(result.getLabel());
@@ -320,7 +318,7 @@ public class Predictor {
                 sb.append("(").append(p.x).append(",").append(p.y).append(") ");
             }
             Log.i(TAG, sb.toString());
-            outputResultSb.append(i+1).append(": ").append(result.getLabel()).append("\n");
+            outputResultSb.append(i + 1).append(": ").append(result.getLabel()).append("\n");
         }
         outputResult = outputResultSb.toString();
         outputImage = inputImage;
