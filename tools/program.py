@@ -394,8 +394,9 @@ def preprocess():
     startup_program = fluid.Program()
     train_program = fluid.Program()
 
-    contain_det = False
     if alg in ['EAST', 'DB']:
-        contain_det = True
+        train_alg_type = 'det'
+    else:
+        train_alg_type = 'rec'
 
-    return startup_program, train_program, place, config, contain_det
+    return startup_program, train_program, place, config, train_alg_type
