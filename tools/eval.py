@@ -48,7 +48,7 @@ from eval_utils.eval_rec_utils import eval_rec_run
 
 
 def main():
-    startup_prog, eval_program, place, config,contain_det = program.preprocess()
+    startup_prog, eval_program, place, config, train_alg_type = program.preprocess()
     eval_build_outputs = program.build(
         config, eval_program, startup_prog, mode='test')
     eval_fetch_name_list = eval_build_outputs[1]
@@ -59,7 +59,7 @@ def main():
 
     init_model(config, eval_program, exe)
 
-    if contain_det:
+    if train_alg_type == 'det':
         eval_reader = reader_main(config=config, mode="eval")
         eval_info_dict = {'program':eval_program,\
             'reader':eval_reader,\
