@@ -80,3 +80,6 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 cd PaddleOCR
 pip3 install -r requirments.txt
 ```
+
+注意，windows环境下，建议从[这里](https://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely)下载shapely安装包完成安装，
+直接通过pip安装的shapely库可能出现`[winRrror 126] 找不到指定模块的问题`。
