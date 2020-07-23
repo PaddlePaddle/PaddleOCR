@@ -155,7 +155,7 @@ demo/cxx/ocr/
 |-- debug/  
 |   |--ch_det_mv3_db_opt.nb             Detection model
 |   |--ch_rec_mv3_crnn_opt.nb           Recognition model
-|   |--11.jpg                           image for OCR
+|   |--11.jpg                           Image for OCR
 |   |--ppocr_keys_v1.txt                Dictionary file
 |   |--libpaddle_light_api_shared.so    C++ .so file
 |   |--config.txt                       Config file

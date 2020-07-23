@@ -78,7 +78,7 @@ class MobileNetV3():
 
         supported_scale = [0.35, 0.5, 0.75, 1.0, 1.25]
         assert self.scale in supported_scale, \
-            "supported scale are {} but input scale is {}".format(supported_scale, self.scale)
+            "supported scales are {} but input scale is {}".format(supported_scale, self.scale)
 
     def __call__(self, input):
         scale = self.scale
