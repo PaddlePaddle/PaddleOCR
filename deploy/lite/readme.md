@@ -18,7 +18,7 @@ Paddle Lite是飞桨轻量化推理引擎，为手机、IOT端提供高效推理
 1. [Docker](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#docker)
 2. [Linux](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#android)
 3. [MAC OS](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#id13)
-4. [Windows](https://paddle-lite.readthedocs.io/zh/latest/demo_guides/x86.html#windows)
+4. [Windows](https://paddle-lite.readthedocs.io/zh/latest/demo_guides/x86.html#id4)
 
 ### 1.2 准备预测库
 
@@ -84,7 +84,7 @@ Paddle-Lite 提供了多种策略来自动优化原始的模型，其中包括�
 
 |模型简介|检测模型|识别模型|Paddle-Lite版本|
 |-|-|-|-|
-|超轻量级中文OCR opt优化模型|[下载地址](https://paddleocr.bj.bcebos.com/deploy/lite/ch_det_mv3_db_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/deploy/lite/ch_rec_mv3_crnn_opt.nb)|2.6.1|
+|超轻量级中文OCR opt优化模型|[下载地址](https://paddleocr.bj.bcebos.com/deploy/lite/ch_det_mv3_db_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/deploy/lite/ch_rec_mv3_crnn_opt.nb)|develop|
 
 如果直接使用上述表格中的模型进行部署，可略过下述步骤，直接阅读 [2.2节](#2.2与手机联调)。
 
