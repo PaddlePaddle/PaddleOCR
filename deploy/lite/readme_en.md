@@ -17,7 +17,7 @@ deployment solutions for end-side deployment issues.
 [build for Docker](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#docker)
 [build for Linux](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#android)
 [build for MAC OS](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#id13)
-[build for windows](https://paddle-lite.readthedocs.io/zh/latest/demo_guides/x86.html#windows)
+[build for windows](https://paddle-lite.readthedocs.io/zh/latest/demo_guides/x86.html#id4)
 
 ## 3. Download prebuild library for android and ios
 
