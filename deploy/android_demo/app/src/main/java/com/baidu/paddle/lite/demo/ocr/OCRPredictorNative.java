@@ -35,8 +35,8 @@ public class OCRPredictorNative {
 
     }
 
-    public void release(){
-        if (nativePointer != 0){
+    public void release() {
+        if (nativePointer != 0) {
             nativePointer = 0;
             destory(nativePointer);
         }

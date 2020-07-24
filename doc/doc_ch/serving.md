@@ -69,7 +69,7 @@ $ hub serving start --modules [Module1==Version1, Module2==Version2, ...] \
 
 #### 方式2. 配置文件启动（支持CPU、GPU）
 **启动命令：**  
-```hub serving start --config/-c config.json```  
+```hub serving start -c config.json```  
 
 其中，`config.json`格式如下： 
 ```python

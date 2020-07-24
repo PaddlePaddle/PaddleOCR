@@ -3,10 +3,8 @@ English | [简体中文](README_cn.md)
 ## Introduction
 PaddleOCR aims to create rich, leading, and practical OCR tools that help users train better models and apply them into practice.
 
-**Live stream on coming day**:  July 21, 2020 at 8 pm BiliBili station live stream
-
 **Recent updates**
-
+- 2020.7.23, Release the playback and PPT of live class on BiliBili station, PaddleOCR Introduction, [address](https://aistudio.baidu.com/aistudio/course/introduce/1519)
 - 2020.7.15, Add mobile App demo , support both iOS and  Android  ( based on easyedge and Paddle Lite)
 - 2020.7.15, Improve the  deployment ability, add the C + +  inference , serving deployment. In addtion, the benchmarks of the ultra-lightweight OCR model are provided.
 - 2020.7.15, Add several related datasets, data annotation and synthesis tools.
