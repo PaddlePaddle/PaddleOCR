@@ -82,3 +82,9 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 cd PaddleOCR
 pip3 install -r requirments.txt
 ```
+
+If you getting this error `OSError: [WinError 126] The specified module could not be found` when you install shapely on windows.
+
+Please try to download Shapely whl file using [http://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely](http://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely).
+
+Reference: [Solve shapely installation on windows](https://stackoverflow.com/questions/44398265/install-shapely-oserror-winerror-126-the-specified-module-could-not-be-found)
