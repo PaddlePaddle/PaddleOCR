@@ -9,9 +9,21 @@
 我们推荐用户使用GPU来做Paddle Serving的OCR服务部署 
 
 **CUDA版本：9.0**
+
 **CUDNN版本：7.0**
+
 **操作系统版本：CentOS 6以上**
 
+**Python3操作指南：**
+```
+#以下提供beta版本的paddle serving whl包，欢迎试用，正式版会在7月底正式上线
+wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_server_gpu-0.3.2-py3-none-any.whl
+wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_client-0.3.2-cp36-none-any.whl
+wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_app-0.1.2-py3-none-any.whl
+python -m pip install paddle_serving_app-0.1.2-py3-none-any.whl paddle_serving_server_gpu-0.3.2-py3-none-any.whl paddle_serving_client-0.3.2-cp36-none-any.whl
+```
+
+**Python2操作指南：**
 ```
 #以下提供beta版本的paddle serving whl包，欢迎试用，正式版会在7月底正式上线
 wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_server_gpu-0.3.2-py2-none-any.whl
