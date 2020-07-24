@@ -74,7 +74,7 @@ def main():
 
     # dump mode structure
     if config['Global']['debug']:
-        if 'attention' in config['Global']['loss_type']:
+        if train_alg_type == 'rec' and 'attention' in config['Global']['loss_type']:
             logger.warning('Does not suport dump attention...')
         else:
             summary(train_program)
