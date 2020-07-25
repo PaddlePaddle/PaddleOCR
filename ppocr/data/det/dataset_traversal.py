@@ -38,14 +38,14 @@ class TrainReader(object):
 
     def __call__(self, process_id):
         with open(self.label_file_path, "rb") as fin:
-                label_infor_list = fin.readlines()
-            img_num = len(label_infor_list)
-            img_id_list = list(range(img_num))
-            random.shuffle(img_id_list)
-            if sys.platform == "win32":
-                print("multiprocess is not fully compatible with Windows."
-                      "num_workers will be 1.")
-                self.num_workers = 1
+            label_infor_list = fin.readlines()        
+        img_num = len(label_infor_list)
+        img_id_list = list(range(img_num))
+        random.shuffle(img_id_list)
+        if sys.platform == "win32":
+            print("multiprocess is not fully compatible with Windows."
+                  "num_workers will be 1.")
+            self.num_workers = 1
                 
         def sample_iter_reader():            
             for img_id in range(process_id, img_num, self.num_workers):
