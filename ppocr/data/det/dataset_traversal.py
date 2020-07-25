@@ -37,8 +37,7 @@ class TrainReader(object):
         self.process = create_module(params['process_function'])(params)
 
     def __call__(self, process_id):
-        def sample_iter_reader():
-            with open(self.label_file_path, "rb") as fin:
+        with open(self.label_file_path, "rb") as fin:
                 label_infor_list = fin.readlines()
             img_num = len(label_infor_list)
             img_id_list = list(range(img_num))
@@ -47,6 +46,8 @@ class TrainReader(object):
                 print("multiprocess is not fully compatible with Windows."
                       "num_workers will be 1.")
                 self.num_workers = 1
+                
+        def sample_iter_reader():            
             for img_id in range(process_id, img_num, self.num_workers):
                 label_infor = label_infor_list[img_id_list[img_id]]
                 outs = self.process(label_infor)
