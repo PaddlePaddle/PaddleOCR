@@ -3,7 +3,7 @@
 
 This tutorial will introduce how to use paddle-lite to deploy paddleOCR ultra-lightweight Chinese and English detection models on mobile phones.
 
-addle Lite is a lightweight inference engine for PaddlePaddle.
+paddle-lite is a lightweight inference engine for PaddlePaddle.
 It provides efficient inference capabilities for mobile phones and IOTs,
 and extensively integrates cross-platform hardware to provide lightweight
 deployment solutions for end-side deployment issues.
