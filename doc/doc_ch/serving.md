@@ -28,21 +28,37 @@ deploy/hubserving/ocr_system/
 # 安装paddlehub  
 pip3 install paddlehub --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
 
-# 设置环境变量  
+# 在Linux下设置环境变量
 export PYTHONPATH=.
-```   
+# 在Windows下设置环境变量
+SET PYTHONPATH=.
+```
 
 ### 2. 安装服务模块
-PaddleOCR提供3种服务模块，根据需要安装所需模块。如： 
+PaddleOCR提供3种服务模块，根据需要安装所需模块。
+
+* 在Linux环境下，安装示例如下：
 
 安装检测服务模块：  
 ```hub install deploy/hubserving/ocr_det/```  
 
-或，安装识别服务模块：    
+或，安装识别服务模块：  
 ```hub install deploy/hubserving/ocr_rec/```  
 
 或，安装检测+识别串联服务模块：  
-```hub install deploy/hubserving/ocr_system/```  
+```hub install deploy/hubserving/ocr_system/```
+
+* 在Windows环境下(文件夹的分隔符为`\`)，安装示例如下：
+
+安装检测服务模块：  
+```hub install deploy\hubserving\ocr_det\```  
+
+或，安装识别服务模块：  
+```hub install deploy\hubserving\ocr_rec\```  
+
+或，安装检测+识别串联服务模块：  
+```hub install deploy\hubserving\ocr_system\```
+
 
 ### 3. 启动服务
 #### 方式1. 命令行命令启动（仅支持CPU）
@@ -71,7 +87,7 @@ $ hub serving start --modules [Module1==Version1, Module2==Version2, ...] \
 **启动命令：**  
 ```hub serving start -c config.json```  
 
-其中，`config.json`格式如下： 
+其中，`config.json`格式如下：
 ```python
 {
     "modules_info": {
@@ -124,7 +140,7 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 ## 返回结果格式说明
 返回结果为列表（list），列表中的每一项为词典（dict），词典一共可能包含3种字段，信息如下：
 
-|字段名称|数据类型|意义| 
+|字段名称|数据类型|意义|
 |-|-|-|
 |text|str|文本内容|
 |confidence|float| 文本识别置信度|
@@ -134,9 +150,9 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 
 |字段名/模块名|ocr_det|ocr_rec|ocr_system|
 |-|-|-|-|  
-|text||✔|✔| 
-|confidence||✔|✔| 
-|text_region|✔||✔| 
+|text||✔|✔|
+|confidence||✔|✔|
+|text_region|✔||✔|
 
 **说明：** 如果需要增加、删除、修改返回字段，可在相应模块的`module.py`文件中进行修改，完整流程参考下一节自定义修改服务模块。
 
@@ -157,4 +173,3 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 
 - 5、重新启动服务  
 ```hub serving start -m ocr_system```  
-
