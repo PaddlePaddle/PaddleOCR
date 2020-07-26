@@ -135,6 +135,9 @@ if __name__ == "__main__":
     text_detector = TextDetector(args)
     count = 0
     total_time = 0
+    draw_img_save = "./inference_results"
+    if not os.path.exists(draw_img_save):
+        os.makedirs(draw_img_save)
     for image_file in image_file_list:
         img = cv2.imread(image_file)
         if img is None:
@@ -147,6 +150,7 @@ if __name__ == "__main__":
         print("Predict time of %s:" % image_file, elapse)
         src_im = utility.draw_text_det_res(dt_boxes, image_file)
         img_name_pure = image_file.split("/")[-1]
-        cv2.imwrite("./inference_results/det_res_%s" % img_name_pure, src_im)
+        cv2.imwrite(
+            os.path.join(draw_img_save, "det_res_%s" % img_name_pure), src_im)
     if count > 1:
         print("Avg Time:", total_time / (count - 1))
