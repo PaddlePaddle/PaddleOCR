@@ -40,9 +40,9 @@ class TrainReader(object):
         with open(self.label_file_path, "rb") as fin:
             label_infor_list = fin.readlines()        
         img_num = len(label_infor_list)
-        img_id_list = list(range(img_num))
-        random.shuffle(img_id_list)
+        img_id_list = list(range(img_num))        
         if sys.platform == "win32":
+            random.shuffle(img_id_list)
             print("multiprocess is not fully compatible with Windows."
                   "num_workers will be 1.")
             self.num_workers = 1
