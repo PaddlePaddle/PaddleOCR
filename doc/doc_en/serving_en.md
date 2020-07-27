@@ -39,31 +39,26 @@ SET PYTHONPATH=.
 PaddleOCR provides 3 kinds of service modules, install the required modules according to your needs.
 
 * On Linux platform, the examples are as follows.
-
-Install the detection service module:
 ```shell
+# Install the detection service module:
 hub install deploy/hubserving/ocr_det/
-```
-Or, install the recognition service module:
-```shell
+
+# Or, install the recognition service module:
 hub install deploy/hubserving/ocr_rec/
-```
-Or, install the 2-stage series service module:
-```shell
+
+#Or, install the 2-stage series service module:
 hub install deploy/hubserving/ocr_system/
 ```
-* On Windows platform, the examples are as follows.
 
-Install the detection service module:
+* On Windows platform, the examples are as follows.
 ```shell
+# Install the detection service module:
 hub install deploy\hubserving\ocr_det\
-```  
-Or, install the recognition service module:
-```shell
+
+# Or, install the recognition service module:
 hub install deploy\hubserving\ocr_rec\
-```  
-Or, install the 2-stage series service module:
-```shell
+
+# Or, install the 2-stage series service module:
 hub install deploy\hubserving\ocr_system\
 ```
 
