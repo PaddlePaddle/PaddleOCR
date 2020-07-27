@@ -38,13 +38,23 @@ public class Predictor {
     protected float scoreThreshold = 0.1f;
     protected Bitmap inputImage = null;
     protected Bitmap outputImage = null;
-    protected String outputResult = "";
+    protected volatile String outputResult = "";
     protected float preprocessTime = 0;
     protected float postprocessTime = 0;
 
 
     public Predictor() {
     }
+
+    public boolean init(Context appCtx, String modelPath, String labelPath) {
+        isLoaded = loadModel(appCtx, modelPath, cpuThreadNum, cpuPowerMode);
+        if (!isLoaded) {
+            return false;
+        }
+        isLoaded = loadLabel(appCtx, labelPath);
+        return isLoaded;
+    }
+
 
     public boolean init(Context appCtx, String modelPath, String labelPath, int cpuThreadNum, String cpuPowerMode,
                         String inputColorFormat,
@@ -76,11 +86,7 @@ public class Predictor {
             Log.e(TAG, "Only  BGR color format is supported.");
             return false;
         }
-        isLoaded = loadModel(appCtx, modelPath, cpuThreadNum, cpuPowerMode);
-        if (!isLoaded) {
-            return false;
-        }
-        isLoaded = loadLabel(appCtx, labelPath);
+        boolean isLoaded = init(appCtx, modelPath, labelPath);
         if (!isLoaded) {
             return false;
         }
@@ -317,7 +323,7 @@ public class Predictor {
             for (Point p : result.getPoints()) {
                 sb.append("(").append(p.x).append(",").append(p.y).append(") ");
             }
-            Log.i(TAG, sb.toString());
+            Log.i(TAG, sb.toString()); // 这里在logcat里打印结果
             outputResultSb.append(i + 1).append(": ").append(result.getLabel()).append("\n");
         }
         outputResult = outputResultSb.toString();
