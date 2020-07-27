@@ -40,33 +40,32 @@ PaddleOCR provides 3 kinds of service modules, install the required modules acco
 
 * On Linux platform, the examples are as follows.
 
-Install the detection service module:  
+Install the detection service module:
 ```shell
 hub install deploy/hubserving/ocr_det/
-```  
-Or, install the recognition service module:  
+```
+Or, install the recognition service module:
 ```shell
 hub install deploy/hubserving/ocr_rec/
-```  
-Or, install the 2-stage series service module:  
+```
+Or, install the 2-stage series service module:
 ```shell
 hub install deploy/hubserving/ocr_system/
 ```
-
 * On Windows platform, the examples are as follows.
 
-Install the detection service module:  
+Install the detection service module:
 ```shell
 hub install deploy\hubserving\ocr_det\
 ```  
-Or, install the recognition service module:  
+Or, install the recognition service module:
 ```shell
 hub install deploy\hubserving\ocr_rec\
 ```  
-Or, install the 2-stage series service module:  
+Or, install the 2-stage series service module:
 ```shell
 hub install deploy\hubserving\ocr_system\
-
+```
 
 ### 3. Start service
 #### Way 1. Start with command line parameters (CPU only)
