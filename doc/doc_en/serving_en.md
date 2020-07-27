@@ -46,7 +46,7 @@ hub install deploy/hubserving/ocr_det/
 # Or, install the recognition service module:
 hub install deploy/hubserving/ocr_rec/
 
-#Or, install the 2-stage series service module:
+# Or, install the 2-stage series service module:
 hub install deploy/hubserving/ocr_system/
 ```
 
