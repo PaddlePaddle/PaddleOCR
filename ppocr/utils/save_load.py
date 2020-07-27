@@ -21,7 +21,6 @@ import os
 import shutil
 import tempfile
 
-import paddle
 import paddle.fluid as fluid
 
 from .utility import initial_logger
@@ -58,7 +57,7 @@ def _load_state(path):
     return state
 
 
-def load_params(exe, prog, path, ignore_params=[]):
+def load_params(prog, path, ignore_params=None):
     """
     Load model from the given path.
     Args:
@@ -113,14 +112,12 @@ def init_model(config, program, exe):
         path = checkpoints
         fluid.load(program, path, exe)
         logger.info("Finish initing model from {}".format(path))
-        return
 
     pretrain_weights = config['Global'].get('pretrain_weights')
     if pretrain_weights:
         path = pretrain_weights
         load_params(exe, program, path)
         logger.info("Finish initing model from {}".format(path))
-    return
 
 
 def save_model(program, model_path):
