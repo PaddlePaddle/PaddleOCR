@@ -38,27 +38,28 @@ SET PYTHONPATH=.
 PaddleOCR提供3种服务模块，根据需要安装所需模块。
 
 * 在Linux环境下，安装示例如下：
+```shell
+# 安装检测服务模块：  
+hub install deploy/hubserving/ocr_det/
 
-安装检测服务模块：  
-```hub install deploy/hubserving/ocr_det/```  
+# 或，安装识别服务模块：  
+hub install deploy/hubserving/ocr_rec/
 
-或，安装识别服务模块：  
-```hub install deploy/hubserving/ocr_rec/```  
-
-或，安装检测+识别串联服务模块：  
-```hub install deploy/hubserving/ocr_system/```
+# 或，安装检测+识别串联服务模块：  
+hub install deploy/hubserving/ocr_system/
+```
 
 * 在Windows环境下(文件夹的分隔符为`\`)，安装示例如下：
+```shell
+# 安装检测服务模块：  
+hub install deploy\hubserving\ocr_det\
 
-安装检测服务模块：  
-```hub install deploy\hubserving\ocr_det\```  
+# 或，安装识别服务模块：  
+hub install deploy\hubserving\ocr_rec\
 
-或，安装识别服务模块：  
-```hub install deploy\hubserving\ocr_rec\```  
-
-或，安装检测+识别串联服务模块：  
-```hub install deploy\hubserving\ocr_system\```
-
+# 或，安装检测+识别串联服务模块：
+hub install deploy\hubserving\ocr_system\
+```
 
 ### 3. 启动服务
 #### 方式1. 命令行命令启动（仅支持CPU）
