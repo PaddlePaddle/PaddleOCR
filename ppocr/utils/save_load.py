@@ -57,7 +57,7 @@ def _load_state(path):
     return state
 
 
-def load_params(prog, path, ignore_params=None):
+def load_params(exe, prog, path, ignore_params=[]):
     """
     Load model from the given path.
     Args:
