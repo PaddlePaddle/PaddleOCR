@@ -82,6 +82,7 @@ def check_and_read_gif(img_path):
         ret, frame = gif.read()
         if not ret:
             logging.info("Cannot read {}. This gif image maybe corrupted.")
+            return None, False
         if len(frame.shape) == 2 or frame.shape[-1] == 1:
             frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2RGB)
         imgvalue = frame[:, :, ::-1]
