@@ -20,7 +20,7 @@ sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 import tools.infer.utility as utility
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
-from ppocr.utils.utility import get_image_file_list
+from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 import cv2
 import copy
 import numpy as np
@@ -153,7 +153,9 @@ def main(args):
     valid_image_file_list = []
     img_list = []
     for image_file in image_file_list:
-        img = cv2.imread(image_file, cv2.IMREAD_COLOR)
+        img, flag = check_and_read_gif(image_file)
+        if not flag:
+            img = cv2.imread(image_file)
         if img is None:
             logger.info("error in loading image:{}".format(image_file))
             continue

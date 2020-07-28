@@ -20,7 +20,7 @@ sys.path.append(os.path.join(__dir__, '../..'))
 import tools.infer.utility as utility
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
-from ppocr.utils.utility import get_image_file_list
+from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 import cv2
 from ppocr.data.det.east_process import EASTProcessTest
 from ppocr.data.det.db_process import DBProcessTest
@@ -139,7 +139,9 @@ if __name__ == "__main__":
     if not os.path.exists(draw_img_save):
         os.makedirs(draw_img_save)
     for image_file in image_file_list:
-        img = cv2.imread(image_file)
+        img, flag = check_and_read_gif(image_file)
+        if not flag:
+            img = cv2.imread(image_file)
         if img is None:
             logger.info("error in loading image:{}".format(image_file))
             continue
