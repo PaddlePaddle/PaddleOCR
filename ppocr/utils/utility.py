@@ -16,6 +16,7 @@ import logging
 import os
 import imghdr
 import cv2
+from paddle import fluid
 
 
 def initial_logger():
@@ -88,9 +89,6 @@ def check_and_read_gif(img_path):
         imgvalue = frame[:, :, ::-1]
         return imgvalue, True
     return None, False
-
-
-from paddle import fluid
 
 
 def create_multi_devices_program(program, loss_var_name):
