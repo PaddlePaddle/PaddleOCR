@@ -137,14 +137,14 @@ def main(args):
         dt_boxes, rec_res = text_sys(img)
         elapse = time.time() - starttime
         print("Predict time of %s: %.3fs" % (image_file, elapse))
+
+        drop_score = 0.5
         dt_num = len(dt_boxes)
-        dt_boxes_final = []
         for dno in range(dt_num):
             text, score = rec_res[dno]
-            if score >= 0.5:
+            if score >= drop_score:
                 text_str = "%s, %.3f" % (text, score)
                 print(text_str)
-                dt_boxes_final.append(dt_boxes[dno])
 
         if is_visualize:
             image = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
@@ -153,7 +153,12 @@ def main(args):
             scores = [rec_res[i][1] for i in range(len(rec_res))]
 
             draw_img = draw_ocr(
-                image, boxes, txts, scores, draw_txt=True, drop_score=0.5)
+                image,
+                boxes,
+                txts,
+                scores,
+                draw_txt=True,
+                drop_score=drop_score)
             draw_img_save = "./inference_results/"
             if not os.path.exists(draw_img_save):
                 os.makedirs(draw_img_save)
