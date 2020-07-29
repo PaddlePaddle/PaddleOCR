@@ -17,7 +17,7 @@ import cv2
 import numpy as np
 import json
 import sys
-from ppocr.utils.utility import initial_logger
+from ppocr.utils.utility import initial_logger, check_and_read_gif
 logger = initial_logger()
 
 from .data_augment import AugmentData
@@ -100,7 +100,9 @@ class DBProcessTrain(object):
 
     def __call__(self, label_infor):
         img_path, gt_label = self.convert_label_infor(label_infor)
-        imgvalue = cv2.imread(img_path)
+        imgvalue, flag = check_and_read_gif(img_path)
+        if not flag:
+            imgvalue = cv2.imread(img_path)
         if imgvalue is None:
             logger.info("{} does not exist!".format(img_path))
             return None
