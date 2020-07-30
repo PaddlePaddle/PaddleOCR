@@ -7,7 +7,7 @@ PaddleOCR 工作环境
 - glibc 2.23
 - cuDNN 7.6+ (GPU)
 
-建议使用我们提供的docker运行PaddleOCR，有关docker使用请参考[链接](https://docs.docker.com/get-started/)。
+建议使用我们提供的docker运行PaddleOCR，有关docker、nvidia-docker使用请参考[链接](https://docs.docker.com/get-started/)。
 
 *如您希望使用 mac 或 windows直接运行预测代码，可以从第2步开始执行。*
 

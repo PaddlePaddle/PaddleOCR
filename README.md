@@ -212,3 +212,4 @@ We welcome all the contributions to PaddleOCR and appreciate for your feedback v
 - Many thanks to [lyl120117](https://github.com/lyl120117) for contributing the code for printing the network structure.
 - Thanks [xiangyubo](https://github.com/xiangyubo) for contributing the handwritten Chinese OCR datasets.
 - Thanks [authorfu](https://github.com/authorfu) for contributing Android demo  and [xiadeye](https://github.com/xiadeye) contributing iOS demo, respectively.
+- Thanks [BeyondYourself](https://github.com/BeyondYourself) for contributing many great suggestions and simplifying part of the code style.
