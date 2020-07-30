@@ -233,7 +233,7 @@ class SimpleReader(object):
                 img_num = len(label_infor_list)
                 img_id_list = list(range(img_num))
                 random.shuffle(img_id_list)
-                if sys.platform == "win32":
+                if sys.platform == "win32" and self.num_workers != 1:
                     print("multiprocess is not fully compatible with Windows."
                           "num_workers will be 1.")
                     self.num_workers = 1
