@@ -52,8 +52,6 @@ hub.baidubce.com/paddlepaddle/paddle   latest-gpu-cuda9.0-cudnn7-dev    f56310dc
 docker中的python默认使用python3.5，PaddleOCR需要在Python3.7下执行（该版本下，对于第三方依赖库的兼容性更好一些）。进入docker后，可以编辑`/etc/profile`文件，之后在文件末尾添加
 
 ```shell
-alias python=python3.7
-alias pip=pip3.7
 
 alias python3=python3.7
 alias pip3=pip3.7
