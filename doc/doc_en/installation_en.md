@@ -4,7 +4,7 @@ After testing, paddleocr can run on glibc 2.23. You can also test other glibc ve
 
 PaddleOCR working environment:
 - PaddlePaddle1.7
-- python3
+- python3.7
 - glibc 2.23
 
 It is recommended to use the docker provided by us to run PaddleOCR, please refer to the use of docker [link](https://docs.docker.com/get-started/).
@@ -49,7 +49,20 @@ docker images
 hub.baidubce.com/paddlepaddle/paddle   latest-gpu-cuda9.0-cudnn7-dev    f56310dcc829
 ```
 
-2. Install PaddlePaddle Fluid v1.7 (the higher version is not supported yet, the adaptation work is in progress)
+2. Change default version of python3
+
+Python3.5 is used as the default version of python. However, Python3.7 is preferred in PaddleOCR for better compatibility of third-party libraries. After entering docker, you can edit file `/etc/profile`, add the following content at the end of the file.
+
+
+```shell
+
+alias python3=python3.7
+alias pip3=pip3.7
+```
+
+After saving the file `/etc/profile`. The command `source /etc/profile` needs to be carried out to make the default python version as 3.7 effective.
+
+3. Install PaddlePaddle Fluid v1.7 (the higher version is not supported yet, the adaptation work is in progress)
 ```
 pip3 install --upgrade pip
 
@@ -65,7 +78,7 @@ python3 -m pip install paddlepaddle==1.7.2 -i https://pypi.tuna.tsinghua.edu.cn/
 For more software version requirements, please refer to the instructions in [Installation Document](https://www.paddlepaddle.org.cn/install/quick) for operation.
 
 
-3. Clone PaddleOCR repo
+4. Clone PaddleOCR repo
 ```
 # Recommend
 git clone https://github.com/PaddlePaddle/PaddleOCR
@@ -77,7 +90,7 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 # Note: The cloud-hosting code may not be able to synchronize the update with this GitHub project in real time. There might be a delay of 3-5 days. Please give priority to the recommended method.
 ```
 
-4. Install third-party libraries
+5. Install third-party libraries
 ```
 cd PaddleOCR
 pip3 install -r requirments.txt
