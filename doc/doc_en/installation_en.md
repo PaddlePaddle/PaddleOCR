@@ -18,14 +18,14 @@ cd /home/Projects
 # You need to create a docker container for the first run, and do not need to run the current command when you run it again
 # Create a docker container named ppocr and map the current directory to the /paddle directory of the container
 
-#If you want to use docker in a CPU environment, use docker instead of nvidia-docker to create docker
+#If using CPU, use docker instead of nvidia-docker to create docker
 sudo docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev /bin/bash
 ```
-If you have cuda9 installed on your machine, please run the following command to create a container:
+If using CUDA9, please run the following command to create a container:
 ```
 sudo nvidia-docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev /bin/bash
 ```
-If you have cuda10 installed on your machine, please run the following command to create a container:
+If using CUDA10, please run the following command to create a container:
 ```
 sudo nvidia-docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda10.0-cudnn7-dev /bin/bash
 ```
