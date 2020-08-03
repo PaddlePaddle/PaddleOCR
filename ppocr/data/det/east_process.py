@@ -52,7 +52,7 @@ class EASTProcessTrain(object):
         label_infor = label_infor.decode()
         label_infor = label_infor.encode('utf-8').decode('utf-8-sig')
         substr = label_infor.strip("\n").split("\t")
-        img_path = self.img_set_dir + substr[0]
+        img_path = self.img_set_dir + "/" + substr[0]
         label = json.loads(substr[1])
         nBox = len(label)
         wordBBs, txts, txt_tags = [], [], []
