@@ -122,9 +122,9 @@ class TextRecognizer(object):
                     ind = np.argmax(probs, axis=1)
                     blank = probs.shape[1]
                     valid_ind = np.where(ind != (blank - 1))[0]
-                    score = np.mean(probs[valid_ind, ind[valid_ind]])
                     if len(valid_ind) == 0:
                         continue
+                    score = np.mean(probs[valid_ind, ind[valid_ind]])
                     # rec_res.append([preds_text, score])
                     rec_res[indices[beg_img_no + rno]] = [preds_text, score]
             else:
