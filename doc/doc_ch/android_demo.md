@@ -3,7 +3,7 @@
 
 ### 1. 安装最新版本的Android Studio
 
-可以从https://developer.android.com/studio下载。本Demo使用是4.0版本Android Studio编写。
+可以从 https://developer.android.com/studio 下载。本Demo使用是4.0版本Android Studio编写。
 
 ### 2. 创建新项目
 
