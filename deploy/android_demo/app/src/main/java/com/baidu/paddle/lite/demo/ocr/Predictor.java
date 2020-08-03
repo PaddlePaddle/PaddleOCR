@@ -228,7 +228,7 @@ public class Predictor {
         for (int i = 0; i < warmupIterNum; i++) {
             paddlePredictor.runImage(inputData, width, height, channels, inputImage);
         }
-        warmupIterNum = 0; // 之后不要再warm了
+        warmupIterNum = 0; // do not need warm
         // Run inference
         start = new Date();
         ArrayList<OcrResultModel> results = paddlePredictor.runImage(inputData, width, height, channels, inputImage);
@@ -323,7 +323,7 @@ public class Predictor {
             for (Point p : result.getPoints()) {
                 sb.append("(").append(p.x).append(",").append(p.y).append(") ");
             }
-            Log.i(TAG, sb.toString()); // 这里在logcat里打印结果
+            Log.i(TAG, sb.toString()); // show LOG in Logcat panel
             outputResultSb.append(i + 1).append(": ").append(result.getLabel()).append("\n");
         }
         outputResult = outputResultSb.toString();

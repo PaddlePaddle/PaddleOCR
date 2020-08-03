@@ -41,8 +41,8 @@ public class MiniActivity extends AppCompatActivity {
     private String assetlabelFilePath = "labels/ppocr_keys_v1.txt";
 
     private Button button;
-    private ImageView imageView; // 显示图像
-    private TextView textView; // 显示结果
+    private ImageView imageView; // image result
+    private TextView textView; // text result
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +85,7 @@ public class MiniActivity extends AppCompatActivity {
                 }
             }
         };
-        sender.sendEmptyMessage(REQUEST_LOAD_MODEL); // 对应上面的REQUEST_LOAD_MODEL， 调用onLoadModel()
+        sender.sendEmptyMessage(REQUEST_LOAD_MODEL); // corresponding to REQUEST_LOAD_MODEL， to call onLoadModel()
 
         imageView = findViewById(R.id.imageView);
         textView = findViewById(R.id.sample_text);
@@ -112,7 +112,7 @@ public class MiniActivity extends AppCompatActivity {
     }
 
     /**
-     * onCreate的时候调用， 模型初始化
+     * call in onCreate, model init
      *
      * @return
      */
@@ -124,7 +124,8 @@ public class MiniActivity extends AppCompatActivity {
     }
 
     /**
-     * on
+     * init engine
+     * call in onCreate
      *
      * @return
      */
@@ -133,7 +134,7 @@ public class MiniActivity extends AppCompatActivity {
             String assetImagePath = "images/5.jpg";
             InputStream imageStream = getAssets().open(assetImagePath);
             Bitmap image = BitmapFactory.decodeStream(imageStream);
-            // 这里输入是Bitmap
+            // Input is Bitmap
             predictor.setInputImage(image);
             return predictor.isLoaded() && predictor.runModel();
         } catch (IOException e) {

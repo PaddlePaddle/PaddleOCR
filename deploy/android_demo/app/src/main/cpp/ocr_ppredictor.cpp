@@ -37,7 +37,7 @@ int OCR_PPredictor::init_from_file(const std::string &det_model_path, const std:
     return RETURN_OK;
 }
 /**
- * 调试用，保存第一步的框选结果
+ * for debug use, show result of First Step
  * @param filter_boxes
  * @param boxes
  * @param srcimg
