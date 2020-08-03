@@ -115,8 +115,8 @@ def init_model(config, program, exe):
             logger.info("Finish initing model from {}".format(path))
         else:
             raise ValueError(
-                "Model checkpoints  {} does not exists,"
-                "check if you lost the file prefix .".format(checkpoints + '.pdparams'))
+                "Model checkpoints {} does not exists,"
+                "check if you lost the file prefix.".format(checkpoints + '.pdparams'))
 
     pretrain_weights = config['Global'].get('pretrain_weights')
     if pretrain_weights:
