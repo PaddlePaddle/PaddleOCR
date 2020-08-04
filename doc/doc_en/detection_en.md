@@ -25,7 +25,7 @@ After decompressing the data set and downloading the annotation file, PaddleOCR/
 The provided annotation file format is as follow, seperated by "\t":
 ```
 " Image file name             Image annotation information encoded by json.dumps"
-ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]], ...}]
+ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]]}, {...}]
 ```
 The image annotation after json.dumps() encoding is a list containing multiple dictionaries. The `points` in the dictionary represent the coordinates (x, y) of the four points of the text box, arranged clockwise from the point at the upper left corner.
 

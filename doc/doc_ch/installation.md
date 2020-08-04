@@ -21,10 +21,10 @@ cd /home/Projects
 如果您希望在CPU环境下使用docker，使用docker而不是nvidia-docker创建docker
 sudo docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev /bin/bash
 
-如果您的机器安装的是CUDA9，请运行以下命令创建容器
+如果使用CUDA9，请运行以下命令创建容器
 sudo nvidia-docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev /bin/bash
 
-如果您的机器安装的是CUDA10，请运行以下命令创建容器
+如果使用CUDA10，请运行以下命令创建容器
 sudo nvidia-docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda10.0-cudnn7-dev /bin/bash
 
 您也可以访问[DockerHub](https://hub.docker.com/r/paddlepaddle/paddle/tags/)获取与您机器适配的镜像。

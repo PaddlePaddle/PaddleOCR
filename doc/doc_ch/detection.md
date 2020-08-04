@@ -26,7 +26,7 @@ wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dataset/test_icdar2015_la
 提供的标注文件格式为，其中中间是"\t"分隔：
 ```
 " 图像文件名                    json.dumps编码的图像标注信息"
-ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]], ...}]
+ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]]}, {...}]
 ```
 json.dumps编码前的图像标注信息是包含多个字典的list，字典中的 `points` 表示文本框的四个点的坐标(x, y)，从左上角的点开始顺时针排列。
 `transcription` 表示当前文本框的文字，在文本检测任务中并不需要这个信息。
