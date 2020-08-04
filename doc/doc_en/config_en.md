@@ -60,6 +60,8 @@ Take `rec_icdar15_train.yml` as an example:
 |         beta1           |    Set the exponential decay rate for the 1st moment estimates  |       0.9         |               \             |
 |         beta2           |    Set the exponential decay rate for the 2nd moment estimates  |     0.999         |               \             |
 |         decay           |         Whether to use decay       |    \              |               \             |
-|      function(decay)    |         Set the decay function       |   cosine_decay    |           Only support cosine_decay            |
-|      step_each_epoch    |      The number of steps in an epoch.  |         20       | Calculation ：total_image_num / (batch_size_per_card * card_size) |
-|        total_epoch      |    The number of epochs      |       1000      | Consistent with Global.epoch_num      |
+|      function(decay)    |         Set the decay function       |   cosine_decay    |         Support cosine_decay and piecewise_decay            |
+|      step_each_epoch    |      The number of steps in an epoch. Used in cosine_decay  |         20       | Calculation ：total_image_num / (batch_size_per_card * card_size) |
+|        total_epoch      |    The number of epochs. Used in cosine_decay      |       1000      | Consistent with Global.epoch_num      |
+|        boundaries      |    The step intervals to reduce learning rate. Used in piecewise_decay       |       -      |  The format is list        |
+|        decay_rate      |    Learning rate decay rate. Used in piecewise_decay       |       -      |  \        |
