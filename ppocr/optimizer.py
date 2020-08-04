@@ -36,17 +36,28 @@ def AdamDecay(params, parameter_list=None):
     l2_decay = params.get("l2_decay", 0.0)
 
     if 'decay' in params:
+        supported_decay_mode = ["cosine_decay", "piecewise_decay"]
         params = params['decay']
         decay_mode = params['function']
-        step_each_epoch = params['step_each_epoch']
-        total_epoch = params['total_epoch']
+        assert decay_mode in supported_decay_mode, "Supported decay mode is {}, but got {}".format(
+            supported_decay_mode, decay_mode)
+
         if decay_mode == "cosine_decay":
+            step_each_epoch = params['step_each_epoch']
+            total_epoch = params['total_epoch']
             base_lr = fluid.layers.cosine_decay(
                 learning_rate=base_lr,
                 step_each_epoch=step_each_epoch,
                 epochs=total_epoch)
-        else:
-            logger.info("Only support Cosine decay currently")
+        elif decay_mode == "piecewise_decay":
+            boundaries = params["boundaries"]
+            decay_rate = params["decay_rate"]
+            values = [
+                base_lr * decay_rate**idx
+                for idx in range(len(boundaries) + 1)
+            ]
+            base_lr = fluid.layers.piecewise_decay(boundaries, values)
+
     optimizer = fluid.optimizer.Adam(
         learning_rate=base_lr,
         beta1=beta1,
