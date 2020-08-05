@@ -248,7 +248,7 @@ class SimpleReader(object):
                           "num_workers will be 1.")
                     self.num_workers = 1
                 if self.batch_size * get_device_num() > img_num:
-                    logger.error(
+                    raise Exception(
                         "The number of the whole data ({}) is smaller than the batch_size * devices_num ({})".
                         format(img_num, self.batch_size * get_device_num()))
                 for img_id in range(process_id, img_num, self.num_workers):
