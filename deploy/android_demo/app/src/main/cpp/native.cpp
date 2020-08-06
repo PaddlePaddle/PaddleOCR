@@ -30,7 +30,7 @@ Java_com_baidu_paddle_lite_demo_ocr_OCRPredictorNative_init(JNIEnv *env, jobject
 }
 
 /**
- * "LITE_POWER_HIGH" 转为 paddle::lite_api::LITE_POWER_HIGH
+ * "LITE_POWER_HIGH" convert to paddle::lite_api::LITE_POWER_HIGH
  * @param cpu_mode
  * @return
  */
