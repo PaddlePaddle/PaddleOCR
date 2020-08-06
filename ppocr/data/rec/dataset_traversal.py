@@ -185,6 +185,7 @@ class SimpleReader(object):
         if params['mode'] != 'test':
             self.img_set_dir = params['img_set_dir']
             self.label_file_path = params['label_file_path']
+        self.use_gpu = params['use_gpu']
         self.char_ops = params['char_ops']
         self.image_shape = params['image_shape']
         self.loss_type = params['loss_type']
@@ -213,6 +214,15 @@ class SimpleReader(object):
         if self.mode != 'train':
             process_id = 0
 
+        def get_device_num():
+            if self.use_gpu:
+                gpus = os.environ.get("CUDA_VISIBLE_DEVICES", 1)
+                gpu_num = len(gpus.split(','))
+                return gpu_num
+            else:
+                cpu_num = os.environ.get("CPU_NUM", 1)
+                return int(cpu_num)
+
         def sample_iter_reader():
             if self.mode != 'train' and self.infer_img is not None:
                 image_file_list = get_image_file_list(self.infer_img)
@@ -237,6 +247,10 @@ class SimpleReader(object):
                     print("multiprocess is not fully compatible with Windows."
                           "num_workers will be 1.")
                     self.num_workers = 1
+                if self.batch_size * get_device_num() > img_num:
+                    raise Exception(
+                        "The number of the whole data ({}) is smaller than the batch_size * devices_num ({})".
+                        format(img_num, self.batch_size * get_device_num()))
                 for img_id in range(process_id, img_num, self.num_workers):
                     label_infor = label_infor_list[img_id_list[img_id]]
                     substr = label_infor.decode('utf-8').strip("\n").split("\t")
