@@ -22,7 +22,10 @@ from paddle_serving_client import Client
 from paddle_serving_app.reader import Sequential, URL2Image, ResizeByFactor
 from paddle_serving_app.reader import Div, Normalize, Transpose
 from paddle_serving_app.reader import DBPostProcess, FilterBoxes, GetRotateCropImage, SortedBoxes
-from paddle_serving_server_gpu.web_service import WebService
+if sys.argv[1] == 'gpu':
+    from paddle_serving_server_gpu.web_service import WebService
+elif sys.argv[1] == 'cpu':
+    from paddle_serving_server.web_service import WebService
 from paddle_serving_app.local_predict import Debugger
 import time
 import re
@@ -37,8 +40,12 @@ class OCRService(WebService):
                 (2, 0, 1))
         ])
         self.det_client = Debugger()
-        self.det_client.load_model_config(
-            det_model_config, gpu=True, profile=False)
+        if sys.argv[1] == 'gpu':
+            self.det_client.load_model_config(
+                det_model_config, gpu=True, profile=False)
+        elif sys.argv[1] == 'cpu':
+            self.det_client.load_model_config(
+                det_model_config, gpu=False, profile=False)
         self.ocr_reader = OCRReader()
 
     def preprocess(self, feed=[], fetch=[]):
@@ -99,5 +106,8 @@ ocr_service = OCRService(name="ocr")
 ocr_service.load_model_config("ocr_rec_model")
 ocr_service.prepare_server(workdir="workdir", port=9292)
 ocr_service.init_det_debugger(det_model_config="ocr_det_model")
-ocr_service.run_debugger_service(gpu=True)
+if sys.argv[1] == 'gpu':
+    ocr_service.run_debugger_service(gpu=True)
+elif sys.argv[1] == 'cpu':
+    ocr_service.run_debugger_service()
 ocr_service.run_web_service()

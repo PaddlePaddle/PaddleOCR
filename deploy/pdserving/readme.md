@@ -16,20 +16,33 @@
 
 **Python3操作指南：**
 ```
-#以下提供beta版本的paddle serving whl包，欢迎试用，正式版会在7月底正式上线
+#以下提供beta版本的paddle serving whl包，欢迎试用，正式版会在8月中正式上线
+#GPU用户下载server包使用这个链接
 wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_server_gpu-0.3.2-py3-none-any.whl
+python -m pip install paddle_serving_server_gpu-0.3.2-py3-none-any.whl
+#CPU版本请下载以下whl包使用这个链接
+wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_server-0.3.2-py3-none-any.whl
+python -m pip install paddle_serving_server-0.3.2-py3-none-any.whl
+#客户端和App包使用以下链接（CPU，GPU通用）
 wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_client-0.3.2-cp36-none-any.whl
 wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_app-0.1.2-py3-none-any.whl
-python -m pip install paddle_serving_app-0.1.2-py3-none-any.whl paddle_serving_server_gpu-0.3.2-py3-none-any.whl paddle_serving_client-0.3.2-cp36-none-any.whl
+python -m pip install paddle_serving_app-0.1.2-py3-none-any.whl paddle_serving_client-0.3.2-cp36-none-any.whl
 ```
 
 **Python2操作指南：**
 ```
-#以下提供beta版本的paddle serving whl包，欢迎试用，正式版会在7月底正式上线
+#以下提供beta版本的paddle serving whl包，欢迎试用，正式版会在8月中正式上线
+#GPU用户下载server包使用这个链接
 wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_server_gpu-0.3.2-py2-none-any.whl
+python -m pip install paddle_serving_server_gpu-0.3.2-py2-none-any.whl 
+#CPU版本请下载以下whl包使用这个链接
+wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_server-0.3.2-py2-none-any.whl
+python -m pip install paddle_serving_server-0.3.2-py2-none-any.whl
+
+#客户端和App包使用以下链接（CPU，GPU通用）
 wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_app-0.1.2-py2-none-any.whl
 wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_client-0.3.2-cp27-none-any.whl
-python -m pip install paddle_serving_app-0.1.2-py2-none-any.whl paddle_serving_server_gpu-0.3.2-py2-none-any.whl paddle_serving_client-0.3.2-cp27-none-any.whl
+python -m pip install paddle_serving_app-0.1.2-py2-none-any.whl paddle_serving_client-0.3.2-cp27-none-any.whl
 ```
 
 ### 2. 模型转换
@@ -54,13 +67,19 @@ tar -xzvf ocr_det.tar.gz
 
 ```
 python -m paddle_serving_server_gpu.serve --model ocr_det_model --port 9293 --gpu_id 0
-python ocr_web_server.py
+# cpu，gpu启动二选一，以下是cpu启动
+python ocr_web_server.py cpu
+# gpu启动
+python ocr_web_server.py gpu
 ```
 
 #### 方式2. 启动快速版服务
 
 ```
-python ocr_local_server.py
+# cpu，gpu启动二选一，以下是cpu启动
+python ocr_local_server.py cpu
+# gpu启动
+python ocr_local_server.py gpu
 ```
 
 ## 发送预测请求
@@ -85,7 +104,7 @@ python ocr_web_client.py
 
 在`ocr_web_server.py`或是`ocr_local_server.py`当中的`preprocess`函数里面做了检测服务和识别服务的前处理，`postprocess`函数里面做了识别的后处理服务，可以在相应的函数中做修改。调用了`paddle_serving_app`库提供的常见CV模型的前处理/后处理库。
 
-如果想要单独启动Paddle Serving的检测服务和识别服务，参见下列表格, 执行对应的脚本即可。
+如果想要单独启动Paddle Serving的检测服务和识别服务，参见下列表格, 执行对应的脚本即可，并且在命令行参数注明用的CPU或是GPU来提供服务。
 
 | 模型 | 标准版         | 快速版           |
 | ---- | ----------------- | ------------------- |
