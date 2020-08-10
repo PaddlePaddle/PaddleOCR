@@ -20,7 +20,7 @@
 #GPU用户下载server包使用这个链接
 wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_server_gpu-0.3.2-py3-none-any.whl
 python -m pip install paddle_serving_server_gpu-0.3.2-py3-none-any.whl
-#CPU版本请下载以下whl包使用这个链接
+#CPU版本使用这个链接
 wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_server-0.3.2-py3-none-any.whl
 python -m pip install paddle_serving_server-0.3.2-py3-none-any.whl
 #客户端和App包使用以下链接（CPU，GPU通用）
@@ -35,7 +35,7 @@ python -m pip install paddle_serving_app-0.1.2-py3-none-any.whl paddle_serving_c
 #GPU用户下载server包使用这个链接
 wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_server_gpu-0.3.2-py2-none-any.whl
 python -m pip install paddle_serving_server_gpu-0.3.2-py2-none-any.whl 
-#CPU版本请下载以下whl包使用这个链接
+#CPU版本使用这个链接
 wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_server-0.3.2-py2-none-any.whl
 python -m pip install paddle_serving_server-0.3.2-py2-none-any.whl
 
@@ -66,10 +66,11 @@ tar -xzvf ocr_det.tar.gz
 #### 方式1. 启动标准版服务
 
 ```
-python -m paddle_serving_server_gpu.serve --model ocr_det_model --port 9293 --gpu_id 0
 # cpu，gpu启动二选一，以下是cpu启动
+python -m paddle_serving_server.serve --model ocr_det_model --port 9293 
 python ocr_web_server.py cpu
 # gpu启动
+python -m paddle_serving_server_gpu.serve --model ocr_det_model --port 9293 --gpu_id 0
 python ocr_web_server.py gpu
 ```
 
