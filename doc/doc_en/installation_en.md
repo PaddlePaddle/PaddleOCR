@@ -11,7 +11,7 @@ It is recommended to use the docker provided by us to run PaddleOCR, please refe
 
 *If you want to directly run the prediction code on mac or windows, you can start from step 2.*
 
-1. (Recommended) Prepare a docker environment. The first time you use this image, it will be downloaded automatically. Please be patient.
+**1. (Recommended) Prepare a docker environment. The first time you use this image, it will be downloaded automatically. Please be patient.**
 ```
 # Switch to the working directory
 cd /home/Projects
