@@ -11,7 +11,7 @@ PaddleOCR 工作环境
 
 *如您希望使用 mac 或 windows直接运行预测代码，可以从第2步开始执行。*
 
-1. （建议）准备docker环境。第一次使用这个镜像，会自动下载该镜像，请耐心等待。
+**1. （建议）准备docker环境。第一次使用这个镜像，会自动下载该镜像，请耐心等待。**
 ```
 # 切换到工作目录下
 cd /home/Projects
@@ -47,19 +47,7 @@ docker images
 hub.baidubce.com/paddlepaddle/paddle   latest-gpu-cuda9.0-cudnn7-dev    f56310dcc829
 ```
 
-2. 更改python3默认版本
-
-docker中的python默认使用python3.5，PaddleOCR需要在Python3.7下执行（该版本下，对于第三方依赖库的兼容性更好一些）。进入docker后，可以编辑`/etc/profile`文件，之后在文件末尾添加
-
-```shell
-
-alias python3=python3.7
-alias pip3=pip3.7
-```
-
-保存之后，使用`source /etc/profile`命令使设置的默认Python生效。
-
-3. 安装PaddlePaddle Fluid v1.7
+**2. 安装PaddlePaddle Fluid v1.7**
 ```
 pip3 install --upgrade pip
 
@@ -76,7 +64,7 @@ python3 -m pip install paddlepaddle==1.7.2 -i https://pypi.tuna.tsinghua.edu.cn/
 更多的版本需求，请参照[安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
 ```
 
-4. 克隆PaddleOCR repo代码
+**3. 克隆PaddleOCR repo代码**
 ```
 【推荐】git clone https://github.com/PaddlePaddle/PaddleOCR
 
@@ -87,7 +75,7 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 注：码云托管代码可能无法实时同步本github项目更新，存在3~5天延时，请优先使用推荐方式。
 ```
 
-5. 安装第三方库
+**4. 安装第三方库**
 ```
 cd PaddleOCR
 pip3 install -r requirments.txt
