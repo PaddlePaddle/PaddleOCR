@@ -25,7 +25,7 @@ import ycm_core
 # These are the compilation flags that will be used in case there's no
 # compilation database set (by default, one is not set).
 # CHANGE THIS LIST OF FLAGS. YES, THIS IS THE DROID YOU HAVE BEEN LOOKING FOR.
-sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
