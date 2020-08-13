@@ -13,6 +13,7 @@
 #limitations under the License.
 
 import os
+import sys
 import math
 import random
 import functools
@@ -22,6 +23,7 @@ import string
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
 from ppocr.utils.utility import create_module
+from ppocr.utils.utility import get_image_file_list
 import time
 
 
@@ -34,12 +36,16 @@ class TrainReader(object):
             "absence process_function in Reader"
         self.process = create_module(params['process_function'])(params)
 
-    def __call__(self, process_id):
+    def __call__(self, process_id):     
+        with open(self.label_file_path, "rb") as fin:
+            label_infor_list = fin.readlines()
+        img_num = len(label_infor_list)
+        img_id_list = list(range(img_num))
+        if sys.platform == "win32" and self.num_workers != 1:
+            print("multiprocess is not fully compatible with Windows."
+                  "num_workers will be 1.")
+            self.num_workers = 1
         def sample_iter_reader():
-            with open(self.label_file_path, "rb") as fin:
-                label_infor_list = fin.readlines()
-            img_num = len(label_infor_list)
-            img_id_list = list(range(img_num))
             random.shuffle(img_id_list)
             for img_id in range(process_id, img_num, self.num_workers):
                 label_infor = label_infor_list[img_id_list[img_id]]
@@ -55,8 +61,6 @@ class TrainReader(object):
                 if len(batch_outs) == self.batch_size:
                     yield batch_outs
                     batch_outs = []
-            if len(batch_outs) != 0:
-                yield batch_outs
 
         return batch_iter_reader
 
@@ -72,34 +76,31 @@ class EvalTestReader(object):
             self.params)
         batch_size = self.params['test_batch_size_per_card']
 
-        flag_test_single_img = False
-        if mode == "test":
-            single_img_path = self.params['single_img_path']
-            if single_img_path is not None:
-                flag_test_single_img = True
-
         img_list = []
-        if flag_test_single_img:
-            img_list.append([single_img_path, single_img_path])
-        else:
+        if mode != "test":
             img_set_dir = self.params['img_set_dir']
             img_name_list_path = self.params['label_file_path']
             with open(img_name_list_path, "rb") as fin:
                 lines = fin.readlines()
                 for line in lines:
                     img_name = line.decode().strip("\n").split("\t")[0]
-                    img_path = img_set_dir + "/" + img_name
-                    img_list.append([img_path, img_name])
+                    img_path = os.path.join(img_set_dir, img_name)
+                    img_list.append(img_path)
+        else:
+            img_path = self.params['infer_img']
+            img_list = get_image_file_list(img_path)
 
         def batch_iter_reader():
             batch_outs = []
-            for img_path, img_name in img_list:
+            for img_path in img_list:
                 img = cv2.imread(img_path)
                 if img is None:
-                    logger.info("load image error:" + img_path)
+                    logger.info("{} does not exist!".format(img_path))
                     continue
+                elif len(list(img.shape)) == 2 or img.shape[2] == 1:
+                    img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
                 outs = process_function(img)
-                outs.append(img_name)
+                outs.append(img_path)
                 batch_outs.append(outs)
                 if len(batch_outs) == batch_size:
                     yield batch_outs

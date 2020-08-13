@@ -66,6 +66,8 @@ def reader_main(config=None, mode=None):
     reader_function = params['reader_function']
     function = create_module(reader_function)(params)
     if mode == "train":
+        if sys.platform == "win32":
+            return function(0)
         readers = []
         num_workers = params['num_workers']
         for process_id in range(num_workers):
@@ -73,9 +75,3 @@ def reader_main(config=None, mode=None):
         return paddle.reader.multiprocess_reader(readers, False)
     else:
         return function(mode)
-
-
-def test_reader(image_shape, img_path):
-    img = cv2.imread(img_path)
-    norm_img = process_image(img, image_shape)
-    return norm_img

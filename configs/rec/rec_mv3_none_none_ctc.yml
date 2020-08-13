@@ -4,7 +4,7 @@ Global:
   epoch_num: 72
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: output
+  save_model_dir: output/rec_Rosetta
   save_epoch_step: 3
   eval_batch_step: 2000
   train_batch_size_per_card: 256
@@ -15,7 +15,10 @@ Global:
   loss_type: ctc
   reader_yml: ./configs/rec/rec_benchmark_reader.yml
   pretrain_weights: 
-  
+  checkpoints:
+  save_inference_dir:
+  infer_img:
+
 Architecture:
   function: ppocr.modeling.architectures.rec_model,RecModel
 

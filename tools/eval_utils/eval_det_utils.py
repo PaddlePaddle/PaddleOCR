@@ -34,6 +34,7 @@ import json
 from copy import deepcopy
 import cv2
 from ppocr.data.reader_main import reader_main
+import os
 
 
 def cal_det_res(exe, config, eval_info_dict):
@@ -43,6 +44,8 @@ def cal_det_res(exe, config, eval_info_dict):
     postprocess_params.update(global_params)
     postprocess = create_module(postprocess_params['function']) \
         (params=postprocess_params)
+    if not os.path.exists(os.path.dirname(save_res_path)):
+        os.makedirs(os.path.dirname(save_res_path))
     with open(save_res_path, "wb") as fout:
         tackling_num = 0
         for data in eval_info_dict['reader']():
@@ -56,7 +59,14 @@ def cal_det_res(exe, config, eval_info_dict):
                 img_list.append(data[ino][0])
                 ratio_list.append(data[ino][1])
                 img_name_list.append(data[ino][2])
-            img_list = np.concatenate(img_list, axis=0)
+            try:
+                img_list = np.concatenate(img_list, axis=0)
+            except:
+                err = "concatenate error usually caused by different input image shapes in evaluation or testing.\n \
+                Please set \"test_batch_size_per_card\" in main yml as 1\n \
+                or add \"test_image_shape: [h, w]\" in reader yml for EvalReader."
+
+                raise Exception(err)
             outs = exe.run(eval_info_dict['program'], \
                            feed={'image': img_list}, \
                            fetch_list=eval_info_dict['fetch_varname_list'])
@@ -93,11 +103,19 @@ def load_label_infor(label_file_path, do_ignore=False):
                 if text == "###" and do_ignore:
                     ignore = True
                 bbox_infor[bno]['ignore'] = ignore
-            img_name_label_dict[substr[0]] = bbox_infor
+            img_name_label_dict[os.path.basename(substr[0])] = bbox_infor
     return img_name_label_dict
 
 
 def cal_det_metrics(gt_label_path, save_res_path):
+    """
+    calculate the detection metrics
+    Args:
+        gt_label_path(string): The groundtruth detection label file path
+        save_res_path(string): The saved predicted detection label path
+    return:
+        claculated metrics including Hmean, precision and recall
+    """
     evaluator = DetectionIoUEvaluator()
     gt_label_infor = load_label_infor(gt_label_path, do_ignore=True)
     dt_label_infor = load_label_infor(save_res_path)

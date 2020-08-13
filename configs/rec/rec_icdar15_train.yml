@@ -1,0 +1,49 @@
+Global:
+  algorithm: CRNN
+  use_gpu: true
+  epoch_num: 1000
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: ./output/rec_CRNN
+  save_epoch_step: 300
+  eval_batch_step: 500
+  train_batch_size_per_card: 256
+  test_batch_size_per_card: 256
+  image_shape: [3, 32, 100]
+  max_text_length: 25
+  character_type: en
+  loss_type: ctc
+  distort: true
+  debug: false
+  reader_yml: ./configs/rec/rec_icdar15_reader.yml
+  pretrain_weights: ./pretrain_models/rec_mv3_none_bilstm_ctc/best_accuracy
+  checkpoints:
+  save_inference_dir:
+  infer_img:
+
+Architecture:
+  function: ppocr.modeling.architectures.rec_model,RecModel
+
+Backbone:
+  function: ppocr.modeling.backbones.rec_mobilenet_v3,MobileNetV3
+  scale: 0.5
+  model_name: large
+
+Head:
+  function: ppocr.modeling.heads.rec_ctc_head,CTCPredict
+  encoder_type: rnn
+  SeqRNN:
+    hidden_size: 96
+    
+Loss:
+  function: ppocr.modeling.losses.rec_ctc_loss,CTCLoss
+
+Optimizer:
+  function: ppocr.optimizer,AdamDecay
+  base_lr: 0.0005
+  beta1: 0.9
+  beta2: 0.999
+  decay:
+    function: cosine_decay
+    step_each_epoch: 20
+    total_epoch: 1000

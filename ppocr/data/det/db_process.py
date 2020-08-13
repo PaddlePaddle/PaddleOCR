@@ -17,6 +17,8 @@ import cv2
 import numpy as np
 import json
 import sys
+from ppocr.utils.utility import initial_logger, check_and_read_gif
+logger = initial_logger()
 
 from .data_augment import AugmentData
 from .random_crop_data import RandomCropData
@@ -25,6 +27,10 @@ from .make_border_map import MakeBorderMap
 
 
 class DBProcessTrain(object):
+    """
+    DB pre-process for Train mode
+    """
+
     def __init__(self, params):
         self.img_set_dir = params['img_set_dir']
         self.image_shape = params['image_shape']
@@ -94,9 +100,14 @@ class DBProcessTrain(object):
 
     def __call__(self, label_infor):
         img_path, gt_label = self.convert_label_infor(label_infor)
-        imgvalue = cv2.imread(img_path)
+        imgvalue, flag = check_and_read_gif(img_path)
+        if not flag:
+            imgvalue = cv2.imread(img_path)
         if imgvalue is None:
+            logger.info("{} does not exist!".format(img_path))
             return None
+        if len(list(imgvalue.shape)) == 2 or imgvalue.shape[2] == 1:
+            imgvalue = cv2.cvtColor(imgvalue, cv2.COLOR_GRAY2BGR)
         data = self.make_data_dict(imgvalue, gt_label)
         data = AugmentData(data)
         data = RandomCropData(data, self.image_shape[1:])
@@ -109,11 +120,15 @@ class DBProcessTrain(object):
 
 
 class DBProcessTest(object):
+    """
+    DB pre-process for Test mode
+    """
+
     def __init__(self, params):
         super(DBProcessTest, self).__init__()
         self.resize_type = 0
-        if 'det_image_shape' in params:
-            self.image_shape = params['det_image_shape']
+        if 'test_image_shape' in params:
+            self.image_shape = params['test_image_shape']
             # print(self.image_shape)
             self.resize_type = 1
         if 'max_side_len' in params:
@@ -124,9 +139,10 @@ class DBProcessTest(object):
     def resize_image_type0(self, im):
         """
         resize image to a size multiple of 32 which is required by the network
-        :param im: the resized image
-        :param max_side_len: limit of max image size to avoid out of memory in gpu
-        :return: the resized image and the resize ratio
+        args:
+            img(array): array with shape [h, w, c]
+        return(tuple):
+            img, (ratio_h, ratio_w)
         """
         max_side_len = self.max_side_len
         h, w, _ = im.shape
@@ -146,12 +162,16 @@ class DBProcessTest(object):
         resize_w = int(resize_w * ratio)
         if resize_h % 32 == 0:
             resize_h = resize_h
+        elif resize_h // 32 <= 1:
+            resize_h = 32
         else:
-            resize_h = (resize_h // 32 + 1) * 32
+            resize_h = (resize_h // 32 - 1) * 32
         if resize_w % 32 == 0:
             resize_w = resize_w
+        elif resize_w // 32 <= 1:
+            resize_w = 32
         else:
-            resize_w = (resize_w // 32 + 1) * 32
+            resize_w = (resize_w // 32 - 1) * 32
         try:
             if int(resize_w) <= 0 or int(resize_h) <= 0:
                 return None, (None, None)
@@ -176,8 +196,12 @@ class DBProcessTest(object):
         img_std = [0.229, 0.224, 0.225]
         im = im.astype(np.float32, copy=False)
         im = im / 255
-        im -= img_mean
-        im /= img_std
+        im[:, :, 0] -= img_mean[0]
+        im[:, :, 1] -= img_mean[1]
+        im[:, :, 2] -= img_mean[2]
+        im[:, :, 0] /= img_std[0]
+        im[:, :, 1] /= img_std[1]
+        im[:, :, 2] /= img_std[2]
         channel_swap = (2, 0, 1)
         im = im.transpose(channel_swap)
         return im

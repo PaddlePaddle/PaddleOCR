@@ -1,14 +1,13 @@
 TrainReader:
   reader_function: ppocr.data.rec.dataset_traversal,SimpleReader
   num_workers: 8
-  img_set_dir: .
-  label_file_path: ./train_data/hard_label.txt
+  img_set_dir: ./train_data
+  label_file_path: ./train_data/rec_gt_train.txt
   
 EvalReader:
   reader_function: ppocr.data.rec.dataset_traversal,SimpleReader
-  img_set_dir: .
-  label_file_path: ./train_data/label_val_all.txt
+  img_set_dir: ./train_data
+  label_file_path: ./train_data/rec_gt_test.txt
 
 TestReader:
   reader_function: ppocr.data.rec.dataset_traversal,SimpleReader
-  infer_img: ./infer_img

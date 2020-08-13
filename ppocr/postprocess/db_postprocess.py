@@ -35,6 +35,7 @@ class DBPostProcess(object):
         self.thresh = params['thresh']
         self.box_thresh = params['box_thresh']
         self.max_candidates = params['max_candidates']
+        self.unclip_ratio = params['unclip_ratio']
         self.min_size = 3
 
     def boxes_from_bitmap(self, pred, _bitmap, dest_width, dest_height):
@@ -46,9 +47,12 @@ class DBPostProcess(object):
         bitmap = _bitmap
         height, width = bitmap.shape
 
-        # img, contours, _ = cv2.findContours((bitmap * 255).astype(np.uint8), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-        contours, _ = cv2.findContours((bitmap * 255).astype(np.uint8),
-                                       cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        outs = cv2.findContours((bitmap * 255).astype(np.uint8), cv2.RETR_LIST,
+                                cv2.CHAIN_APPROX_SIMPLE)
+        if len(outs) == 3:
+            img, contours, _ = outs[0], outs[1], outs[2]
+        elif len(outs) == 2:
+            contours, _ = outs[0], outs[1]
 
         num_contours = min(len(contours), self.max_candidates)
         boxes = np.zeros((num_contours, 4, 2), dtype=np.int16)
@@ -81,7 +85,8 @@ class DBPostProcess(object):
             scores[index] = score
         return boxes, scores
 
-    def unclip(self, box, unclip_ratio=1.5):
+    def unclip(self, box):
+        unclip_ratio = self.unclip_ratio
         poly = Polygon(box)
         distance = poly.area * unclip_ratio / poly.length
         offset = pyclipper.PyclipperOffset()
@@ -128,6 +133,7 @@ class DBPostProcess(object):
 
     def __call__(self, outs_dict, ratio_list):
         pred = outs_dict['maps']
+
         pred = pred[:, 0, :, :]
         segmentation = pred > self.thresh
 

@@ -1,23 +1,27 @@
 Global:
   algorithm: CRNN
-  dataset: common
   use_gpu: true
-  epoch_num: 300
+  epoch_num: 3000
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: output
+  save_model_dir: ./output/rec_CRNN
   save_epoch_step: 3
   eval_batch_step: 2000
   train_batch_size_per_card: 256
   test_batch_size_per_card: 256
-  image_shape: [3, 32, 100]
+  image_shape: [3, 32, 320]
   max_text_length: 25
   character_type: ch
   character_dict_path: ./ppocr/utils/ppocr_keys_v1.txt
   loss_type: ctc
+  distort: false
+  use_space_char: false
   reader_yml: ./configs/rec/rec_chinese_reader.yml
   pretrain_weights:
-  
+  checkpoints:
+  save_inference_dir:
+  infer_img:
+
 Architecture:
   function: ppocr.modeling.architectures.rec_model,RecModel
 
@@ -37,6 +41,6 @@ Loss:
 
 Optimizer:
   function: ppocr.optimizer,AdamDecay
-  base_lr: 0.001
+  base_lr: 0.0005
   beta1: 0.9
   beta2: 0.999
