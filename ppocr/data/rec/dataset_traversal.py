@@ -26,7 +26,7 @@ from ppocr.utils.utility import initial_logger
 from ppocr.utils.utility import get_image_file_list
 logger = initial_logger()
 
-from .img_tools import process_image, get_img_data
+from .img_tools import process_image, process_image_srn, get_img_data
 
 
 class LMDBReader(object):
@@ -40,6 +40,7 @@ class LMDBReader(object):
         self.image_shape = params['image_shape']
         self.loss_type = params['loss_type']
         self.max_text_length = params['max_text_length']
+        self.num_heads = params['num_heads']
         self.mode = params['mode']
         self.drop_last = False
         self.use_tps = False
@@ -117,14 +118,36 @@ class LMDBReader(object):
                 image_file_list = get_image_file_list(self.infer_img)
                 for single_img in image_file_list:
                     img = cv2.imread(single_img)
-                    if img.shape[-1] == 1 or len(list(img.shape)) == 2:
+                    if img.shape[-1]==1 or len(list(img.shape))==2:
+                        img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+                    if self.loss_type == 'srn':
+                        norm_img = process_image_srn(
+                            img=img,
+                            image_shape=self.image_shape,
+                            num_heads=self.num_heads,
+                            max_text_length=self.max_text_length
+                        )
+                    else:
+                        norm_img = process_image(
+                            img=img,
+                            image_shape=self.image_shape,
+                            char_ops=self.char_ops,
+                            tps=self.use_tps,
+                            infer_mode=True)
+                    yield norm_img
+            elif self.mode == 'test':
+                image_file_list = get_image_file_list(self.infer_img)
+                for single_img in image_file_list:
+                    img = cv2.imread(single_img)
+                    if img.shape[-1]==1 or len(list(img.shape))==2:
                         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
                     norm_img = process_image(
                         img=img,
                         image_shape=self.image_shape,
                         char_ops=self.char_ops,
                         tps=self.use_tps,
-                        infer_mode=True)
+                        infer_mode=True
+                    )
                     yield norm_img
             else:
                 lmdb_sets = self.load_hierarchical_lmdb_dataset()
@@ -144,14 +167,16 @@ class LMDBReader(object):
                             if sample_info is None:
                                 continue
                             img, label = sample_info
-                            outs = process_image(
-                                img=img,
-                                image_shape=self.image_shape,
-                                label=label,
-                                char_ops=self.char_ops,
-                                loss_type=self.loss_type,
-                                max_text_length=self.max_text_length,
-                                distort=self.use_distort)
+                            outs = []
+                            if self.loss_type == "srn":
+                                outs = process_image_srn(img, self.image_shape, self.num_heads,
+                                                         self.max_text_length, label,
+                                                         self.char_ops, self.loss_type)
+
+                            else:
+                                outs = process_image(img, self.image_shape, label,
+                                                    self.char_ops, self.loss_type,
+                                                    self.max_text_length)
                             if outs is None:
                                 continue
                             yield outs
@@ -159,7 +184,6 @@ class LMDBReader(object):
                     if finish_read_num == len(lmdb_sets):
                         break
                 self.close_lmdb_dataset(lmdb_sets)
-
         def batch_iter_reader():
             batch_outs = []
             for outs in sample_iter_reader():
@@ -167,9 +191,8 @@ class LMDBReader(object):
                 if len(batch_outs) == self.batch_size:
                     yield batch_outs
                     batch_outs = []
-            if not self.drop_last:
-                if len(batch_outs) != 0:
-                    yield batch_outs
+            if len(batch_outs) != 0:
+                yield batch_outs
 
         if self.infer_img is None:
             return batch_iter_reader

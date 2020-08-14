@@ -32,7 +32,7 @@ class ResNet():
     def __init__(self, params):
         self.layers = params['layers']
         self.is_3x3 = True
-        supported_layers = [18, 34, 50, 101, 152, 200]
+        supported_layers = [18, 34, 50, 101, 152]
         assert self.layers in supported_layers, \
             "supported layers are {} but input layer is {}".format(supported_layers, self.layers)
 
