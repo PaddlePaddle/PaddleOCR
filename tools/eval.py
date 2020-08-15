@@ -58,7 +58,7 @@ def main():
     program.check_gpu(use_gpu)
 
     alg = config['Global']['algorithm']
-    assert alg in ['EAST', 'DB', 'Rosetta', 'CRNN', 'STARNet', 'RARE']
+    assert alg in ['EAST', 'DB', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SAST']
     if alg in ['Rosetta', 'CRNN', 'STARNet', 'RARE']:
         config['Global']['char_ops'] = CharacterOps(config['Global'])
 
@@ -75,7 +75,7 @@ def main():
 
     init_model(config, eval_program, exe)
 
-    if alg in ['EAST', 'DB']:
+    if alg in ['EAST', 'DB', 'SAST']:
         eval_reader = reader_main(config=config, mode="eval")
         eval_info_dict = {'program':eval_program,\
             'reader':eval_reader,\
