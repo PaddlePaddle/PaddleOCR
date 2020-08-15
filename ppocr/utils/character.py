@@ -149,38 +149,29 @@ def cal_predicts_accuracy(char_ops,
     acc = acc_num * 1.0 / img_num
     return acc, acc_num, img_num
 
+
 def cal_predicts_accuracy_srn(char_ops,
-                          preds,
-                          labels,
-                          max_text_len,
-                          is_debug=False):
+                              preds,
+                              labels,
+                              max_text_len,
+                              is_debug=False):
     acc_num = 0
     img_num = 0
 
     total_len = preds.shape[0]
     img_num = int(total_len / max_text_len)
-    #print (img_num)
     for i in range(img_num):
         cur_label = []
         cur_pred = []
         for j in range(max_text_len):
-            if labels[j + i * max_text_len] != 37: #0
+            if labels[j + i * max_text_len] != 37:  #0
                 cur_label.append(labels[j + i * max_text_len][0])
             else:
                 break
 
-        if is_debug:
-            for j in range(max_text_len):
-                if preds[j + i * max_text_len] != 37: #0
-                    cur_pred.append(preds[j + i * max_text_len][0])
-                else:
-                    break
-            print ("cur_label: ", cur_label)
-            print ("cur_pred: ", cur_pred)
-
-
         for j in range(max_text_len + 1):
-            if j < len(cur_label) and preds[j + i * max_text_len][0] != cur_label[j]:
+            if j < len(cur_label) and preds[j + i * max_text_len][
+                    0] != cur_label[j]:
                 break
             elif j == len(cur_label) and j == max_text_len:
                 acc_num += 1

@@ -58,7 +58,10 @@ class RecModel(object):
         self.loss_type = global_params['loss_type']
         self.image_shape = global_params['image_shape']
         self.max_text_length = global_params['max_text_length']
-        self.num_heads = global_params["num_heads"]
+        if "num_heads" in params:
+            self.num_heads = global_params["num_heads"]
+        else:
+            self.num_heads = None
 
     def create_feed(self, mode):
         image_shape = deepcopy(self.image_shape)

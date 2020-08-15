@@ -35,24 +35,21 @@ class SRNLoss(object):
         lbl_weight = others['lbl_weight']
 
         casted_label = fluid.layers.cast(x=label, dtype='int64')
-        cost_word = fluid.layers.cross_entropy(input=word_predict, label=casted_label)
-        cost_gsrm = fluid.layers.cross_entropy(input=gsrm_predict, label=casted_label)
-        cost_vsfd = fluid.layers.cross_entropy(input=predict, label=casted_label)
+        cost_word = fluid.layers.cross_entropy(
+            input=word_predict, label=casted_label)
+        cost_gsrm = fluid.layers.cross_entropy(
+            input=gsrm_predict, label=casted_label)
+        cost_vsfd = fluid.layers.cross_entropy(
+            input=predict, label=casted_label)
 
-        #cost_word = cost_word * lbl_weight
-        #cost_gsrm = cost_gsrm * lbl_weight
-        #cost_vsfd = cost_vsfd * lbl_weight
+        cost_word = fluid.layers.reshape(
+            x=fluid.layers.reduce_sum(cost_word), shape=[1])
+        cost_gsrm = fluid.layers.reshape(
+            x=fluid.layers.reduce_sum(cost_gsrm), shape=[1])
+        cost_vsfd = fluid.layers.reshape(
+            x=fluid.layers.reduce_sum(cost_vsfd), shape=[1])
 
-        cost_word = fluid.layers.reshape(x=fluid.layers.reduce_sum(cost_word), shape=[1])
-        cost_gsrm = fluid.layers.reshape(x=fluid.layers.reduce_sum(cost_gsrm), shape=[1])
-        cost_vsfd = fluid.layers.reshape(x=fluid.layers.reduce_sum(cost_vsfd), shape=[1])
+        sum_cost = fluid.layers.sum(
+            [cost_word, cost_vsfd * 2.0, cost_gsrm * 0.15])
 
-        sum_cost = fluid.layers.sum([cost_word, cost_vsfd * 2.0, cost_gsrm * 0.15])
-
-        #sum_cost = fluid.layers.sum([cost_word * 3.0, cost_vsfd, cost_gsrm * 0.15])
-        #sum_cost = cost_word
-
-        #fluid.layers.Print(cost_word,message="word_cost")
-        #fluid.layers.Print(cost_vsfd,message="img_cost")
-        return [sum_cost,cost_vsfd,cost_word]
-        #return [sum_cost, cost_vsfd, cost_word]
+        return [sum_cost, cost_vsfd, cost_word]
