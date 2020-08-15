@@ -4,8 +4,9 @@ import numpy as np
 import paddle.fluid as fluid
 import paddle.fluid.layers as layers
 
-from .desc import *
-from .config import ModelHyperParams,TrainTaskConfig
+# Set seed for CE
+dropout_seed = None
+
 
 def wrap_layer_with_block(layer, block_idx):
     """
@@ -114,7 +115,7 @@ def multi_head_attention(queries,
 
     def __split_heads_qkv(queries, keys, values, n_head, d_key, d_value):
         """
-        Reshape input tensors at the last dimension to split multi-heads 
+        Reshape input tensors at the last dimension to split multi-heads
         and then transpose. Specifically, transform the input tensor with shape
         [bs, max_sequence_length, n_head * hidden_dim] to the output tensor
         with shape [bs, n_head, max_sequence_length, hidden_dim].
@@ -269,23 +270,24 @@ pre_process_layer = partial(pre_post_process_layer, None)
 post_process_layer = pre_post_process_layer
 
 
-def prepare_encoder(src_word,#[b,t,c]
-                            src_pos,
-                            src_vocab_size,
-                            src_emb_dim,
-                            src_max_len,
-                            dropout_rate=0.,
-                            bos_idx=0,
-                            word_emb_param_name=None,
-                            pos_enc_param_name=None):
+def prepare_encoder(
+        src_word,  #[b,t,c]
+        src_pos,
+        src_vocab_size,
+        src_emb_dim,
+        src_max_len,
+        dropout_rate=0.,
+        bos_idx=0,
+        word_emb_param_name=None,
+        pos_enc_param_name=None):
     """Add word embeddings and position encodings.
     The output tensor has a shape of:
     [batch_size, max_src_length_in_batch, d_model].
     This module is used at the bottom of the encoder stacks.
     """
-    
-    src_word_emb =src_word#layers.concat(res,axis=1)
-    src_word_emb=layers.cast(src_word_emb,'float32')
+
+    src_word_emb = src_word  #layers.concat(res,axis=1)
+    src_word_emb = layers.cast(src_word_emb, 'float32')
     # print("src_word_emb",src_word_emb)
 
     src_word_emb = layers.scale(x=src_word_emb, scale=src_emb_dim**0.5)
@@ -302,14 +304,14 @@ def prepare_encoder(src_word,#[b,t,c]
 
 
 def prepare_decoder(src_word,
-                            src_pos,
-                            src_vocab_size,
-                            src_emb_dim,
-                            src_max_len,
-                            dropout_rate=0.,
-                            bos_idx=0,
-                            word_emb_param_name=None,
-                            pos_enc_param_name=None):
+                    src_pos,
+                    src_vocab_size,
+                    src_emb_dim,
+                    src_max_len,
+                    dropout_rate=0.,
+                    bos_idx=0,
+                    word_emb_param_name=None,
+                    pos_enc_param_name=None):
     """Add word embeddings and position encodings.
         The output tensor has a shape of:
         [batch_size, max_src_length_in_batch, d_model].
@@ -323,7 +325,7 @@ def prepare_decoder(src_word,
             name=word_emb_param_name,
             initializer=fluid.initializer.Normal(0., src_emb_dim**-0.5)))
     # print("target_word_emb",src_word_emb)
-    src_word_emb = layers.scale(x=src_word_emb, scale=src_emb_dim ** 0.5)
+    src_word_emb = layers.scale(x=src_word_emb, scale=src_emb_dim**0.5)
     src_pos_enc = layers.embedding(
         src_pos,
         size=[src_max_len, src_emb_dim],
@@ -334,6 +336,7 @@ def prepare_decoder(src_word,
     return layers.dropout(
         enc_input, dropout_prob=dropout_rate, seed=dropout_seed,
         is_test=False) if dropout_rate else enc_input
+
 
 # prepare_encoder = partial(
 #     prepare_encoder_decoder, pos_enc_param_name=pos_enc_param_names[0])
@@ -595,21 +598,9 @@ def transformer(src_vocab_size,
     weights = all_inputs[-1]
 
     enc_output = wrap_encoder(
-        src_vocab_size,
-        ModelHyperParams.src_seq_len,
-        n_layer,
-        n_head,
-        d_key,
-        d_value,
-        d_model,
-        d_inner_hid,
-        prepostprocess_dropout,
-        attention_dropout,
-        relu_dropout,
-        preprocess_cmd,
-        postprocess_cmd,
-        weight_sharing,
-        enc_inputs)
+        src_vocab_size, 64, n_layer, n_head, d_key, d_value, d_model,
+        d_inner_hid, prepostprocess_dropout, attention_dropout, relu_dropout,
+        preprocess_cmd, postprocess_cmd, weight_sharing, enc_inputs)
 
     predict = wrap_decoder(
         trg_vocab_size,
@@ -650,34 +641,34 @@ def transformer(src_vocab_size,
 
 
 def wrap_encoder_forFeature(src_vocab_size,
-                 max_length,
-                 n_layer,
-                 n_head,
-                 d_key,
-                 d_value,
-                 d_model,
-                 d_inner_hid,
-                 prepostprocess_dropout,
-                 attention_dropout,
-                 relu_dropout,
-                 preprocess_cmd,
-                 postprocess_cmd,
-                 weight_sharing,
-                 enc_inputs=None,
-                 bos_idx=0):
+                            max_length,
+                            n_layer,
+                            n_head,
+                            d_key,
+                            d_value,
+                            d_model,
+                            d_inner_hid,
+                            prepostprocess_dropout,
+                            attention_dropout,
+                            relu_dropout,
+                            preprocess_cmd,
+                            postprocess_cmd,
+                            weight_sharing,
+                            enc_inputs=None,
+                            bos_idx=0):
     """
     The wrapper assembles together all needed layers for the encoder.
     img, src_pos, src_slf_attn_bias = enc_inputs
     img
     """
-    
+
     if enc_inputs is None:
         # This is used to implement independent encoder program in inference.
         conv_features, src_pos, src_slf_attn_bias = make_all_inputs(
             encoder_data_input_fields)
     else:
-        conv_features, src_pos, src_slf_attn_bias = enc_inputs#
-        b,t,c = conv_features.shape
+        conv_features, src_pos, src_slf_attn_bias = enc_inputs  #
+        b, t, c = conv_features.shape
         #"""
         #    insert cnn
         #"""
@@ -694,11 +685,11 @@ def wrap_encoder_forFeature(src_vocab_size,
         #b , c, h, w = feat.shape#h=6
         #print(feat)
         #layers.Print(feat,message="conv_feat",summarize=10)
-        
+
         #feat =layers.conv2d(feat,c,filter_size =[4 , 1],act="relu")
         #feat = layers.pool2d(feat,pool_stride=(3,1),pool_size=(3,1))
         #src_word = layers.squeeze(feat,axes=[2]) #src_word  [-1,c,ww]
-            
+
         #feat = layers.transpose(feat, [0,3,1,2])
         #src_word = layers.reshape(feat,[-1,w, c*h])
         #src_word = layers.im2sequence(
@@ -706,10 +697,10 @@ def wrap_encoder_forFeature(src_vocab_size,
         #    stride=[1, 1],
         #    filter_size=[feat.shape[2], 1])
         #layers.Print(src_word,message="src_word",summarize=10)
-        
+
         # print('feat',feat)
         #print("src_word",src_word)
-    
+
     enc_input = prepare_encoder(
         conv_features,
         src_pos,
@@ -718,7 +709,7 @@ def wrap_encoder_forFeature(src_vocab_size,
         max_length,
         prepostprocess_dropout,
         bos_idx=bos_idx,
-        word_emb_param_name=word_emb_param_names[0])
+        word_emb_param_name="src_word_emb_table")
 
     enc_output = encoder(
         enc_input,
@@ -735,6 +726,7 @@ def wrap_encoder_forFeature(src_vocab_size,
         preprocess_cmd,
         postprocess_cmd, )
     return enc_output
+
 
 def wrap_encoder(src_vocab_size,
                  max_length,
@@ -762,7 +754,7 @@ def wrap_encoder(src_vocab_size,
         src_word, src_pos, src_slf_attn_bias = make_all_inputs(
             encoder_data_input_fields)
     else:
-        src_word, src_pos, src_slf_attn_bias = enc_inputs#
+        src_word, src_pos, src_slf_attn_bias = enc_inputs  #
         #"""
         #    insert cnn
         #"""
@@ -779,11 +771,11 @@ def wrap_encoder(src_vocab_size,
         #b , c, h, w = feat.shape#h=6
         #print(feat)
         #layers.Print(feat,message="conv_feat",summarize=10)
-        
+
         #feat =layers.conv2d(feat,c,filter_size =[4 , 1],act="relu")
         #feat = layers.pool2d(feat,pool_stride=(3,1),pool_size=(3,1))
         #src_word = layers.squeeze(feat,axes=[2]) #src_word  [-1,c,ww]
-            
+
         #feat = layers.transpose(feat, [0,3,1,2])
         #src_word = layers.reshape(feat,[-1,w, c*h])
         #src_word = layers.im2sequence(
@@ -791,7 +783,7 @@ def wrap_encoder(src_vocab_size,
         #    stride=[1, 1],
         #    filter_size=[feat.shape[2], 1])
         #layers.Print(src_word,message="src_word",summarize=10)
-        
+
         # print('feat',feat)
         #print("src_word",src_word)
     enc_input = prepare_decoder(
@@ -802,7 +794,7 @@ def wrap_encoder(src_vocab_size,
         max_length,
         prepostprocess_dropout,
         bos_idx=bos_idx,
-        word_emb_param_name=word_emb_param_names[0])
+        word_emb_param_name="src_word_emb_table")
 
     enc_output = encoder(
         enc_input,
@@ -858,8 +850,8 @@ def wrap_decoder(trg_vocab_size,
         max_length,
         prepostprocess_dropout,
         bos_idx=bos_idx,
-        word_emb_param_name=word_emb_param_names[0]
-        if weight_sharing else word_emb_param_names[1])
+        word_emb_param_name="src_word_emb_table"
+        if weight_sharing else "trg_word_emb_table")
     dec_output = decoder(
         dec_input,
         enc_output,
@@ -886,7 +878,7 @@ def wrap_decoder(trg_vocab_size,
         predict = layers.matmul(
             x=dec_output,
             y=fluid.default_main_program().global_block().var(
-                word_emb_param_names[0]),
+                "trg_word_emb_table"),
             transpose_y=True)
     else:
         predict = layers.fc(input=dec_output,
@@ -931,12 +923,13 @@ def fast_decode(src_vocab_size,
 
     enc_inputs_len = len(encoder_data_input_fields)
     dec_inputs_len = len(fast_decoder_data_input_fields)
-    enc_inputs = all_inputs[0:enc_inputs_len]#enc_inputs tensor
-    dec_inputs = all_inputs[enc_inputs_len:enc_inputs_len + dec_inputs_len]#dec_inputs tensor
+    enc_inputs = all_inputs[0:enc_inputs_len]  #enc_inputs tensor
+    dec_inputs = all_inputs[enc_inputs_len:enc_inputs_len +
+                            dec_inputs_len]  #dec_inputs tensor
 
     enc_output = wrap_encoder(
         src_vocab_size,
-        ModelHyperParams.src_seq_len,##to do !!!!!????
+        64,  ##to do !!!!!????
         n_layer,
         n_head,
         d_key,

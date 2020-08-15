@@ -61,7 +61,7 @@ def eval_rec_run(exe, config, eval_info_dict, mode):
             img_list.append(data[ino][0])
             label_list.append(data[ino][1])
 
-        if config['Global']['loss_type'] != "srn": 
+        if config['Global']['loss_type'] != "srn":
             img_list = np.concatenate(img_list, axis=0)
             outs = exe.run(eval_info_dict['program'], \
                        feed={'image': img_list}, \
@@ -75,7 +75,8 @@ def eval_rec_run(exe, config, eval_info_dict, mode):
                 preds_lod = outs[0].lod()[0]
             labels, labels_lod = convert_rec_label_to_lod(label_list)
             acc, acc_num, sample_num = cal_predicts_accuracy(
-                char_ops, preds, preds_lod, labels, labels_lod, is_remove_duplicate)
+                char_ops, preds, preds_lod, labels, labels_lod,
+                is_remove_duplicate)
         else:
             encoder_word_pos_list = []
             gsrm_word_pos_list = []
@@ -89,15 +90,19 @@ def eval_rec_run(exe, config, eval_info_dict, mode):
 
             img_list = np.concatenate(img_list, axis=0)
             label_list = np.concatenate(label_list, axis=0)
-            encoder_word_pos_list = np.concatenate(encoder_word_pos_list, axis=0).astype(np.int64)
-            gsrm_word_pos_list = np.concatenate(gsrm_word_pos_list, axis=0).astype(np.int64)
-            gsrm_slf_attn_bias1_list = np.concatenate(gsrm_slf_attn_bias1_list, axis=0).astype(np.float32)
-            gsrm_slf_attn_bias2_list = np.concatenate(gsrm_slf_attn_bias2_list, axis=0).astype(np.float32)
+            encoder_word_pos_list = np.concatenate(
+                encoder_word_pos_list, axis=0).astype(np.int64)
+            gsrm_word_pos_list = np.concatenate(
+                gsrm_word_pos_list, axis=0).astype(np.int64)
+            gsrm_slf_attn_bias1_list = np.concatenate(
+                gsrm_slf_attn_bias1_list, axis=0).astype(np.float32)
+            gsrm_slf_attn_bias2_list = np.concatenate(
+                gsrm_slf_attn_bias2_list, axis=0).astype(np.float32)
 
             labels = label_list
 
             outs = exe.run(eval_info_dict['program'], \
-                       feed={'image': img_list, 'encoder_word_pos': encoder_word_pos_list, 
+                       feed={'image': img_list, 'encoder_word_pos': encoder_word_pos_list,
                              'gsrm_word_pos': gsrm_word_pos_list, 'gsrm_slf_attn_bias1': gsrm_slf_attn_bias1_list,
                              'gsrm_slf_attn_bias2': gsrm_slf_attn_bias2_list}, \
                        fetch_list=eval_info_dict['fetch_varname_list'], \
@@ -108,7 +113,7 @@ def eval_rec_run(exe, config, eval_info_dict, mode):
 
         total_acc_num += acc_num
         total_sample_num += sample_num
-        logger.info("eval batch id: {}, acc: {}".format(total_batch_num, acc))
+        #logger.info("eval batch id: {}, acc: {}".format(total_batch_num, acc))
         total_batch_num += 1
     avg_acc = total_acc_num * 1.0 / total_sample_num
     metrics = {'avg_acc': avg_acc, "total_acc_num": total_acc_num, \

@@ -34,6 +34,7 @@ from ppocr.utils.save_load import save_model
 import numpy as np
 from ppocr.utils.character import cal_predicts_accuracy, cal_predicts_accuracy_srn, CharacterOps
 
+
 class ArgsParser(ArgumentParser):
     def __init__(self):
         super(ArgsParser, self).__init__(
@@ -196,10 +197,13 @@ def build(config, main_prog, startup_prog, mode):
                 if config['Global']["loss_type"] == 'srn':
                     model_average = fluid.optimizer.ModelAverage(
                         config['Global']['average_window'],
-                        min_average_window=config['Global']['min_average_window'],
-                        max_average_window=config['Global']['max_average_window'])
+                        min_average_window=config['Global'][
+                            'min_average_window'],
+                        max_average_window=config['Global'][
+                            'max_average_window'])
 
-    return (dataloader, fetch_name_list, fetch_varname_list, opt_loss_name,model_average)
+    return (dataloader, fetch_name_list, fetch_varname_list, opt_loss_name,
+            model_average)
 
 
 def build_export(config, main_prog, startup_prog):
@@ -398,6 +402,7 @@ def train_eval_rec_run(config, exe, train_info_dict, eval_info_dict):
             save_model(train_info_dict['train_program'], save_path)
     return
 
+
 def preprocess():
     FLAGS = ArgsParser().parse_args()
     config = load_config(FLAGS.config)
@@ -409,8 +414,8 @@ def preprocess():
     check_gpu(use_gpu)
 
     alg = config['Global']['algorithm']
-    assert alg in ['EAST', 'DB', 'Rosetta', 'CRNN', 'STARNet', 'RARE']
-    if alg in ['Rosetta', 'CRNN', 'STARNet', 'RARE']:
+    assert alg in ['EAST', 'DB', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN']
+    if alg in ['Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN']:
         config['Global']['char_ops'] = CharacterOps(config['Global'])
 
     place = fluid.CUDAPlace(0) if use_gpu else fluid.CPUPlace()

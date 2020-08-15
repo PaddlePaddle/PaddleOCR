@@ -79,17 +79,45 @@ class RecModel(object):
                 feed_list = [image, label_in, label_out]
                 labels = {'label_in': label_in, 'label_out': label_out}
             elif self.loss_type == "srn":
-                encoder_word_pos = fluid.data(name="encoder_word_pos", shape=[-1, int((image_shape[-2] / 8) * (image_shape[-1] / 8)), 1], dtype="int64")
-                gsrm_word_pos = fluid.data(name="gsrm_word_pos", shape=[-1, self.max_text_length, 1], dtype="int64")
-                gsrm_slf_attn_bias1 = fluid.data(name="gsrm_slf_attn_bias1", shape=[-1, self.num_heads, self.max_text_length, self.max_text_length])
-                gsrm_slf_attn_bias2 = fluid.data(name="gsrm_slf_attn_bias2", shape=[-1, self.num_heads, self.max_text_length, self.max_text_length])
-                lbl_weight = fluid.layers.data(name="lbl_weight", shape=[-1, 1], dtype='int64')
+                encoder_word_pos = fluid.data(
+                    name="encoder_word_pos",
+                    shape=[
+                        -1, int((image_shape[-2] / 8) * (image_shape[-1] / 8)),
+                        1
+                    ],
+                    dtype="int64")
+                gsrm_word_pos = fluid.data(
+                    name="gsrm_word_pos",
+                    shape=[-1, self.max_text_length, 1],
+                    dtype="int64")
+                gsrm_slf_attn_bias1 = fluid.data(
+                    name="gsrm_slf_attn_bias1",
+                    shape=[
+                        -1, self.num_heads, self.max_text_length,
+                        self.max_text_length
+                    ])
+                gsrm_slf_attn_bias2 = fluid.data(
+                    name="gsrm_slf_attn_bias2",
+                    shape=[
+                        -1, self.num_heads, self.max_text_length,
+                        self.max_text_length
+                    ])
+                lbl_weight = fluid.layers.data(
+                    name="lbl_weight", shape=[-1, 1], dtype='int64')
                 label = fluid.data(
                     name='label', shape=[-1, 1], dtype='int32', lod_level=1)
-                feed_list = [image, label, encoder_word_pos, gsrm_word_pos, gsrm_slf_attn_bias1, gsrm_slf_attn_bias2, lbl_weight]
-                labels = {'label': label, 'encoder_word_pos': encoder_word_pos,
-                          'gsrm_word_pos': gsrm_word_pos, 'gsrm_slf_attn_bias1': gsrm_slf_attn_bias1,
-                          'gsrm_slf_attn_bias2': gsrm_slf_attn_bias2,'lbl_weight':lbl_weight}
+                feed_list = [
+                    image, label, encoder_word_pos, gsrm_word_pos,
+                    gsrm_slf_attn_bias1, gsrm_slf_attn_bias2, lbl_weight
+                ]
+                labels = {
+                    'label': label,
+                    'encoder_word_pos': encoder_word_pos,
+                    'gsrm_word_pos': gsrm_word_pos,
+                    'gsrm_slf_attn_bias1': gsrm_slf_attn_bias1,
+                    'gsrm_slf_attn_bias2': gsrm_slf_attn_bias2,
+                    'lbl_weight': lbl_weight
+                }
             else:
                 label = fluid.data(
                     name='label', shape=[None, 1], dtype='int32', lod_level=1)
@@ -112,15 +140,41 @@ class RecModel(object):
                         "We set img_shape to be the same , it may affect the inference effect"
                     )
                     image_shape = deepcopy(self.image_shape)
-                    image = fluid.data(name='image', shape=image_shape, dtype='float32')
+            image = fluid.data(name='image', shape=image_shape, dtype='float32')
             if self.loss_type == "srn":
-                encoder_word_pos = fluid.data(name="encoder_word_pos", shape=[-1, int((image_shape[-2] / 8) * (image_shape[-1] / 8)), 1], dtype="int64")
-                gsrm_word_pos = fluid.data(name="gsrm_word_pos", shape=[-1, self.max_text_length, 1], dtype="int64")
-                gsrm_slf_attn_bias1 = fluid.data(name="gsrm_slf_attn_bias1", shape=[-1, self.num_heads, self.max_text_length, self.max_text_length])
-                gsrm_slf_attn_bias2 = fluid.data(name="gsrm_slf_attn_bias2", shape=[-1, self.num_heads, self.max_text_length, self.max_text_length])
-                feed_list = [image, encoder_word_pos, gsrm_word_pos, gsrm_slf_attn_bias1, gsrm_slf_attn_bias2]
-                labels = {'encoder_word_pos': encoder_word_pos, 'gsrm_word_pos': gsrm_word_pos,
-                        'gsrm_slf_attn_bias1': gsrm_slf_attn_bias1, 'gsrm_slf_attn_bias2': gsrm_slf_attn_bias2}
+                encoder_word_pos = fluid.data(
+                    name="encoder_word_pos",
+                    shape=[
+                        -1, int((image_shape[-2] / 8) * (image_shape[-1] / 8)),
+                        1
+                    ],
+                    dtype="int64")
+                gsrm_word_pos = fluid.data(
+                    name="gsrm_word_pos",
+                    shape=[-1, self.max_text_length, 1],
+                    dtype="int64")
+                gsrm_slf_attn_bias1 = fluid.data(
+                    name="gsrm_slf_attn_bias1",
+                    shape=[
+                        -1, self.num_heads, self.max_text_length,
+                        self.max_text_length
+                    ])
+                gsrm_slf_attn_bias2 = fluid.data(
+                    name="gsrm_slf_attn_bias2",
+                    shape=[
+                        -1, self.num_heads, self.max_text_length,
+                        self.max_text_length
+                    ])
+                feed_list = [
+                    image, encoder_word_pos, gsrm_word_pos, gsrm_slf_attn_bias1,
+                    gsrm_slf_attn_bias2
+                ]
+                labels = {
+                    'encoder_word_pos': encoder_word_pos,
+                    'gsrm_word_pos': gsrm_word_pos,
+                    'gsrm_slf_attn_bias1': gsrm_slf_attn_bias1,
+                    'gsrm_slf_attn_bias2': gsrm_slf_attn_bias2
+                }
         return image, labels, loader
 
     def __call__(self, mode):
@@ -140,8 +194,13 @@ class RecModel(object):
                 label = labels['label']
             if self.loss_type == 'srn':
                 total_loss, img_loss, word_loss = self.loss(predicts, labels)
-                outputs = {'total_loss':total_loss, 'img_loss':img_loss, 'word_loss':word_loss,
-                           'decoded_out':decoded_out, 'label':label}
+                outputs = {
+                    'total_loss': total_loss,
+                    'img_loss': img_loss,
+                    'word_loss': word_loss,
+                    'decoded_out': decoded_out,
+                    'label': label
+                }
             else:
                 outputs = {'total_loss':loss, 'decoded_out':\
                     decoded_out, 'label':label}

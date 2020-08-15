@@ -17,11 +17,12 @@ Global:
   average_window: 0.15
   max_average_window: 15625
   min_average_window: 10000
-  reader_yml: ./configs/rec/rec_srn_reader.yml
+  reader_yml: ./configs/rec/rec_benchmark_reader.yml
   pretrain_weights: 
   checkpoints:
   save_inference_dir:
-  
+  infer_img:
+
 Architecture:
   function: ppocr.modeling.architectures.rec_model,RecModel
 
