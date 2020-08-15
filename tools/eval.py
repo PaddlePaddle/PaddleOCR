@@ -45,26 +45,10 @@ from ppocr.utils.save_load import init_model
 from eval_utils.eval_det_utils import eval_det_run
 from eval_utils.eval_rec_utils import test_rec_benchmark
 from eval_utils.eval_rec_utils import eval_rec_run
-from ppocr.utils.character import CharacterOps
 
 
 def main():
-    config = program.load_config(FLAGS.config)
-    program.merge_config(FLAGS.opt)
-    logger.info(config)
-
-    # check if set use_gpu=True in paddlepaddle cpu version
-    use_gpu = config['Global']['use_gpu']
-    program.check_gpu(use_gpu)
-
-    alg = config['Global']['algorithm']
-    assert alg in ['EAST', 'DB', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SAST']
-    if alg in ['Rosetta', 'CRNN', 'STARNet', 'RARE']:
-        config['Global']['char_ops'] = CharacterOps(config['Global'])
-
-    place = fluid.CUDAPlace(0) if use_gpu else fluid.CPUPlace()
-    startup_prog = fluid.Program()
-    eval_program = fluid.Program()
+    startup_prog, eval_program, place, config, train_alg_type = program.preprocess()
     eval_build_outputs = program.build(
         config, eval_program, startup_prog, mode='test')
     eval_fetch_name_list = eval_build_outputs[1]
@@ -75,7 +59,7 @@ def main():
 
     init_model(config, eval_program, exe)
 
-    if alg in ['EAST', 'DB', 'SAST']:
+    if train_alg_type == 'det':
         eval_reader = reader_main(config=config, mode="eval")
         eval_info_dict = {'program':eval_program,\
             'reader':eval_reader,\
@@ -101,6 +85,4 @@ def main():
 
 
 if __name__ == '__main__':
-    parser = program.ArgsParser()
-    FLAGS = parser.parse_args()
     main()
