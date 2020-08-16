@@ -98,13 +98,15 @@ class RecModel(object):
                     shape=[
                         -1, self.num_heads, self.max_text_length,
                         self.max_text_length
-                    ])
+                    ],
+                    dtype="float32")
                 gsrm_slf_attn_bias2 = fluid.data(
                     name="gsrm_slf_attn_bias2",
                     shape=[
                         -1, self.num_heads, self.max_text_length,
                         self.max_text_length
-                    ])
+                    ],
+                    dtype="float32")
                 lbl_weight = fluid.layers.data(
                     name="lbl_weight", shape=[-1, 1], dtype='int64')
                 label = fluid.data(
@@ -161,13 +163,15 @@ class RecModel(object):
                     shape=[
                         -1, self.num_heads, self.max_text_length,
                         self.max_text_length
-                    ])
+                    ],
+                    dtype="float32")
                 gsrm_slf_attn_bias2 = fluid.data(
                     name="gsrm_slf_attn_bias2",
                     shape=[
                         -1, self.num_heads, self.max_text_length,
                         self.max_text_length
-                    ])
+                    ],
+                    dtype="float32")
                 feed_list = [
                     image, encoder_word_pos, gsrm_word_pos, gsrm_slf_attn_bias1,
                     gsrm_slf_attn_bias2
@@ -214,7 +218,7 @@ class RecModel(object):
             if self.loss_type == "ctc":
                 predict = fluid.layers.softmax(predict)
             if self.loss_type == "srn":
-                logger.infor(
+                raise Exception(
                     "Warning! SRN does not support export model currently")
             return [image, {'decoded_out': decoded_out, 'predicts': predict}]
         else:

@@ -26,12 +26,12 @@ class CharacterOps(object):
         self.character_type = config['character_type']
         self.loss_type = config['loss_type']
         self.max_text_len = config['max_text_length']
+        if self.loss_type == "srn" and self.character_type == "ch":
+            raise Exception("SRN can only support in character_type == en")
         if self.character_type == "en":
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
         elif self.character_type == "ch":
-            if self.loss_type == "srn":
-                raise Exception("SRN can only support in character_type == en")
             character_dict_path = config['character_dict_path']
             add_space = False
             if 'use_space_char' in config:
