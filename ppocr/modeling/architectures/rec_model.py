@@ -58,7 +58,7 @@ class RecModel(object):
         self.loss_type = global_params['loss_type']
         self.image_shape = global_params['image_shape']
         self.max_text_length = global_params['max_text_length']
-        if "num_heads" in params:
+        if "num_heads" in global_params:
             self.num_heads = global_params["num_heads"]
         else:
             self.num_heads = None
