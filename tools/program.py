@@ -82,10 +82,8 @@ default_config = {'Global': {'debug': False, }}
 def load_config(file_path):
     """
     Load config from yml/yaml file.
-
     Args:
         file_path (str): Path of the config file to be loaded.
-
     Returns: global config
     """
     merge_config(default_config)
@@ -104,10 +102,8 @@ def load_config(file_path):
 def merge_config(config):
     """
     Merge config into global config.
-
     Args:
         config (dict): Config to be merged.
-
     Returns: global config
     """
     for key, value in config.items():
@@ -158,13 +154,11 @@ def build(config, main_prog, startup_prog, mode):
         3. create a model
         4. create fetchs
         5. create an optimizer
-
     Args:
         config(dict): config
         main_prog(): main program
         startup_prog(): startup program
         is_train(bool): train or valid
-
     Returns:
         dataloader(): a bridge between the model and the data
         fetchs(dict): dict of model outputs(included loss and measures)
@@ -415,7 +409,7 @@ def preprocess():
     check_gpu(use_gpu)
 
     alg = config['Global']['algorithm']
-    assert alg in ['EAST', 'DB', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN']
+    assert alg in ['EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN']
     if alg in ['Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN']:
         config['Global']['char_ops'] = CharacterOps(config['Global'])
 
@@ -423,7 +417,7 @@ def preprocess():
     startup_program = fluid.Program()
     train_program = fluid.Program()
 
-    if alg in ['EAST', 'DB']:
+    if alg in ['EAST', 'DB', 'SAST']:
         train_alg_type = 'det'
     else:
         train_alg_type = 'rec'
