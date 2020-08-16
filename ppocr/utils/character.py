@@ -25,7 +25,7 @@ class CharacterOps(object):
     def __init__(self, config):
         self.character_type = config['character_type']
         self.loss_type = config['loss_type']
-        self.max_text_len = config['max_text_length']
+        self.max_text_len = 25
         if self.character_type == "en":
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)

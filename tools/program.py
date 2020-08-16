@@ -194,13 +194,14 @@ def build(config, main_prog, startup_prog, mode):
                 global_lr = optimizer._global_learning_rate()
                 fetch_name_list.insert(0, "lr")
                 fetch_varname_list.insert(0, global_lr.name)
-                if config['Global']["loss_type"] == 'srn':
-                    model_average = fluid.optimizer.ModelAverage(
-                        config['Global']['average_window'],
-                        min_average_window=config['Global'][
-                            'min_average_window'],
-                        max_average_window=config['Global'][
-                            'max_average_window'])
+                if "loss_type" in config["Global"]:
+                    if config['Global']["loss_type"] == 'srn':
+                        model_average = fluid.optimizer.ModelAverage(
+                            config['Global']['average_window'],
+                            min_average_window=config['Global'][
+                                'min_average_window'],
+                            max_average_window=config['Global'][
+                                'max_average_window'])
 
     return (dataloader, fetch_name_list, fetch_varname_list, opt_loss_name,
             model_average)
