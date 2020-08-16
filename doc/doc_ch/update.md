@@ -1,4 +1,5 @@
 # 更新
+- 2020.7.23 发布7月21日B站直播课回放和PPT，PaddleOCR开源大礼包全面解读，[获取地址](https://aistudio.baidu.com/aistudio/course/introduce/1519)
 - 2020.7.15 添加基于EasyEdge和Paddle-Lite的移动端DEMO，支持iOS和Android系统
 - 2020.7.15 完善预测部署，添加基于C++预测引擎推理、服务化部署和端侧部署方案，以及超轻量级中文OCR模型预测耗时Benchmark
 - 2020.7.15 整理OCR相关数据集、常用数据标注以及合成工具

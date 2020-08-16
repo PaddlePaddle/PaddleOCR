@@ -3,7 +3,7 @@
 
 This tutorial will introduce how to use paddle-lite to deploy paddleOCR ultra-lightweight Chinese and English detection models on mobile phones.
 
-addle Lite is a lightweight inference engine for PaddlePaddle.
+paddle-lite is a lightweight inference engine for PaddlePaddle.
 It provides efficient inference capabilities for mobile phones and IOTs,
 and extensively integrates cross-platform hardware to provide lightweight
 deployment solutions for end-side deployment issues.
@@ -17,7 +17,7 @@ deployment solutions for end-side deployment issues.
 [build for Docker](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#docker)
 [build for Linux](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#android)
 [build for MAC OS](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#id13)
-[build for windows](https://paddle-lite.readthedocs.io/zh/latest/demo_guides/x86.html#windows)
+[build for windows](https://paddle-lite.readthedocs.io/zh/latest/demo_guides/x86.html#id4)
 
 ## 3. Download prebuild library for android and ios
 
@@ -155,7 +155,7 @@ demo/cxx/ocr/
 |-- debug/  
 |   |--ch_det_mv3_db_opt.nb             Detection model
 |   |--ch_rec_mv3_crnn_opt.nb           Recognition model
-|   |--11.jpg                           image for OCR
+|   |--11.jpg                           Image for OCR
 |   |--ppocr_keys_v1.txt                Dictionary file
 |   |--libpaddle_light_api_shared.so    C++ .so file
 |   |--config.txt                       Config file

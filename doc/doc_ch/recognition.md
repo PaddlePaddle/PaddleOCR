@@ -21,12 +21,11 @@ ln -sf <path/to/dataset> <path/to/paddle_ocr>/train_data/dataset
 * 使用自己数据集：
 
 若您希望使用自己的数据进行训练，请参考下文组织您的数据。
-
 - 训练集
 
 首先请将训练图片放入同一个文件夹（train_images），并用一个txt文件（rec_gt_train.txt）记录图片路径和标签。
 
-* 注意： 默认请将图片路径和图片标签用 \t 分割，如用其他方式分割将造成训练报错
+**注意：** 默认请将图片路径和图片标签用 \t 分割，如用其他方式分割将造成训练报错
 
 ```
 " 图像文件名                 图像标注信息 "
@@ -41,12 +40,9 @@ PaddleOCR 提供了一份用于训练 icdar2015 数据集的标签文件，通�
 wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_train.txt
 # 测试集标签
 wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_test.txt
-
-
 ```
 
 最终训练集应有如下文件结构：
-
 ```
 |-train_data
     |-ic15_data
@@ -150,7 +146,7 @@ PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_t
 
 如果验证集很大，测试将会比较耗时，建议减少评估次数，或训练完再进行评估。
 
-* 提示： 可通过 -c 参数选择 `configs/rec/` 路径下的多种模型配置进行训练，PaddleOCR支持的识别算法有：
+**提示：** 可通过 -c 参数选择 `configs/rec/` 路径下的多种模型配置进行训练，PaddleOCR支持的识别算法有：
 
 
 | 配置文件 |  算法名称 |   backbone |   trans   |   seq      |     pred     |

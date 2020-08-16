@@ -7,7 +7,7 @@
 namespace ppredictor {
 
 /**
- * PaddleLite Preditor 通用接口
+ * PaddleLite Preditor Common Interface
  */
 class PPredictor_Interface {
 public:
@@ -21,7 +21,7 @@ public:
 };
 
 /**
- * 通用推理
+ * Common Predictor
  */
 class PPredictor : public PPredictor_Interface {
 public:
@@ -33,9 +33,9 @@ public:
     }
 
     /**
-     * 初始化paddlitelite的opt模型，nb格式，与init_paddle二选一
+     * init paddlitelite opt model，nb format ，or use ini_paddle
      * @param model_content
-     * @return 0 目前是固定值0， 之后其他值表示失败
+     * @return 0
      */
     virtual int init_nb(const std::string &model_content);
 

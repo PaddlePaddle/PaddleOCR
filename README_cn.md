@@ -3,9 +3,8 @@
 ## 简介
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力使用者训练出更好的模型，并应用落地。
 
-**直播预告：2020年7月21日晚8点B站直播，PaddleOCR开源大礼包全面解读，直播地址当天更新**
-
 **近期更新**
+- 2020.7.23 发布7月21日B站直播课回放和PPT，PaddleOCR开源大礼包全面解读，[获取地址](https://aistudio.baidu.com/aistudio/course/introduce/1519)
 - 2020.7.15 添加基于EasyEdge和Paddle-Lite的移动端DEMO，支持iOS和Android系统
 - 2020.7.15 完善预测部署，添加基于C++预测引擎推理、服务化部署和端侧部署方案，以及超轻量级中文OCR模型预测耗时Benchmark
 - 2020.7.15 整理OCR相关数据集、常用数据标注以及合成工具
@@ -33,7 +32,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 上图是超轻量级中文OCR模型效果展示，更多效果图请见[效果展示页面](./doc/doc_ch/visualization.md)。
 
 - 超轻量级中文OCR在线体验地址：https://www.paddlepaddle.org.cn/hub/scene/ocr
-- 移动端DEMO体验(基于EasyEdge和Paddle-Lite, 支持iOS和Android系统)：[安装包二维码获取地址](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite) 
+- 移动端DEMO体验(基于EasyEdge和Paddle-Lite, 支持iOS和Android系统)：[安装包二维码获取地址](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)
 
    Android手机也可以扫描下面二维码安装体验。
 
@@ -206,8 +205,9 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[模型训�
 ## 贡献代码
 我们非常欢迎你为PaddleOCR贡献代码，也十分感谢你的反馈。
 
-- 非常感谢 [Khanh Tran](https://github.com/xxxpsyduck) 贡献了英文文档。
+- 非常感谢 [Khanh Tran](https://github.com/xxxpsyduck) 贡献了英文文档
 - 非常感谢 [zhangxin](https://github.com/ZhangXinNan)([Blog](https://blog.csdn.net/sdlypyzq)) 贡献新的可视化方式、添加.gitgnore、处理手动设置PYTHONPATH环境变量的问题
 - 非常感谢 [lyl120117](https://github.com/lyl120117) 贡献打印网络结构的代码
 - 非常感谢 [xiangyubo](https://github.com/xiangyubo) 贡献手写中文OCR数据集
 - 非常感谢 [authorfu](https://github.com/authorfu) 贡献Android和[xiadeye](https://github.com/xiadeye) 贡献IOS的demo代码
+- 非常感谢 [BeyondYourself](https://github.com/BeyondYourself) 给PaddleOCR提了很多非常棒的建议，并简化了PaddleOCR的部分代码风格。

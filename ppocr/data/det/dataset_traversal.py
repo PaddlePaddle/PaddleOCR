@@ -41,7 +41,7 @@ class TrainReader(object):
             "absence process_function in Reader"
         self.process = create_module(params['process_function'])(params)
 
-    def __call__(self, process_id):
+    def __call__(self, process_id):     
         def sample_iter_reader():
             with open(self.label_file_path, "rb") as fin:
                 label_infor_list = fin.readlines()

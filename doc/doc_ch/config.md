@@ -60,6 +60,8 @@
 |         beta1           |    设置一阶矩估计的指数衰减率  |       0.9         |               \             |
 |         beta2           |    设置二阶矩估计的指数衰减率  |     0.999         |               \             |
 |         decay           |         是否使用decay       |    \              |               \             |
-|      function(decay)    |         设置decay方式       |   cosine_decay    |       目前只支持cosin_decay  |
-|      step_each_epoch    |      每个epoch包含多少次迭代  |         20       | 计算方式：total_image_num / (batch_size_per_card * card_size) |
-|        total_epoch      |    总共迭代多少个epoch        |       1000      | 与Global.epoch_num 一致        |
+|      function(decay)    |         设置decay方式       |   -    |       目前支持cosine_decay与piecewise_decay  |
+|      step_each_epoch    |      每个epoch包含多少次迭代, cosine_decay时有效   |         20       | 计算方式：total_image_num / (batch_size_per_card * card_size) |
+|        total_epoch      |    总共迭代多少个epoch, cosine_decay时有效        |       1000      | 与Global.epoch_num 一致        |
+|        boundaries      |    学习率下降时的迭代次数间隔, piecewise_decay时有效       |       -      | 参数为列表形式        |
+|        decay_rate      |    学习率衰减系数, piecewise_decay时有效       |       -      |  \        |

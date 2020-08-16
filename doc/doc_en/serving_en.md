@@ -29,25 +29,38 @@ The following steps take the 2-stage series service as an example. If only the d
 # Install paddlehub  
 pip3 install paddlehub --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
 
-# Set environment variables  
+# Set environment variables on Linux
 export PYTHONPATH=.
-```   
+# Set environment variables on Windows
+SET PYTHONPATH=.
+```
 
 ### 2. Install Service Module
-PaddleOCR provides 3 kinds of service modules, install the required modules according to your needs. Such as:  
+PaddleOCR provides 3 kinds of service modules, install the required modules according to your needs.
 
-Install the detection service module:  
+* On Linux platform, the examples are as follows.
 ```shell
+# Install the detection service module:
 hub install deploy/hubserving/ocr_det/
-```  
-Or, install the recognition service module:  
-```shell
+
+# Or, install the recognition service module:
 hub install deploy/hubserving/ocr_rec/
-```  
-Or, install the 2-stage series service module:  
-```shell
+
+# Or, install the 2-stage series service module:
 hub install deploy/hubserving/ocr_system/
-```  
+```
+
+* On Windows platform, the examples are as follows.
+```shell
+# Install the detection service module:
+hub install deploy\hubserving\ocr_det\
+
+# Or, install the recognition service module:
+hub install deploy\hubserving\ocr_rec\
+
+# Or, install the 2-stage series service module:
+hub install deploy\hubserving\ocr_system\
+```
 
 ### 3. Start service
 #### Way 1. Start with command line parameters (CPU only)
@@ -119,7 +132,7 @@ python tools/test_hubserving.py server_url image_path
 ```  
 
 Two parameters need to be passed to the script:
-- **server_url**：service address，format of which is 
+- **server_url**：service address，format of which is
 `http://[ip_address]:[port]/predict/[module_name]`  
 For example, if the detection, recognition and 2-stage serial services are started with provided configuration files, the respective `server_url` would be:  
 `http://127.0.0.1:8866/predict/ocr_det`  
@@ -135,7 +148,7 @@ python tools/test_hubserving.py http://127.0.0.1:8868/predict/ocr_system ./doc/i
 ## Returned result format
 The returned result is a list. Each item in the list is a dict. The dict may contain three fields. The information is as follows:
 
-|field name|data type|description| 
+|field name|data type|description|
 |-|-|-|
 |text|str|text content|
 |confidence|float|text recognition confidence|
@@ -145,9 +158,9 @@ The fields returned by different modules are different. For example, the results
 
 |field name/module name|ocr_det|ocr_rec|ocr_system|
 |-|-|-|-|  
-|text||✔|✔| 
-|confidence||✔|✔| 
-|text_region|✔||✔| 
+|text||✔|✔|
+|confidence||✔|✔|
+|text_region|✔||✔|
 
 **Note：** If you need to add, delete or modify the returned fields, you can modify the file `module.py` of the corresponding module. For the complete process, refer to the user-defined modification service module in the next section.
 

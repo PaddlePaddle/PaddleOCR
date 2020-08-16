@@ -12,26 +12,26 @@
 namespace ppredictor {
 
 /**
- * 配置
+ * Config
  */
 struct OCR_Config {
-    int thread_num = 4; // 线程数
+    int thread_num = 4; // Thread num
     paddle::lite_api::PowerMode mode = paddle::lite_api::LITE_POWER_HIGH; // PaddleLite Mode
 };
 
 /**
- * 一个四边形内图片的推理结果,
+ * PolyGone Result
  */
 struct OCRPredictResult {
-    std::vector<int> word_index; //
+    std::vector<int> word_index;
     std::vector<std::vector<int>> points;
     float score;
 };
 
 /**
- * OCR 一共有2个模型进行推理，
- * 1. 使用第一个模型（det），框选出多个四边形
- * 2. 从原图从抠出这些多边形，使用第二个模型（rec），获取文本
+ * OCR there are 2 models
+ * 1. First model（det），select polygones to show where are the texts
+ * 2. crop from the origin images, use these polygones to infer
  */
 class OCR_PPredictor : public PPredictor_Interface {
 public:
@@ -50,7 +50,7 @@ public:
     int init(const std::string &det_model_content, const std::string &rec_model_content);
     int init_from_file(const std::string &det_model_path, const std::string &rec_model_path);
     /**
-     * 返回OCR结果
+     * Return OCR result
      * @param dims
      * @param input_data
      * @param input_len
@@ -69,7 +69,7 @@ public:
 private:
 
     /**
-     * 从第一个模型的结果中计算有文字的四边形
+     * calcul Polygone from the result image of first model
      * @param pred
      * @param output_height
      * @param output_width
@@ -81,7 +81,7 @@ private:
                         const cv::Mat &origin);
 
     /**
-     * 第二个模型的推理
+     * infer for second model
      *
      * @param boxes
      * @param origin
@@ -91,14 +91,14 @@ private:
     infer_rec(const std::vector<std::vector<std::vector<int>>> &boxes, const cv::Mat &origin);
 
     /**
-     * 第二个模型提取文字的后处理
+     * Postprocess or sencod model to extract text
      * @param res
      * @return
      */
     std::vector<int> postprocess_rec_word_index(const PredictorOutput &res);
 
     /**
-     * 计算第二个模型的文字的置信度
+     * calculate confidence of second model text result
      * @param res
      * @return
      */

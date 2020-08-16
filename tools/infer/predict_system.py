@@ -27,7 +27,7 @@ import copy
 import numpy as np
 import math
 import time
-from ppocr.utils.utility import get_image_file_list
+from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from PIL import Image
 from tools.infer.utility import draw_ocr
 from tools.infer.utility import draw_ocr_box_txt
@@ -49,18 +49,23 @@ class TextSystem(object):
         points[:, 0] = points[:, 0] - left
         points[:, 1] = points[:, 1] - top
         '''
-        img_crop_width = int(max(np.linalg.norm(points[0] - points[1]),
-                                 np.linalg.norm(points[2] - points[3])))
-        img_crop_height = int(max(np.linalg.norm(points[0] - points[3]),
-                                  np.linalg.norm(points[1] - points[2])))
-        pts_std = np.float32([[0, 0],
-                              [img_crop_width, 0],
+        img_crop_width = int(
+            max(
+                np.linalg.norm(points[0] - points[1]),
+                np.linalg.norm(points[2] - points[3])))
+        img_crop_height = int(
+            max(
+                np.linalg.norm(points[0] - points[3]),
+                np.linalg.norm(points[1] - points[2])))
+        pts_std = np.float32([[0, 0], [img_crop_width, 0],
                               [img_crop_width, img_crop_height],
                               [0, img_crop_height]])
         M = cv2.getPerspectiveTransform(points, pts_std)
-        dst_img = cv2.warpPerspective(img, M, (img_crop_width, img_crop_height),
-                                      borderMode=cv2.BORDER_REPLICATE,
-                                      flags=cv2.INTER_CUBIC)
+        dst_img = cv2.warpPerspective(
+            img,
+            M, (img_crop_width, img_crop_height),
+            borderMode=cv2.BORDER_REPLICATE,
+            flags=cv2.INTER_CUBIC)
         dst_img_height, dst_img_width = dst_img.shape[0:2]
         if dst_img_height * 1.0 / dst_img_width >= 1.5:
             dst_img = np.rot90(dst_img)
@@ -119,25 +124,27 @@ def main(args):
     is_visualize = True
     tackle_img_num = 0
     for image_file in image_file_list:
-        img = cv2.imread(image_file)
+        img, flag = check_and_read_gif(image_file)
+        if not flag:
+            img = cv2.imread(image_file)
         if img is None:
             logger.info("error in loading image:{}".format(image_file))
             continue
         starttime = time.time()
-        tackle_img_num += 1	
-        if not args.use_gpu and args.enable_mkldnn and tackle_img_num % 30 == 0:	
+        tackle_img_num += 1
+        if not args.use_gpu and args.enable_mkldnn and tackle_img_num % 30 == 0:
             text_sys = TextSystem(args)
         dt_boxes, rec_res = text_sys(img)
         elapse = time.time() - starttime
         print("Predict time of %s: %.3fs" % (image_file, elapse))
+
+        drop_score = 0.5
         dt_num = len(dt_boxes)
-        dt_boxes_final = []
         for dno in range(dt_num):
             text, score = rec_res[dno]
-            if score >= 0.5:
+            if score >= drop_score:
                 text_str = "%s, %.3f" % (text, score)
                 print(text_str)
-                dt_boxes_final.append(dt_boxes[dno])
 
         if is_visualize:
             image = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
@@ -146,7 +153,12 @@ def main(args):
             scores = [rec_res[i][1] for i in range(len(rec_res))]
 
             draw_img = draw_ocr(
-                image, boxes, txts, scores, draw_txt=True, drop_score=0.5)
+                image,
+                boxes,
+                txts,
+                scores,
+                draw_txt=True,
+                drop_score=drop_score)
             draw_img_save = "./inference_results/"
             if not os.path.exists(draw_img_save):
                 os.makedirs(draw_img_save)

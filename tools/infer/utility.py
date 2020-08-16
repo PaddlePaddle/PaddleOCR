@@ -95,7 +95,7 @@ def create_predictor(args, mode):
         config.set_cpu_math_library_num_threads(6)
         if args.enable_mkldnn:
             config.enable_mkldnn()
-            
+
     #config.enable_memory_optim()
     config.disable_glog_info()
 
@@ -169,7 +169,7 @@ def draw_ocr_box_txt(image, boxes, txts):
     img_right = Image.new('RGB', (w, h), (255, 255, 255))
 
     import random
-    # 每次使用相同的随机种子 ，可以保证两次颜色一致
+
     random.seed(0)
     draw_left = ImageDraw.Draw(img_left)
     draw_right = ImageDraw.Draw(img_right)

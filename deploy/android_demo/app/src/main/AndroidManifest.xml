@@ -14,10 +14,10 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <!-- to test MiniActivity, change this to com.baidu.paddle.lite.demo.ocr.MiniActivity -->
         <activity android:name="com.baidu.paddle.lite.demo.ocr.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -25,6 +25,15 @@
                 android:name="com.baidu.paddle.lite.demo.ocr.SettingsActivity"
                 android:label="Settings">
         </activity>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.baidu.paddle.lite.demo.ocr.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
     </application>
 
 </manifest>

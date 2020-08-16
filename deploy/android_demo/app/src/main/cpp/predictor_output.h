@@ -21,10 +21,10 @@ public:
     const std::vector<std::vector<uint64_t>> get_lod() const;
     const  std::vector<int64_t> get_shape() const;
 
-    std::vector<float> data; // 通常是float返回，与下面的data_int二选一
-    std::vector<int> data_int; // 少数层是int返回，与 data二选一
-    std::vector<int64_t> shape; // PaddleLite输出层的shape
-    std::vector<std::vector<uint64_t>> lod; // PaddleLite输出层的lod
+    std::vector<float> data; // return float, or use data_int
+    std::vector<int> data_int; // several layers return int ，or use data
+    std::vector<int64_t> shape; // PaddleLite output shape
+    std::vector<std::vector<uint64_t>> lod; // PaddleLite output lod
 
 private:
     std::unique_ptr<const paddle::lite_api::Tensor> _tensor;
