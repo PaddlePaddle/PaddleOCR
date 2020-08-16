@@ -4,7 +4,7 @@ English | [简体中文](README_cn.md)
 PaddleOCR aims to create rich, leading, and practical OCR tools that help users train better models and apply them into practice.
 
 **Recent updates**
-- 2020.8.16 Release text detection algorithm [SAST](https://arxiv.org/abs/1908.05498) and text recognition algorithm [SRN](https://arxiv.org/abs/2003.12294)
+- 2020.8.16, Release text detection algorithm [SAST](https://arxiv.org/abs/1908.05498) and text recognition algorithm [SRN](https://arxiv.org/abs/2003.12294)
 - 2020.7.23, Release the playback and PPT of live class on BiliBili station, PaddleOCR Introduction, [address](https://aistudio.baidu.com/aistudio/course/introduce/1519)
 - 2020.7.15, Add mobile App demo , support both iOS and  Android  ( based on easyedge and Paddle Lite)
 - 2020.7.15, Improve the  deployment ability, add the C + +  inference , serving deployment. In addtion, the benchmarks of the ultra-lightweight OCR model are provided.
@@ -101,6 +101,12 @@ On the ICDAR2015 dataset, the text detection result is as follows:
 |DB|ResNet50_vd|83.79%|80.65%|82.19%|[Download link](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar)|
 |DB|MobileNetV3|75.92%|73.18%|74.53%|[Download link](https://paddleocr.bj.bcebos.com/det_mv3_db.tar)|
 |SAST|ResNet50_vd|92.18%|82.96%|87.33%|[Download link](https://paddleocr.bj.bcebos.com/SAST/sast_r50_vd_icdar2015.tar)|
+
+On Total-Text dataset, the text detection result is as follows:
+
+|Model|Backbone|precision|recall|Hmean|Download link|
+|-|-|-|-|-|-|
+|SAST|ResNet50_vd|88.74%|79.80%|84.03%|[Download link](https://paddleocr.bj.bcebos.com/SAST/sast_r50_vd_total_text.tar)|
 
 For use of [LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/datasets_en.md#1-icdar2019-lsvt) street view dataset with a total of 3w training data，the related configuration and pre-trained models for text detection task are as follows:
 |Model|Backbone|Configuration file|Pre-trained model|

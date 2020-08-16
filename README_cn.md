@@ -104,6 +104,12 @@ PaddleOCR开源的文本检测算法列表：
 |DB|MobileNetV3|75.92%|73.18%|74.53%|[下载链接](https://paddleocr.bj.bcebos.com/det_mv3_db.tar)|
 |SAST|ResNet50_vd|92.18%|82.96%|87.33%|[下载链接](https://paddleocr.bj.bcebos.com/SAST/sast_r50_vd_icdar2015.tar)|
 
+在Total-text文本检测公开数据集上，算法效果如下：
+
+|模型|骨干网络|precision|recall|Hmean|下载链接|
+|-|-|-|-|-|-|
+|SAST|ResNet50_vd|88.74%|79.80%|84.03%|[下载链接](https://paddleocr.bj.bcebos.com/SAST/sast_r50_vd_total_text.tar)|
+
 使用[LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/datasets.md#1icdar2019-lsvt)街景数据集共3w张数据，训练中文检测模型的相关配置和预训练文件如下：
 
 |模型|骨干网络|配置文件|预训练模型|
