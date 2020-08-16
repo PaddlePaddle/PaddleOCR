@@ -56,8 +56,8 @@ def parse_args():
     #params for text recognizer
     parser.add_argument("--rec_algorithm", type=str, default='CRNN')
     parser.add_argument("--rec_model_dir", type=str)
-    parser.add_argument("--rec_image_shape", type=str, default="1, 64, 320")
-    parser.add_argument("--rec_char_type", type=str, default='en')
+    parser.add_argument("--rec_image_shape", type=str, default="3, 32, 320")
+    parser.add_argument("--rec_char_type", type=str, default='ch')
     parser.add_argument("--rec_batch_num", type=int, default=30)
     parser.add_argument(
         "--rec_char_dict_path",
