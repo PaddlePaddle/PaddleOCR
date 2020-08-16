@@ -213,6 +213,9 @@ class RecModel(object):
             predict = predicts['predict']
             if self.loss_type == "ctc":
                 predict = fluid.layers.softmax(predict)
+            if self.loss_type == "srn":
+                logger.infor(
+                    "Warning! SRN does not support export model currently")
             return [image, {'decoded_out': decoded_out, 'predicts': predict}]
         else:
             predict = predicts['predict']

@@ -69,7 +69,7 @@ def eval_rec_run(exe, config, eval_info_dict, mode):
                        return_numpy=False)
             preds = np.array(outs[0])
 
-            if preds.shape[1] != 1:
+            if config['Global']['loss_type'] == "attention":
                 preds, preds_lod = convert_rec_attention_infer_res(preds)
             else:
                 preds_lod = outs[0].lod()[0]
@@ -123,8 +123,8 @@ def eval_rec_run(exe, config, eval_info_dict, mode):
 
 def test_rec_benchmark(exe, config, eval_info_dict):
     " Evaluate lmdb dataset "
-    eval_data_list = ['IIIT5k_3000', 'SVT', 'IC03_860','IC03_867',  \
-                      'IC13_857', 'IC13_1015', 'IC15_1811', 'IC15_2077','SVTP', 'CUTE80']
+    eval_data_list = ['IIIT5k_3000', 'SVT', 'IC03_860', 'IC03_867', \
+                      'IC13_857', 'IC13_1015', 'IC15_1811', 'IC15_2077', 'SVTP', 'CUTE80']
     eval_data_dir = config['TestReader']['lmdb_sets_dir']
     total_evaluation_data_number = 0
     total_correct_number = 0
