@@ -30,6 +30,8 @@ class CharacterOps(object):
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
         elif self.character_type == "ch":
+            if self.loss_type == "srn":
+                raise Exception("SRN can only support in character_type == en")
             character_dict_path = config['character_dict_path']
             add_space = False
             if 'use_space_char' in config:
