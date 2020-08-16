@@ -593,38 +593,6 @@ class SASTProcessTrain(object):
 
         return np.array(quad_list)
 
-    def rotate_im_poly(self, im, text_polys):
-        """
-        rotate image with 90 / 180 / 270 degre
-        """
-        im_w, im_h = im.shape[1], im.shape[0]
-        dst_im = im.copy()
-        dst_polys = []
-        rand_degree_ratio = np.random.rand()
-        rand_degree_cnt = 1
-        #if rand_degree_ratio > 0.333 and rand_degree_ratio < 0.666:
-        #    rand_degree_cnt = 2
-        #elif rand_degree_ratio > 0.666:
-        if rand_degree_ratio > 0.5:
-            rand_degree_cnt = 3
-        for i in range(rand_degree_cnt):
-            dst_im = np.rot90(dst_im)
-        rot_degree = -90 * rand_degree_cnt
-        rot_angle = rot_degree * math.pi / 180.0
-        n_poly = text_polys.shape[0]
-        cx, cy = 0.5 * im_w, 0.5 * im_h
-        ncx, ncy = 0.5 * dst_im.shape[1], 0.5 * dst_im.shape[0]
-        for i in range(n_poly):
-            wordBB = text_polys[i]
-            poly = []
-            for j in range(4):#16->4
-                sx, sy = wordBB[j][0], wordBB[j][1]
-                dx = math.cos(rot_angle) * (sx - cx) - math.sin(rot_angle) * (sy - cy) + ncx
-                dy = math.sin(rot_angle) * (sx - cx) + math.cos(rot_angle) * (sy - cy) + ncy
-                poly.append([dx, dy])
-            dst_polys.append(poly)
-        return dst_im, np.array(dst_polys, dtype=np.float32)
-
     def extract_polys(self, poly_txt_path):
         """
         Read text_polys, txt_tags, txts from give txt file.
@@ -653,38 +621,12 @@ class SASTProcessTrain(object):
             return None
         if text_polys.shape[0] == 0:
             return None
-        # #add rotate cases
-        # if np.random.rand() < 0.5:
-        #     im, text_polys = self.rotate_im_poly(im, text_polys)
+
         h, w, _ = im.shape
-        # text_polys, text_tags = self.check_and_validate_polys(text_polys,
-        #                                                       text_tags, h, w)
         text_polys, text_tags, hv_tags = self.check_and_validate_polys(text_polys, text_tags, (h, w))
 
         if text_polys.shape[0] == 0:
             return None
-
-        # # random scale this image
-        # rd_scale = np.random.choice(self.random_scale)
-        # im = cv2.resize(im, dsize=None, fx=rd_scale, fy=rd_scale)
-        # text_polys *= rd_scale
-        # if np.random.rand() < self.background_ratio:
-        #     outs = self.crop_background_infor(im, text_polys, text_tags,
-        #                                       text_strs)
-        # else:
-        #     outs = self.crop_foreground_infor(im, text_polys, text_tags,
-        #                                       text_strs)
-
-        # if outs is None:
-        #     return None
-        # im, score_map, geo_map, training_mask = outs
-        # score_map = score_map[np.newaxis, ::4, ::4].astype(np.float32)
-        # geo_map = np.swapaxes(geo_map, 1, 2)
-        # geo_map = np.swapaxes(geo_map, 1, 0)
-        # geo_map = geo_map[:, ::4, ::4].astype(np.float32)
-        # training_mask = training_mask[np.newaxis, ::4, ::4]
-        # training_mask = training_mask.astype(np.float32)
-        # return im, score_map, geo_map, training_mask
 
         #set aspect ratio and keep area fix
         asp_scales = np.arange(1.0, 1.55, 0.1)
@@ -781,28 +723,9 @@ class SASTProcessTrain(object):
         im_padded[:, :, 0] /= (255.0 * 0.225) 
         im_padded = im_padded.transpose((2, 0, 1))
 
-        # images.append(im_padded[::-1, :, :])
-        # tcl_maps.append(score_map[np.newaxis, :, :])
-        # border_maps.append(border_map.transpose((2, 0, 1)))
-        # training_masks.append(training_mask[np.newaxis, :, :])
-        # tvos.append(tvo_map.transpose((2, 0, 1)))
-        # tcos.append(tco_map.transpose((2, 0, 1)))
-
-        # # After a batch should begin
-        # if len(images) == batch_size:
-        #     yield np.array(images, dtype=np.float32), \
-        #             np.array(tcl_maps, dtype=np.float32), \
-        #             np.array(tvos, dtype=np.float32), \
-        #             np.array(tcos, dtype=np.float32), \
-        #             np.array(border_maps, dtype=np.float32), \
-        #             np.array(training_masks, dtype=np.float32), \
-            
-        #     images, tcl_maps, border_maps, training_masks =  [], [], [], []
-        #     tvos, tcos = [], []
-
-        # return im_padded, score_map, border_map, training_mask, tvo_map, tco_map
         return im_padded[::-1, :, :], score_map[np.newaxis, :, :], border_map.transpose((2, 0, 1)), training_mask[np.newaxis, :, :], tvo_map.transpose((2, 0, 1)), tco_map.transpose((2, 0, 1))
 
+    
 class SASTProcessTest(object):
     """
     SAST process function for test
@@ -813,46 +736,6 @@ class SASTProcessTest(object):
             self.max_side_len = params['max_side_len']
         else:
             self.max_side_len = 2400
-
-    # def resize_image(self, im):
-    #     """
-    #     resize image to a size multiple of 32 which is required by the network
-    #     :param im: the resized image
-    #     :param max_side_len: limit of max image size to avoid out of memory in gpu
-    #     :return: the resized image and the resize ratio
-    #     """
-    #     max_side_len = self.max_side_len
-    #     h, w, _ = im.shape
-
-    #     resize_w = w
-    #     resize_h = h
-
-    #     # limit the max side
-    #     if max(resize_h, resize_w) > max_side_len:
-    #         if resize_h > resize_w:
-    #             ratio = float(max_side_len) / resize_h
-    #         else:
-    #             ratio = float(max_side_len) / resize_w
-    #     else:
-    #         ratio = 1.
-    #     resize_h = int(resize_h * ratio)
-    #     resize_w = int(resize_w * ratio)
-    #     if resize_h % 32 == 0:
-    #         resize_h = resize_h
-    #     elif resize_h // 32 <= 1:
-    #         resize_h = 32
-    #     else:
-    #         resize_h = (resize_h // 32 - 1) * 32
-    #     if resize_w % 32 == 0:
-    #         resize_w = resize_w
-    #     elif resize_w // 32 <= 1:
-    #         resize_w = 32
-    #     else:
-    #         resize_w = (resize_w // 32 - 1) * 32
-    #     im = cv2.resize(im, (int(resize_w), int(resize_h)))
-    #     ratio_h = resize_h / float(h)
-    #     ratio_w = resize_w / float(w)
-    #     return im, (ratio_h, ratio_w)
 
     def resize_image(self, im):
         """
