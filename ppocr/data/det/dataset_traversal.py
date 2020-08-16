@@ -73,7 +73,7 @@ class TrainReader(object):
                 data_size_list.append(len(image_files))
                 fetch_record_list.append(0)
 
-            image_batch, poly_batch = [], []
+            image_batch = []
             # get a batch of img_fns and poly_fns
             for i in range(0, len(batch_size_list)):
                 bs = batch_size_list[i]

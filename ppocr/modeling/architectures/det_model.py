@@ -105,7 +105,6 @@ class DetModel(object):
                 input_mask = fluid.layers.data(
                     name='mask', shape=[1, 128, 128], dtype='float32')
                 input_tvo = fluid.layers.data(
-                    # name='tvo', shape=[5, 128, 128], dtype='float32')
                     name='tvo', shape=[9, 128, 128], dtype='float32')
                 input_tco = fluid.layers.data(
                     name='tco', shape=[3, 128, 128], dtype='float32')

@@ -24,7 +24,7 @@ from collections import OrderedDict
 class SASTHead(object):
     """
     SAST: 
-        see arxiv: https://
+        see arxiv: https://arxiv.org/abs/1908.05498
     args:
         params(dict): the super parameters for network build
     """
@@ -89,7 +89,7 @@ class SASTHead(object):
                 g[i] = fluid.layers.relu(g[i])
                 g[i] = conv_bn_layer(input=g[i], num_filters=num_outputs[i], filter_size=3, stride=1, act='relu', name='fpn_down_g%d_1'%i)
                 g[i] = conv_bn_layer(input=g[i], num_filters=num_outputs[i+1], filter_size=3, stride=2, act=None, name='fpn_down_g%d_2'%i)
-            print("g[{}] shape: {}".format(i, g[i].shape)) 
+            # print("g[{}] shape: {}".format(i, g[i].shape)) 
         g[2] = fluid.layers.elementwise_add(x=g[1], y=h[2])
         g[2] = fluid.layers.relu(g[2])
         g[2] = conv_bn_layer(input=g[2], num_filters=num_outputs[2],
@@ -106,14 +106,14 @@ class SASTHead(object):
         f_score = conv_bn_layer(input=f_score, num_filters=128, filter_size=1, stride=1, act='relu', name='f_score3')
         f_score = conv_bn_layer(input=f_score, num_filters=1, filter_size=3, stride=1, name='f_score4')
         f_score = fluid.layers.sigmoid(f_score)
-        print("f_score shape: {}".format(f_score.shape))
+        # print("f_score shape: {}".format(f_score.shape))
 
         #f_boder
         f_border = conv_bn_layer(input=f_common, num_filters=64, filter_size=1, stride=1, act='relu', name='f_border1')
         f_border = conv_bn_layer(input=f_border, num_filters=64, filter_size=3, stride=1, act='relu', name='f_border2')
         f_border = conv_bn_layer(input=f_border, num_filters=128, filter_size=1, stride=1, act='relu', name='f_border3')
         f_border = conv_bn_layer(input=f_border, num_filters=4, filter_size=3, stride=1, name='f_border4')
-        print("f_border shape: {}".format(f_border.shape))
+        # print("f_border shape: {}".format(f_border.shape))
         
         return f_score, f_border
 
@@ -124,14 +124,14 @@ class SASTHead(object):
         f_tvo = conv_bn_layer(input=f_tvo, num_filters=64, filter_size=3, stride=1, act='relu', name='f_tvo2')
         f_tvo = conv_bn_layer(input=f_tvo, num_filters=128, filter_size=1, stride=1, act='relu', name='f_tvo3')
         f_tvo = conv_bn_layer(input=f_tvo, num_filters=8, filter_size=3, stride=1, name='f_tvo4')
-        print("f_tvo shape: {}".format(f_tvo.shape))
+        # print("f_tvo shape: {}".format(f_tvo.shape))
 
         #f_tco
         f_tco = conv_bn_layer(input=f_common, num_filters=64, filter_size=1, stride=1, act='relu', name='f_tco1')
         f_tco = conv_bn_layer(input=f_tco, num_filters=64, filter_size=3, stride=1, act='relu', name='f_tco2')
         f_tco = conv_bn_layer(input=f_tco, num_filters=128, filter_size=1, stride=1, act='relu', name='f_tco3')
         f_tco = conv_bn_layer(input=f_tco, num_filters=2, filter_size=3, stride=1, name='f_tco4')
-        print("f_tco shape: {}".format(f_tco.shape))
+        # print("f_tco shape: {}".format(f_tco.shape))
         
         return f_tvo, f_tco
 
@@ -161,7 +161,7 @@ class SASTHead(object):
         #weighted sum
         fh_weight = fluid.layers.matmul(fh_attn, fh_g)
         fh_weight = fluid.layers.reshape(fh_weight, [f_shape[0], f_shape[2], f_shape[3], 128])
-        print("fh_weight: {}".format(fh_weight.shape))
+        # print("fh_weight: {}".format(fh_weight.shape))
         fh_weight = fluid.layers.transpose(fh_weight, [0, 3, 1, 2])
         fh_weight = conv_bn_layer(input=fh_weight, num_filters=128, filter_size=1, stride=1, name='fh_weight')
         #short cut
@@ -187,7 +187,7 @@ class SASTHead(object):
         #weighted sum
         fv_weight = fluid.layers.matmul(fv_attn, fv_g)
         fv_weight = fluid.layers.reshape(fv_weight, [f_shape[0], f_shape[3], f_shape[2], 128])
-        print("fv_weight: {}".format(fv_weight.shape))
+        # print("fv_weight: {}".format(fv_weight.shape))
         fv_weight = fluid.layers.transpose(fv_weight, [0, 3, 2, 1])
         fv_weight = conv_bn_layer(input=fv_weight, num_filters=128, filter_size=1, stride=1, name='fv_weight')
         #short cut
@@ -199,22 +199,22 @@ class SASTHead(object):
         return f_attn
         
     def __call__(self, blocks, with_cab=False):
-        for k, v in blocks.items():
-            print(k, v.shape)
+        # for k, v in blocks.items():
+        #     print(k, v.shape)
 
         #down fpn
         f_down = self.FPN_Down_Fusion(blocks)
-        print("f_down shape: {}".format(f_down.shape))
+        # print("f_down shape: {}".format(f_down.shape))
         #up fpn
         f_up = self.FPN_Up_Fusion(blocks)
-        print("f_up shape: {}".format(f_up.shape))
+        # print("f_up shape: {}".format(f_up.shape))
         #fusion
         f_common = fluid.layers.elementwise_add(x=f_down, y=f_up)
         f_common = fluid.layers.relu(f_common)
-        print("f_common: {}".format(f_common.shape))
+        # print("f_common: {}".format(f_common.shape))
         
         if self.with_cab:
-            print('enhence f_common with CAB.')
+            # print('enhence f_common with CAB.')
             f_common = self.cross_attention(f_common)
             
         f_score, f_border= self.SAST_Header1(f_common)
