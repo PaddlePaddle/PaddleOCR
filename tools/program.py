@@ -32,7 +32,8 @@ from eval_utils.eval_det_utils import eval_det_run
 from eval_utils.eval_rec_utils import eval_rec_run
 from ppocr.utils.save_load import save_model
 import numpy as np
-from ppocr.utils.character import cal_predicts_accuracy, CharacterOps
+from ppocr.utils.character import cal_predicts_accuracy, cal_predicts_accuracy_srn, CharacterOps
+
 
 class ArgsParser(ArgumentParser):
     def __init__(self):
@@ -170,8 +171,16 @@ def build(config, main_prog, startup_prog, mode):
             fetch_name_list = list(outputs.keys())
             fetch_varname_list = [outputs[v].name for v in fetch_name_list]
             opt_loss_name = None
+            model_average = None
+            img_loss_name = None
+            word_loss_name = None
             if mode == "train":
                 opt_loss = outputs['total_loss']
+                # srn loss
+                #img_loss = outputs['img_loss']
+                #word_loss = outputs['word_loss']
+                #img_loss_name = img_loss.name
+                #word_loss_name = word_loss.name
                 opt_params = config['Optimizer']
                 optimizer = create_module(opt_params['function'])(opt_params)
                 optimizer.minimize(opt_loss)
@@ -179,7 +188,17 @@ def build(config, main_prog, startup_prog, mode):
                 global_lr = optimizer._global_learning_rate()
                 fetch_name_list.insert(0, "lr")
                 fetch_varname_list.insert(0, global_lr.name)
-    return (dataloader, fetch_name_list, fetch_varname_list, opt_loss_name)
+                if "loss_type" in config["Global"]:
+                    if config['Global']["loss_type"] == 'srn':
+                        model_average = fluid.optimizer.ModelAverage(
+                            config['Global']['average_window'],
+                            min_average_window=config['Global'][
+                                'min_average_window'],
+                            max_average_window=config['Global'][
+                                'max_average_window'])
+
+    return (dataloader, fetch_name_list, fetch_varname_list, opt_loss_name,
+            model_average)
 
 
 def build_export(config, main_prog, startup_prog):
@@ -323,14 +342,20 @@ def train_eval_rec_run(config, exe, train_info_dict, eval_info_dict):
                 lr = np.mean(np.array(train_outs[fetch_map['lr']]))
                 preds_idx = fetch_map['decoded_out']
                 preds = np.array(train_outs[preds_idx])
-                preds_lod = train_outs[preds_idx].lod()[0]
                 labels_idx = fetch_map['label']
                 labels = np.array(train_outs[labels_idx])
-                labels_lod = train_outs[labels_idx].lod()[0]
 
-                acc, acc_num, img_num = cal_predicts_accuracy(
-                    config['Global']['char_ops'], preds, preds_lod, labels,
-                    labels_lod)
+                if config['Global']['loss_type'] != 'srn':
+                    preds_lod = train_outs[preds_idx].lod()[0]
+                    labels_lod = train_outs[labels_idx].lod()[0]
+
+                    acc, acc_num, img_num = cal_predicts_accuracy(
+                        config['Global']['char_ops'], preds, preds_lod, labels,
+                        labels_lod)
+                else:
+                    acc, acc_num, img_num = cal_predicts_accuracy_srn(
+                        config['Global']['char_ops'], preds, labels,
+                        config['Global']['max_text_length'])
                 t2 = time.time()
                 train_batch_elapse = t2 - t1
                 stats = {'loss': loss, 'acc': acc}
@@ -344,6 +369,9 @@ def train_eval_rec_run(config, exe, train_info_dict, eval_info_dict):
 
                 if train_batch_id > 0 and\
                     train_batch_id % eval_batch_step == 0:
+                    model_average = train_info_dict['model_average']
+                    if model_average != None:
+                        model_average.apply(exe)
                     metrics = eval_rec_run(exe, config, eval_info_dict, "eval")
                     eval_acc = metrics['avg_acc']
                     eval_sample_num = metrics['total_sample_num']
@@ -369,6 +397,7 @@ def train_eval_rec_run(config, exe, train_info_dict, eval_info_dict):
             save_model(train_info_dict['train_program'], save_path)
     return
 
+
 def preprocess():
     FLAGS = ArgsParser().parse_args()
     config = load_config(FLAGS.config)
@@ -380,8 +409,8 @@ def preprocess():
     check_gpu(use_gpu)
 
     alg = config['Global']['algorithm']
-    assert alg in ['EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE']
-    if alg in ['Rosetta', 'CRNN', 'STARNet', 'RARE']:
+    assert alg in ['EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN']
+    if alg in ['Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN']:
         config['Global']['char_ops'] = CharacterOps(config['Global'])
 
     place = fluid.CUDAPlace(0) if use_gpu else fluid.CPUPlace()

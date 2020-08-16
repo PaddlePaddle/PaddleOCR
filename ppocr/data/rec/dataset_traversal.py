@@ -26,7 +26,7 @@ from ppocr.utils.utility import initial_logger
 from ppocr.utils.utility import get_image_file_list
 logger = initial_logger()
 
-from .img_tools import process_image, get_img_data
+from .img_tools import process_image, process_image_srn, get_img_data
 
 
 class LMDBReader(object):
@@ -43,6 +43,9 @@ class LMDBReader(object):
         self.mode = params['mode']
         self.drop_last = False
         self.use_tps = False
+        self.num_heads = None
+        if "num_heads" in params:
+            self.num_heads = params['num_heads']
         if "tps" in params:
             self.ues_tps = True
         self.use_distort = False
@@ -119,12 +122,19 @@ class LMDBReader(object):
                     img = cv2.imread(single_img)
                     if img.shape[-1] == 1 or len(list(img.shape)) == 2:
                         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-                    norm_img = process_image(
-                        img=img,
-                        image_shape=self.image_shape,
-                        char_ops=self.char_ops,
-                        tps=self.use_tps,
-                        infer_mode=True)
+                    if self.loss_type == 'srn':
+                        norm_img = process_image_srn(
+                            img=img,
+                            image_shape=self.image_shape,
+                            num_heads=self.num_heads,
+                            max_text_length=self.max_text_length)
+                    else:
+                        norm_img = process_image(
+                            img=img,
+                            image_shape=self.image_shape,
+                            char_ops=self.char_ops,
+                            tps=self.use_tps,
+                            infer_mode=True)
                     yield norm_img
             else:
                 lmdb_sets = self.load_hierarchical_lmdb_dataset()
@@ -144,14 +154,25 @@ class LMDBReader(object):
                             if sample_info is None:
                                 continue
                             img, label = sample_info
-                            outs = process_image(
-                                img=img,
-                                image_shape=self.image_shape,
-                                label=label,
-                                char_ops=self.char_ops,
-                                loss_type=self.loss_type,
-                                max_text_length=self.max_text_length,
-                                distort=self.use_distort)
+                            outs = []
+                            if self.loss_type == "srn":
+                                outs = process_image_srn(
+                                    img=img,
+                                    image_shape=self.image_shape,
+                                    num_heads=self.num_heads,
+                                    max_text_length=self.max_text_length,
+                                    label=label,
+                                    char_ops=self.char_ops,
+                                    loss_type=self.loss_type)
+
+                            else:
+                                outs = process_image(
+                                    img=img,
+                                    image_shape=self.image_shape,
+                                    label=label,
+                                    char_ops=self.char_ops,
+                                    loss_type=self.loss_type,
+                                    max_text_length=self.max_text_length)
                             if outs is None:
                                 continue
                             yield outs
