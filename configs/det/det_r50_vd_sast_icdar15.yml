@@ -1,0 +1,50 @@
+Global:
+  algorithm: SAST
+  use_gpu: true
+  epoch_num: 2000
+  log_smooth_window: 20
+  print_batch_step: 2
+  save_model_dir: ./output/det_sast/
+  save_epoch_step: 20
+  eval_batch_step: 5000
+  train_batch_size_per_card: 8
+  test_batch_size_per_card: 8
+  image_shape: [3, 512, 512]
+  reader_yml: ./configs/det/det_sast_icdar15_reader.yml
+  pretrain_weights: ./pretrain_models/ResNet50_vd_ssld_pretrained/
+  save_res_path: ./output/det_sast/predicts_sast.txt
+  checkpoints: 
+  save_inference_dir:
+
+Architecture:
+  function: ppocr.modeling.architectures.det_model,DetModel
+
+Backbone:
+  function: ppocr.modeling.backbones.det_resnet_vd_sast,ResNet
+  layers: 50
+
+Head:
+  function: ppocr.modeling.heads.det_sast_head,SASTHead
+  model_name: large
+  only_fpn_up: False
+#   with_cab: False
+  with_cab: True
+
+Loss:
+  function: ppocr.modeling.losses.det_sast_loss,SASTLoss
+
+Optimizer:
+  function: ppocr.optimizer,RMSProp
+  base_lr: 0.001
+  decay:
+    function: piecewise_decay
+    boundaries: [30000, 50000, 80000, 100000, 150000]
+    decay_rate: 0.3
+
+PostProcess:
+  function: ppocr.postprocess.sast_postprocess,SASTPostProcess
+  score_thresh: 0.5
+  sample_pts_num: 2
+  nms_thresh: 0.2
+  expand_scale: 1.0
+  shrink_ratio_of_width: 0.3

@@ -64,7 +64,6 @@ def main():
     exe = fluid.Executor(place)
 
     rec_model = create_module(config['Architecture']['function'])(params=config)
-
     startup_prog = fluid.Program()
     eval_prog = fluid.Program()
     with fluid.program_guard(eval_prog, startup_prog):
@@ -86,10 +85,36 @@ def main():
     for i in range(max_img_num):
         logger.info("infer_img:%s" % infer_list[i])
         img = next(blobs)
-        predict = exe.run(program=eval_prog,
-                          feed={"image": img},
-                          fetch_list=fetch_varname_list,
-                          return_numpy=False)
+        if loss_type != "srn":
+            predict = exe.run(program=eval_prog,
+                              feed={"image": img},
+                              fetch_list=fetch_varname_list,
+                              return_numpy=False)
+        else:
+            encoder_word_pos_list = []
+            gsrm_word_pos_list = []
+            gsrm_slf_attn_bias1_list = []
+            gsrm_slf_attn_bias2_list = []
+            encoder_word_pos_list.append(img[1])
+            gsrm_word_pos_list.append(img[2])
+            gsrm_slf_attn_bias1_list.append(img[3])
+            gsrm_slf_attn_bias2_list.append(img[4])
+
+            encoder_word_pos_list = np.concatenate(
+                encoder_word_pos_list, axis=0).astype(np.int64)
+            gsrm_word_pos_list = np.concatenate(
+                gsrm_word_pos_list, axis=0).astype(np.int64)
+            gsrm_slf_attn_bias1_list = np.concatenate(
+                gsrm_slf_attn_bias1_list, axis=0).astype(np.float32)
+            gsrm_slf_attn_bias2_list = np.concatenate(
+                gsrm_slf_attn_bias2_list, axis=0).astype(np.float32)
+
+            predict = exe.run(program=eval_prog, \
+                       feed={'image': img[0], 'encoder_word_pos': encoder_word_pos_list,
+                             'gsrm_word_pos': gsrm_word_pos_list, 'gsrm_slf_attn_bias1': gsrm_slf_attn_bias1_list,
+                             'gsrm_slf_attn_bias2': gsrm_slf_attn_bias2_list}, \
+                       fetch_list=fetch_varname_list, \
+                       return_numpy=False)
         if loss_type == "ctc":
             preds = np.array(predict[0])
             preds = preds.reshape(-1)
@@ -114,7 +139,18 @@ def main():
                 score = np.mean(probs[0, 1:end_pos[1]])
             preds = preds.reshape(-1)
             preds_text = char_ops.decode(preds)
-
+        elif loss_type == "srn":
+            cur_pred = []
+            preds = np.array(predict[0])
+            preds = preds.reshape(-1)
+            probs = np.array(predict[1])
+            ind = np.argmax(probs, axis=1)
+            valid_ind = np.where(preds != 37)[0]
+            if len(valid_ind) == 0:
+                continue
+            score = np.mean(probs[valid_ind, ind[valid_ind]])
+            preds = preds[:valid_ind[-1] + 1]
+            preds_text = char_ops.decode(preds)
         logger.info("\t index: {}".format(preds))
         logger.info("\t word : {}".format(preds_text))
         logger.info("\t score: {}".format(score))

@@ -4,12 +4,11 @@
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力使用者训练出更好的模型，并应用落地。
 
 **近期更新**
+- 2020.8.16 开源文本检测算法[SAST](https://arxiv.org/abs/1908.05498)和文本识别算法[SRN](https://arxiv.org/abs/2003.12294)
 - 2020.7.23 发布7月21日B站直播课回放和PPT，PaddleOCR开源大礼包全面解读，[获取地址](https://aistudio.baidu.com/aistudio/course/introduce/1519)
 - 2020.7.15 添加基于EasyEdge和Paddle-Lite的移动端DEMO，支持iOS和Android系统
 - 2020.7.15 完善预测部署，添加基于C++预测引擎推理、服务化部署和端侧部署方案，以及超轻量级中文OCR模型预测耗时Benchmark
 - 2020.7.15 整理OCR相关数据集、常用数据标注以及合成工具
-- 2020.7.9 添加支持空格的识别模型，识别效果，预测及训练方式请参考快速开始和文本识别训练相关文档
-- 2020.7.9 添加数据增强、学习率衰减策略,具体参考[配置文件](./doc/doc_ch/config.md)
 - [more](./doc/doc_ch/update.md)
 
 
@@ -93,7 +92,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 PaddleOCR开源的文本检测算法列表：
 - [x]  EAST([paper](https://arxiv.org/abs/1704.03155))
 - [x]  DB([paper](https://arxiv.org/abs/1911.08947))
-- [ ]  SAST([paper](https://arxiv.org/abs/1908.05498))(百度自研, coming soon)
+- [x]  SAST([paper](https://arxiv.org/abs/1908.05498))(百度自研)
 
 在ICDAR2015文本检测公开数据集上，算法效果如下：
 
@@ -103,8 +102,16 @@ PaddleOCR开源的文本检测算法列表：
 |EAST|MobileNetV3|81.67%|79.83%|80.74%|[下载链接](https://paddleocr.bj.bcebos.com/det_mv3_east.tar)|
 |DB|ResNet50_vd|83.79%|80.65%|82.19%|[下载链接](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar)|
 |DB|MobileNetV3|75.92%|73.18%|74.53%|[下载链接](https://paddleocr.bj.bcebos.com/det_mv3_db.tar)|
+|SAST|ResNet50_vd|92.18%|82.96%|87.33%|[下载链接](https://paddleocr.bj.bcebos.com/SAST/sast_r50_vd_icdar2015.tar)|
+
+在Total-text文本检测公开数据集上，算法效果如下：
+
+|模型|骨干网络|precision|recall|Hmean|下载链接|
+|-|-|-|-|-|-|
+|SAST|ResNet50_vd|88.74%|79.80%|84.03%|[下载链接](https://paddleocr.bj.bcebos.com/SAST/sast_r50_vd_total_text.tar)|
 
 使用[LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/datasets.md#1icdar2019-lsvt)街景数据集共3w张数据，训练中文检测模型的相关配置和预训练文件如下：
+
 |模型|骨干网络|配置文件|预训练模型|
 |-|-|-|-|
 |超轻量中文模型|MobileNetV3|det_mv3_db.yml|[下载链接](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar)|
@@ -122,7 +129,7 @@ PaddleOCR开源的文本识别算法列表：
 - [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))
 - [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))
 - [x]  RARE([paper](https://arxiv.org/abs/1603.03915v1))
-- [ ]  SRN([paper](https://arxiv.org/abs/2003.12294))(百度自研, coming soon)
+- [x]  SRN([paper](https://arxiv.org/abs/2003.12294))(百度自研)
 
 参考[DTRB](https://arxiv.org/abs/1904.01906)文字识别训练和评估流程，使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估，算法效果如下：
 
@@ -136,6 +143,10 @@ PaddleOCR开源的文本识别算法列表：
 |STAR-Net|MobileNetV3|81.56%|rec_mv3_tps_bilstm_ctc|[下载链接](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_ctc.tar)|
 |RARE|Resnet34_vd|84.90%|rec_r34_vd_tps_bilstm_attn|[下载链接](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_attn.tar)|
 |RARE|MobileNetV3|83.32%|rec_mv3_tps_bilstm_attn|[下载链接](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_attn.tar)|
+|SRN|Resnet50_vd_fpn|88.33%|rec_r50fpn_vd_none_srn|[下载链接](https://paddleocr.bj.bcebos.com/SRN/rec_r50fpn_vd_none_srn.tar)|
+
+**说明：** SRN模型使用了数据扰动方法对上述提到对两个训练集进行增广,增广后的数据可以在[百度网盘](todo)上下载。
+原始论文使用两阶段训练平均精度为89.74%，PaddleOCR中使用one-stage训练，平均精度为88.33%。两种预训练权重均在[下载链接](https://paddleocr.bj.bcebos.com/SRN/rec_r50fpn_vd_none_srn.tar)中。
 
 使用[LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/datasets.md#1icdar2019-lsvt)街景数据集根据真值将图crop出来30w数据，进行位置校准。此外基于LSVT语料生成500w合成数据训练中文模型，相关配置和预训练文件如下：  
 

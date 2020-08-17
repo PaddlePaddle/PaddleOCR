@@ -25,6 +25,9 @@ class CharacterOps(object):
     def __init__(self, config):
         self.character_type = config['character_type']
         self.loss_type = config['loss_type']
+        self.max_text_len = config['max_text_length']
+        if self.loss_type == "srn" and self.character_type != "en":
+            raise Exception("SRN can only support in character_type == en")
         if self.character_type == "en":
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
@@ -54,6 +57,8 @@ class CharacterOps(object):
         self.end_str = "eos"
         if self.loss_type == "attention":
             dict_character = [self.beg_str, self.end_str] + dict_character
+        elif self.loss_type == "srn":
+            dict_character = dict_character + [self.beg_str, self.end_str]
         self.dict = {}
         for i, char in enumerate(dict_character):
             self.dict[char] = i
@@ -143,6 +148,39 @@ def cal_predicts_accuracy(char_ops,
 
         if preds_text == labels_text:
             acc_num += 1
+    acc = acc_num * 1.0 / img_num
+    return acc, acc_num, img_num
+
+
+def cal_predicts_accuracy_srn(char_ops,
+                              preds,
+                              labels,
+                              max_text_len,
+                              is_debug=False):
+    acc_num = 0
+    img_num = 0
+
+    total_len = preds.shape[0]
+    img_num = int(total_len / max_text_len)
+    for i in range(img_num):
+        cur_label = []
+        cur_pred = []
+        for j in range(max_text_len):
+            if labels[j + i * max_text_len] != 37:  #0
+                cur_label.append(labels[j + i * max_text_len][0])
+            else:
+                break
+
+        for j in range(max_text_len + 1):
+            if j < len(cur_label) and preds[j + i * max_text_len][
+                    0] != cur_label[j]:
+                break
+            elif j == len(cur_label) and j == max_text_len:
+                acc_num += 1
+                break
+            elif j == len(cur_label) and preds[j + i * max_text_len][0] == 37:
+                acc_num += 1
+                break
     acc = acc_num * 1.0 / img_num
     return acc, acc_num, img_num
 
