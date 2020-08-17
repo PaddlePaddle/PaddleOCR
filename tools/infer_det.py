@@ -66,6 +66,25 @@ def draw_det_res(dt_boxes, config, img, img_name):
         cv2.imwrite(save_path, src_im)
         logger.info("The detected Image saved in {}".format(save_path))
 
+def gen_im_detection(src_im, detections):
+    """
+    Generate image with detection results.
+    """
+    im_detection = src_im.copy()
+
+    h, w, _ = im_detection.shape
+    thickness = int(max((h + w) / 2000, 1))
+
+    for poly in detections:
+        # Draw the first point
+        cv2.putText(im_detection, '0', org=(int(poly[0, 0]), int(poly[0, 1])),
+                    fontFace=cv2.FONT_HERSHEY_COMPLEX, fontScale=thickness, color=(255, 0, 0),
+                    thickness=thickness)
+
+        cv2.polylines(im_detection, np.array(poly).reshape((1, -1, 2)).astype(np.int32), isClosed=True,
+                  color=(0, 0, 255), thickness=thickness)
+
+    return im_detection
 
 def main():
     config = program.load_config(FLAGS.config)
@@ -134,8 +153,10 @@ def main():
                 dic = {'f_score': outs[0], 'f_geo': outs[1]}
             elif config['Global']['algorithm'] == 'DB':
                 dic = {'maps': outs[0]}
+            elif config['Global']['algorithm'] == 'SAST':
+                dic = {'f_score': outs[0], 'f_border': outs[1], 'f_tvo': outs[2], 'f_tco': outs[3]}
             else:
-                raise Exception("only support algorithm: ['EAST', 'DB']")
+                raise Exception("only support algorithm: ['EAST', 'DB', 'SAST']")
             dt_boxes_list = postprocess(dic, ratio_list)
             for ino in range(img_num):
                 dt_boxes = dt_boxes_list[ino]
@@ -149,7 +170,7 @@ def main():
                 fout.write(otstr.encode())
                 src_img = cv2.imread(img_name)
                 draw_det_res(dt_boxes, config, src_img, img_name)
-
+                
     logger.info("success!")
 
 

@@ -53,6 +53,13 @@ def parse_args():
     parser.add_argument("--det_east_cover_thresh", type=float, default=0.1)
     parser.add_argument("--det_east_nms_thresh", type=float, default=0.2)
 
+    #SAST parmas
+    parser.add_argument("--det_sast_score_thresh", type=float, default=0.5)
+    parser.add_argument("--det_sast_nms_thresh", type=float, default=0.2)
+    parser.add_argument("--det_sast_sample_pts_num", type=float, default=2)
+    parser.add_argument("--det_sast_expand_scale", type=float, default=1.0)
+    parser.add_argument("--det_sast_shrink_ratio_of_width", type=float, default=0.3)
+
     #params for text recognizer
     parser.add_argument("--rec_algorithm", type=str, default='CRNN')
     parser.add_argument("--rec_model_dir", type=str)

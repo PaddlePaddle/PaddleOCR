@@ -20,5 +20,5 @@ EvalReader:
 TestReader:
   reader_function: ppocr.data.det.dataset_traversal,EvalTestReader
   process_function: ppocr.data.det.sast_process,SASTProcessTest
-  infer_img: 
+  infer_img: ./train_data/afs/total_text/Images/Test/img623.jpg
   max_side_len: 768
