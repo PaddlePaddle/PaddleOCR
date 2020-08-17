@@ -66,25 +66,6 @@ def draw_det_res(dt_boxes, config, img, img_name):
         cv2.imwrite(save_path, src_im)
         logger.info("The detected Image saved in {}".format(save_path))
 
-def gen_im_detection(src_im, detections):
-    """
-    Generate image with detection results.
-    """
-    im_detection = src_im.copy()
-
-    h, w, _ = im_detection.shape
-    thickness = int(max((h + w) / 2000, 1))
-
-    for poly in detections:
-        # Draw the first point
-        cv2.putText(im_detection, '0', org=(int(poly[0, 0]), int(poly[0, 1])),
-                    fontFace=cv2.FONT_HERSHEY_COMPLEX, fontScale=thickness, color=(255, 0, 0),
-                    thickness=thickness)
-
-        cv2.polylines(im_detection, np.array(poly).reshape((1, -1, 2)).astype(np.int32), isClosed=True,
-                  color=(0, 0, 255), thickness=thickness)
-
-    return im_detection
 
 def main():
     config = program.load_config(FLAGS.config)
