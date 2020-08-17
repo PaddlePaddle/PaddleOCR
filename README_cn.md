@@ -222,3 +222,4 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[模型训�
 - 非常感谢 [xiangyubo](https://github.com/xiangyubo) 贡献手写中文OCR数据集
 - 非常感谢 [authorfu](https://github.com/authorfu) 贡献Android和[xiadeye](https://github.com/xiadeye) 贡献IOS的demo代码
 - 非常感谢 [BeyondYourself](https://github.com/BeyondYourself) 给PaddleOCR提了很多非常棒的建议，并简化了PaddleOCR的部分代码风格。
+- 非常感谢 [tangmq](https://github.com/tangmq/PaddleOCR) 给PaddleOCR增加Docker化部署服务，支持快速发布可调用的Restful API服务。
