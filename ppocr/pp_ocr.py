@@ -11,7 +11,10 @@ import tarfile
 import requests
 from tqdm import tqdm
 
-from tools.infer.predict_system import TextSystem, check_and_read_gif, logger, get_image_file_list
+from tools.infer import predict_system
+from ppocr.utils.utility import initial_logger
+logger = initial_logger()
+from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 
 __all__ = ['ppocr']
 
@@ -105,11 +108,7 @@ def parse_args():
     parser.add_argument("--rec", type=str2bool, default=True)
     return parser.parse_args()
 
-
-postprocess_params = parse_args()
-
-
-class ppocr(TextSystem):
+class ppocr(predict_system.TextSystem):
     def __init__(self, det_model_name='ch_det_mv3_db', rec_model_name='ch_rec_mv3_crnn_enhance',
                  model_storage_directory=None,
                  log_level=20,
@@ -126,7 +125,7 @@ class ppocr(TextSystem):
             **kwargs: other params show in ppocr --help
         """
         logger.setLevel(log_level)
-
+        postprocess_params = parse_args()
         # init model dir
         if model_storage_directory:
             self.model_storage_directory = model_storage_directory
