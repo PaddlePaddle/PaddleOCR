@@ -1,6 +1,6 @@
 # TEXT DETECTION
 
-This section uses the icdar15 dataset as an example to introduce the training, evaluation, and testing of the detection model in PaddleOCR.
+This section uses the icdar2015 dataset as an example to introduce the training, evaluation, and testing of the detection model in PaddleOCR.
 
 ## DATA PREPARATION
 The icdar2015 dataset can be obtained from [official website](https://rrc.cvc.uab.es/?ch=4&com=downloads). Registration is required for downloading.
@@ -27,10 +27,13 @@ The provided annotation file format is as follow, seperated by "\t":
 " Image file name             Image annotation information encoded by json.dumps"
 ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]]}, {...}]
 ```
-The image annotation after json.dumps() encoding is a list containing multiple dictionaries. The `points` in the dictionary represent the coordinates (x, y) of the four points of the text box, arranged clockwise from the point at the upper left corner.
+The image annotation after **json.dumps()** encoding is a list containing multiple dictionaries. 
 
-`transcription` represents the text of the current text box, and this information is not needed in the text detection task.
-If you want to train PaddleOCR on other datasets, you can build the annotation file according to the above format.
+The `points` in the dictionary represent the coordinates (x, y) of the four points of the text box, arranged clockwise from the point at the upper left corner.
+
+`transcription` represents the text of the current text box. **When its content is "###" it means that the text box is invalid and will be skipped during training.**
+
+If you want to train PaddleOCR on other datasets, please build the annotation file according to the above format.
 
 
 ## TRAINING
@@ -56,7 +59,7 @@ tar xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_models
 
 ```
 
-**START TRAINING**  
+#### START TRAINING
 *If CPU version installed, please set the parameter `use_gpu` to `false` in the configuration.*
 ```
 python3 tools/train.py -c configs/det/det_mv3_db.yml
@@ -70,7 +73,7 @@ You can also use `-o` to change the training parameters without modifying the ym
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
 ```
 
-**load trained model and conntinue training**
+#### load trained model and conntinue training
 If you expect to load trained model and continue the training again, you can specify the parameter `Global.checkpoints` as the model path to be loaded.
 
 For example:
