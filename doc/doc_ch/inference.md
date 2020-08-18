@@ -78,7 +78,7 @@ python3 tools/export_model.py -c configs/rec/rec_chinese_lite_train.yml -o Globa
         Global.save_inference_dir=./inference/rec_crnn/
 ```
 
-**注意：**如果您是在自己的数据集上训练的模型，并且调整了中文字符的字典文件，请注意修改配置文件中的character_dict_path是否是所需要的字典文件。
+**注意：**如果您是在自己的数据集上训练的模型，并且调整了中文字符的字典文件，请注意修改配置文件中的`character_dict_path`是否是所需要的字典文件。
 
 转换成功后，在目录下有两个文件：
 ```
