@@ -61,7 +61,7 @@ tar -xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_model
 
 *如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false*
 
-```python
+```shell
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained/
 ```
 
@@ -69,14 +69,14 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=
 有关配置文件的详细解释，请参考[链接](./config.md)。
 
 您也可以通过-o参数在不需要修改yml文件的情况下，改变训练的参数，比如，调整训练的学习率为0.0001
-```python
+```shell
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
 ```
 
 #### 断点训练
 
 如果训练程序中断，如果希望加载训练中断的模型从而恢复训练，可以通过指定Global.checkpoints指定要加载的模型路径：
-```python
+```shell
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./your/trained/model
 ```
 
@@ -89,13 +89,13 @@ PaddleOCR计算三个OCR检测相关的指标，分别是：Precision、Recall�
 运行如下代码，根据配置文件`det_db_mv3.yml`中`save_res_path`指定的测试集检测结果文件，计算评估指标。
 
 评估时设置后处理参数`box_thresh=0.6`，`unclip_ratio=1.5`，使用不同数据集、不同模型训练，可调整这两个参数进行优化
-```python
+```shell
 python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="{path/to/weights}/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
 ```
 训练中模型参数默认保存在`Global.save_model_dir`目录下。在评估指标时，需要设置`Global.checkpoints`指向保存的参数文件。
 
 比如：
-```python
+```shell
 python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="./output/det_db/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
 ```
 
@@ -104,17 +104,17 @@ python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="./ou
 ## 测试检测效果
 
 测试单张图像的检测效果
-```python
+```shell
 python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o TestReader.infer_img="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy"
 ```
 
 测试DB模型时，调整后处理阈值，
-```python
+```shell
 python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o TestReader.infer_img="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
 ```
 
 
 测试文件夹下所有图像的检测效果
-```python
+```shell
 python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o TestReader.infer_img="./doc/imgs_en/" Global.checkpoints="./output/det_db/best_accuracy"
 ```

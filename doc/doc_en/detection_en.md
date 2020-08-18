@@ -6,7 +6,7 @@ This section uses the icdar2015 dataset as an example to introduce the training,
 The icdar2015 dataset can be obtained from [official website](https://rrc.cvc.uab.es/?ch=4&com=downloads). Registration is required for downloading.
 
 Decompress the downloaded dataset to the working directory, assuming it is decompressed under PaddleOCR/train_data/. In addition, PaddleOCR organizes many scattered annotation files into two separate annotation files for train and test respectively, which can be downloaded by wget:
-```
+```shell
 # Under the PaddleOCR path
 cd PaddleOCR/
 wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dataset/train_icdar2015_label.txt
@@ -39,7 +39,7 @@ If you want to train PaddleOCR on other datasets, please build the annotation fi
 ## TRAINING
 
 First download the pretrained model. The detection model of PaddleOCR currently supports two backbones, namely MobileNetV3 and ResNet50_vd. You can use the model in [PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/master/ppcls/modeling/architectures) to replace backbone according to your needs.
-```
+```shell
 cd PaddleOCR/
 # Download the pre-trained model of MobileNetV3
 wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/MobileNetV3_large_x0_5_pretrained.tar
@@ -47,7 +47,7 @@ wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/Mob
 wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/ResNet50_vd_ssld_pretrained.tar
 
 # decompressing the pre-training model file, take MobileNetV3 as an example
-tar xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_models/
+tar -xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_models/
 
 # Note: After decompressing the backbone pre-training weight file correctly, the file list in the folder is as follows:
 ./pretrain_models/MobileNetV3_large_x0_5_pretrained/
@@ -61,7 +61,7 @@ tar xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_models
 
 #### START TRAINING
 *If CPU version installed, please set the parameter `use_gpu` to `false` in the configuration.*
-```
+```shell
 python3 tools/train.py -c configs/det/det_mv3_db.yml
 ```
 
@@ -69,7 +69,7 @@ In the above instruction, use `-c` to select the training to use the `configs/de
 For a detailed explanation of the configuration file, please refer to [config](./config_en.md).
 
 You can also use `-o` to change the training parameters without modifying the yml file. For example, adjust the training learning rate to 0.0001
-```
+```shell
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
 ```
 
@@ -77,11 +77,11 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
 If you expect to load trained model and continue the training again, you can specify the parameter `Global.checkpoints` as the model path to be loaded.
 
 For example:
-```
+```shell
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./your/trained/model
 ```
 
-**Note**:The priority of `Global.checkpoints` is higher than that of `Global.pretrain_weights`, that is, when two parameters are specified at the same time, the model specified by Global.checkpoints will be loaded first. If the model path specified by `Global.checkpoints` is wrong, the one specified by `Global.pretrain_weights` will be loaded.
+**Note**: The priority of `Global.checkpoints` is higher than that of `Global.pretrain_weights`, that is, when two parameters are specified at the same time, the model specified by `Global.checkpoints` will be loaded first. If the model path specified by `Global.checkpoints` is wrong, the one specified by `Global.pretrain_weights` will be loaded.
 
 
 ## EVALUATION
@@ -92,7 +92,7 @@ Run the following code to calculate the evaluation indicators. The result will b
 
 When evaluating, set post-processing parameters `box_thresh=0.6`, `unclip_ratio=1.5`. If you use different datasets, different models for training, these two parameters should be adjusted for better result.
 
-```
+```shell
 python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="{path/to/weights}/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
 ```
 The model parameters during training are saved in the `Global.save_model_dir` directory by default. When evaluating indicators, you need to set `Global.checkpoints` to point to the saved parameter file.
