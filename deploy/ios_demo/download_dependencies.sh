@@ -26,7 +26,7 @@ download_and_extract() {
 }
 
 echo -e "[Download ios ocr demo denpendancy]\n"
-download_and_extract "${OCR_MODEL_URL}" "./ios-demo/ocr_demo/models"
-download_and_extract "${PADDLE_LITE_LIB_URL}" "./ios-demo/ocr_demo"
-download_and_extract "${OPENCV3_FRAMEWORK_URL}" "./ios-demo/ocr_demo"
+download_and_extract "${OCR_MODEL_URL}" "./ocr_demo/models"
+download_and_extract "${PADDLE_LITE_LIB_URL}" "./ocr_demo"
+download_and_extract "${OPENCV3_FRAMEWORK_URL}" "./ocr_demo"
 echo -e "[done]\n"
