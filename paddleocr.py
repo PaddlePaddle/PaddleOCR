@@ -39,6 +39,8 @@ model_params = {
                                 'algorithm': 'CRNN'},
 }
 
+SUPPORT_DET_MODEL= ['DB']
+SUPPORT_REC_MODEL= ['Rosetta', 'CRNN', 'STARNet', 'RARE']
 
 def download_with_progressbar(url, save_path):
     response = requests.get(url, stream=True)
@@ -51,7 +53,8 @@ def download_with_progressbar(url, save_path):
             file.write(data)
     progress_bar.close()
     if total_size_in_bytes != 0 and progress_bar.n != total_size_in_bytes:
-        print("ERROR, something went wrong")
+        logger.error("ERROR, something went wrong")
+        sys.exit(0)
 
 
 def download_and_unzip(url, model_storage_directory):
@@ -67,10 +70,10 @@ def download_and_unzip(url, model_storage_directory):
 
 def maybe_download(model_storage_directory, model_name, mode='det'):
     algorithm = None
-    # 自定义模型的情况
+    # using custom model
     if os.path.exists(os.path.join(model_name, 'model')) and os.path.exists(os.path.join(model_name, 'params')):
         return model_name, algorithm
-    # 使用ppocr自带模型
+    # using the model of ppocr
     model_path = os.path.join(model_storage_directory, model_name)
     if not os.path.exists(os.path.join(model_path, 'model')) or not os.path.exists(os.path.join(model_path, 'params')):
         assert model_name in model_params, 'model must in {}'.format(model_params.keys())
@@ -158,6 +161,14 @@ class PaddleOCR(predict_system.TextSystem):
             postprocess_params.det_algorithm = det_algorithm
         if rec_algorithm is not None:
             postprocess_params.rec_algorithm = rec_algorithm
+
+        if postprocess_params.det_algorithm not in SUPPORT_DET_MODEL:
+            logger.error('det_algorithm must in {}'.format(SUPPORT_DET_MODEL))
+            sys.exit(0)
+        if postprocess_params.rec_algorithm not in SUPPORT_REC_MODEL:
+            logger.error('rec_algorithm must in {}'.format(SUPPORT_REC_MODEL))
+            sys.exit(0)
+
         postprocess_params.rec_char_dict_path = Path(__file__).parent / postprocess_params.rec_char_dict_path
 
         # init det_model and rec_model
@@ -178,7 +189,7 @@ class PaddleOCR(predict_system.TextSystem):
             if not flag:
                 img = cv2.imread(image_file)
             if img is None:
-                print("error in loading image:{}".format(image_file))
+                logger.error("error in loading image:{}".format(image_file))
                 return None
         if det and rec:
             dt_boxes, rec_res = self.__call__(img)
@@ -199,7 +210,7 @@ def main():
     args = parse_args()
     image_file_list = get_image_file_list(args.image_dir)
     if len(image_file_list) == 0:
-        print('no images find in {}'.format(args.image_dir))
+        logger.error('no images find in {}'.format(args.image_dir))
         return
     ocr_engine = PaddleOCR(args.det_model_name, args.rec_model_name, args.model_storage_directory)
     for img_path in image_file_list:
