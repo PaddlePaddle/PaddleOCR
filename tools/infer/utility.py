@@ -56,9 +56,7 @@ def parse_args():
     #SAST parmas
     parser.add_argument("--det_sast_score_thresh", type=float, default=0.5)
     parser.add_argument("--det_sast_nms_thresh", type=float, default=0.2)
-    parser.add_argument("--det_sast_sample_pts_num", type=float, default=2)
-    parser.add_argument("--det_sast_expand_scale", type=float, default=1.0)
-    parser.add_argument("--det_sast_shrink_ratio_of_width", type=float, default=0.3)
+    parser.add_argument("--det_sast_polygon", type=bool, default=False)
 
     #params for text recognizer
     parser.add_argument("--rec_algorithm", type=str, default='CRNN')

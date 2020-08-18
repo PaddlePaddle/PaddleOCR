@@ -58,9 +58,14 @@ class TextDetector(object):
             self.preprocess_op = SASTProcessTest(preprocess_params)
             postprocess_params["score_thresh"] = args.det_sast_score_thresh
             postprocess_params["nms_thresh"] = args.det_sast_nms_thresh
-            postprocess_params["sample_pts_num"] = args.det_sast_sample_pts_num
-            postprocess_params["expand_scale"] = args.det_sast_expand_scale
-            postprocess_params["shrink_ratio_of_width"] = args.det_sast_shrink_ratio_of_width
+            if args.det_sast_polygon:
+                postprocess_params["sample_pts_num"] = 6
+                postprocess_params["expand_scale"] = 1.2
+                postprocess_params["shrink_ratio_of_width"] = 0.2
+            else:
+                postprocess_params["sample_pts_num"] = 2
+                postprocess_params["expand_scale"] = 1.0
+                postprocess_params["shrink_ratio_of_width"] = 0.3
             self.postprocess_op = SASTPostProcess(postprocess_params)
         else:
             logger.info("unknown det_algorithm:{}".format(self.det_algorithm))
@@ -140,7 +145,7 @@ class TextDetector(object):
                 
         dt_boxes_list = self.postprocess_op(outs_dict, [ratio_list])
         dt_boxes = dt_boxes_list[0]
-        dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
+#         dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
         elapse = time.time() - starttime
         return dt_boxes, elapse
 
