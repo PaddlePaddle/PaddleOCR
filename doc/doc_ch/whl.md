@@ -5,8 +5,8 @@
 
 检测+识别全流程
 ```python
-from ppocr.pp_ocr import ppocr
-ocr = ppocr(model_storage_directory='./model') # need to run only once to load model into memory
+from paddleocr import PaddleOCR
+ocr = PaddleOCR(model_storage_directory='./model') # need to run only once to load model into memory
 img = 'PaddleOCR/doc/imgs/11.jpg'
 result = ocr.ocr(img)
 for line in result:
@@ -44,8 +44,8 @@ for line in result:
 
 单独执行检测
 ```python
-from ppocr.pp_ocr import ppocr
-ocr = ppocr(model_storage_directory='./model') # need to run only once to load model into memory
+from paddleocr import PaddleOCR
+ocr = PaddleOCR(model_storage_directory='./model') # need to run only once to load model into memory
 img = 'PaddleOCR/doc/imgs/11.jpg'
 result = ocr.ocr(img,rec=False)
 for line in result:
@@ -83,8 +83,8 @@ for line in result:
 
 单独执行识别
 ```python
-from ppocr.pp_ocr import ppocr
-ocr = ppocr(model_storage_directory='./model') # need to run only once to load model into memory
+from paddleocr import PaddleOCR
+ocr = PaddleOCR(model_storage_directory='./model') # need to run only once to load model into memory
 img = 'PaddleOCR/doc/imgs_words/ch/word_1.jpg'
 result = ocr.ocr(img,det=False)
 for line in result:
@@ -99,12 +99,12 @@ for line in result:
 
 查看帮助信息
 ```bash
-ppocr -h
+paddleocr -h
 ```
 
 检测+识别全流程
 ```bash
-ppocr --image_dir PaddleOCR/doc/imgs/11.jpg
+paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg
 ```
 结果是一个list，每个item包含了文本框，文字和识别置信度
 ```bash
@@ -138,7 +138,7 @@ ppocr --image_dir PaddleOCR/doc/imgs/11.jpg
 
 单独执行检测
 ```bash
-ppocr --image_dir PaddleOCR/doc/imgs/11.jpg --rec false
+paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --rec false
 ```
 结果是一个list，每个item只包含文本框
 ```bash
@@ -172,7 +172,7 @@ ppocr --image_dir PaddleOCR/doc/imgs/11.jpg --rec false
 
 单独执行识别
 ```bash
-ppocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --det false
+paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --det false
 ```
 
 结果是一个list，每个item只包含识别结果和识别置信度

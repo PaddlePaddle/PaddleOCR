@@ -5,8 +5,8 @@
 
 detection and recognition
 ```python
-from ppocr.pp_ocr import ppocr
-ocr = ppocr(model_storage_directory='./model') # need to run only once to load model into memory
+from paddleocr import PaddleOCR
+ocr = PaddleOCR(model_storage_directory='./model') # need to run only once to load model into memory
 img = 'PaddleOCR/doc/imgs/11.jpg'
 result = ocr.ocr(img)
 for line in result:
@@ -45,8 +45,8 @@ Output will be a list, each item contains bounding box, text and recognition con
 
 only detection
 ```python
-from ppocr.pp_ocr import ppocr
-ocr = ppocr(model_storage_directory='./model') # need to run only once to load model into memory
+from paddleocr import PaddleOCR
+ocr = PaddleOCR(model_storage_directory='./model') # need to run only once to load model into memory
 img = 'PaddleOCR/doc/imgs/11.jpg'
 result = ocr.ocr(img,rec=False)
 for line in result:
@@ -85,8 +85,8 @@ Output will be a list, each item only contains bounding box
 
 only recognition
 ```python
-from ppocr.pp_ocr import ppocr
-ocr = ppocr(model_storage_directory='./model') # need to run only once to load model into memory
+from paddleocr import PaddleOCR
+ocr = PaddleOCR(model_storage_directory='./model') # need to run only once to load model into memory
 img = 'PaddleOCR/doc/imgs_words/ch/word_1.jpg'
 result = ocr.ocr(img,det=False)
 for line in result:
@@ -102,12 +102,12 @@ Output will be a list, each item contains text and recognition confidence
 
 show help information
 ```bash
-ppocr -h
+paddleocr -h
 ```
 
 detection and recognition
 ```bash
-ppocr --image_dir PaddleOCR/doc/imgs/11.jpg
+paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg
 ```
 
 Output will be a list, each item contains bounding box, text and recognition confidence
@@ -142,7 +142,7 @@ Output will be a list, each item contains bounding box, text and recognition con
 
 only detection
 ```bash
-ppocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --rec false
+paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --rec false
 ```
 
 Output will be a list, each item only contains bounding box
@@ -177,7 +177,7 @@ Output will be a list, each item only contains bounding box
 
 only recognition
 ```bash
-ppocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --det false
+paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --det false
 ```
 
 Output will be a list, each item contains text and recognition confidence
