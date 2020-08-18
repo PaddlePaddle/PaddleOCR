@@ -148,7 +148,8 @@ PaddleOCR开源的文本识别算法列表：
 |RARE|MobileNetV3|83.32%|rec_mv3_tps_bilstm_attn|[下载链接](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_attn.tar)|
 |SRN|Resnet50_vd_fpn|88.33%|rec_r50fpn_vd_none_srn|[下载链接](https://paddleocr.bj.bcebos.com/SRN/rec_r50fpn_vd_none_srn.tar)|
 
-**说明：** SRN模型使用了数据扰动方法对上述提到对两个训练集进行增广，增广后的数据可以在[百度网盘](todo)上下载。原始论文使用两阶段训练平均精度为89.74%，PaddleOCR中使用one-stage训练，平均精度为88.33%。两种预训练权重均在[下载链接](https://paddleocr.bj.bcebos.com/SRN/rec_r50fpn_vd_none_srn.tar)中。
+**说明：** SRN模型使用了数据扰动方法对上述提到对两个训练集进行增广，增广后的数据可以在[百度网盘](https://pan.baidu.com/s/1-HSZ-ZVdqBF2HaBZ5pRAKA)上下载，提取码: y3ry。
+原始论文使用两阶段训练平均精度为89.74%，PaddleOCR中使用one-stage训练，平均精度为88.33%。两种预训练权重均在[下载链接](https://paddleocr.bj.bcebos.com/SRN/rec_r50fpn_vd_none_srn.tar)中。
 
 使用[LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/datasets.md#1icdar2019-lsvt)街景数据集根据真值将图crop出来30w数据，进行位置校准。此外基于LSVT语料生成500w合成数据训练中文模型，相关配置和预训练文件如下：  
 
@@ -224,3 +225,4 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[模型训�
 - 非常感谢 [xiangyubo](https://github.com/xiangyubo) 贡献手写中文OCR数据集
 - 非常感谢 [authorfu](https://github.com/authorfu) 贡献Android和[xiadeye](https://github.com/xiadeye) 贡献IOS的demo代码
 - 非常感谢 [BeyondYourself](https://github.com/BeyondYourself) 给PaddleOCR提了很多非常棒的建议，并简化了PaddleOCR的部分代码风格。
+- 非常感谢 [tangmq](https://gitee.com/tangmq) 给PaddleOCR增加Docker化部署服务，支持快速发布可调用的Restful API服务。
