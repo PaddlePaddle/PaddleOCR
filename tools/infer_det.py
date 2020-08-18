@@ -134,8 +134,10 @@ def main():
                 dic = {'f_score': outs[0], 'f_geo': outs[1]}
             elif config['Global']['algorithm'] == 'DB':
                 dic = {'maps': outs[0]}
+            elif config['Global']['algorithm'] == 'SAST':
+                dic = {'f_score': outs[0], 'f_border': outs[1], 'f_tvo': outs[2], 'f_tco': outs[3]}
             else:
-                raise Exception("only support algorithm: ['EAST', 'DB']")
+                raise Exception("only support algorithm: ['EAST', 'DB', 'SAST']")
             dt_boxes_list = postprocess(dic, ratio_list)
             for ino in range(img_num):
                 dt_boxes = dt_boxes_list[ino]
@@ -149,7 +151,7 @@ def main():
                 fout.write(otstr.encode())
                 src_img = cv2.imread(img_name)
                 draw_det_res(dt_boxes, config, src_img, img_name)
-
+                
     logger.info("success!")
 
 

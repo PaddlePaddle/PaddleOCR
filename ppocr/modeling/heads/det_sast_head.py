@@ -49,7 +49,7 @@ class SASTHead(object):
         for i in range(4):
             if i == 0:
                 g[i] = deconv_bn_layer(input=h[i], num_filters=num_outputs[i + 1], act=None, name='fpn_up_g0')
-                print("g[{}] shape: {}".format(i, g[i].shape))
+                #print("g[{}] shape: {}".format(i, g[i].shape))
             else:
                 g[i] = fluid.layers.elementwise_add(x=g[i - 1], y=h[i])
                 g[i] = fluid.layers.relu(g[i])
@@ -58,7 +58,7 @@ class SASTHead(object):
                 g[i] = conv_bn_layer(input=g[i], num_filters=num_outputs[i],
                                     filter_size=3, stride=1, act='relu', name='fpn_up_g%d_1'%i)
                 g[i] = deconv_bn_layer(input=g[i], num_filters=num_outputs[i + 1], act=None, name='fpn_up_g%d_2'%i)
-                print("g[{}] shape: {}".format(i, g[i].shape))
+                #print("g[{}] shape: {}".format(i, g[i].shape))
 
         g[4] = fluid.layers.elementwise_add(x=g[3], y=h[4])
         g[4] = fluid.layers.relu(g[4])
