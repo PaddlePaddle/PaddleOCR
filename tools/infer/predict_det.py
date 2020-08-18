@@ -58,7 +58,8 @@ class TextDetector(object):
             self.preprocess_op = SASTProcessTest(preprocess_params)
             postprocess_params["score_thresh"] = args.det_sast_score_thresh
             postprocess_params["nms_thresh"] = args.det_sast_nms_thresh
-            if args.det_sast_polygon:
+            self.det_sast_polygon = args.det_sast_polygon
+            if self.det_sast_polygon:
                 postprocess_params["sample_pts_num"] = 6
                 postprocess_params["expand_scale"] = 1.2
                 postprocess_params["shrink_ratio_of_width"] = 0.2
@@ -99,7 +100,7 @@ class TextDetector(object):
         return rect
 
     def clip_det_res(self, points, img_height, img_width):
-        for pno in range(4):
+        for pno in range(points.shape[0]):
             points[pno, 0] = int(min(max(points[pno, 0], 0), img_width - 1))
             points[pno, 1] = int(min(max(points[pno, 1], 0), img_height - 1))
         return points
@@ -118,6 +119,15 @@ class TextDetector(object):
         dt_boxes = np.array(dt_boxes_new)
         return dt_boxes
 
+    def filter_tag_det_res_only_clip(self, dt_boxes, image_shape):
+        img_height, img_width = image_shape[0:2]
+        dt_boxes_new = []
+        for box in dt_boxes:
+            box = self.clip_det_res(box, img_height, img_width)
+            dt_boxes_new.append(box)
+        dt_boxes = np.array(dt_boxes_new)
+        return dt_boxes
+    
     def __call__(self, img):
         ori_im = img.copy()
         im, ratio_list = self.preprocess_op(img)
@@ -145,7 +155,10 @@ class TextDetector(object):
                 
         dt_boxes_list = self.postprocess_op(outs_dict, [ratio_list])
         dt_boxes = dt_boxes_list[0]
-#         dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
+        if self.det_algorithm == "SAST" and self.det_sast_polygon:
+            dt_boxes = self.filter_tag_det_res_only_clip(dt_boxes, ori_im.shape)
+        else:
+            dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
         elapse = time.time() - starttime
         return dt_boxes, elapse
 

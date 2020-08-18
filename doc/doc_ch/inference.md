@@ -296,7 +296,11 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model
 <a name="其他模型推理"></a>
 ### 2. 其他模型推理
 
-如果想尝试使用其他检测算法或者识别算法，请参考上述文本检测模型推理和文本识别模型推理，更新相应配置和模型，下面给出基于EAST文本检测和STAR-Net文本识别执行命令：
+如果想尝试使用其他检测算法或者识别算法，请参考上述文本检测模型推理和文本识别模型推理，更新相应配置和模型。
+
+**注意：由于检测框矫正逻辑的局限性，SAST弯曲文本检测模型（即，使用参数`--det_sast_polygon=True`时）暂时无法用来模型串联。**
+
+下面给出基于EAST文本检测和STAR-Net文本识别执行命令：
 
 ```
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_east/" --det_algorithm="EAST" --rec_model_dir="./inference/starnet/" --rec_image_shape="3, 32, 100" --rec_char_type="en"
