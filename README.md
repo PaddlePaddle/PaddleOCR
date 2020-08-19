@@ -7,7 +7,7 @@ PaddleOCR aims to create rich, leading, and practical OCR tools that help users 
 - 2020.8.16, Release text detection algorithm [SAST](https://arxiv.org/abs/1908.05498) and text recognition algorithm [SRN](https://arxiv.org/abs/2003.12294)
 - 2020.7.23, Release the playback and PPT of live class on BiliBili station, PaddleOCR Introduction, [address](https://aistudio.baidu.com/aistudio/course/introduce/1519)
 - 2020.7.15, Add mobile App demo , support both iOS and  Android  ( based on easyedge and Paddle Lite)
-- 2020.7.15, Improve the  deployment ability, add the C + +  inference , serving deployment. In addtion, the benchmarks of the ultra-lightweight OCR model are provided.
+- 2020.7.15, Improve the  deployment ability, add the C + +  inference , serving deployment. In addition, the benchmarks of the ultra-lightweight OCR model are provided.
 - 2020.7.15, Add several related datasets, data annotation and synthesis tools.
 - [more](./doc/doc_en/update_en.md)
 
@@ -17,7 +17,7 @@ PaddleOCR aims to create rich, leading, and practical OCR tools that help users 
     - Detection model DB (4.1M) + recognition model CRNN (4.5M)
 - Various text detection algorithms: EAST, DB
 - Various text recognition algorithms: Rosetta, CRNN, STAR-Net, RARE
-- Support Linux, Windows, MacOS and other systems.
+- Support Linux, Windows, macOS and other systems.
 
 ## Visualization
 
@@ -29,9 +29,9 @@ PaddleOCR aims to create rich, leading, and practical OCR tools that help users 
 
 You can also quickly experience the ultra-lightweight OCR : [Online Experience](https://www.paddlepaddle.org.cn/hub/scene/ocr)
 
-Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Android systems): [Sign in the website to obtain the QR code for  installing the App](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)
+Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Android systems): [Sign in to the website to obtain the QR code for  installing the App](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)
 
- Also, you can scan the QR code blow to install the App (**Android support only**)
+ Also, you can scan the QR code below to install the App (**Android support only**)
 
 <div align="center">
 <img src="./doc/ocr-android-easyedge.png"  width = "200" height = "200" />
@@ -78,7 +78,7 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
 - Visualization
     - [Ultra-lightweight Chinese/English OCR Visualization](#UCOCRVIS)
     - [General Chinese/English OCR Visualization](#GeOCRVIS)
-    - [Chinese/English OCR Visualization (Support Space Recognization )](#SpaceOCRVIS)
+    - [Chinese/English OCR Visualization (Support Space Recognition )](#SpaceOCRVIS)
 - [Community](#Community)
 - [References](./doc/doc_en/reference_en.md)
 - [License](#LICENSE)
@@ -148,7 +148,7 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 
 The average accuracy of the two-stage training in the original paper is 89.74%, and that of one stage training in paddleocr is 88.33%. Both pre-trained weights can be downloaded [here](https://paddleocr.bj.bcebos.com/SRN/rec_r50fpn_vd_none_srn.tar).
 
-We use [LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/datasets_en.md#1-icdar2019-lsvt) dataset and cropout 30w  traning data from original photos by using position groundtruth and make some calibration needed. In addition, based on the LSVT corpus, 500w synthetic data is generated to train the model. The related configuration and pre-trained models are as follows:
+We use [LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/datasets_en.md#1-icdar2019-lsvt) dataset and cropout 30w  training data from original photos by using position groundtruth and make some calibration needed. In addition, based on the LSVT corpus, 500w synthetic data is generated to train the model. The related configuration and pre-trained models are as follows:
 
 |Model|Backbone|Configuration file|Pre-trained model|
 |-|-|-|-|
@@ -159,7 +159,7 @@ Please refer to the document for training guide and use of PaddleOCR text recogn
 
 <a name="ENDENDOCRALGORITHM"></a>
 ## END-TO-END OCR Algorithm
-- [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(Baidu Self-Research, comming soon)
+- [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(Baidu Self-Research, coming soon)
 
 ## Visualization
 
