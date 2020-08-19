@@ -1,7 +1,7 @@
 
 # 基于Python预测引擎推理
 
-inference 模型（fluid.io.save_inference_model保存的模型）
+inference 模型（`fluid.io.save_inference_model`保存的模型）
 一般是模型训练完成后保存的固化模型，多用于预测部署。训练过程中保存的模型是checkpoints模型，保存的是模型的参数，多用于恢复训练等。
 与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合与实际系统集成。更详细的介绍请参考文档[分类预测框架](https://paddleclas.readthedocs.io/zh_CN/latest/extension/paddle_inference.html).
 
@@ -10,22 +10,19 @@ inference 模型（fluid.io.save_inference_model保存的模型）
 
 - [一、训练模型转inference模型](#训练模型转inference模型)
     - [检测模型转inference模型](#检测模型转inference模型)
-    - [识别模型转inference模型](#识别模型转inference模型)
-    
+    - [识别模型转inference模型](#识别模型转inference模型)  
     
 - [二、文本检测模型推理](#文本检测模型推理)
     - [1. 超轻量中文检测模型推理](#超轻量中文检测模型推理)
     - [2. DB文本检测模型推理](#DB文本检测模型推理)
     - [3. EAST文本检测模型推理](#EAST文本检测模型推理)
-    - [4. SAST文本检测模型推理](#SAST文本检测模型推理)
-    
+    - [4. SAST文本检测模型推理](#SAST文本检测模型推理)  
     
 - [三、文本识别模型推理](#文本识别模型推理)
     - [1. 超轻量中文识别模型推理](#超轻量中文识别模型推理)
     - [2. 基于CTC损失的识别模型推理](#基于CTC损失的识别模型推理)
     - [3. 基于Attention损失的识别模型推理](#基于Attention损失的识别模型推理)
-    - [4. 自定义文本识别字典的推理](#自定义文本识别字典的推理)
-    
+    - [4. 自定义文本识别字典的推理](#自定义文本识别字典的推理)  
     
 - [四、文本检测、识别串联推理](#文本检测、识别串联推理)
     - [1. 超轻量中文OCR模型推理](#超轻量中文OCR模型推理)
@@ -154,7 +151,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_
 python3 tools/export_model.py -c configs/det/det_r50_vd_east.yml -o Global.checkpoints="./models/det_r50_vd_east/best_accuracy" Global.save_inference_dir="./inference/det_east"
 ```
 
-**EAST文本检测模型推理，需要设置参数`det_algorithm`，指定检测算法类型为EAST**，可以执行如下命令：
+**EAST文本检测模型推理，需要设置参数`--det_algorithm="EAST"`**，可以执行如下命令：
 
 ```
 python3 tools/infer/predict_det.py --det_algorithm="EAST" --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_east/"
@@ -173,7 +170,7 @@ python3 tools/infer/predict_det.py --det_algorithm="EAST" --image_dir="./doc/img
 ```
 python3 tools/export_model.py -c configs/det/det_r50_vd_sast_icdar15.yml -o Global.checkpoints="./models/sast_r50_vd_icdar2015/best_accuracy" Global.save_inference_dir="./inference/det_sast_ic15"
 ```
-**SAST文本检测模型推理，需要设置参数`det_algorithm`，指定检测算法类型为SAST**，可以执行如下命令：
+**SAST文本检测模型推理，需要设置参数`--det_algorithm="SAST"`**，可以执行如下命令：
 ```
 python3 tools/infer/predict_det.py --det_algorithm="SAST" --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_sast_ic15/"
 ```
@@ -188,7 +185,7 @@ python3 tools/infer/predict_det.py --det_algorithm="SAST" --image_dir="./doc/img
 python3 tools/export_model.py -c configs/det/det_r50_vd_sast_totaltext.yml -o Global.checkpoints="./models/sast_r50_vd_total_text/best_accuracy" Global.save_inference_dir="./inference/det_sast_tt"
 ```
 
-**SAST文本检测模型推理，需要设置参数`det_algorithm`，指定检测算法类型为SAST**，可以执行如下命令：
+**SAST文本检测模型推理，需要设置参数`--det_algorithm="SAST"`，同时，还需要增加参数`--det_sast_polygon=True`，**可以执行如下命令：
 ```
 python3 tools/infer/predict_det.py --det_algorithm="SAST" --image_dir="./doc/imgs_en/img623.jpg" --det_model_dir="./inference/det_sast_tt/" --det_sast_polygon=True
 ```
@@ -298,7 +295,7 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model
 
 如果想尝试使用其他检测算法或者识别算法，请参考上述文本检测模型推理和文本识别模型推理，更新相应配置和模型。
 
-**注意：由于检测框矫正逻辑的局限性，SAST弯曲文本检测模型（即，使用参数`--det_sast_polygon=True`时）暂时无法用来模型串联。**
+**注意：由于检测框矫正逻辑的局限性，暂不支持使用SAST弯曲文本检测模型（即，使用参数`--det_sast_polygon=True`时）进行模型串联。**
 
 下面给出基于EAST文本检测和STAR-Net文本识别执行命令：
 
