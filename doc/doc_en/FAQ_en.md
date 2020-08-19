@@ -48,6 +48,9 @@ At present, the open source model, dataset and magnitude are as follows:
 Error message: Input(X) dims[3] and Input(Grid) dims[2] should be equal, but received X dimension[3](108) != Grid dimension[2](100)  
 Solution：TPS does not support variable shape. Please set --rec_image_shape='3,32,100' and --rec_char_type='en'
 
-11. **Custom dictionary used during training, the recognition results show that words do not appear in the dictionary**
-
+11. **Custom dictionary used during training, the recognition results show that words do not appear in the dictionary**  
 The used custom dictionary path is not set when making prediction. The solution is setting parameter `rec_char_dict_path` to the corresponding dictionary file.
+
+
+12. **Results of cpp_infer and python_inference are very different**  
+Versions of exprted inference model and inference libraray should be same. For example, on Windows platform, version of the inference libraray that PaddlePaddle provides is 1.8, but version of the inference model that PaddleOCR provides is 1.7, you should export model yourself(`tools/export_model.py`) on PaddlePaddle1.8 and then use the exported model for inference.
