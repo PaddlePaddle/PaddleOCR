@@ -219,7 +219,7 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[模型训�
 ## 贡献代码
 我们非常欢迎你为PaddleOCR贡献代码，也十分感谢你的反馈。
 
-- 非常感谢 [Khanh Tran](https://github.com/xxxpsyduck) 和 [Karl Horky](https://github.com/karlhorky) 贡献了英文文档
+- 非常感谢 [Khanh Tran](https://github.com/xxxpsyduck) 和 [Karl Horky](https://github.com/karlhorky) 贡献修改英文文档
 - 非常感谢 [zhangxin](https://github.com/ZhangXinNan)([Blog](https://blog.csdn.net/sdlypyzq)) 贡献新的可视化方式、添加.gitgnore、处理手动设置PYTHONPATH环境变量的问题
 - 非常感谢 [lyl120117](https://github.com/lyl120117) 贡献打印网络结构的代码
 - 非常感谢 [xiangyubo](https://github.com/xiangyubo) 贡献手写中文OCR数据集
