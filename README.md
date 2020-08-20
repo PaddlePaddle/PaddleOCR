@@ -221,7 +221,7 @@ This project is released under <a href="https://github.com/PaddlePaddle/PaddleOC
 ## Contribution
 We welcome all the contributions to PaddleOCR and appreciate for your feedback very much.
 
-- Many thanks to [Khanh Tran](https://github.com/xxxpsyduck) for contributing the English documentation.
+- Many thanks to [Khanh Tran](https://github.com/xxxpsyduck) and [Karl Horky](https://github.com/karlhorky) for contributing the English documentation.
 - Many thanks to [zhangxin](https://github.com/ZhangXinNan) for contributing the new visualize function、add .gitgnore and discard set PYTHONPATH manually.
 - Many thanks to [lyl120117](https://github.com/lyl120117) for contributing the code for printing the network structure.
 - Thanks [xiangyubo](https://github.com/xiangyubo) for contributing the handwritten Chinese OCR datasets.
