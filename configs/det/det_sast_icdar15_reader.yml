@@ -3,7 +3,7 @@ TrainReader:
   process_function: ppocr.data.det.sast_process,SASTProcessTrain
   num_workers: 8
   img_set_dir: ./train_data/
-  label_file_path: [./train_data/icdar13/train_label_json.txt, ./train_data/icdar15/train_label_json.txt, ./train_data/icdar17_mlt_latin/train_label_json.txt, ./train_data/coco_text_icdar_4pts/train_label_json.txt]
+  label_file_path: [./train_data/icdar2013/train_label_json.txt, ./train_data/icdar2015/train_label_json.txt, ./train_data/icdar17_mlt_latin/train_label_json.txt, ./train_data/coco_text_icdar_4pts/train_label_json.txt]
   data_ratio_list: [0.1, 0.45, 0.3, 0.15]
   min_crop_side_ratio: 0.3
   min_crop_size: 24
