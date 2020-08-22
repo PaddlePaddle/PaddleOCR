@@ -1,6 +1,17 @@
 # ppcor package 
 
 ## Get started quickly
+### install package
+install by pypi
+```bash
+pip install paddleocr
+```
+
+build own whl package and install
+```bash
+python setup.py bdist_wheel
+pip install dist/paddleocr-0.0.1-py3-none-any.whl
+```
 ### 1. Use by code
 
 detection and recognition
@@ -212,8 +223,3 @@ Output will be a list, each item contains text and recognition confidence
 | model_storage_directory | Download model save path when det_model_name or rec_model_name use mode 1                                                                                                                                                                                                     | ～/.ppocr                |
 | det                     | Enable detction when `ppocr.ocr` func exec                                                                                                                                                                                                   | TRUE                    |
 | rec                     | Enable detction when `ppocr.ocr` func exec                                                                                                                                                                                                   | TRUE                    |
-
-## build own whl package
-```bash
-python setup.py bdist_wheel
-```

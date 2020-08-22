@@ -1,6 +1,19 @@
 # ppcor package使用说明
 
 ## 快速上手
+
+### 安装whl包
+
+pip安装
+```bash
+pip install paddleocr
+```
+
+本地构建并安装
+```bash
+python setup.py bdist_wheel
+pip install dist/paddleocr-0.0.1-py3-none-any.whl
+```
 ### 1. 通过代码使用
 
 检测+识别全流程
@@ -208,7 +221,3 @@ paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --det false
 | det                     | 前向时使用启动检测                                                                                                                                                                                                   | TRUE                    |
 | rec                     | 前向时是否启动识别                                                                                                                                                                                                   | TRUE                    |
 
-## 构建whl包
-```bash
-python setup.py bdist_wheel
-```
