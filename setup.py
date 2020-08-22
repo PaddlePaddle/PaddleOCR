@@ -37,7 +37,6 @@ setup(
     long_description=readme(),
     long_description_content_type='text/markdown',
     author='Baidu PaddlePaddle',
-    author_email='zjwenmu@gmail.com',
     url='https://github.com/PaddlePaddle/PaddleOCR',
     download_url='https://github.com/PaddlePaddle/PaddleOCR.git',
     keywords=['ocr textdetection textrecognition paddleocr crnn east star-net rosetta ocrlite db chineseocr chinesetextdetection chinesetextrecognition'],
