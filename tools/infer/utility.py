@@ -134,7 +134,12 @@ def resize_img(img, input_size=600):
     return im
 
 
-def draw_ocr(image, boxes, txts, scores, draw_txt=True, drop_score=0.5):
+def draw_ocr(image,
+             boxes,
+             txts=None,
+             scores=None,
+             drop_score=0.5,
+             font_path="./doc/simfang.ttf"):
     """
     Visualize the results of OCR detection and recognition
     args:
@@ -142,23 +147,29 @@ def draw_ocr(image, boxes, txts, scores, draw_txt=True, drop_score=0.5):
         boxes(list): boxes with shape(N, 4, 2)
         txts(list): the texts
         scores(list): txxs corresponding scores
-        draw_txt(bool): whether draw text or not
         drop_score(float): only scores greater than drop_threshold will be visualized
+        font_path: the path of font which is used to draw text
     return(array):
         the visualized img
     """
     if scores is None:
         scores = [1] * len(boxes)
-    for (box, score) in zip(boxes, scores):
-        if score < drop_score or math.isnan(score):
+    box_num = len(boxes)
+    for i in range(box_num):
+        if scores is not None and (scores[i] < drop_score or
+                                   math.isnan(scores[i])):
             continue
-        box = np.reshape(np.array(box), [-1, 1, 2]).astype(np.int64)
+        box = np.reshape(np.array(boxes[i]), [-1, 1, 2]).astype(np.int64)
         image = cv2.polylines(np.array(image), [box], True, (255, 0, 0), 2)
-
-    if draw_txt:
+    if txts is not None:
         img = np.array(resize_img(image, input_size=600))
         txt_img = text_visual(
-            txts, scores, img_h=img.shape[0], img_w=600, threshold=drop_score)
+            txts,
+            scores,
+            img_h=img.shape[0],
+            img_w=600,
+            threshold=drop_score,
+            font_path=font_path)
         img = np.concatenate([np.array(img), np.array(txt_img)], axis=1)
         return img
     return image
@@ -236,7 +247,12 @@ def str_count(s):
     return s_len - math.ceil(en_dg_count / 2)
 
 
-def text_visual(texts, scores, img_h=400, img_w=600, threshold=0.):
+def text_visual(texts,
+                scores,
+                img_h=400,
+                img_w=600,
+                threshold=0.,
+                font_path="./doc/simfang.ttf"):
     """
     create new blank img and draw txt on it
     args:
@@ -244,6 +260,7 @@ def text_visual(texts, scores, img_h=400, img_w=600, threshold=0.):
         scores(list|None): corresponding score of each txt
         img_h(int): the height of blank img
         img_w(int): the width of blank img
+        font_path: the path of font which is used to draw text
     return(array):
 
     """
@@ -262,7 +279,7 @@ def text_visual(texts, scores, img_h=400, img_w=600, threshold=0.):
 
     font_size = 20
     txt_color = (0, 0, 0)
-    font = ImageFont.truetype("./doc/simfang.ttf", font_size, encoding="utf-8")
+    font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
 
     gap = font_size + 5
     txt_img_list = []
@@ -343,6 +360,6 @@ if __name__ == '__main__':
         txts.append(dic['transcription'])
         scores.append(round(dic['scores'], 3))
 
-    new_img = draw_ocr(image, boxes, txts, scores, draw_txt=True)
+    new_img = draw_ocr(image, boxes, txts, scores)
 
     cv2.imwrite(img_name, new_img)
