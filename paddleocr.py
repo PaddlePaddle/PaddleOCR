@@ -73,7 +73,7 @@ def maybe_download(model_storage_directory, model_name, mode='det'):
     # using custom model
     if os.path.exists(os.path.join(model_name, 'model')) and os.path.exists(os.path.join(model_name, 'params')):
         return model_name, algorithm
-    # using the model of ppocr
+    # using the model of paddleocr
     model_path = os.path.join(model_storage_directory, model_name)
     if not os.path.exists(os.path.join(model_path, 'model')) or not os.path.exists(os.path.join(model_path, 'params')):
         assert model_name in model_params, 'model must in {}'.format(model_params.keys())
@@ -131,15 +131,15 @@ class PaddleOCR(predict_system.TextSystem):
                  log_level=20,
                  **kwargs):
         """
-        ppocr package
+        paddleocr package
         args:
             det_model_name: det_model name, keep same with filename in paddleocr. default is ch_det_mv3_db
             det_model_name: rec_model name, keep same with filename in paddleocr. default is ch_rec_mv3_crnn_enhance
-            model_storage_directory: model save path. default is ~/.ppocr
+            model_storage_directory: model save path. default is ~/.paddleocr
                                     det model will save to  model_storage_directory/det_model
                                     rec model will save to  model_storage_directory/rec_model
             log_level:
-            **kwargs: other params show in ppocr --help
+            **kwargs: other params show in paddleocr --help
         """
         logger.setLevel(log_level)
         postprocess_params = parse_args()
@@ -147,7 +147,7 @@ class PaddleOCR(predict_system.TextSystem):
         if model_storage_directory:
             self.model_storage_directory = model_storage_directory
         else:
-            self.model_storage_directory = os.path.expanduser("~/.ppocr/") + '/model'
+            self.model_storage_directory = os.path.expanduser("~/.paddleocr/") + '/model'
         Path(self.model_storage_directory).mkdir(parents=True, exist_ok=True)
 
         # download model

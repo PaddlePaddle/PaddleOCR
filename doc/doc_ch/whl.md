@@ -208,3 +208,7 @@ paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --det false
 | det                     | 前向时使用启动检测                                                                                                                                                                                                   | TRUE                    |
 | rec                     | 前向时是否启动识别                                                                                                                                                                                                   | TRUE                    |
 
+## 构建whl包
+```bash
+python setup.py bdist_wheel
+```

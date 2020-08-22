@@ -213,3 +213,7 @@ Output will be a list, each item contains text and recognition confidence
 | det                     | Enable detction when `ppocr.ocr` func exec                                                                                                                                                                                                   | TRUE                    |
 | rec                     | Enable detction when `ppocr.ocr` func exec                                                                                                                                                                                                   | TRUE                    |
 
+## build own whl package
+```bash
+python setup.py bdist_wheel
+```
