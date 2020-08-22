@@ -20,7 +20,7 @@ with open('requirments.txt', encoding="utf-8-sig") as f:
     requirements.append('tqdm')
 
 def readme():
-    with open('README.md', encoding="utf-8-sig") as f:
+    with open('doc/doc_en/whl.md', encoding="utf-8-sig") as f:
         README = f.read()
     return README
 
@@ -30,12 +30,14 @@ setup(
     package_dir={'paddleocr':''},
     include_package_data=True,
     entry_points={"console_scripts": ["paddleocr= paddleocr.paddleocr:main"]},
-    version='0.0.1',
+    version='0.0.2',
     install_requires=requirements,
     license='Apache License 2.0',
     description='Awesome OCR toolkits based on PaddlePaddle （8.6M ultra-lightweight pre-trained model, support training and deployment among server, mobile, embeded and IoT devices',
     long_description=readme(),
+    long_description_content_type='text/markdown',
     author='Baidu PaddlePaddle',
+    author_email='zjwenmu@gmail.com',
     url='https://github.com/PaddlePaddle/PaddleOCR',
     download_url='https://github.com/PaddlePaddle/PaddleOCR.git',
     keywords=['ocr textdetection textrecognition paddleocr crnn east star-net rosetta ocrlite db chineseocr chinesetextdetection chinesetextrecognition'],
