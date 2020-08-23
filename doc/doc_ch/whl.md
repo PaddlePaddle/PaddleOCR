@@ -12,7 +12,7 @@ pip install paddleocr
 本地构建并安装
 ```bash
 python setup.py bdist_wheel
-pip install dist/paddleocr-0.0.1-py3-none-any.whl
+pip install dist/paddleocr-0.0.3-py3-none-any.whl
 ```
 ### 1. 代码使用
 
