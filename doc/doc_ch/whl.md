@@ -142,7 +142,7 @@ paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --det false
 ```python
 from paddleocr import PaddleOCR, draw_ocr
 # 检测模型和识别模型路径下必须含有model和params文件
-ocr = PaddleOCR(det_model_dir='your_det_model_dir',rec_model_dir='your_rec_model_dir')
+ocr = PaddleOCR(det_model_dir='{your_det_model_dir}',rec_model_dir='{your_rec_model_dir}')
 img_path = 'PaddleOCR/doc/imgs/11.jpg'
 result = ocr.ocr(img_path)
 for line in result:
@@ -162,7 +162,7 @@ im_show.save('result.jpg')
 ### 通过命令行使用
 
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir your_det_model_dir --rec_model_dir your_rec_model_dir
+paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_dir} --rec_model_dir {your_rec_model_dir}
 ```
 
 ## 参数说明

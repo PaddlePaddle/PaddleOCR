@@ -147,7 +147,7 @@ First, refer to the first section of [inference_en.md](./inference_en.md) to con
 ```python
 from paddleocr import PaddleOCR,draw_ocr
 # The path of detection and recognition model must contain model and params files
-ocr = PaddleOCR(det_model_dir='your_det_model_dir',rec_model_dir='your_rec_model_dir')
+ocr = PaddleOCR(det_model_dir='{your_det_model_dir}',rec_model_dir='{your_rec_model_dir}å')
 img_path = 'PaddleOCR/doc/imgs_en/img_12.jpg'
 result = ocr.ocr(img_path)
 for line in result:
@@ -167,7 +167,7 @@ im_show.save('result.jpg')
 ### Use by command line
 
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir your_det_model_dir --rec_model_dir your_rec_model_dir
+paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_dir} --rec_model_dir {your_rec_model_dir}
 ```
 
 ## Parameter Description
