@@ -21,7 +21,7 @@ with open('requirments.txt', encoding="utf-8-sig") as f:
 
 
 def readme():
-    with open('doc/doc_en/whl.md', encoding="utf-8-sig") as f:
+    with open('doc/doc_en/whl_en.md', encoding="utf-8-sig") as f:
         README = f.read()
     return README
 

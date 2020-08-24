@@ -134,6 +134,37 @@ paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --det false
 ['韩国小馆', 0.9907421]
 ```
 
+## 自定义模型
+当内置模型无法满足需求时，需要使用到自己训练的模型。
+首先，参照[inference.md](./inference.md) 第一节转换将检测和识别模型转换为inference模型，然后按照如下方式使用
+
+### 代码使用
+```python
+from paddleocr import PaddleOCR, draw_ocr
+# 检测模型和识别模型路径下必须含有model和params文件
+ocr = PaddleOCR(det_model_dir='your_det_model_dir',rec_model_dir='your_rec_model_dir')
+img_path = 'PaddleOCR/doc/imgs/11.jpg'
+result = ocr.ocr(img_path)
+for line in result:
+    print(line)
+
+# 显示结果
+from PIL import Image
+image = Image.open(img_path).convert('RGB')
+boxes = [line[0] for line in result]
+txts = [line[1][0] for line in result]
+scores = [line[1][1] for line in result]
+im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/simfang.ttf')
+im_show = Image.fromarray(im_show)
+im_show.save('result.jpg')
+```
+
+### 通过命令行使用
+
+```bash
+paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir your_det_model_dir --rec_model_dir your_rec_model_dir
+```
+
 ## 参数说明
 
 | 字段                    | 说明                                                                                                                                                                                                                 | 默认值                  |

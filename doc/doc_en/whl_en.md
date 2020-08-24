@@ -138,6 +138,38 @@ Output will be a list, each item contains text and recognition confidence
 ['PAIN', 0.990372]
 ```
 
+## Use custom model
+When the built-in model cannot meet the needs, you need to use your own trained model.
+First, refer to the first section of [inference_en.md](./inference_en.md) to convert your det and rec model to inference model, and then use it as follows
+
+### 1. Use by code
+
+```python
+from paddleocr import PaddleOCR,draw_ocr
+# The path of detection and recognition model must contain model and params files
+ocr = PaddleOCR(det_model_dir='your_det_model_dir',rec_model_dir='your_rec_model_dir')
+img_path = 'PaddleOCR/doc/imgs_en/img_12.jpg'
+result = ocr.ocr(img_path)
+for line in result:
+    print(line)
+
+# draw result
+from PIL import Image
+image = Image.open(img_path).convert('RGB')
+boxes = [line[0] for line in result]
+txts = [line[1][0] for line in result]
+scores = [line[1][1] for line in result]
+im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/simfang.ttf')
+im_show = Image.fromarray(im_show)
+im_show.save('result.jpg')
+```
+
+### Use by command line
+
+```bash
+paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir your_det_model_dir --rec_model_dir your_rec_model_dir
+```
+
 ## Parameter Description
 
 | Parameter                    | Description                                                                                                                                                                                                                 | Default value                  |
