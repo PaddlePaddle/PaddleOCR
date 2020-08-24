@@ -71,6 +71,7 @@ def parse_args():
         default="./ppocr/utils/ppocr_keys_v1.txt")
     parser.add_argument("--use_space_char", type=bool, default=True)
     parser.add_argument("--enable_mkldnn", type=bool, default=False)
+    parser.add_argument("--use_zero_copy_run", type=bool, default=False)
     return parser.parse_args()
 
 
@@ -105,9 +106,12 @@ def create_predictor(args, mode):
     #config.enable_memory_optim()
     config.disable_glog_info()
 
-    # use zero copy
-    config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
-    config.switch_use_feed_fetch_ops(False)
+    if args.use_zero_copy_run:
+        config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
+        config.switch_use_feed_fetch_ops(False)
+    else:
+        config.switch_use_feed_fetch_ops(True)
+
     predictor = create_paddle_predictor(config)
     input_names = predictor.get_input_names()
     input_tensor = predictor.get_input_tensor(input_names[0])
