@@ -42,6 +42,7 @@ class TextDetector(object):
     def __init__(self, args):
         max_side_len = args.det_max_side_len
         self.det_algorithm = args.det_algorithm
+        self.use_zero_copy_run = args.use_zero_copy_run
         preprocess_params = {'max_side_len': max_side_len}
         postprocess_params = {}
         if self.det_algorithm == "DB":
@@ -138,8 +139,12 @@ class TextDetector(object):
             return None, 0
         im = im.copy()
         starttime = time.time()
-        im = fluid.core.PaddleTensor(im)
-        self.predictor.run([im])
+        if self.use_zero_copy_run:
+            self.input_tensor.copy_from_cpu(im)
+            self.predictor.zero_copy_run()
+        else:
+            im = fluid.core.PaddleTensor(im)
+            self.predictor.run([im])
         outputs = []
         for output_tensor in self.output_tensors:
             output = output_tensor.copy_to_cpu()
