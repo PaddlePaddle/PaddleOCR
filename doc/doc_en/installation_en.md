@@ -11,21 +11,21 @@ It is recommended to use the docker provided by us to run PaddleOCR, please refe
 
 *If you want to directly run the prediction code on mac or windows, you can start from step 2.*
 
-1. (Recommended) Prepare a docker environment. The first time you use this image, it will be downloaded automatically. Please be patient.
+**1. (Recommended) Prepare a docker environment. The first time you use this image, it will be downloaded automatically. Please be patient.**
 ```
 # Switch to the working directory
 cd /home/Projects
 # You need to create a docker container for the first run, and do not need to run the current command when you run it again
 # Create a docker container named ppocr and map the current directory to the /paddle directory of the container
 
-#If you want to use docker in a CPU environment, use docker instead of nvidia-docker to create docker
+#If using CPU, use docker instead of nvidia-docker to create docker
 sudo docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev /bin/bash
 ```
-If you have cuda9 installed on your machine, please run the following command to create a container:
+If using CUDA9, please run the following command to create a container:
 ```
 sudo nvidia-docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev /bin/bash
 ```
-If you have cuda10 installed on your machine, please run the following command to create a container:
+If using CUDA10, please run the following command to create a container:
 ```
 sudo nvidia-docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda10.0-cudnn7-dev /bin/bash
 ```
@@ -49,20 +49,7 @@ docker images
 hub.baidubce.com/paddlepaddle/paddle   latest-gpu-cuda9.0-cudnn7-dev    f56310dcc829
 ```
 
-2. Change default version of python3
-
-Python3.5 is used as the default version of python. However, Python3.7 is preferred in PaddleOCR for better compatibility of third-party libraries. After entering docker, you can edit file `/etc/profile`, add the following content at the end of the file.
-
-
-```shell
-
-alias python3=python3.7
-alias pip3=pip3.7
-```
-
-After saving the file `/etc/profile`. The command `source /etc/profile` needs to be carried out to make the default python version as 3.7 effective.
-
-3. Install PaddlePaddle Fluid v1.7 (the higher version is not supported yet, the adaptation work is in progress)
+**2. Install PaddlePaddle Fluid v1.7 (the higher version is not supported yet, the adaptation work is in progress)**
 ```
 pip3 install --upgrade pip
 
@@ -78,7 +65,7 @@ python3 -m pip install paddlepaddle==1.7.2 -i https://pypi.tuna.tsinghua.edu.cn/
 For more software version requirements, please refer to the instructions in [Installation Document](https://www.paddlepaddle.org.cn/install/quick) for operation.
 
 
-4. Clone PaddleOCR repo
+**3. Clone PaddleOCR repo**
 ```
 # Recommend
 git clone https://github.com/PaddlePaddle/PaddleOCR
@@ -90,7 +77,7 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 # Note: The cloud-hosting code may not be able to synchronize the update with this GitHub project in real time. There might be a delay of 3-5 days. Please give priority to the recommended method.
 ```
 
-5. Install third-party libraries
+**4. Install third-party libraries**
 ```
 cd PaddleOCR
 pip3 install -r requirments.txt

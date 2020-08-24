@@ -13,7 +13,7 @@ deployment solutions for end-side deployment issues.
 - Computer (for Compiling Paddle Lite)
 - Mobile phone (arm7 or arm8)
 
-## 2. Build ncnn library
+## 2. Build PaddleLite library
 [build for Docker](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#docker)
 [build for Linux](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#android)
 [build for MAC OS](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#id13)

@@ -40,7 +40,8 @@ class TextRecognizer(object):
         char_ops_params = {
             "character_type": args.rec_char_type,
             "character_dict_path": args.rec_char_dict_path,
-            "use_space_char": args.use_space_char
+            "use_space_char": args.use_space_char,
+            "max_text_length": args.max_text_length
         }
         if self.rec_algorithm != "RARE":
             char_ops_params['loss_type'] = 'ctc'
@@ -122,9 +123,9 @@ class TextRecognizer(object):
                     ind = np.argmax(probs, axis=1)
                     blank = probs.shape[1]
                     valid_ind = np.where(ind != (blank - 1))[0]
-                    score = np.mean(probs[valid_ind, ind[valid_ind]])
                     if len(valid_ind) == 0:
                         continue
+                    score = np.mean(probs[valid_ind, ind[valid_ind]])
                     # rec_res.append([preds_text, score])
                     rec_res[indices[beg_img_no + rno]] = [preds_text, score]
             else:

@@ -22,7 +22,10 @@ from paddle_serving_client import Client
 from paddle_serving_app.reader import Sequential, URL2Image, ResizeByFactor
 from paddle_serving_app.reader import Div, Normalize, Transpose
 from paddle_serving_app.reader import DBPostProcess, FilterBoxes, GetRotateCropImage, SortedBoxes
-from paddle_serving_server_gpu.web_service import WebService
+if sys.argv[1] == 'gpu':
+    from paddle_serving_server_gpu.web_service import WebService
+elif sys.argv[1] == 'cpu':
+    from paddle_serving_server.web_service import WebService
 import time
 import re
 import base64
@@ -65,8 +68,12 @@ class OCRService(WebService):
 
 ocr_service = OCRService(name="ocr")
 ocr_service.load_model_config("ocr_rec_model")
-ocr_service.set_gpus("0")
 ocr_service.init_rec()
-ocr_service.prepare_server(workdir="workdir", port=9292, device="gpu", gpuid=0)
-ocr_service.run_debugger_service()
+if sys.argv[1] == 'gpu':
+    ocr_service.set_gpus("0")
+    ocr_service.prepare_server(workdir="workdir", port=9292, device="gpu", gpuid=0)
+    ocr_service.run_debugger_service(gpu=True)
+elif sys.argv[1] == 'cpu':
+    ocr_service.prepare_server(workdir="workdir", port=9292, device="cpu")
+    ocr_service.run_debugger_service()
 ocr_service.run_web_service()

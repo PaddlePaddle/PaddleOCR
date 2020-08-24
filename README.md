@@ -4,12 +4,11 @@ English | [简体中文](README_cn.md)
 PaddleOCR aims to create rich, leading, and practical OCR tools that help users train better models and apply them into practice.
 
 **Recent updates**
+- 2020.8.16, Release text detection algorithm [SAST](https://arxiv.org/abs/1908.05498) and text recognition algorithm [SRN](https://arxiv.org/abs/2003.12294)
 - 2020.7.23, Release the playback and PPT of live class on BiliBili station, PaddleOCR Introduction, [address](https://aistudio.baidu.com/aistudio/course/introduce/1519)
 - 2020.7.15, Add mobile App demo , support both iOS and  Android  ( based on easyedge and Paddle Lite)
-- 2020.7.15, Improve the  deployment ability, add the C + +  inference , serving deployment. In addtion, the benchmarks of the ultra-lightweight OCR model are provided.
+- 2020.7.15, Improve the  deployment ability, add the C + +  inference , serving deployment. In addition, the benchmarks of the ultra-lightweight OCR model are provided.
 - 2020.7.15, Add several related datasets, data annotation and synthesis tools.
-- 2020.7.9 Add a new model to support recognize the  character "space".
-- 2020.7.9 Add the data augument and learning rate decay strategies during training.
 - [more](./doc/doc_en/update_en.md)
 
 ## Features
@@ -18,7 +17,7 @@ PaddleOCR aims to create rich, leading, and practical OCR tools that help users 
     - Detection model DB (4.1M) + recognition model CRNN (4.5M)
 - Various text detection algorithms: EAST, DB
 - Various text recognition algorithms: Rosetta, CRNN, STAR-Net, RARE
-- Support Linux, Windows, MacOS and other systems.
+- Support Linux, Windows, macOS and other systems.
 
 ## Visualization
 
@@ -30,9 +29,9 @@ PaddleOCR aims to create rich, leading, and practical OCR tools that help users 
 
 You can also quickly experience the ultra-lightweight OCR : [Online Experience](https://www.paddlepaddle.org.cn/hub/scene/ocr)
 
-Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Android systems): [Sign in the website to obtain the QR code for  installing the App](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)
+Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Android systems): [Sign in to the website to obtain the QR code for  installing the App](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)
 
- Also, you can scan the QR code blow to install the App (**Android support only**)
+ Also, you can scan the QR code below to install the App (**Android support only**)
 
 <div align="center">
 <img src="./doc/ocr-android-easyedge.png"  width = "200" height = "200" />
@@ -79,7 +78,7 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
 - Visualization
     - [Ultra-lightweight Chinese/English OCR Visualization](#UCOCRVIS)
     - [General Chinese/English OCR Visualization](#GeOCRVIS)
-    - [Chinese/English OCR Visualization (Support Space Recognization )](#SpaceOCRVIS)
+    - [Chinese/English OCR Visualization (Support Space Recognition )](#SpaceOCRVIS)
 - [Community](#Community)
 - [References](./doc/doc_en/reference_en.md)
 - [License](#LICENSE)
@@ -91,7 +90,7 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
 PaddleOCR open source text detection algorithms list:
 - [x]  EAST([paper](https://arxiv.org/abs/1704.03155))
 - [x]  DB([paper](https://arxiv.org/abs/1911.08947))
-- [ ]  SAST([paper](https://arxiv.org/abs/1908.05498))(Baidu Self-Research, comming soon)
+- [x]  SAST([paper](https://arxiv.org/abs/1908.05498))(Baidu Self-Research)
 
 On the ICDAR2015 dataset, the text detection result is as follows:
 
@@ -101,8 +100,17 @@ On the ICDAR2015 dataset, the text detection result is as follows:
 |EAST|MobileNetV3|81.67%|79.83%|80.74%|[Download link](https://paddleocr.bj.bcebos.com/det_mv3_east.tar)|
 |DB|ResNet50_vd|83.79%|80.65%|82.19%|[Download link](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar)|
 |DB|MobileNetV3|75.92%|73.18%|74.53%|[Download link](https://paddleocr.bj.bcebos.com/det_mv3_db.tar)|
+|SAST|ResNet50_vd|92.18%|82.96%|87.33%|[Download link](https://paddleocr.bj.bcebos.com/SAST/sast_r50_vd_icdar2015.tar)|
 
-For use of [LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/datasets_en.md#1-icdar2019-lsvt) street view dataset with a total of 3w training data，the related configuration and pre-trained models for text detection task are as follows:
+On Total-Text dataset, the text detection result is as follows:
+
+|Model|Backbone|precision|recall|Hmean|Download link|
+|-|-|-|-|-|-|
+|SAST|ResNet50_vd|88.74%|79.80%|84.03%|[Download link](https://paddleocr.bj.bcebos.com/SAST/sast_r50_vd_total_text.tar)|
+
+**Note：** Additional data, like icdar2013, icdar2017, COCO-Text, ArT, was added to the model training of SAST. Download English public dataset in organized format used by PaddleOCR from [Baidu Drive](https://pan.baidu.com/s/12cPnZcVuV1zn5DOd4mqjVw) (download code: 2bpi).
+
+For use of [LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/datasets_en.md#1-icdar2019-lsvt) street view dataset with a total of 3w training data，the related configuration and pre-trained models for text detection task are as follows:  
 |Model|Backbone|Configuration file|Pre-trained model|
 |-|-|-|-|
 |ultra-lightweight OCR model|MobileNetV3|det_mv3_db.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar)|
@@ -120,7 +128,7 @@ PaddleOCR open-source text recognition algorithms list:
 - [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))
 - [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))
 - [x]  RARE([paper](https://arxiv.org/abs/1603.03915v1))
-- [ ]  SRN([paper](https://arxiv.org/abs/2003.12294))(Baidu Self-Research, comming soon)
+- [x]  SRN([paper](https://arxiv.org/abs/2003.12294))(Baidu Self-Research)
 
 Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation result of these above text recognition (using MJSynth and SynthText for training, evaluate on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE) is as follow:
 
@@ -134,8 +142,14 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 |STAR-Net|MobileNetV3|81.56%|rec_mv3_tps_bilstm_ctc|[Download link](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_ctc.tar)|
 |RARE|Resnet34_vd|84.90%|rec_r34_vd_tps_bilstm_attn|[Download link](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_attn.tar)|
 |RARE|MobileNetV3|83.32%|rec_mv3_tps_bilstm_attn|[Download link](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_attn.tar)|
+|SRN|Resnet50_vd_fpn|88.33%|rec_r50fpn_vd_none_srn|[Download link](https://paddleocr.bj.bcebos.com/SRN/rec_r50fpn_vd_none_srn.tar)|
 
-We use [LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/datasets_en.md#1-icdar2019-lsvt) dataset and cropout 30w  traning data from original photos by using position groundtruth and make some calibration needed. In addition, based on the LSVT corpus, 500w synthetic data is generated to train the model. The related configuration and pre-trained models are as follows:
+**Note：** SRN model uses data expansion method to expand the two training sets mentioned above, and the expanded data can be downloaded from [Baidu Drive](https://pan.baidu.com/s/1-HSZ-ZVdqBF2HaBZ5pRAKA) (download code: y3ry).
+
+The average accuracy of the two-stage training in the original paper is 89.74%, and that of one stage training in paddleocr is 88.33%. Both pre-trained weights can be downloaded [here](https://paddleocr.bj.bcebos.com/SRN/rec_r50fpn_vd_none_srn.tar).
+
+We use [LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/datasets_en.md#1-icdar2019-lsvt) dataset and cropout 30w  training data from original photos by using position groundtruth and make some calibration needed. In addition, based on the LSVT corpus, 500w synthetic data is generated to train the model. The related configuration and pre-trained models are as follows:
+
 |Model|Backbone|Configuration file|Pre-trained model|
 |-|-|-|-|
 |ultra-lightweight OCR model|MobileNetV3|rec_chinese_lite_train.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|[inference model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_enhance_infer.tar) & [pre-trained model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_enhance.tar)|
@@ -145,7 +159,7 @@ Please refer to the document for training guide and use of PaddleOCR text recogn
 
 <a name="ENDENDOCRALGORITHM"></a>
 ## END-TO-END OCR Algorithm
-- [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(Baidu Self-Research, comming soon)
+- [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(Baidu Self-Research, coming soon)
 
 ## Visualization
 
@@ -207,9 +221,10 @@ This project is released under <a href="https://github.com/PaddlePaddle/PaddleOC
 ## Contribution
 We welcome all the contributions to PaddleOCR and appreciate for your feedback very much.
 
-- Many thanks to [Khanh Tran](https://github.com/xxxpsyduck) for contributing the English documentation.
+- Many thanks to [Khanh Tran](https://github.com/xxxpsyduck) and [Karl Horky](https://github.com/karlhorky) for contributing and revising the English documentation.
 - Many thanks to [zhangxin](https://github.com/ZhangXinNan) for contributing the new visualize function、add .gitgnore and discard set PYTHONPATH manually.
 - Many thanks to [lyl120117](https://github.com/lyl120117) for contributing the code for printing the network structure.
 - Thanks [xiangyubo](https://github.com/xiangyubo) for contributing the handwritten Chinese OCR datasets.
 - Thanks [authorfu](https://github.com/authorfu) for contributing Android demo  and [xiadeye](https://github.com/xiadeye) contributing iOS demo, respectively.
 - Thanks [BeyondYourself](https://github.com/BeyondYourself) for contributing many great suggestions and simplifying part of the code style.
+- Thanks [tangmq](https://gitee.com/tangmq) for contributing Dockerized deployment services to PaddleOCR and supporting the rapid release of callable Restful API services.

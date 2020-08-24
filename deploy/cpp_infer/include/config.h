@@ -47,7 +47,7 @@ public:
 
     this->det_db_box_thresh = stod(config_map_["det_db_box_thresh"]);
 
-    this->det_db_box_thresh = stod(config_map_["det_db_box_thresh"]);
+    this->det_db_unclip_ratio = stod(config_map_["det_db_unclip_ratio"]);
 
     this->det_model_dir.assign(config_map_["det_model_dir"]);
 

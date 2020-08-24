@@ -18,9 +18,9 @@ from __future__ import print_function
 
 import os
 import sys
-__dir__ = os.path.dirname(__file__)
+__dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.append(os.path.join(__dir__, '..'))
+sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
 
 
 def set_paddle_flags(**kwargs):
@@ -52,6 +52,7 @@ def main():
     train_fetch_name_list = train_build_outputs[1]
     train_fetch_varname_list = train_build_outputs[2]
     train_opt_loss_name = train_build_outputs[3]
+    model_average = train_build_outputs[-1]
 
     eval_program = fluid.Program()
     eval_build_outputs = program.build(
@@ -85,7 +86,8 @@ def main():
         'train_program':train_program,\
         'reader':train_loader,\
         'fetch_name_list':train_fetch_name_list,\
-        'fetch_varname_list':train_fetch_varname_list}
+        'fetch_varname_list':train_fetch_varname_list,\
+        'model_average': model_average}
 
     eval_info_dict = {'program':eval_program,\
         'reader':eval_reader,\

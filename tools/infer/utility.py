@@ -53,12 +53,18 @@ def parse_args():
     parser.add_argument("--det_east_cover_thresh", type=float, default=0.1)
     parser.add_argument("--det_east_nms_thresh", type=float, default=0.2)
 
+    #SAST parmas
+    parser.add_argument("--det_sast_score_thresh", type=float, default=0.5)
+    parser.add_argument("--det_sast_nms_thresh", type=float, default=0.2)
+    parser.add_argument("--det_sast_polygon", type=bool, default=False)
+
     #params for text recognizer
     parser.add_argument("--rec_algorithm", type=str, default='CRNN')
     parser.add_argument("--rec_model_dir", type=str)
     parser.add_argument("--rec_image_shape", type=str, default="3, 32, 320")
     parser.add_argument("--rec_char_type", type=str, default='ch')
     parser.add_argument("--rec_batch_num", type=int, default=30)
+    parser.add_argument("--max_text_length", type=int, default=25)
     parser.add_argument(
         "--rec_char_dict_path",
         type=str,
@@ -95,7 +101,7 @@ def create_predictor(args, mode):
         config.set_cpu_math_library_num_threads(6)
         if args.enable_mkldnn:
             config.enable_mkldnn()
-            
+
     #config.enable_memory_optim()
     config.disable_glog_info()
 
@@ -169,7 +175,7 @@ def draw_ocr_box_txt(image, boxes, txts):
     img_right = Image.new('RGB', (w, h), (255, 255, 255))
 
     import random
-    # 每次使用相同的随机种子 ，可以保证两次颜色一致
+
     random.seed(0)
     draw_left = ImageDraw.Draw(img_left)
     draw_right = ImageDraw.Draw(img_right)

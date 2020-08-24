@@ -39,7 +39,7 @@ PaddleOCR已完成Windows和Mac系统适配，运行时注意两点：1、在[�
     - 识别：  
     英文数据集，MJSynth和SynthText合成数据，数据量上千万。  
     中文数据集，LSVT街景数据集根据真值将图crop出来，并进行位置校准，总共30w张图像。此外基于LSVT的语料，合成数据500w。  
-    
+
     其中，公开数据集都是开源的，用户可自行搜索下载，也可参考[中文数据集](./datasets.md)，合成数据暂不开源，用户可使用开源合成工具自行合成，可参考的合成工具包括[text_renderer](https://github.com/Sanster/text_renderer)、[SynthText](https://github.com/ankush-me/SynthText)、[TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator)等。
 
 10. **使用带TPS的识别模型预测报错**  
@@ -49,3 +49,5 @@ PaddleOCR已完成Windows和Mac系统适配，运行时注意两点：1、在[�
 11. **自定义字典训练的模型，识别结果出现字典里没出现的字**  
 预测时没有设置采用的自定义字典路径。设置方法是在预测时，通过增加输入参数rec_char_dict_path来设置。
 
+12. **cpp infer与python inference的结果不一致，相差较大**  
+导出的inference model版本与预测库版本需要保持一致，比如在Windows下，Paddle官网提供的预测库版本是1.8，而PaddleOCR提供的inference model 版本是1.7，因此最终预测结果会有差别。可以在Paddle1.8环境下导出模型，再基于该模型进行预测。
