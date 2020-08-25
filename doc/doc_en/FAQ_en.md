@@ -45,7 +45,7 @@ At present, the open source model, dataset and magnitude are as follows:
     Among them, the public datasets are opensourced, users can search and download by themselves, or refer to [Chinese data set](./datasets_en.md), synthetic data is not opensourced, users can use open-source synthesis tools to synthesize data themselves. Current available synthesis tools include [text_renderer](https://github.com/Sanster/text_renderer), [SynthText](https://github.com/ankush-me/SynthText), [TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator), etc.
 
 10. **Error in using the model with TPS module for prediction**  
-Error message: Input(X) dims[3] and Input(Grid) dims[2] should be equal, but received X dimension[3](108) != Grid dimension[2](100)  
+Error message: Input(X) dims[3] and Input(Grid) dims[2] should be equal, but received X dimension[3]\(108) != Grid dimension[2]\(100)  
 Solution：TPS does not support variable shape. Please set --rec_image_shape='3,32,100' and --rec_char_type='en'
 
 11. **Custom dictionary used during training, the recognition results show that words do not appear in the dictionary**  
