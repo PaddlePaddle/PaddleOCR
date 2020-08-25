@@ -41,6 +41,8 @@ public:
 
     this->use_mkldnn = bool(stoi(config_map_["use_mkldnn"]));
 
+    this->use_zero_copy_run = bool(stoi(config_map_["use_zero_copy_run"]));
+
     this->max_side_len = stoi(config_map_["max_side_len"]);
 
     this->det_db_thresh = stod(config_map_["det_db_thresh"]);
@@ -67,6 +69,8 @@ public:
   int cpu_math_library_num_threads = 1;
 
   bool use_mkldnn = false;
+
+  bool use_zero_copy_run = false;
 
   int max_side_len = 960;
 
