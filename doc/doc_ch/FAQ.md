@@ -9,48 +9,54 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [【精选】OCR精选10个问题](#【精选】OCR精选10个问题)
-* [【理论篇】OCR通用21个问题](#【理论篇】OCR通用问题)
+* [【精选】OCR精选10个问题](#OCR精选10个问题)
+* [【理论篇】OCR通用21个问题](#OCR通用问题)
   * [基础知识3题](#基础知识)
   * [数据集4题](#数据集)
   * [模型训练调优6题](#模型训练调优)
   * [预测部署8题](#预测部署)
-* [【实战篇】PaddleOCR实战54个问题](#【实战篇】PaddleOCR实战问题)
-  * [使用咨询18题](#使用咨询)
+* [【实战篇】PaddleOCR实战53个问题](#PaddleOCR实战问题)
+  * [使用咨询17题](#使用咨询)
   * [数据集9题](#数据集)
   * [模型训练调优13题](#模型训练调优)
   * [预测部署14题](#[预测部署)
 
 
 
-
+<a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
 
 #### Q1.1.1：基于深度学习的文字检测方法有哪几种？各有什么优缺点？
 
 **A**：常用的基于深度学习的文字检测方法一般可以分为基于回归的、基于分割的两大类，当然还有一些将两者进行结合的方法。
+
 （1）基于回归的方法分为box回归和像素值回归。a. 采用box回归的方法主要有CTPN、Textbox系列和EAST，这类算法对规则形状文本检测效果较好，但无法准确检测不规则形状文本。 b. 像素值回归的方法主要有CRAFT和SA-Text，这类算法能够检测弯曲文本且对小文本效果优秀但是实时性能不够。
+
 （2）基于分割的算法，如PSENet，这类算法不受文本形状的限制，对各种形状的文本都能取得较好的效果，但是往往后处理比较复杂，导致耗时严重。目前也有一些算法专门针对这个问题进行改进，如DB，将二值化进行近似，使其可导，融入训练，从而获取更准确的边界，大大降低了后处理的耗时。
 
 #### Q1.1.2：对于中文行文本识别，CTC和Attention哪种更优？
 
 **A**：（1）从效果上来看，通用OCR场景CTC的识别效果优于Attention，因为带识别的字典中的字符比较多，常用中文汉字三千字以上，如果训练样本不足的情况下，对于这些字符的序列关系挖掘比较困难。中文场景下Attention模型的优势无法体现。而且Attention适合短语句识别，对长句子识别比较差。
+
 （2）从训练和预测速度上，Attention的串行解码结构限制了预测速度，而CTC网络结构更高效，预测速度上更有优势。
 
 #### Q1.1.3：弯曲形变的文字识别需要怎么处理？TPS应用场景是什么，是否好用？
 
 **A**：（1）在大多数情况下，如果遇到的场景弯曲形变不是太严重，检测4个顶点，然后直接通过仿射变换转正识别就足够了。
+
 （2）如果不能满足需求，可以尝试使用TPS（Thin Plate Spline），即薄板样条插值。TPS是一种插值算法，经常用于图像变形等，通过少量的控制点就可以驱动图像进行变化。一般用在有弯曲形变的文本识别中，当检测到不规则的/弯曲的（如，使用基于分割的方法检测算法）文本区域，往往先使用TPS算法对文本区域矫正成矩形再进行识别，如，STAR-Net、RARE等识别算法中引入了TPS模块。
 **Warning**：TPS看起来美好，在实际应用时经常发现并不够鲁棒，并且会增加耗时，需要谨慎使用。
 
 #### Q1.1.4：简单的对于精度要求不高的OCR任务，数据集需要准备多少张呢？
 
 **A**：（1）训练数据的数量和需要解决问题的复杂度有关系。难度越大，精度要求越高，则数据集需求越大，而且一般情况实际中的训练数据越多效果越好。
+
 （2）对于精度要求不高的场景，检测任务和识别任务需要的数据量是不一样的。对于检测任务，500张图像可以保证基本的检测效果。对于识别任务，需要保证识别字典中每个字符出现在不同场景的行文本图像数目需要大于200张（举例，如果有字典中有5个字，每个字都需要出现在200张图片以上，那么最少要求的图像数量应该在200-1000张之间），这样可以保证基本的识别效果。
 
 #### Q1.1.5：背景干扰的文字（如印章盖到落款上，需要识别落款或者印章中的文字），如何识别？
 
 **A**：（1）在人眼确认可识别的条件下，对于背景有干扰的文字，首先要保证检测框足够准确，如果检测框不准确，需要考虑是否可以通过过滤颜色等方式对图像预处理并且增加更多相关的训练数据；在识别的部分，注意在训练数据中加入背景干扰类的扩增图像。
+
 （2）如果MobileNet模型不能满足需求，可以尝试ResNet系列大模型来获得更好的效果
 。
 
@@ -96,15 +102,18 @@
 #### Q1.1.9：PaddleOCR模型推理方式有几种？各自的优缺点是什么
 
 **A**：目前推理方式支持基于训练引擎推理和基于预测引擎推理。
+
 （1）基于训练引擎推理不需要转换模型，但是需要先组网再load参数，语言只支持python，不适合系统集成。
+
 （2）基于预测引擎的推理需要先转换模型为inference格式，然后可以进行不需要组网的推理，语言支持c++和python，适合系统集成。
 
 #### Q1.1.10：PaddleOCR中，对于模型预测加速，CPU加速的途径有哪些？基于TenorRT加速GPU对输入有什么要求？
 
 **A**：（1）CPU可以使用mkldnn进行加速；对于python inference的话，可以把enable_mkldnn改为true，[参考代码](https://github.com/PaddlePaddle/PaddleOCR/blob/549108fe0aa0d87c0a3b2d471f1c653e89daab80/tools/infer/utility.py#L73)，对于cpp inference的话，在配置文件里面配置use_mkldnn 1即可，[参考代码](https://github.com/PaddlePaddle/PaddleOCR/blob/549108fe0aa0d87c0a3b2d471f1c653e89daab80/deploy/cpp_infer/tools/config.txt#L6)
+
 （2）GPU需要注意变长输入问题等，TRT6 之后才支持变长输入
 
-
+<a name="OCR通用问题"></a>
 ## 【理论篇】OCR通用问题
 ### 基础知识
 
@@ -144,7 +153,9 @@
 
 #### Q2.3.1：如何更换文本检测/识别的backbone？
 **A**：无论是文字检测，还是文字识别，骨干网络的选择是预测效果和预测效率的权衡。一般，选择更大规模的骨干网络，例如ResNet101_vd，则检测或识别更准确，但预测耗时相应也会增加。而选择更小规模的骨干网络，例如MobileNetV3_small_x0_35，则预测更快，但检测或识别的准确率会大打折扣。幸运的是不同骨干网络的检测或识别效果与在ImageNet数据集图像1000分类任务效果正相关。[**飞桨图像分类套件PaddleClas**](https://github.com/PaddlePaddle/PaddleClas)汇总了ResNet_vd、Res2Net、HRNet、MobileNetV3、GhostNet等23种系列的分类网络结构，在上述图像分类任务的top1识别准确率，GPU(V100和T4)和CPU(骁龙855)的预测耗时以及相应的[**117个预训练模型下载地址**](https://paddleclas.readthedocs.io/zh_CN/latest/models/models_intro.html)。
+
  （1）文字检测骨干网络的替换，主要是确定类似与ResNet的4个stages，以方便集成后续的类似FPN的检测头。此外，对于文字检测问题，使用ImageNet训练的分类预训练模型，可以加速收敛和效果提升。
+
  （2）文字识别的骨干网络的替换，需要注意网络宽高stride的下降位置。由于文本识别一般宽高比例很大，因此高度下降频率少一些，宽度下降频率多一些。可以参考PaddleOCR中[MobileNetV3骨干网络](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/modeling/backbones/rec_mobilenet_v3.py)的改动。
 
 #### Q2.3.2：文本识别训练不加LSTM是否可以收敛？
@@ -208,7 +219,7 @@
 **A**：表格目前学术界比较成熟的解决方案不多 ，可以尝试下分割的论文方案。
 
 
-
+<a name="PaddleOCR实战问题"></a>
 ## 【实战篇】PaddleOCR实战问题
 
 ### 使用咨询
@@ -263,23 +274,21 @@
 
 #### Q3.1.13：识别模型框出来的位置太紧凑，会丢失边缘的文字信息，导致识别错误
 
-**A**： 可以在命令中加入 --det_db_unclip_ratio ，参考[定义位置](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/tools/infer/utility.py#L49)，这个参数是检测后处理时控制文本框大小的，默认2.0，可以尝试改成2.5或者更大
-，反之，如果觉得文本框不够紧凑，也可以把该参数调小。
+**A**： 可以在命令中加入 --det_db_unclip_ratio ，参数[定义位置](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/tools/infer/utility.py#L49)，这个参数是检测后处理时控制文本框大小的，默认2.0，可以尝试改成2.5或者更大，反之，如果觉得文本框不够紧凑，也可以把该参数调小。
 
 #### Q3.1.14：英文手写体识别有计划提供的预训练模型吗?
 
 **A**：近期也在开展需求调研，如果企业用户需求较多，我们会考虑增加相应的研发投入，后续提供对应的预训练模型，如果有需求欢迎通过issue或者加入微信群联系我们。
 
-#### Q3.1.15：超轻量模型和通用OCR模型的区别？
-
+#### Q3.1.15：PaddleOCR的算法可以用于手写文字检测识别吗?后续有计划推出手写预训练模型么？
 **A**：理论上只要有相应的数据集，都是可以的。当然手写识别毕竟和印刷体有区别，对应训练调优策略可能需要适配性优化。
 
 
-#### Q3.1.16：PaddleOCR的算法可以用于手写文字检测识别吗?后续有计划推出手写预训练模型么？
+#### Q3.1.16：PaddleOCR是否支持在Windows或Mac系统上运行？
 
-**A**：PaddleOCR已完成Windows和Mac系统适配，并且python预测支持使用pip包安装。运行时注意两点：1、在[快速安装](./installation.md)时，如果不想安装docker，可跳过第一步，直接从第二步安装paddle开始。2、inference模型下载时，如果没有安装wget，可直接点击模型链接或将链接地址复制到浏览器进行下载，并解压放置到相应目录。
+**A**：PaddleOCR已完成Windows和Mac系统适配，运行时注意两点：1、在[快速安装](./installation.md)时，如果不想安装docker，可跳过第一步，直接从第二步安装paddle开始。2、inference模型下载时，如果没有安装wget，可直接点击模型链接或将链接地址复制到浏览器进行下载，并解压放置到相应目录。
 
-#### Q3.1.17：PaddleOCR是否支持在Windows或Mac系统上运行？
+#### Q3.1.17：PaddleOCR开源的超轻量模型和通用OCR模型的区别？
 **A**：目前PaddleOCR开源了2个中文模型，分别是8.6M超轻量中文模型和通用中文OCR模型。两者对比信息如下：
     - 相同点：两者使用相同的**算法**和**训练数据**；  
     - 不同点：不同之处在于**骨干网络**和**通道参数**，超轻量模型使用MobileNetV3作为骨干网络，通用模型使用Resnet50_vd作为检测模型backbone，Resnet34_vd作为识别模型backbone，具体参数差异可对比两种模型训练的配置文件.
@@ -288,10 +297,6 @@
 |-|-|-|-|
 |8.6M超轻量中文OCR模型|MobileNetV3+MobileNetV3|det_mv3_db.yml|rec_chinese_lite_train.yml|
 |通用中文OCR模型|Resnet50_vd+Resnet34_vd|det_r50_vd_db.yml|rec_chinese_common_train.yml|
-
-#### Q3.1.18：是否有计划开源仅识别数字或仅识别英文+数字的模型
-
-**A**：目前主要是开源通用类OCR模型，暂不计划开源小垂类专用模型。PaddleOCR开源了多种检测、识别算法供用户自定义训练，两种中文模型也是基于开源的算法库训练产出，有小垂类需求的小伙伴，可以按照教程准备好数据，选择合适的配置文件，自行训练，相信能有不错的效果。训练有任何问题欢迎提issue或在交流群提问，我们会及时解答。
 
 
 ### 数据集
@@ -375,6 +380,7 @@ unclip_ratio: 文本框扩张的系数，关系到文本框的大小``
 
 ```
 return paddle.reader.multiprocess_reader(readers, False, queue_size=320)
+
 ```
 
 #### Q3.3.6：可不可以将pretrain_weights设置为空呢？想从零开始训练一个model
@@ -400,13 +406,11 @@ return paddle.reader.multiprocess_reader(readers, False, queue_size=320)
 #### Q3.3.11：自己训练出来的未inference转换的模型 可以当作预训练模型吗？
 
 **A**：可以的，但是如果训练数据两量少的话，可能会过拟合到少量数据上，泛化性能不佳。
-
-#### Q3.3.12：如何更换文本检测/识别的backbone？
+#### Q3.3.12：使用带TPS的识别模型预测报错
 
 **A**：直接更换配置文件里的Backbone.function即可，格式为：网络文件路径,网络Class名词。如果所需的backbone在PaddleOCR里没有提供，可以参照PaddleClas里面的网络结构，进行修改尝试。具体修改原则可以参考OCR通用问题中 "如何更换文本检测/识别的backbone" 的回答。
 
-#### Q3.3.13：使用带TPS的识别模型预测报错
-
+#### Q3.3.13：如何更换文本检测/识别的backbone？
 **A**：报错信息：'''Input(X) dims[3] and Input(Grid) dims[2] should be equal, but received X dimension[3](320) != Grid dimension[2](100)  
 **A**：TPS模块暂时无法支持变长的输入，请设置 --rec_image_shape='3,32,100' --rec_char_type='en' 固定输入shape
 
@@ -462,6 +466,7 @@ ocr_system: 检测识别串联预测
 
 **A**：目前包括mkl和openblas两种版本的预测库，推荐使用mkl的预测库，如果下载的预测库是mkl的，编译的时候也需要勾选`with_mkl`选项
 ，以Linux下编译为例，需要在设置这里为ON，`-DWITH_MKL=ON`，[参考链接](https://github.com/PaddlePaddle/PaddleOCR/blob/8a78af26df0dd8f15b734cc8db13e25d2a3656a2/deploy/cpp_infer/tools/build.sh#L12)。此外，使用预测库时，推荐在Linux或者Windows上进行开发，不推荐在MacOS上开发。
+
 #### Q3.4.12：使用自定义字典训练，inference时如何修改
 
 **A**：使用了自定义字典的话，用inference预测时，需要通过 --rec_char_dict_path 修改字典路径。详细操作可参考[文档](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/inference.md#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E5%AD%97%E5%85%B8%E7%9A%84%E6%8E%A8%E7%90%86)
