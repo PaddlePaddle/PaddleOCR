@@ -22,12 +22,12 @@ import paddle
 import paddle.fluid as fluid
 from paddle.fluid.param_attr import ParamAttr
 
-
-__all__ = ["ResNet", "ResNet18", "ResNet34", "ResNet50", "ResNet101", "ResNet152"]
+__all__ = [
+    "ResNet", "ResNet18", "ResNet34", "ResNet50", "ResNet101", "ResNet152"
+]
 
 Trainable = True
-w_nolr = fluid.ParamAttr(
-        trainable = Trainable)
+w_nolr = fluid.ParamAttr(trainable=Trainable)
 train_parameters = {
     "input_size": [3, 224, 224],
     "input_mean": [0.485, 0.456, 0.406],
@@ -40,11 +40,11 @@ train_parameters = {
     }
 }
 
+
 class ResNet():
     def __init__(self, params):
         self.layers = params['layers']
         self.params = train_parameters
-
 
     def __call__(self, input):
         layers = self.layers
@@ -60,12 +60,17 @@ class ResNet():
             depth = [3, 4, 23, 3]
         elif layers == 152:
             depth = [3, 8, 36, 3]
-        stride_list = [(2,2),(2,2),(1,1),(1,1)]
+        stride_list = [(2, 2), (2, 2), (1, 1), (1, 1)]
         num_filters = [64, 128, 256, 512]
 
         conv = self.conv_bn_layer(
-            input=input, num_filters=64, filter_size=7, stride=2, act='relu', name="conv1")
-        F = [] 
+            input=input,
+            num_filters=64,
+            filter_size=7,
+            stride=2,
+            act='relu',
+            name="conv1")
+        F = []
         if layers >= 50:
             for block in range(len(depth)):
                 for i in range(depth[block]):
@@ -79,7 +84,8 @@ class ResNet():
                     conv = self.bottleneck_block(
                         input=conv,
                         num_filters=num_filters[block],
-                        stride=stride_list[block]  if i == 0 else 1, name=conv_name)
+                        stride=stride_list[block] if i == 0 else 1,
+                        name=conv_name)
                 F.append(conv)
         else:
             for block in range(len(depth)):
@@ -100,22 +106,45 @@ class ResNet():
                 F.append(conv)
 
         base = F[-1]
-        for i in [-2, -3]:  
+        for i in [-2, -3]:
             b, c, w, h = F[i].shape
-            if (w,h) == base.shape[2:]:
+            if (w, h) == base.shape[2:]:
                 base = base
             else:
-                base = fluid.layers.conv2d_transpose( input=base, num_filters=c,filter_size=4, stride=2,
-                    padding=1,act=None,
+                base = fluid.layers.conv2d_transpose(
+                    input=base,
+                    num_filters=c,
+                    filter_size=4,
+                    stride=2,
+                    padding=1,
+                    act=None,
                     param_attr=w_nolr,
                     bias_attr=w_nolr)
-                base = fluid.layers.batch_norm(base, act = "relu", param_attr=w_nolr, bias_attr=w_nolr)
+                base = fluid.layers.batch_norm(
+                    base, act="relu", param_attr=w_nolr, bias_attr=w_nolr)
             base = fluid.layers.concat([base, F[i]], axis=1)
-            base = fluid.layers.conv2d(base, num_filters=c, filter_size=1, param_attr=w_nolr, bias_attr=w_nolr)
-            base = fluid.layers.conv2d(base, num_filters=c, filter_size=3,padding = 1, param_attr=w_nolr, bias_attr=w_nolr)
-            base = fluid.layers.batch_norm(base, act = "relu", param_attr=w_nolr, bias_attr=w_nolr)
+            base = fluid.layers.conv2d(
+                base,
+                num_filters=c,
+                filter_size=1,
+                param_attr=w_nolr,
+                bias_attr=w_nolr)
+            base = fluid.layers.conv2d(
+                base,
+                num_filters=c,
+                filter_size=3,
+                padding=1,
+                param_attr=w_nolr,
+                bias_attr=w_nolr)
+            base = fluid.layers.batch_norm(
+                base, act="relu", param_attr=w_nolr, bias_attr=w_nolr)
 
-        base = fluid.layers.conv2d(base, num_filters=512, filter_size=1,bias_attr=w_nolr,param_attr=w_nolr)
+        base = fluid.layers.conv2d(
+            base,
+            num_filters=512,
+            filter_size=1,
+            bias_attr=w_nolr,
+            param_attr=w_nolr)
 
         return base
 
@@ -130,13 +159,14 @@ class ResNet():
         conv = fluid.layers.conv2d(
             input=input,
             num_filters=num_filters,
-            filter_size= 2  if stride==(1,1)  else filter_size,
-            dilation = 2 if stride==(1,1) else 1,
+            filter_size=2 if stride == (1, 1) else filter_size,
+            dilation=2 if stride == (1, 1) else 1,
             stride=stride,
             padding=(filter_size - 1) // 2,
             groups=groups,
             act=None,
-            param_attr=ParamAttr(name=name + "_weights",trainable = Trainable),
+            param_attr=ParamAttr(
+                name=name + "_weights", trainable=Trainable),
             bias_attr=False,
             name=name + '.conv2d.output.1')
 
@@ -144,28 +174,35 @@ class ResNet():
             bn_name = "bn_" + name
         else:
             bn_name = "bn" + name[3:]
-        return fluid.layers.batch_norm(input=conv,
-                                       act=act,
-                                       name=bn_name + '.output.1',
-                                       param_attr=ParamAttr(name=bn_name + '_scale',trainable = Trainable),
-                                       bias_attr=ParamAttr(bn_name + '_offset',trainable = Trainable),
-                                       moving_mean_name=bn_name + '_mean',
-                                       moving_variance_name=bn_name + '_variance', )
+        return fluid.layers.batch_norm(
+            input=conv,
+            act=act,
+            name=bn_name + '.output.1',
+            param_attr=ParamAttr(
+                name=bn_name + '_scale', trainable=Trainable),
+            bias_attr=ParamAttr(
+                bn_name + '_offset', trainable=Trainable),
+            moving_mean_name=bn_name + '_mean',
+            moving_variance_name=bn_name + '_variance', )
 
     def shortcut(self, input, ch_out, stride, is_first, name):
         ch_in = input.shape[1]
         if ch_in != ch_out or stride != 1 or is_first == True:
-            if stride == (1,1):
+            if stride == (1, 1):
                 return self.conv_bn_layer(input, ch_out, 1, 1, name=name)
-            else: #stride == (2,2)
+            else:  #stride == (2,2)
                 return self.conv_bn_layer(input, ch_out, 1, stride, name=name)
-                
+
         else:
             return input
 
     def bottleneck_block(self, input, num_filters, stride, name):
         conv0 = self.conv_bn_layer(
-            input=input, num_filters=num_filters, filter_size=1, act='relu', name=name + "_branch2a")
+            input=input,
+            num_filters=num_filters,
+            filter_size=1,
+            act='relu',
+            name=name + "_branch2a")
         conv1 = self.conv_bn_layer(
             input=conv0,
             num_filters=num_filters,
@@ -174,16 +211,36 @@ class ResNet():
             act='relu',
             name=name + "_branch2b")
         conv2 = self.conv_bn_layer(
-            input=conv1, num_filters=num_filters * 4, filter_size=1, act=None, name=name + "_branch2c")
+            input=conv1,
+            num_filters=num_filters * 4,
+            filter_size=1,
+            act=None,
+            name=name + "_branch2c")
 
-        short = self.shortcut(input, num_filters * 4, stride, is_first=False, name=name + "_branch1")
+        short = self.shortcut(
+            input,
+            num_filters * 4,
+            stride,
+            is_first=False,
+            name=name + "_branch1")
 
-        return fluid.layers.elementwise_add(x=short, y=conv2, act='relu', name=name + ".add.output.5")
+        return fluid.layers.elementwise_add(
+            x=short, y=conv2, act='relu', name=name + ".add.output.5")
 
     def basic_block(self, input, num_filters, stride, is_first, name):
-        conv0 = self.conv_bn_layer(input=input, num_filters=num_filters, filter_size=3, act='relu', stride=stride,
-                                   name=name + "_branch2a")
-        conv1 = self.conv_bn_layer(input=conv0, num_filters=num_filters, filter_size=3, act=None,
-                                   name=name + "_branch2b")
-        short = self.shortcut(input, num_filters, stride, is_first, name=name + "_branch1")
+        conv0 = self.conv_bn_layer(
+            input=input,
+            num_filters=num_filters,
+            filter_size=3,
+            act='relu',
+            stride=stride,
+            name=name + "_branch2a")
+        conv1 = self.conv_bn_layer(
+            input=conv0,
+            num_filters=num_filters,
+            filter_size=3,
+            act=None,
+            name=name + "_branch2b")
+        short = self.shortcut(
+            input, num_filters, stride, is_first, name=name + "_branch1")
         return fluid.layers.elementwise_add(x=short, y=conv1, act='relu')
