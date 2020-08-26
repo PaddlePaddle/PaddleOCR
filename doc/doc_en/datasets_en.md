@@ -6,7 +6,7 @@ This is a collection of commonly used Chinese datasets, which is being updated c
 - [Chinese Document Text Recognition](#中文文档文字识别)
 - [ICDAR2019-ArT](#ICDAR2019-ArT)
 
-In addition to opensource data, users can also use synthesis tools to synthesize data themselves. Current available synthesis tools include [text_renderer](https://github.com/Sanster/text_renderer), [SynthText](https://github.com/ankush-me/SynthText), [TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator), etc.
+In addition to opensource data, users can also use synthesis tools to synthesize data themselves. Current available synthesis tools include [text_renderer](https://github.com/oh-my-ocr/text_renderer), [SynthText](https://github.com/ankush-me/SynthText), [TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator), etc.
 
 <a name="ICDAR2019-LSVT"></a>
 #### 1. ICDAR2019-LSVT
