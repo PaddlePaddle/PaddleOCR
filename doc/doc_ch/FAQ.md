@@ -270,7 +270,7 @@
 
 **A**：近期也在开展需求调研，如果企业用户需求较多，我们会考虑增加相应的研发投入，后续提供对应的预训练模型，如果有需求欢迎通过issue或者加入微信群联系我们。
 
-#### Q3.1.17：超轻量模型和通用OCR模型的区别？
+#### Q3.1.15：超轻量模型和通用OCR模型的区别？
 
 
 **A**：理论上只要有相应的数据集，都是可以的。当然手写识别毕竟和印刷体有区别，对应训练调优策略可能需要适配性优化。
@@ -280,7 +280,7 @@
 
 PaddleOCR已完成Windows和Mac系统适配，并且python预测支持使用pip包安装。运行时注意两点：1、在[快速安装](./installation.md)时，如果不想安装docker，可跳过第一步，直接从第二步安装paddle开始。2、inference模型下载时，如果没有安装wget，可直接点击模型链接或将链接地址复制到浏览器进行下载，并解压放置到相应目录。
 
-#### Q3.1.15：PaddleOCR是否支持在Windows或Mac系统上运行？
+#### Q3.1.17：PaddleOCR是否支持在Windows或Mac系统上运行？
 **A**：目前PaddleOCR开源了2个中文模型，分别是8.6M超轻量中文模型和通用中文OCR模型。两者对比信息如下：
     - 相同点：两者使用相同的**算法**和**训练数据**；  
     - 不同点：不同之处在于**骨干网络**和**通道参数**，超轻量模型使用MobileNetV3作为骨干网络，通用模型使用Resnet50_vd作为检测模型backbone，Resnet34_vd作为识别模型backbone，具体参数差异可对比两种模型训练的配置文件.
@@ -377,7 +377,6 @@ unclip_ratio: 文本框扩张的系数，关系到文本框的大小``
 
 ```
 return paddle.reader.multiprocess_reader(readers, False, queue_size=320)
-
 ```
 
 #### Q3.3.6：可不可以将pretrain_weights设置为空呢？想从零开始训练一个model
@@ -403,11 +402,13 @@ return paddle.reader.multiprocess_reader(readers, False, queue_size=320)
 #### Q3.3.11：自己训练出来的未inference转换的模型 可以当作预训练模型吗？
 
 **A**：可以的，但是如果训练数据两量少的话，可能会过拟合到少量数据上，泛化性能不佳。
-#### Q3.3.13：使用带TPS的识别模型预测报错
+
+#### Q3.3.12：如何更换文本检测/识别的backbone？
 
 **A**：直接更换配置文件里的Backbone.function即可，格式为：网络文件路径,网络Class名词。如果所需的backbone在PaddleOCR里没有提供，可以参照PaddleClas里面的网络结构，进行修改尝试。具体修改原则可以参考OCR通用问题中 "如何更换文本检测/识别的backbone" 的回答。
 
-#### Q3.3.12：如何更换文本检测/识别的backbone？
+#### Q3.3.13：使用带TPS的识别模型预测报错
+
 **A**：报错信息：'''Input(X) dims[3] and Input(Grid) dims[2] should be equal, but received X dimension[3](320) != Grid dimension[2](100)  
 **A**：TPS模块暂时无法支持变长的输入，请设置 --rec_image_shape='3,32,100' --rec_char_type='en' 固定输入shape
 
