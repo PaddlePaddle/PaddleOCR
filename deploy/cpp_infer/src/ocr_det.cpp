@@ -31,7 +31,8 @@ void DBDetector::LoadModel(const std::string &model_dir) {
   }
 
   // false for zero copy tensor
-  config.SwitchUseFeedFetchOps(false);
+  // true for commom tensor
+  config.SwitchUseFeedFetchOps(!this->use_zero_copy_run_);
   // true for multiple input
   config.SwitchSpecifyInputNames(true);
 
@@ -59,12 +60,22 @@ void DBDetector::Run(cv::Mat &img,
   std::vector<float> input(1 * 3 * resize_img.rows * resize_img.cols, 0.0f);
   this->permute_op_.Run(&resize_img, input.data());
 
-  auto input_names = this->predictor_->GetInputNames();
-  auto input_t = this->predictor_->GetInputTensor(input_names[0]);
-  input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
-  input_t->copy_from_cpu(input.data());
-
-  this->predictor_->ZeroCopyRun();
+  // Inference.
+  if (this->use_zero_copy_run_) {
+    auto input_names = this->predictor_->GetInputNames();
+    auto input_t = this->predictor_->GetInputTensor(input_names[0]);
+    input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
+    input_t->copy_from_cpu(input.data());
+    this->predictor_->ZeroCopyRun();
+  } else {
+    paddle::PaddleTensor input_t;
+    input_t.shape = {1, 3, resize_img.rows, resize_img.cols};
+    input_t.data =
+        paddle::PaddleBuf(input.data(), input.size() * sizeof(float));
+    input_t.dtype = PaddleDType::FLOAT32;
+    std::vector<paddle::PaddleTensor> outputs;
+    this->predictor_->Run({input_t}, &outputs, 1);
+  }
 
   std::vector<float> out_data;
   auto output_names = this->predictor_->GetOutputNames();

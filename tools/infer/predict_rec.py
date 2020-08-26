@@ -17,15 +17,18 @@ __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 
-import tools.infer.utility as utility
-from ppocr.utils.utility import initial_logger
-logger = initial_logger()
-from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 import cv2
 import copy
 import numpy as np
 import math
 import time
+
+import paddle.fluid as fluid
+
+import tools.infer.utility as utility
+from ppocr.utils.utility import initial_logger
+logger = initial_logger()
+from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.utils.character import CharacterOps
 
 
@@ -37,6 +40,7 @@ class TextRecognizer(object):
         self.character_type = args.rec_char_type
         self.rec_batch_num = args.rec_batch_num
         self.rec_algorithm = args.rec_algorithm
+        self.use_zero_copy_run = args.use_zero_copy_run
         char_ops_params = {
             "character_type": args.rec_char_type,
             "character_dict_path": args.rec_char_dict_path,
@@ -102,8 +106,12 @@ class TextRecognizer(object):
             norm_img_batch = np.concatenate(norm_img_batch)
             norm_img_batch = norm_img_batch.copy()
             starttime = time.time()
-            self.input_tensor.copy_from_cpu(norm_img_batch)
-            self.predictor.zero_copy_run()
+            if self.use_zero_copy_run:
+                self.input_tensor.copy_from_cpu(norm_img_batch)
+                self.predictor.zero_copy_run()
+            else:
+                norm_img_batch = fluid.core.PaddleTensor(norm_img_batch)
+                self.predictor.run([norm_img_batch])
 
             if self.loss_type == "ctc":
                 rec_idx_batch = self.output_tensors[0].copy_to_cpu()
