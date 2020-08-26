@@ -290,8 +290,8 @@
 
 #### Q3.1.17：PaddleOCR开源的超轻量模型和通用OCR模型的区别？
 **A**：目前PaddleOCR开源了2个中文模型，分别是8.6M超轻量中文模型和通用中文OCR模型。两者对比信息如下：
-    - 相同点：两者使用相同的**算法**和**训练数据**；  
-    - 不同点：不同之处在于**骨干网络**和**通道参数**，超轻量模型使用MobileNetV3作为骨干网络，通用模型使用Resnet50_vd作为检测模型backbone，Resnet34_vd作为识别模型backbone，具体参数差异可对比两种模型训练的配置文件.
+- 相同点：两者使用相同的**算法**和**训练数据**；  
+- 不同点：不同之处在于**骨干网络**和**通道参数**，超轻量模型使用MobileNetV3作为骨干网络，通用模型使用Resnet50_vd作为检测模型backbone，Resnet34_vd作为识别模型backbone，具体参数差异可对比两种模型训练的配置文件.
 
 |模型|骨干网络|检测训练配置|识别训练配置|
 |-|-|-|-|
@@ -316,13 +316,16 @@
 #### Q3.2.4：开源模型使用的训练数据是什么，能否开源？
 
 **A**：目前开源的模型，数据集和量级如下：
-    - 检测：  
-    英文数据集，ICDAR2015  
-    中文数据集，LSVT街景数据集训练数据3w张图片
-    - 识别：  
-    英文数据集，MJSynth和SynthText合成数据，数据量上千万。  
-    中文数据集，LSVT街景数据集根据真值将图crop出来，并进行位置校准，总共30w张图像。此外基于LSVT的语料，合成数据500w。  
-    其中，公开数据集都是开源的，用户可自行搜索下载，也可参考[中文数据集](./datasets.md)，合成数据暂不开源，用户可使用开源合成工具自行合成，可参考的合成工具包括[text_renderer](https://github.com/Sanster/text_renderer)、[SynthText](https://github.com/ankush-me/SynthText)、[TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator)等。
+
+- 检测：  
+    - 英文数据集，ICDAR2015  
+    - 中文数据集，LSVT街景数据集训练数据3w张图片
+
+- 识别：  
+    - 英文数据集，MJSynth和SynthText合成数据，数据量上千万。  
+    - 中文数据集，LSVT街景数据集根据真值将图crop出来，并进行位置校准，总共30w张图像。此外基于LSVT的语料，合成数据500w。  
+
+其中，公开数据集都是开源的，用户可自行搜索下载，也可参考[中文数据集](./datasets.md)，合成数据暂不开源，用户可使用开源合成工具自行合成，可参考的合成工具包括[text_renderer](https://github.com/Sanster/text_renderer)、[SynthText](https://github.com/ankush-me/SynthText)、[TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator)等。
 
 #### Q3.2.5：请问中文字符集多大呢？支持生僻字识别吗？
 
@@ -372,7 +375,12 @@ unclip_ratio: 文本框扩张的系数，关系到文本框的大小``
 
 #### Q3.3.4：训练过程中，如何恰当的停止训练（直接kill，经常还有显存占用的问题）
 
-**A**：可以通过下面的脚本终止所有包含train.py字段的进程，ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
+**A**：可以通过下面的脚本终止所有包含train.py字段的进程，
+
+```
+ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
+
+```
 
 #### Q3.3.5：读数据进程数设置4~8时训练一会进程接连defunct后gpu利用率一直为0卡死
 
@@ -410,8 +418,7 @@ return paddle.reader.multiprocess_reader(readers, False, queue_size=320)
 
 **A**：直接更换配置文件里的Backbone.function即可，格式为：网络文件路径,网络Class名词。如果所需的backbone在PaddleOCR里没有提供，可以参照PaddleClas里面的网络结构，进行修改尝试。具体修改原则可以参考OCR通用问题中 "如何更换文本检测/识别的backbone" 的回答。
 
-#### Q3.3.13：如何更换文本检测/识别的backbone？
-**A**：报错信息：'''Input(X) dims[3] and Input(Grid) dims[2] should be equal, but received X dimension[3](320) != Grid dimension[2](100)  
+#### Q3.3.13：如何更换文本检测/识别的backbone？报错信息：'''Input(X) dims[3] and Input(Grid) dims[2] should be equal, but received X dimension[3](320) != Grid dimension[2](100)  
 **A**：TPS模块暂时无法支持变长的输入，请设置 --rec_image_shape='3,32,100' --rec_char_type='en' 固定输入shape
 
 ### 预测部署
