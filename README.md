@@ -4,7 +4,7 @@
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力使用者训练出更好的模型，并应用落地。
 
 **近期更新**
-- 2020.8.26 更新OCR相关的85个常见问题及解答，具体参考[FAQ](./doc/doc_ch/FAQ.md)
+- 2020.8.26 更新OCR相关的84个常见问题及解答，具体参考[FAQ](./doc/doc_ch/FAQ.md)
 - 2020.8.24 支持通过whl包安装使用PaddleOCR，具体参考[Paddleocr Package使用说明](./doc/doc_ch/whl.md)
 - 2020.8.21 更新8月18日B站直播课回放和PPT，课节2，易学易用的OCR工具大礼包，[获取地址](https://aistudio.baidu.com/aistudio/education/group/info/1519)
 - 2020.8.16 开源文本检测算法[SAST](https://arxiv.org/abs/1908.05498)和文本识别算法[SRN](https://arxiv.org/abs/2003.12294)
