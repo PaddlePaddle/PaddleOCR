@@ -599,7 +599,7 @@ class SASTProcessTrain(object):
         """
         text_polys, txt_tags, txts = [], [], []
 
-        with open(poly_txt_path) as f:
+        with open(poly_txt_path, 'rb') as f:
             for line in f.readlines():
                 poly_str, txt = line.strip().split('\t')
                 poly = map(float, poly_str.split(','))
