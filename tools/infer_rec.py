@@ -140,12 +140,12 @@ def main():
             preds = preds.reshape(-1)
             preds_text = char_ops.decode(preds)
         elif loss_type == "srn":
-            cur_pred = []
+            char_num = char_ops.get_char_num()
             preds = np.array(predict[0])
             preds = preds.reshape(-1)
             probs = np.array(predict[1])
             ind = np.argmax(probs, axis=1)
-            valid_ind = np.where(preds != 37)[0]
+            valid_ind = np.where(preds != int(char_num-1))[0]
             if len(valid_ind) == 0:
                 continue
             score = np.mean(probs[valid_ind, ind[valid_ind]])

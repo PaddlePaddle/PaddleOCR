@@ -27,7 +27,7 @@ Architecture:
   function: ppocr.modeling.architectures.rec_model,RecModel
 
 Backbone:
-  function: ppocr.modeling.backbones.rec_resnet50_fpn,ResNet
+  function: ppocr.modeling.backbones.rec_resnet_fpn,ResNet
   layers: 50
  
 Head:
