@@ -15,8 +15,8 @@ Global:
   loss_type: ctc
   distort: true
   debug: false
-  reader_yml: ./configs/rec/rec_icdar15_reader.yml
-  pretrain_weights: ./pretrain_models/rec_mv3_none_bilstm_ctc/best_accuracy
+  reader_yml: ../configs/rec/rec_icdar15_reader.yml
+  pretrain_weights: ../pretrain_models/rec_mv3_none_bilstm_ctc/best_accuracy
   checkpoints:
   save_inference_dir:
   infer_img:
