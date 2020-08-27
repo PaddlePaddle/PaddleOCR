@@ -55,6 +55,23 @@ tar -xzvf ocr_det.tar.gz
 ```
 执行上述命令会下载`db_crnn_mobile`的模型，如果想要下载规模更大的`db_crnn_server`模型，可以在下载预测模型并解压之后。参考[如何从Paddle保存的预测模型转为Paddle Serving格式可部署的模型](https://github.com/PaddlePaddle/Serving/blob/develop/doc/INFERENCE_TO_SERVING_CN.md)。
 
+我们以`ch_rec_r34_vd_crnn`模型作为例子，下载链接在：
+
+```
+wget --no-check-certificate https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_infer.tar
+tar xf ch_rec_r34_vd_crnn_infer.tar
+```
+因此我们按照Serving模型转换教程，运行下列python文件。
+```
+from paddle_serving_client.io import inference_model_to_serving
+inference_model_dir = "ch_rec_r34_vd_crnn"
+serving_client_dir = "serving_client_dir"
+serving_server_dir = "serving_server_dir"
+feed_var_names, fetch_var_names = inference_model_to_serving(
+        inference_model_dir, serving_client_dir, serving_server_dir, model_filename="model", params_filename="params")
+```
+最终会在`serving_client_dir`和`serving_server_dir`生成客户端和服务端的模型配置。
+
 ### 3. 启动服务
 启动服务可以根据实际需求选择启动`标准版`或者`快速版`，两种方式的对比如下表：  
 

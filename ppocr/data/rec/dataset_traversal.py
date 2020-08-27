@@ -237,7 +237,7 @@ class SimpleReader(object):
 
         def get_device_num():
             if self.use_gpu:
-                gpus = os.environ.get("CUDA_VISIBLE_DEVICES", 1)
+                gpus = os.environ.get("CUDA_VISIBLE_DEVICES", '1')
                 gpu_num = len(gpus.split(','))
                 return gpu_num
             else:

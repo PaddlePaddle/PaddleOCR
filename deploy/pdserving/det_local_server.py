@@ -23,7 +23,7 @@ from paddle_serving_app.reader import Div, Normalize, Transpose
 from paddle_serving_app.reader import DBPostProcess, FilterBoxes
 if sys.argv[1] == 'gpu':
     from paddle_serving_server_gpu.web_service import WebService
-elif sys.argv[1] == 'cpu'
+elif sys.argv[1] == 'cpu':
     from paddle_serving_server.web_service import WebService
 import time
 import re
@@ -67,11 +67,13 @@ class OCRService(WebService):
 
 ocr_service = OCRService(name="ocr")
 ocr_service.load_model_config("ocr_det_model")
+ocr_service.init_det()
 if sys.argv[1] == 'gpu':
     ocr_service.set_gpus("0")
     ocr_service.prepare_server(workdir="workdir", port=9292, device="gpu", gpuid=0)
+    ocr_service.run_debugger_service(gpu=True)
 elif sys.argv[1] == 'cpu':
     ocr_service.prepare_server(workdir="workdir", port=9292)
+    ocr_service.run_debugger_service()
 ocr_service.init_det()
-ocr_service.run_debugger_service()
 ocr_service.run_web_service()

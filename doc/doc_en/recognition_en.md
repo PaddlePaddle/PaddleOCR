@@ -18,6 +18,8 @@ ln -sf <path/to/dataset> <path/to/paddle_ocr>/train_data/dataset
 
 If you do not have a dataset locally, you can download it on the official website [icdar2015](http://rrc.cvc.uab.es/?ch=4&com=downloads). Also refer to [DTRB](https://github.com/clovaai/deep-text-recognition-benchmark#download-lmdb-dataset-for-traininig-and-evaluation-from-here)，download the lmdb format dataset required for benchmark
 
+If you want to reproduce the paper indicators of SRN, you need to download offline [augmented data](https://pan.baidu.com/s/1-HSZ-ZVdqBF2HaBZ5pRAKA), extraction code: y3ry. The augmented data is obtained by rotation and perturbation of mjsynth and synthtext. Please unzip the data to {your_path}/PaddleOCR/train_data/data_lmdb_Release/training/path.
+
 * Use your own dataset:
 
 If you want to use your own data for training, please refer to the following to organize your data.
