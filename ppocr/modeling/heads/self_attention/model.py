@@ -4,9 +4,6 @@ import numpy as np
 import paddle.fluid as fluid
 import paddle.fluid.layers as layers
 
-# Set seed for CE
-dropout_seed = None
-
 encoder_data_input_fields = (
     "src_word",
     "src_pos",
@@ -186,10 +183,7 @@ def multi_head_attention(queries,
         weights = layers.softmax(product)
         if dropout_rate:
             weights = layers.dropout(
-                weights,
-                dropout_prob=dropout_rate,
-                seed=dropout_seed,
-                is_test=False)
+                weights, dropout_prob=dropout_rate, seed=None, is_test=False)
         out = layers.matmul(weights, v)
         return out
 
@@ -221,7 +215,7 @@ def positionwise_feed_forward(x, d_inner_hid, d_hid, dropout_rate):
                        act="relu")
     if dropout_rate:
         hidden = layers.dropout(
-            hidden, dropout_prob=dropout_rate, seed=dropout_seed, is_test=False)
+            hidden, dropout_prob=dropout_rate, seed=None, is_test=False)
     out = layers.fc(input=hidden, size=d_hid, num_flatten_dims=2)
     return out
 
@@ -245,10 +239,7 @@ def pre_post_process_layer(prev_out, out, process_cmd, dropout_rate=0.):
         elif cmd == "d":  # add dropout
             if dropout_rate:
                 out = layers.dropout(
-                    out,
-                    dropout_prob=dropout_rate,
-                    seed=dropout_seed,
-                    is_test=False)
+                    out, dropout_prob=dropout_rate, seed=None, is_test=False)
     return out
 
 
@@ -272,9 +263,8 @@ def prepare_encoder(
     This module is used at the bottom of the encoder stacks.
     """
 
-    src_word_emb = src_word  # layers.concat(res,axis=1)
+    src_word_emb = src_word
     src_word_emb = layers.cast(src_word_emb, 'float32')
-    # print("src_word_emb",src_word_emb)
 
     src_word_emb = layers.scale(x=src_word_emb, scale=src_emb_dim**0.5)
     src_pos_enc = layers.embedding(
@@ -285,7 +275,7 @@ def prepare_encoder(
     src_pos_enc.stop_gradient = True
     enc_input = src_word_emb + src_pos_enc
     return layers.dropout(
-        enc_input, dropout_prob=dropout_rate, seed=dropout_seed,
+        enc_input, dropout_prob=dropout_rate, seed=None,
         is_test=False) if dropout_rate else enc_input
 
 
@@ -310,7 +300,7 @@ def prepare_decoder(src_word,
         param_attr=fluid.ParamAttr(
             name=word_emb_param_name,
             initializer=fluid.initializer.Normal(0., src_emb_dim**-0.5)))
-    # print("target_word_emb",src_word_emb)
+
     src_word_emb = layers.scale(x=src_word_emb, scale=src_emb_dim**0.5)
     src_pos_enc = layers.embedding(
         src_pos,
@@ -320,7 +310,7 @@ def prepare_decoder(src_word,
     src_pos_enc.stop_gradient = True
     enc_input = src_word_emb + src_pos_enc
     return layers.dropout(
-        enc_input, dropout_prob=dropout_rate, seed=dropout_seed,
+        enc_input, dropout_prob=dropout_rate, seed=None,
         is_test=False) if dropout_rate else enc_input
 
 
@@ -465,12 +455,8 @@ def wrap_encoder(src_vocab_size,
     img, src_pos, src_slf_attn_bias = enc_inputs
     img
     """
-    if enc_inputs is None:
-        # This is used to implement independent encoder program in inference.
-        src_word, src_pos, src_slf_attn_bias = make_all_inputs(
-            encoder_data_input_fields)
-    else:
-        src_word, src_pos, src_slf_attn_bias = enc_inputs  #
+
+    src_word, src_pos, src_slf_attn_bias = enc_inputs  #
 
     enc_input = prepare_decoder(
         src_word,
