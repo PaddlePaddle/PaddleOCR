@@ -131,6 +131,7 @@ class LMDBReader(object):
                     else:
                         norm_img = process_image(
                             img=img,
+                            img_path=single_img,
                             image_shape=self.image_shape,
                             char_ops=self.char_ops,
                             tps=self.use_tps,
@@ -168,6 +169,7 @@ class LMDBReader(object):
                             else:
                                 outs = process_image(
                                     img=img,
+                                    img_path=None,
                                     image_shape=self.image_shape,
                                     label=label,
                                     char_ops=self.char_ops,
@@ -263,6 +265,7 @@ class SimpleReader(object):
                     else:
                         norm_img = process_image(
                             img=img,
+                            img_path=single_img,
                             image_shape=self.image_shape,
                             char_ops=self.char_ops,
                             tps=self.use_tps,
@@ -309,6 +312,7 @@ class SimpleReader(object):
                     else:
                         outs = process_image(
                             img=img,
+                            img_path=img_path,
                             image_shape=self.image_shape,
                             label=label,
                             char_ops=self.char_ops,
