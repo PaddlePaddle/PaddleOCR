@@ -339,6 +339,7 @@ def warp(img, ang):
 
 
 def process_image(img,
+                  img_path,
                   image_shape,
                   label=None,
                   char_ops=None,
@@ -362,8 +363,8 @@ def process_image(img,
             logger.info(
                 "Warning in ppocr/data/rec/img_tools.py: Wrong data type."
                 "Excepted string with length between 1 and {}, but "
-                "got '{}'. Label is '{}'".format(max_text_length,
-                                                 len(text), label))
+                "got '{}'. The image path is '{}'. Label is '{}'".format(max_text_length,
+                                                 len(text), img_path, label))
             return None
         else:
             if loss_type == "ctc":
