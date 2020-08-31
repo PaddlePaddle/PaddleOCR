@@ -257,6 +257,7 @@ class SimpleReader(object):
                         norm_img = process_image_srn(
                             img=img,
                             image_shape=self.image_shape,
+                            char_ops=self.char_ops,
                             num_heads=self.num_heads,
                             max_text_length=self.max_text_length)
                     else:
