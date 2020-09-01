@@ -45,6 +45,7 @@ public:
     this->cpu_math_library_num_threads_ = cpu_math_library_num_threads;
     this->use_mkldnn_ = use_mkldnn;
     this->use_zero_copy_run_ = use_zero_copy_run;
+
     this->cls_thresh = cls_thresh;
 
     LoadModel(model_dir);
@@ -63,7 +64,7 @@ private:
   int gpu_mem_ = 4000;
   int cpu_math_library_num_threads_ = 4;
   bool use_mkldnn_ = false;
-
+  bool use_zero_copy_run_ = false;
   double cls_thresh = 0.5;
 
   std::vector<float> mean_ = {0.5f, 0.5f, 0.5f};

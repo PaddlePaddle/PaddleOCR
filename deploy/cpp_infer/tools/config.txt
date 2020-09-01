@@ -13,6 +13,10 @@ det_db_box_thresh  0.5
 det_db_unclip_ratio  2.0
 det_model_dir  ./inference/det_db
 
+# cls config
+cls_model_dir ./inference/cls
+cls_thresh  0.9
+
 # rec config
 rec_model_dir  ./inference/rec_crnn
 char_list_file ../../ppocr/utils/ppocr_keys_v1.txt

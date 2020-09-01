@@ -96,7 +96,7 @@ void Classifier::LoadModel(const std::string &model_dir) {
   }
 
   // false for zero copy tensor
-  config.SwitchUseFeedFetchOps(false);
+  config.SwitchUseFeedFetchOps(!this->use_zero_copy_run_);
   // true for multiple input
   config.SwitchSpecifyInputNames(true);
 
