@@ -1,0 +1,43 @@
+Global:
+  algorithm: CLS
+  use_gpu: false
+  epoch_num: 30
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: output/cls_mb3
+  save_epoch_step: 3
+  eval_batch_step: 100
+  train_batch_size_per_card: 256
+  test_batch_size_per_card: 256
+  image_shape: [3, 32, 100]
+  label_list: [0,180]
+  reader_yml: ./configs/cls/cls_reader.yml
+  pretrain_weights:
+  checkpoints: /Users/zhoujun20/Desktop/code/class_model/cls_mb3_ultra_small_0.35/best_accuracy
+  save_inference_dir:
+  infer_img: /Users/zhoujun20/Desktop/code/PaddleOCR/doc/imgs_words/ch/word_1.jpg
+  
+Architecture:
+  function: ppocr.modeling.architectures.cls_model,ClsModel
+
+Backbone:
+  function: ppocr.modeling.backbones.rec_mobilenet_v3,MobileNetV3
+  scale: 0.35
+  model_name: Ultra_small
+ 
+Head:
+  function: ppocr.modeling.heads.cls_head,ClsHead
+  class_dim: 2
+
+Loss:
+  function: ppocr.modeling.losses.cls_loss,ClsLoss
+
+Optimizer:
+  function: ppocr.optimizer,AdamDecay
+  base_lr: 0.001
+  beta1: 0.9
+  beta2: 0.999
+  decay:
+    function: piecewise_decay
+    boundaries: [20,30]
+    decay_rate: 0.1

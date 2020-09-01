@@ -1,0 +1,13 @@
+TrainReader:
+  reader_function: ppocr.data.cls.dataset_traversal,SimpleReader
+  num_workers: 1
+  img_set_dir: /
+  label_file_path: /Users/zhoujun20/Downloads/direction/rotate_ver/train.txt
+  
+EvalReader:
+  reader_function: ppocr.data.cls.dataset_traversal,SimpleReader
+  img_set_dir: /
+  label_file_path: /Users/zhoujun20/Downloads/direction/rotate_ver/train.txt
+
+TestReader:
+  reader_function: ppocr.data.cls.dataset_traversal,SimpleReader

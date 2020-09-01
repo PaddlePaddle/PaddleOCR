@@ -55,6 +55,10 @@ public:
 
     this->char_list_file.assign(config_map_["char_list_file"]);
 
+    this->cls_model_dir.assign(config_map_["cls_model_dir"]);
+
+    this->cls_thresh = stod(config_map_["cls_thresh"]);
+
     this->visualize = bool(stoi(config_map_["visualize"]));
   }
 
@@ -81,6 +85,10 @@ public:
   std::string rec_model_dir;
 
   std::string char_list_file;
+
+  std::string cls_model_dir;
+
+  double cls_thresh;
 
   bool visualize = true;
 

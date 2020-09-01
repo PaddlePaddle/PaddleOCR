@@ -65,6 +65,13 @@ def parse_args():
         type=str,
         default="./ppocr/utils/ppocr_keys_v1.txt")
     parser.add_argument("--use_space_char", type=bool, default=True)
+
+    # params for text classifier
+    parser.add_argument("--cls_model_dir", type=str)
+    parser.add_argument("--cls_image_shape", type=str, default="3, 32, 100")
+    parser.add_argument("--label_list", type=list, default=[0, 180])
+    parser.add_argument("--cls_batch_num", type=int, default=30)
+
     parser.add_argument("--enable_mkldnn", type=bool, default=False)
     return parser.parse_args()
 
@@ -72,6 +79,8 @@ def parse_args():
 def create_predictor(args, mode):
     if mode == "det":
         model_dir = args.det_model_dir
+    elif mode == 'cls':
+        model_dir = args.cls_model_dir
     else:
         model_dir = args.rec_model_dir
 
