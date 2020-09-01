@@ -189,7 +189,7 @@ PaddleOCR文本识别算法的训练和使用请参考文档教程中[模型训�
 请扫描下面二维码，完成问卷填写，获取加群二维码和OCR方向的炼丹秘籍
 
 <div align="center">
-<img src="./doc/joinus.png"  width = "200" height = "200" />
+<img src="./doc/joinus.PNG"  width = "200" height = "200" />
 </div>
 
 <a name="许可证书"></a>
