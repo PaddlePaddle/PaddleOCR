@@ -28,6 +28,7 @@ import copy
 import numpy as np
 import math
 import time
+from paddle import fluid
 
 
 class TextClassifier(object):
@@ -37,6 +38,7 @@ class TextClassifier(object):
         self.cls_image_shape = [int(v) for v in args.cls_image_shape.split(",")]
         self.cls_batch_num = args.rec_batch_num
         self.label_list = args.label_list
+        self.use_zero_copy_run = args.use_zero_copy_run
 
     def resize_norm_img(self, img):
         imgC, imgH, imgW = self.cls_image_shape
@@ -89,8 +91,12 @@ class TextClassifier(object):
             norm_img_batch = norm_img_batch.copy()
             starttime = time.time()
 
-            self.input_tensor.copy_from_cpu(norm_img_batch)
-            self.predictor.zero_copy_run()
+            if self.use_zero_copy_run:
+                self.input_tensor.copy_from_cpu(norm_img_batch)
+                self.predictor.zero_copy_run()
+            else:
+                norm_img_batch = fluid.core.PaddleTensor(norm_img_batch)
+                self.predictor.run([norm_img_batch])
 
             prob_out = self.output_tensors[0].copy_to_cpu()
             label_out = self.output_tensors[1].copy_to_cpu()

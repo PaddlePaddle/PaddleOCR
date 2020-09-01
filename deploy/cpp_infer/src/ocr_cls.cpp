@@ -34,12 +34,22 @@ cv::Mat Classifier::Run(cv::Mat &img) {
 
   this->permute_op_.Run(&resize_img, input.data());
 
-  auto input_names = this->predictor_->GetInputNames();
-  auto input_t = this->predictor_->GetInputTensor(input_names[0]);
-  input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
-  input_t->copy_from_cpu(input.data());
-
-  this->predictor_->ZeroCopyRun();
+  // Inference.
+  if (this->use_zero_copy_run_) {
+    auto input_names = this->predictor_->GetInputNames();
+    auto input_t = this->predictor_->GetInputTensor(input_names[0]);
+    input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
+    input_t->copy_from_cpu(input.data());
+    this->predictor_->ZeroCopyRun();
+  } else {
+    paddle::PaddleTensor input_t;
+    input_t.shape = {1, 3, resize_img.rows, resize_img.cols};
+    input_t.data =
+        paddle::PaddleBuf(input.data(), input.size() * sizeof(float));
+    input_t.dtype = PaddleDType::FLOAT32;
+    std::vector<paddle::PaddleTensor> outputs;
+    this->predictor_->Run({input_t}, &outputs, 1);
+  }
 
   std::vector<float> softmax_out;
   std::vector<int64_t> label_out;

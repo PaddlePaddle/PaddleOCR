@@ -37,13 +37,14 @@ public:
   explicit Classifier(const std::string &model_dir, const bool &use_gpu,
                       const int &gpu_id, const int &gpu_mem,
                       const int &cpu_math_library_num_threads,
-                      const bool &use_mkldnn, const double &cls_thresh) {
+                      const bool &use_mkldnn, const bool &use_zero_copy_run,
+                      const double &cls_thresh) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
     this->cpu_math_library_num_threads_ = cpu_math_library_num_threads;
     this->use_mkldnn_ = use_mkldnn;
-
+    this->use_zero_copy_run_ = use_zero_copy_run;
     this->cls_thresh = cls_thresh;
 
     LoadModel(model_dir);

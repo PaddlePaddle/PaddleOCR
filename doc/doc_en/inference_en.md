@@ -1,7 +1,7 @@
 
 # Reasoning based on Python prediction engine
 
-The inference model (the model saved by fluid.io.save_inference_model) is generally a solidified model saved after the model training is completed, and is mostly used to give prediction in deployment.
+The inference model (the model saved by `fluid.io.save_inference_model`) is generally a solidified model saved after the model training is completed, and is mostly used to give prediction in deployment.
 
 The model saved during the training process is the checkpoints model, which saves the parameters of the model and is mostly used to resume training.
 
@@ -9,7 +9,31 @@ Compared with the checkpoints model, the inference model will additionally save 
 
 Next, we first introduce how to convert a trained model into an inference model, and then we will introduce text detection, text recognition, and the concatenation of them based on inference model.
 
+- [CONVERT TRAINING MODEL TO INFERENCE MODEL](#CONVERT)
+    - [Convert detection model to inference model](#Convert_detection_model)
+    - [Convert recognition model to inference model](#Convert_recognition_model)
+    
+    
+- [TEXT DETECTION MODEL INFERENCE](#DETECTION_MODEL_INFERENCE)
+    - [1. LIGHTWEIGHT CHINESE DETECTION MODEL INFERENCE](#LIGHTWEIGHT_DETECTION)
+    - [2. DB TEXT DETECTION MODEL INFERENCE](#DB_DETECTION)
+    - [3. EAST TEXT DETECTION MODEL INFERENCE](#EAST_DETECTION)
+    - [4. SAST TEXT DETECTION MODEL INFERENCE](#SAST_DETECTION)
+    
+- [TEXT RECOGNITION MODEL INFERENCE](#RECOGNITION_MODEL_INFERENCE)
+    - [1. LIGHTWEIGHT CHINESE MODEL](#LIGHTWEIGHT_RECOGNITION)
+    - [2. CTC-BASED TEXT RECOGNITION MODEL INFERENCE](#CTC-BASED_RECOGNITION)
+    - [3. ATTENTION-BASED TEXT RECOGNITION MODEL INFERENCE](#ATTENTION-BASED_RECOGNITION)
+    - [4. TEXT RECOGNITION MODEL INFERENCE USING CUSTOM CHARACTERS DICTIONARY](#USING_CUSTOM_CHARACTERS)
+    
+    
+- [TEXT DETECTION AND RECOGNITION INFERENCE CONCATENATION](#CONCATENATION)
+    - [1. LIGHTWEIGHT CHINESE MODEL](#LIGHTWEIGHT_CHINESE_MODEL)
+    - [2. OTHER MODELS](#OTHER_MODELS)
+    
+<a name="CONVERT"></a>
 ## CONVERT TRAINING MODEL TO INFERENCE MODEL
+<a name="Convert_detection_model"></a>
 ### Convert detection model to inference model
 
 Download the lightweight Chinese detection model:
@@ -35,6 +59,7 @@ inference/det_db/
   └─  params    Check the parameter file of the inference model
 ```
 
+<a name="Convert_recognition_model"></a>
 ### Convert recognition model to inference model
 
 Download the lightweight Chinese recognition model:
@@ -62,11 +87,13 @@ After the conversion is successful, there are two files in the directory:
   └─  params    Identify the parameter files of the inference model
 ```
 
+<a name="DETECTION_MODEL_INFERENCE"></a>
 ## TEXT DETECTION MODEL INFERENCE
 
 The following will introduce the lightweight Chinese detection model inference, DB text detection model inference and EAST text detection model inference. The default configuration is based on the inference setting of the DB text detection model.
 Because EAST and DB algorithms are very different, when inference, it is necessary to **adapt the EAST text detection algorithm by passing in corresponding parameters**.
 
+<a name="LIGHTWEIGHT_DETECTION"></a>
 ### 1. LIGHTWEIGHT CHINESE DETECTION MODEL INFERENCE
 
 For lightweight Chinese detection model inference, you can execute the following commands:
@@ -90,6 +117,7 @@ If you want to use the CPU for prediction, execute the command as follows
 python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --use_gpu=False
 ```
 
+<a name="DB_DETECTION"></a>
 ### 2. DB TEXT DETECTION MODEL INFERENCE
 
 First, convert the model saved in the DB text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the ICDAR2015 English dataset as an example ([model download link](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar)), you can use the following command to convert:
@@ -114,6 +142,7 @@ The visualized text detection results are saved to the `./inference_results` fol
 
 **Note**: Since the ICDAR2015 dataset has only 1,000 training images, mainly for English scenes, the above model has very poor detection result on Chinese text images.
 
+<a name="EAST_DETECTION"></a>
 ### 3. EAST TEXT DETECTION MODEL INFERENCE
 
 First, convert the model saved in the EAST text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the ICDAR2015 English dataset as an example ([model download link](https://paddleocr.bj.bcebos.com/det_r50_vd_east.tar)), you can use the following command to convert:
@@ -126,23 +155,64 @@ First, convert the model saved in the EAST text detection training process into 
 python3 tools/export_model.py -c configs/det/det_r50_vd_east.yml -o Global.checkpoints="./models/det_r50_vd_east/best_accuracy" Global.save_inference_dir="./inference/det_east"
 ```
 
-For EAST text detection model inference, you need to set the parameter det_algorithm, specify the detection algorithm type to EAST, run the following command:
+**For EAST text detection model inference, you need to set the parameter ``--det_algorithm="EAST"``**, run the following command:
 
 ```
 python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_east/" --det_algorithm="EAST"
 ```
+
 The visualized text detection results are saved to the `./inference_results` folder by default, and the name of the result file is prefixed with 'det_res'. Examples of results are as follows:
 
 ![](../imgs_results/det_res_img_10_east.jpg)
 
-**Note**: The Python version of NMS in EAST post-processing used in this codebase so the prediction speed is quite slow. If you use the C++ version, there will be a significant speedup.
+**Note**: EAST post-processing locality aware NMS has two versions: Python and C++. The speed of C++ version is obviously faster than that of Python version. Due to the compilation version problem of NMS of C++ version, C++ version NMS will be called only in Python 3.5 environment, and python version NMS will be called in other cases.
 
 
+<a name="SAST_DETECTION"></a>
+### 4. SAST TEXT DETECTION MODEL INFERENCE
+#### (1). Quadrangle text detection model (ICDAR2015)  
+First, convert the model saved in the SAST text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the ICDAR2015 English dataset as an example ([model download link](https://paddleocr.bj.bcebos.com/SAST/sast_r50_vd_icdar2015.tar)), you can use the following command to convert:
+
+```
+python3 tools/export_model.py -c configs/det/det_r50_vd_sast_icdar15.yml -o Global.checkpoints="./models/sast_r50_vd_icdar2015/best_accuracy" Global.save_inference_dir="./inference/det_sast_ic15"
+```
+
+**For SAST quadrangle text detection model inference, you need to set the parameter `--det_algorithm="SAST"`**, run the following command:
+
+```
+python3 tools/infer/predict_det.py --det_algorithm="SAST" --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_sast_ic15/"
+```
+
+The visualized text detection results are saved to the `./inference_results` folder by default, and the name of the result file is prefixed with 'det_res'. Examples of results are as follows:
+
+![](../imgs_results/det_res_img_10_sast.jpg)
+
+#### (2). Curved text detection model (Total-Text)  
+First, convert the model saved in the SAST text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the Total-Text English dataset as an example ([model download link](https://paddleocr.bj.bcebos.com/SAST/sast_r50_vd_total_text.tar)), you can use the following command to convert:
+
+```
+python3 tools/export_model.py -c configs/det/det_r50_vd_sast_totaltext.yml -o Global.checkpoints="./models/sast_r50_vd_total_text/best_accuracy" Global.save_inference_dir="./inference/det_sast_tt"
+```
+
+**For SAST curved text detection model inference, you need to set the parameter `--det_algorithm="SAST"` and `--det_sast_polygon=True`**, run the following command:
+
+```
+python3 tools/infer/predict_det.py --det_algorithm="SAST" --image_dir="./doc/imgs_en/img623.jpg" --det_model_dir="./inference/det_sast_tt/" --det_sast_polygon=True
+```
+
+The visualized text detection results are saved to the `./inference_results` folder by default, and the name of the result file is prefixed with 'det_res'. Examples of results are as follows:
+
+![](../imgs_results/det_res_img623_sast.jpg)
+
+**Note**: SAST post-processing locality aware NMS has two versions: Python and C++. The speed of C++ version is obviously faster than that of Python version. Due to the compilation version problem of NMS of C++ version, C++ version NMS will be called only in Python 3.5 environment, and python version NMS will be called in other cases.
+
+<a name="RECOGNITION_MODEL_INFERENCE"></a>
 ## TEXT RECOGNITION MODEL INFERENCE
 
 The following will introduce the lightweight Chinese recognition model inference, other CTC-based and Attention-based text recognition models inference. For Chinese text recognition, it is recommended to choose the recognition model based on CTC loss. In practice, it is also found that the result of the model based on Attention loss is not as good as the one based on CTC loss. In addition, if the characters dictionary is modified during training, make sure that you use the same characters set during inferencing. Please check below for details.
 
 
+<a name="LIGHTWEIGHT_RECOGNITION"></a>
 ### 1. LIGHTWEIGHT CHINESE TEXT RECOGNITION MODEL REFERENCE
 
 For lightweight Chinese recognition model inference, you can execute the following commands:
@@ -158,6 +228,7 @@ After executing the command, the prediction results (recognized text and score) 
 Predicts of ./doc/imgs_words/ch/word_4.jpg:['实力活力', 0.89552695]
 
 
+<a name="CTC-BASED_RECOGNITION"></a>
 ### 2. CTC-BASED TEXT RECOGNITION MODEL INFERENCE
 
 Taking STAR-Net as an example, we introduce the recognition model inference based on CTC loss. CRNN and Rosetta are used in a similar way, by setting the recognition algorithm parameter `rec_algorithm`.
@@ -178,6 +249,7 @@ For STAR-Net text recognition model inference, execute the following commands:
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./inference/starnet/" --rec_image_shape="3, 32, 100" --rec_char_type="en"
 ```
 
+<a name="ATTENTION-BASED_RECOGNITION"></a>
 ### 3. ATTENTION-BASED TEXT RECOGNITION MODEL INFERENCE
 ![](../imgs_words_en/word_336.png)
 
@@ -196,6 +268,7 @@ self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
 dict_character = list(self.character_str)
 ```
 
+<a name="USING_CUSTOM_CHARACTERS"></a>
 ### 4. TEXT RECOGNITION MODEL INFERENCE USING CUSTOM CHARACTERS DICTIONARY
 If the chars dictionary is modified during training, you need to specify the new dictionary path by setting the parameter `rec_char_dict_path` when using your inference model to predict.
 
@@ -203,8 +276,10 @@ If the chars dictionary is modified during training, you need to specify the new
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="en" --rec_char_dict_path="your text dict path"
 ```
 
+<a name="CONCATENATION"></a>
 ## TEXT DETECTION AND RECOGNITION INFERENCE CONCATENATION
 
+<a name="LIGHTWEIGHT_CHINESE_MODEL"></a>
 ### 1. LIGHTWEIGHT CHINESE MODEL
 
 When performing prediction, you need to specify the path of a single image or a folder of images through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to detect the inference model, and the parameter `rec_model_dir` specifies the path to identify the inference model. The visualized recognition results are saved to the `./inference_results` folder by default.
@@ -217,9 +292,14 @@ After executing the command, the recognition result image is as follows:
 
 ![](../imgs_results/2.jpg)
 
+<a name="OTHER_MODELS"></a>
 ### 2. OTHER MODELS
 
-If you want to try other detection algorithms or recognition algorithms, please refer to the above text detection model inference and text recognition model inference, update the corresponding configuration and model, the following command uses the combination of the EAST text detection and STAR-Net text recognition:
+If you want to try other detection algorithms or recognition algorithms, please refer to the above text detection model inference and text recognition model inference, update the corresponding configuration and model.
+
+**Note: due to the limitation of rotation logic of detected box, SAST curved text detection model (using the parameter `det_sast_polygon=True`) is not supported for model combination yet.**
+
+The following command uses the combination of the EAST text detection and STAR-Net text recognition:
 
 ```
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_east/" --det_algorithm="EAST" --rec_model_dir="./inference/starnet/" --rec_image_shape="3, 32, 100" --rec_char_type="en"

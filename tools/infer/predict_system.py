@@ -160,12 +160,7 @@ def main(args):
             scores = [rec_res[i][1] for i in range(len(rec_res))]
 
             draw_img = draw_ocr(
-                image,
-                boxes,
-                txts,
-                scores,
-                draw_txt=True,
-                drop_score=drop_score)
+                image, boxes, txts, scores, drop_score=drop_score)
             draw_img_save = "./inference_results/"
             if not os.path.exists(draw_img_save):
                 os.makedirs(draw_img_save)

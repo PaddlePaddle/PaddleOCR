@@ -3,7 +3,7 @@ TrainReader:
   process_function: ppocr.data.det.sast_process,SASTProcessTrain
   num_workers: 8
   img_set_dir: ./train_data/
-  label_file_path: [./train_data/art_latin_icdar_14pt/train_no_tt_test/train_label_json.txt, ./train_data/total_text_icdar_14pt/train/train_label_json.txt]
+  label_file_path: [./train_data/art_latin_icdar_14pt/train_no_tt_test/train_label_json.txt, ./train_data/total_text_icdar_14pt/train_label_json.txt]
   data_ratio_list: [0.5, 0.5]
   min_crop_side_ratio: 0.3
   min_crop_size: 24
@@ -13,12 +13,12 @@ TrainReader:
 EvalReader:
   reader_function: ppocr.data.det.dataset_traversal,EvalTestReader
   process_function: ppocr.data.det.sast_process,SASTProcessTest
-  img_set_dir: ./train_data/afs/
-  label_file_path: ./train_data/afs/total_text/test_label_json.txt
+  img_set_dir: ./train_data/
+  label_file_path: ./train_data/total_text_icdar_14pt/test_label_json.txt
   max_side_len: 768
   
 TestReader:
   reader_function: ppocr.data.det.dataset_traversal,EvalTestReader
   process_function: ppocr.data.det.sast_process,SASTProcessTest
-  infer_img: 
+  infer_img: ./train_data/afs/total_text/Images/Test/img623.jpg
   max_side_len: 768
