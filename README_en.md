@@ -211,7 +211,7 @@ Please refer to the document for training guide and use of PaddleOCR text recogn
 Scan  the QR code below with your wechat and completing the questionnaire, you can access to offical technical exchange group.
 
 <div align="center">
-<img src="./doc/joinus.jpg"  width = "200" height = "200" />
+<img src="./doc/joinus.PNG"  width = "200" height = "200" />
 </div>
 
 <a name="LICENSE"></a>
