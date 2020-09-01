@@ -18,15 +18,16 @@ ln -sf <path/to/dataset> <path/to/paddle_ocr>/train_data/dataset
 
 若您本地没有数据集，可以在官网下载 [icdar2015](http://rrc.cvc.uab.es/?ch=4&com=downloads) 数据，用于快速验证。也可以参考[DTRB](https://github.com/clovaai/deep-text-recognition-benchmark#download-lmdb-dataset-for-traininig-and-evaluation-from-here)，下载 benchmark 所需的lmdb格式数据集。
 
+如果希望复现SRN的论文指标，需要下载离线[增广数据](https://pan.baidu.com/s/1-HSZ-ZVdqBF2HaBZ5pRAKA),提取码: y3ry。增广数据是由MJSynth和SynthText做旋转和扰动得到的。数据下载完成后请解压到 {your_path}/PaddleOCR/train_data/data_lmdb_release/training/ 路径下。
+
 * 使用自己数据集：
 
 若您希望使用自己的数据进行训练，请参考下文组织您的数据。
-
 - 训练集
 
 首先请将训练图片放入同一个文件夹（train_images），并用一个txt文件（rec_gt_train.txt）记录图片路径和标签。
 
-* 注意： 默认请将图片路径和图片标签用 \t 分割，如用其他方式分割将造成训练报错
+**注意：** 默认请将图片路径和图片标签用 \t 分割，如用其他方式分割将造成训练报错
 
 ```
 " 图像文件名                 图像标注信息 "
@@ -41,12 +42,9 @@ PaddleOCR 提供了一份用于训练 icdar2015 数据集的标签文件，通�
 wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_train.txt
 # 测试集标签
 wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_test.txt
-
-
 ```
 
 最终训练集应有如下文件结构：
-
 ```
 |-train_data
     |-ic15_data
@@ -94,7 +92,17 @@ word_dict.txt 每行有一个单字，将字符与数字索引映射在一起，
 `ppocr/utils/ic15_dict.txt` 是一个包含36个字符的英文字典，
 您可以按需使用。
 
-如需自定义dic文件，请修改 `configs/rec/rec_icdar15_train.yml` 中的 `character_dict_path` 字段, 并将 `character_type` 设置为 `ch`。
+- 自定义字典
+
+如需自定义dic文件，请在 `configs/rec/rec_icdar15_train.yml` 中添加 `character_dict_path` 字段, 指向您的字典路径。
+并将 `character_type` 设置为 `ch`。
+
+- 添加空格类别
+
+如果希望支持识别"空格"类别, 请将yml文件中的 `use_space_char` 字段设置为 `true`。
+
+**注意：`use_space_char` 仅在 `character_type=ch` 时生效**
+
 
 ### 启动训练
 
@@ -124,11 +132,23 @@ export CUDA_VISIBLE_DEVICES=0,1,2,3
 python3 tools/train.py -c configs/rec/rec_icdar15_train.yml
 ```
 
+- 数据增强
+
+PaddleOCR提供了多种数据增强方式，如果您希望在训练时加入扰动，请在配置文件中设置 `distort: true`。
+
+默认的扰动方式有：颜色空间转换(cvtColor)、模糊(blur)、抖动(jitter)、噪声(Gasuss noise)、随机切割(random crop)、透视(perspective)、颜色反转(reverse)。
+
+训练过程中每种扰动方式以50%的概率被选择，具体代码实现请参考：[img_tools.py](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/rec/img_tools.py)
+
+*由于OpenCV的兼容性问题，扰动操作暂时只支持GPU*
+
+- 训练
+
 PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_train.yml` 中修改 `eval_batch_step` 设置评估频率，默认每500个iter评估一次。评估过程中默认将最佳acc模型，保存为 `output/rec_CRNN/best_accuracy` 。
 
 如果验证集很大，测试将会比较耗时，建议减少评估次数，或训练完再进行评估。
 
-* 提示： 可通过 -c 参数选择 `configs/rec/` 路径下的多种模型配置进行训练，PaddleOCR支持的识别算法有：
+**提示：** 可通过 -c 参数选择 `configs/rec/` 路径下的多种模型配置进行训练，PaddleOCR支持的识别算法有：
 
 
 | 配置文件 |  算法名称 |   backbone |   trans   |   seq      |     pred     |
@@ -143,6 +163,7 @@ PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_t
 | rec_r34_vd_none_none_ctc.yml |  Rosetta |   Resnet34_vd |  None   |  None |  ctc  |
 | rec_r34_vd_tps_bilstm_attn.yml | RARE | Resnet34_vd | tps | BiLSTM | attention |
 | rec_r34_vd_tps_bilstm_ctc.yml | STARNet | Resnet34_vd | tps | BiLSTM | ctc |
+| rec_r50fpn_vd_none_srn.yml | SRN | Resnet50_fpn_vd | None | rnn | srn |
 
 训练中文数据，推荐使用`rec_chinese_lite_train.yml`，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：
 
@@ -157,12 +178,26 @@ Global:
   character_type: ch
   # 添加自定义字典，如修改字典请将路径指向新字典
   character_dict_path: ./ppocr/utils/ppocr_keys_v1.txt
+  # 训练时添加数据增强
+  distort: true
+  # 识别空格
+  use_space_char: true
   ...
   # 修改reader类型
   reader_yml: ./configs/rec/rec_chinese_reader.yml
   ...
 
 ...
+
+Optimizer:
+  ...
+  # 添加学习率衰减策略
+  decay:
+    function: cosine_decay
+    # 每个 epoch 包含 iter 数
+    step_each_epoch: 20
+    # 总共训练epoch数
+    total_epoch: 1000
 ```
 **注意，预测/评估时的配置文件请务必与训练一致。**
 

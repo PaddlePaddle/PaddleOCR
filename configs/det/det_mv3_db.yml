@@ -6,7 +6,8 @@ Global:
   print_batch_step: 2
   save_model_dir: ./output/det_db/
   save_epoch_step: 200
-  eval_batch_step: 5000
+  # evaluation is run every 5000 iterations after the 4000th iteration
+  eval_batch_step: [4000, 5000]
   train_batch_size_per_card: 16
   test_batch_size_per_card: 16
   image_shape: [3, 640, 640]

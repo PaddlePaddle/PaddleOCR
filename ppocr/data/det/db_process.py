@@ -17,7 +17,7 @@ import cv2
 import numpy as np
 import json
 import sys
-from ppocr.utils.utility import initial_logger
+from ppocr.utils.utility import initial_logger, check_and_read_gif
 logger = initial_logger()
 
 from .data_augment import AugmentData
@@ -100,7 +100,9 @@ class DBProcessTrain(object):
 
     def __call__(self, label_infor):
         img_path, gt_label = self.convert_label_infor(label_infor)
-        imgvalue = cv2.imread(img_path)
+        imgvalue, flag = check_and_read_gif(img_path)
+        if not flag:
+            imgvalue = cv2.imread(img_path)
         if imgvalue is None:
             logger.info("{} does not exist!".format(img_path))
             return None
@@ -194,8 +196,12 @@ class DBProcessTest(object):
         img_std = [0.229, 0.224, 0.225]
         im = im.astype(np.float32, copy=False)
         im = im / 255
-        im -= img_mean
-        im /= img_std
+        im[:, :, 0] -= img_mean[0]
+        im[:, :, 1] -= img_mean[1]
+        im[:, :, 2] -= img_mean[2]
+        im[:, :, 0] /= img_std[0]
+        im[:, :, 1] /= img_std[1]
+        im[:, :, 2] /= img_std[2]
         channel_swap = (2, 0, 1)
         im = im.transpose(channel_swap)
         return im

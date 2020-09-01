@@ -22,6 +22,7 @@ import yaml
 import os
 from ppocr.utils.utility import create_module
 from ppocr.utils.utility import initial_logger
+
 logger = initial_logger()
 
 import paddle.fluid as fluid
@@ -31,7 +32,7 @@ from eval_utils.eval_det_utils import eval_det_run
 from eval_utils.eval_rec_utils import eval_rec_run
 from ppocr.utils.save_load import save_model
 import numpy as np
-from ppocr.utils.character import cal_predicts_accuracy
+from ppocr.utils.character import cal_predicts_accuracy, cal_predicts_accuracy_srn, CharacterOps
 
 
 class ArgsParser(ArgumentParser):
@@ -75,16 +76,17 @@ class AttrDict(dict):
 
 global_config = AttrDict()
 
+default_config = {'Global': {'debug': False, }}
+
 
 def load_config(file_path):
     """
     Load config from yml/yaml file.
-
     Args:
         file_path (str): Path of the config file to be loaded.
-
     Returns: global config
     """
+    merge_config(default_config)
     _, ext = os.path.splitext(file_path)
     assert ext in ['.yml', '.yaml'], "only support yaml files for now"
     merge_config(yaml.load(open(file_path), Loader=yaml.Loader))
@@ -100,10 +102,8 @@ def load_config(file_path):
 def merge_config(config):
     """
     Merge config into global config.
-
     Args:
         config (dict): Config to be merged.
-
     Returns: global config
     """
     for key, value in config.items():
@@ -154,13 +154,11 @@ def build(config, main_prog, startup_prog, mode):
         3. create a model
         4. create fetchs
         5. create an optimizer
-
     Args:
         config(dict): config
         main_prog(): main program
         startup_prog(): startup program
         is_train(bool): train or valid
-
     Returns:
         dataloader(): a bridge between the model and the data
         fetchs(dict): dict of model outputs(included loss and measures)
@@ -173,8 +171,16 @@ def build(config, main_prog, startup_prog, mode):
             fetch_name_list = list(outputs.keys())
             fetch_varname_list = [outputs[v].name for v in fetch_name_list]
             opt_loss_name = None
+            model_average = None
+            img_loss_name = None
+            word_loss_name = None
             if mode == "train":
                 opt_loss = outputs['total_loss']
+                # srn loss
+                #img_loss = outputs['img_loss']
+                #word_loss = outputs['word_loss']
+                #img_loss_name = img_loss.name
+                #word_loss_name = word_loss.name
                 opt_params = config['Optimizer']
                 optimizer = create_module(opt_params['function'])(opt_params)
                 optimizer.minimize(opt_loss)
@@ -182,7 +188,17 @@ def build(config, main_prog, startup_prog, mode):
                 global_lr = optimizer._global_learning_rate()
                 fetch_name_list.insert(0, "lr")
                 fetch_varname_list.insert(0, global_lr.name)
-    return (dataloader, fetch_name_list, fetch_varname_list, opt_loss_name)
+                if "loss_type" in config["Global"]:
+                    if config['Global']["loss_type"] == 'srn':
+                        model_average = fluid.optimizer.ModelAverage(
+                            config['Global']['average_window'],
+                            min_average_window=config['Global'][
+                                'min_average_window'],
+                            max_average_window=config['Global'][
+                                'max_average_window'])
+
+    return (dataloader, fetch_name_list, fetch_varname_list, opt_loss_name,
+            model_average)
 
 
 def build_export(config, main_prog, startup_prog):
@@ -219,6 +235,13 @@ def train_eval_det_run(config, exe, train_info_dict, eval_info_dict):
     epoch_num = config['Global']['epoch_num']
     print_batch_step = config['Global']['print_batch_step']
     eval_batch_step = config['Global']['eval_batch_step']
+    start_eval_step = 0
+    if type(eval_batch_step) == list and len(eval_batch_step) >= 2:
+        start_eval_step = eval_batch_step[0]
+        eval_batch_step = eval_batch_step[1]
+        logger.info(
+            "During the training process, after the {}th iteration, an evaluation is run every {} iterations".
+            format(start_eval_step, eval_batch_step))
     save_epoch_step = config['Global']['save_epoch_step']
     save_model_dir = config['Global']['save_model_dir']
     if not os.path.exists(save_model_dir):
@@ -246,15 +269,15 @@ def train_eval_det_run(config, exe, train_info_dict, eval_info_dict):
                 t2 = time.time()
                 train_batch_elapse = t2 - t1
                 train_stats.update(stats)
-                if train_batch_id > 0 and train_batch_id \
+                if train_batch_id > 0 and train_batch_id  \
                     % print_batch_step == 0:
                     logs = train_stats.log()
                     strs = 'epoch: {}, iter: {}, {}, time: {:.3f}'.format(
                         epoch, train_batch_id, logs, train_batch_elapse)
                     logger.info(strs)
 
-                if train_batch_id > 0 and\
-                    train_batch_id % eval_batch_step == 0:
+                if train_batch_id > start_eval_step and\
+                    (train_batch_id - start_eval_step) % eval_batch_step == 0:
                     metrics = eval_det_run(exe, config, eval_info_dict, "eval")
                     hmean = metrics['hmean']
                     if hmean >= best_eval_hmean:
@@ -286,6 +309,13 @@ def train_eval_rec_run(config, exe, train_info_dict, eval_info_dict):
     epoch_num = config['Global']['epoch_num']
     print_batch_step = config['Global']['print_batch_step']
     eval_batch_step = config['Global']['eval_batch_step']
+    start_eval_step = 0
+    if type(eval_batch_step) == list and len(eval_batch_step) >= 2:
+        start_eval_step = eval_batch_step[0]
+        eval_batch_step = eval_batch_step[1]
+        logger.info(
+            "During the training process, after the {}th iteration, an evaluation is run every {} iterations".
+            format(start_eval_step, eval_batch_step))
     save_epoch_step = config['Global']['save_epoch_step']
     save_model_dir = config['Global']['save_model_dir']
     if not os.path.exists(save_model_dir):
@@ -312,19 +342,25 @@ def train_eval_rec_run(config, exe, train_info_dict, eval_info_dict):
                 lr = np.mean(np.array(train_outs[fetch_map['lr']]))
                 preds_idx = fetch_map['decoded_out']
                 preds = np.array(train_outs[preds_idx])
-                preds_lod = train_outs[preds_idx].lod()[0]
                 labels_idx = fetch_map['label']
                 labels = np.array(train_outs[labels_idx])
-                labels_lod = train_outs[labels_idx].lod()[0]
 
-                acc, acc_num, img_num = cal_predicts_accuracy(
-                    config['Global']['char_ops'], preds, preds_lod, labels,
-                    labels_lod)
+                if config['Global']['loss_type'] != 'srn':
+                    preds_lod = train_outs[preds_idx].lod()[0]
+                    labels_lod = train_outs[labels_idx].lod()[0]
+
+                    acc, acc_num, img_num = cal_predicts_accuracy(
+                        config['Global']['char_ops'], preds, preds_lod, labels,
+                        labels_lod)
+                else:
+                    acc, acc_num, img_num = cal_predicts_accuracy_srn(
+                        config['Global']['char_ops'], preds, labels,
+                        config['Global']['max_text_length'])
                 t2 = time.time()
                 train_batch_elapse = t2 - t1
                 stats = {'loss': loss, 'acc': acc}
                 train_stats.update(stats)
-                if train_batch_id > 0 and train_batch_id \
+                if train_batch_id > start_eval_step and (train_batch_id - start_eval_step) \
                     % print_batch_step == 0:
                     logs = train_stats.log()
                     strs = 'epoch: {}, iter: {}, lr: {:.6f}, {}, time: {:.3f}'.format(
@@ -333,6 +369,9 @@ def train_eval_rec_run(config, exe, train_info_dict, eval_info_dict):
 
                 if train_batch_id > 0 and\
                     train_batch_id % eval_batch_step == 0:
+                    model_average = train_info_dict['model_average']
+                    if model_average != None:
+                        model_average.apply(exe)
                     metrics = eval_rec_run(exe, config, eval_info_dict, "eval")
                     eval_acc = metrics['avg_acc']
                     eval_sample_num = metrics['total_sample_num']
@@ -357,3 +396,30 @@ def train_eval_rec_run(config, exe, train_info_dict, eval_info_dict):
             save_path = save_model_dir + "/iter_epoch_%d" % (epoch)
             save_model(train_info_dict['train_program'], save_path)
     return
+
+
+def preprocess():
+    FLAGS = ArgsParser().parse_args()
+    config = load_config(FLAGS.config)
+    merge_config(FLAGS.opt)
+    logger.info(config)
+
+    # check if set use_gpu=True in paddlepaddle cpu version
+    use_gpu = config['Global']['use_gpu']
+    check_gpu(use_gpu)
+
+    alg = config['Global']['algorithm']
+    assert alg in ['EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN']
+    if alg in ['Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN']:
+        config['Global']['char_ops'] = CharacterOps(config['Global'])
+
+    place = fluid.CUDAPlace(0) if use_gpu else fluid.CPUPlace()
+    startup_program = fluid.Program()
+    train_program = fluid.Program()
+
+    if alg in ['EAST', 'DB', 'SAST']:
+        train_alg_type = 'det'
+    else:
+        train_alg_type = 'rec'
+
+    return startup_program, train_program, place, config, train_alg_type
