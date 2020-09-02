@@ -56,7 +56,6 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
 - Algorithm introduction
     - [Text Detection Algorithm](#TEXTDETECTIONALGORITHM)
     - [Text Recognition Algorithm](#TEXTRECOGNITIONALGORITHM)
-    - [END-TO-END OCR Algorithm](#ENDENDOCRALGORITHM)
 - Model training/evaluation
     - [Text Detection](./doc/doc_en/detection_en.md)
     - [Text Recognition](./doc/doc_en/recognition_en.md)
@@ -157,10 +156,6 @@ We use [LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/
 |General OCR model|Resnet34_vd|rec_chinese_common_train.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn.tar)|[inference model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_enhance_infer.tar) & [pre-trained model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_enhance.tar)|
 
 Please refer to the document for training guide and use of PaddleOCR text recognition algorithms [Text recognition model training/evaluation/prediction](./doc/doc_en/recognition_en.md)
-
-<a name="ENDENDOCRALGORITHM"></a>
-## END-TO-END OCR Algorithm
-- [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(Baidu Self-Research, coming soon)
 
 ## Visualization
 
