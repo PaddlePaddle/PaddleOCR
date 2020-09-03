@@ -162,10 +162,7 @@ def main():
 
     fluid.io.save_inference_model(
         "./output/",
-        feeded_var_names=[
-            'image', 'encoder_word_pos', 'gsrm_slf_attn_bias1',
-            'gsrm_slf_attn_bias2', 'gsrm_word_pos'
-        ],
+        feeded_var_names=['image'],
         target_vars=target_var,
         executor=exe,
         main_program=eval_prog,

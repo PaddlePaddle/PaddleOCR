@@ -59,10 +59,10 @@ def parse_args():
     parser.add_argument("--det_sast_polygon", type=bool, default=False)
 
     #params for text recognizer
-    parser.add_argument("--rec_algorithm", type=str, default='SRN')
+    parser.add_argument("--rec_algorithm", type=str, default='CRNN')
     parser.add_argument("--rec_model_dir", type=str)
-    parser.add_argument("--rec_image_shape", type=str, default="3, 64, 256")
-    parser.add_argument("--rec_char_type", type=str, default='en')
+    parser.add_argument("--rec_image_shape", type=str, default="3, 32, 320")
+    parser.add_argument("--rec_char_type", type=str, default='ch')
     parser.add_argument("--rec_batch_num", type=int, default=30)
     parser.add_argument("--max_text_length", type=int, default=25)
     parser.add_argument(
@@ -107,11 +107,9 @@ def create_predictor(args, mode):
 
     # use zero copy
     config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
-    #config.switch_use_feed_fetch_ops(False)
-    config.switch_use_feed_fetch_ops(True)
+    config.switch_use_feed_fetch_ops(False)
     predictor = create_paddle_predictor(config)
     input_names = predictor.get_input_names()
-    print(input_names)
     for name in input_names:
         input_tensor = predictor.get_input_tensor(name)
     output_names = predictor.get_output_names()

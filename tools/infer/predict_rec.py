@@ -196,32 +196,36 @@ class TextRecognizer(object):
                     norm_img_batch.append(norm_img[0])
 
             norm_img_batch = np.concatenate(norm_img_batch, axis=0)
+            norm_img_batch = norm_img_batch.copy()
 
-            encoder_word_pos_list = np.concatenate(encoder_word_pos_list)
+            if self.loss_type == "srn":
+                encoder_word_pos_list = np.concatenate(encoder_word_pos_list)
+                gsrm_word_pos_list = np.concatenate(gsrm_word_pos_list)
+                gsrm_slf_attn_bias1_list = np.concatenate(
+                    gsrm_slf_attn_bias1_list)
+                gsrm_slf_attn_bias2_list = np.concatenate(
+                    gsrm_slf_attn_bias2_list)
+                starttime = time.time()
 
-            gsrm_word_pos_list = np.concatenate(gsrm_word_pos_list)
+                norm_img_batch = fluid.core.PaddleTensor(norm_img_batch)
+                encoder_word_pos_list = fluid.core.PaddleTensor(
+                    encoder_word_pos_list)
+                gsrm_word_pos_list = fluid.core.PaddleTensor(gsrm_word_pos_list)
+                gsrm_slf_attn_bias1_list = fluid.core.PaddleTensor(
+                    gsrm_slf_attn_bias1_list)
+                gsrm_slf_attn_bias2_list = fluid.core.PaddleTensor(
+                    gsrm_slf_attn_bias2_list)
 
-            gsrm_slf_attn_bias1_list = np.concatenate(gsrm_slf_attn_bias1_list)
+                inputs = [
+                    norm_img_batch, encoder_word_pos_list,
+                    gsrm_slf_attn_bias1_list, gsrm_slf_attn_bias2_list,
+                    gsrm_word_pos_list
+                ]
 
-            gsrm_slf_attn_bias2_list = np.concatenate(gsrm_slf_attn_bias2_list)
-
-            starttime = time.time()
-
-            norm_img_batch = fluid.core.PaddleTensor(norm_img_batch)
-            encoder_word_pos_list = fluid.core.PaddleTensor(
-                encoder_word_pos_list)
-            gsrm_word_pos_list = fluid.core.PaddleTensor(gsrm_word_pos_list)
-            gsrm_slf_attn_bias1_list = fluid.core.PaddleTensor(
-                gsrm_slf_attn_bias1_list)
-            gsrm_slf_attn_bias2_list = fluid.core.PaddleTensor(
-                gsrm_slf_attn_bias2_list)
-
-            inputs = [
-                norm_img_batch, encoder_word_pos_list, gsrm_slf_attn_bias1_list,
-                gsrm_slf_attn_bias2_list, gsrm_word_pos_list
-            ]
-
-            self.predictor.run(inputs)
+                self.predictor.run(inputs)
+            else:
+                self.input_tensor.copy_from_cpu(norm_img_batch)
+                self.predictor.zero_copy_run()
 
             if self.loss_type == "ctc":
                 rec_idx_batch = self.output_tensors[0].copy_to_cpu()
