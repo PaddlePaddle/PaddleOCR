@@ -8,7 +8,7 @@ RUN python3.7 -m pip install paddlepaddle-gpu==1.7.2.post107 -i https://pypi.tun
 
 RUN pip3.7 install paddlehub --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
 
-RUN git clone https://gitee.com/PaddlePaddle/PaddleOCR
+RUN git clone https://gitee.com/PaddlePaddle/PaddleOCR /PaddleOCR
 
 WORKDIR /home/PaddleOCR
 
