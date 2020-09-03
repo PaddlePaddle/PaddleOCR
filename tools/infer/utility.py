@@ -114,7 +114,8 @@ def create_predictor(args, mode):
 
     predictor = create_paddle_predictor(config)
     input_names = predictor.get_input_names()
-    input_tensor = predictor.get_input_tensor(input_names[0])
+    for name in input_names:
+        input_tensor = predictor.get_input_tensor(name)
     output_names = predictor.get_output_names()
     output_tensors = []
     for output_name in output_names:

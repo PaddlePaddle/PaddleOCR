@@ -208,10 +208,19 @@ def build_export(config, main_prog, startup_prog):
         with fluid.unique_name.guard():
             func_infor = config['Architecture']['function']
             model = create_module(func_infor)(params=config)
-            image, outputs = model(mode='export')
+            algorithm = config['Global']['algorithm']
+            if algorithm == "SRN":
+                image, others, outputs = model(mode='export')
+            else:
+                image, outputs = model(mode='export')
             fetches_var_name = sorted([name for name in outputs.keys()])
             fetches_var = [outputs[name] for name in fetches_var_name]
-    feeded_var_names = [image.name]
+    if algorithm == "SRN":
+        others_var_names = sorted([name for name in others.keys()])
+        feeded_var_names = [image.name] + others_var_names
+    else:
+        feeded_var_names = [image.name]
+
     target_vars = fetches_var
     return feeded_var_names, target_vars, fetches_var_name
 
@@ -409,7 +418,9 @@ def preprocess():
     check_gpu(use_gpu)
 
     alg = config['Global']['algorithm']
-    assert alg in ['EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN']
+    assert alg in [
+        'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN'
+    ]
     if alg in ['Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN']:
         config['Global']['char_ops'] = CharacterOps(config['Global'])
 
