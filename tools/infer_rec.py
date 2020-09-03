@@ -145,7 +145,7 @@ def main():
             preds = preds.reshape(-1)
             probs = np.array(predict[1])
             ind = np.argmax(probs, axis=1)
-            valid_ind = np.where(preds != int(char_num-1))[0]
+            valid_ind = np.where(preds != int(char_num - 1))[0]
             if len(valid_ind) == 0:
                 continue
             score = np.mean(probs[valid_ind, ind[valid_ind]])
@@ -162,7 +162,10 @@ def main():
 
     fluid.io.save_inference_model(
         "./output/",
-        feeded_var_names=['image'],
+        feeded_var_names=[
+            'image', 'encoder_word_pos', 'gsrm_slf_attn_bias1',
+            'gsrm_slf_attn_bias2', 'gsrm_word_pos'
+        ],
         target_vars=target_var,
         executor=exe,
         main_program=eval_prog,
