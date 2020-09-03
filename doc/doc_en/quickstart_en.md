@@ -5,6 +5,7 @@
 
 Please refer to [quick installation](./installation_en.md) to configure the PaddleOCR operating environment.
 
+*Note: Support the use of PaddleOCR through whl package installation，pelease refer  [PaddleOCR Package](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/whl_en.md)。*
 
 ## 2.inference models
 

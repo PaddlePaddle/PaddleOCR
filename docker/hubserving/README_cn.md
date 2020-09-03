@@ -1,4 +1,6 @@
-# Docker化部署服务
+[English](README.md) | 简体中文
+
+## Docker化部署服务
 在日常项目应用中，相信大家一般都会希望能通过Docker技术，把PaddleOCR服务打包成一个镜像，以便在Docker或k8s环境里，快速发布上线使用。
 
 本文将提供一些标准化的代码来实现这样的目标。大家通过如下步骤可以把PaddleOCR项目快速发布成可调用的Restful API服务。（目前暂时先实现了基于HubServing模式的部署，后续作者计划增加PaddleServing模式的部署）

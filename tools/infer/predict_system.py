@@ -157,7 +157,6 @@ def main(args):
                 boxes,
                 txts,
                 scores,
-                draw_txt=True,
                 drop_score=drop_score)
             draw_img_save = "./inference_results/"
             if not os.path.exists(draw_img_save):

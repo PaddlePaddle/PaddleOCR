@@ -5,6 +5,8 @@
 
 请先参考[快速安装](./installation.md)配置PaddleOCR运行环境。
 
+*注意：也可以通过 whl 包安装使用PaddleOCR，具体参考[Paddleocr Package使用说明](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/whl.md)。*
+
 ## 2.inference模型下载
 
 |模型名称|模型简介|检测模型地址|识别模型地址|支持空格的识别模型地址|
