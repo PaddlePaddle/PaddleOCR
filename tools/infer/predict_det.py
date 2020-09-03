@@ -17,28 +17,32 @@ __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 
-import tools.infer.utility as utility
-from ppocr.utils.utility import initial_logger
-logger = initial_logger()
-from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 import cv2
-from ppocr.data.det.sast_process import SASTProcessTest
-from ppocr.data.det.east_process import EASTProcessTest
-from ppocr.data.det.db_process import DBProcessTest
-from ppocr.postprocess.db_postprocess import DBPostProcess
-from ppocr.postprocess.east_postprocess import EASTPostPocess
-from ppocr.postprocess.sast_postprocess import SASTPostProcess
 import copy
 import numpy as np
 import math
 import time
 import sys
 
+import paddle.fluid as fluid
+
+import tools.infer.utility as utility
+from ppocr.utils.utility import initial_logger
+logger = initial_logger()
+from ppocr.utils.utility import get_image_file_list, check_and_read_gif
+from ppocr.data.det.sast_process import SASTProcessTest
+from ppocr.data.det.east_process import EASTProcessTest
+from ppocr.data.det.db_process import DBProcessTest
+from ppocr.postprocess.db_postprocess import DBPostProcess
+from ppocr.postprocess.east_postprocess import EASTPostPocess
+from ppocr.postprocess.sast_postprocess import SASTPostProcess
+
 
 class TextDetector(object):
     def __init__(self, args):
         max_side_len = args.det_max_side_len
         self.det_algorithm = args.det_algorithm
+        self.use_zero_copy_run = args.use_zero_copy_run
         preprocess_params = {'max_side_len': max_side_len}
         postprocess_params = {}
         if self.det_algorithm == "DB":
@@ -127,7 +131,7 @@ class TextDetector(object):
             dt_boxes_new.append(box)
         dt_boxes = np.array(dt_boxes_new)
         return dt_boxes
-    
+
     def __call__(self, img):
         ori_im = img.copy()
         im, ratio_list = self.preprocess_op(img)
@@ -135,8 +139,12 @@ class TextDetector(object):
             return None, 0
         im = im.copy()
         starttime = time.time()
-        self.input_tensor.copy_from_cpu(im)
-        self.predictor.zero_copy_run()
+        if self.use_zero_copy_run:
+            self.input_tensor.copy_from_cpu(im)
+            self.predictor.zero_copy_run()
+        else:
+            im = fluid.core.PaddleTensor(im)
+            self.predictor.run([im])
         outputs = []
         for output_tensor in self.output_tensors:
             output = output_tensor.copy_to_cpu()
@@ -152,7 +160,7 @@ class TextDetector(object):
             outs_dict['f_tvo'] = outputs[3]
         else:
             outs_dict['maps'] = outputs[0]
-                
+
         dt_boxes_list = self.postprocess_op(outs_dict, [ratio_list])
         dt_boxes = dt_boxes_list[0]
         if self.det_algorithm == "SAST" and self.det_sast_polygon:
