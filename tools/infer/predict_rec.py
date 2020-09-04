@@ -17,15 +17,18 @@ __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 
-import tools.infer.utility as utility
-from ppocr.utils.utility import initial_logger
-logger = initial_logger()
-from ppocr.utils.utility import get_image_file_list
 import cv2
 import copy
 import numpy as np
 import math
 import time
+
+import paddle.fluid as fluid
+
+import tools.infer.utility as utility
+from ppocr.utils.utility import initial_logger
+logger = initial_logger()
+from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.utils.character import CharacterOps
 
 
@@ -37,17 +40,23 @@ class TextRecognizer(object):
         self.character_type = args.rec_char_type
         self.rec_batch_num = args.rec_batch_num
         self.rec_algorithm = args.rec_algorithm
+        self.text_len = args.max_text_length
+        self.use_zero_copy_run = args.use_zero_copy_run
         char_ops_params = {
             "character_type": args.rec_char_type,
             "character_dict_path": args.rec_char_dict_path,
-            "use_space_char": args.use_space_char
+            "use_space_char": args.use_space_char,
+            "max_text_length": args.max_text_length
         }
-        if self.rec_algorithm != "RARE":
+        if self.rec_algorithm in ["CRNN", "Rosetta", "STAR-Net"]:
             char_ops_params['loss_type'] = 'ctc'
             self.loss_type = 'ctc'
-        else:
+        elif self.rec_algorithm == "RARE":
             char_ops_params['loss_type'] = 'attention'
             self.loss_type = 'attention'
+        elif self.rec_algorithm == "SRN":
+            char_ops_params['loss_type'] = 'srn'
+            self.loss_type = 'srn'
         self.char_ops = CharacterOps(char_ops_params)
 
     def resize_norm_img(self, img, max_wh_ratio):
@@ -70,6 +79,83 @@ class TextRecognizer(object):
         padding_im[:, :, 0:resized_w] = resized_image
         return padding_im
 
+    def resize_norm_img_srn(self, img, image_shape):
+        imgC, imgH, imgW = image_shape
+
+        img_black = np.zeros((imgH, imgW))
+        im_hei = img.shape[0]
+        im_wid = img.shape[1]
+
+        if im_wid <= im_hei * 1:
+            img_new = cv2.resize(img, (imgH * 1, imgH))
+        elif im_wid <= im_hei * 2:
+            img_new = cv2.resize(img, (imgH * 2, imgH))
+        elif im_wid <= im_hei * 3:
+            img_new = cv2.resize(img, (imgH * 3, imgH))
+        else:
+            img_new = cv2.resize(img, (imgW, imgH))
+
+        img_np = np.asarray(img_new)
+        img_np = cv2.cvtColor(img_np, cv2.COLOR_BGR2GRAY)
+        img_black[:, 0:img_np.shape[1]] = img_np
+        img_black = img_black[:, :, np.newaxis]
+
+        row, col, c = img_black.shape
+        c = 1
+
+        return np.reshape(img_black, (c, row, col)).astype(np.float32)
+
+    def srn_other_inputs(self, image_shape, num_heads, max_text_length,
+                         char_num):
+
+        imgC, imgH, imgW = image_shape
+        feature_dim = int((imgH / 8) * (imgW / 8))
+
+        encoder_word_pos = np.array(range(0, feature_dim)).reshape(
+            (feature_dim, 1)).astype('int64')
+        gsrm_word_pos = np.array(range(0, max_text_length)).reshape(
+            (max_text_length, 1)).astype('int64')
+
+        gsrm_attn_bias_data = np.ones((1, max_text_length, max_text_length))
+        gsrm_slf_attn_bias1 = np.triu(gsrm_attn_bias_data, 1).reshape(
+            [-1, 1, max_text_length, max_text_length])
+        gsrm_slf_attn_bias1 = np.tile(
+            gsrm_slf_attn_bias1,
+            [1, num_heads, 1, 1]).astype('float32') * [-1e9]
+
+        gsrm_slf_attn_bias2 = np.tril(gsrm_attn_bias_data, -1).reshape(
+            [-1, 1, max_text_length, max_text_length])
+        gsrm_slf_attn_bias2 = np.tile(
+            gsrm_slf_attn_bias2,
+            [1, num_heads, 1, 1]).astype('float32') * [-1e9]
+
+        encoder_word_pos = encoder_word_pos[np.newaxis, :]
+        gsrm_word_pos = gsrm_word_pos[np.newaxis, :]
+
+        return [
+            encoder_word_pos, gsrm_word_pos, gsrm_slf_attn_bias1,
+            gsrm_slf_attn_bias2
+        ]
+
+    def process_image_srn(self,
+                          img,
+                          image_shape,
+                          num_heads,
+                          max_text_length,
+                          char_ops=None):
+        norm_img = self.resize_norm_img_srn(img, image_shape)
+        norm_img = norm_img[np.newaxis, :]
+        char_num = char_ops.get_char_num()
+
+        [encoder_word_pos, gsrm_word_pos, gsrm_slf_attn_bias1, gsrm_slf_attn_bias2] = \
+            self.srn_other_inputs(image_shape, num_heads, max_text_length, char_num)
+
+        gsrm_slf_attn_bias1 = gsrm_slf_attn_bias1.astype(np.float32)
+        gsrm_slf_attn_bias2 = gsrm_slf_attn_bias2.astype(np.float32)
+
+        return (norm_img, encoder_word_pos, gsrm_word_pos, gsrm_slf_attn_bias1,
+                gsrm_slf_attn_bias2)
+
     def __call__(self, img_list):
         img_num = len(img_list)
         # Calculate the aspect ratio of all text bars
@@ -79,7 +165,7 @@ class TextRecognizer(object):
         # Sorting can speed up the recognition process
         indices = np.argsort(np.array(width_list))
 
-        # rec_res = []
+        #rec_res = []
         rec_res = [['', 0.0]] * img_num
         batch_num = self.rec_batch_num
         predict_time = 0
@@ -93,16 +179,62 @@ class TextRecognizer(object):
                 wh_ratio = w * 1.0 / h
                 max_wh_ratio = max(max_wh_ratio, wh_ratio)
             for ino in range(beg_img_no, end_img_no):
-                # norm_img = self.resize_norm_img(img_list[ino], max_wh_ratio)
-                norm_img = self.resize_norm_img(img_list[indices[ino]],
-                                                max_wh_ratio)
-                norm_img = norm_img[np.newaxis, :]
-                norm_img_batch.append(norm_img)
-            norm_img_batch = np.concatenate(norm_img_batch)
+                if self.loss_type != "srn":
+                    norm_img = self.resize_norm_img(img_list[indices[ino]],
+                                                    max_wh_ratio)
+                    norm_img = norm_img[np.newaxis, :]
+                    norm_img_batch.append(norm_img)
+                else:
+                    norm_img = self.process_image_srn(img_list[indices[ino]],
+                                                      self.rec_image_shape, 8,
+                                                      25, self.char_ops)
+                    encoder_word_pos_list = []
+                    gsrm_word_pos_list = []
+                    gsrm_slf_attn_bias1_list = []
+                    gsrm_slf_attn_bias2_list = []
+                    encoder_word_pos_list.append(norm_img[1])
+                    gsrm_word_pos_list.append(norm_img[2])
+                    gsrm_slf_attn_bias1_list.append(norm_img[3])
+                    gsrm_slf_attn_bias2_list.append(norm_img[4])
+                    norm_img_batch.append(norm_img[0])
+
+            norm_img_batch = np.concatenate(norm_img_batch, axis=0)
             norm_img_batch = norm_img_batch.copy()
-            starttime = time.time()
-            self.input_tensor.copy_from_cpu(norm_img_batch)
-            self.predictor.zero_copy_run()
+
+            if self.loss_type == "srn":
+                starttime = time.time()
+                encoder_word_pos_list = np.concatenate(encoder_word_pos_list)
+                gsrm_word_pos_list = np.concatenate(gsrm_word_pos_list)
+                gsrm_slf_attn_bias1_list = np.concatenate(
+                    gsrm_slf_attn_bias1_list)
+                gsrm_slf_attn_bias2_list = np.concatenate(
+                    gsrm_slf_attn_bias2_list)
+                starttime = time.time()
+
+                norm_img_batch = fluid.core.PaddleTensor(norm_img_batch)
+                encoder_word_pos_list = fluid.core.PaddleTensor(
+                    encoder_word_pos_list)
+                gsrm_word_pos_list = fluid.core.PaddleTensor(gsrm_word_pos_list)
+                gsrm_slf_attn_bias1_list = fluid.core.PaddleTensor(
+                    gsrm_slf_attn_bias1_list)
+                gsrm_slf_attn_bias2_list = fluid.core.PaddleTensor(
+                    gsrm_slf_attn_bias2_list)
+
+                inputs = [
+                    norm_img_batch, encoder_word_pos_list,
+                    gsrm_slf_attn_bias1_list, gsrm_slf_attn_bias2_list,
+                    gsrm_word_pos_list
+                ]
+
+                self.predictor.run(inputs)
+            else:
+                starttime = time.time()
+                if self.use_zero_copy_run:
+                    self.input_tensor.copy_from_cpu(norm_img_batch)
+                    self.predictor.zero_copy_run()
+                else:
+                    norm_img_batch = fluid.core.PaddleTensor(norm_img_batch)
+                    self.predictor.run([norm_img_batch])
 
             if self.loss_type == "ctc":
                 rec_idx_batch = self.output_tensors[0].copy_to_cpu()
@@ -122,11 +254,31 @@ class TextRecognizer(object):
                     ind = np.argmax(probs, axis=1)
                     blank = probs.shape[1]
                     valid_ind = np.where(ind != (blank - 1))[0]
-                    score = np.mean(probs[valid_ind, ind[valid_ind]])
                     if len(valid_ind) == 0:
                         continue
+                    score = np.mean(probs[valid_ind, ind[valid_ind]])
                     # rec_res.append([preds_text, score])
                     rec_res[indices[beg_img_no + rno]] = [preds_text, score]
+            elif self.loss_type == 'srn':
+                rec_idx_batch = self.output_tensors[0].copy_to_cpu()
+                probs = self.output_tensors[1].copy_to_cpu()
+                char_num = self.char_ops.get_char_num()
+                preds = rec_idx_batch.reshape(-1)
+                elapse = time.time() - starttime
+                predict_time += elapse
+                total_preds = preds.copy()
+                for ino in range(int(len(rec_idx_batch) / self.text_len)):
+                    preds = total_preds[ino * self.text_len:(ino + 1) *
+                                        self.text_len]
+                    ind = np.argmax(probs, axis=1)
+                    valid_ind = np.where(preds != int(char_num - 1))[0]
+                    if len(valid_ind) == 0:
+                        continue
+                    score = np.mean(probs[valid_ind, ind[valid_ind]])
+                    preds = preds[:valid_ind[-1] + 1]
+                    preds_text = self.char_ops.decode(preds)
+
+                    rec_res[indices[beg_img_no + ino]] = [preds_text, score]
             else:
                 rec_idx_batch = self.output_tensors[0].copy_to_cpu()
                 predict_batch = self.output_tensors[1].copy_to_cpu()
@@ -153,12 +305,15 @@ def main(args):
     valid_image_file_list = []
     img_list = []
     for image_file in image_file_list:
-        img = cv2.imread(image_file, cv2.IMREAD_COLOR)
+        img, flag = check_and_read_gif(image_file)
+        if not flag:
+            img = cv2.imread(image_file)
         if img is None:
             logger.info("error in loading image:{}".format(image_file))
             continue
         valid_image_file_list.append(image_file)
         img_list.append(img)
+
     try:
         rec_res, predict_time = text_recognizer(img_list)
     except Exception as e:

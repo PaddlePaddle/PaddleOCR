@@ -26,7 +26,7 @@ from ppocr.utils.utility import initial_logger
 from ppocr.utils.utility import get_image_file_list
 logger = initial_logger()
 
-from .img_tools import process_image, get_img_data
+from .img_tools import process_image, process_image_srn, get_img_data
 
 
 class LMDBReader(object):
@@ -43,6 +43,9 @@ class LMDBReader(object):
         self.mode = params['mode']
         self.drop_last = False
         self.use_tps = False
+        self.num_heads = None
+        if "num_heads" in params:
+            self.num_heads = params['num_heads']
         if "tps" in params:
             self.ues_tps = True
         self.use_distort = False
@@ -119,12 +122,19 @@ class LMDBReader(object):
                     img = cv2.imread(single_img)
                     if img.shape[-1] == 1 or len(list(img.shape)) == 2:
                         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-                    norm_img = process_image(
-                        img=img,
-                        image_shape=self.image_shape,
-                        char_ops=self.char_ops,
-                        tps=self.use_tps,
-                        infer_mode=True)
+                    if self.loss_type == 'srn':
+                        norm_img = process_image_srn(
+                            img=img,
+                            image_shape=self.image_shape,
+                            num_heads=self.num_heads,
+                            max_text_length=self.max_text_length)
+                    else:
+                        norm_img = process_image(
+                            img=img,
+                            image_shape=self.image_shape,
+                            char_ops=self.char_ops,
+                            tps=self.use_tps,
+                            infer_mode=True)
                     yield norm_img
             else:
                 lmdb_sets = self.load_hierarchical_lmdb_dataset()
@@ -144,14 +154,25 @@ class LMDBReader(object):
                             if sample_info is None:
                                 continue
                             img, label = sample_info
-                            outs = process_image(
-                                img=img,
-                                image_shape=self.image_shape,
-                                label=label,
-                                char_ops=self.char_ops,
-                                loss_type=self.loss_type,
-                                max_text_length=self.max_text_length,
-                                distort=self.use_distort)
+                            outs = []
+                            if self.loss_type == "srn":
+                                outs = process_image_srn(
+                                    img=img,
+                                    image_shape=self.image_shape,
+                                    num_heads=self.num_heads,
+                                    max_text_length=self.max_text_length,
+                                    label=label,
+                                    char_ops=self.char_ops,
+                                    loss_type=self.loss_type)
+
+                            else:
+                                outs = process_image(
+                                    img=img,
+                                    image_shape=self.image_shape,
+                                    label=label,
+                                    char_ops=self.char_ops,
+                                    loss_type=self.loss_type,
+                                    max_text_length=self.max_text_length)
                             if outs is None:
                                 continue
                             yield outs
@@ -185,6 +206,7 @@ class SimpleReader(object):
         if params['mode'] != 'test':
             self.img_set_dir = params['img_set_dir']
             self.label_file_path = params['label_file_path']
+        self.use_gpu = params['use_gpu']
         self.char_ops = params['char_ops']
         self.image_shape = params['image_shape']
         self.loss_type = params['loss_type']
@@ -192,6 +214,8 @@ class SimpleReader(object):
         self.mode = params['mode']
         self.infer_img = params['infer_img']
         self.use_tps = False
+        if "num_heads" in params:
+            self.num_heads = params['num_heads']
         if "tps" in params:
             self.use_tps = True
         self.use_distort = False
@@ -213,6 +237,15 @@ class SimpleReader(object):
         if self.mode != 'train':
             process_id = 0
 
+        def get_device_num():
+            if self.use_gpu:
+                gpus = os.environ.get("CUDA_VISIBLE_DEVICES", '1')
+                gpu_num = len(gpus.split(','))
+                return gpu_num
+            else:
+                cpu_num = os.environ.get("CPU_NUM", 1)
+                return int(cpu_num)
+
         def sample_iter_reader():
             if self.mode != 'train' and self.infer_img is not None:
                 image_file_list = get_image_file_list(self.infer_img)
@@ -220,12 +253,20 @@ class SimpleReader(object):
                     img = cv2.imread(single_img)
                     if img.shape[-1] == 1 or len(list(img.shape)) == 2:
                         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-                    norm_img = process_image(
-                        img=img,
-                        image_shape=self.image_shape,
-                        char_ops=self.char_ops,
-                        tps=self.use_tps,
-                        infer_mode=True)
+                    if self.loss_type == 'srn':
+                        norm_img = process_image_srn(
+                            img=img,
+                            image_shape=self.image_shape,
+                            char_ops=self.char_ops,
+                            num_heads=self.num_heads,
+                            max_text_length=self.max_text_length)
+                    else:
+                        norm_img = process_image(
+                            img=img,
+                            image_shape=self.image_shape,
+                            char_ops=self.char_ops,
+                            tps=self.use_tps,
+                            infer_mode=True)
                     yield norm_img
             else:
                 with open(self.label_file_path, "rb") as fin:
@@ -233,10 +274,16 @@ class SimpleReader(object):
                 img_num = len(label_infor_list)
                 img_id_list = list(range(img_num))
                 random.shuffle(img_id_list)
-                if sys.platform == "win32":
+                if sys.platform == "win32" and self.num_workers != 1:
                     print("multiprocess is not fully compatible with Windows."
                           "num_workers will be 1.")
                     self.num_workers = 1
+                if self.batch_size * get_device_num(
+                ) * self.num_workers > img_num:
+                    raise Exception(
+                        "The number of the whole data ({}) is smaller than the batch_size * devices_num * num_workers ({})".
+                        format(img_num, self.batch_size * get_device_num() *
+                               self.num_workers))
                 for img_id in range(process_id, img_num, self.num_workers):
                     label_infor = label_infor_list[img_id_list[img_id]]
                     substr = label_infor.decode('utf-8').strip("\n").split("\t")
@@ -249,14 +296,25 @@ class SimpleReader(object):
                         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
 
                     label = substr[1]
-                    outs = process_image(
-                        img=img,
-                        image_shape=self.image_shape,
-                        label=label,
-                        char_ops=self.char_ops,
-                        loss_type=self.loss_type,
-                        max_text_length=self.max_text_length,
-                        distort=self.use_distort)
+                    if self.loss_type == "srn":
+                        outs = process_image_srn(
+                            img=img,
+                            image_shape=self.image_shape,
+                            num_heads=self.num_heads,
+                            max_text_length=self.max_text_length,
+                            label=label,
+                            char_ops=self.char_ops,
+                            loss_type=self.loss_type)
+
+                    else:
+                        outs = process_image(
+                            img=img,
+                            image_shape=self.image_shape,
+                            label=label,
+                            char_ops=self.char_ops,
+                            loss_type=self.loss_type,
+                            max_text_length=self.max_text_length,
+                            distort=self.use_distort)
                     if outs is None:
                         continue
                     yield outs
