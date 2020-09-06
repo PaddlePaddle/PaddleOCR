@@ -40,6 +40,7 @@ def resize_norm_img(img, image_shape):
     resized_image = cv2.resize(img, (resized_w, imgH))
     resized_image = resized_image.astype('float32')
     if image_shape[0] == 1:
+        resized_image = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
         resized_image = resized_image / 255
         resized_image = resized_image[np.newaxis, :]
     else:
