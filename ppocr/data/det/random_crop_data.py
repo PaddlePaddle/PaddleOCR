@@ -124,20 +124,21 @@ def RandomCropData(data, size):
     # 计算crop区域
     crop_x, crop_y, crop_w, crop_h = crop_area(im, all_care_polys,
                                                min_crop_side_ratio, max_tries)
+    dh, dw = size
     # crop 图片 保持比例填充
-    scale_w = size[0] / crop_w
-    scale_h = size[1] / crop_h
+    scale_w = dw / crop_w
+    scale_h = dh / crop_h
     scale = min(scale_w, scale_h)
     h = int(crop_h * scale)
     w = int(crop_w * scale)
     if keep_ratio:
-        padimg = np.zeros((size[1], size[0], im.shape[2]), im.dtype)
+        padimg = np.zeros((dh, dw, im.shape[2]), im.dtype)
         padimg[:h, :w] = cv2.resize(
             im[crop_y:crop_y + crop_h, crop_x:crop_x + crop_w], (w, h))
         img = padimg
     else:
         img = cv2.resize(im[crop_y:crop_y + crop_h, crop_x:crop_x + crop_w],
-                         tuple(size))
+                         (dw, dh))
     # crop 文本框
     text_polys_crop = []
     ignore_tags_crop = []
