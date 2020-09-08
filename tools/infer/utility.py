@@ -37,8 +37,8 @@ def parse_args():
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     parser.add_argument("--gpu_mem", type=int, default=8000)
     parser.add_argument("--use_fp16", type=str2bool, default=False)
-    parser.add_argument("--max_batch_size", type=int, default=10)
-    parser.add_argument("--enable_benchmark", type=str2bool, default=True)
+    parser.add_argument("--max_batch_size", type=int, default=1)
+    parser.add_argument("--enable_benchmark", type=str2bool, default=False)
     #params for text detector
     parser.add_argument("--image_dir", type=str)
     parser.add_argument("--det_algorithm", type=str, default='DB')
