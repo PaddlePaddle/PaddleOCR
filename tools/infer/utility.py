@@ -36,7 +36,9 @@ def parse_args():
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     parser.add_argument("--gpu_mem", type=int, default=8000)
-
+    parser.add_argument("--use_fp16", type=str2bool, default=False)
+    parser.add_argument("--max_batch_size", type=int, default=10)
+    parser.add_argument("--enable_benchmark", type=str2bool, default=True)
     #params for text detector
     parser.add_argument("--image_dir", type=str)
     parser.add_argument("--det_algorithm", type=str, default='DB')
@@ -111,6 +113,12 @@ def create_predictor(args, mode):
         config.switch_use_feed_fetch_ops(False)
     else:
         config.switch_use_feed_fetch_ops(True)
+
+    if args.use_tensorrt:
+        config.enable_tensorrt_engine(
+            precision_mode=AnalysisConfig.Precision.Half
+            if args.use_fp16 else AnalysisConfig.Precision.Float32,
+            max_batch_size=args.max_batch_size)
 
     predictor = create_paddle_predictor(config)
     input_names = predictor.get_input_names()

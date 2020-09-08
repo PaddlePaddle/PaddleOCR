@@ -123,50 +123,68 @@ def main(args):
     text_sys = TextSystem(args)
     is_visualize = True
     tackle_img_num = 0
-    for image_file in image_file_list:
-        img, flag = check_and_read_gif(image_file)
-        if not flag:
-            img = cv2.imread(image_file)
-        if img is None:
-            logger.info("error in loading image:{}".format(image_file))
-            continue
-        starttime = time.time()
-        tackle_img_num += 1
-        if not args.use_gpu and args.enable_mkldnn and tackle_img_num % 30 == 0:
-            text_sys = TextSystem(args)
-        dt_boxes, rec_res = text_sys(img)
-        elapse = time.time() - starttime
-        print("Predict time of %s: %.3fs" % (image_file, elapse))
+    if not args.enable_benchmark:
+        for image_file in image_file_list:
+            img, flag = check_and_read_gif(image_file)
+            if not flag:
+                img = cv2.imread(image_file)
+            if img is None:
+                logger.info("error in loading image:{}".format(image_file))
+                continue
+            starttime = time.time()
+            tackle_img_num += 1
+            if not args.use_gpu and args.enable_mkldnn and tackle_img_num % 30 == 0:
+                text_sys = TextSystem(args)
+            dt_boxes, rec_res = text_sys(img)
+            elapse = time.time() - starttime
+            print("Predict time of %s: %.3fs" % (image_file, elapse))
 
-        drop_score = 0.5
-        dt_num = len(dt_boxes)
-        for dno in range(dt_num):
-            text, score = rec_res[dno]
-            if score >= drop_score:
-                text_str = "%s, %.3f" % (text, score)
-                print(text_str)
+            drop_score = 0.5
+            dt_num = len(dt_boxes)
+            for dno in range(dt_num):
+                text, score = rec_res[dno]
+                if score >= drop_score:
+                    text_str = "%s, %.3f" % (text, score)
+                    print(text_str)
 
-        if is_visualize:
-            image = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-            boxes = dt_boxes
-            txts = [rec_res[i][0] for i in range(len(rec_res))]
-            scores = [rec_res[i][1] for i in range(len(rec_res))]
+            if is_visualize:
+                image = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+                boxes = dt_boxes
+                txts = [rec_res[i][0] for i in range(len(rec_res))]
+                scores = [rec_res[i][1] for i in range(len(rec_res))]
 
-            draw_img = draw_ocr(
-                image,
-                boxes,
-                txts,
-                scores,
-                drop_score=drop_score)
-            draw_img_save = "./inference_results/"
-            if not os.path.exists(draw_img_save):
-                os.makedirs(draw_img_save)
-            cv2.imwrite(
-                os.path.join(draw_img_save, os.path.basename(image_file)),
-                draw_img[:, :, ::-1])
-            print("The visualized image saved in {}".format(
-                os.path.join(draw_img_save, os.path.basename(image_file))))
-
-
+                draw_img = draw_ocr(
+                    image,
+                    boxes,
+                    txts,
+                    scores,
+                    drop_score=drop_score)
+                draw_img_save = "./inference_results/"
+                if not os.path.exists(draw_img_save):
+                    os.makedirs(draw_img_save)
+                cv2.imwrite(
+                    os.path.join(draw_img_save, os.path.basename(image_file)),
+                    draw_img[:, :, ::-1])
+                print("The visualized image saved in {}".format(
+                    os.path.join(draw_img_save, os.path.basename(image_file))))
+    else:
+        test_num = 10
+        test_time = 0.0
+        for i in range(0, test_num + 10):
+            #inputs = np.random.rand(640, 640, 3).astype(np.float32)
+            #print(image_file_list)
+            image_file = image_file_list[0]
+            inputs = cv2.imread(image_file)
+            inputs = cv2.resize(inputs, (int(640), int(640)))
+            start_time = time.time()
+            dt_boxes,rec_res = text_sys(inputs)
+            if i >= 10:
+                test_time += time.time() - start_time
+            time.sleep(0.01)
+        fp_message = "FP16" if args.use_fp16 else "FP32"
+        trt_msg = "using tensorrt" if args.use_tensorrt else "not using tensorrt"
+        print("model\t{0}\t{1}\tbatch size: {2}\ttime(ms): {3}".format(
+        trt_msg, fp_message, args.max_batch_size, 1000 *
+        test_time / test_num))
 if __name__ == "__main__":
     main(utility.parse_args())

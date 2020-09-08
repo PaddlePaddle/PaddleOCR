@@ -62,8 +62,8 @@ class TextRecognizer(object):
     def resize_norm_img(self, img, max_wh_ratio):
         imgC, imgH, imgW = self.rec_image_shape
         assert imgC == img.shape[2]
-        if self.character_type == "ch":
-            imgW = int((32 * max_wh_ratio))
+        #if self.character_type == "ch":
+            #imgW = int((32 * max_wh_ratio))
         h, w = img.shape[:2]
         ratio = w / float(h)
         if math.ceil(imgH * ratio) > imgW:
@@ -314,17 +314,12 @@ def main(args):
         valid_image_file_list.append(image_file)
         img_list.append(img)
 
-    try:
-        rec_res, predict_time = text_recognizer(img_list)
+    rec_res, predict_time = text_recognizer(img_list)
+    """
     except Exception as e:
         print(e)
-        logger.info(
-            "ERROR!!!! \n"
-            "Please read the FAQ：https://github.com/PaddlePaddle/PaddleOCR#faq \n"
-            "If your model has tps module:  "
-            "TPS does not support variable shape.\n"
-            "Please set --rec_image_shape='3,32,100' and --rec_char_type='en' ")
         exit()
+    """
     for ino in range(len(img_list)):
         print("Predicts of %s:%s" % (valid_image_file_list[ino], rec_res[ino]))
     print("Total predict time for %d images:%.3f" %
