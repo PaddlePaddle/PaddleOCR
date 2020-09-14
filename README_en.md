@@ -56,7 +56,6 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
 - Algorithm introduction
     - [Text Detection Algorithm](#TEXTDETECTIONALGORITHM)
     - [Text Recognition Algorithm](#TEXTRECOGNITIONALGORITHM)
-    - [END-TO-END OCR Algorithm](#ENDENDOCRALGORITHM)
 - Model training/evaluation
     - [Text Detection](./doc/doc_en/detection_en.md)
     - [Text Recognition](./doc/doc_en/recognition_en.md)
@@ -158,10 +157,6 @@ We use [LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/
 
 Please refer to the document for training guide and use of PaddleOCR text recognition algorithms [Text recognition model training/evaluation/prediction](./doc/doc_en/recognition_en.md)
 
-<a name="ENDENDOCRALGORITHM"></a>
-## END-TO-END OCR Algorithm
-- [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(Baidu Self-Research, coming soon)
-
 ## Visualization
 
 <a name="UCOCRVIS"></a>
@@ -211,7 +206,7 @@ Please refer to the document for training guide and use of PaddleOCR text recogn
 Scan  the QR code below with your wechat and completing the questionnaire, you can access to offical technical exchange group.
 
 <div align="center">
-<img src="./doc/joinus.jpg"  width = "200" height = "200" />
+<img src="./doc/joinus.PNG"  width = "200" height = "200" />
 </div>
 
 <a name="LICENSE"></a>
