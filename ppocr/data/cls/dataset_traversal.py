@@ -14,6 +14,7 @@
 
 import os
 import sys
+import math
 import random
 import numpy as np
 import cv2
@@ -23,7 +24,18 @@ from ppocr.utils.utility import get_image_file_list
 
 logger = initial_logger()
 
-from ppocr.data.rec.img_tools import warp, resize_norm_img
+from ppocr.data.rec.img_tools import resize_norm_img, warp
+from ppocr.data.cls.randaugment import RandAugment
+
+
+def random_crop(img):
+    img_h, img_w = img.shape[:2]
+    if img_w > img_h * 4:
+        w = random.randint(img_h * 2, img_w)
+        i = random.randint(0, img_w - w)
+
+        img = img[:, i:i + w, :]
+    return img
 
 
 class SimpleReader(object):
@@ -39,7 +51,8 @@ class SimpleReader(object):
         self.image_shape = params['image_shape']
         self.mode = params['mode']
         self.infer_img = params['infer_img']
-        self.use_distort = False
+        self.use_distort = params['mode'] == 'train' and params['distort']
+        self.randaug = RandAugment()
         self.label_list = params['label_list']
         if "distort" in params:
             self.use_distort = params['distort'] and params['use_gpu']
@@ -76,6 +89,7 @@ class SimpleReader(object):
                     if img.shape[-1] == 1 or len(list(img.shape)) == 2:
                         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
                     norm_img = resize_norm_img(img, self.image_shape)
+
                     norm_img = norm_img[np.newaxis, :]
                     yield norm_img
             else:
@@ -97,6 +111,8 @@ class SimpleReader(object):
                 for img_id in range(process_id, img_num, self.num_workers):
                     label_infor = label_infor_list[img_id_list[img_id]]
                     substr = label_infor.decode('utf-8').strip("\n").split("\t")
+                    label = self.label_list.index(substr[1])
+
                     img_path = self.img_set_dir + "/" + substr[0]
                     img = cv2.imread(img_path)
                     if img is None:
@@ -105,12 +121,14 @@ class SimpleReader(object):
                     if img.shape[-1] == 1 or len(list(img.shape)) == 2:
                         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
 
-                    label = substr[1]
                     if self.use_distort:
+                        # if random.randint(1, 100)>= 50:
+                        #     img = random_crop(img)
                         img = warp(img, 10)
+                        img = self.randaug(img)
                     norm_img = resize_norm_img(img, self.image_shape)
                     norm_img = norm_img[np.newaxis, :]
-                    yield (norm_img, self.label_list.index(int(label)))
+                    yield (norm_img, label)
 
         def batch_iter_reader():
             batch_outs = []

@@ -58,7 +58,7 @@ public:
   void LoadModel(const std::string &model_dir);
 
   void Run(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat &img,
-           Classifier &cls);
+           Classifier *cls);
 
 private:
   std::shared_ptr<PaddlePredictor> predictor_;

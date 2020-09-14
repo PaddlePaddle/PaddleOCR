@@ -16,12 +16,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import logging
 import numpy as np
 
-import paddle.fluid as fluid
-
-__all__ = ['eval_class_run']
+__all__ = ['eval_cls_run']
 
 import logging
 
@@ -52,7 +49,8 @@ def eval_cls_run(exe, eval_info_dict):
                        fetch_list=eval_info_dict['fetch_varname_list'], \
                        return_numpy=False)
         softmax_outs = np.array(outs[1])
-
+        if len(softmax_outs.shape) != 1:
+            softmax_outs = np.array(outs[0])
         acc, acc_num = cal_cls_acc(softmax_outs, label_list)
         total_acc_num += acc_num
         total_sample_num += len(label_list)

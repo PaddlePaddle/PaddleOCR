@@ -108,7 +108,7 @@ class TextClassifier(object):
                 score = prob_out[rno][label_idx]
                 label = self.label_list[label_idx]
                 cls_res[indices[beg_img_no + rno]] = [label, score]
-                if label == 180:
+                if '180' in label and score > 0.9999:
                     img_list[indices[beg_img_no + rno]] = cv2.rotate(
                         img_list[indices[beg_img_no + rno]], 1)
         return img_list, cls_res, predict_time
@@ -130,12 +130,6 @@ def main(args):
         img_list.append(img)
     try:
         img_list, cls_res, predict_time = text_classifier(img_list)
-        print(cls_res)
-        from matplotlib import pyplot as plt
-        for img, angle in zip(img_list, cls_res):
-            plt.title(str(angle))
-            plt.imshow(img)
-            plt.show()
     except Exception as e:
         print(e)
         exit()

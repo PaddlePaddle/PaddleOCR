@@ -85,9 +85,10 @@ def main():
                           feed={"image": img},
                           fetch_list=fetch_varname_list,
                           return_numpy=False)
-        for k in predict:
-            k = np.array(k)
-            print(k)
+        scores = np.array(predict[0])
+        label = np.array(predict[1])
+        logger.info('\t scores: {}'.format(scores))
+        logger.info('\t label: {}'.format(label))
     # save for inference model
     target_var = []
     for key, values in outputs.items():

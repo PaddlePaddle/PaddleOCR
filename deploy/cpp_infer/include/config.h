@@ -57,6 +57,8 @@ public:
 
     this->char_list_file.assign(config_map_["char_list_file"]);
 
+    this->use_angle_cls = bool(stoi(config_map_["use_angle_cls"]));
+
     this->cls_model_dir.assign(config_map_["cls_model_dir"]);
 
     this->cls_thresh = stod(config_map_["cls_thresh"]);
@@ -87,6 +89,8 @@ public:
   std::string det_model_dir;
 
   std::string rec_model_dir;
+
+  bool use_angle_cls;
 
   std::string char_list_file;
 

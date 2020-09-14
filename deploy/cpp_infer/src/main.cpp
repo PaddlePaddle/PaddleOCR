@@ -53,10 +53,15 @@ int main(int argc, char **argv) {
       config.cpu_math_library_num_threads, config.use_mkldnn,
       config.use_zero_copy_run, config.max_side_len, config.det_db_thresh,
       config.det_db_box_thresh, config.det_db_unclip_ratio, config.visualize);
-  Classifier cls(config.cls_model_dir, config.use_gpu, config.gpu_id,
-                 config.gpu_mem, config.cpu_math_library_num_threads,
-                 config.use_mkldnn, config.use_zero_copy_run,
-                 config.cls_thresh);
+
+  Classifier *cls = nullptr;
+  if (config.use_angle_cls == true) {
+    cls = new Classifier(config.cls_model_dir, config.use_gpu, config.gpu_id,
+                         config.gpu_mem, config.cpu_math_library_num_threads,
+                         config.use_mkldnn, config.use_zero_copy_run,
+                         config.cls_thresh);
+  }
+
   CRNNRecognizer rec(config.rec_model_dir, config.use_gpu, config.gpu_id,
                      config.gpu_mem, config.cpu_math_library_num_threads,
                      config.use_mkldnn, config.use_zero_copy_run,
