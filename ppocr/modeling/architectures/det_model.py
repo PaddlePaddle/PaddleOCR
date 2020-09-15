@@ -67,6 +67,7 @@ class DetModel(object):
 
         image = fluid.layers.data(
             name='image', shape=image_shape, dtype='float32')
+        image.stop_gradient = False
         if mode == "train":
             if self.algorithm == "EAST":
                 h, w = int(image_shape[1] // 4), int(image_shape[2] // 4)
@@ -108,7 +109,10 @@ class DetModel(object):
                     name='tvo', shape=[9, 128, 128], dtype='float32')
                 input_tco = fluid.layers.data(
                     name='tco', shape=[3, 128, 128], dtype='float32')
-                feed_list = [image, input_score, input_border, input_mask, input_tvo, input_tco]
+                feed_list = [
+                    image, input_score, input_border, input_mask, input_tvo,
+                    input_tco
+                ]
                 labels = {'input_score': input_score,\
                     'input_border': input_border,\
                     'input_mask': input_mask,\

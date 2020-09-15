@@ -225,10 +225,12 @@ def build_export(config, main_prog, startup_prog):
     return feeded_var_names, target_vars, fetches_var_name
 
 
-def create_multi_devices_program(program, loss_var_name):
+def create_multi_devices_program(program, loss_var_name, for_quant=False):
     build_strategy = fluid.BuildStrategy()
     build_strategy.memory_optimize = False
     build_strategy.enable_inplace = True
+    if for_quant:
+        build_strategy.fuse_all_reduce_ops = False
     exec_strategy = fluid.ExecutionStrategy()
     exec_strategy.num_iteration_per_drop_scope = 1
     compile_program = fluid.CompiledProgram(program).with_data_parallel(
