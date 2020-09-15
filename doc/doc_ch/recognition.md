@@ -128,8 +128,8 @@ tar -xf rec_mv3_none_bilstm_ctc.tar && rm -rf rec_mv3_none_bilstm_ctc.tar
 export PYTHONPATH=$PYTHONPATH:.
 # GPU训练 支持单卡，多卡训练，通过CUDA_VISIBLE_DEVICES指定卡号
 export CUDA_VISIBLE_DEVICES=0,1,2,3
-# 训练icdar15英文数据
-python3 tools/train.py -c configs/rec/rec_icdar15_train.yml
+# 训练icdar15英文数据 并将训练日志保存为 tain_rec.log
+python3 tools/train.py -c configs/rec/rec_icdar15_train.yml 2>&1 | tee train_rec.log
 ```
 
 - 数据增强

@@ -130,8 +130,8 @@ Start training:
 export PYTHONPATH=$PYTHONPATH:.
 # GPU training Support single card and multi-card training, specify the card number through CUDA_VISIBLE_DEVICES
 export CUDA_VISIBLE_DEVICES=0,1,2,3
-# Training icdar15 English data
-python3 tools/train.py -c configs/rec/rec_icdar15_train.yml
+# Training icdar15 English data and saving the log as train_rec.log
+python3 tools/train.py -c configs/rec/rec_icdar15_train.yml 2>&1 | tee train_rec.log
 ```
 
 - Data Augmentation
