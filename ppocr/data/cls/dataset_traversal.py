@@ -122,8 +122,6 @@ class SimpleReader(object):
                         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
 
                     if self.use_distort:
-                        # if random.randint(1, 100)>= 50:
-                        #     img = random_crop(img)
                         img = warp(img, 10)
                         img = self.randaug(img)
                     norm_img = resize_norm_img(img, self.image_shape)

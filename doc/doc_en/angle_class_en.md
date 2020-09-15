@@ -78,7 +78,7 @@ PaddleOCR provides a variety of data augmentation methods. If you want to add di
 The default perturbation methods are: cvtColor, blur, jitter, Gasuss noise, random crop, perspective, color reverse, RandAugment.
 
 Except for RandAugment, each disturbance method is selected with a 50% probability during the training process. For specific code implementation, please refer to:
-[randaugment.py.py](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/cls/randaugment.py)
+[randaugment.py](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/cls/randaugment.py)
 [img_tools.py](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/rec/img_tools.py)
 
 
