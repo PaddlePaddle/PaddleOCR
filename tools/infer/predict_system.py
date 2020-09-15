@@ -122,7 +122,6 @@ def main(args):
     image_file_list = get_image_file_list(args.image_dir)
     text_sys = TextSystem(args)
     is_visualize = True
-    tackle_img_num = 0
     for image_file in image_file_list:
         img, flag = check_and_read_gif(image_file)
         if not flag:
@@ -131,9 +130,6 @@ def main(args):
             logger.info("error in loading image:{}".format(image_file))
             continue
         starttime = time.time()
-        tackle_img_num += 1
-        if not args.use_gpu and args.enable_mkldnn and tackle_img_num % 30 == 0:
-            text_sys = TextSystem(args)
         dt_boxes, rec_res = text_sys(img)
         elapse = time.time() - starttime
         print("Predict time of %s: %.3fs" % (image_file, elapse))
@@ -153,11 +149,7 @@ def main(args):
             scores = [rec_res[i][1] for i in range(len(rec_res))]
 
             draw_img = draw_ocr(
-                image,
-                boxes,
-                txts,
-                scores,
-                drop_score=drop_score)
+                image, boxes, txts, scores, drop_score=drop_score)
             draw_img_save = "./inference_results/"
             if not os.path.exists(draw_img_save):
                 os.makedirs(draw_img_save)
