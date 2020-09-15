@@ -26,6 +26,7 @@ void DBDetector::LoadModel(const std::string &model_dir) {
     config.DisableGpu();
     if (this->use_mkldnn_) {
       config.EnableMKLDNN();
+      // cache 10 different shapes for mkldnn to avoid memory leak
       config.SetMkldnnCacheCapacity(10);
     }
     config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
