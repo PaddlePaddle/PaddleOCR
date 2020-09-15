@@ -14,7 +14,7 @@ det_db_unclip_ratio  2.0
 det_model_dir  ../model/det
 
 # cls config
-use_angle_cls 1
+use_angle_cls 0
 cls_model_dir ../model/cls
 cls_thresh  0.9
 

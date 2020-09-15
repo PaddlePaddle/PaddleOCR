@@ -73,7 +73,7 @@ def parse_args():
     parser.add_argument("--use_space_char", type=bool, default=True)
 
     # params for text classifier
-    parser.add_argument("--use_angle_cls", type=str2bool, default=True)
+    parser.add_argument("--use_angle_cls", type=str2bool, default=False)
     parser.add_argument("--cls_model_dir", type=str)
     parser.add_argument("--cls_image_shape", type=str, default="3, 48, 192")
     parser.add_argument("--label_list", type=list, default=['0', '180'])
