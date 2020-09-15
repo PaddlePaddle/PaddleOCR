@@ -179,26 +179,7 @@ def main():
         program.train_eval_rec_run(config, exe, train_info_dict, eval_info_dict)
 
 
-def test_reader():
-    logger.info(config)
-    train_reader = reader_main(config=config, mode="train")
-    import time
-    starttime = time.time()
-    count = 0
-    try:
-        for data in train_reader():
-            count += 1
-            if count % 1 == 0:
-                batch_time = time.time() - starttime
-                starttime = time.time()
-                logger.info("reader:", count, len(data), batch_time)
-    except Exception as e:
-        logger.info(e)
-    logger.info("finish reader: {}, Success!".format(count))
-
-
 if __name__ == '__main__':
     startup_program, train_program, place, config, train_alg_type = program.preprocess(
     )
     main()
-#     test_reader()
