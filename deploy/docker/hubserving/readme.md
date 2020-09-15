@@ -18,11 +18,11 @@ git clone https://github.com/PaddlePaddle/PaddleOCR.git
 ```
 b.切换至Dockerfile目录（注：需要区分cpu或gpu版本，下文以cpu为例，gpu版本需要替换一下关键字即可）
 ```
-cd docker/cpu
+cd deploy/docker/cpu
 ```
 c.生成镜像
 ```
-docker build -t paddleocr:cpu . 
+docker build -t paddleocr:cpu .
 ```
 
 ## 3.启动Docker容器
