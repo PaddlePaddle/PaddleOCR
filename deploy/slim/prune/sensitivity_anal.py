@@ -118,7 +118,7 @@ def main():
         params,
         eval_function,
         sensitivities_file="sensitivities_0.data",
-        pruned_ratios=[0.1],
+        pruned_ratios=[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
         eval_args=eval_args,
         criterion='geometry_median')
 
