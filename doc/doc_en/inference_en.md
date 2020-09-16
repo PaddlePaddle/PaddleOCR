@@ -12,25 +12,28 @@ Next, we first introduce how to convert a trained model into an inference model,
 - [CONVERT TRAINING MODEL TO INFERENCE MODEL](#CONVERT)
     - [Convert detection model to inference model](#Convert_detection_model)
     - [Convert recognition model to inference model](#Convert_recognition_model)
-    
-    
+    - [Convert angle classification model to inference model](#Convert_angle_class_model)
+
+
 - [TEXT DETECTION MODEL INFERENCE](#DETECTION_MODEL_INFERENCE)
     - [1. LIGHTWEIGHT CHINESE DETECTION MODEL INFERENCE](#LIGHTWEIGHT_DETECTION)
     - [2. DB TEXT DETECTION MODEL INFERENCE](#DB_DETECTION)
     - [3. EAST TEXT DETECTION MODEL INFERENCE](#EAST_DETECTION)
     - [4. SAST TEXT DETECTION MODEL INFERENCE](#SAST_DETECTION)
-    
+
 - [TEXT RECOGNITION MODEL INFERENCE](#RECOGNITION_MODEL_INFERENCE)
     - [1. LIGHTWEIGHT CHINESE MODEL](#LIGHTWEIGHT_RECOGNITION)
     - [2. CTC-BASED TEXT RECOGNITION MODEL INFERENCE](#CTC-BASED_RECOGNITION)
     - [3. ATTENTION-BASED TEXT RECOGNITION MODEL INFERENCE](#ATTENTION-BASED_RECOGNITION)
     - [4. TEXT RECOGNITION MODEL INFERENCE USING CUSTOM CHARACTERS DICTIONARY](#USING_CUSTOM_CHARACTERS)
-    
-    
-- [TEXT DETECTION AND RECOGNITION INFERENCE CONCATENATION](#CONCATENATION)
+
+- [ANGLE CLASSIFICATION MODEL INFERENCE](#ANGLE_CLASS_MODEL_INFERENCE)
+    - [1. ANGLE CLASSIFICATION MODEL INFERENCE](#ANGLE_CLASS_MODEL_INFERENCE)
+
+- [TEXT DETECTION ANGLE CLASSIFICATION AND RECOGNITION INFERENCE CONCATENATION](#CONCATENATION)
     - [1. LIGHTWEIGHT CHINESE MODEL](#LIGHTWEIGHT_CHINESE_MODEL)
     - [2. OTHER MODELS](#OTHER_MODELS)
-    
+
 <a name="CONVERT"></a>
 ## CONVERT TRAINING MODEL TO INFERENCE MODEL
 <a name="Convert_detection_model"></a>
@@ -86,6 +89,33 @@ After the conversion is successful, there are two files in the directory:
   └─  model     Identify the saved model files
   └─  params    Identify the parameter files of the inference model
 ```
+
+<a name="Convert_angle_class_model"></a>
+### Convert angle classification model to inference model
+
+Download the angle classification model:
+```
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile-v1.1.cls_pre.tar && tar xf ./ch_lite/ch_ppocr_mobile-v1.1.cls_pre.tar -C ./ch_lite/
+```
+
+The angle classification model is converted to the inference model in the same way as the detection, as follows:
+```
+# -c Set the training algorithm yml configuration file
+# -o Set optional parameters
+#  Global.checkpoints parameter Set the training model address to be converted without adding the file suffix .pdmodel, .pdopt or .pdparams.
+#  Global.save_inference_dir Set the address where the converted model will be saved.
+
+python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o Global.checkpoints=./ch_lite/cls_model/best_accuracy \
+        Global.save_inference_dir=./inference/cls/
+```
+
+After the conversion is successful, there are two files in the directory:
+```
+/inference/cls/
+  └─  model     Identify the saved model files
+  └─  params    Identify the parameter files of the inference model
+```
+
 
 <a name="DETECTION_MODEL_INFERENCE"></a>
 ## TEXT DETECTION MODEL INFERENCE
@@ -276,16 +306,39 @@ If the chars dictionary is modified during training, you need to specify the new
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="en" --rec_char_dict_path="your text dict path"
 ```
 
+
+<a name="ANGLE_CLASSIFICATION_MODEL_INFERENCE"></a>
+## ANGLE CLASSIFICATION MODEL INFERENCE
+
+The following will introduce the angle classification model inference.
+
+
+<a name="ANGLE_CLASS_MODEL_INFERENCE"></a>
+### 1.ANGLE CLASSIFICATION MODEL INFERENCE
+
+For angle classification model inference, you can execute the following commands:
+
+```
+python3 tools/infer/predict_cls.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --cls_model_dir="./inference/cls/"
+```
+
+![](../imgs_words/ch/word_4.jpg)
+
+After executing the command, the prediction results (classification angle and score) of the above image will be printed on the screen.
+
+Predicts of ./doc/imgs_words/ch/word_4.jpg:['0', 0.9999963]
+
+
 <a name="CONCATENATION"></a>
-## TEXT DETECTION AND RECOGNITION INFERENCE CONCATENATION
+## TEXT DETECTION ANGLE CLASSIFICATION AND RECOGNITION INFERENCE CONCATENATION
 
 <a name="LIGHTWEIGHT_CHINESE_MODEL"></a>
 ### 1. LIGHTWEIGHT CHINESE MODEL
 
-When performing prediction, you need to specify the path of a single image or a folder of images through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to detect the inference model, and the parameter `rec_model_dir` specifies the path to identify the inference model. The visualized recognition results are saved to the `./inference_results` folder by default.
+When performing prediction, you need to specify the path of a single image or a folder of images through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to detect the inference model, the parameter `cls_model_dir` specifies the path to angle classification inference model and the parameter `rec_model_dir` specifies the path to identify the inference model. The parameter `use_angle_cls` is used to control whether to enable the angle classification model.The visualized recognition results are saved to the `./inference_results` folder by default.
 
 ```
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/"  --rec_model_dir="./inference/rec_crnn/"
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --cls_model_dir="./inference/cls/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls true
 ```
 
 After executing the command, the recognition result image is as follows:
