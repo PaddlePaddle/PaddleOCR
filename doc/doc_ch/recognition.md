@@ -140,7 +140,7 @@ PaddleOCR提供了多种数据增强方式，如果您希望在训练时加入�
 
 训练过程中每种扰动方式以50%的概率被选择，具体代码实现请参考：[img_tools.py](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/rec/img_tools.py)
 
-*由于OpenCV的兼容性问题，扰动操作暂时只支持GPU*
+*由于OpenCV的兼容性问题，扰动操作暂时只支持Linux*
 
 - 训练
 

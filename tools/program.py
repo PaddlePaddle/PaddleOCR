@@ -208,18 +208,29 @@ def build_export(config, main_prog, startup_prog):
         with fluid.unique_name.guard():
             func_infor = config['Architecture']['function']
             model = create_module(func_infor)(params=config)
-            image, outputs = model(mode='export')
+            algorithm = config['Global']['algorithm']
+            if algorithm == "SRN":
+                image, others, outputs = model(mode='export')
+            else:
+                image, outputs = model(mode='export')
             fetches_var_name = sorted([name for name in outputs.keys()])
             fetches_var = [outputs[name] for name in fetches_var_name]
-    feeded_var_names = [image.name]
+    if algorithm == "SRN":
+        others_var_names = sorted([name for name in others.keys()])
+        feeded_var_names = [image.name] + others_var_names
+    else:
+        feeded_var_names = [image.name]
+
     target_vars = fetches_var
     return feeded_var_names, target_vars, fetches_var_name
 
 
-def create_multi_devices_program(program, loss_var_name):
+def create_multi_devices_program(program, loss_var_name, for_quant=False):
     build_strategy = fluid.BuildStrategy()
     build_strategy.memory_optimize = False
     build_strategy.enable_inplace = True
+    if for_quant:
+        build_strategy.fuse_all_reduce_ops = False
     exec_strategy = fluid.ExecutionStrategy()
     exec_strategy.num_iteration_per_drop_scope = 1
     compile_program = fluid.CompiledProgram(program).with_data_parallel(
@@ -409,7 +420,9 @@ def preprocess():
     check_gpu(use_gpu)
 
     alg = config['Global']['algorithm']
-    assert alg in ['EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN']
+    assert alg in [
+        'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN'
+    ]
     if alg in ['Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN']:
         config['Global']['char_ops'] = CharacterOps(config['Global'])
 

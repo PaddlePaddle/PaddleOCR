@@ -68,6 +68,7 @@ class RecModel(object):
         image_shape.insert(0, -1)
         if mode == "train":
             image = fluid.data(name='image', shape=image_shape, dtype='float32')
+            image.stop_gradient = False
             if self.loss_type == "attention":
                 label_in = fluid.data(
                     name='label_in',
@@ -136,7 +137,7 @@ class RecModel(object):
         else:
             labels = None
             loader = None
-            if self.char_type == "ch" and self.infer_img:
+            if self.char_type == "ch" and self.infer_img and self.loss_type != "srn":
                 image_shape[-1] = -1
                 if self.tps != None:
                     logger.info(
@@ -146,6 +147,7 @@ class RecModel(object):
                     )
                     image_shape = deepcopy(self.image_shape)
             image = fluid.data(name='image', shape=image_shape, dtype='float32')
+            image.stop_gradient = False
             if self.loss_type == "srn":
                 encoder_word_pos = fluid.data(
                     name="encoder_word_pos",
@@ -172,16 +174,13 @@ class RecModel(object):
                         self.max_text_length
                     ],
                     dtype="float32")
-                feed_list = [
-                    image, encoder_word_pos, gsrm_word_pos, gsrm_slf_attn_bias1,
-                    gsrm_slf_attn_bias2
-                ]
                 labels = {
                     'encoder_word_pos': encoder_word_pos,
                     'gsrm_word_pos': gsrm_word_pos,
                     'gsrm_slf_attn_bias1': gsrm_slf_attn_bias1,
                     'gsrm_slf_attn_bias2': gsrm_slf_attn_bias2
                 }
+
         return image, labels, loader
 
     def __call__(self, mode):
@@ -218,8 +217,13 @@ class RecModel(object):
             if self.loss_type == "ctc":
                 predict = fluid.layers.softmax(predict)
             if self.loss_type == "srn":
-                raise Exception(
-                    "Warning! SRN does not support export model currently")
+                return [
+                    image, labels, {
+                        'decoded_out': decoded_out,
+                        'predicts': predict
+                    }
+                ]
+
             return [image, {'decoded_out': decoded_out, 'predicts': predict}]
         else:
             predict = predicts['predict']

@@ -61,6 +61,14 @@ hub install deploy\hubserving\ocr_rec\
 hub install deploy\hubserving\ocr_system\
 ```
 
+#### 安装模型
+安装服务模块前，需要将训练好的模型放到对应的文件夹内。默认使用的是：
+./inference/ch_det_mv3_db/
+和
+./inference/ch_rec_mv3_crnn/
+这两个模型可以在https://github.com/PaddlePaddle/PaddleOCR 下载
+可以在./deploy/hubserving/ocr_system/params.py 里面修改成自己的模型
+
 ### 3. 启动服务
 #### 方式1. 命令行命令启动（仅支持CPU）
 **启动命令：**  
