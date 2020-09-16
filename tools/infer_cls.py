@@ -19,6 +19,7 @@ from __future__ import print_function
 import numpy as np
 import os
 import sys
+
 __dir__ = os.path.dirname(__file__)
 sys.path.append(__dir__)
 sys.path.append(os.path.join(__dir__, '..'))
@@ -40,6 +41,7 @@ set_paddle_flags(
 import tools.program as program
 from paddle import fluid
 from ppocr.utils.utility import initial_logger
+
 logger = initial_logger()
 from ppocr.data.reader_main import reader_main
 from ppocr.utils.save_load import init_model
@@ -87,6 +89,8 @@ def main():
                           return_numpy=False)
         scores = np.array(predict[0])
         label = np.array(predict[1])
+        if len(label.shape) != 1:
+            label, scores = scores, label
         logger.info('\t scores: {}'.format(scores))
         logger.info('\t label: {}'.format(label))
     # save for inference model

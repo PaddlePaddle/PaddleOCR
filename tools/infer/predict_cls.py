@@ -100,6 +100,8 @@ class TextClassifier(object):
 
             prob_out = self.output_tensors[0].copy_to_cpu()
             label_out = self.output_tensors[1].copy_to_cpu()
+            if len(label_out.shape) != 1:
+                prob_out, label_out = label_out, prob_out
 
             elapse = time.time() - starttime
             predict_time += elapse
