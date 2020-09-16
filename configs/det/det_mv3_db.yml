@@ -24,6 +24,7 @@ Backbone:
   function: ppocr.modeling.backbones.det_mobilenet_v3,MobileNetV3
   scale: 0.5
   model_name: large
+  disable_se: true
 
 Head:
   function: ppocr.modeling.heads.det_db_head,DBHead
@@ -49,6 +50,6 @@ Optimizer:
 PostProcess:
   function: ppocr.postprocess.db_postprocess,DBPostProcess
   thresh: 0.3
-  box_thresh: 0.7
+  box_thresh: 0.6
   max_candidates: 1000
-  unclip_ratio: 2.0
+  unclip_ratio: 1.5
