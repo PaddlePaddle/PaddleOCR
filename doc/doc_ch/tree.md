@@ -188,40 +188,12 @@ PaddleOCR
 │   │       └── tps.py   // TPS 变换
 │   ├── optimizer.py  // 优化器
 │   ├── postprocess   // 后处理
-│   │   ├── db_postprocess.py    // DB 后处理
-│   │   ├── east_postprocess.py  // East 后处理
-│   │   ├── lanms
-│   │   │   ├── adaptor.cpp
-│   │   │   ├── include
-│   │   │   │   ├── clipper
-│   │   │   │   │   ├── clipper.cpp
-│   │   │   │   │   └── clipper.hpp
-│   │   │   │   └── pybind11
-│   │   │   │       ├── attr.h
-│   │   │   │       ├── buffer_info.h
-│   │   │   │       ├── cast.h
-│   │   │   │       ├── chrono.h
-│   │   │   │       ├── class_support.h
-│   │   │   │       ├── common.h
-│   │   │   │       ├── complex.h
-│   │   │   │       ├── descr.h
-│   │   │   │       ├── eigen.h
-│   │   │   │       ├── embed.h
-│   │   │   │       ├── eval.h
-│   │   │   │       ├── functional.h
-│   │   │   │       ├── numpy.h
-│   │   │   │       ├── operators.h
-│   │   │   │       ├── options.h
-│   │   │   │       ├── pybind11.h
-│   │   │   │       ├── pytypes.h
-│   │   │   │       ├── stl_bind.h
-│   │   │   │       ├── stl.h
-│   │   │   │       └── typeid.h
-│   │   │   ├── lanms.h
-│   │   │   ├── __main__.py
-│   │   │   └── Makefile
-│   │   ├── locality_aware_nms.py
-│   │   └── sast_postprocess.py
+│   │   ├── db_postprocess.py     // DB 后处理
+│   │   ├── east_postprocess.py   // East 后处理
+│   │   ├── lanms                 // lanms 相关
+│   │   │   ...
+│   │   ├── locality_aware_nms.py // nms
+│   │   └── sast_postprocess.py   // sast 后处理
 │   └── utils  // 工具
 │       ├── character.py       // 字符处理
 │       ├── check.py           // 输入参数检查
@@ -233,7 +205,7 @@ PaddleOCR
 ├── README_en.md    // 说明文档
 ├── README.md
 ├── requirments.txt // 安装依赖
-├── setup.py        // 
+├── setup.py        // whl包打包脚本
 └── tools           // 启动工具
     ├── eval.py                 // 评估函数
     ├── eval_utils              // 评估工具
