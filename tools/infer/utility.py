@@ -112,6 +112,8 @@ def create_predictor(args, mode):
         config.disable_gpu()
         config.set_cpu_math_library_num_threads(6)
         if args.enable_mkldnn:
+            # cache 10 different shapes for mkldnn to avoid memory leak
+            config.set_mkldnn_cache_capacity(10)
             config.enable_mkldnn()
 
     # config.enable_memory_optim()
