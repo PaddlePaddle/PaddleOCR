@@ -75,7 +75,8 @@ def main():
 
     # dump mode structure
     if config['Global']['debug']:
-        if train_alg_type == 'rec' and 'attention' in config['Global']['loss_type']:
+        if train_alg_type == 'rec' and 'attention' in config['Global'][
+                'loss_type']:
             logger.warning('Does not suport dump attention...')
         else:
             summary(train_program)
@@ -96,8 +97,10 @@ def main():
 
     if train_alg_type == 'det':
         program.train_eval_det_run(config, exe, train_info_dict, eval_info_dict)
-    else:
+    elif train_alg_type == 'rec':
         program.train_eval_rec_run(config, exe, train_info_dict, eval_info_dict)
+    else:
+        program.train_eval_cls_run(config, exe, train_info_dict, eval_info_dict)
 
 
 def test_reader():
@@ -119,6 +122,7 @@ def test_reader():
 
 
 if __name__ == '__main__':
-    startup_program, train_program, place, config, train_alg_type = program.preprocess()
+    startup_program, train_program, place, config, train_alg_type = program.preprocess(
+    )
     main()
 #     test_reader()

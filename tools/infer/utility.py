@@ -15,6 +15,7 @@
 import argparse
 import os, sys
 from ppocr.utils.utility import initial_logger
+
 logger = initial_logger()
 from paddle.fluid.core import PaddleTensor
 from paddle.fluid.core import AnalysisConfig
@@ -31,34 +32,34 @@ def parse_args():
         return v.lower() in ("true", "t", "1")
 
     parser = argparse.ArgumentParser()
-    #params for prediction engine
+    # params for prediction engine
     parser.add_argument("--use_gpu", type=str2bool, default=True)
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     parser.add_argument("--gpu_mem", type=int, default=8000)
 
-    #params for text detector
+    # params for text detector
     parser.add_argument("--image_dir", type=str)
     parser.add_argument("--det_algorithm", type=str, default='DB')
     parser.add_argument("--det_model_dir", type=str)
     parser.add_argument("--det_max_side_len", type=float, default=960)
 
-    #DB parmas
+    # DB parmas
     parser.add_argument("--det_db_thresh", type=float, default=0.3)
     parser.add_argument("--det_db_box_thresh", type=float, default=0.5)
     parser.add_argument("--det_db_unclip_ratio", type=float, default=2.0)
 
-    #EAST parmas
+    # EAST parmas
     parser.add_argument("--det_east_score_thresh", type=float, default=0.8)
     parser.add_argument("--det_east_cover_thresh", type=float, default=0.1)
     parser.add_argument("--det_east_nms_thresh", type=float, default=0.2)
 
-    #SAST parmas
+    # SAST parmas
     parser.add_argument("--det_sast_score_thresh", type=float, default=0.5)
     parser.add_argument("--det_sast_nms_thresh", type=float, default=0.2)
     parser.add_argument("--det_sast_polygon", type=bool, default=False)
 
-    #params for text recognizer
+    # params for text recognizer
     parser.add_argument("--rec_algorithm", type=str, default='CRNN')
     parser.add_argument("--rec_model_dir", type=str)
     parser.add_argument("--rec_image_shape", type=str, default="3, 32, 320")
@@ -70,14 +71,24 @@ def parse_args():
         type=str,
         default="./ppocr/utils/ppocr_keys_v1.txt")
     parser.add_argument("--use_space_char", type=bool, default=True)
-    parser.add_argument("--enable_mkldnn", type=bool, default=False)
-    parser.add_argument("--use_zero_copy_run", type=bool, default=False)
+
+    # params for text classifier
+    parser.add_argument("--use_angle_cls", type=str2bool, default=False)
+    parser.add_argument("--cls_model_dir", type=str)
+    parser.add_argument("--cls_image_shape", type=str, default="3, 48, 192")
+    parser.add_argument("--label_list", type=list, default=['0', '180'])
+    parser.add_argument("--cls_batch_num", type=int, default=30)
+
+    parser.add_argument("--enable_mkldnn", type=str2bool, default=False)
+    parser.add_argument("--use_zero_copy_run", type=str2bool, default=False)
     return parser.parse_args()
 
 
 def create_predictor(args, mode):
     if mode == "det":
         model_dir = args.det_model_dir
+    elif mode == 'cls':
+        model_dir = args.cls_model_dir
     else:
         model_dir = args.rec_model_dir
 
@@ -105,7 +116,7 @@ def create_predictor(args, mode):
             config.set_mkldnn_cache_capacity(10)
             config.enable_mkldnn()
 
-    #config.enable_memory_optim()
+    # config.enable_memory_optim()
     config.disable_glog_info()
 
     if args.use_zero_copy_run:

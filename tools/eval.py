@@ -45,10 +45,12 @@ from ppocr.utils.save_load import init_model
 from eval_utils.eval_det_utils import eval_det_run
 from eval_utils.eval_rec_utils import test_rec_benchmark
 from eval_utils.eval_rec_utils import eval_rec_run
+from eval_utils.eval_cls_utils import eval_cls_run
 
 
 def main():
-    startup_prog, eval_program, place, config, train_alg_type = program.preprocess()
+    startup_prog, eval_program, place, config, train_alg_type = program.preprocess(
+    )
     eval_build_outputs = program.build(
         config, eval_program, startup_prog, mode='test')
     eval_fetch_name_list = eval_build_outputs[1]
@@ -66,6 +68,14 @@ def main():
             'fetch_name_list':eval_fetch_name_list,\
             'fetch_varname_list':eval_fetch_varname_list}
         metrics = eval_det_run(exe, config, eval_info_dict, "eval")
+        logger.info("Eval result: {}".format(metrics))
+    elif train_alg_type == 'cls':
+        eval_reader = reader_main(config=config, mode="eval")
+        eval_info_dict = {'program': eval_program, \
+                          'reader': eval_reader, \
+                          'fetch_name_list': eval_fetch_name_list, \
+                          'fetch_varname_list': eval_fetch_varname_list}
+        metrics = eval_cls_run(exe, eval_info_dict)
         logger.info("Eval result: {}".format(metrics))
     else:
         reader_type = config['Global']['reader_yml']
