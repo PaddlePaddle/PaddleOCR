@@ -42,7 +42,7 @@ import cv2
 from paddle import fluid
 import paddleslim as slim
 from copy import deepcopy
-from eval_det_utils import eval_det_run
+from tools.eval_utils.eval_det_utils import eval_det_run
 
 from tools import program
 from ppocr.utils.utility import initial_logger
@@ -63,6 +63,14 @@ def get_pruned_params(program):
         ) == 4 and 'depthwise' not in param.name and 'transpose' not in param.name:
             params.append(param.name)
     return params
+
+
+def eval_function(eval_args, mode='eval'):
+    exe = eval_args['exe']
+    config = eval_args['config']
+    eval_info_dict = eval_args['eval_info_dict']
+    metrics = eval_det_run(exe, config, eval_info_dict, mode=mode)
+    return metrics['hmean']
 
 
 def main():
@@ -99,7 +107,7 @@ def main():
         'fetch_varname_list':eval_fetch_varname_list}
     eval_args = dict()
     eval_args = {'exe': exe, 'config': config, 'eval_info_dict': eval_info_dict}
-    metrics = eval_det_run(eval_args)
+    metrics = eval_function(eval_args)
     print("Baseline: {}".format(metrics))
 
     params = get_pruned_params(eval_program)
@@ -108,7 +116,7 @@ def main():
         eval_program,
         place,
         params,
-        eval_det_run,
+        eval_function,
         sensitivities_file="sensitivities_0.data",
         pruned_ratios=[0.1],
         eval_args=eval_args,

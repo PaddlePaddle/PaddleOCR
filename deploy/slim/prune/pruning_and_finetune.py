@@ -104,14 +104,6 @@ def main():
     # compile program for multi-devices
     init_model(config, train_program, exe)
 
-    # params = get_pruned_params(train_program)
-    '''
-    sens_file = ['sensitivities_'+ str(x) for x in range(0,4)]
-    sens = []
-    for f in sens_file:
-        sens.append(load_sensitivities(f+'.data'))
-    sen = merge_sensitive(sens)
-    '''
     sen = load_sensitivities("sensitivities_0.data")
     for i in skip_list:
         sen.pop(i)
@@ -161,28 +153,7 @@ def main():
         program.train_eval_rec_run(config, exe, train_info_dict, eval_info_dict)
 
 
-def test_reader():
-    config = program.load_config(FLAGS.config)
-    program.merge_config(FLAGS.opt)
-    print(config)
-    train_reader = reader_main(config=config, mode="train")
-    import time
-    starttime = time.time()
-    count = 0
-    try:
-        for data in train_reader():
-            count += 1
-            if count % 1 == 0:
-                batch_time = time.time() - starttime
-                starttime = time.time()
-                print("reader:", count, len(data), batch_time)
-    except Exception as e:
-        logger.info(e)
-    logger.info("finish reader: {}, Success!".format(count))
-
-
 if __name__ == '__main__':
     parser = program.ArgsParser()
     FLAGS = parser.parse_args()
     main()
-#     test_reader()
