@@ -241,7 +241,11 @@ def create_multi_devices_program(program, loss_var_name, for_quant=False):
     return compile_program
 
 
-def train_eval_det_run(config, exe, train_info_dict, eval_info_dict):
+def train_eval_det_run(config,
+                       exe,
+                       train_info_dict,
+                       eval_info_dict,
+                       is_pruning=False):
     train_batch_id = 0
     log_smooth_window = config['Global']['log_smooth_window']
     epoch_num = config['Global']['epoch_num']
@@ -297,7 +301,14 @@ def train_eval_det_run(config, exe, train_info_dict, eval_info_dict):
                         best_batch_id = train_batch_id
                         best_epoch = epoch
                         save_path = save_model_dir + "/best_accuracy"
-                        save_model(train_info_dict['train_program'], save_path)
+                        if is_pruning:
+                            import paddleslim as slim
+                            slim.prune.save_model(
+                                exe, train_info_dict['train_program'],
+                                save_path)
+                        else:
+                            save_model(train_info_dict['train_program'],
+                                       save_path)
                     strs = 'Test iter: {}, metrics:{}, best_hmean:{:.6f}, best_epoch:{}, best_batch_id:{}'.format(
                         train_batch_id, metrics, best_eval_hmean, best_epoch,
                         best_batch_id)
@@ -308,10 +319,20 @@ def train_eval_det_run(config, exe, train_info_dict, eval_info_dict):
             train_loader.reset()
         if epoch == 0 and save_epoch_step == 1:
             save_path = save_model_dir + "/iter_epoch_0"
-            save_model(train_info_dict['train_program'], save_path)
+            if is_pruning:
+                import paddleslim as slim
+                slim.prune.save_model(exe, train_info_dict['train_program'],
+                                      save_path)
+            else:
+                save_model(train_info_dict['train_program'], save_path)
         if epoch > 0 and epoch % save_epoch_step == 0:
             save_path = save_model_dir + "/iter_epoch_%d" % (epoch)
-            save_model(train_info_dict['train_program'], save_path)
+            if is_pruning:
+                import paddleslim as slim
+                slim.prune.save_model(exe, train_info_dict['train_program'],
+                                      save_path)
+            else:
+                save_model(train_info_dict['train_program'], save_path)
     return
 
 
