@@ -68,6 +68,7 @@ class RecModel(object):
         image_shape.insert(0, -1)
         if mode == "train":
             image = fluid.data(name='image', shape=image_shape, dtype='float32')
+            image.stop_gradient = False
             if self.loss_type == "attention":
                 label_in = fluid.data(
                     name='label_in',
@@ -146,6 +147,7 @@ class RecModel(object):
                     )
                     image_shape = deepcopy(self.image_shape)
             image = fluid.data(name='image', shape=image_shape, dtype='float32')
+            image.stop_gradient = False
             if self.loss_type == "srn":
                 encoder_word_pos = fluid.data(
                     name="encoder_word_pos",
