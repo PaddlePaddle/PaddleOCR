@@ -79,6 +79,7 @@ class ClsModel(object):
             outputs = {'total_loss': loss, 'decoded_out': \
                 predicts['decoded_out'], 'label': label, 'acc': acc}
             return loader, outputs
-
+        elif mode == "export":
+            return [image, predicts]
         else:
             return loader, predicts
