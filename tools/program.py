@@ -33,7 +33,6 @@ from eval_utils.eval_rec_utils import eval_rec_run
 from ppocr.utils.save_load import save_model
 import numpy as np
 from ppocr.utils.character import cal_predicts_accuracy, cal_predicts_accuracy_srn, CharacterOps
-import paddleslim as slim
 
 
 class ArgsParser(ArgumentParser):
@@ -300,6 +299,7 @@ def train_eval_det_run(config,
                         best_epoch = epoch
                         save_path = save_model_dir + "/best_accuracy"
                         if is_pruning:
+                            import paddleslim as slim
                             slim.prune.save_model(
                                 exe, train_info_dict['train_program'],
                                 save_path)
@@ -317,6 +317,7 @@ def train_eval_det_run(config,
         if epoch == 0 and save_epoch_step == 1:
             save_path = save_model_dir + "/iter_epoch_0"
             if is_pruning:
+                import paddleslim as slim
                 slim.prune.save_model(exe, train_info_dict['train_program'],
                                       save_path)
             else:
@@ -324,6 +325,7 @@ def train_eval_det_run(config,
         if epoch > 0 and epoch % save_epoch_step == 0:
             save_path = save_model_dir + "/iter_epoch_%d" % (epoch)
             if is_pruning:
+                import paddleslim as slim
                 slim.prune.save_model(exe, train_info_dict['train_program'],
                                       save_path)
             else:
