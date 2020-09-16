@@ -29,7 +29,7 @@ public class OCRPredictorNative {
     public OCRPredictorNative(Config config) {
         this.config = config;
         loadLibrary();
-        nativePointer = init(config.detModelFilename, config.recModelFilename,
+        nativePointer = init(config.detModelFilename, config.recModelFilename,config.clsModelFilename,
                 config.cpuThreadNum, config.cpuPower);
         Log.i("OCRPredictorNative", "load success " + nativePointer);
 
@@ -38,7 +38,7 @@ public class OCRPredictorNative {
     public void release() {
         if (nativePointer != 0) {
             nativePointer = 0;
-            destory(nativePointer);
+//            destory(nativePointer);
         }
     }
 
@@ -55,10 +55,11 @@ public class OCRPredictorNative {
         public String cpuPower;
         public String detModelFilename;
         public String recModelFilename;
+        public String clsModelFilename;
 
     }
 
-    protected native long init(String detModelPath, String recModelPath, int threadNum, String cpuMode);
+    protected native long init(String detModelPath, String recModelPath,String clsModelPath, int threadNum, String cpuMode);
 
     protected native float[] forward(long pointer, float[] buf, float[] ddims, Bitmap originalImage);
 

@@ -11,24 +11,28 @@ inference 模型（`fluid.io.save_inference_model`保存的模型）
 - [一、训练模型转inference模型](#训练模型转inference模型)
     - [检测模型转inference模型](#检测模型转inference模型)
     - [识别模型转inference模型](#识别模型转inference模型)  
-    
+    - [方向分类模型转inference模型](#方向分类模型转inference模型)  
+
 - [二、文本检测模型推理](#文本检测模型推理)
     - [1. 超轻量中文检测模型推理](#超轻量中文检测模型推理)
     - [2. DB文本检测模型推理](#DB文本检测模型推理)
     - [3. EAST文本检测模型推理](#EAST文本检测模型推理)
     - [4. SAST文本检测模型推理](#SAST文本检测模型推理)  
-    
+
 - [三、文本识别模型推理](#文本识别模型推理)
     - [1. 超轻量中文识别模型推理](#超轻量中文识别模型推理)
     - [2. 基于CTC损失的识别模型推理](#基于CTC损失的识别模型推理)
     - [3. 基于Attention损失的识别模型推理](#基于Attention损失的识别模型推理)
-    - [4. 自定义文本识别字典的推理](#自定义文本识别字典的推理)  
-    
-- [四、文本检测、识别串联推理](#文本检测、识别串联推理)
+    - [4. 自定义文本识别字典的推理](#自定义文本识别字典的推理)
+
+- [四、方向分类模型推理](#方向识别模型推理)
+    - [1. 方向分类模型推理](#方向分类模型推理)
+
+- [五、文本检测、方向分类和文字识别串联推理](#文本检测、方向分类和文字识别串联推理)
     - [1. 超轻量中文OCR模型推理](#超轻量中文OCR模型推理)
     - [2. 其他模型推理](#其他模型推理)
-    
-    
+
+
 <a name="训练模型转inference模型"></a>
 ## 一、训练模型转inference模型
 <a name="检测模型转inference模型"></a>
@@ -80,6 +84,32 @@ python3 tools/export_model.py -c configs/rec/rec_chinese_lite_train.yml -o Globa
 转换成功后，在目录下有两个文件：
 ```
 /inference/rec_crnn/
+  └─  model     识别inference模型的program文件
+  └─  params    识别inference模型的参数文件
+```
+
+<a name="方向分类模型转inference模型"></a>
+### 方向分类模型转inference模型
+
+下载方向分类模型：
+```
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile-v1.1.cls_pre.tar && tar xf ./ch_lite/ch_ppocr_mobile-v1.1.cls_pre.tar -C ./ch_lite/
+```
+
+方向分类模型转inference模型与检测的方式相同，如下：
+```
+# -c后面设置训练算法的yml配置文件
+# -o配置可选参数
+# Global.checkpoints参数设置待转换的训练模型地址，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
+# Global.save_inference_dir参数设置转换的模型将保存的地址。
+
+python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o Global.checkpoints=./ch_lite/cls_model/best_accuracy \
+        Global.save_inference_dir=./inference/cls/
+```
+
+转换成功后，在目录下有两个文件：
+```
+/inference/cls/
   └─  model     识别inference模型的program文件
   └─  params    识别inference模型的参数文件
 ```
@@ -275,15 +305,36 @@ dict_character = list(self.character_str)
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="en" --rec_char_dict_path="your text dict path"
 ```
 
-<a name="文本检测、识别串联推理"></a>
-## 四、文本检测、识别串联推理
+
+<a name="方向分类模型推理"></a>
+## 四、方向分类模型推理
+
+下面将介绍方向分类模型推理。
+
+<a name="方向分类模型推理"></a>
+### 1. 方向分类模型推理
+
+方向分类模型推理，可以执行如下命令：
+
+```
+python3 tools/infer/predict_cls.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --cls_model_dir="./inference/cls/"
+```
+
+![](../imgs_words/ch/word_4.jpg)
+
+执行命令后，上面图像的预测结果（分类的方向和得分）会打印到屏幕上，示例如下：
+
+Predicts of ./doc/imgs_words/ch/word_4.jpg:['0', 0.9999963]
+
+<a name="文本检测、方向分类和文字识别串联推理"></a>
+## 五、文本检测、方向分类和文字识别串联推理
 <a name="超轻量中文OCR模型推理"></a>
 ### 1. 超轻量中文OCR模型推理
 
-在执行预测时，需要通过参数image_dir指定单张图像或者图像集合的路径、参数det_model_dir指定检测inference模型的路径和参数rec_model_dir指定识别inference模型的路径。可视化识别结果默认保存到 ./inference_results 文件夹里面。
+在执行预测时，需要通过参数`image_dir`指定单张图像或者图像集合的路径、参数`det_model_dir`,`cls_model_dir`和`rec_model_dir`分别指定检测，方向分类和识别的inference模型路径。参数`use_angle_cls`用于控制是否启用方向分类模型。可视化识别结果默认保存到 ./inference_results 文件夹里面。
 
 ```
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/"  --rec_model_dir="./inference/rec_crnn/"
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --cls_model_dir="./inference/cls/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls true
 ```
 
 执行命令后，识别结果图像如下：

@@ -62,7 +62,10 @@ tar -xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_model
 *如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false*
 
 ```shell
-python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained/
+# 训练 mv3_db 模型，并将训练日志保存为 tain_det.log
+python3 tools/train.py -c configs/det/det_mv3_db.yml \ 
+     -o Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained/ \
+     2>&1 | tee train_det.log
 ```
 
 上述指令中，通过-c 选择训练使用configs/det/det_db_mv3.yml配置文件。
