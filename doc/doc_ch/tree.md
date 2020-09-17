@@ -1,26 +1,26 @@
 # 整体目录结构
 
-PaddleOCR 的整理目录结构介绍如下：
+PaddleOCR 的整体目录结构介绍如下：
 
 ```
 PaddleOCR
-├── configs   // 配置文件
+├── configs   // 配置文件，可通过yml文件选择模型结构并修改超参
 │   ├── cls   // 方向分类器相关配置文件
-│   │   ├── cls_mv3.yml               // 训练配置
-│   │   └── cls_reader.yml            // 数据读取
+│   │   ├── cls_mv3.yml               // 训练配置相关，包括骨干网络、head、loss、优化器
+│   │   └── cls_reader.yml            // 数据读取相关，数据读取方式、数据存储路径
 │   ├── det   // 检测相关配置文件
 │   │   ├── det_db_icdar15_reader.yml  // 数据读取
 │   │   ├── det_mv3_db.yml             // 训练配置
-│   │   ...                            // 略
+│   │   ...                            
 │   └── rec   // 识别相关配置文件
-│       ├── rec_benchmark_reader.yml      // LMDB 数据读取
+│       ├── rec_benchmark_reader.yml      // LMDB 格式数据读取相关
 │       ├── rec_chinese_common_train.yml  // 通用中文训练配置
-│       ├── rec_icdar15_reader.yml        // 普通数据读取
-│       ...                               // 略
+│       ├── rec_icdar15_reader.yml        // simple 数据读取相关，包括数据读取函数、数据路径、标签文件
+│       ...                               
 ├── deploy   // 部署相关
 │   ├── android_demo // android_demo 
 │   │   ...
-│   ├── cpp_infer    // C++ infer
+│   ├── cpp_infer    // C++ infer 
 │   │   ├── CMakeLists.txt    // Cmake 文件
 │   │   ├── docs              // 说明文档
 │   │   │   └── windows_vs2019_build.md
@@ -45,7 +45,7 @@ PaddleOCR
 │   │   │   ├── postprocess_op.cpp
 │   │   │   ├── preprocess_op.cpp
 │   │   │   └── utility.cpp
-│   │   └── tools      // 工具
+│   │   └── tools      // 编译、执行脚本
 │   │       ├── build.sh   // 编译脚本
 │   │       ├── config.txt // 配置文件
 │   │       └── run.sh     // 测试启动脚本
@@ -93,53 +93,30 @@ PaddleOCR
 │   │   ├── readme.md        // 说明文档
 │   │   ...
 │   ├── pdserving  // pdserving 部署
-│   │   ├── det_local_server.py
-│   │   ├── det_web_server.py
-│   │   ├── ocr_local_server.py
-│   │   ├── ocr_web_client.py
-│   │   ├── ocr_web_server.py
-│   │   ├── readme.md
-│   │   ├── rec_local_server.py
-│   │   └── rec_web_server.py
+│   │   ├── det_local_server.py  // 检测 快速版，部署方便预测速度快
+│   │   ├── det_web_server.py    // 检测 完整版，稳定性高分布式部署
+│   │   ├── ocr_local_server.py  // 检测+识别 快速版
+│   │   ├── ocr_web_client.py    // 客户端
+│   │   ├── ocr_web_server.py    // 检测+识别 完整版
+│   │   ├── readme.md            // 说明文档 
+│   │   ├── rec_local_server.py  // 识别 快速版
+│   │   └── rec_web_server.py    // 识别 完整版
 │   └── slim     
 │       └── quantization         // 量化相关
 │           ├── export_model.py  // 导出模型
 │           ├── quant.py         // 量化
 │           └── README.md        // 说明文档
-├── doc  // 文档说明
-│   ├── datasets  // 数据集
-│   │   ...
-│   ├── doc_ch    // 中文文档
-│   │   ...
-│   ├── doc_en
-│   │   ...       // 英文文档
-│   ├── imgs      // 中文测试图片
-│   │   ...
-│   ├── imgs_en   // 英文测试图片
-│   │   ...
-│   ├── imgs_results  // 预测结果可视化
-│   │   ...
-│   ├── imgs_results_vis2  // 预测结果可视化效果2
-│   │   ...
-│   ├── imgs_words    // 行文本测试图片
-│   │   ├── ch        // 中文文本
-│   │   │   ...
-│   │   └── en        // 英文文本
-│   │       ...
-│   ├── simfang.ttf   // 可视化字体
-│   └── tricks        // 训练技巧
-│       ...
-├── LICENSE
-├── MANIFEST.in
+├── doc  // 文档教程
+│   ...
 ├── paddleocr.py
 ├── ppocr            // 网络核心代码
 │   ├── data         // 数据处理
 │   │   ├── cls   // 方向分类器
-│   │   │   ├── dataset_traversal.py  // 数据传输
-│   │   │   └── randaugment.py        // 增广
+│   │   │   ├── dataset_traversal.py  // 数据传输，定义数据读取器，读取数据并组成batch
+│   │   │   └── randaugment.py        // 随机数据增广操作
 │   │   ├── det   // 检测
-│   │   │   ├── data_augment.py       // 增广
-│   │   │   ├── dataset_traversal.py  // 数据传输
+│   │   │   ├── data_augment.py       // 数据增广操作
+│   │   │   ├── dataset_traversal.py  // 数据传输，定义数据读取器，读取数据并组成batch
 │   │   │   ├── db_process.py         // db 数据处理
 │   │   │   ├── east_process.py       // east 数据处理
 │   │   │   ├── make_border_map.py    // 生成边界图
@@ -148,11 +125,11 @@ PaddleOCR
 │   │   │   └── sast_process.py       // sast 数据处理
 │   │   ├── reader_main.py   // 数据读取器主函数
 │   │   └── rec  // 识别
-│   │       ├── dataset_traversal.py  // 数据传输
-│   │       └── img_tools.py          // 数据处理
+│   │       ├── dataset_traversal.py  // 数据传输，定义数据读取器，包含 LMDB_Reader 和 Simple_Reader
+│   │       └── img_tools.py          // 数据处理相关，包括数据归一化、扰动
 │   ├── __init__.py
 │   ├── modeling       // 组网相关
-│   │   ├── architectures  // 模型架构
+│   │   ├── architectures  // 模型架构，定义模型所需的各个模块
 │   │   │   ├── cls_model.py  // 方向分类器
 │   │   │   ├── det_model.py  // 检测
 │   │   │   └── rec_model.py  // 识别
@@ -195,13 +172,13 @@ PaddleOCR
 │   │   ├── locality_aware_nms.py // nms
 │   │   └── sast_postprocess.py   // sast 后处理
 │   └── utils  // 工具
-│       ├── character.py       // 字符处理
-│       ├── check.py           // 输入参数检查
-│       ├── ic15_dict.txt      // 英文数字字典
-│       ├── ppocr_keys_v1.txt  // 中文字典
-│       ├── save_load.py       // 模型保存和加载
+│       ├── character.py       // 字符处理，包括对文本的编码和解码，计算预测准确率
+│       ├── check.py           // 参数加载检查
+│       ├── ic15_dict.txt      // 英文数字字典，区分大小写
+│       ├── ppocr_keys_v1.txt  // 中文字典，用于训练中文模型
+│       ├── save_load.py       // 模型保存和加载函数
 │       ├── stats.py           // 统计
-│       └── utility.py         // 工具函数
+│       └── utility.py         // 工具函数，包含输入参数是否合法等相关检查工具
 ├── README_en.md    // 说明文档
 ├── README.md
 ├── requirments.txt // 安装依赖
