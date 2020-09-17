@@ -39,7 +39,7 @@ model_params = {
     'rec':
     'https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_infer.tar',
     'cls':
-    'https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile-v1.1.cls_infer.tar'
+    'https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_infer.tar'
 }
 
 SUPPORT_DET_MODEL = ['DB']
