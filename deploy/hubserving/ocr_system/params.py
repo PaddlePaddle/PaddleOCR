@@ -10,7 +10,7 @@ class Config(object):
 
 def read_params():
     cfg = Config()
-    
+
     #params for text detector
     cfg.det_algorithm = "DB"
     cfg.det_model_dir = "./inference/ch_det_mv3_db/"
@@ -37,6 +37,13 @@ def read_params():
 
     cfg.rec_char_dict_path = "./ppocr/utils/ppocr_keys_v1.txt"
     cfg.use_space_char = True
+
+    #params for text classifier
+    cfg.use_angle_cls = False
+    cfg.cls_model_dir = "./inference/ch_ppocr_mobile-v1.1.cls_infer/"
+    cfg.cls_image_shape = "3, 48, 192"
+    cfg.label_list = ['0', '180']
+    cfg.cls_batch_num = 30
 
     cfg.use_zero_copy_run = False
 
