@@ -17,7 +17,7 @@ PaddleOCR提供的可下载模型包括`预测模型`、`训练模型`、`预训
 
 
 <a name="文本检测模型"></a>
-#### 一、文本检测模型
+### 一、文本检测模型
 |模型名称|模型简介|预测模型大小|下载地址|
 |-|-|-|-|
 |ch_ppocr_mobile_slim_v1.1_det|slim裁剪版超轻量模型，支持中英文、多语种文本检测|-|[预测模型]() / [训练模型]() / [slim模型]()|
@@ -26,7 +26,7 @@ PaddleOCR提供的可下载模型包括`预测模型`、`训练模型`、`预训
 
 
 <a name="文本识别模型"></a>
-#### 二、文本识别模型
+### 二、文本识别模型
 
 <a name="中文识别模型"></a>
 #### 1. 中文识别模型
@@ -55,7 +55,7 @@ PaddleOCR提供的可下载模型包括`预测模型`、`训练模型`、`预训
 |-|日文识别|-|[预测模型]() / [训练模型]()|
 
 <a name="文本方向分类模型"></a>
-#### 三、文本方向分类模型
+### 三、文本方向分类模型
 |模型名称|模型简介|预测模型大小|下载地址|
 |-|-|-|-|
 |ch_ppocr_mobile_v1.1_cls_quant|slim量化版模型|-|[预测模型](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_quant_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_quant_train.tar) / [slim模型]()|
