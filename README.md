@@ -102,15 +102,15 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - [贡献代码](#贡献代码)
 
 <a name="效果展示"></a>
-## 效果展示
+## 效果展示 [more](./doc/doc_ch/visualization.md)
 
 <div align="center">
-    <img src="doc/imgs_results/1102.jpg" width="800">
-    <img src="doc/imgs_results/1103.jpg" width="800">
-    <img src="doc/imgs_results/1104.jpg" width="800">
-    <img src="doc/imgs_results/1105.jpg" width="800">
-    <img src="doc/imgs_results/1110.jpg" width="800">
-    <img src="doc/imgs_results/1112.jpg" width="800">
+    <img src="./doc/imgs_results/1102.jpg" width="800">
+    <img src="./doc/imgs_results/1103.jpg" width="800">
+    <img src="./doc/imgs_results/1104.jpg" width="800">
+    <img src="./doc/imgs_results/1105.jpg" width="800">
+    <img src="./doc/imgs_results/1110.jpg" width="800">
+    <img src="./doc/imgs_results/1112.jpg" width="800">
 </div>
 
 
