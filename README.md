@@ -91,7 +91,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [垂类多语言OCR数据集](./doc/doc_ch/vertical_and_multilingual_datasets.md)
     - [常用数据标注工具](./doc/doc_ch/data_annotation.md)
     - [常用数据合成工具](./doc/doc_ch/data_synthesis.md)
-- [效果展示](#超轻量级中文OCR效果展示)
+- [效果展示](#效果展示)
 - FAQ
     - [【精选】OCR精选10个问题](./doc/doc_ch/FAQ.md)
     - [【理论篇】OCR通用21个问题](./doc/doc_ch/FAQ.md)
@@ -101,7 +101,17 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - [许可证书](#许可证书)
 - [贡献代码](#贡献代码)
 
-<a name="PP-OCR"></a>
+<a name="效果展示"></a>
+## 效果展示
+
+<div align="center">
+    <img src="doc/imgs_results/1102.jpg" width="800">
+    <img src="doc/imgs_results/1103.jpg" width="800">
+    <img src="doc/imgs_results/1104.jpg" width="800">
+    <img src="doc/imgs_results/1105.jpg" width="800">
+    <img src="doc/imgs_results/1110.jpg" width="800">
+    <img src="doc/imgs_results/1112.jpg" width="800">
+</div>
 
 
 
