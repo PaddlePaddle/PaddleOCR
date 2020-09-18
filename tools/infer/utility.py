@@ -78,6 +78,7 @@ def parse_args():
     parser.add_argument("--cls_image_shape", type=str, default="3, 48, 192")
     parser.add_argument("--label_list", type=list, default=['0', '180'])
     parser.add_argument("--cls_batch_num", type=int, default=30)
+    parser.add_argument("--cls_thresh", type=float, default=0.9)
 
     parser.add_argument("--enable_mkldnn", type=str2bool, default=False)
     parser.add_argument("--use_zero_copy_run", type=str2bool, default=False)
