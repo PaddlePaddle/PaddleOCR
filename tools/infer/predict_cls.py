@@ -39,6 +39,7 @@ class TextClassifier(object):
         self.cls_batch_num = args.rec_batch_num
         self.label_list = args.label_list
         self.use_zero_copy_run = args.use_zero_copy_run
+        self.cls_thresh = args.cls_thresh
 
     def resize_norm_img(self, img):
         imgC, imgH, imgW = self.cls_image_shape
@@ -110,7 +111,7 @@ class TextClassifier(object):
                 score = prob_out[rno][label_idx]
                 label = self.label_list[label_idx]
                 cls_res[indices[beg_img_no + rno]] = [label, score]
-                if '180' in label and score > 0.9999:
+                if '180' in label and score > self.cls_thresh:
                     img_list[indices[beg_img_no + rno]] = cv2.rotate(
                         img_list[indices[beg_img_no + rno]], 1)
         return img_list, cls_res, predict_time
