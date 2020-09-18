@@ -1,0 +1,13 @@
+TrainReader:
+  reader_function: ppocr.data.rec.dataset_traversal,SimpleReader
+  num_workers: 8
+  img_set_dir: ./train_data
+  label_file_path: ./train_data/korean_train.txt
+  
+EvalReader:
+  reader_function: ppocr.data.rec.dataset_traversal,SimpleReader
+  img_set_dir: ./train_data
+  label_file_path: ./train_data/korean_eval.txt
+
+TestReader:
+      reader_function: ppocr.data.rec.dataset_traversal,SimpleReader
