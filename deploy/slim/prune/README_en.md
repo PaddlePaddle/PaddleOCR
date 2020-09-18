@@ -2,7 +2,7 @@
 
 
 
-# 模型裁剪压缩教程
+# Model compress tutorial (Pruning)
 
 Compress results：
 <table>
