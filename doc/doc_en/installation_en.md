@@ -7,7 +7,7 @@ PaddleOCR working environment:
 - python3.7
 - glibc 2.23
 
-It is recommended to use the docker provided by us to run PaddleOCR, please refer to the use of docker [link](https://docs.docker.com/get-started/).
+It is recommended to use the docker provided by us to run PaddleOCR, please refer to the use of docker [link](https://www.runoob.com/docker/docker-tutorial.html/).
 
 *If you want to directly run the prediction code on mac or windows, you can start from step 2.*
 
