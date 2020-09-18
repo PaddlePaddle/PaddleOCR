@@ -17,7 +17,7 @@ pip install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x is the version of padd
 * detection classification and recognition
 ```python
 from paddleocr import PaddleOCR,draw_ocr
-ocr = PaddleOCR(use_angle_cls=True) # need to run only once to download and load model into memory
+ocr = PaddleOCR(use_angle_cls=True, lang='en') # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs_en/img_12.jpg'
 result = ocr.ocr(img_path, cls=True)
 for line in result:
@@ -51,7 +51,7 @@ Visualization of results
 * detection and recognition
 ```python
 from paddleocr import PaddleOCR,draw_ocr
-ocr = PaddleOCR() # need to run only once to download and load model into memory
+ocr = PaddleOCR(lang='en') # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs_en/img_12.jpg'
 result = ocr.ocr(img_path)
 for line in result:
@@ -85,7 +85,7 @@ Visualization of results
 * classification and recognition
 ```python
 from paddleocr import PaddleOCR
-ocr = PaddleOCR(use_angle_cls=True) # need to run only once to load model into memory
+ocr = PaddleOCR(use_angle_cls=True, lang='en') # need to run only once to load model into memory
 img_path = 'PaddleOCR/doc/imgs_words_en/word_10.png'
 result = ocr.ocr(img_path, det=False, cls=True)
 for line in result:
@@ -132,7 +132,7 @@ Visualization of results
 * only recognition
 ```python
 from paddleocr import PaddleOCR
-ocr = PaddleOCR() # need to run only once to load model into memory
+ocr = PaddleOCR(lang='en') # need to run only once to load model into memory
 img_path = 'PaddleOCR/doc/imgs_words_en/word_10.png'
 result = ocr.ocr(img_path, det=False, cls=False)
 for line in result:
@@ -168,7 +168,7 @@ paddleocr -h
 
 * detection classification and recognition
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --use_angle_cls true -cls true
+paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --use_angle_cls true -cls true --lang en
 ```
 
 Output will be a list, each item contains bounding box, text and recognition confidence
@@ -181,7 +181,7 @@ Output will be a list, each item contains bounding box, text and recognition con
 
 * detection and recognition
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg
+paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --lang en
 ```
 
 Output will be a list, each item contains bounding box, text and recognition confidence
@@ -194,7 +194,7 @@ Output will be a list, each item contains bounding box, text and recognition con
 
 * classification and recognition
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --use_angle_cls true -cls true --det false
+paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --use_angle_cls true -cls true --det false --lang en
 ```
 
 Output will be a list, each item contains text and recognition confidence
@@ -217,7 +217,7 @@ Output will be a list, each item only contains bounding box
 
 * only recognition
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --det false --cls false
+paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --det false --cls false --lang en
 ```
 
 Output will be a list, each item contains text and recognition confidence
@@ -244,7 +244,7 @@ First, refer to the first section of [inference_en.md](./inference_en.md) to con
 ```python
 from paddleocr import PaddleOCR,draw_ocr
 # The path of detection and recognition model must contain model and params files
-ocr = PaddleOCR(det_model_dir='{your_det_model_dir}', rec_model_dir='{your_rec_model_dir}', cls_model_dir='{your_cls_model_dir}', use_angle_cls=True)
+ocr = PaddleOCR(det_model_dir='{your_det_model_dir}', rec_model_dir='{your_rec_model_dir}', rec_char_dict_path='{your_rec_char_dict_path}', cls_model_dir='{your_cls_model_dir}', use_angle_cls=True)
 img_path = 'PaddleOCR/doc/imgs_en/img_12.jpg'
 result = ocr.ocr(img_path, cls=True)
 for line in result:
@@ -264,7 +264,7 @@ im_show.save('result.jpg')
 ### Use by command line
 
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_dir} --rec_model_dir {your_rec_model_dir} --cls_model_dir {your_cls_model_dir} --use_angle_cls true --cls true
+paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_dir} --rec_model_dir {your_rec_model_dir} --rec_char_dict_path {your_rec_char_dict_path} --cls_model_dir {your_cls_model_dir} --use_angle_cls true --cls true
 ```
 
 ## Parameter Description
@@ -298,6 +298,7 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_
 | cls_batch_num           | When performing classification, the batchsize of forward images                                                                                                                                                                                         | 30                      |
 | enable_mkldnn           | Whether to enable mkldnn                                                                                                                                                                                                       | FALSE                   |
 | use_zero_copy_run           | Whether to forward by zero_copy_run                                                                                                                                                                               | FALSE                   |
+| lang                     | The support language, now only chinese(ch) and english(en) are supported                                                                                                                                                                                                  | ch                    |
 | det                     | Enable detction when `ppocr.ocr` func exec                                                                                                                                                                                                   | TRUE                    |
 | rec                     | Enable recognition when `ppocr.ocr` func exec                                                                                                                                                                                                   | TRUE                    |
 | cls                     | Enable classification when `ppocr.ocr` func exec                                                                                                                                                                                                   | FALSE                    |

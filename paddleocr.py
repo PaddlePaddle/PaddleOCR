@@ -33,11 +33,21 @@ from ppocr.utils.utility import check_and_read_gif, get_image_file_list
 
 __all__ = ['PaddleOCR']
 
-model_params = {
+model_urls = {
     'det':
     'https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_infer.tar',
-    'rec':
-    'https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_infer.tar',
+    'rec': {
+        'ch': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_infer.tar',
+            'dict_path': './ppocr/utils/ppocr_keys_v1.txt'
+        },
+        'en': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/20-09-22/mobile/en/en_ppocr_mobile_v1.1_rec_infer.tar',
+            'dict_path': './ppocr/utils/ic15_dict.txt'
+        }
+    },
     'cls':
     'https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_infer.tar'
 }
@@ -123,10 +133,7 @@ def parse_args():
     parser.add_argument("--rec_char_type", type=str, default='ch')
     parser.add_argument("--rec_batch_num", type=int, default=30)
     parser.add_argument("--max_text_length", type=int, default=25)
-    parser.add_argument(
-        "--rec_char_dict_path",
-        type=str,
-        default="./ppocr/utils/ppocr_keys_v1.txt")
+    parser.add_argument("--rec_char_dict_path", type=str, default=None)
     parser.add_argument("--use_space_char", type=bool, default=True)
 
     # params for text classifier
@@ -135,10 +142,12 @@ def parse_args():
     parser.add_argument("--cls_image_shape", type=str, default="3, 48, 192")
     parser.add_argument("--label_list", type=list, default=['0', '180'])
     parser.add_argument("--cls_batch_num", type=int, default=30)
+    parser.add_argument("--cls_thresh", type=float, default=0.9)
 
     parser.add_argument("--enable_mkldnn", type=bool, default=False)
     parser.add_argument("--use_zero_copy_run", type=bool, default=False)
 
+    parser.add_argument("--lang", type=str, default='ch')
     parser.add_argument("--det", type=str2bool, default=True)
     parser.add_argument("--rec", type=str2bool, default=True)
     parser.add_argument("--cls", type=str2bool, default=False)
@@ -155,21 +164,28 @@ class PaddleOCR(predict_system.TextSystem):
         postprocess_params = parse_args()
         postprocess_params.__dict__.update(**kwargs)
         self.use_angle_cls = postprocess_params.use_angle_cls
+        lang = postprocess_params.lang
+        assert lang in model_urls['rec'], 'param lang must in {}'.format(
+            model_urls['rec'].keys())
+        if postprocess_params.rec_char_dict_path is None:
+            postprocess_params.rec_char_dict_path = model_urls['rec'][lang][
+                'dict_path']
 
         # init model dir
         if postprocess_params.det_model_dir is None:
             postprocess_params.det_model_dir = os.path.join(BASE_DIR, 'det')
         if postprocess_params.rec_model_dir is None:
-            postprocess_params.rec_model_dir = os.path.join(BASE_DIR, 'rec')
+            postprocess_params.rec_model_dir = os.path.join(
+                BASE_DIR, 'rec/{}'.format(lang))
         if postprocess_params.cls_model_dir is None:
             postprocess_params.cls_model_dir = os.path.join(BASE_DIR, 'cls')
         print(postprocess_params)
         # download model
-        maybe_download(postprocess_params.det_model_dir, model_params['det'])
-        maybe_download(postprocess_params.rec_model_dir, model_params['rec'])
+        maybe_download(postprocess_params.det_model_dir, model_urls['det'])
+        maybe_download(postprocess_params.rec_model_dir,
+                       model_urls['rec'][lang]['url'])
         if self.use_angle_cls:
-            maybe_download(postprocess_params.cls_model_dir,
-                           model_params['cls'])
+            maybe_download(postprocess_params.cls_model_dir, model_urls['cls'])
 
         if postprocess_params.det_algorithm not in SUPPORT_DET_MODEL:
             logger.error('det_algorithm must in {}'.format(SUPPORT_DET_MODEL))

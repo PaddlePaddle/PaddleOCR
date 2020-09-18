@@ -236,7 +236,7 @@ paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --use_angle_cls tru
 ```python
 from paddleocr import PaddleOCR, draw_ocr
 # 模型路径下必须含有model和params文件
-ocr = PaddleOCR(det_model_dir='{your_det_model_dir}', rec_model_dir='{your_rec_model_dir}', cls_model_dir='{your_cls_model_dir}', use_angle_cls=True)
+ocr = PaddleOCR(det_model_dir='{your_det_model_dir}', rec_model_dir='{your_rec_model_dir}', rec_char_dict_path='{your_rec_char_dict_path}', cls_model_dir='{your_cls_model_dir}', use_angle_cls=True)
 img_path = 'PaddleOCR/doc/imgs/11.jpg'
 result = ocr.ocr(img_path, cls=True)
 for line in result:
@@ -256,7 +256,7 @@ im_show.save('result.jpg')
 ### 通过命令行使用
 
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_dir} --rec_model_dir {your_rec_model_dir} --cls_model_dir {your_cls_model_dir} --use_angle_cls true --cls true
+paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_dir} --rec_model_dir {your_rec_model_dir} --rec_char_dict_path {your_rec_char_dict_path} --cls_model_dir {your_cls_model_dir} --use_angle_cls true --cls true
 ```
 
 ## 参数说明
@@ -290,6 +290,7 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_
 | cls_batch_num          | 进行分类时，同时前向的图片数                                                                          |30                 |
 | enable_mkldnn           | 是否启用mkldnn                                                                                                                                                                                                       | FALSE                   |
 | use_zero_copy_run           | 是否通过zero_copy_run的方式进行前向                                                                                                                                                                               | FALSE                   |
+| lang                     | 模型语言类型,目前支持 中文(ch)和英文(en)                                                                                                                                                                                                  | ch                    |
 | det                     | 前向时使用启动检测                                                                                                                                                                                                   | TRUE                    |
 | rec                     | 前向时是否启动识别                                                                                                                                                                                                   | TRUE                    |
 | cls                     | 前向时是否启动分类                                                                                                                                                                                                 | FALSE                    |
