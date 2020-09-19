@@ -15,7 +15,7 @@ det_model_dir  ./inference/det_db
 
 # cls config
 use_angle_cls 0
-cls_model_dir ../inference/cls
+cls_model_dir ./inference/cls
 cls_thresh  0.9
 
 # rec config
