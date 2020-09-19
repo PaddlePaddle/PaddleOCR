@@ -46,6 +46,7 @@ from paddle.fluid.contrib.model_stat import summary
 
 
 def main():
+    # build train program
     train_build_outputs = program.build(
         config, train_program, startup_program, mode='train')
     train_loader = train_build_outputs[0]
@@ -54,6 +55,7 @@ def main():
     train_opt_loss_name = train_build_outputs[3]
     model_average = train_build_outputs[-1]
 
+    # build eval program
     eval_program = fluid.Program()
     eval_build_outputs = program.build(
         config, eval_program, startup_program, mode='eval')
@@ -61,9 +63,11 @@ def main():
     eval_fetch_varname_list = eval_build_outputs[2]
     eval_program = eval_program.clone(for_test=True)
 
+    # initialize train reader
     train_reader = reader_main(config=config, mode="train")
     train_loader.set_sample_list_generator(train_reader, places=place)
 
+    # initialize eval reader
     eval_reader = reader_main(config=config, mode="eval")
 
     exe = fluid.Executor(place)
