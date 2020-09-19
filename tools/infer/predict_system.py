@@ -133,6 +133,7 @@ def main(args):
     image_file_list = get_image_file_list(args.image_dir)
     text_sys = TextSystem(args)
     is_visualize = True
+    font_path = args.vis_font_path
     for image_file in image_file_list:
         img, flag = check_and_read_gif(image_file)
         if not flag:
@@ -160,7 +161,7 @@ def main(args):
             scores = [rec_res[i][1] for i in range(len(rec_res))]
 
             draw_img = draw_ocr(
-                image, boxes, txts, scores, drop_score=drop_score)
+                image, boxes, txts, scores, drop_score=drop_score, font_path=font_path)
             draw_img_save = "./inference_results/"
             if not os.path.exists(draw_img_save):
                 os.makedirs(draw_img_save)

@@ -71,6 +71,10 @@ def parse_args():
         type=str,
         default="./ppocr/utils/ppocr_keys_v1.txt")
     parser.add_argument("--use_space_char", type=str2bool, default=True)
+    parser.add_argument(
+        "--vis_font_path",
+        type=str,
+        default="./doc/simfang.ttf")
 
     # params for text classifier
     parser.add_argument("--use_angle_cls", type=str2bool, default=False)
@@ -198,7 +202,7 @@ def draw_ocr(image,
     return image
 
 
-def draw_ocr_box_txt(image, boxes, txts):
+def draw_ocr_box_txt(image, boxes, txts, font_path="./doc/simfang.ttf"):
     h, w = image.height, image.width
     img_left = image.copy()
     img_right = Image.new('RGB', (w, h), (255, 255, 255))
@@ -225,7 +229,7 @@ def draw_ocr_box_txt(image, boxes, txts):
         if box_height > 2 * box_width:
             font_size = max(int(box_width * 0.9), 10)
             font = ImageFont.truetype(
-                "./doc/simfang.ttf", font_size, encoding="utf-8")
+                font_path, font_size, encoding="utf-8")
             cur_y = box[0][1]
             for c in txt:
                 char_size = font.getsize(c)
@@ -235,7 +239,7 @@ def draw_ocr_box_txt(image, boxes, txts):
         else:
             font_size = max(int(box_height * 0.8), 10)
             font = ImageFont.truetype(
-                "./doc/simfang.ttf", font_size, encoding="utf-8")
+                font_path, font_size, encoding="utf-8")
             draw_right.text(
                 [box[0][0], box[0][1]], txt, fill=(0, 0, 0), font=font)
     img_left = Image.blend(image, img_left, 0.5)

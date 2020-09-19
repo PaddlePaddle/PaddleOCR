@@ -24,6 +24,7 @@ inference 模型（`fluid.io.save_inference_model`保存的模型）
     - [2. 基于CTC损失的识别模型推理](#基于CTC损失的识别模型推理)
     - [3. 基于Attention损失的识别模型推理](#基于Attention损失的识别模型推理)
     - [4. 自定义文本识别字典的推理](#自定义文本识别字典的推理)
+    - [5. 多语言模型的推理](#多语言模型的推理)
 
 - [四、方向分类模型推理](#方向识别模型推理)
     - [1. 方向分类模型推理](#方向分类模型推理)
@@ -305,6 +306,22 @@ dict_character = list(self.character_str)
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="en" --rec_char_dict_path="your text dict path"
 ```
 
+<a name="多语言模型的推理"></a>
+### 5. 多语言模型的推理
+如果您需要预测的是其他语言模型，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径, 同时为了得到正确的可视化结果，
+需要通过 `--vis_font_path` 指定可视化的字体路径，`doc/` 路径下有默认提供的小语种字体，例如韩文识别：
+
+```
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" --rec_model_dir="./your inference model" --rec_char_type="korean" --rec_char_dict_path="ppocr/utils/korean_dict.txt" --vis_font_path="doc/korean.ttf"
+```
+![](../imgs_words/korean/1.jpg)
+
+执行命令后，上图的预测结果为：
+``` text
+2020-09-19 16:15:05,076-INFO: 	 index: [205 206  38  39]
+2020-09-19 16:15:05,077-INFO: 	 word : 바탕으로
+2020-09-19 16:15:05,077-INFO: 	 score: 0.9171358942985535
+```
 
 <a name="方向分类模型推理"></a>
 ## 四、方向分类模型推理
