@@ -108,9 +108,11 @@ void DBDetector::Run(cv::Mat &img,
   const double maxvalue = 255;
   cv::Mat bit_map;
   cv::threshold(cbuf_map, bit_map, threshold, maxvalue, cv::THRESH_BINARY);
-
+  cv::Mat dilation_map;
+  cv::Mat dila_ele = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(2,2));
+  cv::dilate(bit_map, dilation_map, dila_ele);
   boxes = post_processor_.BoxesFromBitmap(
-      pred_map, bit_map, this->det_db_box_thresh_, this->det_db_unclip_ratio_);
+      pred_map, dilation_map, this->det_db_box_thresh_, this->det_db_unclip_ratio_);
 
   boxes = post_processor_.FilterTagDetRes(boxes, ratio_h, ratio_w, srcimg);
 

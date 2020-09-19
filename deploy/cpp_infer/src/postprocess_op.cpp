@@ -294,7 +294,7 @@ PostProcessor::FilterTagDetRes(std::vector<std::vector<std::vector<int>>> boxes,
                           pow(boxes[n][0][1] - boxes[n][1][1], 2)));
     rect_height = int(sqrt(pow(boxes[n][0][0] - boxes[n][3][0], 2) +
                            pow(boxes[n][0][1] - boxes[n][3][1], 2)));
-    if (rect_width <= 10 || rect_height <= 10)
+    if (rect_width <= 4 || rect_height <= 4)
       continue;
     root_points.push_back(boxes[n]);
   }
