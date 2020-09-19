@@ -1,4 +1,4 @@
-[English](README_en.md) | 简体中文
+[English](readme_en.md) | 简体中文
 
 # 基于PaddleHub Serving的服务部署
 

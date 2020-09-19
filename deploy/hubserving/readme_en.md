@@ -1,4 +1,4 @@
-English | [简体中文](README.md)
+English | [简体中文](readme.md)
 
 # Service deployment based on PaddleHub Serving  
 
