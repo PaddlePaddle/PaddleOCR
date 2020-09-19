@@ -56,14 +56,6 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 更多模型下载（包括多语言），可以参考[PP-OCR v1.1 系列模型下载](./doc/doc_ch/models_list.md)
 
-## PP-OCR 1.0系列模型列表（7月16日更新）
-
-| 模型简介     | 模型名称               | 检测模型 | 识别模型 | 支持空格的识别模型 |      |
-| ------------ | ---------------------- | -------- | ---------- | -------- | ---- |
-| 超轻量中英文OCR模型（8.6M） | chinese_db_crnn_mobile_xx |[推理模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar)|[推理模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|[推理模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_enhance_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_enhance.tar) |      |
-|通用中文OCR模型（212M）|chinese_db_crnn_server_xx|[推理模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db.tar)|[推理模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn.tar)|[推理模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_enhance_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_enhance.tar)| |
-
-
 ## 文档教程
 - [快速安装](./doc/doc_ch/installation.md)
 - [中文OCR模型快速使用](./doc/doc_ch/quickstart.md)
