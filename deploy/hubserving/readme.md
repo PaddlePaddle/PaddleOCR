@@ -1,5 +1,9 @@
 [English](readme_en.md) | 简体中文
 
+PaddleOCR提供2种服务部署方式：
+- 基于PaddleHub Serving的部署：代码路径为"`./deploy/hubserving`"，按照本教程使用；	
+- 基于PaddleServing的部署：代码路径为"`./deploy/pdserving`"，使用方法参考[文档](../pdserving/readme.md)。
+
 # 基于PaddleHub Serving的服务部署
 
 hubserving服务部署目录下包括检测、识别、2阶段串联三种服务包，请根据需求选择相应的服务包进行安装和启动。目录结构如下：
