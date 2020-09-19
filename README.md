@@ -31,10 +31,10 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 <div align="center">
     <img src="doc/imgs_results/1101.jpg" width="800">
-    <img src="doc/imgs_results/1102.jpg" width="800">
+    <img src="doc/imgs_results/1103.jpg" width="800">
 </div>
 
-上图是超轻量级中文OCR模型效果展示，更多效果图请见[效果展示页面](./doc/doc_ch/visualization.md)。
+上图是通用ppocr_server模型效果展示，更多效果图请见[效果展示页面](./doc/doc_ch/visualization.md)。
 
 ## 快速体验
 - PC端：超轻量级中文OCR在线体验地址：https://www.paddlepaddle.org.cn/hub/scene/ocr
@@ -105,7 +105,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## 效果展示 [more](./doc/doc_ch/visualization.md)
 
 <div align="center">
-    <img src="./doc/imgs_results/1103.jpg" width="800">
+    <img src="./doc/imgs_results/1102.jpg" width="800">
     <img src="./doc/imgs_results/1104.jpg" width="800">
     <img src="./doc/imgs_results/1105.jpg" width="800">
     <img src="./doc/imgs_results/1110.jpg" width="800">
