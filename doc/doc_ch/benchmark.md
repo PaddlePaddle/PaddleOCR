@@ -6,7 +6,7 @@
 针对OCR实际应用场景，包括合同，车牌，铭牌，火车票，化验单，表格，证书，街景文字，名片，数码显示屏等，收集的300张图像，每张图平均有17个文本框，下图给出了一些图像示例。
 
 <div align="center">
-<img src="../datasets/doc.jpg"  width = "800" height = "200" />
+<img src="../datasets/doc.jpg"  width = "1000" height = "500" />
 </div>
 
 ## 评估指标  
