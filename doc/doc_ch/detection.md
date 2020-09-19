@@ -14,6 +14,15 @@ wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dataset/train_icdar2015_l
 wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dataset/test_icdar2015_label.txt
 ```
 
+PaddleOCR 也提供了数据格式转换脚本，可以将官网 label 转换支持的数据格式。 数据转换工具在 `train_data/gen_label.py`, 这里以训练集为例：
+
+```
+# 将官网下载的标签文件转换为 train_icdar2015_label.txt 
+python gen_label.py --mode="det" --root_path="icdar_c4_train_imgs/"  \
+                    --input_path="ch4_training_localization_transcription_gt" \
+                    --output_label="train_icdar2015_label.txt"
+```
+
 解压数据集和下载标注文件后，PaddleOCR/train_data/ 有两个文件夹和两个文件，分别是：
 ```
 /PaddleOCR/train_data/icdar2015/text_localization/
