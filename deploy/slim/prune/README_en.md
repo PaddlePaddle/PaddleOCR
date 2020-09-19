@@ -128,7 +128,7 @@ It is recommended that you could understand following pages before reading this 
 
 ## Install PaddleSlim
 
-\```bash
+```bash
 
 git clone https://github.com/PaddlePaddle/PaddleSlim.git
 
@@ -136,7 +136,7 @@ cd Paddleslim
 
 python setup.py install
 
-\```
+```
 
 
 ## Download Pretrain Model
@@ -150,11 +150,11 @@ python setup.py install
 
 Enter the PaddleOCR root directory，perform sensitivity analysis on the model with the following command：
 
-\```bash
+```bash
 
 python deploy/slim/prune/sensitivity_anal.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=./deploy/slim/prune/pretrain_models/det_mv3_db/best_accuracy Global.test_batch_size_per_card=1
 
-\```
+```
 
 
 
@@ -162,11 +162,11 @@ python deploy/slim/prune/sensitivity_anal.py -c configs/det/det_mv3_db.yml -o Gl
 
   When pruning, the previous sensitivity analysis file would determines the pruning ratio of each network layer. In the specific implementation, in order to retain as many low-level features extracted from the image as possible, we skipped the 4 convolutional layers close to the input in the backbone. Similarly, in order to reduce the model performance loss caused by pruning, we selected some of the less redundant and more sensitive [network layer](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/prune/pruning_and_finetune.py#L41) through the sensitivity table obtained from the previous sensitivity analysis.And choose to skip these network layers in the subsequent pruning process. After pruning, the model need a finetune process to recover the performance and the training strategy of finetune is similar to the strategy of training original OCR detection model.
 
-\```bash
+```bash
 
 python deploy/slim/prune/pruning_and_finetune.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=./deploy/slim/prune/pretrain_models/det_mv3_db/best_accuracy Global.test_batch_size_per_card=1
 
-\```
+```
 
 
 
@@ -176,8 +176,8 @@ python deploy/slim/prune/pruning_and_finetune.py -c configs/det/det_mv3_db.yml -
 
 After getting the model after pruning and finetuning we, can export it as inference_model for predictive deployment:
 
-\```bash
+```bash
 
 python deploy/slim/prune/export_prune_model.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=./output/det_db/best_accuracy Global.test_batch_size_per_card=1 Global.save_inference_dir=inference_model
 
-\```
+```
