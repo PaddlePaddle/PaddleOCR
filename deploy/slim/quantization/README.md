@@ -25,7 +25,7 @@ python deploy/slim/quantization/quant.py -c configs/det/det_mv3_db.yml -o Global
 
 
 
-## 评估并导出
+## 导出模型
 
 在得到量化训练保存的模型后，我们可以将其导出为inference_model，用于预测部署：
 
