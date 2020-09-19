@@ -1,10 +1,8 @@
-# 服务部署
+[English](README_en.md) | 简体中文
 
-PaddleOCR提供2种服务部署方式：
-- 基于HubServing的部署：已集成到PaddleOCR中（[code](https://github.com/PaddlePaddle/PaddleOCR/tree/develop/deploy/hubserving)），按照本教程使用；
-- 基于PaddleServing的部署：详见PaddleServing官网[demo](https://github.com/PaddlePaddle/Serving/tree/develop/python/examples/ocr)，后续也将集成到PaddleOCR。  
+# 基于PaddleHub Serving的服务部署
 
-服务部署目录下包括检测、识别、2阶段串联三种服务包，根据需求选择相应的服务包进行安装和启动。目录如下：
+hubserving服务部署目录下包括检测、识别、2阶段串联三种服务包，请根据需求选择相应的服务包进行安装和启动。目录结构如下：
 ```
 deploy/hubserving/
   └─  ocr_det     检测模块服务包
@@ -30,11 +28,18 @@ pip3 install paddlehub --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # 在Linux下设置环境变量
 export PYTHONPATH=.
-# 在Windows下设置环境变量
+
+# 或者，在Windows下设置环境变量
 SET PYTHONPATH=.
 ```
 
-### 2. 安装服务模块
+### 2. 下载推理模型
+安装服务模块前，需要准备推理模型并放到正确路径。默认使用的是v1.1版的超轻量模型，默认检测模型路径为：
+`./inference/ch_ppocr_mobile_v1.1_det_infer/`，识别模型路径为：`./inference/ch_ppocr_mobile_v1.1_rec_infer/`。  
+
+**模型路径可在`params.py`中查看和修改。** 更多模型可以从PaddleOCR提供的[模型库](../../doc/doc_ch/models_list.md)下载，也可以替换成自己训练转换好的模型。
+
+### 3. 安装服务模块
 PaddleOCR提供3种服务模块，根据需要安装所需模块。
 
 * 在Linux环境下，安装示例如下：
@@ -61,15 +66,7 @@ hub install deploy\hubserving\ocr_rec\
 hub install deploy\hubserving\ocr_system\
 ```
 
-#### 安装模型
-安装服务模块前，需要将训练好的模型放到对应的文件夹内。默认使用的是：
-./inference/ch_det_mv3_db/
-和
-./inference/ch_rec_mv3_crnn/
-这两个模型可以在https://github.com/PaddlePaddle/PaddleOCR 下载
-可以在./deploy/hubserving/ocr_system/params.py 里面修改成自己的模型
-
-### 3. 启动服务
+### 4. 启动服务
 #### 方式1. 命令行命令启动（仅支持CPU）
 **启动命令：**  
 ```shell
@@ -172,7 +169,7 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 ```hub serving stop --port/-p XXXX```  
 
 - 2、 到相应的`module.py`和`params.py`等文件中根据实际需求修改代码。  
-例如，如果需要替换部署服务所用模型，则需要到`params.py`中修改模型路径参数`det_model_dir`和`rec_model_dir`，当然，同时可能还需要修改其他相关参数，请根据实际情况修改调试。 建议修改后先直接运行`module.py`调试，能正确运行预测后再启动服务测试。
+例如，如果需要替换部署服务所用模型，则需要到`params.py`中修改模型路径参数`det_model_dir`和`rec_model_dir`，当然，同时可能还需要修改其他相关参数，请根据实际情况修改调试。 **强烈建议修改后先直接运行`module.py`调试，能正确运行预测后再启动服务测试。**
 
 - 3、 卸载旧服务包  
 ```hub uninstall ocr_system```  
