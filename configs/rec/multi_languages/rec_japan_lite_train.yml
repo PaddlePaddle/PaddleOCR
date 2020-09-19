@@ -4,19 +4,19 @@ Global:
   epoch_num: 500
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/rec_korean
+  save_model_dir: ./output/rec_japan
   save_epoch_step: 1
   eval_batch_step: 2000
   train_batch_size_per_card: 256
   test_batch_size_per_card: 256
   image_shape: [3, 32, 320]
   max_text_length: 25
-  character_type: korean
-  character_dict_path: ./ppocr/utils/korean_dict.txt
+  character_type: japan
+  character_dict_path: ./ppocr/utils/japan_dict.txt
   loss_type: ctc
   distort: true
   use_space_char: false
-  reader_yml: ./configs/rec/rec_korean_reader.yml
+  reader_yml: ./configs/rec/rec_japan_reader.yml
   pretrain_weights:
   checkpoints:
   save_inference_dir:
@@ -29,6 +29,7 @@ Backbone:
   function: ppocr.modeling.backbones.rec_mobilenet_v3,MobileNetV3
   scale: 0.5
   model_name: small
+  small_stride: [1, 2, 2, 2]
 
 Head:
   function: ppocr.modeling.heads.rec_ctc_head,CTCPredict

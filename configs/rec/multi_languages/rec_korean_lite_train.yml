@@ -4,19 +4,19 @@ Global:
   epoch_num: 500
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/en_number
-  save_epoch_step: 3
+  save_model_dir: ./output/rec_korean
+  save_epoch_step: 1
   eval_batch_step: 2000
   train_batch_size_per_card: 256
   test_batch_size_per_card: 256
   image_shape: [3, 32, 320]
-  max_text_length: 30
-  character_type: ch
-  character_dict_path: ./ppocr/utils/ic15_dict.txt
+  max_text_length: 25
+  character_type: korean
+  character_dict_path: ./ppocr/utils/korean_dict.txt
   loss_type: ctc
-  distort: false
+  distort: true
   use_space_char: false
-  reader_yml: ./configs/rec/rec_en_reader.yml
+  reader_yml: ./configs/rec/rec_korean_reader.yml
   pretrain_weights:
   checkpoints:
   save_inference_dir:
@@ -29,6 +29,7 @@ Backbone:
   function: ppocr.modeling.backbones.rec_mobilenet_v3,MobileNetV3
   scale: 0.5
   model_name: small
+  small_stride: [1, 2, 2, 2]
 
 Head:
   function: ppocr.modeling.heads.rec_ctc_head,CTCPredict
@@ -46,7 +47,6 @@ Optimizer:
   beta1: 0.9
   beta2: 0.999
   decay:
-    function: cosine_decay_warmup
-    warmup_minibatch: 1000
-    step_each_epoch: 6530
+    function: cosine_decay
+    step_each_epoch: 254
     total_epoch: 500
