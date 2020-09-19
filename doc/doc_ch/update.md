@@ -1,6 +1,7 @@
 # 更新
-- 2020.9.17 更新超轻量ppocr_mobile系列和通用ppocr_server系列系列中英文ocr模型，效果媲美商业效果。[模型下载](./models_list.md)
-- 2020.8.26 更新OCR相关的84个常见问题及解答，具体参考[FAQ](./FAQ.md)
+- 2020.9.19 更新超轻量压缩ppocr_mobile_slim系列模型，整体模型3.5M(详见[PP-OCR Pipline](#PP-OCR))，适合在移动端部署使用。[模型下载](#模型下载)
+- 2020.9.17 更新超轻量ppocr_mobile系列和通用ppocr_server系列中英文ocr模型，媲美商业效果。[模型下载](#模型下载)
+- 2020.8.26 更新OCR相关的84个常见问题及解答，具体参考[FAQ](./doc/doc_ch/FAQ.md)
 - 2020.8.24 支持通过whl包安装使用PaddleOCR，具体参考[Paddleocr Package使用说明](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/whl.md)
 - 2020.8.21 更新8月18日B站直播课回放和PPT，课节2，易学易用的OCR工具大礼包，[获取地址](https://aistudio.baidu.com/aistudio/education/group/info/1519)
 - 2020.8.16 开源文本检测算法[SAST](https://arxiv.org/abs/1908.05498)和文本识别算法[SRN](https://arxiv.org/abs/2003.12294)

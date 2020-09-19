@@ -4,25 +4,22 @@
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力使用者训练出更好的模型，并应用落地。
 
 **近期更新**
+- 2020.9.19 更新超轻量压缩ppocr_mobile_slim系列模型，整体模型3.5M(详见[PP-OCR Pipline](#PP-OCR))，适合在移动端部署使用。[模型下载](#模型下载)
 - 2020.9.17 更新超轻量ppocr_mobile系列和通用ppocr_server系列中英文ocr模型，媲美商业效果。[模型下载](#模型下载)
 - 2020.8.26 更新OCR相关的84个常见问题及解答，具体参考[FAQ](./doc/doc_ch/FAQ.md)
 - 2020.8.24 支持通过whl包安装使用PaddleOCR，具体参考[Paddleocr Package使用说明](./doc/doc_ch/whl.md)
 - 2020.8.21 更新8月18日B站直播课回放和PPT，课节2，易学易用的OCR工具大礼包，[获取地址](https://aistudio.baidu.com/aistudio/education/group/info/1519)
-- 2020.8.16 开源文本检测算法[SAST](https://arxiv.org/abs/1908.05498)和文本识别算法[SRN](https://arxiv.org/abs/2003.12294)
-- 2020.7.23 发布7月21日B站直播课回放和PPT，课节1，PaddleOCR开源大礼包全面解读，[获取地址](https://aistudio.baidu.com/aistudio/course/introduce/1519)
-- 2020.7.15 添加基于EasyEdge和Paddle-Lite的移动端DEMO，支持iOS和Android系统
-- [more](./doc/doc_ch/update.md)
+- [More](./doc/doc_ch/update.md)
 
 
 ## 特性
 
 - PPOCR系列高质量预训练模型，媲美商业效果
-    - 超轻量ppocr_mobile系列：检测（2.6M）+方向分类器（0.9M
-    ）+ 识别（4.6M）= 8.1M
+    - 超轻量ppocr_mobile移动端系列：检测（2.6M）+方向分类器（0.9M）+ 识别（4.6M）= 8.1M
     - 通用ppocr_server系列：检测（47.2M）+方向分类器（0.9M）+ 识别（107M）= 155.1M
-    - 超轻量压缩ppocr_mobile_slim系列：(coming soon)
+    - 超轻量压缩ppocr_mobile_slim系列：检测（1.4M）+方向分类器（0.5M）+ 识别（1.6M）= 3.5M  
 - 支持中英文数字组合识别、竖排文本识别、长文本识别
-- 支持多语言识别：韩语、日语、德语、法语 (coming soon)
+- 支持多语言识别：韩语、日语、德语、法语
 - 支持用户自定义训练，提供丰富的预测推理部署方案
 - 支持PIP快速安装使用
 - 可运行于Linux、Windows、MacOS等多种系统
@@ -46,44 +43,39 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 <img src="./doc/ocr-android-easyedge.png"  width = "200" height = "200" />
 </div>
 
-- 代码体验：可以直接进入[快速安装](./doc/doc_ch/installation.md)  
+- 代码体验：从[快速安装](./doc/doc_ch/installation.md) 开始
 
 <a name="模型下载"></a>
 ## PP-OCR 1.1系列模型列表（9月17日更新）
 
 | 模型简介     | 模型名称     |推荐场景          | 检测模型 | 方向分类器 | 识别模型 |      |
 | ------------ | --------------- | ----------------|---- | ---------- | -------- | ---- |
-| 中英文超轻量OCR模型（8.1M） | ch_ppocr_mobile_v1.1_xx |移动端&服务器端|[预测模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_train.tar)|[预测模型](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile-v1.1.cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile-v1.1.cls_train.tar) |[预测模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_pre.tar)      | |
-| 中英文通用OCR模型（155.1M）   |ch_ppocr_server_v1.1_xx|服务器端 |[预测模型](https://paddleocr.bj.bcebos.com/20-09-22/server/det/ch_ppocr_server_v1.1_det_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/20-09-22/server/det/ch_ppocr_server_v1.1_det_train.tar)          |[预测模型](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile-v1.1.cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile-v1.1.cls_train.tar)    |[预测模型](https://paddleocr.bj.bcebos.com/20-09-22/server/rec/ch_ppocr_server_v1.1_rec_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/20-09-22/server/rec/ch_ppocr_server_v1.1_rec_pre.tar)  |  |
-| 中英文超轻量压缩OCR模型 | ch_ppocr_mobile_slim_v1.1_xx| 移动端 |即将开源 |即将开源|即将开源| |      ||
+| 中英文超轻量OCR模型（8.1M） | ch_ppocr_mobile_v1.1_xx |移动端&服务器端|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_train.tar)|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile-v1.1.cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile-v1.1.cls_train.tar) |[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_pre.tar)      | |
+| 中英文通用OCR模型（155.1M）   |ch_ppocr_server_v1.1_xx|服务器端 |[预测模型](https://paddleocr.bj.bcebos.com/20-09-22/server/det/ch_ppocr_server_v1.1_det_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/20-09-22/server/det/ch_ppocr_server_v1.1_det_train.tar)          |[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile-v1.1.cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile-v1.1.cls_train.tar)    |[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/server/rec/ch_ppocr_server_v1.1_rec_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/20-09-22/server/rec/ch_ppocr_server_v1.1_rec_pre.tar)  |  |
+| 中英文超轻量压缩OCR模型 | ch_ppocr_mobile_slim_v1.1_xx| 移动端 |[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_infer.tar) / [slim模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_opt.nb) |[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_infer.tar) / [slim模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_opt.nb)|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_quant_infer.tar) / [slim模型](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_cls_quant_opt.nb)| |      ||
 
-更多V1.1版本模型下载，可以参考[OCR1.1模型列表](./doc/doc_ch/models_list.md)
-
-## PP-OCR 1.0系列模型列表（7月16日更新）
-
-| 模型简介     | 模型名称               | 检测模型 | 识别模型 | 支持空格的识别模型 |      |
-| ------------ | ---------------------- | -------- | ---------- | -------- | ---- |
-| 超轻量中英文OCR模型（8.6M） | chinese_db_crnn_mobile_xx |[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar)|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_enhance_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_enhance.tar) |      |
-|通用中文OCR模型（212M）|chinese_db_crnn_server_xx|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db.tar)|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn.tar)|[inference模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_enhance_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_enhance.tar)| |
-
+更多模型下载（包括多语言），可以参考[PP-OCR v1.1 系列模型下载](./doc/doc_ch/models_list.md)
 
 ## 文档教程
 - [快速安装](./doc/doc_ch/installation.md)
 - [中文OCR模型快速使用](./doc/doc_ch/quickstart.md)
+- [代码组织结构](./doc/doc_ch/tree.md)
 - 算法介绍
     - [文本检测](./doc/doc_ch/algorithm_overview.md)
     - [文本识别](./doc/doc_ch/algorithm_overview.md)
-    - PP-OCR (coming soon)
+    - [PP-OCR Pipline](#PP-OCR)
 - 模型训练/评估
     - [文本检测](./doc/doc_ch/detection.md)
     - [文本识别](./doc/doc_ch/recognition.md)
     - [yml参数配置文件介绍](./doc/doc_ch/config.md)
 - 预测部署
-    - [基于Python预测引擎推理](./doc/doc_ch/inference.md)
+    - [基于pip安装whl包快速推理](./doc/doc_ch/whl.md)
+    - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
     - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
     - [服务化部署](./doc/doc_ch/serving.md)
     - [端侧部署](./deploy/lite/readme.md)
-    - 模型量化压缩（coming soon）
+    - [模型量化](./deploy/slim/quantization/README.md)
+    - [模型裁剪](./deploy/slim/prune/README_ch.md)
     - [Benchmark](./doc/doc_ch/benchmark.md)
 - 数据集
     - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
@@ -101,12 +93,22 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - [许可证书](#许可证书)
 - [贡献代码](#贡献代码)
 
+<a name="PP-OCR"></a>
+## PP-OCR Pipline
+<div align="center">
+    <img src="./doc/ppocr_framework.png" width="800">
+</div>
+
+PP-OCR是一个实用的超轻量OCR系统。主要由DB文本检测、检测框矫正和CRNN文本识别三部分组成。该系统从骨干网络选择和调整、预测头部的设计、数据增强、学习率变换策略、正则化参数选择、预训练模型使用以及模型自动裁剪量化8个方面，采用19个有效策略，对各个模块的模型进行效果调优和瘦身，最终得到整体大小为3.5M的超轻量中英文OCR和2M的英文数字OCR。更多细节请参考PP-OCR技术文章（Arxiv文章链接生成中）。
+
+
 <a name="效果展示"></a>
 ## 效果展示 [more](./doc/doc_ch/visualization.md)
 
 <div align="center">
     <img src="./doc/imgs_results/1102.jpg" width="800">
     <img src="./doc/imgs_results/1104.jpg" width="800">
+    <img src="./doc/imgs_results/1106.jpg" width="800">
     <img src="./doc/imgs_results/1105.jpg" width="800">
     <img src="./doc/imgs_results/1110.jpg" width="800">
     <img src="./doc/imgs_results/1112.jpg" width="800">
