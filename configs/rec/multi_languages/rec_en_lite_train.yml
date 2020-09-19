@@ -16,7 +16,7 @@ Global:
   loss_type: ctc
   distort: false
   use_space_char: false
-  reader_yml: ./configs/rec/rec_en_reader.yml
+  reader_yml: ./configs/rec/multi_languages/rec_en_reader.yml
   pretrain_weights:
   checkpoints:
   save_inference_dir:

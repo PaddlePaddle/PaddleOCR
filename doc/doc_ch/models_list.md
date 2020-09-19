@@ -49,10 +49,11 @@ PaddleOCR提供的可下载模型包括`预测模型`、`训练模型`、`预训
 #### 3. 多语言识别模型（更多语言持续更新中...）
 |模型名称|模型简介|预测模型大小|下载地址|
 |-|-|-|-|
-|-|法文识别|-|[预测模型]() / [训练模型]()|
-|-|德文识别|-|[预测模型]() / [训练模型]()|
-|-|韩文识别|-|[预测模型]() / [训练模型]()|
-|-|日文识别|-|[预测模型]() / [训练模型]()|
+|-|法文识别|-|[预测模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/fr/french_ppocr_mobile_v1.1_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/fr/french_ppocr_mobile_v1.1_rec_train.tar)|
+|-|德文识别|-|[预测模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/ge/german_ppocr_mobile_v1.1_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/ge/german_ppocr_mobile_v1.1_rec_train.tar)|
+|-|韩文识别|-|[预测模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/kr/korean_ppocr_mobile_v1.1_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/kr/korean_ppocr_mobile_v1.1_rec_train.tar)|
+|-|日文识别|-|[预测模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/jp/japan_ppocr_mobile_v1.1_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/jp/japan_ppocr_mobile_v1.1_rec_train.tar)|
+
 
 <a name="文本方向分类模型"></a>
 ### 三、文本方向分类模型
