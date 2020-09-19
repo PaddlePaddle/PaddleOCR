@@ -289,8 +289,10 @@ RunDetModel(std::shared_ptr<PaddlePredictor> predictor, cv::Mat img,
   const double maxvalue = 255;
   cv::Mat bit_map;
   cv::threshold(cbuf_map, bit_map, threshold, maxvalue, cv::THRESH_BINARY);
-
-  auto boxes = BoxesFromBitmap(pred_map, bit_map, Config);
+  cv::Mat dilation_map;
+  cv::Mat dila_ele = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(2,2));
+  cv::dilate(bit_map, dilation_map, dila_ele);
+  auto boxes = BoxesFromBitmap(pred_map, dilation_map, Config);
 
   std::vector<std::vector<std::vector<int>>> filter_boxes =
       FilterTagDetRes(boxes, ratio_hw[0], ratio_hw[1], srcimg);
