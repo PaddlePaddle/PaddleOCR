@@ -7,7 +7,7 @@ This document gives the performance of the series models for Chinese and English
 We collected 300 images for different real application scenarios to evaluate the overall OCR system, including contract samples, license plates, nameplates, train tickets, test sheets, forms, certificates, street view images, business cards, digital meter, etc. The following figure shows some images of the test set.
 
 <div align="center">
-<img src="../datasets/doc.jpg"  width = "800" height = "200" />
+<img src="../datasets/doc.jpg"  width = "1000" height = "500" />
 </div>
 
 ## MEASUREMENT
