@@ -1,10 +1,12 @@
-# Service deployment
+English | [简体中文](readme.md)
 
-PaddleOCR provides 2 service deployment methods:：
-- Based on **HubServing**：Has been integrated into PaddleOCR ([code](https://github.com/PaddlePaddle/PaddleOCR/tree/develop/deploy/hubserving)). Please follow this tutorial.
-- Based on **PaddleServing**：See PaddleServing official website for details ([demo](https://github.com/PaddlePaddle/Serving/tree/develop/python/examples/ocr)). Follow-up will also be integrated into PaddleOCR.  
+PaddleOCR provides 2 service deployment methods: 
+- Based on **PaddleHub Serving**: Code path is "`./deploy/hubserving`". Please follow this tutorial. 
+- Based on **PaddleServing**: Code path is "`./deploy/pdserving`". Please refer to the [tutorial](../pdserving/readme_en.md) for usage.
 
-The service deployment directory includes three service packages: detection, recognition, and two-stage series connection. Select the corresponding service package to install and start service according to your needs. The directory is as follows:  
+# Service deployment based on PaddleHub Serving  
+
+The hubserving service deployment directory includes three service packages: detection, recognition, and two-stage series connection. Please select the corresponding service package to install and start service according to your needs. The directory is as follows:  
 ```
 deploy/hubserving/
   └─  ocr_det     detection module service package
@@ -31,11 +33,17 @@ pip3 install paddlehub --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # Set environment variables on Linux
 export PYTHONPATH=.
+
 # Set environment variables on Windows
 SET PYTHONPATH=.
 ```
 
-### 2. Install Service Module
+### 2. Download inference model
+Before installing the service module, you need to prepare the inference model and put it in the correct path. By default, the ultra lightweight model of v1.1 is used, and the default detection model path is: `./inference/ch_ppocr_mobile_v1.1_det_infer/`, the default recognition model path is: `./inference/ch_ppocr_mobile_v1.1_rec_infer/`.  
+
+**The model path can be found and modified in `params.py`.** More models provided by PaddleOCR can be obtained from the [model library](../../doc/doc_en/models_list_en.md). You can also use models trained by yourself.
+
+### 3. Install Service Module
 PaddleOCR provides 3 kinds of service modules, install the required modules according to your needs.
 
 * On Linux platform, the examples are as follows.
@@ -62,7 +70,7 @@ hub install deploy\hubserving\ocr_rec\
 hub install deploy\hubserving\ocr_system\
 ```
 
-### 3. Start service
+### 4. Start service
 #### Way 1. Start with command line parameters (CPU only)
 
 **start command：**  

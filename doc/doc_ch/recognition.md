@@ -44,6 +44,13 @@ wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_t
 wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_test.txt
 ```
 
+PaddleOCR 也提供了数据格式转换脚本，可以将官网 label 转换支持的数据格式。 数据转换工具在 `train_data/gen_label.py`, 这里以训练集为例：
+
+```
+# 将官网下载的标签文件转换为 rec_gt_label.txt
+python gen_label.py --mode="rec" --input_path="{path/of/origin/label}" --output_label="rec_gt_label.txt"
+```
+
 最终训练集应有如下文件结构：
 ```
 |-train_data
@@ -201,7 +208,19 @@ Optimizer:
 ```
 **注意，预测/评估时的配置文件请务必与训练一致。**
 
+- 小语种
 
+PaddleOCR也提供了多语言的， `configs/rec/multi_languages` 路径下的提供了多语言的配置文件，目前PaddleOCR支持的多语言算法有：
+
+| 配置文件 |  算法名称 |   backbone |   trans   |   seq      |     pred     |  language ｜
+| :--------: |  :-------:   | :-------:  |   :-------:   |   :-----:   |  :-----:   | :-----:   |
+| rec_en_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 英语   ｜
+| rec_french_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 法语   ｜
+| rec_ger_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 德语   ｜
+| rec_japan_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 日语   ｜
+| rec_korean_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 韩语   ｜
+
+多语言模型训练方式与中文模型一致，训练数据集均为100w的合成数据，少量的字体和测试数据可以在[百度网盘]()上下载。
 
 ### 评估
 

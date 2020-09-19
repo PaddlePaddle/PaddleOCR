@@ -64,7 +64,7 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
 - Deployment
     - [Python Inference](./doc/doc_en/inference_en.md)
     - [C++ Inference](./deploy/cpp_infer/readme_en.md)
-    - [Serving](./doc/doc_en/serving_en.md)
+    - [Serving](./deploy/hubserving/readme_en.md)
     - [Mobile](./deploy/lite/readme_en.md)
     - Model Quantization and Compression (coming soon)
     - [Benchmark](./doc/doc_en/benchmark_en.md)
