@@ -175,6 +175,7 @@ python deploy/slim/prune/pruning_and_finetune.py -c configs/det/det_mv3_db.yml -
 ## Export inference model
 
 After getting the model after pruning and finetuning we, can export it as inference_model for predictive deployment:
+
 ```bash
 
 python deploy/slim/prune/export_prune_model.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=./output/det_db/best_accuracy Global.test_batch_size_per_card=1 Global.save_inference_dir=inference_model
