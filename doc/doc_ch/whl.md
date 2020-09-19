@@ -19,7 +19,9 @@ pip install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x是paddleocr的版本�
 * 检测+分类+识别全流程
 ```python
 from paddleocr import PaddleOCR, draw_ocr
-ocr = PaddleOCR(use_angle_cls=True) # need to run only once to download and load model into memory
+# Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换
+# 参数依次为`zh`, `en`, `french`, `german`, `korean`, `japan`。
+ocr = PaddleOCR(use_angle_cls=True, lang="ch") # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs/11.jpg'
 result = ocr.ocr(img_path, cls=True)
 for line in result:

@@ -204,6 +204,15 @@ def build(config, main_prog, startup_prog, mode):
 
 def build_export(config, main_prog, startup_prog):
     """
+    Build input and output for exporting a checkpoints model to an inference model
+    Args:
+        config(dict): config
+        main_prog(): main program
+        startup_prog(): startup program
+    Returns:
+        feeded_var_names(list[str]): var names of input for exported inference model
+        target_vars(list[Variable]): output vars for exported inference model
+        fetches_var_name: dict of checkpoints model outputs(included loss and measures)
     """
     with fluid.program_guard(main_prog, startup_prog):
         with fluid.unique_name.guard():
@@ -246,6 +255,9 @@ def train_eval_det_run(config,
                        train_info_dict,
                        eval_info_dict,
                        is_pruning=False):
+    '''
+    main program of evaluation for detection
+    '''
     train_batch_id = 0
     log_smooth_window = config['Global']['log_smooth_window']
     epoch_num = config['Global']['epoch_num']
@@ -337,6 +349,9 @@ def train_eval_det_run(config,
 
 
 def train_eval_rec_run(config, exe, train_info_dict, eval_info_dict):
+    '''
+    main program of evaluation for recognition
+    '''
     train_batch_id = 0
     log_smooth_window = config['Global']['log_smooth_window']
     epoch_num = config['Global']['epoch_num']
@@ -513,6 +528,7 @@ def train_eval_cls_run(config, exe, train_info_dict, eval_info_dict):
 
 
 def preprocess():
+    # load config from yml file
     FLAGS = ArgsParser().parse_args()
     config = load_config(FLAGS.config)
     merge_config(FLAGS.opt)
@@ -522,6 +538,7 @@ def preprocess():
     use_gpu = config['Global']['use_gpu']
     check_gpu(use_gpu)
 
+    # check whether the set algorithm belongs to the supported algorithm list
     alg = config['Global']['algorithm']
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN', 'CLS'
