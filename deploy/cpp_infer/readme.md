@@ -193,6 +193,9 @@ make -j
 sh tools/run.sh
 ```
 
+* 若需要使用方向分类器，则需要将`tools/config.txt`中的`use_angle_cls`参数修改为1，表示开启方向分类器的预测。
+
+
 最终屏幕上会输出检测结果如下。
 
 <div align="center">

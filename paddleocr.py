@@ -46,6 +46,26 @@ model_urls = {
             'url':
             'https://paddleocr.bj.bcebos.com/20-09-22/mobile/en/en_ppocr_mobile_v1.1_rec_infer.tar',
             'dict_path': './ppocr/utils/ic15_dict.txt'
+        },
+        'french': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/20-09-22/mobile/fr/french_ppocr_mobile_v1.1_rec_infer.tar',
+            'dict_path': './ppocr/utils/french_dict.txt'
+        },
+        'german': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/20-09-22/mobile/ge/german_ppocr_mobile_v1.1_rec_infer.tar',
+            'dict_path': './ppocr/utils/german_dict.txt'
+        },
+        'korean': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/20-09-22/mobile/kr/korean_ppocr_mobile_v1.1_rec_infer.tar',
+            'dict_path': './ppocr/utils/korean_dict.txt'
+        },
+        'japan': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/20-09-22/mobile/jp/japan_ppocr_mobile_v1.1_rec_infer.tar',
+            'dict_path': './ppocr/utils/japan_dict.txt'
         }
     },
     'cls':
@@ -165,8 +185,9 @@ class PaddleOCR(predict_system.TextSystem):
         postprocess_params.__dict__.update(**kwargs)
         self.use_angle_cls = postprocess_params.use_angle_cls
         lang = postprocess_params.lang
-        assert lang in model_urls['rec'], 'param lang must in {}'.format(
-            model_urls['rec'].keys())
+        assert lang in model_urls[
+            'rec'], 'param lang must in {}, but got {}'.format(
+                model_urls['rec'].keys(), lang)
         if postprocess_params.rec_char_dict_path is None:
             postprocess_params.rec_char_dict_path = model_urls['rec'][lang][
                 'dict_path']
