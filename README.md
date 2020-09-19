@@ -105,7 +105,6 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## 效果展示 [more](./doc/doc_ch/visualization.md)
 
 <div align="center">
-    <img src="./doc/imgs_results/1102.jpg" width="800">
     <img src="./doc/imgs_results/1103.jpg" width="800">
     <img src="./doc/imgs_results/1104.jpg" width="800">
     <img src="./doc/imgs_results/1105.jpg" width="800">
