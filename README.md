@@ -88,10 +88,7 @@ For more model downloads (including multiple languages), please refer to [PP-OCR
     - [Data Annotation Tools](./doc/doc_en/data_annotation_en.md)
     - [Data Synthesis Tools](./doc/doc_en/data_synthesis_en.md)
 - [Visualization](#Visualization)
-- FAQ
-    - [10 Featured OCR Questions](./doc/doc_en/FAQ_en.md)
-    - [21 General OCR questions](./doc/doc_en/FAQ_en.md)
-    - [53 Questions about PaddleOCR](./doc/doc_en/FAQ_en.md)
+- [FAQ](./doc/doc_en/FAQ_en.md)
 - [Community](#Community)
 - [References](./doc/doc_en/reference_en.md)
 - [License](#LICENSE)
