@@ -47,8 +47,6 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
 
 <a name="Supported-Chinese-model-list"></a>
 
-https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_enhance.tar)
-
 ## PP-OCR 1.1 series model list（Update on Sep 17）
 
 | Model introduction                                           | Model name                   | Recommended scene | Detection model                                              | Direction classifier                                         | Recognition model                                            |      |
