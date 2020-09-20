@@ -201,7 +201,19 @@ Optimizer:
 ```
 **Note that the configuration file for prediction/evaluation must be consistent with the training.**
 
+-Minor language
 
+PaddleOCR also provides multi-language. The configuration file in `configs/rec/multi_languages` provides multi-language configuration files. Currently, the multi-language algorithms supported by PaddleOCR are:
+
+| Configuration file | Algorithm name | backbone | trans | seq | pred | language ｜
+| :--------: | :-------: | :-------: | :-------: | :-----: | :-----: | :-----: |
+| rec_en_lite_train.yml | CRNN | Mobilenet_v3 small 0.5 | None | BiLSTM | ctc | English ｜
+| rec_french_lite_train.yml | CRNN | Mobilenet_v3 small 0.5 | None | BiLSTM | ctc | French ｜
+| rec_ger_lite_train.yml | CRNN | Mobilenet_v3 small 0.5 | None | BiLSTM | ctc | German ｜
+| rec_japan_lite_train.yml | CRNN | Mobilenet_v3 small 0.5 | None | BiLSTM | ctc | Japanese ｜
+| rec_korean_lite_train.yml | CRNN | Mobilenet_v3 small 0.5 | None | BiLSTM | ctc | Korean ｜
+
+The multi-language model training method is the same as the Chinese model. The training data set is 100w synthetic data. A small amount of fonts and test data can be downloaded on [Baidu Netdisk]().
 
 ### EVALUATION
 
