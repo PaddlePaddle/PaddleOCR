@@ -123,6 +123,13 @@ class DBHead(object):
         return fluid.layers.reciprocal(1 + fluid.layers.exp(-self.k * (x - y)))
 
     def __call__(self, conv_features, mode="train"):
+        """
+        Fuse different levels of feature map from backbone in the FPN manner. 
+        Args:
+            conv_features(list): feature maps from backbone
+            mode(str): runtime mode, can be "train", "eval" or "test"
+        Return: predicts
+        """
         c2, c3, c4, c5 = conv_features
         param_attr = fluid.initializer.MSRAInitializer(uniform=False)
         in5 = fluid.layers.conv2d(

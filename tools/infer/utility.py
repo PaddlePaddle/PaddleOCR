@@ -15,6 +15,7 @@
 import argparse
 import os, sys
 from ppocr.utils.utility import initial_logger
+
 logger = initial_logger()
 from paddle.fluid.core import PaddleTensor
 from paddle.fluid.core import AnalysisConfig
@@ -31,53 +32,68 @@ def parse_args():
         return v.lower() in ("true", "t", "1")
 
     parser = argparse.ArgumentParser()
-    #params for prediction engine
+    # params for prediction engine
     parser.add_argument("--use_gpu", type=str2bool, default=True)
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     parser.add_argument("--gpu_mem", type=int, default=8000)
 
-    #params for text detector
+    # params for text detector
     parser.add_argument("--image_dir", type=str)
     parser.add_argument("--det_algorithm", type=str, default='DB')
     parser.add_argument("--det_model_dir", type=str)
     parser.add_argument("--det_max_side_len", type=float, default=960)
 
-    #DB parmas
+    # DB parmas
     parser.add_argument("--det_db_thresh", type=float, default=0.3)
     parser.add_argument("--det_db_box_thresh", type=float, default=0.5)
-    parser.add_argument("--det_db_unclip_ratio", type=float, default=2.0)
+    parser.add_argument("--det_db_unclip_ratio", type=float, default=1.6)
 
-    #EAST parmas
+    # EAST parmas
     parser.add_argument("--det_east_score_thresh", type=float, default=0.8)
     parser.add_argument("--det_east_cover_thresh", type=float, default=0.1)
     parser.add_argument("--det_east_nms_thresh", type=float, default=0.2)
 
-    #SAST parmas
+    # SAST parmas
     parser.add_argument("--det_sast_score_thresh", type=float, default=0.5)
     parser.add_argument("--det_sast_nms_thresh", type=float, default=0.2)
     parser.add_argument("--det_sast_polygon", type=bool, default=False)
 
-    #params for text recognizer
+    # params for text recognizer
     parser.add_argument("--rec_algorithm", type=str, default='CRNN')
     parser.add_argument("--rec_model_dir", type=str)
     parser.add_argument("--rec_image_shape", type=str, default="3, 32, 320")
     parser.add_argument("--rec_char_type", type=str, default='ch')
-    parser.add_argument("--rec_batch_num", type=int, default=30)
+    parser.add_argument("--rec_batch_num", type=int, default=6)
     parser.add_argument("--max_text_length", type=int, default=25)
     parser.add_argument(
         "--rec_char_dict_path",
         type=str,
         default="./ppocr/utils/ppocr_keys_v1.txt")
-    parser.add_argument("--use_space_char", type=bool, default=True)
-    parser.add_argument("--enable_mkldnn", type=bool, default=False)
-    parser.add_argument("--use_zero_copy_run", type=bool, default=False)
+    parser.add_argument("--use_space_char", type=str2bool, default=True)
+    parser.add_argument(
+        "--vis_font_path",
+        type=str,
+        default="./doc/simfang.ttf")
+
+    # params for text classifier
+    parser.add_argument("--use_angle_cls", type=str2bool, default=False)
+    parser.add_argument("--cls_model_dir", type=str)
+    parser.add_argument("--cls_image_shape", type=str, default="3, 48, 192")
+    parser.add_argument("--label_list", type=list, default=['0', '180'])
+    parser.add_argument("--cls_batch_num", type=int, default=30)
+    parser.add_argument("--cls_thresh", type=float, default=0.9)
+
+    parser.add_argument("--enable_mkldnn", type=str2bool, default=False)
+    parser.add_argument("--use_zero_copy_run", type=str2bool, default=False)
     return parser.parse_args()
 
 
 def create_predictor(args, mode):
     if mode == "det":
         model_dir = args.det_model_dir
+    elif mode == 'cls':
+        model_dir = args.cls_model_dir
     else:
         model_dir = args.rec_model_dir
 
@@ -105,7 +121,7 @@ def create_predictor(args, mode):
             config.set_mkldnn_cache_capacity(10)
             config.enable_mkldnn()
 
-    #config.enable_memory_optim()
+    # config.enable_memory_optim()
     config.disable_glog_info()
 
     if args.use_zero_copy_run:
@@ -187,7 +203,7 @@ def draw_ocr(image,
     return image
 
 
-def draw_ocr_box_txt(image, boxes, txts):
+def draw_ocr_box_txt(image, boxes, txts, font_path="./doc/simfang.ttf"):
     h, w = image.height, image.width
     img_left = image.copy()
     img_right = Image.new('RGB', (w, h), (255, 255, 255))
@@ -214,7 +230,7 @@ def draw_ocr_box_txt(image, boxes, txts):
         if box_height > 2 * box_width:
             font_size = max(int(box_width * 0.9), 10)
             font = ImageFont.truetype(
-                "./doc/simfang.ttf", font_size, encoding="utf-8")
+                font_path, font_size, encoding="utf-8")
             cur_y = box[0][1]
             for c in txt:
                 char_size = font.getsize(c)
@@ -224,7 +240,7 @@ def draw_ocr_box_txt(image, boxes, txts):
         else:
             font_size = max(int(box_height * 0.8), 10)
             font = ImageFont.truetype(
-                "./doc/simfang.ttf", font_size, encoding="utf-8")
+                font_path, font_size, encoding="utf-8")
             draw_right.text(
                 [box[0][0], box[0][1]], txt, fill=(0, 0, 0), font=font)
     img_left = Image.blend(image, img_left, 0.5)

@@ -1,5 +1,10 @@
-# Paddle Serving 服务部署(Beta)
+[English](readme_en.md) | 简体中文
 
+PaddleOCR提供2种服务部署方式：
+- 基于PaddleHub Serving的部署：代码路径为"`./deploy/hubserving`"，使用方法参考[文档](../hubserving/readme.md)。	
+- 基于PaddleServing的部署：代码路径为"`./deploy/pdserving`"，按照本教程使用。
+
+# Paddle Serving 服务部署
 本教程将介绍基于[Paddle Serving](https://github.com/PaddlePaddle/Serving)部署PaddleOCR在线预测服务的详细步骤。
 
 ## 快速启动服务
@@ -14,36 +19,19 @@
 
 **操作系统版本：CentOS 6以上**
 
-**Python3操作指南：**
+**Python版本： 2.7/3.6/3.7**
+
+**Python操作指南：**
 ```
-#以下提供beta版本的paddle serving whl包，欢迎试用，正式版会在8月中正式上线
-#GPU用户下载server包使用这个链接
-wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_server_gpu-0.3.2-py3-none-any.whl
-python -m pip install paddle_serving_server_gpu-0.3.2-py3-none-any.whl
-#CPU版本使用这个链接
-wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_server-0.3.2-py3-none-any.whl
-python -m pip install paddle_serving_server-0.3.2-py3-none-any.whl
+#CPU/GPU版本选择一个
+#GPU版本服务端
+python -m pip install paddle_serving_server_gpu
+#CPU版本服务端
+python -m pip install paddle_serving_server
 #客户端和App包使用以下链接（CPU，GPU通用）
-wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_client-0.3.2-cp36-none-any.whl
-wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_app-0.1.2-py3-none-any.whl
-python -m pip install paddle_serving_app-0.1.2-py3-none-any.whl paddle_serving_client-0.3.2-cp36-none-any.whl
+python -m pip install paddle_serving_app paddle_serving_client
 ```
 
-**Python2操作指南：**
-```
-#以下提供beta版本的paddle serving whl包，欢迎试用，正式版会在8月中正式上线
-#GPU用户下载server包使用这个链接
-wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_server_gpu-0.3.2-py2-none-any.whl
-python -m pip install paddle_serving_server_gpu-0.3.2-py2-none-any.whl 
-#CPU版本使用这个链接
-wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_server-0.3.2-py2-none-any.whl
-python -m pip install paddle_serving_server-0.3.2-py2-none-any.whl
-
-#客户端和App包使用以下链接（CPU，GPU通用）
-wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_app-0.1.2-py2-none-any.whl
-wget --no-check-certificate https://paddle-serving.bj.bcebos.com/others/paddle_serving_client-0.3.2-cp27-none-any.whl
-python -m pip install paddle_serving_app-0.1.2-py2-none-any.whl paddle_serving_client-0.3.2-cp27-none-any.whl
-```
 
 ### 2. 模型转换
 可以使用`paddle_serving_app`提供的模型，执行下列命令

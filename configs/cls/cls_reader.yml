@@ -1,0 +1,13 @@
+TrainReader:
+  reader_function: ppocr.data.cls.dataset_traversal,SimpleReader
+  num_workers: 8
+  img_set_dir: ./train_data/cls
+  label_file_path: ./train_data/cls/train.txt
+  
+EvalReader:
+  reader_function: ppocr.data.cls.dataset_traversal,SimpleReader
+  img_set_dir: ./train_data/cls
+  label_file_path: ./train_data/cls/test.txt
+
+TestReader:
+  reader_function: ppocr.data.cls.dataset_traversal,SimpleReader

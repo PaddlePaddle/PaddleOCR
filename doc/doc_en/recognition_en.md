@@ -130,8 +130,8 @@ Start training:
 export PYTHONPATH=$PYTHONPATH:.
 # GPU training Support single card and multi-card training, specify the card number through CUDA_VISIBLE_DEVICES
 export CUDA_VISIBLE_DEVICES=0,1,2,3
-# Training icdar15 English data
-python3 tools/train.py -c configs/rec/rec_icdar15_train.yml
+# Training icdar15 English data and saving the log as train_rec.log
+python3 tools/train.py -c configs/rec/rec_icdar15_train.yml 2>&1 | tee train_rec.log
 ```
 
 - Data Augmentation
@@ -201,7 +201,19 @@ Optimizer:
 ```
 **Note that the configuration file for prediction/evaluation must be consistent with the training.**
 
+-Minor language
 
+PaddleOCR also provides multi-language. The configuration file in `configs/rec/multi_languages` provides multi-language configuration files. Currently, the multi-language algorithms supported by PaddleOCR are:
+
+| Configuration file | Algorithm name | backbone | trans | seq | pred | language ｜
+| :--------: | :-------: | :-------: | :-------: | :-----: | :-----: | :-----: |
+| rec_en_lite_train.yml | CRNN | Mobilenet_v3 small 0.5 | None | BiLSTM | ctc | English ｜
+| rec_french_lite_train.yml | CRNN | Mobilenet_v3 small 0.5 | None | BiLSTM | ctc | French ｜
+| rec_ger_lite_train.yml | CRNN | Mobilenet_v3 small 0.5 | None | BiLSTM | ctc | German ｜
+| rec_japan_lite_train.yml | CRNN | Mobilenet_v3 small 0.5 | None | BiLSTM | ctc | Japanese ｜
+| rec_korean_lite_train.yml | CRNN | Mobilenet_v3 small 0.5 | None | BiLSTM | ctc | Korean ｜
+
+The multi-language model training method is the same as the Chinese model. The training data set is 100w synthetic data. A small amount of fonts and test data can be downloaded on [Baidu Netdisk]().
 
 ### EVALUATION
 
