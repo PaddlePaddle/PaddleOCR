@@ -20,6 +20,7 @@ Next, we first introduce how to convert a trained model into an inference model,
     - [2. DB TEXT DETECTION MODEL INFERENCE](#DB_DETECTION)
     - [3. EAST TEXT DETECTION MODEL INFERENCE](#EAST_DETECTION)
     - [4. SAST TEXT DETECTION MODEL INFERENCE](#SAST_DETECTION)
+    - [5. Multilingual model inference](#Multilingual model inference)
 
 - [TEXT RECOGNITION MODEL INFERENCE](#RECOGNITION_MODEL_INFERENCE)
     - [1. LIGHTWEIGHT CHINESE MODEL](#LIGHTWEIGHT_RECOGNITION)
@@ -306,6 +307,24 @@ If the chars dictionary is modified during training, you need to specify the new
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="en" --rec_char_dict_path="your text dict path"
 ```
 
+<a name="Multilingual model inference"></a>
+
+### 5. Multilingual Model Reasoning
+If you need to predict other language models, when using inference model prediction, you need to specify the dictionary path used by `--rec_char_dict_path`. At the same time, in order to get the correct visualization results,
+You need to specify the visual font path through `--vis_font_path`. There are small language fonts provided by default under the `doc/` path, such as Korean recognition:
+
+```
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" --rec_model_dir="./your inference model" --rec_char_type="korean" --rec_char_dict_path="ppocr/ utils/korean_dict.txt" --vis_font_path="doc/korean.ttf"
+```
+![](../imgs_words/korean/1.jpg)
+
+After executing the command, the prediction result of the above figure is:
+
+``` text
+2020-09-19 16:15:05,076-INFO: 	 index: [205 206  38  39]
+2020-09-19 16:15:05,077-INFO: 	 word : 바탕으로
+2020-09-19 16:15:05,077-INFO: 	 score: 0.9171358942985535
+```
 
 <a name="ANGLE_CLASSIFICATION_MODEL_INFERENCE"></a>
 ## ANGLE CLASSIFICATION MODEL INFERENCE
