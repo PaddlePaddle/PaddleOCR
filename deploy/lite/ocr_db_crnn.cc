@@ -15,6 +15,7 @@
 #include "paddle_api.h" // NOLINT
 #include <chrono>
 
+#include "cls_process.h"
 #include "crnn_process.h"
 #include "db_post_process.h"
 
@@ -105,11 +106,55 @@ cv::Mat DetResizeImg(const cv::Mat img, int max_size_len,
   return resize_img;
 }
 
+cv::Mat RunClsModel(cv::Mat img, std::shared_ptr<PaddlePredictor> predictor_cls,
+                    const float thresh = 0.5) {
+  std::vector<float> mean = {0.5f, 0.5f, 0.5f};
+  std::vector<float> scale = {1 / 0.5f, 1 / 0.5f, 1 / 0.5f};
+
+  cv::Mat srcimg;
+  img.copyTo(srcimg);
+  cv::Mat crop_img;
+  cv::Mat resize_img;
+
+  int index = 0;
+  float wh_ratio =
+      static_cast<float>(crop_img.cols) / static_cast<float>(crop_img.rows);
+
+  resize_img = ClsResizeImg(crop_img);
+  resize_img.convertTo(resize_img, CV_32FC3, 1 / 255.f);
+
+  const float *dimg = reinterpret_cast<const float *>(resize_img.data);
+
+  std::unique_ptr<Tensor> input_tensor0(std::move(predictor_cls->GetInput(0)));
+  input_tensor0->Resize({1, 3, resize_img.rows, resize_img.cols});
+  auto *data0 = input_tensor0->mutable_data<float>();
+
+  NeonMeanScale(dimg, data0, resize_img.rows * resize_img.cols, mean, scale);
+  // Run CLS predictor
+  predictor_cls->Run();
+
+  // Get output and run postprocess
+  std::unique_ptr<const Tensor> softmax_out(
+      std::move(predictor_cls->GetOutput(0)));
+  std::unique_ptr<const Tensor> label_out(
+      std::move(predictor_cls->GetOutput(1)));
+  auto *softmax_scores = softmax_out->mutable_data<float>();
+  auto *label_idxs = label_out->data<int64>();
+  int label_idx = label_idxs[0];
+  float score = softmax_scores[label_idx];
+
+  if (label_idx % 2 == 1 && score > thresh) {
+    cv::rotate(srcimg, srcimg, 1);
+  }
+  return srcimg;
+}
+
 void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
                  std::shared_ptr<PaddlePredictor> predictor_crnn,
                  std::vector<std::string> &rec_text,
                  std::vector<float> &rec_text_score,
-                 std::vector<std::string> charactor_dict) {
+                 std::vector<std::string> charactor_dict,
+                 std::shared_ptr<PaddlePredictor> predictor_cls) {
   std::vector<float> mean = {0.5f, 0.5f, 0.5f};
   std::vector<float> scale = {1 / 0.5f, 1 / 0.5f, 1 / 0.5f};
 
@@ -121,6 +166,7 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
   int index = 0;
   for (int i = boxes.size() - 1; i >= 0; i--) {
     crop_img = GetRotateCropImage(srcimg, boxes[i]);
+    crop_img = RunClsModel(crop_img, predictor_cls);
     float wh_ratio =
         static_cast<float>(crop_img.cols) / static_cast<float>(crop_img.rows);
 
@@ -243,8 +289,10 @@ RunDetModel(std::shared_ptr<PaddlePredictor> predictor, cv::Mat img,
   const double maxvalue = 255;
   cv::Mat bit_map;
   cv::threshold(cbuf_map, bit_map, threshold, maxvalue, cv::THRESH_BINARY);
-
-  auto boxes = BoxesFromBitmap(pred_map, bit_map, Config);
+  cv::Mat dilation_map;
+  cv::Mat dila_ele = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(2,2));
+  cv::dilate(bit_map, dilation_map, dila_ele);
+  auto boxes = BoxesFromBitmap(pred_map, dilation_map, Config);
 
   std::vector<std::vector<std::vector<int>>> filter_boxes =
       FilterTagDetRes(boxes, ratio_hw[0], ratio_hw[1], srcimg);
@@ -323,8 +371,9 @@ int main(int argc, char **argv) {
   }
   std::string det_model_file = argv[1];
   std::string rec_model_file = argv[2];
-  std::string img_path = argv[3];
-  std::string dict_path = argv[4];
+  std::string cls_model_file = argv[3];
+  std::string img_path = argv[4];
+  std::string dict_path = argv[5];
 
   //// load config from txt file
   auto Config = LoadConfigTxt("./config.txt");
@@ -333,6 +382,7 @@ int main(int argc, char **argv) {
 
   auto det_predictor = loadModel(det_model_file);
   auto rec_predictor = loadModel(rec_model_file);
+  auto cls_predictor = loadModel(cls_model_file);
 
   auto charactor_dict = ReadDict(dict_path);
   charactor_dict.push_back(" ");
@@ -343,7 +393,7 @@ int main(int argc, char **argv) {
   std::vector<std::string> rec_text;
   std::vector<float> rec_text_score;
   RunRecModel(boxes, srcimg, rec_predictor, rec_text, rec_text_score,
-              charactor_dict);
+              charactor_dict, cls_predictor);
 
   auto end = std::chrono::system_clock::now();
   auto duration =

@@ -17,7 +17,7 @@
 namespace PaddleOCR {
 
 void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
-                         cv::Mat &img) {
+                         cv::Mat &img, Classifier *cls) {
   cv::Mat srcimg;
   img.copyTo(srcimg);
   cv::Mat crop_img;
@@ -27,6 +27,9 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
   int index = 0;
   for (int i = boxes.size() - 1; i >= 0; i--) {
     crop_img = GetRotateCropImage(srcimg, boxes[i]);
+    if (cls != nullptr) {
+      crop_img = cls->Run(crop_img);
+    }
 
     float wh_ratio = float(crop_img.cols) / float(crop_img.rows);
 

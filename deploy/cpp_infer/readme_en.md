@@ -162,7 +162,7 @@ inference/
 sh tools/build.sh
 ```
 
-具体地，`tools/build.sh`中内容如下。
+Specifically, the content in `tools/build.sh` is as follows.
 
 ```shell
 OPENCV_DIR=your_opencv_dir
@@ -200,6 +200,8 @@ make -j
 ```shell
 sh tools/run.sh
 ```
+
+* If you want to orientation classifier to correct the detected boxes, you can set `use_angle_cls` in the file `tools/config.txt` as 1 to enable the function.
 
 The detection results will be shown on the screen, which is as follows.
 

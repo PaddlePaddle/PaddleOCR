@@ -14,6 +14,15 @@ wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dataset/train_icdar2015_l
 wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dataset/test_icdar2015_label.txt
 ```
 
+PaddleOCR 也提供了数据格式转换脚本，可以将官网 label 转换支持的数据格式。 数据转换工具在 `train_data/gen_label.py`, 这里以训练集为例：
+
+```
+# 将官网下载的标签文件转换为 train_icdar2015_label.txt 
+python gen_label.py --mode="det" --root_path="icdar_c4_train_imgs/"  \
+                    --input_path="ch4_training_localization_transcription_gt" \
+                    --output_label="train_icdar2015_label.txt"
+```
+
 解压数据集和下载标注文件后，PaddleOCR/train_data/ 有两个文件夹和两个文件，分别是：
 ```
 /PaddleOCR/train_data/icdar2015/text_localization/
@@ -62,7 +71,10 @@ tar -xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_model
 *如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false*
 
 ```shell
-python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained/
+# 训练 mv3_db 模型，并将训练日志保存为 tain_det.log
+python3 tools/train.py -c configs/det/det_mv3_db.yml \ 
+     -o Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained/ \
+     2>&1 | tee train_det.log
 ```
 
 上述指令中，通过-c 选择训练使用configs/det/det_db_mv3.yml配置文件。

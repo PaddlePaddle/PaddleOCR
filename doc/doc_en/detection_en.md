@@ -62,7 +62,7 @@ tar -xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_model
 #### START TRAINING
 *If CPU version installed, please set the parameter `use_gpu` to `false` in the configuration.*
 ```shell
-python3 tools/train.py -c configs/det/det_mv3_db.yml
+python3 tools/train.py -c configs/det/det_mv3_db.yml 2>&1 | tee train_det.log
 ```
 
 In the above instruction, use `-c` to select the training to use the `configs/det/det_db_mv3.yml` configuration file.
@@ -73,7 +73,7 @@ You can also use `-o` to change the training parameters without modifying the ym
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
 ```
 
-#### load trained model and conntinue training
+#### load trained model and continue training
 If you expect to load trained model and continue the training again, you can specify the parameter `Global.checkpoints` as the model path to be loaded.
 
 For example:
