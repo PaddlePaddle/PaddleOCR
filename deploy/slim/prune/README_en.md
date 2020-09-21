@@ -1,9 +1,10 @@
 
 ## Introduction
 
-Complicated models help to improve the performance of the model, but it also leads to some redundancy in the model. Model tailoring reduces this redundancy by removing the sub-models in the network model, so as to reduce model calculation complexity and improve model inference performance. .
+Generally, a more complex model would achive better performance in the task, but it also leads to some redundancy in the model. Model Pruning is a technique that reduces this redundancy by removing the sub-models in the neural network model, so as to reduce model calculation complexity and improve model inference performance.
 
-This tutorial will introduce how to use PaddleSlim to crop PaddleOCR model.
+This example uses PaddleSlim provided[APIs of Pruning](https://paddlepaddle.github.io/PaddleSlim/api/prune_api/) to compress the OCR model.
+[PaddleSlim](https://github.com/PaddlePaddle/PaddleSlim), an open source library which integrates model pruning, quantization (including quantization training and offline quantization), distillation, neural network architecture search, and many other commonly used and leading model compression technique in the industry.
 
 It is recommended that you could understand following pages before reading this example：
 1. [PaddleOCR training methods](../../../doc/doc_ch/quickstart.md)
