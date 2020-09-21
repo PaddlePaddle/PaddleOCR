@@ -11,7 +11,7 @@ pip install paddleocr
 
 本地构建并安装
 ```bash
-python setup.py bdist_wheel
+python3 setup.py bdist_wheel
 pip install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x是paddleocr的版本号
 ```
 ### 1. 代码使用

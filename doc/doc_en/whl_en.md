@@ -9,7 +9,7 @@ pip install paddleocr
 
 build own whl package and install
 ```bash
-python setup.py bdist_wheel
+python3 setup.py bdist_wheel
 pip install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x is the version of paddleocr
 ```
 ### 1. Use by code
