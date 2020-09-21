@@ -102,6 +102,8 @@ For more model downloads (including multiple languages), please refer to [PP-OCR
 
 PP-OCR is a practical ultra-lightweight OCR system. It is mainly composed of three parts: DB text detection, detection frame correction and CRNN text recognition. The system adopts 19 effective strategies from 8 aspects including backbone network selection and adjustment, prediction head design, data augmentation, learning rate transformation strategy, regularization parameter selection, pre-training model use, and automatic model tailoring and quantization to optimize and slim down the models of each module. The final results are an ultra-lightweight Chinese and English OCR model with an overall size of 3.5M and a 2.8M English digital OCR model. For more details, please refer to the PP-OCR technical article (Arxiv article link is being generated).
 
+PP-OCR technical article: [Download link](https://github.com/PaddlePaddle/PaddleOCR/raw/develop/doc/PPOCR.pdf)
+
 ## Visualization [more](./doc/doc_en/visualization_en.md)
 
 <div align="center">
