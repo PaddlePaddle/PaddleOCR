@@ -92,9 +92,21 @@ In `word_dict.txt`, there is a single word in each line, which maps characters a
 
 `ppocr/utils/ppocr_keys_v1.txt` is a Chinese dictionary with 6623 characters.
 
-`ppocr/utils/ic15_dict.txt` is an English dictionary with 36 characters.
+`ppocr/utils/ic15_dict.txt` is an English dictionary with 63 characters
 
-You can use them if needed.
+`ppocr/utils/french_dict.txt` is a French dictionary with 118 characters
+
+`ppocr/utils/japan_dict.txt` is a French dictionary with 4399 characters
+
+`ppocr/utils/korean_dict.txt` is a French dictionary with 3636 characters
+
+`ppocr/utils/german_dict.txt` is a French dictionary with 131 characters
+
+You can use it on demand.
+
+The current multi-language model is still in the demo stage and will continue to optimize the model and add languages. **You are very welcome to provide us with dictionaries and fonts in other languages**,
+If you like, you can submit the dictionary file to [utils](../../ppocr/utils) and we will thank you in the Repo.
+
 
 To customize the dict file, please modify the `character_dict_path` field in `configs/rec/rec_icdar15_train.yml` and set `character_type` to `ch`.
 
@@ -215,7 +227,29 @@ PaddleOCR also provides multi-language. The configuration file in `configs/rec/m
 | rec_japan_lite_train.yml | CRNN | Mobilenet_v3 small 0.5 | None | BiLSTM | ctc | Japanese ｜
 | rec_korean_lite_train.yml | CRNN | Mobilenet_v3 small 0.5 | None | BiLSTM | ctc | Korean ｜
 
-The multi-language model training method is the same as the Chinese model. The training data set is 100w synthetic data. A small amount of fonts and test data can be downloaded on [Baidu Netdisk]().
+The multi-language model training method is the same as the Chinese model. The training data set is 100w synthetic data. A small amount of fonts and test data can be downloaded on [Baidu Netdisk](https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA),Extraction code:frgi.
+
+If you want to finetune on the basis of the existing model effect, please refer to the following instructions to modify the configuration file:
+
+Take `rec_french_lite_train` as an example:
+
+```
+Global:
+  ...
+  # Add a custom dictionary, if you modify the dictionary
+  # please point the path to the new dictionary
+  character_dict_path: ./ppocr/utils/french_dict.txt
+  # Add data augmentation during training
+  distort: true
+  # Identify spaces
+  use_space_char: true
+  ...
+  # Modify reader type
+  reader_yml: ./configs/rec/multi_languages/rec_french_reader.yml
+  ...
+...
+```
+
 
 ### EVALUATION
 
