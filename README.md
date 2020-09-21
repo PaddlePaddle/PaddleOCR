@@ -69,6 +69,7 @@ For more model downloads (including multiple languages), please refer to [PP-OCR
 - Model training/evaluation
     - [Text Detection](./doc/doc_en/detection_en.md)
     - [Text Recognition](./doc/doc_en/recognition_en.md)
+    - [TEXT ANGLE CLASSIFICATION](./doc/doc_en/angle_class_en.md)
     - [Yml Configuration](./doc/doc_en/config_en.md)
 - Inference and Deployment
     - [Quick inference based on pip](./doc/doc_en/whl_en.md)
