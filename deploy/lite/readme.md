@@ -123,7 +123,7 @@ cd build.opt/lite/api/
 下面以PaddleOCR的超轻量中文模型为例，介绍使用编译好的opt文件完成inference模型到Paddle-Lite优化模型的转换。
 
 ```
-# 可以下载PaddleOCR V1.1版本的inference模型，V1.1比1.0效果更好，模型大小更小
+# 【推荐】 下载PaddleOCR V1.1版本的中英文 inference模型，V1.1比1.0效果更好，模型更小
 wget  https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_infer.tar && tar xf  ch_ppocr_mobile_v1.1_det_prune_infer.tar
 wget  https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_infer.tar && tar xf  ch_ppocr_mobile_v1.1_rec_quant_infer.tar
 # 转换V1.1检测模型
@@ -132,7 +132,7 @@ wget  https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v
 ./opt --model_file=./ch_ppocr_mobile_v1.1_rec_quant_infer/model  --param_file=./ch_ppocr_mobile_v1.1_rec_quant_infer/params  --optimize_out=./ch_ppocr_mobile_v1.1_rec_quant_opt --valid_targets=arm
 
 
-# 或下载使用PaddleOCR的V1.0超轻量文inference模型，并解压
+# 或下载使用PaddleOCR的V1.0超轻量中英文 inference模型，解压并转换为移动端支持的模型
 wget  https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db_infer.tar && tar xf ch_det_mv3_db_infer.tar
 wget  https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar xf ch_rec_mv3_crnn_infer.tar
 # 转换V1.0检测模型

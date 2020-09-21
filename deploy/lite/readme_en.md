@@ -86,7 +86,7 @@ The `opt` can optimize the inference model saved by paddle.io.save_inference_mod
 
 The usage of opt is as follows：
 ```
-# V1.1 is better than V1.0. steps for convert V1.1 model to nb file are as follows
+# 【Recommend】V1.1 is better than V1.0. steps for convert V1.1 model to nb file are as follows
 wget  https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_infer.tar && tar xf  ch_ppocr_mobile_v1.1_det_prune_infer.tar
 wget  https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_infer.tar && tar xf  ch_ppocr_mobile_v1.1_rec_quant_infer.tar
 
