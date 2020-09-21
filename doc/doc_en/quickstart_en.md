@@ -41,7 +41,7 @@ wget https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_de
 # Download the recognition model of the ultra-lightweight Chinese OCR model and uncompress it
 wget https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_infer.tar && tar xf ch_ppocr_mobile_v1.1_rec_infer.tar
 # Download the direction classifier model of the ultra-lightweight Chinese OCR model and uncompress it
-wget https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile-v1.1.cls_infer.tar && tar xf ch_ppocr_mobile-v1.1.cls_infer.tar
+wget https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_infer.tar && tar xf ch_ppocr_mobile_v1.1_cls_infer.tar
 cd ..
 ```
 
@@ -55,7 +55,7 @@ After decompression, the file structure should be as follows:
     |-ch_ppocr_mobile_v1.1_rec_infer
         |- model
         |- params
-    |-ch_ppocr_mobile-v1.1.cls_infer
+    |-ch_ppocr_mobile_v1.1_cls_infer
         |- model
         |- params
     ...

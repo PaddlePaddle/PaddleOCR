@@ -41,7 +41,7 @@ wget https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_de
 # 下载超轻量级中文OCR模型的识别模型并解压
 wget https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_infer.tar && tar xf ch_ppocr_mobile_v1.1_rec_infer.tar
 # 下载超轻量级中文OCR模型的文本方向分类器模型并解压
-wget https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile-v1.1.cls_infer.tar && tar xf ch_ppocr_mobile-v1.1.cls_infer.tar
+wget https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_infer.tar && tar xf ch_ppocr_mobile_v1.1_cls_infer.tar
 cd ..
 ```
 
@@ -55,7 +55,7 @@ cd ..
     |-ch_ppocr_mobile_v1.1_rec_infer
         |- model
         |- params
-    |-ch_ppocr_mobile-v1.1.cls_infer
+    |-ch_ppocr_mobile-v1.1_cls_infer
         |- model
         |- params
     ...
