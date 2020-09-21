@@ -3,7 +3,7 @@
 
 inference 模型（`fluid.io.save_inference_model`保存的模型）
 一般是模型训练完成后保存的固化模型，多用于预测部署。训练过程中保存的模型是checkpoints模型，保存的是模型的参数，多用于恢复训练等。
-与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合与实际系统集成。更详细的介绍请参考文档[分类预测框架](https://paddleclas.readthedocs.io/zh_CN/latest/extension/paddle_inference.html).
+与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合与实际系统集成。更详细的介绍请参考文档[分类预测框架](https://github.com/PaddlePaddle/PaddleClas/blob/master/docs/zh_CN/extension/paddle_inference.md).
 
 接下来首先介绍如何将训练的模型转换成inference模型，然后将依次介绍文本检测、文本识别以及两者串联基于预测引擎推理。
 
@@ -41,7 +41,7 @@ inference 模型（`fluid.io.save_inference_model`保存的模型）
 
 下载超轻量级中文检测模型：
 ```
-wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar && tar xf ./ch_lite/ch_det_mv3_db.tar -C ./ch_lite/
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_train.tar && tar xf ./ch_lite/ch_ppocr_mobile_v1.1_det_train.tar -C ./ch_lite/
 ```
 上述模型是以MobileNetV3为backbone训练的DB算法，将训练好的模型转换成inference模型只需要运行如下命令：
 ```
@@ -50,7 +50,7 @@ wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar &
 # Global.checkpoints参数设置待转换的训练模型地址，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
 # Global.save_inference_dir参数设置转换的模型将保存的地址。
 
-python3 tools/export_model.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./ch_lite/det_mv3_db/best_accuracy Global.save_inference_dir=./inference/det_db/
+python3 tools/export_model.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./ch_lite/ch_ppocr_mobile_v1.1_det_train/best_accuracy Global.save_inference_dir=./inference/det_db/
 ```
 转inference模型时，使用的配置文件和训练时使用的配置文件相同。另外，还需要设置配置文件中的`Global.checkpoints`、`Global.save_inference_dir`参数。
 其中`Global.checkpoints`指向训练中保存的模型参数文件，`Global.save_inference_dir`是生成的inference模型要保存的目录。
@@ -66,7 +66,7 @@ inference/det_db/
 
 下载超轻量中文识别模型：
 ```
-wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar && tar xf ./ch_lite/ch_rec_mv3_crnn.tar -C ./ch_lite/
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_train.tar && tar xf ch_ppocr_mobile_v1.1_rec_train.tar -C ./ch_lite/
 ```
 
 识别模型转inference模型与检测的方式相同，如下：
@@ -76,7 +76,7 @@ wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar
 # Global.checkpoints参数设置待转换的训练模型地址，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
 # Global.save_inference_dir参数设置转换的模型将保存的地址。
 
-python3 tools/export_model.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints=./ch_lite/rec_mv3_crnn/best_accuracy \
+python3 tools/export_model.py -c configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml -o Global.checkpoints=./ch_lite/ch_ppocr_mobile_v1.1_rec_train/best_accuracy \
         Global.save_inference_dir=./inference/rec_crnn/
 ```
 
@@ -351,8 +351,16 @@ Predicts of ./doc/imgs_words/ch/word_4.jpg:['0', 0.9999963]
 在执行预测时，需要通过参数`image_dir`指定单张图像或者图像集合的路径、参数`det_model_dir`,`cls_model_dir`和`rec_model_dir`分别指定检测，方向分类和识别的inference模型路径。参数`use_angle_cls`用于控制是否启用方向分类模型。可视化识别结果默认保存到 ./inference_results 文件夹里面。
 
 ```
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --cls_model_dir="./inference/cls/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls true
+# 使用方向分类器
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --cls_model_dir="./inference/cls/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls=true
+
+# 不使用方向分类器
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls=false
 ```
+
+
+
+
 
 执行命令后，识别结果图像如下：
 
