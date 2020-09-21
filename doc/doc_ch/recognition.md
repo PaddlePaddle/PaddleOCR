@@ -20,9 +20,10 @@ ln -sf <path/to/dataset> <path/to/paddle_ocr>/train_data/dataset
 
 如果希望复现SRN的论文指标，需要下载离线[增广数据](https://pan.baidu.com/s/1-HSZ-ZVdqBF2HaBZ5pRAKA),提取码: y3ry。增广数据是由MJSynth和SynthText做旋转和扰动得到的。数据下载完成后请解压到 {your_path}/PaddleOCR/train_data/data_lmdb_release/training/ 路径下。
 
-* 使用自己数据集：
+* 使用自己数据集
 
 若您希望使用自己的数据进行训练，请参考下文组织您的数据。
+
 - 训练集
 
 首先请将训练图片放入同一个文件夹（train_images），并用一个txt文件（rec_gt_train.txt）记录图片路径和标签。
@@ -131,8 +132,6 @@ tar -xf rec_mv3_none_bilstm_ctc.tar && rm -rf rec_mv3_none_bilstm_ctc.tar
 *如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false*
 
 ```
-# 设置PYTHONPATH路径
-export PYTHONPATH=$PYTHONPATH:.
 # GPU训练 支持单卡，多卡训练，通过CUDA_VISIBLE_DEVICES指定卡号
 export CUDA_VISIBLE_DEVICES=0,1,2,3
 # 训练icdar15英文数据 并将训练日志保存为 tain_rec.log
@@ -160,7 +159,10 @@ PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_t
 
 | 配置文件 |  算法名称 |   backbone |   trans   |   seq      |     pred     |
 | :--------: |  :-------:   | :-------:  |   :-------:   |   :-----:   |  :-----:   |
+| [rec_chinese_lite_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml) |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  |
+| [rec_chinese_common_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_common_train_v1.1.yml) |  CRNN | ResNet34_vd |  None   |  BiLSTM |  ctc  |
 | rec_chinese_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  |
+| rec_chinese_common_train.yml |  CRNN |   ResNet34_vd |  None   |  BiLSTM |  ctc  |
 | rec_icdar15_train.yml |  CRNN |   Mobilenet_v3 large 0.5 |  None   |  BiLSTM |  ctc  |
 | rec_mv3_none_bilstm_ctc.yml |  CRNN |   Mobilenet_v3 large 0.5 |  None   |  BiLSTM |  ctc  |
 | rec_mv3_none_none_ctc.yml |  Rosetta |   Mobilenet_v3 large 0.5 |  None   |  None |  ctc  |
@@ -172,7 +174,7 @@ PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_t
 | rec_r34_vd_tps_bilstm_ctc.yml | STARNet | Resnet34_vd | tps | BiLSTM | ctc |
 | rec_r50fpn_vd_none_srn.yml | SRN | Resnet50_fpn_vd | None | rnn | srn |
 
-训练中文数据，推荐使用`rec_chinese_lite_train.yml`，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：
+训练中文数据，推荐使用[rec_chinese_lite_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml)，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：
 
 以 `rec_mv3_none_none_ctc.yml` 为例：
 ```
@@ -258,12 +260,12 @@ infer_img: doc/imgs_words/en/word_1.png
      word : joint
 ```
 
-预测使用的配置文件必须与训练一致，如您通过 `python3 tools/train.py -c configs/rec/rec_chinese_lite_train.yml` 完成了中文模型的训练，
+预测使用的配置文件必须与训练一致，如您通过 `python3 tools/train.py -c configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml` 完成了中文模型的训练，
 您可以使用如下命令进行中文模型预测。
 
 ```
 # 预测中文结果
-python3 tools/infer_rec.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy Global.infer_img=doc/imgs_words/ch/word_1.jpg
+python3 tools/infer_rec.py -c configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml -o Global.checkpoints={path/to/weights}/best_accuracy Global.infer_img=doc/imgs_words/ch/word_1.jpg
 ```
 
 预测图片：

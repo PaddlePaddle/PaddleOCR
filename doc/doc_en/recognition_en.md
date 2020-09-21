@@ -126,8 +126,6 @@ tar -xf rec_mv3_none_bilstm_ctc.tar && rm -rf rec_mv3_none_bilstm_ctc.tar
 Start training:
 
 ```
-# Set PYTHONPATH path
-export PYTHONPATH=$PYTHONPATH:.
 # GPU training Support single card and multi-card training, specify the card number through CUDA_VISIBLE_DEVICES
 export CUDA_VISIBLE_DEVICES=0,1,2,3
 # Training icdar15 English data and saving the log as train_rec.log
@@ -154,7 +152,10 @@ If the evaluation set is large, the test will be time-consuming. It is recommend
 
 | Configuration file |  Algorithm |   backbone |   trans   |   seq      |     pred     |
 | :--------: |  :-------:   | :-------:  |   :-------:   |   :-----:   |  :-----:   |
+| [rec_chinese_lite_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml) |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  |
+| [rec_chinese_common_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_common_train_v1.1.yml) |  CRNN | ResNet34_vd |  None   |  BiLSTM |  ctc  |
 | rec_chinese_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  |
+| rec_chinese_common_train.yml |  CRNN |   ResNet34_vd |  None   |  BiLSTM |  ctc  |
 | rec_icdar15_train.yml |  CRNN |   Mobilenet_v3 large 0.5 |  None   |  BiLSTM |  ctc  |
 | rec_mv3_none_bilstm_ctc.yml |  CRNN |   Mobilenet_v3 large 0.5 |  None   |  BiLSTM |  ctc  |
 | rec_mv3_none_none_ctc.yml |  Rosetta |   Mobilenet_v3 large 0.5 |  None   |  None |  ctc  |
@@ -165,7 +166,8 @@ If the evaluation set is large, the test will be time-consuming. It is recommend
 | rec_r34_vd_tps_bilstm_attn.yml | RARE | Resnet34_vd | tps | BiLSTM | attention |
 | rec_r34_vd_tps_bilstm_ctc.yml | STARNet | Resnet34_vd | tps | BiLSTM | ctc |
 
-For training Chinese data, it is recommended to use `rec_chinese_lite_train.yml`. If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:
+For training Chinese data, it is recommended to use
+训练中文数据，推荐使用[rec_chinese_lite_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml). If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:
 co
 Take `rec_mv3_none_none_ctc.yml` as an example:
 ```
@@ -222,7 +224,7 @@ The evaluation data set can be modified via `configs/rec/rec_icdar15_reader.yml`
 ```
 export CUDA_VISIBLE_DEVICES=0
 # GPU evaluation, Global.checkpoints is the weight to be tested
-python3 tools/eval.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy
+python3 tools/eval.py -c configs/rec/rec_icdar15_reader.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
 ### PREDICTION
@@ -235,7 +237,7 @@ The default prediction picture is stored in `infer_img`, and the weight is speci
 
 ```
 # Predict English results
-python3 tools/infer_rec.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy TestReader.infer_img=doc/imgs_words/en/word_1.jpg
+python3 tools/infer_rec.py -c configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml -o Global.checkpoints={path/to/weights}/best_accuracy TestReader.infer_img=doc/imgs_words/en/word_1.jpg
 ```
 
 Input image:
@@ -250,11 +252,11 @@ infer_img: doc/imgs_words/en/word_1.png
      word : joint
 ```
 
-The configuration file used for prediction must be consistent with the training. For example, you completed the training of the Chinese model with `python3 tools/train.py -c configs/rec/rec_chinese_lite_train.yml`, you can use the following command to predict the Chinese model:
+The configuration file used for prediction must be consistent with the training. For example, you completed the training of the Chinese model with `python3 tools/train.py -c configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml`, you can use the following command to predict the Chinese model:
 
 ```
 # Predict Chinese results
-python3 tools/infer_rec.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy TestReader.infer_img=doc/imgs_words/ch/word_1.jpg
+python3 tools/infer_rec.py -c configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml -o Global.checkpoints={path/to/weights}/best_accuracy TestReader.infer_img=doc/imgs_words/ch/word_1.jpg
 ```
 
 Input image:
