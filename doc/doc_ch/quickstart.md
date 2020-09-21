@@ -39,9 +39,9 @@ mkdir inference && cd inference
 # 下载超轻量级中文OCR模型的检测模型并解压
 wget https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_infer.tar && tar xf ch_ppocr_mobile_v1.1_det_infer.tar
 # 下载超轻量级中文OCR模型的识别模型并解压
-wget https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_infer.tar
+wget https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_infer.tar && tar xf ch_ppocr_mobile_v1.1_rec_infer.tar
 # 下载超轻量级中文OCR模型的文本方向分类器模型并解压
-wget https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile-v1.1.cls_infer.tar
+wget https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile-v1.1.cls_infer.tar && tar xf ch_ppocr_mobile-v1.1.cls_infer.tar
 cd ..
 ```
 
@@ -63,7 +63,7 @@ cd ..
 
 ## 3.单张图像或者图像集合预测
 
-以下代码实现了文本检测、识别串联推理，在执行预测时，需要通过参数image_dir指定单张图像或者图像集合的路径、参数det_model_dir指定检测inference模型的路径、参数rec_model_dir指定识别inference模型的路径、参数use_angle_cls指定是否使用方向分类器，参数cls_model_dir指定方向分类器inference模型的路径。可视化识别结果默认保存到 ./inference_results 文件夹里面。
+以下代码实现了文本检测、识别串联推理，在执行预测时，需要通过参数image_dir指定单张图像或者图像集合的路径、参数`det_model_dir`指定检测inference模型的路径、参数`rec_model_dir`指定识别inference模型的路径、参数`use_angle_cls`指定是否使用方向分类器、参数`cls_model_dir`指定方向分类器inference模型的路径、参数`use_space_char`指定是否使用空格数据。可视化识别结果默认保存到`./inference_results`文件夹里面。
 
 ```bash
 
@@ -86,7 +86,10 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_mode
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_ppocr_server_v1.1_det_infer/"  --rec_model_dir="./inference/ch_ppocr_server_v1.1_rec_infer/" --cls_model_dir="./inference/ch_ppocr_mobile_v1.1_cls_infer/" --use_angle_cls=True --use_space_char=True
 ```
 
-* **如果希望使用不支持空格的识别模型，在预测的时候需要注意：请将代码更新到最新版本，并添加参数 `--use_space_char=False`**
+* 注意：
+    - 如果希望使用不支持空格的识别模型，在预测的时候需要注意：请将代码更新到最新版本，并添加参数 `--use_space_char=False`。
+    - 如果不希望使用方向分类器，在预测的时候需要注意：请将代码更新到最新版本，并添加参数 `--use_angle_cls=False`。
+
 
 更多的文本检测、识别串联推理使用方式请参考文档教程中[基于Python预测引擎推理](./inference.md)。
 
