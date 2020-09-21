@@ -59,6 +59,7 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
 - Model training/evaluation
     - [Text Detection](./doc/doc_en/detection_en.md)
     - [Text Recognition](./doc/doc_en/recognition_en.md)
+    - [TEXT ANGLE CLASSIFICATION](./doc/doc_en/angle_class_en.md)
     - [Yml Configuration](./doc/doc_en/config_en.md)
     - [Tricks](./doc/doc_en/tricks_en.md)
 - Deployment

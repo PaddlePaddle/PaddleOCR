@@ -32,6 +32,7 @@ Take `rec_chinese_lite_train.yml` as an example
 |      loss_type           |    Set loss type              |       ctc         |    Supports two types of loss: ctc / attention |
 |       distort            |    Set use distort          |       false       |  Support distort type ,read [img_tools.py](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/rec/img_tools.py)                 |
 |      use_space_char          |    Wether to recognize space             |        false      |         Only support in character_type=ch mode                 |
+|      label_list          | Set the angle supported by the direction classifier | ['0','180'] | Only valid in the direction classifier |
 |      reader_yml          |    Set the reader configuration file          |  ./configs/rec/rec_icdar15_reader.yml  |  \          |
 |      pretrain_weights    |    Load pre-trained model path      |  ./pretrain_models/CRNN/best_accuracy  |  \          |
 |      checkpoints         |    Load saved model path            |       None        |    Used to load saved parameters to continue training after interruption |
