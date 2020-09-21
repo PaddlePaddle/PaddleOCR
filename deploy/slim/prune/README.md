@@ -33,7 +33,7 @@ python setup.py install
 
 ### 3. 敏感度分析训练
 
-加载预训练模型后，通过对现有模型的每个网络层进行敏感度分析，了解各网络层冗余度，从而决定每个网络层的裁剪比例。
+加载预训练模型后，通过对现有模型的每个网络层进行敏感度分析，得到敏感度文件：sensitivities_0.data，可以通过PaddleSlim提供的[接口](https://github.com/PaddlePaddle/PaddleSlim/blob/develop/paddleslim/prune/sensitive.py#L221)加载文件，获得各网络层在不同裁剪比例下的精度损失。从而了解各网络层冗余度，决定每个网络层的裁剪比例。
 敏感度分析的具体细节见：[敏感度分析](https://github.com/PaddlePaddle/PaddleSlim/blob/develop/docs/zh_cn/tutorials/image_classification_sensitivity_analysis_tutorial.md)
 
 进入PaddleOCR根目录，通过以下命令对模型进行敏感度分析训练：
@@ -42,7 +42,7 @@ python deploy/slim/prune/sensitivity_anal.py -c configs/det/det_mv3_db.yml -o Gl
 ```
 
 ### 4. 模型裁剪训练
-裁剪时通过之前的敏感度分析文件决定每个网络层的裁剪比例。在具体实现时，为了尽可能多的保留从图像中提取的低阶特征，我们跳过了backbone中靠近输入的4个卷积层。同样，为了减少由于裁剪导致的模型性能损失，我们通过之前敏感度分析所获得的敏感度表，挑选出了一些冗余较少，对裁剪较为敏感的[网络层](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/prune/pruning_and_finetune.py#L41)，并在之后的裁剪过程中选择避开这些网络层。裁剪过后finetune的过程沿用OCR检测模型原始的训练策略。
+裁剪时通过之前的敏感度分析文件决定每个网络层的裁剪比例。在具体实现时，为了尽可能多的保留从图像中提取的低阶特征，我们跳过了backbone中靠近输入的4个卷积层。同样，为了减少由于裁剪导致的模型性能损失，我们通过之前敏感度分析所获得的敏感度表，人工挑选出了一些冗余较少，对裁剪较为敏感的[网络层](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/prune/pruning_and_finetune.py#L41)（指对其进行较低比例裁剪就会导致模型性能显著下降的网络层），并在之后的裁剪过程中选择避开这些网络层。裁剪过后finetune的过程沿用OCR检测模型原始的训练策略。
 
 ```bash
 python deploy/slim/prune/pruning_and_finetune.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=./deploy/slim/prune/pretrain_models/det_mv3_db/best_accuracy Global.test_batch_size_per_card=1
