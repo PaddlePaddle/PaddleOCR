@@ -10,7 +10,7 @@ The following list can be viewed via `--help`
 
 ## INTRODUCTION TO GLOBAL PARAMETERS OF CONFIGURATION FILE
 
-Take `rec_chinese_lite_train.yml` as an example
+Take `rec_chinese_lite_train_v1.1.yml` as an example
 
 
 |         Parameter             |            Use                |      Default       |            Note            |

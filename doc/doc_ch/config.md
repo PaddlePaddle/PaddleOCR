@@ -10,7 +10,7 @@
 
 ## 配置文件 Global 参数介绍
 
-以 `rec_chinese_lite_train.yml` 为例
+以 `rec_chinese_lite_train_v1.1.yml ` 为例
 
 
 |         字段             |            用途                |      默认值       |            备注            |
