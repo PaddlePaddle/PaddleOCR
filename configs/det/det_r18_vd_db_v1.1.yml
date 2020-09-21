@@ -43,6 +43,10 @@ Optimizer:
   base_lr: 0.001
   beta1: 0.9
   beta2: 0.999
+  decay:                                                                                                                         
+    function: cosine_decay_warmup
+    step_each_epoch: 32                                                                                                         
+    total_epoch: 1200
 
 PostProcess:
   function: ppocr.postprocess.db_postprocess,DBPostProcess
