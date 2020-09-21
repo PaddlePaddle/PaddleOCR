@@ -1,6 +1,4 @@
 
-# Model compress tutorial (Quantization)
-
 ## Introduction
 
 Generally, a more complex model would achive better performance in the task, but it also leads to some redundancy in the model.
