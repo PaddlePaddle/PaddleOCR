@@ -1,5 +1,22 @@
 ## TEXT RECOGNITION
 
+- [DATA PREPARATION](#DATA_PREPARATION)
+    - [Dataset Download](#Dataset_download)
+    - [Costom Dataset](#Costom_Dataset)  
+    - [Dictionary](#Dictionary)  
+    - [Add Space Category](#Add_space_category)
+
+- [TRAINING](#TRAINING)
+    - [Data Augmentation](#Data_Augmentation)
+    - [Training](#Training)
+    - [Multi-language](#Multi_language)
+
+- [EVALUATION](#EVALUATION)
+
+- [PREDICTION](#PREDICTION)
+    - [Training engine prediction](#Training_engine_prediction)
+
+<a name="DATA_PREPARATION"></a>
 ### DATA PREPARATION
 
 
@@ -13,13 +30,14 @@ The default storage path for training data is `PaddleOCR/train_data`, if you alr
 ln -sf <path/to/dataset> <path/to/paddle_ocr>/train_data/dataset
 ```
 
-
+<a name="Dataset_download"></a>
 * Dataset download
 
 If you do not have a dataset locally, you can download it on the official website [icdar2015](http://rrc.cvc.uab.es/?ch=4&com=downloads). Also refer to [DTRB](https://github.com/clovaai/deep-text-recognition-benchmark#download-lmdb-dataset-for-traininig-and-evaluation-from-here)，download the lmdb format dataset required for benchmark
 
 If you want to reproduce the paper indicators of SRN, you need to download offline [augmented data](https://pan.baidu.com/s/1-HSZ-ZVdqBF2HaBZ5pRAKA), extraction code: y3ry. The augmented data is obtained by rotation and perturbation of mjsynth and synthtext. Please unzip the data to {your_path}/PaddleOCR/train_data/data_lmdb_Release/training/path.
 
+<a name="Costom_Dataset"></a>
 * Use your own dataset:
 
 If you want to use your own data for training, please refer to the following to organize your data.
@@ -72,7 +90,7 @@ Similar to the training set, the test set also needs to be provided a folder con
             |- word_003.jpg
             | ...
 ```
-
+<a name="Dictionary"></a>
 - Dictionary
 
 Finally, a dictionary ({word_dict_name}.txt) needs to be provided so that when the model is trained, all the characters that appear can be mapped to the dictionary index.
@@ -114,12 +132,14 @@ To customize the dict file, please modify the `character_dict_path` field in `co
 
 If you need to customize dic file, please add character_dict_path field in configs/rec/rec_icdar15_train.yml to point to your dictionary path. And set character_type to ch.
 
+<a name="Add_space_category"></a>
 - Add space category
 
 If you want to support the recognition of the `space` category, please set the `use_space_char` field in the yml file to `true`.
 
 **Note: use_space_char only takes effect when character_type=ch**
 
+<a name="TRAINING"></a>
 ### TRAINING
 
 PaddleOCR provides training scripts, evaluation scripts, and prediction scripts. In this section, the CRNN recognition model will be used as an example:
@@ -143,7 +163,7 @@ export CUDA_VISIBLE_DEVICES=0,1,2,3
 # Training icdar15 English data and saving the log as train_rec.log
 python3 tools/train.py -c configs/rec/rec_icdar15_train.yml 2>&1 | tee train_rec.log
 ```
-
+<a name="Data_Augmentation"></a>
 - Data Augmentation
 
 PaddleOCR provides a variety of data augmentation methods. If you want to add disturbance during training, please set `distort: true` in the configuration file.
@@ -152,7 +172,7 @@ The default perturbation methods are: cvtColor, blur, jitter, Gasuss noise, rand
 
 Each disturbance method is selected with a 50% probability during the training process. For specific code implementation, please refer to: [img_tools.py](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/rec/img_tools.py)
 
-
+<a name="Training"></a>
 - Training
 
 PaddleOCR supports alternating training and evaluation. You can modify `eval_batch_step` in `configs/rec/rec_icdar15_train.yml` to set the evaluation frequency. By default, it is evaluated every 500 iter and the best acc model is saved under `output/rec_CRNN/best_accuracy` during the evaluation process.
@@ -215,7 +235,8 @@ Optimizer:
 ```
 **Note that the configuration file for prediction/evaluation must be consistent with the training.**
 
--Minor language
+<a name="Multi_language"></a>
+- Multi-language
 
 PaddleOCR also provides multi-language. The configuration file in `configs/rec/multi_languages` provides multi-language configuration files. Currently, the multi-language algorithms supported by PaddleOCR are:
 
@@ -250,7 +271,7 @@ Global:
 ...
 ```
 
-
+<a name="EVALUATION"></a>
 ### EVALUATION
 
 The evaluation data set can be modified via `configs/rec/rec_icdar15_reader.yml` setting of `label_file_path` in EvalReader.
@@ -261,8 +282,10 @@ export CUDA_VISIBLE_DEVICES=0
 python3 tools/eval.py -c configs/rec/rec_icdar15_reader.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
+<a name="PREDICTION"></a>
 ### PREDICTION
 
+<a name="Training_engine_prediction"></a>
 * Training engine prediction
 
 Using the model trained by paddleocr, you can quickly get prediction through the following script.
