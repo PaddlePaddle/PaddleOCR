@@ -31,7 +31,7 @@ python setup.py install
 ```
 
 
-###2. Download Pretrain Model
+### 2. Download Pretrain Model
 PaddleOCR provides a series of trained [models](../../../doc/doc_en/models_list_en.md).
 If the model to be quantified is not in the list, you need to follow the [Regular Training](../../../doc/doc_en/quickstart_en.md) method to get the trained model.
 
