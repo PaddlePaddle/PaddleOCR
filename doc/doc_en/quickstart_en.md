@@ -9,7 +9,7 @@ Please refer to [quick installation](./installation_en.md) to configure the Padd
 
 ## 2.inference models
 
-The detection and recognition models on the mobile and server sides are as follows. For more models  (including multiple languages), please refer to [PP-OCR v1.1 series model download](./doc_ch/models_list.md)
+The detection and recognition models on the mobile and server sides are as follows. For more models  (including multiple languages), please refer to [PP-OCR v1.1 series model list](./doc_ch/models_list.md)
 
 
 | Model introduction    | Model name     |  Recommended scene      | Detection model | Direction Classifier | Recognition model |
@@ -17,7 +17,7 @@ The detection and recognition models on the mobile and server sides are as follo
 | Ultra-lightweight Chinese OCR model（8.1M） | ch_ppocr_mobile_v1.1_xx |Mobile-side/Server-side|[inference model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_infer.tar) / [pretrained model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_train.tar)|[inference model](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile-v1.1.cls_infer.tar) / [pretrained model](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile-v1.1.cls_train.tar) |[inference model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_infer.tar) / [pretrained model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_pre.tar)      |
 | Universal Chinese OCR model（155.1M）   |ch_ppocr_server_v1.1_xx|Server-side |[inference model](https://paddleocr.bj.bcebos.com/20-09-22/server/det/ch_ppocr_server_v1.1_det_infer.tar) / [pretrained model](https://paddleocr.bj.bcebos.com/20-09-22/server/det/ch_ppocr_server_v1.1_det_train.tar)          |[inference model](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile-v1.1.cls_infer.tar) / [pretrained model](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile-v1.1.cls_train.tar)    |[inference model](https://paddleocr.bj.bcebos.com/20-09-22/server/rec/ch_ppocr_server_v1.1_rec_infer.tar) / [pretrained model](https://paddleocr.bj.bcebos.com/20-09-22/server/rec/ch_ppocr_server_v1.1_rec_pre.tar)  |
 
-* If `wget` is not installed in the windows environment, you can copy the link to the browser to download when downloading the model, and uncompress it and place it in the corresponding directory.
+* If `wget` is not installed in the windows environment, you can copy the link to the browser to download when downloading the model, then uncompress it and place it in the corresponding directory.
 
 Copy the download address of the `inference model` for detection and recognition in the table above, and uncompress them.
 
