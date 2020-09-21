@@ -18,7 +18,7 @@ pip3 install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x is the version of pad
 ```python
 from paddleocr import PaddleOCR,draw_ocr
 # Paddleocr supports Chinese, English, French, German, Korean and Japanese.
-# You can set the parameter `lang` as `zh`, `en`, `french`, `german`, `korean`, `japan`
+# You can set the parameter `lang` as `ch`, `en`, `french`, `german`, `korean`, `japan`
 # to switch the language model in order.
 ocr = PaddleOCR(use_angle_cls=True, lang='en') # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs_en/img_12.jpg'
