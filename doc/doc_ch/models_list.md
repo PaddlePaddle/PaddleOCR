@@ -20,9 +20,9 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 ### 一、文本检测模型
 |模型名称|模型简介|配置文件|推理模型大小|下载地址|
 |-|-|-|-|-|
-|ch_ppocr_mobile_slim_v1.1_det|slim裁剪版超轻量模型，支持中英文、多语种文本检测|[det_mv3_db.yml](../../configs/det/det_mv3_db.yml)|1.4M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_infer.tar) / [slim模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_opt.nb)|
-|ch_ppocr_mobile_v1.1_det|原始超轻量模型，支持中英文、多语种文本检测|[det_mv3_db.yml](../../configs/det/det_mv3_db.yml)|2.6M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_train.tar)|
-|ch_ppocr_server_v1.1_det|通用模型，支持中英文、多语种文本检测，比超轻量模型更大，但效果更好|[det_r18_vd_db.yml](../../configs/det/det_r18_vd_db.yml)|47.2M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/server/det/ch_ppocr_server_v1.1_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/20-09-22/server/det/ch_ppocr_server_v1.1_det_train.tar)|
+|ch_ppocr_mobile_slim_v1.1_det|slim裁剪版超轻量模型，支持中英文、多语种文本检测|[det_mv3_db_v1.1.yml](../../configs/det/det_mv3_db_v1.1.yml)|1.4M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_infer.tar) / [slim模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_opt.nb)|
+|ch_ppocr_mobile_v1.1_det|原始超轻量模型，支持中英文、多语种文本检测|[det_mv3_db_v1.1.yml](../../configs/det/det_mv3_db_v1.1.yml)|2.6M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_train.tar)|
+|ch_ppocr_server_v1.1_det|通用模型，支持中英文、多语种文本检测，比超轻量模型更大，但效果更好|[det_r18_vd_db_v1.1.yml](../../configs/det/det_r18_vd_db_v1.1.yml)|47.2M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/server/det/ch_ppocr_server_v1.1_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/20-09-22/server/det/ch_ppocr_server_v1.1_det_train.tar)|
 
 
 <a name="文本识别模型"></a>
@@ -32,9 +32,9 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 #### 1. 中文识别模型
 |模型名称|模型简介|配置文件|推理模型大小|下载地址|
 |-|-|-|-|-|
-|ch_ppocr_mobile_slim_v1.1_rec|slim裁剪量化版超轻量模型，支持中英文、数字识别|[rec_chinese_lite_train.yml](../../configs/rec/rec_chinese_lite_train.yml)|1.6M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_infer.tar) / [slim模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_opt.nb)|
-|ch_ppocr_mobile_v1.1_rec|原始超轻量模型，支持中英文、数字识别|[rec_chinese_lite_train.yml](../../configs/rec/rec_chinese_lite_train.yml)|4.6M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_train.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_pre.tar)|
-|ch_ppocr_server_v1.1_rec|通用模型，支持中英文、数字识别|[rec_chinese_common_train.yml](../../configs/rec/rec_chinese_common_train.yml)|105M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/server/rec/ch_ppocr_server_v1.1_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/20-09-22/server/rec/ch_ppocr_server_v1.1_rec_train.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/20-09-22/server/rec/ch_ppocr_server_v1.1_rec_pre.tar)|
+|ch_ppocr_mobile_slim_v1.1_rec|slim裁剪量化版超轻量模型，支持中英文、数字识别|[rec_chinese_lite_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml)|1.6M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_infer.tar) / [slim模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_opt.nb)|
+|ch_ppocr_mobile_v1.1_rec|原始超轻量模型，支持中英文、数字识别|[rec_chinese_lite_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml)|4.6M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_train.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_pre.tar)|
+|ch_ppocr_server_v1.1_rec|通用模型，支持中英文、数字识别|[rec_chinese_common_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_common_train_v1.1.yml)|105M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/server/rec/ch_ppocr_server_v1.1_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/20-09-22/server/rec/ch_ppocr_server_v1.1_rec_train.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/20-09-22/server/rec/ch_ppocr_server_v1.1_rec_pre.tar)|
 
 **说明：** `训练模型`是基于预训练模型在真实数据与竖排合成文本数据上finetune得到的模型，在真实应用场景中有着更好的表现，`预训练模型`则是直接基于全量真实数据与合成数据训练得到，更适合用于在自己的数据集上finetune。
 
