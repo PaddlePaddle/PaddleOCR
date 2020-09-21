@@ -3,9 +3,9 @@
 
 复杂的模型有利于提高模型的性能，但也导致模型中存在一定冗余，模型裁剪通过移出网络模型中的子模型来减少这种冗余，达到减少模型计算复杂度，提高模型推理性能的目的。
 
-本教程将介绍如何使用PaddleSlim量化PaddleOCR的模型。
+本教程将介绍如何使用PaddleSlim裁剪PaddleOCR的模型。
 
-在开始本教程之前，建议先了解
+在开始本教程之前，建议先了解：
 1. [PaddleOCR模型的训练方法](../../../doc/doc_ch/quickstart.md)
 2. [分类模型裁剪教程](https://paddlepaddle.github.io/PaddleSlim/tutorials/pruning_tutorial/)
 3. [PaddleSlim 裁剪压缩API](https://paddlepaddle.github.io/PaddleSlim/api/prune_api/)
