@@ -67,6 +67,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - 模型训练/评估
     - [文本检测](./doc/doc_ch/detection.md)
     - [文本识别](./doc/doc_ch/recognition.md)
+    - [方向分类器](./doc/doc_ch/angle_class.md)
     - [yml参数配置文件介绍](./doc/doc_ch/config.md)
 - 预测部署
     - [基于pip安装whl包快速推理](./doc/doc_ch/whl.md)
@@ -75,7 +76,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [服务化部署](./deploy/hubserving/readme.md)
     - [端侧部署](./deploy/lite/readme.md)
     - [模型量化](./deploy/slim/quantization/README.md)
-    - [模型裁剪](./deploy/slim/prune/README_ch.md)
+    - [模型裁剪](./deploy/slim/prune/README.md)
     - [Benchmark](./doc/doc_ch/benchmark.md)
 - 数据集
     - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
