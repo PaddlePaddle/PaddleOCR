@@ -26,17 +26,14 @@ After training, if you want to further compress the model size and accelerate th
 
 ```bash
 git clone https://github.com/PaddlePaddle/PaddleSlim.git
-
 cd Paddleslim
-
 python setup.py install
-
 ```
 
 
 ###2. Download Pretrain Model
 PaddleOCR provides a series of trained [models](../../../doc/doc_en/models_list_en.md).
-If the model to be quantified is not in the list, you need to follow the [Regular Training](../. ./../doc/doc_en/quickstart_en.md) method to get the trained model.
+If the model to be quantified is not in the list, you need to follow the [Regular Training](../../../doc/doc_en/quickstart_en.md) method to get the trained model.
 
 
 ### 3. Quant-Aware Training
