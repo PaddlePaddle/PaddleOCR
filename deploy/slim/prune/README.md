@@ -3,7 +3,7 @@
 
 复杂的模型有利于提高模型的性能，但也导致模型中存在一定冗余，模型裁剪通过移出网络模型中的子模型来减少这种冗余，达到减少模型计算复杂度，提高模型推理性能的目的。
 
-本教程将介绍如何使用PaddleSlim量化PaddleOCR的模型。
+本教程将介绍如何使用PaddleSlim压缩PaddleOCR的模型。
 
 在开始本教程之前，建议先了解
 1. [PaddleOCR模型的训练方法](../../../doc/doc_ch/quickstart.md)
@@ -35,6 +35,17 @@ python setup.py install
 
 加载预训练模型后，通过对现有模型的每个网络层进行敏感度分析，得到敏感度文件：sensitivities_0.data，可以通过PaddleSlim提供的[接口](https://github.com/PaddlePaddle/PaddleSlim/blob/develop/paddleslim/prune/sensitive.py#L221)加载文件，获得各网络层在不同裁剪比例下的精度损失。从而了解各网络层冗余度，决定每个网络层的裁剪比例。
 敏感度分析的具体细节见：[敏感度分析](https://github.com/PaddlePaddle/PaddleSlim/blob/develop/docs/zh_cn/tutorials/image_classification_sensitivity_analysis_tutorial.md)
+敏感度文件内容格式：
+    sensitivities_0.data(Dict){
+            'layer_weight_name_0': sens_of_each_ratio(Dict){'pruning_ratio_0': acc_loss, 'pruning_ratio_1': acc_loss}
+            'layer_weight_name_1': sens_of_each_ratio(Dict){'pruning_ratio_0': acc_loss, 'pruning_ratio_1': acc_loss}
+        }
+
+    例子：
+        {
+            'conv10_expand_weights': {0.1: 0.006509952684312718, 0.2: 0.01827734339798862, 0.3: 0.014528405644659832, 0.6: 0.06536008804270439, 0.8: 0.11798612250664964, 0.7: 0.12391408417493704, 0.4: 0.030615754498018757, 0.5: 0.047105205602406594}
+            'conv10_linear_weights': {0.1: 0.05113190831455035, 0.2: 0.07705573833558801, 0.3: 0.12096721757739311, 0.6: 0.5135061352930738, 0.8: 0.7908166677143281, 0.7: 0.7272187676899062, 0.4: 0.1819252083008504, 0.5: 0.3728054727792405}
+        }
 
 进入PaddleOCR根目录，通过以下命令对模型进行敏感度分析训练：
 ```bash
@@ -42,7 +53,7 @@ python deploy/slim/prune/sensitivity_anal.py -c configs/det/det_mv3_db.yml -o Gl
 ```
 
 ### 4. 模型裁剪训练
-裁剪时通过之前的敏感度分析文件决定每个网络层的裁剪比例。在具体实现时，为了尽可能多的保留从图像中提取的低阶特征，我们跳过了backbone中靠近输入的4个卷积层。同样，为了减少由于裁剪导致的模型性能损失，我们通过之前敏感度分析所获得的敏感度表，人工挑选出了一些冗余较少，对裁剪较为敏感的[网络层](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/prune/pruning_and_finetune.py#L41)（指对其进行较低比例裁剪就会导致模型性能显著下降的网络层），并在之后的裁剪过程中选择避开这些网络层。裁剪过后finetune的过程沿用OCR检测模型原始的训练策略。
+裁剪时通过之前的敏感度分析文件决定每个网络层的裁剪比例。在具体实现时，为了尽可能多的保留从图像中提取的低阶特征，我们跳过了backbone中靠近输入的4个卷积层。同样，为了减少由于裁剪导致的模型性能损失，我们通过之前敏感度分析所获得的敏感度表，人工挑选出了一些冗余较少，对裁剪较为敏感的[网络层](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/prune/pruning_and_finetune.py#L41)（指在较低的裁剪比例下就导致很高性能损失的网络层），并在之后的裁剪过程中选择避开这些网络层。裁剪过后finetune的过程沿用OCR检测模型原始的训练策略。
 
 ```bash
 python deploy/slim/prune/pruning_and_finetune.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=./deploy/slim/prune/pretrain_models/det_mv3_db/best_accuracy Global.test_batch_size_per_card=1
