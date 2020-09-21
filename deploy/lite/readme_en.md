@@ -14,10 +14,9 @@ deployment solutions for end-side deployment issues.
 - Mobile phone (arm7 or arm8)
 
 ## 2. Build PaddleLite library
-[build for Docker](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#docker)
-[build for Linux](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#android)
-[build for MAC OS](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#id13)
-[build for windows](https://paddle-lite.readthedocs.io/zh/latest/demo_guides/x86.html#id4)
+1. [Docker](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_env.html#docker)
+2. [Linux](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_env.html#linux)
+3. [MAC OS](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_env.html#mac-os)
 
 ## 3. Download prebuild library for android and ios
 
@@ -25,7 +24,8 @@ deployment solutions for end-side deployment issues.
 |-|-|
 |Android|[arm7](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/Android/inference_lite_lib.android.armv7.gcc.c++_static.with_extra.CV_ON.tar.gz) / [arm8](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/Android/inference_lite_lib.android.armv8.gcc.c++_static.with_extra.CV_ON.tar.gz)|
 |IOS|[arm7](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/iOS/inference_lite_lib.ios.armv7.with_extra.CV_ON.tar.gz) / [arm8](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/iOS/inference_lite_lib.ios64.armv8.with_extra.CV_ON.tar.gz)|
-|x86(Linux)|[预测库](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/X86/Linux/inference_lite_lib.x86.linux.tar.gz)|
+
+note: It is recommended to build prebuild library using [Paddle-Lite](https://github.com/PaddlePaddle/Paddle-Lite) develop branch if developer wants to deploy the [quantitative](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/quantization/README_en.md) model to mobile phone.
 
 
 The structure of the prediction library is as follows:
@@ -64,9 +64,10 @@ Paddle Lite provides a variety of strategies to automatically optimize the origi
 If you use PaddleOCR 8.6M OCR model to deploy, you can directly download the optimized model.
 
 
-|Introduction|Detection model|Recognition model|Paddle Lite branch |
-|-|-|-|-|
-|lightweight Chinese OCR optimized model|[Download](https://paddleocr.bj.bcebos.com/deploy/lite/ch_det_mv3_db_opt.nb)|[Download](https://paddleocr.bj.bcebos.com/deploy/lite/ch_rec_mv3_crnn_opt.nb)|develop|
+|Version|Introduction|Model size|Detection model|Text Direction model|Recognition model|Paddle Lite branch |
+|-|-|-|-|-|-|
+|V1.1|extra-lightweight chinese OCR optimized model|3.0M|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_opt.nb)|[Download](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_cls_quant_opt.nb)|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_opt.nb)|develop|
+|V1.0|lightweight Chinese OCR optimized model|8.6M|[Download](https://paddleocr.bj.bcebos.com/deploy/lite/ch_det_mv3_db_opt.nb)|---|[Download](https://paddleocr.bj.bcebos.com/deploy/lite/ch_rec_mv3_crnn_opt.nb)|develop|
 
 If the model to be deployed is not in the above table, you need to follow the steps below to obtain the optimized model.
 
