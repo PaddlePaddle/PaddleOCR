@@ -67,7 +67,7 @@ inference/det_db/
 
 下载超轻量中文识别模型：
 ```
-wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_train.tar && tar xf ch_ppocr_mobile_v1.1_rec_train.tar -C ./ch_lite/
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_train.tar && tar xf ./ch_lite/ch_ppocr_mobile_v1.1_rec_train.tar -C ./ch_lite/
 ```
 
 识别模型转inference模型与检测的方式相同，如下：
