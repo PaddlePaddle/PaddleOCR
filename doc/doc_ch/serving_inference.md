@@ -99,8 +99,8 @@ python3 tools/export_serving_model.py -c configs/cls/cls_mv3.yml -o Global.check
 在接下来的教程中，我们将给出推理的demo模型下载链接。
 
 ```
-wget --no-check-certificate ocr_serving_model_zoo.tar.gz
-tar zxf ocr_serving_model_zoo.tar.gz
+wget --no-check-certificate https://paddleocr.bj.bcebos.com/deploy/pdserving/ocr_pdserving_suite.tar.gz
+tar zxf ocr_pdserving_suite.tar.gz
 ```
 
 
