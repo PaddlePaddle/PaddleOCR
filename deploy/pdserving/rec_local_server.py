@@ -85,7 +85,6 @@ class TextRecognizerHelper(TextRecognizer):
             rec_idx_lod = args["ctc_greedy_decoder_0.tmp_0.lod"]
             predict_lod = args["softmax_0.tmp_0.lod"]
             indices = args["indices"]
-            print("indices", indices, rec_idx_lod)
             rec_res = [['', 0.0]] * (len(rec_idx_lod) - 1)
             for rno in range(len(rec_idx_lod) - 1):
                 beg = rec_idx_lod[rno]
@@ -155,7 +154,6 @@ class OCRService(WebService):
             if ".lod" in x:
                 self.tmp_args[x] = fetch_map[x]
         rec_res = self.text_recognizer.postprocess(outputs, self.tmp_args)
-        print("rec_res", rec_res)
         res = {
             "pred_text": [x[0] for x in rec_res],
             "score": [str(x[1]) for x in rec_res]

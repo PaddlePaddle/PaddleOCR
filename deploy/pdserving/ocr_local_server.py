@@ -44,17 +44,16 @@ class TextSystemHelper(TextSystem):
         if self.use_angle_cls:
             self.clas_client = Debugger()
             self.clas_client.load_model_config(
-                "ocr_clas_server", gpu=True, profile=False)
+                global_args.cls_model_dir, gpu=True, profile=False)
             self.text_classifier = TextClassifierHelper(args)
         self.det_client = Debugger()
         self.det_client.load_model_config(
-            "serving_server_dir", gpu=True, profile=False)
+            global_args.det_model_dir, gpu=True, profile=False)
         self.fetch = ["ctc_greedy_decoder_0.tmp_0", "softmax_0.tmp_0"]
 
     def preprocess(self, img):
         feed, fetch, self.tmp_args = self.text_detector.preprocess(img)
         fetch_map = self.det_client.predict(feed, fetch)
-        print("det fetch_map", fetch_map)
         outputs = [fetch_map[x] for x in fetch]
         dt_boxes = self.text_detector.postprocess(outputs, self.tmp_args)
         if dt_boxes is None:
@@ -90,12 +89,10 @@ class OCRService(WebService):
 
     def preprocess(self, feed=[], fetch=[]):
         # TODO: to handle batch rec images
-        print("start preprocess")
         data = base64.b64decode(feed[0]["image"].encode('utf8'))
         data = np.fromstring(data, np.uint8)
         im = cv2.imdecode(data, cv2.IMREAD_COLOR)
         feed, fetch, self.tmp_args = self.text_system.preprocess(im)
-        print("ocr preprocess done")
         return feed, fetch
 
     def postprocess(self, feed={}, fetch=[], fetch_map=None):

@@ -25,7 +25,7 @@ from clas_rpc_server import TextClassifierHelper
 from det_rpc_server import TextDetectorHelper
 from rec_rpc_server import TextRecognizerHelper
 import tools.infer.utility as utility
-from tools.infer.predict_system import TextSystem
+from tools.infer.predict_system import TextSystem, sorted_boxes
 import copy
 
 global_args = utility.parse_args()
@@ -48,7 +48,7 @@ class TextSystemHelper(TextSystem):
             self.text_classifier = TextClassifierHelper(args)
         self.det_client = Client()
         self.det_client.load_client_config(
-            "ocr_det_server/serving_client_conf.prototxt")
+            "det_db_client/serving_client_conf.prototxt")
         self.det_client.connect(["127.0.0.1:9293"])
         self.fetch = ["ctc_greedy_decoder_0.tmp_0", "softmax_0.tmp_0"]
 
@@ -57,10 +57,10 @@ class TextSystemHelper(TextSystem):
         fetch_map = self.det_client.predict(feed, fetch)
         outputs = [fetch_map[x] for x in fetch]
         dt_boxes = self.text_detector.postprocess(outputs, self.tmp_args)
+        print(dt_boxes)
         if dt_boxes is None:
             return None, None
         img_crop_list = []
-        sorted_boxes = SortedBoxes()
         dt_boxes = sorted_boxes(dt_boxes)
         for bno in range(len(dt_boxes)):
             tmp_box = copy.deepcopy(dt_boxes[bno])
@@ -70,6 +70,7 @@ class TextSystemHelper(TextSystem):
             feed, fetch, self.tmp_args = self.text_classifier.preprocess(
                 img_crop_list)
             fetch_map = self.clas_client.predict(feed, fetch)
+            print(fetch_map)
             outputs = [fetch_map[x] for x in self.text_classifier.fetch]
             for x in fetch_map.keys():
                 if ".lod" in x:

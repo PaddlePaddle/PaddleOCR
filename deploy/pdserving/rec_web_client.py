@@ -37,4 +37,3 @@ for img_file in os.listdir(test_img_dir):
     data = {"feed": [{"image": image}], "fetch": ["res"]}
     r = requests.post(url=url, headers=headers, data=json.dumps(data))
     print(r.json())
-    break

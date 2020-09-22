@@ -117,7 +117,7 @@ class OCRService(WebService):
 
 if __name__ == "__main__":
     ocr_service = OCRService(name="ocr")
-    ocr_service.load_model_config("cls_server")
+    ocr_service.load_model_config(global_args.cls_model_dir)
     ocr_service.init_rec()
     if global_args.use_gpu:
         ocr_service.prepare_server(

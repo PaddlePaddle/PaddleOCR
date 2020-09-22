@@ -34,7 +34,7 @@ from ppocr.utils.character import CharacterOps
 
 class TextRecognizer(object):
     def __init__(self, args):
-        if args.use_serving is False:
+        if args.use_pdserving is False:
             self.predictor, self.input_tensor, self.output_tensors =\
                 utility.create_predictor(args, mode="rec")
         self.rec_image_shape = [int(v) for v in args.rec_image_shape.split(",")]

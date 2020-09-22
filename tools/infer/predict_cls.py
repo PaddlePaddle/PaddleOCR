@@ -33,7 +33,7 @@ from paddle import fluid
 
 class TextClassifier(object):
     def __init__(self, args):
-        if args.use_serving is False:
+        if args.use_pdserving is False:
             self.predictor, self.input_tensor, self.output_tensors = \
                 utility.create_predictor(args, mode="cls")
         self.cls_image_shape = [int(v) for v in args.cls_image_shape.split(",")]

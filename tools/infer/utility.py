@@ -37,7 +37,7 @@ def parse_args():
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     parser.add_argument("--gpu_mem", type=int, default=8000)
-    parser.add_argument("--use_serving", type=str2bool, default=False)
+    parser.add_argument("--use_pdserving", type=str2bool, default=False)
 
     # params for text detector
     parser.add_argument("--image_dir", type=str)
@@ -73,9 +73,7 @@ def parse_args():
         default="./ppocr/utils/ppocr_keys_v1.txt")
     parser.add_argument("--use_space_char", type=str2bool, default=True)
     parser.add_argument(
-        "--vis_font_path",
-        type=str,
-        default="./doc/simfang.ttf")
+        "--vis_font_path", type=str, default="./doc/simfang.ttf")
 
     # params for text classifier
     parser.add_argument("--use_angle_cls", type=str2bool, default=False)
@@ -230,8 +228,7 @@ def draw_ocr_box_txt(image, boxes, txts, font_path="./doc/simfang.ttf"):
             1])**2)
         if box_height > 2 * box_width:
             font_size = max(int(box_width * 0.9), 10)
-            font = ImageFont.truetype(
-                font_path, font_size, encoding="utf-8")
+            font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
             cur_y = box[0][1]
             for c in txt:
                 char_size = font.getsize(c)
@@ -240,8 +237,7 @@ def draw_ocr_box_txt(image, boxes, txts, font_path="./doc/simfang.ttf"):
                 cur_y += char_size[1]
         else:
             font_size = max(int(box_height * 0.8), 10)
-            font = ImageFont.truetype(
-                font_path, font_size, encoding="utf-8")
+            font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
             draw_right.text(
                 [box[0][0], box[0][1]], txt, fill=(0, 0, 0), font=font)
     img_left = Image.blend(image, img_left, 0.5)

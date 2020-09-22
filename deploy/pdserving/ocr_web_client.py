@@ -36,8 +36,5 @@ for img_file in os.listdir(test_img_dir):
     image = cv2_to_base64(image_data1)
     data = {"feed": [{"image": image}], "fetch": ["res"]}
     r = requests.post(url=url, headers=headers, data=json.dumps(data))
-    print(r)
     rjson = r.json()
     print(rjson)
-    #for x in rjson["result"]["pred_text"]:
-    #    print(x)

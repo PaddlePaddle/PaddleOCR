@@ -96,7 +96,7 @@ class DetService(WebService):
 
 if __name__ == "__main__":
     ocr_service = DetService(name="ocr")
-    ocr_service.load_model_config("serving_server_dir")
+    ocr_service.load_model_config(global_args.det_model_dir)
     ocr_service.init_det()
     if global_args.use_gpu:
         ocr_service.prepare_server(

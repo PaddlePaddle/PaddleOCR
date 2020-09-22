@@ -79,7 +79,6 @@ class TextDetectorHelper(TextDetector):
 class DetService(WebService):
     def init_det(self):
         self.text_detector = TextDetectorHelper(global_args)
-        print("init finish")
 
     def preprocess(self, feed=[], fetch=[]):
         data = base64.b64decode(feed[0]["image"].encode('utf8'))
@@ -96,7 +95,7 @@ class DetService(WebService):
 
 if __name__ == "__main__":
     ocr_service = DetService(name="ocr")
-    ocr_service.load_model_config("serving_server_dir")
+    ocr_service.load_model_config(global_args.det_model_dir)
     ocr_service.init_det()
     if global_args.use_gpu:
         ocr_service.prepare_server(
