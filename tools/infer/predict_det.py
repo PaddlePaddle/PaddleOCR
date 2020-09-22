@@ -75,9 +75,9 @@ class TextDetector(object):
         else:
             logger.info("unknown det_algorithm:{}".format(self.det_algorithm))
             sys.exit(0)
-
-        self.predictor, self.input_tensor, self.output_tensors =\
-            utility.create_predictor(args, mode="det")
+        if args.use_gpu is False:
+            self.predictor, self.input_tensor, self.output_tensors =\
+                utility.create_predictor(args, mode="det")
 
     def order_points_clockwise(self, pts):
         """

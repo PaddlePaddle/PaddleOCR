@@ -1,7 +1,7 @@
 [English](readme_en.md) | 简体中文
 
 PaddleOCR提供2种服务部署方式：
-- 基于PaddleHub Serving的部署：代码路径为"`./deploy/hubserving`"，使用方法参考[文档](../hubserving/readme.md)。	
+- 基于PaddleHub Serving的部署：代码路径为"`./deploy/hubserving`"，使用方法参考[文档](../hubserving/readme.md)。
 - 基于PaddleServing的部署：代码路径为"`./deploy/pdserving`"，按照本教程使用。
 
 # Paddle Serving 服务部署
@@ -11,7 +11,7 @@ PaddleOCR提供2种服务部署方式：
 
 ### 1. 准备环境
 我们先安装Paddle Serving相关组件
-我们推荐用户使用GPU来做Paddle Serving的OCR服务部署 
+我们推荐用户使用GPU来做Paddle Serving的OCR服务部署
 
 **CUDA版本：9.0**
 
@@ -39,7 +39,7 @@ python -m pip install paddle_serving_app paddle_serving_client
 python -m paddle_serving_app.package --get_model ocr_rec
 tar -xzvf ocr_rec.tar.gz
 python -m paddle_serving_app.package --get_model ocr_det
-tar -xzvf ocr_det.tar.gz 
+tar -xzvf ocr_det.tar.gz
 ```
 执行上述命令会下载`db_crnn_mobile`的模型，如果想要下载规模更大的`db_crnn_server`模型，可以在下载预测模型并解压之后。参考[如何从Paddle保存的预测模型转为Paddle Serving格式可部署的模型](https://github.com/PaddlePaddle/Serving/blob/develop/doc/INFERENCE_TO_SERVING_CN.md)。
 
@@ -72,7 +72,7 @@ feed_var_names, fetch_var_names = inference_model_to_serving(
 
 ```
 # cpu，gpu启动二选一，以下是cpu启动
-python -m paddle_serving_server.serve --model ocr_det_model --port 9293 
+python -m paddle_serving_server.serve --model ocr_det_model --port 9293
 python ocr_web_server.py cpu
 # gpu启动
 python -m paddle_serving_server_gpu.serve --model ocr_det_model --port 9293 --gpu_id 0

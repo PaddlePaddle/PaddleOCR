@@ -1,6 +1,6 @@
 English | [简体中文](readme.md)
 
-PaddleOCR provides 2 service deployment methods: 
+PaddleOCR provides 2 service deployment methods:
 - Based on **PaddleHub Serving**: Code path is "`./deploy/hubserving`". Please refer to the [tutorial](../hubserving/readme_en.md) for usage.
 - Based on **PaddleServing**: Code path is "`./deploy/pdserving`". Please follow this tutorial.
 
@@ -37,7 +37,7 @@ You can directly use converted model provided by `paddle_serving_app` for conven
 python -m paddle_serving_app.package --get_model ocr_rec
 tar -xzvf ocr_rec.tar.gz
 python -m paddle_serving_app.package --get_model ocr_det
-tar -xzvf ocr_det.tar.gz 
+tar -xzvf ocr_det.tar.gz
 ```
 Executing the above command will download the `db_crnn_mobile` model, which is in different format with inference model. If you want to use other models for deployment, you can refer to the [tutorial](https://github.com/PaddlePaddle/Serving/blob/develop/doc/INFERENCE_TO_SERVING_CN.md) to convert your inference model to a model which is deployable for Paddle Serving.
 
@@ -71,7 +71,7 @@ Start the standard version or the fast version service according to your actual 
 
 ```
 # start with CPU
-python -m paddle_serving_server.serve --model ocr_det_model --port 9293 
+python -m paddle_serving_server.serve --model ocr_det_model --port 9293
 python ocr_web_server.py cpu
 
 # or, with GPU

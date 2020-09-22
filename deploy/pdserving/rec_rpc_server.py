@@ -74,8 +74,14 @@ class TextRecognizerHelper(TextRecognizer):
                 gsrm_slf_attn_bias1_list.append(norm_img[3])
                 gsrm_slf_attn_bias2_list.append(norm_img[4])
                 norm_img_batch.append(norm_img[0])
-        norm_img_batch = np.concatenate(norm_img_batch, axis=0).copy()
-        feed = {"image": norm_img_batch.copy()}
+
+        norm_img_batch = np.concatenate(norm_img_batch, axis=0)
+        if img_num > 1:
+            feed = [{
+                "image": norm_img_batch[x]
+            } for x in range(norm_img_batch.shape[0])]
+        else:
+            feed = {"image": norm_img_batch[0]}
         return feed, self.fetch, args
 
     def postprocess(self, outputs, args):
@@ -165,12 +171,12 @@ class OCRService(WebService):
 
 if __name__ == "__main__":
     ocr_service = OCRService(name="ocr")
-    ocr_service.load_model_config("ocr_rec_model")
+    ocr_service.load_model_config(global_args.rec_model_dir)
     ocr_service.init_rec()
     if global_args.use_gpu:
         ocr_service.prepare_server(
             workdir="workdir", port=9292, device="gpu", gpuid=0)
     else:
         ocr_service.prepare_server(workdir="workdir", port=9292, device="cpu")
-    ocr_service.run_debugger_service()
+    ocr_service.run_rpc_service()
     ocr_service.run_web_service()

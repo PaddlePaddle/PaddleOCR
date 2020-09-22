@@ -21,12 +21,11 @@ import os
 import time
 import re
 import base64
-from clas_local_server import TextClassifierHelper
-from det_local_server import TextDetectorHelper
-from rec_local_server import TextRecognizerHelper
+from clas_rpc_server import TextClassifierHelper
+from det_rpc_server import TextDetectorHelper
+from rec_rpc_server import TextRecognizerHelper
 import tools.infer.utility as utility
-from tools.infer.predict_system import TextSystem, sorted_boxes
-from paddle_serving_app.local_predict import Debugger
+from tools.infer.predict_system import TextSystem
 import copy
 
 global_args = utility.parse_args()
@@ -42,24 +41,26 @@ class TextSystemHelper(TextSystem):
         self.text_recognizer = TextRecognizerHelper(args)
         self.use_angle_cls = args.use_angle_cls
         if self.use_angle_cls:
-            self.clas_client = Debugger()
-            self.clas_client.load_model_config(
-                "ocr_clas_server", gpu=True, profile=False)
+            self.clas_client = Client()
+            self.clas_client.load_client_config(
+                "ocr_clas_client/serving_client_conf.prototxt")
+            self.clas_client.connect(["127.0.0.1:9294"])
             self.text_classifier = TextClassifierHelper(args)
-        self.det_client = Debugger()
-        self.det_client.load_model_config(
-            "serving_server_dir", gpu=True, profile=False)
+        self.det_client = Client()
+        self.det_client.load_client_config(
+            "ocr_det_server/serving_client_conf.prototxt")
+        self.det_client.connect(["127.0.0.1:9293"])
         self.fetch = ["ctc_greedy_decoder_0.tmp_0", "softmax_0.tmp_0"]
 
     def preprocess(self, img):
         feed, fetch, self.tmp_args = self.text_detector.preprocess(img)
         fetch_map = self.det_client.predict(feed, fetch)
-        print("det fetch_map", fetch_map)
         outputs = [fetch_map[x] for x in fetch]
         dt_boxes = self.text_detector.postprocess(outputs, self.tmp_args)
         if dt_boxes is None:
             return None, None
         img_crop_list = []
+        sorted_boxes = SortedBoxes()
         dt_boxes = sorted_boxes(dt_boxes)
         for bno in range(len(dt_boxes)):
             tmp_box = copy.deepcopy(dt_boxes[bno])
@@ -90,12 +91,10 @@ class OCRService(WebService):
 
     def preprocess(self, feed=[], fetch=[]):
         # TODO: to handle batch rec images
-        print("start preprocess")
         data = base64.b64decode(feed[0]["image"].encode('utf8'))
         data = np.fromstring(data, np.uint8)
         im = cv2.imdecode(data, cv2.IMREAD_COLOR)
         feed, fetch, self.tmp_args = self.text_system.preprocess(im)
-        print("ocr preprocess done")
         return feed, fetch
 
     def postprocess(self, feed={}, fetch=[], fetch_map=None):
@@ -113,12 +112,12 @@ class OCRService(WebService):
 
 if __name__ == "__main__":
     ocr_service = OCRService(name="ocr")
-    ocr_service.load_model_config("ocr_rec_model")
+    ocr_service.load_model_config(global_args.rec_model_dir)
     ocr_service.init_rec()
     if global_args.use_gpu:
         ocr_service.prepare_server(
             workdir="workdir", port=9292, device="gpu", gpuid=0)
     else:
         ocr_service.prepare_server(workdir="workdir", port=9292, device="cpu")
-    ocr_service.run_debugger_service()
+    ocr_service.run_rpc_service()
     ocr_service.run_web_service()
