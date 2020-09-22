@@ -117,9 +117,10 @@ tar zxf ocr_serving_model_zoo.tar.gz
 
 ```
 #根据环境只需要启动其中一个就可以
-python det_rpc_server.py --use_serving True #标准版，Linux用户
-python det_local_server.py --use_serving True #快速版，Windows/Linux用户
+python det_rpc_server.py --use_pdserving True --det_model_dir det_mv_server #标准版，Linux用户
+python det_local_server.py --use_pdserving True --det_model_dir det_mv_server #快速版，Windows/Linux用户
 ```
+如果需要使用CPU版本，还需增加 `--use_gpu False`。
 
 客户端
 
@@ -155,9 +156,10 @@ python3 tools/export_serving_model.py -c configs/det/det_r50_vd_db.yml -o Global
 
 ```
 #根据环境只需要启动其中一个就可以
-python rec_rpc_server.py --use_serving True #标准版，Linux用户
-python rec_local_server.py --use_serving True #快速版，Windows/Linux用户
+python rec_rpc_server.py --use_pdserving True --rec_model_dir ocr_rec_server #标准版，Linux用户
+python rec_local_server.py --use_pdserving True --rec_model_dir ocr_rec_server #快速版，Windows/Linux用户
 ```
+如果需要使用CPU版本，还需增加 `--use_gpu False`。
 
 客户端
 
@@ -165,7 +167,7 @@ python rec_local_server.py --use_serving True #快速版，Windows/Linux用户
 python rec_web_client.py
 ```
 
-
+![](../imgs_words/ch/word_4.jpg)
 
 执行命令后，上面图像的预测结果（识别的文本和得分）会打印到屏幕上，示例如下：
 
@@ -187,9 +189,10 @@ python rec_web_client.py
 
 ```
 #根据环境只需要启动其中一个就可以
-python clas_rpc_server.py --use_serving True #标准版，Linux用户
-python clas_local_server.py --use_serving True #快速版，Windows/Linux用户
+python clas_rpc_server.py --use_pdserving True --cls_model_dir ocr_clas_server #标准版，Linux用户
+python clas_local_server.py --use_pdserving True --cls_model_dir ocr_clas_server #快速版，Windows/Linux用户
 ```
+如果需要使用CPU版本，还需增加 `--use_gpu False`。
 
 客户端
 
@@ -217,16 +220,16 @@ python rec_web_client.py
 ```
 #标准版，Linux用户
 #GPU用户
-python -m paddle_serving_server_gpu.serve --model ocr_det_model --port 9293 --gpu_id 0
-python -m paddle_serving_server_gpu.serve --model ocr_cls_model --port 9294 --gpu_id 0
-python ocr_rpc_server.py --use_serving True --use_gpu True
+python -m paddle_serving_server_gpu.serve --model det_mv_server --port 9293 --gpu_id 0
+python -m paddle_serving_server_gpu.serve --model ocr_cls_server --port 9294 --gpu_id 0
+python ocr_rpc_server.py --use_pdserving True --use_gpu True --rec_model_dir ocr_rec_server
 #CPU用户
-python -m paddle_serving_server.serve --model ocr_det_model --port 9293
-python -m paddle_serving_server.serve --model ocr_cls_model --port 9294
-python ocr_rpc_server.py --use_serving True --use_gpu False
+python -m paddle_serving_server.serve --model det_mv_server --port 9293
+python -m paddle_serving_server.serve --model ocr_cls_server --port 9294
+python ocr_rpc_server.py --use_pdserving True --use_gpu False --rec_model_dir ocr_rec_server
 
 #快速版，Windows/Linux用户
-python ocr_local_server.py --use_serving True
+python ocr_local_server.py --use_gpu False --use_pdserving True --rec_model_dir ocr_rec_server/ --det_model_dir det_mv_server/ --cls_model_dir ocr_clas_server/ --rec_char_dict_path ppocr_keys_v1.txt  --use_angle_cls True
 ```
 
 客户端
