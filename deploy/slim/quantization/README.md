@@ -1,162 +1,61 @@
-> 运行示例前请先安装1.2.0或更高版本PaddleSlim
 
-
-# 模型量化压缩教程
-
-压缩结果：
-<table>
-<thead>
-  <tr>
-    <th>序号</th>
-    <th>任务</th>
-    <th>模型</th>
-    <th>压缩策略</th>
-    <th>精度(自建中文数据集)</th>
-    <th>耗时(ms)</th>
-    <th>整体耗时(ms)</th>
-    <th>加速比</th>
-    <th>整体模型大小(M)</th>
-    <th>压缩比例</th>
-    <th>下载链接</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td rowspan="2">0</td>
-    <td>检测</td>
-    <td>MobileNetV3_DB</td>
-    <td>无</td>
-    <td>61.7</td>
-    <td>224</td>
-    <td rowspan="2">375</td>
-    <td rowspan="2">-</td>
-    <td rowspan="2">8.6</td>
-    <td rowspan="2">-</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>识别</td>
-    <td>MobileNetV3_CRNN</td>
-    <td>无</td>
-    <td>62.0</td>
-    <td>9.52</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td rowspan="2">1</td>
-    <td>检测</td>
-    <td>SlimTextDet</td>
-    <td>PACT量化训练</td>
-    <td>62.1</td>
-    <td>195</td>
-    <td rowspan="2">348</td>
-    <td rowspan="2">8%</td>
-    <td rowspan="2">2.8</td>
-    <td rowspan="2">67.82%</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>识别</td>
-    <td>SlimTextRec</td>
-    <td>PACT量化训练</td>
-    <td>61.48</td>
-    <td>8.6</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td rowspan="2">2</td>
-    <td>检测</td>
-    <td>SlimTextDet_quat_pruning</td>
-    <td>剪裁+PACT量化训练</td>
-    <td>60.86</td>
-    <td>142</td>
-    <td rowspan="2">288</td>
-    <td rowspan="2">30%</td>
-    <td rowspan="2">2.8</td>
-    <td rowspan="2">67.82%</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>识别</td>
-    <td>SlimTextRec</td>
-    <td>PACT量化训练</td>
-    <td>61.48</td>
-    <td>8.6</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td rowspan="2">3</td>
-    <td>检测</td>
-    <td>SlimTextDet_pruning</td>
-    <td>剪裁</td>
-    <td>61.57</td>
-    <td>138</td>
-    <td rowspan="2">295</td>
-    <td rowspan="2">27%</td>
-    <td rowspan="2">2.9</td>
-    <td rowspan="2">66.28%</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>识别</td>
-    <td>SlimTextRec</td>
-    <td>PACT量化训练</td>
-    <td>61.48</td>
-    <td>8.6</td>
-    <td></td>
-  </tr>
-</tbody>
-</table>
-
-
-
-## 概述
-
+## 介绍
 复杂的模型有利于提高模型的性能，但也导致模型中存在一定冗余，模型量化将全精度缩减到定点数减少这种冗余，达到减少模型计算复杂度，提高模型推理性能的目的。
+模型量化可以在基本不损失模型的精度的情况下，将FP32精度的模型参数转换为Int8精度，减小模型参数大小并加速计算，使用量化后的模型在移动端等部署时更具备速度优势。
 
-该示例使用PaddleSlim提供的[量化压缩API](https://paddlepaddle.github.io/PaddleSlim/api/quantization_api/)对OCR模型进行压缩。
-在阅读该示例前，建议您先了解以下内容：
+本教程将介绍如何使用飞桨模型压缩库PaddleSlim做PaddleOCR模型的压缩。
+PaddleSlim（项目链接：https://github.com/PaddlePaddle/PaddleSlim）集成了模型剪枝、量化（包括量化训练和离线量化）、蒸馏和神经网络搜索等多种业界常用且领先的模型压缩功能，如果您感兴趣，可以关注并了解。
 
-- [OCR模型的常规训练方法](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/detection.md)
-- [PaddleSlim使用文档](https://paddleslim.readthedocs.io/zh_CN/latest/index.html)
-
+在开始本教程之前，建议先了解[PaddleOCR模型的训练方法](../../../doc/doc_ch/quickstart.md)以及[PaddleSlim](https://paddleslim.readthedocs.io/zh_CN/latest/index.html)
 
 
-## 安装PaddleSlim
+## 快速开始
+量化多适用于轻量模型在移动端的部署，当训练出一个模型后，如果希望进一步的压缩模型大小并加速预测，可使用量化的方法压缩模型。
+
+模型量化主要包括五个步骤：
+1. 安装 PaddleSlim
+2. 准备训练好的模型
+3. 量化训练
+4. 导出量化推理模型
+5. 量化模型预测部署
+
+### 1. 安装PaddleSlim
 
 ```bash
 git clone https://github.com/PaddlePaddle/PaddleSlim.git
-
 cd Paddleslim
-
 python setup.py install
 ```
 
+### 2. 准备训练好的模型
+
+PaddleOCR提供了一系列训练好的[模型](../../../doc/doc_ch/models_list.md)，如果待量化的模型不在列表中，需要按照[常规训练](../../../doc/doc_ch/quickstart.md)方法得到训练好的模型。
+
+### 3. 量化训练
+量化训练包括离线量化训练和在线量化训练，在线量化训练效果更好，需加载预训练模型，在定义好量化策略后即可对模型进行量化。
 
 
-## 获取预训练模型
-
-[识别预训练模型下载地址]()
-
-[检测预训练模型下载地址]()
-
-
-## 量化训练
-加载预训练模型后，在定义好量化策略后即可对模型进行量化。量化相关功能的使用具体细节见：[模型量化](https://paddleslim.readthedocs.io/zh_CN/latest/api_cn/quantization_api.html)
-
-进入PaddleOCR根目录，通过以下命令对模型进行量化：
-
+量化训练的代码位于slim/quantization/quant/py 中，比如训练检测模型，训练指令如下：
 ```bash
-python deploy/slim/quantization/quant.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=det_mv3_db/best_accuracy Global.save_model_dir=./output/quant_model
+python deploy/slim/quantization/quant.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights='your trained model'   Global.save_model_dir=./output/quant_model
+
+# 比如下载提供的训练模型
+wget https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_train.tar
+tar xf ch_ppocr_mobile_v1.1_det_train.tar
+python deploy/slim/quantization/quant.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=./ch_ppocr_mobile_v1.1_det_train/best_accuracy   Global.save_model_dir=./output/quant_model
+
 ```
+如果要训练识别模型的量化，修改配置文件和加载的模型参数即可。
 
-
-
-
-## 导出模型
+### 4. 导出模型
 
 在得到量化训练保存的模型后，我们可以将其导出为inference_model，用于预测部署：
 
 ```bash
 python deploy/slim/quantization/export_model.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=output/quant_model/best_accuracy Global.save_model_dir=./output/quant_inference_model
 ```
+
+### 5. 量化模型部署
+
+上述步骤导出的量化模型，参数精度仍然是FP32，但是参数的数值范围是int8，导出的模型可以通过PaddleLite的opt模型转换工具完成模型转换。
+量化模型部署的可参考 [移动端模型部署](../lite/readme.md)

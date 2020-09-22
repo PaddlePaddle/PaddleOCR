@@ -1,4 +1,5 @@
 # 更新
+- 2020.9.22 更新PP-OCR技术文章，https://arxiv.org/abs/2009.09941
 - 2020.9.19 更新超轻量压缩ppocr_mobile_slim系列模型，整体模型3.5M(详见[PP-OCR Pipline](#PP-OCR))，适合在移动端部署使用。[模型下载](#模型下载)
 - 2020.9.17 更新超轻量ppocr_mobile系列和通用ppocr_server系列中英文ocr模型，媲美商业效果。[模型下载](#模型下载)
 - 2020.8.26 更新OCR相关的84个常见问题及解答，具体参考[FAQ](./doc/doc_ch/FAQ.md)
