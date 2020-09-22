@@ -160,7 +160,7 @@ def main(args):
             txts = [rec_res[i][0] for i in range(len(rec_res))]
             scores = [rec_res[i][1] for i in range(len(rec_res))]
 
-            draw_img = draw_ocr(
+            draw_img = draw_ocr_box_txt(
                 image,
                 boxes,
                 txts,

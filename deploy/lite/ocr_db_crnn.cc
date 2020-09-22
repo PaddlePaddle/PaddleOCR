@@ -290,7 +290,7 @@ RunDetModel(std::shared_ptr<PaddlePredictor> predictor, cv::Mat img,
   cv::Mat bit_map;
   cv::threshold(cbuf_map, bit_map, threshold, maxvalue, cv::THRESH_BINARY);
   cv::Mat dilation_map;
-  cv::Mat dila_ele = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(2,2));
+  cv::Mat dila_ele = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(2, 2));
   cv::dilate(bit_map, dilation_map, dila_ele);
   auto boxes = BoxesFromBitmap(pred_map, dilation_map, Config);
 
@@ -366,7 +366,8 @@ std::map<std::string, double> LoadConfigTxt(std::string config_path) {
 int main(int argc, char **argv) {
   if (argc < 5) {
     std::cerr << "[ERROR] usage: " << argv[0]
-              << " det_model_file rec_model_file image_path\n";
+              << " det_model_file cls_model_file rec_model_file image_path "
+                 "charactor_dict\n";
     exit(1);
   }
   std::string det_model_file = argv[1];
