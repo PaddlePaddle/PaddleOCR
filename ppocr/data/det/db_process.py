@@ -22,7 +22,7 @@ logger = initial_logger()
 
 import tools.infer.utility as utility
 args = utility.parse_args()
-if args.use_serving is False:
+if args.use_pdserving is False:
     from .data_augment import AugmentData
     from .random_crop_data import RandomCropData
     from .make_shrink_map import MakeShrinkMap
