@@ -29,7 +29,7 @@ PaddleOCR aims to create rich, leading, and practical OCR tools that help users 
     <img src="doc/imgs_results/1103.jpg" width="800">
 </div>
 
-The above picture is the effect display of the general ppocr_server model. For more effect pictures, please see [More visualization](./doc/doc_en/visualization_en.md).
+The above pictures are the visualizations of the general ppocr_server model. For more effect pictures, please see [More visualizations](./doc/doc_en/visualization_en.md).
 
 ## Quick Experience
 
