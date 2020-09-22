@@ -20,10 +20,13 @@ import sys
 from ppocr.utils.utility import initial_logger, check_and_read_gif
 logger = initial_logger()
 
-from .data_augment import AugmentData
-from .random_crop_data import RandomCropData
-from .make_shrink_map import MakeShrinkMap
-from .make_border_map import MakeBorderMap
+import tools.infer.utility as utility
+args = utility.parse_args()
+if args.use_serving is False:
+    from .data_augment import AugmentData
+    from .random_crop_data import RandomCropData
+    from .make_shrink_map import MakeShrinkMap
+    from .make_border_map import MakeBorderMap
 
 
 class DBProcessTrain(object):
