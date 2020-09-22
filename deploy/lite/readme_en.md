@@ -66,7 +66,7 @@ If you use PaddleOCR 8.6M OCR model to deploy, you can directly download the opt
 
 |Version|Introduction|Model size|Detection model|Text Direction model|Recognition model|Paddle Lite branch |
 |-|-|-|-|-|-|
-|V1.1|extra-lightweight chinese OCR optimized model|3.0M|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_opt.nb)|[Download](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_cls_quant_opt.nb)|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_opt.nb)|develop|
+|V1.1|extra-lightweight chinese OCR optimized model|3.5M|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_opt.nb)|[Download](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_cls_quant_opt.nb)|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_opt.nb)|develop|
 |V1.0|lightweight Chinese OCR optimized model|8.6M|[Download](https://paddleocr.bj.bcebos.com/deploy/lite/ch_det_mv3_db_opt.nb)|---|[Download](https://paddleocr.bj.bcebos.com/deploy/lite/ch_rec_mv3_crnn_opt.nb)|develop|
 
 If the model to be deployed is not in the above table, you need to follow the steps below to obtain the optimized model.
@@ -86,6 +86,14 @@ The `opt` can optimize the inference model saved by paddle.io.save_inference_mod
 
 The usage of opt is as follows：
 ```
+# 【Recommend】V1.1 is better than V1.0. steps for convert V1.1 model to nb file are as follows
+wget  https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_infer.tar && tar xf  ch_ppocr_mobile_v1.1_det_prune_infer.tar
+wget  https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_infer.tar && tar xf  ch_ppocr_mobile_v1.1_rec_quant_infer.tar
+
+./opt --model_file=./ch_ppocr_mobile_v1.1_det_prune_infer/model  --param_file=./ch_ppocr_mobile_v1.1_det_prune_infer/params  --optimize_out=./ch_ppocr_mobile_v1.1_det_prune_opt --valid_targets=arm
+./opt --model_file=./ch_ppocr_mobile_v1.1_rec_quant_infer/model  --param_file=./ch_ppocr_mobile_v1.1_rec_quant_infer/params  --optimize_out=./ch_ppocr_mobile_v1.1_rec_quant_opt --valid_targets=arm
+
+# or use V1.0 model
 wget  https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db_infer.tar && tar xf ch_det_mv3_db_infer.tar
 wget  https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar xf ch_rec_mv3_crnn_infer.tar
 
@@ -94,8 +102,7 @@ wget  https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar
 
 ```
 
-When the above code command is completed, there will be two more files `ch_det_mv3_db_opt.nb`,
-`ch_rec_mv3_crnn_opt.nb` in the current directory, which is the converted model file.
+When the above code command is completed, there will be two more files `.nb` in the current directory, which is the converted model file.
 
 ## 5. Run optimized model on Phone
 
@@ -154,8 +161,9 @@ The structure of the OCR demo is as follows after the above command is executed:
 ```
 demo/cxx/ocr/
 |-- debug/  
-|   |--ch_det_mv3_db_opt.nb             Detection model
-|   |--ch_rec_mv3_crnn_opt.nb           Recognition model
+|   |--ch_ppocr_mobile_v1.1_det_prune_opt.nb           Detection model
+|   |--ch_ppocr_mobile_v1.1_rec_quant_opt.nb           Recognition model
+|   |--ch_ppocr_mobile_cls_quant_opt.nb                Text direction classification model
 |   |--11.jpg                           Image for OCR
 |   |--ppocr_keys_v1.txt                Dictionary file
 |   |--libpaddle_light_api_shared.so    C++ .so file
@@ -181,7 +189,7 @@ adb shell
 cd /data/local/tmp/debug
 export LD_LIBRARY_PATH=/data/local/tmp/debug:$LD_LIBRARY_PATH
 # run model
-./ocr_db_crnn ch_det_mv3_db_opt.nb  ch_rec_mv3_crnn_opt.nb ./11.jpg  ppocr_keys_v1.txt
+ ./ocr_db_crnn ch_ppocr_mobile_v1.1_det_prune_opt.nb  ch_ppocr_mobile_v1.1_rec_quant_opt.nb  ch_ppocr_mobile_cls_quant_opt.nb  ./11.jpg  ppocr_keys_v1.txt
 ```
 
 The outputs are as follows:

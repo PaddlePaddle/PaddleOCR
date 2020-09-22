@@ -83,7 +83,7 @@ Paddle-Lite 提供了多种策略来自动优化原始的模型，其中包括�
 
 |模型版本|模型简介|模型大小|检测模型|文本方向分类模型|识别模型|Paddle-Lite版本|
 |-|-|-|-|-|-|-|
-|V1.1|超轻量中文OCR 移动端模型|3.0M|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_cls_quant_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_opt.nb)|develop|
+|V1.1|超轻量中文OCR 移动端模型|3.5M|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_cls_quant_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_opt.nb)|develop|
 |V1.0|轻量级中文OCR 移动端模型|8.6M|[下载地址](https://paddleocr.bj.bcebos.com/deploy/lite/ch_det_mv3_db_opt.nb)|---|[下载地址](https://paddleocr.bj.bcebos.com/deploy/lite/ch_rec_mv3_crnn_opt.nb)|develop|
 
 注意：V1.1 3.0M 轻量模型是使用PaddleSlim优化后的，需要配合Paddle-Lite最新预测库使用。
@@ -123,18 +123,27 @@ cd build.opt/lite/api/
 下面以PaddleOCR的超轻量中文模型为例，介绍使用编译好的opt文件完成inference模型到Paddle-Lite优化模型的转换。
 
 ```
-# 下载PaddleOCR的超轻量文inference模型，并解压
+# 【推荐】 下载PaddleOCR V1.1版本的中英文 inference模型，V1.1比1.0效果更好，模型更小
+wget  https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_infer.tar && tar xf  ch_ppocr_mobile_v1.1_det_prune_infer.tar
+wget  https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_infer.tar && tar xf  ch_ppocr_mobile_v1.1_rec_quant_infer.tar
+# 转换V1.1检测模型
+./opt --model_file=./ch_ppocr_mobile_v1.1_det_prune_infer/model  --param_file=./ch_ppocr_mobile_v1.1_det_prune_infer/params  --optimize_out=./ch_ppocr_mobile_v1.1_det_prune_opt --valid_targets=arm
+# 转换V1.1识别模型
+./opt --model_file=./ch_ppocr_mobile_v1.1_rec_quant_infer/model  --param_file=./ch_ppocr_mobile_v1.1_rec_quant_infer/params  --optimize_out=./ch_ppocr_mobile_v1.1_rec_quant_opt --valid_targets=arm
+
+
+# 或下载使用PaddleOCR的V1.0超轻量中英文 inference模型，解压并转换为移动端支持的模型
 wget  https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db_infer.tar && tar xf ch_det_mv3_db_infer.tar
 wget  https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar xf ch_rec_mv3_crnn_infer.tar
-
-# 转换检测模型
+# 转换V1.0检测模型
 ./opt --model_file=./ch_det_mv3_db/model --param_file=./ch_det_mv3_db/params --optimize_out_type=naive_buffer --optimize_out=./ch_det_mv3_db_opt --valid_targets=arm
-
-# 转换识别模型
+# 转换V1.0识别模型
 ./opt --model_file=./ch_rec_mv3_crnn/model --param_file=./ch_rec_mv3_crnn/params --optimize_out_type=naive_buffer --optimize_out=./ch_rec_mv3_crnn_opt --valid_targets=arm
 ```
 
-转换成功后，当前目录下会多出`ch_det_mv3_db_opt.nb`, `ch_rec_mv3_crnn_opt.nb`结尾的文件，即是转换成功的模型文件。
+# 转换V1.1检测模型
+
+转换成功后，当前目录下会多出`.nb`结尾的文件，即是转换成功的模型文件。
 
 注意：使用paddle-lite部署时，需要使用opt工具优化后的模型。 opt 转换的输入模型是paddle保存的inference模型
 
@@ -184,15 +193,16 @@ wget  https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar
  ```
 
  准备测试图像，以`PaddleOCR/doc/imgs/11.jpg`为例，将测试的图像复制到`demo/cxx/ocr/debug/`文件夹下。
- 准备lite opt工具优化后的模型文件，比如使用`ch_det_mv3_db_opt.nb，ch_rec_mv3_crnn_opt.nb`，模型文件放置在`demo/cxx/ocr/debug/`文件夹下。
+ 准备lite opt工具优化后的模型文件，比如使用`ch_ppocr_mobile_v1.1_det_prune_opt.nb，ch_ppocr_mobile_v1.1_rec_quant_opt.nb, ch_ppocr_mobile_cls_quant_opt.nb`，模型文件放置在`demo/cxx/ocr/debug/`文件夹下。
 
  执行完成后，ocr文件夹下将有如下文件格式：
 
 ```
 demo/cxx/ocr/
 |-- debug/  
-|   |--ch_det_mv3_db_opt.nb             优化后的检测模型文件
-|   |--ch_rec_mv3_crnn_opt.nb           优化后的识别模型文件
+|   |--ch_ppocr_mobile_v1.1_det_prune_opt.nb           优化后的检测模型文件
+|   |--ch_ppocr_mobile_v1.1_rec_quant_opt.nb           优化后的识别模型文件
+|   |--ch_ppocr_mobile_cls_quant_opt.nb                优化后的文字方向分类器模型文件
 |   |--11.jpg                           待测试图像
 |   |--ppocr_keys_v1.txt                字典文件
 |   |--libpaddle_light_api_shared.so    C++预测库文件
@@ -223,7 +233,7 @@ demo/cxx/ocr/
  adb shell
  cd /data/local/tmp/debug
  export LD_LIBRARY_PATH=/data/local/tmp/debug:$LD_LIBRARY_PATH
- ./ocr_db_crnn ch_det_mv3_db_opt.nb  ch_rec_mv3_crnn_opt.nb ./11.jpg  ppocr_keys_v1.txt
+ ./ocr_db_crnn ch_ppocr_mobile_v1.1_det_prune_opt.nb  ch_ppocr_mobile_v1.1_rec_quant_opt.nb  ch_ppocr_mobile_cls_quant_opt.nb  ./11.jpg  ppocr_keys_v1.txt
  ```
 
  如果对代码做了修改，则需要重新编译并push到手机上。
