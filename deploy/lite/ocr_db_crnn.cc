@@ -114,6 +114,7 @@ cv::Mat RunClsModel(cv::Mat img, std::shared_ptr<PaddlePredictor> predictor_cls,
   cv::Mat srcimg;
   img.copyTo(srcimg);
   cv::Mat crop_img;
+  img.copyTo(crop_img);
   cv::Mat resize_img;
 
   int index = 0;
@@ -154,7 +155,8 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
                  std::vector<std::string> &rec_text,
                  std::vector<float> &rec_text_score,
                  std::vector<std::string> charactor_dict,
-                 std::shared_ptr<PaddlePredictor> predictor_cls) {
+                 std::shared_ptr<PaddlePredictor> predictor_cls,
+                 int use_direction_classify) {
   std::vector<float> mean = {0.5f, 0.5f, 0.5f};
   std::vector<float> scale = {1 / 0.5f, 1 / 0.5f, 1 / 0.5f};
 
@@ -166,7 +168,9 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
   int index = 0;
   for (int i = boxes.size() - 1; i >= 0; i--) {
     crop_img = GetRotateCropImage(srcimg, boxes[i]);
-    crop_img = RunClsModel(crop_img, predictor_cls);
+    if (use_direction_classify >= 1) {
+      crop_img = RunClsModel(crop_img, predictor_cls);
+    }
     float wh_ratio =
         static_cast<float>(crop_img.cols) / static_cast<float>(crop_img.rows);
 
@@ -378,6 +382,7 @@ int main(int argc, char **argv) {
 
   //// load config from txt file
   auto Config = LoadConfigTxt("./config.txt");
+  int use_direction_classify = int(Config["use_direction_classify"]);
 
   auto start = std::chrono::system_clock::now();
 
@@ -393,8 +398,9 @@ int main(int argc, char **argv) {
 
   std::vector<std::string> rec_text;
   std::vector<float> rec_text_score;
+
   RunRecModel(boxes, srcimg, rec_predictor, rec_text, rec_text_score,
-              charactor_dict, cls_predictor);
+              charactor_dict, cls_predictor, use_direction_classify);
 
   auto end = std::chrono::system_clock::now();
   auto duration =

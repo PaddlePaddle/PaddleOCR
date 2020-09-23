@@ -178,6 +178,28 @@ demo/cxx/ocr/
 
 ```
 
+#### Note:
+1. ppocr_keys_v1.txt is a Chinese dictionary file.
+If the nb model is used for English recognition or other language recognition, dictionary file should be replaced with a dictionary of the corresponding language.
+PaddleOCR provides a variety of dictionaries under ppocr/utils/, including:
+```
+french_dict.txt     # french
+german_dict.txt     # german
+ic15_dict.txt       # english
+japan_dict.txt      # japan
+korean_dict.txt     # korean
+ppocr_keys_v1.txt   # chinese
+```
+
+2. `config.txt`  of the detector and classifier, as shown below:
+```
+max_side_len  960         #  Limit the maximum image height and width to 960
+det_db_thresh  0.3        # Used to filter the binarized image of DB prediction, setting 0.-0.3 has no obvious effect on the result
+det_db_box_thresh  0.5    # DDB post-processing filter box threshold, if there is a missing box detected, it can be reduced as appropriate
+det_db_unclip_ratio  1.6  # Indicates the compactness of the text box, the smaller the value, the closer the text box to the text
+use_direction_classify  1  # Whether to use the direction classifier, 0 means not to use, 1 means to use
+```
+
 5. Run Model on phone
 
 ```
