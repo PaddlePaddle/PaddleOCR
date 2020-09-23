@@ -20,7 +20,6 @@ import sys
 from ppocr.utils.utility import initial_logger, check_and_read_gif
 logger = initial_logger()
 
-import tools.infer.utility as utility
 from .data_augment import AugmentData
 from .random_crop_data import RandomCropData
 from .make_shrink_map import MakeShrinkMap
