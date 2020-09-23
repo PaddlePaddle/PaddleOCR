@@ -34,14 +34,15 @@ from ppocr.utils.character import CharacterOps
 
 class TextRecognizer(object):
     def __init__(self, args):
-        self.predictor, self.input_tensor, self.output_tensors =\
-            utility.create_predictor(args, mode="rec")
+        if args.use_pdserving is False:
+            self.predictor, self.input_tensor, self.output_tensors =\
+                utility.create_predictor(args, mode="rec")
+            self.use_zero_copy_run = args.use_zero_copy_run
         self.rec_image_shape = [int(v) for v in args.rec_image_shape.split(",")]
         self.character_type = args.rec_char_type
         self.rec_batch_num = args.rec_batch_num
         self.rec_algorithm = args.rec_algorithm
         self.text_len = args.max_text_length
-        self.use_zero_copy_run = args.use_zero_copy_run
         char_ops_params = {
             "character_type": args.rec_char_type,
             "character_dict_path": args.rec_char_dict_path,
@@ -320,7 +321,7 @@ def main(args):
         print(e)
         logger.info(
             "ERROR!!!! \n"
-            "Please read the FAQ：https://github.com/PaddlePaddle/PaddleOCR#faq \n"
+            "Please read the FAQ: https://github.com/PaddlePaddle/PaddleOCR#faq \n"
             "If your model has tps module:  "
             "TPS does not support variable shape.\n"
             "Please set --rec_image_shape='3,32,100' and --rec_char_type='en' ")

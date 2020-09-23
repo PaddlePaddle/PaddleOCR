@@ -44,12 +44,11 @@ class TextDetectorHelper(TextDetector):
             self.fetch = ["save_infer_model/scale_0.tmp_0"]
 
     def preprocess(self, img):
-        img = img.copy()
         im, ratio_list = self.preprocess_op(img)
         if im is None:
             return None, 0
         return {
-            "image": im.copy()
+            "image": im[0]
         }, self.fetch, {
             "ratio_list": [ratio_list],
             "ori_im": img
@@ -103,5 +102,5 @@ if __name__ == "__main__":
             workdir="workdir", port=9292, device="gpu", gpuid=0)
     else:
         ocr_service.prepare_server(workdir="workdir", port=9292, device="cpu")
-    ocr_service.run_debugger_service()
+    ocr_service.run_rpc_service()
     ocr_service.run_web_service()

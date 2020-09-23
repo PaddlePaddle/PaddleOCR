@@ -25,7 +25,6 @@ from tools.infer.predict_rec import TextRecognizer
 from params import read_params
 
 global_args = read_params()
-
 if global_args.use_gpu:
     from paddle_serving_server_gpu.web_service import WebService
 else:
@@ -75,8 +74,14 @@ class TextRecognizerHelper(TextRecognizer):
                 gsrm_slf_attn_bias1_list.append(norm_img[3])
                 gsrm_slf_attn_bias2_list.append(norm_img[4])
                 norm_img_batch.append(norm_img[0])
-        norm_img_batch = np.concatenate(norm_img_batch, axis=0).copy()
-        feed = {"image": norm_img_batch.copy()}
+
+        norm_img_batch = np.concatenate(norm_img_batch, axis=0)
+        if img_num > 1:
+            feed = [{
+                "image": norm_img_batch[x]
+            } for x in range(norm_img_batch.shape[0])]
+        else:
+            feed = {"image": norm_img_batch[0]}
         return feed, self.fetch, args
 
     def postprocess(self, outputs, args):
@@ -171,5 +176,5 @@ if __name__ == "__main__":
             workdir="workdir", port=9292, device="gpu", gpuid=0)
     else:
         ocr_service.prepare_server(workdir="workdir", port=9292, device="cpu")
-    ocr_service.run_debugger_service()
+    ocr_service.run_rpc_service()
     ocr_service.run_web_service()

@@ -21,16 +21,14 @@ import os
 import time
 import re
 import base64
-from clas_local_server import TextClassifierHelper
-from det_local_server import TextDetectorHelper
-from rec_local_server import TextRecognizerHelper
+from clas_rpc_server import TextClassifierHelper
+from det_rpc_server import TextDetectorHelper
+from rec_rpc_server import TextRecognizerHelper
 from tools.infer.predict_system import TextSystem, sorted_boxes
-from paddle_serving_app.local_predict import Debugger
 import copy
 from params import read_params
 
 global_args = read_params()
-
 if global_args.use_gpu:
     from paddle_serving_server_gpu.web_service import WebService
 else:
@@ -43,13 +41,15 @@ class TextSystemHelper(TextSystem):
         self.text_recognizer = TextRecognizerHelper(args)
         self.use_angle_cls = args.use_angle_cls
         if self.use_angle_cls:
-            self.clas_client = Debugger()
-            self.clas_client.load_model_config(
-                global_args.cls_model_dir, gpu=True, profile=False)
+            self.clas_client = Client()
+            self.clas_client.load_client_config(
+                "ocr_clas_client/serving_client_conf.prototxt")
+            self.clas_client.connect(["127.0.0.1:9294"])
             self.text_classifier = TextClassifierHelper(args)
-        self.det_client = Debugger()
-        self.det_client.load_model_config(
-            global_args.det_model_dir, gpu=True, profile=False)
+        self.det_client = Client()
+        self.det_client.load_client_config(
+            "det_db_client/serving_client_conf.prototxt")
+        self.det_client.connect(["127.0.0.1:9293"])
         self.fetch = ["ctc_greedy_decoder_0.tmp_0", "softmax_0.tmp_0"]
 
     def preprocess(self, img):
@@ -57,6 +57,7 @@ class TextSystemHelper(TextSystem):
         fetch_map = self.det_client.predict(feed, fetch)
         outputs = [fetch_map[x] for x in fetch]
         dt_boxes = self.text_detector.postprocess(outputs, self.tmp_args)
+        print(dt_boxes)
         if dt_boxes is None:
             return None, None
         img_crop_list = []
@@ -69,6 +70,7 @@ class TextSystemHelper(TextSystem):
             feed, fetch, self.tmp_args = self.text_classifier.preprocess(
                 img_crop_list)
             fetch_map = self.clas_client.predict(feed, fetch)
+            print(fetch_map)
             outputs = [fetch_map[x] for x in self.text_classifier.fetch]
             for x in fetch_map.keys():
                 if ".lod" in x:
@@ -117,5 +119,5 @@ if __name__ == "__main__":
             workdir="workdir", port=9292, device="gpu", gpuid=0)
     else:
         ocr_service.prepare_server(workdir="workdir", port=9292, device="cpu")
-    ocr_service.run_debugger_service()
+    ocr_service.run_rpc_service()
     ocr_service.run_web_service()

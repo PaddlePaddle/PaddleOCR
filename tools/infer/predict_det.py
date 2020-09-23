@@ -42,7 +42,6 @@ class TextDetector(object):
     def __init__(self, args):
         max_side_len = args.det_max_side_len
         self.det_algorithm = args.det_algorithm
-        self.use_zero_copy_run = args.use_zero_copy_run
         preprocess_params = {'max_side_len': max_side_len}
         postprocess_params = {}
         if self.det_algorithm == "DB":
@@ -75,9 +74,10 @@ class TextDetector(object):
         else:
             logger.info("unknown det_algorithm:{}".format(self.det_algorithm))
             sys.exit(0)
-
-        self.predictor, self.input_tensor, self.output_tensors =\
-            utility.create_predictor(args, mode="det")
+        if args.use_pdserving is False:
+            self.use_zero_copy_run = args.use_zero_copy_run
+            self.predictor, self.input_tensor, self.output_tensors =\
+                utility.create_predictor(args, mode="det")
 
     def order_points_clockwise(self, pts):
         """
