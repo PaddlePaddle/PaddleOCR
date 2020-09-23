@@ -116,6 +116,12 @@ def read_params():
 export PYTHONPATH=$PWD:$PYTHONPATH
 cd deploy/pdserving
 ```
+为了方便用户复现Demo程序，我们提供了Chinese and English ultra-lightweight OCR model (8.1M)版本的Serving模型
+```
+wget --no-check-certificate https://paddleocr.bj.bcebos.com/deploy/pdserving/ocr_pdserving_suite.tar.gz
+tar xf ocr_pdserving_suite.tar.gz
+```
+
 ### 1. 超轻量中文检测模型推理
 
 超轻量中文检测模型推理，可以执行如下命令启动服务端：
