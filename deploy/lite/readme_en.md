@@ -56,13 +56,14 @@ inference_lite_lib.android.armv8/
 ```
 
 
-
 ## 4. Inference Model Optimization
 
 Paddle Lite provides a variety of strategies to automatically optimize the original training model, including quantization, sub-graph fusion, hybrid scheduling, Kernel optimization and so on. In order to make the optimization process more convenient and easy to use, Paddle Lite provide opt tools to automatically complete the optimization steps and output a lightweight, optimal executable model.
 
-If you use PaddleOCR 8.6M OCR model to deploy, you can directly download the optimized model.
+If you have prepared the model file ending in `.nb`, you can skip this step.
 
+The following table also provides a series of models that can be deployed on mobile phones to recognize Chinese.
+You can directly download the optimized model.
 
 |Version|Introduction|Model size|Detection model|Text Direction model|Recognition model|Paddle Lite branch |
 |-|-|-|-|-|-|
@@ -178,6 +179,28 @@ demo/cxx/ocr/
 
 ```
 
+#### Note:
+1. ppocr_keys_v1.txt is a Chinese dictionary file.
+If the nb model is used for English recognition or other language recognition, dictionary file should be replaced with a dictionary of the corresponding language.
+PaddleOCR provides a variety of dictionaries under ppocr/utils/, including:
+```
+french_dict.txt     # french
+german_dict.txt     # german
+ic15_dict.txt       # english
+japan_dict.txt      # japan
+korean_dict.txt     # korean
+ppocr_keys_v1.txt   # chinese
+```
+
+2. `config.txt`  of the detector and classifier, as shown below:
+```
+max_side_len  960         #  Limit the maximum image height and width to 960
+det_db_thresh  0.3        # Used to filter the binarized image of DB prediction, setting 0.-0.3 has no obvious effect on the result
+det_db_box_thresh  0.5    # DDB post-processing filter box threshold, if there is a missing box detected, it can be reduced as appropriate
+det_db_unclip_ratio  1.6  # Indicates the compactness of the text box, the smaller the value, the closer the text box to the text
+use_direction_classify  1  # Whether to use the direction classifier, 0 means not to use, 1 means to use
+```
+
 5. Run Model on phone
 
 ```
@@ -197,3 +220,15 @@ The outputs are as follows:
 <div align="center">
     <img src="../imgs/demo.png" width="600">
 </div>
+
+## FAQ
+
+Q1: What if I want to change the model, do I need to run it again according to the process?
+A1: If you have performed the above steps, you only need to replace the .nb model file to complete the model replacement.
+
+Q2: How to test with another picture?
+A2: Replace the .jpg test image under `./debug` with the image you want to test, and run `adb push` to push new image to the phone.
+
+Q3: How to package it into the mobile APP?
+A3: This demo aims to provide the core algorithm part that can run OCR on mobile phones.  Further,
+PaddleOCR/deploy/android_demo is an example of encapsulating this demo into a mobile app for reference.

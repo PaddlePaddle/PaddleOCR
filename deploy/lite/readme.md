@@ -79,7 +79,9 @@ inference_lite_lib.android.armv8/
 Paddle-Lite 提供了多种策略来自动优化原始的模型，其中包括量化、子图融合、混合调度、Kernel优选等方法，使用Paddle-lite的opt工具可以自动
 对inference模型进行优化，优化后的模型更轻量，模型运行速度更快。
 
-下述表格中提供了优化好的超轻量中文模型：
+如果已经准备好了 `.nb` 结尾的模型文件，可以跳过此步骤。
+
+下述表格中也提供了一系列中文移动端模型：
 
 |模型版本|模型简介|模型大小|检测模型|文本方向分类模型|识别模型|Paddle-Lite版本|
 |-|-|-|-|-|-|-|
@@ -141,11 +143,9 @@ wget  https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar
 ./opt --model_file=./ch_rec_mv3_crnn/model --param_file=./ch_rec_mv3_crnn/params --optimize_out_type=naive_buffer --optimize_out=./ch_rec_mv3_crnn_opt --valid_targets=arm
 ```
 
-# 转换V1.1检测模型
-
 转换成功后，当前目录下会多出`.nb`结尾的文件，即是转换成功的模型文件。
 
-注意：使用paddle-lite部署时，需要使用opt工具优化后的模型。 opt 转换的输入模型是paddle保存的inference模型
+注意：使用paddle-lite部署时，需要使用opt工具优化后的模型。 opt 工具的输入模型是paddle保存的inference模型
 
 <a name="2.2与手机联调"></a>
 ### 2.2 与手机联调
@@ -204,7 +204,7 @@ demo/cxx/ocr/
 |   |--ch_ppocr_mobile_v1.1_rec_quant_opt.nb           优化后的识别模型文件
 |   |--ch_ppocr_mobile_cls_quant_opt.nb                优化后的文字方向分类器模型文件
 |   |--11.jpg                           待测试图像
-|   |--ppocr_keys_v1.txt                字典文件
+|   |--ppocr_keys_v1.txt                中文字典文件
 |   |--libpaddle_light_api_shared.so    C++预测库文件
 |   |--config.txt                       DB-CRNN超参数配置
 |-- config.txt                  DB-CRNN超参数配置
@@ -214,7 +214,27 @@ demo/cxx/ocr/
 |-- db_post_process.h
 |-- Makefile                    编译文件
 |-- ocr_db_crnn.cc              C++预测源文件
+```
 
+#### 注意：
+1. ppocr_keys_v1.txt是中文字典文件，如果使用的 nb 模型是英文数字或其他语言的模型，需要更换为对应语言的字典。
+PaddleOCR 在ppocr/utils/下存放了多种字典，包括：
+```
+french_dict.txt     # 法语字典
+german_dict.txt     # 德语字典
+ic15_dict.txt       # 英文字典
+japan_dict.txt      # 日语字典
+korean_dict.txt     # 韩语字典
+ppocr_keys_v1.txt   # 中文字典
+```
+
+2.  `config.txt` 包含了检测器、分类器的超参数，如下：
+```
+max_side_len  960         # 输入图像长宽大于960时，等比例缩放图像，使得图像最长边为960
+det_db_thresh  0.3        # 用于过滤DB预测的二值化图像，设置为0.-0.3对结果影响不明显
+det_db_box_thresh  0.5    # DB后处理过滤box的阈值，如果检测存在漏框情况，可酌情减小
+det_db_unclip_ratio  1.6  # 表示文本框的紧致程度，越小则文本框更靠近文本
+use_direction_classify  1  # 是否使用方向分类器，0表示不使用，1表示使用
 ```
 
  5. 启动调试
@@ -224,7 +244,7 @@ demo/cxx/ocr/
  ```
  # 执行编译，得到可执行文件ocr_db_crnn
  # ocr_db_crnn可执行文件的使用方式为:
- # ./ocr_db_crnn  检测模型文件  识别模型文件  测试图像路径
+ # ./ocr_db_crnn  检测模型文件 方向分类器模型文件  识别模型文件  测试图像路径  字典文件路径
  make -j
  # 将编译的可执行文件移动到debug文件夹中
  mv ocr_db_crnn ./debug/
@@ -243,3 +263,14 @@ demo/cxx/ocr/
 <div align="center">
     <img src="../imgs/demo.png" width="600">
 </div>
+
+
+## FAQ
+Q1：如果想更换模型怎么办，需要重新按照流程走一遍吗？
+A1：如果已经走通了上述步骤，更换模型只需要替换 .nb 模型文件即可，同时要注意字典更新
+
+Q2：换一个图测试怎么做？
+A2：替换debug下的.jpg测试图像为你想要测试的图像，adb push 到手机上即可
+
+Q3：如何封装到手机APP中？
+A3：此demo旨在提供能在手机上运行OCR的核心算法部分，PaddleOCR/deploy/android_demo是将这个demo封装到手机app的示例，供参考
