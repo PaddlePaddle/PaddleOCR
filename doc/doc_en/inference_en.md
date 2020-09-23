@@ -29,7 +29,7 @@ Next, we first introduce how to convert a trained model into an inference model,
     - [4. SRN-BASED TEXT RECOGNITION MODEL INFERENCE](#SRN-BASED_RECOGNITION)
     - [5. TEXT RECOGNITION MODEL INFERENCE USING CUSTOM CHARACTERS DICTIONARY](#USING_CUSTOM_CHARACTERS)
     - [6. MULTILINGUAL MODEL INFERENCE](MULTILINGUAL_MODEL_INFERENCE)
-    
+
 - [ANGLE CLASSIFICATION MODEL INFERENCE](#ANGLE_CLASS_MODEL_INFERENCE)
     - [1. ANGLE CLASSIFICATION MODEL INFERENCE](#ANGLE_CLASS_MODEL_INFERENCE)
 
@@ -98,7 +98,7 @@ After the conversion is successful, there are two files in the directory:
 
 Download the angle classification model:
 ```
-wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile-v1.1.cls_pre.tar && tar xf ./ch_lite/ch_ppocr_mobile-v1.1.cls_pre.tar -C ./ch_lite/
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_train.tar && tar xf ./ch_lite/ch_ppocr_mobile_v1.1_cls_train.tar -C ./ch_lite/
 ```
 
 The angle classification model is converted to the inference model in the same way as the detection, as follows:
@@ -108,7 +108,7 @@ The angle classification model is converted to the inference model in the same w
 #  Global.checkpoints parameter Set the training model address to be converted without adding the file suffix .pdmodel, .pdopt or .pdparams.
 #  Global.save_inference_dir Set the address where the converted model will be saved.
 
-python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o Global.checkpoints=./ch_lite/cls_model/best_accuracy \
+python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o Global.checkpoints=./ch_lite/ch_ppocr_mobile_v1.1_cls_train/best_accuracy \
         Global.save_inference_dir=./inference/cls/
 ```
 
@@ -304,7 +304,7 @@ dict_character = list(self.character_str)
 <a name="SRN-BASED_RECOGNITION"></a>
 ### 4. SRN-BASED TEXT RECOGNITION MODEL INFERENCE
 
-The recognition model based on SRN requires additional setting of the recognition algorithm parameter --rec_algorithm="SRN". 
+The recognition model based on SRN requires additional setting of the recognition algorithm parameter --rec_algorithm="SRN".
 At the same time, it is necessary to ensure that the predicted shape is consistent with the training, such as: --rec_image_shape="1, 64, 256"
 
 ```
