@@ -55,7 +55,7 @@ Enter the PaddleOCR root directory，perform sensitivity analysis on the model w
 
 ```bash
 
-python deploy/slim/prune/sensitivity_anal.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=./deploy/slim/prune/pretrain_models/det_mv3_db/best_accuracy Global.test_batch_size_per_card=1
+python deploy/slim/prune/sensitivity_anal.py -c configs/det/det_mv3_db_v1.1.yml -o Global.pretrain_weights=./deploy/slim/prune/pretrain_models/det_mv3_db/best_accuracy Global.test_batch_size_per_card=1
 
 ```
 
@@ -67,7 +67,7 @@ python deploy/slim/prune/sensitivity_anal.py -c configs/det/det_mv3_db.yml -o Gl
 
 ```bash
 
-python deploy/slim/prune/pruning_and_finetune.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=./deploy/slim/prune/pretrain_models/det_mv3_db/best_accuracy Global.test_batch_size_per_card=1
+python deploy/slim/prune/pruning_and_finetune.py -c configs/det/det_mv3_db_v1.1.yml -o Global.pretrain_weights=./deploy/slim/prune/pretrain_models/det_mv3_db/best_accuracy Global.test_batch_size_per_card=1
 
 ```
 
@@ -76,7 +76,7 @@ python deploy/slim/prune/pruning_and_finetune.py -c configs/det/det_mv3_db.yml -
 
 We can export the pruned model as inference_model for deployment:
 ```bash
-python deploy/slim/prune/export_prune_model.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=./output/det_db/best_accuracy Global.test_batch_size_per_card=1 Global.save_inference_dir=inference_model
+python deploy/slim/prune/export_prune_model.py -c configs/det/det_mv3_db_v1.1.yml -o Global.pretrain_weights=./output/det_db/best_accuracy Global.test_batch_size_per_card=1 Global.save_inference_dir=inference_model
 ```
 
 Reference for prediction and deployment of inference model:

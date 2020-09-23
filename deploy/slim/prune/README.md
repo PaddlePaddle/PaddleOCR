@@ -51,14 +51,14 @@ python setup.py install
 
 进入PaddleOCR根目录，通过以下命令对模型进行敏感度分析训练：
 ```bash
-python deploy/slim/prune/sensitivity_anal.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights="your trained model" Global.test_batch_size_per_card=1
+python deploy/slim/prune/sensitivity_anal.py -c configs/det/det_mv3_db_v1.1.yml -o Global.pretrain_weights="your trained model" Global.test_batch_size_per_card=1
 ```
 
 ### 4. 模型裁剪训练
 裁剪时通过之前的敏感度分析文件决定每个网络层的裁剪比例。在具体实现时，为了尽可能多的保留从图像中提取的低阶特征，我们跳过了backbone中靠近输入的4个卷积层。同样，为了减少由于裁剪导致的模型性能损失，我们通过之前敏感度分析所获得的敏感度表，人工挑选出了一些冗余较少，对裁剪较为敏感的[网络层](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/prune/pruning_and_finetune.py#L41)（指在较低的裁剪比例下就导致很高性能损失的网络层），并在之后的裁剪过程中选择避开这些网络层。裁剪过后finetune的过程沿用OCR检测模型原始的训练策略。
 
 ```bash
-python deploy/slim/prune/pruning_and_finetune.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=./deploy/slim/prune/pretrain_models/det_mv3_db/best_accuracy Global.test_batch_size_per_card=1
+python deploy/slim/prune/pruning_and_finetune.py -c configs/det/det_mv3_db_v1.1.yml -o Global.pretrain_weights=./deploy/slim/prune/pretrain_models/det_mv3_db/best_accuracy Global.test_batch_size_per_card=1
 ```
 通过对比可以发现，经过裁剪训练保存的模型更小。
 
@@ -66,7 +66,7 @@ python deploy/slim/prune/pruning_and_finetune.py -c configs/det/det_mv3_db.yml -
 
 在得到裁剪训练保存的模型后，我们可以将其导出为inference_model：
 ```bash
-python deploy/slim/prune/export_prune_model.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=./output/det_db/best_accuracy Global.test_batch_size_per_card=1 Global.save_inference_dir=inference_model
+python deploy/slim/prune/export_prune_model.py -c configs/det/det_mv3_db_v1.1.yml -o Global.pretrain_weights=./output/det_db/best_accuracy Global.test_batch_size_per_card=1 Global.save_inference_dir=inference_model
 ```
 
 inference model的预测和部署参考：

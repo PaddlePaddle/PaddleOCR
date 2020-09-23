@@ -92,7 +92,8 @@ def main():
 
     sen = load_sensitivities("sensitivities_0.data")
     for i in skip_list:
-        sen.pop(i)
+        if i in sen.keys():
+            sen.pop(i)
     back_bone_list = ['conv' + str(x) for x in range(1, 5)]
     for i in back_bone_list:
         for key in list(sen.keys()):
