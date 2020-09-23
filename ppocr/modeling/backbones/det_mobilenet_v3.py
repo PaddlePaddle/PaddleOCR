@@ -79,6 +79,8 @@ class MobileNetV3():
         assert self.scale in supported_scale, \
             "supported scale are {} but input scale is {}".format(supported_scale, self.scale)
 
+        self.disable_se = params.get('disable_se', False)
+        
     def __call__(self, input):
         scale = self.scale
         inplanes = self.inplanes
@@ -232,7 +234,7 @@ class MobileNetV3():
             num_groups=num_mid_filter,
             use_cudnn=False,
             name=name + '_depthwise')
-        if use_se:
+        if use_se and not self.disable_se:
             conv1 = self.se_block(
                 input=conv1, num_out_filter=num_mid_filter, name=name + '_se')
 

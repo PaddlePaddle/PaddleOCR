@@ -7,6 +7,9 @@
 
 ### 运行准备
 - Linux环境，推荐使用docker。
+- Windows环境，目前支持基于`Visual Studio 2019 Community`进行编译。
+
+* 该文档主要介绍基于Linux环境的PaddleOCR C++预测流程，如果需要在Windows下基于预测库进行C++预测，具体编译方法请参考[Windows下编译教程](./docs/windows_vs2019_build.md)
 
 ### 1.1 编译opencv库
 
@@ -184,11 +187,14 @@ make -j
 
 
 ### 运行demo
-* 执行以下命令，完成对一幅图像的OCR识别与检测，最终输出
+* 执行以下命令，完成对一幅图像的OCR识别与检测。
 
 ```shell
 sh tools/run.sh
 ```
+
+* 若需要使用方向分类器，则需要将`tools/config.txt`中的`use_angle_cls`参数修改为1，表示开启方向分类器的预测。
+
 
 最终屏幕上会输出检测结果如下。
 

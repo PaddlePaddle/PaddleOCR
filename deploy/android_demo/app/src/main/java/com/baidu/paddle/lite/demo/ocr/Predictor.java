@@ -38,13 +38,23 @@ public class Predictor {
     protected float scoreThreshold = 0.1f;
     protected Bitmap inputImage = null;
     protected Bitmap outputImage = null;
-    protected String outputResult = "";
+    protected volatile String outputResult = "";
     protected float preprocessTime = 0;
     protected float postprocessTime = 0;
 
 
     public Predictor() {
     }
+
+    public boolean init(Context appCtx, String modelPath, String labelPath) {
+        isLoaded = loadModel(appCtx, modelPath, cpuThreadNum, cpuPowerMode);
+        if (!isLoaded) {
+            return false;
+        }
+        isLoaded = loadLabel(appCtx, labelPath);
+        return isLoaded;
+    }
+
 
     public boolean init(Context appCtx, String modelPath, String labelPath, int cpuThreadNum, String cpuPowerMode,
                         String inputColorFormat,
@@ -76,11 +86,7 @@ public class Predictor {
             Log.e(TAG, "Only  BGR color format is supported.");
             return false;
         }
-        isLoaded = loadModel(appCtx, modelPath, cpuThreadNum, cpuPowerMode);
-        if (!isLoaded) {
-            return false;
-        }
-        isLoaded = loadLabel(appCtx, labelPath);
+        boolean isLoaded = init(appCtx, modelPath, labelPath);
         if (!isLoaded) {
             return false;
         }
@@ -115,7 +121,8 @@ public class Predictor {
         config.cpuThreadNum = cpuThreadNum;
         config.detModelFilename = realPath + File.separator + "ch_det_mv3_db_opt.nb";
         config.recModelFilename = realPath + File.separator + "ch_rec_mv3_crnn_opt.nb";
-        Log.e("Predictor", "model path" + config.detModelFilename + " ; " + config.recModelFilename);
+        config.clsModelFilename = realPath + File.separator + "cls_opt_arm.nb";
+        Log.e("Predictor", "model path" + config.detModelFilename + " ; " + config.recModelFilename + ";" + config.clsModelFilename);
         config.cpuPower = cpuPowerMode;
         paddlePredictor = new OCRPredictorNative(config);
 
@@ -127,12 +134,12 @@ public class Predictor {
     }
 
     public void releaseModel() {
-        if (paddlePredictor != null){
+        if (paddlePredictor != null) {
             paddlePredictor.release();
             paddlePredictor = null;
         }
         isLoaded = false;
-        cpuThreadNum = 4;
+        cpuThreadNum = 1;
         cpuPowerMode = "LITE_POWER_HIGH";
         modelPath = "";
         modelName = "";
@@ -222,7 +229,7 @@ public class Predictor {
         for (int i = 0; i < warmupIterNum; i++) {
             paddlePredictor.runImage(inputData, width, height, channels, inputImage);
         }
-        warmupIterNum = 0; // 之后不要再warm了
+        warmupIterNum = 0; // do not need warm
         // Run inference
         start = new Date();
         ArrayList<OcrResultModel> results = paddlePredictor.runImage(inputData, width, height, channels, inputImage);
@@ -287,9 +294,7 @@ public class Predictor {
         if (image == null) {
             return;
         }
-        // Scale image to the size of input tensor
-        Bitmap rgbaImage = image.copy(Bitmap.Config.ARGB_8888, true);
-        this.inputImage = rgbaImage;
+        this.inputImage = image.copy(Bitmap.Config.ARGB_8888, true);
     }
 
     private ArrayList<OcrResultModel> postprocess(ArrayList<OcrResultModel> results) {
@@ -310,7 +315,7 @@ public class Predictor {
 
     private void drawResults(ArrayList<OcrResultModel> results) {
         StringBuffer outputResultSb = new StringBuffer("");
-        for (int i=0;i<results.size();i++) {
+        for (int i = 0; i < results.size(); i++) {
             OcrResultModel result = results.get(i);
             StringBuilder sb = new StringBuilder("");
             sb.append(result.getLabel());
@@ -319,8 +324,8 @@ public class Predictor {
             for (Point p : result.getPoints()) {
                 sb.append("(").append(p.x).append(",").append(p.y).append(") ");
             }
-            Log.i(TAG, sb.toString());
-            outputResultSb.append(i+1).append(": ").append(result.getLabel()).append("\n");
+            Log.i(TAG, sb.toString()); // show LOG in Logcat panel
+            outputResultSb.append(i + 1).append(": ").append(result.getLabel()).append("\n");
         }
         outputResult = outputResultSb.toString();
         outputImage = inputImage;

@@ -214,6 +214,9 @@ BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
 
   for (int i = 0; i < num_contours; i++) {
     float ssid;
+    if (contours[i].size() <= 2)
+      continue;
+
     cv::RotatedRect box = cv::minAreaRect(contours[i]);
     auto array = GetMiniBoxes(box, ssid);
 
@@ -232,6 +235,8 @@ BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
 
     // start for unclip
     cv::RotatedRect points = Unclip(box_for_unclip, unclip_ratio);
+    if (points.size.height < 1.001 && points.size.width < 1.001)
+      continue;
     // end for unclip
 
     cv::RotatedRect clipbox = points;
@@ -288,7 +293,7 @@ FilterTagDetRes(std::vector<std::vector<std::vector<int>>> boxes, float ratio_h,
     rect_height =
         static_cast<int>(sqrt(pow(boxes[n][0][0] - boxes[n][3][0], 2) +
                               pow(boxes[n][0][1] - boxes[n][3][1], 2)));
-    if (rect_width <= 10 || rect_height <= 10)
+    if (rect_width <= 4 || rect_height <= 4)
       continue;
     root_points.push_back(boxes[n]);
   }

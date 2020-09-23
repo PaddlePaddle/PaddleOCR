@@ -26,12 +26,15 @@ void DBDetector::LoadModel(const std::string &model_dir) {
     config.DisableGpu();
     if (this->use_mkldnn_) {
       config.EnableMKLDNN();
+      // cache 10 different shapes for mkldnn to avoid memory leak
+      config.SetMkldnnCacheCapacity(10);
     }
     config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
   }
 
   // false for zero copy tensor
-  config.SwitchUseFeedFetchOps(false);
+  // true for commom tensor
+  config.SwitchUseFeedFetchOps(!this->use_zero_copy_run_);
   // true for multiple input
   config.SwitchSpecifyInputNames(true);
 
@@ -59,12 +62,22 @@ void DBDetector::Run(cv::Mat &img,
   std::vector<float> input(1 * 3 * resize_img.rows * resize_img.cols, 0.0f);
   this->permute_op_.Run(&resize_img, input.data());
 
-  auto input_names = this->predictor_->GetInputNames();
-  auto input_t = this->predictor_->GetInputTensor(input_names[0]);
-  input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
-  input_t->copy_from_cpu(input.data());
-
-  this->predictor_->ZeroCopyRun();
+  // Inference.
+  if (this->use_zero_copy_run_) {
+    auto input_names = this->predictor_->GetInputNames();
+    auto input_t = this->predictor_->GetInputTensor(input_names[0]);
+    input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
+    input_t->copy_from_cpu(input.data());
+    this->predictor_->ZeroCopyRun();
+  } else {
+    paddle::PaddleTensor input_t;
+    input_t.shape = {1, 3, resize_img.rows, resize_img.cols};
+    input_t.data =
+        paddle::PaddleBuf(input.data(), input.size() * sizeof(float));
+    input_t.dtype = PaddleDType::FLOAT32;
+    std::vector<paddle::PaddleTensor> outputs;
+    this->predictor_->Run({input_t}, &outputs, 1);
+  }
 
   std::vector<float> out_data;
   auto output_names = this->predictor_->GetOutputNames();
@@ -95,9 +108,11 @@ void DBDetector::Run(cv::Mat &img,
   const double maxvalue = 255;
   cv::Mat bit_map;
   cv::threshold(cbuf_map, bit_map, threshold, maxvalue, cv::THRESH_BINARY);
-
+  cv::Mat dilation_map;
+  cv::Mat dila_ele = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(2,2));
+  cv::dilate(bit_map, dilation_map, dila_ele);
   boxes = post_processor_.BoxesFromBitmap(
-      pred_map, bit_map, this->det_db_box_thresh_, this->det_db_unclip_ratio_);
+      pred_map, dilation_map, this->det_db_box_thresh_, this->det_db_unclip_ratio_);
 
   boxes = post_processor_.FilterTagDetRes(boxes, ratio_h, ratio_w, srcimg);
 

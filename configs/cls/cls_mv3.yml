@@ -1,0 +1,44 @@
+Global:
+  algorithm: CLS
+  use_gpu: False
+  epoch_num: 100
+  log_smooth_window: 20
+  print_batch_step: 100
+  save_model_dir: output/cls_mv3
+  save_epoch_step: 3
+  eval_batch_step: 500
+  train_batch_size_per_card: 512
+  test_batch_size_per_card: 512
+  image_shape: [3, 48, 192]
+  label_list: ['0','180']
+  distort: True
+  reader_yml: ./configs/cls/cls_reader.yml
+  pretrain_weights:
+  checkpoints:
+  save_inference_dir:
+  infer_img:
+  
+Architecture:
+  function: ppocr.modeling.architectures.cls_model,ClsModel
+
+Backbone:
+  function: ppocr.modeling.backbones.rec_mobilenet_v3,MobileNetV3
+  scale: 0.35
+  model_name: small
+ 
+Head:
+  function: ppocr.modeling.heads.cls_head,ClsHead
+  class_dim: 2
+
+Loss:
+  function: ppocr.modeling.losses.cls_loss,ClsLoss
+
+Optimizer:
+  function: ppocr.optimizer,AdamDecay
+  base_lr: 0.001
+  beta1: 0.9
+  beta2: 0.999
+  decay:
+    function: cosine_decay
+    step_each_epoch: 1169
+    total_epoch: 100

@@ -3,23 +3,22 @@ package com.baidu.paddle.lite.demo.ocr;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
@@ -29,9 +28,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -69,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     protected float[] inputMean = new float[]{};
     protected float[] inputStd = new float[]{};
     protected float scoreThreshold = 0.1f;
+    private String currentPhotoPath;
 
     protected Predictor predictor = new Predictor();
 
@@ -368,18 +376,56 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void takePhoto() {
-        Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePhotoIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePhotoIntent, TAKE_PHOTO_REQUEST_CODE);
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                Log.e("MainActitity", ex.getMessage(), ex);
+                Toast.makeText(MainActivity.this,
+                        "Create Camera temp file failed: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Log.i(TAG, "FILEPATH " + getExternalFilesDir("Pictures").getAbsolutePath());
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.baidu.paddle.lite.demo.ocr.fileprovider",
+                        photoFile);
+                currentPhotoPath = photoFile.getAbsolutePath();
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, TAKE_PHOTO_REQUEST_CODE);
+                Log.i(TAG, "startActivityForResult finished");
+            }
         }
+
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".bmp",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        return image;
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && data != null) {
+        if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case OPEN_GALLERY_REQUEST_CODE:
+                    if (data == null) {
+                        break;
+                    }
                     try {
                         ContentResolver resolver = getContentResolver();
                         Uri uri = data.getData();
@@ -393,9 +439,22 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case TAKE_PHOTO_REQUEST_CODE:
-                    Bundle extras = data.getExtras();
-                    Bitmap image = (Bitmap) extras.get("data");
-                    onImageChanged(image);
+                    if (currentPhotoPath != null) {
+                        ExifInterface exif = null;
+                        try {
+                            exif = new ExifInterface(currentPhotoPath);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                                ExifInterface.ORIENTATION_UNDEFINED);
+                        Log.i(TAG, "rotation " + orientation);
+                        Bitmap image = BitmapFactory.decodeFile(currentPhotoPath);
+                        image = Utils.rotateBitmap(image, orientation);
+                        onImageChanged(image);
+                    } else {
+                        Log.e(TAG, "currentPhotoPath is null");
+                    }
                     break;
                 default:
                     break;

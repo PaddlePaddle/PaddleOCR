@@ -41,19 +41,27 @@ public:
 
     this->use_mkldnn = bool(stoi(config_map_["use_mkldnn"]));
 
+    this->use_zero_copy_run = bool(stoi(config_map_["use_zero_copy_run"]));
+
     this->max_side_len = stoi(config_map_["max_side_len"]);
 
     this->det_db_thresh = stod(config_map_["det_db_thresh"]);
 
     this->det_db_box_thresh = stod(config_map_["det_db_box_thresh"]);
 
-    this->det_db_box_thresh = stod(config_map_["det_db_box_thresh"]);
+    this->det_db_unclip_ratio = stod(config_map_["det_db_unclip_ratio"]);
 
     this->det_model_dir.assign(config_map_["det_model_dir"]);
 
     this->rec_model_dir.assign(config_map_["rec_model_dir"]);
 
     this->char_list_file.assign(config_map_["char_list_file"]);
+
+    this->use_angle_cls = bool(stoi(config_map_["use_angle_cls"]));
+
+    this->cls_model_dir.assign(config_map_["cls_model_dir"]);
+
+    this->cls_thresh = stod(config_map_["cls_thresh"]);
 
     this->visualize = bool(stoi(config_map_["visualize"]));
   }
@@ -68,6 +76,8 @@ public:
 
   bool use_mkldnn = false;
 
+  bool use_zero_copy_run = false;
+
   int max_side_len = 960;
 
   double det_db_thresh = 0.3;
@@ -80,7 +90,13 @@ public:
 
   std::string rec_model_dir;
 
+  bool use_angle_cls;
+
   std::string char_list_file;
+
+  std::string cls_model_dir;
+
+  double cls_thresh;
 
   bool visualize = true;
 
