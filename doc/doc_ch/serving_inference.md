@@ -6,9 +6,30 @@
 
 接下来首先介绍如何将训练的模型转换成Paddle Serving模型，然后将依次介绍文本检测、文本识别以及两者串联基于预测引擎推理。
 
+### 一、 准备环境
+我们先安装Paddle Serving相关组件
+我们推荐用户使用GPU来做Paddle Serving的OCR服务部署 
 
+**CUDA版本：9/10**
 
-## 一、训练模型转Serving模型
+**CUDNN版本：7**
+
+**操作系统版本：Linux/Windows**
+
+**Python版本： 2.7/3.6/3.7**
+
+**Python操作指南：**
+```
+#CPU/GPU版本选择一个
+#GPU版本服务端
+python -m pip install paddle_serving_server_gpu
+#CPU版本服务端
+python -m pip install paddle_serving_server
+#客户端和App包使用以下链接（CPU，GPU通用）
+python -m pip install paddle_serving_app paddle_serving_client
+```
+
+## 二、训练模型转Serving模型
 
 在前序文档 [基于Python预测引擎推理](./inference.md) 中，我们提供了如何把训练的checkpoint转换成Paddle模型。Paddle模型通常由一个文件夹构成，内含模型结构描述文件`model`和模型参数文件`params`。Serving模型由两个文件夹构成，用于存放客户端和服务端的配置。
 
@@ -30,7 +51,7 @@ python tools/inference_to_serving.py --model_dir ch_rec_r34_vd_crnn
 └── serving_server_dir # 服务端配置文件夹
 ```
 
-## 二、文本检测模型Serving推理
+## 三、文本检测模型Serving推理
 
 启动服务可以根据实际需求选择启动`标准版`或者`快速版`，两种方式的对比如下表：  
 
@@ -114,7 +135,7 @@ python det_web_client.py
 
 Serving的推测和本地预测不同点在于，客户端发送请求到服务端，服务端需要检测到文字框之后返回框的坐标，此处没有后处理的图片，只能看到坐标值。
 
-## 三、文本识别模型Serving推理
+## 四、文本识别模型Serving推理
 
 下面将介绍超轻量中文识别模型推理、基于CTC损失的识别模型推理和基于Attention损失的识别模型推理。对于中文文本识别，建议优先选择基于CTC损失的识别模型，实践中也发现基于Attention损失的效果不如基于CTC损失的识别模型。此外，如果训练时修改了文本的字典，请参考下面的自定义文本识别字典的推理。
 
@@ -145,7 +166,7 @@ python rec_web_client.py
 
 
 
-## 四、方向分类模型推理
+## 五、方向分类模型推理
 
 下面将介绍方向分类模型推理。
 
@@ -176,7 +197,7 @@ python rec_web_client.py
 ```
 
 
-## 五、文本检测、方向分类和文字识别串联Serving推理
+## 六、文本检测、方向分类和文字识别串联Serving推理
 
 ### 1. 超轻量中文OCR模型推理
 
