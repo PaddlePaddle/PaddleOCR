@@ -35,7 +35,7 @@ class TextRecognizerHelper(TextRecognizer):
     def __init__(self, args):
         super(TextRecognizerHelper, self).__init__(args)
         if self.loss_type == "ctc":
-            self.fetch = ["ctc_greedy_decoder_0.tmp_0", "softmax_0.tmp_0"]
+            self.fetch = ["save_infer_model/scale_0.tmp_0", "save_infer_model/scale_1.tmp_0"]
 
     def preprocess(self, img_list):
         img_num = len(img_list)
@@ -88,8 +88,8 @@ class TextRecognizerHelper(TextRecognizer):
         if self.loss_type == "ctc":
             rec_idx_batch = outputs[0]
             predict_batch = outputs[1]
-            rec_idx_lod = args["ctc_greedy_decoder_0.tmp_0.lod"]
-            predict_lod = args["softmax_0.tmp_0.lod"]
+            rec_idx_lod = args["save_infer_model/scale_0.tmp_0.lod"]
+            predict_lod = args["save_infer_model/scale_1.tmp_0.lod"]
             indices = args["indices"]
             rec_res = [['', 0.0]] * (len(rec_idx_lod) - 1)
             for rno in range(len(rec_idx_lod) - 1):

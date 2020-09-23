@@ -41,7 +41,7 @@ class TextDetectorHelper(TextDetector):
         elif self.det_algorithm == "EAST":
             self.fetch = ["sigmoid_0.tmp_0", "tmp_2"]
         elif self.det_algorithm == "DB":
-            self.fetch = ["sigmoid_0.tmp_0"]
+            self.fetch = ["save_infer_model/scale_0.tmp_0"]
 
     def preprocess(self, img):
         img = img.copy()

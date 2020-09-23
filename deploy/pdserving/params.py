@@ -14,7 +14,7 @@ def read_params():
 
     #params for text detector
     cfg.det_algorithm = "DB"
-    cfg.det_model_dir = "./det_mv_server/"
+    cfg.det_model_dir = "./det_infer_server/"
     cfg.det_max_side_len = 960
 
     #DB parmas
@@ -29,7 +29,7 @@ def read_params():
 
     #params for text recognizer
     cfg.rec_algorithm = "CRNN"
-    cfg.rec_model_dir = "./ocr_rec_server/"
+    cfg.rec_model_dir = "./rec_infer_server/"
 
     cfg.rec_image_shape = "3, 32, 320"
     cfg.rec_char_type = 'ch'
@@ -41,7 +41,7 @@ def read_params():
 
     #params for text classifier
     cfg.use_angle_cls = True
-    cfg.cls_model_dir = "./ocr_clas_server/"
+    cfg.cls_model_dir = "./cls_infer_server/"
     cfg.cls_image_shape = "3, 48, 192"
     cfg.label_list = ['0', '180']
     cfg.cls_batch_num = 30
