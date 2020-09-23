@@ -56,13 +56,14 @@ inference_lite_lib.android.armv8/
 ```
 
 
-
 ## 4. Inference Model Optimization
 
 Paddle Lite provides a variety of strategies to automatically optimize the original training model, including quantization, sub-graph fusion, hybrid scheduling, Kernel optimization and so on. In order to make the optimization process more convenient and easy to use, Paddle Lite provide opt tools to automatically complete the optimization steps and output a lightweight, optimal executable model.
 
-If you use PaddleOCR 8.6M OCR model to deploy, you can directly download the optimized model.
+If you have prepared the model file ending in `.nb`, you can skip this step.
 
+The following table also provides a series of models that can be deployed on mobile phones to recognize Chinese.
+You can directly download the optimized model.
 
 |Version|Introduction|Model size|Detection model|Text Direction model|Recognition model|Paddle Lite branch |
 |-|-|-|-|-|-|
