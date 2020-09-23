@@ -24,12 +24,13 @@ import base64
 from clas_local_server import TextClassifierHelper
 from det_local_server import TextDetectorHelper
 from rec_local_server import TextRecognizerHelper
-import tools.infer.utility as utility
 from tools.infer.predict_system import TextSystem, sorted_boxes
 from paddle_serving_app.local_predict import Debugger
 import copy
+from params import read_params
 
-global_args = utility.parse_args()
+global_args = read_params()
+
 if global_args.use_gpu:
     from paddle_serving_server_gpu.web_service import WebService
 else:
@@ -84,8 +85,7 @@ class TextSystemHelper(TextSystem):
 
 class OCRService(WebService):
     def init_rec(self):
-        args = utility.parse_args()
-        self.text_system = TextSystemHelper(args)
+        self.text_system = TextSystemHelper(global_args)
 
     def preprocess(self, feed=[], fetch=[]):
         # TODO: to handle batch rec images

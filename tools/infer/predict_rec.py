@@ -37,12 +37,12 @@ class TextRecognizer(object):
         if args.use_pdserving is False:
             self.predictor, self.input_tensor, self.output_tensors =\
                 utility.create_predictor(args, mode="rec")
+            self.use_zero_copy_run = args.use_zero_copy_run
         self.rec_image_shape = [int(v) for v in args.rec_image_shape.split(",")]
         self.character_type = args.rec_char_type
         self.rec_batch_num = args.rec_batch_num
         self.rec_algorithm = args.rec_algorithm
         self.text_len = args.max_text_length
-        self.use_zero_copy_run = args.use_zero_copy_run
         char_ops_params = {
             "character_type": args.rec_char_type,
             "character_dict_path": args.rec_char_dict_path,

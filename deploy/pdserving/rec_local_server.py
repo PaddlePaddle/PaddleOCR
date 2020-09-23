@@ -22,9 +22,10 @@ import time
 import re
 import base64
 from tools.infer.predict_rec import TextRecognizer
-import tools.infer.utility as utility
+from params import read_params
 
-global_args = utility.parse_args()
+global_args = read_params()
+
 if global_args.use_gpu:
     from paddle_serving_server_gpu.web_service import WebService
 else:

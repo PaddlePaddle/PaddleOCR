@@ -37,7 +37,6 @@ def parse_args():
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     parser.add_argument("--gpu_mem", type=int, default=8000)
-    parser.add_argument("--use_pdserving", type=str2bool, default=False)
 
     # params for text detector
     parser.add_argument("--image_dir", type=str)
