@@ -13,6 +13,7 @@
 #limitations under the License.
 import os
 import argparse
+import json
 
 
 def gen_rec_label(input_path, out_label):
@@ -32,15 +33,19 @@ def gen_det_label(root_path, input_dir, out_label):
             label = []
             with open(os.path.join(input_dir, label_file), 'r') as f:
                 for line in f.readlines():
-                    tmp = line.strip("\n\r").replace("\xef\xbb\xbf", "").split(',')
-                    points = tmp[:-2]
+                    tmp = line.strip("\n\r").replace("\xef\xbb\xbf",
+                                                     "").split(',')
+                    points = tmp[:8]
                     s = []
                     for i in range(0, len(points), 2):
                         b = points[i:i + 2]
+                        b = [int(t) for t in b]
                         s.append(b)
-                    result = {"transcription": tmp[-1], "points": s}
+                    result = {"transcription": tmp[8], "points": s}
                     label.append(result)
-            out_file.write(img_path + '\t' + str(label) + '\n')
+
+            out_file.write(img_path + '\t' + json.dumps(
+                label, ensure_ascii=False) + '\n')
 
 
 if __name__ == "__main__":
