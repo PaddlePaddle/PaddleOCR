@@ -10,9 +10,9 @@
 我们先安装Paddle Serving相关组件
 我们推荐用户使用GPU来做Paddle Serving的OCR服务部署 
 
-**CUDA版本：9/10**
+**CUDA版本：9.X/10.X**
 
-**CUDNN版本：7**
+**CUDNN版本：7.X**
 
 **操作系统版本：Linux/Windows**
 
