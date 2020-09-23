@@ -19,6 +19,8 @@ import random
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
 
+from .text_image_aug.augment import tia_distort, tia_stretch, tia_perspective
+
 
 def get_bounding_box_rect(pos):
     left = min(pos[0])
@@ -196,6 +198,9 @@ class Config:
         self.h = h
 
         self.perspective = True
+        self.stretch = True
+        self.distort = True
+
         self.crop = True
         self.affine = False
         self.reverse = True
@@ -299,41 +304,40 @@ def warp(img, ang):
     config.make(w, h, ang)
     new_img = img
 
+    prob = 0.4
+
+    if config.distort:
+        img_height, img_width = img.shape[0:2]
+        if random.random() <= prob and img_height >= 20 and img_width >= 20:
+            new_img = tia_distort(new_img, random.randint(3, 6))
+
+    if config.stretch:
+        img_height, img_width = img.shape[0:2]
+        if random.random() <= prob and img_height >= 20 and img_width >= 20:
+            new_img = tia_stretch(new_img, random.randint(3, 6))
+
     if config.perspective:
-        tp = random.randint(1, 100)
-        if tp >= 50:
-            warpR, (r1, c1), ratio, dst = get_warpR(config)
-            new_w = int(np.max(dst[:, 0])) - int(np.min(dst[:, 0]))
-            new_img = cv2.warpPerspective(
-                new_img,
-                warpR, (int(new_w * ratio), h),
-                borderMode=config.borderMode)
+        if random.random() <= prob:
+            new_img = tia_perspective(new_img)
+
     if config.crop:
         img_height, img_width = img.shape[0:2]
-        tp = random.randint(1, 100)
-        if tp >= 50 and img_height >= 20 and img_width >= 20:
+        if random.random() <= prob and img_height >= 20 and img_width >= 20:
             new_img = get_crop(new_img)
-    if config.affine:
-        warpT = get_warpAffine(config)
-        new_img = cv2.warpAffine(
-            new_img, warpT, (w, h), borderMode=config.borderMode)
+
     if config.blur:
-        tp = random.randint(1, 100)
-        if tp >= 50:
+        if random.random() <= prob:
             new_img = blur(new_img)
     if config.color:
-        tp = random.randint(1, 100)
-        if tp >= 50:
+        if random.random() <= prob:
             new_img = cvtColor(new_img)
     if config.jitter:
         new_img = jitter(new_img)
     if config.noise:
-        tp = random.randint(1, 100)
-        if tp >= 50:
+        if random.random() <= prob:
             new_img = add_gasuss_noise(new_img)
     if config.reverse:
-        tp = random.randint(1, 100)
-        if tp >= 50:
+        if random.random() <= prob:
             new_img = 255 - new_img
     return new_img
 
@@ -360,7 +364,7 @@ def process_image(img,
         text = char_ops.encode(label)
         if len(text) == 0 or len(text) > max_text_length:
             logger.info(
-                "Warning in ppocr/data/rec/img_tools.py: Wrong data type."
+                "Warning in ppocr/data/rec/img_tools.py:line362: Wrong data type."
                 "Excepted string with length between 1 and {}, but "
                 "got '{}'. Label is '{}'".format(max_text_length,
                                                  len(text), label))
@@ -381,6 +385,7 @@ def process_image(img,
                 assert False, "Unsupport loss_type %s in process_image"\
                     % loss_type
     return (norm_img)
+
 
 def resize_norm_img_srn(img, image_shape):
     imgC, imgH, imgW = image_shape
@@ -408,30 +413,39 @@ def resize_norm_img_srn(img, image_shape):
 
     return np.reshape(img_black, (c, row, col)).astype(np.float32)
 
-def srn_other_inputs(image_shape,
-                     num_heads,
-                     max_text_length,
-                     char_num):
+
+def srn_other_inputs(image_shape, num_heads, max_text_length, char_num):
 
     imgC, imgH, imgW = image_shape
     feature_dim = int((imgH / 8) * (imgW / 8))
 
-    encoder_word_pos = np.array(range(0, feature_dim)).reshape((feature_dim, 1)).astype('int64')
-    gsrm_word_pos = np.array(range(0, max_text_length)).reshape((max_text_length, 1)).astype('int64')
+    encoder_word_pos = np.array(range(0, feature_dim)).reshape(
+        (feature_dim, 1)).astype('int64')
+    gsrm_word_pos = np.array(range(0, max_text_length)).reshape(
+        (max_text_length, 1)).astype('int64')
 
-    lbl_weight = np.array([int(char_num-1)] * max_text_length).reshape((-1,1)).astype('int64')
+    lbl_weight = np.array([int(char_num - 1)] * max_text_length).reshape(
+        (-1, 1)).astype('int64')
 
-    gsrm_attn_bias_data = np.ones((1, max_text_length, max_text_length)) 
-    gsrm_slf_attn_bias1 = np.triu(gsrm_attn_bias_data, 1).reshape([-1, 1, max_text_length, max_text_length])
-    gsrm_slf_attn_bias1 = np.tile(gsrm_slf_attn_bias1, [1, num_heads, 1, 1]) * [-1e9] 
+    gsrm_attn_bias_data = np.ones((1, max_text_length, max_text_length))
+    gsrm_slf_attn_bias1 = np.triu(gsrm_attn_bias_data, 1).reshape(
+        [-1, 1, max_text_length, max_text_length])
+    gsrm_slf_attn_bias1 = np.tile(gsrm_slf_attn_bias1,
+                                  [1, num_heads, 1, 1]) * [-1e9]
 
-    gsrm_slf_attn_bias2 = np.tril(gsrm_attn_bias_data, -1).reshape([-1, 1, max_text_length, max_text_length])
-    gsrm_slf_attn_bias2 = np.tile(gsrm_slf_attn_bias2, [1, num_heads, 1, 1]) * [-1e9] 
+    gsrm_slf_attn_bias2 = np.tril(gsrm_attn_bias_data, -1).reshape(
+        [-1, 1, max_text_length, max_text_length])
+    gsrm_slf_attn_bias2 = np.tile(gsrm_slf_attn_bias2,
+                                  [1, num_heads, 1, 1]) * [-1e9]
 
     encoder_word_pos = encoder_word_pos[np.newaxis, :]
     gsrm_word_pos = gsrm_word_pos[np.newaxis, :]
 
-    return [lbl_weight, encoder_word_pos, gsrm_word_pos, gsrm_slf_attn_bias1, gsrm_slf_attn_bias2]
+    return [
+        lbl_weight, encoder_word_pos, gsrm_word_pos, gsrm_slf_attn_bias1,
+        gsrm_slf_attn_bias2
+    ]
+
 
 def process_image_srn(img,
                       image_shape,
@@ -453,14 +467,16 @@ def process_image_srn(img,
             return None
         else:
             if loss_type == "srn":
-                text_padded = [int(char_num-1)] * max_text_length
+                text_padded = [int(char_num - 1)] * max_text_length
                 for i in range(len(text)):
                     text_padded[i] = text[i]
                     lbl_weight[i] = [1.0]
                 text_padded = np.array(text_padded)
                 text = text_padded.reshape(-1, 1)
-                return (norm_img, text,encoder_word_pos, gsrm_word_pos, gsrm_slf_attn_bias1, gsrm_slf_attn_bias2,lbl_weight)
+                return (norm_img, text, encoder_word_pos, gsrm_word_pos,
+                        gsrm_slf_attn_bias1, gsrm_slf_attn_bias2, lbl_weight)
             else:
                 assert False, "Unsupport loss_type %s in process_image"\
                     % loss_type
-    return (norm_img, encoder_word_pos, gsrm_word_pos, gsrm_slf_attn_bias1, gsrm_slf_attn_bias2)
+    return (norm_img, encoder_word_pos, gsrm_word_pos, gsrm_slf_attn_bias1,
+            gsrm_slf_attn_bias2)
