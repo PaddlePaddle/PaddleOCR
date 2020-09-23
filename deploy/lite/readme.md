@@ -263,3 +263,14 @@ use_direction_classify  1  # 是否使用方向分类器，0表示不使用，1�
 <div align="center">
     <img src="../imgs/demo.png" width="600">
 </div>
+
+
+## FAQ
+Q1：如果想更换模型怎么办，需要重新按照流程走一遍吗？
+A1：如果已经走通了上述步骤，更换模型只需要替换 .nb 模型文件即可，同时要注意字典更新
+
+Q2：换一个图测试怎么做？
+A2：替换debug下的.jpg测试图像为你想要测试的图像，adb push 到手机上即可
+
+Q3：如何封装到手机APP中？
+A3：此demo旨在提供能在手机上运行OCR的核心算法部分，PaddleOCR/deploy/android_demo是将这个demo封装到手机app的示例，供参考

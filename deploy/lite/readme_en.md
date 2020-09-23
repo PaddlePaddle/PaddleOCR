@@ -220,3 +220,15 @@ The outputs are as follows:
 <div align="center">
     <img src="../imgs/demo.png" width="600">
 </div>
+
+## FAQ
+
+Q1: What if I want to change the model, do I need to run it again according to the process?
+A1: If you have performed the above steps, you only need to replace the .nb model file to complete the model replacement.
+
+Q2: How to test with another picture?
+A2: Replace the .jpg test image under `./debug` with the image you want to test, and run `adb push` to push new image to the phone.
+
+Q3: How to package it into the mobile APP?
+A3: This demo aims to provide the core algorithm part that can run OCR on mobile phones.  Further,
+PaddleOCR/deploy/android_demo is an example of encapsulating this demo into a mobile app for reference.
