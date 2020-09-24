@@ -20,7 +20,7 @@ The downloadable models provided by PaddleOCR include `inference model`, `traine
 ### 1. Text Detection Model
 |model name|description|config|model size|download|
 |-|-|-|-|-|
-|ch_ppocr_mobile_slim_v1.1_det|Slim pruned lightweight model, supporting Chinese, English, multilingual text detection|[det_mv3_db_v1.1.yml](../../configs/det/det_mv3_db_v1.1.yml)|1.4M|[inference model](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_infer.tar) / [slim model](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_opt.nb)|
+|ch_ppocr_mobile_slim_v1.1_det|Slim pruned lightweight model, supporting Chinese, English, multilingual text detection|[det_mv3_db_v1.1.yml](../../configs/det/det_mv3_db_v1.1.yml)|1.4M|[inference model](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_infer.tar) / [slim model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_prune_opt.nb)|
 |ch_ppocr_mobile_v1.1_det|Original lightweight model, supporting Chinese, English, multilingual text detection|[det_mv3_db_v1.1.yml](../../configs/det/det_mv3_db_v1.1.yml)|2.6M|[inference model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_train.tar)|
 |ch_ppocr_server_v1.1_det|General model, which is larger than the lightweight model, but achieved better performance|[det_r18_vd_db_v1.1.yml](../../configs/det/det_r18_vd_db_v1.1.yml)|47.2M|[inference model](https://paddleocr.bj.bcebos.com/20-09-22/server/det/ch_ppocr_server_v1.1_det_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/20-09-22/server/det/ch_ppocr_server_v1.1_det_train.tar)|
 
@@ -32,7 +32,7 @@ The downloadable models provided by PaddleOCR include `inference model`, `traine
 #### Chinese Recognition Model
 |model name|description|config|model size|download|
 |-|-|-|-|-|
-|ch_ppocr_mobile_slim_v1.1_rec|Slim pruned and quantized lightweight model, supporting Chinese, English and number recognition|[rec_chinese_lite_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml)|1.6M|[inference model](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_infer.tar) / [slim model](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_opt.nb) |
+|ch_ppocr_mobile_slim_v1.1_rec|Slim pruned and quantized lightweight model, supporting Chinese, English and number recognition|[rec_chinese_lite_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml)|1.6M|[inference model](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_infer.tar) / [slim model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_quant_opt.nb) |
 |ch_ppocr_mobile_v1.1_rec|Original lightweight model, supporting Chinese, English and number recognition|[rec_chinese_lite_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml)|4.6M|[inference model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_train.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_pre.tar) |
 |ch_ppocr_server_v1.1_rec|General model, supporting Chinese, English and number recognition|[rec_chinese_common_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_common_train_v1.1.yml)|105M|[inference model](https://paddleocr.bj.bcebos.com/20-09-22/server/rec/ch_ppocr_server_v1.1_rec_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/20-09-22/server/rec/ch_ppocr_server_v1.1_rec_train.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/20-09-22/server/rec/ch_ppocr_server_v1.1_rec_pre.tar) |
 
@@ -59,7 +59,7 @@ The downloadable models provided by PaddleOCR include `inference model`, `traine
 ### 3. Text Angle Classification Model
 |model name|description|config|model size|download|
 |-|-|-|-|-|
-|ch_ppocr_mobile_v1.1_cls_quant|Slim quantized model|[cls_mv3.yml](../../configs/cls/cls_mv3.yml)|0.5M|[inference model](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_quant_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_quant_train.tar) / [slim model](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_cls_quant_opt.nb) |
+|ch_ppocr_mobile_v1.1_cls_quant|Slim quantized model|[cls_mv3.yml](../../configs/cls/cls_mv3.yml)|0.5M|[inference model](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_quant_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_quant_train.tar) / [slim model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_quant_opt.nb) |
 |ch_ppocr_mobile_v1.1_cls|Original model|[cls_mv3.yml](../../configs/cls/cls_mv3.yml)|850kb|[inference model](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_train.tar) |
 
 
