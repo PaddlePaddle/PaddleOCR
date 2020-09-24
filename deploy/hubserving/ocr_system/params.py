@@ -47,5 +47,6 @@ def read_params():
     cfg.cls_thresh = 0.9
 
     cfg.use_zero_copy_run = False
+    cfg.use_pdserving = False
 
     return cfg
