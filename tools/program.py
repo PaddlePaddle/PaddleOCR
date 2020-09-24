@@ -326,6 +326,10 @@ def train_eval_det_run(config,
                                     save_path)
                             elif is_slim == "quant":
                                 save_model(eval_info_dict['program'], save_path)
+                            else:
+                                raise ValueError(
+                                    "Only quant and prune are supported currently. But received {}".
+                                    format(is_slim))
                     strs = 'Test iter: {}, metrics:{}, best_hmean:{:.6f}, best_epoch:{}, best_batch_id:{}'.format(
                         train_batch_id, metrics, best_eval_hmean, best_epoch,
                         best_batch_id)
@@ -345,6 +349,10 @@ def train_eval_det_run(config,
                                           save_path)
                 elif is_slim == "quant":
                     save_model(eval_info_dict['program'], save_path)
+                else:
+                    raise ValueError(
+                        "Only quant and prune are supported currently. But received {}".
+                        format(is_slim))
         if epoch > 0 and epoch % save_epoch_step == 0:
             save_path = save_model_dir + "/iter_epoch_%d" % (epoch)
             if is_slim is None:
@@ -356,6 +364,10 @@ def train_eval_det_run(config,
                                           save_path)
                 elif is_slim == "quant":
                     save_model(eval_info_dict['program'], save_path)
+                else:
+                    raise ValueError(
+                        "Only quant and prune are supported currently. But received {}".
+                        format(is_slim))
     return
 
 
@@ -454,6 +466,10 @@ def train_eval_rec_run(config,
                                     save_path)
                             elif is_slim == "quant":
                                 save_model(eval_info_dict['program'], save_path)
+                            else:
+                                raise ValueError(
+                                    "Only quant and prune are supported currently. But received {}".
+                                    format(is_slim))
                     strs = 'Test iter: {}, acc:{:.6f}, best_acc:{:.6f}, best_epoch:{}, best_batch_id:{}, eval_sample_num:{}'.format(
                         train_batch_id, eval_acc, best_eval_acc, best_epoch,
                         best_batch_id, eval_sample_num)
@@ -473,6 +489,10 @@ def train_eval_rec_run(config,
                                           save_path)
                 elif is_slim == "quant":
                     save_model(eval_info_dict['program'], save_path)
+                else:
+                    raise ValueError(
+                        "Only quant and prune are supported currently. But received {}".
+                        format(is_slim))
         if epoch > 0 and epoch % save_epoch_step == 0:
             save_path = save_model_dir + "/iter_epoch_%d" % (epoch)
             if is_slim is None:
@@ -484,6 +504,10 @@ def train_eval_rec_run(config,
                                           save_path)
                 elif is_slim == "quant":
                     save_model(eval_info_dict['program'], save_path)
+                else:
+                    raise ValueError(
+                        "Only quant and prune are supported currently. But received {}".
+                        format(is_slim))
     return
 
 
@@ -565,6 +589,10 @@ def train_eval_cls_run(config,
                                     save_path)
                             elif is_slim == "quant":
                                 save_model(eval_info_dict['program'], save_path)
+                            else:
+                                raise ValueError(
+                                    "Only quant and prune are supported currently. But received {}".
+                                    format(is_slim))
                     strs = 'Test iter: {}, acc:{:.6f}, best_acc:{:.6f}, best_epoch:{}, best_batch_id:{}, eval_sample_num:{}'.format(
                         train_batch_id, eval_acc, best_eval_acc, best_epoch,
                         best_batch_id, eval_sample_num)
@@ -584,6 +612,10 @@ def train_eval_cls_run(config,
                                           save_path)
                 elif is_slim == "quant":
                     save_model(eval_info_dict['program'], save_path)
+                else:
+                    raise ValueError(
+                        "Only quant and prune are supported currently. But received {}".
+                        format(is_slim))
         if epoch > 0 and epoch % save_epoch_step == 0:
             save_path = save_model_dir + "/iter_epoch_%d" % (epoch)
             if is_slim is None:
@@ -595,6 +627,10 @@ def train_eval_cls_run(config,
                                           save_path)
                 elif is_slim == "quant":
                     save_model(eval_info_dict['program'], save_path)
+                else:
+                    raise ValueError(
+                        "Only quant and prune are supported currently. But received {}".
+                        format(is_slim))
     return
 
 
