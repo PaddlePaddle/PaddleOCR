@@ -232,7 +232,7 @@ char_list_file ../../ppocr/utils/ppocr_keys_v1.txt # dictionary file
 visualize 1 # Whether to visualize the results，when it is set as 1, The prediction result will be save in the image file `./ocr_vis.png`.
 ```
 
-* Multi-language inference is also supported in PaddleOCR, for more details, please refer to part of multi-language dictionaries and models in [recognition tutorial](../../doc/doc_ch/recognition.md).
+* Multi-language inference is also supported in PaddleOCR, for more details, please refer to part of multi-language dictionaries and models in [recognition tutorial](../../doc/doc_en/recognition_en.md).
 
 
 The detection results will be shown on the screen, which is as follows.
