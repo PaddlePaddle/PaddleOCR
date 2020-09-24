@@ -104,7 +104,6 @@ class ResNet():
                         is_first=block == i == 0,
                         name=conv_name)
                 F.append(conv)
-        print("F:", F)
         base = F[-1]
         for i in [-2, -3]:
             b, c, w, h = F[i].shape
