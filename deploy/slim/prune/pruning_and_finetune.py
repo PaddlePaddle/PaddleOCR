@@ -135,7 +135,7 @@ def main():
 
     if alg in ['EAST', 'DB']:
         program.train_eval_det_run(
-            config, exe, train_info_dict, eval_info_dict, is_pruning=True)
+            config, exe, train_info_dict, eval_info_dict, is_slim="prune")
     else:
         program.train_eval_rec_run(config, exe, train_info_dict, eval_info_dict)
 
