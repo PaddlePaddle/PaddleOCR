@@ -20,7 +20,7 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 ### 一、文本检测模型
 |模型名称|模型简介|配置文件|推理模型大小|下载地址|
 |-|-|-|-|-|
-|ch_ppocr_mobile_slim_v1.1_det|slim裁剪版超轻量模型，支持中英文、多语种文本检测|[det_mv3_db_v1.1.yml](../../configs/det/det_mv3_db_v1.1.yml)|1.4M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_infer.tar) / [slim模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_opt.nb)|
+|ch_ppocr_mobile_slim_v1.1_det|slim裁剪版超轻量模型，支持中英文、多语种文本检测|[det_mv3_db_v1.1.yml](../../configs/det/det_mv3_db_v1.1.yml)|1.4M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_infer.tar) / [slim模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_prune_opt.nb)|
 |ch_ppocr_mobile_v1.1_det|原始超轻量模型，支持中英文、多语种文本检测|[det_mv3_db_v1.1.yml](../../configs/det/det_mv3_db_v1.1.yml)|2.6M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_train.tar)|
 |ch_ppocr_server_v1.1_det|通用模型，支持中英文、多语种文本检测，比超轻量模型更大，但效果更好|[det_r18_vd_db_v1.1.yml](../../configs/det/det_r18_vd_db_v1.1.yml)|47.2M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/server/det/ch_ppocr_server_v1.1_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/20-09-22/server/det/ch_ppocr_server_v1.1_det_train.tar)|
 
@@ -32,7 +32,7 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 #### 1. 中文识别模型
 |模型名称|模型简介|配置文件|推理模型大小|下载地址|
 |-|-|-|-|-|
-|ch_ppocr_mobile_slim_v1.1_rec|slim裁剪量化版超轻量模型，支持中英文、数字识别|[rec_chinese_lite_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml)|1.6M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_infer.tar) / [slim模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_opt.nb) |
+|ch_ppocr_mobile_slim_v1.1_rec|slim裁剪量化版超轻量模型，支持中英文、数字识别|[rec_chinese_lite_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml)|1.6M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_infer.tar) / [slim模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_quant_opt.nb) |
 |ch_ppocr_mobile_v1.1_rec|原始超轻量模型，支持中英文、数字识别|[rec_chinese_lite_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml)|4.6M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_train.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_pre.tar) |
 |ch_ppocr_server_v1.1_rec|通用模型，支持中英文、数字识别|[rec_chinese_common_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_common_train_v1.1.yml)|105M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/server/rec/ch_ppocr_server_v1.1_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/20-09-22/server/rec/ch_ppocr_server_v1.1_rec_train.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/20-09-22/server/rec/ch_ppocr_server_v1.1_rec_pre.tar) |
 
@@ -59,7 +59,7 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 ### 三、文本方向分类模型
 |模型名称|模型简介|配置文件|推理模型大小|下载地址|
 |-|-|-|-|-|
-|ch_ppocr_mobile_v1.1_cls_quant|slim量化版模型|[cls_mv3.yml](../../configs/cls/cls_mv3.yml)|0.5M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_quant_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_quant_train.tar) / [slim模型](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_cls_quant_opt.nb) |
+|ch_ppocr_mobile_v1.1_cls_quant|slim量化版模型|[cls_mv3.yml](../../configs/cls/cls_mv3.yml)|0.5M|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_quant_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_quant_train.tar) / [slim模型](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_quant_opt.nb) |
 |ch_ppocr_mobile_v1.1_cls|原始模型|[cls_mv3.yml](../../configs/cls/cls_mv3.yml)|850kb|[推理模型](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_train.tar) |
 
 

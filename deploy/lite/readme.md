@@ -85,8 +85,9 @@ Paddle-Lite 提供了多种策略来自动优化原始的模型，其中包括�
 
 |模型版本|模型简介|模型大小|检测模型|文本方向分类模型|识别模型|Paddle-Lite版本|
 |-|-|-|-|-|-|-|
-|V1.1|超轻量中文OCR 移动端模型|3.5M|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_cls_quant_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_opt.nb)|develop|
-|V1.0|轻量级中文OCR 移动端模型|8.6M|[下载地址](https://paddleocr.bj.bcebos.com/deploy/lite/ch_det_mv3_db_opt.nb)|---|[下载地址](https://paddleocr.bj.bcebos.com/deploy/lite/ch_rec_mv3_crnn_opt.nb)|develop|
+|V1.1|超轻量中文OCR 移动端模型|8.1M|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_opt.nb)|develop|
+|【slim】V1.1|超轻量中文OCR 移动端模型|3.5M|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_prune_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_quant_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_quant_opt.nb)|develop|
+|V1.0|轻量级中文OCR 移动端模型|8.6M|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.0_det_opt.nb)|---|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.0_rec_opt.nb)|develop|
 
 注意：V1.1 3.0M 轻量模型是使用PaddleSlim优化后的，需要配合Paddle-Lite最新预测库使用。
 
