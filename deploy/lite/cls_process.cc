@@ -17,7 +17,7 @@
 #include <memory>
 #include <string>
 
-const std::vector<int> rec_image_shape{3, 32, 100};
+const std::vector<int> rec_image_shape{3, 48, 192};
 
 cv::Mat ClsResizeImg(cv::Mat img) {
   int imgC, imgH, imgW;

@@ -107,7 +107,7 @@ cv::Mat DetResizeImg(const cv::Mat img, int max_size_len,
 }
 
 cv::Mat RunClsModel(cv::Mat img, std::shared_ptr<PaddlePredictor> predictor_cls,
-                    const float thresh = 0.5) {
+                    const float thresh = 0.9) {
   std::vector<float> mean = {0.5f, 0.5f, 0.5f};
   std::vector<float> scale = {1 / 0.5f, 1 / 0.5f, 1 / 0.5f};
 
