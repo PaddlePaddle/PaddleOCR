@@ -406,7 +406,7 @@ return paddle.reader.multiprocess_reader(readers, False, queue_size=320)
 
 #### Q3.3.8：如何进行模型微调？
 
-**A**：注意配置好匹配的数据集合适，然后在finetune训练时，可以加载我们提供的预训练模型，设置配置文件中Global.pretrain_weights 参数为要加载的预训练模型路径。
+**A**：注意配置好合适的数据集，对齐数据格式，然后在finetune训练时，可以加载我们提供的预训练模型，设置配置文件中Global.pretrain_weights 参数为要加载的预训练模型路径。
 
 #### Q3.3.9：文本检测换成自己的数据没法训练，有一些”###”是什么意思？
 
@@ -418,7 +418,7 @@ return paddle.reader.multiprocess_reader(readers, False, queue_size=320)
 
 #### Q3.3.11：自己训练出来的未inference转换的模型 可以当作预训练模型吗？
 
-**A**：可以的，但是如果训练数据两量少的话，可能会过拟合到少量数据上，泛化性能不佳。
+**A**：可以的，但是如果训练数据量少的话，可能会过拟合到少量数据上，泛化性能不佳。
 
 #### Q3.3.12：使用带TPS的识别模型预测报错
 
