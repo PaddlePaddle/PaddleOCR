@@ -155,14 +155,13 @@ def main():
         act_preprocess_func=act_preprocess_func,
         optimizer_func=optimizer_func,
         executor=executor,
-        for_test=False,
-        return_program=True)
+        for_test=False)
 
     # compile program for multi-devices
     train_compile_program = program.create_multi_devices_program(
         quant_train_program, train_opt_loss_name, for_quant=True)
 
-    init_model(config, quant_train_program, exe)
+    init_model(config, train_program, exe)
 
     train_info_dict = {'compile_program':train_compile_program,\
         'train_program':quant_train_program,\
@@ -177,9 +176,11 @@ def main():
         'fetch_varname_list':eval_fetch_varname_list}
 
     if train_alg_type == 'det':
-        program.train_eval_det_run(config, exe, train_info_dict, eval_info_dict)
+        program.train_eval_det_run(
+            config, exe, train_info_dict, eval_info_dict, is_slim="quant")
     else:
-        program.train_eval_rec_run(config, exe, train_info_dict, eval_info_dict)
+        program.train_eval_rec_run(
+            config, exe, train_info_dict, eval_info_dict, is_slim="quant")
 
 
 if __name__ == '__main__':
