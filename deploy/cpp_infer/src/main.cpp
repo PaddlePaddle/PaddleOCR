@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "omp.h"
 #include "opencv2/core.hpp"
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/imgproc.hpp"
@@ -66,6 +67,21 @@ int main(int argc, char **argv) {
                      config.gpu_mem, config.cpu_math_library_num_threads,
                      config.use_mkldnn, config.use_zero_copy_run,
                      config.char_list_file);
+
+#ifdef USE_MKL
+  // test omp parallel
+  int i;
+  std::cout << "...........Testing MKL......... " << omp_get_num_threads()
+            << std::endl;
+#pragma omp parallel for private(i)
+  for (i = 0; i < 50; i++) {
+    std::cout << "omp_get_num_threads(): " << omp_get_num_threads()
+              << std::endl;
+    int tid = omp_get_thread_num();
+    std::cout << "Log from omp thread " << tid << std::endl;
+  }
+
+#endif
 
   auto start = std::chrono::system_clock::now();
   std::vector<std::vector<std::vector<int>>> boxes;
