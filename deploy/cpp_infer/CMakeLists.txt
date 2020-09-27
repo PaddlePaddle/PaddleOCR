@@ -42,6 +42,7 @@ if (WIN32)
   include_directories("${PADDLE_LIB}/paddle/include")
   link_directories("${PADDLE_LIB}/paddle/fluid/inference")
   find_package(OpenCV REQUIRED PATHS ${OPENCV_DIR}/build/ NO_DEFAULT_PATH)
+
 else ()
   find_package(OpenCV REQUIRED PATHS ${OPENCV_DIR}/share/OpenCV NO_DEFAULT_PATH)
   include_directories("${PADDLE_LIB}/paddle/include")
@@ -207,4 +208,3 @@ if (WIN32 AND WITH_MKL)
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${PADDLE_LIB}/third_party/install/mkldnn/lib/mkldnn.dll ./release/mkldnn.dll
     )
 endif()
-
