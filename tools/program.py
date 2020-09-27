@@ -152,7 +152,7 @@ def build(config, main_prog, startup_prog, mode):
     Build a program using a model and an optimizer
         1. create a dataloader
         2. create a model
-        3. create fetchs
+        3. create fetches
         4. create an optimizer
     Args:
         config(dict): config
@@ -208,8 +208,8 @@ def build_export(config, main_prog, startup_prog):
     Build input and output for exporting a checkpoints model to an inference model
     Args:
         config(dict): config
-        main_prog(): main program
-        startup_prog(): startup program
+        main_prog: main program
+        startup_prog: startup program
     Returns:
         feeded_var_names(list[str]): var names of input for exported inference model
         target_vars(list[Variable]): output vars for exported inference model

@@ -152,7 +152,7 @@ def cal_predicts_accuracy(char_ops,
                           labels_lod,
                           is_remove_duplicate=False):
     """
-    Calculate predicts accrarcy
+    Calculate prediction accuracy
     Args:
         char_ops: CharacterOps
         preds: preds result,text index
