@@ -150,19 +150,20 @@ def check_gpu(use_gpu):
 def build(config, main_prog, startup_prog, mode):
     """
     Build a program using a model and an optimizer
-        1. create feeds
-        2. create a dataloader
-        3. create a model
-        4. create fetchs
-        5. create an optimizer
+        1. create a dataloader
+        2. create a model
+        3. create fetches
+        4. create an optimizer
     Args:
         config(dict): config
         main_prog(): main program
         startup_prog(): startup program
-        is_train(bool): train or valid
+        mode(str): train or valid
     Returns:
         dataloader(): a bridge between the model and the data
-        fetchs(dict): dict of model outputs(included loss and measures)
+        fetch_name_list(dict): dict of model outputs(included loss and measures)
+        fetch_varname_list(list): list of outputs' varname
+        opt_loss_name(str): name of loss
     """
     with fluid.program_guard(main_prog, startup_prog):
         with fluid.unique_name.guard():
@@ -207,8 +208,8 @@ def build_export(config, main_prog, startup_prog):
     Build input and output for exporting a checkpoints model to an inference model
     Args:
         config(dict): config
-        main_prog(): main program
-        startup_prog(): startup program
+        main_prog: main program
+        startup_prog: startup program
     Returns:
         feeded_var_names(list[str]): var names of input for exported inference model
         target_vars(list[Variable]): output vars for exported inference model
@@ -257,9 +258,14 @@ def train_eval_det_run(config,
                        train_info_dict,
                        eval_info_dict,
                        is_slim=None):
-    '''
-    main program of evaluation for detection
-    '''
+    """
+    Feed data to the model and fetch the measures and loss for detection
+    Args:
+        config: config
+        exe:
+        train_info_dict: information dict for training
+        eval_info_dict: information dict for evaluation
+    """
     train_batch_id = 0
     log_smooth_window = config['Global']['log_smooth_window']
     epoch_num = config['Global']['epoch_num']
@@ -376,9 +382,14 @@ def train_eval_rec_run(config,
                        train_info_dict,
                        eval_info_dict,
                        is_slim=None):
-    '''
-    main program of evaluation for recognition
-    '''
+    """
+    Feed data to the model and fetch the measures and loss for recognition
+    Args:
+        config: config
+        exe:
+        train_info_dict: information dict for training
+        eval_info_dict: information dict for evaluation
+    """
     train_batch_id = 0
     log_smooth_window = config['Global']['log_smooth_window']
     epoch_num = config['Global']['epoch_num']

@@ -25,6 +25,12 @@ from copy import deepcopy
 
 
 class RecModel(object):
+    """
+    Rec model architecture
+    Args:
+        params(object): Params from yaml file and settings from command line
+    """
+
     def __init__(self, params):
         super(RecModel, self).__init__()
         global_params = params['Global']
@@ -64,6 +70,12 @@ class RecModel(object):
             self.num_heads = None
 
     def create_feed(self, mode):
+        """
+        Create feed dict and DataLoader object
+        Args:
+            mode(str): runtime mode, can be "train", "eval" or "test"
+        Return: image, labels, loader
+        """
         image_shape = deepcopy(self.image_shape)
         image_shape.insert(0, -1)
         if mode == "train":
@@ -189,9 +201,12 @@ class RecModel(object):
             inputs = image
         else:
             inputs = self.tps(image)
+        # backbone
         conv_feas = self.backbone(inputs)
+        # predict
         predicts = self.head(conv_feas, labels, mode)
         decoded_out = predicts['decoded_out']
+        # loss
         if mode == "train":
             loss = self.loss(predicts, labels)
             if self.loss_type == "attention":
@@ -211,7 +226,7 @@ class RecModel(object):
                 outputs = {'total_loss':loss, 'decoded_out':\
                     decoded_out, 'label':label}
             return loader, outputs
-
+        # export_model
         elif mode == "export":
             predict = predicts['predict']
             if self.loss_type == "ctc":
@@ -225,6 +240,7 @@ class RecModel(object):
                 ]
 
             return [image, {'decoded_out': decoded_out, 'predicts': predict}]
+        # eval or test
         else:
             predict = predicts['predict']
             if self.loss_type == "ctc":
