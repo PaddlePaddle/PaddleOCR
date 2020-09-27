@@ -69,10 +69,8 @@ int main(int argc, char **argv) {
                      config.char_list_file);
 
 #ifdef USE_MKL
-  // test omp parallel
   int i;
-  std::cout << "...........Testing MKL......... " << omp_get_num_threads()
-            << std::endl;
+  std::cout << ">>>>>>>>>>>>>>> Testing MKL <<<<<<<<<<<<<<<<< " << std::endl;
 #pragma omp parallel for private(i)
   for (i = 0; i < 50; i++) {
     std::cout << "omp_get_num_threads(): " << omp_get_num_threads()
@@ -80,7 +78,8 @@ int main(int argc, char **argv) {
     int tid = omp_get_thread_num();
     std::cout << "Log from omp thread " << tid << std::endl;
   }
-
+  std::cout << ">>>>>>>>>>>>>>> Testing MKL Finished <<<<<<<<<<<<<<<<< "
+            << std::endl;
 #endif
 
   auto start = std::chrono::system_clock::now();
