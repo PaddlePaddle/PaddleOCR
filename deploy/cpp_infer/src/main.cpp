@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "glog/logging.h"
 #include "omp.h"
 #include "opencv2/core.hpp"
 #include "opencv2/imgcodecs.hpp"
@@ -71,7 +72,13 @@ int main(int argc, char **argv) {
 #ifdef USE_MKL
 #pragma omp parallel
   for (auto i = 0; i < 10; i++) {
-    assert(config.cpu_math_library_num_threads == omp_get_num_threads());
+    LOG_IF(WARNING,
+           config.cpu_math_library_num_threads != omp_get_num_threads())
+        << "WARNING! MKL is running on " << omp_get_num_threads()
+        << " threads while cpu_math_library_num_threads is set to "
+        << config.cpu_math_library_num_threads
+        << ". Possible reason could be 1. You have set omp_set_num_threads() "
+           "somewhere; 2. MKL is not linked properly";
   }
 #endif
 
