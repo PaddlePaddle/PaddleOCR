@@ -31,25 +31,23 @@ import time
 from paddle import fluid
 
 
-def auto_resize(img, SH, SW):
+def auto_resize(img, sh, sw):
     # Scale to the same height
-    scale = SH / img.shape[0]
+    scale = sh / img.shape[0]
     img = cv2.resize(img, (0, 0), fx=scale, fy=scale)
-    # print(img.shape)
 
-    # Make the width greater or equal to SW by copying
+    # Make the width greater or equal to sw by copying
     h, w, c = img.shape
-    if w < SW:
-        scale = math.ceil(SW / w)
-        new_img = np.zeros((SH, w * scale, c))
+    if w < sw:
+        scale = math.ceil(sw / w)
+        new_img = np.zeros((sh, w * scale, c))
         for i in range(scale):
             new_img[:, i*w:(i+1)*w, :] = img
         img = new_img
-        # print(img.shape)
+
     # Cut
-    if img.shape[1] > SW:
-        img = img[:, :SW]
-        # print(img.shape)
+    if img.shape[1] > sw:
+        img = img[:, :sw]
     return img
 
 
@@ -85,59 +83,6 @@ class TextClassifier(object):
         padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
         padding_im[:, :, 0:resized_w] = resized_image
         return padding_im
-    '''
-    def __call__(self, img_list):
-        img_list = copy.deepcopy(img_list)
-        img_num = len(img_list)
-        # Calculate the aspect ratio of all text bars
-        width_list = []
-        for img in img_list:
-            width_list.append(img.shape[1] / float(img.shape[0]))
-        # Sorting can speed up the cls process
-        indices = np.argsort(np.array(width_list))
-
-        cls_res = [['', 0.0]] * img_num
-        batch_num = self.cls_batch_num
-        predict_time = 0
-        for beg_img_no in range(0, img_num, batch_num):
-            end_img_no = min(img_num, beg_img_no + batch_num)
-            norm_img_batch = []
-            max_wh_ratio = 0
-            for ino in range(beg_img_no, end_img_no):
-                h, w = img_list[indices[ino]].shape[0:2]
-                wh_ratio = w * 1.0 / h
-                max_wh_ratio = max(max_wh_ratio, wh_ratio)
-            for ino in range(beg_img_no, end_img_no):
-                norm_img = self.resize_norm_img(img_list[indices[ino]])
-                norm_img = norm_img[np.newaxis, :]
-                norm_img_batch.append(norm_img)
-            norm_img_batch = np.concatenate(norm_img_batch)
-            norm_img_batch = norm_img_batch.copy()
-            starttime = time.time()
-
-            if self.use_zero_copy_run:
-                self.input_tensor.copy_from_cpu(norm_img_batch)
-                self.predictor.zero_copy_run()
-            else:
-                norm_img_batch = fluid.core.PaddleTensor(norm_img_batch)
-                self.predictor.run([norm_img_batch])
-
-            prob_out = self.output_tensors[0].copy_to_cpu()
-            label_out = self.output_tensors[1].copy_to_cpu()
-            if len(label_out.shape) != 1:
-                prob_out, label_out = label_out, prob_out
-            elapse = time.time() - starttime
-            predict_time += elapse
-            for rno in range(len(label_out)):
-                label_idx = label_out[rno]
-                score = prob_out[rno][label_idx]
-                label = self.label_list[label_idx]
-                cls_res[indices[beg_img_no + rno]] = [label, score]
-                if '180' in label and score > self.cls_thresh:
-                    img_list[indices[beg_img_no + rno]] = cv2.rotate(
-                        img_list[indices[beg_img_no + rno]], 1)
-        return img_list, cls_res, predict_time
-    '''
 
     def __call__(self, img_list):
         img_list = copy.deepcopy(img_list)
