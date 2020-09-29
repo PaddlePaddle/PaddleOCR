@@ -31,6 +31,28 @@ import time
 from paddle import fluid
 
 
+def auto_resize(img, SH, SW):
+    # Scale to the same height
+    scale = SH / img.shape[0]
+    img = cv2.resize(img, (0, 0), fx=scale, fy=scale)
+    # print(img.shape)
+
+    # Make the width greater or equal to SW by copying
+    h, w, c = img.shape
+    if w < SW:
+        scale = math.ceil(SW / w)
+        new_img = np.zeros((SH, w * scale, c))
+        for i in range(scale):
+            new_img[:, i*w:(i+1)*w, :] = img
+        img = new_img
+        # print(img.shape)
+    # Cut
+    if img.shape[1] > SW:
+        img = img[:, :SW]
+        # print(img.shape)
+    return img
+
+
 class TextClassifier(object):
     def __init__(self, args):
         if args.use_pdserving is False:
@@ -63,7 +85,7 @@ class TextClassifier(object):
         padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
         padding_im[:, :, 0:resized_w] = resized_image
         return padding_im
-
+    '''
     def __call__(self, img_list):
         img_list = copy.deepcopy(img_list)
         img_num = len(img_list)
@@ -115,6 +137,49 @@ class TextClassifier(object):
                     img_list[indices[beg_img_no + rno]] = cv2.rotate(
                         img_list[indices[beg_img_no + rno]], 1)
         return img_list, cls_res, predict_time
+    '''
+
+    def __call__(self, img_list):
+        img_list = copy.deepcopy(img_list)
+        img_num = len(img_list)
+        for i, img in enumerate(img_list):
+            img_list[i] = auto_resize(img, self.cls_image_shape[1], self.cls_image_shape[2])
+
+        cls_res = [['', 0.0]] * img_num
+        batch_num = self.cls_batch_num
+        predict_time = 0
+        for beg_img_no in range(0, img_num, batch_num):
+            end_img_no = min(img_num, beg_img_no + batch_num)
+            norm_img_batch = []
+            for ino in range(beg_img_no, end_img_no):
+                norm_img = self.resize_norm_img(img_list[ino])
+                norm_img = norm_img[np.newaxis, :]
+                norm_img_batch.append(norm_img)
+            norm_img_batch = np.concatenate(norm_img_batch)
+            norm_img_batch = norm_img_batch.copy()
+            starttime = time.time()
+
+            if self.use_zero_copy_run:
+                self.input_tensor.copy_from_cpu(norm_img_batch)
+                self.predictor.zero_copy_run()
+            else:
+                norm_img_batch = fluid.core.PaddleTensor(norm_img_batch)
+                self.predictor.run([norm_img_batch])
+
+            prob_out = self.output_tensors[0].copy_to_cpu()
+            label_out = self.output_tensors[1].copy_to_cpu()
+            if len(label_out.shape) != 1:
+                prob_out, label_out = label_out, prob_out
+            elapse = time.time() - starttime
+            predict_time += elapse
+            for rno in range(len(label_out)):
+                label_idx = label_out[rno]
+                score = prob_out[rno][label_idx]
+                label = self.label_list[label_idx]
+                cls_res[beg_img_no + rno] = [label, score]
+                if '180' in label and score > self.cls_thresh:
+                    img_list[beg_img_no + rno] = cv2.rotate(img_list[beg_img_no + rno], 1)
+        return img_list, cls_res, predict_time
 
 
 def main(args):
@@ -122,7 +187,8 @@ def main(args):
     text_classifier = TextClassifier(args)
     valid_image_file_list = []
     img_list = []
-    for image_file in image_file_list[:10]:
+    image_file_list.sort()
+    for image_file in image_file_list:
         img, flag = check_and_read_gif(image_file)
         if not flag:
             img = cv2.imread(image_file)
