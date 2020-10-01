@@ -128,7 +128,7 @@ PP-OCR is a practical ultra-lightweight OCR system. It is mainly composed of thr
 
 <a name="Community"></a>
 ## Community
-Scan the QR code below with your Wechat and completing the questionnaire, you can access to offical technical exchange group.
+Scan the QR code below with your Wechat and completing the questionnaire, you can access to official technical exchange group.
 
 <div align="center">
 <img src="./doc/joinus.PNG"  width = "200" height = "200" />
