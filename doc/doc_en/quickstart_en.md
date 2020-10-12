@@ -9,7 +9,7 @@ Please refer to [quick installation](./installation_en.md) to configure the Padd
 
 ## 2.inference models
 
-The detection and recognition models on the mobile and server sides are as follows. For more models  (including multiple languages), please refer to [PP-OCR v1.1 series model list](./doc_ch/models_list.md)
+The detection and recognition models on the mobile and server sides are as follows. For more models  (including multiple languages), please refer to [PP-OCR v1.1 series model list](../doc_ch/models_list.md)
 
 
 | Model introduction    | Model name     |  Recommended scene      | Detection model | Direction Classifier | Recognition model |
