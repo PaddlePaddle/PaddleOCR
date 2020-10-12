@@ -43,14 +43,14 @@ class TextSystemHelper(TextSystem):
         if self.use_angle_cls:
             self.clas_client = Client()
             self.clas_client.load_client_config(
-                "ocr_clas_client/serving_client_conf.prototxt")
+                "cls_infer_client/serving_client_conf.prototxt")
             self.clas_client.connect(["127.0.0.1:9294"])
             self.text_classifier = TextClassifierHelper(args)
         self.det_client = Client()
         self.det_client.load_client_config(
-            "det_db_client/serving_client_conf.prototxt")
+            "det_infer_client/serving_client_conf.prototxt")
         self.det_client.connect(["127.0.0.1:9293"])
-        self.fetch = ["ctc_greedy_decoder_0.tmp_0", "softmax_0.tmp_0"]
+        self.fetch = ["save_infer_model/scale_0.tmp_0", "save_infer_model/scale_1.tmp_0"]
 
     def preprocess(self, img):
         feed, fetch, self.tmp_args = self.text_detector.preprocess(img)

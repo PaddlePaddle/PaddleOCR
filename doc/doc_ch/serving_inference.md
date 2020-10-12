@@ -16,17 +16,23 @@
 
 **操作系统版本：Linux/Windows**
 
-**Python版本： 2.7/3.6/3.7**
+**Python版本： 2.7/3.5/3.6/3.7**
 
 **Python操作指南：**
+
+目前Serving用于OCR的部分功能还在测试当中，因此在这里我们给出[Servnig latest package](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md)
+大家根据自己的环境选择需要安装的whl包即可，例如以Python 3.5为例，执行下列命令
 ```
 #CPU/GPU版本选择一个
 #GPU版本服务端
-python -m pip install paddle_serving_server_gpu
+#CUDA 9
+python -m pip install -U https://paddle-serving.bj.bcebos.com/whl/paddle_serving_server_gpu-0.0.0.post9-py3-none-any.whl 
+#CUDA 10
+python -m pip install -U https://paddle-serving.bj.bcebos.com/whl/paddle_serving_server_gpu-0.0.0.post10-py3-none-any.whl
 #CPU版本服务端
-python -m pip install paddle_serving_server
+python -m pip install -U https://paddle-serving.bj.bcebos.com/whl/paddle_serving_server-0.0.0-py3-none-any.whl
 #客户端和App包使用以下链接（CPU，GPU通用）
-python -m pip install paddle_serving_app paddle_serving_client
+python -m pip install -U https://paddle-serving.bj.bcebos.com/whl/paddle_serving_client-0.0.0-cp36-none-any.whl https://paddle-serving.bj.bcebos.com/whl/paddle_serving_app-0.0.0-py3-none-any.whl
 ```
 
 ## 二、训练模型转Serving模型
@@ -214,12 +220,12 @@ python rec_web_client.py
 ```
 #标准版，Linux用户
 #GPU用户
-python -m paddle_serving_server_gpu.serve --model det_mv_server --port 9293 --gpu_id 0
-python -m paddle_serving_server_gpu.serve --model ocr_cls_server --port 9294 --gpu_id 0
+python -m paddle_serving_server_gpu.serve --model det_infer_server --port 9293 --gpu_id 0
+python -m paddle_serving_server_gpu.serve --model cls_infer_server --port 9294 --gpu_id 0
 python ocr_rpc_server.py 
 #CPU用户
-python -m paddle_serving_server.serve --model det_mv_server --port 9293
-python -m paddle_serving_server.serve --model ocr_cls_server --port 9294
+python -m paddle_serving_server.serve --model det_infer_server --port 9293
+python -m paddle_serving_server.serve --model cls_infer_server --port 9294
 python ocr_rpc_server.py
 
 #快速版，Windows/Linux用户

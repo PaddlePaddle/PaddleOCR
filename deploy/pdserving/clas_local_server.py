@@ -74,6 +74,7 @@ class TextClassifierHelper(TextClassifier):
         prob_out = outputs[0]
         label_out = outputs[1]
         indices = args["indices"]
+        img_list = args["img_list"]
         cls_res = [['', 0.0]] * len(label_out)
         if len(label_out.shape) != 1:
             prob_out, label_out = label_out, prob_out
@@ -84,7 +85,7 @@ class TextClassifierHelper(TextClassifier):
             cls_res[indices[rno]] = [label, score]
             if '180' in label and score > self.cls_thresh:
                 img_list[indices[rno]] = cv2.rotate(img_list[indices[rno]], 1)
-        return args["img_list"], cls_res
+        return img_list, cls_res
 
 
 class OCRService(WebService):
