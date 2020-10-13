@@ -12,7 +12,7 @@ Global:
   image_shape: [3, 32, 320]
   max_text_length: 25
   character_type: korean
-  character_dict_path: ./ppocr/utils/korean_dict.txt
+  character_dict_path: ./ppocr/utils/dict/korean_dict.txt
   loss_type: ctc
   distort: true
   use_space_char: false
