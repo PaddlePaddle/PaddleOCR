@@ -50,7 +50,7 @@ class TextSystemHelper(TextSystem):
         self.det_client = Debugger()
         self.det_client.load_model_config(
             global_args.det_model_dir, gpu=True, profile=False)
-        self.fetch = ["ctc_greedy_decoder_0.tmp_0", "softmax_0.tmp_0"]
+        self.fetch = ["save_infer_model/scale_0.tmp_0", "save_infer_model/scale_1.tmp_0"]
 
     def preprocess(self, img):
         feed, fetch, self.tmp_args = self.text_detector.preprocess(img)
