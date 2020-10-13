@@ -185,11 +185,11 @@ demo/cxx/ocr/
 If the nb model is used for English recognition or other language recognition, dictionary file should be replaced with a dictionary of the corresponding language.
 PaddleOCR provides a variety of dictionaries under ppocr/utils/, including:
 ```
-french_dict.txt     # french
-german_dict.txt     # german
+dict/french_dict.txt     # french
+dict/german_dict.txt     # german
 ic15_dict.txt       # english
-japan_dict.txt      # japan
-korean_dict.txt     # korean
+dict/japan_dict.txt      # japan
+dict/korean_dict.txt     # korean
 ppocr_keys_v1.txt   # chinese
 ```
 

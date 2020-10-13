@@ -221,11 +221,11 @@ demo/cxx/ocr/
 1. ppocr_keys_v1.txt是中文字典文件，如果使用的 nb 模型是英文数字或其他语言的模型，需要更换为对应语言的字典。
 PaddleOCR 在ppocr/utils/下存放了多种字典，包括：
 ```
-french_dict.txt     # 法语字典
-german_dict.txt     # 德语字典
+dict/french_dict.txt     # 法语字典
+dict/german_dict.txt     # 德语字典
 ic15_dict.txt       # 英文字典
-japan_dict.txt      # 日语字典
-korean_dict.txt     # 韩语字典
+dict/japan_dict.txt      # 日语字典
+dict/korean_dict.txt     # 韩语字典
 ppocr_keys_v1.txt   # 中文字典
 ```
 
