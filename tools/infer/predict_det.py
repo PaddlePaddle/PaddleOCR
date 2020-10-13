@@ -13,71 +13,63 @@
 # limitations under the License.
 import os
 import sys
+
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 
 import cv2
-import copy
 import numpy as np
-import math
 import time
 import sys
 
-import paddle.fluid as fluid
+import paddle
 
 import tools.infer.utility as utility
-from ppocr.utils.utility import initial_logger
-logger = initial_logger()
+from ppocr.utils.logging import get_logger
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
-from ppocr.data.det.sast_process import SASTProcessTest
-from ppocr.data.det.east_process import EASTProcessTest
-from ppocr.data.det.db_process import DBProcessTest
-from ppocr.postprocess.db_postprocess import DBPostProcess
-from ppocr.postprocess.east_postprocess import EASTPostPocess
-from ppocr.postprocess.sast_postprocess import SASTPostProcess
+from ppocr.data import create_operators, transform
+from ppocr.postprocess import build_post_process
 
 
 class TextDetector(object):
     def __init__(self, args):
-        max_side_len = args.det_max_side_len
         self.det_algorithm = args.det_algorithm
         self.use_zero_copy_run = args.use_zero_copy_run
-        preprocess_params = {'max_side_len': max_side_len}
         postprocess_params = {}
         if self.det_algorithm == "DB":
-            self.preprocess_op = DBProcessTest(preprocess_params)
+            pre_process_list = [{
+                'ResizeForTest': {
+                    'limit_side_len': args.det_limit_side_len,
+                    'limit_type': args.det_limit_type
+                }
+            }, {
+                'NormalizeImage': {
+                    'std': [0.229, 0.224, 0.225],
+                    'mean': [0.485, 0.456, 0.406],
+                    'scale': '1./255.',
+                    'order': 'hwc'
+                }
+            }, {
+                'ToCHWImage': None
+            }, {
+                'keepKeys': {
+                    'keep_keys': ['image', 'shape']
+                }
+            }]
+            postprocess_params['name'] = 'DBPostProcess'
             postprocess_params["thresh"] = args.det_db_thresh
             postprocess_params["box_thresh"] = args.det_db_box_thresh
             postprocess_params["max_candidates"] = 1000
             postprocess_params["unclip_ratio"] = args.det_db_unclip_ratio
-            self.postprocess_op = DBPostProcess(postprocess_params)
-        elif self.det_algorithm == "EAST":
-            self.preprocess_op = EASTProcessTest(preprocess_params)
-            postprocess_params["score_thresh"] = args.det_east_score_thresh
-            postprocess_params["cover_thresh"] = args.det_east_cover_thresh
-            postprocess_params["nms_thresh"] = args.det_east_nms_thresh
-            self.postprocess_op = EASTPostPocess(postprocess_params)
-        elif self.det_algorithm == "SAST":
-            self.preprocess_op = SASTProcessTest(preprocess_params)
-            postprocess_params["score_thresh"] = args.det_sast_score_thresh
-            postprocess_params["nms_thresh"] = args.det_sast_nms_thresh
-            self.det_sast_polygon = args.det_sast_polygon
-            if self.det_sast_polygon:
-                postprocess_params["sample_pts_num"] = 6
-                postprocess_params["expand_scale"] = 1.2
-                postprocess_params["shrink_ratio_of_width"] = 0.2
-            else:
-                postprocess_params["sample_pts_num"] = 2
-                postprocess_params["expand_scale"] = 1.0
-                postprocess_params["shrink_ratio_of_width"] = 0.3
-            self.postprocess_op = SASTPostProcess(postprocess_params)
         else:
             logger.info("unknown det_algorithm:{}".format(self.det_algorithm))
             sys.exit(0)
 
-        self.predictor, self.input_tensor, self.output_tensors =\
-            utility.create_predictor(args, mode="det")
+        self.preprocess_op = create_operators(pre_process_list)
+        self.postprocess_op = build_post_process(postprocess_params)
+        self.predictor = paddle.jit.load(args.det_model_dir)
+        self.predictor.eval()
 
     def order_points_clockwise(self, pts):
         """
@@ -134,46 +126,31 @@ class TextDetector(object):
 
     def __call__(self, img):
         ori_im = img.copy()
-        im, ratio_list = self.preprocess_op(img)
-        if im is None:
+        data = {'image': img}
+        data = transform(data, self.preprocess_op)
+        img, shape_list = data
+        if img is None:
             return None, 0
-        im = im.copy()
+        img = np.expand_dims(img, axis=0)
+        shape_list = np.expand_dims(shape_list, axis=0)
         starttime = time.time()
-        if self.use_zero_copy_run:
-            self.input_tensor.copy_from_cpu(im)
-            self.predictor.zero_copy_run()
-        else:
-            im = fluid.core.PaddleTensor(im)
-            self.predictor.run([im])
-        outputs = []
-        for output_tensor in self.output_tensors:
-            output = output_tensor.copy_to_cpu()
-            outputs.append(output)
-        outs_dict = {}
-        if self.det_algorithm == "EAST":
-            outs_dict['f_geo'] = outputs[0]
-            outs_dict['f_score'] = outputs[1]
-        elif self.det_algorithm == 'SAST':
-            outs_dict['f_border'] = outputs[0]
-            outs_dict['f_score'] = outputs[1]
-            outs_dict['f_tco'] = outputs[2]
-            outs_dict['f_tvo'] = outputs[3]
-        else:
-            outs_dict['maps'] = outputs[0]
 
-        dt_boxes_list = self.postprocess_op(outs_dict, [ratio_list])
-        dt_boxes = dt_boxes_list[0]
-        if self.det_algorithm == "SAST" and self.det_sast_polygon:
-            dt_boxes = self.filter_tag_det_res_only_clip(dt_boxes, ori_im.shape)
-        else:
-            dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
+        preds = self.predictor(img)
+        post_result = self.postprocess_op(preds, shape_list)
+
+        dt_boxes = post_result[0]['points']
+        dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
         elapse = time.time() - starttime
         return dt_boxes, elapse
 
 
 if __name__ == "__main__":
     args = utility.parse_args()
+    place = paddle.CPUPlace()
+    paddle.disable_static(place)
+
     image_file_list = get_image_file_list(args.image_dir)
+    logger = get_logger()
     text_detector = TextDetector(args)
     count = 0
     total_time = 0
@@ -187,6 +164,7 @@ if __name__ == "__main__":
         if img is None:
             logger.info("error in loading image:{}".format(image_file))
             continue
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         dt_boxes, elapse = text_detector(img)
         if count > 0:
             total_time += elapse

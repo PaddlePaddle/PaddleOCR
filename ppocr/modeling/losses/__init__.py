@@ -11,3 +11,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+import copy
+
+
+def build_loss(config):
+    # det loss
+    from .det_db_loss import DBLoss
+
+    # rec loss
+    from .rec_ctc_loss import CTCLoss
+
+    support_dict = ['DBLoss', 'CTCLoss']
+
+    config = copy.deepcopy(config)
+    module_name = config.pop('name')
+    assert module_name in support_dict, Exception('loss only support {}'.format(
+        support_dict))
+    module_class = eval(module_name)(**config)
+    return module_class

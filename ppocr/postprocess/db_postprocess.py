@@ -16,11 +16,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import paddle
-import paddle.fluid as fluid
-
 import numpy as np
-import string
 import cv2
 from shapely.geometry import Polygon
 import pyclipper
@@ -31,11 +27,16 @@ class DBPostProcess(object):
     The post process for Differentiable Binarization (DB).
     """
 
-    def __init__(self, params):
-        self.thresh = params['thresh']
-        self.box_thresh = params['box_thresh']
-        self.max_candidates = params['max_candidates']
-        self.unclip_ratio = params['unclip_ratio']
+    def __init__(self,
+                 thresh=0.3,
+                 box_thresh=0.7,
+                 max_candidates=1000,
+                 unclip_ratio=2.0,
+                 **kwargs):
+        self.thresh = thresh
+        self.box_thresh = box_thresh
+        self.max_candidates = max_candidates
+        self.unclip_ratio = unclip_ratio
         self.min_size = 3
 
     def boxes_from_bitmap(self, pred, _bitmap, dest_width, dest_height):
@@ -55,9 +56,9 @@ class DBPostProcess(object):
             contours, _ = outs[0], outs[1]
 
         num_contours = min(len(contours), self.max_candidates)
-        boxes = np.zeros((num_contours, 4, 2), dtype=np.int16)
-        scores = np.zeros((num_contours, ), dtype=np.float32)
 
+        boxes = []
+        scores = []
         for index in range(num_contours):
             contour = contours[index]
             points, sside = self.get_mini_boxes(contour)
@@ -73,17 +74,14 @@ class DBPostProcess(object):
             if sside < self.min_size + 2:
                 continue
             box = np.array(box)
-            if not isinstance(dest_width, int):
-                dest_width = dest_width.item()
-                dest_height = dest_height.item()
 
             box[:, 0] = np.clip(
                 np.round(box[:, 0] / width * dest_width), 0, dest_width)
             box[:, 1] = np.clip(
                 np.round(box[:, 1] / height * dest_height), 0, dest_height)
-            boxes[index, :, :] = box.astype(np.int16)
-            scores[index] = score
-        return boxes, scores
+            boxes.append(box.astype(np.int16))
+            scores.append(score)
+        return np.array(boxes, dtype=np.int16), scores
 
     def unclip(self, box):
         unclip_ratio = self.unclip_ratio
@@ -131,28 +129,15 @@ class DBPostProcess(object):
         cv2.fillPoly(mask, box.reshape(1, -1, 2).astype(np.int32), 1)
         return cv2.mean(bitmap[ymin:ymax + 1, xmin:xmax + 1], mask)[0]
 
-    def __call__(self, outs_dict, ratio_list):
-        pred = outs_dict['maps']
-
-        pred = pred[:, 0, :, :]
+    def __call__(self, pred, shape_list):
+        pred = pred.numpy()[:, 0, :, :]
         segmentation = pred > self.thresh
 
         boxes_batch = []
         for batch_index in range(pred.shape[0]):
-            height, width = pred.shape[-2:]
-            tmp_boxes, tmp_scores = self.boxes_from_bitmap(
+            height, width = shape_list[batch_index]
+            boxes, scores = self.boxes_from_bitmap(
                 pred[batch_index], segmentation[batch_index], width, height)
 
-            boxes = []
-            for k in range(len(tmp_boxes)):
-                if tmp_scores[k] > self.box_thresh:
-                    boxes.append(tmp_boxes[k])
-            if len(boxes) > 0:
-                boxes = np.array(boxes)
-
-                ratio_h, ratio_w = ratio_list[batch_index]
-                boxes[:, :, 0] = boxes[:, :, 0] / ratio_w
-                boxes[:, :, 1] = boxes[:, :, 1] / ratio_h
-
-            boxes_batch.append(boxes)
+            boxes_batch.append({'points': boxes})
         return boxes_batch

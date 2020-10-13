@@ -13,12 +13,7 @@
 # limitations under the License.
 
 import argparse
-import os, sys
-from ppocr.utils.utility import initial_logger
-logger = initial_logger()
-from paddle.fluid.core import PaddleTensor
-from paddle.fluid.core import AnalysisConfig
-from paddle.fluid.core import create_paddle_predictor
+import os
 import cv2
 import numpy as np
 import json
@@ -41,7 +36,8 @@ def parse_args():
     parser.add_argument("--image_dir", type=str)
     parser.add_argument("--det_algorithm", type=str, default='DB')
     parser.add_argument("--det_model_dir", type=str)
-    parser.add_argument("--det_max_side_len", type=float, default=960)
+    parser.add_argument("--det_limit_side_len", type=float, default=960)
+    parser.add_argument("--det_limit_type", type=str, default='max')
 
     #DB parmas
     parser.add_argument("--det_db_thresh", type=float, default=0.3)
@@ -75,54 +71,6 @@ def parse_args():
     return parser.parse_args()
 
 
-def create_predictor(args, mode):
-    if mode == "det":
-        model_dir = args.det_model_dir
-    else:
-        model_dir = args.rec_model_dir
-
-    if model_dir is None:
-        logger.info("not find {} model file path {}".format(mode, model_dir))
-        sys.exit(0)
-    model_file_path = model_dir + "/model"
-    params_file_path = model_dir + "/params"
-    if not os.path.exists(model_file_path):
-        logger.info("not find model file path {}".format(model_file_path))
-        sys.exit(0)
-    if not os.path.exists(params_file_path):
-        logger.info("not find params file path {}".format(params_file_path))
-        sys.exit(0)
-
-    config = AnalysisConfig(model_file_path, params_file_path)
-
-    if args.use_gpu:
-        config.enable_use_gpu(args.gpu_mem, 0)
-    else:
-        config.disable_gpu()
-        config.set_cpu_math_library_num_threads(6)
-        if args.enable_mkldnn:
-            config.enable_mkldnn()
-
-    #config.enable_memory_optim()
-    config.disable_glog_info()
-
-    if args.use_zero_copy_run:
-        config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
-        config.switch_use_feed_fetch_ops(False)
-    else:
-        config.switch_use_feed_fetch_ops(True)
-
-    predictor = create_paddle_predictor(config)
-    input_names = predictor.get_input_names()
-    input_tensor = predictor.get_input_tensor(input_names[0])
-    output_names = predictor.get_output_names()
-    output_tensors = []
-    for output_name in output_names:
-        output_tensor = predictor.get_output_tensor(output_name)
-        output_tensors.append(output_tensor)
-    return predictor, input_tensor, output_tensors
-
-
 def draw_text_det_res(dt_boxes, img_path):
     src_im = cv2.imread(img_path)
     for box in dt_boxes:
@@ -139,8 +87,8 @@ def resize_img(img, input_size=600):
     im_shape = img.shape
     im_size_max = np.max(im_shape[0:2])
     im_scale = float(input_size) / float(im_size_max)
-    im = cv2.resize(img, None, None, fx=im_scale, fy=im_scale)
-    return im
+    img = cv2.resize(img, None, None, fx=im_scale, fy=im_scale)
+    return img
 
 
 def draw_ocr(image,

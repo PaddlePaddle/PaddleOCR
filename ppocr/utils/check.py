@@ -19,8 +19,6 @@ from __future__ import unicode_literals
 
 import sys
 
-import paddle.fluid as fluid
-
 import logging
 logger = logging.getLogger(__name__)
 

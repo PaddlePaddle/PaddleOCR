@@ -18,107 +18,122 @@ from __future__ import print_function
 
 import os
 import sys
+
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
 
+import yaml
+import paddle
+import paddle.distributed as dist
 
-def set_paddle_flags(**kwargs):
-    for key, value in kwargs.items():
-        if os.environ.get(key, None) is None:
-            os.environ[key] = str(value)
+paddle.manual_seed(2)
 
-
-# NOTE(paddle-dev): All of these flags should be
-# set before `import paddle`. Otherwise, it would
-# not take any effect.
-set_paddle_flags(
-    FLAGS_eager_delete_tensor_gb=0,  # enable GC to save memory
-)
-
-import tools.program as program
-from paddle import fluid
-from ppocr.utils.utility import initial_logger
-logger = initial_logger()
-from ppocr.data.reader_main import reader_main
+from ppocr.utils.logging import get_logger
+from ppocr.data import build_dataloader
+from ppocr.modeling import build_model, build_loss
+from ppocr.optimizer import build_optimizer
+from ppocr.postprocess import build_post_process
+from ppocr.metrics import build_metric
 from ppocr.utils.save_load import init_model
-from paddle.fluid.contrib.model_stat import summary
+from ppocr.utils.utility import print_dict
+import tools.program as program
+
+dist.get_world_size()
 
 
-def main():
-    train_build_outputs = program.build(
-        config, train_program, startup_program, mode='train')
-    train_loader = train_build_outputs[0]
-    train_fetch_name_list = train_build_outputs[1]
-    train_fetch_varname_list = train_build_outputs[2]
-    train_opt_loss_name = train_build_outputs[3]
-    model_average = train_build_outputs[-1]
+def main(config, device, logger, vdl_writer):
+    # init dist environment
+    if config['Global']['distributed']:
+        dist.init_parallel_env()
 
-    eval_program = fluid.Program()
-    eval_build_outputs = program.build(
-        config, eval_program, startup_program, mode='eval')
-    eval_fetch_name_list = eval_build_outputs[1]
-    eval_fetch_varname_list = eval_build_outputs[2]
-    eval_program = eval_program.clone(for_test=True)
-
-    train_reader = reader_main(config=config, mode="train")
-    train_loader.set_sample_list_generator(train_reader, places=place)
-
-    eval_reader = reader_main(config=config, mode="eval")
-
-    exe = fluid.Executor(place)
-    exe.run(startup_program)
-
-    # compile program for multi-devices
-    train_compile_program = program.create_multi_devices_program(
-        train_program, train_opt_loss_name)
-
-    # dump mode structure
-    if config['Global']['debug']:
-        if train_alg_type == 'rec' and 'attention' in config['Global']['loss_type']:
-            logger.warning('Does not suport dump attention...')
-        else:
-            summary(train_program)
-
-    init_model(config, train_program, exe)
-
-    train_info_dict = {'compile_program':train_compile_program,\
-        'train_program':train_program,\
-        'reader':train_loader,\
-        'fetch_name_list':train_fetch_name_list,\
-        'fetch_varname_list':train_fetch_varname_list,\
-        'model_average': model_average}
-
-    eval_info_dict = {'program':eval_program,\
-        'reader':eval_reader,\
-        'fetch_name_list':eval_fetch_name_list,\
-        'fetch_varname_list':eval_fetch_varname_list}
-
-    if train_alg_type == 'det':
-        program.train_eval_det_run(config, exe, train_info_dict, eval_info_dict)
+    global_config = config['Global']
+    # build dataloader
+    train_loader, train_info_dict = build_dataloader(
+        config['TRAIN'], device, global_config['distributed'], global_config)
+    if config['EVAL']:
+        eval_loader, _ = build_dataloader(config['EVAL'], device, False,
+                                          global_config)
     else:
-        program.train_eval_rec_run(config, exe, train_info_dict, eval_info_dict)
+        eval_loader = None
+    # build post process
+    post_process_class = build_post_process(config['PostProcess'],
+                                            global_config)
+    # build model
+    # for rec algorithm
+    if hasattr(post_process_class, 'character'):
+        config['Architecture']["Head"]['out_channels'] = len(
+            getattr(post_process_class, 'character'))
+    model = build_model(config['Architecture'])
+    if config['Global']['distributed']:
+        model = paddle.DataParallel(model)
+
+    # build optim
+    optimizer, lr_scheduler = build_optimizer(
+        config['Optimizer'],
+        epochs=config['Global']['epoch_num'],
+        step_each_epoch=len(train_loader),
+        parameters=model.parameters())
+
+    best_model_dict = init_model(config, model, logger, optimizer)
+
+    # build loss
+    loss_class = build_loss(config['Loss'])
+    # build metric
+    eval_class = build_metric(config['Metric'])
+
+    # start train
+    program.train(config, model, loss_class, optimizer, lr_scheduler,
+                  train_loader, eval_loader, post_process_class, eval_class,
+                  best_model_dict, logger, vdl_writer)
 
 
-def test_reader():
-    logger.info(config)
-    train_reader = reader_main(config=config, mode="train")
+def test_reader(config, place, logger):
+    train_loader = build_dataloader(config['TRAIN'], place)
     import time
     starttime = time.time()
     count = 0
     try:
-        for data in train_reader():
+        for data in train_loader():
             count += 1
             if count % 1 == 0:
                 batch_time = time.time() - starttime
                 starttime = time.time()
-                logger.info("reader:", count, len(data), batch_time)
+                logger.info("reader: {}, {}, {}".format(count,
+                                                        len(data), batch_time))
     except Exception as e:
         logger.info(e)
     logger.info("finish reader: {}, Success!".format(count))
 
 
+def dis_main():
+    device, config = program.preprocess()
+    config['Global']['distributed'] = dist.get_world_size() != 1
+    paddle.disable_static(device)
+
+    # save_config
+    os.makedirs(config['Global']['save_model_dir'], exist_ok=True)
+    with open(
+            os.path.join(config['Global']['save_model_dir'], 'config.yml'),
+            'w') as f:
+        yaml.dump(dict(config), f, default_flow_style=False, sort_keys=False)
+
+    logger = get_logger(
+        log_file='{}/train.log'.format(config['Global']['save_model_dir']))
+    if config['Global']['use_visualdl']:
+        from visualdl import LogWriter
+        vdl_writer = LogWriter(logdir=config['Global']['save_model_dir'])
+    else:
+        vdl_writer = None
+    print_dict(config, logger)
+    logger.info('train with paddle {} and device {}'.format(paddle.__version__,
+                                                            device))
+
+    main(config, device, logger, vdl_writer)
+    # test_reader(config, place, logger)
+
+
 if __name__ == '__main__':
-    startup_program, train_program, place, config, train_alg_type = program.preprocess()
-    main()
-#     test_reader()
+    # main()
+    # dist.spawn(dis_main, nprocs=2, selelcted_gpus='6,7')
+    dis_main()

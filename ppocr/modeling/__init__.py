@@ -11,3 +11,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+import copy
+from .losses import build_loss
+
+__all__ = ['build_model', 'build_loss']
+
+
+def build_model(config):
+    from .architectures import Model
+
+    config = copy.deepcopy(config)
+    module_class = Model(config)
+    return module_class

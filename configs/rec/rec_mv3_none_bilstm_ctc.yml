@@ -1,43 +1,108 @@
 Global:
-  algorithm: CRNN
-  use_gpu: true
-  epoch_num: 72
+  use_gpu: false
+  epoch_num: 500
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: output/rec_CRNN
-  save_epoch_step: 3
-  eval_batch_step: 2000
-  train_batch_size_per_card: 256
-  test_batch_size_per_card: 256
-  image_shape: [3, 32, 100]
-  max_text_length: 25
-  character_type: en
-  loss_type: ctc
-  reader_yml: ./configs/rec/rec_benchmark_reader.yml
-  pretrain_weights:
-  checkpoints:
+  save_model_dir: ./output/rec/test/
+  save_epoch_step: 500
+  # evaluation is run every 5000 iterations after the 4000th iteration
+  eval_batch_step: 127
+  # if pretrained_model is saved in static mode, load_static_weights must set to True
+  load_static_weights: True
+  cal_metric_during_train: True
+  pretrained_model:
+  checkpoints: #output/rec/rec_crnn/best_accuracy
   save_inference_dir:
-  infer_img:
-  
-Architecture:
-  function: ppocr.modeling.architectures.rec_model,RecModel
+  use_visualdl: False
+  infer_img: doc/imgs_words/ch/word_1.jpg
+  # for data or label process
+  max_text_length: 80
+  character_dict_path: ppocr/utils/ppocr_keys_v1.txt
+  character_type: 'ch'
+  use_space_char: False
+  infer_mode: False
+  use_tps: False
 
-Backbone:
-  function: ppocr.modeling.backbones.rec_mobilenet_v3,MobileNetV3
-  scale: 0.5
-  model_name: large
- 
-Head:
-  function: ppocr.modeling.heads.rec_ctc_head,CTCPredict
-  encoder_type: rnn
-  SeqRNN:
-    hidden_size: 96
-    
-Loss:
-  function: ppocr.modeling.losses.rec_ctc_loss,CTCLoss
 
 Optimizer:
-  function: ppocr.optimizer,AdamDecay
-  base_lr: 0.001
+  name: Adam
   beta1: 0.9
   beta2: 0.999
+  learning_rate:
+    name: Cosine
+    lr: 0.001
+    warmup_epoch: 4
+  regularizer:
+    name: 'L2'
+    factor: 0.00001
+
+Architecture:
+  type: rec
+  algorithm: CRNN
+  Transform:
+  Backbone:
+    name: MobileNetV3
+    scale: 0.5
+    model_name: small
+    small_stride: [ 1, 2, 2, 2 ]
+  Neck:
+    name: SequenceEncoder
+    encoder_type: fc
+    hidden_size: 96
+  Head:
+    name: CTC
+    fc_decay: 0.00001
+
+Loss:
+  name: CTCLoss
+
+PostProcess:
+  name: CTCLabelDecode
+
+Metric:
+  name: RecMetric
+  main_indicator: acc
+
+TRAIN:
+  dataset:
+    name: SimpleDataSet
+    data_dir: /home/zhoujun20/rec
+    file_list:
+      - /home/zhoujun20/rec/real_data.txt # dataset1
+    ratio_list: [ 0.4,0.6 ]
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - CTCLabelEncode: # Class handling label
+      - RecAug:
+      - RecResizeImg:
+          image_shape: [ 3,32,320 ]
+      - keepKeys:
+          keep_keys: [ 'image','label','length' ] # dataloader将按照此顺序返回list
+  loader:
+    batch_size: 256
+    shuffle: True
+    drop_last: True
+    num_workers: 6
+
+EVAL:
+  dataset:
+    name: SimpleDataSet
+    data_dir: /home/zhoujun20/rec
+    file_list:
+      - /home/zhoujun20/rec/label_val_all.txt
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - CTCLabelEncode: # Class handling label
+      - RecResizeImg:
+          image_shape: [ 3,32,320 ]
+      - keepKeys:
+          keep_keys: [ 'image','label','length' ] # dataloader将按照此顺序返回list
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size: 256
+    num_workers: 6
