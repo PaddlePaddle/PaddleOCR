@@ -1,0 +1,19 @@
+# 更新
+- 2020.8.24 支持通过whl包安装使用PaddleOCR，具体参考[Paddleocr Package使用说明](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/whl.md)
+- 2020.8.21 更新8月18日B站直播课回放和PPT，课节2，易学易用的OCR工具大礼包，[获取地址](https://aistudio.baidu.com/aistudio/education/group/info/1519)
+- 2020.8.16 开源文本检测算法[SAST](https://arxiv.org/abs/1908.05498)和文本识别算法[SRN](https://arxiv.org/abs/2003.12294)
+- 2020.7.23 发布7月21日B站直播课回放和PPT，课节1，PaddleOCR开源大礼包全面解读，[获取地址](https://aistudio.baidu.com/aistudio/course/introduce/1519)
+- 2020.7.15 添加基于EasyEdge和Paddle-Lite的移动端DEMO，支持iOS和Android系统
+- 2020.7.15 完善预测部署，添加基于C++预测引擎推理、服务化部署和端侧部署方案，以及超轻量级中文OCR模型预测耗时Benchmark
+- 2020.7.15 整理OCR相关数据集、常用数据标注以及合成工具
+- 2020.7.9 添加支持空格的识别模型，识别效果，预测及训练方式请参考快速开始和文本识别训练相关文档
+- 2020.7.9 添加数据增强、学习率衰减策略,具体参考[配置文件](./doc/doc_ch/config.md)
+- 2020.6.8 添加[数据集](./doc/doc_ch/datasets.md)，并保持持续更新
+- 2020.6.5 支持 `attetnion` 模型导出 `inference_model`
+- 2020.6.5 支持单独预测识别时，输出结果得分
+- 2020.5.30 提供超轻量级中文OCR在线体验
+- 2020.5.30 模型预测、训练支持Windows系统
+- 2020.5.30 开源通用中文OCR模型
+- 2020.5.14 发布[PaddleOCR公开课](https://www.bilibili.com/video/BV1nf4y1U7RX?p=4)
+- 2020.5.14 发布[PaddleOCR实战练习](https://aistudio.baidu.com/aistudio/projectdetail/467229)
+- 2020.5.14 开源8.6M超轻量级中文OCR模型
