@@ -21,4 +21,6 @@ Demo测试的时候使用的是NDK 20b版本，20版本以上均可以支持编�
 
 # FAQ：
 Q1: 更新1.1版本的模型后，demo报错？
+
+
 A1. 如果要更换V1.1 版本的模型，请更新模型的同时，更新预测库文件，建议使用[PaddleLite 2.6.3](https://github.com/PaddlePaddle/Paddle-Lite/releases/tag/v2.6.3)版本的预测库文件，OCR移动端部署参考[教程](../lite/readme.md)。
