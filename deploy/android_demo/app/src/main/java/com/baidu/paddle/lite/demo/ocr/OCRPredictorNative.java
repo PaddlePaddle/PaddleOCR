@@ -63,7 +63,7 @@ public class OCRPredictorNative {
 
     protected native float[] forward(long pointer, float[] buf, float[] ddims, Bitmap originalImage);
 
-    protected native void destory(long pointer);
+    protected native void release(long pointer);
 
     private ArrayList<OcrResultModel> postprocess(float[] raw) {
         ArrayList<OcrResultModel> results = new ArrayList<OcrResultModel>();
