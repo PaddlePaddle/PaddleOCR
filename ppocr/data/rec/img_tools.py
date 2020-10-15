@@ -309,16 +309,28 @@ def warp(img, ang):
     if config.distort:
         img_height, img_width = img.shape[0:2]
         if random.random() <= prob and img_height >= 20 and img_width >= 20:
-            new_img = tia_distort(new_img, random.randint(3, 6))
+            try:
+                new_img = tia_distort(new_img, random.randint(3, 6))
+            except:
+                logger.warning(
+                    "Exception occured during tia_distort, pass it...")
 
     if config.stretch:
         img_height, img_width = img.shape[0:2]
         if random.random() <= prob and img_height >= 20 and img_width >= 20:
-            new_img = tia_stretch(new_img, random.randint(3, 6))
+            try:
+                new_img = tia_stretch(new_img, random.randint(3, 6))
+            except:
+                logger.warning(
+                    "Exception occured during tia_stretch, pass it...")
 
     if config.perspective:
         if random.random() <= prob:
-            new_img = tia_perspective(new_img)
+            try:
+                new_img = tia_perspective(new_img)
+            except:
+                logger.warning(
+                    "Exception occured during tia_perspective, pass it...")
 
     if config.crop:
         img_height, img_width = img.shape[0:2]
