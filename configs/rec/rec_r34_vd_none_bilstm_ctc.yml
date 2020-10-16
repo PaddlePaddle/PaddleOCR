@@ -42,7 +42,7 @@ Architecture:
   Transform:
   Backbone:
     name: ResNet
-    layers: 200
+    layers: 34
   Neck:
     name: SequenceEncoder
     encoder_type: fc
