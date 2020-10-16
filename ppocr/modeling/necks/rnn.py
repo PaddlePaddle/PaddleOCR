@@ -116,7 +116,7 @@ class EncoderWithFC(nn.Layer):
 
 
 class SequenceEncoder(nn.Layer):
-    def __init__(self, in_channels, encoder_type, hidden_size, **kwargs):
+    def __init__(self, in_channels, encoder_type, hidden_size=48, **kwargs):
         super(SequenceEncoder, self).__init__()
         self.encoder_reshape = EncoderWithReshape(in_channels)
         self.out_channels = self.encoder_reshape.out_channels

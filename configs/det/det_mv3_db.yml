@@ -3,7 +3,7 @@ Global:
   epoch_num: 1200
   log_smooth_window: 20
   print_batch_step: 2
-  save_model_dir: ./output/20201010/
+  save_model_dir: ./output/db_mv3/
   save_epoch_step: 1200
   # evaluation is run every 5000 iterations after the 4000th iteration
   eval_batch_step: 8
@@ -66,9 +66,9 @@ Metric:
 TRAIN:
   dataset:
     name: SimpleDataSet
-    data_dir: /home/zhoujun20/detection/
+    data_dir: ./detection/
     file_list:
-      - /home/zhoujun20/detection/train_icdar2015_label.txt # dataset1
+      - ./detection/train_icdar2015_label.txt # dataset1
     ratio_list: [1.0]
     transforms:
       - DecodeImage: # load image
@@ -103,14 +103,14 @@ TRAIN:
     shuffle: True
     drop_last: False
     batch_size: 16
-    num_workers: 6
+    num_workers: 8
 
 EVAL:
   dataset:
     name: SimpleDataSet
-    data_dir: /home/zhoujun20/detection/
+    data_dir: ./detection/
     file_list:
-      - /home/zhoujun20/detection/test_icdar2015_label.txt
+      - ./detection/test_icdar2015_label.txt
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
@@ -130,4 +130,4 @@ EVAL:
     shuffle: False
     drop_last: False
     batch_size: 1 # must be 1
-    num_workers: 6
+    num_workers: 8

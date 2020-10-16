@@ -3,14 +3,14 @@ Global:
   epoch_num: 1200
   log_smooth_window: 20
   print_batch_step: 2
-  save_model_dir: ./output/20201010/
+  save_model_dir: ./output/20201015_r50/
   save_epoch_step: 1200
   # evaluation is run every 5000 iterations after the 4000th iteration
   eval_batch_step: 8
   # if pretrained_model is saved in static mode, load_static_weights must set to True
   load_static_weights: True
   cal_metric_during_train: False
-  pretrained_model: /home/zhoujun20/pretrain_models/MobileNetV3_large_x0_5_pretrained
+  pretrained_model: /home/zhoujun20/pretrain_models/ResNet50_vd_ssld_pretrained/
   checkpoints: #./output/det_db_0.001_DiceLoss_256_pp_config_2.0b_4gpu/best_accuracy
   save_inference_dir:
   use_visualdl: True
@@ -102,7 +102,7 @@ TRAIN:
     shuffle: True
     drop_last: False
     batch_size: 16
-    num_workers: 6
+    num_workers: 8
 
 EVAL:
   dataset:
@@ -129,4 +129,4 @@ EVAL:
     shuffle: False
     drop_last: False
     batch_size: 1 # must be 1
-    num_workers: 6
+    num_workers: 8

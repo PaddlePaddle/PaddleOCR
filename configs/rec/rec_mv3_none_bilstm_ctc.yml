@@ -84,7 +84,7 @@ TRAIN:
     batch_size: 256
     shuffle: True
     drop_last: True
-    num_workers: 6
+    num_workers: 8
 
 EVAL:
   dataset:
@@ -105,4 +105,4 @@ EVAL:
     shuffle: False
     drop_last: False
     batch_size: 256
-    num_workers: 6
+    num_workers: 8

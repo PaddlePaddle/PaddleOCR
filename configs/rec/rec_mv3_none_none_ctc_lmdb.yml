@@ -1,5 +1,5 @@
 Global:
-  use_gpu: true
+  use_gpu: false
   epoch_num: 500
   log_smooth_window: 20
   print_batch_step: 1
@@ -18,7 +18,7 @@ Global:
   # for data or label process
   max_text_length: 80
   character_dict_path: /home/zhoujun20/rec/lmdb/dict.txt
-  character_type: 'ch'
+  character_type: 'en'
   use_space_char: True
   infer_mode: False
   use_tps: False
@@ -47,8 +47,7 @@ Architecture:
     small_stride: [ 1, 2, 2, 2 ]
   Neck:
     name: SequenceEncoder
-    encoder_type: rnn
-    hidden_size: 48
+    encoder_type: reshape
   Head:
     name: CTC
     fc_decay: 0.00001
@@ -67,7 +66,7 @@ TRAIN:
   dataset:
     name: LMDBDateSet
     file_list:
-      - /home/zhoujun20/rec/lmdb/train # dataset1
+      - /Users/zhoujun20/Downloads/evaluation_new # dataset1
     ratio_list: [ 0.4,0.6 ]
     transforms:
       - DecodeImage: # load image
