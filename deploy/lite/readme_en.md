@@ -65,11 +65,11 @@ If you have prepared the model file ending in `.nb`, you can skip this step.
 The following table also provides a series of models that can be deployed on mobile phones to recognize Chinese.
 You can directly download the optimized model.
 
-|Version|Introduction|Model size|Detection model|Text Direction model|Recognition model|Paddle Lite branch |
-|-|-|-|-|-|-|
-|V1.1|extra-lightweight chinese OCR optimized model|8.1M|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_opt.nb)|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_opt.nb)|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_opt.nb)|develop|
-|[slim] V1.1|extra-lightweight chinese OCR optimized model|3.5M|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_prune_opt.nb)|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_quant_opt.nb)|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_quant_opt.nb)|develop|
-|V1.0|lightweight Chinese OCR optimized model|8.6M|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.0_det_opt.nb)|---|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.0_rec_opt.nb)|develop|
+| Version | Introduction | Model size | Detection model | Text Direction model | Recognition model | Paddle Lite branch |
+| - | - | - | - | - | - | - |
+| V1.1 | extra-lightweight chinese OCR optimized model | 8.1M | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_opt.nb) | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_opt.nb) | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_opt.nb) | develop |
+| [slim] V1.1 | extra-lightweight chinese OCR optimized model | 3.5M | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_prune_opt.nb) | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_quant_opt.nb) | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_quant_opt.nb) | develop |
+| V1.0 | lightweight Chinese OCR optimized model | 8.6M | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.0_det_opt.nb) | - | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.0_rec_opt.nb) | develop |
 
 If the model to be deployed is not in the above table, you need to follow the steps below to obtain the optimized model.
 
