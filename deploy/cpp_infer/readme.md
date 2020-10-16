@@ -1,4 +1,4 @@
-# 服务器端C++预测
+# 服务器端C++预测(添加多线程模式)
 
 本教程将介绍在服务器端部署PaddleOCR超轻量中文检测、识别模型的详细步骤。
 
@@ -232,6 +232,10 @@ visualize 1 # 是否对结果进行可视化，为1时，会在当前文件夹�
     <img src="../imgs/cpp_infer_pred_12.png" width="600">
 </div>
 
+###多线程模式
+1：将main.cpp改为main.cpp.bak,启用main_threadpool..cpp
+2: ./tool/run.sh 中传入文件夹路径 直接编译完成
+注意：多线程并发模式不能启用mkldnn，但相对于单线程多核CPU，速度会提升较多，线程数量设置为CPU核数
 
 ### 2.3 注意
 
