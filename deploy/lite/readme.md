@@ -22,21 +22,20 @@ Paddle Lite是飞桨轻量化推理引擎，为手机、IOT端提供高效推理
 ### 1.2 准备预测库
 
 预测库有两种获取方式：
-- 1. 直接下载，预测库下载链接如下：
+- 1. [推荐]直接下载，预测库下载链接如下：
       |平台|预测库下载链接|
       |-|-|
-      |Android|[arm7](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/Android/inference_lite_lib.android.armv7.gcc.c++_static.with_extra.CV_ON.tar.gz) / [arm8](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/Android/inference_lite_lib.android.armv8.gcc.c++_static.with_extra.CV_ON.tar.gz)|
-      |IOS|[arm7](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/iOS/inference_lite_lib.ios.armv7.with_extra.CV_ON.tar.gz) / [arm8](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/iOS/inference_lite_lib.ios64.armv8.with_extra.CV_ON.tar.gz)|
+      |Android|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.android.armv7.gcc.c++_shared.with_extra.with_cv.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.android.armv8.gcc.c++_shared.with_extra.with_cv.tar.gz)|
+      |IOS|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.ios.armv7.with_cv.with_extra.with_log.tiny_publish.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.ios.armv8.with_cv.with_extra.with_log.tiny_publish.tar.gz)|
 
-      注：1. 如果是从下Paddle-Lite[官网文档](https://paddle-lite.readthedocs.io/zh/latest/user_guides/release_lib.html#android-toolchain-gcc)下载的预测库，
-      注意选择`with_extra=ON，with_cv=ON`的下载链接。2. 如果使用量化的模型部署在端侧，建议使用Paddle-Lite develop分支编译预测库。
+      注：1. 上述预测库为PaddleLite 2.6.3分支编译得到，有关PaddleLite 2.6.3 详细信息可参考[链接](https://github.com/PaddlePaddle/Paddle-Lite/releases/tag/v2.6.3)。
 
-- 2. [建议]编译Paddle-Lite得到预测库，Paddle-Lite的编译方式如下：
+- 2. 编译Paddle-Lite得到预测库，Paddle-Lite的编译方式如下：
 ```
 git clone https://github.com/PaddlePaddle/Paddle-Lite.git
 cd Paddle-Lite
-# 务必使用develop分支编译预测库
-git checkout develop
+# 切换到Paddle-Lite 2.6.3稳定分支
+git checkout release/v2.6
 ./lite/tools/build_android.sh  --arch=armv8  --with_cv=ON --with_extra=ON
 ```
 
@@ -235,7 +234,7 @@ max_side_len  960         # 输入图像长宽大于960时，等比例缩放图�
 det_db_thresh  0.3        # 用于过滤DB预测的二值化图像，设置为0.-0.3对结果影响不明显
 det_db_box_thresh  0.5    # DB后处理过滤box的阈值，如果检测存在漏框情况，可酌情减小
 det_db_unclip_ratio  1.6  # 表示文本框的紧致程度，越小则文本框更靠近文本
-use_direction_classify  1  # 是否使用方向分类器，0表示不使用，1表示使用
+use_direction_classify  0  # 是否使用方向分类器，0表示不使用，1表示使用
 ```
 
  5. 启动调试

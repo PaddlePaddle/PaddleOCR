@@ -18,14 +18,14 @@ deployment solutions for end-side deployment issues.
 2. [Linux](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_env.html#linux)
 3. [MAC OS](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_env.html#mac-os)
 
-## 3. Download prebuild library for android and ios
+## 3. [Recommend]Download prebuild library for android and ios
 
 |Platform|Prebuild library Download Link|
 |-|-|
-|Android|[arm7](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/Android/inference_lite_lib.android.armv7.gcc.c++_static.with_extra.CV_ON.tar.gz) / [arm8](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/Android/inference_lite_lib.android.armv8.gcc.c++_static.with_extra.CV_ON.tar.gz)|
-|IOS|[arm7](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/iOS/inference_lite_lib.ios.armv7.with_extra.CV_ON.tar.gz) / [arm8](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/iOS/inference_lite_lib.ios64.armv8.with_extra.CV_ON.tar.gz)|
+|Android|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.android.armv7.gcc.c++_shared.with_extra.with_cv.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.android.armv8.gcc.c++_shared.with_extra.with_cv.tar.gz)|
+|IOS|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.ios.armv7.with_cv.with_extra.with_log.tiny_publish.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.ios.armv8.with_cv.with_extra.with_log.tiny_publish.tar.gz)|
 
-note: It is recommended to build prebuild library using [Paddle-Lite](https://github.com/PaddlePaddle/Paddle-Lite) develop branch if developer wants to deploy the [quantitative](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/quantization/README_en.md) model to mobile phone.
+note: The above pre-build inference library is compiled from the PaddleLite `release/2.6.3` branch. For more information about PaddleLite 2.6.3, please refer to [link](https://github.com/PaddlePaddle/Paddle-Lite/releases/tag/v2.6.3).
 
 
 The structure of the prediction library is as follows:
@@ -199,7 +199,7 @@ max_side_len  960         #  Limit the maximum image height and width to 960
 det_db_thresh  0.3        # Used to filter the binarized image of DB prediction, setting 0.-0.3 has no obvious effect on the result
 det_db_box_thresh  0.5    # DDB post-processing filter box threshold, if there is a missing box detected, it can be reduced as appropriate
 det_db_unclip_ratio  1.6  # Indicates the compactness of the text box, the smaller the value, the closer the text box to the text
-use_direction_classify  1  # Whether to use the direction classifier, 0 means not to use, 1 means to use
+use_direction_classify  0  # Whether to use the direction classifier, 0 means not to use, 1 means to use
 ```
 
 5. Run Model on phone
