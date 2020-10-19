@@ -16,33 +16,33 @@
   * [数据集4题](#数据集)
   * [模型训练调优6题](#模型训练调优)
   * [预测部署8题](#预测部署)
-* [【实战篇】PaddleOCR实战53个问题](#PaddleOCR实战问题)
+* [【实战篇】PaddleOCR实战58个问题](#PaddleOCR实战问题)
   * [使用咨询17题](#使用咨询)
-  * [数据集9题](#数据集)
-  * [模型训练调优13题](#模型训练调优)
-  * [预测部署14题](#预测部署)
+  * [数据集10题](#数据集)
+  * [模型训练调优15题](#模型训练调优)
+  * [预测部署16题](#预测部署)
 
 
 <a name="近期更新"></a>
 ## 近期更新（2020.10.19）
 
-#### Q1： paddleocr网页上放出的通用检测模型里面的预训练模型我用之前版本的代码加载提示在模型文件.pdparams中找不到bn4e_branch2a_variance是什么情况？是网络结构发生了变化吗？
+#### Q3.3.14：使用之前版本的代码加载最新1.1版的通用检测预训练模型，提示在模型文件.pdparams中找不到bn4e_branch2a_variance是什么情况？是网络结构发生了变化吗？
 
-**A**：1.1版的轻量检测模型去掉了mv3结构中的se模块，可以对比下这两个conf：det_mv3_db.yml，det_mv3_db_v1.1.yml
+**A**：1.1版的轻量检测模型去掉了mv3结构中的se模块，可以对比下这两个配置文件：[det_mv3_db.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/det/det_mv3_db.yml)，[det_mv3_db_v1.1.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/det/det_mv3_db_v1.1.yml)
 
-#### Q2： 训练中使用的字典需要与加载的预训练模型使用的字典一样吗？
+#### Q3.3.15： 训练中使用的字典需要与加载的预训练模型使用的字典一样吗？
 
 **A**：是的，训练的字典与你使用该模型进行预测的字典需要保持一致的。
 
-#### Q3： crnn+ctc模型训练所用的垂直文本（旋转至水平方向）是如何生成的？
+#### Q3.2.10： crnn+ctc模型训练所用的垂直文本（旋转至水平方向）是如何生成的？
 
 **A**：方法与合成水平方向文字一致，只是将字体替换成了垂直字体。
 
-#### Q4： hubserving、pdserving这两种部署方式区别是什么？
+#### Q3.4.15： hubserving、pdserving这两种部署方式区别是什么？
 
 **A**：hubserving原本是paddlehub的配套服务部署工具，可以很方便的将paddlehub内置的模型部署为服务，paddleocr使用了这个功能，并将模型路径等参数暴露出来方便用户自定义修改。paddle serving是面向所有paddle模型的部署工具，文档中可以看到我们提供了快速版和标准版，其中快速版和hubserving的本质是一样的，而标准版基于rpc，更稳定，更适合分布式部署。
 
-#### Q5： hub serving部署服务时如何多gpu同时利用起来，export CUDA_VISIBLE_DEVICES=0,1 方式吗？
+#### Q3.4.16： hub serving部署服务时如何多gpu同时利用起来，export CUDA_VISIBLE_DEVICES=0,1 方式吗？
 
 **A**：hubserving的部署方式目前暂不支持多卡预测，除非手动启动多个serving，不同端口对应不同卡。或者可以使用paddleserving进行部署，部署工具已经发布：https://github.com/PaddlePaddle/PaddleOCR/tree/develop/deploy/pdserving ，在启动服务时--gpu_id 0,1 这样就可以
 
@@ -457,9 +457,9 @@ return paddle.reader.multiprocess_reader(readers, False, queue_size=320)
 
 **A**：TPS模块暂时无法支持变长的输入，请设置 ``--rec_image_shape='3,32,100' --rec_char_type='en' 固定输入shape``
 
-#### Q3.3.14： paddleocr网页上放出的通用检测模型里面的预训练模型我用之前版本的代码加载提示在模型文件.pdparams中找不到bn4e_branch2a_variance是什么情况？是网络结构发生了变化吗？
+#### Q3.3.14：使用之前版本的代码加载最新1.1版的通用检测预训练模型，提示在模型文件.pdparams中找不到bn4e_branch2a_variance是什么情况？是网络结构发生了变化吗？
 
-**A**：1.1版的轻量检测模型去掉了mv3结构中的se模块，可以对比下这两个conf：det_mv3_db.yml，det_mv3_db_v1.1.yml
+**A**：1.1版的轻量检测模型去掉了mv3结构中的se模块，可以对比下这两个配置文件：[det_mv3_db.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/det/det_mv3_db.yml)，[det_mv3_db_v1.1.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/det/det_mv3_db_v1.1.yml)
 
 #### Q3.3.15： 训练中使用的字典需要与加载的预训练模型使用的字典一样吗？
 
