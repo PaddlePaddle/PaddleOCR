@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from paddle_serving_client import Client
-from paddle_serving_app.reader import OCRReader
 import cv2
 import sys
 import numpy as np
@@ -140,7 +139,6 @@ class TextRecognizerHelper(TextRecognizer):
 
 class OCRService(WebService):
     def init_rec(self):
-        self.ocr_reader = OCRReader()
         self.text_recognizer = TextRecognizerHelper(global_args)
 
     def preprocess(self, feed=[], fetch=[]):

@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from paddle_serving_client import Client
-from paddle_serving_app.reader import OCRReader
 import cv2
 import sys
 import numpy as np
