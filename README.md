@@ -32,6 +32,15 @@ PaddleOCR aims to create rich, leading, and practical OCR tools that help users 
 
 The above pictures are the visualizations of the general ppocr_server model. For more effect pictures, please see [More visualizations](./doc/doc_en/visualization_en.md).
 
+<a name="Community"></a>
+## Community
+- Scan the QR code below with your Wechat, you can access to official technical exchange group. Look forward to your participation.
+
+<div align="center">
+<img src="./doc/joinus.PNG"  width = "200" height = "200" />
+</div>
+
+
 ## Quick Experience
 
 You can also quickly experience the ultra-lightweight OCR : [Online Experience](https://www.paddlepaddle.org.cn/hub/scene/ocr)
@@ -102,7 +111,7 @@ For more model downloads (including multiple languages), please refer to [PP-OCR
     <img src="./doc/ppocr_framework.png" width="800">
 </div>
 
-PP-OCR is a practical ultra-lightweight OCR system. It is mainly composed of three parts: DB text detection, detection frame correction and CRNN text recognition. The system adopts 19 effective strategies from 8 aspects including backbone network selection and adjustment, prediction head design, data augmentation, learning rate transformation strategy, regularization parameter selection, pre-training model use, and automatic model tailoring and quantization to optimize and slim down the models of each module. The final results are an ultra-lightweight Chinese and English OCR model with an overall size of 3.5M and a 2.8M English digital OCR model. For more details, please refer to the PP-OCR technical article (https://arxiv.org/abs/2009.09941). Besides, The implementation of the FPGM Pruner and PACT quantization is based on [PaddleSlim](https://github.com/PaddlePaddle/PaddleSlim). 
+PP-OCR is a practical ultra-lightweight OCR system. It is mainly composed of three parts: DB text detection, detection frame correction and CRNN text recognition. The system adopts 19 effective strategies from 8 aspects including backbone network selection and adjustment, prediction head design, data augmentation, learning rate transformation strategy, regularization parameter selection, pre-training model use, and automatic model tailoring and quantization to optimize and slim down the models of each module. The final results are an ultra-lightweight Chinese and English OCR model with an overall size of 3.5M and a 2.8M English digital OCR model. For more details, please refer to the PP-OCR technical article (https://arxiv.org/abs/2009.09941). Besides, The implementation of the FPGM Pruner and PACT quantization is based on [PaddleSlim](https://github.com/PaddlePaddle/PaddleSlim).
 
 
 
@@ -126,13 +135,7 @@ PP-OCR is a practical ultra-lightweight OCR system. It is mainly composed of thr
     <img src="./doc/imgs_results/1112.jpg" width="800">
 </div>
 
-<a name="Community"></a>
-## Community
-Scan the QR code below with your Wechat and completing the questionnaire, you can access to official technical exchange group.
 
-<div align="center">
-<img src="./doc/joinus.PNG"  width = "200" height = "200" />
-</div>
 
 <a name="LICENSE"></a>
 ## License

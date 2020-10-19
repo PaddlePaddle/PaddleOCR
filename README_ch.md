@@ -35,6 +35,15 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 上图是通用ppocr_server模型效果展示，更多效果图请见[效果展示页面](./doc/doc_ch/visualization.md)。
 
+<a name="欢迎加入PaddleOCR技术交流群"></a>
+## 欢迎加入PaddleOCR技术交流群
+- 微信扫描二维码加入官方交流群，获得更高效的问题答疑，与各行各业开发者充分交流，期待您的加入。
+
+<div align="center">
+<img src="./doc/joinus.PNG"  width = "200" height = "200" />
+</div>
+
+
 ## 快速体验
 - PC端：超轻量级中文OCR在线体验地址：https://www.paddlepaddle.org.cn/hub/scene/ocr
 
@@ -125,13 +134,7 @@ PP-OCR是一个实用的超轻量OCR系统。主要由DB文本检测、检测框
     <img src="./doc/imgs_results/1112.jpg" width="800">
 </div>
 
-<a name="欢迎加入PaddleOCR技术交流群"></a>
-## 欢迎加入PaddleOCR技术交流群
-请扫描下面二维码，完成问卷填写，获取加群二维码和OCR方向的炼丹秘籍
 
-<div align="center">
-<img src="./doc/joinus.PNG"  width = "200" height = "200" />
-</div>
 
 <a name="许可证书"></a>
 ## 许可证书
