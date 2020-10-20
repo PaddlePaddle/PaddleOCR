@@ -72,8 +72,7 @@ class Model(nn.Layer):
             config['Neck']['in_channels'] = in_channels
             self.neck = build_neck(config['Neck'])
             in_channels = self.neck.out_channels
-
-        # # build head, head is need for del, rec and cls
+        # # build head, head is need for det, rec and cls
         config["Head"]['in_channels'] = in_channels
         self.head = build_head(config["Head"])
 
@@ -94,11 +93,11 @@ def check_static():
     from ppocr.utils.logging import get_logger
     from tools import program
 
-    config = program.load_config('configs/rec/rec_r34_vd_none_bilstm_ctc.yml')
+    config = program.load_config('configs/rec/rec_mv3_none_none_ctc_lmdb.yml')
 
     logger = get_logger()
     np.random.seed(0)
-    data = np.random.rand(1, 3, 32, 320).astype(np.float32)
+    data = np.random.rand(2, 3, 64, 320).astype(np.float32)
     paddle.disable_static()
 
     config['Architecture']['in_channels'] = 3
@@ -117,7 +116,7 @@ def check_static():
 
     static_out = np.load(
         '/Users/zhoujun20/Desktop/code/PaddleOCR/output/conv.npy')
-    diff = y.numpy() - static_out
+    diff = y.reshape((-1, 6624)).numpy() - static_out
     print(y.shape, static_out.shape, diff.mean())
 
 
