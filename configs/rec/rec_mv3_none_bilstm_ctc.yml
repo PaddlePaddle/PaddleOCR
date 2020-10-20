@@ -3,7 +3,7 @@ Global:
   epoch_num: 500
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/rec/test/
+  save_model_dir: ./output/rec/mv3_none_bilstm_ctc/
   save_epoch_step: 500
   # evaluation is run every 5000 iterations after the 4000th iteration
   eval_batch_step: 127
@@ -11,7 +11,7 @@ Global:
   load_static_weights: True
   cal_metric_during_train: True
   pretrained_model:
-  checkpoints: #output/rec/rec_crnn/best_accuracy
+  checkpoints:
   save_inference_dir:
   use_visualdl: False
   infer_img: doc/imgs_words/ch/word_1.jpg
@@ -66,9 +66,9 @@ Metric:
 TRAIN:
   dataset:
     name: SimpleDataSet
-    data_dir: /home/zhoujun20/rec
+    data_dir: ./rec
     file_list:
-      - /home/zhoujun20/rec/real_data.txt # dataset1
+      - ./rec/real_data.txt # dataset1
     ratio_list: [ 0.4,0.6 ]
     transforms:
       - DecodeImage: # load image
@@ -89,9 +89,9 @@ TRAIN:
 EVAL:
   dataset:
     name: SimpleDataSet
-    data_dir: /home/zhoujun20/rec
+    data_dir: ./rec
     file_list:
-      - /home/zhoujun20/rec/label_val_all.txt
+      - ./rec/label_val_all.txt
     transforms:
       - DecodeImage: # load image
           img_mode: BGR

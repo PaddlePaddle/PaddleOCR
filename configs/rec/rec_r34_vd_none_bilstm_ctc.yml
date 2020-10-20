@@ -3,7 +3,7 @@ Global:
   epoch_num: 500
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/rec/test/
+  save_model_dir: ./output/rec/res34_none_bilstm_ctc/
   save_epoch_step: 500
   # evaluation is run every 5000 iterations after the 4000th iteration
   eval_batch_step: 127
@@ -11,7 +11,7 @@ Global:
   load_static_weights: True
   cal_metric_during_train: True
   pretrained_model:
-  checkpoints: #output/rec/rec_crnn/best_accuracy
+  checkpoints:
   save_inference_dir:
   use_visualdl: False
   infer_img: doc/imgs_words/ch/word_1.jpg
