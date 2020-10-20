@@ -99,7 +99,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - FAQ
     - [【精选】OCR精选10个问题](./doc/doc_ch/FAQ.md)
     - [【理论篇】OCR通用21个问题](./doc/doc_ch/FAQ.md)
-    - [【实战篇】PaddleOCR实战53个问题](./doc/doc_ch/FAQ.md)
+    - [【实战篇】PaddleOCR实战58个问题](./doc/doc_ch/FAQ.md)
 - [技术交流群](#欢迎加入PaddleOCR技术交流群)
 - [参考文献](./doc/doc_ch/reference.md)
 - [许可证书](#许可证书)
