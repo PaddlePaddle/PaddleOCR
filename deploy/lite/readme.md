@@ -22,7 +22,7 @@ Paddle Lite是飞桨轻量化推理引擎，为手机、IOT端提供高效推理
 ### 1.2 准备预测库
 
 预测库有两种获取方式：
-- 1. [推荐]直接下载，预测库下载链接如下：
+- 1. 直接下载，预测库下载链接如下：
       |平台|预测库下载链接|
       |-|-|
       |Android|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.android.armv7.gcc.c++_shared.with_extra.with_cv.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.android.armv8.gcc.c++_shared.with_extra.with_cv.tar.gz)|
@@ -30,12 +30,12 @@ Paddle Lite是飞桨轻量化推理引擎，为手机、IOT端提供高效推理
 
       注：1. 上述预测库为PaddleLite 2.6.3分支编译得到，有关PaddleLite 2.6.3 详细信息可参考[链接](https://github.com/PaddlePaddle/Paddle-Lite/releases/tag/v2.6.3)。
 
-- 2. 编译Paddle-Lite得到预测库，Paddle-Lite的编译方式如下：
+- 2. [推荐]编译Paddle-Lite得到预测库，Paddle-Lite的编译方式如下：
 ```
 git clone https://github.com/PaddlePaddle/Paddle-Lite.git
 cd Paddle-Lite
-# 切换到Paddle-Lite 2.6.3稳定分支
-git checkout release/v2.6
+# 切换到Paddle-Lite develop稳定分支
+git checkout develop
 ./lite/tools/build_android.sh  --arch=armv8  --with_cv=ON --with_extra=ON
 ```
 

@@ -18,7 +18,7 @@ deployment solutions for end-side deployment issues.
 2. [Linux](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_env.html#linux)
 3. [MAC OS](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_env.html#mac-os)
 
-## 3. [Recommend]Download prebuild library for android and ios
+## 3. Download prebuild library for android and ios
 
 |Platform|Prebuild library Download Link|
 |-|-|
