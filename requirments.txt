@@ -4,3 +4,4 @@ pyclipper
 lmdb
 tqdm
 numpy
+opencv-python
