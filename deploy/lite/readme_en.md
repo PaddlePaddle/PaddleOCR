@@ -77,6 +77,8 @@ If the model to be deployed is not in the above table, you need to follow the st
 git clone https://github.com/PaddlePaddle/Paddle-Lite.git
 cd Paddle-Lite
 git checkout develop
+# switch to the specified commit
+git reset --hard 55c53482bcdd2868373d024dd1144e4c5ec0e6b8
 ./lite/tools/build.sh build_optimize_tool
 ```
 

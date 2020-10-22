@@ -100,6 +100,8 @@ Paddle-Lite 提供了多种策略来自动优化原始的模型，其中包括�
 git clone https://github.com/PaddlePaddle/Paddle-Lite.git
 cd Paddle-Lite
 git checkout develop
+# 切换到固定的commit
+git reset --hard 55c53482bcdd2868373d024dd1144e4c5ec0e6b8
 # 启动编译
 ./lite/tools/build.sh build_optimize_tool
 ```
@@ -253,6 +255,8 @@ use_direction_classify  0  # 是否使用方向分类器，0表示不使用，1�
  adb shell
  cd /data/local/tmp/debug
  export LD_LIBRARY_PATH=/data/local/tmp/debug:$LD_LIBRARY_PATH
+ export LD_LIBRARY_PATH=${PWD}:$LD_LIBRARY_PATH
+
  ./ocr_db_crnn ch_ppocr_mobile_v1.1_det_prune_opt.nb  ch_ppocr_mobile_v1.1_rec_quant_opt.nb  ch_ppocr_mobile_cls_quant_opt.nb  ./11.jpg  ppocr_keys_v1.txt
  ```
 
