@@ -76,7 +76,6 @@ class Model(nn.Layer):
         config["Head"]['in_channels'] = in_channels
         self.head = build_head(config["Head"])
 
-    # @paddle.jit.to_static
     def forward(self, x):
         if self.use_transform:
             x = self.transform(x)
@@ -93,30 +92,29 @@ def check_static():
     from ppocr.utils.logging import get_logger
     from tools import program
 
-    config = program.load_config('configs/rec/rec_mv3_none_none_ctc_lmdb.yml')
+    config = program.load_config('configs/det/det_r50_vd_db.yml')
 
     logger = get_logger()
     np.random.seed(0)
-    data = np.random.rand(2, 3, 64, 320).astype(np.float32)
+    data = np.random.rand(1, 3, 640, 640).astype(np.float32)
+
     paddle.disable_static()
 
+    x = paddle.to_tensor(data)
+
     config['Architecture']['in_channels'] = 3
-    config['Architecture']["Head"]['out_channels'] = 6624
+    config['Architecture']["Head"]['out_channels'] = 37
     model = Model(config['Architecture'])
     model.eval()
     load_dygraph_pretrain(
-        model,
-        logger,
-        '/Users/zhoujun20/Desktop/code/PaddleOCR/cnn_ctc/cnn_ctc',
-        load_static_weights=True)
-    x = paddle.to_tensor(data)
+        model, logger, 'det_r50_vd_db/best_accuracy', load_static_weights=True)
+
     y = model(x)
     for y1 in y:
         print(y1.shape)
 
-    static_out = np.load(
-        '/Users/zhoujun20/Desktop/code/PaddleOCR/output/conv.npy')
-    diff = y.reshape((-1, 6624)).numpy() - static_out
+    static_out = np.load('static_out.npy')
+    diff = y.numpy() - static_out
     print(y.shape, static_out.shape, diff.mean())
 
 
