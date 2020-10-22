@@ -254,9 +254,7 @@ use_direction_classify  0  # 是否使用方向分类器，0表示不使用，1�
  adb push debug /data/local/tmp/
  adb shell
  cd /data/local/tmp/debug
- export LD_LIBRARY_PATH=/data/local/tmp/debug:$LD_LIBRARY_PATH
  export LD_LIBRARY_PATH=${PWD}:$LD_LIBRARY_PATH
-
  ./ocr_db_crnn ch_ppocr_mobile_v1.1_det_prune_opt.nb  ch_ppocr_mobile_v1.1_rec_quant_opt.nb  ch_ppocr_mobile_cls_quant_opt.nb  ./11.jpg  ppocr_keys_v1.txt
  ```
 
