@@ -68,7 +68,7 @@ TRAIN:
     name: SimpleDataSet
     data_dir: ./rec
     file_list:
-      - ./rec/real_data.txt # dataset1
+      - ./rec/train.txt # dataset1
     ratio_list: [ 0.4,0.6 ]
     transforms:
       - DecodeImage: # load image
@@ -91,7 +91,7 @@ EVAL:
     name: SimpleDataSet
     data_dir: ./rec
     file_list:
-      - ./rec/label_val_all.txt
+      - ./rec/val.txt
     transforms:
       - DecodeImage: # load image
           img_mode: BGR

@@ -3,15 +3,15 @@ Global:
   epoch_num: 1200
   log_smooth_window: 20
   print_batch_step: 2
-  save_model_dir: ./output/20201015_r50/
+  save_model_dir: ./output/det_r50_vd/
   save_epoch_step: 1200
   # evaluation is run every 5000 iterations after the 4000th iteration
   eval_batch_step: 8
   # if pretrained_model is saved in static mode, load_static_weights must set to True
   load_static_weights: True
   cal_metric_during_train: False
-  pretrained_model: /home/zhoujun20/pretrain_models/ResNet50_vd_ssld_pretrained/
-  checkpoints: #./output/det_db_0.001_DiceLoss_256_pp_config_2.0b_4gpu/best_accuracy
+  pretrained_model: ./pretrain_models/ResNet50_vd_ssld_pretrained/
+  checkpoints:
   save_inference_dir:
   use_visualdl: True
   infer_img: doc/imgs_en/img_10.jpg
@@ -65,9 +65,9 @@ Metric:
 TRAIN:
   dataset:
     name: SimpleDataSet
-    data_dir: /home/zhoujun20/detection/
+    data_dir: ./detection/
     file_list:
-      - /home/zhoujun20/detection/train_icdar2015_label.txt # dataset1
+      - ./detection/train_icdar2015_label.txt # dataset1
     ratio_list: [1.0]
     transforms:
       - DecodeImage: # load image
@@ -107,9 +107,9 @@ TRAIN:
 EVAL:
   dataset:
     name: SimpleDataSet
-    data_dir: /home/zhoujun20/detection/
+    data_dir: ./detection/
     file_list:
-      - /home/zhoujun20/detection/test_icdar2015_label.txt
+      - ./detection/test_icdar2015_label.txt
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
