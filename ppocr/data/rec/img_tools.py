@@ -339,7 +339,6 @@ def warp(img, ang):
 
 
 def process_image(img,
-                  img_path,
                   image_shape,
                   label=None,
                   char_ops=None,
@@ -347,7 +346,8 @@ def process_image(img,
                   max_text_length=None,
                   tps=None,
                   infer_mode=False,
-                  distort=False):
+                  distort=False,
+                  img_path=None):
     if distort:
         img = warp(img, 10)
     if infer_mode and char_ops.character_type == "ch" and not tps:
