@@ -131,11 +131,11 @@ class LMDBReader(object):
                     else:
                         norm_img = process_image(
                             img=img,
-                            img_path=single_img,
                             image_shape=self.image_shape,
                             char_ops=self.char_ops,
                             tps=self.use_tps,
-                            infer_mode=True)
+                            infer_mode=True,
+                            img_path=single_img)
                     yield norm_img
             else:
                 lmdb_sets = self.load_hierarchical_lmdb_dataset()
@@ -169,12 +169,12 @@ class LMDBReader(object):
                             else:
                                 outs = process_image(
                                     img=img,
-                                    img_path=None,
                                     image_shape=self.image_shape,
                                     label=label,
                                     char_ops=self.char_ops,
                                     loss_type=self.loss_type,
-                                    max_text_length=self.max_text_length)
+                                    max_text_length=self.max_text_length,
+                                    img_path=None)
                             if outs is None:
                                 continue
                             yield outs
@@ -265,11 +265,11 @@ class SimpleReader(object):
                     else:
                         norm_img = process_image(
                             img=img,
-                            img_path=single_img,
                             image_shape=self.image_shape,
                             char_ops=self.char_ops,
                             tps=self.use_tps,
-                            infer_mode=True)
+                            infer_mode=True,
+                            img_path=single_img)
                     yield norm_img
             else:
                 with open(self.label_file_path, "rb") as fin:
@@ -312,13 +312,13 @@ class SimpleReader(object):
                     else:
                         outs = process_image(
                             img=img,
-                            img_path=img_path,
                             image_shape=self.image_shape,
                             label=label,
                             char_ops=self.char_ops,
                             loss_type=self.loss_type,
                             max_text_length=self.max_text_length,
-                            distort=self.use_distort)
+                            distort=self.use_distort,
+                            img_path=img_path)
                     if outs is None:
                         continue
                     yield outs
