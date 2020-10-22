@@ -19,3 +19,9 @@
 - 工具地址：https://github.com/wkentaro/labelme
 - 示意图：  
     ![](../datasets/labelme.jpg)  
+
+### 4. Vott
+- 工具描述：支持矩形,多边形等图片标注.支持视频标注.方便使用的快捷键以及比较好看的界面.同时支持导出多种标签格式.
+- 工具地址：https://github.com/microsoft/VoTT
+- 示意图：  
+    ![](../datasets/VoTT.jpg)  

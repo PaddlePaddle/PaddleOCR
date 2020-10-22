@@ -33,10 +33,43 @@ from ppocr.utils.utility import check_and_read_gif, get_image_file_list
 
 __all__ = ['PaddleOCR']
 
-model_params = {
-    'det': 'https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db_infer.tar',
-    'rec':
-    'https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_enhance_infer.tar',
+model_urls = {
+    'det':
+    'https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_infer.tar',
+    'rec': {
+        'ch': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_infer.tar',
+            'dict_path': './ppocr/utils/ppocr_keys_v1.txt'
+        },
+        'en': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/20-09-22/mobile/en/en_ppocr_mobile_v1.1_rec_infer.tar',
+            'dict_path': './ppocr/utils/ic15_dict.txt'
+        },
+        'french': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/20-09-22/mobile/fr/french_ppocr_mobile_v1.1_rec_infer.tar',
+            'dict_path': './ppocr/utils/french_dict.txt'
+        },
+        'german': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/20-09-22/mobile/ge/german_ppocr_mobile_v1.1_rec_infer.tar',
+            'dict_path': './ppocr/utils/german_dict.txt'
+        },
+        'korean': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/20-09-22/mobile/kr/korean_ppocr_mobile_v1.1_rec_infer.tar',
+            'dict_path': './ppocr/utils/korean_dict.txt'
+        },
+        'japan': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/20-09-22/mobile/jp/japan_ppocr_mobile_v1.1_rec_infer.tar',
+            'dict_path': './ppocr/utils/japan_dict.txt'
+        }
+    },
+    'cls':
+    'https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_infer.tar'
 }
 
 SUPPORT_DET_MODEL = ['DB']
@@ -120,15 +153,24 @@ def parse_args():
     parser.add_argument("--rec_char_type", type=str, default='ch')
     parser.add_argument("--rec_batch_num", type=int, default=30)
     parser.add_argument("--max_text_length", type=int, default=25)
-    parser.add_argument(
-        "--rec_char_dict_path",
-        type=str,
-        default="./ppocr/utils/ppocr_keys_v1.txt")
+    parser.add_argument("--rec_char_dict_path", type=str, default=None)
     parser.add_argument("--use_space_char", type=bool, default=True)
-    parser.add_argument("--enable_mkldnn", type=bool, default=False)
 
+    # params for text classifier
+    parser.add_argument("--use_angle_cls", type=str2bool, default=False)
+    parser.add_argument("--cls_model_dir", type=str, default=None)
+    parser.add_argument("--cls_image_shape", type=str, default="3, 48, 192")
+    parser.add_argument("--label_list", type=list, default=['0', '180'])
+    parser.add_argument("--cls_batch_num", type=int, default=30)
+    parser.add_argument("--cls_thresh", type=float, default=0.9)
+
+    parser.add_argument("--enable_mkldnn", type=bool, default=False)
+    parser.add_argument("--use_zero_copy_run", type=bool, default=False)
+
+    parser.add_argument("--lang", type=str, default='ch')
     parser.add_argument("--det", type=str2bool, default=True)
     parser.add_argument("--rec", type=str2bool, default=True)
+    parser.add_argument("--cls", type=str2bool, default=False)
     return parser.parse_args()
 
 
@@ -141,16 +183,30 @@ class PaddleOCR(predict_system.TextSystem):
         """
         postprocess_params = parse_args()
         postprocess_params.__dict__.update(**kwargs)
+        self.use_angle_cls = postprocess_params.use_angle_cls
+        lang = postprocess_params.lang
+        assert lang in model_urls[
+            'rec'], 'param lang must in {}, but got {}'.format(
+                model_urls['rec'].keys(), lang)
+        if postprocess_params.rec_char_dict_path is None:
+            postprocess_params.rec_char_dict_path = model_urls['rec'][lang][
+                'dict_path']
 
         # init model dir
         if postprocess_params.det_model_dir is None:
             postprocess_params.det_model_dir = os.path.join(BASE_DIR, 'det')
         if postprocess_params.rec_model_dir is None:
-            postprocess_params.rec_model_dir = os.path.join(BASE_DIR, 'rec')
+            postprocess_params.rec_model_dir = os.path.join(
+                BASE_DIR, 'rec/{}'.format(lang))
+        if postprocess_params.cls_model_dir is None:
+            postprocess_params.cls_model_dir = os.path.join(BASE_DIR, 'cls')
         print(postprocess_params)
         # download model
-        maybe_download(postprocess_params.det_model_dir, model_params['det'])
-        maybe_download(postprocess_params.rec_model_dir, model_params['rec'])
+        maybe_download(postprocess_params.det_model_dir, model_urls['det'])
+        maybe_download(postprocess_params.rec_model_dir,
+                       model_urls['rec'][lang]['url'])
+        if self.use_angle_cls:
+            maybe_download(postprocess_params.cls_model_dir, model_urls['cls'])
 
         if postprocess_params.det_algorithm not in SUPPORT_DET_MODEL:
             logger.error('det_algorithm must in {}'.format(SUPPORT_DET_MODEL))
@@ -165,7 +221,7 @@ class PaddleOCR(predict_system.TextSystem):
         # init det_model and rec_model
         super().__init__(postprocess_params)
 
-    def ocr(self, img, det=True, rec=True):
+    def ocr(self, img, det=True, rec=True, cls=False):
         """
         ocr with paddleocr
         args：
@@ -174,6 +230,10 @@ class PaddleOCR(predict_system.TextSystem):
             rec: use text recognition or not, if false, only det will be exec. default is True
         """
         assert isinstance(img, (np.ndarray, list, str))
+        if cls and not self.use_angle_cls:
+            print('cls should be false when use_angle_cls is false')
+            exit(-1)
+        self.use_angle_cls = cls
         if isinstance(img, str):
             image_file = img
             img, flag = check_and_read_gif(image_file)
@@ -193,6 +253,10 @@ class PaddleOCR(predict_system.TextSystem):
         else:
             if not isinstance(img, list):
                 img = [img]
+            if self.use_angle_cls:
+                img, cls_res, elapse = self.text_classifier(img)
+                if not rec:
+                    return cls_res
             rec_res, elapse = self.text_recognizer(img)
             return rec_res
 
@@ -207,6 +271,9 @@ def main():
     ocr_engine = PaddleOCR()
     for img_path in image_file_list:
         print(img_path)
-        result = ocr_engine.ocr(img_path, det=args.det, rec=args.rec)
+        result = ocr_engine.ocr(img_path,
+                                det=args.det,
+                                rec=args.rec,
+                                cls=args.cls)
         for line in result:
             print(line)

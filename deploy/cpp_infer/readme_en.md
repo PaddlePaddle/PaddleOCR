@@ -162,7 +162,7 @@ inference/
 sh tools/build.sh
 ```
 
-具体地，`tools/build.sh`中内容如下。
+Specifically, the content in `tools/build.sh` is as follows.
 
 ```shell
 OPENCV_DIR=your_opencv_dir
@@ -201,6 +201,40 @@ make -j
 sh tools/run.sh
 ```
 
+* If you want to orientation classifier to correct the detected boxes, you can set `use_angle_cls` in the file `tools/config.txt` as 1 to enable the function.
+* What's more, Parameters and their meanings in `tools/config.txt` are as follows.
+
+
+```
+use_gpu  0 # Whether to use GPU, 0 means not to use, 1 means to use
+gpu_id  0 # GPU id when use_gpu is 1
+gpu_mem  4000  # GPU memory requested
+cpu_math_library_num_threads  10 # Number of threads when using CPU inference. When machine cores is enough, the large the value, the faster the inference speed
+use_mkldnn 1 # Whether to use mkdlnn library
+use_zero_copy_run 1 # Whether to use use_zero_copy_run for inference
+
+max_side_len  960 #  Limit the maximum image height and width to 960
+det_db_thresh  0.3 # Used to filter the binarized image of DB prediction, setting 0.-0.3 has no obvious effect on the result
+det_db_box_thresh  0.5 # DDB post-processing filter box threshold, if there is a missing box detected, it can be reduced as appropriate
+det_db_unclip_ratio  1.6 # Indicates the compactness of the text box, the smaller the value, the closer the text box to the text
+det_model_dir  ./inference/det_db # Address of detection inference model
+
+# cls config
+use_angle_cls 0 # Whether to use the direction classifier, 0 means not to use, 1 means to use
+cls_model_dir ./inference/cls # Address of direction classifier inference model
+cls_thresh  0.9 # Score threshold of the  direction classifier
+
+# rec config
+rec_model_dir  ./inference/rec_crnn # Address of recognition inference model
+char_list_file ../../ppocr/utils/ppocr_keys_v1.txt # dictionary file
+
+# show the detection results
+visualize 1 # Whether to visualize the results，when it is set as 1, The prediction result will be save in the image file `./ocr_vis.png`.
+```
+
+* Multi-language inference is also supported in PaddleOCR, for more details, please refer to part of multi-language dictionaries and models in [recognition tutorial](../../doc/doc_en/recognition_en.md).
+
+
 The detection results will be shown on the screen, which is as follows.
 
 <div align="center">
@@ -208,6 +242,6 @@ The detection results will be shown on the screen, which is as follows.
 </div>
 
 
-### 2.3 Note
+### 2.3 Notes
 
-* `MKLDNN` is disabled by default for C++ inference (`use_mkldnn` in `tools/config.txt` is set to 0), if you need to use MKLDNN for inference acceleration, you need to modify `use_mkldnn` to 1, and use the latest version of the Paddle source code to compile the inference library. When using MKLDNN for CPU prediction, if multiple images are predicted at the same time, there will be a memory leak problem (the problem is not present if MKLDNN is disabled). The problem is currently being fixed, and the temporary solution is: when predicting multiple pictures, Re-initialize the recognition (`CRNNRecognizer`) and detection class (`DBDetector`) every 30 pictures or so.
+* Paddle2.0.0-beta0 inference model library is recommanded for this tuturial.

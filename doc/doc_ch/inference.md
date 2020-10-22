@@ -3,7 +3,7 @@
 
 inference 模型（`fluid.io.save_inference_model`保存的模型）
 一般是模型训练完成后保存的固化模型，多用于预测部署。训练过程中保存的模型是checkpoints模型，保存的是模型的参数，多用于恢复训练等。
-与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合与实际系统集成。更详细的介绍请参考文档[分类预测框架](https://paddleclas.readthedocs.io/zh_CN/latest/extension/paddle_inference.html).
+与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合与实际系统集成。更详细的介绍请参考文档[分类预测框架](https://github.com/PaddlePaddle/PaddleClas/blob/master/docs/zh_CN/extension/paddle_inference.md).
 
 接下来首先介绍如何将训练的模型转换成inference模型，然后将依次介绍文本检测、文本识别以及两者串联基于预测引擎推理。
 
@@ -11,24 +11,30 @@ inference 模型（`fluid.io.save_inference_model`保存的模型）
 - [一、训练模型转inference模型](#训练模型转inference模型)
     - [检测模型转inference模型](#检测模型转inference模型)
     - [识别模型转inference模型](#识别模型转inference模型)  
-    
+    - [方向分类模型转inference模型](#方向分类模型转inference模型)  
+
 - [二、文本检测模型推理](#文本检测模型推理)
     - [1. 超轻量中文检测模型推理](#超轻量中文检测模型推理)
     - [2. DB文本检测模型推理](#DB文本检测模型推理)
     - [3. EAST文本检测模型推理](#EAST文本检测模型推理)
     - [4. SAST文本检测模型推理](#SAST文本检测模型推理)  
-    
+
 - [三、文本识别模型推理](#文本识别模型推理)
     - [1. 超轻量中文识别模型推理](#超轻量中文识别模型推理)
     - [2. 基于CTC损失的识别模型推理](#基于CTC损失的识别模型推理)
     - [3. 基于Attention损失的识别模型推理](#基于Attention损失的识别模型推理)
-    - [4. 自定义文本识别字典的推理](#自定义文本识别字典的推理)  
-    
-- [四、文本检测、识别串联推理](#文本检测、识别串联推理)
+    - [4. 基于SRN损失的识别模型推理](#基于SRN损失的识别模型推理)
+    - [5. 自定义文本识别字典的推理](#自定义文本识别字典的推理)
+    - [6. 多语言模型的推理](#多语言模型的推理)
+
+- [四、方向分类模型推理](#方向识别模型推理)
+    - [1. 方向分类模型推理](#方向分类模型推理)
+
+- [五、文本检测、方向分类和文字识别串联推理](#文本检测、方向分类和文字识别串联推理)
     - [1. 超轻量中文OCR模型推理](#超轻量中文OCR模型推理)
     - [2. 其他模型推理](#其他模型推理)
-    
-    
+
+
 <a name="训练模型转inference模型"></a>
 ## 一、训练模型转inference模型
 <a name="检测模型转inference模型"></a>
@@ -36,7 +42,7 @@ inference 模型（`fluid.io.save_inference_model`保存的模型）
 
 下载超轻量级中文检测模型：
 ```
-wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar && tar xf ./ch_lite/ch_det_mv3_db.tar -C ./ch_lite/
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_train.tar && tar xf ./ch_lite/ch_ppocr_mobile_v1.1_det_train.tar -C ./ch_lite/
 ```
 上述模型是以MobileNetV3为backbone训练的DB算法，将训练好的模型转换成inference模型只需要运行如下命令：
 ```
@@ -45,7 +51,7 @@ wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar &
 # Global.checkpoints参数设置待转换的训练模型地址，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
 # Global.save_inference_dir参数设置转换的模型将保存的地址。
 
-python3 tools/export_model.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./ch_lite/det_mv3_db/best_accuracy Global.save_inference_dir=./inference/det_db/
+python3 tools/export_model.py -c configs/det/det_mv3_db_v1.1.yml -o Global.checkpoints=./ch_lite/ch_ppocr_mobile_v1.1_det_train/best_accuracy Global.save_inference_dir=./inference/det_db/
 ```
 转inference模型时，使用的配置文件和训练时使用的配置文件相同。另外，还需要设置配置文件中的`Global.checkpoints`、`Global.save_inference_dir`参数。
 其中`Global.checkpoints`指向训练中保存的模型参数文件，`Global.save_inference_dir`是生成的inference模型要保存的目录。
@@ -61,7 +67,7 @@ inference/det_db/
 
 下载超轻量中文识别模型：
 ```
-wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar && tar xf ./ch_lite/ch_rec_mv3_crnn.tar -C ./ch_lite/
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_train.tar && tar xf ./ch_lite/ch_ppocr_mobile_v1.1_rec_train.tar -C ./ch_lite/
 ```
 
 识别模型转inference模型与检测的方式相同，如下：
@@ -71,7 +77,7 @@ wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar
 # Global.checkpoints参数设置待转换的训练模型地址，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
 # Global.save_inference_dir参数设置转换的模型将保存的地址。
 
-python3 tools/export_model.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints=./ch_lite/rec_mv3_crnn/best_accuracy \
+python3 tools/export_model.py -c configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml -o Global.checkpoints=./ch_lite/ch_ppocr_mobile_v1.1_rec_train/best_accuracy \
         Global.save_inference_dir=./inference/rec_crnn/
 ```
 
@@ -80,6 +86,32 @@ python3 tools/export_model.py -c configs/rec/rec_chinese_lite_train.yml -o Globa
 转换成功后，在目录下有两个文件：
 ```
 /inference/rec_crnn/
+  └─  model     识别inference模型的program文件
+  └─  params    识别inference模型的参数文件
+```
+
+<a name="方向分类模型转inference模型"></a>
+### 方向分类模型转inference模型
+
+下载方向分类模型：
+```
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_train.tar && tar xf ./ch_lite/ch_ppocr_mobile_v1.1_cls_train.tar -C ./ch_lite/
+```
+
+方向分类模型转inference模型与检测的方式相同，如下：
+```
+# -c后面设置训练算法的yml配置文件
+# -o配置可选参数
+# Global.checkpoints参数设置待转换的训练模型地址，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
+# Global.save_inference_dir参数设置转换的模型将保存的地址。
+
+python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o Global.checkpoints=./ch_lite/ch_ppocr_mobile_v1.1_cls_train/best_accuracy \
+        Global.save_inference_dir=./inference/cls/
+```
+
+转换成功后，在目录下有两个文件：
+```
+/inference/cls/
   └─  model     识别inference模型的program文件
   └─  params    识别inference模型的参数文件
 ```
@@ -266,25 +298,82 @@ Predicts of ./doc/imgs_words_en/word_336.png:['super', 0.9999555]
 self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
 dict_character = list(self.character_str)
 ```
+<a name="基于SRN损失的识别模型推理"></a>
+### 4. 基于SRN损失的识别模型推理
+
+基于SRN损失的识别模型，需要额外设置识别算法参数 --rec_algorithm="SRN"。 同时需要保证预测shape与训练时一致，如： --rec_image_shape="1, 64, 256"
+
+```
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" \
+                                   --rec_model_dir="./inference/srn/" \
+                                   --rec_image_shape="1, 64, 256" \
+                                   --rec_char_type="en" \
+                                   --rec_algorithm="SRN"
+```
 
 <a name="自定义文本识别字典的推理"></a>
-### 4. 自定义文本识别字典的推理
+### 5. 自定义文本识别字典的推理
 如果训练时修改了文本的字典，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径
 
 ```
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="en" --rec_char_dict_path="your text dict path"
 ```
 
-<a name="文本检测、识别串联推理"></a>
-## 四、文本检测、识别串联推理
+<a name="多语言模型的推理"></a>
+### 6. 多语言模型的推理
+如果您需要预测的是其他语言模型，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径, 同时为了得到正确的可视化结果，
+需要通过 `--vis_font_path` 指定可视化的字体路径，`doc/` 路径下有默认提供的小语种字体，例如韩文识别：
+
+```
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" --rec_model_dir="./your inference model" --rec_char_type="korean" --rec_char_dict_path="ppocr/utils/dict/korean_dict.txt" --vis_font_path="doc/korean.ttf"
+```
+![](../imgs_words/korean/1.jpg)
+
+执行命令后，上图的预测结果为：
+``` text
+2020-09-19 16:15:05,076-INFO: 	 index: [205 206  38  39]
+2020-09-19 16:15:05,077-INFO: 	 word : 바탕으로
+2020-09-19 16:15:05,077-INFO: 	 score: 0.9171358942985535
+```
+
+<a name="方向分类模型推理"></a>
+## 四、方向分类模型推理
+
+下面将介绍方向分类模型推理。
+
+<a name="方向分类模型推理"></a>
+### 1. 方向分类模型推理
+
+方向分类模型推理，可以执行如下命令：
+
+```
+python3 tools/infer/predict_cls.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --cls_model_dir="./inference/cls/"
+```
+
+![](../imgs_words/ch/word_4.jpg)
+
+执行命令后，上面图像的预测结果（分类的方向和得分）会打印到屏幕上，示例如下：
+
+Predicts of ./doc/imgs_words/ch/word_4.jpg:['0', 0.9999963]
+
+<a name="文本检测、方向分类和文字识别串联推理"></a>
+## 五、文本检测、方向分类和文字识别串联推理
 <a name="超轻量中文OCR模型推理"></a>
 ### 1. 超轻量中文OCR模型推理
 
-在执行预测时，需要通过参数image_dir指定单张图像或者图像集合的路径、参数det_model_dir指定检测inference模型的路径和参数rec_model_dir指定识别inference模型的路径。可视化识别结果默认保存到 ./inference_results 文件夹里面。
+在执行预测时，需要通过参数`image_dir`指定单张图像或者图像集合的路径、参数`det_model_dir`,`cls_model_dir`和`rec_model_dir`分别指定检测，方向分类和识别的inference模型路径。参数`use_angle_cls`用于控制是否启用方向分类模型。可视化识别结果默认保存到 ./inference_results 文件夹里面。
 
 ```
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/"  --rec_model_dir="./inference/rec_crnn/"
+# 使用方向分类器
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --cls_model_dir="./inference/cls/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls=true
+
+# 不使用方向分类器
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls=false
 ```
+
+
+
+
 
 执行命令后，识别结果图像如下：
 

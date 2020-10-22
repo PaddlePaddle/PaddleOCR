@@ -14,18 +14,18 @@ deployment solutions for end-side deployment issues.
 - Mobile phone (arm7 or arm8)
 
 ## 2. Build PaddleLite library
-[build for Docker](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#docker)
-[build for Linux](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#android)
-[build for MAC OS](https://paddle-lite.readthedocs.io/zh/latest/user_guides/source_compile.html#id13)
-[build for windows](https://paddle-lite.readthedocs.io/zh/latest/demo_guides/x86.html#id4)
+1. [Docker](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_env.html#docker)
+2. [Linux](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_env.html#linux)
+3. [MAC OS](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_env.html#mac-os)
 
 ## 3. Download prebuild library for android and ios
 
 |Platform|Prebuild library Download Link|
 |-|-|
-|Android|[arm7](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/Android/inference_lite_lib.android.armv7.gcc.c++_static.with_extra.CV_ON.tar.gz) / [arm8](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/Android/inference_lite_lib.android.armv8.gcc.c++_static.with_extra.CV_ON.tar.gz)|
-|IOS|[arm7](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/iOS/inference_lite_lib.ios.armv7.with_extra.CV_ON.tar.gz) / [arm8](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/iOS/inference_lite_lib.ios64.armv8.with_extra.CV_ON.tar.gz)|
-|x86(Linux)|[预测库](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/X86/Linux/inference_lite_lib.x86.linux.tar.gz)|
+|Android|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.android.armv7.gcc.c++_shared.with_extra.with_cv.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.android.armv8.gcc.c++_shared.with_extra.with_cv.tar.gz)|
+|IOS|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.ios.armv7.with_cv.with_extra.with_log.tiny_publish.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.ios.armv8.with_cv.with_extra.with_log.tiny_publish.tar.gz)|
+
+note: The above pre-build inference library is compiled from the PaddleLite `release/2.6.3` branch. For more information about PaddleLite 2.6.3, please refer to [link](https://github.com/PaddlePaddle/Paddle-Lite/releases/tag/v2.6.3).
 
 
 The structure of the prediction library is as follows:
@@ -56,17 +56,20 @@ inference_lite_lib.android.armv8/
 ```
 
 
-
 ## 4. Inference Model Optimization
 
 Paddle Lite provides a variety of strategies to automatically optimize the original training model, including quantization, sub-graph fusion, hybrid scheduling, Kernel optimization and so on. In order to make the optimization process more convenient and easy to use, Paddle Lite provide opt tools to automatically complete the optimization steps and output a lightweight, optimal executable model.
 
-If you use PaddleOCR 8.6M OCR model to deploy, you can directly download the optimized model.
+If you have prepared the model file ending in `.nb`, you can skip this step.
 
+The following table also provides a series of models that can be deployed on mobile phones to recognize Chinese.
+You can directly download the optimized model.
 
-|Introduction|Detection model|Recognition model|Paddle Lite branch |
-|-|-|-|-|
-|lightweight Chinese OCR optimized model|[Download](https://paddleocr.bj.bcebos.com/deploy/lite/ch_det_mv3_db_opt.nb)|[Download](https://paddleocr.bj.bcebos.com/deploy/lite/ch_rec_mv3_crnn_opt.nb)|develop|
+|Version|Introduction|Model size|Detection model|Text Direction model|Recognition model|Paddle Lite branch |
+|-|-|-|-|-|-|
+|V1.1|extra-lightweight chinese OCR optimized model|8.1M|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_opt.nb)|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_opt.nb)|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_opt.nb)|develop|
+|[slim] V1.1|extra-lightweight chinese OCR optimized model|3.5M|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_prune_opt.nb)|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_quant_opt.nb)|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_quant_opt.nb)|develop|
+|V1.0|lightweight Chinese OCR optimized model|8.6M|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.0_det_opt.nb)|---|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.0_rec_opt.nb)|develop|
 
 If the model to be deployed is not in the above table, you need to follow the steps below to obtain the optimized model.
 
@@ -85,6 +88,14 @@ The `opt` can optimize the inference model saved by paddle.io.save_inference_mod
 
 The usage of opt is as follows：
 ```
+# 【Recommend】V1.1 is better than V1.0. steps for convert V1.1 model to nb file are as follows
+wget  https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/det/ch_ppocr_mobile_v1.1_det_prune_infer.tar && tar xf  ch_ppocr_mobile_v1.1_det_prune_infer.tar
+wget  https://paddleocr.bj.bcebos.com/20-09-22/mobile-slim/rec/ch_ppocr_mobile_v1.1_rec_quant_infer.tar && tar xf  ch_ppocr_mobile_v1.1_rec_quant_infer.tar
+
+./opt --model_file=./ch_ppocr_mobile_v1.1_det_prune_infer/model  --param_file=./ch_ppocr_mobile_v1.1_det_prune_infer/params  --optimize_out=./ch_ppocr_mobile_v1.1_det_prune_opt --valid_targets=arm
+./opt --model_file=./ch_ppocr_mobile_v1.1_rec_quant_infer/model  --param_file=./ch_ppocr_mobile_v1.1_rec_quant_infer/params  --optimize_out=./ch_ppocr_mobile_v1.1_rec_quant_opt --valid_targets=arm
+
+# or use V1.0 model
 wget  https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db_infer.tar && tar xf ch_det_mv3_db_infer.tar
 wget  https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar xf ch_rec_mv3_crnn_infer.tar
 
@@ -93,8 +104,7 @@ wget  https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar
 
 ```
 
-When the above code command is completed, there will be two more files `ch_det_mv3_db_opt.nb`,
-`ch_rec_mv3_crnn_opt.nb` in the current directory, which is the converted model file.
+When the above code command is completed, there will be two more files `.nb` in the current directory, which is the converted model file.
 
 ## 5. Run optimized model on Phone
 
@@ -153,8 +163,9 @@ The structure of the OCR demo is as follows after the above command is executed:
 ```
 demo/cxx/ocr/
 |-- debug/  
-|   |--ch_det_mv3_db_opt.nb             Detection model
-|   |--ch_rec_mv3_crnn_opt.nb           Recognition model
+|   |--ch_ppocr_mobile_v1.1_det_prune_opt.nb           Detection model
+|   |--ch_ppocr_mobile_v1.1_rec_quant_opt.nb           Recognition model
+|   |--ch_ppocr_mobile_cls_quant_opt.nb                Text direction classification model
 |   |--11.jpg                           Image for OCR
 |   |--ppocr_keys_v1.txt                Dictionary file
 |   |--libpaddle_light_api_shared.so    C++ .so file
@@ -169,6 +180,28 @@ demo/cxx/ocr/
 
 ```
 
+#### Note:
+1. ppocr_keys_v1.txt is a Chinese dictionary file.
+If the nb model is used for English recognition or other language recognition, dictionary file should be replaced with a dictionary of the corresponding language.
+PaddleOCR provides a variety of dictionaries under ppocr/utils/, including:
+```
+dict/french_dict.txt     # french
+dict/german_dict.txt     # german
+ic15_dict.txt       # english
+dict/japan_dict.txt      # japan
+dict/korean_dict.txt     # korean
+ppocr_keys_v1.txt   # chinese
+```
+
+2. `config.txt`  of the detector and classifier, as shown below:
+```
+max_side_len  960         #  Limit the maximum image height and width to 960
+det_db_thresh  0.3        # Used to filter the binarized image of DB prediction, setting 0.-0.3 has no obvious effect on the result
+det_db_box_thresh  0.5    # DDB post-processing filter box threshold, if there is a missing box detected, it can be reduced as appropriate
+det_db_unclip_ratio  1.6  # Indicates the compactness of the text box, the smaller the value, the closer the text box to the text
+use_direction_classify  0  # Whether to use the direction classifier, 0 means not to use, 1 means to use
+```
+
 5. Run Model on phone
 
 ```
@@ -180,7 +213,7 @@ adb shell
 cd /data/local/tmp/debug
 export LD_LIBRARY_PATH=/data/local/tmp/debug:$LD_LIBRARY_PATH
 # run model
-./ocr_db_crnn ch_det_mv3_db_opt.nb  ch_rec_mv3_crnn_opt.nb ./11.jpg  ppocr_keys_v1.txt
+ ./ocr_db_crnn ch_ppocr_mobile_v1.1_det_prune_opt.nb  ch_ppocr_mobile_v1.1_rec_quant_opt.nb  ch_ppocr_mobile_cls_quant_opt.nb  ./11.jpg  ppocr_keys_v1.txt
 ```
 
 The outputs are as follows:
@@ -188,3 +221,15 @@ The outputs are as follows:
 <div align="center">
     <img src="../imgs/demo.png" width="600">
 </div>
+
+## FAQ
+
+Q1: What if I want to change the model, do I need to run it again according to the process?
+A1: If you have performed the above steps, you only need to replace the .nb model file to complete the model replacement.
+
+Q2: How to test with another picture?
+A2: Replace the .jpg test image under `./debug` with the image you want to test, and run `adb push` to push new image to the phone.
+
+Q3: How to package it into the mobile APP?
+A3: This demo aims to provide the core algorithm part that can run OCR on mobile phones.  Further,
+PaddleOCR/deploy/android_demo is an example of encapsulating this demo into a mobile app for reference.

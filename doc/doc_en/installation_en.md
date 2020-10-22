@@ -3,11 +3,11 @@
 After testing, paddleocr can run on glibc 2.23. You can also test other glibc versions or install glic 2.23 for the best compatibility.
 
 PaddleOCR working environment:
-- PaddlePaddle1.7
+- PaddlePaddle1.8+, Recommend PaddlePaddle 2.0.0.beta
 - python3.7
 - glibc 2.23
 
-It is recommended to use the docker provided by us to run PaddleOCR, please refer to the use of docker [link](https://docs.docker.com/get-started/).
+It is recommended to use the docker provided by us to run PaddleOCR, please refer to the use of docker [link](https://www.runoob.com/docker/docker-tutorial.html/).
 
 *If you want to directly run the prediction code on mac or windows, you can start from step 2.*
 
@@ -49,18 +49,15 @@ docker images
 hub.baidubce.com/paddlepaddle/paddle   latest-gpu-cuda9.0-cudnn7-dev    f56310dcc829
 ```
 
-**2. Install PaddlePaddle Fluid v1.7 (the higher version is not supported yet, the adaptation work is in progress)**
+**2. Install PaddlePaddle Fluid v2.0**
 ```
 pip3 install --upgrade pip
 
-# If you have cuda9 installed on your machine, please run the following command to install
-python3 -m pip install paddlepaddle-gpu==1.7.2.post97 -i https://pypi.tuna.tsinghua.edu.cn/simple
-
-# If you have cuda10 installed on your machine, please run the following command to install
-python3 -m pip install paddlepaddle-gpu==1.7.2.post107 -i https://pypi.tuna.tsinghua.edu.cn/simple
+# If you have cuda9 or cuda10 installed on your machine, please run the following command to install
+python3 -m pip install paddlepaddle-gpu==2.0.0b0 -i https://mirror.baidu.com/pypi/simple
 
 # If you only have cpu on your machine, please run the following command to install
-python3 -m pip install paddlepaddle==1.7.2 -i https://pypi.tuna.tsinghua.edu.cn/simple
+python3 -m pip install paddlepaddle==2.0.0b0 -i https://mirror.baidu.com/pypi/simple
 ```
 For more software version requirements, please refer to the instructions in [Installation Document](https://www.paddlepaddle.org.cn/install/quick) for operation.
 
