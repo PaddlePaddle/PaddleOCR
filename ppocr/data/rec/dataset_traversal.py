@@ -264,7 +264,7 @@ class SimpleReader(object):
                             infer_mode=True)
                     yield norm_img
             else:
-                with open(self.label_file_path, "r", encoding="utf-8") as fin:
+                with open(self.label_file_path, "rb") as fin:
                     label_infor_list = fin.readlines()
                 img_num = len(label_infor_list)
                 img_id_list = list(range(img_num))
