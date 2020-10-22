@@ -21,6 +21,7 @@ import lmdb
 
 from ppocr.utils.utility import get_image_file_list
 from ppocr.utils.utility import initial_logger
+from .img_tools import process_image, process_image_srn, get_img_data
 
 logger = initial_logger()
 
