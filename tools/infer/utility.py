@@ -151,6 +151,18 @@ def draw_text_det_res(dt_boxes, img_path):
     return src_im
 
 
+import random
+def draw_text_det_res2(dt_boxes, img):
+    # src_im = cv2.imread(img_path)
+    src_im = img.copy()
+    for box in dt_boxes:
+        box = np.array(box).astype(np.int32).reshape(-1, 2)
+        color = [random.randint(0, 255) for _ in range(3)]
+        # cv2.polylines(src_im, [box], True, color=color, thickness=2)
+        cv2.fillConvexPoly(src_im, box, color)
+    return cv2.addWeighted(src_im, 0.5, img, 0.5, 0)
+
+
 def resize_img(img, input_size=600):
     """
     resize img and limit the longest side of the image to input_size
