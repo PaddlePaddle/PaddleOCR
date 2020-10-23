@@ -20,6 +20,7 @@ import math
 
 import paddle
 from paddle import ParamAttr, nn
+from paddle.nn import functional as F
 
 
 def get_para_bias_attr(l2_decay, k, name):
@@ -48,4 +49,6 @@ class CTC(nn.Layer):
 
     def forward(self, x, labels=None):
         predicts = self.fc(x)
+        if not self.training:
+            predicts = F.softmax(predicts, axis=2)
         return predicts
