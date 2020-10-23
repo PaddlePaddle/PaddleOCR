@@ -6,7 +6,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 **近期更新**
 - 2020.10.19 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，共计89个常见问题及解答，并且计划以后每周一都会更新，欢迎大家持续关注。
 - 2020.9.22 更新PP-OCR技术文章，https://arxiv.org/abs/2009.09941
-- 2020.9.19 更新超轻量压缩ppocr_mobile_slim系列模型，整体模型3.5M(详见[PP-OCR Pipline](#PP-OCR))，适合在移动端部署使用。[模型下载](#模型下载)
+- 2020.9.19 更新超轻量压缩ppocr_mobile_slim系列模型，整体模型3.5M(详见[PP-OCR Pipeline](#PP-OCR))，适合在移动端部署使用。[模型下载](#模型下载)
 - 2020.9.17 更新超轻量ppocr_mobile系列和通用ppocr_server系列中英文ocr模型，媲美商业效果。[模型下载](#模型下载)
 - 2020.9.17 更新[英文识别模型](./doc/doc_ch/models_list.md#英文识别模型)和[多语言识别模型](doc/doc_ch/models_list.md#多语言识别模型)，已支持`德语、法语、日语、韩语`，更多语种识别模型将持续更新。
 - 2020.8.24 支持通过whl包安装使用PaddleOCR，具体参考[Paddleocr Package使用说明](./doc/doc_ch/whl.md)
@@ -74,7 +74,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - 算法介绍
     - [文本检测](./doc/doc_ch/algorithm_overview.md)
     - [文本识别](./doc/doc_ch/algorithm_overview.md)
-    - [PP-OCR Pipline](#PP-OCR)
+    - [PP-OCR Pipeline](#PP-OCR)
 - 模型训练/评估
     - [文本检测](./doc/doc_ch/detection.md)
     - [文本识别](./doc/doc_ch/recognition.md)
@@ -106,7 +106,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - [贡献代码](#贡献代码)
 
 <a name="PP-OCR"></a>
-## PP-OCR Pipline
+## PP-OCR Pipeline
 <div align="center">
     <img src="./doc/ppocr_framework.png" width="800">
 </div>
