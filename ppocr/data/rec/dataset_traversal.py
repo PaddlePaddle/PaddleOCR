@@ -25,7 +25,6 @@ from .img_tools import process_image, process_image_srn, get_img_data
 
 logger = initial_logger()
 
-
 class LMDBReader(object):
     def __init__(self, params):
         if params['mode'] != 'train':
@@ -284,7 +283,7 @@ class SimpleReader(object):
                                self.num_workers))
                 for img_id in range(process_id, img_num, self.num_workers):
                     label_infor = label_infor_list[img_id_list[img_id]]
-                    substr = label_infor.strip("\n").strip().split()
+                    substr = label_infor.strip(b"\n").strip().split()
                     img_path = os.path.join(self.img_set_dir, substr[0])
                     img = cv2.imread(img_path)
                     if img is None:
