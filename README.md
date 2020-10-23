@@ -5,10 +5,10 @@ PaddleOCR aims to create rich, leading, and practical OCR tools that help users 
 
 **Recent updates**
 - 2020.9.22 Update the PP-OCR technical article, https://arxiv.org/abs/2009.09941
-- 2020.9.19 Update the ultra lightweight compressed ppocr_mobile_slim series models, the overall model size is 3.5M (see [PP-OCR Pipline](#PP-OCR-Pipline)), suitable for mobile deployment. [Model Downloads](#Supported-Chinese-model-list)
+- 2020.9.19 Update the ultra lightweight compressed ppocr_mobile_slim series models, the overall model size is 3.5M (see [PP-OCR Pipeline](#PP-OCR-Pipeline)), suitable for mobile deployment. [Model Downloads](#Supported-Chinese-model-list)
 - 2020.9.17 Update the ultra lightweight ppocr_mobile series and general ppocr_server series Chinese and English ocr models, which are comparable to commercial effects. [Model Downloads](#Supported-Chinese-model-list)
 - 2020.9.17 update [English recognition model](./doc/doc_en/models_list_en.md#english-recognition-model) and [Multilingual recognition model](doc/doc_en/models_list_en.md#english-recognition-model), `German`, `French`, `Japanese` and `Korean` have been supported. Models for more languages will continue to be updated.
-- 2020.8.24 Support the use of PaddleOCR through whl package installation，pelease refer  [PaddleOCR Package](./doc/doc_en/whl_en.md)
+- 2020.8.24 Support the use of PaddleOCR through whl package installation，please refer  [PaddleOCR Package](./doc/doc_en/whl_en.md)
 - 2020.8.21 Update the replay and PPT of the live lesson at Bilibili on August 18, lesson 2, easy to learn and use OCR tool spree. [Get Address](https://aistudio.baidu.com/aistudio/education/group/info/1519)
 - [more](./doc/doc_en/update_en.md)
 
@@ -75,7 +75,7 @@ For more model downloads (including multiple languages), please refer to [PP-OCR
 - Algorithm introduction
     - [Text Detection Algorithm](./doc/doc_en/algorithm_overview_en.md)
     - [Text Recognition Algorithm](./doc/doc_en/algorithm_overview_en.md)
-    - [PP-OCR Pipline](#PP-OCR-Pipline)
+    - [PP-OCR Pipeline](#PP-OCR-Pipeline)
 - Model training/evaluation
     - [Text Detection](./doc/doc_en/detection_en.md)
     - [Text Recognition](./doc/doc_en/recognition_en.md)
@@ -103,9 +103,9 @@ For more model downloads (including multiple languages), please refer to [PP-OCR
 - [License](#LICENSE)
 - [Contribution](#CONTRIBUTION)
 
-<a name="PP-OCR-Pipline"></a>
+<a name="PP-OCR-Pipeline"></a>
 
-## PP-OCR Pipline
+## PP-OCR Pipeline
 
 <div align="center">
     <img src="./doc/ppocr_framework.png" width="800">
