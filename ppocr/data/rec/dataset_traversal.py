@@ -266,7 +266,7 @@ class SimpleReader(object):
                             infer_mode=True)
                     yield norm_img
             else:
-                with open(self.label_file_path, "rb") as fin:
+                with open(self.label_file_path, "r", encoding="utf-8") as fin:
                     label_infor_list = fin.readlines()
                 img_num = len(label_infor_list)
                 img_id_list = list(range(img_num))
@@ -283,7 +283,7 @@ class SimpleReader(object):
                                self.num_workers))
                 for img_id in range(process_id, img_num, self.num_workers):
                     label_infor = label_infor_list[img_id_list[img_id]]
-                    substr = label_infor.strip(b"\n").strip().split()
+                    substr = label_infor.strip("\n").strip().split()
                     img_path = os.path.join(self.img_set_dir, substr[0])
                     img = cv2.imread(img_path)
                     if img is None:
