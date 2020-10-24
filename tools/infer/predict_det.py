@@ -36,12 +36,14 @@ from ppocr.data.det.db_process import DBProcessTest
 from ppocr.postprocess.db_postprocess import DBPostProcess
 from ppocr.postprocess.east_postprocess import EASTPostPocess
 from ppocr.postprocess.sast_postprocess import SASTPostProcess
+from ppocr.postprocess.merge_boxes import MergeBoxes
 
 
 class TextDetector(object):
     def __init__(self, args):
         max_side_len = args.det_max_side_len
         self.det_algorithm = args.det_algorithm
+        self.use_merge_boxes = args.use_merge_boxes
         preprocess_params = {'max_side_len': max_side_len}
         postprocess_params = {}
         if self.det_algorithm == "DB":
@@ -163,6 +165,8 @@ class TextDetector(object):
 
         dt_boxes_list = self.postprocess_op(outs_dict, [ratio_list])
         dt_boxes = dt_boxes_list[0]
+        if self.use_merge_boxes:
+            dt_boxes = MergeBoxes(np.array(ori_im.shape)).merge(dt_boxes)
         if self.det_algorithm == "SAST" and self.det_sast_polygon:
             dt_boxes = self.filter_tag_det_res_only_clip(dt_boxes, ori_im.shape)
         else:
