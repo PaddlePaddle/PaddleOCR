@@ -40,7 +40,6 @@ from ppocr.postprocess.sast_postprocess import SASTPostProcess
 import tools.infer.predict_det as predict_det
 
 
-# from urs/transform
 def get_rotated_size(w, h, theta):
     # 以中心为原心为旋转
     half_w = int(w // 2 + 1)
@@ -62,7 +61,6 @@ def get_rotated_size(w, h, theta):
     return new_w, new_h
 
 
-# from urs/transform
 def rotate_image(img, theta):
     h, w = img.shape[:2]
     M = cv2.getRotationMatrix2D((w // 2, h // 2), math.degrees(theta), 1.0)
@@ -73,7 +71,6 @@ def rotate_image(img, theta):
     return cv2.warpAffine(img, M, (new_w, new_h))
 
 
-# from urs/transform
 # 假设最长的5个文本条的方向就是图像的方向
 def get_rotated_radian(text_boxes):
     long_side_list = []
