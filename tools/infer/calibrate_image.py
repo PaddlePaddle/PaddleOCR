@@ -149,6 +149,7 @@ def calibrate_img(text_detector, img, image_file, out_dir):
         score_list.append(score)
         '''
         src_im = utility.draw_text_det_res2(dt_boxes_list[i], imgs[i])
+        img_name_pure = os.path.basename(image_file)
         new_filename = "det_res_{}-{}-{}.png".format(img_name_pure, i, int(score_list[i]))
         cv2.imwrite(os.path.join(draw_img_save, new_filename), src_im)
         '''
