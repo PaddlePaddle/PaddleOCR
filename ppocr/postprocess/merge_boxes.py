@@ -1,20 +1,30 @@
+# Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import math
 import numpy as np
 import cv2
 from collections import defaultdict
 
 
-# ----------------------------------------------------------------------------------------------------
 class MergeBoxes:
     def __init__(self, image_shape):
         self.image_shape = image_shape  # (height, width)
-        # self.angle_threshold = 10  # Maximum angle difference, similar to maximum vertical gap
-        # self.ratio_to_ignore_angle = 1.3  # Ignore angle check if the box is like a square
         self.distance_threshold = [20, 25]  # (vertical, horizontal) Maximum gap
         self.height_overlap_threshold = 0.6  # Minimum height overlap rate
         pass
 
-    # ----------------------------------------------------------------------------------------------------
     def merge(self, boxes):
         # Prepare
         data = np.array(boxes)
@@ -43,11 +53,9 @@ class MergeBoxes:
                     forward += 1
                     continue
                 forward_box = data[forward]
-                # print('Merge: ', current, forward)
                 if self.should_merge(current_box, forward_box):
                     data[current] = self.merge_two_boxes(current_box, forward_box)
                     removed[forward] = True
-                    # print('Merge done: ', current, forward)
                     # Recheck
                     current_box = data[current]
                     forward = 0
@@ -63,28 +71,10 @@ class MergeBoxes:
         for index in range(len(data)):
             if not removed[index]:
                 results.append(data[index])
-            else:
-                # Memo: test
-                # data[index] = np.array([[0, 0], [0, 0], [0, 0], [0, 0]])
-                # results.append(data[index])
-                pass
-        results = sorted(results, key=lambda item: (item[0][1], item[0][0]))  # top to bottom, left to right
+        results = sorted(results, key=lambda item: (item[0][1], item[0][0]))
         return np.array(results)
 
     def should_merge(self, first_box, second_box):
-        # print(
-        #     'Merge test: ',  # Memo: test
-        #     math.fabs(self.calculate_angle(first_box) - self.calculate_angle(second_box)),
-        #     (self.calculate_ratio(first_box), self.calculate_ratio(second_box)),
-        #     self.calculate_distance(first_box, second_box),
-        #     (self.calculate_height_overlap_rate(first_box, second_box), self.calculate_height_overlap_rate(second_box, first_box))
-        # )
-
-        # Check angle
-        # if self.angle_threshold < math.fabs(self.calculate_angle(first_box) - self.calculate_angle(second_box)):
-        #     # Ignore angle if the box is like a square
-        #     if self.ratio_to_ignore_angle < self.calculate_ratio(first_box) and self.ratio_to_ignore_angle <  self.calculate_ratio(second_box):
-        #         return False
         # Check distance
         distance = self.calculate_distance(first_box, second_box)
         if self.distance_threshold[0] < distance[0] or self.distance_threshold[1] < distance[1]:
