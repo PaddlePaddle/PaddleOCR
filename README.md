@@ -85,7 +85,7 @@ For more model downloads (including multiple languages), please refer to [PP-OCR
     - [Quick inference based on pip](./doc/doc_en/whl_en.md)
     - [Python Inference](./doc/doc_en/inference_en.md)
     - [C++ Inference](./deploy/cpp_infer/readme_en.md)
-    - [Serving](./doc/doc_ch/serving_inference.md)
+    - [Serving](./deploy/hubserving/readme_en.md)
     - [Mobile](./deploy/lite/readme_en.md)
     - [Model Quantization](./deploy/slim/quantization/README_en.md)
     - [Model Compression](./deploy/slim/prune/README_en.md)
