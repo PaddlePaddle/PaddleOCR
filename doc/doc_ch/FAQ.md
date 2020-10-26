@@ -9,43 +9,45 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2020.10.19）](#近期更新)
+* [近期更新（2020.10.26）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
-* [【理论篇】OCR通用21个问题](#OCR通用问题)
-  * [基础知识3题](#基础知识)
+* [【理论篇】OCR通用23个问题](#OCR通用问题)
+  * [基础知识5题](#基础知识)
   * [数据集4题](#数据集)
   * [模型训练调优6题](#模型训练调优)
   * [预测部署8题](#预测部署)
-* [【实战篇】PaddleOCR实战58个问题](#PaddleOCR实战问题)
-  * [使用咨询17题](#使用咨询)
+* [【实战篇】PaddleOCR实战61个问题](#PaddleOCR实战问题)
+  * [使用咨询20题](#使用咨询)
   * [数据集10题](#数据集)
   * [模型训练调优15题](#模型训练调优)
   * [预测部署16题](#预测部署)
 
 
 <a name="近期更新"></a>
-## 近期更新（2020.10.19）
+## 近期更新（2020.10.26）
 
-#### Q3.3.14：使用之前版本的代码加载最新1.1版的通用检测预训练模型，提示在模型文件.pdparams中找不到bn4e_branch2a_variance是什么情况？是网络结构发生了变化吗？
+#### Q2.1.4 印章如何识别
+**A**: 1. 使用带tps的识别网络或abcnet,2.使用极坐标变换将图片拉平之后使用crnn
 
-**A**：1.1版的轻量检测模型去掉了mv3结构中的se模块，可以对比下这两个配置文件：[det_mv3_db.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/det/det_mv3_db.yml)，[det_mv3_db_v1.1.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/det/det_mv3_db_v1.1.yml)
+#### Q2.1.5 多语言的字典里是混合了不同的语种，这个是有什么讲究吗？统一到一个字典里会对精度造成多大的损失？
+**A**：统一到一个字典里，会造成最后一层FC过大，增加模型大小。如果有特殊需求的话，可以把需要的几种语言合并字典训练模型，合并字典之后如果引入过多的形近字，可能会造成精度损失，字符平衡的问题可能也需要考虑一下。在PaddleOCR里暂时将语言字典分开。
 
-#### Q3.3.15： 训练中使用的字典需要与加载的预训练模型使用的字典一样吗？
+#### Q3.3.16: 如何对检测模型finetune，比如冻结前面的层或某些层使用小的学习率学习？
 
-**A**：是的，训练的字典与你使用该模型进行预测的字典需要保持一致的。
+**A**：如果是冻结某些层，可以将变量的stop_gradient属性设置为True，这样计算这个变量之前的所有参数都不会更新了，参考：https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/faq/train_cn.html#id4
+如果对某些层使用更小的学习率学习，静态图里还不是很方便，一个方法是在参数初始化的时候，给权重的属性设置固定的学习率，参考：https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/api/paddle/fluid/param_attr/ParamAttr_cn.html#paramattr
+实际上我们实验发现，直接加载模型去fine-tune，不设置某些层不同学习率，效果也都不错
 
-#### Q3.2.10： crnn+ctc模型训练所用的垂直文本（旋转至水平方向）是如何生成的？
+#### Q3.3.17: 使用通用中文模型作为预训练模型，更改了字典文件，出现ctc_fc_b not used的错误
+**A**：修改了字典之后，识别模型的最后一层FC纬度发生了改变，没有办法加载参数。这里是一个警告，可以忽略，正常训练即可。
 
-**A**：方法与合成水平方向文字一致，只是将字体替换成了垂直字体。
 
-#### Q3.4.15： hubserving、pdserving这两种部署方式区别是什么？
-
-**A**：hubserving原本是paddlehub的配套服务部署工具，可以很方便的将paddlehub内置的模型部署为服务，paddleocr使用了这个功能，并将模型路径等参数暴露出来方便用户自定义修改。paddle serving是面向所有paddle模型的部署工具，文档中可以看到我们提供了快速版和标准版，其中快速版和hubserving的本质是一样的，而标准版基于rpc，更稳定，更适合分布式部署。
-
-#### Q3.4.16： hub serving部署服务时如何多gpu同时利用起来，export CUDA_VISIBLE_DEVICES=0,1 方式吗？
-
-**A**：hubserving的部署方式目前暂不支持多卡预测，除非手动启动多个serving，不同端口对应不同卡。或者可以使用paddleserving进行部署，部署工具已经发布：https://github.com/PaddlePaddle/PaddleOCR/tree/develop/deploy/pdserving ，在启动服务时--gpu_id 0,1 这样就可以
-
+#### Q3.1.18：如何加入自己的检测算法？
+**A**：1. 在ppocr/modeling对应目录下分别选择backbone，head。如果没有可用的可以新建文件并添加
+       2. 在ppocr/data下选择对应的数据处理处理方式，如果没有可用的可以新建文件并添加
+       3. 在ppocr/losses下新建文件并编写loss
+       4. 在ppocr/postprocess下新建文件并编写后处理算法
+       5. 将上面四个步骤里新添加的类或函数参照yml文件写到配置中
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -151,6 +153,11 @@
 
 **A**：端到端在文字分布密集的业务场景，效率会比较有保证，精度的话看自己业务数据积累情况，如果行级别的识别数据积累比较多的话two-stage会比较好。百度的落地场景，比如工业仪表识别、车牌识别都用到端到端解决方案。
 
+#### Q2.1.4 印章如何识别
+**A**: 1. 使用带tps的识别网络或abcnet,2.使用极坐标变换将图片拉平之后使用crnn
+
+#### Q2.1.5 多语言的字典里是混合了不同的语种，这个是有什么讲究吗？统一到一个字典里会对精度造成多大的损失？
+**A**：统一到一个字典里，会造成最后一层FC过大，增加模型大小。如果有特殊需求的话，可以把需要的几种语言合并字典训练模型，合并字典之后如果引入过多的形近字，可能会造成精度损失，字符平衡的问题可能也需要考虑一下。在PaddleOCR里暂时将语言字典分开。
 
 ### 数据集
 
@@ -329,6 +336,13 @@
 |8.6M超轻量中文OCR模型|MobileNetV3+MobileNetV3|det_mv3_db.yml|rec_chinese_lite_train.yml|
 |通用中文OCR模型|Resnet50_vd+Resnet34_vd|det_r50_vd_db.yml|rec_chinese_common_train.yml|
 
+#### 3.1.18：如何加入自己的检测算法？
+**A**：1. 在ppocr/modeling对应目录下分别选择backbone，head。如果没有可用的可以新建文件并添加
+       2. 在ppocr/data下选择对应的数据处理处理方式，如果没有可用的可以新建文件并添加
+       3. 在ppocr/losses下新建文件并编写loss
+       4. 在ppocr/postprocess下新建文件并编写后处理算法
+       5. 将上面四个步骤里新添加的类或函数参照yml文件写到配置中
+
 
 ### 数据集
 
@@ -387,6 +401,7 @@
 #### Q3.2.10： crnn+ctc模型训练所用的垂直文本（旋转至水平方向）是如何生成的？
 
 **A**：方法与合成水平方向文字一致，只是将字体替换成了垂直字体。
+
 
 ### 模型训练调优
 
@@ -464,6 +479,18 @@ return paddle.reader.multiprocess_reader(readers, False, queue_size=320)
 #### Q3.3.15： 训练中使用的字典需要与加载的预训练模型使用的字典一样吗？
 
 **A**：是的，训练的字典与你使用该模型进行预测的字典需要保持一致的。
+
+#### Q3.3.16: 如何对检测模型finetune，比如冻结前面的层或某些层使用小的学习率学习？
+**A**：
+
+**A**：如果是冻结某些层，可以将变量的stop_gradient属性设置为True，这样计算这个变量之前的所有参数都不会更新了，参考：https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/faq/train_cn.html#id4
+
+如果对某些层使用更小的学习率学习，静态图里还不是很方便，一个方法是在参数初始化的时候，给权重的属性设置固定的学习率，参考：https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/api/paddle/fluid/param_attr/ParamAttr_cn.html#paramattr
+
+实际上我们实验发现，直接加载模型去fine-tune，不设置某些层不同学习率，效果也都不错
+
+#### Q3.3.17: 使用通用中文模型作为预训练模型，更改了字典文件，出现ctc_fc_b not used的错误
+**A**：修改了字典之后，识别模型的最后一层FC纬度发生了改变，没有办法加载参数。这里是一个警告，可以忽略，正常训练即可。
 
 ### 预测部署
 
