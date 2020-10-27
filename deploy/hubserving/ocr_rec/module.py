@@ -3,11 +3,16 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import os
+import sys
+__dir__ = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(__dir__)
+sys.path.append(os.path.abspath(os.path.join(__dir__, '../../../')))
+
 import argparse
 import ast
 import copy
 import math
-import os
 import time
 
 from paddle.fluid.core import AnalysisConfig, create_paddle_predictor, PaddleTensor
@@ -67,9 +72,7 @@ class OCRRec(hub.Module):
             images.append(img)
         return images
 
-    def predict(self,
-                images=[],
-                paths=[]):
+    def predict(self, images=[], paths=[]):
         """
         Get the text box in the predicted images.
         Args:
@@ -87,30 +90,27 @@ class OCRRec(hub.Module):
             raise TypeError("The input data is inconsistent with expectations.")
 
         assert predicted_data != [], "There is not any image to be predicted. Please check the input data."
-        
+
         img_list = []
         for img in predicted_data:
             if img is None:
                 continue
             img_list.append(img)
-            
+
         rec_res_final = []
         try:
             rec_res, predict_time = self.text_recognizer(img_list)
             for dno in range(len(rec_res)):
                 text, score = rec_res[dno]
-                rec_res_final.append(
-                    {
-                        'text': text,
-                        'confidence': float(score),
-                    }
-                )
+                rec_res_final.append({
+                    'text': text,
+                    'confidence': float(score),
+                })
         except Exception as e:
             print(e)
             return [[]]
 
         return [rec_res_final]
-
 
     @serving
     def serving_method(self, images, **kwargs):
@@ -121,7 +121,7 @@ class OCRRec(hub.Module):
         results = self.predict(images_decode, **kwargs)
         return results
 
-   
+
 if __name__ == '__main__':
     ocr = OCRRec()
     image_path = [
