@@ -22,9 +22,7 @@ Optimizer:
   beta1: 0.9
   beta2: 0.999
   learning_rate:
-#    name: Cosine
     lr: 0.001
-#    warmup_epoch: 0
   regularizer:
     name: 'L2'
     factor: 0
@@ -98,7 +96,7 @@ TRAIN:
           order: 'hwc'
       - ToCHWImage:
       - keepKeys:
-          keep_keys: ['image','threshold_map','threshold_mask','shrink_map','shrink_mask'] # dataloader将按照此顺序返回list
+          keep_keys: ['image','threshold_map','threshold_mask','shrink_map','shrink_mask'] # dataloader will return list in this order
   loader:
     shuffle: True
     drop_last: False
