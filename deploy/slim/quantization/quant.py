@@ -178,8 +178,11 @@ def main():
     if train_alg_type == 'det':
         program.train_eval_det_run(
             config, exe, train_info_dict, eval_info_dict, is_slim="quant")
-    else:
+    elif train_alg_type == 'rec':
         program.train_eval_rec_run(
+            config, exe, train_info_dict, eval_info_dict, is_slim="quant")
+    else:
+        program.train_eval_cls_run(
             config, exe, train_info_dict, eval_info_dict, is_slim="quant")
 
 

@@ -1,3 +1,7 @@
+PaddleOCR提供2种服务部署方式：
+- 基于PaddleServing的部署：代码路径为"`./deploy/pdserving`"，按照本教程使用。。
+- 基于PaddleHub Serving的部署：代码路径为"`./deploy/hubserving`"，使用方法参考[文档](../../deploy/hubserving/readme.md)
+
 # 使用Paddle Serving预测推理
 
 阅读本文档之前，请先阅读文档 [基于Python预测引擎推理](./inference.md)
@@ -8,7 +12,7 @@
 
 ### 一、 准备环境
 我们先安装Paddle Serving相关组件
-我们推荐用户使用GPU来做Paddle Serving的OCR服务部署 
+我们推荐用户使用GPU来做Paddle Serving的OCR服务部署
 
 **CUDA版本：9.X/10.X**
 
@@ -26,7 +30,7 @@
 #CPU/GPU版本选择一个
 #GPU版本服务端
 #CUDA 9
-python -m pip install -U https://paddle-serving.bj.bcebos.com/whl/paddle_serving_server_gpu-0.0.0.post9-py3-none-any.whl 
+python -m pip install -U https://paddle-serving.bj.bcebos.com/whl/paddle_serving_server_gpu-0.0.0.post9-py3-none-any.whl
 #CUDA 10
 python -m pip install -U https://paddle-serving.bj.bcebos.com/whl/paddle_serving_server_gpu-0.0.0.post10-py3-none-any.whl
 #CPU版本服务端
@@ -81,7 +85,7 @@ def read_params():
     #params for text detector
     cfg.det_algorithm = "DB" # 检测算法， DB/EAST等
     cfg.det_model_dir = "./det_mv_server/" # 检测算法模型路径
-    cfg.det_max_side_len = 960 
+    cfg.det_max_side_len = 960
 
     #DB params
     cfg.det_db_thresh =0.3
@@ -222,14 +226,14 @@ python rec_web_client.py
 #GPU用户
 python -m paddle_serving_server_gpu.serve --model det_infer_server --port 9293 --gpu_id 0
 python -m paddle_serving_server_gpu.serve --model cls_infer_server --port 9294 --gpu_id 0
-python ocr_rpc_server.py 
+python ocr_rpc_server.py
 #CPU用户
 python -m paddle_serving_server.serve --model det_infer_server --port 9293
 python -m paddle_serving_server.serve --model cls_infer_server --port 9294
 python ocr_rpc_server.py
 
 #快速版，Windows/Linux用户
-python ocr_local_server.py 
+python ocr_local_server.py
 ```
 
 客户端

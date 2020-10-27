@@ -65,6 +65,7 @@ class ClsModel(object):
             labels = None
             loader = None
             image = fluid.data(name='image', shape=image_shape, dtype='float32')
+        image.stop_gradient = False
         return image, labels, loader
 
     def __call__(self, mode):
