@@ -20,7 +20,7 @@
 #include <iostream>
 #include <vector>
 
-const std::vector<int> CLS_IMAGE_SHAPE = {3, 32, 100};
+const std::vector<int> CLS_IMAGE_SHAPE = {3, 48, 192};
 
 cv::Mat cls_resize_img(const cv::Mat &img) {
   int imgC = CLS_IMAGE_SHAPE[0];
