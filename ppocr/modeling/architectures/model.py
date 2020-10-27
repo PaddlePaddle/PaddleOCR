@@ -21,7 +21,6 @@ __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.append('/home/zhoujun20/PaddleOCR')
 
-import paddle
 from paddle import nn
 from ppocr.modeling.transform import build_transform
 from ppocr.modeling.backbones import build_backbone
@@ -72,12 +71,10 @@ class Model(nn.Layer):
             config['Neck']['in_channels'] = in_channels
             self.neck = build_neck(config['Neck'])
             in_channels = self.neck.out_channels
-
-        # # build head, head is need for del, rec and cls
+        # # build head, head is need for det, rec and cls
         config["Head"]['in_channels'] = in_channels
         self.head = build_head(config["Head"])
 
-    # @paddle.jit.to_static
     def forward(self, x):
         if self.use_transform:
             x = self.transform(x)
@@ -86,40 +83,3 @@ class Model(nn.Layer):
             x = self.neck(x)
         x = self.head(x)
         return x
-
-
-def check_static():
-    import numpy as np
-    from ppocr.utils.save_load import load_dygraph_pretrain
-    from ppocr.utils.logging import get_logger
-    from tools import program
-
-    config = program.load_config('configs/rec/rec_r34_vd_none_bilstm_ctc.yml')
-
-    logger = get_logger()
-    np.random.seed(0)
-    data = np.random.rand(1, 3, 32, 320).astype(np.float32)
-    paddle.disable_static()
-
-    config['Architecture']['in_channels'] = 3
-    config['Architecture']["Head"]['out_channels'] = 6624
-    model = Model(config['Architecture'])
-    model.eval()
-    load_dygraph_pretrain(
-        model,
-        logger,
-        '/Users/zhoujun20/Desktop/code/PaddleOCR/cnn_ctc/cnn_ctc',
-        load_static_weights=True)
-    x = paddle.to_tensor(data)
-    y = model(x)
-    for y1 in y:
-        print(y1.shape)
-
-    static_out = np.load(
-        '/Users/zhoujun20/Desktop/code/PaddleOCR/output/conv.npy')
-    diff = y.numpy() - static_out
-    print(y.shape, static_out.shape, diff.mean())
-
-
-if __name__ == '__main__':
-    check_static()

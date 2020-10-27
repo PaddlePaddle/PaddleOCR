@@ -10,8 +10,8 @@ Global:
   # if pretrained_model is saved in static mode, load_static_weights must set to True
   load_static_weights: True
   cal_metric_during_train: False
-  pretrained_model: /home/zhoujun20/pretrain_models/MobileNetV3_large_x0_5_pretrained
-  checkpoints: #./output/det_db_0.001_DiceLoss_256_pp_config_2.0b_4gpu/best_accuracy
+  pretrained_model: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
+  checkpoints:
   save_inference_dir:
   use_visualdl: True
   infer_img: doc/imgs_en/img_10.jpg
@@ -22,9 +22,7 @@ Optimizer:
   beta1: 0.9
   beta2: 0.999
   learning_rate:
-#    name: Cosine
     lr: 0.001
-#    warmup_epoch: 0
   regularizer:
     name: 'L2'
     factor: 0
@@ -98,7 +96,7 @@ TRAIN:
           order: 'hwc'
       - ToCHWImage:
       - keepKeys:
-          keep_keys: ['image','threshold_map','threshold_mask','shrink_map','shrink_mask'] # dataloader将按照此顺序返回list
+          keep_keys: ['image','threshold_map','threshold_mask','shrink_map','shrink_mask'] # dataloader will return list in this order
   loader:
     shuffle: True
     drop_last: False

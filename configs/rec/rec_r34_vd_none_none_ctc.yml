@@ -1,24 +1,24 @@
 Global:
   use_gpu: false
-  epoch_num: 72
+  epoch_num: 500
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/rec/mv3_none_none_ctc/
+  save_model_dir: ./output/rec/res34_none_none_ctc/
   save_epoch_step: 500
   # evaluation is run every 5000 iterations after the 4000th iteration
-  eval_batch_step: 2000
+  eval_batch_step: 127
   # if pretrained_model is saved in static mode, load_static_weights must set to True
   load_static_weights: True
   cal_metric_during_train: True
   pretrained_model:
   checkpoints:
   save_inference_dir:
-  use_visualdl: True
+  use_visualdl: False
   infer_img: doc/imgs_words/ch/word_1.jpg
   # for data or label process
-  max_text_length: 25
-  character_dict_path:
-  character_type: 'en'
+  max_text_length: 80
+  character_dict_path: ppocr/utils/ppocr_keys_v1.txt
+  character_type: 'ch'
   use_space_char: False
   infer_mode: False
   use_tps: False
@@ -29,7 +29,7 @@ Optimizer:
   beta1: 0.9
   beta2: 0.999
   learning_rate:
-    lr: 0.0005
+    lr: 0.001
   regularizer:
     name: 'L2'
     factor: 0.00001
@@ -39,10 +39,8 @@ Architecture:
   algorithm: CRNN
   Transform:
   Backbone:
-    name: MobileNetV3
-    scale: 0.5
-    model_name: large
-    small_stride: [ 1, 2, 2, 2 ]
+    name: ResNet
+    layers: 34
   Neck:
     name: SequenceEncoder
     encoder_type: reshape
@@ -62,9 +60,10 @@ Metric:
 
 TRAIN:
   dataset:
-    name: LMDBDateSet
+    name: SimpleDataSet
+    data_dir: ./rec
     file_list:
-      - ./rec/train # dataset1
+      - ./rec/train.txt # dataset1
     ratio_list: [ 0.4,0.6 ]
     transforms:
       - DecodeImage: # load image
@@ -73,7 +72,7 @@ TRAIN:
       - CTCLabelEncode: # Class handling label
       - RecAug:
       - RecResizeImg:
-          image_shape: [ 3,32,100 ]
+          image_shape: [ 3,32,320 ]
       - keepKeys:
           keep_keys: [ 'image','label','length' ] # dataloader will return list in this order
   loader:
@@ -84,16 +83,17 @@ TRAIN:
 
 EVAL:
   dataset:
-    name: LMDBDateSet
+    name: SimpleDataSet
+    data_dir: ./rec
     file_list:
-      - ./rec/val/
+      - ./rec/val.txt
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
       - CTCLabelEncode: # Class handling label
       - RecResizeImg:
-          image_shape: [ 3,32,100 ]
+          image_shape: [ 3,32,320 ]
       - keepKeys:
           keep_keys: [ 'image','label','length' ] # dataloader will return list in this order
   loader:
