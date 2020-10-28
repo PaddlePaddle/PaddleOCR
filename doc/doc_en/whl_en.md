@@ -9,15 +9,53 @@ pip install paddleocr
 
 build own whl package and install
 ```bash
-python setup.py bdist_wheel
-pip install dist/paddleocr-0.0.3-py3-none-any.whl
+python3 setup.py bdist_wheel
+pip3 install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x is the version of paddleocr
 ```
 ### 1. Use by code
+
+* detection classification and recognition
+```python
+from paddleocr import PaddleOCR,draw_ocr
+# Paddleocr supports Chinese, English, French, German, Korean and Japanese.
+# You can set the parameter `lang` as `ch`, `en`, `french`, `german`, `korean`, `japan`
+# to switch the language model in order.
+ocr = PaddleOCR(use_angle_cls=True, lang='en') # need to run only once to download and load model into memory
+img_path = 'PaddleOCR/doc/imgs_en/img_12.jpg'
+result = ocr.ocr(img_path, cls=True)
+for line in result:
+    print(line)
+
+
+# draw result
+from PIL import Image
+image = Image.open(img_path).convert('RGB')
+boxes = [line[0] for line in result]
+txts = [line[1][0] for line in result]
+scores = [line[1][1] for line in result]
+im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/simfang.ttf')
+im_show = Image.fromarray(im_show)
+im_show.save('result.jpg')
+```
+
+Output will be a list, each item contains bounding box, text and recognition confidence
+```bash
+[[[442.0, 173.0], [1169.0, 173.0], [1169.0, 225.0], [442.0, 225.0]], ['ACKNOWLEDGEMENTS', 0.99283075]]
+[[[393.0, 340.0], [1207.0, 342.0], [1207.0, 389.0], [393.0, 387.0]], ['We would like to thank all the designers and', 0.9357758]]
+[[[399.0, 398.0], [1204.0, 398.0], [1204.0, 433.0], [399.0, 433.0]], ['contributors whohave been involved in the', 0.9592447]]
+......
+```
+
+Visualization of results
+
+<div align="center">
+    <img src="../imgs_results/whl/12_det_rec.jpg" width="800">
+</div>
 
 * detection and recognition
 ```python
 from paddleocr import PaddleOCR,draw_ocr
-ocr = PaddleOCR() # need to run only once to download and load model into memory
+ocr = PaddleOCR(lang='en') # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs_en/img_12.jpg'
 result = ocr.ocr(img_path)
 for line in result:
@@ -47,6 +85,21 @@ Visualization of results
 <div align="center">
     <img src="../imgs_results/whl/12_det_rec.jpg" width="800">
 </div>
+
+* classification and recognition
+```python
+from paddleocr import PaddleOCR
+ocr = PaddleOCR(use_angle_cls=True, lang='en') # need to run only once to load model into memory
+img_path = 'PaddleOCR/doc/imgs_words_en/word_10.png'
+result = ocr.ocr(img_path, det=False, cls=True)
+for line in result:
+    print(line)
+```
+
+Output will be a list, each item contains recognition text and confidence
+```bash
+['PAIN', 0.990372]
+```
 
 * only detection
 ```python
@@ -83,16 +136,31 @@ Visualization of results
 * only recognition
 ```python
 from paddleocr import PaddleOCR
-ocr = PaddleOCR() # need to run only once to load model into memory
+ocr = PaddleOCR(lang='en') # need to run only once to load model into memory
 img_path = 'PaddleOCR/doc/imgs_words_en/word_10.png'
-result = ocr.ocr(img_path,det=False)
+result = ocr.ocr(img_path, det=False, cls=False)
 for line in result:
     print(line)
 ```
 
-Output will be a list, each item contains text and recognition confidence
+Output will be a list, each item contains recognition text and confidence
 ```bash
 ['PAIN', 0.990372]
+```
+
+* only classification
+```python
+from paddleocr import PaddleOCR
+ocr = PaddleOCR(use_angle_cls=True) # need to run only once to load model into memory
+img_path = 'PaddleOCR/doc/imgs_words_en/word_10.png'
+result = ocr.ocr(img_path, det=False, rec=False, cls=True)
+for line in result:
+    print(line)
+```
+
+Output will be a list, each item contains classification result and confidence
+```bash
+['0', 0.99999964]
 ```
 
 ### Use by command line
@@ -102,9 +170,9 @@ show help information
 paddleocr -h
 ```
 
-* detection and recognition
+* detection classification and recognition
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg
+paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --use_angle_cls true -cls true --lang en
 ```
 
 Output will be a list, each item contains bounding box, text and recognition confidence
@@ -113,6 +181,29 @@ Output will be a list, each item contains bounding box, text and recognition con
 [[[393.0, 340.0], [1207.0, 342.0], [1207.0, 389.0], [393.0, 387.0]], ['We would like to thank all the designers and', 0.9357758]]
 [[[399.0, 398.0], [1204.0, 398.0], [1204.0, 433.0], [399.0, 433.0]], ['contributors whohave been involved in the', 0.9592447]]
 ......
+```
+
+* detection and recognition
+```bash
+paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --lang en
+```
+
+Output will be a list, each item contains bounding box, text and recognition confidence
+```bash
+[[[442.0, 173.0], [1169.0, 173.0], [1169.0, 225.0], [442.0, 225.0]], ['ACKNOWLEDGEMENTS', 0.99283075]]
+[[[393.0, 340.0], [1207.0, 342.0], [1207.0, 389.0], [393.0, 387.0]], ['We would like to thank all the designers and', 0.9357758]]
+[[[399.0, 398.0], [1204.0, 398.0], [1204.0, 433.0], [399.0, 433.0]], ['contributors whohave been involved in the', 0.9592447]]
+......
+```
+
+* classification and recognition
+```bash
+paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --use_angle_cls true -cls true --det false --lang en
+```
+
+Output will be a list, each item contains text and recognition confidence
+```bash
+['PAIN', 0.990372]
 ```
 
 * only detection
@@ -130,12 +221,22 @@ Output will be a list, each item only contains bounding box
 
 * only recognition
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --det false
+paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --det false --cls false --lang en
 ```
 
 Output will be a list, each item contains text and recognition confidence
 ```bash
 ['PAIN', 0.990372]
+```
+
+* only classification
+```bash
+paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --use_angle_cls true -cls true --det false --rec false
+```
+
+Output will be a list, each item contains classification result and confidence
+```bash
+['0', 0.99999964]
 ```
 
 ## Use custom model
@@ -147,9 +248,9 @@ First, refer to the first section of [inference_en.md](./inference_en.md) to con
 ```python
 from paddleocr import PaddleOCR,draw_ocr
 # The path of detection and recognition model must contain model and params files
-ocr = PaddleOCR(det_model_dir='{your_det_model_dir}',rec_model_dir='{your_rec_model_dir}å')
+ocr = PaddleOCR(det_model_dir='{your_det_model_dir}', rec_model_dir='{your_rec_model_dir}', rec_char_dict_path='{your_rec_char_dict_path}', cls_model_dir='{your_cls_model_dir}', use_angle_cls=True)
 img_path = 'PaddleOCR/doc/imgs_en/img_12.jpg'
-result = ocr.ocr(img_path)
+result = ocr.ocr(img_path, cls=True)
 for line in result:
     print(line)
 
@@ -167,7 +268,7 @@ im_show.save('result.jpg')
 ### Use by command line
 
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_dir} --rec_model_dir {your_rec_model_dir}
+paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_dir} --rec_model_dir {your_rec_model_dir} --rec_char_dict_path {your_rec_char_dict_path} --cls_model_dir {your_cls_model_dir} --use_angle_cls true --cls true
 ```
 
 ## Parameter Description
@@ -194,6 +295,14 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_
 | max_text_length         | The maximum text length that the recognition algorithm can recognize                                                                                                                                                                                         | 25                      |
 | rec_char_dict_path      | the alphabet path which needs to be modified to your own path when `rec_model_Name` use mode 2                                                                                                                                              | ./ppocr/utils/ppocr_keys_v1.txt                        |
 | use_space_char          | Whether to recognize spaces                                                                                                                                                                                                         | TRUE                    |
+| use_angle_cls          | Whether to load classification model                                                                                                                                                                                                       | FALSE                    |
+| cls_model_dir           | the classification inference model folder. There are two ways to transfer parameters, 1. None: Automatically download the built-in model to `~/.paddleocr/cls`; 2. The path of the inference model converted by yourself, the model and params files must be included in the model path | None |
+| cls_image_shape         | image shape of classification algorithm                                                                                                                                                                                            | "3,48,192"              |
+| label_list         | label list of classification algorithm                                                                                                                                                                                            | ['0','180']           |
+| cls_batch_num           | When performing classification, the batchsize of forward images                                                                                                                                                                                         | 30                      |
 | enable_mkldnn           | Whether to enable mkldnn                                                                                                                                                                                                       | FALSE                   |
+| use_zero_copy_run           | Whether to forward by zero_copy_run                                                                                                                                                                               | FALSE                   |
+| lang                     | The support language, now only Chinese(ch)、English(en)、French(french)、German(german)、Korean(korean)、Japanese(japan) are supported                                                                                                                                                                                                  | ch                    |
 | det                     | Enable detction when `ppocr.ocr` func exec                                                                                                                                                                                                   | TRUE                    |
-| rec                     | Enable detction when `ppocr.ocr` func exec                                                                                                                                                                                                   | TRUE                    |
+| rec                     | Enable recognition when `ppocr.ocr` func exec                                                                                                                                                                                                   | TRUE                    |
+| cls                     | Enable classification when `ppocr.ocr` func exec                                                                                                                                                                                                   | FALSE                    |

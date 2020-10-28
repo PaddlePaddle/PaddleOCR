@@ -127,6 +127,7 @@ class LMDBReader(object):
                             img=img,
                             image_shape=self.image_shape,
                             num_heads=self.num_heads,
+                            char_ops=self.char_ops,
                             max_text_length=self.max_text_length)
                     else:
                         norm_img = process_image(
@@ -257,6 +258,7 @@ class SimpleReader(object):
                         norm_img = process_image_srn(
                             img=img,
                             image_shape=self.image_shape,
+                            char_ops=self.char_ops,
                             num_heads=self.num_heads,
                             max_text_length=self.max_text_length)
                     else:

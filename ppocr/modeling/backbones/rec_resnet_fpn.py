@@ -100,11 +100,10 @@ class ResNet():
                     conv = self.basic_block(
                         input=conv,
                         num_filters=num_filters[block],
-                        stride=stride,
-                        if_first=block == i == 0,
+                        stride=stride_list[block] if i == 0 else 1,
+                        is_first=block == i == 0,
                         name=conv_name)
                 F.append(conv)
-
         base = F[-1]
         for i in [-2, -3]:
             b, c, w, h = F[i].shape

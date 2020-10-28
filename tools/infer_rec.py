@@ -145,7 +145,7 @@ def main():
             preds = preds.reshape(-1)
             probs = np.array(predict[1])
             ind = np.argmax(probs, axis=1)
-            valid_ind = np.where(preds != int(char_num-1))[0]
+            valid_ind = np.where(preds != int(char_num - 1))[0]
             if len(valid_ind) == 0:
                 continue
             score = np.mean(probs[valid_ind, ind[valid_ind]])

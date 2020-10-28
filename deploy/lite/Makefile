@@ -40,14 +40,17 @@ CXX_LIBS = ${OPENCV_LIBS} -L$(LITE_ROOT)/cxx/lib/ -lpaddle_light_api_shared $(SY
 
 #CXX_LIBS = $(LITE_ROOT)/cxx/lib/libpaddle_api_light_bundled.a $(SYSTEM_LIBS)
 
-ocr_db_crnn: fetch_opencv ocr_db_crnn.o crnn_process.o db_post_process.o clipper.o
-	$(CC) $(SYSROOT_LINK) $(CXXFLAGS_LINK) ocr_db_crnn.o crnn_process.o db_post_process.o clipper.o  -o ocr_db_crnn  $(CXX_LIBS) $(LDFLAGS)
+ocr_db_crnn: fetch_opencv ocr_db_crnn.o crnn_process.o db_post_process.o clipper.o cls_process.o
+	$(CC) $(SYSROOT_LINK) $(CXXFLAGS_LINK) ocr_db_crnn.o crnn_process.o db_post_process.o clipper.o cls_process.o -o ocr_db_crnn  $(CXX_LIBS) $(LDFLAGS)
 
 ocr_db_crnn.o: ocr_db_crnn.cc
 	$(CC) $(SYSROOT_COMPLILE) $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o ocr_db_crnn.o -c ocr_db_crnn.cc
 
 crnn_process.o: fetch_opencv crnn_process.cc
 	$(CC) $(SYSROOT_COMPLILE) $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o crnn_process.o -c crnn_process.cc
+
+cls_process.o: fetch_opencv cls_process.cc
+	$(CC) $(SYSROOT_COMPLILE) $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o cls_process.o -c cls_process.cc
 
 db_post_process.o: fetch_clipper fetch_opencv db_post_process.cc
 	$(CC) $(SYSROOT_COMPLILE) $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o db_post_process.o -c db_post_process.cc
@@ -73,5 +76,5 @@ fetch_opencv:
 
 .PHONY: clean
 clean:
-	rm -f ocr_db_crnn.o clipper.o db_post_process.o crnn_process.o
+	rm -f ocr_db_crnn.o clipper.o db_post_process.o crnn_process.o cls_process.o
 	rm -f ocr_db_crnn

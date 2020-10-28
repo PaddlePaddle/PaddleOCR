@@ -10,7 +10,7 @@
 
 ## 配置文件 Global 参数介绍
 
-以 `rec_chinese_lite_train.yml` 为例
+以 `rec_chinese_lite_train_v1.1.yml ` 为例
 
 
 |         字段             |            用途                |      默认值       |            备注            |
@@ -32,6 +32,7 @@
 |      loss_type           |    设置 loss 类型              |       ctc         |    支持两种loss： ctc / attention |
 |       distort            |    设置是否使用数据增强          |       false       |  设置为true时，将在训练时随机进行扰动，支持的扰动操作可阅读[img_tools.py](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/rec/img_tools.py)                 |
 |       use_space_char     |    设置是否识别空格             |        false      |          仅在 character_type=ch 时支持空格                 |
+|      label_list          |    设置方向分类器支持的角度       |    ['0','180']    |     仅在方向分类器中生效 |
 |      average_window      |    ModelAverage优化器中的窗口长度计算比例 |  0.15       |       目前仅应用与SRN |
 |      max_average_window  |    平均值计算窗口长度的最大值   |   15625              | 推荐设置为一轮训练中mini-batchs的数目|
 |      min_average_window  |    平均值计算窗口长度的最小值  |    10000              |      \          |

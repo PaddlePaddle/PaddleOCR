@@ -27,6 +27,12 @@ import numpy as np
 
 
 class CTCPredict(object):
+    """
+    CTC predict
+    Args:
+        params(object): Params from yaml file and settings from command line
+    """
+
     def __init__(self, params):
         super(CTCPredict, self).__init__()
         self.char_num = params['char_num']
@@ -35,12 +41,13 @@ class CTCPredict(object):
         self.fc_decay = params.get("fc_decay", 0.0004)
 
     def __call__(self, inputs, labels=None, mode=None):
-        encoder_features = self.encoder(inputs)
-        if self.encoder_type != "reshape":
-            encoder_features = fluid.layers.concat(encoder_features, axis=1)
-        name = "ctc_fc"
-        para_attr, bias_attr = get_para_bias_attr(
-            l2_decay=self.fc_decay, k=encoder_features.shape[1], name=name)
+        with fluid.scope_guard("skip_quant"):
+            encoder_features = self.encoder(inputs)
+            if self.encoder_type != "reshape":
+                encoder_features = fluid.layers.concat(encoder_features, axis=1)
+            name = "ctc_fc"
+            para_attr, bias_attr = get_para_bias_attr(
+                l2_decay=self.fc_decay, k=encoder_features.shape[1], name=name)
         predict = fluid.layers.fc(input=encoder_features,
                                   size=self.char_num + 1,
                                   param_attr=para_attr,
