@@ -1,8 +1,8 @@
 [English](readme_en.md) | 简体中文
 
 PaddleOCR提供2种服务部署方式：
-- 基于PaddleHub Serving的部署：代码路径为"`./deploy/hubserving`"，按照本教程使用；	
-- 基于PaddleServing的部署：代码路径为"`./deploy/pdserving`"，使用方法参考[文档](../pdserving/readme.md)。
+- 基于PaddleHub Serving的部署：代码路径为"`./deploy/hubserving`"，按照本教程使用；
+- 基于PaddleServing的部署：代码路径为"`./deploy/pdserving`"，使用方法参考[文档](../../doc/doc_ch/serving_inference.md)。
 
 # 基于PaddleHub Serving的服务部署
 
@@ -29,17 +29,15 @@ deploy/hubserving/ocr_system/
 ```shell
 # 安装paddlehub  
 pip3 install paddlehub --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
-
-# 在Linux下设置环境变量
-export PYTHONPATH=.
-
-# 或者，在Windows下设置环境变量
-SET PYTHONPATH=.
 ```
 
 ### 2. 下载推理模型
-安装服务模块前，需要准备推理模型并放到正确路径。默认使用的是v1.1版的超轻量模型，默认检测模型路径为：
-`./inference/ch_ppocr_mobile_v1.1_det_infer/`，识别模型路径为：`./inference/ch_ppocr_mobile_v1.1_rec_infer/`。  
+安装服务模块前，需要准备推理模型并放到正确路径。默认使用的是v1.1版的超轻量模型，默认模型路径为：
+```
+检测模型：./inference/ch_ppocr_mobile_v1.1_det_infer/
+识别模型：./inference/ch_ppocr_mobile_v1.1_rec_infer/
+方向分类器：./inference/ch_ppocr_mobile_v1.1_cls_infer/
+```  
 
 **模型路径可在`params.py`中查看和修改。** 更多模型可以从PaddleOCR提供的[模型库](../../doc/doc_ch/models_list.md)下载，也可以替换成自己训练转换好的模型。
 
@@ -173,7 +171,7 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 ```hub serving stop --port/-p XXXX```  
 
 - 2、 到相应的`module.py`和`params.py`等文件中根据实际需求修改代码。  
-例如，如果需要替换部署服务所用模型，则需要到`params.py`中修改模型路径参数`det_model_dir`和`rec_model_dir`，当然，同时可能还需要修改其他相关参数，请根据实际情况修改调试。 **强烈建议修改后先直接运行`module.py`调试，能正确运行预测后再启动服务测试。**
+例如，如果需要替换部署服务所用模型，则需要到`params.py`中修改模型路径参数`det_model_dir`和`rec_model_dir`，如果需要关闭文本方向分类器，则将参数`use_angle_cls`置为`False`，当然，同时可能还需要修改其他相关参数，请根据实际情况修改调试。 **强烈建议修改后先直接运行`module.py`调试，能正确运行预测后再启动服务测试。**
 
 - 3、 卸载旧服务包  
 ```hub uninstall ocr_system```  

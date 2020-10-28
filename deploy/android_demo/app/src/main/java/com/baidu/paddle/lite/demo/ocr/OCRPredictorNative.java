@@ -35,12 +35,6 @@ public class OCRPredictorNative {
 
     }
 
-    public void release() {
-        if (nativePointer != 0) {
-            nativePointer = 0;
-//            destory(nativePointer);
-        }
-    }
 
     public ArrayList<OcrResultModel> runImage(float[] inputData, int width, int height, int channels, Bitmap originalImage) {
         Log.i("OCRPredictorNative", "begin to run image " + inputData.length + " " + width + " " + height);
@@ -63,7 +57,7 @@ public class OCRPredictorNative {
 
     protected native float[] forward(long pointer, float[] buf, float[] ddims, Bitmap originalImage);
 
-    protected native void destory(long pointer);
+    public native void release(long pointer);
 
     private ArrayList<OcrResultModel> postprocess(float[] raw) {
         ArrayList<OcrResultModel> results = new ArrayList<OcrResultModel>();

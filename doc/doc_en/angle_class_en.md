@@ -110,7 +110,7 @@ The default prediction picture is stored in `infer_img`, and the weight is speci
 
 ```
 # Predict English results
-python3 tools/infer_rec.py -c configs/cls/cls_mv3.yml -o Global.checkpoints={path/to/weights}/best_accuracy TestReader.infer_img=doc/imgs_words/en/word_1.jpg
+python3 tools/infer_cls.py -c configs/cls/cls_mv3.yml -o Global.checkpoints={path/to/weights}/best_accuracy Global.infer_img=doc/imgs_words/en/word_1.png
 ```
 
 Input image:

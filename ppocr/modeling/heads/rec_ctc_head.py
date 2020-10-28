@@ -27,6 +27,12 @@ import numpy as np
 
 
 class CTCPredict(object):
+    """
+    CTC predict
+    Args:
+        params(object): Params from yaml file and settings from command line
+    """
+
     def __init__(self, params):
         super(CTCPredict, self).__init__()
         self.char_num = params['char_num']

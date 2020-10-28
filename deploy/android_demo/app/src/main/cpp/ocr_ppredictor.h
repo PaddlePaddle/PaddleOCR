@@ -98,7 +98,7 @@ private:
   * @param origin
   * @return
   */
-  cv::Mat infer_cls(const cv::Mat &origin, float thresh = 0.5);
+  cv::Mat infer_cls(const cv::Mat &origin, float thresh = 0.9);
 
   /**
    * Postprocess or sencod model to extract text

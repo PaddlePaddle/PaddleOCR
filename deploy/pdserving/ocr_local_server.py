@@ -13,102 +13,108 @@
 # limitations under the License.
 
 from paddle_serving_client import Client
-from paddle_serving_app.reader import OCRReader
 import cv2
 import sys
 import numpy as np
 import os
-from paddle_serving_client import Client
-from paddle_serving_app.reader import Sequential, URL2Image, ResizeByFactor
-from paddle_serving_app.reader import Div, Normalize, Transpose
-from paddle_serving_app.reader import DBPostProcess, FilterBoxes, GetRotateCropImage, SortedBoxes
-if sys.argv[1] == 'gpu':
-    from paddle_serving_server_gpu.web_service import WebService
-elif sys.argv[1] == 'cpu':
-    from paddle_serving_server.web_service import WebService
-from paddle_serving_app.local_predict import Debugger
 import time
 import re
 import base64
+from clas_local_server import TextClassifierHelper
+from det_local_server import TextDetectorHelper
+from rec_local_server import TextRecognizerHelper
+from tools.infer.predict_system import TextSystem, sorted_boxes
+from paddle_serving_app.local_predict import Debugger
+import copy
+from params import read_params
+
+global_args = read_params()
+
+if global_args.use_gpu:
+    from paddle_serving_server_gpu.web_service import WebService
+else:
+    from paddle_serving_server.web_service import WebService
+
+
+class TextSystemHelper(TextSystem):
+    def __init__(self, args):
+        self.text_detector = TextDetectorHelper(args)
+        self.text_recognizer = TextRecognizerHelper(args)
+        self.use_angle_cls = args.use_angle_cls
+        if self.use_angle_cls:
+            self.clas_client = Debugger()
+            self.clas_client.load_model_config(
+                global_args.cls_model_dir, gpu=True, profile=False)
+            self.text_classifier = TextClassifierHelper(args)
+        self.det_client = Debugger()
+        self.det_client.load_model_config(
+            global_args.det_model_dir, gpu=True, profile=False)
+        self.fetch = ["save_infer_model/scale_0.tmp_0", "save_infer_model/scale_1.tmp_0"]
+
+    def preprocess(self, img):
+        feed, fetch, self.tmp_args = self.text_detector.preprocess(img)
+        fetch_map = self.det_client.predict(feed, fetch)
+        outputs = [fetch_map[x] for x in fetch]
+        dt_boxes = self.text_detector.postprocess(outputs, self.tmp_args)
+        if dt_boxes is None:
+            return None, None
+        img_crop_list = []
+        dt_boxes = sorted_boxes(dt_boxes)
+        for bno in range(len(dt_boxes)):
+            tmp_box = copy.deepcopy(dt_boxes[bno])
+            img_crop = self.get_rotate_crop_image(img, tmp_box)
+            img_crop_list.append(img_crop)
+        if self.use_angle_cls:
+            feed, fetch, self.tmp_args = self.text_classifier.preprocess(
+                img_crop_list)
+            fetch_map = self.clas_client.predict(feed, fetch)
+            outputs = [fetch_map[x] for x in self.text_classifier.fetch]
+            for x in fetch_map.keys():
+                if ".lod" in x:
+                    self.tmp_args[x] = fetch_map[x]
+            img_crop_list, _ = self.text_classifier.postprocess(outputs,
+                                                                self.tmp_args)
+        feed, fetch, self.tmp_args = self.text_recognizer.preprocess(
+            img_crop_list)
+        return feed, self.fetch, self.tmp_args
+
+    def postprocess(self, outputs, args):
+        return self.text_recognizer.postprocess(outputs, args)
 
 
 class OCRService(WebService):
-    def init_det_debugger(self, det_model_config):
-        self.det_preprocess = Sequential([
-            ResizeByFactor(32, 960), Div(255),
-            Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]), Transpose(
-                (2, 0, 1))
-        ])
-        self.det_client = Debugger()
-        if sys.argv[1] == 'gpu':
-            self.det_client.load_model_config(
-                det_model_config, gpu=True, profile=False)
-        elif sys.argv[1] == 'cpu':
-            self.det_client.load_model_config(
-                det_model_config, gpu=False, profile=False)
-        self.ocr_reader = OCRReader()
+    def init_rec(self):
+        self.text_system = TextSystemHelper(global_args)
 
     def preprocess(self, feed=[], fetch=[]):
+        # TODO: to handle batch rec images
         data = base64.b64decode(feed[0]["image"].encode('utf8'))
         data = np.fromstring(data, np.uint8)
         im = cv2.imdecode(data, cv2.IMREAD_COLOR)
-        ori_h, ori_w, _ = im.shape
-        det_img = self.det_preprocess(im)
-        _, new_h, new_w = det_img.shape
-        det_img = det_img[np.newaxis, :]
-        det_img = det_img.copy()
-        det_out = self.det_client.predict(
-            feed={"image": det_img}, fetch=["concat_1.tmp_0"])
-        filter_func = FilterBoxes(10, 10)
-        post_func = DBPostProcess({
-            "thresh": 0.3,
-            "box_thresh": 0.5,
-            "max_candidates": 1000,
-            "unclip_ratio": 1.5,
-            "min_size": 3
-        })
-        sorted_boxes = SortedBoxes()
-        ratio_list = [float(new_h) / ori_h, float(new_w) / ori_w]
-        dt_boxes_list = post_func(det_out["concat_1.tmp_0"], [ratio_list])
-        dt_boxes = filter_func(dt_boxes_list[0], [ori_h, ori_w])
-        dt_boxes = sorted_boxes(dt_boxes)
-        get_rotate_crop_image = GetRotateCropImage()
-        img_list = []
-        max_wh_ratio = 0
-        for i, dtbox in enumerate(dt_boxes):
-            boximg = get_rotate_crop_image(im, dt_boxes[i])
-            img_list.append(boximg)
-            h, w = boximg.shape[0:2]
-            wh_ratio = w * 1.0 / h
-            max_wh_ratio = max(max_wh_ratio, wh_ratio)
-        if len(img_list) == 0:
-            return [], []
-        _, w, h = self.ocr_reader.resize_norm_img(img_list[0],
-                                                  max_wh_ratio).shape
-        imgs = np.zeros((len(img_list), 3, w, h)).astype('float32')
-        for id, img in enumerate(img_list):
-            norm_img = self.ocr_reader.resize_norm_img(img, max_wh_ratio)
-            imgs[id] = norm_img
-        feed = {"image": imgs.copy()}
-        fetch = ["ctc_greedy_decoder_0.tmp_0", "softmax_0.tmp_0"]
+        feed, fetch, self.tmp_args = self.text_system.preprocess(im)
         return feed, fetch
 
     def postprocess(self, feed={}, fetch=[], fetch_map=None):
-        rec_res = self.ocr_reader.postprocess(fetch_map, with_score=True)
-        res_lst = []
-        for res in rec_res:
-            res_lst.append(res[0])
-        res = {"res": res_lst}
+        outputs = [fetch_map[x] for x in self.text_system.fetch]
+        for x in fetch_map.keys():
+            if ".lod" in x:
+                self.tmp_args[x] = fetch_map[x]
+        rec_res = self.text_system.postprocess(outputs, self.tmp_args)
+        res = {
+            "pred_text": [x[0] for x in rec_res],
+            "score": [str(x[1]) for x in rec_res]
+        }
         return res
 
 
-ocr_service = OCRService(name="ocr")
-ocr_service.load_model_config("ocr_rec_model")
-ocr_service.init_det_debugger(det_model_config="ocr_det_model")
-if sys.argv[1] == 'gpu':
-    ocr_service.prepare_server(workdir="workdir", port=9292, device="gpu", gpuid=0)
-    ocr_service.run_debugger_service(gpu=True)
-elif sys.argv[1] == 'cpu':
-    ocr_service.prepare_server(workdir="workdir", port=9292, device="cpu")
+if __name__ == "__main__":
+    ocr_service = OCRService(name="ocr")
+    ocr_service.load_model_config(global_args.rec_model_dir)
+    ocr_service.init_rec()
+    if global_args.use_gpu:
+        ocr_service.prepare_server(
+            workdir="workdir", port=9292, device="gpu", gpuid=0)
+    else:
+        ocr_service.prepare_server(workdir="workdir", port=9292, device="cpu")
     ocr_service.run_debugger_service()
-ocr_service.run_web_service()
+    ocr_service.run_web_service()

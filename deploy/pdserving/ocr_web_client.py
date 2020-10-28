@@ -20,10 +20,12 @@ import base64
 import os, sys
 import time
 
+
 def cv2_to_base64(image):
     #data = cv2.imencode('.jpg', image)[1]
     return base64.b64encode(image).decode(
         'utf8')  #data.tostring()).decode('utf8')
+
 
 headers = {"Content-type": "application/json"}
 url = "http://127.0.0.1:9292/ocr/prediction"
@@ -34,4 +36,5 @@ for img_file in os.listdir(test_img_dir):
     image = cv2_to_base64(image_data1)
     data = {"feed": [{"image": image}], "fetch": ["res"]}
     r = requests.post(url=url, headers=headers, data=json.dumps(data))
-    print(r.json())
+    rjson = r.json()
+    print(rjson)

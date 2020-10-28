@@ -1,8 +1,8 @@
 English | [简体中文](readme.md)
 
-PaddleOCR provides 2 service deployment methods: 
-- Based on **PaddleHub Serving**: Code path is "`./deploy/hubserving`". Please follow this tutorial. 
-- Based on **PaddleServing**: Code path is "`./deploy/pdserving`". Please refer to the [tutorial](../pdserving/readme_en.md) for usage.
+PaddleOCR provides 2 service deployment methods:
+- Based on **PaddleHub Serving**: Code path is "`./deploy/hubserving`". Please follow this tutorial.
+- Based on **PaddleServing**: Code path is "`./deploy/pdserving`". Please refer to the [tutorial](../../doc/doc_ch/serving_inference.md) for usage.
 
 # Service deployment based on PaddleHub Serving  
 
@@ -30,16 +30,15 @@ The following steps take the 2-stage series service as an example. If only the d
 ```shell
 # Install paddlehub  
 pip3 install paddlehub --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
-
-# Set environment variables on Linux
-export PYTHONPATH=.
-
-# Set environment variables on Windows
-SET PYTHONPATH=.
 ```
 
 ### 2. Download inference model
-Before installing the service module, you need to prepare the inference model and put it in the correct path. By default, the ultra lightweight model of v1.1 is used, and the default detection model path is: `./inference/ch_ppocr_mobile_v1.1_det_infer/`, the default recognition model path is: `./inference/ch_ppocr_mobile_v1.1_rec_infer/`.  
+Before installing the service module, you need to prepare the inference model and put it in the correct path. By default, the ultra lightweight model of v1.1 is used, and the default model path is:  
+```
+detection model: ./inference/ch_ppocr_mobile_v1.1_det_infer/
+recognition model: ./inference/ch_ppocr_mobile_v1.1_rec_infer/
+text direction classifier: ./inference/ch_ppocr_mobile_v1.1_cls_infer/
+```  
 
 **The model path can be found and modified in `params.py`.** More models provided by PaddleOCR can be obtained from the [model library](../../doc/doc_en/models_list_en.md). You can also use models trained by yourself.
 
@@ -180,7 +179,7 @@ If you need to modify the service logic, the following steps are generally requi
 hub serving stop --port/-p XXXX
 ```
 - 2. Modify the code in the corresponding files, like `module.py` and `params.py`, according to the actual needs.  
-For example, if you need to replace the model used by the deployed service, you need to modify model path parameters `det_model_dir` and `rec_model_dir` in `params.py`. Of course, other related parameters may need to be modified at the same time. Please modify and debug according to the actual situation. It is suggested to run `module.py` directly for debugging after modification before starting the service test.  
+For example, if you need to replace the model used by the deployed service, you need to modify model path parameters `det_model_dir` and `rec_model_dir` in `params.py`. If you want to turn off the text direction classifier, set the parameter `use_angle_cls` to `False`. Of course, other related parameters may need to be modified at the same time. Please modify and debug according to the actual situation. It is suggested to run `module.py` directly for debugging after modification before starting the service test.  
 - 3. Uninstall old service module
 ```shell
 hub uninstall ocr_system

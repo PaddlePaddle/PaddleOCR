@@ -63,8 +63,7 @@ def draw_server_result(image_file, res):
             scores.append(res[dno]['confidence'])
         boxes = np.array(boxes)
         scores = np.array(scores)
-        draw_img = draw_ocr(
-            image, boxes, texts, scores, draw_txt=True, drop_score=0.5)
+        draw_img = draw_ocr(image, boxes, texts, scores, drop_score=0.5)
         return draw_img
 
 

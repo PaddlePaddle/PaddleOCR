@@ -9,8 +9,8 @@ pip install paddleocr
 
 build own whl package and install
 ```bash
-python setup.py bdist_wheel
-pip install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x is the version of paddleocr
+python3 setup.py bdist_wheel
+pip3 install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x is the version of paddleocr
 ```
 ### 1. Use by code
 
@@ -18,7 +18,7 @@ pip install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x is the version of padd
 ```python
 from paddleocr import PaddleOCR,draw_ocr
 # Paddleocr supports Chinese, English, French, German, Korean and Japanese.
-# You can set the parameter `lang` as `zh`, `en`, `french`, `german`, `korean`, `japan`
+# You can set the parameter `lang` as `ch`, `en`, `french`, `german`, `korean`, `japan`
 # to switch the language model in order.
 ocr = PaddleOCR(use_angle_cls=True, lang='en') # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs_en/img_12.jpg'
@@ -302,7 +302,7 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_
 | cls_batch_num           | When performing classification, the batchsize of forward images                                                                                                                                                                                         | 30                      |
 | enable_mkldnn           | Whether to enable mkldnn                                                                                                                                                                                                       | FALSE                   |
 | use_zero_copy_run           | Whether to forward by zero_copy_run                                                                                                                                                                               | FALSE                   |
-| lang                     | The support language, now only chinese(ch) and english(en) are supported                                                                                                                                                                                                  | ch                    |
+| lang                     | The support language, now only Chinese(ch)、English(en)、French(french)、German(german)、Korean(korean)、Japanese(japan) are supported                                                                                                                                                                                                  | ch                    |
 | det                     | Enable detction when `ppocr.ocr` func exec                                                                                                                                                                                                   | TRUE                    |
 | rec                     | Enable recognition when `ppocr.ocr` func exec                                                                                                                                                                                                   | TRUE                    |
 | cls                     | Enable classification when `ppocr.ocr` func exec                                                                                                                                                                                                   | FALSE                    |

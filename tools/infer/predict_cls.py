@@ -33,12 +33,13 @@ from paddle import fluid
 
 class TextClassifier(object):
     def __init__(self, args):
-        self.predictor, self.input_tensor, self.output_tensors = \
-            utility.create_predictor(args, mode="cls")
+        if args.use_pdserving is False:
+            self.predictor, self.input_tensor, self.output_tensors = \
+                utility.create_predictor(args, mode="cls")
+            self.use_zero_copy_run = args.use_zero_copy_run
         self.cls_image_shape = [int(v) for v in args.cls_image_shape.split(",")]
         self.cls_batch_num = args.rec_batch_num
         self.label_list = args.label_list
-        self.use_zero_copy_run = args.use_zero_copy_run
         self.cls_thresh = args.cls_thresh
 
     def resize_norm_img(self, img):
@@ -103,7 +104,6 @@ class TextClassifier(object):
             label_out = self.output_tensors[1].copy_to_cpu()
             if len(label_out.shape) != 1:
                 prob_out, label_out = label_out, prob_out
-
             elapse = time.time() - starttime
             predict_time += elapse
             for rno in range(len(label_out)):

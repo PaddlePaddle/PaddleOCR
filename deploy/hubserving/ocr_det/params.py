@@ -37,5 +37,6 @@ def read_params():
     # cfg.use_space_char = True
 
     cfg.use_zero_copy_run = False
+    cfg.use_pdserving = False
 
     return cfg
