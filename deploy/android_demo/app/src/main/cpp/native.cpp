@@ -76,15 +76,15 @@ Java_com_baidu_paddle_lite_demo_ocr_OCRPredictorNative_forward(
   dims_arr.resize(dims_float_arr.size());
   std::copy(dims_float_arr.cbegin(), dims_float_arr.cend(), dims_arr.begin());
 
-  // 这里值有点大，就不调用jfloatarray_to_float_vector了
+  // this value is big,so jfloatarray_to_float_vector is not uesd
   int64_t buf_len = (int64_t)env->GetArrayLength(buf);
   jfloat *buf_data = env->GetFloatArrayElements(buf, JNI_FALSE);
   float *data = (jfloat *)buf_data;
   std::vector<ppredictor::OCRPredictResult> results =
       ppredictor->infer_ocr(dims_arr, data, buf_len, NET_OCR, origin);
   LOGI("infer_ocr finished with boxes %ld", results.size());
-  // 这里将std::vector<ppredictor::OCRPredictResult> 序列化成
-  // float数组，传输到java层再反序列化
+  // Here, std::vector<ppredictor::OCRPredictResult> is serialized into
+  //  float array, transferred to java layer and then deserialized
   std::vector<float> float_arr;
   for (const ppredictor::OCRPredictResult &r : results) {
     float_arr.push_back(r.points.size());
