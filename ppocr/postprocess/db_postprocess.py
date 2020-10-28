@@ -18,6 +18,7 @@ from __future__ import print_function
 
 import numpy as np
 import cv2
+import paddle
 from shapely.geometry import Polygon
 import pyclipper
 
@@ -130,7 +131,9 @@ class DBPostProcess(object):
         return cv2.mean(bitmap[ymin:ymax + 1, xmin:xmax + 1], mask)[0]
 
     def __call__(self, pred, shape_list):
-        pred = pred.numpy()[:, 0, :, :]
+        if isinstance(pred, paddle.Tensor):
+            pred = pred.numpy()
+        pred = pred[:, 0, :, :]
         segmentation = pred > self.thresh
 
         boxes_batch = []
