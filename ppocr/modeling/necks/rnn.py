@@ -28,7 +28,8 @@ class Im2Seq(nn.Layer):
 
     def forward(self, x):
         B, C, H, W = x.shape
-        x = x.reshape((B, C * H, W))
+        assert H == 1
+        x = x.squeeze(axis=2)
         x = x.transpose([0, 2, 1])  # (NTC)(batch, width, channels)
         return x
 
