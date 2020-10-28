@@ -147,7 +147,6 @@ class TextDetector(object):
             output = output_tensor.copy_to_cpu()
             outputs.append(output)
         preds = outputs[0]
-        cv2.imwrite('1.jpg', preds[0].transpose((1, 2, 0)) * 255)
 
         # preds = self.predictor(img)
         post_result = self.postprocess_op(preds, shape_list)
