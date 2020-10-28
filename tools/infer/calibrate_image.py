@@ -267,7 +267,7 @@ def calibrate_img(text_detector, img, image_file, out_dir, debug=False):
         rotate_angle1 = math.degrees(theta1)
         logger.debug("第一次旋转：文本框数量1：{}，旋转角度1：{}, score1: {}".format(len(boxes1), rotate_angle1, score1))
         img_name_pure = os.path.basename(image_file)
-        new_filename = "{}.1-rotate.{}.{}.png".format(img_name_pure, int(rotate_angle1), int(score1))
+        new_filename = "{}.1-rotate.{}.{}.jpg".format(img_name_pure, int(rotate_angle1), int(score1))
         cv2.imwrite(os.path.join(out_dir, new_filename), utility.draw_text_det_res2(boxes1, img1))
 
     # 2 计算文本框旋转角度
@@ -282,7 +282,7 @@ def calibrate_img(text_detector, img, image_file, out_dir, debug=False):
     score2 = check_box_score(boxes2)
     if debug:
         logger.debug("第二次旋转:boxes2:{}, 旋转角度2：{}， score2:{}".format(len(boxes2), rotate_angle2, score2))
-        new_filename = "{}.2-rotate.{}.{}.png".format(img_name_pure, int(rotate_angle2), int(score2))
+        new_filename = "{}.2-rotate.{}.{}.jpg".format(img_name_pure, int(rotate_angle2), int(score2))
         cv2.imwrite(os.path.join(draw_img_save, new_filename), utility.draw_text_det_res2(boxes2, img2))
 
     # 3 找到文本区域的四边形顶点
@@ -309,8 +309,10 @@ def calibrate_img(text_detector, img, image_file, out_dir, debug=False):
     if debug:
         img3_show = img3.copy()
         cv2.polylines(img3_show, [pts1.astype(np.int)], True, color=(255, 0, 0), thickness=4)
-        cv2.imwrite(os.path.join(draw_img_save, "{}.3-rectify.png".format(img_name_pure)), img3_show)
-        cv2.imwrite(os.path.join(draw_img_save, "{}.4-rectify.png".format(img_name_pure)), img4)
+        cv2.imwrite(os.path.join(draw_img_save, "{}.3-rectify.jpg".format(img_name_pure)), img3_show)
+        boxes4, elapse4 = text_detector(img4)
+        cv2.imwrite(os.path.join(draw_img_save, "{}.4-rectify.jpg".format(img_name_pure)),
+                    utility.draw_text_det_res2(boxes4, img4))
     return img2, boxes2, theta2
 
 
@@ -331,6 +333,13 @@ if __name__ == "__main__":
             logger.info("error in loading image:{}".format(image_file))
             continue
         count += 1
+        h, w = img.shape[:2]
+        print(image_file, img.shape)
+        if w > 2000 and w >= h:
+            img = cv2.resize(img, (2000, round(2000 * h / w)))
+        elif h > 2000 and h >= w:
+            img = cv2.resize(img, (round(2000 * w / h), 2000))
+        print(img.shape)
         image, dt_boxes, rotate_angle = calibrate_img(text_detector, img, image_file, draw_img_save, debug=True)
         # if dt_boxes is not None and len(dt_boxes) > 0:
         #     image = utility.draw_text_det_res2(dt_boxes, image)
