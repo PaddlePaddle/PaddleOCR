@@ -69,8 +69,9 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
 | Korean ultra-lightweight OCR model (5.9M)       | korean_ppocr_mobile_v1.1_xx      | Mobile & server   | [inference model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_train.tar) | - |[inference model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/kr/korean_ppocr_mobile_v1.1_rec_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/kr/korean_ppocr_mobile_v1.1_rec_train.tar)|
 | Japan ultra-lightweight OCR model (6.2M)       | japan_ppocr_mobile_v1.1_xx      | Mobile & server   | [inference model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_train.tar) | - |[inference model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/jp/japan_ppocr_mobile_v1.1_rec_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/jp/japan_ppocr_mobile_v1.1_rec_train.tar)  |
 
-For more model downloads (including multiple languages), please refer to [PP-OCR v1.1 series model downloads](./doc/doc_en/models_list_en.md)
+For more model downloads (including multiple languages), please refer to [PP-OCR v1.1 series model downloads](./doc/doc_en/models_list_en.md).
 
+For a new language request, please refer to [Guideline for new language_requests](#language_requests).
 
 ## Tutorials
 - [Installation](./doc/doc_en/installation_en.md)
@@ -101,6 +102,7 @@ For more model downloads (including multiple languages), please refer to [PP-OCR
     - [Data Annotation Tools](./doc/doc_en/data_annotation_en.md)
     - [Data Synthesis Tools](./doc/doc_en/data_synthesis_en.md)
 - [Visualization](#Visualization)
+- [New language requests](#language_requests)
 - [FAQ](./doc/doc_en/FAQ_en.md)
 - [Community](#Community)
 - [References](./doc/doc_en/reference_en.md)
@@ -140,8 +142,8 @@ PP-OCR is a practical ultra-lightweight OCR system. It is mainly composed of thr
 </div>
 
 
-<a name="language request"></a>
-## Guideline for new language request
+<a name="language_requests"></a>
+## Guideline for new language requests
 
 If you want to request a new language support, a PR with 2 following files are needed：
 
@@ -155,7 +157,7 @@ Of course, the more, the better.
 
 If your language has unique elements, please tell me in advance within any way, such as useful links, wikipedia and so on.
 
-More details, see [Multilingual OCR Development Plan](https://github.com/PaddlePaddle/PaddleOCR/issues/1048)
+More details, please refer to [Multilingual OCR Development Plan](https://github.com/PaddlePaddle/PaddleOCR/issues/1048).
 
 
 <a name="LICENSE"></a>
