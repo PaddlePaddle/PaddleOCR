@@ -29,12 +29,6 @@ deploy/hubserving/ocr_system/
 ```shell
 # 安装paddlehub  
 pip3 install paddlehub --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
-
-# 在Linux下设置环境变量
-export PYTHONPATH=.
-
-# 或者，在Windows下设置环境变量
-SET PYTHONPATH=.
 ```
 
 ### 2. 下载推理模型
