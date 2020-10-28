@@ -56,11 +56,11 @@ class TextSystemHelper(TextSystem):
         fetch_map = self.det_client.predict(feed, fetch)
         outputs = [fetch_map[x] for x in fetch]
         dt_boxes = self.text_detector.postprocess(outputs, self.tmp_args)
-        print(dt_boxes)
         if dt_boxes is None:
             return None, None
         img_crop_list = []
         dt_boxes = sorted_boxes(dt_boxes)
+        self.dt_boxes = dt_boxes
         for bno in range(len(dt_boxes)):
             tmp_box = copy.deepcopy(dt_boxes[bno])
             img_crop = self.get_rotate_crop_image(img, tmp_box)
@@ -69,7 +69,6 @@ class TextSystemHelper(TextSystem):
             feed, fetch, self.tmp_args = self.text_classifier.preprocess(
                 img_crop_list)
             fetch_map = self.clas_client.predict(feed, fetch)
-            print(fetch_map)
             outputs = [fetch_map[x] for x in self.text_classifier.fetch]
             for x in fetch_map.keys():
                 if ".lod" in x:
@@ -104,7 +103,8 @@ class OCRService(WebService):
         rec_res = self.text_system.postprocess(outputs, self.tmp_args)
         res = {
             "pred_text": [x[0] for x in rec_res],
-            "score": [str(x[1]) for x in rec_res]
+            "score": [str(x[1]) for x in rec_res],
+            "pos": [x.tolist() for x in self.text_system.dt_boxes]
         }
         return res
 
