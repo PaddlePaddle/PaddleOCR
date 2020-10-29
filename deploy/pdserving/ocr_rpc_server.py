@@ -43,12 +43,14 @@ class TextSystemHelper(TextSystem):
         if self.use_angle_cls:
             self.clas_client = Client()
             self.clas_client.load_client_config(
-                "cls_infer_client/serving_client_conf.prototxt")
+                os.path.join(args.cls_client_dir, "serving_client_conf.prototxt")
+            )
             self.clas_client.connect(["127.0.0.1:9294"])
             self.text_classifier = TextClassifierHelper(args)
         self.det_client = Client()
         self.det_client.load_client_config(
-            "det_infer_client/serving_client_conf.prototxt")
+            os.path.join(args.det_client_dir, "serving_client_conf.prototxt")
+            )
         self.det_client.connect(["127.0.0.1:9293"])
         self.fetch = ["save_infer_model/scale_0.tmp_0", "save_infer_model/scale_1.tmp_0"]
 
@@ -57,11 +59,12 @@ class TextSystemHelper(TextSystem):
         fetch_map = self.det_client.predict(feed, fetch)
         outputs = [fetch_map[x] for x in fetch]
         dt_boxes = self.text_detector.postprocess(outputs, self.tmp_args)
-        print(dt_boxes)
+        # print(dt_boxes)
         if dt_boxes is None:
             return None, None
         img_crop_list = []
         dt_boxes = sorted_boxes(dt_boxes)
+        self.dt_boxes = dt_boxes
         for bno in range(len(dt_boxes)):
             tmp_box = copy.deepcopy(dt_boxes[bno])
             img_crop = self.get_rotate_crop_image(img, tmp_box)
@@ -70,7 +73,7 @@ class TextSystemHelper(TextSystem):
             feed, fetch, self.tmp_args = self.text_classifier.preprocess(
                 img_crop_list)
             fetch_map = self.clas_client.predict(feed, fetch)
-            print(fetch_map)
+            # print(fetch_map)
             outputs = [fetch_map[x] for x in self.text_classifier.fetch]
             for x in fetch_map.keys():
                 if ".lod" in x:
@@ -103,16 +106,20 @@ class OCRService(WebService):
             if ".lod" in x:
                 self.tmp_args[x] = fetch_map[x]
         rec_res = self.text_system.postprocess(outputs, self.tmp_args)
-        res = {
-            "pred_text": [x[0] for x in rec_res],
-            "score": [str(x[1]) for x in rec_res]
-        }
+        res = []
+        for i in range(len(rec_res)):
+            tmp_res = {
+                "text_region": self.text_system.dt_boxes[i].tolist(),
+                "text": rec_res[i][0],
+                "confidence": float(rec_res[i][1])
+            }
+            res.append(tmp_res)
         return res
 
 
 if __name__ == "__main__":
     ocr_service = OCRService(name="ocr")
-    ocr_service.load_model_config(global_args.rec_model_dir)
+    ocr_service.load_model_config(global_args.rec_server_dir)
     ocr_service.init_rec()
     if global_args.use_gpu:
         ocr_service.prepare_server(
