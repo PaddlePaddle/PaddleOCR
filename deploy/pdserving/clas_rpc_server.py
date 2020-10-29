@@ -113,16 +113,18 @@ class OCRService(WebService):
             if ".lod" in x:
                 self.tmp_args[x] = fetch_map[x]
         _, rec_res = self.text_classifier.postprocess(outputs, self.tmp_args)
-        res = {
-            "direction": [x[0] for x in rec_res],
-            "score": [str(x[1]) for x in rec_res]
-        }
+        res = []
+        for i in range(len(rec_res)):
+            res.append({
+                "direction": rec_res[i][0],
+                "confidence": float(rec_res[i][1])
+            })
         return res
 
 
 if __name__ == "__main__":
     ocr_service = OCRService(name="ocr")
-    ocr_service.load_model_config(global_args.cls_model_dir)
+    ocr_service.load_model_config(global_args.cls_server_dir)
     ocr_service.init_rec()
     if global_args.use_gpu:
         ocr_service.prepare_server(
