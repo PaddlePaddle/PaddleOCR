@@ -292,12 +292,19 @@ def calibrate_img(text_detector, img, image_file, out_dir, debug=False):
     # else:
     pts1 = rectify_img(img2, boxes2)
     img3 = img2.copy()
+    line_t = line_seg.line_length(pts1[0, 0], pts1[0, 1], pts1[1, 0], pts1[1, 1])
+    line_b = line_seg.line_length(pts1[2, 0], pts1[2, 1], pts1[3, 0], pts1[3, 1])
+    line_l = line_seg.line_length(pts1[0, 0], pts1[0, 1], pts1[3, 0], pts1[3, 1])
+    line_r = line_seg.line_length(pts1[1, 0], pts1[1, 1], pts1[2, 0], pts1[2, 1])
+    size = [max(line_t, line_b), max(line_l, line_r)]
+    if max(line_t, line_b) / min(line_t, line_b) >= max(line_l, line_r) / min(line_l, line_r):
+        size[1] = round(size[1] * max(line_t, line_b) / min(line_t, line_b))
+    else:
+        size[0] = round(size[0] * max(line_l, line_r) / min(line_l, line_r))
 
-    size = (round(line_seg.line_length(pts1[0, 0], pts1[0, 1], pts1[1, 0], pts1[1, 1])),
-            round(line_seg.line_length(pts1[0, 0], pts1[0, 1], pts1[1, 0], pts1[1, 1])))
     pts1 = pts1.astype(np.float32)
     pad1, pad2 = round(size[0] / 10), round(size[1] / 10)
-    size = (size[0] + 2 * pad1, size[1] + 2 * pad2)
+    size = (round(size[0] + 2 * pad1), round(size[1] + 2 * pad2))
     pts2 = np.array([[pad1, pad2],
                      [size[0] - pad1 - 1, pad2],
                      [size[0] - pad1 - 1, size[1] - pad2 - 1],
@@ -311,7 +318,8 @@ def calibrate_img(text_detector, img, image_file, out_dir, debug=False):
         cv2.polylines(img3_show, [pts1.astype(np.int)], True, color=(255, 0, 0), thickness=4)
         cv2.imwrite(os.path.join(draw_img_save, "{}.3-rectify.jpg".format(img_name_pure)), img3_show)
         boxes4, elapse4 = text_detector(img4)
-        cv2.imwrite(os.path.join(draw_img_save, "{}.4-rectify.jpg".format(img_name_pure)),
+        score4 = check_box_score(boxes4)
+        cv2.imwrite(os.path.join(draw_img_save, "{}.4-rectify.{}.jpg".format(img_name_pure, round(score4))),
                     utility.draw_text_det_res2(boxes4, img4))
     return img2, boxes2, theta2
 
