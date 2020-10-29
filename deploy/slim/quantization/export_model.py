@@ -51,6 +51,7 @@ from paddleslim.quant import quant_aware, convert
 from paddle.fluid.layer_helper import LayerHelper
 from eval_utils.eval_det_utils import eval_det_run
 from eval_utils.eval_rec_utils import eval_rec_run
+from eval_utils.eval_cls_utils import eval_cls_run
 
 
 def main():
@@ -105,6 +106,8 @@ def main():
 
     if alg_type == 'det':
         final_metrics = eval_det_run(exe, config, quant_info_dict, "eval")
+    elif alg_type == 'cls':
+        final_metrics = eval_cls_run(exe, quant_info_dict)
     else:
         final_metrics = eval_rec_run(exe, config, quant_info_dict, "eval")
     print(final_metrics)

@@ -1,10 +1,10 @@
 
 # Tutorial of PaddleOCR Mobile deployment
 
-This tutorial will introduce how to use paddle-lite to deploy paddleOCR ultra-lightweight Chinese and English detection models on mobile phones.
+This tutorial will introduce how to use [paddle-lite](https://github.com/PaddlePaddle/Paddle-Lite) to deploy paddleOCR ultra-lightweight Chinese and English detection models on mobile phones.
 
 paddle-lite is a lightweight inference engine for PaddlePaddle.
-It provides efficient inference capabilities for mobile phones and IOTs,
+It provides efficient inference capabilities for mobile phones and IoTs,
 and extensively integrates cross-platform hardware to provide lightweight
 deployment solutions for end-side deployment issues.
 
@@ -22,10 +22,10 @@ deployment solutions for end-side deployment issues.
 
 |Platform|Prebuild library Download Link|
 |-|-|
-|Android|[arm7](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/Android/inference_lite_lib.android.armv7.gcc.c++_static.with_extra.CV_ON.tar.gz) / [arm8](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/Android/inference_lite_lib.android.armv8.gcc.c++_static.with_extra.CV_ON.tar.gz)|
-|IOS|[arm7](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/iOS/inference_lite_lib.ios.armv7.with_extra.CV_ON.tar.gz) / [arm8](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/iOS/inference_lite_lib.ios64.armv8.with_extra.CV_ON.tar.gz)|
+|Android|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.android.armv7.gcc.c++_shared.with_extra.with_cv.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.android.armv8.gcc.c++_shared.with_extra.with_cv.tar.gz)|
+|IOS|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.ios.armv7.with_cv.with_extra.with_log.tiny_publish.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.ios.armv8.with_cv.with_extra.with_log.tiny_publish.tar.gz)|
 
-note: It is recommended to build prebuild library using [Paddle-Lite](https://github.com/PaddlePaddle/Paddle-Lite) develop branch if developer wants to deploy the [quantitative](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/quantization/README_en.md) model to mobile phone.
+note: The above pre-build inference library is compiled from the PaddleLite `release/2.6.3` branch. For more information about PaddleLite 2.6.3, please refer to [link](https://github.com/PaddlePaddle/Paddle-Lite/releases/tag/v2.6.3).
 
 
 The structure of the prediction library is as follows:
@@ -65,11 +65,11 @@ If you have prepared the model file ending in `.nb`, you can skip this step.
 The following table also provides a series of models that can be deployed on mobile phones to recognize Chinese.
 You can directly download the optimized model.
 
-|Version|Introduction|Model size|Detection model|Text Direction model|Recognition model|Paddle Lite branch |
-|-|-|-|-|-|-|
-|V1.1|extra-lightweight chinese OCR optimized model|8.1M|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_opt.nb)|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_opt.nb)|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_opt.nb)|develop|
-|[slim] V1.1|extra-lightweight chinese OCR optimized model|3.5M|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_prune_opt.nb)|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_quant_opt.nb)|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_quant_opt.nb)|develop|
-|V1.0|lightweight Chinese OCR optimized model|8.6M|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.0_det_opt.nb)|---|[Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.0_rec_opt.nb)|develop|
+| Version | Introduction | Model size | Detection model | Text Direction model | Recognition model | Paddle Lite branch |
+| - | - | - | - | - | - | - |
+| V1.1 | extra-lightweight chinese OCR optimized model | 8.1M | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_opt.nb) | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_opt.nb) | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_opt.nb) | develop |
+| [slim] V1.1 | extra-lightweight chinese OCR optimized model | 3.5M | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_prune_opt.nb) | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_quant_opt.nb) | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_quant_opt.nb) | develop |
+| V1.0 | lightweight Chinese OCR optimized model | 8.6M | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.0_det_opt.nb) | - | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.0_rec_opt.nb) | develop |
 
 If the model to be deployed is not in the above table, you need to follow the steps below to obtain the optimized model.
 
@@ -77,6 +77,8 @@ If the model to be deployed is not in the above table, you need to follow the st
 git clone https://github.com/PaddlePaddle/Paddle-Lite.git
 cd Paddle-Lite
 git checkout develop
+# switch to the specified commit
+git reset --hard 55c53482bcdd2868373d024dd1144e4c5ec0e6b8
 ./lite/tools/build.sh build_optimize_tool
 ```
 
@@ -185,11 +187,11 @@ demo/cxx/ocr/
 If the nb model is used for English recognition or other language recognition, dictionary file should be replaced with a dictionary of the corresponding language.
 PaddleOCR provides a variety of dictionaries under ppocr/utils/, including:
 ```
-french_dict.txt     # french
-german_dict.txt     # german
+dict/french_dict.txt     # french
+dict/german_dict.txt     # german
 ic15_dict.txt       # english
-japan_dict.txt      # japan
-korean_dict.txt     # korean
+dict/japan_dict.txt      # japan
+dict/korean_dict.txt     # korean
 ppocr_keys_v1.txt   # chinese
 ```
 
@@ -199,7 +201,7 @@ max_side_len  960         #  Limit the maximum image height and width to 960
 det_db_thresh  0.3        # Used to filter the binarized image of DB prediction, setting 0.-0.3 has no obvious effect on the result
 det_db_box_thresh  0.5    # DDB post-processing filter box threshold, if there is a missing box detected, it can be reduced as appropriate
 det_db_unclip_ratio  1.6  # Indicates the compactness of the text box, the smaller the value, the closer the text box to the text
-use_direction_classify  1  # Whether to use the direction classifier, 0 means not to use, 1 means to use
+use_direction_classify  0  # Whether to use the direction classifier, 0 means not to use, 1 means to use
 ```
 
 5. Run Model on phone

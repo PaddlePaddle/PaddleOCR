@@ -16,6 +16,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from collections import OrderedDict
+
 from paddle import fluid
 
 from ppocr.utils.utility import create_module
@@ -215,16 +217,15 @@ class RecModel(object):
                 label = labels['label']
             if self.loss_type == 'srn':
                 total_loss, img_loss, word_loss = self.loss(predicts, labels)
-                outputs = {
-                    'total_loss': total_loss,
-                    'img_loss': img_loss,
-                    'word_loss': word_loss,
-                    'decoded_out': decoded_out,
-                    'label': label
-                }
+                outputs = OrderedDict([('total_loss', total_loss), 
+                                       ('img_loss', img_loss), 
+                                       ('word_loss', word_loss), 
+                                       ('decoded_out', decoded_out),
+                                       ('label', label)])
             else:
-                outputs = {'total_loss':loss, 'decoded_out':\
-                    decoded_out, 'label':label}
+                outputs = OrderedDict([('total_loss', loss), 
+                                       ('decoded_out', decoded_out),
+                                       ('label', label)])
             return loader, outputs
         # export_model
         elif mode == "export":
@@ -233,16 +234,15 @@ class RecModel(object):
                 predict = fluid.layers.softmax(predict)
             if self.loss_type == "srn":
                 return [
-                    image, labels, {
-                        'decoded_out': decoded_out,
-                        'predicts': predict
-                    }
-                ]
+                    image, labels, OrderedDict([('decoded_out', decoded_out), 
+                                                ('predicts', predict)])]
 
-            return [image, {'decoded_out': decoded_out, 'predicts': predict}]
+            return [image, OrderedDict([('decoded_out', decoded_out), 
+                                        ('predicts', predict)])]
         # eval or test
         else:
             predict = predicts['predict']
             if self.loss_type == "ctc":
                 predict = fluid.layers.softmax(predict)
-            return loader, {'decoded_out': decoded_out, 'predicts': predict}
+            return loader, OrderedDict([('decoded_out', decoded_out), 
+                                        ('predicts', predict)])

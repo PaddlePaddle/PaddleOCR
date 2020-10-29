@@ -3,11 +3,14 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import os
+import sys
+sys.path.insert(0, ".")
+
 import argparse
 import ast
 import copy
 import math
-import os
 import time
 
 from paddle.fluid.core import AnalysisConfig, create_paddle_predictor, PaddleTensor
@@ -52,7 +55,7 @@ class OCRSystem(hub.Module):
                 )
         cfg.ir_optim = True
         cfg.enable_mkldnn = enable_mkldnn
-        
+
         self.text_sys = TextSystem(cfg)
 
     def read_images(self, paths=[]):
@@ -67,9 +70,7 @@ class OCRSystem(hub.Module):
             images.append(img)
         return images
 
-    def predict(self,
-                       images=[],
-                       paths=[]):
+    def predict(self, images=[], paths=[]):
         """
         Get the chinese texts in the predicted images.
         Args:
@@ -104,13 +105,11 @@ class OCRSystem(hub.Module):
 
             for dno in range(dt_num):
                 text, score = rec_res[dno]
-                rec_res_final.append(
-                    {
-                        'text': text,
-                        'confidence': float(score),
-                        'text_region': dt_boxes[dno].astype(np.int).tolist()
-                    }
-                )
+                rec_res_final.append({
+                    'text': text,
+                    'confidence': float(score),
+                    'text_region': dt_boxes[dno].astype(np.int).tolist()
+                })
             all_results.append(rec_res_final)
         return all_results
 
@@ -123,7 +122,7 @@ class OCRSystem(hub.Module):
         results = self.predict(images_decode, **kwargs)
         return results
 
-   
+
 if __name__ == '__main__':
     ocr = OCRSystem()
     image_path = [

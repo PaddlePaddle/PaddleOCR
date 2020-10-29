@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from paddle_serving_client import Client
-from paddle_serving_app.reader import OCRReader
 import cv2
 import sys
 import numpy as np
@@ -59,7 +58,6 @@ class TextSystemHelper(TextSystem):
         fetch_map = self.det_client.predict(feed, fetch)
         outputs = [fetch_map[x] for x in fetch]
         dt_boxes = self.text_detector.postprocess(outputs, self.tmp_args)
-        # print(dt_boxes)
         if dt_boxes is None:
             return None, None
         img_crop_list = []
@@ -73,7 +71,6 @@ class TextSystemHelper(TextSystem):
             feed, fetch, self.tmp_args = self.text_classifier.preprocess(
                 img_crop_list)
             fetch_map = self.clas_client.predict(feed, fetch)
-            # print(fetch_map)
             outputs = [fetch_map[x] for x in self.text_classifier.fetch]
             for x in fetch_map.keys():
                 if ".lod" in x:
