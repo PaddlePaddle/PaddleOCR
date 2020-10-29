@@ -17,11 +17,13 @@ pdserving服务部署目录下包括`检测`、`识别`、`2阶段串联`三种�
 deploy/pdserving/
   └─  det_local_server.py     快速版 检测 服务端
   └─  det_rpc_server.py       标准版 检测 服务端
+  └─  clas_local_server.py    快速版 方向分类器 服务端
+  └─  clas_rpc_server.py      标准版 方向分类器 服务端
   └─  rec_local_server.py     快速版 识别 服务端
   └─  rec_rpc_server.py       标准版 识别 服务端
   └─  ocr_local_server.py     快速版 串联 服务端
   └─  ocr_rpc_server.py       标准版 串联 服务端
-  └─  ocr_web_client.py       客户端
+  └─  pdserving_client.py     客户端
   └─  params.py               配置文件
 ```
 
@@ -39,7 +41,7 @@ deploy/pdserving/
 **Python操作指南：**
 
 目前Serving用于OCR的部分功能还在测试当中，因此在这里我们给出[Servnig latest package](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md)
-大家根据自己的环境选择需要安装的whl包即可，例如以Python 3.6为例，执行下列命令：
+大家根据自己的环境选择需要安装的whl包即可，例如以Python 3.5为例，执行下列命令：
 ```
 # 安装服务端，CPU/GPU版本选择一个
 # GPU版本服务端
@@ -54,7 +56,7 @@ python -m pip install -U https://paddle-serving.bj.bcebos.com/whl/paddle_serving
 python -m pip install -U https://paddle-serving.bj.bcebos.com/whl/paddle_serving_client-0.0.0-cp35-none-any.whl https://paddle-serving.bj.bcebos.com/whl/paddle_serving_app-0.0.0-py3-none-any.whl
 
 # 安装其他依赖
-pip3.6 install func-timeout
+pip3.5 install func-timeout
 ```
 
 <a name="转换模型"></a>
