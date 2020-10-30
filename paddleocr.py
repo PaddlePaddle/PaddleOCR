@@ -166,6 +166,7 @@ def parse_args():
 
     parser.add_argument("--enable_mkldnn", type=bool, default=False)
     parser.add_argument("--use_zero_copy_run", type=bool, default=False)
+    parser.add_argument("--use_pdserving", type=str2bool, default=False)
 
     parser.add_argument("--lang", type=str, default='ch')
     parser.add_argument("--det", type=str2bool, default=True)
