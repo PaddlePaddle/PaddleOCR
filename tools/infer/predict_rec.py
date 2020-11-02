@@ -46,7 +46,7 @@ class TextRecognizer(object):
             "character_type": args.rec_char_type,
             "character_dict_path": args.rec_char_dict_path,
             "use_space_char": args.use_space_char,
-            "use_nomarl_char": args.use_nomarl_char,
+            "use_normal_char": args.use_normal_char,
             "max_text_length": args.max_text_length,
         }
         if self.rec_algorithm in ["CRNN", "Rosetta", "STAR-Net"]:
