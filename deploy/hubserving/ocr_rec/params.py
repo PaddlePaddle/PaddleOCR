@@ -37,6 +37,7 @@ def read_params():
 
     cfg.rec_char_dict_path = "./ppocr/utils/ppocr_keys_v1.txt"
     cfg.use_space_char = True
+    cfg.use_normal_char = True
 
     #params for text classifier
     cfg.use_angle_cls = True

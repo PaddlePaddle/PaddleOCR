@@ -17,7 +17,7 @@ import string
 import re
 from .check import check_config_params
 import sys
-
+from .special_character import SpecialCharacter
 
 class CharacterOps(object):
     """ Convert between text-label and text-index """
@@ -63,6 +63,11 @@ class CharacterOps(object):
         for i, char in enumerate(dict_character):
             self.dict[char] = i
         self.character = dict_character
+        # special character initial
+        self.specialCharacter = SpecialCharacter()
+        self.userNormal = False
+        if "use_normal_char" in config:
+            self.userNormal = config["use_normal_char"]
 
     def encode(self, text):
         """convert text-label into text-index.
@@ -105,6 +110,8 @@ class CharacterOps(object):
                     continue
             char_list.append(self.character[int(text_index[idx])])
         text = ''.join(char_list)
+        if self.userNormal:
+            text = self.specialCharacter.normalText(text)
         return text
 
     def get_char_num(self):
