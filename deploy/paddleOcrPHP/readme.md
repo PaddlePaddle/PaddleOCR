@@ -1,5 +1,3 @@
-简体中文
-
 - 使用本教程前请先基于PaddleHub Serving的部署.
 
 # 基于PaddleHub Serving的PHP调用
