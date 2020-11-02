@@ -4,8 +4,6 @@ English | [简体中文](README_ch.md)
 PaddleOCR aims to create rich, leading, and practical OCR tools that help users train better models and apply them into practice.
 
 **Recent updates**
-- 2020.11.2 [FAQ](./doc/doc_ch/FAQ.md) 5 new high-frequency questions have been added, a total of 99 frequently questions and answers, and it is planned to be updated every Monday in the future.
-        Welcome everyone to continue to pay attention.
 - 2020.9.22 Update the PP-OCR technical article, https://arxiv.org/abs/2009.09941
 - 2020.9.19 Update the ultra lightweight compressed ppocr_mobile_slim series models, the overall model size is 3.5M (see [PP-OCR Pipeline](#PP-OCR-Pipeline)), suitable for mobile deployment. [Model Downloads](#Supported-Chinese-model-list)
 - 2020.9.17 Update the ultra lightweight ppocr_mobile series and general ppocr_server series Chinese and English ocr models, which are comparable to commercial effects. [Model Downloads](#Supported-Chinese-model-list)
