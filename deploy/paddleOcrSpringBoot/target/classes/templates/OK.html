@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>上传成功</title>
+</head>
+<body>
+<div th:if="${fileName}">
+    <!--<h2 th:text="|${fileName} 上传成功，存储路径为 :${path}|"> </h2>-->
+    <img th:src=${fileName}>
+    <table class="table table-striped table-sm">
+        <thead>
+        <tr>
+            <th>内容</th>
+            <th>概率</th>
+            <th>坐标</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="z, iterStat :${z}">
+            <td th:text=${z.text}></td>
+            <td th:text="${z.confidence}"></td>
+            <td th:text="${z.text_region}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
