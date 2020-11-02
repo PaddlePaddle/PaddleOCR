@@ -4,6 +4,7 @@
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力使用者训练出更好的模型，并应用落地。
 
 **近期更新**
+- 2020.11.2 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，共计99个常见问题及解答，并且计划以后每周一都会更新，欢迎大家持续关注。
 - 2020.10.26 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，共计94个常见问题及解答，并且计划以后每周一都会更新，欢迎大家持续关注。
 - 2020.9.22 更新PP-OCR技术文章，https://arxiv.org/abs/2009.09941
 - 2020.9.19 更新超轻量压缩ppocr_mobile_slim系列模型，整体模型3.5M(详见[PP-OCR Pipeline](#PP-OCR))，适合在移动端部署使用。[模型下载](#模型下载)
@@ -98,8 +99,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - [效果展示](#效果展示)
 - FAQ
     - [【精选】OCR精选10个问题](./doc/doc_ch/FAQ.md)
-    - [【理论篇】OCR通用23个问题](./doc/doc_ch/FAQ.md)
-    - [【实战篇】PaddleOCR实战61个问题](./doc/doc_ch/FAQ.md)
+    - [【理论篇】OCR通用24个问题](./doc/doc_ch/FAQ.md)
+    - [【实战篇】PaddleOCR实战65个问题](./doc/doc_ch/FAQ.md)
 - [技术交流群](#欢迎加入PaddleOCR技术交流群)
 - [参考文献](./doc/doc_ch/reference.md)
 - [许可证书](#许可证书)
