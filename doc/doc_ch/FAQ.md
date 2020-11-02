@@ -30,19 +30,19 @@
 
 **A**：1. 使用hubserving出现内存泄漏，该问题为已知问题，预计在paddle2.0正式版中解决。相关讨论见[issue](https://github.com/PaddlePaddle/PaddleHub/issues/682)
 
-**A**：2. C++ 预测出现内存泄漏，该问题已经在paddle2.0rc版本中解决，建议安装paddle2.0rc版本，并更新PaddleOCR代码到最新。
+2. C++ 预测出现内存泄漏，该问题已经在paddle2.0rc版本中解决，建议安装paddle2.0rc版本，并更新PaddleOCR代码到最新。
 
 #### Q3.3.18:  cpp_infer 在Windows下使用vs2015编译不通过
 
 **A**：1. windows上建议使用VS2019工具编译，具体编译细节参考[链接](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/cpp_infer/docs/windows_vs2019_build.md)
 
-**A**：2. 在release模式下而不是debug模式下编译，参考[issue](https://github.com/PaddlePaddle/PaddleOCR/issues/1023)
+2. 在release模式下而不是debug模式下编译，参考[issue](https://github.com/PaddlePaddle/PaddleOCR/issues/1023)
 
 #### Q3.3.19:  No module named 'tools.infer'
 
 **A**：1. 确保在PaddleOCR/目录下执行的指令，执行'export PYTHONPATH=.'
 
-**A**：2. 拉取github上最新代码，这个问题在10月底已修复。
+2. 拉取github上最新代码，这个问题在10月底已修复。
 
 #### Q3.3.20:  训练模型和测试模型的检测结果差距较大
 
