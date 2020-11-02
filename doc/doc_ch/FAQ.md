@@ -46,11 +46,11 @@
 
 #### Q3.3.20:  训练模型和测试模型的检测结果差距较大
 
-**A**：1. 检查两个模型使用的后处理参数是否是一样的，训练的后处理参数在配置文件中的PostProcess部分，测试模型的后处理参数在tools/infer/utility.py中，最新代码中两个后处理参数已保持一致。
+**A**：1. 检查两个模型使用的后处理参数是否是一样的，训练的后处理参数在配置文件中的[PostProcess](https://github.com/PaddlePaddle/PaddleOCR/blob/e9d533fc1fdf7bbce79947dde54b05011bb1e135/configs/det/det_mv3_db_v1.1.yml#L54)部分，测试模型的后处理参数在[tools/infer/utility.py](https://github.com/PaddlePaddle/PaddleOCR/blob/e9d533fc1fdf7bbce79947dde54b05011bb1e135/tools/infer/utility.py#L47)中，最新代码中两个后处理参数已保持一致。
 
 #### Q2.2.5： 文本行较紧密的情况下如何准确检测？
 
-**A**：使用基于分割的方法，如DB，检测密集文本行时，最好收集一批数据进行训练，并且在训练时，并将生成二值图像的shrink_ratio参数调小一些；
+**A**：使用基于分割的方法，如DB，检测密集文本行时，最好收集一批数据进行训练，并且在训练时，并将生成二值图像的[shrink_ratio](https://github.com/PaddlePaddle/PaddleOCR/blob/e9d533fc1fdf7bbce79947dde54b05011bb1e135/ppocr/data/det/make_shrink_map.py#L46)参数调小一些；
 
 
 <a name="OCR精选10个问题"></a>
