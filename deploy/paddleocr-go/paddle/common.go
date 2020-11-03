@@ -1,9 +1,8 @@
 package paddle
 
 // #cgo CFLAGS: -I../paddle_c/paddle/include
-// #cgo LDFLAGS: -L${SRCDIR}/../paddle_c/paddle/lib -Wl,-rpath=\$ORIGIN/paddle_c/paddle/lib -lpaddle_fluid_c
+// #cgo LDFLAGS: -lpaddle_fluid_c
 // #include <stdbool.h>
-// #include "paddle_c_api.h"
 import "C"
 import "fmt"
 

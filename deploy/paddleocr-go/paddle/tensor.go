@@ -1,7 +1,5 @@
 package paddle
 
-// #cgo CFLAGS: -I../paddle_c/paddle/include
-// #cgo LDFLAGS: -L${SRCDIR}/../paddle_c/paddle/lib -Wl,-rpath,$ORIGIN/paddle_c/paddle/lib -lpaddle_fluid_c
 // #include <stdbool.h>
 // #include <stdlib.h>
 // #include <string.h>

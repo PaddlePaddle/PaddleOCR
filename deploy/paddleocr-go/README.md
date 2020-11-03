@@ -150,12 +150,13 @@ make install
 ```shell
 # 创建c++推理库文件夹
 mkdir -p ~/paddle_inference
-export PADDLE_ROOT=`$HOME/paddle_inference`
+export PADDLE_INFER=`$HOME/paddle_inference`
 
 # 执行编译
+export PADDLE_ROOT=`pwd`
 mkdir build
 cd build
-cmake -DFLUID_INFERENCE_INSTALL_DIR=$PADDLE_ROOT \
+cmake -DFLUID_INFERENCE_INSTALL_DIR=$PADDLE_INFER \
       -DWITH_CONTRIB=OFF \
       -DCMAKE_BUILD_TYPE=Release \
       -DWITH_PYTHON=OFF \
@@ -178,17 +179,23 @@ build/fluid_inference_c_install_dir
 └── version.txt
 ```
 
-其中`paddle`就是Paddle库的C语言预测API，`version.txt`中包含当前预测库的版本信息。
+其中`paddle`就是Paddle库的C语言预测API，`version.txt`中包含当前预测库的版本信息。最后，将C推理库的动态库和静态库配置到环境变量。
 
+```shell
+echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PADDLE_ROOT/build/fluid_inference_c_install_dir/paddle/lib" >> ~/.bashrc
+echo "export LIBRARY_PATH=$LIBRARY_PATH:$PADDLE_ROOT/build/fluid_inference_c_install_dir/paddle/lib" >> ~/.bashrc
+
+souce ~/.bashrc
+```
 
 ## 2. paddleocr-go预测库
 
 ### 2.1 安装paddleocr-go
 
-直接执行安装命令
+确保C推理库已配置到环境变量，然后直接执行安装命令
 
 ```shell
-go get github.com/PaddlePaddle/PaddleOCR/deploy/paddleocr-go
+go get -u github.com/PaddlePaddle/PaddleOCR/deploy/paddleocr-go
 ```
 
 ### 2.2 相关使用API
@@ -265,15 +272,10 @@ git clone https://github.com/PaddlePaddle/PaddleOCR
 cd PaddleOCR/deploy/paddleocr-go
 ```
 
-- 准备paddle_c环境
-
-```shell
-cp -r ~/paddle/build/fluid_inference_c_install_dir/* paddle_c/
-```
-
 - 编译demo
 
 ```shell
+# 确保C动态库路径已在环境变量中
 go build demo.go
 ```
 
