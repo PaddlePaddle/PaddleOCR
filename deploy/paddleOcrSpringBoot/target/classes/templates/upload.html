@@ -1,13 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>文件上传页面</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OCR文件上传页面</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <body>
-<form action="/upload" method="POST" enctype="multipart/form-data">
-    <input type="file" name="file" ><br>
-    <input type="submit" value="上传">
-</form>
+<div class="container">
+    <form action="/upload" method="POST" enctype="multipart/form-data" class="form-signin">
+        <input type="file" id="inputfile" name="file" ><br>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">上传</button>
+    </form>
+</div> <!-- /container -->
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </body>
 </html>
+<style>
+    body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #eee;
+    }
+
+    .form-signin {
+        max-width: 330px;
+        padding: 15px;
+        margin: 0 auto;
+    }
+</style>

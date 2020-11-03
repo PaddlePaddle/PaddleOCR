@@ -1,29 +1,41 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>上传成功</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OCR文件识别结果</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <body>
-<div th:if="${fileName}">
-    <!--<h2 th:text="|${fileName} 上传成功，存储路径为 :${path}|"> </h2>-->
-    <img th:src=${fileName}>
-    <table class="table table-striped table-sm">
-        <thead>
-        <tr>
-            <th>内容</th>
-            <th>概率</th>
-            <th>坐标</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="z, iterStat :${z}">
-            <td th:text=${z.text}></td>
-            <td th:text="${z.confidence}"></td>
-            <td th:text="${z.text_region}"></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+
+<div class="container">
+        <div class="carousel slide">
+            <div class="jumbotron">
+                <img class="featurette-image img-responsive center-block" alt="500x500" th:src=${fileName}  data-holder-rendered="true">
+            </div>
+        </div><!--/.col-xs-12.col-sm-9-->
+        <div class="container marketing" id="sidebar">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>内容</th>
+                        <th>概率</th>
+                        <th>坐标</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="z, iterStat :${z}">
+                        <td th:text=${z.text}></td>
+                        <td th:text="${z.confidence}"></td>
+                        <td th:text="${z.text_region}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div><!--/.sidebar-offcanvas-->
+</div><!--/.container-->
 </body>
 </html>

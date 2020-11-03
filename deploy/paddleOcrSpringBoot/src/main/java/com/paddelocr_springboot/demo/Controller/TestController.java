@@ -50,12 +50,12 @@ class TestController {
             //设置请求头格式
             //Set the request header format
             headers.setContentType(MediaType.APPLICATION_JSON);
-            //读入静态资源文件
-            //Read the static resource file
-            InputStream imagePath = new FileInputStream(destFile);
             //构建请求参数
             //Build request parameters
             MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+            //读入静态资源文件
+            //Read the static resource file
+            InputStream imagePath = new FileInputStream(destFile);
             //添加请求参数images，并将Base64编码的图片传入
             //Add the request parameter Images and pass in the Base64 encoded image
             map.add("images", ImageToBase64(imagePath));
