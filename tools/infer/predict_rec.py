@@ -59,8 +59,8 @@ class TextRecognizer(object):
             self.loss_type = 'srn'
         # avoid not config special character
         argsMap = vars(args)
-        if 'special_character_dict_path' in argsMap :
-            char_ops_params['special_char_dict_path'] = args.special_character_dict_path
+        if 'sepcial_char_dict_path' in argsMap :
+            char_ops_params['special_character_dict_path'] = args.sepcial_char_dict_path
         elif 'use_normal_char' in argsMap:
             char_ops_params['use_normal_char'] = args.use_normal_char
         self.char_ops = CharacterOps(char_ops_params)
