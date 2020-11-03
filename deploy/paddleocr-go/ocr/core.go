@@ -10,13 +10,13 @@ import (
 	"log"
 	"math"
 	"net/http"
-	"paddleocr-go/paddle"
 	"path"
 	"path/filepath"
 	"sort"
 	"strings"
 
 	"github.com/LKKlein/gocv"
+	"github.com/LKKlein/PaddleOCR/deploy/paddleocr-go/paddle"
 )
 
 type PaddleModel struct {
