@@ -46,6 +46,7 @@ class TextRecognizer(object):
             "character_type": args.rec_char_type,
             "character_dict_path": args.rec_char_dict_path,
             "use_space_char": args.use_space_char,
+            "special_character_dict_path": args.special_char_dict_path,
             "use_normal_char": args.use_normal_char,
             "max_text_length": args.max_text_length,
         }

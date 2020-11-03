@@ -72,6 +72,11 @@ def parse_args():
         default="./ppocr/utils/ppocr_keys_v1.txt")
     parser.add_argument("--use_space_char", type=str2bool, default=True)
     parser.add_argument(
+        "--sepcial_char_dict_path",
+        type=str,
+        default="./ppocr/utils/special_character_dict.txt")
+    parser.add_argument("--use_normal_char", type=str2bool, default=True)
+    parser.add_argument(
         "--vis_font_path", type=str, default="./doc/simfang.ttf")
 
     # params for text classifier
