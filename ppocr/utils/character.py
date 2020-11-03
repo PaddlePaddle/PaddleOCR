@@ -110,6 +110,7 @@ class CharacterOps(object):
                     continue
             char_list.append(self.character[int(text_index[idx])])
         text = ''.join(char_list)
+        # convert to normal character
         if self.userNormal:
             text = self.specialCharacter.normalText(text)
         return text
