@@ -62,7 +62,7 @@ pip3.5 install func-timeout
 <a name="转换模型"></a>
 ## 2. 转换模型
 
-Paddle Serving无法直接用训练模型（checkpoints 模型）或推理模型（inference 模型）进行部署。Serving模型由两个文件夹构成，用于存放客户端和服务端的配置。本节介绍如何将推理模型转换为Paddle Serving可部署的模型。
+Paddle Serving无法直接用训练模型（checkpoints 模型）或推理模型（inference 模型）进行部署。Serving模型由两个文件夹构成，用于存放客户端和服务端的配置。本节介绍如何将推理模型转换为Paddle Serving可部署的模型。
 
 **以文本检测模型`ch_ppocr_mobile_v1.1_det_infer`为例，文本识别模型和方向分类器的转换同理。**
 
