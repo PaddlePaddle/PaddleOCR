@@ -64,7 +64,7 @@ class CharacterOps(object):
             self.dict[char] = i
         self.character = dict_character
         # special character initial
-        self.specialCharacter = SpecialCharacter()
+        self.specialCharacter = SpecialCharacter(config)
         self.userNormal = False
         if "use_normal_char" in config:
             self.userNormal = config["use_normal_char"]
