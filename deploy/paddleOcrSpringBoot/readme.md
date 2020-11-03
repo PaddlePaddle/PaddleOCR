@@ -12,7 +12,7 @@ deploy/paddleOcrSpringBoot/
             └─  java\com\paddelocr_springboot\demo
                                                └─ DemoApplication.java  SpringBoot启动代码
                                                └─ Controller    
-                                                   └─ OCR.java    控制器代码
+                                                   └─ TestController.java    控制器代码
        └─  test     测试代码
 ```
 
