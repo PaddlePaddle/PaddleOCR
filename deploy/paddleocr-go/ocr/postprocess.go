@@ -4,10 +4,10 @@ import (
 	"image"
 	"image/color"
 	"math"
-	"paddleocr-go/paddle"
 	"sort"
 
 	"github.com/LKKlein/gocv"
+	"github.com/LKKlein/PaddleOCR/deploy/paddleocr-go/paddle"
 	clipper "github.com/ctessum/go.clipper"
 )
 
