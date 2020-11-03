@@ -179,12 +179,11 @@ build/fluid_inference_c_install_dir
 └── version.txt
 ```
 
-其中`paddle`就是Paddle库的C语言预测API，`version.txt`中包含当前预测库的版本信息。最后，将C推理库及头文件配置到环境变量。
+其中`paddle`就是Paddle库的C语言预测API，`version.txt`中包含当前预测库的版本信息。最后，将C推理库配置到环境变量。
 
 ```shell
 echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PADDLE_ROOT/build/fluid_inference_c_install_dir/paddle/lib" >> ~/.bashrc
 echo "export LIBRARY_PATH=$LIBRARY_PATH:$PADDLE_ROOT/build/fluid_inference_c_install_dir/paddle/lib" >> ~/.bashrc
-echo "export C_INCLUDE_PATH="$C_INCLUDE_PATH:$PADDLE_ROOT/build/fluid_inference_c_install_dir/paddle/include"" >> ~/.bashrc
 
 souce ~/.bashrc
 ```

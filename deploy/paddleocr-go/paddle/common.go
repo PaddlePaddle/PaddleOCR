@@ -1,6 +1,6 @@
 package paddle
 
-// #cgo CFLAGS: -I../paddle_c/paddle/include
+// #cgo CFLAGS: -I../paddle_c/include
 // #cgo LDFLAGS: -lpaddle_fluid_c
 // #include <stdbool.h>
 import "C"
