@@ -326,6 +326,7 @@ def main(args):
         print(e)
         logger.info(
             "ERROR!!!! \n"
+            "Please read the FAQ：https://github.com/PaddlePaddle/PaddleOCR#faq \n"
             "If your model has tps module:  "
             "TPS does not support variable shape.\n"
             "Please set --rec_image_shape='3,32,100' and --rec_char_type='en' ")
