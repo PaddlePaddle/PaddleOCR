@@ -39,6 +39,7 @@ set_paddle_flags(
 )
 
 import program
+import paddle
 from paddle import fluid
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
@@ -76,7 +77,7 @@ def main():
         # The decay coefficient of moving average, default is 0.9
         'moving_rate': 0.9,
     }
-
+    paddle.enable_static()
     startup_prog, eval_program, place, config, alg_type = program.preprocess()
 
     feeded_var_names, target_vars, fetches_var_name = program.build_export(
