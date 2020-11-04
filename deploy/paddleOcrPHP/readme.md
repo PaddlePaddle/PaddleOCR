@@ -4,8 +4,9 @@
 
 PHP服务部署目录下包括全部SpringBoot代码。目录结构如下：
 ```
-deploy/paddleOcrPHP/
+deploy/paddleOCRPHP/
   └─  index.php     代码文件
+  └─  1.png     测试用例图片
 
 ```
 

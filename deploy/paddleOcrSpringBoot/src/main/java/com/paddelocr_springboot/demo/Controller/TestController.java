@@ -121,7 +121,6 @@ class TestController {
             e.printStackTrace();
             return "上传失败," + e.getMessage();
         }
-
         return "OK";
     }
     private String ImageToBase64(InputStream imgPath) {
