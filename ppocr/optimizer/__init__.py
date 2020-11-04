@@ -50,6 +50,8 @@ def build_optimizer(config, epochs, step_each_epoch, parameters):
 
     # step3 build optimizer
     optim_name = config.pop('name')
+    # Regularization is invalid. The bug will be fixed in paddle-rc. The param is 
+    # weight_decay.
     optim = getattr(optimizer, optim_name)(learning_rate=lr,
                                            regularization=reg,
                                            **config)

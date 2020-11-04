@@ -24,8 +24,8 @@ __all__ = ['build_post_process']
 
 def build_post_process(config, global_config=None):
     from .db_postprocess import DBPostProcess
-
     from .rec_postprocess import CTCLabelDecode, AttnLabelDecode
+    
     support_dict = ['DBPostProcess', 'CTCLabelDecode', 'AttnLabelDecode']
 
     config = copy.deepcopy(config)

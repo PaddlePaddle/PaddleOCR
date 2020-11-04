@@ -28,7 +28,10 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 from ppocr.utils.stats import TrainingStats
 from ppocr.utils.save_load import save_model
-
+from ppocr.utils.utility import print_dict
+from ppocr.utils.logging import get_logger
+from ppocr.data import build_dataloader
+import numpy as np
 
 class ArgsParser(ArgumentParser):
     def __init__(self):
@@ -136,18 +139,18 @@ def check_gpu(use_gpu):
 
 
 def train(config,
+          train_dataloader,
+          valid_dataloader,
+          device,
           model,
           loss_class,
           optimizer,
           lr_scheduler,
-          train_dataloader,
-          valid_dataloader,
           post_process_class,
           eval_class,
           pre_best_model_dict,
           logger,
           vdl_writer=None):
-    global_step = 0
 
     cal_metric_during_train = config['Global'].get('cal_metric_during_train',
                                                    False)
@@ -156,6 +159,7 @@ def train(config,
     print_batch_step = config['Global']['print_batch_step']
     eval_batch_step = config['Global']['eval_batch_step']
 
+    global_step = 0
     start_eval_step = 0
     if type(eval_batch_step) == list and len(eval_batch_step) >= 2:
         start_eval_step = eval_batch_step[0]
@@ -179,14 +183,15 @@ def train(config,
         start_epoch = 0
 
     for epoch in range(start_epoch, epoch_num):
+        if epoch > 0:
+            train_loader = build_dataloader(config, 'Train', device)
+            
         for idx, batch in enumerate(train_dataloader):
             if idx >= len(train_dataloader):
                 break
-            if not isinstance(lr_scheduler, float):
-                lr_scheduler.step()
             lr = optimizer.get_lr()
             t1 = time.time()
-            batch = [paddle.to_variable(x) for x in batch]
+            batch = [paddle.to_tensor(x) for x in batch]
             images = batch[0]
             preds = model(images)
             loss = loss_class(preds, batch)
@@ -199,6 +204,8 @@ def train(config,
                 avg_loss.backward()
             optimizer.step()
             optimizer.clear_grad()
+            if not isinstance(lr_scheduler, float):
+                lr_scheduler.step()
 
             # logger and visualdl
             stats = {k: v.numpy().mean() for k, v in loss.items()}
@@ -228,8 +235,8 @@ def train(config,
             # eval
             if global_step > start_eval_step and \
                     (global_step - start_eval_step) % eval_batch_step == 0 and dist.get_rank() == 0:
-                cur_metirc = eval(model, valid_dataloader, post_process_class,
-                                  eval_class)
+                cur_metirc = eval(model, valid_dataloader,
+                    post_process_class, eval_class, logger, print_batch_step)
                 cur_metirc_str = 'cur metirc, {}'.format(', '.join(
                     ['{}: {}'.format(k, v) for k, v in cur_metirc.items()]))
                 logger.info(cur_metirc_str)
@@ -291,12 +298,14 @@ def train(config,
     return
 
 
-def eval(model, valid_dataloader, post_process_class, eval_class):
+def eval(model, valid_dataloader, 
+    post_process_class, eval_class, 
+    logger, print_batch_step):
     model.eval()
     with paddle.no_grad():
         total_frame = 0.0
         total_time = 0.0
-        pbar = tqdm(total=len(valid_dataloader), desc='eval model: ')
+#         pbar = tqdm(total=len(valid_dataloader), desc='eval model:')
         for idx, batch in enumerate(valid_dataloader):
             if idx >= len(valid_dataloader):
                 break
@@ -310,11 +319,14 @@ def eval(model, valid_dataloader, post_process_class, eval_class):
             total_time += time.time() - start
             # Evaluate the results of the current batch
             eval_class(post_result, batch)
-            pbar.update(1)
+#             pbar.update(1)
             total_frame += len(images)
+            if idx % print_batch_step == 0:
+                logger.info('tackling images for eval: {}/{}'.format(
+                    idx, len(valid_dataloader)))
         # Get final metirc，eg. acc or hmean
         metirc = eval_class.get_metric()
-        pbar.close()
+#         pbar.close()
     model.train()
     metirc['fps'] = total_frame / total_time
     return metirc
@@ -336,4 +348,25 @@ def preprocess():
 
     device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'
     device = paddle.set_device(device)
-    return device, config
+    
+    config['Global']['distributed'] = dist.get_world_size() != 1
+    paddle.disable_static(device)
+
+    # save_config
+    save_model_dir = config['Global']['save_model_dir']
+    os.makedirs(save_model_dir, exist_ok=True)
+    with open(os.path.join(save_model_dir, 'config.yml'), 'w') as f:
+        yaml.dump(dict(config), f, default_flow_style=False, sort_keys=False)
+    
+    logger = get_logger(log_file='{}/train.log'.format(save_model_dir))
+    if config['Global']['use_visualdl']:
+        from visualdl import LogWriter
+        vdl_writer_path = '{}/vdl/'.format(save_model_dir)
+        os.makedirs(vdl_writer_path, exist_ok=True)
+        vdl_writer = LogWriter(logdir=vdl_writer_path)
+    else:
+        vdl_writer = None
+    print_dict(config, logger)
+    logger.info('train with paddle {} and device {}'.format(paddle.__version__,
+                                                            device))
+    return config, device, logger, vdl_writer

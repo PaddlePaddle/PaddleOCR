@@ -21,104 +21,69 @@ import os
 import sys
 import numpy as np
 import paddle
+import signal
+import random
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 
 import copy
-from paddle.io import DataLoader, DistributedBatchSampler, BatchSampler
+from paddle.io import Dataset, DataLoader, BatchSampler, DistributedBatchSampler
 import paddle.distributed as dist
 
 from ppocr.data.imaug import transform, create_operators
+from ppocr.data.simple_dataset import SimpleDataSet
+from ppocr.data.lmdb_dataset import LMDBDateSet
 
 __all__ = ['build_dataloader', 'transform', 'create_operators']
 
+def term_mp(sig_num, frame):
+    """ kill all child processes
+    """
+    pid = os.getpid()
+    pgid = os.getpgid(os.getpid())
+    print("main proc {} exit, kill process group " "{}".format(pid, pgid))
+    os.killpg(pgid, signal.SIGKILL)
 
-def build_dataset(config, global_config):
-    from ppocr.data.dataset import SimpleDataSet, LMDBDateSet
+signal.signal(signal.SIGINT, term_mp)
+signal.signal(signal.SIGTERM, term_mp)
+
+def build_dataloader(config, mode, device):
+    config = copy.deepcopy(config)
+    
     support_dict = ['SimpleDataSet', 'LMDBDateSet']
-
-    module_name = config.pop('name')
+    module_name = config[mode]['dataset']['name']
     assert module_name in support_dict, Exception(
         'DataSet only support {}'.format(support_dict))
-
-    dataset = eval(module_name)(config, global_config)
-    return dataset
-
-
-def build_dataloader(config, device, distributed=False, global_config=None):
-    from ppocr.data.dataset import BatchBalancedDataLoader
-
-    config = copy.deepcopy(config)
-    dataset_config = config['dataset']
-
-    _dataset_list = []
-    file_list = dataset_config.pop('file_list')
-    if len(file_list) == 1:
-        ratio_list = [1.0]
+    assert mode in ['Train', 'Eval', 'Test'], "Mode should be Train, Eval or Test."
+    
+    dataset = eval(module_name)(config, mode)
+    loader_config = config[mode]['loader']
+    batch_size = loader_config['batch_size_per_card']
+    drop_last = loader_config['drop_last']
+    num_workers = loader_config['num_workers']
+    
+    if mode == "Train":
+        #Distribute data to multiple cards
+        batch_sampler = DistributedBatchSampler(
+            dataset=dataset,
+            batch_size=batch_size,
+            shuffle=False,
+            drop_last=drop_last)
     else:
-        ratio_list = dataset_config.pop('ratio_list')
-    for file in file_list:
-        dataset_config['file_list'] = file
-        _dataset = build_dataset(dataset_config, global_config)
-        _dataset_list.append(_dataset)
-    data_loader = BatchBalancedDataLoader(_dataset_list, ratio_list,
-                                          distributed, device, config['loader'])
-    return data_loader, _dataset.info_dict
-
-
-def test_loader():
-    import time
-    from tools.program import load_config, ArgsParser
-
-    FLAGS = ArgsParser().parse_args()
-    config = load_config(FLAGS.config)
-
-    place = paddle.CPUPlace()
-    paddle.disable_static(place)
-    import time
-
-    data_loader, _ = build_dataloader(
-        config['TRAIN'], place, global_config=config['Global'])
-    start = time.time()
-    print(len(data_loader))
-    for epoch in range(1):
-        print('epoch {} ****************'.format(epoch))
-        for i, batch in enumerate(data_loader):
-            if i > len(data_loader):
-                break
-            t = time.time() - start
-            start = time.time()
-            print('{}, batch : {} ,time {}'.format(i, len(batch[0]), t))
-
-            continue
-            import matplotlib.pyplot as plt
-
-            from matplotlib import pyplot as plt
-            import cv2
-            fig = plt.figure()
-            # # cv2.imwrite('img.jpg',batch[0].numpy()[0].transpose((1,2,0)))
-            # # cv2.imwrite('bmap.jpg',batch[1].numpy()[0])
-            # # cv2.imwrite('bmask.jpg',batch[2].numpy()[0])
-            # # cv2.imwrite('smap.jpg',batch[3].numpy()[0])
-            # # cv2.imwrite('smask.jpg',batch[4].numpy()[0])
-            plt.title('img')
-            plt.imshow(batch[0].numpy()[0].transpose((1, 2, 0)))
-            # plt.figure()
-            # plt.title('bmap')
-            # plt.imshow(batch[1].numpy()[0],cmap='Greys')
-            # plt.figure()
-            # plt.title('bmask')
-            # plt.imshow(batch[2].numpy()[0],cmap='Greys')
-            # plt.figure()
-            # plt.title('smap')
-            # plt.imshow(batch[3].numpy()[0],cmap='Greys')
-            # plt.figure()
-            # plt.title('smask')
-            # plt.imshow(batch[4].numpy()[0],cmap='Greys')
-            # plt.show()
-            # break
-
-
-if __name__ == '__main__':
-    test_loader()
+        #Distribute data to single card
+        batch_sampler = BatchSampler(
+            dataset=dataset,
+            batch_size=batch_size,
+            shuffle=False,
+            drop_last=drop_last)        
+    
+    data_loader = DataLoader(
+        dataset=dataset,
+        batch_sampler=batch_sampler,
+        places=device,
+        num_workers=num_workers,
+        return_list=True)
+    
+    return data_loader
+    #return data_loader, _dataset.info_dict

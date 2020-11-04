@@ -40,8 +40,8 @@ class Momentum(object):
         opt = optim.Momentum(
             learning_rate=self.learning_rate,
             momentum=self.momentum,
-            parameters=self.weight_decay,
-            weight_decay=parameters)
+            parameters=parameters,
+            weight_decay=self.weight_decay)
         return opt
 
 

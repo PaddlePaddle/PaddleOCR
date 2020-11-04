@@ -99,7 +99,7 @@ class ToCHWImage(object):
         return data
 
 
-class keepKeys(object):
+class KeepKeys(object):
     def __init__(self, keep_keys, **kwargs):
         self.keep_keys = keep_keys
 

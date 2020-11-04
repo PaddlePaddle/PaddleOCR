@@ -130,7 +130,6 @@ class MobileNetV3(nn.Layer):
                 if_act=True,
                 act='hard_swish',
                 name='conv_last'))
-
         self.stages.append(nn.Sequential(*block_list))
         self.out_channels.append(make_divisible(scale * cls_ch_squeeze))
         for i, stage in enumerate(self.stages):

@@ -22,9 +22,9 @@ import paddle.nn.functional as F
 from paddle import ParamAttr
 
 
-class FPN(nn.Layer):
+class DBFPN(nn.Layer):
     def __init__(self, in_channels, out_channels, **kwargs):
-        super(FPN, self).__init__()
+        super(DBFPN, self).__init__()
         self.out_channels = out_channels
         weight_attr = paddle.nn.initializer.MSRA(uniform=False)
 

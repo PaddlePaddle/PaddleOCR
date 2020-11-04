@@ -33,10 +33,9 @@ def get_para_bias_attr(l2_decay, k, name):
         regularizer=regularizer, initializer=initializer, name=name + "_b_attr")
     return [weight_attr, bias_attr]
 
-
-class CTC(nn.Layer):
-    def __init__(self, in_channels, out_channels, fc_decay=1e-5, **kwargs):
-        super(CTC, self).__init__()
+class CTCHead(nn.Layer):
+    def __init__(self, in_channels, out_channels, fc_decay=0.0004, **kwargs):
+        super(CTCHead, self).__init__()
         weight_attr, bias_attr = get_para_bias_attr(
             l2_decay=fc_decay, k=in_channels, name='ctc_fc')
         self.fc = nn.Linear(

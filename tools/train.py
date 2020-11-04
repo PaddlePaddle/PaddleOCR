@@ -31,7 +31,8 @@ paddle.manual_seed(2)
 
 from ppocr.utils.logging import get_logger
 from ppocr.data import build_dataloader
-from ppocr.modeling import build_model, build_loss
+from ppocr.modeling.architectures import build_model
+from ppocr.losses import build_loss
 from ppocr.optimizer import build_optimizer
 from ppocr.postprocess import build_post_process
 from ppocr.metrics import build_metric
@@ -48,95 +49,76 @@ def main(config, device, logger, vdl_writer):
         dist.init_parallel_env()
 
     global_config = config['Global']
+    
     # build dataloader
-    train_loader, train_info_dict = build_dataloader(
-        config['TRAIN'], device, global_config['distributed'], global_config)
-    if config['EVAL']:
-        eval_loader, _ = build_dataloader(config['EVAL'], device, False,
-                                          global_config)
+    train_dataloader = build_dataloader(config, 'Train', device)
+    if config['Eval']:
+        valid_dataloader = build_dataloader(config, 'Eval', device)
     else:
-        eval_loader = None
+        valid_dataloader = None
+
     # build post process
-    post_process_class = build_post_process(config['PostProcess'],
-                                            global_config)
+    post_process_class = build_post_process(
+        config['PostProcess'], global_config)
+    
     # build model
-    # for rec algorithm
+    #for rec algorithm
     if hasattr(post_process_class, 'character'):
-        config['Architecture']["Head"]['out_channels'] = len(
-            getattr(post_process_class, 'character'))
+        char_num = len(getattr(post_process_class, 'character'))
+        config['Architecture']["Head"]['out_channels'] = char_num
     model = build_model(config['Architecture'])
     if config['Global']['distributed']:
         model = paddle.DataParallel(model)
 
-    # build optim
-    optimizer, lr_scheduler = build_optimizer(
-        config['Optimizer'],
-        epochs=config['Global']['epoch_num'],
-        step_each_epoch=len(train_loader),
-        parameters=model.parameters())
-
-    best_model_dict = init_model(config, model, logger, optimizer)
-
     # build loss
     loss_class = build_loss(config['Loss'])
+    
+    # build optim
+    optimizer, lr_scheduler = build_optimizer(config['Optimizer'],
+        epochs=config['Global']['epoch_num'],
+        step_each_epoch=len(train_dataloader),
+        parameters=model.parameters())
+
     # build metric
     eval_class = build_metric(config['Metric'])
+    
+    # load pretrain model
+    pre_best_model_dict = init_model(config, model, logger, optimizer)
 
     # start train
-    program.train(config, model, loss_class, optimizer, lr_scheduler,
-                  train_loader, eval_loader, post_process_class, eval_class,
-                  best_model_dict, logger, vdl_writer)
+    program.train(config,
+        train_dataloader,
+        valid_dataloader,
+        device,
+        model,
+        loss_class,
+        optimizer,
+        lr_scheduler,
+        post_process_class,
+        eval_class,
+        pre_best_model_dict,
+        logger,
+        vdl_writer)
 
 
-def test_reader(config, place, logger, global_config):
-    train_loader, _ = build_dataloader(
-        config['TRAIN'], place, global_config=global_config)
+def test_reader(config, device, logger):
+    loader = build_dataloader(config, 'Train', device)
+#     loader = build_dataloader(config, 'Eval', device)
     import time
     starttime = time.time()
     count = 0
     try:
-        for data in train_loader:
+        for data in loader():
             count += 1
             if count % 1 == 0:
                 batch_time = time.time() - starttime
                 starttime = time.time()
-                logger.info("reader: {}, {}, {}".format(
-                    count, len(data[0]), batch_time))
+                logger.info("reader: {}, {}, {}".format(count, len(data), batch_time))
     except Exception as e:
-        import traceback
-        traceback.print_exc()
         logger.info(e)
     logger.info("finish reader: {}, Success!".format(count))
 
-
-def dis_main():
-    device, config = program.preprocess()
-    config['Global']['distributed'] = dist.get_world_size() != 1
-    paddle.disable_static(device)
-
-    # save_config
-    os.makedirs(config['Global']['save_model_dir'], exist_ok=True)
-    with open(
-            os.path.join(config['Global']['save_model_dir'], 'config.yml'),
-            'w') as f:
-        yaml.dump(dict(config), f, default_flow_style=False, sort_keys=False)
-
-    logger = get_logger(
-        log_file='{}/train.log'.format(config['Global']['save_model_dir']))
-    if config['Global']['use_visualdl']:
-        from visualdl import LogWriter
-        vdl_writer = LogWriter(logdir=config['Global']['save_model_dir'])
-    else:
-        vdl_writer = None
-    print_dict(config, logger)
-    logger.info('train with paddle {} and device {}'.format(paddle.__version__,
-                                                            device))
-
-    main(config, device, logger, vdl_writer)
-    # test_reader(config, device, logger, config['Global'])
-
-
 if __name__ == '__main__':
-    # main()
-    # dist.spawn(dis_main, nprocs=2, selelcted_gpus='6,7')
-    dis_main()
+    config, device, logger, vdl_writer = program.preprocess()
+    main(config, device, logger, vdl_writer)
+#     test_reader(config, device, logger)
