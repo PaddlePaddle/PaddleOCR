@@ -1,4 +1,4 @@
-module github.com/LKKlein/PaddleOCR/deploy/paddleocr-go
+module github.com/PaddlePaddle/PaddleOCR/deploy/paddleocr-go
 
 go 1.14
 
