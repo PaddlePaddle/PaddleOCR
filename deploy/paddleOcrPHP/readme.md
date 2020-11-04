@@ -1,19 +1,13 @@
-简体中文
-
 - 使用本教程前请先基于PaddleHub Serving的部署.
 
-# 基于PaddleHub Serving的Java SpringBoot调用
+# 基于PaddleHub Serving的PHP调用
 
-paddleOcrSpringBoot服务部署目录下包括全部SpringBoot代码。目录结构如下：
+PHP服务部署目录下包括全部SpringBoot代码。目录结构如下：
 ```
-deploy/paddleOcrSpringBoot/
-  └─  src     代码文件
-       └─  main     主函数代码
-            └─  java\com\paddelocr_springboot\demo
-                                               └─ DemoApplication.java  SpringBoot启动代码
-                                               └─ Controller    
-                                                   └─ TestController.java    控制器代码
-       └─  test     测试代码
+deploy/paddleOCRPHP/
+  └─  index.php     代码文件
+  └─  1.png     测试用例图片
+
 ```
 
 - Hub Serving启动后的APi端口如下：
