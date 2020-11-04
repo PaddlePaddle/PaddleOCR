@@ -9,45 +9,49 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2020.10.26）](#近期更新)
+* [近期更新（2020.11.02）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
-* [【理论篇】OCR通用23个问题](#OCR通用问题)
-  * [基础知识5题](#基础知识)
+* [【理论篇】OCR通用24个问题](#OCR通用问题)
+  * [基础知识6题](#基础知识)
   * [数据集4题](#数据集)
   * [模型训练调优6题](#模型训练调优)
   * [预测部署8题](#预测部署)
-* [【实战篇】PaddleOCR实战61个问题](#PaddleOCR实战问题)
+* [【实战篇】PaddleOCR实战65个问题](#PaddleOCR实战问题)
   * [使用咨询20题](#使用咨询)
   * [数据集10题](#数据集)
-  * [模型训练调优15题](#模型训练调优)
-  * [预测部署16题](#预测部署)
+  * [模型训练调优18题](#模型训练调优)
+  * [预测部署17题](#预测部署)
 
 
 <a name="近期更新"></a>
-## 近期更新（2020.10.26）
+## 近期更新（2020.11.02）
 
-#### Q2.1.4 印章如何识别
-**A**: 1. 使用带tps的识别网络或abcnet,2.使用极坐标变换将图片拉平之后使用crnn
+#### Q3.4.17： 预测内存泄漏问题
 
-#### Q2.1.5 多语言的字典里是混合了不同的语种，这个是有什么讲究吗？统一到一个字典里会对精度造成多大的损失？
-**A**：统一到一个字典里，会造成最后一层FC过大，增加模型大小。如果有特殊需求的话，可以把需要的几种语言合并字典训练模型，合并字典之后如果引入过多的形近字，可能会造成精度损失，字符平衡的问题可能也需要考虑一下。在PaddleOCR里暂时将语言字典分开。
+**A**：1. 使用hubserving出现内存泄漏，该问题为已知问题，预计在paddle2.0正式版中解决。相关讨论见[issue](https://github.com/PaddlePaddle/PaddleHub/issues/682)
 
-#### Q3.3.16: 如何对检测模型finetune，比如冻结前面的层或某些层使用小的学习率学习？
+2. C++ 预测出现内存泄漏，该问题已经在paddle2.0rc版本中解决，建议安装paddle2.0rc版本，并更新PaddleOCR代码到最新。
 
-**A**：如果是冻结某些层，可以将变量的stop_gradient属性设置为True，这样计算这个变量之前的所有参数都不会更新了，参考：https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/faq/train_cn.html#id4
-如果对某些层使用更小的学习率学习，静态图里还不是很方便，一个方法是在参数初始化的时候，给权重的属性设置固定的学习率，参考：https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/api/paddle/fluid/param_attr/ParamAttr_cn.html#paramattr
-实际上我们实验发现，直接加载模型去fine-tune，不设置某些层不同学习率，效果也都不错
+#### Q3.3.18:  cpp_infer 在Windows下使用vs2015编译不通过
 
-#### Q3.3.17: 使用通用中文模型作为预训练模型，更改了字典文件，出现ctc_fc_b not used的错误
-**A**：修改了字典之后，识别模型的最后一层FC纬度发生了改变，没有办法加载参数。这里是一个警告，可以忽略，正常训练即可。
+**A**：1. windows上建议使用VS2019工具编译，具体编译细节参考[链接](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/cpp_infer/docs/windows_vs2019_build.md)
 
+2. 在release模式下而不是debug模式下编译，参考[issue](https://github.com/PaddlePaddle/PaddleOCR/issues/1023)
 
-#### Q3.1.18：如何加入自己的检测算法？
-**A**：1. 在ppocr/modeling对应目录下分别选择backbone，head。如果没有可用的可以新建文件并添加
-       2. 在ppocr/data下选择对应的数据处理处理方式，如果没有可用的可以新建文件并添加
-       3. 在ppocr/losses下新建文件并编写loss
-       4. 在ppocr/postprocess下新建文件并编写后处理算法
-       5. 将上面四个步骤里新添加的类或函数参照yml文件写到配置中
+#### Q3.3.19:  No module named 'tools.infer'
+
+**A**：1. 确保在PaddleOCR/目录下执行的指令，执行'export PYTHONPATH=.'
+
+2. 拉取github上最新代码，这个问题在10月底已修复。
+
+#### Q3.3.20:  训练模型和测试模型的检测结果差距较大
+
+**A**：1. 检查两个模型使用的后处理参数是否是一样的，训练的后处理参数在配置文件中的[PostProcess](https://github.com/PaddlePaddle/PaddleOCR/blob/e9d533fc1fdf7bbce79947dde54b05011bb1e135/configs/det/det_mv3_db_v1.1.yml#L54)部分，测试模型的后处理参数在[tools/infer/utility.py](https://github.com/PaddlePaddle/PaddleOCR/blob/e9d533fc1fdf7bbce79947dde54b05011bb1e135/tools/infer/utility.py#L47)中，最新代码中两个后处理参数已保持一致。
+
+#### Q2.2.5： 文本行较紧密的情况下如何准确检测？
+
+**A**：使用基于分割的方法，如DB，检测密集文本行时，最好收集一批数据进行训练，并且在训练时，并将生成二值图像的[shrink_ratio](https://github.com/PaddlePaddle/PaddleOCR/blob/e9d533fc1fdf7bbce79947dde54b05011bb1e135/ppocr/data/det/make_shrink_map.py#L46)参数调小一些；
+
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -176,6 +180,11 @@
 #### Q2.2.4：请问一下，竖排文字识别时候，字的特征已经变了，这种情况在数据集和字典标注是新增一个类别还是多个角度的字共享一个类别？
 
 **A**：可以根据实际场景做不同的尝试，共享一个类别是可以收敛，效果也还不错。但是如果分开训练，同类样本之间一致性更好，更容易收敛，识别效果会更优。
+
+#### Q2.2.5： 文本行较紧密的情况下如何准确检测？
+
+**A**：使用基于分割的方法，如DB，检测密集文本行时，最好收集一批数据进行训练，并且在训练时，并将生成二值图像的shrink_ratio参数调小一些；
+
 
 ### 模型训练调优
 
@@ -493,6 +502,23 @@ return paddle.reader.multiprocess_reader(readers, False, queue_size=320)
 #### Q3.3.17: 使用通用中文模型作为预训练模型，更改了字典文件，出现ctc_fc_b not used的错误
 **A**：修改了字典之后，识别模型的最后一层FC纬度发生了改变，没有办法加载参数。这里是一个警告，可以忽略，正常训练即可。
 
+#### Q3.3.18:  cpp_infer 在Windows下使用vs2015编译不通过
+
+**A**：1. windows上建议使用VS2019工具编译，具体编译细节参考[链接](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/cpp_infer/docs/windows_vs2019_build.md)
+
+**A**：2. 在release模式下而不是debug模式下编译，参考[issue](https://github.com/PaddlePaddle/PaddleOCR/issues/1023)
+
+#### Q3.3.19:  No module named 'tools.infer'
+
+**A**：1. 确保在PaddleOCR/目录下执行的指令，执行'export PYTHONPATH=.'
+
+**A**：2. 拉取github上最新代码，这个问题在10月底已修复。
+
+#### Q3.3.20:  训练模型和测试模型的检测结果差距较大
+
+**A**：1. 检查两个模型使用的后处理参数是否是一样的，训练的后处理参数在配置文件中的PostProcess部分，测试模型的后处理参数在tools/infer/utility.py中，最新代码中两个后处理参数已保持一致。
+
+
 ### 预测部署
 
 #### Q3.4.1：如何pip安装opt模型转换工具？
@@ -566,3 +592,9 @@ return paddle.reader.multiprocess_reader(readers, False, queue_size=320)
 #### Q3.4.16： hub serving部署服务时如何多gpu同时利用起来，export CUDA_VISIBLE_DEVICES=0,1 方式吗？
 
 **A**：hubserving的部署方式目前暂不支持多卡预测，除非手动启动多个serving，不同端口对应不同卡。或者可以使用paddleserving进行部署，部署工具已经发布：https://github.com/PaddlePaddle/PaddleOCR/tree/develop/deploy/pdserving ，在启动服务时--gpu_id 0,1 这样就可以
+
+#### Q3.4.17： 预测内存泄漏问题
+
+**A**：1. 使用hubserving出现内存泄漏，该问题为已知问题，预计在paddle2.0正式版中解决。相关讨论见[issue](https://github.com/PaddlePaddle/PaddleHub/issues/682)
+
+**A**：2. C++ 预测出现内存泄漏，该问题已经在paddle2.0rc版本中解决，建议安装paddle2.0rc版本，并更新PaddleOCR代码到最新。
