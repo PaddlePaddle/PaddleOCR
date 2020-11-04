@@ -235,7 +235,7 @@ func readLines2StringSlice(filepath string) []string {
 		if !isPathExist(f) {
 			err := downloadFile(f, filepath)
 			if err != nil {
-				log.Println("download ppocr key file error!")
+				log.Println("download ppocr key file error! You can specify your local dict path by conf.yaml.")
 				return nil
 			}
 		}
