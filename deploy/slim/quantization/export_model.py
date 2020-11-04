@@ -77,7 +77,12 @@ def main():
         # The decay coefficient of moving average, default is 0.9
         'moving_rate': 0.9,
     }
-    paddle.enable_static()
+    # Run code with static graph mode.
+    try:
+        paddle.enable_static()
+    except:
+        pass
+
     startup_prog, eval_program, place, config, alg_type = program.preprocess()
 
     feeded_var_names, target_vars, fetches_var_name = program.build_export(

@@ -50,7 +50,12 @@ skip_list = [
 
 
 def main():
-    paddle.enable_static()
+    # Run code with static graph mode.
+    try:
+        paddle.enable_static()
+    except:
+        pass
+
     config = program.load_config(FLAGS.config)
     program.merge_config(FLAGS.opt)
     logger.info(config)
