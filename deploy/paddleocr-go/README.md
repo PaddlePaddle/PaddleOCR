@@ -261,7 +261,7 @@ func (ocr *OCRSystem) StartServer(port string)
 
 当前给定的配置文件`config/conf.yaml`中，包含了默认的OCR预测配置参数，可根据个人需要更改相关参数。
 
-比如，将`use_gpu`改为`false`，使用CPU执行预测；将`det_model_dir`, `rec_model_dir`, `cls_model_dir`都更改为自己的本地模型路径，也或者是更改字典`rec_char_dict_path`的路径。配置参数包含了预测引擎、检测模型、检测阈值、方向分类模型、识别模型及阈值的相关参数，具体参数的意义可参见[PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/whl.md#%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E)。
+比如，将`use_gpu`改为`false`，使用CPU执行预测；将`det_model_dir`, `rec_model_dir`, `cls_model_dir`都更改为自己的本地模型路径，也或者是更改字典`rec_char_dict_path`的路径，这四个路径如果配置http链接，会自动下载到本地目录。另外，配置参数包含了预测引擎、检测模型、检测阈值、方向分类模型、识别模型及阈值的相关参数，具体参数的意义可参见[PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/whl.md#%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E)。
 
 ### 3.2 编译预测demo
 

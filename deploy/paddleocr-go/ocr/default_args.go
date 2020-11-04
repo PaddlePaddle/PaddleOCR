@@ -28,7 +28,7 @@ var (
 		"rec_char_type":      "ch",
 		"rec_batch_num":      30,
 		"max_text_length":    25,
-		"rec_char_dict_path": "config/ppocr_keys_v1.txt",
+		"rec_char_dict_path": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/develop/ppocr/utils/ppocr_keys_v1.txt",
 		"use_space_char":     true,
 
 		"use_angle_cls":   false,
