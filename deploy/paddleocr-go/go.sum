@@ -1,5 +1,3 @@
-github.com/LKKlein/gocv v0.27.0 h1:JGNBMa2HY7HC0VlVHB4gdFjoc9NlyyrQvlUdBMWWSYw=
-github.com/LKKlein/gocv v0.27.0/go.mod h1:MP408EL7eakRU3vzjsozzfELSX7HDDGdMpWANV1IOHY=
 github.com/LKKlein/gocv v0.28.0 h1:1MMvs9uYf+QGPi86it2pUmN8RRoyMnPLUefKB/Jf1Q0=
 github.com/LKKlein/gocv v0.28.0/go.mod h1:MP408EL7eakRU3vzjsozzfELSX7HDDGdMpWANV1IOHY=
 github.com/ctessum/go.clipper v0.0.0-20200522184404-9c744fa3e86c h1:VXCsVlam0R2Yl7VET2GxZBPdOa7gFRexyhfWb9v9QtM=
