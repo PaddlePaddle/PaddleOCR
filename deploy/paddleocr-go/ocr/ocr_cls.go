@@ -2,6 +2,7 @@ package ocr
 
 import (
 	"log"
+	"os"
 	"time"
 
 	"github.com/LKKlein/gocv"
@@ -34,7 +35,8 @@ func NewTextClassifier(modelDir string, args map[string]interface{}) *TextClassi
 		shape:       shapes,
 	}
 	if checkModelExists(modelDir) {
-		modelDir, _ = downloadModel("./inference/cls", modelDir)
+		home, _ := os.UserHomeDir()
+		modelDir, _ = downloadModel(home+"/.paddleocr/cls", modelDir)
 	} else {
 		log.Panicf("cls model path: %v not exist! Please check!", modelDir)
 	}

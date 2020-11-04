@@ -2,6 +2,7 @@ package ocr
 
 import (
 	"log"
+	"os"
 	"time"
 
 	"github.com/LKKlein/gocv"
@@ -25,7 +26,8 @@ func NewDBDetector(modelDir string, args map[string]interface{}) *DBDetector {
 		postProcess: NewDBPostProcess(thresh, boxThresh, unClipRatio),
 	}
 	if checkModelExists(modelDir) {
-		modelDir, _ = downloadModel("./inference/det", modelDir)
+		home, _ := os.UserHomeDir()
+		modelDir, _ = downloadModel(home+"/.paddleocr/det", modelDir)
 	} else {
 		log.Panicf("det model path: %v not exist! Please check!", modelDir)
 	}

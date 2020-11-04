@@ -2,6 +2,7 @@ package ocr
 
 import (
 	"log"
+	"os"
 	"time"
 
 	"github.com/LKKlein/gocv"
@@ -37,7 +38,8 @@ func NewTextRecognizer(modelDir string, args map[string]interface{}) *TextRecogn
 		labels:      labels,
 	}
 	if checkModelExists(modelDir) {
-		modelDir, _ = downloadModel("./inference/rec/ch", modelDir)
+		home, _ := os.UserHomeDir()
+		modelDir, _ = downloadModel(home+"/.paddleocr/rec/ch", modelDir)
 	} else {
 		log.Panicf("rec model path: %v not exist! Please check!", modelDir)
 	}

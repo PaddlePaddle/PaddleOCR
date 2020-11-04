@@ -9,7 +9,6 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"regexp"
 	"strings"
 
 	"github.com/LKKlein/gocv"
@@ -154,8 +153,10 @@ func isPathExist(path string) bool {
 func downloadModel(modelDir, modelPath string) (string, error) {
 	if modelPath != "" && (strings.HasPrefix(modelPath, "http://") ||
 		strings.HasPrefix(modelPath, "ftp://") || strings.HasPrefix(modelPath, "https://")) {
-		reg := regexp.MustCompile("^(http|https|ftp)://[^/]+/(.+)")
-		suffix := reg.FindStringSubmatch(modelPath)[2]
+		if checkModelExists(modelDir) {
+			return modelDir, nil
+		}
+		_, suffix := path.Split(modelPath)
 		outPath := filepath.Join(modelDir, suffix)
 		outDir := filepath.Dir(outPath)
 		if !isPathExist(outDir) {
@@ -168,16 +169,13 @@ func downloadModel(modelDir, modelPath string) (string, error) {
 				return "", err
 			}
 		}
-		if strings.HasSuffix(outPath, ".tar") {
-			_, f := path.Split(suffix)
-			nextDir := strings.TrimSuffix(f, ".tar")
-			finalPath := modelDir + "/" + nextDir
-			if !checkModelExists(finalPath) {
-				unTar(modelDir, outPath)
-			}
-			return finalPath, nil
+
+		if strings.HasSuffix(outPath, ".tar") && !checkModelExists(modelDir) {
+			unTar(modelDir, outPath)
+			os.Remove(outPath)
+			return modelDir, nil
 		}
-		return outPath, nil
+		return modelDir, nil
 	}
 	return modelPath, nil
 }
@@ -202,15 +200,16 @@ func unTar(dst, src string) (err error) {
 			continue
 		}
 
-		dstFileDir := filepath.Join(dst, hdr.Name)
+		var dstFileDir string
+		if strings.Contains(hdr.Name, "model") {
+			dstFileDir = filepath.Join(dst, "model")
+		} else if strings.Contains(hdr.Name, "params") {
+			dstFileDir = filepath.Join(dst, "params")
+		}
 
 		switch hdr.Typeflag {
 		case tar.TypeDir:
-			if b := isPathExist(dstFileDir); !b {
-				if err := os.MkdirAll(dstFileDir, 0775); err != nil {
-					return err
-				}
-			}
+			continue
 		case tar.TypeReg:
 			file, err := os.OpenFile(dstFileDir, os.O_CREATE|os.O_RDWR, os.FileMode(hdr.Mode))
 			if err != nil {
@@ -227,10 +226,24 @@ func unTar(dst, src string) (err error) {
 	return nil
 }
 
-func readLines2StringSlice(path string) []string {
-	content, err := ioutil.ReadFile(path)
+func readLines2StringSlice(filepath string) []string {
+	if strings.HasPrefix(filepath, "http://") || strings.HasPrefix(filepath, "https://") {
+		home, _ := os.UserHomeDir()
+		dir := home + "/.paddleocr/rec/"
+		_, suffix := path.Split(filepath)
+		f := dir + suffix
+		if !isPathExist(f) {
+			err := downloadFile(f, filepath)
+			if err != nil {
+				log.Println("download ppocr key file error!")
+				return nil
+			}
+		}
+		filepath = f
+	}
+	content, err := ioutil.ReadFile(filepath)
 	if err != nil {
-		log.Println("read file error!")
+		log.Println("read ppocr key file error!")
 		return nil
 	}
 	lines := strings.Split(string(content), "\n")
