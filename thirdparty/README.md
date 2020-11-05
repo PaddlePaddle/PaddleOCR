@@ -2,7 +2,7 @@
 
 
 - 首先感谢大家对于PaddleOCR的支持，我们也希望大家共同建设，共同分享，形成良好的开源社区氛围:)
-- 如果您也有意愿贡献，可以快速查看[贡献说明](#二、贡献说明)：
+- 如果您也有意愿贡献，可以快速查看[贡献说明](#贡献说明)：
 
 ## 一、近期更新（截至2020.11.5）
 
@@ -21,7 +21,7 @@
 - 非常感谢 [lijinhan](https://github.com/lijinhan) 给PaddleOCR增加java SpringBoot 调用OCR Hubserving接口完成对OCR服务化部署的使用([#1027](https://github.com/PaddlePaddle/PaddleOCR/pull/1027))。
 
 
-
+<a name="贡献说明"></a>
 ## 二、贡献说明
 ### 1、修复建议类
  - 如果是bug改动和修复，直接提在官方代码对应位置修改，PR提交，review后合入即可。
