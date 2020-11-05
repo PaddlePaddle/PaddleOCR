@@ -26,7 +26,7 @@ class DBFPN(nn.Layer):
     def __init__(self, in_channels, out_channels, **kwargs):
         super(DBFPN, self).__init__()
         self.out_channels = out_channels
-        weight_attr = paddle.nn.initializer.KaimingNormal()
+        weight_attr = paddle.nn.initializer.KaimingUniform()
 
         self.in2_conv = nn.Conv2D(
             in_channels=in_channels[0],
