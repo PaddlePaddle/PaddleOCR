@@ -29,8 +29,8 @@ Optimizer:
   name: Adam
   beta1: 0.9
   beta2: 0.999
-  learning_rate:
-    lr: 0.0005
+  lr:
+    learning_rate: 0.0005
   regularizer:
     name: 'L2'
     factor: 0.00001
