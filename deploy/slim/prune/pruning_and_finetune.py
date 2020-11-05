@@ -19,6 +19,7 @@ from __future__ import print_function
 import os
 import sys
 import numpy as np
+import paddle
 __dir__ = os.path.dirname(__file__)
 sys.path.append(__dir__)
 sys.path.append(os.path.join(__dir__, '..', '..', '..'))
@@ -49,6 +50,12 @@ skip_list = [
 
 
 def main():
+    # Run code with static graph mode.
+    try:
+        paddle.enable_static()
+    except:
+        pass
+
     config = program.load_config(FLAGS.config)
     program.merge_config(FLAGS.opt)
     logger.info(config)

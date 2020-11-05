@@ -30,7 +30,7 @@ python setup.py install
 ```
 
 ### 2. 获取预训练模型
-模型裁剪需要加载事先训练好的模型，PaddleOCR也提供了一系列模型[../../../doc/doc_ch/models_list.md]，开发者可根据需要自行选择模型或使用自己的模型。
+模型裁剪需要加载事先训练好的模型，PaddleOCR也提供了一系列(模型)[../../../doc/doc_ch/models_list.md]，开发者可根据需要自行选择模型或使用自己的模型。
 
 ### 3. 敏感度分析训练
 
