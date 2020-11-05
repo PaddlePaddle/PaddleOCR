@@ -37,6 +37,7 @@ from ppocr.data.lmdb_dataset import LMDBDateSet
 
 __all__ = ['build_dataloader', 'transform', 'create_operators']
 
+
 def term_mp(sig_num, frame):
     """ kill all child processes
     """
@@ -45,24 +46,27 @@ def term_mp(sig_num, frame):
     print("main proc {} exit, kill process group " "{}".format(pid, pgid))
     os.killpg(pgid, signal.SIGKILL)
 
+
 signal.signal(signal.SIGINT, term_mp)
 signal.signal(signal.SIGTERM, term_mp)
 
-def build_dataloader(config, mode, device):
+
+def build_dataloader(config, mode, device, logger):
     config = copy.deepcopy(config)
-    
+
     support_dict = ['SimpleDataSet', 'LMDBDateSet']
     module_name = config[mode]['dataset']['name']
     assert module_name in support_dict, Exception(
         'DataSet only support {}'.format(support_dict))
-    assert mode in ['Train', 'Eval', 'Test'], "Mode should be Train, Eval or Test."
-    
-    dataset = eval(module_name)(config, mode)
+    assert mode in ['Train', 'Eval', 'Test'
+                    ], "Mode should be Train, Eval or Test."
+
+    dataset = eval(module_name)(config, mode, logger)
     loader_config = config[mode]['loader']
     batch_size = loader_config['batch_size_per_card']
     drop_last = loader_config['drop_last']
     num_workers = loader_config['num_workers']
-    
+
     if mode == "Train":
         #Distribute data to multiple cards
         batch_sampler = DistributedBatchSampler(
@@ -76,14 +80,13 @@ def build_dataloader(config, mode, device):
             dataset=dataset,
             batch_size=batch_size,
             shuffle=False,
-            drop_last=drop_last)        
-    
+            drop_last=drop_last)
+
     data_loader = DataLoader(
         dataset=dataset,
         batch_sampler=batch_sampler,
         places=device,
         num_workers=num_workers,
         return_list=True)
-    
+
     return data_loader
-    #return data_loader, _dataset.info_dict

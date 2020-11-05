@@ -33,6 +33,7 @@ from ppocr.utils.logging import get_logger
 from ppocr.data import build_dataloader
 import numpy as np
 
+
 class ArgsParser(ArgumentParser):
     def __init__(self):
         super(ArgsParser, self).__init__(
@@ -185,7 +186,7 @@ def train(config,
     for epoch in range(start_epoch, epoch_num):
         if epoch > 0:
             train_loader = build_dataloader(config, 'Train', device)
-            
+
         for idx, batch in enumerate(train_dataloader):
             if idx >= len(train_dataloader):
                 break
@@ -196,12 +197,7 @@ def train(config,
             preds = model(images)
             loss = loss_class(preds, batch)
             avg_loss = loss['loss']
-            if config['Global']['distributed']:
-                avg_loss = model.scale_loss(avg_loss)
-                avg_loss.backward()
-                model.apply_collective_grads()
-            else:
-                avg_loss.backward()
+            avg_loss.backward()
             optimizer.step()
             optimizer.clear_grad()
             if not isinstance(lr_scheduler, float):
@@ -227,7 +223,8 @@ def train(config,
                     vdl_writer.add_scalar('TRAIN/{}'.format(k), v, global_step)
                 vdl_writer.add_scalar('TRAIN/lr', lr, global_step)
 
-            if global_step > 0 and global_step % print_batch_step == 0:
+            if dist.get_rank(
+            ) == 0 and global_step > 0 and global_step % print_batch_step == 0:
                 logs = train_stats.log()
                 strs = 'epoch: [{}/{}], iter: {}, {}, time: {:.3f}'.format(
                     epoch, epoch_num, global_step, logs, train_batch_elapse)
@@ -235,8 +232,8 @@ def train(config,
             # eval
             if global_step > start_eval_step and \
                     (global_step - start_eval_step) % eval_batch_step == 0 and dist.get_rank() == 0:
-                cur_metirc = eval(model, valid_dataloader,
-                    post_process_class, eval_class, logger, print_batch_step)
+                cur_metirc = eval(model, valid_dataloader, post_process_class,
+                                  eval_class, logger, print_batch_step)
                 cur_metirc_str = 'cur metirc, {}'.format(', '.join(
                     ['{}: {}'.format(k, v) for k, v in cur_metirc.items()]))
                 logger.info(cur_metirc_str)
@@ -298,18 +295,17 @@ def train(config,
     return
 
 
-def eval(model, valid_dataloader, 
-    post_process_class, eval_class, 
-    logger, print_batch_step):
+def eval(model, valid_dataloader, post_process_class, eval_class, logger,
+         print_batch_step):
     model.eval()
     with paddle.no_grad():
         total_frame = 0.0
         total_time = 0.0
-#         pbar = tqdm(total=len(valid_dataloader), desc='eval model:')
+        #         pbar = tqdm(total=len(valid_dataloader), desc='eval model:')
         for idx, batch in enumerate(valid_dataloader):
             if idx >= len(valid_dataloader):
                 break
-            images = paddle.to_variable(batch[0])
+            images = paddle.to_tensor(batch[0])
             start = time.time()
             preds = model(images)
 
@@ -319,13 +315,14 @@ def eval(model, valid_dataloader,
             total_time += time.time() - start
             # Evaluate the results of the current batch
             eval_class(post_result, batch)
-#             pbar.update(1)
+            #             pbar.update(1)
             total_frame += len(images)
-            if idx % print_batch_step == 0:
+            if idx % print_batch_step == 0 and dist.get_rank() == 0:
                 logger.info('tackling images for eval: {}/{}'.format(
                     idx, len(valid_dataloader)))
         # Get final metirc，eg. acc or hmean
         metirc = eval_class.get_metric()
+
 #         pbar.close()
     model.train()
     metirc['fps'] = total_frame / total_time
@@ -348,16 +345,15 @@ def preprocess():
 
     device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'
     device = paddle.set_device(device)
-    
+
     config['Global']['distributed'] = dist.get_world_size() != 1
-    paddle.disable_static(device)
 
     # save_config
     save_model_dir = config['Global']['save_model_dir']
     os.makedirs(save_model_dir, exist_ok=True)
     with open(os.path.join(save_model_dir, 'config.yml'), 'w') as f:
         yaml.dump(dict(config), f, default_flow_style=False, sort_keys=False)
-    
+
     logger = get_logger(log_file='{}/train.log'.format(save_model_dir))
     if config['Global']['use_visualdl']:
         from visualdl import LogWriter

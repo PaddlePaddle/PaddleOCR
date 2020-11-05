@@ -27,9 +27,8 @@ import yaml
 import paddle
 import paddle.distributed as dist
 
-paddle.manual_seed(2)
+paddle.seed(2)
 
-from ppocr.utils.logging import get_logger
 from ppocr.data import build_dataloader
 from ppocr.modeling.architectures import build_model
 from ppocr.losses import build_loss
@@ -49,18 +48,18 @@ def main(config, device, logger, vdl_writer):
         dist.init_parallel_env()
 
     global_config = config['Global']
-    
+
     # build dataloader
-    train_dataloader = build_dataloader(config, 'Train', device)
+    train_dataloader = build_dataloader(config, 'Train', device, logger)
     if config['Eval']:
-        valid_dataloader = build_dataloader(config, 'Eval', device)
+        valid_dataloader = build_dataloader(config, 'Eval', device, logger)
     else:
         valid_dataloader = None
 
     # build post process
-    post_process_class = build_post_process(
-        config['PostProcess'], global_config)
-    
+    post_process_class = build_post_process(config['PostProcess'],
+                                            global_config)
+
     # build model
     #for rec algorithm
     if hasattr(post_process_class, 'character'):
@@ -72,38 +71,29 @@ def main(config, device, logger, vdl_writer):
 
     # build loss
     loss_class = build_loss(config['Loss'])
-    
+
     # build optim
-    optimizer, lr_scheduler = build_optimizer(config['Optimizer'],
+    optimizer, lr_scheduler = build_optimizer(
+        config['Optimizer'],
         epochs=config['Global']['epoch_num'],
         step_each_epoch=len(train_dataloader),
         parameters=model.parameters())
 
     # build metric
     eval_class = build_metric(config['Metric'])
-    
+
     # load pretrain model
     pre_best_model_dict = init_model(config, model, logger, optimizer)
 
     # start train
-    program.train(config,
-        train_dataloader,
-        valid_dataloader,
-        device,
-        model,
-        loss_class,
-        optimizer,
-        lr_scheduler,
-        post_process_class,
-        eval_class,
-        pre_best_model_dict,
-        logger,
-        vdl_writer)
+    program.train(config, train_dataloader, valid_dataloader, device, model,
+                  loss_class, optimizer, lr_scheduler, post_process_class,
+                  eval_class, pre_best_model_dict, logger, vdl_writer)
 
 
 def test_reader(config, device, logger):
     loader = build_dataloader(config, 'Train', device)
-#     loader = build_dataloader(config, 'Eval', device)
+    #     loader = build_dataloader(config, 'Eval', device)
     import time
     starttime = time.time()
     count = 0
@@ -113,10 +103,12 @@ def test_reader(config, device, logger):
             if count % 1 == 0:
                 batch_time = time.time() - starttime
                 starttime = time.time()
-                logger.info("reader: {}, {}, {}".format(count, len(data), batch_time))
+                logger.info("reader: {}, {}, {}".format(count,
+                                                        len(data), batch_time))
     except Exception as e:
         logger.info(e)
     logger.info("finish reader: {}, Success!".format(count))
+
 
 if __name__ == '__main__':
     config, device, logger, vdl_writer = program.preprocess()

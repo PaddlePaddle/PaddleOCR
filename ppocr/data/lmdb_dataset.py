@@ -22,36 +22,25 @@ import lmdb
 import cv2
 
 from .imaug import transform, create_operators
-from ppocr.utils.logging import get_logger
-logger = get_logger()
+
 
 class LMDBDateSet(Dataset):
-    def __init__(self, config, mode):
+    def __init__(self, config, mode, logger):
         super(LMDBDateSet, self).__init__()
-        
+
         global_config = config['Global']
         dataset_config = config[mode]['dataset']
         loader_config = config[mode]['loader']
         batch_size = loader_config['batch_size_per_card']
         data_dir = dataset_config['data_dir']
         self.do_shuffle = loader_config['shuffle']
-        
+
         self.lmdb_sets = self.load_hierarchical_lmdb_dataset(data_dir)
-        
         logger.info("Initialize indexs of datasets:%s" % data_dir)
         self.data_idx_order_list = self.dataset_traversal()
         if self.do_shuffle:
             np.random.shuffle(self.data_idx_order_list)
         self.ops = create_operators(dataset_config['transforms'], global_config)
-
-
-#         # for rec
-#         character = ''
-#         for op in self.ops:
-#             if hasattr(op, 'character'):
-#                 character = getattr(op, 'character')
-
-#         self.info_dict = {'character': character}
 
     def load_hierarchical_lmdb_dataset(self, data_dir):
         lmdb_sets = {}
@@ -71,7 +60,7 @@ class LMDBDateSet(Dataset):
                     "txn":txn, "num_samples":num_samples}
                 dataset_idx += 1
         return lmdb_sets
-    
+
     def dataset_traversal(self):
         lmdb_num = len(self.lmdb_sets)
         total_sample_num = 0
@@ -88,7 +77,7 @@ class LMDBDateSet(Dataset):
             data_idx_order_list[beg_idx:end_idx, 1] += 1
             beg_idx = beg_idx + tmp_sample_num
         return data_idx_order_list
-    
+
     def get_img_data(self, value):
         """get_img_data"""
         if not value:
@@ -110,15 +99,15 @@ class LMDBDateSet(Dataset):
         img_key = 'image-%09d'.encode() % index
         imgbuf = txn.get(img_key)
         return imgbuf, label
-    
+
     def __getitem__(self, idx):
         lmdb_idx, file_idx = self.data_idx_order_list[idx]
         lmdb_idx = int(lmdb_idx)
         file_idx = int(file_idx)
-        sample_info = self.get_lmdb_sample_info(
-            self.lmdb_sets[lmdb_idx]['txn'], file_idx)
+        sample_info = self.get_lmdb_sample_info(self.lmdb_sets[lmdb_idx]['txn'],
+                                                file_idx)
         if sample_info is None:
-            return self.__getitem__(np.random.randint(self.__len__()))       
+            return self.__getitem__(np.random.randint(self.__len__()))
         img, label = sample_info
         data = {'image': img, 'label': label}
         outs = transform(data, self.ops)
@@ -128,4 +117,3 @@ class LMDBDateSet(Dataset):
 
     def __len__(self):
         return self.data_idx_order_list.shape[0]
-

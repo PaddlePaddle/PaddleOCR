@@ -158,7 +158,7 @@ class ConvBNLayer(nn.Layer):
         super(ConvBNLayer, self).__init__()
         self.if_act = if_act
         self.act = act
-        self.conv = nn.Conv2d(
+        self.conv = nn.Conv2D(
             in_channels=in_channels,
             out_channels=out_channels,
             kernel_size=kernel_size,
@@ -183,7 +183,7 @@ class ConvBNLayer(nn.Layer):
             if self.act == "relu":
                 x = F.relu(x)
             elif self.act == "hard_swish":
-                x = F.hard_swish(x)
+                x = F.activation.hard_swish(x)
             else:
                 print("The activation function is selected incorrectly.")
                 exit()
@@ -242,16 +242,15 @@ class ResidualUnit(nn.Layer):
             x = self.mid_se(x)
         x = self.linear_conv(x)
         if self.if_shortcut:
-            x = paddle.elementwise_add(inputs, x)
+            x = paddle.add(inputs, x)
         return x
 
 
 class SEModule(nn.Layer):
     def __init__(self, in_channels, reduction=4, name=""):
         super(SEModule, self).__init__()
-        self.avg_pool = nn.Pool2D(
-            pool_type="avg", global_pooling=True, use_cudnn=False)
-        self.conv1 = nn.Conv2d(
+        self.avg_pool = nn.AdaptiveAvgPool2D(1)
+        self.conv1 = nn.Conv2D(
             in_channels=in_channels,
             out_channels=in_channels // reduction,
             kernel_size=1,
@@ -259,7 +258,7 @@ class SEModule(nn.Layer):
             padding=0,
             weight_attr=ParamAttr(name=name + "_1_weights"),
             bias_attr=ParamAttr(name=name + "_1_offset"))
-        self.conv2 = nn.Conv2d(
+        self.conv2 = nn.Conv2D(
             in_channels=in_channels // reduction,
             out_channels=in_channels,
             kernel_size=1,
@@ -273,5 +272,5 @@ class SEModule(nn.Layer):
         outputs = self.conv1(outputs)
         outputs = F.relu(outputs)
         outputs = self.conv2(outputs)
-        outputs = F.hard_sigmoid(outputs)
+        outputs = F.activation.hard_sigmoid(outputs)
         return inputs * outputs

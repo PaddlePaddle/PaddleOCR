@@ -20,18 +20,17 @@ from paddle.io import Dataset
 import time
 
 from .imaug import transform, create_operators
-from ppocr.utils.logging import get_logger
-logger = get_logger()
+
 
 class SimpleDataSet(Dataset):
-    def __init__(self, config, mode):
+    def __init__(self, config, mode, logger):
         super(SimpleDataSet, self).__init__()
-        
+
         global_config = config['Global']
         dataset_config = config[mode]['dataset']
         loader_config = config[mode]['loader']
         batch_size = loader_config['batch_size_per_card']
-        
+
         self.delimiter = dataset_config.get('delimiter', '\t')
         label_file_list = dataset_config.pop('label_file_list')
         data_source_num = len(label_file_list)
@@ -39,19 +38,21 @@ class SimpleDataSet(Dataset):
             ratio_list = [1.0]
         else:
             ratio_list = dataset_config.pop('ratio_list')
-        
+
         assert sum(ratio_list) == 1, "The sum of the ratio_list should be 1."
-        assert len(ratio_list) == data_source_num, "The length of ratio_list should be the same as the file_list."
+        assert len(
+            ratio_list
+        ) == data_source_num, "The length of ratio_list should be the same as the file_list."
         self.data_dir = dataset_config['data_dir']
         self.do_shuffle = loader_config['shuffle']
-        
+
         logger.info("Initialize indexs of datasets:%s" % label_file_list)
         self.data_lines_list, data_num_list = self.get_image_info_list(
             label_file_list)
         self.data_idx_order_list = self.dataset_traversal(
             data_num_list, ratio_list, batch_size)
         self.shuffle_data_random()
-                
+
         self.ops = create_operators(dataset_config['transforms'], global_config)
 
     def get_image_info_list(self, file_list):
@@ -65,7 +66,7 @@ class SimpleDataSet(Dataset):
                 data_lines_list.append(lines)
                 data_num_list.append(len(lines))
         return data_lines_list, data_num_list
-    
+
     def dataset_traversal(self, data_num_list, ratio_list, batch_size):
         select_num_list = []
         dataset_num = len(data_num_list)
@@ -87,8 +88,7 @@ class SimpleDataSet(Dataset):
                         cur_index = cur_index_sets[dataset_idx]
                         if cur_index >= data_num_list[dataset_idx]:
                             break
-                        data_idx_order_list.append((
-                            dataset_idx, cur_index))
+                        data_idx_order_list.append((dataset_idx, cur_index))
                         cur_index_sets[dataset_idx] += 1
             if finish_read_num == dataset_num:
                 break
@@ -99,7 +99,7 @@ class SimpleDataSet(Dataset):
             for dno in range(len(self.data_lines_list)):
                 random.shuffle(self.data_lines_list[dno])
         return
-        
+
     def __getitem__(self, idx):
         dataset_idx, file_idx = self.data_idx_order_list[idx]
         data_line = self.data_lines_list[dataset_idx][file_idx]
@@ -119,4 +119,3 @@ class SimpleDataSet(Dataset):
 
     def __len__(self):
         return len(self.data_idx_order_list)
-

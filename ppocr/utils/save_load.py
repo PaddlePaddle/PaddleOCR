@@ -42,16 +42,12 @@ def _mkdir_if_not_exist(path, logger):
                 raise OSError('Failed to mkdir {}'.format(path))
 
 
-def load_dygraph_pretrain(
-        model,
-        logger,
-        path=None,
-        load_static_weights=False):
+def load_dygraph_pretrain(model, logger, path=None, load_static_weights=False):
     if not (os.path.isdir(path) or os.path.exists(path + '.pdparams')):
         raise ValueError("Model pretrain path {} does not "
                          "exists.".format(path))
     if load_static_weights:
-        pre_state_dict = paddle.io.load_program_state(path)
+        pre_state_dict = paddle.static.load_program_state(path)
         param_state_dict = {}
         model_dict = model.state_dict()
         for key in model_dict.keys():
@@ -113,15 +109,11 @@ def init_model(config, model, logger, optimizer=None, lr_scheduler=None):
         if not isinstance(pretrained_model, list):
             pretrained_model = [pretrained_model]
         if not isinstance(load_static_weights, list):
-            load_static_weights = [load_static_weights] * len(
-                pretrained_model)
+            load_static_weights = [load_static_weights] * len(pretrained_model)
         for idx, pretrained in enumerate(pretrained_model):
             load_static = load_static_weights[idx]
             load_dygraph_pretrain(
-                model,
-                logger,
-                path=pretrained,
-                load_static_weights=load_static)
+                model, logger, path=pretrained, load_static_weights=load_static)
             logger.info("load pretrained model from {}".format(
                 pretrained_model))
     else:

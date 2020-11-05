@@ -33,7 +33,7 @@ def get_bias_attr(k, name):
 class Head(nn.Layer):
     def __init__(self, in_channels, name_list):
         super(Head, self).__init__()
-        self.conv1 = nn.Conv2d(
+        self.conv1 = nn.Conv2D(
             in_channels=in_channels,
             out_channels=in_channels // 4,
             kernel_size=3,
@@ -51,14 +51,14 @@ class Head(nn.Layer):
             moving_mean_name=name_list[1] + '.w_1',
             moving_variance_name=name_list[1] + '.w_2',
             act='relu')
-        self.conv2 = nn.ConvTranspose2d(
+        self.conv2 = nn.Conv2DTranspose(
             in_channels=in_channels // 4,
             out_channels=in_channels // 4,
             kernel_size=2,
             stride=2,
             weight_attr=ParamAttr(
                 name=name_list[2] + '.w_0',
-                initializer=paddle.nn.initializer.MSRA(uniform=False)),
+                initializer=paddle.nn.initializer.KaimingNormal()),
             bias_attr=get_bias_attr(in_channels // 4, name_list[-1] + "conv2"))
         self.conv_bn2 = nn.BatchNorm(
             num_channels=in_channels // 4,
@@ -71,14 +71,14 @@ class Head(nn.Layer):
             moving_mean_name=name_list[3] + '.w_1',
             moving_variance_name=name_list[3] + '.w_2',
             act="relu")
-        self.conv3 = nn.ConvTranspose2d(
+        self.conv3 = nn.Conv2DTranspose(
             in_channels=in_channels // 4,
             out_channels=1,
             kernel_size=2,
             stride=2,
             weight_attr=ParamAttr(
                 name=name_list[4] + '.w_0',
-                initializer=paddle.nn.initializer.MSRA(uniform=False)),
+                initializer=paddle.nn.initializer.KaimingNormal()),
             bias_attr=get_bias_attr(in_channels // 4, name_list[-1] + "conv3"),
         )
 
