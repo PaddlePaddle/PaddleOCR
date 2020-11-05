@@ -14,11 +14,10 @@
 
 __all__ = ['build_neck']
 
-
 def build_neck(config):
-    from .fpn import FPN
+    from .db_fpn import DBFPN
     from .rnn import SequenceEncoder
-    support_dict = ['FPN', 'SequenceEncoder']
+    support_dict = ['DBFPN', 'SequenceEncoder']
 
     module_name = config.pop('name')
     assert module_name in support_dict, Exception('neck only support {}'.format(

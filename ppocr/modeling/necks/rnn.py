@@ -76,8 +76,7 @@ class SequenceEncoder(nn.Layer):
                 'fc': EncoderWithFC,
                 'rnn': EncoderWithRNN
             }
-            assert encoder_type in support_encoder_dict, '{} must in {}'.format(
-                encoder_type, support_encoder_dict.keys())
+            assert encoder_type in support_encoder_dict, '{} must in {}'.format(encoder_type, support_encoder_dict.keys())
 
             self.encoder = support_encoder_dict[encoder_type](
                 self.encoder_reshape.out_channels, hidden_size)

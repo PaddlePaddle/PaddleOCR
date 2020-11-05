@@ -50,16 +50,14 @@ class RecResizeImg(object):
                  image_shape,
                  infer_mode=False,
                  character_type='ch',
-                 use_tps=False,
                  **kwargs):
         self.image_shape = image_shape
         self.infer_mode = infer_mode
         self.character_type = character_type
-        self.use_tps = use_tps
 
     def __call__(self, data):
         img = data['image']
-        if self.infer_mode and self.character_type == "ch" and not self.use_tps:
+        if self.infer_mode and self.character_type == "ch":
             norm_img = resize_norm_img_chinese(img, self.image_shape)
         else:
             norm_img = resize_norm_img(img, self.image_shape)

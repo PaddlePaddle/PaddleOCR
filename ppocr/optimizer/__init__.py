@@ -51,6 +51,6 @@ def build_optimizer(config, epochs, step_each_epoch, parameters):
     # step3 build optimizer
     optim_name = config.pop('name')
     optim = getattr(optimizer, optim_name)(learning_rate=lr,
-                                           regularization=reg,
+                                           weight_decay=reg,
                                            **config)
     return optim(parameters), lr

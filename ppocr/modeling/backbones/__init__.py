@@ -19,7 +19,6 @@ def build_backbone(config, model_type):
     if model_type == 'det':
         from .det_mobilenet_v3 import MobileNetV3
         from .det_resnet_vd import ResNet
-
         support_dict = ['MobileNetV3', 'ResNet', 'ResNet_SAST']
     elif model_type == 'rec':
         from .rec_mobilenet_v3 import MobileNetV3

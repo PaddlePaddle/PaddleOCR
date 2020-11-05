@@ -20,8 +20,8 @@ def build_head(config):
     from .det_db_head import DBHead
 
     # rec head
-    from .rec_ctc_head import CTC
-    support_dict = ['DBHead', 'CTC']
+    from .rec_ctc_head import CTCHead
+    support_dict = ['DBHead', 'CTCHead']
 
     module_name = config.pop('name')
     assert module_name in support_dict, Exception('head only support {}'.format(

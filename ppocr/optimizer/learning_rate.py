@@ -17,7 +17,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from paddle.optimizer import lr_scheduler
+from paddle.optimizer import lr as lr_scheduler
 
 
 class Linear(object):

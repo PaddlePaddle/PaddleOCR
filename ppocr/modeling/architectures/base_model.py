@@ -15,38 +15,29 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import os, sys
-
-__dir__ = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(__dir__)
-sys.path.append('/home/zhoujun20/PaddleOCR')
-
 from paddle import nn
-from ppocr.modeling.transform import build_transform
+
 from ppocr.modeling.backbones import build_backbone
 from ppocr.modeling.necks import build_neck
 from ppocr.modeling.heads import build_head
 
-__all__ = ['Model']
+__all__ = ['BaseModel']
 
-
-class Model(nn.Layer):
+class BaseModel(nn.Layer):
     def __init__(self, config):
         """
-        Detection module for OCR.
+        the module for OCR.
         args:
             config (dict): the super parameters for module.
         """
-        super(Model, self).__init__()
-        algorithm = config['algorithm']
-        self.type = config['type']
-        self.model_name = '{}_{}'.format(self.type, algorithm)
-
+        super(BaseModel, self).__init__()
+        
         in_channels = config.get('in_channels', 3)
+        model_type = config['model_type']
         # build transfrom,
         # for rec, transfrom can be TPS,None
         # for det and cls, transfrom shoule to be None,
-        #                  if you make model differently, you can use transfrom in det and cls
+        # if you make model differently, you can use transfrom in det and cls
         if 'Transform' not in config or config['Transform'] is None:
             self.use_transform = False
         else:
@@ -57,9 +48,9 @@ class Model(nn.Layer):
 
         # build backbone, backbone is need for del, rec and cls
         config["Backbone"]['in_channels'] = in_channels
-        self.backbone = build_backbone(config["Backbone"], self.type)
+        self.backbone = build_backbone(config["Backbone"], model_type)
         in_channels = self.backbone.out_channels
-
+        
         # build neck
         # for rec, neck can be cnn,rnn or reshape(None)
         # for det, neck can be FPN, BIFPN and so on.
@@ -71,6 +62,7 @@ class Model(nn.Layer):
             config['Neck']['in_channels'] = in_channels
             self.neck = build_neck(config['Neck'])
             in_channels = self.neck.out_channels
+        
         # # build head, head is need for det, rec and cls
         config["Head"]['in_channels'] = in_channels
         self.head = build_head(config["Head"])

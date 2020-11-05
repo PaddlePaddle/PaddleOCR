@@ -127,7 +127,7 @@ class MobileNetV3(nn.Layer):
             act='hard_swish',
             name='conv_last')
 
-        self.pool = nn.MaxPool2d(kernel_size=2, stride=2, padding=0)
+        self.pool = nn.MaxPool2D(kernel_size=2, stride=2, padding=0)
         self.out_channels = make_divisible(scale * cls_ch_squeeze)
 
     def forward(self, x):

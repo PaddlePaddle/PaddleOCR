@@ -29,7 +29,7 @@ class MakeBorderMap(object):
         self.thresh_min = thresh_min
         self.thresh_max = thresh_max
 
-    def __call__(self, data: dict) -> dict:
+    def __call__(self, data):
 
         img = data['image']
         text_polys = data['polys']
