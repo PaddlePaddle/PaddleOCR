@@ -17,7 +17,7 @@ wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dataset/test_icdar2015_la
 PaddleOCR 也提供了数据格式转换脚本，可以将官网 label 转换支持的数据格式。 数据转换工具在 `train_data/gen_label.py`, 这里以训练集为例：
 
 ```
-# 将官网下载的标签文件转换为 train_icdar2015_label.txt 
+# 将官网下载的标签文件转换为 train_icdar2015_label.txt
 python gen_label.py --mode="det" --root_path="icdar_c4_train_imgs/"  \
                     --input_path="ch4_training_localization_transcription_gt" \
                     --output_label="train_icdar2015_label.txt"
@@ -74,7 +74,7 @@ tar -xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_model
 
 ```shell
 # 训练 mv3_db 模型，并将训练日志保存为 tain_det.log
-python3 tools/train.py -c configs/det/det_mv3_db_v1.1.yml \ 
+python3 tools/train.py -c configs/det/det_mv3_db_v1.1.yml \
      -o Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained/ \
      2>&1 | tee train_det.log
 ```
@@ -119,16 +119,16 @@ python3 tools/eval.py -c configs/det/det_mv3_db_v1.1.yml  -o Global.checkpoints=
 
 测试单张图像的检测效果
 ```shell
-python3 tools/infer_det.py -c configs/det/det_mv3_db_v1.1.yml -o TestReader.infer_img="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy"
+python3 tools/infer_det.py -c configs/det/det_mv3_db_v1.1.yml -o Global.infer_img="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy"
 ```
 
 测试DB模型时，调整后处理阈值，
 ```shell
-python3 tools/infer_det.py -c configs/det/det_mv3_db_v1.1.yml -o TestReader.infer_img="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
+python3 tools/infer_det.py -c configs/det/det_mv3_db_v1.1.yml -o Global.infer_img="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
 ```
 
 
 测试文件夹下所有图像的检测效果
 ```shell
-python3 tools/infer_det.py -c configs/det/det_mv3_db_v1.1.yml -o TestReader.infer_img="./doc/imgs_en/" Global.checkpoints="./output/det_db/best_accuracy"
+python3 tools/infer_det.py -c configs/det/det_mv3_db_v1.1.yml -o Global.infer_img="./doc/imgs_en/" Global.checkpoints="./output/det_db/best_accuracy"
 ```
