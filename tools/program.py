@@ -352,7 +352,8 @@ def preprocess():
     with open(os.path.join(save_model_dir, 'config.yml'), 'w') as f:
         yaml.dump(dict(config), f, default_flow_style=False, sort_keys=False)
 
-    logger = get_logger(log_file='{}/train.log'.format(save_model_dir))
+    logger = get_logger(
+        name='root', log_file='{}/train.log'.format(save_model_dir))
     if config['Global']['use_visualdl']:
         from visualdl import LogWriter
         vdl_writer_path = '{}/vdl/'.format(save_model_dir)
