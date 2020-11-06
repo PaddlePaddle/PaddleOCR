@@ -100,6 +100,7 @@ Train:
       - KeepKeys:
           keep_keys: ['image', 'threshold_map', 'threshold_mask', 'shrink_map', 'shrink_mask'] # the order of the dataloader list
   loader:
+    shuffle: True
     drop_last: False
     batch_size_per_card: 4
     num_workers: 8
@@ -126,6 +127,7 @@ Eval:
       - KeepKeys:
           keep_keys: ['image', 'shape', 'polys', 'ignore_tags']
   loader:
+    shuffle: False
     drop_last: False
     batch_size_per_card: 1 # must be 1
     num_workers: 2
