@@ -6,7 +6,7 @@ Global:
   save_model_dir: ./output/rec/mv3_none_bilstm_ctc/
   save_epoch_step: 3
   # evaluation is run every 5000 iterations after the 4000th iteration
-  eval_batch_step: [0, 1000]
+  eval_batch_step: [0, 2000]
   # if pretrained_model is saved in static mode, load_static_weights must set to True
   cal_metric_during_train: True
   pretrained_model:
@@ -18,11 +18,8 @@ Global:
   character_dict_path: 
   character_type: en
   max_text_length: 25
-  loss_type: ctc
   infer_mode: False
-#   use_space_char: True
-
-#   use_tps: False
+  use_space_char: False
 
 
 Optimizer:
@@ -33,7 +30,7 @@ Optimizer:
     learning_rate: 0.0005
   regularizer:
     name: 'L2'
-    factor: 0.00001
+    factor: 0
 
 Architecture:
   model_type: rec
@@ -49,7 +46,7 @@ Architecture:
     hidden_size: 96
   Head:
     name: CTCHead
-    fc_decay: 0.0004
+    fc_decay: 0
 
 Loss:
   name: CTCLoss
@@ -75,8 +72,8 @@ Train:
       - KeepKeys:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
   loader:
+    shuffle: True
     batch_size_per_card: 256
-    shuffle: False
     drop_last: True
     num_workers: 8
 
@@ -97,4 +94,4 @@ Eval:
     shuffle: False
     drop_last: False
     batch_size_per_card: 256
-    num_workers: 2
+    num_workers: 4
