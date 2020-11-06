@@ -54,7 +54,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 <img src="./doc/ocr-android-easyedge.png"  width = "200" height = "200" />
 </div>
 
-- 代码体验：从[快速安装](./doc/doc_ch/installation.md) 开始
+- 代码体验：从[快速安装](./doc/doc_ch/installation.md) 开始，参考[中文OCR模型快速使用](./doc/doc_ch/quickstart.md)。
 
 <a name="模型下载"></a>
 ## PP-OCR 1.1系列模型列表（9月17日更新）
