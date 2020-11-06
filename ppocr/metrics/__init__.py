@@ -23,8 +23,8 @@ __all__ = ['build_metric']
 
 
 def build_metric(config):
-    from .DetMetric import DetMetric
-    from .RecMetric import RecMetric
+    from .det_metric import DetMetric
+    from .rec_metric import RecMetric
 
     support_dict = ['DetMetric', 'RecMetric']
 

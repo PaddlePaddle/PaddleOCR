@@ -17,7 +17,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from paddle.optimizer import lr as lr_scheduler
+from paddle.optimizer import lr
 
 
 class Linear(object):
@@ -32,7 +32,7 @@ class Linear(object):
     """
 
     def __init__(self,
-                 lr,
+                 learning_rate,
                  epochs,
                  step_each_epoch,
                  end_lr=0.0,
@@ -41,7 +41,7 @@ class Linear(object):
                  last_epoch=-1,
                  **kwargs):
         super(Linear, self).__init__()
-        self.lr = lr
+        self.learning_rate = learning_rate
         self.epochs = epochs * step_each_epoch
         self.end_lr = end_lr
         self.power = power
@@ -49,18 +49,18 @@ class Linear(object):
         self.warmup_epoch = warmup_epoch * step_each_epoch
 
     def __call__(self):
-        learning_rate = lr_scheduler.PolynomialLR(
-            learning_rate=self.lr,
+        learning_rate = lr.PolynomialDecay(
+            learning_rate=self.learning_rate,
             decay_steps=self.epochs,
             end_lr=self.end_lr,
             power=self.power,
             last_epoch=self.last_epoch)
         if self.warmup_epoch > 0:
-            learning_rate = lr_scheduler.LinearLrWarmup(
+            learning_rate = lr.LinearWarmup(
                 learning_rate=learning_rate,
                 warmup_steps=self.warmup_epoch,
                 start_lr=0.0,
-                end_lr=self.lr,
+                end_lr=self.learning_rate,
                 last_epoch=self.last_epoch)
         return learning_rate
 
@@ -77,27 +77,29 @@ class Cosine(object):
     """
 
     def __init__(self,
-                 lr,
+                 learning_rate,
                  step_each_epoch,
                  epochs,
                  warmup_epoch=0,
                  last_epoch=-1,
                  **kwargs):
         super(Cosine, self).__init__()
-        self.lr = lr
+        self.learning_rate = learning_rate
         self.T_max = step_each_epoch * epochs
         self.last_epoch = last_epoch
         self.warmup_epoch = warmup_epoch * step_each_epoch
 
     def __call__(self):
-        learning_rate = lr_scheduler.CosineAnnealingLR(
-            learning_rate=self.lr, T_max=self.T_max, last_epoch=self.last_epoch)
+        learning_rate = lr.CosineAnnealingDecay(
+            learning_rate=self.learning_rate,
+            T_max=self.T_max,
+            last_epoch=self.last_epoch)
         if self.warmup_epoch > 0:
-            learning_rate = lr_scheduler.LinearLrWarmup(
+            learning_rate = lr.LinearWarmup(
                 learning_rate=learning_rate,
                 warmup_steps=self.warmup_epoch,
                 start_lr=0.0,
-                end_lr=self.lr,
+                end_lr=self.learning_rate,
                 last_epoch=self.last_epoch)
         return learning_rate
 
@@ -115,7 +117,7 @@ class Step(object):
     """
 
     def __init__(self,
-                 lr,
+                 learning_rate,
                  step_size,
                  step_each_epoch,
                  gamma,
@@ -124,23 +126,23 @@ class Step(object):
                  **kwargs):
         super(Step, self).__init__()
         self.step_size = step_each_epoch * step_size
-        self.lr = lr
+        self.learning_rate = learning_rate
         self.gamma = gamma
         self.last_epoch = last_epoch
         self.warmup_epoch = warmup_epoch * step_each_epoch
 
     def __call__(self):
-        learning_rate = lr_scheduler.StepLR(
-            learning_rate=self.lr,
+        learning_rate = lr.StepDecay(
+            learning_rate=self.learning_rate,
             step_size=self.step_size,
             gamma=self.gamma,
             last_epoch=self.last_epoch)
         if self.warmup_epoch > 0:
-            learning_rate = lr_scheduler.LinearLrWarmup(
+            learning_rate = lr.LinearWarmup(
                 learning_rate=learning_rate,
                 warmup_steps=self.warmup_epoch,
                 start_lr=0.0,
-                end_lr=self.lr,
+                end_lr=self.learning_rate,
                 last_epoch=self.last_epoch)
         return learning_rate
 
@@ -169,12 +171,12 @@ class Piecewise(object):
         self.warmup_epoch = warmup_epoch * step_each_epoch
 
     def __call__(self):
-        learning_rate = lr_scheduler.PiecewiseLR(
+        learning_rate = lr.PiecewiseDecay(
             boundaries=self.boundaries,
             values=self.values,
             last_epoch=self.last_epoch)
         if self.warmup_epoch > 0:
-            learning_rate = lr_scheduler.LinearLrWarmup(
+            learning_rate = lr.LinearWarmup(
                 learning_rate=learning_rate,
                 warmup_steps=self.warmup_epoch,
                 start_lr=0.0,

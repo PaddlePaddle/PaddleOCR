@@ -58,7 +58,7 @@ class Head(nn.Layer):
             stride=2,
             weight_attr=ParamAttr(
                 name=name_list[2] + '.w_0',
-                initializer=paddle.nn.initializer.KaimingNormal()),
+                initializer=paddle.nn.initializer.KaimingUniform()),
             bias_attr=get_bias_attr(in_channels // 4, name_list[-1] + "conv2"))
         self.conv_bn2 = nn.BatchNorm(
             num_channels=in_channels // 4,
@@ -78,7 +78,7 @@ class Head(nn.Layer):
             stride=2,
             weight_attr=ParamAttr(
                 name=name_list[4] + '.w_0',
-                initializer=paddle.nn.initializer.KaimingNormal()),
+                initializer=paddle.nn.initializer.KaimingUniform()),
             bias_attr=get_bias_attr(in_channels // 4, name_list[-1] + "conv3"),
         )
 

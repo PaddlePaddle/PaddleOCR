@@ -26,7 +26,7 @@ class DBFPN(nn.Layer):
     def __init__(self, in_channels, out_channels, **kwargs):
         super(DBFPN, self).__init__()
         self.out_channels = out_channels
-        weight_attr = paddle.nn.initializer.KaimingNormal()
+        weight_attr = paddle.nn.initializer.KaimingUniform()
 
         self.in2_conv = nn.Conv2D(
             in_channels=in_channels[0],
@@ -97,17 +97,20 @@ class DBFPN(nn.Layer):
         in3 = self.in3_conv(c3)
         in2 = self.in2_conv(c2)
 
-        out4 = in4 + F.upsample(in5, scale_factor=2, mode="nearest")  # 1/16
-        out3 = in3 + F.upsample(out4, scale_factor=2, mode="nearest")  # 1/8
-        out2 = in2 + F.upsample(out3, scale_factor=2, mode="nearest")  # 1/4
+        out4 = in4 + F.upsample(
+            in5, scale_factor=2, mode="nearest", align_mode=1)  # 1/16
+        out3 = in3 + F.upsample(
+            out4, scale_factor=2, mode="nearest", align_mode=1)  # 1/8
+        out2 = in2 + F.upsample(
+            out3, scale_factor=2, mode="nearest", align_mode=1)  # 1/4
 
         p5 = self.p5_conv(in5)
         p4 = self.p4_conv(out4)
         p3 = self.p3_conv(out3)
         p2 = self.p2_conv(out2)
-        p5 = F.upsample(p5, scale_factor=8, mode="nearest")
-        p4 = F.upsample(p4, scale_factor=4, mode="nearest")
-        p3 = F.upsample(p3, scale_factor=2, mode="nearest")
+        p5 = F.upsample(p5, scale_factor=8, mode="nearest", align_mode=1)
+        p4 = F.upsample(p4, scale_factor=4, mode="nearest", align_mode=1)
+        p3 = F.upsample(p3, scale_factor=2, mode="nearest", align_mode=1)
 
         fuse = paddle.concat([p5, p4, p3, p2], axis=1)
         return fuse
