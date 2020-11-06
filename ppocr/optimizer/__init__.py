@@ -29,7 +29,7 @@ def build_lr_scheduler(lr_config, epochs, step_each_epoch):
         lr_name = lr_config.pop('name')
         lr = getattr(learning_rate, lr_name)(**lr_config)()
     else:
-        lr = lr_config['lr']
+        lr = lr_config['learning_rate']
     return lr
 
 
@@ -37,8 +37,7 @@ def build_optimizer(config, epochs, step_each_epoch, parameters):
     from . import regularizer, optimizer
     config = copy.deepcopy(config)
     # step1 build lr
-    lr = build_lr_scheduler(
-        config.pop('learning_rate'), epochs, step_each_epoch)
+    lr = build_lr_scheduler(config.pop('lr'), epochs, step_each_epoch)
 
     # step2 build regularization
     if 'regularizer' in config and config['regularizer'] is not None:
