@@ -83,7 +83,7 @@ def main(config, device, logger, vdl_writer):
     # load pretrain model
     pre_best_model_dict = init_model(config, model, logger, optimizer)
 
-    logger.info('train dataloader has {} iter, valid dataloader has {} iter'.
+    logger.info('train dataloader has {} iters, valid dataloader has {} iters'.
                 format(len(train_dataloader), len(valid_dataloader)))
     # start train
     program.train(config, train_dataloader, valid_dataloader, device, model,
