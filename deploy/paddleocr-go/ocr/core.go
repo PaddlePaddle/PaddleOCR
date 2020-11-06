@@ -149,6 +149,7 @@ func (sys *TextPredictSystem) getRotateCropImage(img gocv.Mat, box [][]int) gocv
 
 func (sys *TextPredictSystem) Run(img gocv.Mat) []OCRText {
 	srcimg := gocv.NewMat()
+	defer srcimg.Close()
 	img.CopyTo(&srcimg)
 	boxes := sys.detector.Run(img)
 	if len(boxes) == 0 {
@@ -224,6 +225,7 @@ func (ocr *OCRSystem) predictHandler(w http.ResponseWriter, r *http.Request) {
 
 	io.Copy(&buf, file)
 	img, err2 := gocv.IMDecode(buf.Bytes(), gocv.IMReadColor)
+	defer img.Close()
 	if err2 != nil {
 		w.Write([]byte(err2.Error()))
 		return
@@ -252,6 +254,7 @@ func (ocr *OCRSystem) PredictDirImages(dirname string) map[string][]OCRText {
 	for i := 0; i < len(imgs); i++ {
 		imgname := imgs[i]
 		img := ReadImage(imgname)
+		defer img.Close()
 		res := ocr.PredictOneImage(img)
 		results[imgname] = res
 	}

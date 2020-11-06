@@ -24,7 +24,8 @@ func NewTextRecognizer(modelDir string, args map[string]interface{}) *TextRecogn
 			shapes[i] = s.(int)
 		}
 	}
-	labelpath := getString(args, "rec_char_dict_path", "./config/ppocr_keys_v1.txt")
+	home, _ := os.UserHomeDir()
+	labelpath := getString(args, "rec_char_dict_path", home+"/.paddleocr/rec/ppocr_keys_v1.txt")
 	labels := readLines2StringSlice(labelpath)
 	if getBool(args, "use_space_char", true) {
 		labels = append(labels, " ")
@@ -38,7 +39,6 @@ func NewTextRecognizer(modelDir string, args map[string]interface{}) *TextRecogn
 		labels:      labels,
 	}
 	if checkModelExists(modelDir) {
-		home, _ := os.UserHomeDir()
 		modelDir, _ = downloadModel(home+"/.paddleocr/rec/ch", modelDir)
 	} else {
 		log.Panicf("rec model path: %v not exist! Please check!", modelDir)
@@ -75,6 +75,7 @@ func (rec *TextRecognizer) Run(imgs []gocv.Mat, bboxes [][][]int) []OCRText {
 		for k := i; k < j; k++ {
 			data := crnnPreprocess(imgs[k], rec.shape, []float32{0.5, 0.5, 0.5},
 				[]float32{0.5, 0.5, 0.5}, 255.0, maxwhratio, rec.charType)
+			defer imgs[k].Close()
 			copy(normimgs[(k-i)*c*h*w:], data)
 		}
 

@@ -59,7 +59,6 @@ func resizeByMaxLen(img gocv.Mat, maxLen int) (gocv.Mat, int, int) {
 func normPermute(img gocv.Mat, mean []float32, std []float32, scaleFactor float32) []float32 {
 	img.ConvertTo(&img, gocv.MatTypeCV32F)
 	img.DivideFloat(scaleFactor)
-	defer img.Close()
 
 	c := gocv.Split(img)
 	data := make([]float32, img.Rows()*img.Cols()*img.Channels())
@@ -154,7 +153,6 @@ func crnnPreprocess(img gocv.Mat, resizeShape []int, mean []float32, std []float
 	img.DivideFloat(scaleFactor)
 	img.SubtractScalar(gocv.NewScalar(float64(mean[0]), float64(mean[1]), float64(mean[2]), 0))
 	img.DivideScalar(gocv.NewScalar(float64(std[0]), float64(std[1]), float64(std[2]), 0))
-	defer img.Close()
 
 	if resizeW < imgW {
 		gocv.CopyMakeBorder(img, &img, 0, 0, 0, imgW-resizeW, gocv.BorderConstant, color.RGBA{0, 0, 0, 0})

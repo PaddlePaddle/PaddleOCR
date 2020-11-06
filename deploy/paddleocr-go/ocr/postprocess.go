@@ -92,6 +92,7 @@ func (d *DBPostProcess) boxScoreFast(array [][]float32, pred gocv.Mat) float64 {
 	ymax := clip(int(math.Ceil(float64(maxf(boxY)))), 0, height-1)
 
 	mask := gocv.NewMatWithSize(ymax-ymin+1, xmax-xmin+1, gocv.MatTypeCV8UC1)
+	defer mask.Close()
 	ppt := make([][]image.Point, 1)
 	ppt[0] = make([]image.Point, 4)
 	ppt[0][0] = image.Point{int(array[0][0]) - xmin, int(array[0][1]) - ymin}
