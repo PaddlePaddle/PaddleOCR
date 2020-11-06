@@ -28,6 +28,7 @@ func main() {
 
 	if image != "" {
 		img := ocr.ReadImage(image)
+		defer img.Close()
 		results := sys.PredictOneImage(img)
 		for _, res := range results {
 			log.Println(res)

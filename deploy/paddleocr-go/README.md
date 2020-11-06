@@ -27,6 +27,7 @@ tar -xzvf go1.14.10.linux-amd64.tar.gz -C /usr/local
 
 # 配置GOROOT，即go的安装目录
 echo "export GOROOT=/usr/local/go" >> ~/.bashrc
+echo "export PATH=$PATH:$GOROOT/bin" >> ~/.bashrc
 # 配置GOPATH，即go相关package的安装目录，可自定义一个目录
 echo "export GOPATH=$HOME/golang" >> ~/.bashrc
 # 配置GOPROXY，即go mod包管理器的下载代理，同时打开mod模式
@@ -276,7 +277,7 @@ cd PaddleOCR/deploy/paddleocr-go
 
 ```shell
 # 确保C动态库路径已在环境变量中
-go build demo.go
+go build ppocr-go.go
 ```
 
 ### 3.3 执行预测demo
@@ -286,7 +287,7 @@ go build demo.go
 #### 3.3.1 单张图预测
 
 ```shell
-./demo --config config/conf.yaml --image images/test.jpg
+./ppocr-go --config config/conf.yaml --image images/test.jpg
 ```
 
 执行完成，会输出以下内容：
@@ -296,7 +297,7 @@ go build demo.go
 #### 3.3.2 文件夹批量预测
 
 ```shell
-./demo --config config/conf.yaml --image_dir ./images
+./ppocr-go --config config/conf.yaml --image_dir ./images
 ```
 
 执行完成，会输出以下内容：
@@ -306,7 +307,7 @@ go build demo.go
 #### 3.3.3 开启OCR Server
 
 ```shell
-./demo --use_servering --port=18600
+./ppocr-go --use_servering --port=18600
 ```
 
 开启服务后，可以在其他客户端中通过`post`请求进行ocr预测。此处以`Python`客户端为例，如下所示
