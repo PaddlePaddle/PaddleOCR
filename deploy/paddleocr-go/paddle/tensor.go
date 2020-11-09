@@ -7,8 +7,6 @@ package paddle
 import "C"
 
 import (
-	"bytes"
-	"encoding/binary"
 	"reflect"
 	"runtime"
 	"unsafe"
@@ -34,23 +32,46 @@ var types = []struct {
 	{reflect.TypeOf(uint8(0)), UINT8},
 }
 
-func TypeOfShape(dtype PaddleDType, shape []int32) reflect.Type {
+func typeOfDataType(dtype PaddleDType) reflect.Type {
 	var ret reflect.Type
 	for _, t := range types {
-		if dtype == PaddleDType(t.dtype) {
+		if t.dtype == dtype {
 			ret = t.gotype
-			break
 		}
 	}
-
-	if ret == nil {
-		panic(bug("Data %v type is not support", dtype))
-	}
-
-	for range shape {
-		ret = reflect.SliceOf(ret)
-	}
 	return ret
+}
+
+func sizeofDataType(dtype PaddleDType) int32 {
+	switch dtype {
+	case UINT8:
+		return int32(C.sizeof_uchar)
+	case INT32:
+		return int32(C.sizeof_int)
+	case INT64:
+		return int32(C.sizeof_longlong)
+	case FLOAT32:
+		return int32(C.sizeof_float)
+	}
+	return -1
+}
+
+func shapeAndTypeOf(val reflect.Value) (shape []int32, dt PaddleDType) {
+	gotype := val.Type()
+	for gotype.Kind() == reflect.Array || gotype.Kind() == reflect.Slice {
+		shape = append(shape, int32(val.Len()))
+		if val.Len() > 0 {
+			val = val.Index(0)
+		}
+		gotype = gotype.Elem()
+	}
+
+	for _, t := range types {
+		if gotype.Kind() == t.gotype.Kind() {
+			return shape, PaddleDType(t.dtype)
+		}
+	}
+	return shape, dt
 }
 
 type ZeroCopyTensor struct {
@@ -82,8 +103,6 @@ func (tensor *ZeroCopyTensor) Name() string {
 func (tensor *ZeroCopyTensor) Rename(name string) {
 	tensor.name = name
 	tensor.c.name = (*C.char)(unsafe.Pointer(tensor.c.name))
-	//tensor.c.name = C.CString(tensor.name)
-	//defer C.free(unsafe.Pointer(tensor.c.name))
 }
 
 func (tensor *ZeroCopyTensor) Reshape(shape []int32) {
@@ -107,9 +126,9 @@ func (tensor *ZeroCopyTensor) DataType() PaddleDType {
 
 func (tensor *ZeroCopyTensor) SetValue(value interface{}) {
 	val := reflect.ValueOf(value)
-	shape, dtype := ShapeAndTypeOf(val)
+	shape, dtype := shapeAndTypeOf(val)
 	num := numel(shape)
-	length := C.size_t(SizeofDataType(dtype) * num)
+	length := C.size_t(sizeofDataType(dtype) * num)
 	if tensor.c.data.capacity < length {
 		if tensor.c.data.capacity != C.size_t(0) {
 			C.free(tensor.c.data.data)
@@ -136,35 +155,89 @@ func (tensor *ZeroCopyTensor) SetValue(value interface{}) {
 	tensor.c.dtype = C.PD_DataType(dtype)
 }
 
-func TypeOf(dtype PaddleDType, shape []int32) reflect.Type {
-	var ret reflect.Type
-	for _, t := range types {
-		if t.dtype == dtype {
-			ret = t.gotype
-			break
-		}
-	}
-
-	for range shape {
-		ret = reflect.SliceOf(ret)
-	}
-	return ret
-}
-
-func (tensor *ZeroCopyTensor) Value() interface{} {
-	t := TypeOf(PaddleDType(tensor.c.dtype), tensor.shape)
-	value := reflect.New(t)
-	c_bytes := tensor.c.data.data
+func (tensor *ZeroCopyTensor) tensorData() []byte {
+	cbytes := tensor.c.data.data
 	length := tensor.c.data.length
 	var slice []byte
 	if unsafe.Sizeof(unsafe.Pointer(nil)) == 8 {
-		slice = (*[1<<50 - 1]byte)(unsafe.Pointer(c_bytes))[:length:length]
+		slice = (*[1<<50 - 1]byte)(unsafe.Pointer(cbytes))[:length:length]
 	} else {
-		slice = (*[1 << 30]byte)(unsafe.Pointer(c_bytes))[:length:length]
+		slice = (*[1 << 30]byte)(unsafe.Pointer(cbytes))[:length:length]
 	}
-	r := bytes.NewReader(slice)
-	DecodeTensor(r, tensor.Shape(), t, value)
-	return reflect.Indirect(value).Interface()
+	return slice
+}
+
+func (tensor *ZeroCopyTensor) Value() interface{} {
+	t := typeOfDataType(PaddleDType(tensor.c.dtype))
+	data := tensor.tensorData()
+	return decodeTensor(data, tensor.Shape(), t).Interface()
+}
+
+// It isn't safe to use reflect.SliceHeader as it uses a uintptr for Data and
+// this is not inspected by the garbage collector
+type sliceHeader struct {
+	Data unsafe.Pointer
+	Len  int
+	Cap  int
+}
+
+func decodeTensor(raw []byte, shape []int32, t reflect.Type) reflect.Value {
+	// Create a 1-dimensional slice of the base large enough for the data and
+	// copy the data in.
+	n := int(numel(shape))
+
+	l := n * int(t.Size())
+	typ := reflect.SliceOf(t)
+	slice := reflect.MakeSlice(typ, n, n)
+	baseBytes := *(*[]byte)(unsafe.Pointer(&sliceHeader{
+		Data: unsafe.Pointer(slice.Pointer()),
+		Len:  l,
+		Cap:  l,
+	}))
+	copy(baseBytes, raw)
+
+	if len(shape) == 0 {
+		// for n
+		return slice.Index(0)
+	}
+	if len(shape) == 1 {
+		// for {}
+		return slice
+	}
+	// for {{} {}} {{} {}} {{} {}}
+	if n == 0 {
+		n = int(numel(shape[:len(shape)-1]))
+	}
+	for i := len(shape) - 2; i >= 0; i-- {
+		underlyingSize := typ.Elem().Size()
+		typ = reflect.SliceOf(typ)
+		subsliceLen := int(shape[i+1])
+		if subsliceLen != 0 {
+			n = n / subsliceLen
+		}
+		data := unsafe.Pointer(slice.Pointer())
+		nextSlice := reflect.MakeSlice(typ, n, n)
+
+		for j := 0; j < n; j++ {
+			// This is equivalent to nSlice[j] = slice[j*subsliceLen: (j+1)*subsliceLen]
+			setSliceInSlice(nextSlice, j, sliceHeader{
+				Data: unsafe.Pointer(uintptr(data) + (uintptr(j*subsliceLen) * underlyingSize)),
+				Len:  subsliceLen,
+				Cap:  subsliceLen,
+			})
+		}
+
+		slice = nextSlice
+	}
+	return slice
+}
+
+// setSliceInSlice sets slice[index] = content.
+func setSliceInSlice(slice reflect.Value, index int, content sliceHeader) {
+	const sliceSize = unsafe.Sizeof(sliceHeader{})
+	// We must cast slice.Pointer to uninptr & back again to avoid GC issues.
+	// See https://github.com/google/go-cmp/issues/167#issuecomment-546093202
+	*(*sliceHeader)(unsafe.Pointer(uintptr(unsafe.Pointer(slice.Pointer())) + (uintptr(index) * sliceSize))) = content
 }
 
 func (tensor *ZeroCopyTensor) Lod() []uint {
@@ -174,74 +247,4 @@ func (tensor *ZeroCopyTensor) Lod() []uint {
 	valHdr.Len = int(tensor.c.lod.length / C.sizeof_size_t)
 	valHdr.Cap = int(tensor.c.lod.length / C.sizeof_size_t)
 	return val
-}
-
-func Endian() binary.ByteOrder {
-	buf := [2]byte{}
-	*(*uint16)(unsafe.Pointer(&buf[0])) = uint16(0xABCD)
-
-	var endian binary.ByteOrder
-
-	switch buf {
-	case [2]byte{0xCD, 0xAB}:
-		endian = binary.LittleEndian
-	case [2]byte{0xAB, 0xCD}:
-		endian = binary.BigEndian
-	default:
-		panic("Could not determine native endianness.")
-	}
-	return endian
-}
-
-func DecodeTensor(r *bytes.Reader, shape []int32, t reflect.Type, ptr reflect.Value) {
-	switch t.Kind() {
-	case reflect.Uint8, reflect.Int32, reflect.Int64, reflect.Float32:
-		binary.Read(r, Endian(), ptr.Interface())
-	case reflect.Slice:
-		value := reflect.Indirect(ptr)
-		value.Set(reflect.MakeSlice(t, int(shape[0]), int(shape[0])))
-		if len(shape) == 1 && value.Len() > 0 {
-			switch value.Index(0).Kind() {
-			case reflect.Uint8, reflect.Int32, reflect.Int64, reflect.Float32:
-				binary.Read(r, Endian(), value.Interface())
-				return
-			}
-		}
-
-		for i := 0; i < value.Len(); i++ {
-			DecodeTensor(r, shape[1:], t.Elem(), value.Index(i).Addr())
-		}
-	}
-}
-
-func SizeofDataType(dtype PaddleDType) int32 {
-	switch dtype {
-	case UINT8:
-		return int32(C.sizeof_uchar)
-	case INT32:
-		return int32(C.sizeof_int)
-	case INT64:
-		return int32(C.sizeof_longlong)
-	case FLOAT32:
-		return int32(C.sizeof_float)
-	}
-	return -1
-}
-
-func ShapeAndTypeOf(val reflect.Value) (shape []int32, dt PaddleDType) {
-	gotype := val.Type()
-	for gotype.Kind() == reflect.Array || gotype.Kind() == reflect.Slice {
-		shape = append(shape, int32(val.Len()))
-		if val.Len() > 0 {
-			val = val.Index(0)
-		}
-		gotype = gotype.Elem()
-	}
-
-	for _, t := range types {
-		if gotype.Kind() == t.gotype.Kind() {
-			return shape, PaddleDType(t.dtype)
-		}
-	}
-	return shape, dt
 }
