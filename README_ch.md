@@ -13,7 +13,6 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - 2020.8.21 更新8月18日B站直播课回放和PPT，课节2，易学易用的OCR工具大礼包，[获取地址](https://aistudio.baidu.com/aistudio/education/group/info/1519)
 - [More](./doc/doc_ch/update.md)
 
-
 ## 特性
 
 - PPOCR系列高质量预训练模型，准确的识别效果
