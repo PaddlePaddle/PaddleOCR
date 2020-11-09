@@ -121,7 +121,10 @@ def merge_config(config):
                 global_config.keys(), sub_keys[0])
             cur = global_config[sub_keys[0]]
             for idx, sub_key in enumerate(sub_keys[1:]):
-                assert (sub_key in cur)
+                assert (
+                    sub_key in cur
+                ), "key {} not in sub_keys: {}, please check your running command.".format(
+                    sub_key, cur)
                 if idx == len(sub_keys) - 2:
                     cur[sub_key] = value
                 else:

@@ -16,6 +16,7 @@ Global:
   checkpoints:
   save_res_path: ./output/det_db/predicts_db.txt
   save_inference_dir:
+  infer_img:
   
 Architecture:
   function: ppocr.modeling.architectures.det_model,DetModel

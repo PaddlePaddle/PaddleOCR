@@ -15,6 +15,7 @@ Global:
   save_res_path: ./output/det_sast/predicts_sast.txt
   checkpoints: 
   save_inference_dir:
+  infer_img:
 
 Architecture:
   function: ppocr.modeling.architectures.det_model,DetModel
