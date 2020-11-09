@@ -2,6 +2,7 @@ shapely
 imgaug
 pyclipper
 lmdb
+opencv-python==4.2.0.32
 tqdm
 numpy
 visualdl
