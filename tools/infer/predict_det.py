@@ -22,7 +22,6 @@ import cv2
 import numpy as np
 import time
 import sys
-
 import paddle
 
 import tools.infer.utility as utility
@@ -39,7 +38,7 @@ class TextDetector(object):
         postprocess_params = {}
         if self.det_algorithm == "DB":
             pre_process_list = [{
-                'ResizeForTest': {
+                'DetResizeForTest': {
                     'limit_side_len': args.det_limit_side_len,
                     'limit_type': args.det_limit_type
                 }
@@ -53,7 +52,7 @@ class TextDetector(object):
             }, {
                 'ToCHWImage': None
             }, {
-                'keepKeys': {
+                'KeepKeys': {
                     'keep_keys': ['image', 'shape']
                 }
             }]
@@ -68,8 +67,9 @@ class TextDetector(object):
 
         self.preprocess_op = create_operators(pre_process_list)
         self.postprocess_op = build_post_process(postprocess_params)
-        self.predictor = paddle.jit.load(args.det_model_dir)
-        self.predictor.eval()
+        self.predictor, self.input_tensor, self.output_tensors = utility.create_predictor(
+            args, 'det', logger)  # paddle.jit.load(args.det_model_dir)
+        # self.predictor.eval()
 
     def order_points_clockwise(self, pts):
         """
@@ -133,11 +133,23 @@ class TextDetector(object):
             return None, 0
         img = np.expand_dims(img, axis=0)
         shape_list = np.expand_dims(shape_list, axis=0)
+        img = img.copy()
         starttime = time.time()
 
-        preds = self.predictor(img)
-        post_result = self.postprocess_op(preds, shape_list)
+        if self.use_zero_copy_run:
+            self.input_tensor.copy_from_cpu(img)
+            self.predictor.zero_copy_run()
+        else:
+            im = paddle.fluid.core.PaddleTensor(img)
+            self.predictor.run([im])
+        outputs = []
+        for output_tensor in self.output_tensors:
+            output = output_tensor.copy_to_cpu()
+            outputs.append(output)
+        preds = outputs[0]
 
+        # preds = self.predictor(img)
+        post_result = self.postprocess_op(preds, shape_list)
         dt_boxes = post_result[0]['points']
         dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
         elapse = time.time() - starttime
@@ -146,8 +158,6 @@ class TextDetector(object):
 
 if __name__ == "__main__":
     args = utility.parse_args()
-    place = paddle.CPUPlace()
-    paddle.disable_static(place)
 
     image_file_list = get_image_file_list(args.image_dir)
     logger = get_logger()
