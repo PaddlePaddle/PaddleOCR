@@ -89,7 +89,8 @@ def init_model(config, model, logger, optimizer=None, lr_scheduler=None):
             "Given dir {}.pdparams not exist.".format(checkpoints)
         assert os.path.exists(checkpoints + ".pdopt"), \
             "Given dir {}.pdopt not exist.".format(checkpoints)
-        para_dict, opti_dict = paddle.load(checkpoints)
+        para_dict = paddle.load(checkpoints + '.pdparams')
+        opti_dict = paddle.load(checkpoints + '.pdopt')
         model.set_dict(para_dict)
         if optimizer is not None:
             optimizer.set_state_dict(opti_dict)
@@ -133,8 +134,8 @@ def save_model(net,
     """
     _mkdir_if_not_exist(model_path, logger)
     model_prefix = os.path.join(model_path, prefix)
-    paddle.save(net.state_dict(), model_prefix)
-    paddle.save(optimizer.state_dict(), model_prefix)
+    paddle.save(net.state_dict(), model_prefix + '.pdparams')
+    paddle.save(optimizer.state_dict(), model_prefix + '.pdopt')
 
     # save metric and config
     with open(model_prefix + '.states', 'wb') as f:
