@@ -18,15 +18,24 @@ deployment solutions for end-side deployment issues.
 2. [Linux](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_env.html#linux)
 3. [MAC OS](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_env.html#mac-os)
 
-## 3. Download prebuild library for android and ios
+## 3. Prepare prebuild library for android and ios
 
+### 3.1 Download prebuild library
 |Platform|Prebuild library Download Link|
 |-|-|
 |Android|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.android.armv7.gcc.c++_shared.with_extra.with_cv.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.android.armv8.gcc.c++_shared.with_extra.with_cv.tar.gz)|
 |IOS|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.ios.armv7.with_cv.with_extra.with_log.tiny_publish.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.ios.armv8.with_cv.with_extra.with_log.tiny_publish.tar.gz)|
 
-note: The above pre-build inference library is compiled from the PaddleLite `release/2.6.3` branch. For more information about PaddleLite 2.6.3, please refer to [link](https://github.com/PaddlePaddle/Paddle-Lite/releases/tag/v2.6.3).
+note: The above pre-build inference library is compiled from the PaddleLite `release/v2.7` branch. For more information about PaddleLite 2.6.3, please refer to [link](https://github.com/PaddlePaddle/Paddle-Lite/releases/tag/v2.6.3).
 
+### 3.2 Compile prebuild library (Recommended)
+```
+git clone https://github.com/PaddlePaddle/Paddle-Lite.git
+cd Paddle-Lite
+# checkout to Paddle-Lite release/v2.7 branch
+git checkout release/v2.7
+./lite/tools/build_android.sh  --arch=armv8  --with_cv=ON --with_extra=ON
+```
 
 The structure of the prediction library is as follows:
 
@@ -76,9 +85,7 @@ If the model to be deployed is not in the above table, you need to follow the st
 ```
 git clone https://github.com/PaddlePaddle/Paddle-Lite.git
 cd Paddle-Lite
-git checkout develop
-# switch to the specified commit
-git reset --hard 55c53482bcdd2868373d024dd1144e4c5ec0e6b8
+git checkout release/v2.7
 ./lite/tools/build.sh build_optimize_tool
 ```
 
