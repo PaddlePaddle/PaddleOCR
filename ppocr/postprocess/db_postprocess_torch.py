@@ -1,4 +1,5 @@
 import cv2
+import paddle
 import numpy as np
 import pyclipper
 from shapely.geometry import Polygon
@@ -23,7 +24,9 @@ class DBPostProcess():
         pred:
             binary: text region segmentation map, with shape (N, 1,H, W)
         '''
-        pred = pred.numpy()[:, 0, :, :]
+        if isinstance(pred, paddle.Tensor):
+            pred = pred.numpy()
+        pred = pred[:, 0, :, :]
         segmentation = self.binarize(pred)
         batch_out = []
         for batch_index in range(pred.shape[0]):

@@ -27,12 +27,11 @@ sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
 
 import paddle
 
-from ppocr.utils.logging import get_logger
 from ppocr.data import create_operators, transform
-from ppocr.modeling import build_model
+from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
 from ppocr.utils.save_load import init_model
-from ppocr.utils.utility import print_dict, get_image_file_list
+from ppocr.utils.utility import get_image_file_list
 import tools.program as program
 
 
@@ -54,13 +53,13 @@ def main():
 
     # create data ops
     transforms = []
-    for op in config['EVAL']['dataset']['transforms']:
+    for op in config['Eval']['dataset']['transforms']:
         op_name = list(op)[0]
         if 'Label' in op_name:
             continue
         elif op_name in ['RecResizeImg']:
             op[op_name]['infer_mode'] = True
-        elif op_name == 'keepKeys':
+        elif op_name == 'KeepKeys':
             op[op_name]['keep_keys'] = ['image']
         transforms.append(op)
     global_config['infer_mode'] = True
@@ -75,22 +74,14 @@ def main():
         batch = transform(data, ops)
 
         images = np.expand_dims(batch[0], axis=0)
-        images = paddle.to_variable(images)
+        images = paddle.to_tensor(images)
         preds = model(images)
         post_result = post_process_class(preds)
         for rec_reuslt in post_result:
             logger.info('\t result: {}'.format(rec_reuslt))
     logger.info("success!")
 
-    # save inference model
-    # currently, paddle.jit.to_static not support rnn
-    # paddle.jit.save(model, 'output/rec/model')
-
 
 if __name__ == '__main__':
-    place, config = program.preprocess()
-    paddle.disable_static(place)
-
-    logger = get_logger()
-    print_dict(config, logger)
+    config, device, logger, vdl_writer = program.preprocess()
     main()
