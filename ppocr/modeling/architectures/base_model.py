@@ -16,12 +16,13 @@ from __future__ import division
 from __future__ import print_function
 
 from paddle import nn
-
+from ppocr.modeling.transform import build_transform
 from ppocr.modeling.backbones import build_backbone
 from ppocr.modeling.necks import build_neck
 from ppocr.modeling.heads import build_head
 
 __all__ = ['BaseModel']
+
 
 class BaseModel(nn.Layer):
     def __init__(self, config):
@@ -31,7 +32,7 @@ class BaseModel(nn.Layer):
             config (dict): the super parameters for module.
         """
         super(BaseModel, self).__init__()
-        
+
         in_channels = config.get('in_channels', 3)
         model_type = config['model_type']
         # build transfrom,
@@ -50,7 +51,7 @@ class BaseModel(nn.Layer):
         config["Backbone"]['in_channels'] = in_channels
         self.backbone = build_backbone(config["Backbone"], model_type)
         in_channels = self.backbone.out_channels
-        
+
         # build neck
         # for rec, neck can be cnn,rnn or reshape(None)
         # for det, neck can be FPN, BIFPN and so on.
@@ -62,7 +63,7 @@ class BaseModel(nn.Layer):
             config['Neck']['in_channels'] = in_channels
             self.neck = build_neck(config['Neck'])
             in_channels = self.neck.out_channels
-        
+
         # # build head, head is need for det, rec and cls
         config["Head"]['in_channels'] = in_channels
         self.head = build_head(config["Head"])
