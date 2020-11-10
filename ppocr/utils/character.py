@@ -20,15 +20,24 @@ import sys
 
 
 class CharacterOps(object):
-    """ Convert between text-label and text-index """
+    """
+    Convert between text-label and text-index
+    Args:
+        config: config from yaml file
+    """
 
     def __init__(self, config):
         self.character_type = config['character_type']
         self.loss_type = config['loss_type']
+        self.max_text_len = config['max_text_length']
+        # use the default dictionary(36 char)
         if self.character_type == "en":
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
-        elif self.character_type == "ch":
+        # use the custom dictionary
+        elif self.character_type in [
+                "ch", 'japan', 'korean', 'french', 'german'
+        ]:
             character_dict_path = config['character_dict_path']
             add_space = False
             if 'use_space_char' in config:
@@ -52,23 +61,27 @@ class CharacterOps(object):
             "Nonsupport type of the character: {}".format(self.character_str)
         self.beg_str = "sos"
         self.end_str = "eos"
+        # add start and end str for attention
         if self.loss_type == "attention":
             dict_character = [self.beg_str, self.end_str] + dict_character
+        elif self.loss_type == "srn":
+            dict_character = dict_character + [self.beg_str, self.end_str]
+        # create char dict
         self.dict = {}
         for i, char in enumerate(dict_character):
             self.dict[char] = i
         self.character = dict_character
 
     def encode(self, text):
-        """convert text-label into text-index.
-        input:
+        """
+        convert text-label into text-index.
+        Args:
             text: text labels of each image. [batch_size]
-
-        output:
+        Return:
             text: concatenated text index for CTCLoss.
                     [sum(text_lengths)] = [text_index_0 + text_index_1 + ... + text_index_(n - 1)]
-            length: length of each text. [batch_size]
         """
+        # Ignore capital
         if self.character_type == "en":
             text = text.lower()
 
@@ -81,7 +94,15 @@ class CharacterOps(object):
         return text
 
     def decode(self, text_index, is_remove_duplicate=False):
-        """ convert text-index into text-label. """
+        """
+        convert text-index into text-label.
+        Args:
+            text_index: text index for each image
+            is_remove_duplicate: Whether to remove duplicate characters,
+                                 The default is False
+        Return:
+            text: text label
+        """
         char_list = []
         char_num = self.get_char_num()
 
@@ -103,6 +124,9 @@ class CharacterOps(object):
         return text
 
     def get_char_num(self):
+        """
+        Get character num
+        """
         return len(self.character)
 
     def get_beg_end_flag_idx(self, beg_or_end):
@@ -127,6 +151,21 @@ def cal_predicts_accuracy(char_ops,
                           labels,
                           labels_lod,
                           is_remove_duplicate=False):
+    """
+    Calculate prediction accuracy
+    Args:
+        char_ops: CharacterOps
+        preds: preds result,text index
+        preds_lod: lod tensor of preds
+        labels: label of input image, text index
+        labels_lod:  lod tensor of label
+        is_remove_duplicate: Whether to remove duplicate characters,
+                                 The default is False
+    Return:
+        acc: The accuracy of test set
+        acc_num: The correct number of samples predicted
+        img_num: The total sample number of the test set
+    """
     acc_num = 0
     img_num = 0
     for ino in range(len(labels_lod) - 1):
@@ -147,7 +186,51 @@ def cal_predicts_accuracy(char_ops,
     return acc, acc_num, img_num
 
 
+def cal_predicts_accuracy_srn(char_ops,
+                              preds,
+                              labels,
+                              max_text_len,
+                              is_debug=False):
+    acc_num = 0
+    img_num = 0
+
+    char_num = char_ops.get_char_num()
+
+    total_len = preds.shape[0]
+    img_num = int(total_len / max_text_len)
+    for i in range(img_num):
+        cur_label = []
+        cur_pred = []
+        for j in range(max_text_len):
+            if labels[j + i * max_text_len] != int(char_num - 1):  #0
+                cur_label.append(labels[j + i * max_text_len][0])
+            else:
+                break
+
+        for j in range(max_text_len + 1):
+            if j < len(cur_label) and preds[j + i * max_text_len][
+                    0] != cur_label[j]:
+                break
+            elif j == len(cur_label) and j == max_text_len:
+                acc_num += 1
+                break
+            elif j == len(cur_label) and preds[j + i * max_text_len][0] == int(
+                    char_num - 1):
+                acc_num += 1
+                break
+    acc = acc_num * 1.0 / img_num
+    return acc, acc_num, img_num
+
+
 def convert_rec_attention_infer_res(preds):
+    """
+    Convert recognition attention predict result with lod information
+    Args:
+        preds: the output of the model
+    Return:
+        convert_ids: A 1-D Tensor represents all the predicted results.
+        target_lod: The lod information of the predicted results
+    """
     img_num = preds.shape[0]
     target_lod = [0]
     convert_ids = []

@@ -10,7 +10,7 @@ The following list can be viewed via `--help`
 
 ## INTRODUCTION TO GLOBAL PARAMETERS OF CONFIGURATION FILE
 
-Take `rec_chinese_lite_train.yml` as an example
+Take `rec_chinese_lite_train_v1.1.yml` as an example
 
 
 |         Parameter             |            Use                |      Default       |            Note            |
@@ -32,6 +32,7 @@ Take `rec_chinese_lite_train.yml` as an example
 |      loss_type           |    Set loss type              |       ctc         |    Supports two types of loss: ctc / attention |
 |       distort            |    Set use distort          |       false       |  Support distort type ,read [img_tools.py](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/rec/img_tools.py)                 |
 |      use_space_char          |    Wether to recognize space             |        false      |         Only support in character_type=ch mode                 |
+     label_list          | Set the angle supported by the direction classifier | ['0','180'] | Only valid in the direction classifier |
 |      reader_yml          |    Set the reader configuration file          |  ./configs/rec/rec_icdar15_reader.yml  |  \          |
 |      pretrain_weights    |    Load pre-trained model path      |  ./pretrain_models/CRNN/best_accuracy  |  \          |
 |      checkpoints         |    Load saved model path            |       None        |    Used to load saved parameters to continue training after interruption |
@@ -60,6 +61,9 @@ Take `rec_icdar15_train.yml` as an example:
 |         beta1           |    Set the exponential decay rate for the 1st moment estimates  |       0.9         |               \             |
 |         beta2           |    Set the exponential decay rate for the 2nd moment estimates  |     0.999         |               \             |
 |         decay           |         Whether to use decay       |    \              |               \             |
-|      function(decay)    |         Set the decay function       |   cosine_decay    |           Only support cosine_decay            |
-|      step_each_epoch    |      The number of steps in an epoch.  |         20       | Calculation ：total_image_num / (batch_size_per_card * card_size) |
-|        total_epoch      |    The number of epochs      |       1000      | Consistent with Global.epoch_num      |
+|      function(decay)    |         Set the decay function       |   cosine_decay    |         Support cosine_decay, cosine_decay_warmup and piecewise_decay            |
+|      step_each_epoch    |      The number of steps in an epoch. Used in cosine_decay/cosine_decay_warmup  |         20       | Calculation: total_image_num / (batch_size_per_card * card_size) |
+|        total_epoch      |    The number of epochs. Used in cosine_decay/cosine_decay_warmup      |       1000      | Consistent with Global.epoch_num      |
+|        warmup_minibatch      |  Number of steps for linear warmup. Used in cosine_decay_warmup        |       1000      | \        |
+|        boundaries      |    The step intervals to reduce learning rate. Used in piecewise_decay       |       -      |  The format is list        |
+|        decay_rate      |    Learning rate decay rate. Used in piecewise_decay       |       -      |  \        |

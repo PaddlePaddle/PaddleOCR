@@ -22,9 +22,9 @@ import json
 
 import os
 import sys
-__dir__ = os.path.dirname(__file__)
+__dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.append(os.path.join(__dir__, '..'))
+sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
 
 
 def set_paddle_flags(**kwargs):
@@ -70,7 +70,7 @@ def draw_det_res(dt_boxes, config, img, img_name):
 def main():
     config = program.load_config(FLAGS.config)
     program.merge_config(FLAGS.opt)
-    print(config)
+    logger.info(config)
 
     # check if set use_gpu=True in paddlepaddle cpu version
     use_gpu = config['Global']['use_gpu']
@@ -104,8 +104,8 @@ def main():
     save_res_path = config['Global']['save_res_path']
     if not os.path.exists(os.path.dirname(save_res_path)):
         os.makedirs(os.path.dirname(save_res_path))
-    with open(save_res_path, "wb") as fout:
 
+    with open(save_res_path, "wb") as fout:
         test_reader = reader_main(config=config, mode='test')
         tackling_num = 0
         for data in test_reader():
@@ -134,8 +134,16 @@ def main():
                 dic = {'f_score': outs[0], 'f_geo': outs[1]}
             elif config['Global']['algorithm'] == 'DB':
                 dic = {'maps': outs[0]}
+            elif config['Global']['algorithm'] == 'SAST':
+                dic = {
+                    'f_score': outs[0],
+                    'f_border': outs[1],
+                    'f_tvo': outs[2],
+                    'f_tco': outs[3]
+                }
             else:
-                raise Exception("only support algorithm: ['EAST', 'DB']")
+                raise Exception(
+                    "only support algorithm: ['EAST', 'DB', 'SAST']")
             dt_boxes_list = postprocess(dic, ratio_list)
             for ino in range(img_num):
                 dt_boxes = dt_boxes_list[ino]

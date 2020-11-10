@@ -16,6 +16,8 @@ import math
 import cv2
 import numpy as np
 import json
+import sys
+import os
 
 
 class EASTProcessTrain(object):
@@ -52,7 +54,7 @@ class EASTProcessTrain(object):
         label_infor = label_infor.decode()
         label_infor = label_infor.encode('utf-8').decode('utf-8-sig')
         substr = label_infor.strip("\n").split("\t")
-        img_path = self.img_set_dir + substr[0]
+        img_path = os.path.join(self.img_set_dir, substr[0])
         label = json.loads(substr[1])
         nBox = len(label)
         wordBBs, txts, txt_tags = [], [], []
@@ -78,7 +80,7 @@ class EASTProcessTrain(object):
         dst_polys = []
         rand_degree_ratio = np.random.rand()
         rand_degree_cnt = 1
-        if rand_degree_ratio > 0.333 and rand_degree_ratio < 0.666:
+        if 0.333 < rand_degree_ratio < 0.666:
             rand_degree_cnt = 2
         elif rand_degree_ratio > 0.666:
             rand_degree_cnt = 3
@@ -138,7 +140,7 @@ class EASTProcessTrain(object):
                 continue
             if p_area > 0:
                 #'poly in wrong direction'
-                if tag == False:
+                if not tag:
                     tag = True  #reversed cases should be ignore
                 poly = poly[(0, 3, 2, 1), :]
             validated_polys.append(poly)
@@ -494,13 +496,13 @@ class EASTProcessTest(object):
         elif resize_h // 32 <= 1:
             resize_h = 32
         else:
-            resize_h = (resize_h // 32 - 1) * 32
+            resize_h = (resize_h // 32) * 32
         if resize_w % 32 == 0:
             resize_w = resize_w
         elif resize_w // 32 <= 1:
             resize_w = 32
         else:
-            resize_w = (resize_w // 32 - 1) * 32
+            resize_w = (resize_w // 32) * 32
         try:
             if int(resize_w) <= 0 or int(resize_h) <= 0:
                 return None, (None, None)

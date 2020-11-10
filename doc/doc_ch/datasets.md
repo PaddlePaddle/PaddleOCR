@@ -1,4 +1,4 @@
-## 数据集
+## 通用中英文OCR数据集
 这里整理了常用中文数据集，持续更新中，欢迎各位小伙伴贡献数据集～
 - [ICDAR2019-LSVT](#ICDAR2019-LSVT)
 - [ICDAR2017-RCTW-17](#ICDAR2017-RCTW-17)
@@ -6,7 +6,9 @@
 - [中文文档文字识别](#中文文档文字识别)
 - [ICDAR2019-ArT](#ICDAR2019-ArT)
 
-除了开源数据，用户还可使用合成工具自行合成，可参考的合成工具包括[text_renderer](https://github.com/Sanster/text_renderer)、[SynthText](https://github.com/ankush-me/SynthText)、[SynthText_Chinese_version](https://github.com/JarveeLee/SynthText_Chinese_version)、[TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator)等。
+除了开源数据，用户还可使用合成工具自行合成，可参考[数据合成工具](./data_synthesis.md)；
+
+如果需要标注自己的数据，可参考[数据标注工具](./data_annotation.md)。  
 
 <a name="ICDAR2019-LSVT"></a>
 #### 1、ICDAR2019-LSVT
@@ -17,6 +19,7 @@
     ![](../datasets/LSVT_2.jpg)  
     (b) 弱标注数据  
 - **下载地址**：https://ai.baidu.com/broad/download?dataset=lsvt
+- **说明**：其中，test数据集的label目前没有开源，如要评估结果，可以去官网提交：https://rrc.cvc.uab.es/?ch=16
 
 <a name="ICDAR2017-RCTW-17"></a>
 #### 2、ICDAR2017-RCTW-17

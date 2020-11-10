@@ -10,7 +10,7 @@
 
 ## 配置文件 Global 参数介绍
 
-以 `rec_chinese_lite_train.yml` 为例
+以 `rec_chinese_lite_train_v1.1.yml ` 为例
 
 
 |         字段             |            用途                |      默认值       |            备注            |
@@ -32,6 +32,10 @@
 |      loss_type           |    设置 loss 类型              |       ctc         |    支持两种loss： ctc / attention |
 |       distort            |    设置是否使用数据增强          |       false       |  设置为true时，将在训练时随机进行扰动，支持的扰动操作可阅读[img_tools.py](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/rec/img_tools.py)                 |
 |       use_space_char     |    设置是否识别空格             |        false      |          仅在 character_type=ch 时支持空格                 |
+|      label_list          |    设置方向分类器支持的角度       |    ['0','180']    |     仅在方向分类器中生效 |
+|      average_window      |    ModelAverage优化器中的窗口长度计算比例 |  0.15       |       目前仅应用与SRN |
+|      max_average_window  |    平均值计算窗口长度的最大值   |   15625              | 推荐设置为一轮训练中mini-batchs的数目|
+|      min_average_window  |    平均值计算窗口长度的最小值  |    10000              |      \          |
 |      reader_yml          |    设置reader配置文件          |  ./configs/rec/rec_icdar15_reader.yml  |  \          |
 |      pretrain_weights    |    加载预训练模型路径      |  ./pretrain_models/CRNN/best_accuracy  |  \          |
 |      checkpoints         |    加载模型参数路径            |       None        |    用于中断后加载参数继续训练 |
@@ -60,6 +64,9 @@
 |         beta1           |    设置一阶矩估计的指数衰减率  |       0.9         |               \             |
 |         beta2           |    设置二阶矩估计的指数衰减率  |     0.999         |               \             |
 |         decay           |         是否使用decay       |    \              |               \             |
-|      function(decay)    |         设置decay方式       |   cosine_decay    |       目前只支持cosin_decay  |
-|      step_each_epoch    |      每个epoch包含多少次迭代  |         20       | 计算方式：total_image_num / (batch_size_per_card * card_size) |
-|        total_epoch      |    总共迭代多少个epoch        |       1000      | 与Global.epoch_num 一致        |
+|      function(decay)    |         设置decay方式       |   -    |       目前支持cosine_decay, cosine_decay_warmup与piecewise_decay  |
+|      step_each_epoch    |      每个epoch包含多少次迭代, cosine_decay/cosine_decay_warmup时有效   |         20       | 计算方式：total_image_num / (batch_size_per_card * card_size) |
+|        total_epoch      |    总共迭代多少个epoch, cosine_decay/cosine_decay_warmup时有效        |       1000      | 与Global.epoch_num 一致        |
+|        warmup_minibatch      |  线性warmup的迭代次数, cosine_decay_warmup时有效        |       1000      | \        |
+|        boundaries      |    学习率下降时的迭代次数间隔, piecewise_decay时有效       |       -      | 参数为列表形式        |
+|        decay_rate      |    学习率衰减系数, piecewise_decay时有效       |       -      |  \        |
