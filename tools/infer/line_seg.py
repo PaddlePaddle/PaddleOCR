@@ -33,6 +33,12 @@ class LineSeg:
         y = (a2 * c1 - a1 * c2) / (a1 * b2 - a2 * b1)
         return round(x), round(y)
 
+    def get_cross_point_by_param(self, a2, b2, c2):
+        a1, b1, c1 = self.A, self.B, self.C
+        x = (b1 * c2 - b2 * c1) / (a1 * b2 - a2 * b1)
+        y = (a2 * c1 - a1 * c2) / (a1 * b2 - a2 * b1)
+        return int(round(x)), int(round(y))
+
     def get_line_vertical(self, pt):
         px, py = pt[0], pt[1]
         AA, BB, CC = 0, 0, 0
