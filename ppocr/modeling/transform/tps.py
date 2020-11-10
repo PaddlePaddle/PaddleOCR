@@ -102,13 +102,11 @@ class LocalizationNetwork(nn.Layer):
         name = "loc_fc2"
         param_attr = ParamAttr(
             learning_rate=loc_lr,
-            initializer=paddle.fluid.initializer.NumpyArrayInitializer(
-                np.zeros([fc_dim, F * 2])),
+            initializer=nn.initializer.Assign(np.zeros([fc_dim, F * 2])),
             name=name + "_w")
         bias_attr = ParamAttr(
             learning_rate=loc_lr,
-            initializer=paddle.fluid.initializer.NumpyArrayInitializer(
-                initial_bias),
+            initializer=nn.initializer.Assign(initial_bias),
             name=name + "_b")
         self.fc2 = nn.Linear(
             fc_dim,
