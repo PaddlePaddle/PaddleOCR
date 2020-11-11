@@ -16,7 +16,9 @@ __all__ = ['build_transform']
 
 
 def build_transform(config):
-    support_dict = ['']
+    from .tps import TPS
+
+    support_dict = ['TPS']
 
     module_name = config.pop('name')
     assert module_name in support_dict, Exception(
