@@ -39,6 +39,7 @@ set_paddle_flags(
 import tools.program as program
 from paddle import fluid
 from ppocr.utils.utility import initial_logger
+from ppocr.utils.utility import enable_static_mode
 logger = initial_logger()
 from ppocr.data.reader_main import reader_main
 from ppocr.utils.save_load import init_model
@@ -126,6 +127,7 @@ def test_reader():
 
 
 if __name__ == '__main__':
+    enable_static_mode()
     startup_program, train_program, place, config, train_alg_type = program.preprocess(
     )
     main()
