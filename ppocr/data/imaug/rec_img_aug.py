@@ -35,7 +35,7 @@ from .text_image_aug import tia_perspective, tia_stretch, tia_distort
 
 
 class RecAug(object):
-    def __init__(self, **kwargsz):
+    def __init__(self, **kwargs):
         pass
 
     def __call__(self, data):
