@@ -323,6 +323,20 @@ def eval(model, valid_dataloader, post_process_class, eval_class):
     return metirc
 
 
+def save_inference_mode(model, config, logger):
+    model.eval()
+    save_path = '{}/infer/{}'.format(config['Global']['save_model_dir'],
+                                     config['Architecture']['model_type'])
+    if config['Architecture']['model_type'] == 'rec':
+        input_shape = [None, 3, 32, None]
+        jit_model = paddle.jit.to_static(
+            model, input_spec=[paddle.static.InputSpec(input_shape)])
+        paddle.jit.save(jit_model, save_path)
+        logger.info('inference model save to {}'.format(save_path))
+
+    model.train()
+
+
 def preprocess():
     FLAGS = ArgsParser().parse_args()
     config = load_config(FLAGS.config)
@@ -334,7 +348,7 @@ def preprocess():
 
     alg = config['Architecture']['algorithm']
     assert alg in [
-        'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN'
+        'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN', 'CLS'
     ]
 
     device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'
