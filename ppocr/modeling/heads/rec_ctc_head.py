@@ -24,7 +24,7 @@ from paddle.nn import functional as F
 
 
 def get_para_bias_attr(l2_decay, k, name):
-    regularizer = paddle.fluid.regularizer.L2Decay(l2_decay)
+    regularizer = paddle.regularizer.L2Decay(l2_decay)
     stdv = 1.0 / math.sqrt(k * 1.0)
     initializer = nn.initializer.Uniform(-stdv, stdv)
     weight_attr = ParamAttr(
@@ -32,6 +32,7 @@ def get_para_bias_attr(l2_decay, k, name):
     bias_attr = ParamAttr(
         regularizer=regularizer, initializer=initializer, name=name + "_b_attr")
     return [weight_attr, bias_attr]
+
 
 class CTCHead(nn.Layer):
     def __init__(self, in_channels, out_channels, fc_decay=0.0004, **kwargs):
