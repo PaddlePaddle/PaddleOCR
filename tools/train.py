@@ -89,6 +89,7 @@ def main(config, device, logger, vdl_writer):
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,
                   eval_class, pre_best_model_dict, logger, vdl_writer)
+    program.save_inference_mode(model, config, logger)
 
 
 def test_reader(config, device, logger):
@@ -102,8 +103,8 @@ def test_reader(config, device, logger):
             if count % 1 == 0:
                 batch_time = time.time() - starttime
                 starttime = time.time()
-                logger.info("reader: {}, {}, {}".format(count,
-                                                        len(data), batch_time))
+                logger.info("reader: {}, {}, {}".format(
+                    count, len(data[0]), batch_time))
     except Exception as e:
         logger.info(e)
     logger.info("finish reader: {}, Success!".format(count))
@@ -112,4 +113,4 @@ def test_reader(config, device, logger):
 if __name__ == '__main__':
     config, device, logger, vdl_writer = program.preprocess()
     main(config, device, logger, vdl_writer)
-#     test_reader(config, device, logger)
+    # test_reader(config, device, logger)
