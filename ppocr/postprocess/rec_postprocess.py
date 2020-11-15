@@ -102,7 +102,6 @@ class CTCLabelDecode(BaseRecLabelDecode):
     def __call__(self, preds, label=None, *args, **kwargs):
         if isinstance(preds, paddle.Tensor):
             preds = preds.numpy()
-        # out = self.decode_preds(preds)
 
         preds_idx = preds.argmax(axis=2)
         preds_prob = preds.max(axis=2)
@@ -115,27 +114,6 @@ class CTCLabelDecode(BaseRecLabelDecode):
     def add_special_char(self, dict_character):
         dict_character = ['blank'] + dict_character
         return dict_character
-
-    def decode_preds(self, preds):
-        probs_ind = np.argmax(preds, axis=2)
-
-        B, N, _ = preds.shape
-        l = np.ones(B).astype(np.int64) * N
-        length = paddle.to_tensor(l)
-        out = paddle.fluid.layers.ctc_greedy_decoder(preds, 0, length)
-        batch_res = [
-            x[:idx[0]] for x, idx in zip(out[0].numpy(), out[1].numpy())
-        ]
-
-        result_list = []
-        for sample_idx, ind, prob in zip(batch_res, probs_ind, preds):
-            char_list = [self.character[idx] for idx in sample_idx]
-            valid_ind = np.where(ind != 0)[0]
-            if len(valid_ind) == 0:
-                continue
-            conf_list = prob[valid_ind, ind[valid_ind]]
-            result_list.append((''.join(char_list), conf_list))
-        return result_list
 
 
 class AttnLabelDecode(BaseRecLabelDecode):

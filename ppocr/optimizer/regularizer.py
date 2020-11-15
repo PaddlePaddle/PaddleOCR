@@ -17,7 +17,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from paddle import fluid
+import paddle
 
 
 class L1Decay(object):
@@ -32,8 +32,7 @@ class L1Decay(object):
         self.regularization_coeff = factor
 
     def __call__(self):
-        reg = fluid.regularizer.L1Decay(
-            regularization_coeff=self.regularization_coeff)
+        reg = paddle.regularizer.L1Decay(self.regularization_coeff)
         return reg
 
 
@@ -49,6 +48,5 @@ class L2Decay(object):
         self.regularization_coeff = factor
 
     def __call__(self):
-        reg = fluid.regularizer.L2Decay(
-            regularization_coeff=self.regularization_coeff)
+        reg = paddle.regularizer.L2Decay(self.regularization_coeff)
         return reg
