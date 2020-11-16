@@ -228,7 +228,7 @@ def train(config,
             if dist.get_rank(
             ) == 0 and global_step > 0 and global_step % print_batch_step == 0:
                 logs = train_stats.log()
-                strs = 'epoch: [{}/{}], iter: {}, {}, reader_cost: {:.5f}s, batch_cost: {:.5f}s, samples: {}, ips: {:.5f}'.format(
+                strs = 'epoch: [{}/{}], iter: {}, {}, reader_cost: {:.5f} s, batch_cost: {:.5f} s, samples: {}, ips: {:.5f}'.format(
                     epoch, epoch_num, global_step, logs, train_reader_cost /
                     print_batch_step, train_batch_cost / print_batch_step,
                     batch_sum, batch_sum / train_batch_cost)
