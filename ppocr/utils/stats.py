@@ -65,5 +65,8 @@ class TrainingStats(object):
 
     def log(self, extras=None):
         d = self.get(extras)
-        strs = ', '.join(str(dict({x: y})).strip('{}') for x, y in d.items())
+        strs = []
+        for k, v in d.items():
+            strs.append('{}: {:x<6f}'.format(k, v))
+        strs = ', '.join(strs)
         return strs
