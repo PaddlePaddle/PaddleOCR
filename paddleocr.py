@@ -270,7 +270,7 @@ def main():
         result = ocr_engine.ocr(img_path,
                                 det=args.det,
                                 rec=args.rec,
-                                cls=args.cls)
+                                cls=args.use_angle_cls)
         if result is not None:
             for line in result:
                 print(line)
