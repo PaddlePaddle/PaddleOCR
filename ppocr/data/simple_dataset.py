@@ -22,6 +22,7 @@ from .imaug import transform, create_operators
 class SimpleDataSet(Dataset):
     def __init__(self, config, mode, logger):
         super(SimpleDataSet, self).__init__()
+        self.logger = logger
 
         global_config = config['Global']
         dataset_config = config[mode]['dataset']
@@ -100,16 +101,22 @@ class SimpleDataSet(Dataset):
     def __getitem__(self, idx):
         dataset_idx, file_idx = self.data_idx_order_list[idx]
         data_line = self.data_lines_list[dataset_idx][file_idx]
-        data_line = data_line.decode('utf-8')
-        substr = data_line.strip("\n").split(self.delimiter)
-        file_name = substr[0]
-        label = substr[1]
-        img_path = os.path.join(self.data_dir, file_name)
-        data = {'img_path': img_path, 'label': label}
-        with open(data['img_path'], 'rb') as f:
-            img = f.read()
-            data['image'] = img
-        outs = transform(data, self.ops)
+        try:
+            data_line = data_line.decode('utf-8')
+            substr = data_line.strip("\n").split(self.delimiter)
+            file_name = substr[1]
+            label = substr[0]
+            img_path = os.path.join(self.data_dir, file_name)
+            data = {'img_path': img_path, 'label': label}
+            with open(data['img_path'], 'rb') as f:
+                img = f.read()
+                data['image'] = img
+            outs = transform(data, self.ops)
+        except Exception as e:
+            self.logger.error(
+                "When parsing line {}, error happened with msg: {}".format(
+                    data_line, e))
+            outs = None
         if outs is None:
             return self.__getitem__(np.random.randint(self.__len__()))
         return outs
