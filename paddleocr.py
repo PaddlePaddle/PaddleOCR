@@ -205,8 +205,7 @@ class PaddleOCR(predict_system.TextSystem):
         maybe_download(postprocess_params.det_model_dir, model_urls['det'])
         maybe_download(postprocess_params.rec_model_dir,
                        model_urls['rec'][lang]['url'])
-        if self.use_angle_cls:
-            maybe_download(postprocess_params.cls_model_dir, model_urls['cls'])
+        maybe_download(postprocess_params.cls_model_dir, model_urls['cls'])
 
         if postprocess_params.det_algorithm not in SUPPORT_DET_MODEL:
             logger.error('det_algorithm must in {}'.format(SUPPORT_DET_MODEL))
