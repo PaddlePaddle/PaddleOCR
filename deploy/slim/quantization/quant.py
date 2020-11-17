@@ -85,6 +85,12 @@ def get_optimizer():
 
 
 def main():
+    # Run code with static graph mode.
+    try:
+        paddle.enable_static()
+    except:
+        pass
+
     train_build_outputs = program.build(
         config, train_program, startup_program, mode='train')
     train_loader = train_build_outputs[0]

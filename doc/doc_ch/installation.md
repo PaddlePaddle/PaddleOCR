@@ -75,7 +75,7 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 **4. 安装第三方库**
 ```
 cd PaddleOCR
-python3 -m pip install -r requirments.txt
+python3 -m pip install -r requirements.txt
 ```
 
 注意，windows环境下，建议从[这里](https://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely)下载shapely安装包完成安装，

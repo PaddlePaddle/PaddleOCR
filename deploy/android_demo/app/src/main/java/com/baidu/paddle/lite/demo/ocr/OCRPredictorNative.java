@@ -53,11 +53,18 @@ public class OCRPredictorNative {
 
     }
 
+    public void destory(){
+        if (nativePointer > 0) {
+            release(nativePointer);
+            nativePointer = 0;
+        }
+    }
+
     protected native long init(String detModelPath, String recModelPath,String clsModelPath, int threadNum, String cpuMode);
 
     protected native float[] forward(long pointer, float[] buf, float[] ddims, Bitmap originalImage);
 
-    public native void release(long pointer);
+    protected native void release(long pointer);
 
     private ArrayList<OcrResultModel> postprocess(float[] raw) {
         ArrayList<OcrResultModel> results = new ArrayList<OcrResultModel>();
