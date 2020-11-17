@@ -31,6 +31,8 @@ from ppocr.postprocess import build_post_process
 from ppocr.utils.logging import get_logger
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 
+logger = get_logger()
+
 
 class TextClassifier(object):
     def __init__(self, args):
@@ -147,5 +149,4 @@ def main(args):
 
 
 if __name__ == "__main__":
-    logger = get_logger()
     main(utility.parse_args())

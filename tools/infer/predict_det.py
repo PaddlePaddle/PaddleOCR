@@ -30,6 +30,8 @@ from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.data import create_operators, transform
 from ppocr.postprocess import build_post_process
 
+logger = get_logger()
+
 
 class TextDetector(object):
     def __init__(self, args):
@@ -158,9 +160,7 @@ class TextDetector(object):
 
 if __name__ == "__main__":
     args = utility.parse_args()
-
     image_file_list = get_image_file_list(args.image_dir)
-    logger = get_logger()
     text_detector = TextDetector(args)
     count = 0
     total_time = 0

@@ -39,7 +39,8 @@ def parse_args():
     parser.add_argument("--image_dir", type=str)
     parser.add_argument("--det_algorithm", type=str, default='DB')
     parser.add_argument("--det_model_dir", type=str)
-    parser.add_argument("--det_max_side_len", type=float, default=960)
+    parser.add_argument("--det_limit_side_len", type=float, default=960)
+    parser.add_argument("--det_limit_type", type=str, default='max')
 
     # DB parmas
     parser.add_argument("--det_db_thresh", type=float, default=0.3)
