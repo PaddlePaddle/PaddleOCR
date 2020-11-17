@@ -1,0 +1,97 @@
+Global:
+  use_gpu: true
+  epoch_num: 100
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: ./output/cls/mv3/
+  save_epoch_step: 3
+  # evaluation is run every 5000 iterations after the 4000th iteration
+  eval_batch_step: [0, 1000]
+  # if pretrained_model is saved in static mode, load_static_weights must set to True
+  load_static_weights: True
+  cal_metric_during_train: True
+  pretrained_model:
+  checkpoints:
+  save_inference_dir:
+  use_visualdl: False
+  infer_img: doc/imgs_words_en/word_10.png
+  label_list: ['0','180']
+
+Architecture:
+  model_type: cls
+  algorithm: CLS
+  Transform:
+  Backbone:
+    name: MobileNetV3
+    scale: 0.35
+    model_name: small
+  Neck:
+  Head:
+    name: ClsHead
+    class_dim: 2
+
+Loss:
+  name: ClsLoss
+
+Optimizer:
+  name: Adam
+  beta1: 0.9
+  beta2: 0.999
+  lr:
+    name: Cosine
+    learning_rate: 0.001
+  regularizer:
+    name: 'L2'
+    factor: 0
+
+PostProcess:
+  name: ClsPostProcess
+
+Metric:
+  name: ClsMetric
+  main_indicator: acc
+
+Train:
+  dataset:
+    name: SimpleDataSet
+    data_dir: ./train_data/cls
+    label_file_list:
+      - ./train_data/cls/train.txt
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - ClsLabelEncode: # Class handling label
+      - RecAug:
+          use_tia: False
+      - RandAugment:
+      - ClsResizeImg:
+          image_shape: [3, 48, 192]
+      - KeepKeys:
+          keep_keys: ['image', 'label'] # dataloader will return list in this order
+  loader:
+    shuffle: True
+    batch_size_per_card: 512
+    drop_last: True
+    num_workers: 8
+
+Eval:
+  dataset:
+    name: SimpleDataSet
+    data_dir: ./train_data/cls
+    label_file_list:
+      - ./train_data/cls/test.txt
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - ClsLabelEncode: # Class handling label
+      - ClsResizeImg:
+          image_shape: [3, 48, 192]
+      - KeepKeys:
+          keep_keys: ['image', 'label'] # dataloader will return list in this order
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 512
+    num_workers: 4

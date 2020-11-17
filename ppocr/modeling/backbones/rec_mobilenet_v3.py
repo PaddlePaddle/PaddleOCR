@@ -136,13 +136,3 @@ class MobileNetV3(nn.Layer):
         x = self.conv2(x)
         x = self.pool(x)
         return x
-
-
-if __name__ == '__main__':
-    import paddle
-    paddle.disable_static()
-    x = paddle.zeros((1, 3, 32, 320))
-    x = paddle.to_variable(x)
-    net = MobileNetV3(model_name='small', small_stride=[1, 2, 2, 2])
-    y = net(x)
-    print(y.shape)

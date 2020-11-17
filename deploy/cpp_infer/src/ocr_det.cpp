@@ -26,6 +26,8 @@ void DBDetector::LoadModel(const std::string &model_dir) {
     config.DisableGpu();
     if (this->use_mkldnn_) {
       config.EnableMKLDNN();
+      // cache 10 different shapes for mkldnn to avoid memory leak
+      config.SetMkldnnCacheCapacity(10);
     }
     config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
   }
@@ -106,9 +108,12 @@ void DBDetector::Run(cv::Mat &img,
   const double maxvalue = 255;
   cv::Mat bit_map;
   cv::threshold(cbuf_map, bit_map, threshold, maxvalue, cv::THRESH_BINARY);
-
-  boxes = post_processor_.BoxesFromBitmap(
-      pred_map, bit_map, this->det_db_box_thresh_, this->det_db_unclip_ratio_);
+  cv::Mat dilation_map;
+  cv::Mat dila_ele = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(2, 2));
+  cv::dilate(bit_map, dilation_map, dila_ele);
+  boxes = post_processor_.BoxesFromBitmap(pred_map, dilation_map,
+                                          this->det_db_box_thresh_,
+                                          this->det_db_unclip_ratio_);
 
   boxes = post_processor_.FilterTagDetRes(boxes, ratio_h, ratio_w, srcimg);
 

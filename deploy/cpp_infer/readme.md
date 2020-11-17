@@ -193,6 +193,39 @@ make -j
 sh tools/run.sh
 ```
 
+* 若需要使用方向分类器，则需要将`tools/config.txt`中的`use_angle_cls`参数修改为1，表示开启方向分类器的预测。
+* 更多地，tools/config.txt中的参数及解释如下。
+
+```
+use_gpu  0 # 是否使用GPU，1表示使用，0表示不使用
+gpu_id  0 # GPU id，使用GPU时有效
+gpu_mem  4000  # 申请的GPU内存
+cpu_math_library_num_threads  10 # CPU预测时的线程数，在机器核数充足的情况下，该值越大，预测速度越快
+use_mkldnn 1 # 是否使用mkldnn库
+use_zero_copy_run 1 # 是否使用use_zero_copy_run进行预测
+
+# det config
+max_side_len  960 # 输入图像长宽大于960时，等比例缩放图像，使得图像最长边为960
+det_db_thresh  0.3 # 用于过滤DB预测的二值化图像，设置为0.-0.3对结果影响不明显
+det_db_box_thresh  0.5 # DB后处理过滤box的阈值，如果检测存在漏框情况，可酌情减小
+det_db_unclip_ratio  1.6 # 表示文本框的紧致程度，越小则文本框更靠近文本
+det_model_dir  ./inference/det_db # 检测模型inference model地址
+
+# cls config
+use_angle_cls 0 # 是否使用方向分类器，0表示不使用，1表示使用
+cls_model_dir ./inference/cls # 方向分类器inference model地址
+cls_thresh  0.9 # 方向分类器的得分阈值
+
+# rec config
+rec_model_dir  ./inference/rec_crnn # 识别模型inference model地址
+char_list_file ../../ppocr/utils/ppocr_keys_v1.txt # 字典文件
+
+# show the detection results
+visualize 1 # 是否对结果进行可视化，为1时，会在当前文件夹下保存文件名为`ocr_vis.png`的预测结果。
+```
+
+* PaddleOCR也支持多语言的预测，更多细节可以参考[识别文档](../../doc/doc_ch/recognition.md)中的多语言字典与模型部分。
+
 最终屏幕上会输出检测结果如下。
 
 <div align="center">
@@ -202,4 +235,4 @@ sh tools/run.sh
 
 ### 2.3 注意
 
-* C++预测默认未开启MKLDNN(`tools/config.txt`中的`use_mkldnn`设置为0)，如果需要使用MKLDNN进行预测加速，则需要将`use_mkldnn`修改为1，同时使用最新版本的Paddle源码编译预测库。在使用MKLDNN进行CPU预测时，如果同时预测多张图像，则会出现内存泄露的问题（不打开MKLDNN则没有该问题），目前该问题正在修复中，临时解决方案为：预测多张图片时，每隔30张图片左右对识别(`CRNNRecognizer`)和检测类(`DBDetector`)重新初始化一次。
+* 在使用Paddle预测库时，推荐使用2.0.0-beta0版本的预测库。
