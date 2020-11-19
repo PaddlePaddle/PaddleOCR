@@ -191,10 +191,12 @@ if __name__ == "__main__":
         if count > 0:
             total_time += elapse
         count += 1
-        print("Predict time of %s:" % image_file, elapse)
+        logger.info("Predict time of %s:" % image_file, elapse)
         src_im = utility.draw_text_det_res(dt_boxes, image_file)
         img_name_pure = image_file.split("/")[-1]
         cv2.imwrite(
             os.path.join(draw_img_save, "det_res_%s" % img_name_pure), src_im)
+        logger.info("The visualized img saved in {}".format(
+            os.path.join(draw_img_save, "det_res_%s" % img_name_pure)))
     if count > 1:
-        print("Avg Time:", total_time / (count - 1))
+        logger.info("Avg Time:", total_time / (count - 1))
