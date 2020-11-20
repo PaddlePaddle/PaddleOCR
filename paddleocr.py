@@ -87,8 +87,8 @@ def download_with_progressbar(url, save_path):
             progress_bar.update(len(data))
             file.write(data)
     progress_bar.close()
-    if total_size_in_bytes == 0 or (progress_bar.n != total_size_in_bytes):
-        logger.error("ERROR, something went wrong")
+    if total_size_in_bytes == 0 or progress_bar.n != total_size_in_bytes:
+        logger.error("Something went wrong while downloading models")
         sys.exit(0)
 
 
