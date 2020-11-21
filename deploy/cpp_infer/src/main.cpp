@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "glog/logging.h"
+#include "omp.h"
 #include "opencv2/core.hpp"
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/imgproc.hpp"
@@ -53,17 +55,38 @@ int main(int argc, char **argv) {
       config.cpu_math_library_num_threads, config.use_mkldnn,
       config.use_zero_copy_run, config.max_side_len, config.det_db_thresh,
       config.det_db_box_thresh, config.det_db_unclip_ratio, config.visualize);
+
+  Classifier *cls = nullptr;
+  if (config.use_angle_cls == true) {
+    cls = new Classifier(config.cls_model_dir, config.use_gpu, config.gpu_id,
+                         config.gpu_mem, config.cpu_math_library_num_threads,
+                         config.use_mkldnn, config.use_zero_copy_run,
+                         config.cls_thresh);
+  }
+
   CRNNRecognizer rec(config.rec_model_dir, config.use_gpu, config.gpu_id,
                      config.gpu_mem, config.cpu_math_library_num_threads,
                      config.use_mkldnn, config.use_zero_copy_run,
                      config.char_list_file);
 
+#ifdef USE_MKL
+#pragma omp parallel
+  for (auto i = 0; i < 10; i++) {
+    LOG_IF(WARNING,
+           config.cpu_math_library_num_threads != omp_get_num_threads())
+        << "WARNING! MKL is running on " << omp_get_num_threads()
+        << " threads while cpu_math_library_num_threads is set to "
+        << config.cpu_math_library_num_threads
+        << ". Possible reason could be 1. You have set omp_set_num_threads() "
+           "somewhere; 2. MKL is not linked properly";
+  }
+#endif
+
   auto start = std::chrono::system_clock::now();
   std::vector<std::vector<std::vector<int>>> boxes;
   det.Run(srcimg, boxes);
 
-  rec.Run(boxes, srcimg);
-
+  rec.Run(boxes, srcimg, cls);
   auto end = std::chrono::system_clock::now();
   auto duration =
       std::chrono::duration_cast<std::chrono::microseconds>(end - start);

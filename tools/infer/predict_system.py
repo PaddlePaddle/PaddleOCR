@@ -17,20 +17,17 @@ __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 
-import tools.infer.utility as utility
-from ppocr.utils.utility import initial_logger
-logger = initial_logger()
 import cv2
-import tools.infer.predict_det as predict_det
-import tools.infer.predict_rec as predict_rec
 import copy
 import numpy as np
-import math
 import time
-from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from PIL import Image
+import tools.infer.utility as utility
 from tools.infer.utility import draw_ocr
-from tools.infer.utility import draw_ocr_box_txt
+import tools.infer.predict_rec as predict_rec
+import tools.infer.predict_det as predict_det
+from ppocr.utils.utility import get_image_file_list, check_and_read_gif
+from ppocr.utils.logging import get_logger
 
 
 class TextSystem(object):
@@ -153,11 +150,7 @@ def main(args):
             scores = [rec_res[i][1] for i in range(len(rec_res))]
 
             draw_img = draw_ocr(
-                image,
-                boxes,
-                txts,
-                scores,
-                drop_score=drop_score)
+                image, boxes, txts, scores, drop_score=drop_score)
             draw_img_save = "./inference_results/"
             if not os.path.exists(draw_img_save):
                 os.makedirs(draw_img_save)
@@ -169,4 +162,5 @@ def main(args):
 
 
 if __name__ == "__main__":
+    logger = get_logger()
     main(utility.parse_args())

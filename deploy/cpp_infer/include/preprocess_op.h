@@ -56,4 +56,10 @@ public:
                    const std::vector<int> &rec_image_shape = {3, 32, 320});
 };
 
+class ClsResizeImg {
+public:
+  virtual void Run(const cv::Mat &img, cv::Mat &resize_img,
+                   const std::vector<int> &rec_image_shape = {3, 48, 192});
+};
+
 } // namespace PaddleOCR

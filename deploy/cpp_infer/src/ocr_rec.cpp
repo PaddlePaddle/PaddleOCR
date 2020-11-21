@@ -17,7 +17,7 @@
 namespace PaddleOCR {
 
 void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
-                         cv::Mat &img) {
+                         cv::Mat &img, Classifier *cls) {
   cv::Mat srcimg;
   img.copyTo(srcimg);
   cv::Mat crop_img;
@@ -27,6 +27,9 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
   int index = 0;
   for (int i = boxes.size() - 1; i >= 0; i--) {
     crop_img = GetRotateCropImage(srcimg, boxes[i]);
+    if (cls != nullptr) {
+      crop_img = cls->Run(crop_img);
+    }
 
     float wh_ratio = float(crop_img.cols) / float(crop_img.rows);
 
@@ -56,62 +59,44 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
       this->predictor_->Run({input_t}, &outputs, 1);
     }
 
-    std::vector<int64_t> rec_idx;
+    std::vector<float> predict_batch;
     auto output_names = this->predictor_->GetOutputNames();
     auto output_t = this->predictor_->GetOutputTensor(output_names[0]);
-    auto rec_idx_lod = output_t->lod();
-    auto shape_out = output_t->shape();
+    auto predict_shape = output_t->shape();
 
-    int out_num = std::accumulate(shape_out.begin(), shape_out.end(), 1,
+    int out_num = std::accumulate(predict_shape.begin(), predict_shape.end(), 1,
                                   std::multiplies<int>());
+    predict_batch.resize(out_num);
 
-    rec_idx.resize(out_num);
-    output_t->copy_to_cpu(rec_idx.data());
+    output_t->copy_to_cpu(predict_batch.data());
 
-    std::vector<int> pred_idx;
-    for (int n = int(rec_idx_lod[0][0]); n < int(rec_idx_lod[0][1]); n++) {
-      pred_idx.push_back(int(rec_idx[n]));
-    }
-
-    if (pred_idx.size() < 1e-3)
-      continue;
-
-    index += 1;
-    std::cout << index << "\t";
-    for (int n = 0; n < pred_idx.size(); n++) {
-      std::cout << label_list_[pred_idx[n]];
-    }
-
-    std::vector<float> predict_batch;
-    auto output_t_1 = this->predictor_->GetOutputTensor(output_names[1]);
-
-    auto predict_lod = output_t_1->lod();
-    auto predict_shape = output_t_1->shape();
-    int out_num_1 = std::accumulate(predict_shape.begin(), predict_shape.end(),
-                                    1, std::multiplies<int>());
-
-    predict_batch.resize(out_num_1);
-    output_t_1->copy_to_cpu(predict_batch.data());
-
+    // ctc decode
+    std::vector<std::string> str_res;
     int argmax_idx;
-    int blank = predict_shape[1];
+    int last_index = 0;
     float score = 0.f;
     int count = 0;
     float max_value = 0.0f;
 
-    for (int n = predict_lod[0][0]; n < predict_lod[0][1] - 1; n++) {
+    for (int n = 0; n < predict_shape[1]; n++) {
       argmax_idx =
-          int(Utility::argmax(&predict_batch[n * predict_shape[1]],
-                              &predict_batch[(n + 1) * predict_shape[1]]));
+          int(Utility::argmax(&predict_batch[n * predict_shape[2]],
+                              &predict_batch[(n + 1) * predict_shape[2]]));
       max_value =
-          float(*std::max_element(&predict_batch[n * predict_shape[1]],
-                                  &predict_batch[(n + 1) * predict_shape[1]]));
-      if (blank - 1 - argmax_idx > 1e-5) {
+          float(*std::max_element(&predict_batch[n * predict_shape[2]],
+                                  &predict_batch[(n + 1) * predict_shape[2]]));
+
+      if (argmax_idx > 0 && (not(i > 0 && argmax_idx == last_index))) {
         score += max_value;
         count += 1;
+        str_res.push_back(label_list_[argmax_idx]);
       }
+      last_index = argmax_idx;
     }
     score /= count;
+    for (int i = 0; i < str_res.size(); i++) {
+      std::cout << str_res[i];
+    }
     std::cout << "\tscore: " << score << std::endl;
   }
 }
@@ -126,6 +111,8 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
     config.DisableGpu();
     if (this->use_mkldnn_) {
       config.EnableMKLDNN();
+      // cache 10 different shapes for mkldnn to avoid memory leak
+      config.SetMkldnnCacheCapacity(10);
     }
     config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
   }

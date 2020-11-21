@@ -27,20 +27,18 @@
 #include <fstream>
 #include <numeric>
 
-#include <include/ocr_cls.h>
-#include <include/postprocess_op.h>
 #include <include/preprocess_op.h>
 #include <include/utility.h>
 
 namespace PaddleOCR {
 
-class CRNNRecognizer {
+class Classifier {
 public:
-  explicit CRNNRecognizer(const std::string &model_dir, const bool &use_gpu,
-                          const int &gpu_id, const int &gpu_mem,
-                          const int &cpu_math_library_num_threads,
-                          const bool &use_mkldnn, const bool &use_zero_copy_run,
-                          const string &label_path) {
+  explicit Classifier(const std::string &model_dir, const bool &use_gpu,
+                      const int &gpu_id, const int &gpu_mem,
+                      const int &cpu_math_library_num_threads,
+                      const bool &use_mkldnn, const bool &use_zero_copy_run,
+                      const double &cls_thresh) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
@@ -48,10 +46,7 @@ public:
     this->use_mkldnn_ = use_mkldnn;
     this->use_zero_copy_run_ = use_zero_copy_run;
 
-    this->label_list_ = Utility::ReadDict(label_path);
-    this->label_list_.insert(this->label_list_.begin(),
-                             "#"); // blank char for ctc
-    this->label_list_.push_back(" ");
+    this->cls_thresh = cls_thresh;
 
     LoadModel(model_dir);
   }
@@ -59,8 +54,7 @@ public:
   // Load Paddle inference model
   void LoadModel(const std::string &model_dir);
 
-  void Run(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat &img,
-           Classifier *cls);
+  cv::Mat Run(cv::Mat &img);
 
 private:
   std::shared_ptr<PaddlePredictor> predictor_;
@@ -71,24 +65,17 @@ private:
   int cpu_math_library_num_threads_ = 4;
   bool use_mkldnn_ = false;
   bool use_zero_copy_run_ = false;
-
-  std::vector<std::string> label_list_;
+  double cls_thresh = 0.5;
 
   std::vector<float> mean_ = {0.5f, 0.5f, 0.5f};
   std::vector<float> scale_ = {1 / 0.5f, 1 / 0.5f, 1 / 0.5f};
   bool is_scale_ = true;
 
   // pre-process
-  CrnnResizeImg resize_op_;
+  ClsResizeImg resize_op_;
   Normalize normalize_op_;
   Permute permute_op_;
 
-  // post-process
-  PostProcessor post_processor_;
-
-  cv::Mat GetRotateCropImage(const cv::Mat &srcimage,
-                             std::vector<std::vector<int>> box);
-
-}; // class CrnnRecognizer
+}; // class Classifier
 
 } // namespace PaddleOCR
