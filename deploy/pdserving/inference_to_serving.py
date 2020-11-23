@@ -24,9 +24,9 @@ def parse_args():
 
 args = parse_args()
 inference_model_dir = args.model_dir
-serving_client_dir = os.path.join(args.model_dir, args.server_dir)
-serving_server_dir = os.path.join(args.model_dir, args.client_dir)
+serving_server_dir = os.path.join(args.model_dir, args.server_dir)
+serving_client_dir = os.path.join(args.model_dir, args.client_dir)
 feed_var_names, fetch_var_names = inference_model_to_serving(
-        inference_model_dir, serving_client_dir, serving_server_dir, model_filename="model", params_filename="params")
+        inference_model_dir, serving_server_dir, serving_client_dir, model_filename="model", params_filename="params")
 
 print("success!")
