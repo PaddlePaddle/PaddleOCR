@@ -104,8 +104,8 @@ class SimpleDataSet(Dataset):
         try:
             data_line = data_line.decode('utf-8')
             substr = data_line.strip("\n").split(self.delimiter)
-            file_name = substr[1]
-            label = substr[0]
+            file_name = substr[0]
+            label = substr[1]
             img_path = os.path.join(self.data_dir, file_name)
             data = {'img_path': img_path, 'label': label}
             with open(data['img_path'], 'rb') as f:
