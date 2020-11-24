@@ -236,7 +236,6 @@ def train(config,
                 train_batch_cost = 0.0
                 train_reader_cost = 0.0
                 batch_sum = 0
-                batch_start = time.time()
             # eval
             if global_step > start_eval_step and \
                     (global_step - start_eval_step) % eval_batch_step == 0 and dist.get_rank() == 0:
@@ -275,6 +274,7 @@ def train(config,
                                           best_model_dict[main_indicator],
                                           global_step)
             global_step += 1
+            batch_start = time.time()
         if dist.get_rank() == 0:
             save_model(
                 model,
@@ -334,17 +334,19 @@ def eval(model, valid_dataloader, post_process_class, eval_class):
 
 
 def save_inference_mode(model, config, logger):
-    model.eval()
-    save_path = '{}/infer/{}'.format(config['Global']['save_model_dir'],
-                                     config['Architecture']['model_type'])
-    if config['Architecture']['model_type'] == 'rec':
-        input_shape = [None, 3, 32, None]
-        jit_model = paddle.jit.to_static(
-            model, input_spec=[paddle.static.InputSpec(input_shape)])
-        paddle.jit.save(jit_model, save_path)
-        logger.info('inference model save to {}'.format(save_path))
+    if dist.get_rank() == 0:
+        model.eval()
+        print('infer')
+        save_path = '{}/infer/{}'.format(config['Global']['save_model_dir'],
+                                         config['Architecture']['model_type'])
+        if config['Architecture']['model_type'] == 'rec':
+            input_shape = [None, 3, 32, None]
+            jit_model = paddle.jit.to_static(
+                model, input_spec=[paddle.static.InputSpec(input_shape)])
+            paddle.jit.save(jit_model, save_path)
+            logger.info('inference model save to {}'.format(save_path))
 
-    model.train()
+        model.train()
 
 
 def preprocess():
