@@ -593,7 +593,7 @@ class MainWindow(QMainWindow, WindowMixin):
             zoomIn, zoomOut, zoomOrg, None,
             fitWindow, fitWidth))
 
-        addActions(self.menus.autolabel, (alcm, saveRec, None, help))
+        addActions(self.menus.autolabel, (saveRec, None, help)) # alcm, 
 
         self.menus.file.aboutToShow.connect(self.updateFileMenu)
 
