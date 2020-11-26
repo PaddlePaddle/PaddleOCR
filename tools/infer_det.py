@@ -49,6 +49,7 @@ import cv2
 
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
+from ppocr.utils.utility import enable_static_mode
 
 
 def draw_det_res(dt_boxes, config, img, img_name):
@@ -162,6 +163,7 @@ def main():
 
 
 if __name__ == '__main__':
+    enable_static_mode()
     parser = program.ArgsParser()
     FLAGS = parser.parse_args()
     main()
