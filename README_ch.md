@@ -4,7 +4,8 @@
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力使用者训练出更好的模型，并应用落地。
 
 **近期更新**
-- 2020.11.2 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，共计99个常见问题及解答，并且计划以后每周一都会更新，欢迎大家持续关注。
+- 2020.11.25 更新半自动标注工具[PPOCRLabel](./PPOCRLabel/README.md)，辅助开发者高效完成标注任务，输出格式与PP-OCR训练任务完美衔接。
+- 2020.11.16 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，共计109个常见问题及解答，并且计划以后每周一都会更新，欢迎大家持续关注。
 - 2020.9.22 更新PP-OCR技术文章，https://arxiv.org/abs/2009.09941
 - 2020.9.19 更新超轻量压缩ppocr_mobile_slim系列模型，整体模型3.5M(详见[PP-OCR Pipeline](#PP-OCR))，适合在移动端部署使用。[模型下载](#模型下载)
 - 2020.9.17 更新超轻量ppocr_mobile系列和通用ppocr_server系列中英文ocr模型，媲美商业效果。[模型下载](#模型下载)
@@ -12,7 +13,6 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - 2020.8.24 支持通过whl包安装使用PaddleOCR，具体参考[Paddleocr Package使用说明](./doc/doc_ch/whl.md)
 - 2020.8.21 更新8月18日B站直播课回放和PPT，课节2，易学易用的OCR工具大礼包，[获取地址](https://aistudio.baidu.com/aistudio/education/group/info/1519)
 - [More](./doc/doc_ch/update.md)
-
 
 ## 特性
 
@@ -54,7 +54,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 <img src="./doc/ocr-android-easyedge.png"  width = "200" height = "200" />
 </div>
 
-- 代码体验：从[快速安装](./doc/doc_ch/installation.md) 开始
+- 代码体验：[中文OCR模型快速使用](./doc/doc_ch/quickstart.md)
 
 <a name="模型下载"></a>
 ## PP-OCR 1.1系列模型列表（9月17日更新）
@@ -84,22 +84,24 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [基于pip安装whl包快速推理](./doc/doc_ch/whl.md)
     - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
     - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
-    - [服务化部署](./deploy/pdserving/readme.md)
+    - [服务化部署](./deploy/hubserving/readme.md)
     - [端侧部署](./deploy/lite/readme.md)
     - [模型量化](./deploy/slim/quantization/README.md)
     - [模型裁剪](./deploy/slim/prune/README.md)
     - [Benchmark](./doc/doc_ch/benchmark.md)
+- 数据标注与合成
+    - [半自动标注工具 PPOCRLabel](./PPOCRLabel/README.md)
+    - [常用数据标注工具](./doc/doc_ch/data_annotation.md)
+    - [常用数据合成工具](./doc/doc_ch/data_synthesis.md)   
 - 数据集
     - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
     - [手写中文OCR数据集](./doc/doc_ch/handwritten_datasets.md)
-    - [垂类多语言OCR数据集](./doc/doc_ch/vertical_and_multilingual_datasets.md)
-    - [常用数据标注工具](./doc/doc_ch/data_annotation.md)
-    - [常用数据合成工具](./doc/doc_ch/data_synthesis.md)
+    - [垂类多语言OCR数据集](./doc/doc_ch/vertical_and_multilingual_datasets.md)    
 - [效果展示](#效果展示)
 - FAQ
     - [【精选】OCR精选10个问题](./doc/doc_ch/FAQ.md)
-    - [【理论篇】OCR通用24个问题](./doc/doc_ch/FAQ.md)
-    - [【实战篇】PaddleOCR实战65个问题](./doc/doc_ch/FAQ.md)
+    - [【理论篇】OCR通用27个问题](./doc/doc_ch/FAQ.md)
+    - [【实战篇】PaddleOCR实战72个问题](./doc/doc_ch/FAQ.md)
 - [技术交流群](#欢迎加入PaddleOCR技术交流群)
 - [参考文献](./doc/doc_ch/reference.md)
 - [许可证书](#许可证书)
@@ -153,3 +155,4 @@ PP-OCR是一个实用的超轻量OCR系统。主要由DB文本检测、检测框
 - 非常感谢 [tangmq](https://gitee.com/tangmq) 给PaddleOCR增加Docker化部署服务，支持快速发布可调用的Restful API服务。
 - 非常感谢 [lijinhan](https://github.com/lijinhan) 给PaddleOCR增加java SpringBoot 调用OCR Hubserving接口完成对OCR服务化部署的使用。
 - 非常感谢 [Mejans](https://github.com/Mejans) 给PaddleOCR增加新语言奥克西坦语Occitan的字典和语料。
+- 非常感谢 [Evezerest](https://github.com/Evezerest)， [ninetailskim](https://github.com/ninetailskim)， [edencfc](https://github.com/edencfc)， [BeyondYourself](https://github.com/BeyondYourself)， [1084667371](https://github.com/1084667371) 贡献了PPOCRLabel的完整代码。

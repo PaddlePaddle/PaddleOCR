@@ -24,6 +24,7 @@ sys.path.append(os.path.join(__dir__, '..', '..', '..'))
 sys.path.append(os.path.join(__dir__, '..', '..', '..', 'tools'))
 
 import program
+import paddle
 from paddle import fluid
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
@@ -32,6 +33,12 @@ from paddleslim.prune import load_model
 
 
 def main():
+    # Run code with static graph mode.
+    try:
+        paddle.enable_static()
+    except:
+        pass
+
     startup_prog, eval_program, place, config, _ = program.preprocess()
 
     feeded_var_names, target_vars, fetches_var_name = program.build_export(

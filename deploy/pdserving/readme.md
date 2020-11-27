@@ -170,17 +170,17 @@ python det_local_server.py #快速版，Windows/Linux用户
 # 标准版，Linux用户
 # GPU用户
 # 启动检测服务
-python -m paddle_serving_server_gpu.serve --model inference/ch_ppocr_mobile_v1.1_det_infer/serving_server_dir/ --port 9293 --gpu_id 0
+python -m paddle_serving_server_gpu.serve --model ../../inference/ch_ppocr_mobile_v1.1_det_infer/serving_server_dir/ --port 9293 --gpu_id 0
 # 启动方向分类器服务
-python -m paddle_serving_server_gpu.serve --model inference/ch_ppocr_mobile_v1.1_cls_infer/serving_server_dir/ --port 9294 --gpu_id 0
+python -m paddle_serving_server_gpu.serve --model ../../inference/ch_ppocr_mobile_v1.1_cls_infer/serving_server_dir/ --port 9294 --gpu_id 0
 # 启动串联服务
 python ocr_rpc_server.py 
 
 # CPU用户
 # 启动检测服务
-python -m paddle_serving_server.serve --model inference/ch_ppocr_mobile_v1.1_det_infer/serving_server_dir/ --port 9293
+python -m paddle_serving_server.serve --model ../../inference/ch_ppocr_mobile_v1.1_det_infer/serving_server_dir/ --port 9293
 # 启动方向分类器服务
-python -m paddle_serving_server.serve --model ch_ppocr_mobile_v1.1_cls_infer/serving_server_dir/ --port 9294
+python -m paddle_serving_server.serve --model ../../inference/ch_ppocr_mobile_v1.1_cls_infer/serving_server_dir/ --port 9294
 # 启动串联服务
 python ocr_rpc_server.py
 

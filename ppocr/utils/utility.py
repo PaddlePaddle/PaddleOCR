@@ -16,6 +16,7 @@ import logging
 import os
 import imghdr
 import cv2
+import paddle
 from paddle import fluid
 
 
@@ -102,3 +103,10 @@ def create_multi_devices_program(program, loss_var_name):
         build_strategy=build_strategy,
         exec_strategy=exec_strategy)
     return compile_program
+
+
+def enable_static_mode():
+    try:
+        paddle.enable_static()
+    except:
+        pass

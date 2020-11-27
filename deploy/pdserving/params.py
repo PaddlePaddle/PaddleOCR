@@ -14,8 +14,8 @@ def read_params():
 
     #params for text detector
     cfg.det_algorithm = "DB"
-    cfg.det_server_dir = "../../ch_lite/ch_ppocr_mobile_v1.1_det_infer/serving_server_dir"
-    cfg.det_client_dir = "../../ch_lite/ch_ppocr_mobile_v1.1_det_infer/serving_client_dir"
+    cfg.det_server_dir = "../../inference/ch_ppocr_mobile_v1.1_det_infer/serving_server_dir"
+    cfg.det_client_dir = "../../inference/ch_ppocr_mobile_v1.1_det_infer/serving_client_dir"
     cfg.det_max_side_len = 960
 
     #DB parmas
@@ -30,8 +30,8 @@ def read_params():
 
     #params for text recognizer
     cfg.rec_algorithm = "CRNN"
-    cfg.rec_server_dir = "../../ch_lite/ch_ppocr_mobile_v1.1_rec_infer/serving_server_dir"
-    cfg.rec_client_dir = "../../ch_lite/ch_ppocr_mobile_v1.1_rec_infer/serving_client_dir"
+    cfg.rec_server_dir = "../../inference/ch_ppocr_mobile_v1.1_rec_infer/serving_server_dir"
+    cfg.rec_client_dir = "../../inference/ch_ppocr_mobile_v1.1_rec_infer/serving_client_dir"
 
     cfg.rec_image_shape = "3, 32, 320"
     cfg.rec_char_type = 'ch'
@@ -43,8 +43,8 @@ def read_params():
 
     #params for text classifier
     cfg.use_angle_cls = True
-    cfg.cls_server_dir = "../../ch_lite/ch_ppocr_mobile_v1.1_cls_infer/serving_server_dir"
-    cfg.cls_client_dir = "../../ch_lite/ch_ppocr_mobile_v1.1_cls_infer/serving_client_dir"
+    cfg.cls_server_dir = "../../inference/ch_ppocr_mobile_v1.1_cls_infer/serving_server_dir"
+    cfg.cls_client_dir = "../../inference/ch_ppocr_mobile_v1.1_cls_infer/serving_client_dir"
     cfg.cls_image_shape = "3, 48, 192"
     cfg.label_list = ['0', '180']
     cfg.cls_batch_num = 30

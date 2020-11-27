@@ -41,6 +41,7 @@ set_paddle_flags(
 import tools.program as program
 from paddle import fluid
 from ppocr.utils.utility import initial_logger
+from ppocr.utils.utility import enable_static_mode
 
 logger = initial_logger()
 from ppocr.data.reader_main import reader_main
@@ -109,6 +110,7 @@ def main():
 
 
 if __name__ == '__main__':
+    enable_static_mode()
     parser = program.ArgsParser()
     FLAGS = parser.parse_args()
     main()
