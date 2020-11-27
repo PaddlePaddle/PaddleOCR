@@ -20,7 +20,7 @@ Download and install [Anaconda](https://www.anaconda.com/download/#download) (Py
 conda install pyqt=5
 cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
 pyrcc5 -o libs/resources.py resources.qrc
-python PPOCRLabel.py
+python PPOCRLabel.py --lang en
 ```
 
 #### Ubuntu Linux
@@ -31,7 +31,7 @@ sudo apt-get install trash-cli
 cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
 sudo pip3 install -r requirements/requirements-linux-python3.txt
 make qt5py3
-python3 PPOCRLabel.py
+python3 PPOCRLabel.py --lang en
 ```
 
 #### macOS
@@ -41,7 +41,7 @@ pip3 uninstall opencv-python # Uninstall opencv manually as it conflicts with py
 pip3 install opencv-contrib-python-headless # Install the headless version of opencv
 cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
 make qt5py3
-python3 PPOCRLabel.py
+python3 PPOCRLabel.py --lang en
 ```
 
 ## Usage
