@@ -174,7 +174,6 @@ if __name__ == "__main__":
         if img is None:
             logger.info("error in loading image:{}".format(image_file))
             continue
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         dt_boxes, elapse = text_detector(img)
         if count > 0:
             total_time += elapse
