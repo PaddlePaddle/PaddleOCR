@@ -16,6 +16,7 @@ import logging
 import os
 import imghdr
 import cv2
+import paddle
 from paddle import fluid
 
 
@@ -90,3 +91,22 @@ def check_and_read_gif(img_path):
         return imgvalue, True
     return None, False
 
+
+def create_multi_devices_program(program, loss_var_name):
+    build_strategy = fluid.BuildStrategy()
+    build_strategy.memory_optimize = False
+    build_strategy.enable_inplace = True
+    exec_strategy = fluid.ExecutionStrategy()
+    exec_strategy.num_iteration_per_drop_scope = 1
+    compile_program = fluid.CompiledProgram(program).with_data_parallel(
+        loss_name=loss_var_name,
+        build_strategy=build_strategy,
+        exec_strategy=exec_strategy)
+    return compile_program
+
+
+def enable_static_mode():
+    try:
+        paddle.enable_static()
+    except:
+        pass

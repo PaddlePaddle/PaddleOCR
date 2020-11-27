@@ -11,8 +11,8 @@ pip install paddleocr
 
 本地构建并安装
 ```bash
-python setup.py bdist_wheel
-pip install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x是paddleocr的版本号
+python3 setup.py bdist_wheel
+pip3 install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x是paddleocr的版本号
 ```
 ### 1. 代码使用
 
@@ -20,7 +20,7 @@ pip install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x是paddleocr的版本�
 ```python
 from paddleocr import PaddleOCR, draw_ocr
 # Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换
-# 参数依次为`zh`, `en`, `french`, `german`, `korean`, `japan`。
+# 参数依次为`ch`, `en`, `french`, `german`, `korean`, `japan`。
 ocr = PaddleOCR(use_angle_cls=True, lang="ch") # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs/11.jpg'
 result = ocr.ocr(img_path, cls=True)
@@ -280,7 +280,7 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_
 | rec_algorithm           | 使用的识别算法类型                                                                                                                                                                                                   | CRNN                    |
 | rec_model_dir          | 识别模型所在文件夹。传参方式有两种，1. None: 自动下载内置模型到 `~/.paddleocr/rec`；2.自己转换好的inference模型路径，模型路径下必须包含model和params文件 | None |
 | rec_image_shape         | 识别算法的输入图片尺寸                                                                                                                                                                                             | "3,32,320"              |
-| rec_char_type           | 识别算法的字符类型，中文(ch)或英文(en)                                                                                                                                                                               | ch                      |
+| rec_char_type           | 识别算法的字符类型，中英文(ch)、英文(en)、法语(french)、德语(german)、韩语(korean)、日语(japan)                                                                                                                                                                               | ch                      |
 | rec_batch_num           | 进行识别时，同时前向的图片数                                                                                                                                                                                         | 30                      |
 | max_text_length         | 识别算法能识别的最大文字长度                                                                                                                                                                                         | 25                      |
 | rec_char_dict_path      | 识别模型字典路径，当rec_model_dir使用方式2传参时需要修改为自己的字典路径                                                                                                                                                | ./ppocr/utils/ppocr_keys_v1.txt                        |

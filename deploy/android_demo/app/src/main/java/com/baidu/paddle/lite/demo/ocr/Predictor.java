@@ -135,7 +135,7 @@ public class Predictor {
 
     public void releaseModel() {
         if (paddlePredictor != null) {
-            paddlePredictor.release();
+            paddlePredictor.destory();
             paddlePredictor = null;
         }
         isLoaded = false;

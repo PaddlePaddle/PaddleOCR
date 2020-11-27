@@ -112,7 +112,7 @@ OrderPointsClockwise(std::vector<std::vector<int>> pts) {
 }
 
 std::vector<std::vector<float>> GetMiniBoxes(cv::RotatedRect box, float &ssid) {
-  ssid = std::max(box.size.width, box.size.height);
+  ssid = std::min(box.size.width, box.size.height);
 
   cv::Mat points;
   cv::boxPoints(box, points);

@@ -16,6 +16,7 @@ Global:
   checkpoints:
   save_res_path: ./output/det_db/predicts_db.txt
   save_inference_dir:
+  infer_img:
   
 Architecture:
   function: ppocr.modeling.architectures.det_model,DetModel
@@ -24,7 +25,6 @@ Backbone:
   function: ppocr.modeling.backbones.det_mobilenet_v3,MobileNetV3
   scale: 0.5
   model_name: large
-  disable_se: true
 
 Head:
   function: ppocr.modeling.heads.det_db_head,DBHead

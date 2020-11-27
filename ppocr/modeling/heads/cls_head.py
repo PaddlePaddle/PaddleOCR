@@ -23,6 +23,14 @@ import paddle.fluid as fluid
 
 
 class ClsHead(object):
+    """
+    Class orientation
+
+    Args:
+
+        params(dict): super parameters for build Class network
+    """
+
     def __init__(self, params):
         super(ClsHead, self).__init__()
         self.class_dim = params['class_dim']

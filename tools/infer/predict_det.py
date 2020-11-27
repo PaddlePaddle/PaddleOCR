@@ -42,7 +42,6 @@ class TextDetector(object):
     def __init__(self, args):
         max_side_len = args.det_max_side_len
         self.det_algorithm = args.det_algorithm
-        self.use_zero_copy_run = args.use_zero_copy_run
         preprocess_params = {'max_side_len': max_side_len}
         postprocess_params = {}
         if self.det_algorithm == "DB":
@@ -75,9 +74,10 @@ class TextDetector(object):
         else:
             logger.info("unknown det_algorithm:{}".format(self.det_algorithm))
             sys.exit(0)
-
-        self.predictor, self.input_tensor, self.output_tensors =\
-            utility.create_predictor(args, mode="det")
+        if args.use_pdserving is False:
+            self.use_zero_copy_run = args.use_zero_copy_run
+            self.predictor, self.input_tensor, self.output_tensors =\
+                utility.create_predictor(args, mode="det")
 
     def order_points_clockwise(self, pts):
         """
@@ -117,7 +117,7 @@ class TextDetector(object):
             box = self.clip_det_res(box, img_height, img_width)
             rect_width = int(np.linalg.norm(box[0] - box[1]))
             rect_height = int(np.linalg.norm(box[0] - box[3]))
-            if rect_width <= 10 or rect_height <= 10:
+            if rect_width <= 3 or rect_height <= 3:
                 continue
             dt_boxes_new.append(box)
         dt_boxes = np.array(dt_boxes_new)
@@ -177,7 +177,7 @@ if __name__ == "__main__":
     text_detector = TextDetector(args)
     count = 0
     total_time = 0
-    draw_img_save = "./inference_results"
+    draw_img_save = os.path.join(".", "inference_results")
     if not os.path.exists(draw_img_save):
         os.makedirs(draw_img_save)
     for image_file in image_file_list:
@@ -193,8 +193,8 @@ if __name__ == "__main__":
         count += 1
         print("Predict time of %s:" % image_file, elapse)
         src_im = utility.draw_text_det_res(dt_boxes, image_file)
-        img_name_pure = image_file.split("/")[-1]
-        cv2.imwrite(
-            os.path.join(draw_img_save, "det_res_%s" % img_name_pure), src_im)
+        img_name_pure = os.path.split(image_file)[-1]  # image_file.split("/")[-1]
+        img_path = os.path.join(draw_img_save, "det_res_%s" % img_name_pure)
+        cv2.imwrite(img_path, src_im)
     if count > 1:
         print("Avg Time:", total_time / (count - 1))

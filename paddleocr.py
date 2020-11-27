@@ -87,8 +87,8 @@ def download_with_progressbar(url, save_path):
             progress_bar.update(len(data))
             file.write(data)
     progress_bar.close()
-    if total_size_in_bytes != 0 and progress_bar.n != total_size_in_bytes:
-        logger.error("ERROR, something went wrong")
+    if total_size_in_bytes == 0 or progress_bar.n != total_size_in_bytes:
+        logger.error("Something went wrong while downloading models")
         sys.exit(0)
 
 
@@ -157,7 +157,6 @@ def parse_args():
     parser.add_argument("--use_space_char", type=bool, default=True)
 
     # params for text classifier
-    parser.add_argument("--use_angle_cls", type=str2bool, default=False)
     parser.add_argument("--cls_model_dir", type=str, default=None)
     parser.add_argument("--cls_image_shape", type=str, default="3, 48, 192")
     parser.add_argument("--label_list", type=list, default=['0', '180'])
@@ -166,11 +165,12 @@ def parse_args():
 
     parser.add_argument("--enable_mkldnn", type=bool, default=False)
     parser.add_argument("--use_zero_copy_run", type=bool, default=False)
+    parser.add_argument("--use_pdserving", type=str2bool, default=False)
 
     parser.add_argument("--lang", type=str, default='ch')
     parser.add_argument("--det", type=str2bool, default=True)
     parser.add_argument("--rec", type=str2bool, default=True)
-    parser.add_argument("--cls", type=str2bool, default=False)
+    parser.add_argument("--use_angle_cls", type=str2bool, default=True)
     return parser.parse_args()
 
 
@@ -205,8 +205,7 @@ class PaddleOCR(predict_system.TextSystem):
         maybe_download(postprocess_params.det_model_dir, model_urls['det'])
         maybe_download(postprocess_params.rec_model_dir,
                        model_urls['rec'][lang]['url'])
-        if self.use_angle_cls:
-            maybe_download(postprocess_params.cls_model_dir, model_urls['cls'])
+        maybe_download(postprocess_params.cls_model_dir, model_urls['cls'])
 
         if postprocess_params.det_algorithm not in SUPPORT_DET_MODEL:
             logger.error('det_algorithm must in {}'.format(SUPPORT_DET_MODEL))
@@ -230,9 +229,6 @@ class PaddleOCR(predict_system.TextSystem):
             rec: use text recognition or not, if false, only det will be exec. default is True
         """
         assert isinstance(img, (np.ndarray, list, str))
-        if cls and not self.use_angle_cls:
-            print('cls should be false when use_angle_cls is false')
-            exit(-1)
         self.use_angle_cls = cls
         if isinstance(img, str):
             image_file = img
@@ -274,6 +270,7 @@ def main():
         result = ocr_engine.ocr(img_path,
                                 det=args.det,
                                 rec=args.rec,
-                                cls=args.cls)
-        for line in result:
-            print(line)
+                                cls=args.use_angle_cls)
+        if result is not None:
+            for line in result:
+                print(line)

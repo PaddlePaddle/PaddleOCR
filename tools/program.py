@@ -90,13 +90,13 @@ def load_config(file_path):
     merge_config(default_config)
     _, ext = os.path.splitext(file_path)
     assert ext in ['.yml', '.yaml'], "only support yaml files for now"
-    merge_config(yaml.load(open(file_path), Loader=yaml.Loader))
+    merge_config(yaml.load(open(file_path, 'rb'), Loader=yaml.Loader))
     assert "reader_yml" in global_config['Global'],\
         "absence reader_yml in global"
     reader_file_path = global_config['Global']['reader_yml']
     _, ext = os.path.splitext(reader_file_path)
     assert ext in ['.yml', '.yaml'], "only support yaml files for reader"
-    merge_config(yaml.load(open(reader_file_path), Loader=yaml.Loader))
+    merge_config(yaml.load(open(reader_file_path, 'rb'), Loader=yaml.Loader))
     return global_config
 
 
@@ -121,7 +121,10 @@ def merge_config(config):
                 global_config.keys(), sub_keys[0])
             cur = global_config[sub_keys[0]]
             for idx, sub_key in enumerate(sub_keys[1:]):
-                assert (sub_key in cur)
+                assert (
+                    sub_key in cur
+                ), "key {} not in sub_keys: {}, please check your running command.".format(
+                    sub_key, cur)
                 if idx == len(sub_keys) - 2:
                     cur[sub_key] = value
                 else:
@@ -150,19 +153,20 @@ def check_gpu(use_gpu):
 def build(config, main_prog, startup_prog, mode):
     """
     Build a program using a model and an optimizer
-        1. create feeds
-        2. create a dataloader
-        3. create a model
-        4. create fetchs
-        5. create an optimizer
+        1. create a dataloader
+        2. create a model
+        3. create fetches
+        4. create an optimizer
     Args:
         config(dict): config
         main_prog(): main program
         startup_prog(): startup program
-        is_train(bool): train or valid
+        mode(str): train or valid
     Returns:
         dataloader(): a bridge between the model and the data
-        fetchs(dict): dict of model outputs(included loss and measures)
+        fetch_name_list(dict): dict of model outputs(included loss and measures)
+        fetch_varname_list(list): list of outputs' varname
+        opt_loss_name(str): name of loss
     """
     with fluid.program_guard(main_prog, startup_prog):
         with fluid.unique_name.guard():
@@ -207,8 +211,8 @@ def build_export(config, main_prog, startup_prog):
     Build input and output for exporting a checkpoints model to an inference model
     Args:
         config(dict): config
-        main_prog(): main program
-        startup_prog(): startup program
+        main_prog: main program
+        startup_prog: startup program
     Returns:
         feeded_var_names(list[str]): var names of input for exported inference model
         target_vars(list[Variable]): output vars for exported inference model
@@ -241,9 +245,11 @@ def create_multi_devices_program(program, loss_var_name, for_quant=False):
     build_strategy.enable_inplace = True
     if for_quant:
         build_strategy.fuse_all_reduce_ops = False
+    else:
+        program = fluid.CompiledProgram(program)
     exec_strategy = fluid.ExecutionStrategy()
     exec_strategy.num_iteration_per_drop_scope = 1
-    compile_program = fluid.CompiledProgram(program).with_data_parallel(
+    compile_program = program.with_data_parallel(
         loss_name=loss_var_name,
         build_strategy=build_strategy,
         exec_strategy=exec_strategy)
@@ -254,10 +260,15 @@ def train_eval_det_run(config,
                        exe,
                        train_info_dict,
                        eval_info_dict,
-                       is_pruning=False):
-    '''
-    main program of evaluation for detection
-    '''
+                       is_slim=None):
+    """
+    Feed data to the model and fetch the measures and loss for detection
+    Args:
+        config: config
+        exe:
+        train_info_dict: information dict for training
+        eval_info_dict: information dict for evaluation
+    """
     train_batch_id = 0
     log_smooth_window = config['Global']['log_smooth_window']
     epoch_num = config['Global']['epoch_num']
@@ -313,14 +324,21 @@ def train_eval_det_run(config,
                         best_batch_id = train_batch_id
                         best_epoch = epoch
                         save_path = save_model_dir + "/best_accuracy"
-                        if is_pruning:
-                            import paddleslim as slim
-                            slim.prune.save_model(
-                                exe, train_info_dict['train_program'],
-                                save_path)
-                        else:
+                        if is_slim is None:
                             save_model(train_info_dict['train_program'],
                                        save_path)
+                        else:
+                            import paddleslim as slim
+                            if is_slim == "prune":
+                                slim.prune.save_model(
+                                    exe, train_info_dict['train_program'],
+                                    save_path)
+                            elif is_slim == "quant":
+                                save_model(eval_info_dict['program'], save_path)
+                            else:
+                                raise ValueError(
+                                    "Only quant and prune are supported currently. But received {}".
+                                    format(is_slim))
                     strs = 'Test iter: {}, metrics:{}, best_hmean:{:.6f}, best_epoch:{}, best_batch_id:{}'.format(
                         train_batch_id, metrics, best_eval_hmean, best_epoch,
                         best_batch_id)
@@ -331,27 +349,50 @@ def train_eval_det_run(config,
             train_loader.reset()
         if epoch == 0 and save_epoch_step == 1:
             save_path = save_model_dir + "/iter_epoch_0"
-            if is_pruning:
-                import paddleslim as slim
-                slim.prune.save_model(exe, train_info_dict['train_program'],
-                                      save_path)
-            else:
+            if is_slim is None:
                 save_model(train_info_dict['train_program'], save_path)
+            else:
+                import paddleslim as slim
+                if is_slim == "prune":
+                    slim.prune.save_model(exe, train_info_dict['train_program'],
+                                          save_path)
+                elif is_slim == "quant":
+                    save_model(eval_info_dict['program'], save_path)
+                else:
+                    raise ValueError(
+                        "Only quant and prune are supported currently. But received {}".
+                        format(is_slim))
         if epoch > 0 and epoch % save_epoch_step == 0:
             save_path = save_model_dir + "/iter_epoch_%d" % (epoch)
-            if is_pruning:
-                import paddleslim as slim
-                slim.prune.save_model(exe, train_info_dict['train_program'],
-                                      save_path)
-            else:
+            if is_slim is None:
                 save_model(train_info_dict['train_program'], save_path)
+            else:
+                import paddleslim as slim
+                if is_slim == "prune":
+                    slim.prune.save_model(exe, train_info_dict['train_program'],
+                                          save_path)
+                elif is_slim == "quant":
+                    save_model(eval_info_dict['program'], save_path)
+                else:
+                    raise ValueError(
+                        "Only quant and prune are supported currently. But received {}".
+                        format(is_slim))
     return
 
 
-def train_eval_rec_run(config, exe, train_info_dict, eval_info_dict):
-    '''
-    main program of evaluation for recognition
-    '''
+def train_eval_rec_run(config,
+                       exe,
+                       train_info_dict,
+                       eval_info_dict,
+                       is_slim=None):
+    """
+    Feed data to the model and fetch the measures and loss for recognition
+    Args:
+        config: config
+        exe:
+        train_info_dict: information dict for training
+        eval_info_dict: information dict for evaluation
+    """
     train_batch_id = 0
     log_smooth_window = config['Global']['log_smooth_window']
     epoch_num = config['Global']['epoch_num']
@@ -428,7 +469,21 @@ def train_eval_rec_run(config, exe, train_info_dict, eval_info_dict):
                         best_batch_id = train_batch_id
                         best_epoch = epoch
                         save_path = save_model_dir + "/best_accuracy"
-                        save_model(train_info_dict['train_program'], save_path)
+                        if is_slim is None:
+                            save_model(train_info_dict['train_program'],
+                                       save_path)
+                        else:
+                            import paddleslim as slim
+                            if is_slim == "prune":
+                                slim.prune.save_model(
+                                    exe, train_info_dict['train_program'],
+                                    save_path)
+                            elif is_slim == "quant":
+                                save_model(eval_info_dict['program'], save_path)
+                            else:
+                                raise ValueError(
+                                    "Only quant and prune are supported currently. But received {}".
+                                    format(is_slim))
                     strs = 'Test iter: {}, acc:{:.6f}, best_acc:{:.6f}, best_epoch:{}, best_batch_id:{}, eval_sample_num:{}'.format(
                         train_batch_id, eval_acc, best_eval_acc, best_epoch,
                         best_batch_id, eval_sample_num)
@@ -439,14 +494,42 @@ def train_eval_rec_run(config, exe, train_info_dict, eval_info_dict):
             train_loader.reset()
         if epoch == 0 and save_epoch_step == 1:
             save_path = save_model_dir + "/iter_epoch_0"
-            save_model(train_info_dict['train_program'], save_path)
+            if is_slim is None:
+                save_model(train_info_dict['train_program'], save_path)
+            else:
+                import paddleslim as slim
+                if is_slim == "prune":
+                    slim.prune.save_model(exe, train_info_dict['train_program'],
+                                          save_path)
+                elif is_slim == "quant":
+                    save_model(eval_info_dict['program'], save_path)
+                else:
+                    raise ValueError(
+                        "Only quant and prune are supported currently. But received {}".
+                        format(is_slim))
         if epoch > 0 and epoch % save_epoch_step == 0:
             save_path = save_model_dir + "/iter_epoch_%d" % (epoch)
-            save_model(train_info_dict['train_program'], save_path)
+            if is_slim is None:
+                save_model(train_info_dict['train_program'], save_path)
+            else:
+                import paddleslim as slim
+                if is_slim == "prune":
+                    slim.prune.save_model(exe, train_info_dict['train_program'],
+                                          save_path)
+                elif is_slim == "quant":
+                    save_model(eval_info_dict['program'], save_path)
+                else:
+                    raise ValueError(
+                        "Only quant and prune are supported currently. But received {}".
+                        format(is_slim))
     return
 
 
-def train_eval_cls_run(config, exe, train_info_dict, eval_info_dict):
+def train_eval_cls_run(config,
+                       exe,
+                       train_info_dict,
+                       eval_info_dict,
+                       is_slim=None):
     train_batch_id = 0
     log_smooth_window = config['Global']['log_smooth_window']
     epoch_num = config['Global']['epoch_num']
@@ -509,7 +592,21 @@ def train_eval_cls_run(config, exe, train_info_dict, eval_info_dict):
                         best_batch_id = train_batch_id
                         best_epoch = epoch
                         save_path = save_model_dir + "/best_accuracy"
-                        save_model(train_info_dict['train_program'], save_path)
+                        if is_slim is None:
+                            save_model(train_info_dict['train_program'],
+                                       save_path)
+                        else:
+                            import paddleslim as slim
+                            if is_slim == "prune":
+                                slim.prune.save_model(
+                                    exe, train_info_dict['train_program'],
+                                    save_path)
+                            elif is_slim == "quant":
+                                save_model(eval_info_dict['program'], save_path)
+                            else:
+                                raise ValueError(
+                                    "Only quant and prune are supported currently. But received {}".
+                                    format(is_slim))
                     strs = 'Test iter: {}, acc:{:.6f}, best_acc:{:.6f}, best_epoch:{}, best_batch_id:{}, eval_sample_num:{}'.format(
                         train_batch_id, eval_acc, best_eval_acc, best_epoch,
                         best_batch_id, eval_sample_num)
@@ -520,10 +617,34 @@ def train_eval_cls_run(config, exe, train_info_dict, eval_info_dict):
             train_loader.reset()
         if epoch == 0 and save_epoch_step == 1:
             save_path = save_model_dir + "/iter_epoch_0"
-            save_model(train_info_dict['train_program'], save_path)
+            if is_slim is None:
+                save_model(train_info_dict['train_program'], save_path)
+            else:
+                import paddleslim as slim
+                if is_slim == "prune":
+                    slim.prune.save_model(exe, train_info_dict['train_program'],
+                                          save_path)
+                elif is_slim == "quant":
+                    save_model(eval_info_dict['program'], save_path)
+                else:
+                    raise ValueError(
+                        "Only quant and prune are supported currently. But received {}".
+                        format(is_slim))
         if epoch > 0 and epoch % save_epoch_step == 0:
             save_path = save_model_dir + "/iter_epoch_%d" % (epoch)
-            save_model(train_info_dict['train_program'], save_path)
+            if is_slim is None:
+                save_model(train_info_dict['train_program'], save_path)
+            else:
+                import paddleslim as slim
+                if is_slim == "prune":
+                    slim.prune.save_model(exe, train_info_dict['train_program'],
+                                          save_path)
+                elif is_slim == "quant":
+                    save_model(eval_info_dict['program'], save_path)
+                else:
+                    raise ValueError(
+                        "Only quant and prune are supported currently. But received {}".
+                        format(is_slim))
     return
 
 

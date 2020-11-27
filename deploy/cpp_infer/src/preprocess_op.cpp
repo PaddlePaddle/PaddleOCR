@@ -85,10 +85,10 @@ void ResizeImgType0::Run(const cv::Mat &img, cv::Mat &resize_img,
 
   if (resize_w % 32 == 0)
     resize_w = resize_w;
-  else if (resize_w / 32 < 1)
+  else if (resize_w / 32 < 1 + 1e-5)
     resize_w = 32;
   else
-    resize_w = (resize_w / 32 - 1) * 32;
+    resize_w = resize_w / 32 * 32;
 
   cv::resize(img, resize_img, cv::Size(resize_w, resize_h));
 
