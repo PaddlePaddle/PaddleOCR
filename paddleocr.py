@@ -50,22 +50,22 @@ model_urls = {
         'french': {
             'url':
             'https://paddleocr.bj.bcebos.com/20-09-22/mobile/fr/french_ppocr_mobile_v1.1_rec_infer.tar',
-            'dict_path': './ppocr/utils/french_dict.txt'
+            'dict_path': './ppocr/utils/dict/french_dict.txt'
         },
         'german': {
             'url':
             'https://paddleocr.bj.bcebos.com/20-09-22/mobile/ge/german_ppocr_mobile_v1.1_rec_infer.tar',
-            'dict_path': './ppocr/utils/german_dict.txt'
+            'dict_path': './ppocr/utils/dict/german_dict.txt'
         },
         'korean': {
             'url':
             'https://paddleocr.bj.bcebos.com/20-09-22/mobile/kr/korean_ppocr_mobile_v1.1_rec_infer.tar',
-            'dict_path': './ppocr/utils/korean_dict.txt'
+            'dict_path': './ppocr/utils/dict/korean_dict.txt'
         },
         'japan': {
             'url':
             'https://paddleocr.bj.bcebos.com/20-09-22/mobile/jp/japan_ppocr_mobile_v1.1_rec_infer.tar',
-            'dict_path': './ppocr/utils/japan_dict.txt'
+            'dict_path': './ppocr/utils/dict/japan_dict.txt'
         }
     },
     'cls':
