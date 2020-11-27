@@ -75,6 +75,7 @@ python3 PPOCRLabel.py
 |  rec_gt.txt   | 识别标签。可直接用于PPOCR识别模型训练。需用户手动点击菜单栏“PaddleOCR” - "保存识别结果"后产生。 |
 |   crop_img    |   识别数据。按照检测框切割后的图片。与rec_gt.txt同时产生。   |
 
+[5] 当前的识别标注不支持中文文件名，大家在使用的时候提前规范化待标注的文件名
 ### 参考资料
 
 1.[Tzutalin. LabelImg. Git code (2015)](https://github.com/tzutalin/labelImg)
