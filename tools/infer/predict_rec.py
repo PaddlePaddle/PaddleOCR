@@ -115,7 +115,7 @@ class TextRecognizer(object):
             rec_result = self.postprocess_op(preds)
             for rno in range(len(rec_result)):
                 rec_res[indices[beg_img_no + rno]] = rec_result[rno]
-            elapse = time.time() - starttime
+            elapse += time.time() - starttime
         return rec_res, elapse
 
 
