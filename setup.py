@@ -15,7 +15,7 @@
 from setuptools import setup
 from io import open
 
-with open('requirments.txt', encoding="utf-8-sig") as f:
+with open('requirements.txt', encoding="utf-8-sig") as f:
     requirements = f.readlines()
     requirements.append('tqdm')
 
