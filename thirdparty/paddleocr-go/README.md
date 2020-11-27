@@ -30,6 +30,7 @@ echo "export GOROOT=/usr/local/go" >> ~/.bashrc
 echo "export PATH=$PATH:$GOROOT/bin" >> ~/.bashrc
 # 配置GOPATH，即go相关package的安装目录，可自定义一个目录
 echo "export GOPATH=$HOME/golang" >> ~/.bashrc
+echo "export PATH=$PATH:$GOPATH/bin" >> ~/.bashrc
 # 配置GOPROXY，即go mod包管理器的下载代理，同时打开mod模式
 echo "export GO111MODULE=on" >> ~/.bashrc
 echo "export GOPROXY=https://mirrors.aliyun.com/goproxy/" >> ~/.bashrc
@@ -196,7 +197,7 @@ souce ~/.bashrc
 确保C推理库已配置到环境变量，然后直接执行安装命令
 
 ```shell
-go get -u github.com/PaddlePaddle/PaddleOCR/deploy/paddleocr-go
+go get -u github.com/PaddlePaddle/PaddleOCR/thirdparty/paddleocr-go
 ```
 
 ### 2.2 相关使用API
@@ -204,7 +205,7 @@ go get -u github.com/PaddlePaddle/PaddleOCR/deploy/paddleocr-go
 在go中使用import引入包
 
 ```go
-import github.com/PaddlePaddle/PaddleOCR/deploy/paddleocr-go/ocr
+import github.com/PaddlePaddle/PaddleOCR/thirdparty/paddleocr-go/ocr
 ```
 
 - 预测结果结构体
@@ -258,27 +259,32 @@ func (ocr *OCRSystem) StartServer(port string)
 
 ## 3. 预测demo
 
-### 3.1 修改预测配置
+### 3.1 生成预测demo
+
+以下两种方式均可生成预测demo文件，任选其一即可
+
+- 通过下载`paddleocr-go`代码并编译
+
+```shell
+git clone https://github.com/PaddlePaddle/PaddleOCR
+cd PaddleOCR/thirdparty/paddleocr-go
+
+# 确保C动态库路径已在环境变量中，执行以下命令生成ppocr-go文件
+go build ppocr-go.go
+```
+
+- 通过go package自动安装
+
+```shell
+# 执行后会自动在$GOPATH/bin下生成ppocr-go文件，如果配置了PATH=$PATH:$GOPATH/bin，以下预测命令可以去掉`./`，直接执行ppocr-go
+go get -u github.com/PaddlePaddle/PaddleOCR/thirdparty/paddleocr-go
+```
+
+### 3.2 修改预测配置
 
 当前给定的配置文件`config/conf.yaml`中，包含了默认的OCR预测配置参数，可根据个人需要更改相关参数。
 
 比如，将`use_gpu`改为`false`，使用CPU执行预测；将`det_model_dir`, `rec_model_dir`, `cls_model_dir`都更改为自己的本地模型路径，也或者是更改字典`rec_char_dict_path`的路径，这四个路径如果配置http链接，会自动下载到本地目录。另外，配置参数包含了预测引擎、检测模型、检测阈值、方向分类模型、识别模型及阈值的相关参数，具体参数的意义可参见[PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/whl.md#%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E)。
-
-### 3.2 编译预测demo
-
-- 下载`paddleocr-go`代码
-
-```shell
-git clone https://github.com/PaddlePaddle/PaddleOCR
-cd PaddleOCR/deploy/paddleocr-go
-```
-
-- 编译demo
-
-```shell
-# 确保C动态库路径已在环境变量中
-go build ppocr-go.go
-```
 
 ### 3.3 执行预测demo
 

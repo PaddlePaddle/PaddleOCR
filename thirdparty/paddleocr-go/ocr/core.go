@@ -16,7 +16,7 @@ import (
 	"strings"
 
 	"github.com/LKKlein/gocv"
-	"github.com/PaddlePaddle/PaddleOCR/deploy/paddleocr-go/paddle"
+	"github.com/PaddlePaddle/PaddleOCR/thirdparty/paddleocr-go/paddle"
 )
 
 type PaddleModel struct {

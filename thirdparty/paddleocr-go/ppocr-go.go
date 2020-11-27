@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"log"
-	"github.com/PaddlePaddle/PaddleOCR/deploy/paddleocr-go/ocr"
+	"github.com/PaddlePaddle/PaddleOCR/thirdparty/paddleocr-go/ocr"
 )
 
 var (
