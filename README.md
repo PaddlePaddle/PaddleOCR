@@ -181,4 +181,4 @@ We welcome all the contributions to PaddleOCR and appreciate for your feedback v
 - Thanks [lijinhan](https://github.com/lijinhan) for contributing a new way, i.e., java SpringBoot, to achieve the request for the Hubserving deployment.
 - Thanks [Mejans](https://github.com/Mejans) for contributing the Occitan corpus and character set.
 - Thanks [LKKlein](https://github.com/LKKlein) for contributing a new deploying package with the Golang program language.
-- Thanks [Evezerest](https://github.com/Evezerest)， [ninetailskim](https://github.com/ninetailskim)， [edencfc](https://github.com/edencfc)， [BeyondYourself](https://github.com/BeyondYourself)， [1084667371](https://github.com/1084667371) for contributing a new data annotation tool, i.e., PPOCRLabel。
+- Thanks [Evezerest](https://github.com/Evezerest), [ninetailskim](https://github.com/ninetailskim), [edencfc](https://github.com/edencfc), [BeyondYourself](https://github.com/BeyondYourself) and [1084667371](https://github.com/1084667371) for contributing a new data annotation tool, i.e., PPOCRLabel。
