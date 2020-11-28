@@ -4,6 +4,7 @@ English | [简体中文](README_ch.md)
 PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools that help users train better models and apply them into practice.
 
 **Recent updates**
+- 2020.11.25 Update a new data annotation tool, i.e., [PPOCRLabel](./PPOCRLabel/README_en.md), which is helpful to improve the labeling efficiency. Moreover, the labeling results can be used in training of the PP-OCR system directly.
 - 2020.9.22 Update the PP-OCR technical article, https://arxiv.org/abs/2009.09941
 - 2020.9.19 Update the ultra lightweight compressed ppocr_mobile_slim series models, the overall model size is 3.5M (see [PP-OCR Pipeline](#PP-OCR-Pipeline)), suitable for mobile deployment. [Model Downloads](#Supported-Chinese-model-list)
 - 2020.9.17 Update the ultra lightweight ppocr_mobile series and general ppocr_server series Chinese and English ocr models, which are comparable to commercial effects. [Model Downloads](#Supported-Chinese-model-list)
@@ -77,30 +78,32 @@ For a new language request, please refer to [Guideline for new language_requests
 - [Installation](./doc/doc_en/installation_en.md)
 - [Quick Start](./doc/doc_en/quickstart_en.md)
 - [Code Structure](./doc/doc_en/tree_en.md)
-- Algorithm introduction
+- Algorithm Introduction
     - [Text Detection Algorithm](./doc/doc_en/algorithm_overview_en.md)
     - [Text Recognition Algorithm](./doc/doc_en/algorithm_overview_en.md)
     - [PP-OCR Pipeline](#PP-OCR-Pipeline)
-- Model training/evaluation
+- Model Training/Evaluation
     - [Text Detection](./doc/doc_en/detection_en.md)
     - [Text Recognition](./doc/doc_en/recognition_en.md)
     - [Direction Classification](./doc/doc_en/angle_class_en.md)
     - [Yml Configuration](./doc/doc_en/config_en.md)
 - Inference and Deployment
-    - [Quick inference based on pip](./doc/doc_en/whl_en.md)
+    - [Quick Inference Based on PIP](./doc/doc_en/whl_en.md)
     - [Python Inference](./doc/doc_en/inference_en.md)
     - [C++ Inference](./deploy/cpp_infer/readme_en.md)
     - [Serving](./deploy/hubserving/readme_en.md)
     - [Mobile](./deploy/lite/readme_en.md)
     - [Model Quantization](./deploy/slim/quantization/README_en.md)
     - [Model Compression](./deploy/slim/prune/README_en.md)
-    - [Benchmark](./doc/doc_en/benchmark_en.md)
+    - [Benchmark](./doc/doc_en/benchmark_en.md)  
+- Data Annotation and Synthesis
+    - [Semi-automatic Annotation Tool](./PPOCRLabel/README_en.md)
+    - [Data Annotation Tools](./doc/doc_en/data_annotation_en.md)
+    - [Data Synthesis Tools](./doc/doc_en/data_synthesis_en.md)
 - Datasets
     - [General OCR Datasets(Chinese/English)](./doc/doc_en/datasets_en.md)
     - [HandWritten_OCR_Datasets(Chinese)](./doc/doc_en/handwritten_datasets_en.md)
     - [Various OCR Datasets(multilingual)](./doc/doc_en/vertical_and_multilingual_datasets_en.md)
-    - [Data Annotation Tools](./doc/doc_en/data_annotation_en.md)
-    - [Data Synthesis Tools](./doc/doc_en/data_synthesis_en.md)
 - [Visualization](#Visualization)
 - [New language requests](#language_requests)
 - [FAQ](./doc/doc_en/FAQ_en.md)
@@ -177,3 +180,5 @@ We welcome all the contributions to PaddleOCR and appreciate for your feedback v
 - Thanks [tangmq](https://gitee.com/tangmq) for contributing Dockerized deployment services to PaddleOCR and supporting the rapid release of callable Restful API services.
 - Thanks [lijinhan](https://github.com/lijinhan) for contributing a new way, i.e., java SpringBoot, to achieve the request for the Hubserving deployment.
 - Thanks [Mejans](https://github.com/Mejans) for contributing the Occitan corpus and character set.
+- Thanks [LKKlein](https://github.com/LKKlein) for contributing a new deploying package with the Golang program language.
+- Thanks [Evezerest](https://github.com/Evezerest), [ninetailskim](https://github.com/ninetailskim), [edencfc](https://github.com/edencfc), [BeyondYourself](https://github.com/BeyondYourself) and [1084667371](https://github.com/1084667371) for contributing a new data annotation tool, i.e., PPOCRLabel。
