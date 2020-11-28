@@ -89,7 +89,6 @@ def main(config, device, logger, vdl_writer):
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,
                   eval_class, pre_best_model_dict, logger, vdl_writer)
-    program.save_inference_mode(model, config, logger)
 
 
 def test_reader(config, device, logger):
