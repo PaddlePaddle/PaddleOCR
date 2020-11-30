@@ -170,7 +170,7 @@ def parse_args(add_help=True):
     parser.add_argument("--lang", type=str, default='ch')
     parser.add_argument("--det", type=str2bool, default=True)
     parser.add_argument("--rec", type=str2bool, default=True)
-    parser.add_argument("--use_angle_cls", type=str2bool, default=True)
+    parser.add_argument("--use_angle_cls", type=str2bool, default=False)
     return parser.parse_args()
 
 
