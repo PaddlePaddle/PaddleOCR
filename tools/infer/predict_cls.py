@@ -132,7 +132,7 @@ def main(args):
         valid_image_file_list.append(image_file)
         img_list.append(img)
     try:
-        img_list, cls_res, elapse = text_classifier(img_list)
+        img_list, cls_res, predict_time = text_classifier(img_list)
     except Exception as e:
         print(e)
         logger.info(
@@ -143,10 +143,10 @@ def main(args):
             "Please set --rec_image_shape='3,32,100' and --rec_char_type='en' ")
         exit()
     for ino in range(len(img_list)):
-        print("Predicts of %s:%s" % (valid_image_file_list[ino], cls_res[ino]))
-    print("Total predict time for %d images, cost: %.3f" %
-          (len(img_list), elapse))
+        print("Predicts of {}:{}".format(valid_image_file_list[ino], cls_res[
+            ino]))
+    print("Total predict time for {} images, cost: {:.3f}".format(
+        len(img_list), predict_time))
 
-
-if __name__ == "__main__":
-    main(utility.parse_args())
+    if __name__ == "__main__":
+        main(utility.parse_args())
