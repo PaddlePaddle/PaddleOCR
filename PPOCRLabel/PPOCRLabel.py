@@ -87,7 +87,7 @@ class WindowMixin(object):
 class MainWindow(QMainWindow, WindowMixin):
     FIT_WINDOW, FIT_WIDTH, MANUAL_ZOOM = list(range(3))
 
-    def __init__(self, defaultFilename=None, defaultPrefdefClassFile=None, defaultSaveDir=None, language="zh-CN"):
+    def __init__(self, lang="ch", defaultFilename=None, defaultPrefdefClassFile=None, defaultSaveDir=None):
         super(MainWindow, self).__init__()
         self.setWindowTitle(__appname__)
 
@@ -95,15 +95,15 @@ class MainWindow(QMainWindow, WindowMixin):
         self.settings = Settings()
         self.settings.load()
         settings = self.settings
-
+        self.lang = lang
         # Load string bundle for i18n
-        if language not in ['zh-CN', 'en']:
-            language = 'zh-CN'
-        self.stringBundle = StringBundle.getBundle(localeStr=language)  # 'en'
+        if lang not in ['ch', 'en']:
+            lang = 'en'
+        self.stringBundle = StringBundle.getBundle(localeStr='zh-CN' if lang=='ch' else 'en') # 'en'
         getStr = lambda strId: self.stringBundle.getString(strId)
 
         self.defaultSaveDir = defaultSaveDir
-        self.ocr = PaddleOCR(use_pdserving=False, use_angle_cls=True, det=True, cls=True, use_gpu=True, lang="ch")
+        self.ocr = PaddleOCR(use_pdserving=False, use_angle_cls=True, det=True, cls=True, use_gpu=False, lang=lang)
 
         # For loading all image under a directory
         self.mImgList = []
@@ -153,9 +153,6 @@ class MainWindow(QMainWindow, WindowMixin):
         self.AutoRecognition = QToolButton()
         self.AutoRecognition.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
         self.AutoRecognition.setIcon(newIcon('Auto'))
-        # self.AutoRecognition.setIconSize(QSize(100,20))
-        self.AutoRecognition.setFixedSize(QSize(80, 30))
-        # self.AutoRecognition.setStyleSheet('text-align:center;')#border:none;font-size : 12pt;
         autoRecLayout = QHBoxLayout()
         autoRecLayout.setContentsMargins(0, 0, 0, 0)
         autoRecLayout.addWidget(self.AutoRecognition)
@@ -181,18 +178,17 @@ class MainWindow(QMainWindow, WindowMixin):
         self.editButton = QToolButton()
         self.reRecogButton = QToolButton()
         self.reRecogButton.setIcon(newIcon('reRec', 30))
-        self.reRecogButton.setFixedSize(QSize(80, 30))
         self.reRecogButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
 
         self.newButton = QToolButton()
         self.newButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        self.newButton.setFixedSize(QSize(80, 30))
+        # self.newButton.setFixedSize(QSize(80, 30))
         self.SaveButton = QToolButton()
         self.SaveButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        self.SaveButton.setFixedSize(QSize(60, 30))
+        # self.SaveButton.setFixedSize(QSize(60, 30))
         self.DelButton = QToolButton()
         self.DelButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        self.DelButton.setFixedSize(QSize(80, 30))
+        # self.DelButton.setFixedSize(QSize(80, 30))
 
         lefttoptoolbox = QHBoxLayout()
         lefttoptoolbox.addWidget(self.newButton)
@@ -390,10 +386,10 @@ class MainWindow(QMainWindow, WindowMixin):
                       'Ctrl+D', 'copy', getStr('dupBoxDetail'),
                       enabled=False)
 
-        hideAll = action('&Hide\nRectBox', partial(self.togglePolygons, False),
+        hideAll = action(getStr('hideBox'), partial(self.togglePolygons, False),
                          'Ctrl+H', 'hide', getStr('hideAllBoxDetail'),
                          enabled=False)
-        showAll = action('&Show\nRectBox', partial(self.togglePolygons, True),
+        showAll = action(getStr('showBox'), partial(self.togglePolygons, True),
                          'Ctrl+A', 'hide', getStr('showAllBoxDetail'),
                          enabled=False)
 
@@ -455,8 +451,6 @@ class MainWindow(QMainWindow, WindowMixin):
         self.SaveButton.setDefaultAction(save)
         self.AutoRecognition.setDefaultAction(AutoRec)
         self.reRecogButton.setDefaultAction(reRec)
-        # self.preButton.setDefaultAction(openPrevImg)
-        # self.nextButton.setDefaultAction(openNextImg)
 
         ############# Zoom layout ##############
         zoomLayout = QHBoxLayout()
@@ -554,8 +548,7 @@ class MainWindow(QMainWindow, WindowMixin):
             hideAll, showAll, None,
             zoomIn, zoomOut, zoomOrg, None,
             fitWindow, fitWidth))
-
-        addActions(self.menus.autolabel, (saveRec, None, help))  # alcm,
+        addActions(self.menus.autolabel, (alcm, saveRec, None, help))
 
         self.menus.file.aboutToShow.connect(self.updateFileMenu)
 
@@ -745,7 +738,7 @@ class MainWindow(QMainWindow, WindowMixin):
         QMessageBox.information(self, u'Information', msg)
 
     def showStepsDialog(self):
-        msg = steps()
+        msg = stepsInfo(self.lang)
         QMessageBox.information(self, u'Information', msg)
 
     def createShape(self):
@@ -1841,7 +1834,50 @@ class MainWindow(QMainWindow, WindowMixin):
             QMessageBox.information(self, "Information", "Draw a box!")
 
     def autolcm(self):
-        print('autolabelchoosemodel')
+        vbox = QVBoxLayout()
+        hbox = QHBoxLayout()
+        self.panel = QLabel()
+        self.panel.setText(self.stringBundle.getString('choseModelLg'))
+        self.panel.setAlignment(Qt.AlignLeft)
+        self.comboBox = QComboBox()
+        self.comboBox.setObjectName("comboBox")
+        self.comboBox.addItems(['Chinese & English', 'English', 'French', 'German', 'Korean', 'Japanese'])
+        # self.comboBox_lg = QComboBox()
+        # self.comboBox_lg.setObjectName("comboBox_language")
+        vbox.addWidget(self.panel)
+        vbox.addWidget(self.comboBox)
+        self.dialog = QDialog()
+        self.dialog.resize(300, 100)
+        self.okBtn = QPushButton(self.stringBundle.getString('ok'))
+        self.cancelBtn = QPushButton(self.stringBundle.getString('cancel'))
+
+        self.okBtn.clicked.connect(self.modelChoose)
+        self.cancelBtn.clicked.connect(self.cancel)
+        self.dialog.setWindowTitle(self.stringBundle.getString('choseModelLg'))
+
+        hbox.addWidget(self.okBtn)
+        hbox.addWidget(self.cancelBtn)
+
+        vbox.addWidget(self.panel)
+        vbox.addLayout(hbox)
+        self.dialog.setLayout(vbox)
+        self.dialog.setWindowModality(Qt.ApplicationModal)
+        self.dialog.exec_()
+        if self.filePath:
+            self.AutoRecognition.setEnabled(True)
+
+
+    def modelChoose(self):
+        print(self.comboBox.currentText())
+        lg_idx = {'Chinese & English': 'ch', 'English': 'en', 'French': 'french', 'German': 'german',
+                  'Korean': 'korean', 'Japanese': 'japan'}
+        del self.ocr
+        self.ocr = PaddleOCR(use_pdserving=False, use_angle_cls=True, det=True, cls=True, use_gpu=False,
+                             lang=lg_idx[self.comboBox.currentText()])
+        self.dialog.close()
+
+    def cancel(self):
+        self.dialog.close()
 
     def loadFilestate(self, saveDir):
         self.fileStatepath = saveDir + '/fileState.txt'
@@ -1941,19 +1977,15 @@ def get_main_app(argv=[]):
     app.setApplicationName(__appname__)
     app.setWindowIcon(newIcon("app"))
     # Tzutalin 201705+: Accept extra agruments to change predefined class file
-    argparser = argparse.ArgumentParser()
-    argparser.add_argument("image_dir", nargs="?")
-    argparser.add_argument("language", default='zh-CN', nargs="?")
-    argparser.add_argument("predefined_classes_file",
+    argparser.add_argument("--lang", default='ch', nargs="?")
+    argparser.add_argument("--predefined_classes_file",
                            default=os.path.join(os.path.dirname(__file__), "data", "predefined_classes.txt"),
                            nargs="?")
-    argparser.add_argument("save_dir", nargs="?")
     args = argparser.parse_args(argv[1:])
     # Usage : labelImg.py image predefClassFile saveDir
-    win = MainWindow(args.image_dir,
-                     args.predefined_classes_file,
-                     args.save_dir,
-                     args.language)
+    win = MainWindow(lang=args.lang,
+                     defaultPrefdefClassFile=args.predefined_classes_file,
+                     )
     win.show()
     return app, win
 

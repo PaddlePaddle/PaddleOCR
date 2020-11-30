@@ -150,18 +150,33 @@ def get_rotate_crop_image(img, points):
     except Exception as e:
         print(e)
 
-def steps():
-    msg = "1. 安装与运行：使用上述命令安装与运行程序。\n" \
-          "2. 打开文件夹：在菜单栏点击 “文件” - 打开目录 选择待标记图片的文件夹.\n"\
-          "3. 自动标注：点击 ”自动标注“，使用PPOCR超轻量模型对图片文件名前图片状态为 “X” 的图片进行自动标注。\n" \
-          "4. 手动标注：点击 “矩形标注”（推荐直接在英文模式下点击键盘中的 “W”)，用户可对当前图片中模型未检出的部分进行手动" \
-          "绘制标记框。点击键盘P，则使用四点标注模式（或点击“编辑” - “四点标注”），用户依次点击4个点后，双击左键表示标注完成。\n" \
-          "5. 标记框绘制完成后，用户点击 “确认”，检测框会先被预分配一个 “待识别” 标签。\n" \
-          "6. 重新识别：将图片中的所有检测画绘制/调整完成后，点击 “重新识别”，PPOCR模型会对当前图片中的**所有检测框**重新识别。\n" \
-          "7. 内容更改：双击识别结果，对不准确的识别结果进行手动更改。\n" \
-          "8. 保存：点击 “保存”，图片状态切换为 “√”，跳转至下一张。\n" \
-          "9. 删除：点击 “删除图像”，图片将会被删除至回收站。\n" \
-          "10. 标注结果：关闭应用程序或切换文件路径后，手动保存过的标签将会被存放在所打开图片文件夹下的" \
-          "*Label.txt*中。在菜单栏点击 “PaddleOCR” - 保存识别结果后，会将此类图片的识别训练数据保存在*crop_img*文件夹下，" \
-          "识别标签保存在*rec_gt.txt*中。\n"
+def stepsInfo(lang='en'):
+    if lang == 'ch':
+        msg = "1. 安装与运行：使用上述命令安装与运行程序。\n" \
+              "2. 打开文件夹：在菜单栏点击 “文件” - 打开目录 选择待标记图片的文件夹.\n"\
+              "3. 自动标注：点击 ”自动标注“，使用PPOCR超轻量模型对图片文件名前图片状态为 “X” 的图片进行自动标注。\n" \
+              "4. 手动标注：点击 “矩形标注”（推荐直接在英文模式下点击键盘中的 “W”)，用户可对当前图片中模型未检出的部分进行手动" \
+              "绘制标记框。点击键盘P，则使用四点标注模式（或点击“编辑” - “四点标注”），用户依次点击4个点后，双击左键表示标注完成。\n" \
+              "5. 标记框绘制完成后，用户点击 “确认”，检测框会先被预分配一个 “待识别” 标签。\n" \
+              "6. 重新识别：将图片中的所有检测画绘制/调整完成后，点击 “重新识别”，PPOCR模型会对当前图片中的**所有检测框**重新识别。\n" \
+              "7. 内容更改：双击识别结果，对不准确的识别结果进行手动更改。\n" \
+              "8. 保存：点击 “保存”，图片状态切换为 “√”，跳转至下一张。\n" \
+              "9. 删除：点击 “删除图像”，图片将会被删除至回收站。\n" \
+              "10. 标注结果：关闭应用程序或切换文件路径后，手动保存过的标签将会被存放在所打开图片文件夹下的" \
+              "*Label.txt*中。在菜单栏点击 “PaddleOCR” - 保存识别结果后，会将此类图片的识别训练数据保存在*crop_img*文件夹下，" \
+              "识别标签保存在*rec_gt.txt*中。\n"
+    else:
+        msg = "1. Build and launch using the instructions above.\n" \
+              "2. Click 'Open Dir' in Menu/File to select the folder of the picture.\n"\
+              "3. Click 'Auto recognition', use PPOCR model to automatically annotate images which marked with 'X' before the file name."\
+              "4. Create Box:\n"\
+                   "4.1 Click 'Create RectBox' or press 'W' in English keyboard mode to draw a new rectangle detection box. Click and release left mouse to select a region to annotate the text area.\n"\
+                   "4.2 Press 'P' to enter four-point labeling mode which enables you to create any four-point shape by clicking four points with the left mouse button in succession and DOUBLE CLICK the left mouse as the signal of labeling completion.\n"\
+              "5. After the marking frame is drawn, the user clicks 'OK', and the detection frame will be pre-assigned a TEMPORARY label.\n"\
+              "6. Click re-Recognition, model will rewrite ALL recognition results in ALL detection box.\n"\
+              "7. Double click the result in 'recognition result' list to manually change inaccurate recognition results.\n"\
+              "8. Click 'Save', the image status will switch to '√',then the program automatically jump to the next.\n"\
+              "9. Click 'Delete Image' and the image will be deleted to the recycle bin.\n"\
+              "10. Labeling result: After closing the application or switching the file path, the manually saved label will be stored in *Label.txt* under the opened picture folder.\n"\
+              "    Click PaddleOCR-Save Recognition Results in the menu bar, the recognition training data of such pictures will be saved in the *crop_img* folder, and the recognition label will be saved in *rec_gt.txt*.\n"
     return msg
