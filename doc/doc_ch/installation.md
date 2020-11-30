@@ -47,9 +47,9 @@ docker images
 hub.baidubce.com/paddlepaddle/paddle   latest-gpu-cuda9.0-cudnn7-dev    f56310dcc829
 ```
 
-**2. 安装PaddlePaddle Fluid v2.0**
+**2. 安装PaddlePaddle v2.0**
 ```
-pip3 install --upgrade pip
+python3 -m pip install --upgrade pip
 
 如果您的机器安装的是CUDA9或CUDA10，请运行以下命令安装
 python3 -m pip install paddlepaddle-gpu==2.0.0b0 -i https://mirror.baidu.com/pypi/simple
@@ -75,7 +75,7 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 **4. 安装第三方库**
 ```
 cd PaddleOCR
-pip3 install -r requirments.txt
+python3 -m pip install -r requirements.txt
 ```
 
 注意，windows环境下，建议从[这里](https://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely)下载shapely安装包完成安装，
