@@ -191,7 +191,8 @@ if __name__ == "__main__":
         if count > 0:
             total_time += elapse
         count += 1
-        logger.info("Predict time of %s:" % image_file, elapse)
+        logger.info("The predicted time of img: {} is  {}:".format(image_file,
+                                                                   elapse))
         src_im = utility.draw_text_det_res(dt_boxes, image_file)
         img_name_pure = image_file.split("/")[-1]
         cv2.imwrite(
