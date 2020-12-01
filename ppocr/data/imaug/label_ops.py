@@ -123,7 +123,7 @@ class BaseRecLabelEncode(object):
                     [sum(text_lengths)] = [text_index_0 + text_index_1 + ... + text_index_(n - 1)]
             length: length of each text. [batch_size]
         """
-        if len(text) > self.max_text_len:
+        if len(text) == 0 or len(text) > self.max_text_len:
             return None
         if self.character_type == "en":
             text = text.lower()
@@ -137,9 +137,6 @@ class BaseRecLabelEncode(object):
         if len(text_list) == 0:
             return None
         return text_list
-
-    def get_ignored_tokens(self):
-        return [0]  # for ctc blank
 
 
 class CTCLabelEncode(BaseRecLabelEncode):
@@ -159,8 +156,6 @@ class CTCLabelEncode(BaseRecLabelEncode):
         text = data['label']
         text = self.encode(text)
         if text is None:
-            return None
-        if len(text) > self.max_text_len:
             return None
         data['length'] = np.array(len(text))
         text = text + [0] * (self.max_text_len - len(text))
@@ -194,11 +189,6 @@ class AttnLabelEncode(BaseRecLabelEncode):
     def __call__(self, text):
         text = self.encode(text)
         return text
-
-    def get_ignored_tokens(self):
-        beg_idx = self.get_beg_end_flag_idx("beg")
-        end_idx = self.get_beg_end_flag_idx("end")
-        return [beg_idx, end_idx]
 
     def get_beg_end_flag_idx(self, beg_or_end):
         if beg_or_end == "beg":

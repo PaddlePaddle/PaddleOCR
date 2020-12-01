@@ -82,7 +82,7 @@ class TextClassifier(object):
 
         cls_res = [['', 0.0]] * img_num
         batch_num = self.cls_batch_num
-        predict_time = 0
+        elapse = 0
         for beg_img_no in range(0, img_num, batch_num):
             end_img_no = min(img_num, beg_img_no + batch_num)
             norm_img_batch = []
@@ -107,14 +107,14 @@ class TextClassifier(object):
                 self.predictor.run([norm_img_batch])
             prob_out = self.output_tensors[0].copy_to_cpu()
             cls_res = self.postprocess_op(prob_out)
-            elapse = time.time() - starttime
+            elapse += time.time() - starttime
             for rno in range(len(cls_res)):
                 label, score = cls_res[rno]
                 cls_res[indices[beg_img_no + rno]] = [label, score]
                 if '180' in label and score > self.cls_thresh:
                     img_list[indices[beg_img_no + rno]] = cv2.rotate(
                         img_list[indices[beg_img_no + rno]], 1)
-        return img_list, cls_res, predict_time
+        return img_list, cls_res, elapse
 
 
 def main(args):
@@ -143,10 +143,10 @@ def main(args):
             "Please set --rec_image_shape='3,32,100' and --rec_char_type='en' ")
         exit()
     for ino in range(len(img_list)):
-        print("Predicts of %s:%s" % (valid_image_file_list[ino], cls_res[ino]))
-    print("Total predict time for %d images, cost: %.3f" %
-          (len(img_list), predict_time))
+        print("Predicts of {}:{}".format(valid_image_file_list[ino], cls_res[
+            ino]))
+    print("Total predict time for {} images, cost: {:.3f}".format(
+        len(img_list), predict_time))
 
-
-if __name__ == "__main__":
-    main(utility.parse_args())
+    if __name__ == "__main__":
+        main(utility.parse_args())

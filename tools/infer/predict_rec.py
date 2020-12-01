@@ -115,7 +115,7 @@ class TextRecognizer(object):
             rec_result = self.postprocess_op(preds)
             for rno in range(len(rec_result)):
                 rec_res[indices[beg_img_no + rno]] = rec_result[rno]
-            elapse = time.time() - starttime
+            elapse += time.time() - starttime
         return rec_res, elapse
 
 
@@ -145,9 +145,10 @@ def main(args):
             "Please set --rec_image_shape='3,32,100' and --rec_char_type='en' ")
         exit()
     for ino in range(len(img_list)):
-        print("Predicts of %s:%s" % (valid_image_file_list[ino], rec_res[ino]))
-    print("Total predict time for %d images, cost: %.3f" %
-          (len(img_list), predict_time))
+        print("Predicts of {}:{}".format(valid_image_file_list[ino], rec_res[
+            ino]))
+    print("Total predict time for {} images, cost: {:.3f}".format(
+        len(img_list), predict_time))
 
 
 if __name__ == "__main__":

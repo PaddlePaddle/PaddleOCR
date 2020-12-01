@@ -174,15 +174,15 @@ if __name__ == "__main__":
         if img is None:
             logger.info("error in loading image:{}".format(image_file))
             continue
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         dt_boxes, elapse = text_detector(img)
         if count > 0:
             total_time += elapse
         count += 1
-        print("Predict time of %s:" % image_file, elapse)
+        print("Predict time of {}: {}".format(image_file, elapse))
         src_im = utility.draw_text_det_res(dt_boxes, image_file)
-        img_name_pure = image_file.split("/")[-1]
-        cv2.imwrite(
-            os.path.join(draw_img_save, "det_res_%s" % img_name_pure), src_im)
+        img_name_pure = os.path.split(image_file)[-1]
+        img_path = os.path.join(draw_img_save,
+                                "det_res_{}".format(img_name_pure))
+        cv2.imwrite(img_path, src_im)
     if count > 1:
         print("Avg Time:", total_time / (count - 1))
