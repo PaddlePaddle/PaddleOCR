@@ -10,25 +10,10 @@ class Config(object):
 
 def read_params():
     cfg = Config()
-    
-    # #params for text detector
-    # cfg.det_algorithm = "DB"
-    # cfg.det_model_dir = "./inference/ch_det_mv3_db/"
-    # cfg.det_max_side_len = 960
-
-    # #DB parmas
-    # cfg.det_db_thresh =0.3
-    # cfg.det_db_box_thresh =0.5
-    # cfg.det_db_unclip_ratio =2.0
-
-    # #EAST parmas
-    # cfg.det_east_score_thresh = 0.8
-    # cfg.det_east_cover_thresh = 0.1
-    # cfg.det_east_nms_thresh = 0.2
 
     #params for text recognizer
     cfg.rec_algorithm = "CRNN"
-    cfg.rec_model_dir = "./inference/ch_rec_mv3_crnn/"
+    cfg.rec_model_dir = "./inference/ch_ppocr_mobile_v1.1_rec_infer/"
 
     cfg.rec_image_shape = "3, 32, 320"
     cfg.rec_char_type = 'ch'
@@ -39,5 +24,6 @@ def read_params():
     cfg.use_space_char = True
 
     cfg.use_zero_copy_run = False
+    cfg.use_pdserving = False
 
     return cfg
