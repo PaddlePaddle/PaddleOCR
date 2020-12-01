@@ -117,11 +117,12 @@ def maybe_download(model_storage_directory, url):
         os.remove(tmp_path)
 
 
-def parse_args():
+def parse_args(add_help=True):
     import argparse
 
     def str2bool(v):
         return v.lower() in ("true", "t", "1")
+      
     if __name__ == '__main__':
         parser = argparse.ArgumentParser()
         # params for prediction engine
@@ -217,7 +218,7 @@ class PaddleOCR(predict_system.TextSystem):
         args:
             **kwargs: other params show in paddleocr --help
         """
-        postprocess_params = parse_args()
+        postprocess_params = parse_args(add_help=False)
         postprocess_params.__dict__.update(**kwargs)
         self.use_angle_cls = postprocess_params.use_angle_cls
         lang = postprocess_params.lang

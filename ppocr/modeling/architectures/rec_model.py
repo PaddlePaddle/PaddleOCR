@@ -160,6 +160,7 @@ class RecModel(object):
                         "We set img_shape to be the same , it may affect the inference effect"
                     )
                     image_shape = deepcopy(self.image_shape)
+                    image_shape.insert(0, -1)
             image = fluid.data(name='image', shape=image_shape, dtype='float32')
             image.stop_gradient = False
             if self.loss_type == "srn":
