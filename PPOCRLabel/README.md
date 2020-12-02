@@ -24,11 +24,9 @@ python PPOCRLabel.py
 #### Ubuntu Linux
 
 ```
-sudo apt-get install pyqt5-dev-tools
-sudo apt-get install trash-cli
+pip3 install pyqt5
+pip3 install trash-cli
 cd ./PPOCRLabel # 将目录切换到PPOCRLabel文件夹下
-sudo pip3 install -r requirements/requirements-linux-python3.txt
-make qt5py3
 python3 PPOCRLabel.py
 ```
 
@@ -38,7 +36,6 @@ pip3 install pyqt5
 pip3 uninstall opencv-python # 由于mac版本的opencv与pyqt有冲突，需先手动卸载opencv
 pip3 install opencv-contrib-python-headless # 安装headless版本的open-cv
 cd ./PPOCRLabel # 将目录切换到PPOCRLabel文件夹下
-make qt5py3
 python3 PPOCRLabel.py
 ```
 
@@ -74,6 +71,16 @@ python3 PPOCRLabel.py
 |  Cache.cach   |              缓存文件，保存模型自动识别的结果。              |
 |  rec_gt.txt   | 识别标签。可直接用于PPOCR识别模型训练。需用户手动点击菜单栏“PaddleOCR” - "保存识别结果"后产生。 |
 |   crop_img    |   识别数据。按照检测框切割后的图片。与rec_gt.txt同时产生。   |
+
+## 说明
+### 内置模型
+ - 默认模型：PPOCRLabel默认使用PaddleOCR中的中英文超轻量OCR模型，支持中英文与数字识别，多种语言检测。
+ - 模型语言切换：用户可通过菜单栏中 "PaddleOCR" - "选择模型" 切换内置模型语言，目前支持的语言包括法文、德文、韩文、日文。具体模型下载链接可参考[PaddleOCR模型列表](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/models_list.md).
+ - 自定义模型：用户可根据[自定义模型代码使用](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/whl.md#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B)，通过修改PPOCRLabel.py中针对[PaddleOCR类的实例化](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/PPOCRLabel/PPOCRLabel.py#L110)替换成自己训练的模型
+
+### 错误提示
+- 如果同时使用whl包安装了paddleocr，其优先级大于通过paddleocr.py调用PaddleOCR类，whl包未更新时会导致程序异常。
+- PPOCRLabel不支持对中文文件名的图片进行自动标注。
 
 ### 参考资料
 

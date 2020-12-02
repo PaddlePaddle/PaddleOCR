@@ -26,11 +26,9 @@ python PPOCRLabel.py --lang en
 #### Ubuntu Linux
 
 ```
-sudo apt-get install pyqt5-dev-tools
-sudo apt-get install trash-cli
+pip3 install pyqt5
+pip3 install trash-cli
 cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
-sudo pip3 install -r requirements/requirements-linux-python3.txt
-make qt5py3
 python3 PPOCRLabel.py --lang en
 ```
 
@@ -40,7 +38,6 @@ pip3 install pyqt5
 pip3 uninstall opencv-python # Uninstall opencv manually as it conflicts with pyqt
 pip3 install opencv-contrib-python-headless # Install the headless version of opencv
 cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
-make qt5py3
 python3 PPOCRLabel.py --lang en
 ```
 
@@ -91,6 +88,14 @@ Therefore, if the recognition result has been manually changed before, it may ch
 |  Cache.cach   |    Cache files to save the results of model recognition.     |
 |  rec_gt.txt   | The recognition label file, which can be directly used for PPOCR identification model training, is generated after the user clicks on the menu bar "PaddleOCR"-"Save recognition result". |
 |   crop_img    | The recognition data, generated at the same time with *rec_gt.txt* |
+
+
+### Built-in Model
+- Default model: PPOCRLabel uses the Chinese and English ultra-lightweight OCR model in PaddleOCR by default, supports Chinese, English and number recognition, and multiple language detection.
+- Model language switching: Changing the built-in model language is supportable by clicking "PaddleOCR"-"Choose OCR Model" in the menu bar. Currently supported languages​include French, German, Korean, and Japanese. 
+For specific model download links, please refer to [PaddleOCR Model List](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/models_list_en.md#multilingual-recognition-modelupdating)
+- Custom model: The model trained by users can be replaced by modifying PPOCRLabel.py in [PaddleOCR class instantiation](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/PPOCRLabel/PPOCRLabel.py#L110) referring [Custom Model Code](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/whl_en.md#use-custom-model)
+
 
 ## Related
 
