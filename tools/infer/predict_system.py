@@ -76,12 +76,12 @@ class TextSystem(object):
         bbox_num = len(img_crop_list)
         for bno in range(bbox_num):
             cv2.imwrite("./output/img_crop_%d.jpg" % bno, img_crop_list[bno])
-            print(bno, rec_res[bno])
+            logger.info(bno, rec_res[bno])
 
     def __call__(self, img):
         ori_im = img.copy()
         dt_boxes, elapse = self.text_detector(img)
-        print("dt_boxes num : {}, elapse : {}".format(len(dt_boxes), elapse))
+        logger.info("dt_boxes num : {}, elapse : {}".format(len(dt_boxes), elapse))
         if dt_boxes is None:
             return None, None
         img_crop_list = []
@@ -92,17 +92,14 @@ class TextSystem(object):
             tmp_box = copy.deepcopy(dt_boxes[bno])
             img_crop = self.get_rotate_crop_image(ori_im, tmp_box)
             img_crop_list.append(img_crop)
-            cv2.imwrite(
-                '/home/zhoujun20/dygraph/PaddleOCR_rc/inference_results/{}.jpg'.
-                format(bno), img_crop)
         if self.use_angle_cls:
             img_crop_list, angle_list, elapse = self.text_classifier(
                 img_crop_list)
-            print("cls num  : {}, elapse : {}".format(
+            logger.info("cls num  : {}, elapse : {}".format(
                 len(img_crop_list), elapse))
 
         rec_res, elapse = self.text_recognizer(img_crop_list)
-        print("rec_res num  : {}, elapse : {}".format(len(rec_res), elapse))
+        logger.info("rec_res num  : {}, elapse : {}".format(len(rec_res), elapse))
         # self.print_draw_crop_rec_res(img_crop_list, rec_res)
         return dt_boxes, rec_res
 
@@ -133,6 +130,7 @@ def main(args):
     text_sys = TextSystem(args)
     is_visualize = True
     font_path = args.vis_font_path
+    drop_score = args.drop_score
     for image_file in image_file_list:
         img, flag = check_and_read_gif(image_file)
         if not flag:
@@ -143,15 +141,14 @@ def main(args):
         starttime = time.time()
         dt_boxes, rec_res = text_sys(img)
         elapse = time.time() - starttime
-        print("Predict time of %s: %.3fs" % (image_file, elapse))
+        logger.info("Predict time of %s: %.3fs" % (image_file, elapse))
 
-        drop_score = 0.5
         dt_num = len(dt_boxes)
         for dno in range(dt_num):
             text, score = rec_res[dno]
             if score >= drop_score:
                 text_str = "%s, %.3f" % (text, score)
-                print(text_str)
+                logger.info(text_str)
 
         if is_visualize:
             image = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
@@ -172,7 +169,7 @@ def main(args):
             cv2.imwrite(
                 os.path.join(draw_img_save, os.path.basename(image_file)),
                 draw_img[:, :, ::-1])
-            print("The visualized image saved in {}".format(
+            logger.info("The visualized image saved in {}".format(
                 os.path.join(draw_img_save, os.path.basename(image_file))))
 
 
