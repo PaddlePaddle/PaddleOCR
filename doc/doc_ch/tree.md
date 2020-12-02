@@ -11,16 +11,16 @@ PaddleOCR
 │   ├── det   // 检测相关配置文件
 │   │   ├── det_db_icdar15_reader.yml  // 数据读取
 │   │   ├── det_mv3_db.yml             // 训练配置
-│   │   ...                            
+│   │   ...  
 │   └── rec   // 识别相关配置文件
 │       ├── rec_benchmark_reader.yml      // LMDB 格式数据读取相关
 │       ├── rec_chinese_common_train.yml  // 通用中文训练配置
 │       ├── rec_icdar15_reader.yml        // simple 数据读取相关，包括数据读取函数、数据路径、标签文件
-│       ...                               
+│       ...  
 ├── deploy   // 部署相关
-│   ├── android_demo // android_demo 
+│   ├── android_demo // android_demo
 │   │   ...
-│   ├── cpp_infer    // C++ infer 
+│   ├── cpp_infer    // C++ infer
 │   │   ├── CMakeLists.txt    // Cmake 文件
 │   │   ├── docs              // 说明文档
 │   │   │   └── windows_vs2019_build.md
@@ -98,10 +98,10 @@ PaddleOCR
 │   │   ├── ocr_local_server.py  // 检测+识别 快速版
 │   │   ├── ocr_web_client.py    // 客户端
 │   │   ├── ocr_web_server.py    // 检测+识别 完整版
-│   │   ├── readme.md            // 说明文档 
+│   │   ├── readme.md            // 说明文档
 │   │   ├── rec_local_server.py  // 识别 快速版
 │   │   └── rec_web_server.py    // 识别 完整版
-│   └── slim     
+│   └── slim  
 │       └── quantization         // 量化相关
 │           ├── export_model.py  // 导出模型
 │           ├── quant.py         // 量化
@@ -135,7 +135,7 @@ PaddleOCR
 │   │   │   └── rec_model.py  // 识别
 │   │   ├── backbones  // 骨干网络
 │   │   │   ├── det_mobilenet_v3.py  // 检测 mobilenet_v3
-│   │   │   ├── det_resnet_vd.py   
+│   │   │   ├── det_resnet_vd.py  
 │   │   │   ├── det_resnet_vd_sast.py
 │   │   │   ├── rec_mobilenet_v3.py  // 识别 mobilenet_v3
 │   │   │   ├── rec_resnet_fpn.py
@@ -193,7 +193,7 @@ PaddleOCR
     │   └── __init__.py
     ├── export_model.py         // 导出 infer 模型
     ├── infer                   // 基于预测引擎预测
-    │   ├── predict_cls.py      
+    │   ├── predict_cls.py  
     │   ├── predict_det.py
     │   ├── predict_rec.py
     │   ├── predict_system.py
@@ -202,7 +202,7 @@ PaddleOCR
     ├── infer_det.py            // 基于训练引擎 预测检测
     ├── infer_rec.py            // 基于训练引擎 预测识别
     ├── program.py              // 整体流程
-    ├── test_hubserving.py      
+    ├── test_hubserving.py  
     └── train.py                // 启动训练
 
 ```

@@ -11,20 +11,20 @@ PaddleOCR
 │   ├── det   // Detection related configuration files
 │   │   ├── det_db_icdar15_reader.yml  // data read
 │   │   ├── det_mv3_db.yml             // training configuration
-│   │   ...                            
+│   │   ...  
 │   └── rec   // Identify related configuration files
 │       ├── rec_benchmark_reader.yml      // LMDB format data reading related
 │       ├── rec_chinese_common_train.yml  // General Chinese training configuration
 │       ├── rec_icdar15_reader.yml        // simple data reading related, including data reading function, data path, label file
-│       ...                               
+│       ...  
 ├── deploy   // deployment related
-│   ├── android_demo // android_demo 
+│   ├── android_demo // android_demo
 │   │   ...
-│   ├── cpp_infer    // C++ infer 
+│   ├── cpp_infer    // C++ infer
 │   │   ├── CMakeLists.txt    // Cmake file
 │   │   ├── docs              // documentation
 │   │   │   └── windows_vs2019_build.md
-│   │   ├── include           
+│   │   ├── include  
 │   │   │   ├── clipper.h     // clipper library
 │   │   │   ├── config.h      // infer configuration
 │   │   │   ├── ocr_cls.h     // direction classifier
@@ -101,7 +101,7 @@ PaddleOCR
 │   │   ├── readme.md            // documentation
 │   │   ├── rec_local_server.py  // recognize quick version
 │   │   └── rec_web_server.py    // Identify the full version
-│   └── slim     
+│   └── slim  
 │       └── quantization         // quantization related
 │           ├── export_model.py  // export model
 │           ├── quant.py         // quantization
@@ -135,13 +135,13 @@ PaddleOCR
 │   │   │   └── rec_model.py  // recognition
 │   │   ├── backbones  // backbone network
 │   │   │   ├── det_mobilenet_v3.py  // detect mobilenet_v3
-│   │   │   ├── det_resnet_vd.py   
+│   │   │   ├── det_resnet_vd.py  
 │   │   │   ├── det_resnet_vd_sast.py
 │   │   │   ├── rec_mobilenet_v3.py  // recognize mobilenet_v3
 │   │   │   ├── rec_resnet_fpn.py
 │   │   │   └── rec_resnet_vd.py
 │   │   ├── common_functions.py      // common functions
-│   │   ├── heads      
+│   │   ├── heads  
 │   │   │   ├── cls_head.py          // class header
 │   │   │   ├── det_db_head.py       // db detection head
 │   │   │   ├── det_east_head.py     // east detection head
@@ -193,7 +193,7 @@ PaddleOCR
     │   └── __init__.py
     ├── export_model.py         // export infer model
     ├── infer                   // Forecast based on prediction engine
-    │   ├── predict_cls.py      
+    │   ├── predict_cls.py  
     │   ├── predict_det.py
     │   ├── predict_rec.py
     │   ├── predict_system.py
@@ -202,7 +202,7 @@ PaddleOCR
     ├── infer_det.py            // Predictive detection based on training engine
     ├── infer_rec.py            // Predictive recognition based on training engine
     ├── program.py              //  overall process
-    ├── test_hubserving.py      
+    ├── test_hubserving.py  
     └── train.py                // start training
 
 ```

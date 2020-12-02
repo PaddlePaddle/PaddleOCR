@@ -1,7 +1,7 @@
 # Visualization
 
 <a name="ppocr_server_1.1"></a>
-## ch_ppocr_server_1.1 
+## ch_ppocr_server_1.1
 
 <div align="center">
     <img src="../imgs_results/1101.jpg" width="800">
@@ -47,4 +47,3 @@
     <img src="../imgs_results/chinese_db_crnn_server/2.jpg" width="800">
     <img src="../imgs_results/chinese_db_crnn_server/8.jpg" width="800">
 </div>
-

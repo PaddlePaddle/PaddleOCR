@@ -13,18 +13,15 @@
 # limitations under the License.
 
 import argparse
-import os, sys
-from ppocr.utils.utility import initial_logger
-
-logger = initial_logger()
-from paddle.fluid.core import PaddleTensor
-from paddle.fluid.core import AnalysisConfig
-from paddle.fluid.core import create_paddle_predictor
+import os
+import sys
 import cv2
 import numpy as np
 import json
 from PIL import Image, ImageDraw, ImageFont
 import math
+from paddle.fluid.core import AnalysisConfig
+from paddle.fluid.core import create_paddle_predictor
 
 
 def parse_args():
@@ -42,7 +39,8 @@ def parse_args():
     parser.add_argument("--image_dir", type=str)
     parser.add_argument("--det_algorithm", type=str, default='DB')
     parser.add_argument("--det_model_dir", type=str)
-    parser.add_argument("--det_max_side_len", type=float, default=960)
+    parser.add_argument("--det_limit_side_len", type=float, default=960)
+    parser.add_argument("--det_limit_type", type=str, default='max')
 
     # DB parmas
     parser.add_argument("--det_db_thresh", type=float, default=0.3)
@@ -90,23 +88,13 @@ def parse_args():
     return parser.parse_args()
 
 
-def create_predictor(args, mode):
-    """
-    create predictor for inference
-    :param args: params for prediction engine
-    :param mode: mode
-    :return: predictor
-    """
+def create_predictor(args, mode, logger):
     if mode == "det":
         model_dir = args.det_model_dir
     elif mode == 'cls':
         model_dir = args.cls_model_dir
-    elif mode == 'rec':
-        model_dir = args.rec_model_dir
     else:
-        raise ValueError(
-            "'mode' of create_predictor() can only be one of ['det', 'cls', 'rec']"
-        )
+        model_dir = args.rec_model_dir
 
     if model_dir is None:
         logger.info("not find {} model file path {}".format(mode, model_dir))
@@ -154,12 +142,6 @@ def create_predictor(args, mode):
 
 
 def draw_text_det_res(dt_boxes, img_path):
-    """
-    Visualize the results of detection
-    :param dt_boxes: The boxes predicted by detection model
-    :param img_path: Image path
-    :return: Visualized image
-    """
     src_im = cv2.imread(img_path)
     for box in dt_boxes:
         box = np.array(box).astype(np.int32).reshape(-1, 2)
@@ -175,8 +157,8 @@ def resize_img(img, input_size=600):
     im_shape = img.shape
     im_size_max = np.max(im_shape[0:2])
     im_scale = float(input_size) / float(im_size_max)
-    im = cv2.resize(img, None, None, fx=im_scale, fy=im_scale)
-    return im
+    img = cv2.resize(img, None, None, fx=im_scale, fy=im_scale)
+    return img
 
 
 def draw_ocr(image,
@@ -220,12 +202,7 @@ def draw_ocr(image,
     return image
 
 
-def draw_ocr_box_txt(image,
-                     boxes,
-                     txts,
-                     scores=None,
-                     drop_score=0.5,
-                     font_path="./doc/simfang.ttf"):
+def draw_ocr_box_txt(image, boxes, txts):
     h, w = image.height, image.width
     img_left = image.copy()
     img_right = Image.new('RGB', (w, h), (255, 255, 255))
@@ -235,9 +212,7 @@ def draw_ocr_box_txt(image,
     random.seed(0)
     draw_left = ImageDraw.Draw(img_left)
     draw_right = ImageDraw.Draw(img_right)
-    for idx, (box, txt) in enumerate(zip(boxes, txts)):
-        if scores is not None and scores[idx] < drop_score:
-            continue
+    for (box, txt) in zip(boxes, txts):
         color = (random.randint(0, 255), random.randint(0, 255),
                  random.randint(0, 255))
         draw_left.polygon(box, fill=color)
@@ -253,7 +228,8 @@ def draw_ocr_box_txt(image,
             1])**2)
         if box_height > 2 * box_width:
             font_size = max(int(box_width * 0.9), 10)
-            font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
+            font = ImageFont.truetype(
+                "./doc/simfang.ttf", font_size, encoding="utf-8")
             cur_y = box[0][1]
             for c in txt:
                 char_size = font.getsize(c)
@@ -262,7 +238,8 @@ def draw_ocr_box_txt(image,
                 cur_y += char_size[1]
         else:
             font_size = max(int(box_height * 0.8), 10)
-            font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
+            font = ImageFont.truetype(
+                "./doc/simfang.ttf", font_size, encoding="utf-8")
             draw_right.text(
                 [box[0][0], box[0][1]], txt, fill=(0, 0, 0), font=font)
     img_left = Image.blend(image, img_left, 0.5)

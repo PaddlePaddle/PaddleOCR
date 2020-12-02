@@ -49,6 +49,8 @@ public:
     this->use_zero_copy_run_ = use_zero_copy_run;
 
     this->label_list_ = Utility::ReadDict(label_path);
+    this->label_list_.insert(this->label_list_.begin(),
+                             "#"); // blank char for ctc
     this->label_list_.push_back(" ");
 
     LoadModel(model_dir);

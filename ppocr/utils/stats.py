@@ -40,14 +40,18 @@ def Time():
 
 class TrainingStats(object):
     def __init__(self, window_size, stats_keys):
+        self.window_size = window_size
         self.smoothed_losses_and_metrics = {
             key: SmoothedValue(window_size)
             for key in stats_keys
         }
 
     def update(self, stats):
-        for k, v in self.smoothed_losses_and_metrics.items():
-            v.add_value(stats[k])
+        for k, v in stats.items():
+            if k not in self.smoothed_losses_and_metrics:
+                self.smoothed_losses_and_metrics[k] = SmoothedValue(
+                    self.window_size)
+            self.smoothed_losses_and_metrics[k].add_value(v)
 
     def get(self, extras=None):
         stats = collections.OrderedDict()
@@ -61,5 +65,8 @@ class TrainingStats(object):
 
     def log(self, extras=None):
         d = self.get(extras)
-        strs = ', '.join(str(dict({x: y})).strip('{}') for x, y in d.items())
+        strs = []
+        for k, v in d.items():
+            strs.append('{}: {:x<6f}'.format(k, v))
+        strs = ', '.join(strs)
         return strs

@@ -21,11 +21,11 @@ cv::Mat Classifier::Run(cv::Mat &img) {
   img.copyTo(src_img);
   cv::Mat resize_img;
 
-  std::vector<int> rec_image_shape = {3, 48, 192};
+  std::vector<int> cls_image_shape = {3, 48, 192};
   int index = 0;
   float wh_ratio = float(img.cols) / float(img.rows);
 
-  this->resize_op_.Run(img, resize_img, rec_image_shape);
+  this->resize_op_.Run(img, resize_img, cls_image_shape);
 
   this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
                           this->is_scale_);
@@ -55,26 +55,24 @@ cv::Mat Classifier::Run(cv::Mat &img) {
   std::vector<int64_t> label_out;
   auto output_names = this->predictor_->GetOutputNames();
   auto softmax_out_t = this->predictor_->GetOutputTensor(output_names[0]);
-  auto label_out_t = this->predictor_->GetOutputTensor(output_names[1]);
   auto softmax_shape_out = softmax_out_t->shape();
-  auto label_shape_out = label_out_t->shape();
 
   int softmax_out_num =
       std::accumulate(softmax_shape_out.begin(), softmax_shape_out.end(), 1,
                       std::multiplies<int>());
 
-  int label_out_num =
-      std::accumulate(label_shape_out.begin(), label_shape_out.end(), 1,
-                      std::multiplies<int>());
   softmax_out.resize(softmax_out_num);
-  label_out.resize(label_out_num);
 
   softmax_out_t->copy_to_cpu(softmax_out.data());
-  label_out_t->copy_to_cpu(label_out.data());
 
-  int label = label_out[0];
-  float score = softmax_out[label];
-  //    std::cout << "\nlabel "<<label<<" score: "<<score;
+  float score = 0;
+  int label = 0;
+  for (int i = 0; i < softmax_out_num; i++) {
+    if (softmax_out[i] > score) {
+      score = softmax_out[i];
+      label = i;
+    }
+  }
   if (label % 2 == 1 && score > this->cls_thresh) {
     cv::rotate(src_img, src_img, 1);
   }

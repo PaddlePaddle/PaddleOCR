@@ -87,7 +87,6 @@ int main(int argc, char **argv) {
   det.Run(srcimg, boxes);
 
   rec.Run(boxes, srcimg, cls);
-
   auto end = std::chrono::system_clock::now();
   auto duration =
       std::chrono::duration_cast<std::chrono::microseconds>(end - start);

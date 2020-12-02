@@ -18,29 +18,35 @@ __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 
-import tools.infer.utility as utility
-from ppocr.utils.utility import initial_logger
-
-logger = initial_logger()
-from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 import cv2
 import copy
 import numpy as np
 import math
 import time
-from paddle import fluid
+
+import paddle.fluid as fluid
+
+import tools.infer.utility as utility
+from ppocr.postprocess import build_post_process
+from ppocr.utils.logging import get_logger
+from ppocr.utils.utility import get_image_file_list, check_and_read_gif
+
+logger = get_logger()
 
 
 class TextClassifier(object):
     def __init__(self, args):
-        if args.use_pdserving is False:
-            self.predictor, self.input_tensor, self.output_tensors = \
-                utility.create_predictor(args, mode="cls")
-            self.use_zero_copy_run = args.use_zero_copy_run
         self.cls_image_shape = [int(v) for v in args.cls_image_shape.split(",")]
-        self.cls_batch_num = args.rec_batch_num
-        self.label_list = args.label_list
+        self.cls_batch_num = args.cls_batch_num
         self.cls_thresh = args.cls_thresh
+        self.use_zero_copy_run = args.use_zero_copy_run
+        postprocess_params = {
+            'name': 'ClsPostProcess',
+            "label_list": args.label_list,
+        }
+        self.postprocess_op = build_post_process(postprocess_params)
+        self.predictor, self.input_tensor, self.output_tensors = \
+            utility.create_predictor(args, 'cls', logger)
 
     def resize_norm_img(self, img):
         imgC, imgH, imgW = self.cls_image_shape
@@ -76,7 +82,7 @@ class TextClassifier(object):
 
         cls_res = [['', 0.0]] * img_num
         batch_num = self.cls_batch_num
-        predict_time = 0
+        elapse = 0
         for beg_img_no in range(0, img_num, batch_num):
             end_img_no = min(img_num, beg_img_no + batch_num)
             norm_img_batch = []
@@ -99,22 +105,16 @@ class TextClassifier(object):
             else:
                 norm_img_batch = fluid.core.PaddleTensor(norm_img_batch)
                 self.predictor.run([norm_img_batch])
-
             prob_out = self.output_tensors[0].copy_to_cpu()
-            label_out = self.output_tensors[1].copy_to_cpu()
-            if len(label_out.shape) != 1:
-                prob_out, label_out = label_out, prob_out
-            elapse = time.time() - starttime
-            predict_time += elapse
-            for rno in range(len(label_out)):
-                label_idx = label_out[rno]
-                score = prob_out[rno][label_idx]
-                label = self.label_list[label_idx]
+            cls_res = self.postprocess_op(prob_out)
+            elapse += time.time() - starttime
+            for rno in range(len(cls_res)):
+                label, score = cls_res[rno]
                 cls_res[indices[beg_img_no + rno]] = [label, score]
                 if '180' in label and score > self.cls_thresh:
                     img_list[indices[beg_img_no + rno]] = cv2.rotate(
                         img_list[indices[beg_img_no + rno]], 1)
-        return img_list, cls_res, predict_time
+        return img_list, cls_res, elapse
 
 
 def main(args):
@@ -122,7 +122,7 @@ def main(args):
     text_classifier = TextClassifier(args)
     valid_image_file_list = []
     img_list = []
-    for image_file in image_file_list[:10]:
+    for image_file in image_file_list:
         img, flag = check_and_read_gif(image_file)
         if not flag:
             img = cv2.imread(image_file)
@@ -135,12 +135,18 @@ def main(args):
         img_list, cls_res, predict_time = text_classifier(img_list)
     except Exception as e:
         print(e)
+        logger.info(
+            "ERROR!!!! \n"
+            "Please read the FAQ：https://github.com/PaddlePaddle/PaddleOCR#faq \n"
+            "If your model has tps module:  "
+            "TPS does not support variable shape.\n"
+            "Please set --rec_image_shape='3,32,100' and --rec_char_type='en' ")
         exit()
     for ino in range(len(img_list)):
-        print("Predicts of %s:%s" % (valid_image_file_list[ino], cls_res[ino]))
-    print("Total predict time for %d images:%.3f" %
-          (len(img_list), predict_time))
+        print("Predicts of {}:{}".format(valid_image_file_list[ino], cls_res[
+            ino]))
+    print("Total predict time for {} images, cost: {:.3f}".format(
+        len(img_list), predict_time))
 
-
-if __name__ == "__main__":
-    main(utility.parse_args())
+    if __name__ == "__main__":
+        main(utility.parse_args())
