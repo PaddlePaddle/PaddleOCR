@@ -2,6 +2,9 @@
 
 ## Get started quickly
 ### install package
+
+First, you need to refer to [installation document](installation_en.md) to install paddlepaddle, and then start to install paddleocr package
+
 install by pypi
 ```bash
 pip install paddleocr
@@ -172,7 +175,7 @@ paddleocr -h
 
 * detection classification and recognition
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --use_angle_cls true -cls true --lang en
+paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --use_angle_cls true --lang en
 ```
 
 Output will be a list, each item contains bounding box, text and recognition confidence
@@ -198,7 +201,7 @@ Output will be a list, each item contains bounding box, text and recognition con
 
 * classification and recognition
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --use_angle_cls true -cls true --det false --lang en
+paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --use_angle_cls true --det false --lang en
 ```
 
 Output will be a list, each item contains text and recognition confidence
@@ -221,7 +224,7 @@ Output will be a list, each item only contains bounding box
 
 * only recognition
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --det false --cls false --lang en
+paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --det false --lang en
 ```
 
 Output will be a list, each item contains text and recognition confidence
@@ -231,7 +234,7 @@ Output will be a list, each item contains text and recognition confidence
 
 * only classification
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --use_angle_cls true -cls true --det false --rec false
+paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --use_angle_cls true --det false --rec false
 ```
 
 Output will be a list, each item contains classification result and confidence
@@ -268,7 +271,7 @@ im_show.save('result.jpg')
 ### Use by command line
 
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_dir} --rec_model_dir {your_rec_model_dir} --rec_char_dict_path {your_rec_char_dict_path} --cls_model_dir {your_cls_model_dir} --use_angle_cls true --cls true
+paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_dir} --rec_model_dir {your_rec_model_dir} --rec_char_dict_path {your_rec_char_dict_path} --cls_model_dir {your_cls_model_dir} --use_angle_cls true
 ```
 
 ## Parameter Description
@@ -305,4 +308,4 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_
 | lang                     | The support language, now only Chinese(ch)、English(en)、French(french)、German(german)、Korean(korean)、Japanese(japan) are supported                                                                                                                                                                                                  | ch                    |
 | det                     | Enable detction when `ppocr.ocr` func exec                                                                                                                                                                                                   | TRUE                    |
 | rec                     | Enable recognition when `ppocr.ocr` func exec                                                                                                                                                                                                   | TRUE                    |
-| cls                     | Enable classification when `ppocr.ocr` func exec                                                                                                                                                                                                   | FALSE                    |
+| cls                     | Enable classification when `ppocr.ocr` func exec，this parameter only exists in `code usage` mode                                                                                                                                                                                                   | FALSE                    |

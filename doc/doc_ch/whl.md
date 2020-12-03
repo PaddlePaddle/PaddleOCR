@@ -4,6 +4,8 @@
 
 ### 安装whl包
 
+首先需要参照[安装文档](installation.md)安装paddlepaddle，然后开始安装paddleocr package
+
 pip安装
 ```bash
 pip install paddleocr
@@ -166,7 +168,7 @@ paddleocr -h
 
 * 检测+分类+识别全流程
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --use_angle_cls true --cls true
+paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --use_angle_cls true
 ```
 结果是一个list，每个item包含了文本框，文字和识别置信度
 ```bash
@@ -190,7 +192,7 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg
 
 * 分类+识别
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --use_angle_cls true --cls true --det false
+paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --use_angle_cls true --det false
 ```
 
 结果是一个list，每个item只包含识别结果和识别置信度
@@ -222,7 +224,7 @@ paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --det false
 
 * 单独执行分类
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --use_angle_cls true --cls true --det false --rec false
+paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --use_angle_cls true --det false --rec false
 ```
 
 结果是一个list，每个item只包含分类结果和分类置信度
@@ -258,7 +260,7 @@ im_show.save('result.jpg')
 ### 通过命令行使用
 
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_dir} --rec_model_dir {your_rec_model_dir} --rec_char_dict_path {your_rec_char_dict_path} --cls_model_dir {your_cls_model_dir} --use_angle_cls true --cls true
+paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_dir} --rec_model_dir {your_rec_model_dir} --rec_char_dict_path {your_rec_char_dict_path} --cls_model_dir {your_cls_model_dir} --use_angle_cls true
 ```
 
 ## 参数说明
@@ -295,4 +297,4 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_
 | lang                     | 模型语言类型,目前支持 中文(ch)和英文(en)                                                                                                                                                                                                  | ch                    |
 | det                     | 前向时使用启动检测                                                                                                                                                                                                   | TRUE                    |
 | rec                     | 前向时是否启动识别                                                                                                                                                                                                   | TRUE                    |
-| cls                     | 前向时是否启动分类                                                                                                                                                                                                 | FALSE                    |
+| cls                     | 前向时是否启动分类,  此参数仅存在于`代码使用`模式                                                                                                                                                                                      | FALSE                    |
