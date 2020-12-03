@@ -144,7 +144,6 @@ word_dict.txt 每行有一个单字，将字符与数字索引映射在一起，
 
 如果希望支持识别"空格"类别, 请将yml文件中的 `use_space_char` 字段设置为 `true`。
 
-**注意：`use_space_char` 仅在 `character_type=ch` 时生效**
 
 <a name="启动训练"></a>
 ### 启动训练
@@ -167,10 +166,9 @@ tar -xf rec_mv3_none_bilstm_ctc.tar && rm -rf rec_mv3_none_bilstm_ctc.tar
 *如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false*
 
 ```
-# GPU训练 支持单卡，多卡训练，通过CUDA_VISIBLE_DEVICES指定卡号
-export CUDA_VISIBLE_DEVICES=0,1,2,3
+# GPU训练 支持单卡，多卡训练，通过selected_gpus参数指定卡号
 # 训练icdar15英文数据 并将训练日志保存为 tain_rec.log
-python3 tools/train.py -c configs/rec/rec_icdar15_train.yml 2>&1 | tee train_rec.log
+python3 -m paddle.distributed.launch --selected_gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_icdar15_train.yml 2>&1 | tee train_rec.log
 ```
 <a name="数据增强"></a>
 - 数据增强
@@ -212,37 +210,67 @@ PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_t
 
 训练中文数据，推荐使用[rec_chinese_lite_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml)，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：
 
-以 `rec_mv3_none_none_ctc.yml` 为例：
+以 `rec_chinese_lite_train_v1.1.yml` 为例：
 ```
 Global:
   ...
-  # 修改 image_shape 以适应长文本
-  image_shape: [3, 32, 320]
-  ...
+  # 添加自定义字典，如修改字典请将路径指向新字典
+  character_dict_path: ppocr/utils/ppocr_keys_v1.txt
   # 修改字符类型
   character_type: ch
-  # 添加自定义字典，如修改字典请将路径指向新字典
-  character_dict_path: ./ppocr/utils/ppocr_keys_v1.txt
-  # 训练时添加数据增强
-  distort: true
+  ...
   # 识别空格
-  use_space_char: true
-  ...
-  # 修改reader类型
-  reader_yml: ./configs/rec/rec_chinese_reader.yml
-  ...
+  use_space_char: False
 
-...
 
 Optimizer:
   ...
   # 添加学习率衰减策略
-  decay:
-    function: cosine_decay
-    # 每个 epoch 包含 iter 数
-    step_each_epoch: 20
-    # 总共训练epoch数
-    total_epoch: 1000
+  lr:
+    name: Cosine
+    learning_rate: 0.001
+  ...
+
+...
+
+Train:
+  dataset:
+    # 数据集格式，支持LMDBDateSet以及SimpleDataSet
+    name: SimpleDataSet
+    # 数据集路径
+    data_dir: ./train_data/
+    # 训练集标签文件
+    label_file_list: ["./train_data/train_list.txt"]
+    transforms:
+      ...
+      - RecResizeImg:
+          # 修改 image_shape 以适应长文本
+          image_shape: [3, 32, 320]
+      ...
+  loader:
+    ...
+    # 单卡训练的batch_size
+    batch_size_per_card: 256
+    ...
+
+Eval:
+  dataset:
+    # 数据集格式，支持LMDBDateSet以及SimpleDataSet
+    name: SimpleDataSet
+    # 数据集路径
+    data_dir: ./train_data
+    # 验证集标签文件
+    label_file_list: ["./train_data/val_list.txt"]
+    transforms:
+      ...
+      - RecResizeImg:
+          # 修改 image_shape 以适应长文本
+          image_shape: [3, 32, 320]
+      ...
+  loader:
+    # 单卡验证的batch_size
+    batch_size_per_card: 256
+    ...
 ```
 **注意，预测/评估时的配置文件请务必与训练一致。**
 
@@ -270,33 +298,36 @@ Global:
   ...
   # 添加自定义字典，如修改字典请将路径指向新字典
   character_dict_path: ./ppocr/utils/dict/french_dict.txt
-  # 训练时添加数据增强
-  distort: true
+  ...
   # 识别空格
-  use_space_char: true
-  ...
-  # 修改reader类型
-  reader_yml: ./configs/rec/multi_languages/rec_french_reader.yml
-  ...
-...
-```
-
-同时需要修改数据读取文件 `rec_french_reader.yml`：
-
-```
-TrainReader:
-  ...
-  # 修改训练数据存放的目录名
-  img_set_dir: ./train_data
-  # 修改 label 文件名称
-  label_file_path: ./train_data/french_train.txt
+  use_space_char: False
 
 ...
+
+Train:
+  dataset:
+    # 数据集格式，支持LMDBDateSet以及SimpleDataSet
+    name: SimpleDataSet
+    # 数据集路径
+    data_dir: ./train_data/
+    # 训练集标签文件
+    label_file_list: ["./train_data/french_train.txt"]
+    ...
+
+Eval:
+  dataset:
+    # 数据集格式，支持LMDBDateSet以及SimpleDataSet
+    name: SimpleDataSet
+    # 数据集路径
+    data_dir: ./train_data
+    # 验证集标签文件
+    label_file_list: ["./train_data/french_val.txt"]
+    ...
 ```
 <a name="评估"></a>
 ### 评估
 
-评估数据集可以通过 `configs/rec/rec_icdar15_reader.yml`  修改EvalReader中的 `label_file_path` 设置。
+评估数据集可以通过 `configs/rec/rec_icdar15_train.yml`  修改Eval中的 `label_file_path` 设置。
 
 *注意* 评估时必须确保配置文件中 infer_img 字段为空
 ```
