@@ -71,6 +71,7 @@ def parse_args():
     parser.add_argument("--use_space_char", type=str2bool, default=True)
     parser.add_argument(
         "--vis_font_path", type=str, default="./doc/simfang.ttf")
+    parser.add_argument("--drop_score", type=float, default=0.5)
 
     # params for text classifier
     parser.add_argument("--use_angle_cls", type=str2bool, default=False)
