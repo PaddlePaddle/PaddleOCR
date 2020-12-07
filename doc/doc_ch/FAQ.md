@@ -32,22 +32,21 @@
 
 #### Q3.3.22: 文字检测时怎么模糊的数据增强？
 
-**A**: 模糊的数据增强需要修改代码进行添加，以DB为例，在这一行之前添加模糊的增强就行 https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/det/db_process.py#L145
+**A**: 模糊的数据增强需要修改代码进行添加，以DB为例，在[这一行](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/det/db_process.py#L145) 之前添加模糊的增强就行 
 
 #### Q3.3.23: 文字检测时怎么更改图片旋转的角度，实现360度任意旋转？
 
-**A**: 将这里的(-10,10)) 改为(-180,180)即可 https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/det/data_augment.py#L22
+**A**: 将[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/det/data_augment.py#L22) 的(-10,10) 改为(-180,180)即可 
 
 #### Q3.3.24: 训练数据的长宽比过大怎么修改shape
 
-**A**: 识别修改这里 https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/rec/ch_ppocr_v1.1/rec_chinese_common_train_v1.1.yml#L12
-
-检测修改这里 https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/det/det_mv3_db.yml#L13
+**A**: 识别修改[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/rec/ch_ppocr_v1.1/rec_chinese_common_train_v1.1.yml#L12),
+检测修改[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/det/det_mv3_db.yml#L13)
 
 
 #### Q3.4.23：安装paddleocr后，提示没有paddle
 
-**A**：这是因为paddlepaddle gpu版本和cpu版本的名称不一致，现在已经在whl的文档里做了安装说明。
+**A**：这是因为paddlepaddle gpu版本和cpu版本的名称不一致，现在已经在[whl的文档](./whl.md)里做了安装说明。
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -600,21 +599,18 @@ return paddle.reader.multiprocess_reader(readers, False, queue_size=320)
 
 （3）在训练的时候，文本长度超过25的训练图像都会被丢弃，因此需要看下真正参与训练的图像有多少，太少的话也容易过拟合。
 
-
 #### Q3.3.22: 文字检测时怎么模糊的数据增强？
 
-**A**: 模糊的数据增强需要修改代码进行添加，以DB为例，在这一行之前添加模糊的增强就行 https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/det/db_process.py#L145
+**A**: 模糊的数据增强需要修改代码进行添加，以DB为例，在[这一行](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/det/db_process.py#L145) 之前添加模糊的增强就行 
 
 #### Q3.3.23: 文字检测时怎么更改图片旋转的角度，实现360度任意旋转？
 
-**A**: 将这里的(-10,10)) 改为(-180,180)即可 https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/det/data_augment.py#L22
-
+**A**: 将[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/det/data_augment.py#L22) 的(-10,10) 改为(-180,180)即可 
 
 #### Q3.3.24: 训练数据的长宽比过大怎么修改shape
 
-**A**: 识别修改这里 https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/rec/ch_ppocr_v1.1/rec_chinese_common_train_v1.1.yml#L12
-
-检测修改这里 https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/det/det_mv3_db.yml#L13
+**A**: 识别修改[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/rec/ch_ppocr_v1.1/rec_chinese_common_train_v1.1.yml#L12) ,
+检测修改[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/det/det_mv3_db.yml#L13)
 
 
 <a name="预测部署3"></a>
@@ -722,4 +718,4 @@ return paddle.reader.multiprocess_reader(readers, False, queue_size=320)
 
 #### Q3.4.23：安装paddleocr后，提示没有paddle
 
-**A**：这是因为paddlepaddle gpu版本和cpu版本的名称不一致，现在已经在whl的文档里做了安装说明。
+**A**：这是因为paddlepaddle gpu版本和cpu版本的名称不一致，现在已经在[whl的文档](./whl.md)里做了安装说明。
