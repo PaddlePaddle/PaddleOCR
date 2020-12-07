@@ -3,7 +3,7 @@ Global:
   epoch_num: 72
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/rec/r34_vd_tps_bilstm_ctc/
+  save_model_dir: ./output/rec/r34_vd_none_none_ctc/
   save_epoch_step: 3
   # evaluation is run every 2000 iterations
   eval_batch_step: [0, 2000]
@@ -15,7 +15,7 @@ Global:
   use_visualdl: False
   infer_img: doc/imgs_words_en/word_10.png
   # for data or label process
-  character_dict_path: 
+  character_dict_path:
   character_type: en
   max_text_length: 25
   infer_mode: False
@@ -34,22 +34,16 @@ Optimizer:
 
 Architecture:
   model_type: rec
-  algorithm: STARNet
-  Transform:
-    name: TPS
-    num_fiducial: 20
-    loc_lr: 0.1
-    model_name: small
+  algorithm: Rosetta
   Backbone:
     name: ResNet
     layers: 34
   Neck:
     name: SequenceEncoder
-    encoder_type: rnn
-    hidden_size: 256
+    encoder_type: reshape
   Head:
     name: CTCHead
-    fc_decay: 0
+    fc_decay: 0.0004
 
 Loss:
   name: CTCLoss
