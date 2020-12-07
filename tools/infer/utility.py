@@ -203,7 +203,12 @@ def draw_ocr(image,
     return image
 
 
-def draw_ocr_box_txt(image, boxes, txts):
+def draw_ocr_box_txt(image,
+                     boxes,
+                     txts,
+                     scores=None,
+                     drop_score=0.5,
+                     font_path="./doc/simfang.ttf"):
     h, w = image.height, image.width
     img_left = image.copy()
     img_right = Image.new('RGB', (w, h), (255, 255, 255))
@@ -213,7 +218,9 @@ def draw_ocr_box_txt(image, boxes, txts):
     random.seed(0)
     draw_left = ImageDraw.Draw(img_left)
     draw_right = ImageDraw.Draw(img_right)
-    for (box, txt) in zip(boxes, txts):
+    for idx, (box, txt) in enumerate(zip(boxes, txts)):
+        if scores is not None and scores[idx] < drop_score:
+            continue
         color = (random.randint(0, 255), random.randint(0, 255),
                  random.randint(0, 255))
         draw_left.polygon(box, fill=color)
@@ -229,8 +236,7 @@ def draw_ocr_box_txt(image, boxes, txts):
             1])**2)
         if box_height > 2 * box_width:
             font_size = max(int(box_width * 0.9), 10)
-            font = ImageFont.truetype(
-                "./doc/simfang.ttf", font_size, encoding="utf-8")
+            font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
             cur_y = box[0][1]
             for c in txt:
                 char_size = font.getsize(c)
@@ -239,8 +245,7 @@ def draw_ocr_box_txt(image, boxes, txts):
                 cur_y += char_size[1]
         else:
             font_size = max(int(box_height * 0.8), 10)
-            font = ImageFont.truetype(
-                "./doc/simfang.ttf", font_size, encoding="utf-8")
+            font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
             draw_right.text(
                 [box[0][0], box[0][1]], txt, fill=(0, 0, 0), font=font)
     img_left = Image.blend(image, img_left, 0.5)
@@ -255,7 +260,6 @@ def str_count(s):
     Count the number of Chinese characters,
     a single English character and a single number
     equal to half the length of Chinese characters.
-
     args:
         s(string): the input of string
     return(int):
@@ -290,7 +294,6 @@ def text_visual(texts,
         img_w(int): the width of blank img
         font_path: the path of font which is used to draw text
     return(array):
-
     """
     if scores is not None:
         assert len(texts) == len(
