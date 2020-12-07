@@ -24,8 +24,11 @@ def build_loss(config):
 
     # cls loss
     from .cls_loss import ClsLoss
+   
+    # att loss
+    from .rec_att_loss import AttentionLoss
 
-    support_dict = ['DBLoss', 'CTCLoss', 'ClsLoss']
+    support_dict = ['DBLoss', 'CTCLoss', 'ClsLoss', 'AttentionLoss']
 
     config = copy.deepcopy(config)
     module_name = config.pop('name')

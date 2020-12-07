@@ -195,8 +195,14 @@ def train(config,
                 break
             lr = optimizer.get_lr()
             images = batch[0]
-            preds = model(images)
-            loss = loss_class(preds, batch)
+            labels = batch[1]
+            if "RARE" == config['Architecture']['algorithm']:
+                preds = model(images, targets=labels)
+                batch[1] = labels[:, 1:] # without start token 
+                loss = loss_class(preds, batch)
+            else:
+                preds = model(images, targets=None)
+                loss = loss_class(preds, batch)
             avg_loss = loss['loss']
             avg_loss.backward()
             optimizer.step()
@@ -313,6 +319,7 @@ def eval(model, valid_dataloader, post_process_class, eval_class):
             if idx >= len(valid_dataloader):
                 break
             images = batch[0]
+            labels = batch[1]
             start = time.time()
             preds = model(images)
 

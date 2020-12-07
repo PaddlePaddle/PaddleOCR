@@ -1,0 +1,1 @@
+ python3.7 -m paddle.distributed.launch --selected_gpus '0,1,2,3,4,5,6,7'  tools/train.py -c ./configs/rec/rec_mv3_none_att.yml # -o Global.checkpoints=./output/rec/mv3_none_bilstm_rare_nostn/best_accuracy
