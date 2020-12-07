@@ -23,17 +23,21 @@ import numpy as np
 import time
 from PIL import Image
 import tools.infer.utility as utility
-from tools.infer.utility import draw_ocr
 import tools.infer.predict_rec as predict_rec
 import tools.infer.predict_det as predict_det
+import tools.infer.predict_cls as predict_cls
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.utils.logging import get_logger
+from tools.infer.utility import draw_ocr_box_txt
 
 
 class TextSystem(object):
     def __init__(self, args):
         self.text_detector = predict_det.TextDetector(args)
         self.text_recognizer = predict_rec.TextRecognizer(args)
+        self.use_angle_cls = args.use_angle_cls
+        if self.use_angle_cls:
+            self.text_classifier = predict_cls.TextClassifier(args)
 
     def get_rotate_crop_image(self, img, points):
         '''
@@ -72,12 +76,13 @@ class TextSystem(object):
         bbox_num = len(img_crop_list)
         for bno in range(bbox_num):
             cv2.imwrite("./output/img_crop_%d.jpg" % bno, img_crop_list[bno])
-            print(bno, rec_res[bno])
+            logger.info(bno, rec_res[bno])
 
     def __call__(self, img):
         ori_im = img.copy()
         dt_boxes, elapse = self.text_detector(img)
-        print("dt_boxes num : {}, elapse : {}".format(len(dt_boxes), elapse))
+        logger.info("dt_boxes num : {}, elapse : {}".format(
+            len(dt_boxes), elapse))
         if dt_boxes is None:
             return None, None
         img_crop_list = []
@@ -88,8 +93,15 @@ class TextSystem(object):
             tmp_box = copy.deepcopy(dt_boxes[bno])
             img_crop = self.get_rotate_crop_image(ori_im, tmp_box)
             img_crop_list.append(img_crop)
+        if self.use_angle_cls:
+            img_crop_list, angle_list, elapse = self.text_classifier(
+                img_crop_list)
+            logger.info("cls num  : {}, elapse : {}".format(
+                len(img_crop_list), elapse))
+
         rec_res, elapse = self.text_recognizer(img_crop_list)
-        print("rec_res num  : {}, elapse : {}".format(len(rec_res), elapse))
+        logger.info("rec_res num  : {}, elapse : {}".format(
+            len(rec_res), elapse))
         # self.print_draw_crop_rec_res(img_crop_list, rec_res)
         return dt_boxes, rec_res
 
@@ -119,7 +131,8 @@ def main(args):
     image_file_list = get_image_file_list(args.image_dir)
     text_sys = TextSystem(args)
     is_visualize = True
-    tackle_img_num = 0
+    font_path = args.vis_font_path
+    drop_score = args.drop_score
     for image_file in image_file_list:
         img, flag = check_and_read_gif(image_file)
         if not flag:
@@ -128,20 +141,16 @@ def main(args):
             logger.info("error in loading image:{}".format(image_file))
             continue
         starttime = time.time()
-        tackle_img_num += 1
-        if not args.use_gpu and args.enable_mkldnn and tackle_img_num % 30 == 0:
-            text_sys = TextSystem(args)
         dt_boxes, rec_res = text_sys(img)
         elapse = time.time() - starttime
-        print("Predict time of %s: %.3fs" % (image_file, elapse))
+        logger.info("Predict time of %s: %.3fs" % (image_file, elapse))
 
-        drop_score = 0.5
         dt_num = len(dt_boxes)
         for dno in range(dt_num):
             text, score = rec_res[dno]
             if score >= drop_score:
                 text_str = "%s, %.3f" % (text, score)
-                print(text_str)
+                logger.info(text_str)
 
         if is_visualize:
             image = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
@@ -149,15 +158,20 @@ def main(args):
             txts = [rec_res[i][0] for i in range(len(rec_res))]
             scores = [rec_res[i][1] for i in range(len(rec_res))]
 
-            draw_img = draw_ocr(
-                image, boxes, txts, scores, drop_score=drop_score)
+            draw_img = draw_ocr_box_txt(
+                image,
+                boxes,
+                txts,
+                scores,
+                drop_score=drop_score,
+                font_path=font_path)
             draw_img_save = "./inference_results/"
             if not os.path.exists(draw_img_save):
                 os.makedirs(draw_img_save)
             cv2.imwrite(
                 os.path.join(draw_img_save, os.path.basename(image_file)),
                 draw_img[:, :, ::-1])
-            print("The visualized image saved in {}".format(
+            logger.info("The visualized image saved in {}".format(
                 os.path.join(draw_img_save, os.path.basename(image_file))))
 
 
