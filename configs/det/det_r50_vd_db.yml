@@ -2,16 +2,16 @@ Global:
   use_gpu: true
   epoch_num: 1200
   log_smooth_window: 20
-  print_batch_step: 2
-  save_model_dir: ./output/db_mv3/
+  print_batch_step: 10
+  save_model_dir: ./output/det_rc/det_r50_vd/
   save_epoch_step: 1200
   # evaluation is run every 5000 iterations after the 4000th iteration
-  eval_batch_step: [4000, 5000]
+  eval_batch_step: [5000,4000]
   # if pretrained_model is saved in static mode, load_static_weights must set to True
   load_static_weights: True
   cal_metric_during_train: False
-  pretrained_model: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
-  checkpoints: #./output/det_db_0.001_DiceLoss_256_pp_config_2.0b_4gpu/best_accuracy
+  pretrained_model:
+  checkpoints:
   save_inference_dir:
   use_visualdl: False
   infer_img: doc/imgs_en/img_10.jpg
@@ -22,9 +22,8 @@ Architecture:
   algorithm: DB
   Transform:
   Backbone:
-    name: MobileNetV3
-    scale: 0.5
-    model_name: large
+    name: ResNet
+    layers: 50
   Neck:
     name: DBFPN
     out_channels: 256
@@ -39,7 +38,7 @@ Loss:
   alpha: 5
   beta: 10
   ohem_ratio: 3
-  
+
 Optimizer:
   name: Adam
   beta1: 0.9
@@ -53,7 +52,7 @@ Optimizer:
 PostProcess:
   name: DBPostProcess
   thresh: 0.3
-  box_thresh: 0.6
+  box_thresh: 0.7
   max_candidates: 1000
   unclip_ratio: 1.5
 
@@ -100,7 +99,7 @@ Train:
   loader:
     shuffle: True
     drop_last: False
-    batch_size_per_card: 4
+    batch_size_per_card: 16
     num_workers: 8
 
 Eval:
@@ -128,4 +127,4 @@ Eval:
     shuffle: False
     drop_last: False
     batch_size_per_card: 1 # must be 1
-    num_workers: 2
+    num_workers: 8
