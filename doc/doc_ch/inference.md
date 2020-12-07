@@ -127,12 +127,12 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_di
 
 ![](../imgs_results/det_res_2.jpg)
 
-通过参数`limit_type`和`det_limit_side_len`来对图片的尺寸进行限制限，`max`为限制长边长度<`det_limit_side_len`，`min`为限制短边长度>`det_limit_side_len`, 
-图片不满足限制条件时(`max`时>`det_limit_side_len`或`min`时<`det_limit_side_len`)，将对图片进行等比例缩放。
+通过参数`limit_type`和`det_limit_side_len`来对图片的尺寸进行限制限，`limit_type=max`为限制长边长度<`det_limit_side_len`，`limit_type=min`为限制短边长度>`det_limit_side_len`, 
+图片不满足限制条件时(`limit_type=max`时长边长度>`det_limit_side_len`或`limit_type=min`时短边长度<`det_limit_side_len`)，将对图片进行等比例缩放。
 该参数默认设置为`limit_type='max',det_max_side_len=960`。 如果输入图片的分辨率比较大，而且想使用更大的分辨率预测，可以执行如下命令：
 
 ```
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --det_max_side_len=1200
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --det_limit_type=max --det_limit_side_len=1200
 ```
 
 如果想使用CPU进行预测，执行命令如下
