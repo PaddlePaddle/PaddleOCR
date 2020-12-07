@@ -143,7 +143,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_di
 <a name="DB文本检测模型推理"></a>
 ### 2. DB文本检测模型推理
 
-首先将DB文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例（[模型下载地址](地址))，可以使用如下命令进行转换：
+首先将DB文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例（[模型下载地址](link))，可以使用如下命令进行转换：
 
 ```
 # -c 后面设置训练算法的yml配置文件，需将待转换的训练模型地址写入配置文件里的Global.checkpoints字段下,不用添加文件后缀.pdmodel，.pdopt或.pdparams。
@@ -167,7 +167,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_
 <a name="EAST文本检测模型推理"></a>
 ### 3. EAST文本检测模型推理
 
-首先将EAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例（[模型下载地址](地址))，可以使用如下命令进行转换：
+首先将EAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例（[模型下载地址](link))，可以使用如下命令进行转换：
 
 ```
 # -c 后面设置训练算法的yml配置文件，需将待转换的训练模型地址写入配置文件里的Global.checkpoints字段下,不用添加文件后缀.pdmodel，.pdopt或.pdparams。
@@ -191,7 +191,7 @@ python3 tools/infer/predict_det.py --det_algorithm="EAST" --image_dir="./doc/img
 <a name="SAST文本检测模型推理"></a>
 ### 4. SAST文本检测模型推理
 #### (1). 四边形文本检测模型（ICDAR2015）  
-首先将SAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例([模型下载地址](地址))，可以使用如下命令进行转换：
+首先将SAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例([模型下载地址](link))，可以使用如下命令进行转换：
 ```
 # -c 后面设置训练算法的yml配置文件，需将待转换的训练模型地址写入配置文件里的Global.checkpoints字段下,不用添加文件后缀.pdmodel，.pdopt或.pdparams。
 # -o 后面设置转换的模型将保存的地址。
@@ -207,7 +207,7 @@ python3 tools/infer/predict_det.py --det_algorithm="SAST" --image_dir="./doc/img
 ![](../imgs_results/det_res_img_10_sast.jpg)
 
 #### (2). 弯曲文本检测模型（Total-Text）  
-首先将SAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在Total-Text英文数据集训练的模型为例（[模型下载地址](地址))，可以使用如下命令进行转换：
+首先将SAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在Total-Text英文数据集训练的模型为例（[模型下载地址](link))，可以使用如下命令进行转换：
 
 ```
 # -c 后面设置训练算法的yml配置文件，需将待转换的训练模型地址写入配置文件里的Global.checkpoints字段下,不用添加文件后缀.pdmodel，.pdopt或.pdparams。
@@ -255,7 +255,7 @@ Predicts of ./doc/imgs_words/ch/word_4.jpg:['实力活力', 0.89552695]
 我们以STAR-Net为例，介绍基于CTC损失的识别模型推理。 CRNN和Rosetta使用方式类似，不用设置识别算法参数rec_algorithm。
 
 首先将STAR-Net文本识别训练过程中保存的模型，转换成inference model。以基于Resnet34_vd骨干网络，使用MJSynth和SynthText两个英文文本识别合成数据集训练
-的模型为例（[模型下载地址](地址))，可以使用如下命令进行转换：
+的模型为例（[模型下载地址](link))，可以使用如下命令进行转换：
 
 ```
 # -c 后面设置训练算法的yml配置文件，需将待转换的训练模型地址写入配置文件里的Global.checkpoints字段下,不用添加文件后缀.pdmodel，.pdopt或.pdparams。
