@@ -23,7 +23,7 @@ import copy
 import numpy as np
 import math
 import time
-
+import traceback
 import paddle.fluid as fluid
 
 import tools.infer.utility as utility
@@ -106,10 +106,10 @@ class TextClassifier(object):
                 norm_img_batch = fluid.core.PaddleTensor(norm_img_batch)
                 self.predictor.run([norm_img_batch])
             prob_out = self.output_tensors[0].copy_to_cpu()
-            cls_res = self.postprocess_op(prob_out)
+            cls_result = self.postprocess_op(prob_out)
             elapse += time.time() - starttime
-            for rno in range(len(cls_res)):
-                label, score = cls_res[rno]
+            for rno in range(len(cls_result)):
+                label, score = cls_result[rno]
                 cls_res[indices[beg_img_no + rno]] = [label, score]
                 if '180' in label and score > self.cls_thresh:
                     img_list[indices[beg_img_no + rno]] = cv2.rotate(
@@ -133,8 +133,8 @@ def main(args):
         img_list.append(img)
     try:
         img_list, cls_res, predict_time = text_classifier(img_list)
-    except Exception as e:
-        print(e)
+    except:
+        logger.info(traceback.format_exc())
         logger.info(
             "ERROR!!!! \n"
             "Please read the FAQ：https://github.com/PaddlePaddle/PaddleOCR#faq \n"
@@ -143,10 +143,10 @@ def main(args):
             "Please set --rec_image_shape='3,32,100' and --rec_char_type='en' ")
         exit()
     for ino in range(len(img_list)):
-        print("Predicts of {}:{}".format(valid_image_file_list[ino], cls_res[
+        logger.info("Predicts of {}:{}".format(valid_image_file_list[ino], cls_res[
             ino]))
-    print("Total predict time for {} images, cost: {:.3f}".format(
+    logger.info("Total predict time for {} images, cost: {:.3f}".format(
         len(img_list), predict_time))
 
-    if __name__ == "__main__":
-        main(utility.parse_args())
+if __name__ == "__main__":
+    main(utility.parse_args())

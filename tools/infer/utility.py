@@ -71,6 +71,7 @@ def parse_args():
     parser.add_argument("--use_space_char", type=str2bool, default=True)
     parser.add_argument(
         "--vis_font_path", type=str, default="./doc/simfang.ttf")
+    parser.add_argument("--drop_score", type=float, default=0.5)
 
     # params for text classifier
     parser.add_argument("--use_angle_cls", type=str2bool, default=False)
@@ -202,7 +203,12 @@ def draw_ocr(image,
     return image
 
 
-def draw_ocr_box_txt(image, boxes, txts):
+def draw_ocr_box_txt(image,
+                     boxes,
+                     txts,
+                     scores=None,
+                     drop_score=0.5,
+                     font_path="./doc/simfang.ttf"):
     h, w = image.height, image.width
     img_left = image.copy()
     img_right = Image.new('RGB', (w, h), (255, 255, 255))
@@ -212,7 +218,9 @@ def draw_ocr_box_txt(image, boxes, txts):
     random.seed(0)
     draw_left = ImageDraw.Draw(img_left)
     draw_right = ImageDraw.Draw(img_right)
-    for (box, txt) in zip(boxes, txts):
+    for idx, (box, txt) in enumerate(zip(boxes, txts)):
+        if scores is not None and scores[idx] < drop_score:
+            continue
         color = (random.randint(0, 255), random.randint(0, 255),
                  random.randint(0, 255))
         draw_left.polygon(box, fill=color)
@@ -222,14 +230,13 @@ def draw_ocr_box_txt(image, boxes, txts):
                 box[2][1], box[3][0], box[3][1]
             ],
             outline=color)
-        box_height = math.sqrt((box[0][0] - box[3][0])**2 + (box[0][1] - box[3][
-            1])**2)
-        box_width = math.sqrt((box[0][0] - box[1][0])**2 + (box[0][1] - box[1][
-            1])**2)
+        box_height = math.sqrt((box[0][0] - box[3][0]) ** 2 + (box[0][1] - box[3][
+            1]) ** 2)
+        box_width = math.sqrt((box[0][0] - box[1][0]) ** 2 + (box[0][1] - box[1][
+            1]) ** 2)
         if box_height > 2 * box_width:
             font_size = max(int(box_width * 0.9), 10)
-            font = ImageFont.truetype(
-                "./doc/simfang.ttf", font_size, encoding="utf-8")
+            font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
             cur_y = box[0][1]
             for c in txt:
                 char_size = font.getsize(c)
@@ -238,8 +245,7 @@ def draw_ocr_box_txt(image, boxes, txts):
                 cur_y += char_size[1]
         else:
             font_size = max(int(box_height * 0.8), 10)
-            font = ImageFont.truetype(
-                "./doc/simfang.ttf", font_size, encoding="utf-8")
+            font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
             draw_right.text(
                 [box[0][0], box[0][1]], txt, fill=(0, 0, 0), font=font)
     img_left = Image.blend(image, img_left, 0.5)

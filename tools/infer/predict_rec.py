@@ -22,7 +22,7 @@ import cv2
 import numpy as np
 import math
 import time
-
+import traceback
 import paddle.fluid as fluid
 
 import tools.infer.utility as utility
@@ -135,8 +135,8 @@ def main(args):
         img_list.append(img)
     try:
         rec_res, predict_time = text_recognizer(img_list)
-    except Exception as e:
-        print(e)
+    except:
+        logger.info(traceback.format_exc())
         logger.info(
             "ERROR!!!! \n"
             "Please read the FAQ：https://github.com/PaddlePaddle/PaddleOCR#faq \n"
@@ -145,9 +145,9 @@ def main(args):
             "Please set --rec_image_shape='3,32,100' and --rec_char_type='en' ")
         exit()
     for ino in range(len(img_list)):
-        print("Predicts of {}:{}".format(valid_image_file_list[ino], rec_res[
+        logger.info("Predicts of {}:{}".format(valid_image_file_list[ino], rec_res[
             ino]))
-    print("Total predict time for {} images, cost: {:.3f}".format(
+    logger.info("Total predict time for {} images, cost: {:.3f}".format(
         len(img_list), predict_time))
 
 
