@@ -261,6 +261,61 @@ im_show.save('result.jpg')
 paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_dir} --rec_model_dir {your_rec_model_dir} --rec_char_dict_path {your_rec_char_dict_path} --cls_model_dir {your_cls_model_dir} --use_angle_cls true --cls true
 ```
 
+### 使用网络图片或者numpy数组作为输入
+
+1. 网络图片
+
+代码使用
+```python
+from paddleocr import PaddleOCR, draw_ocr
+# Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换
+# 参数依次为`ch`, `en`, `french`, `german`, `korean`, `japan`。
+ocr = PaddleOCR(use_angle_cls=True, lang="ch") # need to run only once to download and load model into memory
+img_path = 'http://n.sinaimg.cn/ent/transform/w630h933/20171222/o111-fypvuqf1838418.jpg'
+result = ocr.ocr(img_path, cls=True)
+for line in result:
+    print(line)
+
+# 显示结果
+from PIL import Image
+image = Image.open(img_path).convert('RGB')
+boxes = [line[0] for line in result]
+txts = [line[1][0] for line in result]
+scores = [line[1][1] for line in result]
+im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/simfang.ttf')
+im_show = Image.fromarray(im_show)
+im_show.save('result.jpg')
+```
+命令行模式
+```bash
+paddleocr --image_dir http://n.sinaimg.cn/ent/transform/w630h933/20171222/o111-fypvuqf1838418.jpg --use_angle_cls=true
+```
+
+2. numpy数组
+仅通过代码使用时支持numpy数组作为输入
+```python
+from paddleocr import PaddleOCR, draw_ocr
+# Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换
+# 参数依次为`ch`, `en`, `french`, `german`, `korean`, `japan`。
+ocr = PaddleOCR(use_angle_cls=True, lang="ch") # need to run only once to download and load model into memory
+img_path = 'PaddleOCR/doc/imgs/11.jpg'
+img = cv2.imread(img_path)
+# img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY), 如果你自己训练的模型支持灰度图，可以将这句话的注释取消
+result = ocr.ocr(img_path, cls=True)
+for line in result:
+    print(line)
+
+# 显示结果
+from PIL import Image
+image = Image.open(img_path).convert('RGB')
+boxes = [line[0] for line in result]
+txts = [line[1][0] for line in result]
+scores = [line[1][1] for line in result]
+im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/simfang.ttf')
+im_show = Image.fromarray(im_show)
+im_show.save('result.jpg')
+```
+
 ## 参数说明
 
 | 字段                    | 说明                                                                                                                                                                                                                 | 默认值                  |
@@ -285,6 +340,7 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_
 | max_text_length         | 识别算法能识别的最大文字长度                                                                                                                                                                                         | 25                      |
 | rec_char_dict_path      | 识别模型字典路径，当rec_model_dir使用方式2传参时需要修改为自己的字典路径                                                                                                                                                | ./ppocr/utils/ppocr_keys_v1.txt                        |
 | use_space_char          | 是否识别空格                                                                                                                                                                                                         | TRUE                    |
+| drop_score          | 对输出按照分数(来自于识别模型)进行过滤，低于此分数的不返回                                                                                                                                                                                                         | 0.5                    |
 | use_angle_cls          | 是否加载分类模型                                                                                                                                                                                                         | FALSE                    |
 | cls_model_dir          | 分类模型所在文件夹。传参方式有两种，1. None: 自动下载内置模型到 `~/.paddleocr/cls`；2.自己转换好的inference模型路径，模型路径下必须包含model和params文件                                                                                 | None                    |
 | cls_image_shape          | 分类算法的输入图片尺寸                                                                           | "3, 48, 192"                    |
@@ -295,4 +351,4 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_
 | lang                     | 模型语言类型,目前支持 中文(ch)和英文(en)                                                                                                                                                                                                  | ch                    |
 | det                     | 前向时使用启动检测                                                                                                                                                                                                   | TRUE                    |
 | rec                     | 前向时是否启动识别                                                                                                                                                                                                   | TRUE                    |
-| cls                     | 前向时是否启动分类                                                                                                                                                                                                 | FALSE                    |
+| cls                     | 前向时是否启动分类 (命令行模式下使用use_angle_cls控制前向是否启动分类)                                                                                                                                                                                                | FALSE                    |
