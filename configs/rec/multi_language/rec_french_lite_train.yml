@@ -85,7 +85,7 @@ Eval:
   dataset:
     name: SimpleDataSet
     data_dir: ./train_data/
-    label_file_list: ["./train_data/train_list.txt"]
+    label_file_list: ["./train_data/eval_list.txt"]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
