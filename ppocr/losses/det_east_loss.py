@@ -22,9 +22,6 @@ from .det_basic_loss import DiceLoss
 
 
 class EASTLoss(nn.Layer):
-    """
-    """
-
     def __init__(self,
                  eps=1e-6,
                  **kwargs):

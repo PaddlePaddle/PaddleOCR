@@ -24,9 +24,6 @@ import numpy as np
 
 
 class SASTLoss(nn.Layer):
-    """
-    """
-
     def __init__(self,
                  eps=1e-6,
                  **kwargs):
