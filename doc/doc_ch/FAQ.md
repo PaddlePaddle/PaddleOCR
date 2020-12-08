@@ -36,12 +36,12 @@
 
 #### Q3.3.23: 文字检测时怎么更改图片旋转的角度，实现360度任意旋转？
 
-**A**: 参考角度调整[源码位置](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/det/data_augment.py#L22) 的(-10,10) 改为(-180,180)即可 
+**A**: 角度调整参考[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/det/data_augment.py#L22) 的(-10,10) 改为(-180,180)即可 
 
 #### Q3.3.24: 训练数据的长宽比过大怎么修改shape
 
-**A**: 识别数据长宽比修改参考[源码位置](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/rec/ch_ppocr_v1.1/rec_chinese_common_train_v1.1.yml#L12),
-识别数据长宽比修改参考[源码位置](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/det/det_mv3_db.yml#L13)
+**A**: 识别数据长宽比修改参考[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/rec/ch_ppocr_v1.1/rec_chinese_common_train_v1.1.yml#L12),
+识别数据长宽比修改参考[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/det/det_mv3_db.yml#L13)
 
 
 #### Q3.4.23：安装paddleocr后，提示没有paddle
