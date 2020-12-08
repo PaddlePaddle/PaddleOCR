@@ -52,6 +52,7 @@ class DetLabelEncode(object):
                 txt_tags.append(True)
             else:
                 txt_tags.append(False)
+        boxes = self.expand_points_num(boxes)
         boxes = np.array(boxes, dtype=np.float32)
         txt_tags = np.array(txt_tags, dtype=np.bool)
 
@@ -69,6 +70,17 @@ class DetLabelEncode(object):
         rect[1] = pts[np.argmin(diff)]
         rect[3] = pts[np.argmax(diff)]
         return rect
+
+    def expand_points_num(self, boxes):
+        max_points_num = 0
+        for box in boxes:
+            if len(box) > max_points_num:
+                max_points_num = len(box)
+        ex_boxes = []
+        for box in boxes:
+            ex_box = box + [box[-1]] * (max_points_num - len(box))
+            ex_boxes.append(ex_box)
+        return ex_boxes
 
 
 class BaseRecLabelEncode(object):
