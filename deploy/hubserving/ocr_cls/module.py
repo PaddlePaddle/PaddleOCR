@@ -13,22 +13,22 @@ import cv2
 import paddlehub as hub
 
 from tools.infer.utility import base64_to_cv2
-from tools.infer.predict_rec import TextRecognizer
+from tools.infer.predict_cls import TextClassifier
 
 
 @moduleinfo(
-    name="ocr_rec",
+    name="ocr_cls",
     version="1.0.0",
     summary="ocr recognition service",
     author="paddle-dev",
     author_email="paddle-dev@baidu.com",
     type="cv/text_recognition")
-class OCRRec(hub.Module):
+class OCRCls(hub.Module):
     def _initialize(self, use_gpu=False, enable_mkldnn=False):
         """
         initialize with the necessary elements
         """
-        from ocr_rec.params import read_params
+        from ocr_cls.params import read_params
         cfg = read_params()
 
         cfg.use_gpu = use_gpu
@@ -46,7 +46,7 @@ class OCRRec(hub.Module):
         cfg.ir_optim = True
         cfg.enable_mkldnn = enable_mkldnn
 
-        self.text_recognizer = TextRecognizer(cfg)
+        self.text_classifier = TextClassifier(cfg)
 
     def read_images(self, paths=[]):
         images = []
@@ -62,7 +62,7 @@ class OCRRec(hub.Module):
 
     def predict(self, images=[], paths=[]):
         """
-        Get the text box in the predicted images.
+        Get the text angle in the predicted images.
         Args:
             images (list(numpy.ndarray)): images data, shape of each is [H, W, C]. If images not paths
             paths (list[str]): The paths of images. If paths not images
@@ -87,11 +87,11 @@ class OCRRec(hub.Module):
 
         rec_res_final = []
         try:
-            rec_res, predict_time = self.text_recognizer(img_list)
-            for dno in range(len(rec_res)):
-                text, score = rec_res[dno]
+            img_list, cls_res, predict_time = self.text_classifier(img_list)
+            for dno in range(len(cls_res)):
+                angle, score = cls_res[dno]
                 rec_res_final.append({
-                    'text': text,
+                    'angle': angle,
                     'confidence': float(score),
                 })
         except Exception as e:
@@ -111,7 +111,7 @@ class OCRRec(hub.Module):
 
 
 if __name__ == '__main__':
-    ocr = OCRRec()
+    ocr = OCRCls()
     image_path = [
         './doc/imgs_words/ch/word_1.jpg',
         './doc/imgs_words/ch/word_2.jpg',

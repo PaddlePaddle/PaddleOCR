@@ -1,6 +1,6 @@
 {
     "modules_info": {
-        "ocr_det": {
+        "ocr_cls": {
             "init_args": {
                 "version": "1.0.0",
                 "use_gpu": true
@@ -9,7 +9,7 @@
             }
         }
     },
-    "port": 8865,
+    "port": 8866,
     "use_multiprocess": false,
-    "workers": 2    
+    "workers": 2
 }
