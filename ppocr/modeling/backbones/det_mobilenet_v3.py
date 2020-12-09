@@ -111,6 +111,7 @@ class MobileNetV3(nn.Layer):
         i = 0
         inplanes = make_divisible(inplanes * scale)
         for (k, exp, c, se, nl, s) in cfg:
+            se = se and not self.disable_se
             if s == 2 and i > 2:
                 self.out_channels.append(inplanes)
                 self.stages.append(nn.Sequential(*block_list))
@@ -231,7 +232,7 @@ class ResidualUnit(nn.Layer):
             if_act=True,
             act=act,
             name=name + "_depthwise")
-        if self.if_se and not self.disable_se:
+        if self.if_se:
             self.mid_se = SEModule(mid_channels, name=name + "_se")
         self.linear_conv = ConvBNLayer(
             in_channels=mid_channels,
@@ -246,7 +247,7 @@ class ResidualUnit(nn.Layer):
     def forward(self, inputs):
         x = self.expand_conv(inputs)
         x = self.bottleneck_conv(x)
-        if self.if_se and not self.disable_se:
+        if self.if_se:
             x = self.mid_se(x)
         x = self.linear_conv(x)
         if self.if_shortcut:
