@@ -10,7 +10,7 @@ Global:
   # if pretrained_model is saved in static mode, load_static_weights must set to True
   load_static_weights: True
   cal_metric_during_train: False
-  pretrained_model:
+  pretrained_model: ./pretrain_models/ResNet50_vd_ssld_pretrained
   checkpoints:
   save_inference_dir:
   use_visualdl: False
