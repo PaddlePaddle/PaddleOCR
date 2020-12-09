@@ -18,7 +18,8 @@ namespace PaddleOCR {
 
 void DBDetector::LoadModel(const std::string &model_dir) {
   AnalysisConfig config;
-  config.SetModel(model_dir + "/det.pdmodel", model_dir + "/det.pdiparams");
+  config.SetModel(model_dir + "/inference.pdmodel",
+                  model_dir + "/inference.pdiparams");
 
   if (this->use_gpu_) {
     config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);

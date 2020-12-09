@@ -81,7 +81,8 @@ cv::Mat Classifier::Run(cv::Mat &img) {
 
 void Classifier::LoadModel(const std::string &model_dir) {
   AnalysisConfig config;
-  config.SetModel(model_dir + "/cls.pdmodel", model_dir + "/cls.pdiparams");
+  config.SetModel(model_dir + "/inference.pdmodel",
+                  model_dir + "/inference.pdiparams");
 
   if (this->use_gpu_) {
     config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
