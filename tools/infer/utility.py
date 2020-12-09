@@ -100,8 +100,8 @@ def create_predictor(args, mode, logger):
     if model_dir is None:
         logger.info("not find {} model file path {}".format(mode, model_dir))
         sys.exit(0)
-    model_file_path = model_dir + "/model"
-    params_file_path = model_dir + "/params"
+    model_file_path = model_dir + ".pdmodel"
+    params_file_path = model_dir + ".pdiparams"
     if not os.path.exists(model_file_path):
         logger.info("not find model file path {}".format(model_file_path))
         sys.exit(0)
@@ -230,10 +230,10 @@ def draw_ocr_box_txt(image,
                 box[2][1], box[3][0], box[3][1]
             ],
             outline=color)
-        box_height = math.sqrt((box[0][0] - box[3][0]) ** 2 + (box[0][1] - box[3][
-            1]) ** 2)
-        box_width = math.sqrt((box[0][0] - box[1][0]) ** 2 + (box[0][1] - box[1][
-            1]) ** 2)
+        box_height = math.sqrt((box[0][0] - box[3][0])**2 + (box[0][1] - box[3][
+            1])**2)
+        box_width = math.sqrt((box[0][0] - box[1][0])**2 + (box[0][1] - box[1][
+            1])**2)
         if box_height > 2 * box_width:
             font_size = max(int(box_width * 0.9), 10)
             font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
