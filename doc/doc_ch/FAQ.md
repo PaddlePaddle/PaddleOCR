@@ -9,43 +9,44 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2020.11.30）](#近期更新)
+* [近期更新（2020.12.07）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
-* [【理论篇】OCR通用29个问题](#OCR通用问题)
+* [【理论篇】OCR通用30个问题](#OCR通用问题)
   * [基础知识7题](#基础知识)
   * [数据集7题](#数据集2)
   * [模型训练调优7题](#模型训练调优2)
-  * [预测部署8题](#预测部署2)
-* [【实战篇】PaddleOCR实战80个问题](#PaddleOCR实战问题)
+  * [预测部署9题](#预测部署2)
+* [【实战篇】PaddleOCR实战84个问题](#PaddleOCR实战问题)
   * [使用咨询20题](#使用咨询)
   * [数据集17题](#数据集3)
-  * [模型训练调优21题](#模型训练调优3)
-  * [预测部署22题](#预测部署3)
+  * [模型训练调优24题](#模型训练调优3)
+  * [预测部署23题](#预测部署3)
 
 
 <a name="近期更新"></a>
-## 近期更新（2020.11.30）
+## 近期更新（2020.12.07）
 
-#### Q3.2.15: 文本标注工具PPOCRLabel有什么特色？
+#### Q2.4.9：弯曲文本有试过opencv的TPS进行弯曲校正吗？
 
-**A**: PPOCRLabel是一个半自动文本标注工具，它使用基于PPOCR的中英文OCR模型，预先预测文本检测和识别结果，然后用户对上述结果进行校验和修正就行，大大提高用户的标注效率。同时导出的标注结果直接适配PPOCR训练所需要的数据格式，
+**A**：opencv的tps需要标出上下边界对应的点，这些点很难通过传统方法或者深度学习方法获取。PaddleOCR里StarNet网络中的tps模块实现了自动学点，自动校正，可以直接尝试这个。
 
-#### Q3.2.16: 文本标注工具PPOCRLabel，可以更换模型吗？
+#### Q3.3.22: 文字检测时怎么模糊的数据增强？
 
-**A**: PPOCRLabel中OCR部署方式采用的基于pip安装whl包快速推理，可以参考相关文档更换模型路径，进行特定任务的标注适配。基于pip安装whl包快速推理的文档如下，https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/whl.md。
+**A**: 模糊的数据增强需要修改代码进行添加，以DB为例，在[这一行](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/det/db_process.py#L145) 之前添加模糊的增强就行 
 
-#### Q3.2.17: 文本标注工具PPOCRLabel支持的运行环境有哪些？
+#### Q3.3.23: 文字检测时怎么更改图片旋转的角度，实现360度任意旋转？
 
-**A**: PPOCRLabel可运行于Linux、Windows、MacOS等多种系统。操作步骤可以参考文档，https://github.com/PaddlePaddle/PaddleOCR/blob/develop/PPOCRLabel/README.md
+**A**: 角度调整参考[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/det/data_augment.py#L22) 的(-10,10) 改为(-180,180)即可 
 
-#### Q2.2.6: 当训练数据量少时，如何获取更多的数据？
+#### Q3.3.24: 训练数据的长宽比过大怎么修改shape
 
-**A**: 当训练数据量少时，可以尝试以下三种方式获取更多的数据：（1）人工采集更多的训练数据，最直接也是最有效的方式。（2）基于PIL和opencv基本图像处理或者变换。例如PIL中ImageFont, Image, ImageDraw三个模块将文字写到背景中，opencv的旋转仿射变换，高斯滤波等。（3）利用数据生成算法合成数据，例如pix2pix等算法。
+**A**: 识别数据长宽比修改参考[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/rec/ch_ppocr_v1.1/rec_chinese_common_train_v1.1.yml#L12),
+识别数据长宽比修改参考[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/det/det_mv3_db.yml#L13)
 
-#### Q2.2.7: 论文《Editing Text in the Wild》中文本合成方法SRNet有什么特点？
 
-**A**: SRNet是借鉴GAN中图像到图像转换、风格迁移的想法合成文本数据。不同于通用GAN的方法只选择一个分支，SRNet将文本合成任务分解为三个简单的子模块，提升合成数据的效果。这三个子模块为不带背景的文本风格迁移模块、背景抽取模块和融合模块。PaddleOCR计划将在2020年12月中旬开源基于SRNet的实用模型。
+#### Q3.4.23：安装paddleocr后，提示没有paddle
 
+**A**：这是因为paddlepaddle gpu版本和cpu版本的名称不一致，现在已经在[whl的文档](./whl.md)里做了安装说明。
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -281,6 +282,10 @@
 #### Q2.4.8：表格识别有什么好的模型 或者论文推荐么
 
 **A**：表格目前学术界比较成熟的解决方案不多 ，可以尝试下分割的论文方案。
+
+#### Q2.4.9：弯曲文本有试过opencv的TPS进行弯曲校正吗？
+
+**A**：opencv的tps需要标出上下边界对应的点，这个点很难通过传统方法或者深度学习方法获取。PaddleOCR里StarNet网络中的tps模块实现了自动学点，自动校正，可以直接尝试这个。
 
 
 
@@ -594,6 +599,20 @@ return paddle.reader.multiprocess_reader(readers, False, queue_size=320)
 
 （3）在训练的时候，文本长度超过25的训练图像都会被丢弃，因此需要看下真正参与训练的图像有多少，太少的话也容易过拟合。
 
+#### Q3.3.22: 文字检测时怎么模糊的数据增强？
+
+**A**: 模糊的数据增强需要修改代码进行添加，以DB为例，在[这一行](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/det/db_process.py#L145) 之前添加模糊的增强就行 
+
+#### Q3.3.23: 文字检测时怎么更改图片旋转的角度，实现360度任意旋转？
+
+**A**: 将[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/det/data_augment.py#L22) 的(-10,10) 改为(-180,180)即可 
+
+#### Q3.3.24: 训练数据的长宽比过大怎么修改shape
+
+**A**: 识别修改[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/rec/ch_ppocr_v1.1/rec_chinese_common_train_v1.1.yml#L12) ,
+检测修改[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/det/det_mv3_db.yml#L13)
+
+
 <a name="预测部署3"></a>
 ### 预测部署
 
@@ -696,3 +715,7 @@ return paddle.reader.multiprocess_reader(readers, False, queue_size=320)
 #### Q3.4.22：训练ccpd车牌数据集，训练集准确率高，测试均是错误的，这是什么原因？
 
 **A**：这是因为训练时将shape修改为[3, 70, 220], 预测时对图片resize，会把高度压缩至32，影响测试结果。注释掉[resize代码](https://github.com/PaddlePaddle/PaddleOCR/blob/ed4313d611b7708a7763d4612f00cb7f318a0e1f/tools/infer/predict_rec.py#L54-L55)可以解决问题。
+
+#### Q3.4.23：安装paddleocr后，提示没有paddle
+
+**A**：这是因为paddlepaddle gpu版本和cpu版本的名称不一致，现在已经在[whl的文档](./whl.md)里做了安装说明。

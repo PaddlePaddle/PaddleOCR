@@ -25,6 +25,7 @@ class Worker(QThread):
         self.mImgList = mImgList
         self.mainThread = mainThread
         self.model = model
+        self.setStackSize(1024*1024)
 
     def run(self):
         try:
