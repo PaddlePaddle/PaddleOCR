@@ -57,8 +57,7 @@ def main():
     init_model(config, model, logger)
     model.eval()
 
-    save_path = '{}/{}/inference'.format(FLAGS.output_path,
-                                         config['Architecture']['model_type'])
+    save_path = '{}/inference'.format(FLAGS.output_path)
     infer_shape = [3, 32, 100] if config['Architecture'][
         'model_type'] != "det" else [3, 640, 640]
     model = to_static(
