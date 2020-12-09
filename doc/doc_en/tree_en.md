@@ -2,40 +2,37 @@
 
 The overall directory structure of PaddleOCR is introduced as follows:
 
+
 ```
 PaddleOCR
-├── configs   // configuration file, you can select model structure and modify hyperparameters through yml file
-│   ├── cls   // Related configuration files of direction classifier
-│   │   ├── cls_mv3.yml               // training configuration related, including backbone network, head, loss, optimizer
-│   │   └── cls_reader.yml            // Data reading related, data reading method, data storage path
-│   ├── det   // Detection related configuration files
-│   │   ├── det_db_icdar15_reader.yml  // data read
-│   │   ├── det_mv3_db.yml             // training configuration
+├── configs                                 // Configuration file, you can config the model structure and modify the hyperparameters through the yml file
+│   ├── cls                                 // Angle classifier config files
+│   │   ├── cls_mv3.yml                     // Training config, including backbone network, head, loss, optimizer and data
+│   ├── det                                 // Text detection config files
+│   │   ├── det_mv3_db.yml                  // Training config
 │   │   ...  
-│   └── rec   // Identify related configuration files
-│       ├── rec_benchmark_reader.yml      // LMDB format data reading related
-│       ├── rec_chinese_common_train.yml  // General Chinese training configuration
-│       ├── rec_icdar15_reader.yml        // simple data reading related, including data reading function, data path, label file
+│   └── rec                                 // Text recognition config files
+│       ├── rec_mv3_none_bilstm_ctc.yml     // CRNN config
 │       ...  
-├── deploy   // deployment related
-│   ├── android_demo // android_demo
+├── deploy                                  // Depoly
+│   ├── android_demo                        // Android demo
 │   │   ...
-│   ├── cpp_infer    // C++ infer
-│   │   ├── CMakeLists.txt    // Cmake file
-│   │   ├── docs              // documentation
+│   ├── cpp_infer                           // C++ infer
+│   │   ├── CMakeLists.txt                  // Cmake file
+│   │   ├── docs                            // Docs
 │   │   │   └── windows_vs2019_build.md
-│   │   ├── include  
-│   │   │   ├── clipper.h     // clipper library
-│   │   │   ├── config.h      // infer configuration
-│   │   │   ├── ocr_cls.h     // direction classifier
-│   │   │   ├── ocr_det.h     // text detection
-│   │   │   ├── ocr_rec.h     // text recognition
-│   │   │   ├── postprocess_op.h  // postprocess after detection
-│   │   │   ├── preprocess_op.h   // preprocess detection
-│   │   │   └── utility.h         // tools
-│   │   ├── readme.md     // documentation
+│   │   ├── include                         // Head Files
+│   │   │   ├── clipper.h                   // clipper
+│   │   │   ├── config.h                    // Inference config
+│   │   │   ├── ocr_cls.h                   // Angle class
+│   │   │   ├── ocr_det.h                   // Text detection
+│   │   │   ├── ocr_rec.h                   // Text recognition
+│   │   │   ├── postprocess_op.h            // Post-processing
+│   │   │   ├── preprocess_op.h             // Pre-processing
+│   │   │   └── utility.h                   // tools
+│   │   ├── readme.md                       // Documentation
 │   │   ├── ...
-│   │   ├── src              // source file
+│   │   ├── src                             // Source code files
 │   │   │   ├── clipper.cpp  
 │   │   │   ├── config.cpp
 │   │   │   ├── main.cpp
@@ -45,10 +42,10 @@ PaddleOCR
 │   │   │   ├── postprocess_op.cpp
 │   │   │   ├── preprocess_op.cpp
 │   │   │   └── utility.cpp
-│   │   └── tools      // compile and execute script
-│   │       ├── build.sh   // compile script
-│   │       ├── config.txt // configuration file
-│   │       └── run.sh     // Test startup script
+│   │   └── tools                           // Compile and execute script
+│   │       ├── build.sh                    // Compile script
+│   │       ├── config.txt                  // Config file
+│   │       └── run.sh                      // Execute script
 │   ├── docker
 │   │   └── hubserving
 │   │       ├── cpu
@@ -58,151 +55,151 @@ PaddleOCR
 │   │       ├── README_cn.md
 │   │       ├── README.md
 │   │       └── sample_request.txt
-│   ├── hubserving  // hubserving
-│   │   ├── ocr_det   // text detection
-│   │   │   ├── config.json  // serving configuration
+│   ├── hubserving                          // hubserving
+│   │   ├── ocr_cls                         // Angle class
+│   │   │   ├── config.json                 // Serving config
 │   │   │   ├── __init__.py  
-│   │   │   ├── module.py    // prediction model
-│   │   │   └── params.py    // prediction parameters
-│   │   ├── ocr_rec   // text recognition
+│   │   │   ├── module.py                   // Model
+│   │   │   └── params.py                   // Parameters
+│   │   ├── ocr_det                         // Text detection
+│   │   │   ├── config.json                 // serving config
+│   │   │   ├── __init__.py  
+│   │   │   ├── module.py                   // Model
+│   │   │   └── params.py                   // Parameters
+│   │   ├── ocr_rec                         // Text recognition
 │   │   │   ├── config.json
 │   │   │   ├── __init__.py
 │   │   │   ├── module.py
 │   │   │   └── params.py
-│   │   └── ocr_system  // system forecast
+│   │   └── ocr_system                      // Inference System
 │   │       ├── config.json
 │   │       ├── __init__.py
 │   │       ├── module.py
 │   │       └── params.py
-│   ├── imgs  // prediction picture
+│   ├── imgs                                // Inference images
 │   │   ├── cpp_infer_pred_12.png
 │   │   └── demo.png
-│   ├── ios_demo  // ios demo
+│   ├── ios_demo                            // IOS demo
 │   │   ...
-│   ├── lite      // lite deployment
-│   │   ├── cls_process.cc  // direction classifier data processing
+│   ├── lite                                // Lite depoly
+│   │   ├── cls_process.cc                  // Pre-process for angle class
 │   │   ├── cls_process.h
-│   │   ├── config.txt      // check configuration parameters
-│   │   ├── crnn_process.cc  // crnn data processing
+│   │   ├── config.txt                      // Config file
+│   │   ├── crnn_process.cc                 // Pre-process for CRNN
 │   │   ├── crnn_process.h
-│   │   ├── db_post_process.cc  // db data processing
+│   │   ├── db_post_process.cc              // Pre-process for DB
 │   │   ├── db_post_process.h
-│   │   ├── Makefile            // compile file
-│   │   ├── ocr_db_crnn.cc      // series prediction
-│   │   ├── prepare.sh          // data preparation
-│   │   ├── readme.md        // documentation
+│   │   ├── Makefile                        // Compile file
+│   │   ├── ocr_db_crnn.cc                  // Inference system
+│   │   ├── prepare.sh                      // Prepare bash script
+│   │   ├── readme.md                       // Documentation
 │   │   ...
-│   ├── pdserving  // pdserving deployment
-│   │   ├── det_local_server.py  // fast detection version, easy deployment and fast prediction
-│   │   ├── det_web_server.py    // Full version of detection, high stability and distributed deployment
-│   │   ├── ocr_local_server.py  // detection + identification quick version
-│   │   ├── ocr_web_client.py    // client
-│   │   ├── ocr_web_server.py    // detection + identification full version
-│   │   ├── readme.md            // documentation
-│   │   ├── rec_local_server.py  // recognize quick version
-│   │   └── rec_web_server.py    // Identify the full version
+│   ├── pdserving                           // Pdserving depoly
+│   │   ├── det_local_server.py             // Text detection fast version, easy to deploy and fast to predict
+│   │   ├── det_web_server.py               // Text detection full version, high stability distributed deployment
+│   │   ├── ocr_local_server.py             // Text detection + recognition fast version
+│   │   ├── ocr_web_client.py               // client
+│   │   ├── ocr_web_server.py               // Text detection + recognition full version
+│   │   ├── readme.md                       // Documentation
+│   │   ├── rec_local_server.py             // Text recognition fast version
+│   │   └── rec_web_server.py               // Text recognition full version
 │   └── slim  
-│       └── quantization         // quantization related
-│           ├── export_model.py  // export model
-│           ├── quant.py         // quantization
-│           └── README.md        // Documentation
-├── doc  // Documentation tutorial
+│       └── quantization                    // Quantization
+│           ├── export_model.py             // Export model
+│           ├── quant.py                    // Quantization script
+│           └── README.md                   // Documentation
+├── doc                                     // Documentation and Tutorials
 │   ...
-├── paddleocr.py
-├── ppocr            // network core code
-│   ├── data         // data processing
-│   │   ├── cls   // direction classifier
-│   │   │   ├── dataset_traversal.py  // Data transmission, define data reader, read data and form batch
-│   │   │   └── randaugment.py        // Random data augmentation operation
-│   │   ├── det   // detection
-│   │   │   ├── data_augment.py       // data augmentation operation
-│   │   │   ├── dataset_traversal.py  // Data transmission, define data reader, read data and form batch
-│   │   │   ├── db_process.py         // db data processing
-│   │   │   ├── east_process.py       // east data processing
-│   │   │   ├── make_border_map.py    // Generate boundary map
-│   │   │   ├── make_shrink_map.py    // Generate shrink map
-│   │   │   ├── random_crop_data.py   // random crop
-│   │   │   └── sast_process.py       // sast data processing
-│   │   ├── reader_main.py   // main function of data reader
-│   │   └── rec  // recognation
-│   │       ├── dataset_traversal.py  // Data transmission, define data reader, including LMDB_Reader and Simple_Reader
-│   │       └── img_tools.py          // Data processing related, including data normalization and disturbance
-│   ├── __init__.py
-│   ├── modeling       // networking related
-│   │   ├── architectures  // Model architecture, which defines the various modules required by the model
-│   │   │   ├── cls_model.py  // direction classifier
-│   │   │   ├── det_model.py  // detection
-│   │   │   └── rec_model.py  // recognition
-│   │   ├── backbones  // backbone network
-│   │   │   ├── det_mobilenet_v3.py  // detect mobilenet_v3
-│   │   │   ├── det_resnet_vd.py  
-│   │   │   ├── det_resnet_vd_sast.py
-│   │   │   ├── rec_mobilenet_v3.py  // recognize mobilenet_v3
-│   │   │   ├── rec_resnet_fpn.py
-│   │   │   └── rec_resnet_vd.py
-│   │   ├── common_functions.py      // common functions
-│   │   ├── heads  
-│   │   │   ├── cls_head.py          // class header
-│   │   │   ├── det_db_head.py       // db detection head
-│   │   │   ├── det_east_head.py     // east detection head
-│   │   │   ├── det_sast_head.py     // sast detection head
-│   │   │   ├── rec_attention_head.py  // recognition attention
-│   │   │   ├── rec_ctc_head.py        // recognition ctc
-│   │   │   ├── rec_seq_encoder.py     // recognition sequence code
-│   │   │   ├── rec_srn_all_head.py    // srn related
-│   │   │   └── self_attention         // srn attention
-│   │   │       └── model.py
-│   │   ├── losses    // loss function
-│   │   │   ├── cls_loss.py            // Directional classifier loss function
-│   │   │   ├── det_basic_loss.py      // detect basic loss
-│   │   │   ├── det_db_loss.py         // DB loss
-│   │   │   ├── det_east_loss.py       // EAST loss
-│   │   │   ├── det_sast_loss.py       // SAST loss
-│   │   │   ├── rec_attention_loss.py  // attention loss
-│   │   │   ├── rec_ctc_loss.py        // ctc loss
-│   │   │   └── rec_srn_loss.py        // srn loss
-│   │   └── stns     // Spatial transformation network
-│   │       └── tps.py   // TPS conversion
-│   ├── optimizer.py  // optimizer
-│   ├── postprocess   // post-processing
-│   │   ├── db_postprocess.py     // DB postprocess
-│   │   ├── east_postprocess.py   // East postprocess
-│   │   ├── lanms                 // lanms related
-│   │   │   ...
-│   │   ├── locality_aware_nms.py // nms
-│   │   └── sast_postprocess.py   // sast post-processing
-│   └── utils  // tools
-│       ├── character.py       // Character processing, including text encoding and decoding, and calculation of prediction accuracy
-│       ├── check.py           // parameter loading check
-│       ├── ic15_dict.txt      // English number dictionary, case sensitive
-│       ├── ppocr_keys_v1.txt  // Chinese dictionary, used to train Chinese models
-│       ├── save_load.py       // model save and load function
-│       ├── stats.py           // Statistics
-│       └── utility.py         // Tool functions, including related check tools such as whether the input parameters are legal
-├── README_en.md    // documentation
-├── README.md
-├── requirments.txt // installation dependencies
-├── setup.py        // whl package packaging script
-└── tools           // start tool
-    ├── eval.py                 // evaluation function
-    ├── eval_utils              // evaluation tools
-    │   ├── eval_cls_utils.py   // category related
-    │   ├── eval_det_iou.py     // detect iou related
-    │   ├── eval_det_utils.py   // detection related
-    │   ├── eval_rec_utils.py   // recognition related
-    │   └── __init__.py
-    ├── export_model.py         // export infer model
-    ├── infer                   // Forecast based on prediction engine
-    │   ├── predict_cls.py  
-    │   ├── predict_det.py
-    │   ├── predict_rec.py
-    │   ├── predict_system.py
-    │   └── utility.py
-    ├── infer_cls.py            // Predict classification based on training engine
-    ├── infer_det.py            // Predictive detection based on training engine
-    ├── infer_rec.py            // Predictive recognition based on training engine
-    ├── program.py              //  overall process
-    ├── test_hubserving.py  
-    └── train.py                // start training
-
-```
+├── ppocr                                   // Core code
+│   ├── data                                // Data processing
+│   │   ├── imaug                           // Image and label processing code
+│   │   │   ├── text_image_aug              // Tia data augment for text recognition
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── augment.py              // Tia_distort,tia_stretch and tia_perspective
+│   │   │   │   ├── warp_mls.py 
+│   │   │   ├── __init__.py
+│   │   │   ├── iaa_augment.py              // Data augmentation operations
+│   │   │   ├── label_ops.py                // label encode operations
+│   │   │   ├── make_border_map.py          // Generate boundary map
+│   │   │   ├── make_shrink_map.py          // Generate shrink graph
+│   │   │   ├── operators.py                // Basic image operations, such as reading and normalization
+│   │   │   ├── randaugment.py              // Random data augmentation operation
+│   │   │   ├── random_crop_data.py         // Random crop
+│   │   │   └── rec_img_aug.py              // Data augmentation for text recognition
+│   │   ├── __init__.py                     // Construct dataloader code
+│   │   ├── lmdb_dataset.py                 // Read lmdb dataset
+│   │   ├── simple_dataset.py               // Read the dataset stored in text format
+│   ├── losses                              // Loss function
+│   │   ├── __init__.py                     // Construct loss code
+│   │   ├── cls_loss.py                     // Angle class loss
+│   │   ├── det_basic_loss.py               // Text detection basic loss
+│   │   ├── det_db_loss.py                  // DB loss
+│   │   ├── rec_ctc_loss.py                 // ctc loss
+│   ├── metrics                             // Metrics
+│   │   ├── __init__.py                     // Construct metric code
+│   │   ├── cls_metric.py                   // Angle class metric
+│   │   ├── det_metric.py                   // Text detection metric
+    │   ├── eval_det_iou.py                 // Text detection iou code
+│   │   ├── rec_metric.py                   // Text recognition metric
+│   ├── modeling                            // Network
+│   │   ├── architectures                   // Architecture
+│   │   │   ├── __init__.py                 // Construct model code
+│   │   │   ├── base_model.py               // Base model
+│   │   ├── backbones                       // backbones
+│   │   │   ├── __init__.py                 // Construct backbone code
+│   │   │   ├── det_mobilenet_v3.py         // Text detection mobilenet_v3
+│   │   │   ├── det_resnet_vd.py            // Text detection resnet
+│   │   │   ├── rec_mobilenet_v3.py         // Text recognition mobilenet_v3
+│   │   │   └── rec_resnet_vd.py            // Text recognition resnet
+│   │   ├── necks                           // Necks
+│   │   │   ├── __init__.py                 // Construct neck code
+│   │   │   ├── db_fpn.py                   // FPN
+│   │   │   ├── rnn.py                      // Character recognition sequence encoding
+│   │   ├── heads                           // Heads
+│   │   │   ├── __init__.py                 // Construct head code
+│   │   │   ├── cls_head.py                 // Angle class head
+│   │   │   ├── det_db_head.py              // DB head
+│   │   │   ├── rec_ctc_head.py             // Ctc head
+│   │   ├── transforms                      // Transforms
+│   │   │   ├── __init__.py                 // Construct transform code
+│   │   │   └── tps.py                      // TPS transform
+│   ├── optimizer                           // Optimizer
+│   │   ├── __init__.py                     // Construct optimizer code
+│   │   └── learning_rate.py                // Learning rate decay
+│   │   └── optimizer.py                    // Optimizer
+│   │   └── regularizer.py                  // Network regularization
+│   ├── postprocess                         // Post-processing
+│   │   ├── cls_postprocess.py              // Angle class post-processing
+│   │   ├── db_postprocess.py               // DB post-processing
+│   │   └── rec_postprocess.py              // Text recognition post-processing
+│   └── utils                               // utils
+│       ├── dict                            // Minor language dictionary
+│            ....                            
+│       ├── ic15_dict.txt                   // English number dictionary, case sensitive
+│       ├── ppocr_keys_v1.txt               // Chinese dictionary for training Chinese models
+│       ├── logging.py                      // logger
+│       ├── save_load.py                    // Model saving and loading functions
+│       ├── stats.py                        // Training status statistics
+│       └── utility.py                      // Utility function
+├── tools
+│   ├── eval.py                             // Evaluation function
+│   ├── export_model.py                     // Export inference model
+│   ├── infer                               // Inference based on Inference engine
+│   │   ├── predict_cls.py
+│   │   ├── predict_det.py
+│   │   ├── predict_rec.py
+│   │   ├── predict_system.py
+│   │   └── utility.py
+│   ├── infer_cls.py                        // Angle classification inference based on training engine
+│   ├── infer_det.py                        // Text detection inference based on training engine
+│   ├── infer_rec.py                        // Text recognition inference based on training engine
+│   ├── program.py                          // Inference system
+│   ├── test_hubserving.py
+│   └── train.py                            // Start training script
+├── paddleocr.py 
+├── README_ch.md                            // Chinese documentation
+├── README_en.md                            // English documentation
+├── README.md                               // Home page documentation
+├── requirments.txt                         // Requirments
+├── setup.py                                // Whl package packaging script
+├── train.sh                                // Start training bash script
