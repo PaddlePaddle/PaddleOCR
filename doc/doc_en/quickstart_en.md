@@ -5,7 +5,7 @@
 
 Please refer to [quick installation](./installation_en.md) to configure the PaddleOCR operating environment.
 
-* Note: Support the use of PaddleOCR through whl package installation，pelease refer  [PaddleOCR Package](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/whl_en.md).
+* Note: Support the use of PaddleOCR through whl package installation，pelease refer  [PaddleOCR Package](./whl_en.md).
 
 ## 2.inference models
 
@@ -14,8 +14,8 @@ The detection and recognition models on the mobile and server sides are as follo
 
 | Model introduction    | Model name     |  Recommended scene      | Detection model | Direction Classifier | Recognition model |
 | ------------ | --------------- | ----------------|---- | ---------- | -------- |
-| Ultra-lightweight Chinese OCR model（8.1M） | ch_ppocr_mobile_v1.1_xx |Mobile-side/Server-side|[inference model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_infer.tar) / [pretrained model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_train.tar)|[inference model](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_infer.tar) / [pretrained model](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_train.tar) |[inference model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_infer.tar) / [pretrained model](https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_pre.tar)      |
-| Universal Chinese OCR model（155.1M）   |ch_ppocr_server_v1.1_xx|Server-side |[inference model](https://paddleocr.bj.bcebos.com/20-09-22/server/det/ch_ppocr_server_v1.1_det_infer.tar) / [pretrained model](https://paddleocr.bj.bcebos.com/20-09-22/server/det/ch_ppocr_server_v1.1_det_train.tar)          |[inference model](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_infer.tar) / [pretrained model](https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_train.tar)    |[inference model](https://paddleocr.bj.bcebos.com/20-09-22/server/rec/ch_ppocr_server_v1.1_rec_infer.tar) / [pretrained model](https://paddleocr.bj.bcebos.com/20-09-22/server/rec/ch_ppocr_server_v1.1_rec_pre.tar)  |
+| Ultra-lightweight Chinese OCR model（xM） | ch_ppocr_mobile_v1.1_xx |Mobile-side/Server-side|[inference model](link) / [pretrained model](link)|[inference model](link) / [pretrained model](link) |[inference model](link) / [pretrained model](link)      |
+| Universal Chinese OCR model（xM）   |ch_ppocr_server_v1.1_xx|Server-side |[inference model](link) / [pretrained model](link)          |[inference model](link) / [pretrained model](link)    |[inference model](link) / [pretrained model](link)  |
 
 * If `wget` is not installed in the windows environment, you can copy the link to the browser to download when downloading the model, then uncompress it and place it in the corresponding directory.
 
@@ -37,11 +37,11 @@ Take the ultra-lightweight model as an example:
 ```
 mkdir inference && cd inference
 # Download the detection model of the ultra-lightweight Chinese OCR model and uncompress it
-wget https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_infer.tar && tar xf ch_ppocr_mobile_v1.1_det_infer.tar
+wget link && tar xf ch_ppocr_mobile_v1.1_det_infer.tar
 # Download the recognition model of the ultra-lightweight Chinese OCR model and uncompress it
-wget https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_infer.tar && tar xf ch_ppocr_mobile_v1.1_rec_infer.tar
+wget link && tar xf ch_ppocr_mobile_v1.1_rec_infer.tar
 # Download the direction classifier model of the ultra-lightweight Chinese OCR model and uncompress it
-wget https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_infer.tar && tar xf ch_ppocr_mobile_v1.1_cls_infer.tar
+wget link && tar xf ch_ppocr_mobile_v1.1_cls_infer.tar
 cd ..
 ```
 
@@ -63,7 +63,7 @@ After decompression, the file structure should be as follows:
 
 ## 3. Single image or image set prediction
 
-* The following code implements text detection and recognition process. When performing prediction, you need to specify the path of a single image or image set through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to detect the inference model, the parameter `rec_model_dir` specifies the path to identify the inference model, the parameter `use_angle_cls` specifies whether to use the direction classifier, the parameter `cls_model_dir` specifies the path to identify the direction classifier model, the parameter `use_space_char` specifies whether to predict the space char. The visual results are saved to the `./inference_results` folder by default.
+* The following code implements text detection、angle class and recognition process. When performing prediction, you need to specify the path of a single image or image set through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to detect the inference model, the parameter `rec_model_dir` specifies the path to identify the inference model, the parameter `use_angle_cls` specifies whether to use the direction classifier, the parameter `cls_model_dir` specifies the path to identify the direction classifier model, the parameter `use_space_char` specifies whether to predict the space char. The visual results are saved to the `./inference_results` folder by default.
 
 
 
