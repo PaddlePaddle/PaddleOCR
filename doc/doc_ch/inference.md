@@ -45,7 +45,7 @@ wget -P ./ch_lite/ {link} && tar xf ./ch_lite/{file} -C ./ch_lite/
 ```
 上述模型是以MobileNetV3为backbone训练的DB算法，将训练好的模型转换成inference模型只需要运行如下命令：
 ```
-# -c 后面设置训练算法的yml配置文件，需将待转换的训练模型地址写入配置文件里的Global.checkpoints字段下, 不用添加文件后缀.pdmodel，.pdopt或.pdparams。
+# -c 后面设置训练算法的yml配置文件，需设置 `Global.load_static_weights=False`, 并将待转换的训练模型地址写入配置文件里的 `Global.pretrained_model` 字段下，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
 # -o 后面设置转换的模型将保存的地址。
 
 python3 tools/export_model.py -c configs/det/det_mv3_db_v1.1.yml -o ./inference/det_db/
@@ -54,9 +54,9 @@ python3 tools/export_model.py -c configs/det/det_mv3_db_v1.1.yml -o ./inference/
 转换成功后，在模型保存目录下有三个文件：
 ```
 inference/det_db/
-    ├── det.pdiparams         # 检测inference模型的参数文件
-    ├── det.pdiparams.info    # 检测inference模型的参数信息，可忽略
-    └── det.pdmodel           # 检测inference模型的program文件
+    ├── inference.pdiparams         # 检测inference模型的参数文件
+    ├── inference.pdiparams.info    # 检测inference模型的参数信息，可忽略
+    └── inference.pdmodel           # 检测inference模型的program文件
 ```
 
 <a name="识别模型转inference模型"></a>
@@ -69,7 +69,7 @@ wget -P ./ch_lite/ {link} && tar xf ./ch_lite/{file} -C ./ch_lite/
 
 识别模型转inference模型与检测的方式相同，如下：
 ```
-# -c 后面设置训练算法的yml配置文件，需将待转换的训练模型地址写入配置文件里的Global.checkpoints字段下,不用添加文件后缀.pdmodel，.pdopt或.pdparams。
+# -c 后面设置训练算法的yml配置文件，需设置 `Global.load_static_weights=False`, 并将待转换的训练模型地址写入配置文件里的 `Global.pretrained_model` 字段下，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
 # -o 后面设置转换的模型将保存的地址。
 python3 tools/export_model.py -c configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml -o ./inference/rec_crnn/
 ```
@@ -79,9 +79,9 @@ python3 tools/export_model.py -c configs/rec/ch_ppocr_v1.1/rec_chinese_lite_trai
 转换成功后，在目录下有三个文件：
 ```
 /inference/rec_crnn/
-    ├── rec.pdiparams         # 识别inference模型的参数文件
-    ├── rec.pdiparams.info    # 识别inference模型的参数信息，可忽略
-    └── rec.pdmodel           # 识别inference模型的program文件
+    ├── inference.pdiparams         # 识别inference模型的参数文件
+    ├── inference.pdiparams.info    # 识别inference模型的参数信息，可忽略
+    └── inference.pdmodel           # 识别inference模型的program文件
 ```
 
 <a name="方向分类模型转inference模型"></a>
@@ -94,7 +94,7 @@ wget -P ./ch_lite/ {link} && tar xf ./ch_lite/{file} -C ./ch_lite/
 
 方向分类模型转inference模型与检测的方式相同，如下：
 ```
-# -c 后面设置训练算法的yml配置文件，需将待转换的训练模型地址写入配置文件里的Global.checkpoints字段下,不用添加文件后缀.pdmodel，.pdopt或.pdparams。
+# -c 后面设置训练算法的yml配置文件，需设置 `Global.load_static_weights=False`, 并将待转换的训练模型地址写入配置文件里的 `Global.pretrained_model` 字段下，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
 # -o 后面设置转换的模型将保存的地址。
 
 python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o ./inference/cls/
@@ -103,9 +103,9 @@ python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o ./inference/cls/
 转换成功后，在目录下有三个文件：
 ```
 /inference/cls/
-    ├── cls.pdiparams         # 分类inference模型的参数文件
-    ├── cls.pdiparams.info    # 分类inference模型的参数信息，可忽略
-    └── cls.pdmodel           # 分类inference模型的program文件
+    ├── inference.pdiparams         # 分类inference模型的参数文件
+    ├── inference.pdiparams.info    # 分类inference模型的参数信息，可忽略
+    └── inference.pdmodel           # 分类inference模型的program文件
 ```
 
 <a name="文本检测模型推理"></a>
@@ -126,7 +126,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_di
 
 ![](../imgs_results/det_res_2.jpg)
 
-通过参数`limit_type`和`det_limit_side_len`来对图片的尺寸进行限制限，`limit_type=max`为限制长边长度<`det_limit_side_len`，`limit_type=min`为限制短边长度>`det_limit_side_len`, 
+通过参数`limit_type`和`det_limit_side_len`来对图片的尺寸进行限制限，`limit_type=max`为限制长边长度<`det_limit_side_len`，`limit_type=min`为限制短边长度>`det_limit_side_len`,
 图片不满足限制条件时(`limit_type=max`时长边长度>`det_limit_side_len`或`limit_type=min`时短边长度<`det_limit_side_len`)，将对图片进行等比例缩放。
 该参数默认设置为`limit_type='max',det_max_side_len=960`。 如果输入图片的分辨率比较大，而且想使用更大的分辨率预测，可以执行如下命令：
 
@@ -145,7 +145,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_di
 首先将DB文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例（[模型下载地址](link))，可以使用如下命令进行转换：
 
 ```
-# -c 后面设置训练算法的yml配置文件，需将待转换的训练模型地址写入配置文件里的Global.checkpoints字段下,不用添加文件后缀.pdmodel，.pdopt或.pdparams。
+# -c 后面设置训练算法的yml配置文件，需设置 `Global.load_static_weights=False`, 并将待转换的训练模型地址写入配置文件里的 `Global.pretrained_model` 字段下，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
 # -o 后面设置转换的模型将保存的地址。
 
 python3 tools/export_model.py -c configs/det/det_r50_vd_db.yml -o "./inference/det_db"
@@ -169,7 +169,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_
 首先将EAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例（[模型下载地址](link))，可以使用如下命令进行转换：
 
 ```
-# -c 后面设置训练算法的yml配置文件，需将待转换的训练模型地址写入配置文件里的Global.checkpoints字段下,不用添加文件后缀.pdmodel，.pdopt或.pdparams。
+# -c 后面设置训练算法的yml配置文件，需设置 `Global.load_static_weights=False`, 并将待转换的训练模型地址写入配置文件里的 `Global.pretrained_model` 字段下，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
 # -o 后面设置转换的模型将保存的地址。
 
 python3 tools/export_model.py -c configs/det/det_r50_vd_east.yml -o Global.checkpoints="./models/det_r50_vd_east/best_accuracy" Global.save_inference_dir="./inference/det_east"
@@ -192,7 +192,7 @@ python3 tools/infer/predict_det.py --det_algorithm="EAST" --image_dir="./doc/img
 #### (1). 四边形文本检测模型（ICDAR2015）  
 首先将SAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例([模型下载地址](link))，可以使用如下命令进行转换：
 ```
-# -c 后面设置训练算法的yml配置文件，需将待转换的训练模型地址写入配置文件里的Global.checkpoints字段下,不用添加文件后缀.pdmodel，.pdopt或.pdparams。
+# -c 后面设置训练算法的yml配置文件，需设置 `Global.load_static_weights=False`, 并将待转换的训练模型地址写入配置文件里的 `Global.pretrained_model` 字段下，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
 # -o 后面设置转换的模型将保存的地址。
 
 python3 tools/export_model.py -c configs/det/det_r50_vd_sast_icdar15.yml -o "./inference/det_sast_ic15"
@@ -209,7 +209,7 @@ python3 tools/infer/predict_det.py --det_algorithm="SAST" --image_dir="./doc/img
 首先将SAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在Total-Text英文数据集训练的模型为例（[模型下载地址](link))，可以使用如下命令进行转换：
 
 ```
-# -c 后面设置训练算法的yml配置文件，需将待转换的训练模型地址写入配置文件里的Global.checkpoints字段下,不用添加文件后缀.pdmodel，.pdopt或.pdparams。
+# -c 后面设置训练算法的yml配置文件，需设置 `Global.load_static_weights=False`, 并将待转换的训练模型地址写入配置文件里的 `Global.pretrained_model` 字段下，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
 # -o 后面设置转换的模型将保存的地址。
 
 python3 tools/export_model.py -c configs/det/det_r50_vd_sast_totaltext.yml -o "./inference/det_sast_tt"
@@ -257,7 +257,7 @@ Predicts of ./doc/imgs_words/ch/word_4.jpg:['实力活力', 0.89552695]
 的模型为例（[模型下载地址](link))，可以使用如下命令进行转换：
 
 ```
-# -c 后面设置训练算法的yml配置文件，需将待转换的训练模型地址写入配置文件里的Global.checkpoints字段下,不用添加文件后缀.pdmodel，.pdopt或.pdparams。
+# -c 后面设置训练算法的yml配置文件，需设置 `Global.load_static_weights=False`, 并将待转换的训练模型地址写入配置文件里的 `Global.pretrained_model` 字段下，不用添加文件后缀.pdmodel，.pdopt或.pdparams。
 # -o 后面设置转换的模型将保存的地址。
 
 python3 tools/export_model.py -c configs/rec/rec_r34_vd_tps_bilstm_ctc.yml -o "./inference/starnet"

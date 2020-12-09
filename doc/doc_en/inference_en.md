@@ -48,7 +48,7 @@ wget -P ./ch_lite/ {link} && tar xf ./ch_lite/{file} -C ./ch_lite/
 
 The above model is a DB algorithm trained with MobileNetV3 as the backbone. To convert the trained model into an inference model, just run the following command:
 ```
-# -c Set the yml configuration file of the training algorithm, you need to write the path of the training model to be converted into the Global.checkpoints parameter in the configuration file, without adding the file suffixes .pdmodel, .pdopt or .pdparams.
+-c Set the yml configuration file of the algorithm, you need to set `Global.load_static_weights=False`, and write the path of the training model to be converted under the `Global.pretrained_model` parameter in the configuration file, without adding the file suffix .pdmodel, .pdopt or .pdparams.
 # -o Set the address where the converted model will be saved.
 
 python3 tools/export_model.py -c configs/det/det_mv3_db_v1.1.yml -o ./inference/det_db/
@@ -58,9 +58,9 @@ When converting to an inference model, the configuration file used is the same a
 After the conversion is successful, there are three files in the model save directory:
 ```
 inference/det_db/
-    ├── det.pdiparams         # The parameter file of detection inference model
-    ├── det.pdiparams.info    # The parameter information of detection inference model, which can be ignored
-    └── det.pdmodel           # The program file of detection inference model
+    ├── inference.pdiparams         # The parameter file of detection inference model
+    ├── inference.pdiparams.info    # The parameter information of detection inference model, which can be ignored
+    └── inference.pdmodel           # The program file of detection inference model
 ```
 
 <a name="Convert_recognition_model"></a>
@@ -73,7 +73,7 @@ wget -P ./ch_lite/ {link} && tar xf ./ch_lite/{file} -C ./ch_lite/
 
 The recognition model is converted to the inference model in the same way as the detection, as follows:
 ```
-# -c Set the yml configuration file of the training algorithm, you need to write the path of the training model to be converted into the Global.checkpoints parameter in the configuration file, without adding the file suffixes .pdmodel, .pdopt or .pdparams.
+-c Set the yml configuration file of the algorithm, you need to set `Global.load_static_weights=False`, and write the path of the training model to be converted under the `Global.pretrained_model` parameter in the configuration file, without adding the file suffix .pdmodel, .pdopt or .pdparams.
 # -o Set the address where the converted model will be saved.
 
 python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o ./inference/cls/
@@ -84,9 +84,9 @@ If you have a model trained on your own dataset with a different dictionary file
 After the conversion is successful, there are three files in the model save directory:
 ```
 inference/det_db/
-    ├── rec.pdiparams         # The parameter file of recognition inference model
-    ├── rec.pdiparams.info    # The parameter information of recognition inference model, which can be ignored
-    └── rec.pdmodel           # The program file of recognition model
+    ├── inference.pdiparams         # The parameter file of recognition inference model
+    ├── inference.pdiparams.info    # The parameter information of recognition inference model, which can be ignored
+    └── inference.pdmodel           # The program file of recognition model
 ```
 
 <a name="Convert_angle_class_model"></a>
@@ -99,7 +99,7 @@ wget -P ./ch_lite/ {link} && tar xf ./ch_lite/{file} -C ./ch_lite/
 
 The angle classification model is converted to the inference model in the same way as the detection, as follows:
 ```
-# -c Set the yml configuration file of the training algorithm, you need to write the path of the training model to be converted into the Global.checkpoints parameter in the configuration file, without adding the file suffixes .pdmodel, .pdopt or .pdparams.
+-c Set the yml configuration file of the algorithm, you need to set `Global.load_static_weights=False`, and write the path of the training model to be converted under the `Global.pretrained_model` parameter in the configuration file, without adding the file suffix .pdmodel, .pdopt or .pdparams.
 # -o Set the address where the converted model will be saved.
 
 python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o ./inference/cls/
@@ -108,9 +108,9 @@ python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o ./inference/cls/
 After the conversion is successful, there are two files in the directory:
 ```
 inference/det_db/
-    ├── rec.pdiparams         # The parameter file of angle class inference model
-    ├── rec.pdiparams.info    # The parameter information of  angle class inference model, which can be ignored
-    └── rec.pdmodel           # The program file of angle class model
+    ├── inference.pdiparams         # The parameter file of angle class inference model
+    ├── inference.pdiparams.info    # The parameter information of  angle class inference model, which can be ignored
+    └── inference.pdmodel           # The program file of angle class model
 ```
 
 
@@ -152,7 +152,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_di
 First, convert the model saved in the DB text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the ICDAR2015 English dataset as an example ([model download link](link)), you can use the following command to convert:
 
 ```
-# -c Set the yml configuration file of the training algorithm, you need to write the path of the training model to be converted into the Global.checkpoints parameter in the configuration file, without adding the file suffixes .pdmodel, .pdopt or .pdparams.
+-c Set the yml configuration file of the algorithm, you need to set `Global.load_static_weights=False`, and write the path of the training model to be converted under the `Global.pretrained_model` parameter in the configuration file, without adding the file suffix .pdmodel, .pdopt or .pdparams.
 # -o Set the address where the converted model will be saved.
 
 python3 tools/export_model.py -c configs/det/det_r50_vd_db.yml -o "./inference/det_db"
@@ -176,7 +176,7 @@ The visualized text detection results are saved to the `./inference_results` fol
 First, convert the model saved in the EAST text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the ICDAR2015 English dataset as an example ([model download link](link)), you can use the following command to convert:
 
 ```
-# -c Set the yml configuration file of the training algorithm, you need to write the path of the training model to be converted into the Global.checkpoints parameter in the configuration file, without adding the file suffixes .pdmodel, .pdopt or .pdparams.
+-c Set the yml configuration file of the algorithm, you need to set `Global.load_static_weights=False`, and write the path of the training model to be converted under the `Global.pretrained_model` parameter in the configuration file, without adding the file suffix .pdmodel, .pdopt or .pdparams.
 # -o Set the address where the converted model will be saved.
 
 python3 tools/export_model.py -c configs/det/det_r50_vd_east.yml -o Global.checkpoints="./models/det_r50_vd_east/best_accuracy" Global.save_inference_dir="./inference/det_east"
@@ -200,7 +200,7 @@ The visualized text detection results are saved to the `./inference_results` fol
 First, convert the model saved in the SAST text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the ICDAR2015 English dataset as an example ([model download link](link)), you can use the following command to convert:
 
 ```
-# -c Set the yml configuration file of the training algorithm, you need to write the path of the training model to be converted into the Global.checkpoints parameter in the configuration file, without adding the file suffixes .pdmodel, .pdopt or .pdparams.
+-c Set the yml configuration file of the algorithm, you need to set `Global.load_static_weights=False`, and write the path of the training model to be converted under the `Global.pretrained_model` parameter in the configuration file, without adding the file suffix .pdmodel, .pdopt or .pdparams.
 # -o Set the address where the converted model will be saved.
 
 python3 tools/export_model.py -c configs/det/det_r50_vd_sast_icdar15.yml -o "./inference/det_sast_ic15"
@@ -220,6 +220,9 @@ The visualized text detection results are saved to the `./inference_results` fol
 First, convert the model saved in the SAST text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the Total-Text English dataset as an example ([model download link](https://paddleocr.bj.bcebos.com/SAST/sast_r50_vd_total_text.tar)), you can use the following command to convert:
 
 ```
+-c Set the yml configuration file of the algorithm, you need to set `Global.load_static_weights=False`, and write the path of the training model to be converted under the `Global.pretrained_model` parameter in the configuration file, without adding the file suffix .pdmodel, .pdopt or .pdparams.
+# -o Set the address where the converted model will be saved.
+
 python3 tools/export_model.py -c configs/det/det_r50_vd_sast_totaltext.yml -o Global.checkpoints="./models/sast_r50_vd_total_text/best_accuracy" Global.save_inference_dir="./inference/det_sast_tt"
 ```
 
@@ -265,7 +268,7 @@ Taking STAR-Net as an example, we introduce the recognition model inference base
 First, convert the model saved in the STAR-Net text recognition training process into an inference model. Taking the model based on Resnet34_vd backbone network, using MJSynth and SynthText (two English text recognition synthetic datasets) for training, as an example ([model download address](link)). It can be converted as follow:
 
 ```
-# -c Set the yml configuration file of the training algorithm, you need to write the path of the training model to be converted into the Global.checkpoints parameter in the configuration file, without adding the file suffixes .pdmodel, .pdopt or .pdparams.
+-c Set the yml configuration file of the algorithm, you need to set `Global.load_static_weights=False`, and write the path of the training model to be converted under the `Global.pretrained_model` parameter in the configuration file, without adding the file suffix .pdmodel, .pdopt or .pdparams.
 # -o Set the address where the converted model will be saved.
 
 python3 tools/export_model.py -c configs/rec/rec_r34_vd_tps_bilstm_ctc.yml -o "./inference/starnet"
