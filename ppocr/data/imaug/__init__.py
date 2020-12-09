@@ -26,6 +26,9 @@ from .randaugment import RandAugment
 from .operators import *
 from .label_ops import *
 
+from .east_process import *
+from .sast_process import *
+
 
 def transform(data, ops=None):
     """ transform """

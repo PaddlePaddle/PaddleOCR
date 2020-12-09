@@ -23,14 +23,16 @@ class BaseRecLabelDecode(object):
                  character_dict_path=None,
                  character_type='ch',
                  use_space_char=False):
-        support_character_type = ['ch', 'en', 'en_sensitive']
+        support_character_type = [
+            'ch', 'en', 'en_sensitive', 'french', 'german', 'japan', 'korean'
+        ]
         assert character_type in support_character_type, "Only {} are supported now but get {}".format(
             support_character_type, self.character_str)
 
         if character_type == "en":
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
-        elif character_type == "ch":
+        elif character_type in ["ch", "french", "german", "japan", "korean"]:
             self.character_str = ""
             assert character_dict_path is not None, "character_dict_path should not be None when character_type is ch"
             with open(character_dict_path, "rb") as fin:
