@@ -54,11 +54,6 @@ PaddleOCR开源的文本识别算法列表：
 |CRNN|MobileNetV3||rec_mv3_none_bilstm_ctc|[敬请期待]()|
 |STAR-Net|Resnet34_vd||rec_r34_vd_tps_bilstm_ctc|[敬请期待]()|
 |STAR-Net|MobileNetV3||rec_mv3_tps_bilstm_ctc|[敬请期待]()|
-|RARE|Resnet34_vd||rec_r34_vd_tps_bilstm_attn|[敬请期待]()|
-|RARE|MobileNetV3||rec_mv3_tps_bilstm_attn|[敬请期待]()|
-|SRN|Resnet50_vd_fpn||rec_r50fpn_vd_none_srn|[敬请期待]()|
 
-**说明：** SRN模型使用了数据扰动方法对上述提到对两个训练集进行增广，增广后的数据可以在[百度网盘](https://pan.baidu.com/s/1-HSZ-ZVdqBF2HaBZ5pRAKA)上下载，提取码: y3ry。
-原始论文使用两阶段训练平均精度为89.74%，PaddleOCR中使用one-stage训练，平均精度为88.33%。两种预训练权重均在[下载链接](https://paddleocr.bj.bcebos.com/SRN/rec_r50fpn_vd_none_srn.tar)中。
 
 PaddleOCR文本识别算法的训练和使用请参考文档教程中[模型训练/评估中的文本识别部分](./recognition.md)。

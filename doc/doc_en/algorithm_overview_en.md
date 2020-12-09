@@ -55,12 +55,6 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 |CRNN|MobileNetV3||rec_mv3_none_bilstm_ctc|[Coming soon]()|
 |STAR-Net|Resnet34_vd||rec_r34_vd_tps_bilstm_ctc|[Coming soon]()|
 |STAR-Net|MobileNetV3||rec_mv3_tps_bilstm_ctc|[Coming soon]()|
-|RARE|Resnet34_vd||rec_r34_vd_tps_bilstm_attn|[Coming soon]()|
-|RARE|MobileNetV3||rec_mv3_tps_bilstm_attn|[Coming soon]()|
-|SRN|Resnet50_vd_fpn||rec_r50fpn_vd_none_srn|[Coming soon]()|
 
-**Note：** SRN model uses data expansion method to expand the two training sets mentioned above, and the expanded data can be downloaded from [Baidu Drive](https://pan.baidu.com/s/1-HSZ-ZVdqBF2HaBZ5pRAKA) (download code: y3ry).
-
-The average accuracy of the two-stage training in the original paper is 89.74%, and that of one stage training in paddleocr is 88.33%. Both pre-trained weights can be downloaded [here](https://paddleocr.bj.bcebos.com/SRN/rec_r50fpn_vd_none_srn.tar).
 
 Please refer to the document for training guide and use of PaddleOCR text recognition algorithms [Text recognition model training/evaluation/prediction](./doc/doc_en/recognition_en.md)

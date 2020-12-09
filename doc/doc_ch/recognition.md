@@ -166,9 +166,9 @@ tar -xf rec_mv3_none_bilstm_ctc.tar && rm -rf rec_mv3_none_bilstm_ctc.tar
 *如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false*
 
 ```
-# GPU训练 支持单卡，多卡训练，通过selected_gpus参数指定卡号
+# GPU训练 支持单卡，多卡训练，通过--gpus参数指定卡号
 # 训练icdar15英文数据 并将训练日志保存为 tain_rec.log
-python3 -m paddle.distributed.launch --selected_gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_icdar15_train.yml 2>&1 | tee train_rec.log
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_icdar15_train.yml
 ```
 <a name="数据增强"></a>
 - 数据增强
@@ -331,9 +331,8 @@ Eval:
 
 *注意* 评估时必须确保配置文件中 infer_img 字段为空
 ```
-export CUDA_VISIBLE_DEVICES=0
 # GPU 评估， Global.checkpoints 为待测权重
-python3 tools/eval.py -c configs/rec/rec_icdar15_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy
+python3 --gpus '0' tools/eval.py -c configs/rec/rec_icdar15_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
 <a name="预测"></a>

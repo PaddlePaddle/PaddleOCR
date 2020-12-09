@@ -158,10 +158,9 @@ tar -xf rec_mv3_none_bilstm_ctc.tar && rm -rf rec_mv3_none_bilstm_ctc.tar
 Start training:
 
 ```
-# GPU training Support single card and multi-card training, specify the card number through CUDA_VISIBLE_DEVICES
-export CUDA_VISIBLE_DEVICES=0,1,2,3
+# GPU training Support single card and multi-card training, specify the card number through --gpus
 # Training icdar15 English data and saving the log as train_rec.log
-python3 tools/train.py -c configs/rec/rec_icdar15_train.yml 2>&1 | tee train_rec.log
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_icdar15_train.yml
 ```
 <a name="Data_Augmentation"></a>
 - Data Augmentation
@@ -199,39 +198,69 @@ If the evaluation set is large, the test will be time-consuming. It is recommend
 | rec_r34_vd_tps_bilstm_ctc.yml | STARNet | Resnet34_vd | tps | BiLSTM | ctc |
 
 For training Chinese data, it is recommended to use
-训练中文数据，推荐使用[rec_chinese_lite_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml). If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:
+[rec_chinese_lite_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml). If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:
 co
-Take `rec_mv3_none_none_ctc.yml` as an example:
+Take `rec_chinese_lite_train_v1.1.yml` as an example:
 ```
 Global:
   ...
-  # Modify image_shape to fit long text
-  image_shape: [3, 32, 320]
-  ...
+  # Add a custom dictionary, such as modify the dictionary, please point the path to the new dictionary
+  character_dict_path: ppocr/utils/ppocr_keys_v1.txt
   # Modify character type
   character_type: ch
-  # Add a custom dictionary, such as modify the dictionary, please point the path to the new dictionary
-  character_dict_path: ./ppocr/utils/ppocr_keys_v1.txt
   ...
-  # Modify reader type
-  reader_yml: ./configs/rec/rec_chinese_reader.yml
-  # Whether to use data augmentation
-  distort: true
   # Whether to recognize spaces
-  use_space_char: true
-  ...
+  use_space_char: False
 
-...
 
 Optimizer:
   ...
   # Add learning rate decay strategy
-  decay:
-    function: cosine_decay
-    # Each epoch contains iter number
-    step_each_epoch: 20
-    # Total epoch number
-    total_epoch: 1000
+  lr:
+    name: Cosine
+    learning_rate: 0.001
+  ...
+
+...
+
+Train:
+  dataset:
+    # Type of dataset，we support LMDBDateSet and SimpleDataSet
+    name: SimpleDataSet
+    # Path of dataset
+    data_dir: ./train_data/
+    # Path of train list
+    label_file_list: ["./train_data/train_list.txt"]
+    transforms:
+      ...
+      - RecResizeImg:
+          # Modify image_shape to fit long text
+          image_shape: [3, 32, 320]
+      ...
+  loader:
+    ...
+    # Train batch_size for Single card
+    batch_size_per_card: 256
+    ...
+
+Eval:
+  dataset:
+    # Type of dataset，we support LMDBDateSet and SimpleDataSet
+    name: SimpleDataSet
+    # Path of dataset
+    data_dir: ./train_data
+    # Path of eval list
+    label_file_list: ["./train_data/val_list.txt"]
+    transforms:
+      ...
+      - RecResizeImg:
+          # Modify image_shape to fit long text
+          image_shape: [3, 32, 320]
+      ...
+  loader:
+    # Eval batch_size for Single card
+    batch_size_per_card: 256
+    ...
 ```
 **Note that the configuration file for prediction/evaluation must be consistent with the training.**
 
@@ -257,18 +286,33 @@ Take `rec_french_lite_train` as an example:
 ```
 Global:
   ...
-  # Add a custom dictionary, if you modify the dictionary
-  # please point the path to the new dictionary
+  # Add a custom dictionary, such as modify the dictionary, please point the path to the new dictionary
   character_dict_path: ./ppocr/utils/dict/french_dict.txt
-  # Add data augmentation during training
-  distort: true
-  # Identify spaces
-  use_space_char: true
   ...
-  # Modify reader type
-  reader_yml: ./configs/rec/multi_languages/rec_french_reader.yml
-  ...
+  # Whether to recognize spaces
+  use_space_char: False
+
 ...
+
+Train:
+  dataset:
+    # Type of dataset，we support LMDBDateSet and SimpleDataSet
+    name: SimpleDataSet
+    # Path of dataset
+    data_dir: ./train_data/
+    # Path of train list
+    label_file_list: ["./train_data/french_train.txt"]
+    ...
+
+Eval:
+  dataset:
+    # Type of dataset，we support LMDBDateSet and SimpleDataSet
+    name: SimpleDataSet
+    # Path of dataset
+    data_dir: ./train_data
+    # Path of eval list
+    label_file_list: ["./train_data/french_val.txt"]
+    ...
 ```
 
 <a name="EVALUATION"></a>
@@ -277,9 +321,8 @@ Global:
 The evaluation data set can be modified via `configs/rec/rec_icdar15_reader.yml` setting of `label_file_path` in EvalReader.
 
 ```
-export CUDA_VISIBLE_DEVICES=0
 # GPU evaluation, Global.checkpoints is the weight to be tested
-python3 tools/eval.py -c configs/rec/rec_icdar15_reader.yml -o Global.checkpoints={path/to/weights}/best_accuracy
+python3 --gpus '0' tools/eval.py -c configs/rec/rec_icdar15_reader.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
 <a name="PREDICTION"></a>
