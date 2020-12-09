@@ -140,7 +140,7 @@ class DBPostProcess(object):
 
         boxes_batch = []
         for batch_index in range(pred.shape[0]):
-            height, width = shape_list[batch_index]
+            src_h, src_w, ratio_h, ratio_w = shape_list[batch_index]
             if self.dilation_kernel is not None:
                 mask = cv2.dilate(
                     np.array(segmentation[batch_index]).astype(np.uint8),
@@ -148,7 +148,7 @@ class DBPostProcess(object):
             else:
                 mask = segmentation[batch_index]
             boxes, scores = self.boxes_from_bitmap(pred[batch_index], mask,
-                                                   width, height)
+                                                   src_w, src_h)
 
             boxes_batch.append({'points': boxes})
         return boxes_batch
