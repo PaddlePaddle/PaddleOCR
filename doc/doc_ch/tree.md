@@ -117,14 +117,14 @@ PaddleOCR
 │   │   │   │   ├── augment.py              // tia_distort,tia_stretch 和 tia_perspective 的代码
 │   │   │   │   ├── warp_mls.py 
 │   │   │   ├── __init__.py
-│   │   │   ├── iaa_augment.py              // 数据增广操作
-│   │   │   ├── label_ops.py                // label 编码操作
+│   │   │   ├── east_process.py             // EAST 算法的数据处理步骤
 │   │   │   ├── make_border_map.py          // 生成边界图
 │   │   │   ├── make_shrink_map.py          // 生成收缩图
 │   │   │   ├── operators.py                // 图像基本操作，如读取和归一化
 │   │   │   ├── randaugment.py              // 随机数据增广操作
 │   │   │   ├── random_crop_data.py         // 随机裁剪
-│   │   │   └── rec_img_aug.py              // 文本识别的数据扩充
+│   │   │   ├── rec_img_aug.py              // 文本识别的数据扩充
+│   │   │   └── sast_process.py             // SAST 算法的数据处理步骤
 │   │   ├── __init__.py                     // 构造 dataloader 相关代码
 │   │   ├── lmdb_dataset.py                 // 读取lmdb数据集的 dataset
 │   │   ├── simple_dataset.py               // 读取文本格式存储数据集的 dataset
@@ -133,6 +133,8 @@ PaddleOCR
 │   │   ├── cls_loss.py                     // 方向分类器 loss
 │   │   ├── det_basic_loss.py               // 检测基础 loss
 │   │   ├── det_db_loss.py                  // DB loss
+│   │   ├── det_east_loss.py                // EAST loss
+│   │   ├── det_sast_loss.py                // SAST loss
 │   │   ├── rec_ctc_loss.py                 // ctc loss
 │   ├── metrics                             // 评估指标
 │   │   ├── __init__.py                     // 构造 metric 相关代码
@@ -148,16 +150,21 @@ PaddleOCR
 │   │   │   ├── __init__.py                 // 构造 backbone 相关代码
 │   │   │   ├── det_mobilenet_v3.py         // 检测 mobilenet_v3
 │   │   │   ├── det_resnet_vd.py            // 检测 resnet
+│   │   │   ├── det_resnet_vd_sast.py       // 检测 SAST算法的resnet backbone
 │   │   │   ├── rec_mobilenet_v3.py         // 识别 mobilenet_v3
 │   │   │   └── rec_resnet_vd.py            // 识别 resnet
 │   │   ├── necks                           // 颈函数
 │   │   │   ├── __init__.py                 // 构造 neck 相关代码
-│   │   │   ├── db_fpn.py                   // fpn 网络
+│   │   │   ├── db_fpn.py                   // 标准 fpn 网络
+│   │   │   ├── east_fpn.py                 // EAST 算法的 fpn 网络
+│   │   │   ├── sast_fpn.py                 // SAST 算法的 fpn 网络
 │   │   │   ├── rnn.py                      // 识别 序列编码
 │   │   ├── heads                           // 头函数
 │   │   │   ├── __init__.py                 // 构造 head 相关代码
 │   │   │   ├── cls_head.py                 // 方向分类器 分类头
 │   │   │   ├── det_db_head.py              // db 检测头
+│   │   │   ├── det_east_head.py            // EAST 检测头
+│   │   │   ├── det_sast_head.py            // SAST 检测头
 │   │   │   ├── rec_ctc_head.py             // 识别 ctc
 │   │   ├── transforms                      // 图像变换
 │   │   │   ├── __init__.py                 // 构造 transform 相关代码
@@ -170,7 +177,10 @@ PaddleOCR
 │   ├── postprocess                         // 后处理
 │   │   ├── cls_postprocess.py              // 方向分类器 后处理
 │   │   ├── db_postprocess.py               // DB 后处理
-│   │   └── rec_postprocess.py              // 识别网络 后处理
+│   │   ├── east_postprocess.py             // EAST 后处理
+│   │   ├── locality_aware_nms.py           // NMS
+│   │   ├── rec_postprocess.py              // 识别网络 后处理
+│   │   └── sast_postprocess.py             // SAST 后处理
 │   └── utils                               // 工具
 │       ├── dict                            // 小语种字典
 │            ....                            

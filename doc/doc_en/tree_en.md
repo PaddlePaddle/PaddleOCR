@@ -118,6 +118,7 @@ PaddleOCR
 │   │   │   │   ├── augment.py              // Tia_distort,tia_stretch and tia_perspective
 │   │   │   │   ├── warp_mls.py 
 │   │   │   ├── __init__.py
+│   │   │   ├── east_process.py             // Data processing steps of EAST algorithm
 │   │   │   ├── iaa_augment.py              // Data augmentation operations
 │   │   │   ├── label_ops.py                // label encode operations
 │   │   │   ├── make_border_map.py          // Generate boundary map
@@ -125,7 +126,8 @@ PaddleOCR
 │   │   │   ├── operators.py                // Basic image operations, such as reading and normalization
 │   │   │   ├── randaugment.py              // Random data augmentation operation
 │   │   │   ├── random_crop_data.py         // Random crop
-│   │   │   └── rec_img_aug.py              // Data augmentation for text recognition
+│   │   │   ├── rec_img_aug.py              // Data augmentation for text recognition
+│   │   │   └── sast_process.py             // Data processing steps of SAST algorithm
 │   │   ├── __init__.py                     // Construct dataloader code
 │   │   ├── lmdb_dataset.py                 // Read lmdb dataset
 │   │   ├── simple_dataset.py               // Read the dataset stored in text format
@@ -134,6 +136,8 @@ PaddleOCR
 │   │   ├── cls_loss.py                     // Angle class loss
 │   │   ├── det_basic_loss.py               // Text detection basic loss
 │   │   ├── det_db_loss.py                  // DB loss
+│   │   ├── det_east_loss.py                // EAST loss
+│   │   ├── det_sast_loss.py                // SAST loss
 │   │   ├── rec_ctc_loss.py                 // ctc loss
 │   ├── metrics                             // Metrics
 │   │   ├── __init__.py                     // Construct metric code
@@ -149,16 +153,21 @@ PaddleOCR
 │   │   │   ├── __init__.py                 // Construct backbone code
 │   │   │   ├── det_mobilenet_v3.py         // Text detection mobilenet_v3
 │   │   │   ├── det_resnet_vd.py            // Text detection resnet
+│   │   │   ├── det_resnet_vd_sast.py       // Text detection resnet backbone of the SAST algorithm
 │   │   │   ├── rec_mobilenet_v3.py         // Text recognition mobilenet_v3
 │   │   │   └── rec_resnet_vd.py            // Text recognition resnet
 │   │   ├── necks                           // Necks
 │   │   │   ├── __init__.py                 // Construct neck code
-│   │   │   ├── db_fpn.py                   // FPN
+│   │   │   ├── db_fpn.py                   // Standard fpn
+│   │   │   ├── east_fpn.py                 // EAST algorithm fpn network
+│   │   │   ├── sast_fpn.py                 // SAST algorithm fpn network
 │   │   │   ├── rnn.py                      // Character recognition sequence encoding
 │   │   ├── heads                           // Heads
 │   │   │   ├── __init__.py                 // Construct head code
 │   │   │   ├── cls_head.py                 // Angle class head
 │   │   │   ├── det_db_head.py              // DB head
+│   │   │   ├── det_east_head.py            // EAST head
+│   │   │   ├── det_sast_head.py            // SAST head
 │   │   │   ├── rec_ctc_head.py             // Ctc head
 │   │   ├── transforms                      // Transforms
 │   │   │   ├── __init__.py                 // Construct transform code
@@ -171,7 +180,10 @@ PaddleOCR
 │   ├── postprocess                         // Post-processing
 │   │   ├── cls_postprocess.py              // Angle class post-processing
 │   │   ├── db_postprocess.py               // DB post-processing
-│   │   └── rec_postprocess.py              // Text recognition post-processing
+│   │   ├── east_postprocess.py             // EAST post-processing
+│   │   ├── locality_aware_nms.py           // NMS
+│   │   ├── rec_postprocess.py              // Text recognition post-processing
+│   │   └── sast_postprocess.py             // SAST post-processing
 │   └── utils                               // utils
 │       ├── dict                            // Minor language dictionary
 │            ....                            
