@@ -21,7 +21,6 @@ Global:
   infer_mode: False
   use_space_char: False
 
-
 Optimizer:
   name: Adam
   beta1: 0.9
