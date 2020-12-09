@@ -138,9 +138,9 @@ class DBPostProcess(object):
 
         boxes_batch = []
         for batch_index in range(pred.shape[0]):
-            height, width = shape_list[batch_index]
+            src_h, src_w, ratio_h, ratio_w = shape_list[batch_index]
             boxes, scores = self.boxes_from_bitmap(
-                pred[batch_index], segmentation[batch_index], width, height)
+                pred[batch_index], segmentation[batch_index], src_w, src_h)
 
             boxes_batch.append({'points': boxes})
         return boxes_batch
