@@ -107,7 +107,7 @@ class MainWindow(QMainWindow, WindowMixin):
         getStr = lambda strId: self.stringBundle.getString(strId)
 
         self.defaultSaveDir = defaultSaveDir
-        self.ocr = PaddleOCR(use_pdserving=False, use_angle_cls=True, det=True, cls=True, use_gpu=False, lang=lang)
+        self.ocr = PaddleOCR(use_pdserving=False, use_angle_cls=True, det=True, cls=True, use_gpu=True, lang=lang)
 
         if os.path.exists('./data/paddle.png'):
             result = self.ocr.ocr('./data/paddle.png', cls=True, det=True)
@@ -161,9 +161,6 @@ class MainWindow(QMainWindow, WindowMixin):
         self.AutoRecognition = QToolButton()
         self.AutoRecognition.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
         self.AutoRecognition.setIcon(newIcon('Auto'))
-        # self.AutoRecognition.setIconSize(QSize(100,20))
-        # self.AutoRecognition.setFixedSize(QSize(80,30))
-        # self.AutoRecognition.setStyleSheet('text-align:center;')#border:none;font-size : 12pt;
         autoRecLayout = QHBoxLayout()
         autoRecLayout.setContentsMargins(0, 0, 0, 0)
         autoRecLayout.addWidget(self.AutoRecognition)
@@ -182,25 +179,17 @@ class MainWindow(QMainWindow, WindowMixin):
         listLayout = QVBoxLayout()
         listLayout.setContentsMargins(0, 0, 0, 0)
 
-        # Create a widget for edit and diffc button
-        self.diffcButton = QCheckBox(getStr('useDifficult'))
-        self.diffcButton.setChecked(False)
-        self.diffcButton.stateChanged.connect(self.btnstate)
         self.editButton = QToolButton()
         self.reRecogButton = QToolButton()
         self.reRecogButton.setIcon(newIcon('reRec', 30))
-        # self.reRecogButton.setFixedSize(QSize(80,30))
         self.reRecogButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
 
         self.newButton = QToolButton()
         self.newButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        # self.newButton.setFixedSize(QSize(80, 30))
         self.SaveButton = QToolButton()
         self.SaveButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        # self.SaveButton.setFixedSize(QSize(60, 30))
         self.DelButton = QToolButton()
         self.DelButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        # self.DelButton.setFixedSize(QSize(80, 30))
 
 
         lefttoptoolbox = QHBoxLayout()
@@ -285,12 +274,9 @@ class MainWindow(QMainWindow, WindowMixin):
         hlayout.setSpacing(0)
         hlayout.setContentsMargins(*m)
         self.preButton = QToolButton()
-        # self.preButton.setFixedHeight(100)
-        # self.preButton.setText(getStr("prevImg"))
         self.preButton.setIcon(newIcon("prev",40))
         self.preButton.setIconSize(QSize(40, 100))
         self.preButton.clicked.connect(self.openPrevImg)
-        # self.preButton.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         self.preButton.setStyleSheet('border: none;')
         self.iconlist = QListWidget()
         self.iconlist.setViewMode(QListView.IconMode)
@@ -299,19 +285,14 @@ class MainWindow(QMainWindow, WindowMixin):
         self.iconlist.setIconSize(QSize(50, 50))
         self.iconlist.setMovement(False)
         self.iconlist.setResizeMode(QListView.Adjust)
-        # self.iconlist.itemDoubleClicked.connect(self.iconitemDoubleClicked)
         self.iconlist.itemClicked.connect(self.iconitemDoubleClicked)
         self.iconlist.setStyleSheet("background-color:transparent; border: none;")
         self.iconlist.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        # self.iconlist.setStyleSheet('border: none;')
         self.nextButton = QToolButton()
-        # self.nextButton.setFixedHeight(100)
-        # self.nextButton.setText(getStr("nextImg"))
         self.nextButton.setIcon(newIcon("next", 40))
         self.nextButton.setIconSize(QSize(40, 100))
         self.nextButton.setStyleSheet('border: none;')
         self.nextButton.clicked.connect(self.openNextImg)
-        # self.nextButton.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         
         hlayout.addWidget(self.preButton)
         hlayout.addWidget(self.iconlist)
@@ -874,7 +855,7 @@ class MainWindow(QMainWindow, WindowMixin):
             # shape.line_color = generateColorByText(shape.label)
             self.setDirty()
         else:  # User probably changed item visibility
-            self.canvas.setShapeVisible(shape, item.checkState() == Qt.Checked)
+            self.canvas.setShapeVisible(shape, True)#item.checkState() == Qt.Checked
 
     def editBox(self):  # ADD
         if not self.canvas.editing():
@@ -945,33 +926,6 @@ class MainWindow(QMainWindow, WindowMixin):
         if len(self.mImgList) > 0:
             self.zoomWidget.setValue(self.zoomWidgetValue + self.imgsplider.value())
 
-    # Add chris
-    def btnstate(self, item=None):
-        """ Function to handle difficult examples
-        Update on each object """
-        if not self.canvas.editing():
-            return
-
-        item = self.currentItem()
-        if not item:  # If not selected Item, take the first one
-            item = self.labelList.item(self.labelList.count() - 1)
-
-        difficult = self.diffcButton.isChecked()
-
-        try:
-            shape = self.itemsToShapes[item]
-        except:
-            pass
-        # Checked and Update
-        try:
-            if difficult != shape.difficult:
-                shape.difficult = difficult
-                self.setDirty()
-            else:  # User probably changed item visibility
-                self.canvas.setShapeVisible(shape, item.checkState() == Qt.Checked)
-        except:
-            pass
-
     # React to canvas signals.
     def shapeSelectionChanged(self, selected=False):
         if self._noSelectionSlot:
@@ -993,7 +947,8 @@ class MainWindow(QMainWindow, WindowMixin):
         shape.paintLabel = self.displayLabelOption.isChecked()
         item = HashableQListWidgetItem(shape.label)
         item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
-        item.setCheckState(Qt.Checked)
+        item.setCheckState(Qt.Unchecked) if shape.difficult else item.setCheckState(Qt.Checked)
+        # Checked means difficult is False
         # item.setBackground(generateColorByText(shape.label))
         self.itemsToShapes[item] = shape
         self.shapesToItems[shape] = item
@@ -1002,10 +957,6 @@ class MainWindow(QMainWindow, WindowMixin):
 
         # ADD for box
         item = HashableQListWidgetItem(str([(int(p.x()), int(p.y())) for p in shape.points]))
-        # item = QListWidgetItem(str([(p.x(), p.y()) for p in shape.points]))
-        item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
-        item.setCheckState(Qt.Checked)
-        # item.setBackground(generateColorByText(shape.label))
         self.itemsToShapesbox[item] = shape
         self.shapesToItemsbox[shape] = item
         self.BoxList.addItem(item)
@@ -1072,6 +1023,7 @@ class MainWindow(QMainWindow, WindowMixin):
         # self.comboBox.update_items(uniqueTextList)
 
     def saveLabels(self, annotationFilePath, mode='Auto'):
+        # Mode is Auto means that labels will be loaded from self.result_dic totally, which is the output of ocr model
         annotationFilePath = ustr(annotationFilePath)
         if self.labelFile is None:
             self.labelFile = LabelFile()
@@ -1090,17 +1042,16 @@ class MainWindow(QMainWindow, WindowMixin):
             [format_shape(shape) for shape in self.canvas.shapes]
         # Can add differrent annotation formats here
 
-        if self.model == 'paddle':
-            for box in self.result_dic:
-                trans_dic = {"label": box[1][0], "points": box[0], 'difficult': False}
-                if trans_dic["label"] is "" and mode == 'Auto':
-                    continue
-                shapes.append(trans_dic)
+        for box in self.result_dic:
+            trans_dic = {"label": box[1][0], "points": box[0], 'difficult': False}
+            if trans_dic["label"] is "" and mode == 'Auto':
+                continue
+            shapes.append(trans_dic)
 
         try:
             trans_dic = []
             for box in shapes:
-                trans_dic.append({"transcription": box['label'], "points": box['points'], 'difficult': False})
+                trans_dic.append({"transcription": box['label'], "points": box['points'], 'difficult': box['difficult']})
             self.PPlabel[annotationFilePath] = trans_dic
 
             if mode == 'Auto':
@@ -1127,8 +1078,6 @@ class MainWindow(QMainWindow, WindowMixin):
             self._noSelectionSlot = True
             self.canvas.selectShape(self.itemsToShapes[item])
             shape = self.itemsToShapes[item]
-            # Add Chris
-            self.diffcButton.setChecked(shape.difficult)
 
     def boxSelectionChanged(self):
         item = self.currentBox()
@@ -1136,8 +1085,6 @@ class MainWindow(QMainWindow, WindowMixin):
             self._noSelectionSlot = True
             self.canvas.selectShape(self.itemsToShapesbox[item])
             shape = self.itemsToShapesbox[item]
-            # Add Chris
-            self.diffcButton.setChecked(shape.difficult)
 
     def labelItemChanged(self, item):
         shape = self.itemsToShapes[item]
@@ -1146,8 +1093,12 @@ class MainWindow(QMainWindow, WindowMixin):
             shape.label = item.text()
             # shape.line_color = generateColorByText(shape.label)
             self.setDirty()
+        elif not ((item.checkState()== Qt.Unchecked) ^ (not shape.difficult)):
+            shape.difficult = True if item.checkState() == Qt.Unchecked else False
+            self.setDirty()
         else:  # User probably changed item visibility
-            self.canvas.setShapeVisible(shape, item.checkState() == Qt.Checked)
+            self.canvas.setShapeVisible(shape, True)  # item.checkState() == Qt.Checked
+            # self.actions.save.setEnabled(True)
 
     # Callback functions:
     def newShape(self):
@@ -1166,8 +1117,6 @@ class MainWindow(QMainWindow, WindowMixin):
             text = self.labelDialog.popUp(text=self.prevLabelText)
             self.lastLabel = text
 
-        # Add Chris
-        self.diffcButton.setChecked(False)
         if text is not None:
             self.prevLabelText = self.stringBundle.getString('tempLabel')
             # generate_color = generateColorByText(text)
@@ -1264,7 +1213,7 @@ class MainWindow(QMainWindow, WindowMixin):
 
     def togglePolygons(self, value):
         for item, shape in self.itemsToShapes.items():
-            item.setCheckState(Qt.Checked if value else Qt.Unchecked)
+            self.canvas.setShapeVisible(shape, value)
 
     def loadFile(self, filePath=None):
         """Load the specified file, or the last opened file if None."""
@@ -1628,6 +1577,7 @@ class MainWindow(QMainWindow, WindowMixin):
         pass
 
     def saveFile(self, _value=False, mode='Manual'):
+        # Manual mode is used for users click "Save" manually,which will change the state of the image
         if self.defaultSaveDir is not None and len(ustr(self.defaultSaveDir)):
             if self.filePath:
                 imgidx = self.getImglabelidx(self.filePath)
@@ -1925,8 +1875,6 @@ class MainWindow(QMainWindow, WindowMixin):
         self.comboBox = QComboBox()
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItems(['Chinese & English', 'English', 'French', 'German', 'Korean', 'Japanese'])
-        # self.comboBox_lg = QComboBox()
-        # self.comboBox_lg.setObjectName("comboBox_language")
         vbox.addWidget(self.panel)
         vbox.addWidget(self.comboBox)
         self.dialog = QDialog()
@@ -1994,6 +1942,7 @@ class MainWindow(QMainWindow, WindowMixin):
                     file, label = each.split('\t')
                     if label:
                         label = label.replace('false', 'False')
+                        label = label.replace('true', 'True')
                         labeldict[file] = eval(label)
                     else:
                         labeldict[file] = []
@@ -2004,7 +1953,7 @@ class MainWindow(QMainWindow, WindowMixin):
         savedfile = [self.getImglabelidx(i) for i in self.fileStatedict.keys()]
         with open(self.PPlabelpath, 'w', encoding='utf-8') as f:
             for key in self.PPlabel:
-                if key in savedfile:
+                if key in savedfile and self.PPlabel[key] != []:
                     f.write(key + '\t')
                     f.write(json.dumps(self.PPlabel[key], ensure_ascii=False) + '\n')
 
@@ -2032,6 +1981,7 @@ class MainWindow(QMainWindow, WindowMixin):
             for key in self.fileStatedict:
                 idx = self.getImglabelidx(key)
                 for i, label in enumerate(self.PPlabel[idx]):
+                    if label['difficult']: continue
                     img = cv2.imread(key)
                     img_crop = get_rotate_crop_image(img, np.array(label['points'], np.float32))
                     img_name = os.path.splitext(os.path.basename(idx))[0] + '_crop_'+str(i)+'.jpg'
@@ -2070,8 +2020,7 @@ def get_main_app(argv=[]):
     args = argparser.parse_args(argv[1:])
     # Usage : labelImg.py image predefClassFile saveDir
     win = MainWindow(lang=args.lang,
-                     defaultPrefdefClassFile=args.predefined_classes_file,
-                     )
+                     defaultPrefdefClassFile=args.predefined_classes_file)
     win.show()
     return app, win
 
