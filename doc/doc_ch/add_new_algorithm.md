@@ -13,7 +13,7 @@ PaddleOCR将一个算法分解为以下几个部分，并对各部分进行模�
 
 ## 数据加载和处理
 
-数据加载和处理由不同的模块(module)组成,其完成了图片的读取、数据增强和label的制作。这一部分在[ppocr/data](../../ppocr/data)下。 各个文件及文件夹作用说明如下:
+数据加载和处理由不同的模块(module)组成，其完成了图片的读取、数据增强和label的制作。这一部分在[ppocr/data](../../ppocr/data)下。 各个文件及文件夹作用说明如下:
 
 ```bash
 ppocr/data/
@@ -125,7 +125,7 @@ Architecture:
 
 ## 后处理
 
-后处理主要完成从网络输出到人类友好结果的变换。这一部分在[ppocr/postprocess](../../ppocr/postprocess)下。
+后处理实现解码网络输出获得文本框或者识别到的文字。这一部分在[ppocr/postprocess](../../ppocr/postprocess)下。
 PaddleOCR内置了DB,EAST,SAST,CRNN和Attention等算法相关的后处理模块，对于没有内置的组件可通过如下步骤添加:
 
 1. 在 [ppocr/postprocess](../../ppocr/postprocess) 文件夹下新建文件，如 my_postprocess.py。

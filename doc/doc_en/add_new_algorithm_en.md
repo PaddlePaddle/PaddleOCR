@@ -126,7 +126,7 @@ Architecture:
 
 ## Post-processing
 
-Post-processing mainly completes the transformation from network output to human-friendly results. This part is under [ppocr/postprocess](../../ppocr/postprocess).
+Post-processing realizes decoding network output to obtain text box or recognized text. This part is under [ppocr/postprocess](../../ppocr/postprocess).
 PaddleOCR has built-in post-processing modules related to algorithms such as DB, EAST, SAST, CRNN and Attention. For components that are not built-in, they can be added through the following steps:
 
 1. Create a new file under the [ppocr/postprocess](../../ppocr/postprocess) folder, such as my_postprocess.py.
