@@ -1,9 +1,9 @@
 English | [简体中文](README_cn.md)
 
 ## Introduction
-Many user hopes package the PaddleOCR service into an docker image, so that it can be quickly released and used in the docker or k8s environment.
+Many users hope package the PaddleOCR service into a docker image, so that it can be quickly released and used in the docker or k8s environment.
 
-This page provide some standardized code to achieve this goal. You can quickly publish the PaddleOCR project into a callable Restful API service through the following steps. (At present, the deployment based on the HubServing mode is implemented first, and author plans to increase the deployment of the PaddleServing mode in the futrue)
+This page provides some standardized code to achieve this goal. You can quickly publish the PaddleOCR project into a callable Restful API service through the following steps. (At present, the deployment based on the HubServing mode is implemented first, and author plans to increase the deployment of the PaddleServing mode in the futrue)
 
 ## 1. Prerequisites
 
