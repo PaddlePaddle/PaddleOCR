@@ -58,9 +58,9 @@ When converting to an inference model, the configuration file used is the same a
 After the conversion is successful, there are three files in the model save directory:
 ```
 inference/det_db/
-    ├── det.pdiparams         # The parameter file of detection inference model which needs to be renamed to params
+    ├── det.pdiparams         # The parameter file of detection inference model
     ├── det.pdiparams.info    # The parameter information of detection inference model, which can be ignored
-    └── det.pdmodel           # The program file of detection inference model which needs to be renamed to model
+    └── det.pdmodel           # The program file of detection inference model
 ```
 
 <a name="Convert_recognition_model"></a>
@@ -84,9 +84,9 @@ If you have a model trained on your own dataset with a different dictionary file
 After the conversion is successful, there are three files in the model save directory:
 ```
 inference/det_db/
-    ├── rec.pdiparams         # The parameter file of recognition inference model which needs to be renamed to params
+    ├── rec.pdiparams         # The parameter file of recognition inference model
     ├── rec.pdiparams.info    # The parameter information of recognition inference model, which can be ignored
-    └── rec.pdmodel           # The program file of detection recognition model which needs to be renamed to model
+    └── rec.pdmodel           # The program file of recognition model
 ```
 
 <a name="Convert_angle_class_model"></a>
@@ -107,9 +107,10 @@ python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o ./inference/cls/
 
 After the conversion is successful, there are two files in the directory:
 ```
-/inference/cls/
-  └─  model     Identify the saved model files
-  └─  params    Identify the parameter files of the inference model
+inference/det_db/
+    ├── rec.pdiparams         # The parameter file of angle class inference model
+    ├── rec.pdiparams.info    # The parameter information of  angle class inference model, which can be ignored
+    └── rec.pdmodel           # The program file of angle class model
 ```
 
 

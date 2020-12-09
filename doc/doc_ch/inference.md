@@ -79,9 +79,9 @@ python3 tools/export_model.py -c configs/rec/ch_ppocr_v1.1/rec_chinese_lite_trai
 转换成功后，在目录下有三个文件：
 ```
 /inference/rec_crnn/
-    ├── rec.pdiparams         # 识别inference模型的参数文件，需要重命名为params
+    ├── rec.pdiparams         # 识别inference模型的参数文件
     ├── rec.pdiparams.info    # 识别inference模型的参数信息，可忽略
-    └── rec.pdmodel           # 识别inference模型的program文件，需要重命名为model
+    └── rec.pdmodel           # 识别inference模型的program文件
 ```
 
 <a name="方向分类模型转inference模型"></a>
@@ -103,9 +103,9 @@ python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o ./inference/cls/
 转换成功后，在目录下有三个文件：
 ```
 /inference/cls/
-    ├── cls.pdiparams         # 分类inference模型的参数文件，需要重命名为params
+    ├── cls.pdiparams         # 分类inference模型的参数文件
     ├── cls.pdiparams.info    # 分类inference模型的参数信息，可忽略
-    └── cls.pdmodel           # 分类inference模型的program文件，需要重命名为model
+    └── cls.pdmodel           # 分类inference模型的program文件
 ```
 
 <a name="文本检测模型推理"></a>
