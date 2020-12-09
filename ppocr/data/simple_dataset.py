@@ -57,9 +57,9 @@ class SimpleDataSet(Dataset):
         sample_num = round(len(datas) * sample_ratio)
 
         if data_num_per_epoch is not None:
-            sample_num = data_num_per_epoch * sample_ratio
+            sample_num = int(data_num_per_epoch * sample_ratio)
 
-        nums, rem = sample_num // len(datas), sample_num % len(datas)
+        nums, rem = int(sample_num // len(datas)), int(sample_num % len(datas))
         return list(datas) * nums + random.sample(datas, rem)
 
     def get_image_info_list(self,
