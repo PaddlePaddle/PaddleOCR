@@ -34,13 +34,21 @@ def make_divisible(v, divisor=8, min_value=None):
 
 
 class MobileNetV3(nn.Layer):
-    def __init__(self, in_channels=3, model_name='large', scale=0.5, **kwargs):
+    def __init__(self,
+                 in_channels=3,
+                 model_name='large',
+                 scale=0.5,
+                 disable_se=False,
+                 **kwargs):
         """
         the MobilenetV3 backbone network for detection module.
         Args:
             params(dict): the super parameters for build network
         """
         super(MobileNetV3, self).__init__()
+
+        self.disable_se = disable_se
+
         if model_name == "large":
             cfg = [
                 # k, exp, c,  se,     nl,  s,
@@ -223,7 +231,7 @@ class ResidualUnit(nn.Layer):
             if_act=True,
             act=act,
             name=name + "_depthwise")
-        if self.if_se:
+        if self.if_se and not self.disable_se:
             self.mid_se = SEModule(mid_channels, name=name + "_se")
         self.linear_conv = ConvBNLayer(
             in_channels=mid_channels,
@@ -238,7 +246,7 @@ class ResidualUnit(nn.Layer):
     def forward(self, inputs):
         x = self.expand_conv(inputs)
         x = self.bottleneck_conv(x)
-        if self.if_se:
+        if self.if_se and not self.disable_se:
             x = self.mid_se(x)
         x = self.linear_conv(x)
         if self.if_shortcut:

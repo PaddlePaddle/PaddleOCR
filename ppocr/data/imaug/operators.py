@@ -42,6 +42,8 @@ class DecodeImage(object):
                 img) > 0, "invalid input 'img' in DecodeImage"
         img = np.frombuffer(img, dtype='uint8')
         img = cv2.imdecode(img, 1)
+        if img is None:
+            return None
         if self.img_mode == 'GRAY':
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
         elif self.img_mode == 'RGB':

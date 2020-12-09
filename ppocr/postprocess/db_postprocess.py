@@ -39,6 +39,7 @@ class DBPostProcess(object):
         self.max_candidates = max_candidates
         self.unclip_ratio = unclip_ratio
         self.min_size = 3
+        self.dilation_kernel = np.array([[1, 1], [1, 1]])
 
     def boxes_from_bitmap(self, pred, _bitmap, dest_width, dest_height):
         '''
@@ -139,8 +140,11 @@ class DBPostProcess(object):
         boxes_batch = []
         for batch_index in range(pred.shape[0]):
             height, width = shape_list[batch_index]
-            boxes, scores = self.boxes_from_bitmap(
-                pred[batch_index], segmentation[batch_index], width, height)
+            mask = cv2.dilate(
+                np.array(segmentation[batch_index]).astype(np.uint8),
+                self.dilation_kernel)
+            boxes, scores = self.boxes_from_bitmap(pred[batch_index], mask,
+                                                   width, height)
 
             boxes_batch.append({'points': boxes})
         return boxes_batch
