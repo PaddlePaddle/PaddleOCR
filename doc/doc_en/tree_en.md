@@ -138,7 +138,8 @@ PaddleOCR
 │   │   ├── det_db_loss.py                  // DB loss
 │   │   ├── det_east_loss.py                // EAST loss
 │   │   ├── det_sast_loss.py                // SAST loss
-│   │   ├── rec_ctc_loss.py                 // ctc loss
+│   │   ├── rec_ctc_loss.py                 // CTC loss
+│   │   ├── rec_att_loss.py                 // Attention loss
 │   ├── metrics                             // Metrics
 │   │   ├── __init__.py                     // Construct metric code
 │   │   ├── cls_metric.py                   // Angle class metric
@@ -168,7 +169,8 @@ PaddleOCR
 │   │   │   ├── det_db_head.py              // DB head
 │   │   │   ├── det_east_head.py            // EAST head
 │   │   │   ├── det_sast_head.py            // SAST head
-│   │   │   ├── rec_ctc_head.py             // Ctc head
+│   │   │   ├── rec_ctc_head.py             // CTC head
+│   │   │   ├── rec_att_head.py             // Attention head
 │   │   ├── transforms                      // Transforms
 │   │   │   ├── __init__.py                 // Construct transform code
 │   │   │   └── tps.py                      // TPS transform

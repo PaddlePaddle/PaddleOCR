@@ -135,7 +135,8 @@ PaddleOCR
 │   │   ├── det_db_loss.py                  // DB loss
 │   │   ├── det_east_loss.py                // EAST loss
 │   │   ├── det_sast_loss.py                // SAST loss
-│   │   ├── rec_ctc_loss.py                 // ctc loss
+│   │   ├── rec_ctc_loss.py                 // CTC loss
+│   │   ├── rec_att_loss.py                 // Attention loss
 │   ├── metrics                             // 评估指标
 │   │   ├── __init__.py                     // 构造 metric 相关代码
 │   │   ├── cls_metric.py                   // 方向分类器 metric
@@ -162,10 +163,11 @@ PaddleOCR
 │   │   ├── heads                           // 头函数
 │   │   │   ├── __init__.py                 // 构造 head 相关代码
 │   │   │   ├── cls_head.py                 // 方向分类器 分类头
-│   │   │   ├── det_db_head.py              // db 检测头
+│   │   │   ├── det_db_head.py              // DB 检测头
 │   │   │   ├── det_east_head.py            // EAST 检测头
 │   │   │   ├── det_sast_head.py            // SAST 检测头
 │   │   │   ├── rec_ctc_head.py             // 识别 ctc
+│   │   │   ├── rec_att_head.py             // 识别 attention 
 │   │   ├── transforms                      // 图像变换
 │   │   │   ├── __init__.py                 // 构造 transform 相关代码
 │   │   │   └── tps.py                      // TPS 变换
