@@ -52,6 +52,7 @@ class DetLabelEncode(object):
                 txt_tags.append(True)
             else:
                 txt_tags.append(False)
+        boxes = self.expand_points_num(boxes)
         boxes = np.array(boxes, dtype=np.float32)
         txt_tags = np.array(txt_tags, dtype=np.bool)
 
@@ -70,6 +71,17 @@ class DetLabelEncode(object):
         rect[3] = pts[np.argmax(diff)]
         return rect
 
+    def expand_points_num(self, boxes):
+        max_points_num = 0
+        for box in boxes:
+            if len(box) > max_points_num:
+                max_points_num = len(box)
+        ex_boxes = []
+        for box in boxes:
+            ex_box = box + [box[-1]] * (max_points_num - len(box))
+            ex_boxes.append(ex_box)
+        return ex_boxes
+
 
 class BaseRecLabelEncode(object):
     """ Convert between text-label and text-index """
@@ -79,15 +91,17 @@ class BaseRecLabelEncode(object):
                  character_dict_path=None,
                  character_type='ch',
                  use_space_char=False):
-        support_character_type = ['ch', 'en', 'en_sensitive']
+        support_character_type = [
+            'ch', 'en', 'en_sensitive', 'french', 'german', 'japan', 'korean'
+        ]
         assert character_type in support_character_type, "Only {} are supported now but get {}".format(
-            support_character_type, self.character_str)
+            support_character_type, character_type)
 
         self.max_text_len = max_text_length
         if character_type == "en":
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
-        elif character_type == "ch":
+        elif character_type in ["ch", "french", "german", "japan", "korean"]:
             self.character_str = ""
             assert character_dict_path is not None, "character_dict_path should not be None when character_type is ch"
             with open(character_dict_path, "rb") as fin:
