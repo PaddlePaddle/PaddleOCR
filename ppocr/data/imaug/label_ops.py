@@ -95,7 +95,7 @@ class BaseRecLabelEncode(object):
             'ch', 'en', 'en_sensitive', 'french', 'german', 'japan', 'korean'
         ]
         assert character_type in support_character_type, "Only {} are supported now but get {}".format(
-            support_character_type, self.character_str)
+            support_character_type, character_type)
 
         self.max_text_len = max_text_length
         if character_type == "en":
