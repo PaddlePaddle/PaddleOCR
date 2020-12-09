@@ -54,9 +54,9 @@ python3 tools/export_model.py -c configs/det/det_mv3_db_v1.1.yml -o ./inference/
 转换成功后，在模型保存目录下有三个文件：
 ```
 inference/det_db/
-    ├── det.pdiparams         # 检测inference模型的参数文件，需要重命名为params
+    ├── det.pdiparams         # 检测inference模型的参数文件
     ├── det.pdiparams.info    # 检测inference模型的参数信息，可忽略
-    └── det.pdmodel           # 检测inference模型的program文件，需要重命名为model
+    └── det.pdmodel           # 检测inference模型的program文件
 ```
 
 <a name="识别模型转inference模型"></a>
