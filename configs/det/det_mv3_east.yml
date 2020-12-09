@@ -1,61 +1,57 @@
 Global:
   use_gpu: true
-  epoch_num: 1200
+  epoch_num: 10000
   log_smooth_window: 20
   print_batch_step: 2
-  save_model_dir: ./output/db_mv3/
-  save_epoch_step: 1200
+  save_model_dir: ./output/east_mv3/
+  save_epoch_step: 1000
   # evaluation is run every 5000 iterations after the 4000th iteration
   eval_batch_step: [4000, 5000]
   # if pretrained_model is saved in static mode, load_static_weights must set to True
   load_static_weights: True
   cal_metric_during_train: False
   pretrained_model: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
-  checkpoints: #./output/det_db_0.001_DiceLoss_256_pp_config_2.0b_4gpu/best_accuracy
+  checkpoints: 
   save_inference_dir:
   use_visualdl: False
-  infer_img: doc/imgs_en/img_10.jpg
-  save_res_path: ./output/det_db/predicts_db.txt
+  infer_img: 
+  save_res_path: ./output/det_east/predicts_east.txt
 
 Architecture:
   model_type: det
-  algorithm: DB
+  algorithm: EAST
   Transform:
   Backbone:
     name: MobileNetV3
     scale: 0.5
     model_name: large
   Neck:
-    name: DBFPN
-    out_channels: 256
+    name: EASTFPN
+    model_name: small
   Head:
-    name: DBHead
-    k: 50
+    name: EASTHead
+    model_name: small
 
 Loss:
-  name: DBLoss
-  balance_loss: true
-  main_loss_type: DiceLoss
-  alpha: 5
-  beta: 10
-  ohem_ratio: 3
+  name: EASTLoss
   
 Optimizer:
   name: Adam
   beta1: 0.9
   beta2: 0.999
   lr:
+  #  name: Cosine
     learning_rate: 0.001
+  #  warmup_epoch: 0
   regularizer:
     name: 'L2'
     factor: 0
 
 PostProcess:
-  name: DBPostProcess
-  thresh: 0.3
-  box_thresh: 0.6
-  max_candidates: 1000
-  unclip_ratio: 1.5
+  name: EASTPostProcess
+  score_thresh: 0.8
+  cover_thresh: 0.1
+  nms_thresh: 0.2
 
 Metric:
   name: DetMetric
@@ -67,40 +63,23 @@ Train:
     data_dir: ./train_data/icdar2015/text_localization/
     label_file_list:
       - ./train_data/icdar2015/text_localization/train_icdar2015_label.txt
-    ratio_list: [0.5]
+    ratio_list: [1.0]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
       - DetLabelEncode: # Class handling label
-      - IaaAugment:
-          augmenter_args:
-            - { 'type': Fliplr, 'args': { 'p': 0.5 } }
-            - { 'type': Affine, 'args': { 'rotate': [-10, 10] } }
-            - { 'type': Resize, 'args': { 'size': [0.5, 3] } }
-      - EastRandomCropData:
-          size: [640, 640]
-          max_tries: 50
-          keep_ratio: true
-      - MakeBorderMap:
-          shrink_ratio: 0.4
-          thresh_min: 0.3
-          thresh_max: 0.7
-      - MakeShrinkMap:
-          shrink_ratio: 0.4
-          min_text_size: 8
-      - NormalizeImage:
-          scale: 1./255.
-          mean: [0.485, 0.456, 0.406]
-          std: [0.229, 0.224, 0.225]
-          order: 'hwc'
-      - ToCHWImage:
+      - EASTProcessTrain:
+          image_shape: [512, 512]
+          background_ratio: 0.125
+          min_crop_side_ratio: 0.1
+          min_text_size: 10
       - KeepKeys:
-          keep_keys: ['image', 'threshold_map', 'threshold_mask', 'shrink_map', 'shrink_mask'] # the order of the dataloader list
+          keep_keys: ['image', 'score_map', 'geo_map', 'training_mask'] # dataloader will return list in this order
   loader:
     shuffle: True
     drop_last: False
-    batch_size_per_card: 4
+    batch_size_per_card: 16
     num_workers: 8
 
 Eval:
@@ -115,7 +94,8 @@ Eval:
           channel_first: False
       - DetLabelEncode: # Class handling label
       - DetResizeForTest:
-          image_shape: [736, 1280]
+          limit_side_len: 2400
+          limit_type: max
       - NormalizeImage:
           scale: 1./255.
           mean: [0.485, 0.456, 0.406]

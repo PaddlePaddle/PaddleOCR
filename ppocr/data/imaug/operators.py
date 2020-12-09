@@ -122,26 +122,37 @@ class DetResizeForTest(object):
         if 'limit_side_len' in kwargs:
             self.limit_side_len = kwargs['limit_side_len']
             self.limit_type = kwargs.get('limit_type', 'min')
+        if 'resize_long' in kwargs:
+            self.resize_type = 2
+            self.resize_long = kwargs.get('resize_long', 960)
         else:
             self.limit_side_len = 736
             self.limit_type = 'min'
 
     def __call__(self, data):
         img = data['image']
+        src_h, src_w, _ = img.shape
 
         if self.resize_type == 0:
-            img, shape = self.resize_image_type0(img)
+            # img, shape = self.resize_image_type0(img)
+            img, [ratio_h, ratio_w] = self.resize_image_type0(img)
+        elif self.resize_type == 2:
+            img, [ratio_h, ratio_w] = self.resize_image_type2(img)
         else:
-            img, shape = self.resize_image_type1(img)
+            # img, shape = self.resize_image_type1(img)
+            img, [ratio_h, ratio_w] = self.resize_image_type1(img)
         data['image'] = img
-        data['shape'] = shape
+        data['shape'] = np.array([src_h, src_w, ratio_h, ratio_w])
         return data
 
     def resize_image_type1(self, img):
         resize_h, resize_w = self.image_shape
         ori_h, ori_w = img.shape[:2]  # (h, w, c)
+        ratio_h = float(resize_h) / ori_h
+        ratio_w = float(resize_w) / ori_w
         img = cv2.resize(img, (int(resize_w), int(resize_h)))
-        return img, np.array([ori_h, ori_w])
+        # return img, np.array([ori_h, ori_w])
+        return img, [ratio_h, ratio_w]
 
     def resize_image_type0(self, img):
         """
@@ -184,4 +195,31 @@ class DetResizeForTest(object):
         except:
             print(img.shape, resize_w, resize_h)
             sys.exit(0)
-        return img, np.array([h, w])
+        ratio_h = resize_h / float(h)
+        ratio_w = resize_w / float(w)
+        # return img, np.array([h, w])
+        return img, [ratio_h, ratio_w]
+
+    def resize_image_type2(self, img):
+        h, w, _ = img.shape
+
+        resize_w = w
+        resize_h = h
+
+        # Fix the longer side
+        if resize_h > resize_w:
+            ratio = float(self.resize_long) / resize_h
+        else:
+            ratio = float(self.resize_long) / resize_w
+
+        resize_h = int(resize_h * ratio)
+        resize_w = int(resize_w * ratio)
+
+        max_stride = 128
+        resize_h = (resize_h + max_stride - 1) // max_stride * max_stride
+        resize_w = (resize_w + max_stride - 1) // max_stride * max_stride
+        img = cv2.resize(img, (int(resize_w), int(resize_h)))
+        ratio_h = resize_h / float(h)
+        ratio_w = resize_w / float(w)
+
+        return img, [ratio_h, ratio_w]
