@@ -48,12 +48,6 @@ class SimpleDataSet(Dataset):
             self.shuffle_data_random()
         self.ops = create_operators(dataset_config['transforms'], global_config)
 
-    def _sample_dataset(self, datas, sample_ratio):
-        sample_num = round(len(datas) * sample_ratio)
-
-        nums, rem = int(sample_num // len(datas)), int(sample_num % len(datas))
-        return list(datas) * nums + random.sample(datas, rem)
-
     def get_image_info_list(self, file_list, ratio_list):
         if isinstance(file_list, str):
             file_list = [file_list]
@@ -61,7 +55,8 @@ class SimpleDataSet(Dataset):
         for idx, file in enumerate(file_list):
             with open(file, "rb") as f:
                 lines = f.readlines()
-                lines = self._sample_dataset(lines, ratio_list[idx])
+                lines = random.sample(lines,
+                                      round(len(lines) * ratio_list[idx]))
                 data_lines.extend(lines)
         return data_lines
 
