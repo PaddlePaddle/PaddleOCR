@@ -64,7 +64,7 @@ tar -xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_model
 #### START TRAINING
 *If CPU version installed, please set the parameter `use_gpu` to `false` in the configuration.*
 ```shell
-python3 tools/train.py -c configs/det/det_mv3_db_v1.1.yml 2>&1 | tee train_det.log
+python3 tools/train.py -c configs/det/det_mv3_db.yml 2>&1 | tee train_det.log
 ```
 
 In the above instruction, use `-c` to select the training to use the `configs/det/det_db_mv3.yml` configuration file.
@@ -72,7 +72,7 @@ For a detailed explanation of the configuration file, please refer to [config](.
 
 You can also use `-o` to change the training parameters without modifying the yml file. For example, adjust the training learning rate to 0.0001
 ```shell
-python3 tools/train.py -c configs/det/det_mv3_db_v1.1.yml -o Optimizer.base_lr=0.0001
+python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
 ```
 
 #### load trained model and continue training
@@ -80,7 +80,7 @@ If you expect to load trained model and continue the training again, you can spe
 
 For example:
 ```shell
-python3 tools/train.py -c configs/det/det_mv3_db_v1.1.yml -o Global.checkpoints=./your/trained/model
+python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./your/trained/model
 ```
 
 **Note**: The priority of `Global.checkpoints` is higher than that of `Global.pretrain_weights`, that is, when two parameters are specified at the same time, the model specified by `Global.checkpoints` will be loaded first. If the model path specified by `Global.checkpoints` is wrong, the one specified by `Global.pretrain_weights` will be loaded.
@@ -90,18 +90,18 @@ python3 tools/train.py -c configs/det/det_mv3_db_v1.1.yml -o Global.checkpoints=
 
 PaddleOCR calculates three indicators for evaluating performance of OCR detection task: Precision, Recall, and Hmean.
 
-Run the following code to calculate the evaluation indicators. The result will be saved in the test result file specified by `save_res_path` in the configuration file `det_db_mv3_v1.1.yml`
+Run the following code to calculate the evaluation indicators. The result will be saved in the test result file specified by `save_res_path` in the configuration file `det_db_mv3.yml`
 
 When evaluating, set post-processing parameters `box_thresh=0.6`, `unclip_ratio=1.5`. If you use different datasets, different models for training, these two parameters should be adjusted for better result.
 
 ```shell
-python3 tools/eval.py -c configs/det/det_mv3_db_v1.1.yml  -o Global.checkpoints="{path/to/weights}/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
+python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="{path/to/weights}/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
 ```
 The model parameters during training are saved in the `Global.save_model_dir` directory by default. When evaluating indicators, you need to set `Global.checkpoints` to point to the saved parameter file.
 
 Such as:
 ```shell
-python3 tools/eval.py -c configs/det/det_mv3_db_v1.1.yml  -o Global.checkpoints="./output/det_db/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
+python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="./output/det_db/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
 ```
 
 * Note: `box_thresh` and `unclip_ratio` are parameters required for DB post-processing, and not need to be set when evaluating the EAST model.
@@ -110,16 +110,16 @@ python3 tools/eval.py -c configs/det/det_mv3_db_v1.1.yml  -o Global.checkpoints=
 
 Test the detection result on a single image:
 ```shell
-python3 tools/infer_det.py -c configs/det/det_mv3_db_v1.1.yml -o TestReader.infer_img="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy"
+python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy"
 ```
 
 When testing the DB model, adjust the post-processing threshold:
 ```shell
-python3 tools/infer_det.py -c configs/det/det_mv3_db_v1.1.yml -o TestReader.infer_img="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
+python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
 ```
 
 
 Test the detection result on all images in the folder:
 ```shell
-python3 tools/infer_det.py -c configs/det/det_mv3_db_v1.1.yml -o TestReader.infer_img="./doc/imgs_en/" Global.checkpoints="./output/det_db/best_accuracy"
+python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./doc/imgs_en/" Global.checkpoints="./output/det_db/best_accuracy"
 ```
