@@ -43,15 +43,18 @@ Next, we first introduce how to convert a trained model into an inference model,
 
 Download the lightweight Chinese detection model:
 ```
-wget -P ./ch_lite/ {link} && tar xf ./ch_lite/{file} -C ./ch_lite/
+wget -P ./ch_lite/ {link} && tar xf ./ch_lite/ch_ppocr_mobile_v2.0_det_train.tar -C ./ch_lite/
 ```
 
 The above model is a DB algorithm trained with MobileNetV3 as the backbone. To convert the trained model into an inference model, just run the following command:
 ```
--c Set the yml configuration file of the algorithm, you need to set `Global.load_static_weights=False`, and write the path of the training model to be converted under the `Global.pretrained_model` parameter in the configuration file, without adding the file suffix .pdmodel, .pdopt or .pdparams.
-# -o Set the address where the converted model will be saved.
+# -c Set the training algorithm yml configuration file
+# -o Set optional parameters
+# Global.checkpoints parameter Set the training model address to be converted without adding the file suffix .pdmodel, .pdopt or .pdparams.
+# Global.load_static_weights needs to be set to False
+# Global.save_inference_dir Set the address where the converted model will be saved.
 
-python3 tools/export_model.py -c configs/det/det_mv3_db_v1.1.yml -o ./inference/det_db/
+python3 tools/export_model.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.checkpoints=./ch_lite/ch_ppocr_mobile_v2.0_det_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/det_db/
 ```
 
 When converting to an inference model, the configuration file used is the same as the configuration file used during training. In addition, you also need to set the `Global.checkpoints` parameter in the configuration file.
@@ -68,15 +71,18 @@ inference/det_db/
 
 Download the lightweight Chinese recognition model:
 ```
-wget -P ./ch_lite/ {link} && tar xf ./ch_lite/{file} -C ./ch_lite/
+wget -P ./ch_lite/ {link} && tar xf ./ch_lite/ch_ppocr_mobile_v2.0_rec_train.tar -C ./ch_lite/
 ```
 
 The recognition model is converted to the inference model in the same way as the detection, as follows:
 ```
--c Set the yml configuration file of the algorithm, you need to set `Global.load_static_weights=False`, and write the path of the training model to be converted under the `Global.pretrained_model` parameter in the configuration file, without adding the file suffix .pdmodel, .pdopt or .pdparams.
-# -o Set the address where the converted model will be saved.
+# -c Set the training algorithm yml configuration file
+# -o Set optional parameters
+# Global.checkpoints parameter Set the training model address to be converted without adding the file suffix .pdmodel, .pdopt or .pdparams.
+# Global.load_static_weights needs to be set to False
+# Global.save_inference_dir Set the address where the converted model will be saved.
 
-python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o ./inference/cls/
+python3 tools/export_model.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml -o Global.checkpoints=./ch_lite/ch_ppocr_mobile_v2.0_rec_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/rec_crnn/
 ```
 
 If you have a model trained on your own dataset with a different dictionary file, please make sure that you modify the `character_dict_path` in the configuration file to your dictionary file path.
@@ -94,15 +100,18 @@ inference/det_db/
 
 Download the angle classification model:
 ```
-wget -P ./ch_lite/ {link} && tar xf ./ch_lite/{file} -C ./ch_lite/
+wget -P ./ch_lite/ {link} && tar xf ./ch_lite/ch_ppocr_mobile_v2.0_cls_train.tar -C ./ch_lite/
 ```
 
 The angle classification model is converted to the inference model in the same way as the detection, as follows:
 ```
--c Set the yml configuration file of the algorithm, you need to set `Global.load_static_weights=False`, and write the path of the training model to be converted under the `Global.pretrained_model` parameter in the configuration file, without adding the file suffix .pdmodel, .pdopt or .pdparams.
-# -o Set the address where the converted model will be saved.
+# -c Set the training algorithm yml configuration file
+# -o Set optional parameters
+# Global.checkpoints parameter Set the training model address to be converted without adding the file suffix .pdmodel, .pdopt or .pdparams.
+# Global.load_static_weights needs to be set to False
+# Global.save_inference_dir Set the address where the converted model will be saved.
 
-python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o ./inference/cls/
+python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o Global.checkpoints=./ch_lite/ch_ppocr_mobile_v2.0_cls_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/cls/
 ```
 
 After the conversion is successful, there are two files in the directory:
@@ -152,10 +161,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_di
 First, convert the model saved in the DB text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the ICDAR2015 English dataset as an example ([model download link](link)), you can use the following command to convert:
 
 ```
--c Set the yml configuration file of the algorithm, you need to set `Global.load_static_weights=False`, and write the path of the training model to be converted under the `Global.pretrained_model` parameter in the configuration file, without adding the file suffix .pdmodel, .pdopt or .pdparams.
-# -o Set the address where the converted model will be saved.
-
-python3 tools/export_model.py -c configs/det/det_r50_vd_db.yml -o "./inference/det_db"
+python3 tools/export_model.py -c configs/det/det_r50_vd_db.yml -o Global.checkpoints=./det_r50_vd_db_v2.0.train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/det_db
 ```
 
 DB text detection model inference, you can execute the following command:
@@ -176,10 +182,7 @@ The visualized text detection results are saved to the `./inference_results` fol
 First, convert the model saved in the EAST text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the ICDAR2015 English dataset as an example ([model download link](link)), you can use the following command to convert:
 
 ```
--c Set the yml configuration file of the algorithm, you need to set `Global.load_static_weights=False`, and write the path of the training model to be converted under the `Global.pretrained_model` parameter in the configuration file, without adding the file suffix .pdmodel, .pdopt or .pdparams.
-# -o Set the address where the converted model will be saved.
-
-python3 tools/export_model.py -c configs/det/det_r50_vd_east.yml -o Global.checkpoints="./models/det_r50_vd_east/best_accuracy" Global.save_inference_dir="./inference/det_east"
+python3 tools/export_model.py -c configs/det/det_r50_vd_east.yml -o Global.checkpoints=./det_r50_vd_east_v2.0.train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/det_east
 ```
 **For EAST text detection model inference, you need to set the parameter ``--det_algorithm="EAST"``**, run the following command:
 
@@ -200,10 +203,7 @@ The visualized text detection results are saved to the `./inference_results` fol
 First, convert the model saved in the SAST text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the ICDAR2015 English dataset as an example ([model download link](link)), you can use the following command to convert:
 
 ```
--c Set the yml configuration file of the algorithm, you need to set `Global.load_static_weights=False`, and write the path of the training model to be converted under the `Global.pretrained_model` parameter in the configuration file, without adding the file suffix .pdmodel, .pdopt or .pdparams.
-# -o Set the address where the converted model will be saved.
-
-python3 tools/export_model.py -c configs/det/det_r50_vd_sast_icdar15.yml -o "./inference/det_sast_ic15"
+python3 tools/export_model.py -c configs/det/det_r50_vd_sast_icdar15.yml -o Global.checkpoints=./det_r50_vd_sast_icdar15_v2.0.train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/det_sast_ic15
 ```
 
 **For SAST quadrangle text detection model inference, you need to set the parameter `--det_algorithm="SAST"`**, run the following command:
@@ -220,10 +220,7 @@ The visualized text detection results are saved to the `./inference_results` fol
 First, convert the model saved in the SAST text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the Total-Text English dataset as an example ([model download link](https://paddleocr.bj.bcebos.com/SAST/sast_r50_vd_total_text.tar)), you can use the following command to convert:
 
 ```
--c Set the yml configuration file of the algorithm, you need to set `Global.load_static_weights=False`, and write the path of the training model to be converted under the `Global.pretrained_model` parameter in the configuration file, without adding the file suffix .pdmodel, .pdopt or .pdparams.
-# -o Set the address where the converted model will be saved.
-
-python3 tools/export_model.py -c configs/det/det_r50_vd_sast_totaltext.yml -o Global.checkpoints="./models/sast_r50_vd_total_text/best_accuracy" Global.save_inference_dir="./inference/det_sast_tt"
+python3 tools/export_model.py -c configs/det/det_r50_vd_sast_totaltext.yml -o Global.checkpoints=./det_r50_vd_sast_totaltext_v2.0.train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/det_sast_tt
 ```
 
 **For SAST curved text detection model inference, you need to set the parameter `--det_algorithm="SAST"` and `--det_sast_polygon=True`**, run the following command:
@@ -263,18 +260,15 @@ Predicts of ./doc/imgs_words/ch/word_4.jpg:['实力活力', 0.89552695]
 <a name="CTC-BASED_RECOGNITION"></a>
 ### 2. CTC-BASED TEXT RECOGNITION MODEL INFERENCE
 
-Taking STAR-Net as an example, we introduce the recognition model inference based on CTC loss. CRNN and Rosetta are used in a similar way, by setting the recognition algorithm parameter `rec_algorithm`.
+Taking CRNN as an example, we introduce the recognition model inference based on CTC loss. Rosetta and Star-Net are used in a similar way, No need to set the recognition algorithm parameter rec_algorithm.
 
-First, convert the model saved in the STAR-Net text recognition training process into an inference model. Taking the model based on Resnet34_vd backbone network, using MJSynth and SynthText (two English text recognition synthetic datasets) for training, as an example ([model download address](link)). It can be converted as follow:
+First, convert the model saved in the CRNN text recognition training process into an inference model. Taking the model based on Resnet34_vd backbone network, using MJSynth and SynthText (two English text recognition synthetic datasets) for training, as an example ([model download address](link)). It can be converted as follow:
 
 ```
--c Set the yml configuration file of the algorithm, you need to set `Global.load_static_weights=False`, and write the path of the training model to be converted under the `Global.pretrained_model` parameter in the configuration file, without adding the file suffix .pdmodel, .pdopt or .pdparams.
-# -o Set the address where the converted model will be saved.
-
-python3 tools/export_model.py -c configs/rec/rec_r34_vd_tps_bilstm_ctc.yml -o "./inference/starnet"
+python3 tools/export_model.py -c configs/det/rec_r34_vd_none_bilstm_ctc.yml -o Global.checkpoints=./rec_r34_vd_none_bilstm_ctc_v2.0.train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/rec_crnn
 ```
 
-For STAR-Net text recognition model inference, execute the following commands:
+For CRNN text recognition model inference, execute the following commands:
 
 ```
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./inference/starnet/" --rec_image_shape="3, 32, 100" --rec_char_type="en"
@@ -284,7 +278,11 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png
 ### 3. ATTENTION-BASED TEXT RECOGNITION MODEL INFERENCE
 ![](../imgs_words_en/word_336.png)
 
+The recognition model based on Attention loss is different from ctc, and additional recognition algorithm parameters need to be set --rec_algorithm="RARE"
 After executing the command, the recognition result of the above image is as follows:
+```bash
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./inference/rare/" --rec_image_shape="3, 32, 100" --rec_char_type="en" --rec_algorithm="RARE"
+```
 
 Predicts of ./doc/imgs_words_en/word_336.png:['super', 0.9999555]
 
