@@ -100,8 +100,8 @@ def create_predictor(args, mode, logger):
     if model_dir is None:
         logger.info("not find {} model file path {}".format(mode, model_dir))
         sys.exit(0)
-    model_file_path = model_dir + "/model"
-    params_file_path = model_dir + "/params"
+    model_file_path = model_dir + "/inference.pdmodel"
+    params_file_path = model_dir + "/inference.pdiparams"
     if not os.path.exists(model_file_path):
         logger.info("not find model file path {}".format(model_file_path))
         sys.exit(0)
@@ -230,10 +230,10 @@ def draw_ocr_box_txt(image,
                 box[2][1], box[3][0], box[3][1]
             ],
             outline=color)
-        box_height = math.sqrt((box[0][0] - box[3][0]) ** 2 + (box[0][1] - box[3][
-            1]) ** 2)
-        box_width = math.sqrt((box[0][0] - box[1][0]) ** 2 + (box[0][1] - box[1][
-            1]) ** 2)
+        box_height = math.sqrt((box[0][0] - box[3][0])**2 + (box[0][1] - box[3][
+            1])**2)
+        box_width = math.sqrt((box[0][0] - box[1][0])**2 + (box[0][1] - box[1][
+            1])**2)
         if box_height > 2 * box_width:
             font_size = max(int(box_width * 0.9), 10)
             font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
@@ -260,7 +260,6 @@ def str_count(s):
     Count the number of Chinese characters,
     a single English character and a single number
     equal to half the length of Chinese characters.
-
     args:
         s(string): the input of string
     return(int):
@@ -295,7 +294,6 @@ def text_visual(texts,
         img_w(int): the width of blank img
         font_path: the path of font which is used to draw text
     return(array):
-
     """
     if scores is not None:
         assert len(texts) == len(

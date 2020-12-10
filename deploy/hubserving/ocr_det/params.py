@@ -10,16 +10,17 @@ class Config(object):
 
 def read_params():
     cfg = Config()
-    
+
     #params for text detector
     cfg.det_algorithm = "DB"
-    cfg.det_model_dir = "./inference/ch_det_mv3_db/"
-    cfg.det_max_side_len = 960
+    cfg.det_model_dir = "./inference/ch_ppocr_mobile_v1.1_det_infer/"
+    cfg.det_limit_side_len = 960
+    cfg.det_limit_type = 'max'
 
     #DB parmas
-    cfg.det_db_thresh =0.3
-    cfg.det_db_box_thresh =0.5
-    cfg.det_db_unclip_ratio =2.0
+    cfg.det_db_thresh = 0.3
+    cfg.det_db_box_thresh = 0.5
+    cfg.det_db_unclip_ratio = 2.0
 
     # #EAST parmas
     # cfg.det_east_score_thresh = 0.8
@@ -37,5 +38,6 @@ def read_params():
     # cfg.use_space_char = True
 
     cfg.use_zero_copy_run = False
+    cfg.use_pdserving = False
 
     return cfg

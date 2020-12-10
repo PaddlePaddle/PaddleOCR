@@ -55,8 +55,8 @@ def load_dygraph_pretrain(model, logger, path=None, load_static_weights=False):
             weight_name = weight_name.replace('binarize', '').replace(
                 'thresh', '')  # for DB
             if weight_name in pre_state_dict.keys():
-                logger.info('Load weight: {}, shape: {}'.format(
-                    weight_name, pre_state_dict[weight_name].shape))
+                # logger.info('Load weight: {}, shape: {}'.format(
+                #     weight_name, pre_state_dict[weight_name].shape))
                 if 'encoder_rnn' in key:
                     # delete axis which is 1
                     pre_state_dict[weight_name] = pre_state_dict[

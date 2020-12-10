@@ -41,8 +41,8 @@ PaddleOCR基于动态图开源的文本识别算法列表：
 - [x]  CRNN([paper](https://arxiv.org/abs/1507.05717))（ppocr推荐）
 - [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))
 - [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))
-- [ ]  RARE([paper](https://arxiv.org/abs/1603.03915v1))
-- [ ]  SRN([paper](https://arxiv.org/abs/2003.12294))
+- [ ]  RARE([paper](https://arxiv.org/abs/1603.03915v1)) coming soon
+- [ ]  SRN([paper](https://arxiv.org/abs/2003.12294)) coming soon
 
 参考[DTRB](https://arxiv.org/abs/1904.01906)文字识别训练和评估流程，使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估，算法效果如下：
 
@@ -54,5 +54,6 @@ PaddleOCR基于动态图开源的文本识别算法列表：
 |CRNN|MobileNetV3|79.37%|rec_mv3_none_bilstm_ctc|[下载链接](link)|
 |STAR-Net|Resnet34_vd|83.93%|rec_r34_vd_tps_bilstm_ctc|[下载链接](link)|
 |STAR-Net|MobileNetV3|81.56%|rec_mv3_tps_bilstm_ctc|[下载链接](link)|
+
 
 PaddleOCR文本识别算法的训练和使用请参考文档教程中[模型训练/评估中的文本识别部分](./recognition.md)。
