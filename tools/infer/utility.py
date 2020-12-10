@@ -100,8 +100,8 @@ def create_predictor(args, mode, logger):
     if model_dir is None:
         logger.info("not find {} model file path {}".format(mode, model_dir))
         sys.exit(0)
-    model_file_path = model_dir + ".pdmodel"
-    params_file_path = model_dir + ".pdiparams"
+    model_file_path = model_dir + "/inference.pdmodel"
+    params_file_path = model_dir + "/inference.pdiparams"
     if not os.path.exists(model_file_path):
         logger.info("not find model file path {}".format(model_file_path))
         sys.exit(0)

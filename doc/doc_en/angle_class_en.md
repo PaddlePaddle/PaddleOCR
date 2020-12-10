@@ -65,9 +65,9 @@ Start training:
 ```
 # Set PYTHONPATH path
 export PYTHONPATH=$PYTHONPATH:.
-# GPU training Support single card and multi-card training, specify the card number through selected_gpus
+# GPU training Support single card and multi-card training, specify the card number through gpus
 # Start training, the following command has been written into the train.sh file, just modify the configuration file path in the file
-python3 -m paddle.distributed.launch --selected_gpus '0,1,2,3,4,5,6,7'  tools/train.py -c configs/cls/cls_mv3.yml
+python3 -m paddle.distributed.launch --gpus '0,1,2,3,4,5,6,7'  tools/train.py -c configs/cls/cls_mv3.yml
 ```
 
 - Data Augmentation
