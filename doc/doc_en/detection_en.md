@@ -64,7 +64,7 @@ tar -xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_model
 #### START TRAINING
 *If CPU version installed, please set the parameter `use_gpu` to `false` in the configuration.*
 ```shell
-python3 tools/train.py -c configs/det/det_mv3_db.yml 2>&1 | tee train_det.log
+python3 tools/train.py -c configs/det/det_mv3_db.yml
 ```
 
 In the above instruction, use `-c` to select the training to use the `configs/det/det_db_mv3.yml` configuration file.
@@ -72,7 +72,12 @@ For a detailed explanation of the configuration file, please refer to [config](.
 
 You can also use `-o` to change the training parameters without modifying the yml file. For example, adjust the training learning rate to 0.0001
 ```shell
+# single GPU training
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
+
+# multi-GPU training
+# Set the GPU ID used by the '--select_gpus' parameter;
+python3 -m paddle.distributed.launch --selected_gpus '0,1,2,3'  tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
 ```
 
 #### load trained model and continue training

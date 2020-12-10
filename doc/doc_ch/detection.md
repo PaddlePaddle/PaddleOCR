@@ -73,11 +73,14 @@ tar -xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_model
 *如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false*
 
 ```shell
-# 训练 mv3_db 模型，并将训练日志保存为 tain_det.log
+# 单机单卡训练 mv3_db 模型
 python3 tools/train.py -c configs/det/det_mv3_db.yml \
-     -o Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained/ \
-     2>&1 | tee train_det.log
+     -o Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained/
+# 单机多卡训练，通过 --select_gpus 参数设置使用的GPU ID；
+python3 -m paddle.distributed.launch --selected_gpus '0,1,2,3' tools/train.py -c configs/det/det_mv3_db.yml \
+     -o Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained/
 ```
+
 
 上述指令中，通过-c 选择训练使用configs/det/det_db_mv3.yml配置文件。
 有关配置文件的详细解释，请参考[链接](./config.md)。
@@ -92,6 +95,8 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
 如果训练程序中断，如果希望加载训练中断的模型从而恢复训练，可以通过指定Global.checkpoints指定要加载的模型路径：
 ```shell
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./your/trained/model
+
+
 ```
 
 **注意**：`Global.checkpoints`的优先级高于`Global.pretrain_weights`的优先级，即同时指定两个参数时，优先加载`Global.checkpoints`指定的模型，如果`Global.checkpoints`指定的模型路径有误，会加载`Global.pretrain_weights`指定的模型。
