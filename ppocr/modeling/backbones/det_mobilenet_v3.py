@@ -34,13 +34,21 @@ def make_divisible(v, divisor=8, min_value=None):
 
 
 class MobileNetV3(nn.Layer):
-    def __init__(self, in_channels=3, model_name='large', scale=0.5, **kwargs):
+    def __init__(self,
+                 in_channels=3,
+                 model_name='large',
+                 scale=0.5,
+                 disable_se=False,
+                 **kwargs):
         """
         the MobilenetV3 backbone network for detection module.
         Args:
             params(dict): the super parameters for build network
         """
         super(MobileNetV3, self).__init__()
+
+        self.disable_se = disable_se
+
         if model_name == "large":
             cfg = [
                 # k, exp, c,  se,     nl,  s,
@@ -103,6 +111,7 @@ class MobileNetV3(nn.Layer):
         i = 0
         inplanes = make_divisible(inplanes * scale)
         for (k, exp, c, se, nl, s) in cfg:
+            se = se and not self.disable_se
             if s == 2 and i > 2:
                 self.out_channels.append(inplanes)
                 self.stages.append(nn.Sequential(*block_list))

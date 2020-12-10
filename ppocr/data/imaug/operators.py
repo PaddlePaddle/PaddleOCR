@@ -42,6 +42,8 @@ class DecodeImage(object):
                 img) > 0, "invalid input 'img' in DecodeImage"
         img = np.frombuffer(img, dtype='uint8')
         img = cv2.imdecode(img, 1)
+        if img is None:
+            return None
         if self.img_mode == 'GRAY':
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
         elif self.img_mode == 'RGB':
@@ -197,7 +199,7 @@ class DetResizeForTest(object):
         ratio_w = resize_w / float(w)
         # return img, np.array([h, w])
         return img, [ratio_h, ratio_w]
-    
+
     def resize_image_type2(self, img):
         h, w, _ = img.shape
 
