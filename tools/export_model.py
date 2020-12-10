@@ -15,7 +15,7 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-from ppocr.utils.utility import enable_static_mode
+
 
 import os
 import sys
@@ -39,6 +39,7 @@ set_paddle_flags(
 
 import program
 from paddle import fluid
+from ppocr.utils.utility import enable_static_mode
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
 from ppocr.utils.save_load import init_model
