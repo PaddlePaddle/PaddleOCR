@@ -13,6 +13,7 @@
 # limitations under the License.
 import os
 import sys
+
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
@@ -30,12 +31,15 @@ from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.utils.logging import get_logger
 from tools.infer.utility import draw_ocr_box_txt
 
+logger = get_logger()
+
 
 class TextSystem(object):
     def __init__(self, args):
         self.text_detector = predict_det.TextDetector(args)
         self.text_recognizer = predict_rec.TextRecognizer(args)
         self.use_angle_cls = args.use_angle_cls
+        self.drop_score = args.drop_score
         if self.use_angle_cls:
             self.text_classifier = predict_cls.TextClassifier(args)
 
@@ -103,7 +107,13 @@ class TextSystem(object):
         logger.info("rec_res num  : {}, elapse : {}".format(
             len(rec_res), elapse))
         # self.print_draw_crop_rec_res(img_crop_list, rec_res)
-        return dt_boxes, rec_res
+        filter_boxes, filter_rec_res = [], []
+        for box, rec_reuslt in zip(dt_boxes, rec_res):
+            text, score = rec_reuslt
+            if score >= self.drop_score:
+                filter_boxes.append(box)
+                filter_rec_res.append(rec_reuslt)
+        return filter_boxes, filter_rec_res
 
 
 def sorted_boxes(dt_boxes):
@@ -119,8 +129,8 @@ def sorted_boxes(dt_boxes):
     _boxes = list(sorted_boxes)
 
     for i in range(num_boxes - 1):
-        if abs(_boxes[i+1][0][1] - _boxes[i][0][1]) < 10 and \
-            (_boxes[i + 1][0][0] < _boxes[i][0][0]):
+        if abs(_boxes[i + 1][0][1] - _boxes[i][0][1]) < 10 and \
+                (_boxes[i + 1][0][0] < _boxes[i][0][0]):
             tmp = _boxes[i]
             _boxes[i] = _boxes[i + 1]
             _boxes[i + 1] = tmp
@@ -145,12 +155,8 @@ def main(args):
         elapse = time.time() - starttime
         logger.info("Predict time of %s: %.3fs" % (image_file, elapse))
 
-        dt_num = len(dt_boxes)
-        for dno in range(dt_num):
-            text, score = rec_res[dno]
-            if score >= drop_score:
-                text_str = "%s, %.3f" % (text, score)
-                logger.info(text_str)
+        for text, score in rec_res:
+            logger.info("{}, {:.3f}".format(text, score))
 
         if is_visualize:
             image = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
@@ -176,5 +182,4 @@ def main(args):
 
 
 if __name__ == "__main__":
-    logger = get_logger()
     main(utility.parse_args())

@@ -39,26 +39,12 @@ def parse_args():
     return parser.parse_args()
 
 
-class Model(paddle.nn.Layer):
-    def __init__(self, model):
-        super(Model, self).__init__()
-        self.pre_model = model
-
-    # Please modify the 'shape' according to actual needs
-    @to_static(input_spec=[
-        paddle.static.InputSpec(
-            shape=[None, 3, 640, 640], dtype='float32')
-    ])
-    def forward(self, inputs):
-        x = self.pre_model(inputs)
-        return x
-
-
 def main():
     FLAGS = parse_args()
     config = load_config(FLAGS.config)
     logger = get_logger()
     # build post process
+
     post_process_class = build_post_process(config['PostProcess'],
                                             config['Global'])
 
@@ -71,9 +57,16 @@ def main():
     init_model(config, model, logger)
     model.eval()
 
-    model = Model(model)
-    save_path = '{}/{}'.format(FLAGS.output_path,
-                               config['Architecture']['model_type'])
+    save_path = '{}/{}/inference'.format(FLAGS.output_path,
+                                         config['Architecture']['model_type'])
+    infer_shape = [3, 32, 100] if config['Architecture'][
+        'model_type'] != "det" else [3, 640, 640]
+    model = to_static(
+        model,
+        input_spec=[
+            paddle.static.InputSpec(
+                shape=[None] + infer_shape, dtype='float32')
+        ])
     paddle.jit.save(model, save_path)
     logger.info('inference model is saved to {}'.format(save_path))
 
