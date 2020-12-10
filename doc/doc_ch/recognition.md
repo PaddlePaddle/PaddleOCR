@@ -332,7 +332,7 @@ Eval:
 *注意* 评估时必须确保配置文件中 infer_img 字段为空
 ```
 # GPU 评估， Global.checkpoints 为待测权重
-python3 --gpus '0' tools/eval.py -c configs/rec/rec_icdar15_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_icdar15_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
 <a name="预测"></a>

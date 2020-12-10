@@ -322,7 +322,7 @@ The evaluation data set can be modified via `configs/rec/rec_icdar15_reader.yml`
 
 ```
 # GPU evaluation, Global.checkpoints is the weight to be tested
-python3 --gpus '0' tools/eval.py -c configs/rec/rec_icdar15_reader.yml -o Global.checkpoints={path/to/weights}/best_accuracy
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_icdar15_reader.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
 <a name="PREDICTION"></a>
