@@ -2,7 +2,7 @@
 
 经测试PaddleOCR可在glibc 2.23上运行，您也可以测试其他glibc版本或安装glic 2.23
 PaddleOCR 工作环境
-- PaddlePaddle 1.8+ ，推荐使用 PaddlePaddle 2.0.0.beta
+- PaddlePaddle 2.0rc0+ ，推荐使用 PaddlePaddle 2.0rc0
 - python3.7
 - glibc 2.23
 - cuDNN 7.6+ (GPU)
@@ -19,32 +19,15 @@ cd /home/Projects
 # 创建一个名字为ppocr的docker容器，并将当前目录映射到容器的/paddle目录下
 
 如果您希望在CPU环境下使用docker，使用docker而不是nvidia-docker创建docker
-sudo docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev /bin/bash
+sudo docker run --name ppocr -v $PWD:/paddle --network=host -it paddlepaddle/paddle:latest-dev-cuda10.1-cudnn7-gcc82 /bin/bash
 
-如果使用CUDA9，请运行以下命令创建容器
-sudo nvidia-docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev /bin/bash
-
-如果使用CUDA10，请运行以下命令创建容器
-sudo nvidia-docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda10.0-cudnn7-dev /bin/bash
+如果使用CUDA10，请运行以下命令创建容器，设置docker容器共享内存shm-size为64G，建议设置32G以上
+sudo nvidia-docker run --name ppocr -v $PWD:/paddle --shm-size=64G --network=host -it paddlepaddle/paddle:latest-dev-cuda10.1-cudnn7-gcc82 /bin/bash
 
 您也可以访问[DockerHub](https://hub.docker.com/r/paddlepaddle/paddle/tags/)获取与您机器适配的镜像。
 
-# ctrl+P+Q可退出docker，重新进入docker使用如下命令
+# ctrl+P+Q可退出docker 容器，重新进入docker 容器使用如下命令
 sudo docker container exec -it ppocr /bin/bash
-```
-
-注意：如果docker pull过慢，可以按照如下步骤手动下载后加载docker,以cuda9 docker为例，使用cuda10 docker只需要将cuda9改为cuda10即可。
-```
-# 下载CUDA9 docker的压缩文件，并解压
-wget https://paddleocr.bj.bcebos.com/docker/docker_pdocr_cuda9.tar.gz
-# 为减少下载时间，上传的docker image是压缩过的，需要解压使用
-tar zxf docker_pdocr_cuda9.tar.gz
-# 创建image
-docker load < docker_pdocr_cuda9.tar
-# 完成上述步骤后通过docker images检查是否加载了下载的镜像
-docker images
-# 执行docker images后如果有下面的输出，即可按照按照 步骤1 创建docker环境。
-hub.baidubce.com/paddlepaddle/paddle   latest-gpu-cuda9.0-cudnn7-dev    f56310dcc829
 ```
 
 **2. 安装PaddlePaddle Fluid v2.0**
@@ -52,11 +35,11 @@ hub.baidubce.com/paddlepaddle/paddle   latest-gpu-cuda9.0-cudnn7-dev    f56310dc
 pip3 install --upgrade pip
 
 如果您的机器安装的是CUDA9或CUDA10，请运行以下命令安装
-python3 -m pip install paddlepaddle-gpu==2.0.0b0 -i https://mirror.baidu.com/pypi/simple
+python3 -m pip install paddlepaddle-gpu==2.0.0rc0 -i https://mirror.baidu.com/pypi/simple
 
 如果您的机器是CPU，请运行以下命令安装
 
-python3 -m pip install paddlepaddle==2.0.0b0 -i https://mirror.baidu.com/pypi/simple
+python3 -m pip install paddlepaddle==2.0.0rc0 -i https://mirror.baidu.com/pypi/simple
 
 更多的版本需求，请参照[安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
 ```
