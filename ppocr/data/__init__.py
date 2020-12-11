@@ -67,6 +67,7 @@ def build_dataloader(config, mode, device, logger):
     drop_last = loader_config['drop_last']
     num_workers = loader_config['num_workers']
 
+    use_shared_memory = False
     if mode == "Train":
         #Distribute data to multiple cards
         batch_sampler = DistributedBatchSampler(
@@ -74,6 +75,7 @@ def build_dataloader(config, mode, device, logger):
             batch_size=batch_size,
             shuffle=False,
             drop_last=drop_last)
+        use_shared_memory = True
     else:
         #Distribute data to single card
         batch_sampler = BatchSampler(
@@ -87,6 +89,7 @@ def build_dataloader(config, mode, device, logger):
         batch_sampler=batch_sampler,
         places=device,
         num_workers=num_workers,
-        return_list=True)
+        return_list=True,
+        use_shared_memory=use_shared_memory)
 
     return data_loader
