@@ -114,11 +114,13 @@ In `word_dict.txt`, there is a single word in each line, which maps characters a
 
 `ppocr/utils/dict/french_dict.txt` is a French dictionary with 118 characters
 
-`ppocr/utils/dict/japan_dict.txt` is a French dictionary with 4399 characters
+`ppocr/utils/dict/japan_dict.txt` is a Japan dictionary with 4399 characters
 
-`ppocr/utils/dict/korean_dict.txt` is a French dictionary with 3636 characters
+`ppocr/utils/dict/korean_dict.txt` is a Korean dictionary with 3636 characters
 
-`ppocr/utils/dict/german_dict.txt` is a French dictionary with 131 characters
+`ppocr/utils/dict/german_dict.txt` is a German dictionary with 131 characters
+
+`ppocr/utils/dict/en_dict.txt` is a English dictionary with 63 characters
 
 You can use it on demand.
 
@@ -194,7 +196,6 @@ If the evaluation set is large, the test will be time-consuming. It is recommend
 | rec_mv3_tps_bilstm_attn.yml |  RARE |   Mobilenet_v3 large 0.5 |  tps   |  BiLSTM |  attention  |
 | rec_r34_vd_none_bilstm_ctc.yml |  CRNN |   Resnet34_vd |  None   |  BiLSTM |  ctc  |
 | rec_r34_vd_none_none_ctc.yml |  Rosetta |   Resnet34_vd |  None   |  None |  ctc  |
-| rec_r34_vd_tps_bilstm_attn.yml | RARE | Resnet34_vd | tps | BiLSTM | attention |
 | rec_r34_vd_tps_bilstm_ctc.yml | STARNet | Resnet34_vd | tps | BiLSTM | ctc |
 
 For training Chinese data, it is recommended to use
