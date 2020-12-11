@@ -373,11 +373,11 @@ class MainWindow(QMainWindow, WindowMixin):
         openPrevImg = action(getStr('prevImg'), self.openPrevImg,
                              'a', 'prev', getStr('prevImgDetail'))
 
-        verify = action(getStr('verifyImg'), self.verifyImg,
-                        'space', 'verify', getStr('verifyImgDetail'))
+        # verify = action(getStr('verifyImg'), self.verifyImg,
+        #                 'space', 'verify', getStr('verifyImgDetail'))
 
         save = action(getStr('save'), self.saveFile,
-                      'Ctrl+S', 'save', getStr('saveDetail'), enabled=False)
+                      'Ctrl+S', 'verify', getStr('saveDetail'), enabled=False)
 
         alcm = action(getStr('choosemodel'), self.autolcm,
                                         'Ctrl+M', 'next', getStr('tipchoosemodel'))
@@ -463,6 +463,9 @@ class MainWindow(QMainWindow, WindowMixin):
         saveRec = action(getStr('saveRec'), self.saveRecResult,
                             '', 'saveRec', getStr('saveRec'), enabled=False)
 
+        saveLabel = action(getStr('saveLabel'), self.saveLabelFile, #
+                            '', 'save', getStr('saveLabel'), enabled=False)
+
         self.editButton.setDefaultAction(edit)
         self.newButton.setDefaultAction(create)
         self.DelButton.setDefaultAction(deleteImg)
@@ -526,9 +529,9 @@ class MainWindow(QMainWindow, WindowMixin):
                               shapeLineColor=shapeLineColor, shapeFillColor=shapeFillColor,
                               zoom=zoom, zoomIn=zoomIn, zoomOut=zoomOut, zoomOrg=zoomOrg,
                               fitWindow=fitWindow, fitWidth=fitWidth,
-                              zoomActions=zoomActions,
+                              zoomActions=zoomActions, saveLabel=saveLabel,
                               fileMenuActions=(
-                                  open, opendir, save,  resetAll, quit),
+                                  open, opendir, saveLabel,  resetAll, quit),
                               beginner=(), advanced=(),
                               editMenu=(createpoly, edit, copy, delete,
                                         None, color1, self.drawSquaresOption),
@@ -564,7 +567,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.displayLabelOption.triggered.connect(self.togglePaintLabelsOption)
 
         addActions(self.menus.file,
-                   (opendir, None, save,  resetAll, deleteImg, quit))
+                   (opendir, None, saveLabel, saveRec, None, resetAll, deleteImg, quit))
 
         addActions(self.menus.help, (showSteps, showInfo))
         addActions(self.menus.view, (
@@ -574,7 +577,7 @@ class MainWindow(QMainWindow, WindowMixin):
             zoomIn, zoomOut, zoomOrg, None,
             fitWindow, fitWidth))
 
-        addActions(self.menus.autolabel, (alcm, saveRec, None, help)) #
+        addActions(self.menus.autolabel, (alcm, None, help)) #
 
         self.menus.file.aboutToShow.connect(self.updateFileMenu)
 
@@ -586,14 +589,14 @@ class MainWindow(QMainWindow, WindowMixin):
 
         # self.tools = self.toolbar('Tools')
 
-        self.actions.beginner = (
-            open, opendir, openNextImg, openPrevImg, verify, save, None, create, copy, delete, None,
-            zoomIn, zoom, zoomOut, fitWindow, fitWidth)
-
-        self.actions.advanced = (
-            open, opendir, openNextImg, openPrevImg, save, None,
-            createMode, editMode, None,
-            hideAll, showAll)
+        # self.actions.beginner = (
+        #     open, opendir, openNextImg, openPrevImg, verify, save, None, create, copy, delete, None,
+        #     zoomIn, zoom, zoomOut, fitWindow, fitWidth)
+        #
+        # self.actions.advanced = (
+        #     open, opendir, openNextImg, openPrevImg, save, None,
+        #     createMode, editMode, None,
+        #     hideAll, showAll)
 
         self.statusBar().showMessage('%s started.' % __appname__)
         self.statusBar().show()
@@ -1400,8 +1403,7 @@ class MainWindow(QMainWindow, WindowMixin):
             settings[SETTING_DRAW_SQUARE] = self.drawSquaresOption.isChecked()
             settings.save()
             try:
-                self.saveFilestate()
-                self.savePPlabel()
+                self.saveLabelFile()
             except:
                 pass
 
@@ -1446,8 +1448,7 @@ class MainWindow(QMainWindow, WindowMixin):
         if not self.mayContinue() or not dirpath:
             return
         if self.defaultSaveDir and self.defaultSaveDir != dirpath:
-            self.saveFilestate()
-            self.savePPlabel()
+            self.saveLabelFile()
 
         if not isDelete:
             self.loadFilestate(dirpath)
@@ -1488,6 +1489,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.haveAutoReced = False
         self.AutoRecognition.setEnabled(True)
         self.reRecogButton.setEnabled(True)
+        self.actions.saveLabel.setEnabled(True)
 
     def verifyImg(self, _value=False):
         # Proceding next image without dialog if having any label
@@ -1967,6 +1969,10 @@ class MainWindow(QMainWindow, WindowMixin):
                 f.write(key + '\t')
                 f.write(json.dumps(self.Cachelabel[key], ensure_ascii=False) + '\n')
 
+    def saveLabelFile(self):
+        self.saveFilestate()
+        self.savePPlabel()
+
     def saveRecResult(self):
         if None in [self.PPlabelpath, self.PPlabel, self.fileStatedict]:
             QMessageBox.information(self, "Information", "Save file first")
@@ -2013,7 +2019,7 @@ def get_main_app(argv=[]):
     app.setWindowIcon(newIcon("app"))
     # Tzutalin 201705+: Accept extra agruments to change predefined class file
     argparser = argparse.ArgumentParser()
-    argparser.add_argument("--lang", default='ch', nargs="?")
+    argparser.add_argument("--lang", default='en', nargs="?")
     argparser.add_argument("--predefined_classes_file",
                            default=os.path.join(os.path.dirname(__file__), "data", "predefined_classes.txt"),
                            nargs="?")

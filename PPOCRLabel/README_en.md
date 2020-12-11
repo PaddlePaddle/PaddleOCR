@@ -2,7 +2,7 @@
 
 PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field. It is written in python3 and pyqt5, supporting rectangular box annotation and four-point annotation modes. Annotations can be directly used for the training of PPOCR detection and recognition models.
 
-<img src="./data/gif/steps.gif" width="100%"/>
+<img src="./data/gif/steps_en.gif" width="100%"/>
 
 ## Installation
 
@@ -17,10 +17,9 @@ Refer to [PaddleOCR installation document](https://github.com/PaddlePaddle/Paddl
 Download and install [Anaconda](https://www.anaconda.com/download/#download) (Python 3+)
 
 ```
-conda install pyqt=5
+pip install pyqt5
 cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
-pyrcc5 -o libs/resources.py resources.qrc
-python PPOCRLabel.py --lang en
+python PPOCRLabel.py
 ```
 
 #### Ubuntu Linux
@@ -29,7 +28,7 @@ python PPOCRLabel.py --lang en
 pip3 install pyqt5
 pip3 install trash-cli
 cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
-python3 PPOCRLabel.py --lang en
+python3 PPOCRLabel.py
 ```
 
 #### macOS
@@ -38,7 +37,7 @@ pip3 install pyqt5
 pip3 uninstall opencv-python # Uninstall opencv manually as it conflicts with pyqt
 pip3 install opencv-contrib-python-headless # Install the headless version of opencv
 cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
-python3 PPOCRLabel.py --lang en
+python3 PPOCRLabel.py
 ```
 
 ## Usage
@@ -63,11 +62,11 @@ python3 PPOCRLabel.py --lang en
 
 7. Double click the result in 'recognition result' list to manually change inaccurate recognition results.
 
-8. Click "Save", the image status will switch to "√",then the program automatically jump to the next.
+8. Click "Check", the image status will switch to "√",then the program automatically jump to the next(The results will not be written directly to the file at this time).
 
 9. Click "Delete Image" and the image will be deleted to the recycle bin.
 
-10. Labeling result: After closing the application or switching the file path, the manually saved label will be stored in *Label.txt* under the opened picture folder.
+10. Labeling result: the user can save manually through the menu "File - Save Label", while the program will also save automatically after every 10 images confirmed by the user.the manually checked label will be stored in *Label.txt* under the opened picture folder.
     Click "PaddleOCR"-"Save Recognition Results" in the menu bar, the recognition training data of such pictures will be saved in the *crop_img* folder, and the recognition label will be saved in *rec_gt.txt*<sup>[4]</sup>.
 
 ### Note
@@ -79,14 +78,14 @@ python3 PPOCRLabel.py --lang en
 [3] After clicking "Re-recognize", the model will overwrite ALL recognition results in the picture.
 Therefore, if the recognition result has been manually changed before, it may change after re-recognition.
 
-[4] The files produced by PPOCRLabel include the following, please do not manually change the contents, otherwise it will cause the program to be abnormal.
+[4] The files produced by PPOCRLabel can be found under the opened picture folder including the following, please do not manually change the contents, otherwise it will cause the program to be abnormal.
 
 |   File name   |                         Description                          |
 | :-----------: | :----------------------------------------------------------: |
 |   Label.txt   | The detection label file can be directly used for PPOCR detection model training. After the user saves 10 label results, the file will be automatically saved. It will also be written when the user closes the application or changes the file folder. |
 | fileState.txt | The picture status file save the image in the current folder that has been manually confirmed by the user. |
 |  Cache.cach   |    Cache files to save the results of model recognition.     |
-|  rec_gt.txt   | The recognition label file, which can be directly used for PPOCR identification model training, is generated after the user clicks on the menu bar "PaddleOCR"-"Save recognition result". |
+|  rec_gt.txt   | The recognition label file, which can be directly used for PPOCR identification model training, is generated after the user clicks on the menu bar "File"-"Save recognition result". |
 |   crop_img    | The recognition data, generated at the same time with *rec_gt.txt* |
 
 ## Explanation
@@ -115,7 +114,10 @@ For some data that are difficult to recognize, the recognition results will not 
 	```
 	pip install opencv-python==4.2.0.32
 	```
-
+- If you get an error starting with **Missing string id **,you need to recompile resources:
+    ```
+	pyrcc5 -o libs/resources.py resources.qrc
+	```
 ### Related
 
 1.[Tzutalin. LabelImg. Git code (2015)](https://github.com/tzutalin/labelImg)
