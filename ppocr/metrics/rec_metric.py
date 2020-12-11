@@ -43,7 +43,7 @@ class RecMetric(object):
 
     def get_metric(self):
         """
-        return metircs {
+        return metrics {
                  'acc': 0,
                  'norm_edit_dis': 0,
             }
