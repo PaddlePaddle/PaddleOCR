@@ -114,11 +114,11 @@ In `word_dict.txt`, there is a single word in each line, which maps characters a
 
 `ppocr/utils/dict/french_dict.txt` is a French dictionary with 118 characters
 
-`ppocr/utils/dict/japan_dict.txt` is a French dictionary with 4399 characters
+`ppocr/utils/dict/japan_dict.txt` is a Japanese dictionary with 4399 characters
 
-`ppocr/utils/dict/korean_dict.txt` is a French dictionary with 3636 characters
+`ppocr/utils/dict/korean_dict.txt` is a Korean dictionary with 3636 characters
 
-`ppocr/utils/dict/german_dict.txt` is a French dictionary with 131 characters
+`ppocr/utils/dict/german_dict.txt` is a German dictionary with 131 characters
 
 You can use it on demand.
 
