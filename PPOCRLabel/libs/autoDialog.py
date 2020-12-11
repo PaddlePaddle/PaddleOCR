@@ -45,7 +45,7 @@ class Worker(QThread):
                             chars = res[1][0]
                             cond = res[1][1]
                             posi = res[0]
-                            self.listValue.emit("文字:" + chars + " 置信度:" + str(cond) + " 坐标:" + json.dumps(posi))
+                            self.listValue.emit("Transcription: " + chars + " Probability: " + str(cond) + " Location: " + json.dumps(posi))
                         self.mainThread.result_dic = self.result_dic
                         self.mainThread.filePath = Imgpath
                         # 保存
@@ -88,7 +88,7 @@ class AutoDialog(QDialog):
         bb.button(BB.Ok).setEnabled(False)
 
         self.setLayout(layout)
-        self.setWindowTitle("自动标注中")
+        # self.setWindowTitle("自动标注中")
         self.setWindowModality(Qt.ApplicationModal)
 
         # self.setWindowFlags(Qt.WindowCloseButtonHint)

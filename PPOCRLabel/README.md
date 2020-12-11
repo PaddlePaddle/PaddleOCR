@@ -12,13 +12,10 @@ PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，使用p
 ### 2. 安装PPOCRLabel
 #### Windows + Anaconda
 
-下载安装[Anaconda](https://www.anaconda.com/download/#download) (Python 3+)
-
 ```
-conda install pyqt=5
+pip install pyqt5
 cd ./PPOCRLabel # 将目录切换到PPOCRLabel文件夹下
-pyrcc5 -o libs/resources.py resources.qrc
-python PPOCRLabel.py
+python PPOCRLabel.py --lang ch
 ```
 
 #### Ubuntu Linux
@@ -27,7 +24,7 @@ python PPOCRLabel.py
 pip3 install pyqt5
 pip3 install trash-cli
 cd ./PPOCRLabel # 将目录切换到PPOCRLabel文件夹下
-python3 PPOCRLabel.py
+python3 PPOCRLabel.py --lang ch
 ```
 
 #### macOS
@@ -36,7 +33,7 @@ pip3 install pyqt5
 pip3 uninstall opencv-python # 由于mac版本的opencv与pyqt有冲突，需先手动卸载opencv
 pip3 install opencv-contrib-python-headless # 安装headless版本的open-cv
 cd ./PPOCRLabel # 将目录切换到PPOCRLabel文件夹下
-python3 PPOCRLabel.py
+python3 PPOCRLabel.py --lang ch
 ```
 
 ## 使用
@@ -50,9 +47,9 @@ python3 PPOCRLabel.py
 5. 标记框绘制完成后，用户点击 “确认”，检测框会先被预分配一个 “待识别” 标签。
 6. 重新识别：将图片中的所有检测画绘制/调整完成后，点击 “重新识别”，PPOCR模型会对当前图片中的**所有检测框**重新识别<sup>[3]</sup>。
 7. 内容更改：双击识别结果，对不准确的识别结果进行手动更改。
-8. 确认结果：点击 “确认”，图片状态切换为 “√”，跳转至下一张。
+8. 确认标记：点击 “确认”，图片状态切换为 “√”，跳转至下一张（此时不会直接将结果写入文件）。
 9. 删除：点击 “删除图像”，图片将会被删除至回收站。
-10. 保存标注结果：关闭应用程序或切换文件路径后，手动确认过的标签将会被存放在所打开图片文件夹下的*Label.txt*中。在菜单栏点击 “PaddleOCR” - "保存识别结果"后，会将此类图片的识别训练数据保存在*crop_img*文件夹下，识别标签保存在*rec_gt.txt*中<sup>[4]</sup>。
+10. 保存结果：用户可以通过菜单中“文件-保存标记结果”手动保存，同时程序也会在用户每确认10张图片后自动保存一次。手动确认过的标记将会被存放在所打开图片文件夹下的*Label.txt*中。在菜单栏点击 “文件” - "保存识别结果"后，会将此类图片的识别训练数据保存在*crop_img*文件夹下，识别标签保存在*rec_gt.txt*中<sup>[4]</sup>。
 
 ### 注意
 
@@ -62,14 +59,14 @@ python3 PPOCRLabel.py
 
 [3] 点击“重新识别”后，模型会对图片中的识别结果进行覆盖。因此如果在此之前手动更改过识别结果，有可能在重新识别后产生变动。
 
-[4] PPOCRLabel产生的文件均在标记图片的文件夹中，包括一下几种，请勿手动更改其中内容，否则会引起程序出现异常。
+[4] PPOCRLabel产生的文件放置于标记图片文件夹下，包括一下几种，请勿手动更改其中内容，否则会引起程序出现异常。
 
 |    文件名     |                             说明                             |
 | :-----------: | :----------------------------------------------------------: |
 |   Label.txt   | 检测标签，可直接用于PPOCR检测模型训练。用户每保存10张检测结果后，程序会进行自动写入。当用户关闭应用程序或切换文件路径后同样会进行写入。 |
 | fileState.txt | 图片状态标记文件，保存当前文件夹下已经被用户手动确认过的图片名称。 |
 |  Cache.cach   |              缓存文件，保存模型自动识别的结果。              |
-|  rec_gt.txt   | 识别标签。可直接用于PPOCR识别模型训练。需用户手动点击菜单栏“PaddleOCR” - "保存识别结果"后产生。 |
+|  rec_gt.txt   | 识别标签。可直接用于PPOCR识别模型训练。需用户手动点击菜单栏“文件” - "保存识别结果"后产生。 |
 |   crop_img    |   识别数据。按照检测框切割后的图片。与rec_gt.txt同时产生。   |
 
 ## 说明
@@ -93,6 +90,10 @@ python3 PPOCRLabel.py
 - 如果您在打开软件过程中出现**objc[XXXXX]**开头的错误，证明您的opencv版本太高，建议安装4.2版本：
 	```
 	pip install opencv-python==4.2.0.32
+	```
+- 如果出现''Missing string id '开头的错误，需要重新编译资源：
+	```
+	pyrcc5 -o libs/resources.py resources.qrc
 	```
 ### 参考资料
 
