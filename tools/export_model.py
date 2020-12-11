@@ -28,7 +28,7 @@ from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
 from ppocr.utils.save_load import init_model
 from ppocr.utils.logging import get_logger
-from tools.program import load_config, merge_config,ArgsParser
+from tools.program import load_config, merge_config, ArgsParser
 
 
 def main():
@@ -36,7 +36,6 @@ def main():
     config = load_config(FLAGS.config)
     merge_config(FLAGS.opt)
     logger = get_logger()
-    print(config)
     # build post process
 
     post_process_class = build_post_process(config['PostProcess'],

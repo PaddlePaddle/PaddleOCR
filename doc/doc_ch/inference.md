@@ -41,7 +41,7 @@ inference 模型（`paddle.jit.save`保存的模型）
 
 下载超轻量级中文检测模型：
 ```
-wget -P ./ch_lite/ {link} && tar xf ./ch_lite/ch_ppocr_mobile_v2.0_det_train.tar -C ./ch_lite/
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar && tar xf ./ch_lite/ch_ppocr_mobile_v2.0_det_train.tar -C ./ch_lite/
 ```
 上述模型是以MobileNetV3为backbone训练的DB算法，将训练好的模型转换成inference模型只需要运行如下命令：
 ```
@@ -51,9 +51,9 @@ wget -P ./ch_lite/ {link} && tar xf ./ch_lite/ch_ppocr_mobile_v2.0_det_train.tar
 # Global.load_static_weights 参数需要设置为 False。
 # Global.save_inference_dir参数设置转换的模型将保存的地址。
 
-python3 tools/export_model.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.checkpoints=./ch_lite/ch_ppocr_mobile_v2.0_det_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/det_db/
+python3 tools/export_model.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrained_model=./ch_lite/ch_ppocr_mobile_v2.0_det_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/det_db/
 ```
-转inference模型时，使用的配置文件和训练时使用的配置文件相同。另外，还需要设置配置文件中的`Global.checkpoints`参数，其指向训练中保存的模型参数文件。
+转inference模型时，使用的配置文件和训练时使用的配置文件相同。另外，还需要设置配置文件中的`Global.pretrained_model`参数，其指向训练中保存的模型参数文件。
 转换成功后，在模型保存目录下有三个文件：
 ```
 inference/det_db/
@@ -67,7 +67,7 @@ inference/det_db/
 
 下载超轻量中文识别模型：
 ```
-wget -P ./ch_lite/ {link} && tar xf ./ch_lite/ch_ppocr_mobile_v2.0_rec_train.tar -C ./ch_lite/
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_train.tar && tar xf ./ch_lite/ch_ppocr_mobile_v2.0_rec_train.tar -C ./ch_lite/
 ```
 
 识别模型转inference模型与检测的方式相同，如下：
@@ -78,7 +78,7 @@ wget -P ./ch_lite/ {link} && tar xf ./ch_lite/ch_ppocr_mobile_v2.0_rec_train.tar
 # Global.load_static_weights 参数需要设置为 False。
 # Global.save_inference_dir参数设置转换的模型将保存的地址。
 
-python3 tools/export_model.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml -o Global.checkpoints=./ch_lite/ch_ppocr_mobile_v2.0_rec_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/rec_crnn/
+python3 tools/export_model.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml -o Global.pretrained_model=./ch_lite/ch_ppocr_mobile_v2.0_rec_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/rec_crnn/
 ```
 
 **注意：**如果您是在自己的数据集上训练的模型，并且调整了中文字符的字典文件，请注意修改配置文件中的`character_dict_path`是否是所需要的字典文件。
@@ -96,7 +96,7 @@ python3 tools/export_model.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_trai
 
 下载方向分类模型：
 ```
-wget -P ./ch_lite/ {link} && tar xf ./ch_lite/ch_ppocr_mobile_v2.0_cls_train.tar -C ./ch_lite/
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar && tar xf ./ch_lite/ch_ppocr_mobile_v2.0_cls_train.tar -C ./ch_lite/
 ```
 
 方向分类模型转inference模型与检测的方式相同，如下：
@@ -107,7 +107,7 @@ wget -P ./ch_lite/ {link} && tar xf ./ch_lite/ch_ppocr_mobile_v2.0_cls_train.tar
 # Global.load_static_weights 参数需要设置为 False。
 # Global.save_inference_dir参数设置转换的模型将保存的地址。
 
-python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o Global.checkpoints=./ch_lite/ch_ppocr_mobile_v2.0_cls_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/cls/
+python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o Global.pretrained_model=./ch_lite/ch_ppocr_mobile_v2.0_cls_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/cls/
 ```
 
 转换成功后，在目录下有三个文件：
@@ -152,10 +152,10 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_di
 <a name="DB文本检测模型推理"></a>
 ### 2. DB文本检测模型推理
 
-首先将DB文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例（[模型下载地址](link))，可以使用如下命令进行转换：
+首先将DB文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例（ [模型下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_db_v2.0_train.tar) )，可以使用如下命令进行转换：
 
 ```
-python3 tools/export_model.py -c configs/det/det_r50_vd_db.yml -o Global.checkpoints=./det_r50_vd_db_v2.0.train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/det_db
+python3 tools/export_model.py -c configs/det/det_r50_vd_db.yml -o Global.pretrained_model=./det_r50_vd_db_v2.0_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/det_db
 ```
 
 DB文本检测模型推理，可以执行如下命令：
@@ -173,10 +173,10 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_
 <a name="EAST文本检测模型推理"></a>
 ### 3. EAST文本检测模型推理
 
-首先将EAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例（[模型下载地址](link))，可以使用如下命令进行转换：
+首先将EAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例（ [模型下载地址 (coming soon)](link) )，可以使用如下命令进行转换：
 
 ```
-python3 tools/export_model.py -c configs/det/det_r50_vd_east.yml -o Global.checkpoints=./det_r50_vd_east_v2.0.train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/det_east
+python3 tools/export_model.py -c configs/det/det_r50_vd_east.yml -o Global.pretrained_model=./det_r50_vd_east_v2.0_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/det_east
 ```
 
 **EAST文本检测模型推理，需要设置参数`--det_algorithm="EAST"`**，可以执行如下命令：
@@ -194,9 +194,9 @@ python3 tools/infer/predict_det.py --det_algorithm="EAST" --image_dir="./doc/img
 <a name="SAST文本检测模型推理"></a>
 ### 4. SAST文本检测模型推理
 #### (1). 四边形文本检测模型（ICDAR2015）  
-首先将SAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例([模型下载地址](link))，可以使用如下命令进行转换：
+首先将SAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例([模型下载地址(coming soon)](link))，可以使用如下命令进行转换：
 ```
-python3 tools/export_model.py -c configs/det/det_r50_vd_sast_icdar15.yml -o Global.checkpoints=./det_r50_vd_sast_icdar15_v2.0.train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/det_sast_ic15
+python3 tools/export_model.py -c configs/det/det_r50_vd_sast_icdar15.yml -o Global.pretrained_model=./det_r50_vd_sast_icdar15_v2.0_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/det_sast_ic15
 
 ```
 **SAST文本检测模型推理，需要设置参数`--det_algorithm="SAST"`**，可以执行如下命令：
@@ -208,10 +208,10 @@ python3 tools/infer/predict_det.py --det_algorithm="SAST" --image_dir="./doc/img
 ![](../imgs_results/det_res_img_10_sast.jpg)
 
 #### (2). 弯曲文本检测模型（Total-Text）  
-首先将SAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在Total-Text英文数据集训练的模型为例（[模型下载地址](link))，可以使用如下命令进行转换：
+首先将SAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在Total-Text英文数据集训练的模型为例（[模型下载地址(coming soon)](link))，可以使用如下命令进行转换：
 
 ```
-python3 tools/export_model.py -c configs/det/det_r50_vd_sast_totaltext.yml -o Global.checkpoints=./det_r50_vd_sast_totaltext_v2.0.train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/det_sast_tt
+python3 tools/export_model.py -c configs/det/det_r50_vd_sast_totaltext.yml -o Global.pretrained_model=./det_r50_vd_sast_totaltext_v2.0_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/det_sast_tt
 
 ```
 
@@ -254,10 +254,10 @@ Predicts of ./doc/imgs_words/ch/word_4.jpg:['实力活力', 0.89552695]
 我们以 CRNN 为例，介绍基于CTC损失的识别模型推理。 Rosetta 使用方式类似，不用设置识别算法参数rec_algorithm。
 
 首先将 Rosetta 文本识别训练过程中保存的模型，转换成inference model。以基于Resnet34_vd骨干网络，使用MJSynth和SynthText两个英文文本识别合成数据集训练
-的模型为例（[模型下载地址](link))，可以使用如下命令进行转换：
+的模型为例（ [模型下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_none_bilstm_ctc_v2.0_train.tar) )，可以使用如下命令进行转换：
 
 ```
-python3 tools/export_model.py -c configs/det/rec_r34_vd_none_bilstm_ctc.yml -o Global.checkpoints=./rec_r34_vd_none_bilstm_ctc_v2.0.train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/rec_crnn
+python3 tools/export_model.py -c configs/rec/rec_r34_vd_none_bilstm_ctc.yml -o Global.pretrained_model=./rec_r34_vd_none_bilstm_ctc_v2.0_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/rec_crnn
 
 ```
 
@@ -313,9 +313,9 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" -
 
 执行命令后，上图的预测结果为：
 ``` text
-2020-09-19 16:15:05,076-INFO: 	 index: [205 206  38  39]
-2020-09-19 16:15:05,077-INFO: 	 word : 바탕으로
-2020-09-19 16:15:05,077-INFO: 	 score: 0.9171358942985535
+2020-09-19 16:15:05,076-INFO:      index: [205 206  38  39]
+2020-09-19 16:15:05,077-INFO:      word : 바탕으로
+2020-09-19 16:15:05,077-INFO:      score: 0.9171358942985535
 ```
 
 <a name="方向分类模型推理"></a>
@@ -337,8 +337,7 @@ python3 tools/infer/predict_cls.py --image_dir="./doc/imgs_words/ch/word_4.jpg" 
 执行命令后，上面图像的预测结果（分类的方向和得分）会打印到屏幕上，示例如下：
 
 ```
-infer_img: doc/imgs_words/ch/word_1.jpg
-     result: ('0', 0.9998784)
+Predicts of ./doc/imgs_words/ch/word_4.jpg:['0', 0.9999982]
 ```
 
 <a name="文本检测、方向分类和文字识别串联推理"></a>

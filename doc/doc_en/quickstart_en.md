@@ -9,13 +9,13 @@ Please refer to [quick installation](./installation_en.md) to configure the Padd
 
 ## 2.inference models
 
-The detection and recognition models on the mobile and server sides are as follows. For more models  (including multiple languages), please refer to [PP-OCR v1.1 series model list](../doc_ch/models_list.md)
+The detection and recognition models on the mobile and server sides are as follows. For more models  (including multiple languages), please refer to [PP-OCR v2.0 series model list](../doc_ch/models_list.md)
 
-
-| Model introduction    | Model name     |  Recommended scene      | Detection model | Direction Classifier | Recognition model |
+| Model introduction     | Model name      | Recommended scene          | Detection model | Direction Classifier | Recognition model |
 | ------------ | --------------- | ----------------|---- | ---------- | -------- |
-| Ultra-lightweight Chinese OCR model（xM） | ch_ppocr_mobile_v1.1_xx |Mobile-side/Server-side|[inference model](link) / [pretrained model](link)|[inference model](link) / [pretrained model](link) |[inference model](link) / [pretrained model](link)      |
-| Universal Chinese OCR model（xM）   |ch_ppocr_server_v1.1_xx|Server-side |[inference model](link) / [pretrained model](link)          |[inference model](link) / [pretrained model](link)    |[inference model](link) / [pretrained model](link)  |
+| Ultra-lightweight Chinese OCR model（8.6M） | ch_ppocr_mobile_v2.0_xx |Mobile-side/Server-side|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) / [pretrained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar)|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [pretrained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar) / [pretrained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_train.tar)      |
+| Universal Chinese OCR model（146.4M）   | ch_ppocr_server_v2.0_xx |Server-side |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [pretrained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar)          |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [pretrained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [pretrained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_train.tar)  |
+
 
 * If `wget` is not installed in the windows environment, you can copy the link to the browser to download when downloading the model, then uncompress it and place it in the corresponding directory.
 
@@ -37,28 +37,29 @@ Take the ultra-lightweight model as an example:
 ```
 mkdir inference && cd inference
 # Download the detection model of the ultra-lightweight Chinese OCR model and uncompress it
-wget link && tar xf ch_ppocr_mobile_v1.1_det_infer.tar
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_ppocr_mobile_v2.0_det_infer.tar
 # Download the recognition model of the ultra-lightweight Chinese OCR model and uncompress it
-wget link && tar xf ch_ppocr_mobile_v1.1_rec_infer.tar
-# Download the direction classifier model of the ultra-lightweight Chinese OCR model and uncompress it
-wget link && tar xf ch_ppocr_mobile_v1.1_cls_infer.tar
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf ch_ppocr_mobile_v2.0_rec_infer.tar
+# Download the angle classifier model of the ultra-lightweight Chinese OCR model and uncompress it
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar && tar xf ch_ppocr_mobile_v2.0_cls_infer.tar
 cd ..
 ```
 
 After decompression, the file structure should be as follows:
 
 ```
-|-inference
-    |-ch_ppocr_mobile_v1.1_det_infer
-        |- model
-        |- params
-    |-ch_ppocr_mobile_v1.1_rec_infer
-        |- model
-        |- params
-    |-ch_ppocr_mobile_v1.1_cls_infer
-        |- model
-        |- params
-    ...
+├── ch_ppocr_mobile_v2.0_cls_infer
+│   ├── inference.pdiparams
+│   ├── inference.pdiparams.info
+│   └── inference.pdmodel
+├── ch_ppocr_mobile_v2.0_det_infer
+│   ├── inference.pdiparams
+│   ├── inference.pdiparams.info
+│   └── inference.pdmodel
+├── ch_ppocr_mobile_v2.0_rec_infer
+    ├── inference.pdiparams
+    ├── inference.pdiparams.info
+    └── inference.pdmodel
 ```
 
 ## 3. Single image or image set prediction
@@ -70,13 +71,13 @@ After decompression, the file structure should be as follows:
 ```bash
 
 # Predict a single image specified by image_dir
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_ppocr_mobile_v1.1_det_infer/"  --rec_model_dir="./inference/ch_ppocr_mobile_v1.1_rec_infer/" --cls_model_dir="./inference/ch_ppocr_mobile_v1.1_cls_infer/" --use_angle_cls=True --use_space_char=True
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_ppocr_mobile_v2.0_det_infer/"  --rec_model_dir="./inference/ch_ppocr_mobile_v2.0_rec_infer/" --cls_model_dir="./inference/ch_ppocr_mobile_v2.0_cls_infer/" --use_angle_cls=True --use_space_char=True
 
 # Predict imageset specified by image_dir
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/" --det_model_dir="./inference/ch_ppocr_mobile_v1.1_det_infer/"  --rec_model_dir="./inference/ch_ppocr_mobile_v1.1_rec_infer/" --cls_model_dir="./inference/ch_ppocr_mobile_v1.1_cls_infer/" --use_angle_cls=True --use_space_char=True
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/" --det_model_dir="./inference/ch_ppocr_mobile_v2.0_det_infer/"  --rec_model_dir="./inference/ch_ppocr_mobile_v2.0_rec_infer/" --cls_model_dir="./inference/ch_ppocr_mobile_v2.0_cls_infer/" --use_angle_cls=True --use_space_char=True
 
 # If you want to use the CPU for prediction, you need to set the use_gpu parameter to False
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_ppocr_mobile_v1.1_det_infer/"  --rec_model_dir="./inference/ch_ppocr_mobile_v1.1_rec_infer/" --cls_model_dir="./inference/ch_ppocr_mobile_v1.1_cls_infer/" --use_angle_cls=True --use_space_char=True --use_gpu=False
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_ppocr_mobile_v2.0_det_infer/"  --rec_model_dir="./inference/ch_ppocr_mobile_v2.0_rec_infer/" --cls_model_dir="./inference/ch_ppocr_mobile_v2.0_cls_infer/" --use_angle_cls=True --use_space_char=True --use_gpu=False
 ```
 
 - Universal Chinese OCR model
@@ -85,7 +86,7 @@ Please follow the above steps to download the corresponding models and update th
 
 ```
 # Predict a single image specified by image_dir
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_ppocr_server_v1.1_det_infer/"  --rec_model_dir="./inference/ch_ppocr_server_v1.1_rec_infer/" --cls_model_dir="./inference/ch_ppocr_mobile_v1.1_cls_infer/" --use_angle_cls=True --use_space_char=True
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_ppocr_server_v2.0_det_infer/"  --rec_model_dir="./inference/ch_ppocr_server_v2.0_rec_infer/" --cls_model_dir="./inference/ch_ppocr_mobile_v2.0_cls_infer/" --use_angle_cls=True --use_space_char=True
 ```
 
 * Note
