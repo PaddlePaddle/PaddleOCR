@@ -9,12 +9,12 @@
 
 ## 2.inference模型下载
 
-* 移动端和服务器端的检测与识别模型如下，更多模型下载（包括多语言），可以参考[PP-OCR v1.1 系列模型下载](../doc_ch/models_list.md)
+* 移动端和服务器端的检测与识别模型如下，更多模型下载（包括多语言），可以参考[PP-OCR v2.0 系列模型下载](../doc_ch/models_list.md)
 
 | 模型简介     | 模型名称     |推荐场景          | 检测模型 | 方向分类器 | 识别模型 |
 | ------------ | --------------- | ----------------|---- | ---------- | -------- |
-| 中英文超轻量OCR模型（xM） |  |移动端&服务器端|[推理模型](link) / [预训练模型](link)|[推理模型]({}) / [预训练模型]({}) |[推理模型]({}) / [预训练模型]({})      |
-| 中英文通用OCR模型（xM）   | |服务器端 |[推理模型]({}) / [预训练模型]({})          |[推理模型]({}) / [预训练模型]({})    |[推理模型]({}) / [预训练模型]({}})  |
+| 中英文超轻量OCR模型（8.1M） | ch_ppocr_mobile_v2.0_xx |移动端&服务器端|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar)|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_train.tar)      |
+| 中英文通用OCR模型（155.1M）   | ch_ppocr_server_v2.0_xx |服务器端 |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar)          |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar)    |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_train.tar)  |
 
 
 * windows 环境下如果没有安装wget,下载模型时可将链接复制到浏览器中下载，并解压放置在相应目录下
@@ -37,28 +37,29 @@ cd ..
 ```
 mkdir inference && cd inference
 # 下载超轻量级中文OCR模型的检测模型并解压
-wget {} && tar xf ch_ppocr_mobile_v1.1_det_infer.tar
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_ppocr_mobile_v2.0_det_infer.tar
 # 下载超轻量级中文OCR模型的识别模型并解压
-wget {} && tar xf ch_ppocr_mobile_v1.1_rec_infer.tar
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf ch_ppocr_mobile_v2.0_rec_infer.tar
 # 下载超轻量级中文OCR模型的文本方向分类器模型并解压
-wget {} && tar xf ch_ppocr_mobile_v1.1_cls_infer.tar
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar && tar xf ch_ppocr_mobile_v2.0_cls_infer.tar
 cd ..
 ```
 
 解压完毕后应有如下文件结构：
 
 ```
-|-inference
-    |-ch_ppocr_mobile_v1.1_det_infer
-        |- model
-        |- params
-    |-ch_ppocr_mobile_v1.1_rec_infer
-        |- model
-        |- params
-    |-ch_ppocr_mobile-v1.1_cls_infer
-        |- model
-        |- params
-    ...
+├── ch_ppocr_mobile_v2.0_cls_infer
+│   ├── inference.pdiparams
+│   ├── inference.pdiparams.info
+│   └── inference.pdmodel
+├── ch_ppocr_mobile_v2.0_det_infer
+│   ├── inference.pdiparams
+│   ├── inference.pdiparams.info
+│   └── inference.pdmodel
+├── ch_ppocr_mobile_v2.0_rec_infer
+    ├── inference.pdiparams
+    ├── inference.pdiparams.info
+    └── inference.pdmodel
 ```
 
 ## 3.单张图像或者图像集合预测
@@ -68,13 +69,13 @@ cd ..
 ```bash
 
 # 预测image_dir指定的单张图像
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_ppocr_mobile_v1.1_det_infer/"  --rec_model_dir="./inference/ch_ppocr_mobile_v1.1_rec_infer/" --cls_model_dir="./inference/ch_ppocr_mobile_v1.1_cls_infer/" --use_angle_cls=True --use_space_char=True
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_ppocr_mobile_v2.0_det_infer/"  --rec_model_dir="./inference/ch_ppocr_mobile_v2.0_rec_infer/" --cls_model_dir="./inference/ch_ppocr_mobile_v2.0_cls_infer/" --use_angle_cls=True --use_space_char=True
 
 # 预测image_dir指定的图像集合
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/" --det_model_dir="./inference/ch_ppocr_mobile_v1.1_det_infer/"  --rec_model_dir="./inference/ch_ppocr_mobile_v1.1_rec_infer/" --cls_model_dir="./inference/ch_ppocr_mobile_v1.1_cls_infer/" --use_angle_cls=True --use_space_char=True
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/" --det_model_dir="./inference/ch_ppocr_mobile_v2.0_det_infer/"  --rec_model_dir="./inference/ch_ppocr_mobile_v2.0_rec_infer/" --cls_model_dir="./inference/ch_ppocr_mobile_v2.0_cls_infer/" --use_angle_cls=True --use_space_char=True
 
 # 如果想使用CPU进行预测，需设置use_gpu参数为False
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_ppocr_mobile_v1.1_det_infer/"  --rec_model_dir="./inference/ch_ppocr_mobile_v1.1_rec_infer/" --cls_model_dir="./inference/ch_ppocr_mobile_v1.1_cls_infer/" --use_angle_cls=True --use_space_char=True --use_gpu=False
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_ppocr_mobile_v2.0_det_infer/"  --rec_model_dir="./inference/ch_ppocr_mobile_v2.0_rec_infer/" --cls_model_dir="./inference/ch_ppocr_mobile_v2.0_cls_infer/" --use_angle_cls=True --use_space_char=True --use_gpu=False
 ```
 
 - 通用中文OCR模型
@@ -83,7 +84,7 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_mode
 
 ```bash
 # 预测image_dir指定的单张图像
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_ppocr_server_v1.1_det_infer/"  --rec_model_dir="./inference/ch_ppocr_server_v1.1_rec_infer/" --cls_model_dir="./inference/ch_ppocr_mobile_v1.1_cls_infer/" --use_angle_cls=True --use_space_char=True
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/ch_ppocr_server_v2.0_det_infer/"  --rec_model_dir="./inference/ch_ppocr_server_v2.0_rec_infer/" --cls_model_dir="./inference/ch_ppocr_mobile_v2.0_cls_infer/" --use_angle_cls=True --use_space_char=True
 ```
 
 * 注意：
