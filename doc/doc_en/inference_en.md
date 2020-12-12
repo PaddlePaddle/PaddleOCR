@@ -299,10 +299,10 @@ dict_character = list(self.character_str)
 
 <a name="USING_CUSTOM_CHARACTERS"></a>
 ### 4. TEXT RECOGNITION MODEL INFERENCE USING CUSTOM CHARACTERS DICTIONARY
-If the chars dictionary is modified during training, you need to specify the new dictionary path by setting the parameter `rec_char_dict_path` when using your inference model to predict.
+If the text dictionary is modified during training, when using the inference model to predict, you need to specify the dictionary path used by `--rec_char_dict_path`, and set `rec_char_type=ch`
 
 ```
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="en" --rec_char_dict_path="your text dict path"
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="ch" --rec_char_dict_path="your text dict path"
 ```
 
 <a name="MULTILINGUAL_MODEL_INFERENCE"></a>
