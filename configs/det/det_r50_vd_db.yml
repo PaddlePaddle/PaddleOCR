@@ -3,7 +3,7 @@ Global:
   epoch_num: 1200
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/det_rc/det_r50_vd/
+  save_model_dir: ./output/det_r50_vd/
   save_epoch_step: 1200
   # evaluation is run every 5000 iterations after the 4000th iteration
   eval_batch_step: [5000,4000]

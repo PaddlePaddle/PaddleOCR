@@ -120,11 +120,11 @@ word_dict.txt 每行有一个单字，将字符与数字索引映射在一起，
 
 `ppocr/utils/dict/french_dict.txt` 是一个包含118个字符的法文字典
 
-`ppocr/utils/dict/japan_dict.txt` 是一个包含4399个字符的法文字典
+`ppocr/utils/dict/japan_dict.txt` 是一个包含4399个字符的日文字典
 
-`ppocr/utils/dict/korean_dict.txt` 是一个包含3636个字符的法文字典
+`ppocr/utils/dict/korean_dict.txt` 是一个包含3636个字符的韩文字典
 
-`ppocr/utils/dict/german_dict.txt` 是一个包含131个字符的法文字典
+`ppocr/utils/dict/german_dict.txt` 是一个包含131个字符的德文字典
 
 `ppocr/utils/dict/en_dict.txt` 是一个包含63个字符的英文字典
 
