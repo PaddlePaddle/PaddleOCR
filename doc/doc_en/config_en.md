@@ -16,7 +16,7 @@ Take rec_chinese_lite_train_v2.0.yml as an example
 | :----------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
 |      use_gpu             |    Set using GPU or not           |       true        |                \                 |
 |      epoch_num           |    Maximum training epoch number             |       500        |                \                 |
-|      log_smooth_window   |    Sliding window size            |       20          |                \                 |
+|      log_smooth_window   |    Log queue length, the median value in the queue each time will be printed           |       20          |                \                 |
 |      print_batch_step    |    Set print log interval         |       10          |                \                 |
 |      save_model_dir      |    Set model save path        |  output/{算法名称}  |                \                 |
 |      save_epoch_step     |    Set model save interval        |       3           |                \                 |
