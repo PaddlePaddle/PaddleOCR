@@ -155,10 +155,10 @@ PaddleOCR提供了训练脚本、评估脚本和预测脚本，本节将以 CRNN
 ```
 cd PaddleOCR/
 # 下载MobileNetV3的预训练模型
-wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_none_bilstm_ctc_v2.0_infer.tar
+wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_none_bilstm_ctc_v2.0_train.tar
 # 解压模型参数
 cd pretrain_models
-tar -xf rec_mv3_none_bilstm_ctc_v2.0_infer.tar && rm -rf rec_mv3_none_bilstm_ctc_v2.0_infer.tar
+tar -xf rec_mv3_none_bilstm_ctc_v2.0_train.tar && rm -rf rec_mv3_none_bilstm_ctc_v2.0_train.tar
 ```
 
 开始训练:

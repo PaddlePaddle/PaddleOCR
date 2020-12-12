@@ -151,10 +151,10 @@ First download the pretrain model, you can download the trained model to finetun
 ```
 cd PaddleOCR/
 # Download the pre-trained model of MobileNetV3
-wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/rec_mv3_none_bilstm_ctc.tar
+wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_none_bilstm_ctc_v2.0_train.tar
 # Decompress model parameters
 cd pretrain_models
-tar -xf rec_mv3_none_bilstm_ctc.tar && rm -rf rec_mv3_none_bilstm_ctc.tar
+tar -xf rec_mv3_none_bilstm_ctc_v2.0_train.tar && rm -rf rec_mv3_none_bilstm_ctc_v2.0_train.tar
 ```
 
 Start training:
