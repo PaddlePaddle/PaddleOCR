@@ -186,4 +186,4 @@ if __name__ == "__main__":
         cv2.imwrite(img_path, src_im)
         logger.info("The visualized image saved in {}".format(img_path))
     if count > 1:
-        logger.info("Avg Time:", total_time / (count - 1))
+        logger.info("Avg Time: {}".format(total_time / (count - 1)))
