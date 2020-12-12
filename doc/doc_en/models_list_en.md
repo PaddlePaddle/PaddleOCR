@@ -1,4 +1,4 @@
-## OCR model list（V1.1, updated on 9.22）
+## OCR model list（V1.1, updated on 2020.12.12）
 
 - [1. Text Detection Model](#Detection)
 - [2. Text Recognition Model](#Recognition)
@@ -66,6 +66,6 @@ The downloadable models provided by PaddleOCR include `inference model`, `traine
 |ch_ppocr_mobile_v2.0_cls|Original model|[cls_mv3.yml](../../configs/cls/cls_mv3.yml)|1.38M|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |
 
 
-## OCR model list (V1.1，update in 2020.9.22)
+## OCR model list (V1.1，updated on 2020.9.22)
 
 [1.1 series model address](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/models_list.md)
