@@ -51,6 +51,7 @@ except ImportError:
     from PyQt4.QtCore import *
 
 from combobox import ComboBox
+from editinlist import EditInList
 from libs.constants import *
 from libs.utils import *
 from libs.settings import Settings
@@ -202,12 +203,12 @@ class MainWindow(QMainWindow, WindowMixin):
 
         ################## label list ####################
         # Create and add a widget for showing current label items
-        self.labelList = QListWidget()
+        self.labelList = EditInList()
         labelListContainer = QWidget()
         labelListContainer.setLayout(listLayout)
         self.labelList.itemActivated.connect(self.labelSelectionChanged)
         self.labelList.itemSelectionChanged.connect(self.labelSelectionChanged)
-        self.labelList.itemDoubleClicked.connect(self.editLabel)
+        self.labelList.doubleClicked.connect(self.labelList.item_double_clicked)
         # Connect to itemChanged to detect checkbox changes.
         self.labelList.itemChanged.connect(self.labelItemChanged)
         self.labelListDock = QDockWidget(getStr('recognitionResult'),self)
@@ -1110,12 +1111,7 @@ class MainWindow(QMainWindow, WindowMixin):
             self.labelDialog = LabelDialog(
                 parent=self, listItem=self.labelHist)
 
-        # Sync single class mode from PR#106
-        if self.singleClassMode.isChecked() and self.lastLabel:
-            text = self.lastLabel
-        else:
-            text = self.labelDialog.popUp(text=self.prevLabelText)
-            self.lastLabel = text
+        text = self.prevLabelText
 
         if text is not None:
             self.prevLabelText = self.stringBundle.getString('tempLabel')
