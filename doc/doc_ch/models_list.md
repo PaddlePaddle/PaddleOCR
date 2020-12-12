@@ -68,11 +68,7 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 |ch_ppocr_mobile_v2.0_cls|原始模型|[cls_mv3.yml](../../configs/cls/cls_mv3.yml)|1.38M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |
 
 
-## OCR模型列表（V1.1，9月22日更新）
+## OCR模型列表（V1.1，2020年9月22日更新）
 
 [1.1系列模型地址](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/models_list.md)
-
-使用2.0版本代码加载1.x系列模型训练模型需在配置文件进行如下设置：
-1. `Global.load_static_weights=True`
-2. `Global.pretrained_model={path/to/1.x_model}`
 

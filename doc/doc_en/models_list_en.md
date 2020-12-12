@@ -66,9 +66,6 @@ The downloadable models provided by PaddleOCR include `inference model`, `traine
 |ch_ppocr_mobile_v2.0_cls|Original model|[cls_mv3.yml](../../configs/cls/cls_mv3.yml)|1.38M|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |
 
 
-## OCR模型列表（V1.1，9月22日更新）
-[1.1 series model address](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/models_list.md)
+## OCR model list (V1.1，update in 2020.9.22)
 
-Use the 2.0 version code to load the 1.x series model training model needs to be set in the configuration file as follows:
-1. `Global.load_static_weights=True`
-2. `Global.pretrained_model={path/to/1.x_model}`
+[1.1 series model address](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/models_list.md)
