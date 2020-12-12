@@ -9,8 +9,8 @@ The following list can be viewed through `--help`
 
 ## INTRODUCTION TO GLOBAL PARAMETERS OF CONFIGURATION FILE
 
-Take rec_chinese_lite_train_v1.1.yml as an example
-### Global 
+Take rec_chinese_lite_train_v2.0.yml as an example
+### Global
 
 |         Parameter             |            Use                |      Defaults       |            Note            |
 | :----------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |

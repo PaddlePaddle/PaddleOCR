@@ -192,7 +192,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_
 
 The visualized text detection results are saved to the `./inference_results` folder by default, and the name of the result file is prefixed with 'det_res'. Examples of results are as follows:
 
-![](../imgs_results/det_res_img_10_east.jpg)
+(coming soon)
 
 **Note**: EAST post-processing locality aware NMS has two versions: Python and C++. The speed of C++ version is obviously faster than that of Python version. Due to the compilation version problem of NMS of C++ version, C++ version NMS will be called only in Python 3.5 environment, and python version NMS will be called in other cases.
 
@@ -214,7 +214,7 @@ python3 tools/infer/predict_det.py --det_algorithm="SAST" --image_dir="./doc/img
 
 The visualized text detection results are saved to the `./inference_results` folder by default, and the name of the result file is prefixed with 'det_res'. Examples of results are as follows:
 
-![](../imgs_results/det_res_img_10_sast.jpg)
+(coming soon)
 
 #### (2). Curved text detection model (Total-Text)  
 First, convert the model saved in the SAST text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the Total-Text English dataset as an example ([model download link (coming soon)](https://paddleocr.bj.bcebos.com/SAST/sast_r50_vd_total_text.tar)), you can use the following command to convert:
@@ -231,7 +231,7 @@ python3 tools/infer/predict_det.py --det_algorithm="SAST" --image_dir="./doc/img
 
 The visualized text detection results are saved to the `./inference_results` folder by default, and the name of the result file is prefixed with 'det_res'. Examples of results are as follows:
 
-![](../imgs_results/det_res_img623_sast.jpg)
+(coming soon)
 
 **Note**: SAST post-processing locality aware NMS has two versions: Python and C++. The speed of C++ version is obviously faster than that of Python version. Due to the compilation version problem of NMS of C++ version, C++ version NMS will be called only in Python 3.5 environment, and python version NMS will be called in other cases.
 
@@ -254,8 +254,9 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" 
 
 After executing the command, the prediction results (recognized text and score) of the above image will be printed on the screen.
 
-Predicts of ./doc/imgs_words/ch/word_4.jpg:['实力活力', 0.89552695]
-
+```bash
+Predicts of ./doc/imgs_words/ch/word_4.jpg:('实力活力', 0.98458153)
+```
 
 <a name="CTC-BASED_RECOGNITION"></a>
 ### 2. CTC-BASED TEXT RECOGNITION MODEL INFERENCE
@@ -276,7 +277,6 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png
 
 <a name="ATTENTION-BASED_RECOGNITION"></a>
 ### 3. ATTENTION-BASED TEXT RECOGNITION MODEL INFERENCE
-![](../imgs_words_en/word_336.png)
 
 The recognition model based on Attention loss is different from ctc, and additional recognition algorithm parameters need to be set --rec_algorithm="RARE"
 After executing the command, the recognition result of the above image is as follows:
@@ -284,8 +284,13 @@ After executing the command, the recognition result of the above image is as fol
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./inference/rare/" --rec_image_shape="3, 32, 100" --rec_char_type="en" --rec_algorithm="RARE"
 ```
 
-Predicts of ./doc/imgs_words_en/word_336.png:['super', 0.9999555]
+![](../imgs_words_en/word_336.png)
 
+After executing the command, the recognition result of the above image is as follows:
+
+```bash
+Predicts of ./doc/imgs_words_en/word_336.png:('super', 0.9999073)
+```
 **Note**：Since the above model refers to [DTRB](https://arxiv.org/abs/1904.01906) text recognition training and evaluation process, it is different from the training of lightweight Chinese recognition model in two aspects:
 
 - The image resolution used in training is different: the image resolution used in training the above model is [3，32，100], while during our Chinese model training, in order to ensure the recognition effect of long text, the image resolution used in training is [3, 32, 320]. The default shape parameter of the inference stage is the image resolution used in training phase, that is [3, 32, 320]. Therefore, when running inference of the above English model here, you need to set the shape of the recognition image through the parameter `rec_image_shape`.
@@ -299,10 +304,10 @@ dict_character = list(self.character_str)
 
 <a name="USING_CUSTOM_CHARACTERS"></a>
 ### 4. TEXT RECOGNITION MODEL INFERENCE USING CUSTOM CHARACTERS DICTIONARY
-If the chars dictionary is modified during training, you need to specify the new dictionary path by setting the parameter `rec_char_dict_path` when using your inference model to predict.
+If the text dictionary is modified during training, when using the inference model to predict, you need to specify the dictionary path used by `--rec_char_dict_path`, and set `rec_char_type=ch`
 
 ```
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="en" --rec_char_dict_path="your text dict path"
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="ch" --rec_char_dict_path="your text dict path"
 ```
 
 <a name="MULTILINGUAL_MODEL_INFERENCE"></a>
@@ -318,9 +323,7 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" -
 After executing the command, the prediction result of the above figure is:
 
 ``` text
-2020-09-19 16:15:05,076-INFO:      index: [205 206  38  39]
-2020-09-19 16:15:05,077-INFO:      word : 바탕으로
-2020-09-19 16:15:05,077-INFO:      score: 0.9171358942985535
+Predicts of ./doc/imgs_words/korean/1.jpg:('바탕으로', 0.9948904)
 ```
 
 <a name="ANGLE_CLASSIFICATION_MODEL_INFERENCE"></a>
@@ -381,4 +384,4 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_10.jpg" --d
 
 After executing the command, the recognition result image is as follows:
 
-![](../imgs_results/img_10.jpg)
+(coming soon)
