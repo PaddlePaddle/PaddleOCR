@@ -11,7 +11,7 @@ The downloadable models provided by PaddleOCR include `inference model`, `traine
 
 |model type|model format|description|
 |--- | --- | --- |
-|inference model|inference.pdmodel、inference.pdiparams|Used for reasoning based on Python prediction engine，[detail](./inference.md)|
+|inference model|inference.pdmodel、inference.pdiparams|Used for reasoning based on Python prediction engine，[detail](./inference_en.md)|
 |trained model, pre-trained model|\*.pdparams、\*.pdopt、\*.states |The checkpoints model saved in the training process, which stores the parameters of the model, mostly used for model evaluation and continuous training.|
 |slim model|\*.nb|Generally used for Lite deployment|
 
