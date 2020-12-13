@@ -77,9 +77,9 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
     - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
     - [服务化部署](./deploy/hubserving/readme.md)
-    - [端侧部署](./deploy/lite/readme.md)
-    - [模型量化](./deploy/slim/quantization/README.md)
-    - [模型裁剪](./deploy/slim/prune/README.md)
+    - [端侧部署](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme.md)
+    - [模型量化](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/quantization/README.md)
+    - [模型裁剪](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/prune/README.md)
     - [Benchmark](./doc/doc_ch/benchmark.md)
 - 数据集
     - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
@@ -96,6 +96,9 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - [参考文献](./doc/doc_ch/reference.md)
 - [许可证书](#许可证书)
 - [贡献代码](#贡献代码)
+
+***注意：动态图端侧部署仍在开发中，目前仅支持动态图训练、python端预测，C++预测，
+如果您有需要移动端部署案例或者量化裁剪，请切换到静态图分支；***
 
 <a name="PP-OCR"></a>
 ## PP-OCR Pipline
