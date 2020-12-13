@@ -40,7 +40,7 @@ class DBPostProcess(object):
         self.max_candidates = max_candidates
         self.unclip_ratio = unclip_ratio
         self.min_size = 3
-        self.dilation_kernel = None if not use_dilation else [[1, 1], [1, 1]]
+        self.dilation_kernel = None if not use_dilation else np.array([[1, 1], [1, 1]])
 
     def boxes_from_bitmap(self, pred, _bitmap, dest_width, dest_height):
         '''
