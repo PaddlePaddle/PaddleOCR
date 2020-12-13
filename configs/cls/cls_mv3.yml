@@ -8,7 +8,6 @@ Global:
   # evaluation is run every 5000 iterations after the 4000th iteration
   eval_batch_step: [0, 1000]
   # if pretrained_model is saved in static mode, load_static_weights must set to True
-  load_static_weights: True
   cal_metric_during_train: True
   pretrained_model:
   checkpoints:

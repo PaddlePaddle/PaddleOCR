@@ -1,5 +1,5 @@
 Global:
-  use_gpu: true
+  use_gpu: True
   epoch_num: 500
   log_smooth_window: 20
   print_batch_step: 10
@@ -9,9 +9,9 @@ Global:
   eval_batch_step: [0, 2000]
   # if pretrained_model is saved in static mode, load_static_weights must set to True
   cal_metric_during_train: True
-  pretrained_model:
+  pretrained_model: 
   checkpoints: 
-  save_inference_dir:
+  save_inference_dir: 
   use_visualdl: False
   infer_img:
   # for data or label process
@@ -19,7 +19,7 @@ Global:
   character_type: french
   max_text_length: 25
   infer_mode: False
-  use_space_char: True
+  use_space_char: False
 
 
 Optimizer:

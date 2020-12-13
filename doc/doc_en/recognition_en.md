@@ -114,11 +114,14 @@ In `word_dict.txt`, there is a single word in each line, which maps characters a
 
 `ppocr/utils/dict/french_dict.txt` is a French dictionary with 118 characters
 
-`ppocr/utils/dict/japan_dict.txt` is a French dictionary with 4399 characters
+`ppocr/utils/dict/japan_dict.txt` is a Japanese dictionary with 4399 characters
 
-`ppocr/utils/dict/korean_dict.txt` is a French dictionary with 3636 characters
+`ppocr/utils/dict/korean_dict.txt` is a Korean dictionary with 3636 characters
 
-`ppocr/utils/dict/german_dict.txt` is a French dictionary with 131 characters
+`ppocr/utils/dict/german_dict.txt` is a German dictionary with 131 characters
+
+`ppocr/utils/dict/en_dict.txt` is a English dictionary with 63 characters
+
 
 You can use it on demand.
 
@@ -135,7 +138,7 @@ If you need to customize dic file, please add character_dict_path field in confi
 <a name="Add_space_category"></a>
 - Add space category
 
-If you want to support the recognition of the `space` category, please set the `use_space_char` field in the yml file to `true`.
+If you want to support the recognition of the `space` category, please set the `use_space_char` field in the yml file to `True`.
 
 **Note: use_space_char only takes effect when character_type=ch**
 
@@ -149,19 +152,18 @@ First download the pretrain model, you can download the trained model to finetun
 ```
 cd PaddleOCR/
 # Download the pre-trained model of MobileNetV3
-wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/rec_mv3_none_bilstm_ctc.tar
+wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_none_bilstm_ctc_v2.0_train.tar
 # Decompress model parameters
 cd pretrain_models
-tar -xf rec_mv3_none_bilstm_ctc.tar && rm -rf rec_mv3_none_bilstm_ctc.tar
+tar -xf rec_mv3_none_bilstm_ctc_v2.0_train.tar && rm -rf rec_mv3_none_bilstm_ctc_v2.0_train.tar
 ```
 
 Start training:
 
 ```
-# GPU training Support single card and multi-card training, specify the card number through CUDA_VISIBLE_DEVICES
-export CUDA_VISIBLE_DEVICES=0,1,2,3
+# GPU training Support single card and multi-card training, specify the card number through --gpus
 # Training icdar15 English data and saving the log as train_rec.log
-python3 tools/train.py -c configs/rec/rec_icdar15_train.yml 2>&1 | tee train_rec.log
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_icdar15_train.yml
 ```
 <a name="Data_Augmentation"></a>
 - Data Augmentation
@@ -184,8 +186,8 @@ If the evaluation set is large, the test will be time-consuming. It is recommend
 
 | Configuration file |  Algorithm |   backbone |   trans   |   seq      |     pred     |
 | :--------: |  :-------:   | :-------:  |   :-------:   |   :-----:   |  :-----:   |
-| [rec_chinese_lite_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml) |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  |
-| [rec_chinese_common_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_common_train_v1.1.yml) |  CRNN | ResNet34_vd |  None   |  BiLSTM |  ctc  |
+| [rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml) |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  |
+| [rec_chinese_common_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_common_train_v2.0.yml) |  CRNN | ResNet34_vd |  None   |  BiLSTM |  ctc  |
 | rec_chinese_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  |
 | rec_chinese_common_train.yml |  CRNN |   ResNet34_vd |  None   |  BiLSTM |  ctc  |
 | rec_icdar15_train.yml |  CRNN |   Mobilenet_v3 large 0.5 |  None   |  BiLSTM |  ctc  |
@@ -195,43 +197,72 @@ If the evaluation set is large, the test will be time-consuming. It is recommend
 | rec_mv3_tps_bilstm_attn.yml |  RARE |   Mobilenet_v3 large 0.5 |  tps   |  BiLSTM |  attention  |
 | rec_r34_vd_none_bilstm_ctc.yml |  CRNN |   Resnet34_vd |  None   |  BiLSTM |  ctc  |
 | rec_r34_vd_none_none_ctc.yml |  Rosetta |   Resnet34_vd |  None   |  None |  ctc  |
-| rec_r34_vd_tps_bilstm_attn.yml | RARE | Resnet34_vd | tps | BiLSTM | attention |
 | rec_r34_vd_tps_bilstm_ctc.yml | STARNet | Resnet34_vd | tps | BiLSTM | ctc |
 
 For training Chinese data, it is recommended to use
-训练中文数据，推荐使用[rec_chinese_lite_train_v1.1.yml](../../configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml). If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:
+[rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml). If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:
 co
-Take `rec_mv3_none_none_ctc.yml` as an example:
+Take `rec_chinese_lite_train_v2.0.yml` as an example:
 ```
 Global:
   ...
-  # Modify image_shape to fit long text
-  image_shape: [3, 32, 320]
-  ...
+  # Add a custom dictionary, such as modify the dictionary, please point the path to the new dictionary
+  character_dict_path: ppocr/utils/ppocr_keys_v1.txt
   # Modify character type
   character_type: ch
-  # Add a custom dictionary, such as modify the dictionary, please point the path to the new dictionary
-  character_dict_path: ./ppocr/utils/ppocr_keys_v1.txt
   ...
-  # Modify reader type
-  reader_yml: ./configs/rec/rec_chinese_reader.yml
-  # Whether to use data augmentation
-  distort: true
   # Whether to recognize spaces
-  use_space_char: true
-  ...
+  use_space_char: True
 
-...
 
 Optimizer:
   ...
   # Add learning rate decay strategy
-  decay:
-    function: cosine_decay
-    # Each epoch contains iter number
-    step_each_epoch: 20
-    # Total epoch number
-    total_epoch: 1000
+  lr:
+    name: Cosine
+    learning_rate: 0.001
+  ...
+
+...
+
+Train:
+  dataset:
+    # Type of dataset，we support LMDBDateSet and SimpleDataSet
+    name: SimpleDataSet
+    # Path of dataset
+    data_dir: ./train_data/
+    # Path of train list
+    label_file_list: ["./train_data/train_list.txt"]
+    transforms:
+      ...
+      - RecResizeImg:
+          # Modify image_shape to fit long text
+          image_shape: [3, 32, 320]
+      ...
+  loader:
+    ...
+    # Train batch_size for Single card
+    batch_size_per_card: 256
+    ...
+
+Eval:
+  dataset:
+    # Type of dataset，we support LMDBDateSet and SimpleDataSet
+    name: SimpleDataSet
+    # Path of dataset
+    data_dir: ./train_data
+    # Path of eval list
+    label_file_list: ["./train_data/val_list.txt"]
+    transforms:
+      ...
+      - RecResizeImg:
+          # Modify image_shape to fit long text
+          image_shape: [3, 32, 320]
+      ...
+  loader:
+    # Eval batch_size for Single card
+    batch_size_per_card: 256
+    ...
 ```
 **Note that the configuration file for prediction/evaluation must be consistent with the training.**
 
@@ -257,18 +288,33 @@ Take `rec_french_lite_train` as an example:
 ```
 Global:
   ...
-  # Add a custom dictionary, if you modify the dictionary
-  # please point the path to the new dictionary
+  # Add a custom dictionary, such as modify the dictionary, please point the path to the new dictionary
   character_dict_path: ./ppocr/utils/dict/french_dict.txt
-  # Add data augmentation during training
-  distort: true
-  # Identify spaces
-  use_space_char: true
   ...
-  # Modify reader type
-  reader_yml: ./configs/rec/multi_languages/rec_french_reader.yml
-  ...
+  # Whether to recognize spaces
+  use_space_char: True
+
 ...
+
+Train:
+  dataset:
+    # Type of dataset，we support LMDBDateSet and SimpleDataSet
+    name: SimpleDataSet
+    # Path of dataset
+    data_dir: ./train_data/
+    # Path of train list
+    label_file_list: ["./train_data/french_train.txt"]
+    ...
+
+Eval:
+  dataset:
+    # Type of dataset，we support LMDBDateSet and SimpleDataSet
+    name: SimpleDataSet
+    # Path of dataset
+    data_dir: ./train_data
+    # Path of eval list
+    label_file_list: ["./train_data/french_val.txt"]
+    ...
 ```
 
 <a name="EVALUATION"></a>
@@ -277,9 +323,8 @@ Global:
 The evaluation data set can be modified via `configs/rec/rec_icdar15_reader.yml` setting of `label_file_path` in EvalReader.
 
 ```
-export CUDA_VISIBLE_DEVICES=0
 # GPU evaluation, Global.checkpoints is the weight to be tested
-python3 tools/eval.py -c configs/rec/rec_icdar15_reader.yml -o Global.checkpoints={path/to/weights}/best_accuracy
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_icdar15_reader.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
 <a name="PREDICTION"></a>
@@ -294,7 +339,7 @@ The default prediction picture is stored in `infer_img`, and the weight is speci
 
 ```
 # Predict English results
-python3 tools/infer_rec.py -c configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml -o Global.checkpoints={path/to/weights}/best_accuracy TestReader.infer_img=doc/imgs_words/en/word_1.jpg
+python3 tools/infer_rec.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml -o Global.checkpoints={path/to/weights}/best_accuracy TestReader.infer_img=doc/imgs_words/en/word_1.jpg
 ```
 
 Input image:
@@ -309,11 +354,11 @@ infer_img: doc/imgs_words/en/word_1.png
      word : joint
 ```
 
-The configuration file used for prediction must be consistent with the training. For example, you completed the training of the Chinese model with `python3 tools/train.py -c configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml`, you can use the following command to predict the Chinese model:
+The configuration file used for prediction must be consistent with the training. For example, you completed the training of the Chinese model with `python3 tools/train.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml`, you can use the following command to predict the Chinese model:
 
 ```
 # Predict Chinese results
-python3 tools/infer_rec.py -c configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml -o Global.checkpoints={path/to/weights}/best_accuracy TestReader.infer_img=doc/imgs_words/ch/word_1.jpg
+python3 tools/infer_rec.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml -o Global.checkpoints={path/to/weights}/best_accuracy TestReader.infer_img=doc/imgs_words/ch/word_1.jpg
 ```
 
 Input image:
