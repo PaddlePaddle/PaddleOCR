@@ -88,9 +88,9 @@ For a new language request, please refer to [Guideline for new language_requests
     - [Python Inference](./doc/doc_en/inference_en.md)
     - [C++ Inference](./deploy/cpp_infer/readme_en.md)
     - [Serving](./deploy/hubserving/readme_en.md)
-    - [Mobile](./deploy/lite/readme_en.md)
-    - [Model Quantization](./deploy/slim/quantization/README_en.md)
-    - [Model Compression](./deploy/slim/prune/README_en.md)
+    - [Mobile](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme_en.md)
+    - [Model Quantization](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/quantization/README_en.md)
+    - [Model Compression](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/prune/README_en.md)
     - [Benchmark](./doc/doc_en/benchmark_en.md)  
 - Data Annotation and Synthesis
     - [Semi-automatic Annotation Tool](./PPOCRLabel/README_en.md)

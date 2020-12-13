@@ -77,9 +77,9 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
     - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
     - [服务化部署](./deploy/hubserving/readme.md)
-    - [端侧部署](./deploy/lite/readme.md)
-    - [模型量化](./deploy/slim/quantization/README.md)
-    - [模型裁剪](./deploy/slim/prune/README.md)
+    - [端侧部署](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme.md)
+    - [模型量化](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/quantization/README.md)
+    - [模型裁剪](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/prune/README.md)
     - [Benchmark](./doc/doc_ch/benchmark.md)
 - 数据集
     - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
