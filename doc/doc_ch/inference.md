@@ -186,7 +186,7 @@ python3 tools/infer/predict_det.py --det_algorithm="EAST" --image_dir="./doc/img
 ```
 可视化文本检测结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
 
-![](../imgs_results/det_res_img_10_east.jpg)
+(coming soon)
 
 **注意**：本代码库中，EAST后处理Locality-Aware NMS有python和c++两种版本，c++版速度明显快于python版。由于c++版本nms编译版本问题，只有python3.5环境下会调用c++版nms，其他情况将调用python版nms。
 
@@ -205,7 +205,7 @@ python3 tools/infer/predict_det.py --det_algorithm="SAST" --image_dir="./doc/img
 ```
 可视化文本检测结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
 
-![](../imgs_results/det_res_img_10_sast.jpg)
+(coming soon)
 
 #### (2). 弯曲文本检测模型（Total-Text）  
 首先将SAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在Total-Text英文数据集训练的模型为例（[模型下载地址(coming soon)](link))，可以使用如下命令进行转换：
@@ -221,7 +221,7 @@ python3 tools/infer/predict_det.py --det_algorithm="SAST" --image_dir="./doc/img
 ```
 可视化文本检测结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
 
-![](../imgs_results/det_res_img623_sast.jpg)
+(coming soon)
 
 **注意**：本代码库中，SAST后处理Locality-Aware NMS有python和c++两种版本，c++版速度明显快于python版。由于c++版本nms编译版本问题，只有python3.5环境下会调用c++版nms，其他情况将调用python版nms。
 
@@ -245,15 +245,16 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" 
 
 执行命令后，上面图像的预测结果（识别的文本和得分）会打印到屏幕上，示例如下：
 
-Predicts of ./doc/imgs_words/ch/word_4.jpg:['实力活力', 0.89552695]
-
+```bash
+Predicts of ./doc/imgs_words/ch/word_4.jpg:('实力活力', 0.98458153)
+```
 
 <a name="基于CTC损失的识别模型推理"></a>
 ### 2. 基于CTC损失的识别模型推理
 
 我们以 CRNN 为例，介绍基于CTC损失的识别模型推理。 Rosetta 使用方式类似，不用设置识别算法参数rec_algorithm。
 
-首先将 Rosetta 文本识别训练过程中保存的模型，转换成inference model。以基于Resnet34_vd骨干网络，使用MJSynth和SynthText两个英文文本识别合成数据集训练
+首先将 CRNN 文本识别训练过程中保存的模型，转换成inference model。以基于Resnet34_vd骨干网络，使用MJSynth和SynthText两个英文文本识别合成数据集训练
 的模型为例（ [模型下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_none_bilstm_ctc_v2.0_train.tar) )，可以使用如下命令进行转换：
 
 ```
@@ -261,7 +262,7 @@ python3 tools/export_model.py -c configs/rec/rec_r34_vd_none_bilstm_ctc.yml -o G
 
 ```
 
-STAR-Net文本识别模型推理，可以执行如下命令：
+CRNN 文本识别模型推理，可以执行如下命令：
 
 ```
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./inference/rec_crnn/" --rec_image_shape="3, 32, 100" --rec_char_type="en"
@@ -281,7 +282,9 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png
 
 执行命令后，上面图像的识别结果如下：
 
-Predicts of ./doc/imgs_words_en/word_336.png:['super', 0.9999555]
+```bash
+Predicts of ./doc/imgs_words_en/word_336.png:('super', 0.9999073)
+```
 
 **注意**：由于上述模型是参考[DTRB](https://arxiv.org/abs/1904.01906)文本识别训练和评估流程，与超轻量级中文识别模型训练有两方面不同：
 
@@ -295,10 +298,10 @@ dict_character = list(self.character_str)
 ```
 
 ### 4. 自定义文本识别字典的推理
-如果训练时修改了文本的字典，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径
+如果训练时修改了文本的字典，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径，并且设置 `rec_char_type=ch`
 
 ```
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="en" --rec_char_dict_path="your text dict path"
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="ch" --rec_char_dict_path="your text dict path"
 ```
 
 <a name="多语言模型的推理"></a>
@@ -313,9 +316,7 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" -
 
 执行命令后，上图的预测结果为：
 ``` text
-2020-09-19 16:15:05,076-INFO:      index: [205 206  38  39]
-2020-09-19 16:15:05,077-INFO:      word : 바탕으로
-2020-09-19 16:15:05,077-INFO:      score: 0.9171358942985535
+Predicts of ./doc/imgs_words/korean/1.jpg:('바탕으로', 0.9948904)
 ```
 
 <a name="方向分类模型推理"></a>
@@ -378,4 +379,4 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_10.jpg" --d
 
 执行命令后，识别结果图像如下：
 
-![](../imgs_results/img_10.jpg)
+(coming soon)

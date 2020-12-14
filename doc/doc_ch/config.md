@@ -10,14 +10,14 @@
 
 ## 配置文件参数介绍
 
-以 `rec_chinese_lite_train_v1.1.yml ` 为例
+以 `rec_chinese_lite_train_v2.0.yml ` 为例
 ### Global
 
 |         字段             |            用途                |      默认值       |            备注            |
 | :----------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
 |      use_gpu             |    设置代码是否在gpu运行           |       true        |                \                 |
 |      epoch_num           |    最大训练epoch数             |       500        |                \                 |
-|      log_smooth_window   |    滑动窗口大小            |       20          |                \                 |
+|      log_smooth_window   |    log队列长度，每次打印输出队列里的中间值            |       20          |                \                 |
 |      print_batch_step    |    设置打印log间隔         |       10          |                \                 |
 |      save_model_dir      |    设置模型保存路径        |  output/{算法名称}  |                \                 |
 |      save_epoch_step     |    设置模型保存间隔        |       3           |                \                 |
