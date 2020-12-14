@@ -87,7 +87,7 @@ python3 PPOCRLabel.py --lang ch
 ### 错误提示
 - 如果同时使用whl包安装了paddleocr，其优先级大于通过paddleocr.py调用PaddleOCR类，whl包未更新时会导致程序异常。
 - PPOCRLabel**不支持对中文文件名**的图片进行自动标注。
-- 如果您在打开软件过程中出现**objc[XXXXX]**开头的错误，证明您的opencv版本太高，建议安装4.2版本：
+- 针对Linux用户：：如果您在打开软件过程中出现**objc[XXXXX]**开头的错误，证明您的opencv版本太高，建议安装4.2版本：
 	```
 	pip install opencv-python==4.2.0.32
 	```
