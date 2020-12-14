@@ -373,7 +373,7 @@ class MainWindow(QMainWindow, WindowMixin):
                              'a', 'prev', getStr('prevImgDetail'))
 
         save = action(getStr('save'), self.saveFile,
-                      'Ctrl+S', 'verify', getStr('saveDetail'), enabled=False)
+                      'Ctrl+V', 'verify', getStr('saveDetail'), enabled=False)
 
         alcm = action(getStr('choosemodel'), self.autolcm,
                                         'Ctrl+M', 'next', getStr('tipchoosemodel'))
@@ -397,7 +397,7 @@ class MainWindow(QMainWindow, WindowMixin):
         delete = action(getStr('delBox'), self.deleteSelectedShape,
                         'Delete', 'delete', getStr('delBoxDetail'), enabled=False)
         copy = action(getStr('dupBox'), self.copySelectedShape,
-                      'Ctrl+D', 'copy', getStr('dupBoxDetail'),
+                      'Ctrl+C', 'copy', getStr('dupBoxDetail'),
                       enabled=False)
 
         hideAll = action(getStr('hideBox'), partial(self.togglePolygons, False),
