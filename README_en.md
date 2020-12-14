@@ -62,15 +62,11 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
 
 | Model introduction                                           | Model name                   | Recommended scene | Detection model                                              | Direction classifier                                         | Recognition model                                            |
 | ------------------------------------------------------------ | ---------------------------- | ----------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Chinese and English ultra-lightweight OCR model (8.1M)       | ch_ppocr_mobile_v1.1_xx      | Mobile & server   | [inference model](link) / [pre-trained model](link) | [inference model](link) / [pre-trained model](link) | [inference model](link) / [pre-trained model](link) |  
-| Chinese and English general OCR model (155.1M)               | ch_ppocr_server_v1.1_xx      | Server            | [inference model](link) / [pre-trained model](link) | [inference model](link) / [pre-trained model](link) | [inference model](link) / [pre-trained model](link) |  
-| Chinese and English ultra-lightweight compressed OCR model (3.5M) | ch_ppocr_mobile_slim_v1.1_xx | Mobile            | [inference model](link) / [slim model](link) | [inference model](link) / [slim model](link) |    [inference model](link) / [slim model](link) |
-| French ultra-lightweight OCR model (4.6M)       | french_ppocr_mobile_v1.1_xx      | Mobile & server   | [inference model](link) / [pre-trained model](link) | - | [inference model](link) / [pre-trained model](link)  |
-| German ultra-lightweight OCR model (4.6M)       | german_ppocr_mobile_v1.1_xx      | Mobile & server   | [inference model](link) / [pre-trained model](link) | - |[inference model](link) / [pre-trained model](link) |
-| Korean ultra-lightweight OCR model (5.9M)       | korean_ppocr_mobile_v1.1_xx      | Mobile & server   | [inference model](link) / [pre-trained model](link) | - |[inference model](link) / [pre-trained model](link)|
-| Japan ultra-lightweight OCR model (6.2M)       | japan_ppocr_mobile_v1.1_xx      | Mobile & server   | [inference model](link) / [pre-trained model](link) | - |[inference model](link) / [pre-trained model](link)  |
+| Chinese and English ultra-lightweight OCR model (8.1M)       | ch_ppocr_mobile_v2.0_xx      | Mobile & server   |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar)|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_pre.tar)      |
+| Chinese and English general OCR model (143M)               | ch_ppocr_server_v2.0_xx      | Server            |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_traingit.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_pre.tar)  |  
 
-For more model downloads (including multiple languages), please refer to [PP-OCR v1.1 series model downloads](./doc/doc_en/models_list_en.md).
+
+For more model downloads (including multiple languages), please refer to [PP-OCR v2.0 series model downloads](./doc/doc_en/models_list_en.md).
 
 For a new language request, please refer to [Guideline for new language_requests](#language_requests).
 
@@ -92,9 +88,9 @@ For a new language request, please refer to [Guideline for new language_requests
     - [Python Inference](./doc/doc_en/inference_en.md)
     - [C++ Inference](./deploy/cpp_infer/readme_en.md)
     - [Serving](./deploy/hubserving/readme_en.md)
-    - [Mobile](./deploy/lite/readme_en.md)
-    - [Model Quantization](./deploy/slim/quantization/README_en.md)
-    - [Model Compression](./deploy/slim/prune/README_en.md)
+    - [Mobile](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme_en.md)
+    - [Model Quantization](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/quantization/README_en.md)
+    - [Model Compression](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/prune/README_en.md)
     - [Benchmark](./doc/doc_en/benchmark_en.md)  
 - Data Annotation and Synthesis
     - [Semi-automatic Annotation Tool](./PPOCRLabel/README_en.md)
@@ -111,6 +107,12 @@ For a new language request, please refer to [Guideline for new language_requests
 - [References](./doc/doc_en/reference_en.md)
 - [License](#LICENSE)
 - [Contribution](#CONTRIBUTION)
+
+***Note: The dynamic graphs branch is still under development.
+Currently, only dynamic graph training, python-end prediction, and C++ prediction are supported.
+If you need mobile-end deployment cases or quantitative demo,
+please use the static graph branch.***
+
 
 <a name="PP-OCR-Pipeline"></a>
 

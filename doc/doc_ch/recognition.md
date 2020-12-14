@@ -37,8 +37,6 @@ ln -sf <path/to/dataset> <path/to/paddle_ocr>/train_data/dataset
 
 若您本地没有数据集，可以在官网下载 [icdar2015](http://rrc.cvc.uab.es/?ch=4&com=downloads) 数据，用于快速验证。也可以参考[DTRB](https://github.com/clovaai/deep-text-recognition-benchmark#download-lmdb-dataset-for-traininig-and-evaluation-from-here)，下载 benchmark 所需的lmdb格式数据集。
 
-如果希望复现SRN的论文指标，需要下载离线[增广数据](https://pan.baidu.com/s/1-HSZ-ZVdqBF2HaBZ5pRAKA),提取码: y3ry。增广数据是由MJSynth和SynthText做旋转和扰动得到的。数据下载完成后请解压到 {your_path}/PaddleOCR/train_data/data_lmdb_release/training/ 路径下。
-
 <a name="自定义数据集"></a>
 * 使用自己数据集
 
@@ -65,7 +63,7 @@ wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_t
 wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_test.txt
 ```
 
-PaddleOCR 也提供了数据格式转换脚本，可以将官网 label 转换支持的数据格式。 数据转换工具在 `train_data/gen_label.py`, 这里以训练集为例：
+PaddleOCR 也提供了数据格式转换脚本，可以将官网 label 转换支持的数据格式。 数据转换工具在 `ppocr/utils/gen_label.py`, 这里以训练集为例：
 
 ```
 # 将官网下载的标签文件转换为 rec_gt_label.txt
@@ -116,9 +114,9 @@ n
 
 word_dict.txt 每行有一个单字，将字符与数字索引映射在一起，“and” 将被映射成 [2 5 1]
 
-`ppocr/utils/ppocr_keys_v1.txt` 是一个包含6623个字符的中文字典，
+`ppocr/utils/ppocr_keys_v1.txt` 是一个包含6623个字符的中文字典
 
-`ppocr/utils/ic15_dict.txt` 是一个包含36个字符的英文字典，
+`ppocr/utils/ic15_dict.txt` 是一个包含36个字符的英文字典
 
 `ppocr/utils/dict/french_dict.txt` 是一个包含118个字符的法文字典
 
@@ -127,6 +125,8 @@ word_dict.txt 每行有一个单字，将字符与数字索引映射在一起，
 `ppocr/utils/dict/korean_dict.txt` 是一个包含3636个字符的韩文字典
 
 `ppocr/utils/dict/german_dict.txt` 是一个包含131个字符的德文字典
+
+`ppocr/utils/dict/en_dict.txt` 是一个包含63个字符的英文字典
 
 
 您可以按需使用。
@@ -155,10 +155,10 @@ PaddleOCR提供了训练脚本、评估脚本和预测脚本，本节将以 CRNN
 ```
 cd PaddleOCR/
 # 下载MobileNetV3的预训练模型
-wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/rec_mv3_none_bilstm_ctc.tar
+wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_none_bilstm_ctc_v2.0_train.tar
 # 解压模型参数
 cd pretrain_models
-tar -xf rec_mv3_none_bilstm_ctc.tar && rm -rf rec_mv3_none_bilstm_ctc.tar
+tar -xf rec_mv3_none_bilstm_ctc_v2.0_train.tar && rm -rf rec_mv3_none_bilstm_ctc_v2.0_train.tar
 ```
 
 开始训练:
@@ -204,9 +204,7 @@ PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_t
 | rec_mv3_tps_bilstm_attn.yml |  RARE |   Mobilenet_v3 large 0.5 |  tps   |  BiLSTM |  attention  |
 | rec_r34_vd_none_bilstm_ctc.yml |  CRNN |   Resnet34_vd |  None   |  BiLSTM |  ctc  |
 | rec_r34_vd_none_none_ctc.yml |  Rosetta |   Resnet34_vd |  None   |  None |  ctc  |
-| rec_r34_vd_tps_bilstm_attn.yml | RARE | Resnet34_vd | tps | BiLSTM | attention |
 | rec_r34_vd_tps_bilstm_ctc.yml | STARNet | Resnet34_vd | tps | BiLSTM | ctc |
-| rec_r50fpn_vd_none_srn.yml | SRN | Resnet50_fpn_vd | None | rnn | srn |
 
 训练中文数据，推荐使用[rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：
 

@@ -54,11 +54,10 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 | 模型简介     | 模型名称     |推荐场景          | 检测模型 | 方向分类器 | 识别模型 |
 | ------------ | --------------- | ----------------|---- | ---------- | -------- |
-| 中英文超轻量OCR模型（8.1M） | ch_ppocr_mobile_v1.1_xx |移动端&服务器端|[推理模型](link) / [预训练模型](link)|[推理模型](link) / [预训练模型](link) |[推理模型](link) / [预训练模型](link)      |
-| 中英文通用OCR模型（155.1M）   |ch_ppocr_server_v1.1_xx|服务器端 |[推理模型](link) / [预训练模型](link)    |[推理模型](link) / [预训练模型](link)    |[推理模型](link) / [预训练模型](link)  |  
-| 中英文超轻量压缩OCR模型（3.5M） | ch_ppocr_mobile_slim_v1.1_xx| 移动端 |[推理模型](link) / [slim模型](link) |[推理模型](link) / [slim模型](link)| [推理模型](link) / [slim模型](link)|  
+| 中英文超轻量OCR模型（8.1M） | ch_ppocr_mobile_v2.0_xx |移动端&服务器端|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar)|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_pre.tar)      |
+| 中英文通用OCR模型（143M）   |ch_ppocr_server_v2.0_xx|服务器端 |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar)    |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar)    |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_pre.tar)  |  
 
-更多模型下载（包括多语言），可以参考[PP-OCR v1.1 系列模型下载](./doc/doc_ch/models_list.md)
+更多模型下载（包括多语言），可以参考[PP-OCR v2.0 系列模型下载](./doc/doc_ch/models_list.md)
 
 ## 文档教程
 - [快速安装](./doc/doc_ch/installation.md)
@@ -78,9 +77,9 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
     - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
     - [服务化部署](./deploy/hubserving/readme.md)
-    - [端侧部署](./deploy/lite/readme.md)
-    - [模型量化](./deploy/slim/quantization/README.md)
-    - [模型裁剪](./deploy/slim/prune/README.md)
+    - [端侧部署](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme.md)
+    - [模型量化](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/quantization/README.md)
+    - [模型裁剪](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/prune/README.md)
     - [Benchmark](./doc/doc_ch/benchmark.md)
 - 数据集
     - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
@@ -97,6 +96,9 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - [参考文献](./doc/doc_ch/reference.md)
 - [许可证书](#许可证书)
 - [贡献代码](#贡献代码)
+
+***注意：动态图端侧部署仍在开发中，目前仅支持动态图训练、python端预测，C++预测，
+如果您有需要移动端部署案例或者量化裁剪，请切换到静态图分支；***
 
 <a name="PP-OCR"></a>
 ## PP-OCR Pipline
