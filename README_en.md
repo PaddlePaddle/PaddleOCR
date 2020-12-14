@@ -108,6 +108,12 @@ For a new language request, please refer to [Guideline for new language_requests
 - [License](#LICENSE)
 - [Contribution](#CONTRIBUTION)
 
+***Note: The dynamic graphs branch is still under development.
+Currently, only dynamic graph training, python-end prediction, and C++ prediction are supported.
+If you need mobile-end deployment cases or quantitative demo,
+please use the static graph branch.***
+
+
 <a name="PP-OCR-Pipeline"></a>
 
 ## PP-OCR Pipeline
