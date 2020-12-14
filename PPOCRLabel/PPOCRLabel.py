@@ -376,7 +376,7 @@ class MainWindow(QMainWindow, WindowMixin):
         #                 'space', 'verify', getStr('verifyImgDetail'))
 
         save = action(getStr('save'), self.saveFile,
-                      'Ctrl+S', 'verify', getStr('saveDetail'), enabled=False)
+                      'Ctrl+V', 'verify', getStr('saveDetail'), enabled=False)
 
         alcm = action(getStr('choosemodel'), self.autolcm,
                                         'Ctrl+M', 'next', getStr('tipchoosemodel'))
@@ -400,7 +400,7 @@ class MainWindow(QMainWindow, WindowMixin):
         delete = action(getStr('delBox'), self.deleteSelectedShape,
                         'Delete', 'delete', getStr('delBoxDetail'), enabled=False)
         copy = action(getStr('dupBox'), self.copySelectedShape,
-                      'Ctrl+D', 'copy', getStr('dupBoxDetail'),
+                      'Ctrl+C', 'copy', getStr('dupBoxDetail'),
                       enabled=False)
 
         hideAll = action(getStr('hideBox'), partial(self.togglePolygons, False),
@@ -460,10 +460,10 @@ class MainWindow(QMainWindow, WindowMixin):
                             'p', 'new', 'Creat Polygon', enabled=True)
 
         saveRec = action(getStr('saveRec'), self.saveRecResult,
-                            '', 'saveRec', getStr('saveRec'), enabled=False)
+                            '', 'save', getStr('saveRec'), enabled=False)
 
         saveLabel = action(getStr('saveLabel'), self.saveLabelFile, #
-                            '', 'save', getStr('saveLabel'), enabled=False)
+                            'Ctrl+S', 'save', getStr('saveLabel'), enabled=False)
 
         self.editButton.setDefaultAction(edit)
         self.newButton.setDefaultAction(create)
