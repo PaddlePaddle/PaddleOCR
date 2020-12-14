@@ -41,6 +41,7 @@ Take rec_chinese_lite_train_v2.0.yml as an example
 |      name        |         Optimizer class name          |  Adam  |  Currently supports`Momentum`,`Adam`,`RMSProp`, see [ppocr/optimizer/optimizer.py](../../ppocr/optimizer/optimizer.py)  |
 |      beta1           |    Set the exponential decay rate for the 1st moment estimates  |       0.9         |               \             |
 |      beta2           |    Set the exponential decay rate for the 2nd moment estimates  |     0.999         |               \             |
+|      clip_norm           |    The maximum norm value  |    -         |               \             |
 |      **lr**                |         Set the learning rate decay method       |   -    |       \  |
 |        name    |      Learning rate decay class name   |         Cosine       | Currently supports`Linear`,`Cosine`,`Step`,`Piecewise`, see[ppocr/optimizer/learning_rate.py](../../ppocr/optimizer/learning_rate.py) |
 |        learning_rate      |    Set the base learning rate        |       0.001      |  \        |
