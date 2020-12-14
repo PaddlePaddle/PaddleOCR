@@ -16,8 +16,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
-
 import copy
+import paddle
 
 __all__ = ['build_optimizer']
 
@@ -49,7 +49,13 @@ def build_optimizer(config, epochs, step_each_epoch, parameters):
 
     # step3 build optimizer
     optim_name = config.pop('name')
+    if 'clip_norm' in config:
+        clip_norm = config.pop('clip_norm')
+        grad_clip = paddle.nn.ClipGradByNorm(clip_norm=clip_norm)
+    else:
+        grad_clip = None
     optim = getattr(optimizer, optim_name)(learning_rate=lr,
                                            weight_decay=reg,
+                                           grad_clip=grad_clip,
                                            **config)
     return optim(parameters), lr

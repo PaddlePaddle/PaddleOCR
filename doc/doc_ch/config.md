@@ -42,6 +42,7 @@
 |      name        |         优化器类名          |  Adam  |  目前支持`Momentum`,`Adam`,`RMSProp`, 见[ppocr/optimizer/optimizer.py](../../ppocr/optimizer/optimizer.py)  |
 |      beta1           |    设置一阶矩估计的指数衰减率  |       0.9         |               \             |
 |      beta2           |    设置二阶矩估计的指数衰减率  |     0.999         |               \             |
+|      clip_norm           |    所允许的二范数最大值  |              |               \             |
 |      **lr**                |         设置学习率decay方式       |   -    |       \  |
 |        name    |      学习率decay类名   |         Cosine       | 目前支持`Linear`,`Cosine`,`Step`,`Piecewise`, 见[ppocr/optimizer/learning_rate.py](../../ppocr/optimizer/learning_rate.py) |
 |        learning_rate      |    基础学习率        |       0.001      |  \        |

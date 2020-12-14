@@ -30,18 +30,25 @@ class Momentum(object):
         regularization (WeightDecayRegularizer, optional) - The strategy of regularization.
     """
 
-    def __init__(self, learning_rate, momentum, weight_decay=None, **args):
+    def __init__(self,
+                 learning_rate,
+                 momentum,
+                 weight_decay=None,
+                 grad_clip=None,
+                 **args):
         super(Momentum, self).__init__()
         self.learning_rate = learning_rate
         self.momentum = momentum
         self.weight_decay = weight_decay
+        self.grad_clip = grad_clip
 
     def __call__(self, parameters):
         opt = optim.Momentum(
             learning_rate=self.learning_rate,
             momentum=self.momentum,
-            parameters=parameters,
-            weight_decay=self.weight_decay)
+            weight_decay=self.weight_decay,
+            grad_clip=self.grad_clip,
+            parameters=parameters)
         return opt
 
 
@@ -96,10 +103,11 @@ class RMSProp(object):
 
     def __init__(self,
                  learning_rate,
-                 momentum,
+                 momentum=0.0,
                  rho=0.95,
                  epsilon=1e-6,
                  weight_decay=None,
+                 grad_clip=None,
                  **args):
         super(RMSProp, self).__init__()
         self.learning_rate = learning_rate
@@ -107,6 +115,7 @@ class RMSProp(object):
         self.rho = rho
         self.epsilon = epsilon
         self.weight_decay = weight_decay
+        self.grad_clip = grad_clip
 
     def __call__(self, parameters):
         opt = optim.RMSProp(
@@ -115,5 +124,6 @@ class RMSProp(object):
             rho=self.rho,
             epsilon=self.epsilon,
             weight_decay=self.weight_decay,
+            grad_clip=self.grad_clip,
             parameters=parameters)
         return opt
