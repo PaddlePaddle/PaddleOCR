@@ -35,44 +35,45 @@ __all__ = ['PaddleOCR']
 
 model_urls = {
     'det':
-        'https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_infer.tar',
+    'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar',
     'rec': {
         'ch': {
             'url':
-                'https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_infer.tar',
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/ppocr_keys_v1.txt'
         },
         'en': {
             'url':
-                'https://paddleocr.bj.bcebos.com/20-09-22/mobile/en/en_ppocr_mobile_v1.1_rec_infer.tar',
-            'dict_path': './ppocr/utils/ic15_dict.txt'
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/en_number_mobile_v2.0_rec_infer.tar',
+            'dict_path': './ppocr/utils/dict/en_dict.txt'
         },
         'french': {
             'url':
-                'https://paddleocr.bj.bcebos.com/20-09-22/mobile/fr/french_ppocr_mobile_v1.1_rec_infer.tar',
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/french_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/dict/french_dict.txt'
         },
         'german': {
             'url':
-                'https://paddleocr.bj.bcebos.com/20-09-22/mobile/ge/german_ppocr_mobile_v1.1_rec_infer.tar',
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/german_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/dict/german_dict.txt'
         },
         'korean': {
             'url':
-                'https://paddleocr.bj.bcebos.com/20-09-22/mobile/kr/korean_ppocr_mobile_v1.1_rec_infer.tar',
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/korean_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/dict/korean_dict.txt'
         },
         'japan': {
             'url':
-                'https://paddleocr.bj.bcebos.com/20-09-22/mobile/jp/japan_ppocr_mobile_v1.1_rec_infer.tar',
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/japan_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/dict/japan_dict.txt'
         }
     },
     'cls':
-        'https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_infer.tar'
+    'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar'
 }
 
 SUPPORT_DET_MODEL = ['DB']
+VERSION = 2.0
 SUPPORT_REC_MODEL = ['CRNN']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
@@ -94,20 +95,24 @@ def download_with_progressbar(url, save_path):
 
 def maybe_download(model_storage_directory, url):
     # using custom model
-    if not os.path.exists(os.path.join(
-            model_storage_directory, 'model')) or not os.path.exists(
-        os.path.join(model_storage_directory, 'params')):
+    tar_file_name_list = [
+        'inference.pdiparams', 'inference.pdiparams.info', 'inference.pdmodel'
+    ]
+    if not os.path.exists(
+            os.path.join(model_storage_directory, 'inference.pdiparams')
+    ) or not os.path.exists(
+            os.path.join(model_storage_directory, 'inference.pdmodel')):
         tmp_path = os.path.join(model_storage_directory, url.split('/')[-1])
         print('download {} to {}'.format(url, tmp_path))
         os.makedirs(model_storage_directory, exist_ok=True)
         download_with_progressbar(url, tmp_path)
         with tarfile.open(tmp_path, 'r') as tarObj:
             for member in tarObj.getmembers():
-                if "model" in member.name:
-                    filename = 'model'
-                elif "params" in member.name:
-                    filename = 'params'
-                else:
+                filename = None
+                for tar_file_name in tar_file_name_list:
+                    if tar_file_name in member.name:
+                        filename = tar_file_name
+                if filename is None:
                     continue
                 file = tarObj.extractfile(member)
                 with open(
@@ -176,43 +181,43 @@ def parse_args(mMain=True, add_help=True):
         parser.add_argument("--use_angle_cls", type=str2bool, default=False)
         return parser.parse_args()
     else:
-        return argparse.Namespace(use_gpu=True,
-                                  ir_optim=True,
-                                  use_tensorrt=False,
-                                  gpu_mem=8000,
-                                  image_dir='',
-                                  det_algorithm='DB',
-                                  det_model_dir=None,
-                                  det_limit_side_len=960,
-                                  det_limit_type='max',
-                                  det_db_thresh=0.3,
-                                  det_db_box_thresh=0.5,
-                                  det_db_unclip_ratio=2.0,
-                                  det_east_score_thresh=0.8,
-                                  det_east_cover_thresh=0.1,
-                                  det_east_nms_thresh=0.2,
-                                  rec_algorithm='CRNN',
-                                  rec_model_dir=None,
-                                  rec_image_shape="3, 32, 320",
-                                  rec_char_type='ch',
-                                  rec_batch_num=30,
-                                  max_text_length=25,
-                                  rec_char_dict_path=None,
-                                  use_space_char=True,
-                                  drop_score=0.5,
-                                  cls_model_dir=None,
-                                  cls_image_shape="3, 48, 192",
-                                  label_list=['0', '180'],
-                                  cls_batch_num=30,
-                                  cls_thresh=0.9,
-                                  enable_mkldnn=False,
-                                  use_zero_copy_run=False,
-                                  use_pdserving=False,
-                                  lang='ch',
-                                  det=True,
-                                  rec=True,
-                                  use_angle_cls=False
-                                  )
+        return argparse.Namespace(
+            use_gpu=True,
+            ir_optim=True,
+            use_tensorrt=False,
+            gpu_mem=8000,
+            image_dir='',
+            det_algorithm='DB',
+            det_model_dir=None,
+            det_limit_side_len=960,
+            det_limit_type='max',
+            det_db_thresh=0.3,
+            det_db_box_thresh=0.5,
+            det_db_unclip_ratio=2.0,
+            det_east_score_thresh=0.8,
+            det_east_cover_thresh=0.1,
+            det_east_nms_thresh=0.2,
+            rec_algorithm='CRNN',
+            rec_model_dir=None,
+            rec_image_shape="3, 32, 320",
+            rec_char_type='ch',
+            rec_batch_num=30,
+            max_text_length=25,
+            rec_char_dict_path=None,
+            use_space_char=True,
+            drop_score=0.5,
+            cls_model_dir=None,
+            cls_image_shape="3, 48, 192",
+            label_list=['0', '180'],
+            cls_batch_num=30,
+            cls_thresh=0.9,
+            enable_mkldnn=False,
+            use_zero_copy_run=False,
+            use_pdserving=False,
+            lang='ch',
+            det=True,
+            rec=True,
+            use_angle_cls=False)
 
 
 class PaddleOCR(predict_system.TextSystem):
@@ -228,19 +233,21 @@ class PaddleOCR(predict_system.TextSystem):
         lang = postprocess_params.lang
         assert lang in model_urls[
             'rec'], 'param lang must in {}, but got {}'.format(
-            model_urls['rec'].keys(), lang)
+                model_urls['rec'].keys(), lang)
         if postprocess_params.rec_char_dict_path is None:
             postprocess_params.rec_char_dict_path = model_urls['rec'][lang][
                 'dict_path']
 
         # init model dir
         if postprocess_params.det_model_dir is None:
-            postprocess_params.det_model_dir = os.path.join(BASE_DIR, 'det')
+            postprocess_params.det_model_dir = os.path.join(
+                BASE_DIR, '{}/det'.format(VERSION))
         if postprocess_params.rec_model_dir is None:
             postprocess_params.rec_model_dir = os.path.join(
-                BASE_DIR, 'rec/{}'.format(lang))
+                BASE_DIR, '{}/rec/{}'.format(VERSION, lang))
         if postprocess_params.cls_model_dir is None:
-            postprocess_params.cls_model_dir = os.path.join(BASE_DIR, 'cls')
+            postprocess_params.cls_model_dir = os.path.join(
+                BASE_DIR, '{}/cls'.format(VERSION))
         print(postprocess_params)
         # download model
         maybe_download(postprocess_params.det_model_dir, model_urls['det'])

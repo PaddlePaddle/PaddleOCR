@@ -9,14 +9,14 @@ The following list can be viewed through `--help`
 
 ## INTRODUCTION TO GLOBAL PARAMETERS OF CONFIGURATION FILE
 
-Take rec_chinese_lite_train_v1.1.yml as an example
-### Global 
+Take rec_chinese_lite_train_v2.0.yml as an example
+### Global
 
 |         Parameter             |            Use                |      Defaults       |            Note            |
 | :----------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
 |      use_gpu             |    Set using GPU or not           |       true        |                \                 |
 |      epoch_num           |    Maximum training epoch number             |       500        |                \                 |
-|      log_smooth_window   |    Sliding window size            |       20          |                \                 |
+|      log_smooth_window   |    Log queue length, the median value in the queue each time will be printed           |       20          |                \                 |
 |      print_batch_step    |    Set print log interval         |       10          |                \                 |
 |      save_model_dir      |    Set model save path        |  output/{算法名称}  |                \                 |
 |      save_epoch_step     |    Set model save interval        |       3           |                \                 |
@@ -41,6 +41,7 @@ Take rec_chinese_lite_train_v1.1.yml as an example
 |      name        |         Optimizer class name          |  Adam  |  Currently supports`Momentum`,`Adam`,`RMSProp`, see [ppocr/optimizer/optimizer.py](../../ppocr/optimizer/optimizer.py)  |
 |      beta1           |    Set the exponential decay rate for the 1st moment estimates  |       0.9         |               \             |
 |      beta2           |    Set the exponential decay rate for the 2nd moment estimates  |     0.999         |               \             |
+|      clip_norm           |    The maximum norm value  |    -         |               \             |
 |      **lr**                |         Set the learning rate decay method       |   -    |       \  |
 |        name    |      Learning rate decay class name   |         Cosine       | Currently supports`Linear`,`Cosine`,`Step`,`Piecewise`, see[ppocr/optimizer/learning_rate.py](../../ppocr/optimizer/learning_rate.py) |
 |        learning_rate      |    Set the base learning rate        |       0.001      |  \        |

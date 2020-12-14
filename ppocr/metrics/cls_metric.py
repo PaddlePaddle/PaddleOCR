@@ -32,9 +32,8 @@ class ClsMetric(object):
 
     def get_metric(self):
         """
-        return metircs {
-                 'acc': 0,
-                 'norm_edit_dis': 0,
+        return metrics {
+                 'acc': 0
             }
         """
         acc = self.correct_num / self.all_num

@@ -57,7 +57,7 @@ class DetMetric(object):
 
     def get_metric(self):
         """
-        return metircs {
+        return metrics {
                  'precision': 0,
                  'recall': 0,
                  'hmean': 0

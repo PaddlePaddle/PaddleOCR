@@ -1,32 +1,48 @@
-English | [简体中文](README.md)
+English | [简体中文](README_ch.md)
 
 ## Introduction
-PaddleOCR aims to create rich, leading, and practical OCR tools that help users train better models and apply them into practice.
+PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools that help users train better models and apply them into practice.
 
 **Recent updates**
-- 2020.8.24 Support the use of PaddleOCR through whl package installation，pelease refer  [PaddleOCR Package](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/whl_en.md)
-- 2020.8.16, Release text detection algorithm [SAST](https://arxiv.org/abs/1908.05498) and text recognition algorithm [SRN](https://arxiv.org/abs/2003.12294)
-- 2020.7.23, Release the playback and PPT of live class on BiliBili station, PaddleOCR Introduction, [address](https://aistudio.baidu.com/aistudio/course/introduce/1519)
-- 2020.7.15, Add mobile App demo , support both iOS and  Android  ( based on easyedge and Paddle Lite)
-- 2020.7.15, Improve the  deployment ability, add the C + +  inference , serving deployment. In addition, the benchmarks of the ultra-lightweight OCR model are provided.
-- 2020.7.15, Add several related datasets, data annotation and synthesis tools.
+- 2020.11.25 Update a new data annotation tool, i.e., [PPOCRLabel](./PPOCRLabel/README_en.md), which is helpful to improve the labeling efficiency. Moreover, the labeling results can be used in training of the PP-OCR system directly.
+- 2020.9.22 Update the PP-OCR technical article, https://arxiv.org/abs/2009.09941
+- 2020.9.19 Update the ultra lightweight compressed ppocr_mobile_slim series models, the overall model size is 3.5M (see [PP-OCR Pipeline](#PP-OCR-Pipeline)), suitable for mobile deployment. [Model Downloads](#Supported-Chinese-model-list)
+- 2020.9.17 Update the ultra lightweight ppocr_mobile series and general ppocr_server series Chinese and English ocr models, which are comparable to commercial effects. [Model Downloads](#Supported-Chinese-model-list)
+- 2020.9.17 update [English recognition model](./doc/doc_en/models_list_en.md#english-recognition-model) and [Multilingual recognition model](doc/doc_en/models_list_en.md#english-recognition-model), `English`, `Chinese`, `German`, `French`, `Japanese` and `Korean` have been supported. Models for more languages will continue to be updated.
+- 2020.8.24 Support the use of PaddleOCR through whl package installation，please refer  [PaddleOCR Package](./doc/doc_en/whl_en.md)
+- 2020.8.21 Update the replay and PPT of the live lesson at Bilibili on August 18, lesson 2, easy to learn and use OCR tool spree. [Get Address](https://aistudio.baidu.com/aistudio/education/group/info/1519)
 - [more](./doc/doc_en/update_en.md)
 
 ## Features
-- Ultra-lightweight OCR model, total model size is only 8.6M
-    - Single model supports Chinese/English numbers combination recognition, vertical text recognition, long text recognition
-    - Detection model DB (4.1M) + recognition model CRNN (4.5M)
-- Various text detection algorithms: EAST, DB
-- Various text recognition algorithms: Rosetta, CRNN, STAR-Net, RARE
-- Support Linux, Windows, macOS and other systems.
+- PPOCR series of high-quality pre-trained models, comparable to commercial effects
+    - Ultra lightweight ppocr_mobile series models: detection (2.6M) + direction classifier (0.9M) + recognition (4.6M) = 8.1M
+    - General ppocr_server series models: detection (47.2M) + direction classifier (0.9M) + recognition (107M) = 155.1M
+    - Ultra lightweight compression ppocr_mobile_slim series models: detection (1.4M) + direction classifier (0.5M) + recognition (1.6M) = 3.5M
+- Support Chinese, English, and digit recognition, vertical text recognition, and long text recognition
+- Support multi-language recognition: Korean, Japanese, German, French
+- Support user-defined training, provides rich predictive inference deployment solutions
+- Support PIP installation, easy to use
+- Support Linux, Windows, MacOS and other systems
 
 ## Visualization
 
-![](doc/imgs_results/11.jpg)
+<div align="center">
+    <img src="doc/imgs_results/1101.jpg" width="800">
+    <img src="doc/imgs_results/1103.jpg" width="800">
+</div>
 
-![](doc/imgs_results/img_10.jpg)
+The above pictures are the visualizations of the general ppocr_server model. For more effect pictures, please see [More visualizations](./doc/doc_en/visualization_en.md).
 
-[More visualization](./doc/doc_en/visualization_en.md)
+<a name="Community"></a>
+## Community
+- Scan the QR code below with your Wechat, you can access to official technical exchange group. Look forward to your participation.
+
+<div align="center">
+<img src="./doc/joinus.PNG"  width = "200" height = "200" />
+</div>
+
+
+## Quick Experience
 
 You can also quickly experience the ultra-lightweight OCR : [Online Experience](https://www.paddlepaddle.org.cn/hub/scene/ocr)
 
@@ -42,177 +58,112 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
 
 <a name="Supported-Chinese-model-list"></a>
 
-### Supported Models:
+## PP-OCR 2.0 series model list（Update on Sep 17）
 
-|Model Name|Description |Detection Model link|Recognition Model link| Support for space Recognition Model link|
-|-|-|-|-|-|
-|db_crnn_mobile|ultra-lightweight OCR model|[inference model](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar)|[inference model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|[inference model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_enhance_infer.tar) / [pre-train model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_enhance.tar)
-|db_crnn_server|General OCR model|[inference model](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db.tar)|[inference model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn.tar)|[inference model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_enhance_infer.tar) / [pre-train model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_enhance.tar)
+| Model introduction                                           | Model name                   | Recommended scene | Detection model                                              | Direction classifier                                         | Recognition model                                            |
+| ------------------------------------------------------------ | ---------------------------- | ----------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Chinese and English ultra-lightweight OCR model (8.1M)       | ch_ppocr_mobile_v2.0_xx      | Mobile & server   |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar)|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_pre.tar)      |
+| Chinese and English general OCR model (143M)               | ch_ppocr_server_v2.0_xx      | Server            |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_traingit.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_pre.tar)  |  
 
+
+For more model downloads (including multiple languages), please refer to [PP-OCR v2.0 series model downloads](./doc/doc_en/models_list_en.md).
+
+For a new language request, please refer to [Guideline for new language_requests](#language_requests).
 
 ## Tutorials
 - [Installation](./doc/doc_en/installation_en.md)
 - [Quick Start](./doc/doc_en/quickstart_en.md)
-- Algorithm introduction
-    - [Text Detection Algorithm](#TEXTDETECTIONALGORITHM)
-    - [Text Recognition Algorithm](#TEXTRECOGNITIONALGORITHM)
-    - [END-TO-END OCR Algorithm](#ENDENDOCRALGORITHM)
-- Model training/evaluation
+- [Code Structure](./doc/doc_en/tree_en.md)
+- Algorithm Introduction
+    - [Text Detection Algorithm](./doc/doc_en/algorithm_overview_en.md)
+    - [Text Recognition Algorithm](./doc/doc_en/algorithm_overview_en.md)
+    - [PP-OCR Pipeline](#PP-OCR-Pipeline)
+- Model Training/Evaluation
     - [Text Detection](./doc/doc_en/detection_en.md)
     - [Text Recognition](./doc/doc_en/recognition_en.md)
+    - [Direction Classification](./doc/doc_en/angle_class_en.md)
     - [Yml Configuration](./doc/doc_en/config_en.md)
-    - [Tricks](./doc/doc_en/tricks_en.md)
-- Deployment
+- Inference and Deployment
+    - [Quick Inference Based on PIP](./doc/doc_en/whl_en.md)
     - [Python Inference](./doc/doc_en/inference_en.md)
     - [C++ Inference](./deploy/cpp_infer/readme_en.md)
-    - [Serving](./doc/doc_en/serving_en.md)
-    - [Mobile](./deploy/lite/readme_en.md)
-    - Model Quantization and Compression (coming soon)
-    - [Benchmark](./doc/doc_en/benchmark_en.md)
+    - [Serving](./deploy/hubserving/readme_en.md)
+    - [Mobile](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme_en.md)
+    - [Model Quantization](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/quantization/README_en.md)
+    - [Model Compression](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/prune/README_en.md)
+    - [Benchmark](./doc/doc_en/benchmark_en.md)  
+- Data Annotation and Synthesis
+    - [Semi-automatic Annotation Tool](./PPOCRLabel/README_en.md)
+    - [Data Annotation Tools](./doc/doc_en/data_annotation_en.md)
+    - [Data Synthesis Tools](./doc/doc_en/data_synthesis_en.md)
 - Datasets
     - [General OCR Datasets(Chinese/English)](./doc/doc_en/datasets_en.md)
     - [HandWritten_OCR_Datasets(Chinese)](./doc/doc_en/handwritten_datasets_en.md)
     - [Various OCR Datasets(multilingual)](./doc/doc_en/vertical_and_multilingual_datasets_en.md)
-    - [Data Annotation Tools](./doc/doc_en/data_annotation_en.md)
-    - [Data Synthesis Tools](./doc/doc_en/data_synthesis_en.md)
-- [FAQ](#FAQ)
-- Visualization
-    - [Ultra-lightweight Chinese/English OCR Visualization](#UCOCRVIS)
-    - [General Chinese/English OCR Visualization](#GeOCRVIS)
-    - [Chinese/English OCR Visualization (Support Space Recognition )](#SpaceOCRVIS)
+- [Visualization](#Visualization)
+- [New language requests](#language_requests)
+- [FAQ](./doc/doc_en/FAQ_en.md)
 - [Community](#Community)
 - [References](./doc/doc_en/reference_en.md)
 - [License](#LICENSE)
 - [Contribution](#CONTRIBUTION)
 
-<a name="TEXTDETECTIONALGORITHM"></a>
-## Text Detection Algorithm
+***Note: The dynamic graphs branch is still under development.
+Currently, only dynamic graph training, python-end prediction, and C++ prediction are supported.
+If you need mobile-end deployment cases or quantitative demo,
+please use the static graph branch.***
 
-PaddleOCR open source text detection algorithms list:
-- [x]  EAST([paper](https://arxiv.org/abs/1704.03155))
-- [x]  DB([paper](https://arxiv.org/abs/1911.08947))
-- [x]  SAST([paper](https://arxiv.org/abs/1908.05498))(Baidu Self-Research)
 
-On the ICDAR2015 dataset, the text detection result is as follows:
+<a name="PP-OCR-Pipeline"></a>
 
-|Model|Backbone|precision|recall|Hmean|Download link|
-|-|-|-|-|-|-|
-|EAST|ResNet50_vd|88.18%|85.51%|86.82%|[Download link](https://paddleocr.bj.bcebos.com/det_r50_vd_east.tar)|
-|EAST|MobileNetV3|81.67%|79.83%|80.74%|[Download link](https://paddleocr.bj.bcebos.com/det_mv3_east.tar)|
-|DB|ResNet50_vd|83.79%|80.65%|82.19%|[Download link](https://paddleocr.bj.bcebos.com/det_r50_vd_db.tar)|
-|DB|MobileNetV3|75.92%|73.18%|74.53%|[Download link](https://paddleocr.bj.bcebos.com/det_mv3_db.tar)|
-|SAST|ResNet50_vd|92.18%|82.96%|87.33%|[Download link](https://paddleocr.bj.bcebos.com/SAST/sast_r50_vd_icdar2015.tar)|
-
-On Total-Text dataset, the text detection result is as follows:
-
-|Model|Backbone|precision|recall|Hmean|Download link|
-|-|-|-|-|-|-|
-|SAST|ResNet50_vd|88.74%|79.80%|84.03%|[Download link](https://paddleocr.bj.bcebos.com/SAST/sast_r50_vd_total_text.tar)|
-
-**Note：** Additional data, like icdar2013, icdar2017, COCO-Text, ArT, was added to the model training of SAST. Download English public dataset in organized format used by PaddleOCR from [Baidu Drive](https://pan.baidu.com/s/12cPnZcVuV1zn5DOd4mqjVw) (download code: 2bpi).
-
-For use of [LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/datasets_en.md#1-icdar2019-lsvt) street view dataset with a total of 3w training data，the related configuration and pre-trained models for text detection task are as follows:  
-|Model|Backbone|Configuration file|Pre-trained model|
-|-|-|-|-|
-|ultra-lightweight OCR model|MobileNetV3|det_mv3_db.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar)|
-|General OCR model|ResNet50_vd|det_r50_vd_db.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_det_r50_vd_db.tar)|
-
-* Note: For the training and evaluation of the above DB model, post-processing parameters box_thresh=0.6 and unclip_ratio=1.5 need to be set. If using different datasets and different models for training, these two parameters can be adjusted for better result.
-
-For the training guide and use of PaddleOCR text detection algorithms, please refer to the document [Text detection model training/evaluation/prediction](./doc/doc_en/detection_en.md)
-
-<a name="TEXTRECOGNITIONALGORITHM"></a>
-## Text Recognition Algorithm
-
-PaddleOCR open-source text recognition algorithms list:
-- [x]  CRNN([paper](https://arxiv.org/abs/1507.05717))
-- [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))
-- [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))
-- [x]  RARE([paper](https://arxiv.org/abs/1603.03915v1))
-- [x]  SRN([paper](https://arxiv.org/abs/2003.12294))(Baidu Self-Research)
-
-Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation result of these above text recognition (using MJSynth and SynthText for training, evaluate on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE) is as follow:
-
-|Model|Backbone|Avg Accuracy|Module combination|Download link|
-|-|-|-|-|-|
-|Rosetta|Resnet34_vd|80.24%|rec_r34_vd_none_none_ctc|[Download link](https://paddleocr.bj.bcebos.com/rec_r34_vd_none_none_ctc.tar)|
-|Rosetta|MobileNetV3|78.16%|rec_mv3_none_none_ctc|[Download link](https://paddleocr.bj.bcebos.com/rec_mv3_none_none_ctc.tar)|
-|CRNN|Resnet34_vd|82.20%|rec_r34_vd_none_bilstm_ctc|[Download link](https://paddleocr.bj.bcebos.com/rec_r34_vd_none_bilstm_ctc.tar)|
-|CRNN|MobileNetV3|79.37%|rec_mv3_none_bilstm_ctc|[Download link](https://paddleocr.bj.bcebos.com/rec_mv3_none_bilstm_ctc.tar)|
-|STAR-Net|Resnet34_vd|83.93%|rec_r34_vd_tps_bilstm_ctc|[Download link](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_ctc.tar)|
-|STAR-Net|MobileNetV3|81.56%|rec_mv3_tps_bilstm_ctc|[Download link](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_ctc.tar)|
-|RARE|Resnet34_vd|84.90%|rec_r34_vd_tps_bilstm_attn|[Download link](https://paddleocr.bj.bcebos.com/rec_r34_vd_tps_bilstm_attn.tar)|
-|RARE|MobileNetV3|83.32%|rec_mv3_tps_bilstm_attn|[Download link](https://paddleocr.bj.bcebos.com/rec_mv3_tps_bilstm_attn.tar)|
-|SRN|Resnet50_vd_fpn|88.33%|rec_r50fpn_vd_none_srn|[Download link](https://paddleocr.bj.bcebos.com/SRN/rec_r50fpn_vd_none_srn.tar)|
-
-**Note：** SRN model uses data expansion method to expand the two training sets mentioned above, and the expanded data can be downloaded from [Baidu Drive](https://pan.baidu.com/s/1-HSZ-ZVdqBF2HaBZ5pRAKA) (download code: y3ry).
-
-The average accuracy of the two-stage training in the original paper is 89.74%, and that of one stage training in paddleocr is 88.33%. Both pre-trained weights can be downloaded [here](https://paddleocr.bj.bcebos.com/SRN/rec_r50fpn_vd_none_srn.tar).
-
-We use [LSVT](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/datasets_en.md#1-icdar2019-lsvt) dataset and cropout 30w  training data from original photos by using position groundtruth and make some calibration needed. In addition, based on the LSVT corpus, 500w synthetic data is generated to train the model. The related configuration and pre-trained models are as follows:
-
-|Model|Backbone|Configuration file|Pre-trained model|
-|-|-|-|-|
-|ultra-lightweight OCR model|MobileNetV3|rec_chinese_lite_train.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar)|[inference model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_enhance_infer.tar) & [pre-trained model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_enhance.tar)|
-|General OCR model|Resnet34_vd|rec_chinese_common_train.yml|[Download link](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn.tar)|[inference model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_enhance_infer.tar) & [pre-trained model](https://paddleocr.bj.bcebos.com/ch_models/ch_rec_r34_vd_crnn_enhance.tar)|
-
-Please refer to the document for training guide and use of PaddleOCR text recognition algorithms [Text recognition model training/evaluation/prediction](./doc/doc_en/recognition_en.md)
-
-<a name="ENDENDOCRALGORITHM"></a>
-## END-TO-END OCR Algorithm
-- [ ]  [End2End-PSL](https://arxiv.org/abs/1909.07808)(Baidu Self-Research, coming soon)
-
-## Visualization
-
-<a name="UCOCRVIS"></a>
-### 1.Ultra-lightweight Chinese/English OCR Visualization [more](./doc/doc_en/visualization_en.md)
+## PP-OCR Pipeline
 
 <div align="center">
-    <img src="doc/imgs_results/1.jpg" width="800">
+    <img src="./doc/ppocr_framework.png" width="800">
 </div>
 
-<a name="GeOCRVIS"></a>
-### 2. General Chinese/English OCR Visualization [more](./doc/doc_en/visualization_en.md)
+PP-OCR is a practical ultra-lightweight OCR system. It is mainly composed of three parts: DB text detection, detection frame correction and CRNN text recognition. The system adopts 19 effective strategies from 8 aspects including backbone network selection and adjustment, prediction head design, data augmentation, learning rate transformation strategy, regularization parameter selection, pre-training model use, and automatic model tailoring and quantization to optimize and slim down the models of each module. The final results are an ultra-lightweight Chinese and English OCR model with an overall size of 3.5M and a 2.8M English digital OCR model. For more details, please refer to the PP-OCR technical article (https://arxiv.org/abs/2009.09941). Besides, The implementation of the FPGM Pruner and PACT quantization is based on [PaddleSlim](https://github.com/PaddlePaddle/PaddleSlim).
 
+
+
+## Visualization [more](./doc/doc_en/visualization_en.md)
+- Chinese OCR model
 <div align="center">
-    <img src="doc/imgs_results/chinese_db_crnn_server/11.jpg" width="800">
+    <img src="./doc/imgs_results/1102.jpg" width="800">
+    <img src="./doc/imgs_results/1104.jpg" width="800">
+    <img src="./doc/imgs_results/1106.jpg" width="800">
+    <img src="./doc/imgs_results/1105.jpg" width="800">
 </div>
 
-<a name="SpaceOCRVIS"></a>
-### 3.Chinese/English OCR Visualization (Space_support) [more](./doc/doc_en/visualization_en.md)
-
+- English OCR model
 <div align="center">
-    <img src="doc/imgs_results/chinese_db_crnn_server/en_paper.jpg" width="800">
+    <img src="./doc/imgs_results/img_12.jpg" width="800">
 </div>
 
-<a name="FAQ"></a>
-
-## FAQ
-1. Error when using attention-based recognition model: KeyError: 'predict'
-
-    The inference of recognition model based on attention loss is still being debugged. For Chinese text recognition, it is recommended to choose the recognition model based on CTC loss first. In practice, it is also found that the recognition model based on attention loss is not as effective as the one based on CTC loss.
-
-2. About inference speed
-
-    When there are a lot of texts in the picture, the prediction time will increase. You can use `--rec_batch_num` to set a smaller prediction batch size. The default value is 30, which can be changed to 10 or other values.
-
-3. Service deployment and mobile deployment
-
-    It is expected that the service deployment based on Serving and the mobile deployment based on Paddle Lite will be released successively in mid-to-late June. Stay tuned for more updates.
-
-4. Release time of self-developed algorithm
-
-    Baidu Self-developed algorithms such as SAST, SRN and end2end PSL will be released in June or July. Please be patient.
-
-[more](./doc/doc_en/FAQ_en.md)
-
-<a name="Community"></a>
-## Community
-Scan  the QR code below with your wechat and completing the questionnaire, you can access to offical technical exchange group.
-
+- Multilingual OCR model
 <div align="center">
-<img src="./doc/joinus.jpg"  width = "200" height = "200" />
+    <img src="./doc/imgs_results/1110.jpg" width="800">
+    <img src="./doc/imgs_results/1112.jpg" width="800">
 </div>
+
+
+<a name="language_requests"></a>
+## Guideline for new language requests
+
+If you want to request a new language support, a PR with 2 following files are needed：
+
+1. In folder [ppocr/utils/dict](https://github.com/PaddlePaddle/PaddleOCR/tree/develop/ppocr/utils/dict),
+it is necessary to submit the dict text to this path and name it with `{language}_dict.txt` that contains a list of all characters. Please see the format example from other files in that folder.
+
+2. In folder [ppocr/utils/corpus](https://github.com/PaddlePaddle/PaddleOCR/tree/develop/ppocr/utils/corpus),
+it is necessary to submit the corpus to this path and name it with `{language}_corpus.txt` that contains a list of words in your language.
+Maybe, 50000 words per language is necessary at least.
+Of course, the more, the better.
+
+If your language has unique elements, please tell me in advance within any way, such as useful links, wikipedia and so on.
+
+More details, please refer to [Multilingual OCR Development Plan](https://github.com/PaddlePaddle/PaddleOCR/issues/1048).
+
 
 <a name="LICENSE"></a>
 ## License
@@ -229,3 +180,7 @@ We welcome all the contributions to PaddleOCR and appreciate for your feedback v
 - Thanks [authorfu](https://github.com/authorfu) for contributing Android demo  and [xiadeye](https://github.com/xiadeye) contributing iOS demo, respectively.
 - Thanks [BeyondYourself](https://github.com/BeyondYourself) for contributing many great suggestions and simplifying part of the code style.
 - Thanks [tangmq](https://gitee.com/tangmq) for contributing Dockerized deployment services to PaddleOCR and supporting the rapid release of callable Restful API services.
+- Thanks [lijinhan](https://github.com/lijinhan) for contributing a new way, i.e., java SpringBoot, to achieve the request for the Hubserving deployment.
+- Thanks [Mejans](https://github.com/Mejans) for contributing the Occitan corpus and character set.
+- Thanks [LKKlein](https://github.com/LKKlein) for contributing a new deploying package with the Golang program language.
+- Thanks [Evezerest](https://github.com/Evezerest), [ninetailskim](https://github.com/ninetailskim), [edencfc](https://github.com/edencfc), [BeyondYourself](https://github.com/BeyondYourself) and [1084667371](https://github.com/1084667371) for contributing a new data annotation tool, i.e., PPOCRLabel。
