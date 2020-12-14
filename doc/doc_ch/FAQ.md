@@ -9,48 +9,42 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2020.11.16）](#近期更新)
+* [近期更新（2020.12.14）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
-* [【理论篇】OCR通用27个问题](#OCR通用问题)
+* [【理论篇】OCR通用30个问题](#OCR通用问题)
   * [基础知识7题](#基础知识)
-  * [数据集5题](#数据集)
-  * [模型训练调优7题](#模型训练调优)
-  * [预测部署8题](#预测部署)
-* [【实战篇】PaddleOCR实战72个问题](#PaddleOCR实战问题)
-  * [使用咨询20题](#使用咨询)
-  * [数据集14题](#数据集)
-  * [模型训练调优21题](#模型训练调优)
-  * [预测部署21题](#预测部署)
+  * [数据集7题](#数据集2)
+  * [模型训练调优7题](#模型训练调优2)
+  * [预测部署9题](#预测部署2)
+* [【实战篇】PaddleOCR实战89个问题](#PaddleOCR实战问题)
+  * [使用咨询21题](#使用咨询)
+  * [数据集17题](#数据集3)
+  * [模型训练调优27题](#模型训练调优3)
+  * [预测部署24题](#预测部署3)
 
 
 <a name="近期更新"></a>
-## 近期更新（2020.11.23）
+## 近期更新（2020.12.14）
 
-#### Q3.2.11：有哪些标注工具可以标注OCR数据集？
+#### Q3.1.21：PaddleOCR支持动态图吗？
 
-**A**：您可以参考：https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/data_annotation_en.md。
-我们计划推出高效标注OCR数据的标注工具，请您持续关注PaddleOCR的近期更新。
+**A**：动态图版本正在紧锣密鼓开发中，将于2020年12月16日发布，敬请关注。
 
-#### Q3.2.12：一些特殊场景的数据识别效果差，但是数据量很少，不够用来finetune怎么办？
+#### Q3.3.25：检测模型训练或预测时出现elementwise_add报错
 
-**A**：您可以合成一些接近使用场景的数据用于训练。
-我们计划推出基于特定场景的文本数据合成工具，请您持续关注PaddleOCR的近期更新。
+**A**：设置的输入尺寸必须是32的倍数，否则在网络多次下采样和上采样后，feature map会产生1个像素的diff，从而导致elementwise_add时报shape不匹配的错误。
 
-#### Q3.2.13：特殊字符（例如一些标点符号）识别效果不好怎么办？
+#### Q3.3.26: DB检测训练输入尺寸640，可以改大一些吗？
 
-**A**：首先请您确认要识别的特殊字符是否在字典中。
-如果字符在已经字典中但效果依然不好，可能是由于识别数据较少导致的，您可以增加相应数据finetune模型。
+**A**: 不建议改大。检测模型训练输入尺寸是预处理中random crop后的尺寸，并非直接将原图进行resize，多数场景下这个尺寸并不小了，改大后可能反而并不合适，而且训练会变慢。另外，代码里可能有的地方参数按照预设输入尺寸适配的，改大后可能有隐藏风险。
 
-#### Q3.2.14：PaddleOCR可以识别灰度图吗？
+#### Q3.3.27: 识别模型训练时，loss能正常下降，但acc一直为0
 
-**A**：PaddleOCR的模型均为三通道输入。如果您想使用灰度图作为输入，建议直接用3通道的模式读入灰度图，
-或者将单通道图像转换为三通道图像再识别。例如，opencv的cvtColor函数就可以将灰度图转换为RGB三通道模式。
+**A**: 识别模型训练初期acc为0是正常的，多训一段时间指标就上来了。
 
-#### Q3.1.20：PaddleOCR与百度的其他OCR产品有什么区别？
+#### Q3.4.24：DB模型能正确推理预测，但换成EAST或SAST模型时报错或结果不正确
 
-**A**：PaddleOCR主要聚焦通用ocr，如果有垂类需求，您可以用PaddleOCR+垂类数据自己训练；
-如果缺少带标注的数据，或者不想投入研发成本，建议直接调用开放的API，开放的API覆盖了目前比较常见的一些垂类。
-
+**A**：使用EAST或SAST模型进行推理预测时，需要在命令中指定参数--det_algorithm="EAST" 或 --det_algorithm="SAST"，使用DB时不用指定是因为该参数默认值是"DB"：https://github.com/PaddlePaddle/PaddleOCR/blob/e7a708e9fdaf413ed7a14da8e4a7b4ac0b211e42/tools/infer/utility.py#L43
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -141,6 +135,8 @@
 
 <a name="OCR通用问题"></a>
 ## 【理论篇】OCR通用问题
+
+<a name="基础知识"></a>
 ### 基础知识
 
 #### Q2.1.1：CRNN能否识别两行的文字?还是说必须一行？
@@ -169,6 +165,7 @@
 
 **A**：处理字符的时候，把多字符的当作一个字就行，字典中每行是一个字。
 
+<a name="数据集2"></a>
 ### 数据集
 
 #### Q2.2.1：支持空格的模型，标注数据的时候是不是要标注空格？中间几个空格都要标注出来么？
@@ -191,7 +188,15 @@
 
 **A**：使用基于分割的方法，如DB，检测密集文本行时，最好收集一批数据进行训练，并且在训练时，并将生成二值图像的shrink_ratio参数调小一些。
 
+#### Q2.2.6: 当训练数据量少时，如何获取更多的数据？
 
+**A**: 当训练数据量少时，可以尝试以下三种方式获取更多的数据：（1）人工采集更多的训练数据，最直接也是最有效的方式。（2）基于PIL和opencv基本图像处理或者变换。例如PIL中ImageFont, Image, ImageDraw三个模块将文字写到背景中，opencv的旋转仿射变换，高斯滤波等。（3）利用数据生成算法合成数据，例如pix2pix等算法。
+
+#### Q2.2.7: 论文《Editing Text in the Wild》中文本合成方法SRNet有什么特点？
+
+**A**: SRNet是借鉴GAN中图像到图像转换、风格迁移的想法合成文本数据。不同于通用GAN的方法只选择一个分支，SRNet将文本合成任务分解为三个简单的子模块，提升合成数据的效果。这三个子模块为不带背景的文本风格迁移模块、背景抽取模块和融合模块。PaddleOCR计划将在2020年12月中旬开源基于SRNet的实用模型。
+
+<a name="模型训练调优2"></a>
 ### 模型训练调优
 
 #### Q2.3.1：如何更换文本检测/识别的backbone？
@@ -233,6 +238,7 @@
 
 （2）调大系统的[l2 dcay值](https://github.com/PaddlePaddle/PaddleOCR/blob/a501603d54ff5513fc4fc760319472e59da25424/configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml#L47)
 
+<a name="预测部署2"></a>
 ### 预测部署
 
 #### Q2.4.1：请问对于图片中的密集文字，有什么好的处理办法吗？
@@ -275,11 +281,16 @@
 
 **A**：表格目前学术界比较成熟的解决方案不多 ，可以尝试下分割的论文方案。
 
+#### Q2.4.9：弯曲文本有试过opencv的TPS进行弯曲校正吗？
+
+**A**：opencv的tps需要标出上下边界对应的点，这个点很难通过传统方法或者深度学习方法获取。PaddleOCR里StarNet网络中的tps模块实现了自动学点，自动校正，可以直接尝试这个。
+
 
 
 <a name="PaddleOCR实战问题"></a>
 ## 【实战篇】PaddleOCR实战问题
 
+<a name="使用咨询"></a>
 ### 使用咨询
 
 #### Q3.1.1：OSError： [WinError 126] 找不到指定的模块。mac pro python 3.4 shapely import 问题
@@ -377,7 +388,11 @@
 **A**：PaddleOCR主要聚焦通用ocr，如果有垂类需求，您可以用PaddleOCR+垂类数据自己训练；
 如果缺少带标注的数据，或者不想投入研发成本，建议直接调用开放的API，开放的API覆盖了目前比较常见的一些垂类。
 
+#### Q3.1.21：PaddleOCR支持动态图吗？
 
+**A**：动态图版本正在紧锣密鼓开发中，本周即将发布，敬请关注。
+
+<a name="数据集3"></a>
 ### 数据集
 
 #### Q3.2.1：如何制作PaddleOCR支持的数据格式
@@ -456,7 +471,19 @@
 **A**：PaddleOCR的模型均为三通道输入。如果您想使用灰度图作为输入，建议直接用3通道的模式读入灰度图，
 或者将单通道图像转换为三通道图像再识别。例如，opencv的cvtColor函数就可以将灰度图转换为RGB三通道模式。
 
+#### Q3.2.15: 文本标注工具PPOCRLabel有什么特色？
 
+**A**: PPOCRLabel是一个半自动文本标注工具，它使用基于PPOCR的中英文OCR模型，预先预测文本检测和识别结果，然后用户对上述结果进行校验和修正就行，大大提高用户的标注效率。同时导出的标注结果直接适配PPOCR训练所需要的数据格式，
+
+#### Q3.2.16: 文本标注工具PPOCRLabel，可以更换模型吗？
+
+**A**: PPOCRLabel中OCR部署方式采用的基于pip安装whl包快速推理，可以参考相关文档更换模型路径，进行特定任务的标注适配。基于pip安装whl包快速推理的文档如下，https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/whl.md。
+
+#### Q3.2.17: 文本标注工具PPOCRLabel支持的运行环境有哪些？
+
+**A**: PPOCRLabel可运行于Linux、Windows、MacOS等多种系统。操作步骤可以参考文档，https://github.com/PaddlePaddle/PaddleOCR/blob/develop/PPOCRLabel/README.md
+
+<a name="模型训练调优3"></a>
 ### 模型训练调优
 
 #### Q3.3.1：文本长度超过25，应该怎么处理？
@@ -574,7 +601,32 @@ return paddle.reader.multiprocess_reader(readers, False, queue_size=320)
 
 （3）在训练的时候，文本长度超过25的训练图像都会被丢弃，因此需要看下真正参与训练的图像有多少，太少的话也容易过拟合。
 
+#### Q3.3.22: 文字检测时怎么模糊的数据增强？
 
+**A**: 模糊的数据增强需要修改代码进行添加，以DB为例，在[这一行](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/det/db_process.py#L145) 之前添加模糊的增强就行 
+
+#### Q3.3.23: 文字检测时怎么更改图片旋转的角度，实现360度任意旋转？
+
+**A**: 将[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/det/data_augment.py#L22) 的(-10,10) 改为(-180,180)即可 
+
+#### Q3.3.24: 训练数据的长宽比过大怎么修改shape
+
+**A**: 识别修改[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/rec/ch_ppocr_v1.1/rec_chinese_common_train_v1.1.yml#L12) ,
+检测修改[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/configs/det/det_mv3_db.yml#L13)
+
+#### Q3.3.25：检测模型训练或预测时出现elementwise_add报错
+
+**A**：设置的输入尺寸必须是32的倍数，否则在网络多次下采样和上采样后，feature map会产生1个像素的diff，从而导致elementwise_add时报shape不匹配的错误。
+
+#### Q3.3.26: DB检测训练输入尺寸640，可以改大一些吗？
+
+**A**: 不建议改大。检测模型训练输入尺寸是预处理中random crop后的尺寸，并非直接将原图进行resize，多数场景下这个尺寸并不小了，改大后可能反而并不合适，而且训练会变慢。另外，代码里可能有的地方参数按照预设输入尺寸适配的，改大后可能有隐藏风险。
+
+#### Q3.3.27: 识别模型训练时，loss能正常下降，但acc一直为0
+
+**A**: 识别模型训练初期acc为0是正常的，多训一段时间指标就上来了。
+
+<a name="预测部署3"></a>
 ### 预测部署
 
 #### Q3.4.1：如何pip安装opt模型转换工具？
@@ -676,3 +728,11 @@ return paddle.reader.multiprocess_reader(readers, False, queue_size=320)
 #### Q3.4.22：训练ccpd车牌数据集，训练集准确率高，测试均是错误的，这是什么原因？
 
 **A**：这是因为训练时将shape修改为[3, 70, 220], 预测时对图片resize，会把高度压缩至32，影响测试结果。注释掉[resize代码](https://github.com/PaddlePaddle/PaddleOCR/blob/ed4313d611b7708a7763d4612f00cb7f318a0e1f/tools/infer/predict_rec.py#L54-L55)可以解决问题。
+
+#### Q3.4.23：安装paddleocr后，提示没有paddle
+
+**A**：这是因为paddlepaddle gpu版本和cpu版本的名称不一致，现在已经在[whl的文档](./whl.md)里做了安装说明。
+
+#### Q3.4.24：DB模型能正确推理预测，但换成EAST或SAST模型时报错或结果不正确
+
+**A**：使用EAST或SAST模型进行推理预测时，需要在命令中指定参数--det_algorithm="EAST" 或 --det_algorithm="SAST"，使用DB时不用指定是因为该参数默认值是"DB"：https://github.com/PaddlePaddle/PaddleOCR/blob/e7a708e9fdaf413ed7a14da8e4a7b4ac0b211e42/tools/infer/utility.py#L43
