@@ -162,7 +162,7 @@ Start training:
 
 ```
 # GPU training Support single card and multi-card training, specify the card number through --gpus
-# Training icdar15 English data and saving the log as train_rec.log
+# Training icdar15 English data and The training log will be automatically saved as train.log under "{save_model_dir}"
 python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_icdar15_train.yml
 ```
 <a name="Data_Augmentation"></a>
@@ -347,8 +347,7 @@ Get the prediction result of the input image:
 
 ```
 infer_img: doc/imgs_words/en/word_1.png
-     index: [19 24 18 23 29]
-     word : joint
+        result: ('joint', 0.9998967)
 ```
 
 The configuration file used for prediction must be consistent with the training. For example, you completed the training of the Chinese model with `python3 tools/train.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml`, you can use the following command to predict the Chinese model:
@@ -366,6 +365,5 @@ Get the prediction result of the input image:
 
 ```
 infer_img: doc/imgs_words/ch/word_1.jpg
-     index: [2092  177  312 2503]
-     word : 韩国小馆
+        result: ('韩国小馆', 0.997218)
 ```

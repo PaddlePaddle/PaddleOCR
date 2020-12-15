@@ -167,7 +167,7 @@ tar -xf rec_mv3_none_bilstm_ctc_v2.0_train.tar && rm -rf rec_mv3_none_bilstm_ctc
 
 ```
 # GPU训练 支持单卡，多卡训练，通过--gpus参数指定卡号
-# 训练icdar15英文数据 并将训练日志保存为 tain_rec.log
+# 训练icdar15英文数据 训练日志会自动保存为 "{save_model_dir}" 下的train.log
 python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_icdar15_train.yml
 ```
 <a name="数据增强"></a>
@@ -353,8 +353,7 @@ python3 tools/infer_rec.py -c configs/rec/rec_icdar15_train.yml -o Global.checkp
 
 ```
 infer_img: doc/imgs_words/en/word_1.png
-     index: [19 24 18 23 29]
-     word : joint
+        result: ('joint', 0.9998967)
 ```
 
 预测使用的配置文件必须与训练一致，如您通过 `python3 tools/train.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml` 完成了中文模型的训练，
@@ -373,6 +372,5 @@ python3 tools/infer_rec.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v
 
 ```
 infer_img: doc/imgs_words/ch/word_1.jpg
-     index: [2092  177  312 2503]
-     word : 韩国小馆
+        result: ('韩国小馆', 0.997218)
 ```
