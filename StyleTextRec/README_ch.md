@@ -13,14 +13,12 @@
 </div>
 
 Style-Text数据合成工具是基于百度自研的文本编辑算法《Editing Text in the Wild》https://arxiv.org/abs/1908.03047
-不同于常用的基于GAN的数据合成工具，Style-Text主要框架包括 ①文本前景风格迁移模块 ②背景抽取模块 ③融合模块。经过这样三步，就可以迅速实现图片文字风格迁移啦。
+不同于常用的基于GAN的数据合成工具，Style-Text主要框架包括：1.文本前景风格迁移模块 2.背景抽取模块 3.融合模块。经过这样三步，就可以迅速实现图片文字风格迁移。
 
 <div align="center">
-    <img src="doc/images/1.png" width="600">
-    <img src="doc/images/2.png" width="600">
+    <img src="doc/images/1.png" width="800">
+    <img src="doc/images/2.png" width="800">
 </div>
-
-此外，在实际铭牌文本识别场景和韩语文本识别场景，验证了该合成工具的有效性。
 
 ### 环境配置
 
