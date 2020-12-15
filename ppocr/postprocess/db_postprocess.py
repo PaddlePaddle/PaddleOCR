@@ -40,7 +40,8 @@ class DBPostProcess(object):
         self.max_candidates = max_candidates
         self.unclip_ratio = unclip_ratio
         self.min_size = 3
-        self.dilation_kernel = None if not use_dilation else np.array([[1, 1], [1, 1]])
+        self.dilation_kernel = None if not use_dilation else np.array(
+            [[1, 1], [1, 1]])
 
     def boxes_from_bitmap(self, pred, _bitmap, dest_width, dest_height):
         '''
@@ -132,7 +133,8 @@ class DBPostProcess(object):
         cv2.fillPoly(mask, box.reshape(1, -1, 2).astype(np.int32), 1)
         return cv2.mean(bitmap[ymin:ymax + 1, xmin:xmax + 1], mask)[0]
 
-    def __call__(self, pred, shape_list):
+    def __call__(self, outs_dict, shape_list):
+        pred = outs_dict['maps']
         if isinstance(pred, paddle.Tensor):
             pred = pred.numpy()
         pred = pred[:, 0, :, :]

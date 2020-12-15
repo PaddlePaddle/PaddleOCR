@@ -47,6 +47,7 @@ class DBLoss(nn.Layer):
             negative_ratio=ohem_ratio)
 
     def forward(self, predicts, labels):
+        predicts = predicts['maps']
         label_threshold_map, label_threshold_mask, label_shrink_map, label_shrink_mask = labels[
             1:]
         shrink_maps = predicts[:, 0, :, :]
