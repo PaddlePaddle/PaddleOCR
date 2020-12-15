@@ -177,8 +177,10 @@ class TextDetector(object):
             preds['f_score'] = outputs[1]
             preds['f_tco'] = outputs[2]
             preds['f_tvo'] = outputs[3]
-        else:
+        elif self.det_algorithm == 'DB':
             preds['maps'] = outputs[0]
+        else:
+            raise NotImplementedError
 
         post_result = self.postprocess_op(preds, shape_list)
         dt_boxes = post_result[0]['points']
