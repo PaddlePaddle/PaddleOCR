@@ -41,11 +41,14 @@ class Worker(QThread):
                         print('Can not recognise file  is :  ', Imgpath)
                         pass
                     else:
+                        strs = ''
                         for res in self.result_dic:
                             chars = res[1][0]
                             cond = res[1][1]
                             posi = res[0]
-                            self.listValue.emit("Transcription: " + chars + " Probability: " + str(cond) + " Location: " + json.dumps(posi))
+                            strs += "Transcription: " + chars + " Probability: " + str(cond) + " Location: " + json.dumps(posi)
+                        # Sending large amounts of data repeatedly through pyqtSignal may affect the program efficiency
+                        # self.listValue.emit(strs)  # It is better to remove this line
                         self.mainThread.result_dic = self.result_dic
                         self.mainThread.filePath = Imgpath
                         # 保存
