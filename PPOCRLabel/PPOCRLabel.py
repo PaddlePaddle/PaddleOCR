@@ -257,9 +257,6 @@ class MainWindow(QMainWindow, WindowMixin):
         self.imgsliderDock.setObjectName(getStr('IR'))
         self.imgsliderDock.setWidget(self.imgsplider)
         self.imgsliderDock.setFeatures(QDockWidget.DockWidgetFloatable)
-        # op = QGraphicsOpacityEffect()
-        # op.setOpacity(0.2)
-        # self.imgsliderDock.setGraphicsEffect(op)
         self.imgsliderDock.setAttribute(Qt.WA_TranslucentBackground)
         self.addDockWidget(Qt.RightDockWidgetArea, self.imgsliderDock)
 
@@ -302,10 +299,6 @@ class MainWindow(QMainWindow, WindowMixin):
         iconListContainer = QWidget()
         iconListContainer.setLayout(hlayout)
         iconListContainer.setFixedHeight(100)
-        # iconListContainer.setFixedWidth(530)
-        # op = QGraphicsOpacityEffect()
-        # op.setOpacity(0.5)
-        # iconListContainer.setGraphicsEffect(op)
         
         ########### Canvas ###########
         self.canvas = Canvas(parent=self)
@@ -498,10 +491,6 @@ class MainWindow(QMainWindow, WindowMixin):
                                 icon='color', tip=getStr('shapeFillColorDetail'),
                                 enabled=False)
 
-        # labels = self.dock.toggleViewAction()
-        # labels.setText(getStr('showHide'))
-        # labels.setShortcut('Ctrl+Shift+L')
-
         # Label list context menu.
         labelMenu = QMenu()
         addActions(labelMenu, (edit, delete))
@@ -582,17 +571,6 @@ class MainWindow(QMainWindow, WindowMixin):
         addActions(self.canvas.menus[1], (
             action('&Copy here', self.copyShape),
             action('&Move here', self.moveShape)))
-
-        # self.tools = self.toolbar('Tools')
-
-        # self.actions.beginner = (
-        #     open, opendir, openNextImg, openPrevImg, verify, save, None, create, copy, delete, None,
-        #     zoomIn, zoom, zoomOut, fitWindow, fitWidth)
-        #
-        # self.actions.advanced = (
-        #     open, opendir, openNextImg, openPrevImg, save, None,
-        #     createMode, editMode, None,
-        #     hideAll, showAll)
 
         self.statusBar().showMessage('%s started.' % __appname__)
         self.statusBar().show()
