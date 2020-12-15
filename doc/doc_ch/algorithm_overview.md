@@ -21,7 +21,7 @@ PaddleOCR开源的文本检测算法列表：
 |EAST|MobileNetV3|78.24%|79.15%|78.69%|[下载链接](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_east_v2.0_train.tar)|
 |DB|ResNet50_vd|86.41%|78.72%|82.38%|[下载链接](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_db_v2.0_train.tar)|
 |DB|MobileNetV3|77.29%|73.08%|75.12%|[下载链接](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar)|
-|SAST|ResNet50_vd|91.83%|81.80%|86.52%|[下载链接](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_icdar15_v2.0_train.tar))|
+|SAST|ResNet50_vd|91.83%|81.80%|86.52%|[下载链接](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_icdar15_v2.0_train.tar)|
 
 在Total-text文本检测公开数据集上，算法效果如下：
 
@@ -40,7 +40,7 @@ PaddleOCR文本检测算法的训练和使用请参考文档教程中[模型训�
 PaddleOCR基于动态图开源的文本识别算法列表：
 - [x]  CRNN([paper](https://arxiv.org/abs/1507.05717) )（ppocr推荐）
 - [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))
-- [ ]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))
+- [ ]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html)) coming soon
 - [ ]  RARE([paper](https://arxiv.org/abs/1603.03915v1)) coming soon
 - [ ]  SRN([paper](https://arxiv.org/abs/2003.12294)) coming soon
 

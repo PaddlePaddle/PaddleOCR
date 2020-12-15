@@ -5,6 +5,7 @@
 - [二、环境配置](#环境配置)
 - [三、快速上手](#快速上手)
 - [四、应用案例](#应用案例)
+- [五、代码结构](#代码结构)
 
 <a name="工具简介"></a>
 ### 一、工具简介
@@ -54,38 +55,43 @@ fusion_generator:
 ### 三、快速上手
 
 #### 合成单张图
-
-1. 运行tools/synth_image，生成示例图片：
-
-```python
-python3 -m tools.synth_image -c configs/config.yml
-```
-
-2. 运行后，会生成`fake_busion.jpg`，即为最终结果。
-<div align="center">
-    <img src="doc/images/4.jpg" width="300">
-</div>
-除此之外，程序还会生成并保存中间结果：
-   * `fake_bg.jpg`：为风格参考图去掉文字后的背景；
-   * `fake_text.jpg`：是用提供的字符串，仿照风格参考图中文字的风格，生成在灰色背景上的文字图片。
-
-3. 如果您想尝试其他风格图像和文字的效果，可以添加style_image,text_corpus和language参数：
+输入一张风格图和一段文字语料，运行tools/synth_image，合成单张图片，结果图像保存在当前目录下：
 ```python
 python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_images/2.jpg --text_corpus PaddleOCR --language en
 ```
-   * 注意：语言选项和语料相对应，目前我们支持英文、简体中文和韩语。
+* 注意：语言选项和语料相对应，目前该工具只支持英文、简体中文和韩语。
 
-4. 在`tools/synth_image.py`中，我们还提供了一个`batch_synth_images`方法，可以两两组合语料和图片，批量生成一批数据。
+例如，输入如下图片和语料"PaddleOCR":
+
+<div align="center">
+    <img src="examples/style_images/2.jpg" width="300">
+</div>
+
+生成合成数据`fake_fusion.jpg`：
+<div align="center">
+    <img src="doc/images/4.jpg" width="300">
+</div>
+
+除此之外，程序还会生成并保存中间结果`fake_bg.jpg`：为风格参考图去掉文字后的背景；
+   
+<div align="center">
+    <img src="doc/images/7.jpg" width="300">
+</div>
+
+`fake_text.jpg`：是用提供的字符串，仿照风格参考图中文字的风格，生成在灰色背景上的文字图片。
+   
+<div align="center">
+    <img src="doc/images/8.jpg" width="300">
+</div>
 
 #### 批量合成
+在实际应用场景中，经常需要批量合成图片，补充到训练集中。StyleText可以使用一批风格图片和语料，批量合成数据。合成过程如下：
 
-在开始合成数据前，需要准备一些素材。
+1. 在`configs/dataset_config.yml`中配置目标场景风格图像和语料的路径，具体如下：
 
-首先，需要风格图片作为合成图片的参考依据，这些数据可以是用作训练OCR识别模型的数据集。本例中使用带有标注文件的数据集作为风格图片.
-
-1. 在`configs/dataset_config.yml`中配置输入数据路径。
+   * `Global`：
+     * `output_dir:`：保存合成数据的目录。
    * `StyleSampler`：
-     * `method`：使用的风格图片采样方法；
      * `image_home`：风格图片目录；
      * `label_file`：风格图片路径列表文件，如果所用数据集有label，则label_file为label文件路径；
      * `with_label`：标志`label_file`是否为label文件。
@@ -94,21 +100,18 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
      * `language`：语料的语种；
      * `corpus_file`: 语料文件路径。
    
-   我们提供了一批中英韩5w通用数据供您试用 （[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/chkoen_5w.tar) ），下面给出了一些示例：
+   StyleText也提供了一批中英韩5万张通用场景数据用作文本风格图像，便于合成场景丰富的文本图像，下图给出了一些示例。
+   
+   中英韩5万张通用场景数据: [下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/chkoen_5w.tar) 
+   
 <div align="center">
     <img src="doc/images/5.png" width="800">
 </div>
+
 2. 运行`tools/synth_dataset`合成数据：
 
    ``` bash
    python -m tools.synth_dataset -c configs/dataset_config.yml
-   ```
-
-3. 如果您想使用并行方式来快速合成数据，可以通过启动多个进程，在启动时需要指定不同的`tag`（`-t`），如下所示:
-
-   ```bash
-   python3 -m tools.synth_dataset -t 0 -c configs/dataset_config.yml
-   python3 -m tools.synth_dataset -t 1 -c configs/dataset_config.yml
    ```
 
 <a name="应用案例"></a>
@@ -127,7 +130,8 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
 | 随机背景 | 韩语       | 5631     | 1230     | 0.3012                     | 100000       | 0.5057                 | 20%      |
 
 
-### 项目结构
+<a name="代码结构"></a>
+### 五、代码结构
 ```
 style_text_rec
 |-- arch

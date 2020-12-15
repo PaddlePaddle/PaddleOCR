@@ -23,7 +23,7 @@ On the ICDAR2015 dataset, the text detection result is as follows:
 |EAST|MobileNetV3|78.24%|79.15%|78.69%|[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_east_v2.0_train.tar)|
 |DB|ResNet50_vd|86.41%|78.72%|82.38%|[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_db_v2.0_train.tar)|
 |DB|MobileNetV3|77.29%|73.08%|75.12%|[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar)|
-|SAST|ResNet50_vd|91.83%|81.80%|86.52%|[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_icdar15_v2.0_train.tar))|
+|SAST|ResNet50_vd|91.83%|81.80%|86.52%|[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_icdar15_v2.0_train.tar)|
 
 On Total-Text dataset, the text detection result is as follows:
 
@@ -33,7 +33,7 @@ On Total-Text dataset, the text detection result is as follows:
 
 **Note：** Additional data, like icdar2013, icdar2017, COCO-Text, ArT, was added to the model training of SAST. Download English public dataset in organized format used by PaddleOCR from [Baidu Drive](https://pan.baidu.com/s/12cPnZcVuV1zn5DOd4mqjVw) (download code: 2bpi).
 
-For the training guide and use of PaddleOCR text detection algorithms, please refer to the document [Text detection model training/evaluation/prediction](./doc/doc_en/detection_en.md)
+For the training guide and use of PaddleOCR text detection algorithms, please refer to the document [Text detection model training/evaluation/prediction](./detection_en.md)
 
 <a name="TEXTRECOGNITIONALGORITHM"></a>
 ### 2. Text Recognition Algorithm
@@ -41,7 +41,7 @@ For the training guide and use of PaddleOCR text detection algorithms, please re
 PaddleOCR open-source text recognition algorithms list:
 - [x]  CRNN([paper](https://arxiv.org/abs/1507.05717))
 - [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))
-- [ ]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))
+- [ ]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html)) coming soon
 - [ ]  RARE([paper](https://arxiv.org/abs/1603.03915v1)) coming soon
 - [ ]  SRN([paper](https://arxiv.org/abs/2003.12294) )(Baidu Self-Research) coming soon
 
@@ -54,4 +54,4 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 |CRNN|Resnet34_vd|82.76%|rec_r34_vd_none_bilstm_ctc|[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_none_bilstm_ctc_v2.0_train.tar)|
 |CRNN|MobileNetV3|79.97%|rec_mv3_none_bilstm_ctc|[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_none_bilstm_ctc_v2.0_train.tar)|
 
-Please refer to the document for training guide and use of PaddleOCR text recognition algorithms [Text recognition model training/evaluation/prediction](./doc/doc_en/recognition_en.md)
+Please refer to the document for training guide and use of PaddleOCR text recognition algorithms [Text recognition model training/evaluation/prediction](./recognition_en.md)

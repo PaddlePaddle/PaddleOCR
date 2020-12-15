@@ -65,7 +65,3 @@ The downloadable models provided by PaddleOCR include `inference model`, `traine
 |ch_ppocr_mobile_slim_v2.0_cls|Slim quantized model|[cls_mv3.yml](../../configs/cls/cls_mv3.yml)| |[inference model (coming soon)](link) / [trained model](link) / [slim model](link) |
 |ch_ppocr_mobile_v2.0_cls|Original model|[cls_mv3.yml](../../configs/cls/cls_mv3.yml)|1.38M|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |
 
-
-## OCR model list (V2.0，updated on 2020.12.15)
-
-[2.0 series model address](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/models_list.md)

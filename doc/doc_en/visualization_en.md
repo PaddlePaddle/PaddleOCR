@@ -29,6 +29,6 @@
 <a name="multilingual"></a>
 ## (multilingual)_ppocr_mobile_2.0
 <div align="center">
-    <img src="./doc/imgs_results/french_0.jpg" width="800">
-    <img src="./doc/imgs_results/korean.jpg" width="800">
+    <img src="../imgs_results/french_0.jpg" width="800">
+    <img src="../imgs_results/korean.jpg" width="800">
 </div>
