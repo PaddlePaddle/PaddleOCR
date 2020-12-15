@@ -35,12 +35,13 @@ from .text_image_aug import tia_perspective, tia_stretch, tia_distort
 
 
 class RecAug(object):
-    def __init__(self, use_tia=True, **kwargsz):
+    def __init__(self, use_tia=True, aug_prob=0.4, **kwargs):
         self.use_tia = use_tia
+        self.aug_prob = aug_prob
 
     def __call__(self, data):
         img = data['image']
-        img = warp(img, 10, self.use_tia)
+        img = warp(img, 10, self.use_tia, self.aug_prob)
         data['image'] = img
         return data
 
@@ -329,7 +330,7 @@ def get_warpAffine(config):
     return rz
 
 
-def warp(img, ang, use_tia=True):
+def warp(img, ang, use_tia=True, prob=0.4):
     """
     warp
     """
@@ -337,8 +338,6 @@ def warp(img, ang, use_tia=True):
     config = Config(use_tia=use_tia)
     config.make(w, h, ang)
     new_img = img
-
-    prob = 0.4
 
     if config.distort:
         img_height, img_width = img.shape[0:2]

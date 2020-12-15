@@ -120,6 +120,9 @@ In `word_dict.txt`, there is a single word in each line, which maps characters a
 
 `ppocr/utils/dict/german_dict.txt` is a German dictionary with 131 characters
 
+`ppocr/utils/dict/en_dict.txt` is a English dictionary with 63 characters
+
+
 You can use it on demand.
 
 The current multi-language model is still in the demo stage and will continue to optimize the model and add languages. **You are very welcome to provide us with dictionaries and fonts in other languages**,
@@ -149,10 +152,10 @@ First download the pretrain model, you can download the trained model to finetun
 ```
 cd PaddleOCR/
 # Download the pre-trained model of MobileNetV3
-wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/rec_mv3_none_bilstm_ctc.tar
+wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_none_bilstm_ctc_v2.0_train.tar
 # Decompress model parameters
 cd pretrain_models
-tar -xf rec_mv3_none_bilstm_ctc.tar && rm -rf rec_mv3_none_bilstm_ctc.tar
+tar -xf rec_mv3_none_bilstm_ctc_v2.0_train.tar && rm -rf rec_mv3_none_bilstm_ctc_v2.0_train.tar
 ```
 
 Start training:
@@ -194,7 +197,6 @@ If the evaluation set is large, the test will be time-consuming. It is recommend
 | rec_mv3_tps_bilstm_attn.yml |  RARE |   Mobilenet_v3 large 0.5 |  tps   |  BiLSTM |  attention  |
 | rec_r34_vd_none_bilstm_ctc.yml |  CRNN |   Resnet34_vd |  None   |  BiLSTM |  ctc  |
 | rec_r34_vd_none_none_ctc.yml |  Rosetta |   Resnet34_vd |  None   |  None |  ctc  |
-| rec_r34_vd_tps_bilstm_attn.yml | RARE | Resnet34_vd | tps | BiLSTM | attention |
 | rec_r34_vd_tps_bilstm_ctc.yml | STARNet | Resnet34_vd | tps | BiLSTM | ctc |
 
 For training Chinese data, it is recommended to use
