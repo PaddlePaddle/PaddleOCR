@@ -2,10 +2,11 @@
 
 ### 目录
 - [一、工具简介](#工具简介)
-- [二、环境配置](# 二、环境配置)
-- [三、快速上手](# 三、快速上手)
-- [四、应用示例](# 四、应用示例)
+- [二、环境配置](#环境配置)
+- [三、快速上手](#快速上手)
+- [四、应用示例](#应用示例)
 
+<a name="工具简介"></a>
 ### 一、工具简介
 <div align="center">
     <img src="doc/images/3.png" width="800">
@@ -22,6 +23,7 @@ Style-Text数据合成工具是基于百度自研的文本编辑算法《Editing
     <img src="doc/images/2.png" width="1000">
 </div>
 
+<a name="环境配置"></a>
 ### 二、环境配置
 
 1. 参考[快速安装](../doc/doc_ch/installation.md)，安装PaddleOCR。
@@ -46,6 +48,7 @@ fusion_generator:
   pretrain: style_text_models/fusion_generator
 ```
 
+<a name="快速上手"></a>
 ### 三、快速上手
 
 #### 合成单张图
@@ -106,7 +109,7 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
    python3 -m tools.synth_dataset -t 1 -c configs/dataset_config.yml
    ```
 
-
+<a name="应用示例"></a>
 ### 四、应用示例
 
 在完成上述操作后，即可得到用于OCR识别的合成数据集。在实用场景中，我们经常遇到数据量不足的情况，这时可以使用已有数据作为style_input，合成数据。
