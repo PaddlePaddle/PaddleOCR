@@ -9,21 +9,21 @@
 
 ### 工具简介
 <div align="center">
-    <img src="../imgs_style_text/3.png" width="800">
+    <img src="doc/images/3.png" width="800">
 </div>
 
 Style-Text是对百度自研文本编辑算法《Editing Text in the Wild》中提出的SRNet网络的改进，不同于常用的GAN的方法只选择一个分支，该工具将文本合成任务分解为三个子模块，文本风格迁移模块、背景抽取模块和前背景融合模块，来提升合成数据的效果。下图显示了一些示例结果。
 
 <div align="center">
-    <img src="../imgs_style_text/1.png" width="800">
-    <img src="../imgs_style_text/2.png" width="800">
+    <img src="doc/images/1.png" width="800">
+    <img src="doc/images/2.png" width="800">
 </div>
 
 此外，在实际铭牌文本识别场景和韩语文本识别场景，验证了该合成工具的有效性。
 
 ### 环境配置
 
-1. 参考[快速安装](./installation.md)，安装PaddleOCR。强烈建议您使用python3环境。
+1. 参考[快速安装](../doc/doc_ch/installation.md)，安装PaddleOCR。强烈建议您使用python3环境。
 2. 进入`style_text_rec`目录，下载模型，并解压：
 
 ```bash
@@ -55,7 +55,7 @@ python3 -m tools.synth_image -c configs/config.yml
 
 1. 运行后，会生成`fake_busion.jpg`，即为最终结果。
 <div align="center">
-    <img src="../imgs_style_text/4.jpg" width="300">
+    <img src="doc/images/4.jpg" width="300">
 </div>
 除此之外，程序还会生成并保存中间结果：
    * `fake_bg.jpg`：为风格参考图去掉文字后的背景；
@@ -66,7 +66,7 @@ python3 -m tools.synth_image -c configs/config.yml
 python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_images/2.jpg --text_corpus PaddleOCR --language en
 ```
    * 注意：语言选项和语料相对应，目前我们支持英文、简体中文和韩语。
-  
+
 3. 在`tools/synth_image.py`中，我们还提供了一个`batch_synth_images`方法，可以两两组合语料和图片，批量生成一批数据。
 
 ### 高级使用
@@ -81,12 +81,15 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
      * `image_home`：风格图片目录；
      * `label_file`：风格图片路径列表文件，如果所用数据集有label，则label_file为label文件路径；
      * `with_label`：标志`label_file`是否为label文件。
-   我们提供了一批[样例图](https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/chkoen_5w.tar)供您试用。
    * `CorpusGenerator`：
      * `method`：语料生成方法，目前有`FileCorpus`和`EnNumCorpus`可选。如果使用`EnNumCorpus`，则不需要填写其他配置，否则需要修改`corpus_file`和`language`；
      * `language`：语料的语种；
      * `corpus_file`: 语料文件路径。
-
+   
+   我们提供了一批[样例图](https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/chkoen_5w.tar)供您试用，下面给出了一些示例：
+<div align="center">
+    <img src="doc/images/5.png" width="800">
+</div>
 2. 运行`tools/synth_dataset`合成数据：
 
    ``` bash
@@ -104,8 +107,17 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
 ### 应用示例
 
 在完成上述操作后，即可得到用于OCR识别的合成数据集，下面给出了一些数据集生成的示例：
+<div align="center">
+    <img src="doc/images/6.png" width="800">
+</div>
+请您参考[OCR识别文档](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/recognition.md#%E5%90%AF%E5%8A%A8%E8%AE%AD%E7%BB%83)，完成训练。
 
-接下来请参考[OCR识别文档](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/recognition.md#%E5%90%AF%E5%8A%A8%E8%AE%AD%E7%BB%83)，完成训练。
+下面展示了一些使用合成数据训练的效果：
+
+| 场景     | 字符       | 原始数据 | 测试数据 | 只使用原始数据的识别准确率 | 新增合成数据 | 使用合成数据识别准确率 | 指标提升 |
+| -------- | ---------- | -------- | -------- | -------------------------- | ------------ | ---------------------- | -------- |
+| 金属表面 | 英文和数字 | 2203     | 650      | 0.5938                     | 20000        | 0.7546                 | 16%      |
+| 随机背景 | 韩语       | 5631     | 1230     | 0.3012                     | 100000       | 0.5057                 | 20%      |
 
 ### 项目结构
 ```
