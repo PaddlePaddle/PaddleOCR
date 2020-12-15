@@ -97,7 +97,7 @@ For a new language request, please refer to [Guideline for new language_requests
     - [Benchmark](./doc/doc_en/benchmark_en.md)  
 - Data Annotation and Synthesis
     - [Semi-automatic Annotation Tool: PPOCRLabel](./PPOCRLabel/README.md)
-    - [Data Synthesis Tool: Style_Edit](./StyleTextRec/README.md)
+    - [Data Synthesis Tool: StyleText](./StyleText/README.md)
     - [Other Data Annotation Tools](./doc/doc_en/data_annotation_en.md)
     - [Other Data Synthesis Tools](./doc/doc_en/data_synthesis_en.md)
 - Datasets
