@@ -1,7 +1,7 @@
 <a name="Algorithm_introduction"></a>
 ## Algorithm introduction
 
-This tutorial lists the text detection algorithms and text recognition algorithms supported by PaddleOCR, as well as the models and metrics of each algorithm on **English public datasets**. It is mainly used for algorithm introduction and algorithm performance comparison. For more models on other datasets including Chinese, please refer to [PP-OCR v1.1 models list](./models_list_en.md).
+This tutorial lists the text detection algorithms and text recognition algorithms supported by PaddleOCR, as well as the models and metrics of each algorithm on **English public datasets**. It is mainly used for algorithm introduction and algorithm performance comparison. For more models on other datasets including Chinese, please refer to [PP-OCR v2.0 models list](./models_list_en.md).
 
 
 - [1. Text Detection Algorithm](#TEXTDETECTIONALGORITHM)
