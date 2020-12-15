@@ -12,7 +12,8 @@
     <img src="doc/images/3.png" width="800">
 </div>
 
-Style-Text是对百度自研文本编辑算法《Editing Text in the Wild》中提出的SRNet网络的改进，不同于常用的GAN的方法只选择一个分支，该工具将文本合成任务分解为三个子模块，文本风格迁移模块、背景抽取模块和前背景融合模块，来提升合成数据的效果。下图显示了一些示例结果。
+Style-Text数据合成工具是基于百度自研的文本编辑算法《Editing Text in the Wild》https://arxiv.org/abs/1908.03047
+不同于常用的基于GAN的数据合成工具，Style-Text主要框架包括 ①文本前景风格迁移模块 ②背景抽取模块 ③融合模块。经过这样三步，就可以迅速实现图片文字风格迁移啦。
 
 <div align="center">
     <img src="doc/images/1.png" width="800">
