@@ -76,8 +76,8 @@ tar -xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_model
 # 单机单卡训练 mv3_db 模型
 python3 tools/train.py -c configs/det/det_mv3_db.yml \
      -o Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained/
-# 单机多卡训练，通过 --select_gpus 参数设置使用的GPU ID；
-python3 -m paddle.distributed.launch --selected_gpus '0,1,2,3' tools/train.py -c configs/det/det_mv3_db.yml \
+# 单机多卡训练，通过 --gpus 参数设置使用的GPU ID；如果使用的paddle版本小于2.0rc1，请使用'--select_gpus'参数选择要使用的GPU
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/det_mv3_db.yml \
      -o Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained/
 ```
 
