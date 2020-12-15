@@ -4,7 +4,7 @@
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力使用者训练出更好的模型，并应用落地。
 
 **近期更新**
-- 2020.12.15 更新数据合成工具[Style-Text](./doc/doc_ch/style_text_rec.md)，可以批量合成大量与目标场景类似的图像，在多个场景验证，效果均提升15%以上。
+- 2020.12.15 更新数据合成工具[Style-Text](./doc/doc_ch/style_text_rec.md)，可以批量合成大量与目标场景类似的图像，在多个场景验证，效果明显提升。
 - 2020.12.15 发布release/2.0-rc1分支，支持动态图开发（训练调试更方便），静态图部署（预测效率更高）。
 - 2020.12.07 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，总数124个，并且计划以后每周一都会更新，欢迎大家持续关注。
 - 2020.11.25 更新半自动标注工具[PPOCRLabel](./PPOCRLabel/README.md)，辅助开发者高效完成标注任务，输出格式与PP-OCR训练任务完美衔接。
@@ -21,9 +21,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## 特性
 
 - PPOCR系列高质量预训练模型，准确的识别效果
-    - 超轻量ppocr_mobile移动端系列：检测（2.6M）+方向分类器（0.9M）+ 识别（4.6M）= 8.1M
-    - 通用ppocr_server系列：检测（47.2M）+方向分类器（0.9M）+ 识别（107M）= 155.1M
-    - 超轻量压缩ppocr_mobile_slim系列：检测（1.4M）+方向分类器（0.5M）+ 识别（1.6M）= 3.5M
+    - 超轻量ppocr_mobile移动端系列：检测（3.0M）+方向分类器（1.4M）+ 识别（5.0M）= 9.4M
+    - 通用ppocr_server系列：检测（47.1M）+方向分类器（1.4M）+ 识别（94.9M）= 143.4M
     - 支持中英文数字组合识别、竖排文本识别、长文本识别
     - 支持多语言识别：韩语、日语、德语、法语
 - 丰富易用的OCR相关工具组件
@@ -59,8 +58,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 | 模型简介     | 模型名称     |推荐场景          | 检测模型 | 方向分类器 | 识别模型 |
 | ------------ | --------------- | ----------------|---- | ---------- | -------- |
-| 中英文超轻量OCR模型（8.1M） | ch_ppocr_mobile_v2.0_xx |移动端&服务器端|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar)|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_pre.tar)      |
-| 中英文通用OCR模型（143M）   |ch_ppocr_server_v2.0_xx|服务器端 |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar)    |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar)    |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_pre.tar)  |  
+| 中英文超轻量OCR模型（9.4M） | ch_ppocr_mobile_v2.0_xx |移动端&服务器端|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar)|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_pre.tar)      |
+| 中英文通用OCR模型（143.4M）   |ch_ppocr_server_v2.0_xx|服务器端 |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar)    |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar)    |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_pre.tar)  |  
 
 更多模型下载（包括多语言），可以参考[PP-OCR v2.0 系列模型下载](./doc/doc_ch/models_list.md)
 
@@ -83,8 +82,6 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
     - [服务化部署](./deploy/hubserving/readme.md)
     - [端侧部署](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme.md)
-    - [模型量化](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/quantization/README.md)
-    - [模型裁剪](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/prune/README.md)
     - [Benchmark](./doc/doc_ch/benchmark.md)
 - 数据集
     - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
@@ -93,8 +90,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - 数据标注与合成
     - [半自动标注工具PPOCRLabel](./PPOCRLabel/README_ch.md)
     - [数据合成工具Style-Text](./StyleTextRec/README_ch.md)
-    - [其它常用数据标注工具](./doc/doc_ch/data_annotation.md)
-    - [其它常用数据合成工具](./doc/doc_ch/data_synthesis.md)
+    - [其它数据标注工具](./doc/doc_ch/data_annotation.md)
+    - [其它数据合成工具](./doc/doc_ch/data_synthesis.md)
 - [效果展示](#效果展示)
 - FAQ
     - [【精选】OCR精选10个问题](./doc/doc_ch/FAQ.md)
