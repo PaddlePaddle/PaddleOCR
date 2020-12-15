@@ -13,7 +13,7 @@
 # limitations under the License.
 import yaml
 import os
-from utils.argparse import ArgumentParser, RawDescriptionHelpFormatter
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 
 def override(dl, ks, v):
