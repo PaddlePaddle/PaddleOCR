@@ -131,8 +131,8 @@ PP-OCR is a practical ultra-lightweight OCR system. It is mainly composed of thr
 - Chinese OCR model
 <div align="center">
     <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00056221.jpg" width="800">
-    <img src="../imgs_results/ch_ppocr_mobile_v2.0/00015504.jpg" width="800">
-    <img src="../imgs_results/ch_ppocr_mobile_v2.0/00056221.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00015504.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00056221.jpg" width="800">
     <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/rotate_00052204.jpg" width="800">
 </div>
 
