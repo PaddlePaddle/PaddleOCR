@@ -76,8 +76,10 @@ You can also use `-o` to change the training parameters without modifying the ym
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
 
 # multi-GPU training
-# Set the GPU ID used by the '--select_gpus' parameter;
-python3 -m paddle.distributed.launch --selected_gpus '0,1,2,3'  tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
+# Set the GPU ID used by the '--gpus' parameter; If your paddle version is less than 2.0rc1, please use '--selected_gpus'
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
+
+
 ```
 
 #### load trained model and continue training
