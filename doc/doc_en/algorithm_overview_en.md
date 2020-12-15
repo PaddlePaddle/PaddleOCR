@@ -13,7 +13,7 @@ This tutorial lists the text detection algorithms and text recognition algorithm
 PaddleOCR open source text detection algorithms list:
 - [x]  EAST([paper](https://arxiv.org/abs/1704.03155))
 - [x]  DB([paper](https://arxiv.org/abs/1911.08947))
-- [x]  SAST([paper](https://arxiv.org/abs/1908.05498))(Baidu Self-Research)
+- [x]  SAST([paper](https://arxiv.org/abs/1908.05498) )(Baidu Self-Research)
 
 On the ICDAR2015 dataset, the text detection result is as follows:
 
@@ -43,7 +43,7 @@ PaddleOCR open-source text recognition algorithms list:
 - [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))
 - [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))
 - [ ]  RARE([paper](https://arxiv.org/abs/1603.03915v1)) coming soon
-- [ ]  SRN([paper](https://arxiv.org/abs/2003.12294))(Baidu Self-Research) coming soon
+- [ ]  SRN([paper](https://arxiv.org/abs/2003.12294) )(Baidu Self-Research) coming soon
 
 Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation result of these above text recognition (using MJSynth and SynthText for training, evaluate on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE) is as follow:
 
