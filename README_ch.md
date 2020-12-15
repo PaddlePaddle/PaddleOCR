@@ -49,7 +49,7 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 <img src="./doc/ocr-android-easyedge.png"  width = "200" height = "200" />
 </div>
 
-- 代码体验：从[快速安装](./doc/doc_ch/installation.md) 开始
+- 代码体验：从[快速安装](./doc/doc_ch/quickstart.md) 开始
 
 <a name="模型下载"></a>
 ## PP-OCR 2.0系列模型列表（更新中）
