@@ -85,7 +85,7 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
 </div>
 
 #### 批量合成
-在实际应用场景中，经常需要批量合成图片，补充到训练集中。StyleText可以使用一批风格图片和语料，批量合成数据。合成过程如下：
+在实际应用场景中，经常需要批量合成图片，补充到训练集中。Style-Text可以使用一批风格图片和语料，批量合成数据。合成过程如下：
 
 1. 在`configs/dataset_config.yml`中配置目标场景风格图像和语料的路径，具体如下：
 
@@ -100,7 +100,7 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
      * `language`：语料的语种；
      * `corpus_file`: 语料文件路径。
    
-   StyleText也提供了一批中英韩5万张通用场景数据用作文本风格图像，便于合成场景丰富的文本图像，下图给出了一些示例。
+   Style-Text也提供了一批中英韩5万张通用场景数据用作文本风格图像，便于合成场景丰富的文本图像，下图给出了一些示例。
    
    中英韩5万张通用场景数据: [下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/chkoen_5w.tar) 
    
@@ -116,7 +116,7 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
 
 <a name="应用案例"></a>
 ### 四、应用案例
-下面以金属表面英文数字识别和通用韩语识别两个场景为例，说明使用StyleText合成数据，来提升文本识别效果的实际案例。下图给出了一些真实场景图像和合成图像的示例：
+下面以金属表面英文数字识别和通用韩语识别两个场景为例，说明使用Style-Text合成数据，来提升文本识别效果的实际案例。下图给出了一些真实场景图像和合成图像的示例：
 
 <div align="center">
     <img src="doc/images/6.png" width="800">
