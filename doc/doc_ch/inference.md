@@ -128,24 +128,32 @@ python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o Global.pretrained_mo
 超轻量中文检测模型推理，可以执行如下命令：
 
 ```
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/"
+# 下载超轻量中文检测模型：
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar
+tar xf ch_ppocr_mobile_v2.0_det_infer.tar
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/22.jpg" --det_model_dir="./ch_ppocr_mobile_v2.0_det_infer/"
 ```
 
 可视化文本检测结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
 
-![](../imgs_results/det_res_2.jpg)
+![](../imgs_results/det_res_22.jpg)
 
-通过参数`limit_type`和`det_limit_side_len`来对图片的尺寸进行限制限，`limit_type=max`为限制长边长度<`det_limit_side_len`，`limit_type=min`为限制短边长度>`det_limit_side_len`,
-图片不满足限制条件时(`limit_type=max`时长边长度>`det_limit_side_len`或`limit_type=min`时短边长度<`det_limit_side_len`)，将对图片进行等比例缩放。
-该参数默认设置为`limit_type='max',det_max_side_len=960`。 如果输入图片的分辨率比较大，而且想使用更大的分辨率预测，可以执行如下命令：
+通过参数`limit_type`和`det_limit_side_len`来对图片的尺寸进行限制，
+`litmit_type`可选参数为[`max`, `min`]，
+`det_limit_size_len` 为正整数，一般设置为32 的倍数，比如960。
 
+参数默认设置为`limit_type='max', det_limit_side_len=960`。表示网络输入图像的最长边不能超过960，
+如果超过这个值，会对图像做等宽比的resize操作，确保最长边为`det_limit_side_len`。
+设置为`limit_type='min', det_limit_side_len=960` 则表示限制图像的最短边为960。
+
+如果输入图片的分辨率比较大，而且想使用更大的分辨率预测，可以设置det_limit_side_len 为想要的值，比如1216：
 ```
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --det_limit_type=max --det_limit_side_len=1200
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --det_limit_type=max --det_limit_side_len=1216
 ```
 
 如果想使用CPU进行预测，执行命令如下
 ```
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --use_gpu=False
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/"  --use_gpu=False
 ```
 
 <a name="DB文本检测模型推理"></a>

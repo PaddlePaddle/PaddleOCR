@@ -36,8 +36,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## 效果展示
 
 <div align="center">
-    <img src="doc/imgs_results/1101.jpg" width="800">
-    <img src="doc/imgs_results/1103.jpg" width="800">
+    <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
+    <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/00018069.jpg" width="800">
 </div>
 
 上图是通用ppocr_server模型效果展示，更多效果图请见[效果展示页面](./doc/doc_ch/visualization.md)。
@@ -120,10 +120,10 @@ PP-OCR是一个实用的超轻量OCR系统。主要由DB文本检测、检测框
 ## 效果展示 [more](./doc/doc_ch/visualization.md)
 - 中文模型
 <div align="center">
-    <img src="./doc/imgs_results/1102.jpg" width="800">
-    <img src="./doc/imgs_results/1104.jpg" width="800">
-    <img src="./doc/imgs_results/1106.jpg" width="800">
-    <img src="./doc/imgs_results/1105.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00015504.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00056221.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/rotate_00052204.jpg" width="800">
 </div>
 
 - 英文模型
@@ -133,8 +133,8 @@ PP-OCR是一个实用的超轻量OCR系统。主要由DB文本检测、检测框
 
 - 其他语言模型
 <div align="center">
-    <img src="./doc/imgs_results/1110.jpg" width="800">
-    <img src="./doc/imgs_results/1112.jpg" width="800">
+    <img src="./doc/imgs_results/french_0.jpg" width="800">
+    <img src="./doc/imgs_results/korean.jpg" width="800">
 </div>
 
 <a name="欢迎加入PaddleOCR技术交流群"></a>
