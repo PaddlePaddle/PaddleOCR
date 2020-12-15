@@ -167,7 +167,7 @@ tar -xf rec_mv3_none_bilstm_ctc_v2.0_train.tar && rm -rf rec_mv3_none_bilstm_ctc
 
 ```
 # GPU训练 支持单卡，多卡训练，通过--gpus参数指定卡号
-# 训练icdar15英文数据 并将训练日志保存为 tain_rec.log
+# 训练icdar15英文数据 训练日志会自动保存为 "{save_model_dir}" 下的train.log
 python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_icdar15_train.yml
 ```
 <a name="数据增强"></a>

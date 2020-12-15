@@ -162,7 +162,7 @@ Start training:
 
 ```
 # GPU training Support single card and multi-card training, specify the card number through --gpus
-# Training icdar15 English data and saving the log as train_rec.log
+# Training icdar15 English data and The training log will be automatically saved as train.log under "{save_model_dir}"
 python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_icdar15_train.yml
 ```
 <a name="Data_Augmentation"></a>
