@@ -61,8 +61,8 @@ Train:
   dataset:
     name: SimpleDataSet
     data_dir: ./train_data/
-    label_file_path: [./train_data/art_latin_icdar_14pt/train_no_tt_test/train_label_json.txt, ./train_data/total_text_icdar_14pt/train_label_json.txt]
-    data_ratio_list: [0.5, 0.5]
+    label_file_list: [./train_data/icdar2013/train_label_json.txt, ./train_data/icdar2015/train_label_json.txt, ./train_data/icdar17_mlt_latin/train_label_json.txt, ./train_data/coco_text_icdar_4pts/train_label_json.txt]
+    ratio_list: [0.1, 0.45, 0.3, 0.15]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
