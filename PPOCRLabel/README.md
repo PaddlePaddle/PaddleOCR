@@ -1,21 +1,25 @@
 # PPOCRLabel
 
-PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，使用python3和pyqt5编写，支持矩形框标注和四点标注模式，导出格式可直接用于PPOCR检测和识别模型的训练。
+PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field. It is written in python3 and pyqt5, supporting rectangular box annotation and four-point annotation modes. Annotations can be directly used for the training of PPOCR detection and recognition models.
 
-<img src="./data/gif/steps.gif" width="100%"/>
+<img src="./data/gif/steps_en.gif" width="100%"/>
 
-## 安装
+## Installation
 
-### 1. 安装PaddleOCR
-参考[PaddleOCR安装文档](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/installation.md)准备好PaddleOCR
+### 1. Install PaddleOCR
 
-### 2. 安装PPOCRLabel
+Refer to [PaddleOCR installation document](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/installation.md) to prepare PaddleOCR
+
+### 2. Install PPOCRLabel
+
 #### Windows + Anaconda
+
+Download and install [Anaconda](https://www.anaconda.com/download/#download) (Python 3+)
 
 ```
 pip install pyqt5
-cd ./PPOCRLabel # 将目录切换到PPOCRLabel文件夹下
-python PPOCRLabel.py --lang ch
+cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
+python PPOCRLabel.py
 ```
 
 #### Ubuntu Linux
@@ -23,78 +27,97 @@ python PPOCRLabel.py --lang ch
 ```
 pip3 install pyqt5
 pip3 install trash-cli
-cd ./PPOCRLabel # 将目录切换到PPOCRLabel文件夹下
-python3 PPOCRLabel.py --lang ch
+cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
+python3 PPOCRLabel.py
 ```
 
 #### macOS
 ```
 pip3 install pyqt5
-pip3 uninstall opencv-python # 由于mac版本的opencv与pyqt有冲突，需先手动卸载opencv
-pip3 install opencv-contrib-python-headless # 安装headless版本的open-cv
-cd ./PPOCRLabel # 将目录切换到PPOCRLabel文件夹下
-python3 PPOCRLabel.py --lang ch
+pip3 uninstall opencv-python # Uninstall opencv manually as it conflicts with pyqt
+pip3 install opencv-contrib-python-headless # Install the headless version of opencv
+cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
+python3 PPOCRLabel.py
 ```
 
-## 使用
+## Usage
 
-### 操作步骤
+### Steps
 
-1. 安装与运行：使用上述命令安装与运行程序。
-2. 打开文件夹：在菜单栏点击 “文件” - "打开目录" 选择待标记图片的文件夹<sup>[1]</sup>.
-3. 自动标注：点击 ”自动标注“，使用PPOCR超轻量模型对图片文件名前图片状态<sup>[2]</sup>为 “X” 的图片进行自动标注。
-4. 手动标注：点击 “矩形标注”（推荐直接在英文模式下点击键盘中的 “W”)，用户可对当前图片中模型未检出的部分进行手动绘制标记框。点击键盘P，则使用四点标注模式（或点击“编辑” - “四点标注”），用户依次点击4个点后，双击左键表示标注完成。
-5. 标记框绘制完成后，用户点击 “确认”，检测框会先被预分配一个 “待识别” 标签。
-6. 重新识别：将图片中的所有检测画绘制/调整完成后，点击 “重新识别”，PPOCR模型会对当前图片中的**所有检测框**重新识别<sup>[3]</sup>。
-7. 内容更改：双击识别结果，对不准确的识别结果进行手动更改。
-8. 确认标记：点击 “确认”，图片状态切换为 “√”，跳转至下一张（此时不会直接将结果写入文件）。
-9. 删除：点击 “删除图像”，图片将会被删除至回收站。
-10. 保存结果：用户可以通过菜单中“文件-保存标记结果”手动保存，同时程序也会在用户每确认10张图片后自动保存一次。手动确认过的标记将会被存放在所打开图片文件夹下的*Label.txt*中。在菜单栏点击 “文件” - "保存识别结果"后，会将此类图片的识别训练数据保存在*crop_img*文件夹下，识别标签保存在*rec_gt.txt*中<sup>[4]</sup>。
+1. Build and launch using the instructions above.
 
-### 注意
+2. Click 'Open Dir' in Menu/File to select the folder of the picture.<sup>[1]</sup>
 
-[1] PPOCRLabel以文件夹为基本标记单位，打开待标记的图片文件夹后，不会在窗口栏中显示图片，而是在点击 "选择文件夹" 之后直接将文件夹下的图片导入到程序中。
+3. Click 'Auto recognition', use PPOCR model to automatically annotate images which marked with 'X' <sup>[2]</sup>before the file name.
 
-[2] 图片状态表示本张图片用户是否手动保存过，未手动保存过即为 “X”，手动保存过为 “√”。点击 “自动标注”按钮后，PPOCRLabel不会对状态为 “√” 的图片重新标注。
+4. Create Box:
 
-[3] 点击“重新识别”后，模型会对图片中的识别结果进行覆盖。因此如果在此之前手动更改过识别结果，有可能在重新识别后产生变动。
+   4.1 Click 'Create RectBox' or press 'W' in English keyboard mode to draw a new rectangle detection box. Click and release left mouse to select a region to annotate the text area.
 
-[4] PPOCRLabel产生的文件放置于标记图片文件夹下，包括一下几种，请勿手动更改其中内容，否则会引起程序出现异常。
+   4.2 Press 'P' to enter four-point labeling mode which enables you to create any four-point shape by clicking four points with the left mouse button in succession and DOUBLE CLICK the left mouse as the signal of labeling completion.
 
-|    文件名     |                             说明                             |
+5. After the marking frame is drawn, the user clicks "OK", and the detection frame will be pre-assigned a "TEMPORARY" label.
+
+6. Click 're-Recognition', model will rewrite ALL recognition results in ALL detection box<sup>[3]</sup>.
+
+7. Double click the result in 'recognition result' list to manually change inaccurate recognition results.
+
+8. Click "Check", the image status will switch to "√",then the program automatically jump to the next(The results will not be written directly to the file at this time).
+
+9. Click "Delete Image" and the image will be deleted to the recycle bin.
+
+10. Labeling result: the user can save manually through the menu "File - Save Label", while the program will also save automatically after every 10 images confirmed by the user.the manually checked label will be stored in *Label.txt* under the opened picture folder.
+    Click "PaddleOCR"-"Save Recognition Results" in the menu bar, the recognition training data of such pictures will be saved in the *crop_img* folder, and the recognition label will be saved in *rec_gt.txt*<sup>[4]</sup>.
+
+### Note
+
+[1] PPOCRLabel uses the opened folder as the project. After opening the image folder, the picture will not be displayed in the dialog. Instead, the pictures under the folder will be directly imported into the program after clicking "Open Dir".
+
+[2] The image status indicates whether the user has saved the image manually. If it has not been saved manually it is "X", otherwise it is "√", PPOCRLabel will not relabel pictures with a status of "√".
+
+[3] After clicking "Re-recognize", the model will overwrite ALL recognition results in the picture.
+Therefore, if the recognition result has been manually changed before, it may change after re-recognition.
+
+[4] The files produced by PPOCRLabel can be found under the opened picture folder including the following, please do not manually change the contents, otherwise it will cause the program to be abnormal.
+
+|   File name   |                         Description                          |
 | :-----------: | :----------------------------------------------------------: |
-|   Label.txt   | 检测标签，可直接用于PPOCR检测模型训练。用户每保存10张检测结果后，程序会进行自动写入。当用户关闭应用程序或切换文件路径后同样会进行写入。 |
-| fileState.txt | 图片状态标记文件，保存当前文件夹下已经被用户手动确认过的图片名称。 |
-|  Cache.cach   |              缓存文件，保存模型自动识别的结果。              |
-|  rec_gt.txt   | 识别标签。可直接用于PPOCR识别模型训练。需用户手动点击菜单栏“文件” - "保存识别结果"后产生。 |
-|   crop_img    |   识别数据。按照检测框切割后的图片。与rec_gt.txt同时产生。   |
+|   Label.txt   | The detection label file can be directly used for PPOCR detection model training. After the user saves 10 label results, the file will be automatically saved. It will also be written when the user closes the application or changes the file folder. |
+| fileState.txt | The picture status file save the image in the current folder that has been manually confirmed by the user. |
+|  Cache.cach   |    Cache files to save the results of model recognition.     |
+|  rec_gt.txt   | The recognition label file, which can be directly used for PPOCR identification model training, is generated after the user clicks on the menu bar "File"-"Save recognition result". |
+|   crop_img    | The recognition data, generated at the same time with *rec_gt.txt* |
 
-## 说明
-### 内置模型
+## Explanation
 
- - 默认模型：PPOCRLabel默认使用PaddleOCR中的中英文超轻量OCR模型，支持中英文与数字识别，多种语言检测。
+### Built-in Model
 
- - 模型语言切换：用户可通过菜单栏中 "PaddleOCR" - "选择模型" 切换内置模型语言，目前支持的语言包括法文、德文、韩文、日文。具体模型下载链接可参考[PaddleOCR模型列表](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/models_list.md).
+- Default model: PPOCRLabel uses the Chinese and English ultra-lightweight OCR model in PaddleOCR by default, supports Chinese, English and number recognition, and multiple language detection.
 
- - 自定义模型：用户可根据[自定义模型代码使用](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/whl.md#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B)，通过修改PPOCRLabel.py中针对[PaddleOCR类的实例化](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/PPOCRLabel/PPOCRLabel.py#L110)替换成自己训练的模型。
+- Model language switching: Changing the built-in model language is supportable by clicking "PaddleOCR"-"Choose OCR Model" in the menu bar. Currently supported languages​include French, German, Korean, and Japanese.
+  For specific model download links, please refer to [PaddleOCR Model List](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/models_list_en.md#multilingual-recognition-modelupdating)
 
-### 导出部分识别结果
+- Custom model: The model trained by users can be replaced by modifying PPOCRLabel.py in [PaddleOCR class instantiation](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/PPOCRLabel/PPOCRLabel.py#L110) referring [Custom Model Code](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/whl_en.md#use-custom-model)
 
-针对部分难以识别的数据，通过在识别结果的复选框中**取消勾选**相应的标记，其识别结果不会被导出。
+### Export partial recognition results
 
-*注意：识别结果中的复选框状态仍需用户手动点击保存后才能保留*
+For some data that are difficult to recognize, the recognition results will not be exported by **unchecking** the corresponding tags in the recognition results checkbox.
 
-### 错误提示
-- 如果同时使用whl包安装了paddleocr，其优先级大于通过paddleocr.py调用PaddleOCR类，whl包未更新时会导致程序异常。
-- PPOCRLabel**不支持对中文文件名**的图片进行自动标注。
-- 针对Linux用户：：如果您在打开软件过程中出现**objc[XXXXX]**开头的错误，证明您的opencv版本太高，建议安装4.2版本：
-	```
-	pip install opencv-python==4.2.0.32
-	```
-- 如果出现''Missing string id '开头的错误，需要重新编译资源：
-	```
-	pyrcc5 -o libs/resources.py resources.qrc
-	```
-### 参考资料
+*Note: The status of the checkboxes in the recognition results still needs to be saved manually by clicking Save Button.*
+
+### Error message
+
+- If paddleocr is installed with whl, it has a higher priority than calling PaddleOCR class with paddleocr.py, which may cause an exception if whl package is not updated.
+
+- For Linux users, if you get an error starting with **objc[XXXXX]** when opening the software, it proves that your opencv version is too high. It is recommended to install version 4.2:
+
+    ```
+    pip install opencv-python==4.2.0.32
+    ```
+- If you get an error starting with **Missing string id **,you need to recompile resources:
+    ```
+    pyrcc5 -o libs/resources.py resources.qrc
+    ```
+### Related
 
 1.[Tzutalin. LabelImg. Git code (2015)](https://github.com/tzutalin/labelImg)
