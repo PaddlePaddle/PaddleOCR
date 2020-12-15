@@ -1,7 +1,7 @@
 # 效果展示
 
-<a name="通用ppocr_server_1.1效果展示"></a>
-## 通用ppocr_server_1.1效果展示
+<a name="通用ppocr_server_2.0效果展示"></a>
+## 通用ppocr_server_2.0效果展示
 
 <div align="center">
     <img src="../imgs_results/1101.jpg" width="800">
