@@ -25,7 +25,7 @@ Style-Text数据合成工具是基于百度自研的文本编辑算法《Editing
 
 ### 环境配置
 
-1. 参考[快速安装](../doc/doc_ch/installation.md)，安装PaddleOCR。强烈建议您使用python3环境。
+1. 参考[快速安装](../doc/doc_ch/installation.md)，安装PaddleOCR。
 2. 进入`style_text_rec`目录，下载模型，并解压：
 
 ```bash
