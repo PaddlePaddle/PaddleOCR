@@ -1,4 +1,7 @@
-## Style-Text
+简体中文 | [English](README.md)
+
+## Style Text
+
 
 ### 目录
 - [一、工具简介](#工具简介)
@@ -56,6 +59,7 @@ fusion_generator:
 
 #### 合成单张图
 输入一张风格图和一段文字语料，运行tools/synth_image，合成单张图片，结果图像保存在当前目录下：
+
 ```python
 python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_images/2.jpg --text_corpus PaddleOCR --language en
 ```
@@ -73,13 +77,13 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
 </div>
 
 除此之外，程序还会生成并保存中间结果`fake_bg.jpg`：为风格参考图去掉文字后的背景；
-   
+
 <div align="center">
     <img src="doc/images/7.jpg" width="300">
 </div>
 
 `fake_text.jpg`：是用提供的字符串，仿照风格参考图中文字的风格，生成在灰色背景上的文字图片。
-   
+
 <div align="center">
     <img src="doc/images/8.jpg" width="300">
 </div>
@@ -99,11 +103,11 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
      * `method`：语料生成方法，目前有`FileCorpus`和`EnNumCorpus`可选。如果使用`EnNumCorpus`，则不需要填写其他配置，否则需要修改`corpus_file`和`language`；
      * `language`：语料的语种；
      * `corpus_file`: 语料文件路径。
-   
+
    Style-Text也提供了一批中英韩5万张通用场景数据用作文本风格图像，便于合成场景丰富的文本图像，下图给出了一些示例。
-   
-   中英韩5万张通用场景数据: [下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/chkoen_5w.tar) 
-   
+
+   中英韩5万张通用场景数据: [下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/chkoen_5w.tar)
+
 <div align="center">
     <img src="doc/images/5.png" width="800">
 </div>
@@ -132,8 +136,9 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
 
 <a name="代码结构"></a>
 ### 五、代码结构
+
 ```
-style_text_rec
+StyleText
 |-- arch                        // 网络结构定义文件
 |   |-- base_module.py
 |   |-- decoder.py

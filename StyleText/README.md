@@ -1,22 +1,54 @@
-### Quick Start
+English | [简体中文](README_ch.md)
 
-`Style-Text` is an improvement of the SRNet network proposed in Baidu's self-developed text editing algorithm "Editing Text in the Wild". It is different from the commonly used GAN methods. This tool decomposes the text synthesis task into three sub-modules to improve the effect of synthetic data: text style transfer module, background extraction module and fusion module. 
+## Style Text
 
-The following figure shows some example results. In addition, the actual `nameplate text recognition` scene and `the Korean text recognition` scene verify the effectiveness of the synthesis tool, as follows.
+### Contents
+- [1. Introduction](#Introduction)
+- [2. Preparation](#Preparation)
+- [3. Quick Start](#Quick_Start)
+- [4. Applications](#Applications)
+- [5. Code Structure](#Code_structure)
 
 
+<a name="Introduction"></a>
+### Introduction
+
+<div align="center">
+    <img src="doc/images/3.png" width="800">
+</div>
+
+<div align="center">
+    <img src="doc/images/9.png" width="600">
+</div>
+
+
+The Style-Text data synthesis tool is a tool based on Baidu's self-developed text editing algorithm "Editing Text in the Wild" [https://arxiv.org/abs/1908.03047](https://arxiv.org/abs/1908.03047).
+
+Different from the commonly used GAN-based data synthesis tools, the main framework of Style-Text includes:
+* (1) Text foreground style transfer module.
+* (2) Background extraction module.
+* (3) Fusion module.
+
+After these three steps, you can quickly realize the image text style transfer. The following figure is some results of the data synthesis tool.
+
+<div align="center">
+    <img src="doc/images/10.png" width="1000">
+</div>
+
+
+<a name="Preparation"></a>
 #### Preparation
 
 1. Please refer the [QUICK INSTALLATION](../doc/doc_en/installation_en.md) to install PaddlePaddle. Python3 environment is strongly recommended.
 2. Download the pretrained models and unzip:
 
 ```bash
-cd tools/style_text_rec
-wget /path/to/style_text_models.zip
+cd StyleText
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/style_text_models.zip
 unzip style_text_models.zip
 ```
 
-You can dowload models [here](https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/style_text_models.zip). If you save the model files in other folders, please edit the three model paths in `configs/config.yml`:
+If you save the model in another location, please modify the address of the model file in `configs/config.yml`, and you need to modify these three configurations at the same time:
 
 ```
 bg_generator:
@@ -29,64 +61,69 @@ fusion_generator:
   pretrain: style_text_models/fusion_generator
 ```
 
+<a name="Quick_Start"></a>
+### Quick Start
 
+#### Synthesis single image
 
-#### Demo
+1. You can run `tools/synth_image` and generate the demo image, which is saved in the current folder.
 
-1. You can use the following commands to run a demo：
-
-```bash
-python -m tools.synth_image -c configs/config.yml
+```python
+python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_images/2.jpg --text_corpus PaddleOCR --language en
 ```
 
-2. The results are `fake_bg.jpg`, `fake_text.jpg` and `fake_fusion.jpg` as shown in the figure above. Above them:
-   * `fake_text.jpg` is the generated image with the same font style as `Style Input`;
-   * `fake_bg.jpg` is the generated image of `Style Input` after removing foreground. 
-   * `fake_fusion.jpg` is the final result, that is synthesised by `fake_text.jpg` and `fake_bg.jpg`.  
+* Note: The language options is correspond to the corpus. Currently, the tool only supports English, Simplified Chinese and Korean.
 
-3. If want to generate image by other `Style Input` or `Text Input`, you can modify the `tools/synth_image.py`:
-   * `img = cv2.imread("examples/style_images/1.jpg")`: the path of `Style Input`;
-   * `corpus = "PaddleOCR"`: the `Text Input`;
-   * Notice：modify the language option(`language = "en"`) to adapt `Text Input`, that support `en`, `ch`, `ko`.
+For example, enter the following image and corpus `PaddleOCR`.
 
-4. We also provide `batch_synth_images` mothod, that can combine corpus and pictures in pairs to generate a batch of data.
+<div align="center">
+    <img src="examples/style_images/2.jpg" width="300">
+</div>
 
-### Advanced Usage
+The result `fake_fusion.jpg` will be generated.
 
-#### Components
+<div align="center">
+    <img src="doc/images/4.jpg" width="300">
+</div>
 
-`Style Text Rec` mainly contains the following components：
+What's more, the medium result `fake_bg.jpg` will also be saved, which is the background output.
 
-* `style_samplers`: It can sample `Style Input` from a dataset. Now, We only provide `DatasetSampler`.
+<div align="center">
+    <img src="doc/images/7.jpg" width="300">
+</div>
 
-* `corpus_generators`: It can generate corpus. Now, wo only provide two `corpus_generators`:
-  * `EnNumCorpus`: It can generate a random string according to a given length,  including uppercase and lowercase English letters, numbers and spaces.
-  * `FileCorpus`: It can read a text file and randomly return the words in it.
 
-* `text_drawers`: It can generate `Text Input`(text picture in standard font according to the input corpus). Note that when using, you have to modify the language information according to the corpus.
+`fake_text.jpg` * `fake_text.jpg` is the generated image with the same font style as `Style Input`.
 
-* `predictors`: It can call the deep learning model to generate new data based on the `Style Input` and `Text Input`.
 
-* `writers`: It can write the generated pictures(`fake_bg.jpg`, `fake_text.jpg` and `fake_fusion.jpg`) and label information to the disk.
+<div align="center">
+    <img src="doc/images/8.jpg" width="300">
+</div>
 
-* `synthesisers`: It can call the all modules to complete the work.
 
-### Generate Dataset
+#### Batch synthesis
 
-Before the start, you need to prepare some data as material.
-First, you should have the style reference data for synthesis tasks, which are generally used as datasets for OCR recognition tasks.
+In actual application scenarios, it is often necessary to synthesize pictures in batches and add them to the training set. StyleText can use a batch of style pictures and corpus to synthesize data in batches. The synthesis process is as follows:
 
 1. The referenced dataset can be specifed in `configs/dataset_config.yml`:
-   * `StyleSampler`: 
-     * `method`: The method of `StyleSampler`.
-     * `image_home`: The directory of pictures.
-     * `label_file`: The list of pictures path if `with_label` is `false`, otherwise, the label file path.
-     * `with_label`: The `label_file` is label file or not.
-    
-   * `CorpusGenerator`: 
-     * `method`: The mothod of `CorpusGenerator`. If `FileCorpus` used, you need modify `corpus_file` and `language` accordingly, if `EnNumCorpus`, other configurations is not needed.
-     * `language`: The language of the corpus. Needed if method is not `EnNumCorpus`.
-     * `corpus_file`: The corpus file path. Needed if method is not `EnNumCorpus`.
+
+   * `Global`：
+     * `output_dir:`：Output synthesis data path.
+   * `StyleSampler`：
+     * `image_home`：style images' folder.
+     * `label_file`：Style images' file list. If label is provided, then it is the label file path.
+     * `with_label`：Whether the `label_file` is label file list.
+   * `CorpusGenerator`：
+     * `method`：Method of CorpusGenerator，supports `FileCorpus` and `EnNumCorpus`. If `EnNumCorpus` is used，No other configuration is needed，otherwise you need to set `corpus_file` and `language`.
+     * `language`：Language of the corpus.
+     * `corpus_file`: Filepath of the corpus.
+
+
+We provide a general dataset containing Chinese, English and Korean (50,000 images in all) for your trial ([download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/chkoen_5w.tar)), some examples are given below :
+
+<div align="center">
+     <img src="doc/images/5.png" width="800">
+</div>
 
 2. You can run the following command to start synthesis task:
 
@@ -94,13 +131,64 @@ First, you should have the style reference data for synthesis tasks, which are g
    python -m tools.synth_dataset.py -c configs/dataset_config.yml
    ```
 
-3. You can using the following command to start multiple synthesis tasks in a multi-threaded manner, which needed to specifying tags by `-t`:
-   
-   ```bash
-   python -m tools.synth_dataset.py -t 0 -c configs/dataset_config.yml
-   python -m tools.synth_dataset.py -t 1 -c configs/dataset_config.yml
-   ```
 
-### OCR Recognition Training
+<a name="Applications"></a>
+### Applications
+We take two scenes as examples, which are metal surface English number recognition and general Korean recognition, to illustrate practical cases of using StyleText to synthesize data to improve text recognition. The following figure shows some examples of real scene images and composite images:
 
-After completing the above operations, you can get the synthetic data set for OCR recognition. Next, please complete the training by refering to [OCR Recognition Document](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/recognition. md#%E5%90%AF%E5%8A%A8%E8%AE%AD%E7%BB%83).
+<div align="center">
+    <img src="doc/images/11.png" width="800">
+</div>
+
+
+After adding the above synthetic data for training, the accuracy of the recognition model is improved, which is shown in the following table:
+
+| Scenario | Characters | Raw Data | Test Data | Only Use Raw Data</br>Recognition Accuracy | New Synthetic Data | Simultaneous Use of Synthetic Data</br>Recognition Accuracy | Index Improvement |
+| -------- | ---------- | -------- | -------- | ----------- --------------- | ------------ | --------------------- -| -------- |
+| Metal surface | English and numbers | 2203 | 650 | 0.5938 | 20000 | 0.7546 | 16% |
+| Random background | Korean | 5631 | 1230 | 0.3012 | 100000 | 0.5057 | 20% |
+
+
+<a name="Code_structure"></a>
+### Code Structure
+
+```
+StyleText
+|-- arch                        // Network module files.
+|   |-- base_module.py
+|   |-- decoder.py
+|   |-- encoder.py
+|   |-- spectral_norm.py
+|   `-- style_text_rec.py
+|-- configs                     // Config files.
+|   |-- config.yml
+|   `-- dataset_config.yml
+|-- engine                      // Synthesis engines.
+|   |-- corpus_generators.py    // Sample corpus from file or generate random corpus.
+|   |-- predictors.py           // Predict using network.
+|   |-- style_samplers.py       // Sample style images.
+|   |-- synthesisers.py         // Manage other engines to synthesis images.
+|   |-- text_drawers.py         // Generate standard input text images.
+|   `-- writers.py              // Write synthesis images and labels into files.
+|-- examples                    // Example files.
+|   |-- corpus
+|   |   `-- example.txt
+|   |-- image_list.txt
+|   `-- style_images
+|       |-- 1.jpg
+|       `-- 2.jpg
+|-- fonts                       // Font files.
+|   |-- ch_standard.ttf
+|   |-- en_standard.ttf
+|   `-- ko_standard.ttf
+|-- tools                       // Program entrance.
+|   |-- __init__.py
+|   |-- synth_dataset.py        // Synthesis dataset.
+|   `-- synth_image.py          // Synthesis image.
+`-- utils                       // Module of basic functions.
+    |-- config.py
+    |-- load_params.py
+    |-- logging.py
+    |-- math_functions.py
+    `-- sys_funcs.py
+```
