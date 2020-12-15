@@ -112,10 +112,10 @@ PP-OCR是一个实用的超轻量OCR系统。主要由DB文本检测、检测框
 ## 效果展示 [more](./doc/doc_ch/visualization.md)
 - 中文模型
 <div align="center">
-    <img src="./doc/imgs_results/1102.jpg" width="800">
-    <img src="./doc/imgs_results/1104.jpg" width="800">
-    <img src="./doc/imgs_results/1106.jpg" width="800">
-    <img src="./doc/imgs_results/1105.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00056221.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00175408.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00057937.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/rotate_00052204.jpg" width="800">
 </div>
 
 - 英文模型
@@ -126,7 +126,7 @@ PP-OCR是一个实用的超轻量OCR系统。主要由DB文本检测、检测框
 - 其他语言模型
 <div align="center">
     <img src="./doc/imgs_results/1110.jpg" width="800">
-    <img src="./doc/imgs_results/1112.jpg" width="800">
+    <img src="./doc/imgs_results/korean.jpg" width="800">
 </div>
 
 <a name="欢迎加入PaddleOCR技术交流群"></a>
