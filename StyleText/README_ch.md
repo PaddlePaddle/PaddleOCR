@@ -144,7 +144,7 @@ style_text_rec
 |   |-- predictors.py           // 调用网络生成数据
 |   |-- style_samplers.py       // 采样风格图片
 |   |-- synthesisers.py         // 调度各个模块，合成数据
-|   |-- text_drawers.py         // 生成标准文字图片，用作舒服
+|   |-- text_drawers.py         // 生成标准文字图片，用作输入
 |   `-- writers.py              // 将合成的图片和标签写入本地目录
 |-- examples                    // 示例文件
 |   |-- corpus
