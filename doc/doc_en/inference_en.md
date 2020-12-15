@@ -25,9 +25,8 @@ Next, we first introduce how to convert a trained model into an inference model,
 - [TEXT RECOGNITION MODEL INFERENCE](#RECOGNITION_MODEL_INFERENCE)
     - [1. LIGHTWEIGHT CHINESE MODEL](#LIGHTWEIGHT_RECOGNITION)
     - [2. CTC-BASED TEXT RECOGNITION MODEL INFERENCE](#CTC-BASED_RECOGNITION)
-    - [3. ATTENTION-BASED TEXT RECOGNITION MODEL INFERENCE](#ATTENTION-BASED_RECOGNITION)
-    - [4. TEXT RECOGNITION MODEL INFERENCE USING CUSTOM CHARACTERS DICTIONARY](#USING_CUSTOM_CHARACTERS)
-    - [5. MULTILINGUAL MODEL INFERENCE](MULTILINGUAL_MODEL_INFERENCE)
+    - [3. TEXT RECOGNITION MODEL INFERENCE USING CUSTOM CHARACTERS DICTIONARY](#USING_CUSTOM_CHARACTERS)
+    - [4. MULTILINGUAL MODEL INFERENCE](MULTILINGUAL_MODEL_INFERENCE)
 
 - [ANGLE CLASSIFICATION MODEL INFERENCE](#ANGLE_CLASS_MODEL_INFERENCE)
     - [1. ANGLE CLASSIFICATION MODEL INFERENCE](#ANGLE_CLASS_MODEL_INFERENCE)
@@ -275,15 +274,6 @@ For CRNN text recognition model inference, execute the following commands:
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./inference/starnet/" --rec_image_shape="3, 32, 100" --rec_char_type="en"
 ```
 
-<a name="ATTENTION-BASED_RECOGNITION"></a>
-### 3. ATTENTION-BASED TEXT RECOGNITION MODEL INFERENCE
-
-The recognition model based on Attention loss is different from ctc, and additional recognition algorithm parameters need to be set --rec_algorithm="RARE"
-After executing the command, the recognition result of the above image is as follows:
-```bash
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./inference/rare/" --rec_image_shape="3, 32, 100" --rec_char_type="en" --rec_algorithm="RARE"
-```
-
 ![](../imgs_words_en/word_336.png)
 
 After executing the command, the recognition result of the above image is as follows:
@@ -303,7 +293,7 @@ dict_character = list(self.character_str)
 ```
 
 <a name="USING_CUSTOM_CHARACTERS"></a>
-### 4. TEXT RECOGNITION MODEL INFERENCE USING CUSTOM CHARACTERS DICTIONARY
+### 3. TEXT RECOGNITION MODEL INFERENCE USING CUSTOM CHARACTERS DICTIONARY
 If the text dictionary is modified during training, when using the inference model to predict, you need to specify the dictionary path used by `--rec_char_dict_path`, and set `rec_char_type=ch`
 
 ```
@@ -311,7 +301,7 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png
 ```
 
 <a name="MULTILINGUAL_MODEL_INFERENCE"></a>
-### 5. MULTILINGAUL MODEL INFERENCE
+### 4. MULTILINGAUL MODEL INFERENCE
 If you need to predict other language models, when using inference model prediction, you need to specify the dictionary path used by `--rec_char_dict_path`. At the same time, in order to get the correct visualization results,
 You need to specify the visual font path through `--vis_font_path`. There are small language fonts provided by default under the `doc/` path, such as Korean recognition:
 
