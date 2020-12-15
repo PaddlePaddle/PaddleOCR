@@ -41,11 +41,14 @@ class Worker(QThread):
                         print('Can not recognise file  is :  ', Imgpath)
                         pass
                     else:
+                        strs = ''
                         for res in self.result_dic:
                             chars = res[1][0]
                             cond = res[1][1]
                             posi = res[0]
-                            self.listValue.emit("Transcription: " + chars + " Probability: " + str(cond) + " Location: " + json.dumps(posi))
+                            strs += "Transcription: " + chars + " Probability: " + str(
+                                cond) + " Location: " + json.dumps(posi) + '\n'
+                        self.listValue.emit(strs)
                         self.mainThread.result_dic = self.result_dic
                         self.mainThread.filePath = Imgpath
                         # 保存
