@@ -61,11 +61,11 @@ python3 -m tools.synth_image -c configs/config.yml
    * `fake_bg.jpg`：为风格参考图去掉文字后的背景；
    * `fake_text.jpg`：是用提供的字符串，仿照风格参考图中文字的风格，生成在灰色背景上的文字图片。
 
-2. 如果您想尝试其他风格图像和文字的效果，可以添加style_image和text_corpus参数：
+2. 如果您想尝试其他风格图像和文字的效果，可以添加style_image,text_corpus和language参数：
 ```python
-python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_images/2.jpg --text_corpus PaddleOCR
+python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_images/2.jpg --text_corpus PaddleOCR --language en
 ```
-   * 注意：请修改语言选项（`language = "en"`）和语料相对应，目前我们支持英文、简体中文和韩语。
+   * 注意：语言选项和语料相对应，目前我们支持英文、简体中文和韩语。
   
 3. 在`tools/synth_image.py`中，我们还提供了一个`batch_synth_images`方法，可以两两组合语料和图片，批量生成一批数据。
 
@@ -81,7 +81,7 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
      * `image_home`：风格图片目录；
      * `label_file`：风格图片路径列表文件，如果所用数据集有label，则label_file为label文件路径；
      * `with_label`：标志`label_file`是否为label文件。
-   
+   我们提供了一批[样例图](https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/chkoen_5w.tar)供您试用。
    * `CorpusGenerator`：
      * `method`：语料生成方法，目前有`FileCorpus`和`EnNumCorpus`可选。如果使用`EnNumCorpus`，则不需要填写其他配置，否则需要修改`corpus_file`和`language`；
      * `language`：语料的语种；
@@ -103,7 +103,9 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
 
 ### 应用示例
 
-在完成上述操作后，即可得到用于OCR识别的合成数据集，接下来请参考[OCR识别文档](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/recognition.md#%E5%90%AF%E5%8A%A8%E8%AE%AD%E7%BB%83)，完成训练。
+在完成上述操作后，即可得到用于OCR识别的合成数据集，下面给出了一些数据集生成的示例：
+
+接下来请参考[OCR识别文档](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/recognition.md#%E5%90%AF%E5%8A%A8%E8%AE%AD%E7%BB%83)，完成训练。
 
 ### 项目结构
 ```
