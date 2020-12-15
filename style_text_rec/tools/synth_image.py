@@ -15,6 +15,7 @@ import os
 import cv2
 import sys
 import glob
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 from engine.synthesisers import ImageSynthesiser
 
@@ -24,11 +25,14 @@ sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
 
 
 def synth_image():
+    args = ArgsParser().parse_args()
     image_synthesiser = ImageSynthesiser()
-    img = cv2.imread("examples/style_images/1.jpg")
-    corpus = "PaddleOCR"
-    language = "en"
-    synth_result = image_synthesiser.synth_image(corpus, img, language)
+    style_image_path = args.style_image
+    img = cv2.imread(style_image_path)
+    text_corpus = args.text_corpus
+    language = args.language
+
+    synth_result = image_synthesiser.synth_image(text_corpus, img, language)
     fake_fusion = synth_result["fake_fusion"]
     fake_text = synth_result["fake_text"]
     fake_bg = synth_result["fake_bg"]
@@ -71,6 +75,26 @@ def batch_synth_images():
                 cv2.imwrite("%s_fake_bg.jpg" % prefix, fake_bg)
                 cv2.imwrite("%s_input_style.jpg" % prefix, img)
             print(cno, corpus_num, sno, style_img_num)
+
+
+class ArgsParser(ArgumentParser):
+    def __init__(self):
+        super(ArgsParser, self).__init__(
+            formatter_class=RawDescriptionHelpFormatter)
+        self.add_argument("-c", "--config", help="configuration file to use")
+        self.add_argument(
+            "--style_image", default="examples/style_images/1.jpg", help="tag for marking worker")
+        self.add_argument(
+            "--text_corpus", default="PaddleOCR", help="tag for marking worker")
+        self.add_argument(
+            "--language", default="en", help="tag for marking worker")
+
+    def parse_args(self, argv=None):
+        args = super(ArgsParser, self).parse_args(argv)
+        assert args.config is not None, \
+            "Please specify --config=configure_file_path."
+        return args
+
 
 
 if __name__ == '__main__':
