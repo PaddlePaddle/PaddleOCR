@@ -1,8 +1,11 @@
 ## Style Text Rec
 
 ### 目录
-
-[TOC]
+[工具简介](#工具简介) 
+[环境配置](#环境配置) 
+[快速上手](#快速上手) 
+[高级使用](#高级使用) 
+[应用示例](#应用示例) 
 
 ### 工具简介
 <div align="center">
@@ -25,7 +28,7 @@ Style-Text是对百度自研文本编辑算法《Editing Text in the Wild》中�
 
 ```bash
 cd style_text_rec
-wget /https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/style_text_models.zip
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/style_text_models.zip
 unzip style_text_models.zip
 ```
 
@@ -52,15 +55,16 @@ python3 -m tools.synth_image -c configs/config.yml
 
 1. 运行后，会生成`fake_busion.jpg`，即为最终结果。
 <div align="center">
-    <img src="../imgs_style_text/4.jpg" width="800">
+    <img src="../imgs_style_text/4.jpg" width="300">
 </div>
 除此之外，程序还会生成并保存中间结果：
    * `fake_bg.jpg`：为风格参考图去掉文字后的背景；
    * `fake_text.jpg`：是用提供的字符串，仿照风格参考图中文字的风格，生成在灰色背景上的文字图片。
-  
-2. 如果您想尝试其他风格图像和文字的效果，可以在`tools/synth_image.py`中修改：
-   * `img = cv2.imread("examples/style_images/1.jpg")`：请在此处修改风格图像的目录；
-   * `corpus = "PaddleOCR"`：请在此处修改要使用的语料文本
+
+2. 如果您想尝试其他风格图像和文字的效果，可以添加style_image和text_corpus参数：
+```python
+python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_images/2.jpg --text_corpus PaddleOCR
+```
    * 注意：请修改语言选项（`language = "en"`）和语料相对应，目前我们支持英文、简体中文和韩语。
   
 3. 在`tools/synth_image.py`中，我们还提供了一个`batch_synth_images`方法，可以两两组合语料和图片，批量生成一批数据。
@@ -102,8 +106,8 @@ python3 -m tools.synth_image -c configs/config.yml
 在完成上述操作后，即可得到用于OCR识别的合成数据集，接下来请参考[OCR识别文档](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/recognition.md#%E5%90%AF%E5%8A%A8%E8%AE%AD%E7%BB%83)，完成训练。
 
 ### 项目结构
-
-.
+```
+style_text_rec
 |-- arch
 |   |-- base_module.py
 |   |-- decoder.py
@@ -141,3 +145,4 @@ python3 -m tools.synth_image -c configs/config.yml
     |-- logging.py
     |-- math_functions.py
     `-- sys_funcs.py
+```

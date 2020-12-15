@@ -98,6 +98,12 @@ class ArgsParser(ArgumentParser):
             action='append',
             default=[],
             help='config options to be overridden')
+        self.add_argument(
+            "--style_image", default="examples/style_images/1.jpg", help="tag for marking worker")
+        self.add_argument(
+            "--text_corpus", default="PaddleOCR", help="tag for marking worker")
+        self.add_argument(
+            "--language", default="en", help="tag for marking worker")
 
     def parse_args(self, argv=None):
         args = super(ArgsParser, self).parse_args(argv)

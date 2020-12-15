@@ -77,26 +77,6 @@ def batch_synth_images():
             print(cno, corpus_num, sno, style_img_num)
 
 
-class ArgsParser(ArgumentParser):
-    def __init__(self):
-        super(ArgsParser, self).__init__(
-            formatter_class=RawDescriptionHelpFormatter)
-        self.add_argument("-c", "--config", help="configuration file to use")
-        self.add_argument(
-            "--style_image", default="examples/style_images/1.jpg", help="tag for marking worker")
-        self.add_argument(
-            "--text_corpus", default="PaddleOCR", help="tag for marking worker")
-        self.add_argument(
-            "--language", default="en", help="tag for marking worker")
-
-    def parse_args(self, argv=None):
-        args = super(ArgsParser, self).parse_args(argv)
-        assert args.config is not None, \
-            "Please specify --config=configure_file_path."
-        return args
-
-
-
 if __name__ == '__main__':
     # batch_synth_images()
     synth_image()
