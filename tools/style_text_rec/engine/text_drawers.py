@@ -1,4 +1,3 @@
-import random
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 from utils.logging import get_logger

@@ -11,9 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import functools
 import paddle
 import paddle.nn as nn
+
 from arch.spectral_norm import spectral_norm
 
 

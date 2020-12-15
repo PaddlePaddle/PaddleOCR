@@ -13,6 +13,7 @@
 # limitations under the License.
 import paddle
 import paddle.nn as nn
+
 from arch.base_module import SNConv, SNConvTranspose, ResBlock
 
 

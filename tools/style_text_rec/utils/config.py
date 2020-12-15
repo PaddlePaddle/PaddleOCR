@@ -13,7 +13,6 @@
 # limitations under the License.
 import yaml
 import os
-from collections import OrderedDict
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 
