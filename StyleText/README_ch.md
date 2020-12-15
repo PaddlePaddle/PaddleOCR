@@ -130,38 +130,38 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
 ### 五、代码结构
 ```
 style_text_rec
-|-- arch
+|-- arch                        // 网络结构定义文件
 |   |-- base_module.py
 |   |-- decoder.py
 |   |-- encoder.py
 |   |-- spectral_norm.py
 |   `-- style_text_rec.py
-|-- configs
+|-- configs                     // 配置文件
 |   |-- config.yml
 |   `-- dataset_config.yml
-|-- engine
-|   |-- corpus_generators.py
-|   |-- predictors.py
-|   |-- style_samplers.py
-|   |-- synthesisers.py
-|   |-- text_drawers.py
-|   `-- writers.py
-|-- examples
+|-- engine                      // 数据合成引擎
+|   |-- corpus_generators.py    // 从文本采样或随机生成语料
+|   |-- predictors.py           // 调用网络生成数据
+|   |-- style_samplers.py       // 采样风格图片
+|   |-- synthesisers.py         // 调度各个模块，合成数据
+|   |-- text_drawers.py         // 生成标准文字图片，用作舒服
+|   `-- writers.py              // 将合成的图片和标签写入本地目录
+|-- examples                    // 示例文件
 |   |-- corpus
 |   |   `-- example.txt
 |   |-- image_list.txt
 |   `-- style_images
 |       |-- 1.jpg
 |       `-- 2.jpg
-|-- fonts
+|-- fonts                       // 字体文件
 |   |-- ch_standard.ttf
 |   |-- en_standard.ttf
 |   `-- ko_standard.ttf
-|-- tools
+|-- tools                       // 程序入口
 |   |-- __init__.py
-|   |-- synth_dataset.py
-|   `-- synth_image.py
-`-- utils
+|   |-- synth_dataset.py        // 批量合成数据
+|   `-- synth_image.py          // 合成单张图片
+`-- utils                       // 其他基础功能模块
     |-- config.py
     |-- load_params.py
     |-- logging.py
