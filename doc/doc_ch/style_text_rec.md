@@ -18,7 +18,7 @@ wget /path/to/style_text_models.zip
 unzip style_text_models.zip
 ```
 
-您可以在[此处]()下载模型文件。如果您选择了其他下载位置，请在`configs/config.yml`中修改模型文件的地址，修改时需要同时修改这三个配置：
+您可以在 [此处](https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/style_text_models.zip) 下载模型文件。如果您选择了其他下载位置，请在`configs/config.yml`中修改模型文件的地址，修改时需要同时修改这三个配置：
 
 ```
 bg_generator:

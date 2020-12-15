@@ -7,7 +7,7 @@ The following figure shows some example results. In addition, the actual `namepl
 
 #### Preparation
 
-1. Please refer the [QUICK INSTALLATION](./installation_en.md) to install PaddlePaddle. Python3 environment is recommended.
+1. Please refer the [QUICK INSTALLATION](./installation_en.md) to install PaddlePaddle. Python3 environment is strongly recommended.
 2. Download the pretrained models and unzip:
 
 ```bash
@@ -16,7 +16,7 @@ wget /path/to/style_text_models.zip
 unzip style_text_models.zip
 ```
 
-You can dowload models [here](). If you save the model files in other folders, please edit the three model paths in `configs/config.yml`:
+You can dowload models [here](https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/style_text_models.zip). If you save the model files in other folders, please edit the three model paths in `configs/config.yml`:
 
 ```
 bg_generator:
