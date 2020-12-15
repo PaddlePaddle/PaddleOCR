@@ -1,4 +1,4 @@
-## Style Text
+English | [简体中文](README_ch.md)
 
 ### Contents
 - [1. Introduction](#Introduction)
@@ -27,7 +27,7 @@ Different from the commonly used GAN-based data synthesis tools, the main framew
 * (2) Background extraction module.
 * (3) Fusion module.
 
-After these three steps, you can quickly realize the image text style transfer. The following figure is som results of the data synthesis tool.
+After these three steps, you can quickly realize the image text style transfer. The following figure is some results of the data synthesis tool.
 
 <div align="center">
     <img src="doc/images/2.png" width="1000">
@@ -100,7 +100,7 @@ First, you should have the style reference data for synthesis tasks, which are g
      * `language`: The language of the corpus. Needed if method is not `EnNumCorpus`.
      * `corpus_file`: The corpus file path. Needed if method is not `EnNumCorpus`.
 
-We provide a general dataset constaining Chinese, English and Korean (50,000 images in all) for your trial ([download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/chkoen_5w.tar)), some examples are given below :
+We provide a general dataset containing Chinese, English and Korean (50,000 images in all) for your trial ([download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/chkoen_5w.tar)), some examples are given below :
 
 <div align="center">
      <img src="doc/images/5.png" width="800">
