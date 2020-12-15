@@ -23,7 +23,7 @@ Predictor:
   - 0.5
   expand_result: false
   bg_generator:
-    pretrain: models/style_text_rec/bg_generator
+    pretrain: style_text_models/bg_generator
     module_name: bg_generator
     generator_type: BgGeneratorWithMask
     encode_dim: 64
@@ -33,7 +33,7 @@ Predictor:
     conv_block_dilation: true
     output_factor: 1.05
   text_generator:
-    pretrain: models/style_text_rec/text_generator
+    pretrain: style_text_models/text_generator
     module_name: text_generator
     generator_type: TextGenerator
     encode_dim: 64
@@ -42,7 +42,7 @@ Predictor:
     conv_block_dropout: false
     conv_block_dilation: true
   fusion_generator:
-    pretrain: models/style_text_rec/fusion_generator
+    pretrain: style_text_models/fusion_generator
     module_name: fusion_generator
     generator_type: FusionGeneratorSimple
     encode_dim: 64
