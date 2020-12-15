@@ -61,7 +61,6 @@ from libs.zoomWidget import ZoomWidget
 from libs.autoDialog import AutoDialog
 from libs.labelDialog import LabelDialog
 from libs.colorDialog import ColorDialog
-from libs.labelFile import LabelFile, LabelFileError
 from libs.toolBar import ToolBar
 from libs.ustr import ustr
 from libs.hashableQListWidgetItem import HashableQListWidgetItem
@@ -373,11 +372,11 @@ class MainWindow(QMainWindow, WindowMixin):
         openPrevImg = action(getStr('prevImg'), self.openPrevImg,
                              'a', 'prev', getStr('prevImgDetail'))
 
-        verify = action(getStr('verifyImg'), self.verifyImg,
-                        'space', 'verify', getStr('verifyImgDetail'))
+        # verify = action(getStr('verifyImg'), self.verifyImg,
+        #                 'space', 'verify', getStr('verifyImgDetail'))
 
         save = action(getStr('save'), self.saveFile,
-                      'Ctrl+S', 'save', getStr('saveDetail'), enabled=False)
+                      'Ctrl+V', 'verify', getStr('saveDetail'), enabled=False)
 
         alcm = action(getStr('choosemodel'), self.autolcm,
                                         'Ctrl+M', 'next', getStr('tipchoosemodel'))
@@ -401,7 +400,7 @@ class MainWindow(QMainWindow, WindowMixin):
         delete = action(getStr('delBox'), self.deleteSelectedShape,
                         'Delete', 'delete', getStr('delBoxDetail'), enabled=False)
         copy = action(getStr('dupBox'), self.copySelectedShape,
-                      'Ctrl+D', 'copy', getStr('dupBoxDetail'),
+                      'Ctrl+C', 'copy', getStr('dupBoxDetail'),
                       enabled=False)
 
         hideAll = action(getStr('hideBox'), partial(self.togglePolygons, False),
@@ -461,7 +460,10 @@ class MainWindow(QMainWindow, WindowMixin):
                             'p', 'new', 'Creat Polygon', enabled=True)
 
         saveRec = action(getStr('saveRec'), self.saveRecResult,
-                            '', 'saveRec', getStr('saveRec'), enabled=False)
+                            '', 'save', getStr('saveRec'), enabled=False)
+
+        saveLabel = action(getStr('saveLabel'), self.saveLabelFile, #
+                            'Ctrl+S', 'save', getStr('saveLabel'), enabled=False)
 
         self.editButton.setDefaultAction(edit)
         self.newButton.setDefaultAction(create)
@@ -526,9 +528,9 @@ class MainWindow(QMainWindow, WindowMixin):
                               shapeLineColor=shapeLineColor, shapeFillColor=shapeFillColor,
                               zoom=zoom, zoomIn=zoomIn, zoomOut=zoomOut, zoomOrg=zoomOrg,
                               fitWindow=fitWindow, fitWidth=fitWidth,
-                              zoomActions=zoomActions,
+                              zoomActions=zoomActions, saveLabel=saveLabel,
                               fileMenuActions=(
-                                  open, opendir, save,  resetAll, quit),
+                                  open, opendir, saveLabel,  resetAll, quit),
                               beginner=(), advanced=(),
                               editMenu=(createpoly, edit, copy, delete,
                                         None, color1, self.drawSquaresOption),
@@ -564,7 +566,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.displayLabelOption.triggered.connect(self.togglePaintLabelsOption)
 
         addActions(self.menus.file,
-                   (opendir, None, save,  resetAll, deleteImg, quit))
+                   (opendir, None, saveLabel, saveRec, None, resetAll, deleteImg, quit))
 
         addActions(self.menus.help, (showSteps, showInfo))
         addActions(self.menus.view, (
@@ -574,7 +576,7 @@ class MainWindow(QMainWindow, WindowMixin):
             zoomIn, zoomOut, zoomOrg, None,
             fitWindow, fitWidth))
 
-        addActions(self.menus.autolabel, (alcm, saveRec, None, help)) #
+        addActions(self.menus.autolabel, (alcm, None, help)) #
 
         self.menus.file.aboutToShow.connect(self.updateFileMenu)
 
@@ -586,14 +588,14 @@ class MainWindow(QMainWindow, WindowMixin):
 
         # self.tools = self.toolbar('Tools')
 
-        self.actions.beginner = (
-            open, opendir, openNextImg, openPrevImg, verify, save, None, create, copy, delete, None,
-            zoomIn, zoom, zoomOut, fitWindow, fitWidth)
-
-        self.actions.advanced = (
-            open, opendir, openNextImg, openPrevImg, save, None,
-            createMode, editMode, None,
-            hideAll, showAll)
+        # self.actions.beginner = (
+        #     open, opendir, openNextImg, openPrevImg, verify, save, None, create, copy, delete, None,
+        #     zoomIn, zoom, zoomOut, fitWindow, fitWidth)
+        #
+        # self.actions.advanced = (
+        #     open, opendir, openNextImg, openPrevImg, save, None,
+        #     createMode, editMode, None,
+        #     hideAll, showAll)
 
         self.statusBar().showMessage('%s started.' % __appname__)
         self.statusBar().show()
@@ -1025,9 +1027,6 @@ class MainWindow(QMainWindow, WindowMixin):
     def saveLabels(self, annotationFilePath, mode='Auto'):
         # Mode is Auto means that labels will be loaded from self.result_dic totally, which is the output of ocr model
         annotationFilePath = ustr(annotationFilePath)
-        if self.labelFile is None:
-            self.labelFile = LabelFile()
-            self.labelFile.verified = self.canvas.verified
 
         def format_shape(s):
             # print('s in saveLabels is ',s)
@@ -1062,8 +1061,8 @@ class MainWindow(QMainWindow, WindowMixin):
             #                         self.lineColor.getRgb(), self.fillColor.getRgb())
             # print('Image:{0} -> Annotation:{1}'.format(self.filePath, annotationFilePath))
             return True
-        except LabelFileError as e:
-            self.errorMessage(u'Error saving label data', u'<b>%s</b>' % e)
+        except:
+            self.errorMessage(u'Error saving label data')
             return False
 
     def copySelectedShape(self):
@@ -1255,26 +1254,8 @@ class MainWindow(QMainWindow, WindowMixin):
         #     if unicodeFilePath in self.mImgList:
                 
         if unicodeFilePath and os.path.exists(unicodeFilePath):
-            if LabelFile.isLabelFile(unicodeFilePath):
-                try:
-                    self.labelFile = LabelFile(unicodeFilePath)
-                except LabelFileError as e:
-                    self.errorMessage(u'Error opening file',
-                                      (u"<p><b>%s</b></p>"
-                                       u"<p>Make sure <i>%s</i> is a valid label file.")
-                                      % (e, unicodeFilePath))
-                    self.status("Error reading %s" % unicodeFilePath)
-                    return False
-                self.imageData = self.labelFile.imageData
-                self.lineColor = QColor(*self.labelFile.lineColor)
-                self.fillColor = QColor(*self.labelFile.fillColor)
-                self.canvas.verified = self.labelFile.verified
-            else:
-                # Load image:
-                # read data first and store for saving into label file.
-                self.imageData = read(unicodeFilePath, None)
-                self.labelFile = None
-                self.canvas.verified = False
+            self.imageData = read(unicodeFilePath, None)
+            self.canvas.verified = False
 
             image = QImage.fromData(self.imageData)
             if image.isNull():
@@ -1286,8 +1267,7 @@ class MainWindow(QMainWindow, WindowMixin):
             self.image = image
             self.filePath = unicodeFilePath
             self.canvas.loadPixmap(QPixmap.fromImage(image))
-            if self.labelFile:
-                self.loadLabels(self.labelFile.shapes)
+
             if self.validFilestate(filePath) is True:
                 self.setClean()
             else:
@@ -1400,8 +1380,7 @@ class MainWindow(QMainWindow, WindowMixin):
             settings[SETTING_DRAW_SQUARE] = self.drawSquaresOption.isChecked()
             settings.save()
             try:
-                self.saveFilestate()
-                self.savePPlabel()
+                self.saveLabelFile()
             except:
                 pass
 
@@ -1446,8 +1425,7 @@ class MainWindow(QMainWindow, WindowMixin):
         if not self.mayContinue() or not dirpath:
             return
         if self.defaultSaveDir and self.defaultSaveDir != dirpath:
-            self.saveFilestate()
-            self.savePPlabel()
+            self.saveLabelFile()
 
         if not isDelete:
             self.loadFilestate(dirpath)
@@ -1488,24 +1466,8 @@ class MainWindow(QMainWindow, WindowMixin):
         self.haveAutoReced = False
         self.AutoRecognition.setEnabled(True)
         self.reRecogButton.setEnabled(True)
+        self.actions.saveLabel.setEnabled(True)
 
-    def verifyImg(self, _value=False):
-        # Proceding next image without dialog if having any label
-        if self.filePath is not None:
-            try:
-                self.labelFile.toggleVerify()
-            except AttributeError:
-                # If the labelling file does not exist yet, create if and
-                # re-save it with the verified attribute.
-                self.saveFile()
-                if self.labelFile != None:
-                    self.labelFile.toggleVerify()
-                else:
-                    return
-
-            self.canvas.verified = self.labelFile.verified
-            self.paintCanvas()
-            self.saveFile()
 
     def openPrevImg(self, _value=False):
         if len(self.mImgList) <= 0:
@@ -1578,18 +1540,10 @@ class MainWindow(QMainWindow, WindowMixin):
 
     def saveFile(self, _value=False, mode='Manual'):
         # Manual mode is used for users click "Save" manually,which will change the state of the image
-        if self.defaultSaveDir is not None and len(ustr(self.defaultSaveDir)):
-            if self.filePath:
-                imgidx = self.getImglabelidx(self.filePath)
-                self._saveFile(imgidx, mode=mode)
+        if self.filePath:
+            imgidx = self.getImglabelidx(self.filePath)
+            self._saveFile(imgidx, mode=mode)
 
-        else:
-            imgFileDir = os.path.dirname(self.filePath)
-            imgFileName = os.path.basename(self.filePath)
-            savedFileName = os.path.splitext(imgFileName)[0]
-            savedPath = os.path.join(imgFileDir, savedFileName)
-            self._saveFile(savedPath if self.labelFile
-                           else self.saveFileDialog(removeExt=False), mode=mode)
 
     def saveFileAs(self, _value=False):
         assert not self.image.isNull(), "cannot save empty image"
@@ -1967,6 +1921,10 @@ class MainWindow(QMainWindow, WindowMixin):
                 f.write(key + '\t')
                 f.write(json.dumps(self.Cachelabel[key], ensure_ascii=False) + '\n')
 
+    def saveLabelFile(self):
+        self.saveFilestate()
+        self.savePPlabel()
+
     def saveRecResult(self):
         if None in [self.PPlabelpath, self.PPlabel, self.fileStatedict]:
             QMessageBox.information(self, "Information", "Save file first")
@@ -2013,7 +1971,7 @@ def get_main_app(argv=[]):
     app.setWindowIcon(newIcon("app"))
     # Tzutalin 201705+: Accept extra agruments to change predefined class file
     argparser = argparse.ArgumentParser()
-    argparser.add_argument("--lang", default='ch', nargs="?")
+    argparser.add_argument("--lang", default='en', nargs="?")
     argparser.add_argument("--predefined_classes_file",
                            default=os.path.join(os.path.dirname(__file__), "data", "predefined_classes.txt"),
                            nargs="?")
