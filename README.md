@@ -4,7 +4,9 @@ English | [简体中文](README_ch.md)
 PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools that help users train better models and apply them into practice.
 
 **Recent updates**
-- 2020.11.25 Update a new data annotation tool, i.e., [PPOCRLabel](./PPOCRLabel/README_en.md), which is helpful to improve the labeling efficiency. Moreover, the labeling results can be used in training of the PP-OCR system directly.
+- 2020.12.15 update Data synthesis tool, i.e., [Style-Text](./StyleTextRec/README.md)，easy to synthesize a large number of images which are similar to the target scene image.
+- 2020.12.15 Release the branch of the release/2.0-rc1, support both the dynamic graph development (more convenient for training and debugging) and the static graph deployment (higher prediction efficiency).
+- 2020.11.25 Update a new data annotation tool, i.e., [PPOCRLabel](./PPOCRLabel/README.md), which is helpful to improve the labeling efficiency. Moreover, the labeling results can be used in training of the PP-OCR system directly.
 - 2020.9.22 Update the PP-OCR technical article, https://arxiv.org/abs/2009.09941
 - 2020.9.19 Update the ultra lightweight compressed ppocr_mobile_slim series models, the overall model size is 3.5M (see [PP-OCR Pipeline](#PP-OCR-Pipeline)), suitable for mobile deployment. [Model Downloads](#Supported-Chinese-model-list)
 - 2020.9.17 Update the ultra lightweight ppocr_mobile series and general ppocr_server series Chinese and English ocr models, which are comparable to commercial effects. [Model Downloads](#Supported-Chinese-model-list)
@@ -15,11 +17,13 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
 
 ## Features
 - PPOCR series of high-quality pre-trained models, comparable to commercial effects
-    - Ultra lightweight ppocr_mobile series models: detection (2.6M) + direction classifier (0.9M) + recognition (4.6M) = 8.1M
-    - General ppocr_server series models: detection (47.2M) + direction classifier (0.9M) + recognition (107M) = 155.1M
-    - Ultra lightweight compression ppocr_mobile_slim series models: detection (1.4M) + direction classifier (0.5M) + recognition (1.6M) = 3.5M
-- Support Chinese, English, and digit recognition, vertical text recognition, and long text recognition
-- Support multi-language recognition: Korean, Japanese, German, French
+    - Ultra lightweight ppocr_mobile series models: detection (3.0M) + direction classifier (1.4M) + recognition (5.0M) = 9.4M
+    - General ppocr_server series models: detection (47.1M) + direction classifier (1.4M) + recognition (94.9M) = 143.4M
+    - Support Chinese, English, and digit recognition, vertical text recognition, and long text recognition
+    - Support multi-language recognition: Korean, Japanese, German, French
+- rich toolkits related to the OCR areas
+    - Semi-automatic data annotation tool, i.e., PPOCRLabel: support fast and efficient data annotation
+    - Data synthesis tool, i.e., Style-Text: easy to synthesize a large number of images which are similar to the target scene image
 - Support user-defined training, provides rich predictive inference deployment solutions
 - Support PIP installation, easy to use
 - Support Linux, Windows, MacOS and other systems
@@ -63,8 +67,8 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
 
 | Model introduction                                           | Model name                   | Recommended scene | Detection model                                              | Direction classifier                                         | Recognition model                                            |
 | ------------------------------------------------------------ | ---------------------------- | ----------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Chinese and English ultra-lightweight OCR model (8.1M)       | ch_ppocr_mobile_v2.0_xx      | Mobile & server   |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar)|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_pre.tar)      |
-| Chinese and English general OCR model (143M)               | ch_ppocr_server_v2.0_xx      | Server            |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_traingit.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_pre.tar)  |  
+| Chinese and English ultra-lightweight OCR model (9.4M)       | ch_ppocr_mobile_v2.0_xx      | Mobile & server   |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar)|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_pre.tar)      |
+| Chinese and English general OCR model (143.4M)               | ch_ppocr_server_v2.0_xx      | Server            |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_traingit.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_pre.tar)  |  
 
 
 For more model downloads (including multiple languages), please refer to [PP-OCR v2.0 series model downloads](./doc/doc_en/models_list_en.md).
@@ -90,13 +94,12 @@ For a new language request, please refer to [Guideline for new language_requests
     - [C++ Inference](./deploy/cpp_infer/readme_en.md)
     - [Serving](./deploy/hubserving/readme_en.md)
     - [Mobile](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme_en.md)
-    - [Model Quantization](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/quantization/README_en.md)
-    - [Model Compression](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/slim/prune/README_en.md)
     - [Benchmark](./doc/doc_en/benchmark_en.md)  
 - Data Annotation and Synthesis
-    - [Semi-automatic Annotation Tool](./PPOCRLabel/README_en.md)
-    - [Data Annotation Tools](./doc/doc_en/data_annotation_en.md)
-    - [Data Synthesis Tools](./doc/doc_en/data_synthesis_en.md)
+    - [Semi-automatic Annotation Tool: PPOCRLabel](./PPOCRLabel/README.md)
+    - [Data Synthesis Tool: Style_Edit](./StyleTextRec/README.md)
+    - [Other Data Annotation Tools](./doc/doc_en/data_annotation_en.md)
+    - [Other Data Synthesis Tools](./doc/doc_en/data_synthesis_en.md)
 - Datasets
     - [General OCR Datasets(Chinese/English)](./doc/doc_en/datasets_en.md)
     - [HandWritten_OCR_Datasets(Chinese)](./doc/doc_en/handwritten_datasets_en.md)
@@ -109,10 +112,6 @@ For a new language request, please refer to [Guideline for new language_requests
 - [License](#LICENSE)
 - [Contribution](#CONTRIBUTION)
 
-***Note: The dynamic graphs branch is still under development.
-Currently, only dynamic graph training, python-end prediction, and C++ prediction are supported.
-If you need mobile-end deployment cases or quantitative demo,
-please use the static graph branch.***
 
 
 <a name="PP-OCR-Pipeline"></a>
