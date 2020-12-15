@@ -5,7 +5,7 @@
 - [二、环境配置](#环境配置)
 - [三、快速上手](#快速上手)
 - [四、应用案例](#应用案例)
-- [五、项目结构](#项目结构)
+- [五、代码结构](#代码结构)
 
 <a name="工具简介"></a>
 ### 一、工具简介
@@ -54,14 +54,15 @@ fusion_generator:
 <a name="快速上手"></a>
 ### 三、快速上手
 
-- 合成单张图
-运行tools/synth_image，合成单张图片：
+#### 合成单张图
+输入一张风格图和一段文字语料，运行tools/synth_image，合成单张图片：
 ```python
 python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_images/2.jpg --text_corpus PaddleOCR --language en
 ```
+* 注意：语言选项和语料相对应，目前我们支持英文、简体中文和韩语。
 例如，输入如下图片和语料"PaddleOCR":
 <div align="center">
-    <img src="examples/style_images/1.jpg" width="300">
+    <img src="examples/style_images/2.jpg" width="300">
 </div>
 得到结果fake_fusion.jpg：
 <div align="center">
@@ -69,11 +70,15 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
 </div>
 除此之外，程序还会生成并保存中间结果：
    * `fake_bg.jpg`：为风格参考图去掉文字后的背景；
+<div align="center">
+    <img src="doc/images/7.jpg" width="300">
+</div>
    * `fake_text.jpg`：是用提供的字符串，仿照风格参考图中文字的风格，生成在灰色背景上的文字图片。
+<div align="center">
+    <img src="doc/images/8.jpg" width="300">
+</div>
 
-   * 注意：语言选项和语料相对应，目前我们支持英文、简体中文和韩语。
-
-- 批量合成
+#### 批量合成
 在实际应用场景中，经常需要批量合成图片，补充到训练集中。StyleText可以使用一批风格图片和语料，批量合成数据。合成过程如下：
 首先，需要风格图片作为合成图片的参考依据，这些数据可以是用作训练OCR识别模型的数据集。本例中使用带有标注文件的数据集作为风格图片.
 
@@ -121,8 +126,8 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
 | 随机背景 | 韩语       | 5631     | 1230     | 0.3012                     | 100000       | 0.5057                 | 20%      |
 
 
-<a name="项目结构"></a>
-### 五、项目结构
+<a name="代码结构"></a>
+### 五、代码结构
 ```
 style_text_rec
 |-- arch
