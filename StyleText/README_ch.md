@@ -126,7 +126,6 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
 | 金属表面 | 英文和数字 | 2203     | 650      | 0.5938                     | 20000        | 0.7546                 | 16%      |
 | 随机背景 | 韩语       | 5631     | 1230     | 0.3012                     | 100000       | 0.5057                 | 20%      |
 
-识别模型的训练方法可以参考[OCR识别文档](../doc/doc_ch/recognition.md) 
 
 ### 项目结构
 ```
