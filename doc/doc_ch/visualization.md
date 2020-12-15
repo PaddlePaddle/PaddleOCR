@@ -26,6 +26,6 @@
 <a name="多语言识别模型效果展示"></a>
 ## 多语言识别模型效果展示
 <div align="center">
-    <img src="./doc/imgs_results/french_0.jpg" width="800">
-    <img src="./doc/imgs_results/korean.jpg" width="800">
+    <img src="../imgs_results/french_0.jpg" width="800">
+    <img src="../imgs_results/korean.jpg" width="800">
 </div>
