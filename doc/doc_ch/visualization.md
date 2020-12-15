@@ -19,7 +19,7 @@
 <a name="英文识别模型效果展示"></a>
 ## 英文识别模型效果展示
 <div align="center">
-    <img src="../imgs_results/ch_ppocr_mobile_v2/img_12.jpg" width="800">
+    <img src="../imgs_results/ch_ppocr_mobile_v2.0/img_12.jpg" width="800">
 </div>
 
 
