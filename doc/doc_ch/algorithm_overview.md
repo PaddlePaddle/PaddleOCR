@@ -40,7 +40,7 @@ PaddleOCR文本检测算法的训练和使用请参考文档教程中[模型训�
 PaddleOCR基于动态图开源的文本识别算法列表：
 - [x]  CRNN([paper](https://arxiv.org/abs/1507.05717) )（ppocr推荐）
 - [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))
-- [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))
+- [ ]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))
 - [ ]  RARE([paper](https://arxiv.org/abs/1603.03915v1)) coming soon
 - [ ]  SRN([paper](https://arxiv.org/abs/2003.12294)) coming soon
 
@@ -52,8 +52,8 @@ PaddleOCR基于动态图开源的文本识别算法列表：
 |Rosetta|Resnet34_vd|80.9%|rec_r34_vd_none_none_ctc|[下载链接](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_none_none_ctc_v2.0_train.tar)|
 |CRNN|MobileNetV3|79.97%|rec_mv3_none_bilstm_ctc|[下载链接](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_none_bilstm_ctc_v2.0_train.tar)|
 |CRNN|Resnet34_vd|82.76%|rec_r34_vd_none_bilstm_ctc|[下载链接](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_none_bilstm_ctc_v2.0_train.tar)|
-|STAR-Net|MobileNetV3|81.08%|rec_mv3_tps_bilstm_ctc|[下载链接](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_tps_bilstm_ctc_v2.0_train.tar)|
-|STAR-Net|Resnet34_vd|83.32%|rec_r34_vd_tps_bilstm_ctc|[下载链接](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_tps_bilstm_ctc_v2.0_train.tar)|
+|STAR-Net|MobileNetV3|81.56%|rec_mv3_tps_bilstm_ctc|[下载链接 (coming soon )]()|
+|STAR-Net|Resnet34_vd|83.93%|rec_r34_vd_tps_bilstm_ctc|[下载链接 (coming soon )]()|
 
 
 PaddleOCR文本识别算法的训练和使用请参考文档教程中[模型训练/评估中的文本识别部分](./recognition.md)。
