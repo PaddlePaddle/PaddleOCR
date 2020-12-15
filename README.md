@@ -27,8 +27,8 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
 ## Visualization
 
 <div align="center">
-    <img src="doc/imgs_results/1101.jpg" width="800">
-    <img src="doc/imgs_results/1103.jpg" width="800">
+    <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
+    <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/00018069.jpg" width="800">
 </div>
 
 The above pictures are the visualizations of the general ppocr_server model. For more effect pictures, please see [More visualizations](./doc/doc_en/visualization_en.md).
@@ -57,6 +57,7 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
 - [**OCR Quick Start**](./doc/doc_en/quickstart_en.md)
 
 <a name="Supported-Chinese-model-list"></a>
+
 
 ## PP-OCR 2.0 series model list（Update on Dec 15）
 
@@ -129,21 +130,21 @@ PP-OCR is a practical ultra-lightweight OCR system. It is mainly composed of thr
 ## Visualization [more](./doc/doc_en/visualization_en.md)
 - Chinese OCR model
 <div align="center">
-    <img src="./doc/imgs_results/1102.jpg" width="800">
-    <img src="./doc/imgs_results/1104.jpg" width="800">
-    <img src="./doc/imgs_results/1106.jpg" width="800">
-    <img src="./doc/imgs_results/1105.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00015504.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00056221.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/rotate_00052204.jpg" width="800">
 </div>
 
 - English OCR model
 <div align="center">
-    <img src="./doc/imgs_results/img_12.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/img_12.jpg" width="800">
 </div>
 
 - Multilingual OCR model
 <div align="center">
-    <img src="./doc/imgs_results/1110.jpg" width="800">
-    <img src="./doc/imgs_results/1112.jpg" width="800">
+    <img src="./doc/imgs_results/french_0.jpg" width="800">
+    <img src="./doc/imgs_results/korean.jpg" width="800">
 </div>
 
 
