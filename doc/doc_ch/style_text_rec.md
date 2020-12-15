@@ -76,7 +76,7 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
 首先，需要风格图片作为合成图片的参考依据，这些数据可以是用作训练OCR识别模型的数据集。本例中使用带有标注文件的数据集作为风格图片.
 
 1. 在`configs/dataset_config.yml`中配置输入数据路径。
-   * `StyleSamplerl`：
+   * `StyleSampler`：
      * `method`：使用的风格图片采样方法；
      * `image_home`：风格图片目录；
      * `label_file`：风格图片路径列表文件，如果所用数据集有label，则label_file为label文件路径；

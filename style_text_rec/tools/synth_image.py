@@ -15,8 +15,8 @@ import os
 import cv2
 import sys
 import glob
-from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
+from utils.config import ArgsParser
 from engine.synthesisers import ImageSynthesiser
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
