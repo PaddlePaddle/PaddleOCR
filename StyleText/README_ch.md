@@ -74,9 +74,7 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
    * 注意：语言选项和语料相对应，目前我们支持英文、简体中文和韩语。
 
 - 批量合成
-
-在开始合成数据前，需要准备一些素材。
-
+在实际应用场景中，经常需要批量合成图片，补充到训练集中。StyleText可以使用一批风格图片和语料，批量合成数据。合成过程如下：
 首先，需要风格图片作为合成图片的参考依据，这些数据可以是用作训练OCR识别模型的数据集。本例中使用带有标注文件的数据集作为风格图片.
 
 1. 在`configs/dataset_config.yml`中配置输入数据路径。
