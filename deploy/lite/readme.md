@@ -11,7 +11,7 @@ Paddle Lite是飞桨轻量化推理引擎，为手机、IOT端提供高效推理
 - 电脑（编译Paddle Lite）
 - 安卓手机（armv7或armv8）
 
-***注意： PaddleOCR 移动端部署当前不支持动态图模型，只支持静态图保存的模型。当前PaddleOCR静态图的分支是`release/static`。***
+***注意： PaddleOCR 移动端部署当前不支持动态图模型，只支持静态图保存的模型。当前PaddleOCR静态图的分支是`develop`。***
 
 ### 1.1 准备交叉编译环境
 交叉编译环境用于编译 Paddle Lite 和 PaddleOCR 的C++ demo。
