@@ -66,7 +66,7 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
     <img src="examples/style_images/2.jpg" width="300">
 </div>
 
-得到结果fake_fusion.jpg：
+生成合成数据：`fake_fusion.jpg`：
 <div align="center">
     <img src="doc/images/4.jpg" width="300">
 </div>
