@@ -58,7 +58,8 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
 
 <a name="Supported-Chinese-model-list"></a>
 
-## PP-OCR 2.0 series model list（Update on Sep 17）
+
+## PP-OCR 2.0 series model list（Update on Dec 15）
 
 | Model introduction                                           | Model name                   | Recommended scene | Detection model                                              | Direction classifier                                         | Recognition model                                            |
 | ------------------------------------------------------------ | ---------------------------- | ----------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
