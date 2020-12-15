@@ -178,7 +178,6 @@ class TextDetector(object):
             preds['f_tco'] = outputs[2]
             preds['f_tvo'] = outputs[3]
         else:
-            # preds['maps'] = outputs[0]
             preds = outputs[0]
 
         post_result = self.postprocess_op(preds, shape_list)
