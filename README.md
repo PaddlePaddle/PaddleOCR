@@ -4,7 +4,7 @@ English | [简体中文](README_ch.md)
 PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools that help users train better models and apply them into practice.
 
 **Recent updates**
-- 2020.12.15 update Data synthesis tool, i.e., [Style-Text](./StyleTextRec/README.md)，easy to synthesize a large number of images which are similar to the target scene image.
+- 2020.12.15 update Data synthesis tool, i.e., [Style-Text](./StyleText/README.md)，easy to synthesize a large number of images which are similar to the target scene image.
 - 2020.12.15 Release the branch of the release/2.0-rc1, support both the dynamic graph development (more convenient for training and debugging) and the static graph deployment (higher prediction efficiency).
 - 2020.11.25 Update a new data annotation tool, i.e., [PPOCRLabel](./PPOCRLabel/README.md), which is helpful to improve the labeling efficiency. Moreover, the labeling results can be used in training of the PP-OCR system directly.
 - 2020.9.22 Update the PP-OCR technical article, https://arxiv.org/abs/2009.09941
