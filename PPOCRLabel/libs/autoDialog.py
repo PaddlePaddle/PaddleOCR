@@ -48,7 +48,7 @@ class Worker(QThread):
                             posi = res[0]
                             strs += "Transcription: " + chars + " Probability: " + str(cond) + " Location: " + json.dumps(posi)
                         # Sending large amounts of data repeatedly through pyqtSignal may affect the program efficiency
-                        self.listValue.emit(strs)  # It is better to remove this line
+                        # self.listValue.emit(strs)  # It is better to remove this line
                         self.mainThread.result_dic = self.result_dic
                         self.mainThread.filePath = Imgpath
                         # 保存
