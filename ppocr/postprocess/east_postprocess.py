@@ -19,12 +19,10 @@ from __future__ import print_function
 import numpy as np
 from .locality_aware_nms import nms_locality
 import cv2
+import paddle
 
 import os
 import sys
-# __dir__ = os.path.dirname(os.path.abspath(__file__))
-# sys.path.append(__dir__)
-# sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
 
 
 class EASTPostProcess(object):
@@ -113,11 +111,14 @@ class EASTPostProcess(object):
     def __call__(self, outs_dict, shape_list):
         score_list = outs_dict['f_score']
         geo_list = outs_dict['f_geo']
+        if isinstance(score_list, paddle.Tensor):
+            score_list = score_list.numpy()
+            geo_list = geo_list.numpy()
         img_num = len(shape_list)
         dt_boxes_list = []
         for ino in range(img_num):
-            score = score_list[ino].numpy()
-            geo = geo_list[ino].numpy()
+            score = score_list[ino]
+            geo = geo_list[ino]
             boxes = self.detect(
                 score_map=score,
                 geo_map=geo,
