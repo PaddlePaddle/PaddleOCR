@@ -59,7 +59,7 @@ fusion_generator:
 ```python
 python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_images/2.jpg --text_corpus PaddleOCR --language en
 ```
-* 注意：语言选项和语料相对应，目前我们支持英文、简体中文和韩语。
+* 注意：语言选项和语料相对应，目前我们只支持英文、简体中文和韩语。
 例如，输入如下图片和语料"PaddleOCR":
 <div align="center">
     <img src="examples/style_images/2.jpg" width="300">
