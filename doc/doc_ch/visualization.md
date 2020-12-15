@@ -1,7 +1,7 @@
 # 效果展示
 
-<a name="超轻量ppocr_mobile_2.0效果展示"></a>
-## 通用ppocr_mobile_2.0 效果展示
+<a name="超轻量ppocr_server_2.0效果展示"></a>
+## 通用ppocr_server_2.0 效果展示
 
 <div align="center">
     <img src="../imgs_results/ch_ppocr_mobile_v2.0/00006737.jpg" width="800">
