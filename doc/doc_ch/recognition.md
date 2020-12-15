@@ -353,8 +353,7 @@ python3 tools/infer_rec.py -c configs/rec/rec_icdar15_train.yml -o Global.checkp
 
 ```
 infer_img: doc/imgs_words/en/word_1.png
-     index: [19 24 18 23 29]
-     word : joint
+        result: ('joint', 0.9998967)
 ```
 
 预测使用的配置文件必须与训练一致，如您通过 `python3 tools/train.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml` 完成了中文模型的训练，
@@ -373,6 +372,5 @@ python3 tools/infer_rec.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v
 
 ```
 infer_img: doc/imgs_words/ch/word_1.jpg
-     index: [2092  177  312 2503]
-     word : 韩国小馆
+        result: ('韩国小馆', 0.997218)
 ```

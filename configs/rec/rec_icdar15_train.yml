@@ -36,12 +36,13 @@ Architecture:
   algorithm: CRNN
   Transform:
   Backbone:
-    name: ResNet
-    layers: 34
+    name: MobileNetV3
+    scale: 0.5
+    model_name: large
   Neck:
     name: SequenceEncoder
     encoder_type: rnn
-    hidden_size: 256
+    hidden_size: 96
   Head:
     name: CTCHead
     fc_decay: 0
