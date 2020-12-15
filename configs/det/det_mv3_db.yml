@@ -2,7 +2,7 @@ Global:
   use_gpu: true
   epoch_num: 1200
   log_smooth_window: 20
-  print_batch_step: 2
+  print_batch_step: 10
   save_model_dir: ./output/db_mv3/
   save_epoch_step: 1200
   # evaluation is run every 5000 iterations after the 4000th iteration
@@ -39,7 +39,7 @@ Loss:
   alpha: 5
   beta: 10
   ohem_ratio: 3
-  
+
 Optimizer:
   name: Adam
   beta1: 0.9
@@ -100,7 +100,7 @@ Train:
   loader:
     shuffle: True
     drop_last: False
-    batch_size_per_card: 4
+    batch_size_per_card: 16
     num_workers: 8
 
 Eval:
@@ -128,4 +128,4 @@ Eval:
     shuffle: False
     drop_last: False
     batch_size_per_card: 1 # must be 1
-    num_workers: 2
+    num_workers: 8
