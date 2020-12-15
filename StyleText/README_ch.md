@@ -89,6 +89,8 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
 
 1. 在`configs/dataset_config.yml`中配置目标场景风格图像和语料的路径，具体如下：
 
+   * `Global`：
+     * `output_dir:`：保存合成数据的目录。
    * `StyleSampler`：
      * `image_home`：风格图片目录；
      * `label_file`：风格图片路径列表文件，如果所用数据集有label，则label_file为label文件路径；
@@ -110,13 +112,6 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
 
    ``` bash
    python -m tools.synth_dataset -c configs/dataset_config.yml
-   ```
-
-3. 如果您想使用并行方式来快速合成数据，可以通过启动多个进程，在启动时需要指定不同的`tag`（`-t`），如下所示:
-
-   ```bash
-   python3 -m tools.synth_dataset -t 0 -c configs/dataset_config.yml
-   python3 -m tools.synth_dataset -t 1 -c configs/dataset_config.yml
    ```
 
 <a name="应用案例"></a>
