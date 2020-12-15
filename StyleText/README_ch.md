@@ -71,14 +71,13 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
     <img src="doc/images/4.jpg" width="300">
 </div>
 
-除此之外，程序还会生成并保存中间结果：
-   * `fake_bg.jpg`：为风格参考图去掉文字后的背景；
+除此之外，程序还会生成并保存中间结果：`fake_bg.jpg`：为风格参考图去掉文字后的背景；
    
 <div align="center">
     <img src="doc/images/7.jpg" width="300">
 </div>
 
-   * `fake_text.jpg`：是用提供的字符串，仿照风格参考图中文字的风格，生成在灰色背景上的文字图片。
+`fake_text.jpg`：是用提供的字符串，仿照风格参考图中文字的风格，生成在灰色背景上的文字图片。
    
 <div align="center">
     <img src="doc/images/8.jpg" width="300">
