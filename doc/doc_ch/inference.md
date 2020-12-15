@@ -22,9 +22,8 @@ inference 模型（`paddle.jit.save`保存的模型）
 - [三、文本识别模型推理](#文本识别模型推理)
     - [1. 超轻量中文识别模型推理](#超轻量中文识别模型推理)
     - [2. 基于CTC损失的识别模型推理](#基于CTC损失的识别模型推理)
-    - [3. 基于Attention损失的识别模型推理](#基于Attention损失的识别模型推理)
-    - [4. 自定义文本识别字典的推理](#自定义文本识别字典的推理)
-    - [5. 多语言模型的推理](#多语言模型的推理)
+    - [3. 自定义文本识别字典的推理](#自定义文本识别字典的推理)
+    - [4. 多语言模型的推理](#多语言模型的推理)
 
 - [四、方向分类模型推理](#方向识别模型推理)
     - [1. 方向分类模型推理](#方向分类模型推理)
@@ -129,24 +128,32 @@ python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o Global.pretrained_mo
 超轻量中文检测模型推理，可以执行如下命令：
 
 ```
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/"
+# 下载超轻量中文检测模型：
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar
+tar xf ch_ppocr_mobile_v2.0_det_infer.tar
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/22.jpg" --det_model_dir="./ch_ppocr_mobile_v2.0_det_infer/"
 ```
 
 可视化文本检测结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
 
-![](../imgs_results/det_res_2.jpg)
+![](../imgs_results/det_res_22.jpg)
 
-通过参数`limit_type`和`det_limit_side_len`来对图片的尺寸进行限制限，`limit_type=max`为限制长边长度<`det_limit_side_len`，`limit_type=min`为限制短边长度>`det_limit_side_len`,
-图片不满足限制条件时(`limit_type=max`时长边长度>`det_limit_side_len`或`limit_type=min`时短边长度<`det_limit_side_len`)，将对图片进行等比例缩放。
-该参数默认设置为`limit_type='max',det_max_side_len=960`。 如果输入图片的分辨率比较大，而且想使用更大的分辨率预测，可以执行如下命令：
+通过参数`limit_type`和`det_limit_side_len`来对图片的尺寸进行限制，
+`litmit_type`可选参数为[`max`, `min`]，
+`det_limit_size_len` 为正整数，一般设置为32 的倍数，比如960。
 
+参数默认设置为`limit_type='max', det_limit_side_len=960`。表示网络输入图像的最长边不能超过960，
+如果超过这个值，会对图像做等宽比的resize操作，确保最长边为`det_limit_side_len`。
+设置为`limit_type='min', det_limit_side_len=960` 则表示限制图像的最短边为960。
+
+如果输入图片的分辨率比较大，而且想使用更大的分辨率预测，可以设置det_limit_side_len 为想要的值，比如1216：
 ```
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --det_limit_type=max --det_limit_side_len=1200
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --det_limit_type=max --det_limit_side_len=1216
 ```
 
 如果想使用CPU进行预测，执行命令如下
 ```
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --use_gpu=False
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/"  --use_gpu=False
 ```
 
 <a name="DB文本检测模型推理"></a>
@@ -268,16 +275,6 @@ CRNN 文本识别模型推理，可以执行如下命令：
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./inference/rec_crnn/" --rec_image_shape="3, 32, 100" --rec_char_type="en"
 ```
 
-<a name="基于Attention损失的识别模型推理"></a>
-### 3. 基于Attention损失的识别模型推理
-
-基于Attention损失的识别模型与ctc不同，需要额外设置识别算法参数 --rec_algorithm="RARE"
-RARE 文本识别模型推理，可以执行如下命令：
-```
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./inference/rare/" --rec_image_shape="3, 32, 100" --rec_char_type="en" --rec_algorithm="RARE"
-
-```
-
 ![](../imgs_words_en/word_336.png)
 
 执行命令后，上面图像的识别结果如下：
@@ -297,7 +294,7 @@ self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
 dict_character = list(self.character_str)
 ```
 
-### 4. 自定义文本识别字典的推理
+### 3. 自定义文本识别字典的推理
 如果训练时修改了文本的字典，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径，并且设置 `rec_char_type=ch`
 
 ```
@@ -305,7 +302,7 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png
 ```
 
 <a name="多语言模型的推理"></a>
-### 5. 多语言模型的推理
+### 4. 多语言模型的推理
 如果您需要预测的是其他语言模型，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径, 同时为了得到正确的可视化结果，
 需要通过 `--vis_font_path` 指定可视化的字体路径，`doc/` 路径下有默认提供的小语种字体，例如韩文识别：
 

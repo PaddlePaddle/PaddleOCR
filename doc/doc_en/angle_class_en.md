@@ -65,9 +65,9 @@ Start training:
 ```
 # Set PYTHONPATH path
 export PYTHONPATH=$PYTHONPATH:.
-# GPU training Support single card and multi-card training, specify the card number through selected_gpus
+# GPU training Support single card and multi-card training, specify the card number through --gpus. If your paddle version is less than 2.0rc1, please use '--selected_gpus'
 # Start training, the following command has been written into the train.sh file, just modify the configuration file path in the file
-python3 -m paddle.distributed.launch --selected_gpus '0,1,2,3,4,5,6,7'  tools/train.py -c configs/cls/cls_mv3.yml
+python3 -m paddle.distributed.launch --gpus '0,1,2,3,4,5,6,7'  tools/train.py -c configs/cls/cls_mv3.yml
 ```
 
 - Data Augmentation
@@ -77,7 +77,7 @@ PaddleOCR provides a variety of data augmentation methods. If you want to add di
 The default perturbation methods are: cvtColor, blur, jitter, Gasuss noise, random crop, perspective, color reverse, RandAugment.
 
 Except for RandAugment, each disturbance method is selected with a 50% probability during the training process. For specific code implementation, please refer to:
-[rec_img_aug.py](../../ppocr/data/imaug/rec_img_aug.py) 
+[rec_img_aug.py](../../ppocr/data/imaug/rec_img_aug.py)
 [randaugment.py](../../ppocr/data/imaug/randaugment.py)
 
 

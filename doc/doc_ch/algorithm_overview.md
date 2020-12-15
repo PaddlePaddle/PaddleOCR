@@ -9,7 +9,7 @@
 ### 1.文本检测算法
 
 PaddleOCR开源的文本检测算法列表：
-- [x]  DB([paper](https://arxiv.org/abs/1911.08947))（ppocr推荐）
+- [x]  DB([paper]( https://arxiv.org/abs/1911.08947) )（ppocr推荐）
 - [x]  EAST([paper](https://arxiv.org/abs/1704.03155))
 - [x]  SAST([paper](https://arxiv.org/abs/1908.05498))
 
@@ -38,9 +38,9 @@ PaddleOCR文本检测算法的训练和使用请参考文档教程中[模型训�
 ### 2.文本识别算法
 
 PaddleOCR基于动态图开源的文本识别算法列表：
-- [x]  CRNN([paper](https://arxiv.org/abs/1507.05717))（ppocr推荐）
+- [x]  CRNN([paper](https://arxiv.org/abs/1507.05717) )（ppocr推荐）
 - [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))
-- [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))
+- [ ]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))
 - [ ]  RARE([paper](https://arxiv.org/abs/1603.03915v1)) coming soon
 - [ ]  SRN([paper](https://arxiv.org/abs/2003.12294)) coming soon
 

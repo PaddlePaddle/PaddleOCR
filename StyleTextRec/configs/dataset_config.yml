@@ -1,0 +1,64 @@
+Global:
+  output_num: 10
+  output_dir: output_data
+  use_gpu: false
+  image_height: 32
+  image_width: 320
+  standard_font: fonts/en_standard.ttf
+TextDrawer:
+  fonts:
+    en: fonts/en_standard.ttf
+    ch: fonts/ch_standard.ttf
+    ko: fonts/ko_standard.ttf
+StyleSampler:
+  method: DatasetSampler
+  image_home: examples
+  label_file: examples/image_list.txt
+  with_label: true
+CorpusGenerator:
+  method: FileCorpus
+  language: ch
+  corpus_file: examples/corpus/example.txt
+Predictor:
+  method: StyleTextRecPredictor
+  algorithm: StyleTextRec
+  scale: 0.00392156862745098
+  mean:
+  - 0.5
+  - 0.5
+  - 0.5
+  std:
+  - 0.5
+  - 0.5
+  - 0.5
+  expand_result: false
+  bg_generator:
+    pretrain: models/style_text_rec/bg_generator
+    module_name: bg_generator
+    generator_type: BgGeneratorWithMask
+    encode_dim: 64
+    norm_layer: null
+    conv_block_num: 4
+    conv_block_dropout: false
+    conv_block_dilation: true
+    output_factor: 1.05
+  text_generator:
+    pretrain: models/style_text_rec/text_generator
+    module_name: text_generator
+    generator_type: TextGenerator
+    encode_dim: 64
+    norm_layer: InstanceNorm2D
+    conv_block_num: 4
+    conv_block_dropout: false
+    conv_block_dilation: true
+  fusion_generator:
+    pretrain: models/style_text_rec/fusion_generator
+    module_name: fusion_generator
+    generator_type: FusionGeneratorSimple
+    encode_dim: 64
+    norm_layer: null
+    conv_block_num: 4
+    conv_block_dropout: false
+    conv_block_dilation: true
+Writer:
+  method: SimpleWriter

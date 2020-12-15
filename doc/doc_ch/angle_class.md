@@ -62,9 +62,9 @@ PaddleOCR提供了训练脚本、评估脚本和预测脚本。
 *如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false*
 
 ```
-# GPU训练 支持单卡，多卡训练，通过selected_gpus指定卡号
+# GPU训练 支持单卡，多卡训练，通过 '--gpus' 指定卡号，如果使用的paddle版本小于2.0rc1，请使用'--select_gpus'参数选择要使用的GPU
 # 启动训练，下面的命令已经写入train.sh文件中，只需修改文件里的配置文件路径即可
-python3 -m paddle.distributed.launch --selected_gpus '0,1,2,3,4,5,6,7'  tools/train.py -c configs/cls/cls_mv3.yml
+python3 -m paddle.distributed.launch --gpus '0,1,2,3,4,5,6,7'  tools/train.py -c configs/cls/cls_mv3.yml
 ```
 
 - 数据增强
@@ -74,7 +74,7 @@ PaddleOCR提供了多种数据增强方式，如果您希望在训练时加入�
 默认的扰动方式有：颜色空间转换(cvtColor)、模糊(blur)、抖动(jitter)、噪声(Gasuss noise)、随机切割(random crop)、透视(perspective)、颜色反转(reverse),随机数据增强(RandAugment)。
 
 训练过程中除随机数据增强外每种扰动方式以50%的概率被选择，具体代码实现请参考：
-[rec_img_aug.py](../../ppocr/data/imaug/rec_img_aug.py) 
+[rec_img_aug.py](../../ppocr/data/imaug/rec_img_aug.py)
 [randaugment.py](../../ppocr/data/imaug/randaugment.py)
 
 *由于OpenCV的兼容性问题，扰动操作暂时只支持linux*
