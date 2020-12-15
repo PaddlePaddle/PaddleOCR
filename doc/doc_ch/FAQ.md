@@ -9,19 +9,44 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
+* [近期更新（2020.12.07）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
-* [【理论篇】OCR通用21个问题](#OCR通用问题)
-  * [基础知识3题](#基础知识)
-  * [数据集4题](#数据集)
-  * [模型训练调优6题](#模型训练调优)
-  * [预测部署8题](#预测部署)
-* [【实战篇】PaddleOCR实战53个问题](#PaddleOCR实战问题)
-  * [使用咨询17题](#使用咨询)
-  * [数据集9题](#数据集)
-  * [模型训练调优13题](#模型训练调优)
-  * [预测部署14题](#预测部署)
+* [【理论篇】OCR通用30个问题](#OCR通用问题)
+  * [基础知识7题](#基础知识)
+  * [数据集7题](#数据集2)
+  * [模型训练调优7题](#模型训练调优2)
+  * [预测部署9题](#预测部署2)
+* [【实战篇】PaddleOCR实战84个问题](#PaddleOCR实战问题)
+  * [使用咨询20题](#使用咨询)
+  * [数据集17题](#数据集3)
+  * [模型训练调优24题](#模型训练调优3)
+  * [预测部署23题](#预测部署3)
 
 
+<a name="近期更新"></a>
+## 近期更新（2020.12.07）
+
+#### Q2.4.9：弯曲文本有试过opencv的TPS进行弯曲校正吗？
+
+**A**：opencv的tps需要标出上下边界对应的点，这些点很难通过传统方法或者深度学习方法获取。PaddleOCR里StarNet网络中的tps模块实现了自动学点，自动校正，可以直接尝试这个。
+
+#### Q3.3.20: 文字检测时怎么模糊的数据增强？
+
+**A**: 模糊的数据增强需要修改代码进行添加，以DB为例，参考[Normalize](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/data/imaug/operators.py#L60) ,添加模糊的增强就行 
+
+#### Q3.3.21: 文字检测时怎么更改图片旋转的角度，实现360度任意旋转？
+
+**A**: 将[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/data/imaug/iaa_augment.py#L64) 的(-10,10) 改为(-180,180)即可 
+
+#### Q3.3.22: 训练数据的长宽比过大怎么修改shape
+
+**A**: 识别修改[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yaml#L75) ,
+检测修改[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml#L85)
+
+
+#### Q3.4.23：安装paddleocr后，提示没有paddle
+
+**A**：这是因为paddlepaddle gpu版本和cpu版本的名称不一致，现在已经在[whl的文档](./whl.md)里做了安装说明。
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -106,12 +131,14 @@
 
 #### Q1.1.10：PaddleOCR中，对于模型预测加速，CPU加速的途径有哪些？基于TenorRT加速GPU对输入有什么要求？
 
-**A**：（1）CPU可以使用mkldnn进行加速；对于python inference的话，可以把enable_mkldnn改为true，[参考代码](https://github.com/PaddlePaddle/PaddleOCR/blob/549108fe0aa0d87c0a3b2d471f1c653e89daab80/tools/infer/utility.py#L73)，对于cpp inference的话，在配置文件里面配置use_mkldnn 1即可，[参考代码](https://github.com/PaddlePaddle/PaddleOCR/blob/549108fe0aa0d87c0a3b2d471f1c653e89daab80/deploy/cpp_infer/tools/config.txt#L6)
+**A**：（1）CPU可以使用mkldnn进行加速；对于python inference的话，可以把enable_mkldnn改为true，[参考代码](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/tools/infer/utility.py#L84)，对于cpp inference的话，在配置文件里面配置use_mkldnn 1即可，[参考代码](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/deploy/cpp_infer/tools/config.txt#L6)
 
 （2）GPU需要注意变长输入问题等，TRT6 之后才支持变长输入
 
 <a name="OCR通用问题"></a>
 ## 【理论篇】OCR通用问题
+
+<a name="基础知识"></a>
 ### 基础知识
 
 #### Q2.1.1：CRNN能否识别两行的文字?还是说必须一行？
@@ -127,7 +154,20 @@
 
 **A**：端到端在文字分布密集的业务场景，效率会比较有保证，精度的话看自己业务数据积累情况，如果行级别的识别数据积累比较多的话two-stage会比较好。百度的落地场景，比如工业仪表识别、车牌识别都用到端到端解决方案。
 
+#### Q2.1.4 印章如何识别
+**A**: 1. 使用带tps的识别网络或abcnet,2.使用极坐标变换将图片拉平之后使用crnn
 
+#### Q2.1.5 多语言的字典里是混合了不同的语种，这个是有什么讲究吗？统一到一个字典里会对精度造成多大的损失？
+**A**：统一到一个字典里，会造成最后一层FC过大，增加模型大小。如果有特殊需求的话，可以把需要的几种语言合并字典训练模型，合并字典之后如果引入过多的形近字，可能会造成精度损失，字符平衡的问题可能也需要考虑一下。在PaddleOCR里暂时将语言字典分开。
+
+#### Q2.1.6 预处理部分，图片的长和宽为什么要处理成32的倍数？
+**A**：以检测中的resnet骨干网络为例，图像输入网络之后，需要经过5次2倍降采样，共32倍，因此建议输入的图像尺寸为32的倍数。
+
+#### Q2.1.7：类似泰语这样的小语种，部分字会占用两个字符甚至三个字符，请问如何制作字典。
+
+**A**：处理字符的时候，把多字符的当作一个字就行，字典中每行是一个字。
+
+<a name="数据集2"></a>
 ### 数据集
 
 #### Q2.2.1：支持空格的模型，标注数据的时候是不是要标注空格？中间几个空格都要标注出来么？
@@ -146,6 +186,19 @@
 
 **A**：可以根据实际场景做不同的尝试，共享一个类别是可以收敛，效果也还不错。但是如果分开训练，同类样本之间一致性更好，更容易收敛，识别效果会更优。
 
+#### Q2.2.5： 文本行较紧密的情况下如何准确检测？
+
+**A**：使用基于分割的方法，如DB，检测密集文本行时，最好收集一批数据进行训练，并且在训练时，并将生成二值图像的shrink_ratio参数调小一些。
+
+#### Q2.2.6: 当训练数据量少时，如何获取更多的数据？
+
+**A**: 当训练数据量少时，可以尝试以下三种方式获取更多的数据：（1）人工采集更多的训练数据，最直接也是最有效的方式。（2）基于PIL和opencv基本图像处理或者变换。例如PIL中ImageFont, Image, ImageDraw三个模块将文字写到背景中，opencv的旋转仿射变换，高斯滤波等。（3）利用数据生成算法合成数据，例如pix2pix等算法。
+
+#### Q2.2.7: 论文《Editing Text in the Wild》中文本合成方法SRNet有什么特点？
+
+**A**: SRNet是借鉴GAN中图像到图像转换、风格迁移的想法合成文本数据。不同于通用GAN的方法只选择一个分支，SRNet将文本合成任务分解为三个简单的子模块，提升合成数据的效果。这三个子模块为不带背景的文本风格迁移模块、背景抽取模块和融合模块。PaddleOCR计划将在2020年12月中旬开源基于SRNet的实用模型。
+
+<a name="模型训练调优2"></a>
 ### 模型训练调优
 
 #### Q2.3.1：如何更换文本检测/识别的backbone？
@@ -179,6 +232,15 @@
 
 **A**：在中文识别模型训练时，并不是采用直接将训练样本缩放到[3,32,320]进行训练，而是先等比例缩放图像，保证图像高度为32，宽度不足320的部分补0，宽高比大于10的样本直接丢弃。预测时，如果是单张图像预测，则按上述操作直接对图像缩放，不做宽度320的限制。如果是多张图预测，则采用batch方式预测，每个batch的宽度动态变换，采用这个batch中最长宽度。
 
+#### Q2.3.7：识别训练时，训练集精度已经到达90了，但验证集精度一直在70，涨不上去怎么办？
+
+**A**：训练集精度90，测试集70多的话，应该是过拟合了，有两个可尝试的方法：
+
+（1）加入更多的增广方式或者调大增广prob的[概率](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/data/imaug/rec_img_aug.py#L341)，默认为0.4。
+
+（2）调大系统的[l2 dcay值](https://github.com/PaddlePaddle/PaddleOCR/blob/a501603d54ff5513fc4fc760319472e59da25424/configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml#L47)
+
+<a name="预测部署2"></a>
 ### 预测部署
 
 #### Q2.4.1：请问对于图片中的密集文字，有什么好的处理办法吗？
@@ -221,10 +283,16 @@
 
 **A**：表格目前学术界比较成熟的解决方案不多 ，可以尝试下分割的论文方案。
 
+#### Q2.4.9：弯曲文本有试过opencv的TPS进行弯曲校正吗？
+
+**A**：opencv的tps需要标出上下边界对应的点，这个点很难通过传统方法或者深度学习方法获取。PaddleOCR里StarNet网络中的tps模块实现了自动学点，自动校正，可以直接尝试这个。
+
+
 
 <a name="PaddleOCR实战问题"></a>
 ## 【实战篇】PaddleOCR实战问题
 
+<a name="使用咨询"></a>
 ### 使用咨询
 
 #### Q3.1.1：OSError： [WinError 126] 找不到指定的模块。mac pro python 3.4 shapely import 问题
@@ -261,7 +329,7 @@
 
 #### Q3.1.9：模型的解码部分有后处理？
 
-**A**：有的检测的后处理在ppocr/postprocess路径下，识别的后处理均在ppocr/utils/character.py文件内
+**A**：有的检测的后处理在ppocr/postprocess路径下
 
 #### Q3.1.10：PaddleOCR中文模型是否支持数字识别？
 
@@ -269,15 +337,15 @@
 
 #### Q3.1.11：PaddleOCR如何做到横排和竖排同时支持的？
 
-**A**：合成了一批竖排文字，逆时针旋转90度后加入训练集与横排一起训练。预测时根据图片长款比判断是否为竖排，若为竖排则将crop出的文本逆时针旋转90度后送入识别网络。
+**A**：合成了一批竖排文字，逆时针旋转90度后加入训练集与横排一起训练。预测时根据图片长宽比判断是否为竖排，若为竖排则将crop出的文本逆时针旋转90度后送入识别网络。
 
 #### Q3.1.12：如何获取检测文本框的坐标？
 
-**A**：文本检测的结果有box和文本信息, 具体 [参考代码](https://github.com/PaddlePaddle/PaddleOCR/blob/9d33e36df550762b204d5fbfd7977a25e31b2c44/tools/infer/predict_system.py#L13)
+**A**：文本检测的结果有box和文本信息, 具体 [参考代码](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/tools/infer/predict_system.py)
 
 #### Q3.1.13：识别模型框出来的位置太紧凑，会丢失边缘的文字信息，导致识别错误
 
-**A**： 可以在命令中加入 --det_db_unclip_ratio ，参数[定义位置](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/tools/infer/utility.py#L49)，这个参数是检测后处理时控制文本框大小的，默认2.0，可以尝试改成2.5或者更大，反之，如果觉得文本框不够紧凑，也可以把该参数调小。
+**A**： 可以在命令中加入 --det_db_unclip_ratio ，参数[定义位置](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/tools/infer/utility.py#L48)，这个参数是检测后处理时控制文本框大小的，默认1.6，可以尝试改成2.5或者更大，反之，如果觉得文本框不够紧凑，也可以把该参数调小。
 
 #### Q3.1.14：英文手写体识别有计划提供的预训练模型吗?
 
@@ -305,7 +373,24 @@
 |8.6M超轻量中文OCR模型|MobileNetV3+MobileNetV3|det_mv3_db.yml|rec_chinese_lite_train.yml|
 |通用中文OCR模型|Resnet50_vd+Resnet34_vd|det_r50_vd_db.yml|rec_chinese_common_train.yml|
 
+#### ！！Q3.1.18：如何加入自己的检测算法？
+**A**：1. 在ppocr/modeling对应目录下分别选择backbone，head。如果没有可用的可以新建文件并添加
+       2. 在ppocr/data下选择对应的数据处理处理方式，如果没有可用的可以新建文件并添加
+              3. 在ppocr/losses下新建文件并编写loss
+              4. 在ppocr/postprocess下新建文件并编写后处理算法
+                     5. 将上面四个步骤里新添加的类或函数参照yml文件写到配置中
 
+
+#### ！！Q3.1.19：训练的时候报错`reader raised an exception`，但是具体不知道是啥问题？
+
+**A**：这个一般是因为标注文件格式有问题或者是标注文件中的图片路径有问题导致的，在[tools/train.py](../../tools/train.py)文件中有一个`test_reader`的函数，基于这个去检查一下数据的格式以及标注，确认没问题之后再进行模型训练。
+
+#### Q3.1.20：PaddleOCR与百度的其他OCR产品有什么区别？
+
+**A**：PaddleOCR主要聚焦通用ocr，如果有垂类需求，您可以用PaddleOCR+垂类数据自己训练；
+如果缺少带标注的数据，或者不想投入研发成本，建议直接调用开放的API，开放的API覆盖了目前比较常见的一些垂类。
+
+<a name="数据集3"></a>
 ### 数据集
 
 #### Q3.2.1：如何制作PaddleOCR支持的数据格式
@@ -359,6 +444,45 @@
 
 **A**：可以主要参考可视化效果，通用模型更倾向于检测一整行文字，轻量级可能会有一行文字被分成两段检测的情况，不是数量越多，效果就越好。
 
+
+#### Q3.2.10：crnn+ctc模型训练所用的垂直文本（旋转至水平方向）是如何生成的？
+
+**A**：方法与合成水平方向文字一致，只是将字体替换成了垂直字体。
+
+#### Q3.2.11：有哪些标注工具可以标注OCR数据集？
+
+**A**：您可以参考：https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/data_annotation_en.md。
+我们计划推出高效标注OCR数据的标注工具，请您持续关注PaddleOCR的近期更新。
+
+#### Q3.2.12：一些特殊场景的数据识别效果差，但是数据量很少，不够用来finetune怎么办？
+
+**A**：您可以合成一些接近使用场景的数据用于训练。
+我们计划推出基于特定场景的文本数据合成工具，请您持续关注PaddleOCR的近期更新。
+
+#### Q3.2.13：特殊字符（例如一些标点符号）识别效果不好怎么办？
+
+**A**：首先请您确认要识别的特殊字符是否在字典中。
+如果字符在已经字典中但效果依然不好，可能是由于识别数据较少导致的，您可以增加相应数据finetune模型。
+
+#### Q3.2.14：PaddleOCR可以识别灰度图吗？
+
+**A**：PaddleOCR的模型均为三通道输入。如果您想使用灰度图作为输入，建议直接用3通道的模式读入灰度图，
+或者将单通道图像转换为三通道图像再识别。例如，opencv的cvtColor函数就可以将灰度图转换为RGB三通道模式。
+
+#### Q3.2.15: 文本标注工具PPOCRLabel有什么特色？
+
+**A**: PPOCRLabel是一个半自动文本标注工具，它使用基于PPOCR的中英文OCR模型，预先预测文本检测和识别结果，然后用户对上述结果进行校验和修正就行，大大提高用户的标注效率。同时导出的标注结果直接适配PPOCR训练所需要的数据格式，
+
+#### Q3.2.16: 文本标注工具PPOCRLabel，可以更换模型吗？
+
+**A**: PPOCRLabel中OCR部署方式采用的基于pip安装whl包快速推理，可以参考相关文档更换模型路径，进行特定任务的标注适配。基于pip安装whl包快速推理的文档如下，https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/whl.md。
+
+#### Q3.2.17: 文本标注工具PPOCRLabel支持的运行环境有哪些？
+
+**A**: PPOCRLabel可运行于Linux、Windows、MacOS等多种系统。操作步骤可以参考文档，https://github.com/PaddlePaddle/PaddleOCR/blob/develop/PPOCRLabel/README.md
+
+<a name="模型训练调优3"></a>
+
 ### 模型训练调优
 
 #### Q3.3.1：文本长度超过25，应该怎么处理？
@@ -368,12 +492,12 @@
 #### Q3.3.2：配置文件里面检测的阈值设置么?
 
 **A**：有的，检测相关的参数主要有以下几个：
-``max_side_len：预测时图像resize的长边尺寸
-thresh: 用于二值化输出图的阈值
-box_thresh:用于过滤文本框的阈值，低于此阈值的文本框不要
-unclip_ratio: 文本框扩张的系数，关系到文本框的大小``
+``det_limit_side_len：预测时图像resize的长边尺寸
+det_db_thresh: 用于二值化输出图的阈值
+det_db_box_thresh:用于过滤文本框的阈值，低于此阈值的文本框不要
+det_db_unclip_ratio: 文本框扩张的系数，关系到文本框的大小``
 
-这些参数的默认值见[代码](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/tools/infer/utility.py#L40)，可以通过从命令行传递参数进行修改。
+这些参数的默认值见[代码](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/tools/infer/utility.py#L42)，可以通过从命令行传递参数进行修改。
 
 #### Q3.3.3：我想请教一下，你们在训练识别时候，lsvt里的非矩形框文字，你们是怎么做处理的呢。忽略掉还是去最小旋转框？
 
@@ -383,50 +507,103 @@ unclip_ratio: 文本框扩张的系数，关系到文本框的大小``
 
 **A**：可以通过下面的脚本终止所有包含train.py字段的进程，
 
-```
+```shell
 ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 ```
 
-#### Q3.3.5：读数据进程数设置4~8时训练一会进程接连defunct后gpu利用率一直为0卡死
 
-**A**：修改多进程的队列数后解决， 将[代码段]( https://github.com/PaddlePaddle/PaddleOCR/blob/549108fe0aa0d87c0a3b2d471f1c653e89daab80/ppocr/data/reader_main.py#L75 )  修改为：
-
-```
-return paddle.reader.multiprocess_reader(readers, False, queue_size=320)
-
-```
-
-#### Q3.3.6：可不可以将pretrain_weights设置为空呢？想从零开始训练一个model
+#### Q3.3.5：可不可以将pretrain_weights设置为空呢？想从零开始训练一个model
 
 **A**：这个是可以的，在训练通用识别模型的时候，pretrain_weights就设置为空，但是这样可能需要更长的迭代轮数才能达到相同的精度。
 
-#### Q3.3.7：PaddleOCR默认不是200个step保存一次模型吗？为啥文件夹下面都没有生成
+#### Q3.3.6：PaddleOCR默认不是200个step保存一次模型吗？为啥文件夹下面都没有生成
 
 **A**：因为默认保存的起始点不是0，而是4000，将eval_batch_step [4000, 5000]改为[0, 2000] 就是从第0次迭代开始，每2000迭代保存一次模型
 
-#### Q3.3.8：如何进行模型微调？
+#### Q3.3.7：如何进行模型微调？
 
 **A**：注意配置好合适的数据集，对齐数据格式，然后在finetune训练时，可以加载我们提供的预训练模型，设置配置文件中Global.pretrain_weights 参数为要加载的预训练模型路径。
 
-#### Q3.3.9：文本检测换成自己的数据没法训练，有一些”###”是什么意思？
+#### Q3.3.8：文本检测换成自己的数据没法训练，有一些”###”是什么意思？
 
 **A**：数据格式有问题，”###” 表示要被忽略的文本区域，所以你的数据都被跳过了，可以换成其他任意字符或者就写个空的。
 
-#### Q3.3.10：copy_from_cpu这个地方，这块input不变(t_data的size不变)连续调用两次copy_from_cpu()时，这里面的gpu_place会重新malloc GPU内存吗？还是只有当ele_size变化时才会重新在GPU上malloc呢？
+#### Q3.3.9：copy_from_cpu这个地方，这块input不变(t_data的size不变)连续调用两次copy_from_cpu()时，这里面的gpu_place会重新malloc GPU内存吗？还是只有当ele_size变化时才会重新在GPU上malloc呢？
 
 **A**：小于等于的时候都不会重新分配，只有大于的时候才会重新分配
 
-#### Q3.3.11：自己训练出来的未inference转换的模型 可以当作预训练模型吗？
+#### Q3.3.10：自己训练出来的未inference转换的模型 可以当作预训练模型吗？
 
 **A**：可以的，但是如果训练数据量少的话，可能会过拟合到少量数据上，泛化性能不佳。
 
-#### Q3.3.12：使用带TPS的识别模型预测报错
+#### Q3.3.11：使用带TPS的识别模型预测报错
 
-**A**：直接更换配置文件里的Backbone.function即可，格式为：网络文件路径,网络Class名词。如果所需的backbone在PaddleOCR里没有提供，可以参照PaddleClas里面的网络结构，进行修改尝试。具体修改原则可以参考OCR通用问题中 "如何更换文本检测/识别的backbone" 的回答。
+**A**：TPS模块暂时不支持导出，后续更新。
 
-#### Q3.3.13：如何更换文本检测/识别的backbone？报错信息：``Input(X) dims[3] and Input(Grid) dims[2] should be equal, but received X dimension[3](320) != Grid dimension[2](100)  ``
+#### Q3.3.12：如何更换文本检测/识别的backbone？报错信息：``Input(X) dims[3] and Input(Grid) dims[2] should be equal, but received X dimension[3](320) != Grid dimension[2](100)  ``
 
-**A**：TPS模块暂时无法支持变长的输入，请设置 ``--rec_image_shape='3,32,100' --rec_char_type='en' 固定输入shape``
+**A**：直接更换配置文件里的Backbone.name即可，格式为：网络文件路径,网络Class名词。如果所需的backbone在PaddleOCR里没有提供，可以参照PaddleClas里面的网络结构，进行修改尝试。具体修改原则可以参考OCR通用问题中 "如何更换文本检测/识别的backbone" 的回答。
+
+#### Q3.3.13： 训练中使用的字典需要与加载的预训练模型使用的字典一样吗？
+
+**A**：分情况，1. 不改变识别字符，训练的字典与你使用该模型进行预测的字典需要保持一致的。
+             2. 改变识别的字符，这种情况可以不一样，最后一层会重新训练
+
+#### Q3.3.14: 如何对检测模型finetune，比如冻结前面的层或某些层使用小的学习率学习？
+
+**A**：
+
+**A**：如果是冻结某些层，可以将变量的stop_gradient属性设置为True，这样计算这个变量之前的所有参数都不会更新了，参考：https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/faq/train_cn.html#id4
+
+如果对某些层使用更小的学习率学习，静态图里还不是很方便，一个方法是在参数初始化的时候，给权重的属性设置固定的学习率，参考：https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/api/paddle/fluid/param_attr/ParamAttr_cn.html#paramattr
+
+实际上我们实验发现，直接加载模型去fine-tune，不设置某些层不同学习率，效果也都不错
+
+#### Q3.3.15: 使用通用中文模型作为预训练模型，更改了字典文件，出现ctc_fc_b not used的错误
+
+**A**：修改了字典之后，识别模型的最后一层FC纬度发生了改变，没有办法加载参数。这里是一个警告，可以忽略，正常训练即可。
+
+#### Q3.3.16:  cpp_infer 在Windows下使用vs2015编译不通过
+
+**A**：1. windows上建议使用VS2019工具编译，具体编译细节参考[链接](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/cpp_infer/docs/windows_vs2019_build.md)
+
+**A**：2. 在release模式下而不是debug模式下编译，参考[issue](https://github.com/PaddlePaddle/PaddleOCR/issues/1023)
+
+#### Q3.3.17:  No module named 'tools.infer'
+
+**A**：1. 确保在PaddleOCR/目录下执行的指令，执行'export PYTHONPATH=.'
+
+**A**：2. 拉取github上最新代码，这个问题在10月底已修复。
+
+#### Q3.3.18:  训练模型和测试模型的检测结果差距较大
+
+**A**：1. 检查两个模型使用的后处理参数是否是一样的，训练的后处理参数在配置文件中的PostProcess部分，测试模型的后处理参数在tools/infer/utility.py中，最新代码中两个后处理参数已保持一致。
+
+
+#### Q3.3.19: 使用合成数据精调小模型后，效果可以，但是还没开源的小infer模型效果好，这是为什么呢？
+
+**A**：
+
+（1）要保证使用的配置文件和pretrain weights是对应的；
+
+（2）在微调时，一般都需要真实数据，如果使用合成数据，效果反而可能会有下降，PaddleOCR中放出的识别inference模型也是基于预训练模型在真实数据上微调得到的，效果提升比较明显；
+
+（3）在训练的时候，文本长度超过25的训练图像都会被丢弃，因此需要看下真正参与训练的图像有多少，太少的话也容易过拟合。
+
+#### Q3.3.20: 文字检测时怎么模糊的数据增强？
+
+**A**: 模糊的数据增强需要修改代码进行添加，以DB为例，参考[Normalize](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/data/imaug/operators.py#L60) ,添加模糊的增强就行 
+
+#### Q3.3.21: 文字检测时怎么更改图片旋转的角度，实现360度任意旋转？
+
+**A**: 将[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/data/imaug/iaa_augment.py#L64) 的(-10,10) 改为(-180,180)即可 
+
+#### Q3.3.22: 训练数据的长宽比过大怎么修改shape
+
+**A**: 识别修改[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yaml#L75) ,
+检测修改[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml#L85)
+
+<a name="预测部署3"></a>
 
 ### 预测部署
 
@@ -481,15 +658,56 @@ return paddle.reader.multiprocess_reader(readers, False, queue_size=320)
 #### Q3.4.11：libopenblas.so找不到是什么意思？
 
 **A**：目前包括mkl和openblas两种版本的预测库，推荐使用mkl的预测库，如果下载的预测库是mkl的，编译的时候也需要勾选`with_mkl`选项
-，以Linux下编译为例，需要在设置这里为ON，`-DWITH_MKL=ON`，[参考链接](https://github.com/PaddlePaddle/PaddleOCR/blob/8a78af26df0dd8f15b734cc8db13e25d2a3656a2/deploy/cpp_infer/tools/build.sh#L12)。此外，使用预测库时，推荐在Linux或者Windows上进行开发，不推荐在MacOS上开发。
+，以Linux下编译为例，需要在设置这里为ON，`-DWITH_MKL=ON`，[参考链接](https://github.com/PaddlePaddle/PaddleOCR/blob/569deedc41c2fa5e126a4d14b6c0c46a6bca43b8/deploy/cpp_infer/tools/build.sh#L12) 。此外，使用预测库时，推荐在Linux或者Windows上进行开发，不推荐在MacOS上开发。
 
 #### Q3.4.12：使用自定义字典训练，inference时如何修改
 
-**A**：使用了自定义字典的话，用inference预测时，需要通过 --rec_char_dict_path 修改字典路径。详细操作可参考[文档](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/inference.md#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E5%AD%97%E5%85%B8%E7%9A%84%E6%8E%A8%E7%90%86)
+**A**：使用了自定义字典的话，用inference预测时，需要通过 --rec_char_dict_path 修改字典路径。详细操作可参考[文档](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/inference.md#4-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E5%AD%97%E5%85%B8%E7%9A%84%E6%8E%A8%E7%90%86)
 
 #### Q3.4.13：能否返回单字字符的位置？
 
 **A**：训练的时候标注是整个文本行的标注，所以预测的也是文本行位置，如果要获取单字符位置信息，可以根据预测的文本，计算字符数量，再去根据整个文本行的位置信息，估计文本块中每个字符的位置。
 
 #### Q3.4.14：PaddleOCR模型部署方式有哪几种？
+
 **A**：目前有Inference部署，serving部署和手机端Paddle Lite部署，可根据不同场景做灵活的选择：Inference部署适用于本地离线部署，serving部署适用于云端部署，Paddle Lite部署适用于手机端集成。
+
+#### Q3.4.15： hubserving、pdserving这两种部署方式区别是什么？
+
+**A**：hubserving原本是paddlehub的配套服务部署工具，可以很方便的将paddlehub内置的模型部署为服务，paddleocr使用了这个功能，并将模型路径等参数暴露出来方便用户自定义修改。paddle serving是面向所有paddle模型的部署工具，文档中可以看到我们提供了快速版和标准版，其中快速版和hubserving的本质是一样的，而标准版基于rpc，更稳定，更适合分布式部署。
+
+#### Q3.4.16： hub serving部署服务时如何多gpu同时利用起来，export CUDA_VISIBLE_DEVICES=0,1 方式吗？
+
+**A**：hubserving的部署方式目前暂不支持多卡预测，除非手动启动多个serving，不同端口对应不同卡。或者可以使用paddleserving进行部署，部署工具已经发布：https://github.com/PaddlePaddle/PaddleOCR/tree/develop/deploy/pdserving ，在启动服务时--gpu_id 0,1 这样就可以
+
+#### Q3.4.17： 预测内存泄漏问题
+
+**A**：1. 使用hubserving出现内存泄漏，该问题为已知问题，预计在paddle2.0正式版中解决。相关讨论见[issue](https://github.com/PaddlePaddle/PaddleHub/issues/682)
+
+**A**：2. C++ 预测出现内存泄漏，该问题已经在paddle2.0rc版本中解决，建议安装paddle2.0rc版本，并更新PaddleOCR代码到最新。
+
+#### Q3.4.18：对于一些尺寸较大的文档类图片，在检测时会有较多的漏检，怎么避免这种漏检的问题呢？
+
+**A**：PaddleOCR中在图像最长边大于960时，将图像等比例缩放为长边960的图像再进行预测，对于这种图像，可以通过修改det_limit_side_len，增大检测的最长边：[tools/infer/utility.py#L42](../../tools/infer/utility.py#L42)
+
+#### Q3.4.19：在使用训练好的识别模型进行预测的时候，发现有很多重复的字，这个怎么解决呢？
+
+**A**：可以看下训练的尺度和预测的尺度是否相同，如果训练的尺度为`[3, 32, 320]`，预测的尺度为`[3, 64, 640]`，则会有比较多的重复识别现象。
+
+#### Q3.4.20：文档场景中，使用DB模型会出现整行漏检的情况应该怎么解决？
+
+**A**：可以在预测时调小 det_db_box_thresh 阈值，默认为0.5, 可调小至0.3观察效果。
+
+#### Q3.4.21：自己训练的det模型，在同一张图片上，inference模型与eval模型结果差别很大，为什么？
+
+**A**：这是由于图片预处理不同造成的。如果训练的det模型图片输入并不是默认的shape[600, 600]，eval的程序中图片预处理方式与train时一致
+（由xxx_reader.yml中的test_image_shape参数决定缩放大小，但predict_eval.py中的图片预处理方式由程序里的preprocess_params决定，
+最好不要传入max_side_len，而是传入和训练时一样大小的test_image_shape。
+
+#### Q3.4.22：训练ccpd车牌数据集，训练集准确率高，测试均是错误的，这是什么原因？
+
+**A**：这是因为训练时将shape修改为[3, 70, 220], 预测时对图片resize，会把高度压缩至32，影响测试结果。注释掉[resize代码](https://github.com/PaddlePaddle/PaddleOCR/blob/569deedc41c2fa5e126a4d14b6c0c46a6bca43b8/tools/infer/predict_rec.py#L56-L57) 可以解决问题。
+
+#### Q3.4.23：安装paddleocr后，提示没有paddle
+
+**A**：这是因为paddlepaddle gpu版本和cpu版本的名称不一致，现在已经在[whl的文档](./whl.md)里做了安装说明。
