@@ -5,15 +5,16 @@
 ## ch_ppocr_mobile_2.0
 
 <div align="center">
-    <img src="../imgs_results/ch_ppocr_mobile_v2.0/00093030.jpg" width="800">
+    <img src="../imgs_results/ch_ppocr_mobile_v2.0/00006737.jpg" width="800">
+    <img src="../imgs_results/ch_ppocr_mobile_v2.0/00009282.jpg" width="800">
+    <img src="../imgs_results/ch_ppocr_mobile_v2.0/00015504.jpg" width="800">
+    <img src="../imgs_results/ch_ppocr_mobile_v2.0/00018069.jpg" width="800">
+    <img src="../imgs_results/ch_ppocr_mobile_v2.0/00056221.jpg" width="800">
+    <img src="../imgs_results/ch_ppocr_mobile_v2.0/00057937.jpg" width="800">
+    <img src="../imgs_results/ch_ppocr_mobile_v2.0/00059985.jpg" width="800">
     <img src="../imgs_results/ch_ppocr_mobile_v2.0/00111002.jpg" width="800">
-    <img src="../imgs_results/ch_ppocr_mobile_v2.0/00164416.jpg" width="800">
-    <img src="../imgs_results/ch_ppocr_mobile_v2.0/test_add_182.jpg" width="800">
-    <img src="../imgs_results/ch_ppocr_mobile_v2.0/00001691.jpg" width="800">
-    <img src="../imgs_results/ch_ppocr_mobile_v2.0/00202426.jpg" width="800">
-    <img src="../imgs_results/ch_ppocr_mobile_v2.0/test_add_102.jpg" width="800">
-    <img src="../imgs_results/ch_ppocr_mobile_v2.0/00150949.jpg" width="800">
-    <img src="../imgs_results/ch_ppocr_mobile_v2.0/test_add_170.jpg" width="800">
+    <img src="../imgs_results/ch_ppocr_mobile_v2.0/00077949.jpg" width="800">
+    <img src="../imgs_results/ch_ppocr_mobile_v2.0/00207393.jpg" width="800">
 </div>
 
 
