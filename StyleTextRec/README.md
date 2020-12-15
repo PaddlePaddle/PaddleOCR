@@ -7,7 +7,7 @@ The following figure shows some example results. In addition, the actual `namepl
 
 #### Preparation
 
-1. Please refer the [QUICK INSTALLATION](./installation_en.md) to install PaddlePaddle. Python3 environment is strongly recommended.
+1. Please refer the [QUICK INSTALLATION](../doc/doc_en/installation_en.md) to install PaddlePaddle. Python3 environment is strongly recommended.
 2. Download the pretrained models and unzip:
 
 ```bash

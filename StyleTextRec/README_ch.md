@@ -9,21 +9,21 @@
 
 ### 工具简介
 <div align="center">
-    <img src="../imgs_style_text/3.png" width="800">
+    <img src="doc/images/3.png" width="800">
 </div>
 
 Style-Text是对百度自研文本编辑算法《Editing Text in the Wild》中提出的SRNet网络的改进，不同于常用的GAN的方法只选择一个分支，该工具将文本合成任务分解为三个子模块，文本风格迁移模块、背景抽取模块和前背景融合模块，来提升合成数据的效果。下图显示了一些示例结果。
 
 <div align="center">
-    <img src="../imgs_style_text/1.png" width="800">
-    <img src="../imgs_style_text/2.png" width="800">
+    <img src="doc/images/1.png" width="800">
+    <img src="doc/images/2.png" width="800">
 </div>
 
 此外，在实际铭牌文本识别场景和韩语文本识别场景，验证了该合成工具的有效性。
 
 ### 环境配置
 
-1. 参考[快速安装](./installation.md)，安装PaddleOCR。强烈建议您使用python3环境。
+1. 参考[快速安装](../doc/doc_ch/installation.md)，安装PaddleOCR。强烈建议您使用python3环境。
 2. 进入`style_text_rec`目录，下载模型，并解压：
 
 ```bash
@@ -55,7 +55,7 @@ python3 -m tools.synth_image -c configs/config.yml
 
 1. 运行后，会生成`fake_busion.jpg`，即为最终结果。
 <div align="center">
-    <img src="../imgs_style_text/4.jpg" width="300">
+    <img src="doc/images/4.jpg" width="300">
 </div>
 除此之外，程序还会生成并保存中间结果：
    * `fake_bg.jpg`：为风格参考图去掉文字后的背景；
