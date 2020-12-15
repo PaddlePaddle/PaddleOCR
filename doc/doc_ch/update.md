@@ -1,7 +1,10 @@
 # 更新
+- 2020.12.15 更新数据合成工具[Style-Text](../../StyleText/README_ch.md)，可以批量合成大量与目标场景类似的图像，在多个场景验证，效果明显提升。
+- 2020.12.07 [FAQ](../../doc/doc_ch/FAQ.md)新增5个高频问题，总数124个，并且计划以后每周一都会更新，欢迎大家持续关注。
+- 2020.11.25 更新半自动标注工具[PPOCRLabel](../../PPOCRLabel/README_ch.md)，辅助开发者高效完成标注任务，输出格式与PP-OCR训练任务完美衔接。
 - 2020.9.22 更新PP-OCR技术文章，https://arxiv.org/abs/2009.09941
-- 2020.9.19 更新超轻量压缩ppocr_mobile_slim系列模型，整体模型3.5M(详见[PP-OCR Pipline](../../README_ch.md#PP-OCR))，适合在移动端部署使用。[模型下载](../../README_ch.md#模型下载)
-- 2020.9.17 更新超轻量ppocr_mobile系列和通用ppocr_server系列中英文ocr模型，媲美商业效果。[模型下载](../../README_ch.md#模型下载)
+- 2020.9.19 更新超轻量压缩ppocr_mobile_slim系列模型，整体模型3.5M(详见PP-OCR Pipline)，适合在移动端部署使用。
+- 2020.9.17 更新超轻量ppocr_mobile系列和通用ppocr_server系列中英文ocr模型，媲美商业效果。
 - 2020.9.17 更新[英文识别模型](./models_list.md#english-recognition-model)和[多语种识别模型](./models_list.md#english-recognition-model)，已支持`德语、法语、日语、韩语`，更多语种识别模型将持续更新。
 - 2020.8.26 更新OCR相关的84个常见问题及解答，具体参考[FAQ](./FAQ.md)
 - 2020.8.24 支持通过whl包安装使用PaddleOCR，具体参考[Paddleocr Package使用说明](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/whl.md)

@@ -3,16 +3,15 @@ English | [简体中文](README_ch.md)
 ## Introduction
 PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools that help users train better models and apply them into practice.
 
+## Notice
+PaddleOCR supports both dynamic graph and static graph programming paradigm
+- Dynamic graph: dygraph branch (default)
+- Static graph: develop branch
+
 **Recent updates**
 - 2020.12.15 update Data synthesis tool, i.e., [Style-Text](./StyleText/README.md)，easy to synthesize a large number of images which are similar to the target scene image.
-- 2020.12.15 Release the branch of the release/2.0-rc1, support both the dynamic graph development (more convenient for training and debugging) and the static graph deployment (higher prediction efficiency).
 - 2020.11.25 Update a new data annotation tool, i.e., [PPOCRLabel](./PPOCRLabel/README.md), which is helpful to improve the labeling efficiency. Moreover, the labeling results can be used in training of the PP-OCR system directly.
 - 2020.9.22 Update the PP-OCR technical article, https://arxiv.org/abs/2009.09941
-- 2020.9.19 Update the ultra lightweight compressed ppocr_mobile_slim series models, the overall model size is 3.5M (see [PP-OCR Pipeline](#PP-OCR-Pipeline)), suitable for mobile deployment. [Model Downloads](#Supported-Chinese-model-list)
-- 2020.9.17 Update the ultra lightweight ppocr_mobile series and general ppocr_server series Chinese and English ocr models, which are comparable to commercial effects. [Model Downloads](#Supported-Chinese-model-list)
-- 2020.9.17 update [English recognition model](./doc/doc_en/models_list_en.md#english-recognition-model) and [Multilingual recognition model](doc/doc_en/models_list_en.md#english-recognition-model), `English`, `Chinese`, `German`, `French`, `Japanese` and `Korean` have been supported. Models for more languages will continue to be updated.
-- 2020.8.24 Support the use of PaddleOCR through whl package installation，please refer  [PaddleOCR Package](./doc/doc_en/whl_en.md)
-- 2020.8.21 Update the replay and PPT of the live lesson at Bilibili on August 18, lesson 2, easy to learn and use OCR tool spree. [Get Address](https://aistudio.baidu.com/aistudio/education/group/info/1519)
 - [more](./doc/doc_en/update_en.md)
 
 ## Features
@@ -21,7 +20,7 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
     - General ppocr_server series models: detection (47.1M) + direction classifier (1.4M) + recognition (94.9M) = 143.4M
     - Support Chinese, English, and digit recognition, vertical text recognition, and long text recognition
     - Support multi-language recognition: Korean, Japanese, German, French
-- rich toolkits related to the OCR areas
+- Rich toolkits related to the OCR areas
     - Semi-automatic data annotation tool, i.e., PPOCRLabel: support fast and efficient data annotation
     - Data synthesis tool, i.e., Style-Text: easy to synthesize a large number of images which are similar to the target scene image
 - Support user-defined training, provides rich predictive inference deployment solutions
