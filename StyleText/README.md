@@ -144,7 +144,7 @@ We take two scenes as examples, which are metal surface English number recogniti
 After adding the above synthetic data for training, the accuracy of the recognition model is improved, which is shown in the following table:
 
 | Scenario | Characters | Raw Data | Test Data | Only Use Raw Data</br>Recognition Accuracy | New Synthetic Data | Simultaneous Use of Synthetic Data</br>Recognition Accuracy | Index Improvement |
-| -------- | ---------- | -------- | -------- | ----------- --------------- | ------------ | --------------------- -| -------- |
+| -------- | ---------- | -------- | -------- | ----------- --------------- | ------------ | ---------------------| -------- |
 | Metal surface | English and numbers | 2203 | 650 | 0.5938 | 20000 | 0.7546 | 16% |
 | Random background | Korean | 5631 | 1230 | 0.3012 | 100000 | 0.5057 | 20% |
 
