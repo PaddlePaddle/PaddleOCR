@@ -180,7 +180,6 @@ class GridGenerator(nn.Layer):
         P = self.build_P_paddle(I_r_size)
 
         inv_delta_C_tensor = self.build_inv_delta_C_paddle(C).astype('float32')
-        # inv_delta_C_tensor = paddle.zeros((23,23)).astype('float32')
         P_hat_tensor = self.build_P_hat_paddle(
             C, paddle.to_tensor(P)).astype('float32')
 
