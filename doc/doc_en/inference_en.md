@@ -134,24 +134,33 @@ Because EAST and DB algorithms are very different, when inference, it is necessa
 For lightweight Chinese detection model inference, you can execute the following commands:
 
 ```
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/"
+# download DB text detection inference model
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar
+tar xf ch_ppocr_mobile_v2.0_det_infer.tar
+# predict
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/22.jpg" --det_model_dir="./inference/det_db/"
 ```
 
 The visual text detection results are saved to the ./inference_results folder by default, and the name of the result file is prefixed with'det_res'. Examples of results are as follows:
 
-![](../imgs_results/det_res_2.jpg)
+![](../imgs_results/det_res_22.jpg)
 
-The size of the image is limited by the parameters `limit_type` and `det_limit_side_len`, `limit_type=max` is to limit the length of the long side <`det_limit_side_len`, and `limit_type=min` is to limit the length of the short side>`det_limit_side_len`,
-When the picture does not meet the restriction conditions (for `limit_type=max`and  long side >`det_limit_side_len` or for `min` and short side <`det_limit_side_len`), the image will be scaled proportionally.
-This parameter is set to `limit_type='max', det_max_side_len=960` by default. If the resolution of the input picture is relatively large, and you want to use a larger resolution prediction, you can execute the following command:
+You can use the parameters `limit_type` and `det_limit_side_len` to limit the size of the input image,
+The optional parameters of `litmit_type` are [`max`, `min`], and
+`det_limit_size_len` is a positive integer, generally set to a multiple of 32, such as 960.
 
+The default setting of the parameters is `limit_type='max', det_limit_side_len=960`. Indicates that the longest side of the network input image cannot exceed 960,
+If this value is exceeded, the image will be resized with the same width ratio to ensure that the longest side is `det_limit_side_len`.
+Set as `limit_type='min', det_limit_side_len=960`, it means that the shortest side of the image is limited to 960.
+
+If the resolution of the input picture is relatively large and you want to use a larger resolution prediction, you can set det_limit_side_len to the desired value, such as 1216:
 ```
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --det_limit_type=max --det_limit_side_len=1200
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/22.jpg" --det_model_dir="./inference/det_db/" --det_limit_type=max --det_limit_side_len=1216
 ```
 
 If you want to use the CPU for prediction, execute the command as follows
 ```
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --use_gpu=False
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/22.jpg" --det_model_dir="./inference/det_db/" --use_gpu=False
 ```
 
 <a name="DB_DETECTION"></a>
