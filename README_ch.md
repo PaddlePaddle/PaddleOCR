@@ -2,18 +2,16 @@
 
 ## 简介
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力使用者训练出更好的模型，并应用落地。
+## 注意
+PaddleOCR同时支持动态图与静态图两种编程范式
+- 动态图版本：dygraph分支（默认）
+- 静态图版本：develop分支
 
 **近期更新**
 - 2020.12.15 更新数据合成工具[Style-Text](./StyleText/README_ch.md)，可以批量合成大量与目标场景类似的图像，在多个场景验证，效果明显提升。
-- 2020.12.15 发布release/2.0-rc1分支，支持动态图开发（训练调试更方便），静态图部署（预测效率更高）。
 - 2020.12.07 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，总数124个，并且计划以后每周一都会更新，欢迎大家持续关注。
 - 2020.11.25 更新半自动标注工具[PPOCRLabel](./PPOCRLabel/README_ch.md)，辅助开发者高效完成标注任务，输出格式与PP-OCR训练任务完美衔接。
 - 2020.9.22 更新PP-OCR技术文章，https://arxiv.org/abs/2009.09941
-- 2020.9.19 更新超轻量压缩ppocr_mobile_slim系列模型，整体模型3.5M(详见[PP-OCR Pipeline](#PP-OCR))，适合在移动端部署使用。[模型下载](#模型下载)
-- 2020.9.17 更新超轻量ppocr_mobile系列和通用ppocr_server系列中英文ocr模型，媲美商业效果。[模型下载](#模型下载)
-- 2020.9.17 更新[英文识别模型](./doc/doc_ch/models_list.md#英文识别模型)和[多语言识别模型](doc/doc_ch/models_list.md#多语言识别模型)，已支持`德语、法语、日语、韩语`，更多语种识别模型将持续更新。
-- 2020.8.24 支持通过whl包安装使用PaddleOCR，具体参考[Paddleocr Package使用说明](./doc/doc_ch/whl.md)
-- 2020.8.21 更新8月18日B站直播课回放和PPT，课节2，易学易用的OCR工具大礼包，[获取地址](https://aistudio.baidu.com/aistudio/education/group/info/1519)
 - [More](./doc/doc_ch/update.md)
 
 
@@ -51,7 +49,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 <img src="./doc/ocr-android-easyedge.png"  width = "200" height = "200" />
 </div>
 
-- 代码体验：从[快速安装](./doc/doc_ch/installation.md) 开始
+- 代码体验：从[快速安装](./doc/doc_ch/quickstart.md) 开始
 
 <a name="模型下载"></a>
 ## PP-OCR 2.0系列模型列表（更新中）
