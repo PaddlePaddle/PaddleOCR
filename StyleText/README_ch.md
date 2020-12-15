@@ -86,9 +86,9 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
 
 #### 批量合成
 在实际应用场景中，经常需要批量合成图片，补充到训练集中。StyleText可以使用一批风格图片和语料，批量合成数据。合成过程如下：
-首先，需要风格图片作为合成图片的参考依据，这些数据可以是用作训练OCR识别模型的数据集。本例中使用带有标注文件的数据集作为风格图片.
 
-1. 在`configs/dataset_config.yml`中配置输入数据路径。
+1. 在`configs/dataset_config.yml`中配置目标场景风格图像和语料的路径。
+
    * `StyleSampler`：
      * `method`：使用的风格图片采样方法；
      * `image_home`：风格图片目录；
@@ -99,10 +99,14 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
      * `language`：语料的语种；
      * `corpus_file`: 语料文件路径。
    
-   我们提供了一批中英韩5w通用数据供您试用 （[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/chkoen_5w.tar) ），下面给出了一些示例：
+   StyleText也提供了一批中英韩5万张通用场景数据用作文本风格图像，便于合成场景丰富的文本图像，下图给出了一些示例。
+   
+   [中英韩5万张通用场景数据下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/chkoen_5w.tar) 
+   
 <div align="center">
     <img src="doc/images/5.png" width="800">
 </div>
+
 2. 运行`tools/synth_dataset`合成数据：
 
    ``` bash
