@@ -153,7 +153,7 @@ After adding the above synthetic data for training, the accuracy of the recognit
 ### Code Structure
 
 ```
-style_text_rec
+StyleText
 |-- arch                        // Network module files.
 |   |-- base_module.py
 |   |-- decoder.py
