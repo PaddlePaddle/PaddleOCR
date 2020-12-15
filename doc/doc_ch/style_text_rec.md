@@ -9,7 +9,7 @@ Style-Text是对百度自研文本编辑算法《Editing Text in the Wild》中�
 
 #### 环境配置
 
-1. 参考[快速安装](./installation.md)，安装PaddlePaddle并准备环境。
+1. 参考[快速安装](./installation.md)，安装PaddlePaddle并准备环境。强烈建议您使用python3环境。
 2. 进入`style_text_rec`目录，下载模型，并解压：
 
 ```bash
