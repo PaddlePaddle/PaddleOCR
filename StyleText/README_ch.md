@@ -104,6 +104,15 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
      * `language`：语料的语种；
      * `corpus_file`: 语料文件路径。语料文件应使用文本文件。语料生成器首先会将语料按行切分，之后每次随机选取一行。
 
+   语料文件格式示例：
+   ```
+   PaddleOCR
+   飞桨文字识别
+   StyleText
+   风格文本图像数据合成
+   ...
+   ```
+
    Style-Text也提供了一批中英韩5万张通用场景数据用作文本风格图像，便于合成场景丰富的文本图像，下图给出了一些示例。
 
    中英韩5万张通用场景数据: [下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/chkoen_5w.tar)
