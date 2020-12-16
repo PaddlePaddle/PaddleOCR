@@ -5,7 +5,7 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
 
 ## Notice
 PaddleOCR supports both dynamic graph and static graph programming paradigm
-- Dynamic graph: dygraph branch (default)
+- Dynamic graph: dygraph branch (default), **only supported by paddle 2.0rc1+ ([installation](./doc/doc_en/installation_en.md))**
 - Static graph: develop branch
 
 **Recent updates**
