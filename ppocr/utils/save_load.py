@@ -102,7 +102,6 @@ def init_model(config, model, logger, optimizer=None, lr_scheduler=None):
             best_model_dict = states_dict.get('best_model_dict', {})
             if 'epoch' in states_dict:
                 best_model_dict['start_epoch'] = states_dict['epoch'] + 1
-            best_model_dict['start_epoch'] = best_model_dict['best_epoch'] + 1
 
         logger.info("resume from {}".format(checkpoints))
     elif pretrained_model:
