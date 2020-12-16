@@ -2,7 +2,7 @@ English | [简体中文](readme.md)
 
 PaddleOCR provides 2 service deployment methods:
 - Based on **PaddleHub Serving**: Code path is "`./deploy/hubserving`". Please follow this tutorial.
-- Based on **PaddleServing**: Code path is "`./deploy/pdserving`". Please refer to the [tutorial](../../deploy/pdserving/readme.md) for usage.
+- (coming soon)Based on **PaddleServing**: Code path is "`./deploy/pdserving`". Please refer to the [tutorial](../../deploy/pdserving/readme.md) for usage.
 
 # Service deployment based on PaddleHub Serving  
 
