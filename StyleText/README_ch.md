@@ -91,7 +91,7 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
    * `CorpusGenerator`：
      * `method`：语料生成方法，目前有`FileCorpus`和`EnNumCorpus`可选。如果使用`EnNumCorpus`，则不需要填写其他配置，否则需要修改`corpus_file`和`language`；
      * `language`：语料的语种；
-     * `corpus_file`: 语料文件路径。
+     * `corpus_file`: 语料文件路径。语料文件应使用文本文件。语料生成器首先会将语料按行切分，之后每次随机选取一行。
    
    我们提供了一批中英韩5w通用数据供您试用 （[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/chkoen_5w.tar) ），下面给出了一些示例：
 <div align="center">
