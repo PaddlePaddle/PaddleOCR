@@ -126,6 +126,19 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
    ``` bash
    python -m tools.synth_dataset -c configs/dataset_config.yml
    ```
+   我们在example提供了样例图片和语料在example中。
+    <div align="center">
+        <img src="examples/style_images/1.jpg" width="300">
+        <img src="examples/style_images/2.jpg" width="300">
+    </div>
+
+   直接运行上述命令，可以在output_data中产生样例输出，包括图片和用于训练识别模型的标注文件：
+   <div align="center">
+       <img src="doc/images/12.png" width="800">
+   </div>
+
+   其中label目录下的标注文件为程序运行过程中产生的缓存，如果程序在中途异常终止，可以使用缓存的标注文件。
+   如果程序正常运行完毕，则会在output_data下生成label.txt，为最终的标注结果。
 
 <a name="应用案例"></a>
 ### 四、应用案例
