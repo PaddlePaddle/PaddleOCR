@@ -60,7 +60,8 @@ Metric:
 Train:
   dataset:
     name: SimpleDataSet
-    label_file_path: [./train_data/art_latin_icdar_14pt/train_no_tt_test/train_label_json.txt, ./train_data/total_text_icdar_14pt/train_label_json.txt]
+    data_dir: ./train_data/
+    label_file_list: [./train_data/art_latin_icdar_14pt/train_no_tt_test/train_label_json.txt, ./train_data/total_text_icdar_14pt/train_label_json.txt]
     data_ratio_list: [0.5, 0.5]
     transforms:
       - DecodeImage: # load image
