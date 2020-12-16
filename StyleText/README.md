@@ -138,7 +138,7 @@ We provide a general dataset containing Chinese, English and Korean (50,000 imag
    ``` bash
    python -m tools.synth_dataset.py -c configs/dataset_config.yml
    ```
-We also provide example corpus and images in `example` folder. 
+We also provide example corpus and images in `examples` folder. 
     <div align="center">
         <img src="examples/style_images/1.jpg" width="300">
         <img src="examples/style_images/2.jpg" width="300">

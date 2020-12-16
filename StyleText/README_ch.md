@@ -126,7 +126,7 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
    ``` bash
    python -m tools.synth_dataset -c configs/dataset_config.yml
    ```
-   我们在example提供了样例图片和语料在example中。
+   我们在examples目录下提供了样例图片和语料。
     <div align="center">
         <img src="examples/style_images/1.jpg" width="300">
         <img src="examples/style_images/2.jpg" width="300">
