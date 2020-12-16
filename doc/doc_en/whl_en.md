@@ -172,7 +172,7 @@ paddleocr -h
 
 * detection classification and recognition
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --use_angle_cls true -cls true --lang en
+paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --use_angle_cls true --lang en
 ```
 
 Output will be a list, each item contains bounding box, text and recognition confidence
@@ -198,7 +198,7 @@ Output will be a list, each item contains bounding box, text and recognition con
 
 * classification and recognition
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --use_angle_cls true -cls true --det false --lang en
+paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --use_angle_cls true --det false --lang en
 ```
 
 Output will be a list, each item contains text and recognition confidence
@@ -221,7 +221,7 @@ Output will be a list, each item only contains bounding box
 
 * only recognition
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --det false --cls false --lang en
+paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --det false --lang en
 ```
 
 Output will be a list, each item contains text and recognition confidence
@@ -231,7 +231,7 @@ Output will be a list, each item contains text and recognition confidence
 
 * only classification
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --use_angle_cls true -cls true --det false --rec false
+paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --use_angle_cls true --det false --rec false
 ```
 
 Output will be a list, each item contains classification result and confidence
@@ -268,7 +268,7 @@ im_show.save('result.jpg')
 ### Use by command line
 
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_dir} --rec_model_dir {your_rec_model_dir} --rec_char_dict_path {your_rec_char_dict_path} --cls_model_dir {your_cls_model_dir} --use_angle_cls true --cls true
+paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_dir} --rec_model_dir {your_rec_model_dir} --rec_char_dict_path {your_rec_char_dict_path} --cls_model_dir {your_cls_model_dir} --use_angle_cls true
 ```
 
 ### Use web images or numpy array as input
