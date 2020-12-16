@@ -63,7 +63,7 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
 
 
 ## PP-OCR 2.0 series model list（Update on Dec 15）
-**Note:** Compared with models 1.0, which are trained with static graph programming paradigm, models 2.0 are the dynamic graph trained version and achieve close performance.
+**Note** : Compared with models 1.1, which are trained with static graph programming paradigm, models 2.0 are the dynamic graph trained version and achieve close performance.
 
 | Model introduction                                           | Model name                   | Recommended scene | Detection model                                              | Direction classifier                                         | Recognition model                                            |
 | ------------------------------------------------------------ | ---------------------------- | ----------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
