@@ -373,15 +373,15 @@
 |8.6M超轻量中文OCR模型|MobileNetV3+MobileNetV3|det_mv3_db.yml|rec_chinese_lite_train.yml|
 |通用中文OCR模型|Resnet50_vd+Resnet34_vd|det_r50_vd_db.yml|rec_chinese_common_train.yml|
 
-#### ！！Q3.1.18：如何加入自己的检测算法？
+#### Q3.1.18：如何加入自己的检测算法？
 **A**：1. 在ppocr/modeling对应目录下分别选择backbone，head。如果没有可用的可以新建文件并添加
        2. 在ppocr/data下选择对应的数据处理处理方式，如果没有可用的可以新建文件并添加
-              3. 在ppocr/losses下新建文件并编写loss
-              4. 在ppocr/postprocess下新建文件并编写后处理算法
-                     5. 将上面四个步骤里新添加的类或函数参照yml文件写到配置中
+       3. 在ppocr/losses下新建文件并编写loss
+       4. 在ppocr/postprocess下新建文件并编写后处理算法
+       5. 将上面四个步骤里新添加的类或函数参照yml文件写到配置中
 
 
-#### ！！Q3.1.19：训练的时候报错`reader raised an exception`，但是具体不知道是啥问题？
+#### Q3.1.19：训练的时候报错`reader raised an exception`，但是具体不知道是啥问题？
 
 **A**：这个一般是因为标注文件格式有问题或者是标注文件中的图片路径有问题导致的，在[tools/train.py](../../tools/train.py)文件中有一个`test_reader`的函数，基于这个去检查一下数据的格式以及标注，确认没问题之后再进行模型训练。
 
