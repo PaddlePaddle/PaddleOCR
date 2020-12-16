@@ -72,7 +72,10 @@ fusion_generator:
 python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_images/2.jpg --text_corpus PaddleOCR --language en
 ```
 
-* Note: The language options is correspond to the corpus. Currently, the tool only supports English, Simplified Chinese and Korean.
+* Note 1: The language options is correspond to the corpus. Currently, the tool only supports English, Simplified Chinese and Korean.
+* Note 2: Synth-Text is mainly used to generate images for OCR recognition models. 
+  So the height of style images should be around 32 pixels. Images in other sizes may behave poorly.
+
 
 For example, enter the following image and corpus `PaddleOCR`.
 
