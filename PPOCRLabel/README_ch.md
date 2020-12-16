@@ -88,14 +88,22 @@ python3 PPOCRLabel.py --lang ch
 
 ### 错误提示
 - 如果同时使用whl包安装了paddleocr，其优先级大于通过paddleocr.py调用PaddleOCR类，whl包未更新时会导致程序异常。
+  
 - PPOCRLabel**不支持对中文文件名**的图片进行自动标注。
+
 - 针对Linux用户：：如果您在打开软件过程中出现**objc[XXXXX]**开头的错误，证明您的opencv版本太高，建议安装4.2版本：
     ```
     pip install opencv-python==4.2.0.32
     ```
-- 如果出现''Missing string id '开头的错误，需要重新编译资源：
+    
+- 如果出现 ```Missing string id``` 开头的错误，需要重新编译资源：
     ```
     pyrcc5 -o libs/resources.py resources.qrc
+    ```
+    
+- 如果出现``` module 'cv2' has no attribute 'INTER_NEAREST'```错误，需要首先删除所有opencv相关包，然后重新安装headless版本的opencv
+    ```
+    pip install opencv-contrib-python-headless
     ```
 ### 参考资料
 
