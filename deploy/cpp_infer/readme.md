@@ -103,17 +103,17 @@ make inference_lib_dist
 更多编译参数选项可以参考Paddle C++预测库官网：[https://www.paddlepaddle.org.cn/documentation/docs/zh/advanced_guide/inference_deployment/inference/build_and_install_lib_cn.html](https://www.paddlepaddle.org.cn/documentation/docs/zh/advanced_guide/inference_deployment/inference/build_and_install_lib_cn.html)。
 
 
-* 编译完成之后，可以在`build/fluid_inference_install_dir/`文件下看到生成了以下文件及文件夹。
+* 编译完成之后，可以在`build/paddle_inference_install_dir/`文件下看到生成了以下文件及文件夹。
 
 ```
-build/fluid_inference_install_dir/
+build/paddle_inference_install_dir/
 |-- CMakeCache.txt
 |-- paddle
 |-- third_party
 |-- version.txt
 ```
 
-其中`paddle`就是之后进行C++预测时所需的Paddle库，`version.txt`中包含当前预测库的版本信息。
+其中`paddle`就是C++预测所需的Paddle库，`version.txt`中包含当前预测库的版本信息。
 
 #### 1.2.2 直接下载安装
 

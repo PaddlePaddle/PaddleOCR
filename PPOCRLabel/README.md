@@ -120,6 +120,11 @@ For some data that are difficult to recognize, the recognition results will not 
     ```
     pyrcc5 -o libs/resources.py resources.qrc
     ```
+- If you get an error ``` module 'cv2' has no attribute 'INTER_NEAREST'```, you need to delete all opencv related packages first, and then reinstall the headless version of opencv
+    ```
+    pip install opencv-contrib-python-headless
+    ```
+    
 ### Related
 
 1.[Tzutalin. LabelImg. Git code (2015)](https://github.com/tzutalin/labelImg)

@@ -11,10 +11,15 @@ max_side_len  960
 det_db_thresh  0.3
 det_db_box_thresh  0.5
 det_db_unclip_ratio  2.0
-det_model_dir  ./inference/det_db
+det_model_dir  ./inference/ch__ppocr_mobile_v2.0_det_infer/
+
+# cls config
+use_angle_cls 0
+cls_model_dir  ./inference/ch_ppocr_mobile_v2.0_cls_infer/
+cls_thresh  0.9
 
 # rec config
-rec_model_dir  ./inference/rec_crnn
+rec_model_dir  ./inference/ch_ppocr_mobile_v2.0_rec_infer/
 char_list_file ../../ppocr/utils/ppocr_keys_v1.txt
 
 # show the detection results

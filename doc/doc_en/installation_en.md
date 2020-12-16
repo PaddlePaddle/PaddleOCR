@@ -61,7 +61,7 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 **4. Install third-party libraries**
 ```
 cd PaddleOCR
-pip3 install -r requirments.txt
+pip3 install -r requirements.txt
 ```
 
 If you getting this error `OSError: [WinError 126] The specified module could not be found` when you install shapely on windows.

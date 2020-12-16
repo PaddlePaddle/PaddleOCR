@@ -9,44 +9,42 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2020.12.07）](#近期更新)
+* [近期更新（2020.12.14）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
 * [【理论篇】OCR通用30个问题](#OCR通用问题)
   * [基础知识7题](#基础知识)
   * [数据集7题](#数据集2)
   * [模型训练调优7题](#模型训练调优2)
   * [预测部署9题](#预测部署2)
-* [【实战篇】PaddleOCR实战84个问题](#PaddleOCR实战问题)
-  * [使用咨询20题](#使用咨询)
+* [【实战篇】PaddleOCR实战87个问题](#PaddleOCR实战问题)
+  * [使用咨询21题](#使用咨询)
   * [数据集17题](#数据集3)
-  * [模型训练调优24题](#模型训练调优3)
-  * [预测部署23题](#预测部署3)
+  * [模型训练调优25题](#模型训练调优3)
+  * [预测部署24题](#预测部署3)
 
 
 <a name="近期更新"></a>
-## 近期更新（2020.12.07）
+## 近期更新（2020.12.14）
 
-#### Q2.4.9：弯曲文本有试过opencv的TPS进行弯曲校正吗？
+#### Q3.1.21：PaddleOCR支持动态图吗？
 
-**A**：opencv的tps需要标出上下边界对应的点，这些点很难通过传统方法或者深度学习方法获取。PaddleOCR里StarNet网络中的tps模块实现了自动学点，自动校正，可以直接尝试这个。
+**A**：动态图版本正在紧锣密鼓开发中，将于2020年12月16日发布，敬请关注。
 
-#### Q3.3.20: 文字检测时怎么模糊的数据增强？
+#### Q3.3.23：检测模型训练或预测时出现elementwise_add报错
 
-**A**: 模糊的数据增强需要修改代码进行添加，以DB为例，参考[Normalize](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/data/imaug/operators.py#L60) ,添加模糊的增强就行 
+**A**：设置的输入尺寸必须是32的倍数，否则在网络多次下采样和上采样后，feature map会产生1个像素的diff，从而导致elementwise_add时报shape不匹配的错误。
 
-#### Q3.3.21: 文字检测时怎么更改图片旋转的角度，实现360度任意旋转？
+#### Q3.3.24: DB检测训练输入尺寸640，可以改大一些吗？
 
-**A**: 将[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/data/imaug/iaa_augment.py#L64) 的(-10,10) 改为(-180,180)即可 
+**A**: 不建议改大。检测模型训练输入尺寸是预处理中random crop后的尺寸，并非直接将原图进行resize，多数场景下这个尺寸并不小了，改大后可能反而并不合适，而且训练会变慢。另外，代码里可能有的地方参数按照预设输入尺寸适配的，改大后可能有隐藏风险。
 
-#### Q3.3.22: 训练数据的长宽比过大怎么修改shape
+#### Q3.3.25: 识别模型训练时，loss能正常下降，但acc一直为0
 
-**A**: 识别修改[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yaml#L75) ,
-检测修改[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml#L85)
+**A**: 识别模型训练初期acc为0是正常的，多训一段时间指标就上来了。
 
+#### Q3.4.24：DB模型能正确推理预测，但换成EAST或SAST模型时报错或结果不正确
 
-#### Q3.4.23：安装paddleocr后，提示没有paddle
-
-**A**：这是因为paddlepaddle gpu版本和cpu版本的名称不一致，现在已经在[whl的文档](./whl.md)里做了安装说明。
+**A**：使用EAST或SAST模型进行推理预测时，需要在命令中指定参数--det_algorithm="EAST" 或 --det_algorithm="SAST"，使用DB时不用指定是因为该参数默认值是"DB"：https://github.com/PaddlePaddle/PaddleOCR/blob/e7a708e9fdaf413ed7a14da8e4a7b4ac0b211e42/tools/infer/utility.py#L43
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -373,15 +371,15 @@
 |8.6M超轻量中文OCR模型|MobileNetV3+MobileNetV3|det_mv3_db.yml|rec_chinese_lite_train.yml|
 |通用中文OCR模型|Resnet50_vd+Resnet34_vd|det_r50_vd_db.yml|rec_chinese_common_train.yml|
 
-#### ！！Q3.1.18：如何加入自己的检测算法？
+#### Q3.1.18：如何加入自己的检测算法？
 **A**：1. 在ppocr/modeling对应目录下分别选择backbone，head。如果没有可用的可以新建文件并添加
        2. 在ppocr/data下选择对应的数据处理处理方式，如果没有可用的可以新建文件并添加
-              3. 在ppocr/losses下新建文件并编写loss
-              4. 在ppocr/postprocess下新建文件并编写后处理算法
-                     5. 将上面四个步骤里新添加的类或函数参照yml文件写到配置中
+       3. 在ppocr/losses下新建文件并编写loss
+       4. 在ppocr/postprocess下新建文件并编写后处理算法
+       5. 将上面四个步骤里新添加的类或函数参照yml文件写到配置中
 
 
-#### ！！Q3.1.19：训练的时候报错`reader raised an exception`，但是具体不知道是啥问题？
+#### Q3.1.19：训练的时候报错`reader raised an exception`，但是具体不知道是啥问题？
 
 **A**：这个一般是因为标注文件格式有问题或者是标注文件中的图片路径有问题导致的，在[tools/train.py](../../tools/train.py)文件中有一个`test_reader`的函数，基于这个去检查一下数据的格式以及标注，确认没问题之后再进行模型训练。
 
@@ -389,6 +387,10 @@
 
 **A**：PaddleOCR主要聚焦通用ocr，如果有垂类需求，您可以用PaddleOCR+垂类数据自己训练；
 如果缺少带标注的数据，或者不想投入研发成本，建议直接调用开放的API，开放的API覆盖了目前比较常见的一些垂类。
+
+#### Q3.1.21：PaddleOCR支持动态图吗？
+
+**A**：动态图版本正在紧锣密鼓开发中，将于2020年12月16日发布，敬请关注。
 
 <a name="数据集3"></a>
 ### 数据集
@@ -603,6 +605,18 @@ ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 **A**: 识别修改[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yaml#L75) ,
 检测修改[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml#L85)
 
+#### Q3.3.23：检测模型训练或预测时出现elementwise_add报错
+
+**A**：设置的输入尺寸必须是32的倍数，否则在网络多次下采样和上采样后，feature map会产生1个像素的diff，从而导致elementwise_add时报shape不匹配的错误。
+
+#### Q3.3.24: DB检测训练输入尺寸640，可以改大一些吗？
+
+**A**: 不建议改大。检测模型训练输入尺寸是预处理中random crop后的尺寸，并非直接将原图进行resize，多数场景下这个尺寸并不小了，改大后可能反而并不合适，而且训练会变慢。另外，代码里可能有的地方参数按照预设输入尺寸适配的，改大后可能有隐藏风险。
+
+#### Q3.3.25: 识别模型训练时，loss能正常下降，但acc一直为0
+
+**A**: 识别模型训练初期acc为0是正常的，多训一段时间指标就上来了。
+
 <a name="预测部署3"></a>
 
 ### 预测部署
@@ -711,3 +725,7 @@ ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 #### Q3.4.23：安装paddleocr后，提示没有paddle
 
 **A**：这是因为paddlepaddle gpu版本和cpu版本的名称不一致，现在已经在[whl的文档](./whl.md)里做了安装说明。
+
+#### Q3.4.24：DB模型能正确推理预测，但换成EAST或SAST模型时报错或结果不正确
+
+**A**：使用EAST或SAST模型进行推理预测时，需要在命令中指定参数--det_algorithm="EAST" 或 --det_algorithm="SAST"，使用DB时不用指定是因为该参数默认值是"DB"：https://github.com/PaddlePaddle/PaddleOCR/blob/e7a708e9fdaf413ed7a14da8e4a7b4ac0b211e42/tools/infer/utility.py#L43
