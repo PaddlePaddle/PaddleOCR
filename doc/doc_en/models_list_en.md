@@ -1,5 +1,5 @@
 ## OCR model list（V2.0, updated on 2020.12.12）
-**Note** : Compared with models 1.0, which are trained with static graph programming paradigm, models 2.0 are the dynamic graph trained version and achieve close performance.
+**Note** : Compared with [models 1.1](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/models_list_en.md), which are trained with static graph programming paradigm, models 2.0 are the dynamic graph trained version and achieve close performance.
 
 - [1. Text Detection Model](#Detection)
 - [2. Text Recognition Model](#Recognition)
