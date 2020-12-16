@@ -115,7 +115,7 @@ PaddleOCR
 │   │   │   ├── text_image_aug              // 文本识别的 tia 数据扩充
 │   │   │   │   ├── __init__.py
 │   │   │   │   ├── augment.py              // tia_distort,tia_stretch 和 tia_perspective 的代码
-│   │   │   │   ├── warp_mls.py 
+│   │   │   │   ├── warp_mls.py
 │   │   │   ├── __init__.py
 │   │   │   ├── east_process.py             // EAST 算法的数据处理步骤
 │   │   │   ├── make_border_map.py          // 生成边界图
@@ -167,7 +167,7 @@ PaddleOCR
 │   │   │   ├── det_east_head.py            // EAST 检测头
 │   │   │   ├── det_sast_head.py            // SAST 检测头
 │   │   │   ├── rec_ctc_head.py             // 识别 ctc
-│   │   │   ├── rec_att_head.py             // 识别 attention 
+│   │   │   ├── rec_att_head.py             // 识别 attention
 │   │   ├── transforms                      // 图像变换
 │   │   │   ├── __init__.py                 // 构造 transform 相关代码
 │   │   │   └── tps.py                      // TPS 变换
@@ -185,7 +185,7 @@ PaddleOCR
 │   │   └── sast_postprocess.py             // SAST 后处理
 │   └── utils                               // 工具
 │       ├── dict                            // 小语种字典
-│            ....                            
+│            ....  
 │       ├── ic15_dict.txt                   // 英文数字字典，区分大小写
 │       ├── ppocr_keys_v1.txt               // 中文字典，用于训练中文模型
 │       ├── logging.py                      // logger
@@ -207,10 +207,10 @@ PaddleOCR
 │   ├── program.py                          // 整体流程
 │   ├── test_hubserving.py
 │   └── train.py                            // 启动训练
-├── paddleocr.py 
+├── paddleocr.py
 ├── README_ch.md                            // 中文说明文档
 ├── README_en.md                            // 英文说明文档
 ├── README.md                               // 主页说明文档
-├── requirments.txt                         // 安装依赖
+├── requirements.txt                         // 安装依赖
 ├── setup.py                                // whl包打包脚本
 ├── train.sh                                // 启动训练脚本
