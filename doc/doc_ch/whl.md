@@ -6,7 +6,7 @@
 
 pip安装
 ```bash
-pip install paddleocr
+pip install "paddleocr>=2.0.1" # 推荐使用2.0.1+版本
 ```
 
 本地构建并安装

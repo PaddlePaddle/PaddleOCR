@@ -4,7 +4,7 @@
 ### install package
 install by pypi
 ```bash
-pip install paddleocr
+pip install "paddleocr>=2.0.1" # Recommend to use version 2.0.1+
 ```
 
 build own whl package and install
