@@ -123,6 +123,8 @@ Example of corpus file:
 ```
 PaddleOCR
 飞桨文字识别
+StyleText
+风格文本图像数据合成
 ```
 
 We provide a general dataset containing Chinese, English and Korean (50,000 images in all) for your trial ([download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/chkoen_5w.tar)), some examples are given below :
