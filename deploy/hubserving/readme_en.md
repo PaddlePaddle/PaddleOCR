@@ -2,7 +2,7 @@ English | [简体中文](readme.md)
 
 PaddleOCR provides 2 service deployment methods:
 - Based on **PaddleHub Serving**: Code path is "`./deploy/hubserving`". Please follow this tutorial.
-- Based on **PaddleServing**: Code path is "`./deploy/pdserving`". Please refer to the [tutorial](../../deploy/pdserving/readme.md) for usage.
+- (coming soon)Based on **PaddleServing**: Code path is "`./deploy/pdserving`". Please refer to the [tutorial](../../deploy/pdserving/readme.md) for usage.
 
 # Service deployment based on PaddleHub Serving  
 
@@ -34,11 +34,11 @@ pip3 install paddlehub --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 ### 2. Download inference model
-Before installing the service module, you need to prepare the inference model and put it in the correct path. By default, the ultra lightweight model of v1.1 is used, and the default model path is:  
+Before installing the service module, you need to prepare the inference model and put it in the correct path. By default, the ultra lightweight model of v2.0 is used, and the default model path is:  
 ```
-detection model: ./inference/ch_ppocr_mobile_v1.1_det_infer/
-recognition model: ./inference/ch_ppocr_mobile_v1.1_rec_infer/
-text direction classifier: ./inference/ch_ppocr_mobile_v1.1_cls_infer/
+detection model: ./inference/ch_ppocr_mobile_v2.0_det_infer/
+recognition model: ./inference/ch_ppocr_mobile_v2.0_rec_infer/
+text direction classifier: ./inference/ch_ppocr_mobile_v2.0_cls_infer/
 ```  
 
 **The model path can be found and modified in `params.py`.** More models provided by PaddleOCR can be obtained from the [model library](../../doc/doc_en/models_list_en.md). You can also use models trained by yourself.

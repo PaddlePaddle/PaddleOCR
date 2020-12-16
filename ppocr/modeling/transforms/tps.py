@@ -128,7 +128,7 @@ class LocalizationNetwork(nn.Layer):
         i = 0
         for block in self.block_list:
             x = block(x)
-        x = x.reshape([B, -1])
+        x = x.squeeze(axis=2).squeeze(axis=2)
         x = self.fc1(x)
 
         x = F.relu(x)
@@ -176,14 +176,14 @@ class GridGenerator(nn.Layer):
         Return:
             batch_P_prime: the grid for the grid_sampler
         """
-        C = self.build_C()
-        P = self.build_P(I_r_size)
-        inv_delta_C = self.build_inv_delta_C(C).astype('float32')
-        P_hat = self.build_P_hat(C, P).astype('float32')
+        C = self.build_C_paddle()
+        P = self.build_P_paddle(I_r_size)
 
-        inv_delta_C_tensor = paddle.to_tensor(inv_delta_C)
+        inv_delta_C_tensor = self.build_inv_delta_C_paddle(C).astype('float32')
+        P_hat_tensor = self.build_P_hat_paddle(
+            C, paddle.to_tensor(P)).astype('float32')
+
         inv_delta_C_tensor.stop_gradient = True
-        P_hat_tensor = paddle.to_tensor(P_hat)
         P_hat_tensor.stop_gradient = True
 
         batch_C_ex_part_tensor = self.get_expand_tensor(batch_C_prime)
@@ -196,71 +196,80 @@ class GridGenerator(nn.Layer):
         batch_P_prime = paddle.matmul(P_hat_tensor, batch_T)
         return batch_P_prime
 
-    def build_C(self):
+    def build_C_paddle(self):
         """ Return coordinates of fiducial points in I_r; C """
         F = self.F
-        ctrl_pts_x = np.linspace(-1.0, 1.0, int(F / 2))
-        ctrl_pts_y_top = -1 * np.ones(int(F / 2))
-        ctrl_pts_y_bottom = np.ones(int(F / 2))
-        ctrl_pts_top = np.stack([ctrl_pts_x, ctrl_pts_y_top], axis=1)
-        ctrl_pts_bottom = np.stack([ctrl_pts_x, ctrl_pts_y_bottom], axis=1)
-        C = np.concatenate([ctrl_pts_top, ctrl_pts_bottom], axis=0)
+        ctrl_pts_x = paddle.linspace(-1.0, 1.0, int(F / 2))
+        ctrl_pts_y_top = -1 * paddle.ones([int(F / 2)])
+        ctrl_pts_y_bottom = paddle.ones([int(F / 2)])
+        ctrl_pts_top = paddle.stack([ctrl_pts_x, ctrl_pts_y_top], axis=1)
+        ctrl_pts_bottom = paddle.stack([ctrl_pts_x, ctrl_pts_y_bottom], axis=1)
+        C = paddle.concat([ctrl_pts_top, ctrl_pts_bottom], axis=0)
         return C  # F x 2
 
-    def build_P(self, I_r_size):
-        I_r_width, I_r_height = I_r_size
-        I_r_grid_x = (np.arange(-I_r_width, I_r_width, 2) + 1.0) \
-                     / I_r_width  # self.I_r_width
-        I_r_grid_y = (np.arange(-I_r_height, I_r_height, 2) + 1.0) \
-                     / I_r_height  # self.I_r_height
+    def build_P_paddle(self, I_r_size):
+        I_r_height, I_r_width = I_r_size
+        I_r_grid_x = (
+            paddle.arange(-I_r_width, I_r_width, 2).astype('float32') + 1.0
+        ) / I_r_width  # self.I_r_width
+        I_r_grid_y = (
+            paddle.arange(-I_r_height, I_r_height, 2).astype('float32') + 1.0
+        ) / I_r_height  # self.I_r_height
         # P: self.I_r_width x self.I_r_height x 2
-        P = np.stack(np.meshgrid(I_r_grid_x, I_r_grid_y), axis=2)
+        P = paddle.stack(paddle.meshgrid(I_r_grid_x, I_r_grid_y), axis=2)
+        P = paddle.transpose(P, perm=[1, 0, 2])
         # n (= self.I_r_width x self.I_r_height) x 2
         return P.reshape([-1, 2])
 
-    def build_inv_delta_C(self, C):
+    def build_inv_delta_C_paddle(self, C):
         """ Return inv_delta_C which is needed to calculate T """
         F = self.F
-        hat_C = np.zeros((F, F), dtype=float)  # F x F
+        hat_C = paddle.zeros((F, F), dtype='float32')  # F x F
         for i in range(0, F):
             for j in range(i, F):
-                r = np.linalg.norm(C[i] - C[j])
-                hat_C[i, j] = r
-                hat_C[j, i] = r
-        np.fill_diagonal(hat_C, 1)
-        hat_C = (hat_C**2) * np.log(hat_C)
-        # print(C.shape, hat_C.shape)
-        delta_C = np.concatenate(  # F+3 x F+3
+                if i == j:
+                    hat_C[i, j] = 1
+                else:
+                    r = paddle.norm(C[i] - C[j])
+                    hat_C[i, j] = r
+                    hat_C[j, i] = r
+        hat_C = (hat_C**2) * paddle.log(hat_C)
+        delta_C = paddle.concat(  # F+3 x F+3
             [
-                np.concatenate(
-                    [np.ones((F, 1)), C, hat_C], axis=1),  # F x F+3
-                np.concatenate(
-                    [np.zeros((2, 3)), np.transpose(C)], axis=1),  # 2 x F+3
-                np.concatenate(
-                    [np.zeros((1, 3)), np.ones((1, F))], axis=1)  # 1 x F+3
+                paddle.concat(
+                    [paddle.ones((F, 1)), C, hat_C], axis=1),  # F x F+3
+                paddle.concat(
+                    [paddle.zeros((2, 3)), paddle.transpose(
+                        C, perm=[1, 0])],
+                    axis=1),  # 2 x F+3
+                paddle.concat(
+                    [paddle.zeros((1, 3)), paddle.ones((1, F))],
+                    axis=1)  # 1 x F+3
             ],
             axis=0)
-        inv_delta_C = np.linalg.inv(delta_C)
+        inv_delta_C = paddle.inverse(delta_C)
         return inv_delta_C  # F+3 x F+3
 
-    def build_P_hat(self, C, P):
+    def build_P_hat_paddle(self, C, P):
         F = self.F
         eps = self.eps
         n = P.shape[0]  # n (= self.I_r_width x self.I_r_height)
         # P_tile: n x 2 -> n x 1 x 2 -> n x F x 2
-        P_tile = np.tile(np.expand_dims(P, axis=1), (1, F, 1))
-        C_tile = np.expand_dims(C, axis=0)  # 1 x F x 2
+        P_tile = paddle.tile(paddle.unsqueeze(P, axis=1), (1, F, 1))
+        C_tile = paddle.unsqueeze(C, axis=0)  # 1 x F x 2
         P_diff = P_tile - C_tile  # n x F x 2
         # rbf_norm: n x F
-        rbf_norm = np.linalg.norm(P_diff, ord=2, axis=2, keepdims=False)
+        rbf_norm = paddle.norm(P_diff, p=2, axis=2, keepdim=False)
+
         # rbf: n x F
-        rbf = np.multiply(np.square(rbf_norm), np.log(rbf_norm + eps))
-        P_hat = np.concatenate([np.ones((n, 1)), P, rbf], axis=1)
+        rbf = paddle.multiply(
+            paddle.square(rbf_norm), paddle.log(rbf_norm + eps))
+        P_hat = paddle.concat([paddle.ones((n, 1)), P, rbf], axis=1)
         return P_hat  # n x F+3
 
     def get_expand_tensor(self, batch_C_prime):
-        B = batch_C_prime.shape[0]
-        batch_C_prime = batch_C_prime.reshape([B, -1])
+        B, H, C = batch_C_prime.shape
+        batch_C_prime = batch_C_prime.reshape([B, H * C])
         batch_C_ex_part_tensor = self.fc(batch_C_prime)
         batch_C_ex_part_tensor = batch_C_ex_part_tensor.reshape([-1, 3, 2])
         return batch_C_ex_part_tensor
@@ -277,10 +286,8 @@ class TPS(nn.Layer):
 
     def forward(self, image):
         image.stop_gradient = False
-        I_r_size = [image.shape[3], image.shape[2]]
-
         batch_C_prime = self.loc_net(image)
-        batch_P_prime = self.grid_generator(batch_C_prime, I_r_size)
+        batch_P_prime = self.grid_generator(batch_C_prime, image.shape[2:])
         batch_P_prime = batch_P_prime.reshape(
             [-1, image.shape[2], image.shape[3], 2])
         batch_I_r = F.grid_sample(x=image, grid=batch_P_prime)

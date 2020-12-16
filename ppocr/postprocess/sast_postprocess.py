@@ -24,7 +24,7 @@ sys.path.append(os.path.join(__dir__, '..'))
 
 import numpy as np
 from .locality_aware_nms import nms_locality
-# import lanms
+import paddle
 import cv2
 import time
 
@@ -276,14 +276,19 @@ class SASTPostProcess(object):
         border_list = outs_dict['f_border']
         tvo_list = outs_dict['f_tvo']
         tco_list = outs_dict['f_tco']
+        if isinstance(score_list, paddle.Tensor):
+            score_list = score_list.numpy()
+            border_list = border_list.numpy()
+            tvo_list = tvo_list.numpy()
+            tco_list = tco_list.numpy()
                     
         img_num = len(shape_list)
         poly_lists = []
         for ino in range(img_num):
-            p_score = score_list[ino].transpose((1,2,0)).numpy()
-            p_border = border_list[ino].transpose((1,2,0)).numpy()
-            p_tvo = tvo_list[ino].transpose((1,2,0)).numpy()
-            p_tco = tco_list[ino].transpose((1,2,0)).numpy()
+            p_score = score_list[ino].transpose((1,2,0))
+            p_border = border_list[ino].transpose((1,2,0))
+            p_tvo = tvo_list[ino].transpose((1,2,0))
+            p_tco = tco_list[ino].transpose((1,2,0))
             src_h, src_w, ratio_h, ratio_w = shape_list[ino]
 
             poly_list = self.detect_sast(p_score, p_tvo, p_border, p_tco, ratio_w, ratio_h, src_w, src_h, 

@@ -162,7 +162,7 @@ Start training:
 
 ```
 # GPU training Support single card and multi-card training, specify the card number through --gpus
-# Training icdar15 English data and saving the log as train_rec.log
+# Training icdar15 English data and The training log will be automatically saved as train.log under "{save_model_dir}"
 python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_icdar15_train.yml
 ```
 <a name="Data_Augmentation"></a>
@@ -193,11 +193,8 @@ If the evaluation set is large, the test will be time-consuming. It is recommend
 | rec_icdar15_train.yml |  CRNN |   Mobilenet_v3 large 0.5 |  None   |  BiLSTM |  ctc  |
 | rec_mv3_none_bilstm_ctc.yml |  CRNN |   Mobilenet_v3 large 0.5 |  None   |  BiLSTM |  ctc  |
 | rec_mv3_none_none_ctc.yml |  Rosetta |   Mobilenet_v3 large 0.5 |  None   |  None |  ctc  |
-| rec_mv3_tps_bilstm_ctc.yml |  STARNet |   Mobilenet_v3 large 0.5 |  tps   |  BiLSTM |  ctc  |
-| rec_mv3_tps_bilstm_attn.yml |  RARE |   Mobilenet_v3 large 0.5 |  tps   |  BiLSTM |  attention  |
 | rec_r34_vd_none_bilstm_ctc.yml |  CRNN |   Resnet34_vd |  None   |  BiLSTM |  ctc  |
 | rec_r34_vd_none_none_ctc.yml |  Rosetta |   Resnet34_vd |  None   |  None |  ctc  |
-| rec_r34_vd_tps_bilstm_ctc.yml | STARNet | Resnet34_vd | tps | BiLSTM | ctc |
 
 For training Chinese data, it is recommended to use
 [rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml). If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:
@@ -350,8 +347,7 @@ Get the prediction result of the input image:
 
 ```
 infer_img: doc/imgs_words/en/word_1.png
-     index: [19 24 18 23 29]
-     word : joint
+        result: ('joint', 0.9998967)
 ```
 
 The configuration file used for prediction must be consistent with the training. For example, you completed the training of the Chinese model with `python3 tools/train.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml`, you can use the following command to predict the Chinese model:
@@ -369,6 +365,5 @@ Get the prediction result of the input image:
 
 ```
 infer_img: doc/imgs_words/ch/word_1.jpg
-     index: [2092  177  312 2503]
-     word : 韩国小馆
+        result: ('韩国小馆', 0.997218)
 ```

@@ -76,8 +76,8 @@ tar -xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_model
 # 单机单卡训练 mv3_db 模型
 python3 tools/train.py -c configs/det/det_mv3_db.yml \
      -o Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained/
-# 单机多卡训练，通过 --select_gpus 参数设置使用的GPU ID；
-python3 -m paddle.distributed.launch --selected_gpus '0,1,2,3' tools/train.py -c configs/det/det_mv3_db.yml \
+# 单机多卡训练，通过 --gpus 参数设置使用的GPU ID；如果使用的paddle版本小于2.0rc1，请使用'--select_gpus'参数选择要使用的GPU
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/det_mv3_db.yml \
      -o Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained/
 ```
 
@@ -107,16 +107,12 @@ PaddleOCR计算三个OCR检测相关的指标，分别是：Precision、Recall�
 
 运行如下代码，根据配置文件`det_db_mv3.yml`中`save_res_path`指定的测试集检测结果文件，计算评估指标。
 
-评估时设置后处理参数`box_thresh=0.6`，`unclip_ratio=1.5`，使用不同数据集、不同模型训练，可调整这两个参数进行优化
-```shell
-python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="{path/to/weights}/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
-```
+评估时设置后处理参数`box_thresh=0.5`，`unclip_ratio=1.5`，使用不同数据集、不同模型训练，可调整这两个参数进行优化
 训练中模型参数默认保存在`Global.save_model_dir`目录下。在评估指标时，需要设置`Global.checkpoints`指向保存的参数文件。
-
-比如：
 ```shell
-python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="./output/det_db/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
+python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="{path/to/weights}/best_accuracy" PostProcess.box_thresh=0.5 PostProcess.unclip_ratio=1.5
 ```
+
 
 * 注：`box_thresh`、`unclip_ratio`是DB后处理所需要的参数，在评估EAST模型时不需要设置
 

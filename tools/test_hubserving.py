@@ -17,8 +17,9 @@ __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
 
-from ppocr.utils.utility import initial_logger
-logger = initial_logger()
+from ppocr.utils.logging import get_logger
+logger = get_logger()
+
 import cv2
 import numpy as np
 import time

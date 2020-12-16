@@ -7,7 +7,7 @@
     - [字典](#字典)  
     - [支持空格](#支持空格)
 
-- [二、启动训练](#文本检测模型推理)
+- [二、启动训练](#启动训练)
     - [1. 数据增强](#数据增强)
     - [2. 训练](#训练)
     - [3. 小语种](#小语种)
@@ -167,7 +167,7 @@ tar -xf rec_mv3_none_bilstm_ctc_v2.0_train.tar && rm -rf rec_mv3_none_bilstm_ctc
 
 ```
 # GPU训练 支持单卡，多卡训练，通过--gpus参数指定卡号
-# 训练icdar15英文数据 并将训练日志保存为 tain_rec.log
+# 训练icdar15英文数据 训练日志会自动保存为 "{save_model_dir}" 下的train.log
 python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_icdar15_train.yml
 ```
 <a name="数据增强"></a>
@@ -200,11 +200,8 @@ PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_t
 | rec_icdar15_train.yml |  CRNN |   Mobilenet_v3 large 0.5 |  None   |  BiLSTM |  ctc  |
 | rec_mv3_none_bilstm_ctc.yml |  CRNN |   Mobilenet_v3 large 0.5 |  None   |  BiLSTM |  ctc  |
 | rec_mv3_none_none_ctc.yml |  Rosetta |   Mobilenet_v3 large 0.5 |  None   |  None |  ctc  |
-| rec_mv3_tps_bilstm_ctc.yml |  STARNet |   Mobilenet_v3 large 0.5 |  tps   |  BiLSTM |  ctc  |
-| rec_mv3_tps_bilstm_attn.yml |  RARE |   Mobilenet_v3 large 0.5 |  tps   |  BiLSTM |  attention  |
 | rec_r34_vd_none_bilstm_ctc.yml |  CRNN |   Resnet34_vd |  None   |  BiLSTM |  ctc  |
 | rec_r34_vd_none_none_ctc.yml |  Rosetta |   Resnet34_vd |  None   |  None |  ctc  |
-| rec_r34_vd_tps_bilstm_ctc.yml | STARNet | Resnet34_vd | tps | BiLSTM | ctc |
 
 训练中文数据，推荐使用[rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：
 
@@ -356,8 +353,7 @@ python3 tools/infer_rec.py -c configs/rec/rec_icdar15_train.yml -o Global.checkp
 
 ```
 infer_img: doc/imgs_words/en/word_1.png
-     index: [19 24 18 23 29]
-     word : joint
+        result: ('joint', 0.9998967)
 ```
 
 预测使用的配置文件必须与训练一致，如您通过 `python3 tools/train.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml` 完成了中文模型的训练，
@@ -376,6 +372,5 @@ python3 tools/infer_rec.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v
 
 ```
 infer_img: doc/imgs_words/ch/word_1.jpg
-     index: [2092  177  312 2503]
-     word : 韩国小馆
+        result: ('韩国小馆', 0.997218)
 ```
