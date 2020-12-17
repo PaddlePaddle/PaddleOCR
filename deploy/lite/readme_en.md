@@ -13,6 +13,8 @@ deployment solutions for end-side deployment issues.
 - Computer (for Compiling Paddle Lite)
 - Mobile phone (arm7 or arm8)
 
+***Note: PaddleOCR lite deployment currently does not support dynamic graph models, only models saved with static graph. The static branch of PaddleOCR is `develop`.***
+
 ## 2. Build PaddleLite library
 1. [Docker](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_env.html#docker)
 2. [Linux](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_env.html#linux)
