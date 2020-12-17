@@ -75,6 +75,7 @@ python3 tools/synth_image.py -c configs/config.yml --style_image examples/style_
 * Note 1: The language options is correspond to the corpus. Currently, the tool only supports English, Simplified Chinese and Korean.
 * Note 2: Synth-Text is mainly used to generate images for OCR recognition models.
   So the height of style images should be around 32 pixels. Images in other sizes may behave poorly.
+* Note 3: You can modify `use_gpu` in `configs/config.yml` to determine whether to use GPU for prediction.
 
 
 For example, enter the following image and corpus `PaddleOCR`.

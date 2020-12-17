@@ -66,6 +66,7 @@ python3 tools/synth_image.py -c configs/config.yml --style_image examples/style_
 * 注1：语言选项和语料相对应，目前该工具只支持英文、简体中文和韩语。
 * 注2：Style-Text生成的数据主要应用于OCR识别场景。基于当前PaddleOCR识别模型的设计，我们主要支持高度在32左右的风格图像。
   如果输入图像尺寸相差过多，效果可能不佳。
+* 注3：可以通过修改配置文件中的`use_gpu`(true或者false)参数来决定是否使用GPU进行预测。
 
 
 例如，输入如下图片和语料"PaddleOCR":
