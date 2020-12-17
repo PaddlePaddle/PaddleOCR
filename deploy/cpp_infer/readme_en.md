@@ -107,10 +107,10 @@ make inference_lib_dist
 For more compilation parameter options, please refer to the official website of the Paddle C++ inference library:[https://www.paddlepaddle.org.cn/documentation/docs/en/advanced_guide/inference_deployment/inference/build_and_install_lib_en.html](https://www.paddlepaddle.org.cn/documentation/docs/en/advanced_guide/inference_deployment/inference/build_and_install_lib_en.html).
 
 
-* After the compilation process, you can see the following files in the folder of `build/fluid_inference_install_dir/`.
+* After the compilation process, you can see the following files in the folder of `build/paddle_inference_install_dir/`.
 
 ```
-build/fluid_inference_install_dir/
+build/paddle_inference_install_dir/
 |-- CMakeCache.txt
 |-- paddle
 |-- third_party
