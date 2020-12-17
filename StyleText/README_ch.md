@@ -63,7 +63,10 @@ fusion_generator:
 ```python
 python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_images/2.jpg --text_corpus PaddleOCR --language en
 ```
-* 注意：语言选项和语料相对应，目前该工具只支持英文、简体中文和韩语。
+* 注1：语言选项和语料相对应，目前该工具只支持英文、简体中文和韩语。
+* 注2：Style-Text生成的数据主要应用于OCR识别场景。基于当前PaddleOCR识别模型的设计，我们主要支持高度在32左右的风格图像。
+  如果输入图像尺寸相差过多，效果可能不佳。
+
 
 例如，输入如下图片和语料"PaddleOCR":
 
@@ -102,7 +105,16 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
    * `CorpusGenerator`：
      * `method`：语料生成方法，目前有`FileCorpus`和`EnNumCorpus`可选。如果使用`EnNumCorpus`，则不需要填写其他配置，否则需要修改`corpus_file`和`language`；
      * `language`：语料的语种；
-     * `corpus_file`: 语料文件路径。
+     * `corpus_file`: 语料文件路径。语料文件应使用文本文件。语料生成器首先会将语料按行切分，之后每次随机选取一行。
+
+   语料文件格式示例：
+   ```
+   PaddleOCR
+   飞桨文字识别
+   StyleText
+   风格文本图像数据合成
+   ...
+   ```
 
    Style-Text也提供了一批中英韩5万张通用场景数据用作文本风格图像，便于合成场景丰富的文本图像，下图给出了一些示例。
 
@@ -117,6 +129,19 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
    ``` bash
    python -m tools.synth_dataset -c configs/dataset_config.yml
    ```
+   我们在examples目录下提供了样例图片和语料。
+    <div align="center">
+        <img src="examples/style_images/1.jpg" width="300">
+        <img src="examples/style_images/2.jpg" width="300">
+    </div>
+
+   直接运行上述命令，可以在output_data中产生样例输出，包括图片和用于训练识别模型的标注文件：
+   <div align="center">
+       <img src="doc/images/12.png" width="800">
+   </div>
+
+   其中label目录下的标注文件为程序运行过程中产生的缓存，如果程序在中途异常终止，可以使用缓存的标注文件。
+   如果程序正常运行完毕，则会在output_data下生成label.txt，为最终的标注结果。
 
 <a name="应用案例"></a>
 ### 四、应用案例

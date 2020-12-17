@@ -116,7 +116,7 @@ PaddleOCR
 │   │   │   ├── text_image_aug              // Tia data augment for text recognition
 │   │   │   │   ├── __init__.py
 │   │   │   │   ├── augment.py              // Tia_distort,tia_stretch and tia_perspective
-│   │   │   │   ├── warp_mls.py 
+│   │   │   │   ├── warp_mls.py
 │   │   │   ├── __init__.py
 │   │   │   ├── east_process.py             // Data processing steps of EAST algorithm
 │   │   │   ├── iaa_augment.py              // Data augmentation operations
@@ -188,7 +188,7 @@ PaddleOCR
 │   │   └── sast_postprocess.py             // SAST post-processing
 │   └── utils                               // utils
 │       ├── dict                            // Minor language dictionary
-│            ....                            
+│            ....  
 │       ├── ic15_dict.txt                   // English number dictionary, case sensitive
 │       ├── ppocr_keys_v1.txt               // Chinese dictionary for training Chinese models
 │       ├── logging.py                      // logger
@@ -210,10 +210,10 @@ PaddleOCR
 │   ├── program.py                          // Inference system
 │   ├── test_hubserving.py
 │   └── train.py                            // Start training script
-├── paddleocr.py 
+├── paddleocr.py
 ├── README_ch.md                            // Chinese documentation
 ├── README_en.md                            // English documentation
 ├── README.md                               // Home page documentation
-├── requirments.txt                         // Requirments
+├── requirements.txt                         // Requirements
 ├── setup.py                                // Whl package packaging script
 ├── train.sh                                // Start training bash script

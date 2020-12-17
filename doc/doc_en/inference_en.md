@@ -138,12 +138,12 @@ For lightweight Chinese detection model inference, you can execute the following
 wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar
 tar xf ch_ppocr_mobile_v2.0_det_infer.tar
 # predict
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/22.jpg" --det_model_dir="./inference/det_db/"
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./inference/det_db/"
 ```
 
 The visual text detection results are saved to the ./inference_results folder by default, and the name of the result file is prefixed with'det_res'. Examples of results are as follows:
 
-![](../imgs_results/det_res_22.jpg)
+![](../imgs_results/det_res_00018069.jpg)
 
 You can use the parameters `limit_type` and `det_limit_side_len` to limit the size of the input image,
 The optional parameters of `litmit_type` are [`max`, `min`], and

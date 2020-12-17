@@ -9,7 +9,7 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 
 **近期更新**
 - 2020.12.15 更新数据合成工具[Style-Text](./StyleText/README_ch.md)，可以批量合成大量与目标场景类似的图像，在多个场景验证，效果明显提升。
-- 2020.12.07 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，总数124个，并且计划以后每周一都会更新，欢迎大家持续关注。
+- 2020.12.14 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，总数127个，每周一都会更新，欢迎大家持续关注。
 - 2020.11.25 更新半自动标注工具[PPOCRLabel](./PPOCRLabel/README_ch.md)，辅助开发者高效完成标注任务，输出格式与PP-OCR训练任务完美衔接。
 - 2020.9.22 更新PP-OCR技术文章，https://arxiv.org/abs/2009.09941
 - [More](./doc/doc_ch/update.md)
@@ -38,6 +38,14 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 </div>
 
 上图是通用ppocr_server模型效果展示，更多效果图请见[效果展示页面](./doc/doc_ch/visualization.md)。
+
+<a name="欢迎加入PaddleOCR技术交流群"></a>
+## 欢迎加入PaddleOCR技术交流群
+- 微信扫描二维码加入官方交流群，获得更高效的问题答疑，与各行各业开发者充分交流，期待您的加入。
+
+<div align="center">
+<img src="./doc/joinus.PNG"  width = "200" height = "200" />
+</div>
 
 ## 快速体验
 - PC端：超轻量级中文OCR在线体验地址：https://www.paddlepaddle.org.cn/hub/scene/ocr
@@ -121,7 +129,7 @@ PP-OCR是一个实用的超轻量OCR系统。主要由DB文本检测、检测框
 
 - 英文模型
 <div align="center">
-    <img src="./doc/imgs_results/img_12.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/img_12.jpg" width="800">
 </div>
 
 - 其他语言模型
@@ -130,13 +138,6 @@ PP-OCR是一个实用的超轻量OCR系统。主要由DB文本检测、检测框
     <img src="./doc/imgs_results/korean.jpg" width="800">
 </div>
 
-<a name="欢迎加入PaddleOCR技术交流群"></a>
-## 欢迎加入PaddleOCR技术交流群
-请扫描下面二维码，完成问卷填写，获取加群二维码和OCR方向的炼丹秘籍
-
-<div align="center">
-<img src="./doc/joinus.PNG"  width = "200" height = "200" />
-</div>
 
 <a name="许可证书"></a>
 ## 许可证书

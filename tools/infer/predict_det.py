@@ -65,12 +65,12 @@ class TextDetector(object):
             postprocess_params["unclip_ratio"] = args.det_db_unclip_ratio
             postprocess_params["use_dilation"] = True
         elif self.det_algorithm == "EAST":
-            postprocess_params['name'] = 'EASTPostProcess'      
+            postprocess_params['name'] = 'EASTPostProcess'
             postprocess_params["score_thresh"] = args.det_east_score_thresh
             postprocess_params["cover_thresh"] = args.det_east_cover_thresh
             postprocess_params["nms_thresh"] = args.det_east_nms_thresh
         elif self.det_algorithm == "SAST":
-            postprocess_params['name'] = 'SASTPostProcess'      
+            postprocess_params['name'] = 'SASTPostProcess'
             postprocess_params["score_thresh"] = args.det_sast_score_thresh
             postprocess_params["nms_thresh"] = args.det_sast_nms_thresh
             self.det_sast_polygon = args.det_sast_polygon
@@ -177,8 +177,10 @@ class TextDetector(object):
             preds['f_score'] = outputs[1]
             preds['f_tco'] = outputs[2]
             preds['f_tvo'] = outputs[3]
+        elif self.det_algorithm == 'DB':
+            preds['maps'] = outputs[0]
         else:
-            preds = outputs[0]
+            raise NotImplementedError
 
         post_result = self.postprocess_op(preds, shape_list)
         dt_boxes = post_result[0]['points']

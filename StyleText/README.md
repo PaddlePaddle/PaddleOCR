@@ -72,7 +72,10 @@ fusion_generator:
 python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_images/2.jpg --text_corpus PaddleOCR --language en
 ```
 
-* Note: The language options is correspond to the corpus. Currently, the tool only supports English, Simplified Chinese and Korean.
+* Note 1: The language options is correspond to the corpus. Currently, the tool only supports English, Simplified Chinese and Korean.
+* Note 2: Synth-Text is mainly used to generate images for OCR recognition models. 
+  So the height of style images should be around 32 pixels. Images in other sizes may behave poorly.
+
 
 For example, enter the following image and corpus `PaddleOCR`.
 
@@ -116,8 +119,16 @@ In actual application scenarios, it is often necessary to synthesize pictures in
    * `CorpusGenerator`：
      * `method`：Method of CorpusGenerator，supports `FileCorpus` and `EnNumCorpus`. If `EnNumCorpus` is used，No other configuration is needed，otherwise you need to set `corpus_file` and `language`.
      * `language`：Language of the corpus.
-     * `corpus_file`: Filepath of the corpus.
+     * `corpus_file`: Filepath of the corpus. Corpus file should be a text file which will be split by line-endings（'\n'）. Corpus generator samples one line each time.
 
+
+Example of corpus file: 
+```
+PaddleOCR
+飞桨文字识别
+StyleText
+风格文本图像数据合成
+```
 
 We provide a general dataset containing Chinese, English and Korean (50,000 images in all) for your trial ([download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/style_text/chkoen_5w.tar)), some examples are given below :
 
@@ -130,7 +141,18 @@ We provide a general dataset containing Chinese, English and Korean (50,000 imag
    ``` bash
    python -m tools.synth_dataset.py -c configs/dataset_config.yml
    ```
-
+We also provide example corpus and images in `examples` folder. 
+    <div align="center">
+        <img src="examples/style_images/1.jpg" width="300">
+        <img src="examples/style_images/2.jpg" width="300">
+    </div>
+If you run the code above directly, you will get example output data in `output_data` folder.
+You will get synthesis images and labels as below:
+   <div align="center">
+       <img src="doc/images/12.png" width="800">
+   </div>
+There will be some cache under the `label` folder. If the program exit unexpectedly, you can find cached labels there.
+When the program finish normally, you will find all the labels in `label.txt` which give the final results.
 
 <a name="Applications"></a>
 ### Applications
