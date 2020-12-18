@@ -6,6 +6,10 @@ PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，使用p
 
 <img src="./data/gif/steps.gif" width="100%"/>
 
+#### 近期更新
+
+- 2020.12.18: 支持对单个标记框进行重新识别（by [ninetailskim](https://github.com/ninetailskim) ），完善快捷键。
+
 ## 安装
 
 ### 1. 安装PaddleOCR
@@ -72,6 +76,26 @@ python3 PPOCRLabel.py --lang ch
 |   crop_img    |   识别数据。按照检测框切割后的图片。与rec_gt.txt同时产生。   |
 
 ## 说明
+
+### 快捷键
+
+| 快捷键           | 说明                         |
+| ---------------- | ---------------------------- |
+| Ctrl + shift + A | 自动标注所有未确认过的图片   |
+| Ctrl + shift + R | 对当前图片的所有标记重新识别 |
+| W                | 新建矩形框                   |
+| Q                | 新建四点框                   |
+| Ctrl + E         | 编辑所选框标签               |
+| Ctrl + R         | 重新识别所选标记             |
+| Backspace        | 删除所选框                   |
+| Ctrl + V         | 确认本张图片标记             |
+| Ctrl + Shift + d | 删除本张图片                 |
+| D                | 下一张图片                   |
+| A                | 上一张图片                   |
+| Ctrl++           | 缩小                         |
+| Ctrl--           | 放大                         |
+| ↑→↓←             | 移动标记框                   |
+
 ### 内置模型
 
  - 默认模型：PPOCRLabel默认使用PaddleOCR中的中英文超轻量OCR模型，支持中英文与数字识别，多种语言检测。
