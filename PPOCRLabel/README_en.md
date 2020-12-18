@@ -4,6 +4,10 @@ PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field. I
 
 <img src="./data/gif/steps_en.gif" width="100%"/>
 
+### Recent Update
+
+- 2020.12.18: Support re-recognition of a single label box (by [ninetailskim](https://github.com/ninetailskim) ), perfect shortcut keys.
+
 ## Installation
 
 ### 1. Install PaddleOCR
@@ -89,6 +93,25 @@ Therefore, if the recognition result has been manually changed before, it may ch
 |   crop_img    | The recognition data, generated at the same time with *rec_gt.txt* |
 
 ## Explanation
+
+### Shortcut keys
+
+| Shortcut keys    | Description                                      |
+| ---------------- | ------------------------------------------------ |
+| Ctrl + shift + A | Automatically label all unchecked images         |
+| Ctrl + shift + R | Re-recognize all the labels of the current image |
+| W                | Create a rect box                                |
+| Q                | Create a four-points box                         |
+| Ctrl + E         | Edit label of the selected box                   |
+| Ctrl + R         | Re-recognize the selected box                    |
+| Backspace        | Delete the selected box                          |
+| Ctrl + V         | Check image                                      |
+| Ctrl + Shift + d | Delete image                                     |
+| D                | Next image                                       |
+| A                | Previous image                                   |
+| Ctrl++           | Zoom in                                          |
+| Ctrl--           | Zoom out                                         |
+| ↑→↓←             | Move selected box                                |
 
 ### Built-in Model
 

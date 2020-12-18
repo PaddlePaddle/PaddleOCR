@@ -1,8 +1,12 @@
-# PPOCRLabel
+# **PPOCRLabel**
 
 PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，使用python3和pyqt5编写，支持矩形框标注和四点标注模式，导出格式可直接用于PPOCR检测和识别模型的训练。
 
 <img src="./data/gif/steps.gif" width="100%"/>
+
+#### 近期更新
+
+- 2020.12.18: 支持对单个标记框进行重新识别（by [ninetailskim](https://github.com/ninetailskim) ），完善快捷键。
 
 ## 安装
 
@@ -70,6 +74,26 @@ python3 PPOCRLabel.py --lang ch
 |   crop_img    |   识别数据。按照检测框切割后的图片。与rec_gt.txt同时产生。   |
 
 ## 说明
+
+### 快捷键
+
+| 快捷键           | 说明                         |
+| ---------------- | ---------------------------- |
+| Ctrl + shift + A | 自动标注所有未确认过的图片   |
+| Ctrl + shift + R | 对当前图片的所有标记重新识别 |
+| W                | 新建矩形框                   |
+| Q                | 新建四点框                   |
+| Ctrl + E         | 编辑所选框标签               |
+| Ctrl + R         | 重新识别所选标记             |
+| Backspace        | 删除所选框                   |
+| Ctrl + V         | 确认本张图片标记             |
+| Ctrl + Shift + d | 删除本张图片                 |
+| D                | 下一张图片                   |
+| A                | 上一张图片                   |
+| Ctrl++           | 缩小                         |
+| Ctrl--           | 放大                         |
+| ↑→↓←             | 移动标记框                   |
+
 ### 内置模型
 
  - 默认模型：PPOCRLabel默认使用PaddleOCR中的中英文超轻量OCR模型，支持中英文与数字识别，多种语言检测。
@@ -80,7 +104,7 @@ python3 PPOCRLabel.py --lang ch
 
 ### 导出部分识别结果
 
-针对部分难以识别的数据，通过在识别结果的复选框中**取消勾选**相应的标记，其识别结果不会被导出。
+针对部分难以识别的数据，通过在识别结果的复选框中取消勾选相应的标记，其识别结果不会被导出。
 
 *注意：识别结果中的复选框状态仍需用户手动点击保存后才能保留*
 
@@ -97,4 +121,4 @@ python3 PPOCRLabel.py --lang ch
 	```
 ### 参考资料
 
-1.[Tzutalin. LabelImg. Git code (2015)](https://github.com/tzutalin/labelImg)
+**1.[Tzutalin. LabelImg. Git code (2015)](https://github.com/tzutalin/labelImg)**
