@@ -70,6 +70,9 @@ class TextDetector(object):
             postprocess_params["cover_thresh"] = args.det_east_cover_thresh
             postprocess_params["nms_thresh"] = args.det_east_nms_thresh
         elif self.det_algorithm == "SAST":
+            pre_process_list[0] = {
+                'DetResizeForTest': {'resize_long': args.det_limit_side_len}
+            }
             postprocess_params['name'] = 'SASTPostProcess'
             postprocess_params["score_thresh"] = args.det_sast_score_thresh
             postprocess_params["nms_thresh"] = args.det_sast_nms_thresh
