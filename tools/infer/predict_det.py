@@ -35,6 +35,7 @@ logger = get_logger()
 
 class TextDetector(object):
     def __init__(self, args):
+        self.args = args
         self.det_algorithm = args.det_algorithm
         self.use_zero_copy_run = args.use_zero_copy_run
         pre_process_list = [{
