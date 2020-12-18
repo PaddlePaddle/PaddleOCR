@@ -262,8 +262,8 @@ class PaddleOCR(predict_system.TextSystem):
             logger.error('rec_algorithm must in {}'.format(SUPPORT_REC_MODEL))
             sys.exit(0)
 
-        postprocess_params.rec_char_dict_path = Path(
-            __file__).parent / postprocess_params.rec_char_dict_path
+        postprocess_params.rec_char_dict_path = str(
+            Path(__file__).parent / postprocess_params.rec_char_dict_path)
 
         # init det_model and rec_model
         super().__init__(postprocess_params)
