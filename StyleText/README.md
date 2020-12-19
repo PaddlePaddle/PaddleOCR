@@ -69,12 +69,14 @@ fusion_generator:
 1. You can run `tools/synth_image` and generate the demo image, which is saved in the current folder.
 
 ```python
-python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_images/2.jpg --text_corpus PaddleOCR --language en
+python3 tools/synth_image.py -c configs/config.yml --style_image examples/style_images/2.jpg --text_corpus PaddleOCR --language en
 ```
 
 * Note 1: The language options is correspond to the corpus. Currently, the tool only supports English, Simplified Chinese and Korean.
-* Note 2: Synth-Text is mainly used to generate images for OCR recognition models. 
+* Note 2: Synth-Text is mainly used to generate images for OCR recognition models.
   So the height of style images should be around 32 pixels. Images in other sizes may behave poorly.
+* Note 3: You can modify `use_gpu` in `configs/config.yml` to determine whether to use GPU for prediction.
+
 
 
 For example, enter the following image and corpus `PaddleOCR`.
@@ -139,9 +141,10 @@ We provide a general dataset containing Chinese, English and Korean (50,000 imag
 2. You can run the following command to start synthesis task:
 
    ``` bash
-   python -m tools.synth_dataset.py -c configs/dataset_config.yml
+   python3 tools/synth_dataset.py -c configs/dataset_config.yml
    ```
-We also provide example corpus and images in `examples` folder. 
+
+We also provide example corpus and images in `examples` folder.
     <div align="center">
         <img src="examples/style_images/1.jpg" width="300">
         <img src="examples/style_images/2.jpg" width="300">
