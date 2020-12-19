@@ -22,7 +22,7 @@ English | [简体中文](README_ch.md)
 </div>
 
 
-The Style-Text data synthesis tool is a tool based on text editing algorithm "Editing Text in the Wild" [https://arxiv.org/abs/1908.03047](https://arxiv.org/abs/1908.03047).
+The Style-Text data synthesis tool is a tool based on Baidu and HUST cooperation research work, text editing algorithm "Editing Text in the Wild" [https://arxiv.org/abs/1908.03047](https://arxiv.org/abs/1908.03047).
 
 Different from the commonly used GAN-based data synthesis tools, the main framework of Style-Text includes:
 * (1) Text foreground style transfer module.
