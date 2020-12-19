@@ -78,6 +78,7 @@ python3 tools/synth_image.py -c configs/config.yml --style_image examples/style_
 * Note 3: You can modify `use_gpu` in `configs/config.yml` to determine whether to use GPU for prediction.
 
 
+
 For example, enter the following image and corpus `PaddleOCR`.
 
 <div align="center">
@@ -123,7 +124,7 @@ In actual application scenarios, it is often necessary to synthesize pictures in
      * `corpus_file`: Filepath of the corpus. Corpus file should be a text file which will be split by line-endings（'\n'）. Corpus generator samples one line each time.
 
 
-Example of corpus file:
+Example of corpus file: 
 ```
 PaddleOCR
 飞桨文字识别
@@ -142,6 +143,7 @@ We provide a general dataset containing Chinese, English and Korean (50,000 imag
    ``` bash
    python3 tools/synth_dataset.py -c configs/dataset_config.yml
    ```
+
 We also provide example corpus and images in `examples` folder.
     <div align="center">
         <img src="examples/style_images/1.jpg" width="300">
