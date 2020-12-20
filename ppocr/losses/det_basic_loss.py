@@ -45,7 +45,6 @@ class BalanceLoss(nn.Layer):
         self.balance_loss = balance_loss
         self.main_loss_type = main_loss_type
         self.negative_ratio = negative_ratio
-        self.main_loss_type = main_loss_type
         self.return_origin = return_origin
         self.eps = eps
 
