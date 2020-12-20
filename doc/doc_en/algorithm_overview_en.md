@@ -11,9 +11,9 @@ This tutorial lists the text detection algorithms and text recognition algorithm
 ### 1. Text Detection Algorithm
 
 PaddleOCR open source text detection algorithms list:
-- [x]  EAST([paper](https://arxiv.org/abs/1704.03155))
-- [x]  DB([paper](https://arxiv.org/abs/1911.08947))
-- [x]  SAST([paper](https://arxiv.org/abs/1908.05498) )(Baidu Self-Research)
+- [x]  EAST[2]([paper](https://arxiv.org/abs/1704.03155))
+- [x]  DB[1]([paper](https://arxiv.org/abs/1911.08947))
+- [x]  SAST[4]([paper](https://arxiv.org/abs/1908.05498) )(Baidu Self-Research)
 
 On the ICDAR2015 dataset, the text detection result is as follows:
 
@@ -39,11 +39,11 @@ For the training guide and use of PaddleOCR text detection algorithms, please re
 ### 2. Text Recognition Algorithm
 
 PaddleOCR open-source text recognition algorithms list:
-- [x]  CRNN([paper](https://arxiv.org/abs/1507.05717))
-- [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))
-- [ ]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html)) coming soon
-- [ ]  RARE([paper](https://arxiv.org/abs/1603.03915v1)) coming soon
-- [ ]  SRN([paper](https://arxiv.org/abs/2003.12294) )(Baidu Self-Research) coming soon
+- [x]  CRNN[7]([paper](https://arxiv.org/abs/1507.05717))
+- [x]  Rosetta[10]([paper](https://arxiv.org/abs/1910.05085))
+- [ ]  STAR-Net[11]([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html)) coming soon
+- [ ]  RARE[12]([paper](https://arxiv.org/abs/1603.03915v1)) coming soon
+- [ ]  SRN[5]([paper](https://arxiv.org/abs/2003.12294) )(Baidu Self-Research) coming soon
 
 Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation result of these above text recognition (using MJSynth and SynthText for training, evaluate on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE) is as follow:
 
