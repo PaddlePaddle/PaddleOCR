@@ -11,11 +11,12 @@
 }
 
 2. DB:
-@article{liao2019real,
-  title={Real-time Scene Text Detection with Differentiable Binarization},
+@inproceedings{liao2020real,
+  title={Real-Time Scene Text Detection with Differentiable Binarization.},
   author={Liao, Minghui and Wan, Zhaoyi and Yao, Cong and Chen, Kai and Bai, Xiang},
-  journal={arXiv preprint arXiv:1911.08947},
-  year={2019}
+  booktitle={AAAI},
+  pages={11474--11481},
+  year={2020}
 }
 
 3. DTRB:
@@ -37,10 +38,11 @@
 }
 
 5. SRN:
-@article{yu2020towards,
-  title={Towards Accurate Scene Text Recognition with Semantic Reasoning Networks},
-  author={Yu, Deli and Li, Xuan and Zhang, Chengquan and Han, Junyu and Liu, Jingtuo and Ding, Errui},
-  journal={arXiv preprint arXiv:2003.12294},
+@inproceedings{yu2020towards,
+  title={Towards accurate scene text recognition with semantic reasoning networks},
+  author={Yu, Deli and Li, Xuan and Zhang, Chengquan and Liu, Tao and Han, Junyu and Liu, Jingtuo and Ding, Errui},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={12113--12122},
   year={2020}
 }
 
@@ -52,4 +54,62 @@
   pages={9086--9095},
   year={2019}
 }
+
+7. CRNN:
+@article{shi2016end,
+  title={An end-to-end trainable neural network for image-based sequence recognition and its application to scene text recognition},
+  author={Shi, Baoguang and Bai, Xiang and Yao, Cong},
+  journal={IEEE transactions on pattern analysis and machine intelligence},
+  volume={39},
+  number={11},
+  pages={2298--2304},
+  year={2016},
+  publisher={IEEE}
+}
+
+8. FPGM:
+@inproceedings{he2019filter,
+  title={Filter pruning via geometric median for deep convolutional neural networks acceleration},
+  author={He, Yang and Liu, Ping and Wang, Ziwei and Hu, Zhilan and Yang, Yi},
+  booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
+  pages={4340--4349},
+  year={2019}
+}
+
+9. PACT:
+@article{choi2018pact,
+  title={Pact: Parameterized clipping activation for quantized neural networks},
+  author={Choi, Jungwook and Wang, Zhuo and Venkataramani, Swagath and Chuang, Pierce I-Jen and Srinivasan, Vijayalakshmi and Gopalakrishnan, Kailash},
+  journal={arXiv preprint arXiv:1805.06085},
+  year={2018}
+}
+
+10.Rosetta
+@inproceedings{borisyuk2018rosetta,
+  title={Rosetta: Large scale system for text detection and recognition in images},
+  author={Borisyuk, Fedor and Gordo, Albert and Sivakumar, Viswanath},
+  booktitle={Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery \& Data Mining},
+  pages={71--79},
+  year={2018}
+}
+
+11.STAR-Net
+@inproceedings{liu2016star,
+  title={STAR-Net: A SpaTial Attention Residue Network for Scene Text Recognition.},
+  author={Liu, Wei and Chen, Chaofeng and Wong, Kwan-Yee K and Su, Zhizhong and Han, Junyu},
+  booktitle={BMVC},
+  volume={2},
+  pages={7},
+  year={2016}
+}
+
+12.RARE
+@inproceedings{shi2016robust,
+  title={Robust scene text recognition with automatic rectification},
+  author={Shi, Baoguang and Wang, Xinggang and Lyu, Pengyuan and Yao, Cong and Bai, Xiang},
+  booktitle={Proceedings of the IEEE conference on computer vision and pattern recognition},
+  pages={4168--4176},
+  year={2016}
+}
+
 ```
