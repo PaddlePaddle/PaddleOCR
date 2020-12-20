@@ -9,9 +9,9 @@
 ### 1.文本检测算法
 
 PaddleOCR开源的文本检测算法列表：
-- [x]  DB[2]([paper]( https://arxiv.org/abs/1911.08947) )（ppocr推荐）
-- [x]  EAST[1]([paper](https://arxiv.org/abs/1704.03155))
-- [x]  SAST[4]([paper](https://arxiv.org/abs/1908.05498))
+- [x]  DB([paper]( https://arxiv.org/abs/1911.08947)) [2]（ppocr推荐）
+- [x]  EAST([paper](https://arxiv.org/abs/1704.03155))[1]
+- [x]  SAST([paper](https://arxiv.org/abs/1908.05498))[4]
 
 在ICDAR2015文本检测公开数据集上，算法效果如下：
 
