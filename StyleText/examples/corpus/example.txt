@@ -1,2 +1,2 @@
-PaddleOCR
+Paddle
 飞桨文字识别

@@ -106,7 +106,7 @@ class MainWindow(QMainWindow, WindowMixin):
         getStr = lambda strId: self.stringBundle.getString(strId)
 
         self.defaultSaveDir = defaultSaveDir
-        self.ocr = PaddleOCR(use_pdserving=False, use_angle_cls=True, det=True, cls=True, use_gpu=True, lang=lang)
+        self.ocr = PaddleOCR(use_pdserving=False, use_angle_cls=True, det=True, cls=True, use_gpu=False, lang=lang)
 
         if os.path.exists('./data/paddle.png'):
             result = self.ocr.ocr('./data/paddle.png', cls=True, det=True)
@@ -274,6 +274,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.preButton.setIconSize(QSize(40, 100))
         self.preButton.clicked.connect(self.openPrevImg)
         self.preButton.setStyleSheet('border: none;')
+        self.preButton.setShortcut('a')
         self.iconlist = QListWidget()
         self.iconlist.setViewMode(QListView.IconMode)
         self.iconlist.setFlow(QListView.TopToBottom)
@@ -289,12 +290,12 @@ class MainWindow(QMainWindow, WindowMixin):
         self.nextButton.setIconSize(QSize(40, 100))
         self.nextButton.setStyleSheet('border: none;')
         self.nextButton.clicked.connect(self.openNextImg)
+        self.nextButton.setShortcut('d')
         
         hlayout.addWidget(self.preButton)
         hlayout.addWidget(self.iconlist)
         hlayout.addWidget(self.nextButton)
 
-        # self.setLayout(hlayout)
 
         iconListContainer = QWidget()
         iconListContainer.setLayout(hlayout)
@@ -359,11 +360,6 @@ class MainWindow(QMainWindow, WindowMixin):
         opendir = action(getStr('openDir'), self.openDirDialog,
                          'Ctrl+u', 'open', getStr('openDir'))
 
-        openNextImg = action(getStr('nextImg'), self.openNextImg,
-                             'd', 'next', getStr('nextImgDetail'))
-
-        openPrevImg = action(getStr('prevImg'), self.openPrevImg,
-                             'a', 'prev', getStr('prevImgDetail'))
 
         save = action(getStr('save'), self.saveFile,
                       'Ctrl+V', 'verify', getStr('saveDetail'), enabled=False)
@@ -371,7 +367,7 @@ class MainWindow(QMainWindow, WindowMixin):
         alcm = action(getStr('choosemodel'), self.autolcm,
                                         'Ctrl+M', 'next', getStr('tipchoosemodel'))
 
-        deleteImg = action(getStr('deleteImg'), self.deleteImg, 'Ctrl+D', 'close', getStr('deleteImgDetail'),
+        deleteImg = action(getStr('deleteImg'), self.deleteImg, 'Ctrl+Shift+D', 'close', getStr('deleteImgDetail'),
                            enabled=True)
 
         resetAll = action(getStr('resetAll'), self.resetAll, None, 'resetall', getStr('resetAllDetail'))
@@ -388,7 +384,7 @@ class MainWindow(QMainWindow, WindowMixin):
                         'w', 'new', getStr('crtBoxDetail'), enabled=False)
 
         delete = action(getStr('delBox'), self.deleteSelectedShape,
-                        'Delete', 'delete', getStr('delBoxDetail'), enabled=False)
+                        'backspace', 'delete', getStr('delBoxDetail'), enabled=False)
         copy = action(getStr('dupBox'), self.copySelectedShape,
                       'Ctrl+C', 'copy', getStr('dupBoxDetail'),
                       enabled=False)
@@ -446,8 +442,11 @@ class MainWindow(QMainWindow, WindowMixin):
         reRec = action(getStr('reRecognition'), self.reRecognition, 
                       'Ctrl+Shift+R', 'reRec', getStr('reRecognition'), enabled=False)
 
+        singleRere = action(getStr('singleRe'), self.singleRerecognition,
+                            'Ctrl+R', 'reRec', getStr('singleRe'), enabled=False)
+
         createpoly = action(getStr('creatPolygon'), self.createPolygon,
-                            'p', 'new', 'Creat Polygon', enabled=True)
+                            'q', 'new', 'Creat Polygon', enabled=True)
 
         saveRec = action(getStr('saveRec'), self.saveRecResult,
                             '', 'save', getStr('saveRec'), enabled=False)
@@ -491,6 +490,7 @@ class MainWindow(QMainWindow, WindowMixin):
                                 icon='color', tip=getStr('shapeFillColorDetail'),
                                 enabled=False)
 
+
         # Label list context menu.
         labelMenu = QMenu()
         addActions(labelMenu, (edit, delete))
@@ -501,7 +501,6 @@ class MainWindow(QMainWindow, WindowMixin):
 
         # Draw squares/rectangles
         self.drawSquaresOption = QAction(getStr('drawSquares'), self)
-        self.drawSquaresOption.setShortcut('Ctrl+Shift+R')
         self.drawSquaresOption.setCheckable(True)
         self.drawSquaresOption.setChecked(settings.get(SETTING_DRAW_SQUARE, False))
         self.drawSquaresOption.triggered.connect(self.toogleDrawSquare)
@@ -509,7 +508,7 @@ class MainWindow(QMainWindow, WindowMixin):
         # Store actions for further handling.
         self.actions = struct(save=save,  open=open,  resetAll=resetAll, deleteImg=deleteImg,
                               lineColor=color1, create=create, delete=delete, edit=edit, copy=copy,
-                              saveRec=saveRec,
+                              saveRec=saveRec, singleRere=singleRere,AutoRec=AutoRec,reRec=reRec,
                               createMode=createMode, editMode=editMode,
                               shapeLineColor=shapeLineColor, shapeFillColor=shapeFillColor,
                               zoom=zoom, zoomIn=zoomIn, zoomOut=zoomOut, zoomOrg=zoomOrg,
@@ -518,9 +517,9 @@ class MainWindow(QMainWindow, WindowMixin):
                               fileMenuActions=(
                                   open, opendir, saveLabel,  resetAll, quit),
                               beginner=(), advanced=(),
-                              editMenu=(createpoly, edit, copy, delete,
+                              editMenu=(createpoly, edit, copy, delete,singleRere,
                                         None, color1, self.drawSquaresOption),
-                              beginnerContext=(create, edit, copy, delete),
+                              beginnerContext=(create, edit, copy, delete, singleRere),
                               advancedContext=(createMode, editMode, edit, copy,
                                                delete, shapeLineColor, shapeFillColor),
                               onLoadActive=(
@@ -562,7 +561,7 @@ class MainWindow(QMainWindow, WindowMixin):
             zoomIn, zoomOut, zoomOrg, None,
             fitWindow, fitWidth))
 
-        addActions(self.menus.autolabel, (alcm, None, help)) #
+        addActions(self.menus.autolabel, (AutoRec, reRec, alcm, None, help)) #
 
         self.menus.file.aboutToShow.connect(self.updateFileMenu)
 
@@ -571,6 +570,7 @@ class MainWindow(QMainWindow, WindowMixin):
         addActions(self.canvas.menus[1], (
             action('&Copy here', self.copyShape),
             action('&Move here', self.moveShape)))
+
 
         self.statusBar().showMessage('%s started.' % __appname__)
         self.statusBar().show()
@@ -919,6 +919,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.actions.edit.setEnabled(selected)
         self.actions.shapeLineColor.setEnabled(selected)
         self.actions.shapeFillColor.setEnabled(selected)
+        self.actions.singleRere.setEnabled(selected)
 
     def addLabel(self, shape):
         shape.paintLabel = self.displayLabelOption.isChecked()
@@ -987,6 +988,19 @@ class MainWindow(QMainWindow, WindowMixin):
             self.addLabel(shape)
         self.updateComboBox()
         self.canvas.loadShapes(s)
+
+    def singleLabel(self, shape):
+        if shape is None:
+            # print('rm empty label')
+            return
+        item = self.shapesToItems[shape]
+        item.setText(shape.label)
+        self.updateComboBox()
+
+        # ADD:
+        item = self.shapesToItemsbox[shape]
+        item.setText(str([(int(p.x()), int(p.y())) for p in shape.points]))
+        self.updateComboBox()
 
     def updateComboBox(self):
         # Get the unique labels and add them to the Combobox.
@@ -1441,6 +1455,8 @@ class MainWindow(QMainWindow, WindowMixin):
         self.haveAutoReced = False
         self.AutoRecognition.setEnabled(True)
         self.reRecogButton.setEnabled(True)
+        self.actions.AutoRec.setEnabled(True)
+        self.actions.reRec.setEnabled(True)
         self.actions.saveLabel.setEnabled(True)
 
 
@@ -1755,6 +1771,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.loadFile(self.filePath) # ADD
         self.haveAutoReced = True
         self.AutoRecognition.setEnabled(False)
+        self.actions.AutoRec.setEnabled(False)
         self.setDirty()
         self.saveCacheLabel()
 
@@ -1794,6 +1811,27 @@ class MainWindow(QMainWindow, WindowMixin):
         else:
             QMessageBox.information(self, "Information", "Draw a box!")
 
+    def singleRerecognition(self):
+        img = cv2.imread(self.filePath)
+        shape = self.canvas.selectedShape
+        box = [[int(p.x()), int(p.y())] for p in shape.points]
+        assert len(box) == 4
+        img_crop = get_rotate_crop_image(img, np.array(box, np.float32))
+        if img_crop is None:
+            msg = 'Can not recognise the detection box in ' + self.filePath + '. Please change manually'
+            QMessageBox.information(self, "Information", msg)
+            return
+        result = self.ocr.ocr(img_crop, cls=True, det=False)
+        if result[0][0] is not '':
+            result.insert(0, box)
+            print('result in reRec is ', result)
+            if result[1][0] == shape.label:
+                print('label no change')
+            else:
+                shape.label = result[1][0]
+            self.singleLabel(shape)
+            self.setDirty()
+        print(box)
 
     def autolcm(self):
         vbox = QVBoxLayout()
@@ -1825,6 +1863,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.dialog.exec_()
         if self.filePath:
             self.AutoRecognition.setEnabled(True)
+            self.actions.AutoRec.setEnabled(True)
 
 
     def modelChoose(self):

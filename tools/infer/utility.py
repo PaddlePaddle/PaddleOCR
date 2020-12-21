@@ -34,7 +34,6 @@ def parse_args():
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     parser.add_argument("--use_fp16", type=str2bool, default=False)
-    parser.add_argument("--max_batch_size", type=int, default=10)
     parser.add_argument("--gpu_mem", type=int, default=8000)
 
     # params for text detector
