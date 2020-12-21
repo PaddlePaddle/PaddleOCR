@@ -18,7 +18,7 @@ cls_model_dir  ./inference/ch_ppocr_mobile_v2.0_cls_infer/
 cls_thresh  0.9
 
 # rec config
-rec_model_dir  ../../../deploy/cpp_infer/inference/ch_ppocr_mobile_v2.0_rec_infer/
+rec_model_dir  ./inference/ch_ppocr_mobile_v2.0_rec_infer/
 char_list_file ../../ppocr/utils/ppocr_keys_v1.txt
 
 # show the detection results
