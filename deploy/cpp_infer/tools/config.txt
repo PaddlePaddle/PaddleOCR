@@ -1,17 +1,16 @@
 # model load config
-use_gpu  0
+use_gpu 0
 gpu_id  0
 gpu_mem  4000
 cpu_math_library_num_threads  10
 use_mkldnn 0
-use_zero_copy_run 1
 
 # det config
 max_side_len  960
 det_db_thresh  0.3
 det_db_box_thresh  0.5
 det_db_unclip_ratio  2.0
-det_model_dir  ./inference/ch__ppocr_mobile_v2.0_det_infer/
+det_model_dir  ../../../deploy/cpp_infer/inference/ch_ppocr_mobile_v2.0_det_infer/
 
 # cls config
 use_angle_cls 0
@@ -19,7 +18,7 @@ cls_model_dir  ./inference/ch_ppocr_mobile_v2.0_cls_infer/
 cls_thresh  0.9
 
 # rec config
-rec_model_dir  ./inference/ch_ppocr_mobile_v2.0_rec_infer/
+rec_model_dir  ../../../deploy/cpp_infer/inference/ch_ppocr_mobile_v2.0_rec_infer/
 char_list_file ../../ppocr/utils/ppocr_keys_v1.txt
 
 # show the detection results

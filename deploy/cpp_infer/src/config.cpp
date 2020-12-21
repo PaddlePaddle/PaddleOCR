@@ -16,8 +16,8 @@
 
 namespace PaddleOCR {
 
-std::vector<std::string> Config::split(const std::string &str,
-                                       const std::string &delim) {
+std::vector<std::string> OCRConfig::split(const std::string &str,
+                                          const std::string &delim) {
   std::vector<std::string> res;
   if ("" == str)
     return res;
@@ -38,7 +38,7 @@ std::vector<std::string> Config::split(const std::string &str,
 }
 
 std::map<std::string, std::string>
-Config::LoadConfig(const std::string &config_path) {
+OCRConfig::LoadConfig(const std::string &config_path) {
   auto config = Utility::ReadDict(config_path);
 
   std::map<std::string, std::string> dict;
@@ -53,7 +53,7 @@ Config::LoadConfig(const std::string &config_path) {
   return dict;
 }
 
-void Config::PrintConfigInfo() {
+void OCRConfig::PrintConfigInfo() {
   std::cout << "=======Paddle OCR inference config======" << std::endl;
   for (auto iter = config_map_.begin(); iter != config_map_.end(); iter++) {
     std::cout << iter->first << " : " << iter->second << std::endl;
