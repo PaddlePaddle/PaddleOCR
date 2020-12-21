@@ -39,7 +39,6 @@ class TextRecognizer(object):
         self.character_type = args.rec_char_type
         self.rec_batch_num = args.rec_batch_num
         self.rec_algorithm = args.rec_algorithm
-        self.use_zero_copy_run = args.use_zero_copy_run
         postprocess_params = {
             'name': 'CTCLabelDecode',
             "character_type": args.rec_char_type,
@@ -101,12 +100,8 @@ class TextRecognizer(object):
             norm_img_batch = np.concatenate(norm_img_batch)
             norm_img_batch = norm_img_batch.copy()
             starttime = time.time()
-            if self.use_zero_copy_run:
-                self.input_tensor.copy_from_cpu(norm_img_batch)
-                self.predictor.zero_copy_run()
-            else:
-                norm_img_batch = fluid.core.PaddleTensor(norm_img_batch)
-                self.predictor.run([norm_img_batch])
+            self.input_tensor.copy_from_cpu(norm_img_batch)
+            self.predictor.run()
             outputs = []
             for output_tensor in self.output_tensors:
                 output = output_tensor.copy_to_cpu()
@@ -145,8 +140,8 @@ def main(args):
             "Please set --rec_image_shape='3,32,100' and --rec_char_type='en' ")
         exit()
     for ino in range(len(img_list)):
-        logger.info("Predicts of {}:{}".format(valid_image_file_list[ino], rec_res[
-            ino]))
+        logger.info("Predicts of {}:{}".format(valid_image_file_list[ino],
+                                               rec_res[ino]))
     logger.info("Total predict time for {} images, cost: {:.3f}".format(
         len(img_list), predict_time))
 

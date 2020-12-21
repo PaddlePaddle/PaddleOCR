@@ -20,8 +20,7 @@ import numpy as np
 import json
 from PIL import Image, ImageDraw, ImageFont
 import math
-from paddle.fluid.core import AnalysisConfig
-from paddle.fluid.core import create_paddle_predictor
+from paddle import inference
 
 
 def parse_args():
@@ -83,8 +82,6 @@ def parse_args():
     parser.add_argument("--cls_thresh", type=float, default=0.9)
 
     parser.add_argument("--enable_mkldnn", type=str2bool, default=False)
-    parser.add_argument("--use_zero_copy_run", type=str2bool, default=False)
-
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
 
     return parser.parse_args()
@@ -110,14 +107,14 @@ def create_predictor(args, mode, logger):
         logger.info("not find params file path {}".format(params_file_path))
         sys.exit(0)
 
-    config = AnalysisConfig(model_file_path, params_file_path)
+    config = inference.Config(model_file_path, params_file_path)
 
     if args.use_gpu:
         config.enable_use_gpu(args.gpu_mem, 0)
         if args.use_tensorrt:
             config.enable_tensorrt_engine(
-                precision_mode=AnalysisConfig.Precision.Half
-                if args.use_fp16 else AnalysisConfig.Precision.Float32,
+                precision_mode=inference.PrecisionType.Half
+                if args.use_fp16 else inference.PrecisionType.Float32,
                 max_batch_size=args.max_batch_size)
     else:
         config.disable_gpu()
@@ -130,20 +127,18 @@ def create_predictor(args, mode, logger):
     # config.enable_memory_optim()
     config.disable_glog_info()
 
-    if args.use_zero_copy_run:
-        config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
-        config.switch_use_feed_fetch_ops(False)
-    else:
-        config.switch_use_feed_fetch_ops(True)
+    config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
+    config.switch_use_feed_fetch_ops(False)
 
-    predictor = create_paddle_predictor(config)
+    # create predictor
+    predictor = inference.create_predictor(config)
     input_names = predictor.get_input_names()
     for name in input_names:
-        input_tensor = predictor.get_input_tensor(name)
+        input_tensor = predictor.get_input_handle(name)
     output_names = predictor.get_output_names()
     output_tensors = []
     for output_name in output_names:
-        output_tensor = predictor.get_output_tensor(output_name)
+        output_tensor = predictor.get_output_handle(output_name)
         output_tensors.append(output_tensor)
     return predictor, input_tensor, output_tensors
 
