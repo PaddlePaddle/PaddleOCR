@@ -19,23 +19,25 @@ from __future__ import print_function
 import numpy as np
 from .locality_aware_nms import nms_locality
 import cv2
+import paddle
 
 import os
 import sys
-__dir__ = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(__dir__)
-sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
 
 
-class EASTPostPocess(object):
+class EASTPostProcess(object):
     """
     The post process for EAST.
     """
+    def __init__(self,
+                 score_thresh=0.8,
+                 cover_thresh=0.1,
+                 nms_thresh=0.2,
+                 **kwargs):
 
-    def __init__(self, params):
-        self.score_thresh = params['score_thresh']
-        self.cover_thresh = params['cover_thresh']
-        self.nms_thresh = params['nms_thresh']
+        self.score_thresh = score_thresh
+        self.cover_thresh = cover_thresh
+        self.nms_thresh = nms_thresh
         
         # c++ la-nms is faster, but only support python 3.5
         self.is_python35 = False
@@ -106,10 +108,13 @@ class EASTPostPocess(object):
         else:
             return p[[0, 3, 2, 1]]
 
-    def __call__(self, outs_dict, ratio_list):
+    def __call__(self, outs_dict, shape_list):
         score_list = outs_dict['f_score']
         geo_list = outs_dict['f_geo']
-        img_num = len(ratio_list)
+        if isinstance(score_list, paddle.Tensor):
+            score_list = score_list.numpy()
+            geo_list = geo_list.numpy()
+        img_num = len(shape_list)
         dt_boxes_list = []
         for ino in range(img_num):
             score = score_list[ino]
@@ -122,7 +127,8 @@ class EASTPostPocess(object):
                 nms_thresh=self.nms_thresh)
             boxes_norm = []
             if len(boxes) > 0:
-                ratio_h, ratio_w = ratio_list[ino]
+                h, w = score.shape[1:]
+                src_h, src_w, ratio_h, ratio_w = shape_list[ino]
                 boxes = boxes[:, :8].reshape((-1, 4, 2))
                 boxes[:, :, 0] /= ratio_w
                 boxes[:, :, 1] /= ratio_h
@@ -132,5 +138,5 @@ class EASTPostPocess(object):
                         or np.linalg.norm(box[3] - box[0]) < 5:
                         continue
                     boxes_norm.append(box)
-            dt_boxes_list.append(np.array(boxes_norm))
+            dt_boxes_list.append({'points': np.array(boxes_norm)})
         return dt_boxes_list

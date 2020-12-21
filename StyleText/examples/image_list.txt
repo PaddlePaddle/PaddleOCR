@@ -1,0 +1,2 @@
+style_images/1.jpg	NEATNESS
+style_images/2.jpg	锁店君和宾馆

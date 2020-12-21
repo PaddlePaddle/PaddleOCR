@@ -24,7 +24,7 @@ sys.path.append(os.path.join(__dir__, '..'))
 
 import numpy as np
 from .locality_aware_nms import nms_locality
-# import lanms
+import paddle
 import cv2
 import time
 
@@ -34,13 +34,21 @@ class SASTPostProcess(object):
     The post process for SAST.
     """
 
-    def __init__(self, params):
-        self.score_thresh = params.get('score_thresh', 0.5)
-        self.nms_thresh = params.get('nms_thresh', 0.2)
-        self.sample_pts_num = params.get('sample_pts_num', 2)
-        self.shrink_ratio_of_width = params.get('shrink_ratio_of_width', 0.3)
-        self.expand_scale = params.get('expand_scale', 1.0)
-        self.tcl_map_thresh = 0.5
+    def __init__(self,
+                 score_thresh=0.5,
+                 nms_thresh=0.2,
+                 sample_pts_num=2,
+                 shrink_ratio_of_width=0.3,
+                 expand_scale=1.0,
+                 tcl_map_thresh=0.5,
+                 **kwargs):
+
+        self.score_thresh = score_thresh
+        self.nms_thresh = nms_thresh
+        self.sample_pts_num = sample_pts_num
+        self.shrink_ratio_of_width = shrink_ratio_of_width
+        self.expand_scale = expand_scale
+        self.tcl_map_thresh = tcl_map_thresh
         
         # c++ la-nms is faster, but only support python 3.5
         self.is_python35 = False
@@ -263,27 +271,30 @@ class SASTPostProcess(object):
 
         return poly_list
 
-    def __call__(self, outs_dict, ratio_list):                
+    def __call__(self, outs_dict, shape_list):                
         score_list = outs_dict['f_score']
         border_list = outs_dict['f_border']
         tvo_list = outs_dict['f_tvo']
         tco_list = outs_dict['f_tco']
+        if isinstance(score_list, paddle.Tensor):
+            score_list = score_list.numpy()
+            border_list = border_list.numpy()
+            tvo_list = tvo_list.numpy()
+            tco_list = tco_list.numpy()
                     
-        img_num = len(ratio_list)
+        img_num = len(shape_list)
         poly_lists = []
         for ino in range(img_num):
             p_score = score_list[ino].transpose((1,2,0))
             p_border = border_list[ino].transpose((1,2,0))
             p_tvo = tvo_list[ino].transpose((1,2,0))
             p_tco = tco_list[ino].transpose((1,2,0))
-            # print(p_score.shape, p_border.shape, p_tvo.shape, p_tco.shape)
-            ratio_h, ratio_w, src_h, src_w = ratio_list[ino]
+            src_h, src_w, ratio_h, ratio_w = shape_list[ino]
 
             poly_list = self.detect_sast(p_score, p_tvo, p_border, p_tco, ratio_w, ratio_h, src_w, src_h, 
                                          shrink_ratio_of_width=self.shrink_ratio_of_width, 
                                          tcl_map_thresh=self.tcl_map_thresh, offset_expand=self.expand_scale)
-
-            poly_lists.append(poly_list)
+            poly_lists.append({'points': np.array(poly_list)})
 
         return poly_lists
 

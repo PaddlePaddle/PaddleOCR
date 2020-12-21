@@ -27,6 +27,7 @@
 #include <fstream>
 #include <numeric>
 
+#include <include/ocr_cls.h>
 #include <include/postprocess_op.h>
 #include <include/preprocess_op.h>
 #include <include/utility.h>
@@ -48,6 +49,8 @@ public:
     this->use_zero_copy_run_ = use_zero_copy_run;
 
     this->label_list_ = Utility::ReadDict(label_path);
+    this->label_list_.insert(this->label_list_.begin(),
+                             "#"); // blank char for ctc
     this->label_list_.push_back(" ");
 
     LoadModel(model_dir);
@@ -56,7 +59,8 @@ public:
   // Load Paddle inference model
   void LoadModel(const std::string &model_dir);
 
-  void Run(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat &img);
+  void Run(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat &img,
+           Classifier *cls);
 
 private:
   std::shared_ptr<PaddlePredictor> predictor_;
