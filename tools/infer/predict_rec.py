@@ -23,7 +23,6 @@ import numpy as np
 import math
 import time
 import traceback
-import paddle.fluid as fluid
 
 import tools.infer.utility as utility
 from ppocr.postprocess import build_post_process
