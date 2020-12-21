@@ -14,37 +14,48 @@
 * [【理论篇】OCR通用30个问题](#OCR通用问题)
   * [基础知识7题](#基础知识)
   * [数据集7题](#数据集2)
-  * [模型训练调优7题](#模型训练调优2)
-  * [预测部署9题](#预测部署2)
+  * [模型训练调优18题](#模型训练调优2)
 * [【实战篇】PaddleOCR实战87个问题](#PaddleOCR实战问题)
-  * [使用咨询21题](#使用咨询)
+  * [使用咨询23题](#使用咨询)
   * [数据集17题](#数据集3)
   * [模型训练调优25题](#模型训练调优3)
-  * [预测部署24题](#预测部署3)
+  * [预测部署25题](#预测部署3)
 
 
 <a name="近期更新"></a>
 ## 近期更新（2020.12.14）
 
-#### Q3.1.21：PaddleOCR支持动态图吗？
+#### Q2.3.17: StyleText 合成数据效果不好？
+**A**： StyleText模型生成的数据主要用于OCR识别模型的训练。PaddleOCR目前识别模型的输入为32*N，因此当前版本模型主要适用高度为32的数据。建议要合成的数据尺寸设置为32*N。尺寸相差不多的数据也可以生成，尺寸很大或很小的数据效果确实不佳。
 
-**A**：动态图版本正在紧锣密鼓开发中，将于2020年12月16日发布，敬请关注。
+#### Q2.3.18:  PaddleOCR develop分支和dygraph分支的区别？
+**A**：目前PaddleOCR有四个分支，分别是：
+- develop：基于Paddle静态图开发的分支，推荐使用paddle1.8 或者2.0版本，该分支具备完善的模型训练、预测、推理部署、量化裁剪等功能。
+- release/1.1：PaddleOCR 发布的第一个稳定版本，基于静态图开发，具备完善的训练、预测、推理部署、量化裁剪等功能。
+- dygraph：基于Paddle动态图开发的分支，目前仍在开发中，未来将作为主要开发分支，运行要求使用Paddle2.0rc1版本，目前仍在开发中。
+- release/2.0-rc1-0：PaddleOCR发布的第二个稳定版本，基于动态图和paddle2.0版本开发，动态图开发的工程更易于调试，目前支，支持模型训练、预测，暂不支持移动端部署。
 
-#### Q3.3.23：检测模型训练或预测时出现elementwise_add报错
+如果您已经上手过PaddleOCR，并且希望在各种环境上部署PaddleOCR，目前建议使用静态图分支，develop或者release/1.1分支。如果您是初学者，想快速训练，调试PaddleOCR中的算法，建议尝鲜PaddleOCR dygraph分支。
 
-**A**：设置的输入尺寸必须是32的倍数，否则在网络多次下采样和上采样后，feature map会产生1个像素的diff，从而导致elementwise_add时报shape不匹配的错误。
+**注意**：develop和dygraph分支要求的Paddle版本、本地环境有差别，请注意不同分支环境安装部分的差异。
 
-#### Q3.3.24: DB检测训练输入尺寸640，可以改大一些吗？
+#### Q3.1.22： ModuleNotFoundError: No module named 'paddle.nn'，
+**A**： paddle.nn是Paddle2.0版本特有的功能，请安装大于等于Paddle 2.0.0rc1的版本，安装方式为
+```
+python3 -m pip install paddlepaddle-gpu==2.0.0rc1 -i https://mirror.baidu.com/pypi/simple
+```
 
-**A**: 不建议改大。检测模型训练输入尺寸是预处理中random crop后的尺寸，并非直接将原图进行resize，多数场景下这个尺寸并不小了，改大后可能反而并不合适，而且训练会变慢。另外，代码里可能有的地方参数按照预设输入尺寸适配的，改大后可能有隐藏风险。
+#### Q3.1.23： ImportError: /usr/lib/x86_64_linux-gnu/libstdc++.so.6:version `CXXABI_1.3.11` not found (required by /usr/lib/python3.6/site-package/paddle/fluid/core+avx.so)
+**A**：这个问题是glibc版本不足导致的，Paddle2.0rc1版本对gcc版本和glib版本有更高的要求，推荐gcc版本为8.2，glibc版本2.12以上。
+如果您的环境不满足这个要求，或者使用的docker镜像为:
+`hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev`
+`hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev`，安装Paddle2.0rc版本可能会出现上述错误，
+2.0版本推荐使用新的docker镜像 `paddlepaddle/paddle:latest-dev-cuda10.1-cudnn7-gcc82`。
+或者访问[dockerhub](https://hub.docker.com/r/paddlepaddle/paddle/tags/)获得与您机器适配的镜像。
 
-#### Q3.3.25: 识别模型训练时，loss能正常下降，但acc一直为0
+#### Q3.4.25 : PaddleOCR模型Python端预测和C++预测结果不一致？
+**A**：正常来说，python端预测和C++预测文本是一致的，如果预测结果差异较大，建议首先排查diff出现在检测模型还是识别模型，或者尝试换其他模型是否有类似的问题。其次，检查python端和C++端数据处理部分是否存在差异，建议保存环境，更新PaddleOCR代码再试下。如果更新代码或者更新代码都没能解决，建议在PaddleOCR群里或者issue中抛出您的问题。
 
-**A**: 识别模型训练初期acc为0是正常的，多训一段时间指标就上来了。
-
-#### Q3.4.24：DB模型能正确推理预测，但换成EAST或SAST模型时报错或结果不正确
-
-**A**：使用EAST或SAST模型进行推理预测时，需要在命令中指定参数--det_algorithm="EAST" 或 --det_algorithm="SAST"，使用DB时不用指定是因为该参数默认值是"DB"：https://github.com/PaddlePaddle/PaddleOCR/blob/e7a708e9fdaf413ed7a14da8e4a7b4ac0b211e42/tools/infer/utility.py#L43
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -238,18 +249,15 @@
 
 （2）调大系统的[l2 dcay值](https://github.com/PaddlePaddle/PaddleOCR/blob/a501603d54ff5513fc4fc760319472e59da25424/configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml#L47)
 
-<a name="预测部署2"></a>
-### 预测部署
-
-#### Q2.4.1：请问对于图片中的密集文字，有什么好的处理办法吗？
+#### Q2.3.8：请问对于图片中的密集文字，有什么好的处理办法吗？
 
 **A**：可以先试用预训练模型测试一下，例如DB+CRNN，判断下密集文字图片中是检测还是识别的问题，然后针对性的改善。还有一种是如果图象中密集文字较小，可以尝试增大图像分辨率，对图像进行一定范围内的拉伸，将文字稀疏化，提高识别效果。
 
-#### Q2.4.2：对于一些在识别时稍微模糊的文本，有没有一些图像增强的方式？
+#### Q2.3.9：对于一些在识别时稍微模糊的文本，有没有一些图像增强的方式？
 
 **A**：在人类肉眼可以识别的前提下，可以考虑图像处理中的均值滤波、中值滤波或者高斯滤波等模糊算子尝试。也可以尝试从数据扩增扰动来强化模型鲁棒性，另外新的思路有对抗性训练和超分SR思路，可以尝试借鉴。但目前业界尚无普遍认可的最优方案，建议优先在数据采集阶段增加一些限制提升图片质量。
 
-#### Q2.4.3：对于特定文字检测，例如身份证只检测姓名，检测指定区域文字更好，还是检测全部区域再筛选更好？
+#### Q2.3.10：对于特定文字检测，例如身份证只检测姓名，检测指定区域文字更好，还是检测全部区域再筛选更好？
 
 **A**：两个角度来说明一般检测全部区域再筛选更好。
 
@@ -257,11 +265,11 @@
 
 （2）产品的需求可能是变化的，不排除后续对于模型需求变化的可能性（比如又需要增加一个字段），相比于训练模型，后处理的逻辑会更容易调整。
 
-#### Q2.4.4：对于小白如何快速入门中文OCR项目实践？
+#### Q2.3.11：对于小白如何快速入门中文OCR项目实践？
 
 **A**：建议可以先了解OCR方向的基础知识，大概了解基础的检测和识别模型算法。然后在Github上可以查看OCR方向相关的repo。目前来看，从内容的完备性来看，PaddleOCR的中英文双语教程文档是有明显优势的，在数据集、模型训练、预测部署文档详实，可以快速入手。而且还有微信用户群答疑，非常适合学习实践。项目地址：[PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR)
 
-#### Q2.4.5：如何识别带空格的英文行文本图像？
+#### Q2.1.12：如何识别带空格的英文行文本图像？
 
 **A**：空格识别可以考虑以下两种方案：
 
@@ -269,22 +277,36 @@
 
 (2)优化文本识别算法。在识别字典里面引入空格字符，然后在识别的训练数据中，如果用空行，进行标注。此外，合成数据时，通过拼接训练数据，生成含有空格的文本。
 
-#### Q2.4.6：中英文一起识别时也可以加空格字符来训练吗
+#### Q2.3.13：中英文一起识别时也可以加空格字符来训练吗
 
 **A**：中文识别可以加空格当做分隔符训练，具体的效果如何没法给出直接评判，根据实际业务数据训练来判断。
 
-#### Q2.4.7：低像素文字或者字号比较小的文字有什么超分辨率方法吗
+#### Q2.3.14：低像素文字或者字号比较小的文字有什么超分辨率方法吗
 
 **A**：超分辨率方法分为传统方法和基于深度学习的方法。基于深度学习的方法中，比较经典的有SRCNN，另外CVPR2020也有一篇超分辨率的工作可以参考文章：Unpaired Image Super-Resolution using Pseudo-Supervision，但是没有充分的实践验证过，需要看实际场景下的效果。
 
-#### Q2.4.8：表格识别有什么好的模型 或者论文推荐么
+#### Q2.3.15：表格识别有什么好的模型 或者论文推荐么
 
 **A**：表格目前学术界比较成熟的解决方案不多 ，可以尝试下分割的论文方案。
 
-#### Q2.4.9：弯曲文本有试过opencv的TPS进行弯曲校正吗？
+#### Q2.3.16：弯曲文本有试过opencv的TPS进行弯曲校正吗？
 
 **A**：opencv的tps需要标出上下边界对应的点，这个点很难通过传统方法或者深度学习方法获取。PaddleOCR里StarNet网络中的tps模块实现了自动学点，自动校正，可以直接尝试这个。
 
+#### Q2.3.17: StyleText 合成数据效果不好？
+**A**：StyleText模型生成的数据主要用于OCR识别模型的训练。PaddleOCR目前识别模型的输入为32*N，因此当前版本模型主要适用高度为32的数据。建议要合成的数据尺寸设置为32*N。尺寸相差不多的数据也可以生成，尺寸很大或很小的数据效果确实不佳。
+
+#### Q2.3.18: PaddleOCR develop分支和dygraph分支的区别？
+**A** 目前PaddleOCR有四个分支，分别是：
+
+- develop：基于Paddle静态图开发的分支，推荐使用paddle1.8 或者2.0版本，该分支具备完善的模型训练、预测、推理部署、量化裁剪等功能。
+- release/1.1：PaddleOCR 发布的第一个稳定版本，基于静态图开发，具备完善的训练、预测、推理部署、量化裁剪等功能。
+- dygraph：基于Paddle动态图开发的分支，目前仍在开发中，未来将作为主要开发分支，运行要求使用Paddle2.0rc1版本，目前仍在开发中。
+- release/2.0-rc1-0：PaddleOCR发布的第二个稳定版本，基于动态图和paddle2.0版本开发，动态图开发的工程更易于调试，目前支，支持模型训练、预测，暂不支持移动端部署。
+
+如果您已经上手过PaddleOCR，并且希望在各种环境上部署PaddleOCR，目前建议使用静态图分支，develop或者release/1.1分支。如果您是初学者，想快速训练，调试PaddleOCR中的算法，建议尝鲜PaddleOCR dygraph分支。
+
+**注意**：develop和dygraph分支要求的Paddle版本、本地环境有差别，请注意不同分支环境安装部分的差异。
 
 
 <a name="PaddleOCR实战问题"></a>
@@ -391,6 +413,20 @@
 #### Q3.1.21：PaddleOCR支持动态图吗？
 
 **A**：动态图版本正在紧锣密鼓开发中，将于2020年12月16日发布，敬请关注。
+
+#### Q3.1.22：ModuleNotFoundError: No module named 'paddle.nn'，
+**A**：paddle.nn是Paddle2.0版本特有的功能，请安装大于等于Paddle 2.0.0rc1的版本，安装方式为
+```
+python3 -m pip install paddlepaddle-gpu==2.0.0rc1 -i https://mirror.baidu.com/pypi/simple
+```
+
+#### Q3.1.23： ImportError: /usr/lib/x86_64_linux-gnu/libstdc++.so.6:version `CXXABI_1.3.11` not found (required by /usr/lib/python3.6/site-package/paddle/fluid/core+avx.so)
+**A**：这个问题是glibc版本不足导致的，Paddle2.0rc1版本对gcc版本和glib版本有更高的要求，推荐gcc版本为8.2，glibc版本2.12以上。
+如果您的环境不满足这个要求，或者使用的docker镜像为:
+`hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev`
+`hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev`，安装Paddle2.0rc版本可能会出现上述错误，2.0版本推荐使用新的docker镜像 `paddlepaddle/paddle:latest-dev-cuda10.1-cudnn7-gcc82`。
+或者访问[dockerhub](https://hub.docker.com/r/paddlepaddle/paddle/tags/)获得与您机器适配的镜像。
+
 
 <a name="数据集3"></a>
 ### 数据集
@@ -594,11 +630,11 @@ ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 
 #### Q3.3.20: 文字检测时怎么模糊的数据增强？
 
-**A**: 模糊的数据增强需要修改代码进行添加，以DB为例，参考[Normalize](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/data/imaug/operators.py#L60) ,添加模糊的增强就行 
+**A**: 模糊的数据增强需要修改代码进行添加，以DB为例，参考[Normalize](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/data/imaug/operators.py#L60) ,添加模糊的增强就行
 
 #### Q3.3.21: 文字检测时怎么更改图片旋转的角度，实现360度任意旋转？
 
-**A**: 将[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/data/imaug/iaa_augment.py#L64) 的(-10,10) 改为(-180,180)即可 
+**A**: 将[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/data/imaug/iaa_augment.py#L64) 的(-10,10) 改为(-180,180)即可
 
 #### Q3.3.22: 训练数据的长宽比过大怎么修改shape
 
@@ -729,3 +765,9 @@ ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 #### Q3.4.24：DB模型能正确推理预测，但换成EAST或SAST模型时报错或结果不正确
 
 **A**：使用EAST或SAST模型进行推理预测时，需要在命令中指定参数--det_algorithm="EAST" 或 --det_algorithm="SAST"，使用DB时不用指定是因为该参数默认值是"DB"：https://github.com/PaddlePaddle/PaddleOCR/blob/e7a708e9fdaf413ed7a14da8e4a7b4ac0b211e42/tools/infer/utility.py#L43
+
+#### Q3.4.25 : PaddleOCR模型Python端预测和C++预测结果不一致？
+正常来说，python端预测和C++预测文本是一致的，如果预测结果差异较大，
+建议首先排查diff出现在检测模型还是识别模型，或者尝试换其他模型是否有类似的问题。
+其次，检查python端和C++端数据处理部分是否存在差异，建议保存环境，更新PaddleOCR代码再试下。
+如果更新代码或者更新代码都没能解决，建议在PaddleOCR微信群里或者issue中抛出您的问题。
