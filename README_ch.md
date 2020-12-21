@@ -10,8 +10,8 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 **近期更新**
 - 2020.12.21 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，总数132个，每周一都会更新，欢迎大家持续关注。
 - 2020.12.15 更新数据合成工具[Style-Text](./StyleText/README_ch.md)，可以批量合成大量与目标场景类似的图像，在多个场景验证，效果明显提升。
-- 2020.12.14 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，总数127个，每周一都会更新，欢迎大家持续关注。
 - 2020.11.25 更新半自动标注工具[PPOCRLabel](./PPOCRLabel/README_ch.md)，辅助开发者高效完成标注任务，输出格式与PP-OCR训练任务完美衔接。
+- 2020.9.22 更新PP-OCR技术文章，https://arxiv.org/abs/2009.09941
 - [More](./doc/doc_ch/update.md)
 
 
@@ -101,8 +101,8 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 - [效果展示](#效果展示)
 - FAQ
     - [【精选】OCR精选10个问题](./doc/doc_ch/FAQ.md)
-    - [【理论篇】OCR通用30个问题](./doc/doc_ch/FAQ.md)
-    - [【实战篇】PaddleOCR实战84个问题](./doc/doc_ch/FAQ.md)
+    - [【理论篇】OCR通用32个问题](./doc/doc_ch/FAQ.md)
+    - [【实战篇】PaddleOCR实战90个问题](./doc/doc_ch/FAQ.md)
 - [技术交流群](#欢迎加入PaddleOCR技术交流群)
 - [参考文献](./doc/doc_ch/reference.md)
 - [许可证书](#许可证书)
