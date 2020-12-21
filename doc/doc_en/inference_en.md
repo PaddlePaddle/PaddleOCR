@@ -255,15 +255,18 @@ The following will introduce the lightweight Chinese recognition model inference
 For lightweight Chinese recognition model inference, you can execute the following commands:
 
 ```
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --rec_model_dir="./inference/rec_crnn/"
+# download CRNN text recognition inference model
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar
+tar xf ch_ppocr_mobile_v2.0_rec_infer.tar
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_10.png" --rec_model_dir="ch_ppocr_mobile_v2.0_rec_infer"
 ```
 
-![](../imgs_words/ch/word_4.jpg)
+![](../imgs_words_en/word_10.png)
 
 After executing the command, the prediction results (recognized text and score) of the above image will be printed on the screen.
 
 ```bash
-Predicts of ./doc/imgs_words/ch/word_4.jpg:('实力活力', 0.98458153)
+Predicts of ./doc/imgs_words_en/word_10.png:('PAIN', 0.9897658)
 ```
 
 <a name="CTC-BASED_RECOGNITION"></a>
@@ -339,7 +342,12 @@ For angle classification model inference, you can execute the following commands
 ```
 python3 tools/infer/predict_cls.py --image_dir="./doc/imgs_words_en/word_10.png" --cls_model_dir="./inference/cls/"
 ```
-
+```
+# download text angle class inference model：
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
+tar xf ch_ppocr_mobile_v2.0_cls_infer.tar
+python3 tools/infer/predict_cls.py --image_dir="./doc/imgs_words_en/word_10.png" --cls_model_dir="ch_ppocr_mobile_v2.0_cls_infer"
+```
 ![](../imgs_words_en/word_10.png)
 
 After executing the command, the prediction results (classification angle and score) of the above image will be printed on the screen.

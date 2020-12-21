@@ -119,7 +119,7 @@ Use `Global.infer_img` to specify the path of the predicted picture or folder, a
 
 ```
 # Predict English results
-python3 tools/infer_cls.py -c configs/cls/cls_mv3.yml -o Global.checkpoints={path/to/weights}/best_accuracy Global.infer_img=doc/imgs_words_en/word_10.png
+python3 tools/infer_cls.py -c configs/cls/cls_mv3.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.load_static_weights=false Global.infer_img=doc/imgs_words_en/word_10.png
 ```
 
 Input image:

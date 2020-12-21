@@ -22,7 +22,7 @@ English | [简体中文](README_ch.md)
 </div>
 
 
-The Style-Text data synthesis tool is a tool based on Baidu's self-developed text editing algorithm "Editing Text in the Wild" [https://arxiv.org/abs/1908.03047](https://arxiv.org/abs/1908.03047).
+The Style-Text data synthesis tool is a tool based on Baidu and HUST cooperation research work, "Editing Text in the Wild" [https://arxiv.org/abs/1908.03047](https://arxiv.org/abs/1908.03047).
 
 Different from the commonly used GAN-based data synthesis tools, the main framework of Style-Text includes:
 * (1) Text foreground style transfer module.
@@ -76,6 +76,7 @@ python3 tools/synth_image.py -c configs/config.yml --style_image examples/style_
 * Note 2: Synth-Text is mainly used to generate images for OCR recognition models.
   So the height of style images should be around 32 pixels. Images in other sizes may behave poorly.
 * Note 3: You can modify `use_gpu` in `configs/config.yml` to determine whether to use GPU for prediction.
+
 
 
 For example, enter the following image and corpus `PaddleOCR`.
@@ -142,6 +143,7 @@ We provide a general dataset containing Chinese, English and Korean (50,000 imag
    ``` bash
    python3 tools/synth_dataset.py -c configs/dataset_config.yml
    ```
+
 We also provide example corpus and images in `examples` folder.
     <div align="center">
         <img src="examples/style_images/1.jpg" width="300">

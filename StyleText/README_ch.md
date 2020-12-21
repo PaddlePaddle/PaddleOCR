@@ -21,7 +21,7 @@
 </div>
 
 
-Style-Text数据合成工具是基于百度自研的文本编辑算法《Editing Text in the Wild》https://arxiv.org/abs/1908.03047
+Style-Text数据合成工具是基于百度和华科合作研发的文本编辑算法《Editing Text in the Wild》https://arxiv.org/abs/1908.03047
 
 不同于常用的基于GAN的数据合成工具，Style-Text主要框架包括：1.文本前景风格迁移模块 2.背景抽取模块 3.融合模块。经过这样三步，就可以迅速实现图像文本风格迁移。下图是一些该数据合成工具效果图。
 
@@ -128,7 +128,7 @@ python3 tools/synth_image.py -c configs/config.yml --style_image examples/style_
 2. 运行`tools/synth_dataset`合成数据：
 
    ``` bash
-   python tools/synth_dataset.py -c configs/dataset_config.yml
+   python3 tools/synth_dataset.py -c configs/dataset_config.yml
    ```
    我们在examples目录下提供了样例图片和语料。
     <div align="center">
