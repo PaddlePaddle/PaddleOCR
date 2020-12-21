@@ -295,7 +295,8 @@ python3 -m pip install paddlepaddle-gpu==2.0.0rc1 -i https://mirror.baidu.com/py
 **A**：opencv的tps需要标出上下边界对应的点，这个点很难通过传统方法或者深度学习方法获取。PaddleOCR里StarNet网络中的tps模块实现了自动学点，自动校正，可以直接尝试这个。
 
 #### Q2.3.17: StyleText 合成数据效果不好？
-**A**：StyleText模型生成的数据主要用于OCR识别模型的训练。PaddleOCR目前识别模型的输入为32*N，因此当前版本模型主要适用高度为32的数据。建议要合成的数据尺寸设置为32*N。尺寸相差不多的数据也可以生成，尺寸很大或很小的数据效果确实不佳。
+**A**：StyleText模型生成的数据主要用于OCR识别模型的训练。PaddleOCR目前识别模型的输入为32 x N，因此当前版本模型主要适用高度为32的数据。
+建议要合成的数据尺寸设置为32 x N。尺寸相差不多的数据也可以生成，尺寸很大或很小的数据效果确实不佳。
 
 #### Q2.3.18: PaddleOCR develop分支和dygraph分支的区别？
 **A** 目前PaddleOCR有四个分支，分别是：
