@@ -124,7 +124,7 @@ In actual application scenarios, it is often necessary to synthesize pictures in
      * `corpus_file`: Filepath of the corpus. Corpus file should be a text file which will be split by line-endings（'\n'）. Corpus generator samples one line each time.
 
 
-Example of corpus file: 
+Example of corpus file:
 ```
 PaddleOCR
 飞桨文字识别

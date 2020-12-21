@@ -128,7 +128,7 @@ python3 tools/synth_image.py -c configs/config.yml --style_image examples/style_
 2. 运行`tools/synth_dataset`合成数据：
 
    ``` bash
-   python tools/synth_dataset.py -c configs/dataset_config.yml
+   python3 tools/synth_dataset.py -c configs/dataset_config.yml
    ```
    我们在examples目录下提供了样例图片和语料。
     <div align="center">
