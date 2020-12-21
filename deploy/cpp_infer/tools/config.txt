@@ -11,7 +11,7 @@ max_side_len  960
 det_db_thresh  0.3
 det_db_box_thresh  0.5
 det_db_unclip_ratio  2.0
-det_model_dir  ./inference/ch__ppocr_mobile_v2.0_det_infer/
+det_model_dir  ./inference/ch_ppocr_mobile_v2.0_det_infer/
 
 # cls config
 use_angle_cls 0

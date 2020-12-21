@@ -6,6 +6,10 @@ PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field. I
 
 <img src="./data/gif/steps_en.gif" width="100%"/>
 
+### Recent Update
+
+- 2020.12.18: Support re-recognition of a single label box (by [ninetailskim](https://github.com/ninetailskim) ), perfect shortcut keys.
+
 ## Installation
 
 ### 1. Install PaddleOCR
@@ -92,11 +96,30 @@ Therefore, if the recognition result has been manually changed before, it may ch
 
 ## Explanation
 
+### Shortcut keys
+
+| Shortcut keys    | Description                                      |
+| ---------------- | ------------------------------------------------ |
+| Ctrl + shift + A | Automatically label all unchecked images         |
+| Ctrl + shift + R | Re-recognize all the labels of the current image |
+| W                | Create a rect box                                |
+| Q                | Create a four-points box                         |
+| Ctrl + E         | Edit label of the selected box                   |
+| Ctrl + R         | Re-recognize the selected box                    |
+| Backspace        | Delete the selected box                          |
+| Ctrl + V         | Check image                                      |
+| Ctrl + Shift + d | Delete image                                     |
+| D                | Next image                                       |
+| A                | Previous image                                   |
+| Ctrl++           | Zoom in                                          |
+| Ctrl--           | Zoom out                                         |
+| ↑→↓←             | Move selected box                                |
+
 ### Built-in Model
 
 - Default model: PPOCRLabel uses the Chinese and English ultra-lightweight OCR model in PaddleOCR by default, supports Chinese, English and number recognition, and multiple language detection.
 
-- Model language switching: Changing the built-in model language is supportable by clicking "PaddleOCR"-"Choose OCR Model" in the menu bar. Currently supported languages​include French, German, Korean, and Japanese.
+- Model language switching: Changing the built-in model language is supportable by clicking "PaddleOCR"-"Choose OCR Model" in the menu bar. Currently supported languages​include French, German, Korean, and Japanese. 
   For specific model download links, please refer to [PaddleOCR Model List](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/models_list_en.md#multilingual-recognition-modelupdating)
 
 - Custom model: The model trained by users can be replaced by modifying PPOCRLabel.py in [PaddleOCR class instantiation](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/PPOCRLabel/PPOCRLabel.py#L110) referring [Custom Model Code](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/whl_en.md#use-custom-model)

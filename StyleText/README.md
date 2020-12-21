@@ -22,7 +22,7 @@ English | [简体中文](README_ch.md)
 </div>
 
 
-The Style-Text data synthesis tool is a tool based on Baidu's self-developed text editing algorithm "Editing Text in the Wild" [https://arxiv.org/abs/1908.03047](https://arxiv.org/abs/1908.03047).
+The Style-Text data synthesis tool is a tool based on Baidu and HUST cooperation research work, "Editing Text in the Wild" [https://arxiv.org/abs/1908.03047](https://arxiv.org/abs/1908.03047).
 
 Different from the commonly used GAN-based data synthesis tools, the main framework of Style-Text includes:
 * (1) Text foreground style transfer module.
@@ -69,10 +69,15 @@ fusion_generator:
 1. You can run `tools/synth_image` and generate the demo image, which is saved in the current folder.
 
 ```python
-python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_images/2.jpg --text_corpus PaddleOCR --language en
+python3 tools/synth_image.py -c configs/config.yml --style_image examples/style_images/2.jpg --text_corpus PaddleOCR --language en
 ```
 
-* Note: The language options is correspond to the corpus. Currently, the tool only supports English, Simplified Chinese and Korean.
+* Note 1: The language options is correspond to the corpus. Currently, the tool only supports English, Simplified Chinese and Korean.
+* Note 2: Synth-Text is mainly used to generate images for OCR recognition models.
+  So the height of style images should be around 32 pixels. Images in other sizes may behave poorly.
+* Note 3: You can modify `use_gpu` in `configs/config.yml` to determine whether to use GPU for prediction.
+
+
 
 For example, enter the following image and corpus `PaddleOCR`.
 
@@ -136,9 +141,21 @@ We provide a general dataset containing Chinese, English and Korean (50,000 imag
 2. You can run the following command to start synthesis task:
 
    ``` bash
-   python3 -m tools.synth_dataset.py -c configs/dataset_config.yml
+   python3 tools/synth_dataset.py -c configs/dataset_config.yml
    ```
 
+We also provide example corpus and images in `examples` folder.
+    <div align="center">
+        <img src="examples/style_images/1.jpg" width="300">
+        <img src="examples/style_images/2.jpg" width="300">
+    </div>
+If you run the code above directly, you will get example output data in `output_data` folder.
+You will get synthesis images and labels as below:
+   <div align="center">
+       <img src="doc/images/12.png" width="800">
+   </div>
+There will be some cache under the `label` folder. If the program exit unexpectedly, you can find cached labels there.
+When the program finish normally, you will find all the labels in `label.txt` which give the final results.
 
 <a name="Applications"></a>
 ### Applications

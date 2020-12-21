@@ -117,7 +117,7 @@ python3 tools/eval.py -c configs/cls/cls_mv3.yml -o Global.checkpoints={path/to/
 
 ```
 # 预测分类结果
-python3 tools/infer_cls.py -c configs/cls/cls_mv3.yml -o Global.checkpoints={path/to/weights}/best_accuracy Global.infer_img=doc/imgs_words/ch/word_1.jpg
+python3 tools/infer_cls.py -c configs/cls/cls_mv3.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.load_static_weights=false Global.infer_img=doc/imgs_words/ch/word_1.jpg
 ```
 
 预测图片：
