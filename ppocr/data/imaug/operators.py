@@ -119,10 +119,10 @@ class DetResizeForTest(object):
         if 'image_shape' in kwargs:
             self.image_shape = kwargs['image_shape']
             self.resize_type = 1
-        if 'limit_side_len' in kwargs:
+        elif 'limit_side_len' in kwargs:
             self.limit_side_len = kwargs['limit_side_len']
             self.limit_type = kwargs.get('limit_type', 'min')
-        if 'resize_long' in kwargs:
+        elif 'resize_long' in kwargs:
             self.resize_type = 2
             self.resize_long = kwargs.get('resize_long', 960)
         else:

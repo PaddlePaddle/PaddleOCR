@@ -131,7 +131,7 @@ def check_gpu(use_gpu):
           "model on CPU"
 
     try:
-        if use_gpu and not paddle.fluid.is_compiled_with_cuda():
+        if use_gpu and not paddle.is_compiled_with_cuda():
             print(err)
             sys.exit(1)
     except Exception as e:
