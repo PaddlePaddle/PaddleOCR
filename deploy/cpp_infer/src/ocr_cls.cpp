@@ -35,26 +35,16 @@ cv::Mat Classifier::Run(cv::Mat &img) {
   this->permute_op_.Run(&resize_img, input.data());
 
   // Inference.
-  if (this->use_zero_copy_run_) {
-    auto input_names = this->predictor_->GetInputNames();
-    auto input_t = this->predictor_->GetInputTensor(input_names[0]);
-    input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
-    input_t->copy_from_cpu(input.data());
-    this->predictor_->ZeroCopyRun();
-  } else {
-    paddle::PaddleTensor input_t;
-    input_t.shape = {1, 3, resize_img.rows, resize_img.cols};
-    input_t.data =
-        paddle::PaddleBuf(input.data(), input.size() * sizeof(float));
-    input_t.dtype = PaddleDType::FLOAT32;
-    std::vector<paddle::PaddleTensor> outputs;
-    this->predictor_->Run({input_t}, &outputs, 1);
-  }
+  auto input_names = this->predictor_->GetInputNames();
+  auto input_t = this->predictor_->GetInputHandle(input_names[0]);
+  input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
+  input_t->CopyFromCpu(input.data());
+  this->predictor_->Run();
 
   std::vector<float> softmax_out;
   std::vector<int64_t> label_out;
   auto output_names = this->predictor_->GetOutputNames();
-  auto softmax_out_t = this->predictor_->GetOutputTensor(output_names[0]);
+  auto softmax_out_t = this->predictor_->GetOutputHandle(output_names[0]);
   auto softmax_shape_out = softmax_out_t->shape();
 
   int softmax_out_num =
@@ -63,7 +53,7 @@ cv::Mat Classifier::Run(cv::Mat &img) {
 
   softmax_out.resize(softmax_out_num);
 
-  softmax_out_t->copy_to_cpu(softmax_out.data());
+  softmax_out_t->CopyToCpu(softmax_out.data());
 
   float score = 0;
   int label = 0;
@@ -95,7 +85,7 @@ void Classifier::LoadModel(const std::string &model_dir) {
   }
 
   // false for zero copy tensor
-  config.SwitchUseFeedFetchOps(!this->use_zero_copy_run_);
+  config.SwitchUseFeedFetchOps(false);
   // true for multiple input
   config.SwitchSpecifyInputNames(true);
 
@@ -104,6 +94,6 @@ void Classifier::LoadModel(const std::string &model_dir) {
   config.EnableMemoryOptim();
   config.DisableGlogInfo();
 
-  this->predictor_ = CreatePaddlePredictor(config);
+  this->predictor_ = CreatePredictor(config);
 }
 } // namespace PaddleOCR
