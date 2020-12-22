@@ -33,7 +33,7 @@ def parse_args():
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     parser.add_argument("--use_fp16", type=str2bool, default=False)
-    parser.add_argument("--gpu_mem", type=int, default=8000)
+    parser.add_argument("--gpu_mem", type=int, default=500)
 
     # params for text detector
     parser.add_argument("--image_dir", type=str)
@@ -62,7 +62,7 @@ def parse_args():
     parser.add_argument("--rec_model_dir", type=str)
     parser.add_argument("--rec_image_shape", type=str, default="3, 32, 320")
     parser.add_argument("--rec_char_type", type=str, default='ch')
-    parser.add_argument("--rec_batch_num", type=int, default=1)
+    parser.add_argument("--rec_batch_num", type=int, default=6)
     parser.add_argument("--max_text_length", type=int, default=25)
     parser.add_argument(
         "--rec_char_dict_path",
@@ -123,6 +123,7 @@ def create_predictor(args, mode, logger):
             # cache 10 different shapes for mkldnn to avoid memory leak
             config.set_mkldnn_cache_capacity(10)
             config.enable_mkldnn()
+            args.rec_batch_num = 1
 
     # config.enable_memory_optim()
     config.disable_glog_info()
