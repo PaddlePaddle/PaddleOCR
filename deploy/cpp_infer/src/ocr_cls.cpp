@@ -76,24 +76,30 @@ void Classifier::LoadModel(const std::string &model_dir) {
 
   if (this->use_gpu_) {
     config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
-  } else {
-    config.DisableGpu();
-    if (this->use_mkldnn_) {
-      config.EnableMKLDNN();
+    if (this->use_tensorrt_) {
+      config.EnableTensorRtEngine(
+          1 << 20, 10, 3,
+          this->use_fp16_ ? paddle_infer::Config::Precision::kHalf
+                          : paddle_infer::Config::Precision::kFloat32,
+          false, false);
+    } else {
+      config.DisableGpu();
+      if (this->use_mkldnn_) {
+        config.EnableMKLDNN();
+      }
+      config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
     }
-    config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
+
+    // false for zero copy tensor
+    config.SwitchUseFeedFetchOps(false);
+    // true for multiple input
+    config.SwitchSpecifyInputNames(true);
+
+    config.SwitchIrOptim(true);
+
+    config.EnableMemoryOptim();
+    config.DisableGlogInfo();
+
+    this->predictor_ = CreatePredictor(config);
   }
-
-  // false for zero copy tensor
-  config.SwitchUseFeedFetchOps(false);
-  // true for multiple input
-  config.SwitchSpecifyInputNames(true);
-
-  config.SwitchIrOptim(true);
-
-  config.EnableMemoryOptim();
-  config.DisableGlogInfo();
-
-  this->predictor_ = CreatePredictor(config);
-}
 } // namespace PaddleOCR
