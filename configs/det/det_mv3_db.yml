@@ -67,7 +67,7 @@ Train:
     data_dir: ./train_data/icdar2015/text_localization/
     label_file_list:
       - ./train_data/icdar2015/text_localization/train_icdar2015_label.txt
-    ratio_list: [0.5]
+    ratio_list: [1.0]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
