@@ -9,54 +9,44 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2020.12.21）](#近期更新)
+* [近期更新（2020.12.28）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
 * [【理论篇】OCR通用31个问题](#OCR通用问题)
   * [基础知识7题](#基础知识)
   * [数据集7题](#数据集2)
   * [模型训练调优17题](#模型训练调优2)
-* [【实战篇】PaddleOCR实战91个问题](#PaddleOCR实战问题)
-  * [使用咨询24题](#使用咨询)
+* [【实战篇】PaddleOCR实战96个问题](#PaddleOCR实战问题)
+  * [使用咨询28题](#使用咨询)
   * [数据集17题](#数据集3)
-  * [模型训练调优25题](#模型训练调优3)
+  * [模型训练调优26题](#模型训练调优3)
   * [预测部署25题](#预测部署3)
 
 
 <a name="近期更新"></a>
-## 近期更新（2020.12.21）
+## 近期更新（2020.12.28）
 
-#### Q2.3.17: StyleText 合成数据效果不好？
-**A**： StyleText模型生成的数据主要用于OCR识别模型的训练。PaddleOCR目前识别模型的输入为32 x N，因此当前版本模型主要适用高度为32的数据。
-建议要合成的数据尺寸设置为32 x N。尺寸相差不多的数据也可以生成，尺寸很大或很小的数据效果确实不佳。
+#### Q3.1.25: 使用dygraph分支，在docker中训练PaddleOCR的时候，数据路径没有任何问题，但是一直报错`reader rasied an exception`，这是为什么呢？
 
-#### Q3.1.22： ModuleNotFoundError: No module named 'paddle.nn'，
-**A**： paddle.nn是Paddle2.0版本特有的功能，请安装大于等于Paddle 2.0.0rc1的版本，安装方式为
-```
-python3 -m pip install paddlepaddle-gpu==2.0.0rc1 -i https://mirror.baidu.com/pypi/simple
-```
+**A** 创建docker的时候，`/dev/shm`的默认大小为64M，如果使用多进程读取数据，共享内存可能不够，因此需要给`/dev/shm`分配更大的空间，在创建docker的时候，传入`--shm-size=8g`表示给`/dev/shm`分配8g的空间。
 
-#### Q3.1.23： ImportError: /usr/lib/x86_64_linux-gnu/libstdc++.so.6:version `CXXABI_1.3.11` not found (required by /usr/lib/python3.6/site-package/paddle/fluid/core+avx.so)
-**A**：这个问题是glibc版本不足导致的，Paddle2.0rc1版本对gcc版本和glib版本有更高的要求，推荐gcc版本为8.2，glibc版本2.12以上。
-如果您的环境不满足这个要求，或者使用的docker镜像为:
-`hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev`
-`hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev`，安装Paddle2.0rc版本可能会出现上述错误，
-2.0版本推荐使用新的docker镜像 `paddlepaddle/paddle:latest-dev-cuda10.1-cudnn7-gcc82`。
-或者访问[dockerhub](https://hub.docker.com/r/paddlepaddle/paddle/tags/)获得与您机器适配的镜像。
+#### Q3.1.26: 在repo中没有找到Lite和PaddleServing相关的部署教程，这是在哪里呢？
 
-#### Q3.1.24:  PaddleOCR develop分支和dygraph分支的区别？
-**A**：目前PaddleOCR有四个分支，分别是：
-- develop：基于Paddle静态图开发的分支，推荐使用paddle1.8 或者2.0版本，该分支具备完善的模型训练、预测、推理部署、量化裁剪等功能，领先于release/1.1分支。
-- release/1.1：PaddleOCR 发布的第一个稳定版本，基于静态图开发，具备完善的训练、预测、推理部署、量化裁剪等功能。
-- dygraph：基于Paddle动态图开发的分支，未来将作为主要开发分支，运行要求使用Paddle2.0rc1版本，目前仍在开发中。
-- release/2.0-rc1-0：PaddleOCR发布的第二个稳定版本，基于动态图和paddle2.0版本开发，动态图开发的工程更易于调试，目前支，支持模型训练、预测，暂不支持移动端部署。
+**A** 目前PaddleOCR的默认分支为dygraph，关于Lite和PaddleLite的动态图部署还在适配中，如果希望在Lite端或者使用PaddleServing部署，推荐使用develop分支（静态图）的代码。
 
-如果您已经上手过PaddleOCR，并且希望在各种环境上部署PaddleOCR，目前建议使用静态图分支，develop或者release/1.1分支。如果您是初学者，想快速训练，调试PaddleOCR中的算法，建议尝鲜PaddleOCR dygraph分支。
+#### Q3.1.27: 如何可视化acc,loss曲线图,模型网络结构图等？
 
-**注意**：develop和dygraph分支要求的Paddle版本、本地环境有差别，请注意不同分支环境安装部分的差异。
+**A** 在配置文件里有`use_visualdl`的参数，设置为True即可，更多的使用命令可以参考：[VisualDL使用指南](https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0-rc1/guides/03_VisualDL/visualdl.html)。
 
+#### Q3.1.28: 在使用StyleText数据合成工具的时候，报错`ModuleNotFoundError: No module named 'utils.config'`，这是为什么呢？
 
-#### Q3.4.25 : PaddleOCR模型Python端预测和C++预测结果不一致？
-**A**：正常来说，python端预测和C++预测文本是一致的，如果预测结果差异较大，建议首先排查diff出现在检测模型还是识别模型，或者尝试换其他模型是否有类似的问题。其次，检查python端和C++端数据处理部分是否存在差异，建议保存环境，更新PaddleOCR代码再试下。如果更新代码或者更新代码都没能解决，建议在PaddleOCR群里或者issue中抛出您的问题。
+**A** 有2个解决方案
+- 在StyleText路径下面设置PYTHONPATH：`export PYTHONPATH=./`
+- 拉取最新的代码
+
+#### Q3.3.26: PaddleOCR在训练的时候一直使用cosine_decay的学习率下降策略，这是为什么呢？
+
+**A**: cosine_decay表示在训练的过程中，学习率按照cosine的变化趋势逐渐下降至0，在迭代轮数更长的情况下，比常量的学习率变化策略会有更好的收敛效果，因此在实际训练的时候，均采用了cosine_decay，来获得精度更高的模型。
+
 
 
 <a name="OCR精选10个问题"></a>
@@ -431,7 +421,23 @@ python3 -m pip install paddlepaddle-gpu==2.0.0rc1 -i https://mirror.baidu.com/py
 
 **注意**：develop和dygraph分支要求的Paddle版本、本地环境有差别，请注意不同分支环境安装部分的差异。
 
+#### Q3.1.25: 使用dygraph分支，在docker中训练PaddleOCR的时候，数据路径没有任何问题，但是一直报错`reader rasied an exception`，这是为什么呢？
 
+**A** 创建docker的时候，`/dev/shm`的默认大小为64M，如果使用多进程读取数据，共享内存可能不够，因此需要给`/dev/shm`分配更大的空间，在创建docker的时候，传入`--shm-size=8g`表示给`/dev/shm`分配8g的空间。
+
+#### Q3.1.26: 在repo中没有找到Lite和PaddleServing相关的部署教程，这是在哪里呢？
+
+**A** 目前PaddleOCR的默认分支为dygraph，关于Lite和PaddleLite的动态图部署还在适配中，如果希望在Lite端或者使用PaddleServing部署，推荐使用develop分支（静态图）的代码。
+
+#### Q3.1.27: 如何可视化acc,loss曲线图,模型网络结构图等？
+
+**A** 在配置文件里有`use_visualdl`的参数，设置为True即可，更多的使用命令可以参考：[VisualDL使用指南](https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0-rc1/guides/03_VisualDL/visualdl.html)。
+
+#### Q3.1.28: 在使用StyleText数据合成工具的时候，报错`ModuleNotFoundError: No module named 'utils.config'`，这是为什么呢？
+
+**A** 有2个解决方案
+- 在StyleText路径下面设置PYTHONPATH：`export PYTHONPATH=./`
+- 拉取最新的代码
 
 <a name="数据集3"></a>
 ### 数据集
@@ -657,6 +663,10 @@ ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 #### Q3.3.25: 识别模型训练时，loss能正常下降，但acc一直为0
 
 **A**: 识别模型训练初期acc为0是正常的，多训一段时间指标就上来了。
+
+#### Q3.3.26: PaddleOCR在训练的时候一直使用cosine_decay的学习率下降策略，这是为什么呢？
+
+**A**: cosine_decay表示在训练的过程中，学习率按照cosine的变化趋势逐渐下降至0，在迭代轮数更长的情况下，比常量的学习率变化策略会有更好的收敛效果，因此在实际训练的时候，均采用了cosine_decay，来获得精度更高的模型。
 
 <a name="预测部署3"></a>
 
