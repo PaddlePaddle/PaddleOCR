@@ -26,7 +26,6 @@ def build_metric(config):
     from .det_metric import DetMetric
     from .rec_metric import RecMetric
     from .cls_metric import ClsMetric
-    from .rec_metric import RecMetric
 
     support_dict = ['DetMetric', 'RecMetric', 'ClsMetric']
 
