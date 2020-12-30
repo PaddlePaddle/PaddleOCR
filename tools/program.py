@@ -179,9 +179,9 @@ def train(config,
     if 'start_epoch' in best_model_dict:
         start_epoch = best_model_dict['start_epoch']
     else:
-        start_epoch = 1
+        start_epoch = 0
 
-    for epoch in range(start_epoch, epoch_num + 1):
+    for epoch in range(start_epoch, epoch_num):
         if epoch > 0:
             train_dataloader = build_dataloader(config, 'Train', device, logger)
         train_batch_cost = 0.0
@@ -194,7 +194,11 @@ def train(config,
                 break
             lr = optimizer.get_lr()
             images = batch[0]
-            preds = model(images)
+            if config['Architecture']['algorithm'] == "SRN":
+                others = batch[-4:]
+                preds = model(images, others)
+            else:
+                preds = model(images)
             loss = loss_class(preds, batch)
             avg_loss = loss['loss']
             avg_loss.backward()
@@ -212,6 +216,7 @@ def train(config,
             stats['lr'] = lr
             train_stats.update(stats)
 
+            #cal_metric_during_train = False
             if cal_metric_during_train:  # onlt rec and cls need
                 batch = [item.numpy() for item in batch]
                 post_result = post_process_class(preds, batch[1])
@@ -312,8 +317,9 @@ def eval(model, valid_dataloader, post_process_class, eval_class):
             if idx >= len(valid_dataloader):
                 break
             images = batch[0]
+            others = batch[-4:]
             start = time.time()
-            preds = model(images)
+            preds = model(images, others)
 
             batch = [item.numpy() for item in batch]
             # Obtain usable results from post-processing methods

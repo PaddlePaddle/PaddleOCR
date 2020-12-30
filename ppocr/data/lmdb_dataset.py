@@ -20,9 +20,9 @@ import cv2
 from .imaug import transform, create_operators
 
 
-class LMDBDateSet(Dataset):
+class LMDBDataSet(Dataset):
     def __init__(self, config, mode, logger):
-        super(LMDBDateSet, self).__init__()
+        super(LMDBDataSet, self).__init__()
 
         global_config = config['Global']
         dataset_config = config[mode]['dataset']

@@ -33,7 +33,7 @@ import paddle.distributed as dist
 
 from ppocr.data.imaug import transform, create_operators
 from ppocr.data.simple_dataset import SimpleDataSet
-from ppocr.data.lmdb_dataset import LMDBDateSet
+from ppocr.data.lmdb_dataset import LMDBDataSet
 
 __all__ = ['build_dataloader', 'transform', 'create_operators']
 
@@ -54,7 +54,7 @@ signal.signal(signal.SIGTERM, term_mp)
 def build_dataloader(config, mode, device, logger):
     config = copy.deepcopy(config)
 
-    support_dict = ['SimpleDataSet', 'LMDBDateSet']
+    support_dict = ['SimpleDataSet', 'LMDBDataSet']
     module_name = config[mode]['dataset']['name']
     assert module_name in support_dict, Exception(
         'DataSet only support {}'.format(support_dict))

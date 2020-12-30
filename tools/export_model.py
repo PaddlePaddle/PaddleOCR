@@ -31,6 +31,14 @@ from ppocr.utils.logging import get_logger
 from tools.program import load_config, merge_config, ArgsParser
 
 
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", "--config", help="configuration file to use")
+    parser.add_argument(
+        "-o", "--output_path", type=str, default='./output/infer/')
+    return parser.parse_args()
+
+
 def main():
     FLAGS = ArgsParser().parse_args()
     config = load_config(FLAGS.config)
@@ -51,14 +59,33 @@ def main():
     model.eval()
 
     save_path = '{}/inference'.format(config['Global']['save_inference_dir'])
-    infer_shape = [3, 32, 100] if config['Architecture'][
-        'model_type'] != "det" else [3, 640, 640]
-    model = to_static(
-        model,
-        input_spec=[
+
+    if config['Architecture']['algorithm'] == "SRN":
+        other_shape = [
             paddle.static.InputSpec(
-                shape=[None] + infer_shape, dtype='float32')
-        ])
+                shape=[None, 1, 64, 256], dtype='float32'), [
+                    paddle.static.InputSpec(
+                        shape=[None, 256, 1],
+                        dtype="int64"), paddle.static.InputSpec(
+                            shape=[None, 25, 1],
+                            dtype="int64"), paddle.static.InputSpec(
+                                shape=[None, 8, 25, 25], dtype="int64"),
+                    paddle.static.InputSpec(
+                        shape=[None, 8, 25, 25], dtype="int64")
+                ]
+        ]
+        model = to_static(model, input_spec=other_shape)
+
+    else:
+        infer_shape = [3, 32, 100] if config['Architecture'][
+            'model_type'] != "det" else [3, 640, 640]
+        model = to_static(
+            model,
+            input_spec=[
+                paddle.static.InputSpec(
+                    shape=[None] + infer_shape, dtype='float32')
+            ])
+
     paddle.jit.save(model, save_path)
     logger.info('inference model is saved to {}'.format(save_path))
 
