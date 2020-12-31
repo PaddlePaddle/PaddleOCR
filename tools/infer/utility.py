@@ -83,6 +83,7 @@ def parse_args():
 
     parser.add_argument("--enable_mkldnn", type=str2bool, default=False)
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
+    parser.add_argument("--use_tensorrt", type=str2bool, default=False)
 
     return parser.parse_args()
 
