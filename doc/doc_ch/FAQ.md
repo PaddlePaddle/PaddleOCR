@@ -11,23 +11,19 @@
 
 * [近期更新（2021.1.4）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
-* [【理论篇】OCR通用32个问题](#OCR通用问题)
+* [【理论篇】OCR通用31个问题](#OCR通用问题)
   * [基础知识7题](#基础知识)
   * [数据集7题](#数据集2)
-  * [模型训练调优18题](#模型训练调优2)
-* [【实战篇】PaddleOCR实战100个问题](#PaddleOCR实战问题)
+  * [模型训练调优17题](#模型训练调优2)
+* [【实战篇】PaddleOCR实战101个问题](#PaddleOCR实战问题)
   * [使用咨询31题](#使用咨询)
   * [数据集17题](#数据集3)
   * [模型训练调优26题](#模型训练调优3)
-  * [预测部署26题](#预测部署3)
+  * [预测部署27题](#预测部署3)
 
 
 <a name="近期更新"></a>
 ## 近期更新（2021.1.4）
-
-#### Q2.3.18: 请问有哪些修改骨干网络的技巧？
-
-**A**: 可以参考HS-ResNet这篇文章:https://arxiv.org/pdf/2010.07621.pdf
 
 #### Q3.1.29: PPOCRLabel创建矩形框时只能拖出正方形，如何进行矩形标注？
 
@@ -51,6 +47,12 @@ response = request.urlopen('http://i1.whymtj.com/uploads/tu/201902/9999/52491ae4
 img_array = np.array(bytearray(response.read()), dtype=np.uint8)
 img = cv.imdecode(img_array, -1)
 ```
+
+### Q3.4.27: C++ 端侧部署可以只对OCR的检测部署吗？
+
+**A** 可以的，识别和检测模块是解耦的。如果想对检测部署，需要自己修改一下main函数，
+只保留检测相关就可以:https://github.com/PaddlePaddle/PaddleOCR/blob/de3e2e7cd3b8b65ee02d7a41e570fa5b511a3c1d/deploy/cpp_infer/src/main.cpp#L72
+
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -292,9 +294,6 @@ img = cv.imdecode(img_array, -1)
 **A**：StyleText模型生成的数据主要用于OCR识别模型的训练。PaddleOCR目前识别模型的输入为32 x N，因此当前版本模型主要适用高度为32的数据。
 建议要合成的数据尺寸设置为32 x N。尺寸相差不多的数据也可以生成，尺寸很大或很小的数据效果确实不佳。
 
-#### Q2.3.18: 请问有哪些修改骨干网络的技巧？
-
-**A**: 可以参考HS-ResNet这篇文章:https://arxiv.org/pdf/2010.07621.pdf
 
 
 <a name="PaddleOCR实战问题"></a>
@@ -816,3 +815,8 @@ response = request.urlopen('http://i1.whymtj.com/uploads/tu/201902/9999/52491ae4
 img_array = np.array(bytearray(response.read()), dtype=np.uint8)
 img = cv.imdecode(img_array, -1)
 ```
+
+### Q3.4.27: C++ 端侧部署可以只对OCR的检测部署吗？
+
+**A** 可以的，识别和检测模块是解耦的。如果想对检测部署，需要自己修改一下main函数，
+只保留检测相关就可以:https://github.com/PaddlePaddle/PaddleOCR/blob/de3e2e7cd3b8b65ee02d7a41e570fa5b511a3c1d/deploy/cpp_infer/src/main.cpp#L72
