@@ -27,20 +27,20 @@
 
 #### Q3.1.29: PPOCRLabel创建矩形框时只能拖出正方形，如何进行矩形标注？
 
-**A** 取消勾选：“编辑”-“正方形标注”
+**A**： 取消勾选：“编辑”-“正方形标注”
 
 #### Q3.1.30: Style-Text 如何不文字风格迁移，就像普通文本生成程序一样默认字体直接输出到分割的背景图？
 
-**A** 使用image_synth模式会输出fake_bg.jpg，即为背景图。如果想要批量提取背景，可以稍微修改一下代码，将fake_bg保存下来即可。要修改的位置：
+**A**： 使用image_synth模式会输出fake_bg.jpg，即为背景图。如果想要批量提取背景，可以稍微修改一下代码，将fake_bg保存下来即可。要修改的位置：
 https://github.com/PaddlePaddle/PaddleOCR/blob/de3e2e7cd3b8b65ee02d7a41e570fa5b511a3c1d/StyleText/engine/synthesisers.py#L68
 
 #### Q3.1.31: 怎么输出网络结构以及每层的参数信息？
 
-**A** 可以使用 `paddle.summary`， 具体参考:https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0-rc1/api/paddle/hapi/model_summary/summary_cn.html#summary。
+**A**： 可以使用 `paddle.summary`， 具体参考:https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0-rc1/api/paddle/hapi/model_summary/summary_cn.html#summary。
 
-### Q3.4.26: 目前paddle hub serving 只支持 imgpath，如果我想用imgurl 去哪里改呢？
+#### Q3.4.26: 目前paddle hub serving 只支持 imgpath，如果我想用imgurl 去哪里改呢？
 
-**A**: 图片是在这里读取的：https://github.com/PaddlePaddle/PaddleOCR/blob/67ef25d593c4eabfaaceb22daade4577f53bed81/deploy/hubserving/ocr_system/module.py#L55，
+**A**： 图片是在这里读取的：https://github.com/PaddlePaddle/PaddleOCR/blob/67ef25d593c4eabfaaceb22daade4577f53bed81/deploy/hubserving/ocr_system/module.py#L55，
 可以参考下面的写法，将url path转化为np array（https://cloud.tencent.com/developer/article/1467840）
 ```
 response = request.urlopen('http://i1.whymtj.com/uploads/tu/201902/9999/52491ae4ba.jpg')
@@ -48,9 +48,9 @@ img_array = np.array(bytearray(response.read()), dtype=np.uint8)
 img = cv.imdecode(img_array, -1)
 ```
 
-### Q3.4.27: C++ 端侧部署可以只对OCR的检测部署吗？
+#### Q3.4.27: C++ 端侧部署可以只对OCR的检测部署吗？
 
-**A** 可以的，识别和检测模块是解耦的。如果想对检测部署，需要自己修改一下main函数，
+**A**： 可以的，识别和检测模块是解耦的。如果想对检测部署，需要自己修改一下main函数，
 只保留检测相关就可以:https://github.com/PaddlePaddle/PaddleOCR/blob/de3e2e7cd3b8b65ee02d7a41e570fa5b511a3c1d/deploy/cpp_infer/src/main.cpp#L72
 
 
