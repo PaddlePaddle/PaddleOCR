@@ -9,9 +9,9 @@
 ### 1.文本检测算法
 
 PaddleOCR开源的文本检测算法列表：
-- [x]  DB([paper]( https://arxiv.org/abs/1911.08947) )（ppocr推荐）
-- [x]  EAST([paper](https://arxiv.org/abs/1704.03155))
-- [x]  SAST([paper](https://arxiv.org/abs/1908.05498))
+- [x]  DB([paper]( https://arxiv.org/abs/1911.08947)) [2]（ppocr推荐）
+- [x]  EAST([paper](https://arxiv.org/abs/1704.03155))[1]
+- [x]  SAST([paper](https://arxiv.org/abs/1908.05498))[4]
 
 在ICDAR2015文本检测公开数据集上，算法效果如下：
 
@@ -38,13 +38,13 @@ PaddleOCR文本检测算法的训练和使用请参考文档教程中[模型训�
 ### 2.文本识别算法
 
 PaddleOCR基于动态图开源的文本识别算法列表：
-- [x]  CRNN([paper](https://arxiv.org/abs/1507.05717) )（ppocr推荐）
-- [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))
-- [ ]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html)) coming soon
-- [ ]  RARE([paper](https://arxiv.org/abs/1603.03915v1)) coming soon
-- [ ]  SRN([paper](https://arxiv.org/abs/2003.12294)) coming soon
+- [x]  CRNN([paper](https://arxiv.org/abs/1507.05717))[7]（ppocr推荐）
+- [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))[10]
+- [ ]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))[11] coming soon
+- [ ]  RARE([paper](https://arxiv.org/abs/1603.03915v1))[12] coming soon
+- [ ]  SRN([paper](https://arxiv.org/abs/2003.12294))[5] coming soon
 
-参考[DTRB](https://arxiv.org/abs/1904.01906)文字识别训练和评估流程，使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估，算法效果如下：
+参考[DTRB][3](https://arxiv.org/abs/1904.01906)文字识别训练和评估流程，使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估，算法效果如下：
 
 |模型|骨干网络|Avg Accuracy|模型存储命名|下载链接|
 |-|-|-|-|-|

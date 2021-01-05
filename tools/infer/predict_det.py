@@ -18,11 +18,12 @@ __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 
+os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
+
 import cv2
 import numpy as np
 import time
 import sys
-import paddle
 
 import tools.infer.utility as utility
 from ppocr.utils.logging import get_logger
@@ -35,8 +36,8 @@ logger = get_logger()
 
 class TextDetector(object):
     def __init__(self, args):
+        self.args = args
         self.det_algorithm = args.det_algorithm
-        self.use_zero_copy_run = args.use_zero_copy_run
         pre_process_list = [{
             'DetResizeForTest': {
                 'limit_side_len': args.det_limit_side_len,
@@ -70,6 +71,11 @@ class TextDetector(object):
             postprocess_params["cover_thresh"] = args.det_east_cover_thresh
             postprocess_params["nms_thresh"] = args.det_east_nms_thresh
         elif self.det_algorithm == "SAST":
+            pre_process_list[0] = {
+                'DetResizeForTest': {
+                    'resize_long': args.det_limit_side_len
+                }
+            }
             postprocess_params['name'] = 'SASTPostProcess'
             postprocess_params["score_thresh"] = args.det_sast_score_thresh
             postprocess_params["nms_thresh"] = args.det_sast_nms_thresh
@@ -157,12 +163,8 @@ class TextDetector(object):
         img = img.copy()
         starttime = time.time()
 
-        if self.use_zero_copy_run:
-            self.input_tensor.copy_from_cpu(img)
-            self.predictor.zero_copy_run()
-        else:
-            im = paddle.fluid.core.PaddleTensor(img)
-            self.predictor.run([im])
+        self.input_tensor.copy_from_cpu(img)
+        self.predictor.run()
         outputs = []
         for output_tensor in self.output_tensors:
             output = output_tensor.copy_to_cpu()

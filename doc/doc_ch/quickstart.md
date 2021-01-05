@@ -96,5 +96,5 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_mode
 
 此外，文档教程中也提供了中文OCR模型的其他预测部署方式：
 - [基于C++预测引擎推理](../../deploy/cpp_infer/readme.md)
-- [服务部署](../../deploy/pdserving/readme.md)
-- [端侧部署](../../deploy/lite/readme.md)
+- [服务部署](../../deploy/hubserving)
+- [端侧部署（目前只支持静态图）](https://github.com/PaddlePaddle/PaddleOCR/tree/develop/deploy/lite)

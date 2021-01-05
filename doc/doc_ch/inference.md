@@ -245,7 +245,10 @@ python3 tools/infer/predict_det.py --det_algorithm="SAST" --image_dir="./doc/img
 超轻量中文识别模型推理，可以执行如下命令：
 
 ```
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --rec_model_dir="./inference/rec_crnn/"
+# 下载超轻量中文识别模型：
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar
+tar xf ch_ppocr_mobile_v2.0_rec_infer.tar
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --rec_model_dir="ch_ppocr_mobile_v2.0_rec_infer"
 ```
 
 ![](../imgs_words/ch/word_4.jpg)
@@ -266,7 +269,6 @@ Predicts of ./doc/imgs_words/ch/word_4.jpg:('实力活力', 0.98458153)
 
 ```
 python3 tools/export_model.py -c configs/rec/rec_r34_vd_none_bilstm_ctc.yml -o Global.pretrained_model=./rec_r34_vd_none_bilstm_ctc_v2.0_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/rec_crnn
-
 ```
 
 CRNN 文本识别模型推理，可以执行如下命令：
@@ -327,7 +329,10 @@ Predicts of ./doc/imgs_words/korean/1.jpg:('바탕으로', 0.9948904)
 方向分类模型推理，可以执行如下命令：
 
 ```
-python3 tools/infer/predict_cls.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --cls_model_dir="./inference/cls/"
+# 下载超轻量中文方向分类器模型：
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
+tar xf ch_ppocr_mobile_v2.0_cls_infer.tar
+python3 tools/infer/predict_cls.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --cls_model_dir="ch_ppocr_mobile_v2.0_cls_infer"
 ```
 
 ![](../imgs_words/ch/word_1.jpg)

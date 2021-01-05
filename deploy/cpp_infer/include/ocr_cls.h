@@ -30,6 +30,8 @@
 #include <include/preprocess_op.h>
 #include <include/utility.h>
 
+using namespace paddle_infer;
+
 namespace PaddleOCR {
 
 class Classifier {
@@ -37,14 +39,12 @@ public:
   explicit Classifier(const std::string &model_dir, const bool &use_gpu,
                       const int &gpu_id, const int &gpu_mem,
                       const int &cpu_math_library_num_threads,
-                      const bool &use_mkldnn, const bool &use_zero_copy_run,
-                      const double &cls_thresh) {
+                      const bool &use_mkldnn, const double &cls_thresh) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
     this->cpu_math_library_num_threads_ = cpu_math_library_num_threads;
     this->use_mkldnn_ = use_mkldnn;
-    this->use_zero_copy_run_ = use_zero_copy_run;
 
     this->cls_thresh = cls_thresh;
 
@@ -57,14 +57,13 @@ public:
   cv::Mat Run(cv::Mat &img);
 
 private:
-  std::shared_ptr<PaddlePredictor> predictor_;
+  std::shared_ptr<Predictor> predictor_;
 
   bool use_gpu_ = false;
   int gpu_id_ = 0;
   int gpu_mem_ = 4000;
   int cpu_math_library_num_threads_ = 4;
   bool use_mkldnn_ = false;
-  bool use_zero_copy_run_ = false;
   double cls_thresh = 0.5;
 
   std::vector<float> mean_ = {0.5f, 0.5f, 0.5f};

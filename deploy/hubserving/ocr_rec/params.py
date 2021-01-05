@@ -13,7 +13,7 @@ def read_params():
 
     #params for text recognizer
     cfg.rec_algorithm = "CRNN"
-    cfg.rec_model_dir = "./inference/ch_ppocr_mobile_v1.1_rec_infer/"
+    cfg.rec_model_dir = "./inference/ch_ppocr_mobile_v2.0_rec_infer/"
 
     cfg.rec_image_shape = "3, 32, 320"
     cfg.rec_char_type = 'ch'
@@ -23,7 +23,7 @@ def read_params():
     cfg.rec_char_dict_path = "./ppocr/utils/ppocr_keys_v1.txt"
     cfg.use_space_char = True
 
-    cfg.use_zero_copy_run = False
     cfg.use_pdserving = False
+    cfg.use_tensorrt = False
 
     return cfg

@@ -25,9 +25,9 @@
 
 namespace PaddleOCR {
 
-class Config {
+class OCRConfig {
 public:
-  explicit Config(const std::string &config_file) {
+  explicit OCRConfig(const std::string &config_file) {
     config_map_ = LoadConfig(config_file);
 
     this->use_gpu = bool(stoi(config_map_["use_gpu"]));
@@ -40,8 +40,6 @@ public:
         stoi(config_map_["cpu_math_library_num_threads"]);
 
     this->use_mkldnn = bool(stoi(config_map_["use_mkldnn"]));
-
-    this->use_zero_copy_run = bool(stoi(config_map_["use_zero_copy_run"]));
 
     this->max_side_len = stoi(config_map_["max_side_len"]);
 
@@ -75,8 +73,6 @@ public:
   int cpu_math_library_num_threads = 1;
 
   bool use_mkldnn = false;
-
-  bool use_zero_copy_run = false;
 
   int max_side_len = 960;
 

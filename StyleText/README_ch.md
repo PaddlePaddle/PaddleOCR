@@ -21,7 +21,7 @@
 </div>
 
 
-Style-Text数据合成工具是基于百度自研的文本编辑算法《Editing Text in the Wild》https://arxiv.org/abs/1908.03047
+Style-Text数据合成工具是基于百度和华科合作研发的文本编辑算法《Editing Text in the Wild》https://arxiv.org/abs/1908.03047
 
 不同于常用的基于GAN的数据合成工具，Style-Text主要框架包括：1.文本前景风格迁移模块 2.背景抽取模块 3.融合模块。经过这样三步，就可以迅速实现图像文本风格迁移。下图是一些该数据合成工具效果图。
 
@@ -61,11 +61,12 @@ fusion_generator:
 输入一张风格图和一段文字语料，运行tools/synth_image，合成单张图片，结果图像保存在当前目录下：
 
 ```python
-python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_images/2.jpg --text_corpus PaddleOCR --language en
+python3 tools/synth_image.py -c configs/config.yml --style_image examples/style_images/2.jpg --text_corpus PaddleOCR --language en
 ```
 * 注1：语言选项和语料相对应，目前该工具只支持英文、简体中文和韩语。
 * 注2：Style-Text生成的数据主要应用于OCR识别场景。基于当前PaddleOCR识别模型的设计，我们主要支持高度在32左右的风格图像。
   如果输入图像尺寸相差过多，效果可能不佳。
+* 注3：可以通过修改配置文件中的`use_gpu`(true或者false)参数来决定是否使用GPU进行预测。
 
 
 例如，输入如下图片和语料"PaddleOCR":
@@ -127,7 +128,7 @@ python3 -m tools.synth_image -c configs/config.yml --style_image examples/style_
 2. 运行`tools/synth_dataset`合成数据：
 
    ``` bash
-   python -m tools.synth_dataset -c configs/dataset_config.yml
+   python3 tools/synth_dataset.py -c configs/dataset_config.yml
    ```
    我们在examples目录下提供了样例图片和语料。
     <div align="center">

@@ -107,10 +107,10 @@ make inference_lib_dist
 For more compilation parameter options, please refer to the official website of the Paddle C++ inference library:[https://www.paddlepaddle.org.cn/documentation/docs/en/advanced_guide/inference_deployment/inference/build_and_install_lib_en.html](https://www.paddlepaddle.org.cn/documentation/docs/en/advanced_guide/inference_deployment/inference/build_and_install_lib_en.html).
 
 
-* After the compilation process, you can see the following files in the folder of `build/fluid_inference_install_dir/`.
+* After the compilation process, you can see the following files in the folder of `build/paddle_inference_install_dir/`.
 
 ```
-build/fluid_inference_install_dir/
+build/paddle_inference_install_dir/
 |-- CMakeCache.txt
 |-- paddle
 |-- third_party
@@ -130,10 +130,10 @@ Among them, `paddle` is the Paddle library required for C++ prediction later, an
 * After downloading, use the following method to uncompress.
 
 ```
-tar -xf fluid_inference.tgz
+tar -xf paddle_inference.tgz
 ```
 
-Finally you can see the following files in the folder of `fluid_inference/`.
+Finally you can see the following files in the folder of `paddle_inference/`.
 
 
 ## 2. Compile and run the demo
@@ -145,11 +145,11 @@ Finally you can see the following files in the folder of `fluid_inference/`.
 ```
 inference/
 |-- det_db
-|   |--model
-|   |--params
+|   |--inference.pdparams
+|   |--inference.pdimodel
 |-- rec_rcnn
-|   |--model
-|   |--params
+|   |--inference.pdparams
+|   |--inference.pdparams
 ```
 
 
@@ -188,7 +188,9 @@ cmake .. \
 make -j
 ```
 
-`OPENCV_DIR` is the opencv installation path; `LIB_DIR` is the download (`fluid_inference` folder) or the generated Paddle inference library path (`build/fluid_inference_install_dir` folder); `CUDA_LIB_DIR` is the cuda library file path, in docker; it is `/usr/local/cuda/lib64`; `CUDNN_LIB_DIR` is the cudnn library file path, in docker it is `/usr/lib/x86_64-linux-gnu/`.
+`OPENCV_DIR` is the opencv installation path; `LIB_DIR` is the download (`paddle_inference` folder)
+or the generated Paddle inference library path (`build/paddle_inference_install_dir` folder);
+`CUDA_LIB_DIR` is the cuda library file path, in docker; it is `/usr/local/cuda/lib64`; `CUDNN_LIB_DIR` is the cudnn library file path, in docker it is `/usr/lib/x86_64-linux-gnu/`.
 
 
 * After the compilation is completed, an executable file named `ocr_system` will be generated in the `build` folder.
@@ -211,7 +213,6 @@ gpu_id  0 # GPU id when use_gpu is 1
 gpu_mem  4000  # GPU memory requested
 cpu_math_library_num_threads  10 # Number of threads when using CPU inference. When machine cores is enough, the large the value, the faster the inference speed
 use_mkldnn 1 # Whether to use mkdlnn library
-use_zero_copy_run 1 # Whether to use use_zero_copy_run for inference
 
 max_side_len  960 #  Limit the maximum image height and width to 960
 det_db_thresh  0.3 # Used to filter the binarized image of DB prediction, setting 0.-0.3 has no obvious effect on the result
@@ -244,4 +245,4 @@ The detection results will be shown on the screen, which is as follows.
 
 ### 2.3 Notes
 
-* Paddle2.0.0-beta0 inference model library is recommanded for this tuturial.
+* Paddle2.0.0-beta0 inference model library is recommended for this toturial.
