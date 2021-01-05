@@ -54,18 +54,20 @@ int main(int argc, char **argv) {
                  config.gpu_mem, config.cpu_math_library_num_threads,
                  config.use_mkldnn, config.max_side_len, config.det_db_thresh,
                  config.det_db_box_thresh, config.det_db_unclip_ratio,
-                 config.visualize);
+                 config.visualize, config.use_tensorrt, config.use_fp16);
 
   Classifier *cls = nullptr;
   if (config.use_angle_cls == true) {
     cls = new Classifier(config.cls_model_dir, config.use_gpu, config.gpu_id,
                          config.gpu_mem, config.cpu_math_library_num_threads,
-                         config.use_mkldnn, config.cls_thresh);
+                         config.use_mkldnn, config.cls_thresh,
+                         config.use_tensorrt, config.use_fp16);
   }
 
   CRNNRecognizer rec(config.rec_model_dir, config.use_gpu, config.gpu_id,
                      config.gpu_mem, config.cpu_math_library_num_threads,
-                     config.use_mkldnn, config.char_list_file);
+                     config.use_mkldnn, config.char_list_file,
+                     config.use_tensorrt, config.use_fp16);
 
   auto start = std::chrono::system_clock::now();
   std::vector<std::vector<std::vector<int>>> boxes;
