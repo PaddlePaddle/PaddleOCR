@@ -9,44 +9,49 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2020.12.28）](#近期更新)
+* [近期更新（2021.1.4）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
 * [【理论篇】OCR通用31个问题](#OCR通用问题)
   * [基础知识7题](#基础知识)
   * [数据集7题](#数据集2)
   * [模型训练调优17题](#模型训练调优2)
-* [【实战篇】PaddleOCR实战96个问题](#PaddleOCR实战问题)
-  * [使用咨询28题](#使用咨询)
+* [【实战篇】PaddleOCR实战101个问题](#PaddleOCR实战问题)
+  * [使用咨询31题](#使用咨询)
   * [数据集17题](#数据集3)
   * [模型训练调优26题](#模型训练调优3)
-  * [预测部署25题](#预测部署3)
+  * [预测部署27题](#预测部署3)
 
 
 <a name="近期更新"></a>
-## 近期更新（2020.12.28）
+## 近期更新（2021.1.4）
 
-#### Q3.1.25: 使用dygraph分支，在docker中训练PaddleOCR的时候，数据路径没有任何问题，但是一直报错`reader rasied an exception`，这是为什么呢？
+#### Q3.1.29: PPOCRLabel创建矩形框时只能拖出正方形，如何进行矩形标注？
 
-**A** 创建docker的时候，`/dev/shm`的默认大小为64M，如果使用多进程读取数据，共享内存可能不够，因此需要给`/dev/shm`分配更大的空间，在创建docker的时候，传入`--shm-size=8g`表示给`/dev/shm`分配8g的空间。
+**A** 取消勾选：“编辑”-“正方形标注”
 
-#### Q3.1.26: 在repo中没有找到Lite和PaddleServing相关的部署教程，这是在哪里呢？
+#### Q3.1.30: Style-Text 如何不文字风格迁移，就像普通文本生成程序一样默认字体直接输出到分割的背景图？
 
-**A** 目前PaddleOCR的默认分支为dygraph，关于Lite和PaddleLite的动态图部署还在适配中，如果希望在Lite端或者使用PaddleServing部署，推荐使用develop分支（静态图）的代码。
+**A** 使用image_synth模式会输出fake_bg.jpg，即为背景图。如果想要批量提取背景，可以稍微修改一下代码，将fake_bg保存下来即可。要修改的位置：
+https://github.com/PaddlePaddle/PaddleOCR/blob/de3e2e7cd3b8b65ee02d7a41e570fa5b511a3c1d/StyleText/engine/synthesisers.py#L68
 
-#### Q3.1.27: 如何可视化acc,loss曲线图,模型网络结构图等？
+#### Q3.1.31: 怎么输出网络结构以及每层的参数信息？
 
-**A** 在配置文件里有`use_visualdl`的参数，设置为True即可，更多的使用命令可以参考：[VisualDL使用指南](https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0-rc1/guides/03_VisualDL/visualdl.html)。
+**A** 可以使用 `paddle.summary`， 具体参考:https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0-rc1/api/paddle/hapi/model_summary/summary_cn.html#summary。
 
-#### Q3.1.28: 在使用StyleText数据合成工具的时候，报错`ModuleNotFoundError: No module named 'utils.config'`，这是为什么呢？
+### Q3.4.26: 目前paddle hub serving 只支持 imgpath，如果我想用imgurl 去哪里改呢？
 
-**A** 有2个解决方案
-- 在StyleText路径下面设置PYTHONPATH：`export PYTHONPATH=./`
-- 拉取最新的代码
+**A**: 图片是在这里读取的：https://github.com/PaddlePaddle/PaddleOCR/blob/67ef25d593c4eabfaaceb22daade4577f53bed81/deploy/hubserving/ocr_system/module.py#L55，
+可以参考下面的写法，将url path转化为np array（https://cloud.tencent.com/developer/article/1467840）
+```
+response = request.urlopen('http://i1.whymtj.com/uploads/tu/201902/9999/52491ae4ba.jpg')
+img_array = np.array(bytearray(response.read()), dtype=np.uint8)
+img = cv.imdecode(img_array, -1)
+```
 
-#### Q3.3.26: PaddleOCR在训练的时候一直使用cosine_decay的学习率下降策略，这是为什么呢？
+### Q3.4.27: C++ 端侧部署可以只对OCR的检测部署吗？
 
-**A**: cosine_decay表示在训练的过程中，学习率按照cosine的变化趋势逐渐下降至0，在迭代轮数更长的情况下，比常量的学习率变化策略会有更好的收敛效果，因此在实际训练的时候，均采用了cosine_decay，来获得精度更高的模型。
-
+**A** 可以的，识别和检测模块是解耦的。如果想对检测部署，需要自己修改一下main函数，
+只保留检测相关就可以:https://github.com/PaddlePaddle/PaddleOCR/blob/de3e2e7cd3b8b65ee02d7a41e570fa5b511a3c1d/deploy/cpp_infer/src/main.cpp#L72
 
 
 <a name="OCR精选10个问题"></a>
@@ -290,6 +295,7 @@
 建议要合成的数据尺寸设置为32 x N。尺寸相差不多的数据也可以生成，尺寸很大或很小的数据效果确实不佳。
 
 
+
 <a name="PaddleOCR实战问题"></a>
 ## 【实战篇】PaddleOCR实战问题
 
@@ -438,6 +444,19 @@ python3 -m pip install paddlepaddle-gpu==2.0.0rc1 -i https://mirror.baidu.com/py
 **A** 有2个解决方案
 - 在StyleText路径下面设置PYTHONPATH：`export PYTHONPATH=./`
 - 拉取最新的代码
+
+#### Q3.1.29: PPOCRLabel创建矩形框时只能拖出正方形，如何进行矩形标注？
+
+**A** 取消勾选：“编辑”-“正方形标注”
+
+#### Q3.1.30: Style-Text 如何不文字风格迁移，就像普通文本生成程序一样默认字体直接输出到分割的背景图？
+
+**A** 使用image_synth模式会输出fake_bg.jpg，即为背景图。如果想要批量提取背景，可以稍微修改一下代码，将fake_bg保存下来即可。要修改的位置：
+https://github.com/PaddlePaddle/PaddleOCR/blob/de3e2e7cd3b8b65ee02d7a41e570fa5b511a3c1d/StyleText/engine/synthesisers.py#L68
+
+#### Q3.1.31: 怎么输出网络结构以及每层的参数信息？
+
+**A** 可以使用 `paddle.summary`， 具体参考:https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0-rc1/api/paddle/hapi/model_summary/summary_cn.html#summary。
 
 <a name="数据集3"></a>
 ### 数据集
@@ -786,3 +805,18 @@ ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 建议首先排查diff出现在检测模型还是识别模型，或者尝试换其他模型是否有类似的问题。
 其次，检查python端和C++端数据处理部分是否存在差异，建议保存环境，更新PaddleOCR代码再试下。
 如果更新代码或者更新代码都没能解决，建议在PaddleOCR微信群里或者issue中抛出您的问题。
+
+### Q3.4.26: 目前paddle hub serving 只支持 imgpath，如果我想用imgurl 去哪里改呢？
+
+**A**: 图片是在这里读取的：https://github.com/PaddlePaddle/PaddleOCR/blob/67ef25d593c4eabfaaceb22daade4577f53bed81/deploy/hubserving/ocr_system/module.py#L55，
+可以参考下面的写法，将url path转化为np array（https://cloud.tencent.com/developer/article/1467840）
+```
+response = request.urlopen('http://i1.whymtj.com/uploads/tu/201902/9999/52491ae4ba.jpg')
+img_array = np.array(bytearray(response.read()), dtype=np.uint8)
+img = cv.imdecode(img_array, -1)
+```
+
+### Q3.4.27: C++ 端侧部署可以只对OCR的检测部署吗？
+
+**A** 可以的，识别和检测模块是解耦的。如果想对检测部署，需要自己修改一下main函数，
+只保留检测相关就可以:https://github.com/PaddlePaddle/PaddleOCR/blob/de3e2e7cd3b8b65ee02d7a41e570fa5b511a3c1d/deploy/cpp_infer/src/main.cpp#L72
