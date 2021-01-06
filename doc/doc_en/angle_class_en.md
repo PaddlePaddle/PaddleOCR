@@ -23,8 +23,8 @@ First put the training images in the same folder (train_images), and use a txt f
 ```
 " Image file name           Image annotation "
 
-train_data/word_001.jpg   0
-train_data/word_002.jpg   180
+train/word_001.jpg   0
+train/word_002.jpg   180
 ```
 
 The final training set should have the following file structure:
@@ -57,6 +57,7 @@ containing all images (test) and a cls_gt_test.txt. The structure of the test se
 ```
 
 ### TRAINING
+Write the prepared txt file and image folder path into the configuration file under the `Train/Eval.dataset.label_file_list` and `Train/Eval.dataset.data_dir` fields, the absolute path of the image consists of the `Train/Eval.dataset.data_dir` field and the image name recorded in the txt file.
 
 PaddleOCR provides training scripts, evaluation scripts, and prediction scripts.
 
