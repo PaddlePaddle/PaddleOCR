@@ -2,18 +2,26 @@
 
 # PPOCRLabel
 
-PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，使用python3和pyqt5编写，支持矩形框标注和四点标注模式，导出格式可直接用于PPOCR检测和识别模型的训练。
+PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，内置PPOCR模型对数据自动标注和重新识别。使用python3和pyqt5编写，支持矩形框标注和四点标注模式，导出格式可直接用于PPOCR检测和识别模型的训练。
 
 <img src="./data/gif/steps.gif" width="100%"/>
 
 #### 近期更新
 
-- 2020.12.18: 支持对单个标记框进行重新识别（by [ninetailskim](https://github.com/ninetailskim) ），完善快捷键。
+- 2020.12.18: 支持对单个标记框进行重新识别（by [ninetailskim](https://github.com/ninetailskim)），完善快捷键。
+
+#### 尽请期待
+
+- 锁定框模式：针对同一场景数据，被锁定的检测框的大小与位置能在不同图片之间传递。
+- 体验优化：增加撤销操作，批量移动、复制、删除等功能。优化标注流程。
+
+如果您对以上内容感兴趣或对完善工具有不一样的想法，欢迎加入我们的队伍与我们共同开发
+
 
 ## 安装
 
 ### 1. 安装PaddleOCR
-参考[PaddleOCR安装文档](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/installation.md)准备好PaddleOCR
+PPOCRLabel内置PaddleOCR模型，故请参考[PaddleOCR安装文档](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/installation.md)准备好PaddleOCR，并确保PaddleOCR安装成功。
 
 ### 2. 安装PPOCRLabel
 #### Windows + Anaconda
@@ -115,7 +123,7 @@ python3 PPOCRLabel.py --lang ch
   
 - PPOCRLabel**不支持对中文文件名**的图片进行自动标注。
 
-- 针对Linux用户：：如果您在打开软件过程中出现**objc[XXXXX]**开头的错误，证明您的opencv版本太高，建议安装4.2版本：
+- 针对Linux用户：如果您在打开软件过程中出现**objc[XXXXX]**开头的错误，证明您的opencv版本太高，建议安装4.2版本：
     ```
     pip install opencv-python==4.2.0.32
     ```
@@ -129,6 +137,10 @@ python3 PPOCRLabel.py --lang ch
     ```
     pip install opencv-contrib-python-headless
     ```
+### 成为特殊兴趣小组的一员
+
+PPOCRSIG（Paddle Paddle OCR Special Interest Group，飞桨OCR特殊兴趣小组）致力于，我们希望拥有各种背景的，以开源的精神将OCR应用于各行各业。小组
+
 ### 参考资料
 
 1.[Tzutalin. LabelImg. Git code (2015)](https://github.com/tzutalin/labelImg)

@@ -2,7 +2,7 @@ English | [简体中文](README_ch.md)
 
 # PPOCRLabel
 
-PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field. It is written in python3 and pyqt5, supporting rectangular box annotation and four-point annotation modes. Annotations can be directly used for the training of PPOCR detection and recognition models.
+PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field, with built-in PPOCR model to automatically detect and re-recognize data. It is written in python3 and pyqt5, supporting rectangular box annotation and four-point annotation modes. Annotations can be directly used for the training of PPOCR detection and recognition models.
 
 <img src="./data/gif/steps_en.gif" width="100%"/>
 
@@ -10,11 +10,15 @@ PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field. I
 
 - 2020.12.18: Support re-recognition of a single label box (by [ninetailskim](https://github.com/ninetailskim) ), perfect shortcut keys.
 
+### TODO:
+- Lock box mode: For the same scene data, the size and position of the locked detection box can be transferred between different pictures.
+- Experience optimization: Add undo, batch operation include move, copy, delete and so on, optimize the annotation process.
+
 ## Installation
 
 ### 1. Install PaddleOCR
 
-Refer to [PaddleOCR installation document](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/installation.md) to prepare PaddleOCR
+PaddleOCR models has been built in PPOCRLabel, please refer to [PaddleOCR installation document](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/installation.md) to prepare PaddleOCR and make sure it works.
 
 ### 2. Install PPOCRLabel
 
