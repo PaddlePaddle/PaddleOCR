@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:id="@+id/pick_image">
+        <item
+                android:id="@+id/open_gallery"
+                android:title="Open Gallery"
+                app:showAsAction="withText"/>
+
+        <item
+                android:id="@+id/take_photo"
+                android:title="Take Photo"
+                app:showAsAction="withText"/>
+    </group>
+
+    <group>
+        <item
+                android:id="@+id/settings"
+                android:title="Settings..."
+                app:showAsAction="withText"/>
+    </group>
+</menu>

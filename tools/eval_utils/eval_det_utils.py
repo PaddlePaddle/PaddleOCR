@@ -59,7 +59,14 @@ def cal_det_res(exe, config, eval_info_dict):
                 img_list.append(data[ino][0])
                 ratio_list.append(data[ino][1])
                 img_name_list.append(data[ino][2])
-            img_list = np.concatenate(img_list, axis=0)
+            try:
+                img_list = np.concatenate(img_list, axis=0)
+            except:
+                err = "concatenate error usually caused by different input image shapes in evaluation or testing.\n \
+                Please set \"test_batch_size_per_card\" in main yml as 1\n \
+                or add \"test_image_shape: [h, w]\" in reader yml for EvalReader."
+
+                raise Exception(err)
             outs = exe.run(eval_info_dict['program'], \
                            feed={'image': img_list}, \
                            fetch_list=eval_info_dict['fetch_varname_list'])
@@ -107,7 +114,7 @@ def cal_det_metrics(gt_label_path, save_res_path):
         gt_label_path(string): The groundtruth detection label file path
         save_res_path(string): The saved predicted detection label path
     return:
-        claculated metrics including Hmean、precision and recall
+        claculated metrics including Hmean, precision and recall
     """
     evaluator = DetectionIoUEvaluator()
     gt_label_infor = load_label_infor(gt_label_path, do_ignore=True)

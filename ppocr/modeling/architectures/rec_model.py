@@ -16,6 +16,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from collections import OrderedDict
+
 from paddle import fluid
 
 from ppocr.utils.utility import create_module
@@ -25,6 +27,12 @@ from copy import deepcopy
 
 
 class RecModel(object):
+    """
+    Rec model architecture
+    Args:
+        params(object): Params from yaml file and settings from command line
+    """
+
     def __init__(self, params):
         super(RecModel, self).__init__()
         global_params = params['Global']
@@ -58,12 +66,23 @@ class RecModel(object):
         self.loss_type = global_params['loss_type']
         self.image_shape = global_params['image_shape']
         self.max_text_length = global_params['max_text_length']
+        if "num_heads" in global_params:
+            self.num_heads = global_params["num_heads"]
+        else:
+            self.num_heads = None
 
     def create_feed(self, mode):
+        """
+        Create feed dict and DataLoader object
+        Args:
+            mode(str): runtime mode, can be "train", "eval" or "test"
+        Return: image, labels, loader
+        """
         image_shape = deepcopy(self.image_shape)
         image_shape.insert(0, -1)
         if mode == "train":
             image = fluid.data(name='image', shape=image_shape, dtype='float32')
+            image.stop_gradient = False
             if self.loss_type == "attention":
                 label_in = fluid.data(
                     name='label_in',
@@ -77,6 +96,48 @@ class RecModel(object):
                     lod_level=1)
                 feed_list = [image, label_in, label_out]
                 labels = {'label_in': label_in, 'label_out': label_out}
+            elif self.loss_type == "srn":
+                encoder_word_pos = fluid.data(
+                    name="encoder_word_pos",
+                    shape=[
+                        -1, int((image_shape[-2] / 8) * (image_shape[-1] / 8)),
+                        1
+                    ],
+                    dtype="int64")
+                gsrm_word_pos = fluid.data(
+                    name="gsrm_word_pos",
+                    shape=[-1, self.max_text_length, 1],
+                    dtype="int64")
+                gsrm_slf_attn_bias1 = fluid.data(
+                    name="gsrm_slf_attn_bias1",
+                    shape=[
+                        -1, self.num_heads, self.max_text_length,
+                        self.max_text_length
+                    ],
+                    dtype="float32")
+                gsrm_slf_attn_bias2 = fluid.data(
+                    name="gsrm_slf_attn_bias2",
+                    shape=[
+                        -1, self.num_heads, self.max_text_length,
+                        self.max_text_length
+                    ],
+                    dtype="float32")
+                lbl_weight = fluid.layers.data(
+                    name="lbl_weight", shape=[-1, 1], dtype='int64')
+                label = fluid.data(
+                    name='label', shape=[-1, 1], dtype='int32', lod_level=1)
+                feed_list = [
+                    image, label, encoder_word_pos, gsrm_word_pos,
+                    gsrm_slf_attn_bias1, gsrm_slf_attn_bias2, lbl_weight
+                ]
+                labels = {
+                    'label': label,
+                    'encoder_word_pos': encoder_word_pos,
+                    'gsrm_word_pos': gsrm_word_pos,
+                    'gsrm_slf_attn_bias1': gsrm_slf_attn_bias1,
+                    'gsrm_slf_attn_bias2': gsrm_slf_attn_bias2,
+                    'lbl_weight': lbl_weight
+                }
             else:
                 label = fluid.data(
                     name='label', shape=[None, 1], dtype='int32', lod_level=1)
@@ -88,7 +149,9 @@ class RecModel(object):
                 use_double_buffer=True,
                 iterable=False)
         else:
-            if self.char_type == "ch" and self.infer_img:
+            labels = None
+            loader = None
+            if self.char_type == "ch" and self.infer_img and self.loss_type != "srn":
                 image_shape[-1] = -1
                 if self.tps != None:
                     logger.info(
@@ -97,9 +160,42 @@ class RecModel(object):
                         "We set img_shape to be the same , it may affect the inference effect"
                     )
                     image_shape = deepcopy(self.image_shape)
+                    image_shape.insert(0, -1)
             image = fluid.data(name='image', shape=image_shape, dtype='float32')
-            labels = None
-            loader = None
+            image.stop_gradient = False
+            if self.loss_type == "srn":
+                encoder_word_pos = fluid.data(
+                    name="encoder_word_pos",
+                    shape=[
+                        -1, int((image_shape[-2] / 8) * (image_shape[-1] / 8)),
+                        1
+                    ],
+                    dtype="int64")
+                gsrm_word_pos = fluid.data(
+                    name="gsrm_word_pos",
+                    shape=[-1, self.max_text_length, 1],
+                    dtype="int64")
+                gsrm_slf_attn_bias1 = fluid.data(
+                    name="gsrm_slf_attn_bias1",
+                    shape=[
+                        -1, self.num_heads, self.max_text_length,
+                        self.max_text_length
+                    ],
+                    dtype="float32")
+                gsrm_slf_attn_bias2 = fluid.data(
+                    name="gsrm_slf_attn_bias2",
+                    shape=[
+                        -1, self.num_heads, self.max_text_length,
+                        self.max_text_length
+                    ],
+                    dtype="float32")
+                labels = {
+                    'encoder_word_pos': encoder_word_pos,
+                    'gsrm_word_pos': gsrm_word_pos,
+                    'gsrm_slf_attn_bias1': gsrm_slf_attn_bias1,
+                    'gsrm_slf_attn_bias2': gsrm_slf_attn_bias2
+                }
+
         return image, labels, loader
 
     def __call__(self, mode):
@@ -108,25 +204,46 @@ class RecModel(object):
             inputs = image
         else:
             inputs = self.tps(image)
+        # backbone
         conv_feas = self.backbone(inputs)
+        # predict
         predicts = self.head(conv_feas, labels, mode)
         decoded_out = predicts['decoded_out']
+        # loss
         if mode == "train":
             loss = self.loss(predicts, labels)
             if self.loss_type == "attention":
                 label = labels['label_out']
             else:
                 label = labels['label']
-            outputs = {'total_loss':loss, 'decoded_out':\
-                decoded_out, 'label':label}
+            if self.loss_type == 'srn':
+                total_loss, img_loss, word_loss = self.loss(predicts, labels)
+                outputs = OrderedDict([('total_loss', total_loss), 
+                                       ('img_loss', img_loss), 
+                                       ('word_loss', word_loss), 
+                                       ('decoded_out', decoded_out),
+                                       ('label', label)])
+            else:
+                outputs = OrderedDict([('total_loss', loss), 
+                                       ('decoded_out', decoded_out),
+                                       ('label', label)])
             return loader, outputs
+        # export_model
         elif mode == "export":
             predict = predicts['predict']
             if self.loss_type == "ctc":
                 predict = fluid.layers.softmax(predict)
-            return [image, {'decoded_out': decoded_out, 'predicts': predict}]
+            if self.loss_type == "srn":
+                return [
+                    image, labels, OrderedDict([('decoded_out', decoded_out), 
+                                                ('predicts', predict)])]
+
+            return [image, OrderedDict([('decoded_out', decoded_out), 
+                                        ('predicts', predict)])]
+        # eval or test
         else:
             predict = predicts['predict']
             if self.loss_type == "ctc":
                 predict = fluid.layers.softmax(predict)
-            return loader, {'decoded_out': decoded_out, 'predicts': predict}
+            return loader, OrderedDict([('decoded_out', decoded_out), 
+                                        ('predicts', predict)])

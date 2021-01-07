@@ -6,7 +6,8 @@ Global:
   print_batch_step: 2
   save_model_dir: ./output/det_db/
   save_epoch_step: 200
-  eval_batch_step: 5000
+  # evaluation is run every 5000 iterations after the 4000th iteration
+  eval_batch_step: [4000, 5000]
   train_batch_size_per_card: 16
   test_batch_size_per_card: 16
   image_shape: [3, 640, 640]
@@ -15,6 +16,7 @@ Global:
   checkpoints:
   save_res_path: ./output/det_db/predicts_db.txt
   save_inference_dir:
+  infer_img:
   
 Architecture:
   function: ppocr.modeling.architectures.det_model,DetModel
@@ -48,6 +50,6 @@ Optimizer:
 PostProcess:
   function: ppocr.postprocess.db_postprocess,DBPostProcess
   thresh: 0.3
-  box_thresh: 0.7
+  box_thresh: 0.6
   max_candidates: 1000
-  unclip_ratio: 2.0
+  unclip_ratio: 1.5

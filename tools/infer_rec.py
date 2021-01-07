@@ -16,10 +16,12 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import os
-import time
-import multiprocessing
 import numpy as np
+import os
+import sys
+__dir__ = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(__dir__)
+sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
 
 
 def set_paddle_flags(**kwargs):
@@ -35,19 +37,16 @@ set_paddle_flags(
     FLAGS_eager_delete_tensor_gb=0,  # enable GC to save memory
 )
 
-from paddle import fluid
-
-# from ppocr.utils.utility import load_config, merge_config
-import program
+import tools.program as program
 from paddle import fluid
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
+from ppocr.utils.utility import enable_static_mode
 from ppocr.data.reader_main import reader_main
 from ppocr.utils.save_load import init_model
 from ppocr.utils.character import CharacterOps
 from ppocr.utils.utility import create_module
 from ppocr.utils.utility import get_image_file_list
-logger = initial_logger()
 
 
 def main():
@@ -66,7 +65,6 @@ def main():
     exe = fluid.Executor(place)
 
     rec_model = create_module(config['Architecture']['function'])(params=config)
-
     startup_prog = fluid.Program()
     eval_prog = fluid.Program()
     with fluid.program_guard(eval_prog, startup_prog):
@@ -86,12 +84,38 @@ def main():
     if len(infer_list) == 0:
         logger.info("Can not find img in infer_img dir.")
     for i in range(max_img_num):
-        print("infer_img:%s" % infer_list[i])
+        logger.info("infer_img:%s" % infer_list[i])
         img = next(blobs)
-        predict = exe.run(program=eval_prog,
-                          feed={"image": img},
-                          fetch_list=fetch_varname_list,
-                          return_numpy=False)
+        if loss_type != "srn":
+            predict = exe.run(program=eval_prog,
+                              feed={"image": img},
+                              fetch_list=fetch_varname_list,
+                              return_numpy=False)
+        else:
+            encoder_word_pos_list = []
+            gsrm_word_pos_list = []
+            gsrm_slf_attn_bias1_list = []
+            gsrm_slf_attn_bias2_list = []
+            encoder_word_pos_list.append(img[1])
+            gsrm_word_pos_list.append(img[2])
+            gsrm_slf_attn_bias1_list.append(img[3])
+            gsrm_slf_attn_bias2_list.append(img[4])
+
+            encoder_word_pos_list = np.concatenate(
+                encoder_word_pos_list, axis=0).astype(np.int64)
+            gsrm_word_pos_list = np.concatenate(
+                gsrm_word_pos_list, axis=0).astype(np.int64)
+            gsrm_slf_attn_bias1_list = np.concatenate(
+                gsrm_slf_attn_bias1_list, axis=0).astype(np.float32)
+            gsrm_slf_attn_bias2_list = np.concatenate(
+                gsrm_slf_attn_bias2_list, axis=0).astype(np.float32)
+
+            predict = exe.run(program=eval_prog, \
+                       feed={'image': img[0], 'encoder_word_pos': encoder_word_pos_list,
+                             'gsrm_word_pos': gsrm_word_pos_list, 'gsrm_slf_attn_bias1': gsrm_slf_attn_bias1_list,
+                             'gsrm_slf_attn_bias2': gsrm_slf_attn_bias2_list}, \
+                       fetch_list=fetch_varname_list, \
+                       return_numpy=False)
         if loss_type == "ctc":
             preds = np.array(predict[0])
             preds = preds.reshape(-1)
@@ -101,6 +125,8 @@ def main():
             ind = np.argmax(probs, axis=1)
             blank = probs.shape[1]
             valid_ind = np.where(ind != (blank - 1))[0]
+            if len(valid_ind) == 0:
+                continue
             score = np.mean(probs[valid_ind, ind[valid_ind]])
         elif loss_type == "attention":
             preds = np.array(predict[0])
@@ -114,10 +140,21 @@ def main():
                 score = np.mean(probs[0, 1:end_pos[1]])
             preds = preds.reshape(-1)
             preds_text = char_ops.decode(preds)
-
-        print("\t index:", preds)
-        print("\t word :", preds_text)
-        print("\t score :", score)
+        elif loss_type == "srn":
+            char_num = char_ops.get_char_num()
+            preds = np.array(predict[0])
+            preds = preds.reshape(-1)
+            probs = np.array(predict[1])
+            ind = np.argmax(probs, axis=1)
+            valid_ind = np.where(preds != int(char_num - 1))[0]
+            if len(valid_ind) == 0:
+                continue
+            score = np.mean(probs[valid_ind, ind[valid_ind]])
+            preds = preds[:valid_ind[-1] + 1]
+            preds_text = char_ops.decode(preds)
+        logger.info("\t index: {}".format(preds))
+        logger.info("\t word : {}".format(preds_text))
+        logger.info("\t score: {}".format(score))
 
     # save for inference model
     target_var = []
@@ -135,6 +172,7 @@ def main():
 
 
 if __name__ == '__main__':
+    enable_static_mode()
     parser = program.ArgsParser()
     FLAGS = parser.parse_args()
     main()

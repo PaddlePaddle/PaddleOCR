@@ -1,0 +1,8 @@
+include LICENSE.txt
+include README.md
+
+recursive-include ppocr/utils *.txt utility.py character.py check.py
+recursive-include ppocr/data/det *.py
+recursive-include ppocr/postprocess *.py
+recursive-include ppocr/postprocess/lanms *.*
+recursive-include tools/infer *.py

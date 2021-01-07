@@ -17,6 +17,10 @@ from __future__ import division
 from __future__ import print_function
 
 import os
+import sys
+__dir__ = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(__dir__)
+sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
 
 
 def set_paddle_flags(**kwargs):
@@ -35,32 +39,19 @@ set_paddle_flags(
 import program
 from paddle import fluid
 from ppocr.utils.utility import initial_logger
+from ppocr.utils.utility import enable_static_mode
 logger = initial_logger()
 from ppocr.data.reader_main import reader_main
 from ppocr.utils.save_load import init_model
 from eval_utils.eval_det_utils import eval_det_run
 from eval_utils.eval_rec_utils import test_rec_benchmark
 from eval_utils.eval_rec_utils import eval_rec_run
-from ppocr.utils.character import CharacterOps
+from eval_utils.eval_cls_utils import eval_cls_run
 
 
 def main():
-    config = program.load_config(FLAGS.config)
-    program.merge_config(FLAGS.opt)
-    logger.info(config)
-
-    # check if set use_gpu=True in paddlepaddle cpu version
-    use_gpu = config['Global']['use_gpu']
-    program.check_gpu(use_gpu)
-
-    alg = config['Global']['algorithm']
-    assert alg in ['EAST', 'DB', 'Rosetta', 'CRNN', 'STARNet', 'RARE']
-    if alg in ['Rosetta', 'CRNN', 'STARNet', 'RARE']:
-        config['Global']['char_ops'] = CharacterOps(config['Global'])
-
-    place = fluid.CUDAPlace(0) if use_gpu else fluid.CPUPlace()
-    startup_prog = fluid.Program()
-    eval_program = fluid.Program()
+    startup_prog, eval_program, place, config, train_alg_type = program.preprocess(
+    )
     eval_build_outputs = program.build(
         config, eval_program, startup_prog, mode='test')
     eval_fetch_name_list = eval_build_outputs[1]
@@ -71,14 +62,22 @@ def main():
 
     init_model(config, eval_program, exe)
 
-    if alg in ['EAST', 'DB']:
+    if train_alg_type == 'det':
         eval_reader = reader_main(config=config, mode="eval")
         eval_info_dict = {'program':eval_program,\
             'reader':eval_reader,\
             'fetch_name_list':eval_fetch_name_list,\
             'fetch_varname_list':eval_fetch_varname_list}
         metrics = eval_det_run(exe, config, eval_info_dict, "eval")
-        print("Eval result", metrics)
+        logger.info("Eval result: {}".format(metrics))
+    elif train_alg_type == 'cls':
+        eval_reader = reader_main(config=config, mode="eval")
+        eval_info_dict = {'program': eval_program, \
+                          'reader': eval_reader, \
+                          'fetch_name_list': eval_fetch_name_list, \
+                          'fetch_varname_list': eval_fetch_varname_list}
+        metrics = eval_cls_run(exe, eval_info_dict)
+        logger.info("Eval result: {}".format(metrics))
     else:
         reader_type = config['Global']['reader_yml']
         if "benchmark" not in reader_type:
@@ -88,7 +87,7 @@ def main():
                               'fetch_name_list': eval_fetch_name_list, \
                               'fetch_varname_list': eval_fetch_varname_list}
             metrics = eval_rec_run(exe, config, eval_info_dict, "eval")
-            print("Eval result:", metrics)
+            logger.info("Eval result: {}".format(metrics))
         else:
             eval_info_dict = {'program':eval_program,\
                 'fetch_name_list':eval_fetch_name_list,\
@@ -97,6 +96,5 @@ def main():
 
 
 if __name__ == '__main__':
-    parser = program.ArgsParser()
-    FLAGS = parser.parse_args()
+    enable_static_mode()
     main()

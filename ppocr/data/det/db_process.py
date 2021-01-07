@@ -17,7 +17,7 @@ import cv2
 import numpy as np
 import json
 import sys
-from ppocr.utils.utility import initial_logger
+from ppocr.utils.utility import initial_logger, check_and_read_gif
 logger = initial_logger()
 
 from .data_augment import AugmentData
@@ -28,14 +28,22 @@ from .make_border_map import MakeBorderMap
 
 class DBProcessTrain(object):
     """
-    DB pre-process for Train mode
+    The pre-process of DB for train mode
     """
 
     def __init__(self, params):
+        """
+        :param params: dict of params
+        """
         self.img_set_dir = params['img_set_dir']
         self.image_shape = params['image_shape']
 
     def order_points_clockwise(self, pts):
+        """
+        Sort the points in the box clockwise
+        :param pts: points with shape [4, 2]
+        :return: sorted points
+        """
         rect = np.zeros((4, 2), dtype="float32")
         s = pts.sum(axis=1)
         rect[0] = pts[np.argmin(s)]
@@ -46,6 +54,12 @@ class DBProcessTrain(object):
         return rect
 
     def make_data_dict(self, imgvalue, entry):
+        """
+        create input dict
+        :param imgvalue: input image
+        :param entry: dict of annotations information
+        :return: created dict of input data information
+        """
         boxes = []
         texts = []
         ignores = []
@@ -71,6 +85,11 @@ class DBProcessTrain(object):
         return data
 
     def NormalizeImage(self, data):
+        """
+        Normalize input image
+        :param data: input dict
+        :return: new dict with normalized image
+        """
         im = data['image']
         img_mean = [0.485, 0.456, 0.406]
         img_std = [0.229, 0.224, 0.225]
@@ -84,6 +103,11 @@ class DBProcessTrain(object):
         return data
 
     def FilterKeys(self, data):
+        """
+        Filter keys
+        :param data: dict
+        :return:
+        """
         filter_keys = ['polys', 'texts', 'ignore_tags', 'shape']
         for key in filter_keys:
             if key in data:
@@ -91,6 +115,11 @@ class DBProcessTrain(object):
         return data
 
     def convert_label_infor(self, label_infor):
+        """
+        encode annotations using json.loads
+        :param label_infor: string
+        :return: (image, encoded annotations)
+        """
         label_infor = label_infor.decode()
         label_infor = label_infor.encode('utf-8').decode('utf-8-sig')
         substr = label_infor.strip("\n").split("\t")
@@ -100,10 +129,14 @@ class DBProcessTrain(object):
 
     def __call__(self, label_infor):
         img_path, gt_label = self.convert_label_infor(label_infor)
-        imgvalue = cv2.imread(img_path)
+        imgvalue, flag = check_and_read_gif(img_path)
+        if not flag:
+            imgvalue = cv2.imread(img_path)
         if imgvalue is None:
             logger.info("{} does not exist!".format(img_path))
             return None
+        if len(list(imgvalue.shape)) == 2 or imgvalue.shape[2] == 1:
+            imgvalue = cv2.cvtColor(imgvalue, cv2.COLOR_GRAY2BGR)
         data = self.make_data_dict(imgvalue, gt_label)
         data = AugmentData(data)
         data = RandomCropData(data, self.image_shape[1:])
@@ -123,8 +156,8 @@ class DBProcessTest(object):
     def __init__(self, params):
         super(DBProcessTest, self).__init__()
         self.resize_type = 0
-        if 'det_image_shape' in params:
-            self.image_shape = params['det_image_shape']
+        if 'test_image_shape' in params:
+            self.image_shape = params['test_image_shape']
             # print(self.image_shape)
             self.resize_type = 1
         if 'max_side_len' in params:
@@ -161,13 +194,13 @@ class DBProcessTest(object):
         elif resize_h // 32 <= 1:
             resize_h = 32
         else:
-            resize_h = (resize_h // 32 - 1) * 32
+            resize_h = (resize_h // 32) * 32
         if resize_w % 32 == 0:
             resize_w = resize_w
         elif resize_w // 32 <= 1:
             resize_w = 32
         else:
-            resize_w = (resize_w // 32 - 1) * 32
+            resize_w = (resize_w // 32) * 32
         try:
             if int(resize_w) <= 0 or int(resize_h) <= 0:
                 return None, (None, None)
@@ -180,6 +213,11 @@ class DBProcessTest(object):
         return im, (ratio_h, ratio_w)
 
     def resize_image_type1(self, im):
+        """
+        resize image to a size self.image_shape
+        :param im: input image
+        :return: normalized image and resize ratio
+        """
         resize_h, resize_w = self.image_shape
         ori_h, ori_w = im.shape[:2]  # (h, w, c)
         im = cv2.resize(im, (int(resize_w), int(resize_h)))
@@ -188,12 +226,21 @@ class DBProcessTest(object):
         return im, (ratio_h, ratio_w)
 
     def normalize(self, im):
+        """
+        Normalize image
+        :param im: input image
+        :return: Normalized image
+        """
         img_mean = [0.485, 0.456, 0.406]
         img_std = [0.229, 0.224, 0.225]
         im = im.astype(np.float32, copy=False)
         im = im / 255
-        im -= img_mean
-        im /= img_std
+        im[:, :, 0] -= img_mean[0]
+        im[:, :, 1] -= img_mean[1]
+        im[:, :, 2] -= img_mean[2]
+        im[:, :, 0] /= img_std[0]
+        im[:, :, 1] /= img_std[1]
+        im[:, :, 2] /= img_std[2]
         channel_swap = (2, 0, 1)
         im = im.transpose(channel_swap)
         return im

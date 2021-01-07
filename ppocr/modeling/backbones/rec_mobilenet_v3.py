@@ -31,16 +31,28 @@ __all__ = [
 
 class MobileNetV3():
     def __init__(self, params):
-        self.scale = params['scale']
-        model_name = params['model_name']
+        self.scale = params.get("scale", 0.5)
+        model_name = params.get("model_name", "small")
+        large_stride = params.get("large_stride", [1, 2, 2, 2])
+        small_stride = params.get("small_stride", [2, 2, 2, 2])
+
+        assert isinstance(large_stride, list), "large_stride type must " \
+            "be list but got {}".format(type(large_stride))
+        assert isinstance(small_stride, list), "small_stride type must " \
+            "be list but got {}".format(type(small_stride))
+        assert len(large_stride) == 4, "large_stride length must be " \
+            "4 but got {}".format(len(large_stride))
+        assert len(small_stride) == 4, "small_stride length must be " \
+            "4 but got {}".format(len(small_stride))
+
         self.inplanes = 16
         if model_name == "large":
             self.cfg = [
                 # k, exp, c,  se,     nl,  s,
-                [3, 16, 16, False, 'relu', 1],
-                [3, 64, 24, False, 'relu', (2, 1)],
+                [3, 16, 16, False, 'relu', large_stride[0]],
+                [3, 64, 24, False, 'relu', (large_stride[1], 1)],
                 [3, 72, 24, False, 'relu', 1],
-                [5, 72, 40, True, 'relu', (2, 1)],
+                [5, 72, 40, True, 'relu', (large_stride[2], 1)],
                 [5, 120, 40, True, 'relu', 1],
                 [5, 120, 40, True, 'relu', 1],
                 [3, 240, 80, False, 'hard_swish', 1],
@@ -49,7 +61,7 @@ class MobileNetV3():
                 [3, 184, 80, False, 'hard_swish', 1],
                 [3, 480, 112, True, 'hard_swish', 1],
                 [3, 672, 112, True, 'hard_swish', 1],
-                [5, 672, 160, True, 'hard_swish', (2, 1)],
+                [5, 672, 160, True, 'hard_swish', (large_stride[3], 1)],
                 [5, 960, 160, True, 'hard_swish', 1],
                 [5, 960, 160, True, 'hard_swish', 1],
             ]
@@ -58,15 +70,15 @@ class MobileNetV3():
         elif model_name == "small":
             self.cfg = [
                 # k, exp, c,  se,     nl,  s,
-                [3, 16, 16, True, 'relu', (2, 1)],
-                [3, 72, 24, False, 'relu', (2, 1)],
+                [3, 16, 16, True, 'relu', (small_stride[0], 1)],
+                [3, 72, 24, False, 'relu', (small_stride[1], 1)],
                 [3, 88, 24, False, 'relu', 1],
-                [5, 96, 40, True, 'hard_swish', (2, 1)],
+                [5, 96, 40, True, 'hard_swish', (small_stride[2], 1)],
                 [5, 240, 40, True, 'hard_swish', 1],
                 [5, 240, 40, True, 'hard_swish', 1],
                 [5, 120, 48, True, 'hard_swish', 1],
                 [5, 144, 48, True, 'hard_swish', 1],
-                [5, 288, 96, True, 'hard_swish', (2, 1)],
+                [5, 288, 96, True, 'hard_swish', (small_stride[3], 1)],
                 [5, 576, 96, True, 'hard_swish', 1],
                 [5, 576, 96, True, 'hard_swish', 1],
             ]
@@ -78,7 +90,7 @@ class MobileNetV3():
 
         supported_scale = [0.35, 0.5, 0.75, 1.0, 1.25]
         assert self.scale in supported_scale, \
-            "supported scale are {} but input scale is {}".format(supported_scale, scale)
+            "supported scales are {} but input scale is {}".format(supported_scale, self.scale)
 
     def __call__(self, input):
         scale = self.scale

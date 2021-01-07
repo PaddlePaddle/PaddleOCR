@@ -33,6 +33,7 @@ class AttentionLoss(object):
         predict = predicts['predict']
         label_out = labels['label_out']
         label_out = fluid.layers.cast(x=label_out, dtype='int64')
+        # calculate attention loss
         cost = fluid.layers.cross_entropy(input=predict, label=label_out)
         sum_cost = fluid.layers.reduce_sum(cost)
         return sum_cost
