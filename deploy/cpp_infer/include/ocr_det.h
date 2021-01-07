@@ -44,9 +44,8 @@ public:
                       const bool &use_mkldnn, const int &max_side_len,
                       const double &det_db_thresh,
                       const double &det_db_box_thresh,
-                      const double &det_db_unclip_ratio,
-                      const bool &visualize const bool &use_tensorrt,
-                      const bool &use_fp16) {
+                      const double &det_db_unclip_ratio, const bool &visualize,
+                      const bool &use_tensorrt, const bool &use_fp16) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;

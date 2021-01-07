@@ -88,7 +88,7 @@ void Classifier::LoadModel(const std::string &model_dir) {
     if (this->use_mkldnn_) {
       config.EnableMKLDNN();
     }
-    config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_)
+    config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
   }
 
   // false for zero copy tensor
