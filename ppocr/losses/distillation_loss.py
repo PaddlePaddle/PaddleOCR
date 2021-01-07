@@ -26,20 +26,22 @@ from .rec_ctc_loss import CTCLoss
 class DistillationLoss(nn.Layer):
     def __init__(self,
                  loss_type="celoss",
-                 with_basic_loss=False,
-                 basic_losc_ratio=0.0,
+                 with_ctc_loss=False,
+                 ctc_loss_ratio=0.5,
+                 distillation_loss_ratio=0.5,
                  **kwargs):
         super(DistillationLoss, self).__init__()
         self.loss_type = loss_type
-        self.with_basic_loss = with_basic_loss
-        self.basic_losc_ratio = basic_losc_ratio
+        self.with_ctc_loss = with_ctc_loss
+        self.ctc_loss_ratio = ctc_loss_ratio
+        self.distillation_loss_ratio = distillation_loss_ratio
         # TODO: add more loss
         supported_loss_type = ["celoss"]
         assert self.loss_type in supported_loss_type, "self.loss_type({}) must be in supported_loss_type({})".format(
             self.loss_type, supported_loss_type)
 
-        if self.with_basic_loss:
-            self.basic_loss_func = CTCLoss()
+        if self.with_ctc_loss:
+            self.ctc_loss_func = CTCLoss()
 
     def __call__(self, predicts, batch):
         teacher_out = predicts["teacher_out"]
@@ -51,13 +53,13 @@ class DistillationLoss(nn.Layer):
             tmp_out = paddle.sum(y, axis=-1)
             cost = F.cross_entropy(student_out, y, soft_label=True)
             cost = paddle.mean(cost)
-            loss_dict["celoss"] = cost * (1 - self.basic_losc_ratio)
+            loss_dict["celoss"] = cost * self.distillation_loss_ratio
         else:
             assert False, "not supported loss type!"
 
-        if self.with_basic_loss:
-            basic_loss = self.basic_loss_func(
-                student_out, batch)["loss"] * self.basic_losc_ratio
+        if self.with_ctc_loss:
+            basic_loss = self.ctc_loss_func(student_out,
+                                            batch)["loss"] * self.ctc_loss_ratio
             loss_dict["ctcloss"] = basic_loss
 
         loss_dict["loss"] = paddle.add_n(list(loss_dict.values()))
