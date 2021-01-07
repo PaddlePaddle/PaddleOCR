@@ -211,6 +211,6 @@ PaddleOCR
 ├── README_ch.md                            // 中文说明文档
 ├── README_en.md                            // 英文说明文档
 ├── README.md                               // 主页说明文档
-├── requirements.txt                         // 安装依赖
+├── requirements.txt                        // 安装依赖
 ├── setup.py                                // whl包打包脚本
 ├── train.sh                                // 启动训练脚本
