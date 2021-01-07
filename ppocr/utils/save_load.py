@@ -73,7 +73,45 @@ def load_dygraph_pretrain(model, logger, path=None, load_static_weights=False):
 
     param_state_dict = paddle.load(path + '.pdparams')
     model.set_state_dict(param_state_dict)
+
+    pre_keys = param_state_dict.keys()
+    model_keys = model.state_dict().keys()
+    print("==============diff=========")
+    print(pre_keys - model_keys)
+    print(model_keys - pre_keys)
+    print("==============end of diff=========")
     return
+
+
+def load_distillation_model(model, pretrained_model, load_static_weights,
+                            logger):
+    logger.info("In distillation mode, teacher model will be "
+                "loaded firstly before student model.")
+    assert len(pretrained_model
+               ) == 2, "pretrained_model length should be 2 but got {}".format(
+                   len(pretrained_model))
+    assert len(
+        load_static_weights
+    ) == 2, "load_static_weights length should be 2 but got {}".format(
+        len(load_static_weights))
+    teacher = model.teacher if hasattr(model,
+                                       "teacher") else model._layers.teacher
+    student = model.student if hasattr(model,
+                                       "student") else model._layers.student
+    load_dygraph_pretrain(
+        teacher,
+        logger,
+        path=pretrained_model[0],
+        load_static_weights=load_static_weights[0])
+    logger.info("Finish initing teacher model from {}".format(pretrained_model[
+        0]))
+    load_dygraph_pretrain(
+        student,
+        logger,
+        path=pretrained_model[1],
+        load_static_weights=load_static_weights[1])
+    logger.info("Finish initing student model from {}".format(pretrained_model[
+        1]))
 
 
 def init_model(config, model, logger, optimizer=None, lr_scheduler=None):
@@ -106,16 +144,18 @@ def init_model(config, model, logger, optimizer=None, lr_scheduler=None):
         logger.info("resume from {}".format(checkpoints))
     elif pretrained_model:
         load_static_weights = gloabl_config.get('load_static_weights', False)
-        if not isinstance(pretrained_model, list):
-            pretrained_model = [pretrained_model]
-        if not isinstance(load_static_weights, list):
-            load_static_weights = [load_static_weights] * len(pretrained_model)
-        for idx, pretrained in enumerate(pretrained_model):
-            load_static = load_static_weights[idx]
+        if isinstance(pretrained_model, list):
+            if not isinstance(load_static_weights, list):
+                load_static_weights = [load_static_weights] * len(
+                    pretrained_model)
+            load_distillation_model(model, pretrained_model,
+                                    load_static_weights, logger)
+        else:
             load_dygraph_pretrain(
-                model, logger, path=pretrained, load_static_weights=load_static)
-            logger.info("load pretrained model from {}".format(
-                pretrained_model))
+                model,
+                logger,
+                path=pretrained_model,
+                load_static_weights=load_static_weights)
     else:
         logger.info('train from scratch')
     return best_model_dict

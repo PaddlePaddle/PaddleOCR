@@ -16,9 +16,15 @@ import copy
 
 __all__ = ['build_model']
 
+
 def build_model(config):
+
     from .base_model import BaseModel
-    
+    from .distillation_model import DistillationModel
     config = copy.deepcopy(config)
-    module_class = BaseModel(config)
+    use_distillation = config.get("use_distillation", False)
+    if use_distillation:
+        module_class = DistillationModel(config)
+    else:
+        module_class = BaseModel(config)
     return module_class
