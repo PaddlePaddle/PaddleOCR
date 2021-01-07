@@ -1,8 +1,14 @@
+English | [简体中文](README_ch.md)
+
 # PPOCRLabel
 
 PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field. It is written in python3 and pyqt5, supporting rectangular box annotation and four-point annotation modes. Annotations can be directly used for the training of PPOCR detection and recognition models.
 
 <img src="./data/gif/steps_en.gif" width="100%"/>
+
+### Recent Update
+
+- 2020.12.18: Support re-recognition of a single label box (by [ninetailskim](https://github.com/ninetailskim) ), perfect shortcut keys.
 
 ## Installation
 
@@ -54,7 +60,7 @@ python3 PPOCRLabel.py
 
    4.1 Click 'Create RectBox' or press 'W' in English keyboard mode to draw a new rectangle detection box. Click and release left mouse to select a region to annotate the text area.
 
-   4.2 Press 'P' to enter four-point labeling mode which enables you to create any four-point shape by clicking four points with the left mouse button in succession and DOUBLE CLICK the left mouse as the signal of labeling completion.
+   4.2 Press 'Q' to enter four-point labeling mode which enables you to create any four-point shape by clicking four points with the left mouse button in succession and DOUBLE CLICK the left mouse as the signal of labeling completion.
 
 5. After the marking frame is drawn, the user clicks "OK", and the detection frame will be pre-assigned a "TEMPORARY" label.
 
@@ -90,6 +96,25 @@ Therefore, if the recognition result has been manually changed before, it may ch
 
 ## Explanation
 
+### Shortcut keys
+
+| Shortcut keys    | Description                                      |
+| ---------------- | ------------------------------------------------ |
+| Ctrl + shift + A | Automatically label all unchecked images         |
+| Ctrl + shift + R | Re-recognize all the labels of the current image |
+| W                | Create a rect box                                |
+| Q                | Create a four-points box                         |
+| Ctrl + E         | Edit label of the selected box                   |
+| Ctrl + R         | Re-recognize the selected box                    |
+| Backspace        | Delete the selected box                          |
+| Ctrl + V         | Check image                                      |
+| Ctrl + Shift + d | Delete image                                     |
+| D                | Next image                                       |
+| A                | Previous image                                   |
+| Ctrl++           | Zoom in                                          |
+| Ctrl--           | Zoom out                                         |
+| ↑→↓←             | Move selected box                                |
+
 ### Built-in Model
 
 - Default model: PPOCRLabel uses the Chinese and English ultra-lightweight OCR model in PaddleOCR by default, supports Chinese, English and number recognition, and multiple language detection.
@@ -111,13 +136,18 @@ For some data that are difficult to recognize, the recognition results will not 
 
 - For Linux users, if you get an error starting with **objc[XXXXX]** when opening the software, it proves that your opencv version is too high. It is recommended to install version 4.2:
 
-	```
-	pip install opencv-python==4.2.0.32
-	```
+    ```
+    pip install opencv-python==4.2.0.32
+    ```
 - If you get an error starting with **Missing string id **,you need to recompile resources:
     ```
-	pyrcc5 -o libs/resources.py resources.qrc
-	```
+    pyrcc5 -o libs/resources.py resources.qrc
+    ```
+- If you get an error ``` module 'cv2' has no attribute 'INTER_NEAREST'```, you need to delete all opencv related packages first, and then reinstall the headless version of opencv
+    ```
+    pip install opencv-contrib-python-headless
+    ```
+    
 ### Related
 
 1.[Tzutalin. LabelImg. Git code (2015)](https://github.com/tzutalin/labelImg)
