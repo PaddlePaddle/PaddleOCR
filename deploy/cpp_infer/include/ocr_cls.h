@@ -40,7 +40,7 @@ public:
                       const int &gpu_id, const int &gpu_mem,
                       const int &cpu_math_library_num_threads,
                       const bool &use_mkldnn, const double &cls_thresh,
-                      const bool &use_tensorrt, const &bool use_fp16) {
+                      const bool &use_tensorrt, const bool &use_fp16) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;

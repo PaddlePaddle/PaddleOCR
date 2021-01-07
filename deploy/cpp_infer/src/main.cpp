@@ -77,11 +77,11 @@ int main(int argc, char **argv) {
   auto end = std::chrono::system_clock::now();
   auto duration =
       std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-  std::cout << "花费了"
+  std::cout << "Cost"
             << double(duration.count()) *
                    std::chrono::microseconds::period::num /
                    std::chrono::microseconds::period::den
-            << "秒" << std::endl;
+            << "s" << std::endl;
 
   return 0;
 }
