@@ -138,12 +138,22 @@ endif()
 
 # Note: libpaddle_inference_api.so/a must put before libpaddle_fluid.so/a
 if(WITH_STATIC_LIB)
-  set(DEPS
-      ${PADDLE_LIB}/paddle/lib/libpaddle_fluid${CMAKE_STATIC_LIBRARY_SUFFIX})
+  if(WIN32)
+    set(DEPS
+        ${PADDLE_LIB}/paddle/lib/paddle_fluid${CMAKE_STATIC_LIBRARY_SUFFIX})
+  else()
+    set(DEPS
+        ${PADDLE_LIB}/paddle/lib/libpaddle_fluid${CMAKE_STATIC_LIBRARY_SUFFIX})
+  endif()
 else()
-  set(DEPS
-      ${PADDLE_LIB}/paddle/lib/libpaddle_fluid${CMAKE_SHARED_LIBRARY_SUFFIX})
-endif()
+  if(WIN32)
+    set(DEPS
+        ${PADDLE_LIB}/paddle/lib/paddle_fluid${CMAKE_SHARED_LIBRARY_SUFFIX})
+  else()
+    set(DEPS
+        ${PADDLE_LIB}/paddle/lib/libpaddle_fluid${CMAKE_SHARED_LIBRARY_SUFFIX})
+  endif()
+endif(WITH_STATIC_LIB)
 
 if (NOT WIN32)
     set(DEPS ${DEPS}
