@@ -36,7 +36,7 @@ class DistillationLoss(nn.Layer):
         self.ctc_loss_ratio = ctc_loss_ratio
         self.distillation_loss_ratio = distillation_loss_ratio
         # TODO: add more loss
-        supported_loss_type = ["celoss"]
+        supported_loss_type = ["celoss", "l2loss", "l1loss"]
         assert self.loss_type in supported_loss_type, "self.loss_type({}) must be in supported_loss_type({})".format(
             self.loss_type, supported_loss_type)
 
@@ -54,13 +54,21 @@ class DistillationLoss(nn.Layer):
             cost = F.cross_entropy(student_out, y, soft_label=True)
             cost = paddle.mean(cost)
             loss_dict["celoss"] = cost * self.distillation_loss_ratio
+        elif self.loss_type == "l2loss":
+            diff = teacher_out - student_out
+            y = paddle.square(diff)
+            cost = paddle.mean(y)
+            loss_dict["l2loss"] = cost * self.distillation_loss_ratio
+        elif self.loss_type == "l1loss":
+            cost = F.l1_loss(student_out, teacher_out, reduction='mean')
+            loss_dict["l1loss"] = cost * self.distillation_loss_ratio
         else:
             assert False, "not supported loss type!"
 
         if self.with_ctc_loss:
-            basic_loss = self.ctc_loss_func(student_out,
-                                            batch)["loss"] * self.ctc_loss_ratio
-            loss_dict["ctcloss"] = basic_loss
+            ctc_loss = self.ctc_loss_func(student_out,
+                                          batch)["loss"] * self.ctc_loss_ratio
+            loss_dict["ctcloss"] = ctc_loss
 
         loss_dict["loss"] = paddle.add_n(list(loss_dict.values()))
         return loss_dict
