@@ -2,18 +2,26 @@
 
 # PPOCRLabel
 
-PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，使用python3和pyqt5编写，支持矩形框标注和四点标注模式，导出格式可直接用于PPOCR检测和识别模型的训练。
+PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，内置PPOCR模型对数据自动标注和重新识别。使用python3和pyqt5编写，支持矩形框标注和四点标注模式，导出格式可直接用于PPOCR检测和识别模型的训练。
 
 <img src="./data/gif/steps.gif" width="100%"/>
 
 #### 近期更新
 
-- 2020.12.18: 支持对单个标记框进行重新识别（by [ninetailskim](https://github.com/ninetailskim) ），完善快捷键。
+- 2020.12.18: 支持对单个标记框进行重新识别（by [ninetailskim](https://github.com/ninetailskim)），完善快捷键。
+
+#### 尽请期待
+
+- 锁定框模式：针对同一场景数据，被锁定的检测框的大小与位置能在不同图片之间传递。
+- 体验优化：增加撤销操作，批量移动、复制、删除等功能。优化标注流程。
+
+如果您对以上内容感兴趣或对完善工具有不一样的想法，欢迎加入我们的队伍与我们共同开发
+
 
 ## 安装
 
 ### 1. 安装PaddleOCR
-参考[PaddleOCR安装文档](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/installation.md)准备好PaddleOCR
+PPOCRLabel内置PaddleOCR模型，故请参考[PaddleOCR安装文档](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/installation.md)准备好PaddleOCR，并确保PaddleOCR安装成功。
 
 ### 2. 安装PPOCRLabel
 #### Windows + Anaconda
@@ -55,7 +63,7 @@ python3 PPOCRLabel.py --lang ch
 7. 内容更改：双击识别结果，对不准确的识别结果进行手动更改。
 8. 确认标记：点击 “确认”，图片状态切换为 “√”，跳转至下一张（此时不会直接将结果写入文件）。
 9. 删除：点击 “删除图像”，图片将会被删除至回收站。
-10. 保存结果：用户可以通过菜单中“文件-保存标记结果”手动保存，同时程序也会在用户每确认10张图片后自动保存一次。手动确认过的标记将会被存放在所打开图片文件夹下的*Label.txt*中。在菜单栏点击 “文件” - "保存识别结果"后，会将此类图片的识别训练数据保存在*crop_img*文件夹下，识别标签保存在*rec_gt.txt*中<sup>[4]</sup>。
+10. 保存结果：用户可以通过菜单中“文件-保存标记结果”手动保存，同时程序也会在用户每确认5张图片后自动保存一次。手动确认过的标记将会被存放在所打开图片文件夹下的*Label.txt*中。在菜单栏点击 “文件” - "保存识别结果"后，会将此类图片的识别训练数据保存在*crop_img*文件夹下，识别标签保存在*rec_gt.txt*中<sup>[4]</sup>。
 
 ### 注意
 
@@ -69,7 +77,7 @@ python3 PPOCRLabel.py --lang ch
 
 |    文件名     |                             说明                             |
 | :-----------: | :----------------------------------------------------------: |
-|   Label.txt   | 检测标签，可直接用于PPOCR检测模型训练。用户每保存10张检测结果后，程序会进行自动写入。当用户关闭应用程序或切换文件路径后同样会进行写入。 |
+|   Label.txt   | 检测标签，可直接用于PPOCR检测模型训练。用户每保存5张检测结果后，程序会进行自动写入。当用户关闭应用程序或切换文件路径后同样会进行写入。 |
 | fileState.txt | 图片状态标记文件，保存当前文件夹下已经被用户手动确认过的图片名称。 |
 |  Cache.cach   |              缓存文件，保存模型自动识别的结果。              |
 |  rec_gt.txt   | 识别标签。可直接用于PPOCR识别模型训练。需用户手动点击菜单栏“文件” - "保存识别结果"后产生。 |
@@ -104,6 +112,14 @@ python3 PPOCRLabel.py --lang ch
 
  - 自定义模型：用户可根据[自定义模型代码使用](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/whl.md#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B)，通过修改PPOCRLabel.py中针对[PaddleOCR类的实例化](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/PPOCRLabel/PPOCRLabel.py#L110)替换成自己训练的模型。
 
+### 保存方式
+
+PPOCRLabel支持三种保存方式：
+
+- 程序自动保存：当检测到用户手动确认过5张图片后，程序自动将标记结果写入Label.txt中。其中用户可通过更改```PPOCRLabel.py```中的```self.autoSaveNum```的数值设置确认几张图片后进行自动保存。
+- 手动保存：点击“文件 - 保存标记结果”手动保存标记。
+- 关闭应用程序保存
+
 ### 导出部分识别结果
 
 针对部分难以识别的数据，通过在识别结果的复选框中**取消勾选**相应的标记，其识别结果不会被导出。
@@ -115,7 +131,7 @@ python3 PPOCRLabel.py --lang ch
   
 - PPOCRLabel**不支持对中文文件名**的图片进行自动标注。
 
-- 针对Linux用户：：如果您在打开软件过程中出现**objc[XXXXX]**开头的错误，证明您的opencv版本太高，建议安装4.2版本：
+- 针对Linux用户：如果您在打开软件过程中出现**objc[XXXXX]**开头的错误，证明您的opencv版本太高，建议安装4.2版本：
     ```
     pip install opencv-python==4.2.0.32
     ```
@@ -129,6 +145,10 @@ python3 PPOCRLabel.py --lang ch
     ```
     pip install opencv-contrib-python-headless
     ```
+### 成为特殊兴趣小组的一员
+
+PPOCRSIG（Paddle Paddle OCR Special Interest Group，飞桨OCR特殊兴趣小组）致力于，我们希望拥有各种背景的，以开源的精神将OCR应用于各行各业。小组
+
 ### 参考资料
 
 1.[Tzutalin. LabelImg. Git code (2015)](https://github.com/tzutalin/labelImg)

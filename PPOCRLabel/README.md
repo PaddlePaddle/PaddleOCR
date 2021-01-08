@@ -2,7 +2,7 @@ English | [简体中文](README_ch.md)
 
 # PPOCRLabel
 
-PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field. It is written in python3 and pyqt5, supporting rectangular box annotation and four-point annotation modes. Annotations can be directly used for the training of PPOCR detection and recognition models.
+PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field, with built-in PPOCR model to automatically detect and re-recognize data. It is written in python3 and pyqt5, supporting rectangular box annotation and four-point annotation modes. Annotations can be directly used for the training of PPOCR detection and recognition models.
 
 <img src="./data/gif/steps_en.gif" width="100%"/>
 
@@ -10,11 +10,15 @@ PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field. I
 
 - 2020.12.18: Support re-recognition of a single label box (by [ninetailskim](https://github.com/ninetailskim) ), perfect shortcut keys.
 
+### TODO:
+- Lock box mode: For the same scene data, the size and position of the locked detection box can be transferred between different pictures.
+- Experience optimization: Add undo, batch operation include move, copy, delete and so on, optimize the annotation process.
+
 ## Installation
 
 ### 1. Install PaddleOCR
 
-Refer to [PaddleOCR installation document](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/installation.md) to prepare PaddleOCR
+PaddleOCR models has been built in PPOCRLabel, please refer to [PaddleOCR installation document](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/installation.md) to prepare PaddleOCR and make sure it works.
 
 ### 2. Install PPOCRLabel
 
@@ -72,7 +76,7 @@ python3 PPOCRLabel.py
 
 9. Click "Delete Image" and the image will be deleted to the recycle bin.
 
-10. Labeling result: the user can save manually through the menu "File - Save Label", while the program will also save automatically after every 10 images confirmed by the user.the manually checked label will be stored in *Label.txt* under the opened picture folder.
+10. Labeling result: the user can save manually through the menu "File - Save Label", while the program will also save automatically after every 5 images confirmed by the user.the manually checked label will be stored in *Label.txt* under the opened picture folder.
     Click "PaddleOCR"-"Save Recognition Results" in the menu bar, the recognition training data of such pictures will be saved in the *crop_img* folder, and the recognition label will be saved in *rec_gt.txt*<sup>[4]</sup>.
 
 ### Note
@@ -88,7 +92,7 @@ Therefore, if the recognition result has been manually changed before, it may ch
 
 |   File name   |                         Description                          |
 | :-----------: | :----------------------------------------------------------: |
-|   Label.txt   | The detection label file can be directly used for PPOCR detection model training. After the user saves 10 label results, the file will be automatically saved. It will also be written when the user closes the application or changes the file folder. |
+|   Label.txt   | The detection label file can be directly used for PPOCR detection model training. After the user saves 5 label results, the file will be automatically saved. It will also be written when the user closes the application or changes the file folder. |
 | fileState.txt | The picture status file save the image in the current folder that has been manually confirmed by the user. |
 |  Cache.cach   |    Cache files to save the results of model recognition.     |
 |  rec_gt.txt   | The recognition label file, which can be directly used for PPOCR identification model training, is generated after the user clicks on the menu bar "File"-"Save recognition result". |
@@ -123,6 +127,15 @@ Therefore, if the recognition result has been manually changed before, it may ch
   For specific model download links, please refer to [PaddleOCR Model List](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/models_list_en.md#multilingual-recognition-modelupdating)
 
 - Custom model: The model trained by users can be replaced by modifying PPOCRLabel.py in [PaddleOCR class instantiation](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/PPOCRLabel/PPOCRLabel.py#L110) referring [Custom Model Code](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/whl_en.md#use-custom-model)
+
+### Save
+
+PPOCRLabel supports three ways to save Label.txt
+
+- Automatically save: When it detects that the user has manually checked 5 pictures, the program automatically writes the annotations into Label.txt. The user can change the value of ``self.autoSaveNum`` in ``PPOCRLabel.py`` to set the number of images to be automatically saved after confirmation.
+- Manual save: Click "File-Save Marking Results" to manually save the label.
+- Close application save
+
 
 ### Export partial recognition results
 
