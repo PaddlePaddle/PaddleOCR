@@ -147,7 +147,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.prevLabelText = getStr('tempLabel')
         self.model = 'paddle'
         self.PPreader = None
-        self.autoSaveNum = 10
+        self.autoSaveNum = 5
 
         ################# file list  ###############
         self.fileListWidget = QListWidget()
