@@ -62,6 +62,10 @@ public:
     this->cls_thresh = stod(config_map_["cls_thresh"]);
 
     this->visualize = bool(stoi(config_map_["visualize"]));
+
+    this->use_tensorrt = bool(stoi(config_map_["use_tensorrt"]));
+
+    this->use_fp16 = bool(stod(config_map_["use_fp16"]));
   }
 
   bool use_gpu = false;
@@ -95,6 +99,10 @@ public:
   double cls_thresh;
 
   bool visualize = true;
+
+  bool use_tensorrt = false;
+
+  bool use_fp16 = false;
 
   void PrintConfigInfo();
 

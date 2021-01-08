@@ -76,6 +76,13 @@ void Classifier::LoadModel(const std::string &model_dir) {
 
   if (this->use_gpu_) {
     config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
+    if (this->use_tensorrt_) {
+      config.EnableTensorRtEngine(
+          1 << 20, 10, 3,
+          this->use_fp16_ ? paddle_infer::Config::Precision::kHalf
+                          : paddle_infer::Config::Precision::kFloat32,
+          false, false);
+    }
   } else {
     config.DisableGpu();
     if (this->use_mkldnn_) {

@@ -44,8 +44,8 @@ public:
                       const bool &use_mkldnn, const int &max_side_len,
                       const double &det_db_thresh,
                       const double &det_db_box_thresh,
-                      const double &det_db_unclip_ratio,
-                      const bool &visualize) {
+                      const double &det_db_unclip_ratio, const bool &visualize,
+                      const bool &use_tensorrt, const bool &use_fp16) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
@@ -59,6 +59,8 @@ public:
     this->det_db_unclip_ratio_ = det_db_unclip_ratio;
 
     this->visualize_ = visualize;
+    this->use_tensorrt_ = use_tensorrt;
+    this->use_fp16_ = use_fp16;
 
     LoadModel(model_dir);
   }
@@ -85,6 +87,8 @@ private:
   double det_db_unclip_ratio_ = 2.0;
 
   bool visualize_ = true;
+  bool use_tensorrt_ = false;
+  bool use_fp16_ = false;
 
   std::vector<float> mean_ = {0.485f, 0.456f, 0.406f};
   std::vector<float> scale_ = {1 / 0.229f, 1 / 0.224f, 1 / 0.225f};
