@@ -26,6 +26,7 @@ class MobileNetV3(nn.Layer):
                  scale=0.5,
                  large_stride=None,
                  small_stride=None,
+                 last_act="hard_swish",
                  **kwargs):
         super(MobileNetV3, self).__init__()
         if small_stride is None:
@@ -124,7 +125,7 @@ class MobileNetV3(nn.Layer):
             padding=0,
             groups=1,
             if_act=True,
-            act='hard_swish',
+            act=last_act,
             name='conv_last')
 
         self.pool = nn.MaxPool2D(kernel_size=2, stride=2, padding=0)
