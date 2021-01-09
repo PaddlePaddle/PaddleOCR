@@ -145,9 +145,6 @@ PPOCRLabel支持三种保存方式：
     ```
     pip install opencv-contrib-python-headless
     ```
-### 成为特殊兴趣小组的一员
-
-PPOCRSIG（Paddle Paddle OCR Special Interest Group，飞桨OCR特殊兴趣小组）致力于，我们希望拥有各种背景的，以开源的精神将OCR应用于各行各业。小组
 
 ### 参考资料
 
