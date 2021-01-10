@@ -15,7 +15,6 @@ import numpy as np
 import cv2
 import math
 import paddle
-import platform
 
 from arch import style_text_rec
 from utils.sys_funcs import check_gpu
@@ -24,15 +23,13 @@ from utils.logging import get_logger
 
 class StyleTextRecPredictor(object):
     def __init__(self, config):
-        self.logger = get_logger()
         algorithm = config['Predictor']['algorithm']
         assert algorithm in ["StyleTextRec"
                              ], "Generator {} not supported.".format(algorithm)
         use_gpu = config["Global"]['use_gpu']
-        if use_gpu and paddle.is_compiled_with_cuda() and platform.system()=="Windows":
-            self.logger.error("GPU mode on Windows is not supported.")
         check_gpu(use_gpu)
         paddle.set_device('gpu' if use_gpu else 'cpu')
+        self.logger = get_logger()
         self.generator = getattr(style_text_rec, algorithm)(config)
         self.height = config["Global"]["image_height"]
         self.width = config["Global"]["image_width"]
