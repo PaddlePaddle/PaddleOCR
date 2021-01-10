@@ -47,8 +47,8 @@ def read_params():
     cfg.cls_batch_num = 30
     cfg.cls_thresh = 0.9
 
-    cfg.use_zero_copy_run = False
     cfg.use_pdserving = False
+    cfg.use_tensorrt = False
     cfg.drop_score = 0.5
 
     return cfg

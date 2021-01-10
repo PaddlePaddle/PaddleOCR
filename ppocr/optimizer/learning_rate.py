@@ -18,6 +18,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from paddle.optimizer import lr
+from .lr_scheduler import CyclicalCosineDecay
 
 
 class Linear(object):
@@ -46,7 +47,7 @@ class Linear(object):
         self.end_lr = end_lr
         self.power = power
         self.last_epoch = last_epoch
-        self.warmup_epoch = warmup_epoch * step_each_epoch
+        self.warmup_epoch = round(warmup_epoch * step_each_epoch)
 
     def __call__(self):
         learning_rate = lr.PolynomialDecay(
@@ -87,7 +88,7 @@ class Cosine(object):
         self.learning_rate = learning_rate
         self.T_max = step_each_epoch * epochs
         self.last_epoch = last_epoch
-        self.warmup_epoch = warmup_epoch * step_each_epoch
+        self.warmup_epoch = round(warmup_epoch * step_each_epoch)
 
     def __call__(self):
         learning_rate = lr.CosineAnnealingDecay(
@@ -129,7 +130,7 @@ class Step(object):
         self.learning_rate = learning_rate
         self.gamma = gamma
         self.last_epoch = last_epoch
-        self.warmup_epoch = warmup_epoch * step_each_epoch
+        self.warmup_epoch = round(warmup_epoch * step_each_epoch)
 
     def __call__(self):
         learning_rate = lr.StepDecay(
@@ -168,7 +169,7 @@ class Piecewise(object):
         self.boundaries = [step_each_epoch * e for e in decay_epochs]
         self.values = values
         self.last_epoch = last_epoch
-        self.warmup_epoch = warmup_epoch * step_each_epoch
+        self.warmup_epoch = round(warmup_epoch * step_each_epoch)
 
     def __call__(self):
         learning_rate = lr.PiecewiseDecay(
@@ -181,5 +182,47 @@ class Piecewise(object):
                 warmup_steps=self.warmup_epoch,
                 start_lr=0.0,
                 end_lr=self.values[0],
+                last_epoch=self.last_epoch)
+        return learning_rate
+
+
+class CyclicalCosine(object):
+    """
+    Cyclical cosine learning rate decay
+    Args:
+        learning_rate(float): initial learning rate
+        step_each_epoch(int): steps each epoch
+        epochs(int): total training epochs
+        cycle(int): period of the cosine learning rate
+        last_epoch (int, optional):  The index of last epoch. Can be set to restart training. Default: -1, means initial learning rate.
+    """
+
+    def __init__(self,
+                 learning_rate,
+                 step_each_epoch,
+                 epochs,
+                 cycle,
+                 warmup_epoch=0,
+                 last_epoch=-1,
+                 **kwargs):
+        super(CyclicalCosine, self).__init__()
+        self.learning_rate = learning_rate
+        self.T_max = step_each_epoch * epochs
+        self.last_epoch = last_epoch
+        self.warmup_epoch = round(warmup_epoch * step_each_epoch)
+        self.cycle = round(cycle * step_each_epoch)
+
+    def __call__(self):
+        learning_rate = CyclicalCosineDecay(
+            learning_rate=self.learning_rate,
+            T_max=self.T_max,
+            cycle=self.cycle,
+            last_epoch=self.last_epoch)
+        if self.warmup_epoch > 0:
+            learning_rate = lr.LinearWarmup(
+                learning_rate=learning_rate,
+                warmup_steps=self.warmup_epoch,
+                start_lr=0.0,
+                end_lr=self.learning_rate,
                 last_epoch=self.last_epoch)
         return learning_rate

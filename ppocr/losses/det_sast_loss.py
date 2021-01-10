@@ -19,7 +19,6 @@ from __future__ import print_function
 import paddle
 from paddle import nn
 from .det_basic_loss import DiceLoss
-import paddle.fluid as fluid
 import numpy as np
 
 
@@ -27,9 +26,7 @@ class SASTLoss(nn.Layer):
     """
     """
 
-    def __init__(self,
-                 eps=1e-6,
-                 **kwargs):
+    def __init__(self, eps=1e-6, **kwargs):
         super(SASTLoss, self).__init__()
         self.dice_loss = DiceLoss(eps=eps)
 
@@ -39,7 +36,7 @@ class SASTLoss(nn.Layer):
         tcl_mask: N x 128 x 1
         tcl_label: N x X list or LoDTensor
         """
-                
+
         f_score = predicts['f_score']
         f_border = predicts['f_border']
         f_tvo = predicts['f_tvo']
@@ -53,15 +50,17 @@ class SASTLoss(nn.Layer):
         score_loss = 1.0 - 2 * intersection / (union + 1e-5)
 
         #border loss
-        l_border_split, l_border_norm = paddle.split(l_border, num_or_sections=[4, 1], axis=1)
+        l_border_split, l_border_norm = paddle.split(
+            l_border, num_or_sections=[4, 1], axis=1)
         f_border_split = f_border
         border_ex_shape = l_border_norm.shape * np.array([1, 4, 1, 1])
-        l_border_norm_split = paddle.expand(x=l_border_norm, shape=border_ex_shape)
-        l_border_score = paddle.expand(x=l_score, shape=border_ex_shape)   
-        l_border_mask = paddle.expand(x=l_mask, shape=border_ex_shape)  
+        l_border_norm_split = paddle.expand(
+            x=l_border_norm, shape=border_ex_shape)
+        l_border_score = paddle.expand(x=l_score, shape=border_ex_shape)
+        l_border_mask = paddle.expand(x=l_mask, shape=border_ex_shape)
 
         border_diff = l_border_split - f_border_split
-        abs_border_diff = paddle.abs(border_diff) 
+        abs_border_diff = paddle.abs(border_diff)
         border_sign = abs_border_diff < 1.0
         border_sign = paddle.cast(border_sign, dtype='float32')
         border_sign.stop_gradient = True
@@ -72,15 +71,16 @@ class SASTLoss(nn.Layer):
                     (paddle.sum(l_border_score * l_border_mask) + 1e-5)
 
         #tvo_loss
-        l_tvo_split, l_tvo_norm = paddle.split(l_tvo, num_or_sections=[8, 1], axis=1)
+        l_tvo_split, l_tvo_norm = paddle.split(
+            l_tvo, num_or_sections=[8, 1], axis=1)
         f_tvo_split = f_tvo
         tvo_ex_shape = l_tvo_norm.shape * np.array([1, 8, 1, 1])
         l_tvo_norm_split = paddle.expand(x=l_tvo_norm, shape=tvo_ex_shape)
-        l_tvo_score = paddle.expand(x=l_score, shape=tvo_ex_shape)   
-        l_tvo_mask = paddle.expand(x=l_mask, shape=tvo_ex_shape)   
+        l_tvo_score = paddle.expand(x=l_score, shape=tvo_ex_shape)
+        l_tvo_mask = paddle.expand(x=l_mask, shape=tvo_ex_shape)
         #
         tvo_geo_diff = l_tvo_split - f_tvo_split
-        abs_tvo_geo_diff = paddle.abs(tvo_geo_diff) 
+        abs_tvo_geo_diff = paddle.abs(tvo_geo_diff)
         tvo_sign = abs_tvo_geo_diff < 1.0
         tvo_sign = paddle.cast(tvo_sign, dtype='float32')
         tvo_sign.stop_gradient = True
@@ -91,15 +91,16 @@ class SASTLoss(nn.Layer):
                     (paddle.sum(l_tvo_score * l_tvo_mask) + 1e-5)
 
         #tco_loss
-        l_tco_split, l_tco_norm = paddle.split(l_tco, num_or_sections=[2, 1], axis=1)
+        l_tco_split, l_tco_norm = paddle.split(
+            l_tco, num_or_sections=[2, 1], axis=1)
         f_tco_split = f_tco
         tco_ex_shape = l_tco_norm.shape * np.array([1, 2, 1, 1])
         l_tco_norm_split = paddle.expand(x=l_tco_norm, shape=tco_ex_shape)
-        l_tco_score = paddle.expand(x=l_score, shape=tco_ex_shape)   
-        l_tco_mask = paddle.expand(x=l_mask, shape=tco_ex_shape) 
-        
+        l_tco_score = paddle.expand(x=l_score, shape=tco_ex_shape)
+        l_tco_mask = paddle.expand(x=l_mask, shape=tco_ex_shape)
+
         tco_geo_diff = l_tco_split - f_tco_split
-        abs_tco_geo_diff = paddle.abs(tco_geo_diff) 
+        abs_tco_geo_diff = paddle.abs(tco_geo_diff)
         tco_sign = abs_tco_geo_diff < 1.0
         tco_sign = paddle.cast(tco_sign, dtype='float32')
         tco_sign.stop_gradient = True
@@ -109,13 +110,12 @@ class SASTLoss(nn.Layer):
         tco_loss = paddle.sum(tco_out_loss * l_tco_score * l_tco_mask) / \
                     (paddle.sum(l_tco_score * l_tco_mask) + 1e-5)
 
-
         # total loss
         tvo_lw, tco_lw = 1.5, 1.5
         score_lw, border_lw = 1.0, 1.0
         total_loss = score_loss * score_lw + border_loss * border_lw + \
                     tvo_loss * tvo_lw + tco_loss * tco_lw
-                    
+
         losses = {'loss':total_loss, "score_loss":score_loss,\
             "border_loss":border_loss, 'tvo_loss':tvo_loss, 'tco_loss':tco_loss}
         return losses

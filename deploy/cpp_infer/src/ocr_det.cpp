@@ -17,12 +17,20 @@
 namespace PaddleOCR {
 
 void DBDetector::LoadModel(const std::string &model_dir) {
-  AnalysisConfig config;
+  //   AnalysisConfig config;
+  paddle_infer::Config config;
   config.SetModel(model_dir + "/inference.pdmodel",
                   model_dir + "/inference.pdiparams");
 
   if (this->use_gpu_) {
     config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
+    if (this->use_tensorrt_) {
+      config.EnableTensorRtEngine(
+          1 << 20, 10, 3,
+          this->use_fp16_ ? paddle_infer::Config::Precision::kHalf
+                          : paddle_infer::Config::Precision::kFloat32,
+          false, false);
+    }
   } else {
     config.DisableGpu();
     if (this->use_mkldnn_) {
@@ -32,10 +40,8 @@ void DBDetector::LoadModel(const std::string &model_dir) {
     }
     config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
   }
-
-  // false for zero copy tensor
-  // true for commom tensor
-  config.SwitchUseFeedFetchOps(!this->use_zero_copy_run_);
+  // use zero_copy_run as default
+  config.SwitchUseFeedFetchOps(false);
   // true for multiple input
   config.SwitchSpecifyInputNames(true);
 
@@ -44,7 +50,7 @@ void DBDetector::LoadModel(const std::string &model_dir) {
   config.EnableMemoryOptim();
   config.DisableGlogInfo();
 
-  this->predictor_ = CreatePaddlePredictor(config);
+  this->predictor_ = CreatePredictor(config);
 }
 
 void DBDetector::Run(cv::Mat &img,
@@ -64,31 +70,21 @@ void DBDetector::Run(cv::Mat &img,
   this->permute_op_.Run(&resize_img, input.data());
 
   // Inference.
-  if (this->use_zero_copy_run_) {
-    auto input_names = this->predictor_->GetInputNames();
-    auto input_t = this->predictor_->GetInputTensor(input_names[0]);
-    input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
-    input_t->copy_from_cpu(input.data());
-    this->predictor_->ZeroCopyRun();
-  } else {
-    paddle::PaddleTensor input_t;
-    input_t.shape = {1, 3, resize_img.rows, resize_img.cols};
-    input_t.data =
-        paddle::PaddleBuf(input.data(), input.size() * sizeof(float));
-    input_t.dtype = PaddleDType::FLOAT32;
-    std::vector<paddle::PaddleTensor> outputs;
-    this->predictor_->Run({input_t}, &outputs, 1);
-  }
+  auto input_names = this->predictor_->GetInputNames();
+  auto input_t = this->predictor_->GetInputHandle(input_names[0]);
+  input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
+  input_t->CopyFromCpu(input.data());
+  this->predictor_->Run();
 
   std::vector<float> out_data;
   auto output_names = this->predictor_->GetOutputNames();
-  auto output_t = this->predictor_->GetOutputTensor(output_names[0]);
+  auto output_t = this->predictor_->GetOutputHandle(output_names[0]);
   std::vector<int> output_shape = output_t->shape();
   int out_num = std::accumulate(output_shape.begin(), output_shape.end(), 1,
                                 std::multiplies<int>());
 
   out_data.resize(out_num);
-  output_t->copy_to_cpu(out_data.data());
+  output_t->CopyToCpu(out_data.data());
 
   int n2 = output_shape[2];
   int n3 = output_shape[3];

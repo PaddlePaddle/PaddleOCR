@@ -18,6 +18,8 @@ __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 
+os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
+
 import cv2
 import copy
 import numpy as np

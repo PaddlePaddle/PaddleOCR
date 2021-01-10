@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
     exit(1);
   }
 
-  Config config(argv[1]);
+  OCRConfig config(argv[1]);
 
   config.PrintConfigInfo();
 
@@ -50,37 +50,24 @@ int main(int argc, char **argv) {
 
   cv::Mat srcimg = cv::imread(img_path, cv::IMREAD_COLOR);
 
-  DBDetector det(
-      config.det_model_dir, config.use_gpu, config.gpu_id, config.gpu_mem,
-      config.cpu_math_library_num_threads, config.use_mkldnn,
-      config.use_zero_copy_run, config.max_side_len, config.det_db_thresh,
-      config.det_db_box_thresh, config.det_db_unclip_ratio, config.visualize);
+  DBDetector det(config.det_model_dir, config.use_gpu, config.gpu_id,
+                 config.gpu_mem, config.cpu_math_library_num_threads,
+                 config.use_mkldnn, config.max_side_len, config.det_db_thresh,
+                 config.det_db_box_thresh, config.det_db_unclip_ratio,
+                 config.visualize, config.use_tensorrt, config.use_fp16);
 
   Classifier *cls = nullptr;
   if (config.use_angle_cls == true) {
     cls = new Classifier(config.cls_model_dir, config.use_gpu, config.gpu_id,
                          config.gpu_mem, config.cpu_math_library_num_threads,
-                         config.use_mkldnn, config.use_zero_copy_run,
-                         config.cls_thresh);
+                         config.use_mkldnn, config.cls_thresh,
+                         config.use_tensorrt, config.use_fp16);
   }
 
   CRNNRecognizer rec(config.rec_model_dir, config.use_gpu, config.gpu_id,
                      config.gpu_mem, config.cpu_math_library_num_threads,
-                     config.use_mkldnn, config.use_zero_copy_run,
-                     config.char_list_file);
-
-#ifdef USE_MKL
-#pragma omp parallel
-  for (auto i = 0; i < 10; i++) {
-    LOG_IF(WARNING,
-           config.cpu_math_library_num_threads != omp_get_num_threads())
-        << "WARNING! MKL is running on " << omp_get_num_threads()
-        << " threads while cpu_math_library_num_threads is set to "
-        << config.cpu_math_library_num_threads
-        << ". Possible reason could be 1. You have set omp_set_num_threads() "
-           "somewhere; 2. MKL is not linked properly";
-  }
-#endif
+                     config.use_mkldnn, config.char_list_file,
+                     config.use_tensorrt, config.use_fp16);
 
   auto start = std::chrono::system_clock::now();
   std::vector<std::vector<std::vector<int>>> boxes;
@@ -90,11 +77,11 @@ int main(int argc, char **argv) {
   auto end = std::chrono::system_clock::now();
   auto duration =
       std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-  std::cout << "花费了"
+  std::cout << "Cost"
             << double(duration.count()) *
                    std::chrono::microseconds::period::num /
                    std::chrono::microseconds::period::den
-            << "秒" << std::endl;
+            << "s" << std::endl;
 
   return 0;
 }

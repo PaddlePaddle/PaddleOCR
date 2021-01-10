@@ -18,13 +18,14 @@ __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 
+os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
+
 import cv2
 import copy
 import numpy as np
 import math
 import time
 import traceback
-import paddle.fluid as fluid
 
 import tools.infer.utility as utility
 from ppocr.postprocess import build_post_process
@@ -39,7 +40,6 @@ class TextClassifier(object):
         self.cls_image_shape = [int(v) for v in args.cls_image_shape.split(",")]
         self.cls_batch_num = args.cls_batch_num
         self.cls_thresh = args.cls_thresh
-        self.use_zero_copy_run = args.use_zero_copy_run
         postprocess_params = {
             'name': 'ClsPostProcess',
             "label_list": args.label_list,
@@ -99,12 +99,8 @@ class TextClassifier(object):
             norm_img_batch = norm_img_batch.copy()
             starttime = time.time()
 
-            if self.use_zero_copy_run:
-                self.input_tensor.copy_from_cpu(norm_img_batch)
-                self.predictor.zero_copy_run()
-            else:
-                norm_img_batch = fluid.core.PaddleTensor(norm_img_batch)
-                self.predictor.run([norm_img_batch])
+            self.input_tensor.copy_from_cpu(norm_img_batch)
+            self.predictor.run()
             prob_out = self.output_tensors[0].copy_to_cpu()
             cls_result = self.postprocess_op(prob_out)
             elapse += time.time() - starttime
@@ -143,10 +139,11 @@ def main(args):
             "Please set --rec_image_shape='3,32,100' and --rec_char_type='en' ")
         exit()
     for ino in range(len(img_list)):
-        logger.info("Predicts of {}:{}".format(valid_image_file_list[ino], cls_res[
-            ino]))
+        logger.info("Predicts of {}:{}".format(valid_image_file_list[ino],
+                                               cls_res[ino]))
     logger.info("Total predict time for {} images, cost: {:.3f}".format(
         len(img_list), predict_time))
+
 
 if __name__ == "__main__":
     main(utility.parse_args())

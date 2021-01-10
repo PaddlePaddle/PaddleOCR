@@ -43,32 +43,22 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
     this->permute_op_.Run(&resize_img, input.data());
 
     // Inference.
-    if (this->use_zero_copy_run_) {
-      auto input_names = this->predictor_->GetInputNames();
-      auto input_t = this->predictor_->GetInputTensor(input_names[0]);
-      input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
-      input_t->copy_from_cpu(input.data());
-      this->predictor_->ZeroCopyRun();
-    } else {
-      paddle::PaddleTensor input_t;
-      input_t.shape = {1, 3, resize_img.rows, resize_img.cols};
-      input_t.data =
-          paddle::PaddleBuf(input.data(), input.size() * sizeof(float));
-      input_t.dtype = PaddleDType::FLOAT32;
-      std::vector<paddle::PaddleTensor> outputs;
-      this->predictor_->Run({input_t}, &outputs, 1);
-    }
+    auto input_names = this->predictor_->GetInputNames();
+    auto input_t = this->predictor_->GetInputHandle(input_names[0]);
+    input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
+    input_t->CopyFromCpu(input.data());
+    this->predictor_->Run();
 
     std::vector<float> predict_batch;
     auto output_names = this->predictor_->GetOutputNames();
-    auto output_t = this->predictor_->GetOutputTensor(output_names[0]);
+    auto output_t = this->predictor_->GetOutputHandle(output_names[0]);
     auto predict_shape = output_t->shape();
 
     int out_num = std::accumulate(predict_shape.begin(), predict_shape.end(), 1,
                                   std::multiplies<int>());
     predict_batch.resize(out_num);
 
-    output_t->copy_to_cpu(predict_batch.data());
+    output_t->CopyToCpu(predict_batch.data());
 
     // ctc decode
     std::vector<std::string> str_res;
@@ -86,7 +76,7 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
           float(*std::max_element(&predict_batch[n * predict_shape[2]],
                                   &predict_batch[(n + 1) * predict_shape[2]]));
 
-      if (argmax_idx > 0 && (not(i > 0 && argmax_idx == last_index))) {
+      if (argmax_idx > 0 && (!(i > 0 && argmax_idx == last_index))) {
         score += max_value;
         count += 1;
         str_res.push_back(label_list_[argmax_idx]);
@@ -102,12 +92,20 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
 }
 
 void CRNNRecognizer::LoadModel(const std::string &model_dir) {
-  AnalysisConfig config;
+  //   AnalysisConfig config;
+  paddle_infer::Config config;
   config.SetModel(model_dir + "/inference.pdmodel",
                   model_dir + "/inference.pdiparams");
 
   if (this->use_gpu_) {
     config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
+    if (this->use_tensorrt_) {
+      config.EnableTensorRtEngine(
+          1 << 20, 10, 3,
+          this->use_fp16_ ? paddle_infer::Config::Precision::kHalf
+                          : paddle_infer::Config::Precision::kFloat32,
+          false, false);
+    }
   } else {
     config.DisableGpu();
     if (this->use_mkldnn_) {
@@ -118,9 +116,7 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
     config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
   }
 
-  // false for zero copy tensor
-  // true for commom tensor
-  config.SwitchUseFeedFetchOps(!this->use_zero_copy_run_);
+  config.SwitchUseFeedFetchOps(false);
   // true for multiple input
   config.SwitchSpecifyInputNames(true);
 
@@ -129,7 +125,7 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
   config.EnableMemoryOptim();
   config.DisableGlogInfo();
 
-  this->predictor_ = CreatePaddlePredictor(config);
+  this->predictor_ = CreatePredictor(config);
 }
 
 cv::Mat CRNNRecognizer::GetRotateCropImage(const cv::Mat &srcimage,
