@@ -64,6 +64,7 @@ from libs.colorDialog import ColorDialog
 from libs.toolBar import ToolBar
 from libs.ustr import ustr
 from libs.hashableQListWidgetItem import HashableQListWidgetItem
+from libs.editinlist import EditInList
 
 __appname__ = 'PPOCRLabel'
 
@@ -201,12 +202,12 @@ class MainWindow(QMainWindow, WindowMixin):
 
         ################## label list ####################
         # Create and add a widget for showing current label items
-        self.labelList = QListWidget()
+        self.labelList = EditInList()
         labelListContainer = QWidget()
         labelListContainer.setLayout(listLayout)
         self.labelList.itemActivated.connect(self.labelSelectionChanged)
         self.labelList.itemSelectionChanged.connect(self.labelSelectionChanged)
-        self.labelList.itemDoubleClicked.connect(self.editLabel)
+        self.labelList.clicked.connect(self.labelList.item_clicked)
         # Connect to itemChanged to detect checkbox changes.
         self.labelList.itemChanged.connect(self.labelItemChanged)
         self.labelListDock = QDockWidget(getStr('recognitionResult'),self)
@@ -316,7 +317,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.scrollArea = scroll
         self.canvas.scrollRequest.connect(self.scrollRequest)
 
-        self.canvas.newShape.connect(self.newShape)
+        self.canvas.newShape.connect(partial(self.newShape, False))
         self.canvas.shapeMoved.connect(self.updateBoxlist)  # self.setDirty
         self.canvas.selectionChanged.connect(self.shapeSelectionChanged)
         self.canvas.drawingPolygon.connect(self.toggleDrawingSensitive)
@@ -354,12 +355,8 @@ class MainWindow(QMainWindow, WindowMixin):
         quit = action(getStr('quit'), self.close,
                       'Ctrl+Q', 'quit', getStr('quitApp'))
 
-        open = action(getStr('openFile'), self.openFile,
-                      'Ctrl+O', 'open', getStr('openFileDetail'))
-
         opendir = action(getStr('openDir'), self.openDirDialog,
                          'Ctrl+u', 'open', getStr('openDir'))
-
 
         save = action(getStr('save'), self.saveFile,
                       'Ctrl+V', 'verify', getStr('saveDetail'), enabled=False)
@@ -506,7 +503,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.drawSquaresOption.triggered.connect(self.toogleDrawSquare)
 
         # Store actions for further handling.
-        self.actions = struct(save=save,  open=open,  resetAll=resetAll, deleteImg=deleteImg,
+        self.actions = struct(save=save,  resetAll=resetAll, deleteImg=deleteImg,
                               lineColor=color1, create=create, delete=delete, edit=edit, copy=copy,
                               saveRec=saveRec, singleRere=singleRere,AutoRec=AutoRec,reRec=reRec,
                               createMode=createMode, editMode=editMode,
@@ -515,7 +512,7 @@ class MainWindow(QMainWindow, WindowMixin):
                               fitWindow=fitWindow, fitWidth=fitWidth,
                               zoomActions=zoomActions, saveLabel=saveLabel,
                               fileMenuActions=(
-                                  open, opendir, saveLabel,  resetAll, quit),
+                                  opendir, saveLabel,  resetAll, quit),
                               beginner=(), advanced=(),
                               editMenu=(createpoly, edit, copy, delete,singleRere,
                                         None, color1, self.drawSquaresOption),
@@ -537,11 +534,6 @@ class MainWindow(QMainWindow, WindowMixin):
             labelList=labelMenu)
 
 
-        # Sync single class mode from PR#106
-        self.singleClassMode = QAction(getStr('singleClsMode'), self)
-        self.singleClassMode.setShortcut("Ctrl+Shift+S")
-        self.singleClassMode.setCheckable(True)
-        self.singleClassMode.setChecked(settings.get(SETTING_SINGLE_CLASS, False))
         self.lastLabel = None
         # Add option to enable/disable labels being displayed at the top of bounding boxes
         self.displayLabelOption = QAction(getStr('displayLabel'), self)
@@ -550,12 +542,18 @@ class MainWindow(QMainWindow, WindowMixin):
         self.displayLabelOption.setChecked(settings.get(SETTING_PAINT_LABEL, False))
         self.displayLabelOption.triggered.connect(self.togglePaintLabelsOption)
 
+        self.labelDialogOption = QAction(getStr('labelDialogOption'), self)
+        self.labelDialogOption.setShortcut("Ctrl+Shift+L")
+        self.labelDialogOption.setCheckable(True)
+        self.labelDialogOption.setChecked(settings.get(SETTING_PAINT_LABEL, False))
+        self.labelDialogOption.triggered.connect(self.speedChoose)
+
         addActions(self.menus.file,
                    (opendir, None, saveLabel, saveRec, None, resetAll, deleteImg, quit))
 
         addActions(self.menus.help, (showSteps, showInfo))
         addActions(self.menus.view, (
-            self.displayLabelOption, # labels,
+            self.displayLabelOption, self.labelDialogOption,
              None,
             hideAll, showAll, None,
             zoomIn, zoomOut, zoomOrg, None,
@@ -1062,6 +1060,7 @@ class MainWindow(QMainWindow, WindowMixin):
 
     def labelSelectionChanged(self):
         item = self.currentItem()
+        self.labelList.scrollToItem(item, QAbstractItemView.EnsureVisible)
         if item and self.canvas.editing():
             self._noSelectionSlot = True
             self.canvas.selectShape(self.itemsToShapes[item])
@@ -1069,6 +1068,7 @@ class MainWindow(QMainWindow, WindowMixin):
 
     def boxSelectionChanged(self):
         item = self.currentBox()
+        self.BoxList.scrollToItem(item, QAbstractItemView.EnsureVisible)
         if item and self.canvas.editing():
             self._noSelectionSlot = True
             self.canvas.selectShape(self.itemsToShapesbox[item])
@@ -1089,7 +1089,7 @@ class MainWindow(QMainWindow, WindowMixin):
             # self.actions.save.setEnabled(True)
 
     # Callback functions:
-    def newShape(self):
+    def newShape(self, value=True):
         """Pop-up and give focus to the label editor.
 
         position MUST be in global coordinates.
@@ -1098,12 +1098,11 @@ class MainWindow(QMainWindow, WindowMixin):
             self.labelDialog = LabelDialog(
                 parent=self, listItem=self.labelHist)
 
-        # Sync single class mode from PR#106
-        if self.singleClassMode.isChecked() and self.lastLabel:
-            text = self.lastLabel
-        else:
+        if value:
             text = self.labelDialog.popUp(text=self.prevLabelText)
             self.lastLabel = text
+        else:
+            text = self.prevLabelText
 
         if text is not None:
             self.prevLabelText = self.stringBundle.getString('tempLabel')
@@ -1364,7 +1363,6 @@ class MainWindow(QMainWindow, WindowMixin):
             else:
                 settings[SETTING_LAST_OPEN_DIR] = ''
 
-            settings[SETTING_SINGLE_CLASS] = self.singleClassMode.isChecked()
             settings[SETTING_PAINT_LABEL] = self.displayLabelOption.isChecked()
             settings[SETTING_DRAW_SQUARE] = self.drawSquaresOption.isChecked()
             settings.save()
@@ -1496,35 +1494,6 @@ class MainWindow(QMainWindow, WindowMixin):
         if filename:
             print('file name in openNext is ',filename)
             self.loadFile(filename)
-
-    def openFile(self, _value=False):
-        if not self.mayContinue():
-            return
-        path = os.path.dirname(ustr(self.filePath)) if self.filePath else '.'
-        formats = ['*.%s' % fmt.data().decode("ascii").lower() for fmt in QImageReader.supportedImageFormats()]
-        filters = "Image & Label files (%s)" % ' '.join(formats + ['*%s' % LabelFile.suffix])
-        filename = QFileDialog.getOpenFileName(self, '%s - Choose Image or Label file' % __appname__, path, filters)
-        if filename:
-            if isinstance(filename, (tuple, list)):
-                filename = filename[0]
-            self.loadFile(filename)
-            # print('filename in openfile is ', self.filePath)
-        self.filePath = None
-        self.fileListWidget.clear()
-        self.iconlist.clear()
-        self.mImgList = [filename]
-        self.openNextImg()
-        if self.validFilestate(filename) is True:
-            item = QListWidgetItem(newIcon('done'), filename)
-            self.setClean()
-        elif self.validFilestate(filename) is None:
-            item = QListWidgetItem(newIcon('close'), filename)
-        else:
-            item = QListWidgetItem(newIcon('close'), filename)
-            self.setDirty()
-        self.fileListWidget.addItem(filename)
-        self.additems5(None)
-        print('opened image is', filename)
         
     def updateFileListIcon(self, filename):
         pass
@@ -1962,6 +1931,16 @@ class MainWindow(QMainWindow, WindowMixin):
                     f.write(label['transcription'] + '\n')
 
         QMessageBox.information(self, "Information", "Cropped images has been saved in "+str(crop_img_dir))
+
+    def speedChoose(self):
+        if self.labelDialogOption.isChecked():
+            self.canvas.newShape.disconnect()
+            self.canvas.newShape.connect(partial(self.newShape, True))
+
+        else:
+            self.canvas.newShape.disconnect()
+            self.canvas.newShape.connect(partial(self.newShape, False))
+
 
 def inverted(color):
     return QColor(*[255 - v for v in color.getRgb()])
