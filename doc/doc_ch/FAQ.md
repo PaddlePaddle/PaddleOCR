@@ -15,43 +15,41 @@
   * [基础知识7题](#基础知识)
   * [数据集7题](#数据集2)
   * [模型训练调优17题](#模型训练调优2)
-* [【实战篇】PaddleOCR实战101个问题](#PaddleOCR实战问题)
-  * [使用咨询31题](#使用咨询)
+* [【实战篇】PaddleOCR实战106个问题](#PaddleOCR实战问题)
+  * [使用咨询36题](#使用咨询)
   * [数据集17题](#数据集3)
   * [模型训练调优26题](#模型训练调优3)
   * [预测部署27题](#预测部署3)
 
 
 <a name="近期更新"></a>
-## 近期更新（2021.1.4）
+## 近期更新（2021.1.11）
 
-#### Q3.1.29: PPOCRLabel创建矩形框时只能拖出正方形，如何进行矩形标注？
 
-**A**： 取消勾选：“编辑”-“正方形标注”
+#### Q3.1.32 能否修改StyleText配置文件中的分辨率？
 
-#### Q3.1.30: Style-Text 如何不文字风格迁移，就像普通文本生成程序一样默认字体直接输出到分割的背景图？
+**A**：StyleText目前的训练数据主要是高度32的图片，建议不要改变高度。未来我们会支持更丰富的分辨率。
 
-**A**： 使用image_synth模式会输出fake_bg.jpg，即为背景图。如果想要批量提取背景，可以稍微修改一下代码，将fake_bg保存下来即可。要修改的位置：
-https://github.com/PaddlePaddle/PaddleOCR/blob/de3e2e7cd3b8b65ee02d7a41e570fa5b511a3c1d/StyleText/engine/synthesisers.py#L68
+#### Q3.1.33 StyleText是否可以更换字体文件？
 
-#### Q3.1.31: 怎么输出网络结构以及每层的参数信息？
+**A**：StyleText项目中的字体文件为标准字体，主要用作模型的输入部分，不能够修改。
+StyleText的用途主要是：提取style_image中的字体、背景等style信息，根据语料生成同样style的图片。
 
-**A**： 可以使用 `paddle.summary`， 具体参考:https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0-rc1/api/paddle/hapi/model_summary/summary_cn.html#summary。
+#### Q3.1.34 StyleText批量生成图片为什么没有输出？
 
-#### Q3.4.26: 目前paddle hub serving 只支持 imgpath，如果我想用imgurl 去哪里改呢？
+**A**：需要检查以下您配置文件中的路径是否都存在。尤其要注意的是[label_file配置](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/StyleText/README_ch.md#%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B)。
+如果您使用的style_image输入没有label信息，您依然需要提供一个图片文件列表。
 
-**A**： 图片是在这里读取的：https://github.com/PaddlePaddle/PaddleOCR/blob/67ef25d593c4eabfaaceb22daade4577f53bed81/deploy/hubserving/ocr_system/module.py#L55，
-可以参考下面的写法，将url path转化为np array（https://cloud.tencent.com/developer/article/1467840）
-```
-response = request.urlopen('http://i1.whymtj.com/uploads/tu/201902/9999/52491ae4ba.jpg')
-img_array = np.array(bytearray(response.read()), dtype=np.uint8)
-img = cv.imdecode(img_array, -1)
-```
+#### Q3.1.35 怎样把OCR输出的结果组成有意义的语句呢？
 
-#### Q3.4.27: C++ 端侧部署可以只对OCR的检测部署吗？
+**A**：OCR输出的结果包含坐标信息和文字内容两部分。如果您不关心文字的顺序，那么可以直接按box的序号连起来。
+如果需要将文字按照一定的顺序排列，则需要您设定一些规则，对文字的坐标进行处理，例如按照坐标从上到下，从左到右连接识别结果。
+对于一些有规律的垂类场景，可以设定模板，根据位置、内容进行匹配。
+例如识别身份证照片，可以先匹配"姓名"，"性别"等关键字，根据这些关键字的坐标去推测其他信息的位置，再与识别的结果匹配。
 
-**A**： 可以的，识别和检测模块是解耦的。如果想对检测部署，需要自己修改一下main函数，
-只保留检测相关就可以:https://github.com/PaddlePaddle/PaddleOCR/blob/de3e2e7cd3b8b65ee02d7a41e570fa5b511a3c1d/deploy/cpp_infer/src/main.cpp#L72
+#### Q3.1.36 如何识别竹简上的古文？
+**A**：对于字符都是普通的汉字字符的情况，只要标注足够的数据，finetune模型就可以了。如果数据量不足，您可以尝试StyleText工具。
+而如果使用的字符是特殊的古文字、甲骨文、象形文字等，那么首先需要构建一个古文字的字典，之后再进行训练。
 
 
 <a name="OCR精选10个问题"></a>
@@ -161,7 +159,7 @@ img = cv.imdecode(img_array, -1)
 **A**：端到端在文字分布密集的业务场景，效率会比较有保证，精度的话看自己业务数据积累情况，如果行级别的识别数据积累比较多的话two-stage会比较好。百度的落地场景，比如工业仪表识别、车牌识别都用到端到端解决方案。
 
 #### Q2.1.4 印章如何识别
-**A**: 1. 使用带tps的识别网络或abcnet,2.使用极坐标变换将图片拉平之后使用crnn
+**A**：1. 使用带tps的识别网络或abcnet,2.使用极坐标变换将图片拉平之后使用crnn
 
 #### Q2.1.5 多语言的字典里是混合了不同的语种，这个是有什么讲究吗？统一到一个字典里会对精度造成多大的损失？
 **A**：统一到一个字典里，会造成最后一层FC过大，增加模型大小。如果有特殊需求的话，可以把需要的几种语言合并字典训练模型，合并字典之后如果引入过多的形近字，可能会造成精度损失，字符平衡的问题可能也需要考虑一下。在PaddleOCR里暂时将语言字典分开。
@@ -198,11 +196,11 @@ img = cv.imdecode(img_array, -1)
 
 #### Q2.2.6: 当训练数据量少时，如何获取更多的数据？
 
-**A**: 当训练数据量少时，可以尝试以下三种方式获取更多的数据：（1）人工采集更多的训练数据，最直接也是最有效的方式。（2）基于PIL和opencv基本图像处理或者变换。例如PIL中ImageFont, Image, ImageDraw三个模块将文字写到背景中，opencv的旋转仿射变换，高斯滤波等。（3）利用数据生成算法合成数据，例如pix2pix等算法。
+**A**：当训练数据量少时，可以尝试以下三种方式获取更多的数据：（1）人工采集更多的训练数据，最直接也是最有效的方式。（2）基于PIL和opencv基本图像处理或者变换。例如PIL中ImageFont, Image, ImageDraw三个模块将文字写到背景中，opencv的旋转仿射变换，高斯滤波等。（3）利用数据生成算法合成数据，例如pix2pix等算法。
 
 #### Q2.2.7: 论文《Editing Text in the Wild》中文本合成方法SRNet有什么特点？
 
-**A**: SRNet是借鉴GAN中图像到图像转换、风格迁移的想法合成文本数据。不同于通用GAN的方法只选择一个分支，SRNet将文本合成任务分解为三个简单的子模块，提升合成数据的效果。这三个子模块为不带背景的文本风格迁移模块、背景抽取模块和融合模块。PaddleOCR计划将在2020年12月中旬开源基于SRNet的实用模型。
+**A**：SRNet是借鉴GAN中图像到图像转换、风格迁移的想法合成文本数据。不同于通用GAN的方法只选择一个分支，SRNet将文本合成任务分解为三个简单的子模块，提升合成数据的效果。这三个子模块为不带背景的文本风格迁移模块、背景抽取模块和融合模块。PaddleOCR计划将在2020年12月中旬开源基于SRNet的实用模型。
 
 <a name="模型训练调优2"></a>
 ### 模型训练调优
@@ -352,7 +350,7 @@ img = cv.imdecode(img_array, -1)
 
 #### Q3.1.13：识别模型框出来的位置太紧凑，会丢失边缘的文字信息，导致识别错误
 
-**A**： 可以在命令中加入 --det_db_unclip_ratio ，参数[定义位置](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/tools/infer/utility.py#L48)，这个参数是检测后处理时控制文本框大小的，默认1.6，可以尝试改成2.5或者更大，反之，如果觉得文本框不够紧凑，也可以把该参数调小。
+**A**：可以在命令中加入 --det_db_unclip_ratio ，参数[定义位置](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/tools/infer/utility.py#L48)，这个参数是检测后处理时控制文本框大小的，默认1.6，可以尝试改成2.5或者更大，反之，如果觉得文本框不够紧凑，也可以把该参数调小。
 
 #### Q3.1.14：英文手写体识别有计划提供的预训练模型吗?
 
@@ -416,7 +414,7 @@ python3 -m pip install paddlepaddle-gpu==2.0.0rc1 -i https://mirror.baidu.com/py
 
 
 #### Q3.1.24: PaddleOCR develop分支和dygraph分支的区别？
-**A** 目前PaddleOCR有四个分支，分别是：
+**A**：目前PaddleOCR有四个分支，分别是：
 
 - develop：基于Paddle静态图开发的分支，推荐使用paddle1.8 或者2.0版本，该分支具备完善的模型训练、预测、推理部署、量化裁剪等功能，领先于release/1.1分支。
 - release/1.1：PaddleOCR 发布的第一个稳定版本，基于静态图开发，具备完善的训练、预测、推理部署、量化裁剪等功能。
@@ -429,34 +427,59 @@ python3 -m pip install paddlepaddle-gpu==2.0.0rc1 -i https://mirror.baidu.com/py
 
 #### Q3.1.25: 使用dygraph分支，在docker中训练PaddleOCR的时候，数据路径没有任何问题，但是一直报错`reader rasied an exception`，这是为什么呢？
 
-**A** 创建docker的时候，`/dev/shm`的默认大小为64M，如果使用多进程读取数据，共享内存可能不够，因此需要给`/dev/shm`分配更大的空间，在创建docker的时候，传入`--shm-size=8g`表示给`/dev/shm`分配8g的空间。
+**A**：创建docker的时候，`/dev/shm`的默认大小为64M，如果使用多进程读取数据，共享内存可能不够，因此需要给`/dev/shm`分配更大的空间，在创建docker的时候，传入`--shm-size=8g`表示给`/dev/shm`分配8g的空间。
 
 #### Q3.1.26: 在repo中没有找到Lite和PaddleServing相关的部署教程，这是在哪里呢？
 
-**A** 目前PaddleOCR的默认分支为dygraph，关于Lite和PaddleLite的动态图部署还在适配中，如果希望在Lite端或者使用PaddleServing部署，推荐使用develop分支（静态图）的代码。
+**A**：目前PaddleOCR的默认分支为dygraph，关于Lite和PaddleLite的动态图部署还在适配中，如果希望在Lite端或者使用PaddleServing部署，推荐使用develop分支（静态图）的代码。
 
 #### Q3.1.27: 如何可视化acc,loss曲线图,模型网络结构图等？
 
-**A** 在配置文件里有`use_visualdl`的参数，设置为True即可，更多的使用命令可以参考：[VisualDL使用指南](https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0-rc1/guides/03_VisualDL/visualdl.html)。
+**A**：在配置文件里有`use_visualdl`的参数，设置为True即可，更多的使用命令可以参考：[VisualDL使用指南](https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0-rc1/guides/03_VisualDL/visualdl.html)。
 
 #### Q3.1.28: 在使用StyleText数据合成工具的时候，报错`ModuleNotFoundError: No module named 'utils.config'`，这是为什么呢？
 
-**A** 有2个解决方案
+**A**：有2个解决方案
 - 在StyleText路径下面设置PYTHONPATH：`export PYTHONPATH=./`
 - 拉取最新的代码
 
 #### Q3.1.29: PPOCRLabel创建矩形框时只能拖出正方形，如何进行矩形标注？
 
-**A** 取消勾选：“编辑”-“正方形标注”
+**A**：取消勾选：“编辑”-“正方形标注”
 
 #### Q3.1.30: Style-Text 如何不文字风格迁移，就像普通文本生成程序一样默认字体直接输出到分割的背景图？
 
-**A** 使用image_synth模式会输出fake_bg.jpg，即为背景图。如果想要批量提取背景，可以稍微修改一下代码，将fake_bg保存下来即可。要修改的位置：
+**A**：使用image_synth模式会输出fake_bg.jpg，即为背景图。如果想要批量提取背景，可以稍微修改一下代码，将fake_bg保存下来即可。要修改的位置：
 https://github.com/PaddlePaddle/PaddleOCR/blob/de3e2e7cd3b8b65ee02d7a41e570fa5b511a3c1d/StyleText/engine/synthesisers.py#L68
 
 #### Q3.1.31: 怎么输出网络结构以及每层的参数信息？
 
-**A** 可以使用 `paddle.summary`， 具体参考:https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0-rc1/api/paddle/hapi/model_summary/summary_cn.html#summary。
+**A**：可以使用 `paddle.summary`， 具体参考:https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0-rc1/api/paddle/hapi/model_summary/summary_cn.html#summary。
+
+#### Q3.1.32 能否修改StyleText配置文件中的分辨率？
+
+**A**：StyleText目前的训练数据主要是高度32的图片，建议不要改变高度。未来我们会支持更丰富的分辨率。
+
+#### Q3.1.33 StyleText是否可以更换字体文件？
+
+**A**：StyleText项目中的字体文件为标准字体，主要用作模型的输入部分，不能够修改。
+StyleText的用途主要是：提取style_image中的字体、背景等style信息，根据语料生成同样style的图片。
+
+#### Q3.1.34 StyleText批量生成图片为什么没有输出？
+
+**A**：需要检查以下您配置文件中的路径是否都存在。尤其要注意的是[label_file配置](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/StyleText/README_ch.md#%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B)。
+如果您使用的style_image输入没有label信息，您依然需要提供一个图片文件列表。
+
+#### Q3.1.35 怎样把OCR输出的结果组成有意义的语句呢？
+
+**A**：OCR输出的结果包含坐标信息和文字内容两部分。如果您不关心文字的顺序，那么可以直接按box的序号连起来。
+如果需要将文字按照一定的顺序排列，则需要您设定一些规则，对文字的坐标进行处理，例如按照坐标从上到下，从左到右连接识别结果。
+对于一些有规律的垂类场景，可以设定模板，根据位置、内容进行匹配。
+例如识别身份证照片，可以先匹配"姓名"，"性别"等关键字，根据这些关键字的坐标去推测其他信息的位置，再与识别的结果匹配。
+
+#### Q3.1.36 如何识别竹简上的古文？
+**A**：对于字符都是普通的汉字字符的情况，只要标注足够的数据，finetune模型就可以了。如果数据量不足，您可以尝试StyleText工具。
+而如果使用的字符是特殊的古文字、甲骨文、象形文字等，那么首先需要构建一个古文字的字典，之后再进行训练。
 
 <a name="数据集3"></a>
 ### 数据集
@@ -519,8 +542,8 @@ https://github.com/PaddlePaddle/PaddleOCR/blob/de3e2e7cd3b8b65ee02d7a41e570fa5b5
 
 #### Q3.2.11：有哪些标注工具可以标注OCR数据集？
 
-**A**：您可以参考：https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/data_annotation_en.md。
-我们计划推出高效标注OCR数据的标注工具，请您持续关注PaddleOCR的近期更新。
+**A**：推荐您使用PPOCRLabel工具。
+您还可以参考：https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/data_annotation_en.md。
 
 #### Q3.2.12：一些特殊场景的数据识别效果差，但是数据量很少，不够用来finetune怎么办？
 
@@ -539,15 +562,15 @@ https://github.com/PaddlePaddle/PaddleOCR/blob/de3e2e7cd3b8b65ee02d7a41e570fa5b5
 
 #### Q3.2.15: 文本标注工具PPOCRLabel有什么特色？
 
-**A**: PPOCRLabel是一个半自动文本标注工具，它使用基于PPOCR的中英文OCR模型，预先预测文本检测和识别结果，然后用户对上述结果进行校验和修正就行，大大提高用户的标注效率。同时导出的标注结果直接适配PPOCR训练所需要的数据格式，
+**A**：PPOCRLabel是一个半自动文本标注工具，它使用基于PPOCR的中英文OCR模型，预先预测文本检测和识别结果，然后用户对上述结果进行校验和修正就行，大大提高用户的标注效率。同时导出的标注结果直接适配PPOCR训练所需要的数据格式，
 
 #### Q3.2.16: 文本标注工具PPOCRLabel，可以更换模型吗？
 
-**A**: PPOCRLabel中OCR部署方式采用的基于pip安装whl包快速推理，可以参考相关文档更换模型路径，进行特定任务的标注适配。基于pip安装whl包快速推理的文档如下，https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/whl.md。
+**A**：PPOCRLabel中OCR部署方式采用的基于pip安装whl包快速推理，可以参考相关文档更换模型路径，进行特定任务的标注适配。基于pip安装whl包快速推理的文档如下，https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/whl.md。
 
 #### Q3.2.17: 文本标注工具PPOCRLabel支持的运行环境有哪些？
 
-**A**: PPOCRLabel可运行于Linux、Windows、MacOS等多种系统。操作步骤可以参考文档，https://github.com/PaddlePaddle/PaddleOCR/blob/develop/PPOCRLabel/README.md
+**A**：PPOCRLabel可运行于Linux、Windows、MacOS等多种系统。操作步骤可以参考文档，https://github.com/PaddlePaddle/PaddleOCR/blob/develop/PPOCRLabel/README.md
 
 <a name="模型训练调优3"></a>
 
@@ -660,15 +683,15 @@ ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 
 #### Q3.3.20: 文字检测时怎么模糊的数据增强？
 
-**A**: 模糊的数据增强需要修改代码进行添加，以DB为例，参考[Normalize](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/data/imaug/operators.py#L60) ,添加模糊的增强就行
+**A**：模糊的数据增强需要修改代码进行添加，以DB为例，参考[Normalize](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/data/imaug/operators.py#L60) ,添加模糊的增强就行
 
 #### Q3.3.21: 文字检测时怎么更改图片旋转的角度，实现360度任意旋转？
 
-**A**: 将[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/data/imaug/iaa_augment.py#L64) 的(-10,10) 改为(-180,180)即可
+**A**：将[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/data/imaug/iaa_augment.py#L64) 的(-10,10) 改为(-180,180)即可
 
 #### Q3.3.22: 训练数据的长宽比过大怎么修改shape
 
-**A**: 识别修改[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yaml#L75) ,
+**A**：识别修改[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yaml#L75) ,
 检测修改[这里](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml#L85)
 
 #### Q3.3.23：检测模型训练或预测时出现elementwise_add报错
@@ -677,15 +700,15 @@ ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 
 #### Q3.3.24: DB检测训练输入尺寸640，可以改大一些吗？
 
-**A**: 不建议改大。检测模型训练输入尺寸是预处理中random crop后的尺寸，并非直接将原图进行resize，多数场景下这个尺寸并不小了，改大后可能反而并不合适，而且训练会变慢。另外，代码里可能有的地方参数按照预设输入尺寸适配的，改大后可能有隐藏风险。
+**A**：不建议改大。检测模型训练输入尺寸是预处理中random crop后的尺寸，并非直接将原图进行resize，多数场景下这个尺寸并不小了，改大后可能反而并不合适，而且训练会变慢。另外，代码里可能有的地方参数按照预设输入尺寸适配的，改大后可能有隐藏风险。
 
 #### Q3.3.25: 识别模型训练时，loss能正常下降，但acc一直为0
 
-**A**: 识别模型训练初期acc为0是正常的，多训一段时间指标就上来了。
+**A**：识别模型训练初期acc为0是正常的，多训一段时间指标就上来了。
 
 #### Q3.3.26: PaddleOCR在训练的时候一直使用cosine_decay的学习率下降策略，这是为什么呢？
 
-**A**: cosine_decay表示在训练的过程中，学习率按照cosine的变化趋势逐渐下降至0，在迭代轮数更长的情况下，比常量的学习率变化策略会有更好的收敛效果，因此在实际训练的时候，均采用了cosine_decay，来获得精度更高的模型。
+**A**：cosine_decay表示在训练的过程中，学习率按照cosine的变化趋势逐渐下降至0，在迭代轮数更长的情况下，比常量的学习率变化策略会有更好的收敛效果，因此在实际训练的时候，均采用了cosine_decay，来获得精度更高的模型。
 
 <a name="预测部署3"></a>
 
@@ -808,7 +831,7 @@ ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 
 ### Q3.4.26: 目前paddle hub serving 只支持 imgpath，如果我想用imgurl 去哪里改呢？
 
-**A**: 图片是在这里读取的：https://github.com/PaddlePaddle/PaddleOCR/blob/67ef25d593c4eabfaaceb22daade4577f53bed81/deploy/hubserving/ocr_system/module.py#L55，
+**A**：图片是在这里读取的：https://github.com/PaddlePaddle/PaddleOCR/blob/67ef25d593c4eabfaaceb22daade4577f53bed81/deploy/hubserving/ocr_system/module.py#L55，
 可以参考下面的写法，将url path转化为np array（https://cloud.tencent.com/developer/article/1467840）
 ```
 response = request.urlopen('http://i1.whymtj.com/uploads/tu/201902/9999/52491ae4ba.jpg')
@@ -818,5 +841,5 @@ img = cv.imdecode(img_array, -1)
 
 ### Q3.4.27: C++ 端侧部署可以只对OCR的检测部署吗？
 
-**A** 可以的，识别和检测模块是解耦的。如果想对检测部署，需要自己修改一下main函数，
+**A**：可以的，识别和检测模块是解耦的。如果想对检测部署，需要自己修改一下main函数，
 只保留检测相关就可以:https://github.com/PaddlePaddle/PaddleOCR/blob/de3e2e7cd3b8b65ee02d7a41e570fa5b511a3c1d/deploy/cpp_infer/src/main.cpp#L72
