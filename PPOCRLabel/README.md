@@ -8,6 +8,10 @@ PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field, w
 
 ### Recent Update
 
+- 2021.1.11: Optimize the labeling experience (by [edencfc](https://github.com/edencfc)),
+  - Users can choose whether to pop up the label input dialog after drawing the detection box in "View - Pop-up Label Input Dialog". 
+  - The recognition result scrolls synchronously when users click related detection box.
+  - Click to modify the recognition result.(If you can't change the result, please switch to the system default input method, or switch back to the original input method again)
 - 2020.12.18: Support re-recognition of a single label box (by [ninetailskim](https://github.com/ninetailskim) ), perfect shortcut keys.
 
 ### TODO:

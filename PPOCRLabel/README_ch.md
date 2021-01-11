@@ -8,7 +8,11 @@ PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，内置P
 
 #### 近期更新
 
-- 2020.12.18: 支持对单个标记框进行重新识别（by [ninetailskim](https://github.com/ninetailskim)），完善快捷键。
+- 2021.1.11：优化标注体验（by [edencfc](https://github.com/edencfc)）：
+  - 用户可在“视图 - 弹出标记输入框”选择在画完检测框后标记输入框是否弹出。
+  - 识别结果与检测框同步滚动。
+  - 识别结果更改为单击修改。（如果无法修改，请切换为系统自带输入法，或再次切回原输入法）
+- 2020.12.18： 支持对单个标记框进行重新识别（by [ninetailskim](https://github.com/ninetailskim)），完善快捷键。
 
 #### 尽请期待
 
