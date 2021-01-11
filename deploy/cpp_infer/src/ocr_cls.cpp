@@ -25,7 +25,7 @@ cv::Mat Classifier::Run(cv::Mat &img) {
   int index = 0;
   float wh_ratio = float(img.cols) / float(img.rows);
 
-  this->resize_op_.Run(img, resize_img, cls_image_shape);
+  this->resize_op_.Run(img, resize_img, this->use_tensorrt_, cls_image_shape);
 
   this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
                           this->is_scale_);
