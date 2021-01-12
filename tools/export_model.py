@@ -12,77 +12,56 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 import os
 import sys
-import time
-import multiprocessing
-import numpy as np
 
+__dir__ = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(__dir__)
+sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
 
-def set_paddle_flags(**kwargs):
-    for key, value in kwargs.items():
-        if os.environ.get(key, None) is None:
-            os.environ[key] = str(value)
+import argparse
 
+import paddle
+from paddle.jit import to_static
 
-# NOTE(paddle-dev): All of these flags should be
-# set before `import paddle`. Otherwise, it would
-# not take any effect. 
-set_paddle_flags(
-    FLAGS_eager_delete_tensor_gb=0,  # enable GC to save memory
-)
-
-import program
-from paddle import fluid
-from ppocr.utils.utility import initial_logger
-logger = initial_logger()
+from ppocr.modeling.architectures import build_model
+from ppocr.postprocess import build_post_process
 from ppocr.utils.save_load import init_model
-from ppocr.utils.character import CharacterOps
-from ppocr.utils.utility import create_module
+from ppocr.utils.logging import get_logger
+from tools.program import load_config, merge_config, ArgsParser
 
 
 def main():
-    config = program.load_config(FLAGS.config)
-    program.merge_config(FLAGS.opt)
-    logger.info(config)
+    FLAGS = ArgsParser().parse_args()
+    config = load_config(FLAGS.config)
+    merge_config(FLAGS.opt)
+    logger = get_logger()
+    # build post process
 
-    # check if set use_gpu=True in paddlepaddle cpu version
-    use_gpu = config['Global']['use_gpu']
-    program.check_gpu(True)
+    post_process_class = build_post_process(config['PostProcess'],
+                                            config['Global'])
 
-    alg = config['Global']['algorithm']
-    assert alg in ['EAST', 'DB', 'Rosetta', 'CRNN', 'STARNet', 'RARE']
-    if alg in ['Rosetta', 'CRNN', 'STARNet', 'RARE']:
-        config['Global']['char_ops'] = CharacterOps(config['Global'])
+    # build model
+    # for rec algorithm
+    if hasattr(post_process_class, 'character'):
+        char_num = len(getattr(post_process_class, 'character'))
+        config['Architecture']["Head"]['out_channels'] = char_num
+    model = build_model(config['Architecture'])
+    init_model(config, model, logger)
+    model.eval()
 
-    place = fluid.CUDAPlace(0) if use_gpu else fluid.CPUPlace()
-    startup_prog = fluid.Program()
-    eval_program = fluid.Program()
-
-    feeded_var_names, target_vars, fetches_var_name = program.build_export(
-        config, eval_program, startup_prog)
-    eval_program = eval_program.clone(for_test=True)
-    exe = fluid.Executor(place)
-    exe.run(startup_prog)
-
-    init_model(config, eval_program, exe)
-
-    fluid.io.save_inference_model(
-        dirname="./output/",
-        feeded_var_names=feeded_var_names,
-        main_program=eval_program,
-        target_vars=target_vars,
-        executor=exe,
-        model_filename='model',
-        params_filename='params')
-    print("save success, output_name_list:", fetches_var_name)
+    save_path = '{}/inference'.format(config['Global']['save_inference_dir'])
+    infer_shape = [3, 32, 100] if config['Architecture'][
+        'model_type'] != "det" else [3, 640, 640]
+    model = to_static(
+        model,
+        input_spec=[
+            paddle.static.InputSpec(
+                shape=[None] + infer_shape, dtype='float32')
+        ])
+    paddle.jit.save(model, save_path)
+    logger.info('inference model is saved to {}'.format(save_path))
 
 
-if __name__ == '__main__':
-    parser = program.ArgsParser()
-    FLAGS = parser.parse_args()
+if __name__ == "__main__":
     main()
