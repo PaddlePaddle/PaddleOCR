@@ -52,7 +52,7 @@ If you save the model in another location, please modify the address of the mode
 
 ```
 bg_generator:
-  pretrain: style_text_rec/bg_generator
+  pretrain: style_text_models/bg_generator
 ...
 text_generator:
   pretrain: style_text_models/text_generator

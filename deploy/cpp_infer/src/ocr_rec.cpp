@@ -33,7 +33,7 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
 
     float wh_ratio = float(crop_img.cols) / float(crop_img.rows);
 
-    this->resize_op_.Run(crop_img, resize_img, wh_ratio);
+    this->resize_op_.Run(crop_img, resize_img, wh_ratio, this->use_tensorrt_);
 
     this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
                             this->is_scale_);

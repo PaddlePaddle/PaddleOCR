@@ -61,7 +61,8 @@ void DBDetector::Run(cv::Mat &img,
   cv::Mat srcimg;
   cv::Mat resize_img;
   img.copyTo(srcimg);
-  this->resize_op_.Run(img, resize_img, this->max_side_len_, ratio_h, ratio_w);
+  this->resize_op_.Run(img, resize_img, this->max_side_len_, ratio_h, ratio_w,
+                       this->use_tensorrt_);
 
   this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
                           this->is_scale_);
