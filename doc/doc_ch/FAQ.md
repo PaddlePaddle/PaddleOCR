@@ -32,19 +32,19 @@
 
 #### Q3.3.27: PaddleOCR关于文本识别模型的训练，支持的数据增强方式有哪些？
 
-**A**：文本识别支持的数据增强方式有随机小幅度裁剪、图像平衡、添加白噪声、颜色漂移、图像反色和Text Image Augmentation（TIA）变换等。可以参考[代码](https://github.com/PaddlePaddle/PaddleOCR/blob/17346d854e90e95decdc8585479924d9cb03831c/ppocr/data/imaug/rec_img_aug.py)中的warp函数。
+**A**：文本识别支持的数据增强方式有随机小幅度裁剪、图像平衡、添加白噪声、颜色漂移、图像反色和Text Image Augmentation（TIA）变换等。可以参考[代码](../../ppocr/data/imaug/rec_img_aug.py)中的warp函数。
 
 #### Q3.3.28: 关于dygraph分支中，文本识别模型训练，要使用数据增强应该如何设置？
 
-**A**：可以参考[配置文件](PaddleOCR/configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)在Train['dataset']['transforms']添加RecAug字段，使数据增强生效。可以通过添加对aug_prob设置，表示每种数据增强采用的概率。aug_prob默认是0.4.由于tia数据增强特殊性，默认不采用，可以通过添加use_tia设置，使tia数据增强生效。详细设置可以参考[ISSUE 1744](https://github.com/PaddlePaddle/PaddleOCR/issues/1744)。
+**A**：可以参考[配置文件](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)在Train['dataset']['transforms']添加RecAug字段，使数据增强生效。可以通过添加对aug_prob设置，表示每种数据增强采用的概率。aug_prob默认是0.4.由于tia数据增强特殊性，默认不采用，可以通过添加use_tia设置，使tia数据增强生效。详细设置可以参考[ISSUE 1744](https://github.com/PaddlePaddle/PaddleOCR/issues/1744)。
 
 #### Q3.4.28: PP-OCR系统中，文本检测的结果有置信度吗？
 
-**A**：文本检测的结果有置信度，由于推理过程中没有使用，所以没有显示的返回到最终结果中。如果需要文本检测结果的置信度，可以在[文本检测DB的后处理代码](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/postprocess/db_postprocess.py)的155行，添加scores信息。这样，在[检测预测代码](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/tools/infer/predict_det.py)的197行，就可以拿到文本检测的scores信息。
+**A**：文本检测的结果有置信度，由于推理过程中没有使用，所以没有显示的返回到最终结果中。如果需要文本检测结果的置信度，可以在[文本检测DB的后处理代码](../../ppocr/postprocess/db_postprocess.py)的155行，添加scores信息。这样，在[检测预测代码](../../tools/infer/predict_det.py)的197行，就可以拿到文本检测的scores信息。
 
 #### Q3.4.29: DB文本检测，特征提取网络金字塔构建的部分代码在哪儿？
-**A**：特征提取网络金字塔构建的部分:[代码位置](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/modeling/necks/db_fpn.py)。ppocr/modeling文件夹里面是组网相关的代码，其中architectures是文本检测或者文本识别整体流程代码；backbones是骨干网络相关代码；necks是类似与FPN的颈函数代码；heads是提取文本检测或者文本识别预测结果相关的头函数；transforms是类似于TPS特征预处理模块。更多的信息可以参考[代码组织结构](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/tree.md)。
 
+**A**：特征提取网络金字塔构建的部分:[代码位置](../../ppocr/modeling/necks/db_fpn.py)。ppocr/modeling文件夹里面是组网相关的代码，其中architectures是文本检测或者文本识别整体流程代码；backbones是骨干网络相关代码；necks是类似与FPN的颈函数代码；heads是提取文本检测或者文本识别预测结果相关的头函数；transforms是类似于TPS特征预处理模块。更多的信息可以参考[代码组织结构](./tree.md)。
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -707,11 +707,11 @@ ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 
 #### Q3.3.27: PaddleOCR关于文本识别模型的训练，支持的数据增强方式有哪些？
 
-**A**：文本识别支持的数据增强方式有随机小幅度裁剪、图像平衡、添加白噪声、颜色漂移、图像反色和Text Image Augmentation（TIA）变换等。可以参考[代码](https://github.com/PaddlePaddle/PaddleOCR/blob/17346d854e90e95decdc8585479924d9cb03831c/ppocr/data/imaug/rec_img_aug.py)中的warp函数。
+**A**：文本识别支持的数据增强方式有随机小幅度裁剪、图像平衡、添加白噪声、颜色漂移、图像反色和Text Image Augmentation（TIA）变换等。可以参考[代码](../../ppocr/data/imaug/rec_img_aug.py)中的warp函数。
 
 #### Q3.3.28: 关于dygraph分支中，文本识别模型训练，要使用数据增强应该如何设置？
 
-**A**：可以参考[配置文件](PaddleOCR/configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)在Train['dataset']['transforms']添加RecAug字段，使数据增强生效。可以通过添加对aug_prob设置，表示每种数据增强采用的概率。aug_prob默认是0.4.由于tia数据增强特殊性，默认不采用，可以通过添加use_tia设置，使tia数据增强生效。详细设置可以参考[ISSUE 1744](https://github.com/PaddlePaddle/PaddleOCR/issues/1744)。
+**A**：可以参考[配置文件](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)在Train['dataset']['transforms']添加RecAug字段，使数据增强生效。可以通过添加对aug_prob设置，表示每种数据增强采用的概率。aug_prob默认是0.4.由于tia数据增强特殊性，默认不采用，可以通过添加use_tia设置，使tia数据增强生效。详细设置可以参考[ISSUE 1744](https://github.com/PaddlePaddle/PaddleOCR/issues/1744)。
 
 <a name="预测部署3"></a>
 
@@ -849,7 +849,8 @@ img = cv.imdecode(img_array, -1)
 
 #### Q3.4.28: PP-OCR系统中，文本检测的结果有置信度吗？
 
-**A**：文本检测的结果有置信度，由于推理过程中没有使用，所以没有显示的返回到最终结果中。如果需要文本检测结果的置信度，可以在[文本检测DB的后处理代码](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/postprocess/db_postprocess.py)的155行，添加scores信息。这样，在[检测预测代码](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/tools/infer/predict_det.py)的197行，就可以拿到文本检测的scores信息。
+**A**：文本检测的结果有置信度，由于推理过程中没有使用，所以没有显示的返回到最终结果中。如果需要文本检测结果的置信度，可以在[文本检测DB的后处理代码](../../ppocr/postprocess/db_postprocess.py)的155行，添加scores信息。这样，在[检测预测代码](../../tools/infer/predict_det.py)的197行，就可以拿到文本检测的scores信息。
 
 #### Q3.4.29: DB文本检测，特征提取网络金字塔构建的部分代码在哪儿？
-**A**：特征提取网络金字塔构建的部分:[代码位置](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/modeling/necks/db_fpn.py)。ppocr/modeling文件夹里面是组网相关的代码，其中architectures是文本检测或者文本识别整体流程代码；backbones是骨干网络相关代码；necks是类似与FPN的颈函数代码；heads是提取文本检测或者文本识别预测结果相关的头函数；transforms是类似于TPS特征预处理模块。更多的信息可以参考[代码组织结构](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/tree.md)。
+
+**A**：特征提取网络金字塔构建的部分:[代码位置](../../ppocr/modeling/necks/db_fpn.py)。ppocr/modeling文件夹里面是组网相关的代码，其中architectures是文本检测或者文本识别整体流程代码；backbones是骨干网络相关代码；necks是类似与FPN的颈函数代码；heads是提取文本检测或者文本识别预测结果相关的头函数；transforms是类似于TPS特征预处理模块。更多的信息可以参考[代码组织结构](./tree.md)。
