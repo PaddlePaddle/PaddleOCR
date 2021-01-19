@@ -110,7 +110,7 @@ class CTCLabelDecode(BaseRecLabelDecode):
         text = self.decode(preds_idx, preds_prob)
         if label is None:
             return text
-        label = self.decode(label, is_remove_duplicate=False)
+        label = self.decode(label)
         return text, label
 
     def add_special_char(self, dict_character):
