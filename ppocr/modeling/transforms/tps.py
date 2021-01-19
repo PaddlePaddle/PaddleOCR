@@ -310,34 +310,3 @@ class TPS(nn.Layer):
             [-1, image.shape[2], image.shape[3], 2])
         batch_I_r = F.grid_sample(x=image, grid=batch_P_prime)
         return batch_I_r
-
-
-if __name__ == '__main__':
-    import paddle
-    from ppocr.utils.save_load import load_dygraph_pretrain
-    from ppocr.utils.logging import get_logger
-
-    np.random.seed(0)
-    img = np.random.random((1, 3, 32, 100)).astype(np.float32)
-    x = paddle.to_tensor(img)
-
-    batch_P_prime = np.load(
-        '/Users/zhoujun20/Desktop/code/static/PaddleOCR/output/tps1.npy')
-    batch_P_prime = paddle.to_tensor(batch_P_prime)
-
-    model = TPS(in_channels=3, num_fiducial=20, loc_lr=0.1, model_name='small')
-    load_dygraph_pretrain(
-        model,
-        get_logger(),
-        '/Users/zhoujun20/Desktop/code/static/PaddleOCR/output/tps',
-        load_static_weights=True)
-
-    model.eval()
-    y = model(x)
-    print(y.shape)
-
-    static = np.load(
-        '/Users/zhoujun20/Desktop/code/static/PaddleOCR/output/tps.npy')
-    print(static.dtype, y.numpy().dtype, static.shape, y.numpy().shape)
-    diff = y.numpy() - static
-    print(diff.max())
