@@ -3,7 +3,7 @@ Global:
   epoch_num: 72
   log_smooth_window: 20
   print_batch_step: 5
-  save_model_dir: ./output/rec/srn
+  save_model_dir: ./output/rec/srn_new
   save_epoch_step: 3
   # evaluation is run every 5000 iterations after the 4000th iteration
   eval_batch_step: [0, 5000]
@@ -25,8 +25,10 @@ Global:
 
 Optimizer:
   name: Adam
+  beta1: 0.9
+  beta2: 0.999
+  clip_norm: 10.0
   lr:
-    name: Cosine
     learning_rate: 0.0001
 
 Architecture:
@@ -58,7 +60,6 @@ Train:
   dataset:
     name: LMDBDataSet
     data_dir: ./train_data/srn_train_data_duiqi
-    #label_file_list: ["./train_data/ic15_data/1.txt"]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
@@ -77,7 +78,7 @@ Train:
   loader:
     shuffle: False
     batch_size_per_card: 64
-    drop_last: True
+    drop_last: False
     num_workers: 4
 
 Eval:

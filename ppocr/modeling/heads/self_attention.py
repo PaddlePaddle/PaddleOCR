@@ -359,6 +359,7 @@ class PrepareDecoder(nn.Layer):
         self.emb0 = paddle.nn.Embedding(
             num_embeddings=src_vocab_size,
             embedding_dim=self.src_emb_dim,
+            padding_idx=bos_idx,
             weight_attr=paddle.ParamAttr(
                 name=word_emb_param_name,
                 initializer=nn.initializer.Normal(0., src_emb_dim**-0.5)))

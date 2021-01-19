@@ -242,6 +242,12 @@ def train(config,
             # eval
             if global_step > start_eval_step and \
                     (global_step - start_eval_step) % eval_batch_step == 0 and dist.get_rank() == 0:
+                model_average = paddle.optimizer.ModelAverage(
+                    0.15,
+                    parameters=model.parameters(),
+                    min_average_window=10000,
+                    max_average_window=15625)
+                model_average.apply()
                 cur_metirc = eval(model, valid_dataloader, post_process_class,
                                   eval_class)
                 cur_metirc_str = 'cur metirc, {}'.format(', '.join(
@@ -277,6 +283,7 @@ def train(config,
                                           best_model_dict[main_indicator],
                                           global_step)
             global_step += 1
+            optimizer.clear_grad()
             batch_start = time.time()
         if dist.get_rank() == 0:
             save_model(
