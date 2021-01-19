@@ -217,7 +217,7 @@ class GridGenerator(nn.Layer):
             paddle.arange(
                 -I_r_width, I_r_width, 2, dtype='float64') + 1.0,
             paddle.to_tensor(
-                I_r_width, dtype='float64'))  # / 2.2128224363981985e-08
+                I_r_width, dtype='float64'))
         I_r_grid_y = paddle.divide(
             paddle.arange(
                 -I_r_height, I_r_height, 2, dtype='float64') + 1.0,
