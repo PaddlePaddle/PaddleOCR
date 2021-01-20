@@ -60,6 +60,7 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 | japan_mobile_v2.0_rec |日文识别|[rec_japan_lite_train.yml](../../configs/rec/multi_language/rec_japan_lite_train.yml)|4.23M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/japan_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/japan_mobile_v2.0_rec_train.tar) |
 
 
+
 <a name="文本方向分类模型"></a>
 ### 三、文本方向分类模型
 
