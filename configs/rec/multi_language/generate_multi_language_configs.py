@@ -97,13 +97,18 @@ def merge_config(config):
                     cur = cur[sub_key]
                     
 def loss_file(path):
-    if not os.path.exists(path):
-        logging.warning('There is no such file:{},Please do not forget to put in the specified file'.format(path))
+    assert(
+            os.path.exists(path)
+          ),"There is no such file:{},Please do not forget to put in the specified file".format(path)
 
         
 if __name__ == '__main__':
     FLAGS = ArgsParser().parse_args()
     merge_config(FLAGS.opt)
+    save_file_path = 'rec_{}_lite_train.yml'.format(FLAGS.language)
+    if os.path.isfile(save_file_path):
+        os.remove(save_file_path)
+        
     if FLAGS.train:
         global_config['Train']['dataset']['label_file_list'] = [FLAGS.train]
         train_label_path = os.path.join(project_path,FLAGS.train)
@@ -122,10 +127,6 @@ if __name__ == '__main__':
         data_dir = os.path.join(project_path,FLAGS.data_dir)
         loss_file(data_dir)
         
-    
-    save_file_path = 'rec_{}_lite_train.yml'.format(FLAGS.language)
-    if os.path.isfile(save_file_path):
-        os.remove(save_file_path)
     with open(save_file_path, 'w') as f:
         yaml.dump(dict(global_config), f, default_flow_style=False, sort_keys=False)
     logging.info("Project path is          :{}".format(project_path))
