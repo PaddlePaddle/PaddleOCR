@@ -352,10 +352,10 @@ Predicts of ./doc/imgs_words/ch/word_4.jpg:['0', 0.9999982]
 
 ```
 # 使用方向分类器
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --cls_model_dir="./inference/cls/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls=true
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./inference/det_db/" --cls_model_dir="./inference/cls/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls=true
 
 # 不使用方向分类器
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls=false
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./inference/det_db/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls=false
 ```
 
 
@@ -364,7 +364,7 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model
 
 执行命令后，识别结果图像如下：
 
-![](../imgs_results/2.jpg)
+![](../imgs_results/system_res_00018069.jpg)
 
 <a name="其他模型推理"></a>
 ### 2. 其他模型推理
@@ -381,4 +381,4 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_10.jpg" --d
 
 执行命令后，识别结果图像如下：
 
-(coming soon)
+![](../imgs_results/img_10_east_starnet.jpg)
