@@ -64,7 +64,7 @@ Metric:
 Train:
   dataset:
     name: SimpleDataSet
-    data_dir: ./train_data/
+    data_dir: train_data/
     label_file_list: ["./train_data/train_list.txt"]
     transforms:
       - DecodeImage: # load image
@@ -85,7 +85,7 @@ Train:
 Eval:
   dataset:
     name: SimpleDataSet
-    data_dir: ./train_data/
+    data_dir: train_data/
     label_file_list: ["./train_data/val_list.txt"]
     transforms:
       - DecodeImage: # load image
