@@ -21,9 +21,8 @@ ln -sf <path/to/dataset> <path/to/paddle_ocr>/train_data/cls/dataset
 
 ```
 " 图像文件名                 图像标注信息 "
-
-train_data/cls/word_001.jpg   0
-train_data/cls/word_002.jpg   180
+train/word_001.jpg   0
+train/word_002.jpg   180
 ```
 
 最终训练集应有如下文件结构：
@@ -54,6 +53,8 @@ train_data/cls/word_002.jpg   180
 ```
 
 ### 启动训练
+
+将准备好的txt文件和图片文件夹路径分别写入配置文件的 `Train/Eval.dataset.label_file_list` 和 `Train/Eval.dataset.data_dir` 字段下，`Train/Eval.dataset.data_dir`字段下的路径和文件里记载的图片名构成了图片的绝对路径。
 
 PaddleOCR提供了训练脚本、评估脚本和预测脚本。
 

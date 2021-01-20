@@ -24,10 +24,13 @@ void DBDetector::LoadModel(const std::string &model_dir) {
 
   if (this->use_gpu_) {
     config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
-    //     config.EnableTensorRtEngine(
-    //           1 << 20, 1, 3,
-    //           AnalysisConfig::Precision::kFloat32,
-    //           false, false);
+    if (this->use_tensorrt_) {
+      config.EnableTensorRtEngine(
+          1 << 20, 10, 3,
+          this->use_fp16_ ? paddle_infer::Config::Precision::kHalf
+                          : paddle_infer::Config::Precision::kFloat32,
+          false, false);
+    }
   } else {
     config.DisableGpu();
     if (this->use_mkldnn_) {
@@ -58,7 +61,8 @@ void DBDetector::Run(cv::Mat &img,
   cv::Mat srcimg;
   cv::Mat resize_img;
   img.copyTo(srcimg);
-  this->resize_op_.Run(img, resize_img, this->max_side_len_, ratio_h, ratio_w);
+  this->resize_op_.Run(img, resize_img, this->max_side_len_, ratio_h, ratio_w,
+                       this->use_tensorrt_);
 
   this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
                           this->is_scale_);

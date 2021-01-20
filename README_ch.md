@@ -8,7 +8,7 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 - 静态图版本：develop分支
 
 **近期更新**
-- 2020.12.28 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，总数137个，每周一都会更新，欢迎大家持续关注。
+- 2021.1.18 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，总数152个，每周一都会更新，欢迎大家持续关注。
 - 2020.12.15 更新数据合成工具[Style-Text](./StyleText/README_ch.md)，可以批量合成大量与目标场景类似的图像，在多个场景验证，效果明显提升。
 - 2020.11.25 更新半自动标注工具[PPOCRLabel](./PPOCRLabel/README_ch.md)，辅助开发者高效完成标注任务，输出格式与PP-OCR训练任务完美衔接。
 - 2020.9.22 更新PP-OCR技术文章，https://arxiv.org/abs/2009.09941
@@ -101,8 +101,8 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 - [效果展示](#效果展示)
 - FAQ
     - [【精选】OCR精选10个问题](./doc/doc_ch/FAQ.md)
-    - [【理论篇】OCR通用31个问题](./doc/doc_ch/FAQ.md)
-    - [【实战篇】PaddleOCR实战96个问题](./doc/doc_ch/FAQ.md)
+    - [【理论篇】OCR通用32个问题](./doc/doc_ch/FAQ.md)
+    - [【实战篇】PaddleOCR实战110个问题](./doc/doc_ch/FAQ.md)
 - [技术交流群](#欢迎加入PaddleOCR技术交流群)
 - [参考文献](./doc/doc_ch/reference.md)
 - [许可证书](#许可证书)
@@ -149,7 +149,7 @@ PP-OCR是一个实用的超轻量OCR系统。主要由DB文本检测[2]、检测
 
 
 - 非常感谢 [Khanh Tran](https://github.com/xxxpsyduck) 和 [Karl Horky](https://github.com/karlhorky) 贡献修改英文文档
-- 非常感谢 [zhangxin](https://github.com/ZhangXinNan)([Blog](https://blog.csdn.net/sdlypyzq)) 贡献新的可视化方式、添加.gitgnore、处理手动设置PYTHONPATH环境变量的问题
+- 非常感谢 [zhangxin](https://github.com/ZhangXinNan)([Blog](https://blog.csdn.net/sdlypyzq)) 贡献新的可视化方式、添加.gitignore、处理手动设置PYTHONPATH环境变量的问题
 - 非常感谢 [lyl120117](https://github.com/lyl120117) 贡献打印网络结构的代码
 - 非常感谢 [xiangyubo](https://github.com/xiangyubo) 贡献手写中文OCR数据集
 - 非常感谢 [authorfu](https://github.com/authorfu) 贡献Android和[xiadeye](https://github.com/xiadeye) 贡献IOS的demo代码

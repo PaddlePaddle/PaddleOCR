@@ -60,7 +60,7 @@ class BaseRecLabelDecode(object):
     def add_special_char(self, dict_character):
         return dict_character
 
-    def decode(self, text_index, text_prob=None, is_remove_duplicate=True):
+    def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
         """ convert text-index into text-label. """
         result_list = []
         ignored_tokens = self.get_ignored_tokens()
@@ -110,7 +110,7 @@ class CTCLabelDecode(BaseRecLabelDecode):
         text = self.decode(preds_idx, preds_prob)
         if label is None:
             return text
-        label = self.decode(label, is_remove_duplicate=False)
+        label = self.decode(label)
         return text, label
 
     def add_special_char(self, dict_character):

@@ -41,12 +41,15 @@ public:
   explicit CRNNRecognizer(const std::string &model_dir, const bool &use_gpu,
                           const int &gpu_id, const int &gpu_mem,
                           const int &cpu_math_library_num_threads,
-                          const bool &use_mkldnn, const string &label_path) {
+                          const bool &use_mkldnn, const string &label_path,
+                          const bool &use_tensorrt, const bool &use_fp16) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
     this->cpu_math_library_num_threads_ = cpu_math_library_num_threads;
     this->use_mkldnn_ = use_mkldnn;
+    this->use_tensorrt_ = use_tensorrt;
+    this->use_fp16_ = use_fp16;
 
     this->label_list_ = Utility::ReadDict(label_path);
     this->label_list_.insert(this->label_list_.begin(),
@@ -76,7 +79,8 @@ private:
   std::vector<float> mean_ = {0.5f, 0.5f, 0.5f};
   std::vector<float> scale_ = {1 / 0.5f, 1 / 0.5f, 1 / 0.5f};
   bool is_scale_ = true;
-
+  bool use_tensorrt_ = false;
+  bool use_fp16_ = false;
   // pre-process
   CrnnResizeImg resize_op_;
   Normalize normalize_op_;

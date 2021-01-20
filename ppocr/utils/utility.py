@@ -57,7 +57,7 @@ def get_image_file_list(img_file):
     elif os.path.isdir(img_file):
         for single_file in os.listdir(img_file):
             file_path = os.path.join(img_file, single_file)
-            if imghdr.what(file_path) in img_end:
+            if os.path.isfile(file_path) and imghdr.what(file_path) in img_end:
                 imgs_lists.append(file_path)
     if len(imgs_lists) == 0:
         raise Exception("not found any img file in {}".format(img_file))
