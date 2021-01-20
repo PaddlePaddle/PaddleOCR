@@ -107,7 +107,7 @@ class CTCLabelDecode(BaseRecLabelDecode):
 
         preds_idx = preds.argmax(axis=2)
         preds_prob = preds.max(axis=2)
-        text = self.decode(preds_idx, preds_prob)
+        text = self.decode(preds_idx, preds_prob, is_remove_duplicate=True)
         if label is None:
             return text
         label = self.decode(label)
