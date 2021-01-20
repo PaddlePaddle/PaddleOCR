@@ -41,7 +41,7 @@ For the training guide and use of PaddleOCR text detection algorithms, please re
 PaddleOCR open-source text recognition algorithms list:
 - [x]  CRNN([paper](https://arxiv.org/abs/1507.05717))[7]
 - [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))[10]
-- [ ]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))[11] coming soon
+- [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))[11] coming soon
 - [ ]  RARE([paper](https://arxiv.org/abs/1603.03915v1))[12] coming soon
 - [ ]  SRN([paper](https://arxiv.org/abs/2003.12294))[5] coming soon
 
