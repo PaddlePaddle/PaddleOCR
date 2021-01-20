@@ -52,13 +52,68 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 <a name="多语言识别模型"></a>
 #### 3. 多语言识别模型（更多语言持续更新中...）
 
+**说明：** 新增的多语言模型的配置文件通过代码方式生成，您可以通过`--help`参数查看当前PaddleOCR支持生成哪些多语言的配置文件：
+```bash
+# 该代码需要在指定目录运行
+cd PaddleOCR/configs/rec/multi_language/
+python3 generate_multi_language_configs.py --help
+```
+下面以生成意大利语配置文件为例：
+##### 1. 生成意大利语配置文件测试现有模型
+
+如果您仅仅想用配置文件测试PaddleOCR提供的多语言模型可以通过下面命令生成默认的配置文件，使用PaddleOCR提供的小语种字典进行预测。
+```bash
+# 该代码需要在指定目录运行
+cd PaddleOCR/configs/rec/multi_language/
+# 通过-l或者--language参数设置需要生成的语种的配置文件，该命令会将默认参数写入配置文件
+python3 generate_multi_language_configs.py -l it
+```
+##### 2. 生成意大利语配置文件训练自己的数据
+如果您想训练自己的小语种模型，可以准备好训练集文件、验证集文件、字典文件和训练数据路径，这里假设准备的意大利语的训练集、验证集、字典和训练数据路径为：
+- 训练集:{your/path/}PaddleOCR/train_data/train_list.txt
+- 验证集:{your/path/}PaddleOCR/train_data/val_list.txt
+- 使用PaddleOCR提供的默认字典：{your/path/}PaddleOCR/ppocr/utils/dict/it_dict.txt
+- 训练数据路径:{your/path/}PaddleOCR/train_data
+
+使用以下命令生成配置文件：
+```bash
+# -l或者--language字段是必须的
+# --train修改训练集，--val修改验证集，--data_dir修改数据集目录，-o修改对应默认参数
+# --dict命令改变字典路径，示例使用默认字典路径则该参数可不填
+python3 generate_multi_language_configs.py -l it \
+--train train_data/train_list.txt \
+--val train_data/val_list.txt \
+--data_dir train_data \
+-o Global.use_gpu=False
+```
+
 |模型名称|模型简介|配置文件|推理模型大小|下载地址|
 | --- | --- | --- | --- | --- |
 | french_mobile_v2.0_rec |法文识别|[rec_french_lite_train.yml](../../configs/rec/multi_language/rec_french_lite_train.yml)|2.65M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/french_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/french_mobile_v2.0_rec_train.tar) |
 | german_mobile_v2.0_rec |德文识别|[rec_german_lite_train.yml](../../configs/rec/multi_language/rec_german_lite_train.yml)|2.65M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/german_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/german_mobile_v2.0_rec_train.tar) |
 | korean_mobile_v2.0_rec |韩文识别|[rec_korean_lite_train.yml](../../configs/rec/multi_language/rec_korean_lite_train.yml)|3.9M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/korean_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/korean_mobile_v2.0_rec_train.tar) |
 | japan_mobile_v2.0_rec |日文识别|[rec_japan_lite_train.yml](../../configs/rec/multi_language/rec_japan_lite_train.yml)|4.23M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/japan_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/japan_mobile_v2.0_rec_train.tar) |
-
+| it_mobile_v2.0_rec |意大利文识别|rec_it_lite_train.yml|2.53M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/it_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/it_mobile_v2.0_rec_train.tar) |
+| xi_mobile_v2.0_rec |西班牙文识别|rec_xi_lite_train.yml|2.53M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/xi_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/xi_mobile_v2.0_rec_train.tar) |
+| pu_mobile_v2.0_rec |葡萄牙文识别|rec_pu_lite_train.yml|2.63M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/pu_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/pu_mobile_v2.0_rec_train.tar) |
+| ru_mobile_v2.0_rec |俄罗斯文识别|rec_ru_lite_train.yml|2.63M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ru_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ru_mobile_v2.0_rec_train.tar) |
+| ar_mobile_v2.0_rec |阿拉伯文识别|rec_ar_lite_train.yml|2.53M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ar_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ar_mobile_v2.0_rec_train.tar) |
+| hi_mobile_v2.0_rec |印地文识别|rec_hi_lite_train.yml|2.63M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/hi_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/hi_mobile_v2.0_rec_train.tar) |
+| chinese_cht_mobile_v2.0_rec |中文繁体识别|rec_chinese_cht_lite_train.yml|5.63M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/chinese_cht_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/chinese_cht_mobile_v2.0_rec_train.tar) |
+| ug_mobile_v2.0_rec |维吾尔文识别|rec_ug_lite_train.yml|2.63M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ug_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ug_mobile_v2.0_rec_train.tar) |
+| fa_mobile_v2.0_rec |波斯文识别|rec_fa_lite_train.yml|2.63M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/fa_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/fa_mobile_v2.0_rec_train.tar) |
+| ur_mobile_v2.0_rec |乌尔都文识别|rec_ur_lite_train.yml|2.63M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ur_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ur_mobile_v2.0_rec_train.tar) |
+| rs_mobile_v2.0_rec |塞尔维亚文（latin）识别|rec_rs_lite_train.yml|2.53M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/rs_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/rs_mobile_v2.0_rec_train.tar) |
+| oc_mobile_v2.0_rec |欧西坦文识别|rec_oc_lite_train.yml|2.53M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/oc_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/oc_mobile_v2.0_rec_train.tar) |
+| mr_mobile_v2.0_rec |马拉地文识别|rec_mr_lite_train.yml|2.63M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/mr_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/mr_mobile_v2.0_rec_train.tar) |
+| ne_mobile_v2.0_rec |尼泊尔文识别|rec_ne_lite_train.yml|2.63M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ne_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ne_mobile_v2.0_rec_train.tar) |
+| rsc_mobile_v2.0_rec |塞尔维亚文（cyrillic）识别|rec_rsc_lite_train.yml|2.63M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/rsc_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/rsc_mobile_v2.0_rec_train.tar) |
+| bg_mobile_v2.0_rec |保加利亚文识别|rec_bg_lite_train.yml|2.63M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/bg_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/bg_mobile_v2.0_rec_train.tar) |
+| uk_mobile_v2.0_rec |乌克兰文识别|rec_uk_lite_train.yml|2.63M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/uk_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/uk_mobile_v2.0_rec_train.tar) |
+| be_mobile_v2.0_rec |白俄罗斯文识别|rec_be_lite_train.yml|2.63M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/be_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/be_mobile_v2.0_rec_train.tar) |
+| te_mobile_v2.0_rec |泰卢固文识别|rec_te_lite_train.yml|2.63M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/te_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/te_mobile_v2.0_rec_train.tar) |
+| ka_mobile_v2.0_rec |卡纳达文识别|[rec_ka_lite_train.yml|2.63M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ka_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ka_mobile_v2.0_rec_train.tar) |
+| ta_mobile_v2.0_rec |泰米尔文识别|rec_ta_lite_train.yml|2.63M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ta_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ta_mobile_v2.0_rec_train.tar) |
 
 
 <a name="文本方向分类模型"></a>
