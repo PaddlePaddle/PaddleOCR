@@ -77,6 +77,7 @@ class ArgsParser(ArgumentParser):
         global_config['Global']['save_model_dir'] = './output/rec_{}_lite'.format(type[0])
         global_config['Train']['dataset']['label_file_list'] = ["train_data/{}_train.txt".format(type[0])]
         global_config['Eval']['dataset']['label_file_list'] = ["train_data/{}_val.txt".format(type[0])]
+        global_config['Global']['character_type'] = type[0]
         assert(
                 os.path.isfile(os.path.join(project_path,global_config['Global']['character_dict_path']))
               ),"Loss default dictionary file {}_dict.txt.You can download it from \
