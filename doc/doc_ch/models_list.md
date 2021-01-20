@@ -52,28 +52,38 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 <a name="多语言识别模型"></a>
 #### 3. 多语言识别模型（更多语言持续更新中...）
 
-**说明：** 新增的多语言模型的配置文件通过代码方式生成，以生成意大利语配置文件为例：
+**说明：** 新增的多语言模型的配置文件通过代码方式生成，您可以通过`--help`参数查看当前PaddleOCR支持生成哪些多语言的配置文件：
+```bash
+# 该代码需要在指定目录运行
+cd PaddleOCR/configs/rec/multi_language/
+python3 generate_multi_language_configs.py --help
+```
+下面以生成意大利语配置文件为例：
+##### 1. 生成意大利语配置文件测试现有模型
 
+如果您仅仅想用配置文件测试PaddleOCR提供的多语言模型可以通过下面命令生成默认的配置文件，使用PaddleOCR提供的小语种字典进行预测。
 ```bash
 # 该代码需要在指定目录运行
 cd PaddleOCR/configs/rec/multi_language/
 # 通过-l或者--language参数设置需要生成的语种的配置文件，该命令会将默认参数写入配置文件
 python3 generate_multi_language_configs.py -l it
 ```
-您可以通过`--help`参数查看当前PaddleOCR支持生成哪些多语言的配置文件：
+##### 2. 生成意大利语配置文件训练自己的数据
+如果您想训练自己的小语种模型，可以准备好训练集文件、验证集文件、字典文件和训练数据路径，这里假设准备的意大利语的训练集、验证集、字典和训练数据路径为：
+- 训练集:{your/path/}PaddleOCR/train_data/train_list.txt
+- 验证集:{your/path/}PaddleOCR/train_data/val_list.txt
+- 使用PaddleOCR提供的默认字典：{your/path/}PaddleOCR/ppocr/utils/dict/it_dict.txt
+- 训练数据路径:{your/path/}PaddleOCR/train_data
 
-```bash
-python3 generate_multi_language_configs.py --help
-```
-如果您不想使用默认的路径或者默认参数可以根据以下命令修改：
-
+使用以下命令生成配置文件：
 ```bash
 # -l或者--language字段是必须的
 # --train修改训练集，--val修改验证集，--data_dir修改数据集目录，-o修改对应默认参数
+# --dict命令改变字典路径，示例使用默认字典路径则该参数可不填
 python3 generate_multi_language_configs.py -l it \
---train {path/to/train_list} \
---val {path/to/val_list} \
---data_dir {path/to/data_dir} \
+--train train_data/train_list.txt \
+--val train_data/val_list.txt \
+--data_dir train_data \
 -o Global.use_gpu=False
 ```
 
