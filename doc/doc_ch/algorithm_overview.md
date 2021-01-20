@@ -40,7 +40,7 @@ PaddleOCR文本检测算法的训练和使用请参考文档教程中[模型训�
 PaddleOCR基于动态图开源的文本识别算法列表：
 - [x]  CRNN([paper](https://arxiv.org/abs/1507.05717))[7]（ppocr推荐）
 - [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))[10]
-- [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))[11] coming soon
+- [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))[11]
 - [ ]  RARE([paper](https://arxiv.org/abs/1603.03915v1))[12] coming soon
 - [ ]  SRN([paper](https://arxiv.org/abs/2003.12294))[5] coming soon
 
