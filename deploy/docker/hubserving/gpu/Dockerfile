@@ -1,10 +1,8 @@
-# Version: 1.0.0
-FROM hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda10.0-cudnn7-dev
+# Version: 2.0.0
+FROM egistry.baidubce.com/paddlepaddle/paddle:2.0.0rc1-gpu-cuda10.0-cudnn7
 
 # PaddleOCR base on Python3.7
 RUN pip3.7 install --upgrade pip -i https://mirror.baidu.com/pypi/simple
-
-RUN python3.7 -m pip install paddlepaddle-gpu==2.0.0rc0 -i https://mirror.baidu.com/pypi/simple
 
 RUN pip3.7 install paddlehub --upgrade -i https://mirror.baidu.com/pypi/simple
 
