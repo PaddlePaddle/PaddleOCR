@@ -42,6 +42,6 @@ class SRNLoss(nn.Layer):
         cost_gsrm = paddle.reshape(x=paddle.sum(cost_gsrm), shape=[1])
         cost_vsfd = paddle.reshape(x=paddle.sum(cost_vsfd), shape=[1])
 
-        sum_cost = cost_word + cost_vsfd * 2.0 + cost_gsrm * 0.15
+        sum_cost = cost_word * 3.0 + cost_vsfd + cost_gsrm * 0.15
 
         return {'loss': sum_cost, 'word_loss': cost_word, 'img_loss': cost_vsfd}

@@ -182,12 +182,12 @@ class SRNLabelDecode(BaseRecLabelDecode):
 
         preds_prob = np.reshape(preds_prob, [-1, 25])
 
-        text = self.decode(preds_idx, preds_prob, is_remove_duplicate=True)
+        text = self.decode(preds_idx, preds_prob)
 
         if label is None:
             text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
             return text
-        label = self.decode(label, is_remove_duplicate=True)
+        label = self.decode(label)
         return text, label
 
     def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
