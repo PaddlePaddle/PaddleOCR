@@ -21,7 +21,7 @@ from .imaug import transform, create_operators
 
 
 class LMDBDateSet(Dataset):
-    def __init__(self, config, mode, logger):
+    def __init__(self, config, mode, logger, seed=None):
         super(LMDBDateSet, self).__init__()
 
         global_config = config['Global']
