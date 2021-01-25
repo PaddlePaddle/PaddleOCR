@@ -96,7 +96,7 @@ class MyBackbone(nn.Layer):
         self.conv = nn.xxxx
 
     def forward(self, inputs):
-        # your necwork forward
+        # your network forward
         y = self.conv(inputs)
         return y
 ```

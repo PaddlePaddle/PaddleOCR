@@ -203,9 +203,9 @@ class GridGenerator(nn.Layer):
     def build_C_paddle(self):
         """ Return coordinates of fiducial points in I_r; C """
         F = self.F
-        ctrl_pts_x = paddle.linspace(-1.0, 1.0, int(F / 2))
-        ctrl_pts_y_top = -1 * paddle.ones([int(F / 2)])
-        ctrl_pts_y_bottom = paddle.ones([int(F / 2)])
+        ctrl_pts_x = paddle.linspace(-1.0, 1.0, int(F / 2), dtype='float64')
+        ctrl_pts_y_top = -1 * paddle.ones([int(F / 2)], dtype='float64')
+        ctrl_pts_y_bottom = paddle.ones([int(F / 2)], dtype='float64')
         ctrl_pts_top = paddle.stack([ctrl_pts_x, ctrl_pts_y_top], axis=1)
         ctrl_pts_bottom = paddle.stack([ctrl_pts_x, ctrl_pts_y_bottom], axis=1)
         C = paddle.concat([ctrl_pts_top, ctrl_pts_bottom], axis=0)
@@ -213,12 +213,14 @@ class GridGenerator(nn.Layer):
 
     def build_P_paddle(self, I_r_size):
         I_r_height, I_r_width = I_r_size
-        I_r_grid_x = (
-            paddle.arange(-I_r_width, I_r_width, 2).astype('float32') + 1.0
-        ) / I_r_width  # self.I_r_width
-        I_r_grid_y = (
-            paddle.arange(-I_r_height, I_r_height, 2).astype('float32') + 1.0
-        ) / I_r_height  # self.I_r_height
+        I_r_grid_x = (paddle.arange(
+            -I_r_width, I_r_width, 2, dtype='float64') + 1.0
+                      ) / paddle.to_tensor(np.array([I_r_width]))
+
+        I_r_grid_y = (paddle.arange(
+            -I_r_height, I_r_height, 2, dtype='float64') + 1.0
+                      ) / paddle.to_tensor(np.array([I_r_height]))
+
         # P: self.I_r_width x self.I_r_height x 2
         P = paddle.stack(paddle.meshgrid(I_r_grid_x, I_r_grid_y), axis=2)
         P = paddle.transpose(P, perm=[1, 0, 2])
@@ -228,7 +230,7 @@ class GridGenerator(nn.Layer):
     def build_inv_delta_C_paddle(self, C):
         """ Return inv_delta_C which is needed to calculate T """
         F = self.F
-        hat_C = paddle.zeros((F, F), dtype='float32')  # F x F
+        hat_C = paddle.zeros((F, F), dtype='float64')  # F x F
         for i in range(0, F):
             for j in range(i, F):
                 if i == j:
@@ -241,13 +243,21 @@ class GridGenerator(nn.Layer):
         delta_C = paddle.concat(  # F+3 x F+3
             [
                 paddle.concat(
-                    [paddle.ones((F, 1)), C, hat_C], axis=1),  # F x F+3
+                    [paddle.ones(
+                        (F, 1), dtype='float64'), C, hat_C], axis=1),  # F x F+3
                 paddle.concat(
-                    [paddle.zeros((2, 3)), paddle.transpose(
-                        C, perm=[1, 0])],
+                    [
+                        paddle.zeros(
+                            (2, 3), dtype='float64'), paddle.transpose(
+                                C, perm=[1, 0])
+                    ],
                     axis=1),  # 2 x F+3
                 paddle.concat(
-                    [paddle.zeros((1, 3)), paddle.ones((1, F))],
+                    [
+                        paddle.zeros(
+                            (1, 3), dtype='float64'), paddle.ones(
+                                (1, F), dtype='float64')
+                    ],
                     axis=1)  # 1 x F+3
             ],
             axis=0)
@@ -268,7 +278,9 @@ class GridGenerator(nn.Layer):
         # rbf: n x F
         rbf = paddle.multiply(
             paddle.square(rbf_norm), paddle.log(rbf_norm + eps))
-        P_hat = paddle.concat([paddle.ones((n, 1)), P, rbf], axis=1)
+        P_hat = paddle.concat(
+            [paddle.ones(
+                (n, 1), dtype='float64'), P, rbf], axis=1)
         return P_hat  # n x F+3
 
     def get_expand_tensor(self, batch_C_prime):

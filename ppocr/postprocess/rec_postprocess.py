@@ -24,7 +24,9 @@ class BaseRecLabelDecode(object):
                  character_type='ch',
                  use_space_char=False):
         support_character_type = [
-            'ch', 'en', 'en_sensitive', 'french', 'german', 'japan', 'korean'
+            'ch', 'en', 'en_sensitive', 'french', 'german', 'japan', 'korean', 'it',
+            'xi', 'pu', 'ru', 'ar', 'ta', 'ug', 'fa', 'ur', 'rs', 'oc', 'rsc', 'bg',
+            'uk', 'be', 'te', 'ka', 'chinese_cht', 'hi', 'mr', 'ne'
         ]
         assert character_type in support_character_type, "Only {} are supported now but get {}".format(
             support_character_type, character_type)
@@ -60,7 +62,7 @@ class BaseRecLabelDecode(object):
     def add_special_char(self, dict_character):
         return dict_character
 
-    def decode(self, text_index, text_prob=None, is_remove_duplicate=True):
+    def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
         """ convert text-index into text-label. """
         result_list = []
         ignored_tokens = self.get_ignored_tokens()
@@ -107,10 +109,10 @@ class CTCLabelDecode(BaseRecLabelDecode):
 
         preds_idx = preds.argmax(axis=2)
         preds_prob = preds.max(axis=2)
-        text = self.decode(preds_idx, preds_prob)
+        text = self.decode(preds_idx, preds_prob, is_remove_duplicate=True)
         if label is None:
             return text
-        label = self.decode(label, is_remove_duplicate=False)
+        label = self.decode(label)
         return text, label
 
     def add_special_char(self, dict_character):
