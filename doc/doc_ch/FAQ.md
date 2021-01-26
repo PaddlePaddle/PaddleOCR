@@ -9,42 +9,43 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2021.1.18）](#近期更新)
+* [近期更新（2021.1.25）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
 * [【理论篇】OCR通用32个问题](#OCR通用问题)
   * [基础知识7题](#基础知识)
   * [数据集7题](#数据集2)
   * [模型训练调优18题](#模型训练调优2)
-* [【实战篇】PaddleOCR实战110个问题](#PaddleOCR实战问题)
-  * [使用咨询36题](#使用咨询)
+* [【实战篇】PaddleOCR实战115个问题](#PaddleOCR实战问题)
+  * [使用咨询38题](#使用咨询)
   * [数据集17题](#数据集3)
   * [模型训练调优28题](#模型训练调优3)
-  * [预测部署29题](#预测部署3)
+  * [预测部署32题](#预测部署3)
 
 
 <a name="近期更新"></a>
-## 近期更新（2021.1.18）
+## 近期更新（2021.1.25）
 
+#### Q3.1.37: 小语种模型只有识别模型，没有检测模型吗？
 
-#### Q2.3.18: 在PP-OCR系统中，文本检测的骨干网络为什么没有使用SE模块？
+**A**：小语种（包括纯英文数字）的检测模型和中文的检测模型是共用的，在训练中文检测模型时加入了多语言数据。https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_en/models_list_en.md#1-text-detection-model。
 
-**A**：SE模块是MobileNetV3网络一个重要模块，目的是估计特征图每个特征通道重要性，给特征图每个特征分配权重，提高网络的表达能力。但是，对于文本检测，输入网络的分辨率比较大，一般是640\*640，利用SE模块估计特征图每个特征通道重要性比较困难，网络提升能力有限，但是该模块又比较耗时，因此在PP-OCR系统中，文本检测的骨干网络没有使用SE模块。实验也表明，当去掉SE模块，超轻量模型大小可以减小40%，文本检测效果基本不受影响。详细可以参考PP-OCR技术文章，https://arxiv.org/abs/2009.09941.
+#### Q3.1.38: module 'paddle.distributed' has no attribute ‘get_rank’。
 
-#### Q3.3.27: PaddleOCR关于文本识别模型的训练，支持的数据增强方式有哪些？
+**A**：Paddle版本问题，请安装2.0版本Paddle：pip install paddlepaddle==2.0.0rc1。
 
-**A**：文本识别支持的数据增强方式有随机小幅度裁剪、图像平衡、添加白噪声、颜色漂移、图像反色和Text Image Augmentation（TIA）变换等。可以参考[代码](../../ppocr/data/imaug/rec_img_aug.py)中的warp函数。
+#### Q3.4.30: PaddleOCR是否支持在华为鲲鹏920CPU上部署？
 
-#### Q3.3.28: 关于dygraph分支中，文本识别模型训练，要使用数据增强应该如何设置？
+**A**：目前Paddle的预测库是支持华为鲲鹏920CPU的，但是OCR还没在这些芯片上测试过，可以自己调试，有问题反馈给我们。
 
-**A**：可以参考[配置文件](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)在Train['dataset']['transforms']添加RecAug字段，使数据增强生效。可以通过添加对aug_prob设置，表示每种数据增强采用的概率。aug_prob默认是0.4.由于tia数据增强特殊性，默认不采用，可以通过添加use_tia设置，使tia数据增强生效。详细设置可以参考[ISSUE 1744](https://github.com/PaddlePaddle/PaddleOCR/issues/1744)。
+#### Q3.4.31: 采用Paddle-Lite进行端侧部署，出现问题，环境没问题。
 
-#### Q3.4.28: PP-OCR系统中，文本检测的结果有置信度吗？
+**A**：如果你的预测库是自己编译的，那么你的nb文件也要自己编译，用同一个lite版本。不能直接用下载的nb文件，因为版本不同。
 
-**A**：文本检测的结果有置信度，由于推理过程中没有使用，所以没有显示的返回到最终结果中。如果需要文本检测结果的置信度，可以在[文本检测DB的后处理代码](../../ppocr/postprocess/db_postprocess.py)的155行，添加scores信息。这样，在[检测预测代码](../../tools/infer/predict_det.py)的197行，就可以拿到文本检测的scores信息。
+#### Q3.4.32: PaddleOCR的模型支持onnx转换吗？
 
-#### Q3.4.29: DB文本检测，特征提取网络金字塔构建的部分代码在哪儿？
-
-**A**：特征提取网络金字塔构建的部分:[代码位置](../../ppocr/modeling/necks/db_fpn.py)。ppocr/modeling文件夹里面是组网相关的代码，其中architectures是文本检测或者文本识别整体流程代码；backbones是骨干网络相关代码；necks是类似与FPN的颈函数代码；heads是提取文本检测或者文本识别预测结果相关的头函数；transforms是类似于TPS特征预处理模块。更多的信息可以参考[代码组织结构](./tree.md)。
+**A**：我们目前已经通过Paddle2ONNX来支持各模型套件的转换，PaddleOCR基于PaddlePaddle 2.0的版本（dygraph分支）已经支持导出为ONNX，欢迎关注Paddle2ONNX，了解更多项目的进展：
+Paddle2ONNX项目：https://github.com/PaddlePaddle/Paddle2ONNX
+Paddle2ONNX支持转换的[模型列表](https://github.com/PaddlePaddle/Paddle2ONNX/blob/develop/docs/zh/model_zoo.md#%E5%9B%BE%E5%83%8Focr)
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -474,8 +475,17 @@ StyleText的用途主要是：提取style_image中的字体、背景等style信�
 例如识别身份证照片，可以先匹配"姓名"，"性别"等关键字，根据这些关键字的坐标去推测其他信息的位置，再与识别的结果匹配。
 
 #### Q3.1.36 如何识别竹简上的古文？
+
 **A**：对于字符都是普通的汉字字符的情况，只要标注足够的数据，finetune模型就可以了。如果数据量不足，您可以尝试StyleText工具。
 而如果使用的字符是特殊的古文字、甲骨文、象形文字等，那么首先需要构建一个古文字的字典，之后再进行训练。
+
+#### Q3.1.37: 小语种模型只有识别模型，没有检测模型吗？
+
+**A**：小语种（包括纯英文数字）的检测模型和中文的检测模型是共用的，在训练中文检测模型时加入了多语言数据。https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_en/models_list_en.md#1-text-detection-model。
+
+#### Q3.1.38: module 'paddle.distributed' has no attribute ‘get_rank’。
+
+**A**：Paddle版本问题，请安装2.0版本Paddle：pip install paddlepaddle==2.0.0rc1。
 
 <a name="数据集3"></a>
 ### 数据集
@@ -854,3 +864,17 @@ img = cv.imdecode(img_array, -1)
 #### Q3.4.29: DB文本检测，特征提取网络金字塔构建的部分代码在哪儿？
 
 **A**：特征提取网络金字塔构建的部分:[代码位置](../../ppocr/modeling/necks/db_fpn.py)。ppocr/modeling文件夹里面是组网相关的代码，其中architectures是文本检测或者文本识别整体流程代码；backbones是骨干网络相关代码；necks是类似与FPN的颈函数代码；heads是提取文本检测或者文本识别预测结果相关的头函数；transforms是类似于TPS特征预处理模块。更多的信息可以参考[代码组织结构](./tree.md)。
+
+#### Q3.4.30: PaddleOCR是否支持在华为鲲鹏920CPU上部署？
+
+**A**：目前Paddle的预测库是支持华为鲲鹏920CPU的，但是OCR还没在这些芯片上测试过，可以自己调试，有问题反馈给我们。
+
+#### Q3.4.31: 采用Paddle-Lite进行端侧部署，出现问题，环境没问题。
+
+**A**：如果你的预测库是自己编译的，那么你的nb文件也要自己编译，用同一个lite版本。不能直接用下载的nb文件，因为版本不同。
+
+#### Q3.4.32: PaddleOCR的模型支持onnx转换吗？
+
+**A**：我们目前已经通过Paddle2ONNX来支持各模型套件的转换，PaddleOCR基于PaddlePaddle 2.0的版本（dygraph分支）已经支持导出为ONNX，欢迎关注Paddle2ONNX，了解更多项目的进展：
+Paddle2ONNX项目：https://github.com/PaddlePaddle/Paddle2ONNX
+Paddle2ONNX支持转换的[模型列表](https://github.com/PaddlePaddle/Paddle2ONNX/blob/develop/docs/zh/model_zoo.md#%E5%9B%BE%E5%83%8Focr)

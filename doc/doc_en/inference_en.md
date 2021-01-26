@@ -366,15 +366,15 @@ When performing prediction, you need to specify the path of a single image or a 
 
 ```
 # use direction classifier
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --cls_model_dir="./inference/cls/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls=true
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./inference/det_db/" --cls_model_dir="./inference/cls/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls=true
 
 # not use use direction classifier
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --rec_model_dir="./inference/rec_crnn/"
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./inference/det_db/" --rec_model_dir="./inference/rec_crnn/"
 ```
 
 After executing the command, the recognition result image is as follows:
 
-![](../imgs_results/2.jpg)
+![](../imgs_results/system_res_00018069.jpg)
 
 <a name="OTHER_MODELS"></a>
 ### 2. OTHER MODELS
@@ -391,4 +391,4 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_10.jpg" --d
 
 After executing the command, the recognition result image is as follows:
 
-(coming soon)
+![](../imgs_results/img_10_east_starnet.jpg)

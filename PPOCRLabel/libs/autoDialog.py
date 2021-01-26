@@ -7,6 +7,8 @@ except ImportError:
     from PyQt4.QtCore import *
 
 import json
+import cv2
+import numpy as np
 
 from libs.utils import newIcon
 
@@ -34,11 +36,16 @@ class Worker(QThread):
                 if self.handle == 0:
                     self.listValue.emit(Imgpath)
                     if self.model == 'paddle':
-                        self.result_dic = self.ocr.ocr(Imgpath, cls=True, det=True)
+                        h, w, _ = cv2.imdecode(np.fromfile(Imgpath, dtype=np.uint8), 1).shape
+                        if h > 32 and w > 32:
+                            self.result_dic = self.ocr.ocr(Imgpath, cls=True, det=True)
+                        else:
+                            print('The size of', Imgpath, 'is too small to be recognised')
+                            self.result_dic = None
 
                     # 结果保存
                     if self.result_dic is None or len(self.result_dic) == 0:
-                        print('Can not recognise file  is :  ', Imgpath)
+                        print('Can not recognise file', Imgpath)
                         pass
                     else:
                         strs = ''

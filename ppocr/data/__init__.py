@@ -51,7 +51,7 @@ signal.signal(signal.SIGINT, term_mp)
 signal.signal(signal.SIGTERM, term_mp)
 
 
-def build_dataloader(config, mode, device, logger):
+def build_dataloader(config, mode, device, logger, seed=None):
     config = copy.deepcopy(config)
 
     support_dict = ['SimpleDataSet', 'LMDBDateSet']
@@ -61,7 +61,7 @@ def build_dataloader(config, mode, device, logger):
     assert mode in ['Train', 'Eval', 'Test'
                     ], "Mode should be Train, Eval or Test."
 
-    dataset = eval(module_name)(config, mode, logger)
+    dataset = eval(module_name)(config, mode, logger, seed)
     loader_config = config[mode]['loader']
     batch_size = loader_config['batch_size_per_card']
     drop_last = loader_config['drop_last']

@@ -20,7 +20,7 @@ from .imaug import transform, create_operators
 
 
 class SimpleDataSet(Dataset):
-    def __init__(self, config, mode, logger):
+    def __init__(self, config, mode, logger, seed=None):
         super(SimpleDataSet, self).__init__()
         self.logger = logger
 
@@ -41,6 +41,7 @@ class SimpleDataSet(Dataset):
         self.data_dir = dataset_config['data_dir']
         self.do_shuffle = loader_config['shuffle']
 
+        self.seed = seed
         logger.info("Initialize indexs of datasets:%s" % label_file_list)
         self.data_lines = self.get_image_info_list(label_file_list, ratio_list)
         self.data_idx_order_list = list(range(len(self.data_lines)))
@@ -55,6 +56,7 @@ class SimpleDataSet(Dataset):
         for idx, file in enumerate(file_list):
             with open(file, "rb") as f:
                 lines = f.readlines()
+                random.seed(self.seed)
                 lines = random.sample(lines,
                                       round(len(lines) * ratio_list[idx]))
                 data_lines.extend(lines)
@@ -62,6 +64,7 @@ class SimpleDataSet(Dataset):
 
     def shuffle_data_random(self):
         if self.do_shuffle:
+            random.seed(self.seed)
             random.shuffle(self.data_lines)
         return
 
