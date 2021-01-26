@@ -93,7 +93,7 @@ class BaseRecLabelEncode(object):
                  use_space_char=False):
         support_character_type = [
             'ch', 'en', 'en_sensitive', 'french', 'german', 'japan', 'korean',
-            'EN', 'it', 'xi', 'pu', 'ru', 'ar', 'ta', 'ug', 'fa', 'ur', 'rs',
+            'En', 'it', 'xi', 'pu', 'ru', 'ar', 'ta', 'ug', 'fa', 'ur', 'rs',
             'oc', 'rsc', 'bg', 'uk', 'be', 'te', 'ka', 'chinese_cht', 'hi',
             'mr', 'ne'
         ]
