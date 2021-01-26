@@ -51,15 +51,15 @@ class MobileNetV3(nn.Layer):
                 [5, 72, 40, True, 'relu', (large_stride[2], 1)],
                 [5, 120, 40, True, 'relu', 1],
                 [5, 120, 40, True, 'relu', 1],
-                [3, 240, 80, False, 'hardswish', 1],
-                [3, 200, 80, False, 'hardswish', 1],
-                [3, 184, 80, False, 'hardswish', 1],
-                [3, 184, 80, False, 'hardswish', 1],
-                [3, 480, 112, True, 'hardswish', 1],
-                [3, 672, 112, True, 'hardswish', 1],
-                [5, 672, 160, True, 'hardswish', (large_stride[3], 1)],
-                [5, 960, 160, True, 'hardswish', 1],
-                [5, 960, 160, True, 'hardswish', 1],
+                [3, 240, 80, False, 'hard_swish', 1],
+                [3, 200, 80, False, 'hard_swish', 1],
+                [3, 184, 80, False, 'hard_swish', 1],
+                [3, 184, 80, False, 'hard_swish', 1],
+                [3, 480, 112, True, 'hard_swish', 1],
+                [3, 672, 112, True, 'hard_swish', 1],
+                [5, 672, 160, True, 'hard_swish', (large_stride[3], 1)],
+                [5, 960, 160, True, 'hard_swish', 1],
+                [5, 960, 160, True, 'hard_swish', 1],
             ]
             cls_ch_squeeze = 960
         elif model_name == "small":
@@ -68,14 +68,14 @@ class MobileNetV3(nn.Layer):
                 [3, 16, 16, True, 'relu', (small_stride[0], 1)],
                 [3, 72, 24, False, 'relu', (small_stride[1], 1)],
                 [3, 88, 24, False, 'relu', 1],
-                [5, 96, 40, True, 'hardswish', (small_stride[2], 1)],
-                [5, 240, 40, True, 'hardswish', 1],
-                [5, 240, 40, True, 'hardswish', 1],
-                [5, 120, 48, True, 'hardswish', 1],
-                [5, 144, 48, True, 'hardswish', 1],
-                [5, 288, 96, True, 'hardswish', (small_stride[3], 1)],
-                [5, 576, 96, True, 'hardswish', 1],
-                [5, 576, 96, True, 'hardswish', 1],
+                [5, 96, 40, True, 'hard_swish', (small_stride[2], 1)],
+                [5, 240, 40, True, 'hard_swish', 1],
+                [5, 240, 40, True, 'hard_swish', 1],
+                [5, 120, 48, True, 'hard_swish', 1],
+                [5, 144, 48, True, 'hard_swish', 1],
+                [5, 288, 96, True, 'hard_swish', (small_stride[3], 1)],
+                [5, 576, 96, True, 'hard_swish', 1],
+                [5, 576, 96, True, 'hard_swish', 1],
             ]
             cls_ch_squeeze = 576
         else:
@@ -96,7 +96,7 @@ class MobileNetV3(nn.Layer):
             padding=1,
             groups=1,
             if_act=True,
-            act='hardswish',
+            act='hard_swish',
             name='conv1')
         i = 0
         block_list = []
@@ -124,7 +124,7 @@ class MobileNetV3(nn.Layer):
             padding=0,
             groups=1,
             if_act=True,
-            act='hardswish',
+            act='hard_swish',
             name='conv_last')
 
         self.pool = nn.MaxPool2D(kernel_size=2, stride=2, padding=0)
