@@ -112,7 +112,8 @@ class MobileNetV3(nn.Layer):
         inplanes = make_divisible(inplanes * scale)
         for (k, exp, c, se, nl, s) in cfg:
             se = se and not self.disable_se
-            if s == 2 and i > 2:
+            start_idx = 2 if model_name == 'large' else 0
+            if s == 2 and i > start_idx:
                 self.out_channels.append(inplanes)
                 self.stages.append(nn.Sequential(*block_list))
                 block_list = []
