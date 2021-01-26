@@ -58,15 +58,15 @@ class MobileNetV3(nn.Layer):
                 [5, 72, 40, True, 'relu', 2],
                 [5, 120, 40, True, 'relu', 1],
                 [5, 120, 40, True, 'relu', 1],
-                [3, 240, 80, False, 'hardswish', 2],
-                [3, 200, 80, False, 'hardswish', 1],
-                [3, 184, 80, False, 'hardswish', 1],
-                [3, 184, 80, False, 'hardswish', 1],
-                [3, 480, 112, True, 'hardswish', 1],
-                [3, 672, 112, True, 'hardswish', 1],
-                [5, 672, 160, True, 'hardswish', 2],
-                [5, 960, 160, True, 'hardswish', 1],
-                [5, 960, 160, True, 'hardswish', 1],
+                [3, 240, 80, False, 'hard_swish', 2],
+                [3, 200, 80, False, 'hard_swish', 1],
+                [3, 184, 80, False, 'hard_swish', 1],
+                [3, 184, 80, False, 'hard_swish', 1],
+                [3, 480, 112, True, 'hard_swish', 1],
+                [3, 672, 112, True, 'hard_swish', 1],
+                [5, 672, 160, True, 'hard_swish', 2],
+                [5, 960, 160, True, 'hard_swish', 1],
+                [5, 960, 160, True, 'hard_swish', 1],
             ]
             cls_ch_squeeze = 960
         elif model_name == "small":
@@ -75,14 +75,14 @@ class MobileNetV3(nn.Layer):
                 [3, 16, 16, True, 'relu', 2],
                 [3, 72, 24, False, 'relu', 2],
                 [3, 88, 24, False, 'relu', 1],
-                [5, 96, 40, True, 'hardswish', 2],
-                [5, 240, 40, True, 'hardswish', 1],
-                [5, 240, 40, True, 'hardswish', 1],
-                [5, 120, 48, True, 'hardswish', 1],
-                [5, 144, 48, True, 'hardswish', 1],
-                [5, 288, 96, True, 'hardswish', 2],
-                [5, 576, 96, True, 'hardswish', 1],
-                [5, 576, 96, True, 'hardswish', 1],
+                [5, 96, 40, True, 'hard_swish', 2],
+                [5, 240, 40, True, 'hard_swish', 1],
+                [5, 240, 40, True, 'hard_swish', 1],
+                [5, 120, 48, True, 'hard_swish', 1],
+                [5, 144, 48, True, 'hard_swish', 1],
+                [5, 288, 96, True, 'hard_swish', 2],
+                [5, 576, 96, True, 'hard_swish', 1],
+                [5, 576, 96, True, 'hard_swish', 1],
             ]
             cls_ch_squeeze = 576
         else:
@@ -102,7 +102,7 @@ class MobileNetV3(nn.Layer):
             padding=1,
             groups=1,
             if_act=True,
-            act='hardswish',
+            act='hard_swish',
             name='conv1')
 
         self.stages = []
@@ -137,7 +137,7 @@ class MobileNetV3(nn.Layer):
                 padding=0,
                 groups=1,
                 if_act=True,
-                act='hardswish',
+                act='hard_swish',
                 name='conv_last'))
         self.stages.append(nn.Sequential(*block_list))
         self.out_channels.append(make_divisible(scale * cls_ch_squeeze))
@@ -191,11 +191,10 @@ class ConvBNLayer(nn.Layer):
         if self.if_act:
             if self.act == "relu":
                 x = F.relu(x)
-            elif self.act == "hardswish":
-                x = F.hardswish(x)
+            elif self.act == "hard_swish":
+                x = F.activation.hard_swish(x)
             else:
-                print("The activation function({}) is selected incorrectly.".
-                      format(self.act))
+                print("The activation function is selected incorrectly.")
                 exit()
         return x
 
@@ -282,5 +281,5 @@ class SEModule(nn.Layer):
         outputs = self.conv1(outputs)
         outputs = F.relu(outputs)
         outputs = self.conv2(outputs)
-        outputs = F.hardsigmoid(outputs, slope=0.2, offset=0.5)
+        outputs = F.activation.hard_sigmoid(outputs)
         return inputs * outputs
