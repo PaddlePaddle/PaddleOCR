@@ -304,6 +304,7 @@ There are two ways to create the required configuration file:：
     # --train to modify the training set
     # --val to modify the validation set
     # --data_dir to modify the data set directory
+    # --dict to modify the dict path
     # -o to modify the corresponding default parameters
     cd PaddleOCR/configs/rec/multi_language/
     python3 generate_multi_language_configs.py -l it \  # language
@@ -346,10 +347,10 @@ There are two ways to create the required configuration file:：
 
 Currently, the multi-language algorithms supported by PaddleOCR are:
 
-| 配置文件 |  算法名称 |   backbone |   trans   |   seq      |     pred     |  language | character_type |
+| Configuration file |  Algorithm name |   backbone |   trans   |   seq      |     pred     |  language | character_type |
 | :--------: |  :-------:   | :-------:  |   :-------:   |   :-----:   |  :-----:   | :-----:  | :-----:  |
 | rec_chinese_cht_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | chinese traditional  | chinese_cht|
-| rec_en_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | English   | ch |
+| rec_en_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | English   | En |
 | rec_french_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | French |  french |
 | rec_ger_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | German   | german |
 | rec_japan_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Japanese | japan |

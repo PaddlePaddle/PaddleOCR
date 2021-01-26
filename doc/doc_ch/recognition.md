@@ -303,7 +303,7 @@ PaddleOCR目前已支持26种（除中文外）语种识别，`configs/rec/multi
 
     ```bash
     # -l或者--language字段是必须的
-    # --train修改训练集，--val修改验证集，--data_dir修改数据集目录，-o修改对应默认参数
+    # --train修改训练集，--val修改验证集，--data_dir修改数据集目录，--dict修改字典路径， -o修改对应默认参数
     cd PaddleOCR/configs/rec/multi_language/
     python3 generate_multi_language_configs.py -l it \  # 语种
     --train {path/of/train_label.txt} \ # 训练标签文件的路径
@@ -348,7 +348,7 @@ PaddleOCR目前已支持26种（除中文外）语种识别，`configs/rec/multi
 | 配置文件 |  算法名称 |   backbone |   trans   |   seq      |     pred     |  language | character_type |
 | :--------: |  :-------:   | :-------:  |   :-------:   |   :-----:   |  :-----:   | :-----:  | :-----:  |
 | rec_chinese_cht_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 中文繁体  | chinese_cht|
-| rec_en_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 英语   | ch |
+| rec_en_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 英语   | En |
 | rec_french_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 法语 |  french |
 | rec_ger_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 德语   | german |
 | rec_japan_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 日语  | japan |
