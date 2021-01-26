@@ -27,7 +27,7 @@ def read_params():
     # cfg.det_east_cover_thresh = 0.1
     # cfg.det_east_nms_thresh = 0.2
 
-    cfg.use_zero_copy_run = False
     cfg.use_pdserving = False
+    cfg.use_tensorrt = False
 
     return cfg

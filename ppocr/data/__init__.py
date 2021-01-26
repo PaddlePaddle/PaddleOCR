@@ -51,7 +51,7 @@ signal.signal(signal.SIGINT, term_mp)
 signal.signal(signal.SIGTERM, term_mp)
 
 
-def build_dataloader(config, mode, device, logger):
+def build_dataloader(config, mode, device, logger, seed=None):
     config = copy.deepcopy(config)
 
     support_dict = ['SimpleDataSet', 'LMDBDataSet']
@@ -61,13 +61,15 @@ def build_dataloader(config, mode, device, logger):
     assert mode in ['Train', 'Eval', 'Test'
                     ], "Mode should be Train, Eval or Test."
 
-    dataset = eval(module_name)(config, mode, logger)
+    dataset = eval(module_name)(config, mode, logger, seed)
     loader_config = config[mode]['loader']
     batch_size = loader_config['batch_size_per_card']
     drop_last = loader_config['drop_last']
     num_workers = loader_config['num_workers']
-
-    use_shared_memory = False
+    if 'use_shared_memory' in loader_config.keys():
+        use_shared_memory = loader_config['use_shared_memory']
+    else:
+        use_shared_memory = True
     if mode == "Train":
         #Distribute data to multiple cards
         batch_sampler = DistributedBatchSampler(
@@ -75,7 +77,6 @@ def build_dataloader(config, mode, device, logger):
             batch_size=batch_size,
             shuffle=False,
             drop_last=drop_last)
-        use_shared_memory = True
     else:
         #Distribute data to single card
         batch_sampler = BatchSampler(

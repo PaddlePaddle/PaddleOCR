@@ -99,5 +99,5 @@ For more text detection and recognition tandem reasoning, please refer to the do
 
 In addition, the tutorial also provides other deployment methods for the Chinese OCR model:
 - [Server-side C++ inference](../../deploy/cpp_infer/readme_en.md)
-- [Service deployment](../../deploy/pdserving/readme_en.md)
-- [End-to-end deployment](../../deploy/lite/readme_en.md)
+- [Service deployment](../../deploy/hubserving)
+- [End-to-end deployment](https://github.com/PaddlePaddle/PaddleOCR/tree/develop/deploy/lite)

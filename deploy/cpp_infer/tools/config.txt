@@ -24,3 +24,7 @@ char_list_file ../../ppocr/utils/ppocr_keys_v1.txt
 # show the detection results
 visualize 1
 
+# use_tensorrt
+use_tensorrt 0
+use_fp16   0
+

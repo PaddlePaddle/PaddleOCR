@@ -76,6 +76,7 @@ Train:
     batch_size_per_card: 256
     drop_last: True
     num_workers: 8
+    use_shared_memory: False
 
 Eval:
   dataset:
@@ -96,3 +97,4 @@ Eval:
     drop_last: False
     batch_size_per_card: 256
     num_workers: 4
+    use_shared_memory: False

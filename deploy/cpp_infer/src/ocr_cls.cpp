@@ -25,7 +25,7 @@ cv::Mat Classifier::Run(cv::Mat &img) {
   int index = 0;
   float wh_ratio = float(img.cols) / float(img.rows);
 
-  this->resize_op_.Run(img, resize_img, cls_image_shape);
+  this->resize_op_.Run(img, resize_img, this->use_tensorrt_, cls_image_shape);
 
   this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
                           this->is_scale_);
@@ -76,6 +76,13 @@ void Classifier::LoadModel(const std::string &model_dir) {
 
   if (this->use_gpu_) {
     config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
+    if (this->use_tensorrt_) {
+      config.EnableTensorRtEngine(
+          1 << 20, 10, 3,
+          this->use_fp16_ ? paddle_infer::Config::Precision::kHalf
+                          : paddle_infer::Config::Precision::kFloat32,
+          false, false);
+    }
   } else {
     config.DisableGpu();
     if (this->use_mkldnn_) {

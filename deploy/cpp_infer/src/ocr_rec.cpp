@@ -33,7 +33,7 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
 
     float wh_ratio = float(crop_img.cols) / float(crop_img.rows);
 
-    this->resize_op_.Run(crop_img, resize_img, wh_ratio);
+    this->resize_op_.Run(crop_img, resize_img, wh_ratio, this->use_tensorrt_);
 
     this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
                             this->is_scale_);
@@ -76,7 +76,7 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
           float(*std::max_element(&predict_batch[n * predict_shape[2]],
                                   &predict_batch[(n + 1) * predict_shape[2]]));
 
-      if (argmax_idx > 0 && (not(i > 0 && argmax_idx == last_index))) {
+      if (argmax_idx > 0 && (!(i > 0 && argmax_idx == last_index))) {
         score += max_value;
         count += 1;
         str_res.push_back(label_list_[argmax_idx]);
@@ -99,6 +99,13 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
 
   if (this->use_gpu_) {
     config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
+    if (this->use_tensorrt_) {
+      config.EnableTensorRtEngine(
+          1 << 20, 10, 3,
+          this->use_fp16_ ? paddle_infer::Config::Precision::kHalf
+                          : paddle_infer::Config::Precision::kFloat32,
+          false, false);
+    }
   } else {
     config.DisableGpu();
     if (this->use_mkldnn_) {

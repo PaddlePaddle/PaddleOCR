@@ -183,8 +183,8 @@ def train(config,
         start_epoch = 1
 
     for epoch in range(start_epoch, epoch_num + 1):
-        if epoch > 0:
-            train_dataloader = build_dataloader(config, 'Train', device, logger)
+        train_dataloader = build_dataloader(
+            config, 'Train', device, logger, seed=epoch)
         train_batch_cost = 0.0
         train_reader_cost = 0.0
         batch_sum = 0
