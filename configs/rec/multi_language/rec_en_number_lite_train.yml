@@ -1,5 +1,5 @@
 Global:
-  use_gpu: True
+  use_gpu: False
   epoch_num: 500
   log_smooth_window: 20
   print_batch_step: 10
@@ -16,7 +16,7 @@ Global:
   infer_img:
   # for data or label process
   character_dict_path: ppocr/utils/dict/en_dict.txt
-  character_type: En
+  character_type: EN
   max_text_length: 25
   infer_mode: False
   use_space_char: False
@@ -63,8 +63,8 @@ Metric:
 Train:
   dataset:
     name: SimpleDataSet
-    data_dir: ./train_data/
-    label_file_list: ["./train_data/train_list.txt"]
+    data_dir: ./train_data/ic15_data/
+    label_file_list: ["./train_data/ic15_data/rec_gt_test.txt"]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
@@ -77,15 +77,15 @@ Train:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
   loader:
     shuffle: True
-    batch_size_per_card: 256
+    batch_size_per_card: 1
     drop_last: True
-    num_workers: 8
+    num_workers: 1
 
 Eval:
   dataset:
     name: SimpleDataSet
-    data_dir: ./train_data/
-    label_file_list: ["./train_data/eval_list.txt"]
+    data_dir: ./train_data/ic15_data/
+    label_file_list: ["./train_data/ic15_data/rec_gt_test.txt"]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR

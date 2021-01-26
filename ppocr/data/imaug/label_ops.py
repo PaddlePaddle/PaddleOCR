@@ -18,6 +18,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import numpy as np
+import string
 
 
 class ClsLabelEncode(object):
@@ -92,8 +93,8 @@ class BaseRecLabelEncode(object):
                  character_type='ch',
                  use_space_char=False):
         support_character_type = [
-            'ch', 'en', 'en_sensitive', 'french', 'german', 'japan', 'korean',
-            'En', 'it', 'xi', 'pu', 'ru', 'ar', 'ta', 'ug', 'fa', 'ur', 'rs',
+            'ch', 'en', 'EN_symbol', 'french', 'german', 'japan', 'korean',
+            'EN', 'it', 'xi', 'pu', 'ru', 'ar', 'ta', 'ug', 'fa', 'ur', 'rs',
             'oc', 'rsc', 'bg', 'uk', 'be', 'te', 'ka', 'chinese_cht', 'hi',
             'mr', 'ne'
         ]
@@ -104,9 +105,8 @@ class BaseRecLabelEncode(object):
         if character_type == "en":
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
-        elif character_type == "en_sensitive":
+        elif character_type == "EN_symbol":
             # same with ASTER setting (use 94 char).
-            import string
             self.character_str = string.printable[:-6]
             dict_character = list(self.character_str)
         elif character_type in support_character_type:

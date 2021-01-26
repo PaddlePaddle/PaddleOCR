@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import numpy as np
+import string
 import paddle
 from paddle.nn import functional as F
 
@@ -24,10 +25,10 @@ class BaseRecLabelDecode(object):
                  character_type='ch',
                  use_space_char=False):
         support_character_type = [
-            'ch', 'en', 'en_sensitive', 'french', 'german', 'japan', 'korean',
+            'ch', 'en', 'EN_symbol', 'french', 'german', 'japan', 'korean',
             'it', 'xi', 'pu', 'ru', 'ar', 'ta', 'ug', 'fa', 'ur', 'rs', 'oc',
             'rsc', 'bg', 'uk', 'be', 'te', 'ka', 'chinese_cht', 'hi', 'mr',
-            'ne', 'En'
+            'ne', 'EN'
         ]
         assert character_type in support_character_type, "Only {} are supported now but get {}".format(
             support_character_type, character_type)
@@ -35,9 +36,8 @@ class BaseRecLabelDecode(object):
         if character_type == "en":
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
-        elif character_type == "en_sensitive":
+        elif character_type == "EN_symbol":
             # same with ASTER setting (use 94 char).
-            import string
             self.character_str = string.printable[:-6]
             dict_character = list(self.character_str)
         elif character_type in support_character_type:
