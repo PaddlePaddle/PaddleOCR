@@ -51,8 +51,11 @@ def main():
     model.eval()
 
     save_path = '{}/inference'.format(config['Global']['save_inference_dir'])
-    infer_shape = [3, 32, 100] if config['Architecture'][
-        'model_type'] != "det" else [3, 640, 640]
+
+    infer_shape = [3, -1, -1] 
+    if config['Architecture']['model_type'] == "rec":
+         infer_shape = [3, 32, -1]
+
     model = to_static(
         model,
         input_spec=[
