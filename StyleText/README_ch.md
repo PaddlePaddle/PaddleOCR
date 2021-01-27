@@ -63,10 +63,10 @@ fusion_generator:
 ```python
 python3 tools/synth_image.py -c configs/config.yml --style_image examples/style_images/2.jpg --text_corpus PaddleOCR --language en
 ```
-* 注1：语言选项和语料相对应，目前该工具只支持英文、简体中文和韩语。
+* 注1：语言选项和语料相对应，目前支持英文(en)、简体中文(ch)和韩语(ko)。
 * 注2：Style-Text生成的数据主要应用于OCR识别场景。基于当前PaddleOCR识别模型的设计，我们主要支持高度在32左右的风格图像。
   如果输入图像尺寸相差过多，效果可能不佳。
-* 注3：可以通过修改配置文件中的`use_gpu`(true或者false)参数来决定是否使用GPU进行预测。
+* 注3：可以通过修改配置文件`configs/config.yml`中的`use_gpu`(true或者false)参数来决定是否使用GPU进行预测。
 
 
 例如，输入如下图片和语料"PaddleOCR":
@@ -105,7 +105,7 @@ python3 tools/synth_image.py -c configs/config.yml --style_image examples/style_
      * `with_label`：标志`label_file`是否为label文件。
    * `CorpusGenerator`：
      * `method`：语料生成方法，目前有`FileCorpus`和`EnNumCorpus`可选。如果使用`EnNumCorpus`，则不需要填写其他配置，否则需要修改`corpus_file`和`language`；
-     * `language`：语料的语种；
+     * `language`：语料的语种，目前支持英文(en)、简体中文(ch)和韩语(ko)；
      * `corpus_file`: 语料文件路径。语料文件应使用文本文件。语料生成器首先会将语料按行切分，之后每次随机选取一行。
 
    语料文件格式示例：
