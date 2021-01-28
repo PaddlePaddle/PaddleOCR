@@ -19,7 +19,8 @@ pip3 install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x is the version of pad
 
 * detection classification and recognition
 ```python
-from paddleocr import PaddleOCR,draw_ocr
+from paddleocr import PaddleOCR
+from tools.infer.utility import draw_ocr
 # Paddleocr supports Chinese, English, French, German, Korean and Japanese.
 # You can set the parameter `lang` as `ch`, `en`, `french`, `german`, `korean`, `japan`
 # to switch the language model in order.
