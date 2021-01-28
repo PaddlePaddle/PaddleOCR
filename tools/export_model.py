@@ -47,7 +47,7 @@ def main():
         char_num = len(getattr(post_process_class, 'character'))
         config['Architecture']["Head"]['out_channels'] = char_num
     model = build_model(config['Architecture'])
-    # init_model(config, model, logger)
+    init_model(config, model, logger)
     model.eval()
 
     save_path = '{}/inference'.format(config['Global']['save_inference_dir'])
