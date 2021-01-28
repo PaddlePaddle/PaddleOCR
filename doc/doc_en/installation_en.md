@@ -3,7 +3,7 @@
 After testing, paddleocr can run on glibc 2.23. You can also test other glibc versions or install glic 2.23 for the best compatibility.
 
 PaddleOCR working environment:
-- PaddlePaddle 1.8+, Recommend PaddlePaddle 2.0.0
+- PaddlePaddle 2.0.0
 - python3.7
 - glibc 2.23
 
