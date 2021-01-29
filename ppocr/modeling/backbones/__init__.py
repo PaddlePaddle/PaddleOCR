@@ -24,7 +24,8 @@ def build_backbone(config, model_type):
     elif model_type == 'rec' or model_type == 'cls':
         from .rec_mobilenet_v3 import MobileNetV3
         from .rec_resnet_vd import ResNet
-        support_dict = ['MobileNetV3', 'ResNet', 'ResNet_FPN']
+        from .rec_resnet_fpn import ResNetFPN
+        support_dict = ['MobileNetV3', 'ResNet', 'ResNetFPN']
     else:
         raise NotImplementedError
 

@@ -31,7 +31,7 @@
 
 #### Q3.1.38: module 'paddle.distributed' has no attribute ‘get_rank’。
 
-**A**：Paddle版本问题，请安装2.0版本Paddle：pip install paddlepaddle==2.0.0rc1。
+**A**：Paddle版本问题，请安装2.0版本Paddle：pip install paddlepaddle==2.0.0。
 
 #### Q3.4.30: PaddleOCR是否支持在华为鲲鹏920CPU上部署？
 
@@ -397,13 +397,13 @@ Paddle2ONNX支持转换的[模型列表](https://github.com/PaddlePaddle/Paddle2
 **A**：动态图版本正在紧锣密鼓开发中，将于2020年12月16日发布，敬请关注。
 
 #### Q3.1.22：ModuleNotFoundError: No module named 'paddle.nn'，
-**A**：paddle.nn是Paddle2.0版本特有的功能，请安装大于等于Paddle 2.0.0rc1的版本，安装方式为
+**A**：paddle.nn是Paddle2.0版本特有的功能，请安装大于等于Paddle 2.0.0的版本，安装方式为
 ```
-python3 -m pip install paddlepaddle-gpu==2.0.0rc1 -i https://mirror.baidu.com/pypi/simple
+python3 -m pip install paddlepaddle-gpu==2.0.0 -i https://mirror.baidu.com/pypi/simple
 ```
 
 #### Q3.1.23： ImportError: /usr/lib/x86_64_linux-gnu/libstdc++.so.6:version `CXXABI_1.3.11` not found (required by /usr/lib/python3.6/site-package/paddle/fluid/core+avx.so)
-**A**：这个问题是glibc版本不足导致的，Paddle2.0rc1版本对gcc版本和glib版本有更高的要求，推荐gcc版本为8.2，glibc版本2.12以上。
+**A**：这个问题是glibc版本不足导致的，Paddle2.0.0版本对gcc版本和glib版本有更高的要求，推荐gcc版本为8.2，glibc版本2.12以上。
 如果您的环境不满足这个要求，或者使用的docker镜像为:
 `hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev`
 `hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev`，安装Paddle2.0rc版本可能会出现上述错误，2.0版本推荐使用新的docker镜像 `paddlepaddle/paddle:latest-dev-cuda10.1-cudnn7-gcc82`。
@@ -415,7 +415,7 @@ python3 -m pip install paddlepaddle-gpu==2.0.0rc1 -i https://mirror.baidu.com/py
 
 - develop：基于Paddle静态图开发的分支，推荐使用paddle1.8 或者2.0版本，该分支具备完善的模型训练、预测、推理部署、量化裁剪等功能，领先于release/1.1分支。
 - release/1.1：PaddleOCR 发布的第一个稳定版本，基于静态图开发，具备完善的训练、预测、推理部署、量化裁剪等功能。
-- dygraph：基于Paddle动态图开发的分支，目前仍在开发中，未来将作为主要开发分支，运行要求使用Paddle2.0rc1版本，目前仍在开发中。
+- dygraph：基于Paddle动态图开发的分支，目前仍在开发中，未来将作为主要开发分支，运行要求使用Paddle2.0.0版本。
 - release/2.0-rc1-0：PaddleOCR发布的第二个稳定版本，基于动态图和paddle2.0版本开发，动态图开发的工程更易于调试，目前支，支持模型训练、预测，暂不支持移动端部署。
 
 如果您已经上手过PaddleOCR，并且希望在各种环境上部署PaddleOCR，目前建议使用静态图分支，develop或者release/1.1分支。如果您是初学者，想快速训练，调试PaddleOCR中的算法，建议尝鲜PaddleOCR dygraph分支。
@@ -432,7 +432,7 @@ python3 -m pip install paddlepaddle-gpu==2.0.0rc1 -i https://mirror.baidu.com/py
 
 #### Q3.1.27: 如何可视化acc,loss曲线图,模型网络结构图等？
 
-**A**：在配置文件里有`use_visualdl`的参数，设置为True即可，更多的使用命令可以参考：[VisualDL使用指南](https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0-rc1/guides/03_VisualDL/visualdl.html)。
+**A**：在配置文件里有`use_visualdl`的参数，设置为True即可，更多的使用命令可以参考：[VisualDL使用指南](https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/guides/03_VisualDL/visualdl.html)。
 
 #### Q3.1.28: 在使用StyleText数据合成工具的时候，报错`ModuleNotFoundError: No module named 'utils.config'`，这是为什么呢？
 
@@ -451,7 +451,7 @@ https://github.com/PaddlePaddle/PaddleOCR/blob/de3e2e7cd3b8b65ee02d7a41e570fa5b5
 
 #### Q3.1.31: 怎么输出网络结构以及每层的参数信息？
 
-**A**：可以使用 `paddle.summary`， 具体参考:https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0-rc1/api/paddle/hapi/model_summary/summary_cn.html#summary。
+**A**：可以使用 `paddle.summary`， 具体参考:https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/api/paddle/hapi/model_summary/summary_cn.html。
 
 #### Q3.1.32 能否修改StyleText配置文件中的分辨率？
 
@@ -485,7 +485,7 @@ StyleText的用途主要是：提取style_image中的字体、背景等style信�
 
 #### Q3.1.38: module 'paddle.distributed' has no attribute ‘get_rank’。
 
-**A**：Paddle版本问题，请安装2.0版本Paddle：pip install paddlepaddle==2.0.0rc1。
+**A**：Paddle版本问题，请安装2.0版本Paddle：pip install paddlepaddle==2.0.0。
 
 <a name="数据集3"></a>
 ### 数据集
