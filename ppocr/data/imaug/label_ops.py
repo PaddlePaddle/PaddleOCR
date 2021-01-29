@@ -197,16 +197,30 @@ class AttnLabelEncode(BaseRecLabelEncode):
         super(AttnLabelEncode,
               self).__init__(max_text_length, character_dict_path,
                              character_type, use_space_char)
-        self.beg_str = "sos"
-        self.end_str = "eos"
 
     def add_special_char(self, dict_character):
-        dict_character = [self.beg_str, self.end_str] + dict_character
+        self.beg_str = "sos"
+        self.end_str = "eos"
+        dict_character = [self.beg_str] + dict_character + [self.end_str]
         return dict_character
 
-    def __call__(self, text):
+    def __call__(self, data):
+        text = data['label']
         text = self.encode(text)
-        return text
+        if text is None:
+            return None
+        if len(text) > self.max_text_len:
+            return None
+        data['length'] = np.array(len(text))
+        text = [0] + text + [len(self.character) - 1] + [0] * (self.max_text_len
+                                                               - len(text) - 1)
+        data['label'] = np.array(text)
+        return data
+
+    def get_ignored_tokens(self):
+        beg_idx = self.get_beg_end_flag_idx("beg")
+        end_idx = self.get_beg_end_flag_idx("end")
+        return [beg_idx, end_idx]
 
     def get_beg_end_flag_idx(self, beg_or_end):
         if beg_or_end == "beg":

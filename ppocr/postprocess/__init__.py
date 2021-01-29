@@ -30,7 +30,8 @@ def build_post_process(config, global_config=None):
     from .cls_postprocess import ClsPostProcess
 
     support_dict = [
-        'DBPostProcess', 'EASTPostProcess', 'SASTPostProcess', 'CTCLabelDecode', 'AttnLabelDecode', 'ClsPostProcess'
+        'DBPostProcess', 'EASTPostProcess', 'SASTPostProcess', 'CTCLabelDecode',
+        'AttnLabelDecode', 'ClsPostProcess', 'AttnLabelDecode'
     ]
 
     config = copy.deepcopy(config)
