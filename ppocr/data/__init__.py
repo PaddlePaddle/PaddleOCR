@@ -33,7 +33,7 @@ import paddle.distributed as dist
 
 from ppocr.data.imaug import transform, create_operators
 from ppocr.data.simple_dataset import SimpleDataSet
-from ppocr.data.lmdb_dataset import LMDBDateSet
+from ppocr.data.lmdb_dataset import LMDBDataSet
 
 __all__ = ['build_dataloader', 'transform', 'create_operators']
 
@@ -51,20 +51,21 @@ signal.signal(signal.SIGINT, term_mp)
 signal.signal(signal.SIGTERM, term_mp)
 
 
-def build_dataloader(config, mode, device, logger):
+def build_dataloader(config, mode, device, logger, seed=None):
     config = copy.deepcopy(config)
 
-    support_dict = ['SimpleDataSet', 'LMDBDateSet']
+    support_dict = ['SimpleDataSet', 'LMDBDataSet']
     module_name = config[mode]['dataset']['name']
     assert module_name in support_dict, Exception(
         'DataSet only support {}'.format(support_dict))
     assert mode in ['Train', 'Eval', 'Test'
                     ], "Mode should be Train, Eval or Test."
 
-    dataset = eval(module_name)(config, mode, logger)
+    dataset = eval(module_name)(config, mode, logger, seed)
     loader_config = config[mode]['loader']
     batch_size = loader_config['batch_size_per_card']
     drop_last = loader_config['drop_last']
+    shuffle = loader_config['shuffle']
     num_workers = loader_config['num_workers']
     if 'use_shared_memory' in loader_config.keys():
         use_shared_memory = loader_config['use_shared_memory']
@@ -75,14 +76,14 @@ def build_dataloader(config, mode, device, logger):
         batch_sampler = DistributedBatchSampler(
             dataset=dataset,
             batch_size=batch_size,
-            shuffle=False,
+            shuffle=shuffle,
             drop_last=drop_last)
     else:
         #Distribute data to single card
         batch_sampler = BatchSampler(
             dataset=dataset,
             batch_size=batch_size,
-            shuffle=False,
+            shuffle=shuffle,
             drop_last=drop_last)
 
     data_loader = DataLoader(

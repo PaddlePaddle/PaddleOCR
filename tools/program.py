@@ -174,6 +174,7 @@ def train(config,
     best_model_dict = {main_indicator: 0}
     best_model_dict.update(pre_best_model_dict)
     train_stats = TrainingStats(log_smooth_window, ['lr'])
+    model_average = False
     model.train()
 
     if 'start_epoch' in best_model_dict:
@@ -182,8 +183,8 @@ def train(config,
         start_epoch = 1
 
     for epoch in range(start_epoch, epoch_num + 1):
-        if epoch > 0:
-            train_dataloader = build_dataloader(config, 'Train', device, logger)
+        train_dataloader = build_dataloader(
+            config, 'Train', device, logger, seed=epoch)
         train_batch_cost = 0.0
         train_reader_cost = 0.0
         batch_sum = 0
@@ -194,7 +195,12 @@ def train(config,
                 break
             lr = optimizer.get_lr()
             images = batch[0]
-            preds = model(images)
+            if config['Architecture']['algorithm'] == "SRN":
+                others = batch[-4:]
+                preds = model(images, others)
+                model_average = True
+            else:
+                preds = model(images)
             loss = loss_class(preds, batch)
             avg_loss = loss['loss']
             avg_loss.backward()
@@ -212,7 +218,7 @@ def train(config,
             stats['lr'] = lr
             train_stats.update(stats)
 
-            if cal_metric_during_train:  # onlt rec and cls need
+            if cal_metric_during_train:  # only rec and cls need
                 batch = [item.numpy() for item in batch]
                 post_result = post_process_class(preds, batch[1])
                 eval_class(post_result, batch)
@@ -238,21 +244,28 @@ def train(config,
             # eval
             if global_step > start_eval_step and \
                     (global_step - start_eval_step) % eval_batch_step == 0 and dist.get_rank() == 0:
+                if model_average:
+                    Model_Average = paddle.incubate.optimizer.ModelAverage(
+                        0.15,
+                        parameters=model.parameters(),
+                        min_average_window=10000,
+                        max_average_window=15625)
+                    Model_Average.apply()
                 cur_metirc = eval(model, valid_dataloader, post_process_class,
                                   eval_class)
-                cur_metirc_str = 'cur metirc, {}'.format(', '.join(
-                    ['{}: {}'.format(k, v) for k, v in cur_metirc.items()]))
-                logger.info(cur_metirc_str)
+                cur_metric_str = 'cur metric, {}'.format(', '.join(
+                    ['{}: {}'.format(k, v) for k, v in cur_metric.items()]))
+                logger.info(cur_metric_str)
 
                 # logger metric
                 if vdl_writer is not None:
-                    for k, v in cur_metirc.items():
+                    for k, v in cur_metric.items():
                         if isinstance(v, (float, int)):
                             vdl_writer.add_scalar('EVAL/{}'.format(k),
-                                                  cur_metirc[k], global_step)
-                if cur_metirc[main_indicator] >= best_model_dict[
+                                                  cur_metric[k], global_step)
+                if cur_metric[main_indicator] >= best_model_dict[
                         main_indicator]:
-                    best_model_dict.update(cur_metirc)
+                    best_model_dict.update(cur_metric)
                     best_model_dict['best_epoch'] = epoch
                     save_model(
                         model,
@@ -263,7 +276,7 @@ def train(config,
                         prefix='best_accuracy',
                         best_model_dict=best_model_dict,
                         epoch=epoch)
-                best_str = 'best metirc, {}'.format(', '.join([
+                best_str = 'best metric, {}'.format(', '.join([
                     '{}: {}'.format(k, v) for k, v in best_model_dict.items()
                 ]))
                 logger.info(best_str)
@@ -273,6 +286,7 @@ def train(config,
                                           best_model_dict[main_indicator],
                                           global_step)
             global_step += 1
+            optimizer.clear_grad()
             batch_start = time.time()
         if dist.get_rank() == 0:
             save_model(
@@ -294,7 +308,7 @@ def train(config,
                 prefix='iter_epoch_{}'.format(epoch),
                 best_model_dict=best_model_dict,
                 epoch=epoch)
-    best_str = 'best metirc, {}'.format(', '.join(
+    best_str = 'best metric, {}'.format(', '.join(
         ['{}: {}'.format(k, v) for k, v in best_model_dict.items()]))
     logger.info(best_str)
     if dist.get_rank() == 0 and vdl_writer is not None:
@@ -312,8 +326,9 @@ def eval(model, valid_dataloader, post_process_class, eval_class):
             if idx >= len(valid_dataloader):
                 break
             images = batch[0]
+            others = batch[-4:]
             start = time.time()
-            preds = model(images)
+            preds = model(images, others)
 
             batch = [item.numpy() for item in batch]
             # Obtain usable results from post-processing methods
@@ -323,13 +338,13 @@ def eval(model, valid_dataloader, post_process_class, eval_class):
             eval_class(post_result, batch)
             pbar.update(1)
             total_frame += len(images)
-        # Get final metirc，eg. acc or hmean
-        metirc = eval_class.get_metric()
+        # Get final metric，eg. acc or hmean
+        metric = eval_class.get_metric()
 
     pbar.close()
     model.train()
-    metirc['fps'] = total_frame / total_time
-    return metirc
+    metric['fps'] = total_frame / total_time
+    return metric
 
 
 def preprocess(is_train=False):

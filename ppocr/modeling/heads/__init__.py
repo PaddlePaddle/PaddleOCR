@@ -23,10 +23,13 @@ def build_head(config):
 
     # rec head
     from .rec_ctc_head import CTCHead
+    from .rec_srn_head import SRNHead
 
     # cls head
     from .cls_head import ClsHead
-    support_dict = ['DBHead', 'EASTHead', 'SASTHead', 'CTCHead', 'ClsHead']
+    support_dict = [
+        'DBHead', 'EASTHead', 'SASTHead', 'CTCHead', 'ClsHead', 'SRNHead'
+    ]
 
     module_name = config.pop('name')
     assert module_name in support_dict, Exception('head only support {}'.format(

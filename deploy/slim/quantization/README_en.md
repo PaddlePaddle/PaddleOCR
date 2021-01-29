@@ -58,7 +58,7 @@ python deploy/slim/quantization/quant.py -c configs/det/det_mv3_db.yml -o Global
 After getting the model after pruning and finetuning we, can export it as inference_model for predictive deployment:
 
 ```bash
-python deploy/slim/quantization/export_model.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=output/quant_model/best_accuracy Global.save_model_dir=./output/quant_inference_model
+python deploy/slim/quantization/export_model.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=output/quant_model/best_accuracy Global.save_inference_dir=./output/quant_inference_model
 ```
 
 ### 5. Deploy
