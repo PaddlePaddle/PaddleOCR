@@ -4,7 +4,7 @@
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力使用者训练出更好的模型，并应用落地。
 ## 注意
 PaddleOCR同时支持动态图与静态图两种编程范式
-- 动态图版本：dygraph分支（默认），需将paddle版本升级至2.0rc1+（[快速安装](./doc/doc_ch/installation.md)）
+- 动态图版本：dygraph分支（默认），需将paddle版本升级至2.0.0（[快速安装](./doc/doc_ch/installation.md)）
 - 静态图版本：develop分支
 
 **近期更新**
