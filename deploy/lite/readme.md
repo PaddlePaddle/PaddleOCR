@@ -11,8 +11,6 @@ Paddle Lite是飞桨轻量化推理引擎，为手机、IOT端提供高效推理
 - 电脑（编译Paddle Lite）
 - 安卓手机（armv7或armv8）
 
-***注意： PaddleOCR 移动端部署当前不支持动态图模型，只支持静态图保存的模型。当前PaddleOCR静态图的分支是`develop`。***
-
 ### 1.1 准备交叉编译环境
 交叉编译环境用于编译 Paddle Lite 和 PaddleOCR 的C++ demo。
 支持多种开发环境，不同开发环境的编译流程请参考对应文档。
@@ -31,7 +29,7 @@ Paddle Lite是飞桨轻量化推理引擎，为手机、IOT端提供高效推理
       |Android|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.8/inference_lite_lib.android.armv7.gcc.c++_shared.with_extra.with_cv.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.8/inference_lite_lib.android.armv8.gcc.c++_shared.with_extra.with_cv.tar.gz)|
       |IOS|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.8/inference_lite_lib.ios.armv7.with_cv.with_extra.with_log.tiny_publish.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.8/inference_lite_lib.ios.armv8.with_cv.with_extra.with_log.tiny_publish.tar.gz)|
 
-      注：1. 上述预测库为PaddleLite 2.8分支编译得到，有关PaddleLite 2.8 详细信息可参考[链接](https://github.com/PaddlePaddle/Paddle-Lite/releases/tag/v2.8)。
+      注：1. 上述预测库为PaddleLite 2.8分支编译得到，有关PaddleLite 2.8 详细信息可参考[链接](https://github.com/PaddlePaddle/Paddle-Lite/releases/tag/v2.8) 。
 
 - 2. [推荐]编译Paddle-Lite得到预测库，Paddle-Lite的编译方式如下：
 ```
@@ -87,10 +85,7 @@ Paddle-Lite 提供了多种策略来自动优化原始的模型，其中包括�
 
 |模型版本|模型简介|模型大小|检测模型|文本方向分类模型|识别模型|Paddle-Lite版本|
 |---|---|---|---|---|---|---|
-|V2.0|超轻量中文OCR 移动端模型|8.1M|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_opt.nb)|v2.8|
-|V2.0(slim)|超轻量中文OCR 移动端模型|3.5M|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_prune_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_quant_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_quant_opt.nb)|v2.8|
-
-注意：V2.0 3.0M 轻量模型是使用PaddleSlim优化后的，需要配合Paddle-Lite最新预测库使用。
+|V2.0|超轻量中文OCR 移动端模型|7.8M|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_det_infer_nb.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_infer_nb.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_rec_infer_nb.nb)|v2.8|
 
 如果直接使用上述表格中的模型进行部署，可略过下述步骤，直接阅读 [2.2节](#2.2与手机联调)。
 
@@ -128,12 +123,16 @@ cd build.opt/lite/api/
 
 ```
 # 【推荐】 下载PaddleOCR V2.0版本的中英文 inference模型
-wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_slim_infer.tar && tar xf  ch_ppocr_mobile_v1.1_det_prune_infer.tar
-wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_slim_infer.tar && tar xf  ch_ppocr_mobile_v1.1_rec_quant_infer.tar
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_det_slim_infer.tar
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_rec_slim_infer.tar
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_cls_slim_infer.tar
 # 转换V2.0检测模型
-./opt --model_file=./ch_ppocr_mobile_v1.1_det_prune_infer/model  --param_file=./ch_ppocr_mobile_v1.1_det_prune_infer/params  --optimize_out=./ch_ppocr_mobile_v1.1_det_prune_opt --valid_targets=arm  --optimize_out_type=naive_buffer
+./opt --model_file=./ch_ppocr_mobile_v2.0_det_slim_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_det_slim_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_det_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
 # 转换V2.0识别模型
-./opt --model_file=./ch_ppocr_mobile_v1.1_rec_quant_infer/model  --param_file=./ch_ppocr_mobile_v1.1_rec_quant_infer/params  --optimize_out=./ch_ppocr_mobile_v1.1_rec_quant_opt --valid_targets=arm  --optimize_out_type=naive_buffer
+./opt --model_file=./ch_ppocr_mobile_v2.0_rec_slim_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_rec_slim_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_rec_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
+# 转换V2.0方向分类器模型
+./opt --model_file=./ch_ppocr_mobile_v2.0_cls_slim_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_cls_slim_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_cls_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
+
 ```
 
 转换成功后，当前目录下会多出`.nb`结尾的文件，即是转换成功的模型文件。
@@ -186,21 +185,23 @@ wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_s
  ```
 
  准备测试图像，以`PaddleOCR/doc/imgs/11.jpg`为例，将测试的图像复制到`demo/cxx/ocr/debug/`文件夹下。
- 准备lite opt工具优化后的模型文件，比如使用`ch_ppocr_mobile_v1.1_det_prune_opt.nb，ch_ppocr_mobile_v1.1_rec_quant_opt.nb, ch_ppocr_mobile_cls_quant_opt.nb`，模型文件放置在`demo/cxx/ocr/debug/`文件夹下。
+ 准备lite opt工具优化后的模型文件，比如使用`ch_ppocr_mobile_v2.0_det_slim_opt.nb，ch_ppocr_mobile_v2.0_rec_slim_opt.nb, ch_ppocr_mobile_v2.0_cls_slim_opt.nb`，模型文件放置在`demo/cxx/ocr/debug/`文件夹下。
 
  执行完成后，ocr文件夹下将有如下文件格式：
 
 ```
 demo/cxx/ocr/
 |-- debug/  
-|   |--ch_ppocr_mobile_v1.1_det_prune_opt.nb           优化后的检测模型文件
-|   |--ch_ppocr_mobile_v1.1_rec_quant_opt.nb           优化后的识别模型文件
-|   |--ch_ppocr_mobile_cls_quant_opt.nb                优化后的文字方向分类器模型文件
+|   |--ch_ppocr_mobile_v2.0_det_slim_opt.nb           优化后的检测模型文件
+|   |--ch_ppocr_mobile_v2.0_rec_slim_opt.nb           优化后的识别模型文件
+|   |--ch_ppocr_mobile_v2.0_cls_slim_opt.nb           优化后的文字方向分类器模型文件
 |   |--11.jpg                           待测试图像
 |   |--ppocr_keys_v1.txt                中文字典文件
 |   |--libpaddle_light_api_shared.so    C++预测库文件
-|   |--config.txt                       DB-CRNN超参数配置
-|-- config.txt                  DB-CRNN超参数配置
+|   |--config.txt                       超参数配置
+|-- config.txt                  超参数配置
+|-- cls_process.cc              方向分类器的预处理和后处理文件
+|-- cls_process.h
 |-- crnn_process.cc             识别模型CRNN的预处理和后处理文件
 |-- crnn_process.h
 |-- db_post_process.cc          检测模型DB的后处理文件
@@ -219,6 +220,7 @@ ic15_dict.txt       # 英文字典
 dict/japan_dict.txt      # 日语字典
 dict/korean_dict.txt     # 韩语字典
 ppocr_keys_v1.txt   # 中文字典
+...
 ```
 
 2.  `config.txt` 包含了检测器、分类器的超参数，如下：
@@ -246,7 +248,7 @@ use_direction_classify  0  # 是否使用方向分类器，0表示不使用，1�
  adb shell
  cd /data/local/tmp/debug
  export LD_LIBRARY_PATH=${PWD}:$LD_LIBRARY_PATH
- ./ocr_db_crnn ch_ppocr_mobile_v1.1_det_prune_opt.nb  ch_ppocr_mobile_v1.1_rec_quant_opt.nb  ch_ppocr_mobile_cls_quant_opt.nb  ./11.jpg  ppocr_keys_v1.txt
+ ./ocr_db_crnn ch_ppocr_mobile_v2.0_det_slim_opt.nbb  ch_ppocr_mobile_v2.0_rec_slim_opt.nb  ch_ppocr_mobile_v2.0_cls_slim_opt.nb  ./11.jpg  ppocr_keys_v1.txt
  ```
 
  如果对代码做了修改，则需要重新编译并push到手机上。
