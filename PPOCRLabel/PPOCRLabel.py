@@ -1450,7 +1450,7 @@ class MainWindow(QMainWindow, WindowMixin):
                 item = QListWidgetItem(closeicon, filename)
             self.fileListWidget.addItem(item)
 
-        print('dirPath in importDirImages is', dirpath)
+        print('DirPath in importDirImages is', dirpath)
         self.iconlist.clear()
         self.additems5(dirpath)
         self.changeFileFolder = True
@@ -1459,7 +1459,6 @@ class MainWindow(QMainWindow, WindowMixin):
         self.reRecogButton.setEnabled(True)
         self.actions.AutoRec.setEnabled(True)
         self.actions.reRec.setEnabled(True)
-        self.actions.saveLabel.setEnabled(True)
 
 
     def openPrevImg(self, _value=False):
@@ -1862,6 +1861,8 @@ class MainWindow(QMainWindow, WindowMixin):
                 for each in states:
                     file, state = each.split('\t')
                     self.fileStatedict[file] = 1
+                self.actions.saveLabel.setEnabled(True)
+                self.actions.saveRec.setEnabled(True)
 
 
     def saveFilestate(self):
@@ -1919,22 +1920,29 @@ class MainWindow(QMainWindow, WindowMixin):
 
         rec_gt_dir = os.path.dirname(self.PPlabelpath) + '/rec_gt.txt'
         crop_img_dir = os.path.dirname(self.PPlabelpath) + '/crop_img/'
+        ques_img = []
         if not os.path.exists(crop_img_dir):
             os.mkdir(crop_img_dir)
 
         with open(rec_gt_dir, 'w', encoding='utf-8') as f:
             for key in self.fileStatedict:
                 idx = self.getImglabelidx(key)
-                for i, label in enumerate(self.PPlabel[idx]):
-                    if label['difficult']: continue
+                try:
                     img = cv2.imread(key)
-                    img_crop = get_rotate_crop_image(img, np.array(label['points'], np.float32))
-                    img_name = os.path.splitext(os.path.basename(idx))[0] + '_crop_'+str(i)+'.jpg'
-                    cv2.imwrite(crop_img_dir+img_name, img_crop)
-                    f.write('crop_img/'+ img_name + '\t')
-                    f.write(label['transcription'] + '\n')
-
-        QMessageBox.information(self, "Information", "Cropped images has been saved in "+str(crop_img_dir))
+                    for i, label in enumerate(self.PPlabel[idx]):
+                        if label['difficult']: continue
+                        img_crop = get_rotate_crop_image(img, np.array(label['points'], np.float32))
+                        img_name = os.path.splitext(os.path.basename(idx))[0] + '_crop_'+str(i)+'.jpg'
+                        cv2.imwrite(crop_img_dir+img_name, img_crop)
+                        f.write('crop_img/'+ img_name + '\t')
+                        f.write(label['transcription'] + '\n')
+                except Exception as e:
+                    ques_img.append(key)
+                    print("Can not read image ",e)
+        if ques_img:
+            QMessageBox.information(self, "Information", "The following images can not be saved, "
+                                                         "please check the image path and labels.\n" + "".join(str(i)+'\n' for i in ques_img))
+        QMessageBox.information(self, "Information", "Cropped images have been saved in "+str(crop_img_dir))
 
     def speedChoose(self):
         if self.labelDialogOption.isChecked():
