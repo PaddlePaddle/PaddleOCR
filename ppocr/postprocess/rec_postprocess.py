@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import numpy as np
+import string
 import paddle
 from paddle.nn import functional as F
 
@@ -24,9 +25,10 @@ class BaseRecLabelDecode(object):
                  character_type='ch',
                  use_space_char=False):
         support_character_type = [
-            'ch', 'en', 'en_sensitive', 'french', 'german', 'japan', 'korean', 'it',
-            'xi', 'pu', 'ru', 'ar', 'ta', 'ug', 'fa', 'ur', 'rs', 'oc', 'rsc', 'bg',
-            'uk', 'be', 'te', 'ka', 'chinese_cht', 'hi', 'mr', 'ne'
+            'ch', 'en', 'EN_symbol', 'french', 'german', 'japan', 'korean',
+            'it', 'xi', 'pu', 'ru', 'ar', 'ta', 'ug', 'fa', 'ur', 'rs', 'oc',
+            'rsc', 'bg', 'uk', 'be', 'te', 'ka', 'chinese_cht', 'hi', 'mr',
+            'ne', 'EN'
         ]
         assert character_type in support_character_type, "Only {} are supported now but get {}".format(
             support_character_type, character_type)
@@ -37,9 +39,14 @@ class BaseRecLabelDecode(object):
         if character_type == "en":
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
-        elif character_type in ["ch", "french", "german", "japan", "korean"]:
+        elif character_type == "EN_symbol":
+            # same with ASTER setting (use 94 char).
+            self.character_str = string.printable[:-6]
+            dict_character = list(self.character_str)
+        elif character_type in support_character_type:
             self.character_str = ""
-            assert character_dict_path is not None, "character_dict_path should not be None when character_type is ch"
+            assert character_dict_path is not None, "character_dict_path should not be None when character_type is {}".format(
+                character_type)
             with open(character_dict_path, "rb") as fin:
                 lines = fin.readlines()
                 for line in lines:
@@ -48,11 +55,7 @@ class BaseRecLabelDecode(object):
             if use_space_char:
                 self.character_str += " "
             dict_character = list(self.character_str)
-        elif character_type == "en_sensitive":
-            # same with ASTER setting (use 94 char).
-            import string
-            self.character_str = string.printable[:-6]
-            dict_character = list(self.character_str)
+
         else:
             raise NotImplementedError
         self.character_type = character_type

@@ -306,10 +306,10 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png
 <a name="多语言模型的推理"></a>
 ### 4. 多语言模型的推理
 如果您需要预测的是其他语言模型，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径, 同时为了得到正确的可视化结果，
-需要通过 `--vis_font_path` 指定可视化的字体路径，`doc/` 路径下有默认提供的小语种字体，例如韩文识别：
+需要通过 `--vis_font_path` 指定可视化的字体路径，`doc/fonts/` 路径下有默认提供的小语种字体，例如韩文识别：
 
 ```
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" --rec_model_dir="./your inference model" --rec_char_type="korean" --rec_char_dict_path="ppocr/utils/dict/korean_dict.txt" --vis_font_path="doc/korean.ttf"
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" --rec_model_dir="./your inference model" --rec_char_type="korean" --rec_char_dict_path="ppocr/utils/dict/korean_dict.txt" --vis_font_path="doc/fonts/korean.ttf"
 ```
 ![](../imgs_words/korean/1.jpg)
 
