@@ -1031,7 +1031,7 @@ class MainWindow(QMainWindow, WindowMixin):
 
         for box in self.result_dic:
             trans_dic = {"label": box[1][0], "points": box[0], 'difficult': False}
-            if trans_dic["label"] is "" and mode == 'Auto':
+            if trans_dic["label"] == "" and mode == 'Auto':
                 continue
             shapes.append(trans_dic)
 
@@ -1764,7 +1764,7 @@ class MainWindow(QMainWindow, WindowMixin):
                     QMessageBox.information(self, "Information", msg)
                     return
                 result = self.ocr.ocr(img_crop, cls=True, det=False)
-                if result[0][0] is not '':
+                if result[0][0] != '':
                     result.insert(0, box)
                     print('result in reRec is ', result)
                     self.result_dic.append(result)
@@ -1795,7 +1795,7 @@ class MainWindow(QMainWindow, WindowMixin):
             QMessageBox.information(self, "Information", msg)
             return
         result = self.ocr.ocr(img_crop, cls=True, det=False)
-        if result[0][0] is not '':
+        if result[0][0] != '':
             result.insert(0, box)
             print('result in reRec is ', result)
             if result[1][0] == shape.label:
@@ -1991,7 +1991,7 @@ if __name__ == '__main__':
     resource_file = './libs/resources.py'
     if not os.path.exists(resource_file):
         output = os.system('pyrcc5 -o libs/resources.py resources.qrc')
-        assert output is 0, "operate the cmd have some problems ,please check  whether there is a in the lib " \
+        assert output == 0, "operate the cmd have some problems ,please check  whether there is a in the lib " \
                             "directory resources.py "
     import libs.resources
     sys.exit(main())
