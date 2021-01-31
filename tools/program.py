@@ -326,12 +326,11 @@ def eval(model, valid_dataloader, post_process_class, eval_class):
             if idx >= len(valid_dataloader):
                 break
             images = batch[0]
+            start = time.time()
             if "SRN" in str(model.head):
                 others = batch[-4:]
-                start = time.time()
                 preds = model(images, others)
             else:
-                start = time.time()
                 preds = model(images)
 
             batch = [item.numpy() for item in batch]
