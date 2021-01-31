@@ -333,7 +333,6 @@ def eval(model, valid_dataloader, post_process_class, eval_class,
             if idx >= len(valid_dataloader):
                 break
             images = batch[0]
-            others = batch[-4:]
             start = time.time()
             if use_srn:
                 others = batch[-4:]
