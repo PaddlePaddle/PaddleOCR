@@ -255,12 +255,12 @@ class SRNLabelDecode(BaseRecLabelDecode):
         text = self.decode(preds_idx, preds_prob)
 
         if label is None:
-            text = self.decode(preds_idx, preds_prob, is_remove_duplicate=True)
+            text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
             return text
         label = self.decode(label)
         return text, label
 
-    def decode(self, text_index, text_prob=None, is_remove_duplicate=True):
+    def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
         """ convert text-index into text-label. """
         result_list = []
         ignored_tokens = self.get_ignored_tokens()
