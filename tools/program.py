@@ -222,8 +222,8 @@ def train(config,
                 batch = [item.numpy() for item in batch]
                 post_result = post_process_class(preds, batch[1])
                 eval_class(post_result, batch)
-                metirc = eval_class.get_metric()
-                train_stats.update(metirc)
+                metric = eval_class.get_metric()
+                train_stats.update(metric)
 
             if vdl_writer is not None and dist.get_rank() == 0:
                 for k, v in train_stats.get().items():
@@ -251,7 +251,7 @@ def train(config,
                         min_average_window=10000,
                         max_average_window=15625)
                     Model_Average.apply()
-                cur_metric = eval(model, valid_dataloader, post_process_class, 
+                cur_metric = eval(model, valid_dataloader, post_process_class,
                                   eval_class)
                 cur_metric_str = 'cur metric, {}'.format(', '.join(
                     ['{}: {}'.format(k, v) for k, v in cur_metric.items()]))
