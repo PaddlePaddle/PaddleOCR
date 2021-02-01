@@ -9,48 +9,43 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2021.1.11）](#近期更新)
+* [近期更新（2021.1.25）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
-* [【理论篇】OCR通用31个问题](#OCR通用问题)
+* [【理论篇】OCR通用32个问题](#OCR通用问题)
   * [基础知识7题](#基础知识)
   * [数据集7题](#数据集2)
-  * [模型训练调优17题](#模型训练调优2)
-* [【实战篇】PaddleOCR实战106个问题](#PaddleOCR实战问题)
-  * [使用咨询36题](#使用咨询)
+  * [模型训练调优18题](#模型训练调优2)
+* [【实战篇】PaddleOCR实战115个问题](#PaddleOCR实战问题)
+  * [使用咨询38题](#使用咨询)
   * [数据集17题](#数据集3)
-  * [模型训练调优26题](#模型训练调优3)
-  * [预测部署27题](#预测部署3)
+  * [模型训练调优28题](#模型训练调优3)
+  * [预测部署32题](#预测部署3)
 
 
 <a name="近期更新"></a>
-## 近期更新（2021.1.11）
+## 近期更新（2021.1.25）
 
+#### Q3.1.37: 小语种模型只有识别模型，没有检测模型吗？
 
-#### Q3.1.32 能否修改StyleText配置文件中的分辨率？
+**A**：小语种（包括纯英文数字）的检测模型和中文的检测模型是共用的，在训练中文检测模型时加入了多语言数据。https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_en/models_list_en.md#1-text-detection-model。
 
-**A**：StyleText目前的训练数据主要是高度32的图片，建议不要改变高度。未来我们会支持更丰富的分辨率。
+#### Q3.1.38: module 'paddle.distributed' has no attribute ‘get_rank’。
 
-#### Q3.1.33 StyleText是否可以更换字体文件？
+**A**：Paddle版本问题，请安装2.0版本Paddle：pip install paddlepaddle==2.0.0。
 
-**A**：StyleText项目中的字体文件为标准字体，主要用作模型的输入部分，不能够修改。
-StyleText的用途主要是：提取style_image中的字体、背景等style信息，根据语料生成同样style的图片。
+#### Q3.4.30: PaddleOCR是否支持在华为鲲鹏920CPU上部署？
 
-#### Q3.1.34 StyleText批量生成图片为什么没有输出？
+**A**：目前Paddle的预测库是支持华为鲲鹏920CPU的，但是OCR还没在这些芯片上测试过，可以自己调试，有问题反馈给我们。
 
-**A**：需要检查以下您配置文件中的路径是否都存在。尤其要注意的是[label_file配置](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/StyleText/README_ch.md#%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B)。
-如果您使用的style_image输入没有label信息，您依然需要提供一个图片文件列表。
+#### Q3.4.31: 采用Paddle-Lite进行端侧部署，出现问题，环境没问题。
 
-#### Q3.1.35 怎样把OCR输出的结果组成有意义的语句呢？
+**A**：如果你的预测库是自己编译的，那么你的nb文件也要自己编译，用同一个lite版本。不能直接用下载的nb文件，因为版本不同。
 
-**A**：OCR输出的结果包含坐标信息和文字内容两部分。如果您不关心文字的顺序，那么可以直接按box的序号连起来。
-如果需要将文字按照一定的顺序排列，则需要您设定一些规则，对文字的坐标进行处理，例如按照坐标从上到下，从左到右连接识别结果。
-对于一些有规律的垂类场景，可以设定模板，根据位置、内容进行匹配。
-例如识别身份证照片，可以先匹配"姓名"，"性别"等关键字，根据这些关键字的坐标去推测其他信息的位置，再与识别的结果匹配。
+#### Q3.4.32: PaddleOCR的模型支持onnx转换吗？
 
-#### Q3.1.36 如何识别竹简上的古文？
-**A**：对于字符都是普通的汉字字符的情况，只要标注足够的数据，finetune模型就可以了。如果数据量不足，您可以尝试StyleText工具。
-而如果使用的字符是特殊的古文字、甲骨文、象形文字等，那么首先需要构建一个古文字的字典，之后再进行训练。
-
+**A**：我们目前已经通过Paddle2ONNX来支持各模型套件的转换，PaddleOCR基于PaddlePaddle 2.0的版本（dygraph分支）已经支持导出为ONNX，欢迎关注Paddle2ONNX，了解更多项目的进展：
+Paddle2ONNX项目：https://github.com/PaddlePaddle/Paddle2ONNX
+Paddle2ONNX支持转换的[模型列表](https://github.com/PaddlePaddle/Paddle2ONNX/blob/develop/docs/zh/model_zoo.md#%E5%9B%BE%E5%83%8Focr)
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -292,7 +287,9 @@ StyleText的用途主要是：提取style_image中的字体、背景等style信�
 **A**：StyleText模型生成的数据主要用于OCR识别模型的训练。PaddleOCR目前识别模型的输入为32 x N，因此当前版本模型主要适用高度为32的数据。
 建议要合成的数据尺寸设置为32 x N。尺寸相差不多的数据也可以生成，尺寸很大或很小的数据效果确实不佳。
 
+#### Q2.3.18: 在PP-OCR系统中，文本检测的骨干网络为什么没有使用SE模块？
 
+**A**：SE模块是MobileNetV3网络一个重要模块，目的是估计特征图每个特征通道重要性，给特征图每个特征分配权重，提高网络的表达能力。但是，对于文本检测，输入网络的分辨率比较大，一般是640\*640，利用SE模块估计特征图每个特征通道重要性比较困难，网络提升能力有限，但是该模块又比较耗时，因此在PP-OCR系统中，文本检测的骨干网络没有使用SE模块。实验也表明，当去掉SE模块，超轻量模型大小可以减小40%，文本检测效果基本不受影响。详细可以参考PP-OCR技术文章，https://arxiv.org/abs/2009.09941.
 
 <a name="PaddleOCR实战问题"></a>
 ## 【实战篇】PaddleOCR实战问题
@@ -400,13 +397,13 @@ StyleText的用途主要是：提取style_image中的字体、背景等style信�
 **A**：动态图版本正在紧锣密鼓开发中，将于2020年12月16日发布，敬请关注。
 
 #### Q3.1.22：ModuleNotFoundError: No module named 'paddle.nn'，
-**A**：paddle.nn是Paddle2.0版本特有的功能，请安装大于等于Paddle 2.0.0rc1的版本，安装方式为
+**A**：paddle.nn是Paddle2.0版本特有的功能，请安装大于等于Paddle 2.0.0的版本，安装方式为
 ```
-python3 -m pip install paddlepaddle-gpu==2.0.0rc1 -i https://mirror.baidu.com/pypi/simple
+python3 -m pip install paddlepaddle-gpu==2.0.0 -i https://mirror.baidu.com/pypi/simple
 ```
 
 #### Q3.1.23： ImportError: /usr/lib/x86_64_linux-gnu/libstdc++.so.6:version `CXXABI_1.3.11` not found (required by /usr/lib/python3.6/site-package/paddle/fluid/core+avx.so)
-**A**：这个问题是glibc版本不足导致的，Paddle2.0rc1版本对gcc版本和glib版本有更高的要求，推荐gcc版本为8.2，glibc版本2.12以上。
+**A**：这个问题是glibc版本不足导致的，Paddle2.0.0版本对gcc版本和glib版本有更高的要求，推荐gcc版本为8.2，glibc版本2.12以上。
 如果您的环境不满足这个要求，或者使用的docker镜像为:
 `hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev`
 `hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev`，安装Paddle2.0rc版本可能会出现上述错误，2.0版本推荐使用新的docker镜像 `paddlepaddle/paddle:latest-dev-cuda10.1-cudnn7-gcc82`。
@@ -418,7 +415,7 @@ python3 -m pip install paddlepaddle-gpu==2.0.0rc1 -i https://mirror.baidu.com/py
 
 - develop：基于Paddle静态图开发的分支，推荐使用paddle1.8 或者2.0版本，该分支具备完善的模型训练、预测、推理部署、量化裁剪等功能，领先于release/1.1分支。
 - release/1.1：PaddleOCR 发布的第一个稳定版本，基于静态图开发，具备完善的训练、预测、推理部署、量化裁剪等功能。
-- dygraph：基于Paddle动态图开发的分支，目前仍在开发中，未来将作为主要开发分支，运行要求使用Paddle2.0rc1版本，目前仍在开发中。
+- dygraph：基于Paddle动态图开发的分支，目前仍在开发中，未来将作为主要开发分支，运行要求使用Paddle2.0.0版本。
 - release/2.0-rc1-0：PaddleOCR发布的第二个稳定版本，基于动态图和paddle2.0版本开发，动态图开发的工程更易于调试，目前支，支持模型训练、预测，暂不支持移动端部署。
 
 如果您已经上手过PaddleOCR，并且希望在各种环境上部署PaddleOCR，目前建议使用静态图分支，develop或者release/1.1分支。如果您是初学者，想快速训练，调试PaddleOCR中的算法，建议尝鲜PaddleOCR dygraph分支。
@@ -435,7 +432,7 @@ python3 -m pip install paddlepaddle-gpu==2.0.0rc1 -i https://mirror.baidu.com/py
 
 #### Q3.1.27: 如何可视化acc,loss曲线图,模型网络结构图等？
 
-**A**：在配置文件里有`use_visualdl`的参数，设置为True即可，更多的使用命令可以参考：[VisualDL使用指南](https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0-rc1/guides/03_VisualDL/visualdl.html)。
+**A**：在配置文件里有`use_visualdl`的参数，设置为True即可，更多的使用命令可以参考：[VisualDL使用指南](https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/guides/03_VisualDL/visualdl.html)。
 
 #### Q3.1.28: 在使用StyleText数据合成工具的时候，报错`ModuleNotFoundError: No module named 'utils.config'`，这是为什么呢？
 
@@ -454,7 +451,7 @@ https://github.com/PaddlePaddle/PaddleOCR/blob/de3e2e7cd3b8b65ee02d7a41e570fa5b5
 
 #### Q3.1.31: 怎么输出网络结构以及每层的参数信息？
 
-**A**：可以使用 `paddle.summary`， 具体参考:https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0-rc1/api/paddle/hapi/model_summary/summary_cn.html#summary。
+**A**：可以使用 `paddle.summary`， 具体参考:https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/api/paddle/hapi/model_summary/summary_cn.html。
 
 #### Q3.1.32 能否修改StyleText配置文件中的分辨率？
 
@@ -478,8 +475,17 @@ StyleText的用途主要是：提取style_image中的字体、背景等style信�
 例如识别身份证照片，可以先匹配"姓名"，"性别"等关键字，根据这些关键字的坐标去推测其他信息的位置，再与识别的结果匹配。
 
 #### Q3.1.36 如何识别竹简上的古文？
+
 **A**：对于字符都是普通的汉字字符的情况，只要标注足够的数据，finetune模型就可以了。如果数据量不足，您可以尝试StyleText工具。
 而如果使用的字符是特殊的古文字、甲骨文、象形文字等，那么首先需要构建一个古文字的字典，之后再进行训练。
+
+#### Q3.1.37: 小语种模型只有识别模型，没有检测模型吗？
+
+**A**：小语种（包括纯英文数字）的检测模型和中文的检测模型是共用的，在训练中文检测模型时加入了多语言数据。https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_en/models_list_en.md#1-text-detection-model。
+
+#### Q3.1.38: module 'paddle.distributed' has no attribute ‘get_rank’。
+
+**A**：Paddle版本问题，请安装2.0版本Paddle：pip install paddlepaddle==2.0.0。
 
 <a name="数据集3"></a>
 ### 数据集
@@ -602,7 +608,6 @@ det_db_unclip_ratio: 文本框扩张的系数，关系到文本框的大小``
 ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 ```
 
-
 #### Q3.3.5：可不可以将pretrain_weights设置为空呢？想从零开始训练一个model
 
 **A**：这个是可以的，在训练通用识别模型的时候，pretrain_weights就设置为空，但是这样可能需要更长的迭代轮数才能达到相同的精度。
@@ -709,6 +714,14 @@ ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 #### Q3.3.26: PaddleOCR在训练的时候一直使用cosine_decay的学习率下降策略，这是为什么呢？
 
 **A**：cosine_decay表示在训练的过程中，学习率按照cosine的变化趋势逐渐下降至0，在迭代轮数更长的情况下，比常量的学习率变化策略会有更好的收敛效果，因此在实际训练的时候，均采用了cosine_decay，来获得精度更高的模型。
+
+#### Q3.3.27: PaddleOCR关于文本识别模型的训练，支持的数据增强方式有哪些？
+
+**A**：文本识别支持的数据增强方式有随机小幅度裁剪、图像平衡、添加白噪声、颜色漂移、图像反色和Text Image Augmentation（TIA）变换等。可以参考[代码](../../ppocr/data/imaug/rec_img_aug.py)中的warp函数。
+
+#### Q3.3.28: 关于dygraph分支中，文本识别模型训练，要使用数据增强应该如何设置？
+
+**A**：可以参考[配置文件](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)在Train['dataset']['transforms']添加RecAug字段，使数据增强生效。可以通过添加对aug_prob设置，表示每种数据增强采用的概率。aug_prob默认是0.4.由于tia数据增强特殊性，默认不采用，可以通过添加use_tia设置，使tia数据增强生效。详细设置可以参考[ISSUE 1744](https://github.com/PaddlePaddle/PaddleOCR/issues/1744)。
 
 <a name="预测部署3"></a>
 
@@ -823,13 +836,13 @@ ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 
 **A**：使用EAST或SAST模型进行推理预测时，需要在命令中指定参数--det_algorithm="EAST" 或 --det_algorithm="SAST"，使用DB时不用指定是因为该参数默认值是"DB"：https://github.com/PaddlePaddle/PaddleOCR/blob/e7a708e9fdaf413ed7a14da8e4a7b4ac0b211e42/tools/infer/utility.py#L43
 
-#### Q3.4.25 : PaddleOCR模型Python端预测和C++预测结果不一致？
+#### Q3.4.25: PaddleOCR模型Python端预测和C++预测结果不一致？
 正常来说，python端预测和C++预测文本是一致的，如果预测结果差异较大，
 建议首先排查diff出现在检测模型还是识别模型，或者尝试换其他模型是否有类似的问题。
 其次，检查python端和C++端数据处理部分是否存在差异，建议保存环境，更新PaddleOCR代码再试下。
 如果更新代码或者更新代码都没能解决，建议在PaddleOCR微信群里或者issue中抛出您的问题。
 
-### Q3.4.26: 目前paddle hub serving 只支持 imgpath，如果我想用imgurl 去哪里改呢？
+#### Q3.4.26: 目前paddle hub serving 只支持 imgpath，如果我想用imgurl 去哪里改呢？
 
 **A**：图片是在这里读取的：https://github.com/PaddlePaddle/PaddleOCR/blob/67ef25d593c4eabfaaceb22daade4577f53bed81/deploy/hubserving/ocr_system/module.py#L55，
 可以参考下面的写法，将url path转化为np array（https://cloud.tencent.com/developer/article/1467840）
@@ -839,7 +852,29 @@ img_array = np.array(bytearray(response.read()), dtype=np.uint8)
 img = cv.imdecode(img_array, -1)
 ```
 
-### Q3.4.27: C++ 端侧部署可以只对OCR的检测部署吗？
+#### Q3.4.27: C++ 端侧部署可以只对OCR的检测部署吗？
 
 **A**：可以的，识别和检测模块是解耦的。如果想对检测部署，需要自己修改一下main函数，
 只保留检测相关就可以:https://github.com/PaddlePaddle/PaddleOCR/blob/de3e2e7cd3b8b65ee02d7a41e570fa5b511a3c1d/deploy/cpp_infer/src/main.cpp#L72
+
+#### Q3.4.28: PP-OCR系统中，文本检测的结果有置信度吗？
+
+**A**：文本检测的结果有置信度，由于推理过程中没有使用，所以没有显示的返回到最终结果中。如果需要文本检测结果的置信度，可以在[文本检测DB的后处理代码](../../ppocr/postprocess/db_postprocess.py)的155行，添加scores信息。这样，在[检测预测代码](../../tools/infer/predict_det.py)的197行，就可以拿到文本检测的scores信息。
+
+#### Q3.4.29: DB文本检测，特征提取网络金字塔构建的部分代码在哪儿？
+
+**A**：特征提取网络金字塔构建的部分:[代码位置](../../ppocr/modeling/necks/db_fpn.py)。ppocr/modeling文件夹里面是组网相关的代码，其中architectures是文本检测或者文本识别整体流程代码；backbones是骨干网络相关代码；necks是类似与FPN的颈函数代码；heads是提取文本检测或者文本识别预测结果相关的头函数；transforms是类似于TPS特征预处理模块。更多的信息可以参考[代码组织结构](./tree.md)。
+
+#### Q3.4.30: PaddleOCR是否支持在华为鲲鹏920CPU上部署？
+
+**A**：目前Paddle的预测库是支持华为鲲鹏920CPU的，但是OCR还没在这些芯片上测试过，可以自己调试，有问题反馈给我们。
+
+#### Q3.4.31: 采用Paddle-Lite进行端侧部署，出现问题，环境没问题。
+
+**A**：如果你的预测库是自己编译的，那么你的nb文件也要自己编译，用同一个lite版本。不能直接用下载的nb文件，因为版本不同。
+
+#### Q3.4.32: PaddleOCR的模型支持onnx转换吗？
+
+**A**：我们目前已经通过Paddle2ONNX来支持各模型套件的转换，PaddleOCR基于PaddlePaddle 2.0的版本（dygraph分支）已经支持导出为ONNX，欢迎关注Paddle2ONNX，了解更多项目的进展：
+Paddle2ONNX项目：https://github.com/PaddlePaddle/Paddle2ONNX
+Paddle2ONNX支持转换的[模型列表](https://github.com/PaddlePaddle/Paddle2ONNX/blob/develop/docs/zh/model_zoo.md#%E5%9B%BE%E5%83%8Focr)

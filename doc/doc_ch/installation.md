@@ -2,7 +2,7 @@
 
 经测试PaddleOCR可在glibc 2.23上运行，您也可以测试其他glibc版本或安装glic 2.23
 PaddleOCR 工作环境
-- PaddlePaddle 1.8+ ，推荐使用 PaddlePaddle 2.0rc1
+- PaddlePaddle 2.0.0
 - python3.7
 - glibc 2.23
 - cuDNN 7.6+ (GPU)
@@ -35,11 +35,11 @@ sudo docker container exec -it ppocr /bin/bash
 pip3 install --upgrade pip
 
 如果您的机器安装的是CUDA9或CUDA10，请运行以下命令安装
-python3 -m pip install paddlepaddle-gpu==2.0.0rc1 -i https://mirror.baidu.com/pypi/simple
+python3 -m pip install paddlepaddle-gpu==2.0.0 -i https://mirror.baidu.com/pypi/simple
 
 如果您的机器是CPU，请运行以下命令安装
 
-python3 -m pip install paddlepaddle==2.0.0rc1 -i https://mirror.baidu.com/pypi/simple
+python3 -m pip install paddlepaddle==2.0.0 -i https://mirror.baidu.com/pypi/simple
 
 更多的版本需求，请参照[安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
 ```

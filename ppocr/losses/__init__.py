@@ -23,11 +23,14 @@ def build_loss(config):
 
     # rec loss
     from .rec_ctc_loss import CTCLoss
+    from .rec_srn_loss import SRNLoss
 
     # cls loss
     from .cls_loss import ClsLoss
 
-    support_dict = ['DBLoss', 'EASTLoss', 'SASTLoss', 'CTCLoss', 'ClsLoss']
+    support_dict = [
+        'DBLoss', 'EASTLoss', 'SASTLoss', 'CTCLoss', 'ClsLoss', 'SRNLoss'
+    ]
 
     config = copy.deepcopy(config)
     module_name = config.pop('name')

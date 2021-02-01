@@ -21,7 +21,7 @@ from .make_border_map import MakeBorderMap
 from .make_shrink_map import MakeShrinkMap
 from .random_crop_data import EastRandomCropData, PSERandomCrop
 
-from .rec_img_aug import RecAug, RecResizeImg, ClsResizeImg
+from .rec_img_aug import RecAug, RecResizeImg, ClsResizeImg, SRNRecResizeImg
 from .randaugment import RandAugment
 from .operators import *
 from .label_ops import *

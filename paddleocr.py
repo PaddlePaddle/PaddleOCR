@@ -290,7 +290,9 @@ class PaddleOCR(predict_system.TextSystem):
             image_file = img
             img, flag = check_and_read_gif(image_file)
             if not flag:
-                img = cv2.imread(image_file)
+                with open(image_file, 'rb') as f:
+                    np_arr = np.frombuffer(f.read(), dtype=np.uint8)
+                    img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
             if img is None:
                 logger.error("error in loading image:{}".format(image_file))
                 return None
