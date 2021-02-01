@@ -126,7 +126,7 @@ In `word_dict.txt`, there is a single word in each line, which maps characters a
 You can use it on demand.
 
 The current multi-language model is still in the demo stage and will continue to optimize the model and add languages. **You are very welcome to provide us with dictionaries and fonts in other languages**,
-If you like, you can submit the dictionary file to [dict](../../ppocr/utils/dict) or corpus file to [corpus](../../ppocr/utils/corpus) and we will thank you in the Repo.
+If you like, you can submit the dictionary file to [dict](../../ppocr/utils/dict) and we will thank you in the Repo.
 
 
 To customize the dict file, please modify the `character_dict_path` field in `configs/rec/rec_icdar15_train.yml` and set `character_type` to `ch`.
