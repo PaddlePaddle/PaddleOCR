@@ -251,7 +251,7 @@ def train(config,
                         min_average_window=10000,
                         max_average_window=15625)
                     Model_Average.apply()
-                cur_metirc = eval(model, valid_dataloader, post_process_class,
+                cur_metric = eval(model, valid_dataloader, post_process_class, 
                                   eval_class)
                 cur_metric_str = 'cur metric, {}'.format(', '.join(
                     ['{}: {}'.format(k, v) for k, v in cur_metric.items()]))
