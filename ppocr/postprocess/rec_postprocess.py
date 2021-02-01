@@ -143,6 +143,35 @@ class AttnLabelDecode(BaseRecLabelDecode):
         dict_character = [self.beg_str] + dict_character + [self.end_str]
         return dict_character
 
+    def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
+        """ convert text-index into text-label. """
+        result_list = []
+        ignored_tokens = self.get_ignored_tokens()
+        [beg_idx, end_idx] = self.get_ignored_tokens()
+        batch_size = len(text_index)
+        for batch_idx in range(batch_size):
+            char_list = []
+            conf_list = []
+            for idx in range(len(text_index[batch_idx])):
+                if text_index[batch_idx][idx] in ignored_tokens:
+                    continue
+                if int(text_index[batch_idx][idx]) == int(end_idx):
+                    break
+                if is_remove_duplicate:
+                    # only for predict
+                    if idx > 0 and text_index[batch_idx][idx - 1] == text_index[
+                            batch_idx][idx]:
+                        continue
+                char_list.append(self.character[int(text_index[batch_idx][
+                    idx])])
+                if text_prob is not None:
+                    conf_list.append(text_prob[batch_idx][idx])
+                else:
+                    conf_list.append(1)
+            text = ''.join(char_list)
+            result_list.append((text, np.mean(conf_list)))
+        return result_list
+
     def __call__(self, preds, label=None, *args, **kwargs):
         """
         text = self.decode(text)
@@ -157,10 +186,10 @@ class AttnLabelDecode(BaseRecLabelDecode):
 
         preds_idx = preds.argmax(axis=2)
         preds_prob = preds.max(axis=2)
-        text = self.decode(preds_idx, preds_prob, is_remove_duplicate=True)
+        text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
         if label is None:
             return text
-        label = self.decode(label, is_remove_duplicate=True)
+        label = self.decode(label, is_remove_duplicate=False)
         return text, label
 
     def encoder(self, labels, labels_length):
@@ -226,12 +255,12 @@ class SRNLabelDecode(BaseRecLabelDecode):
         text = self.decode(preds_idx, preds_prob)
 
         if label is None:
-            text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
+            text = self.decode(preds_idx, preds_prob, is_remove_duplicate=True)
             return text
         label = self.decode(label)
         return text, label
 
-    def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
+    def decode(self, text_index, text_prob=None, is_remove_duplicate=True):
         """ convert text-index into text-label. """
         result_list = []
         ignored_tokens = self.get_ignored_tokens()
