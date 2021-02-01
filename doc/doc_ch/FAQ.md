@@ -33,7 +33,7 @@
 **A**：1.1和2.0的模型一样，微调时，垂直排列的文字需要逆时针旋转90%后加入训练，上下颠倒的需要旋转为水平的。
 
 #### Q3.3.30: 模型训练过程中如何得到 best_accuracy 模型？
-**A**：配置文件里的eval_batch_step字段用来控制多少次iter进行一次eval，在eval完成后会自动生成 best_accuracy 模型，所以将eval_batch_step改小一点(例如，10))就能得到best_accuracy模型了。
+**A**：配置文件里的eval_batch_step字段用来控制多少次iter进行一次eval，在eval完成后会自动生成 best_accuracy 模型，所以如果希望很快就能拿到best_accuracy模型，可以将eval_batch_step改小一点(例如，10)。
 
 #### Q3.4.33: 如何多进程运行paddleocr？
 **A**：实例化多个paddleocr服务，然后将服务注册到注册中心，之后通过注册中心统一调度即可。
@@ -724,7 +724,7 @@ ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 **A**：1.1和2.0的模型一样，微调时，垂直排列的文字需要逆时针旋转90%后加入训练，上下颠倒的需要旋转为水平的。
 
 #### Q3.3.30: 模型训练过程中如何得到 best_accuracy 模型？
-**A**：配置文件里的eval_batch_step字段用来控制多少次iter进行一次eval，在eval完成后会自动生成 best_accuracy 模型，所以将eval_batch_step改小一点(例如，10))就能得到best_accuracy模型了。
+**A**：配置文件里的eval_batch_step字段用来控制多少次iter进行一次eval，在eval完成后会自动生成 best_accuracy 模型，所以如果希望很快就能拿到best_accuracy模型，可以将eval_batch_step改小一点(例如，10)。
 
 <a name="预测部署3"></a>
 
