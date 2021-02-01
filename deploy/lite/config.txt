@@ -2,4 +2,5 @@ max_side_len  960
 det_db_thresh  0.3
 det_db_box_thresh  0.5
 det_db_unclip_ratio  1.6
-use_direction_classify  0
+det_db_use_dilate 0
+use_direction_classify  1

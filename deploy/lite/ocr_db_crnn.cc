@@ -229,6 +229,7 @@ RunDetModel(std::shared_ptr<PaddlePredictor> predictor, cv::Mat img,
             std::map<std::string, double> Config) {
   // Read img
   int max_side_len = int(Config["max_side_len"]);
+  int det_db_use_dilate = int(Config["det_db_use_dilate"]);
 
   cv::Mat srcimg;
   img.copyTo(srcimg);
@@ -275,10 +276,14 @@ RunDetModel(std::shared_ptr<PaddlePredictor> predictor, cv::Mat img,
   const double maxvalue = 255;
   cv::Mat bit_map;
   cv::threshold(cbuf_map, bit_map, threshold, maxvalue, cv::THRESH_BINARY);
-  cv::Mat dilation_map;
-  cv::Mat dila_ele = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(2, 2));
-  cv::dilate(bit_map, dilation_map, dila_ele);
-  auto boxes = BoxesFromBitmap(pred_map, dilation_map, Config);
+  if (det_db_use_dilate == 1) {
+    cv::Mat dilation_map;
+    cv::Mat dila_ele =
+        cv::getStructuringElement(cv::MORPH_RECT, cv::Size(2, 2));
+    cv::dilate(bit_map, dilation_map, dila_ele);
+    bit_map = dilation_map;
+  }
+  auto boxes = BoxesFromBitmap(pred_map, bit_map, Config);
 
   std::vector<std::vector<std::vector<int>>> filter_boxes =
       FilterTagDetRes(boxes, ratio_hw[0], ratio_hw[1], srcimg);
@@ -375,8 +380,7 @@ int main(int argc, char **argv) {
   auto charactor_dict = ReadDict(dict_path);
   charactor_dict.insert(charactor_dict.begin(), "#"); // blank char for ctc
   charactor_dict.push_back(" ");
-std:
-  cout << charactor_dict[0] << "  " << charactor_dict[1] << std::endl;
+
   cv::Mat srcimg = cv::imread(img_path, cv::IMREAD_COLOR);
   auto boxes = RunDetModel(det_predictor, srcimg, Config);
 
