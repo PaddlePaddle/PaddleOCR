@@ -123,15 +123,15 @@ cd build.opt/lite/api/
 
 ```
 # 【推荐】 下载PaddleOCR V2.0版本的中英文 inference模型
-wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_det_slim_infer.tar
-wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_rec_slim_infer.tar
-wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_cls_slim_infer.tar
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar && tar xf  ch_ppocr_mobile_v2.0_det_infer.tar
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf  ch_ppocr_mobile_v2.0_rec_infer.tar
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar && tar xf  ch_ppocr_mobile_v2.0_cls_infer.tar
 # 转换V2.0检测模型
-./opt --model_file=./ch_ppocr_mobile_v2.0_det_slim_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_det_slim_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_det_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
+./opt --model_file=./ch_ppocr_mobile_v2.0_det_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_det_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_det_opt --valid_targets=arm  --optimize_out_type=naive_buffer
 # 转换V2.0识别模型
-./opt --model_file=./ch_ppocr_mobile_v2.0_rec_slim_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_rec_slim_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_rec_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
+./opt --model_file=./ch_ppocr_mobile_v2.0_rec_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_rec_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_rec_opt --valid_targets=arm  --optimize_out_type=naive_buffer
 # 转换V2.0方向分类器模型
-./opt --model_file=./ch_ppocr_mobile_v2.0_cls_slim_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_cls_slim_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_cls_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
+./opt --model_file=./ch_ppocr_mobile_v2.0_cls_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_cls_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_cls_opt --valid_targets=arm  --optimize_out_type=naive_buffer
 
 ```
 
@@ -185,16 +185,16 @@ wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_s
  ```
 
  准备测试图像，以`PaddleOCR/doc/imgs/11.jpg`为例，将测试的图像复制到`demo/cxx/ocr/debug/`文件夹下。
- 准备lite opt工具优化后的模型文件，比如使用`ch_ppocr_mobile_v2.0_det_slim_opt.nb，ch_ppocr_mobile_v2.0_rec_slim_opt.nb, ch_ppocr_mobile_v2.0_cls_slim_opt.nb`，模型文件放置在`demo/cxx/ocr/debug/`文件夹下。
+ 准备lite opt工具优化后的模型文件，比如使用`ch_ppocr_mobile_v2.0_det_opt.nb，ch_ppocr_mobile_v2.0_rec_opt.nb, ch_ppocr_mobile_v2.0_cls_opt.nb`，模型文件放置在`demo/cxx/ocr/debug/`文件夹下。
 
  执行完成后，ocr文件夹下将有如下文件格式：
 
 ```
 demo/cxx/ocr/
 |-- debug/  
-|   |--ch_ppocr_mobile_v2.0_det_slim_opt.nb           优化后的检测模型文件
-|   |--ch_ppocr_mobile_v2.0_rec_slim_opt.nb           优化后的识别模型文件
-|   |--ch_ppocr_mobile_v2.0_cls_slim_opt.nb           优化后的文字方向分类器模型文件
+|   |--ch_ppocr_mobile_v2.0_det_opt.nb           优化后的检测模型文件
+|   |--ch_ppocr_mobile_v2.0_rec_opt.nb           优化后的识别模型文件
+|   |--ch_ppocr_mobile_v2.0_cls_opt.nb           优化后的文字方向分类器模型文件
 |   |--11.jpg                           待测试图像
 |   |--ppocr_keys_v1.txt                中文字典文件
 |   |--libpaddle_light_api_shared.so    C++预测库文件
@@ -248,7 +248,7 @@ use_direction_classify  0  # 是否使用方向分类器，0表示不使用，1�
  adb shell
  cd /data/local/tmp/debug
  export LD_LIBRARY_PATH=${PWD}:$LD_LIBRARY_PATH
- ./ocr_db_crnn ch_ppocr_mobile_v2.0_det_slim_opt.nbb  ch_ppocr_mobile_v2.0_rec_slim_opt.nb  ch_ppocr_mobile_v2.0_cls_slim_opt.nb  ./11.jpg  ppocr_keys_v1.txt
+ ./ocr_db_crnn ch_ppocr_mobile_v2.0_det_opt.nbb  ch_ppocr_mobile_v2.0_rec_opt.nb  ch_ppocr_mobile_v2.0_cls_opt.nb  ./11.jpg  ppocr_keys_v1.txt
  ```
 
  如果对代码做了修改，则需要重新编译并push到手机上。

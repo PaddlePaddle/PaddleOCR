@@ -124,16 +124,16 @@ The following takes the ultra-lightweight Chinese model of PaddleOCR as an examp
 
 ```
 # [Recommendation] Download the Chinese and English inference model of PaddleOCR V2.0
-wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_det_slim_infer.tar
-wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_rec_slim_infer.tar
-wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_cls_slim_infer.tar
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar && tar xf  ch_ppocr_mobile_v2.0_det_infer.tar
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf  ch_ppocr_mobile_v2.0_rec_infer.tar
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar && tar xf  ch_ppocr_mobile_v2.0_cls_infer.tar
 # Convert V2.0 detection model
-./opt --model_file=./ch_ppocr_mobile_v2.0_det_slim_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_det_slim_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_det_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
+./opt --model_file=./ch_ppocr_mobile_v2.0_det_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_det_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_det_opt --valid_targets=arm  --optimize_out_type=naive_buffer
 # 转换V2.0识别模型
 # Convert V2.0 recognition model
-./opt --model_file=./ch_ppocr_mobile_v2.0_rec_slim_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_rec_slim_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_rec_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
+./opt --model_file=./ch_ppocr_mobile_v2.0_rec_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_rec_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_rec_opt --valid_targets=arm  --optimize_out_type=naive_buffer
 # Convert V2.0 angle classifier model
-./opt --model_file=./ch_ppocr_mobile_v2.0_cls_slim_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_cls_slim_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_cls_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
+./opt --model_file=./ch_ppocr_mobile_v2.0_cls_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_cls_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_cls_opt --valid_targets=arm  --optimize_out_type=naive_buffer
 
 ```
 
@@ -194,9 +194,9 @@ The structure of the OCR demo is as follows after the above command is executed:
 ```
 demo/cxx/ocr/
 |-- debug/  
-|   |--ch_ppocr_mobile_v2.0_det_slim_opt.nb           Detection model
-|   |--ch_ppocr_mobile_v2.0_rec_slim_opt.nb           Recognition model
-|   |--ch_ppocr_mobile_v2.0_cls_slim_opt.nb           Text direction classification model
+|   |--ch_ppocr_mobile_v2.0_det_opt.nb           Detection model
+|   |--ch_ppocr_mobile_v2.0_rec_opt.nb           Recognition model
+|   |--ch_ppocr_mobile_v2.0_cls_opt.nb           Text direction classification model
 |   |--11.jpg                           Image for OCR
 |   |--ppocr_keys_v1.txt                Dictionary file
 |   |--libpaddle_light_api_shared.so    C++ .so file
@@ -248,7 +248,7 @@ After the above steps are completed, you can use adb to push the file to the pho
  adb shell
  cd /data/local/tmp/debug
  export LD_LIBRARY_PATH=${PWD}:$LD_LIBRARY_PATH
- ./ocr_db_crnn ch_ppocr_mobile_v2.0_det_slim_opt.nbb  ch_ppocr_mobile_v2.0_rec_slim_opt.nb  ch_ppocr_mobile_v2.0_cls_slim_opt.nb  ./11.jpg  ppocr_keys_v1.txt
+ ./ocr_db_crnn ch_ppocr_mobile_v2.0_det_opt.nbb  ch_ppocr_mobile_v2.0_rec_opt.nb  ch_ppocr_mobile_v2.0_cls_opt.nb  ./11.jpg  ppocr_keys_v1.txt
  ```
 
 If you modify the code, you need to recompile and push to the phone.
