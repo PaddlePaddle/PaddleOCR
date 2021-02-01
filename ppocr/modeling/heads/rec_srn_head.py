@@ -246,7 +246,7 @@ class SRNHead(nn.Layer):
             num_encoder_tus=self.num_encoder_TUs,
             num_decoder_tus=self.num_decoder_TUs,
             hidden_dims=self.hidden_dims)
-        self.vsfd = VSFD(in_channels=in_channels)
+        self.vsfd = VSFD(in_channels=in_channels, char_num=self.char_num)
 
         self.gsrm.wrap_encoder1.prepare_decoder.emb0 = self.gsrm.wrap_encoder0.prepare_decoder.emb0
 
