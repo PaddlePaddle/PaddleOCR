@@ -725,7 +725,7 @@ ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 **A**：1.1和2.0的模型一样，微调时，垂直排列的文字需要逆时针旋转 90°后加入训练，上下颠倒的需要旋转为水平的。
 
 #### Q3.3.30: 模型训练过程中如何得到 best_accuracy 模型？
-**A**：配置文件里的eval_batch_step字段用来控制多少次iter进行一次eval，在eval完成后会自动生成 best_accuracy 模型，所以如果希望很快就能拿到best_accuracy模型，可以将eval_batch_step改小一点(例如，10)。
+**A**：配置文件里的eval_batch_step字段用来控制多少次iter进行一次eval，在eval完成后会自动生成 best_accuracy 模型，所以如果希望很快就能拿到best_accuracy模型，可以将eval_batch_step改小一点，如改为[10,10]，这样表示第10次迭代后，以后没隔10个迭代就进行一次模型的评估。
 
 <a name="预测部署3"></a>
 
