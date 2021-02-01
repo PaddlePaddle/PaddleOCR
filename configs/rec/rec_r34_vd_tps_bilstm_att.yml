@@ -43,7 +43,6 @@ Architecture:
   Backbone:
     name: ResNet  
     layers: 34
-
   Neck:
     name: SequenceEncoder
     encoder_type: rnn 
@@ -52,7 +51,6 @@ Architecture:
     name: AttentionHead  # AttentionHead
     hidden_size: 256 #
     l2_decay: 0.00001
-    
 
 Loss:
   name: AttentionLoss
