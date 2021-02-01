@@ -9,42 +9,41 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2021.1.18）](#近期更新)
+* [近期更新（2021.2.1）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
 * [【理论篇】OCR通用32个问题](#OCR通用问题)
   * [基础知识7题](#基础知识)
   * [数据集7题](#数据集2)
   * [模型训练调优18题](#模型训练调优2)
-* [【实战篇】PaddleOCR实战110个问题](#PaddleOCR实战问题)
+* [【实战篇】PaddleOCR实战115个问题](#PaddleOCR实战问题)
   * [使用咨询36题](#使用咨询)
-  * [数据集17题](#数据集3)
-  * [模型训练调优28题](#模型训练调优3)
-  * [预测部署29题](#预测部署3)
+  * [数据集18题](#数据集3)
+  * [模型训练调优30题](#模型训练调优3)
+  * [预测部署31题](#预测部署3)
 
 
 <a name="近期更新"></a>
 ## 近期更新（2021.1.18）
 
+#### Q3.2.18: PaddleOCR动态图版本如何finetune？
 
-#### Q2.3.18: 在PP-OCR系统中，文本检测的骨干网络为什么没有使用SE模块？
+**A**：finetune需要将配置文件里的 Global.load_static_weights设置为false，如果没有此字段可以手动添加，然后将模型地址放到Global.pretrained_model字段下即可
 
-**A**：SE模块是MobileNetV3网络一个重要模块，目的是估计特征图每个特征通道重要性，给特征图每个特征分配权重，提高网络的表达能力。但是，对于文本检测，输入网络的分辨率比较大，一般是640\*640，利用SE模块估计特征图每个特征通道重要性比较困难，网络提升能力有限，但是该模块又比较耗时，因此在PP-OCR系统中，文本检测的骨干网络没有使用SE模块。实验也表明，当去掉SE模块，超轻量模型大小可以减小40%，文本检测效果基本不受影响。详细可以参考PP-OCR技术文章，https://arxiv.org/abs/2009.09941.
+#### Q3.3.29: 微调v1.1预训练的模型，可以直接用文字垂直排列和上下颠倒的图片吗？还是必须要水平排列的？
 
-#### Q3.3.27: PaddleOCR关于文本识别模型的训练，支持的数据增强方式有哪些？
+**A**：1.1和2.0的模型一样，微调时，垂直排列的文字需要逆时针旋转90%后加入训练，上下颠倒的需要旋转为水平的。
 
-**A**：文本识别支持的数据增强方式有随机小幅度裁剪、图像平衡、添加白噪声、颜色漂移、图像反色和Text Image Augmentation（TIA）变换等。可以参考[代码](../../ppocr/data/imaug/rec_img_aug.py)中的warp函数。
+#### Q3.3.30: 模型训练过程中如何得到 best_accuracy 模型？
 
-#### Q3.3.28: 关于dygraph分支中，文本识别模型训练，要使用数据增强应该如何设置？
+**A**：配置文件里的eval_batch_step字段用来控制多少次iter进行一次eval，在eval完成后会自动生成 best_accuracy 模型，所以将eval_batch_step改小一点(例如，10))就能得到best_accuracy模型了。
 
-**A**：可以参考[配置文件](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)在Train['dataset']['transforms']添加RecAug字段，使数据增强生效。可以通过添加对aug_prob设置，表示每种数据增强采用的概率。aug_prob默认是0.4.由于tia数据增强特殊性，默认不采用，可以通过添加use_tia设置，使tia数据增强生效。详细设置可以参考[ISSUE 1744](https://github.com/PaddlePaddle/PaddleOCR/issues/1744)。
+#### Q3.4.30: 如何多进程运行paddleocr？
 
-#### Q3.4.28: PP-OCR系统中，文本检测的结果有置信度吗？
+**A**：实例化多个paddleocr服务，然后将服务注册到注册中心，之后通过注册中心统一调度即可。
 
-**A**：文本检测的结果有置信度，由于推理过程中没有使用，所以没有显示的返回到最终结果中。如果需要文本检测结果的置信度，可以在[文本检测DB的后处理代码](../../ppocr/postprocess/db_postprocess.py)的155行，添加scores信息。这样，在[检测预测代码](../../tools/infer/predict_det.py)的197行，就可以拿到文本检测的scores信息。
+#### Q3.4.31: 2.0训练出来的模型，能否在1.1版本上进行部署？
 
-#### Q3.4.29: DB文本检测，特征提取网络金字塔构建的部分代码在哪儿？
-
-**A**：特征提取网络金字塔构建的部分:[代码位置](../../ppocr/modeling/necks/db_fpn.py)。ppocr/modeling文件夹里面是组网相关的代码，其中architectures是文本检测或者文本识别整体流程代码；backbones是骨干网络相关代码；necks是类似与FPN的颈函数代码；heads是提取文本检测或者文本识别预测结果相关的头函数；transforms是类似于TPS特征预处理模块。更多的信息可以参考[代码组织结构](./tree.md)。
+**A**：这个是不建议的，2.0训练出来的模型建议使用dygraph分支里提供的部署代码。
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -415,7 +414,7 @@ python3 -m pip install paddlepaddle-gpu==2.0.0rc1 -i https://mirror.baidu.com/py
 - develop：基于Paddle静态图开发的分支，推荐使用paddle1.8 或者2.0版本，该分支具备完善的模型训练、预测、推理部署、量化裁剪等功能，领先于release/1.1分支。
 - release/1.1：PaddleOCR 发布的第一个稳定版本，基于静态图开发，具备完善的训练、预测、推理部署、量化裁剪等功能。
 - dygraph：基于Paddle动态图开发的分支，目前仍在开发中，未来将作为主要开发分支，运行要求使用Paddle2.0rc1版本，目前仍在开发中。
-- release/2.0-rc1-0：PaddleOCR发布的第二个稳定版本，基于动态图和paddle2.0版本开发，动态图开发的工程更易于调试，目前支，支持模型训练、预测，暂不支持移动端部署。
+- release/2.0：PaddleOCR发布的第二个稳定版本，基于动态图和paddle2.0rc1版本开发，动态图开发的工程更易于调试，目前支，支持模型训练、预测，暂不支持移动端部署。
 
 如果您已经上手过PaddleOCR，并且希望在各种环境上部署PaddleOCR，目前建议使用静态图分支，develop或者release/1.1分支。如果您是初学者，想快速训练，调试PaddleOCR中的算法，建议尝鲜PaddleOCR dygraph分支。
 
@@ -568,6 +567,12 @@ StyleText的用途主要是：提取style_image中的字体、背景等style信�
 
 **A**：PPOCRLabel可运行于Linux、Windows、MacOS等多种系统。操作步骤可以参考文档，https://github.com/PaddlePaddle/PaddleOCR/blob/develop/PPOCRLabel/README.md
 
+
+#### Q3.2.18: PaddleOCR动态图版本如何finetune？
+
+**A**：finetune需要将配置文件里的 Global.load_static_weights设置为false，如果没有此字段可以手动添加，然后将模型地址放到Global.pretrained_model字段下即可
+
+
 <a name="模型训练调优3"></a>
 
 ### 模型训练调优
@@ -713,6 +718,15 @@ ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 
 **A**：可以参考[配置文件](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)在Train['dataset']['transforms']添加RecAug字段，使数据增强生效。可以通过添加对aug_prob设置，表示每种数据增强采用的概率。aug_prob默认是0.4.由于tia数据增强特殊性，默认不采用，可以通过添加use_tia设置，使tia数据增强生效。详细设置可以参考[ISSUE 1744](https://github.com/PaddlePaddle/PaddleOCR/issues/1744)。
 
+#### Q3.3.29: 微调v1.1预训练的模型，可以直接用文字垂直排列和上下颠倒的图片吗？还是必须要水平排列的？
+
+**A**：1.1和2.0的模型一样，微调时，垂直排列的文字需要逆时针旋转90%后加入训练，上下颠倒的需要旋转为水平的。
+
+#### Q3.3.30: 模型训练过程中如何得到 best_accuracy 模型？
+
+**A**：配置文件里的eval_batch_step字段用来控制多少次iter进行一次eval，在eval完成后会自动生成 best_accuracy 模型，所以将eval_batch_step改小一点(例如，10))就能得到best_accuracy模型了。
+
+
 <a name="预测部署3"></a>
 
 ### 预测部署
@@ -854,3 +868,12 @@ img = cv.imdecode(img_array, -1)
 #### Q3.4.29: DB文本检测，特征提取网络金字塔构建的部分代码在哪儿？
 
 **A**：特征提取网络金字塔构建的部分:[代码位置](../../ppocr/modeling/necks/db_fpn.py)。ppocr/modeling文件夹里面是组网相关的代码，其中architectures是文本检测或者文本识别整体流程代码；backbones是骨干网络相关代码；necks是类似与FPN的颈函数代码；heads是提取文本检测或者文本识别预测结果相关的头函数；transforms是类似于TPS特征预处理模块。更多的信息可以参考[代码组织结构](./tree.md)。
+
+#### Q3.4.30: 如何多进程运行paddleocr？
+
+**A**：实例化多个paddleocr服务，然后将服务注册到注册中心，之后通过注册中心统一调度即可。
+
+
+#### Q3.4.31: 2.0训练出来的模型，能否在1.1版本上进行部署？
+
+**A**：这个是不建议的，2.0训练出来的模型建议使用dygraph分支里提供的部署代码。
