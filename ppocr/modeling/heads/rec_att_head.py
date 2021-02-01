@@ -64,8 +64,10 @@ class AttentionHead(nn.Layer):
                 (outputs, hidden), alpha = self.attention_cell(hidden, inputs,
                                                                char_onehots)
                 probs_step = self.generator(outputs)
-                probs = paddle.unsqueeze(
-                    probs_step, axis=1) if probs is None else paddle.concat(
+                if probs is None:
+                    probs = paddle.unsqueeze(probs_step, axis=1)
+                else:
+                    probs = paddle.concat(
                         [probs, paddle.unsqueeze(
                             probs_step, axis=1)], axis=1)
                 next_input = probs_step.argmax(axis=1)
@@ -152,8 +154,10 @@ class AttentionLSTM(nn.Layer):
                                                     char_onehots)
                 probs_step = self.generator(hidden[0])
                 hidden = (hidden[1][0], hidden[1][1])
-                probs = paddle.unsqueeze(
-                    probs_step, axis=1) if probs is None else paddle.concat(
+                if probs is None:
+                    probs = paddle.unsqueeze(probs_step, axis=1)
+                else:
+                    probs = paddle.concat(
                         [probs, paddle.unsqueeze(
                             probs_step, axis=1)], axis=1)
 
