@@ -30,7 +30,7 @@
 
 
 #### Q3.3.29: 微调v1.1预训练的模型，可以直接用文字垂直排列和上下颠倒的图片吗？还是必须要水平排列的？
-**A**：1.1和2.0的模型一样，微调时，垂直排列的文字需要逆时针旋转90%后加入训练，上下颠倒的需要旋转为水平的。
+**A**：1.1和2.0的模型一样，微调时，垂直排列的文字需要逆时针旋转 90° 后加入训练，上下颠倒的需要旋转为水平的。
 
 #### Q3.3.30: 模型训练过程中如何得到 best_accuracy 模型？
 **A**：配置文件里的eval_batch_step字段用来控制多少次iter进行一次eval，在eval完成后会自动生成 best_accuracy 模型，所以如果希望很快就能拿到best_accuracy模型，可以将eval_batch_step改小一点(例如，10)。
@@ -722,7 +722,7 @@ ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 **A**：可以参考[配置文件](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)在Train['dataset']['transforms']添加RecAug字段，使数据增强生效。可以通过添加对aug_prob设置，表示每种数据增强采用的概率。aug_prob默认是0.4.由于tia数据增强特殊性，默认不采用，可以通过添加use_tia设置，使tia数据增强生效。详细设置可以参考[ISSUE 1744](https://github.com/PaddlePaddle/PaddleOCR/issues/1744)。
 
 #### Q3.3.29: 微调v1.1预训练的模型，可以直接用文字垂直排列和上下颠倒的图片吗？还是必须要水平排列的？
-**A**：1.1和2.0的模型一样，微调时，垂直排列的文字需要逆时针旋转90%后加入训练，上下颠倒的需要旋转为水平的。
+**A**：1.1和2.0的模型一样，微调时，垂直排列的文字需要逆时针旋转 90°后加入训练，上下颠倒的需要旋转为水平的。
 
 #### Q3.3.30: 模型训练过程中如何得到 best_accuracy 模型？
 **A**：配置文件里的eval_batch_step字段用来控制多少次iter进行一次eval，在eval完成后会自动生成 best_accuracy 模型，所以如果希望很快就能拿到best_accuracy模型，可以将eval_batch_step改小一点(例如，10)。
