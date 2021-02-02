@@ -12,9 +12,13 @@ The downloadable models provided by PaddleOCR include `inference model`, `traine
 
 |model type|model format|description|
 |--- | --- | --- |
-|inference model|inference.pdmodel、inference.pdiparams|Used for reasoning based on Python prediction engine，[detail](./inference_en.md)|
+|inference model|inference.pdmodel、inference.pdiparams|Used for inference based on Paddle inference engine，[detail](./inference_en.md)|
 |trained model, pre-trained model|\*.pdparams、\*.pdopt、\*.states |The checkpoints model saved in the training process, which stores the parameters of the model, mostly used for model evaluation and continuous training.|
-|slim model|\*.nb|Generally used for Lite deployment|
+|slim model|\*.nb| Model compressed by PaddleSim (a model compression tool using PaddlePaddle), which is suitable for mobile-side deployment scenarios (Paddle-Lite is needed for slim model deployment). |
+
+Relationship of the above models is as follows.
+
+![](../imgs_en/model_prod_flow_en.png)
 
 <a name="Detection"></a>
 ### 1. Text Detection Model
@@ -80,7 +84,7 @@ If you want to train your own model, you can prepare the training set file, veri
 cd {your/path/}PaddleOCR/configs/rec/multi_language/
 # The -l or --language parameter is required
 # --train modify train_list path
-# --val modify eval_list path 
+# --val modify eval_list path
 # --data_dir modify data dir
 # -o modify default parameters
 # --dict Change the dictionary path. The example uses the default dictionary path, so that this parameter can be empty.

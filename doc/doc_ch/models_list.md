@@ -12,9 +12,14 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 
 |模型类型|模型格式|简介|
 |--- | --- | --- |
-|推理模型|inference.pdmodel、inference.pdiparams|用于python预测引擎推理，[详情](./inference.md)|
+|推理模型|inference.pdmodel、inference.pdiparams|用于预测引擎推理，[详情](./inference.md)|
 |训练模型、预训练模型|\*.pdparams、\*.pdopt、\*.states |训练过程中保存的模型的参数、优化器状态和训练中间信息，多用于模型指标评估和恢复训练|
-|slim模型|\*.nb|用于lite部署|
+|slim模型|\*.nb|经过飞桨模型压缩工具PaddleSlim压缩后的模型，适用于移动端/IoT端等端侧部署场景（需使用飞桨Paddle Lite部署）。|
+
+
+各个模型的关系如下面的示意图所示。
+
+![](../imgs/model_prod_flow_ch.png)
 
 
 <a name="文本检测模型"></a>
