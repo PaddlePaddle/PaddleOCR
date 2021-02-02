@@ -174,6 +174,7 @@ def train(config,
     best_model_dict = {main_indicator: 0}
     best_model_dict.update(pre_best_model_dict)
     train_stats = TrainingStats(log_smooth_window, ['lr'])
+    model_average = False
     model.train()
 
     if 'start_epoch' in best_model_dict:
@@ -194,7 +195,12 @@ def train(config,
                 break
             lr = optimizer.get_lr()
             images = batch[0]
-            preds = model(images)
+            if config['Architecture']['algorithm'] == "SRN":
+                others = batch[-4:]
+                preds = model(images, others)
+                model_average = True
+            else:
+                preds = model(images)
             loss = loss_class(preds, batch)
             avg_loss = loss['loss']
             avg_loss.backward()
@@ -216,8 +222,8 @@ def train(config,
                 batch = [item.numpy() for item in batch]
                 post_result = post_process_class(preds, batch[1])
                 eval_class(post_result, batch)
-                metirc = eval_class.get_metric()
-                train_stats.update(metirc)
+                metric = eval_class.get_metric()
+                train_stats.update(metric)
 
             if vdl_writer is not None and dist.get_rank() == 0:
                 for k, v in train_stats.get().items():
@@ -238,6 +244,13 @@ def train(config,
             # eval
             if global_step > start_eval_step and \
                     (global_step - start_eval_step) % eval_batch_step == 0 and dist.get_rank() == 0:
+                if model_average:
+                    Model_Average = paddle.incubate.optimizer.ModelAverage(
+                        0.15,
+                        parameters=model.parameters(),
+                        min_average_window=10000,
+                        max_average_window=15625)
+                    Model_Average.apply()
                 cur_metric = eval(model, valid_dataloader, post_process_class,
                                   eval_class)
                 cur_metric_str = 'cur metric, {}'.format(', '.join(
@@ -273,6 +286,7 @@ def train(config,
                                           best_model_dict[main_indicator],
                                           global_step)
             global_step += 1
+            optimizer.clear_grad()
             batch_start = time.time()
         if dist.get_rank() == 0:
             save_model(
@@ -313,7 +327,11 @@ def eval(model, valid_dataloader, post_process_class, eval_class):
                 break
             images = batch[0]
             start = time.time()
-            preds = model(images)
+            if "SRN" in str(model.head):
+                others = batch[-4:]
+                preds = model(images, others)
+            else:
+                preds = model(images)
 
             batch = [item.numpy() for item in batch]
             # Obtain usable results from post-processing methods

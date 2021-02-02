@@ -36,6 +36,7 @@ ln -sf <path/to/dataset> <path/to/paddle_ocr>/train_data/dataset
 * 数据下载
 
 若您本地没有数据集，可以在官网下载 [icdar2015](http://rrc.cvc.uab.es/?ch=4&com=downloads) 数据，用于快速验证。也可以参考[DTRB](https://github.com/clovaai/deep-text-recognition-benchmark#download-lmdb-dataset-for-traininig-and-evaluation-from-here)，下载 benchmark 所需的lmdb格式数据集。
+如果希望复现SRN的论文指标，需要下载离线[增广数据](https://pan.baidu.com/s/1-HSZ-ZVdqBF2HaBZ5pRAKA),提取码: y3ry。增广数据是由MJSynth和SynthText做旋转和扰动得到的。数据下载完成后请解压到 {your_path}/PaddleOCR/train_data/data_lmdb_release/training/ 路径下。
 
 <a name="自定义数据集"></a>
 * 使用自己数据集
@@ -132,7 +133,7 @@ word_dict.txt 每行有一个单字，将字符与数字索引映射在一起，
 您可以按需使用。
 
 目前的多语言模型仍处在demo阶段，会持续优化模型并补充语种，**非常欢迎您为我们提供其他语言的字典和字体**，
-如您愿意可将字典文件提交至 [dict](../../ppocr/utils/dict) 将语料文件提交至[corpus](../../ppocr/utils/corpus)，我们会在Repo中感谢您。
+如您愿意可将字典文件提交至 [dict](../../ppocr/utils/dict)，我们会在Repo中感谢您。
 
 - 自定义字典
 
@@ -200,6 +201,9 @@ PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_t
 | rec_mv3_none_none_ctc.yml |  Rosetta |   Mobilenet_v3 large 0.5 |  None   |  None |  ctc  |
 | rec_r34_vd_none_bilstm_ctc.yml |  CRNN |   Resnet34_vd |  None   |  BiLSTM |  ctc  |
 | rec_r34_vd_none_none_ctc.yml |  Rosetta |   Resnet34_vd |  None   |  None |  ctc  |
+| rec_mv3_tps_bilstm_att.yml |  CRNN |   Mobilenet_v3 |  TPS   |  BiLSTM |  att  |
+| rec_r34_vd_tps_bilstm_att.yml |  CRNN |   Resnet34_vd |  TPS   |  BiLSTM |  att  |
+| rec_r50fpn_vd_none_srn.yml    | SRN | Resnet50_fpn_vd    | None    | rnn | srn |
 
 训练中文数据，推荐使用[rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：
 
