@@ -67,7 +67,7 @@ PaddleOCR提供了训练脚本、评估脚本和预测脚本。
 *如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false*
 
 ```
-# GPU训练 支持单卡，多卡训练，通过 '--gpus' 指定卡号，如果使用的paddle版本小于2.0rc1，请使用'--select_gpus'参数选择要使用的GPU
+# GPU训练 支持单卡，多卡训练，通过 '--gpus' 指定卡号。
 # 启动训练，下面的命令已经写入train.sh文件中，只需修改文件里的配置文件路径即可
 python3 -m paddle.distributed.launch --gpus '0,1,2,3,4,5,6,7'  tools/train.py -c configs/cls/cls_mv3.yml
 ```

@@ -1,5 +1,5 @@
 Global:
-  use_gpu: true
+  use_gpu: True
   epoch_num: 72
   log_smooth_window: 20
   print_batch_step: 10
@@ -63,7 +63,7 @@ Metric:
 
 Train:
   dataset:
-    name: LMDBDateSet
+    name: LMDBDataSet
     data_dir: ./train_data/data_lmdb_release/training/
     transforms:
       - DecodeImage: # load image
@@ -82,7 +82,7 @@ Train:
 
 Eval:
   dataset:
-    name: LMDBDateSet
+    name: LMDBDataSet
     data_dir: ./train_data/data_lmdb_release/validation/
     transforms:
       - DecodeImage: # load image

@@ -12,20 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# copyright (c) 2020 PaddlePaddle Authors. All Rights Reserve.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#    http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 import math
 import cv2
 import numpy as np
@@ -77,6 +63,26 @@ class RecResizeImg(object):
         return data
 
 
+class SRNRecResizeImg(object):
+    def __init__(self, image_shape, num_heads, max_text_length, **kwargs):
+        self.image_shape = image_shape
+        self.num_heads = num_heads
+        self.max_text_length = max_text_length
+
+    def __call__(self, data):
+        img = data['image']
+        norm_img = resize_norm_img_srn(img, self.image_shape)
+        data['image'] = norm_img
+        [encoder_word_pos, gsrm_word_pos, gsrm_slf_attn_bias1, gsrm_slf_attn_bias2] = \
+            srn_other_inputs(self.image_shape, self.num_heads, self.max_text_length)
+
+        data['encoder_word_pos'] = encoder_word_pos
+        data['gsrm_word_pos'] = gsrm_word_pos
+        data['gsrm_slf_attn_bias1'] = gsrm_slf_attn_bias1
+        data['gsrm_slf_attn_bias2'] = gsrm_slf_attn_bias2
+        return data
+
+
 def resize_norm_img(img, image_shape):
     imgC, imgH, imgW = image_shape
     h = img.shape[0]
@@ -103,7 +109,7 @@ def resize_norm_img(img, image_shape):
 def resize_norm_img_chinese(img, image_shape):
     imgC, imgH, imgW = image_shape
     # todo: change to 0 and modified image shape
-    max_wh_ratio = 0
+    max_wh_ratio = imgW * 1.0 / imgH
     h, w = img.shape[0], img.shape[1]
     ratio = w * 1.0 / h
     max_wh_ratio = max(max_wh_ratio, ratio)
@@ -124,6 +130,60 @@ def resize_norm_img_chinese(img, image_shape):
     padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
     padding_im[:, :, 0:resized_w] = resized_image
     return padding_im
+
+
+def resize_norm_img_srn(img, image_shape):
+    imgC, imgH, imgW = image_shape
+
+    img_black = np.zeros((imgH, imgW))
+    im_hei = img.shape[0]
+    im_wid = img.shape[1]
+
+    if im_wid <= im_hei * 1:
+        img_new = cv2.resize(img, (imgH * 1, imgH))
+    elif im_wid <= im_hei * 2:
+        img_new = cv2.resize(img, (imgH * 2, imgH))
+    elif im_wid <= im_hei * 3:
+        img_new = cv2.resize(img, (imgH * 3, imgH))
+    else:
+        img_new = cv2.resize(img, (imgW, imgH))
+
+    img_np = np.asarray(img_new)
+    img_np = cv2.cvtColor(img_np, cv2.COLOR_BGR2GRAY)
+    img_black[:, 0:img_np.shape[1]] = img_np
+    img_black = img_black[:, :, np.newaxis]
+
+    row, col, c = img_black.shape
+    c = 1
+
+    return np.reshape(img_black, (c, row, col)).astype(np.float32)
+
+
+def srn_other_inputs(image_shape, num_heads, max_text_length):
+
+    imgC, imgH, imgW = image_shape
+    feature_dim = int((imgH / 8) * (imgW / 8))
+
+    encoder_word_pos = np.array(range(0, feature_dim)).reshape(
+        (feature_dim, 1)).astype('int64')
+    gsrm_word_pos = np.array(range(0, max_text_length)).reshape(
+        (max_text_length, 1)).astype('int64')
+
+    gsrm_attn_bias_data = np.ones((1, max_text_length, max_text_length))
+    gsrm_slf_attn_bias1 = np.triu(gsrm_attn_bias_data, 1).reshape(
+        [1, max_text_length, max_text_length])
+    gsrm_slf_attn_bias1 = np.tile(gsrm_slf_attn_bias1,
+                                  [num_heads, 1, 1]) * [-1e9]
+
+    gsrm_slf_attn_bias2 = np.tril(gsrm_attn_bias_data, -1).reshape(
+        [1, max_text_length, max_text_length])
+    gsrm_slf_attn_bias2 = np.tile(gsrm_slf_attn_bias2,
+                                  [num_heads, 1, 1]) * [-1e9]
+
+    return [
+        encoder_word_pos, gsrm_word_pos, gsrm_slf_attn_bias1,
+        gsrm_slf_attn_bias2
+    ]
 
 
 def flag():
