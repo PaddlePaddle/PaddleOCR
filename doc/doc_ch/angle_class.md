@@ -1,4 +1,8 @@
 ## 文字角度分类
+### 方法介绍
+文字角度分类主要用于图片非0度的场景下，在这种场景下需要对图片里检测到的文本行进行一个转正的操作。在PaddleOCR系统内，
+文字检测之后得到的文本行图片经过仿射变换之后送入识别模型，此时只需要对文字进行一个0和180度的角度分类，因此PaddleOCR内置的
+文字角度分类器**只支持了0和180度的分类**。如果想支持更多角度，可以自己修改算法进行支持。
 
 ### 数据准备
 
@@ -13,7 +17,7 @@ ln -sf <path/to/dataset> <path/to/paddle_ocr>/train_data/cls/dataset
 请参考下文组织您的数据。
 - 训练集
 
-首先请将训练图片放入同一个文件夹（train_images），并用一个txt文件（cls_gt_train.txt）记录图片路径和标签。
+首先建议将训练图片放入同一个文件夹，并用一个txt文件（cls_gt_train.txt）记录图片路径和标签。
 
 **注意：** 默认请将图片路径和图片标签用 `\t` 分割，如用其他方式分割将造成训练报错
 
@@ -21,8 +25,8 @@ ln -sf <path/to/dataset> <path/to/paddle_ocr>/train_data/cls/dataset
 
 ```
 " 图像文件名                 图像标注信息 "
-train/word_001.jpg   0
-train/word_002.jpg   180
+train/cls/train/word_001.jpg   0
+train/cls/train/word_002.jpg   180
 ```
 
 最终训练集应有如下文件结构：
