@@ -49,8 +49,8 @@ It is recommended to put the training images in the same folder, and use a txt f
 ```
 " Image file name           Image annotation "
 
-train_data/train/word_001.jpg   简单可依赖
-train_data/train/word_002.jpg   用科技让复杂的世界更简单
+train_data/rec/train/word_001.jpg   简单可依赖
+train_data/rec/train/word_002.jpg   用科技让复杂的世界更简单
 ...
 ```
 
@@ -58,6 +58,7 @@ The final training set should have the following file structure:
 
 ```
 |-train_data
+  |-rec
     |- rec_gt_train.txt
     |- train
         |- word_001.png
@@ -72,6 +73,7 @@ Similar to the training set, the test set also needs to be provided a folder con
 
 ```
 |-train_data
+  |-rec
     |-ic15_data
         |- rec_gt_test.txt
         |- test

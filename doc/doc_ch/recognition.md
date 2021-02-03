@@ -48,14 +48,15 @@ mklink /d <path/to/paddle_ocr>/train_data/dataset <path/to/dataset>
 ```
 " 图像文件名                 图像标注信息 "
 
-train_data/train/word_001.jpg   简单可依赖
-train_data/train/word_002.jpg   用科技让复杂的世界更简单
+train_data/rec/train/word_001.jpg   简单可依赖
+train_data/rec/train/word_002.jpg   用科技让复杂的世界更简单
 ...
 ```
 
 最终训练集应有如下文件结构：
 ```
 |-train_data
+  |-rec
     |- rec_gt_train.txt
     |- train
         |- word_001.png
@@ -70,6 +71,7 @@ train_data/train/word_002.jpg   用科技让复杂的世界更简单
 
 ```
 |-train_data
+  |-rec
     |- rec_gt_test.txt
     |- test
         |- word_001.jpg
