@@ -1,8 +1,8 @@
 # paddleocr package使用说明
 
-## 快速上手
+## 1 快速上手
 
-### 安装whl包
+### 1.1 安装whl包
 
 pip安装
 ```bash
@@ -14,9 +14,12 @@ pip install "paddleocr>=2.0.1" # 推荐使用2.0.1+版本
 python3 setup.py bdist_wheel
 pip3 install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x是paddleocr的版本号
 ```
-### 1. 代码使用
 
-* 检测+分类+识别全流程
+## 2 使用
+### 2.1 代码使用
+paddleocr whl包会自动下载ppocr轻量级模型作为默认模型，可以根据第3节**自定义模型**进行自定义更换。
+
+* 检测+方向分类器+识别全流程
 ```python
 from paddleocr import PaddleOCR, draw_ocr
 # Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换
@@ -84,7 +87,7 @@ im_show.save('result.jpg')
 </div>
 
 
-* 分类+识别
+* 方向分类器+识别
 ```python
 from paddleocr import PaddleOCR
 ocr = PaddleOCR(use_angle_cls=True) # need to run only once to download and load model into memory
@@ -143,7 +146,7 @@ for line in result:
 ['韩国小馆', 0.9907421]
 ```
 
-* 单独执行分类
+* 单独执行方向分类器
 ```python
 from paddleocr import PaddleOCR
 ocr = PaddleOCR(use_angle_cls=True) # need to run only once to download and load model into memory
@@ -157,14 +160,14 @@ for line in result:
 ['0', 0.9999924]
 ```
 
-### 通过命令行使用
+### 2.2 通过命令行使用
 
 查看帮助信息
 ```bash
 paddleocr -h
 ```
 
-* 检测+分类+识别全流程
+* 检测+方向分类器+识别全流程
 ```bash
 paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --use_angle_cls true
 ```
@@ -188,7 +191,7 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg
 ......
 ```
 
-* 分类+识别
+* 方向分类器+识别
 ```bash
 paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --use_angle_cls true --det false
 ```
@@ -220,7 +223,7 @@ paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --det false
 ['韩国小馆', 0.9907421]
 ```
 
-* 单独执行分类
+* 单独执行方向分类器
 ```bash
 paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --use_angle_cls true --det false --rec false
 ```
@@ -230,11 +233,11 @@ paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --use_angle_cls tru
 ['0', 0.9999924]
 ```
 
-## 自定义模型
+## 3 自定义模型
 当内置模型无法满足需求时，需要使用到自己训练的模型。
 首先，参照[inference.md](./inference.md) 第一节转换将检测、分类和识别模型转换为inference模型，然后按照如下方式使用
 
-### 代码使用
+### 3.1 代码使用
 ```python
 from paddleocr import PaddleOCR, draw_ocr
 # 模型路径下必须含有model和params文件
@@ -255,17 +258,17 @@ im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
 
-### 通过命令行使用
+### 3.2 通过命令行使用
 
 ```bash
 paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_dir} --rec_model_dir {your_rec_model_dir} --rec_char_dict_path {your_rec_char_dict_path} --cls_model_dir {your_cls_model_dir} --use_angle_cls true
 ```
 
-### 使用网络图片或者numpy数组作为输入
+## 4 使用网络图片或者numpy数组作为输入
 
-1. 网络图片
+### 4.1 网络图片
 
-代码使用
+- 代码使用
 ```python
 from paddleocr import PaddleOCR, draw_ocr
 # Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换
@@ -286,12 +289,12 @@ im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
-命令行模式
+- 命令行模式
 ```bash
 paddleocr --image_dir http://n.sinaimg.cn/ent/transform/w630h933/20171222/o111-fypvuqf1838418.jpg --use_angle_cls=true
 ```
 
-2. numpy数组
+### 4.2 numpy数组
 仅通过代码使用时支持numpy数组作为输入
 ```python
 from paddleocr import PaddleOCR, draw_ocr
@@ -301,7 +304,7 @@ ocr = PaddleOCR(use_angle_cls=True, lang="ch") # need to run only once to downlo
 img_path = 'PaddleOCR/doc/imgs/11.jpg'
 img = cv2.imread(img_path)
 # img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY), 如果你自己训练的模型支持灰度图，可以将这句话的注释取消
-result = ocr.ocr(img_path, cls=True)
+result = ocr.ocr(img, cls=True)
 for line in result:
     print(line)
 
@@ -316,7 +319,7 @@ im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
 
-## 参数说明
+## 5 参数说明
 
 | 字段                    | 说明                                                                                                                                                                                                                 | 默认值                  |
 |-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
