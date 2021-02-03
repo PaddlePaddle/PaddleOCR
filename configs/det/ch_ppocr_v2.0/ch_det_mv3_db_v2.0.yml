@@ -7,7 +7,10 @@ Global:
   save_epoch_step: 1200
   # evaluation is run every 5000 iterations after the 4000th iteration
   eval_batch_step: [3000, 2000]
-  # if pretrained_model is saved in static mode, load_static_weights must set to True
+  # 1. If pretrained_model is saved in static mode, such as classification pretrained model
+  #    from static branch, load_static_weights must be set as True.
+  # 2. If you want to finetune the pretrained models we provide in the docs,
+  #    you should set load_static_weights as False.
   load_static_weights: True
   cal_metric_during_train: False
   pretrained_model: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
