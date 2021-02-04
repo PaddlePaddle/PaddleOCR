@@ -163,6 +163,11 @@ def train(config,
     if type(eval_batch_step) == list and len(eval_batch_step) >= 2:
         start_eval_step = eval_batch_step[0]
         eval_batch_step = eval_batch_step[1]
+        if len(valid_dataloader) == 0:
+            logger.info(
+                'No Images in eval dataset, evaluation during training will be disabled'
+            )
+            start_eval_step = 1e111
         logger.info(
             "During the training process, after the {}th iteration, an evaluation is run every {} iterations".
             format(start_eval_step, eval_batch_step))
