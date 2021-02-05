@@ -82,8 +82,11 @@ class Shape(object):
         return False
 
     def addPoint(self, point):
-        if not self.reachMaxPoints():
-            self.points.append(point)
+        if not self.reachMaxPoints():  # 4个点时发出close信号
+            if self.points and point == self.points[0]:
+                self.close()
+            else:
+                self.points.append(point)
 
     def popPoint(self):
         if self.points:
