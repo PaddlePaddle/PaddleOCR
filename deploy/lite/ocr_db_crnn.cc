@@ -211,7 +211,7 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
       max_value =
           float(*std::max_element(&predict_batch[n * predict_shape[2]],
                                   &predict_batch[(n + 1) * predict_shape[2]]));
-      if (argmax_idx > 0 && (!(i > 0 && argmax_idx == last_index))) {
+      if (argmax_idx > 0 && (!(n > 0 && argmax_idx == last_index))) {
         score += max_value;
         count += 1;
         str_res += charactor_dict[argmax_idx];
