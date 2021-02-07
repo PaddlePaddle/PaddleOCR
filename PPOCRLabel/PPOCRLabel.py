@@ -206,7 +206,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.labelList = EditInList()
         labelListContainer = QWidget()
         labelListContainer.setLayout(listLayout)
-        # self.labelList.itemActivated.connect(self.labelSelectionChanged)
+        #self.labelList.itemActivated.connect(self.labelSelectionChanged)
         self.labelList.itemSelectionChanged.connect(self.labelSelectionChanged)
         self.labelList.clicked.connect(self.labelList.item_clicked)
         # Connect to itemChanged to detect checkbox changes.
@@ -219,7 +219,7 @@ class MainWindow(QMainWindow, WindowMixin):
         ################## detection box ####################
         self.BoxList = QListWidget()
 
-        self.BoxList.itemActivated.connect(self.boxSelectionChanged)
+        #self.BoxList.itemActivated.connect(self.boxSelectionChanged)
         self.BoxList.itemSelectionChanged.connect(self.boxSelectionChanged)
         self.BoxList.itemDoubleClicked.connect(self.editBox)
         # Connect to itemChanged to detect checkbox changes.
@@ -453,10 +453,10 @@ class MainWindow(QMainWindow, WindowMixin):
                             'Ctrl+S', 'save', getStr('saveLabel'), enabled=False)
 
         undoLastPoint = action(getStr("undoLastPoint"), self.canvas.undoLastPoint,
-                               'Ctrl+Z', "undo", "Undo last drawn point", enabled=False)
+                               'Ctrl+Z', "undo", getStr("undoLastPoint"), enabled=False)
 
         undo = action(getStr("undo"), self.undoShapeEdit,
-                      'Ctrl+Z', "undo", "Undo last add and edit of shape", enabled=False)
+                      'Ctrl+Z', "undo", getStr("undo"), enabled=False)
 
         self.editButton.setDefaultAction(edit)
         self.newButton.setDefaultAction(create)
@@ -578,9 +578,9 @@ class MainWindow(QMainWindow, WindowMixin):
 
         # Custom context menu for the canvas widget:
         addActions(self.canvas.menus[0], self.actions.beginnerContext)
-        addActions(self.canvas.menus[1], (
-            action('&Copy here', self.copyShape),
-            action('&Move here', self.moveShape)))
+        #addActions(self.canvas.menus[1], (
+         #   action('&Copy here', self.copyShape),
+          #  action('&Move here', self.moveShape)))
 
 
         self.statusBar().showMessage('%s started.' % __appname__)
@@ -878,16 +878,7 @@ class MainWindow(QMainWindow, WindowMixin):
             self.setDirty()
             self.updateComboBox()
 
-    # def updateBoxlist(self):
-    #     shape = self.canvas.selectedShape
-    #     item = self.shapesToItemsbox[shape]  # listitem
-    #     text = [(int(p.x()), int(p.y())) for p in shape.points]
-    #     item.setText(str(text))
-    #     self.setDirty()
-
     def updateBoxlist(self):
-        #changedShape = self.canvas.selectedShapes
-        #changedShape.append(self.canvas.hShape) #changedShape: #
         for shape in self.canvas.selectedShapes+[self.canvas.hShape]:
             item = self.shapesToItemsbox[shape]  # listitem
             text = [(int(p.x()), int(p.y())) for p in shape.points]
@@ -925,57 +916,24 @@ class MainWindow(QMainWindow, WindowMixin):
         if len(self.mImgList) > 0:
             self.zoomWidget.setValue(self.zoomWidgetValue + self.imgsplider.value())
 
-    # # TODO: UPDATE THIS FUNCTION
-    # # React to canvas signals.
-    # def shapeSelectionChanged(self, selected=False):
-    #     if self._noSelectionSlot:
-    #         self._noSelectionSlot = False
-    #     else:
-    #         shape = self.canvas.selectedShape
-    #         if shape:
-    #             self.shapesToItems[shape].setSelected(True)
-    #             self.shapesToItemsbox[shape].setSelected(True)  # ADD
-    #         else:
-    #             self.labelList.clearSelection()
-    #     self.actions.delete.setEnabled(selected)
-    #     self.actions.copy.setEnabled(selected)
-    #     self.actions.edit.setEnabled(selected)
-    #     self.actions.shapeLineColor.setEnabled(selected)
-    #     self.actions.shapeFillColor.setEnabled(selected)
-    #     self.actions.singleRere.setEnabled(selected)
-
-    # def shapeSelectionChanged(self, selected_shapes):
-    #     if self._noSelectionSlot:
-    #         self._noSelectionSlot = False
-    #     else:
-    #         if self.canvas.selectedShapes:
-    #             for shape in self.canvas.selectedShapes:
-    #                 self.shapesToItems[shape].setSelected(True)
-    #                 self.shapesToItemsbox[shape].setSelected(True)
-    #         else:
-    #             self.labelList.clearSelection()
-    #
-    #     n_selected = len(selected_shapes)
-    #     self.actions.delete.setEnabled(n_selected)
-    #     self.actions.copy.setEnabled(n_selected)
-    #     self.actions.edit.setEnabled(n_selected == 1)
 
     def shapeSelectionChanged(self, selected_shapes):
         self._noSelectionSlot = True
-        for shape in self.canvas.selectedShapes: # 为何要反选?
+        for shape in self.canvas.selectedShapes:
             shape.selected = False
         self.labelList.clearSelection()
-        self.canvas.selectedShapes = selected_shapes # 这里没有把选择的两个都加入
+        self.canvas.selectedShapes = selected_shapes
         for shape in self.canvas.selectedShapes:
             shape.selected = True
-            # item = self.labelList.findItemByShape(shape)
-            # self.labelList.selectItem(item)
-            # self.labelList.scrollToItem(item)
             self.shapesToItems[shape].setSelected(True)
-            self.shapesToItemsbox[shape].setSelected(True)  # ADD 是否可以代替selectItem？
+            self.shapesToItemsbox[shape].setSelected(True)
+
+        self.labelList.scrollToItem(self.currentItem()) # QAbstractItemView.EnsureVisible
+        self.BoxList.scrollToItem(self.currentBox())
 
         self._noSelectionSlot = False
         n_selected = len(selected_shapes)
+        self.actions.singleRere.setEnabled(n_selected)
         self.actions.delete.setEnabled(n_selected)
         self.actions.copy.setEnabled(n_selected)
         self.actions.edit.setEnabled(n_selected == 1)
@@ -1115,18 +1073,11 @@ class MainWindow(QMainWindow, WindowMixin):
             return False
 
     def copySelectedShape(self):
-        self.addLabel(self.canvas.copySelectedShape())
+        for shape in self.canvas.copySelectedShape():
+            self.addLabel(shape)
         # fix copy and delete
-        self.shapeSelectionChanged(True)
+        #self.shapeSelectionChanged(True)
 
-
-    # def labelSelectionChanged(self):
-    #     item = self.currentItem()
-    #     self.labelList.scrollToItem(item, QAbstractItemView.EnsureVisible)
-    #     if item and self.canvas.editing():
-    #         self._noSelectionSlot = True
-    #         self.canvas.selectShape(self.itemsToShapes[item])
-    #         shape = self.itemsToShapes[item]
 
     def labelSelectionChanged(self):
         if self._noSelectionSlot:
@@ -1141,20 +1092,13 @@ class MainWindow(QMainWindow, WindowMixin):
                 self.canvas.deSelectShape()
 
 
-    # def boxSelectionChanged(self):
-    #     item = self.currentBox()
-    #     self.BoxList.scrollToItem(item, QAbstractItemView.EnsureVisible)
-    #     if item and self.canvas.editing():
-    #         self._noSelectionSlot = True
-    #         self.canvas.selectShape(self.itemsToShapesbox[item])
-    #         shape = self.itemsToShapesbox[item]
-
     def boxSelectionChanged(self):
         if self._noSelectionSlot:
+            #self.BoxList.scrollToItem(self.currentBox(), QAbstractItemView.PositionAtCenter)
             return
         if self.canvas.editing():
             selected_shapes = []
-            for item in self.labelList.selectedItems():
+            for item in self.BoxList.selectedItems():
                 selected_shapes.append(self.itemsToShapesbox[item])
             if selected_shapes:
                 self.canvas.selectShapes(selected_shapes)
@@ -1637,6 +1581,7 @@ class MainWindow(QMainWindow, WindowMixin):
                 self.fileListWidget.insertItem(int(currIndex), item)
                 self.openNextImg()
                 self.actions.saveRec.setEnabled(True)
+                self.actions.saveLabel.setEnabled(True)
 
         elif mode == 'Auto':
             if annotationFilePath and self.saveLabels(annotationFilePath, mode=mode):
@@ -1743,7 +1688,7 @@ class MainWindow(QMainWindow, WindowMixin):
         color = self.colorDialog.getColor(self.lineColor, u'Choose line color',
                                           default=DEFAULT_LINE_COLOR)
         if color:
-            self.canvas.selectedShape.line_color = color
+            for shape in self.canvas.selectedShapes: shape.line_color = color
             self.canvas.update()
             self.setDirty()
 
@@ -1751,7 +1696,7 @@ class MainWindow(QMainWindow, WindowMixin):
         color = self.colorDialog.getColor(self.fillColor, u'Choose fill color',
                                           default=DEFAULT_FILL_COLOR)
         if color:
-            self.canvas.selectedShape.fill_color = color
+            for shape in self.canvas.selectedShapes: shape.fill_color = color
             self.canvas.update()
             self.setDirty()
 
@@ -1875,25 +1820,25 @@ class MainWindow(QMainWindow, WindowMixin):
 
     def singleRerecognition(self):
         img = cv2.imread(self.filePath)
-        shape = self.canvas.selectedShape
-        box = [[int(p.x()), int(p.y())] for p in shape.points]
-        assert len(box) == 4
-        img_crop = get_rotate_crop_image(img, np.array(box, np.float32))
-        if img_crop is None:
-            msg = 'Can not recognise the detection box in ' + self.filePath + '. Please change manually'
-            QMessageBox.information(self, "Information", msg)
-            return
-        result = self.ocr.ocr(img_crop, cls=True, det=False)
-        if result[0][0] != '':
-            result.insert(0, box)
-            print('result in reRec is ', result)
-            if result[1][0] == shape.label:
-                print('label no change')
-            else:
-                shape.label = result[1][0]
-            self.singleLabel(shape)
-            self.setDirty()
-        print(box)
+        for shape in self.canvas.selectedShapes:
+            box = [[int(p.x()), int(p.y())] for p in shape.points]
+            assert len(box) == 4
+            img_crop = get_rotate_crop_image(img, np.array(box, np.float32))
+            if img_crop is None:
+                msg = 'Can not recognise the detection box in ' + self.filePath + '. Please change manually'
+                QMessageBox.information(self, "Information", msg)
+                return
+            result = self.ocr.ocr(img_crop, cls=True, det=False)
+            if result[0][0] != '':
+                result.insert(0, box)
+                print('result in reRec is ', result)
+                if result[1][0] == shape.label:
+                    print('label no change')
+                else:
+                    shape.label = result[1][0]
+                self.singleLabel(shape)
+                self.setDirty()
+            print(box)
 
     def autolcm(self):
         vbox = QVBoxLayout()
@@ -2046,6 +1991,10 @@ class MainWindow(QMainWindow, WindowMixin):
     def autoSaveFunc(self):
         if self.autoSaveOption.isChecked():
             self.autoSaveNum = 1 # Real auto_Save
+            try:
+                self.saveLabelFile()
+            except:
+                pass
             print('The program will automatically save once after confirming an image')
         else:
             self.autoSaveNum = 5 # Used for backup
@@ -2055,7 +2004,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.canvas.restoreShape()
         self.labelList.clear()
         self.BoxList.clear()
-        self.loadShapes(self.canvas.shapes) #  重新加载
+        self.loadShapes(self.canvas.shapes)
         self.actions.undo.setEnabled(self.canvas.isShapeRestorable)
 
     def loadShapes(self, shapes, replace=True):
@@ -2089,7 +2038,7 @@ def get_main_app(argv=[]):
     app.setWindowIcon(newIcon("app"))
     # Tzutalin 201705+: Accept extra agruments to change predefined class file
     argparser = argparse.ArgumentParser()
-    argparser.add_argument("--lang", default='ch', nargs="?")
+    argparser.add_argument("--lang", default='en', nargs="?")
     argparser.add_argument("--predefined_classes_file",
                            default=os.path.join(os.path.dirname(__file__), "data", "predefined_classes.txt"),
                            nargs="?")

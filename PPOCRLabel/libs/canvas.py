@@ -154,39 +154,19 @@ class Canvas(QWidget):
                     clipped_y = min(max(0, pos.y()), size.height())
                     pos = QPointF(clipped_x, clipped_y)
 
-                elif len(self.current) > 1 and self.closeEnough(pos, self.current[0]):# and not self.fourpoint:
+                elif len(self.current) > 1 and self.closeEnough(pos, self.current[0]):
                     # Attract line to starting point and colorise to alert the
                     # user:
                     pos = self.current[0]
                     color = self.current.line_color
                     self.overrideCursor(CURSOR_POINT)
                     self.current.highlightVertex(0, Shape.NEAR_VERTEX)
-                # elif ( # ADD # 合并上下代码 内容一样
-                #         len(self.current) > 1
-                #         and self.fourpoint
-                #         and self.closeEnough(pos, self.current[0])
-                # ):
-                #     # Attract line to starting point and
-                #     # colorise to alert the user.
-                #     pos = self.current[0]
-                #     self.overrideCursor(CURSOR_POINT)
-                #     self.current.highlightVertex(0, Shape.NEAR_VERTEX)
 
-
-                if self.drawSquare: # 这部分不同
-                    # initPos = self.current[0] # 原先代码
-                    # minX = initPos.x()
-                    # minY = initPos.y()
-                    # min_size = min(abs(pos.x() - minX), abs(pos.y() - minY))
-                    # directionX = -1 if pos.x() - minX < 0 else 1
-                    # directionY = -1 if pos.y() - minY < 0 else 1
-                    # self.line[1] = QPointF(minX + directionX * min_size, minY + directionY * min_size)
-
-                    self.line.points = [self.current[0], pos] # Labelme代码
+                if self.drawSquare:
+                    self.line.points = [self.current[0], pos]
                     self.line.close()
 
                 elif self.fourpoint:
-                    # self.line[self.pointnum] = pos # OLD
                     self.line[0] = self.current[-1]
                     self.line[1] = pos
 
@@ -200,7 +180,7 @@ class Canvas(QWidget):
                 self.prevPoint = pos
             self.repaint()
             return
-        # 一下都相同
+
         # Polygon copy moving.
         if Qt.RightButton & ev.buttons():
             if self.selectedShapesCopy and self.prevPoint:
@@ -218,7 +198,7 @@ class Canvas(QWidget):
         if Qt.LeftButton & ev.buttons():
             if self.selectedVertex():
                 self.boundedMoveVertex(pos)
-                self.shapeMoved.emit() # 同时选中时的移动
+                self.shapeMoved.emit()
                 self.repaint()
                 self.movingShape = True
             elif self.selectedShapes and self.prevPoint:
@@ -227,7 +207,7 @@ class Canvas(QWidget):
                 self.shapeMoved.emit()
                 self.repaint()
                 self.movingShape = True
-            else: # TODO 这部分是多的
+            else:
                 #pan
                 delta_x = pos.x() - self.pan_initial_pos.x()
                 delta_y = pos.y() - self.pan_initial_pos.y()
@@ -248,8 +228,7 @@ class Canvas(QWidget):
             if index is not None:
                 if self.selectedVertex():
                     self.hShape.highlightClear()
-                # TODO： Pre部分的变量都没有
-                self.hVertex, self.hShape = index, shape # 倒着来的原因是要更新hShape的值？
+                self.hVertex, self.hShape = index, shape
                 shape.highlightVertex(index, shape.MOVE_VERTEX)
                 self.overrideCursor(CURSOR_POINT)
                 self.setToolTip("Click & drag to move point")
@@ -293,39 +272,23 @@ class Canvas(QWidget):
                         self.finalise()
                 elif not self.outOfPixmap(pos):
                     # Create new shape.
-                    self.current = Shape()# self.current = Shape(shape_type=self.createMode) # TODO: 有可能需要制定类型？
+                    self.current = Shape()
                     self.current.addPoint(pos)
-                    # if self.createMode == "point":
-                    #     self.finalise()
-                    # else:
-                    #     if self.createMode == "circle":
-                    #         self.current.shape_type = "circle"
                     self.line.points = [pos, pos]
                     self.setHiding()
                     self.drawingPolygon.emit(True)
                     self.update()
 
-            else: # 改动后可以增加多选框，选点方式从单点变成list
-                # selection = self.selectShapePoint(pos)
-                # self.prevPoint = pos
-                #
-                # if selection is None:
-                #     #pan
-                #     QApplication.setOverrideCursor(QCursor(Qt.OpenHandCursor))
-                #     self.pan_initial_pos = pos
+            else:
                 group_mode = int(ev.modifiers()) == Qt.ControlModifier
                 self.selectShapePoint(pos, multiple_selection_mode=group_mode)
                 self.prevPoint = pos
                 self.pan_initial_pos = pos
-                # self.repaint()
 
         elif ev.button() == Qt.RightButton and self.editing():
-            # self.selectShapePoint(pos)
-            # self.prevPoint = pos
             group_mode = int(ev.modifiers()) == Qt.ControlModifier
             self.selectShapePoint(pos, multiple_selection_mode=group_mode)
             self.prevPoint = pos
-            # self.repaint() # 只用update？
         self.update()
 
     def mouseReleaseEvent(self, ev):
@@ -338,46 +301,34 @@ class Canvas(QWidget):
                 # self.selectedShapeCopy = None
                 self.selectedShapesCopy = []
                 self.repaint()
-        # elif ev.button() == Qt.LeftButton and self.selectedShape: # OLD
+
         elif ev.button() == Qt.LeftButton and self.selectedShapes:
             if self.selectedVertex():
                 self.overrideCursor(CURSOR_POINT)
             else:
                 self.overrideCursor(CURSOR_GRAB)
 
-        elif ev.button() == Qt.LeftButton and not self.fourpoint: # 暂时去除四点部分的代码
+        elif ev.button() == Qt.LeftButton and not self.fourpoint:
             pos = self.transformPos(ev.pos())
             if self.drawing():
-                self.handleDrawing(pos) # 关键函数
+                self.handleDrawing(pos)
             else:
                 #pan
                 QApplication.restoreOverrideCursor() # ?
 
-        if self.movingShape and self.hShape: # 加上之后会移动点会崩 用于撤回
+        if self.movingShape and self.hShape:
              index = self.shapes.index(self.hShape)
              if (
-                 self.shapesBackups[-1][index].points # 如果新建的框位置变化
+                 self.shapesBackups[-1][index].points
                  != self.shapes[index].points
              ):
-                 self.storeShapes() # 重新backup一下
-                 self.shapeMoved.emit() # 连接updateBoxlist
+                 self.storeShapes()
+                 self.shapeMoved.emit() # connect to updateBoxlist in PPOCRLabel.py
 
              self.movingShape = False
 
 
     def endMove(self, copy=False):
-        # assert self.selectedShape and self.selectedShapeCopy
-        # shape = self.selectedShapeCopy
-        #del shape.fill_color
-        #del shape.line_color
-        # if copy:
-        #     self.shapes.append(shape)
-        #     self.selectedShape.selected = False
-        #     self.selectedShape = shape
-        #     self.repaint()
-        # else:
-        #     self.selectedShape.points = [p for p in shape.points]
-        # self.selectedShapeCopy = None
         assert self.selectedShapes and self.selectedShapesCopy
         assert len(self.selectedShapesCopy) == len(self.selectedShapes)
         if copy:
@@ -401,7 +352,7 @@ class Canvas(QWidget):
             self.setHiding(True)
             self.repaint()
 
-    def handleDrawing(self, pos): # 没有此函数
+    def handleDrawing(self, pos):
         if self.current and self.current.reachMaxPoints() is False:
             if self.fourpoint:
                 targetPos = self.line[self.pointnum]
@@ -411,7 +362,7 @@ class Canvas(QWidget):
                 if self.pointnum == 3:
                     self.finalise()
 
-            else: # 按住送掉后跳到这里
+            else:
                 initPos = self.current[0]
                 print('initPos', self.current[0])
                 minX = initPos.x()
@@ -448,38 +399,17 @@ class Canvas(QWidget):
             self.finalise()
 
     def selectShapes(self, shapes):
-        # self.deSelectShape()
-        # shape.selected = True
-        # self.selectedShape = shape
-        # self.setHiding()
-        # self.selectionChanged.emit(True)
-        # self.update()
         for s in shapes: s.seleted = True
         self.setHiding()
         self.selectionChanged.emit(shapes)
         self.update()
 
-    # def selectShapePoint(self, point):
-    #     """Select the first shape created which contains this point."""
-    #     self.deSelectShape()
-    #     if self.selectedVertex():  # A vertex is marked for selection.
-    #         index, shape = self.hVertex, self.hShape
-    #         shape.highlightVertex(index, shape.MOVE_VERTEX)
-    #         self.selectShape(shape)
-    #         return self.hVertex
-    #     for shape in reversed(self.shapes):
-    #         if self.isVisible(shape) and shape.containsPoint(point):
-    #             self.selectShape(shape) # 函数
-    #             self.calculateOffsets(shape, point)
-    #             return self.selectedShape
-    #     return None
 
     def selectShapePoint(self, point, multiple_selection_mode):
         """Select the first shape created which contains this point."""
         if self.selectedVertex():  # A vertex is marked for selection.
             index, shape = self.hVertex, self.hShape
-            shape.highlightVertex(index, shape.MOVE_VERTEX) # 突出显示
-
+            shape.highlightVertex(index, shape.MOVE_VERTEX)
             return self.hVertex
         else:
             for shape in reversed(self.shapes):
@@ -487,9 +417,9 @@ class Canvas(QWidget):
                     self.calculateOffsets(shape, point)
                     self.setHiding()
                     if multiple_selection_mode:
-                        if shape not in self.selectedShapes: # list TODO:为什么是2个，刚开始应该是1个
+                        if shape not in self.selectedShapes: # list
                             self.selectionChanged.emit(
-                                self.selectedShapes + [shape] # 选择+未选择
+                                self.selectedShapes + [shape]
                             )
                     else:
                         self.selectionChanged.emit([shape])
@@ -539,7 +469,8 @@ class Canvas(QWidget):
         else:
             shiftPos = pos - point
 
-        if shape[0].x()==shape[3].x() and shape[1].x()==shape[2].x() and shape[0].y()==shape[1].y():
+        if [shape[0].x(), shape[0].y(), shape[2].x(), shape[2].y()] \
+                == [shape[3].x(),shape[1].y(),shape[1].x(),shape[3].y()]:
             shape.moveVertexBy(index, shiftPos)
             lindex = (index + 1) % 4
             rindex = (index + 3) % 4
@@ -559,6 +490,7 @@ class Canvas(QWidget):
 
 
     def boundedMoveShape(self, shapes, pos):
+        if type(shapes).__name__ != 'list': shapes = [shapes]
         if self.outOfPixmap(pos):
             return False  # No need to move
         o1 = pos + self.offsets[0]
@@ -582,36 +514,19 @@ class Canvas(QWidget):
         return False
 
     def deSelectShape(self):
-        # if self.selectedShape:
-        #     self.selectedShape.selected = False
-        #     self.selectedShape = None
-        #     self.setHiding(False)
-        #     self.selectionChanged.emit(False)
-        #     self.update()
         if self.selectedShapes:
-            # TODO：少了两个清空？
             for shape in self.selectedShapes: shape.selected=False
             self.setHiding(False)
             self.selectionChanged.emit([])
             self.update()
 
-    # def deleteSelected(self):
-    #     if self.selectedShape:
-    #         shape = self.selectedShape
-    #         self.shapes.remove(self.selectedShape)
-    #         self.selectedShape = None
-    #         self.update()
-    #         return shape
-
     def deleteSelected(self):
         deleted_shapes = []
         if self.selectedShapes:
-            #self.storeShapes()
             for shape in self.selectedShapes:
                 self.shapes.remove(shape)
-                #self.shapesBackups.append(shape)
                 deleted_shapes.append(shape)
-            self.storeShapes() # 这里应该是先储存
+            self.storeShapes()
             self.selectedShapes = []
             self.update()
         return deleted_shapes
@@ -622,32 +537,25 @@ class Canvas(QWidget):
             shapesBackup.append(shape.copy())
         if len(self.shapesBackups) >= 10:
             self.shapesBackups = self.shapesBackups[-9:]
-        self.shapesBackups.append(shapesBackup) # 每删除或保存一次都会backup一次
+        self.shapesBackups.append(shapesBackup)
 
     def copySelectedShape(self):
-        # if self.selectedShape:
-        #     shape = self.selectedShape.copy()
-        #     self.deSelectShape()
-        #     self.shapes.append(shape)
-        #     shape.selected = True
-        #     self.selectedShape = shape
-        #     self.boundedShiftShape(shape)
-        #     return shape
         if self.selectedShapes:
             self.selectedShapesCopy = [s.copy() for s in self.selectedShapes]
             self.boundedShiftShapes(self.selectedShapesCopy)
             self.endMove(copy=True)
         return self.selectedShapes
 
-    def boundedShiftShape(self, shape):
+    def boundedShiftShapes(self, shapes):
         # Try to move in one direction, and if it fails in another.
         # Give up if both fail.
-        point = shape[0]
-        offset = QPointF(2.0, 2.0)
-        self.calculateOffsets(shape, point)
-        self.prevPoint = point
-        if not self.boundedMoveShape(shape, point - offset):
-            self.boundedMoveShape(shape, point + offset)
+        for shape in shapes:
+            point = shape[0]
+            offset = QPointF(2.0, 2.0)
+            self.calculateOffsets(shape, point)
+            self.prevPoint = point
+            if not self.boundedMoveShape(shape, point - offset):
+                self.boundedMoveShape(shape, point + offset)
 
     def paintEvent(self, event):
         if not self.pixmap:
@@ -801,14 +709,14 @@ class Canvas(QWidget):
             self.update()
         elif key == Qt.Key_Return and self.canCloseShape():
             self.finalise()
-        # elif key == Qt.Key_Left and self.selectedShape:
-        #     self.moveOnePixel('Left')
-        # elif key == Qt.Key_Right and self.selectedShape:
-        #     self.moveOnePixel('Right')
-        # elif key == Qt.Key_Up and self.selectedShape:
-        #     self.moveOnePixel('Up')
-        # elif key == Qt.Key_Down and self.selectedShape:
-        #     self.moveOnePixel('Down')
+        elif key == Qt.Key_Left and self.selectedShape:
+             self.moveOnePixel('Left')
+        elif key == Qt.Key_Right and self.selectedShape:
+             self.moveOnePixel('Right')
+        elif key == Qt.Key_Up and self.selectedShape:
+             self.moveOnePixel('Up')
+        elif key == Qt.Key_Down and self.selectedShape:
+             self.moveOnePixel('Down')
 
     def moveOnePixel(self, direction):
         # print(self.selectedShape.points)
@@ -851,7 +759,6 @@ class Canvas(QWidget):
 
         if fill_color:
             self.shapes[-1].fill_color = fill_color
-        #self.shapesBackups.pop() # 新建shape后要pop?
         self.storeShapes()
 
         return self.shapes[-1]
@@ -930,13 +837,12 @@ class Canvas(QWidget):
     def setDrawingShapeToSquare(self, status):
         self.drawSquare = status
 
-    def restoreShape(self): # 用于撤销
+    def restoreShape(self):
         if not self.isShapeRestorable:
             return
         self.shapesBackups.pop()  # latest
         shapesBackup = self.shapesBackups.pop()
         self.shapes = shapesBackup
-        #self.shapes.append(self.shapesBackups.pop()) # 为何这里之前是只将back赋值呢
         self.selectedShapes = []
         for shape in self.shapes:
             shape.selected = False
