@@ -261,7 +261,7 @@ class SRNLabelEncode(BaseRecLabelEncode):
         if len(text) > self.max_text_len:
             return None
         data['length'] = np.array(len(text))
-        text = text + [char_num] * (self.max_text_len - len(text))
+        text = text + [char_num - 1] * (self.max_text_len - len(text))
         data['label'] = np.array(text)
         return data
 
