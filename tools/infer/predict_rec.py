@@ -54,6 +54,13 @@ class TextRecognizer(object):
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }
+        elif self.rec_algorithm == "RARE":
+            postprocess_params = {
+                'name': 'AttnLabelDecode',
+                "character_type": args.rec_char_type,
+                "character_dict_path": args.rec_char_dict_path,
+                "use_space_char": args.use_space_char
+            }
         self.postprocess_op = build_post_process(postprocess_params)
         self.predictor, self.input_tensor, self.output_tensors = \
             utility.create_predictor(args, 'rec', logger)
