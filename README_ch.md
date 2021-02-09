@@ -8,6 +8,7 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 - 静态图版本：develop分支
 
 **近期更新**
+- 2021.2.8 正式发布PaddleOCRv2.0(branch release/2.0)并设置为推荐用户使用的默认分支. 发布的详细内容，请参考: https://github.com/PaddlePaddle/PaddleOCR/releases/tag/v2.0.0
 - 2021.2.8 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，总数167个，每周一都会更新，欢迎大家持续关注。
 - 2021.1.26,28,29 PaddleOCR官方研发团队带来技术深入解读三日直播课，1月26日、28日、29日晚上19:30，[直播地址](https://live.bilibili.com/21689802)
 - 2021.1.21 更新多语言识别模型，目前支持语种超过27种，[多语言模型下载](./doc/doc_ch/models_list.md)，包括中文简体、中文繁体、英文、法文、德文、韩文、日文、意大利文、西班牙文、葡萄牙文、俄罗斯文、阿拉伯文等，后续计划可以参考[多语言研发计划](https://github.com/PaddlePaddle/PaddleOCR/issues/1048)
