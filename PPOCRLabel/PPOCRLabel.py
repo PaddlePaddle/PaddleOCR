@@ -435,7 +435,7 @@ class MainWindow(QMainWindow, WindowMixin):
 
         ######## New actions #######
         AutoRec = action(getStr('autoRecognition'), self.autoRecognition,
-                      'Ctrl+Shift+A', 'Auto', getStr('autoRecognition'), enabled=False)
+                      '', 'Auto', getStr('autoRecognition'), enabled=False)
 
         reRec = action(getStr('reRecognition'), self.reRecognition, 
                       'Ctrl+Shift+R', 'reRec', getStr('reRecognition'), enabled=False)

@@ -109,7 +109,6 @@ python3 PPOCRLabel.py
 
 | Shortcut keys            | Description                                      |
 | ------------------------ | ------------------------------------------------ |
-| Ctrl + Shift + A         | Automatically label all unchecked images         |
 | Ctrl + Shift + R         | Re-recognize all the labels of the current image |
 | W                        | Create a rect box                                |
 | Q                        | Create a four-points box                         |
