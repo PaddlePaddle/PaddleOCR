@@ -33,7 +33,7 @@ You can also visit [DockerHub](https://hub.docker.com/r/paddlepaddle/paddle/tags
 sudo docker container exec -it ppocr /bin/bash
 ```
 
-**2. Install PaddlePaddle Fluid v2.0**
+**2. Install PaddlePaddle v2.0**
 ```
 pip3 install --upgrade pip
 
