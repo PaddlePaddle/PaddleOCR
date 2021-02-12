@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import Levenshtein
+from rapidfuzz import string_metric
 
 
 class RecMetric(object):
@@ -28,7 +28,7 @@ class RecMetric(object):
         for (pred, pred_conf), (target, _) in zip(preds, labels):
             pred = pred.replace(" ", "")
             target = target.replace(" ", "")
-            norm_edit_dis += Levenshtein.distance(pred, target) / max(
+            norm_edit_dis += string_metric.levenshtein(pred, target) / max(
                 len(pred), len(target), 1)
             if pred == target:
                 correct_num += 1
