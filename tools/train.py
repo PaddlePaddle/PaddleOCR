@@ -50,6 +50,12 @@ def main(config, device, logger, vdl_writer):
 
     # build dataloader
     train_dataloader = build_dataloader(config, 'Train', device, logger)
+    if len(train_dataloader) == 0:
+        logger.error(
+            'No Images in train dataset, please check annotation file and path in the configuration file'
+        )
+        return
+
     if config['Eval']:
         valid_dataloader = build_dataloader(config, 'Eval', device, logger)
     else:

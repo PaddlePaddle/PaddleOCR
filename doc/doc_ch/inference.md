@@ -141,7 +141,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/00018069.jpg" --det_m
 ![](../imgs_results/det_res_00018069.jpg)
 
 通过参数`limit_type`和`det_limit_side_len`来对图片的尺寸进行限制，
-`litmit_type`可选参数为[`max`, `min`]，
+`limit_type`可选参数为[`max`, `min`]，
 `det_limit_size_len` 为正整数，一般设置为32 的倍数，比如960。
 
 参数默认设置为`limit_type='max', det_limit_side_len=960`。表示网络输入图像的最长边不能超过960，

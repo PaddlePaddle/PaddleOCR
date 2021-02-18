@@ -185,8 +185,8 @@ class DetResizeForTest(object):
         resize_h = int(h * ratio)
         resize_w = int(w * ratio)
 
-        resize_h = int(round(resize_h / 32) * 32)
-        resize_w = int(round(resize_w / 32) * 32)
+        resize_h = max(int(round(resize_h / 32) * 32), 32)
+        resize_w = max(int(round(resize_w / 32) * 32), 32)
 
         try:
             if int(resize_w) <= 0 or int(resize_h) <= 0:

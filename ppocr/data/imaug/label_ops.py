@@ -215,7 +215,7 @@ class AttnLabelEncode(BaseRecLabelEncode):
             return None
         data['length'] = np.array(len(text))
         text = [0] + text + [len(self.character) - 1] + [0] * (self.max_text_len
-                                                               - len(text) - 1)
+                                                               - len(text) - 2)
         data['label'] = np.array(text)
         return data
 
@@ -255,13 +255,13 @@ class SRNLabelEncode(BaseRecLabelEncode):
     def __call__(self, data):
         text = data['label']
         text = self.encode(text)
-        char_num = len(self.character_str)
+        char_num = len(self.character)
         if text is None:
             return None
         if len(text) > self.max_text_len:
             return None
         data['length'] = np.array(len(text))
-        text = text + [char_num] * (self.max_text_len - len(text))
+        text = text + [char_num - 1] * (self.max_text_len - len(text))
         data['label'] = np.array(text)
         return data
 
