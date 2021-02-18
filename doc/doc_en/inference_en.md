@@ -147,7 +147,7 @@ The visual text detection results are saved to the ./inference_results folder by
 ![](../imgs_results/det_res_00018069.jpg)
 
 You can use the parameters `limit_type` and `det_limit_side_len` to limit the size of the input image,
-The optional parameters of `litmit_type` are [`max`, `min`], and
+The optional parameters of `limit_type` are [`max`, `min`], and
 `det_limit_size_len` is a positive integer, generally set to a multiple of 32, such as 960.
 
 The default setting of the parameters is `limit_type='max', det_limit_side_len=960`. Indicates that the longest side of the network input image cannot exceed 960,
