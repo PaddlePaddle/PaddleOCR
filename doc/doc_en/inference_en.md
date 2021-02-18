@@ -6,7 +6,7 @@ The inference model (the model saved by `paddle.jit.save`) is generally a solidi
 The model saved during the training process is the checkpoints model, which saves the parameters of the model and is mostly used to resume training.
 
 Compared with the checkpoints model, the inference model will additionally save the structural information of the model. Therefore, it is easier to deploy because the model structure and model parameters are already solidified in the inference model file, and is suitable for integration with actual systems.
-For more details, please refer to the document [Classification Framework](https://github.com/PaddlePaddle/PaddleClas/blob/master/docs/zh_CN/extension/paddle_inference.md).
+For more details, please refer to the document [Classification Framework](https://github.com/PaddlePaddle/PaddleClas/blob/release%2F2.0/docs/zh_CN/extension/paddle_mobile_inference.md).
 
 Next, we first introduce how to convert a trained model into an inference model, and then we will introduce text detection, text recognition, angle class, and the concatenation of them based on inference model.
 
