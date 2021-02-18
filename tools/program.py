@@ -394,6 +394,7 @@ def preprocess(is_train=False):
     logger = get_logger(name='root', log_file=log_file)
     if config['Global']['use_visualdl']:
         from visualdl import LogWriter
+        save_model_dir = config['Global']['save_model_dir']
         vdl_writer_path = '{}/vdl/'.format(save_model_dir)
         os.makedirs(vdl_writer_path, exist_ok=True)
         vdl_writer = LogWriter(logdir=vdl_writer_path)
