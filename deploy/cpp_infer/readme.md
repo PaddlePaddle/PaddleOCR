@@ -1,6 +1,8 @@
 # 服务器端C++预测
 
-本教程将介绍在服务器端部署PaddleOCR超轻量中文检测、识别模型的详细步骤。
+本章节介绍PaddleOCR 模型的的C++部署方法，与之对应的python预测部署方式参考[文档](../../doc/doc_ch/inference.md)。
+C++在性能计算上优于python，因此，在大多数CPU、GPU部署场景，多采用C++的部署方式，本节将介绍如何在Linux\Windows (CPU\GPU)环境下配置C++环境并完成
+PaddleOCR模型部署。
 
 
 ## 1. 准备环境
