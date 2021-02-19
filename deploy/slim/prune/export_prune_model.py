@@ -25,23 +25,16 @@ sys.path.append(os.path.join(__dir__, '..', '..', '..'))
 sys.path.append(os.path.join(__dir__, '..', '..', '..', 'tools'))
 
 import paddle
-import paddle.distributed as dist
 from ppocr.data import build_dataloader
 from ppocr.modeling.architectures import build_model
-from ppocr.losses import build_loss
-from ppocr.optimizer import build_optimizer
+
 from ppocr.postprocess import build_post_process
 from ppocr.metrics import build_metric
 from ppocr.utils.save_load import init_model
 import tools.program as program
 
-dist.get_world_size()
-
 
 def main(config, device, logger, vdl_writer):
-    # init dist environment
-    if config['Global']['distributed']:
-        dist.init_parallel_env()
 
     global_config = config['Global']
 
