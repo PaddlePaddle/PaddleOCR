@@ -146,7 +146,8 @@ def parse_args(mMain=True, add_help=True):
         # DB parmas
         parser.add_argument("--det_db_thresh", type=float, default=0.3)
         parser.add_argument("--det_db_box_thresh", type=float, default=0.5)
-        parser.add_argument("--det_db_unclip_ratio", type=float, default=2.0)
+        parser.add_argument("--det_db_unclip_ratio", type=float, default=1.6)
+        parser.add_argument("--use_dilation", type=bool, default=False)
 
         # EAST parmas
         parser.add_argument("--det_east_score_thresh", type=float, default=0.8)
@@ -193,7 +194,8 @@ def parse_args(mMain=True, add_help=True):
             det_limit_type='max',
             det_db_thresh=0.3,
             det_db_box_thresh=0.5,
-            det_db_unclip_ratio=2.0,
+            det_db_unclip_ratio=1.6,
+            use_dilation=False,
             det_east_score_thresh=0.8,
             det_east_cover_thresh=0.1,
             det_east_nms_thresh=0.2,
