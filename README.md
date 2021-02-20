@@ -171,17 +171,17 @@ More details, please refer to [Multilingual OCR Development Plan](https://github
 This project is released under <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/master/LICENSE">Apache 2.0 license</a>
 
 <a name="CONTRIBUTION"></a>
-## Contribution
-We welcome all the contributions to PaddleOCR and appreciate for your feedback very much.
+## Contribution 贡献
+We welcome all the contributions to PaddleOCR and appreciate your feedback very much.
 
-- Many thanks to [Khanh Tran](https://github.com/xxxpsyduck) and [Karl Horky](https://github.com/karlhorky) for contributing and revising the English documentation.
-- Many thanks to [zhangxin](https://github.com/ZhangXinNan) for contributing the new visualize function、add .gitignore and discard set PYTHONPATH manually.
-- Many thanks to [lyl120117](https://github.com/lyl120117) for contributing the code for printing the network structure.
+- Thanks [Khanh Tran](https://github.com/xxxpsyduck) and [Karl Horky](https://github.com/karlhorky) for contributing and revising the English documentation.
+- Thanks [zhangxin](https://github.com/ZhangXinNan) for contributing the new visualize function, add .gitignore and discard set PYTHONPATH manually.
+- Thanks [lyl120117](https://github.com/lyl120117) for contributing the code for printing the network structure.
 - Thanks [xiangyubo](https://github.com/xiangyubo) for contributing the handwritten Chinese OCR datasets.
-- Thanks [authorfu](https://github.com/authorfu) for contributing Android demo  and [xiadeye](https://github.com/xiadeye) contributing iOS demo, respectively.
-- Thanks [BeyondYourself](https://github.com/BeyondYourself) for contributing many great suggestions and simplifying part of the code style.
-- Thanks [tangmq](https://gitee.com/tangmq) for contributing Dockerized deployment services to PaddleOCR and supporting the rapid release of callable Restful API services.
-- Thanks [lijinhan](https://github.com/lijinhan) for contributing a new way, i.e., java SpringBoot, to achieve the request for the Hubserving deployment.
-- Thanks [Mejans](https://github.com/Mejans) for contributing the Occitan corpus and character set.
+- Thanks [authorfu](https://github.com/authorfu) for contributing the Android demo and [xiadeye](https://github.com/xiadeye) for contributing the iOS demo, respectively.
+- Thanks [BeyondYourself](https://github.com/BeyondYourself) for contributing many good suggestions and simplifying the code style.
+- Thanks [tangmq](https://gitee.com/tangmq) for contributing the Dockerized deployment services to PaddleOCR and supporting the rapid release of the Callable Restful API Services.
+- Thanks [lijinhan](https://github.com/lijinhan) for contributing a new way, i.e., java SpringBoot, to achieve the request for the using the Hubserving as the deployment method.
+- Thanks [Mejans](https://github.com/Mejans) for contributing the Occitan corpus and the character set.
 - Thanks [LKKlein](https://github.com/LKKlein) for contributing a new deploying package with the Golang program language.
-- Thanks [Evezerest](https://github.com/Evezerest), [ninetailskim](https://github.com/ninetailskim), [edencfc](https://github.com/edencfc), [BeyondYourself](https://github.com/BeyondYourself) and [1084667371](https://github.com/1084667371) for contributing a new data annotation tool, i.e., PPOCRLabel。
+- Thanks [Evezerest](https://github.com/Evezerest), [ninetailskim](https://github.com/ninetailskim), [edencfc](https://github.com/edencfc), [BeyondYourself](https://github.com/BeyondYourself) and [1084667371](https://github.com/1084667371) for contributing a new data annotation tool, i.e., PPOCRLabel.
