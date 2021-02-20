@@ -1,29 +1,28 @@
 English | [简体中文](README_ch.md)
 
-## Introduction
-PaddleOCR aims to create multilingual, leading, and practical OCR tools that help users train better OCR models and apply them into practice.
+## Intro
+PaddleOCR aims to create multilingual, leading and practical OCR tools that help users train better models and apply them into practice.
 
-## Notice
+## Attention Please
 PaddleOCR supports both dynamic graph and static graph programming paradigm
-- Dynamic graph: dygraph branch (by default), **supported by paddle 2.0.0rc1 ([installation](./doc/doc_en/installation_en.md))**
+- Dynamic graph: dygraph branch (default), **supported by paddle 2.0.0 ([installation](./doc/doc_en/installation_en.md))**
 - Static graph: develop branch
 
 **Recent updates**
-- 2021.02.20 Wei modification of docs
-- 2021.02.08 Release PaddleOCRv2.0(branch release/2.0) and set as default branch. Check release note here: https://github.com/PaddlePaddle/PaddleOCR/releases/tag/v2.0.0
-- 2021.01.21 Update more than 25+ multilingual recognition models [models list](./doc/doc_en/models_list_en.md), including：English, Chinese, German, French, Japanese, Spanish, Portuguese, Russia, Arabic et. al. Models for other languages will continue to be updated [Develop Plan](https://github.com/PaddlePaddle/PaddleOCR/issues/1048).
-- 2020.12.15 Update Data synthesis tool, i.e., [Style-Text](./StyleText/README.md)，easy to synthesize a large number of images which are similar to the target scene image.
-- 2020.11.25 Update a new data annotation tool, i.e., [PPOCRLabel](./PPOCRLabel/README.md), which is helpful to improve the labeling efficiency. Moreover, the labelled dataset can be used in training the PP-OCR system directly without significant modifications.
-- 2020.09.22 Update the PP-OCR technical report,[PaddleOCR TR](https://arxiv.org/abs/2009.09941)
-- [more](./doc/doc_en/update_en.md)
+- 2021.02.08 Release PaddleOCRv2.0(branch release/2.0) and set as default branch. Check release note here: https://github.com/PaddlePaddle/PaddleOCR/releases/tag/v2.0.0 .
+- 2021.01.21 ADD more than 25+ multilingual recognition models [model list](./doc/doc_en/models_list_en.md) including：English, Chinese, German, French, Japanese，Spanish，Portuguese, Russia, Arabic et. al. Models for many MORE languages will be added soon. [Develop Plan](https://github.com/PaddlePaddle/PaddleOCR/issues/1048).
+- 2020.12.15 Update Data synthesis tool, i.e., [Style-Text](./StyleText/README.md), easy to synthesize a large number of images which are similar to the target scene image.
+- 2020.11.25 Update a new data annotation tool, i.e., [PPOCRLabel](./PPOCRLabel/README.md), which improves the data labeling efficiency. More, the labeling results can be used for training via the PP-OCR system directly.
+- 2020.09.22 Update the PP-OCR [technical article](https://arxiv.org/abs/2009.09941)
+- [See More](./doc/doc_en/update_en.md)
 
 ## Features
-- High Quality pre-trained models, ready for industry strength usage.
+- High Quality pre-trained industry strength models
     - Ultra lightweight ppocr_mobile series models: detection (3.0M) + direction classifier (1.4M) + recognition (5.0M) = 9.4M
     - General ppocr_server series models: detection (47.1M) + direction classifier (1.4M) + recognition (94.9M) = 143.4M
     - Support Chinese, English, and digit recognition, vertical text recognition, and long text recognition
     - Support multi-language recognition: Korean, Japanese, German, French
-- Rich toolkits related to the OCR areas
+- Rich Toolkits for the whole OCR pipeline
     - Semi-automatic data annotation tool, i.e., PPOCRLabel: support fast and efficient data annotation
     - Data synthesis tool, i.e., Style-Text: easy to synthesize a large number of images which are similar to the target scene image
 - Support user-defined training, provides rich predictive inference deployment solutions
@@ -148,6 +147,7 @@ PP-OCR is a practical ultra-lightweight OCR system. It is mainly composed of thr
     <img src="./doc/imgs_results/korean.jpg" width="800">
 </div>
 
+
 <a name="language_requests"></a>
 ## Guideline for new language requests
 
@@ -165,10 +165,23 @@ If your language has unique elements, please tell me in advance within any way, 
 
 More details, please refer to [Multilingual OCR Development Plan](https://github.com/PaddlePaddle/PaddleOCR/issues/1048).
 
+
 <a name="LICENSE"></a>
 ## License
 This project is released under <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/master/LICENSE">Apache 2.0 license</a>
 
 <a name="CONTRIBUTION"></a>
 ## Contribution
-We welcome all the contributions to PaddleOCR and appreciate your feedback.
+We welcome all the contributions to PaddleOCR and appreciate for your feedback very much.
+
+- Many thanks to [Khanh Tran](https://github.com/xxxpsyduck) and [Karl Horky](https://github.com/karlhorky) for contributing and revising the English documentation.
+- Many thanks to [zhangxin](https://github.com/ZhangXinNan) for contributing the new visualize function、add .gitignore and discard set PYTHONPATH manually.
+- Many thanks to [lyl120117](https://github.com/lyl120117) for contributing the code for printing the network structure.
+- Thanks [xiangyubo](https://github.com/xiangyubo) for contributing the handwritten Chinese OCR datasets.
+- Thanks [authorfu](https://github.com/authorfu) for contributing Android demo  and [xiadeye](https://github.com/xiadeye) contributing iOS demo, respectively.
+- Thanks [BeyondYourself](https://github.com/BeyondYourself) for contributing many great suggestions and simplifying part of the code style.
+- Thanks [tangmq](https://gitee.com/tangmq) for contributing Dockerized deployment services to PaddleOCR and supporting the rapid release of callable Restful API services.
+- Thanks [lijinhan](https://github.com/lijinhan) for contributing a new way, i.e., java SpringBoot, to achieve the request for the Hubserving deployment.
+- Thanks [Mejans](https://github.com/Mejans) for contributing the Occitan corpus and character set.
+- Thanks [LKKlein](https://github.com/LKKlein) for contributing a new deploying package with the Golang program language.
+- Thanks [Evezerest](https://github.com/Evezerest), [ninetailskim](https://github.com/ninetailskim), [edencfc](https://github.com/edencfc), [BeyondYourself](https://github.com/BeyondYourself) and [1084667371](https://github.com/1084667371) for contributing a new data annotation tool, i.e., PPOCRLabel。
