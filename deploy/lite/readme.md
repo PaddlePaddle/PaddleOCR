@@ -37,7 +37,7 @@ git checkout release/v2.7
 更多编译命令
 介绍请参考[链接](https://paddle-lite.readthedocs.io/zh/latest/user_guides/Compile/Android.html#id2)。
 
-- 2. 直接下载预测库，下载[链接](https://github.com/PaddlePaddle/Paddle-Lite/releases/tag/v2.7.1)
+- 2. 直接下载预测库，下载[链接](https://github.com/PaddlePaddle/Paddle-Lite/releases/tag/v2.7.1)。
 
 
 直接下载预测库并解压后，可以得到`inference_lite_lib.android.armv8/`文件夹，通过编译Paddle-Lite得到的预测库位于
@@ -179,7 +179,7 @@ wget  https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar
  ```
  git clone https://github.com/PaddlePaddle/PaddleOCR.git
  cd PaddleOCR/deploy/lite/
- # 运行prepare.sh，准备预测库文件、测试图像和使用的字典文件到预测库中的demo/cxx/ocr文件夹下
+ # 按照如下命令运行prepare.sh，将预测库文件、测试图像和使用的字典文件到预测库中的demo/cxx/ocr文件夹下
  sh prepare.sh /{lite prediction library path}/inference_lite_lib.android.armv8
 
  # 进入OCR demo的工作目录
