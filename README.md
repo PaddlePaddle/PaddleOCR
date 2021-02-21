@@ -1,5 +1,6 @@
 English | [简体中文](README_ch.md)
 
+<a name="Intro"></a>
 ## Intro
 PaddleOCR aims to create multilingual, leading and practical OCR tools that help users train better models and apply them into practice.
 
@@ -11,19 +12,27 @@ PaddleOCR aims to create multilingual, leading and practical OCR tools that help
 
 PaddleOCR is a practical ultra-lightweight OCR system. It is mainly composed of 3 parts: the DB Text Detection, the Detection Frame Correction and the CRNN Text Recognition. The system adopts 19 effective strategies from 8 aspects including the Backbone Network Selection and Adjustment, Prediction Head Design, Data Augmentation, Learning Rate Transformation Strategy, Regularization Parameter Selection, Pre-training Model Use, Automatic Model Tailoring and Quantization to optimize and slim down each module. The final results are an ultra-lightweight Chinese & English OCR model with an overall size being 3.5M and an English digital OCR model being 2.8M. For more details, please refer to our [technical report](https://arxiv.org/abs/2009.09941). Besides, the Implementation of FPGM Pruner and PACT Quantization is based on [PaddleSlim](https://github.com/PaddlePaddle/PaddleSlim).
 
-## Attention Please
+<a name="Attention"></a>
+## Attention
 PaddleOCR supports both dynamic graph and static graph programming paradigm
 - Dynamic graph: dygraph branch (default), **supported by paddle 2.0.0 ([installation](./doc/doc_en/installation_en.md))**
 - Static graph: develop branch
 
 **Recent updates**
+
 - 2021.02.08 Release PaddleOCRv2.0(branch release/2.0) and set as default branch. Check release note here: https://github.com/PaddlePaddle/PaddleOCR/releases/tag/v2.0.0 .
+
 - 2021.01.21 ADD more than 25+ multilingual recognition models [model list](./doc/doc_en/models_list_en.md) including：English, Chinese, German, French, Japanese，Spanish，Portuguese, Russia, Arabic et. al. Models for many MORE languages will be added soon. [Develop Plan](https://github.com/PaddlePaddle/PaddleOCR/issues/1048).
+
 - 2020.12.15 Update Data synthesis tool, i.e., [Style-Text](./StyleText/README.md), easy to synthesize a large number of images which are similar to the target scene image.
+
 - 2020.11.25 Update a new data annotation tool, i.e., [PPOCRLabel](./PPOCRLabel/README.md), which improves the data labeling efficiency. More, the labeling results can be used for training via the PP-OCR system directly.
+
 - 2020.09.22 Update the PP-OCR [technical article](https://arxiv.org/abs/2009.09941)
+
 - [See More](./doc/doc_en/update_en.md)
 
+<a name="Features"></a>
 ## Features
 - High Quality pre-trained industry strength models
     - Ultra lightweight ppocr_mobile series models: detection (3.0M) + direction classifier (1.4M) + recognition (5.0M) = 9.4M
@@ -37,6 +46,7 @@ PaddleOCR supports both dynamic graph and static graph programming paradigm
 - Support PIP installation, easy to use
 - Support Linux, Windows, MacOS and other systems
 
+<a name="Visualization"></a>
 ## Visualization
 
 <div align="center">
@@ -44,34 +54,30 @@ PaddleOCR supports both dynamic graph and static graph programming paradigm
     <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/00018069.jpg" width="800">
 </div>
 
-The above pictures are the visualizations of the general ppocr_server model. For more effect pictures, please see [More visualizations](./doc/doc_en/visualization_en.md).
+The above image is the visualizations of the general ppocr_server model. For more, please see [More visualizations](./doc/doc_en/visualization_en.md).
 
 <a name="Community"></a>
 ## Community
-- Scan the QR code below with your Wechat, you can access to official technical exchange group. Look forward to your participation.
+- Scan the QR code below using your Wechat, you can join the official technical group. We are looking forward to your participation. For users who don't have an Wechat account, please use github for now.
 
 <div align="center">
 <img src="./doc/joinus.PNG"  width = "200" height = "200" />
 </div>
 
+<a name="OnlineDemo"></a>
+## Online Demo
 
-## Quick Experience
+Quickly experience our ultra-lightweight OCR System: [Online Demo](https://www.paddlepaddle.org.cn/hub/scene/ocr)
 
-You can also quickly experience the ultra-lightweight OCR : [Online Experience](https://www.paddlepaddle.org.cn/hub/scene/ocr)
+[Mobile DEMO](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite) (Note: Sign in to the website to obtain the QR code for installing the App. This demo is based on Baidu EasyEdge and Paddle-Lite, supports iOS and Android systems)
 
-Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Android systems): [Sign in to the website to obtain the QR code for  installing the App](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)
-
- Also, you can scan the QR code below to install the App (**Android support only**)
+Also, you can scan the QR code below to install the App (Note: ONLY available on **Android** for current)
 
 <div align="center">
 <img src="./doc/ocr-android-easyedge.png"  width = "200" height = "200" />
 </div>
 
-- [**OCR Quick Start**](./doc/doc_en/quickstart_en.md)
-
 <a name="Supported-Chinese-model-list"></a>
-
-
 ## PP-OCR 2.0 series model list（Update on Dec 15）
 **Note** : Compared with [models 1.1](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/models_list_en.md), which are trained with static graph programming paradigm, models 2.0 are the dynamic graph trained version and achieve close performance.
 
