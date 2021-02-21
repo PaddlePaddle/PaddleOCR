@@ -1,24 +1,22 @@
 English | [简体中文](README_ch.md)
 
 <a name="Intro"></a>
-## Intro
-PaddleOCR aims to create multilingual, leading and practical OCR tools that help users train better models and apply them into practice.
+## Intro 简介
+Baidu PaddleOCR aims to create multilingual, leading and practical OCR tools that help users train STOA OCR models and apply them into practice.
 
 <a name="PP-OCR-Pipeline"></a>
-## System Architecture
+## System Architecture 系统架构
 <div align="center">
     <img src="./doc/ppocr_framework.png" width="800">
 </div>
 
 PaddleOCR is a practical ultra-lightweight OCR system. It is mainly composed of 3 parts: the DB Text Detection, the Detection Frame Correction and the CRNN Text Recognition. The system adopts 19 effective strategies from 8 aspects including the Backbone Network Selection and Adjustment, Prediction Head Design, Data Augmentation, Learning Rate Transformation Strategy, Regularization Parameter Selection, Pre-training Model Use, Automatic Model Tailoring and Quantization to optimize and slim down each module. The final results are an ultra-lightweight Chinese & English OCR model with an overall size being 3.5M and an English digital OCR model being 2.8M. For more details, please refer to our [technical report](https://arxiv.org/abs/2009.09941). Besides, the Implementation of FPGM Pruner and PACT Quantization is based on [PaddleSlim](https://github.com/PaddlePaddle/PaddleSlim).
 
-<a name="Attention"></a>
-## Attention
-PaddleOCR supports both dynamic graph and static graph programming paradigm
+<a name="News"></a>
+## News 新闻
+Note: PaddleOCR now supports both dynamic graph and static graph programming paradigm
 - Dynamic graph: dygraph branch (default), **supported by paddle 2.0.0 ([installation](./doc/doc_en/installation_en.md))**
 - Static graph: develop branch
-
-**Recent updates**
 
 - 2021.02.08 Release PaddleOCRv2.0(branch release/2.0) and set as default branch. Check release note here: https://github.com/PaddlePaddle/PaddleOCR/releases/tag/v2.0.0 .
 
@@ -33,7 +31,7 @@ PaddleOCR supports both dynamic graph and static graph programming paradigm
 - [See More](./doc/doc_en/update_en.md)
 
 <a name="Features"></a>
-## Features
+## Features 特性
 - High Quality pre-trained industry strength models
     - Ultra lightweight ppocr_mobile series models: detection (3.0M) + direction classifier (1.4M) + recognition (5.0M) = 9.4M
     - General ppocr_server series models: detection (47.1M) + direction classifier (1.4M) + recognition (94.9M) = 143.4M
@@ -47,51 +45,34 @@ PaddleOCR supports both dynamic graph and static graph programming paradigm
 - Support Linux, Windows, MacOS and other systems
 
 <a name="Visualization"></a>
-## Visualization
+## Visualization 结果可视化
 
 <div align="center">
-    <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
-    <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/00018069.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00015504.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00056221.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/rotate_00052204.jpg" width="800">
 </div>
+
+- Chinese OCR model
+
+<div align="center">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/img_12.jpg" width="800">
+</div>
+
+- English OCR model
+
+<div align="center">
+    <img src="./doc/imgs_results/french_0.jpg" width="800">
+    <img src="./doc/imgs_results/korean.jpg" width="800">
+</div>
+
+- Multilingual OCR model
 
 The above image is the visualizations of the general ppocr_server model. For more, please see [More visualizations](./doc/doc_en/visualization_en.md).
 
-<a name="Community"></a>
-## Community
-- Scan the QR code below using your Wechat, you can join the official technical group. We are looking forward to your participation. For users who don't have an Wechat account, please use github for now.
-
-<div align="center">
-<img src="./doc/joinus.PNG"  width = "200" height = "200" />
-</div>
-
-<a name="OnlineDemo"></a>
-## Online Demo
-
-Quickly experience our ultra-lightweight OCR System: [Online Demo](https://www.paddlepaddle.org.cn/hub/scene/ocr)
-
-[Mobile DEMO](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite) (Note: Sign in to the website to obtain the QR code for installing the App. This demo is based on Baidu EasyEdge and Paddle-Lite, supports iOS and Android systems)
-
-Also, you can scan the QR code below to install the App (Note: ONLY available on **Android** for current)
-
-<div align="center">
-<img src="./doc/ocr-android-easyedge.png"  width = "200" height = "200" />
-</div>
-
-<a name="Supported-Chinese-model-list"></a>
-## PP-OCR 2.0 series model list（Update on Dec 15）
-**Note** : Compared with [models 1.1](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/models_list_en.md), which are trained with static graph programming paradigm, models 2.0 are the dynamic graph trained version and achieve close performance.
-
-| Model introduction                                           | Model name                   | Recommended scene | Detection model                                              | Direction classifier                                         | Recognition model                                            |
-| ------------------------------------------------------------ | ---------------------------- | ----------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Chinese and English ultra-lightweight OCR model (9.4M)       | ch_ppocr_mobile_v2.0_xx      | Mobile & server   |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar)|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_pre.tar)      |
-| Chinese and English general OCR model (143.4M)               | ch_ppocr_server_v2.0_xx      | Server            |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_traingit.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_pre.tar)  |  
-
-
-For more model downloads (including multiple languages), please refer to [PP-OCR v2.0 series model downloads](./doc/doc_en/models_list_en.md).
-
-For a new language request, please refer to [Guideline for new language_requests](#language_requests).
-
-## Tutorials
+<a name="Tutorials"></a>
+## Tutorials 入门教程
 - [Installation](./doc/doc_en/installation_en.md)
 - [Quick Start](./doc/doc_en/quickstart_en.md)
 - [Code Structure](./doc/doc_en/tree_en.md)
@@ -128,28 +109,32 @@ For a new language request, please refer to [Guideline for new language_requests
 - [License](#LICENSE)
 - [Contribution](#CONTRIBUTION)
 
-## Visualization [more](./doc/doc_en/visualization_en.md)
-- Chinese OCR model
+<a name="OnlineDemo"></a>
+## Online Demo 核心能力演示
+
+Quickly experience our ultra-lightweight OCR System: [Online Demo](https://www.paddlepaddle.org.cn/hub/scene/ocr)
+
+[Mobile DEMO](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite) (Note: Sign in to the website to obtain the QR code for installing the App. This demo is based on Baidu EasyEdge and Paddle-Lite, supports iOS and Android systems)
+
+Also, you can scan the QR code below to install the App (Note: ONLY available on **Android** for current)
+
 <div align="center">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00015504.jpg" width="800">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00056221.jpg" width="800">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/rotate_00052204.jpg" width="800">
+<img src="./doc/ocr-android-easyedge.png"  width = "200" height = "200" />
 </div>
 
-- English OCR model
-<div align="center">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/img_12.jpg" width="800">
-</div>
+<a name="Supported-Chinese-model-list"></a>
+## PaddleOCR 2.0 Model Hub 模型枢纽
+**Note** : Compared with [models 1.x](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/models_list_en.md), which are trained with static graph programming paradigm, model 2.0 are training based on the dynamic graph, the performance is comparable.
 
-- Multilingual OCR model
-<div align="center">
-    <img src="./doc/imgs_results/french_0.jpg" width="800">
-    <img src="./doc/imgs_results/korean.jpg" width="800">
-</div>
+| Intro                                           | Model name                   | Usage Scene | Detection Model                                              | Direction Classifier                                         | Recognition Model                                            |
+| ------------------------------------------------------------ | ---------------------------- | ----------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Chinese and English ultra-lightweight OCR model (9.4M)       | ch_ppocr_mobile_v2.0_xx      | Mobile & server   |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar)|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_pre.tar)      |
+| Chinese and English general OCR model (143.4M)               | ch_ppocr_server_v2.0_xx      | Server            |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_traingit.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_pre.tar)  |  
+
+To download other models (including multiple languages), please refer to [PP-OCR v2.0 model list](./doc/doc_en/models_list_en.md).
 
 <a name="language_requests"></a>
-## Guideline for NEW Language Support
+## New Language Support 新语言支持
 
 If you want to request a new language support, a PR with 2 following files are needed:
 
@@ -160,6 +145,14 @@ it is necessary to submit the dict text to this path and name it with `{language
 it is necessary to submit the corpus to this path and name it with `{language}_corpus.txt` that contains a list of words in your language. Based on previous experience, at least 50000 words per language is necessary. Of course, the more the better.
 
 If your language contains unique elements, please INFO us in advance, such as useful links, wikipedia pages et. al. For more, please refer to [Multilingual OCR Development Plan](https://github.com/PaddlePaddle/PaddleOCR/issues/1048).
+
+<a name="Community"></a>
+## Community 社群
+- Scan the QR code below using your Wechat, you can join the official technical group. We are looking forward to your participation. For users who don't have an Wechat account, please use github for now.
+
+<div align="center">
+<img src="./doc/joinus.PNG"  width = "200" height = "200" />
+</div>
 
 <a name="LICENSE"></a>
 ## License 版权
