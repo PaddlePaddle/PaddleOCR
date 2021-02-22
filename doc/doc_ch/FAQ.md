@@ -9,48 +9,56 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2021.2.8）](#近期更新)
+* [近期更新（2021.2.22）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
 * [【理论篇】OCR通用32个问题](#OCR通用问题)
   * [基础知识7题](#基础知识)
   * [数据集7题](#数据集2)
   * [模型训练调优18题](#模型训练调优2)
 * [【实战篇】PaddleOCR实战125个问题](#PaddleOCR实战问题)
-  * [使用咨询41题](#使用咨询)
+  * [使用咨询43题](#使用咨询)
   * [数据集18题](#数据集3)
   * [模型训练调优30题](#模型训练调优3)
-  * [预测部署36题](#预测部署3)
+  * [预测部署39题](#预测部署3)
 
 
 <a name="近期更新"></a>
-## 近期更新（2021.2.8）
+## 近期更新（2021.2.22）
 
-#### Q3.1.39: 字典中没有的字应该如何标注，是用空格代替还是直接忽略掉？
+#### Q3.1.42: 训练识别任务的时候，在CPU上运行时，报错`The setting of Parameter-Server must has server_num or servers`。
 
-**A**：可以直接按照图片内容标注，在编码的时候，会忽略掉字典中不存在的字符。
+**A**：这是训练任务启动方式不对造成的。
 
-#### Q3.1.40: dygraph、release/2.0-rc1-0、release/2.0 这三个分支有什么区别？
+1. 在使用CPU或者单块GPU训练的时候，可以直接使用`python3 tools/train.py -c xxx.yml`的方式启动。
+2. 在使用多块GPU训练的时候，需要使用`distributed.launch`的方式启动，如`python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c xxx.yml`，这种方式需要安装NCCL库，如果没有的话会报错。
 
-**A**：dygraph是动态图分支，并且适配Paddle-develop，当然目前在Paddle2.0上也可以运行，新特性我们会在这里更新。
-release/2.0-rc1-0是基于Paddle 2.0rc1的稳定版本，release/2.0是基于Paddle2.0的稳定版本，如果希望版本或者代
-码稳定的话，建议使用release/2.0分支，如果希望可以实时拿到一些最新特性，建议使用dygraph分支。
+#### Q3.1.43：使用StyleText进行数据合成时，文本(TextInput)的长度远超StyleInput的长度，该怎么处理与合成呢？
 
-#### Q3.1.41: style-text 融合模块的输入是生成的前景图像以及背景特征权重吗？
 
-**A**：目前版本是直接输入两个图像进行融合的，没有用到feature_map，替换背景图片不会影响效果。
+**A**：在使用StyleText进行数据合成的时候，建议StyleInput的长度长于TextInput的长度。有2种方法可以处理上述问题：
 
-#### Q3.4.35: 怎么解决paddleOCR在T4卡上有越预测越慢的情况？
-**A**：
-1. T4 GPU没有主动散热，因此在测试的时候需要在每次infer之后需要sleep 30ms，否则机器容易因为过热而降频(inference速度会变慢)，温度过高也有可能会导致宕机。
-2. T4在不使用的时候，也有可能会降频，因此在做benchmark的时候需要锁频，下面这两条命令可以进行锁频。
-```
-nvidia-smi -i 0 -pm ENABLED
-nvidia-smi --lock-gpu-clocks=1590 -i 0
-```
+1. 将StyleInput按列的方向进行复制与扩充，直到其超过TextInput的长度。
+2. 将TextInput进行裁剪，保证每段TextInput都稍短于StyleInput，分别合成之后，再拼接在一起。
 
-#### Q3.4.36: DB有些框太贴文本了反而去掉了一些文本的边角影响识别，这个问题有什么办法可以缓解吗？
+实际使用中发现，使用第2种方法的效果在长文本合成的场景中的合成效果更好，StyleText中提供的也是第2种数据合成的逻辑。
 
-**A**：可以把后处理的参数unclip_ratio适当调大一点。
+
+#### Q3.4.37: 在windows上进行cpp inference的部署时，总是提示找不到`paddle_fluid.dll`和`opencv_world346.dll`，
+**A**：有2种方法可以解决这个问题：
+
+1. 将paddle预测库和opencv库的地址添加到系统环境变量中。
+2. 将提示缺失的dll文件拷贝到编译产出的`ocr_system.exe`文件夹中。
+
+
+#### Q3.4.38：想在Mac上部署，从哪里下载预测库呢？
+
+**A**：Mac上的Paddle预测库可以从这里下载：[https://paddle-inference-lib.bj.bcebos.com/mac/2.0.0/cpu_avx_openblas/paddle_inference.tgz](https://paddle-inference-lib.bj.bcebos.com/mac/2.0.0/cpu_avx_openblas/paddle_inference.tgz)
+
+
+#### Q3.4.39：内网环境如何进行服务化部署呢？
+
+**A**：仍然可以使用PaddleServing或者HubServing进行服务化部署，保证内网地址可以访问即可。
+
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -506,6 +514,23 @@ release/2.0-rc1-0是基于Paddle 2.0rc1的稳定版本，release/2.0是基于Pad
 
 **A**：目前版本是直接输入两个图像进行融合的，没有用到feature_map，替换背景图片不会影响效果。
 
+#### Q3.1.42: 训练识别任务的时候，在CPU上运行时，报错`The setting of Parameter-Server must has server_num or servers`。
+
+**A**：这是训练任务启动方式不对造成的。
+
+1. 在使用CPU或者单块GPU训练的时候，可以直接使用`python3 tools/train.py -c xxx.yml`的方式启动。
+2. 在使用多块GPU训练的时候，需要使用`distributed.launch`的方式启动，如`python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c xxx.yml`，这种方式需要安装NCCL库，如果没有的话会报错。
+
+#### Q3.1.43：使用StyleText进行数据合成时，文本(TextInput)的长度远超StyleInput的长度，该怎么处理与合成呢？
+
+
+**A**：在使用StyleText进行数据合成的时候，建议StyleInput的长度长于TextInput的长度。有2种方法可以处理上述问题：
+
+1. 将StyleInput按列的方向进行复制与扩充，直到其超过TextInput的长度。
+2. 将TextInput进行裁剪，保证每段TextInput都稍短于StyleInput，分别合成之后，再拼接在一起。
+
+实际使用中发现，使用第2种方法的效果在长文本合成的场景中的合成效果更好，StyleText中提供的也是第2种数据合成的逻辑。
+
 <a name="数据集3"></a>
 ### 数据集
 
@@ -927,3 +952,19 @@ nvidia-smi --lock-gpu-clocks=1590 -i 0
 #### Q3.4.36: DB有些框太贴文本了反而去掉了一些文本的边角影响识别，这个问题有什么办法可以缓解吗？
 
 **A**：可以把后处理的参数unclip_ratio适当调大一点。
+
+#### Q3.4.37: 在windows上进行cpp inference的部署时，总是提示找不到`paddle_fluid.dll`和`opencv_world346.dll`，
+**A**：有2种方法可以解决这个问题：
+
+1. 将paddle预测库和opencv库的地址添加到系统环境变量中。
+2. 将提示缺失的dll文件拷贝到编译产出的`ocr_system.exe`文件夹中。
+
+
+#### Q3.4.38：想在Mac上部署，从哪里下载预测库呢？
+
+**A**：Mac上的Paddle预测库可以从这里下载：[https://paddle-inference-lib.bj.bcebos.com/mac/2.0.0/cpu_avx_openblas/paddle_inference.tgz](https://paddle-inference-lib.bj.bcebos.com/mac/2.0.0/cpu_avx_openblas/paddle_inference.tgz)
+
+
+#### Q3.4.39：内网环境如何进行服务化部署呢？
+
+**A**：仍然可以使用PaddleServing或者HubServing进行服务化部署，保证内网地址可以访问即可。
