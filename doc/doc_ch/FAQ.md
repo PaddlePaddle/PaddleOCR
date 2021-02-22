@@ -9,38 +9,56 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2021.2.1）](#近期更新)
+* [近期更新（2021.2.22）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
 * [【理论篇】OCR通用32个问题](#OCR通用问题)
   * [基础知识7题](#基础知识)
   * [数据集7题](#数据集2)
   * [模型训练调优18题](#模型训练调优2)
-* [【实战篇】PaddleOCR实战120个问题](#PaddleOCR实战问题)
-  * [使用咨询38题](#使用咨询)
+* [【实战篇】PaddleOCR实战125个问题](#PaddleOCR实战问题)
+  * [使用咨询40题](#使用咨询)
   * [数据集18题](#数据集3)
   * [模型训练调优30题](#模型训练调优3)
-  * [预测部署34题](#预测部署3)
+  * [预测部署37题](#预测部署3)
 
 
 <a name="近期更新"></a>
-## 近期更新（2021.2.1）
-
-#### Q3.2.18: PaddleOCR动态图版本如何finetune？
-**A**：finetune需要将配置文件里的 Global.load_static_weights设置为false，如果没有此字段可以手动添加，然后将模型地址放到Global.pretrained_model字段下即可。
+## 近期更新（2021.2.22）
 
 
-#### Q3.3.29: 微调v1.1预训练的模型，可以直接用文字垂直排列和上下颠倒的图片吗？还是必须要水平排列的？
-**A**：1.1和2.0的模型一样，微调时，垂直排列的文字需要逆时针旋转 90° 后加入训练，上下颠倒的需要旋转为水平的。
+#### Q3.1.39: 训练识别任务的时候，在CPU上运行时，报错`The setting of Parameter-Server must has server_num or servers`。
 
-#### Q3.3.30: 模型训练过程中如何得到 best_accuracy 模型？
-**A**：配置文件里的eval_batch_step字段用来控制多少次iter进行一次eval，在eval完成后会自动生成 best_accuracy 模型，所以如果希望很快就能拿到best_accuracy模型，可以将eval_batch_step改小一点(例如，10)。
+**A**：这是训练任务启动方式不对造成的。
 
-#### Q3.4.33: 如何多进程运行paddleocr？
-**A**：实例化多个paddleocr服务，然后将服务注册到注册中心，之后通过注册中心统一调度即可，关于注册中心，可以搜索eureka了解一下具体使用，其他的注册中心也行。
+1. 在使用CPU或者单块GPU训练的时候，可以直接使用`python3 tools/train.py -c xxx.yml`的方式启动。
+2. 在使用多块GPU训练的时候，需要使用`distributed.launch`的方式启动，如`python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c xxx.yml`，这种方式需要安装NCCL库，如果没有的话会报错。
+
+#### Q3.1.40：使用StyleText进行数据合成时，文本(TextInput)的长度远超StyleInput的长度，该怎么处理与合成呢？
 
 
-#### Q3.4.34: 2.0训练出来的模型，能否在1.1版本上进行部署？
-**A**：这个是不建议的，2.0训练出来的模型建议使用dygraph分支里提供的部署代码。
+**A**：在使用StyleText进行数据合成的时候，建议StyleInput的长度长于TextInput的长度。有2种方法可以处理上述问题：
+
+1. 将StyleInput按列的方向进行复制与扩充，直到其超过TextInput的长度。
+2. 将TextInput进行裁剪，保证每段TextInput都稍短于StyleInput，分别合成之后，再拼接在一起。
+
+实际使用中发现，使用第2种方法的效果在长文本合成的场景中的合成效果更好，StyleText中提供的也是第2种数据合成的逻辑。
+
+
+#### Q3.4.35: 在windows上进行cpp inference的部署时，总是提示找不到`paddle_fluid.dll`和`opencv_world346.dll`，
+**A**：有2种方法可以解决这个问题：
+
+1. 将paddle预测库和opencv库的地址添加到系统环境变量中。
+2. 将提示缺失的dll文件拷贝到编译产出的`ocr_system.exe`文件夹中。
+
+
+#### Q3.4.36：想在Mac上部署，从哪里下载预测库呢？
+
+**A**：Mac上的Paddle预测库可以从这里下载：[https://paddle-inference-lib.bj.bcebos.com/mac/2.0.0/cpu_avx_openblas/paddle_inference.tgz](https://paddle-inference-lib.bj.bcebos.com/mac/2.0.0/cpu_avx_openblas/paddle_inference.tgz)
+
+
+#### Q3.4.37：内网环境如何进行服务化部署呢？
+
+**A**：仍然可以使用HubServing进行服务化部署，保证内网地址可以访问即可。
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -482,6 +500,23 @@ StyleText的用途主要是：提取style_image中的字体、背景等style信�
 
 **A**：Paddle版本问题，请安装2.0版本Paddle：pip install paddlepaddle==2.0.0。
 
+#### Q3.1.39: 训练识别任务的时候，在CPU上运行时，报错`The setting of Parameter-Server must has server_num or servers`。
+
+**A**：这是训练任务启动方式不对造成的。
+
+1. 在使用CPU或者单块GPU训练的时候，可以直接使用`python3 tools/train.py -c xxx.yml`的方式启动。
+2. 在使用多块GPU训练的时候，需要使用`distributed.launch`的方式启动，如`python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c xxx.yml`，这种方式需要安装NCCL库，如果没有的话会报错。
+
+#### Q3.1.40：使用StyleText进行数据合成时，文本(TextInput)的长度远超StyleInput的长度，该怎么处理与合成呢？
+
+**A**：在使用StyleText进行数据合成的时候，建议StyleInput的长度长于TextInput的长度。有2种方法可以处理上述问题：
+
+1. 将StyleInput按列的方向进行复制与扩充，直到其超过TextInput的长度。
+2. 将TextInput进行裁剪，保证每段TextInput都稍短于StyleInput，分别合成之后，再拼接在一起。
+
+实际使用中发现，使用第2种方法的效果在长文本合成的场景中的合成效果更好，StyleText中提供的也是第2种数据合成的逻辑。
+
+
 <a name="数据集3"></a>
 ### 数据集
 
@@ -885,7 +920,31 @@ Paddle2ONNX支持转换的[模型列表](https://github.com/PaddlePaddle/Paddle2
 
 
 #### Q3.4.33: 如何多进程运行paddleocr？
+
 **A**：实例化多个paddleocr服务，然后将服务注册到注册中心，之后通过注册中心统一调度即可，关于注册中心，可以搜索eureka了解一下具体使用，其他的注册中心也行。
 
 #### Q3.4.34: 2.0训练出来的模型，能否在1.1版本上进行部署？
+
 **A**：这个是不建议的，2.0训练出来的模型建议使用dygraph分支里提供的部署代码。
+
+
+#### Q3.4.35: 在windows上进行cpp inference的部署时，总是提示找不到`paddle_fluid.dll`和`opencv_world346.dll`。
+
+**A**：有2种方法可以解决这个问题：
+
+1. 将paddle预测库和opencv库的地址添加到系统环境变量中。
+2. 将提示缺失的dll文件拷贝到编译产出的`ocr_system.exe`文件夹中。
+
+#### Q3.4.36：想在Mac上部署，从哪里下载预测库呢？
+
+**A**：Mac上的Paddle预测库可以从这里下载：[下载地址](https://paddle-inference-lib.bj.bcebos.com/mac/2.0.0/cpu_avx_openblas/paddle_inference.tgz)
+
+
+#### Q3.4.37：内网环境如何进行服务化部署呢？
+
+**A**：仍然可以使用HubServing进行服务化部署，保证内网地址可以访问即可。
+
+
+#### Q3.4.37：内网环境如何进行服务化部署呢？
+
+**A**：仍然可以使用HubServing进行服务化部署，保证内网地址可以访问即可。
