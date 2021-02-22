@@ -261,7 +261,8 @@ def main(args):
             continue
         valid_image_file_list.append(image_file)
         img_list.append(img)
-        if len(img_list) >= args.rec_batch_num:
+        if len(img_list) >= args.rec_batch_num or idx == len(
+                image_file_list) - 1:
             try:
                 rec_res, predict_time = text_recognizer(img_list)
                 total_run_time += predict_time
