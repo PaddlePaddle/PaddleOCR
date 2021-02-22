@@ -44,21 +44,34 @@ class MakeShrinkMap(object):
                 ignore_tags[i] = True
             else:
                 polygon_shape = Polygon(polygon)
-                distance = polygon_shape.area * (
-                    1 - np.power(self.shrink_ratio, 2)) / polygon_shape.length
-                subject = [tuple(l) for l in text_polys[i]]
+                subject = [tuple(l) for l in polygon]
                 padding = pyclipper.PyclipperOffset()
                 padding.AddPath(subject, pyclipper.JT_ROUND,
                                 pyclipper.ET_CLOSEDPOLYGON)
-                shrinked = padding.Execute(-distance)
+                shrinked = []
+
+                # Increase the shrink ratio every time we get multiple polygon returned back
+                possible_ratios = np.arange(self.shrink_ratio, 1,
+                                            self.shrink_ratio)
+                np.append(possible_ratios, 1)
+                # print(possible_ratios)
+                for ratio in possible_ratios:
+                    # print(f"Change shrink ratio to {ratio}")
+                    distance = polygon_shape.area * (
+                        1 - np.power(ratio, 2)) / polygon_shape.length
+                    shrinked = padding.Execute(-distance)
+                    if len(shrinked) == 1:
+                        break
+
                 if shrinked == []:
                     cv2.fillPoly(mask,
                                  polygon.astype(np.int32)[np.newaxis, :, :], 0)
                     ignore_tags[i] = True
                     continue
-                shrinked = np.array(shrinked[0]).reshape(-1, 2)
-                cv2.fillPoly(gt, [shrinked.astype(np.int32)], 1)
-                # cv2.fillPoly(gt[0], [shrinked.astype(np.int32)], 1)
+
+                for each_shirnk in shrinked:
+                    shirnk = np.array(each_shirnk).reshape(-1, 2)
+                    cv2.fillPoly(gt, [shirnk.astype(np.int32)], 1)
 
         data['shrink_map'] = gt
         data['shrink_mask'] = mask
