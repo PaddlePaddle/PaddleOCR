@@ -74,7 +74,7 @@ class StyleTextRecPredictor(object):
 
     def predict(self, style_input, text_input_list):
         if not isinstance(text_input_list, (tuple, list)):
-            return self.predict(style_input, text_input_list)
+            return self.predict_single_image(style_input, text_input_list)
 
         synth_result_list = []
         for text_input in text_input_list:
