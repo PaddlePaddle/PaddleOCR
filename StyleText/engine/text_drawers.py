@@ -1,5 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
+import cv2
 from utils.logging import get_logger
 
 
@@ -28,7 +29,11 @@ class StdTextDrawer(object):
         else:
             return int((self.height - 4)**2 / font_height)
 
-    def draw_text(self, corpus, language="en", crop=True):
+    def draw_text(self,
+                  corpus,
+                  language="en",
+                  crop=True,
+                  style_input_width=None):
         if language not in self.support_languages:
             self.logger.warning(
                 "language {} not supported, use en instead.".format(language))
@@ -37,21 +42,43 @@ class StdTextDrawer(object):
             width = min(self.max_width, len(corpus) * self.height) + 4
         else:
             width = len(corpus) * self.height + 4
-        bg = Image.new("RGB", (width, self.height), color=(127, 127, 127))
-        draw = ImageDraw.Draw(bg)
 
-        char_x = 2
-        font = self.font_dict[language]
-        for i, char_i in enumerate(corpus):
-            char_size = font.getsize(char_i)[0]
-            draw.text((char_x, 2), char_i, fill=(0, 0, 0), font=font)
-            char_x += char_size
-            if char_x >= width:
-                corpus = corpus[0:i + 1]
-                self.logger.warning("corpus length exceed limit: {}".format(
-                    corpus))
+        if style_input_width is not None:
+            width = min(width, style_input_width)
+
+        corpus_list = []
+        text_input_list = []
+
+        while len(corpus) != 0:
+            bg = Image.new("RGB", (width, self.height), color=(127, 127, 127))
+            draw = ImageDraw.Draw(bg)
+            char_x = 2
+            font = self.font_dict[language]
+            i = 0
+            while i < len(corpus):
+                char_i = corpus[i]
+                char_size = font.getsize(char_i)[0]
+                # split when char_x exceeds char size and index is not 0 (at least 1 char should be wroten on the image)
+                if char_x + char_size >= width and i != 0:
+                    text_input = np.array(bg).astype(np.uint8)
+                    text_input = text_input[:, 0:char_x, :]
+
+                    corpus_list.append(corpus[0:i])
+                    text_input_list.append(text_input)
+                    corpus = corpus[i:]
+                    break
+                draw.text((char_x, 2), char_i, fill=(0, 0, 0), font=font)
+                char_x += char_size
+
+                i += 1
+            # the whole text is shorter than style input
+            if i == len(corpus):
+                text_input = np.array(bg).astype(np.uint8)
+                text_input = text_input[:, 0:char_x, :]
+
+                corpus_list.append(corpus[0:i])
+                text_input_list.append(text_input)
+                corpus = corpus[i:]
                 break
 
-        text_input = np.array(bg).astype(np.uint8)
-        text_input = text_input[:, 0:char_x, :]
-        return corpus, text_input
+        return corpus_list, text_input_list
