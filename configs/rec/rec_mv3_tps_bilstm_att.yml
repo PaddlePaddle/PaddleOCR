@@ -3,22 +3,23 @@ Global:
   epoch_num: 72
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/rec/mv3_tps_bilstm_ctc/
+  save_model_dir: ./output/rec/rec_mv3_tps_bilstm_att/
   save_epoch_step: 3
-  # evaluation is run every 2000 iterations
+  # evaluation is run every 5000 iterations after the 4000th iteration
   eval_batch_step: [0, 2000]
   cal_metric_during_train: True
   pretrained_model:
   checkpoints:
   save_inference_dir:
   use_visualdl: False
-  infer_img: doc/imgs_words_en/word_10.png
+  infer_img: doc/imgs_words/ch/word_1.jpg
   # for data or label process
-  character_dict_path:
+  character_dict_path: 
   character_type: en
   max_text_length: 25
   infer_mode: False
   use_space_char: False
+
 
 Optimizer:
   name: Adam
@@ -28,11 +29,11 @@ Optimizer:
     learning_rate: 0.0005
   regularizer:
     name: 'L2'
-    factor: 0
+    factor: 0.00001
 
 Architecture:
   model_type: rec
-  algorithm: STARNet
+  algorithm: RARE
   Transform:
     name: TPS
     num_fiducial: 20
@@ -44,17 +45,18 @@ Architecture:
     model_name: large
   Neck:
     name: SequenceEncoder
-    encoder_type: rnn
+    encoder_type: rnn 
     hidden_size: 96
   Head:
-    name: CTCHead
-    fc_decay: 0.0004
+    name: AttentionHead  
+    hidden_size: 96
+    
 
 Loss:
-  name: CTCLoss
+  name: AttentionLoss
 
 PostProcess:
-  name: CTCLabelDecode
+  name: AttnLabelDecode
 
 Metric:
   name: RecMetric
@@ -68,13 +70,13 @@ Train:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
-      - CTCLabelEncode: # Class handling label
+      - AttnLabelEncode: # Class handling label
       - RecResizeImg:
           image_shape: [3, 32, 100]
       - KeepKeys:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
   loader:
-    shuffle: False
+    shuffle: True
     batch_size_per_card: 256
     drop_last: True
     num_workers: 8
@@ -87,7 +89,7 @@ Eval:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
-      - CTCLabelEncode: # Class handling label
+      - AttnLabelEncode: # Class handling label
       - RecResizeImg:
           image_shape: [3, 32, 100]
       - KeepKeys:
@@ -96,4 +98,4 @@ Eval:
     shuffle: False
     drop_last: False
     batch_size_per_card: 256
-    num_workers: 4
+    num_workers: 1

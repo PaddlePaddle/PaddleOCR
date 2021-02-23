@@ -1,4 +1,4 @@
-# Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.
+# Copyright (c) 2021 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,16 +19,13 @@ from __future__ import print_function
 import os
 import sys
 
-__dir__ = os.path.dirname(os.path.abspath(__file__))
+__dir__ = os.path.dirname(__file__)
 sys.path.append(__dir__)
-sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
+sys.path.append(os.path.join(__dir__, '..', '..', '..'))
+sys.path.append(os.path.join(__dir__, '..', '..', '..', 'tools'))
 
-import yaml
 import paddle
 import paddle.distributed as dist
-
-paddle.seed(2)
-
 from ppocr.data import build_dataloader
 from ppocr.modeling.architectures import build_model
 from ppocr.losses import build_loss
@@ -41,6 +38,17 @@ import tools.program as program
 dist.get_world_size()
 
 
+def get_pruned_params(parameters):
+    params = []
+
+    for param in parameters:
+        if len(
+                param.shape
+        ) == 4 and 'depthwise' not in param.name and 'transpose' not in param.name and "conv2d_57" not in param.name and "conv2d_56" not in param.name:
+            params.append(param.name)
+    return params
+
+
 def main(config, device, logger, vdl_writer):
     # init dist environment
     if config['Global']['distributed']:
@@ -50,12 +58,6 @@ def main(config, device, logger, vdl_writer):
 
     # build dataloader
     train_dataloader = build_dataloader(config, 'Train', device, logger)
-    if len(train_dataloader) == 0:
-        logger.error(
-            'No Images in train dataset, please check annotation file and path in the configuration file'
-        )
-        return
-
     if config['Eval']:
         valid_dataloader = build_dataloader(config, 'Eval', device, logger)
     else:
@@ -71,8 +73,13 @@ def main(config, device, logger, vdl_writer):
         char_num = len(getattr(post_process_class, 'character'))
         config['Architecture']["Head"]['out_channels'] = char_num
     model = build_model(config['Architecture'])
-    if config['Global']['distributed']:
-        model = paddle.DataParallel(model)
+
+    flops = paddle.flops(model, [1, 3, 640, 640])
+    logger.info(f"FLOPs before pruning: {flops}")
+
+    from paddleslim.dygraph import FPGMFilterPruner
+    model.train()
+    pruner = FPGMFilterPruner(model, [1, 3, 640, 640])
 
     # build loss
     loss_class = build_loss(config['Loss'])
@@ -91,31 +98,49 @@ def main(config, device, logger, vdl_writer):
 
     logger.info('train dataloader has {} iters, valid dataloader has {} iters'.
                 format(len(train_dataloader), len(valid_dataloader)))
+    # build metric
+    eval_class = build_metric(config['Metric'])
+
+    logger.info('train dataloader has {} iters, valid dataloader has {} iters'.
+                format(len(train_dataloader), len(valid_dataloader)))
+
+    def eval_fn():
+        metric = program.eval(model, valid_dataloader, post_process_class,
+                              eval_class)
+        logger.info(f"metric['hmean']: {metric['hmean']}")
+        return metric['hmean']
+
+    params_sensitive = pruner.sensitive(
+        eval_func=eval_fn,
+        sen_file="./sen.pickle",
+        skip_vars=[
+            "conv2d_57.w_0", "conv2d_transpose_2.w_0", "conv2d_transpose_3.w_0"
+        ])
+
+    logger.info(
+        "The sensitivity analysis results of model parameters saved in sen.pickle"
+    )
+    # calculate pruned params's ratio
+    params_sensitive = pruner._get_ratios_by_loss(params_sensitive, loss=0.02)
+    for key in params_sensitive.keys():
+        logger.info(f"{key}, {params_sensitive[key]}")
+
+    plan = pruner.prune_vars(params_sensitive, [0])
+    for param in model.parameters():
+        if ("weights" in param.name and "conv" in param.name) or (
+                "w_0" in param.name and "conv2d" in param.name):
+            logger.info(f"{param.name}: {param.shape}")
+
+    flops = paddle.flops(model, [1, 3, 640, 640])
+    logger.info(f"FLOPs after pruning: {flops}")
+
     # start train
+
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,
                   eval_class, pre_best_model_dict, logger, vdl_writer)
 
 
-def test_reader(config, device, logger):
-    loader = build_dataloader(config, 'Train', device, logger)
-    import time
-    starttime = time.time()
-    count = 0
-    try:
-        for data in loader():
-            count += 1
-            if count % 1 == 0:
-                batch_time = time.time() - starttime
-                starttime = time.time()
-                logger.info("reader: {}, {}, {}".format(
-                    count, len(data[0]), batch_time))
-    except Exception as e:
-        logger.info(e)
-    logger.info("finish reader: {}, Success!".format(count))
-
-
 if __name__ == '__main__':
     config, device, logger, vdl_writer = program.preprocess(is_train=True)
     main(config, device, logger, vdl_writer)
-    # test_reader(config, device, logger)

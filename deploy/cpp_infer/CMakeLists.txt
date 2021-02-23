@@ -133,7 +133,11 @@ if(WITH_MKL)
     endif ()
   endif()
 else()
-  set(MATH_LIB ${PADDLE_LIB}/third_party/install/openblas/lib/libopenblas${CMAKE_STATIC_LIBRARY_SUFFIX})
+  if (WIN32)
+    set(MATH_LIB ${PADDLE_LIB}/third_party/install/openblas/lib/openblas${CMAKE_STATIC_LIBRARY_SUFFIX})
+  else ()
+    set(MATH_LIB ${PADDLE_LIB}/third_party/install/openblas/lib/libopenblas${CMAKE_STATIC_LIBRARY_SUFFIX})
+  endif ()
 endif()
 
 # Note: libpaddle_inference_api.so/a must put before libpaddle_fluid.so/a
@@ -157,7 +161,7 @@ endif(WITH_STATIC_LIB)
 
 if (NOT WIN32)
     set(DEPS ${DEPS}
-        ${MATH_LIB} ${MKLDNN_LIB} 
+        ${MATH_LIB} ${MKLDNN_LIB}
         glog gflags protobuf z xxhash
         )
     if(EXISTS "${PADDLE_LIB}/third_party/install/snappystream/lib")

@@ -2,10 +2,11 @@
 # 基于Python预测引擎推理
 
 inference 模型（`paddle.jit.save`保存的模型）
-一般是模型训练完成后保存的固化模型，多用于预测部署。训练过程中保存的模型是checkpoints模型，保存的是模型的参数，多用于恢复训练等。
-与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合与实际系统集成。
+一般是模型训练，把模型结构和模型参数保存在文件中的固化模型，多用于预测部署场景。
+训练过程中保存的模型是checkpoints模型，保存的只有模型的参数，多用于恢复训练等。
+与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合于实际系统集成。
 
-接下来首先介绍如何将训练的模型转换成inference模型，然后将依次介绍文本检测、文本角度分类器、文本识别以及三者串联基于预测引擎推理。
+接下来首先介绍如何将训练的模型转换成inference模型，然后将依次介绍文本检测、文本角度分类器、文本识别以及三者串联在CPU、GPU上的预测方法。
 
 
 - [一、训练模型转inference模型](#训练模型转inference模型)
@@ -22,8 +23,9 @@ inference 模型（`paddle.jit.save`保存的模型）
 - [三、文本识别模型推理](#文本识别模型推理)
     - [1. 超轻量中文识别模型推理](#超轻量中文识别模型推理)
     - [2. 基于CTC损失的识别模型推理](#基于CTC损失的识别模型推理)
-    - [3. 自定义文本识别字典的推理](#自定义文本识别字典的推理)
-    - [4. 多语言模型的推理](#多语言模型的推理)
+    - [3. 基于SRN损失的识别模型推理](#基于SRN损失的识别模型推理)
+    - [4. 自定义文本识别字典的推理](#自定义文本识别字典的推理)
+    - [5. 多语言模型的推理](#多语言模型的推理)
 
 - [四、方向分类模型推理](#方向识别模型推理)
     - [1. 方向分类模型推理](#方向分类模型推理)
@@ -139,7 +141,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/00018069.jpg" --det_m
 ![](../imgs_results/det_res_00018069.jpg)
 
 通过参数`limit_type`和`det_limit_side_len`来对图片的尺寸进行限制，
-`litmit_type`可选参数为[`max`, `min`]，
+`limit_type`可选参数为[`max`, `min`]，
 `det_limit_size_len` 为正整数，一般设置为32 的倍数，比如960。
 
 参数默认设置为`limit_type='max', det_limit_side_len=960`。表示网络输入图像的最长边不能超过960，
@@ -295,8 +297,20 @@ Predicts of ./doc/imgs_words_en/word_336.png:('super', 0.9999073)
 self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
 dict_character = list(self.character_str)
 ```
+<a name="基于SRN损失的识别模型推理"></a>
+### 3. 基于SRN损失的识别模型推理
+基于SRN损失的识别模型，需要额外设置识别算法参数 --rec_algorithm="SRN"。
+同时需要保证预测shape与训练时一致，如： --rec_image_shape="1, 64, 256"
 
-### 3. 自定义文本识别字典的推理
+```
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" \
+                                   --rec_model_dir="./inference/srn/" \
+                                   --rec_image_shape="1, 64, 256" \
+                                   --rec_char_type="en" \
+                                   --rec_algorithm="SRN"
+```
+
+### 4. 自定义文本识别字典的推理
 如果训练时修改了文本的字典，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径，并且设置 `rec_char_type=ch`
 
 ```
@@ -304,7 +318,7 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png
 ```
 
 <a name="多语言模型的推理"></a>
-### 4. 多语言模型的推理
+### 5. 多语言模型的推理
 如果您需要预测的是其他语言模型，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径, 同时为了得到正确的可视化结果，
 需要通过 `--vis_font_path` 指定可视化的字体路径，`doc/fonts/` 路径下有默认提供的小语种字体，例如韩文识别：
 

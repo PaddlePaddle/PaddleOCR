@@ -47,6 +47,7 @@ def parse_args():
     parser.add_argument("--det_db_box_thresh", type=float, default=0.5)
     parser.add_argument("--det_db_unclip_ratio", type=float, default=1.6)
     parser.add_argument("--max_batch_size", type=int, default=10)
+    parser.add_argument("--use_dilation", type=bool, default=False)
     # EAST parmas
     parser.add_argument("--det_east_score_thresh", type=float, default=0.8)
     parser.add_argument("--det_east_cover_thresh", type=float, default=0.1)
@@ -123,6 +124,8 @@ def create_predictor(args, mode, logger):
             # cache 10 different shapes for mkldnn to avoid memory leak
             config.set_mkldnn_cache_capacity(10)
             config.enable_mkldnn()
+            #  TODO LDOUBLEV: fix mkldnn bug when bach_size  > 1
+            #config.set_mkldnn_op({'conv2d', 'depthwise_conv2d', 'pool2d', 'batch_norm'})
             args.rec_batch_num = 1
 
     # config.enable_memory_optim()
