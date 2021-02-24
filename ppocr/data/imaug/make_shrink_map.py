@@ -32,7 +32,6 @@ class MakeShrinkMap(object):
         text_polys, ignore_tags = self.validate_polygons(text_polys,
                                                          ignore_tags, h, w)
         gt = np.zeros((h, w), dtype=np.float32)
-        # gt = np.zeros((1, h, w), dtype=np.float32)
         mask = np.ones((h, w), dtype=np.float32)
         for i in range(len(text_polys)):
             polygon = text_polys[i]
