@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import os
+import numpy as np
+import cv2
 
 from utils.config import ArgsParser, load_config, override_config
 from utils.logging import get_logger
@@ -36,8 +38,9 @@ class ImageSynthesiser(object):
         self.predictor = getattr(predictors, predictor_method)(self.config)
 
     def synth_image(self, corpus, style_input, language="en"):
-        corpus, text_input = self.text_drawer.draw_text(corpus, language)
-        synth_result = self.predictor.predict(style_input, text_input)
+        corpus_list, text_input_list = self.text_drawer.draw_text(
+            corpus, language, style_input_width=style_input.shape[1])
+        synth_result = self.predictor.predict(style_input, text_input_list)
         return synth_result
 
 
@@ -59,12 +62,15 @@ class DatasetSynthesiser(ImageSynthesiser):
         for i in range(self.output_num):
             style_data = self.style_sampler.sample()
             style_input = style_data["image"]
-            corpus_language, text_input_label = self.corpus_generator.generate(
-            )
-            text_input_label, text_input = self.text_drawer.draw_text(
-                text_input_label, corpus_language)
+            corpus_language, text_input_label = self.corpus_generator.generate()
+            text_input_label_list, text_input_list = self.text_drawer.draw_text(
+                text_input_label,
+                corpus_language,
+                style_input_width=style_input.shape[1])
 
-            synth_result = self.predictor.predict(style_input, text_input)
+            text_input_label = "".join(text_input_label_list)
+
+            synth_result = self.predictor.predict(style_input, text_input_list)
             fake_fusion = synth_result["fake_fusion"]
             self.writer.save_image(fake_fusion, text_input_label)
         self.writer.save_label()
