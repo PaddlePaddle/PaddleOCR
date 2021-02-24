@@ -46,7 +46,7 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 - 微信扫描二维码加入官方交流群，获得更高效的问题答疑，与各行各业开发者充分交流，期待您的加入。
 
 <div align="center">
-<img src="./doc/joinus.PNG"  width = "200" height = "200" />
+<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/joinus.PNG"  width = "200" height = "200" />
 </div>
 
 ## 快速体验
