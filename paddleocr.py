@@ -282,8 +282,13 @@ class PaddleOCR(predict_system.TextSystem):
         if isinstance(img, list) and det == True:
             logger.error('When input a list of images, det must be false')
             exit(0)
+        if cls == False:
+            self.use_angle_cls = False
+        elif cls == True and self.use_angle_cls == False:
+            logger.warning(
+                'Since the angle classifier is not initialized, the angle classifier will not be uesd during the forward process'
+            )
 
-        self.use_angle_cls = cls
         if isinstance(img, str):
             # download net image
             if img.startswith('http'):
@@ -301,6 +306,7 @@ class PaddleOCR(predict_system.TextSystem):
         if isinstance(img, np.ndarray) and len(img.shape) == 2:
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
         if det and rec:
+
             dt_boxes, rec_res = self.__call__(img)
             return [[box.tolist(), res] for box, res in zip(dt_boxes, rec_res)]
         elif det and not rec:
@@ -342,3 +348,9 @@ def main():
         if result is not None:
             for line in result:
                 logger.info(line)
+
+
+if __name__ == '__main__':
+    ocr = PaddleOCR(use_angle_cls=False)
+    r = ocr.ocr('doc/imgs/1.jpg')
+    print(r)
