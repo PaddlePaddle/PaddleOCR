@@ -347,9 +347,3 @@ def main():
         if result is not None:
             for line in result:
                 logger.info(line)
-
-
-if __name__ == '__main__':
-    ocr = PaddleOCR(use_angle_cls=False)
-    r = ocr.ocr('doc/imgs/1.jpg')
-    print(r)
