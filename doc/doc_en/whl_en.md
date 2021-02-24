@@ -1,7 +1,7 @@
 # paddleocr package
 
-## Get started quickly
-### install package
+## 1 Get started quickly
+### 1.1 install package
 install by pypi
 ```bash
 pip install "paddleocr>=2.0.1" # Recommend to use version 2.0.1+
@@ -12,9 +12,11 @@ build own whl package and install
 python3 setup.py bdist_wheel
 pip3 install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x is the version of paddleocr
 ```
-### 1. Use by code
+## 2 Use
+### 2.1 Use by code
+The paddleocr whl package will automatically download the ppocr lightweight model as the default model, which can be customized and replaced according to the section 3 **Custom Model**.
 
-* detection classification and recognition
+* detection angle classification and recognition
 ```python
 from paddleocr import PaddleOCR,draw_ocr
 # Paddleocr supports Chinese, English, French, German, Korean and Japanese.
@@ -163,7 +165,7 @@ Output will be a list, each item contains classification result and confidence
 ['0', 0.99999964]
 ```
 
-### Use by command line
+### 2.2 Use by command line
 
 show help information
 ```bash
@@ -239,11 +241,11 @@ Output will be a list, each item contains classification result and confidence
 ['0', 0.99999964]
 ```
 
-## Use custom model
+## 3 Use custom model
 When the built-in model cannot meet the needs, you need to use your own trained model.
 First, refer to the first section of [inference_en.md](./inference_en.md) to convert your det and rec model to inference model, and then use it as follows
 
-### 1. Use by code
+### 3.1 Use by code
 
 ```python
 from paddleocr import PaddleOCR,draw_ocr
@@ -265,17 +267,17 @@ im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
 
-### Use by command line
+### 3.2 Use by command line
 
 ```bash
 paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_dir} --rec_model_dir {your_rec_model_dir} --rec_char_dict_path {your_rec_char_dict_path} --cls_model_dir {your_cls_model_dir} --use_angle_cls true
 ```
 
-### Use web images or numpy array as input
+## 4 Use web images or numpy array as input
 
-1. Web image
+### 4.1 Web image
 
-Use by code
+- Use by code
 ```python
 from paddleocr import PaddleOCR, draw_ocr
 ocr = PaddleOCR(use_angle_cls=True, lang="ch") # need to run only once to download and load model into memory
@@ -294,12 +296,12 @@ im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
-Use by command line
+- Use by command line
 ```bash
 paddleocr --image_dir http://n.sinaimg.cn/ent/transform/w630h933/20171222/o111-fypvuqf1838418.jpg --use_angle_cls=true
 ```
 
-2. Numpy array
+### 4.2 Numpy array
 Support numpy array as input only when used by code
 
 ```python
@@ -324,7 +326,7 @@ im_show.save('result.jpg')
 ```
 
 
-## Parameter Description
+## 5 Parameter Description
 
 | Parameter                    | Description                                                                                                                                                                                                                 | Default value                  |
 |-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|

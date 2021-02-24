@@ -13,7 +13,7 @@ PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field, w
   - Undo function: In the process of drawing a four-point label box or after editing the box, press Ctrl+Z to undo the previous operation.
   - Fix image rotation and size problems, optimize the process of editing the mark frame (by [ninetailskim](https://github.com/ninetailskim)、 [edencfc](https://github.com/edencfc)).
 - 2021.1.11: Optimize the labeling experience (by [edencfc](https://github.com/edencfc)),
-  - Users can choose whether to pop up the label input dialog after drawing the detection box in "View - Pop-up Label Input Dialog". 
+  - Users can choose whether to pop up the label input dialog after drawing the detection box in "View - Pop-up Label Input Dialog".
   - The recognition result scrolls synchronously when users click related detection box.
   - Click to modify the recognition result.(If you can't change the result, please switch to the system default input method, or switch back to the original input method again)
 - 2020.12.18: Support re-recognition of a single label box (by [ninetailskim](https://github.com/ninetailskim) ), perfect shortcut keys.
@@ -52,7 +52,7 @@ python3 PPOCRLabel.py
 ```
 pip3 install pyqt5
 pip3 uninstall opencv-python # Uninstall opencv manually as it conflicts with pyqt
-pip3 install opencv-contrib-python-headless # Install the headless version of opencv
+pip3 install opencv-contrib-python-headless==4.2.0.32 # Install the headless version of opencv
 cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
 python3 PPOCRLabel.py
 ```
@@ -129,7 +129,7 @@ python3 PPOCRLabel.py
 
 - Default model: PPOCRLabel uses the Chinese and English ultra-lightweight OCR model in PaddleOCR by default, supports Chinese, English and number recognition, and multiple language detection.
 
-- Model language switching: Changing the built-in model language is supportable by clicking "PaddleOCR"-"Choose OCR Model" in the menu bar. Currently supported languages​include French, German, Korean, and Japanese. 
+- Model language switching: Changing the built-in model language is supportable by clicking "PaddleOCR"-"Choose OCR Model" in the menu bar. Currently supported languages​include French, German, Korean, and Japanese.
   For specific model download links, please refer to [PaddleOCR Model List](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/models_list_en.md#multilingual-recognition-modelupdating)
 
 - Custom model: The model trained by users can be replaced by modifying PPOCRLabel.py in [PaddleOCR class instantiation](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/PPOCRLabel/PPOCRLabel.py#L110) referring [Custom Model Code](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/whl_en.md#use-custom-model)
@@ -162,11 +162,11 @@ For some data that are difficult to recognize, the recognition results will not 
     ```
     pyrcc5 -o libs/resources.py resources.qrc
     ```
-- If you get an error ``` module 'cv2' has no attribute 'INTER_NEAREST'```, you need to delete all opencv related packages first, and then reinstall the headless version of opencv
+- If you get an error ``` module 'cv2' has no attribute 'INTER_NEAREST'```, you need to delete all opencv related packages first, and then reinstall the 4.2.0.32  version of headless opencv
     ```
-    pip install opencv-contrib-python-headless
+    pip install opencv-contrib-python-headless==4.2.0.32
     ```
-    
+
 ### Related
 
 1.[Tzutalin. LabelImg. Git code (2015)](https://github.com/tzutalin/labelImg)

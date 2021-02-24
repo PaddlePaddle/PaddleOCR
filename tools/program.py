@@ -163,6 +163,11 @@ def train(config,
     if type(eval_batch_step) == list and len(eval_batch_step) >= 2:
         start_eval_step = eval_batch_step[0]
         eval_batch_step = eval_batch_step[1]
+        if len(valid_dataloader) == 0:
+            logger.info(
+                'No Images in eval dataset, evaluation during training will be disabled'
+            )
+            start_eval_step = 1e111
         logger.info(
             "During the training process, after the {}th iteration, an evaluation is run every {} iterations".
             format(start_eval_step, eval_batch_step))
@@ -176,6 +181,8 @@ def train(config,
     train_stats = TrainingStats(log_smooth_window, ['lr'])
     model_average = False
     model.train()
+
+    use_srn = config['Architecture']['algorithm'] == "SRN"
 
     if 'start_epoch' in best_model_dict:
         start_epoch = best_model_dict['start_epoch']
@@ -195,7 +202,7 @@ def train(config,
                 break
             lr = optimizer.get_lr()
             images = batch[0]
-            if config['Architecture']['algorithm'] == "SRN":
+            if use_srn:
                 others = batch[-4:]
                 preds = model(images, others)
                 model_average = True
@@ -222,8 +229,8 @@ def train(config,
                 batch = [item.numpy() for item in batch]
                 post_result = post_process_class(preds, batch[1])
                 eval_class(post_result, batch)
-                metirc = eval_class.get_metric()
-                train_stats.update(metirc)
+                metric = eval_class.get_metric()
+                train_stats.update(metric)
 
             if vdl_writer is not None and dist.get_rank() == 0:
                 for k, v in train_stats.get().items():
@@ -251,8 +258,12 @@ def train(config,
                         min_average_window=10000,
                         max_average_window=15625)
                     Model_Average.apply()
-                cur_metirc = eval(model, valid_dataloader, post_process_class,
-                                  eval_class)
+                cur_metric = eval(
+                    model,
+                    valid_dataloader,
+                    post_process_class,
+                    eval_class,
+                    use_srn=use_srn)
                 cur_metric_str = 'cur metric, {}'.format(', '.join(
                     ['{}: {}'.format(k, v) for k, v in cur_metric.items()]))
                 logger.info(cur_metric_str)
@@ -316,7 +327,8 @@ def train(config,
     return
 
 
-def eval(model, valid_dataloader, post_process_class, eval_class):
+def eval(model, valid_dataloader, post_process_class, eval_class,
+         use_srn=False):
     model.eval()
     with paddle.no_grad():
         total_frame = 0.0
@@ -326,9 +338,13 @@ def eval(model, valid_dataloader, post_process_class, eval_class):
             if idx >= len(valid_dataloader):
                 break
             images = batch[0]
-            others = batch[-4:]
             start = time.time()
-            preds = model(images, others)
+
+            if use_srn:
+                others = batch[-4:]
+                preds = model(images, others)
+            else:
+                preds = model(images)
 
             batch = [item.numpy() for item in batch]
             # Obtain usable results from post-processing methods
@@ -378,6 +394,7 @@ def preprocess(is_train=False):
     logger = get_logger(name='root', log_file=log_file)
     if config['Global']['use_visualdl']:
         from visualdl import LogWriter
+        save_model_dir = config['Global']['save_model_dir']
         vdl_writer_path = '{}/vdl/'.format(save_model_dir)
         os.makedirs(vdl_writer_path, exist_ok=True)
         vdl_writer = LogWriter(logdir=vdl_writer_path)

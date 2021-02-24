@@ -1,5 +1,5 @@
 # Version: 2.0.0
-FROM registry.baidubce.com/paddlepaddle/paddle:2.0.0rc1
+FROM registry.baidubce.com/paddlepaddle/paddle:2.0.0
 
 # PaddleOCR base on Python3.7
 RUN pip3.7 install --upgrade pip -i https://mirror.baidu.com/pypi/simple
