@@ -306,7 +306,6 @@ class PaddleOCR(predict_system.TextSystem):
         if isinstance(img, np.ndarray) and len(img.shape) == 2:
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
         if det and rec:
-
             dt_boxes, rec_res = self.__call__(img)
             return [[box.tolist(), res] for box, res in zip(dt_boxes, rec_res)]
         elif det and not rec:
