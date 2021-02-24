@@ -200,4 +200,4 @@ if __name__ == "__main__":
         logger.info("The visualized img saved in {}".format(
             os.path.join(draw_img_save, "det_res_%s" % img_name_pure)))
     if count > 1:
-        logger.info("Avg Time:", total_time / (count - 1))
+        logger.info("Avg Time: {}".format(total_time / (count - 1)))
