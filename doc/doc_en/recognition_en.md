@@ -108,7 +108,7 @@ n
 
 In `word_dict.txt`, there is a single word in each line, which maps characters and numeric indexes together, e.g "and" will be mapped to [2 5 1]
 
-`ppocr/utils/ppocr_keys_v1.txt` is a Chinese dictionary with 6623 characters.
+`ppocr/utils/ppocr_keys_v1.txt` is a Chinese dictionary with 6634 characters.
 
 `ppocr/utils/ic15_dict.txt` is an English dictionary with 63 characters
 
