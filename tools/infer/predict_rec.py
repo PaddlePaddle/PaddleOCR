@@ -47,7 +47,7 @@ class TextRecognizer(object):
             "character_type": args.rec_char_type,
             "character_dict_path": args.rec_char_dict_path,
             "use_space_char": args.use_space_char,
-            "max_text_length": args.max_text_length
+            "max_text_length": args.max_text_length,
         }
         if self.rec_algorithm in ["CRNN", "Rosetta", "STAR-Net"]:
             char_ops_params['loss_type'] = 'ctc'
@@ -58,6 +58,12 @@ class TextRecognizer(object):
         elif self.rec_algorithm == "SRN":
             char_ops_params['loss_type'] = 'srn'
             self.loss_type = 'srn'
+        # avoid not config special character
+        argsMap = vars(args)
+        if 'sepcial_char_dict_path' in argsMap :
+            char_ops_params['special_character_dict_path'] = args.sepcial_char_dict_path
+        elif 'use_normal_char' in argsMap:
+            char_ops_params['use_normal_char'] = args.use_normal_char
         self.char_ops = CharacterOps(char_ops_params)
 
     def resize_norm_img(self, img, max_wh_ratio):
