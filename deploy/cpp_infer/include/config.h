@@ -63,6 +63,8 @@ public:
 
     this->cls_thresh = stod(config_map_["cls_thresh"]);
 
+    this->rec_batch_num = stoi(config_map_["rec_batch_num"]);
+
     this->visualize = bool(stoi(config_map_["visualize"]));
   }
 
@@ -85,6 +87,8 @@ public:
   double det_db_box_thresh = 0.5;
 
   double det_db_unclip_ratio = 2.0;
+
+  int rec_batch_num = 30;
 
   std::string det_model_dir;
 

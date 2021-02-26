@@ -21,6 +21,7 @@ cls_thresh  0.9
 # rec config
 rec_model_dir  ./inference/rec_crnn
 char_list_file ../../ppocr/utils/ppocr_keys_v1.txt
+rec_batch_num  30
 
 # show the detection results
 visualize 1
