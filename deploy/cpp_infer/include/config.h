@@ -38,6 +38,8 @@ public:
 
     this->cpu_math_library_num_threads =
         stoi(config_map_["cpu_math_library_num_threads"]);
+    
+    this->threadpool_num =stoi(config_map_["threadpool_num"]);
 
     this->use_mkldnn = bool(stoi(config_map_["use_mkldnn"]));
 
@@ -73,6 +75,8 @@ public:
   int gpu_mem = 4000;
 
   int cpu_math_library_num_threads = 1;
+  
+  int threadpool_num = 4;
 
   bool use_mkldnn = false;
 
