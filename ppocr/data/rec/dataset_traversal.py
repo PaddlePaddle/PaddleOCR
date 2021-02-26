@@ -135,7 +135,8 @@ class LMDBReader(object):
                             image_shape=self.image_shape,
                             char_ops=self.char_ops,
                             tps=self.use_tps,
-                            infer_mode=True)
+                            infer_mode=True,
+                            img_path=single_img)
                     yield norm_img
             else:
                 lmdb_sets = self.load_hierarchical_lmdb_dataset()
@@ -173,7 +174,8 @@ class LMDBReader(object):
                                     label=label,
                                     char_ops=self.char_ops,
                                     loss_type=self.loss_type,
-                                    max_text_length=self.max_text_length)
+                                    max_text_length=self.max_text_length,
+                                    img_path=None)
                             if outs is None:
                                 continue
                             yield outs
@@ -267,7 +269,8 @@ class SimpleReader(object):
                             image_shape=self.image_shape,
                             char_ops=self.char_ops,
                             tps=self.use_tps,
-                            infer_mode=True)
+                            infer_mode=True,
+                            img_path=single_img)
                     yield norm_img
             else:
                 with open(self.label_file_path, "rb") as fin:
@@ -315,7 +318,8 @@ class SimpleReader(object):
                             char_ops=self.char_ops,
                             loss_type=self.loss_type,
                             max_text_length=self.max_text_length,
-                            distort=self.use_distort)
+                            distort=self.use_distort,
+                            img_path=img_path)
                     if outs is None:
                         continue
                     yield outs
