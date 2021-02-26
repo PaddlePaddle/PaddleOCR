@@ -20,7 +20,8 @@ def read_params():
     #DB parmas
     cfg.det_db_thresh = 0.3
     cfg.det_db_box_thresh = 0.5
-    cfg.det_db_unclip_ratio = 2.0
+    cfg.det_db_unclip_ratio = 1.6
+    cfg.use_dilation = False
 
     #EAST parmas
     cfg.det_east_score_thresh = 0.8
