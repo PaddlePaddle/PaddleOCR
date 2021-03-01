@@ -25,30 +25,30 @@
 <a name="近期更新"></a>
 ## 近期更新（2021.3.1）  
 
-#### Q1: 文字识别训练，设置图像高度不等于32时报错
+#### Q3.1.44: 文字识别训练，设置图像高度不等于32时报错
 **A**：ctc decode的时候，输入需要是1为序列，因此降采样之后，建议特征图高度为1，ppocr中，特征图会降采样32倍，之后高度正好为1，所以有2种解决方案
 - 指定输入shape高度为32（推荐）
 - 在backbone的mv3中添加更多的降采样模块，保证输出的特征图高度为1
 
-#### Q2: 增大batch_size模型训练速度没有明显提升
+#### Q3.1.45: 增大batch_size模型训练速度没有明显提升
 如果bs打得太大，加速效果不明显的话，可以试一下增大初始化内存的值，运行代码前设置环境变量：
 ```
 export FLAGS_initial_cpu_memory_in_mb=2000  # 设置初始化内存约2G左右
 ```
 
-#### Q3: 动态图分支(dygraph,release/2.0)，训练模型和推理模型效果不一致
+#### Q3.1.46: 动态图分支(dygraph,release/2.0)，训练模型和推理模型效果不一致
 当前问题表现为：使用训练完的模型直接测试结果较好，但是转换为inference model后，预测结果不一致；出现这个问题一般是两个原因：
 - 1. 预处理函数设置的不一致
 - 2. 后处理参数不一致
 repo中config.yml文件的前后处理参数和inference预测默认的超参数有不一致的地方，建议排查下训练模型预测和inference预测的前后处理，
 参考[issue](https://github.com/PaddlePaddle/PaddleOCR/issues/2080)。
 
-#### Q4: paddleocr package 报错 FatalError: `Process abort signal` is detected by the operating system
+#### Q3.1.47: paddleocr package 报错 FatalError: `Process abort signal` is detected by the operating system
 首先，按照[安装文档](./installation.md)安装PaddleOCR的运行环境；另外，检查python环境，python3.6/3.8上可能会出现这个问题，建议用python3.7，
 参考[issue](https://github.com/PaddlePaddle/PaddleOCR/issues/2069)。
 
 
-#### Q5: 下载的识别模型解压后缺失文件，没有期望的inference.pdiparams, inference.pdmodel等文件
+#### Q3.1.48: 下载的识别模型解压后缺失文件，没有期望的inference.pdiparams, inference.pdmodel等文件
 用解压软件解压可能会出现这个问题，建议二次解压下或者用命令行解压`tar xf `
 
 
