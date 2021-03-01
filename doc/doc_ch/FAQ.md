@@ -9,13 +9,13 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2021.2.22）](#近期更新)
+* [近期更新（2021.3.1）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
 * [【理论篇】OCR通用32个问题](#OCR通用问题)
   * [基础知识7题](#基础知识)
   * [数据集7题](#数据集2)
   * [模型训练调优18题](#模型训练调优2)
-* [【实战篇】PaddleOCR实战125个问题](#PaddleOCR实战问题)
+* [【实战篇】PaddleOCR实战135个问题](#PaddleOCR实战问题)
   * [使用咨询43题](#使用咨询)
   * [数据集18题](#数据集3)
   * [模型训练调优30题](#模型训练调优3)
@@ -23,41 +23,33 @@
 
 
 <a name="近期更新"></a>
-## 近期更新（2021.2.22）
+## 近期更新（2021.3.1）  
 
-#### Q3.1.42: 训练识别任务的时候，在CPU上运行时，报错`The setting of Parameter-Server must has server_num or servers`。
+#### Q1: 文字识别训练，设置图像高度不等于32时报错
+**A**：ctc decode的时候，输入需要是1为序列，因此降采样之后，建议特征图高度为1，ppocr中，特征图会降采样32倍，之后高度正好为1，所以有2种解决方案
+- 指定输入shape高度为32（推荐）
+- 在backbone的mv3中添加更多的降采样模块，保证输出的特征图高度为1
 
-**A**：这是训练任务启动方式不对造成的。
+#### Q2: 增大batch_size模型训练速度没有明显提升
+如果bs打得太大，加速效果不明显的话，可以试一下增大初始化内存的值，运行代码前设置环境变量：
+```
+export FLAGS_initial_cpu_memory_in_mb=2000  # 设置初始化内存约2G左右
+```
 
-1. 在使用CPU或者单块GPU训练的时候，可以直接使用`python3 tools/train.py -c xxx.yml`的方式启动。
-2. 在使用多块GPU训练的时候，需要使用`distributed.launch`的方式启动，如`python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c xxx.yml`，这种方式需要安装NCCL库，如果没有的话会报错。
+#### Q3: 动态图分支(dygraph,release/2.0)，训练模型和推理模型效果不一致
+当前问题表现为：使用训练完的模型直接测试结果较好，但是转换为inference model后，预测结果不一致；出现这个问题一般是两个原因：
+- 1. 预处理函数设置的不一致
+- 2. 后处理参数不一致
+repo中config.yml文件的前后处理参数和inference预测默认的超参数有不一致的地方，建议排查下训练模型预测和inference预测的前后处理，
+参考[issue](https://github.com/PaddlePaddle/PaddleOCR/issues/2080)。
 
-#### Q3.1.43：使用StyleText进行数据合成时，文本(TextInput)的长度远超StyleInput的长度，该怎么处理与合成呢？
-
-
-**A**：在使用StyleText进行数据合成的时候，建议StyleInput的长度长于TextInput的长度。有2种方法可以处理上述问题：
-
-1. 将StyleInput按列的方向进行复制与扩充，直到其超过TextInput的长度。
-2. 将TextInput进行裁剪，保证每段TextInput都稍短于StyleInput，分别合成之后，再拼接在一起。
-
-实际使用中发现，使用第2种方法的效果在长文本合成的场景中的合成效果更好，StyleText中提供的也是第2种数据合成的逻辑。
-
-
-#### Q3.4.37: 在windows上进行cpp inference的部署时，总是提示找不到`paddle_fluid.dll`和`opencv_world346.dll`，
-**A**：有2种方法可以解决这个问题：
-
-1. 将paddle预测库和opencv库的地址添加到系统环境变量中。
-2. 将提示缺失的dll文件拷贝到编译产出的`ocr_system.exe`文件夹中。
+#### Q4: paddleocr package 报错 FatalError: `Process abort signal` is detected by the operating system
+首先，按照[安装文档](./installation.md)安装PaddleOCR的运行环境；另外，检查python环境，python3.6/3.8上可能会出现这个问题，建议用python3.7，
+参考[issue](https://github.com/PaddlePaddle/PaddleOCR/issues/2069)。
 
 
-#### Q3.4.38：想在Mac上部署，从哪里下载预测库呢？
-
-**A**：Mac上的Paddle预测库可以从这里下载：[https://paddle-inference-lib.bj.bcebos.com/mac/2.0.0/cpu_avx_openblas/paddle_inference.tgz](https://paddle-inference-lib.bj.bcebos.com/mac/2.0.0/cpu_avx_openblas/paddle_inference.tgz)
-
-
-#### Q3.4.39：内网环境如何进行服务化部署呢？
-
-**A**：仍然可以使用PaddleServing或者HubServing进行服务化部署，保证内网地址可以访问即可。
+#### Q5: 下载的识别模型解压后缺失文件，没有期望的inference.pdiparams, inference.pdmodel等文件
+用解压软件解压可能会出现这个问题，建议二次解压下或者用命令行解压`tar xf `
 
 
 <a name="OCR精选10个问题"></a>
@@ -530,6 +522,35 @@ release/2.0-rc1-0是基于Paddle 2.0rc1的稳定版本，release/2.0是基于Pad
 2. 将TextInput进行裁剪，保证每段TextInput都稍短于StyleInput，分别合成之后，再拼接在一起。
 
 实际使用中发现，使用第2种方法的效果在长文本合成的场景中的合成效果更好，StyleText中提供的也是第2种数据合成的逻辑。
+
+
+#### Q3.1.44: 文字识别训练，设置图像高度不等于32时报错
+**A**：ctc decode的时候，输入需要是1为序列，因此降采样之后，建议特征图高度为1，ppocr中，特征图会降采样32倍，之后高度正好为1，所以有2种解决方案
+- 指定输入shape高度为32（推荐）
+- 在backbone的mv3中添加更多的降采样模块，保证输出的特征图高度为1
+
+#### Q3.1.45: 增大batch_size模型训练速度没有明显提升
+如果bs打得太大，加速效果不明显的话，可以试一下增大初始化内存的值，运行代码前设置环境变量：
+```
+export FLAGS_initial_cpu_memory_in_mb=2000  # 设置初始化内存约2G左右
+```
+
+#### Q3.1.46: 动态图分支(dygraph,release/2.0)，训练模型和推理模型效果不一致
+当前问题表现为：使用训练完的模型直接测试结果较好，但是转换为inference model后，预测结果不一致；出现这个问题一般是两个原因：
+- 1. 预处理函数设置的不一致
+- 2. 后处理参数不一致
+repo中config.yml文件的前后处理参数和inference预测默认的超参数有不一致的地方，建议排查下训练模型预测和inference预测的前后处理，
+参考[issue](https://github.com/PaddlePaddle/PaddleOCR/issues/2080)。
+
+#### Q3.1.47: paddleocr package 报错 FatalError: `Process abort signal` is detected by the operating system
+首先，按照[安装文档](./installation.md)安装PaddleOCR的运行环境；另外，检查python环境，python3.6/3.8上可能会出现这个问题，建议用python3.7，
+参考[issue](https://github.com/PaddlePaddle/PaddleOCR/issues/2069)。
+
+
+#### Q3.1.48: 下载的识别模型解压后缺失文件，没有期望的inference.pdiparams, inference.pdmodel等文件
+用解压软件解压可能会出现这个问题，建议二次解压下或者用命令行解压`tar xf `
+
+
 
 <a name="数据集3"></a>
 ### 数据集
