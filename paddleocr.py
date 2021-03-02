@@ -236,7 +236,9 @@ class PaddleOCR(predict_system.TextSystem):
         assert lang in model_urls[
             'rec'], 'param lang must in {}, but got {}'.format(
                 model_urls['rec'].keys(), lang)
+        use_inner_dict = False
         if postprocess_params.rec_char_dict_path is None:
+            use_inner_dict = True
             postprocess_params.rec_char_dict_path = model_urls['rec'][lang][
                 'dict_path']
 
@@ -263,9 +265,9 @@ class PaddleOCR(predict_system.TextSystem):
         if postprocess_params.rec_algorithm not in SUPPORT_REC_MODEL:
             logger.error('rec_algorithm must in {}'.format(SUPPORT_REC_MODEL))
             sys.exit(0)
-
-        postprocess_params.rec_char_dict_path = str(
-            Path(__file__).parent / postprocess_params.rec_char_dict_path)
+        if use_inner_dict:
+            postprocess_params.rec_char_dict_path = str(
+                Path(__file__).parent / postprocess_params.rec_char_dict_path)
 
         # init det_model and rec_model
         super().__init__(postprocess_params)
