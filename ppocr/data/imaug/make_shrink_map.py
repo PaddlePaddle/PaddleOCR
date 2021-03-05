@@ -32,7 +32,6 @@ class MakeShrinkMap(object):
         text_polys, ignore_tags = self.validate_polygons(text_polys,
                                                          ignore_tags, h, w)
         gt = np.zeros((h, w), dtype=np.float32)
-        # gt = np.zeros((1, h, w), dtype=np.float32)
         mask = np.ones((h, w), dtype=np.float32)
         for i in range(len(text_polys)):
             polygon = text_polys[i]
@@ -51,7 +50,8 @@ class MakeShrinkMap(object):
                 shrinked = []
 
                 # Increase the shrink ratio every time we get multiple polygon returned back 
-                possible_ratios = np.arange(self.shrink_ratio, 1, self.shrink_ratio)
+                possible_ratios = np.arange(self.shrink_ratio, 1,
+                                            self.shrink_ratio)
                 np.append(possible_ratios, 1)
                 # print(possible_ratios)
                 for ratio in possible_ratios:
