@@ -131,7 +131,7 @@ if __name__ == '__main__':
     if FLAGS.val:
         global_config['Eval']['dataset']['label_file_list'] = [FLAGS.val]
         eval_label_path = os.path.join(project_path,FLAGS.val)
-        loss_file(Eval_label_path)
+        loss_file(eval_label_path)
     if FLAGS.dict:
         global_config['Global']['character_dict_path'] = FLAGS.dict
         dict_path = os.path.join(project_path,FLAGS.dict)
