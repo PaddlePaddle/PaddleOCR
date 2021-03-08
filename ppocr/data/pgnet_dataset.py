@@ -19,10 +19,11 @@ import random
 
 
 class PGDateSet(Dataset):
-    def __init__(self, config, mode, logger):
+    def __init__(self, config, mode, logger, seed=None):
         super(PGDateSet, self).__init__()
 
         self.logger = logger
+        self.seed = seed
         global_config = config['Global']
         dataset_config = config[mode]['dataset']
         loader_config = config[mode]['loader']
@@ -36,7 +37,6 @@ class PGDateSet(Dataset):
         assert len(
             ratio_list
         ) == data_source_num, "The length of ratio_list should be the same as the file_list."
-        # self.data_dir = dataset_config['data_dir']
         self.do_shuffle = loader_config['shuffle']
 
         logger.info("Initialize indexs of datasets:%s" % label_file_list)
@@ -50,6 +50,7 @@ class PGDateSet(Dataset):
 
     def shuffle_data_random(self):
         if self.do_shuffle:
+            random.seed(self.seed)
             random.shuffle(self.data_lines)
         return
 
@@ -122,6 +123,7 @@ class PGDateSet(Dataset):
             else:
                 print("Unrecognized data format...")
                 exit(-1)
+            random.seed(self.seed)
             image_files = random.sample(
                 image_files, round(len(image_files) * ratio_list[idx]))
             data_lines.extend(image_files)

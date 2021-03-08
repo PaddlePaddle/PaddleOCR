@@ -113,7 +113,6 @@ class PGPostProcess(object):
         all_point_pair_list = []
         for yx_center_line, keep_str in zip(instance_yxs_list, seq_strs):
             if len(yx_center_line) == 1:
-                print('the length of tcl point is less than 2, repeat')
                 yx_center_line.append(yx_center_line[-1])
 
             # expand corresponding offset for total-text.
@@ -148,7 +147,6 @@ class PGPostProcess(object):
 
             # ndarry: (x, 2)
             detected_poly, pair_length_info = point_pair2poly(point_pair_list)
-            print('expand along width. {}'.format(detected_poly.shape))
             detected_poly = expand_poly_along_width(
                 detected_poly, shrink_ratio_of_width=0.2)
             detected_poly[:, 0] = np.clip(
@@ -157,7 +155,6 @@ class PGPostProcess(object):
                 detected_poly[:, 1], a_min=0, a_max=src_h)
 
             if len(keep_str) < 2:
-                print('--> too short, {}'.format(keep_str))
                 continue
 
             keep_str_list.append(keep_str)
@@ -175,20 +172,4 @@ class PGPostProcess(object):
             'points': poly_list,
             'strs': keep_str_list,
         }
-        # visualization
-        # if self.save_visualization:
-        #     visualize_e2e_result(im_fn, poly_list, keep_str_list, src_im)
-        #     visualize_point_result(im_fn, all_point_list, all_point_pair_list, src_im)
-
-        # save detected boxes
-        # txt_dir = (result_path[:-1] if result_path.endswith('/') else result_path) + '_txt_anno'
-        # if not os.path.exists(txt_dir):
-        #     os.makedirs(txt_dir)
-        # res_file = os.path.join(txt_dir, '{}.txt'.format(im_prefix))
-        # with open(res_file, 'w') as f:
-        #     for i_box, box in enumerate(poly_list):
-        #         seq_str = keep_str_list[i_box]
-        #         box = np.round(box).astype('int32')
-        #         box_str = ','.join(str(s) for s in (box.flatten().tolist()))
-        #         f.write('{}\t{}\r\n'.format(box_str, seq_str))
         return data
