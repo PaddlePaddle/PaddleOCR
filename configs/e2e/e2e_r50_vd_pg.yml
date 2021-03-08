@@ -65,7 +65,7 @@ PostProcess:
 
 Metric:
   name: E2EMetric
-  main_indicator: hmean
+  main_indicator: f_score_e2e
 
 Train:
   dataset:
