@@ -34,6 +34,25 @@ class ClsLabelEncode(object):
         return data
 
 
+class E2ELabelEncode(object):
+    def __init__(self, label_list, **kwargs):
+        self.label_list = label_list
+
+    def __call__(self, data):
+        text_label_index_list, temp_text = [], []
+        texts = data['strs']
+        for text in texts:
+            text = text.upper()
+            temp_text = []
+            for c_ in text:
+                if c_ in self.label_list:
+                    temp_text.append(self.label_list.index(c_))
+            temp_text = temp_text + [36] * (50 - len(temp_text))
+            text_label_index_list.append(temp_text)
+        data['strs'] = np.array(text_label_index_list)
+        return data
+
+
 class DetLabelEncode(object):
     def __init__(self, **kwargs):
         pass

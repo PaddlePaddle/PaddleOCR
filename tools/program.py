@@ -44,6 +44,7 @@ class ArgsParser(ArgumentParser):
 
     def parse_args(self, argv=None):
         args = super(ArgsParser, self).parse_args(argv)
+        args.config = '/Users/hongyongjie/project/PaddleOCR/configs/e2e/e2e_r50_vd_pg.yml'
         assert args.config is not None, \
             "Please specify --config=configure_file_path."
         args.opt = self._parse_opt(args.opt)
@@ -374,7 +375,8 @@ def preprocess(is_train=False):
 
     alg = config['Architecture']['algorithm']
     assert alg in [
-        'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN', 'CLS'
+        'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
+        'CLS', 'PG'
     ]
 
     device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'
