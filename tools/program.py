@@ -44,7 +44,6 @@ class ArgsParser(ArgumentParser):
 
     def parse_args(self, argv=None):
         args = super(ArgsParser, self).parse_args(argv)
-        args.config = '/Users/hongyongjie/project/PaddleOCR/configs/e2e/e2e_r50_vd_pg.yml'
         assert args.config is not None, \
             "Please specify --config=configure_file_path."
         args.opt = self._parse_opt(args.opt)

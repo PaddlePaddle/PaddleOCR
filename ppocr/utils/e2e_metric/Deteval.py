@@ -1,9 +1,18 @@
-from os import listdir
-import os, sys
-from scipy import io
+# Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 import numpy as np
 from ppocr.utils.e2e_metric.polygon_fast import iod, area_of_intersection, area
-from tqdm import tqdm
 
 try:  # python2
     range = xrange
@@ -862,16 +871,3 @@ def combine_results(all_data):
         'f_score_e2e': f_score_e2e
     }
     return final
-
-
-# a = [1526, 642, 1565, 629, 1579, 627, 1593, 625, 1607, 623, 1620, 622, 1634, 620, 1659, 620, 1654, 681, 1631, 680, 1618,
-#      681, 1606, 681, 1594, 681, 1584, 682, 1573, 685, 1542, 694]
-# gt_dict = [{'points': np.array(a).reshape(-1, 2), 'text': 'MILK'}]
-# pred_dict = [{'points': np.array(a), 'text': 'ccc'},
-#              {'points': np.array(a), 'text': 'ccf'}]
-# result = []
-# for i in range(2):
-#     result.append(get_socre(gt_dict, pred_dict))
-# print(111)
-# a = combine_results(result)
-# print(a)

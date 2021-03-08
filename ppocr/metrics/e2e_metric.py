@@ -32,16 +32,6 @@ class E2EMetric(object):
         self.reset()
 
     def __call__(self, preds, batch, **kwargs):
-        '''
-       batch: a list produced by dataloaders.
-           image: np.ndarray  of shape (N, C, H, W).
-           ratio_list: np.ndarray  of shape(N,2)
-           polygons: np.ndarray  of shape (N, K, 4, 2), the polygons of objective regions.
-           ignore_tags: np.ndarray  of shape (N, K), indicates whether a region is ignorable or not.
-       preds: a list of dict produced by post process
-            points: np.ndarray of shape (N, K, 4, 2), the polygons of objective regions.
-       '''
-
         gt_polyons_batch = batch[2]
         temp_gt_strs_batch = batch[3]
         ignore_tags_batch = batch[4]
@@ -72,13 +62,6 @@ class E2EMetric(object):
             self.results.append(result)
 
     def get_metric(self):
-        """
-        return metrics {
-                 'precision': 0,
-                 'recall': 0,
-                 'hmean': 0
-            }
-        """
         metircs = combine_results(self.results)
         self.reset()
         return metircs

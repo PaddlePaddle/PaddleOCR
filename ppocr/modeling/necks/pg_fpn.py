@@ -106,172 +106,212 @@ class DeConvBNLayer(nn.Layer):
         return x
 
 
-class FPN_Up_Fusion(nn.Layer):
-    def __init__(self, in_channels):
-        super(FPN_Up_Fusion, self).__init__()
-        in_channels = in_channels[::-1]
-        out_channels = [256, 256, 192, 192, 128]
+class PGFPN(nn.Layer):
+    def __init__(self, in_channels, **kwargs):
+        super(PGFPN, self).__init__()
+        num_inputs = [2048, 2048, 1024, 512, 256]
+        num_outputs = [256, 256, 192, 192, 128]
+        self.out_channels = 128
+        # print(in_channels)
+        self.conv_bn_layer_1 = ConvBNLayer(
+            in_channels=3,
+            out_channels=32,
+            kernel_size=3,
+            stride=1,
+            act=None,
+            name='FPN_d1')
+        self.conv_bn_layer_2 = ConvBNLayer(
+            in_channels=64,
+            out_channels=64,
+            kernel_size=3,
+            stride=1,
+            act=None,
+            name='FPN_d2')
+        self.conv_bn_layer_3 = ConvBNLayer(
+            in_channels=256,
+            out_channels=128,
+            kernel_size=3,
+            stride=1,
+            act=None,
+            name='FPN_d3')
+        self.conv_bn_layer_4 = ConvBNLayer(
+            in_channels=32,
+            out_channels=64,
+            kernel_size=3,
+            stride=2,
+            act=None,
+            name='FPN_d4')
+        self.conv_bn_layer_5 = ConvBNLayer(
+            in_channels=64,
+            out_channels=64,
+            kernel_size=3,
+            stride=1,
+            act='relu',
+            name='FPN_d5')
+        self.conv_bn_layer_6 = ConvBNLayer(
+            in_channels=64,
+            out_channels=128,
+            kernel_size=3,
+            stride=2,
+            act=None,
+            name='FPN_d6')
+        self.conv_bn_layer_7 = ConvBNLayer(
+            in_channels=128,
+            out_channels=128,
+            kernel_size=3,
+            stride=1,
+            act='relu',
+            name='FPN_d7')
+        self.conv_bn_layer_8 = ConvBNLayer(
+            in_channels=128,
+            out_channels=128,
+            kernel_size=1,
+            stride=1,
+            act=None,
+            name='FPN_d8')
 
-        self.h0_conv = ConvBNLayer(
-            in_channels[0], out_channels[0], 1, 1, act=None, name='conv_h0')
-        self.h1_conv = ConvBNLayer(
-            in_channels[1], out_channels[1], 1, 1, act=None, name='conv_h1')
-        self.h2_conv = ConvBNLayer(
-            in_channels[2], out_channels[2], 1, 1, act=None, name='conv_h2')
-        self.h3_conv = ConvBNLayer(
-            in_channels[3], out_channels[3], 1, 1, act=None, name='conv_h3')
-        self.h4_conv = ConvBNLayer(
-            in_channels[4], out_channels[4], 1, 1, act=None, name='conv_h4')
+        self.conv_h0 = ConvBNLayer(
+            in_channels=num_inputs[0],
+            out_channels=num_outputs[0],
+            kernel_size=1,
+            stride=1,
+            act=None,
+            name="conv_h{}".format(0))
+        self.conv_h1 = ConvBNLayer(
+            in_channels=num_inputs[1],
+            out_channels=num_outputs[1],
+            kernel_size=1,
+            stride=1,
+            act=None,
+            name="conv_h{}".format(1))
+        self.conv_h2 = ConvBNLayer(
+            in_channels=num_inputs[2],
+            out_channels=num_outputs[2],
+            kernel_size=1,
+            stride=1,
+            act=None,
+            name="conv_h{}".format(2))
+        self.conv_h3 = ConvBNLayer(
+            in_channels=num_inputs[3],
+            out_channels=num_outputs[3],
+            kernel_size=1,
+            stride=1,
+            act=None,
+            name="conv_h{}".format(3))
+        self.conv_h4 = ConvBNLayer(
+            in_channels=num_inputs[4],
+            out_channels=num_outputs[4],
+            kernel_size=1,
+            stride=1,
+            act=None,
+            name="conv_h{}".format(4))
 
         self.dconv0 = DeConvBNLayer(
-            in_channels=out_channels[0],
-            out_channels=out_channels[1],
+            in_channels=num_outputs[0],
+            out_channels=num_outputs[0 + 1],
             name="dconv_{}".format(0))
         self.dconv1 = DeConvBNLayer(
-            in_channels=out_channels[1],
-            out_channels=out_channels[2],
+            in_channels=num_outputs[1],
+            out_channels=num_outputs[1 + 1],
             act=None,
             name="dconv_{}".format(1))
         self.dconv2 = DeConvBNLayer(
-            in_channels=out_channels[2],
-            out_channels=out_channels[3],
+            in_channels=num_outputs[2],
+            out_channels=num_outputs[2 + 1],
             act=None,
             name="dconv_{}".format(2))
         self.dconv3 = DeConvBNLayer(
-            in_channels=out_channels[3],
-            out_channels=out_channels[4],
+            in_channels=num_outputs[3],
+            out_channels=num_outputs[3 + 1],
             act=None,
             name="dconv_{}".format(3))
         self.conv_g1 = ConvBNLayer(
-            in_channels=out_channels[1],
-            out_channels=out_channels[1],
+            in_channels=num_outputs[1],
+            out_channels=num_outputs[1],
             kernel_size=3,
             stride=1,
             act='relu',
             name="conv_g{}".format(1))
         self.conv_g2 = ConvBNLayer(
-            in_channels=out_channels[2],
-            out_channels=out_channels[2],
+            in_channels=num_outputs[2],
+            out_channels=num_outputs[2],
             kernel_size=3,
             stride=1,
             act='relu',
             name="conv_g{}".format(2))
         self.conv_g3 = ConvBNLayer(
-            in_channels=out_channels[3],
-            out_channels=out_channels[3],
+            in_channels=num_outputs[3],
+            out_channels=num_outputs[3],
             kernel_size=3,
             stride=1,
             act='relu',
             name="conv_g{}".format(3))
         self.conv_g4 = ConvBNLayer(
-            in_channels=out_channels[4],
-            out_channels=out_channels[4],
+            in_channels=num_outputs[4],
+            out_channels=num_outputs[4],
             kernel_size=3,
             stride=1,
             act='relu',
             name="conv_g{}".format(4))
         self.convf = ConvBNLayer(
-            in_channels=out_channels[4],
-            out_channels=out_channels[4],
+            in_channels=num_outputs[4],
+            out_channels=num_outputs[4],
             kernel_size=1,
             stride=1,
             act=None,
             name="conv_f{}".format(4))
 
-    def _add_relu(self, x1, x2):
-        x = paddle.add(x=x1, y=x2)
-        x = F.relu(x)
-        return x
-
     def forward(self, x):
-        f = x[2:][::-1]
-        h0 = self.h0_conv(f[0])
-        h1 = self.h1_conv(f[1])
-        h2 = self.h2_conv(f[2])
-        h3 = self.h3_conv(f[3])
-        h4 = self.h4_conv(f[4])
+        c0, c1, c2, c3, c4, c5, c6 = x
+        # FPN_Down_Fusion
+        f = [c0, c1, c2]
+        g = [None, None, None]
+        h = [None, None, None]
+        h[0] = self.conv_bn_layer_1(f[0])
+        h[1] = self.conv_bn_layer_2(f[1])
+        h[2] = self.conv_bn_layer_3(f[2])
 
-        g0 = self.dconv0(h0)
+        g[0] = self.conv_bn_layer_4(h[0])
+        g[1] = paddle.add(g[0], h[1])
+        g[1] = F.relu(g[1])
+        g[1] = self.conv_bn_layer_5(g[1])
+        g[1] = self.conv_bn_layer_6(g[1])
 
-        g1 = self.dconv2(self.conv_g2(self._add_relu(g0, h1)))
-        g2 = self.dconv2(self.conv_g2(self._add_relu(g1, h2)))
-        g3 = self.dconv3(self.conv_g2(self._add_relu(g2, h3)))
-        g4 = self.dconv4(self.conv_g2(self._add_relu(g3, h4)))
-        return g4
+        g[2] = paddle.add(g[1], h[2])
+        g[2] = F.relu(g[2])
+        g[2] = self.conv_bn_layer_7(g[2])
+        f_down = self.conv_bn_layer_8(g[2])
 
+        # FPN UP Fusion
+        f1 = [c6, c5, c4, c3, c2]
+        g = [None, None, None, None, None]
+        h = [None, None, None, None, None]
+        h[0] = self.conv_h0(f1[0])
+        h[1] = self.conv_h1(f1[1])
+        h[2] = self.conv_h2(f1[2])
+        h[3] = self.conv_h3(f1[3])
+        h[4] = self.conv_h4(f1[4])
 
-class FPN_Down_Fusion(nn.Layer):
-    def __init__(self, in_channels):
-        super(FPN_Down_Fusion, self).__init__()
-        out_channels = [32, 64, 128]
+        g[0] = self.dconv0(h[0])
+        g[1] = paddle.add(g[0], h[1])
+        g[1] = F.relu(g[1])
+        g[1] = self.conv_g1(g[1])
+        g[1] = self.dconv1(g[1])
 
-        self.h0_conv = ConvBNLayer(
-            in_channels[0], out_channels[0], 3, 1, act=None, name='FPN_d1')
-        self.h1_conv = ConvBNLayer(
-            in_channels[1], out_channels[1], 3, 1, act=None, name='FPN_d2')
-        self.h2_conv = ConvBNLayer(
-            in_channels[2], out_channels[2], 3, 1, act=None, name='FPN_d3')
+        g[2] = paddle.add(g[1], h[2])
+        g[2] = F.relu(g[2])
+        g[2] = self.conv_g2(g[2])
+        g[2] = self.dconv2(g[2])
 
-        self.g0_conv = ConvBNLayer(
-            out_channels[0], out_channels[1], 3, 2, act=None, name='FPN_d4')
+        g[3] = paddle.add(g[2], h[3])
+        g[3] = F.relu(g[3])
+        g[3] = self.conv_g3(g[3])
+        g[3] = self.dconv3(g[3])
 
-        self.g1_conv = nn.Sequential(
-            ConvBNLayer(
-                out_channels[1],
-                out_channels[1],
-                3,
-                1,
-                act='relu',
-                name='FPN_d5'),
-            ConvBNLayer(
-                out_channels[1], out_channels[2], 3, 2, act=None,
-                name='FPN_d6'))
-
-        self.g2_conv = nn.Sequential(
-            ConvBNLayer(
-                out_channels[2],
-                out_channels[2],
-                3,
-                1,
-                act='relu',
-                name='FPN_d7'),
-            ConvBNLayer(
-                out_channels[2], out_channels[2], 1, 1, act=None,
-                name='FPN_d8'))
-
-    def forward(self, x):
-        f = x[:3]
-        h0 = self.h0_conv(f[0])
-        h1 = self.h1_conv(f[1])
-        h2 = self.h2_conv(f[2])
-        g0 = self.g0_conv(h0)
-        g1 = paddle.add(x=g0, y=h1)
-        g1 = F.relu(g1)
-        g1 = self.g1_conv(g1)
-        g2 = paddle.add(x=g1, y=h2)
-        g2 = F.relu(g2)
-        g2 = self.g2_conv(g2)
-        return g2
-
-
-class PGFPN(nn.Layer):
-    def __init__(self, in_channels, with_cab=False, **kwargs):
-        super(PGFPN, self).__init__()
-        self.in_channels = in_channels
-        self.with_cab = with_cab
-        self.FPN_Down_Fusion = FPN_Down_Fusion(self.in_channels)
-        self.FPN_Up_Fusion = FPN_Up_Fusion(self.in_channels)
-        self.out_channels = 128
-
-    def forward(self, x):
-        # down fpn
-        f_down = self.FPN_Down_Fusion(x)
-
-        # up fpn
-        f_up = self.FPN_Up_Fusion(x)
-
-        # fusion
-        f_common = paddle.add(x=f_down, y=f_up)
+        g[4] = paddle.add(x=g[3], y=h[4])
+        g[4] = F.relu(g[4])
+        g[4] = self.conv_g4(g[4])
+        f_up = self.convf(g[4])
+        f_common = paddle.add(f_down, f_up)
         f_common = F.relu(f_common)
-
         return f_common
