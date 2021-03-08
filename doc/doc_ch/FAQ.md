@@ -23,7 +23,7 @@
 
 
 <a name="近期更新"></a>
-## 近期更新（2021.3.1） 
+## 近期更新（2021.3.8）
  
 #### Q3.1.49: 只想要识别票据中的部分片段，重新训练它的话，只需要训练文本检测模型就可以了吗？问文本识别，方向分类还是用原来的模型这样可以吗？
 
@@ -538,7 +538,7 @@ release/2.0-rc1-0是基于Paddle 2.0rc1的稳定版本，release/2.0是基于Pad
 
 #### Q3.1.45: 增大batch_size模型训练速度没有明显提升
 
-**A**：如果bs打得太大，加速效果不明显的话，可以试一下增大初始化内存的值，运行代码前设置环境变量：
+**A**：如果batch_size打得太大，加速效果不明显的话，可以试一下增大初始化内存的值，运行代码前设置环境变量：
 ```
 export FLAGS_initial_cpu_memory_in_mb=2000  # 设置初始化内存约2G左右
 ```
@@ -831,7 +831,7 @@ ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 
 #### Q3.3.31: Cosine学习率的更新策略是怎样的？训练过程中为什么会在一个值上停很久？
 
-**A**: Cosine学习率的说明可以参考https://www.paddlepaddle.org.cn/documentation/docs/zh/api/paddle/optimizer/lr/CosineAnnealingDecay_cn.html#cosineannealingdecay
+**A**: Cosine学习率的说明可以参考[这里](https://www.paddlepaddle.org.cn/documentation/docs/zh/api/paddle/optimizer/lr/CosineAnnealingDecay_cn.html#cosineannealingdecay)
 
 在PaddleOCR中，为了让学习率更加平缓，我们将其中的epoch调整成了iter。
 学习率的更新会和总的iter数量有关。当iter比较大时，会经过较多iter才能看出学习率的值有变化。
