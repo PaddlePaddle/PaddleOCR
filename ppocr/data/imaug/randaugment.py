@@ -125,7 +125,7 @@ class RandAugment(RawRandAugment):
             super().__init__(*args, **kwargs)
 
     def __call__(self, data):
-        if np.random.rand() < self.prob:
+        if np.random.rand() > self.prob:
             return data
         img = data['image']
         if not isinstance(img, Image.Image):
