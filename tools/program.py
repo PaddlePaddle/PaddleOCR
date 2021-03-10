@@ -375,7 +375,7 @@ def preprocess(is_train=False):
     alg = config['Architecture']['algorithm']
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
-        'CLS', 'PG'
+        'CLS', 'PGNet'
     ]
 
     device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'

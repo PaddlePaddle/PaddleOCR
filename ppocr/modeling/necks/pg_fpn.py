@@ -1,4 +1,4 @@
-# copyright (c) 2019 PaddlePaddle Authors. All Rights Reserve.
+# copyright (c) 2021 PaddlePaddle Authors. All Rights Reserve.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -60,8 +60,6 @@ class ConvBNLayer(nn.Layer):
             use_global_stats=False)
 
     def forward(self, inputs):
-        # if self.is_vd_mode:
-        #     inputs = self._pool2d_avg(inputs)
         y = self._conv(inputs)
         y = self._batch_norm(y)
         return y
@@ -112,7 +110,6 @@ class PGFPN(nn.Layer):
         num_inputs = [2048, 2048, 1024, 512, 256]
         num_outputs = [256, 256, 192, 192, 128]
         self.out_channels = 128
-        # print(in_channels)
         self.conv_bn_layer_1 = ConvBNLayer(
             in_channels=3,
             out_channels=32,

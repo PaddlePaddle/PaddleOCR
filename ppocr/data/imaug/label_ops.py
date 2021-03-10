@@ -35,9 +35,10 @@ class ClsLabelEncode(object):
 
 
 class E2ELabelEncode(object):
-    def __init__(self, label_list, **kwargs):
-        self.label_list = label_list
-        self.max_len = 50
+    def __init__(self, Lexicon_Table, max_len, **kwargs):
+        self.Lexicon_Table = Lexicon_Table
+        self.max_len = max_len
+        self.pad_num = len(self.Lexicon_Table)
 
     def __call__(self, data):
         text_label_index_list, temp_text = [], []
@@ -46,9 +47,10 @@ class E2ELabelEncode(object):
             text = text.upper()
             temp_text = []
             for c_ in text:
-                if c_ in self.label_list:
-                    temp_text.append(self.label_list.index(c_))
-            temp_text = temp_text + [36] * (self.max_len - len(temp_text))
+                if c_ in self.Lexicon_Table:
+                    temp_text.append(self.Lexicon_Table.index(c_))
+            temp_text = temp_text + [self.pad_num] * (self.max_len -
+                                                      len(temp_text))
             text_label_index_list.append(temp_text)
         data['strs'] = np.array(text_label_index_list)
         return data

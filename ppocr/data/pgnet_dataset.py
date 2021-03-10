@@ -1,4 +1,4 @@
-# copyright (c) 2020 PaddlePaddle Authors. All Rights Reserve.
+# copyright (c) 2021 PaddlePaddle Authors. All Rights Reserve.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@ from .imaug import transform, create_operators
 import random
 
 
-class PGDateSet(Dataset):
+class PGDataSet(Dataset):
     def __init__(self, config, mode, logger, seed=None):
-        super(PGDateSet, self).__init__()
+        super(PGDataSet, self).__init__()
 
         self.logger = logger
         self.seed = seed
@@ -81,7 +81,9 @@ class PGDateSet(Dataset):
         """
         info_list = im_fn.split('\t')
         img_path = ''
-        for ext in ['.jpg', '.png', '.jpeg', '.JPG']:
+        for ext in [
+                'jpg', 'bmp', 'png', 'jpeg', 'rgb', 'tif', 'tiff', 'gif', 'JPG'
+        ]:
             if os.path.exists(os.path.join(img_dir, info_list[0] + ext)):
                 img_path = os.path.join(img_dir, info_list[0] + ext)
                 break
@@ -111,11 +113,12 @@ class PGDateSet(Dataset):
         for idx, data_source in enumerate(file_list):
             image_files = []
             if data_format == 'icdar':
-                image_files = [
-                    (data_source, x)
-                    for x in os.listdir(os.path.join(data_source, 'rgb'))
-                    if x.split('.')[-1] in ['jpg', 'png', 'jpeg', 'JPG']
-                ]
+                image_files = [(data_source, x) for x in
+                               os.listdir(os.path.join(data_source, 'rgb'))
+                               if x.split('.')[-1] in [
+                                   'jpg', 'bmp', 'png', 'jpeg', 'rgb', 'tif',
+                                   'tiff', 'gif', 'JPG'
+                               ]]
             elif data_format == 'textnet':
                 with open(data_source) as f:
                     image_files = [(data_source, x.strip())

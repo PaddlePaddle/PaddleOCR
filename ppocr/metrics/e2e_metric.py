@@ -1,4 +1,4 @@
-# Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.
+# Copyright (c) 2021 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,12 +22,9 @@ from ppocr.utils.e2e_metric.Deteval import *
 
 
 class E2EMetric(object):
-    def __init__(self, main_indicator='f_score_e2e', **kwargs):
-        self.label_list = [
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C',
-            'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-            'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
-        ]
+    def __init__(self, Lexicon_Table, main_indicator='f_score_e2e', **kwargs):
+        self.label_list = Lexicon_Table
+        self.max_index = len(self.label_list)
         self.main_indicator = main_indicator
         self.reset()
 
@@ -40,12 +37,12 @@ class E2EMetric(object):
         for temp_list in temp_gt_strs_batch:
             t = ""
             for index in temp_list:
-                if index < 36:
+                if index < self.max_index:
                     t += self.label_list[index]
             gt_strs_batch.append(t)
 
         for pred, gt_polyons, gt_strs, ignore_tags in zip(
-                preds, gt_polyons_batch, gt_strs_batch, ignore_tags_batch):
+            [preds], gt_polyons_batch, [gt_strs_batch], ignore_tags_batch):
             # prepare gt
             gt_info_list = [{
                 'points': gt_polyon,
@@ -57,7 +54,7 @@ class E2EMetric(object):
             e2e_info_list = [{
                 'points': det_polyon,
                 'text': pred_str
-            } for det_polyon, pred_str in zip(pred['points'], preds['strs'])]
+            } for det_polyon, pred_str in zip(pred['points'], pred['strs'])]
             result = get_socre(gt_info_list, e2e_info_list)
             self.results.append(result)
 

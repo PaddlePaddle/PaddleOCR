@@ -1,14 +1,17 @@
 Global:
-  use_gpu: False
+  use_gpu: True
   epoch_num: 600
   log_smooth_window: 20
-  print_batch_step: 2
+  print_batch_step: 10
   save_model_dir: ./output/pg_r50_vd_tt/
-  save_epoch_step: 1
-  # evaluation is run every 5000 iterationss after the 4000th iteration
+  save_epoch_step: 10
+  # evaluation is run every 0 iterationss after the 1000th iteration
   eval_batch_step: [ 0, 1000 ]
-  # if pretrained_model is saved in static mode, load_static_weights must set to True
-  load_static_weights: False
+  # 1. If pretrained_model is saved in static mode, such as classification pretrained model
+  #    from static branch, load_static_weights must be set as True.
+  # 2. If you want to finetune the pretrained models we provide in the docs,
+  #    you should set load_static_weights as False.
+  load_static_weights: True
   cal_metric_during_train: False
   pretrained_model:
   checkpoints:
@@ -19,7 +22,7 @@ Global:
 
 Architecture:
   model_type: e2e
-  algorithm: PG
+  algorithm: PGNet
   Transform:
   Backbone:
     name: ResNet
@@ -34,28 +37,16 @@ Architecture:
 Loss:
   name: PGLoss
 
-#Optimizer:
-#  name: Adam
-#  beta1: 0.9
-#  beta2: 0.999
-#  lr:
-#    name: Cosine
-#    learning_rate: 0.001
-#    warmup_epoch: 1
-#  regularizer:
-#    name: 'L2'
-#    factor: 0
-
 Optimizer:
-  name: RMSProp
+  name: Adam
+  beta1: 0.9
+  beta2: 0.999
   lr:
-    name: Piecewise
     learning_rate: 0.001
-    decay_epochs: [ 40, 80, 120, 160, 200 ]
-    values: [ 0.001, 0.00033, 0.0001, 0.000033, 0.00001 ]
   regularizer:
     name: 'L2'
-    factor: 0.00005
+    factor: 0
+
 
 PostProcess:
   name: PGPostProcess
@@ -65,45 +56,45 @@ PostProcess:
 
 Metric:
   name: E2EMetric
+  Lexicon_Table: [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' ]
   main_indicator: f_score_e2e
 
 Train:
   dataset:
     name: PGDateSet
-    label_file_list:
-    ratio_list:
-    data_format: textnet  # textnet/partvgg
-    Lexicon_Table: [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' ]
+    label_file_list: [./train_data/total_text/train/]
+    ratio_list: [1.0]
+    data_format: icdar
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
       - PGProcessTrain:
           batch_size: 14
-          data_format: icdar
-          tcl_len: 64
           min_crop_size: 24
           min_text_size: 4
           max_text_size: 512
+          Lexicon_Table: [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' ]
       - KeepKeys:
           keep_keys: [ 'images', 'tcl_maps', 'tcl_label_maps', 'border_maps','direction_maps', 'training_masks', 'label_list', 'pos_list', 'pos_mask' ] # dataloader will return list in this order
   loader:
     shuffle: True
     drop_last: True
-    batch_size_per_card: 1
-    num_workers: 8
+    batch_size_per_card: 14
+    num_workers: 16
 
 Eval:
   dataset:
-    name: PGDateSet
+    name: PGDataSet
     data_dir: ./train_data/
-    label_file_list:
+    label_file_list: [./train_data/total_text/test/]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
       - E2ELabelEncode:
-          label_list: [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' ]
+          Lexicon_Table: [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' ]
+          max_len: 50
       - E2EResizeForTest:
           valid_set: totaltext
           max_side_len: 768

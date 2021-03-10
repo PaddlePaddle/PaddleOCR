@@ -1,4 +1,4 @@
-# Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.
+# Copyright (c) 2021 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,42 +11,27 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 import numpy as np
 from ppocr.utils.e2e_metric.polygon_fast import iod, area_of_intersection, area
 
-try:  # python2
-    range = xrange
-except Exception:
-    # python3
-    range = range
-"""
-Input format: y0,x0, ..... yn,xn. Each detection is separated by the end of line token ('\n')'
-"""
-
-# if len(sys.argv) != 4:
-#     print('\n usage: test.py pred_dir gt_dir savefile')
-#     sys.exit()
-
 
 def get_socre(gt_dict, pred_dict):
-    # allInputs = listdir(input_dir)
     allInputs = 1
 
-    def input_reading_mod(pred_dict, input):
+    def input_reading_mod(pred_dict):
         """This helper reads input from txt files"""
         det = []
         n = len(pred_dict)
         for i in range(n):
             points = pred_dict[i]['points']
             text = pred_dict[i]['text']
-            # for i in range(len(points)):
             point = ",".join(map(str, points.reshape(-1, )))
             det.append([point, text])
         return det
 
-    def gt_reading_mod(gt_dict, gt_id):
+    def gt_reading_mod(gt_dict):
         """This helper reads groundtruths from mat files"""
-        # gt_id = gt_id.split('.')[0]
         gt = []
         n = len(gt_dict)
         for i in range(n):
@@ -74,23 +59,12 @@ def get_socre(gt_dict, pred_dict):
 
     def detection_filtering(detections, groundtruths, threshold=0.5):
         for gt_id, gt in enumerate(groundtruths):
-            print
-            "liushanshan gt[1] = {}".format(gt[1])
-            print
-            "liushanshan gt[2] = {}".format(gt[2])
-            print
-            "liushanshan gt[3] = {}".format(gt[3])
-            print
-            "liushanshan gt[4] = {}".format(gt[4])
-            print
-            "liushanshan gt[5] = {}".format(gt[5])
             if (gt[5] == '#') and (gt[1].shape[1] > 1):
                 gt_x = list(map(int, np.squeeze(gt[1])))
                 gt_y = list(map(int, np.squeeze(gt[3])))
                 for det_id, detection in enumerate(detections):
                     detection_orig = detection
                     detection = [float(x) for x in detection[0].split(',')]
-                    # detection = detection.split(',')
                     detection = list(map(int, detection))
                     det_x = detection[0::2]
                     det_y = detection[1::2]
@@ -105,18 +79,10 @@ def get_socre(gt_dict, pred_dict):
         """
         sigma = inter_area / gt_area
         """
-        # print(area_of_intersection(det_x, det_y, gt_x, gt_y))
         return np.round((area_of_intersection(det_x, det_y, gt_x, gt_y) /
                          area(gt_x, gt_y)), 2)
 
     def tau_calculation(det_x, det_y, gt_x, gt_y):
-        """
-        tau = inter_area / det_area
-        """
-        # print "liushanshan det_x {}".format(det_x)
-        # print "liushanshan det_y {}".format(det_y)
-        # print "liushanshan area {}".format(area(det_x, det_y))
-        # print "liushanshan tau = {}".format(np.round((area_of_intersection(det_x, det_y, gt_x, gt_y) / area(det_x, det_y)), 2))
         if area(det_x, det_y) == 0.0:
             return 0
         return np.round((area_of_intersection(det_x, det_y, gt_x, gt_y) /
@@ -141,10 +107,8 @@ def get_socre(gt_dict, pred_dict):
                 input_id != 'Pascal_result_curved.txt') and (input_id != 'Pascal_result_non_curved.txt') and (
                 input_id != 'Deteval_result.txt') and (input_id != 'Deteval_result_curved.txt') \
                 and (input_id != 'Deteval_result_non_curved.txt'):
-            print(input_id)
-            detections = input_reading_mod(pred_dict, input_id)
-            # print "liushanshan detections = {}".format(detections)
-            groundtruths = gt_reading_mod(gt_dict, input_id)
+            detections = input_reading_mod(pred_dict)
+            groundtruths = gt_reading_mod(gt_dict)
             detections = detection_filtering(
                 detections,
                 groundtruths)  # filters detections overlapping with DC area
@@ -187,10 +151,6 @@ def get_socre(gt_dict, pred_dict):
             global_tau.append(local_tau_table)
             global_pred_str.append(local_pred_str)
             global_gt_str.append(local_gt_str)
-            print
-            "liushanshan global_pred_str = {}".format(global_pred_str)
-            print
-            "liushanshan global_gt_str = {}".format(global_gt_str)
 
     global_accumulative_recall = 0
     global_accumulative_precision = 0
@@ -236,17 +196,11 @@ def get_socre(gt_dict, pred_dict):
                 gt_flag[0, gt_id] = 1
                 matched_det_id = np.where(local_sigma_table[gt_id, :] > tr)
                 # recg start
-                print
-                "liushanshan one to one det_id = {}".format(matched_det_id)
-                print
-                "liushanshan one to one gt_id = {}".format(gt_id)
+
                 gt_str_cur = global_gt_str[idy][gt_id]
                 pred_str_cur = global_pred_str[idy][matched_det_id[0].tolist()[
                     0]]
-                print
-                "liushanshan one to one gt_str_cur = {}".format(gt_str_cur)
-                print
-                "liushanshan one to one pred_str_cur = {}".format(pred_str_cur)
+
                 if pred_str_cur == gt_str_cur:
                     hit_str_num += 1
                 else:
@@ -290,20 +244,10 @@ def get_socre(gt_dict, pred_dict):
                         gt_flag[0, gt_id] = 1
                         det_flag[0, qualified_tau_candidates] = 1
                         # recg start
-                        print
-                        "liushanshan one to many det_id = {}".format(
-                            qualified_tau_candidates)
-                        print
-                        "liushanshan one to many gt_id = {}".format(gt_id)
                         gt_str_cur = global_gt_str[idy][gt_id]
                         pred_str_cur = global_pred_str[idy][
                             qualified_tau_candidates[0].tolist()[0]]
-                        print
-                        "liushanshan one to many gt_str_cur = {}".format(
-                            gt_str_cur)
-                        print
-                        "liushanshan one to many pred_str_cur = {}".format(
-                            pred_str_cur)
+
                         if pred_str_cur == gt_str_cur:
                             hit_str_num += 1
                         else:
@@ -315,19 +259,11 @@ def get_socre(gt_dict, pred_dict):
                     gt_flag[0, gt_id] = 1
                     det_flag[0, qualified_tau_candidates] = 1
                     # recg start
-                    print
-                    "liushanshan one to many det_id = {}".format(
-                        qualified_tau_candidates)
-                    print
-                    "liushanshan one to many gt_id = {}".format(gt_id)
+
                     gt_str_cur = global_gt_str[idy][gt_id]
                     pred_str_cur = global_pred_str[idy][
                         qualified_tau_candidates[0].tolist()[0]]
-                    print
-                    "liushanshan one to many gt_str_cur = {}".format(gt_str_cur)
-                    print
-                    "liushanshan one to many pred_str_cur = {}".format(
-                        pred_str_cur)
+
                     if pred_str_cur == gt_str_cur:
                         hit_str_num += 1
                     else:
@@ -377,25 +313,14 @@ def get_socre(gt_dict, pred_dict):
                         gt_flag[0, qualified_sigma_candidates] = 1
                         det_flag[0, det_id] = 1
                         # recg start
-                        print
-                        "liushanshan many to one det_id = {}".format(det_id)
-                        print
-                        "liushanshan many to one gt_id = {}".format(
-                            qualified_sigma_candidates)
                         pred_str_cur = global_pred_str[idy][det_id]
                         gt_len = len(qualified_sigma_candidates[0])
                         for idx in range(gt_len):
                             ele_gt_id = qualified_sigma_candidates[0].tolist()[
                                 idx]
-                            if not global_gt_str[idy].has_key(ele_gt_id):
+                            if ele_gt_id not in global_gt_str[idy]:
                                 continue
                             gt_str_cur = global_gt_str[idy][ele_gt_id]
-                            print
-                            "liushanshan many to one gt_str_cur = {}".format(
-                                gt_str_cur)
-                            print
-                            "liushanshan many to one pred_str_cur = {}".format(
-                                pred_str_cur)
                             if pred_str_cur == gt_str_cur:
                                 hit_str_num += 1
                                 break
@@ -409,24 +334,14 @@ def get_socre(gt_dict, pred_dict):
                     det_flag[0, det_id] = 1
                     gt_flag[0, qualified_sigma_candidates] = 1
                     # recg start
-                    print
-                    "liushanshan many to one det_id = {}".format(det_id)
-                    print
-                    "liushanshan many to one gt_id = {}".format(
-                        qualified_sigma_candidates)
+
                     pred_str_cur = global_pred_str[idy][det_id]
                     gt_len = len(qualified_sigma_candidates[0])
                     for idx in range(gt_len):
                         ele_gt_id = qualified_sigma_candidates[0].tolist()[idx]
-                        if not global_gt_str[idy].has_key(ele_gt_id):
+                        if ele_gt_id not in global_gt_str[idy]:
                             continue
                         gt_str_cur = global_gt_str[idy][ele_gt_id]
-                        print
-                        "liushanshan many to one gt_str_cur = {}".format(
-                            gt_str_cur)
-                        print
-                        "liushanshan many to one pred_str_cur = {}".format(
-                            pred_str_cur)
                         if pred_str_cur == gt_str_cur:
                             hit_str_num += 1
                             break
@@ -434,9 +349,6 @@ def get_socre(gt_dict, pred_dict):
                             if pred_str_cur.lower() == gt_str_cur.lower():
                                 hit_str_num += 1
                                 break
-                            else:
-                                print
-                                'no match'
                     # recg end
 
                     global_accumulative_recall = global_accumulative_recall + num_qualified_sigma_candidates * fsc_k
@@ -448,7 +360,6 @@ def get_socre(gt_dict, pred_dict):
 
     single_data = {}
     for idx in range(len(global_sigma)):
-        # print(allInputs[idx])
         local_sigma_table = global_sigma[idx]
         local_tau_table = global_tau[idx]
 
@@ -504,8 +415,6 @@ def get_socre(gt_dict, pred_dict):
         except ZeroDivisionError:
             local_f_score = 0
 
-        # temp = ('%s: Recall=%.4f, Precision=%.4f, f_score=%.4f\n' % (
-        #     allInputs[idx], local_recall, local_precision, local_f_score))
     single_data['sigma'] = global_sigma
     single_data['global_tau'] = global_tau
     single_data['global_pred_str'] = global_pred_str
@@ -575,17 +484,9 @@ def combine_results(all_data):
                 gt_flag[0, gt_id] = 1
                 matched_det_id = np.where(local_sigma_table[gt_id, :] > tr)
                 # recg start
-                print
-                "liushanshan one to one det_id = {}".format(matched_det_id)
-                print
-                "liushanshan one to one gt_id = {}".format(gt_id)
                 gt_str_cur = global_gt_str[idy][gt_id]
                 pred_str_cur = global_pred_str[idy][matched_det_id[0].tolist()[
                     0]]
-                print
-                "liushanshan one to one gt_str_cur = {}".format(gt_str_cur)
-                print
-                "liushanshan one to one pred_str_cur = {}".format(pred_str_cur)
                 if pred_str_cur == gt_str_cur:
                     hit_str_num += 1
                 else:
@@ -629,20 +530,9 @@ def combine_results(all_data):
                         gt_flag[0, gt_id] = 1
                         det_flag[0, qualified_tau_candidates] = 1
                         # recg start
-                        print
-                        "liushanshan one to many det_id = {}".format(
-                            qualified_tau_candidates)
-                        print
-                        "liushanshan one to many gt_id = {}".format(gt_id)
                         gt_str_cur = global_gt_str[idy][gt_id]
                         pred_str_cur = global_pred_str[idy][
                             qualified_tau_candidates[0].tolist()[0]]
-                        print
-                        "liushanshan one to many gt_str_cur = {}".format(
-                            gt_str_cur)
-                        print
-                        "liushanshan one to many pred_str_cur = {}".format(
-                            pred_str_cur)
                         if pred_str_cur == gt_str_cur:
                             hit_str_num += 1
                         else:
@@ -654,19 +544,9 @@ def combine_results(all_data):
                     gt_flag[0, gt_id] = 1
                     det_flag[0, qualified_tau_candidates] = 1
                     # recg start
-                    print
-                    "liushanshan one to many det_id = {}".format(
-                        qualified_tau_candidates)
-                    print
-                    "liushanshan one to many gt_id = {}".format(gt_id)
                     gt_str_cur = global_gt_str[idy][gt_id]
                     pred_str_cur = global_pred_str[idy][
                         qualified_tau_candidates[0].tolist()[0]]
-                    print
-                    "liushanshan one to many gt_str_cur = {}".format(gt_str_cur)
-                    print
-                    "liushanshan one to many pred_str_cur = {}".format(
-                        pred_str_cur)
                     if pred_str_cur == gt_str_cur:
                         hit_str_num += 1
                     else:
@@ -716,11 +596,6 @@ def combine_results(all_data):
                         gt_flag[0, qualified_sigma_candidates] = 1
                         det_flag[0, det_id] = 1
                         # recg start
-                        print
-                        "liushanshan many to one det_id = {}".format(det_id)
-                        print
-                        "liushanshan many to one gt_id = {}".format(
-                            qualified_sigma_candidates)
                         pred_str_cur = global_pred_str[idy][det_id]
                         gt_len = len(qualified_sigma_candidates[0])
                         for idx in range(gt_len):
@@ -729,12 +604,6 @@ def combine_results(all_data):
                             if ele_gt_id not in global_gt_str[idy]:
                                 continue
                             gt_str_cur = global_gt_str[idy][ele_gt_id]
-                            print
-                            "liushanshan many to one gt_str_cur = {}".format(
-                                gt_str_cur)
-                            print
-                            "liushanshan many to one pred_str_cur = {}".format(
-                                pred_str_cur)
                             if pred_str_cur == gt_str_cur:
                                 hit_str_num += 1
                                 break
@@ -748,24 +617,13 @@ def combine_results(all_data):
                     det_flag[0, det_id] = 1
                     gt_flag[0, qualified_sigma_candidates] = 1
                     # recg start
-                    print
-                    "liushanshan many to one det_id = {}".format(det_id)
-                    print
-                    "liushanshan many to one gt_id = {}".format(
-                        qualified_sigma_candidates)
                     pred_str_cur = global_pred_str[idy][det_id]
                     gt_len = len(qualified_sigma_candidates[0])
                     for idx in range(gt_len):
                         ele_gt_id = qualified_sigma_candidates[0].tolist()[idx]
-                        if not global_gt_str[idy].has_key(ele_gt_id):
+                        if ele_gt_id not in global_gt_str[idy]:
                             continue
                         gt_str_cur = global_gt_str[idy][ele_gt_id]
-                        print
-                        "liushanshan many to one gt_str_cur = {}".format(
-                            gt_str_cur)
-                        print
-                        "liushanshan many to one pred_str_cur = {}".format(
-                            pred_str_cur)
                         if pred_str_cur == gt_str_cur:
                             hit_str_num += 1
                             break
@@ -773,9 +631,6 @@ def combine_results(all_data):
                             if pred_str_cur.lower() == gt_str_cur.lower():
                                 hit_str_num += 1
                                 break
-                            else:
-                                print
-                                'no match'
                     # recg end
 
                     global_accumulative_recall = global_accumulative_recall + num_qualified_sigma_candidates * fsc_k

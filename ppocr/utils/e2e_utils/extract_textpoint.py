@@ -1,4 +1,4 @@
-# Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.
+# Copyright (c) 2021 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,14 +16,12 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import os
 import cv2
-import time
 import math
 
 import numpy as np
 from itertools import groupby
-from ppocr.utils.e2e_utils.ski_thin import thin
+from skimage.morphology._skeletonize import thin
 
 
 def softmax(logits):
@@ -518,28 +516,6 @@ def generate_pivot_list_tt_inference(p_score,
                 continue
             pos_list_sorted = sort_and_expand_with_direction_v2(
                 pos_list, f_direction, p_tcl_map)
-            # pos_list_sorted, _ = sort_with_direction(pos_list, f_direction)
             pos_list_sorted_with_id = add_id(pos_list_sorted, image_id=image_id)
             all_pos_yxs.append(pos_list_sorted_with_id)
     return all_pos_yxs
-
-
-if __name__ == '__main__':
-    np.random.seed(0)
-    import time
-
-    logits_map = np.random.random([10, 20, 33])
-    # a list of [x, y]
-    instance_gather_info_1 = [(2, 3), (2, 4), (3, 5)]
-    instance_gather_info_2 = [(15, 6), (15, 7), (18, 8)]
-    instance_gather_info_3 = [(8, 8), (8, 8), (8, 8)]
-    gather_info_list = [
-        instance_gather_info_1, instance_gather_info_2, instance_gather_info_3
-    ]
-
-    time0 = time.time()
-    res = ctc_decoder_for_image(
-        gather_info_list, logits_map, keep_blank_in_idxs=True)
-    print(res)
-    print('cost {}'.format(time.time() - time0))
-    print('--' * 20)

@@ -1,4 +1,4 @@
-# copyright (c) 2020 PaddlePaddle Authors. All Rights Reserve.
+# copyright (c) 2021 PaddlePaddle Authors. All Rights Reserve.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
 import math
 import cv2
 import numpy as np
-import os
 
 __all__ = ['PGProcessTrain']
 
@@ -23,15 +22,11 @@ __all__ = ['PGProcessTrain']
 class PGProcessTrain(object):
     def __init__(self,
                  batch_size=14,
-                 data_format='icdar',
-                 tcl_len=64,
                  min_crop_size=24,
                  min_text_size=10,
                  max_text_size=512,
                  **kwargs):
         self.batch_size = batch_size
-        self.data_format = data_format
-        self.tcl_len = tcl_len
         self.min_crop_size = min_crop_size
         self.min_text_size = min_text_size
         self.max_text_size = max_text_size
@@ -60,24 +55,22 @@ class PGProcessTrain(object):
         """
         point_num = poly.shape[0]
         min_area_quad = np.zeros((4, 2), dtype=np.float32)
-        if True:
-            rect = cv2.minAreaRect(poly.astype(
-                np.int32))  # (center (x,y), (width, height), angle of rotation)
-            center_point = rect[0]
-            box = np.array(cv2.boxPoints(rect))
+        rect = cv2.minAreaRect(poly.astype(
+            np.int32))  # (center (x,y), (width, height), angle of rotation)
+        box = np.array(cv2.boxPoints(rect))
 
-            first_point_idx = 0
-            min_dist = 1e4
-            for i in range(4):
-                dist = np.linalg.norm(box[(i + 0) % 4] - poly[0]) + \
-                       np.linalg.norm(box[(i + 1) % 4] - poly[point_num // 2 - 1]) + \
-                       np.linalg.norm(box[(i + 2) % 4] - poly[point_num // 2]) + \
-                       np.linalg.norm(box[(i + 3) % 4] - poly[-1])
-                if dist < min_dist:
-                    min_dist = dist
-                    first_point_idx = i
-            for i in range(4):
-                min_area_quad[i] = box[(first_point_idx + i) % 4]
+        first_point_idx = 0
+        min_dist = 1e4
+        for i in range(4):
+            dist = np.linalg.norm(box[(i + 0) % 4] - poly[0]) + \
+                   np.linalg.norm(box[(i + 1) % 4] - poly[point_num // 2 - 1]) + \
+                   np.linalg.norm(box[(i + 2) % 4] - poly[point_num // 2]) + \
+                   np.linalg.norm(box[(i + 3) % 4] - poly[-1])
+            if dist < min_dist:
+                min_dist = dist
+                first_point_idx = i
+        for i in range(4):
+            min_area_quad[i] = box[(first_point_idx + i) % 4]
 
         return min_area_quad
 
@@ -235,8 +228,6 @@ class PGProcessTrain(object):
         ys, xs = np.where(tmp_image > 0)
         xy_text = np.array(list(zip(xs, ys)), dtype='float32')
 
-        # left_center_pt = np.array(key_point_xys[0]).reshape(1, 2)
-        # right_center_pt = np.array(key_point_xys[-1]).reshape(1, 2)
         left_center_pt = (
             (min_area_quad[0] - min_area_quad[1]) / 2.0).reshape(1, 2)
         right_center_pt = (
@@ -317,16 +308,6 @@ class PGProcessTrain(object):
         average_height = max(sum(height_list) / len(height_list), 1.0)
         return average_height
 
-    def encode(self, text):
-        text_list = []
-        for char in text:
-            if char not in self.dict:
-                continue
-            text_list.append([self.dict[char]])
-        if len(text_list) == 0:
-            return None
-        return text_list
-
     def generate_tcl_ctc_label(self,
                                h,
                                w,
@@ -390,8 +371,6 @@ class PGProcessTrain(object):
                 text_label = text_strs[poly_idx]
                 text_label = self.prepare_text_label(text_label,
                                                      self.Lexicon_Table)
-                # text = text.decode('utf-8')
-                # text_label_index_list = self.encode(text)
 
                 text_label_index_list = [[self.Lexicon_Table.index(c_)]
                                          for c_ in text_label
@@ -402,22 +381,18 @@ class PGProcessTrain(object):
                 tcl_poly = self.poly2tcl(poly, tcl_ratio)
                 tcl_quads = self.poly2quads(tcl_poly)
                 poly_quads = self.poly2quads(poly)
-                # stcl map
+
                 stcl_quads, quad_index = self.shrink_poly_along_width(
                     tcl_quads,
                     shrink_ratio_of_width=shrink_ratio_of_width,
                     expand_height_ratio=1.0 / tcl_ratio)
-                # generate tcl map
+
                 cv2.fillPoly(score_map,
                              np.round(stcl_quads).astype(np.int32), 1.0)
                 cv2.fillPoly(score_map_big,
                              np.round(stcl_quads / ds_ratio).astype(np.int32),
                              1.0)
 
-                # generate tbo map
-                # tbo_tcl_poly = poly2tcl(poly, 0.5)
-                # tbo_tcl_quads = poly2quads(tbo_tcl_poly)
-                # for idx, quad in enumerate(tbo_tcl_quads):
                 for idx, quad in enumerate(stcl_quads):
                     quad_mask = np.zeros((h, w), dtype=np.float32)
                     quad_mask = cv2.fillPoly(
@@ -432,7 +407,6 @@ class PGProcessTrain(object):
                     score_label_map_text_label_list.append(text_pos_list_)
 
                 label_idx += 1
-                # cv2.fillPoly(score_label_map, np.round(poly_quads[np.newaxis, :, :]).astype(np.int32), label_idx)
                 cv2.fillPoly(score_label_map,
                              np.round(poly_quads).astype(np.int32), label_idx)
                 score_label_map_text_label_list.append(text_label_index_list)
@@ -641,8 +615,6 @@ class PGProcessTrain(object):
         d = a1 * b2 - a2 * b1
 
         if d == 0:
-            # print("line1", line1)
-            # print("line2", line2)
             print('Cross point does not exist')
             return np.array([0, 0], dtype=np.float32)
         else:

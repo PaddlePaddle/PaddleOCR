@@ -1,4 +1,4 @@
-# Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.
+# Copyright (c) 2021 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,14 +23,9 @@ __dir__ = os.path.dirname(__file__)
 sys.path.append(__dir__)
 sys.path.append(os.path.join(__dir__, '..'))
 
-import numpy as np
-from .locality_aware_nms import nms_locality
 from ppocr.utils.e2e_utils.extract_textpoint import *
-from ppocr.utils.e2e_utils.ski_thin import *
 from ppocr.utils.e2e_utils.visual import *
 import paddle
-import cv2
-import time
 
 
 class PGPostProcess(object):
@@ -115,7 +110,6 @@ class PGPostProcess(object):
             if len(yx_center_line) == 1:
                 yx_center_line.append(yx_center_line[-1])
 
-            # expand corresponding offset for total-text.
             offset_expand = 1.0
             if self.valid_set == 'totaltext':
                 offset_expand = 1.2
@@ -137,7 +131,6 @@ class PGPostProcess(object):
                     [ratio_w, ratio_h]).reshape(-1, 2)
                 point_pair_list.append(point_pair)
 
-                # for visualization
                 all_point_list.append([
                     int(round(x * 4.0 / ratio_w)),
                     int(round(y * 4.0 / ratio_h))
@@ -145,7 +138,6 @@ class PGPostProcess(object):
                 all_point_pair_list.append(point_pair.round().astype(np.int32)
                                            .tolist())
 
-            # ndarry: (x, 2)
             detected_poly, pair_length_info = point_pair2poly(point_pair_list)
             detected_poly = expand_poly_along_width(
                 detected_poly, shrink_ratio_of_width=0.2)

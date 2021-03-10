@@ -45,8 +45,14 @@ def draw_e2e_res(dt_boxes, strs, config, img, img_name):
         for box, str in zip(dt_boxes, strs):
             box = box.astype(np.int32).reshape((-1, 1, 2))
             cv2.polylines(src_im, [box], True, color=(255, 255, 0), thickness=2)
-            cv2.putText(src_im, str, org=(int(box[0, 0, 0]), int(box[0, 0, 1])),
-                    fontFace=cv2.FONT_HERSHEY_COMPLEX, fontScale=0.7, color=(0, 255, 0), thickness=1)
+            cv2.putText(
+                src_im,
+                str,
+                org=(int(box[0, 0, 0]), int(box[0, 0, 1])),
+                fontFace=cv2.FONT_HERSHEY_COMPLEX,
+                fontScale=0.7,
+                color=(0, 255, 0),
+                thickness=1)
         save_det_path = os.path.dirname(config['Global'][
             'save_res_path']) + "/e2e_results/"
         if not os.path.exists(save_det_path):
@@ -54,6 +60,7 @@ def draw_e2e_res(dt_boxes, strs, config, img, img_name):
         save_path = os.path.join(save_det_path, os.path.basename(img_name))
         cv2.imwrite(save_path, src_im)
         logger.info("The e2e Image saved in {}".format(save_path))
+
 
 def main():
     global_config = config['Global']

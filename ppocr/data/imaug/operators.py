@@ -197,7 +197,6 @@ class DetResizeForTest(object):
             sys.exit(0)
         ratio_h = resize_h / float(h)
         ratio_w = resize_w / float(w)
-        # return img, np.array([h, w])
         return img, [ratio_h, ratio_w]
 
     def resize_image_type2(self, img):
@@ -206,7 +205,6 @@ class DetResizeForTest(object):
         resize_w = w
         resize_h = h
 
-        # Fix the longer side
         if resize_h > resize_w:
             ratio = float(self.resize_long) / resize_h
         else:
@@ -245,10 +243,8 @@ class E2EResizeForTest(object):
         return data
 
     def resize_image_for_totaltext(self, im, max_side_len=512):
-        """
-        """
-        h, w, _ = im.shape
 
+        h, w, _ = im.shape
         resize_w = w
         resize_h = h
         ratio = 1.25

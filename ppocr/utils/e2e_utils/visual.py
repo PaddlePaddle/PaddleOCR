@@ -1,4 +1,4 @@
-# Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.
+# Copyright (c) 2021 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ def resize_image(im, max_side_len=512):
 def resize_image_min(im, max_side_len=512):
     """
     """
-    print('--> Using resize_image_min')
+    # print('--> Using resize_image_min')
     h, w, _ = im.shape
 
     resize_w = w

@@ -1,4 +1,4 @@
-# copyright (c) 2019 PaddlePaddle Authors. All Rights Reserve.
+# copyright (c) 2021 PaddlePaddle Authors. All Rights Reserve.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,20 +21,12 @@ import paddle
 import numpy as np
 import copy
 
-from .det_basic_loss import BalanceLoss, MaskL1Loss, DiceLoss
+from .det_basic_loss import DiceLoss
 
 
 class PGLoss(nn.Layer):
-    """
-    Differentiable Binarization (DB) Loss Function
-    args:
-        param (dict): the super paramter for DB Loss
-    """
-
-    def __init__(self, alpha=5, beta=10, eps=1e-6, **kwargs):
+    def __init__(self, eps=1e-6, **kwargs):
         super(PGLoss, self).__init__()
-        self.alpha = alpha
-        self.beta = beta
         self.dice_loss = DiceLoss(eps=eps)
 
     def org_tcl_rois(self, batch_size, pos_lists, pos_masks, label_lists):
@@ -86,27 +78,30 @@ class PGLoss(nn.Layer):
         return pos_lists_, pos_masks_, label_lists_
 
     def pre_process(self, label_list, pos_list, pos_mask):
+        max_len = 30  # the max texts in a single image
+        max_str_len = 50  # the max len in a single text
+        pad_num = 36  # padding num
         label_list = label_list.numpy()
-        b, h, w, c = label_list.shape
+        batch, _, _, _ = label_list.shape
         pos_list = pos_list.numpy()
         pos_mask = pos_mask.numpy()
         pos_list_t = []
         pos_mask_t = []
         label_list_t = []
-        for i in range(b):
-            for j in range(30):
+        for i in range(batch):
+            for j in range(max_len):
                 if pos_mask[i, j].any():
                     pos_list_t.append(pos_list[i][j])
                     pos_mask_t.append(pos_mask[i][j])
                     label_list_t.append(label_list[i][j])
         pos_list, pos_mask, label_list = self.org_tcl_rois(
-            b, pos_list_t, pos_mask_t, label_list_t)
+            batch, pos_list_t, pos_mask_t, label_list_t)
         label = []
         tt = [l.tolist() for l in label_list]
-        for i in range(64):
+        for i in range(batch):
             k = 0
-            for j in range(50):
-                if tt[i][j][0] != 36:
+            for j in range(max_str_len):
+                if tt[i][j][0] != pad_num:
                     k += 1
                 else:
                     break

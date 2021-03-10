@@ -1,4 +1,4 @@
-# copyright (c) 2019 PaddlePaddle Authors. All Rights Reserve.
+# copyright (c) 2021 PaddlePaddle Authors. All Rights Reserve.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -179,7 +179,7 @@ class PGHead(nn.Layer):
             name="conv_f_char{}".format(5))
         self.conv3 = nn.Conv2D(
             in_channels=256,
-            out_channels=6625,
+            out_channels=37,
             kernel_size=3,
             stride=1,
             padding=1,
