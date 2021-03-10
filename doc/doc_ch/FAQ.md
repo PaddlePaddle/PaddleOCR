@@ -961,7 +961,8 @@ lr:
 **A**：使用EAST或SAST模型进行推理预测时，需要在命令中指定参数--det_algorithm="EAST" 或 --det_algorithm="SAST"，使用DB时不用指定是因为该参数默认值是"DB"：https://github.com/PaddlePaddle/PaddleOCR/blob/e7a708e9fdaf413ed7a14da8e4a7b4ac0b211e42/tools/infer/utility.py#L43
 
 #### Q3.4.25: PaddleOCR模型Python端预测和C++预测结果不一致？
-正常来说，python端预测和C++预测文本是一致的，如果预测结果差异较大，
+
+**A**：正常来说，python端预测和C++预测文本是一致的，如果预测结果差异较大，
 建议首先排查diff出现在检测模型还是识别模型，或者尝试换其他模型是否有类似的问题。
 其次，检查python端和C++端数据处理部分是否存在差异，建议保存环境，更新PaddleOCR代码再试下。
 如果更新代码或者更新代码都没能解决，建议在PaddleOCR微信群里或者issue中抛出您的问题。
