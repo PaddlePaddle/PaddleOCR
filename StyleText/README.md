@@ -98,7 +98,7 @@ What's more, the medium result `fake_bg.jpg` will also be saved, which is the ba
 </div>
 
 
-`fake_text.jpg` * `fake_text.jpg` is the generated image with the same font style as `Style Input`.
+`fake_text.jpg` is the generated image with the same font style as `Style Input`.
 
 
 <div align="center">
