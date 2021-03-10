@@ -839,6 +839,13 @@ ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 #### Q3.3.32: 之前的CosineWarmup方法为什么不见了？
 
 **A**: 我们对代码结构进行了调整，目前的Cosine可以覆盖原有的CosineWarmup的功能，只需要在配置文件中增加相应配置即可。
+例如下面的代码，可以设置warmup为2个epoch：
+```
+lr:
+  name: Cosine
+  learning_rate: 0.001
+  warmup_epoch: 2
+```
 
 <a name="预测部署3"></a>
 
