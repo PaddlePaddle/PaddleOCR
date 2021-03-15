@@ -9,47 +9,54 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2021.3.1）](#近期更新)
+* [近期更新（2021.3.8）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
 * [【理论篇】OCR通用32个问题](#OCR通用问题)
   * [基础知识7题](#基础知识)
   * [数据集7题](#数据集2)
   * [模型训练调优18题](#模型训练调优2)
 * [【实战篇】PaddleOCR实战130个问题](#PaddleOCR实战问题)
-  * [使用咨询48题](#使用咨询)
+  * [使用咨询52题](#使用咨询)
   * [数据集18题](#数据集3)
-  * [模型训练调优30题](#模型训练调优3)
+  * [模型训练调优32题](#模型训练调优3)
   * [预测部署39题](#预测部署3)
 
 
 <a name="近期更新"></a>
-## 近期更新（2021.3.1）  
+## 近期更新（2021.3.8）
+ 
+#### Q3.1.49: 只想要识别票据中的部分片段，重新训练它的话，只需要训练文本检测模型就可以了吗？问文本识别，方向分类还是用原来的模型这样可以吗？
 
-#### Q3.1.44: 文字识别训练，设置图像高度不等于32时报错
-**A**：ctc decode的时候，输入需要是1维向量，因此降采样之后，建议特征图高度为1，ppocr中，特征图会降采样32倍，之后高度正好为1，所以有2种解决方案
-- 指定输入shape高度为32（推荐）
-- 在backbone的mv3中添加更多的降采样模块，保证输出的特征图高度为1
+**A**：可以的。PaddleOCR的检测、识别、方向分类器三个模型是独立的，在实际使用中可以优化和替换其中任何一个模型。
 
-#### Q3.1.45: 增大batch_size模型训练速度没有明显提升
-如果bs打得太大，加速效果不明显的话，可以试一下增大初始化内存的值，运行代码前设置环境变量：
-```
-export FLAGS_initial_cpu_memory_in_mb=2000  # 设置初始化内存约2G左右
-```
+#### Q3.1.50: 为什么在checkpoints中load下载的预训练模型会报错？
 
-#### Q3.1.46: 动态图分支(dygraph,release/2.0)，训练模型和推理模型效果不一致
-当前问题表现为：使用训练完的模型直接测试结果较好，但是转换为inference model后，预测结果不一致；出现这个问题一般是两个原因：
-- 1. 预处理函数设置的不一致
-- 2. 后处理参数不一致
-repo中config.yml文件的前后处理参数和inference预测默认的超参数有不一致的地方，建议排查下训练模型预测和inference预测的前后处理，
-参考[issue](https://github.com/PaddlePaddle/PaddleOCR/issues/2080)。
+**A**: 这里有两个不同的概念：
+- pretrained_model：指预训练模型，是已经训练完成的模型。这时会load预训练模型的参数，但并不会load学习率、优化器以及训练状态等。如果需要finetune，应该使用pretrained。
+- checkpoints：指之前训练的中间结果，例如前一次训练到了100个epoch，想接着训练。这时会load尝试所有信息，包括模型的参数，之前的状态等。
 
-#### Q3.1.47: paddleocr package 报错 FatalError: `Process abort signal` is detected by the operating system
-首先，按照[安装文档](./installation.md)安装PaddleOCR的运行环境；另外，检查python环境，python3.6/3.8上可能会出现这个问题，建议用python3.7，
-参考[issue](https://github.com/PaddlePaddle/PaddleOCR/issues/2069)。
+这里应该使用pretrained_model而不是checkpoints
 
+#### Q3.1.51: 如何用PaddleOCR识别视频中的文字？
 
-#### Q3.1.48: 下载的识别模型解压后缺失文件，没有期望的inference.pdiparams, inference.pdmodel等文件
-用解压软件解压可能会出现这个问题，建议二次解压下或者用命令行解压`tar xf `
+**A**: 目前PaddleOCR主要针对图像做处理，如果需要视频识别，可以先对视频抽帧，然后用PPOCR识别。
+
+#### Q3.1.52: 相机采集的图像为四通道，应该如何处理？
+
+**A**: 有两种方式处理：
+- 如果没有其他需要，可以在解码数据的时候指定模式为三通道，例如如果使用opencv，可以使用cv::imread(img_path, cv::IMREAD_COLOR)。
+- 如果其他模块需要处理四通道的图像，那也可以在输入PaddleOCR模块之前进行转换，例如使用cvCvtColor(&img,img3chan,CV_RGBA2RGB)。
+
+#### Q3.3.31: Cosine学习率的更新策略是怎样的？训练过程中为什么会在一个值上停很久？
+
+**A**: Cosine学习率的说明可以参考https://www.paddlepaddle.org.cn/documentation/docs/zh/api/paddle/optimizer/lr/CosineAnnealingDecay_cn.html#cosineannealingdecay
+
+在PaddleOCR中，为了让学习率更加平缓，我们将其中的epoch调整成了iter。
+学习率的更新会和总的iter数量有关。当iter比较大时，会经过较多iter才能看出学习率的值有变化。
+
+#### Q3.3.32: 之前的CosineWarmup方法为什么不见了？
+
+**A**: 我们对代码结构进行了调整，目前的Cosine可以覆盖原有的CosineWarmup的功能，只需要在配置文件中增加相应配置即可。
 
 
 <a name="OCR精选10个问题"></a>
@@ -515,7 +522,6 @@ release/2.0-rc1-0是基于Paddle 2.0rc1的稳定版本，release/2.0是基于Pad
 
 #### Q3.1.43：使用StyleText进行数据合成时，文本(TextInput)的长度远超StyleInput的长度，该怎么处理与合成呢？
 
-
 **A**：在使用StyleText进行数据合成的时候，建议StyleInput的长度长于TextInput的长度。有2种方法可以处理上述问题：
 
 1. 将StyleInput按列的方向进行复制与扩充，直到其超过TextInput的长度。
@@ -525,32 +531,56 @@ release/2.0-rc1-0是基于Paddle 2.0rc1的稳定版本，release/2.0是基于Pad
 
 
 #### Q3.1.44: 文字识别训练，设置图像高度不等于32时报错
+
 **A**：ctc decode的时候，输入需要是1维向量，因此降采样之后，建议特征图高度为1，ppocr中，特征图会降采样32倍，之后高度正好为1，所以有2种解决方案
 - 指定输入shape高度为32（推荐）
 - 在backbone的mv3中添加更多的降采样模块，保证输出的特征图高度为1
 
 #### Q3.1.45: 增大batch_size模型训练速度没有明显提升
-如果bs打得太大，加速效果不明显的话，可以试一下增大初始化内存的值，运行代码前设置环境变量：
+
+**A**：如果batch_size打得太大，加速效果不明显的话，可以试一下增大初始化内存的值，运行代码前设置环境变量：
 ```
 export FLAGS_initial_cpu_memory_in_mb=2000  # 设置初始化内存约2G左右
 ```
 
 #### Q3.1.46: 动态图分支(dygraph,release/2.0)，训练模型和推理模型效果不一致
-当前问题表现为：使用训练完的模型直接测试结果较好，但是转换为inference model后，预测结果不一致；出现这个问题一般是两个原因：
-- 1. 预处理函数设置的不一致
-- 2. 后处理参数不一致
+
+**A**：当前问题表现为：使用训练完的模型直接测试结果较好，但是转换为inference model后，预测结果不一致；出现这个问题一般是两个原因：
+1. 预处理函数设置的不一致
+2. 后处理参数不一致
 repo中config.yml文件的前后处理参数和inference预测默认的超参数有不一致的地方，建议排查下训练模型预测和inference预测的前后处理，
 参考[issue](https://github.com/PaddlePaddle/PaddleOCR/issues/2080)。
 
 #### Q3.1.47: paddleocr package 报错 FatalError: `Process abort signal` is detected by the operating system
-首先，按照[安装文档](./installation.md)安装PaddleOCR的运行环境；另外，检查python环境，python3.6/3.8上可能会出现这个问题，建议用python3.7，
+
+**A**：首先，按照[安装文档](./installation.md)安装PaddleOCR的运行环境；另外，检查python环境，python3.6/3.8上可能会出现这个问题，建议用python3.7，
 参考[issue](https://github.com/PaddlePaddle/PaddleOCR/issues/2069)。
 
-
 #### Q3.1.48: 下载的识别模型解压后缺失文件，没有期望的inference.pdiparams, inference.pdmodel等文件
-用解压软件解压可能会出现这个问题，建议二次解压下或者用命令行解压`tar xf `
 
+**A**：用解压软件解压可能会出现这个问题，建议二次解压下或者用命令行解压`tar xf `
 
+#### Q3.1.49: 只想要识别票据中的部分片段，重新训练它的话，只需要训练文本检测模型就可以了吗？问文本识别，方向分类还是用原来的模型这样可以吗？
+
+**A**：可以的。PaddleOCR的检测、识别、方向分类器三个模型是独立的，在实际使用中可以优化和替换其中任何一个模型。
+
+#### Q3.1.50: 为什么在checkpoints中load下载的预训练模型会报错？
+
+**A**: 这里有两个不同的概念：
+- pretrained_model：指预训练模型，是已经训练完成的模型。这时会load预训练模型的参数，但并不会load学习率、优化器以及训练状态等。如果需要finetune，应该使用pretrained。
+- checkpoints：指之前训练的中间结果，例如前一次训练到了100个epoch，想接着训练。这时会load尝试所有信息，包括模型的参数，之前的状态等。
+
+这里应该使用pretrained_model而不是checkpoints
+
+#### Q3.1.51: 如何用PaddleOCR识别视频中的文字？
+
+**A**: 目前PaddleOCR主要针对图像做处理，如果需要视频识别，可以先对视频抽帧，然后用PPOCR识别。
+
+#### Q3.1.52: 相机采集的图像为四通道，应该如何处理？
+
+**A**: 有两种方式处理：
+- 如果没有其他需要，可以在解码数据的时候指定模式为三通道，例如如果使用opencv，可以使用cv::imread(img_path, cv::IMREAD_COLOR)。
+- 如果其他模块需要处理四通道的图像，那也可以在输入PaddleOCR模块之前进行转换，例如使用cvCvtColor(&img,img3chan,CV_RGBA2RGB)。
 
 <a name="数据集3"></a>
 ### 数据集
@@ -796,7 +826,26 @@ ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 **A**：1.1和2.0的模型一样，微调时，垂直排列的文字需要逆时针旋转 90°后加入训练，上下颠倒的需要旋转为水平的。
 
 #### Q3.3.30: 模型训练过程中如何得到 best_accuracy 模型？
+
 **A**：配置文件里的eval_batch_step字段用来控制多少次iter进行一次eval，在eval完成后会自动生成 best_accuracy 模型，所以如果希望很快就能拿到best_accuracy模型，可以将eval_batch_step改小一点，如改为[10,10]，这样表示第10次迭代后，以后没隔10个迭代就进行一次模型的评估。
+
+#### Q3.3.31: Cosine学习率的更新策略是怎样的？训练过程中为什么会在一个值上停很久？
+
+**A**: Cosine学习率的说明可以参考[这里](https://www.paddlepaddle.org.cn/documentation/docs/zh/api/paddle/optimizer/lr/CosineAnnealingDecay_cn.html#cosineannealingdecay)
+
+在PaddleOCR中，为了让学习率更加平缓，我们将其中的epoch调整成了iter。
+学习率的更新会和总的iter数量有关。当iter比较大时，会经过较多iter才能看出学习率的值有变化。
+
+#### Q3.3.32: 之前的CosineWarmup方法为什么不见了？
+
+**A**: 我们对代码结构进行了调整，目前的Cosine可以覆盖原有的CosineWarmup的功能，只需要在配置文件中增加相应配置即可。
+例如下面的代码，可以设置warmup为2个epoch：
+```
+lr:
+  name: Cosine
+  learning_rate: 0.001
+  warmup_epoch: 2
+```
 
 <a name="预测部署3"></a>
 
@@ -912,7 +961,8 @@ ps -axu | grep train.py | awk '{print $2}' | xargs kill -9
 **A**：使用EAST或SAST模型进行推理预测时，需要在命令中指定参数--det_algorithm="EAST" 或 --det_algorithm="SAST"，使用DB时不用指定是因为该参数默认值是"DB"：https://github.com/PaddlePaddle/PaddleOCR/blob/e7a708e9fdaf413ed7a14da8e4a7b4ac0b211e42/tools/infer/utility.py#L43
 
 #### Q3.4.25: PaddleOCR模型Python端预测和C++预测结果不一致？
-正常来说，python端预测和C++预测文本是一致的，如果预测结果差异较大，
+
+**A**：正常来说，python端预测和C++预测文本是一致的，如果预测结果差异较大，
 建议首先排查diff出现在检测模型还是识别模型，或者尝试换其他模型是否有类似的问题。
 其次，检查python端和C++端数据处理部分是否存在差异，建议保存环境，更新PaddleOCR代码再试下。
 如果更新代码或者更新代码都没能解决，建议在PaddleOCR微信群里或者issue中抛出您的问题。
