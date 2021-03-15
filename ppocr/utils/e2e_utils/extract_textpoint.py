@@ -24,6 +24,17 @@ from itertools import groupby
 from skimage.morphology._skeletonize import thin
 
 
+def get_dict(character_dict_path):
+    character_str = ""
+    with open(character_dict_path, "rb") as fin:
+        lines = fin.readlines()
+        for line in lines:
+            line = line.decode('utf-8').strip("\n").strip("\r\n")
+            character_str += line
+        dict_character = list(character_str)
+    return dict_character
+
+
 def softmax(logits):
     """
     logits: N x d
@@ -164,7 +175,6 @@ def sort_and_expand_with_direction(pos_list, f_direction):
     h, w, _ = f_direction.shape
     sorted_list, point_direction = sort_with_direction(pos_list, f_direction)
 
-    # expand along
     point_num = len(sorted_list)
     sub_direction_len = max(point_num // 3, 2)
     left_direction = point_direction[:sub_direction_len, :]
@@ -207,7 +217,6 @@ def sort_and_expand_with_direction_v2(pos_list, f_direction, binary_tcl_map):
     h, w, _ = f_direction.shape
     sorted_list, point_direction = sort_with_direction(pos_list, f_direction)
 
-    # expand along
     point_num = len(sorted_list)
     sub_direction_len = max(point_num // 3, 2)
     left_direction = point_direction[:sub_direction_len, :]
@@ -268,7 +277,6 @@ def generate_pivot_list_curved(p_score,
     instance_count, instance_label_map = cv2.connectedComponents(
         skeleton_map.astype(np.uint8), connectivity=8)
 
-    # get TCL Instance
     all_pos_yxs = []
     center_pos_yxs = []
     end_points_yxs = []
@@ -279,7 +287,6 @@ def generate_pivot_list_curved(p_score,
             ys, xs = np.where(instance_label_map == instance_id)
             pos_list = list(zip(ys, xs))
 
-            ### FIX-ME, eliminate outlier
             if len(pos_list) < 3:
                 continue
 
@@ -290,7 +297,6 @@ def generate_pivot_list_curved(p_score,
                 pos_list_sorted, _ = sort_with_direction(pos_list, f_direction)
             all_pos_yxs.append(pos_list_sorted)
 
-    # use decoder to filter backgroud points.
     p_char_maps = p_char_maps.transpose([1, 2, 0])
     decode_res = ctc_decoder_for_image(
         all_pos_yxs, logits_map=p_char_maps, keep_blank_in_idxs=True)
@@ -335,11 +341,9 @@ def generate_pivot_list_horizontal(p_score,
             ys, xs = np.where(instance_label_map == instance_id)
             pos_list = list(zip(ys, xs))
 
-            ### FIX-ME, eliminate outlier
             if len(pos_list) < 5:
                 continue
 
-            # add rule here
             main_direction = extract_main_direction(pos_list,
                                                     f_direction)  # y x
             reference_directin = np.array([0, 1]).reshape([-1, 2])  # y x
@@ -370,7 +374,6 @@ def generate_pivot_list_horizontal(p_score,
                                                      f_direction)
             all_pos_yxs.append(pos_list_sorted)
 
-    # use decoder to filter backgroud points.
     p_char_maps = p_char_maps.transpose([1, 2, 0])
     decode_res = ctc_decoder_for_image(
         all_pos_yxs, logits_map=p_char_maps, keep_blank_in_idxs=True)
@@ -417,7 +420,6 @@ def generate_pivot_list(p_score,
             image_id=image_id)
 
 
-# for refine module
 def extract_main_direction(pos_list, f_direction):
     """
     f_direction: h x w x 2
@@ -504,14 +506,12 @@ def generate_pivot_list_tt_inference(p_score,
     instance_count, instance_label_map = cv2.connectedComponents(
         skeleton_map.astype(np.uint8), connectivity=8)
 
-    # get TCL Instance
     all_pos_yxs = []
     if instance_count > 0:
         for instance_id in range(1, instance_count):
             pos_list = []
             ys, xs = np.where(instance_label_map == instance_id)
             pos_list = list(zip(ys, xs))
-            ### FIX-ME, eliminate outlier
             if len(pos_list) < 3:
                 continue
             pos_list_sorted = sort_and_expand_with_direction_v2(

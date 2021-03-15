@@ -30,30 +30,14 @@ import paddle
 
 class PGPostProcess(object):
     """
-    The post process for SAST.
+    The post process for PGNet.
     """
 
-    def __init__(self,
-                 score_thresh=0.5,
-                 nms_thresh=0.2,
-                 sample_pts_num=2,
-                 shrink_ratio_of_width=0.3,
-                 expand_scale=1.0,
-                 tcl_map_thresh=0.5,
-                 **kwargs):
-        self.result_path = ""
-        self.valid_set = 'totaltext'
-        self.Lexicon_Table = [
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C',
-            'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-            'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
-        ]
+    def __init__(self, character_dict_path, valid_set, score_thresh, **kwargs):
+
+        self.Lexicon_Table = get_dict(character_dict_path)
+        self.valid_set = valid_set
         self.score_thresh = score_thresh
-        self.nms_thresh = nms_thresh
-        self.sample_pts_num = sample_pts_num
-        self.shrink_ratio_of_width = shrink_ratio_of_width
-        self.expand_scale = expand_scale
-        self.tcl_map_thresh = tcl_map_thresh
 
         # c++ la-nms is faster, but only support python 3.5
         self.is_python35 = False
@@ -61,16 +45,23 @@ class PGPostProcess(object):
             self.is_python35 = True
 
     def __call__(self, outs_dict, shape_list):
-        p_score, p_border, p_direction, p_char = outs_dict[:4]
-        p_score = p_score[0].numpy()
-        p_border = p_border[0].numpy()
-        p_direction = p_direction[0].numpy()
-        p_char = p_char[0].numpy()
-        src_h, src_w, ratio_h, ratio_w = shape_list[0]
-        if self.valid_set != 'totaltext':
-            is_curved = False
+        p_score = outs_dict['f_score']
+        p_border = outs_dict['f_border']
+        p_char = outs_dict['f_char']
+        p_direction = outs_dict['f_direction']
+        if isinstance(p_score, paddle.Tensor):
+            p_score = p_score[0].numpy()
+            p_border = p_border[0].numpy()
+            p_direction = p_direction[0].numpy()
+            p_char = p_char[0].numpy()
         else:
-            is_curved = True
+            p_score = p_score[0]
+            p_border = p_border[0]
+            p_direction = p_direction[0]
+            p_char = p_char[0]
+
+        src_h, src_w, ratio_h, ratio_w = shape_list[0]
+        is_curved = self.valid_set == "totaltext"
         instance_yxs_list = generate_pivot_list(
             p_score,
             p_char,

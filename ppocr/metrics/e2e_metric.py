@@ -19,11 +19,15 @@ from __future__ import print_function
 __all__ = ['E2EMetric']
 
 from ppocr.utils.e2e_metric.Deteval import *
+from ppocr.utils.e2e_utils.extract_textpoint import *
 
 
 class E2EMetric(object):
-    def __init__(self, Lexicon_Table, main_indicator='f_score_e2e', **kwargs):
-        self.label_list = Lexicon_Table
+    def __init__(self,
+                 character_dict_path,
+                 main_indicator='f_score_e2e',
+                 **kwargs):
+        self.label_list = get_dict(character_dict_path)
         self.max_index = len(self.label_list)
         self.main_indicator = main_indicator
         self.reset()

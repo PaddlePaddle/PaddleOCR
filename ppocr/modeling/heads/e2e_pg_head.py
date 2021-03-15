@@ -228,11 +228,11 @@ class PGHead(nn.Layer):
         f_score = self.conv1(f_score)
         f_score = F.sigmoid(f_score)
 
-        # f_boder
-        f_boder = self.conv_f_boder1(x)
-        f_boder = self.conv_f_boder2(f_boder)
-        f_boder = self.conv_f_boder3(f_boder)
-        f_boder = self.conv2(f_boder)
+        # f_border
+        f_border = self.conv_f_boder1(x)
+        f_border = self.conv_f_boder2(f_border)
+        f_border = self.conv_f_boder3(f_border)
+        f_border = self.conv2(f_border)
 
         f_char = self.conv_f_char1(x)
         f_char = self.conv_f_char2(f_char)
@@ -246,4 +246,9 @@ class PGHead(nn.Layer):
         f_direction = self.conv_f_direc3(f_direction)
         f_direction = self.conv4(f_direction)
 
-        return f_score, f_boder, f_direction, f_char
+        predicts = {}
+        predicts['f_score'] = f_score
+        predicts['f_border'] = f_border
+        predicts['f_char'] = f_char
+        predicts['f_direction'] = f_direction
+        return predicts

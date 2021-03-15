@@ -34,28 +34,6 @@ class ClsLabelEncode(object):
         return data
 
 
-class E2ELabelEncode(object):
-    def __init__(self, Lexicon_Table, max_len, **kwargs):
-        self.Lexicon_Table = Lexicon_Table
-        self.max_len = max_len
-        self.pad_num = len(self.Lexicon_Table)
-
-    def __call__(self, data):
-        text_label_index_list, temp_text = [], []
-        texts = data['strs']
-        for text in texts:
-            text = text.upper()
-            temp_text = []
-            for c_ in text:
-                if c_ in self.Lexicon_Table:
-                    temp_text.append(self.Lexicon_Table.index(c_))
-            temp_text = temp_text + [self.pad_num] * (self.max_len -
-                                                      len(temp_text))
-            text_label_index_list.append(temp_text)
-        data['strs'] = np.array(text_label_index_list)
-        return data
-
-
 class DetLabelEncode(object):
     def __init__(self, **kwargs):
         pass
@@ -207,6 +185,32 @@ class CTCLabelEncode(BaseRecLabelEncode):
     def add_special_char(self, dict_character):
         dict_character = ['blank'] + dict_character
         return dict_character
+
+
+class E2ELabelEncode(BaseRecLabelEncode):
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 character_type='EN',
+                 use_space_char=False,
+                 **kwargs):
+        super(E2ELabelEncode,
+              self).__init__(max_text_length, character_dict_path,
+                             character_type, use_space_char)
+
+    def __call__(self, data):
+        texts = data['strs']
+        temp_texts = []
+        for text in texts:
+            text = text.upper()
+            text = self.encode(text)
+            if text is None:
+                return None
+            text = text + [36] * (self.max_text_len - len(text)
+                                  )  # use 36 to pad
+            temp_texts.append(text)
+        data['strs'] = np.array(temp_texts)
+        return data
 
 
 class AttnLabelEncode(BaseRecLabelEncode):

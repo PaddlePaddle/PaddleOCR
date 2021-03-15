@@ -21,6 +21,7 @@ __all__ = ['PGProcessTrain']
 
 class PGProcessTrain(object):
     def __init__(self,
+                 character_dict_path,
                  batch_size=14,
                  min_crop_size=24,
                  min_text_size=10,
@@ -30,12 +31,18 @@ class PGProcessTrain(object):
         self.min_crop_size = min_crop_size
         self.min_text_size = min_text_size
         self.max_text_size = max_text_size
-        self.Lexicon_Table = [
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C',
-            'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-            'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
-        ]
+        self.Lexicon_Table = self.get_dict(character_dict_path)
         self.img_id = 0
+
+    def get_dict(self, character_dict_path):
+        character_str = ""
+        with open(character_dict_path, "rb") as fin:
+            lines = fin.readlines()
+            for line in lines:
+                line = line.decode('utf-8').strip("\n").strip("\r\n")
+                character_str += line
+            dict_character = list(character_str)
+        return dict_character
 
     def quad_area(self, poly):
         """
@@ -853,7 +860,7 @@ class PGProcessTrain(object):
         for i in range(len(label_list)):
             label_list[i] = np.array(label_list[i])
 
-        if len(pos_list) <= 0 or len(pos_list) > 30:
+        if len(pos_list) <= 0 or len(pos_list) > 30:  #一张图片中最多存在30行文本
             return None
         for __ in range(30 - len(pos_list), 0, -1):
             pos_list.append(pos_list_temp)

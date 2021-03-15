@@ -73,14 +73,14 @@ def build_dataloader(config, mode, device, logger, seed=None):
     else:
         use_shared_memory = True
     if mode == "Train":
-        #Distribute data to multiple cards
+        # Distribute data to multiple cards
         batch_sampler = DistributedBatchSampler(
             dataset=dataset,
             batch_size=batch_size,
             shuffle=shuffle,
             drop_last=drop_last)
     else:
-        #Distribute data to single card
+        # Distribute data to single card
         batch_sampler = BatchSampler(
             dataset=dataset,
             batch_size=batch_size,

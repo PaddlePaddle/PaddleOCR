@@ -3,7 +3,7 @@ Global:
   epoch_num: 600
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/pg_r50_vd_tt/
+  save_model_dir: ./output/pgnet_r50_vd_totaltext/
   save_epoch_step: 10
   # evaluation is run every 0 iterationss after the 1000th iteration
   eval_batch_step: [ 0, 1000 ]
@@ -18,7 +18,11 @@ Global:
   save_inference_dir:
   use_visualdl: False
   infer_img:
-  save_res_path: ./output/pg_r50_vd_tt/predicts_pg.txt
+  valid_set: totaltext #two mode: totaltext valid curved words, partvgg valid non-curved words
+  save_res_path: ./output/pgnet_r50_vd_totaltext/predicts_pgnet.txt
+  character_dict_path: ppocr/utils/pgnet_dict.txt
+  character_type: EN
+  max_text_length: 50
 
 Architecture:
   model_type: e2e
@@ -51,30 +55,26 @@ Optimizer:
 PostProcess:
   name: PGPostProcess
   score_thresh: 0.8
-  cover_thresh: 0.1
-  nms_thresh: 0.2
-
 Metric:
   name: E2EMetric
-  Lexicon_Table: [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' ]
+  character_dict_path: ppocr/utils/pgnet_dict.txt
   main_indicator: f_score_e2e
 
 Train:
   dataset:
-    name: PGDateSet
-    label_file_list: [./train_data/total_text/train/]
+    name: PGDataSet
+    label_file_list: [.././train_data/total_text/train/]
     ratio_list: [1.0]
-    data_format: icdar
+    data_format: icdar #two data format: icdar/textnet
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
       - PGProcessTrain:
-          batch_size: 14
+          batch_size: 14  # same as loader: batch_size_per_card
           min_crop_size: 24
           min_text_size: 4
           max_text_size: 512
-          Lexicon_Table: [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' ]
       - KeepKeys:
           keep_keys: [ 'images', 'tcl_maps', 'tcl_label_maps', 'border_maps','direction_maps', 'training_masks', 'label_list', 'pos_list', 'pos_mask' ] # dataloader will return list in this order
   loader:
@@ -93,10 +93,7 @@ Eval:
           img_mode: BGR
           channel_first: False
       - E2ELabelEncode:
-          Lexicon_Table: [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' ]
-          max_len: 50
       - E2EResizeForTest:
-          valid_set: totaltext
           max_side_len: 768
       - NormalizeImage:
           scale: 1./255.

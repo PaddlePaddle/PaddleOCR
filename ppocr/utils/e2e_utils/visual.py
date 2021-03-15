@@ -28,7 +28,6 @@ def resize_image(im, max_side_len=512):
     resize_w = w
     resize_h = h
 
-    # Fix the longer side
     if resize_h > resize_w:
         ratio = float(max_side_len) / resize_h
     else:
@@ -50,13 +49,11 @@ def resize_image(im, max_side_len=512):
 def resize_image_min(im, max_side_len=512):
     """
     """
-    # print('--> Using resize_image_min')
     h, w, _ = im.shape
 
     resize_w = w
     resize_h = h
 
-    # Fix the longer side
     if resize_h < resize_w:
         ratio = float(max_side_len) / resize_h
     else:
@@ -84,12 +81,7 @@ def resize_image_for_totaltext(im, max_side_len=512):
     ratio = 1.25
     if h * ratio > max_side_len:
         ratio = float(max_side_len) / resize_h
-        # Fix the longer side
-        # if resize_h > resize_w:
-        #    ratio = float(max_side_len) / resize_h
-        # else:
-        #    ratio = float(max_side_len) / resize_w
-    ###
+
     resize_h = int(resize_h * ratio)
     resize_w = int(resize_w * ratio)
 
@@ -114,7 +106,6 @@ def point_pair2poly(point_pair_list):
     pair_info = (pair_length_list.max(), pair_length_list.min(),
                  pair_length_list.mean())
 
-    # constract poly
     point_num = len(point_pair_list) * 2
     point_list = [0] * point_num
     for idx, point_pair in enumerate(point_pair_list):

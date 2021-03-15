@@ -71,7 +71,8 @@ def main():
     init_model(config, model, logger)
 
     # build post process
-    post_process_class = build_post_process(config['PostProcess'])
+    post_process_class = build_post_process(config['PostProcess'],
+                                            global_config)
 
     # create data ops
     transforms = []
