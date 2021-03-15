@@ -35,7 +35,7 @@ support_list = {
     'uk': 'ukranian',
     'be': 'belarusian',
     'te': 'telugu',
-    'ka': 'kannada',
+    'kn': 'kannada',
     'ch_tra': 'chinese tradition',
     'hi': 'hindi',
     'mr': 'marathi',
