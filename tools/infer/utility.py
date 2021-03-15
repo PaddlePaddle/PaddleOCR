@@ -145,7 +145,8 @@ def create_predictor(args, mode, logger):
             #config.set_mkldnn_op({'conv2d', 'depthwise_conv2d', 'pool2d', 'batch_norm'})
             args.rec_batch_num = 1
 
-    # config.enable_memory_optim()
+    # enable memory optim
+    config.enable_memory_optim()
     config.disable_glog_info()
 
     config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
