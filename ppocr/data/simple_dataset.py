@@ -57,8 +57,9 @@ class SimpleDataSet(Dataset):
             with open(file, "rb") as f:
                 lines = f.readlines()
                 random.seed(self.seed)
-                lines = random.sample(lines,
-                                      round(len(lines) * ratio_list[idx]))
+                data_sample_num = round(len(lines) * ratio_list[idx])
+                sample_idx_list = sorted(random.sample(range(len(lines)), data_sample_num))
+                lines = [lines[i] for i in sample_idx_list]
                 data_lines.extend(lines)
         return data_lines
 
