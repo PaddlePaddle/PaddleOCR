@@ -27,7 +27,7 @@ class BaseRecLabelDecode(object):
         support_character_type = [
             'ch', 'en', 'EN_symbol', 'french', 'german', 'japan', 'korean',
             'it', 'es', 'pt', 'ru', 'ar', 'ta', 'ug', 'fa', 'ur', 'rs_latin',
-            'oc', 'rs_cyrillic', 'bg', 'uk', 'be', 'te', 'ka', 'ch_tra', 'hi',
+            'oc', 'rs_cyrillic', 'bg', 'uk', 'be', 'te', 'kn', 'ch_tra', 'hi',
             'mr', 'ne', 'EN'
         ]
         assert character_type in support_character_type, "Only {} are supported now but get {}".format(
