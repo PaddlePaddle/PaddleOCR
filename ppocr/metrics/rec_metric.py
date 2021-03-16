@@ -30,8 +30,16 @@ class RecMetric(object):
             target = target.replace(" ", "")
             norm_edit_dis += Levenshtein.distance(pred, target) / max(
                 len(pred), len(target), 1)
+            eval_result = {
+                'pred': pred,
+                'target': target,
+            }
             if pred == target:
+                eval_result['correct'] = True
                 correct_num += 1
+            else:
+                eval_result['correct'] = False
+            self.output.append(eval_result)
             all_num += 1
         self.correct_num += correct_num
         self.all_num += all_num
@@ -46,14 +54,17 @@ class RecMetric(object):
         return metrics {
                  'acc': 0,
                  'norm_edit_dis': 0,
+                 'output': [],
             }
         """
         acc = 1.0 * self.correct_num / self.all_num
         norm_edit_dis = 1 - self.norm_edit_dis / self.all_num
+        output = self.output
         self.reset()
-        return {'acc': acc, 'norm_edit_dis': norm_edit_dis}
+        return {'acc': acc, 'norm_edit_dis': norm_edit_dis, 'output': output,}
 
     def reset(self):
         self.correct_num = 0
         self.all_num = 0
         self.norm_edit_dis = 0
+        self.output = []
