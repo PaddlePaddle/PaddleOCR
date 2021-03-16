@@ -1,7 +1,9 @@
 # Server-side C++ inference
 
-
-In this tutorial, we will introduce the detailed steps of deploying PaddleOCR ultra-lightweight Chinese detection and recognition models on the server side.
+This chapter introduces the C++ deployment method of the PaddleOCR model, and the corresponding python predictive deployment method refers to [document](../../doc/doc_ch/inference.md).
+C++ is better than python in terms of performance calculation. Therefore, in most CPU and GPU deployment scenarios, C++ deployment is mostly used.
+This section will introduce how to configure the C++ environment and complete it in the Linux\Windows (CPU\GPU) environment
+PaddleOCR model deployment.
 
 
 ## 1. Prepare the environment
@@ -74,10 +76,23 @@ opencv3/
 
 * There are 2 ways to obtain the Paddle inference library, described in detail below.
 
+#### 1.2.1 Direct download and installation
 
-#### 1.2.1 Compile from the source code
+* Different cuda versions of the Linux inference library (based on GCC 4.8.2) are provided on the
+[Paddle inference library official website](https://www.paddlepaddle.org.cn/documentation/docs/en/develop/guides/05_inference_deployment/inference/build_and_install_lib_en.html). You can view and select the appropriate version of the inference library on the official website.
+
+
+* After downloading, use the following method to uncompress.
+
+```
+tar -xf paddle_inference.tgz
+```
+
+Finally you can see the following files in the folder of `paddle_inference/`.
+
+#### 1.2.2 Compile from the source code
 * If you want to get the latest Paddle inference library features, you can download the latest code from Paddle github repository and compile the inference library from the source code.
-* You can refer to [Paddle inference library] (https://www.paddlepaddle.org.cn/documentation/docs/en/advanced_guide/inference_deployment/inference/build_and_install_lib_en.html) to get the Paddle source code from github, and then compile To generate the latest inference library. The method of using git to access the code is as follows.
+* You can refer to [Paddle inference library] (https://www.paddlepaddle.org.cn/documentation/docs/en/develop/guides/05_inference_deployment/inference/build_and_install_lib_en.html) to get the Paddle source code from github, and then compile To generate the latest inference library. The method of using git to access the code is as follows.
 
 
 ```shell
@@ -104,7 +119,7 @@ make -j
 make inference_lib_dist
 ```
 
-For more compilation parameter options, please refer to the official website of the Paddle C++ inference library:[https://www.paddlepaddle.org.cn/documentation/docs/en/advanced_guide/inference_deployment/inference/build_and_install_lib_en.html](https://www.paddlepaddle.org.cn/documentation/docs/en/advanced_guide/inference_deployment/inference/build_and_install_lib_en.html).
+For more compilation parameter options, please refer to the official website of the Paddle C++ inference library:[https://www.paddlepaddle.org.cn/documentation/docs/en/develop/guides/05_inference_deployment/inference/build_and_install_lib_en.html](https://www.paddlepaddle.org.cn/documentation/docs/en/develop/guides/05_inference_deployment/inference/build_and_install_lib_en.html).
 
 
 * After the compilation process, you can see the following files in the folder of `build/paddle_inference_install_dir/`.
@@ -118,22 +133,6 @@ build/paddle_inference_install_dir/
 ```
 
 Among them, `paddle` is the Paddle library required for C++ prediction later, and `version.txt` contains the version information of the current inference library.
-
-
-
-#### 1.2.2 Direct download and installation
-
-* Different cuda versions of the Linux inference library (based on GCC 4.8.2) are provided on the
-[Paddle inference library official website](https://www.paddlepaddle.org.cn/documentation/docs/en/advanced_guide/inference_deployment/inference/build_and_install_lib_en.html). You can view and select the appropriate version of the inference library on the official website.
-
-
-* After downloading, use the following method to uncompress.
-
-```
-tar -xf paddle_inference.tgz
-```
-
-Finally you can see the following files in the folder of `paddle_inference/`.
 
 
 ## 2. Compile and run the demo
@@ -233,7 +232,7 @@ char_list_file ../../ppocr/utils/ppocr_keys_v1.txt # dictionary file
 visualize 1 # Whether to visualize the results，when it is set as 1, The prediction result will be save in the image file `./ocr_vis.png`.
 ```
 
-* Multi-language inference is also supported in PaddleOCR, for more details, please refer to part of multi-language dictionaries and models in [recognition tutorial](../../doc/doc_en/recognition_en.md).
+* Multi-language inference is also supported in PaddleOCR, you can refer to [recognition tutorial](../../doc/doc_en/recognition_en.md) for more supported languages and models in PaddleOCR. Specifically, if you want to infer using multi-language models, you just need to modify values of `char_list_file` and `rec_model_dir` in file `tools/config.txt`.
 
 
 The detection results will be shown on the screen, which is as follows.
@@ -245,4 +244,4 @@ The detection results will be shown on the screen, which is as follows.
 
 ### 2.3 Notes
 
-* Paddle2.0.0-beta0 inference model library is recommended for this toturial.
+* Paddle2.0.0 inference model library is recommended for this toturial.

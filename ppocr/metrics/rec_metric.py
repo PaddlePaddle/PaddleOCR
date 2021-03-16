@@ -29,12 +29,10 @@ class RecMetric(object):
             pred = pred.replace(" ", "")
             target = target.replace(" ", "")
             norm_edit_dis += Levenshtein.distance(pred, target) / max(
-                len(pred), len(target))
+                len(pred), len(target), 1)
             if pred == target:
                 correct_num += 1
             all_num += 1
-            # if all_num < 10 and kwargs.get('show_str', False):
-            #     print('{} -> {}'.format(pred, target))
         self.correct_num += correct_num
         self.all_num += all_num
         self.norm_edit_dis += norm_edit_dis
@@ -50,7 +48,7 @@ class RecMetric(object):
                  'norm_edit_dis': 0,
             }
         """
-        acc = self.correct_num / self.all_num
+        acc = 1.0 * self.correct_num / self.all_num
         norm_edit_dis = 1 - self.norm_edit_dis / self.all_num
         self.reset()
         return {'acc': acc, 'norm_edit_dis': norm_edit_dis}

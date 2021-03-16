@@ -50,6 +50,12 @@ def main(config, device, logger, vdl_writer):
 
     # build dataloader
     train_dataloader = build_dataloader(config, 'Train', device, logger)
+    if len(train_dataloader) == 0:
+        logger.error(
+            'No Images in train dataset, please check annotation file and path in the configuration file'
+        )
+        return
+
     if config['Eval']:
         valid_dataloader = build_dataloader(config, 'Eval', device, logger)
     else:
@@ -83,8 +89,10 @@ def main(config, device, logger, vdl_writer):
     # load pretrain model
     pre_best_model_dict = init_model(config, model, logger, optimizer)
 
-    logger.info('train dataloader has {} iters, valid dataloader has {} iters'.
-                format(len(train_dataloader), len(valid_dataloader)))
+    logger.info('train dataloader has {} iters'.format(len(train_dataloader)))
+    if valid_dataloader is not None:
+        logger.info('valid dataloader has {} iters'.format(
+            len(valid_dataloader)))
     # start train
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,

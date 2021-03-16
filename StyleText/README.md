@@ -72,7 +72,7 @@ fusion_generator:
 python3 tools/synth_image.py -c configs/config.yml --style_image examples/style_images/2.jpg --text_corpus PaddleOCR --language en
 ```
 
-* Note 1: The language options is correspond to the corpus. Currently, the tool only supports English, Simplified Chinese and Korean.
+* Note 1: The language options is correspond to the corpus. Currently, the tool only supports English(en), Simplified Chinese(ch) and Korean(ko).
 * Note 2: Synth-Text is mainly used to generate images for OCR recognition models.
   So the height of style images should be around 32 pixels. Images in other sizes may behave poorly.
 * Note 3: You can modify `use_gpu` in `configs/config.yml` to determine whether to use GPU for prediction.
@@ -120,7 +120,7 @@ In actual application scenarios, it is often necessary to synthesize pictures in
      * `with_label`：Whether the `label_file` is label file list.
    * `CorpusGenerator`：
      * `method`：Method of CorpusGenerator，supports `FileCorpus` and `EnNumCorpus`. If `EnNumCorpus` is used，No other configuration is needed，otherwise you need to set `corpus_file` and `language`.
-     * `language`：Language of the corpus.
+     * `language`：Language of the corpus. Currently, the tool only supports English(en), Simplified Chinese(ch) and Korean(ko). 
      * `corpus_file`: Filepath of the corpus. Corpus file should be a text file which will be split by line-endings（'\n'）. Corpus generator samples one line each time.
 
 

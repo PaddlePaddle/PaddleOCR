@@ -1,6 +1,8 @@
 # 服务器端C++预测
 
-本教程将介绍在服务器端部署PaddleOCR超轻量中文检测、识别模型的详细步骤。
+本章节介绍PaddleOCR 模型的的C++部署方法，与之对应的python预测部署方式参考[文档](../../doc/doc_ch/inference.md)。
+C++在性能计算上优于python，因此，在大多数CPU、GPU部署场景，多采用C++的部署方式，本节将介绍如何在Linux\Windows (CPU\GPU)环境下配置C++环境并完成
+PaddleOCR模型部署。
 
 
 ## 1. 准备环境
@@ -72,9 +74,21 @@ opencv3/
 
 * 有2种方式获取Paddle预测库，下面进行详细介绍。
 
-#### 1.2.1 预测库源码编译
+#### 1.2.1 直接下载安装
+
+* [Paddle预测库官网](https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/guides/05_inference_deployment/inference/build_and_install_lib_cn.html)上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本。
+
+* 下载之后使用下面的方法解压。
+
+```
+tar -xf paddle_inference.tgz
+```
+
+最终会在当前的文件夹中生成`paddle_inference/`的子文件夹。
+
+#### 1.2.2 预测库源码编译
 * 如果希望获取最新预测库特性，可以从Paddle github上克隆最新代码，源码编译预测库。
-* 可以参考[Paddle预测库官网](https://www.paddlepaddle.org.cn/documentation/docs/zh/advanced_guide/inference_deployment/inference/build_and_install_lib_cn.html)的说明，从github上获取Paddle代码，然后进行编译，生成最新的预测库。使用git获取代码方法如下。
+* 可以参考[Paddle预测库官网](https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/guides/05_inference_deployment/inference/build_and_install_lib_cn.html)的说明，从github上获取Paddle代码，然后进行编译，生成最新的预测库。使用git获取代码方法如下。
 
 ```shell
 git clone https://github.com/PaddlePaddle/Paddle.git
@@ -100,7 +114,7 @@ make -j
 make inference_lib_dist
 ```
 
-更多编译参数选项可以参考Paddle C++预测库官网：[https://www.paddlepaddle.org.cn/documentation/docs/zh/advanced_guide/inference_deployment/inference/build_and_install_lib_cn.html](https://www.paddlepaddle.org.cn/documentation/docs/zh/advanced_guide/inference_deployment/inference/build_and_install_lib_cn.html)。
+更多编译参数选项可以参考Paddle C++预测库官网：[https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/guides/05_inference_deployment/inference/build_and_install_lib_cn.html](https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/guides/05_inference_deployment/inference/build_and_install_lib_cn.html)。
 
 
 * 编译完成之后，可以在`build/paddle_inference_install_dir/`文件下看到生成了以下文件及文件夹。
@@ -115,17 +129,7 @@ build/paddle_inference_install_dir/
 
 其中`paddle`就是C++预测所需的Paddle库，`version.txt`中包含当前预测库的版本信息。
 
-#### 1.2.2 直接下载安装
 
-* [Paddle预测库官网](https://www.paddlepaddle.org.cn/documentation/docs/zh/advanced_guide/inference_deployment/inference/build_and_install_lib_cn.html)上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本。
-
-* 下载之后使用下面的方法解压。
-
-```
-tar -xf paddle_inference.tgz
-```
-
-最终会在当前的文件夹中生成`paddle_inference/`的子文件夹。
 
 
 ## 2 开始运行
@@ -223,7 +227,7 @@ char_list_file ../../ppocr/utils/ppocr_keys_v1.txt # 字典文件
 visualize 1 # 是否对结果进行可视化，为1时，会在当前文件夹下保存文件名为`ocr_vis.png`的预测结果。
 ```
 
-* PaddleOCR也支持多语言的预测，更多细节可以参考[识别文档](../../doc/doc_ch/recognition.md)中的多语言字典与模型部分。
+* PaddleOCR也支持多语言的预测，更多支持的语言和模型可以参考[识别文档](../../doc/doc_ch/recognition.md)中的多语言字典与模型部分，如果希望进行多语言预测，只需将修改`tools/config.txt`中的`char_list_file`（字典文件路径）以及`rec_model_dir`（inference模型路径）字段即可。
 
 最终屏幕上会输出检测结果如下。
 
@@ -234,4 +238,4 @@ visualize 1 # 是否对结果进行可视化，为1时，会在当前文件夹�
 
 ### 2.3 注意
 
-* 在使用Paddle预测库时，推荐使用2.0.0-beta0版本的预测库。
+* 在使用Paddle预测库时，推荐使用2.0.0版本的预测库。

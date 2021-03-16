@@ -1,5 +1,12 @@
 ## TEXT ANGLE CLASSIFICATION
 
+### Method introduction
+The angle classification is used in the scene where the image is not 0 degrees. In this scene, it is necessary to perform a correction operation on the text line detected in the picture. In the PaddleOCR system,
+The text line image obtained after text detection is sent to the recognition model after affine transformation. At this time, only a 0 and 180 degree angle classification of the text is required, so the built-in PaddleOCR text angle classifier **only supports 0 and 180 degree classification**. If you want to support more angles, you can modify the algorithm yourself to support.
+
+Example of 0 and 180 degree data samples：
+
+![](../imgs_results/angle_class_example.jpg)
 ### DATA PREPARATION
 
 Please organize the dataset as follows:
@@ -66,7 +73,7 @@ Start training:
 ```
 # Set PYTHONPATH path
 export PYTHONPATH=$PYTHONPATH:.
-# GPU training Support single card and multi-card training, specify the card number through --gpus. If your paddle version is less than 2.0rc1, please use '--selected_gpus'
+# GPU training Support single card and multi-card training, specify the card number through --gpus.
 # Start training, the following command has been written into the train.sh file, just modify the configuration file path in the file
 python3 -m paddle.distributed.launch --gpus '0,1,2,3,4,5,6,7'  tools/train.py -c configs/cls/cls_mv3.yml
 ```

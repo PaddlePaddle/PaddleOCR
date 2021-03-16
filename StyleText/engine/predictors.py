@@ -38,7 +38,15 @@ class StyleTextRecPredictor(object):
         self.std = config["Predictor"]["std"]
         self.expand_result = config["Predictor"]["expand_result"]
 
-    def predict(self, style_input, text_input):
+    def reshape_to_same_height(self, img_list):
+        h = img_list[0].shape[0]
+        for idx in range(1, len(img_list)):
+            new_w = round(1.0 * img_list[idx].shape[1] /
+                          img_list[idx].shape[0] * h)
+            img_list[idx] = cv2.resize(img_list[idx], (new_w, h))
+        return img_list
+
+    def predict_single_image(self, style_input, text_input):
         style_input = self.rep_style_input(style_input, text_input)
         tensor_style_input = self.preprocess(style_input)
         tensor_text_input = self.preprocess(text_input)
@@ -63,6 +71,21 @@ class StyleTextRecPredictor(object):
             "fake_sk": fake_sk,
             "fake_bg": fake_bg,
         }
+
+    def predict(self, style_input, text_input_list):
+        if not isinstance(text_input_list, (tuple, list)):
+            return self.predict_single_image(style_input, text_input_list)
+
+        synth_result_list = []
+        for text_input in text_input_list:
+            synth_result = self.predict_single_image(style_input, text_input)
+            synth_result_list.append(synth_result)
+
+        for key in synth_result:
+            res = [r[key] for r in synth_result_list]
+            res = self.reshape_to_same_height(res)
+            synth_result[key] = np.concatenate(res, axis=1)
+        return synth_result
 
     def preprocess(self, img):
         img = (img.astype('float32') * self.scale - self.mean) / self.std

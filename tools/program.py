@@ -163,6 +163,11 @@ def train(config,
     if type(eval_batch_step) == list and len(eval_batch_step) >= 2:
         start_eval_step = eval_batch_step[0]
         eval_batch_step = eval_batch_step[1]
+        if len(valid_dataloader) == 0:
+            logger.info(
+                'No Images in eval dataset, evaluation during training will be disabled'
+            )
+            start_eval_step = 1e111
         logger.info(
             "During the training process, after the {}th iteration, an evaluation is run every {} iterations".
             format(start_eval_step, eval_batch_step))
@@ -174,7 +179,10 @@ def train(config,
     best_model_dict = {main_indicator: 0}
     best_model_dict.update(pre_best_model_dict)
     train_stats = TrainingStats(log_smooth_window, ['lr'])
+    model_average = False
     model.train()
+
+    use_srn = config['Architecture']['algorithm'] == "SRN"
 
     if 'start_epoch' in best_model_dict:
         start_epoch = best_model_dict['start_epoch']
@@ -182,8 +190,8 @@ def train(config,
         start_epoch = 1
 
     for epoch in range(start_epoch, epoch_num + 1):
-        if epoch > 0:
-            train_dataloader = build_dataloader(config, 'Train', device, logger)
+        train_dataloader = build_dataloader(
+            config, 'Train', device, logger, seed=epoch)
         train_batch_cost = 0.0
         train_reader_cost = 0.0
         batch_sum = 0
@@ -194,7 +202,12 @@ def train(config,
                 break
             lr = optimizer.get_lr()
             images = batch[0]
-            preds = model(images)
+            if use_srn:
+                others = batch[-4:]
+                preds = model(images, others)
+                model_average = True
+            else:
+                preds = model(images)
             loss = loss_class(preds, batch)
             avg_loss = loss['loss']
             avg_loss.backward()
@@ -212,12 +225,12 @@ def train(config,
             stats['lr'] = lr
             train_stats.update(stats)
 
-            if cal_metric_during_train:  # onlt rec and cls need
+            if cal_metric_during_train:  # only rec and cls need
                 batch = [item.numpy() for item in batch]
                 post_result = post_process_class(preds, batch[1])
                 eval_class(post_result, batch)
-                metirc = eval_class.get_metric()
-                train_stats.update(metirc)
+                metric = eval_class.get_metric()
+                train_stats.update(metric)
 
             if vdl_writer is not None and dist.get_rank() == 0:
                 for k, v in train_stats.get().items():
@@ -238,21 +251,32 @@ def train(config,
             # eval
             if global_step > start_eval_step and \
                     (global_step - start_eval_step) % eval_batch_step == 0 and dist.get_rank() == 0:
-                cur_metirc = eval(model, valid_dataloader, post_process_class,
-                                  eval_class)
-                cur_metirc_str = 'cur metirc, {}'.format(', '.join(
-                    ['{}: {}'.format(k, v) for k, v in cur_metirc.items()]))
-                logger.info(cur_metirc_str)
+                if model_average:
+                    Model_Average = paddle.incubate.optimizer.ModelAverage(
+                        0.15,
+                        parameters=model.parameters(),
+                        min_average_window=10000,
+                        max_average_window=15625)
+                    Model_Average.apply()
+                cur_metric = eval(
+                    model,
+                    valid_dataloader,
+                    post_process_class,
+                    eval_class,
+                    use_srn=use_srn)
+                cur_metric_str = 'cur metric, {}'.format(', '.join(
+                    ['{}: {}'.format(k, v) for k, v in cur_metric.items()]))
+                logger.info(cur_metric_str)
 
                 # logger metric
                 if vdl_writer is not None:
-                    for k, v in cur_metirc.items():
+                    for k, v in cur_metric.items():
                         if isinstance(v, (float, int)):
                             vdl_writer.add_scalar('EVAL/{}'.format(k),
-                                                  cur_metirc[k], global_step)
-                if cur_metirc[main_indicator] >= best_model_dict[
+                                                  cur_metric[k], global_step)
+                if cur_metric[main_indicator] >= best_model_dict[
                         main_indicator]:
-                    best_model_dict.update(cur_metirc)
+                    best_model_dict.update(cur_metric)
                     best_model_dict['best_epoch'] = epoch
                     save_model(
                         model,
@@ -263,7 +287,7 @@ def train(config,
                         prefix='best_accuracy',
                         best_model_dict=best_model_dict,
                         epoch=epoch)
-                best_str = 'best metirc, {}'.format(', '.join([
+                best_str = 'best metric, {}'.format(', '.join([
                     '{}: {}'.format(k, v) for k, v in best_model_dict.items()
                 ]))
                 logger.info(best_str)
@@ -273,6 +297,7 @@ def train(config,
                                           best_model_dict[main_indicator],
                                           global_step)
             global_step += 1
+            optimizer.clear_grad()
             batch_start = time.time()
         if dist.get_rank() == 0:
             save_model(
@@ -294,7 +319,7 @@ def train(config,
                 prefix='iter_epoch_{}'.format(epoch),
                 best_model_dict=best_model_dict,
                 epoch=epoch)
-    best_str = 'best metirc, {}'.format(', '.join(
+    best_str = 'best metric, {}'.format(', '.join(
         ['{}: {}'.format(k, v) for k, v in best_model_dict.items()]))
     logger.info(best_str)
     if dist.get_rank() == 0 and vdl_writer is not None:
@@ -302,7 +327,8 @@ def train(config,
     return
 
 
-def eval(model, valid_dataloader, post_process_class, eval_class):
+def eval(model, valid_dataloader, post_process_class, eval_class,
+         use_srn=False):
     model.eval()
     with paddle.no_grad():
         total_frame = 0.0
@@ -313,7 +339,12 @@ def eval(model, valid_dataloader, post_process_class, eval_class):
                 break
             images = batch[0]
             start = time.time()
-            preds = model(images)
+
+            if use_srn:
+                others = batch[-4:]
+                preds = model(images, others)
+            else:
+                preds = model(images)
 
             batch = [item.numpy() for item in batch]
             # Obtain usable results from post-processing methods
@@ -323,13 +354,13 @@ def eval(model, valid_dataloader, post_process_class, eval_class):
             eval_class(post_result, batch)
             pbar.update(1)
             total_frame += len(images)
-        # Get final metirc，eg. acc or hmean
-        metirc = eval_class.get_metric()
+        # Get final metric，eg. acc or hmean
+        metric = eval_class.get_metric()
 
     pbar.close()
     model.train()
-    metirc['fps'] = total_frame / total_time
-    return metirc
+    metric['fps'] = total_frame / total_time
+    return metric
 
 
 def preprocess(is_train=False):
@@ -363,6 +394,7 @@ def preprocess(is_train=False):
     logger = get_logger(name='root', log_file=log_file)
     if config['Global']['use_visualdl']:
         from visualdl import LogWriter
+        save_model_dir = config['Global']['save_model_dir']
         vdl_writer_path = '{}/vdl/'.format(save_model_dir)
         os.makedirs(vdl_writer_path, exist_ok=True)
         vdl_writer = LogWriter(logdir=vdl_writer_path)
