@@ -139,9 +139,9 @@ class AttnLabelDecode(BaseRecLabelDecode):
     def add_special_char(self, dict_character):
         self.beg_str = "sos"
         self.end_str = "eos"
-        dict_character = dict_character
-        dict_character = [self.beg_str] + dict_character + [self.end_str]
-        return dict_character
+        self.dict_character = dict_character
+        self.dict_character = [self.beg_str] + dict_character + [self.end_str]
+        return self.dict_character
 
     def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
         """ convert text-index into text-label. """
