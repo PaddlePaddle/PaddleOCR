@@ -61,6 +61,15 @@ def main():
     # start eval
     metirc = program.eval(model, valid_dataloader, post_process_class,
                           eval_class, use_srn)
+    try:
+        eval_result_file = config['Eval']['save_result_dir']
+        if not os.path.exists(eval_result_file):
+            os.makedirs(eval_result_file)
+        output_dir = f"./{eval_result_file}/{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_acc_{acc}.txt"
+        with open(output_dir, "w", encoding="utf-8") as fp:
+            json.dump(eval_result, fp)
+    except Exception as e:
+        pass
     logger.info('metric eval ***************')
     for k, v in metirc.items():
         logger.info('{}:{}'.format(k, v))
