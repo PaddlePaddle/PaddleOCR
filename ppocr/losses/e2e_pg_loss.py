@@ -18,101 +18,25 @@ from __future__ import print_function
 
 from paddle import nn
 import paddle
-import numpy as np
-import copy
 
 from .det_basic_loss import DiceLoss
+from ppocr.utils.e2e_utils.extract_batchsize import *
 
 
 class PGLoss(nn.Layer):
-    def __init__(self, eps=1e-6, **kwargs):
+    def __init__(self,
+                 tcl_bs,
+                 max_text_length,
+                 max_text_nums,
+                 pad_num,
+                 eps=1e-6,
+                 **kwargs):
         super(PGLoss, self).__init__()
+        self.tcl_bs = tcl_bs
+        self.max_text_nums = max_text_nums
+        self.max_text_length = max_text_length
+        self.pad_num = pad_num
         self.dice_loss = DiceLoss(eps=eps)
-
-    def org_tcl_rois(self, batch_size, pos_lists, pos_masks, label_lists):
-        """
-        """
-        pos_lists_, pos_masks_, label_lists_ = [], [], []
-        img_bs = batch_size
-        tcl_bs = 64
-        ngpu = int(batch_size / img_bs)
-        img_ids = np.array(pos_lists, dtype=np.int32)[:, 0, 0].copy()
-        pos_lists_split, pos_masks_split, label_lists_split = [], [], []
-        for i in range(ngpu):
-            pos_lists_split.append([])
-            pos_masks_split.append([])
-            label_lists_split.append([])
-
-        for i in range(img_ids.shape[0]):
-            img_id = img_ids[i]
-            gpu_id = int(img_id / img_bs)
-            img_id = img_id % img_bs
-            pos_list = pos_lists[i].copy()
-            pos_list[:, 0] = img_id
-            pos_lists_split[gpu_id].append(pos_list)
-            pos_masks_split[gpu_id].append(pos_masks[i].copy())
-            label_lists_split[gpu_id].append(copy.deepcopy(label_lists[i]))
-        # repeat or delete
-        for i in range(ngpu):
-            vp_len = len(pos_lists_split[i])
-            if vp_len <= tcl_bs:
-                for j in range(0, tcl_bs - vp_len):
-                    pos_list = pos_lists_split[i][j].copy()
-                    pos_lists_split[i].append(pos_list)
-                    pos_mask = pos_masks_split[i][j].copy()
-                    pos_masks_split[i].append(pos_mask)
-                    label_list = copy.deepcopy(label_lists_split[i][j])
-                    label_lists_split[i].append(label_list)
-            else:
-                for j in range(0, vp_len - tcl_bs):
-                    c_len = len(pos_lists_split[i])
-                    pop_id = np.random.permutation(c_len)[0]
-                    pos_lists_split[i].pop(pop_id)
-                    pos_masks_split[i].pop(pop_id)
-                    label_lists_split[i].pop(pop_id)
-        # merge
-        for i in range(ngpu):
-            pos_lists_.extend(pos_lists_split[i])
-            pos_masks_.extend(pos_masks_split[i])
-            label_lists_.extend(label_lists_split[i])
-        return pos_lists_, pos_masks_, label_lists_
-
-    def pre_process(self, label_list, pos_list, pos_mask):
-        max_len = 30  # the max texts in a single image
-        max_str_len = 50  # the max len in a single text
-        pad_num = 36  # padding num
-        label_list = label_list.numpy()
-        batch, _, _, _ = label_list.shape
-        pos_list = pos_list.numpy()
-        pos_mask = pos_mask.numpy()
-        pos_list_t = []
-        pos_mask_t = []
-        label_list_t = []
-        for i in range(batch):
-            for j in range(max_len):
-                if pos_mask[i, j].any():
-                    pos_list_t.append(pos_list[i][j])
-                    pos_mask_t.append(pos_mask[i][j])
-                    label_list_t.append(label_list[i][j])
-        pos_list, pos_mask, label_list = self.org_tcl_rois(
-            batch, pos_list_t, pos_mask_t, label_list_t)
-        label = []
-        tt = [l.tolist() for l in label_list]
-        for i in range(batch):
-            k = 0
-            for j in range(max_str_len):
-                if tt[i][j][0] != pad_num:
-                    k += 1
-                else:
-                    break
-            label.append(k)
-        label = paddle.to_tensor(label)
-        label = paddle.cast(label, dtype='int64')
-        pos_list = paddle.to_tensor(pos_list)
-        pos_mask = paddle.to_tensor(pos_mask)
-        label_list = paddle.squeeze(paddle.to_tensor(label_list), axis=2)
-        label_list = paddle.cast(label_list, dtype='int32')
-        return pos_list, pos_mask, label_list, label
 
     def border_loss(self, f_border, l_border, l_score, l_mask):
         l_border_split, l_border_norm = paddle.tensor.split(
@@ -183,7 +107,7 @@ class PGLoss(nn.Layer):
             labels=tcl_label,
             input_lengths=input_lengths,
             label_lengths=label_t,
-            blank=36,
+            blank=self.pad_num,
             reduction='none')
         cost = cost.mean()
         return cost
@@ -192,12 +116,14 @@ class PGLoss(nn.Layer):
         images, tcl_maps, tcl_label_maps, border_maps \
             , direction_maps, training_masks, label_list, pos_list, pos_mask = labels
         # for all the batch_size
-        pos_list, pos_mask, label_list, label_t = self.pre_process(
-            label_list, pos_list, pos_mask)
+        pos_list, pos_mask, label_list, label_t = pre_process(
+            label_list, pos_list, pos_mask, self.max_text_length,
+            self.max_text_nums, self.pad_num, self.tcl_bs)
 
-        f_score, f_boder, f_direction, f_char = predicts
+        f_score, f_border, f_direction, f_char = predicts['f_score'], predicts['f_border'], predicts['f_direction'], \
+                                                 predicts['f_char']
         score_loss = self.dice_loss(f_score, tcl_maps, training_masks)
-        border_loss = self.border_loss(f_boder, border_maps, tcl_maps,
+        border_loss = self.border_loss(f_border, border_maps, tcl_maps,
                                        training_masks)
         direction_loss = self.direction_loss(f_direction, direction_maps,
                                              tcl_maps, training_masks)

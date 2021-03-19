@@ -197,17 +197,17 @@ class E2ELabelEncode(BaseRecLabelEncode):
         super(E2ELabelEncode,
               self).__init__(max_text_length, character_dict_path,
                              character_type, use_space_char)
+        self.pad_num = len(self.dict)  # the length to pad
 
     def __call__(self, data):
         texts = data['strs']
         temp_texts = []
         for text in texts:
-            text = text.upper()
+            text = text.lower()
             text = self.encode(text)
             if text is None:
                 return None
-            text = text + [36] * (self.max_text_len - len(text)
-                                  )  # use 36 to pad
+            text = text + [self.pad_num] * (self.max_text_len - len(text))
             temp_texts.append(text)
         data['strs'] = np.array(temp_texts)
         return data

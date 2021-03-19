@@ -66,9 +66,8 @@ class PGHead(nn.Layer):
     """
     """
 
-    def __init__(self, in_channels, model_name, **kwargs):
+    def __init__(self, in_channels, **kwargs):
         super(PGHead, self).__init__()
-        self.model_name = model_name
         self.conv_f_score1 = ConvBNLayer(
             in_channels=in_channels,
             out_channels=64,

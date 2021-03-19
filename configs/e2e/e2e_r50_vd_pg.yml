@@ -18,11 +18,13 @@ Global:
   save_inference_dir:
   use_visualdl: False
   infer_img:
-  valid_set: totaltext #two mode: totaltext valid curved words, partvgg valid non-curved words
+  valid_set: totaltext # two mode: totaltext valid curved words, partvgg valid non-curved words
   save_res_path: ./output/pgnet_r50_vd_totaltext/predicts_pgnet.txt
-  character_dict_path: ppocr/utils/pgnet_dict.txt
+  character_dict_path: ppocr/utils/ic15_dict.txt
   character_type: EN
-  max_text_length: 50
+  max_text_length: 50 # the max length in seq
+  max_text_nums: 30 # the max seq nums in a pic
+  tcl_len: 64
 
 Architecture:
   model_type: e2e
@@ -33,13 +35,15 @@ Architecture:
     layers: 50
   Neck:
     name: PGFPN
-    model_name: large
   Head:
     name: PGHead
-    model_name: large
 
 Loss:
   name: PGLoss
+  tcl_bs: 64
+  max_text_length: 50 # the same as Global: max_text_length
+  max_text_nums: 30 # the same as Global：max_text_nums
+  pad_num: 36 # the length of dict for pad
 
 Optimizer:
   name: Adam
@@ -54,10 +58,10 @@ Optimizer:
 
 PostProcess:
   name: PGPostProcess
-  score_thresh: 0.8
+  score_thresh: 0.5
 Metric:
   name: E2EMetric
-  character_dict_path: ppocr/utils/pgnet_dict.txt
+  character_dict_path: ppocr/utils/ic15_dict.txt
   main_indicator: f_score_e2e
 
 Train:

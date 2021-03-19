@@ -156,6 +156,7 @@ class PGDataSet(Dataset):
                 img = f.read()
                 data['image'] = img
             outs = transform(data, self.ops)
+
         except Exception as e:
             self.logger.error(
                 "When parsing line {}, error happened with msg: {}".format(

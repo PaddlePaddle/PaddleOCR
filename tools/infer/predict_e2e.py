@@ -39,10 +39,7 @@ class TextE2e(object):
         self.args = args
         self.e2e_algorithm = args.e2e_algorithm
         pre_process_list = [{
-            'E2EResizeForTest': {
-                'max_side_len': 768,
-                'valid_set': 'totaltext'
-            }
+            'E2EResizeForTest': {}
         }, {
             'NormalizeImage': {
                 'std': [0.229, 0.224, 0.225],
@@ -70,12 +67,6 @@ class TextE2e(object):
             postprocess_params["character_dict_path"] = args.e2e_char_dict_path
             postprocess_params["valid_set"] = args.e2e_pgnet_valid_set
             self.e2e_pgnet_polygon = args.e2e_pgnet_polygon
-            if self.e2e_pgnet_polygon:
-                postprocess_params["expand_scale"] = 1.2
-                postprocess_params["shrink_ratio_of_width"] = 0.2
-            else:
-                postprocess_params["expand_scale"] = 1.0
-                postprocess_params["shrink_ratio_of_width"] = 0.3
         else:
             logger.info("unknown e2e_algorithm:{}".format(self.e2e_algorithm))
             sys.exit(0)
@@ -102,6 +93,7 @@ class TextE2e(object):
         return dt_boxes
 
     def __call__(self, img):
+
         ori_im = img.copy()
         data = {'image': img}
         data = transform(data, self.preprocess_op)
@@ -109,7 +101,6 @@ class TextE2e(object):
         if img is None:
             return None, 0
         img = np.expand_dims(img, axis=0)
-        print(img.shape)
         shape_list = np.expand_dims(shape_list, axis=0)
         img = img.copy()
         starttime = time.time()
@@ -123,13 +114,12 @@ class TextE2e(object):
 
         preds = {}
         if self.e2e_algorithm == 'PGNet':
-            preds['f_score'] = outputs[0]
-            preds['f_border'] = outputs[1]
+            preds['f_border'] = outputs[0]
+            preds['f_char'] = outputs[1]
             preds['f_direction'] = outputs[2]
-            preds['f_char'] = outputs[3]
+            preds['f_score'] = outputs[3]
         else:
             raise NotImplementedError
-
         post_result = self.postprocess_op(preds, shape_list)
         points, strs = post_result['points'], post_result['strs']
         dt_boxes = self.filter_tag_det_res_only_clip(points, ori_im.shape)

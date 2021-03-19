@@ -22,16 +22,23 @@ __all__ = ['PGProcessTrain']
 class PGProcessTrain(object):
     def __init__(self,
                  character_dict_path,
+                 max_text_length,
+                 max_text_nums,
+                 tcl_len,
                  batch_size=14,
                  min_crop_size=24,
                  min_text_size=10,
                  max_text_size=512,
                  **kwargs):
+        self.tcl_len = tcl_len
+        self.max_text_length = max_text_length
+        self.max_text_nums = max_text_nums
         self.batch_size = batch_size
         self.min_crop_size = min_crop_size
         self.min_text_size = min_text_size
         self.max_text_size = max_text_size
         self.Lexicon_Table = self.get_dict(character_dict_path)
+        self.pad_num = len(self.Lexicon_Table)
         self.img_id = 0
 
     def get_dict(self, character_dict_path):
@@ -290,7 +297,7 @@ class PGProcessTrain(object):
             height_list.append(quad_h)
         norm_width = max(sum(width_list) / n_char, 1.0)
         average_height = max(sum(height_list) / len(height_list), 1.0)
-
+        k = 1
         for quad in poly_quads:
             direct_vector_full = (
                 (quad[1] + quad[2]) - (quad[0] + quad[3])) / 2.0
@@ -302,6 +309,8 @@ class PGProcessTrain(object):
             cv2.fillPoly(direction_map,
                          quad.round().astype(np.int32)[np.newaxis, :, :],
                          direction_label)
+            cv2.imwrite("output/{}.png".format(k), direction_map * 255.0)
+            k += 1
         return direction_map
 
     def calculate_average_height(self, poly_quads):
@@ -371,7 +380,6 @@ class PGProcessTrain(object):
                 continue
 
             if tag:
-                # continue
                 cv2.fillPoly(training_mask,
                              poly.astype(np.int32)[np.newaxis, :, :], 0.15)
             else:
@@ -577,7 +585,7 @@ class PGProcessTrain(object):
         Prepare text lablel by given Lexicon_Table.
         """
         if len(Lexicon_Table) == 36:
-            return label_str.upper()
+            return label_str.lower()
         else:
             return label_str
 
@@ -846,23 +854,23 @@ class PGProcessTrain(object):
             return None
         pos_list_temp = np.zeros([64, 3])
         pos_mask_temp = np.zeros([64, 1])
-        label_list_temp = np.zeros([50, 1]) + 36
+        label_list_temp = np.zeros([self.max_text_length, 1]) + self.pad_num
 
         for i, label in enumerate(label_list):
             n = len(label)
-            if n > 50:
-                label_list[i] = label[:50]
+            if n > self.max_text_length:
+                label_list[i] = label[:self.max_text_length]
                 continue
-            while n < 50:
-                label.append([36])
+            while n < self.max_text_length:
+                label.append([self.pad_num])
                 n += 1
 
         for i in range(len(label_list)):
             label_list[i] = np.array(label_list[i])
 
-        if len(pos_list) <= 0 or len(pos_list) > 30:  #一张图片中最多存在30行文本
+        if len(pos_list) <= 0 or len(pos_list) > self.max_text_nums:
             return None
-        for __ in range(30 - len(pos_list), 0, -1):
+        for __ in range(self.max_text_nums - len(pos_list), 0, -1):
             pos_list.append(pos_list_temp)
             pos_mask.append(pos_mask_temp)
             label_list.append(label_list_temp)

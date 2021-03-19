@@ -83,11 +83,9 @@ def parse_args():
     # PGNet parmas
     parser.add_argument("--e2e_pgnet_score_thresh", type=float, default=0.5)
     parser.add_argument(
-        "--e2e_char_dict_path",
-        type=str,
-        default="./ppocr/utils/pgnet_dict.txt")
+        "--e2e_char_dict_path", type=str, default="./ppocr/utils/ic15_dict.txt")
     parser.add_argument("--e2e_pgnet_valid_set", type=str, default='totaltext')
-    parser.add_argument("--e2e_pgnet_polygon", type=bool, default=False)
+    parser.add_argument("--e2e_pgnet_polygon", type=bool, default=True)
 
     # params for text classifier
     parser.add_argument("--use_angle_cls", type=str2bool, default=False)
