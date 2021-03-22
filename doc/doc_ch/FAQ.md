@@ -11,19 +11,32 @@
 
 * [近期更新（2021.3.22）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
-* [【理论篇】OCR通用37个问题](#OCR通用问题)
-  * [基础知识12题](#基础知识)
-  * [数据集7题](#数据集2)
-  * [模型训练调优18题](#模型训练调优2)
-* [【实战篇】PaddleOCR实战141个问题](#PaddleOCR实战问题)
-  * [使用咨询52题](#使用咨询)
+* [【理论篇】OCR通用40个问题](#OCR通用问题)
+  * [基础知识13题](#基础知识)
+  * [数据集8题](#数据集2)
+  * [模型训练调优19题](#模型训练调优2)
+* [【实战篇】PaddleOCR实战143个问题](#PaddleOCR实战问题)
+  * [使用咨询54题](#使用咨询)
   * [数据集18题](#数据集3)
   * [模型训练调优32题](#模型训练调优3)
   * [预测部署39题](#预测部署3)
 
-
 <a name="近期更新"></a>
 ## 近期更新（2021.3.22）
+#### Q2.1.13: PaddleOCR提供的文本识别算法包括哪些？
+**A**: PaddleOCR主要提供五种文本识别算法，包括CRNN\StarNet\RARAE\Rosetta和SRN, 其中CRNN\StarNet和Rosetta是基于ctc的文字识别算法，RARE是基于attention的文字识别算法；SRN为百度自研的文本识别算法，引入了语义信息，显著提升了准确率。 详情可参照如下页面：https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.0/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95
+
+#### Q2.2.8:  DBNet如果想使用多边形作为输入，数据标签格式应该如何设定？
+**A**：如果想使用多边形作为DBNet的输入，数据标签也应该用多边形来表示。这样子可以更好得拟合弯曲文本。PPOCRLabel暂时只支持矩形框标注和四边形框标注。
+
+#### Q2.3.19: 参照文档做实际项目时，是重新训练还是在官方训练的基础上进行训练？具体如何操作？
+**A**： 基于官方提供的模型，进行finetune的话，收敛会更快一些。 具体操作上，以识别模型训练为例：如果修改了字符文件，可以设置pretraind_model为官方提供的预训练模型
+
+#### Q3.1.53: 预测时提示图像过大，显存、内存溢出了，应该如何处理？
+**A**: 可以按照这个PR的修改来缓解显存、内存占用 https://github.com/PaddlePaddle/PaddleOCR/pull/2230
+
+#### Q3.1.54: 用c++来部署，目前支持Paddle2.0的模型吗？
+**A**: PPOCR 2.0的模型在arm上运行可以参照该PR https://github.com/PaddlePaddle/PaddleOCR/pull/1877
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -576,13 +589,13 @@ repo中config.yml文件的前后处理参数和inference预测默认的超参数
 - 如果没有其他需要，可以在解码数据的时候指定模式为三通道，例如如果使用opencv，可以使用cv::imread(img_path, cv::IMREAD_COLOR)。
 - 如果其他模块需要处理四通道的图像，那也可以在输入PaddleOCR模块之前进行转换，例如使用cvCvtColor(&img,img3chan,CV_RGBA2RGB)。
 
-<a name="数据集3"></a>
-
 #### Q3.1.53: 预测时提示图像过大，显存、内存溢出了，应该如何处理？
 **A**: 可以按照这个PR的修改来缓解显存、内存占用 https://github.com/PaddlePaddle/PaddleOCR/pull/2230
 
 #### Q3.1.54: 用c++来部署，目前支持Paddle2.0的模型吗？
-**A**: PPOCR 2.0的模型在arm上运行可以参照该PR， https://github.com/PaddlePaddle/PaddleOCR/pull/1877
+**A**: PPOCR 2.0的模型在arm上运行可以参照该PR https://github.com/PaddlePaddle/PaddleOCR/pull/1877
+
+<a name="数据集3"></a>
 
 ### 数据集
 
