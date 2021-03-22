@@ -48,6 +48,8 @@ class TextClassifier(object):
         self.predictor, self.input_tensor, self.output_tensors = \
             utility.create_predictor(args, 'cls', logger)
 
+        self.cls_times = utility.Timer()
+
     def resize_norm_img(self, img):
         imgC, imgH, imgW = self.cls_image_shape
         h = img.shape[0]
@@ -83,6 +85,7 @@ class TextClassifier(object):
         cls_res = [['', 0.0]] * img_num
         batch_num = self.cls_batch_num
         elapse = 0
+        self.cls_times.total_time.start()
         for beg_img_no in range(0, img_num, batch_num):
             end_img_no = min(img_num, beg_img_no + batch_num)
             norm_img_batch = []
@@ -91,6 +94,7 @@ class TextClassifier(object):
                 h, w = img_list[indices[ino]].shape[0:2]
                 wh_ratio = w * 1.0 / h
                 max_wh_ratio = max(max_wh_ratio, wh_ratio)
+            self.cls_times.preprocess_time.start()
             for ino in range(beg_img_no, end_img_no):
                 norm_img = self.resize_norm_img(img_list[indices[ino]])
                 norm_img = norm_img[np.newaxis, :]
@@ -98,11 +102,15 @@ class TextClassifier(object):
             norm_img_batch = np.concatenate(norm_img_batch)
             norm_img_batch = norm_img_batch.copy()
             starttime = time.time()
-
+            self.cls_times.preprocess_time.end()
+            self.cls_times.inference_time.start()
             self.input_tensor.copy_from_cpu(norm_img_batch)
             self.predictor.run()
             prob_out = self.output_tensors[0].copy_to_cpu()
+            self.cls_times.inference_time.end()
+            self.cls_times.postprocess_time.start()
             cls_result = self.postprocess_op(prob_out)
+            self.cls_times.postprocess_time.end()
             elapse += time.time() - starttime
             for rno in range(len(cls_result)):
                 label, score = cls_result[rno]
@@ -110,6 +118,9 @@ class TextClassifier(object):
                 if '180' in label and score > self.cls_thresh:
                     img_list[indices[beg_img_no + rno]] = cv2.rotate(
                         img_list[indices[beg_img_no + rno]], 1)
+        self.cls_times.total_time.end()
+        self.cls_times.img_num += img_num
+        elapse = self.cls_times.total_time.value()
         return img_list, cls_res, elapse
 
 
@@ -141,8 +152,10 @@ def main(args):
     for ino in range(len(img_list)):
         logger.info("Predicts of {}:{}".format(valid_image_file_list[ino],
                                                cls_res[ino]))
-    logger.info("Total predict time for {} images, cost: {:.3f}".format(
-        len(img_list), predict_time))
+
+    logger.info(
+        "The predict time about text angle classify module is as follows: ")
+    text_classifier.cls_times.info(average=False)
 
 
 if __name__ == "__main__":

@@ -65,6 +65,8 @@ class TextRecognizer(object):
         self.predictor, self.input_tensor, self.output_tensors = \
             utility.create_predictor(args, 'rec', logger)
 
+        self.rec_times = utility.Timer()
+
     def resize_norm_img(self, img, max_wh_ratio):
         imgC, imgH, imgW = self.rec_image_shape
         assert imgC == img.shape[2]
@@ -165,7 +167,7 @@ class TextRecognizer(object):
             width_list.append(img.shape[1] / float(img.shape[0]))
         # Sorting can speed up the recognition process
         indices = np.argsort(np.array(width_list))
-
+        self.rec_times.total_time.start()
         # rec_res = []
         rec_res = [['', 0.0]] * img_num
         batch_num = self.rec_batch_num
@@ -174,6 +176,7 @@ class TextRecognizer(object):
             end_img_no = min(img_num, beg_img_no + batch_num)
             norm_img_batch = []
             max_wh_ratio = 0
+            self.rec_times.preprocess_time.start()
             for ino in range(beg_img_no, end_img_no):
                 # h, w = img_list[ino].shape[0:2]
                 h, w = img_list[indices[ino]].shape[0:2]
@@ -216,19 +219,23 @@ class TextRecognizer(object):
                     gsrm_slf_attn_bias1_list,
                     gsrm_slf_attn_bias2_list,
                 ]
+                self.rec_times.preprocess_time.end()
+                self.rec_times.inference_time.start()
                 input_names = self.predictor.get_input_names()
                 for i in range(len(input_names)):
                     input_tensor = self.predictor.get_input_handle(input_names[
                         i])
                     input_tensor.copy_from_cpu(inputs[i])
                 self.predictor.run()
+                self.rec_times.inference_time.end()
                 outputs = []
                 for output_tensor in self.output_tensors:
                     output = output_tensor.copy_to_cpu()
                     outputs.append(output)
                 preds = {"predict": outputs[2]}
             else:
-                starttime = time.time()
+                self.rec_times.preprocess_time.end()
+                self.rec_times.inference_time.start()
                 self.input_tensor.copy_from_cpu(norm_img_batch)
                 self.predictor.run()
 
@@ -237,12 +244,15 @@ class TextRecognizer(object):
                     output = output_tensor.copy_to_cpu()
                     outputs.append(output)
                 preds = outputs[0]
-
+            self.rec_times.inference_time.end()
+            self.rec_times.postprocess_time.start()
             rec_result = self.postprocess_op(preds)
             for rno in range(len(rec_result)):
                 rec_res[indices[beg_img_no + rno]] = rec_result[rno]
-            elapse += time.time() - starttime
-        return rec_res, elapse
+            self.rec_times.postprocess_time.end()
+            self.rec_times.img_num += int(norm_img_batch.shape[0])
+        self.rec_times.total_time.end()
+        return rec_res, self.rec_times.total_time.value()
 
 
 def main(args):
@@ -273,8 +283,9 @@ def main(args):
     for ino in range(len(img_list)):
         logger.info("Predicts of {}:{}".format(valid_image_file_list[ino],
                                                rec_res[ino]))
-    logger.info("Total predict time for {} images, cost: {:.3f}".format(
-        len(img_list), predict_time))
+
+    logger.info("The predict time about recognizer module is as follows: ")
+    text_recognizer.rec_times.info(average=False)
 
 
 if __name__ == "__main__":

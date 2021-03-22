@@ -21,6 +21,10 @@ import json
 from PIL import Image, ImageDraw, ImageFont
 import math
 from paddle import inference
+import time
+from ppocr.utils.logging import get_logger
+logger = get_logger()
+from tabulate import tabulate
 
 
 def parse_args():
@@ -87,6 +91,62 @@ def parse_args():
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
 
     return parser.parse_args()
+
+
+class Times(object):
+    def __init__(self):
+        self.time = 0.
+        self.st = 0.
+        self.et = 0.
+
+    def start(self):
+        self.st = time.time()
+
+    def end(self, accumulative=True):
+        self.et = time.time()
+        if accumulative:
+            self.time += self.et - self.st
+        else:
+            self.time = self.et - self.st
+
+    def reset(self):
+        self.time = 0.
+        self.st = 0.
+        self.et = 0.
+
+    def value(self):
+        return round(self.time, 4)
+
+
+class Timer(Times):
+    def __init__(self):
+        super(Timer, self).__init__()
+        self.total_time = Times()
+        self.preprocess_time = Times()
+        self.inference_time = Times()
+        self.postprocess_time = Times()
+        self.img_num = 0
+
+    def info(self, average=False):
+
+        if average and self.img_num > 0:
+            preprocess_time = round(self.preprocess_time.value() / self.img_num,
+                                    4)
+            postprocess_time = round(self.postprocess_time.value() /
+                                     self.img_num, 4)
+            inference_time = round(self.inference_time.value() / self.img_num,
+                                   4)
+            strs = f"\n===>total number of predict image is {self.img_num} with total time {self.total_time.value()} s\n" \
+                f"===>avg process time: {preprocess_time} s\n" \
+                f"===>avg inference time: {inference_time} s\n" \
+                f"===>avg postprocess time: {postprocess_time} s"
+        else:
+            strs = f"\n===>total number of predict image is {self.img_num} with total time {self.total_time.value()} s\n" \
+                f"===>process time: {self.preprocess_time.value()} s\n" \
+                f"===>inference time: {self.inference_time.value()} s\n" \
+                f"===>postprocess time: {self.postprocess_time.value()} s"
+
+        logger.info(strs)
 
 
 def create_predictor(args, mode, logger):
