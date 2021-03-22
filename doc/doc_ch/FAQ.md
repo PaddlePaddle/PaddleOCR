@@ -163,7 +163,7 @@
 
 **A**: PubTabNet是IBM提出的基于图片格式的表格识别数据集，包含 56.8 万张表格数据的图像，以及图像对应的 html 格式的注释。该数据集的发布推动了表格结构化算法的研发和落地应用。
 
-#### Q2.1.13: PaddleOCR提供的文本识别是包括哪些算法？
+#### Q2.1.13: PaddleOCR提供的文本识别算法包括哪些？
 **A**: PaddleOCR主要提供五种文本识别算法，包括CRNN\StarNet\RARAE\Rosetta和SRN, 其中CRNN\StarNet和Rosetta是基于ctc的文字识别算法，RARE是基于attention的文字识别算法；SRN为百度自研的文本识别算法，引入了语义信息，显著提升了准确率。 详情可参照如下页面：https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.0/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95
 
 <a name="数据集2"></a>
@@ -198,7 +198,7 @@
 **A**：SRNet是借鉴GAN中图像到图像转换、风格迁移的想法合成文本数据。不同于通用GAN的方法只选择一个分支，SRNet将文本合成任务分解为三个简单的子模块，提升合成数据的效果。这三个子模块为不带背景的文本风格迁移模块、背景抽取模块和融合模块。PaddleOCR计划将在2020年12月中旬开源基于SRNet的实用模型。
 
 #### Q2.2.8:  DBNet如果想使用多边形作为输入，数据标签格式应该如何设定？
-**A**：如果想使用多边形作为DBNet的输入，数据标签也应该用多边形来表示，这样子可以更好得拟合弯曲文本。PPOCRLabel暂时只支持矩形标注和四边形框标注。
+**A**：如果想使用多边形作为DBNet的输入，数据标签也应该用多边形来表示。这样子可以更好得拟合弯曲文本。PPOCRLabel暂时只支持矩形框标注和四边形框标注。
 
 <a name="模型训练调优2"></a>
 ### 模型训练调优
