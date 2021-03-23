@@ -4,7 +4,8 @@
 
 This document will introduce how to use the [PaddleServing](https://github.com/PaddlePaddle/Serving/blob/develop/README_CN.md) to deploy the PPOCR dynamic graph model as a pipeline online service.
 
-**note**: Paddle Serving service deployment framework introduction and tutorial reference [document](https://aistudio.baidu.com/aistudio/projectdetail/1550674).
+Compared with hubserving deployment, PaddleServing supports high concurrency and efficient communication between the client and the server.
+The introduction and tutorial of Paddle Serving service deployment framework reference [document](https://aistudio.baidu.com/aistudio/projectdetail/1550674).
 
 
 ## Contents
@@ -42,7 +43,16 @@ pip3 install paddle-serving-client-gpu==0.5.0 # for GPU
 3. Install serving-app
 ```
 pip3 install paddle-serving-app==0.3.0
+# fix local_predict to support load dynamic model
+# find the install directoory of paddle_serving_app
+vim /usr/local/lib/python3.7/site-packages/paddle_serving_app/local_predict.py
+# replace line 85 of local_predict.py config = AnalysisConfig(model_path) with:
+if os.path.exists(os.path.join(model_path, "__params__")):
+    config = AnalysisConfig(os.path.join(model_path, "__model__"), os.path.join(model_path, "__params__"))
+else:
+    config = AnalysisConfig(model_path)
 ```
+
 
 **note:** If you want to install the latest version of PaddleServing, refer to [link](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md).
 

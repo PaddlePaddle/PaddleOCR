@@ -5,7 +5,7 @@
 本文档将介绍如何使用[PaddleServing](https://github.com/PaddlePaddle/Serving/blob/develop/README_CN.md)工具部署PPOCR
 动态图模型的pipeline在线服务。
 
-**note**: Paddle Serving服务化部署框架介绍和使用教程参考[文档](https://aistudio.baidu.com/aistudio/projectdetail/1550674)。
+相比较于hubserving部署，PaddleServing支持客户端和服务端之间 高并发和高效通信，更多有关Paddle Serving服务化部署框架介绍和使用教程参考[文档](https://aistudio.baidu.com/aistudio/projectdetail/1550674)。
 
 ## 目录
 - 环境准备
@@ -43,6 +43,16 @@ pip3 install paddle-serving-client-gpu==0.5.0   # for GPU
 3. 安装serving-app
 ```
 pip3 install paddle-serving-app==0.3.0
+```
+**note:**  安装0.3.0版本的serving-app后，为了能加载动态图模型，需要修改serving_app的源码，具体为：
+```
+# 找到paddle_serving_app的安装目录，找到并编辑local_predict.py文件
+vim /usr/local/lib/python3.7/site-packages/paddle_serving_app/local_predict.py
+# 将local_predict.py 的第85行 config = AnalysisConfig(model_path)  替换为：
+if os.path.exists(os.path.join(model_path, "__params__")):
+    config = AnalysisConfig(os.path.join(model_path, "__model__"), os.path.join(model_path, "__params__"))
+else:
+    config = AnalysisConfig(model_path)
 ```
 
 **note:** 如果要安装最新版本的PaddleServing参考[链接](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md)。
