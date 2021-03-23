@@ -64,7 +64,6 @@ Need to prepare PaddleOCR operating environment and Paddle Serving operating env
         config = AnalysisConfig(model_path)
     ```
 
-
    **note:** If you want to install the latest version of PaddleServing, refer to [link](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md).
 
 
@@ -79,14 +78,14 @@ wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_in
 # Download and unzip the OCR text recognition model
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar && tar xf ch_ppocr_server_v2.0_rec_infer.tar
 
-# Conversion detection model
+#  Detection model conversion
 python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_server_v2.0_det_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
                                          --serving_server ./ppocr_det_server_2.0_serving/ \
                                          --serving_client ./ppocr_det_server_2.0_client/
 
-# Conversion recognition model
+#  Recognition model conversion
 python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_server_v2.0_rec_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
