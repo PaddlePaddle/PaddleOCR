@@ -2,7 +2,7 @@
 
 (English|[简体中文](./README_CN.md))
 
-PaddleOCR provides 2 service deployment methods:
+PaddleOCR provides two service deployment methods:
 - Based on **PaddleHub Serving**: Code path is "`./deploy/hubserving`". Please refer to the [tutorial](../../deploy/hubserving/readme_en.md)
 - Based on **PaddleServing**: Code path is "`./deploy/pdserving`". Please follow this tutorial.
 
@@ -27,11 +27,11 @@ The introduction and tutorial of Paddle Serving service deployment framework ref
 <a name="environmental-preparation"></a>
 ## Environmental preparation
 
-Need to prepare PaddleOCR operating environment and Paddle Serving operating environment.
+PaddleOCR operating environment and Paddle Serving operating environment are needed.
 
-1. Prepare PaddleOCR operating environment reference [link](../../doc/doc_ch/installation.md).
+1. Please prepare PaddleOCR operating environment reference [link](../../doc/doc_ch/installation.md).
 
-2. Prepare the operating environment of PaddleServing, the steps are as follows
+2. The steps of PaddleServing operating environment prepare are as follows:
 
     Install serving which used to start the service
     ```
@@ -78,6 +78,9 @@ wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_in
 # Download and unzip the OCR text recognition model
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar && tar xf ch_ppocr_server_v2.0_rec_infer.tar
 
+```
+Then, you can use installed paddle_serving_client tool to convert inference model to server model.
+```
 #  Detection model conversion
 python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_server_v2.0_det_infer/ \
                                          --model_filename inference.pdmodel          \

@@ -79,7 +79,11 @@ PaddleOCR提供2种服务部署方式：
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar && tar xf ch_ppocr_server_v2.0_det_infer.tar
 # 下载并解压 OCR 文本识别模型
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar && tar xf ch_ppocr_server_v2.0_rec_infer.tar
+```
 
+接下来，用安装的paddle_serving_client把下载的inference模型转换成易于server部署的模型格式。
+
+```
 # 转换检测模型
 python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_server_v2.0_det_infer/ \
                                          --model_filename inference.pdmodel          \
