@@ -50,8 +50,6 @@ int main(int argc, char **argv) {
   std::vector<std::string> all_img_names;
   Utility::GetAllFiles((char *)img_path.c_str(), all_img_names);
 
-  cv::Mat srcimg = cv::imread(img_path, cv::IMREAD_COLOR);
-
   DBDetector det(config.det_model_dir, config.use_gpu, config.gpu_id,
                  config.gpu_mem, config.cpu_math_library_num_threads,
                  config.use_mkldnn, config.max_side_len, config.det_db_thresh,
