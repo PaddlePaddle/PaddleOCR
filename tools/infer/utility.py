@@ -24,7 +24,6 @@ from paddle import inference
 import time
 from ppocr.utils.logging import get_logger
 logger = get_logger()
-from tabulate import tabulate
 
 
 def parse_args():
