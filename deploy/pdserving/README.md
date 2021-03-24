@@ -149,9 +149,9 @@ The recognition model is the same.
 
 <a name="faq"></a>
 ## FAQ
-** Q1**: No result return after sending the request.
+**Q1**: No result return after sending the request.
 
-** A1**: Do not set the proxy when starting the service and sending the request. You can close the proxy before starting the service and before sending the request. The command to close the proxy is:
+**A1**: Do not set the proxy when starting the service and sending the request. You can close the proxy before starting the service and before sending the request. The command to close the proxy is:
 ```
 unset https_proxy
 unset http_proxy
