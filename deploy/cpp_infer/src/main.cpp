@@ -47,6 +47,8 @@ int main(int argc, char **argv) {
   config.PrintConfigInfo();
 
   std::string img_path(argv[2]);
+  std::vector<std::string> all_img_names;
+  Utility::GetAllFiles((char *)img_path.c_str(), all_img_names);
 
   cv::Mat srcimg = cv::imread(img_path, cv::IMREAD_COLOR);
 
@@ -68,20 +70,22 @@ int main(int argc, char **argv) {
                      config.gpu_mem, config.cpu_math_library_num_threads,
                      config.use_mkldnn, config.char_list_file,
                      config.use_tensorrt, config.use_fp16);
+  for (auto img_dir : all_img_names) {
+    cv::Mat srcimg = cv::imread(img_dir, cv::IMREAD_COLOR);
+    auto start = std::chrono::system_clock::now();
+    std::vector<std::vector<std::vector<int>>> boxes;
+    det.Run(srcimg, boxes);
 
-  auto start = std::chrono::system_clock::now();
-  std::vector<std::vector<std::vector<int>>> boxes;
-  det.Run(srcimg, boxes);
-
-  rec.Run(boxes, srcimg, cls);
-  auto end = std::chrono::system_clock::now();
-  auto duration =
-      std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-  std::cout << "Cost  "
-            << double(duration.count()) *
-                   std::chrono::microseconds::period::num /
-                   std::chrono::microseconds::period::den
-            << "s" << std::endl;
+    rec.Run(boxes, srcimg, cls);
+    auto end = std::chrono::system_clock::now();
+    auto duration =
+        std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    std::cout << "Cost  "
+              << double(duration.count()) *
+                     std::chrono::microseconds::period::num /
+                     std::chrono::microseconds::period::den
+              << "s" << std::endl;
+  }
 
   return 0;
 }
