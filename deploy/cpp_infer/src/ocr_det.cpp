@@ -54,10 +54,11 @@ void DBDetector::LoadModel(const std::string &model_dir) {
 }
 
 void DBDetector::Run(cv::Mat &img,
-                     std::vector<std::vector<std::vector<int>>> &boxes) {
+                     std::vector<std::vector<std::vector<int>>> &boxes,
+                     std::vector<double> &times) {
   float ratio_h{};
   float ratio_w{};
-
+  auto preprocess_start = std::chrono::system_clock::now();
   cv::Mat srcimg;
   cv::Mat resize_img;
   img.copyTo(srcimg);
@@ -69,7 +70,7 @@ void DBDetector::Run(cv::Mat &img,
 
   std::vector<float> input(1 * 3 * resize_img.rows * resize_img.cols, 0.0f);
   this->permute_op_.Run(&resize_img, input.data());
-
+  auto inference_start = std::chrono::system_clock::now();
   // Inference.
   auto input_names = this->predictor_->GetInputNames();
   auto input_t = this->predictor_->GetInputHandle(input_names[0]);
@@ -86,6 +87,8 @@ void DBDetector::Run(cv::Mat &img,
 
   out_data.resize(out_num);
   output_t->CopyToCpu(out_data.data());
+
+  auto postprocess_start = std::chrono::system_clock::now();
 
   int n2 = output_shape[2];
   int n3 = output_shape[3];
@@ -114,7 +117,22 @@ void DBDetector::Run(cv::Mat &img,
                                           this->det_db_unclip_ratio_);
 
   boxes = post_processor_.FilterTagDetRes(boxes, ratio_h, ratio_w, srcimg);
-
+  auto end = std::chrono::system_clock::now();
+  auto preprocess_time = std::chrono::duration_cast<std::chrono::microseconds>(
+      inference_start - preprocess_start);
+  auto inference_time = std::chrono::duration_cast<std::chrono::microseconds>(
+      postprocess_start - inference_start);
+  auto postprocess_time = std::chrono::duration_cast<std::chrono::microseconds>(
+      end - postprocess_start);
+  times.push_back(double(preprocess_time.count()) *
+                  std::chrono::microseconds::period::num /
+                  std::chrono::microseconds::period::den);
+  times.push_back(double(inference_time.count()) *
+                  std::chrono::microseconds::period::num /
+                  std::chrono::microseconds::period::den);
+  times.push_back(double(postprocess_time.count()) *
+                  std::chrono::microseconds::period::num /
+                  std::chrono::microseconds::period::den);
   //// visualization
   if (this->visualize_) {
     Utility::VisualizeBboxes(srcimg, boxes);

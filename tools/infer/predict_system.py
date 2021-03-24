@@ -183,7 +183,7 @@ def main(args):
                 os.path.join(draw_img_save, os.path.basename(image_file))))
 
     logger.info("\nThe predict time about detection module is as follows: ")
-    text_sys.text_detector.db_times.info(average=False)
+    text_sys.text_detector.det_times.info(average=False)
     if args.use_angle_cls:
         logger.info(
             "\nThe predict time about text angle classify module is as follows: "

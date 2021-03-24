@@ -69,7 +69,8 @@ public:
   void LoadModel(const std::string &model_dir);
 
   // Run predictor
-  void Run(cv::Mat &img, std::vector<std::vector<std::vector<int>>> &boxes);
+  void Run(cv::Mat &img, std::vector<std::vector<std::vector<int>>> &boxes,
+           std::vector<double> times);
 
 private:
   std::shared_ptr<Predictor> predictor_;

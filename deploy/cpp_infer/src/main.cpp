@@ -68,20 +68,27 @@ int main(int argc, char **argv) {
                      config.gpu_mem, config.cpu_math_library_num_threads,
                      config.use_mkldnn, config.char_list_file,
                      config.use_tensorrt, config.use_fp16);
-
+  std::vector<double> det_times;
   auto start = std::chrono::system_clock::now();
   std::vector<std::vector<std::vector<int>>> boxes;
-  det.Run(srcimg, boxes);
+  det.Run(srcimg, boxes, det_times);
 
-  rec.Run(boxes, srcimg, cls);
+  std::vector<double> rec_times;
+  rec.Run(boxes, srcimg, cls, rec_times);
   auto end = std::chrono::system_clock::now();
   auto duration =
       std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-  std::cout << "Cost  "
+  std::cout << "=>Total cost  "
             << double(duration.count()) *
                    std::chrono::microseconds::period::num /
                    std::chrono::microseconds::period::den
             << "s" << std::endl;
+  std::cout << "=>det process time: " << det_times[0]
+            << "s  det inference time: " << det_times[1]
+            << "s   det postprocess time: " << det_times[2] << "s" << std::endl;
+  std::cout << "=>rec process time: " << rec_times[0]
+            << "s  rec inference time: " << rec_times[1]
+            << "s   rec postprocess time: " << rec_times[2] << "s" << std::endl;
 
   return 0;
 }
