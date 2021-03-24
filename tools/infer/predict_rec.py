@@ -168,17 +168,14 @@ class TextRecognizer(object):
         # Sorting can speed up the recognition process
         indices = np.argsort(np.array(width_list))
         self.rec_times.total_time.start()
-        # rec_res = []
         rec_res = [['', 0.0]] * img_num
         batch_num = self.rec_batch_num
-        elapse = 0
         for beg_img_no in range(0, img_num, batch_num):
             end_img_no = min(img_num, beg_img_no + batch_num)
             norm_img_batch = []
             max_wh_ratio = 0
             self.rec_times.preprocess_time.start()
             for ino in range(beg_img_no, end_img_no):
-                # h, w = img_list[ino].shape[0:2]
                 h, w = img_list[indices[ino]].shape[0:2]
                 wh_ratio = w * 1.0 / h
                 max_wh_ratio = max(max_wh_ratio, wh_ratio)
@@ -204,7 +201,6 @@ class TextRecognizer(object):
             norm_img_batch = norm_img_batch.copy()
 
             if self.rec_algorithm == "SRN":
-                starttime = time.time()
                 encoder_word_pos_list = np.concatenate(encoder_word_pos_list)
                 gsrm_word_pos_list = np.concatenate(gsrm_word_pos_list)
                 gsrm_slf_attn_bias1_list = np.concatenate(

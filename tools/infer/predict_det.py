@@ -96,7 +96,7 @@ class TextDetector(object):
             args, 'det', logger)  # paddle.jit.load(args.det_model_dir)
         # self.predictor.eval()
 
-        self.db_times = utility.Timer()
+        self.det_times = utility.Timer()
 
     def order_points_clockwise(self, pts):
         """
@@ -154,8 +154,8 @@ class TextDetector(object):
     def __call__(self, img):
         ori_im = img.copy()
         data = {'image': img}
-        self.db_times.total_time.start()
-        self.db_times.preprocess_time.start()
+        self.det_times.total_time.start()
+        self.det_times.preprocess_time.start()
         data = transform(data, self.preprocess_op)
         img, shape_list = data
         if img is None:
@@ -164,15 +164,15 @@ class TextDetector(object):
         shape_list = np.expand_dims(shape_list, axis=0)
         img = img.copy()
 
-        self.db_times.preprocess_time.end()
-        self.db_times.inference_time.start()
+        self.det_times.preprocess_time.end()
+        self.det_times.inference_time.start()
         self.input_tensor.copy_from_cpu(img)
         self.predictor.run()
         outputs = []
         for output_tensor in self.output_tensors:
             output = output_tensor.copy_to_cpu()
             outputs.append(output)
-        self.db_times.inference_time.end()
+        self.det_times.inference_time.end()
 
         preds = {}
         if self.det_algorithm == "EAST":
@@ -187,17 +187,17 @@ class TextDetector(object):
             preds['maps'] = outputs[0]
         else:
             raise NotImplementedError
-        self.db_times.postprocess_time.start()
+        self.det_times.postprocess_time.start()
         post_result = self.postprocess_op(preds, shape_list)
         dt_boxes = post_result[0]['points']
         if self.det_algorithm == "SAST" and self.det_sast_polygon:
             dt_boxes = self.filter_tag_det_res_only_clip(dt_boxes, ori_im.shape)
         else:
             dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
-        self.db_times.postprocess_time.end()
-        self.db_times.total_time.end()
-        self.db_times.img_num += 1
-        return dt_boxes, self.db_times.total_time.value()
+        self.det_times.postprocess_time.end()
+        self.det_times.total_time.end()
+        self.det_times.img_num += 1
+        return dt_boxes, self.det_times.total_time.value()
 
 
 if __name__ == "__main__":
@@ -229,4 +229,4 @@ if __name__ == "__main__":
         logger.info("The visualized image saved in {}".format(img_path))
 
     logger.info("The predict time about detection module is as follows: ")
-    text_detector.db_times.info(average=False)
+    text_detector.det_times.info(average=False)
