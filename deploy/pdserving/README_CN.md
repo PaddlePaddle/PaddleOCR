@@ -151,9 +151,9 @@ python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_server_v2.0_rec_in
 
 <a name="FAQ"></a>
 ## FAQ
-** Q1**： 发送请求后没有结果返回或者提示输出解码报错
+**Q1**： 发送请求后没有结果返回或者提示输出解码报错
 
-** A1**： 启动服务和发送请求时不要设置代理，可以在启动服务前和发送请求前关闭代理，关闭代理的命令是：
+**A1**： 启动服务和发送请求时不要设置代理，可以在启动服务前和发送请求前关闭代理，关闭代理的命令是：
 ```
 unset https_proxy
 unset http_proxy
