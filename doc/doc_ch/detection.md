@@ -108,9 +108,9 @@ PaddleOCR计算三个OCR检测相关的指标，分别是：Precision、Recall�
 运行如下代码，根据配置文件`det_db_mv3.yml`中`save_res_path`指定的测试集检测结果文件，计算评估指标。
 
 评估时设置后处理参数`box_thresh=0.5`，`unclip_ratio=1.5`，使用不同数据集、不同模型训练，可调整这两个参数进行优化
-训练中模型参数默认保存在`Global.save_model_dir`目录下。在评估指标时，需要设置`Global.checkpoints`指向保存的参数文件。
+训练中模型参数默认保存在`Global.save_model_dir`目录下。在评估指标时，需要设置`Global.pretrained_model`指向保存的参数文件。
 ```shell
-python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="{path/to/weights}/best_accuracy" PostProcess.box_thresh=0.5 PostProcess.unclip_ratio=1.5
+python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.pretrained_model="{path/to/weights}/best_accuracy" PostProcess.box_thresh=0.5 PostProcess.unclip_ratio=1.5
 ```
 
 

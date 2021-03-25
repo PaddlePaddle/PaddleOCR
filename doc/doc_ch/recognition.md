@@ -420,8 +420,8 @@ Eval:
 评估数据集可以通过 `configs/rec/rec_icdar15_train.yml`  修改Eval中的 `label_file_path` 设置。
 
 ```
-# GPU 评估， Global.checkpoints 为待测权重
-python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_icdar15_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy
+# GPU 评估， Global.pretrained_model 为待测权重
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_icdar15_train.yml -o Global.pretrained_model={path/to/weights}/best_accuracy
 ```
 
 <a name="预测"></a>
@@ -432,7 +432,7 @@ python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec
 
 使用 PaddleOCR 训练好的模型，可以通过以下脚本进行快速预测。
 
-默认预测图片存储在 `infer_img` 里，通过 `-o Global.checkpoints` 指定权重：
+默认预测图片存储在 `infer_img` 里，通过 `-o Global.pretrained_model` 指定权重：
 
 ```
 # 预测英文结果
