@@ -425,8 +425,8 @@ Eval:
 The evaluation dataset can be set by modifying the `Eval.dataset.label_file_list` field in the `configs/rec/rec_icdar15_train.yml` file.
 
 ```
-# GPU evaluation, Global.checkpoints is the weight to be tested
-python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_icdar15_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy
+# GPU evaluation, Global.pretrained_model is the weight to be tested
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_icdar15_train.yml -o Global.pretrained_model={path/to/weights}/best_accuracy
 ```
 
 <a name="PREDICTION"></a>
@@ -437,7 +437,7 @@ python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec
 
 Using the model trained by paddleocr, you can quickly get prediction through the following script.
 
-The default prediction picture is stored in `infer_img`, and the weight is specified via `-o Global.checkpoints`:
+The default prediction picture is stored in `infer_img`, and the weight is specified via `-o Global.pretrained_model`:
 
 ```
 # Predict English results
