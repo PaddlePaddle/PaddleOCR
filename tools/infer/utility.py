@@ -87,6 +87,7 @@ def parse_args():
     parser.add_argument("--cls_thresh", type=float, default=0.9)
 
     parser.add_argument("--enable_mkldnn", type=str2bool, default=False)
+    parser.add_argument("--cpu_threads", type=int, default=6)
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
 
     return parser.parse_args()
@@ -127,25 +128,39 @@ class Timer(Times):
         self.img_num = 0
 
     def info(self, average=False):
+        logger.info("----------------------- Perf info -----------------------")
+        logger.info("total_time: {}, img_num: {}".format(self.total_time.value(
+        ), self.img_num))
+        preprocess_time = round(self.preprocess_time.value() / self.img_num,
+                                4) if average else self.preprocess_time.value()
+        postprocess_time = round(
+            self.postprocess_time.value() / self.img_num,
+            4) if average else self.postprocess_time.value()
+        inference_time = round(self.inference_time.value() / self.img_num,
+                               4) if average else self.inference_time.value()
 
-        if average and self.img_num > 0:
-            preprocess_time = round(self.preprocess_time.value() / self.img_num,
-                                    4)
-            postprocess_time = round(self.postprocess_time.value() /
-                                     self.img_num, 4)
-            inference_time = round(self.inference_time.value() / self.img_num,
-                                   4)
-            strs = f"\n===>total number of predict image is {self.img_num} with total time {self.total_time.value()} s\n" \
-                f"===>avg process time: {preprocess_time} s\n" \
-                f"===>avg inference time: {inference_time} s\n" \
-                f"===>avg postprocess time: {postprocess_time} s"
-        else:
-            strs = f"\n===>total number of predict image is {self.img_num} with total time {self.total_time.value()} s\n" \
-                f"===>process time: {self.preprocess_time.value()} s\n" \
-                f"===>inference time: {self.inference_time.value()} s\n" \
-                f"===>postprocess time: {self.postprocess_time.value()} s"
+        average_latency = self.total_time.value() / self.img_num
+        logger.info("average_latency(ms): {:.2f}, QPS: {:2f}".format(
+            average_latency * 1000, 1 / average_latency))
+        logger.info(
+            "preprocess_latency(ms): {:.2f}, inference_latency(ms): {:.2f}, postprocess_latency(ms): {:.2f}".
+            format(preprocess_time * 1000, inference_time * 1000,
+                   postprocess_time * 1000))
 
-        logger.info(strs)
+    def report(self, average=False):
+        dic = {}
+        dic['preprocess_time'] = round(
+            self.preprocess_time.value() / self.img_num,
+            4) if average else self.preprocess_time.value()
+        dic['postprocess_time'] = round(
+            self.postprocess_time.value() / self.img_num,
+            4) if average else self.postprocess_time.value()
+        dic['inference_time'] = round(
+            self.inference_time.value() / self.img_num,
+            4) if average else self.inference_time.value()
+        dic['img_num'] = self.img_num
+        dic['total_time'] = round(self.total_time.value(), 4)
+        return dic
 
 
 def create_predictor(args, mode, logger):
@@ -176,10 +191,59 @@ def create_predictor(args, mode, logger):
             config.enable_tensorrt_engine(
                 precision_mode=inference.PrecisionType.Half
                 if args.use_fp16 else inference.PrecisionType.Float32,
-                max_batch_size=args.max_batch_size)
+                max_batch_size=args.max_batch_size,
+                min_subgraph_size=3)
+            if mode == "det":
+                min_input_shape = {
+                    "x": [1, 3, 50, 50],
+                    "conv2d_92.tmp_0": [1, 96, 20, 20],
+                    # "conv2d_91.tmp_0": [1, 96, 10, 10],
+                    # "nearest_interp_v2_1.tmp_0": [1, 96, 10, 10], 
+                    "nearest_interp_v2_2.tmp_0": [1, 96, 20, 20],
+                    "nearest_interp_v2_3.tmp_0": [1, 24, 20, 20],
+                    "nearest_interp_v2_4.tmp_0": [1, 24, 20, 20],
+                    "nearest_interp_v2_5.tmp_0": [1, 24, 20, 20]
+                }
+                # "elementwise_add_7": [1, 56, 2, 2], 
+                # "nearest_interp_v2_0.tmp_0": [1, 96, 2, 2]}
+                max_input_shape = {
+                    "x": [1, 3, 2000, 2000],
+                    "conv2d_92.tmp_0": [1, 96, 400, 400],
+                    # "conv2d_91.tmp_0": [1, 96, 200, 200],
+                    # "nearest_interp_v2_1.tmp_0": [1, 96, 200, 200],
+                    "nearest_interp_v2_2.tmp_0": [1, 96, 400, 400],
+                    "nearest_interp_v2_3.tmp_0": [1, 24, 400, 400],
+                    "nearest_interp_v2_4.tmp_0": [1, 24, 400, 400],
+                    "nearest_interp_v2_5.tmp_0": [1, 24, 400, 400]
+                }
+                # "elementwise_add_7": [1, 56, 400, 400], 
+                # "nearest_interp_v2_0.tmp_0": [1, 96, 400, 400]}
+                opt_input_shape = {
+                    "x": [1, 3, 640, 640],
+                    "conv2d_92.tmp_0": [1, 96, 160, 160],
+                    # "conv2d_91.tmp_0": [1, 96, 80, 80], 
+                    # "nearest_interp_v2_1.tmp_0": [1, 96, 80, 80], 
+                    "nearest_interp_v2_2.tmp_0": [1, 96, 160, 160],
+                    "nearest_interp_v2_3.tmp_0": [1, 24, 160, 160],
+                    "nearest_interp_v2_4.tmp_0": [1, 24, 160, 160],
+                    "nearest_interp_v2_5.tmp_0": [1, 24, 160, 160]
+                }
+                # "elementwise_add_7": [1, 56, 40, 40],
+                # "nearest_interp_v2_0.tmp_0": [1, 96, 40, 40]} 
+            elif mode == "rec":
+                min_input_shape = {"x": [1, 3, 32, 10]}
+                max_input_shape = {"x": [1, 3, 32, 2000]}
+                opt_input_shape = {"x": [1, 3, 32, 320]}
+            elif mode == "cls":
+                min_input_shape = {"x": [1, 3, 48, 10]}
+                max_input_shape = {"x": [1, 3, 48, 2000]}
+                opt_input_shape = {"x": [1, 3, 48, 320]}
+
+            # config.set_trt_dynamic_shape_info(min_input_shape, max_input_shape, opt_input_shape)
+
     else:
         config.disable_gpu()
-        config.set_cpu_math_library_num_threads(6)
+        config.set_cpu_math_library_num_threads(args.cpu_threads)
         if args.enable_mkldnn:
             # cache 10 different shapes for mkldnn to avoid memory leak
             config.set_mkldnn_cache_capacity(10)
@@ -233,7 +297,7 @@ def draw_ocr(image,
              txts=None,
              scores=None,
              drop_score=0.5,
-             font_path="./doc/simfang.ttf"):
+             font_path="./doc/fonts/simfang.ttf"):
     """
     Visualize the results of OCR detection and recognition
     args:
@@ -274,7 +338,7 @@ def draw_ocr_box_txt(image,
                      txts,
                      scores=None,
                      drop_score=0.5,
-                     font_path="./doc/simfang.ttf"):
+                     font_path="./doc/fonts/simfang.ttf"):
     h, w = image.height, image.width
     img_left = image.copy()
     img_right = Image.new('RGB', (w, h), (255, 255, 255))
@@ -350,7 +414,7 @@ def text_visual(texts,
                 img_h=400,
                 img_w=600,
                 threshold=0.,
-                font_path="./doc/simfang.ttf"):
+                font_path="./doc/fonts/simfang.ttf"):
     """
     create new blank img and draw txt on it
     args:
@@ -438,6 +502,88 @@ def draw_boxes(image, boxes, scores=None, drop_score=0.5):
         box = np.reshape(np.array(box), [-1, 1, 2]).astype(np.int64)
         image = cv2.polylines(np.array(image), [box], True, (255, 0, 0), 2)
     return image
+
+
+def get_current_memory_mb(gpu_id=None):
+    """
+    It is used to Obtain the memory usage of the CPU and GPU during the running of the program.
+    And this function Current program is time-consuming.
+    """
+    import pynvml
+    import psutil
+    import GPUtil
+
+    pid = os.getpid()
+    p = psutil.Process(pid)
+    info = p.memory_full_info()
+    cpu_mem = info.uss / 1024. / 1024.
+    gpu_mem = 0
+    gpu_percent = 0
+    if gpu_id is not None:
+        GPUs = GPUtil.getGPUs()
+        gpu_load = GPUs[gpu_id].load
+        gpu_percent = gpu_load
+        pynvml.nvmlInit()
+        handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+        meminfo = pynvml.nvmlDeviceGetMemoryInfo(handle)
+        gpu_mem = meminfo.used / 1024. / 1024.
+    return round(cpu_mem, 4), round(gpu_mem, 4), round(gpu_percent, 4)
+
+
+class LoggerHelper(object):
+    def __init__(self, args, times, model_name, mem_info=None):
+        """
+        args: utility.parse_args()
+        times: The Timer class
+        """
+        self.args = args
+        self.times = times
+        self.model_name = model_name
+        self.batch_size = 1 if "det" in model_name else args.rec_batch_num
+        self.shape = "dynamic shape"
+        self.precision = "fp32"
+        if args.use_tensorrt and args.use_fp16:
+            self.predicion = "fp16"
+
+        self.device = "gpu" if args.use_gpu else "cpu"
+        self.preprocess_time = round(times['preprocess_time'], 4)
+        self.inference_time = round(times['inference_time'], 4)
+        self.postprocess_time = round(times['postprocess_time'], 4)
+        self.data_num = times['img_num']
+        self.total_time = round(times['total_time'], 4)
+        self.mem_info = {"cpu_rss": 0, "gpu_rss": 0, "gpu_util": 0}
+        if mem_info is not None:
+            self.mem_info = mem_info
+
+    def report(self):
+        logger.info("\n")
+        logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        logger.info("----------------------- Model info ----------------------")
+        logger.info(f"model_name: {self.model_name}")
+
+        logger.info("----------------------- Data info ----------------------")
+        logger.info(f"batch_size: {self.batch_size}")
+        logger.info(f"input_shape: {self.shape}")
+
+        logger.info("----------------------- Conf info -----------------------")
+        logger.info(f"runtime_device: {self.device}")
+        logger.info(f"ir_optim: {True}")
+        logger.info(f"enable_memory_optim: {True}")
+        logger.info(f"enable_tensorrt: {self.args.use_tensorrt}")
+        logger.info(f"precision: {self.precision}")
+        logger.info(f"enable_mkldnn : {self.args.enable_mkldnn}")
+        logger.info(f"cpu_math_library_num_threads: {self.args.cpu_threads}")
+
+        logger.info("----------------------- Perf info -----------------------")
+        logger.info(
+            f"cpu_rss(MB): {round(self.mem_info['cpu_rss'], 4)} gpu_rss(MB): {round(self.mem_info['gpu_rss'], 4)}, gpu_util: {round(self.mem_info['gpu_util'], 2)}%"
+        )
+        logger.info(
+            f"total number of predicted data: {self.data_num} and total time spent(s): {self.total_time}"
+        )
+        logger.info(
+            f"preproce_time(ms): {self.preprocess_time*1000}, inference_time(ms): {self.inference_time*1000}, postprocess_time(ms): {self.postprocess_time*1000}"
+        )
 
 
 if __name__ == '__main__':

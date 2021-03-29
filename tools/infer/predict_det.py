@@ -23,6 +23,7 @@ os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
 import cv2
 import numpy as np
 import sys
+import time
 
 import tools.infer.utility as utility
 from ppocr.utils.logging import get_logger
@@ -205,6 +206,8 @@ if __name__ == "__main__":
     count = 0
     total_time = 0
     draw_img_save = "./inference_results"
+    cpu_mem, gpu_mem, gpu_util = 0, 0, 0
+
     if not os.path.exists(draw_img_save):
         os.makedirs(draw_img_save)
     for image_file in image_file_list:
@@ -214,17 +217,33 @@ if __name__ == "__main__":
         if img is None:
             logger.info("error in loading image:{}".format(image_file))
             continue
-        dt_boxes, elapse = text_detector(img)
+        st = time.time()
+        dt_boxes, _ = text_detector(img)
+        elapse = time.time() - st
         if count > 0:
             total_time += elapse
         count += 1
+
+        cm, gm, gu = utility.get_current_memory_mb(0)
+        cpu_mem += cm
+        gpu_mem += gm
+        gpu_util += gu
+
         logger.info("Predict time of {}: {}".format(image_file, elapse))
         src_im = utility.draw_text_det_res(dt_boxes, image_file)
         img_name_pure = os.path.split(image_file)[-1]
         img_path = os.path.join(draw_img_save,
                                 "det_res_{}".format(img_name_pure))
         cv2.imwrite(img_path, src_im)
-        logger.info("The visualized image saved in {}".format(img_path))
+        # logger.info("The visualized image saved in {}".format(img_path))
 
     logger.info("The predict time about detection module is as follows: ")
-    text_detector.det_times.info(average=False)
+    mems = {
+        'cpu_rss': cpu_mem / count,
+        'gpu_rss': gpu_mem / count,
+        'gpu_util': gpu_util * 100 / count
+    }
+    det_time_dict = text_detector.det_times.report(average=True)
+    det_model_name = args.det_model_dir
+    det_logger = utility.LoggerHelper(args, det_time_dict, det_model_name, mems)
+    det_logger.report()

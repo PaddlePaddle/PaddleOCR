@@ -256,6 +256,8 @@ def main(args):
     text_recognizer = TextRecognizer(args)
     valid_image_file_list = []
     img_list = []
+    cpu_mem, gpu_mem, gpu_util = 0, 0, 0
+    count = 0
     for image_file in image_file_list:
         img, flag = check_and_read_gif(image_file)
         if not flag:
@@ -266,7 +268,12 @@ def main(args):
         valid_image_file_list.append(image_file)
         img_list.append(img)
     try:
-        rec_res, predict_time = text_recognizer(img_list)
+        rec_res, _ = text_recognizer(img_list)
+        cm, gm, gu = utility.get_current_memory_mb(0)
+        cpu_mem += cm
+        gpu_mem += gm
+        gpu_util += gu
+        count += 1
     except:
         logger.info(traceback.format_exc())
         logger.info(
@@ -281,7 +288,15 @@ def main(args):
                                                rec_res[ino]))
 
     logger.info("The predict time about recognizer module is as follows: ")
-    text_recognizer.rec_times.info(average=False)
+    mems = {
+        'cpu_rss': cpu_mem / count,
+        'gpu_rss': gpu_mem / count,
+        'gpu_util': gpu_util * 100 / count
+    }
+    rec_time_dict = text_recognizer.rec_times.report(average=True)
+    rec_model_name = args.rec_model_dir
+    rec_logger = utility.LoggerHelper(args, rec_time_dict, rec_model_name, mems)
+    rec_logger.report()
 
 
 if __name__ == "__main__":

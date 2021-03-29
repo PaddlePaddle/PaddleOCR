@@ -23,9 +23,10 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
   img.copyTo(srcimg);
   cv::Mat crop_img;
   cv::Mat resize_img;
-  times = {0., 0., 0.};
+
   std::cout << "The predicted text is :" << std::endl;
   int index = 0;
+  times = {0., 0., 0.};
   for (int i = boxes.size() - 1; i >= 0; i--) {
     auto preprocess_start = std::chrono::system_clock::now();
     crop_img = GetRotateCropImage(srcimg, boxes[i]);
@@ -45,6 +46,7 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
     this->permute_op_.Run(&resize_img, input.data());
 
     auto inference_start = std::chrono::system_clock::now();
+
     // Inference.
     auto input_names = this->predictor_->GetInputNames();
     auto input_t = this->predictor_->GetInputHandle(input_names[0]);
@@ -64,6 +66,7 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
     output_t->CopyToCpu(predict_batch.data());
 
     auto postprocess_start = std::chrono::system_clock::now();
+
     // ctc decode
     std::vector<std::string> str_res;
     int argmax_idx;
@@ -125,6 +128,15 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
           this->use_fp16_ ? paddle_infer::Config::Precision::kHalf
                           : paddle_infer::Config::Precision::kFloat32,
           false, false);
+      std::map<std::string, std::vector<int>> min_input_shape = {
+          {"x", {1, 3, 32, 10}}};
+      std::map<std::string, std::vector<int>> max_input_shape = {
+          {"x", {1, 3, 32, 2000}}};
+      std::map<std::string, std::vector<int>> opt_input_shape = {
+          {"x", {1, 3, 32, 320}}};
+
+      config.SetTRTDynamicShapeInfo(min_input_shape, max_input_shape,
+                                    opt_input_shape);
     }
   } else {
     config.DisableGpu();
