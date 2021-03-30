@@ -60,7 +60,7 @@ void OCRConfig::ParserConfig(int argc, char **argv,
       "use_mkldnn", "use_tensorrt", "use_fp16"};
   std::map<std::string, std::string> dict;
 
-  for (int i = 3; i < key.size() + 3 && i <= argc; i++) {
+  for (int i = 3; i < key.size() + 3 && i < argc; i++) {
     config[key[i - 3]] = argv[i];
   }
 }

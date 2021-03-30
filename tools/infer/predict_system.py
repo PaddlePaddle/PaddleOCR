@@ -172,10 +172,11 @@ def main(args):
         dt_boxes, rec_res = text_sys(img)
         elapse = time.time() - starttime
         total_time += elapse
-        cm, gm, gu = get_current_memory_mb(0)
-        cpu_mem += cm
-        gpu_mem += gm
-        gpu_util += gu
+        if args.debug:
+            cm, gm, gu = get_current_memory_mb(0)
+            cpu_mem += cm
+            gpu_mem += gm
+            gpu_util += gu
 
         logger.info("Predict time of %s: %.3fs" % (image_file, elapse))
 
@@ -207,31 +208,23 @@ def main(args):
     logger.info("The predict total time is {}".format(time.time() - _st))
     logger.info("\nThe predict total time is {}".format(total_time))
     img_num = text_sys.text_detector.det_times.img_num
-    mems = {
-        'cpu_rss': cpu_mem / img_num,
-        'gpu_rss': gpu_mem / img_num,
-        'gpu_util': gpu_util * 100 / img_num
-    }
+    if args.debug:
+        mems = {
+            'cpu_rss': cpu_mem / img_num,
+            'gpu_rss': gpu_mem / img_num,
+            'gpu_util': gpu_util * 100 / img_num
+        }
+    else:
+        mems = None
     det_time_dict = text_sys.text_detector.det_times.report(average=True)
     rec_time_dict = text_sys.text_recognizer.rec_times.report(average=True)
     det_model_name = args.det_model_dir
     rec_model_name = args.rec_model_dir
     det_logger = utility.LoggerHelper(args, det_time_dict, det_model_name, mems)
     rec_logger = utility.LoggerHelper(args, rec_time_dict, rec_model_name, mems)
-    det_logger.report()
-    rec_logger.report()
+    det_logger.report("Det")
+    rec_logger.report("Rec")
 
-
-# logger.info("The cpu mem: {:.2f} MB, gpu mem: {:.2f} MB, gpu_util: {:.2f} %".format(, gpu_mem/img_num, gpu_util*100/img_num))
-# logger.info("\nThe predict time about detection module is as follows: ")
-# text_sys.text_detector.det_times.info(average=True)
-# if args.use_angle_cls:
-#     logger.info(
-#         "\nThe predict time about text angle classify module is as follows: "
-#     )
-#     text_sys.text_classifier.cls_times.info(average=False)
-# logger.info("\nThe predict time about recognizer module is as follows: ")
-# text_sys.text_recognizer.rec_times.info(average=True)
 
 if __name__ == "__main__":
     main(utility.parse_args())

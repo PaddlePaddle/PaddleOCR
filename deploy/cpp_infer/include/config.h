@@ -29,7 +29,9 @@ class OCRConfig {
 public:
   explicit OCRConfig(const std::string &config_file, int argc, char **argv) {
     config_map_ = LoadConfig(config_file);
-    ParserConfig(argc, argv, config_map_);
+    if (argc > 3) {
+      ParserConfig(argc, argv, config_map_);
+    }
 
     this->use_gpu = bool(stoi(config_map_["use_gpu"]));
 

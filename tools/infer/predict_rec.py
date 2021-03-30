@@ -269,11 +269,13 @@ def main(args):
         img_list.append(img)
     try:
         rec_res, _ = text_recognizer(img_list)
-        cm, gm, gu = utility.get_current_memory_mb(0)
-        cpu_mem += cm
-        gpu_mem += gm
-        gpu_util += gu
-        count += 1
+        if args.debug:
+            cm, gm, gu = utility.get_current_memory_mb(0)
+            cpu_mem += cm
+            gpu_mem += gm
+            gpu_util += gu
+            count += 1
+
     except:
         logger.info(traceback.format_exc())
         logger.info(
@@ -286,17 +288,19 @@ def main(args):
     for ino in range(len(img_list)):
         logger.info("Predicts of {}:{}".format(valid_image_file_list[ino],
                                                rec_res[ino]))
-
+    if args.debug:
+        mems = {
+            'cpu_rss': cpu_mem / count,
+            'gpu_rss': gpu_mem / count,
+            'gpu_util': gpu_util * 100 / count
+        }
+    else:
+        mems = None
     logger.info("The predict time about recognizer module is as follows: ")
-    mems = {
-        'cpu_rss': cpu_mem / count,
-        'gpu_rss': gpu_mem / count,
-        'gpu_util': gpu_util * 100 / count
-    }
     rec_time_dict = text_recognizer.rec_times.report(average=True)
     rec_model_name = args.rec_model_dir
     rec_logger = utility.LoggerHelper(args, rec_time_dict, rec_model_name, mems)
-    rec_logger.report()
+    rec_logger.report("Rec")
 
 
 if __name__ == "__main__":

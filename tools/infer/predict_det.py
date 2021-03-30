@@ -224,10 +224,11 @@ if __name__ == "__main__":
             total_time += elapse
         count += 1
 
-        cm, gm, gu = utility.get_current_memory_mb(0)
-        cpu_mem += cm
-        gpu_mem += gm
-        gpu_util += gu
+        if args.debug:
+            cm, gm, gu = utility.get_current_memory_mb(0)
+            cpu_mem += cm
+            gpu_mem += gm
+            gpu_util += gu
 
         logger.info("Predict time of {}: {}".format(image_file, elapse))
         src_im = utility.draw_text_det_res(dt_boxes, image_file)
@@ -235,15 +236,18 @@ if __name__ == "__main__":
         img_path = os.path.join(draw_img_save,
                                 "det_res_{}".format(img_name_pure))
         cv2.imwrite(img_path, src_im)
-        # logger.info("The visualized image saved in {}".format(img_path))
-
+        logger.info("The visualized image saved in {}".format(img_path))
+    # print the information about memory and time-spent
+    if args.debug:
+        mems = {
+            'cpu_rss': cpu_mem / count,
+            'gpu_rss': gpu_mem / count,
+            'gpu_util': gpu_util * 100 / count
+        }
+    else:
+        mems = None
     logger.info("The predict time about detection module is as follows: ")
-    mems = {
-        'cpu_rss': cpu_mem / count,
-        'gpu_rss': gpu_mem / count,
-        'gpu_util': gpu_util * 100 / count
-    }
     det_time_dict = text_detector.det_times.report(average=True)
     det_model_name = args.det_model_dir
     det_logger = utility.LoggerHelper(args, det_time_dict, det_model_name, mems)
-    det_logger.report()
+    det_logger.report("Det")

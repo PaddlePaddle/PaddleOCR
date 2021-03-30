@@ -2,7 +2,7 @@ OPENCV_DIR=/paddle/Paddle/opencv-3.4.7/opencv3
 LIB_DIR=/paddle/Paddle/inference/paddle_inference
 CUDA_LIB_DIR=/usr/local/cuda/lib64
 CUDNN_LIB_DIR=/usr/lib/x86_64-linux-gnu
-TENSORRT_DIR=/paddle/Paddle/package/TensorRT/TensorRT-6.0.1.8/
+TENSORRT_DIR=/paddle/Paddle/package/TensorRT/TensorRT-6.0.1.5/
 
 BUILD_DIR=build
 rm -rf ${BUILD_DIR}

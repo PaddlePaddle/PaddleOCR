@@ -90,6 +90,8 @@ def parse_args():
     parser.add_argument("--cpu_threads", type=int, default=6)
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
 
+    parser.add_argument("--debug", type=bool, default=True)
+
     return parser.parse_args()
 
 
@@ -197,39 +199,39 @@ def create_predictor(args, mode, logger):
                 min_input_shape = {
                     "x": [1, 3, 50, 50],
                     "conv2d_92.tmp_0": [1, 96, 20, 20],
-                    # "conv2d_91.tmp_0": [1, 96, 10, 10],
-                    # "nearest_interp_v2_1.tmp_0": [1, 96, 10, 10], 
+                    "conv2d_91.tmp_0": [1, 96, 10, 10],
+                    "nearest_interp_v2_1.tmp_0": [1, 96, 10, 10],
                     "nearest_interp_v2_2.tmp_0": [1, 96, 20, 20],
                     "nearest_interp_v2_3.tmp_0": [1, 24, 20, 20],
                     "nearest_interp_v2_4.tmp_0": [1, 24, 20, 20],
-                    "nearest_interp_v2_5.tmp_0": [1, 24, 20, 20]
+                    "nearest_interp_v2_5.tmp_0": [1, 24, 20, 20],
+                    "elementwise_add_7": [1, 56, 2, 2],
+                    "nearest_interp_v2_0.tmp_0": [1, 96, 2, 2]
                 }
-                # "elementwise_add_7": [1, 56, 2, 2], 
-                # "nearest_interp_v2_0.tmp_0": [1, 96, 2, 2]}
                 max_input_shape = {
                     "x": [1, 3, 2000, 2000],
                     "conv2d_92.tmp_0": [1, 96, 400, 400],
-                    # "conv2d_91.tmp_0": [1, 96, 200, 200],
-                    # "nearest_interp_v2_1.tmp_0": [1, 96, 200, 200],
+                    "conv2d_91.tmp_0": [1, 96, 200, 200],
+                    "nearest_interp_v2_1.tmp_0": [1, 96, 200, 200],
                     "nearest_interp_v2_2.tmp_0": [1, 96, 400, 400],
                     "nearest_interp_v2_3.tmp_0": [1, 24, 400, 400],
                     "nearest_interp_v2_4.tmp_0": [1, 24, 400, 400],
-                    "nearest_interp_v2_5.tmp_0": [1, 24, 400, 400]
+                    "nearest_interp_v2_5.tmp_0": [1, 24, 400, 400],
+                    "elementwise_add_7": [1, 56, 400, 400],
+                    "nearest_interp_v2_0.tmp_0": [1, 96, 400, 400]
                 }
-                # "elementwise_add_7": [1, 56, 400, 400], 
-                # "nearest_interp_v2_0.tmp_0": [1, 96, 400, 400]}
                 opt_input_shape = {
                     "x": [1, 3, 640, 640],
                     "conv2d_92.tmp_0": [1, 96, 160, 160],
-                    # "conv2d_91.tmp_0": [1, 96, 80, 80], 
-                    # "nearest_interp_v2_1.tmp_0": [1, 96, 80, 80], 
+                    "conv2d_91.tmp_0": [1, 96, 80, 80],
+                    "nearest_interp_v2_1.tmp_0": [1, 96, 80, 80],
                     "nearest_interp_v2_2.tmp_0": [1, 96, 160, 160],
                     "nearest_interp_v2_3.tmp_0": [1, 24, 160, 160],
                     "nearest_interp_v2_4.tmp_0": [1, 24, 160, 160],
-                    "nearest_interp_v2_5.tmp_0": [1, 24, 160, 160]
+                    "nearest_interp_v2_5.tmp_0": [1, 24, 160, 160],
+                    "elementwise_add_7": [1, 56, 40, 40],
+                    "nearest_interp_v2_0.tmp_0": [1, 96, 40, 40]
                 }
-                # "elementwise_add_7": [1, 56, 40, 40],
-                # "nearest_interp_v2_0.tmp_0": [1, 96, 40, 40]} 
             elif mode == "rec":
                 min_input_shape = {"x": [1, 3, 32, 10]}
                 max_input_shape = {"x": [1, 3, 32, 2000]}
@@ -238,8 +240,8 @@ def create_predictor(args, mode, logger):
                 min_input_shape = {"x": [1, 3, 48, 10]}
                 max_input_shape = {"x": [1, 3, 48, 2000]}
                 opt_input_shape = {"x": [1, 3, 48, 320]}
-
-            # config.set_trt_dynamic_shape_info(min_input_shape, max_input_shape, opt_input_shape)
+            config.set_trt_dynamic_shape_info(min_input_shape, max_input_shape,
+                                              opt_input_shape)
 
     else:
         config.disable_gpu()
@@ -248,9 +250,6 @@ def create_predictor(args, mode, logger):
             # cache 10 different shapes for mkldnn to avoid memory leak
             config.set_mkldnn_cache_capacity(10)
             config.enable_mkldnn()
-            #  TODO LDOUBLEV: fix mkldnn bug when bach_size  > 1
-            #config.set_mkldnn_op({'conv2d', 'depthwise_conv2d', 'pool2d', 'batch_norm'})
-            args.rec_batch_num = 1
 
     # enable memory optim
     config.enable_memory_optim()
@@ -555,16 +554,10 @@ class LoggerHelper(object):
         if mem_info is not None:
             self.mem_info = mem_info
 
-    def report(self):
+    def report(self, mode=None):
+        if mode not in ["Det", "Rec", None]:
+            raise ValueError("The 'mode' can only be one of ['Det', 'Rec']")
         logger.info("\n")
-        logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-        logger.info("----------------------- Model info ----------------------")
-        logger.info(f"model_name: {self.model_name}")
-
-        logger.info("----------------------- Data info ----------------------")
-        logger.info(f"batch_size: {self.batch_size}")
-        logger.info(f"input_shape: {self.shape}")
-
         logger.info("----------------------- Conf info -----------------------")
         logger.info(f"runtime_device: {self.device}")
         logger.info(f"ir_optim: {True}")
@@ -574,15 +567,28 @@ class LoggerHelper(object):
         logger.info(f"enable_mkldnn : {self.args.enable_mkldnn}")
         logger.info(f"cpu_math_library_num_threads: {self.args.cpu_threads}")
 
-        logger.info("----------------------- Perf info -----------------------")
+        logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         logger.info(
-            f"cpu_rss(MB): {round(self.mem_info['cpu_rss'], 4)} gpu_rss(MB): {round(self.mem_info['gpu_rss'], 4)}, gpu_util: {round(self.mem_info['gpu_util'], 2)}%"
+            f"----------------------- [{mode}] Model info ----------------------"
+        )
+        logger.info(f"[mode] model_name: {self.model_name}")
+
+        logger.info(
+            f"----------------------- [{mode}] Data info ----------------------")
+        logger.info(f"[{mode}] batch_size: {self.batch_size}")
+        logger.info(f"[{mode}] input_shape: {self.shape}")
+
+        logger.info(
+            f"----------------------- [{mode}] Perf info -----------------------"
         )
         logger.info(
-            f"total number of predicted data: {self.data_num} and total time spent(s): {self.total_time}"
+            f"[{mode}] cpu_rss(MB): {round(self.mem_info['cpu_rss'], 4)} gpu_rss(MB): {round(self.mem_info['gpu_rss'], 4)}, gpu_util: {round(self.mem_info['gpu_util'], 2)}%"
         )
         logger.info(
-            f"preproce_time(ms): {self.preprocess_time*1000}, inference_time(ms): {self.inference_time*1000}, postprocess_time(ms): {self.postprocess_time*1000}"
+            f"[{mode}] total number of predicted data: {self.data_num} and total time spent(s): {self.total_time}"
+        )
+        logger.info(
+            f"[{mode}] preproce_time(ms): {self.preprocess_time*1000}, inference_time(ms): {self.inference_time*1000}, postprocess_time(ms): {self.postprocess_time*1000}"
         )
 
 
