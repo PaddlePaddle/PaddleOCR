@@ -52,7 +52,10 @@ def main(config, device, logger, vdl_writer):
     train_dataloader = build_dataloader(config, 'Train', device, logger)
     if len(train_dataloader) == 0:
         logger.error(
-            'No Images in train dataset, please check annotation file and path in the configuration file'
+            "No Images in train dataset, please ensure\n" +
+            "\t1. The images num in the train label_file_list should be larger than or equal with batch size.\n"
+            +
+            "\t2. The annotation file and path in the configuration file are provided normally."
         )
         return
 
