@@ -44,8 +44,15 @@ int main(int argc, char **argv) {
               << " configure_filepath image_path\n";
     exit(1);
   }
+  if (argc > 3) {
+    std::cout << "[-H] uasge: " << argv[0]
+              << " configure_filepath image_path use_gpu gpu_id  "
+                 "cpu_math_library_num_threads  use_mkldnn  use_tensorrt  "
+                 "use_fp16"
+              << std::endl;
+  }
 
-  OCRConfig config(argv[1]);
+  OCRConfig config(argv[1], argc, argv);
 
   config.PrintConfigInfo();
 
@@ -113,22 +120,22 @@ int main(int argc, char **argv) {
             << "dynamic shape";
   LOG(INFO) << "\n";
   LOG(INFO) << "----------------------- Det Model info -----------------------";
-  LOG(INFO) << "model_name: " << config.det_model_dir;
-  LOG(INFO) << "----------------------- Perf info -----------------------";
-  LOG(INFO) << "total number of predicted data: " << all_img_names.size()
+  LOG(INFO) << "[Det] model_name: " << config.det_model_dir;
+  LOG(INFO) << "----------------------- Det Perf info -----------------------";
+  LOG(INFO) << "[Det] total number of predicted data: " << all_img_names.size()
             << " and total time spent(s): "
             << std::accumulate(det_t.begin(), det_t.end(), 0);
-  LOG(INFO) << "preprocess_time(ms): " << det_t[0] / all_img_names.size()
+  LOG(INFO) << "[Det] preprocess_time(ms): " << det_t[0] / all_img_names.size()
             << ", inference_time(ms): " << det_t[1] / all_img_names.size()
             << ", postprocess_time(ms): " << det_t[2];
   LOG(INFO) << "\n";
   LOG(INFO) << "----------------------- Rec Model info -----------------------";
-  LOG(INFO) << "model_name: " << config.rec_model_dir;
-  LOG(INFO) << "----------------------- Perf info -----------------------";
-  LOG(INFO) << "total number of predicted data: " << rec_img_num
+  LOG(INFO) << "[Rec] model_name: " << config.rec_model_dir;
+  LOG(INFO) << "----------------------- Rec Perf info -----------------------";
+  LOG(INFO) << "[Rec] total number of predicted data: " << rec_img_num
             << " and total time spent(s): "
             << std::accumulate(rec_t.begin(), rec_t.end(), 0);
-  LOG(INFO) << "preprocess_time(ms): " << rec_t[0] / rec_img_num
+  LOG(INFO) << "[Rec] preprocess_time(ms): " << rec_t[0] / rec_img_num
             << ", inference_time(ms): " << rec_t[1] / rec_img_num
             << ", postprocess_time(ms): " << rec_t[2] / rec_img_num;
   return 0;

@@ -53,6 +53,18 @@ OCRConfig::LoadConfig(const std::string &config_path) {
   return dict;
 }
 
+void OCRConfig::ParserConfig(int argc, char **argv,
+                             std::map<std::string, std::string> &config) {
+  std::vector<std::string> key = {
+      "use_gpu",    "gpu_id",       "cpu_math_library_num_threads",
+      "use_mkldnn", "use_tensorrt", "use_fp16"};
+  std::map<std::string, std::string> dict;
+
+  for (int i = 3; i < key.size() + 3 && i <= argc; i++) {
+    config[key[i - 3]] = argv[i];
+  }
+}
+
 void OCRConfig::PrintConfigInfo() {
   std::cout << "=======Paddle OCR inference config======" << std::endl;
   for (auto iter = config_map_.begin(); iter != config_map_.end(); iter++) {
