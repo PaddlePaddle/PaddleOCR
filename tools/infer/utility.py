@@ -90,7 +90,7 @@ def parse_args():
     parser.add_argument("--cpu_threads", type=int, default=6)
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
 
-    parser.add_argument("--debug", type=bool, default=True)
+    parser.add_argument("--debug", type=bool, default=False)
 
     return parser.parse_args()
 
