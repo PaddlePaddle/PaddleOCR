@@ -200,6 +200,7 @@ def create_predictor(args, mode, logger):
                     "x": [1, 3, 50, 50],
                     "conv2d_92.tmp_0": [1, 96, 20, 20],
                     "conv2d_91.tmp_0": [1, 96, 10, 10],
+                    # "conv2d_59.tmp_0": [1, 96, 10, 10], # for det server
                     "nearest_interp_v2_1.tmp_0": [1, 96, 10, 10],
                     "nearest_interp_v2_2.tmp_0": [1, 96, 20, 20],
                     "nearest_interp_v2_3.tmp_0": [1, 24, 20, 20],
@@ -212,6 +213,7 @@ def create_predictor(args, mode, logger):
                     "x": [1, 3, 2000, 2000],
                     "conv2d_92.tmp_0": [1, 96, 400, 400],
                     "conv2d_91.tmp_0": [1, 96, 200, 200],
+                    # "conv2d_59.tmp_0": [1, 96, 400, 400], # for det server
                     "nearest_interp_v2_1.tmp_0": [1, 96, 200, 200],
                     "nearest_interp_v2_2.tmp_0": [1, 96, 400, 400],
                     "nearest_interp_v2_3.tmp_0": [1, 24, 400, 400],
@@ -224,6 +226,7 @@ def create_predictor(args, mode, logger):
                     "x": [1, 3, 640, 640],
                     "conv2d_92.tmp_0": [1, 96, 160, 160],
                     "conv2d_91.tmp_0": [1, 96, 80, 80],
+                    # "conv2d_59.tmp_0": [1, 96, 160, 160], # for det server
                     "nearest_interp_v2_1.tmp_0": [1, 96, 80, 80],
                     "nearest_interp_v2_2.tmp_0": [1, 96, 160, 160],
                     "nearest_interp_v2_3.tmp_0": [1, 24, 160, 160],
@@ -542,7 +545,7 @@ class LoggerHelper(object):
         self.shape = "dynamic shape"
         self.precision = "fp32"
         if args.use_tensorrt and args.use_fp16:
-            self.predicion = "fp16"
+            self.precision = "fp16"
 
         self.device = "gpu" if args.use_gpu else "cpu"
         self.preprocess_time = round(times['preprocess_time'], 4)
@@ -564,14 +567,14 @@ class LoggerHelper(object):
         logger.info(f"enable_memory_optim: {True}")
         logger.info(f"enable_tensorrt: {self.args.use_tensorrt}")
         logger.info(f"precision: {self.precision}")
-        logger.info(f"enable_mkldnn : {self.args.enable_mkldnn}")
+        logger.info(f"enable_mkldnn: {self.args.enable_mkldnn}")
         logger.info(f"cpu_math_library_num_threads: {self.args.cpu_threads}")
 
         logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         logger.info(
             f"----------------------- [{mode}] Model info ----------------------"
         )
-        logger.info(f"[mode] model_name: {self.model_name}")
+        logger.info(f"[{mode}] model_name: {self.model_name}")
 
         logger.info(
             f"----------------------- [{mode}] Data info ----------------------")
@@ -582,13 +585,13 @@ class LoggerHelper(object):
             f"----------------------- [{mode}] Perf info -----------------------"
         )
         logger.info(
-            f"[{mode}] cpu_rss(MB): {round(self.mem_info['cpu_rss'], 4)} gpu_rss(MB): {round(self.mem_info['gpu_rss'], 4)}, gpu_util: {round(self.mem_info['gpu_util'], 2)}%"
+            f"[{mode}] cpu_rss(MB): {int(self.mem_info['cpu_rss'])}  gpu_rss(MB): {int(self.mem_info['gpu_rss'])}  gpu_util: {round(self.mem_info['gpu_util'], 1)}%"
         )
         logger.info(
             f"[{mode}] total number of predicted data: {self.data_num} and total time spent(s): {self.total_time}"
         )
         logger.info(
-            f"[{mode}] preproce_time(ms): {self.preprocess_time*1000}, inference_time(ms): {self.inference_time*1000}, postprocess_time(ms): {self.postprocess_time*1000}"
+            f"[{mode}] preproce_time(ms): {round(self.preprocess_time*1000, 1)}  inference_time(ms): {round(self.inference_time*1000, 1)}  postprocess_time(ms): {round(self.postprocess_time*1000, 1)}"
         )
 
 
