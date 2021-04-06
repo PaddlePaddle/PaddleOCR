@@ -30,7 +30,7 @@
 **A**：在不同的硬件上，不同的backbone的速度优势不同，可以根据不同平台的速度-精度图来确定backbone，这里可以参考https://github.com/PaddlePaddle/PaddleClas/tree/release/2.0/docs/zh_CN/models
 
 #### Q3.1.55: 目前PaddleOCR有知识蒸馏的demo吗？
-**A**： 目前我们还没有提供PaddleOCR知识蒸馏的相关demo，PaddleClas开源了一个效果还不错的方案，可以移步https://github.com/PaddlePaddle/PaddleClas/blob/release%2F2.0/docs/zh_CN/advanced_tutorials/distillation/distillation.md， paper: https://arxiv.org/abs/2103.05959。 关于PaddleOCR的蒸馏，我们也会在未来支持。
+**A**： 目前我们还没有提供PaddleOCR知识蒸馏的相关demo，PaddleClas开源了一个效果还不错的方案，可以移步https://github.com/PaddlePaddle/PaddleClas/blob/release%2F2.0/docs/zh_CN/advanced_tutorials/distillation/distillation.md  paper: https://arxiv.org/abs/2103.05959  关于PaddleOCR的蒸馏，我们也会在未来支持。
 
 #### Q3.3.33: 训练识别和检测时学习率要加上warmup，目的是什么？
 **A**: Warmup机制先使学习率从一个较小的值逐步升到一个较大的值，而不是直接就使用较大的学习率，这样有助于模型的稳定收敛。在OCR检测和OCR识别中，一般会带来精度~0.5%的提升。
@@ -599,7 +599,7 @@ repo中config.yml文件的前后处理参数和inference预测默认的超参数
 **A**: PPOCR 2.0的模型在arm上运行可以参照该PR [#1877](https://github.com/PaddlePaddle/PaddleOCR/pull/1877)
 
 #### Q3.1.55: 目前PaddleOCR有知识蒸馏的demo吗？
-**A**： 目前我们还没有提供PaddleOCR知识蒸馏的相关demo，PaddleClas开源了一个效果还不错的方案，可以移步https://github.com/PaddlePaddle/PaddleClas/blob/release%2F2.0/docs/zh_CN/advanced_tutorials/distillation/distillation.md， paper: https://arxiv.org/abs/2103.05959。 关于PaddleOCR的蒸馏，我们也会在未来支持。
+**A**： 目前我们还没有提供PaddleOCR知识蒸馏的相关demo，PaddleClas开源了一个效果还不错的方案，可以移步https://github.com/PaddlePaddle/PaddleClas/blob/release%2F2.0/docs/zh_CN/advanced_tutorials/distillation/distillation.md  paper: https://arxiv.org/abs/2103.05959  关于PaddleOCR的蒸馏，我们也会在未来支持。
 
 #### Q3.1.56: 在使用PPOCRLabel的时候，如何标注倾斜的文字？
 **A**: 如果矩形框标注后空白冗余较多，可以尝试PPOCRLabel提供的四点标注，可以标注各种倾斜角度的文本。
