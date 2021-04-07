@@ -20,7 +20,7 @@ from paddle import nn
 import paddle
 
 from .det_basic_loss import DiceLoss
-from ppocr.utils.e2e_utils.extract_batchsize import *
+from ppocr.utils.e2e_utils.extract_batchsize import pre_process
 
 
 class PGLoss(nn.Layer):

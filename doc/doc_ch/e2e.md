@@ -31,7 +31,7 @@
   |- rgb/           total_text数据集的训练数据
       |- gt_0.png
       | ...  
-  |-poly/           total_text数据集的测试标注
+  |- poly/           total_text数据集的测试标注
       |- gt_0.txt
       | ...
 ```
@@ -52,19 +52,11 @@
 您可以根据需求使用[PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/master/ppcls/modeling/architectures)中的模型更换backbone。
 ```shell
 cd PaddleOCR/
-下载ResNet50_vd的预训练模型
-wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/ResNet50_vd_ssld_pretrained.tar
+下载ResNet50_vd的动态图预训练模型
+wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/ResNet50_vd_ssld_pretrained.pdparams
 
-# 解压预训练模型文件，以ResNet50_vd为例
-tar -xf ./pretrain_models/ResNet50_vd_ssld_pretrained.tar ./pretrain_models/
-
-# 注：正确解压backbone预训练权重文件后，文件夹下包含众多以网络层命名的权重文件，格式如下：
-./pretrain_models/ResNet50_vd_ssld_pretrained/
-  └─ conv_last_bn_mean
-  └─ conv_last_bn_offset
-  └─ conv_last_bn_scale
-  └─ conv_last_bn_variance
-  └─ ......
+./pretrain_models/
+  └─ ResNet50_vd_ssld_pretrained.pdparams
 
 ```
 
@@ -74,11 +66,9 @@ tar -xf ./pretrain_models/ResNet50_vd_ssld_pretrained.tar ./pretrain_models/
 
 ```shell
 # 单机单卡训练 e2e 模型
-python3 tools/train.py -c configs/e2e/e2e_r50_vd_pg.yml \
-     -o Global.pretrain_weights=./pretrain_models/ResNet50_vd_ssld_pretrained/ Global.load_static_weights=True
+python3 tools/train.py -c configs/e2e/e2e_r50_vd_pg.yml -o Global.pretrained_model=./pretrain_models/ResNet50_vd_ssld_pretrained Global.load_static_weights=False
 # 单机多卡训练，通过 --gpus 参数设置使用的GPU ID
-python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/e2e/e2e_r50_vd_pg.yml \
-     -o Global.pretrain_weights=./pretrain_models/ResNet50_vd_ssld_pretrained/  Global.load_static_weights=True
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/e2e/e2e_r50_vd_pg.yml -o Global.pretrained_model=./pretrain_models/ResNet50_vd_ssld_pretrained  Global.load_static_weights=False
 ```
 
 

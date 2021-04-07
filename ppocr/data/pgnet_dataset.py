@@ -67,10 +67,7 @@ class PGDataSet(Dataset):
                     np.array(
                         list(poly), dtype=np.float32).reshape(-1, 2))
                 txts.append(txt)
-                if txt == '###':
-                    txt_tags.append(True)
-                else:
-                    txt_tags.append(False)
+                txt_tags.append(txt == '###')
 
         return np.array(list(map(np.array, text_polys))), \
                np.array(txt_tags, dtype=np.bool), txts
@@ -84,8 +81,8 @@ class PGDataSet(Dataset):
         for ext in [
                 'jpg', 'bmp', 'png', 'jpeg', 'rgb', 'tif', 'tiff', 'gif', 'JPG'
         ]:
-            if os.path.exists(os.path.join(img_dir, info_list[0] + ext)):
-                img_path = os.path.join(img_dir, info_list[0] + ext)
+            if os.path.exists(os.path.join(img_dir, info_list[0] + "." + ext)):
+                img_path = os.path.join(img_dir, info_list[0] + "." + ext)
                 break
 
         if img_path == '':

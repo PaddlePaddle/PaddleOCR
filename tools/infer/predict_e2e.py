@@ -34,7 +34,7 @@ from ppocr.postprocess import build_post_process
 logger = get_logger()
 
 
-class TextE2e(object):
+class TextE2E(object):
     def __init__(self, args):
         self.args = args
         self.e2e_algorithm = args.e2e_algorithm
@@ -130,7 +130,7 @@ class TextE2e(object):
 if __name__ == "__main__":
     args = utility.parse_args()
     image_file_list = get_image_file_list(args.image_dir)
-    text_detector = TextE2e(args)
+    text_detector = TextE2E(args)
     count = 0
     total_time = 0
     draw_img_save = "./inference_results"
@@ -151,7 +151,7 @@ if __name__ == "__main__":
         src_im = utility.draw_e2e_res(points, strs, image_file)
         img_name_pure = os.path.split(image_file)[-1]
         img_path = os.path.join(draw_img_save,
-                                "e2e_res_{}".format(img_name_pure))
+                                "e2e_res_{}_pgnet".format(img_name_pure))
         cv2.imwrite(img_path, src_im)
         logger.info("The visualized image saved in {}".format(img_path))
     if count > 1:

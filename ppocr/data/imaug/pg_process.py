@@ -27,7 +27,7 @@ class PGProcessTrain(object):
                  tcl_len,
                  batch_size=14,
                  min_crop_size=24,
-                 min_text_size=10,
+                 min_text_size=4,
                  max_text_size=512,
                  **kwargs):
         self.tcl_len = tcl_len
@@ -197,7 +197,6 @@ class PGProcessTrain(object):
                     for selected_poly in selected_polys:
                         txts_tmp.append(txts[selected_poly])
                     txts = txts_tmp
-                    # print(1111)
                     return im[ymin: ymax + 1, xmin: xmax + 1, :], \
                            polys[selected_polys], tags[selected_polys], hv_tags[selected_polys], txts
                 else:
@@ -309,7 +308,6 @@ class PGProcessTrain(object):
             cv2.fillPoly(direction_map,
                          quad.round().astype(np.int32)[np.newaxis, :, :],
                          direction_label)
-            cv2.imwrite("output/{}.png".format(k), direction_map * 255.0)
             k += 1
         return direction_map
 
