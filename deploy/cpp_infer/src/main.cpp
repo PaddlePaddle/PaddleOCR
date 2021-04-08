@@ -50,6 +50,11 @@ int main(int argc, char **argv) {
 
   cv::Mat srcimg = cv::imread(img_path, cv::IMREAD_COLOR);
 
+  if (!srcimg.data) {
+    std::cerr << "[ERROR] image read failed! image path: " << img_path << "\n";
+    exit(1);
+  }
+
   DBDetector det(config.det_model_dir, config.use_gpu, config.gpu_id,
                  config.gpu_mem, config.cpu_math_library_num_threads,
                  config.use_mkldnn, config.max_side_len, config.det_db_thresh,
