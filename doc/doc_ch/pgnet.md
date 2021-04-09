@@ -72,7 +72,7 @@ python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/im
 本节以totaltext数据集为例，介绍PaddleOCR中端到端模型的训练、评估与测试。
 
 ###  准备数据
-下载解压totaltext数据集到PaddleOCR/train_data/目录，数据集组织结构：
+下载解压[totaltext](https://github.com/cs-chan/Total-Text-Dataset/blob/master/Dataset/README.md)数据集到PaddleOCR/train_data/目录，数据集组织结构：
 ```
 /PaddleOCR/train_data/total_text/train/
   |- rgb/            # total_text数据集的训练数据
