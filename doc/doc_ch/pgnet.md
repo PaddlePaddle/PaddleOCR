@@ -1,13 +1,17 @@
+
+# 端对端OCR算法-PGNet
+
+----
 # 端对端OCR算法-PGNet
 - [一、简介](#简介)
 - [二、环境配置](#环境配置)
 - [三、快速使用](#快速使用)
-- [四、快速训练](#开始训练)
+- [四、快速训练](#快速训练)
 - [五、预测推理](#预测推理)
 
 
 <a name="简介"></a>
-##简介
+## 一、简介
 OCR算法可以分为两阶段算法和端对端的算法。二阶段OCR算法一般分为两个部分，文本检测和文本识别算法，文件检测算法从图像中得到文本行的检测框，然后识别算法去识别文本框中的内容。而端对端OCR算法可以在一个算法中完成文字检测和文字识别，其基本思想是设计一个同时具有检测单元和识别模块的模型，共享其中两者的CNN特征，并联合训练。由于一个算法即可完成文字识别，端对端模型更小，速度更快。
 
 ### PGNet算法介绍
@@ -27,11 +31,11 @@ PGNet算法细节详见[论文](https://www.aaai.org/AAAI21Papers/AAAI-2885.Wang
 ![](../imgs_results/e2e_res_img295_pgnet.png)
 
 <a name="环境配置"></a>
-##环境配置
+## 二、环境配置
 请先参考[快速安装](./installation.md)配置PaddleOCR运行环境。
 
 <a name="快速使用"></a>
-##快速使用
+## 三、快速使用
 ### inference模型下载
 本节以训练好的端到端模型为例，快速使用模型预测，首先下载训练好的端到端inference模型[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/e2e_server_pgnetA_infer.tar)
 ```
@@ -59,20 +63,25 @@ python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/im
 # 如果想使用CPU进行预测，需设置use_gpu参数为False
 python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/imgs_en/img623.jpg" --e2e_model_dir="./inference/e2e/" --e2e_pgnet_polygon=True --use_gpu=False
 ```
-<a name="开始训练"></a>
-##开始训练
+
+# 这里要指明可视化结果在哪，不然快速使用就没有意义
+
+
+<a name="快速训练"></a>
+## 四、快速训练
 本节以totaltext数据集为例，介绍PaddleOCR中端到端模型的训练、评估与测试。
-###数据形式为icdar, 十六点标注数据
-解压数据集和下载标注文件后，PaddleOCR/train_data/total_text/train/ 有两个文件夹，分别是：
+
+###  准备数据
+下载解压totaltext数据集到PaddleOCR/train_data/目录，数据集组织结构：
 ```
 /PaddleOCR/train_data/total_text/train/
-  |- rgb/            total_text数据集的训练数据
+  |- rgb/            # total_text数据集的训练数据
       |- gt_0.png
       | ...  
-  |- total_text.txt  total_text数据集的训练标注
+  |- total_text.txt  # total_text数据集的训练标注
 ```
 
-提供的标注文件格式如下，中间用"\t"分隔：
+total_text.txt标注文件格式如下，文件名和标注信息中间用"\t"分隔：
 ```
 " 图像文件名                    json.dumps编码的图像标注信息"
 rgb/gt_0.png    [{"transcription": "EST", "points": [[1004.0,689.0],[1019.0,698.0],[1034.0,708.0],[1049.0,718.0],[1064.0,728.0],[1079.0,738.0],[1095.0,748.0],[1094.0,774.0],[1079.0,765.0],[1065.0,756.0],[1050.0,747.0],[1036.0,738.0],[1021.0,729.0],[1007.0,721.0]]}, {...}]
@@ -81,20 +90,18 @@ json.dumps编码前的图像标注信息是包含多个字典的list，字典中
 `transcription` 表示当前文本框的文字，**当其内容为“###”时，表示该文本框无效，在训练时会跳过。**
 如果您想在其他数据集上训练，可以按照上述形式构建标注文件。
 
-### 快速启动训练
+### 启动训练
 
-模型训练一般分两步骤进行，第一步可以选择用合成数据训练，第二步加载第一步训练好的模型训练，这边我们提供了第一步训练好的模型，可以直接加载，从第二步开始训练
-[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/train_step1.tar)
+PGNet训练分为两个步骤：step1: 在合成数据上训练，得到预训练模型，此时模型精度依然较低；step2: 加载预训练模型，在totaltext数据集上训练；为快速训练，我们直接提供了step1的预训练模型。
 ```shell
 cd PaddleOCR/
-下载ResNet50_vd的动态图预训练模型
+下载step1 预训练模型
 wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/train_step1.tar
 可以得到以下的文件格式
 ./pretrain_models/train_step1/
   └─ best_accuracy.pdopt
   └─ best_accuracy.states
   └─ best_accuracy.pdparams
-
 ```
 
 *如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false*
@@ -114,17 +121,8 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/
 python3 tools/train.py -c configs/e2e/e2e_r50_vd_pg.yml -o Optimizer.base_lr=0.0001
 ```
 
-#### 断点训练
 
-如果训练程序中断，如果希望加载训练中断的模型从而恢复训练，可以通过指定Global.checkpoints指定要加载的模型路径：
-```shell
-python3 tools/train.py -c configs/e2e/e2e_r50_vd_pg.yml -o Global.checkpoints=./your/trained/model
-```
-
-**注意**：`Global.checkpoints`的优先级高于`Global.pretrain_weights`的优先级，即同时指定两个参数时，优先加载`Global.checkpoints`指定的模型，如果`Global.checkpoints`指定的模型路径有误，会加载`Global.pretrain_weights`指定的模型。
-
-<a name="预测推理"></a>
-## 预测推理
+### 模型评估
 
 PaddleOCR计算三个OCR端到端相关的指标，分别是：Precision、Recall、Hmean。
 
@@ -136,7 +134,7 @@ PaddleOCR计算三个OCR端到端相关的指标，分别是：Precision、Recal
 python3 tools/eval.py -c configs/e2e/e2e_r50_vd_pg.yml  -o Global.checkpoints="{path/to/weights}/best_accuracy"
 ```
 
-### 测试端到端效果
+### 模型预测
 测试单张图像的端到端识别效果
 ```shell
 python3 tools/infer_e2e.py -c configs/e2e/e2e_r50_vd_pg.yml -o Global.infer_img="./doc/imgs_en/img_10.jpg" Global.pretrained_model="./output/det_db/best_accuracy" Global.load_static_weights=false
@@ -147,8 +145,9 @@ python3 tools/infer_e2e.py -c configs/e2e/e2e_r50_vd_pg.yml -o Global.infer_img=
 python3 tools/infer_e2e.py -c configs/e2e/e2e_r50_vd_pg.yml -o Global.infer_img="./doc/imgs_en/" Global.pretrained_model="./output/det_db/best_accuracy" Global.load_static_weights=false
 ```
 
-###转为推理模型
-### (1). 四边形文本检测模型（ICDAR2015）  
+<a name="预测推理"></a>
+## 五、预测推理
+### 四边形文本检测模型（ICDAR2015）  
 首先将PGNet端到端训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，以英文数据集训练的模型为例[模型下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/en_server_pgnetA.tar) ，可以使用如下命令进行转换：
 ```
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/en_server_pgnetA.tar && tar xf en_server_pgnetA.tar
@@ -162,7 +161,7 @@ python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/im
 
 ![](../imgs_results/e2e_res_img_10_pgnet.jpg)
 
-### (2). 弯曲文本检测模型（Total-Text）
+### 弯曲文本检测模型（Total-Text）
 对于弯曲文本样例
 
 **PGNet端到端模型推理，需要设置参数`--e2e_algorithm="PGNet"`，同时，还需要增加参数`--e2e_pgnet_polygon=True`，**可以执行如下命令：
