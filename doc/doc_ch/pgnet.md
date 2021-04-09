@@ -30,8 +30,6 @@ PGNet算法细节详见[论文](https://www.aaai.org/AAAI21Papers/AAAI-2885.Wang
 ##环境配置
 请先参考[快速安装](./installation.md)配置PaddleOCR运行环境。
 
-*注意：也可以通过 whl 包安装使用PaddleOCR，具体参考[Paddleocr Package使用说明](./whl.md)。*
-
 <a name="快速使用"></a>
 ##快速使用
 ### inference模型下载
