@@ -21,9 +21,11 @@
                 android:key="@string/LABEL_PATH_KEY"
                 android:defaultValue="@string/LABEL_PATH_DEFAULT"
                 android:title="Label Path" />
-        <EditTextPreference
+        <ListPreference
                 android:key="@string/IMAGE_PATH_KEY"
                 android:defaultValue="@string/IMAGE_PATH_DEFAULT"
+                android:entries="@array/image_name_entries"
+                android:entryValues="@array/image_name_values"
                 android:title="Image Path" />
     </PreferenceCategory>
     <PreferenceCategory android:title="CPU Settings">

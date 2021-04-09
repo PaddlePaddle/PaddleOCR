@@ -131,7 +131,7 @@ public class MiniActivity extends AppCompatActivity {
      */
     private boolean onRunModel() {
         try {
-            String assetImagePath = "images/5.jpg";
+            String assetImagePath = "images/0.jpg";
             InputStream imageStream = getAssets().open(assetImagePath);
             Bitmap image = BitmapFactory.decodeStream(imageStream);
             // Input is Bitmap

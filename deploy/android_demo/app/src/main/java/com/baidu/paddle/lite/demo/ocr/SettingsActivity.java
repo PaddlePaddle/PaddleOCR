@@ -17,7 +17,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     CheckBoxPreference cbEnableCustomSettings = null;
     EditTextPreference etModelPath = null;
     EditTextPreference etLabelPath = null;
-    EditTextPreference etImagePath = null;
+    ListPreference etImagePath = null;
     ListPreference lpCPUThreadNum = null;
     ListPreference lpCPUPowerMode = null;
     ListPreference lpInputColorFormat = null;
@@ -84,7 +84,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         etModelPath = (EditTextPreference) findPreference(getString(R.string.MODEL_PATH_KEY));
         etModelPath.setTitle("Model Path (SDCard: " + Utils.getSDCardDirectory() + ")");
         etLabelPath = (EditTextPreference) findPreference(getString(R.string.LABEL_PATH_KEY));
-        etImagePath = (EditTextPreference) findPreference(getString(R.string.IMAGE_PATH_KEY));
+        etImagePath = (ListPreference) findPreference(getString(R.string.IMAGE_PATH_KEY));
         lpCPUThreadNum =
                 (ListPreference) findPreference(getString(R.string.CPU_THREAD_NUM_KEY));
         lpCPUPowerMode =
@@ -119,7 +119,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 editor.putString(getString(R.string.INPUT_STD_KEY), preInstalledInputStds.get(modelIdx));
                 editor.putString(getString(R.string.SCORE_THRESHOLD_KEY),
                         preInstalledScoreThresholds.get(modelIdx));
-                editor.commit();
+                editor.apply();
             }
             lpChoosePreInstalledModel.setSummary(modelPath);
         }
@@ -159,7 +159,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         etLabelPath.setSummary(labelPath);
         etLabelPath.setText(labelPath);
         etImagePath.setSummary(imagePath);
-        etImagePath.setText(imagePath);
+        etImagePath.setValue(imagePath);
         lpCPUThreadNum.setValue(cpuThreadNum);
         lpCPUThreadNum.setSummary(cpuThreadNum);
         lpCPUPowerMode.setValue(cpuPowerMode);

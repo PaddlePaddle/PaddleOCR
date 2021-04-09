@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="image_name_entries">
+        <item>0.jpg</item>
+        <item>90.jpg</item>
+        <item>180.jpg</item>
+        <item>270.jpg</item>
+    </string-array>
+    <string-array name="image_name_values">
+        <item>images/0.jpg</item>
+        <item>images/90.jpg</item>
+        <item>images/180.jpg</item>
+        <item>images/270.jpg</item>
+    </string-array>
     <string-array name="cpu_thread_num_entries">
         <item>1 threads</item>
         <item>2 threads</item>
