@@ -52,7 +52,7 @@ cmake .. \
     -DWITH_TIFF=ON \
     -DBUILD_TIFF=ON
 
-make -j
+make -j4
 make install
 ```
 
