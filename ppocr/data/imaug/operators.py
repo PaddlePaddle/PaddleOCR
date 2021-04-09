@@ -185,8 +185,8 @@ class DetResizeForTest(object):
         resize_h = int(h * ratio)
         resize_w = int(w * ratio)
 
-        resize_h = int(round(resize_h / 32) * 32)
-        resize_w = int(round(resize_w / 32) * 32)
+        resize_h = max(int(round(resize_h / 32) * 32), 32)
+        resize_w = max(int(round(resize_w / 32) * 32), 32)
 
         try:
             if int(resize_w) <= 0 or int(resize_h) <= 0:
@@ -197,7 +197,6 @@ class DetResizeForTest(object):
             sys.exit(0)
         ratio_h = resize_h / float(h)
         ratio_w = resize_w / float(w)
-        # return img, np.array([h, w])
         return img, [ratio_h, ratio_w]
 
     def resize_image_type2(self, img):
@@ -206,7 +205,6 @@ class DetResizeForTest(object):
         resize_w = w
         resize_h = h
 
-        # Fix the longer side
         if resize_h > resize_w:
             ratio = float(self.resize_long) / resize_h
         else:
@@ -223,3 +221,72 @@ class DetResizeForTest(object):
         ratio_w = resize_w / float(w)
 
         return img, [ratio_h, ratio_w]
+
+
+class E2EResizeForTest(object):
+    def __init__(self, **kwargs):
+        super(E2EResizeForTest, self).__init__()
+        self.max_side_len = kwargs['max_side_len']
+        self.valid_set = kwargs['valid_set']
+
+    def __call__(self, data):
+        img = data['image']
+        src_h, src_w, _ = img.shape
+        if self.valid_set == 'totaltext':
+            im_resized, [ratio_h, ratio_w] = self.resize_image_for_totaltext(
+                img, max_side_len=self.max_side_len)
+        else:
+            im_resized, (ratio_h, ratio_w) = self.resize_image(
+                img, max_side_len=self.max_side_len)
+        data['image'] = im_resized
+        data['shape'] = np.array([src_h, src_w, ratio_h, ratio_w])
+        return data
+
+    def resize_image_for_totaltext(self, im, max_side_len=512):
+
+        h, w, _ = im.shape
+        resize_w = w
+        resize_h = h
+        ratio = 1.25
+        if h * ratio > max_side_len:
+            ratio = float(max_side_len) / resize_h
+        resize_h = int(resize_h * ratio)
+        resize_w = int(resize_w * ratio)
+
+        max_stride = 128
+        resize_h = (resize_h + max_stride - 1) // max_stride * max_stride
+        resize_w = (resize_w + max_stride - 1) // max_stride * max_stride
+        im = cv2.resize(im, (int(resize_w), int(resize_h)))
+        ratio_h = resize_h / float(h)
+        ratio_w = resize_w / float(w)
+        return im, (ratio_h, ratio_w)
+
+    def resize_image(self, im, max_side_len=512):
+        """
+        resize image to a size multiple of max_stride which is required by the network
+        :param im: the resized image
+        :param max_side_len: limit of max image size to avoid out of memory in gpu
+        :return: the resized image and the resize ratio
+        """
+        h, w, _ = im.shape
+
+        resize_w = w
+        resize_h = h
+
+        # Fix the longer side
+        if resize_h > resize_w:
+            ratio = float(max_side_len) / resize_h
+        else:
+            ratio = float(max_side_len) / resize_w
+
+        resize_h = int(resize_h * ratio)
+        resize_w = int(resize_w * ratio)
+
+        max_stride = 128
+        resize_h = (resize_h + max_stride - 1) // max_stride * max_stride
+        resize_w = (resize_w + max_stride - 1) // max_stride * max_stride
+        im = cv2.resize(im, (int(resize_w), int(resize_h)))
+        ratio_h = resize_h / float(h)
+        ratio_w = resize_w / float(w)
+
+        return im, (ratio_h, ratio_w)

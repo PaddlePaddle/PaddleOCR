@@ -98,10 +98,10 @@ class TextClassifier(object):
             norm_img_batch = np.concatenate(norm_img_batch)
             norm_img_batch = norm_img_batch.copy()
             starttime = time.time()
-
             self.input_tensor.copy_from_cpu(norm_img_batch)
             self.predictor.run()
             prob_out = self.output_tensors[0].copy_to_cpu()
+            self.predictor.try_shrink_memory()
             cls_result = self.postprocess_op(prob_out)
             elapse += time.time() - starttime
             for rno in range(len(cls_result)):

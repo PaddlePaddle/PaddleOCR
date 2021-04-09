@@ -1,7 +1,9 @@
 # Server-side C++ inference
 
-
-In this tutorial, we will introduce the detailed steps of deploying PaddleOCR ultra-lightweight Chinese detection and recognition models on the server side.
+This chapter introduces the C++ deployment method of the PaddleOCR model, and the corresponding python predictive deployment method refers to [document](../../doc/doc_ch/inference.md).
+C++ is better than python in terms of performance calculation. Therefore, in most CPU and GPU deployment scenarios, C++ deployment is mostly used.
+This section will introduce how to configure the C++ environment and complete it in the Linux\Windows (CPU\GPU) environment
+PaddleOCR model deployment.
 
 
 ## 1. Prepare the environment

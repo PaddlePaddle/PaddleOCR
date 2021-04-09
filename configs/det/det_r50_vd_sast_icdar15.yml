@@ -14,11 +14,12 @@ Global:
   load_static_weights: True
   cal_metric_during_train: False
   pretrained_model: ./pretrain_models/ResNet50_vd_ssld_pretrained/
-  checkpoints: 
+  checkpoints:
   save_inference_dir:
   use_visualdl: False
-  infer_img: 
+  infer_img:
   save_res_path: ./output/sast_r50_vd_ic15/predicts_sast.txt
+
 
 Architecture:
   model_type: det

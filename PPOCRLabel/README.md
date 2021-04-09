@@ -8,15 +8,18 @@ PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field, w
 
 ### Recent Update
 
+- 2021.2.5: New batch processing and undo functions (by [Evezerest](https://github.com/Evezerest)):
+  - Batch processing function: Press and hold the Ctrl key to select the box, you can move, copy, and delete in batches.
+  - Undo function: In the process of drawing a four-point label box or after editing the box, press Ctrl+Z to undo the previous operation.
+  - Fix image rotation and size problems, optimize the process of editing the mark frame (by [ninetailskim](https://github.com/ninetailskim)、 [edencfc](https://github.com/edencfc)).
 - 2021.1.11: Optimize the labeling experience (by [edencfc](https://github.com/edencfc)),
-  - Users can choose whether to pop up the label input dialog after drawing the detection box in "View - Pop-up Label Input Dialog". 
+  - Users can choose whether to pop up the label input dialog after drawing the detection box in "View - Pop-up Label Input Dialog".
   - The recognition result scrolls synchronously when users click related detection box.
   - Click to modify the recognition result.(If you can't change the result, please switch to the system default input method, or switch back to the original input method again)
 - 2020.12.18: Support re-recognition of a single label box (by [ninetailskim](https://github.com/ninetailskim) ), perfect shortcut keys.
 
 ### TODO:
 - Lock box mode: For the same scene data, the size and position of the locked detection box can be transferred between different pictures.
-- Experience optimization: Add undo, batch operation include move, copy, delete and so on, optimize the annotation process.
 
 ## Installation
 
@@ -49,7 +52,7 @@ python3 PPOCRLabel.py
 ```
 pip3 install pyqt5
 pip3 uninstall opencv-python # Uninstall opencv manually as it conflicts with pyqt
-pip3 install opencv-contrib-python-headless # Install the headless version of opencv
+pip3 install opencv-contrib-python-headless==4.2.0.32 # Install the headless version of opencv
 cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
 python3 PPOCRLabel.py
 ```
@@ -76,12 +79,11 @@ python3 PPOCRLabel.py
 
 7. Double click the result in 'recognition result' list to manually change inaccurate recognition results.
 
-8. Click "Check", the image status will switch to "√",then the program automatically jump to the next(The results will not be written directly to the file at this time).
+8. Click "Check", the image status will switch to "√",then the program automatically jump to the next.
 
 9. Click "Delete Image" and the image will be deleted to the recycle bin.
 
-10. Labeling result: the user can save manually through the menu "File - Save Label", while the program will also save automatically after every 5 images confirmed by the user.the manually checked label will be stored in *Label.txt* under the opened picture folder.
-    Click "PaddleOCR"-"Save Recognition Results" in the menu bar, the recognition training data of such pictures will be saved in the *crop_img* folder, and the recognition label will be saved in *rec_gt.txt*<sup>[4]</sup>.
+10. Labeling result: the user can save manually through the menu "File - Save Label", while the program will also save automatically if "File - Auto Save Label Mode" is selected. The manually checked label will be stored in *Label.txt* under the opened picture folder. Click "PaddleOCR"-"Save Recognition Results" in the menu bar, the recognition training data of such pictures will be saved in the *crop_img* folder, and the recognition label will be saved in *rec_gt.txt*<sup>[4]</sup>.
 
 ### Note
 
@@ -89,8 +91,7 @@ python3 PPOCRLabel.py
 
 [2] The image status indicates whether the user has saved the image manually. If it has not been saved manually it is "X", otherwise it is "√", PPOCRLabel will not relabel pictures with a status of "√".
 
-[3] After clicking "Re-recognize", the model will overwrite ALL recognition results in the picture.
-Therefore, if the recognition result has been manually changed before, it may change after re-recognition.
+[3] After clicking "Re-recognize", the model will overwrite ALL recognition results in the picture. Therefore, if the recognition result has been manually changed before, it may change after re-recognition.
 
 [4] The files produced by PPOCRLabel can be found under the opened picture folder including the following, please do not manually change the contents, otherwise it will cause the program to be abnormal.
 
@@ -106,28 +107,29 @@ Therefore, if the recognition result has been manually changed before, it may ch
 
 ### Shortcut keys
 
-| Shortcut keys    | Description                                      |
-| ---------------- | ------------------------------------------------ |
-| Ctrl + shift + A | Automatically label all unchecked images         |
-| Ctrl + shift + R | Re-recognize all the labels of the current image |
-| W                | Create a rect box                                |
-| Q                | Create a four-points box                         |
-| Ctrl + E         | Edit label of the selected box                   |
-| Ctrl + R         | Re-recognize the selected box                    |
-| Backspace        | Delete the selected box                          |
-| Ctrl + V         | Check image                                      |
-| Ctrl + Shift + d | Delete image                                     |
-| D                | Next image                                       |
-| A                | Previous image                                   |
-| Ctrl++           | Zoom in                                          |
-| Ctrl--           | Zoom out                                         |
-| ↑→↓←             | Move selected box                                |
+| Shortcut keys            | Description                                      |
+| ------------------------ | ------------------------------------------------ |
+| Ctrl + Shift + R         | Re-recognize all the labels of the current image |
+| W                        | Create a rect box                                |
+| Q                        | Create a four-points box                         |
+| Ctrl + E                 | Edit label of the selected box                   |
+| Ctrl + R                 | Re-recognize the selected box                    |
+| Ctrl + C                 | Copy and paste the selected box                  |
+| Ctrl + Left Mouse Button | Multi select the label box                       |
+| Backspace                | Delete the selected box                          |
+| Ctrl + V                 | Check image                                      |
+| Ctrl + Shift + d         | Delete image                                     |
+| D                        | Next image                                       |
+| A                        | Previous image                                   |
+| Ctrl++                   | Zoom in                                          |
+| Ctrl--                   | Zoom out                                         |
+| ↑→↓←                     | Move selected box                                |
 
 ### Built-in Model
 
 - Default model: PPOCRLabel uses the Chinese and English ultra-lightweight OCR model in PaddleOCR by default, supports Chinese, English and number recognition, and multiple language detection.
 
-- Model language switching: Changing the built-in model language is supportable by clicking "PaddleOCR"-"Choose OCR Model" in the menu bar. Currently supported languages​include French, German, Korean, and Japanese. 
+- Model language switching: Changing the built-in model language is supportable by clicking "PaddleOCR"-"Choose OCR Model" in the menu bar. Currently supported languages​include French, German, Korean, and Japanese.
   For specific model download links, please refer to [PaddleOCR Model List](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/models_list_en.md#multilingual-recognition-modelupdating)
 
 - Custom model: The model trained by users can be replaced by modifying PPOCRLabel.py in [PaddleOCR class instantiation](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/PPOCRLabel/PPOCRLabel.py#L110) referring [Custom Model Code](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/whl_en.md#use-custom-model)
@@ -136,7 +138,7 @@ Therefore, if the recognition result has been manually changed before, it may ch
 
 PPOCRLabel supports three ways to save Label.txt
 
-- Automatically save: When it detects that the user has manually checked 5 pictures, the program automatically writes the annotations into Label.txt. The user can change the value of ``self.autoSaveNum`` in ``PPOCRLabel.py`` to set the number of images to be automatically saved after confirmation.
+- Automatically save: After selecting "File - Auto Save Label Mode", the program will automatically write the annotations into Label.txt every time the user confirms an image. If this option is not turned on, it will be automatically saved after detecting that the user has manually checked 5 images.
 - Manual save: Click "File-Save Marking Results" to manually save the label.
 - Close application save
 
@@ -160,11 +162,11 @@ For some data that are difficult to recognize, the recognition results will not 
     ```
     pyrcc5 -o libs/resources.py resources.qrc
     ```
-- If you get an error ``` module 'cv2' has no attribute 'INTER_NEAREST'```, you need to delete all opencv related packages first, and then reinstall the headless version of opencv
+- If you get an error ``` module 'cv2' has no attribute 'INTER_NEAREST'```, you need to delete all opencv related packages first, and then reinstall the 4.2.0.32  version of headless opencv
     ```
-    pip install opencv-contrib-python-headless
+    pip install opencv-contrib-python-headless==4.2.0.32
     ```
-    
+
 ### Related
 
 1.[Tzutalin. LabelImg. Git code (2015)](https://github.com/tzutalin/labelImg)

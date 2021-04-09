@@ -2,16 +2,18 @@
 # 基于Python预测引擎推理
 
 inference 模型（`paddle.jit.save`保存的模型）
-一般是模型训练完成后保存的固化模型，多用于预测部署。训练过程中保存的模型是checkpoints模型，保存的是模型的参数，多用于恢复训练等。
-与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合与实际系统集成。
+一般是模型训练，把模型结构和模型参数保存在文件中的固化模型，多用于预测部署场景。
+训练过程中保存的模型是checkpoints模型，保存的只有模型的参数，多用于恢复训练等。
+与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合于实际系统集成。
 
-接下来首先介绍如何将训练的模型转换成inference模型，然后将依次介绍文本检测、文本角度分类器、文本识别以及三者串联基于预测引擎推理。
+接下来首先介绍如何将训练的模型转换成inference模型，然后将依次介绍文本检测、文本角度分类器、文本识别以及三者串联在CPU、GPU上的预测方法。
 
 
 - [一、训练模型转inference模型](#训练模型转inference模型)
     - [检测模型转inference模型](#检测模型转inference模型)
     - [识别模型转inference模型](#识别模型转inference模型)  
-    - [方向分类模型转inference模型](#方向分类模型转inference模型)  
+    - [方向分类模型转inference模型](#方向分类模型转inference模型)
+    - [端到端模型转inference模型](#端到端模型转inference模型)
 
 - [二、文本检测模型推理](#文本检测模型推理)
     - [1. 超轻量中文检测模型推理](#超轻量中文检测模型推理)
@@ -26,10 +28,13 @@ inference 模型（`paddle.jit.save`保存的模型）
     - [4. 自定义文本识别字典的推理](#自定义文本识别字典的推理)
     - [5. 多语言模型的推理](#多语言模型的推理)
 
-- [四、方向分类模型推理](#方向识别模型推理)
+- [四、端到端模型推理](#端到端模型推理)
+    - [1. PGNet端到端模型推理](#PGNet端到端模型推理)
+
+- [五、方向分类模型推理](#方向识别模型推理)
     - [1. 方向分类模型推理](#方向分类模型推理)
 
-- [五、文本检测、方向分类和文字识别串联推理](#文本检测、方向分类和文字识别串联推理)
+- [六、文本检测、方向分类和文字识别串联推理](#文本检测、方向分类和文字识别串联推理)
     - [1. 超轻量中文OCR模型推理](#超轻量中文OCR模型推理)
     - [2. 其他模型推理](#其他模型推理)
 
@@ -117,6 +122,32 @@ python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o Global.pretrained_mo
     ├── inference.pdiparams.info    # 分类inference模型的参数信息，可忽略
     └── inference.pdmodel           # 分类inference模型的program文件
 ```
+<a name="端到端模型转inference模型"></a>
+### 端到端模型转inference模型
+
+下载端到端模型：
+```
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar && tar xf ./ch_lite/ch_ppocr_mobile_v2.0_cls_train.tar -C ./ch_lite/
+```
+
+端到端模型转inference模型与检测的方式相同，如下：
+```
+# -c 后面设置训练算法的yml配置文件
+# -o 配置可选参数
+# Global.pretrained_model 参数设置待转换的训练模型地址，不用添加文件后缀 .pdmodel，.pdopt或.pdparams。
+# Global.load_static_weights 参数需要设置为 False。
+# Global.save_inference_dir参数设置转换的模型将保存的地址。
+
+python3 tools/export_model.py -c configs/e2e/e2e_r50_vd_pg.yml -o Global.pretrained_model=./ch_lite/ch_ppocr_mobile_v2.0_cls_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/e2e/
+```
+
+转换成功后，在目录下有三个文件：
+```
+/inference/e2e/
+    ├── inference.pdiparams         # 分类inference模型的参数文件
+    ├── inference.pdiparams.info    # 分类inference模型的参数信息，可忽略
+    └── inference.pdmodel           # 分类inference模型的program文件
+```
 
 <a name="文本检测模型推理"></a>
 ## 二、文本检测模型推理
@@ -140,7 +171,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/00018069.jpg" --det_m
 ![](../imgs_results/det_res_00018069.jpg)
 
 通过参数`limit_type`和`det_limit_side_len`来对图片的尺寸进行限制，
-`litmit_type`可选参数为[`max`, `min`]，
+`limit_type`可选参数为[`max`, `min`]，
 `det_limit_size_len` 为正整数，一般设置为32 的倍数，比如960。
 
 参数默认设置为`limit_type='max', det_limit_side_len=960`。表示网络输入图像的最长边不能超过960，
@@ -331,8 +362,38 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" -
 Predicts of ./doc/imgs_words/korean/1.jpg:('바탕으로', 0.9948904)
 ```
 
+<a name="端到端模型推理"></a>
+## 四、端到端模型推理
+
+端到端模型推理，默认使用PGNet模型的配置参数。当不使用PGNet模型时，在推理时，需要通过传入相应的参数进行算法适配，细节参考下文。
+<a name="PGNet端到端模型推理"></a>
+### 1. PGNet端到端模型推理
+#### (1). 四边形文本检测模型（ICDAR2015）  
+首先将PGNet端到端训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例([模型下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/en_server_pgnetA.tar))，可以使用如下命令进行转换：
+```
+python3 tools/export_model.py -c configs/e2e/e2e_r50_vd_pg.yml -o Global.pretrained_model=./en_server_pgnetA/iter_epoch_450 Global.load_static_weights=False Global.save_inference_dir=./inference/e2e
+```
+**PGNet端到端模型推理，需要设置参数`--e2e_algorithm="PGNet"`**，可以执行如下命令：
+```
+python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/imgs_en/img_10.jpg" --e2e_model_dir="./inference/e2e/"  --e2e_pgnet_polygon=False
+```
+可视化文本检测结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'e2e_res'。结果示例如下：
+
+![](../imgs_results/e2e_res_img_10_pgnet.jpg)
+
+#### (2). 弯曲文本检测模型（Total-Text）  
+和四边形文本检测模型共用一个推理模型
+**PGNet端到端模型推理，需要设置参数`--e2e_algorithm="PGNet"`，同时，还需要增加参数`--e2e_pgnet_polygon=True`，**可以执行如下命令：
+```
+python3.7 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/imgs_en/img623.jpg" --e2e_model_dir="./inference/e2e/" --e2e_pgnet_polygon=True
+```
+可视化文本端到端结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'e2e_res'。结果示例如下：
+
+![](../imgs_results/e2e_res_img623_pgnet.jpg)
+
+
 <a name="方向分类模型推理"></a>
-## 四、方向分类模型推理
+## 五、方向分类模型推理
 
 下面将介绍方向分类模型推理。
 
@@ -357,7 +418,7 @@ Predicts of ./doc/imgs_words/ch/word_4.jpg:['0', 0.9999982]
 ```
 
 <a name="文本检测、方向分类和文字识别串联推理"></a>
-## 五、文本检测、方向分类和文字识别串联推理
+## 六、文本检测、方向分类和文字识别串联推理
 <a name="超轻量中文OCR模型推理"></a>
 ### 1. 超轻量中文OCR模型推理
 

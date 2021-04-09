@@ -46,7 +46,7 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 - 微信扫描二维码加入官方交流群，获得更高效的问题答疑，与各行各业开发者充分交流，期待您的加入。
 
 <div align="center">
-<img src="./doc/joinus.PNG"  width = "200" height = "200" />
+<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/joinus.PNG"  width = "200" height = "200" />
 </div>
 
 ## 快速体验
@@ -88,7 +88,7 @@ PaddleOCR同时支持动态图与静态图两种编程范式
     - [基于pip安装whl包快速推理](./doc/doc_ch/whl.md)
     - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
     - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
-    - [服务化部署](./deploy/hubserving/readme.md)
+    - [服务化部署](./deploy/pdserving/README_CN.md)
     - [端侧部署](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme.md)
     - [Benchmark](./doc/doc_ch/benchmark.md)
 - 数据集
