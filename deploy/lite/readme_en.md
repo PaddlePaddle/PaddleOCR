@@ -248,7 +248,7 @@ After the above steps are completed, you can use adb to push the file to the pho
  adb shell
  cd /data/local/tmp/debug
  export LD_LIBRARY_PATH=${PWD}:$LD_LIBRARY_PATH
- ./ocr_db_crnn ch_ppocr_mobile_v2.0_det_opt.nbb  ch_ppocr_mobile_v2.0_rec_opt.nb  ch_ppocr_mobile_v2.0_cls_opt.nb  ./11.jpg  ppocr_keys_v1.txt
+ ./ocr_db_crnn ch_ppocr_mobile_v2.0_det_opt.nb  ch_ppocr_mobile_v2.0_rec_opt.nb  ch_ppocr_mobile_v2.0_cls_opt.nb  ./11.jpg  ppocr_keys_v1.txt
  ```
 
 If you modify the code, you need to recompile and push to the phone.
@@ -256,9 +256,8 @@ If you modify the code, you need to recompile and push to the phone.
 The outputs are as follows:
 
 <div align="center">
-    <img src="../imgs_results/lite_demo.png" width="600">
+    <img src="../../doc/imgs_results/lite_demo.png" width="600">
 </div>
-
 
 ## FAQ
 

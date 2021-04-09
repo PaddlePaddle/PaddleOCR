@@ -248,7 +248,7 @@ use_direction_classify  0  # 是否使用方向分类器，0表示不使用，1�
  adb shell
  cd /data/local/tmp/debug
  export LD_LIBRARY_PATH=${PWD}:$LD_LIBRARY_PATH
- ./ocr_db_crnn ch_ppocr_mobile_v2.0_det_opt.nbb  ch_ppocr_mobile_v2.0_rec_opt.nb  ch_ppocr_mobile_v2.0_cls_opt.nb  ./11.jpg  ppocr_keys_v1.txt
+ ./ocr_db_crnn ch_ppocr_mobile_v2.0_det_opt.nb  ch_ppocr_mobile_v2.0_rec_opt.nb  ch_ppocr_mobile_v2.0_cls_opt.nb  ./11.jpg  ppocr_keys_v1.txt
  ```
 
  如果对代码做了修改，则需要重新编译并push到手机上。
@@ -256,7 +256,7 @@ use_direction_classify  0  # 是否使用方向分类器，0表示不使用，1�
  运行效果如下：
 
 <div align="center">
-    <img src="../imgs_results/lite_demo.png" width="600">
+    <img src="../../doc/imgs_results/lite_demo.png" width="600">
 </div>
 
 
