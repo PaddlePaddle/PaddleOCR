@@ -1,10 +1,9 @@
 # 多语言模型
 
-近期更新：
+**近期更新**
 
-* 支持**80种**语言的检测和识别
-* 支持**轻量高精度**英文模型检测识别
-* 优化英文模型中的空格识别
+- 2021.4.9 支持**80种**语言的检测和识别
+- 2021.4.9 支持**轻量高精度**英文模型检测识别
 
 - [1 安装](#安装)
     - [1.1 paddle 安装](#paddle安装)
@@ -19,10 +18,12 @@
      - [2.2.1 整图预测](#python_检测+识别)
      - [2.2.2 识别预测](#python_识别)
      - [2.2.3 检测预测](#python_检测)
-- [3 支持语种及缩写](#支持语种及缩写)
+- [3 支持语种及缩写](#语种缩写)
 
+<a name="安装"></a>
 ## 1 安装
 
+<a name="paddle安装"></a>
 ### 1.1 paddle 安装
 ```
 # cpu
@@ -31,20 +32,25 @@ pip install paddlepaddle
 # gpu
 pip instll paddlepaddle-gpu
 ```
+
+<a name="paddleocr_package_安装"></a>
 ### 1.2 paddleocr package 安装
 
 
 pip 安装
 ```
-pip install "paddleocr>=2.0.3" # 推荐使用2.0.3版本
+pip install "paddleocr>=2.0.4" # 推荐使用2.0.4版本
 ```
 本地构建并安装
 ```
 python3 setup.py bdist_wheel
 pip3 install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x是paddleocr的版本号
 ```
+
+<a name="快速使用"></a>
 ## 2 快速使用
 
+<a name="命令行运行"></a>
 ### 2.1 命令行运行
 
 查看帮助信息
@@ -53,7 +59,7 @@ pip3 install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x是paddleocr的版本�
 paddleocr -h
 ```
 
-* 运行检测+识别
+* 整图预测（检测+识别）
 
 Paddleocr目前支持80个语种，可以通过修改--lang参数进行切换，具体支持的[语种](#语种缩写)可查看表格。
 
@@ -72,19 +78,21 @@ paddleocr --image_dir doc/imgs/japan_2.jpg --lang=japan
 ......
 ```
 
-* 识别
+* 识别预测
 
 ```bash
 paddleocr --image_dir doc/imgs_words/japan/1.jpg   --det false --lang=japan
 ```
+
 ![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/imgs_words/japan/1.jpg)
+
 结果是一个tuple，返回识别结果和识别置信度
 
 ```text
 ('したがって', 0.99965394)
 ```
 
-* 检测
+* 检测预测
 
 ```
 paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --rec false
@@ -99,11 +107,12 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --rec false
 ......
 ```
 
+<a name="python_脚本运行"></a>
 ### 2.2 python 脚本运行
 
 ppocr 也支持在python脚本中运行，便于嵌入到您自己的代码中：
 
-* 检测+识别
+* 整图预测（检测+识别）
 
 ```
 from paddleocr import PaddleOCR, draw_ocr
@@ -131,7 +140,7 @@ im_show.save('result.jpg')
 ![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/imgs_results/korean.jpg)
 
 
-* 单独执行识别
+* 识别预测
 
 ```
 from paddleocr import PaddleOCR
@@ -150,7 +159,7 @@ for line in result:
 ('leider auch jetzt', 0.97538936)
 ```
 
-* 单独执行检测
+* 检测预测
 
 ```python
 from paddleocr import PaddleOCR, draw_ocr
@@ -176,13 +185,21 @@ im_show.save('result.jpg')
 ......
 ```
 
-结果可视化（todo:换图）：
+结果可视化 ：
 ![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/imgs_results/whl/12_det.jpg)
 
 ppocr 还支持方向分类， 更多使用方式请参考：[whl包使用说明](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.0/doc/doc_ch/whl.md)。
 
-<a name="语种缩写"></a>
 
+### 自定义训练
+
+ppocr 支持使用自己的数据进行自定义训练或finetune, 其中识别模型可以参考 [法语配置文件](../../configs/rec/multi_language/rec_french_lite_train.yml)
+修改训练数据路径、字典等参数。
+
+具体数据准备、训练过程可参考：[文本检测](../doc_ch/detection.md)、[文本识别](../doc_ch/recognition.md)，更多功能如预测部署、
+数据标注等功能可以阅读完整的[文档教程](../../README_ch.md)。
+
+<a name="语种缩写"></a>
 ### 支持语种及缩写
 
 | 语种 | 描述 | 缩写 |
@@ -214,77 +231,53 @@ ppocr 还支持方向分类， 更多使用方式请参考：[whl包使用说明
 |泰卢固文|Telugu |te|
 |卡纳达文|Kannada |kn|
 |泰米尔文|Tamil |ta|
-| | |af|
-| | |az|
-| | |bs|
-| | |cs|
-| | |cy|
-| | |da|
-| | |de|
-| | |en|
-| | |es|
-| | |et|
-| | |fr|
-| | |ga|
-| | |hr|
-| | |hu|
-| | |id|
-| | |is|
-| | |it|
-| | |ku|
-| | |la|
-| | |lt|
-| | |lv|
-| | |mi|
-| | |ms|
-| | |mt|
-| | |nl|
-| | |no|
-| | |oc|
-| | |pi|
-| | |pl|
-| | |pt|
-| | |ro|
-| | |rs_latin|
-| | |sk|
-| | |sl|
-| | |sq|
-| | |sv|
-| | |sw|
-| | |tl|
-| | |tr|
-| | |uz|
-| | |vi|
-| | |ar|
-| | |fa|
-| | |ug|
-| | |ur|
-| | |ru|
-| | |rs_cyrillic|
-| | |be|
-| | |bg|
-| | |uk|
-| | |mn|
-| | |abq|
-| | |ady|
-| | |kbd|
-| | |ava|
-| | |dar|
-| | |inh|
-| | |che|
-| | |lbe|
-| | |lez|
-| | |tab|
-| | |hi|
-| | |mr|
-| | |ne|
-| | |bh|
-| | |mai|
-| | |ang|
-| | |bho|
-| | |mah|
-| | |sck|
-| | |new|
-| | |gom|
-| | |sa|
-| | |bgc|
+|南非荷兰文 |Afrikaans |af|
+|阿塞拜疆文 |Azerbaijani	|az|
+|波斯尼亚文|Bosnian|bs|
+|捷克文|Czech|cs|
+|威尔士文 |Welsh |cy|
+|丹麦文 |Danish|da|
+|爱沙尼亚文 |Estonian |et|
+|爱尔兰文 |Irish |ga|
+|克罗地亚文|Croatian |hr|
+|匈牙利文|Hungarian |hu|
+|印尼文|Indonesian|id|
+|冰岛文 |Icelandic|is|
+|库尔德文 |Kurdish|ku|
+|立陶宛文|Lithuanian |lt|
+|拉脱维亚文 |Latvian |lv|
+|毛利文|Maori|mi|
+|马来文 |Malay|ms|
+|马耳他文 |Maltese |mt|
+|荷兰文 |Dutch |nl|
+|挪威文 |Norwegian |no|
+|波兰文|Polish |pl|
+| 罗马尼亚文|Romanian |ro|
+| 斯洛伐克文|Slovak |sk|
+| 斯洛文尼亚文|Slovenian |sl|
+| 阿尔巴尼亚文|Albanian |sq|
+| 瑞典文|Swedish |sv|
+| 西瓦希里文|Swahili |sw|
+| 塔加洛文|Tagalog |tl|
+| 土耳其文|Turkish |tr|
+| 乌兹别克文|Uzbek |uz|
+| 越南文|Vietnamese |vi|
+| 蒙古文|Mongolian |mn|
+| 阿巴扎文|Abaza |abq|
+| 阿迪赫文|Adyghe |ady|
+| 卡巴丹文|Kabardian |kbd|
+| 阿瓦尔文|Avar |ava|
+| 达尔瓦文|Dargwa |dar|
+| 因古什文|Ingush |inh|
+| 拉克文|Lak |lbe|
+| 莱兹甘文|Lezghian |lez|
+|塔巴萨兰文 |Tabassaran |tab|
+| 比尔哈文|Bihari |bh|
+| 迈蒂利文|Maithili |mai|
+| 昂加文|Angika |ang|
+| 孟加拉文|Bhojpuri |bho|
+| 摩揭陀文 |Magahi |mah|
+| 那格浦尔文|Nagpur |sck|
+| 尼瓦尔文|Newari |new|
+| 保加利亚文 |Goan Konkani|gom|
+| 沙特阿拉伯文|Saudi Arabia|sa|
