@@ -26,8 +26,9 @@ def build_metric(config):
     from .det_metric import DetMetric
     from .rec_metric import RecMetric
     from .cls_metric import ClsMetric
+    from .e2e_metric import E2EMetric
 
-    support_dict = ['DetMetric', 'RecMetric', 'ClsMetric']
+    support_dict = ['DetMetric', 'RecMetric', 'ClsMetric', 'E2EMetric']
 
     config = copy.deepcopy(config)
     module_name = config.pop('name')

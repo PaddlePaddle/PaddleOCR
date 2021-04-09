@@ -74,6 +74,19 @@ def parse_args():
         "--vis_font_path", type=str, default="./doc/fonts/simfang.ttf")
     parser.add_argument("--drop_score", type=float, default=0.5)
 
+    # params for e2e
+    parser.add_argument("--e2e_algorithm", type=str, default='PGNet')
+    parser.add_argument("--e2e_model_dir", type=str)
+    parser.add_argument("--e2e_limit_side_len", type=float, default=768)
+    parser.add_argument("--e2e_limit_type", type=str, default='max')
+
+    # PGNet parmas
+    parser.add_argument("--e2e_pgnet_score_thresh", type=float, default=0.5)
+    parser.add_argument(
+        "--e2e_char_dict_path", type=str, default="./ppocr/utils/ic15_dict.txt")
+    parser.add_argument("--e2e_pgnet_valid_set", type=str, default='totaltext')
+    parser.add_argument("--e2e_pgnet_polygon", type=bool, default=True)
+
     # params for text classifier
     parser.add_argument("--use_angle_cls", type=str2bool, default=False)
     parser.add_argument("--cls_model_dir", type=str)
@@ -85,6 +98,10 @@ def parse_args():
     parser.add_argument("--enable_mkldnn", type=str2bool, default=False)
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
 
+    parser.add_argument("--use_mp", type=str2bool, default=False)
+    parser.add_argument("--total_process_num", type=int, default=1)
+    parser.add_argument("--process_id", type=int, default=0)
+
     return parser.parse_args()
 
 
@@ -93,8 +110,10 @@ def create_predictor(args, mode, logger):
         model_dir = args.det_model_dir
     elif mode == 'cls':
         model_dir = args.cls_model_dir
-    else:
+    elif mode == 'rec':
         model_dir = args.rec_model_dir
+    else:
+        model_dir = args.e2e_model_dir
 
     if model_dir is None:
         logger.info("not find {} model file path {}".format(mode, model_dir))
@@ -146,6 +165,22 @@ def create_predictor(args, mode, logger):
         output_tensor = predictor.get_output_handle(output_name)
         output_tensors.append(output_tensor)
     return predictor, input_tensor, output_tensors
+
+
+def draw_e2e_res(dt_boxes, strs, img_path):
+    src_im = cv2.imread(img_path)
+    for box, str in zip(dt_boxes, strs):
+        box = box.astype(np.int32).reshape((-1, 1, 2))
+        cv2.polylines(src_im, [box], True, color=(255, 255, 0), thickness=2)
+        cv2.putText(
+            src_im,
+            str,
+            org=(int(box[0, 0, 0]), int(box[0, 0, 1])),
+            fontFace=cv2.FONT_HERSHEY_COMPLEX,
+            fontScale=0.7,
+            color=(0, 255, 0),
+            thickness=1)
+    return src_im
 
 
 def draw_text_det_res(dt_boxes, img_path):
