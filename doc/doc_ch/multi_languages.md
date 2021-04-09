@@ -18,7 +18,8 @@
      - [2.2.1 整图预测](#python_检测+识别)
      - [2.2.2 识别预测](#python_识别)
      - [2.2.3 检测预测](#python_检测)
-- [3 支持语种及缩写](#语种缩写)
+- [3 自定义训练](#自定义训练)
+- [4 支持语种及缩写](#语种缩写)
 
 <a name="安装"></a>
 ## 1 安装
@@ -190,8 +191,8 @@ im_show.save('result.jpg')
 
 ppocr 还支持方向分类， 更多使用方式请参考：[whl包使用说明](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.0/doc/doc_ch/whl.md)。
 
-
-### 自定义训练
+<a name="自定义训练"></a>
+## 3 自定义训练
 
 ppocr 支持使用自己的数据进行自定义训练或finetune, 其中识别模型可以参考 [法语配置文件](../../configs/rec/multi_language/rec_french_lite_train.yml)
 修改训练数据路径、字典等参数。
@@ -200,7 +201,7 @@ ppocr 支持使用自己的数据进行自定义训练或finetune, 其中识别�
 数据标注等功能可以阅读完整的[文档教程](../../README_ch.md)。
 
 <a name="语种缩写"></a>
-### 支持语种及缩写
+## 4 支持语种及缩写
 
 | 语种 | 描述 | 缩写 |
 | --- | --- | --- |
