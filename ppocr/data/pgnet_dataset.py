@@ -24,6 +24,7 @@ class PGDataSet(Dataset):
 
         self.logger = logger
         self.seed = seed
+        self.mode = mode
         global_config = config['Global']
         dataset_config = config[mode]['dataset']
         loader_config = config[mode]['loader']
@@ -62,10 +63,13 @@ class PGDataSet(Dataset):
         with open(poly_txt_path) as f:
             for line in f.readlines():
                 poly_str, txt = line.strip().split('\t')
-                poly = map(float, poly_str.split(','))
+                poly = list(map(float, poly_str.split(',')))
+                if self.mode.lower() == "eval":
+                    while len(poly) < 100:
+                        poly.append(-1)
                 text_polys.append(
                     np.array(
-                        list(poly), dtype=np.float32).reshape(-1, 2))
+                        poly, dtype=np.float32).reshape(-1, 2))
                 txts.append(txt)
                 txt_tags.append(txt == '###')
 
@@ -135,8 +139,12 @@ class PGDataSet(Dataset):
         try:
             if self.data_format == 'icdar':
                 im_path = os.path.join(data_path, 'rgb', data_line)
-                poly_path = os.path.join(data_path, 'poly',
-                                         data_line.split('.')[0] + '.txt')
+                if self.mode.lower() == "eval":
+                    poly_path = os.path.join(data_path, 'poly_gt',
+                                             data_line.split('.')[0] + '.txt')
+                else:
+                    poly_path = os.path.join(data_path, 'poly',
+                                             data_line.split('.')[0] + '.txt')
                 text_polys, text_tags, text_strs = self.extract_polys(poly_path)
             else:
                 image_dir = os.path.join(os.path.dirname(data_path), 'image')
