@@ -12,14 +12,14 @@
 -[2 Quick Use](#Quick_Use)
     -[2.1 Command line operation](#Command_line_operation)
      -[2.1.1 Prediction of the whole image](#bash_detection+recognition)
-     -[2.1.2 Recognition and Prediction](#bash_Recognition)
-     -[2.1.3 Detection prediction](#bash_detection)
+     -[2.1.2 Recognition](#bash_Recognition)
+     -[2.1.3 Detection](#bash_detection)
     -[2.2 python script running](#python_Script_running)
      -[2.2.1 Whole image prediction](#python_detection+recognition)
-     -[2.2.2 Recognition and Prediction](#python_Recognition)
-     -[2.2.3 Detection and prediction](#python_detection)
+     -[2.2.2 Recognition](#python_Recognition)
+     -[2.2.3 Detection](#python_detection)
 -[3 Custom Training](#Custom_Training)
--[4 Supported languages and abbreviations] (#language_abbreviations)
+-[4 Supported languages and abbreviations](#language_abbreviations)
 
 <a name="Install"></a>
 ## 1 Installation
@@ -62,7 +62,8 @@ paddleocr -h
 
 * Whole image prediction (detection + recognition)
 
-Paddleocr currently supports 80 languages, which can be switched by modifying the --lang parameter. The specific supported [language] (#语语abbreviation) can be viewed in the table.
+Paddleocr currently supports 80 languages, which can be switched by modifying the --lang parameter.
+The specific supported [language] (#language_abbreviations) can be viewed in the table.
 
 ``` bash
 
@@ -79,7 +80,7 @@ The result is a list, each item contains a text box, text and recognition confid
 ......
 ```
 
-* Identify predictions
+* Recognition
 
 ```bash
 paddleocr --image_dir doc/imgs_words/japan/1.jpg --det false --lang=japan
@@ -93,7 +94,7 @@ The result is a tuple, which returns the recognition result and recognition conf
 ('したがって', 0.99965394)
 ```
 
-* Detection and prediction
+* Detection
 
 ```
 paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --rec false
@@ -141,7 +142,7 @@ Visualization of results:
 ![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/imgs_results/korean.jpg)
 
 
-* Identify predictions
+* Recognition
 
 ```
 from paddleocr import PaddleOCR
@@ -160,7 +161,7 @@ The result is a tuple, which only contains the recognition result and recognitio
 ('leider auch jetzt', 0.97538936)
 ```
 
-* Detection and prediction
+* Detection
 
 ```python
 from paddleocr import PaddleOCR, draw_ocr
