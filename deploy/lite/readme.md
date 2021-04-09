@@ -29,7 +29,7 @@ Paddle Lite是飞桨轻量化推理引擎，为手机、IOT端提供高效推理
       |Android|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.8/inference_lite_lib.android.armv7.gcc.c++_shared.with_extra.with_cv.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.8/inference_lite_lib.android.armv8.gcc.c++_shared.with_extra.with_cv.tar.gz)|
       |IOS|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.8/inference_lite_lib.ios.armv7.with_cv.with_extra.with_log.tiny_publish.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.8/inference_lite_lib.ios.armv8.with_cv.with_extra.with_log.tiny_publish.tar.gz)|
 
-      注：1. 上述预测库为PaddleLite 2.8分支编译得到，有关PaddleLite 2.8 详细信息可参考[链接](https://github.com/PaddlePaddle/Paddle-Lite/releases/tag/v2.8) 。
+      注：1. 上述预测库为PaddleLite 2.8分支编译得到，有关PaddleLite 2.8 详细信息可参考 [链接](https://github.com/PaddlePaddle/Paddle-Lite/releases/tag/v2.8) 。
 
 - 2. [推荐]编译Paddle-Lite得到预测库，Paddle-Lite的编译方式如下：
 ```
@@ -42,7 +42,7 @@ git checkout release/v2.8
 
 注意：编译Paddle-Lite获得预测库时，需要打开`--with_cv=ON --with_extra=ON`两个选项，`--arch`表示`arm`版本，这里指定为armv8，
 更多编译命令
-介绍请参考[链接](https://paddle-lite.readthedocs.io/zh/latest/user_guides/Compile/Android.html#id2)。
+介绍请参考 [链接](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_andriod.html) 。
 
 直接下载预测库并解压后，可以得到`inference_lite_lib.android.armv8/`文件夹，通过编译Paddle-Lite得到的预测库位于
 `Paddle-Lite/build.lite.android.armv8.gcc/inference_lite_lib.android.armv8/`文件夹下。
@@ -85,7 +85,7 @@ Paddle-Lite 提供了多种策略来自动优化原始的模型，其中包括�
 
 |模型版本|模型简介|模型大小|检测模型|文本方向分类模型|识别模型|Paddle-Lite版本|
 |---|---|---|---|---|---|---|
-|V2.0|超轻量中文OCR 移动端模型|7.8M|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_det_infer_nb.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_infer_nb.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_rec_infer_nb.nb)|v2.8|
+|V2.0|超轻量中文OCR 移动端模型|7.8M|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_det_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_rec_opt.nb)|v2.8|
 
 如果直接使用上述表格中的模型进行部署，可略过下述步骤，直接阅读 [2.2节](#2.2与手机联调)。
 

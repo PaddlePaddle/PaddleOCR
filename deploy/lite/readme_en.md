@@ -44,7 +44,7 @@ git checkout release/v2.8
 
 Note: When compiling Paddle-Lite to obtain the Paddle-Lite library, you need to turn on the two options `--with_cv=ON --with_extra=ON`, `--arch` means the `arm` version, here is designated as armv8,
 
-More compilation commands refer to the introduction [link](https://paddle-lite.readthedocs.io/zh/latest/user_guides/Compile/Android.html#id2) 。
+More compilation commands refer to the introduction [link](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_andriod.html) 。
 
 After directly downloading the Paddle-Lite library and decompressing it, you can get the `inference_lite_lib.android.armv8/` folder, and the Paddle-Lite library obtained by compiling Paddle-Lite is located
 `Paddle-Lite/build.lite.android.armv8.gcc/inference_lite_lib.android.armv8/` folder.
@@ -87,7 +87,7 @@ The following table also provides a series of models that can be deployed on mob
 
 |Version|Introduction|Model size|Detection model|Text Direction model|Recognition model|Paddle-Lite branch|
 |---|---|---|---|---|---|---|
-|V2.0|extra-lightweight chinese OCR optimized model|7.8M|[download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_det_infer_nb.nb)|[download lin](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_infer_nb.nb)|[download lin](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_rec_infer_nb.nb)|v2.8|
+|V2.0|extra-lightweight chinese OCR optimized model|7.8M|[download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_det_opt.nb)|[download lin](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_opt.nb)|[download lin](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_rec_opt.nb)|v2.8|
 
 If you directly use the model in the above table for deployment, you can skip the following steps and directly read [Section 2.2](#2.2 Run optimized model on Phone).
 
