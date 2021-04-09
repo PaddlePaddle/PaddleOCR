@@ -38,9 +38,11 @@ if __name__ == "__main__":
 
         with open("{}/results.{}".format(inference_dir, process_id),
                   "w") as fin:
-            p = subprocess.Popen(cmd, stdout=fin, stderr=fin)
+            # p = subprocess.Popen(cmd, stdout=fin, stderr=fin)
             # if you want to print results in the screen, you can use the following command
-            # p = subprocess.Popen(cmd, stdout=fin, stderr=sys.stdout)
+            p = subprocess.Popen(cmd, stdout=sys.stdout, stderr=sys.stdout)
             p_list.append(p)
     for p in p_list:
         p.wait()
+    print("all inference results are save in directory: {}".format(
+        inference_dir))
