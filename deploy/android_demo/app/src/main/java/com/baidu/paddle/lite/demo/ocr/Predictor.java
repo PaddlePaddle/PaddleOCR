@@ -147,6 +147,7 @@ public class Predictor {
 
     protected boolean loadLabel(Context appCtx, String labelPath) {
         wordLabels.clear();
+        wordLabels.add("black");
         // Load word labels from file
         try {
             InputStream assetsInputStream = appCtx.getAssets().open(labelPath);
