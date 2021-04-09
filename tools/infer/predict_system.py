@@ -141,6 +141,7 @@ def sorted_boxes(dt_boxes):
 
 def main(args):
     image_file_list = get_image_file_list(args.image_dir)
+    image_file_list = image_file_list[args.process_id::args.total_process_num]
     text_sys = TextSystem(args)
     is_visualize = True
     font_path = args.vis_font_path

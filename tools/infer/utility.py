@@ -85,6 +85,10 @@ def parse_args():
     parser.add_argument("--enable_mkldnn", type=str2bool, default=False)
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
 
+    parser.add_argument("--use_multiprocess", type=str2bool, default=False)
+    parser.add_argument("--total_process_num", type=int, default=1)
+    parser.add_argument("--process_id", type=int, default=0)
+
     return parser.parse_args()
 
 
