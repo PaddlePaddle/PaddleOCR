@@ -48,7 +48,7 @@ dependencies {
 
 def archives = [
         [
-                'src' : 'https://paddlelite-demo.bj.bcebos.com/libs/android/paddle_lite_libs_v2_6_1.tar.gz',
+                'src' : 'https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/paddle_lite_libs_v2_8_0.gz',
                 'dest': 'PaddleLite'
         ],
         [
@@ -56,7 +56,7 @@ def archives = [
                 'dest': 'OpenCV'
         ],
         [
-                'src' : 'https://paddleocr.bj.bcebos.com/deploy/lite/ocr_v1_for_cpu.tar.gz',
+                'src' : 'https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ocr_v2_for_cpu.gz',
                 'dest' : 'src/main/assets/models'
         ]
 ]
