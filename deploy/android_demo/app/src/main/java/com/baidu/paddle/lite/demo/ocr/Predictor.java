@@ -119,9 +119,9 @@ public class Predictor {
 
         OCRPredictorNative.Config config = new OCRPredictorNative.Config();
         config.cpuThreadNum = cpuThreadNum;
-        config.detModelFilename = realPath + File.separator + "ch_det_mv3_db_opt.nb";
-        config.recModelFilename = realPath + File.separator + "ch_rec_mv3_crnn_opt.nb";
-        config.clsModelFilename = realPath + File.separator + "ch_cls_mv3_opt.nb";
+        config.detModelFilename = realPath + File.separator + "ch_ppocr_mobile_v2.0_det_opt.nb";
+        config.recModelFilename = realPath + File.separator + "ch_ppocr_mobile_v2.0_rec_opt.nb";
+        config.clsModelFilename = realPath + File.separator + "ch_ppocr_mobile_v2.0_cls_opt.nb";
         Log.e("Predictor", "model path" + config.detModelFilename + " ; " + config.recModelFilename + ";" + config.clsModelFilename);
         config.cpuPower = cpuPowerMode;
         paddlePredictor = new OCRPredictorNative(config);
