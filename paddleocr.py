@@ -146,7 +146,8 @@ def parse_args(mMain=True, add_help=True):
         # DB parmas
         parser.add_argument("--det_db_thresh", type=float, default=0.3)
         parser.add_argument("--det_db_box_thresh", type=float, default=0.5)
-        parser.add_argument("--det_db_unclip_ratio", type=float, default=2.0)
+        parser.add_argument("--det_db_unclip_ratio", type=float, default=1.6)
+        parser.add_argument("--use_dilation", type=bool, default=False)
 
         # EAST parmas
         parser.add_argument("--det_east_score_thresh", type=float, default=0.8)
@@ -193,7 +194,8 @@ def parse_args(mMain=True, add_help=True):
             det_limit_type='max',
             det_db_thresh=0.3,
             det_db_box_thresh=0.5,
-            det_db_unclip_ratio=2.0,
+            det_db_unclip_ratio=1.6,
+            use_dilation=False,
             det_east_score_thresh=0.8,
             det_east_cover_thresh=0.1,
             det_east_nms_thresh=0.2,
@@ -234,7 +236,9 @@ class PaddleOCR(predict_system.TextSystem):
         assert lang in model_urls[
             'rec'], 'param lang must in {}, but got {}'.format(
                 model_urls['rec'].keys(), lang)
+        use_inner_dict = False
         if postprocess_params.rec_char_dict_path is None:
+            use_inner_dict = True
             postprocess_params.rec_char_dict_path = model_urls['rec'][lang][
                 'dict_path']
 
@@ -261,9 +265,9 @@ class PaddleOCR(predict_system.TextSystem):
         if postprocess_params.rec_algorithm not in SUPPORT_REC_MODEL:
             logger.error('rec_algorithm must in {}'.format(SUPPORT_REC_MODEL))
             sys.exit(0)
-
-        postprocess_params.rec_char_dict_path = str(
-            Path(__file__).parent / postprocess_params.rec_char_dict_path)
+        if use_inner_dict:
+            postprocess_params.rec_char_dict_path = str(
+                Path(__file__).parent / postprocess_params.rec_char_dict_path)
 
         # init det_model and rec_model
         super().__init__(postprocess_params)
@@ -280,8 +284,13 @@ class PaddleOCR(predict_system.TextSystem):
         if isinstance(img, list) and det == True:
             logger.error('When input a list of images, det must be false')
             exit(0)
+        if cls == False:
+            self.use_angle_cls = False
+        elif cls == True and self.use_angle_cls == False:
+            logger.warning(
+                'Since the angle classifier is not initialized, the angle classifier will not be uesd during the forward process'
+            )
 
-        self.use_angle_cls = cls
         if isinstance(img, str):
             # download net image
             if img.startswith('http'):
