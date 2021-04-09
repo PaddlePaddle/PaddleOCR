@@ -188,7 +188,6 @@ def main(args):
 if __name__ == "__main__":
     args = utility.parse_args()
     if args.use_mp:
-        print("12233")
         p_list = []
         total_process_num = args.total_process_num
         for process_id in range(total_process_num):
