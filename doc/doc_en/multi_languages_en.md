@@ -198,8 +198,8 @@ ppocr also supports direction classification. For more usage methods, please ref
 ppocr supports using your own data for custom training or finetune, where the recognition model can refer to [French configuration file](../../configs/rec/multi_language/rec_french_lite_train.yml)
 Modify the training data path, dictionary and other parameters.
 
-For specific data preparation and training process, please refer to: [Text Detection](../doc_ch/detection.md), [Text Recognition](../doc_ch/recognition.md), more functions such as predictive deployment,
-For functions such as data annotation, you can read the complete [Document Tutorial](../../README_ch.md).
+For specific data preparation and training process, please refer to: [Text Detection](../doc_en/detection_en.md), [Text Recognition](../doc_en/recognition_en.md), more functions such as predictive deployment,
+For functions such as data annotation, you can read the complete [Document Tutorial](../../README.md).
 
 <a name="language_abbreviation"></a>
 ## 4 Support languages and abbreviations
