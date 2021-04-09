@@ -64,7 +64,8 @@ python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/im
 python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/imgs_en/img623.jpg" --e2e_model_dir="./inference/e2e/" --e2e_pgnet_polygon=True --use_gpu=False
 ```
 
-# 这里要指明可视化结果在哪，不然快速使用就没有意义
+### 可视化结果
+可视化文本检测结果默认保存到./inference_results文件夹里面，结果文件的名称前缀为'e2e_res'
 
 
 <a name="快速训练"></a>
