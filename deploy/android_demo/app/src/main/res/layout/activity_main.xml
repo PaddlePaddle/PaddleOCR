@@ -16,6 +16,43 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/btn_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_load_model"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="btn_load_model_click"
+                    android:text="加载模型" />
+                <Button
+                    android:id="@+id/btn_run_model"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="btn_run_model_click"
+                    android:text="运行模型" />
+                <Button
+                    android:id="@+id/btn_take_photo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="btn_take_photo_click"
+                    android:text="拍照识别" />
+                <Button
+                    android:id="@+id/btn_choice_img"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="btn_choice_img_click"
+                    android:text="选取图片" />
+
+            </LinearLayout>
             <TextView
                     android:id="@+id/tv_input_setting"
                     android:layout_width="wrap_content"
@@ -29,6 +66,19 @@
                     android:singleLine="false"
                     android:maxLines="6"
                     android:text=""/>
+            <TextView
+                android:id="@+id/tv_model_img_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="-5dp"
+                android:layout_marginBottom="5dp"
+                android:lineSpacingExtra="4dp"
+                android:singleLine="false"
+                android:maxLines="6"
+                android:text="STATUS: ok"/>
 
         </LinearLayout>
 
@@ -95,5 +145,4 @@
         </RelativeLayout>
 
     </RelativeLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,7 +10,9 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
+import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,6 +26,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
     // UI components of object detection
     protected TextView tvInputSetting;
+    protected TextView tvStatus;
     protected ImageView ivInputImage;
     protected TextView tvOutputResult;
     protected TextView tvInferenceTime;
@@ -77,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
     protected float[] inputStd = new float[]{};
     protected float scoreThreshold = 0.1f;
     private String currentPhotoPath;
+    private AssetManager assetManager =null;
 
     protected Predictor predictor = new Predictor();
 
@@ -89,7 +94,16 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
+
+        // Setup the UI components
+        tvInputSetting = findViewById(R.id.tv_input_setting);
+        tvStatus = findViewById(R.id.tv_model_img_status);
+        ivInputImage = findViewById(R.id.iv_input_image);
+        tvInferenceTime = findViewById(R.id.tv_inference_time);
+        tvOutputResult = findViewById(R.id.tv_output_result);
+        tvInputSetting.setMovementMethod(ScrollingMovementMethod.getInstance());
+        tvOutputResult.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         // Prepare the worker thread for mode loading and inference
         receiver = new Handler() {
@@ -97,20 +111,28 @@ public class MainActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case RESPONSE_LOAD_MODEL_SUCCESSED:
-                        pbLoadModel.dismiss();
+                        if(pbLoadModel!=null && pbLoadModel.isShowing()){
+                            pbLoadModel.dismiss();
+                        }
                         onLoadModelSuccessed();
                         break;
                     case RESPONSE_LOAD_MODEL_FAILED:
-                        pbLoadModel.dismiss();
+                        if(pbLoadModel!=null && pbLoadModel.isShowing()){
+                            pbLoadModel.dismiss();
+                        }
                         Toast.makeText(MainActivity.this, "Load model failed!", Toast.LENGTH_SHORT).show();
                         onLoadModelFailed();
                         break;
                     case RESPONSE_RUN_MODEL_SUCCESSED:
-                        pbRunModel.dismiss();
+                        if(pbRunModel!=null && pbRunModel.isShowing()){
+                            pbRunModel.dismiss();
+                        }
                         onRunModelSuccessed();
                         break;
                     case RESPONSE_RUN_MODEL_FAILED:
-                        pbRunModel.dismiss();
+                        if(pbRunModel!=null && pbRunModel.isShowing()){
+                            pbRunModel.dismiss();
+                        }
                         Toast.makeText(MainActivity.this, "Run model failed!", Toast.LENGTH_SHORT).show();
                         onRunModelFailed();
                         break;
@@ -146,14 +168,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-
-        // Setup the UI components
-        tvInputSetting = findViewById(R.id.tv_input_setting);
-        ivInputImage = findViewById(R.id.iv_input_image);
-        tvInferenceTime = findViewById(R.id.tv_inference_time);
-        tvOutputResult = findViewById(R.id.tv_output_result);
-        tvInputSetting.setMovementMethod(ScrollingMovementMethod.getInstance());
-        tvOutputResult.setMovementMethod(ScrollingMovementMethod.getInstance());
     }
 
     @Override
@@ -224,17 +238,18 @@ public class MainActivity extends AppCompatActivity {
                     " Thread Num: " + Integer.toString(cpuThreadNum) + "\n" + "CPU Power Mode: " + cpuPowerMode);
             tvInputSetting.scrollTo(0, 0);
             // Reload model if configure has been changed
-            loadModel();
+//            loadModel();
+            set_img();
         }
     }
 
     public void loadModel() {
-        pbLoadModel = ProgressDialog.show(this, "", "Loading model...", false, false);
+        pbLoadModel = ProgressDialog.show(this, "", "loading model...", false, false);
         sender.sendEmptyMessage(REQUEST_LOAD_MODEL);
     }
 
     public void runModel() {
-        pbRunModel = ProgressDialog.show(this, "", "Running model...", false, false);
+        pbRunModel = ProgressDialog.show(this, "", "running model...", false, false);
         sender.sendEmptyMessage(REQUEST_RUN_MODEL);
     }
 
@@ -252,36 +267,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void onLoadModelSuccessed() {
         // Load test image from path and run model
-        try {
-            if (imagePath.isEmpty()) {
-                return;
-            }
-            Bitmap image = null;
-            // Read test image file from custom path if the first character of mode path is '/', otherwise read test
-            // image file from assets
-            if (!imagePath.substring(0, 1).equals("/")) {
-                InputStream imageStream = getAssets().open(imagePath);
-                image = BitmapFactory.decodeStream(imageStream);
-            } else {
-                if (!new File(imagePath).exists()) {
-                    return;
-                }
-                image = BitmapFactory.decodeFile(imagePath);
-            }
-            if (image != null && predictor.isLoaded()) {
-                predictor.setInputImage(image);
-                runModel();
-            }
-        } catch (IOException e) {
-            Toast.makeText(MainActivity.this, "Load image failed!", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
+        tvStatus.setText("STATUS: load model successed");
     }
 
     public void onLoadModelFailed() {
+        tvStatus.setText("STATUS: load model failed");
     }
 
     public void onRunModelSuccessed() {
+        tvStatus.setText("STATUS: run model successed");
         // Obtain results and update UI
         tvInferenceTime.setText("Inference time: " + predictor.inferenceTime() + " ms");
         Bitmap outputImage = predictor.outputImage();
@@ -293,6 +287,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onRunModelFailed() {
+        tvStatus.setText("STATUS: run model failed");
     }
 
     public void onImageChanged(Bitmap image) {
@@ -300,6 +295,19 @@ public class MainActivity extends AppCompatActivity {
         if (image != null && predictor.isLoaded()) {
             predictor.setInputImage(image);
             runModel();
+        }
+    }
+
+    public void set_img() {
+        // Load test image from path and run model
+        try {
+            assetManager= getAssets();
+            InputStream in=assetManager.open(imagePath);
+            Bitmap bmp=BitmapFactory.decodeStream(in);
+            ivInputImage.setImageBitmap(bmp);
+        } catch (IOException e) {
+            Toast.makeText(MainActivity.this, "Load image failed!", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
     }
 
@@ -316,8 +324,6 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onPrepareOptionsMenu(Menu menu) {
         boolean isLoaded = predictor.isLoaded();
-        menu.findItem(R.id.open_gallery).setEnabled(isLoaded);
-        menu.findItem(R.id.take_photo).setEnabled(isLoaded);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -326,16 +332,6 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
-                break;
-            case R.id.open_gallery:
-                if (requestAllPermissions()) {
-                    openGallery();
-                }
-                break;
-            case R.id.take_photo:
-                if (requestAllPermissions()) {
-                    takePhoto();
-                }
                 break;
             case R.id.settings:
                 if (requestAllPermissions()) {
@@ -434,6 +430,9 @@ public class MainActivity extends AppCompatActivity {
                         Cursor cursor = managedQuery(uri, proj, null, null, null);
                         cursor.moveToFirst();
                         onImageChanged(image);
+                        if (image != null) {
+                            ivInputImage.setImageBitmap(image);
+                        }
                     } catch (IOException e) {
                         Log.e(TAG, e.toString());
                     }
@@ -452,6 +451,9 @@ public class MainActivity extends AppCompatActivity {
                         Bitmap image = BitmapFactory.decodeFile(currentPhotoPath);
                         image = Utils.rotateBitmap(image, orientation);
                         onImageChanged(image);
+                        if (image != null) {
+                            ivInputImage.setImageBitmap(image);
+                        }
                     } else {
                         Log.e(TAG, "currentPhotoPath is null");
                     }
@@ -459,6 +461,36 @@ public class MainActivity extends AppCompatActivity {
                 default:
                     break;
             }
+        }
+    }
+
+    public void btn_load_model_click(View view) {
+        tvStatus.setText("STATUS: load model ......");
+        loadModel();
+    }
+
+    public void btn_run_model_click(View view) {
+        Bitmap image =((BitmapDrawable)ivInputImage.getDrawable()).getBitmap();
+        if(image == null) {
+            tvStatus.setText("STATUS: image is not exists");
+        }
+        else if (!predictor.isLoaded()){
+            tvStatus.setText("STATUS: model is not loaded");
+        }else{
+            tvStatus.setText("STATUS: run model ...... ");
+            predictor.setInputImage(image);
+            runModel();
+        }
+    }
+    public void btn_choice_img_click(View view) {
+        if (requestAllPermissions()) {
+            openGallery();
+        }
+    }
+
+    public void btn_take_photo_click(View view) {
+        if (requestAllPermissions()) {
+            takePhoto();
         }
     }
 
