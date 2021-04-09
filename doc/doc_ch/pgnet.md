@@ -144,7 +144,7 @@ python3 tools/infer_e2e.py -c configs/e2e/e2e_r50_vd_pg.yml -o Global.infer_img=
 ```
 
 ### 预测推理
-####(1)四边形文本检测模型（ICDAR2015）  
+#### (1).四边形文本检测模型（ICDAR2015）  
 首先将PGNet端到端训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，以英文数据集训练的模型为例[模型下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/en_server_pgnetA.tar) ，可以使用如下命令进行转换：
 ```
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/en_server_pgnetA.tar && tar xf en_server_pgnetA.tar
@@ -158,7 +158,7 @@ python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/im
 
 ![](../imgs_results/e2e_res_img_10_pgnet.jpg)
 
-####(2)弯曲文本检测模型（Total-Text）
+#### (2).弯曲文本检测模型（Total-Text）
 对于弯曲文本样例
 
 **PGNet端到端模型推理，需要设置参数`--e2e_algorithm="PGNet"`，同时，还需要增加参数`--e2e_pgnet_polygon=True`，**可以执行如下命令：
