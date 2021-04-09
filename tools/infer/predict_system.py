@@ -188,12 +188,13 @@ def main(args):
 if __name__ == "__main__":
     args = utility.parse_args()
     if args.use_mp:
+        print("12233")
         p_list = []
         total_process_num = args.total_process_num
         for process_id in range(total_process_num):
             cmd = [sys.executable, "-u"] + sys.argv + [
-                "--process_id={} ".format(process_id),
-                "--use_mp={} ".format(args.use_mp)
+                "--process_id={}".format(process_id),
+                "--use_mp={}".format(False)
             ]
             p = subprocess.Popen(cmd, stdout=sys.stdout, stderr=sys.stdout)
             p_list.append(p)
