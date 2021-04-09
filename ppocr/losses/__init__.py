@@ -29,10 +29,11 @@ def build_loss(config):
     # cls loss
     from .cls_loss import ClsLoss
 
+    # e2e loss
+    from .e2e_pg_loss import PGLoss
     support_dict = [
         'DBLoss', 'EASTLoss', 'SASTLoss', 'CTCLoss', 'ClsLoss', 'AttentionLoss',
-        'SRNLoss'
-    ]
+        'SRNLoss', 'PGLoss']
 
     config = copy.deepcopy(config)
     module_name = config.pop('name')

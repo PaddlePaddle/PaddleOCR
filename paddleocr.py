@@ -66,6 +66,46 @@ model_urls = {
             'url':
             'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/japan_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/dict/japan_dict.txt'
+        },
+        'chinese_cht': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/chinese_cht_mobile_v2.0_rec_infer.tar',
+            'dict_path': './ppocr/utils/dict/chinese_cht_dict.txt'
+        },
+        'ta': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ta_mobile_v2.0_rec_infer.tar',
+            'dict_path': './ppocr/utils/dict/ta_dict.txt'
+        },
+        'te': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/te_mobile_v2.0_rec_infer.tar',
+            'dict_path': './ppocr/utils/dict/te_dict.txt'
+        },
+        'ka': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ka_mobile_v2.0_rec_infer.tar',
+            'dict_path': './ppocr/utils/dict/ka_dict.txt'
+        },
+        'latin': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/latin_ppocr_mobile_v2.0_rec_infer.tar',
+            'dict_path': './ppocr/utils/dict/latin_dict.txt'
+        },
+        'arabic': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/arabic_ppocr_mobile_v2.0_rec_infer.tar',
+            'dict_path': './ppocr/utils/dict/arabic_dict.txt'
+        },
+        'cyrillic': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/cyrillic_ppocr_mobile_v2.0_rec_infer.tar',
+            'dict_path': './ppocr/utils/dict/cyrillic_dict.txt'
+        },
+        'devanagari': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/devanagari_ppocr_mobile_v2.0_rec_infer.tar',
+            'dict_path': './ppocr/utils/dict/devanagari_dict.txt'
         }
     },
     'cls':
@@ -233,6 +273,29 @@ class PaddleOCR(predict_system.TextSystem):
         postprocess_params.__dict__.update(**kwargs)
         self.use_angle_cls = postprocess_params.use_angle_cls
         lang = postprocess_params.lang
+        latin_lang = [
+            'af', 'az', 'bs', 'cs', 'cy', 'da', 'de', 'en', 'es', 'et', 'fr',
+            'ga', 'hr', 'hu', 'id', 'is', 'it', 'ku', 'la', 'lt', 'lv', 'mi',
+            'ms', 'mt', 'nl', 'no', 'oc', 'pi', 'pl', 'pt', 'ro', 'rs_latin',
+            'sk', 'sl', 'sq', 'sv', 'sw', 'tl', 'tr', 'uz', 'vi'
+        ]
+        arabic_lang = ['ar', 'fa', 'ug', 'ur']
+        cyrillic_lang = [
+            'ru', 'rs_cyrillic', 'be', 'bg', 'uk', 'mn', 'abq', 'ady', 'kbd',
+            'ava', 'dar', 'inh', 'che', 'lbe', 'lez', 'tab'
+        ]
+        devanagari_lang = [
+            'hi', 'mr', 'ne', 'bh', 'mai', 'ang', 'bho', 'mah', 'sck', 'new',
+            'gom', 'sa', 'bgc'
+        ]
+        if lang in latin_lang:
+            lang = "latin"
+        elif lang in arabic_lang:
+            lang = "arabic"
+        elif lang in cyrillic_lang:
+            lang = "cyrillic"
+        elif lang in devanagari_lang:
+            lang = "devanagari"
         assert lang in model_urls[
             'rec'], 'param lang must in {}, but got {}'.format(
                 model_urls['rec'].keys(), lang)

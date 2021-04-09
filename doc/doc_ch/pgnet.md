@@ -1,13 +1,8 @@
-
-# 端对端OCR算法-PGNet
-
-----
 # 端对端OCR算法-PGNet
 - [一、简介](#简介)
 - [二、环境配置](#环境配置)
 - [三、快速使用](#快速使用)
 - [四、模型训练、评估、推理](#快速训练)
-
 
 <a name="简介"></a>
 ## 一、简介
@@ -62,13 +57,12 @@ python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/im
 # 如果想使用CPU进行预测，需设置use_gpu参数为False
 python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/imgs_en/img623.jpg" --e2e_model_dir="./inference/e2e/" --e2e_pgnet_polygon=True --use_gpu=False
 ```
-
 ### 可视化结果
 可视化文本检测结果默认保存到./inference_results文件夹里面，结果文件的名称前缀为'e2e_res'。结果示例如下：
 ![](../imgs_results/e2e_res_img623_pgnet.jpg)
 
 <a name="快速训练"></a>
-## 四、快速训练
+## 四、模型训练、评估、推理
 本节以totaltext数据集为例，介绍PaddleOCR中端到端模型的训练、评估与测试。
 
 ###  准备数据
@@ -103,7 +97,6 @@ wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/tr
   └─ best_accuracy.states
   └─ best_accuracy.pdparams
 ```
-
 *如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false*
 
 ```shell
@@ -121,8 +114,13 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/
 python3 tools/train.py -c configs/e2e/e2e_r50_vd_pg.yml -o Optimizer.base_lr=0.0001
 ```
 
+#### 断点训练
+如果训练程序中断，如果希望加载训练中断的模型从而恢复训练，可以通过指定Global.checkpoints指定要加载的模型路径：
+```shell
+python3 tools/train.py -c configs/e2e/e2e_r50_vd_pg.yml -o Global.checkpoints=./your/trained/model
+```
 
-### 模型评估
+**注意**：`Global.checkpoints`的优先级高于`Global.pretrain_weights`的优先级，即同时指定两个参数时，优先加载`Global.checkpoints`指定的模型，如果`Global.checkpoints`指定的模型路径有误，会加载`Global.pretrain_weights`指定的模型。
 
 PaddleOCR计算三个OCR端到端相关的指标，分别是：Precision、Recall、Hmean。
 
