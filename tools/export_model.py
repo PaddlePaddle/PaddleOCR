@@ -31,14 +31,6 @@ from ppocr.utils.logging import get_logger
 from tools.program import load_config, merge_config, ArgsParser
 
 
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-c", "--config", help="configuration file to use")
-    parser.add_argument(
-        "-o", "--output_path", type=str, default='./output/infer/')
-    return parser.parse_args()
-
-
 def main():
     FLAGS = ArgsParser().parse_args()
     config = load_config(FLAGS.config)
