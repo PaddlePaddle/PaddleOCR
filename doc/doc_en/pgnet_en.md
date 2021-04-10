@@ -65,7 +65,7 @@ The visualized end-to-end results are saved to the `./inference_results` folder 
 ## 4、Model Training,Evaluation And Inference
 This section takes the totaltext dataset as an example to introduce the training, evaluation and testing of the end-to-end model in PaddleOCR.
 
-###  准备数据
+###  Data Preparation
 Download and unzip [totaltext](https://github.com/cs-chan/Total-Text-Dataset/blob/master/Dataset/README.md) dataset to PaddleOCR/train_data/, dataset organization structure is as follow：
 ```
 /PaddleOCR/train_data/total_text/train/
