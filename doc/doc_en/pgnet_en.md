@@ -1,11 +1,11 @@
 # End-to-end OCR Algorithm-PGNet
-- [1、Brief Introduction](#Brief Introduction)
-- [2、Environment Configuration](#Environment Configuration)
-- [3、Quick Use](#Quick Use)
-- [4、Model Training,Evaluation And Inference](#Model Training,Evaluation And Inference)
+- [1. Brief Introduction](#Brief_Introduction)
+- [2. Environment Configuration](#Environment_Configuration)
+- [3. Quick Use](#Quick_Use)
+- [4. Model Training,Evaluation And Inference](#Model_Training_Evaluation_And_Inference)
 
-<a name="Brief Introduction"></a>
-## 1、Brief Introduction
+<a name="Brief_Introduction"></a>
+## 1. Brief Introduction
 OCR algorithm can be divided into two-stage algorithm and end-to-end algorithm. The two-stage OCR algorithm is generally divided into two parts, text detection and text recognition algorithm. The text detection algorithm gets the detection box of the text line from the image, and then the recognition algorithm identifies the content of the text box. The end-to-end OCR algorithm can complete text detection and recognition in one algorithm. Its basic idea is to design a model with both detection unit and recognition module, share the CNN features of both and train them together. Because one algorithm can complete character recognition, the end-to-end model is smaller and faster.
 ### Introduction Of PGNet Algorithm
 In recent years, the end-to-end OCR algorithm has been well developed, including MaskTextSpotter series, TextSnake, TextDragon, PGNet series and so on. Among these algorithms, PGNet algorithm has the advantages that other algorithms do not
@@ -24,12 +24,12 @@ The results of detection and recognition are as follows:
 ![](../imgs_results/e2e_res_img293_pgnet.png)
 ![](../imgs_results/e2e_res_img295_pgnet.png)
 
-<a name="Environment Configuration"></a>
-## 2、Environment Configuration
+<a name="Environment_Configuration"></a>
+## 2. Environment Configuration
 Please refer to [Quick Installation](./installation_en.md) Configure the PaddleOCR running environment.
 
-<a name="Quick Use"></a>
-## 3、Quick Use
+<a name="Quick_Use"></a>
+## 3. Quick Use
 ### inference model download
 This section takes the trained end-to-end model as an example to quickly use the model prediction. First, download the trained end-to-end inference model [download address](https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/e2e_server_pgnetA_infer.tar)
 ```
@@ -61,8 +61,8 @@ python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/im
 The visualized end-to-end results are saved to the `./inference_results` folder by default, and the name of the result file is prefixed with 'e2e_res'. Examples of results are as follows:
 ![](../imgs_results/e2e_res_img623_pgnet.jpg)
 
-<a name="Model Training,Evaluation And Inference"></a>
-## 4、Model Training,Evaluation And Inference
+<a name="Model_Training_Evaluation_And_Inference"></a>
+## 4. Model Training,Evaluation And Inference
 This section takes the totaltext dataset as an example to introduce the training, evaluation and testing of the end-to-end model in PaddleOCR.
 
 ###  Data Preparation
