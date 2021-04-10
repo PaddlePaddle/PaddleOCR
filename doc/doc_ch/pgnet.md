@@ -2,7 +2,7 @@
 - [一、简介](#简介)
 - [二、环境配置](#环境配置)
 - [三、快速使用](#快速使用)
-- [四、模型训练、评估、推理](#快速训练)
+- [四、模型训练、评估、推理](#模型训练、评估、推理)
 
 <a name="简介"></a>
 ## 一、简介
@@ -20,7 +20,9 @@ PGNet算法细节详见[论文](https://www.aaai.org/AAAI21Papers/AAAI-2885.Wang
 ![](../pgnet_framework.png)
 输入图像经过特征提取送入四个分支，分别是：文本边缘偏移量预测TBO模块，文本中心线预测TCL模块，文本方向偏移量预测TDO模块，以及文本字符分类图预测TCC模块。
 其中TBO以及TCL的输出经过后处理后可以得到文本的检测结果，TCL、TDO、TCC负责文本识别。
+
 其检测识别效果图如下：
+
 ![](../imgs_results/e2e_res_img293_pgnet.png)
 ![](../imgs_results/e2e_res_img295_pgnet.png)
 
@@ -61,12 +63,12 @@ python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/im
 可视化文本检测结果默认保存到./inference_results文件夹里面，结果文件的名称前缀为'e2e_res'。结果示例如下：
 ![](../imgs_results/e2e_res_img623_pgnet.jpg)
 
-<a name="快速训练"></a>
+<a name="模型训练、评估、推理"></a>
 ## 四、模型训练、评估、推理
 本节以totaltext数据集为例，介绍PaddleOCR中端到端模型的训练、评估与测试。
 
 ###  准备数据
-下载解压[totaltext](https://github.com/cs-chan/Total-Text-Dataset/blob/master/Dataset/README.md)数据集到PaddleOCR/train_data/目录，数据集组织结构：
+下载解压[totaltext](https://github.com/cs-chan/Total-Text-Dataset/blob/master/Dataset/README.md) 数据集到PaddleOCR/train_data/目录，数据集组织结构：
 ```
 /PaddleOCR/train_data/total_text/train/
   |- rgb/            # total_text数据集的训练数据

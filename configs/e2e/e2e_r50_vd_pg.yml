@@ -61,6 +61,7 @@ PostProcess:
   score_thresh: 0.5
 Metric:
   name: E2EMetric
+  gt_mat_dir:    # the dir of gt_mat
   character_dict_path: ppocr/utils/ic15_dict.txt
   main_indicator: f_score_e2e
 
@@ -106,7 +107,7 @@ Eval:
           order: 'hwc'
       - ToCHWImage:
       - KeepKeys:
-          keep_keys: [ 'image', 'shape', 'polys', 'strs', 'tags' ]
+          keep_keys: [ 'image', 'shape', 'polys', 'strs', 'tags', 'img_id']
   loader:
     shuffle: False
     drop_last: False

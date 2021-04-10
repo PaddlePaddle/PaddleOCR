@@ -138,6 +138,7 @@ class PGPostProcess(object):
                 continue
 
             keep_str_list.append(keep_str)
+            detected_poly = np.round(detected_poly).astype('int32')
             if self.valid_set == 'partvgg':
                 middle_point = len(detected_poly) // 2
                 detected_poly = detected_poly[
