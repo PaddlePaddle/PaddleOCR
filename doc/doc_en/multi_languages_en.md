@@ -5,21 +5,21 @@
 -2021.4.9 supports the detection and recognition of 80 languages
 -2021.4.9 supports **lightweight high-precision** English model detection and recognition
 
--[1 Installation](#Install)
-    -[1.1 paddle installation](#paddleinstallation)
-    -[1.2 paddleocr package installation](#paddleocr_package_install)
+- [1 Installation](#Install)
+    - [1.1 paddle installation](#paddleinstallation)
+    - [1.2 paddleocr package installation](#paddleocr_package_install)
 
--[2 Quick Use](#Quick_Use)
-    -[2.1 Command line operation](#Command_line_operation)
-     -[2.1.1 Prediction of the whole image](#bash_detection+recognition)
-     -[2.1.2 Recognition](#bash_Recognition)
-     -[2.1.3 Detection](#bash_detection)
-    -[2.2 python script running](#python_Script_running)
-     -[2.2.1 Whole image prediction](#python_detection+recognition)
-     -[2.2.2 Recognition](#python_Recognition)
-     -[2.2.3 Detection](#python_detection)
--[3 Custom Training](#Custom_Training)
--[4 Supported languages and abbreviations](#language_abbreviations)
+- [2 Quick Use](#Quick_Use)
+    - [2.1 Command line operation](#Command_line_operation)
+        - [2.1.1 Prediction of the whole image](#bash_detection+recognition)
+        - [2.1.2 Recognition](#bash_Recognition)
+        - [2.1.3 Detection](#bash_detection)
+    - [2.2 python script running](#python_Script_running)
+        - [2.2.1 Whole image prediction](#python_detection+recognition)
+        - [2.2.2 Recognition](#python_Recognition)
+        - [2.2.3 Detection](#python_detection)
+- [3 Custom Training](#Custom_Training)
+- [4 Supported languages and abbreviations](#language_abbreviations)
 
 <a name="Install"></a>
 ## 1 Installation

@@ -1,4 +1,7 @@
 # RECENT UPDATES
+- 2021.4.8 Release PaddleOCRv2.1(branch release/2.1). Newly released AAAI 2021 end-to-end algorithm [PGNet](./doc/doc_ch/pgnet.md) and [Multi language recognition model](./doc/doc_ch/multi_languages.md), support more than 80 language recognition.
+- 2021.2.8 Release PaddleOCRv2.0 (branch release/2.0). Refer to [release note](https://github.com/PaddlePaddle/PaddleOCR/releases/tag/v2.0.0) for more details.
+- 2021.1.21 update more than 25+ multilingual recognition models [models list](./doc/doc_en/models_list_en.md), including：English, Chinese, German, French, Japanese，Spanish，Portuguese Russia Arabic and so on.  Models for more languages will continue to be updated [Develop Plan](https://github.com/PaddlePaddle/PaddleOCR/issues/1048).
 - 2020.12.15 update Data synthesis tool, i.e., [Style-Text](../../StyleText/README.md)，easy to synthesize a large number of images which are similar to the target scene image.
 - 2020.11.25 Update a new data annotation tool, i.e., [PPOCRLabel](../../PPOCRLabel/README.md), which is helpful to improve the labeling efficiency. Moreover, the labeling results can be used in training of the PP-OCR system directly.
 - 2020.9.22 Update the PP-OCR technical article, https://arxiv.org/abs/2009.09941
