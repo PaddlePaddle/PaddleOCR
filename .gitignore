@@ -25,3 +25,6 @@ output/
 build/
 dist/
 paddleocr.egg-info/
+Release
+Debug
+VS2015
