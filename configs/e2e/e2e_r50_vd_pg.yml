@@ -59,6 +59,7 @@ Optimizer:
 PostProcess:
   name: PGPostProcess
   score_thresh: 0.5
+  mode: fast   # fast or slow two ways
 Metric:
   name: E2EMetric
   gt_mat_dir:    # the dir of gt_mat

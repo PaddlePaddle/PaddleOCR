@@ -21,7 +21,7 @@ import math
 
 import numpy as np
 from itertools import groupby
-from skimage.morphology._skeletonize import thin
+from cv2.ximgproc import thinning as thin
 
 
 def get_dict(character_dict_path):
@@ -399,13 +399,13 @@ def generate_pivot_list_horizontal(p_score,
         return center_pos_yxs, end_points_yxs
 
 
-def generate_pivot_list(p_score,
-                        p_char_maps,
-                        f_direction,
-                        score_thresh=0.5,
-                        is_backbone=False,
-                        is_curved=True,
-                        image_id=0):
+def generate_pivot_list_slow(p_score,
+                             p_char_maps,
+                             f_direction,
+                             score_thresh=0.5,
+                             is_backbone=False,
+                             is_curved=True,
+                             image_id=0):
     """
     Warp all the function together.
     """
