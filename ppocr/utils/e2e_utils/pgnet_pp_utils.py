@@ -16,9 +16,14 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 import paddle
+import os
+import sys
 
+__dir__ = os.path.dirname(__file__)
+sys.path.append(__dir__)
+sys.path.append(os.path.join(__dir__, '..'))
 from extract_textpoint_slow import *
-from extract_textpoint_fast import *
+from extract_textpoint_fast import generate_pivot_list_fast, restore_poly
 
 
 class PGNet_PostProcess(object):

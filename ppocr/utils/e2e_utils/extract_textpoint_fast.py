@@ -21,7 +21,7 @@ import math
 
 import numpy as np
 from itertools import groupby
-from cv2.ximgproc import thinning as thin
+from skimage.morphology._skeletonize import thin
 
 
 def get_dict(character_dict_path):
@@ -362,11 +362,10 @@ def generate_pivot_list_fast(p_score,
     """
     p_score = p_score[0]
     f_direction = f_direction.transpose(1, 2, 0)
-    ret, p_tcl_map = cv2.threshold(p_score, score_thresh, 255,
-                                   cv2.THRESH_BINARY)
-    skeleton_map = thin(p_tcl_map.astype('uint8'))
+    p_tcl_map = (p_score > score_thresh) * 1.0
+    skeleton_map = thin(p_tcl_map.astype(np.uint8))
     instance_count, instance_label_map = cv2.connectedComponents(
-        skeleton_map, connectivity=8)
+        skeleton_map.astype(np.uint8), connectivity=8)
 
     # get TCL Instance
     all_pos_yxs = []
