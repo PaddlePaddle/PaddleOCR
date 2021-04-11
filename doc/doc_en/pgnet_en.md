@@ -173,3 +173,7 @@ python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/im
 The visualized text detection results are saved to the `./inference_results` folder by default, and the name of the result file is prefixed with 'e2e_res'. Examples of results are as follows:
 
 ![](../imgs_results/e2e_res_img623_pgnet.jpg)
+#### (3). Metric and FPS
+|det_precision|det_recall|det_f_score|e2e_precision|e2e_recall|e2e_f_score|FPS|
+| --- | --- | --- | --- | --- | --- | --- |
+|87.03|82.48|84.69|61.71|58.43|60.03|62.61|

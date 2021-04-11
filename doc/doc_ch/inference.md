@@ -28,13 +28,10 @@ inference 模型（`paddle.jit.save`保存的模型）
     - [4. 自定义文本识别字典的推理](#自定义文本识别字典的推理)
     - [5. 多语言模型的推理](#多语言模型的推理)
 
-- [四、端到端模型推理](#端到端模型推理)
-    - [1. PGNet端到端模型推理](#PGNet端到端模型推理)
-
-- [五、方向分类模型推理](#方向识别模型推理)
+- [四、方向分类模型推理](#方向识别模型推理)
     - [1. 方向分类模型推理](#方向分类模型推理)
 
-- [六、文本检测、方向分类和文字识别串联推理](#文本检测、方向分类和文字识别串联推理)
+- [五、文本检测、方向分类和文字识别串联推理](#文本检测、方向分类和文字识别串联推理)
     - [1. 超轻量中文OCR模型推理](#超轻量中文OCR模型推理)
     - [2. 其他模型推理](#其他模型推理)
 
@@ -362,38 +359,8 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" -
 Predicts of ./doc/imgs_words/korean/1.jpg:('바탕으로', 0.9948904)
 ```
 
-<a name="端到端模型推理"></a>
-## 四、端到端模型推理
-
-端到端模型推理，默认使用PGNet模型的配置参数。当不使用PGNet模型时，在推理时，需要通过传入相应的参数进行算法适配，细节参考下文。
-<a name="PGNet端到端模型推理"></a>
-### 1. PGNet端到端模型推理
-#### (1). 四边形文本检测模型（ICDAR2015）  
-首先将PGNet端到端训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例([模型下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/en_server_pgnetA.tar))，可以使用如下命令进行转换：
-```
-python3 tools/export_model.py -c configs/e2e/e2e_r50_vd_pg.yml -o Global.pretrained_model=./en_server_pgnetA/iter_epoch_450 Global.load_static_weights=False Global.save_inference_dir=./inference/e2e
-```
-**PGNet端到端模型推理，需要设置参数`--e2e_algorithm="PGNet"`**，可以执行如下命令：
-```
-python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/imgs_en/img_10.jpg" --e2e_model_dir="./inference/e2e/"  --e2e_pgnet_polygon=False
-```
-可视化文本检测结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'e2e_res'。结果示例如下：
-
-![](../imgs_results/e2e_res_img_10_pgnet.jpg)
-
-#### (2). 弯曲文本检测模型（Total-Text）  
-和四边形文本检测模型共用一个推理模型
-**PGNet端到端模型推理，需要设置参数`--e2e_algorithm="PGNet"`，同时，还需要增加参数`--e2e_pgnet_polygon=True`，**可以执行如下命令：
-```
-python3.7 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/imgs_en/img623.jpg" --e2e_model_dir="./inference/e2e/" --e2e_pgnet_polygon=True
-```
-可视化文本端到端结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'e2e_res'。结果示例如下：
-
-![](../imgs_results/e2e_res_img623_pgnet.jpg)
-
-
 <a name="方向分类模型推理"></a>
-## 五、方向分类模型推理
+## 四、方向分类模型推理
 
 下面将介绍方向分类模型推理。
 
@@ -418,7 +385,7 @@ Predicts of ./doc/imgs_words/ch/word_4.jpg:['0', 0.9999982]
 ```
 
 <a name="文本检测、方向分类和文字识别串联推理"></a>
-## 六、文本检测、方向分类和文字识别串联推理
+## 五、文本检测、方向分类和文字识别串联推理
 <a name="超轻量中文OCR模型推理"></a>
 ### 1. 超轻量中文OCR模型推理
 
