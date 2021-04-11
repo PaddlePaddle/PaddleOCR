@@ -1,0 +1,429 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7772C098-DF96-36B5-836E-C0C44B6987DD}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>ocr_system</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ocr_system.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ocr_system</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ocr_system.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ocr_system</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">ocr_system.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">ocr_system</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">ocr_system.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">ocr_system</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\fluid\inference;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\protobuf\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\glog\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\gflags\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\xxhash\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\zlib\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\boost;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\eigen3;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mklml\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mkldnn\include;D:\编程环境文件\opencv\build\include;D:\编程环境文件\opencv\build\include\opencv;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <OpenMPSupport>true</OpenMPSupport>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;GOOGLE_GLOG_DLL_DECL=;USE_MKL;STATIC_LIB;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;GOOGLE_GLOG_DLL_DECL=;USE_MKL;STATIC_LIB;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\fluid\inference;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\protobuf\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\glog\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\gflags\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\xxhash\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\zlib\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\boost;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\eigen3;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mklml\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mkldnn\include;D:\编程环境文件\opencv\build\include;D:\编程环境文件\opencv\build\include\opencv;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\fluid\inference;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\protobuf\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\glog\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\gflags\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\xxhash\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\zlib\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\boost;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\eigen3;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mklml\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mkldnn\include;D:\编程环境文件\opencv\build\include;D:\编程环境文件\opencv\build\include\opencv;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib/mklml.dll ./mklml.dll
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib/libiomp5md.dll ./libiomp5md.dll
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mkldnn/lib/mkldnn.dll ./mkldnn.dll
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib/mklml.dll ./release/mklml.dll
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib/libiomp5md.dll ./release/libiomp5md.dll
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mkldnn/lib/mkldnn.dll ./release/mkldnn.dll
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\lib\paddle_inference.lib;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mklml\lib\mklml.lib;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mklml\lib\libiomp5md.lib;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mkldnn\lib\mkldnn.lib;glog.lib;gflags_static.lib;libprotobuf.lib;xxhash.lib;libcmt.lib;shlwapi.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\lib\x64\cudart.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\lib\x64\cublas.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\cuda\lib\x64\cudnn.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346d.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346d.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346d.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346d.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346d.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346d.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346d.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346d.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346d.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346d.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346d.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346d.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346d.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346d.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346d.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346d.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346d.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/paddle/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/paddle/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/paddle/fluid/inference;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/paddle/fluid/inference/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/zlib/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/zlib/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/protobuf/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/protobuf/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/glog/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/glog/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/gflags/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/gflags/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/xxhash/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/xxhash/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mkldnn/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mkldnn/lib/$(Configuration);C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.0/lib/x64;C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.0/lib/x64/$(Configuration);C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.0/cuda/lib/x64;C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.0/cuda/lib/x64/$(Configuration);D:/编程环境文件/opencv/build/x64/vc14/lib;D:/编程环境文件/opencv/build/x64/vc14/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer/VS2015/Debug/ocr_system.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer/VS2015/Debug/ocr_system.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\fluid\inference;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\protobuf\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\glog\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\gflags\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\xxhash\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\zlib\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\boost;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\eigen3;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mklml\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mkldnn\include;D:\编程环境文件\opencv\build\include;D:\编程环境文件\opencv\build\include\opencv;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <OpenMPSupport>true</OpenMPSupport>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;GOOGLE_GLOG_DLL_DECL=;USE_MKL;STATIC_LIB;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;GOOGLE_GLOG_DLL_DECL=;USE_MKL;STATIC_LIB;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\fluid\inference;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\protobuf\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\glog\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\gflags\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\xxhash\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\zlib\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\boost;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\eigen3;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mklml\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mkldnn\include;D:\编程环境文件\opencv\build\include;D:\编程环境文件\opencv\build\include\opencv;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\fluid\inference;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\protobuf\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\glog\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\gflags\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\xxhash\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\zlib\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\boost;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\eigen3;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mklml\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mkldnn\include;D:\编程环境文件\opencv\build\include;D:\编程环境文件\opencv\build\include\opencv;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib/mklml.dll ./mklml.dll
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib/libiomp5md.dll ./libiomp5md.dll
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mkldnn/lib/mkldnn.dll ./mkldnn.dll
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib/mklml.dll ./release/mklml.dll
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib/libiomp5md.dll ./release/libiomp5md.dll
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mkldnn/lib/mkldnn.dll ./release/mkldnn.dll
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\lib\paddle_inference.lib;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mklml\lib\mklml.lib;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mklml\lib\libiomp5md.lib;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mkldnn\lib\mkldnn.lib;glog.lib;gflags_static.lib;libprotobuf.lib;xxhash.lib;libcmt.lib;shlwapi.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\lib\x64\cudart.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\lib\x64\cublas.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\cuda\lib\x64\cudnn.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/paddle/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/paddle/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/paddle/fluid/inference;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/paddle/fluid/inference/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/zlib/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/zlib/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/protobuf/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/protobuf/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/glog/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/glog/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/gflags/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/gflags/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/xxhash/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/xxhash/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mkldnn/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mkldnn/lib/$(Configuration);C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.0/lib/x64;C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.0/lib/x64/$(Configuration);C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.0/cuda/lib/x64;C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.0/cuda/lib/x64/$(Configuration);D:/编程环境文件/opencv/build/x64/vc14/lib;D:/编程环境文件/opencv/build/x64/vc14/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer/VS2015/Release/ocr_system.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer/VS2015/Release/ocr_system.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\fluid\inference;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\protobuf\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\glog\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\gflags\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\xxhash\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\zlib\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\boost;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\eigen3;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mklml\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mkldnn\include;D:\编程环境文件\opencv\build\include;D:\编程环境文件\opencv\build\include\opencv;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;GOOGLE_GLOG_DLL_DECL=;USE_MKL;STATIC_LIB;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;GOOGLE_GLOG_DLL_DECL=;USE_MKL;STATIC_LIB;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\fluid\inference;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\protobuf\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\glog\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\gflags\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\xxhash\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\zlib\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\boost;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\eigen3;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mklml\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mkldnn\include;D:\编程环境文件\opencv\build\include;D:\编程环境文件\opencv\build\include\opencv;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\fluid\inference;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\protobuf\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\glog\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\gflags\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\xxhash\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\zlib\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\boost;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\eigen3;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mklml\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mkldnn\include;D:\编程环境文件\opencv\build\include;D:\编程环境文件\opencv\build\include\opencv;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib/mklml.dll ./mklml.dll
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib/libiomp5md.dll ./libiomp5md.dll
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mkldnn/lib/mkldnn.dll ./mkldnn.dll
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib/mklml.dll ./release/mklml.dll
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib/libiomp5md.dll ./release/libiomp5md.dll
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mkldnn/lib/mkldnn.dll ./release/mkldnn.dll
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\lib\paddle_inference.lib;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mklml\lib\mklml.lib;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mklml\lib\libiomp5md.lib;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mkldnn\lib\mkldnn.lib;glog.lib;gflags_static.lib;libprotobuf.lib;xxhash.lib;libcmt.lib;shlwapi.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\lib\x64\cudart.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\lib\x64\cublas.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\cuda\lib\x64\cudnn.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/paddle/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/paddle/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/paddle/fluid/inference;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/paddle/fluid/inference/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/zlib/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/zlib/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/protobuf/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/protobuf/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/glog/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/glog/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/gflags/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/gflags/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/xxhash/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/xxhash/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mkldnn/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mkldnn/lib/$(Configuration);C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.0/lib/x64;C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.0/lib/x64/$(Configuration);C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.0/cuda/lib/x64;C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.0/cuda/lib/x64/$(Configuration);D:/编程环境文件/opencv/build/x64/vc14/lib;D:/编程环境文件/opencv/build/x64/vc14/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer/VS2015/MinSizeRel/ocr_system.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer/VS2015/MinSizeRel/ocr_system.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\fluid\inference;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\protobuf\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\glog\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\gflags\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\xxhash\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\zlib\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\boost;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\eigen3;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mklml\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mkldnn\include;D:\编程环境文件\opencv\build\include;D:\编程环境文件\opencv\build\include\opencv;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;GOOGLE_GLOG_DLL_DECL=;USE_MKL;STATIC_LIB;CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;GOOGLE_GLOG_DLL_DECL=;USE_MKL;STATIC_LIB;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\fluid\inference;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\protobuf\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\glog\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\gflags\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\xxhash\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\zlib\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\boost;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\eigen3;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mklml\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mkldnn\include;D:\编程环境文件\opencv\build\include;D:\编程环境文件\opencv\build\include\opencv;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\fluid\inference;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\protobuf\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\glog\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\gflags\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\xxhash\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\zlib\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\boost;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\eigen3;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mklml\include;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mkldnn\include;D:\编程环境文件\opencv\build\include;D:\编程环境文件\opencv\build\include\opencv;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib/mklml.dll ./mklml.dll
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib/libiomp5md.dll ./libiomp5md.dll
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mkldnn/lib/mkldnn.dll ./mkldnn.dll
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib/mklml.dll ./release/mklml.dll
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib/libiomp5md.dll ./release/libiomp5md.dll
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mkldnn/lib/mkldnn.dll ./release/mkldnn.dll
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\paddle\lib\paddle_inference.lib;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mklml\lib\mklml.lib;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mklml\lib\libiomp5md.lib;D:\4_code\GitHub_Open\PaddleOCR\paddle_inference_install_dir\third_party\install\mkldnn\lib\mkldnn.lib;glog.lib;gflags_static.lib;libprotobuf.lib;xxhash.lib;libcmt.lib;shlwapi.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\lib\x64\cudart.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\lib\x64\cublas.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\cuda\lib\x64\cudnn.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;D:\编程环境文件\opencv\build\x64\vc14\lib\opencv_world346.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/paddle/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/paddle/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/paddle/fluid/inference;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/paddle/fluid/inference/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/zlib/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/zlib/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/protobuf/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/protobuf/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/glog/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/glog/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/gflags/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/gflags/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/xxhash/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/xxhash/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mklml/lib/$(Configuration);D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mkldnn/lib;D:/4_code/GitHub_Open/PaddleOCR/paddle_inference_install_dir/third_party/install/mkldnn/lib/$(Configuration);C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.0/lib/x64;C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.0/lib/x64/$(Configuration);C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.0/cuda/lib/x64;C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.0/cuda/lib/x64/$(Configuration);D:/编程环境文件/opencv/build/x64/vc14/lib;D:/编程环境文件/opencv/build/x64/vc14/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer/VS2015/RelWithDebInfo/ocr_system.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer/VS2015/RelWithDebInfo/ocr_system.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule D:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer -BD:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer/VS2015 --check-stamp-file D:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer/VS2015/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Platform\WindowsPaths.cmake;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\CMakeFiles\3.16.5\CMakeCCompiler.cmake;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\CMakeFiles\3.16.5\CMakeCXXCompiler.cmake;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\CMakeFiles\3.16.5\CMakeRCCompiler.cmake;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\CMakeFiles\3.16.5\CMakeSystem.cmake;D:\编程环境文件\opencv\build\x64\vc14\lib\OpenCVConfig-version.cmake;D:\编程环境文件\opencv\build\x64\vc14\lib\OpenCVConfig.cmake;D:\编程环境文件\opencv\build\x64\vc14\lib\OpenCVModules-debug.cmake;D:\编程环境文件\opencv\build\x64\vc14\lib\OpenCVModules-release.cmake;D:\编程环境文件\opencv\build\x64\vc14\lib\OpenCVModules.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule D:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer -BD:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer/VS2015 --check-stamp-file D:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer/VS2015/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Platform\WindowsPaths.cmake;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\CMakeFiles\3.16.5\CMakeCCompiler.cmake;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\CMakeFiles\3.16.5\CMakeCXXCompiler.cmake;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\CMakeFiles\3.16.5\CMakeRCCompiler.cmake;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\CMakeFiles\3.16.5\CMakeSystem.cmake;D:\编程环境文件\opencv\build\x64\vc14\lib\OpenCVConfig-version.cmake;D:\编程环境文件\opencv\build\x64\vc14\lib\OpenCVConfig.cmake;D:\编程环境文件\opencv\build\x64\vc14\lib\OpenCVModules-debug.cmake;D:\编程环境文件\opencv\build\x64\vc14\lib\OpenCVModules-release.cmake;D:\编程环境文件\opencv\build\x64\vc14\lib\OpenCVModules.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule D:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer -BD:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer/VS2015 --check-stamp-file D:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer/VS2015/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Platform\WindowsPaths.cmake;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\CMakeFiles\3.16.5\CMakeCCompiler.cmake;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\CMakeFiles\3.16.5\CMakeCXXCompiler.cmake;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\CMakeFiles\3.16.5\CMakeRCCompiler.cmake;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\CMakeFiles\3.16.5\CMakeSystem.cmake;D:\编程环境文件\opencv\build\x64\vc14\lib\OpenCVConfig-version.cmake;D:\编程环境文件\opencv\build\x64\vc14\lib\OpenCVConfig.cmake;D:\编程环境文件\opencv\build\x64\vc14\lib\OpenCVModules-debug.cmake;D:\编程环境文件\opencv\build\x64\vc14\lib\OpenCVModules-release.cmake;D:\编程环境文件\opencv\build\x64\vc14\lib\OpenCVModules.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule D:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer -BD:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer/VS2015 --check-stamp-file D:/4_code/GitHub_Open/PaddleOCR/deploy/cpp_infer/VS2015/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\Platform\WindowsPaths.cmake;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\CMakeFiles\3.16.5\CMakeCCompiler.cmake;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\CMakeFiles\3.16.5\CMakeCXXCompiler.cmake;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\CMakeFiles\3.16.5\CMakeRCCompiler.cmake;D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\CMakeFiles\3.16.5\CMakeSystem.cmake;D:\编程环境文件\opencv\build\x64\vc14\lib\OpenCVConfig-version.cmake;D:\编程环境文件\opencv\build\x64\vc14\lib\OpenCVConfig.cmake;D:\编程环境文件\opencv\build\x64\vc14\lib\OpenCVModules-debug.cmake;D:\编程环境文件\opencv\build\x64\vc14\lib\OpenCVModules-release.cmake;D:\编程环境文件\opencv\build\x64\vc14\lib\OpenCVModules.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\src\clipper.cpp" />
+    <ClCompile Include="D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\src\config.cpp" />
+    <ClCompile Include="D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\src\main.cpp" />
+    <ClCompile Include="D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\src\ocr_cls.cpp" />
+    <ClCompile Include="D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\src\ocr_det.cpp" />
+    <ClCompile Include="D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\src\ocr_rec.cpp" />
+    <ClCompile Include="D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\src\postprocess_op.cpp" />
+    <ClCompile Include="D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\src\preprocess_op.cpp" />
+    <ClCompile Include="D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\src\utility.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:\4_code\GitHub_Open\PaddleOCR\deploy\cpp_infer\VS2015\ZERO_CHECK.vcxproj">
+      <Project>{93F57B50-1C7D-3AE2-8479-69340C2B29FB}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

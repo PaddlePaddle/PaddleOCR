@@ -27,8 +27,12 @@ dist/
 paddleocr.egg-info/
 Release
 Debug
-VS2015
+*.db
+*.opendb
+*.suo
 paddle_inference_install_dir
 *.zip
-!ocr_system.sln
-!ocr_system.vcxproj
+CMakeFiles
+*.dll
+*.exe
+*.sdf
