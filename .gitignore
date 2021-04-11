@@ -28,3 +28,7 @@ paddleocr.egg-info/
 Release
 Debug
 VS2015
+paddle_inference_install_dir
+*.zip
+!ocr_system.sln
+!ocr_system.vcxproj
