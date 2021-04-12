@@ -25,6 +25,13 @@ PGNet算法细节详见[论文](https://www.aaai.org/AAAI21Papers/AAAI-2885.Wang
 
 ![](../imgs_results/e2e_res_img293_pgnet.png)
 ![](../imgs_results/e2e_res_img295_pgnet.png)
+### 性能指标
+| |det_precision|det_recall|det_f_score|e2e_precision|e2e_recall|e2e_f_score|FPS (size=640)|下载|
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|Paper|85.30|86.80|86.1|-|-|61.7|38.20|-|
+|Ours|87.03|82.48|84.69|61.71|58.43|60.03|62.61|[下载链接](https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/en_server_pgnetA.tar)|
+
+*note：PaddleOCR里的PGNet实现针对预测速度做了优化，在精度下降可接受范围内，可以显著提升端对端预测速度*
 
 <a name="环境配置"></a>
 ## 二、环境配置
@@ -170,10 +177,3 @@ python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/im
 可视化文本端到端结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'e2e_res'。结果示例如下：
 
 ![](../imgs_results/e2e_res_img623_pgnet.jpg)
-
-#### (3). 性能指标
-| |det_precision|det_recall|det_f_score|e2e_precision|e2e_recall|e2e_f_score|FPS (size=640)|
-| --- | --- | --- | --- | --- | --- | --- | --- |
-|Ours|87.03|82.48|84.69|61.71|58.43|60.03|62.61|
-|Paper|85.30|86.80|86.1|-|-|61.7|38.20|
-*note：PaddleOCR里的PGNet实现针对预测速度做了优化，在精度下降可接受范围内，可以显著提升端对端预测速度*
