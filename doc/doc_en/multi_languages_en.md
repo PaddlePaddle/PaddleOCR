@@ -159,7 +159,7 @@ im_show.save('result.jpg')
 ```
 
 Visualization of results:
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/imgs_results/korean.jpg)
+![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_results/korean.jpg)
 
 
 * Recognition
@@ -173,7 +173,7 @@ for line in result:
     print(line)
 ```
 
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/imgs_words/german/1.jpg)
+![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_words/german/1.jpg)
 
 The result is a tuple, which only contains the recognition result and recognition confidence
 
@@ -208,7 +208,7 @@ The result is a list, each item contains only text boxes
 ```
 
 Visualization of results:
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/imgs_results/whl/12_det.jpg)
+![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_results/whl/12_det.jpg)
 
 ppocr also supports direction classification. For more usage methods, please refer to: [whl package instructions](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.0/doc/doc_ch/whl.md).
 
