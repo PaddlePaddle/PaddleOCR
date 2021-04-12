@@ -86,6 +86,7 @@ def parse_args():
         "--e2e_char_dict_path", type=str, default="./ppocr/utils/ic15_dict.txt")
     parser.add_argument("--e2e_pgnet_valid_set", type=str, default='totaltext')
     parser.add_argument("--e2e_pgnet_polygon", type=bool, default=True)
+    parser.add_argument("--e2e_pgnet_mode", type=str, default='fast')
 
     # params for text classifier
     parser.add_argument("--use_angle_cls", type=str2bool, default=False)
