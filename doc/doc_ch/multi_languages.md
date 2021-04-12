@@ -9,17 +9,18 @@ PaddleOCR 旨在打造一套丰富、领先、且实用的OCR工具库，不仅�
 和覆盖[80个语言](#语种缩写)的小语种模型。
 
 其中英文模型支持，大小写字母和常见标点的检测识别，并优化了空格字符的识别：
+
 <div align="center">
-    <img src="../imgs_results/multi_lang/en_1.jpg" width="400">
-    <img src="../imgs_results/multi_lang/en_3.jpg" width="400">
+    <img src="../imgs_results/multi_lang/en_1.jpg" width="400" height="600">
 </div>
 
 小语种模型覆盖了拉丁语系、阿拉伯语系、中文繁体、韩语、日语等等：
 
 <div align="center">
-    <img src="../imgs_results/multi_lang/japan_2.jpg" width="800">
-    <img src="../imgs_results/multi_lang/french_0.jpg" width="400">
+    <img src="../imgs_results/multi_lang/japan_2.jpg" width="600" height="300">
+    <img src="../imgs_results/multi_lang/french_0.jpg" width="300" height="300">
 </div>
+
 
 本文档将简要介绍小语种模型的使用方法。
 
