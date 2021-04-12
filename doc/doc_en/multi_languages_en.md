@@ -5,8 +5,6 @@
 -2021.4.9 supports the detection and recognition of 80 languages
 -2021.4.9 supports **lightweight high-precision** English model detection and recognition
 
-PaddleOCR 旨在打造一套丰富、领先、且实用的OCR工具库，不仅提供了通用场景下的中英文模型，也提供了专门在英文场景下训练的模型，
-和覆盖[80个语言](#语种缩写)的小语种模型。
 PaddleOCR aims to create a rich, leading, and practical OCR tool library, which not only provides
 Chinese and English models in general scenarios, but also provides models specifically trained
 in English scenarios. And multilingual models covering [80 languages](#language_abbreviations).
@@ -16,6 +14,7 @@ letters and common punctuation, and the recognition of space characters is optim
 
 <div align="center">
     <img src="../imgs_results/multi_lang/en_1.jpg" width="400">
+    <img src="../imgs_results/multi_lang/en_3.jpg" width="400">
 </div>
 
 The multilingual models cover Latin, Arabic, Traditional Chinese, Korean, Japanese, etc.:
