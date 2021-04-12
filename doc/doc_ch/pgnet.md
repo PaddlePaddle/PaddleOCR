@@ -26,7 +26,9 @@ PGNet算法细节详见[论文](https://www.aaai.org/AAAI21Papers/AAAI-2885.Wang
 ![](../imgs_results/e2e_res_img293_pgnet.png)
 ![](../imgs_results/e2e_res_img295_pgnet.png)
 ### 性能指标
+
 测试集：Total-Text
+
 测试环境: NVIDIA Tesla V100-SXM2-16GB
 |PGNetA|det_precision|det_recall|det_f_score|e2e_precision|e2e_recall|e2e_f_score|FPS|下载|
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
