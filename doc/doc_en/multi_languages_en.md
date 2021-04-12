@@ -2,8 +2,8 @@
 
 **Recent Update**
 
--2021.4.9 supports the detection and recognition of 80 languages
--2021.4.9 supports **lightweight high-precision** English model detection and recognition
+- 2021.4.9 supports the detection and recognition of 80 languages
+- 2021.4.9 supports **lightweight high-precision** English model detection and recognition
 
 PaddleOCR aims to create a rich, leading, and practical OCR tool library, which not only provides
 Chinese and English models in general scenarios, but also provides models specifically trained
@@ -25,21 +25,21 @@ The multilingual models cover Latin, Arabic, Traditional Chinese, Korean, Japane
 
 This document will briefly introduce how to use the multilingual model.
 
--[1 Installation](#Install)
-    -[1.1 paddle installation](#paddleinstallation)
-    -[1.2 paddleocr package installation](#paddleocr_package_install)
+- [1 Installation](#Install)
+    - [1.1 paddle installation](#paddleinstallation)
+    - [1.2 paddleocr package installation](#paddleocr_package_install)
 
--[2 Quick Use](#Quick_Use)
-    -[2.1 Command line operation](#Command_line_operation)
-     -[2.1.1 Prediction of the whole image](#bash_detection+recognition)
-     -[2.1.2 Recognition](#bash_Recognition)
-     -[2.1.3 Detection](#bash_detection)
-    -[2.2 python script running](#python_Script_running)
-     -[2.2.1 Whole image prediction](#python_detection+recognition)
-     -[2.2.2 Recognition](#python_Recognition)
-     -[2.2.3 Detection](#python_detection)
--[3 Custom Training](#Custom_Training)
--[4 Supported languages and abbreviations](#language_abbreviations)
+- [2 Quick Use](#Quick_Use)
+    - [2.1 Command line operation](#Command_line_operation)
+     - [2.1.1 Prediction of the whole image](#bash_detection+recognition)
+     - [2.1.2 Recognition](#bash_Recognition)
+     - [2.1.3 Detection](#bash_detection)
+    - [2.2 python script running](#python_Script_running)
+     - [2.2.1 Whole image prediction](#python_detection+recognition)
+     - [2.2.2 Recognition](#python_Recognition)
+     - [2.2.3 Detection](#python_detection)
+- [3 Custom Training](#Custom_Training)
+- [4 Supported languages and abbreviations](#language_abbreviations)
 
 <a name="Install"></a>
 ## 1 Installation
@@ -89,7 +89,7 @@ The specific supported [language] (#language_abbreviations) can be viewed in the
 
 paddleocr --image_dir doc/imgs/japan_2.jpg --lang=japan
 ```
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/imgs/japan_2.jpg)
+![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs/japan_2.jpg)
 
 The result is a list, each item contains a text box, text and recognition confidence
 ```text
@@ -106,7 +106,7 @@ The result is a list, each item contains a text box, text and recognition confid
 paddleocr --image_dir doc/imgs_words/japan/1.jpg --det false --lang=japan
 ```
 
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/imgs_words/japan/1.jpg)
+![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_words/japan/1.jpg)
 
 The result is a tuple, which returns the recognition result and recognition confidence
 
@@ -159,7 +159,7 @@ im_show.save('result.jpg')
 ```
 
 Visualization of results:
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/imgs_results/korean.jpg)
+![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_results/korean.jpg)
 
 
 * Recognition
@@ -173,7 +173,7 @@ for line in result:
     print(line)
 ```
 
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/imgs_words/german/1.jpg)
+![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_words/german/1.jpg)
 
 The result is a tuple, which only contains the recognition result and recognition confidence
 
@@ -208,7 +208,7 @@ The result is a list, each item contains only text boxes
 ```
 
 Visualization of results:
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/imgs_results/whl/12_det.jpg)
+![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_results/whl/12_det.jpg)
 
 ppocr also supports direction classification. For more usage methods, please refer to: [whl package instructions](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.0/doc/doc_ch/whl.md).
 
