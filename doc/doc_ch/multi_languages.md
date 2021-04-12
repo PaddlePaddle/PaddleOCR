@@ -5,6 +5,24 @@
 - 2021.4.9 支持**80种**语言的检测和识别
 - 2021.4.9 支持**轻量高精度**英文模型检测识别
 
+PaddleOCR 旨在打造一套丰富、领先、且实用的OCR工具库，不仅提供了通用场景下的中英文模型，也提供了专门在英文场景下训练的模型，
+和覆盖[80个语言](#语种缩写)的小语种模型。
+
+其中英文模型支持，大小写字母和常见标点的检测识别，并优化了空格字符的识别：
+<div align="center">
+    <img src="../doc/imgs/imgs_results/multi_lang/en_1.jpg" width="400">
+    <img src="../doc/imgs/imgs_results/multi_lang/en_2.jpg" width="400">
+</div>
+
+小语种模型覆盖了拉丁语系、阿拉伯语系、中文繁体、韩语、日语等等：
+
+<div align="center">
+    <img src="../doc/imgs/imgs_results/multi_lang/japan_2.jpg" width="400">
+    <img src="../doc/imgs/imgs_results/multi_lang/french_0.jpg" width="400">
+</div>
+
+本文档将简要介绍小语种模型的使用方法。
+
 - [1 安装](#安装)
     - [1.1 paddle 安装](#paddle安装)
     - [1.2 paddleocr package 安装](#paddleocr_package_安装)  
@@ -68,7 +86,11 @@ Paddleocr目前支持80个语种，可以通过修改--lang参数进行切换，
 
 paddleocr --image_dir doc/imgs/japan_2.jpg --lang=japan
 ```
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/imgs/japan_2.jpg)
+
+<div align="center">
+    <img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs/japan_2.jpg" width="800">
+</div>
+
 
 结果是一个list，每个item包含了文本框，文字和识别置信度
 ```text
@@ -138,8 +160,10 @@ im_show.save('result.jpg')
 ```
 
 结果可视化:
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/imgs_results/korean.jpg)
 
+<div align="center">
+    <img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_results/korean.jpg" width="800">
+</div>
 
 * 识别预测
 
@@ -152,7 +176,8 @@ for line in result:
     print(line)
 ```
 
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/imgs_words/german/1.jpg)
+
+![](../imgs_words/german/1.jpg)
 
 结果是一个tuple，只包含识别结果和识别置信度
 
@@ -187,7 +212,10 @@ im_show.save('result.jpg')
 ```
 
 结果可视化 ：
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/imgs_results/whl/12_det.jpg)
+
+<div align="center">
+    <img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_results/whl/12_det.jpg" width="800">
+</div>
 
 ppocr 还支持方向分类， 更多使用方式请参考：[whl包使用说明](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.0/doc/doc_ch/whl.md)。
 
@@ -233,7 +261,7 @@ ppocr 支持使用自己的数据进行自定义训练或finetune, 其中识别�
 |卡纳达文|Kannada |kn|
 |泰米尔文|Tamil |ta|
 |南非荷兰文 |Afrikaans |af|
-|阿塞拜疆文 |Azerbaijani	|az|
+|阿塞拜疆文 |Azerbaijani    |az|
 |波斯尼亚文|Bosnian|bs|
 |捷克文|Czech|cs|
 |威尔士文 |Welsh |cy|
