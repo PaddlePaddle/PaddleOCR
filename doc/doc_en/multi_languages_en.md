@@ -5,21 +5,41 @@
 -2021.4.9 supports the detection and recognition of 80 languages
 -2021.4.9 supports **lightweight high-precision** English model detection and recognition
 
-- [1 Installation](#Install)
-    - [1.1 paddle installation](#paddleinstallation)
-    - [1.2 paddleocr package installation](#paddleocr_package_install)
+PaddleOCR aims to create a rich, leading, and practical OCR tool library, which not only provides
+Chinese and English models in general scenarios, but also provides models specifically trained
+in English scenarios. And multilingual models covering [80 languages](#language_abbreviations).
 
-- [2 Quick Use](#Quick_Use)
-    - [2.1 Command line operation](#Command_line_operation)
-        - [2.1.1 Prediction of the whole image](#bash_detection+recognition)
-        - [2.1.2 Recognition](#bash_Recognition)
-        - [2.1.3 Detection](#bash_detection)
-    - [2.2 python script running](#python_Script_running)
-        - [2.2.1 Whole image prediction](#python_detection+recognition)
-        - [2.2.2 Recognition](#python_Recognition)
-        - [2.2.3 Detection](#python_detection)
-- [3 Custom Training](#Custom_Training)
-- [4 Supported languages and abbreviations](#language_abbreviations)
+Among them, the English model supports the detection and recognition of uppercase and lowercase
+letters and common punctuation, and the recognition of space characters is optimized:
+
+<div align="center">
+    <img src="../imgs_results/multi_lang/en_1.jpg" width="400" height="600">
+</div>
+
+The multilingual models cover Latin, Arabic, Traditional Chinese, Korean, Japanese, etc.:
+
+<div align="center">
+    <img src="../imgs_results/multi_lang/japan_2.jpg" width="600" height="300">
+    <img src="../imgs_results/multi_lang/french_0.jpg" width="300" height="300">
+</div>
+
+This document will briefly introduce how to use the multilingual model.
+
+-[1 Installation](#Install)
+    -[1.1 paddle installation](#paddleinstallation)
+    -[1.2 paddleocr package installation](#paddleocr_package_install)
+
+-[2 Quick Use](#Quick_Use)
+    -[2.1 Command line operation](#Command_line_operation)
+     -[2.1.1 Prediction of the whole image](#bash_detection+recognition)
+     -[2.1.2 Recognition](#bash_Recognition)
+     -[2.1.3 Detection](#bash_detection)
+    -[2.2 python script running](#python_Script_running)
+     -[2.2.1 Whole image prediction](#python_detection+recognition)
+     -[2.2.2 Recognition](#python_Recognition)
+     -[2.2.3 Detection](#python_detection)
+-[3 Custom Training](#Custom_Training)
+-[4 Supported languages and abbreviations](#language_abbreviations)
 
 <a name="Install"></a>
 ## 1 Installation
