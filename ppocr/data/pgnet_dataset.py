@@ -64,9 +64,6 @@ class PGDataSet(Dataset):
             for line in f.readlines():
                 poly_str, txt = line.strip().split('\t')
                 poly = list(map(float, poly_str.split(',')))
-                if self.mode.lower() == "eval":
-                    while len(poly) < 100:
-                        poly.append(-1)
                 text_polys.append(
                     np.array(
                         poly, dtype=np.float32).reshape(-1, 2))
@@ -139,23 +136,21 @@ class PGDataSet(Dataset):
         try:
             if self.data_format == 'icdar':
                 im_path = os.path.join(data_path, 'rgb', data_line)
-                if self.mode.lower() == "eval":
-                    poly_path = os.path.join(data_path, 'poly_gt',
-                                             data_line.split('.')[0] + '.txt')
-                else:
-                    poly_path = os.path.join(data_path, 'poly',
-                                             data_line.split('.')[0] + '.txt')
+                poly_path = os.path.join(data_path, 'poly',
+                                         data_line.split('.')[0] + '.txt')
                 text_polys, text_tags, text_strs = self.extract_polys(poly_path)
             else:
                 image_dir = os.path.join(os.path.dirname(data_path), 'image')
                 im_path, text_polys, text_tags, text_strs = self.extract_info_textnet(
                     data_line, image_dir)
+            img_id = int(data_line.split(".")[0][3:])
 
             data = {
                 'img_path': im_path,
                 'polys': text_polys,
                 'tags': text_tags,
-                'strs': text_strs
+                'strs': text_strs,
+                'img_id': img_id
             }
             with open(data['img_path'], 'rb') as f:
                 img = f.read()
