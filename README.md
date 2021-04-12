@@ -22,7 +22,7 @@ PaddleOCR supports both dynamic graph and static graph programming paradigm
     - Ultra lightweight ppocr_mobile series models: detection (3.0M) + direction classifier (1.4M) + recognition (5.0M) = 9.4M
     - General ppocr_server series models: detection (47.1M) + direction classifier (1.4M) + recognition (94.9M) = 143.4M
     - Support Chinese, English, and digit recognition, vertical text recognition, and long text recognition
-    - Support multi-language recognition: Korean, Japanese, German, French
+    - Support more than 80 kinds of multi-language recognition models: [For details](./doc/doc_ch/multi_languages.md)
 - Rich toolkits related to the OCR areas
     - Semi-automatic data annotation tool, i.e., PPOCRLabel: support fast and efficient data annotation
     - Data synthesis tool, i.e., Style-Text: easy to synthesize a large number of images which are similar to the target scene image
@@ -33,11 +33,11 @@ PaddleOCR supports both dynamic graph and static graph programming paradigm
 ## Visualization
 
 <div align="center">
-    <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
-    <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/00018069.jpg" width="800">
+    <img src="doc/imgs_en/img_01.jpg" width="800">
+    <img src="doc/imgs_en/img_02.jpg" width="800">
 </div>
 
-The above pictures are the visualizations of the general ppocr_server model. For more effect pictures, please see [More visualizations](./doc/doc_en/visualization_en.md).
+The above pictures are the visualizations of the English recognition model. For more details, please see [Multi language recognition model](./doc/doc_en/multi_languages_en.md)
 
 <a name="Community"></a>
 ## Community
