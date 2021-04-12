@@ -25,6 +25,7 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
 
   std::cout << "The predicted text is :" << std::endl;
   int index = 0;
+  vecStrAllResult.clear();
   for (int i = boxes.size() - 1; i >= 0; i--) {
     crop_img = GetRotateCropImage(srcimg, boxes[i]);
     if (cls != nullptr) {
@@ -61,7 +62,8 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
     output_t->CopyToCpu(predict_batch.data());
 
     // ctc decode
-    std::vector<std::string> str_res;
+	std::vector<std::string> str_res;
+	std::string strSingleBoxCode="";
     int argmax_idx;
     int last_index = 0;
     float score = 0.f;
@@ -85,9 +87,11 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
     }
     score /= count;
     for (int i = 0; i < str_res.size(); i++) {
+	  strSingleBoxCode += str_res[i];
       std::cout << str_res[i];
     }
-    std::cout << "\tscore: " << score << std::endl;
+	vecStrAllResult.push_back(strSingleBoxCode);
+    std::cout << "\tscore: " << score << std::endl;	
   }
 }
 
