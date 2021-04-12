@@ -35,7 +35,7 @@
 #### Q3.3.34: 表格识别中，如何提高单字的识别结果？
 **A**: 首先需要确认一下检测模型有没有有效的检测出单个字符，如果没有的话，需要在训练集当中添加相应的单字数据集。
 
-#### Q3.4.41: PaddleORC支持tensorrt推理吗？
+#### Q3.4.41: PaddleOCR持tensorrt推理吗？
 **A**: 支持的，需要在编译的时候将CMakeLists.txt文件当中，将相关代码`option(WITH_TENSORRT "Compile demo with TensorRT."   OFF)`的OFF改成ON。
 
 <a name="OCR精选10个问题"></a>
@@ -1084,5 +1084,5 @@ nvidia-smi --lock-gpu-clocks=1590 -i 0
 
 **A**: 首先，测试的时候第一张图延时较高，可以多测试几张然后观察后几张图的速度；其次，如果是在cpu端部署serving端模型（如backbone为ResNet34），耗时较慢，建议在cpu端部署mobile（如backbone为MobileNetV3）模型。
 
-#### Q3.4.41: PaddleORC支持tensorrt推理吗？
+#### Q3.4.41: PaddleOCR支持tensorrt推理吗？
 **A**: 支持的，需要在编译的时候将CMakeLists.txt文件当中，将相关代码`option(WITH_TENSORRT "Compile demo with TensorRT."   OFF)`的OFF改成ON。
