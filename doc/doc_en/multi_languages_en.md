@@ -5,6 +5,26 @@
 -2021.4.9 supports the detection and recognition of 80 languages
 -2021.4.9 supports **lightweight high-precision** English model detection and recognition
 
+PaddleOCR aims to create a rich, leading, and practical OCR tool library, which not only provides
+Chinese and English models in general scenarios, but also provides models specifically trained
+in English scenarios. And multilingual models covering [80 languages](#language_abbreviations).
+
+Among them, the English model supports the detection and recognition of uppercase and lowercase
+letters and common punctuation, and the recognition of space characters is optimized:
+
+<div align="center">
+    <img src="../imgs_results/multi_lang/en_1.jpg" width="400" height="600">
+</div>
+
+The multilingual models cover Latin, Arabic, Traditional Chinese, Korean, Japanese, etc.:
+
+<div align="center">
+    <img src="../imgs_results/multi_lang/japan_2.jpg" width="600" height="300">
+    <img src="../imgs_results/multi_lang/french_0.jpg" width="300" height="300">
+</div>
+
+This document will briefly introduce how to use the multilingual model.
+
 -[1 Installation](#Install)
     -[1.1 paddle installation](#paddleinstallation)
     -[1.2 paddleocr package installation](#paddleocr_package_install)
