@@ -16,7 +16,7 @@ OCR算法可以分为两阶段算法和端对端的算法。二阶段OCR算法�
 - 提出基于图的修正模块（GRM）来进一步提高模型识别性能
 - 精度更高，预测速度更快
 
-PGNet算法细节详见[论文](https://www.aaai.org/AAAI21Papers/AAAI-2885.WangP.pdf)， 算法原理图如下所示：
+PGNet算法细节详见[论文](https://www.aaai.org/AAAI21Papers/AAAI-2885.WangP.pdf) ,算法原理图如下所示：
 ![](../pgnet_framework.png)
 输入图像经过特征提取送入四个分支，分别是：文本边缘偏移量预测TBO模块，文本中心线预测TCL模块，文本方向偏移量预测TDO模块，以及文本字符分类图预测TCC模块。
 其中TBO以及TCL的输出经过后处理后可以得到文本的检测结果，TCL、TDO、TCC负责文本识别。
@@ -51,13 +51,13 @@ wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/e2e_server_pgnetA_infer.
 ### 单张图像或者图像集合预测
 ```bash
 # 预测image_dir指定的单张图像
-python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/imgs_en/img623.jpg" --e2e_model_dir="./inference/e2e/" --e2e_pgnet_polygon=True
+python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/imgs_en/img623.jpg" --e2e_model_dir="./inference/e2e_server_pgnetA_infer/" --e2e_pgnet_polygon=True
 
 # 预测image_dir指定的图像集合
-python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/imgs_en/" --e2e_model_dir="./inference/e2e/" --e2e_pgnet_polygon=True
+python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/imgs_en/" --e2e_model_dir="./inference/e2e_server_pgnetA_infer/" --e2e_pgnet_polygon=True
 
 # 如果想使用CPU进行预测，需设置use_gpu参数为False
-python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/imgs_en/img623.jpg" --e2e_model_dir="./inference/e2e/" --e2e_pgnet_polygon=True --use_gpu=False
+python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/imgs_en/img623.jpg" --e2e_model_dir="./inference/e2e_server_pgnetA_infer/" --e2e_pgnet_polygon=True --use_gpu=False
 ```
 ### 可视化结果
 可视化文本检测结果默认保存到./inference_results文件夹里面，结果文件的名称前缀为'e2e_res'。结果示例如下：
@@ -137,12 +137,12 @@ python3 tools/eval.py -c configs/e2e/e2e_r50_vd_pg.yml  -o Global.checkpoints="{
 ### 模型预测
 测试单张图像的端到端识别效果
 ```shell
-python3 tools/infer_e2e.py -c configs/e2e/e2e_r50_vd_pg.yml -o Global.infer_img="./doc/imgs_en/img_10.jpg" Global.pretrained_model="./output/det_db/best_accuracy" Global.load_static_weights=false
+python3 tools/infer_e2e.py -c configs/e2e/e2e_r50_vd_pg.yml -o Global.infer_img="./doc/imgs_en/img_10.jpg" Global.pretrained_model="./output/e2e_pgnet/best_accuracy" Global.load_static_weights=false
 ```
 
 测试文件夹下所有图像的端到端识别效果
 ```shell
-python3 tools/infer_e2e.py -c configs/e2e/e2e_r50_vd_pg.yml -o Global.infer_img="./doc/imgs_en/" Global.pretrained_model="./output/det_db/best_accuracy" Global.load_static_weights=false
+python3 tools/infer_e2e.py -c configs/e2e/e2e_r50_vd_pg.yml -o Global.infer_img="./doc/imgs_en/" Global.pretrained_model="./output/e2e_pgnet/best_accuracy" Global.load_static_weights=false
 ```
 
 ### 预测推理
@@ -150,7 +150,7 @@ python3 tools/infer_e2e.py -c configs/e2e/e2e_r50_vd_pg.yml -o Global.infer_img=
 首先将PGNet端到端训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，以英文数据集训练的模型为例[模型下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/en_server_pgnetA.tar) ，可以使用如下命令进行转换：
 ```
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/en_server_pgnetA.tar && tar xf en_server_pgnetA.tar
-python3 tools/export_model.py -c configs/e2e/e2e_r50_vd_pg.yml -o Global.pretrained_model=./en_server_pgnetA/iter_epoch_450 Global.load_static_weights=False Global.save_inference_dir=./inference/e2e
+python3 tools/export_model.py -c configs/e2e/e2e_r50_vd_pg.yml -o Global.pretrained_model=./en_server_pgnetA/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/e2e
 ```
 **PGNet端到端模型推理，需要设置参数`--e2e_algorithm="PGNet"`**，可以执行如下命令：
 ```
@@ -171,7 +171,9 @@ python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/im
 
 ![](../imgs_results/e2e_res_img623_pgnet.jpg)
 
-#### (3). 精度与FPS
-|det_precision|det_recall|det_f_score|e2e_precision|e2e_recall|e2e_f_score|FPS|
-| --- | --- | --- | --- | --- | --- | --- |
-|87.03|82.48|84.69|61.71|58.43|60.03|62.61|
+#### (3). 性能指标
+| |det_precision|det_recall|det_f_score|e2e_precision|e2e_recall|e2e_f_score|FPS (size=640)|
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|Ours|87.03|82.48|84.69|61.71|58.43|60.03|62.61|
+|Paper|85.30|86.80|86.1|-|-|61.7|38.20|
+*note：PaddleOCR里的PGNet实现针对预测速度做了优化，在精度下降可接受范围内，可以显著提升端对端预测速度*
