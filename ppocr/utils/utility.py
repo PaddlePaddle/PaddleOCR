@@ -61,6 +61,7 @@ def get_image_file_list(img_file):
                 imgs_lists.append(file_path)
     if len(imgs_lists) == 0:
         raise Exception("not found any img file in {}".format(img_file))
+    imgs_lists = sorted(imgs_lists)
     return imgs_lists
 
 
