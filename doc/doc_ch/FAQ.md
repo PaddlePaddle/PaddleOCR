@@ -9,34 +9,34 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2021.4.6）](#近期更新)
+* [近期更新（2021.4.12）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
-* [【理论篇】OCR通用41个问题](#OCR通用问题)
+* [【理论篇】OCR通用43个问题](#OCR通用问题)
   * [基础知识13题](#基础知识)
-  * [数据集8题](#数据集2)
-  * [模型训练调优20题](#模型训练调优2)
-* [【实战篇】PaddleOCR实战147个问题](#PaddleOCR实战问题)
-  * [使用咨询56题](#使用咨询)
+  * [数据集9题](#数据集2)
+  * [模型训练调优21题](#模型训练调优2)
+* [【实战篇】PaddleOCR实战150个问题](#PaddleOCR实战问题)
+  * [使用咨询57题](#使用咨询)
   * [数据集18题](#数据集3)
-  * [模型训练调优33题](#模型训练调优3)
-  * [预测部署40题](#预测部署3)
+  * [模型训练调优34题](#模型训练调优3)
+  * [预测部署41题](#预测部署3)
 
 <a name="近期更新"></a>
-## 近期更新（2021.4.6）
-#### Q3.4.40: 使用hub_serving部署，延时较高，可能的原因是什么呀？
-**A**: 首先，测试的时候第一张图延时较高，可以多测试几张然后观察后几张图的速度；其次，如果是在cpu端部署serving端模型（如backbone为ResNet34），耗时较慢，建议在cpu端部署mobile（如backbone为MobileNetV3）模型。
+## 近期更新（2021.4.12）
+#### Q2.2.9: 端到端算法PGNet使用的是什么类型的数据集呢？
+**A**: PGNet目前可以使用四点标注数据集，也可以使用多点标注数据集（十四点），多点标注训练的效果要比四点的好，一种可以尝试的策略是先在四点数据集上训练，之后用多点数据集在此基础上继续训练。
 
-#### Q2.3.20:  如何根据不同的硬件平台选用不同的backbone？
-**A**：在不同的硬件上，不同的backbone的速度优势不同，可以根据不同平台的速度-精度图来确定backbone，这里可以参考[PaddleClas模型速度-精度图](https://github.com/PaddlePaddle/PaddleClas/tree/release/2.0/docs/zh_CN/models)。
+#### Q2.3.21:  端到端算法PGNet是否支持中文识别，速度会很慢嘛？
+**A**：目前开源的PGNet算法模型主要是用于检测英文数字，对于中文的识别需要自己训练，大家可以使用开源的端到端中文数据集，而对于复杂文本（弯曲文本）的识别，也可以自己构造一批数据集针对进行训练，对于推理速度，可以先将模型转换为inference再进行预测，速度应该会相当可观。
 
-#### Q3.1.55: 目前PaddleOCR有知识蒸馏的demo吗？
-**A**： 目前我们还没有提供PaddleOCR知识蒸馏的相关demo，PaddleClas开源了一个效果还不错的方案，可以移步[SSLD知识蒸馏方案](https://github.com/PaddlePaddle/PaddleClas/blob/release%2F2.0/docs/zh_CN/advanced_tutorials/distillation/distillation.md)，  paper: https://arxiv.org/abs/2103.05959  关于PaddleOCR的蒸馏，我们也会在未来支持。
+#### Q3.1.57: 端到端算法PGNet提供了两种后处理方式，两者之间有什么区别呢？
+**A**: 两种后处理的区别主要在于速度的推理，config中PostProcess有fast/slow两种模式，slow模式的后处理速度慢，精度相对较高，fast模式的后处理速度快，精度也在可接受的范围之内。建议使用速度快的后处理方式。
 
-#### Q3.3.33: 训练识别和检测时学习率要加上warmup，目的是什么？
-**A**: Warmup机制先使学习率从一个较小的值逐步升到一个较大的值，而不是直接就使用较大的学习率，这样有助于模型的稳定收敛。在OCR检测和OCR识别中，一般会带来精度~0.5%的提升。
+#### Q3.3.34: 表格识别中，如何提高单字的识别结果？
+**A**: 首先需要确认一下检测模型有没有有效的检测出单个字符，如果没有的话，需要在训练集当中添加相应的单字数据集。
 
-#### Q3.1.56: 在使用PPOCRLabel的时候，如何标注倾斜的文字？
-**A**: 如果矩形框标注后空白冗余较多，可以尝试PPOCRLabel提供的四点标注，可以标注各种倾斜角度的文本。
+#### Q3.4.41: PaddleOCR持tensorrt推理吗？
+**A**: 支持的，需要在编译的时候将CMakeLists.txt文件当中，将相关代码`option(WITH_TENSORRT "Compile demo with TensorRT."   OFF)`的OFF改成ON。关于服务器端部署的更多设置，可以参考[飞桨官网](https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/05_inference_deployment/inference/native_infer.html)
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -213,6 +213,9 @@
 #### Q2.2.8:  DBNet如果想使用多边形作为输入，数据标签格式应该如何设定？
 **A**：如果想使用多边形作为DBNet的输入，数据标签也应该用多边形来表示。这样子可以更好得拟合弯曲文本。PPOCRLabel暂时只支持矩形框标注和四边形框标注。
 
+#### Q2.2.9: 端到端算法PGNet使用的是什么类型的数据集呢？
+**A**: PGNet目前可以使用四点标注数据集，也可以使用多点标注数据集（十四点），多点标注训练的效果要比四点的好，一种可以尝试的策略是先在四点数据集上训练，之后用多点数据集在此基础上继续训练。
+
 <a name="模型训练调优2"></a>
 ### 模型训练调优
 
@@ -312,6 +315,9 @@
 
 #### Q2.3.20:  如何根据不同的硬件平台选用不同的backbone？
 **A**：在不同的硬件上，不同的backbone的速度优势不同，可以根据不同平台的速度-精度图来确定backbone，这里可以参考[PaddleClas模型速度-精度图](https://github.com/PaddlePaddle/PaddleClas/tree/release/2.0/docs/zh_CN/models)。
+
+#### Q2.3.21:  端到端算法PGNet是否支持中文识别，速度会很慢嘛？
+**A**：目前开源的PGNet算法模型主要是用于检测英文数字，对于中文的识别需要自己训练，大家可以使用开源的端到端中文数据集，而对于复杂文本（弯曲文本）的识别，也可以自己构造一批数据集针对进行训练，对于推理速度，可以先将模型转换为inference再进行预测，速度应该会相当可观。
 
 <a name="PaddleOCR实战问题"></a>
 ## 【实战篇】PaddleOCR实战问题
@@ -604,6 +610,9 @@ repo中config.yml文件的前后处理参数和inference预测默认的超参数
 #### Q3.1.56: 在使用PPOCRLabel的时候，如何标注倾斜的文字？
 **A**: 如果矩形框标注后空白冗余较多，可以尝试PPOCRLabel提供的四点标注，可以标注各种倾斜角度的文本。
 
+#### Q3.1.57: 端到端算法PGNet提供了两种后处理方式，两者之间有什么区别呢？
+**A**: 两种后处理的区别主要在于速度的推理，config中PostProcess有fast/slow两种模式，slow模式的后处理速度慢，精度相对较高，fast模式的后处理速度快，精度也在可接受的范围之内。建议使用速度快的后处理方式。
+
 
 <a name="数据集3"></a>
 
@@ -874,6 +883,9 @@ lr:
 #### Q3.3.33: 训练识别和检测时学习率要加上warmup，目的是什么？
 **A**: Warmup机制先使学习率从一个较小的值逐步升到一个较大的值，而不是直接就使用较大的学习率，这样有助于模型的稳定收敛。在OCR检测和OCR识别中，一般会带来精度~0.5%的提升。
 
+#### Q3.3.34: 表格识别中，如何提高单字的识别结果？
+**A**: 首先需要确认一下检测模型有没有有效的检测出单个字符，如果没有的话，需要在训练集当中添加相应的单字数据集。
+
 <a name="预测部署3"></a>
 
 
@@ -1071,3 +1083,6 @@ nvidia-smi --lock-gpu-clocks=1590 -i 0
 #### Q3.4.40: 使用hub_serving部署，延时较高，可能的原因是什么呀？
 
 **A**: 首先，测试的时候第一张图延时较高，可以多测试几张然后观察后几张图的速度；其次，如果是在cpu端部署serving端模型（如backbone为ResNet34），耗时较慢，建议在cpu端部署mobile（如backbone为MobileNetV3）模型。
+
+#### Q3.4.41: PaddleOCR支持tensorrt推理吗？
+**A**: 支持的，需要在编译的时候将CMakeLists.txt文件当中，将相关代码`option(WITH_TENSORRT "Compile demo with TensorRT."   OFF)`的OFF改成ON。关于服务器端部署的更多设置，可以参考[飞桨官网](https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/05_inference_deployment/inference/native_infer.html)
