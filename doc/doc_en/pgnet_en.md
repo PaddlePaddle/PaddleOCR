@@ -23,6 +23,13 @@ The output of TBO and TCL can get text detection results after post-processing, 
 The results of detection and recognition are as follows:
 ![](../imgs_results/e2e_res_img293_pgnet.png)
 ![](../imgs_results/e2e_res_img295_pgnet.png)
+### Performance
+| |det_precision|det_recall|det_f_score|e2e_precision|e2e_recall|e2e_f_score|FPS (size=640)|download|
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|Paper|85.30|86.80|86.1|-|-|61.7|38.20|-|
+|Ours|87.03|82.48|84.69|61.71|58.43|60.03|62.61|[download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/en_server_pgnetA.tar)|
+
+*note：PGNet in PaddleOCR optimizes the prediction speed, and can significantly improve the end-to-end prediction speed within the acceptable range of accuracy reduction*
 
 <a name="Environment_Configuration"></a>
 ## 2. Environment Configuration
@@ -173,9 +180,3 @@ python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/im
 The visualized text detection results are saved to the `./inference_results` folder by default, and the name of the result file is prefixed with 'e2e_res'. Examples of results are as follows:
 
 ![](../imgs_results/e2e_res_img623_pgnet.jpg)
-#### (3). Performance
-| |det_precision|det_recall|det_f_score|e2e_precision|e2e_recall|e2e_f_score|FPS (size=640)|
-| --- | --- | --- | --- | --- | --- | --- | --- |
-|Paper|85.30|86.80|86.1|-|-|61.7|38.20|
-|Ours|87.03|82.48|84.69|61.71|58.43|60.03|62.61|
-*note：PGNet in PaddleOCR optimizes the prediction speed, and can significantly improve the end-to-end prediction speed within the acceptable range of accuracy reduction*
