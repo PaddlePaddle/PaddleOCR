@@ -177,7 +177,7 @@
 **A**: PubTabNet是IBM提出的基于图片格式的表格识别数据集，包含 56.8 万张表格数据的图像，以及图像对应的 html 格式的注释。该数据集的发布推动了表格结构化算法的研发和落地应用。
 
 #### Q2.1.13: PaddleOCR提供的文本识别算法包括哪些？
-**A**: PaddleOCR主要提供五种文本识别算法，包括CRNN\StarNet\RARAE\Rosetta和SRN, 其中CRNN\StarNet和Rosetta是基于ctc的文字识别算法，RARE是基于attention的文字识别算法；SRN为百度自研的文本识别算法，引入了语义信息，显著提升了准确率。 详情可参照如下页面: [文本识别算法](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.0/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
+**A**: PaddleOCR主要提供五种文本识别算法，包括CRNN\StarNet\RARE\Rosetta和SRN, 其中CRNN\StarNet和Rosetta是基于ctc的文字识别算法，RARE是基于attention的文字识别算法；SRN为百度自研的文本识别算法，引入了语义信息，显著提升了准确率。 详情可参照如下页面: [文本识别算法](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.0/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
 
 <a name="数据集2"></a>
 ### 数据集
