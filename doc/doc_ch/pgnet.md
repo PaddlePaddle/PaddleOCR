@@ -174,6 +174,6 @@ python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/im
 #### (3). 性能指标
 | |det_precision|det_recall|det_f_score|e2e_precision|e2e_recall|e2e_f_score|FPS (size=640)|
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|Ours|87.03|82.48|84.69|61.71|58.43|60.03|62.61|
 |Paper|85.30|86.80|86.1|-|-|61.7|38.20|
+|Ours|87.03|82.48|84.69|61.71|58.43|60.03|62.61|
 *note：PaddleOCR里的PGNet实现针对预测速度做了优化，在精度下降可接受范围内，可以显著提升端对端预测速度*

@@ -176,6 +176,6 @@ The visualized text detection results are saved to the `./inference_results` fol
 #### (3). Performance
 | |det_precision|det_recall|det_f_score|e2e_precision|e2e_recall|e2e_f_score|FPS (size=640)|
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|Ours|87.03|82.48|84.69|61.71|58.43|60.03|62.61|
 |Paper|85.30|86.80|86.1|-|-|61.7|38.20|
+|Ours|87.03|82.48|84.69|61.71|58.43|60.03|62.61|
 *note：PGNet in PaddleOCR optimizes the prediction speed, and can significantly improve the end-to-end prediction speed within the acceptable range of accuracy reduction*
