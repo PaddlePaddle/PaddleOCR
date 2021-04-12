@@ -10,7 +10,7 @@ PaddleOCR supports both dynamic graph and static graph programming paradigm
 
 **Recent updates**
 - **Notice: PaddleOCR R & D team will conduct in-depth technical interpretation of the latest version at 19:00 P.M. on April 13. ([live address](https://live.bilibili.com/21689802))**
-- 2021.4.8 Release PaddleOCRv2.1(branch release/2.1). Newly released AAAI 2021 end-to-end algorithm [PGNet](./doc/doc_en/pgnet_en.md) and [Multi language recognition model](./doc/doc_en/multi_languages_en.md), support more than 80 language recognition.
+- 2021.4.8 Release PaddleOCRv2.1(branch release/2.1). Newly released AAAI 2021 end-to-end algorithm [PGNet](./doc/doc_en/pgnet_en.md) and [Multi language recognition model](./doc/doc_en/multi_languages_en.md), support more than 80 languages recognition.
 - 2021.2.8 Release PaddleOCRv2.0 (branch release/2.0). Refer to [release note](https://github.com/PaddlePaddle/PaddleOCR/releases/tag/v2.0.0) for more details.
 - 2021.1.21 update more than 25+ multilingual recognition models [models list](./doc/doc_en/models_list_en.md), including：English, Chinese, German, French, Japanese，Spanish，Portuguese Russia Arabic and so on.  Models for more languages will continue to be updated [Develop Plan](https://github.com/PaddlePaddle/PaddleOCR/issues/1048).
 - 2020.12.15 update Data synthesis tool, i.e., [Style-Text](./StyleText/README.md)，easy to synthesize a large number of images which are similar to the target scene image.
