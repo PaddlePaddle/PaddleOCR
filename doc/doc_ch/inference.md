@@ -13,7 +13,6 @@ inference 模型（`paddle.jit.save`保存的模型）
     - [检测模型转inference模型](#检测模型转inference模型)
     - [识别模型转inference模型](#识别模型转inference模型)  
     - [方向分类模型转inference模型](#方向分类模型转inference模型)
-    - [端到端模型转inference模型](#端到端模型转inference模型)
 
 - [二、文本检测模型推理](#文本检测模型推理)
     - [1. 超轻量中文检测模型推理](#超轻量中文检测模型推理)
@@ -115,32 +114,6 @@ python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o Global.pretrained_mo
 转换成功后，在目录下有三个文件：
 ```
 /inference/cls/
-    ├── inference.pdiparams         # 分类inference模型的参数文件
-    ├── inference.pdiparams.info    # 分类inference模型的参数信息，可忽略
-    └── inference.pdmodel           # 分类inference模型的program文件
-```
-<a name="端到端模型转inference模型"></a>
-### 端到端模型转inference模型
-
-下载端到端模型：
-```
-wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar && tar xf ./ch_lite/ch_ppocr_mobile_v2.0_cls_train.tar -C ./ch_lite/
-```
-
-端到端模型转inference模型与检测的方式相同，如下：
-```
-# -c 后面设置训练算法的yml配置文件
-# -o 配置可选参数
-# Global.pretrained_model 参数设置待转换的训练模型地址，不用添加文件后缀 .pdmodel，.pdopt或.pdparams。
-# Global.load_static_weights 参数需要设置为 False。
-# Global.save_inference_dir参数设置转换的模型将保存的地址。
-
-python3 tools/export_model.py -c configs/e2e/e2e_r50_vd_pg.yml -o Global.pretrained_model=./ch_lite/ch_ppocr_mobile_v2.0_cls_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/e2e/
-```
-
-转换成功后，在目录下有三个文件：
-```
-/inference/e2e/
     ├── inference.pdiparams         # 分类inference模型的参数文件
     ├── inference.pdiparams.info    # 分类inference模型的参数信息，可忽略
     └── inference.pdmodel           # 分类inference模型的program文件
