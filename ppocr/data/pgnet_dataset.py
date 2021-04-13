@@ -78,7 +78,10 @@ class PGDataSet(Dataset):
             file_name = substr[0]
             label = substr[1]
             img_path = os.path.join(self.data_dir, file_name)
-            img_id = int(data_line.split(".")[0][3:])
+            if self.mode.lower() == 'eval':
+                img_id = int(data_line.split(".")[0][7:])
+            else:
+                img_id = 0
             data = {'img_path': img_path, 'label': label, 'img_id': img_id}
             if not os.path.exists(img_path):
                 raise Exception("{} does not exist!".format(img_path))
