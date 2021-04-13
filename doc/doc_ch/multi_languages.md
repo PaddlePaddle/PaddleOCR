@@ -59,7 +59,7 @@ pip instll paddlepaddle-gpu
 
 pip 安装
 ```
-pip install "paddleocr>=2.0.4" # 推荐使用2.0.4版本
+pip install "paddleocr>=2.0.6" # 推荐使用2.0.6版本
 ```
 本地构建并安装
 ```
