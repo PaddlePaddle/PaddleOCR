@@ -64,7 +64,7 @@ class PGNet_PostProcess(object):
                                                 src_w, src_h, self.valid_set)
         data = {
             'points': poly_list,
-            'strs': keep_str_list,
+            'texts': keep_str_list,
         }
         return data
 
@@ -176,6 +176,6 @@ class PGNet_PostProcess(object):
                 exit(-1)
         data = {
             'points': poly_list,
-            'strs': keep_str_list,
+            'texts': keep_str_list,
         }
         return data
