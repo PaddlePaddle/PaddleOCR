@@ -13,10 +13,11 @@
 # limitations under the License.
 
 import numpy as np
+import scipy.io as io
 from ppocr.utils.e2e_metric.polygon_fast import iod, area_of_intersection, area
 
 
-def get_socre(gt_dict, pred_dict):
+def get_socre(gt_dir, img_id, pred_dict):
     allInputs = 1
 
     def input_reading_mod(pred_dict):
@@ -30,31 +31,9 @@ def get_socre(gt_dict, pred_dict):
             det.append([point, text])
         return det
 
-    def gt_reading_mod(gt_dict):
-        """This helper reads groundtruths from mat files"""
-        gt = []
-        n = len(gt_dict)
-        for i in range(n):
-            points = gt_dict[i]['points']
-            h = len(points)
-            text = gt_dict[i]['text']
-            xx = [
-                np.array(
-                    ['x:'], dtype='<U2'), 0, np.array(
-                        ['y:'], dtype='<U2'), 0, np.array(
-                            ['#'], dtype='<U1'), np.array(
-                                ['#'], dtype='<U1')
-            ]
-            t_x, t_y = [], []
-            for j in range(h):
-                t_x.append(points[j][0])
-                t_y.append(points[j][1])
-            xx[1] = np.array([t_x], dtype='int16')
-            xx[3] = np.array([t_y], dtype='int16')
-            if text != "" and "#" not in text:
-                xx[4] = np.array([text], dtype='U{}'.format(len(text)))
-                xx[5] = np.array(['c'], dtype='<U1')
-            gt.append(xx)
+    def gt_reading_mod(gt_dir, gt_id):
+        gt = io.loadmat('%s/poly_gt_img%s.mat' % (gt_dir, gt_id))
+        gt = gt['polygt']
         return gt
 
     def detection_filtering(detections, groundtruths, threshold=0.5):
@@ -101,7 +80,7 @@ def get_socre(gt_dict, pred_dict):
                 input_id != 'Deteval_result.txt') and (input_id != 'Deteval_result_curved.txt') \
                 and (input_id != 'Deteval_result_non_curved.txt'):
             detections = input_reading_mod(pred_dict)
-            groundtruths = gt_reading_mod(gt_dict)
+            groundtruths = gt_reading_mod(gt_dir, img_id).tolist()
             detections = detection_filtering(
                 detections,
                 groundtruths)  # filters detections overlapping with DC area

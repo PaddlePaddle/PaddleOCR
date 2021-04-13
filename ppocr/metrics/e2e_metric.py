@@ -19,58 +19,29 @@ from __future__ import print_function
 __all__ = ['E2EMetric']
 
 from ppocr.utils.e2e_metric.Deteval import get_socre, combine_results
-from ppocr.utils.e2e_utils.extract_textpoint import get_dict
+from ppocr.utils.e2e_utils.extract_textpoint_slow import get_dict
 
 
 class E2EMetric(object):
     def __init__(self,
+                 gt_mat_dir,
                  character_dict_path,
                  main_indicator='f_score_e2e',
                  **kwargs):
+        self.gt_mat_dir = gt_mat_dir
         self.label_list = get_dict(character_dict_path)
         self.max_index = len(self.label_list)
         self.main_indicator = main_indicator
         self.reset()
 
     def __call__(self, preds, batch, **kwargs):
-        temp_gt_polyons_batch = batch[2]
-        temp_gt_strs_batch = batch[3]
-        ignore_tags_batch = batch[4]
-        gt_polyons_batch = []
-        gt_strs_batch = []
-
-        temp_gt_polyons_batch = temp_gt_polyons_batch[0].tolist()
-        for temp_list in temp_gt_polyons_batch:
-            t = []
-            for index in temp_list:
-                if index[0] != -1 and index[1] != -1:
-                    t.append(index)
-            gt_polyons_batch.append(t)
-
-        temp_gt_strs_batch = temp_gt_strs_batch[0].tolist()
-        for temp_list in temp_gt_strs_batch:
-            t = ""
-            for index in temp_list:
-                if index < self.max_index:
-                    t += self.label_list[index]
-            gt_strs_batch.append(t)
-
-        for pred, gt_polyons, gt_strs, ignore_tags in zip(
-            [preds], [gt_polyons_batch], [gt_strs_batch], ignore_tags_batch):
-            # prepare gt
-            gt_info_list = [{
-                'points': gt_polyon,
-                'text': gt_str,
-                'ignore': ignore_tag
-            } for gt_polyon, gt_str, ignore_tag in
-                            zip(gt_polyons, gt_strs, ignore_tags)]
-            # prepare det
-            e2e_info_list = [{
-                'points': det_polyon,
-                'text': pred_str
-            } for det_polyon, pred_str in zip(pred['points'], pred['strs'])]
-            result = get_socre(gt_info_list, e2e_info_list)
-            self.results.append(result)
+        img_id = batch[5][0]
+        e2e_info_list = [{
+            'points': det_polyon,
+            'text': pred_str
+        } for det_polyon, pred_str in zip(preds['points'], preds['strs'])]
+        result = get_socre(self.gt_mat_dir, img_id, e2e_info_list)
+        self.results.append(result)
 
     def get_metric(self):
         metircs = combine_results(self.results)
