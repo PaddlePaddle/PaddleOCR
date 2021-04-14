@@ -60,7 +60,7 @@ pip instll paddlepaddle-gpu
 
 pip install
 ```
-pip install "paddleocr>=2.0.4" # 2.0.4 version is recommended
+pip install "paddleocr>=2.0.6" # 2.0.6 version is recommended
 ```
 Build and install locally
 ```
