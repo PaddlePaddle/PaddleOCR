@@ -118,7 +118,6 @@ class ArgsParser(ArgumentParser):
         return config
 
     def _set_language(self, type):
-        print("type:", type)
         lang = type[0]
         assert (type), "please use -l or --language to choose language type"
         assert(

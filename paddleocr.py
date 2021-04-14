@@ -30,6 +30,7 @@ from ppocr.utils.logging import get_logger
 
 logger = get_logger()
 from ppocr.utils.utility import check_and_read_gif, get_image_file_list
+from tools.infer.utility import draw_ocr
 
 __all__ = ['PaddleOCR']
 
