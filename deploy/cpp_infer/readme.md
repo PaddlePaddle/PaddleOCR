@@ -232,7 +232,7 @@ visualize 1 # 是否对结果进行可视化，为1时，会在当前文件夹�
 最终屏幕上会输出检测结果如下。
 
 <div align="center">
-    <img src="../imgs/cpp_infer_pred_12.png" width="600">
+    <img src="./imgs/cpp_infer_pred_12.png" width="600">
 </div>
 
 
