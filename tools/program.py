@@ -237,8 +237,9 @@ def train(config,
                     vdl_writer.add_scalar('TRAIN/{}'.format(k), v, global_step)
                 vdl_writer.add_scalar('TRAIN/lr', lr, global_step)
 
-            if dist.get_rank(
-            ) == 0 and global_step > 0 and global_step % print_batch_step == 0:
+            if dist.get_rank() == 0 and (
+                (global_step > 0 and global_step % print_batch_step == 0) or
+                (idx >= len(train_dataloader) - 1)):
                 logs = train_stats.log()
                 strs = 'epoch: [{}/{}], iter: {}, {}, reader_cost: {:.5f} s, batch_cost: {:.5f} s, samples: {}, ips: {:.5f}'.format(
                     epoch, epoch_num, global_step, logs, train_reader_cost /
@@ -374,7 +375,8 @@ def preprocess(is_train=False):
 
     alg = config['Architecture']['algorithm']
     assert alg in [
-        'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN', 'CLS'
+        'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
+        'CLS', 'PGNet'
     ]
 
     device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'

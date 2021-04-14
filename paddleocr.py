@@ -66,6 +66,46 @@ model_urls = {
             'url':
             'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/japan_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/dict/japan_dict.txt'
+        },
+        'chinese_cht': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/chinese_cht_mobile_v2.0_rec_infer.tar',
+            'dict_path': './ppocr/utils/dict/chinese_cht_dict.txt'
+        },
+        'ta': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ta_mobile_v2.0_rec_infer.tar',
+            'dict_path': './ppocr/utils/dict/ta_dict.txt'
+        },
+        'te': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/te_mobile_v2.0_rec_infer.tar',
+            'dict_path': './ppocr/utils/dict/te_dict.txt'
+        },
+        'ka': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ka_mobile_v2.0_rec_infer.tar',
+            'dict_path': './ppocr/utils/dict/ka_dict.txt'
+        },
+        'latin': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/latin_ppocr_mobile_v2.0_rec_infer.tar',
+            'dict_path': './ppocr/utils/dict/latin_dict.txt'
+        },
+        'arabic': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/arabic_ppocr_mobile_v2.0_rec_infer.tar',
+            'dict_path': './ppocr/utils/dict/arabic_dict.txt'
+        },
+        'cyrillic': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/cyrillic_ppocr_mobile_v2.0_rec_infer.tar',
+            'dict_path': './ppocr/utils/dict/cyrillic_dict.txt'
+        },
+        'devanagari': {
+            'url':
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/devanagari_ppocr_mobile_v2.0_rec_infer.tar',
+            'dict_path': './ppocr/utils/dict/devanagari_dict.txt'
         }
     },
     'cls':
@@ -233,10 +273,35 @@ class PaddleOCR(predict_system.TextSystem):
         postprocess_params.__dict__.update(**kwargs)
         self.use_angle_cls = postprocess_params.use_angle_cls
         lang = postprocess_params.lang
+        latin_lang = [
+            'af', 'az', 'bs', 'cs', 'cy', 'da', 'de', 'en', 'es', 'et', 'fr',
+            'ga', 'hr', 'hu', 'id', 'is', 'it', 'ku', 'la', 'lt', 'lv', 'mi',
+            'ms', 'mt', 'nl', 'no', 'oc', 'pi', 'pl', 'pt', 'ro', 'rs_latin',
+            'sk', 'sl', 'sq', 'sv', 'sw', 'tl', 'tr', 'uz', 'vi'
+        ]
+        arabic_lang = ['ar', 'fa', 'ug', 'ur']
+        cyrillic_lang = [
+            'ru', 'rs_cyrillic', 'be', 'bg', 'uk', 'mn', 'abq', 'ady', 'kbd',
+            'ava', 'dar', 'inh', 'che', 'lbe', 'lez', 'tab'
+        ]
+        devanagari_lang = [
+            'hi', 'mr', 'ne', 'bh', 'mai', 'ang', 'bho', 'mah', 'sck', 'new',
+            'gom', 'sa', 'bgc'
+        ]
+        if lang in latin_lang:
+            lang = "latin"
+        elif lang in arabic_lang:
+            lang = "arabic"
+        elif lang in cyrillic_lang:
+            lang = "cyrillic"
+        elif lang in devanagari_lang:
+            lang = "devanagari"
         assert lang in model_urls[
             'rec'], 'param lang must in {}, but got {}'.format(
                 model_urls['rec'].keys(), lang)
+        use_inner_dict = False
         if postprocess_params.rec_char_dict_path is None:
+            use_inner_dict = True
             postprocess_params.rec_char_dict_path = model_urls['rec'][lang][
                 'dict_path']
 
@@ -263,9 +328,9 @@ class PaddleOCR(predict_system.TextSystem):
         if postprocess_params.rec_algorithm not in SUPPORT_REC_MODEL:
             logger.error('rec_algorithm must in {}'.format(SUPPORT_REC_MODEL))
             sys.exit(0)
-
-        postprocess_params.rec_char_dict_path = str(
-            Path(__file__).parent / postprocess_params.rec_char_dict_path)
+        if use_inner_dict:
+            postprocess_params.rec_char_dict_path = str(
+                Path(__file__).parent / postprocess_params.rec_char_dict_path)
 
         # init det_model and rec_model
         super().__init__(postprocess_params)
@@ -282,8 +347,13 @@ class PaddleOCR(predict_system.TextSystem):
         if isinstance(img, list) and det == True:
             logger.error('When input a list of images, det must be false')
             exit(0)
+        if cls == False:
+            self.use_angle_cls = False
+        elif cls == True and self.use_angle_cls == False:
+            logger.warning(
+                'Since the angle classifier is not initialized, the angle classifier will not be uesd during the forward process'
+            )
 
-        self.use_angle_cls = cls
         if isinstance(img, str):
             # download net image
             if img.startswith('http'):

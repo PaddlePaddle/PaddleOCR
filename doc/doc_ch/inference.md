@@ -12,7 +12,7 @@ inference 模型（`paddle.jit.save`保存的模型）
 - [一、训练模型转inference模型](#训练模型转inference模型)
     - [检测模型转inference模型](#检测模型转inference模型)
     - [识别模型转inference模型](#识别模型转inference模型)  
-    - [方向分类模型转inference模型](#方向分类模型转inference模型)  
+    - [方向分类模型转inference模型](#方向分类模型转inference模型)
 
 - [二、文本检测模型推理](#文本检测模型推理)
     - [1. 超轻量中文检测模型推理](#超轻量中文检测模型推理)
