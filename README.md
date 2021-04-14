@@ -34,8 +34,8 @@ PaddleOCR supports both dynamic graph and static graph programming paradigm
 
 <div align="center">
     <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
-    <img src="doc/imgs_en/img_01.jpg" width="800">
-    <img src="doc/imgs_en/img_02.jpg" width="800">
+    <img src="doc/imgs_results/multi_lang/img_01.jpg" width="800">
+    <img src="doc/imgs_results/multi_lang/img_02.jpg" width="800">
 </div>
 
 The above pictures are the visualizations of the English recognition model. For more details, please see [Multi language recognition model](./doc/doc_en/multi_languages_en.md)
