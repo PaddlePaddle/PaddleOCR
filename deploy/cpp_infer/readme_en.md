@@ -238,7 +238,7 @@ visualize 1 # Whether to visualize the results，when it is set as 1, The predic
 The detection results will be shown on the screen, which is as follows.
 
 <div align="center">
-    <img src="../imgs/cpp_infer_pred_12.png" width="600">
+    <img src="./imgs/cpp_infer_pred_12.png" width="600">
 </div>
 
 
