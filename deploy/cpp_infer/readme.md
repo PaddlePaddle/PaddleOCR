@@ -1,6 +1,8 @@
 # 服务器端C++预测
 
-本教程将介绍在服务器端部署PaddleOCR超轻量中文检测、识别模型的详细步骤。
+本章节介绍PaddleOCR 模型的的C++部署方法，与之对应的python预测部署方式参考[文档](../../doc/doc_ch/inference.md)。
+C++在性能计算上优于python，因此，在大多数CPU、GPU部署场景，多采用C++的部署方式，本节将介绍如何在Linux\Windows (CPU\GPU)环境下配置C++环境并完成
+PaddleOCR模型部署。
 
 
 ## 1. 准备环境
@@ -72,9 +74,10 @@ opencv3/
 
 * 有2种方式获取Paddle预测库，下面进行详细介绍。
 
+
 #### 1.2.1 直接下载安装
 
-* [Paddle预测库官网](https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/guides/05_inference_deployment/inference/build_and_install_lib_cn.html)上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本。
+* [Paddle预测库官网](https://www.paddlepaddle.org.cn/documentation/docs/zh/advanced_guide/inference_deployment/inference/build_and_install_lib_cn.html)上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本（*建议选择paddle版本>=2.0.1版本的预测库* ）。
 
 * 下载之后使用下面的方法解压。
 
@@ -126,8 +129,6 @@ build/paddle_inference_install_dir/
 ```
 
 其中`paddle`就是C++预测所需的Paddle库，`version.txt`中包含当前预测库的版本信息。
-
-
 
 
 ## 2 开始运行
@@ -230,7 +231,7 @@ visualize 1 # 是否对结果进行可视化，为1时，会在当前文件夹�
 最终屏幕上会输出检测结果如下。
 
 <div align="center">
-    <img src="../imgs/cpp_infer_pred_12.png" width="600">
+    <img src="./imgs/cpp_infer_pred_12.png" width="600">
 </div>
 
 

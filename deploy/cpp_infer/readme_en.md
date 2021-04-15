@@ -1,7 +1,9 @@
 # Server-side C++ inference
 
-
-In this tutorial, we will introduce the detailed steps of deploying PaddleOCR ultra-lightweight Chinese detection and recognition models on the server side.
+This chapter introduces the C++ deployment method of the PaddleOCR model, and the corresponding python predictive deployment method refers to [document](../../doc/doc_ch/inference.md).
+C++ is better than python in terms of performance calculation. Therefore, in most CPU and GPU deployment scenarios, C++ deployment is mostly used.
+This section will introduce how to configure the C++ environment and complete it in the Linux\Windows (CPU\GPU) environment
+PaddleOCR model deployment.
 
 
 ## 1. Prepare the environment
@@ -89,8 +91,8 @@ tar -xf paddle_inference.tgz
 Finally you can see the following files in the folder of `paddle_inference/`.
 
 #### 1.2.2 Compile from the source code
-* If you want to get the latest Paddle inference library features, you can download the latest code from Paddle github repository and compile the inference library from the source code.
-* You can refer to [Paddle inference library] (https://www.paddlepaddle.org.cn/documentation/docs/en/develop/guides/05_inference_deployment/inference/build_and_install_lib_en.html) to get the Paddle source code from github, and then compile To generate the latest inference library. The method of using git to access the code is as follows.
+* If you want to get the latest Paddle inference library features, you can download the latest code from Paddle github repository and compile the inference library from the source code. It is recommended to download the inference library with paddle version greater than or equal to 2.0.1.
+* You can refer to [Paddle inference library] (https://www.paddlepaddle.org.cn/documentation/docs/en/advanced_guide/inference_deployment/inference/build_and_install_lib_en.html) to get the Paddle source code from github, and then compile To generate the latest inference library. The method of using git to access the code is as follows.
 
 
 ```shell
@@ -236,7 +238,7 @@ visualize 1 # Whether to visualize the results，when it is set as 1, The predic
 The detection results will be shown on the screen, which is as follows.
 
 <div align="center">
-    <img src="../imgs/cpp_infer_pred_12.png" width="600">
+    <img src="./imgs/cpp_infer_pred_12.png" width="600">
 </div>
 
 

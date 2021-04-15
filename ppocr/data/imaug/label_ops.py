@@ -187,6 +187,32 @@ class CTCLabelEncode(BaseRecLabelEncode):
         return dict_character
 
 
+class E2ELabelEncode(BaseRecLabelEncode):
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 character_type='EN',
+                 use_space_char=False,
+                 **kwargs):
+        super(E2ELabelEncode,
+              self).__init__(max_text_length, character_dict_path,
+                             character_type, use_space_char)
+        self.pad_num = len(self.dict)  # the length to pad
+
+    def __call__(self, data):
+        texts = data['strs']
+        temp_texts = []
+        for text in texts:
+            text = text.lower()
+            text = self.encode(text)
+            if text is None:
+                return None
+            text = text + [self.pad_num] * (self.max_text_len - len(text))
+            temp_texts.append(text)
+        data['strs'] = np.array(temp_texts)
+        return data
+
+
 class AttnLabelEncode(BaseRecLabelEncode):
     """ Convert between text-label and text-index """
 
@@ -215,7 +241,7 @@ class AttnLabelEncode(BaseRecLabelEncode):
             return None
         data['length'] = np.array(len(text))
         text = [0] + text + [len(self.character) - 1] + [0] * (self.max_text_len
-                                                               - len(text) - 1)
+                                                               - len(text) - 2)
         data['label'] = np.array(text)
         return data
 
@@ -261,7 +287,7 @@ class SRNLabelEncode(BaseRecLabelEncode):
         if len(text) > self.max_text_len:
             return None
         data['length'] = np.array(len(text))
-        text = text + [char_num] * (self.max_text_len - len(text))
+        text = text + [char_num - 1] * (self.max_text_len - len(text))
         data['label'] = np.array(text)
         return data
 

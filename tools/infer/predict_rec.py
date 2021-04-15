@@ -41,6 +41,7 @@ class TextRecognizer(object):
         self.character_type = args.rec_char_type
         self.rec_batch_num = args.rec_batch_num
         self.rec_algorithm = args.rec_algorithm
+        self.max_text_length = args.max_text_length
         postprocess_params = {
             'name': 'CTCLabelDecode',
             "character_type": args.rec_char_type,
@@ -50,6 +51,13 @@ class TextRecognizer(object):
         if self.rec_algorithm == "SRN":
             postprocess_params = {
                 'name': 'SRNLabelDecode',
+                "character_type": args.rec_char_type,
+                "character_dict_path": args.rec_char_dict_path,
+                "use_space_char": args.use_space_char
+            }
+        elif self.rec_algorithm == "RARE":
+            postprocess_params = {
+                'name': 'AttnLabelDecode',
                 "character_type": args.rec_char_type,
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
@@ -179,8 +187,9 @@ class TextRecognizer(object):
                     norm_img = norm_img[np.newaxis, :]
                     norm_img_batch.append(norm_img)
                 else:
-                    norm_img = self.process_image_srn(
-                        img_list[indices[ino]], self.rec_image_shape, 8, 25)
+                    norm_img = self.process_image_srn(img_list[indices[ino]],
+                                                      self.rec_image_shape, 8,
+                                                      self.max_text_length)
                     encoder_word_pos_list = []
                     gsrm_word_pos_list = []
                     gsrm_slf_attn_bias1_list = []
@@ -230,7 +239,7 @@ class TextRecognizer(object):
                     output = output_tensor.copy_to_cpu()
                     outputs.append(output)
                 preds = outputs[0]
-
+            self.predictor.try_shrink_memory()
             rec_result = self.postprocess_op(preds)
             for rno in range(len(rec_result)):
                 rec_res[indices[beg_img_no + rno]] = rec_result[rno]
@@ -241,9 +250,11 @@ class TextRecognizer(object):
 def main(args):
     image_file_list = get_image_file_list(args.image_dir)
     text_recognizer = TextRecognizer(args)
+    total_run_time = 0.0
+    total_images_num = 0
     valid_image_file_list = []
     img_list = []
-    for image_file in image_file_list:
+    for idx, image_file in enumerate(image_file_list):
         img, flag = check_and_read_gif(image_file)
         if not flag:
             img = cv2.imread(image_file)
@@ -252,22 +263,29 @@ def main(args):
             continue
         valid_image_file_list.append(image_file)
         img_list.append(img)
-    try:
-        rec_res, predict_time = text_recognizer(img_list)
-    except:
-        logger.info(traceback.format_exc())
-        logger.info(
-            "ERROR!!!! \n"
-            "Please read the FAQ：https://github.com/PaddlePaddle/PaddleOCR#faq \n"
-            "If your model has tps module:  "
-            "TPS does not support variable shape.\n"
-            "Please set --rec_image_shape='3,32,100' and --rec_char_type='en' ")
-        exit()
-    for ino in range(len(img_list)):
-        logger.info("Predicts of {}:{}".format(valid_image_file_list[ino],
-                                               rec_res[ino]))
+        if len(img_list) >= args.rec_batch_num or idx == len(
+                image_file_list) - 1:
+            try:
+                rec_res, predict_time = text_recognizer(img_list)
+                total_run_time += predict_time
+            except:
+                logger.info(traceback.format_exc())
+                logger.info(
+                    "ERROR!!!! \n"
+                    "Please read the FAQ：https://github.com/PaddlePaddle/PaddleOCR#faq \n"
+                    "If your model has tps module:  "
+                    "TPS does not support variable shape.\n"
+                    "Please set --rec_image_shape='3,32,100' and --rec_char_type='en' "
+                )
+                exit()
+            for ino in range(len(img_list)):
+                logger.info("Predicts of {}:{}".format(valid_image_file_list[
+                    ino], rec_res[ino]))
+            total_images_num += len(valid_image_file_list)
+            valid_image_file_list = []
+            img_list = []
     logger.info("Total predict time for {} images, cost: {:.3f}".format(
-        len(img_list), predict_time))
+        total_images_num, total_run_time))
 
 
 if __name__ == "__main__":

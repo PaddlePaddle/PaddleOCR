@@ -30,7 +30,7 @@ sudo nvidia-docker run --name ppocr -v $PWD:/paddle --shm-size=64G --network=hos
 sudo docker container exec -it ppocr /bin/bash
 ```
 
-**2. 安装PaddlePaddle Fluid v2.0**
+**2. 安装PaddlePaddle 2.0**
 ```
 pip3 install --upgrade pip
 

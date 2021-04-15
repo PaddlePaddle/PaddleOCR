@@ -2,16 +2,17 @@
 # 基于Python预测引擎推理
 
 inference 模型（`paddle.jit.save`保存的模型）
-一般是模型训练完成后保存的固化模型，多用于预测部署。训练过程中保存的模型是checkpoints模型，保存的是模型的参数，多用于恢复训练等。
-与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合与实际系统集成。
+一般是模型训练，把模型结构和模型参数保存在文件中的固化模型，多用于预测部署场景。
+训练过程中保存的模型是checkpoints模型，保存的只有模型的参数，多用于恢复训练等。
+与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合于实际系统集成。
 
-接下来首先介绍如何将训练的模型转换成inference模型，然后将依次介绍文本检测、文本角度分类器、文本识别以及三者串联基于预测引擎推理。
+接下来首先介绍如何将训练的模型转换成inference模型，然后将依次介绍文本检测、文本角度分类器、文本识别以及三者串联在CPU、GPU上的预测方法。
 
 
 - [一、训练模型转inference模型](#训练模型转inference模型)
     - [检测模型转inference模型](#检测模型转inference模型)
     - [识别模型转inference模型](#识别模型转inference模型)  
-    - [方向分类模型转inference模型](#方向分类模型转inference模型)  
+    - [方向分类模型转inference模型](#方向分类模型转inference模型)
 
 - [二、文本检测模型推理](#文本检测模型推理)
     - [1. 超轻量中文检测模型推理](#超轻量中文检测模型推理)
@@ -140,7 +141,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/00018069.jpg" --det_m
 ![](../imgs_results/det_res_00018069.jpg)
 
 通过参数`limit_type`和`det_limit_side_len`来对图片的尺寸进行限制，
-`litmit_type`可选参数为[`max`, `min`]，
+`limit_type`可选参数为[`max`, `min`]，
 `det_limit_size_len` 为正整数，一般设置为32 的倍数，比如960。
 
 参数默认设置为`limit_type='max', det_limit_side_len=960`。表示网络输入图像的最长边不能超过960，
