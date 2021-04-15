@@ -147,6 +147,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.itemsToShapesbox = {}
         self.shapesToItemsbox = {}
         self.prevLabelText = getStr('tempLabel')
+        self.noLabelText = getStr('nullLabel')
         self.model = 'paddle'
         self.PPreader = None
         self.autoSaveNum = 5
@@ -1020,7 +1021,7 @@ class MainWindow(QMainWindow, WindowMixin):
         item.setText(str([(int(p.x()), int(p.y())) for p in shape.points]))
         self.updateComboBox()
 
-    def updateComboBox(self): # TODO：貌似没用
+    def updateComboBox(self):
         # Get the unique labels and add them to the Combobox.
         itemsTextList = [str(self.labelList.item(i).text()) for i in range(self.labelList.count())]
 
@@ -1040,7 +1041,7 @@ class MainWindow(QMainWindow, WindowMixin):
             return dict(label=s.label,  # str
                         line_color=s.line_color.getRgb(),
                         fill_color=s.fill_color.getRgb(),
-                        points=[(p.x(), p.y()) for p in s.points],  # QPonitF
+                        points=[(int(p.x()), int(p.y())) for p in s.points],  # QPonitF
                        # add chris
                         difficult=s.difficult)  # bool
 
@@ -1069,7 +1070,7 @@ class MainWindow(QMainWindow, WindowMixin):
             # print('Image:{0} -> Annotation:{1}'.format(self.filePath, annotationFilePath))
             return True
         except:
-            self.errorMessage(u'Error saving label data')
+            self.errorMessage(u'Error saving label data', u'Error saving label data')
             return False
 
     def copySelectedShape(self):
@@ -1802,10 +1803,14 @@ class MainWindow(QMainWindow, WindowMixin):
                     result.insert(0, box)
                     print('result in reRec is ', result)
                     self.result_dic.append(result)
-                    if result[1][0] == shape.label:
-                        print('label no change')
-                    else:
-                        rec_flag += 1
+                else:
+                    print('Can not recognise the box')
+                    self.result_dic.append([box,(self.noLabelText,0)])
+
+                if self.noLabelText == shape.label or result[1][0] == shape.label:
+                    print('label no change')
+                else:
+                    rec_flag += 1
 
             if len(self.result_dic) > 0 and rec_flag > 0:
                 self.saveFile(mode='Auto')
@@ -1836,9 +1841,14 @@ class MainWindow(QMainWindow, WindowMixin):
                     print('label no change')
                 else:
                     shape.label = result[1][0]
-                self.singleLabel(shape)
-                self.setDirty()
-            print(box)
+            else:
+                print('Can not recognise the box')
+                if self.noLabelText == shape.label:
+                    print('label no change')
+                else:
+                    shape.label = self.noLabelText
+            self.singleLabel(shape)
+            self.setDirty()
 
     def autolcm(self):
         vbox = QVBoxLayout()
