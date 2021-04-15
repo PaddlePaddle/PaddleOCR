@@ -34,8 +34,12 @@ from ppocr.utils.utility import check_and_read_gif, get_image_file_list
 __all__ = ['PaddleOCR']
 
 model_urls = {
-    'det':
-    'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar',
+    'det': {
+        'ch':
+        'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar',
+        'en':
+        'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/en_ppocr_mobile_v2.0_det_infer.tar'
+    },
     'rec': {
         'ch': {
             'url':
@@ -45,7 +49,7 @@ model_urls = {
         'en': {
             'url':
             'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/en_number_mobile_v2.0_rec_infer.tar',
-            'dict_path': './ppocr/utils/dict/en_dict.txt'
+            'dict_path': './ppocr/utils/en_dict.txt'
         },
         'french': {
             'url':
@@ -113,7 +117,7 @@ model_urls = {
 }
 
 SUPPORT_DET_MODEL = ['DB']
-VERSION = 2.0
+VERSION = 2.1
 SUPPORT_REC_MODEL = ['CRNN']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
@@ -199,7 +203,7 @@ def parse_args(mMain=True, add_help=True):
         parser.add_argument("--rec_model_dir", type=str, default=None)
         parser.add_argument("--rec_image_shape", type=str, default="3, 32, 320")
         parser.add_argument("--rec_char_type", type=str, default='ch')
-        parser.add_argument("--rec_batch_num", type=int, default=30)
+        parser.add_argument("--rec_batch_num", type=int, default=6)
         parser.add_argument("--max_text_length", type=int, default=25)
         parser.add_argument("--rec_char_dict_path", type=str, default=None)
         parser.add_argument("--use_space_char", type=bool, default=True)
@@ -209,7 +213,7 @@ def parse_args(mMain=True, add_help=True):
         parser.add_argument("--cls_model_dir", type=str, default=None)
         parser.add_argument("--cls_image_shape", type=str, default="3, 48, 192")
         parser.add_argument("--label_list", type=list, default=['0', '180'])
-        parser.add_argument("--cls_batch_num", type=int, default=30)
+        parser.add_argument("--cls_batch_num", type=int, default=6)
         parser.add_argument("--cls_thresh", type=float, default=0.9)
 
         parser.add_argument("--enable_mkldnn", type=bool, default=False)
@@ -243,7 +247,7 @@ def parse_args(mMain=True, add_help=True):
             rec_model_dir=None,
             rec_image_shape="3, 32, 320",
             rec_char_type='ch',
-            rec_batch_num=30,
+            rec_batch_num=6,
             max_text_length=25,
             rec_char_dict_path=None,
             use_space_char=True,
@@ -251,7 +255,7 @@ def parse_args(mMain=True, add_help=True):
             cls_model_dir=None,
             cls_image_shape="3, 48, 192",
             label_list=['0', '180'],
-            cls_batch_num=30,
+            cls_batch_num=6,
             cls_thresh=0.9,
             enable_mkldnn=False,
             use_zero_copy_run=False,
@@ -274,10 +278,10 @@ class PaddleOCR(predict_system.TextSystem):
         self.use_angle_cls = postprocess_params.use_angle_cls
         lang = postprocess_params.lang
         latin_lang = [
-            'af', 'az', 'bs', 'cs', 'cy', 'da', 'de', 'en', 'es', 'et', 'fr',
-            'ga', 'hr', 'hu', 'id', 'is', 'it', 'ku', 'la', 'lt', 'lv', 'mi',
-            'ms', 'mt', 'nl', 'no', 'oc', 'pi', 'pl', 'pt', 'ro', 'rs_latin',
-            'sk', 'sl', 'sq', 'sv', 'sw', 'tl', 'tr', 'uz', 'vi'
+            'af', 'az', 'bs', 'cs', 'cy', 'da', 'de', 'es', 'et', 'fr', 'ga',
+            'hr', 'hu', 'id', 'is', 'it', 'ku', 'la', 'lt', 'lv', 'mi', 'ms',
+            'mt', 'nl', 'no', 'oc', 'pi', 'pl', 'pt', 'ro', 'rs_latin', 'sk',
+            'sl', 'sq', 'sv', 'sw', 'tl', 'tr', 'uz', 'vi'
         ]
         arabic_lang = ['ar', 'fa', 'ug', 'ur']
         cyrillic_lang = [
@@ -299,6 +303,10 @@ class PaddleOCR(predict_system.TextSystem):
         assert lang in model_urls[
             'rec'], 'param lang must in {}, but got {}'.format(
                 model_urls['rec'].keys(), lang)
+        if lang == "ch":
+            det_lang = "ch"
+        else:
+            det_lang = "en"
         use_inner_dict = False
         if postprocess_params.rec_char_dict_path is None:
             use_inner_dict = True
@@ -308,7 +316,7 @@ class PaddleOCR(predict_system.TextSystem):
         # init model dir
         if postprocess_params.det_model_dir is None:
             postprocess_params.det_model_dir = os.path.join(
-                BASE_DIR, '{}/det'.format(VERSION))
+                BASE_DIR, '{}/det/{}'.format(VERSION, det_lang))
         if postprocess_params.rec_model_dir is None:
             postprocess_params.rec_model_dir = os.path.join(
                 BASE_DIR, '{}/rec/{}'.format(VERSION, lang))
@@ -317,7 +325,8 @@ class PaddleOCR(predict_system.TextSystem):
                 BASE_DIR, '{}/cls'.format(VERSION))
         print(postprocess_params)
         # download model
-        maybe_download(postprocess_params.det_model_dir, model_urls['det'])
+        maybe_download(postprocess_params.det_model_dir,
+                       model_urls['det'][det_lang])
         maybe_download(postprocess_params.rec_model_dir,
                        model_urls['rec'][lang]['url'])
         maybe_download(postprocess_params.cls_model_dir, model_urls['cls'])
