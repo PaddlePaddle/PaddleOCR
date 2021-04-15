@@ -45,7 +45,7 @@ class Canvas(QWidget):
     CREATE, EDIT = list(range(2))
     _fill_drawing = False # draw shadows
 
-    epsilon = 11.0
+    epsilon = 5.0
 
     def __init__(self, *args, **kwargs):
         super(Canvas, self).__init__(*args, **kwargs)
