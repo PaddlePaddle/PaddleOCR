@@ -129,7 +129,7 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --rec false
 <a name="python_脚本运行"></a>
 ### 2.2 python 脚本运行
 
-ppocr 也支持在python脚本中运行，便于嵌入到您自己的代码中：
+ppocr 也支持在python脚本中运行，便于嵌入到您自己的代码中 ：
 
 * 整图预测（检测+识别）
 
@@ -153,7 +153,7 @@ image = Image.open(img_path).convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
 scores = [line[1][1] for line in result]
-im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/korean.ttf')
+im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/korean.ttf')
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
@@ -196,7 +196,7 @@ ppocr 支持使用自己的数据进行自定义训练或finetune, 其中识别�
 |英文|english|en| |乌克兰文|Ukranian|uk|
 |法文|french|fr| |白俄罗斯文|Belarusian|be|
 |德文|german|german| |泰卢固文|Telugu |te|
-|日文|japan|japan| |卡纳达文|Kannada |kn|
+|日文|japan|japan| | |阿巴扎文|Abaza |abq|
 |韩文|korean|korean| |泰米尔文|Tamil |ta|
 |中文繁体|chinese traditional |ch_tra| |南非荷兰文 |Afrikaans |af|
 |意大利文| Italian |it| |阿塞拜疆文 |Azerbaijani    |az|
@@ -230,4 +230,3 @@ ppocr 支持使用自己的数据进行自定义训练或finetune, 其中识别�
 | 乌兹别克文|Uzbek |uz| | 阿瓦尔文|Avar |ava|
 | 越南文|Vietnamese |vi| | 阿瓦尔文|Avar |ava|
 | 蒙古文|Mongolian |mn| | 阿迪赫文|Adyghe |ady|
-| 阿巴扎文|Abaza |abq|
