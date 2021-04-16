@@ -181,7 +181,7 @@ ppocr 支持使用自己的数据进行自定义训练或finetune, 其中识别�
 除了安装whl包进行快速预测，ppocr 也提供了多种预测部署方式，如有需求可阅读相关文档：
 - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
 - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
-- [服务化部署](./deploy/pdserving/README_CN.md)
+- [服务化部署](./deploy/hubserving/readme.md)
 - [端侧部署](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme.md)
 - [Benchmark](./doc/doc_ch/benchmark.md)
 

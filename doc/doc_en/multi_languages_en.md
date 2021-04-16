@@ -183,7 +183,7 @@ If necessary, you can read related documents:
 
 - [Python Inference](./doc/doc_en/inference_en.md)
 - [C++ Inference](./deploy/cpp_infer/readme_en.md)
-- [Serving](./deploy/pdserving/README.md)
+- [Serving](./deploy/hubserving/readme_en.md)
 - [Mobile](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme_en.md)
 - [Benchmark](./doc/doc_en/benchmark_en.md)
 
