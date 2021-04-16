@@ -13,7 +13,7 @@ Among them, the English model supports the detection and recognition of uppercas
 letters and common punctuation, and the recognition of space characters is optimized:
 
 <div align="center">
-    <img src="../imgs_results/multi_lang/img_12.jpg" width="400" height="600">
+    <img src="../imgs_results/multi_lang/img_12.jpg" width="900" height="300">
 </div>
 
 The multilingual models cover Latin, Arabic, Traditional Chinese, Korean, Japanese, etc.:
@@ -21,8 +21,8 @@ The multilingual models cover Latin, Arabic, Traditional Chinese, Korean, Japane
 <div align="center">
     <img src="../imgs_results/multi_lang/japan_2.jpg" width="600" height="300">
     <img src="../imgs_results/multi_lang/french_0.jpg" width="300" height="300">
-    <img src="../imgs_results/multi_lang/korean_0.jpg" width="400" height="300">
-    <img src="../imgs_results/multi_lang/arabic_0.jpg" width="400" height="300">
+    <img src="../imgs_results/multi_lang/korean_0.jpg" width="500" height="300">
+    <img src="../imgs_results/multi_lang/arabic_0.jpg" width="300" height="300">
 </div>
 
 This document will briefly introduce how to use the multilingual model.

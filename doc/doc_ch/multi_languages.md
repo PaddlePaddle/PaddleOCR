@@ -11,7 +11,7 @@ PaddleOCR 旨在打造一套丰富、领先、且实用的OCR工具库，不仅�
 其中英文模型支持，大小写字母和常见标点的检测识别，并优化了空格字符的识别：
 
 <div align="center">
-    <img src="../imgs_results/multi_lang/img_12.jpg" width="400" height="600">
+    <img src="../imgs_results/multi_lang/img_12.jpg" width="900" height="300">
 </div>
 
 小语种模型覆盖了拉丁语系、阿拉伯语系、中文繁体、韩语、日语等等：
@@ -19,8 +19,8 @@ PaddleOCR 旨在打造一套丰富、领先、且实用的OCR工具库，不仅�
 <div align="center">
     <img src="../imgs_results/multi_lang/japan_2.jpg" width="600" height="300">
     <img src="../imgs_results/multi_lang/french_0.jpg" width="300" height="300">
-    <img src="../imgs_results/multi_lang/korean_0.jpg" width="400" height="300">
-    <img src="../imgs_results/multi_lang/arabic_0.jpg" width="400" height="300">
+    <img src="../imgs_results/multi_lang/korean_0.jpg" width="500" height="300">
+    <img src="../imgs_results/multi_lang/arabic_0.jpg" width="300" height="300">
 </div>
 
 
