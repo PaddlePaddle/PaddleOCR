@@ -153,7 +153,7 @@ image = Image.open(img_path).convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
 scores = [line[1][1] for line in result]
-im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/korean.ttf')
+im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/korean.ttf')
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
@@ -232,7 +232,7 @@ For functions such as data annotation, you can read the complete [Document Tutor
 |german|german|
 |japan|japan|
 |korean|korean|
-|chinese traditional |ch_tra|
+|chinese traditional |chinese_cht|
 | Italian |it|
 |Spanish |es|
 | Portuguese|pt|
@@ -251,7 +251,6 @@ For functions such as data annotation, you can read the complete [Document Tutor
 |Ukranian|uk|
 |Belarusian|be|
 |Telugu |te|
-|Kannada |kn|
 |Tamil |ta|
 |Afrikaans |af|
 |Azerbaijani    |az|

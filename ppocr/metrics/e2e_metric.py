@@ -35,11 +35,11 @@ class E2EMetric(object):
         self.reset()
 
     def __call__(self, preds, batch, **kwargs):
-        img_id = batch[5][0]
+        img_id = batch[2][0]
         e2e_info_list = [{
             'points': det_polyon,
-            'text': pred_str
-        } for det_polyon, pred_str in zip(preds['points'], preds['strs'])]
+            'texts': pred_str
+        } for det_polyon, pred_str in zip(preds['points'], preds['texts'])]
         result = get_socre(self.gt_mat_dir, img_id, e2e_info_list)
         self.results.append(result)
 

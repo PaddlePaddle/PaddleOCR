@@ -30,6 +30,7 @@ from ppocr.utils.logging import get_logger
 
 logger = get_logger()
 from ppocr.utils.utility import check_and_read_gif, get_image_file_list
+from tools.infer.utility import draw_ocr
 
 __all__ = ['PaddleOCR']
 
@@ -117,7 +118,7 @@ model_urls = {
 }
 
 SUPPORT_DET_MODEL = ['DB']
-VERSION = 2.1
+VERSION = '2.1'
 SUPPORT_REC_MODEL = ['CRNN']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
@@ -315,14 +316,13 @@ class PaddleOCR(predict_system.TextSystem):
 
         # init model dir
         if postprocess_params.det_model_dir is None:
-            postprocess_params.det_model_dir = os.path.join(
-                BASE_DIR, '{}/det/{}'.format(VERSION, det_lang))
+            postprocess_params.det_model_dir = os.path.join(BASE_DIR, VERSION,
+                                                            'det', det_lang)
         if postprocess_params.rec_model_dir is None:
-            postprocess_params.rec_model_dir = os.path.join(
-                BASE_DIR, '{}/rec/{}'.format(VERSION, lang))
+            postprocess_params.rec_model_dir = os.path.join(BASE_DIR, VERSION,
+                                                            'rec', lang)
         if postprocess_params.cls_model_dir is None:
-            postprocess_params.cls_model_dir = os.path.join(
-                BASE_DIR, '{}/cls'.format(VERSION))
+            postprocess_params.cls_model_dir = os.path.join(BASE_DIR, 'cls')
         print(postprocess_params)
         # download model
         maybe_download(postprocess_params.det_model_dir,

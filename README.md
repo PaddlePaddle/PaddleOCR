@@ -32,7 +32,8 @@ PaddleOCR supports both dynamic graph and static graph programming paradigm
 
 <div align="center">
     <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
-    <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/00018069.jpg" width="800">
+    <img src="doc/imgs_results/multi_lang/img_01.jpg" width="800">
+    <img src="doc/imgs_results/multi_lang/img_02.jpg" width="800">
 </div>
 
 The above pictures are the visualizations of the general ppocr_server model. For more effect pictures, please see [More visualizations](./doc/doc_en/visualization_en.md).
