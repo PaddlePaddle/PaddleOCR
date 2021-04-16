@@ -122,7 +122,7 @@ class TextE2E(object):
         else:
             raise NotImplementedError
         post_result = self.postprocess_op(preds, shape_list)
-        points, strs = post_result['points'], post_result['strs']
+        points, strs = post_result['points'], post_result['texts']
         dt_boxes = self.filter_tag_det_res_only_clip(points, ori_im.shape)
         elapse = time.time() - starttime
         return dt_boxes, strs, elapse
