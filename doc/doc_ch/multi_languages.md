@@ -138,11 +138,11 @@ from paddleocr import PaddleOCR, draw_ocr
 
 # 同样也是通过修改 lang 参数切换语种
 ocr = PaddleOCR(lang="korean") # 首次执行会自动下载模型文件
+img_path = 'doc/imgs/korean_1.jpg '
+result = ocr.ocr(img_path)
 # 可通过参数控制单独执行识别、检测
 # result = ocr.ocr(img_path, det=False) 只执行识别
 # result = ocr.ocr(img_path, rec=False) 只执行检测
-img_path = 'doc/imgs/korean_1.jpg '
-result = ocr.ocr(img_path)
 # 打印检测框和识别结果
 for line in result:
     print(line)
