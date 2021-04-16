@@ -62,20 +62,21 @@ PostProcess:
   mode: fast   # fast or slow two ways
 Metric:
   name: E2EMetric
-  gt_mat_dir:    # the dir of gt_mat
+  gt_mat_dir:  ./train_data/total_text/gt  # the dir of gt_mat
   character_dict_path: ppocr/utils/ic15_dict.txt
   main_indicator: f_score_e2e
 
 Train:
   dataset:
     name: PGDataSet
-    label_file_list: [.././train_data/total_text/train/]
+    data_dir: ./train_data/total_text/train
+    label_file_list: [./train_data/total_text/train/]
     ratio_list: [1.0]
-    data_format: icdar #two data format: icdar/textnet
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
+      - E2ELabelEncode:
       - PGProcessTrain:
           batch_size: 14  # same as loader: batch_size_per_card
           min_crop_size: 24
@@ -92,13 +93,12 @@ Train:
 Eval:
   dataset:
     name: PGDataSet
-    data_dir: ./train_data/
+    data_dir: ./train_data/total_text/test
     label_file_list: [./train_data/total_text/test/]
     transforms:
       - DecodeImage: # load image
           img_mode: RGB
           channel_first: False
-      - E2ELabelEncode:
       - E2EResizeForTest:
           max_side_len: 768
       - NormalizeImage:
@@ -108,7 +108,7 @@ Eval:
           order: 'hwc'
       - ToCHWImage:
       - KeepKeys:
-          keep_keys: [ 'image', 'shape', 'polys', 'strs', 'tags', 'img_id']
+          keep_keys: [ 'image', 'shape', 'img_id']
   loader:
     shuffle: False
     drop_last: False
