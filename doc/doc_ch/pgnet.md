@@ -30,6 +30,7 @@ PGNet算法细节详见[论文](https://www.aaai.org/AAAI21Papers/AAAI-2885.Wang
 测试集：Total-Text
 
 测试环境: NVIDIA Tesla V100-SXM2-16GB
+
 |PGNetA|det_precision|det_recall|det_f_score|e2e_precision|e2e_recall|e2e_f_score|FPS|下载|
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 |Paper|85.30|86.80|86.1|-|-|61.7|38.20 (size=640)|-|
