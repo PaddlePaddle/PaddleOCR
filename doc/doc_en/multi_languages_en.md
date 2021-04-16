@@ -188,11 +188,11 @@ If necessary, you can read related documents:
 - [Benchmark](./doc/doc_en/benchmark_en.md)
 
 
-<a name="language_abbreviation"></a>
+<a name="language_abbreviations"></a>
 ## 5 Support languages and abbreviations
 
 | Language  | Abbreviation | | Language  | Abbreviation |
-| ---  | --- | | ---  | --- |
+| ---  | --- | --- | ---  | --- |
 |chinese and english|ch| |Arabic|ar|
 |english|en| |Hindi|hi|
 |french|fr| |Uyghur|ug|
