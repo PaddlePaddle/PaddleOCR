@@ -36,7 +36,7 @@ Paddle Lite是飞桨轻量化推理引擎，为手机、IOT端提供高效推理
 git clone https://github.com/PaddlePaddle/Paddle-Lite.git
 cd Paddle-Lite
 # 切换到Paddle-Lite release/v2.8 稳定分支
-git checkout release/v2.8
+git checkout 86a5140faeddf419781dced1049bd4ceea28ff39 # 此commit后对量化模型支持比较好
 ./lite/tools/build_android.sh  --arch=armv8  --with_cv=ON --with_extra=ON
 ```
 
@@ -96,7 +96,7 @@ Paddle-Lite 提供了多种策略来自动优化原始的模型，其中包括�
 # 如果准备环境时已经clone了Paddle-Lite，则不用重新clone Paddle-Lite
 git clone https://github.com/PaddlePaddle/Paddle-Lite.git
 cd Paddle-Lite
-git checkout release/v2.8
+git checkout 86a5140faeddf419781dced1049bd4ceea28ff39
 # 启动编译
 ./lite/tools/build.sh build_optimize_tool
 ```
@@ -262,10 +262,13 @@ use_direction_classify  0  # 是否使用方向分类器，0表示不使用，1�
 
 ## FAQ
 Q1：如果想更换模型怎么办，需要重新按照流程走一遍吗？
+
 A1：如果已经走通了上述步骤，更换模型只需要替换 .nb 模型文件即可，同时要注意字典更新
 
 Q2：换一个图测试怎么做？
+
 A2：替换debug下的.jpg测试图像为你想要测试的图像，adb push 到手机上即可
 
 Q3：如何封装到手机APP中？
+
 A3：此demo旨在提供能在手机上运行OCR的核心算法部分，PaddleOCR/deploy/android_demo是将这个demo封装到手机app的示例，供参考
