@@ -21,7 +21,7 @@ PaddleOCR supports both dynamic graph and static graph programming paradigm
     - Ultra lightweight ppocr_mobile series models: detection (3.0M) + direction classifier (1.4M) + recognition (5.0M) = 9.4M
     - General ppocr_server series models: detection (47.1M) + direction classifier (1.4M) + recognition (94.9M) = 143.4M
     - Support Chinese, English, and digit recognition, vertical text recognition, and long text recognition
-    - Support more than 80 kinds of multi-language recognition models: [For details](./doc/doc_ch/multi_languages.md)
+    - Support more than 80 kinds of multi-language recognition models: [For details](./doc/doc_en/multi_languages_en.md)
 - Rich toolkits related to the OCR areas
     - Semi-automatic data annotation tool, i.e., PPOCRLabel: support fast and efficient data annotation
     - Data synthesis tool, i.e., Style-Text: easy to synthesize a large number of images which are similar to the target scene image
@@ -97,7 +97,7 @@ For a new language request, please refer to [Guideline for new language_requests
     - [Quick Inference Based on PIP](./doc/doc_en/whl_en.md)
     - [Python Inference](./doc/doc_en/inference_en.md)
     - [C++ Inference](./deploy/cpp_infer/readme_en.md)
-    - [Serving](./deploy/pdserving/README.md)
+    - [Serving](./deploy/hubserving/readme_en.md)
     - [Mobile](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme_en.md)
     - [Benchmark](./doc/doc_en/benchmark_en.md)  
 - Data Annotation and Synthesis

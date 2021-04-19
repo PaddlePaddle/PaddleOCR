@@ -26,7 +26,7 @@ def get_socre(gt_dir, img_id, pred_dict):
         n = len(pred_dict)
         for i in range(n):
             points = pred_dict[i]['points']
-            text = pred_dict[i]['text']
+            text = pred_dict[i]['texts']
             point = ",".join(map(str, points.reshape(-1, )))
             det.append([point, text])
         return det
