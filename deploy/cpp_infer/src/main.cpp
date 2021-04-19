@@ -83,23 +83,29 @@ int main(int argc, char **argv) {
   std::vector<double> det_t = {0, 0, 0};
   std::vector<double> rec_t = {0, 0, 0};
   int rec_img_num = 0;
-  for (auto img_dir : all_img_names) {
-    cv::Mat srcimg = cv::imread(img_dir, cv::IMREAD_COLOR);
-
-    std::vector<double> det_times;
+  Timer timer;
+  std::vector<Timer> warmpupTimer = {timer, timer, timer};
+  // warmup 20 times
+  for (int warmup = 0; warmup <= 20; warmup++) {
+    cv::Mat srcimg = cv::imread(all_img_names[0], cv::IMREAD_COLOR);
 
     std::vector<std::vector<std::vector<int>>> boxes;
-    det.Run(srcimg, boxes, det_times);
+    det.Run(srcimg, boxes, warmpupTimer);
+    rec.Run(boxes, srcimg, cls, warmpupTimer);
+  }
 
-    std::vector<double> rec_times;
-    rec.Run(boxes, srcimg, cls, rec_times);
-    auto end = std::chrono::system_clock::now();
-    det_t[0] += det_times[0];
-    det_t[1] += det_times[1];
-    det_t[2] += det_times[2];
-    rec_t[0] += rec_times[0];
-    rec_t[1] += rec_times[1];
-    rec_t[2] += rec_times[2];
+  // start to run
+  std::vector<Timer> detTimer = {timer, timer, timer};
+  std::vector<Timer> recTimer = {timer, timer, timer};
+  for (auto img_dir : all_img_names) {
+    LOG(INFO) << "The predict img: " << img_dir;
+    cv::Mat srcimg = cv::imread(img_dir, cv::IMREAD_COLOR);
+
+    std::vector<std::vector<std::vector<int>>> boxes;
+    det.Run(srcimg, boxes, detTimer);
+
+    rec.Run(boxes, srcimg, cls, recTimer);
+
     rec_img_num += boxes.size();
   }
 
@@ -121,22 +127,38 @@ int main(int argc, char **argv) {
   LOG(INFO) << "\n";
   LOG(INFO) << "----------------------- Det Model info -----------------------";
   LOG(INFO) << "[Det] model_name: " << config.det_model_dir;
-  LOG(INFO) << "----------------------- Det Perf info -----------------------";
+
+  LOG(INFO) << "----------------------- Det Perf info -----------------------"
+            << std::endl;
   LOG(INFO) << "[Det] total number of predicted data: " << all_img_names.size()
             << " and total time spent(s): "
-            << std::accumulate(det_t.begin(), det_t.end(), 0);
-  LOG(INFO) << "[Det] preprocess_time(ms): " << det_t[0] / all_img_names.size()
-            << ", inference_time(ms): " << det_t[1] / all_img_names.size()
-            << ", postprocess_time(ms): " << det_t[2];
-  LOG(INFO) << "\n";
-  LOG(INFO) << "----------------------- Rec Model info -----------------------";
+            << (detTimer[0].report() + detTimer[1].report() +
+                detTimer[2].report()) /
+                   1000
+            << std::endl;
+  LOG(INFO) << "[Det] preprocess_time(ms): "
+            << detTimer[0].report() / all_img_names.size()
+            << ", inference_time(ms): "
+            << detTimer[1].report() / all_img_names.size()
+            << ", postprocess_time(ms): "
+            << detTimer[2].report() / all_img_names.size() << std::endl;
+  LOG(INFO) << "\n" << std::endl;
+  LOG(INFO) << "----------------------- Rec Model info -----------------------"
+            << std::endl;
   LOG(INFO) << "[Rec] model_name: " << config.rec_model_dir;
-  LOG(INFO) << "----------------------- Rec Perf info -----------------------";
+  LOG(INFO) << "----------------------- Rec Perf info -----------------------"
+            << std::endl;
   LOG(INFO) << "[Rec] total number of predicted data: " << rec_img_num
             << " and total time spent(s): "
-            << std::accumulate(rec_t.begin(), rec_t.end(), 0);
-  LOG(INFO) << "[Rec] preprocess_time(ms): " << rec_t[0] / rec_img_num
-            << ", inference_time(ms): " << rec_t[1] / rec_img_num
-            << ", postprocess_time(ms): " << rec_t[2] / rec_img_num;
+            << (recTimer[0].report() + recTimer[1].report() +
+                recTimer[2].report()) /
+                   1000
+            << std::endl;
+  LOG(INFO) << "[Rec] preprocess_time(ms): "
+            << recTimer[0].report() / rec_img_num
+            << ", inference_time(ms): " << recTimer[1].report() / rec_img_num
+            << ", postprocess_time(ms): " << recTimer[2].report() / rec_img_num
+            << std::endl;
+
   return 0;
 }

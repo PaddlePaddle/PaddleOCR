@@ -18,7 +18,7 @@ namespace PaddleOCR {
 
 void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
                          cv::Mat &img, Classifier *cls,
-                         std::vector<double> &times) {
+                         std::vector<Timer> &recTimer) {
   cv::Mat srcimg;
   img.copyTo(srcimg);
   cv::Mat crop_img;
@@ -26,9 +26,10 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
 
   std::cout << "The predicted text is :" << std::endl;
   int index = 0;
-  times = {0., 0., 0.};
+
   for (int i = boxes.size() - 1; i >= 0; i--) {
-    auto preprocess_start = std::chrono::system_clock::now();
+    recTimer[0].start();
+
     crop_img = GetRotateCropImage(srcimg, boxes[i]);
     if (cls != nullptr) {
       crop_img = cls->Run(crop_img);
@@ -45,7 +46,8 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
 
     this->permute_op_.Run(&resize_img, input.data());
 
-    auto inference_start = std::chrono::system_clock::now();
+    recTimer[0].stop();
+    recTimer[1].start();
 
     // Inference.
     auto input_names = this->predictor_->GetInputNames();
@@ -65,7 +67,8 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
 
     output_t->CopyToCpu(predict_batch.data());
 
-    auto postprocess_start = std::chrono::system_clock::now();
+    recTimer[1].stop();
+    recTimer[2].start();
 
     // ctc decode
     std::vector<std::string> str_res;
@@ -90,27 +93,12 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
       }
       last_index = argmax_idx;
     }
+    recTimer[2].stop();
     score /= count;
     for (int i = 0; i < str_res.size(); i++) {
       std::cout << str_res[i];
     }
     std::cout << "\tscore: " << score << std::endl;
-    auto end = std::chrono::system_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
-        inference_start - preprocess_start);
-    times[0] += double(duration.count()) *
-                std::chrono::microseconds::period::num /
-                std::chrono::microseconds::period::den;
-    duration = std::chrono::duration_cast<std::chrono::microseconds>(
-        postprocess_start - inference_start);
-    times[1] += double(duration.count()) *
-                std::chrono::microseconds::period::num /
-                std::chrono::microseconds::period::den;
-    duration = std::chrono::duration_cast<std::chrono::microseconds>(
-        end - postprocess_start);
-    times[2] += double(duration.count()) *
-                std::chrono::microseconds::period::num /
-                std::chrono::microseconds::period::den;
   }
 }
 

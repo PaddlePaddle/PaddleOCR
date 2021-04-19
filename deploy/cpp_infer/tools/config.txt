@@ -25,6 +25,6 @@ char_list_file ../../ppocr/utils/ppocr_keys_v1.txt
 visualize 0
 
 # use_tensorrt
-use_tensorrt 1
+use_tensorrt 0
 use_fp16   0
 

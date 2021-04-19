@@ -63,7 +63,7 @@ public:
   void LoadModel(const std::string &model_dir);
 
   void Run(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat &img,
-           Classifier *cls, std::vector<double> &times);
+           Classifier *cls, std::vector<Timer> &recTimer);
 
 private:
   std::shared_ptr<Predictor> predictor_;

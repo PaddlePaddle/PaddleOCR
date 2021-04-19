@@ -70,7 +70,7 @@ public:
 
   // Run predictor
   void Run(cv::Mat &img, std::vector<std::vector<std::vector<int>>> &boxes,
-           std::vector<double> &times);
+           std::vector<Timer> &detTimer);
 
 private:
   std::shared_ptr<Predictor> predictor_;

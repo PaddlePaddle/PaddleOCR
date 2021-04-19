@@ -64,4 +64,24 @@ public:
                    const std::vector<int> &rec_image_shape = {3, 48, 192});
 };
 
+class Timer {
+  // Timer, count in ms
+public:
+  Timer() { reset(); }
+  void start() { start_t = std::chrono::high_resolution_clock::now(); }
+  void stop() {
+    auto end_t = std::chrono::high_resolution_clock::now();
+    typedef std::chrono::microseconds ms;
+    auto diff = end_t - start_t;
+    ms counter = std::chrono::duration_cast<ms>(diff);
+    total_time += counter.count();
+  }
+  void reset() { total_time = 0.; }
+  double report() { return total_time / 1000.0; }
+
+private:
+  double total_time;
+  std::chrono::high_resolution_clock::time_point start_t;
+};
+
 } // namespace PaddleOCR
