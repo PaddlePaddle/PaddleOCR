@@ -93,11 +93,13 @@ rgb/gt_0.png    [{"transcription": "EST", "points": [[1004.0,689.0],[1019.0,698.
 ```
 The image annotation after **json.dumps()** encoding is a list containing multiple dictionaries.
 
-The `points` in the dictionary represent the coordinates (x, y) of the four points of the text box, arranged clockwise from the point at the upper left corner.
+The `points` in the dictionary represent the coordinates (x, y) of the fourteen points of the text box, arranged clockwise from the point at the upper left corner.
 
 `transcription` represents the text of the current text box. **When its content is "###" it means that the text box is invalid and will be skipped during training.**
 
 If you want to train PaddleOCR on other datasets, please build the annotation file according to the above format.
+
+*PGNet supports data input of any point, but it needs to ensure uniform labeling (upper and lower symmetry, left and right distance is consistent). In our experiment, the training effect of fourteen points tagging is better than that of four points tagging. We can try to do two-stage training on four points tagging and fourteen points tagging.*
 
 
 ### Start Training
