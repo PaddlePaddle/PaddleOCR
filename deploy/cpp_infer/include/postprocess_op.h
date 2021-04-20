@@ -51,6 +51,7 @@ public:
                                                float &ssid);
 
   float BoxScoreFast(std::vector<std::vector<float>> box_array, cv::Mat pred);
+  float PolygonScoreAcc(std::vector<cv::Point> contour, cv::Mat pred);
 
   std::vector<std::vector<std::vector<int>>>
   BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
