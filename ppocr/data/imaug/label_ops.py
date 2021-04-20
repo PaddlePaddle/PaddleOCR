@@ -187,7 +187,33 @@ class CTCLabelEncode(BaseRecLabelEncode):
         return dict_character
 
 
-class E2ELabelEncode(object):
+class E2ELabelEncode_test(BaseRecLabelEncode):
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 character_type='EN',
+                 use_space_char=False,
+                 **kwargs):
+        super(E2ELabelEncode_test,
+              self).__init__(max_text_length, character_dict_path,
+                             character_type, use_space_char)
+
+    def __call__(self, data):
+        texts = data['texts']
+        temp_texts = []
+        for text in texts:
+            text = text.lower()
+            text = self.encode(text)
+            if text is None:
+                return None
+            text = text + [36] * (self.max_text_len - len(text)
+                                  )  # use 36 to pad
+            temp_texts.append(text)
+        data['texts'] = np.array(temp_texts)
+        return data
+
+
+class E2ELabelEncode_train(object):
     def __init__(self, **kwargs):
         pass
 
