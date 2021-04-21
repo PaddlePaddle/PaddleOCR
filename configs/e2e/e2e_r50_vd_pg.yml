@@ -63,7 +63,7 @@ PostProcess:
 
 Metric:
   name: E2EMetric
-  mode: A   # A or B
+  mode: A   # two ways for eval, A: label from txt,  B: label from gt_mat
   gt_mat_dir:  ./train_data/total_text/gt  # the dir of gt_mat
   character_dict_path: ppocr/utils/ic15_dict.txt
   main_indicator: f_score_e2e
