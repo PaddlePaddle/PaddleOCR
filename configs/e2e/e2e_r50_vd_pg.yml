@@ -60,6 +60,7 @@ PostProcess:
   name: PGPostProcess
   score_thresh: 0.5
   mode: fast   # fast or slow two ways
+
 Metric:
   name: E2EMetric
   mode: A   # A or B
