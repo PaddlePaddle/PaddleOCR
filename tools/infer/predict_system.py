@@ -161,7 +161,8 @@ def main(args):
     total_time = 0
     cpu_mem, gpu_mem, gpu_util = 0, 0, 0
     _st = time.time()
-    for image_file in image_file_list:
+    count = 0
+    for idx, image_file in enumerate(image_file_list):
         img, flag = check_and_read_gif(image_file)
         if not flag:
             img = cv2.imread(image_file)
@@ -172,16 +173,18 @@ def main(args):
         dt_boxes, rec_res = text_sys(img)
         elapse = time.time() - starttime
         total_time += elapse
-        if args.debug:
+        if args.benchmark and idx % 20 == 0:
             cm, gm, gu = get_current_memory_mb(0)
             cpu_mem += cm
             gpu_mem += gm
             gpu_util += gu
+            count += 1
 
-        logger.info("Predict time of %s: %.3fs" % (image_file, elapse))
+        logger.info(
+            str(idx) + "  Predict time of %s: %.3fs" % (image_file, elapse))
 
-        for text, score in rec_res:
-            logger.info("{}, {:.3f}".format(text, score))
+        # for text, score in rec_res:
+        #     logger.info("{}, {:.3f}".format(text, score))
 
         if is_visualize:
             image = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
@@ -208,16 +211,19 @@ def main(args):
     logger.info("The predict total time is {}".format(time.time() - _st))
     logger.info("\nThe predict total time is {}".format(total_time))
     img_num = text_sys.text_detector.det_times.img_num
-    if args.debug:
+    if args.benchmark:
         mems = {
-            'cpu_rss': cpu_mem / img_num,
-            'gpu_rss': gpu_mem / img_num,
-            'gpu_util': gpu_util * 100 / img_num
+            'cpu_rss': cpu_mem / count,
+            'gpu_rss': gpu_mem / count,
+            'gpu_util': gpu_util * 100 / count
         }
     else:
         mems = None
     det_time_dict = text_sys.text_detector.det_times.report(average=True)
     rec_time_dict = text_sys.text_recognizer.rec_times.report(average=True)
+    # for k in det_time_dict:
+    #     if "time" in k :
+    #         det_time_dict[k] += rec_time_dict[k]
     det_model_name = args.det_model_dir
     rec_model_name = args.rec_model_dir
     det_logger = utility.LoggerHelper(args, det_time_dict, det_model_name, mems)

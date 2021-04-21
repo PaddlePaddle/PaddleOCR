@@ -39,7 +39,9 @@ class TextDetector(object):
         self.args = args
         self.det_algorithm = args.det_algorithm
         pre_process_list = [{
-            'DetResizeForTest': None
+            'DetResizeForTest': {
+                "resize_long": 960
+            }
         }, {
             'NormalizeImage': {
                 'std': [0.229, 0.224, 0.225],
@@ -208,6 +210,10 @@ if __name__ == "__main__":
     draw_img_save = "./inference_results"
     cpu_mem, gpu_mem, gpu_util = 0, 0, 0
 
+    fake_img = np.random.uniform(-1, 1, [640, 640, 3]).astype(np.float32)
+    for i in range(10):
+        dt_boxes, _ = text_detector(fake_img)
+
     if not os.path.exists(draw_img_save):
         os.makedirs(draw_img_save)
     for image_file in image_file_list:
@@ -224,7 +230,7 @@ if __name__ == "__main__":
             total_time += elapse
         count += 1
 
-        if args.debug:
+        if args.benchmark:
             cm, gm, gu = utility.get_current_memory_mb(0)
             cpu_mem += cm
             gpu_mem += gm
@@ -235,10 +241,10 @@ if __name__ == "__main__":
         img_name_pure = os.path.split(image_file)[-1]
         img_path = os.path.join(draw_img_save,
                                 "det_res_{}".format(img_name_pure))
-        cv2.imwrite(img_path, src_im)
+        # cv2.imwrite(img_path, src_im)
         logger.info("The visualized image saved in {}".format(img_path))
     # print the information about memory and time-spent
-    if args.debug:
+    if args.benchmark:
         mems = {
             'cpu_rss': cpu_mem / count,
             'gpu_rss': gpu_mem / count,

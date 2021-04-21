@@ -258,6 +258,11 @@ def main(args):
     img_list = []
     cpu_mem, gpu_mem, gpu_util = 0, 0, 0
     count = 0
+
+    fake_img = np.random.uniform(-1, 1, [1, 32, 320, 3]).astype(np.float32)
+    for i in range(10):
+        dt_boxes, _ = text_recognizer(fake_img)
+
     for image_file in image_file_list:
         img, flag = check_and_read_gif(image_file)
         if not flag:
@@ -269,7 +274,7 @@ def main(args):
         img_list.append(img)
     try:
         rec_res, _ = text_recognizer(img_list)
-        if args.debug:
+        if args.benchmark:
             cm, gm, gu = utility.get_current_memory_mb(0)
             cpu_mem += cm
             gpu_mem += gm
@@ -288,7 +293,7 @@ def main(args):
     for ino in range(len(img_list)):
         logger.info("Predicts of {}:{}".format(valid_image_file_list[ino],
                                                rec_res[ino]))
-    if args.debug:
+    if args.benchmark:
         mems = {
             'cpu_rss': cpu_mem / count,
             'gpu_rss': gpu_mem / count,

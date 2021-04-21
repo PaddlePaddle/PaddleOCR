@@ -35,7 +35,7 @@ def parse_args():
     parser.add_argument("--use_gpu", type=str2bool, default=True)
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
-    parser.add_argument("--use_fp16", type=str2bool, default=False)
+    parser.add_argument("--precision", type=str, default="fp32")
     parser.add_argument("--gpu_mem", type=int, default=500)
 
     # params for text detector
@@ -90,7 +90,7 @@ def parse_args():
     parser.add_argument("--cpu_threads", type=int, default=6)
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
 
-    parser.add_argument("--debug", type=bool, default=False)
+    parser.add_argument("--benchmark", type=bool, default=False)
 
     return parser.parse_args()
 
@@ -187,20 +187,31 @@ def create_predictor(args, mode, logger):
 
     config = inference.Config(model_file_path, params_file_path)
 
+    assert args.precision in [
+        "fp32", "fp16", "int8"
+    ], "args.precision can only be one of ['fp32', 'fp16', 'int8']"
+
+    if args.precision == "fp16" and args.use_tensorrt:
+        precision = inference.PrecisionType.Half
+    elif args.precision == "int8":
+        precision = inference.PrecisionType.Int8
+    else:
+        precision = inference.PrecisionType.Float32
+
     if args.use_gpu:
         config.enable_use_gpu(args.gpu_mem, 0)
         if args.use_tensorrt:
             config.enable_tensorrt_engine(
-                precision_mode=inference.PrecisionType.Half
-                if args.use_fp16 else inference.PrecisionType.Float32,
+                precision_mode=precision,
                 max_batch_size=args.max_batch_size,
-                min_subgraph_size=3)
-            if mode == "det":
+                min_subgraph_size=10)  # skip the minmum trt subgraph 
+            if mode == "det" and "mobile" in model_file_path:
                 min_input_shape = {
                     "x": [1, 3, 50, 50],
                     "conv2d_92.tmp_0": [1, 96, 20, 20],
                     "conv2d_91.tmp_0": [1, 96, 10, 10],
-                    # "conv2d_59.tmp_0": [1, 96, 10, 10], # for det server
+                    "conv2d_97.tmp_0": [1, 96, 10, 10],  # int8
+                    "conv2d_98.tmp_0": [1, 96, 10, 10],  # int8
                     "nearest_interp_v2_1.tmp_0": [1, 96, 10, 10],
                     "nearest_interp_v2_2.tmp_0": [1, 96, 20, 20],
                     "nearest_interp_v2_3.tmp_0": [1, 24, 20, 20],
@@ -213,7 +224,8 @@ def create_predictor(args, mode, logger):
                     "x": [1, 3, 2000, 2000],
                     "conv2d_92.tmp_0": [1, 96, 400, 400],
                     "conv2d_91.tmp_0": [1, 96, 200, 200],
-                    # "conv2d_59.tmp_0": [1, 96, 400, 400], # for det server
+                    "conv2d_97.tmp_0": [1, 96, 400, 400],  # int8
+                    "conv2d_98.tmp_0": [1, 96, 400, 400],  # int8
                     "nearest_interp_v2_1.tmp_0": [1, 96, 200, 200],
                     "nearest_interp_v2_2.tmp_0": [1, 96, 400, 400],
                     "nearest_interp_v2_3.tmp_0": [1, 24, 400, 400],
@@ -226,7 +238,8 @@ def create_predictor(args, mode, logger):
                     "x": [1, 3, 640, 640],
                     "conv2d_92.tmp_0": [1, 96, 160, 160],
                     "conv2d_91.tmp_0": [1, 96, 80, 80],
-                    # "conv2d_59.tmp_0": [1, 96, 160, 160], # for det server
+                    "conv2d_97.tmp_0": [1, 96, 160, 160],  # int8
+                    "conv2d_98.tmp_0": [1, 96, 160, 160],  # int8
                     "nearest_interp_v2_1.tmp_0": [1, 96, 80, 80],
                     "nearest_interp_v2_2.tmp_0": [1, 96, 160, 160],
                     "nearest_interp_v2_3.tmp_0": [1, 24, 160, 160],
@@ -235,6 +248,32 @@ def create_predictor(args, mode, logger):
                     "elementwise_add_7": [1, 56, 40, 40],
                     "nearest_interp_v2_0.tmp_0": [1, 96, 40, 40]
                 }
+            if mode == "det" and "server" in model_file_path:
+                min_input_shape = {
+                    "x": [1, 3, 50, 50],
+                    "conv2d_59.tmp_0": [1, 96, 20, 20],
+                    "nearest_interp_v2_2.tmp_0": [1, 96, 20, 20],
+                    "nearest_interp_v2_3.tmp_0": [1, 24, 20, 20],
+                    "nearest_interp_v2_4.tmp_0": [1, 24, 20, 20],
+                    "nearest_interp_v2_5.tmp_0": [1, 24, 20, 20]
+                }
+                max_input_shape = {
+                    "x": [1, 3, 2000, 2000],
+                    "conv2d_59.tmp_0": [1, 96, 400, 400],
+                    "nearest_interp_v2_2.tmp_0": [1, 96, 400, 400],
+                    "nearest_interp_v2_3.tmp_0": [1, 24, 400, 400],
+                    "nearest_interp_v2_4.tmp_0": [1, 24, 400, 400],
+                    "nearest_interp_v2_5.tmp_0": [1, 24, 400, 400]
+                }
+                opt_input_shape = {
+                    "x": [1, 3, 640, 640],
+                    "conv2d_59.tmp_0": [1, 96, 160, 160],
+                    "nearest_interp_v2_2.tmp_0": [1, 96, 160, 160],
+                    "nearest_interp_v2_3.tmp_0": [1, 24, 160, 160],
+                    "nearest_interp_v2_4.tmp_0": [1, 24, 160, 160],
+                    "nearest_interp_v2_5.tmp_0": [1, 24, 160, 160]
+                }
+
             elif mode == "rec":
                 min_input_shape = {"x": [1, 3, 32, 10]}
                 max_input_shape = {"x": [1, 3, 32, 2000]}
@@ -256,7 +295,7 @@ def create_predictor(args, mode, logger):
 
     # enable memory optim
     config.enable_memory_optim()
-    config.disable_glog_info()
+    # config.disable_glog_info()
 
     config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
     config.switch_use_feed_fetch_ops(False)
@@ -543,8 +582,8 @@ class LoggerHelper(object):
         self.model_name = model_name
         self.batch_size = 1 if "det" in model_name else args.rec_batch_num
         self.shape = "dynamic shape"
-        self.precision = "fp32"
-        if args.use_tensorrt and args.use_fp16:
+        self.precision = args.precision
+        if args.use_tensorrt and args.precision == "fp16":
             self.precision = "fp16"
 
         self.device = "gpu" if args.use_gpu else "cpu"
@@ -558,8 +597,8 @@ class LoggerHelper(object):
             self.mem_info = mem_info
 
     def report(self, mode=None):
-        if mode not in ["Det", "Rec", None]:
-            raise ValueError("The 'mode' can only be one of ['Det', 'Rec']")
+        # if mode not in ["Det", "Rec", None]:
+        #     raise ValueError("The 'mode' can only be one of ['Det', 'Rec']")
         logger.info("\n")
         logger.info("----------------------- Conf info -----------------------")
         logger.info(f"runtime_device: {self.device}")
