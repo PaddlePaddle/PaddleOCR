@@ -39,7 +39,7 @@ class E2EMetric(object):
     def __call__(self, preds, batch, **kwargs):
         if self.mode == 'A':
             gt_polyons_batch = batch[2]
-            temp_gt_strs_batch = batch[3]
+            temp_gt_strs_batch = batch[3][0]
             ignore_tags_batch = batch[4]
             gt_strs_batch = []
 
@@ -51,8 +51,7 @@ class E2EMetric(object):
                 gt_strs_batch.append(t)
 
             for pred, gt_polyons, gt_strs, ignore_tags in zip(
-                [preds], [gt_polyons_batch], [gt_strs_batch],
-                    ignore_tags_batch):
+                [preds], gt_polyons_batch, [gt_strs_batch], ignore_tags_batch):
                 # prepare gt
                 gt_info_list = [{
                     'points': gt_polyon,

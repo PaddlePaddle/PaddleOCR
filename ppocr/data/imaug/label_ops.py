@@ -199,15 +199,33 @@ class E2ELabelEncode_test(BaseRecLabelEncode):
                              character_type, use_space_char)
 
     def __call__(self, data):
-        texts = data['texts']
+        import json
+        padnum = len(self.dict)
+        label = data['label']
+        label = json.loads(label)
+        nBox = len(label)
+        boxes, txts, txt_tags = [], [], []
+        for bno in range(0, nBox):
+            box = label[bno]['points']
+            txt = label[bno]['transcription']
+            boxes.append(box)
+            txts.append(txt)
+            if txt in ['*', '###']:
+                txt_tags.append(True)
+            else:
+                txt_tags.append(False)
+        boxes = np.array(boxes, dtype=np.float32)
+        txt_tags = np.array(txt_tags, dtype=np.bool)
+        data['polys'] = boxes
+        data['ignore_tags'] = txt_tags
         temp_texts = []
-        for text in texts:
+        for text in txts:
             text = text.lower()
             text = self.encode(text)
             if text is None:
                 return None
-            text = text + [36] * (self.max_text_len - len(text)
-                                  )  # use 36 to pad
+            text = text + [padnum] * (self.max_text_len - len(text)
+                                      )  # use 36 to pad
             temp_texts.append(text)
         data['texts'] = np.array(temp_texts)
         return data
