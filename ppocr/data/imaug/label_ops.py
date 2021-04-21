@@ -217,7 +217,7 @@ class E2ELabelEncode_test(BaseRecLabelEncode):
         boxes = np.array(boxes, dtype=np.float32)
         txt_tags = np.array(txt_tags, dtype=np.bool)
         data['polys'] = boxes
-        data['ignore_tags'] = txt_tags
+        data['tags'] = txt_tags
         temp_texts = []
         for text in txts:
             text = text.lower()
@@ -255,7 +255,7 @@ class E2ELabelEncode_train(object):
 
         data['polys'] = boxes
         data['texts'] = txts
-        data['ignore_tags'] = txt_tags
+        data['tags'] = txt_tags
         return data
 
 
