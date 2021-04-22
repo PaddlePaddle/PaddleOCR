@@ -59,7 +59,7 @@ pip instll paddlepaddle-gpu
 
 pip 安装
 ```
-pip install "paddleocr>=2.0.4" # 推荐使用2.0.4版本
+pip install "paddleocr>=2.0.6" # 推荐使用2.0.6版本
 ```
 本地构建并安装
 ```
@@ -134,7 +134,7 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --rec false
 <a name="python_脚本运行"></a>
 ### 2.2 python 脚本运行
 
-ppocr 也支持在python脚本中运行，便于嵌入到您自己的代码中：
+ppocr 也支持在python脚本中运行，便于嵌入到您自己的代码中 ：
 
 * 整图预测（检测+识别）
 
@@ -155,7 +155,7 @@ image = Image.open(img_path).convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
 scores = [line[1][1] for line in result]
-im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/korean.ttf')
+im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/korean.ttf')
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
@@ -240,7 +240,7 @@ ppocr 支持使用自己的数据进行自定义训练或finetune, 其中识别�
 |德文|german|german|
 |日文|japan|japan|
 |韩文|korean|korean|
-|中文繁体|chinese traditional |ch_tra|
+|中文繁体|chinese traditional |chinese_cht|
 |意大利文| Italian |it|
 |西班牙文|Spanish |es|
 |葡萄牙文| Portuguese|pt|
@@ -259,10 +259,9 @@ ppocr 支持使用自己的数据进行自定义训练或finetune, 其中识别�
 |乌克兰文|Ukranian|uk|
 |白俄罗斯文|Belarusian|be|
 |泰卢固文|Telugu |te|
-|卡纳达文|Kannada |kn|
 |泰米尔文|Tamil |ta|
 |南非荷兰文 |Afrikaans |af|
-|阿塞拜疆文 |Azerbaijani    |az|
+|阿塞拜疆文 |Azerbaijani  |az|
 |波斯尼亚文|Bosnian|bs|
 |捷克文|Czech|cs|
 |威尔士文 |Welsh |cy|
