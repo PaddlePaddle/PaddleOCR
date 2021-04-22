@@ -187,14 +187,14 @@ class CTCLabelEncode(BaseRecLabelEncode):
         return dict_character
 
 
-class E2ELabelEncode_test(BaseRecLabelEncode):
+class E2ELabelEncodeTest(BaseRecLabelEncode):
     def __init__(self,
                  max_text_length,
                  character_dict_path=None,
                  character_type='EN',
                  use_space_char=False,
                  **kwargs):
-        super(E2ELabelEncode_test,
+        super(E2ELabelEncodeTest,
               self).__init__(max_text_length, character_dict_path,
                              character_type, use_space_char)
 
@@ -217,7 +217,7 @@ class E2ELabelEncode_test(BaseRecLabelEncode):
         boxes = np.array(boxes, dtype=np.float32)
         txt_tags = np.array(txt_tags, dtype=np.bool)
         data['polys'] = boxes
-        data['tags'] = txt_tags
+        data['ignore_tags'] = txt_tags
         temp_texts = []
         for text in txts:
             text = text.lower()
@@ -231,7 +231,7 @@ class E2ELabelEncode_test(BaseRecLabelEncode):
         return data
 
 
-class E2ELabelEncode_train(object):
+class E2ELabelEncodeTrain(object):
     def __init__(self, **kwargs):
         pass
 
@@ -255,7 +255,7 @@ class E2ELabelEncode_train(object):
 
         data['polys'] = boxes
         data['texts'] = txts
-        data['tags'] = txt_tags
+        data['ignore_tags'] = txt_tags
         return data
 
 
