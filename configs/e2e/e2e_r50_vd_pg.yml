@@ -72,13 +72,13 @@ Train:
   dataset:
     name: PGDataSet
     data_dir: ./train_data/total_text/train
-    label_file_list: [./train_data/total_text/train/]
+    label_file_list: [./train_data/total_text/train/total_text.txt]
     ratio_list: [1.0]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
-      - E2ELabelEncode_train:
+      - E2ELabelEncodeTrain:
       - PGProcessTrain:
           batch_size: 14  # same as loader: batch_size_per_card
           min_crop_size: 24
@@ -96,12 +96,12 @@ Eval:
   dataset:
     name: PGDataSet
     data_dir: ./train_data/total_text/test
-    label_file_list: [./train_data/total_text/test/]
+    label_file_list: [./train_data/total_text/test/total_text.txt]
     transforms:
       - DecodeImage: # load image
           img_mode: RGB
           channel_first: False
-      - E2ELabelEncode_test:
+      - E2ELabelEncodeTest:
       - E2EResizeForTest:
           max_side_len: 768
       - NormalizeImage:
@@ -111,7 +111,7 @@ Eval:
           order: 'hwc'
       - ToCHWImage:
       - KeepKeys:
-          keep_keys: [ 'image', 'shape', 'polys', 'texts', 'tags', 'img_id']
+          keep_keys: [ 'image', 'shape', 'polys', 'texts', 'ignore_tags', 'img_id']
   loader:
     shuffle: False
     drop_last: False
