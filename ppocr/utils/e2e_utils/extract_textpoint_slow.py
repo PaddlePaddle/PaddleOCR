@@ -342,6 +342,7 @@ def generate_pivot_list_curved(p_score,
     center_pos_yxs = []
     end_points_yxs = []
     instance_center_pos_yxs = []
+    pred_strs = []
     if instance_count > 0:
         for instance_id in range(1, instance_count):
             pos_list = []
@@ -367,12 +368,13 @@ def generate_pivot_list_curved(p_score,
         if is_backbone:
             keep_yxs_list_with_id = add_id(keep_yxs_list, image_id=image_id)
             instance_center_pos_yxs.append(keep_yxs_list_with_id)
+            pred_strs.append(decoded_str)
         else:
             end_points_yxs.extend((keep_yxs_list[0], keep_yxs_list[-1]))
             center_pos_yxs.extend(keep_yxs_list)
 
     if is_backbone:
-        return instance_center_pos_yxs
+        return pred_strs, instance_center_pos_yxs
     else:
         return center_pos_yxs, end_points_yxs
 
