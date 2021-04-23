@@ -34,12 +34,18 @@ class DBPostProcess(object):
                  max_candidates=1000,
                  unclip_ratio=2.0,
                  use_dilation=False,
+                 score_mode="fast",
                  **kwargs):
         self.thresh = thresh
         self.box_thresh = box_thresh
         self.max_candidates = max_candidates
         self.unclip_ratio = unclip_ratio
         self.min_size = 3
+        self.score_mode = score_mode
+        assert score_mode in [
+            "slow", "fast"
+        ], "Score mode must be in [slow, fast] but got: {}".format(score_mode)
+
         self.dilation_kernel = None if not use_dilation else np.array(
             [[1, 1], [1, 1]])
 
@@ -69,7 +75,10 @@ class DBPostProcess(object):
             if sside < self.min_size:
                 continue
             points = np.array(points)
-            score = self.box_score_fast(pred, points.reshape(-1, 2))
+            if self.score_mode == "fast":
+                score = self.box_score_fast(pred, points.reshape(-1, 2))
+            else:
+                score = self.box_score_slow(pred, contour)
             if self.box_thresh > score:
                 continue
 
@@ -120,6 +129,9 @@ class DBPostProcess(object):
         return box, min(bounding_box[1])
 
     def box_score_fast(self, bitmap, _box):
+        '''
+        box_score_fast: use bbox mean score as the mean score
+        '''
         h, w = bitmap.shape[:2]
         box = _box.copy()
         xmin = np.clip(np.floor(box[:, 0].min()).astype(np.int), 0, w - 1)
@@ -131,6 +143,27 @@ class DBPostProcess(object):
         box[:, 0] = box[:, 0] - xmin
         box[:, 1] = box[:, 1] - ymin
         cv2.fillPoly(mask, box.reshape(1, -1, 2).astype(np.int32), 1)
+        return cv2.mean(bitmap[ymin:ymax + 1, xmin:xmax + 1], mask)[0]
+
+    def box_score_slow(self, bitmap, contour):
+        '''
+        box_score_slow: use polyon mean score as the mean score
+        '''
+        h, w = bitmap.shape[:2]
+        contour = contour.copy()
+        contour = np.reshape(contour, (-1, 2))
+
+        xmin = np.clip(np.min(contour[:, 0]), 0, w - 1)
+        xmax = np.clip(np.max(contour[:, 0]), 0, w - 1)
+        ymin = np.clip(np.min(contour[:, 1]), 0, h - 1)
+        ymax = np.clip(np.max(contour[:, 1]), 0, h - 1)
+
+        mask = np.zeros((ymax - ymin + 1, xmax - xmin + 1), dtype=np.uint8)
+
+        contour[:, 0] = contour[:, 0] - xmin
+        contour[:, 1] = contour[:, 1] - ymin
+
+        cv2.fillPoly(mask, contour.reshape(1, -1, 2).astype(np.int32), 1)
         return cv2.mean(bitmap[ymin:ymax + 1, xmin:xmax + 1], mask)[0]
 
     def __call__(self, outs_dict, shape_list):
