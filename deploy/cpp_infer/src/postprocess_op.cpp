@@ -170,10 +170,10 @@ float PostProcessor::PolygonScoreAcc(std::vector<cv::Point> contour,
     box_y.push_back(contour[i].y);
   }
 
-  int xmin = std::clamp(int(std::floor(*(std::min_element(box_x.begin(), box_x.end())))), 0, width - 1);
-  int xmax = std::clamp(int(std::ceil(*(std::max_element(box_x.begin(), box_x.end())))), 0, width - 1);
-  int ymin = std::clamp(int(std::floor(*(std::min_element(box_y.begin(), box_y.end())))), 0, height - 1);
-  int ymax = std::clamp(int(std::ceil(*(std::max_element(box_y.begin(), box_y.end())))), 0, height - 1);
+  int xmin = clamp(int(std::floor(*(std::min_element(box_x.begin(), box_x.end())))), 0, width - 1);
+  int xmax = clamp(int(std::ceil(*(std::max_element(box_x.begin(), box_x.end())))), 0, width - 1);
+  int ymin = clamp(int(std::floor(*(std::min_element(box_y.begin(), box_y.end())))), 0, height - 1);
+  int ymax = clamp(int(std::ceil(*(std::max_element(box_y.begin(), box_y.end())))), 0, height - 1);
 
   cv::Mat mask;
   mask = cv::Mat::zeros(ymax - ymin + 1, xmax - xmin + 1, CV_8UC1);
