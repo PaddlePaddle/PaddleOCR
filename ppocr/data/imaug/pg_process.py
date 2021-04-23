@@ -750,7 +750,7 @@ class PGProcessTrain(object):
         input_size = 512
         im = data['image']
         text_polys = data['polys']
-        text_tags = data['tags']
+        text_tags = data['ignore_tags']
         text_strs = data['texts']
         h, w, _ = im.shape
         text_polys, text_tags, hv_tags = self.check_and_validate_polys(
