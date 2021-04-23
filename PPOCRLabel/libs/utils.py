@@ -124,6 +124,15 @@ def natural_sort(list, key=lambda s:s):
 
 
 def get_rotate_crop_image(img, points):
+    # Use Green's theory to judge clockwise or counterclockwise
+    # author: biyanhua
+    d = 0.0
+    for index in range(-1, 3):
+        d += -0.5 * (points[index + 1][1] + points[index][1]) * (
+                    points[index + 1][0] - points[index][0])
+    if d < 0: # counterclockwise
+        tmp = np.array(points)
+        points[1], points[3] = tmp[3], tmp[1]
 
     try:
         img_crop_width = int(
