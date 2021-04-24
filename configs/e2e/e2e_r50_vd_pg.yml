@@ -72,7 +72,7 @@ Train:
   dataset:
     name: PGDataSet
     data_dir: ./train_data/total_text/train
-    label_file_list: [./train_data/total_text/train/total_text.txt]
+    label_file_list: [./train_data/total_text/train/train.txt]
     ratio_list: [1.0]
     transforms:
       - DecodeImage: # load image
@@ -96,7 +96,7 @@ Eval:
   dataset:
     name: PGDataSet
     data_dir: ./train_data/total_text/test
-    label_file_list: [./train_data/total_text/test/total_text.txt]
+    label_file_list: [./train_data/total_text/test/test.txt]
     transforms:
       - DecodeImage: # load image
           img_mode: RGB
