@@ -22,6 +22,7 @@ def read_params():
     cfg.det_db_box_thresh = 0.5
     cfg.det_db_unclip_ratio = 1.6
     cfg.use_dilation = False
+    cfg.det_db_score_mode = "fast"
 
     # #EAST parmas
     # cfg.det_east_score_thresh = 0.8
