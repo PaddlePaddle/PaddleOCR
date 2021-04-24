@@ -6,6 +6,7 @@ from __future__ import print_function
 import os
 import sys
 sys.path.insert(0, ".")
+import copy
 
 import time
 
@@ -17,6 +18,7 @@ import paddlehub as hub
 
 from tools.infer.utility import base64_to_cv2
 from tools.infer.predict_system import TextSystem
+from tools.infer.utility import parse_args
 
 
 @moduleinfo(
@@ -31,8 +33,7 @@ class OCRSystem(hub.Module):
         """
         initialize with the necessary elements
         """
-        from ocr_system.params import read_params
-        cfg = read_params()
+        cfg = self.merge_configs()
 
         cfg.use_gpu = use_gpu
         if use_gpu:
@@ -50,6 +51,21 @@ class OCRSystem(hub.Module):
         cfg.enable_mkldnn = enable_mkldnn
 
         self.text_sys = TextSystem(cfg)
+
+    def merge_configs(self, ):
+        # deafult cfg
+        backup_argv = copy.deepcopy(sys.argv)
+        sys.argv = sys.argv[:1]
+        cfg = parse_args()
+
+        from ocr_det.params import read_params
+        update_cfg_map = vars(read_params())
+
+        for key in update_cfg_map:
+            cfg.__setattr__(key, update_cfg_map[key])
+
+        sys.argv = copy.deepcopy(backup_argv)
+        return cfg
 
     def read_images(self, paths=[]):
         images = []
