@@ -83,19 +83,19 @@ python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/im
 本节以totaltext数据集为例，介绍PaddleOCR中端到端模型的训练、评估与测试。
 
 ###  准备数据
-下载解压[totaltext](https://github.com/cs-chan/Total-Text-Dataset/blob/master/Dataset/README.md) 数据集到PaddleOCR/train_data/目录，数据集组织结构：
+下载解压[totaltext](https://paddleocr.bj.bcebos.com/dataset/total_text.tar) 数据集到PaddleOCR/train_data/目录，数据集组织结构：
 ```
 /PaddleOCR/train_data/total_text/train/
   |- rgb/            # total_text数据集的训练数据
-      |- gt_0.png
+      |- img11.jpg
       | ...  
-  |- total_text.txt  # total_text数据集的训练标注
+  |- train.txt       # total_text数据集的训练标注
 ```
 
 total_text.txt标注文件格式如下，文件名和标注信息中间用"\t"分隔：
 ```
 " 图像文件名                    json.dumps编码的图像标注信息"
-rgb/gt_0.png    [{"transcription": "EST", "points": [[1004.0,689.0],[1019.0,698.0],[1034.0,708.0],[1049.0,718.0],[1064.0,728.0],[1079.0,738.0],[1095.0,748.0],[1094.0,774.0],[1079.0,765.0],[1065.0,756.0],[1050.0,747.0],[1036.0,738.0],[1021.0,729.0],[1007.0,721.0]]}, {...}]
+rgb/img11.jpg    [{"transcription": "ASRAMA", "points": [[214.0, 325.0], [235.0, 308.0], [259.0, 296.0], [286.0, 291.0], [313.0, 295.0], [338.0, 305.0], [362.0, 320.0], [349.0, 347.0], [330.0, 337.0], [310.0, 329.0], [290.0, 324.0], [269.0, 328.0], [249.0, 336.0], [231.0, 346.0]]}, {...}]
 ```
 json.dumps编码前的图像标注信息是包含多个字典的list，字典中的 `points` 表示文本框的四个点的坐标(x, y)，从左上角的点开始顺时针排列。
 `transcription` 表示当前文本框的文字，**当其内容为“###”时，表示该文本框无效，在训练时会跳过。**
