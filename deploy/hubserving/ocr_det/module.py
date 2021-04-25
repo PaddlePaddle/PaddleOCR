@@ -30,7 +30,6 @@ class OCRDet(hub.Module):
         """
         initialize with the necessary elements
         """
-        from ocr_det.params import read_params
         cfg = read_params()
 
         cfg.use_gpu = use_gpu
