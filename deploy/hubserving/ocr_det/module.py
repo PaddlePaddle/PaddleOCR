@@ -15,6 +15,7 @@ import paddlehub as hub
 
 from tools.infer.utility import base64_to_cv2
 from tools.infer.predict_det import TextDetector
+from deploy.hubserving.ocr_det.params import read_params
 
 
 @moduleinfo(
