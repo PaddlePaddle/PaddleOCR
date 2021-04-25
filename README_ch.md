@@ -8,8 +8,8 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 - 静态图版本：develop分支
 
 **近期更新**
-- **【预告】 PaddleOCR研发团队对最新发版内容技术深入解读，4月13日晚上19:00，[直播地址](https://live.bilibili.com/21689802)**
-- 2021.4.12 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，总数203个，每周一都会更新，欢迎大家持续关注。
+- 2021.4.20 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，总数208个，每周一都会更新，欢迎大家持续关注。
+- PaddleOCR研发团队对最新发版内容技术深入解读，4月13日晚上19:00，[直播地址](https://live.bilibili.com/21689802)。
 - 2021.4.8 release 2.1版本，新增AAAI 2021论文[端到端识别算法PGNet](./doc/doc_ch/pgnet.md)开源，[多语言模型](./doc/doc_ch/multi_languages.md)支持种类增加到80+。
 - 2021.2.8 正式发布PaddleOCRv2.0(branch release/2.0)并设置为推荐用户使用的默认分支. 发布的详细内容，请参考: https://github.com/PaddlePaddle/PaddleOCR/releases/tag/v2.0.0
 - 2021.1.26,28,29 PaddleOCR官方研发团队带来技术深入解读三日直播课，1月26日、28日、29日晚上19:30，[直播地址](https://live.bilibili.com/21689802)
@@ -89,7 +89,7 @@ PaddleOCR同时支持动态图与静态图两种编程范式
     - [基于pip安装whl包快速推理](./doc/doc_ch/whl.md)
     - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
     - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
-    - [服务化部署](./deploy/pdserving/README_CN.md)
+    - [服务化部署](./deploy/hubserving/readme.md)
     - [端侧部署](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme.md)
     - [Benchmark](./doc/doc_ch/benchmark.md)
 - 数据集

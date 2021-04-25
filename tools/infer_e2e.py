@@ -103,7 +103,7 @@ def main():
             images = paddle.to_tensor(images)
             preds = model(images)
             post_result = post_process_class(preds, shape_list)
-            points, strs = post_result['points'], post_result['strs']
+            points, strs = post_result['points'], post_result['texts']
             # write resule
             dt_boxes_json = []
             for poly, str in zip(points, strs):

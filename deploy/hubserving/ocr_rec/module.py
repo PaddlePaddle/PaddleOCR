@@ -6,6 +6,7 @@ from __future__ import print_function
 import os
 import sys
 sys.path.insert(0, ".")
+import copy
 
 from paddlehub.common.logger import logger
 from paddlehub.module.module import moduleinfo, runnable, serving
@@ -14,7 +15,9 @@ import paddlehub as hub
 
 from tools.infer.utility import base64_to_cv2
 from tools.infer.predict_rec import TextRecognizer
+
 from deploy.hubserving.ocr_rec.params import read_params
+from tools.infer.utility import parse_args
 
 
 @moduleinfo(
@@ -29,7 +32,8 @@ class OCRRec(hub.Module):
         """
         initialize with the necessary elements
         """
-        cfg = read_params()
+
+        cfg = self.merge_configs()
 
         cfg.use_gpu = use_gpu
         if use_gpu:
@@ -47,6 +51,20 @@ class OCRRec(hub.Module):
         cfg.enable_mkldnn = enable_mkldnn
 
         self.text_recognizer = TextRecognizer(cfg)
+
+    def merge_configs(self, ):
+        # deafult cfg
+        backup_argv = copy.deepcopy(sys.argv)
+        sys.argv = sys.argv[:1]
+        cfg = parse_args()
+
+        update_cfg_map = vars(read_params())
+
+        for key in update_cfg_map:
+            cfg.__setattr__(key, update_cfg_map[key])
+
+        sys.argv = copy.deepcopy(backup_argv)
+        return cfg
 
     def read_images(self, paths=[]):
         images = []

@@ -102,13 +102,11 @@ class PGLoss(nn.Layer):
         f_tcl_char_ld = paddle.transpose(f_tcl_char_mask, (1, 0, 2))
         N, B, _ = f_tcl_char_ld.shape
         input_lengths = paddle.to_tensor([N] * B, dtype='int64')
-        cost = paddle.nn.functional.ctc_loss(
-            log_probs=f_tcl_char_ld,
-            labels=tcl_label,
-            input_lengths=input_lengths,
-            label_lengths=label_t,
-            blank=self.pad_num,
-            reduction='none')
+        loss_out = paddle.fluid.layers.warpctc(f_tcl_char_ld, tcl_label,
+                                               self.pad_num, True,
+                                               input_lengths, label_t)
+
+        cost = paddle.fluid.layers.squeeze(loss_out, [-1])
         cost = cost.mean()
         return cost
 
