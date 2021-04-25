@@ -187,7 +187,51 @@ class CTCLabelEncode(BaseRecLabelEncode):
         return dict_character
 
 
-class E2ELabelEncode(object):
+class E2ELabelEncodeTest(BaseRecLabelEncode):
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 character_type='EN',
+                 use_space_char=False,
+                 **kwargs):
+        super(E2ELabelEncodeTest,
+              self).__init__(max_text_length, character_dict_path,
+                             character_type, use_space_char)
+
+    def __call__(self, data):
+        import json
+        padnum = len(self.dict)
+        label = data['label']
+        label = json.loads(label)
+        nBox = len(label)
+        boxes, txts, txt_tags = [], [], []
+        for bno in range(0, nBox):
+            box = label[bno]['points']
+            txt = label[bno]['transcription']
+            boxes.append(box)
+            txts.append(txt)
+            if txt in ['*', '###']:
+                txt_tags.append(True)
+            else:
+                txt_tags.append(False)
+        boxes = np.array(boxes, dtype=np.float32)
+        txt_tags = np.array(txt_tags, dtype=np.bool)
+        data['polys'] = boxes
+        data['ignore_tags'] = txt_tags
+        temp_texts = []
+        for text in txts:
+            text = text.lower()
+            text = self.encode(text)
+            if text is None:
+                return None
+            text = text + [padnum] * (self.max_text_len - len(text)
+                                      )  # use 36 to pad
+            temp_texts.append(text)
+        data['texts'] = np.array(temp_texts)
+        return data
+
+
+class E2ELabelEncodeTrain(object):
     def __init__(self, **kwargs):
         pass
 

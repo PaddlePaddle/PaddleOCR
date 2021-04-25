@@ -31,7 +31,7 @@ PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，内置P
 PPOCRLabel内置PaddleOCR模型，故请参考[PaddleOCR安装文档](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/installation.md)准备好PaddleOCR，并确保PaddleOCR安装成功。
 
 ### 2. 安装PPOCRLabel
-#### Windows + Anaconda
+#### Windows
 
 ```
 pip install pyqt5

@@ -72,6 +72,7 @@ class PGDataSet(Dataset):
     def __getitem__(self, idx):
         file_idx = self.data_idx_order_list[idx]
         data_line = self.data_lines[file_idx]
+        img_id = 0
         try:
             data_line = data_line.decode('utf-8')
             substr = data_line.strip("\n").split(self.delimiter)
@@ -79,9 +80,10 @@ class PGDataSet(Dataset):
             label = substr[1]
             img_path = os.path.join(self.data_dir, file_name)
             if self.mode.lower() == 'eval':
-                img_id = int(data_line.split(".")[0][7:])
-            else:
-                img_id = 0
+                try:
+                    img_id = int(data_line.split(".")[0][7:])
+                except:
+                    img_id = 0
             data = {'img_path': img_path, 'label': label, 'img_id': img_id}
             if not os.path.exists(img_path):
                 raise Exception("{} does not exist!".format(img_path))
