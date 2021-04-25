@@ -336,8 +336,6 @@ def eval(model, valid_dataloader, post_process_class, eval_class,
         total_time = 0.0
         pbar = tqdm(total=len(valid_dataloader), desc='eval model:')
         for idx, batch in enumerate(valid_dataloader):
-            if idx >= len(valid_dataloader):
-                break
             images = batch[0]
             start = time.time()
 
@@ -355,6 +353,8 @@ def eval(model, valid_dataloader, post_process_class, eval_class,
             eval_class(post_result, batch)
             pbar.update(1)
             total_frame += len(images)
+            if idx >= len(valid_dataloader)-1:
+                break
         # Get final metric，eg. acc or hmean
         metric = eval_class.get_metric()
 
