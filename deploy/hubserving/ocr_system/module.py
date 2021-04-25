@@ -18,6 +18,7 @@ import paddlehub as hub
 
 from tools.infer.utility import base64_to_cv2
 from tools.infer.predict_system import TextSystem
+from deploy.hubserving.ocr_system.params import read_params
 from tools.infer.utility import parse_args
 
 
@@ -58,7 +59,6 @@ class OCRSystem(hub.Module):
         sys.argv = sys.argv[:1]
         cfg = parse_args()
 
-        from ocr_det.params import read_params
         update_cfg_map = vars(read_params())
 
         for key in update_cfg_map:
