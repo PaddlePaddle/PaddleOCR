@@ -55,7 +55,6 @@ class OCRCls(hub.Module):
         sys.argv = sys.argv[:1]
         cfg = parse_args()
 
-        from ocr_det.params import read_params
         update_cfg_map = vars(read_params())
 
         for key in update_cfg_map:
