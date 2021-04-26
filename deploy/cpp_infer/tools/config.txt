@@ -10,6 +10,7 @@ max_side_len  960
 det_db_thresh  0.3
 det_db_box_thresh  0.5
 det_db_unclip_ratio  1.6
+use_polygon_score 1
 det_model_dir  ./inference/ch_ppocr_mobile_v2.0_det_infer/
 
 # cls config
