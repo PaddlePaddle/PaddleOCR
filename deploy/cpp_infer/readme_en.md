@@ -217,6 +217,7 @@ max_side_len  960 #  Limit the maximum image height and width to 960
 det_db_thresh  0.3 # Used to filter the binarized image of DB prediction, setting 0.-0.3 has no obvious effect on the result
 det_db_box_thresh  0.5 # DDB post-processing filter box threshold, if there is a missing box detected, it can be reduced as appropriate
 det_db_unclip_ratio  1.6 # Indicates the compactness of the text box, the smaller the value, the closer the text box to the text
+use_polygon_score 1 # Whether to use polygon box to calculate bbox score, 0 means to use rectangle box to calculate. Use rectangular box to calculate faster, and polygonal box more accurate for curved text area.
 det_model_dir  ./inference/det_db # Address of detection inference model
 
 # cls config
