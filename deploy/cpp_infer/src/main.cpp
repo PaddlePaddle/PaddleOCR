@@ -59,7 +59,8 @@ int main(int argc, char **argv) {
                  config.gpu_mem, config.cpu_math_library_num_threads,
                  config.use_mkldnn, config.max_side_len, config.det_db_thresh,
                  config.det_db_box_thresh, config.det_db_unclip_ratio,
-                 config.visualize, config.use_tensorrt, config.use_fp16);
+                 config.use_polygon_score, config.visualize,
+                 config.use_tensorrt, config.use_fp16);
 
   Classifier *cls = nullptr;
   if (config.use_angle_cls == true) {
