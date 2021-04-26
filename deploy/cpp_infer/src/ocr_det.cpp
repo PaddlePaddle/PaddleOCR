@@ -109,9 +109,9 @@ void DBDetector::Run(cv::Mat &img,
   cv::Mat dilation_map;
   cv::Mat dila_ele = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(2, 2));
   cv::dilate(bit_map, dilation_map, dila_ele);
-  boxes = post_processor_.BoxesFromBitmap(pred_map, dilation_map,
-                                          this->det_db_box_thresh_,
-                                          this->det_db_unclip_ratio_);
+  boxes = post_processor_.BoxesFromBitmap(
+      pred_map, dilation_map, this->det_db_box_thresh_,
+      this->det_db_unclip_ratio_, this->use_polygon_score_);
 
   boxes = post_processor_.FilterTagDetRes(boxes, ratio_h, ratio_w, srcimg);
 

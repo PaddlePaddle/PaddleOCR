@@ -49,6 +49,8 @@ public:
 
     this->det_db_unclip_ratio = stod(config_map_["det_db_unclip_ratio"]);
 
+    this->use_polygon_score = bool(stoi(config_map_["use_polygon_score"]));
+
     this->det_model_dir.assign(config_map_["det_model_dir"]);
 
     this->rec_model_dir.assign(config_map_["rec_model_dir"]);
@@ -85,6 +87,8 @@ public:
   double det_db_box_thresh = 0.5;
 
   double det_db_unclip_ratio = 2.0;
+
+  bool use_polygon_score = false;
 
   std::string det_model_dir;
 
