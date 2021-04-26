@@ -9,41 +9,35 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2021.4.20）](#近期更新)
+* [近期更新（2021.4.26）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
 * [【理论篇】OCR通用43个问题](#OCR通用问题)
   * [基础知识13题](#基础知识)
   * [数据集9题](#数据集2)
   * [模型训练调优21题](#模型训练调优2)
-* [【实战篇】PaddleOCR实战150个问题](#PaddleOCR实战问题)
-  * [使用咨询61题](#使用咨询)
+* [【实战篇】PaddleOCR实战160个问题](#PaddleOCR实战问题)
+  * [使用咨询63题](#使用咨询)
   * [数据集18题](#数据集3)
-  * [模型训练调优34题](#模型训练调优3)
-  * [预测部署42题](#预测部署3)
+  * [模型训练调优35题](#模型训练调优3)
+  * [预测部署44题](#预测部署3)
 
 <a name="近期更新"></a>
-## 近期更新（2021.4.20）
+## 近期更新（2021.4.26）
 
-#### Q3.1.58: 使用PGNet进行eval报错？
-**A**: 需要注意，我们目前在release/2.1更新了评测代码，目前支持A，B两种评测模式：
-* A模式：该模式主要为了方便用户使用，与训练集一样的标注文件就可以正常进行eval操作, 代码中默认是A模式。
-* B模式：该模式主要为了保证我们的评测代码可以和Total Text官方的评测方式对齐，该模式下直接加载官方提供的mat文件进行eval。
+#### Q3.1.62: 弯曲文本（如略微形变的文档图像）漏检问题
+**A**: db后处理中计算文本框平均得分时，是求rectangle区域的平均分数，容易造成弯曲文本漏检，已新增求polygon区域的平均分数，会更准确，但速度有所降低，可按需选择，在相关pr中可查看[可视化对比效果](https://github.com/PaddlePaddle/PaddleOCR/pull/2604)。该功能通过参数 [det_db_score_mode](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/tools/infer/utility.py#L51)进行选择，参数值可选[`fast`(默认)、`slow`]，`fast`对应原始的rectangle方式，`slow`对应polygon方式。感谢用户[buptlihang](https://github.com/buptlihang)提[pr](https://github.com/PaddlePaddle/PaddleOCR/pull/2574)帮助解决该问题🌹。
 
-#### Q3.1.59: 使用预训练模型进行预测，对于特定字符识别识别效果较差，怎么解决？
-**A**: 由于我们所提供的识别模型是基于通用大规模数据集进行训练的，部分字符可能在训练集中包含较少，因此您可以构建特定场景的数据集，基于我们提供的预训练模型进行微调。建议用于微调的数据集中，每个字符出现的样本数量不低于300，但同时需要注意不同字符的数量均衡。具体可以参考：[微调](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/recognition.md#2-%E5%90%AF%E5%8A%A8%E8%AE%AD%E7%BB%83)
+#### Q3.1.63: 请问端到端的pgnet相比于DB+CRNN在准确率上有优势吗？或者是pgnet最擅长的场景是什么场景呢？
+**A**: pgnet是端到端算法，检测识别一步到位，不用分开训练2个模型，也支持弯曲文本的识别，但是在中文上的效果还没有充分验证；db+crnn的验证更充分，应用相对成熟，常规非弯曲的文本都能解的不错。
 
-#### Q3.1.60: PGNet有中文预训练模型吗？
-**A**: 目前我们尚未提供针对中文的预训练模型，如有需要，可以尝试自己训练。具体需要修改的地方有：
-  1. [config文件中](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/configs/e2e/e2e_r50_vd_pg.yml#L23-L24)，字典文件路径及语种设置；
-  1. [网络结构中](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/ppocr/modeling/heads/e2e_pg_head.py#L181)，`out_channels`修改为字典中的字符数目+1（考虑到空格）；
-  1. [loss中](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/ppocr/losses/e2e_pg_loss.py#L93)，修改`37`为字典中的字符数目+1（考虑到空格）；
+#### Q3.3.35: SRN训练不收敛（loss不降）或SRN训练acc一直为0。
+**A**: 如果loss下降不正常，需要确认没有修改yml文件中的image_shape，默认[1, 64, 256]，代码中针对这个配置写死了，修改可能会造成无法收敛。如果确认参数无误，loss正常下降，可以多迭代一段时间观察下，开始acc为0是正常的。
 
-#### Q3.1.61: 用于PGNet的训练集，文本框的标注有要求吗？
-**A**: PGNet支持多点标注，比如4点、8点、14点等。但需要注意的是，标注点尽可能分布均匀（相邻标注点间隔距离均匀一致），且label文件中的标注点需要从标注框的左上角开始，按标注点顺时针顺序依次编写，以上问题都可能对训练精度造成影响。
-我们提供的，基于Total Text数据集的PGNet预训练模型使用了14点标注方式。
+#### Q3.4.43: 预测时显存爆炸、内存泄漏问题？
+**A**: 打开显存/内存优化开关`enable_memory_optim`可以解决该问题，相关代码已合入，[查看详情](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/tools/infer/utility.py#L153)。
 
-#### Q3.4.42: 在使用PaddleLite进行预测部署时，启动预测后卡死/手机死机？
-**A**: 请检查模型转换时所用PaddleLite的版本，和预测库的版本是否对齐。即PaddleLite版本为2.8，则预测库版本也要为2.8。
+#### Q3.4.44: 如何多进程预测？
+**A**: 近期PaddleOCR新增了[多进程预测控制参数](https://github.com/PaddlePaddle/PaddleOCR/blob/a312647be716776c1aac33ff939ae358a39e8188/tools/infer/utility.py#L103)，`use_mp`表示是否使用多进程，`total_process_num`表示在使用多进程时的进程数。具体使用方式请参考[文档](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/inference.md#1-%E8%B6%85%E8%BD%BB%E9%87%8F%E4%B8%AD%E6%96%87ocr%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86)。
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -638,6 +632,11 @@ repo中config.yml文件的前后处理参数和inference预测默认的超参数
 **A**: PGNet支持多点标注，比如4点、8点、14点等。但需要注意的是，标注点尽可能分布均匀（相邻标注点间隔距离均匀一致），且label文件中的标注点需要从标注框的左上角开始，按标注点顺时针顺序依次编写，以上问题都可能对训练精度造成影响。
 我们提供的，基于Total Text数据集的PGNet预训练模型使用了14点标注方式。
 
+#### Q3.1.62: 弯曲文本（如略微形变的文档图像）漏检问题
+**A**: db后处理中计算文本框平均得分时，是求rectangle区域的平均分数，容易造成弯曲文本漏检，已新增求polygon区域的平均分数，会更准确，但速度有所降低，可按需选择，在相关pr中可查看[可视化对比效果](https://github.com/PaddlePaddle/PaddleOCR/pull/2604)。该功能通过参数 [det_db_score_mode](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/tools/infer/utility.py#L51)进行选择，参数值可选[`fast`(默认)、`slow`]，`fast`对应原始的rectangle方式，`slow`对应polygon方式。感谢用户[buptlihang](https://github.com/buptlihang)提[pr](https://github.com/PaddlePaddle/PaddleOCR/pull/2574)帮助解决该问题🌹。
+
+#### Q3.1.63: 请问端到端的pgnet相比于DB+CRNN在准确率上有优势吗？或者是pgnet最擅长的场景是什么场景呢？
+**A**: pgnet是端到端算法，检测识别一步到位，不用分开训练2个模型，也支持弯曲文本的识别，但是在中文上的效果还没有充分验证；db+crnn的验证更充分，应用相对成熟，常规非弯曲的文本都能解的不错。
 
 <a name="数据集3"></a>
 
@@ -911,8 +910,10 @@ lr:
 #### Q3.3.34: 表格识别中，如何提高单字的识别结果？
 **A**: 首先需要确认一下检测模型有没有有效的检测出单个字符，如果没有的话，需要在训练集当中添加相应的单字数据集。
 
-<a name="预测部署3"></a>
+#### Q3.3.35: SRN训练不收敛（loss不降）或SRN训练acc一直为0。
+**A**: 如果loss下降不正常，需要确认没有修改yml文件中的image_shape，默认[1, 64, 256]，代码中针对这个配置写死了，修改可能会造成无法收敛。如果确认参数无误，loss正常下降，可以多迭代一段时间观察下，开始acc为0是正常的。
 
+<a name="预测部署3"></a>
 
 ### 预测部署
 
@@ -1114,3 +1115,9 @@ nvidia-smi --lock-gpu-clocks=1590 -i 0
 
 #### Q3.4.42: 在使用PaddleLite进行预测部署时，启动预测后卡死/手机死机？
 **A**: 请检查模型转换时所用PaddleLite的版本，和预测库的版本是否对齐。即PaddleLite版本为2.8，则预测库版本也要为2.8。
+
+#### Q3.4.43: 预测时显存爆炸、内存泄漏问题？
+**A**: 打开显存/内存优化开关`enable_memory_optim`可以解决该问题，相关代码已合入，[查看详情](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/tools/infer/utility.py#L153)。
+
+#### Q3.4.44: 如何多进程预测？
+**A**: 近期PaddleOCR新增了[多进程预测控制参数](https://github.com/PaddlePaddle/PaddleOCR/blob/a312647be716776c1aac33ff939ae358a39e8188/tools/infer/utility.py#L103)，`use_mp`表示是否使用多进程，`total_process_num`表示在使用多进程时的进程数。具体使用方式请参考[文档](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/inference.md#1-%E8%B6%85%E8%BD%BB%E9%87%8F%E4%B8%AD%E6%96%87ocr%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86)。
