@@ -320,6 +320,18 @@ def train(config,
                 prefix='iter_epoch_{}'.format(epoch),
                 best_model_dict=best_model_dict,
                 epoch=epoch)
+            if epoch > save_epoch_step*5:
+                for i in range(save_epoch_step,epoch-save_epoch_step*5+1,save_epoch_step):
+                    prefix='iter_epoch_{}'.format(i)
+                    pdopt = os.path.join(save_model_dir,prefix)+".pdopt"
+                    pdparams = os.path.join(save_model_dir,prefix)+".pdparams"
+                    states = os.path.join(save_model_dir,prefix)+".states"
+                    if os.path.exists(pdopt):
+                        print("执行删除：",pdopt,"---",pdparams,"---",states)
+                        os.remove(pdopt)
+                        os.remove(pdparams)
+                        os.remove(states)
+
     best_str = 'best metric, {}'.format(', '.join(
         ['{}: {}'.format(k, v) for k, v in best_model_dict.items()]))
     logger.info(best_str)
