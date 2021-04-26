@@ -162,7 +162,6 @@ class TextDetector(object):
         shape_list = np.expand_dims(shape_list, axis=0)
         img = img.copy()
         starttime = time.time()
-        print(img.shape)
         self.input_tensor.copy_from_cpu(img)
         self.predictor.run()
         outputs = []
