@@ -39,7 +39,10 @@ class TextDetector(object):
         self.args = args
         self.det_algorithm = args.det_algorithm
         pre_process_list = [{
-            'DetResizeForTest': None
+            'DetResizeForTest': {
+                'limit_side_len': args.det_limit_side_len,
+                'limit_type': args.det_limit_type
+            }
         }, {
             'NormalizeImage': {
                 'std': [0.229, 0.224, 0.225],
@@ -160,7 +163,6 @@ class TextDetector(object):
         shape_list = np.expand_dims(shape_list, axis=0)
         img = img.copy()
         starttime = time.time()
-
         self.input_tensor.copy_from_cpu(img)
         self.predictor.run()
         outputs = []
