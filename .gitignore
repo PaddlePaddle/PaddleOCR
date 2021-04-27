@@ -25,3 +25,4 @@ output/
 build/
 dist/
 paddleocr.egg-info/
+test-byy.bat
