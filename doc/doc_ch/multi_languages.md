@@ -47,7 +47,7 @@ PaddleOCR 旨在打造一套丰富、领先、且实用的OCR工具库，不仅�
 pip install paddlepaddle
 
 # gpu
-pip insatll paddlepaddle-gpu
+pip install paddlepaddle-gpu
 ```
 
 <a name="paddleocr_package_安装"></a>
