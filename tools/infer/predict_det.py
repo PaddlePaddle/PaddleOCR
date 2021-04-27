@@ -39,7 +39,10 @@ class TextDetector(object):
         self.args = args
         self.det_algorithm = args.det_algorithm
         pre_process_list = [{
-            'DetResizeForTest': None
+            'DetResizeForTest': {
+                'limit_side_len': args.det_limit_side_len,
+                'limit_type': args.det_limit_type
+            }
         }, {
             'NormalizeImage': {
                 'std': [0.229, 0.224, 0.225],
@@ -62,6 +65,7 @@ class TextDetector(object):
             postprocess_params["max_candidates"] = 1000
             postprocess_params["unclip_ratio"] = args.det_db_unclip_ratio
             postprocess_params["use_dilation"] = args.use_dilation
+            postprocess_params["score_mode"] = args.det_db_score_mode
         elif self.det_algorithm == "EAST":
             postprocess_params['name'] = 'EASTPostProcess'
             postprocess_params["score_thresh"] = args.det_east_score_thresh

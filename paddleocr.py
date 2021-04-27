@@ -193,6 +193,7 @@ def parse_args(mMain=True, add_help=True):
         parser.add_argument("--det_db_box_thresh", type=float, default=0.5)
         parser.add_argument("--det_db_unclip_ratio", type=float, default=1.6)
         parser.add_argument("--use_dilation", type=bool, default=False)
+        parser.add_argument("--det_db_score_mode", type=str, default="fast")
 
         # EAST parmas
         parser.add_argument("--det_east_score_thresh", type=float, default=0.8)
@@ -241,6 +242,7 @@ def parse_args(mMain=True, add_help=True):
             det_db_box_thresh=0.5,
             det_db_unclip_ratio=1.6,
             use_dilation=False,
+            det_db_score_mode="fast",
             det_east_score_thresh=0.8,
             det_east_cover_thresh=0.1,
             det_east_nms_thresh=0.2,
