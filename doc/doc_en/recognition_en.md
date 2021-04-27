@@ -131,7 +131,7 @@ PaddleOCR has built-in dictionaries, which can be used on demand.
 
 `ppocr/utils/dict/german_dict.txt` is a German dictionary with 131 characters
 
-`ppocr/utils/dict/en_dict.txt` is a English dictionary with 63 characters
+`ppocr/utils/en_dict.txt` is a English dictionary with 96 characters
 
 
 The current multi-language model is still in the demo stage and will continue to optimize the model and add languages. **You are very welcome to provide us with dictionaries and fonts in other languages**,
@@ -279,7 +279,7 @@ Eval:
 <a name="Multi_language"></a>
 #### 2.3 Multi-language
 
-PaddleOCR currently supports 26 (except Chinese) language recognition. A multi-language configuration file template is
+PaddleOCR currently supports 80 (except Chinese) language recognition. A multi-language configuration file template is
 provided under the path `configs/rec/multi_languages`: [rec_multi_language_lite_train.yml](../../configs/rec/multi_language/rec_multi_language_lite_train.yml)。
 
 There are two ways to create the required configuration file:：
@@ -362,33 +362,18 @@ Currently, the multi-language algorithms supported by PaddleOCR are:
 
 | Configuration file |  Algorithm name |   backbone |   trans   |   seq      |     pred     |  language | character_type |
 | :--------: |  :-------:   | :-------:  |   :-------:   |   :-----:   |  :-----:   | :-----:  | :-----:  |
-| rec_ch_tra_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | chinese traditional  | ch_tra|
+| rec_chinese_cht_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | chinese traditional  | chinese_cht|
 | rec_en_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | English(Case sensitive)   | EN |
 | rec_french_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | French |  french |
 | rec_ger_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | German   | german |
 | rec_japan_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Japanese | japan |
 | rec_korean_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Korean  | korean |
-| rec_it_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Italian  | it |
-| rec_es_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Spanish |  es |
-| rec_pt_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Portuguese   | pt |
-| rec_ru_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Russia  | ru |
-| rec_ar_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Arabic  | ar |
-| rec_hi_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Hindi |  hi |
-| rec_ug_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Uyghur  | ug |
-| rec_fa_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Persian(Farsi)  | fa |
-| rec_ur_ite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Urdu  | ur |
-| rec_rs_latin_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Serbian(latin) | rs_latin |
-| rec_oc_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Occitan  | oc |
-| rec_mr_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Marathi  | mr |
-| rec_ne_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Nepali  | ne |
-| rec_rs_cyrillic_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Serbian(cyrillic) |  rs_cyrillic |
-| rec_bg_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Bulgarian  | bg |
-| rec_uk_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Ukranian  | uk |
-| rec_be_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Belarusian   | be |
-| rec_te_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Telugu  | te |
-| rec_kn_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | kannada  | kn |
-| rec_ta_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Tamil |  ta |
+| rec_latin_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Latin  | latin |
+| rec_arabic_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | arabic |  ar |
+| rec_cyrillic_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | cyrillic   | cyrillic |
+| rec_devanagari_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | devanagari  | devanagari |
 
+For more supported languages, please refer to : [Multi-language model](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_en/multi_languages_en.md#4-support-languages-and-abbreviations)
 
 The multi-language model training method is the same as the Chinese model. The training data set is 100w synthetic data. A small amount of fonts and test data can be downloaded on [Baidu Netdisk](https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA),Extraction code:frgi.
 
@@ -434,8 +419,8 @@ Eval:
 The evaluation dataset can be set by modifying the `Eval.dataset.label_file_list` field in the `configs/rec/rec_icdar15_train.yml` file.
 
 ```
-# GPU evaluation, Global.pretrained_model is the weight to be tested
-python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_icdar15_train.yml -o Global.pretrained_model={path/to/weights}/best_accuracy
+# GPU evaluation, Global.checkpoints is the weight to be tested
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_icdar15_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
 <a name="PREDICTION"></a>
@@ -446,7 +431,7 @@ python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec
 
 Using the model trained by paddleocr, you can quickly get prediction through the following script.
 
-The default prediction picture is stored in `infer_img`, and the weight is specified via `-o Global.pretrained_model`:
+The default prediction picture is stored in `infer_img`, and the weight is specified via `-o Global.checkpoints`:
 
 ```
 # Predict English results

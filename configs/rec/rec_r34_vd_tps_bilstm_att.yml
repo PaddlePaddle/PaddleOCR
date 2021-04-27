@@ -19,6 +19,7 @@ Global:
   max_text_length: 25
   infer_mode: False
   use_space_char: False
+  save_res_path: ./output/rec/predicts_b3_rare_r34_none_gru.txt
 
 
 Optimizer:

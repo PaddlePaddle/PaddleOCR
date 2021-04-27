@@ -138,7 +138,7 @@ PaddleOCR内置了一部分字典，可以按需使用。
 
 `ppocr/utils/dict/german_dict.txt` 是一个包含131个字符的德文字典
 
-`ppocr/utils/dict/en_dict.txt` 是一个包含63个字符的英文字典
+`ppocr/utils/en_dict.txt` 是一个包含96个字符的英文字典
 
 
 
@@ -285,7 +285,7 @@ Eval:
 <a name="小语种"></a>
 #### 2.3 小语种
 
-PaddleOCR目前已支持26种（除中文外）语种识别，`configs/rec/multi_languages` 路径下提供了一个多语言的配置文件模版: [rec_multi_language_lite_train.yml](../../configs/rec/multi_language/rec_multi_language_lite_train.yml)。
+PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi_languages` 路径下提供了一个多语言的配置文件模版: [rec_multi_language_lite_train.yml](../../configs/rec/multi_language/rec_multi_language_lite_train.yml)。
 
 您有两种方式创建所需的配置文件：
 
@@ -362,32 +362,18 @@ PaddleOCR目前已支持26种（除中文外）语种识别，`configs/rec/multi
 
 | 配置文件 |  算法名称 |   backbone |   trans   |   seq      |     pred     |  language | character_type |
 | :--------: |  :-------:   | :-------:  |   :-------:   |   :-----:   |  :-----:   | :-----:  | :-----:  |
-| rec_ch_tra_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 中文繁体  | ch_tra|
+| rec_chinese_cht_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 中文繁体  | chinese_cht|
 | rec_en_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 英语（区分大小写）   | EN |
 | rec_french_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 法语 |  french |
 | rec_ger_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 德语   | german |
 | rec_japan_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 日语  | japan |
 | rec_korean_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 韩语  | korean |
-| rec_it_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 意大利语  | it |
-| rec_es_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 西班牙语 |  es |
-| rec_pt_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 葡萄牙语   | pt |
-| rec_ru_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 俄罗斯语  | ru |
-| rec_ar_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 阿拉伯语  | ar |
-| rec_hi_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 印地语 |  hi |
-| rec_ug_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 维吾尔语  | ug |
-| rec_fa_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 波斯语  | fa |
-| rec_ur_ite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 乌尔都语  | ur |
-| rec_rs_latin_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 塞尔维亚(latin)语 | rs_latin |
-| rec_oc_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 欧西坦语   | oc |
-| rec_mr_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 马拉地语  | mr |
-| rec_ne_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 尼泊尔语  | ne |
-| rec_rs_cyrillic_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 塞尔维亚(cyrillic)语 |  rs_cyrillic |
-| rec_bg_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 保加利亚语  | bg |
-| rec_uk_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 乌克兰语  | uk |
-| rec_be_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 白俄罗斯语   | be |
-| rec_te_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 泰卢固语  | te |
-| rec_kn_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 卡纳达语  | kn |
-| rec_ta_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 泰米尔语 |  ta |
+| rec_latin_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 拉丁字母  | latin |
+| rec_arabic_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 阿拉伯字母 |  ar |
+| rec_cyrillic_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 斯拉夫字母  | cyrillic |
+| rec_devanagari_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 梵文字母  | devanagari |
+
+更多支持语种请参考: [多语言模型](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/multi_languages.md#%E8%AF%AD%E7%A7%8D%E7%BC%A9%E5%86%99)
 
 多语言模型训练方式与中文模型一致，训练数据集均为100w的合成数据，少量的字体可以在 [百度网盘](https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA) 上下载，提取码：frgi。
 
@@ -431,8 +417,8 @@ Eval:
 评估数据集可以通过 `configs/rec/rec_icdar15_train.yml`  修改Eval中的 `label_file_path` 设置。
 
 ```
-# GPU 评估， Global.pretrained_model 为待测权重
-python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_icdar15_train.yml -o Global.pretrained_model={path/to/weights}/best_accuracy
+# GPU 评估， Global.checkpoints 为待测权重
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_icdar15_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
 <a name="预测"></a>
@@ -443,7 +429,7 @@ python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec
 
 使用 PaddleOCR 训练好的模型，可以通过以下脚本进行快速预测。
 
-默认预测图片存储在 `infer_img` 里，通过 `-o Global.pretrained_model` 指定权重：
+默认预测图片存储在 `infer_img` 里，通过 `-o Global.checkpoints` 指定权重：
 
 ```
 # 预测英文结果
