@@ -188,7 +188,7 @@ float PostProcessor::PolygonScoreAcc(std::vector<cv::Point> contour,
 
 
   cv::Point* rook_point = new cv::Point[contour.size()];
-       //[contour.size()];
+   
   for (int i = 0; i < contour.size(); ++i) {
     rook_point[i] = cv::Point(int(box_x[i]) - xmin, int(box_y[i]) - ymin);
   }
