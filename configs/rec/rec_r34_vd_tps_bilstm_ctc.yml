@@ -19,6 +19,7 @@ Global:
   max_text_length: 25
   infer_mode: False
   use_space_char: False
+  save_res_path: ./output/rec/predicts_r34_vd_tps_bilstm_ctc.txt
 
 Optimizer:
   name: Adam
@@ -37,7 +38,7 @@ Architecture:
     name: TPS
     num_fiducial: 20
     loc_lr: 0.1
-    model_name: small
+    model_name: large
   Backbone:
     name: ResNet
     layers: 34

@@ -66,6 +66,7 @@ class TextE2E(object):
             postprocess_params["score_thresh"] = args.e2e_pgnet_score_thresh
             postprocess_params["character_dict_path"] = args.e2e_char_dict_path
             postprocess_params["valid_set"] = args.e2e_pgnet_valid_set
+            postprocess_params["mode"] = args.e2e_pgnet_mode
             self.e2e_pgnet_polygon = args.e2e_pgnet_polygon
         else:
             logger.info("unknown e2e_algorithm:{}".format(self.e2e_algorithm))
@@ -121,7 +122,7 @@ class TextE2E(object):
         else:
             raise NotImplementedError
         post_result = self.postprocess_op(preds, shape_list)
-        points, strs = post_result['points'], post_result['strs']
+        points, strs = post_result['points'], post_result['texts']
         dt_boxes = self.filter_tag_det_res_only_clip(points, ori_im.shape)
         elapse = time.time() - starttime
         return dt_boxes, strs, elapse

@@ -5,15 +5,15 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
 
 ## Notice
 PaddleOCR supports both dynamic graph and static graph programming paradigm
-- Dynamic graph: dygraph branch (default), **supported by paddle 2.0.0 ([installation](./doc/doc_en/installation_en.md))**
+- Dynamic graph: release/2.1 (default), **supported by paddle 2.0.0 ([installation](./doc/doc_en/installation_en.md))**
 - Static graph: develop branch
 
 **Recent updates**
-- 2021.2.8 Release PaddleOCRv2.0(branch release/2.0) and set as default branch. Check release note here: https://github.com/PaddlePaddle/PaddleOCR/releases/tag/v2.0.0
+- 2021.4.8 Release PaddleOCRv2.1(branch release/2.1). Newly released AAAI 2021 end-to-end algorithm [PGNet](./doc/doc_en/pgnet_en.md) and [Multi language recognition model](./doc/doc_en/multi_languages_en.md), support more than 80 languages recognition.
+- 2021.2.8 Release PaddleOCRv2.0 (branch release/2.0). Refer to [release note](https://github.com/PaddlePaddle/PaddleOCR/releases/tag/v2.0.0) for more details.
 - 2021.1.21 update more than 25+ multilingual recognition models [models list](./doc/doc_en/models_list_en.md), including：English, Chinese, German, French, Japanese，Spanish，Portuguese Russia Arabic and so on.  Models for more languages will continue to be updated [Develop Plan](https://github.com/PaddlePaddle/PaddleOCR/issues/1048).
 - 2020.12.15 update Data synthesis tool, i.e., [Style-Text](./StyleText/README.md)，easy to synthesize a large number of images which are similar to the target scene image.
 - 2020.11.25 Update a new data annotation tool, i.e., [PPOCRLabel](./PPOCRLabel/README.md), which is helpful to improve the labeling efficiency. Moreover, the labeling results can be used in training of the PP-OCR system directly.
-- 2020.9.22 Update the PP-OCR technical article, https://arxiv.org/abs/2009.09941
 - [more](./doc/doc_en/update_en.md)
 
 ## Features
@@ -21,7 +21,7 @@ PaddleOCR supports both dynamic graph and static graph programming paradigm
     - Ultra lightweight ppocr_mobile series models: detection (3.0M) + direction classifier (1.4M) + recognition (5.0M) = 9.4M
     - General ppocr_server series models: detection (47.1M) + direction classifier (1.4M) + recognition (94.9M) = 143.4M
     - Support Chinese, English, and digit recognition, vertical text recognition, and long text recognition
-    - Support multi-language recognition: Korean, Japanese, German, French
+    - Support more than 80 kinds of multi-language recognition models: [For details](./doc/doc_en/multi_languages_en.md)
 - Rich toolkits related to the OCR areas
     - Semi-automatic data annotation tool, i.e., PPOCRLabel: support fast and efficient data annotation
     - Data synthesis tool, i.e., Style-Text: easy to synthesize a large number of images which are similar to the target scene image
@@ -33,17 +33,18 @@ PaddleOCR supports both dynamic graph and static graph programming paradigm
 
 <div align="center">
     <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
-    <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/00018069.jpg" width="800">
+    <img src="doc/imgs_results/multi_lang/img_01.jpg" width="800">
+    <img src="doc/imgs_results/multi_lang/img_02.jpg" width="800">
 </div>
 
-The above pictures are the visualizations of the general ppocr_server model. For more effect pictures, please see [More visualizations](./doc/doc_en/visualization_en.md).
+The above pictures are the visualizations of the English recognition model. For more details, please see [Multi language recognition model](./doc/doc_en/multi_languages_en.md)
 
 <a name="Community"></a>
 ## Community
 - Scan the QR code below with your Wechat, you can access to official technical exchange group. Look forward to your participation.
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/joinus.PNG"  width = "200" height = "200" />
+<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "200" height = "200" />
 </div>
 
 
@@ -79,12 +80,14 @@ For a new language request, please refer to [Guideline for new language_requests
 
 ## Tutorials
 - [Installation](./doc/doc_en/installation_en.md)
-- [Quick Start](./doc/doc_en/quickstart_en.md)
+- [Chinese OCR Quick Start](./doc/doc_en/quickstart_en.md)
+- [Multi-language OCR Quick Start](./doc/doc_en/multi_languages_en.md)
 - [Code Structure](./doc/doc_en/tree_en.md)
 - Algorithm Introduction
     - [Text Detection Algorithm](./doc/doc_en/algorithm_overview_en.md)
     - [Text Recognition Algorithm](./doc/doc_en/algorithm_overview_en.md)
     - [PP-OCR Pipeline](#PP-OCR-Pipeline)
+    - [End2End Algorithm *PGNet*](./doc/doc_en/pgnet_en.md)
 - Model Training/Evaluation
     - [Text Detection](./doc/doc_en/detection_en.md)
     - [Text Recognition](./doc/doc_en/recognition_en.md)
@@ -94,7 +97,7 @@ For a new language request, please refer to [Guideline for new language_requests
     - [Quick Inference Based on PIP](./doc/doc_en/whl_en.md)
     - [Python Inference](./doc/doc_en/inference_en.md)
     - [C++ Inference](./deploy/cpp_infer/readme_en.md)
-    - [Serving](./deploy/pdserving/README.md)
+    - [Serving](./deploy/hubserving/readme_en.md)
     - [Mobile](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme_en.md)
     - [Benchmark](./doc/doc_en/benchmark_en.md)  
 - Data Annotation and Synthesis
