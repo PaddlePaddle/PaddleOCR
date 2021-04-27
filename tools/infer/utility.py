@@ -275,13 +275,13 @@ def create_predictor(args, mode, logger):
                 }
 
             elif mode == "rec":
-                min_input_shape = {"x": [1, 3, 32, 10]}
-                max_input_shape = {"x": [1, 3, 32, 2000]}
-                opt_input_shape = {"x": [1, 3, 32, 320]}
+                min_input_shape = {"x": [args.rec_batch_num, 3, 32, 10]}
+                max_input_shape = {"x": [args.rec_batch_num, 3, 32, 2000]}
+                opt_input_shape = {"x": [args.rec_batch_num, 3, 32, 320]}
             elif mode == "cls":
-                min_input_shape = {"x": [1, 3, 48, 10]}
-                max_input_shape = {"x": [1, 3, 48, 2000]}
-                opt_input_shape = {"x": [1, 3, 48, 320]}
+                min_input_shape = {"x": [args.rec_batch_num, 3, 48, 10]}
+                max_input_shape = {"x": [args.rec_batch_num, 3, 48, 2000]}
+                opt_input_shape = {"x": [args.rec_batch_num, 3, 48, 320]}
             config.set_trt_dynamic_shape_info(min_input_shape, max_input_shape,
                                               opt_input_shape)
 
