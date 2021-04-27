@@ -160,26 +160,34 @@ std::vector<std::vector<float>> PostProcessor::GetMiniBoxes(cv::RotatedRect box,
 }
 
 float PostProcessor::PolygonScoreAcc(std::vector<cv::Point> contour,
-		                  cv::Mat pred){
+                                     cv::Mat pred) {
   int width = pred.cols;
   int height = pred.rows;
   std::vector<float> box_x;
   std::vector<float> box_y;
-  for(int i=0; i<contour.size(); ++i){
+  for (int i = 0; i < contour.size(); ++i) {
     box_x.push_back(contour[i].x);
     box_y.push_back(contour[i].y);
   }
 
-  int xmin = clamp(int(std::floor(*(std::min_element(box_x.begin(), box_x.end())))), 0, width - 1);
-  int xmax = clamp(int(std::ceil(*(std::max_element(box_x.begin(), box_x.end())))), 0, width - 1);
-  int ymin = clamp(int(std::floor(*(std::min_element(box_y.begin(), box_y.end())))), 0, height - 1);
-  int ymax = clamp(int(std::ceil(*(std::max_element(box_y.begin(), box_y.end())))), 0, height - 1);
+  int xmin =
+      clamp(int(std::floor(*(std::min_element(box_x.begin(), box_x.end())))), 0,
+            width - 1);
+  int xmax =
+      clamp(int(std::ceil(*(std::max_element(box_x.begin(), box_x.end())))), 0,
+            width - 1);
+  int ymin =
+      clamp(int(std::floor(*(std::min_element(box_y.begin(), box_y.end())))), 0,
+            height - 1);
+  int ymax =
+      clamp(int(std::ceil(*(std::max_element(box_y.begin(), box_y.end())))), 0,
+            height - 1);
 
   cv::Mat mask;
   mask = cv::Mat::zeros(ymax - ymin + 1, xmax - xmin + 1, CV_8UC1);
 
   cv::Point rook_point[contour.size()];
-  for(int i=0; i<contour.size(); ++i){
+  for (int i = 0; i < contour.size(); ++i) {
     rook_point[i] = cv::Point(int(box_x[i]) - xmin, int(box_y[i]) - ymin);
   }
   const cv::Point *ppt[1] = {rook_point};
@@ -187,7 +195,8 @@ float PostProcessor::PolygonScoreAcc(std::vector<cv::Point> contour,
   cv::fillPoly(mask, ppt, npt, 1, cv::Scalar(1));
 
   cv::Mat croppedImg;
-  pred(cv::Rect(xmin, ymin, xmax - xmin + 1, ymax - ymin + 1)).copyTo(croppedImg);
+  pred(cv::Rect(xmin, ymin, xmax - xmin + 1, ymax - ymin + 1))
+      .copyTo(croppedImg);
   float score = cv::mean(croppedImg, mask)[0];
   return score;
 }
@@ -230,10 +239,9 @@ float PostProcessor::BoxScoreFast(std::vector<std::vector<float>> box_array,
   return score;
 }
 
-std::vector<std::vector<std::vector<int>>>
-PostProcessor::BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
-                               const float &box_thresh,
-                               const float &det_db_unclip_ratio) {
+std::vector<std::vector<std::vector<int>>> PostProcessor::BoxesFromBitmap(
+    const cv::Mat pred, const cv::Mat bitmap, const float &box_thresh,
+    const float &det_db_unclip_ratio, const bool &use_polygon_score) {
   const int min_size = 3;
   const int max_candidates = 1000;
 
@@ -267,9 +275,12 @@ PostProcessor::BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
     }
 
     float score;
-    score = BoxScoreFast(array, pred);
-    /* compute using polygon*/ 
-    // score = PolygonScoreAcc(contours[_i], pred);
+    if (use_polygon_score)
+      /* compute using polygon*/
+      score = PolygonScoreAcc(contours[_i], pred);
+    else
+      score = BoxScoreFast(array, pred);
+
     if (score < box_thresh)
       continue;
 
