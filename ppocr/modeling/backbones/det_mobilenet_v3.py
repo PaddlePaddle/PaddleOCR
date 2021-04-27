@@ -283,5 +283,5 @@ class SEModule(nn.Layer):
         outputs = self.conv1(outputs)
         outputs = F.relu(outputs)
         outputs = self.conv2(outputs)
-        outputs = F.hardsigmoid(outputs, slope=0.2, offset=0.5)
+        outputs = F.hardsigmoid(outputs)
         return inputs * outputs
