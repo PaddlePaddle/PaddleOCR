@@ -2,7 +2,7 @@
 
 PaddleOCR提供2种服务部署方式：
 - 基于PaddleHub Serving的部署：代码路径为"`./deploy/hubserving`"，按照本教程使用；
-- (coming soon)基于PaddleServing的部署：代码路径为"`./deploy/pdserving`"，使用方法参考[文档](../../deploy/pdserving/readme.md)。
+- 基于PaddleServing的部署：代码路径为"`./deploy/pdserving`"，使用方法参考[文档](../../deploy/pdserving/README_CN.md)。
 
 # 基于PaddleHub Serving的服务部署
 

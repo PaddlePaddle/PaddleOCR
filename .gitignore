@@ -25,14 +25,4 @@ output/
 build/
 dist/
 paddleocr.egg-info/
-Release
-Debug
-*.db
-*.opendb
-*.suo
-paddle_inference_install_dir
-*.zip
-CMakeFiles
-*.dll
-*.exe
-*.sdf
+test-byy.bat

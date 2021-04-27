@@ -198,7 +198,7 @@ def train(config,
         batch_start = time.time()
         for idx, batch in enumerate(train_dataloader):
             train_reader_cost += time.time() - batch_start
-            if idx >= len(train_dataloader):
+            if idx >= len(train_dataloader)-1:
                 break
             lr = optimizer.get_lr()
             images = batch[0]
@@ -237,8 +237,9 @@ def train(config,
                     vdl_writer.add_scalar('TRAIN/{}'.format(k), v, global_step)
                 vdl_writer.add_scalar('TRAIN/lr', lr, global_step)
 
-            if dist.get_rank(
-            ) == 0 and global_step > 0 and global_step % print_batch_step == 0:
+            if dist.get_rank() == 0 and (
+                (global_step > 0 and global_step % print_batch_step == 0) or
+                (idx >= len(train_dataloader) - 1)):
                 logs = train_stats.log()
                 strs = 'epoch: [{}/{}], iter: {}, {}, reader_cost: {:.5f} s, batch_cost: {:.5f} s, samples: {}, ips: {:.5f}'.format(
                     epoch, epoch_num, global_step, logs, train_reader_cost /
@@ -334,9 +335,7 @@ def eval(model, valid_dataloader, post_process_class, eval_class,
         total_frame = 0.0
         total_time = 0.0
         pbar = tqdm(total=len(valid_dataloader), desc='eval model:')
-        for idx, batch in enumerate(valid_dataloader):
-            if idx >= len(valid_dataloader):
-                break
+        for idx, batch in enumerate(valid_dataloader):          
             images = batch[0]
             start = time.time()
 
@@ -354,6 +353,8 @@ def eval(model, valid_dataloader, post_process_class, eval_class,
             eval_class(post_result, batch)
             pbar.update(1)
             total_frame += len(images)
+            if idx >= len(valid_dataloader)-1:
+                break
         # Get final metric，eg. acc or hmean
         metric = eval_class.get_metric()
 
@@ -374,7 +375,8 @@ def preprocess(is_train=False):
 
     alg = config['Architecture']['algorithm']
     assert alg in [
-        'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN', 'CLS'
+        'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
+        'CLS', 'PGNet'
     ]
 
     device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'

@@ -28,10 +28,11 @@ def build_post_process(config, global_config=None):
     from .sast_postprocess import SASTPostProcess
     from .rec_postprocess import CTCLabelDecode, AttnLabelDecode, SRNLabelDecode
     from .cls_postprocess import ClsPostProcess
+    from .pg_postprocess import PGPostProcess
 
     support_dict = [
         'DBPostProcess', 'EASTPostProcess', 'SASTPostProcess', 'CTCLabelDecode',
-        'AttnLabelDecode', 'ClsPostProcess', 'SRNLabelDecode'
+        'AttnLabelDecode', 'ClsPostProcess', 'SRNLabelDecode', 'PGPostProcess'
     ]
 
     config = copy.deepcopy(config)

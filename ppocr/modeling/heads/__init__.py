@@ -20,6 +20,7 @@ def build_head(config):
     from .det_db_head import DBHead
     from .det_east_head import EASTHead
     from .det_sast_head import SASTHead
+    from .e2e_pg_head import PGHead
 
     # rec head
     from .rec_ctc_head import CTCHead
@@ -30,8 +31,8 @@ def build_head(config):
     from .cls_head import ClsHead
     support_dict = [
         'DBHead', 'EASTHead', 'SASTHead', 'CTCHead', 'ClsHead', 'AttentionHead',
-        'SRNHead'
-    ]
+        'SRNHead', 'PGHead']
+
 
     module_name = config.pop('name')
     assert module_name in support_dict, Exception('head only support {}'.format(

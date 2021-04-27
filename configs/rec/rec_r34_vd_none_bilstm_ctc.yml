@@ -7,7 +7,6 @@ Global:
   save_epoch_step: 3
   # evaluation is run every 2000 iterations
   eval_batch_step: [0, 2000]
-  # if pretrained_model is saved in static mode, load_static_weights must set to True
   cal_metric_during_train: True
   pretrained_model:
   checkpoints:
