@@ -13,7 +13,7 @@ Among them, the English model supports the detection and recognition of uppercas
 letters and common punctuation, and the recognition of space characters is optimized:
 
 <div align="center">
-    <img src="../imgs_results/multi_lang/en_1.jpg" width="400" height="600">
+    <img src="../imgs_results/multi_lang/img_12.jpg" width="900" height="300">
 </div>
 
 The multilingual models cover Latin, Arabic, Traditional Chinese, Korean, Japanese, etc.:
@@ -21,6 +21,8 @@ The multilingual models cover Latin, Arabic, Traditional Chinese, Korean, Japane
 <div align="center">
     <img src="../imgs_results/multi_lang/japan_2.jpg" width="600" height="300">
     <img src="../imgs_results/multi_lang/french_0.jpg" width="300" height="300">
+    <img src="../imgs_results/multi_lang/korean_0.jpg" width="500" height="300">
+    <img src="../imgs_results/multi_lang/arabic_0.jpg" width="300" height="300">
 </div>
 
 This document will briefly introduce how to use the multilingual model.
@@ -31,14 +33,9 @@ This document will briefly introduce how to use the multilingual model.
 
 - [2 Quick Use](#Quick_Use)
     - [2.1 Command line operation](#Command_line_operation)
-     - [2.1.1 Prediction of the whole image](#bash_detection+recognition)
-     - [2.1.2 Recognition](#bash_Recognition)
-     - [2.1.3 Detection](#bash_detection)
     - [2.2 python script running](#python_Script_running)
-     - [2.2.1 Whole image prediction](#python_detection+recognition)
-     - [2.2.2 Recognition](#python_Recognition)
-     - [2.2.3 Detection](#python_detection)
 - [3 Custom Training](#Custom_Training)
+- [4 Inference and Deployment](#inference)
 - [4 Supported languages and abbreviations](#language_abbreviations)
 
 <a name="Install"></a>
@@ -51,7 +48,7 @@ This document will briefly introduce how to use the multilingual model.
 pip install paddlepaddle
 
 # gpu
-pip instll paddlepaddle-gpu
+pip install paddlepaddle-gpu
 ```
 
 <a name="paddleocr_package_install"></a>
@@ -89,7 +86,7 @@ The specific supported [language] (#language_abbreviations) can be viewed in the
 
 paddleocr --image_dir doc/imgs/japan_2.jpg --lang=japan
 ```
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs/japan_2.jpg)
+![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/imgs/japan_2.jpg)
 
 The result is a list, each item contains a text box, text and recognition confidence
 ```text
@@ -106,7 +103,7 @@ The result is a list, each item contains a text box, text and recognition confid
 paddleocr --image_dir doc/imgs_words/japan/1.jpg --det false --lang=japan
 ```
 
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_words/japan/1.jpg)
+![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/imgs_words/japan/1.jpg)
 
 The result is a tuple, which returns the recognition result and recognition confidence
 
@@ -143,6 +140,9 @@ from paddleocr import PaddleOCR, draw_ocr
 ocr = PaddleOCR(lang="korean") # The model file will be downloaded automatically when executed for the first time
 img_path ='doc/imgs/korean_1.jpg'
 result = ocr.ocr(img_path)
+# Recognition and detection can be performed separately through parameter control
+# result = ocr.ocr(img_path, det=False)  Only perform recognition
+# result = ocr.ocr(img_path, rec=False)  Only perform detection
 # Print detection frame and recognition result
 for line in result:
     print(line)
@@ -162,54 +162,6 @@ Visualization of results:
 ![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_results/korean.jpg)
 
 
-* Recognition
-
-```
-from paddleocr import PaddleOCR
-ocr = PaddleOCR(lang="german")
-img_path ='PaddleOCR/doc/imgs_words/german/1.jpg'
-result = ocr.ocr(img_path, det=False, cls=True)
-for line in result:
-    print(line)
-```
-
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_words/german/1.jpg)
-
-The result is a tuple, which only contains the recognition result and recognition confidence
-
-```
-('leider auch jetzt', 0.97538936)
-```
-
-* Detection
-
-```python
-from paddleocr import PaddleOCR, draw_ocr
-ocr = PaddleOCR() # need to run only once to download and load model into memory
-img_path ='PaddleOCR/doc/imgs_en/img_12.jpg'
-result = ocr.ocr(img_path, rec=False)
-for line in result:
-    print(line)
-
-# show result
-from PIL import Image
-
-image = Image.open(img_path).convert('RGB')
-im_show = draw_ocr(image, result, txts=None, scores=None, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')
-im_show = Image.fromarray(im_show)
-im_show.save('result.jpg')
-```
-The result is a list, each item contains only text boxes
-```bash
-[[26.0, 457.0], [137.0, 457.0], [137.0, 477.0], [26.0, 477.0]]
-[[25.0, 425.0], [372.0, 425.0], [372.0, 448.0], [25.0, 448.0]]
-[[128.0, 397.0], [273.0, 397.0], [273.0, 414.0], [128.0, 414.0]]
-......
-```
-
-Visualization of results:
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_results/whl/12_det.jpg)
-
 ppocr also supports direction classification. For more usage methods, please refer to: [whl package instructions](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.0/doc/doc_ch/whl.md).
 
 <a name="Custom_training"></a>
@@ -221,84 +173,61 @@ Modify the training data path, dictionary and other parameters.
 For specific data preparation and training process, please refer to: [Text Detection](../doc_en/detection_en.md), [Text Recognition](../doc_en/recognition_en.md), more functions such as predictive deployment,
 For functions such as data annotation, you can read the complete [Document Tutorial](../../README.md).
 
-<a name="language_abbreviation"></a>
-## 4 Support languages and abbreviations
 
-| Language  | Abbreviation |
-| ---  | --- |
-|chinese and english|ch|
-|english|en|
-|french|fr|
-|german|german|
-|japan|japan|
-|korean|korean|
-|chinese traditional |chinese_cht|
-| Italian |it|
-|Spanish |es|
-| Portuguese|pt|
-|Russia|ru|
-|Arabic|ar|
-|Hindi|hi|
-|Uyghur|ug|
-|Persian|fa|
-|Urdu|ur|
-| Serbian(latin) |rs_latin|
-|Occitan |oc|
-|Marathi|mr|
-|Nepali|ne|
-|Serbian(cyrillic)|rs_cyrillic|
-|Bulgarian |bg|
-|Ukranian|uk|
-|Belarusian|be|
-|Telugu |te|
-|Tamil |ta|
-|Afrikaans |af|
-|Azerbaijani    |az|
-|Bosnian|bs|
-|Czech|cs|
-|Welsh |cy|
-|Danish|da|
-|Estonian |et|
-|Irish |ga|
-|Croatian |hr|
-|Hungarian |hu|
-|Indonesian|id|
-|Icelandic|is|
-|Kurdish|ku|
-|Lithuanian |lt|
- |Latvian |lv|
-|Maori|mi|
-|Malay|ms|
-|Maltese |mt|
-|Dutch |nl|
-|Norwegian |no|
-|Polish |pl|
-|Romanian |ro|
-|Slovak |sk|
-|Slovenian |sl|
-|Albanian |sq|
-|Swedish |sv|
-|Swahili |sw|
-|Tagalog |tl|
-|Turkish |tr|
-|Uzbek |uz|
-|Vietnamese |vi|
-|Mongolian |mn|
-|Abaza |abq|
-|Adyghe |ady|
-|Kabardian |kbd|
-|Avar |ava|
-|Dargwa |dar|
-|Ingush |inh|
-|Lak |lbe|
-|Lezghian |lez|
-|Tabassaran |tab|
-|Bihari |bh|
-|Maithili |mai|
-|Angika |ang|
-|Bhojpuri |bho|
-|Magahi |mah|
-|Nagpur |sck|
-|Newari |new|
-|Goan Konkani|gom|
-|Saudi Arabia|sa|
+<a name="inference"></a>
+## 4 Inference and Deployment
+
+In addition to installing the whl package for quick forecasting,
+ppocr also provides a variety of forecasting deployment methods.
+If necessary, you can read related documents:
+
+- [Python Inference](./inference_en.md)
+- [C++ Inference](../../deploy/cpp_infer/readme_en.md)
+- [Serving](../../deploy/hubserving/readme_en.md)
+- [Mobile](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme_en.md)
+- [Benchmark](./benchmark_en.md)
+
+
+<a name="language_abbreviations"></a>
+## 5 Support languages and abbreviations
+
+| Language  | Abbreviation | | Language  | Abbreviation |
+| ---  | --- | --- | ---  | --- |
+|chinese and english|ch| |Arabic|ar|
+|english|en| |Hindi|hi|
+|french|fr| |Uyghur|ug|
+|german|german| |Persian|fa|
+|japan|japan| |Urdu|ur|
+|korean|korean| | Serbian(latin) |rs_latin|
+|chinese traditional |ch_tra| |Occitan |oc|
+| Italian |it| |Marathi|mr|
+|Spanish |es| |Nepali|ne|
+| Portuguese|pt| |Serbian(cyrillic)|rs_cyrillic|
+|Russia|ru||Bulgarian |bg|
+|Ukranian|uk| |Estonian |et|
+|Belarusian|be| |Irish |ga|
+|Telugu |te| |Croatian |hr|
+|Saudi Arabia|sa| |Hungarian |hu|
+|Tamil |ta| |Indonesian|id|
+|Afrikaans |af| |Icelandic|is|
+|Azerbaijani  |az||Kurdish|ku|
+|Bosnian|bs| |Lithuanian |lt|
+|Czech|cs| |Latvian |lv|
+|Welsh |cy| |Maori|mi|
+|Danish|da| |Malay|ms|
+|Maltese |mt| |Adyghe |ady|
+|Dutch |nl| |Kabardian |kbd|
+|Norwegian |no| |Avar |ava|
+|Polish |pl| |Dargwa |dar|
+|Romanian |ro| |Ingush |inh|
+|Slovak |sk| |Lak |lbe|
+|Slovenian |sl| |Lezghian |lez|
+|Albanian |sq| |Tabassaran |tab|
+|Swedish |sv| |Bihari |bh|
+|Swahili |sw| |Maithili |mai|
+|Tagalog |tl| |Angika |ang|
+|Turkish |tr| |Bhojpuri |bho|
+|Uzbek |uz| |Magahi |mah|
+|Vietnamese |vi| |Nagpur |sck|
+|Mongolian |mn| |Newari |new|
+|Abaza |abq| |Goan Konkani|gom|
