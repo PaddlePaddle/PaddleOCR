@@ -199,7 +199,7 @@ def train(config,
         batch_start = time.time()
         for idx, batch in enumerate(train_dataloader):
             train_reader_cost += time.time() - batch_start
-            if idx >= len(train_dataloader):
+            if idx >= len(train_dataloader)-1:
                 break
             lr = optimizer.get_lr()
             images = batch[0]

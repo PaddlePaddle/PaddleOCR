@@ -33,7 +33,7 @@ class DBPostProcess(object):
                  box_thresh=0.7,
                  max_candidates=1000,
                  unclip_ratio=2.0,
-                 use_dilation=False,
+                 use_dilation=True,
                  score_mode="fast",
                  **kwargs):
         self.thresh = thresh
