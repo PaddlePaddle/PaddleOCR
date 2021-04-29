@@ -65,7 +65,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - 算法介绍
     - [文本检测](./doc/doc_ch/algorithm_overview.md)
     - [文本识别](./doc/doc_ch/algorithm_overview.md)
-    - [PP-OCR Pipline](#PP-OCR)
+    - [PP-OCR Pipeline](#PP-OCR)
 - 模型训练/评估
     - [文本检测](./doc/doc_ch/detection.md)
     - [文本识别](./doc/doc_ch/recognition.md)
@@ -97,7 +97,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - [贡献代码](#贡献代码)
 
 <a name="PP-OCR"></a>
-## PP-OCR Pipline
+## PP-OCR Pipeline
 <div align="center">
     <img src="./doc/ppocr_framework.png" width="800">
 </div>
