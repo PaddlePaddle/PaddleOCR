@@ -959,7 +959,7 @@ lr:
 
 #### Q3.4.9：PaddleOCR模型是否可以转换成ONNX模型?
 
-**A**：目前暂不支持转ONNX，相关工作在研发中。
+**A**：PaddlePaddle已提供将支持将PaddlePaddle模型格式转化到ONNX模型格式的工具Paddle2ONNX，并提供了转换PaddleOCR模型的教程，详见[Paddle2ONNX文档](https://github.com/PaddlePaddle/Paddle2ONNX)
 
 #### Q3.4.10：使用opt工具对检测模型转换时报错 can not found op arguments for node conv2_b_attr
 
