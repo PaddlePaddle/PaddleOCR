@@ -249,7 +249,7 @@ class ResNet(nn.Layer):
                             name=conv_name))
                     shortcut = True
                     self.block_list.append(bottleneck_block)
-                self.out_channels = num_filters[block]
+                self.out_channels = num_filters[block] * 4
         else:
             for block in range(len(depth)):
                 shortcut = False
