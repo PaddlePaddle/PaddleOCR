@@ -186,18 +186,23 @@ float PostProcessor::PolygonScoreAcc(std::vector<cv::Point> contour,
   cv::Mat mask;
   mask = cv::Mat::zeros(ymax - ymin + 1, xmax - xmin + 1, CV_8UC1);
 
-  cv::Point rook_point[contour.size()];
+
+  cv::Point* rook_point = new cv::Point[contour.size()];
+   
   for (int i = 0; i < contour.size(); ++i) {
     rook_point[i] = cv::Point(int(box_x[i]) - xmin, int(box_y[i]) - ymin);
   }
   const cv::Point *ppt[1] = {rook_point};
   int npt[] = {int(contour.size())};
+
+
   cv::fillPoly(mask, ppt, npt, 1, cv::Scalar(1));
 
   cv::Mat croppedImg;
-  pred(cv::Rect(xmin, ymin, xmax - xmin + 1, ymax - ymin + 1))
-      .copyTo(croppedImg);
+  pred(cv::Rect(xmin, ymin, xmax - xmin + 1, ymax - ymin + 1)).copyTo(croppedImg);
   float score = cv::mean(croppedImg, mask)[0];
+
+  delete []rook_point;
   return score;
 }
 
