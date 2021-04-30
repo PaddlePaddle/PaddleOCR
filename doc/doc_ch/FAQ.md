@@ -957,10 +957,6 @@ lr:
 
 **A**：在安卓APK上无法设置，没有暴露这个接口，如果使用的是PaddledOCR/deploy/lite/的demo，可以修改config.txt中的对应参数来设置
 
-#### Q3.4.9：PaddleOCR模型是否可以转换成ONNX模型?
-
-**A**：目前暂不支持转ONNX，相关工作在研发中。
-
 #### Q3.4.10：使用opt工具对检测模型转换时报错 can not found op arguments for node conv2_b_attr
 
 **A**：这个问题大概率是编译opt工具的Paddle-Lite不是develop分支，建议使用Paddle-Lite 的develop分支编译opt工具。
