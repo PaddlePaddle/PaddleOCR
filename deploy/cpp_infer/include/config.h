@@ -27,8 +27,11 @@ namespace PaddleOCR {
 
 class OCRConfig {
 public:
-  explicit OCRConfig(const std::string &config_file) {
+  explicit OCRConfig(const std::string &config_file, int argc, char **argv) {
     config_map_ = LoadConfig(config_file);
+    if (argc > 3) {
+      ParserConfig(argc, argv, config_map_);
+    }
 
     this->use_gpu = bool(stoi(config_map_["use_gpu"]));
 
@@ -109,6 +112,8 @@ public:
 private:
   // Load configuration
   std::map<std::string, std::string> LoadConfig(const std::string &config_file);
+  void ParserConfig(int argc, char **argv,
+                    std::map<std::string, std::string> &config);
 
   std::vector<std::string> split(const std::string &str,
                                  const std::string &delim);

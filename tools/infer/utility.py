@@ -21,6 +21,9 @@ import json
 from PIL import Image, ImageDraw, ImageFont
 import math
 from paddle import inference
+import time
+from ppocr.utils.logging import get_logger
+logger = get_logger()
 
 
 def parse_args():
@@ -32,7 +35,7 @@ def parse_args():
     parser.add_argument("--use_gpu", type=str2bool, default=True)
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
-    parser.add_argument("--use_fp16", type=str2bool, default=False)
+    parser.add_argument("--precision", type=str, default="fp32")
     parser.add_argument("--gpu_mem", type=int, default=500)
 
     # params for text detector
@@ -84,9 +87,82 @@ def parse_args():
     parser.add_argument("--cls_thresh", type=float, default=0.9)
 
     parser.add_argument("--enable_mkldnn", type=str2bool, default=False)
+    parser.add_argument("--cpu_threads", type=int, default=6)
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
 
+    parser.add_argument("--benchmark", type=bool, default=False)
+
     return parser.parse_args()
+
+
+class Times(object):
+    def __init__(self):
+        self.time = 0.
+        self.st = 0.
+        self.et = 0.
+
+    def start(self):
+        self.st = time.time()
+
+    def end(self, accumulative=True):
+        self.et = time.time()
+        if accumulative:
+            self.time += self.et - self.st
+        else:
+            self.time = self.et - self.st
+
+    def reset(self):
+        self.time = 0.
+        self.st = 0.
+        self.et = 0.
+
+    def value(self):
+        return round(self.time, 4)
+
+
+class Timer(Times):
+    def __init__(self):
+        super(Timer, self).__init__()
+        self.total_time = Times()
+        self.preprocess_time = Times()
+        self.inference_time = Times()
+        self.postprocess_time = Times()
+        self.img_num = 0
+
+    def info(self, average=False):
+        logger.info("----------------------- Perf info -----------------------")
+        logger.info("total_time: {}, img_num: {}".format(self.total_time.value(
+        ), self.img_num))
+        preprocess_time = round(self.preprocess_time.value() / self.img_num,
+                                4) if average else self.preprocess_time.value()
+        postprocess_time = round(
+            self.postprocess_time.value() / self.img_num,
+            4) if average else self.postprocess_time.value()
+        inference_time = round(self.inference_time.value() / self.img_num,
+                               4) if average else self.inference_time.value()
+
+        average_latency = self.total_time.value() / self.img_num
+        logger.info("average_latency(ms): {:.2f}, QPS: {:2f}".format(
+            average_latency * 1000, 1 / average_latency))
+        logger.info(
+            "preprocess_latency(ms): {:.2f}, inference_latency(ms): {:.2f}, postprocess_latency(ms): {:.2f}".
+            format(preprocess_time * 1000, inference_time * 1000,
+                   postprocess_time * 1000))
+
+    def report(self, average=False):
+        dic = {}
+        dic['preprocess_time'] = round(
+            self.preprocess_time.value() / self.img_num,
+            4) if average else self.preprocess_time.value()
+        dic['postprocess_time'] = round(
+            self.postprocess_time.value() / self.img_num,
+            4) if average else self.postprocess_time.value()
+        dic['inference_time'] = round(
+            self.inference_time.value() / self.img_num,
+            4) if average else self.inference_time.value()
+        dic['img_num'] = self.img_num
+        dic['total_time'] = round(self.total_time.value(), 4)
+        return dic
 
 
 def create_predictor(args, mode, logger):
@@ -111,27 +187,115 @@ def create_predictor(args, mode, logger):
 
     config = inference.Config(model_file_path, params_file_path)
 
+    assert args.precision in [
+        "fp32", "fp16", "int8"
+    ], "args.precision can only be one of ['fp32', 'fp16', 'int8']"
+
+    if args.precision == "fp16" and args.use_tensorrt:
+        precision = inference.PrecisionType.Half
+    elif args.precision == "int8":
+        precision = inference.PrecisionType.Int8
+    else:
+        precision = inference.PrecisionType.Float32
+
     if args.use_gpu:
         config.enable_use_gpu(args.gpu_mem, 0)
         if args.use_tensorrt:
             config.enable_tensorrt_engine(
-                precision_mode=inference.PrecisionType.Half
-                if args.use_fp16 else inference.PrecisionType.Float32,
-                max_batch_size=args.max_batch_size)
+                precision_mode=precision,
+                max_batch_size=args.max_batch_size,
+                min_subgraph_size=10)  # skip the minmum trt subgraph 
+            if mode == "det" and "mobile" in model_file_path:
+                min_input_shape = {
+                    "x": [1, 3, 50, 50],
+                    "conv2d_92.tmp_0": [1, 96, 20, 20],
+                    "conv2d_91.tmp_0": [1, 96, 10, 10],
+                    "conv2d_97.tmp_0": [1, 96, 10, 10],  # int8
+                    "conv2d_98.tmp_0": [1, 96, 10, 10],  # int8
+                    "nearest_interp_v2_1.tmp_0": [1, 96, 10, 10],
+                    "nearest_interp_v2_2.tmp_0": [1, 96, 20, 20],
+                    "nearest_interp_v2_3.tmp_0": [1, 24, 20, 20],
+                    "nearest_interp_v2_4.tmp_0": [1, 24, 20, 20],
+                    "nearest_interp_v2_5.tmp_0": [1, 24, 20, 20],
+                    "elementwise_add_7": [1, 56, 2, 2],
+                    "nearest_interp_v2_0.tmp_0": [1, 96, 2, 2]
+                }
+                max_input_shape = {
+                    "x": [1, 3, 2000, 2000],
+                    "conv2d_92.tmp_0": [1, 96, 400, 400],
+                    "conv2d_91.tmp_0": [1, 96, 200, 200],
+                    "conv2d_97.tmp_0": [1, 96, 400, 400],  # int8
+                    "conv2d_98.tmp_0": [1, 96, 400, 400],  # int8
+                    "nearest_interp_v2_1.tmp_0": [1, 96, 200, 200],
+                    "nearest_interp_v2_2.tmp_0": [1, 96, 400, 400],
+                    "nearest_interp_v2_3.tmp_0": [1, 24, 400, 400],
+                    "nearest_interp_v2_4.tmp_0": [1, 24, 400, 400],
+                    "nearest_interp_v2_5.tmp_0": [1, 24, 400, 400],
+                    "elementwise_add_7": [1, 56, 400, 400],
+                    "nearest_interp_v2_0.tmp_0": [1, 96, 400, 400]
+                }
+                opt_input_shape = {
+                    "x": [1, 3, 640, 640],
+                    "conv2d_92.tmp_0": [1, 96, 160, 160],
+                    "conv2d_91.tmp_0": [1, 96, 80, 80],
+                    "conv2d_97.tmp_0": [1, 96, 160, 160],  # int8
+                    "conv2d_98.tmp_0": [1, 96, 160, 160],  # int8
+                    "nearest_interp_v2_1.tmp_0": [1, 96, 80, 80],
+                    "nearest_interp_v2_2.tmp_0": [1, 96, 160, 160],
+                    "nearest_interp_v2_3.tmp_0": [1, 24, 160, 160],
+                    "nearest_interp_v2_4.tmp_0": [1, 24, 160, 160],
+                    "nearest_interp_v2_5.tmp_0": [1, 24, 160, 160],
+                    "elementwise_add_7": [1, 56, 40, 40],
+                    "nearest_interp_v2_0.tmp_0": [1, 96, 40, 40]
+                }
+            if mode == "det" and "server" in model_file_path:
+                min_input_shape = {
+                    "x": [1, 3, 50, 50],
+                    "conv2d_59.tmp_0": [1, 96, 20, 20],
+                    "nearest_interp_v2_2.tmp_0": [1, 96, 20, 20],
+                    "nearest_interp_v2_3.tmp_0": [1, 24, 20, 20],
+                    "nearest_interp_v2_4.tmp_0": [1, 24, 20, 20],
+                    "nearest_interp_v2_5.tmp_0": [1, 24, 20, 20]
+                }
+                max_input_shape = {
+                    "x": [1, 3, 2000, 2000],
+                    "conv2d_59.tmp_0": [1, 96, 400, 400],
+                    "nearest_interp_v2_2.tmp_0": [1, 96, 400, 400],
+                    "nearest_interp_v2_3.tmp_0": [1, 24, 400, 400],
+                    "nearest_interp_v2_4.tmp_0": [1, 24, 400, 400],
+                    "nearest_interp_v2_5.tmp_0": [1, 24, 400, 400]
+                }
+                opt_input_shape = {
+                    "x": [1, 3, 640, 640],
+                    "conv2d_59.tmp_0": [1, 96, 160, 160],
+                    "nearest_interp_v2_2.tmp_0": [1, 96, 160, 160],
+                    "nearest_interp_v2_3.tmp_0": [1, 24, 160, 160],
+                    "nearest_interp_v2_4.tmp_0": [1, 24, 160, 160],
+                    "nearest_interp_v2_5.tmp_0": [1, 24, 160, 160]
+                }
+
+            elif mode == "rec":
+                min_input_shape = {"x": [args.rec_batch_num, 3, 32, 10]}
+                max_input_shape = {"x": [args.rec_batch_num, 3, 32, 2000]}
+                opt_input_shape = {"x": [args.rec_batch_num, 3, 32, 320]}
+            elif mode == "cls":
+                min_input_shape = {"x": [args.rec_batch_num, 3, 48, 10]}
+                max_input_shape = {"x": [args.rec_batch_num, 3, 48, 2000]}
+                opt_input_shape = {"x": [args.rec_batch_num, 3, 48, 320]}
+            config.set_trt_dynamic_shape_info(min_input_shape, max_input_shape,
+                                              opt_input_shape)
+
     else:
         config.disable_gpu()
-        config.set_cpu_math_library_num_threads(6)
+        config.set_cpu_math_library_num_threads(args.cpu_threads)
         if args.enable_mkldnn:
             # cache 10 different shapes for mkldnn to avoid memory leak
             config.set_mkldnn_cache_capacity(10)
             config.enable_mkldnn()
-            #  TODO LDOUBLEV: fix mkldnn bug when bach_size  > 1
-            #config.set_mkldnn_op({'conv2d', 'depthwise_conv2d', 'pool2d', 'batch_norm'})
-            args.rec_batch_num = 1
 
     # enable memory optim
     config.enable_memory_optim()
-    config.disable_glog_info()
+    # config.disable_glog_info()
 
     config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
     config.switch_use_feed_fetch_ops(False)
@@ -174,7 +338,7 @@ def draw_ocr(image,
              txts=None,
              scores=None,
              drop_score=0.5,
-             font_path="./doc/simfang.ttf"):
+             font_path="./doc/fonts/simfang.ttf"):
     """
     Visualize the results of OCR detection and recognition
     args:
@@ -215,7 +379,7 @@ def draw_ocr_box_txt(image,
                      txts,
                      scores=None,
                      drop_score=0.5,
-                     font_path="./doc/simfang.ttf"):
+                     font_path="./doc/fonts/simfang.ttf"):
     h, w = image.height, image.width
     img_left = image.copy()
     img_right = Image.new('RGB', (w, h), (255, 255, 255))
@@ -291,7 +455,7 @@ def text_visual(texts,
                 img_h=400,
                 img_w=600,
                 threshold=0.,
-                font_path="./doc/simfang.ttf"):
+                font_path="./doc/fonts/simfang.ttf"):
     """
     create new blank img and draw txt on it
     args:
@@ -379,6 +543,95 @@ def draw_boxes(image, boxes, scores=None, drop_score=0.5):
         box = np.reshape(np.array(box), [-1, 1, 2]).astype(np.int64)
         image = cv2.polylines(np.array(image), [box], True, (255, 0, 0), 2)
     return image
+
+
+def get_current_memory_mb(gpu_id=None):
+    """
+    It is used to Obtain the memory usage of the CPU and GPU during the running of the program.
+    And this function Current program is time-consuming.
+    """
+    import pynvml
+    import psutil
+    import GPUtil
+
+    pid = os.getpid()
+    p = psutil.Process(pid)
+    info = p.memory_full_info()
+    cpu_mem = info.uss / 1024. / 1024.
+    gpu_mem = 0
+    gpu_percent = 0
+    if gpu_id is not None:
+        GPUs = GPUtil.getGPUs()
+        gpu_load = GPUs[gpu_id].load
+        gpu_percent = gpu_load
+        pynvml.nvmlInit()
+        handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+        meminfo = pynvml.nvmlDeviceGetMemoryInfo(handle)
+        gpu_mem = meminfo.used / 1024. / 1024.
+    return round(cpu_mem, 4), round(gpu_mem, 4), round(gpu_percent, 4)
+
+
+class LoggerHelper(object):
+    def __init__(self, args, times, model_name, mem_info=None):
+        """
+        args: utility.parse_args()
+        times: The Timer class
+        """
+        self.args = args
+        self.times = times
+        self.model_name = model_name
+        self.batch_size = 1 if "det" in model_name else args.rec_batch_num
+        self.shape = "dynamic shape"
+        self.precision = args.precision
+        if args.use_tensorrt and args.precision == "fp16":
+            self.precision = "fp16"
+
+        self.device = "gpu" if args.use_gpu else "cpu"
+        self.preprocess_time = round(times['preprocess_time'], 4)
+        self.inference_time = round(times['inference_time'], 4)
+        self.postprocess_time = round(times['postprocess_time'], 4)
+        self.data_num = times['img_num']
+        self.total_time = round(times['total_time'], 4)
+        self.mem_info = {"cpu_rss": 0, "gpu_rss": 0, "gpu_util": 0}
+        if mem_info is not None:
+            self.mem_info = mem_info
+
+    def report(self, mode=None):
+        # if mode not in ["Det", "Rec", None]:
+        #     raise ValueError("The 'mode' can only be one of ['Det', 'Rec']")
+        logger.info("\n")
+        logger.info("----------------------- Conf info -----------------------")
+        logger.info(f"runtime_device: {self.device}")
+        logger.info(f"ir_optim: {True}")
+        logger.info(f"enable_memory_optim: {True}")
+        logger.info(f"enable_tensorrt: {self.args.use_tensorrt}")
+        logger.info(f"precision: {self.precision}")
+        logger.info(f"enable_mkldnn: {self.args.enable_mkldnn}")
+        logger.info(f"cpu_math_library_num_threads: {self.args.cpu_threads}")
+
+        logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        logger.info(
+            f"----------------------- [{mode}] Model info ----------------------"
+        )
+        logger.info(f"[{mode}] model_name: {self.model_name}")
+
+        logger.info(
+            f"----------------------- [{mode}] Data info ----------------------")
+        logger.info(f"[{mode}] batch_size: {self.batch_size}")
+        logger.info(f"[{mode}] input_shape: {self.shape}")
+
+        logger.info(
+            f"----------------------- [{mode}] Perf info -----------------------"
+        )
+        logger.info(
+            f"[{mode}] cpu_rss(MB): {int(self.mem_info['cpu_rss'])}  gpu_rss(MB): {int(self.mem_info['gpu_rss'])}  gpu_util: {round(self.mem_info['gpu_util'], 1)}%"
+        )
+        logger.info(
+            f"[{mode}] total number of predicted data: {self.data_num} and total time spent(s): {self.total_time}"
+        )
+        logger.info(
+            f"[{mode}] preproce_time(ms): {round(self.preprocess_time*1000, 1)}  inference_time(ms): {round(self.inference_time*1000, 1)}  postprocess_time(ms): {round(self.postprocess_time*1000, 1)}"
+        )
 
 
 if __name__ == '__main__':

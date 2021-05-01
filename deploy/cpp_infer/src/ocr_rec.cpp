@@ -17,7 +17,8 @@
 namespace PaddleOCR {
 
 void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
-                         cv::Mat &img, Classifier *cls) {
+                         cv::Mat &img, Classifier *cls,
+                         std::vector<Timer> &recTimer) {
   cv::Mat srcimg;
   img.copyTo(srcimg);
   cv::Mat crop_img;
@@ -25,7 +26,10 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
 
   std::cout << "The predicted text is :" << std::endl;
   int index = 0;
+
   for (int i = boxes.size() - 1; i >= 0; i--) {
+    recTimer[0].start();
+
     crop_img = GetRotateCropImage(srcimg, boxes[i]);
     if (cls != nullptr) {
       crop_img = cls->Run(crop_img);
@@ -41,6 +45,9 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
     std::vector<float> input(1 * 3 * resize_img.rows * resize_img.cols, 0.0f);
 
     this->permute_op_.Run(&resize_img, input.data());
+
+    recTimer[0].stop();
+    recTimer[1].start();
 
     // Inference.
     auto input_names = this->predictor_->GetInputNames();
@@ -59,6 +66,9 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
     predict_batch.resize(out_num);
 
     output_t->CopyToCpu(predict_batch.data());
+
+    recTimer[1].stop();
+    recTimer[2].start();
 
     // ctc decode
     std::vector<std::string> str_res;
@@ -83,6 +93,7 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
       }
       last_index = argmax_idx;
     }
+    recTimer[2].stop();
     score /= count;
     for (int i = 0; i < str_res.size(); i++) {
       std::cout << str_res[i];
@@ -105,6 +116,15 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
           this->use_fp16_ ? paddle_infer::Config::Precision::kHalf
                           : paddle_infer::Config::Precision::kFloat32,
           false, false);
+      std::map<std::string, std::vector<int>> min_input_shape = {
+          {"x", {1, 3, 32, 10}}};
+      std::map<std::string, std::vector<int>> max_input_shape = {
+          {"x", {1, 3, 32, 2000}}};
+      std::map<std::string, std::vector<int>> opt_input_shape = {
+          {"x", {1, 3, 32, 320}}};
+
+      config.SetTRTDynamicShapeInfo(min_input_shape, max_input_shape,
+                                    opt_input_shape);
     }
   } else {
     config.DisableGpu();

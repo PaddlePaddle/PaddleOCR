@@ -25,7 +25,7 @@ import numpy as np
 import time
 from PIL import Image
 from ppocr.utils.utility import get_image_file_list
-from tools.infer.utility import draw_ocr, draw_boxes
+from tools.infer.utility import draw_ocr, draw_boxes, draw_ocr_box_txt
 
 import requests
 import json
@@ -51,7 +51,7 @@ def draw_server_result(image_file, res):
         for dno in range(len(res)):
             boxes.append(res[dno]['text_region'])
         boxes = np.array(boxes)
-        draw_img = draw_boxes(image, boxes)
+        draw_img = draw_ocr(image, boxes)
         return draw_img
     else:  # for ocr_system
         logger.info("draw boxes and texts!")
@@ -64,13 +64,13 @@ def draw_server_result(image_file, res):
             scores.append(res[dno]['confidence'])
         boxes = np.array(boxes)
         scores = np.array(scores)
-        draw_img = draw_ocr(image, boxes, texts, scores, drop_score=0.5)
+        draw_img = draw_ocr_box_txt(image, boxes, texts, scores, drop_score=0.5)
         return draw_img
 
 
 def main(url, image_path):
     image_file_list = get_image_file_list(image_path)
-    is_visualize = False
+    is_visualize = True
     headers = {"Content-type": "application/json"}
     cnt = 0
     total_time = 0

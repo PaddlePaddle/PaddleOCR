@@ -22,8 +22,8 @@ os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
 
 import cv2
 import numpy as np
-import time
 import sys
+import time
 
 import tools.infer.utility as utility
 from ppocr.utils.logging import get_logger
@@ -39,7 +39,9 @@ class TextDetector(object):
         self.args = args
         self.det_algorithm = args.det_algorithm
         pre_process_list = [{
-            'DetResizeForTest': None
+            'DetResizeForTest': {
+                "resize_long": 960
+            }
         }, {
             'NormalizeImage': {
                 'std': [0.229, 0.224, 0.225],
@@ -94,6 +96,8 @@ class TextDetector(object):
         self.predictor, self.input_tensor, self.output_tensors = utility.create_predictor(
             args, 'det', logger)  # paddle.jit.load(args.det_model_dir)
         # self.predictor.eval()
+
+        self.det_times = utility.Timer()
 
     def order_points_clockwise(self, pts):
         """
@@ -151,6 +155,8 @@ class TextDetector(object):
     def __call__(self, img):
         ori_im = img.copy()
         data = {'image': img}
+        self.det_times.total_time.start()
+        self.det_times.preprocess_time.start()
         data = transform(data, self.preprocess_op)
         img, shape_list = data
         if img is None:
@@ -158,14 +164,16 @@ class TextDetector(object):
         img = np.expand_dims(img, axis=0)
         shape_list = np.expand_dims(shape_list, axis=0)
         img = img.copy()
-        starttime = time.time()
+        self.det_times.preprocess_time.end()
 
+        self.det_times.inference_time.start()
         self.input_tensor.copy_from_cpu(img)
         self.predictor.run()
         outputs = []
         for output_tensor in self.output_tensors:
             output = output_tensor.copy_to_cpu()
             outputs.append(output)
+        self.det_times.inference_time.end()
 
         preds = {}
         if self.det_algorithm == "EAST":
@@ -180,15 +188,17 @@ class TextDetector(object):
             preds['maps'] = outputs[0]
         else:
             raise NotImplementedError
-
+        self.det_times.postprocess_time.start()
         post_result = self.postprocess_op(preds, shape_list)
         dt_boxes = post_result[0]['points']
         if self.det_algorithm == "SAST" and self.det_sast_polygon:
             dt_boxes = self.filter_tag_det_res_only_clip(dt_boxes, ori_im.shape)
         else:
             dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
-        elapse = time.time() - starttime
-        return dt_boxes, elapse
+        self.det_times.postprocess_time.end()
+        self.det_times.total_time.end()
+        self.det_times.img_num += 1
+        return dt_boxes, self.det_times.total_time.value()
 
 
 if __name__ == "__main__":
@@ -198,6 +208,12 @@ if __name__ == "__main__":
     count = 0
     total_time = 0
     draw_img_save = "./inference_results"
+    cpu_mem, gpu_mem, gpu_util = 0, 0, 0
+
+    fake_img = np.random.uniform(-1, 1, [640, 640, 3]).astype(np.float32)
+    for i in range(10):
+        dt_boxes, _ = text_detector(fake_img)
+
     if not os.path.exists(draw_img_save):
         os.makedirs(draw_img_save)
     for image_file in image_file_list:
@@ -207,16 +223,37 @@ if __name__ == "__main__":
         if img is None:
             logger.info("error in loading image:{}".format(image_file))
             continue
-        dt_boxes, elapse = text_detector(img)
+        st = time.time()
+        dt_boxes, _ = text_detector(img)
+        elapse = time.time() - st
         if count > 0:
             total_time += elapse
         count += 1
+
+        if args.benchmark:
+            cm, gm, gu = utility.get_current_memory_mb(0)
+            cpu_mem += cm
+            gpu_mem += gm
+            gpu_util += gu
+
         logger.info("Predict time of {}: {}".format(image_file, elapse))
         src_im = utility.draw_text_det_res(dt_boxes, image_file)
         img_name_pure = os.path.split(image_file)[-1]
         img_path = os.path.join(draw_img_save,
                                 "det_res_{}".format(img_name_pure))
-        cv2.imwrite(img_path, src_im)
+        # cv2.imwrite(img_path, src_im)
         logger.info("The visualized image saved in {}".format(img_path))
-    if count > 1:
-        logger.info("Avg Time: {}".format(total_time / (count - 1)))
+    # print the information about memory and time-spent
+    if args.benchmark:
+        mems = {
+            'cpu_rss': cpu_mem / count,
+            'gpu_rss': gpu_mem / count,
+            'gpu_util': gpu_util * 100 / count
+        }
+    else:
+        mems = None
+    logger.info("The predict time about detection module is as follows: ")
+    det_time_dict = text_detector.det_times.report(average=True)
+    det_model_name = args.det_model_dir
+    det_logger = utility.LoggerHelper(args, det_time_dict, det_model_name, mems)
+    det_logger.report("Det")

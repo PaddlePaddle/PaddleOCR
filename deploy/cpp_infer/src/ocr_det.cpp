@@ -30,6 +30,42 @@ void DBDetector::LoadModel(const std::string &model_dir) {
           this->use_fp16_ ? paddle_infer::Config::Precision::kHalf
                           : paddle_infer::Config::Precision::kFloat32,
           false, false);
+      std::map<std::string, std::vector<int>> min_input_shape = {
+          {"x", {1, 3, 50, 50}},
+          {"conv2d_92.tmp_0", {1, 96, 20, 20}},
+          {"conv2d_91.tmp_0", {1, 96, 10, 10}},
+          {"nearest_interp_v2_1.tmp_0", {1, 96, 10, 10}},
+          {"nearest_interp_v2_2.tmp_0", {1, 96, 20, 20}},
+          {"nearest_interp_v2_3.tmp_0", {1, 24, 20, 20}},
+          {"nearest_interp_v2_4.tmp_0", {1, 24, 20, 20}},
+          {"nearest_interp_v2_5.tmp_0", {1, 24, 20, 20}},
+          {"elementwise_add_7", {1, 56, 2, 2}},
+          {"nearest_interp_v2_0.tmp_0", {1, 96, 2, 2}}};
+      std::map<std::string, std::vector<int>> max_input_shape = {
+          {"x", {1, 3, this->max_side_len_, this->max_side_len_}},
+          {"conv2d_92.tmp_0", {1, 96, 400, 400}},
+          {"conv2d_91.tmp_0", {1, 96, 200, 200}},
+          {"nearest_interp_v2_1.tmp_0", {1, 96, 200, 200}},
+          {"nearest_interp_v2_2.tmp_0", {1, 96, 400, 400}},
+          {"nearest_interp_v2_3.tmp_0", {1, 24, 400, 400}},
+          {"nearest_interp_v2_4.tmp_0", {1, 24, 400, 400}},
+          {"nearest_interp_v2_5.tmp_0", {1, 24, 400, 400}},
+          {"elementwise_add_7", {1, 56, 400, 400}},
+          {"nearest_interp_v2_0.tmp_0", {1, 96, 400, 400}}};
+      std::map<std::string, std::vector<int>> opt_input_shape = {
+          {"x", {1, 3, 640, 640}},
+          {"conv2d_92.tmp_0", {1, 96, 160, 160}},
+          {"conv2d_91.tmp_0", {1, 96, 80, 80}},
+          {"nearest_interp_v2_1.tmp_0", {1, 96, 80, 80}},
+          {"nearest_interp_v2_2.tmp_0", {1, 96, 160, 160}},
+          {"nearest_interp_v2_3.tmp_0", {1, 24, 160, 160}},
+          {"nearest_interp_v2_4.tmp_0", {1, 24, 160, 160}},
+          {"nearest_interp_v2_5.tmp_0", {1, 24, 160, 160}},
+          {"elementwise_add_7", {1, 56, 40, 40}},
+          {"nearest_interp_v2_0.tmp_0", {1, 96, 40, 40}}};
+
+      config.SetTRTDynamicShapeInfo(min_input_shape, max_input_shape,
+                                    opt_input_shape);
     }
   } else {
     config.DisableGpu();
@@ -54,13 +90,15 @@ void DBDetector::LoadModel(const std::string &model_dir) {
 }
 
 void DBDetector::Run(cv::Mat &img,
-                     std::vector<std::vector<std::vector<int>>> &boxes) {
+                     std::vector<std::vector<std::vector<int>>> &boxes,
+                     std::vector<Timer> &detTimer) {
   float ratio_h{};
   float ratio_w{};
 
   cv::Mat srcimg;
   cv::Mat resize_img;
   img.copyTo(srcimg);
+  detTimer[0].start();
   this->resize_op_.Run(img, resize_img, this->max_side_len_, ratio_h, ratio_w,
                        this->use_tensorrt_);
 
@@ -69,7 +107,8 @@ void DBDetector::Run(cv::Mat &img,
 
   std::vector<float> input(1 * 3 * resize_img.rows * resize_img.cols, 0.0f);
   this->permute_op_.Run(&resize_img, input.data());
-
+  detTimer[0].stop();
+  detTimer[1].start();
   // Inference.
   auto input_names = this->predictor_->GetInputNames();
   auto input_t = this->predictor_->GetInputHandle(input_names[0]);
@@ -86,6 +125,8 @@ void DBDetector::Run(cv::Mat &img,
 
   out_data.resize(out_num);
   output_t->CopyToCpu(out_data.data());
+  detTimer[1].stop();
+  detTimer[2].start();
 
   int n2 = output_shape[2];
   int n3 = output_shape[3];
@@ -114,6 +155,8 @@ void DBDetector::Run(cv::Mat &img,
                                           this->det_db_unclip_ratio_);
 
   boxes = post_processor_.FilterTagDetRes(boxes, ratio_h, ratio_w, srcimg);
+
+  detTimer[2].stop();
 
   //// visualization
   if (this->visualize_) {

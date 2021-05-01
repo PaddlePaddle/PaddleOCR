@@ -31,7 +31,7 @@ import tools.infer.predict_det as predict_det
 import tools.infer.predict_cls as predict_cls
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.utils.logging import get_logger
-from tools.infer.utility import draw_ocr_box_txt
+from tools.infer.utility import draw_ocr_box_txt, get_current_memory_mb
 
 logger = get_logger()
 
@@ -87,8 +87,8 @@ class TextSystem(object):
     def __call__(self, img):
         ori_im = img.copy()
         dt_boxes, elapse = self.text_detector(img)
-        logger.info("dt_boxes num : {}, elapse : {}".format(
-            len(dt_boxes), elapse))
+        # logger.info("dt_boxes num : {}, elapse : {}".format(
+        #     len(dt_boxes), elapse))
         if dt_boxes is None:
             return None, None
         img_crop_list = []
@@ -102,12 +102,12 @@ class TextSystem(object):
         if self.use_angle_cls:
             img_crop_list, angle_list, elapse = self.text_classifier(
                 img_crop_list)
-            logger.info("cls num  : {}, elapse : {}".format(
-                len(img_crop_list), elapse))
+            # logger.info("cls num  : {}, elapse : {}".format(
+            #     len(img_crop_list), elapse))
 
         rec_res, elapse = self.text_recognizer(img_crop_list)
-        logger.info("rec_res num  : {}, elapse : {}".format(
-            len(rec_res), elapse))
+        # logger.info("rec_res num  : {}, elapse : {}".format(
+        #     len(rec_res), elapse))
         # self.print_draw_crop_rec_res(img_crop_list, rec_res)
         filter_boxes, filter_rec_res = [], []
         for box, rec_reuslt in zip(dt_boxes, rec_res):
@@ -139,13 +139,30 @@ def sorted_boxes(dt_boxes):
     return _boxes
 
 
+def read_img_from_file(label_file, root_path):
+    f = open(label_file)
+    data = f.readlines()
+    imgs_filename = []
+    for idx, line in enumerate(data):
+        img_name, _ = line.strip().split('\t')
+        imgs_filename.append(root_path + img_name)
+    assert len(imgs_filename) == len(data), "haha, bug raise"
+    return imgs_filename
+
+
 def main(args):
     image_file_list = get_image_file_list(args.image_dir)
+    # root_dir = "../test_set/"
+    # image_file_list = read_img_from_file(args.image_dir, root_dir)
     text_sys = TextSystem(args)
-    is_visualize = True
+    is_visualize = False
     font_path = args.vis_font_path
     drop_score = args.drop_score
-    for image_file in image_file_list:
+    total_time = 0
+    cpu_mem, gpu_mem, gpu_util = 0, 0, 0
+    _st = time.time()
+    count = 0
+    for idx, image_file in enumerate(image_file_list):
         img, flag = check_and_read_gif(image_file)
         if not flag:
             img = cv2.imread(image_file)
@@ -155,10 +172,19 @@ def main(args):
         starttime = time.time()
         dt_boxes, rec_res = text_sys(img)
         elapse = time.time() - starttime
-        logger.info("Predict time of %s: %.3fs" % (image_file, elapse))
+        total_time += elapse
+        if args.benchmark and idx % 20 == 0:
+            cm, gm, gu = get_current_memory_mb(0)
+            cpu_mem += cm
+            gpu_mem += gm
+            gpu_util += gu
+            count += 1
 
-        for text, score in rec_res:
-            logger.info("{}, {:.3f}".format(text, score))
+        logger.info(
+            str(idx) + "  Predict time of %s: %.3fs" % (image_file, elapse))
+
+        # for text, score in rec_res:
+        #     logger.info("{}, {:.3f}".format(text, score))
 
         if is_visualize:
             image = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
@@ -183,6 +209,29 @@ def main(args):
                 draw_img[:, :, ::-1])
             logger.info("The visualized image saved in {}".format(
                 os.path.join(draw_img_save, os.path.basename(image_file))))
+
+    logger.info("The predict total time is {}".format(time.time() - _st))
+    logger.info("\nThe predict total time is {}".format(total_time))
+    img_num = text_sys.text_detector.det_times.img_num
+    if args.benchmark:
+        mems = {
+            'cpu_rss': cpu_mem / count,
+            'gpu_rss': gpu_mem / count,
+            'gpu_util': gpu_util * 100 / count
+        }
+    else:
+        mems = None
+    det_time_dict = text_sys.text_detector.det_times.report(average=True)
+    rec_time_dict = text_sys.text_recognizer.rec_times.report(average=True)
+    # for k in det_time_dict:
+    #     if "time" in k :
+    #         det_time_dict[k] += rec_time_dict[k]
+    det_model_name = args.det_model_dir
+    rec_model_name = args.rec_model_dir
+    det_logger = utility.LoggerHelper(args, det_time_dict, det_model_name, mems)
+    rec_logger = utility.LoggerHelper(args, rec_time_dict, rec_model_name, mems)
+    det_logger.report("Det")
+    rec_logger.report("Rec")
 
 
 if __name__ == "__main__":
