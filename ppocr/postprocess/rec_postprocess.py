@@ -26,9 +26,9 @@ class BaseRecLabelDecode(object):
                  use_space_char=False):
         support_character_type = [
             'ch', 'en', 'EN_symbol', 'french', 'german', 'japan', 'korean',
-            'it', 'es', 'pt', 'ru', 'ar', 'ta', 'ug', 'fa', 'ur', 'rs_latin',
-            'oc', 'rs_cyrillic', 'bg', 'uk', 'be', 'te', 'kn', 'ch_tra', 'hi',
-            'mr', 'ne', 'EN'
+            'it', 'xi', 'pu', 'ru', 'ar', 'ta', 'ug', 'fa', 'ur', 'rs', 'oc',
+            'rsc', 'bg', 'uk', 'be', 'te', 'ka', 'chinese_cht', 'hi', 'mr',
+            'ne', 'EN', 'latin', 'arabic', 'cyrillic', 'devanagari'
         ]
         assert character_type in support_character_type, "Only {} are supported now but get {}".format(
             support_character_type, character_type)
@@ -216,9 +216,9 @@ class SRNLabelDecode(BaseRecLabelDecode):
                  character_type='en',
                  use_space_char=False,
                  **kwargs):
-        self.max_text_length = kwargs['max_text_length']
         super(SRNLabelDecode, self).__init__(character_dict_path,
                                              character_type, use_space_char)
+        self.max_text_length = kwargs.get('max_text_length', 25)
 
     def __call__(self, preds, label=None, *args, **kwargs):
         pred = preds['predict']

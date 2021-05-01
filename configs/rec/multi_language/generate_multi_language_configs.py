@@ -20,27 +20,45 @@ logging.basicConfig(level=logging.INFO)
 
 support_list = {
     'it': 'italian',
-    'es': 'spanish',
-    'pt': 'portuguese',
+    'xi': 'spanish',
+    'pu': 'portuguese',
     'ru': 'russian',
     'ar': 'arabic',
     'ta': 'tamil',
     'ug': 'uyghur',
     'fa': 'persian',
     'ur': 'urdu',
-    'rs_latin': 'serbian latin',
+    'rs': 'serbian latin',
     'oc': 'occitan',
-    'rs_cyrillic': 'serbian cyrillic',
+    'rsc': 'serbian cyrillic',
     'bg': 'bulgarian',
     'uk': 'ukranian',
     'be': 'belarusian',
     'te': 'telugu',
-    'kn': 'kannada',
-    'ch_tra': 'chinese tradition',
+    'ka': 'kannada',
+    'chinese_cht': 'chinese tradition',
     'hi': 'hindi',
     'mr': 'marathi',
     'ne': 'nepali',
 }
+
+latin_lang = [
+    'af', 'az', 'bs', 'cs', 'cy', 'da', 'de', 'es', 'et', 'fr', 'ga', 'hr',
+    'hu', 'id', 'is', 'it', 'ku', 'la', 'lt', 'lv', 'mi', 'ms', 'mt', 'nl',
+    'no', 'oc', 'pi', 'pl', 'pt', 'ro', 'rs_latin', 'sk', 'sl', 'sq', 'sv',
+    'sw', 'tl', 'tr', 'uz', 'vi', 'latin'
+]
+arabic_lang = ['ar', 'fa', 'ug', 'ur']
+cyrillic_lang = [
+    'ru', 'rs_cyrillic', 'be', 'bg', 'uk', 'mn', 'abq', 'ady', 'kbd', 'ava',
+    'dar', 'inh', 'che', 'lbe', 'lez', 'tab', 'cyrillic'
+]
+devanagari_lang = [
+    'hi', 'mr', 'ne', 'bh', 'mai', 'ang', 'bho', 'mah', 'sck', 'new', 'gom',
+    'sa', 'bgc', 'devanagari'
+]
+multi_lang = latin_lang + arabic_lang + cyrillic_lang + devanagari_lang
+
 assert (os.path.isfile("./rec_multi_language_lite_train.yml")
         ), "Loss basic configuration file rec_multi_language_lite_train.yml.\
 You can download it from \
@@ -100,29 +118,37 @@ class ArgsParser(ArgumentParser):
         return config
 
     def _set_language(self, type):
+        lang = type[0]
         assert (type), "please use -l or --language to choose language type"
         assert(
-                type[0] in support_list.keys()
+                lang in support_list.keys() or lang in multi_lang
                ),"the sub_keys(-l or --language) can only be one of support list: \n{},\nbut get: {}, " \
-                 "please check your running command".format(support_list, type)
+                 "please check your running command".format(multi_lang, type)
+        if lang in latin_lang:
+            lang = "latin"
+        elif lang in arabic_lang:
+            lang = "arabic"
+        elif lang in cyrillic_lang:
+            lang = "cyrillic"
+        elif lang in devanagari_lang:
+            lang = "devanagari"
         global_config['Global'][
-            'character_dict_path'] = 'ppocr/utils/dict/{}_dict.txt'.format(type[
-                0])
+            'character_dict_path'] = 'ppocr/utils/dict/{}_dict.txt'.format(lang)
         global_config['Global'][
-            'save_model_dir'] = './output/rec_{}_lite'.format(type[0])
+            'save_model_dir'] = './output/rec_{}_lite'.format(lang)
         global_config['Train']['dataset'][
-            'label_file_list'] = ["train_data/{}_train.txt".format(type[0])]
+            'label_file_list'] = ["train_data/{}_train.txt".format(lang)]
         global_config['Eval']['dataset'][
-            'label_file_list'] = ["train_data/{}_val.txt".format(type[0])]
-        global_config['Global']['character_type'] = type[0]
+            'label_file_list'] = ["train_data/{}_val.txt".format(lang)]
+        global_config['Global']['character_type'] = lang
         assert (
             os.path.isfile(
                 os.path.join(project_path, global_config['Global'][
                     'character_dict_path']))
         ), "Loss default dictionary file {}_dict.txt.You can download it from \
 https://github.com/PaddlePaddle/PaddleOCR/tree/dygraph/ppocr/utils/dict/".format(
-            type[0])
-        return type[0]
+            lang)
+        return lang
 
 
 def merge_config(config):

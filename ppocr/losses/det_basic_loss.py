@@ -200,6 +200,6 @@ def ohem_batch(scores, gt_texts, training_masks, ohem_ratio):
                 i, :, :], ohem_ratio))
 
     selected_masks = np.concatenate(selected_masks, 0)
-    selected_masks = paddle.to_variable(selected_masks)
+    selected_masks = paddle.to_tensor(selected_masks)
 
     return selected_masks

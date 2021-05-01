@@ -49,7 +49,7 @@ class MakeShrinkMap(object):
                                 pyclipper.ET_CLOSEDPOLYGON)
                 shrinked = []
 
-                # Increase the shrink ratio every time we get multiple polygon returned back 
+                # Increase the shrink ratio every time we get multiple polygon returned back
                 possible_ratios = np.arange(self.shrink_ratio, 1,
                                             self.shrink_ratio)
                 np.append(possible_ratios, 1)
@@ -71,7 +71,6 @@ class MakeShrinkMap(object):
                 for each_shirnk in shrinked:
                     shirnk = np.array(each_shirnk).reshape(-1, 2)
                     cv2.fillPoly(gt, [shirnk.astype(np.int32)], 1)
-                # cv2.fillPoly(gt[0], [shrinked.astype(np.int32)], 1)
 
         data['shrink_map'] = gt
         data['shrink_mask'] = mask
@@ -97,11 +96,12 @@ class MakeShrinkMap(object):
         return polygons, ignore_tags
 
     def polygon_area(self, polygon):
-        # return cv2.contourArea(polygon.astype(np.float32))
-        edge = 0
-        for i in range(polygon.shape[0]):
-            next_index = (i + 1) % polygon.shape[0]
-            edge += (polygon[next_index, 0] - polygon[i, 0]) * (
-                polygon[next_index, 1] - polygon[i, 1])
-
-        return edge / 2.
+        """
+        compute polygon area
+        """
+        area = 0
+        q = polygon[-1]
+        for p in polygon:
+            area += p[0] * q[1] - p[1] * q[0]
+            q = p
+        return area / 2.0
