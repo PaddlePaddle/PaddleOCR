@@ -18,6 +18,7 @@ from __future__ import print_function
 
 import os
 import sys
+import platform
 import yaml
 import time
 import shutil
@@ -159,6 +160,8 @@ def train(config,
     eval_batch_step = config['Global']['eval_batch_step']
 
     global_step = 0
+    if 'global_step' in pre_best_model_dict:
+        global_step = pre_best_model_dict['global_step']
     start_eval_step = 0
     if type(eval_batch_step) == list and len(eval_batch_step) >= 2:
         start_eval_step = eval_batch_step[0]
@@ -196,8 +199,12 @@ def train(config,
         train_reader_cost = 0.0
         batch_sum = 0
         batch_start = time.time()
-        for idx, batch in enumerate(train_dataloader()):
+        max_iter = len(train_dataloader) - 1 if platform.system(
+        ) == "Windows" else len(train_dataloader)
+        for idx, batch in enumerate(train_dataloader):
             train_reader_cost += time.time() - batch_start
+            if idx >= max_iter:
+                break
             lr = optimizer.get_lr()
             images = batch[0]
             if use_srn:
@@ -285,7 +292,8 @@ def train(config,
                         is_best=True,
                         prefix='best_accuracy',
                         best_model_dict=best_model_dict,
-                        epoch=epoch)
+                        epoch=epoch,
+                        global_step=global_step)
                 best_str = 'best metric, {}'.format(', '.join([
                     '{}: {}'.format(k, v) for k, v in best_model_dict.items()
                 ]))
@@ -307,7 +315,8 @@ def train(config,
                 is_best=False,
                 prefix='latest',
                 best_model_dict=best_model_dict,
-                epoch=epoch)
+                epoch=epoch,
+                global_step=global_step)
         if dist.get_rank() == 0 and epoch > 0 and epoch % save_epoch_step == 0:
             save_model(
                 model,
@@ -317,7 +326,8 @@ def train(config,
                 is_best=False,
                 prefix='iter_epoch_{}'.format(epoch),
                 best_model_dict=best_model_dict,
-                epoch=epoch)
+                epoch=epoch,
+                global_step=global_step)
     best_str = 'best metric, {}'.format(', '.join(
         ['{}: {}'.format(k, v) for k, v in best_model_dict.items()]))
     logger.info(best_str)
@@ -333,8 +343,10 @@ def eval(model, valid_dataloader, post_process_class, eval_class,
         total_frame = 0.0
         total_time = 0.0
         pbar = tqdm(total=len(valid_dataloader), desc='eval model:')
+        max_iter = len(valid_dataloader) - 1 if platform.system(
+        ) == "Windows" else len(valid_dataloader)
         for idx, batch in enumerate(valid_dataloader):
-            if idx >= len(valid_dataloader):
+            if idx >= max_iter:
                 break
             images = batch[0]
             start = time.time()

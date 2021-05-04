@@ -8,7 +8,6 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 - 静态图版本：develop分支
 
 **近期更新**
-- 【预告】 PaddleOCR研发团队对最新发版内容技术深入解读，4月13日晚上19:00，[直播地址](https://live.bilibili.com/21689802)
 - 2021.4.8 release 2.1版本，新增AAAI 2021论文[端到端识别算法PGNet](./doc/doc_ch/pgnet.md)开源，[多语言模型](./doc/doc_ch/multi_languages.md)支持种类增加到80+。
 - 2021.2.1 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，总数162个，每周一都会更新，欢迎大家持续关注。
 - 2021.1.21 更新多语言识别模型，目前支持语种超过27种，包括中文简体、中文繁体、英文、法文、德文、韩文、日文、意大利文、西班牙文、葡萄牙文、俄罗斯文、阿拉伯文等，后续计划可以参考[多语言研发计划](https://github.com/PaddlePaddle/PaddleOCR/issues/1048)
@@ -80,7 +79,7 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 - 算法介绍
     - [文本检测](./doc/doc_ch/algorithm_overview.md)
     - [文本识别](./doc/doc_ch/algorithm_overview.md)
-    - [PP-OCR Pipline](#PP-OCR)
+    - [PP-OCR Pipeline](#PP-OCR)
     - [端到端PGNet算法](./doc/doc_ch/pgnet.md)
 - 模型训练/评估
     - [文本检测](./doc/doc_ch/detection.md)
@@ -115,7 +114,7 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 
 
 <a name="PP-OCR"></a>
-## PP-OCR Pipline
+## PP-OCR Pipeline
 <div align="center">
     <img src="./doc/ppocr_framework.png" width="800">
 </div>
