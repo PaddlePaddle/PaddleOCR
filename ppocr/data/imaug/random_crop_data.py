@@ -36,6 +36,8 @@ def split_regions(axis):
             region = axis[min_axis:i]
             min_axis = i
             regions.append(region)
+    region = axis[min_axis:axis.shape[0]]
+    regions.append(region)
     return regions
 
 
