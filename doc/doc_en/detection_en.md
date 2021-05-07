@@ -38,7 +38,7 @@ If you want to train PaddleOCR on other datasets, please build the annotation fi
 
 ## TRAINING
 
-First download the pretrained model. The detection model of PaddleOCR currently supports 3 backbones, namely MobileNetV3, ResNet18_vd and ResNet50_vd. You can use the model in [PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/master/ppcls/modeling/architectures) to replace backbone according to your needs.
+First download the pretrained model. The detection model of PaddleOCR currently supports 3 backbones, namely MobileNetV3, ResNet18_vd and ResNet50_vd. You can use the model in [PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/develop/ppcls/modeling/architectures) to replace backbone according to your needs.
 And the responding download link of backbone pretrain weights can be found in [PaddleClas repo](https://github.com/PaddlePaddle/PaddleClas#mobile-series).
 ```shell
 cd PaddleOCR/

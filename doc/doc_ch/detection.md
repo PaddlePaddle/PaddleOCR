@@ -45,7 +45,7 @@ json.dumps编码前的图像标注信息是包含多个字典的list，字典中
 ## 快速启动训练
 
 首先下载模型backbone的pretrain model，PaddleOCR的检测模型目前支持两种backbone，分别是MobileNetV3、ResNet_vd系列，
-您可以根据需求使用[PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/master/ppcls/modeling/architectures)中的模型更换backbone，
+您可以根据需求使用[PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/develop/ppcls/modeling/architectures)中的模型更换backbone，
 对应的backbone预训练模型可以从[PaddleClas repo 主页中找到下载链接](https://github.com/PaddlePaddle/PaddleClas#mobile-series)。
 ```shell
 cd PaddleOCR/
