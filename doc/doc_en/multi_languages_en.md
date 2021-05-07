@@ -48,7 +48,7 @@ This document will briefly introduce how to use the multilingual model.
 pip install paddlepaddle
 
 # gpu
-pip instll paddlepaddle-gpu
+pip install paddlepaddle-gpu
 ```
 
 <a name="paddleocr_package_install"></a>
@@ -181,11 +181,11 @@ In addition to installing the whl package for quick forecasting,
 ppocr also provides a variety of forecasting deployment methods.
 If necessary, you can read related documents:
 
-- [Python Inference](./doc/doc_en/inference_en.md)
-- [C++ Inference](./deploy/cpp_infer/readme_en.md)
-- [Serving](./deploy/hubserving/readme_en.md)
+- [Python Inference](./inference_en.md)
+- [C++ Inference](../../deploy/cpp_infer/readme_en.md)
+- [Serving](../../deploy/hubserving/readme_en.md)
 - [Mobile](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme_en.md)
-- [Benchmark](./doc/doc_en/benchmark_en.md)
+- [Benchmark](./benchmark_en.md)
 
 
 <a name="language_abbreviations"></a>

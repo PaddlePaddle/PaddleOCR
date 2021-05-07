@@ -285,8 +285,7 @@ class PrePostProcessLayer(nn.Layer):
             elif cmd == "n":  # add layer normalization
                 self.functors.append(
                     self.add_sublayer(
-                        "layer_norm_%d" % len(
-                            self.sublayers(include_sublayers=False)),
+                        "layer_norm_%d" % len(self.sublayers()),
                         paddle.nn.LayerNorm(
                             normalized_shape=d_model,
                             weight_attr=fluid.ParamAttr(
@@ -320,9 +319,7 @@ class PrepareEncoder(nn.Layer):
         self.src_emb_dim = src_emb_dim
         self.src_max_len = src_max_len
         self.emb = paddle.nn.Embedding(
-            num_embeddings=self.src_max_len,
-            embedding_dim=self.src_emb_dim,
-            sparse=True)
+            num_embeddings=self.src_max_len, embedding_dim=self.src_emb_dim)
         self.dropout_rate = dropout_rate
 
     def forward(self, src_word, src_pos):

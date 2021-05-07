@@ -18,6 +18,7 @@ from __future__ import print_function
 
 import os
 import sys
+import platform
 import yaml
 import time
 import shutil
@@ -196,9 +197,11 @@ def train(config,
         train_reader_cost = 0.0
         batch_sum = 0
         batch_start = time.time()
+        max_iter = len(train_dataloader) - 1 if platform.system(
+        ) == "Windows" else len(train_dataloader)
         for idx, batch in enumerate(train_dataloader):
             train_reader_cost += time.time() - batch_start
-            if idx >= len(train_dataloader):
+            if idx >= max_iter:
                 break
             lr = optimizer.get_lr()
             images = batch[0]
@@ -335,8 +338,10 @@ def eval(model, valid_dataloader, post_process_class, eval_class,
         total_frame = 0.0
         total_time = 0.0
         pbar = tqdm(total=len(valid_dataloader), desc='eval model:')
+        max_iter = len(valid_dataloader) - 1 if platform.system(
+        ) == "Windows" else len(valid_dataloader)
         for idx, batch in enumerate(valid_dataloader):
-            if idx >= len(valid_dataloader):
+            if idx >= max_iter:
                 break
             images = batch[0]
             start = time.time()
