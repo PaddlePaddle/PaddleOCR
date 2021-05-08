@@ -36,6 +36,9 @@ from tools.infer.utility import draw_ocr_box_txt
 
 logger = get_logger()
 
+SHRT_MAX = 32767
+PADDING = 16
+
 
 class TextSystem(object):
     def __init__(self, args):
@@ -69,6 +72,13 @@ class TextSystem(object):
                               [img_crop_width, img_crop_height],
                               [0, img_crop_height]])
         M = cv2.getPerspectiveTransform(points, pts_std)
+        if (np.asarray(img.shape) > SHRT_MAX).any():
+            xyxy_crop = np.hstack(
+                [points.min(0) - PADDING, points.max(0) + PADDING]
+            ).astype(int)
+            xyxy_crop[xyxy_crop < 0] = 0
+            points -= xyxy_crop[:2]
+            img = img[xyxy_crop[1] : xyxy_crop[3] + 1, xyxy_crop[0] : xyxy_crop[2] + 1]
         dst_img = cv2.warpPerspective(
             img,
             M, (img_crop_width, img_crop_height),
