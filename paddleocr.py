@@ -232,7 +232,7 @@ def parse_args(mMain=True, add_help=True):
             use_gpu=True,
             ir_optim=True,
             use_tensorrt=False,
-            gpu_mem=8000,
+            gpu_mem=500,
             image_dir='',
             det_algorithm='DB',
             det_model_dir=None,
