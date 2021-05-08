@@ -179,7 +179,7 @@ def parse_args(mMain=True, add_help=True):
         parser.add_argument("--use_gpu", type=str2bool, default=True)
         parser.add_argument("--ir_optim", type=str2bool, default=True)
         parser.add_argument("--use_tensorrt", type=str2bool, default=False)
-        parser.add_argument("--gpu_mem", type=int, default=8000)
+        parser.add_argument("--gpu_mem", type=int, default=500)
 
         # params for text detector
         parser.add_argument("--image_dir", type=str)
@@ -232,7 +232,7 @@ def parse_args(mMain=True, add_help=True):
             use_gpu=True,
             ir_optim=True,
             use_tensorrt=False,
-            gpu_mem=8000,
+            gpu_mem=500,
             image_dir='',
             det_algorithm='DB',
             det_model_dir=None,
