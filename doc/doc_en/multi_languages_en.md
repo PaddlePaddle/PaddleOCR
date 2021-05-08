@@ -83,32 +83,37 @@ Paddleocr currently supports 80 languages, which can be switched by modifying th
 The specific supported [language] (#language_abbreviations) can be viewed in the table.
 
 ``` bash
-
-paddleocr --image_dir doc/imgs/japan_2.jpg --lang=japan
+paddleocr --image_dir doc/imgs_en/254.jpg --lang=en
 ```
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/imgs/japan_2.jpg)
+<div align="center">
+    <img src="../imgs_en/254.jpg" width="300" height="600">
+    <img src="../imgs_results/multi_lang/img_02.jpg" width="600" height="600">
+</div>
 
 The result is a list, each item contains a text box, text and recognition confidence
 ```text
-[[[671.0, 60.0], [847.0, 63.0], [847.0, 104.0], [671.0, 102.0]], ('もちもち', 0.9993342)]
-[[[394.0, 82.0], [536.0, 77.0], [538.0, 127.0], [396.0, 132.0]], ('自然の', 0.9919842)]
-[[[880.0, 89.0], [1014.0, 93.0], [1013.0, 127.0], [879.0, 124.0]], ('とろっと', 0.9976762)]
-[[[1067.0, 101.0], [1294.0, 101.0], [1294.0, 138.0], [1067.0, 138.0]], ('后味のよい', 0.9988712)]
+[('PHO CAPITAL', 0.95723116), [[66.0, 50.0], [327.0, 44.0], [327.0, 76.0], [67.0, 82.0]]]
+[('107 State Street', 0.96311164), [[72.0, 90.0], [451.0, 84.0], [452.0, 116.0], [73.0, 121.0]]]
+[('Montpelier Vermont', 0.97389287), [[69.0, 132.0], [501.0, 126.0], [501.0, 158.0], [70.0, 164.0]]]
+[('8022256183', 0.99810505), [[71.0, 175.0], [363.0, 170.0], [364.0, 202.0], [72.0, 207.0]]]
+[('REG 07-24-201706:59 PM', 0.93537045), [[73.0, 299.0], [653.0, 281.0], [654.0, 318.0], [74.0, 336.0]]]
+[('045555', 0.99346405), [[509.0, 331.0], [651.0, 325.0], [652.0, 356.0], [511.0, 362.0]]]
+[('CT1', 0.9988654), [[535.0, 367.0], [654.0, 367.0], [654.0, 406.0], [535.0, 406.0]]]
 ......
 ```
 
 * Recognition
 
 ```bash
-paddleocr --image_dir doc/imgs_words/japan/1.jpg --det false --lang=japan
+paddleocr --image_dir doc/imgs_words_en/word_308.png --det false --lang=en
 ```
 
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/imgs_words/japan/1.jpg)
+![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_words_en/word_308.png)
 
 The result is a tuple, which returns the recognition result and recognition confidence
 
 ```text
-('したがって', 0.99965394)
+(0.99879867, 'LITTLE')
 ```
 
 * Detection
