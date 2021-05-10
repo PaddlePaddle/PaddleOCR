@@ -48,7 +48,7 @@ dependencies {
 
 def archives = [
         [
-                'src' : 'https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/paddle_lite_libs_v2_8_0.gz',
+                'src' : 'https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/paddle_lite_libs_v2_9_0.tar.gz',
                 'dest': 'PaddleLite'
         ],
         [

@@ -429,8 +429,8 @@ public class MainActivity extends AppCompatActivity {
                         String[] proj = {MediaStore.Images.Media.DATA};
                         Cursor cursor = managedQuery(uri, proj, null, null, null);
                         cursor.moveToFirst();
-                        onImageChanged(image);
                         if (image != null) {
+//                            onImageChanged(image);
                             ivInputImage.setImageBitmap(image);
                         }
                     } catch (IOException e) {
@@ -450,8 +450,8 @@ public class MainActivity extends AppCompatActivity {
                         Log.i(TAG, "rotation " + orientation);
                         Bitmap image = BitmapFactory.decodeFile(currentPhotoPath);
                         image = Utils.rotateBitmap(image, orientation);
-                        onImageChanged(image);
                         if (image != null) {
+//                            onImageChanged(image);
                             ivInputImage.setImageBitmap(image);
                         }
                     } else {
