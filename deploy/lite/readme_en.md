@@ -28,10 +28,10 @@ There are two ways to obtain the Paddle-Lite library：
 
       | Platform | Paddle-Lite library download link |
       |---|---|
-      |Android|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.8/inference_lite_lib.android.armv7.gcc.c++_shared.with_extra.with_cv.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.8/inference_lite_lib.android.armv8.gcc.c++_shared.with_extra.with_cv.tar.gz)|
-      |IOS|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.8/inference_lite_lib.ios.armv7.with_cv.with_extra.with_log.tiny_publish.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.8/inference_lite_lib.ios.armv8.with_cv.with_extra.with_log.tiny_publish.tar.gz)|
+      |Android|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.9/inference_lite_lib.android.armv7.gcc.c++_shared.with_extra.with_cv.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.9/inference_lite_lib.android.armv8.gcc.c++_shared.with_extra.with_cv.tar.gz)|
+      |IOS|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.9/inference_lite_lib.ios.armv7.with_cv.with_extra.with_log.tiny_publish.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.9/inference_lite_lib.ios.armv8.with_cv.with_extra.with_log.tiny_publish.tar.gz)|
 
-      Note: 1. The above Paddle-Lite library is compiled from the Paddle-Lite 2.8 branch. For more information about Paddle-Lite 2.8, please refer to [link](https://github.com/PaddlePaddle/Paddle-Lite/releases/tag/v2.8).
+      Note: 1. The above Paddle-Lite library is compiled from the Paddle-Lite 2.9 branch. For more information about Paddle-Lite 2.9, please refer to [link](https://github.com/PaddlePaddle/Paddle-Lite/releases/tag/v2.9).
 
 - 2. [Recommended] Compile Paddle-Lite to get the prediction library. The compilation method of Paddle-Lite is as follows：
 ```
@@ -87,7 +87,8 @@ The following table also provides a series of models that can be deployed on mob
 
 |Version|Introduction|Model size|Detection model|Text Direction model|Recognition model|Paddle-Lite branch|
 |---|---|---|---|---|---|---|
-|V2.0|extra-lightweight chinese OCR optimized model|7.8M|[download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_det_opt.nb)|[download lin](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_opt.nb)|[download lin](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_rec_opt.nb)|v2.8|
+|V2.0|extra-lightweight chinese OCR optimized model|7.8M|[download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_det_opt.nb)|[download lin](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_opt.nb)|[download lin](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_rec_opt.nb)|v2.9|
+|V2.0(slim)|extra-lightweight chinese OCR optimized model|3.3M|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_det_slim_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_slim_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_rec_slim_opt.nb)|v2.9|
 
 If you directly use the model in the above table for deployment, you can skip the following steps and directly read [Section 2.2](#2.2 Run optimized model on Phone).
 
@@ -97,7 +98,7 @@ The `opt` tool can be obtained by compiling Paddle Lite.
 ```
 git clone https://github.com/PaddlePaddle/Paddle-Lite.git
 cd Paddle-Lite
-git checkout release/v2.8
+git checkout release/v2.9
 ./lite/tools/build.sh build_optimize_tool
 ```
 
@@ -124,20 +125,19 @@ The following takes the ultra-lightweight Chinese model of PaddleOCR as an examp
 
 ```
 # [Recommendation] Download the Chinese and English inference model of PaddleOCR V2.0
-wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar && tar xf  ch_ppocr_mobile_v2.0_det_infer.tar
-wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf  ch_ppocr_mobile_v2.0_rec_infer.tar
-wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar && tar xf  ch_ppocr_mobile_v2.0_cls_infer.tar
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_det_slim_infer.tar
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_rec_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_rec_slim_infer.tar
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_cls_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_cls_slim_infer.tar
 # Convert V2.0 detection model
-./opt --model_file=./ch_ppocr_mobile_v2.0_det_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_det_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_det_opt --valid_targets=arm  --optimize_out_type=naive_buffer
-# 转换V2.0识别模型
+./opt --model_file=./ch_ppocr_mobile_v2.0_det_slim_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_det_slim_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_det_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
 # Convert V2.0 recognition model
-./opt --model_file=./ch_ppocr_mobile_v2.0_rec_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_rec_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_rec_opt --valid_targets=arm  --optimize_out_type=naive_buffer
+./opt --model_file=./ch_ppocr_mobile_v2.0_rec_slim_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_rec_slim_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_rec_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
 # Convert V2.0 angle classifier model
-./opt --model_file=./ch_ppocr_mobile_v2.0_cls_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_cls_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_cls_opt --valid_targets=arm  --optimize_out_type=naive_buffer
+./opt --model_file=./ch_ppocr_mobile_v2.0_cls_slim_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_cls_slim_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_cls_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
 
 ```
 
-After the conversion is successful, there will be more files ending with `.nb` in the current directory, which is the successfully converted model file.
+After the conversion is successful, there will be more files ending with `.nb` in the inference model directory, which is the successfully converted model file.
 
 <a name="2.2 Run optimized model on Phone"></a>
 ### 2.2 Run optimized model on Phone
@@ -194,9 +194,9 @@ The structure of the OCR demo is as follows after the above command is executed:
 ```
 demo/cxx/ocr/
 |-- debug/  
-|   |--ch_ppocr_mobile_v2.0_det_opt.nb           Detection model
-|   |--ch_ppocr_mobile_v2.0_rec_opt.nb           Recognition model
-|   |--ch_ppocr_mobile_v2.0_cls_opt.nb           Text direction classification model
+|   |--ch_ppocr_mobile_v2.0_det_slim_opt.nb           Detection model
+|   |--ch_ppocr_mobile_v2.0_rec_slim_opt.nb           Recognition model
+|   |--ch_ppocr_mobile_v2.0_cls_slim_opt.nb           Text direction classification model
 |   |--11.jpg                           Image for OCR
 |   |--ppocr_keys_v1.txt                Dictionary file
 |   |--libpaddle_light_api_shared.so    C++ .so file
@@ -238,8 +238,6 @@ After the above steps are completed, you can use adb to push the file to the pho
 
  ```
  # Execute the compilation and get the executable file ocr_db_crnn
- # The use of ocr_db_crnn is:
- # ./ocr_db_crnn Detection model file Orientation classifier model file Recognition model file Test image path Dictionary file path
  make -j
  # Move the compiled executable file to the debug folder
  mv ocr_db_crnn ./debug/
@@ -248,6 +246,8 @@ After the above steps are completed, you can use adb to push the file to the pho
  adb shell
  cd /data/local/tmp/debug
  export LD_LIBRARY_PATH=${PWD}:$LD_LIBRARY_PATH
+ # The use of ocr_db_crnn is:
+ # ./ocr_db_crnn Detection model file Orientation classifier model file Recognition model file Test image path Dictionary file path
  ./ocr_db_crnn ch_ppocr_mobile_v2.0_det_opt.nb  ch_ppocr_mobile_v2.0_rec_opt.nb  ch_ppocr_mobile_v2.0_cls_opt.nb  ./11.jpg  ppocr_keys_v1.txt
  ```
 

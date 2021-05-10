@@ -86,7 +86,7 @@ Paddle-Lite 提供了多种策略来自动优化原始的模型，其中包括�
 |模型版本|模型简介|模型大小|检测模型|文本方向分类模型|识别模型|Paddle-Lite版本|
 |---|---|---|---|---|---|---|
 |V2.0|超轻量中文OCR 移动端模型|7.8M|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_det_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_rec_opt.nb)|v2.9|
-|V2.0(slim)|超轻量中文OCR 移动端模型|7.8M|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_det_slim_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_slim_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_rec_slim_opt.nb)|v2.9|
+|V2.0(slim)|超轻量中文OCR 移动端模型|3.3M|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_det_slim_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_slim_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_rec_slim_opt.nb)|v2.9|
 
 如果直接使用上述表格中的模型进行部署，可略过下述步骤，直接阅读 [2.2节](#2.2与手机联调)。
 
@@ -124,9 +124,9 @@ cd build.opt/lite/api/
 
 ```
 # 【推荐】 下载PaddleOCR V2.0版本的中英文 inference模型
-wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_det_slim_infer.tar
-wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_nfer.tar && tar xf  ch_ppocr_mobile_v2.0_rec_slim_infer.tar
-wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_cls_slim_infer.tar
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_det_slim_infer.tar
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_rec_slim_nfer.tar && tar xf  ch_ppocr_mobile_v2.0_rec_slim_infer.tar
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_cls_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_cls_slim_infer.tar
 # 转换V2.0检测模型
 ./opt --model_file=./ch_ppocr_mobile_v2.0_det_slim_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_det_slim_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_det_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
 # 转换V2.0识别模型
@@ -239,9 +239,8 @@ use_direction_classify  0  # 是否使用方向分类器，0表示不使用，1�
 
  ```
  # 执行编译，得到可执行文件ocr_db_crnn
- # ocr_db_crnn可执行文件的使用方式为:
- # ./ocr_db_crnn  检测模型文件 方向分类器模型文件  识别模型文件  测试图像路径  字典文件路径
  make -j
+
  # 将编译的可执行文件移动到debug文件夹中
  mv ocr_db_crnn ./debug/
  # 将debug文件夹push到手机上
@@ -249,6 +248,8 @@ use_direction_classify  0  # 是否使用方向分类器，0表示不使用，1�
  adb shell
  cd /data/local/tmp/debug
  export LD_LIBRARY_PATH=${PWD}:$LD_LIBRARY_PATH
+ # 开始使用，ocr_db_crnn可执行文件的使用方式为:
+ # ./ocr_db_crnn  检测模型文件 方向分类器模型文件  识别模型文件  测试图像路径  字典文件路径
  ./ocr_db_crnn ch_ppocr_mobile_v2.0_det_slim_opt.nb  ch_ppocr_mobile_v2.0_rec_slim_opt.nb  ch_ppocr_mobile_v2.0_cls_slim_opt.nb  ./11.jpg  ppocr_keys_v1.txt
  ```
 
@@ -264,7 +265,7 @@ use_direction_classify  0  # 是否使用方向分类器，0表示不使用，1�
 ## FAQ
 Q1：如果想更换模型怎么办，需要重新按照流程走一遍吗？
 
-A1：如果已经走通了上述步骤，更换模型只需要替换 .nb 模型文件即可，同时要注意字典更新
+A1：如果已经走通了上述步骤，更换模型只需要替换 .nb 模型文件即可，同时要注意更新字典
 
 Q2：换一个图测试怎么做？
 
