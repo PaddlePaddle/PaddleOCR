@@ -258,7 +258,7 @@ use_direction_classify  0  # 是否使用方向分类器，0表示不使用，1�
  运行效果如下：
 
 <div align="center">
-    <img src="../../doc/imgs_results/lite_demo.png" width="600">
+    <img src="imgs/lite_demo.png" width="600">
 </div>
 
 

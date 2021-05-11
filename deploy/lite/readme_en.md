@@ -256,7 +256,7 @@ If you modify the code, you need to recompile and push to the phone.
 The outputs are as follows:
 
 <div align="center">
-    <img src="../../doc/imgs_results/lite_demo.png" width="600">
+    <img src="imgs/lite_demo.png" width="600">
 </div>
 
 ## FAQ
