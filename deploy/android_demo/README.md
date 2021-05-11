@@ -1,6 +1,6 @@
 # 如何快速测试
 ### 1. 安装最新版本的Android Studio
-可以从https://developer.android.com/studio 下载。本Demo使用是4.0版本Android Studio编写。
+可以从 https://developer.android.com/studio 下载。本Demo使用是4.0版本Android Studio编写。
 
 ### 2. 按照NDK 20 以上版本
 Demo测试的时候使用的是NDK 20b版本，20版本以上均可以支持编译成功。
@@ -17,7 +17,3 @@ Demo测试的时候使用的是NDK 20b版本，20版本以上均可以支持编�
 
 - Demo APP：可使用手机扫码安装，方便手机端快速体验文字识别
 - SDK：模型被封装为适配不同芯片硬件和操作系统SDK，包括完善的接口，方便进行二次开发
-
-
-# FAQ：
-暂无
