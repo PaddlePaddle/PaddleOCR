@@ -273,9 +273,9 @@ RunDetModel(std::shared_ptr<PaddlePredictor> predictor, cv::Mat img,
                    reinterpret_cast<float *>(pred));
 
   const double threshold = double(Config["det_db_thresh"]) * 255;
-  const double maxvalue = 255;
+  const double max_value = 255;
   cv::Mat bit_map;
-  cv::threshold(cbuf_map, bit_map, threshold, maxvalue, cv::THRESH_BINARY);
+  cv::threshold(cbuf_map, bit_map, threshold, max_value, cv::THRESH_BINARY);
   if (det_db_use_dilate == 1) {
     cv::Mat dilation_map;
     cv::Mat dila_ele =
