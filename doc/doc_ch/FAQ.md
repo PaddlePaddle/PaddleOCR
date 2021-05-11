@@ -22,14 +22,14 @@
   * [预测部署46题](#预测部署3)
 
 <a name="近期更新"></a>
-## 近期更新（2021.4.26）
+## 近期更新（2021.5.11）
 
-#### Q3.1.64: ratio_list有什么作用？
-**A**: ratio_list在有多个数据源的情况下使用，ratio_list中的每个值是每个epoch从对于数据源采样数据的比例，数据源list在label_file_list中
+#### Q3.1.64: config yml文件中的ratio_list参数的作用是什么？
+**A**: ratio_list在有多个数据源的情况下使用，ratio_list中的每个值是每个epoch从对应数据源采样数据的比例。如ratio_list=[0.3,0.2],label_file_list=['data1','data2'],代表每个epoch从data1里采样30%，data2里采样20%数据构成训练集。并且ratio_list和label_file_list的长度必须一致。
 
 
-#### Q3.1.65: 2.0里的android demo什么时候上线？
-**A**: 2.0的android demo pr已经合入，可以下载体验了。
+#### Q3.1.65: 支持动态图模型的android和ios demo什么时候上线？
+**A**: 支持动态图模型的android demo已经合入dygraph分支，欢迎试用（https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/deploy/android_demo/README.md）; ios demo暂时未提供动态图模型版本，可以基于静态图版本（https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/ios_demo）自行改造。
 
 #### Q3.3.36: 训练starnet网络，印章数据可以和非弯曲数据一起训练吗。
 **A**: 可以的，starnet里的tps模块会对印章图片进行校正，使其和非弯曲的图片一样。
@@ -38,7 +38,7 @@
 **A**: win下编码格式不是utf8,而ppocr_keys_v1.txt的编码格式的utf8，将ppocr_keys_v1.txt 的编码从utf-8修改为 Ansi 编码格式就行了
 
 #### Q3.4.46: windows 3060显卡GPU模式启动 加载模型慢。
-**A**: 3060的显卡需要使用cuda11。
+**A**: 30系列的显卡需要使用cuda11。
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -639,11 +639,11 @@ repo中config.yml文件的前后处理参数和inference预测默认的超参数
 #### Q3.1.63: 请问端到端的pgnet相比于DB+CRNN在准确率上有优势吗？或者是pgnet最擅长的场景是什么场景呢？
 **A**: pgnet是端到端算法，检测识别一步到位，不用分开训练2个模型，也支持弯曲文本的识别，但是在中文上的效果还没有充分验证；db+crnn的验证更充分，应用相对成熟，常规非弯曲的文本都能解的不错。
 
-#### Q3.1.64: ratio_list有什么作用？
-**A**: ratio_list在有多个数据源的情况下使用，ratio_list中的每个值是每个epoch从对于数据源采样数据的比例，数据源list在label_file_list中
+#### Q3.1.64: config yml文件中的ratio_list参数的作用是什么？
+**A**: ratio_list在有多个数据源的情况下使用，ratio_list中的每个值是每个epoch从对应数据源采样数据的比例。如ratio_list=[0.3,0.2],label_file_list=['data1','data2'],代表每个epoch从data1里采样30%，data2里采样20%数据构成训练集。并且ratio_list和label_file_list的长度必须一致。
 
-#### Q3.1.65: 2.0里的android demo什么时候上线？
-**A**: 2.0的android demo pr已经合入，可以下载体验了。
+#### Q3.1.65: 支持动态图模型的android和ios demo什么时候上线？？
+**A**:  支持动态图模型的android demo已经合入dygraph分支，欢迎试用（https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/deploy/android_demo/README.md）; ios demo暂时未提供动态图模型版本，可以基于静态图版本（https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/ios_demo）自行改造。
 
 <a name="数据集3"></a>
 
@@ -1132,4 +1132,4 @@ nvidia-smi --lock-gpu-clocks=1590 -i 0
 **A**: win下编码格式不是utf8,而ppocr_keys_v1.txt的编码格式的utf8，将ppocr_keys_v1.txt 的编码从utf-8修改为 Ansi 编码格式就行了。
 
 #### Q3.4.46: windows 3060显卡GPU模式启动 加载模型慢。
-**A**: 3060的显卡需要使用cuda11。
+**A**: 30系列的显卡需要使用cuda11。
