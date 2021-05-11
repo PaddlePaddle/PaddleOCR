@@ -190,6 +190,51 @@ float BoxScoreFast(std::vector<std::vector<float>> box_array, cv::Mat pred) {
   return score;
 }
 
+float PolygonScoreAcc(std::vector<cv::Point> contour, cv::Mat pred) {
+  int width = pred.cols;
+  int height = pred.rows;
+  std::vector<float> box_x;
+  std::vector<float> box_y;
+  for (int i = 0; i < contour.size(); ++i) {
+    box_x.push_back(contour[i].x);
+    box_y.push_back(contour[i].y);
+  }
+
+  int xmin =
+      clamp(int(std::floor(*(std::min_element(box_x.begin(), box_x.end())))), 0,
+            width - 1);
+  int xmax =
+      clamp(int(std::ceil(*(std::max_element(box_x.begin(), box_x.end())))), 0,
+            width - 1);
+  int ymin =
+      clamp(int(std::floor(*(std::min_element(box_y.begin(), box_y.end())))), 0,
+            height - 1);
+  int ymax =
+      clamp(int(std::ceil(*(std::max_element(box_y.begin(), box_y.end())))), 0,
+            height - 1);
+
+  cv::Mat mask;
+  mask = cv::Mat::zeros(ymax - ymin + 1, xmax - xmin + 1, CV_8UC1);
+
+  cv::Point *rook_point = new cv::Point[contour.size()];
+
+  for (int i = 0; i < contour.size(); ++i) {
+    rook_point[i] = cv::Point(int(box_x[i]) - xmin, int(box_y[i]) - ymin);
+  }
+  const cv::Point *ppt[1] = {rook_point};
+  int npt[] = {int(contour.size())};
+
+  cv::fillPoly(mask, ppt, npt, 1, cv::Scalar(1));
+
+  cv::Mat croppedImg;
+  pred(cv::Rect(xmin, ymin, xmax - xmin + 1, ymax - ymin + 1))
+      .copyTo(croppedImg);
+  float score = cv::mean(croppedImg, mask)[0];
+
+  delete[] rook_point;
+  return score;
+}
+
 std::vector<std::vector<std::vector<int>>>
 BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
                 std::map<std::string, double> Config) {
@@ -197,6 +242,7 @@ BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
   const int max_candidates = 1000;
   const float box_thresh = static_cast<float>(Config["det_db_box_thresh"]);
   const float unclip_ratio = static_cast<float>(Config["det_db_unclip_ratio"]);
+  const int det_use_polygon_score = int(Config["det_use_polygon_score"]);
 
   int width = bitmap.cols;
   int height = bitmap.rows;
@@ -228,7 +274,11 @@ BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
     }
 
     float score;
-    score = BoxScoreFast(array, pred);
+    if (det_use_polygon_score) {
+      score = PolygonScoreAcc(contours[i], pred);
+    } else {
+      score = BoxScoreFast(array, pred);
+    }
     // end box_score_fast
     if (score < box_thresh)
       continue;
