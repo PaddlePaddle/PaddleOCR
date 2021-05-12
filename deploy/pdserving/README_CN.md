@@ -29,7 +29,9 @@ PaddleOCR提供2种服务部署方式：
 
 需要准备PaddleOCR的运行环境和Paddle Serving的运行环境。
 
-- 准备PaddleOCR的运行环境参考[链接](../../doc/doc_ch/installation.md)
+- 准备PaddleOCR的运行环境[链接](../../doc/doc_ch/installation.md)
+  根据环境下载对应的paddle whl包，
+  推荐2.0.1版本：https://www.paddlepaddle.org.cn/whl/mkl/stable.html
 
 - 准备PaddleServing的运行环境，步骤如下
 
@@ -45,25 +47,16 @@ PaddleOCR提供2种服务部署方式：
     ```
 
 2. 安装client，用于向服务发送请求
-    ```
-    pip3 install paddle-serving-client==0.5.0  # for CPU
+    在[下载链接](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md)中找到对应python版本的client安装包，这里推荐python3.7版本：
 
-    pip3 install paddle-serving-client-gpu==0.5.0   # for GPU
+    ```
+    wget https://paddle-serving.bj.bcebos.com/whl/paddle_serving_client-0.0.0-cp37-none-any.whl
+    pip3 install paddle_serving_client-0.0.0-cp37-none-any.whl
     ```
 
 3. 安装serving-app
     ```
-    pip3 install paddle-serving-app==0.3.0
-    ```
-    **note:**  安装0.3.0版本的serving-app后，为了能加载动态图模型，需要修改serving_app的源码，具体为：
-    ```
-    # 找到paddle_serving_app的安装目录，找到并编辑local_predict.py文件
-    vim /usr/local/lib/python3.7/site-packages/paddle_serving_app/local_predict.py
-    # 将local_predict.py 的第85行 config = AnalysisConfig(model_path)  替换为：
-    if os.path.exists(os.path.join(model_path, "__params__")):
-        config = AnalysisConfig(os.path.join(model_path, "__model__"), os.path.join(model_path, "__params__"))
-    else:
-        config = AnalysisConfig(model_path)
+    pip3 install paddle-serving-app==0.3.1
     ```
 
     **Note:** 如果要安装最新版本的PaddleServing参考[链接](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md)。
