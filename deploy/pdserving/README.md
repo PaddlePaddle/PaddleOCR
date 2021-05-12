@@ -156,7 +156,9 @@ The recognition model is the same.
 
     Multiple service requests can be sent at the same time if necessary.
 
-    The predicted performance data will be automatically written into the `PipelineServingLogs/pipeline.tracer` file:
+    The predicted performance data will be automatically written into the `PipelineServingLogs/pipeline.tracer` file.
+
+    Tested on 200 real pictures, and limited the detection long side to 960. The average QPS on T4 GPU can reach around 13:
 
     ```
     2021-05-12 10:03:24,812 ==================== TRACER ======================

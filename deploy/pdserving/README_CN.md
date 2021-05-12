@@ -153,7 +153,9 @@ python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_mobile_v2.0_rec_in
     ```
     有需要的话可以同时发送多个服务请求
 
-    预测性能数据会被自动写入 `PipelineServingLogs/pipeline.tracer` 文件中：
+    预测性能数据会被自动写入 `PipelineServingLogs/pipeline.tracer` 文件中。
+
+    在200张真实图片上测试，把检测长边限制为960。T4 GPU 上 QPS 均值可达到13左右：
 
     ```
     2021-05-12 10:03:24,812 ==================== TRACER ======================
@@ -190,6 +192,8 @@ python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_mobile_v2.0_rec_in
     2021-05-12 10:03:24,909         chl1(In: ['det'], Out: ['rec']) size[1/0]
     2021-05-12 10:03:24,910         chl2(In: ['rec'], Out: ['@DAGExecutor']) size[0/0]
     ```
+
+
 
 <a name="FAQ"></a>
 ## FAQ
