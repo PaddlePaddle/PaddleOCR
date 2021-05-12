@@ -24,10 +24,9 @@ The results of detection and recognition are as follows:
 ![](../imgs_results/e2e_res_img293_pgnet.png)
 ![](../imgs_results/e2e_res_img295_pgnet.png)
 ### Performance
+####Test set: Total Text
 
-Test set: total text
-
-Test environment: NVIDIA Tesla V100-SXM2-16GB
+####Test environment: NVIDIA Tesla V100-SXM2-16GB
 |PGNetA|det_precision|det_recall|det_f_score|e2e_precision|e2e_recall|e2e_f_score|FPS|download|
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 |Paper|85.30|86.80|86.1|-|-|61.7|38.20 (size=640)|-|
@@ -93,13 +92,11 @@ rgb/img11.jpg    [{"transcription": "ASRAMA", "points": [[214.0, 325.0], [235.0,
 ```
 The image annotation after **json.dumps()** encoding is a list containing multiple dictionaries.
 
-The `points` in the dictionary represent the coordinates (x, y) of the fourteen points of the text box, arranged clockwise from the point at the upper left corner.
+The `points` in the dictionary represent the coordinates (x, y) of the four points of the text box, arranged clockwise from the point at the upper left corner.
 
 `transcription` represents the text of the current text box. **When its content is "###" it means that the text box is invalid and will be skipped during training.**
 
 If you want to train PaddleOCR on other datasets, please build the annotation file according to the above format.
-
-*PGNet supports data input of any point, but it needs to ensure uniform labeling (upper and lower symmetry, left and right distance is consistent). In our experiment, the training effect of fourteen points tagging is better than that of four points tagging. We can try to do two-stage training on four points tagging and fourteen points tagging.*
 
 
 ### Start Training

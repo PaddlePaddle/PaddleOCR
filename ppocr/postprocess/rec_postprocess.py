@@ -218,6 +218,7 @@ class SRNLabelDecode(BaseRecLabelDecode):
                  **kwargs):
         super(SRNLabelDecode, self).__init__(character_dict_path,
                                              character_type, use_space_char)
+        self.max_text_length = kwargs.get('max_text_length', 25)
 
     def __call__(self, preds, label=None, *args, **kwargs):
         pred = preds['predict']
@@ -229,9 +230,9 @@ class SRNLabelDecode(BaseRecLabelDecode):
         preds_idx = np.argmax(pred, axis=1)
         preds_prob = np.max(pred, axis=1)
 
-        preds_idx = np.reshape(preds_idx, [-1, 25])
+        preds_idx = np.reshape(preds_idx, [-1, self.max_text_length])
 
-        preds_prob = np.reshape(preds_prob, [-1, 25])
+        preds_prob = np.reshape(preds_prob, [-1, self.max_text_length])
 
         text = self.decode(preds_idx, preds_prob)
 

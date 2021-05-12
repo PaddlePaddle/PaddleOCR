@@ -29,7 +29,7 @@ except ImportError:
 
 def newIcon(icon, iconSize=None):
     if iconSize is not None:
-        return QIcon(QIcon(':/' + icon).pixmap(iconSize,iconSize))
+        return QIcon(QIcon(':/' + icon).pixmap(iconSize, iconSize))
     else:
         return QIcon(':/' + icon)
 
@@ -43,8 +43,15 @@ def newButton(text, icon=None, slot=None):
     return b
 
 
-def newAction(parent, text, slot=None, shortcut=None, icon=None,
-              tip=None, checkable=False, enabled=True, iconSize=None):
+def newAction(parent,
+              text,
+              slot=None,
+              shortcut=None,
+              icon=None,
+              tip=None,
+              checkable=False,
+              enabled=True,
+              iconSize=None):
     """Create a new action and assign callbacks, shortcuts, etc."""
     a = QAction(text, parent)
     if icon is not None:
@@ -83,7 +90,6 @@ def labelValidator():
 
 
 class struct(object):
-
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
 
@@ -101,29 +107,43 @@ def generateColorByText(text):
     s = ustr(text)
     hashCode = int(hashlib.sha256(s.encode('utf-8')).hexdigest(), 16)
     r = int((hashCode / 255) % 255)
-    g = int((hashCode / 65025)  % 255)
-    b = int((hashCode / 16581375)  % 255)
+    g = int((hashCode / 65025) % 255)
+    b = int((hashCode / 16581375) % 255)
     return QColor(r, g, b, 100)
+
 
 def have_qstring():
     '''p3/qt5 get rid of QString wrapper as py3 has native unicode str type'''
     return not (sys.version_info.major >= 3 or QT_VERSION_STR.startswith('5.'))
 
+
 def util_qt_strlistclass():
     return QStringList if have_qstring() else list
 
-def natural_sort(list, key=lambda s:s):
+
+def natural_sort(list, key=lambda s: s):
     """
     Sort the list into natural alphanumeric order.
     """
+
     def get_alphanum_key_func(key):
         convert = lambda text: int(text) if text.isdigit() else text
         return lambda s: [convert(c) for c in re.split('([0-9]+)', key(s))]
+
     sort_key = get_alphanum_key_func(key)
     list.sort(key=sort_key)
 
 
 def get_rotate_crop_image(img, points):
+    # Use Green's theory to judge clockwise or counterclockwise
+    # author: biyanhua
+    d = 0.0
+    for index in range(-1, 3):
+        d += -0.5 * (points[index + 1][1] + points[index][1]) * (
+            points[index + 1][0] - points[index][0])
+    if d < 0:  # counterclockwise
+        tmp = np.array(points)
+        points[1], points[3] = tmp[3], tmp[1]
 
     try:
         img_crop_width = int(
@@ -149,6 +169,7 @@ def get_rotate_crop_image(img, points):
         return dst_img
     except Exception as e:
         print(e)
+
 
 def stepsInfo(lang='en'):
     if lang == 'ch':

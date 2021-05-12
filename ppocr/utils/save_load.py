@@ -121,7 +121,7 @@ def init_model(config, model, logger, optimizer=None, lr_scheduler=None):
     return best_model_dict
 
 
-def save_model(net,
+def save_model(model,
                optimizer,
                model_path,
                logger,
@@ -133,7 +133,7 @@ def save_model(net,
     """
     _mkdir_if_not_exist(model_path, logger)
     model_prefix = os.path.join(model_path, prefix)
-    paddle.save(net.state_dict(), model_prefix + '.pdparams')
+    paddle.save(model.state_dict(), model_prefix + '.pdparams')
     paddle.save(optimizer.state_dict(), model_prefix + '.pdopt')
 
     # save metric and config

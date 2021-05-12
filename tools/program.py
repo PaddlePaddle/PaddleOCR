@@ -160,6 +160,8 @@ def train(config,
     eval_batch_step = config['Global']['eval_batch_step']
 
     global_step = 0
+    if 'global_step' in pre_best_model_dict:
+        global_step = pre_best_model_dict['global_step']
     start_eval_step = 0
     if type(eval_batch_step) == list and len(eval_batch_step) >= 2:
         start_eval_step = eval_batch_step[0]
@@ -290,7 +292,8 @@ def train(config,
                         is_best=True,
                         prefix='best_accuracy',
                         best_model_dict=best_model_dict,
-                        epoch=epoch)
+                        epoch=epoch,
+                        global_step=global_step)
                 best_str = 'best metric, {}'.format(', '.join([
                     '{}: {}'.format(k, v) for k, v in best_model_dict.items()
                 ]))
@@ -312,7 +315,8 @@ def train(config,
                 is_best=False,
                 prefix='latest',
                 best_model_dict=best_model_dict,
-                epoch=epoch)
+                epoch=epoch,
+                global_step=global_step)
         if dist.get_rank() == 0 and epoch > 0 and epoch % save_epoch_step == 0:
             save_model(
                 model,
@@ -322,7 +326,8 @@ def train(config,
                 is_best=False,
                 prefix='iter_epoch_{}'.format(epoch),
                 best_model_dict=best_model_dict,
-                epoch=epoch)
+                epoch=epoch,
+                global_step=global_step)
     best_str = 'best metric, {}'.format(', '.join(
         ['{}: {}'.format(k, v) for k, v in best_model_dict.items()]))
     logger.info(best_str)

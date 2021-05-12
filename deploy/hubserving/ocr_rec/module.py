@@ -15,9 +15,8 @@ import paddlehub as hub
 
 from tools.infer.utility import base64_to_cv2
 from tools.infer.predict_rec import TextRecognizer
-
-from deploy.hubserving.ocr_rec.params import read_params
 from tools.infer.utility import parse_args
+from deploy.hubserving.ocr_rec.params import read_params
 
 
 @moduleinfo(
@@ -32,7 +31,6 @@ class OCRRec(hub.Module):
         """
         initialize with the necessary elements
         """
-
         cfg = self.merge_configs()
 
         cfg.use_gpu = use_gpu

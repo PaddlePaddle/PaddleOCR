@@ -4,7 +4,7 @@
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力使用者训练出更好的模型，并应用落地。
 ## 注意
 PaddleOCR同时支持动态图与静态图两种编程范式
-- 动态图版本：release/2.1（默认分支，开发分支为dygraph分支），需将paddle版本升级至2.0.0（[快速安装](./doc/doc_ch/installation.md)）
+- 动态图版本：dygraph分支（默认），需将paddle版本升级至2.0.0（[快速安装](./doc/doc_ch/installation.md)）
 - 静态图版本：develop分支
 
 **近期更新**
@@ -16,14 +16,13 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 - [More](./doc/doc_ch/update.md)
 
 
-
 ## 特性
 
 - PPOCR系列高质量预训练模型，准确的识别效果
     - 超轻量ppocr_mobile移动端系列：检测（3.0M）+方向分类器（1.4M）+ 识别（5.0M）= 9.4M
     - 通用ppocr_server系列：检测（47.1M）+方向分类器（1.4M）+ 识别（94.9M）= 143.4M
     - 支持中英文数字组合识别、竖排文本识别、长文本识别
-    - 支持80+多语言识别，详见[多语言模型](./doc/doc_ch/multi_languages.md)
+    - 支持多语言识别：韩语、日语、德语、法语
 - 丰富易用的OCR相关工具组件
     - 半自动数据标注工具PPOCRLabel：支持快速高效的数据标注
     - 数据合成工具Style-Text：批量合成大量与目标场景类似的图像
@@ -45,7 +44,7 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 - 微信扫描二维码加入官方交流群，获得更高效的问题答疑，与各行各业开发者充分交流，期待您的加入。
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "200" height = "200" />
+<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/joinus.PNG"  width = "200" height = "200" />
 </div>
 
 ## 快速体验
@@ -89,7 +88,7 @@ PaddleOCR同时支持动态图与静态图两种编程范式
     - [基于pip安装whl包快速推理](./doc/doc_ch/whl.md)
     - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
     - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
-    - [服务化部署](./deploy/hubserving/readme.md)
+    - [服务化部署](./deploy/pdserving/README_CN.md)
     - [端侧部署](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme.md)
     - [Benchmark](./doc/doc_ch/benchmark.md)
 - 数据集
@@ -104,8 +103,8 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 - [效果展示](#效果展示)
 - FAQ
     - [【精选】OCR精选10个问题](./doc/doc_ch/FAQ.md)
-    - [【理论篇】OCR通用41个问题](./doc/doc_ch/FAQ.md)
-    - [【实战篇】PaddleOCR实战147个问题](./doc/doc_ch/FAQ.md)
+    - [【理论篇】OCR通用32个问题](./doc/doc_ch/FAQ.md)
+    - [【实战篇】PaddleOCR实战110个问题](./doc/doc_ch/FAQ.md)
 - [技术交流群](#欢迎加入PaddleOCR技术交流群)
 - [参考文献](./doc/doc_ch/reference.md)
 - [许可证书](#许可证书)
