@@ -6,7 +6,7 @@ http_port: 9998
 
 #worker_num, 最大并发数。当build_dag_each_worker=True时, 框架会创建worker_num个进程，每个进程内构建grpcSever和DAG
 ##当build_dag_each_worker=False时，框架会设置主线程grpc线程池的max_workers=worker_num
-worker_num: 5
+worker_num: 10
 
 #build_dag_each_worker, False，框架在进程内创建一条DAG；True，框架会每个进程内创建多个独立的DAG
 build_dag_each_worker: False
@@ -42,7 +42,7 @@ op:
             #计算硬件ID，当devices为""或不写时为CPU预测；当devices为"0", "0,1,2"时为GPU预测，表示使用的GPU卡
             devices: "0"
             
-            ir_optim: False
+            ir_optim: True
     rec:
         #并发数，is_thread_op=True时，为线程并发；否则为进程并发
         concurrency: 4
@@ -68,4 +68,4 @@ op:
             #计算硬件ID，当devices为""或不写时为CPU预测；当devices为"0", "0,1,2"时为GPU预测，表示使用的GPU卡
             devices: "0"
             
-            ir_optim: False
+            ir_optim: True
