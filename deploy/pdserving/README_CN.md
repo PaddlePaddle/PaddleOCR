@@ -30,8 +30,7 @@ PaddleOCR提供2种服务部署方式：
 需要准备PaddleOCR的运行环境和Paddle Serving的运行环境。
 
 - 准备PaddleOCR的运行环境[链接](../../doc/doc_ch/installation.md)
-  根据环境下载对应的paddle whl包，
-  推荐2.0.1版本：https://www.paddlepaddle.org.cn/whl/mkl/stable.html
+  根据环境下载对应的paddle whl包，推荐安装2.0.1版本
 
 - 准备PaddleServing的运行环境，步骤如下
 

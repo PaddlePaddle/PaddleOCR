@@ -30,6 +30,8 @@ The introduction and tutorial of Paddle Serving service deployment framework ref
 PaddleOCR operating environment and Paddle Serving operating environment are needed.
 
 1. Please prepare PaddleOCR operating environment reference [link](../../doc/doc_ch/installation.md).
+   Download the corresponding paddle whl package according to the environment, it is recommended to install version 2.0.1.
+
 
 2. The steps of PaddleServing operating environment prepare are as follows:
 
@@ -45,23 +47,17 @@ PaddleOCR operating environment and Paddle Serving operating environment are nee
     ```
 
 3. Install the client to send requests to the service
-    ```
-    pip3 install paddle-serving-client==0.5.0 # for CPU
+    In [download link](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md) find the client installation package corresponding to the python version.
+    The python3.7 version is recommended here:
 
-    pip3 install paddle-serving-client-gpu==0.5.0 # for GPU
+    ```
+    wget https://paddle-serving.bj.bcebos.com/whl/paddle_serving_client-0.0.0-cp37-none-any.whl
+    pip3 install paddle_serving_client-0.0.0-cp37-none-any.whl
     ```
 
 4. Install serving-app
     ```
-    pip3 install paddle-serving-app==0.3.0
-    # fix local_predict to support load dynamic model
-    # find the install directoory of paddle_serving_app
-    vim /usr/local/lib/python3.7/site-packages/paddle_serving_app/local_predict.py
-    # replace line 85 of local_predict.py config = AnalysisConfig(model_path) with:
-    if os.path.exists(os.path.join(model_path, "__params__")):
-        config = AnalysisConfig(os.path.join(model_path, "__model__"), os.path.join(model_path, "__params__"))
-    else:
-        config = AnalysisConfig(model_path)
+    pip3 install paddle-serving-app==0.3.1
     ```
 
    **note:** If you want to install the latest version of PaddleServing, refer to [link](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md).
