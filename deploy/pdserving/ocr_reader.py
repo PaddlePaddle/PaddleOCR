@@ -33,12 +33,12 @@ class DetResizeForTest(object):
         elif 'limit_side_len' in kwargs:
             self.limit_side_len = kwargs['limit_side_len']
             self.limit_type = kwargs.get('limit_type', 'min')
-        elif 'resize_long' in kwargs:
-            self.resize_type = 2
-            self.resize_long = kwargs.get('resize_long', 960)
-        else:
+        elif 'resize_short' in kwargs:
             self.limit_side_len = 736
             self.limit_type = 'min'
+        else:
+            self.resize_type = 2
+            self.resize_long = kwargs.get('resize_long', 960)
 
     def __call__(self, data):
         img = deepcopy(data)
@@ -226,8 +226,6 @@ class CTCLabelDecode(BaseRecLabelDecode):
         super(CTCLabelDecode, self).__init__(config)
 
     def __call__(self, preds, label=None, *args, **kwargs):
-        #if isinstance(preds, paddle.Tensor):
-        #    preds = preds.numpy()
         preds_idx = preds.argmax(axis=2)
         preds_prob = preds.max(axis=2)
         text = self.decode(preds_idx, preds_prob, is_remove_duplicate=True)

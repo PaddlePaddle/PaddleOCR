@@ -70,38 +70,38 @@ When using PaddleServing for service deployment, you need to convert the saved i
 Firstly, download the [inference model](https://github.com/PaddlePaddle/PaddleOCR#pp-ocr-20-series-model-listupdate-on-dec-15) of PPOCR
 ```
 # Download and unzip the OCR text detection model
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar && tar xf ch_ppocr_server_v2.0_det_infer.tar
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_ppocr_mobile_v2.0_det_infer.tar
 # Download and unzip the OCR text recognition model
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar && tar xf ch_ppocr_server_v2.0_rec_infer.tar
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf ch_ppocr_mobile_v2.0_rec_infer.tar
 
 ```
-Then, you can use installed paddle_serving_client tool to convert inference model to server model.
+Then, you can use installed paddle_serving_client tool to convert inference model to mobile model.
 ```
 #  Detection model conversion
-python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_server_v2.0_det_infer/ \
+python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_mobile_v2.0_det_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
-                                         --serving_server ./ppocr_det_server_2.0_serving/ \
-                                         --serving_client ./ppocr_det_server_2.0_client/
+                                         --serving_server ./ppocr_det_mobile_2.0_serving/ \
+                                         --serving_client ./ppocr_det_mobile_2.0_client/
 
 #  Recognition model conversion
-python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_server_v2.0_rec_infer/ \
+python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_mobile_v2.0_rec_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
-                                         --serving_server ./ppocr_rec_server_2.0_serving/  \
-                                         --serving_client ./ppocr_rec_server_2.0_client/
+                                         --serving_server ./ppocr_rec_mobile_2.0_serving/  \
+                                         --serving_client ./ppocr_rec_mobile_2.0_client/
 
 ```
 
-After the detection model is converted, there will be additional folders of `ppocr_det_server_2.0_serving` and `ppocr_det_server_2.0_client` in the current folder, with the following format:
+After the detection model is converted, there will be additional folders of `ppocr_det_mobile_2.0_serving` and `ppocr_det_mobile_2.0_client` in the current folder, with the following format:
 ```
-|- ppocr_det_server_2.0_serving/
+|- ppocr_det_mobile_2.0_serving/
    |- __model__
    |- __params__
    |- serving_server_conf.prototxt
    |- serving_server_conf.stream.prototxt
 
-|- ppocr_det_server_2.0_client
+|- ppocr_det_mobile_2.0_client
    |- serving_client_conf.prototxt
    |- serving_client_conf.stream.prototxt
 
@@ -142,6 +142,58 @@ The recognition model is the same.
     ```
     After successfully running, the predicted result of the model will be printed in the cmd window. An example of the result is:
     ![](./imgs/results.png)  
+
+    Adjust the number of concurrency in config.yml to get the largest QPS. Generally, the number of concurrent detection and recognition is 2:1
+
+    ```
+    det:
+        concurrency: 8
+        ...
+    rec:
+        concurrency: 4
+        ...
+    ```
+
+    Multiple service requests can be sent at the same time if necessary.
+
+    The predicted performance data will be automatically written into the `PipelineServingLogs/pipeline.tracer` file:
+
+    ```
+    2021-05-12 10:03:24,812 ==================== TRACER ======================
+    2021-05-12 10:03:24,904 Op(rec):
+    2021-05-12 10:03:24,904         in[51.5634921875 ms]
+    2021-05-12 10:03:24,904         prep[215.310859375 ms]
+    2021-05-12 10:03:24,904         midp[33.1617109375 ms]
+    2021-05-12 10:03:24,905         postp[10.451234375 ms]
+    2021-05-12 10:03:24,905         out[9.736765625 ms]
+    2021-05-12 10:03:24,905         idle[0.1914292677880819]
+    2021-05-12 10:03:24,905 Op(det):
+    2021-05-12 10:03:24,905         in[218.63487096774193 ms]
+    2021-05-12 10:03:24,906         prep[357.35925 ms]
+    2021-05-12 10:03:24,906         midp[31.47598387096774 ms]
+    2021-05-12 10:03:24,906         postp[15.274870967741936 ms]
+    2021-05-12 10:03:24,906         out[16.245693548387095 ms]
+    2021-05-12 10:03:24,906         idle[0.3675805857279226]
+    2021-05-12 10:03:24,906 DAGExecutor:
+    2021-05-12 10:03:24,906         Query count[128]
+    2021-05-12 10:03:24,906         QPS[12.8 q/s]
+    2021-05-12 10:03:24,906         Succ[1.0]
+    2021-05-12 10:03:24,907         Error req[]
+    2021-05-12 10:03:24,907         Latency:
+    2021-05-12 10:03:24,907                 ave[798.6557734374998 ms]
+    2021-05-12 10:03:24,907                 .50[867.936 ms]
+    2021-05-12 10:03:24,907                 .60[914.507 ms]
+    2021-05-12 10:03:24,907                 .70[961.064 ms]
+    2021-05-12 10:03:24,907                 .80[1043.264 ms]
+    2021-05-12 10:03:24,907                 .90[1117.923 ms]
+    2021-05-12 10:03:24,907                 .95[1207.056 ms]
+    2021-05-12 10:03:24,908                 .99[1325.008 ms]
+    2021-05-12 10:03:24,908 Channel (server worker num[10]):
+    2021-05-12 10:03:24,909         chl0(In: ['@DAGExecutor'], Out: ['det']) size[0/0]
+    2021-05-12 10:03:24,909         chl1(In: ['det'], Out: ['rec']) size[1/0]
+    2021-05-12 10:03:24,910         chl2(In: ['rec'], Out: ['@DAGExecutor']) size[0/0]
+    ```
+
 
 <a name="faq"></a>
 ## FAQ

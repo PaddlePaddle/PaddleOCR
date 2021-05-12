@@ -26,7 +26,7 @@ dag:
 op:
     det:
         #并发数，is_thread_op=True时，为线程并发；否则为进程并发
-        concurrency: 2
+        concurrency: 8
 
         #当op配置没有server_endpoints时，从local_service_conf读取本地服务配置
         local_service_conf:
@@ -34,7 +34,7 @@ op:
             client_type: local_predictor
 
             #det模型路径
-            model_config: ./ppocr_det_server_2.0_serving
+            model_config: ./ppocr_det_mobile_2.0_serving
 
             #Fetch结果列表，以client_config中fetch_var的alias_name为准
             fetch_list: ["save_infer_model/scale_0.tmp_1"]
@@ -45,7 +45,7 @@ op:
             ir_optim: False
     rec:
         #并发数，is_thread_op=True时，为线程并发；否则为进程并发
-        concurrency: 1
+        concurrency: 4
 
         #超时时间, 单位ms
         timeout: -1
@@ -60,7 +60,7 @@ op:
             client_type: local_predictor
 
             #rec模型路径
-            model_config: ./ppocr_rec_server_2.0_serving
+            model_config: ./ppocr_rec_mobile_2.0_serving
 
             #Fetch结果列表，以client_config中fetch_var的alias_name为准
             fetch_list: ["save_infer_model/scale_0.tmp_1"]  

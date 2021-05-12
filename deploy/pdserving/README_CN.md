@@ -68,38 +68,38 @@ PaddleOCR提供2种服务部署方式：
 首先，下载PPOCR的[inference模型](https://github.com/PaddlePaddle/PaddleOCR#pp-ocr-20-series-model-listupdate-on-dec-15)
 ```
 # 下载并解压 OCR 文本检测模型
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar && tar xf ch_ppocr_server_v2.0_det_infer.tar
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_ppocr_mobile_v2.0_det_infer.tar
 # 下载并解压 OCR 文本识别模型
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar && tar xf ch_ppocr_server_v2.0_rec_infer.tar
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf ch_ppocr_mobile_v2.0_rec_infer.tar
 ```
 
 接下来，用安装的paddle_serving_client把下载的inference模型转换成易于server部署的模型格式。
 
 ```
 # 转换检测模型
-python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_server_v2.0_det_infer/ \
+python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_mobile_v2.0_det_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
-                                         --serving_server ./ppocr_det_server_2.0_serving/ \
-                                         --serving_client ./ppocr_det_server_2.0_client/
+                                         --serving_server ./ppocr_det_mobile_2.0_serving/ \
+                                         --serving_client ./ppocr_det_mobile_2.0_client/
 
 # 转换识别模型
-python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_server_v2.0_rec_infer/ \
+python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_mobile_v2.0_rec_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
-                                         --serving_server ./ppocr_rec_server_2.0_serving/  \
-                                         --serving_client ./ppocr_rec_server_2.0_client/
+                                         --serving_server ./ppocr_rec_mobile_2.0_serving/  \
+                                         --serving_client ./ppocr_rec_mobile_2.0_client/
 ```
 
-检测模型转换完成后，会在当前文件夹多出`ppocr_det_server_2.0_serving` 和`ppocr_det_server_2.0_client`的文件夹，具备如下格式：
+检测模型转换完成后，会在当前文件夹多出`ppocr_det_mobile_2.0_serving` 和`ppocr_det_mobile_2.0_client`的文件夹，具备如下格式：
 ```
-|- ppocr_det_server_2.0_serving/
+|- ppocr_det_mobile_2.0_serving/
   |- __model__  
   |- __params__
   |- serving_server_conf.prototxt  
   |- serving_server_conf.stream.prototxt
 
-|- ppocr_det_server_2.0_client
+|- ppocr_det_mobile_2.0_client
   |- serving_client_conf.prototxt  
   |- serving_client_conf.stream.prototxt
 
@@ -140,6 +140,56 @@ python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_server_v2.0_rec_in
     成功运行后，模型预测的结果会打印在cmd窗口中，结果示例为：
     ![](./imgs/results.png)
 
+    调整 config.yml 中的并发个数获得最大的QPS, 一般检测和识别的并发数为2：1
+    ```
+    det:
+        #并发数，is_thread_op=True时，为线程并发；否则为进程并发
+        concurrency: 8
+        ...
+    rec:
+        #并发数，is_thread_op=True时，为线程并发；否则为进程并发
+        concurrency: 4
+        ...
+    ```
+    有需要的话可以同时发送多个服务请求
+
+    预测性能数据会被自动写入 `PipelineServingLogs/pipeline.tracer` 文件中：
+
+    ```
+    2021-05-12 10:03:24,812 ==================== TRACER ======================
+    2021-05-12 10:03:24,904 Op(rec):
+    2021-05-12 10:03:24,904         in[51.5634921875 ms]
+    2021-05-12 10:03:24,904         prep[215.310859375 ms]
+    2021-05-12 10:03:24,904         midp[33.1617109375 ms]
+    2021-05-12 10:03:24,905         postp[10.451234375 ms]
+    2021-05-12 10:03:24,905         out[9.736765625 ms]
+    2021-05-12 10:03:24,905         idle[0.1914292677880819]
+    2021-05-12 10:03:24,905 Op(det):
+    2021-05-12 10:03:24,905         in[218.63487096774193 ms]
+    2021-05-12 10:03:24,906         prep[357.35925 ms]
+    2021-05-12 10:03:24,906         midp[31.47598387096774 ms]
+    2021-05-12 10:03:24,906         postp[15.274870967741936 ms]
+    2021-05-12 10:03:24,906         out[16.245693548387095 ms]
+    2021-05-12 10:03:24,906         idle[0.3675805857279226]
+    2021-05-12 10:03:24,906 DAGExecutor:
+    2021-05-12 10:03:24,906         Query count[128]
+    2021-05-12 10:03:24,906         QPS[12.8 q/s]
+    2021-05-12 10:03:24,906         Succ[1.0]
+    2021-05-12 10:03:24,907         Error req[]
+    2021-05-12 10:03:24,907         Latency:
+    2021-05-12 10:03:24,907                 ave[798.6557734374998 ms]
+    2021-05-12 10:03:24,907                 .50[867.936 ms]
+    2021-05-12 10:03:24,907                 .60[914.507 ms]
+    2021-05-12 10:03:24,907                 .70[961.064 ms]
+    2021-05-12 10:03:24,907                 .80[1043.264 ms]
+    2021-05-12 10:03:24,907                 .90[1117.923 ms]
+    2021-05-12 10:03:24,907                 .95[1207.056 ms]
+    2021-05-12 10:03:24,908                 .99[1325.008 ms]
+    2021-05-12 10:03:24,908 Channel (server worker num[10]):
+    2021-05-12 10:03:24,909         chl0(In: ['@DAGExecutor'], Out: ['det']) size[0/0]
+    2021-05-12 10:03:24,909         chl1(In: ['det'], Out: ['rec']) size[1/0]
+    2021-05-12 10:03:24,910         chl2(In: ['rec'], Out: ['@DAGExecutor']) size[0/0]
+    ```
 
 <a name="FAQ"></a>
 ## FAQ

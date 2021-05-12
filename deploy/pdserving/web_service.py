@@ -48,13 +48,12 @@ class DetOp(Op):
     def preprocess(self, input_dicts, data_id, log_id):
         (_, input_dict), = input_dicts.items()
         data = base64.b64decode(input_dict["image"].encode('utf8'))
+        self.raw_im = data
         data = np.fromstring(data, np.uint8)
         # Note: class variables(self.var) can only be used in process op mode
         im = cv2.imdecode(data, cv2.IMREAD_COLOR)
-        self.im = im
         self.ori_h, self.ori_w, _ = im.shape
-
-        det_img = self.det_preprocess(self.im)
+        det_img = self.det_preprocess(im)
         _, self.new_h, self.new_w = det_img.shape
         return {"x": det_img[np.newaxis, :].copy()}, False, None, ""
 
@@ -65,7 +64,7 @@ class DetOp(Op):
         ]
         dt_boxes_list = self.post_func(det_out, [ratio_list])
         dt_boxes = self.filter_func(dt_boxes_list[0], [self.ori_h, self.ori_w])
-        out_dict = {"dt_boxes": dt_boxes, "image": self.im}
+        out_dict = {"dt_boxes": dt_boxes, "image": self.raw_im}
 
         return out_dict, None, ""
 
@@ -80,7 +79,9 @@ class RecOp(Op):
 
     def preprocess(self, input_dicts, data_id, log_id):
         (_, input_dict), = input_dicts.items()
-        im = input_dict["image"]
+        raw_im = input_dict["image"]
+        data = np.frombuffer(raw_im, np.uint8)
+        im = cv2.imdecode(data, cv2.IMREAD_COLOR)
         dt_boxes = input_dict["dt_boxes"]
         dt_boxes = self.sorted_boxes(dt_boxes)
         feed_list = []
@@ -95,7 +96,6 @@ class RecOp(Op):
         boxes_size = len(dt_boxes)
         batch_size = boxes_size // max_batch_size
         rem = boxes_size % max_batch_size
-        #_LOGGER.info("max_batch_len:{}, batch_size:{}, rem:{}, boxes_size:{}".format(max_batch_size, batch_size, rem, boxes_size))
         for bt_idx in range(0, batch_size + 1):
             imgs = None
             boxes_num_in_one_batch = 0
@@ -131,6 +131,7 @@ class RecOp(Op):
             feed_list.append(feed)
 
         return feed_list, False, None, ""
+
     def postprocess(self, input_dicts, fetch_data, log_id):
         res_list = []
         if isinstance(fetch_data, dict):
