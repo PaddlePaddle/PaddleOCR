@@ -25,7 +25,11 @@
 ## 近期更新（2021.5.11）
 
 #### Q3.1.64: config yml文件中的ratio_list参数的作用是什么？
-**A**: ratio_list在有多个数据源的情况下使用，ratio_list中的每个值是每个epoch从对应数据源采样数据的比例。如ratio_list=[0.3,0.2],label_file_list=['data1','data2'],代表每个epoch从data1里采样30%，data2里采样20%数据构成训练集。并且ratio_list和label_file_list的长度必须一致。
+**A**: 在动态图中，ratio_list在有多个数据源的情况下使用，ratio_list中的每个值是每个epoch从对应数据源采样数据的比例。如ratio_list=[0.3,0.2]，label_file_list=['data1','data2'],代表每个epoch的训练数据包含data1 30%的数据，和data2里 20%的数据，ratio_list中数值的和不需要等于1。ratio_list和label_file_list的长度必须一致。
+
+静态图检测数据采样的逻辑与动态图不同，但基本不影响训练精度。
+
+在静态图中，使用 检测 dataloader读取数据时，会先设置每个epoch的数据量，比如这里设置为1000，ratio_list中的值表示在1000中的占比，比如ratio_list是[0.3, 0.7]，则表示使用两个数据源，每个epoch从第一个数据源采样1000*0.3=300张图，从第二个数据源采样700张图。ratio_list的值的和也不需要等于1。
 
 
 #### Q3.1.65: 支持动态图模型的android和ios demo什么时候上线？
@@ -640,7 +644,11 @@ repo中config.yml文件的前后处理参数和inference预测默认的超参数
 **A**: pgnet是端到端算法，检测识别一步到位，不用分开训练2个模型，也支持弯曲文本的识别，但是在中文上的效果还没有充分验证；db+crnn的验证更充分，应用相对成熟，常规非弯曲的文本都能解的不错。
 
 #### Q3.1.64: config yml文件中的ratio_list参数的作用是什么？
-**A**: ratio_list在有多个数据源的情况下使用，ratio_list中的每个值是每个epoch从对应数据源采样数据的比例。如ratio_list=[0.3,0.2],label_file_list=['data1','data2'],代表每个epoch从data1里采样30%，data2里采样20%数据构成训练集。并且ratio_list和label_file_list的长度必须一致。
+**A**: 在动态图中，ratio_list在有多个数据源的情况下使用，ratio_list中的每个值是每个epoch从对应数据源采样数据的比例。如ratio_list=[0.3,0.2]，label_file_list=['data1','data2'],代表每个epoch的训练数据包含data1 30%的数据，和data2里 20%的数据，ratio_list中数值的和不需要等于1。ratio_list和label_file_list的长度必须一致。
+
+静态图检测数据采样的逻辑与动态图不同，但基本不影响训练精度。
+
+在静态图中，使用 检测 dataloader读取数据时，会先设置每个epoch的数据量，比如这里设置为1000，ratio_list中的值表示在1000中的占比，比如ratio_list是[0.3, 0.7]，则表示使用两个数据源，每个epoch从第一个数据源采样1000*0.3=300张图，从第二个数据源采样700张图。ratio_list的值的和也不需要等于1。
 
 #### Q3.1.65: 支持动态图模型的android和ios demo什么时候上线？？
 **A**:  支持动态图模型的android demo已经合入dygraph分支，欢迎试用（https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/deploy/android_demo/README.md）; ios demo暂时未提供动态图模型版本，可以基于静态图版本（https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/ios_demo）自行改造。
