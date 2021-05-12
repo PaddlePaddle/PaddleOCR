@@ -91,8 +91,8 @@ tar -xf paddle_inference.tgz
 Finally you can see the following files in the folder of `paddle_inference/`.
 
 #### 1.2.2 Compile from the source code
-* If you want to get the latest Paddle inference library features, you can download the latest code from Paddle github repository and compile the inference library from the source code.
-* You can refer to [Paddle inference library] (https://www.paddlepaddle.org.cn/documentation/docs/en/develop/guides/05_inference_deployment/inference/build_and_install_lib_en.html) to get the Paddle source code from github, and then compile To generate the latest inference library. The method of using git to access the code is as follows.
+* If you want to get the latest Paddle inference library features, you can download the latest code from Paddle github repository and compile the inference library from the source code. It is recommended to download the inference library with paddle version greater than or equal to 2.0.1.
+* You can refer to [Paddle inference library] (https://www.paddlepaddle.org.cn/documentation/docs/en/advanced_guide/inference_deployment/inference/build_and_install_lib_en.html) to get the Paddle source code from github, and then compile To generate the latest inference library. The method of using git to access the code is as follows.
 
 
 ```shell
@@ -217,6 +217,7 @@ max_side_len  960 #  Limit the maximum image height and width to 960
 det_db_thresh  0.3 # Used to filter the binarized image of DB prediction, setting 0.-0.3 has no obvious effect on the result
 det_db_box_thresh  0.5 # DDB post-processing filter box threshold, if there is a missing box detected, it can be reduced as appropriate
 det_db_unclip_ratio  1.6 # Indicates the compactness of the text box, the smaller the value, the closer the text box to the text
+use_polygon_score 1 # Whether to use polygon box to calculate bbox score, 0 means to use rectangle box to calculate. Use rectangular box to calculate faster, and polygonal box more accurate for curved text area.
 det_model_dir  ./inference/det_db # Address of detection inference model
 
 # cls config
@@ -238,7 +239,7 @@ visualize 1 # Whether to visualize the results，when it is set as 1, The predic
 The detection results will be shown on the screen, which is as follows.
 
 <div align="center">
-    <img src="../imgs/cpp_infer_pred_12.png" width="600">
+    <img src="./imgs/cpp_infer_pred_12.png" width="600">
 </div>
 
 

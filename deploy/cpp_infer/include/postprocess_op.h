@@ -51,10 +51,12 @@ public:
                                                float &ssid);
 
   float BoxScoreFast(std::vector<std::vector<float>> box_array, cv::Mat pred);
+  float PolygonScoreAcc(std::vector<cv::Point> contour, cv::Mat pred);
 
   std::vector<std::vector<std::vector<int>>>
   BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
-                  const float &box_thresh, const float &det_db_unclip_ratio);
+                  const float &box_thresh, const float &det_db_unclip_ratio,
+                  const bool &use_polygon_score);
 
   std::vector<std::vector<std::vector<int>>>
   FilterTagDetRes(std::vector<std::vector<std::vector<int>>> boxes,

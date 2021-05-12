@@ -74,9 +74,10 @@ opencv3/
 
 * 有2种方式获取Paddle预测库，下面进行详细介绍。
 
+
 #### 1.2.1 直接下载安装
 
-* [Paddle预测库官网](https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/guides/05_inference_deployment/inference/build_and_install_lib_cn.html)上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本。
+* [Paddle预测库官网](https://www.paddlepaddle.org.cn/documentation/docs/zh/advanced_guide/inference_deployment/inference/build_and_install_lib_cn.html)上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本（*建议选择paddle版本>=2.0.1版本的预测库* ）。
 
 * 下载之后使用下面的方法解压。
 
@@ -128,8 +129,6 @@ build/paddle_inference_install_dir/
 ```
 
 其中`paddle`就是C++预测所需的Paddle库，`version.txt`中包含当前预测库的版本信息。
-
-
 
 
 ## 2 开始运行
@@ -184,7 +183,7 @@ cmake .. \
 make -j
 ```
 
-`OPENCV_DIR`为opencv编译安装的地址；`LIB_DIR`为下载(`paddle_inference`文件夹)或者编译生成的Paddle预测库地址(`build/paddle_inference_install_dir`文件夹)；`CUDA_LIB_DIR`为cuda库文件地址，在docker中；为`/usr/local/cuda/lib64`；`CUDNN_LIB_DIR`为cudnn库文件地址，在docker中为`/usr/lib/x86_64-linux-gnu/`。
+`OPENCV_DIR`为opencv编译安装的地址；`LIB_DIR`为下载(`paddle_inference`文件夹)或者编译生成的Paddle预测库地址(`build/paddle_inference_install_dir`文件夹)；`CUDA_LIB_DIR`为cuda库文件地址，在docker中为`/usr/local/cuda/lib64`；`CUDNN_LIB_DIR`为cudnn库文件地址，在docker中为`/usr/lib/x86_64-linux-gnu/`。
 
 
 * 编译完成之后，会在`build`文件夹下生成一个名为`ocr_system`的可执行文件。
@@ -212,6 +211,7 @@ max_side_len  960 # 输入图像长宽大于960时，等比例缩放图像，使
 det_db_thresh  0.3 # 用于过滤DB预测的二值化图像，设置为0.-0.3对结果影响不明显
 det_db_box_thresh  0.5 # DB后处理过滤box的阈值，如果检测存在漏框情况，可酌情减小
 det_db_unclip_ratio  1.6 # 表示文本框的紧致程度，越小则文本框更靠近文本
+use_polygon_score 1 # 是否使用多边形框计算bbox score，0表示使用矩形框计算。矩形框计算速度更快，多边形框对弯曲文本区域计算更准确。
 det_model_dir  ./inference/det_db # 检测模型inference model地址
 
 # cls config
@@ -232,7 +232,7 @@ visualize 1 # 是否对结果进行可视化，为1时，会在当前文件夹�
 最终屏幕上会输出检测结果如下。
 
 <div align="center">
-    <img src="../imgs/cpp_infer_pred_12.png" width="600">
+    <img src="./imgs/cpp_infer_pred_12.png" width="600">
 </div>
 
 

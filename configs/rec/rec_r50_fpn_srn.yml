@@ -20,6 +20,7 @@ Global:
   num_heads: 8
   infer_mode: False
   use_space_char: False
+  save_res_path: ./output/rec/predicts_srn.txt
 
 
 Optimizer:
