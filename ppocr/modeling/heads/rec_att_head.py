@@ -23,7 +23,7 @@ import numpy as np
 
 
 class AttentionHead(nn.Layer):
-    def __init__(self, in_channels, out_channels, hidden_size, **kwargs):
+    def __init__(self, in_channels, out_channels, hidden_size, steps, **kwargs):
         super(AttentionHead, self).__init__()
         self.input_size = in_channels
         self.hidden_size = hidden_size
@@ -32,14 +32,15 @@ class AttentionHead(nn.Layer):
         self.attention_cell = AttentionGRUCell(
             in_channels, hidden_size, out_channels, use_gru=False)
         self.generator = nn.Linear(hidden_size, out_channels)
+        self.steps = steps
 
     def _char_to_onehot(self, input_char, onehot_dim):
         input_ont_hot = F.one_hot(input_char, onehot_dim)
         return input_ont_hot
 
-    def forward(self, inputs, targets=None, batch_max_length=25):
+    def forward(self, inputs, targets=None):
         batch_size = paddle.shape(inputs)[0]
-        num_steps = batch_max_length
+        num_steps = self.steps
 
         hidden = paddle.zeros((batch_size, self.hidden_size))
         output_hiddens = []

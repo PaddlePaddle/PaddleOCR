@@ -31,8 +31,8 @@ def build_head(config):
     from .cls_head import ClsHead
     support_dict = [
         'DBHead', 'EASTHead', 'SASTHead', 'CTCHead', 'ClsHead', 'AttentionHead',
-        'SRNHead', 'PGHead']
-
+        'SRNHead', 'PGHead'
+    ]
 
     module_name = config.pop('name')
     assert module_name in support_dict, Exception('head only support {}'.format(

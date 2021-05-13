@@ -51,7 +51,7 @@ Architecture:
   Head:
     name: AttentionHead  
     hidden_size: 96
-    
+    steps: 25
 
 Loss:
   name: AttentionLoss

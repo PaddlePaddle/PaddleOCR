@@ -36,4 +36,7 @@ class AttentionLoss(nn.Layer):
         inputs = paddle.reshape(predicts, [-1, predicts.shape[-1]])
         targets = paddle.reshape(targets, [-1])
 
+        assert targets.shape[0] == inputs.shape[
+            0], "The first dim of targets and inputs should be same."
+
         return {'loss': paddle.sum(self.loss_func(inputs, targets))}
