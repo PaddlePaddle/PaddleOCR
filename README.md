@@ -43,7 +43,7 @@ The above pictures are the visualizations of the general ppocr_server model. For
 - Scan the QR code below with your Wechat, you can access to official technical exchange group. Look forward to your participation.
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.0/doc/joinus.PNG"  width = "200" height = "200" />
+<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "200" height = "200" />
 </div>
 
 
