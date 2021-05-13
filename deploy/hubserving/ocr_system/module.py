@@ -105,7 +105,7 @@ class OCRSystem(hub.Module):
                 all_results.append([])
                 continue
             starttime = time.time()
-            dt_boxes, rec_res = self.text_sys(img)
+            dt_boxes, rec_res, cls_res = self.text_sys(img)
             elapse = time.time() - starttime
             logger.info("Predict time: {}".format(elapse))
 
@@ -114,8 +114,10 @@ class OCRSystem(hub.Module):
 
             for dno in range(dt_num):
                 text, score = rec_res[dno]
+                angle, ang_score = cls_res[dno]
                 rec_res_final.append({
                     'text': text,
+                    'angle': angle,
                     'confidence': float(score),
                     'text_region': dt_boxes[dno].astype(np.int).tolist()
                 })
@@ -134,6 +136,7 @@ class OCRSystem(hub.Module):
 
 if __name__ == '__main__':
     ocr = OCRSystem()
+    ocr._initialize(use_gpu=True)
     image_path = [
         './doc/imgs/11.jpg',
         './doc/imgs/12.jpg',
