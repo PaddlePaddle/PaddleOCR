@@ -1,15 +1,15 @@
 
-# Quick start of Chinese OCR model
+# Quick Start of Chinese OCR Model
 
-## 1. Prepare for the environment
+## 1. Environment Preparation
 
 Please refer to [quick installation](./installation_en.md) to configure the PaddleOCR operating environment.
 
-* Note: Support the use of PaddleOCR through whl package installation，pelease refer  [PaddleOCR Package](./whl_en.md).
+* Note: Support the use of PaddleOCR through whl package installation，please refer  [PaddleOCR Package](./whl_en.md).
 
-## 2.inference models
+## 2. Inference Models
 
-The detection and recognition models on the mobile and server sides are as follows. For more models  (including multiple languages), please refer to [PP-OCR v2.0 series model list](../doc_ch/models_list.md)
+The detection and recognition models on the mobile and server sides are as follows. For more models  (including multiple languages), please refer to [PP-OCR v2.0 series model list](../doc_en/models_list.md)
 
 | Model introduction     | Model name      | Recommended scene          | Detection model | Direction Classifier | Recognition model |
 | ------------ | --------------- | ----------------|---- | ---------- | -------- |
@@ -62,9 +62,9 @@ After decompression, the file structure should be as follows:
     └── inference.pdmodel
 ```
 
-## 3. Single image or image set prediction
+## 3. Single Image or Image Set Prediction
 
-* The following code implements text detection、angle class and recognition process. When performing prediction, you need to specify the path of a single image or image set through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to detect the inference model, the parameter `rec_model_dir` specifies the path to identify the inference model, the parameter `use_angle_cls` specifies whether to use the direction classifier, the parameter `cls_model_dir` specifies the path to identify the direction classifier model, the parameter `use_space_char` specifies whether to predict the space char. The visual results are saved to the `./inference_results` folder by default.
+* The following code implements text detection、angle class and recognition process. When performing prediction, you need to specify the path of a single image or image set through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to the detection inference model, the parameter `rec_model_dir` specifies the path to the recognition inference model, the parameter `use_angle_cls` specifies whether to use the direction classifier, the parameter `cls_model_dir` specifies the path to the direction classifier model, the parameter `use_space_char` specifies whether to predict the space char. The visual results are saved to the `./inference_results` folder by default.
 
 
 
@@ -93,8 +93,7 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_mode
     - If you want to use the recognition model which does not support space char recognition, please update the source code to the latest version and add parameters `--use_space_char=False`.
     - If you do not want to use direction classifier, please update the source code to the latest version and add parameters `--use_angle_cls=False`.
 
-
-For more text detection and recognition tandem reasoning, please refer to the document tutorial
+For more text detection and recognition tandem inferring, please refer to the document tutorial
 : [Inference with Python inference engine](./inference_en.md)。
 
 In addition, the tutorial also provides other deployment methods for the Chinese OCR model:
