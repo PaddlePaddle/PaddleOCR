@@ -48,28 +48,24 @@ class DetOp(Op):
     def preprocess(self, input_dicts, data_id, log_id):
         (_, input_dict), = input_dicts.items()
         data = base64.b64decode(input_dict["image"].encode('utf8'))
+        self.raw_im = data
         data = np.fromstring(data, np.uint8)
         # Note: class variables(self.var) can only be used in process op mode
         im = cv2.imdecode(data, cv2.IMREAD_COLOR)
-        self.im = im
         self.ori_h, self.ori_w, _ = im.shape
-
-        det_img = self.det_preprocess(self.im)
+        det_img = self.det_preprocess(im)
         _, self.new_h, self.new_w = det_img.shape
-        print("det image shape", det_img.shape)
         return {"x": det_img[np.newaxis, :].copy()}, False, None, ""
 
     def postprocess(self, input_dicts, fetch_dict, log_id):
-        print("input_dicts: ", input_dicts)
         det_out = fetch_dict["save_infer_model/scale_0.tmp_1"]
         ratio_list = [
             float(self.new_h) / self.ori_h, float(self.new_w) / self.ori_w
         ]
         dt_boxes_list = self.post_func(det_out, [ratio_list])
         dt_boxes = self.filter_func(dt_boxes_list[0], [self.ori_h, self.ori_w])
-        out_dict = {"dt_boxes": dt_boxes, "image": self.im}
+        out_dict = {"dt_boxes": dt_boxes, "image": self.raw_im}
 
-        print("out dict", out_dict["dt_boxes"])
         return out_dict, None, ""
 
 
@@ -83,35 +79,75 @@ class RecOp(Op):
 
     def preprocess(self, input_dicts, data_id, log_id):
         (_, input_dict), = input_dicts.items()
-        im = input_dict["image"]
+        raw_im = input_dict["image"]
+        data = np.frombuffer(raw_im, np.uint8)
+        im = cv2.imdecode(data, cv2.IMREAD_COLOR)
         dt_boxes = input_dict["dt_boxes"]
         dt_boxes = self.sorted_boxes(dt_boxes)
         feed_list = []
         img_list = []
         max_wh_ratio = 0
-        for i, dtbox in enumerate(dt_boxes):
-            boximg = self.get_rotate_crop_image(im, dt_boxes[i])
-            img_list.append(boximg)
-            h, w = boximg.shape[0:2]
-            wh_ratio = w * 1.0 / h
-            max_wh_ratio = max(max_wh_ratio, wh_ratio)
-        _, w, h = self.ocr_reader.resize_norm_img(img_list[0],
-                                                  max_wh_ratio).shape
+        ## Many mini-batchs, the type of feed_data is list.
+        max_batch_size = 6  # len(dt_boxes)
 
-        imgs = np.zeros((len(img_list), 3, w, h)).astype('float32')
-        for id, img in enumerate(img_list):
-            norm_img = self.ocr_reader.resize_norm_img(img, max_wh_ratio)
-            imgs[id] = norm_img
-        print("rec image shape", imgs.shape)
-        feed = {"x": imgs.copy()}
-        return feed, False, None, ""
+        # If max_batch_size is 0, skipping predict stage
+        if max_batch_size == 0:
+            return {}, True, None, ""
+        boxes_size = len(dt_boxes)
+        batch_size = boxes_size // max_batch_size
+        rem = boxes_size % max_batch_size
+        for bt_idx in range(0, batch_size + 1):
+            imgs = None
+            boxes_num_in_one_batch = 0
+            if bt_idx == batch_size:
+                if rem == 0:
+                    continue
+                else:
+                    boxes_num_in_one_batch = rem
+            elif bt_idx < batch_size:
+                boxes_num_in_one_batch = max_batch_size
+            else:
+                _LOGGER.error("batch_size error, bt_idx={}, batch_size={}".
+                              format(bt_idx, batch_size))
+                break
 
-    def postprocess(self, input_dicts, fetch_dict, log_id):
-        rec_res = self.ocr_reader.postprocess(fetch_dict, with_score=True)
-        res_lst = []
-        for res in rec_res:
-            res_lst.append(res[0])
-        res = {"res": str(res_lst)}
+            start = bt_idx * max_batch_size
+            end = start + boxes_num_in_one_batch
+            img_list = []
+            for box_idx in range(start, end):
+                boximg = self.get_rotate_crop_image(im, dt_boxes[box_idx])
+                img_list.append(boximg)
+                h, w = boximg.shape[0:2]
+                wh_ratio = w * 1.0 / h
+                max_wh_ratio = max(max_wh_ratio, wh_ratio)
+            _, w, h = self.ocr_reader.resize_norm_img(img_list[0],
+                                                      max_wh_ratio).shape
+
+            imgs = np.zeros((boxes_num_in_one_batch, 3, w, h)).astype('float32')
+            for id, img in enumerate(img_list):
+                norm_img = self.ocr_reader.resize_norm_img(img, max_wh_ratio)
+                imgs[id] = norm_img
+            feed = {"x": imgs.copy()}
+            feed_list.append(feed)
+
+        return feed_list, False, None, ""
+
+    def postprocess(self, input_dicts, fetch_data, log_id):
+        res_list = []
+        if isinstance(fetch_data, dict):
+            if len(fetch_data) > 0:
+                rec_batch_res = self.ocr_reader.postprocess(
+                    fetch_data, with_score=True)
+                for res in rec_batch_res:
+                    res_list.append(res[0])
+        elif isinstance(fetch_data, list):
+            for one_batch in fetch_data:
+                one_batch_res = self.ocr_reader.postprocess(
+                    one_batch, with_score=True)
+                for res in one_batch_res:
+                    res_list.append(res[0])
+
+        res = {"res": str(res_list)}
         return res, None, ""
 
 
