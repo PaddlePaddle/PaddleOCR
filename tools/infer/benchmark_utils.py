@@ -29,19 +29,32 @@ LOG_PATH_ROOT = f"{CUR_DIR}/../../tools/output"
 class PaddleInferBenchmark(object):
     def __init__(self,
                  config,
-                 model_info: dict,
-                 data_info: dict,
-                 perf_info: dict,
-                 mem_info: dict,
+                 model_info: dict = {},
+                 data_info: dict = {},
+                 perf_info: dict = {},
+                 resource_info: dict = {},
                  **kwargs):
         """
         Construct PaddleInferBenchmark Class to format logs.
         args:
             config(paddle.inference.Config): paddle inference config
             model_info(dict): basic model info
+                {'model_name': 'resnet50'
+                 'precision': 'fp32'}
             data_info(dict): input data info
-            perf_info(dict): speed performance
-            mem_info(dict): cpu and gpu resources
+                {'batch_size': 1
+                 'shape': '3,224,224'
+                 'data_num': 1000}
+            perf_info(dict): performance result
+                {'preprocess_time_s': 1.0
+                'inference_time_s': 2.0
+                'postprocess_time_s': 1.0
+                'total_time_s': 4.0}
+            resource_info(dict): 
+                cpu and gpu resources
+                {'cpu_rss': 100
+                 'gpu_rss': 100
+                 'gpu_util': 60}
         """
         # PaddleInferBenchmark Log Version
         self.log_version = 1.0
@@ -54,36 +67,42 @@ class PaddleInferBenchmark(object):
 
         # model info
         self.model_info = model_info
-        self.model_name = model_info['model_name']
-        self.precision = model_info['precision']
 
         # data info
         self.data_info = data_info
-        self.batch_size = data_info['batch_size']
-        self.shape = data_info['shape']
-        self.data_num = data_info['data_num']
+
+        # perf info
+        self.perf_info = perf_info
+
+        try:
+            self.model_name = model_info['model_name']
+            self.precision = model_info['precision']
+
+            self.batch_size = data_info['batch_size']
+            self.shape = data_info['shape']
+            self.data_num = data_info['data_num']
+
+            self.preprocess_time_s = round(perf_info['preprocess_time_s'], 4)
+            self.inference_time_s = round(perf_info['inference_time_s'], 4)
+            self.postprocess_time_s = round(perf_info['postprocess_time_s'], 4)
+            self.total_time_s = round(perf_info['total_time_s'], 4)
+        except:
+            self.print_help()
+            raise ValueError("Set argument wrong, please check input argument and its type")
 
         # conf info
         self.config_status = self.parse_config(config)
 
-        # perf info
-        self.perf_info = perf_info
-        self.preprocess_time = round(perf_info['preprocess_time'], 4)
-        self.inference_time = round(perf_info['inference_time'], 4)
-        self.postprocess_time = round(perf_info['postprocess_time'], 4)
-        self.total_time = round(perf_info['total_time'], 4)
-
         # mem info
-        self.mem_info = mem_info
-        if mem_info:
-            self.cpu_rss = int(mem_info['cpu_rss'])
-            self.gpu_rss = int(mem_info['gpu_rss'])
-            self.gpu_util = round(mem_info['gpu_util'], 2)
+        if isinstance(resource_info, dict):
+            self.cpu_rss_mb = int(resource_info.get('cpu_rss_mb', 0))
+            self.gpu_rss_mb = int(resource_info.get('gpu_rss_mb', 0))
+            self.gpu_util = round(resource_info.get('gpu_util', 0), 2)
         else:
-            self.cpu_rss = None
-            self.gpu_rss = None
-            self.gpu_util = None
-
+            self.cpu_rss_mb = 0
+            self.gpu_rss_mb = 0
+            self.gpu_util = 0
+        
         # init benchmark logger
         self.benchmark_logger()
 
@@ -143,7 +162,7 @@ class PaddleInferBenchmark(object):
         self.logger.info(f"{identifier} paddle_version: {self.paddle_version}")
         self.logger.info(f"{identifier} paddle_commit: {self.paddle_commit}")
         self.logger.info(f"{identifier} paddle_branch: {self.paddle_branch}")
-        self.logger.info(f"{identifier} log_style_version: {self.log_version}")
+        self.logger.info(f"{identifier} log_api_version: {self.log_version}")
         self.logger.info(
             "----------------------- Conf info -----------------------")
         self.logger.info(
@@ -155,7 +174,6 @@ class PaddleInferBenchmark(object):
         self.logger.info(
             f"{identifier} enable_tensorrt: {self.config_status['enable_tensorrt']}"
         )
-        self.logger.info(f"{identifier} precision: {self.precision}")
         self.logger.info(
             f"{identifier} enable_mkldnn: {self.config_status['enable_mkldnn']}")
         self.logger.info(
@@ -164,6 +182,7 @@ class PaddleInferBenchmark(object):
         self.logger.info(
             "----------------------- Model info ----------------------")
         self.logger.info(f"{identifier} model_name: {self.model_name}")
+        self.logger.info(f"{identifier} precision: {self.precision}")
         self.logger.info(
             "----------------------- Data info -----------------------")
         self.logger.info(f"{identifier} batch_size: {self.batch_size}")
@@ -172,21 +191,34 @@ class PaddleInferBenchmark(object):
         self.logger.info(
             "----------------------- Perf info -----------------------")
         self.logger.info(
-            f"{identifier} cpu_rss(MB): {self.cpu_rss}, gpu_rss(MB): {self.gpu_rss}, gpu_util: {self.gpu_util}%"
+            f"{identifier} cpu_rss(MB): {self.cpu_rss_mb}, gpu_rss(MB): {self.gpu_rss_mb}, gpu_util: {self.gpu_util}%"
         )
-        self.logger.info(f"{identifier} total time spent(s): {self.total_time}")
+        self.logger.info(f"{identifier} total time spent(s): {self.total_time_s}")
         self.logger.info(
-            f"{identifier} preproce_time(ms): {round(self.preprocess_time*1000, 1)}, inference_time(ms): {round(self.inference_time*1000, 1)}, postprocess_time(ms): {round(self.postprocess_time*1000, 1)}"
+            f"{identifier} preproce_time(ms): {round(self.preprocess_time_s*1000, 1)}, inference_time(ms): {round(self.inference_time_s*1000, 1)}, postprocess_time(ms): {round(self.postprocess_time_s*1000, 1)}"
         )
 
     def print_help(self):
         """
         print function help
         """
-        self.logger.info("""Usage: 
-            Print inference benchmark logs.
-            log = PaddleInferBenchmark(config, model_name, batch_size, shape, precision, times, mem_info)
-            log()
+        print("""Usage: 
+            ==== Print inference benchmark logs. ====
+            config = paddle.inference.Config()
+            model_info = {'model_name': 'resnet50'
+                          'precision': 'fp32'}
+            data_info = {'batch_size': 1
+                         'shape': '3,224,224'
+                         'data_num': 1000}
+            perf_info = {'preprocess_time_s': 1.0
+                         'inference_time_s': 2.0
+                         'postprocess_time_s': 1.0
+                         'total_time_s': 4.0}
+            resource_info = {'cpu_rss_mb': 100
+                             'gpu_rss_mb': 100
+                             'gpu_util': 60}
+            log = PaddleInferBenchmark(config, model_info, data_info, perf_info, resource_info)
+            log('Test')
             """)
 
     def __call__(self, identifier=None):

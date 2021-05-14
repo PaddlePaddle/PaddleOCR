@@ -295,8 +295,8 @@ def main(args):
                                                rec_res[ino]))
     if args.benchmark:
         mems = {
-            'cpu_rss': cpu_mem / count,
-            'gpu_rss': gpu_mem / count,
+            'cpu_rss_mb': cpu_mem / count,
+            'gpu_rss_mb': gpu_mem / count,
             'gpu_util': gpu_util * 100 / count
         }
     else:
@@ -316,10 +316,10 @@ def main(args):
         'data_num': rec_time_dict['img_num']
     }
     perf_info = {
-        'preprocess_time': rec_time_dict['preprocess_time'],
-        'inference_time': rec_time_dict['inference_time'],
-        'postprocess_time': rec_time_dict['postprocess_time'],
-        'total_time': rec_time_dict['total_time']
+        'preprocess_time_s': rec_time_dict['preprocess_time'],
+        'inference_time_s': rec_time_dict['inference_time'],
+        'postprocess_time_s': rec_time_dict['postprocess_time'],
+        'total_time_s': rec_time_dict['total_time']
     }
     benchmark_log = benchmark_utils.PaddleInferBenchmark(
         text_recognizer.config, model_info, data_info, perf_info, mems)
