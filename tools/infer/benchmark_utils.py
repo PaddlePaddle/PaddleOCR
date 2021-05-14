@@ -195,7 +195,7 @@ class PaddleInferBenchmark(object):
         )
         self.logger.info(f"{identifier} total time spent(s): {self.total_time_s}")
         self.logger.info(
-            f"{identifier} preproce_time(ms): {round(self.preprocess_time_s*1000, 1)}, inference_time(ms): {round(self.inference_time_s*1000, 1)}, postprocess_time(ms): {round(self.postprocess_time_s*1000, 1)}"
+            f"{identifier} preprocess_time(ms): {round(self.preprocess_time_s*1000, 1)}, inference_time(ms): {round(self.inference_time_s*1000, 1)}, postprocess_time(ms): {round(self.postprocess_time_s*1000, 1)}"
         )
 
     def print_help(self):
