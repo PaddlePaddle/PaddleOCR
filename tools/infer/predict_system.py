@@ -226,10 +226,46 @@ def main(args):
     #         det_time_dict[k] += rec_time_dict[k]
     det_model_name = args.det_model_dir
     rec_model_name = args.rec_model_dir
-    det_logger = utility.LoggerHelper(args, det_time_dict, det_model_name, mems)
-    rec_logger = utility.LoggerHelper(args, rec_time_dict, rec_model_name, mems)
-    det_logger.report("Det")
-    rec_logger.report("Rec")
+
+    # construct log information
+    model_info = {
+        'model_name': args.det_model_dir.split('/')[-1],
+        'precision': args.precision
+    }
+    data_info = {
+        'batch_size': 1,
+        'shape': 'dynamic_shape',
+        'data_num': det_time_dict['img_num']
+    }
+    perf_info = {
+        'preprocess_time': det_time_dict['preprocess_time'],
+        'inference_time': det_time_dict['inference_time'],
+        'postprocess_time': det_time_dict['postprocess_time'],
+        'total_time': det_time_dict['total_time']
+    }
+    benchmark_log = benchmark_utils.PaddleInferBenchmark(
+        text_detector.config, model_info, data_info, perf_info, mems)
+    benchmark_log("Det")
+
+    # construct log information
+    model_info = {
+        'model_name': args.rec_model_dir.split('/')[-1],
+        'precision': args.precision
+    }
+    data_info = {
+        'batch_size': args.rec_batch_num,
+        'shape': 'dynamic_shape',
+        'data_num': rec_time_dict['img_num']
+    }
+    perf_info = {
+        'preprocess_time': rec_time_dict['preprocess_time'],
+        'inference_time': rec_time_dict['inference_time'],
+        'postprocess_time': rec_time_dict['postprocess_time'],
+        'total_time': rec_time_dict['total_time']
+    }
+    benchmark_log = benchmark_utils.PaddleInferBenchmark(
+        text_recognizer.config, model_info, data_info, perf_info, mems)
+    benchmark_log("Rec")
 
 
 if __name__ == "__main__":

@@ -62,7 +62,7 @@ class TextRecognizer(object):
                 "use_space_char": args.use_space_char
             }
         self.postprocess_op = build_post_process(postprocess_params)
-        self.predictor, self.input_tensor, self.output_tensors = \
+        self.predictor, self.input_tensor, self.output_tensors, self.config = \
             utility.create_predictor(args, 'rec', logger)
 
         self.rec_times = utility.Timer()
@@ -304,8 +304,26 @@ def main(args):
     logger.info("The predict time about recognizer module is as follows: ")
     rec_time_dict = text_recognizer.rec_times.report(average=True)
     rec_model_name = args.rec_model_dir
-    rec_logger = utility.LoggerHelper(args, rec_time_dict, rec_model_name, mems)
-    rec_logger.report("Rec")
+
+    # construct log information
+    model_info = {
+        'model_name': args.rec_model_dir.split('/')[-1],
+        'precision': args.precision
+    }
+    data_info = {
+        'batch_size': args.rec_batch_num,
+        'shape': 'dynamic_shape',
+        'data_num': rec_time_dict['img_num']
+    }
+    perf_info = {
+        'preprocess_time': rec_time_dict['preprocess_time'],
+        'inference_time': rec_time_dict['inference_time'],
+        'postprocess_time': rec_time_dict['postprocess_time'],
+        'total_time': rec_time_dict['total_time']
+    }
+    benchmark_log = benchmark_utils.PaddleInferBenchmark(
+        text_recognizer.config, model_info, data_info, perf_info, mems)
+    benchmark_log("Rec")
 
 
 if __name__ == "__main__":

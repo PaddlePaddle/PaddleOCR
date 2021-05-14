@@ -310,7 +310,7 @@ def create_predictor(args, mode, logger):
     for output_name in output_names:
         output_tensor = predictor.get_output_handle(output_name)
         output_tensors.append(output_tensor)
-    return predictor, input_tensor, output_tensors
+    return predictor, input_tensor, output_tensors, config
 
 
 def draw_text_det_res(dt_boxes, img_path):
@@ -569,69 +569,6 @@ def get_current_memory_mb(gpu_id=None):
         meminfo = pynvml.nvmlDeviceGetMemoryInfo(handle)
         gpu_mem = meminfo.used / 1024. / 1024.
     return round(cpu_mem, 4), round(gpu_mem, 4), round(gpu_percent, 4)
-
-
-class LoggerHelper(object):
-    def __init__(self, args, times, model_name, mem_info=None):
-        """
-        args: utility.parse_args()
-        times: The Timer class
-        """
-        self.args = args
-        self.times = times
-        self.model_name = model_name
-        self.batch_size = 1 if "det" in model_name else args.rec_batch_num
-        self.shape = "dynamic shape"
-        self.precision = args.precision
-        if args.use_tensorrt and args.precision == "fp16":
-            self.precision = "fp16"
-
-        self.device = "gpu" if args.use_gpu else "cpu"
-        self.preprocess_time = round(times['preprocess_time'], 4)
-        self.inference_time = round(times['inference_time'], 4)
-        self.postprocess_time = round(times['postprocess_time'], 4)
-        self.data_num = times['img_num']
-        self.total_time = round(times['total_time'], 4)
-        self.mem_info = {"cpu_rss": 0, "gpu_rss": 0, "gpu_util": 0}
-        if mem_info is not None:
-            self.mem_info = mem_info
-
-    def report(self, mode=None):
-        # if mode not in ["Det", "Rec", None]:
-        #     raise ValueError("The 'mode' can only be one of ['Det', 'Rec']")
-        logger.info("\n")
-        logger.info("----------------------- Conf info -----------------------")
-        logger.info(f"runtime_device: {self.device}")
-        logger.info(f"ir_optim: {True}")
-        logger.info(f"enable_memory_optim: {True}")
-        logger.info(f"enable_tensorrt: {self.args.use_tensorrt}")
-        logger.info(f"precision: {self.precision}")
-        logger.info(f"enable_mkldnn: {self.args.enable_mkldnn}")
-        logger.info(f"cpu_math_library_num_threads: {self.args.cpu_threads}")
-
-        logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-        logger.info(
-            f"----------------------- [{mode}] Model info ----------------------"
-        )
-        logger.info(f"[{mode}] model_name: {self.model_name}")
-
-        logger.info(
-            f"----------------------- [{mode}] Data info ----------------------")
-        logger.info(f"[{mode}] batch_size: {self.batch_size}")
-        logger.info(f"[{mode}] input_shape: {self.shape}")
-
-        logger.info(
-            f"----------------------- [{mode}] Perf info -----------------------"
-        )
-        logger.info(
-            f"[{mode}] cpu_rss(MB): {int(self.mem_info['cpu_rss'])}  gpu_rss(MB): {int(self.mem_info['gpu_rss'])}  gpu_util: {round(self.mem_info['gpu_util'], 1)}%"
-        )
-        logger.info(
-            f"[{mode}] total number of predicted data: {self.data_num} and total time spent(s): {self.total_time}"
-        )
-        logger.info(
-            f"[{mode}] preproce_time(ms): {round(self.preprocess_time*1000, 1)}  inference_time(ms): {round(self.inference_time*1000, 1)}  postprocess_time(ms): {round(self.postprocess_time*1000, 1)}"
-        )
 
 
 if __name__ == '__main__':
