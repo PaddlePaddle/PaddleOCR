@@ -1,0 +1,114 @@
+Global:
+  use_gpu: True
+  epoch_num: 600
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: ./output/pgnet_r50_vd_totaltext/
+  save_epoch_step: 10
+  # evaluation is run every 0 iterationss after the 1000th iteration
+  eval_batch_step: [ 0, 1000 ]
+  cal_metric_during_train: False
+  pretrained_model:
+  checkpoints:
+  save_inference_dir:
+  use_visualdl: False
+  infer_img:
+  valid_set: totaltext # two mode: totaltext valid curved words, partvgg valid non-curved words
+  save_res_path: ./output/pgnet_r50_vd_totaltext/predicts_pgnet.txt
+  character_dict_path: ppocr/utils/ic15_dict.txt
+  character_type: EN
+  max_text_length: 50 # the max length in seq
+  max_text_nums: 30 # the max seq nums in a pic
+  tcl_len: 64
+
+Architecture:
+  model_type: e2e
+  algorithm: PGNet
+  Transform:
+  Backbone:
+    name: ResNet
+    layers: 50
+  Neck:
+    name: PGFPN
+  Head:
+    name: PGHead
+
+Loss:
+  name: PGLoss
+  tcl_bs: 64
+  max_text_length: 50 # the same as Global: max_text_length
+  max_text_nums: 30 # the same as Global：max_text_nums
+  pad_num: 36 # the length of dict for pad
+
+Optimizer:
+  name: Adam
+  beta1: 0.9
+  beta2: 0.999
+  lr:
+    learning_rate: 0.001
+  regularizer:
+    name: 'L2'
+    factor: 0
+
+
+PostProcess:
+  name: PGPostProcess
+  score_thresh: 0.5
+  mode: fast   # fast or slow two ways
+
+Metric:
+  name: E2EMetric
+  mode: A   # two ways for eval, A: label from txt,  B: label from gt_mat
+  gt_mat_dir:  ./train_data/total_text/gt  # the dir of gt_mat
+  character_dict_path: ppocr/utils/ic15_dict.txt
+  main_indicator: f_score_e2e
+
+Train:
+  dataset:
+    name: PGDataSet
+    data_dir: ./train_data/total_text/train
+    label_file_list: [./train_data/total_text/train/train.txt]
+    ratio_list: [1.0]
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - E2ELabelEncodeTrain:
+      - PGProcessTrain:
+          batch_size: 14  # same as loader: batch_size_per_card
+          min_crop_size: 24
+          min_text_size: 4
+          max_text_size: 512
+      - KeepKeys:
+          keep_keys: [ 'images', 'tcl_maps', 'tcl_label_maps', 'border_maps','direction_maps', 'training_masks', 'label_list', 'pos_list', 'pos_mask' ] # dataloader will return list in this order
+  loader:
+    shuffle: True
+    drop_last: True
+    batch_size_per_card: 14
+    num_workers: 16
+
+Eval:
+  dataset:
+    name: PGDataSet
+    data_dir: ./train_data/total_text/test
+    label_file_list: [./train_data/total_text/test/test.txt]
+    transforms:
+      - DecodeImage: # load image
+          img_mode: RGB
+          channel_first: False
+      - E2ELabelEncodeTest:
+      - E2EResizeForTest:
+          max_side_len: 768
+      - NormalizeImage:
+          scale: 1./255.
+          mean: [ 0.485, 0.456, 0.406 ]
+          std: [ 0.229, 0.224, 0.225 ]
+          order: 'hwc'
+      - ToCHWImage:
+      - KeepKeys:
+          keep_keys: [ 'image', 'shape', 'polys', 'texts', 'ignore_tags', 'img_id']
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 1 # must be 1
+    num_workers: 2

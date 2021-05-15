@@ -77,19 +77,10 @@ void ResizeImgType0::Run(const cv::Mat &img, cv::Mat &resize_img,
 
   int resize_h = int(float(h) * ratio);
   int resize_w = int(float(w) * ratio);
-  if (resize_h % 32 == 0)
-    resize_h = resize_h;
-  else if (resize_h / 32 < 1 + 1e-5)
-    resize_h = 32;
-  else
-    resize_h = (resize_h / 32) * 32;
+  
+  resize_h = max(int(round(float(resize_h) / 32) * 32), 32);
+  resize_w = max(int(round(float(resize_w) / 32) * 32), 32);
 
-  if (resize_w % 32 == 0)
-    resize_w = resize_w;
-  else if (resize_w / 32 < 1 + 1e-5)
-    resize_w = 32;
-  else
-    resize_w = (resize_w / 32) * 32;
   if (!use_tensorrt) {
     cv::resize(img, resize_img, cv::Size(resize_w, resize_h));
     ratio_h = float(resize_h) / float(h);
