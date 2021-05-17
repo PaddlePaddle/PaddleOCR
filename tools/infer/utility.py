@@ -187,10 +187,6 @@ def create_predictor(args, mode, logger):
 
     config = inference.Config(model_file_path, params_file_path)
 
-    assert args.precision in [
-        "fp32", "fp16", "int8"
-    ], "args.precision can only be one of ['fp32', 'fp16', 'int8']"
-
     if args.precision == "fp16" and args.use_tensorrt:
         precision = inference.PrecisionType.Half
     elif args.precision == "int8":
