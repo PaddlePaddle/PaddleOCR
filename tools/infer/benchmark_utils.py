@@ -23,7 +23,6 @@ import paddle.inference as paddle_infer
 from pathlib import Path
 
 CUR_DIR = os.path.dirname(os.path.abspath(__file__))
-LOG_PATH_ROOT = f"{CUR_DIR}/../../tools/output"
 
 
 class PaddleInferBenchmark(object):
@@ -92,7 +91,7 @@ class PaddleInferBenchmark(object):
 
         # conf info
         self.config_status = self.parse_config(config)
-
+        self.save_log_path = config.save_log_path
         # mem info
         if isinstance(resource_info, dict):
             self.cpu_rss_mb = int(resource_info.get('cpu_rss_mb', 0))
@@ -112,8 +111,8 @@ class PaddleInferBenchmark(object):
         """
         # Init logger
         FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-        log_output = f"{LOG_PATH_ROOT}/{self.model_name}.log"
-        Path(f"{LOG_PATH_ROOT}").mkdir(parents=True, exist_ok=True)
+        log_output = f"{self.save_log_path}/{self.model_name}.log"
+        Path(f"{self.save_log_path}").mkdir(parents=True, exist_ok=True)
         logging.basicConfig(
             level=logging.INFO,
             format=FORMAT,

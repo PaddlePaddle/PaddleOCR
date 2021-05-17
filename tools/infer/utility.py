@@ -91,7 +91,7 @@ def parse_args():
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
 
     parser.add_argument("--benchmark", type=bool, default=False)
-
+    parser.add_argument("--save_log_path", type=str, default="./log_output/")
     return parser.parse_args()
 
 
