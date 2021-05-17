@@ -26,6 +26,7 @@ import sys
 import time
 
 import tools.infer.utility as utility
+import tools.infer.benchmark_utils as benchmark_utils
 from ppocr.utils.logging import get_logger
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.data import create_operators, transform
@@ -257,23 +258,23 @@ if __name__ == "__main__":
     logger.info("The predict time about detection module is as follows: ")
     det_time_dict = text_detector.det_times.report(average=True)
     det_model_name = args.det_model_dir
-
-    # construct log information
-    model_info = {
-        'model_name': args.det_model_dir.split('/')[-1],
-        'precision': args.precision
-    }
-    data_info = {
-        'batch_size': 1,
-        'shape': 'dynamic_shape',
-        'data_num': det_time_dict['img_num']
-    }
-    perf_info = {
-        'preprocess_time_s': det_time_dict['preprocess_time'],
-        'inference_time_s': det_time_dict['inference_time'],
-        'postprocess_time_s': det_time_dict['postprocess_time'],
-        'total_time_s': det_time_dict['total_time']
-    }
-    benchmark_log = benchmark_utils.PaddleInferBenchmark(
-        text_detector.config, model_info, data_info, perf_info, mems)
-    benchmark_log("Det")
+    if args.benchmark:
+        # construct log information
+        model_info = {
+            'model_name': args.det_model_dir.split('/')[-1],
+            'precision': args.precision
+        }
+        data_info = {
+            'batch_size': 1,
+            'shape': 'dynamic_shape',
+            'data_num': det_time_dict['img_num']
+        }
+        perf_info = {
+            'preprocess_time_s': det_time_dict['preprocess_time'],
+            'inference_time_s': det_time_dict['inference_time'],
+            'postprocess_time_s': det_time_dict['postprocess_time'],
+            'total_time_s': det_time_dict['total_time']
+        }
+        benchmark_log = benchmark_utils.PaddleInferBenchmark(
+            text_detector.config, model_info, data_info, perf_info, mems)
+        benchmark_log("Det")

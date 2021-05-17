@@ -28,6 +28,7 @@ import traceback
 import paddle
 
 import tools.infer.utility as utility
+import tools.infer.benchmark_utils as benchmark_utils
 from ppocr.postprocess import build_post_process
 from ppocr.utils.logging import get_logger
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
@@ -305,25 +306,26 @@ def main(args):
     rec_time_dict = text_recognizer.rec_times.report(average=True)
     rec_model_name = args.rec_model_dir
 
-    # construct log information
-    model_info = {
-        'model_name': args.rec_model_dir.split('/')[-1],
-        'precision': args.precision
-    }
-    data_info = {
-        'batch_size': args.rec_batch_num,
-        'shape': 'dynamic_shape',
-        'data_num': rec_time_dict['img_num']
-    }
-    perf_info = {
-        'preprocess_time_s': rec_time_dict['preprocess_time'],
-        'inference_time_s': rec_time_dict['inference_time'],
-        'postprocess_time_s': rec_time_dict['postprocess_time'],
-        'total_time_s': rec_time_dict['total_time']
-    }
-    benchmark_log = benchmark_utils.PaddleInferBenchmark(
-        text_recognizer.config, model_info, data_info, perf_info, mems)
-    benchmark_log("Rec")
+    if args.benchmark:
+        # construct log information
+        model_info = {
+            'model_name': args.rec_model_dir.split('/')[-1],
+            'precision': args.precision
+        }
+        data_info = {
+            'batch_size': args.rec_batch_num,
+            'shape': 'dynamic_shape',
+            'data_num': rec_time_dict['img_num']
+        }
+        perf_info = {
+            'preprocess_time_s': rec_time_dict['preprocess_time'],
+            'inference_time_s': rec_time_dict['inference_time'],
+            'postprocess_time_s': rec_time_dict['postprocess_time'],
+            'total_time_s': rec_time_dict['total_time']
+        }
+        benchmark_log = benchmark_utils.PaddleInferBenchmark(
+            text_recognizer.config, model_info, data_info, perf_info, mems)
+        benchmark_log("Rec")
 
 
 if __name__ == "__main__":

@@ -203,7 +203,7 @@ def main(args):
             if not os.path.exists(draw_img_save):
                 os.makedirs(draw_img_save)
             if flag:
-               image_file = image_file[:-3] + "png" 
+                image_file = image_file[:-3] + "png"
             cv2.imwrite(
                 os.path.join(draw_img_save, os.path.basename(image_file)),
                 draw_img[:, :, ::-1])
@@ -223,9 +223,6 @@ def main(args):
         mems = None
     det_time_dict = text_sys.text_detector.det_times.report(average=True)
     rec_time_dict = text_sys.text_recognizer.rec_times.report(average=True)
-    # for k in det_time_dict:
-    #     if "time" in k :
-    #         det_time_dict[k] += rec_time_dict[k]
     det_model_name = args.det_model_dir
     rec_model_name = args.rec_model_dir
 
