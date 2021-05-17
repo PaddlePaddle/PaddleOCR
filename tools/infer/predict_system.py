@@ -202,6 +202,8 @@ def main(args):
             draw_img_save = "./inference_results/"
             if not os.path.exists(draw_img_save):
                 os.makedirs(draw_img_save)
+            if flag:
+               image_file = image_file[:-3] + "png" 
             cv2.imwrite(
                 os.path.join(draw_img_save, os.path.basename(image_file)),
                 draw_img[:, :, ::-1])
