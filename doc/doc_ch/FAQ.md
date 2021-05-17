@@ -9,34 +9,34 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2021.3.22）](#近期更新)
+* [近期更新（2021.4.6）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
-* [【理论篇】OCR通用40个问题](#OCR通用问题)
+* [【理论篇】OCR通用41个问题](#OCR通用问题)
   * [基础知识13题](#基础知识)
   * [数据集8题](#数据集2)
-  * [模型训练调优19题](#模型训练调优2)
-* [【实战篇】PaddleOCR实战143个问题](#PaddleOCR实战问题)
-  * [使用咨询54题](#使用咨询)
+  * [模型训练调优20题](#模型训练调优2)
+* [【实战篇】PaddleOCR实战147个问题](#PaddleOCR实战问题)
+  * [使用咨询56题](#使用咨询)
   * [数据集18题](#数据集3)
-  * [模型训练调优32题](#模型训练调优3)
-  * [预测部署39题](#预测部署3)
+  * [模型训练调优33题](#模型训练调优3)
+  * [预测部署40题](#预测部署3)
 
 <a name="近期更新"></a>
-## 近期更新（2021.3.22）
-#### Q2.1.13: PaddleOCR提供的文本识别算法包括哪些？
-**A**: PaddleOCR主要提供五种文本识别算法，包括CRNN\StarNet\RARAE\Rosetta和SRN, 其中CRNN\StarNet和Rosetta是基于ctc的文字识别算法，RARE是基于attention的文字识别算法；SRN为百度自研的文本识别算法，引入了语义信息，显著提升了准确率。 详情可参照如下页面：[文本识别算法](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.0/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
+## 近期更新（2021.4.6）
+#### Q3.4.40: 使用hub_serving部署，延时较高，可能的原因是什么呀？
+**A**: 首先，测试的时候第一张图延时较高，可以多测试几张然后观察后几张图的速度；其次，如果是在cpu端部署serving端模型（如backbone为ResNet34），耗时较慢，建议在cpu端部署mobile（如backbone为MobileNetV3）模型。
 
-#### Q2.2.8:  DBNet如果想使用多边形作为输入，数据标签格式应该如何设定？
-**A**：如果想使用多边形作为DBNet的输入，数据标签也应该用多边形来表示。这样子可以更好得拟合弯曲文本。PPOCRLabel暂时只支持矩形框标注和四边形框标注。
+#### Q2.3.20:  如何根据不同的硬件平台选用不同的backbone？
+**A**：在不同的硬件上，不同的backbone的速度优势不同，可以根据不同平台的速度-精度图来确定backbone，这里可以参考[PaddleClas模型速度-精度图](https://github.com/PaddlePaddle/PaddleClas/tree/release/2.0/docs/zh_CN/models)。
 
-#### Q2.3.19: 参照文档做实际项目时，是重新训练还是在官方训练的基础上进行训练？具体如何操作？
-**A**： 基于官方提供的模型，进行finetune的话，收敛会更快一些。 具体操作上，以识别模型训练为例：如果修改了字符文件，可以设置pretraind_model为官方提供的预训练模型
+#### Q3.1.55: 目前PaddleOCR有知识蒸馏的demo吗？
+**A**： 目前我们还没有提供PaddleOCR知识蒸馏的相关demo，PaddleClas开源了一个效果还不错的方案，可以移步[SSLD知识蒸馏方案](https://github.com/PaddlePaddle/PaddleClas/blob/release%2F2.0/docs/zh_CN/advanced_tutorials/distillation/distillation.md)，  paper: https://arxiv.org/abs/2103.05959  关于PaddleOCR的蒸馏，我们也会在未来支持。
 
-#### Q3.1.53: 预测时提示图像过大，显存、内存溢出了，应该如何处理？
-**A**: 可以按照这个PR的修改来缓解显存、内存占用 [#2230](https://github.com/PaddlePaddle/PaddleOCR/pull/2230)
+#### Q3.3.33: 训练识别和检测时学习率要加上warmup，目的是什么？
+**A**: Warmup机制先使学习率从一个较小的值逐步升到一个较大的值，而不是直接就使用较大的学习率，这样有助于模型的稳定收敛。在OCR检测和OCR识别中，一般会带来精度~0.5%的提升。
 
-#### Q3.1.54: 用c++来部署，目前支持Paddle2.0的模型吗？
-**A**: PPOCR 2.0的模型在arm上运行可以参照该PR [#1877](https://github.com/PaddlePaddle/PaddleOCR/pull/1877)
+#### Q3.1.56: 在使用PPOCRLabel的时候，如何标注倾斜的文字？
+**A**: 如果矩形框标注后空白冗余较多，可以尝试PPOCRLabel提供的四点标注，可以标注各种倾斜角度的文本。
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -177,7 +177,7 @@
 **A**: PubTabNet是IBM提出的基于图片格式的表格识别数据集，包含 56.8 万张表格数据的图像，以及图像对应的 html 格式的注释。该数据集的发布推动了表格结构化算法的研发和落地应用。
 
 #### Q2.1.13: PaddleOCR提供的文本识别算法包括哪些？
-**A**: PaddleOCR主要提供五种文本识别算法，包括CRNN\StarNet\RARAE\Rosetta和SRN, 其中CRNN\StarNet和Rosetta是基于ctc的文字识别算法，RARE是基于attention的文字识别算法；SRN为百度自研的文本识别算法，引入了语义信息，显著提升了准确率。 详情可参照如下页面: [文本识别算法](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.0/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
+**A**: PaddleOCR主要提供五种文本识别算法，包括CRNN\StarNet\RARE\Rosetta和SRN, 其中CRNN\StarNet和Rosetta是基于ctc的文字识别算法，RARE是基于attention的文字识别算法；SRN为百度自研的文本识别算法，引入了语义信息，显著提升了准确率。 详情可参照如下页面: [文本识别算法](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.0/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
 
 <a name="数据集2"></a>
 ### 数据集
@@ -309,6 +309,9 @@
 
 #### Q2.3.19: 参照文档做实际项目时，是重新训练还是在官方训练的基础上进行训练？具体如何操作？
 **A**： 基于官方提供的模型，进行finetune的话，收敛会更快一些。 具体操作上，以识别模型训练为例：如果修改了字符文件，可以设置pretraind_model为官方提供的预训练模型
+
+#### Q2.3.20:  如何根据不同的硬件平台选用不同的backbone？
+**A**：在不同的硬件上，不同的backbone的速度优势不同，可以根据不同平台的速度-精度图来确定backbone，这里可以参考[PaddleClas模型速度-精度图](https://github.com/PaddlePaddle/PaddleClas/tree/release/2.0/docs/zh_CN/models)。
 
 <a name="PaddleOCR实战问题"></a>
 ## 【实战篇】PaddleOCR实战问题
@@ -595,6 +598,13 @@ repo中config.yml文件的前后处理参数和inference预测默认的超参数
 #### Q3.1.54: 用c++来部署，目前支持Paddle2.0的模型吗？
 **A**: PPOCR 2.0的模型在arm上运行可以参照该PR [#1877](https://github.com/PaddlePaddle/PaddleOCR/pull/1877)
 
+#### Q3.1.55: 目前PaddleOCR有知识蒸馏的demo吗？
+**A**： 目前我们还没有提供PaddleOCR知识蒸馏的相关demo，PaddleClas开源了一个效果还不错的方案，可以移步[SSLD知识蒸馏方案](https://github.com/PaddlePaddle/PaddleClas/blob/release%2F2.0/docs/zh_CN/advanced_tutorials/distillation/distillation.md)，  paper: https://arxiv.org/abs/2103.05959  关于PaddleOCR的蒸馏，我们也会在未来支持。
+
+#### Q3.1.56: 在使用PPOCRLabel的时候，如何标注倾斜的文字？
+**A**: 如果矩形框标注后空白冗余较多，可以尝试PPOCRLabel提供的四点标注，可以标注各种倾斜角度的文本。
+
+
 <a name="数据集3"></a>
 
 ### 数据集
@@ -861,7 +871,11 @@ lr:
   warmup_epoch: 2
 ```
 
+#### Q3.3.33: 训练识别和检测时学习率要加上warmup，目的是什么？
+**A**: Warmup机制先使学习率从一个较小的值逐步升到一个较大的值，而不是直接就使用较大的学习率，这样有助于模型的稳定收敛。在OCR检测和OCR识别中，一般会带来精度~0.5%的提升。
+
 <a name="预测部署3"></a>
+
 
 ### 预测部署
 
@@ -1053,3 +1067,7 @@ nvidia-smi --lock-gpu-clocks=1590 -i 0
 #### Q3.4.39：内网环境如何进行服务化部署呢？
 
 **A**：仍然可以使用PaddleServing或者HubServing进行服务化部署，保证内网地址可以访问即可。
+
+#### Q3.4.40: 使用hub_serving部署，延时较高，可能的原因是什么呀？
+
+**A**: 首先，测试的时候第一张图延时较高，可以多测试几张然后观察后几张图的速度；其次，如果是在cpu端部署serving端模型（如backbone为ResNet34），耗时较慢，建议在cpu端部署mobile（如backbone为MobileNetV3）模型。
