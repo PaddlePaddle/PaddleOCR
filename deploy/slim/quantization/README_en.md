@@ -43,13 +43,12 @@ After the quantization strategy is defined, the model can be quantified.
 
 The code for quantization training is located in `slim/quantization/quant.py`. For example, to train a detection model, the training instructions are as follows:
 ```bash
-python deploy/slim/quantization/quant.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights='your trained model'   Global.save_model_dir=./output/quant_model
+python deploy/slim/quantization/quant.py -c configs/det/det_mv3_db.yml -o Global.pretrained_model='your trained model'   Global.save_model_dir=./output/quant_model
 
 # download provided model
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar
 tar -xf ch_ppocr_mobile_v2.0_det_train.tar
-python deploy/slim/quantization/quant.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=./ch_ppocr_mobile_v2.0_det_train/best_accuracy   Global.save_model_dir=./output/quant_model
-
+python deploy/slim/quantization/quant.py -c configs/det/det_mv3_db.yml -o Global.pretrained_model=./ch_ppocr_mobile_v2.0_det_train/best_accuracy   Global.save_model_dir=./output/quant_model
 ```
 
 
