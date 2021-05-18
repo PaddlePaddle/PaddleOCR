@@ -54,7 +54,7 @@ Enter the PaddleOCR root directory，perform sensitivity analysis on the model w
 
 ```bash
 
-python3.7 deploy/slim/prune/sensitivity_anal.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrain_weights="your trained model"
+python3.7 deploy/slim/prune/sensitivity_anal.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrained_model="your trained model"
 
 ```
 
@@ -63,7 +63,7 @@ python3.7 deploy/slim/prune/sensitivity_anal.py -c configs/det/ch_ppocr_v2.0/ch_
 
 We can export the pruned model as inference_model for deployment:
 ```bash
-python deploy/slim/prune/export_prune_model.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml  -o Global.pretrain_weights=./output/det_db/best_accuracy Global.test_batch_size_per_card=1 Global.save_inference_dir=inference_model
+python deploy/slim/prune/export_prune_model.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml  -o Global.pretrained_model=./output/det_db/best_accuracy Global.save_inference_dir=inference_model
 ```
 
 Reference for prediction and deployment of inference model:
