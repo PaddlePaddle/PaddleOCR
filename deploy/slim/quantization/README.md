@@ -57,5 +57,5 @@ python deploy/slim/quantization/export_model.py -c configs/det/det_mv3_db.yml -o
 
 ### 5. 量化模型部署
 
-上述步骤导出的量化模型，参数精度仍然是FP32，但是参数的数值范围是int8，导出的模型可以通过PaddleLite的opt模型转换工具完成模型转换。
+上述步骤导出的量化模型，参数精度仍然是FP32，表现为量化后的模型大小不变，但是参数的数值范围是int8，导出的模型可以通过PaddleLite的opt模型转换工具完成模型转换。
 量化模型部署的可参考 [移动端模型部署](../../lite/readme.md)
