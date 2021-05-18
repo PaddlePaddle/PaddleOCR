@@ -187,10 +187,13 @@ def create_predictor(args, mode, logger):
 
     config = inference.Config(model_file_path, params_file_path)
 
-    if args.precision == "fp16" and args.use_tensorrt:
-        precision = inference.PrecisionType.Half
-    elif args.precision == "int8":
-        precision = inference.PrecisionType.Int8
+    if hasattr(args, 'precision'):
+        if args.precision == "fp16" and args.use_tensorrt:
+            precision = inference.PrecisionType.Half
+        elif args.precision == "int8":
+            precision = inference.PrecisionType.Int8
+        else:
+            precision = inference.PrecisionType.Float32
     else:
         precision = inference.PrecisionType.Float32
 
