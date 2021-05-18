@@ -45,7 +45,7 @@ class TextClassifier(object):
             "label_list": args.label_list,
         }
         self.postprocess_op = build_post_process(postprocess_params)
-        self.predictor, self.input_tensor, self.output_tensors = \
+        self.predictor, self.input_tensor, self.output_tensors, _ = \
             utility.create_predictor(args, 'cls', logger)
 
         self.cls_times = utility.Timer()
