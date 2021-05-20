@@ -219,5 +219,3 @@ python3 ocr_web_client.py
 unset https_proxy
 unset http_proxy
 ```
-
-
