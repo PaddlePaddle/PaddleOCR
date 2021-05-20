@@ -9,40 +9,55 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2021.5.11）](#近期更新)
+* [近期更新（2021.5.17）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
 * [【理论篇】OCR通用43个问题](#OCR通用问题)
   * [基础知识13题](#基础知识)
   * [数据集9题](#数据集2)
   * [模型训练调优21题](#模型训练调优2)
-* [【实战篇】PaddleOCR实战165个问题](#PaddleOCR实战问题)
-  * [使用咨询65题](#使用咨询)
+* [【实战篇】PaddleOCR实战170个问题](#PaddleOCR实战问题)
+  * [使用咨询68题](#使用咨询)
   * [数据集18题](#数据集3)
   * [模型训练调优36题](#模型训练调优3)
-  * [预测部署46题](#预测部署3)
+  * [预测部署48题](#预测部署3)
 
 <a name="近期更新"></a>
-## 近期更新（2021.5.11）
+## 近期更新（2021.5.17）
 
-#### Q3.1.64: config yml文件中的ratio_list参数的作用是什么？
-**A**: 在动态图中，ratio_list在有多个数据源的情况下使用，ratio_list中的每个值是每个epoch从对应数据源采样数据的比例。如ratio_list=[0.3,0.2]，label_file_list=['data1','data2'],代表每个epoch的训练数据包含data1 30%的数据，和data2里 20%的数据，ratio_list中数值的和不需要等于1。ratio_list和label_file_list的长度必须一致。
+### Q3.1.66: iaa里面添加的数据增强方式，是每张图像训练都会做增强还是随机的？如何添加一个数据增强方法？
 
-静态图检测数据采样的逻辑与动态图不同，但基本不影响训练精度。
+**A**：iaa增强的训练配置参考：[链接](https://github.com/PaddlePaddle/PaddleOCR/blob/0ccc1720c252beb277b9e522a1b228eb6abffb8a/configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml#L82)
+其中{ 'type': Fliplr, 'args': { 'p': 0.5 } } p是概率。新增数据增强，可以参考这个[方法](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.1/doc/doc_ch/add_new_algorithm.md#%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD%E5%92%8C%E5%A4%84%E7%90%86)
 
-在静态图中，使用 检测 dataloader读取数据时，会先设置每个epoch的数据量，比如这里设置为1000，ratio_list中的值表示在1000中的占比，比如ratio_list是[0.3, 0.7]，则表示使用两个数据源，每个epoch从第一个数据源采样1000*0.3=300张图，从第二个数据源采样700张图。ratio_list的值的和也不需要等于1。
+### Q3.1.67: PGNet训练中文弯曲数据集，可视化时弯曲文本无法显示。
+
+**A**: 可能是因为安装的OpenCV里，cv2.putText不能显示中文的原因，可以尝试用Pillow来添加显示中文，需要改draw_e2e_res函数里面的代码，可以参考如下代码：
+```
+box = box.astype(np.int32).reshape((-1, 1, 2))
+cv2.polylines(src_im, [box], True, color=(255, 255, 0), thickness=2)
+
+from PIL import ImageFont, ImageDraw, Image
+img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+draw = ImageDraw.Draw(img)
+fontStyle = ImageFont.truetype(
+"font/msyh.ttc", 16, encoding="utf-8")
+draw.text((int(box[0, 0, 0]), int(box[0, 0, 1])), text, (0, 255, 0), font=fontStyle)
+
+src_im= cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
+```
+### Q3.1.68: 用PGNet做进行端到端训练时，数据集标注的点的个数必须都是统一一样的吗? 能不能随意标点数，只要能够按顺时针从左上角开始标这样?
+
+**A**: 目前代码要求标注为统一的点数。
+
+#### Q3.4.47: 请教如何优化检测阶段时长?
+
+**A**: 预测单张图会慢一点，如果批量预测，第一张图比较慢，后面就快了，因为最开始一些初始化操作比较耗时。服务部署的话，访问一次后，后面再访问就不会初始化了，推理的话每次都需要初始化的。
+
+### Q3.4.48: paddle serving 本地启动调用失败,怎么判断是否正常工作？
+
+**A**：没有打印出预测结果，说明启动失败。可以参考这篇文档重新配置下动态图的paddle serving：https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/deploy/pdserving/README_CN.md
 
 
-#### Q3.1.65: 支持动态图模型的android和ios demo什么时候上线？
-**A**: 支持动态图模型的android demo已经合入dygraph分支，欢迎试用（https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/deploy/android_demo/README.md）; ios demo暂时未提供动态图模型版本，可以基于静态图版本（https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/ios_demo）自行改造。
-
-#### Q3.3.36: 训练starnet网络，印章数据可以和非弯曲数据一起训练吗。
-**A**: 可以的，starnet里的tps模块会对印章图片进行校正，使其和非弯曲的图片一样。
-
-#### Q3.4.45: win下C++部署中文识别乱码的解决方法
-**A**: win下编码格式不是utf8,而ppocr_keys_v1.txt的编码格式的utf8，将ppocr_keys_v1.txt 的编码从utf-8修改为 Ansi 编码格式就行了
-
-#### Q3.4.46: windows 3060显卡GPU模式启动 加载模型慢。
-**A**: 30系列的显卡需要使用cuda11。
 
 <a name="OCR精选10个问题"></a>
 ## 【精选】OCR精选10个问题
@@ -653,6 +668,31 @@ repo中config.yml文件的前后处理参数和inference预测默认的超参数
 #### Q3.1.65: 支持动态图模型的android和ios demo什么时候上线？？
 **A**:  支持动态图模型的android demo已经合入dygraph分支，欢迎试用（https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/deploy/android_demo/README.md）; ios demo暂时未提供动态图模型版本，可以基于静态图版本（https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/ios_demo）自行改造。
 
+### Q3.1.66: iaa里面添加的数据增强方式，是每张图像训练都会做增强还是随机的？如何添加一个数据增强方法？
+
+**A**：iaa增强的训练配置参考：https://github.com/PaddlePaddle/PaddleOCR/blob/0ccc1720c252beb277b9e522a1b228eb6abffb8a/configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml#L82，
+其中{ 'type': Fliplr, 'args': { 'p': 0.5 } } p是概率。新增数据增强，可以参考这个方法：https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.1/doc/doc_ch/add_new_algorithm.md#%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD%E5%92%8C%E5%A4%84%E7%90%86
+
+### Q3.1.67: PGNet训练中文弯曲数据集，可视化时弯曲文本无法显示。
+
+**A**: 可能是因为安装的OpenCV里，cv2.putText不能显示中文的原因，可以尝试用Pillow来添加显示中文，需要改draw_e2e_res函数里面的代码，可以参考如下代码：
+```
+box = box.astype(np.int32).reshape((-1, 1, 2))
+cv2.polylines(src_im, [box], True, color=(255, 255, 0), thickness=2)
+
+from PIL import ImageFont, ImageDraw, Image
+img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+draw = ImageDraw.Draw(img)
+fontStyle = ImageFont.truetype(
+"font/msyh.ttc", 16, encoding="utf-8")
+draw.text((int(box[0, 0, 0]), int(box[0, 0, 1])), text, (0, 255, 0), font=fontStyle)
+
+src_im= cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
+```
+### Q3.1.68: 用PGNet做进行端到端训练时，数据集标注的点的个数必须都是统一一样的吗? 能不能随意标点数，只要能够按顺时针从左上角开始标这样?
+
+**A**: 目前代码要求标注为统一的点数。
+
 <a name="数据集3"></a>
 
 ### 数据集
@@ -1141,3 +1181,11 @@ nvidia-smi --lock-gpu-clocks=1590 -i 0
 
 #### Q3.4.46: windows 3060显卡GPU模式启动 加载模型慢。
 **A**: 30系列的显卡需要使用cuda11。
+
+#### Q3.4.47: 请教如何优化检测阶段时长?
+
+**A**: 预测单张图会慢一点，如果批量预测，第一张图比较慢，后面就快了，因为最开始一些初始化操作比较耗时。服务部署的话，访问一次后，后面再访问就不会初始化了，推理的话每次都需要初始化的。
+
+### Q3.4.48: paddle serving 本地启动调用失败,怎么判断是否正常工作？
+
+**A**：没有打印出预测结果，说明启动失败。可以参考这篇文档重新配置下动态图的paddle serving：https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/deploy/pdserving/README_CN.md
