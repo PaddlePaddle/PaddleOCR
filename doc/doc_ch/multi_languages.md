@@ -118,7 +118,7 @@ paddleocr --image_dir doc/imgs_words_en/word_308.png --det false --lang=en
 * 检测预测
 
 ```
-paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --rec false
+paddleocr --image_dir doc/imgs/11.jpg --rec false
 ```
 
 结果是一个list，每个item只包含文本框
@@ -142,7 +142,7 @@ from paddleocr import PaddleOCR, draw_ocr
 
 # 同样也是通过修改 lang 参数切换语种
 ocr = PaddleOCR(lang="korean") # 首次执行会自动下载模型文件
-img_path = 'doc/imgs/korean_1.jpg '
+img_path = 'doc/imgs/korean_1.jpg'
 result = ocr.ocr(img_path)
 # 可通过参数控制单独执行识别、检测
 # result = ocr.ocr(img_path, det=False) 只执行识别
@@ -157,7 +157,7 @@ image = Image.open(img_path).convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
 scores = [line[1][1] for line in result]
-im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/korean.ttf')
+im_show = draw_ocr(image, boxes, txts, scores, font_path='doc/fonts/korean.ttf')
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
