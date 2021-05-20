@@ -197,6 +197,23 @@ The recognition model is the same.
     2021-05-13 03:42:36,979         chl2(In: ['rec'], Out: ['@DAGExecutor']) size[0/0]
     ```
 
+## WINDOWS Users
+
+Windows does not support Pipeline Serving, if we want to lauch paddle serving on Windows, we should use Web Service, for more infomation please refer to [Paddle Serving for Windows Users](https://github.com/PaddlePaddle/Serving/blob/develop/doc/WINDOWS_TUTORIAL.md)
+
+
+1. Start Server
+
+```
+cd win
+python3 ocr_web_server.py
+```
+
+2. Client Send Requests
+
+```
+python3 ocr_web_client.py
+```
 
 <a name="faq"></a>
 ## FAQ

@@ -193,6 +193,23 @@ python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_mobile_v2.0_rec_in
     2021-05-13 03:42:36,979         chl2(In: ['rec'], Out: ['@DAGExecutor']) size[0/0]
     ```
 
+## WINDOWS用户
+
+Windows用户不能使用上述的启动方式，需要使用Web Service，详情参见[Windows平台使用Paddle Serving指导](https://github.com/PaddlePaddle/Serving/blob/develop/doc/WINDOWS_TUTORIAL_CN.md)
+
+
+1. 启动服务端程序
+
+```
+cd win 
+python3 ocr_web_server.py
+```
+
+2. 发送服务请求
+
+```
+python3 ocr_web_client.py
+```
 
 
 <a name="FAQ"></a>
@@ -204,3 +221,5 @@ python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_mobile_v2.0_rec_in
 unset https_proxy
 unset http_proxy
 ```
+
+
