@@ -101,7 +101,7 @@ python3 generate_multi_language_configs.py -l it \
 <a name="多语言模型与配置文件"></a>
 ##### 3. 多语言模型与配置文件
 
-|模型名称|字典文件|模型简介｜配置文件|推理模型大小|下载地址|
+|模型名称|字典文件|模型简介|配置文件|推理模型大小|下载地址|
 | --- | --- | --- | --- |--- | --- |
 | french_mobile_v2.0_rec | ppocr/utils/dict/french_dict.txt |法文识别|[rec_french_lite_train.yml](../../configs/rec/multi_language/rec_french_lite_train.yml)|2.65M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/french_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/french_mobile_v2.0_rec_train.tar) |
 | german_mobile_v2.0_rec | ppocr/utils/dict/german_dict.txt |德文识别|[rec_german_lite_train.yml](../../configs/rec/multi_language/rec_german_lite_train.yml)|2.65M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/german_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/german_mobile_v2.0_rec_train.tar) |
