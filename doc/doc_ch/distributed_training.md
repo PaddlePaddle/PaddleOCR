@@ -20,7 +20,7 @@ python3 -m paddle.distributed.launch \
 
 ### 多机训练
 
-* 相比单机训练，多机训练时，只需要添加`--ips`的参数，下面为运行代码示例。
+* 相比单机训练，多机训练时，只需要添加`--ips`的参数，该参数表示需要参与分布式训练的机器的ip列表，不同机器的ip用逗号隔开。下面为运行代码示例。
 
 
 ```shell
@@ -46,6 +46,6 @@ python3 -m paddle.distributed.launch \
 |         模型             |     配置文件 |  机器数量    | 每台机器的GPU数量  |   训练时间    | 识别Acc    | 加速比 |
 | :----------------------: | :------------: | :------------: | :---------------: | :----------: | :-----------: | :-----------: |
 |          CRNN        |   configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml  | 1     |  8  |  60h  |  66.7% | - |
-|          CRNN        |   configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml   | 2   |  8  |  40h  |  67.0% | 75% |
+|          CRNN        |   configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml   | 2   |  8  |  40h  |  67.0% | 150% |
 
-可以看出，精度没有下降的情况下，训练时间由60h缩短为了40h。
+可以看出，精度没有下降的情况下，训练时间由60h缩短为了40h，加速比可以达到60h/40h=150%，效率为60h/(40h*2)=75%。
