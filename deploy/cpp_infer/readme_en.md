@@ -234,6 +234,7 @@ visualize 1 # Whether to visualize the results，when it is set as 1, The predic
 ```
 
 * Multi-language inference is also supported in PaddleOCR, you can refer to [recognition tutorial](../../doc/doc_en/recognition_en.md) for more supported languages and models in PaddleOCR. Specifically, if you want to infer using multi-language models, you just need to modify values of `char_list_file` and `rec_model_dir` in file `tools/config.txt`.
+The corresponding relationship between the multi-language model and the dictionary file can be found in [document](../../doc/doc_en/multi_languages_en.md#inference)
 
 
 The detection results will be shown on the screen, which is as follows.

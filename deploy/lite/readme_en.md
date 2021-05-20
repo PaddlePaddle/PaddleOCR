@@ -222,6 +222,7 @@ dict/japan_dict.txt      # japan
 dict/korean_dict.txt     # korean
 ppocr_keys_v1.txt   # chinese
 ```
+For more language model and dictionary file correspondence, please refer to [Document](../../doc/doc_en/multi_languages_en.md#inference)
 
 2.  `config.txt` of the detector and classifier, as shown below:
 ```

@@ -42,6 +42,8 @@ pip3 install paddlehub --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 **模型路径可在`params.py`中查看和修改。** 更多模型可以从PaddleOCR提供的[模型库](../../doc/doc_ch/models_list.md)下载，也可以替换成自己训练转换好的模型。
 
+* 如果需要使用多语言模型，请同时修改 `ocr_rec/params.py` 中 `cfg.rec_model_dir` 和 `cfg.rec_char_dict_path` 参数，多语言模型和字典文件对应关系可以参考[文档](../../doc/doc_ch/multi_languages.md#预测部署)
+
 ### 3. 安装服务模块
 PaddleOCR提供3种服务模块，根据需要安装所需模块。
 
