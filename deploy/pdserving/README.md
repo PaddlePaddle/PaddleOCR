@@ -205,7 +205,7 @@ Windows does not support Pipeline Serving, if we want to lauch paddle serving on
 **Prepare Stage:**
 
 ```
-pip3 install paddle-serving-server==0.6.0
+pip3 install paddle-serving-server==0.5.0
 pip3 install paddle-serving-app==0.3.1
 ```
 

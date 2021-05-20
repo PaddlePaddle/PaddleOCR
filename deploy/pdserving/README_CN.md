@@ -199,7 +199,7 @@ Windows用户不能使用上述的启动方式，需要使用Web Service，详�
 
 准备阶段：
 ```
-pip3 install paddle-serving-server==0.6.0
+pip3 install paddle-serving-server==0.5.0
 pip3 install paddle-serving-app==0.3.1
 ```
 
