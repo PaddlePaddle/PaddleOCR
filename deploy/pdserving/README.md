@@ -37,13 +37,11 @@ PaddleOCR operating environment and Paddle Serving operating environment are nee
 
     Install serving which used to start the service
     ```
-    pip3 install paddle-serving-server==0.5.0 # for CPU
-    pip3 install paddle-serving-server-gpu==0.5.0 # for GPU
+    pip3 install paddle-serving-server==0.6.0 # for CPU
+    pip3 install paddle-serving-server-gpu==0.6.0 # for GPU
     # Other GPU environments need to confirm the environment and then choose to execute the following commands
-    pip3 install paddle-serving-server-gpu==0.5.0.post9 # GPU with CUDA9.0
-    pip3 install paddle-serving-server-gpu==0.5.0.post10 # GPU with CUDA10.0
-    pip3 install paddle-serving-server-gpu==0.5.0.post101 # GPU with CUDA10.1 + TensorRT6
-    pip3 install paddle-serving-server-gpu==0.5.0.post11 # GPU with CUDA10.1 + TensorRT7
+    pip3 install paddle-serving-server-gpu==0.6.0.post101 # GPU with CUDA10.1 + TensorRT6
+    pip3 install paddle-serving-server-gpu==0.6.0.post11 # GPU with CUDA11 + TensorRT7
     ```
 
 3. Install the client to send requests to the service
@@ -51,13 +49,13 @@ PaddleOCR operating environment and Paddle Serving operating environment are nee
     The python3.7 version is recommended here:
 
     ```
-    wget https://paddle-serving.bj.bcebos.com/whl/paddle_serving_client-0.0.0-cp37-none-any.whl
+    wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_client-0.0.0-cp37-none-any.whl
     pip3 install paddle_serving_client-0.0.0-cp37-none-any.whl
     ```
 
 4. Install serving-app
     ```
-    pip3 install paddle-serving-app==0.3.1
+    pip3 install paddle-serving-app==0.6.0
     ```
 
    **note:** If you want to install the latest version of PaddleServing, refer to [link](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md).
@@ -197,6 +195,23 @@ The recognition model is the same.
     2021-05-13 03:42:36,979         chl2(In: ['rec'], Out: ['@DAGExecutor']) size[0/0]
     ```
 
+## WINDOWS Users
+
+Windows does not support Pipeline Serving, if we want to lauch paddle serving on Windows, we should use Web Service, for more infomation please refer to [Paddle Serving for Windows Users](https://github.com/PaddlePaddle/Serving/blob/develop/doc/WINDOWS_TUTORIAL.md)
+
+
+1. Start Server
+
+```
+cd win
+python3 ocr_web_server.py
+```
+
+2. Client Send Requests
+
+```
+python3 ocr_web_client.py
+```
 
 <a name="faq"></a>
 ## FAQ

@@ -36,26 +36,24 @@ PaddleOCR提供2种服务部署方式：
 
 1. 安装serving，用于启动服务
     ```
-    pip3 install paddle-serving-server==0.5.0 # for CPU
-    pip3 install paddle-serving-server-gpu==0.5.0 # for GPU
+    pip3 install paddle-serving-server==0.6.0 # for CPU
+    pip3 install paddle-serving-server-gpu==0.6.0 # for GPU
     # 其他GPU环境需要确认环境再选择执行如下命令
-    pip3 install paddle-serving-server-gpu==0.5.0.post9 # GPU with CUDA9.0
-    pip3 install paddle-serving-server-gpu==0.5.0.post10 # GPU with CUDA10.0
-    pip3 install paddle-serving-server-gpu==0.5.0.post101 # GPU with CUDA10.1 + TensorRT6
-    pip3 install paddle-serving-server-gpu==0.5.0.post11 # GPU with CUDA10.1 + TensorRT7
+    pip3 install paddle-serving-server-gpu==0.6.0.post101 # GPU with CUDA10.1 + TensorRT6
+    pip3 install paddle-serving-server-gpu==0.6.0.post11 # GPU with CUDA11 + TensorRT7
     ```
 
 2. 安装client，用于向服务发送请求
     在[下载链接](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md)中找到对应python版本的client安装包，这里推荐python3.7版本：
 
     ```
-    wget https://paddle-serving.bj.bcebos.com/whl/paddle_serving_client-0.0.0-cp37-none-any.whl
+    wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_client-0.0.0-cp37-none-any.whl
     pip3 install paddle_serving_client-0.0.0-cp37-none-any.whl
     ```
 
 3. 安装serving-app
     ```
-    pip3 install paddle-serving-app==0.3.1
+    pip3 install paddle-serving-app==0.6.0
     ```
 
     **Note:** 如果要安装最新版本的PaddleServing参考[链接](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md)。
@@ -193,6 +191,23 @@ python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_mobile_v2.0_rec_in
     2021-05-13 03:42:36,979         chl2(In: ['rec'], Out: ['@DAGExecutor']) size[0/0]
     ```
 
+## WINDOWS用户
+
+Windows用户不能使用上述的启动方式，需要使用Web Service，详情参见[Windows平台使用Paddle Serving指导](https://github.com/PaddlePaddle/Serving/blob/develop/doc/WINDOWS_TUTORIAL_CN.md)
+
+
+1. 启动服务端程序
+
+```
+cd win 
+python3 ocr_web_server.py
+```
+
+2. 发送服务请求
+
+```
+python3 ocr_web_client.py
+```
 
 
 <a name="FAQ"></a>
