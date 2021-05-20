@@ -11,10 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-try:
-    from paddle_serving_server_gpu.web_service import WebService, Op
-except ImportError:
-    from paddle_serving_server.web_service import WebService, Op
+from paddle_serving_server.web_service import WebService, Op
 
 import logging
 import numpy as np

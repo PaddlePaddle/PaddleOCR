@@ -36,26 +36,24 @@ PaddleOCR提供2种服务部署方式：
 
 1. 安装serving，用于启动服务
     ```
-    pip3 install paddle-serving-server==0.5.0 # for CPU
-    pip3 install paddle-serving-server-gpu==0.5.0 # for GPU
+    pip3 install paddle-serving-server==0.6.0 # for CPU
+    pip3 install paddle-serving-server-gpu==0.6.0 # for GPU
     # 其他GPU环境需要确认环境再选择执行如下命令
-    pip3 install paddle-serving-server-gpu==0.5.0.post9 # GPU with CUDA9.0
-    pip3 install paddle-serving-server-gpu==0.5.0.post10 # GPU with CUDA10.0
-    pip3 install paddle-serving-server-gpu==0.5.0.post101 # GPU with CUDA10.1 + TensorRT6
-    pip3 install paddle-serving-server-gpu==0.5.0.post11 # GPU with CUDA10.1 + TensorRT7
+    pip3 install paddle-serving-server-gpu==0.6.0.post101 # GPU with CUDA10.1 + TensorRT6
+    pip3 install paddle-serving-server-gpu==0.6.0.post11 # GPU with CUDA11 + TensorRT7
     ```
 
 2. 安装client，用于向服务发送请求
     在[下载链接](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md)中找到对应python版本的client安装包，这里推荐python3.7版本：
 
     ```
-    wget https://paddle-serving.bj.bcebos.com/whl/paddle_serving_client-0.0.0-cp37-none-any.whl
+    wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_client-0.0.0-cp37-none-any.whl
     pip3 install paddle_serving_client-0.0.0-cp37-none-any.whl
     ```
 
 3. 安装serving-app
     ```
-    pip3 install paddle-serving-app==0.3.1
+    pip3 install paddle-serving-app==0.6.0
     ```
 
     **Note:** 如果要安装最新版本的PaddleServing参考[链接](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md)。
