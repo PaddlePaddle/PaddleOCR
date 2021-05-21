@@ -202,7 +202,7 @@ Windows用户不能使用上述的启动方式，需要使用Web Service，详�
 cd win 
 python3 ocr_web_server.py gpu(使用gpu方式)
 或者
-python3 ocr_web_server.py cpu(使用gpu方式)
+python3 ocr_web_server.py cpu(使用cpu方式)
 ```
 
 2. 发送服务请求
