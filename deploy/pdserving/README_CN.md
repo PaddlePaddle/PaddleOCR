@@ -36,11 +36,11 @@ PaddleOCR提供2种服务部署方式：
 
 1. 安装serving，用于启动服务
     ```
-    pip3 install paddle-serving-server==0.6.0 # for CPU
-    pip3 install paddle-serving-server-gpu==0.6.0 # for GPU
+    pip3 install paddle-serving-server==0.6.1 # for CPU
+    pip3 install paddle-serving-server-gpu==0.6.1 # for GPU
     # 其他GPU环境需要确认环境再选择执行如下命令
-    pip3 install paddle-serving-server-gpu==0.6.0.post101 # GPU with CUDA10.1 + TensorRT6
-    pip3 install paddle-serving-server-gpu==0.6.0.post11 # GPU with CUDA11 + TensorRT7
+    pip3 install paddle-serving-server-gpu==0.6.1.post101 # GPU with CUDA10.1 + TensorRT6
+    pip3 install paddle-serving-server-gpu==0.6.1.post11 # GPU with CUDA11 + TensorRT7
     ```
 
 2. 安装client，用于向服务发送请求
@@ -53,7 +53,7 @@ PaddleOCR提供2种服务部署方式：
 
 3. 安装serving-app
     ```
-    pip3 install paddle-serving-app==0.6.0
+    pip3 install paddle-serving-app==0.6.1
     ```
 
     **Note:** 如果要安装最新版本的PaddleServing参考[链接](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md)。
@@ -200,7 +200,9 @@ Windows用户不能使用上述的启动方式，需要使用Web Service，详�
 
 ```
 cd win 
-python3 ocr_web_server.py
+python3 ocr_web_server.py gpu(使用gpu方式)
+或者
+python3 ocr_web_server.py cpu(使用cpu方式)
 ```
 
 2. 发送服务请求
