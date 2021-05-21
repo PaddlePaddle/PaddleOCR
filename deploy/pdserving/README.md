@@ -37,11 +37,11 @@ PaddleOCR operating environment and Paddle Serving operating environment are nee
 
     Install serving which used to start the service
     ```
-    pip3 install paddle-serving-server==0.6.0 # for CPU
-    pip3 install paddle-serving-server-gpu==0.6.0 # for GPU
+    pip3 install paddle-serving-server==0.6.1 # for CPU
+    pip3 install paddle-serving-server-gpu==0.6.1 # for GPU
     # Other GPU environments need to confirm the environment and then choose to execute the following commands
-    pip3 install paddle-serving-server-gpu==0.6.0.post101 # GPU with CUDA10.1 + TensorRT6
-    pip3 install paddle-serving-server-gpu==0.6.0.post11 # GPU with CUDA11 + TensorRT7
+    pip3 install paddle-serving-server-gpu==0.6.1.post101 # GPU with CUDA10.1 + TensorRT6
+    pip3 install paddle-serving-server-gpu==0.6.1.post11 # GPU with CUDA11 + TensorRT7
     ```
 
 3. Install the client to send requests to the service
@@ -55,7 +55,7 @@ PaddleOCR operating environment and Paddle Serving operating environment are nee
 
 4. Install serving-app
     ```
-    pip3 install paddle-serving-app==0.6.0
+    pip3 install paddle-serving-app==0.6.1
     ```
 
    **note:** If you want to install the latest version of PaddleServing, refer to [link](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md).
@@ -204,7 +204,9 @@ Windows does not support Pipeline Serving, if we want to lauch paddle serving on
 
 ```
 cd win
-python3 ocr_web_server.py
+python3 ocr_web_server.py gpu(for gpu user)
+or
+python3 ocr_web_server.py cpu(for cpu user)
 ```
 
 2. Client Send Requests
