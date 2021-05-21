@@ -23,7 +23,7 @@
 
 ```bash
 git clone https://github.com/PaddlePaddle/PaddleSlim.git
-cd Paddleslim
+cd PaddleSlim
 python setup.py install
 ```
 
@@ -37,12 +37,12 @@ PaddleOCR提供了一系列训练好的[模型](../../../doc/doc_ch/models_list.
 
 量化训练的代码位于slim/quantization/quant.py 中，比如训练检测模型，训练指令如下：
 ```bash
-python deploy/slim/quantization/quant.py -c configs/det/det_mv3_db.yml -o Global.pretrained_model='your trained model'   Global.save_model_dir=./output/quant_model
+python deploy/slim/quantization/quant.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrained_model='your trained model'   Global.save_model_dir=./output/quant_model
 
 # 比如下载提供的训练模型
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar
 tar -xf ch_ppocr_mobile_v2.0_det_train.tar
-python deploy/slim/quantization/quant.py -c configs/det/det_mv3_db.yml -o Global.pretrained_model=./ch_ppocr_mobile_v2.0_det_train/best_accuracy   Global.save_inference_dir=./output/quant_inference_model
+python deploy/slim/quantization/quant.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrained_model=./ch_ppocr_mobile_v2.0_det_train/best_accuracy   Global.save_model_dir=./output/quant_inference_model
 
 ```
 如果要训练识别模型的量化，修改配置文件和加载的模型参数即可。
@@ -52,10 +52,10 @@ python deploy/slim/quantization/quant.py -c configs/det/det_mv3_db.yml -o Global
 在得到量化训练保存的模型后，我们可以将其导出为inference_model，用于预测部署：
 
 ```bash
-python deploy/slim/quantization/export_model.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=output/quant_model/best_accuracy Global.save_model_dir=./output/quant_inference_model
+python deploy/slim/quantization/export_model.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.checkpoints=output/quant_model/best_accuracy Global.save_inference_dir=./output/quant_inference_model
 ```
 
 ### 5. 量化模型部署
 
-上述步骤导出的量化模型，参数精度仍然是FP32，表现为量化后的模型大小不变，但是参数的数值范围是int8，导出的模型可以通过PaddleLite的opt模型转换工具完成模型转换。
+上述步骤导出的量化模型，参数精度仍然是FP32，但是参数的数值范围是int8，导出的模型可以通过PaddleLite的opt模型转换工具完成模型转换。
 量化模型部署的可参考 [移动端模型部署](../../lite/readme.md)
