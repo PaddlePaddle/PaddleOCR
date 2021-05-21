@@ -23,14 +23,14 @@ Five steps for OCR model prune:
 ```bash
 git clone https://github.com/PaddlePaddle/PaddleSlim.git
 git checkout develop
-cd Paddleslim
+cd PaddleSlim
 python3 setup.py install
 ```
 
 
 ### 2. Download Pretrain Model
 Model prune needs to load pre-trained models.
-PaddleOCR also provides a series of (models)[../../../doc/doc_en/models_list_en.md]. Developers can choose their own models or use their own models according to their needs.
+PaddleOCR also provides a series of [models](../../../doc/doc_en/models_list_en.md). Developers can choose their own models or use their own models according to their needs.
 
 
 ### 3. Pruning sensitivity analysis
