@@ -23,13 +23,13 @@
 
 ```bash
 git clone https://github.com/PaddlePaddle/PaddleSlim.git
+cd PaddleSlim
 git checkout develop
-cd Paddleslim
 python3 setup.py install
 ```
 
 ### 2. 获取预训练模型
-模型裁剪需要加载事先训练好的模型，PaddleOCR也提供了一系列(模型)[../../../doc/doc_ch/models_list.md]，开发者可根据需要自行选择模型或使用自己的模型。
+模型裁剪需要加载事先训练好的模型，PaddleOCR也提供了一系列[模型](../../../doc/doc_ch/models_list.md)，开发者可根据需要自行选择模型或使用自己的模型。
 
 ### 3. 敏感度分析训练
 
@@ -49,14 +49,14 @@ python3 setup.py install
 
 进入PaddleOCR根目录，通过以下命令对模型进行敏感度分析训练：
 ```bash
-python3.7 deploy/slim/prune/sensitivity_anal.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrain_weights="your trained model"
+python3.7 deploy/slim/prune/sensitivity_anal.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrained_model="your trained model" Global.save_model_dir=./output/prune_model/
 ```
 
 ### 4. 导出模型、预测部署
 
 在得到裁剪训练保存的模型后，我们可以将其导出为inference_model：
 ```bash
-pytho3.7 deploy/slim/prune/export_prune_model.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrain_weights=./output/det_db/best_accuracy  Global.save_inference_dir=inference_model
+pytho3.7 deploy/slim/prune/export_prune_model.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrained_model=./output/det_db/best_accuracy  Global.save_inference_dir=./prune/prune_inference_model
 ```
 
 inference model的预测和部署参考：

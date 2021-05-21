@@ -29,9 +29,7 @@ PaddleOCR models has been built in PPOCRLabel, please refer to [PaddleOCR instal
 
 ### 2. Install PPOCRLabel
 
-#### Windows + Anaconda
-
-Download and install [Anaconda](https://www.anaconda.com/download/#download) (Python 3+)
+#### Windows
 
 ```
 pip install pyqt5

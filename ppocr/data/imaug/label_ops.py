@@ -96,7 +96,7 @@ class BaseRecLabelEncode(object):
             'ch', 'en', 'EN_symbol', 'french', 'german', 'japan', 'korean',
             'EN', 'it', 'xi', 'pu', 'ru', 'ar', 'ta', 'ug', 'fa', 'ur', 'rs',
             'oc', 'rsc', 'bg', 'uk', 'be', 'te', 'ka', 'chinese_cht', 'hi',
-            'mr', 'ne'
+            'mr', 'ne', 'latin', 'arabic', 'cyrillic', 'devanagari'
         ]
         assert character_type in support_character_type, "Only {} are supported now but get {}".format(
             support_character_type, character_type)
@@ -185,6 +185,78 @@ class CTCLabelEncode(BaseRecLabelEncode):
     def add_special_char(self, dict_character):
         dict_character = ['blank'] + dict_character
         return dict_character
+
+
+class E2ELabelEncodeTest(BaseRecLabelEncode):
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 character_type='EN',
+                 use_space_char=False,
+                 **kwargs):
+        super(E2ELabelEncodeTest,
+              self).__init__(max_text_length, character_dict_path,
+                             character_type, use_space_char)
+
+    def __call__(self, data):
+        import json
+        padnum = len(self.dict)
+        label = data['label']
+        label = json.loads(label)
+        nBox = len(label)
+        boxes, txts, txt_tags = [], [], []
+        for bno in range(0, nBox):
+            box = label[bno]['points']
+            txt = label[bno]['transcription']
+            boxes.append(box)
+            txts.append(txt)
+            if txt in ['*', '###']:
+                txt_tags.append(True)
+            else:
+                txt_tags.append(False)
+        boxes = np.array(boxes, dtype=np.float32)
+        txt_tags = np.array(txt_tags, dtype=np.bool)
+        data['polys'] = boxes
+        data['ignore_tags'] = txt_tags
+        temp_texts = []
+        for text in txts:
+            text = text.lower()
+            text = self.encode(text)
+            if text is None:
+                return None
+            text = text + [padnum] * (self.max_text_len - len(text)
+                                      )  # use 36 to pad
+            temp_texts.append(text)
+        data['texts'] = np.array(temp_texts)
+        return data
+
+
+class E2ELabelEncodeTrain(object):
+    def __init__(self, **kwargs):
+        pass
+
+    def __call__(self, data):
+        import json
+        label = data['label']
+        label = json.loads(label)
+        nBox = len(label)
+        boxes, txts, txt_tags = [], [], []
+        for bno in range(0, nBox):
+            box = label[bno]['points']
+            txt = label[bno]['transcription']
+            boxes.append(box)
+            txts.append(txt)
+            if txt in ['*', '###']:
+                txt_tags.append(True)
+            else:
+                txt_tags.append(False)
+        boxes = np.array(boxes, dtype=np.float32)
+        txt_tags = np.array(txt_tags, dtype=np.bool)
+
+        data['polys'] = boxes
+        data['texts'] = txts
+        data['ignore_tags'] = txt_tags
+        return data
 
 
 class AttnLabelEncode(BaseRecLabelEncode):
