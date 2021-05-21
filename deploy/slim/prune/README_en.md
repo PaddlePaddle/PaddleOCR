@@ -22,8 +22,8 @@ Five steps for OCR model prune:
 
 ```bash
 git clone https://github.com/PaddlePaddle/PaddleSlim.git
-git checkout develop
 cd PaddleSlim
+git checkout develop
 python3 setup.py install
 ```
 

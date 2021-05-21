@@ -23,7 +23,6 @@
 
 ```bash
 git clone https://github.com/PaddlePaddle/PaddleSlim.git
-git checkout develop
 cd PaddleSlim
 python3 setup.py install
 ```
