@@ -238,6 +238,7 @@ After the above steps are completed, you can use adb to push the file to the pho
 
  ```
  # Execute the compilation and get the executable file ocr_db_crnn
+ # The first execution of this command will download dependent libraries such as opencv. After the download is complete, you need to execute it again
  make -j
  # Move the compiled executable file to the debug folder
  mv ocr_db_crnn ./debug/
