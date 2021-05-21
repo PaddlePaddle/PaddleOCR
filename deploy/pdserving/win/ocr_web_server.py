@@ -42,7 +42,7 @@ class OCRService(WebService):
         self.det_client = LocalPredictor()
         if sys.argv[1] == 'gpu':
             self.det_client.load_model_config(
-                det_model_config, use_gpu=True, gpu_id=1)
+                det_model_config, use_gpu=True, gpu_id=0)
         elif sys.argv[1] == 'cpu':
             self.det_client.load_model_config(det_model_config)
         self.ocr_reader = OCRReader(
