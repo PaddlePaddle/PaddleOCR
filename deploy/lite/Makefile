@@ -40,7 +40,7 @@ CXX_LIBS = ${OPENCV_LIBS} -L$(LITE_ROOT)/cxx/lib/ -lpaddle_light_api_shared $(SY
 
 #CXX_LIBS = $(LITE_ROOT)/cxx/lib/libpaddle_api_light_bundled.a $(SYSTEM_LIBS)
 
-ocr_db_crnn: fetch_opencv ocr_db_crnn.o crnn_process.o db_post_process.o clipper.o cls_process.o
+ocr_db_crnn: fetch_clipper fetch_opencv ocr_db_crnn.o crnn_process.o db_post_process.o clipper.o cls_process.o
 	$(CC) $(SYSROOT_LINK) $(CXXFLAGS_LINK) ocr_db_crnn.o crnn_process.o db_post_process.o clipper.o cls_process.o -o ocr_db_crnn  $(CXX_LIBS) $(LDFLAGS)
 
 ocr_db_crnn.o: ocr_db_crnn.cc
