@@ -41,6 +41,7 @@ This document will briefly introduce how to use the multilingual model.
 <a name="Install"></a>
 ## 1 Installation
 
+PaddleOCR provides two installation methods
 <a name="paddle_install"></a>
 ### 1.1 paddle installation
 ```
