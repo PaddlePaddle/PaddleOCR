@@ -4,11 +4,11 @@
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力使用者训练出更好的模型，并应用落地。
 ## 注意
 PaddleOCR同时支持动态图与静态图两种编程范式
-- 动态图版本：release/2.1（默认分支，开发分支为dygraph分支），需将paddle版本升级至2.0.0（[快速安装](./doc/doc_ch/installation.md)）
+- 动态图版本：release/2.1（默认分支，开发分支为dygraph分支），需将paddle版本升级至2.0.0或以上版本（[快速安装](./doc/doc_ch/installation.md)）
 - 静态图版本：develop分支
 
 **近期更新**
-- 2021.5.17 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，总数223个，每周一都会更新，欢迎大家持续关注。
+- 2021.5.24 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，总数228个，每周一都会更新，欢迎大家持续关注。
 - PaddleOCR研发团队对最新发版内容技术深入解读，4月13日晚上19:00，[直播地址](https://live.bilibili.com/21689802)。
 - 2021.4.8 release 2.1版本，新增AAAI 2021论文[端到端识别算法PGNet](./doc/doc_ch/pgnet.md)开源，[多语言模型](./doc/doc_ch/multi_languages.md)支持种类增加到80+。
 - 2021.2.8 正式发布PaddleOCRv2.0(branch release/2.0)并设置为推荐用户使用的默认分支. 发布的详细内容，请参考: https://github.com/PaddlePaddle/PaddleOCR/releases/tag/v2.0.0
@@ -104,8 +104,8 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 - [效果展示](#效果展示)
 - FAQ
     - [【精选】OCR精选10个问题](./doc/doc_ch/FAQ.md)
-    - [【理论篇】OCR通用43个问题](./doc/doc_ch/FAQ.md)
-    - [【实战篇】PaddleOCR实战170个问题](./doc/doc_ch/FAQ.md)
+    - [【理论篇】OCR通用44个问题](./doc/doc_ch/FAQ.md)
+    - [【实战篇】PaddleOCR实战174个问题](./doc/doc_ch/FAQ.md)
 - [技术交流群](#欢迎加入PaddleOCR技术交流群)
 - [参考文献](./doc/doc_ch/reference.md)
 - [许可证书](#许可证书)
