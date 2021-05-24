@@ -22,6 +22,7 @@ from paddle_serving_app.reader import Sequential, URL2Image, ResizeByFactor
 from paddle_serving_app.reader import Div, Normalize, Transpose
 from paddle_serving_app.reader import DBPostProcess, FilterBoxes, GetRotateCropImage, SortedBoxes
 from ocr_reader import OCRReader
+from ..ocr_reader import OCRReader
 try:
     from paddle_serving_server_gpu.web_service import WebService
 except ImportError:
