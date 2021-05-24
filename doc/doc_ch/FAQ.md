@@ -9,14 +9,14 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2021.5.17）](#近期更新)
+* [近期更新（2021.5.24）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
-* [【理论篇】OCR通用43个问题](#OCR通用问题)
+* [【理论篇】OCR通用44个问题](#OCR通用问题)
   * [基础知识13题](#基础知识)
   * [数据集9题](#数据集2)
-  * [模型训练调优21题](#模型训练调优2)
-* [【实战篇】PaddleOCR实战170个问题](#PaddleOCR实战问题)
-  * [使用咨询68题](#使用咨询)
+  * [模型训练调优22题](#模型训练调优2)
+* [【实战篇】PaddleOCR实战174个问题](#PaddleOCR实战问题)
+  * [使用咨询72题](#使用咨询)
   * [数据集18题](#数据集3)
   * [模型训练调优36题](#模型训练调优3)
   * [预测部署48题](#预测部署3)
@@ -24,38 +24,34 @@
 <a name="近期更新"></a>
 ## 近期更新（2021.5.17）
 
-### Q3.1.66: iaa里面添加的数据增强方式，是每张图像训练都会做增强还是随机的？如何添加一个数据增强方法？
+### Q2.3.22: 目前知识蒸馏有哪些主要的实践思路？
 
-**A**：iaa增强的训练配置参考：[链接](https://github.com/PaddlePaddle/PaddleOCR/blob/0ccc1720c252beb277b9e522a1b228eb6abffb8a/configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml#L82)
-其中{ 'type': Fliplr, 'args': { 'p': 0.5 } } p是概率。新增数据增强，可以参考这个[方法](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.1/doc/doc_ch/add_new_algorithm.md#%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD%E5%92%8C%E5%A4%84%E7%90%86)
+**A**：知识蒸馏即利用教师模型指导学生模型的训练，目前有3种主要的蒸馏思路：
+1. 基于输出结果的蒸馏，即让学生模型学习教师模型的软标签（分类或者OCR识别等任务中）或者概率热度图（分割等任务中）。
+2. 基于特征图的蒸馏，即让学生模型学习教师模型中间层的特征图，拟合中间层的一些特征。
+3. 基于关系的蒸馏，针对不同的样本（假设个数为N），教师模型会有不同的输出，那么可以基于不同样本的输出，计算一个NxN的相关性矩阵，可以让学生模型去学习教师模型关于不同样本的相关性矩阵。
 
-### Q3.1.67: PGNet训练中文弯曲数据集，可视化时弯曲文本无法显示。
+当然，知识蒸馏方法日新月异，也欢迎大家提出更多的总结与建议。
 
-**A**: 可能是因为安装的OpenCV里，cv2.putText不能显示中文的原因，可以尝试用Pillow来添加显示中文，需要改draw_e2e_res函数里面的代码，可以参考如下代码：
-```
-box = box.astype(np.int32).reshape((-1, 1, 2))
-cv2.polylines(src_im, [box], True, color=(255, 255, 0), thickness=2)
+### Q3.1.69: 怎么加速训练过程呢？
 
-from PIL import ImageFont, ImageDraw, Image
-img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-draw = ImageDraw.Draw(img)
-fontStyle = ImageFont.truetype(
-"font/msyh.ttc", 16, encoding="utf-8")
-draw.text((int(box[0, 0, 0]), int(box[0, 0, 1])), text, (0, 255, 0), font=fontStyle)
+**A**：OCR模型训练过程中一般包含大量的数据增广，这些数据增广是比较耗时的，因此可以离线生成大量增广后的图像，直接送入网络进行训练，机器资源充足的情况下，也可以使用分布式训练的方法，可以参考[分布式训练教程文档](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/distributed_training.md)。
 
-src_im= cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
-```
-### Q3.1.68: 用PGNet做进行端到端训练时，数据集标注的点的个数必须都是统一一样的吗? 能不能随意标点数，只要能够按顺时针从左上角开始标这样?
 
-**A**: 目前代码要求标注为统一的点数。
+### Q3.1.70: 文字识别模型模型的输出矩阵需要进行解码才能得到识别的文本。代码中实现为preds_idx = preds.argmax(axis=2)，也就是最佳路径解码法。这是一种贪心算法，是每一个时间步只将最大概率的字符作为当前时间步的预测输出，但得到的结果不一定是最好的。为什么不使用beam search这种方式进行解码呢？
 
-#### Q3.4.47: 请教如何优化检测阶段时长?
+**A**：实验发现，使用贪心的方法去做解码，识别精度影响不大，但是速度方面的优势比较明显，因此PaddleOCR中使用贪心算法去做识别的解码。
 
-**A**: 预测单张图会慢一点，如果批量预测，第一张图比较慢，后面就快了，因为最开始一些初始化操作比较耗时。服务部署的话，访问一次后，后面再访问就不会初始化了，推理的话每次都需要初始化的。
+### Q3.1.71: 请教一下如何在现有中英文识别模型上增加对罗马数字的识别？
 
-### Q3.4.48: paddle serving 本地启动调用失败,怎么判断是否正常工作？
+**A**：因为目前中英文识别模型的字符中没有包含罗马数字，所以需要通过以下步骤，完成识别模型的微调过程：
+1. 准备中英文识别数据以及罗马数字的识别数据，用于训练，同时保证罗马数字和中英文识别数字的效果；
+2. 修改默认的字典文件，在后面添加罗马数字的字符；
+3. 下载PaddleOCR提供的预训练模型，配置预训练模型和数据的路径，开始训练。
 
-**A**：没有打印出预测结果，说明启动失败。可以参考这篇文档重新配置下动态图的paddle serving：https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/deploy/pdserving/README_CN.md
+### Q3.1.72: 文字识别主要有CRNN和Attention两种方式，但是在我们的说明文档中，CRNN有对应的论文，但是Attention没看到，这个具体在哪里呢？
+
+**A**：文字识别主要有CTC和Attention两种方式，基于CTC的算法有CRNN、Rosetta、StarNet，基于Attention的方法有RARE、其他的算法PaddleOCR里没有提供复现代码。论文的链接可以参考：[https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
 
 
 
@@ -337,8 +333,18 @@ src_im= cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
 #### Q2.3.20:  如何根据不同的硬件平台选用不同的backbone？
 **A**：在不同的硬件上，不同的backbone的速度优势不同，可以根据不同平台的速度-精度图来确定backbone，这里可以参考[PaddleClas模型速度-精度图](https://github.com/PaddlePaddle/PaddleClas/tree/release/2.0/docs/zh_CN/models)。
 
-#### Q2.3.21:  端到端算法PGNet是否支持中文识别，速度会很慢嘛？
+#### Q2.3.21: 端到端算法PGNet是否支持中文识别，速度会很慢嘛？
 **A**：目前开源的PGNet算法模型主要是用于检测英文数字，对于中文的识别需要自己训练，大家可以使用开源的端到端中文数据集，而对于复杂文本（弯曲文本）的识别，也可以自己构造一批数据集针对进行训练，对于推理速度，可以先将模型转换为inference再进行预测，速度应该会相当可观。
+
+
+### Q2.3.22: 目前知识蒸馏有哪些主要的实践思路？
+
+**A**：知识蒸馏即利用教师模型指导学生模型的训练，目前有3种主要的蒸馏思路：
+1. 基于输出结果的蒸馏，即让学生模型学习教师模型的软标签（分类或者OCR识别等任务中）或者概率热度图（分割等任务中）。
+2. 基于特征图的蒸馏，即让学生模型学习教师模型中间层的特征图，拟合中间层的一些特征。
+3. 基于关系的蒸馏，针对不同的样本（假设个数为N），教师模型会有不同的输出，那么可以基于不同样本的输出，计算一个NxN的相关性矩阵，可以让学生模型去学习教师模型关于不同样本的相关性矩阵。
+
+当然，知识蒸馏方法日新月异，也欢迎大家提出更多的总结与建议。
 
 <a name="PaddleOCR实战问题"></a>
 ## 【实战篇】PaddleOCR实战问题
@@ -692,6 +698,27 @@ src_im= cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
 ### Q3.1.68: 用PGNet做进行端到端训练时，数据集标注的点的个数必须都是统一一样的吗? 能不能随意标点数，只要能够按顺时针从左上角开始标这样?
 
 **A**: 目前代码要求标注为统一的点数。
+
+### Q3.1.69: 怎么加速训练过程呢？
+
+**A**：OCR模型训练过程中一般包含大量的数据增广，这些数据增广是比较耗时的，因此可以离线生成大量增广后的图像，直接送入网络进行训练，机器资源充足的情况下，也可以使用分布式训练的方法，可以参考[分布式训练教程文档](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/distributed_training.md)。
+
+
+### Q3.1.70: 文字识别模型模型的输出矩阵需要进行解码才能得到识别的文本。代码中实现为preds_idx = preds.argmax(axis=2)，也就是最佳路径解码法。这是一种贪心算法，是每一个时间步只将最大概率的字符作为当前时间步的预测输出，但得到的结果不一定是最好的。为什么不使用beam search这种方式进行解码呢？
+
+**A**：实验发现，使用贪心的方法去做解码，识别精度影响不大，但是速度方面的优势比较明显，因此PaddleOCR中使用贪心算法去做识别的解码。
+
+### Q3.1.71: 请教一下如何在现有中英文识别模型上增加对罗马数字的识别？
+
+**A**：因为目前中英文识别模型的字符中没有包含罗马数字，所以需要通过以下步骤，完成识别模型的微调过程：
+1. 准备中英文识别数据以及罗马数字的识别数据，用于训练，同时保证罗马数字和中英文识别数字的效果；
+2. 修改默认的字典文件，在后面添加罗马数字的字符；
+3. 下载PaddleOCR提供的预训练模型，配置预训练模型和数据的路径，开始训练。
+
+
+### Q3.1.72: 文字识别主要有CRNN和Attention两种方式，但是在我们的说明文档中，CRNN有对应的论文，但是Attention没看到，这个具体在哪里呢？
+
+**A**：文字识别主要有CTC和Attention两种方式，基于CTC的算法有CRNN、Rosetta、StarNet，基于Attention的方法有RARE、其他的算法PaddleOCR里没有提供复现代码。论文的链接可以参考：[https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
 
 <a name="数据集3"></a>
 
