@@ -42,16 +42,16 @@
 
 **A**：实验发现，使用贪心的方法去做解码，识别精度影响不大，但是速度方面的优势比较明显，因此PaddleOCR中使用贪心算法去做识别的解码。
 
-### Q3.1.71: 请教一下如何在现有中英文识别模型上增加对罗马数字的识别？
+### Q3.1.71: 遇到中英文识别模型不支持的字符，该如何对模型做微调？
 
-**A**：因为目前中英文识别模型的字符中没有包含罗马数字，所以需要通过以下步骤，完成识别模型的微调过程：
+**A**：如果希望识别中英文识别模型中不支持的字符，需要更新识别的字典，并完成微调过程。比如说如果希望模型能够进一步识别罗马数字，可以按照以下步骤完成模型微调过程。
 1. 准备中英文识别数据以及罗马数字的识别数据，用于训练，同时保证罗马数字和中英文识别数字的效果；
 2. 修改默认的字典文件，在后面添加罗马数字的字符；
 3. 下载PaddleOCR提供的预训练模型，配置预训练模型和数据的路径，开始训练。
 
 ### Q3.1.72: 文字识别主要有CRNN和Attention两种方式，但是在我们的说明文档中，CRNN有对应的论文，但是Attention没看到，这个具体在哪里呢？
 
-**A**：文字识别主要有CTC和Attention两种方式，基于CTC的算法有CRNN、Rosetta、StarNet，基于Attention的方法有RARE、其他的算法PaddleOCR里没有提供复现代码。论文的链接可以参考：[https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
+**A**：文字识别主要有CTC和Attention两种方式，基于CTC的算法有CRNN、Rosetta、StarNet，基于Attention的方法有RARE、其他的算法PaddleOCR里没有提供复现代码。论文的链接可以参考：[PaddleOCR文本识别算法教程文档](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
 
 
 
@@ -708,9 +708,9 @@ src_im= cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
 
 **A**：实验发现，使用贪心的方法去做解码，识别精度影响不大，但是速度方面的优势比较明显，因此PaddleOCR中使用贪心算法去做识别的解码。
 
-### Q3.1.71: 请教一下如何在现有中英文识别模型上增加对罗马数字的识别？
+### Q3.1.71: 遇到中英文识别模型不支持的字符，该如何对模型做微调？
 
-**A**：因为目前中英文识别模型的字符中没有包含罗马数字，所以需要通过以下步骤，完成识别模型的微调过程：
+**A**：如果希望识别中英文识别模型中不支持的字符，需要更新识别的字典，并完成微调过程。比如说如果希望模型能够进一步识别罗马数字，可以按照以下步骤完成模型微调过程。
 1. 准备中英文识别数据以及罗马数字的识别数据，用于训练，同时保证罗马数字和中英文识别数字的效果；
 2. 修改默认的字典文件，在后面添加罗马数字的字符；
 3. 下载PaddleOCR提供的预训练模型，配置预训练模型和数据的路径，开始训练。
@@ -718,7 +718,7 @@ src_im= cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
 
 ### Q3.1.72: 文字识别主要有CRNN和Attention两种方式，但是在我们的说明文档中，CRNN有对应的论文，但是Attention没看到，这个具体在哪里呢？
 
-**A**：文字识别主要有CTC和Attention两种方式，基于CTC的算法有CRNN、Rosetta、StarNet，基于Attention的方法有RARE、其他的算法PaddleOCR里没有提供复现代码。论文的链接可以参考：[https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
+**A**：文字识别主要有CTC和Attention两种方式，基于CTC的算法有CRNN、Rosetta、StarNet，基于Attention的方法有RARE、其他的算法PaddleOCR里没有提供复现代码。论文的链接可以参考：[PaddleOCR文本识别算法教程文档](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
 
 <a name="数据集3"></a>
 
