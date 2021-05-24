@@ -23,7 +23,7 @@ import base64
 import os
 
 client = PipelineClient()
-client.connect(['127.0.0.1:18090'])
+client.connect(['127.0.0.1:18091'])
 
 
 def cv2_to_base64(image):
@@ -39,4 +39,3 @@ for img_file in os.listdir(test_img_dir):
 for i in range(1):
     ret = client.predict(feed_dict={"image": image}, fetch=["res"])
     print(ret)
-    #print(ret)
