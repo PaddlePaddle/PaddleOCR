@@ -79,7 +79,7 @@ paddleocr -h
 
 * Whole image prediction (detection + recognition)
 
-Paddleocr currently supports 80 languages, which can be switched by modifying the --lang parameter.
+PaddleOCR currently supports 80 languages, which can be switched by modifying the --lang parameter.
 The specific supported [language](#language_abbreviations) can be viewed in the table.
 
 ``` bash
@@ -134,7 +134,7 @@ The result is a list, each item contains only text boxes
 <a name="python_script_running"></a>
 ### 2.2 Python Script Running
 
-PPocr also supports running in python scripts for easy embedding in your own code:
+PaddleOCR also supports running in python scripts for easy embedding in your own code:
 
 * Whole image prediction (detection + recognition)
 
@@ -172,7 +172,7 @@ ppocr also supports direction classification. For more usage methods, please ref
 <a name="Custom_training"></a>
 ## 3 Custom Training
 
-PPOCR supports using your own data for custom training or finetune, where the configuration file can refer to [French model](../../configs/rec/multi_language/rec_french_lite_train.yml)
+PaddleOCR supports using your own data for custom training or finetune, where the configuration file can refer to [French model](../../configs/rec/multi_language/rec_french_lite_train.yml)
 Modify the training data path, dictionary and other parameters.
 
 For specific data preparation and training process, please refer to: [Text Detection](../doc_en/detection_en.md), [Text Recognition](../doc_en/recognition_en.md), more functions such as predictive deployment,
