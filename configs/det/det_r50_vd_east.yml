@@ -7,11 +7,6 @@ Global:
   save_epoch_step: 1000
   # evaluation is run every 5000 iterations after the 4000th iteration
   eval_batch_step: [4000, 5000]
-  # 1. If pretrained_model is saved in static mode, such as classification pretrained model
-  #    from static branch, load_static_weights must be set as True.
-  # 2. If you want to finetune the pretrained models we provide in the docs,
-  #    you should set load_static_weights as False.
-  load_static_weights: True
   cal_metric_during_train: False
   pretrained_model: ./pretrain_models/ResNet50_vd_pretrained/
   checkpoints: 
