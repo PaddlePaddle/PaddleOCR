@@ -77,7 +77,7 @@ opencv3/
 
 #### 1.2.1 直接下载安装
 
-* [Paddle预测库官网](https://www.paddlepaddle.org.cn/documentation/docs/zh/advanced_guide/inference_deployment/inference/build_and_install_lib_cn.html)上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本（*建议选择paddle版本>=2.0.1版本的预测库* ）。
+* [Paddle预测库官网](https://www.paddlepaddle.org.cn/documentation/docs/zh/advanced_guide/inference_deployment/inference/build_and_install_lib_cn.html) 上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本（*建议选择paddle版本>=2.0.1版本的预测库* ）。
 
 * 下载之后使用下面的方法解压。
 
@@ -89,7 +89,7 @@ tar -xf paddle_inference.tgz
 
 #### 1.2.2 预测库源码编译
 * 如果希望获取最新预测库特性，可以从Paddle github上克隆最新代码，源码编译预测库。
-* 可以参考[Paddle预测库官网](https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/guides/05_inference_deployment/inference/build_and_install_lib_cn.html)的说明，从github上获取Paddle代码，然后进行编译，生成最新的预测库。使用git获取代码方法如下。
+* 可以参考[Paddle预测库官网](https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/guides/05_inference_deployment/inference/build_and_install_lib_cn.html) 的说明，从github上获取Paddle代码，然后进行编译，生成最新的预测库。使用git获取代码方法如下。
 
 ```shell
 git clone https://github.com/PaddlePaddle/Paddle.git
@@ -115,7 +115,7 @@ make -j
 make inference_lib_dist
 ```
 
-更多编译参数选项可以参考Paddle C++预测库官网：[https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/guides/05_inference_deployment/inference/build_and_install_lib_cn.html](https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/guides/05_inference_deployment/inference/build_and_install_lib_cn.html)。
+更多编译参数选项可以参考Paddle C++预测库官网：[https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/guides/05_inference_deployment/inference/build_and_install_lib_cn.html](https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/guides/05_inference_deployment/inference/build_and_install_lib_cn.html) 。
 
 
 * 编译完成之后，可以在`build/paddle_inference_install_dir/`文件下看到生成了以下文件及文件夹。
@@ -227,7 +227,10 @@ char_list_file ../../ppocr/utils/ppocr_keys_v1.txt # 字典文件
 visualize 1 # 是否对结果进行可视化，为1时，会在当前文件夹下保存文件名为`ocr_vis.png`的预测结果。
 ```
 
-* PaddleOCR也支持多语言的预测，更多支持的语言和模型可以参考[识别文档](../../doc/doc_ch/recognition.md)中的多语言字典与模型部分，如果希望进行多语言预测，只需将修改`tools/config.txt`中的`char_list_file`（字典文件路径）以及`rec_model_dir`（inference模型路径）字段即可。
+* PaddleOCR也支持多语言的预测，更多支持的语言和模型可以参考[识别文档](../../doc/doc_ch/recognition.md) 中的多语言字典与模型部分，
+如果希望进行多语言预测，只需将修改`tools/config.txt`中的`char_list_file`（字典文件路径）以及`rec_model_dir`（inference模型路径）字段即可。
+
+多语言模型和字典文件对应关系可以参考[文档](../../doc/doc_ch/multi_languages.md#预测部署)
 
 最终屏幕上会输出检测结果如下。
 
