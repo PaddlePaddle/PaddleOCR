@@ -20,7 +20,7 @@ Next, we first introduce how to convert a trained model into an inference model,
     - [2. DB Text Detection Model Inference](#DB_DETECTION)
     - [3. EAST Text Detection Model Inference](#EAST_DETECTION)
     - [4. SAST Text Detection Model Inference](#SAST_DETECTION)
-    - [5. Multilingual Model Inference](#Multilingual model inference)
+    - [5. Multilingual Model Inference](#MULTILINGUAL_MODEL_INFERENCE)
 
 - [TEXT RECOGNITION MODEL INFERENCE](#RECOGNITION_MODEL_INFERENCE)
     - [1. Lightweight Chinese Model](#LIGHTWEIGHT_RECOGNITION)
