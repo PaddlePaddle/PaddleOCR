@@ -244,13 +244,13 @@ The visualized text detection results are saved to the `./inference_results` fol
 <a name="RECOGNITION_MODEL_INFERENCE"></a>
 ## TEXT RECOGNITION MODEL INFERENCE
 
-The following will introduce the lightweight Chinese recognition model inference, other CTC-based and Attention-based text recognition models inference. For Chinese text recognition, it is recommended to choose the recognition model based on CTC loss. In practice, it is also found that the result of the model based on Attention loss is not as good as the one based on CTC loss. In addition, if the characters dictionary is modified during training, make sure that you use the same characters set during inferencing. Please check below for details.
+The following will introduce the lightweight English recognition model inference, other CTC-based and Attention-based text recognition models inference. For English text recognition, it is recommended to choose the recognition model based on CTC loss. In practice, it is also found that the result of the model based on Attention loss is not as good as the one based on CTC loss. In addition, if the characters dictionary is modified during training, make sure that you use the same characters set during inferencing. Please check below for details.
 
 
 <a name="LIGHTWEIGHT_RECOGNITION"></a>
 ### 1. LIGHTWEIGHT ENGLISH TEXT RECOGNITION MODEL REFERENCE
 
-For lightweight Chinese recognition model inference, you can execute the following commands:
+For lightweight English recognition model inference, you can execute the following commands:
 
 ```
 # download CRNN text recognition inference model
