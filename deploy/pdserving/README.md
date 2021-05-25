@@ -200,6 +200,15 @@ The recognition model is the same.
 Windows does not support Pipeline Serving, if we want to lauch paddle serving on Windows, we should use Web Service, for more infomation please refer to [Paddle Serving for Windows Users](https://github.com/PaddlePaddle/Serving/blob/develop/doc/WINDOWS_TUTORIAL.md)
 
 
+**WINDOWS user can only use version 0.5.0 CPU Mode**
+
+**Prepare Stage:**
+
+```
+pip3 install paddle-serving-server==0.5.0
+pip3 install paddle-serving-app==0.3.1
+```
+
 1. Start Server
 
 ```
