@@ -9,7 +9,7 @@
     - [English Recognition Model](#English)
     - [Multilingual Recognition Model](#Multilingual)
 - [3. Text Angle Classification Model](#Angle)
-- [4. Paddle-Lite Model](#Paddle-Lite Model)
+- [4. Paddle-Lite Model](#Paddle-Lite)
 
 The downloadable models provided by PaddleOCR include `inference model`, `trained model`, `pre-trained model` and `slim model`. The differences between the models are as follows:
 
@@ -123,6 +123,7 @@ For more supported languages, please refer to : [Multi-language model](./multi_l
 |ch_ppocr_mobile_slim_v2.0_cls|Slim quantized model|[cls_mv3.yml](../../configs/cls/cls_mv3.yml)| 2.1M | [inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_slim_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_slim_train.tar) |
 |ch_ppocr_mobile_v2.0_cls|Original model|[cls_mv3.yml](../../configs/cls/cls_mv3.yml)|1.38M|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |
 
+<a name="Paddle-Lite"></a>
 ### 4. Paddle-Lite Model
 |Version|Introduction|Model size|Detection model|Text Direction model|Recognition model|Paddle-Lite branch|
 |---|---|---|---|---|---|---|
