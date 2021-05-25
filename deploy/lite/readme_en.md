@@ -222,6 +222,7 @@ dict/japan_dict.txt      # japan
 dict/korean_dict.txt     # korean
 ppocr_keys_v1.txt   # chinese
 ```
+For more language model and dictionary file correspondence, please refer to [Document](../../doc/doc_en/multi_languages_en.md#inference)
 
 2.  `config.txt` of the detector and classifier, as shown below:
 ```
@@ -237,7 +238,8 @@ use_direction_classify  0  # Whether to use the direction classifier, 0 means no
 After the above steps are completed, you can use adb to push the file to the phone to run, the steps are as follows:
 
  ```
- # Execute the compilation and get the executable file ocr_db_crnn
+ # Execute the compilation and get the executable file ocr_db_crnn.
+ # The first execution of this command will download dependent libraries such as opencv. After the download is complete, you need to execute it again
  make -j
  # Move the compiled executable file to the debug folder
  mv ocr_db_crnn ./debug/

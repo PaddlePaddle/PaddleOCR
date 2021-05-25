@@ -183,11 +183,28 @@ ppocr 支持使用自己的数据进行自定义训练或finetune, 其中识别�
 ## 4 预测部署
 
 除了安装whl包进行快速预测，ppocr 也提供了多种预测部署方式，如有需求可阅读相关文档：
+
+部署教程默认使用中文模型，如需使用其他语种模型，请自行替换模型文件和字典：
+
+|模型名称|字典文件|模型简介|配置文件|下载地址|
+| --- | --- | --- | --- | --- |
+| french_mobile_v2.0_rec | ppocr/utils/dict/french_dict.txt | 法文识别 | [rec_french_lite_train.yml](../../configs/rec/multi_language/rec_french_lite_train.yml) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/french_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/french_mobile_v2.0_rec_train.tar) |
+| german_mobile_v2.0_rec | ppocr/utils/dict/german_dict.txt |德文识别|[rec_german_lite_train.yml](../../configs/rec/multi_language/rec_german_lite_train.yml)|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/german_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/german_mobile_v2.0_rec_train.tar) |
+| korean_mobile_v2.0_rec | ppocr/utils/dict/korean_dict.txt |韩文识别|[rec_korean_lite_train.yml](../../configs/rec/multi_language/rec_korean_lite_train.yml)|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/korean_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/korean_mobile_v2.0_rec_train.tar) |
+| japan_mobile_v2.0_rec | ppocr/utils/dict/japan_dict.txt |日文识别|[rec_japan_lite_train.yml](../../configs/rec/multi_language/rec_japan_lite_train.yml)|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/japan_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/japan_mobile_v2.0_rec_train.tar) |
+| chinese_cht_mobile_v2.0_rec | ppocr/utils/dict/chinese_cht_dict.txt | 中文繁体识别|rec_chinese_cht_lite_train.yml|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/chinese_cht_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/chinese_cht_mobile_v2.0_rec_train.tar) |
+| te_mobile_v2.0_rec | ppocr/utils/dict/te_dict.txt | 泰卢固文识别|rec_te_lite_train.yml|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/te_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/te_mobile_v2.0_rec_train.tar) |
+| ka_mobile_v2.0_rec | ppocr/utils/dict/ka_dict.txt |卡纳达文识别|rec_ka_lite_train.yml|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ka_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ka_mobile_v2.0_rec_train.tar) |
+| ta_mobile_v2.0_rec | ppocr/utils/dict/ta_dict.txt |泰米尔文识别|rec_ta_lite_train.yml|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ta_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ta_mobile_v2.0_rec_train.tar) |
+| latin_mobile_v2.0_rec |  ppocr/utils/dict/latin_dict.txt | 拉丁文识别 |  [rec_latin_lite_train.yml](../../configs/rec/multi_language/rec_latin_lite_train.yml) |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/latin_ppocr_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/latin_ppocr_mobile_v2.0_rec_train.tar) |
+| arabic_mobile_v2.0_rec | ppocr/utils/dict/arabic_dict.txt | 阿拉伯字母 | [rec_arabic_lite_train.yml](../../configs/rec/multi_language/rec_arabic_lite_train.yml) |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/arabic_ppocr_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/arabic_ppocr_mobile_v2.0_rec_train.tar) |
+| cyrillic_mobile_v2.0_rec | ppocr/utils/dict/cyrillic_dict.txt | 斯拉夫字母 | [rec_cyrillic_lite_train.yml](../../configs/rec/multi_language/rec_cyrillic_lite_train.yml) |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/cyrillic_ppocr_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/cyrillic_ppocr_mobile_v2.0_rec_train.tar) |
+| devanagari_mobile_v2.0_rec | ppocr/utils/dict/devanagari_dict.txt |梵文字母 | [rec_devanagari_lite_train.yml](../../configs/rec/multi_language/rec_devanagari_lite_train.yml) |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/devanagari_ppocr_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/devanagari_ppocr_mobile_v2.0_rec_train.tar) |
+
 - [基于Python脚本预测引擎推理](./inference.md)
 - [基于C++预测引擎推理](../../deploy/cpp_infer/readme.md)
 - [服务化部署](../../deploy/hubserving/readme.md)
 - [端侧部署](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme.md)
-- [Benchmark](./benchmark.md)
 
 
 
