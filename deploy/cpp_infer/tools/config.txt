@@ -1,5 +1,5 @@
 # model load config
-use_gpu 1
+use_gpu 0
 gpu_id  0
 gpu_mem  4000
 cpu_math_library_num_threads  10

@@ -51,7 +51,6 @@ int main(int argc, char **argv) {
 
   std::string img_path(argv[2]);
   std::vector<std::string> all_img_names;
-  // cv::Mat srcimg = cv::imread(img_path, cv::IMREAD_COLOR);
   Utility::GetAllFiles((char *)img_path.c_str(), all_img_names);
 
   DBDetector det(config.det_model_dir, config.use_gpu, config.gpu_id,
