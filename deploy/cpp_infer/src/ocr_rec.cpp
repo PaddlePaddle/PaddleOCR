@@ -88,6 +88,10 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
       std::cout << str_res[i];
     }
     std::cout << "\tscore: " << score << std::endl;
+    auto box = boxes[i];
+    std::cout << "box: " << box[0][0] << "  " << box[0][1] << "  " << box[1][0]
+              << "  " << box[1][1] << "  " << box[2][0] << "  " << box[2][1]
+              << "  " << box[3][0] << "  " << box[3][1] << "  " << std::endl;
   }
 }
 
