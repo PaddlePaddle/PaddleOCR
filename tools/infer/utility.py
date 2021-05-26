@@ -23,87 +23,288 @@ import math
 from paddle import inference
 
 
-def parse_args():
-    def str2bool(v):
-        return v.lower() in ("true", "t", "1")
+def str2bool(v):
+    return v.lower() in ("true", "t", "1")
 
-    parser = argparse.ArgumentParser()
+
+inference_args_list = [
     # params for prediction engine
-    parser.add_argument("--use_gpu", type=str2bool, default=True)
-    parser.add_argument("--ir_optim", type=str2bool, default=True)
-    parser.add_argument("--use_tensorrt", type=str2bool, default=False)
-    parser.add_argument("--use_fp16", type=str2bool, default=False)
-    parser.add_argument("--gpu_mem", type=int, default=500)
-
+    {
+        'name': 'use_gpu',
+        'type': str2bool,
+        'default': True
+    },
+    {
+        'name': 'ir_optim',
+        'type': str2bool,
+        'default': True
+    },
+    {
+        'name': 'use_tensorrt',
+        'type': str2bool,
+        'default': False
+    },
+    {
+        'name': 'use_fp16',
+        'type': str2bool,
+        'default': False
+    },
+    {
+        'name': 'enable_mkldnn',
+        'type': str2bool,
+        'default': False
+    },
+    {
+        'name': 'use_pdserving',
+        'type': str2bool,
+        'default': False
+    },
+    {
+        'name': 'use_mp',
+        'type': str2bool,
+        'default': False
+    },
+    {
+        'name': 'total_process_num',
+        'type': int,
+        'default': 1
+    },
+    {
+        'name': 'process_id',
+        'type': int,
+        'default': 0
+    },
+    {
+        'name': 'gpu_mem',
+        'type': int,
+        'default': 500
+    },
     # params for text detector
-    parser.add_argument("--image_dir", type=str)
-    parser.add_argument("--det_algorithm", type=str, default='DB')
-    parser.add_argument("--det_model_dir", type=str)
-    parser.add_argument("--det_limit_side_len", type=float, default=960)
-    parser.add_argument("--det_limit_type", type=str, default='max')
-
+    {
+        'name': 'image_dir',
+        'type': str,
+        'default': None
+    },
+    {
+        'name': 'det_algorithm',
+        'type': str,
+        'default': 'DB'
+    },
+    {
+        'name': 'det_model_dir',
+        'type': str,
+        'default': None
+    },
+    {
+        'name': 'det_limit_side_len',
+        'type': float,
+        'default': 960
+    },
+    {
+        'name': 'det_limit_type',
+        'type': str,
+        'default': 'max'
+    },
     # DB parmas
-    parser.add_argument("--det_db_thresh", type=float, default=0.3)
-    parser.add_argument("--det_db_box_thresh", type=float, default=0.5)
-    parser.add_argument("--det_db_unclip_ratio", type=float, default=1.6)
-    parser.add_argument("--max_batch_size", type=int, default=10)
-    parser.add_argument("--use_dilation", type=bool, default=False)
-    parser.add_argument("--det_db_score_mode", type=str, default="fast")
+    {
+        'name': 'det_db_thresh',
+        'type': float,
+        'default': 0.3
+    },
+    {
+        'name': 'det_db_box_thresh',
+        'type': float,
+        'default': 0.5
+    },
+    {
+        'name': 'det_db_unclip_ratio',
+        'type': float,
+        'default': 1.6
+    },
+    {
+        'name': 'max_batch_size',
+        'type': int,
+        'default': 10
+    },
+    {
+        'name': 'use_dilation',
+        'type': str2bool,
+        'default': False
+    },
+    {
+        'name': 'det_db_score_mode',
+        'type': str,
+        'default': 'fast'
+    },
     # EAST parmas
-    parser.add_argument("--det_east_score_thresh", type=float, default=0.8)
-    parser.add_argument("--det_east_cover_thresh", type=float, default=0.1)
-    parser.add_argument("--det_east_nms_thresh", type=float, default=0.2)
-
+    {
+        'name': 'det_east_score_thresh',
+        'type': float,
+        'default': 0.8
+    },
+    {
+        'name': 'det_east_cover_thresh',
+        'type': float,
+        'default': 0.1
+    },
+    {
+        'name': 'det_east_nms_thresh',
+        'type': float,
+        'default': 0.2
+    },
     # SAST parmas
-    parser.add_argument("--det_sast_score_thresh", type=float, default=0.5)
-    parser.add_argument("--det_sast_nms_thresh", type=float, default=0.2)
-    parser.add_argument("--det_sast_polygon", type=bool, default=False)
-
+    {
+        'name': 'det_sast_score_thresh',
+        'type': float,
+        'default': 0.5
+    },
+    {
+        'name': 'det_sast_nms_thresh',
+        'type': float,
+        'default': 0.2
+    },
+    {
+        'name': 'det_sast_polygon',
+        'type': str2bool,
+        'default': False
+    },
     # params for text recognizer
-    parser.add_argument("--rec_algorithm", type=str, default='CRNN')
-    parser.add_argument("--rec_model_dir", type=str)
-    parser.add_argument("--rec_image_shape", type=str, default="3, 32, 320")
-    parser.add_argument("--rec_char_type", type=str, default='ch')
-    parser.add_argument("--rec_batch_num", type=int, default=6)
-    parser.add_argument("--max_text_length", type=int, default=25)
-    parser.add_argument(
-        "--rec_char_dict_path",
-        type=str,
-        default="./ppocr/utils/ppocr_keys_v1.txt")
-    parser.add_argument("--use_space_char", type=str2bool, default=True)
-    parser.add_argument(
-        "--vis_font_path", type=str, default="./doc/fonts/simfang.ttf")
-    parser.add_argument("--drop_score", type=float, default=0.5)
-
+    {
+        'name': 'rec_algorithm',
+        'type': str,
+        'default': 'CRNN'
+    },
+    {
+        'name': 'rec_model_dir',
+        'type': str,
+        'default': None
+    },
+    {
+        'name': 'rec_image_shape',
+        'type': str,
+        'default': '3, 32, 320'
+    },
+    {
+        'name': 'rec_char_type',
+        'type': str,
+        'default': "ch"
+    },
+    {
+        'name': 'rec_batch_num',
+        'type': int,
+        'default': 6
+    },
+    {
+        'name': 'max_text_length',
+        'type': int,
+        'default': 25
+    },
+    {
+        'name': 'rec_char_dict_path',
+        'type': str,
+        'default': './ppocr/utils/ppocr_keys_v1.txt'
+    },
+    {
+        'name': 'use_space_char',
+        'type': str2bool,
+        'default': True
+    },
+    {
+        'name': 'vis_font_path',
+        'type': str,
+        'default': './doc/fonts/simfang.ttf'
+    },
+    {
+        'name': 'drop_score',
+        'type': float,
+        'default': 0.5
+    },
     # params for e2e
-    parser.add_argument("--e2e_algorithm", type=str, default='PGNet')
-    parser.add_argument("--e2e_model_dir", type=str)
-    parser.add_argument("--e2e_limit_side_len", type=float, default=768)
-    parser.add_argument("--e2e_limit_type", type=str, default='max')
-
+    {
+        'name': 'e2e_algorithm',
+        'type': str,
+        'default': 'PGNet'
+    },
+    {
+        'name': 'e2e_model_dir',
+        'type': str,
+        'default': None
+    },
+    {
+        'name': 'e2e_limit_side_len',
+        'type': float,
+        'default': 768
+    },
+    {
+        'name': 'e2e_limit_type',
+        'type': str,
+        'default': 'max'
+    },
     # PGNet parmas
-    parser.add_argument("--e2e_pgnet_score_thresh", type=float, default=0.5)
-    parser.add_argument(
-        "--e2e_char_dict_path", type=str, default="./ppocr/utils/ic15_dict.txt")
-    parser.add_argument("--e2e_pgnet_valid_set", type=str, default='totaltext')
-    parser.add_argument("--e2e_pgnet_polygon", type=bool, default=True)
-    parser.add_argument("--e2e_pgnet_mode", type=str, default='fast')
-
+    {
+        'name': 'e2e_pgnet_score_thresh',
+        'type': float,
+        'default': 0.5
+    },
+    {
+        'name': 'e2e_char_dict_path',
+        'type': str,
+        'default': './ppocr/utils/ic15_dict.txt'
+    },
+    {
+        'name': 'e2e_pgnet_valid_set',
+        'type': str,
+        'default': 'totaltext'
+    },
+    {
+        'name': 'e2e_pgnet_polygon',
+        'type': str2bool,
+        'default': True
+    },
+    {
+        'name': 'e2e_pgnet_mode',
+        'type': str,
+        'default': 'fast'
+    },
     # params for text classifier
-    parser.add_argument("--use_angle_cls", type=str2bool, default=False)
-    parser.add_argument("--cls_model_dir", type=str)
-    parser.add_argument("--cls_image_shape", type=str, default="3, 48, 192")
-    parser.add_argument("--label_list", type=list, default=['0', '180'])
-    parser.add_argument("--cls_batch_num", type=int, default=6)
-    parser.add_argument("--cls_thresh", type=float, default=0.9)
+    {
+        'name': 'use_angle_cls',
+        'type': str2bool,
+        'default': False
+    },
+    {
+        'name': 'cls_model_dir',
+        'type': str,
+        'default': None
+    },
+    {
+        'name': 'cls_image_shape',
+        'type': str,
+        'default': '3, 48, 192'
+    },
+    {
+        'name': 'label_list',
+        'type': list,
+        'default': ['0', '180']
+    },
+    {
+        'name': 'cls_batch_num',
+        'type': int,
+        'default': 6
+    },
+    {
+        'name': 'cls_thresh',
+        'type': float,
+        'default': 0.9
+    },
+]
 
-    parser.add_argument("--enable_mkldnn", type=str2bool, default=False)
-    parser.add_argument("--use_pdserving", type=str2bool, default=False)
 
-    parser.add_argument("--use_mp", type=str2bool, default=False)
-    parser.add_argument("--total_process_num", type=int, default=1)
-    parser.add_argument("--process_id", type=int, default=0)
-
+def parse_args():
+    parser = argparse.ArgumentParser()
+    for item in inference_args_list:
+        parser.add_argument(
+            '--' + item['name'], type=item['type'], default=item['default'])
     return parser.parse_args()
 
 
@@ -146,7 +347,7 @@ def create_predictor(args, mode, logger):
             config.set_mkldnn_cache_capacity(10)
             config.enable_mkldnn()
             #  TODO LDOUBLEV: fix mkldnn bug when bach_size  > 1
-            #config.set_mkldnn_op({'conv2d', 'depthwise_conv2d', 'pool2d', 'batch_norm'})
+            # config.set_mkldnn_op({'conv2d', 'depthwise_conv2d', 'pool2d', 'batch_norm'})
             args.rec_batch_num = 1
 
     # enable memory optim

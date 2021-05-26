@@ -59,7 +59,7 @@ Visualization of results
 from paddleocr import PaddleOCR,draw_ocr
 ocr = PaddleOCR(lang='en') # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs_en/img_12.jpg'
-result = ocr.ocr(img_path)
+result = ocr.ocr(img_path, cls=False)
 for line in result:
     print(line)
 
