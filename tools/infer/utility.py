@@ -21,6 +21,9 @@ import json
 from PIL import Image, ImageDraw, ImageFont
 import math
 from paddle import inference
+import time
+from ppocr.utils.logging import get_logger
+logger = get_logger()
 
 
 def parse_args():
@@ -32,7 +35,7 @@ def parse_args():
     parser.add_argument("--use_gpu", type=str2bool, default=True)
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
-    parser.add_argument("--use_fp16", type=str2bool, default=False)
+    parser.add_argument("--precision", type=str, default="fp32")
     parser.add_argument("--gpu_mem", type=int, default=500)
 
     # params for text detector
@@ -98,13 +101,86 @@ def parse_args():
     parser.add_argument("--cls_thresh", type=float, default=0.9)
 
     parser.add_argument("--enable_mkldnn", type=str2bool, default=False)
+    parser.add_argument("--cpu_threads", type=int, default=10)
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
 
     parser.add_argument("--use_mp", type=str2bool, default=False)
     parser.add_argument("--total_process_num", type=int, default=1)
     parser.add_argument("--process_id", type=int, default=0)
 
+    parser.add_argument("--benchmark", type=bool, default=False)
+    parser.add_argument("--save_log_path", type=str, default="./log_output/")
     return parser.parse_args()
+
+
+class Times(object):
+    def __init__(self):
+        self.time = 0.
+        self.st = 0.
+        self.et = 0.
+
+    def start(self):
+        self.st = time.time()
+
+    def end(self, accumulative=True):
+        self.et = time.time()
+        if accumulative:
+            self.time += self.et - self.st
+        else:
+            self.time = self.et - self.st
+
+    def reset(self):
+        self.time = 0.
+        self.st = 0.
+        self.et = 0.
+
+    def value(self):
+        return round(self.time, 4)
+
+
+class Timer(Times):
+    def __init__(self):
+        super(Timer, self).__init__()
+        self.total_time = Times()
+        self.preprocess_time = Times()
+        self.inference_time = Times()
+        self.postprocess_time = Times()
+        self.img_num = 0
+
+    def info(self, average=False):
+        logger.info("----------------------- Perf info -----------------------")
+        logger.info("total_time: {}, img_num: {}".format(self.total_time.value(
+        ), self.img_num))
+        preprocess_time = round(self.preprocess_time.value() / self.img_num,
+                                4) if average else self.preprocess_time.value()
+        postprocess_time = round(
+            self.postprocess_time.value() / self.img_num,
+            4) if average else self.postprocess_time.value()
+        inference_time = round(self.inference_time.value() / self.img_num,
+                               4) if average else self.inference_time.value()
+
+        average_latency = self.total_time.value() / self.img_num
+        logger.info("average_latency(ms): {:.2f}, QPS: {:2f}".format(
+            average_latency * 1000, 1 / average_latency))
+        logger.info(
+            "preprocess_latency(ms): {:.2f}, inference_latency(ms): {:.2f}, postprocess_latency(ms): {:.2f}".
+            format(preprocess_time * 1000, inference_time * 1000,
+                   postprocess_time * 1000))
+
+    def report(self, average=False):
+        dic = {}
+        dic['preprocess_time'] = round(
+            self.preprocess_time.value() / self.img_num,
+            4) if average else self.preprocess_time.value()
+        dic['postprocess_time'] = round(
+            self.postprocess_time.value() / self.img_num,
+            4) if average else self.postprocess_time.value()
+        dic['inference_time'] = round(
+            self.inference_time.value() / self.img_num,
+            4) if average else self.inference_time.value()
+        dic['img_num'] = self.img_num
+        dic['total_time'] = round(self.total_time.value(), 4)
+        return dic
 
 
 def create_predictor(args, mode, logger):
@@ -131,6 +207,16 @@ def create_predictor(args, mode, logger):
 
     config = inference.Config(model_file_path, params_file_path)
 
+    if hasattr(args, 'precision'):
+        if args.precision == "fp16" and args.use_tensorrt:
+            precision = inference.PrecisionType.Half
+        elif args.precision == "int8":
+            precision = inference.PrecisionType.Int8
+        else:
+            precision = inference.PrecisionType.Float32
+    else:
+        precision = inference.PrecisionType.Float32
+
     if args.use_gpu:
         config.enable_use_gpu(args.gpu_mem, 0)
         if args.use_tensorrt:
@@ -140,7 +226,10 @@ def create_predictor(args, mode, logger):
                 max_batch_size=args.max_batch_size)
     else:
         config.disable_gpu()
-        config.set_cpu_math_library_num_threads(6)
+        if hasattr(args, "cpu_threads"):
+            config.set_cpu_math_library_num_threads(args.cpu_threads)
+        else:
+            config.set_cpu_math_library_num_threads(10)
         if args.enable_mkldnn:
             # cache 10 different shapes for mkldnn to avoid memory leak
             config.set_mkldnn_cache_capacity(10)
@@ -166,7 +255,7 @@ def create_predictor(args, mode, logger):
     for output_name in output_names:
         output_tensor = predictor.get_output_handle(output_name)
         output_tensors.append(output_tensor)
-    return predictor, input_tensor, output_tensors
+    return predictor, input_tensor, output_tensors, config
 
 
 def draw_e2e_res(dt_boxes, strs, img_path):
@@ -415,6 +504,31 @@ def draw_boxes(image, boxes, scores=None, drop_score=0.5):
         box = np.reshape(np.array(box), [-1, 1, 2]).astype(np.int64)
         image = cv2.polylines(np.array(image), [box], True, (255, 0, 0), 2)
     return image
+
+
+def get_current_memory_mb(gpu_id=None):
+    """
+    It is used to Obtain the memory usage of the CPU and GPU during the running of the program.
+    And this function Current program is time-consuming.
+    """
+    import pynvml
+    import psutil
+    import GPUtil
+    pid = os.getpid()
+    p = psutil.Process(pid)
+    info = p.memory_full_info()
+    cpu_mem = info.uss / 1024. / 1024.
+    gpu_mem = 0
+    gpu_percent = 0
+    if gpu_id is not None:
+        GPUs = GPUtil.getGPUs()
+        gpu_load = GPUs[gpu_id].load
+        gpu_percent = gpu_load
+        pynvml.nvmlInit()
+        handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+        meminfo = pynvml.nvmlDeviceGetMemoryInfo(handle)
+        gpu_mem = meminfo.used / 1024. / 1024.
+    return round(cpu_mem, 4), round(gpu_mem, 4), round(gpu_percent, 4)
 
 
 if __name__ == '__main__':
