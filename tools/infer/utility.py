@@ -497,22 +497,4 @@ def draw_boxes(image, boxes, scores=None, drop_score=0.5):
 
 
 if __name__ == '__main__':
-    test_img = "./doc/test_v2"
-    predict_txt = "./doc/predict.txt"
-    f = open(predict_txt, 'r')
-    data = f.readlines()
-    img_path, anno = data[0].strip().split('\t')
-    img_name = os.path.basename(img_path)
-    img_path = os.path.join(test_img, img_name)
-    image = Image.open(img_path)
-
-    data = json.loads(anno)
-    boxes, txts, scores = [], [], []
-    for dic in data:
-        boxes.append(dic['points'])
-        txts.append(dic['transcription'])
-        scores.append(round(dic['scores'], 3))
-
-    new_img = draw_ocr(image, boxes, txts, scores)
-
-    cv2.imwrite(img_name, new_img)
+    pass
