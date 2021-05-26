@@ -224,8 +224,8 @@ def create_predictor(args, mode, logger):
         if hasattr(args, "cpu_threads"):
             config.set_cpu_math_library_num_threads(args.cpu_threads)
         else:
-            config.set_cpu_math_library_num_threads(
-                10)  # default cpu threads as 10
+            # default cpu threads as 10
+            config.set_cpu_math_library_num_threads(10)
         if args.enable_mkldnn:
             # cache 10 different shapes for mkldnn to avoid memory leak
             config.set_mkldnn_cache_capacity(10)
