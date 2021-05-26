@@ -88,12 +88,7 @@ int main(int argc, char **argv) {
     std::vector<std::vector<std::vector<int>>> boxes;
 
     det.Run(srcimg, boxes);
-    // for (auto box : boxes){
-    //   std::cout << "box: " << box[0][0] << "  " << box[0][1] << "  "
-    //             << box[1][0] << "  " << box[1][1] << "  "
-    //             << box[2][0] << "  " << box[2][1] << "  "
-    //             << box[3][0] << "  " << box[3][1] << "  " << std::endl;
-    // }
+
     rec.Run(boxes, srcimg, cls);
     auto end = std::chrono::system_clock::now();
     auto duration =
