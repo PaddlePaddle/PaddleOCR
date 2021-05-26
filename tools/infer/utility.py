@@ -215,7 +215,7 @@ def draw_ocr(image,
              txts=None,
              scores=None,
              drop_score=0.5,
-             font_path="./doc/simfang.ttf"):
+             font_path="./doc/fonts/simfang.ttf"):
     """
     Visualize the results of OCR detection and recognition
     args:
