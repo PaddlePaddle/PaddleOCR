@@ -170,32 +170,20 @@ def maybe_download(model_storage_directory, url):
 def parse_args_whl(mMain=True):
     import argparse
     extend_args_list = [
-        {
-            'name': 'lang',
-            'type': str,
-            'default': 'ch'
-        },
-        {
-            'name': 'det',
-            'type': str2bool,
-            'default': True
-        },
-        {
-            'name': 'rec',
-            'type': str2bool,
-            'default': True
-        },
+        ['lang', str, 'ch'],
+        ['det', str2bool, True],
+        ['rec', str2bool, True],
     ]
     for item in inference_args_list:
-        if item['name'] == 'rec_char_dict_path':
-            item['default'] = None
+        if item[0] == 'rec_char_dict_path':
+            item[2] = None
     inference_args_list.extend(extend_args_list)
     if mMain:
         return parse_args()
     else:
         inference_args_dict = {}
         for item in inference_args_list:
-            inference_args_dict[item['name']] = item['default']
+            inference_args_dict[item[0]] = item[2]
         return argparse.Namespace(**inference_args_dict)
 
 

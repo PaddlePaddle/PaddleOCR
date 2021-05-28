@@ -28,283 +28,75 @@ def str2bool(v):
 
 
 inference_args_list = [
+    # name     type      defalue
     # params for prediction engine
-    {
-        'name': 'use_gpu',
-        'type': str2bool,
-        'default': True
-    },
-    {
-        'name': 'ir_optim',
-        'type': str2bool,
-        'default': True
-    },
-    {
-        'name': 'use_tensorrt',
-        'type': str2bool,
-        'default': False
-    },
-    {
-        'name': 'use_fp16',
-        'type': str2bool,
-        'default': False
-    },
-    {
-        'name': 'enable_mkldnn',
-        'type': str2bool,
-        'default': False
-    },
-    {
-        'name': 'use_pdserving',
-        'type': str2bool,
-        'default': False
-    },
-    {
-        'name': 'use_mp',
-        'type': str2bool,
-        'default': False
-    },
-    {
-        'name': 'total_process_num',
-        'type': int,
-        'default': 1
-    },
-    {
-        'name': 'process_id',
-        'type': int,
-        'default': 0
-    },
-    {
-        'name': 'gpu_mem',
-        'type': int,
-        'default': 500
-    },
+    ['use_gpu', str2bool, True],
+    ['use_tensorrt', str2bool, False],
+    ['use_fp16', str2bool, False],
+    ['use_pdserving', str2bool, False],
+    ['use_mp', str2bool, False],
+    ['enable_mkldnn', str2bool, False],
+    ['ir_optim', str2bool, True],
+    ['total_process_num', int, 1],
+    ['process_id', int, 0],
+    ['gpu_mem', int, 500],
     # params for text detector
-    {
-        'name': 'image_dir',
-        'type': str,
-        'default': None
-    },
-    {
-        'name': 'det_algorithm',
-        'type': str,
-        'default': 'DB'
-    },
-    {
-        'name': 'det_model_dir',
-        'type': str,
-        'default': None
-    },
-    {
-        'name': 'det_limit_side_len',
-        'type': float,
-        'default': 960
-    },
-    {
-        'name': 'det_limit_type',
-        'type': str,
-        'default': 'max'
-    },
+    ['image_dir', str, None],
+    ['det_algorithm', str, 'DB'],
+    ['det_model_dir', str, None],
+    ['det_limit_side_len', float, 960],
+    ['det_limit_type', str, 'max'],
     # DB parmas
-    {
-        'name': 'det_db_thresh',
-        'type': float,
-        'default': 0.3
-    },
-    {
-        'name': 'det_db_box_thresh',
-        'type': float,
-        'default': 0.5
-    },
-    {
-        'name': 'det_db_unclip_ratio',
-        'type': float,
-        'default': 1.6
-    },
-    {
-        'name': 'max_batch_size',
-        'type': int,
-        'default': 10
-    },
-    {
-        'name': 'use_dilation',
-        'type': str2bool,
-        'default': False
-    },
-    {
-        'name': 'det_db_score_mode',
-        'type': str,
-        'default': 'fast'
-    },
+    ['det_db_thresh', float, 0.3],
+    ['det_db_box_thresh', float, 0.5],
+    ['det_db_unclip_ratio', float, 1.6],
+    ['max_batch_size', int, 10],
+    ['use_dilation', str2bool, False],
+    ['det_db_score_mode', str, 'fast'],
     # EAST parmas
-    {
-        'name': 'det_east_score_thresh',
-        'type': float,
-        'default': 0.8
-    },
-    {
-        'name': 'det_east_cover_thresh',
-        'type': float,
-        'default': 0.1
-    },
-    {
-        'name': 'det_east_nms_thresh',
-        'type': float,
-        'default': 0.2
-    },
+    ['det_east_score_thresh', float, 0.8],
+    ['det_east_cover_thresh', float, 0.1],
+    ['det_east_nms_thresh', float, 0.2],
     # SAST parmas
-    {
-        'name': 'det_sast_score_thresh',
-        'type': float,
-        'default': 0.5
-    },
-    {
-        'name': 'det_sast_nms_thresh',
-        'type': float,
-        'default': 0.2
-    },
-    {
-        'name': 'det_sast_polygon',
-        'type': str2bool,
-        'default': False
-    },
+    ['det_sast_score_thresh', float, 0.5],
+    ['det_sast_nms_thresh', float, 0.2],
+    ['det_sast_polygon', str2bool, False],
     # params for text recognizer
-    {
-        'name': 'rec_algorithm',
-        'type': str,
-        'default': 'CRNN'
-    },
-    {
-        'name': 'rec_model_dir',
-        'type': str,
-        'default': None
-    },
-    {
-        'name': 'rec_image_shape',
-        'type': str,
-        'default': '3, 32, 320'
-    },
-    {
-        'name': 'rec_char_type',
-        'type': str,
-        'default': "ch"
-    },
-    {
-        'name': 'rec_batch_num',
-        'type': int,
-        'default': 6
-    },
-    {
-        'name': 'max_text_length',
-        'type': int,
-        'default': 25
-    },
-    {
-        'name': 'rec_char_dict_path',
-        'type': str,
-        'default': './ppocr/utils/ppocr_keys_v1.txt'
-    },
-    {
-        'name': 'use_space_char',
-        'type': str2bool,
-        'default': True
-    },
-    {
-        'name': 'vis_font_path',
-        'type': str,
-        'default': './doc/fonts/simfang.ttf'
-    },
-    {
-        'name': 'drop_score',
-        'type': float,
-        'default': 0.5
-    },
+    ['rec_algorithm', str, 'CRNN'],
+    ['rec_model_dir', str, None],
+    ['rec_image_shape', str, '3, 32, 320'],
+    ['rec_char_type', str, "ch"],
+    ['rec_batch_num', int, 6],
+    ['max_text_length', int, 25],
+    ['rec_char_dict_path', str, './ppocr/utils/ppocr_keys_v1.txt'],
+    ['use_space_char', str2bool, True],
+    ['vis_font_path', str, './doc/fonts/simfang.ttf'],
+    ['drop_score', float, 0.5],
     # params for e2e
-    {
-        'name': 'e2e_algorithm',
-        'type': str,
-        'default': 'PGNet'
-    },
-    {
-        'name': 'e2e_model_dir',
-        'type': str,
-        'default': None
-    },
-    {
-        'name': 'e2e_limit_side_len',
-        'type': float,
-        'default': 768
-    },
-    {
-        'name': 'e2e_limit_type',
-        'type': str,
-        'default': 'max'
-    },
+    ['e2e_algorithm', str, 'PGNet'],
+    ['e2e_model_dir', str, None],
+    ['e2e_limit_side_len', float, 768],
+    ['e2e_limit_type', str, 'max'],
     # PGNet parmas
-    {
-        'name': 'e2e_pgnet_score_thresh',
-        'type': float,
-        'default': 0.5
-    },
-    {
-        'name': 'e2e_char_dict_path',
-        'type': str,
-        'default': './ppocr/utils/ic15_dict.txt'
-    },
-    {
-        'name': 'e2e_pgnet_valid_set',
-        'type': str,
-        'default': 'totaltext'
-    },
-    {
-        'name': 'e2e_pgnet_polygon',
-        'type': str2bool,
-        'default': True
-    },
-    {
-        'name': 'e2e_pgnet_mode',
-        'type': str,
-        'default': 'fast'
-    },
+    ['e2e_pgnet_score_thresh', float, 0.5],
+    ['e2e_char_dict_path', str, './ppocr/utils/ic15_dict.txt'],
+    ['e2e_pgnet_valid_set', str, 'totaltext'],
+    ['e2e_pgnet_polygon', str2bool, True],
+    ['e2e_pgnet_mode', str, 'fast'],
     # params for text classifier
-    {
-        'name': 'use_angle_cls',
-        'type': str2bool,
-        'default': False
-    },
-    {
-        'name': 'cls_model_dir',
-        'type': str,
-        'default': None
-    },
-    {
-        'name': 'cls_image_shape',
-        'type': str,
-        'default': '3, 48, 192'
-    },
-    {
-        'name': 'label_list',
-        'type': list,
-        'default': ['0', '180']
-    },
-    {
-        'name': 'cls_batch_num',
-        'type': int,
-        'default': 6
-    },
-    {
-        'name': 'cls_thresh',
-        'type': float,
-        'default': 0.9
-    },
+    ['use_angle_cls', str2bool, False],
+    ['cls_model_dir', str, None],
+    ['cls_image_shape', str, '3, 48, 192'],
+    ['label_list', list, ['0', '180']],
+    ['cls_batch_num', int, 6],
+    ['cls_thresh', float, 0.9],
 ]
 
 
 def parse_args():
     parser = argparse.ArgumentParser()
     for item in inference_args_list:
-        parser.add_argument(
-            '--' + item['name'], type=item['type'], default=item['default'])
+        parser.add_argument('--' + item[0], type=item[1], default=item[2])
     return parser.parse_args()
 
 
