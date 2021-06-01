@@ -55,7 +55,7 @@ ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], 
 提供的标注文件格式如上，中间用"\t"分隔，不是四个空格分隔。
 
 如果是训练期间报错了，需要检查下是不是遇到了异常数据，或者是共享内存不足导致了这个问题，可以使用tools/train.py中的test_reader进行调试，
-linux系统共享内存位于/dev/shm目录下，如果内存不足，可以清理/dev/shm目录。
+linux系统共享内存位于/dev/shm目录下，如果内存不足，可以清理/dev/shm目录，另外，如果是使用docker，在创建镜像时，可通过设置参数--shm_size=8G 设置较大的共享内存。
 
 ### Q3.1.77: 使用mkldnn加速预测时遇到 'Please compile with MKLDNN first to use MKLDNN'
 
@@ -761,7 +761,7 @@ ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], 
 提供的标注文件格式如上，中间用"\t"分隔，不是四个空格分隔。
 
 如果是训练期间报错了，需要检查下是不是遇到了异常数据，或者是共享内存不足导致了这个问题，可以使用tools/train.py中的test_reader进行调试，
-linux系统共享内存位于/dev/shm目录下，如果内存不足，可以清理/dev/shm目录。
+linux系统共享内存位于/dev/shm目录下，如果内存不足，可以清理/dev/shm目录, 另外，如果是使用docker，在创建镜像时，可通过设置参数--shm_size=8G 设置较大的共享内存。
 
 ### Q3.1.77: 使用mkldnn加速预测时遇到 'Please compile with MKLDNN first to use MKLDNN'
 
