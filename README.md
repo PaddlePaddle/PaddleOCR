@@ -80,7 +80,8 @@ For a new language request, please refer to [Guideline for new language_requests
 
 ## Tutorials
 - [Installation](./doc/doc_en/installation_en.md)
-- [Quick Start](./doc/doc_en/quickstart_en.md)
+- [Quick Start(Chinese)](./doc/doc_en/quickstart_en.md)
+- [Quick Start(English&Multi-languages)](./doc/doc_en/multi_languages_en.md)
 - [Code Structure](./doc/doc_en/tree_en.md)
 - Algorithm Introduction
     - [Text Detection Algorithm](./doc/doc_en/algorithm_overview_en.md)
