@@ -9,13 +9,13 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2021.5.24）](#近期更新)
+* [近期更新（2021.6.1）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
 * [【理论篇】OCR通用44个问题](#OCR通用问题)
   * [基础知识13题](#基础知识)
   * [数据集9题](#数据集2)
   * [模型训练调优22题](#模型训练调优2)
-* [【实战篇】PaddleOCR实战174个问题](#PaddleOCR实战问题)
+* [【实战篇】PaddleOCR实战179个问题](#PaddleOCR实战问题)
   * [使用咨询72题](#使用咨询)
   * [数据集18题](#数据集3)
   * [模型训练调优36题](#模型训练调优3)
@@ -24,35 +24,43 @@
 <a name="近期更新"></a>
 ## 近期更新（2021.5.17）
 
-### Q2.3.22: 目前知识蒸馏有哪些主要的实践思路？
+### Q3.1.73: 如何使用TensorRT加速PaddleOCR预测？
 
-**A**：知识蒸馏即利用教师模型指导学生模型的训练，目前有3种主要的蒸馏思路：
-1. 基于输出结果的蒸馏，即让学生模型学习教师模型的软标签（分类或者OCR识别等任务中）或者概率热度图（分割等任务中）。
-2. 基于特征图的蒸馏，即让学生模型学习教师模型中间层的特征图，拟合中间层的一些特征。
-3. 基于关系的蒸馏，针对不同的样本（假设个数为N），教师模型会有不同的输出，那么可以基于不同样本的输出，计算一个NxN的相关性矩阵，可以让学生模型去学习教师模型关于不同样本的相关性矩阵。
+**A**： 目前paddle的dygraph分支已经支持了python和C++ TensorRT预测的代码，python端inference预测时把参数[--use_tensorrt=True](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L37)即可，
+C++TensorRT预测需要使用支持TRT的预测库并在编译时打开[-DWITH_TENSORRT=ON](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/deploy/cpp_infer/tools/build.sh#L15)。
+如果想修改其他分支代码支持TensorRT预测，可以参考[PR](https://github.com/PaddlePaddle/PaddleOCR/pull/2921)。
 
-当然，知识蒸馏方法日新月异，也欢迎大家提出更多的总结与建议。
+注：建议使用TensorRT大于等于6.1.0.5以上的版本。
 
-### Q3.1.69: 怎么加速训练过程呢？
+### Q3.1.74: ppocr检测效果不好，该如何优化？
 
-**A**：OCR模型训练过程中一般包含大量的数据增广，这些数据增广是比较耗时的，因此可以离线生成大量增广后的图像，直接送入网络进行训练，机器资源充足的情况下，也可以使用分布式训练的方法，可以参考[分布式训练教程文档](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/distributed_training.md)。
+**A**： 具体问题具体分析:
+1. 如果在你的场景上检测效果不可用，首选是在你的数据上做finetune训练；
+2. 如果图像过大，文字过于密集，建议不要过度压缩图像，可以尝试修改检测预处理的[resize逻辑](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/predict_det.py#L42)，防止图像被过度压缩；
+3. 检测框大小过于紧贴文字或检测框过大，可以调整[db_unclip_ratio](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L51)这个参数，加大参数可以扩大检测框，减小参数可以减小检测框大小；
+4. 检测框存在很多漏检问题，可以减小DB检测后处理的阈值参数[det_db_box_thresh](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L50)，防止一些检测框被过滤掉，也可以尝试设置[det_db_score_mode](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L54)为'slow';
+5. 其他方法可以选择[use_dilation](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L53)为True，对检测输出的feature map做膨胀处理，一般情况下，会有效果改善；
 
+### Q3.1.75: lite预测库和nb模型版本不匹配，该如何解决？
 
-### Q3.1.70: 文字识别模型模型的输出矩阵需要进行解码才能得到识别的文本。代码中实现为preds_idx = preds.argmax(axis=2)，也就是最佳路径解码法。这是一种贪心算法，是每一个时间步只将最大概率的字符作为当前时间步的预测输出，但得到的结果不一定是最好的。为什么不使用beam search这种方式进行解码呢？
+**A**： 如果可以正常预测就不用管，如果这个问题导致无法正常预测，可以尝试使用同一个commit的Paddle Lite代码编译预测库和opt文件，可以参考[移动端部署教程](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.1/deploy/lite/readme.md)。
 
-**A**：实验发现，使用贪心的方法去做解码，识别精度影响不大，但是速度方面的优势比较明显，因此PaddleOCR中使用贪心算法去做识别的解码。
+### Q3.1.76: 'SystemError: (Fatal) Blocking queue is killed because the data reader raises an exception.' 遇到这个错如何处理？
 
-### Q3.1.71: 遇到中英文识别模型不支持的字符，该如何对模型做微调？
+这个报错说明dataloader的时候报错了，如果是还未开始训练就报错，需要检查下数据和标签格式是不是对的，ppocr的数据标签格式为
+```
+" 图像文件名                    json.dumps编码的图像标注信息"
+ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]]}, {...}]
+```
+提供的标注文件格式如上，中间用"\t"分隔，不是四个空格分隔。
 
-**A**：如果希望识别中英文识别模型中不支持的字符，需要更新识别的字典，并完成微调过程。比如说如果希望模型能够进一步识别罗马数字，可以按照以下步骤完成模型微调过程。
-1. 准备中英文识别数据以及罗马数字的识别数据，用于训练，同时保证罗马数字和中英文识别数字的效果；
-2. 修改默认的字典文件，在后面添加罗马数字的字符；
-3. 下载PaddleOCR提供的预训练模型，配置预训练模型和数据的路径，开始训练。
+如果是训练期间报错了，需要检查下是不是遇到了异常数据，或者是共享内存不足导致了这个问题，可以使用tools/train.py中的test_reader进行调试，
+linux系统共享内存位于/dev/shm目录下，如果内存不足，可以清理/dev/shm目录，另外，如果是使用docker，在创建镜像时，可通过设置参数--shm_size=8G 设置较大的共享内存。
 
-### Q3.1.72: 文字识别主要有CRNN和Attention两种方式，但是在我们的说明文档中，CRNN有对应的论文，但是Attention没看到，这个具体在哪里呢？
+### Q3.1.77: 使用mkldnn加速预测时遇到 'Please compile with MKLDNN first to use MKLDNN'
 
-**A**：文字识别主要有CTC和Attention两种方式，基于CTC的算法有CRNN、Rosetta、StarNet，基于Attention的方法有RARE、其他的算法PaddleOCR里没有提供复现代码。论文的链接可以参考：[PaddleOCR文本识别算法教程文档](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
-
+**A**： 报错提示当前环境没有mkldnn，建议检查下当前CPU是否支持mlkdnn（MAC上是无法用mkldnn）；另外的可能是使用的预测库不支持mkldnn，
+建议从[这里](https://paddle-inference.readthedocs.io/en/latest/user_guides/download_lib.html#linux)下载支持mlkdnn的CPU预测库。
 
 
 <a name="OCR精选10个问题"></a>
@@ -719,6 +727,48 @@ src_im= cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
 ### Q3.1.72: 文字识别主要有CRNN和Attention两种方式，但是在我们的说明文档中，CRNN有对应的论文，但是Attention没看到，这个具体在哪里呢？
 
 **A**：文字识别主要有CTC和Attention两种方式，基于CTC的算法有CRNN、Rosetta、StarNet，基于Attention的方法有RARE、其他的算法PaddleOCR里没有提供复现代码。论文的链接可以参考：[PaddleOCR文本识别算法教程文档](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
+
+
+
+### Q3.1.73: 如何使用TensorRT加速PaddleOCR预测？
+
+**A**： 目前paddle的dygraph分支已经支持了python和C++ TensorRT预测的代码，python端inference预测时把参数[--use_tensorrt=True](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L37)即可，
+C++TensorRT预测需要使用支持TRT的预测库并在编译时打开[-DWITH_TENSORRT=ON](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/deploy/cpp_infer/tools/build.sh#L15)。
+如果想修改其他分支代码支持TensorRT预测，可以参考[PR](https://github.com/PaddlePaddle/PaddleOCR/pull/2921)。
+
+注：建议使用TensorRT大于等于6.1.0.5以上的版本。
+
+### Q3.1.74: ppocr检测效果不好，该如何优化？
+
+**A**： 具体问题具体分析:
+1. 如果在你的场景上检测效果不可用，首选是在你的数据上做finetune训练；
+2. 如果图像过大，文字过于密集，建议不要过度压缩图像，可以尝试修改检测预处理的[resize逻辑](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/predict_det.py#L42)，防止图像被过度压缩；
+3. 检测框大小过于紧贴文字或检测框过大，可以调整[db_unclip_ratio](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L51)这个参数，加大参数可以扩大检测框，减小参数可以减小检测框大小；
+4. 检测框存在很多漏检问题，可以减小DB检测后处理的阈值参数[det_db_box_thresh](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L50)，防止一些检测框被过滤掉，也可以尝试设置[det_db_score_mode](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L54)为'slow';
+5. 其他方法可以选择[use_dilation](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L53)为True，对检测输出的feature map做膨胀处理，一般情况下，会有效果改善；
+
+### Q3.1.75: lite预测库和nb模型版本不匹配，该如何解决？
+
+**A**： 如果可以正常预测就不用管，如果这个问题导致无法正常预测，可以尝试使用同一个commit的Paddle Lite代码编译预测库和opt文件，可以参考[移动端部署教程](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.1/deploy/lite/readme.md)。
+
+### Q3.1.76: 'SystemError: (Fatal) Blocking queue is killed because the data reader raises an exception.' 遇到这个错如何处理？
+
+这个报错说明dataloader的时候报错了，如果是还未开始训练就报错，需要检查下数据和标签格式是不是对的，ppocr的数据标签格式为
+```
+" 图像文件名                    json.dumps编码的图像标注信息"
+ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]]}, {...}]
+```
+提供的标注文件格式如上，中间用"\t"分隔，不是四个空格分隔。
+
+如果是训练期间报错了，需要检查下是不是遇到了异常数据，或者是共享内存不足导致了这个问题，可以使用tools/train.py中的test_reader进行调试，
+linux系统共享内存位于/dev/shm目录下，如果内存不足，可以清理/dev/shm目录, 另外，如果是使用docker，在创建镜像时，可通过设置参数--shm_size=8G 设置较大的共享内存。
+
+### Q3.1.77: 使用mkldnn加速预测时遇到 'Please compile with MKLDNN first to use MKLDNN'
+
+**A**： 报错提示当前环境没有mkldnn，建议检查下当前CPU是否支持mlkdnn（MAC上是无法用mkldnn）；另外的可能是使用的预测库不支持mkldnn，
+建议从[这里](https://paddle-inference.readthedocs.io/en/latest/user_guides/download_lib.html#linux)下载支持mlkdnn的CPU预测库。
+
+
 
 <a name="数据集3"></a>
 
