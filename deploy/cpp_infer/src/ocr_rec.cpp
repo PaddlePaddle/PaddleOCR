@@ -25,8 +25,9 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
 
   std::cout << "The predicted text is :" << std::endl;
   int index = 0;
-  for (int i = boxes.size() - 1; i >= 0; i--) {
+  for (int i = 0; i < boxes.size(); i++) {
     crop_img = GetRotateCropImage(srcimg, boxes[i]);
+
     if (cls != nullptr) {
       crop_img = cls->Run(crop_img);
     }
@@ -105,6 +106,15 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
           this->use_fp16_ ? paddle_infer::Config::Precision::kHalf
                           : paddle_infer::Config::Precision::kFloat32,
           false, false);
+      std::map<std::string, std::vector<int>> min_input_shape = {
+          {"x", {1, 3, 32, 10}}};
+      std::map<std::string, std::vector<int>> max_input_shape = {
+          {"x", {1, 3, 32, 2000}}};
+      std::map<std::string, std::vector<int>> opt_input_shape = {
+          {"x", {1, 3, 32, 320}}};
+
+      config.SetTRTDynamicShapeInfo(min_input_shape, max_input_shape,
+                                    opt_input_shape);
     }
   } else {
     config.DisableGpu();
