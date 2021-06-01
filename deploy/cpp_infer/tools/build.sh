@@ -16,5 +16,6 @@ cmake .. \
     -DOPENCV_DIR=${OPENCV_DIR} \
     -DCUDNN_LIB=${CUDNN_LIB_DIR} \
     -DCUDA_LIB=${CUDA_LIB_DIR} \
+    -DTENSORRT_DIR=${TENSORRT_DIR} \
 
 make -j
