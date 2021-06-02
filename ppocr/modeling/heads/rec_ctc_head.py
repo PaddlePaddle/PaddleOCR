@@ -23,14 +23,12 @@ from paddle import ParamAttr, nn
 from paddle.nn import functional as F
 
 
-def get_para_bias_attr(l2_decay, k, name):
+def get_para_bias_attr(l2_decay, k):
     regularizer = paddle.regularizer.L2Decay(l2_decay)
     stdv = 1.0 / math.sqrt(k * 1.0)
     initializer = nn.initializer.Uniform(-stdv, stdv)
-    weight_attr = ParamAttr(
-        regularizer=regularizer, initializer=initializer, name=name + "_w_attr")
-    bias_attr = ParamAttr(
-        regularizer=regularizer, initializer=initializer, name=name + "_b_attr")
+    weight_attr = ParamAttr(regularizer=regularizer, initializer=initializer)
+    bias_attr = ParamAttr(regularizer=regularizer, initializer=initializer)
     return [weight_attr, bias_attr]
 
 
@@ -38,13 +36,12 @@ class CTCHead(nn.Layer):
     def __init__(self, in_channels, out_channels, fc_decay=0.0004, **kwargs):
         super(CTCHead, self).__init__()
         weight_attr, bias_attr = get_para_bias_attr(
-            l2_decay=fc_decay, k=in_channels, name='ctc_fc')
+            l2_decay=fc_decay, k=in_channels)
         self.fc = nn.Linear(
             in_channels,
             out_channels,
             weight_attr=weight_attr,
-            bias_attr=bias_attr,
-            name='ctc_fc')
+            bias_attr=bias_attr)
         self.out_channels = out_channels
 
     def forward(self, x, labels=None):

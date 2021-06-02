@@ -42,7 +42,10 @@ def _mkdir_if_not_exist(path, logger):
                 raise OSError('Failed to mkdir {}'.format(path))
 
 
-def load_dygraph_pretrain(model, logger, path=None, load_static_weights=False):
+def load_dygraph_pretrain(model,
+                          logger=None,
+                          path=None,
+                          load_static_weights=False):
     if not (os.path.isdir(path) or os.path.exists(path + '.pdparams')):
         raise ValueError("Model pretrain path {} does not "
                          "exists.".format(path))
