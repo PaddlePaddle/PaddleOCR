@@ -25,8 +25,9 @@ void CRNNRecognizer::Run(std::vector<std::vector<std::vector<int>>> boxes,
 
   std::cout << "The predicted text is :" << std::endl;
   int index = 0;
-  for (int i = boxes.size() - 1; i >= 0; i--) {
+  for (int i = 0; i < boxes.size(); i++) {
     crop_img = GetRotateCropImage(srcimg, boxes[i]);
+
     if (cls != nullptr) {
       crop_img = cls->Run(crop_img);
     }
