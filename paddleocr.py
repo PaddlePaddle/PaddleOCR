@@ -30,7 +30,7 @@ from ppocr.utils.logging import get_logger
 
 logger = get_logger()
 from ppocr.utils.utility import check_and_read_gif, get_image_file_list
-from tools.infer.utility import draw_ocr, inference_args_list, str2bool, parse_args
+from tools.infer.utility import draw_ocr, init_args, str2bool
 
 __all__ = ['PaddleOCR']
 
@@ -167,23 +167,23 @@ def maybe_download(model_storage_directory, url):
         os.remove(tmp_path)
 
 
-def parse_args_whl(mMain=True):
+def parse_args(mMain=True):
     import argparse
-    extend_args_list = [
-        ['lang', str, 'ch'],
-        ['det', str2bool, True],
-        ['rec', str2bool, True],
-    ]
-    for item in inference_args_list:
-        if item[0] == 'rec_char_dict_path':
-            item[2] = None
-    inference_args_list.extend(extend_args_list)
+    parser = init_args()
+    parser.add_help = mMain
+    parser.add_argument("--lang", type=str, default='ch')
+    parser.add_argument("--det", type=str2bool, default=True)
+    parser.add_argument("--rec", type=str2bool, default=True)
+
+    for action in parser._actions:
+        if action.dest == 'rec_char_dict_path':
+            action.default = None
     if mMain:
-        return parse_args()
+        return parser.parse_args()
     else:
         inference_args_dict = {}
-        for item in inference_args_list:
-            inference_args_dict[item[0]] = item[2]
+        for action in parser._actions:
+            inference_args_dict[action.dest] = action.default
         return argparse.Namespace(**inference_args_dict)
 
 
@@ -194,7 +194,7 @@ class PaddleOCR(predict_system.TextSystem):
         args:
             **kwargs: other params show in paddleocr --help
         """
-        postprocess_params = parse_args_whl(mMain=False)
+        postprocess_params = parse_args(mMain=False)
         postprocess_params.__dict__.update(**kwargs)
         self.use_angle_cls = postprocess_params.use_angle_cls
         lang = postprocess_params.lang
@@ -318,7 +318,7 @@ class PaddleOCR(predict_system.TextSystem):
 
 def main():
     # for cmd
-    args = parse_args_whl(mMain=True)
+    args = parse_args(mMain=True)
     image_dir = args.image_dir
     if image_dir.startswith('http'):
         download_with_progressbar(image_dir, 'tmp.jpg')
