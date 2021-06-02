@@ -99,7 +99,7 @@ git clone https://github.com/PaddlePaddle/Paddle.git
 git checkout release/2.1
 ```
 
-* After entering the Paddle directory, the compilation method is as follows.
+* After entering the Paddle directory, the instructions to compile the paddle inference library are as follows.
 
 ```shell
 rm -rf build
