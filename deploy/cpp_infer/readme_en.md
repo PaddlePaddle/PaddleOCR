@@ -144,11 +144,11 @@ Among them, `paddle` is the Paddle library required for C++ prediction later, an
 ```
 inference/
 |-- det_db
-|   |--inference.pdparams
-|   |--inference.pdimodel
+|   |--inference.pdiparams
+|   |--inference.pdmodel
 |-- rec_rcnn
-|   |--inference.pdparams
-|   |--inference.pdparams
+|   |--inference.pdiparams
+|   |--inference.pdmodel
 ```
 
 
