@@ -21,7 +21,8 @@ import cv2
 import json
 from tqdm import tqdm
 from ppstructure.table.table_metric import TEDS
-from ppstructure.table.predict_table import TableSystem, utility
+from ppstructure.table.predict_table import TableSystem
+from ppstructure.predict_system import parse_args
 
 
 def main(gt_path, img_root, args):
@@ -32,8 +33,6 @@ def main(gt_path, img_root, args):
     pred_htmls = []
     gt_htmls = []
     for img_name in tqdm(jsons_gt):
-        if img_name != 'PMC1064865_002_00.png':
-            continue
         # 读取信息
         img = cv2.imread(os.path.join(img_root,img_name))
         pred_html = text_sys(img)
@@ -61,7 +60,7 @@ def get_gt_html(gt_structures, contents_with_block):
 
 
 if __name__ == '__main__':
-    args = utility.parse_args()
+    args = parse_args()
     gt_path = 'table/match_code/f_gt_bbox.json'
     img_root = 'table/imgs'
     main(gt_path,img_root, args)
