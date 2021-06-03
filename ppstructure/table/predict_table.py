@@ -31,7 +31,7 @@ import tools.infer.predict_det as predict_det
 import ppstructure.table.predict_structure as predict_strture
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.utils.logging import get_logger
-from ppocr.utils.table_utils.matcher import distance, compute_iou
+from ppstructure.table.matcher import distance, compute_iou
 
 logger = get_logger()
 
