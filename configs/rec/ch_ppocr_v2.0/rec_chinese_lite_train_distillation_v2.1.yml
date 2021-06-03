@@ -95,17 +95,17 @@ Loss:
       model_name_pairs:
       - ["Student", "Teacher"]
       key: backbone_out
-  
-      
 
 PostProcess:
   name: DistillationCTCLabelDecode
-  model_name: "Student"
+  model_name: ["Student", "Teacher"]
   key: head_out
 
 Metric:
-  name: RecMetric
+  name: DistillationMetric
+  base_metric_name: RecMetric
   main_indicator: acc
+  key: "Student"
 
 Train:
   dataset:

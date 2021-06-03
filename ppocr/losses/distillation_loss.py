@@ -26,10 +26,11 @@ class DistillationDMLLoss(DMLLoss):
 
     def __init__(self, model_name_pairs=[], act=None, key=None,
                  name="loss_dml"):
-        super().__init__(act=act, name=name)
+        super().__init__(act=act)
         assert isinstance(model_name_pairs, list)
         self.key = key
         self.model_name_pairs = model_name_pairs
+        self.name = name
 
     def forward(self, predicts, batch):
         loss_dict = dict()
@@ -42,8 +43,8 @@ class DistillationDMLLoss(DMLLoss):
             loss = super().forward(out1, out2)
             if isinstance(loss, dict):
                 for key in loss:
-                    loss_dict["{}_{}_{}".format(self.name, key, idx)] = loss[
-                        key]
+                    loss_dict["{}_{}_{}_{}".format(key, pair[0], pair[1],
+                                                   idx)] = loss[key]
             else:
                 loss_dict["{}_{}".format(self.name, idx)] = loss
         return loss_dict
@@ -82,10 +83,11 @@ class DistillationDistanceLoss(DistanceLoss):
                  key=None,
                  name="loss_distance",
                  **kargs):
-        super().__init__(mode=mode, name=name, **kargs)
+        super().__init__(mode=mode, **kargs)
         assert isinstance(model_name_pairs, list)
         self.key = key
         self.model_name_pairs = model_name_pairs
+        self.name = name + "_l2"
 
     def forward(self, predicts, batch):
         loss_dict = dict()
@@ -101,5 +103,6 @@ class DistillationDistanceLoss(DistanceLoss):
                     loss_dict["{}_{}_{}".format(self.name, key, idx)] = loss[
                         key]
             else:
-                loss_dict["{}_{}".format(self.name, idx)] = loss
+                loss_dict["{}_{}_{}_{}".format(self.name, pair[0], pair[1],
+                                               idx)] = loss
         return loss_dict

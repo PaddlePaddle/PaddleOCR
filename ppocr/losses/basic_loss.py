@@ -22,9 +22,8 @@ from paddle.nn import SmoothL1Loss
 
 
 class CELoss(nn.Layer):
-    def __init__(self, name="loss_ce", epsilon=None):
+    def __init__(self, epsilon=None):
         super().__init__()
-        self.name = name
         if epsilon is not None and (epsilon <= 0 or epsilon >= 1):
             epsilon = None
         self.epsilon = epsilon
@@ -52,9 +51,7 @@ class CELoss(nn.Layer):
             else:
                 soft_label = False
             loss = F.cross_entropy(x, label=label, soft_label=soft_label)
-
-        loss_dict[self.name] = paddle.mean(loss)
-        return loss_dict
+        return loss
 
 
 class DMLLoss(nn.Layer):
@@ -62,11 +59,10 @@ class DMLLoss(nn.Layer):
     DMLLoss
     """
 
-    def __init__(self, act=None, name="loss_dml"):
+    def __init__(self, act=None):
         super().__init__()
         if act is not None:
             assert act in ["softmax", "sigmoid"]
-        self.name = name
         if act == "softmax":
             self.act = nn.Softmax(axis=-1)
         elif act == "sigmoid":
@@ -75,7 +71,6 @@ class DMLLoss(nn.Layer):
             self.act = None
 
     def forward(self, out1, out2):
-        loss_dict = {}
         if self.act is not None:
             out1 = self.act(out1)
             out2 = self.act(out2)
@@ -85,18 +80,16 @@ class DMLLoss(nn.Layer):
         loss = (F.kl_div(
             log_out1, out2, reduction='batchmean') + F.kl_div(
                 log_out2, log_out1, reduction='batchmean')) / 2.0
-        loss_dict[self.name] = loss
-        return loss_dict
+        return loss
 
 
 class DistanceLoss(nn.Layer):
     """
     DistanceLoss:
         mode: loss mode
-        name: loss key in the output dict
     """
 
-    def __init__(self, mode="l2", name="loss_dist", **kargs):
+    def __init__(self, mode="l2", **kargs):
         super().__init__()
         assert mode in ["l1", "l2", "smooth_l1"]
         if mode == "l1":
@@ -106,7 +99,5 @@ class DistanceLoss(nn.Layer):
         elif mode == "smooth_l1":
             self.loss_func = nn.SmoothL1Loss(**kargs)
 
-        self.name = "{}_{}".format(name, mode)
-
     def forward(self, x, y):
-        return {self.name: self.loss_func(x, y)}
+        return self.loss_func(x, y)
