@@ -23,35 +23,28 @@ class DistillationDMLLoss(DMLLoss):
     """
     """
 
-    def __init__(self,
-                 model_name_list1=[],
-                 model_name_list2=[],
-                 key=None,
+    def __init__(self, model_name_pairs=[], act=None, key=None,
                  name="loss_dml"):
-        super().__init__(name=name)
-        if not isinstance(model_name_list1, (list, )):
-            model_name_list1 = [model_name_list1]
-        if not isinstance(model_name_list2, (list, )):
-            model_name_list2 = [model_name_list2]
-
-        assert len(model_name_list1) == len(model_name_list2)
-        self.model_name_list1 = model_name_list1
-        self.model_name_list2 = model_name_list2
+        super().__init__(act=act, name=name)
+        assert isinstance(model_name_pairs, list)
         self.key = key
+        self.model_name_pairs = model_name_pairs
 
     def forward(self, predicts, batch):
         loss_dict = dict()
-        for idx in range(len(self.model_name_list1)):
-            out1 = predicts[self.model_name_list1[idx]]
-            out2 = predicts[self.model_name_list2[idx]]
+        for idx, pair in enumerate(self.model_name_pairs):
+            out1 = predicts[pair[0]]
+            out2 = predicts[pair[1]]
             if self.key is not None:
                 out1 = out1[self.key]
                 out2 = out2[self.key]
             loss = super().forward(out1, out2)
             if isinstance(loss, dict):
-                assert len(loss) == 1
-                loss = list(loss.values())[0]
-            loss_dict["{}_{}".format(self.name, idx)] = loss
+                for key in loss:
+                    loss_dict["{}_{}_{}".format(self.name, key, idx)] = loss[
+                        key]
+            else:
+                loss_dict["{}_{}".format(self.name, idx)] = loss
         return loss_dict
 
 
@@ -64,13 +57,15 @@ class DistillationCTCLoss(CTCLoss):
 
     def forward(self, predicts, batch):
         loss_dict = dict()
-        for model_name in self.model_name_list:
+        for idx, model_name in enumerate(self.model_name_list):
             out = predicts[model_name]
             if self.key is not None:
                 out = out[self.key]
             loss = super().forward(out, batch)
             if isinstance(loss, dict):
-                assert len(loss) == 1
-                loss = list(loss.values())[0]
-            loss_dict["{}_{}".format(self.name, model_name)] = loss
+                for key in loss:
+                    loss_dict["{}_{}_{}".format(self.name, model_name,
+                                                idx)] = loss[key]
+            else:
+                loss_dict["{}_{}".format(self.name, model_name)] = loss
         return loss_dict

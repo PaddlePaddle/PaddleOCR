@@ -4,11 +4,9 @@ Global:
   epoch_num: 800
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/rec_D081
+  save_model_dir: ./output/rec_chinese_lite_distillation_v2.1
   save_epoch_step: 3
-  eval_batch_step:
-  - 0
-  - 2000
+  eval_batch_step: [0, 2000]
   cal_metric_during_train: true
   pretrained_model: null
   checkpoints: null
@@ -37,12 +35,10 @@ Optimizer:
 Architecture:
   name: DistillationModel
   algorithm: Distillation
-  freeze_params:
-  - false
-  - false
-  pretrained: null
   Models:
     Student:
+      pretrained: null
+      freeze_params: false
       model_type: rec
       algorithm: CRNN
       Transform:
@@ -59,6 +55,8 @@ Architecture:
         name: CTCHead
         fc_decay: 0.00001
     Teacher:
+      pretrained: null
+      freeze_params: false
       model_type: rec
       algorithm: CRNN
       Transform:
@@ -85,16 +83,20 @@ Loss:
       key: null
   - DistillationDMLLoss:
       weight: 1.0
-      model_name_list1: ["Student"]
-      model_name_list2: ["Teacher"]
+      act: "softmax"
+      model_name_pairs:
+      - ["Student", "Teacher"]
+      key: null
 
 PostProcess:
   name: DistillationCTCLabelDecode
   model_name: "Student"
   key_out: null
+
 Metric:
   name: RecMetric
   main_indicator: acc
+
 Train:
   dataset:
     name: SimpleDataSet
@@ -108,10 +110,7 @@ Train:
     - RecAug: null
     - CTCLabelEncode: null
     - RecResizeImg:
-        image_shape:
-        - 3
-        - 32
-        - 320
+        image_shape: [3, 32, 320]
     - KeepKeys:
         keep_keys:
         - image
@@ -135,10 +134,7 @@ Eval:
         channel_first: false
     - CTCLabelEncode: null
     - RecResizeImg:
-        image_shape:
-        - 3
-        - 32
-        - 320
+        image_shape: [3, 32, 320]
     - KeepKeys:
         keep_keys:
         - image

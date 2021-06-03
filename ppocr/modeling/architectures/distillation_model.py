@@ -34,25 +34,20 @@ class DistillationModel(nn.Layer):
             config (dict): the super parameters for module.
         """
         super().__init__()
-
-        freeze_params = config["freeze_params"]
-        pretrained = config["pretrained"]
-        if not isinstance(freeze_params, list):
-            freeze_params = [freeze_params]
-        assert len(config["Models"]) == len(freeze_params)
-
-        if not isinstance(pretrained, list):
-            pretrained = [pretrained] * len(config["Models"])
-        assert len(config["Models"]) == len(pretrained)
-
         self.model_dict = dict()
         index = 0
         for key in config["Models"]:
             model_config = config["Models"][key]
+            freeze_params = False
+            pretrained = None
+            if "freeze_params" in model_config:
+                freeze_params = model_config.pop("freeze_params")
+            if "pretrained" in model_config:
+                pretrained = model_config.pop("pretrained")
             model = BaseModel(model_config)
-            if pretrained[index] is not None:
+            if pretrained is not None:
                 load_dygraph_pretrain(model, path=pretrained[index])
-            if freeze_params[index]:
+            if freeze_params:
                 for param in model.parameters():
                     param.trainable = False
             self.model_dict[key] = self.add_sublayer(key, model)

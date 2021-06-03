@@ -62,19 +62,29 @@ class DMLLoss(nn.Layer):
     DMLLoss
     """
 
-    def __init__(self, name="loss_dml"):
+    def __init__(self, act=None, name="loss_dml"):
         super().__init__()
+        if act is not None:
+            assert act in ["softmax", "sigmoid"]
         self.name = name
+        if act == "softmax":
+            self.act = nn.Softmax(axis=-1)
+        elif act == "sigmoid":
+            self.act = nn.Sigmoid()
+        else:
+            self.act = None
 
     def forward(self, out1, out2):
         loss_dict = {}
-        soft_out1 = F.softmax(out1, axis=-1)
-        log_soft_out1 = paddle.log(soft_out1)
-        soft_out2 = F.softmax(out2, axis=-1)
-        log_soft_out2 = paddle.log(soft_out2)
+        if self.act is not None:
+            out1 = self.act(out1)
+            out2 = self.act(out2)
+
+        log_out1 = paddle.log(out1)
+        log_out2 = paddle.log(out2)
         loss = (F.kl_div(
-            log_soft_out1, soft_out2, reduction='batchmean') + F.kl_div(
-                log_soft_out2, soft_out1, reduction='batchmean')) / 2.0
+            log_out1, out2, reduction='batchmean') + F.kl_div(
+                log_out2, log_out1, reduction='batchmean')) / 2.0
         loss_dict[self.name] = loss
         return loss_dict
 
@@ -90,7 +100,7 @@ class DistanceLoss(nn.Layer):
         assert mode in ["l1", "l2", "smooth_l1"]
         if mode == "l1":
             self.loss_func = nn.L1Loss(**kargs)
-        elif mode == "l1":
+        elif mode == "l2":
             self.loss_func = nn.MSELoss(**kargs)
         elif mode == "smooth_l1":
             self.loss_func = nn.SmoothL1Loss(**kargs)
