@@ -82,7 +82,7 @@ class DistillationDistanceLoss(DistanceLoss):
                  key=None,
                  name="loss_distance",
                  **kargs):
-        super().__init__(mode=mode, name=name)
+        super().__init__(mode=mode, name=name, **kargs)
         assert isinstance(model_name_pairs, list)
         self.key = key
         self.model_name_pairs = model_name_pairs
