@@ -39,6 +39,7 @@ Architecture:
     Student:
       pretrained: null
       freeze_params: false
+      return_all_feats: true
       model_type: rec
       algorithm: CRNN
       Transform:
@@ -57,6 +58,7 @@ Architecture:
     Teacher:
       pretrained: null
       freeze_params: false
+      return_all_feats: true
       model_type: rec
       algorithm: CRNN
       Transform:
@@ -80,18 +82,26 @@ Loss:
   - DistillationCTCLoss:
       weight: 1.0
       model_name_list: ["Student", "Teacher"]
-      key: null
+      key: head_out
   - DistillationDMLLoss:
       weight: 1.0
       act: "softmax"
       model_name_pairs:
       - ["Student", "Teacher"]
-      key: null
+      key: head_out
+  - DistillationDistanceLoss:
+      weight: 1.0
+      mode: "l2"
+      model_name_pairs:
+      - ["Student", "Teacher"]
+      key: backbone_out
+  
+      
 
 PostProcess:
   name: DistillationCTCLabelDecode
   model_name: "Student"
-  key_out: null
+  key: head_out
 
 Metric:
   name: RecMetric

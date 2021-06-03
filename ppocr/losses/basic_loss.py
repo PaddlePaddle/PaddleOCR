@@ -97,6 +97,7 @@ class DistanceLoss(nn.Layer):
     """
 
     def __init__(self, mode="l2", name="loss_dist", **kargs):
+        super().__init__()
         assert mode in ["l1", "l2", "smooth_l1"]
         if mode == "l1":
             self.loss_func = nn.L1Loss(**kargs)

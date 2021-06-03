@@ -17,6 +17,7 @@ import paddle.nn as nn
 
 from .distillation_loss import DistillationCTCLoss
 from .distillation_loss import DistillationDMLLoss
+from .distillation_loss import DistillationDistanceLoss
 
 
 class CombinedLoss(nn.Layer):

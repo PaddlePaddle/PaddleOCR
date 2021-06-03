@@ -136,17 +136,17 @@ class DistillationCTCLabelDecode(CTCLabelDecode):
                  character_type='ch',
                  use_space_char=False,
                  model_name="student",
-                 key_out=None,
+                 key=None,
                  **kwargs):
         super(DistillationCTCLabelDecode, self).__init__(
             character_dict_path, character_type, use_space_char)
         self.model_name = model_name
-        self.key_out = key_out
+        self.key = key
 
     def __call__(self, preds, label=None, *args, **kwargs):
         pred = preds[self.model_name]
-        if self.key_out is not None:
-            pred = pred[self.key_out]
+        if self.key is not None:
+            pred = pred[self.key]
         return super().__call__(pred, label=label, *args, **kwargs)
 
 

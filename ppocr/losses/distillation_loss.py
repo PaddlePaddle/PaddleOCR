@@ -17,6 +17,7 @@ import paddle.nn as nn
 
 from .rec_ctc_loss import CTCLoss
 from .basic_loss import DMLLoss
+from .basic_loss import DistanceLoss
 
 
 class DistillationDMLLoss(DMLLoss):
@@ -68,4 +69,37 @@ class DistillationCTCLoss(CTCLoss):
                                                 idx)] = loss[key]
             else:
                 loss_dict["{}_{}".format(self.name, model_name)] = loss
+        return loss_dict
+
+
+class DistillationDistanceLoss(DistanceLoss):
+    """
+    """
+
+    def __init__(self,
+                 mode="l2",
+                 model_name_pairs=[],
+                 key=None,
+                 name="loss_distance",
+                 **kargs):
+        super().__init__(mode=mode, name=name)
+        assert isinstance(model_name_pairs, list)
+        self.key = key
+        self.model_name_pairs = model_name_pairs
+
+    def forward(self, predicts, batch):
+        loss_dict = dict()
+        for idx, pair in enumerate(self.model_name_pairs):
+            out1 = predicts[pair[0]]
+            out2 = predicts[pair[1]]
+            if self.key is not None:
+                out1 = out1[self.key]
+                out2 = out2[self.key]
+            loss = super().forward(out1, out2)
+            if isinstance(loss, dict):
+                for key in loss:
+                    loss_dict["{}_{}_{}".format(self.name, key, idx)] = loss[
+                        key]
+            else:
+                loss_dict["{}_{}".format(self.name, idx)] = loss
         return loss_dict
