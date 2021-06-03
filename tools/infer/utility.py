@@ -125,6 +125,8 @@ def create_predictor(args, mode, logger):
         model_dir = args.cls_model_dir
     elif mode == 'rec':
         model_dir = args.rec_model_dir
+    elif mode == 'table':
+        model_dir = args.table_model_dir
     else:
         model_dir = args.e2e_model_dir
 
@@ -244,7 +246,8 @@ def create_predictor(args, mode, logger):
 
     config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
     config.switch_use_feed_fetch_ops(False)
-
+    if mode == 'table':
+        config.switch_ir_optim(False)
     # create predictor
     predictor = inference.create_predictor(config)
     input_names = predictor.get_input_names()
