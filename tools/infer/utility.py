@@ -23,13 +23,15 @@ import math
 from paddle import inference
 import time
 from ppocr.utils.logging import get_logger
+
 logger = get_logger()
 
 
-def parse_args():
-    def str2bool(v):
-        return v.lower() in ("true", "t", "1")
+def str2bool(v):
+    return v.lower() in ("true", "t", "1")
 
+
+def init_args():
     parser = argparse.ArgumentParser()
     # params for prediction engine
     parser.add_argument("--use_gpu", type=str2bool, default=True)
@@ -108,6 +110,11 @@ def parse_args():
     parser.add_argument("--total_process_num", type=int, default=1)
     parser.add_argument("--process_id", type=int, default=0)
 
+    return parser
+
+
+def parse_args():
+    parser = init_args()
     return parser.parse_args()
 
 
@@ -141,7 +148,7 @@ def create_predictor(args, mode, logger):
             config.enable_tensorrt_engine(
                 precision_mode=inference.PrecisionType.Float32,
                 max_batch_size=args.max_batch_size,
-                min_subgraph_size=3)  # skip the minmum trt subgraph 
+                min_subgraph_size=3)  # skip the minmum trt subgraph
         if mode == "det" and "mobile" in model_file_path:
             min_input_shape = {
                 "x": [1, 3, 50, 50],
