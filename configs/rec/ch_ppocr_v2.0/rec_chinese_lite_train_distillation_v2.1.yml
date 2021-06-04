@@ -98,7 +98,7 @@ Loss:
 
 PostProcess:
   name: DistillationCTCLabelDecode
-  model_name: ["Student", "Teacher"]
+  model_name: ["Student"]
   key: head_out
 
 Metric:

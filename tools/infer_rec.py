@@ -46,8 +46,14 @@ def main():
 
     # build model
     if hasattr(post_process_class, 'character'):
-        config['Architecture']["Head"]['out_channels'] = len(
-            getattr(post_process_class, 'character'))
+        char_num = len(getattr(post_process_class, 'character'))
+        if config['Architecture']["algorithm"] in ["Distillation",
+                                                   ]:  # distillation model
+            for key in config['Architecture']["Models"]:
+                config['Architecture']["Models"][key]["Head"][
+                    'out_channels'] = char_num
+        else:  # base rec model
+            config['Architecture']["Head"]['out_channels'] = char_num
 
     model = build_model(config['Architecture'])
 
