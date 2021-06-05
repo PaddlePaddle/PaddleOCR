@@ -16,15 +16,15 @@ import os
 import sys
 
 __dir__ = os.path.dirname(__file__)
-sys.path.append(os.path.join(__dir__, ''))
-
+sys.path.append(__dir__)
+sys.path.append(os.path.join(__dir__, '..'))
 
 import cv2
 import numpy as np
 from pathlib import Path
 
 from ppocr.utils.logging import get_logger
-from predict_system import OCRSystem, save_res
+from ppstructure.predict_system import OCRSystem, save_res
 from utility import init_args
 
 logger = get_logger()
@@ -93,9 +93,11 @@ class PaddleStructure(OCRSystem):
                 params.rec_char_dict_path = str(Path(__file__).parent.parent / 'ppocr/utils/dict/table_dict.txt')
         if params.structure_char_dict_path is None:
             if os.path.exists(str(Path(__file__).parent / 'ppocr/utils/dict/table_structure_dict.txt')):
-                params.structure_char_dict_path = str(Path(__file__).parent / 'ppocr/utils/dict/table_structure_dict.txt')
+                params.structure_char_dict_path = str(
+                    Path(__file__).parent / 'ppocr/utils/dict/table_structure_dict.txt')
             else:
-                params.structure_char_dict_path = str(Path(__file__).parent.parent / 'ppocr/utils/dict/table_structure_dict.txt')
+                params.structure_char_dict_path = str(
+                    Path(__file__).parent.parent / 'ppocr/utils/dict/table_structure_dict.txt')
 
         print(params)
         super().__init__(params)
@@ -146,3 +148,16 @@ def main():
             logger.info(item['res'])
         save_res(result, save_folder, img_name)
         logger.info('result save to {}'.format(os.path.join(save_folder, img_name)))
+
+
+if __name__ == '__main__':
+    table_engine = PaddleStructure(
+        det_model_dir='/Users/zhoujun20/Desktop/工作相关/table/table_pr/PaddleOCR/inference/table/ch_ppocr_mobile_v2.0_table_det_infer',
+        rec_model_dir='/Users/zhoujun20/Desktop/工作相关/table/table_pr/PaddleOCR/inference/table/ch_ppocr_mobile_v2.0_table_rec_infer',
+        structure_model_dir='/Users/zhoujun20/Desktop/工作相关/table/table_pr/PaddleOCR/inference/table/ch_ppocr_mobile_v2.0_table_structure_infer',
+        output='/Users/zhoujun20/Desktop/工作相关/table/table_pr/PaddleOCR/output/table',
+        show_log=True)
+    img = cv2.imread('/Users/zhoujun20/Desktop/工作相关/table/table_pr/PaddleOCR/ppstructure/test_imgs/table_1.png')
+    result = table_engine(img)
+    for line in result:
+        print(line)

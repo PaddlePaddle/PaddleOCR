@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import os
 
 from setuptools import setup
 from io import open
@@ -20,6 +21,7 @@ with open('../requirements.txt', encoding="utf-8-sig") as f:
     requirements = f.readlines()
     requirements.append('tqdm')
     requirements.append('layoutparser')
+    requirements.append('iopath')
 
 
 def readme():
@@ -27,9 +29,13 @@ def readme():
         README = f.read()
     return README
 
-shutil.copytree('../ppocr','./ppocr')
-shutil.copytree('../tools','./tools')
-shutil.copytree('../ppstructure','./ppstructure')
+
+shutil.copytree('../ppstructure/table', './ppstructure/table')
+shutil.copyfile('../ppstructure/predict_system.py', './ppstructure/predict_system.py')
+shutil.copyfile('../ppstructure/utility.py', './ppstructure/utility.py')
+shutil.copytree('../ppocr', './ppocr')
+shutil.copytree('../tools', './tools')
+shutil.copyfile('../LICENSE', './LICENSE')
 
 setup(
     name='paddlestructure',
@@ -63,3 +69,4 @@ setup(
 shutil.rmtree('ppocr')
 shutil.rmtree('tools')
 shutil.rmtree('ppstructure')
+os.remove('LICENSE')

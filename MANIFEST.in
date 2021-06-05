@@ -1,4 +1,4 @@
-include LICENSE.txt
+include LICENSE
 include README.md
 
 recursive-include ppocr/utils *.txt utility.py logging.py network.py
