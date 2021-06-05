@@ -40,7 +40,7 @@ class TableStructurer(object):
     def __init__(self, args):
         pre_process_list = [{
             'ResizeTableImage': {
-                'max_len': args.table_max_len
+                'max_len': args.structure_max_len
             }
         }, {
             'NormalizeImage': {
@@ -60,17 +60,17 @@ class TableStructurer(object):
         }]
         postprocess_params = {
             'name': 'TableLabelDecode',
-            "character_type": args.table_char_type,
-            "character_dict_path": args.table_char_dict_path,
-            "max_text_length": args.table_max_text_length,
-            "max_elem_length": args.table_max_elem_length,
-            "max_cell_num": args.table_max_cell_num
+            "character_type": args.structure_char_type,
+            "character_dict_path": args.structure_char_dict_path,
+            "max_text_length": args.structure_max_text_length,
+            "max_elem_length": args.structure_max_elem_length,
+            "max_cell_num": args.structure_max_cell_num
         }
 
         self.preprocess_op = create_operators(pre_process_list)
         self.postprocess_op = build_post_process(postprocess_params)
         self.predictor, self.input_tensor, self.output_tensors = \
-            utility.create_predictor(args, 'table', logger)
+            utility.create_predictor(args, 'structure', logger)
 
     def __call__(self, img):
         ori_im = img.copy()

@@ -18,6 +18,7 @@ import subprocess
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
+sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 
 os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
@@ -25,13 +26,13 @@ import cv2
 import copy
 import numpy as np
 import time
-import tools.infer.utility as utility
 import tools.infer.predict_rec as predict_rec
 import tools.infer.predict_det as predict_det
 import ppstructure.table.predict_structure as predict_strture
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.utils.logging import get_logger
-from ppstructure.table.matcher import distance, compute_iou
+from matcher import distance, compute_iou
+from ppstructure.utility import parse_args
 
 logger = get_logger()
 
@@ -52,12 +53,10 @@ def expand(pix, det_box, shape):
 
 
 class TableSystem(object):
-    def __init__(self, args):
-        self.text_detector = predict_det.TextDetector(args)
-        self.text_recognizer = predict_rec.TextRecognizer(args)
+    def __init__(self, args, text_detector=None, text_recognizer=None):
+        self.text_detector = predict_det.TextDetector(args) if text_detector is None else text_detector
+        self.text_recognizer = predict_rec.TextRecognizer(args) if text_recognizer is None else text_recognizer
         self.table_structurer = predict_strture.TableStructurer(args)
-        self.use_angle_cls = args.use_angle_cls
-        self.drop_score = args.drop_score
 
     def __call__(self, img):
         ori_im = img.copy()
@@ -75,8 +74,8 @@ class TableSystem(object):
             r_boxes.append(box)
         dt_boxes = np.array(r_boxes)
 
-        # logger.info("dt_boxes num : {}, elapse : {}".format(
-        #     len(dt_boxes), elapse))
+        logger.debug("dt_boxes num : {}, elapse : {}".format(
+            len(dt_boxes), elapse))
         if dt_boxes is None:
             return None, None
         img_crop_list = []
@@ -87,8 +86,8 @@ class TableSystem(object):
             text_rect = ori_im[int(y0):int(y1), int(x0):int(x1), :]
             img_crop_list.append(text_rect)
         rec_res, elapse = self.text_recognizer(img_crop_list)
-        # logger.info("rec_res num  : {}, elapse : {}".format(
-        #     len(rec_res), elapse))
+        logger.debug("rec_res num  : {}, elapse : {}".format(
+            len(rec_res), elapse))
 
         pred_html, pred = self.rebuild_table(structure_res, dt_boxes, rec_res)
         return pred_html
@@ -172,6 +171,7 @@ def sorted_boxes(dt_boxes):
             _boxes[i + 1] = tmp
     return _boxes
 
+
 def to_excel(html_table, excel_path):
     from tablepyxl import tablepyxl
     tablepyxl.document_to_xl(html_table, excel_path)
@@ -180,19 +180,18 @@ def to_excel(html_table, excel_path):
 def main(args):
     image_file_list = get_image_file_list(args.image_dir)
     image_file_list = image_file_list[args.process_id::args.total_process_num]
-    excel_save_folder = 'output/table'
-    os.makedirs(excel_save_folder, exist_ok=True)
+    os.makedirs(args.output, exist_ok=True)
 
     text_sys = TableSystem(args)
     img_num = len(image_file_list)
     for i, image_file in enumerate(image_file_list):
         logger.info("[{}/{}] {}".format(i, img_num, image_file))
         img, flag = check_and_read_gif(image_file)
-        excel_path = os.path.join(excel_save_folder, os.path.basename(image_file).split('.')[0] + '.xlsx')
+        excel_path = os.path.join(args.table_output, os.path.basename(image_file).split('.')[0] + '.xlsx')
         if not flag:
             img = cv2.imread(image_file)
         if img is None:
-            logger.info("error in loading image:{}".format(image_file))
+            logger.error("error in loading image:{}".format(image_file))
             continue
         starttime = time.time()
         pred_html = text_sys(img)
@@ -205,7 +204,7 @@ def main(args):
 
 
 if __name__ == "__main__":
-    args = utility.parse_args()
+    args = parse_args()
     if args.use_mp:
         p_list = []
         total_process_num = args.total_process_num

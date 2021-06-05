@@ -194,21 +194,3 @@ def matcher_structure(gt_bboxes, pred_bboxes_rows, pred_bboxes):
             matched[index].append(i)
         pre_bbox = gt_box
     return matched
-
-
-def main():
-    detect_bboxes = json.load(open('./f_detecion_bbox.json'))
-    gt_bboxes = json.load(open('./f_gt_bbox.json'))
-    all_node = 0
-    matched_right = 0
-    key = 'PMC4796501_003_00.png'
-    print(key)
-    gt_bbox = gt_bboxes[key]
-    pred_bbox = detect_bboxes[key]
-    matched = matcher(gt_bbox, pred_bbox)
-    print(matched)
-    
-
-if __name__ == "__main__":
-    main()
-

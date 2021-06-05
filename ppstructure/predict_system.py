@@ -18,97 +18,93 @@ import subprocess
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
+sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
 
 os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
 import cv2
-import copy
 import numpy as np
 import time
-import tools.infer.utility as utility
-from tools.infer.predict_system import TextSystem
-from ppstructure.table.predict_table import TableSystem, to_excel
-from ppstructure.layout.predict_layout import LayoutDetector
+
+import layoutparser as lp
+
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.utils.logging import get_logger
+from tools.infer.predict_system import TextSystem
+from ppstructure.table.predict_table import TableSystem, to_excel
+from ppstructure.utility import parse_args
 
 logger = get_logger()
 
 
-def parse_args():
-    parser = utility.init_args()
-
-    # params for output
-    parser.add_argument("--table_output", type=str, default='output/table')
-    # params for table structure
-    parser.add_argument("--table_max_len", type=int, default=488)
-    parser.add_argument("--table_max_text_length", type=int, default=100)
-    parser.add_argument("--table_max_elem_length", type=int, default=800)
-    parser.add_argument("--table_max_cell_num", type=int, default=500)
-    parser.add_argument("--table_model_dir", type=str)
-    parser.add_argument("--table_char_type", type=str, default='en')
-    parser.add_argument("--table_char_dict_path", type=str, default="./ppocr/utils/dict/table_structure_dict.txt")
-
-    # params for layout detector
-    parser.add_argument("--layout_model_dir", type=str)
-    return parser.parse_args()
-
-
-class OCRSystem():
+class OCRSystem(object):
     def __init__(self, args):
         self.text_system = TextSystem(args)
-        self.table_system = TableSystem(args)
-        self.table_layout = LayoutDetector(args)
+        self.table_system = TableSystem(args, self.text_system.text_detector, self.text_system.text_recognizer)
+        self.table_layout = lp.PaddleDetectionLayoutModel("lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config",
+                                                          threshold=0.5, enable_mkldnn=args.enable_mkldnn,
+                                                          enforce_cpu=not args.use_gpu)
         self.use_angle_cls = args.use_angle_cls
         self.drop_score = args.drop_score
 
     def __call__(self, img):
         ori_im = img.copy()
-        layout_res = self.table_layout(copy.deepcopy(img))
+        layout_res = self.table_layout.detect(img[..., ::-1])
+        res_list = []
         for region in layout_res:
-            x1, y1, x2, y2 = region['bbox']
+            x1, y1, x2, y2 = region.coordinates
+            x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
             roi_img = ori_im[y1:y2, x1:x2, :]
-            if region['label'] == 'table':
-                res = self.text_system(roi_img)
+            if region.type == 'Table':
+                res = self.table_system(roi_img)
+            elif region.type == 'Figure':
+                continue
             else:
-                res = self.text_system(roi_img)
-            region['res'] = res
-        return layout_res
+                filter_boxes, filter_rec_res = self.text_system(roi_img)
+                filter_boxes = [x.reshape(-1).tolist() for x in filter_boxes]
+                res = (filter_boxes, filter_rec_res)
+            res_list.append({'type': region.type, 'bbox': [x1, y1, x2, y2], 'res': res})
+        return res_list
+
+
+def save_res(res, save_folder, img_name):
+    excel_save_folder = os.path.join(save_folder, img_name)
+    os.makedirs(excel_save_folder, exist_ok=True)
+    # save res
+    for region in res:
+        if region['type'] == 'Table':
+            excel_path = os.path.join(excel_save_folder, '{}.xlsx'.format(region['bbox']))
+            to_excel(region['res'], excel_path)
+        elif region['type'] == 'Figure':
+            pass
+        else:
+            with open(os.path.join(excel_save_folder, 'res.txt'), 'a', encoding='utf8') as f:
+                for box, rec_res in zip(*region['res']):
+                    f.write('{}\t{}\n'.format(np.array(box).reshape(-1).tolist(), rec_res))
 
 
 def main(args):
     image_file_list = get_image_file_list(args.image_dir)
+    image_file_list = image_file_list
     image_file_list = image_file_list[args.process_id::args.total_process_num]
-    save_folder = args.table_output
+    save_folder = args.output
     os.makedirs(save_folder, exist_ok=True)
 
-    text_sys = OCRSystem(args)
+    structure_sys = OCRSystem(args)
     img_num = len(image_file_list)
     for i, image_file in enumerate(image_file_list):
         logger.info("[{}/{}] {}".format(i, img_num, image_file))
         img, flag = check_and_read_gif(image_file)
         img_name = os.path.basename(image_file).split('.')[0]
-        # excel_path = os.path.join(excel_save_folder, + '.xlsx')
+
         if not flag:
             img = cv2.imread(image_file)
         if img is None:
-            logger.info("error in loading image:{}".format(image_file))
+            logger.error("error in loading image:{}".format(image_file))
             continue
         starttime = time.time()
-        res = text_sys(img)
-
-        excel_save_folder = os.path.join(save_folder, img_name)
-        os.makedirs(excel_save_folder, exist_ok=True)
-        # save res
-        for region in res:
-            if region['label'] == 'table':
-                excel_path = os.path.join(excel_save_folder, '{}.xlsx'.format(region['bbox']))
-                to_excel(region['res'], excel_path)
-            else:
-                with open(os.path.join(excel_save_folder, 'res.txt'),'a',encoding='utf8') as f:
-                    for box, rec_res in zip(*region['res']):
-                        f.write('{}\t{}\n'.format(np.array(box).reshape(-1).tolist(), rec_res))
-        logger.info(res)
+        res = structure_sys(img)
+        save_res(res, save_folder, img_name)
+        logger.info('result save to {}'.format(os.path.join(save_folder, img_name)))
         elapse = time.time() - starttime
         logger.info("Predict time : {:.3f}s".format(elapse))
 

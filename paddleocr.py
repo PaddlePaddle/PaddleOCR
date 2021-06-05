@@ -19,6 +19,7 @@ __dir__ = os.path.dirname(__file__)
 sys.path.append(os.path.join(__dir__, ''))
 
 import cv2
+import logging
 import numpy as np
 from pathlib import Path
 
@@ -150,6 +151,8 @@ class PaddleOCR(predict_system.TextSystem):
         """
         params = parse_args(mMain=False)
         params.__dict__.update(**kwargs)
+        if params.show_log:
+            logger.setLevel(logging.DEBUG)
         self.use_angle_cls = params.use_angle_cls
         lang = params.lang
         latin_lang = [
