@@ -146,16 +146,3 @@ def main():
             logger.info(item['res'])
         save_res(result, save_folder, img_name)
         logger.info('result save to {}'.format(os.path.join(save_folder, img_name)))
-
-
-
-if __name__ == '__main__':
-    table_engine = PaddleStructure(det_model_dir='../inference/table/ch_ppocr_mobile_v2.0_table_det_infer',
-                                   rec_model_dir='../inference/table/ch_ppocr_mobile_v2.0_table_rec_infer',
-                                   structure_model_dir='../inference/table/ch_ppocr_mobile_v2.0_table_structure_infer',
-                                   output='/Users/zhoujun20/Desktop/工作相关/table/table_pr/PaddleOCR/output/table',
-                                   show_log=True)
-    img = cv2.imread('/Users/zhoujun20/Desktop/工作相关/table/table_pr/PaddleOCR/ppstructure/test_imgs/table_1.png')
-    result = table_engine(img)
-    for line in result:
-        print(line)
