@@ -8,9 +8,9 @@ Global:
   save_epoch_step: 3
   eval_batch_step: [0, 2000]
   cal_metric_during_train: true
-  pretrained_model: null
-  checkpoints: null
-  save_inference_dir: null
+  pretrained_model:
+  checkpoints:
+  save_inference_dir:
   use_visualdl: false
   infer_img: doc/imgs_words/ch/word_1.jpg
   character_dict_path: ppocr/utils/ppocr_keys_v1.txt
@@ -38,7 +38,7 @@ Architecture:
   algorithm: Distillation
   Models:
     Student:
-      pretrained: null
+      pretrained:
       freeze_params: false
       return_all_feats: true
       model_type: rec
@@ -57,7 +57,7 @@ Architecture:
         name: CTCHead
         fc_decay: 0.00001
     Teacher:
-      pretrained: null
+      pretrained:
       freeze_params: false
       return_all_feats: true
       model_type: rec
@@ -118,8 +118,8 @@ Train:
     - DecodeImage:
         img_mode: BGR
         channel_first: false
-    - RecAug: null
-    - CTCLabelEncode: null
+    - RecAug:
+    - CTCLabelEncode:
     - RecResizeImg:
         image_shape: [3, 32, 320]
     - KeepKeys:
@@ -143,7 +143,7 @@ Eval:
     - DecodeImage:
         img_mode: BGR
         channel_first: false
-    - CTCLabelEncode: null
+    - CTCLabelEncode:
     - RecResizeImg:
         image_shape: [3, 32, 320]
     - KeepKeys:

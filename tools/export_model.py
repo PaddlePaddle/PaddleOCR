@@ -95,7 +95,7 @@ def main():
         else:  # base rec model
             config["Architecture"]["Head"]["out_channels"] = char_num
     model = build_model(config["Architecture"])
-    init_model(config, model, logger)
+    init_model(config, model)
     model.eval()
 
     save_path = config["Global"]["save_inference_dir"]

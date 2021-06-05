@@ -21,7 +21,7 @@ from ppocr.modeling.backbones import build_backbone
 from ppocr.modeling.necks import build_neck
 from ppocr.modeling.heads import build_head
 from .base_model import BaseModel
-from ppocr.utils.save_load import load_dygraph_pretrain
+from ppocr.utils.save_load import init_model
 
 __all__ = ['DistillationModel']
 
@@ -46,7 +46,7 @@ class DistillationModel(nn.Layer):
                 pretrained = model_config.pop("pretrained")
             model = BaseModel(model_config)
             if pretrained is not None:
-                load_dygraph_pretrain(model, path=pretrained)
+                init_model(model, path=pretrained)
             if freeze_params:
                 for param in model.parameters():
                     param.trainable = False

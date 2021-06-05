@@ -49,7 +49,7 @@ def main():
     model = build_model(config['Architecture'])
     use_srn = config['Architecture']['algorithm'] == "SRN"
 
-    best_model_dict = init_model(config, model, logger)
+    best_model_dict = init_model(config, model)
     if len(best_model_dict):
         logger.info('metric in ckpt ***************')
         for k, v in best_model_dict.items():

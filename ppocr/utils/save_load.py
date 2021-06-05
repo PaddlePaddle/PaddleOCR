@@ -23,6 +23,8 @@ import six
 
 import paddle
 
+from ppocr.utils.logging import get_logger
+
 __all__ = ['init_model', 'save_model', 'load_dygraph_pretrain']
 
 
@@ -42,19 +44,11 @@ def _mkdir_if_not_exist(path, logger):
                 raise OSError('Failed to mkdir {}'.format(path))
 
 
-def load_dygraph_pretrain(model, logger=None, path=None):
-    if not (os.path.isdir(path) or os.path.exists(path + '.pdparams')):
-        raise ValueError("Model pretrain path {} does not "
-                         "exists.".format(path))
-    param_state_dict = paddle.load(path + '.pdparams')
-    model.set_state_dict(param_state_dict)
-    return
-
-
-def init_model(config, model, logger, optimizer=None, lr_scheduler=None):
+def init_model(config, model, optimizer=None, lr_scheduler=None):
     """
     load model from checkpoint or pretrained_model
     """
+    logger = get_logger()
     global_config = config['Global']
     checkpoints = global_config.get('checkpoints')
     pretrained_model = global_config.get('pretrained_model')
@@ -77,13 +71,17 @@ def init_model(config, model, logger, optimizer=None, lr_scheduler=None):
             best_model_dict = states_dict.get('best_model_dict', {})
             if 'epoch' in states_dict:
                 best_model_dict['start_epoch'] = states_dict['epoch'] + 1
-
         logger.info("resume from {}".format(checkpoints))
     elif pretrained_model:
         if not isinstance(pretrained_model, list):
             pretrained_model = [pretrained_model]
         for pretrained in pretrained_model:
-            load_dygraph_pretrain(model, logger, path=pretrained)
+            if not (os.path.isdir(pretrained) or
+                    os.path.exists(pretrained + '.pdparams')):
+                raise ValueError("Model pretrain path {} does not "
+                                 "exists.".format(pretrained))
+            param_state_dict = paddle.load(pretrained + '.pdparams')
+            model.set_state_dict(param_state_dict)
             logger.info("load pretrained model from {}".format(
                 pretrained_model))
     else:
