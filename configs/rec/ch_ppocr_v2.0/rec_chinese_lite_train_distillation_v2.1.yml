@@ -19,6 +19,7 @@ Global:
   infer_mode: false
   use_space_char: false
   distributed: true
+  save_res_path: ./output/rec/predicts_chinese_lite_distillation_v2.1.txt
 
 
 Optimizer:
@@ -98,7 +99,7 @@ Loss:
 
 PostProcess:
   name: DistillationCTCLabelDecode
-  model_name: ["Student"]
+  model_name: ["Student", "Teacher"]
   key: head_out
 
 Metric:
