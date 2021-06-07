@@ -78,7 +78,7 @@ def save_res(res, save_folder, img_name):
             pass
         else:
             with open(os.path.join(excel_save_folder, 'res.txt'), 'a', encoding='utf8') as f:
-                for box, rec_res in zip(*region['res']):
+                for box, rec_res in zip(region['res'][0],region['res'][1]):
                     f.write('{}\t{}\n'.format(np.array(box).reshape(-1).tolist(), rec_res))
 
 
