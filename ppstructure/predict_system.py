@@ -42,7 +42,7 @@ class OCRSystem(object):
         self.table_system = TableSystem(args, self.text_system.text_detector, self.text_system.text_recognizer)
         self.table_layout = lp.PaddleDetectionLayoutModel("lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config",
                                                           threshold=0.5, enable_mkldnn=args.enable_mkldnn,
-                                                          enforce_cpu=not args.use_gpu)
+                                                          enforce_cpu=not args.use_gpu,thread_num=args.cpu_threads)
         self.use_angle_cls = args.use_angle_cls
         self.drop_score = args.drop_score
 
@@ -60,7 +60,9 @@ class OCRSystem(object):
                 continue
             else:
                 filter_boxes, filter_rec_res = self.text_system(roi_img)
+                filter_boxes = [x + [x1, y1] for x in filter_boxes]
                 filter_boxes = [x.reshape(-1).tolist() for x in filter_boxes]
+
                 res = (filter_boxes, filter_rec_res)
             res_list.append({'type': region.type, 'bbox': [x1, y1, x2, y2], 'res': res})
         return res_list
@@ -78,7 +80,7 @@ def save_res(res, save_folder, img_name):
             pass
         else:
             with open(os.path.join(excel_save_folder, 'res.txt'), 'a', encoding='utf8') as f:
-                for box, rec_res in zip(region['res'][0],region['res'][1]):
+                for box, rec_res in zip(region['res'][0], region['res'][1]):
                     f.write('{}\t{}\n'.format(np.array(box).reshape(-1).tolist(), rec_res))
 
 
