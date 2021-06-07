@@ -23,13 +23,15 @@ import math
 from paddle import inference
 import time
 from ppocr.utils.logging import get_logger
+
 logger = get_logger()
 
 
-def parse_args():
-    def str2bool(v):
-        return v.lower() in ("true", "t", "1")
+def str2bool(v):
+    return v.lower() in ("true", "t", "1")
 
+
+def init_args():
     parser = argparse.ArgumentParser()
     # params for prediction engine
     parser.add_argument("--use_gpu", type=str2bool, default=True)
@@ -110,6 +112,12 @@ def parse_args():
 
     parser.add_argument("--benchmark", type=bool, default=False)
     parser.add_argument("--save_log_path", type=str, default="./log_output/")
+
+    return parser
+
+
+def parse_args():
+    parser = init_args()
     return parser.parse_args()
 
 
@@ -221,22 +229,97 @@ def create_predictor(args, mode, logger):
         config.enable_use_gpu(args.gpu_mem, 0)
         if args.use_tensorrt:
             config.enable_tensorrt_engine(
-                precision_mode=inference.PrecisionType.Half
-                if args.use_fp16 else inference.PrecisionType.Float32,
-                max_batch_size=args.max_batch_size)
+                precision_mode=inference.PrecisionType.Float32,
+                max_batch_size=args.max_batch_size,
+                min_subgraph_size=3)  # skip the minmum trt subgraph
+        if mode == "det" and "mobile" in model_file_path:
+            min_input_shape = {
+                "x": [1, 3, 50, 50],
+                "conv2d_92.tmp_0": [1, 96, 20, 20],
+                "conv2d_91.tmp_0": [1, 96, 10, 10],
+                "nearest_interp_v2_1.tmp_0": [1, 96, 10, 10],
+                "nearest_interp_v2_2.tmp_0": [1, 96, 20, 20],
+                "nearest_interp_v2_3.tmp_0": [1, 24, 20, 20],
+                "nearest_interp_v2_4.tmp_0": [1, 24, 20, 20],
+                "nearest_interp_v2_5.tmp_0": [1, 24, 20, 20],
+                "elementwise_add_7": [1, 56, 2, 2],
+                "nearest_interp_v2_0.tmp_0": [1, 96, 2, 2]
+            }
+            max_input_shape = {
+                "x": [1, 3, 2000, 2000],
+                "conv2d_92.tmp_0": [1, 96, 400, 400],
+                "conv2d_91.tmp_0": [1, 96, 200, 200],
+                "nearest_interp_v2_1.tmp_0": [1, 96, 200, 200],
+                "nearest_interp_v2_2.tmp_0": [1, 96, 400, 400],
+                "nearest_interp_v2_3.tmp_0": [1, 24, 400, 400],
+                "nearest_interp_v2_4.tmp_0": [1, 24, 400, 400],
+                "nearest_interp_v2_5.tmp_0": [1, 24, 400, 400],
+                "elementwise_add_7": [1, 56, 400, 400],
+                "nearest_interp_v2_0.tmp_0": [1, 96, 400, 400]
+            }
+            opt_input_shape = {
+                "x": [1, 3, 640, 640],
+                "conv2d_92.tmp_0": [1, 96, 160, 160],
+                "conv2d_91.tmp_0": [1, 96, 80, 80],
+                "nearest_interp_v2_1.tmp_0": [1, 96, 80, 80],
+                "nearest_interp_v2_2.tmp_0": [1, 96, 160, 160],
+                "nearest_interp_v2_3.tmp_0": [1, 24, 160, 160],
+                "nearest_interp_v2_4.tmp_0": [1, 24, 160, 160],
+                "nearest_interp_v2_5.tmp_0": [1, 24, 160, 160],
+                "elementwise_add_7": [1, 56, 40, 40],
+                "nearest_interp_v2_0.tmp_0": [1, 96, 40, 40]
+            }
+        if mode == "det" and "server" in model_file_path:
+            min_input_shape = {
+                "x": [1, 3, 50, 50],
+                "conv2d_59.tmp_0": [1, 96, 20, 20],
+                "nearest_interp_v2_2.tmp_0": [1, 96, 20, 20],
+                "nearest_interp_v2_3.tmp_0": [1, 24, 20, 20],
+                "nearest_interp_v2_4.tmp_0": [1, 24, 20, 20],
+                "nearest_interp_v2_5.tmp_0": [1, 24, 20, 20]
+            }
+            max_input_shape = {
+                "x": [1, 3, 2000, 2000],
+                "conv2d_59.tmp_0": [1, 96, 400, 400],
+                "nearest_interp_v2_2.tmp_0": [1, 96, 400, 400],
+                "nearest_interp_v2_3.tmp_0": [1, 24, 400, 400],
+                "nearest_interp_v2_4.tmp_0": [1, 24, 400, 400],
+                "nearest_interp_v2_5.tmp_0": [1, 24, 400, 400]
+            }
+            opt_input_shape = {
+                "x": [1, 3, 640, 640],
+                "conv2d_59.tmp_0": [1, 96, 160, 160],
+                "nearest_interp_v2_2.tmp_0": [1, 96, 160, 160],
+                "nearest_interp_v2_3.tmp_0": [1, 24, 160, 160],
+                "nearest_interp_v2_4.tmp_0": [1, 24, 160, 160],
+                "nearest_interp_v2_5.tmp_0": [1, 24, 160, 160]
+            }
+        elif mode == "rec":
+            min_input_shape = {"x": [args.rec_batch_num, 3, 32, 10]}
+            max_input_shape = {"x": [args.rec_batch_num, 3, 32, 2000]}
+            opt_input_shape = {"x": [args.rec_batch_num, 3, 32, 320]}
+        elif mode == "cls":
+            min_input_shape = {"x": [args.rec_batch_num, 3, 48, 10]}
+            max_input_shape = {"x": [args.rec_batch_num, 3, 48, 2000]}
+            opt_input_shape = {"x": [args.rec_batch_num, 3, 48, 320]}
+        else:
+            min_input_shape = {"x": [1, 3, 10, 10]}
+            max_input_shape = {"x": [1, 3, 1000, 1000]}
+            opt_input_shape = {"x": [1, 3, 500, 500]}
+        config.set_trt_dynamic_shape_info(min_input_shape, max_input_shape,
+                                          opt_input_shape)
+
     else:
         config.disable_gpu()
         if hasattr(args, "cpu_threads"):
             config.set_cpu_math_library_num_threads(args.cpu_threads)
         else:
+            # default cpu threads as 10
             config.set_cpu_math_library_num_threads(10)
         if args.enable_mkldnn:
             # cache 10 different shapes for mkldnn to avoid memory leak
             config.set_mkldnn_cache_capacity(10)
             config.enable_mkldnn()
-            #  TODO LDOUBLEV: fix mkldnn bug when bach_size  > 1
-            #config.set_mkldnn_op({'conv2d', 'depthwise_conv2d', 'pool2d', 'batch_norm'})
-            args.rec_batch_num = 1
 
     # enable memory optim
     config.enable_memory_optim()
@@ -299,7 +382,7 @@ def draw_ocr(image,
              txts=None,
              scores=None,
              drop_score=0.5,
-             font_path="./doc/simfang.ttf"):
+             font_path="./doc/fonts/simfang.ttf"):
     """
     Visualize the results of OCR detection and recognition
     args:
@@ -532,22 +615,4 @@ def get_current_memory_mb(gpu_id=None):
 
 
 if __name__ == '__main__':
-    test_img = "./doc/test_v2"
-    predict_txt = "./doc/predict.txt"
-    f = open(predict_txt, 'r')
-    data = f.readlines()
-    img_path, anno = data[0].strip().split('\t')
-    img_name = os.path.basename(img_path)
-    img_path = os.path.join(test_img, img_name)
-    image = Image.open(img_path)
-
-    data = json.loads(anno)
-    boxes, txts, scores = [], [], []
-    for dic in data:
-        boxes.append(dic['points'])
-        txts.append(dic['transcription'])
-        scores.append(round(dic['scores'], 3))
-
-    new_img = draw_ocr(image, boxes, txts, scores)
-
-    cv2.imwrite(img_name, new_img)
+    pass

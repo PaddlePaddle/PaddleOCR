@@ -84,7 +84,7 @@ class TextSystem(object):
             cv2.imwrite("./output/img_crop_%d.jpg" % bno, img_crop_list[bno])
             logger.info(bno, rec_res[bno])
 
-    def __call__(self, img):
+    def __call__(self, img, cls=True):
         ori_im = img.copy()
         dt_boxes, elapse = self.text_detector(img)
 
@@ -98,7 +98,7 @@ class TextSystem(object):
             tmp_box = copy.deepcopy(dt_boxes[bno])
             img_crop = self.get_rotate_crop_image(ori_im, tmp_box)
             img_crop_list.append(img_crop)
-        if self.use_angle_cls:
+        if self.use_angle_cls and cls:
             img_crop_list, angle_list, elapse = self.text_classifier(
                 img_crop_list)
 
