@@ -21,7 +21,6 @@ from .locality_aware_nms import nms_locality
 import cv2
 import paddle
 
-import os
 import sys
 
 
@@ -127,12 +126,11 @@ class EASTPostProcess(object):
                 nms_thresh=self.nms_thresh)
             boxes_norm = []
             if len(boxes) > 0:
-                h, w = score.shape[1:]
-                src_h, src_w, ratio_h, ratio_w = shape_list[ino]
+                __, __, ratio_h, ratio_w = shape_list[ino]
                 boxes = boxes[:, :8].reshape((-1, 4, 2))
                 boxes[:, :, 0] /= ratio_w
                 boxes[:, :, 1] /= ratio_h
-                for i_box, box in enumerate(boxes):
+                for box in boxes:
                     box = self.sort_poly(box.astype(np.int32))
                     if np.linalg.norm(box[0] - box[1]) < 5 \
                         or np.linalg.norm(box[3] - box[0]) < 5:
