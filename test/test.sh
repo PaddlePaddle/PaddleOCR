@@ -116,8 +116,12 @@ for train_model in ${train_model_list[*]}; do
                 if [ "${model_name}" = "det" ]; then 
                     export rec_batch_size_list=( "1" )
                     inference="tools/infer/predict_det.py"
+                    det_model_dir=${save_log}/export_inference/
+                    rec_model_dir=""
                 elif [ "${model_name}" = "rec" ]; then
                     inference="tools/infer/predict_rec.py"
+                    rec_model_dir=${save_log}/export_inference/
+                    det_model_dir=""
                 fi
                 # inference 
                 for device in ${devices[*]}; do 
