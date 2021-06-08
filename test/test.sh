@@ -55,10 +55,10 @@ checkpoints=$(func_parser "${lines[14]}")
 
 
 for train_model in ${train_model_list[*]}; do 
-    if [ ${train_model} = "det" ];then
+    if [ ${train_model} = "ocr_det" ];then
         model_name="det"
         yml_file="configs/det/det_mv3_db.yml"
-    elif [ ${train_model} = "rec" ];then
+    elif [ ${train_model} = "ocr_rec" ];then
         model_name="rec"
         yml_file="configs/rec/rec_mv3_none_bilstm_ctc.yml"
     else

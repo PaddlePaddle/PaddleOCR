@@ -1,4 +1,4 @@
-train_model_list: det;benchmark/benchmark_det.yml
+train_model_list: ocr_det
 gpu_list: -1|0|0,1
 auto_cast_list: False|True
 trainer_list: norm|quant|prune
