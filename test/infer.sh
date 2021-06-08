@@ -29,7 +29,7 @@ gpu_precision_list=$(func_parser "${lines[11]}")
 
 
 function status_check(){
-    last_status=$1   # 上个阶段的退出码
+    last_status=$1   # the exit code
     run_model=$2
     run_command=$3
     save_log=$4

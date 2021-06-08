@@ -57,7 +57,7 @@ gpu_precision_list=$(func_parser "${lines[11]}")
 img_dir="./train_data/icdar2015/text_localization/ch4_test_images/"
 
 function status_check(){
-    last_status=$1   # 上个阶段的退出码
+    last_status=$1   # the exit code
     run_model=$2
     run_command=$3
     save_log=$4
@@ -92,7 +92,7 @@ for train_model in ${train_model_list[*]}; do
         else
             launch="-m paddle.distributed.launch --log_dir=./debug/ --gpus ${gpu}"
         fi
-        # echo "model_name: ${model_name}  yml_file: ${yml_file}   launch: ${launch}   gpu: ${gpu}" 
+
         for auto_cast in ${auto_cast_list[*]}; do 
             for slim_trainer in ${slim_trainer_list[*]}; do 
                 if [ ${slim_trainer} = "norm" ]; then
