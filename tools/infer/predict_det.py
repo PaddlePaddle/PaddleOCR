@@ -42,8 +42,6 @@ class TextDetector(object):
             'DetResizeForTest': {
                 'limit_side_len': args.det_limit_side_len,
                 'limit_type': args.det_limit_type,
-                'pad':args.det_pad,
-                'pad_size':args.det_pad_size
             }
         }, {
             'NormalizeImage': {

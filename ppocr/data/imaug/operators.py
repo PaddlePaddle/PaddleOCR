@@ -122,8 +122,6 @@ class DetResizeForTest(object):
         elif 'limit_side_len' in kwargs:
             self.limit_side_len = kwargs['limit_side_len']
             self.limit_type = kwargs.get('limit_type', 'min')
-            self.pad = kwargs.get('pad', False)
-            self.pad_size = kwargs.get('pad_size', 480)
         elif 'resize_long' in kwargs:
             self.resize_type = 2
             self.resize_long = kwargs.get('resize_long', 960)
@@ -174,11 +172,9 @@ class DetResizeForTest(object):
                     ratio = float(limit_side_len) / h
                 else:
                     ratio = float(limit_side_len) / w
-            elif self.pad:
-                ratio = float(self.pad_size) / max(h, w)
             else:
                 ratio = 1.
-        else:
+        elif self.limit_type == 'min':
             if min(h, w) < limit_side_len:
                 if h < w:
                     ratio = float(limit_side_len) / h
@@ -186,6 +182,10 @@ class DetResizeForTest(object):
                     ratio = float(limit_side_len) / w
             else:
                 ratio = 1.
+        elif self.limit_type == 'resize_long':
+            ratio = float(limit_side_len) / max(h,w)
+        else:
+            raise Exception('not support limit type, image ')
         resize_h = int(h * ratio)
         resize_w = int(w * ratio)
 
@@ -201,10 +201,6 @@ class DetResizeForTest(object):
             sys.exit(0)
         ratio_h = resize_h / float(h)
         ratio_w = resize_w / float(w)
-        if self.limit_type == 'max' and self.pad:
-            padding_im = np.zeros((self.pad_size, self.pad_size, c), dtype=np.float32)
-            padding_im[:resize_h, :resize_w, :] = img
-            img = padding_im
         return img, [ratio_h, ratio_w]
 
     def resize_image_type2(self, img):

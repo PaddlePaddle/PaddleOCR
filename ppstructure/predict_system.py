@@ -38,8 +38,7 @@ logger = get_logger()
 
 class OCRSystem(object):
     def __init__(self, args):
-        args.det_pad = True
-        args.det_pad_size = 960
+        args.det_limit_type = 'resize_long'
         args.drop_score = 0
         self.text_system = TextSystem(args)
         self.table_system = TableSystem(args, self.text_system.text_detector, self.text_system.text_recognizer)

@@ -46,8 +46,6 @@ def init_args():
     parser.add_argument("--det_model_dir", type=str)
     parser.add_argument("--det_limit_side_len", type=float, default=960)
     parser.add_argument("--det_limit_type", type=str, default='max')
-    parser.add_argument("--det_pad", type=str2bool, default=False)
-    parser.add_argument("--det_pad_size", type=int, default=640)
 
     # DB parmas
     parser.add_argument("--det_db_thresh", type=float, default=0.3)
