@@ -78,8 +78,8 @@ class PaddleStructure(OCRSystem):
             params.structure_model_dir = os.path.join(BASE_DIR, VERSION, 'structure')
         # download model
         maybe_download(params.det_model_dir, model_urls['det'])
-        maybe_download(params.det_model_dir, model_urls['rec'])
-        maybe_download(params.det_model_dir, model_urls['structure'])
+        maybe_download(params.rec_model_dir, model_urls['rec'])
+        maybe_download(params.structure_model_dir, model_urls['structure'])
 
         if params.rec_char_dict_path is None:
             params.rec_char_type = 'EN'
@@ -143,4 +143,3 @@ def main():
             logger.info(item['res'])
         save_res(result, save_folder, img_name)
         logger.info('result save to {}'.format(os.path.join(save_folder, img_name)))
-
