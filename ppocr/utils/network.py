@@ -20,6 +20,7 @@ from tqdm import tqdm
 
 from ppocr.utils.logging import get_logger
 
+
 def download_with_progressbar(url, save_path):
     logger = get_logger()
     response = requests.get(url, stream=True)
@@ -45,6 +46,7 @@ def maybe_download(model_storage_directory, url):
             os.path.join(model_storage_directory, 'inference.pdiparams')
     ) or not os.path.exists(
         os.path.join(model_storage_directory, 'inference.pdmodel')):
+        assert url.endswith('.tar'), 'Only supports tar compressed package'
         tmp_path = os.path.join(model_storage_directory, url.split('/')[-1])
         print('download {} to {}'.format(url, tmp_path))
         os.makedirs(model_storage_directory, exist_ok=True)
@@ -64,3 +66,17 @@ def maybe_download(model_storage_directory, url):
                     f.write(file.read())
         os.remove(tmp_path)
 
+
+def is_link(s):
+    return s is not None and s.startswith('http')
+
+
+def confirm_model_dir_url(model_dir, default_model_dir, default_url):
+    url = default_url
+    if model_dir is None or is_link(model_dir):
+        if is_link(model_dir):
+            url = model_dir
+        file_name = url.split('/')[-1][:-4]
+        model_dir = default_model_dir
+        model_dir = os.path.join(model_dir, file_name)
+    return model_dir, url
