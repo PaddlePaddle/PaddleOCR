@@ -31,7 +31,7 @@ from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.utils.logging import get_logger
 from tools.infer.predict_system import TextSystem
 from ppstructure.table.predict_table import TableSystem, to_excel
-from ppstructure.utility import parse_args
+from ppstructure.utility import parse_args,draw_result
 
 logger = get_logger()
 
@@ -39,7 +39,8 @@ logger = get_logger()
 class OCRSystem(object):
     def __init__(self, args):
         args.det_pad = True
-        args.det_pad_size = 640
+        args.det_pad_size = 960
+        args.drop_score = 0
         self.text_system = TextSystem(args)
         self.table_system = TableSystem(args, self.text_system.text_detector, self.text_system.text_recognizer)
         self.table_layout = lp.PaddleDetectionLayoutModel("lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config",
@@ -107,6 +108,8 @@ def main(args):
         starttime = time.time()
         res = structure_sys(img)
         save_res(res, save_folder, img_name)
+        draw_img = draw_result(img,res, args.vis_font_path)
+        cv2.imwrite(os.path.join(save_folder, img_name, 'show.jpg'), draw_img)
         logger.info('result save to {}'.format(os.path.join(save_folder, img_name)))
         elapse = time.time() - starttime
         logger.info("Predict time : {:.3f}s".format(elapse))

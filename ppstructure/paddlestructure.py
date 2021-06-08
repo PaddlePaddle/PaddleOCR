@@ -25,27 +25,23 @@ from pathlib import Path
 
 from ppocr.utils.logging import get_logger
 from ppstructure.predict_system import OCRSystem, save_res
-from utility import init_args
+from ppstructure.table.predict_table import to_excel
+from ppstructure.utility import init_args, draw_result
 
 logger = get_logger()
 from ppocr.utils.utility import check_and_read_gif, get_image_file_list
 from ppocr.utils.network import maybe_download, download_with_progressbar
 
-__all__ = ['PaddleStructure']
+__all__ = ['PaddleStructure', 'draw_result', 'to_excel']
 
 VERSION = '2.1'
 BASE_DIR = os.path.expanduser("~/.paddlestructure/")
 
 model_urls = {
-    'det': {
-        'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar',
-    },
-    'rec': {
-        'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar',
-    },
-    'structure': {
-        'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar',
-    },
+    'det': 'https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_det_infer.tar',
+    'rec': 'https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar',
+    'structure': 'https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar'
+
 }
 
 
@@ -143,21 +139,8 @@ def main():
         img_name = os.path.basename(img_path).split('.')[0]
         logger.info('{}{}{}'.format('*' * 10, img_path, '*' * 10))
         result = structure_engine(img_path)
-        save_res(result, args.output, os.path.basename(img_path).split('.')[0])
         for item in result:
             logger.info(item['res'])
         save_res(result, save_folder, img_name)
         logger.info('result save to {}'.format(os.path.join(save_folder, img_name)))
 
-
-if __name__ == '__main__':
-    table_engine = PaddleStructure(
-        det_model_dir='/Users/zhoujun20/Desktop/工作相关/table/table_pr/PaddleOCR/inference/table/ch_ppocr_mobile_v2.0_table_det_infer',
-        rec_model_dir='/Users/zhoujun20/Desktop/工作相关/table/table_pr/PaddleOCR/inference/table/ch_ppocr_mobile_v2.0_table_rec_infer',
-        structure_model_dir='/Users/zhoujun20/Desktop/工作相关/table/table_pr/PaddleOCR/inference/table/ch_ppocr_mobile_v2.0_table_structure_infer',
-        output='/Users/zhoujun20/Desktop/工作相关/table/table_pr/PaddleOCR/output/table',
-        show_log=True)
-    img = cv2.imread('/Users/zhoujun20/Desktop/工作相关/table/table_pr/PaddleOCR/ppstructure/test_imgs/table_1.png')
-    result = table_engine(img)
-    for line in result:
-        print(line)
