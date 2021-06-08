@@ -382,23 +382,12 @@ class TableLabelDecode(object):
         """convert text-label into text-index.
         """
         if char_or_elem == "char":
-            max_len = self.max_text_length
             current_dict = self.dict_idx_character
         else:
-            max_len = self.max_elem_length
             current_dict = self.dict_idx_elem
             ignored_tokens = self.get_ignored_tokens('elem')
             beg_idx, end_idx = ignored_tokens
 
-        #         select_td_tokens = []
-        #         select_span_tokens = []
-        #         for elem in self.dict_elem:
-        # #             if elem == '<td>' or elem == '<td' or elem == '<tr>'\
-        # #                 or 'rowspan' in elem or 'colspan' in elem:
-        #             if elem == '<td>' or elem == '<td' or elem == '<tr>':
-        #                 select_td_tokens.append(self.dict_elem[elem])
-        #             if 'rowspan' in elem or 'colspan' in elem:
-        #                 select_span_tokens.append(self.dict_elem[elem])
         result_list = []
         result_pos_list = []
         result_score_list = []
@@ -415,12 +404,7 @@ class TableLabelDecode(object):
                     break
                 if tmp_elem_idx in ignored_tokens:
                     continue
-                #                 if tmp_elem_idx in select_td_tokens:
-                #                     total_td_score += structure_probs[batch_idx, idx]
-                #                     total_td_num += 1
-                #                 if tmp_elem_idx in select_span_tokens:
-                #                     total_span_score += structure_probs[batch_idx, idx]
-                #                     total_span_num += 1
+
                 char_list.append(current_dict[tmp_elem_idx])
                 elem_pos_list.append(idx)
                 score_list.append(structure_probs[batch_idx, idx])

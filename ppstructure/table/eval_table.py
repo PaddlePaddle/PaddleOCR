@@ -38,15 +38,15 @@ def main(gt_path, img_root, args):
     pred_htmls = []
     gt_htmls = []
     for img_name in tqdm(jsons_gt):
-        # 读取信息
+        # read image
         img = cv2.imread(os.path.join(img_root,img_name))
         pred_html = text_sys(img)
         pred_htmls.append(pred_html)
 
         gt_structures, gt_bboxes, gt_contents, contents_with_block = jsons_gt[img_name]
-        gt_html, gt = get_gt_html(gt_structures, contents_with_block)  # 获取HTMLgt
+        gt_html, gt = get_gt_html(gt_structures, contents_with_block)
         gt_htmls.append(gt_html)
-    scores = teds.batch_evaluate_html(gt_htmls, pred_htmls)  # 计算teds
+    scores = teds.batch_evaluate_html(gt_htmls, pred_htmls)
     print('teds:', sum(scores) / len(scores))
 
 

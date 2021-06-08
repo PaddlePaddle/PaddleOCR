@@ -2,14 +2,9 @@ import json
 def distance(box_1, box_2):
         x1, y1, x2, y2 = box_1
         x3, y3, x4, y4 = box_2
-        # min_x = (x1 + x2) / 2
-        # min_y = (y1 + y2) / 2
-        # max_x = (x3 + x4) / 2
-        # max_y = (y3 + y4) / 2
         dis = abs(x3 - x1) + abs(y3 - y1) + abs(x4- x2) + abs(y4 - y2)
         dis_2 = abs(x3 - x1) + abs(y3 - y1)
         dis_3 = abs(x4- x2) + abs(y4 - y2)
-        #dis = pow(min_x - max_x, 2) + pow(min_y - max_y, 2) + pow(x3 - x1, 2) + pow(y3 - y1, 2) + pow(x4- x2, 2) + pow(y4 - y2, 2) + abs(x3 - x1) + abs(y3 - y1) + abs(x4- x2) + abs(y4 - y2)
         return dis + min(dis_2, dis_3)
 
 def compute_iou(rec1, rec2):
@@ -21,7 +16,6 @@ def compute_iou(rec1, rec2):
     :return: scala value of IoU
     """
     # computing area of each rectangles
-    rec1, rec2 = rec1 * 1000, rec2 * 1000
     S_rec1 = (rec1[2] - rec1[0]) * (rec1[3] - rec1[1])
     S_rec2 = (rec2[2] - rec2[0]) * (rec2[3] - rec2[1])
  
@@ -36,29 +30,31 @@ def compute_iou(rec1, rec2):
  
     # judge if there is an intersect
     if left_line >= right_line or top_line >= bottom_line:
-        return 0
+        return 0.0
     else:
         intersect = (right_line - left_line) * (bottom_line - top_line)
         return (intersect / (sum_area - intersect))*1.0
  
 
 
-def matcher_merge(ocr_bboxes, pred_bboxes): # ocr_bboxes: OCR pred_bboxes：端到端
+def matcher_merge(ocr_bboxes, pred_bboxes):
     all_dis = []
     ious = []
     matched = {}
     for i, gt_box in enumerate(ocr_bboxes):
         distances = []
         for j, pred_box in enumerate(pred_bboxes):
-            distances.append((distance(gt_box, pred_box), 1. - compute_iou(gt_box, pred_box))) #获取两两cell之间的L1距离和 1- IOU
+            # compute l1 distence and IOU between two boxes
+            distances.append((distance(gt_box, pred_box), 1. - compute_iou(gt_box, pred_box)))
         sorted_distances = distances.copy()
-        # 根据距离和IOU挑选最"近"的cell
+        # select nearest cell
         sorted_distances = sorted(sorted_distances, key = lambda item: (item[1], item[0])) 
         if distances.index(sorted_distances[0]) not in matched.keys(): 
             matched[distances.index(sorted_distances[0])] = [i]
         else:
             matched[distances.index(sorted_distances[0])].append(i)
     return matched#, sum(ious) / len(ious)
+
 def complex_num(pred_bboxes):
     complex_nums = []
     for bbox in pred_bboxes:
