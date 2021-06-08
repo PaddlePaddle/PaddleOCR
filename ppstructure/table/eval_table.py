@@ -38,8 +38,6 @@ def main(gt_path, img_root, args):
     pred_htmls = []
     gt_htmls = []
     for img_name in tqdm(jsons_gt):
-        if img_name != 'PMC1064865_002_00.png':
-            continue
         # 读取信息
         img = cv2.imread(os.path.join(img_root,img_name))
         pred_html = text_sys(img)
