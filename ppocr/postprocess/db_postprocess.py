@@ -54,6 +54,7 @@ class DBPostProcess(object):
         _bitmap: single map with shape (1, H, W),
                 whose values are binarized as {0, 1}
         '''
+
         bitmap = _bitmap
         height, width = bitmap.shape
 
