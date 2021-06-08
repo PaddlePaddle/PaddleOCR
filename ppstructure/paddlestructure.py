@@ -146,24 +146,3 @@ def main():
             logger.info(item['res'])
         save_res(result, save_folder, img_name)
         logger.info('result save to {}'.format(os.path.join(save_folder, img_name)))
-
-
-if __name__ == '__main__':
-    table_engine = PaddleStructure(
-        output='/Users/zhoujun20/Desktop/工作相关/table/table_pr/PaddleOCR/output/table',
-        show_log=True)
-
-    img_path = '/Users/zhoujun20/Desktop/工作相关/table/table_pr/PaddleOCR/ppstructure/test_imgs/paper-image.jpg'
-    img = cv2.imread(img_path)
-    result = table_engine(img)
-    for line in result:
-        print(line)
-
-    from PIL import Image
-
-    font_path = '/Users/zhoujun20/Desktop/工作相关/table/table_pr/PaddleOCR//doc/fonts/simfang.ttf'
-    image = Image.open(img_path).convert('RGB')
-    im_show = draw_result(image, result,
-                          font_path='/Users/zhoujun20/Desktop/工作相关/table/table_pr/PaddleOCR//doc/fonts/simfang.ttf')
-    im_show = Image.fromarray(im_show)
-    im_show.save('result.jpg')
