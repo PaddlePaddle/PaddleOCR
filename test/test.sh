@@ -103,8 +103,16 @@ for train_model in ${train_model_list[*]}; do
                 fi
                 # dataset="Train.dataset.data_dir=${train_dir}  Train.dataset.label_file_list=${train_label_file}  Eval.dataset.data_dir=${eval_dir} Eval.dataset.label_file_list=${eval_label_file}"
                 save_log=${log_path}/${model_name}_${slim_trainer}_autocast_${auto_cast}_gpuid_${gpu}
+                
                 ${python}  ${launch}  ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu}
-                ${python} ${export_model} -c ${yml_file} -o Global.pretrained_model=${save_log}/best_accuracy Global.save_inference_dir=${save_log}/export_inference/ 
+                ${python} ${export_model} -c ${yml_file} -o Global.pretrained_model=${save_log}/best_accuracy Global.save_inference_dir=${save_log}/export_inference/ Global.save_model_dir=${save_log} 
+                if [ $? -eq 0 ]; then
+                    echo -e "\033[33m training of $model_name successfully!\033[0m" | tee -a ${save_log}/train.log
+                else
+                    cat ${save_log}/train.log
+                    echo -e "\033[33m training of $model_name failed!\033[0m" | tee -a ${save_log}/train.log
+                fi
+               
                 if [ "${model_name}" = "det" ]; then 
                     export rec_batch_size_list=( "1" )
                     inference="tools/infer/predict_det.py"
@@ -119,6 +127,13 @@ for train_model in ${train_model_list[*]}; do
                                 for rec_batch_size in ${rec_batch_size_list[*]}; do    
                                     echo ${python} ${inference} --enable_mkldnn=${use_mkldnn} --use_gpu=False --cpu_threads=${threads} --benchmark=True --det_model_dir=${save_log}/export_inference/ --rec_batch_num=${rec_batch_size} --rec_model_dir=${rec_model_dir}  --image_dir=${img_dir}  --save_log_path=${log_path}/${model_name}_${slim_trainer}_cpu_usemkldnn_${use_mkldnn}_cputhreads_${threads}_recbatchnum_${rec_batch_size}_infer.log
                                     ${python} ${inference} --enable_mkldnn=${use_mkldnn} --use_gpu=False --cpu_threads=${threads} --benchmark=True --det_model_dir=${save_log}/export_inference/ --rec_batch_num=${rec_batch_size} --rec_model_dir=${rec_model_dir}  --image_dir=${img_dir}  2>&1 | tee ${log_path}/${model_name}_${slim_trainer}_cpu_usemkldnn_${use_mkldnn}_cputhreads_${threads}_recbatchnum_${rec_batch_size}_infer.log
+                                    if [ $? -eq 0 ]; then
+                                        echo -e "\033[33m training of $model_name successfully!\033[0m" | tee -a ${log_path}${model_name}_${slim_trainer}_cpu_usemkldnn_${use_mkldnn}_cputhreads_${threads}_recbatchnum_${rec_batch_size}_infer.log
+                                    else
+                                        cat ${log_path}${model_name}_${slim_trainer}_cpu_usemkldnn_${use_mkldnn}_cputhreads_${threads}_recbatchnum_${rec_batch_size}_infer.log
+                                        echo -e "\033[33m training of $model_name failed!\033[0m" | tee -a ${log_path}${model_name}_${slim_trainer}_cpu_usemkldnn_${use_mkldnn}_cputhreads_${threads}_recbatchnum_${rec_batch_size}_infer.log
+                                    fi
+
                                 done
                             done
                         done
