@@ -50,11 +50,10 @@ cpu_threads_list=$(func_parser "${lines[8]}")
 rec_batch_size_list=$(func_parser "${lines[9]}")
 gpu_trt_list=$(func_parser "${lines[10]}")
 gpu_precision_list=$(func_parser "${lines[11]}")
-img_dir=$(func_parser "${lines[12]}")
-
+img_dir="./train_data/icdar2015/text_localization/ch4_test_images/"
 # train superparameters
-epoch=$(func_parser "${lines[13]}")
-checkpoints=$(func_parser "${lines[14]}")
+epoch=$(func_parser "${lines[12]}")
+checkpoints=$(func_parser "${lines[13]}")
 
 
 for train_model in ${train_model_list[*]}; do 
