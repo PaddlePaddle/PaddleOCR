@@ -194,26 +194,25 @@ public class Predictor {
                         "supported!");
                 return false;
             }
-            int[] channelStride = new int[]{width * height, width * height * 2};
-            int p = scaleImage.getPixel(scaleImage.getWidth() - 1, scaleImage.getHeight() - 1);
-            for (int y = 0; y < height; y++) {
-                for (int x = 0; x < width; x++) {
-                    int color = scaleImage.getPixel(x, y);
-                    float[] rgb = new float[]{(float) red(color) / 255.0f, (float) green(color) / 255.0f,
-                            (float) blue(color) / 255.0f};
-                    inputData[y * width + x] = (rgb[channelIdx[0]] - inputMean[0]) / inputStd[0];
-                    inputData[y * width + x + channelStride[0]] = (rgb[channelIdx[1]] - inputMean[1]) / inputStd[1];
-                    inputData[y * width + x + channelStride[1]] = (rgb[channelIdx[2]] - inputMean[2]) / inputStd[2];
 
-                }
+            int[] channelStride = new int[]{width * height, width * height * 2};
+            int[] pixels=new int[width*height];
+            scaleImage.getPixels(pixels,0,scaleImage.getWidth(),0,0,scaleImage.getWidth(),scaleImage.getHeight());
+            for (int i = 0; i < pixels.length; i++) {
+                int color = pixels[i];
+                float[] rgb = new float[]{(float) red(color) / 255.0f, (float) green(color) / 255.0f,
+                        (float) blue(color) / 255.0f};
+                inputData[i] = (rgb[channelIdx[0]] - inputMean[0]) / inputStd[0];
+                inputData[i + channelStride[0]] = (rgb[channelIdx[1]] - inputMean[1]) / inputStd[1];
+                inputData[i+ channelStride[1]] = (rgb[channelIdx[2]] - inputMean[2]) / inputStd[2];
             }
         } else if (channels == 1) {
-            for (int y = 0; y < height; y++) {
-                for (int x = 0; x < width; x++) {
-                    int color = inputImage.getPixel(x, y);
-                    float gray = (float) (red(color) + green(color) + blue(color)) / 3.0f / 255.0f;
-                    inputData[y * width + x] = (gray - inputMean[0]) / inputStd[0];
-                }
+            int[] pixels=new int[width*height];
+            scaleImage.getPixels(pixels,0,scaleImage.getWidth(),0,0,scaleImage.getWidth(),scaleImage.getHeight());
+            for (int i = 0; i < pixels.length; i++) {
+                int color = pixels[i];
+                float gray = (float) (red(color) + green(color) + blue(color)) / 3.0f / 255.0f;
+                inputData[i] = (gray - inputMean[0]) / inputStd[0];
             }
         } else {
             Log.i(TAG, "Unsupported channel size " + Integer.toString(channels) + ",  only channel 1 and 3 is " +
