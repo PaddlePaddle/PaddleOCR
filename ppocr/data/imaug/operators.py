@@ -81,7 +81,7 @@ class NormalizeImage(object):
         assert isinstance(img,
                           np.ndarray), "invalid input 'img' in NormalizeImage"
         data['image'] = (
-            img.astype('float32') * self.scale - self.mean) / self.std
+                                img.astype('float32') * self.scale - self.mean) / self.std
         return data
 
 
@@ -122,6 +122,8 @@ class DetResizeForTest(object):
         elif 'limit_side_len' in kwargs:
             self.limit_side_len = kwargs['limit_side_len']
             self.limit_type = kwargs.get('limit_type', 'min')
+            self.pad = kwargs.get('pad', False)
+            self.pad_size = kwargs.get('pad_size', 480)
         elif 'resize_long' in kwargs:
             self.resize_type = 2
             self.resize_long = kwargs.get('resize_long', 960)
@@ -163,7 +165,7 @@ class DetResizeForTest(object):
             img, (ratio_h, ratio_w)
         """
         limit_side_len = self.limit_side_len
-        h, w, _ = img.shape
+        h, w, c = img.shape
 
         # limit the max side
         if self.limit_type == 'max':
@@ -172,6 +174,8 @@ class DetResizeForTest(object):
                     ratio = float(limit_side_len) / h
                 else:
                     ratio = float(limit_side_len) / w
+            elif self.pad:
+                ratio = float(self.pad_size) / max(h, w)
             else:
                 ratio = 1.
         else:
@@ -197,6 +201,10 @@ class DetResizeForTest(object):
             sys.exit(0)
         ratio_h = resize_h / float(h)
         ratio_w = resize_w / float(w)
+        if self.limit_type == 'max' and self.pad:
+            padding_im = np.zeros((self.pad_size, self.pad_size, c), dtype=np.float32)
+            padding_im[:resize_h, :resize_w, :] = img
+            img = padding_im
         return img, [ratio_h, ratio_w]
 
     def resize_image_type2(self, img):

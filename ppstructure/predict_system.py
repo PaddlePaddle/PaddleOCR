@@ -38,11 +38,13 @@ logger = get_logger()
 
 class OCRSystem(object):
     def __init__(self, args):
+        args.det_pad = True
+        args.det_pad_size = 640
         self.text_system = TextSystem(args)
         self.table_system = TableSystem(args, self.text_system.text_detector, self.text_system.text_recognizer)
         self.table_layout = lp.PaddleDetectionLayoutModel("lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config",
                                                           threshold=0.5, enable_mkldnn=args.enable_mkldnn,
-                                                          enforce_cpu=not args.use_gpu,thread_num=args.cpu_threads)
+                                                          enforce_cpu=not args.use_gpu, thread_num=args.cpu_threads)
         self.use_angle_cls = args.use_angle_cls
         self.drop_score = args.drop_score
 
@@ -66,7 +68,6 @@ class OCRSystem(object):
                 res = (filter_boxes, filter_rec_res)
             res_list.append({'type': region.type, 'bbox': [x1, y1, x2, y2], 'res': res})
         return res_list
-
 
 def save_res(res, save_folder, img_name):
     excel_save_folder = os.path.join(save_folder, img_name)
