@@ -15,10 +15,14 @@ if [ ${MODE} = "lite_train_infer" ];then
     cd ./train_data/ && tar xf icdar2015_lite.tar && 
     ln -s ./icdar2015_lite ./icdar2015
     cd ../
+    epoch=10
+    eval_batch_step=10
 elif [ ${MODE} = "whole_train_infer" ];then
     rm -rf ./train_data/icdar2015
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015.tar
     cd ./train_data/ && tar xf icdar2015.tar && cd ../
+    epoch=300
+    eval_batch_step=200
 else
     echo "Do Nothing"
 fi
@@ -52,8 +56,8 @@ gpu_trt_list=$(func_parser "${lines[10]}")
 gpu_precision_list=$(func_parser "${lines[11]}")
 img_dir="./train_data/icdar2015/text_localization/ch4_test_images/"
 # train superparameters
-epoch=$(func_parser "${lines[12]}")
-checkpoints=$(func_parser "${lines[13]}")
+#epoch=$(func_parser "${lines[12]}")
+#checkpoints=$(func_parser "${lines[13]}")
 
 
 for train_model in ${train_model_list[*]}; do 
@@ -99,7 +103,7 @@ for train_model in ${train_model_list[*]}; do
                 fi
                 # dataset="Train.dataset.data_dir=${train_dir}  Train.dataset.label_file_list=${train_label_file}  Eval.dataset.data_dir=${eval_dir} Eval.dataset.label_file_list=${eval_label_file}"
                 save_log=${log_path}/${model_name}_${slim_trainer}_autocast_${auto_cast}_gpuid_${gpu}
-                echo ${python}  ${launch}  ${trainer}  -c ${yml_file} -o Global.auto_cast=${auto_cast}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu}  Global.epoch=${epoch}
+                ${python}  ${launch}  ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu}
                 ${python} ${export_model} -c ${yml_file} -o Global.pretrained_model=${save_log}/best_accuracy Global.save_inference_dir=${save_log}/export_inference/ 
                 if [ "${model_name}" = "det" ]; then 
                     export rec_batch_size_list=( "1" )
