@@ -43,7 +43,7 @@ setup(
     package_dir={'paddlestructure': ''},
     include_package_data=True,
     entry_points={"console_scripts": ["paddlestructure= paddlestructure.paddlestructure:main"]},
-    version='2.0.6',
+    version='1.0',
     install_requires=requirements,
     license='Apache License 2.0',
     description='Awesome OCR toolkits based on PaddlePaddle （8.6M ultra-lightweight pre-trained model, support training and deployment among server, mobile, embeded and IoT devices',

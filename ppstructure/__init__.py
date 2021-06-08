@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .paddlestructure import PaddleStructure
+from .paddlestructure import PaddleStructure, draw_result, to_excel
 
-__all__ = ['PaddleStructure']
+__all__ = ['PaddleStructure', 'draw_result', 'to_excel']
