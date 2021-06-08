@@ -49,12 +49,11 @@ class DBPostProcess(object):
         self.dilation_kernel = None if not use_dilation else np.array(
             [[1, 1], [1, 1]])
 
-    def boxes_from_bitmap(self, pred, _bitmap, shape):
+    def boxes_from_bitmap(self, pred, _bitmap, dest_width, dest_height):
         '''
         _bitmap: single map with shape (1, H, W),
                 whose values are binarized as {0, 1}
         '''
-        dest_height, dest_width, ratio_h, ratio_w = shape
         bitmap = _bitmap
         height, width = bitmap.shape
 
@@ -89,9 +88,9 @@ class DBPostProcess(object):
             box = np.array(box)
 
             box[:, 0] = np.clip(
-                np.round(box[:, 0] / ratio_w), 0, dest_width)
+                np.round(box[:, 0] / width * dest_width), 0, dest_width)
             box[:, 1] = np.clip(
-                np.round(box[:, 1] / ratio_h), 0, dest_height)
+                np.round(box[:, 1] / height * dest_height), 0, dest_height)
             boxes.append(box.astype(np.int16))
             scores.append(score)
         return np.array(boxes, dtype=np.int16), scores
@@ -175,6 +174,7 @@ class DBPostProcess(object):
 
         boxes_batch = []
         for batch_index in range(pred.shape[0]):
+            src_h, src_w, ratio_h, ratio_w = shape_list[batch_index]
             if self.dilation_kernel is not None:
                 mask = cv2.dilate(
                     np.array(segmentation[batch_index]).astype(np.uint8),
@@ -182,7 +182,7 @@ class DBPostProcess(object):
             else:
                 mask = segmentation[batch_index]
             boxes, scores = self.boxes_from_bitmap(pred[batch_index], mask,
-                                                   shape_list[batch_index])
+                                                   src_w, src_h)
 
             boxes_batch.append({'points': boxes})
         return boxes_batch
