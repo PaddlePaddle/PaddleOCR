@@ -65,11 +65,6 @@ for train_model in ${train_model_list[*]}; do
         model_name="det"
         yml_file="configs/det/det_mv3_db.yml"
     fi
-    # array=(${train_model})
-    # for j in "${!array[@]}"; do
-    #     model_name=${array[0]}
-    #     yml_file=${array[1]}
-    # done
     IFS="|"
     for gpu in ${gpu_list[*]}; do
         use_gpu=True
@@ -103,7 +98,7 @@ for train_model in ${train_model_list[*]}; do
                 # dataset="Train.dataset.data_dir=${train_dir}  Train.dataset.label_file_list=${train_label_file}  Eval.dataset.data_dir=${eval_dir} Eval.dataset.label_file_list=${eval_label_file}"
                 save_log=${log_path}/${model_name}_${slim_trainer}_autocast_${auto_cast}_gpuid_${gpu}
                 echo ${python}  ${launch}  ${trainer}  -c ${yml_file} -o Global.auto_cast=${auto_cast}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu}  Global.epoch=${epoch}
-                echo ${python} ${export_model} -c ${yml_file} -o Global.pretrained_model=${save_log}/best_accuracy Global.save_inference_dir=${save_log}/export_inference/ 
+                ${python} ${export_model} -c ${yml_file} -o Global.pretrained_model=${save_log}/best_accuracy Global.save_inference_dir=${save_log}/export_inference/ 
                 if [ "${model_name}" = "det" ]; then 
                     export rec_batch_size_list=( "1" )
                     inference="tools/infer/predict_det.py"
@@ -117,7 +112,7 @@ for train_model in ${train_model_list[*]}; do
                             for threads in ${cpu_threads_list[*]}; do
                                 for rec_batch_size in ${rec_batch_size_list[*]}; do    
                                     echo ${python} ${inference} --enable_mkldnn=${use_mkldnn} --use_gpu=False --cpu_threads=${threads} --benchmark=True --det_model_dir=${save_log}/export_inference/ --rec_batch_num=${rec_batch_size} --rec_model_dir=${rec_model_dir}  --image_dir=${img_dir}  --save_log_path=${log_path}/${model_name}_${slim_trainer}_cpu_usemkldnn_${use_mkldnn}_cputhreads_${threads}_recbatchnum_${rec_batch_size}_infer.log
-                                    # ${python} ${inference} --enable_mkldnn=${use_mkldnn} --use_gpu=False --cpu_threads=${threads} --benchmark=True --det_model_dir=${save_log}/export_inference/ --rec_batch_num=${rec_batch_size} --rec_model_dir=${rec_model_dir}  --image_dir=${img_dir}  2>&1 | tee ${log_path}/${model_name}_${slim_trainer}_cpu_usemkldnn_${use_mkldnn}_cputhreads_${threads}_recbatchnum_${rec_batch_size}_infer.log
+                                    ${python} ${inference} --enable_mkldnn=${use_mkldnn} --use_gpu=False --cpu_threads=${threads} --benchmark=True --det_model_dir=${save_log}/export_inference/ --rec_batch_num=${rec_batch_size} --rec_model_dir=${rec_model_dir}  --image_dir=${img_dir}  2>&1 | tee ${log_path}/${model_name}_${slim_trainer}_cpu_usemkldnn_${use_mkldnn}_cputhreads_${threads}_recbatchnum_${rec_batch_size}_infer.log
                                 done
                             done
                         done
@@ -129,7 +124,7 @@ for train_model in ${train_model_list[*]}; do
                                 fi
                                 for rec_batch_size in ${rec_batch_size_list[*]}; do
                                     # echo "${model_name}  ${det_model_dir} ${rec_model_dir}, use_trt: ${use_trt}   use_fp16: ${use_fp16}"
-                                    echo ${python} ${inference} --use_gpu=True --use_tensorrt=${use_trt}  --precision=${precision} --benchmark=True --det_model_dir=${save_log}/export_inference/ --rec_batch_num=${rec_batch_size} --rec_model_dir=${rec_model_dir} --image_dir=${img_dir} --save_log_path=${log_path}/${model_name}_${slim_trainer}_gpu_usetensorrt_${use_trt}_usefp16_${precision}_recbatchnum_${rec_batch_size}_infer.log
+                                    ${python} ${inference} --use_gpu=True --use_tensorrt=${use_trt}  --precision=${precision} --benchmark=True --det_model_dir=${save_log}/export_inference/ --rec_batch_num=${rec_batch_size} --rec_model_dir=${rec_model_dir} --image_dir=${img_dir} --save_log_path=${log_path}/${model_name}_${slim_trainer}_gpu_usetensorrt_${use_trt}_usefp16_${precision}_recbatchnum_${rec_batch_size}_infer.log
                                 done
                             done
                         done
