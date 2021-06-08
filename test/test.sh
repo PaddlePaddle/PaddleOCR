@@ -1,4 +1,7 @@
 #!/bin/bash 
+# Usage:
+# bash test/test.sh ./test/params.txt 'lite_train_infer'
+
 FILENAME=$1
 
 # MODE be one of ['lite_train_infer' 'whole_infer' 'whole_train_infer']
