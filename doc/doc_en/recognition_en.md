@@ -237,7 +237,7 @@ Optimizer:
 
 Train:
   dataset:
-    # Type of dataset，we support LMDBDateSet and SimpleDataSet
+    # Type of dataset，we support LMDBDataSet and SimpleDataSet
     name: SimpleDataSet
     # Path of dataset
     data_dir: ./train_data/
@@ -257,7 +257,7 @@ Train:
 
 Eval:
   dataset:
-    # Type of dataset，we support LMDBDateSet and SimpleDataSet
+    # Type of dataset，we support LMDBDataSet and SimpleDataSet
     name: SimpleDataSet
     # Path of dataset
     data_dir: ./train_data
@@ -394,7 +394,7 @@ Global:
 
 Train:
   dataset:
-    # Type of dataset，we support LMDBDateSet and SimpleDataSet
+    # Type of dataset，we support LMDBDataSet and SimpleDataSet
     name: SimpleDataSet
     # Path of dataset
     data_dir: ./train_data/
@@ -404,7 +404,7 @@ Train:
 
 Eval:
   dataset:
-    # Type of dataset，we support LMDBDateSet and SimpleDataSet
+    # Type of dataset，we support LMDBDataSet and SimpleDataSet
     name: SimpleDataSet
     # Path of dataset
     data_dir: ./train_data
