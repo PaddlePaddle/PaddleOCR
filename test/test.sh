@@ -127,8 +127,8 @@ for train_model in ${train_model_list[*]}; do
                     export_model="tools/export_model.py"
                 fi
                 save_log="${log_path}/${model_name}_${slim_trainer}_autocast_${auto_cast}_gpuid_${gpu}"
-                command="${env} ${python}  ${launch}  ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu}"
-                ${env} ${python}  ${launch}  ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu}
+                command="${env} ${python}  ${launch}  ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu} Train.loader.batch_size_per_card=2"
+                ${env} ${python}  ${launch}  ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu}  Train.loader.batch_size_per_card=2
                 status_check $? "${trainer}" "${command}" "${save_log}/train.log"
 
                 command="${env} ${python} ${export_model} -c ${yml_file} -o Global.pretrained_model=${save_log}/latest Global.save_inference_dir=${save_log}/export_inference/ Global.save_model_dir=${save_log}"

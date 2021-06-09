@@ -45,13 +45,14 @@ for train_model in ${train_model_list[*]}; do
     if [ ${train_model} = "ocr_det" ];then
         model_name="det"
         yml_file="configs/det/det_mv3_db.yml"
-        # wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar 
-        tar xf ./inference/ch_det_data_50.tar 
+        wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar
+        cd ./inference && tar xf ch_det_data_50.tar && cd ../
         img_dir="./inference/ch_det_data_50/"
     elif [ ${train_model} = "ocr_rec" ];then
         model_name="rec"
         yml_file="configs/rec/rec_mv3_none_bilstm_ctc.yml"
-        wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_rec_data_200.tar && tar xf ./inference/ch_rec_data_200.tar 
+        wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_rec_data_200.tar 
+        cd ./inference && tar xf ch_rec_data_200.tar  && cd ../
         img_dir="./inference/ch_rec_data_200/"
     fi
 
@@ -59,45 +60,53 @@ for train_model in ${train_model_list[*]}; do
     for slim_trainer in ${slim_trainer_list[*]}; do 
         if [ ${slim_trainer} = "norm" ]; then
             if [ ${model_name} = "det" ]; then
-                eval_model_name="ch_ppocr_mobile_v2.0_det_infer"
+                eval_model_name="ch_ppocr_mobile_v2.0_det_train"
                 wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar
+                cd ./inference && tar xf ${eval_model_name}.tar && cd ../
             else 
-                eval_model_name="ch_ppocr_mobile_v2.0_rec_infer"
+                eval_model_name="ch_ppocr_mobile_v2.0_rec_train"
                 wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_train.tar
+                cd ./inference && tar xf ${eval_model_name}.tar && cd ../
             fi 
         elif [ ${slim_trainer} = "quant" ]; then
             if [ ${model_name} = "det" ]; then
-                eval_model_name="ch_ppocr_mobile_v2.0_det_quant_infer"
+                eval_model_name="ch_ppocr_mobile_v2.0_det_quant_train"
                 wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_quant_train.tar
+                cd ./inference && tar xf ${eval_model_name}.tar && cd ../
             else
-                eval_model_name="ch_ppocr_mobile_v2.0_rec_quant_infer"
+                eval_model_name="ch_ppocr_mobile_v2.0_rec_quant_train"
                 wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_rec_quant_train.tar
+                cd ./inference && tar xf ${eval_model_name}.tar && cd ../
             fi
         elif [ ${slim_trainer} = "distill" ]; then
             if [ ${model_name} = "det" ]; then
-                eval_model_name="ch_ppocr_mobile_v2.0_det_distill_infer"
+                eval_model_name="ch_ppocr_mobile_v2.0_det_distill_train"
                 wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_distill_train.tar
+                cd ./inference && tar xf ${eval_model_name}.tar && cd ../
             else
-                eval_model_name="ch_ppocr_mobile_v2.0_rec_distill_infer"
+                eval_model_name="ch_ppocr_mobile_v2.0_rec_distill_train"
                 wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_rec_distill_train.tar
+                cd ./inference && tar xf ${eval_model_name}.tar && cd ../
             fi 
         elif [ ${slim_trainer} = "prune" ]; then
             if [ ${model_name} = "det" ]; then
                 eval_model_name="ch_ppocr_mobile_v2.0_det_prune_train"
                 wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_prune_train.tar
+                cd ./inference && tar xf ${eval_model_name}.tar && cd ../
             else
                 eval_model_name="ch_ppocr_mobile_v2.0_rec_prune_train"
                 wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_rec_prune_train.tar
+                cd ./inference && tar xf ${eval_model_name}.tar && cd ../
             fi
         fi
 
         save_log_path="${log_path}/${eval_model_name}"
-        command="${python} tools/eval.py -c ${yml_file} -o Global.pretrained_model=${eval_model_name} Global.save_model_dir=${save_log_path}"
-        ${python} tools/eval.py -c ${yml_file} -o Global.pretrained_model=${eval_model_name} Global.save_model_dir=${save_log_path}
+        command="${python} tools/eval.py -c ${yml_file} -o Global.pretrained_model="${eval_model_name}/best_accuracy" Global.save_model_dir=${save_log_path}"
+        ${python} tools/eval.py -c ${yml_file} -o Global.pretrained_model="${eval_model_name}/best_accuracy" Global.save_model_dir=${save_log_path}
         status_check $? "${trainer}" "${command}" "${save_log_path}/train.log"
 
-        command="${python} tools/export_model.py -c ${yml_file} -o Global.pretrained_model=${eval_model_name} Global.save_inference_dir=${log_path}/${eval_model_name}_infer Global.save_model_dir=${save_log_path}"
-        ${python} tools/export_model.py -c ${yml_file} -o Global.pretrained_model=${eval_model_name} Global.save_inference_dir="${log_path}/${eval_model_name}_infer" Global.save_model_dir=${save_log_path}
+        command="${python} tools/export_model.py -c ${yml_file} -o Global.pretrained_model="${eval_model_name}/best_accuracy" Global.save_inference_dir=${log_path}/${eval_model_name}_infer Global.save_model_dir=${save_log_path}"
+        ${python} tools/export_model.py -c ${yml_file} -o Global.pretrained_model="${eval_model_name}/best_accuracy" Global.save_inference_dir="${log_path}/${eval_model_name}_infer" Global.save_model_dir=${save_log_path}
         status_check $? "${trainer}" "${command}" "${save_log_path}/train.log"
 
         if [ $? -eq 0 ]; then
