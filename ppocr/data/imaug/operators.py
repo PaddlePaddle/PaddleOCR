@@ -81,7 +81,7 @@ class NormalizeImage(object):
         assert isinstance(img,
                           np.ndarray), "invalid input 'img' in NormalizeImage"
         data['image'] = (
-                                img.astype('float32') * self.scale - self.mean) / self.std
+            img.astype('float32') * self.scale - self.mean) / self.std
         return data
 
 
@@ -163,7 +163,7 @@ class DetResizeForTest(object):
             img, (ratio_h, ratio_w)
         """
         limit_side_len = self.limit_side_len
-        h, w, c = img.shape
+        h, w, _ = img.shape
 
         # limit the max side
         if self.limit_type == 'max':
@@ -174,7 +174,7 @@ class DetResizeForTest(object):
                     ratio = float(limit_side_len) / w
             else:
                 ratio = 1.
-        elif self.limit_type == 'min':
+        else:
             if min(h, w) < limit_side_len:
                 if h < w:
                     ratio = float(limit_side_len) / h
@@ -182,10 +182,6 @@ class DetResizeForTest(object):
                     ratio = float(limit_side_len) / w
             else:
                 ratio = 1.
-        elif self.limit_type == 'resize_long':
-            ratio = float(limit_side_len) / max(h,w)
-        else:
-            raise Exception('not support limit type, image ')
         resize_h = int(h * ratio)
         resize_w = int(w * ratio)
 
