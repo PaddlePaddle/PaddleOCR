@@ -109,7 +109,7 @@ def init_args():
     parser.add_argument("--use_mp", type=str2bool, default=False)
     parser.add_argument("--total_process_num", type=int, default=1)
     parser.add_argument("--process_id", type=int, default=0)
-    
+
     parser.add_argument("--benchmark", type=bool, default=False)
     parser.add_argument("--save_log_path", type=str, default="./log_output/")
 
@@ -235,7 +235,7 @@ def create_predictor(args, mode, logger):
             config.enable_tensorrt_engine(
                 precision_mode=inference.PrecisionType.Float32,
                 max_batch_size=args.max_batch_size,
-                min_subgraph_size=3)  # skip the minmum trt subgraph
+                min_subgraph_size=10)  # skip the minmum trt subgraph
         if mode == "det" and "mobile" in model_file_path:
             min_input_shape = {
                 "x": [1, 3, 50, 50],
