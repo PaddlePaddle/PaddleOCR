@@ -111,9 +111,9 @@
 |         字段             |            用途            |      默认值        |            备注             |
 | :---------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
 |      **dataset**        |         每次迭代返回一个样本          |  -  |  -  |
-|      name        |        dataset类名         |  SimpleDataSet |  目前支持`SimpleDataSet`和`LMDBDateSet`  |
+|      name        |        dataset类名         |  SimpleDataSet |  目前支持`SimpleDataSet`和`LMDBDataSet`  |
 |      data_dir        |        数据集图片存放路径         |  ./train_data |  \  |
-|      label_file_list        |        数据标签路径         |  ["./train_data/train_list.txt"] | dataset为LMDBDateSet时不需要此参数   |
+|      label_file_list        |        数据标签路径         |  ["./train_data/train_list.txt"] | dataset为LMDBDataSet时不需要此参数   |
 |      ratio_list        |        数据集的比例         |  [1.0] | 若label_file_list中有两个train_list，且ratio_list为[0.4,0.6]，则从train_list1中采样40%，从train_list2中采样60%组合整个dataset   |
 |      transforms        |        对图片和标签进行变换的方法列表         |  [DecodeImage,CTCLabelEncode,RecResizeImg,KeepKeys] |   见[ppocr/data/imaug](../../ppocr/data/imaug)  |
 |      **loader**        |        dataloader相关         |  - |   |
