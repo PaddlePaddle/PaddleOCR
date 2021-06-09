@@ -8,6 +8,8 @@ FILENAME=$1
 MODE=$2
 # prepare pretrained weights and dataset 
 wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams
+wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar
+cd pretrain_models && tar xf det_mv3_db_v2.0_train.tar && cd ../
 
 if [ ${MODE} = "lite_train_infer" ];then
     # pretrain lite train data
@@ -107,28 +109,32 @@ for train_model in ${train_model_list[*]}; do
             env="CUDA_VISIBLE_DEVICES=${array[0]}"
             IFS="|"
         fi
-        IFS="|"
         for auto_cast in ${auto_cast_list[*]}; do 
             for slim_trainer in ${slim_trainer_list[*]}; do 
                 if [ ${slim_trainer} = "norm" ]; then
                     trainer="tools/train.py"
                     export_model="tools/export_model.py"
+                    pretrain="./pretrain_models/MobileNetV3_large_x0_5_pretrained"
                 elif [ ${slim_trainer} = "quant" ]; then
                     trainer="deploy/slim/quantization/quant.py"
                     export_model="deploy/slim/quantization/export_model.py"
+                    pretrain="./pretrain_models/det_mv3_db_v2.0_train/best_accuracy"
                 elif [ ${slim_trainer} = "prune" ]; then
                     trainer="deploy/slim/prune/sensitivity_anal.py"
                     export_model="deploy/slim/prune/export_prune_model.py"
+                    pretrain="./pretrain_models/det_mv3_db_v2.0_train/best_accuracy"
                 elif [ ${slim_trainer} = "distill" ]; then
                     trainer="deploy/slim/distill/train_dml.py"
                     export_model="deploy/slim/distill/export_distill_model.py"
+                    pretrain=""
                 else
                     trainer="tools/train.py"
                     export_model="tools/export_model.py"
+                    pretrain="./pretrain_models/MobileNetV3_large_x0_5_pretrained"
                 fi
                 save_log="${log_path}/${model_name}_${slim_trainer}_autocast_${auto_cast}_gpuid_${gpu}"
-                command="${env} ${python}  ${launch}  ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu} Train.loader.batch_size_per_card=2"
-                ${env} ${python}  ${launch}  ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu}  Train.loader.batch_size_per_card=2
+                command="${env} ${python}  ${launch}  ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast} Global.pretrained_model=${pretrain}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu} Train.loader.batch_size_per_card=2"
+                ${env} ${python}  ${launch}  ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast} Global.pretrained_model=${pretrain}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu}  Train.loader.batch_size_per_card=2
                 status_check $? "${trainer}" "${command}" "${save_log}/train.log"
 
                 command="${env} ${python} ${export_model} -c ${yml_file} -o Global.pretrained_model=${save_log}/latest Global.save_inference_dir=${save_log}/export_inference/ Global.save_model_dir=${save_log}"
