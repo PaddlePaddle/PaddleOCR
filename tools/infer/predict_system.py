@@ -147,6 +147,12 @@ def main(args):
     is_visualize = True
     font_path = args.vis_font_path
     drop_score = args.drop_score
+    # warm up 10 times
+    if args.warmup:
+        img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
+        for i in range(10):
+            res = text_sys(img)
+
     for image_file in image_file_list:
         img, flag = check_and_read_gif(image_file)
         if not flag:

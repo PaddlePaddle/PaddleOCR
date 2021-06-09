@@ -254,6 +254,12 @@ def main(args):
     total_images_num = 0
     valid_image_file_list = []
     img_list = []
+    # warmup 10 times
+    if args.warmup:
+        img = np.random.uniform(0, 255, [32, 320, 3]).astype(np.uint8)
+        for i in range(10):
+            res = text_recognizer([img])
+
     for idx, image_file in enumerate(image_file_list):
         img, flag = check_and_read_gif(image_file)
         if not flag:
