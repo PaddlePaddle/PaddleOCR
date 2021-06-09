@@ -48,7 +48,7 @@ for train_model in ${train_model_list[*]}; do
         yml_file="configs/det/det_mv3_db.yml"
         wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar
         cd ./inference && tar xf ch_det_data_50.tar && cd ../
-        img_dir="./inference/ch_det_data_50/"
+        img_dir="./inference/ch_det_data_50/all-sum-50"
     elif [ ${train_model} = "ocr_rec" ];then
         model_name="rec"
         yml_file="configs/rec/rec_mv3_none_bilstm_ctc.yml"
@@ -102,12 +102,13 @@ for train_model in ${train_model_list[*]}; do
         fi
 
         save_log_path="${log_path}/${eval_model_name}"
-        command="${python} tools/eval.py -c ${yml_file} -o Global.pretrained_model="${eval_model_name}/best_accuracy" Global.save_model_dir=${save_log_path}"
-        ${python} tools/eval.py -c ${yml_file} -o Global.pretrained_model="${eval_model_name}/best_accuracy" Global.save_model_dir=${save_log_path}
+        eval_img="Eval.dataset.data_dir=./inference/ch_det_data_50/ Eval.dataset.label_file_list=./inference/ch_det_data_50/test_gt_50.txt"
+        command="${python} tools/eval.py -c ${yml_file} -o Global.pretrained_model='${eval_model_name}/best_accuracy' Global.save_model_dir=${save_log_path} ${eval_img}"
+        ${python} tools/eval.py -c ${yml_file} -o Global.pretrained_model='./inference/${eval_model_name}/best_accuracy' Global.save_model_dir=${save_log_path} ${eval_img}
         status_check $? "${trainer}" "${command}" "${status_log}"
 
         command="${python} tools/export_model.py -c ${yml_file} -o Global.pretrained_model="${eval_model_name}/best_accuracy" Global.save_inference_dir=${log_path}/${eval_model_name}_infer Global.save_model_dir=${save_log_path}"
-        ${python} tools/export_model.py -c ${yml_file} -o Global.pretrained_model="${eval_model_name}/best_accuracy" Global.save_inference_dir="${log_path}/${eval_model_name}_infer" Global.save_model_dir=${save_log_path}
+        ${python} tools/export_model.py -c ${yml_file} -o Global.pretrained_model="./inference/${eval_model_name}/best_accuracy" Global.save_inference_dir="${log_path}/${eval_model_name}_infer" Global.save_model_dir=${save_log_path}
         status_check $? "${trainer}" "${command}" "${status_log}"
 
         if [ $? -eq 0 ]; then
@@ -119,11 +120,11 @@ for train_model in ${train_model_list[*]}; do
         if [ "${model_name}" = "det" ]; then 
             export rec_batch_size_list=( "1" )
             inference="tools/infer/predict_det.py"
-            det_model_dir=${log_path}/${eval_model_name}_infer
+            det_model_dir="./inference/${log_path}/${eval_model_name}_infer"
             rec_model_dir=""
         elif [ "${model_name}" = "rec" ]; then
             inference="tools/infer/predict_rec.py"
-            rec_model_dir=${log_path}/${eval_model_name}_infer
+            rec_model_dir="./inference/${log_path}/${eval_model_name}_infer"
             det_model_dir=""
         fi
         # inference 
