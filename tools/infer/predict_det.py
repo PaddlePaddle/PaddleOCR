@@ -283,5 +283,6 @@ if __name__ == "__main__":
             'total_time_s': det_time_dict['total_time']
         }
         benchmark_log = benchmark_utils.PaddleInferBenchmark(
-            text_detector.config, model_info, data_info, perf_info, mems)
+            text_detector.config, model_info, data_info, perf_info, mems,
+            args.save_log_path)
         benchmark_log("Det")
