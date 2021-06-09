@@ -78,7 +78,7 @@ function status_check(){
     fi
 }
 
-
+IFS="|"
 for train_model in ${train_model_list[*]}; do 
     if [ ${train_model} = "ocr_det" ];then
         model_name="det"
@@ -107,7 +107,7 @@ for train_model in ${train_model_list[*]}; do
             env="CUDA_VISIBLE_DEVICES=${array[0]}"
             IFS="|"
         fi
-
+        IFS="|"
         for auto_cast in ${auto_cast_list[*]}; do 
             for slim_trainer in ${slim_trainer_list[*]}; do 
                 if [ ${slim_trainer} = "norm" ]; then
@@ -126,13 +126,13 @@ for train_model in ${train_model_list[*]}; do
                     trainer="tools/train.py"
                     export_model="tools/export_model.py"
                 fi
-                save_log=${log_path}/${model_name}_${slim_trainer}_autocast_${auto_cast}_gpuid_${gpu}
+                save_log="${log_path}/${model_name}_${slim_trainer}_autocast_${auto_cast}_gpuid_${gpu}"
                 command="${env} ${python}  ${launch}  ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu}"
                 ${env} ${python}  ${launch}  ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu}
                 status_check $? "${trainer}" "${command}" "${save_log}/train.log"
 
-                command="${env} ${python} ${export_model} -c ${yml_file} -o Global.pretrained_model=${save_log}/best_accuracy Global.save_inference_dir=${save_log}/export_inference/ Global.save_model_dir=${save_log}"
-                ${env} ${python} ${export_model} -c ${yml_file} -o Global.pretrained_model=${save_log}/best_accuracy Global.save_inference_dir=${save_log}/export_inference/ Global.save_model_dir=${save_log} 
+                command="${env} ${python} ${export_model} -c ${yml_file} -o Global.pretrained_model=${save_log}/latest Global.save_inference_dir=${save_log}/export_inference/ Global.save_model_dir=${save_log}"
+                ${env} ${python} ${export_model} -c ${yml_file} -o Global.pretrained_model=${save_log}/latest Global.save_inference_dir=${save_log}/export_inference/ Global.save_model_dir=${save_log} 
                 status_check $? "${trainer}" "${command}" "${save_log}/train.log"
                
                 if [ "${model_name}" = "det" ]; then 

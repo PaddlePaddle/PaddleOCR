@@ -1,7 +1,7 @@
 train_model_list: ocr_det
 gpu_list: -1|0|0,1
 auto_cast_list: False
-trainer_list: norm|quant|prune
+trainer_list: norm|quant
 python: python3.7
 
 inference: python
