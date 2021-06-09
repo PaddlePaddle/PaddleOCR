@@ -1,7 +1,7 @@
-include LICENSE
+include LICENSE.txt
 include README.md
 
-recursive-include ppocr/utils *.txt utility.py logging.py network.py
+recursive-include ppocr/utils *.txt utility.py logging.py
 recursive-include ppocr/data/ *.py
 recursive-include ppocr/postprocess *.py
 recursive-include tools/infer *.py

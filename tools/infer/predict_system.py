@@ -88,7 +88,8 @@ class TextSystem(object):
         ori_im = img.copy()
         dt_boxes, elapse = self.text_detector(img)
 
-        logger.debug("dt_boxes num : {}, elapse : {}".format(
+        logger.info("dt_boxes num : {}, elapse : {}".format(
+
             len(dt_boxes), elapse))
         if dt_boxes is None:
             return None, None
@@ -103,11 +104,11 @@ class TextSystem(object):
         if self.use_angle_cls and cls:
             img_crop_list, angle_list, elapse = self.text_classifier(
                 img_crop_list)
-            logger.debug("cls num  : {}, elapse : {}".format(
+            logger.info("cls num  : {}, elapse : {}".format(
                 len(img_crop_list), elapse))
 
         rec_res, elapse = self.text_recognizer(img_crop_list)
-        logger.debug("rec_res num  : {}, elapse : {}".format(
+        logger.info("rec_res num  : {}, elapse : {}".format(
             len(rec_res), elapse))
         # self.print_draw_crop_rec_res(img_crop_list, rec_res)
         filter_boxes, filter_rec_res = [], []
@@ -155,7 +156,7 @@ def main(args):
         if not flag:
             img = cv2.imread(image_file)
         if img is None:
-            logger.error("error in loading image:{}".format(image_file))
+            logger.info("error in loading image:{}".format(image_file))
             continue
         starttime = time.time()
         dt_boxes, rec_res = text_sys(img)
