@@ -47,7 +47,7 @@ def main():
     # build model
     model = build_model(config['Architecture'])
 
-    init_model(config, model, logger)
+    init_model(config, model)
 
     # create data ops
     transforms = []

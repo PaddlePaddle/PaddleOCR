@@ -72,7 +72,14 @@ def main(config, device, logger, vdl_writer):
     # for rec algorithm
     if hasattr(post_process_class, 'character'):
         char_num = len(getattr(post_process_class, 'character'))
-        config['Architecture']["Head"]['out_channels'] = char_num
+        if config['Architecture']["algorithm"] in ["Distillation",
+                                                   ]:  # distillation model
+            for key in config['Architecture']["Models"]:
+                config['Architecture']["Models"][key]["Head"][
+                    'out_channels'] = char_num
+        else:  # base rec model
+            config['Architecture']["Head"]['out_channels'] = char_num
+
     model = build_model(config['Architecture'])
     if config['Global']['distributed']:
         model = paddle.DataParallel(model)
@@ -90,7 +97,7 @@ def main(config, device, logger, vdl_writer):
     # build metric
     eval_class = build_metric(config['Metric'])
     # load pretrain model
-    pre_best_model_dict = init_model(config, model, logger, optimizer)
+    pre_best_model_dict = init_model(config, model, optimizer)
 
     logger.info('train dataloader has {} iters'.format(len(train_dataloader)))
     if valid_dataloader is not None:

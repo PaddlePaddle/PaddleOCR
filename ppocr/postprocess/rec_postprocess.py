@@ -125,6 +125,37 @@ class CTCLabelDecode(BaseRecLabelDecode):
         return dict_character
 
 
+class DistillationCTCLabelDecode(CTCLabelDecode):
+    """
+    Convert 
+    Convert between text-label and text-index
+    """
+
+    def __init__(self,
+                 character_dict_path=None,
+                 character_type='ch',
+                 use_space_char=False,
+                 model_name=["student"],
+                 key=None,
+                 **kwargs):
+        super(DistillationCTCLabelDecode, self).__init__(
+            character_dict_path, character_type, use_space_char)
+        if not isinstance(model_name, list):
+            model_name = [model_name]
+        self.model_name = model_name
+
+        self.key = key
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        output = dict()
+        for name in self.model_name:
+            pred = preds[name]
+            if self.key is not None:
+                pred = pred[self.key]
+            output[name] = super().__call__(pred, label=label, *args, **kwargs)
+        return output
+
+
 class AttnLabelDecode(BaseRecLabelDecode):
     """ Convert between text-label and text-index """
 
