@@ -8,11 +8,12 @@ FILENAME=$1
 MODE=$2
 # prepare pretrained weights and dataset 
 wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams
+
 if [ ${MODE} = "lite_train_infer" ];then
     # pretrain lite train data
     rm -rf ./train_data/icdar2015
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015_lite.tar
-    cd ./train_data/ && tar xf icdar2015_lite.tar && 
+    cd ./train_data/ && tar xf icdar2015_lite.tar
     ln -s ./icdar2015_lite ./icdar2015
     cd ../
     epoch=10
@@ -24,8 +25,16 @@ elif [ ${MODE} = "whole_train_infer" ];then
     epoch=500
     eval_batch_step=200
 else
-    echo "Do Nothing"
+    rm -rf ./train_data/icdar2015
+    wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015_infer.tar
+    cd ./train_data/ && tar xf icdar2015_infer.tar
+    ln -s ./icdar2015_infer ./icdar2015
+    cd ../
+    epoch=10
+    eval_batch_step=10
 fi
+
+img_dir="./train_data/icdar2015/text_localization/ch4_test_images/"
 
 
 dataline=$(cat ${FILENAME})
@@ -34,7 +43,7 @@ IFS=$'\n'
 lines=(${dataline})
 function func_parser(){
     strs=$1
-    IFS=":"
+    IFS=": "
     array=(${strs})
     tmp=${array[1]}
     echo ${tmp}
@@ -54,7 +63,8 @@ cpu_threads_list=$(func_parser "${lines[8]}")
 rec_batch_size_list=$(func_parser "${lines[9]}")
 gpu_trt_list=$(func_parser "${lines[10]}")
 gpu_precision_list=$(func_parser "${lines[11]}")
-img_dir="./train_data/icdar2015/text_localization/ch4_test_images/"
+
+log_path=$(func_parser "${lines[12]}")
 
 function status_check(){
     last_status=$1   # the exit code
@@ -113,12 +123,12 @@ for train_model in ${train_model_list[*]}; do
                 fi
                 save_log=${log_path}/${model_name}_${slim_trainer}_autocast_${auto_cast}_gpuid_${gpu}
                 command="${python}  ${launch}  ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu}"
-                ${python}  ${launch}  ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu}
-                status_check $? "${trainer}" "${command}" "${save_log}/train.log"
+                echo ${python}  ${launch}  ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu}
+                # status_check $? "${trainer}" "${command}" "${save_log}/train.log"
 
                 command="${python} ${export_model} -c ${yml_file} -o Global.pretrained_model=${save_log}/best_accuracy Global.save_inference_dir=${save_log}/export_inference/ Global.save_model_dir=${save_log}"
-                ${python} ${export_model} -c ${yml_file} -o Global.pretrained_model=${save_log}/best_accuracy Global.save_inference_dir=${save_log}/export_inference/ Global.save_model_dir=${save_log} 
-                status_check $? "${trainer}" "${command}" "${save_log}/train.log"
+                echo ${python} ${export_model} -c ${yml_file} -o Global.pretrained_model=${save_log}/best_accuracy Global.save_inference_dir=${save_log}/export_inference/ Global.save_model_dir=${save_log} 
+                # status_check $? "${trainer}" "${command}" "${save_log}/train.log"
                
                 if [ "${model_name}" = "det" ]; then 
                     export rec_batch_size_list=( "1" )
@@ -138,8 +148,8 @@ for train_model in ${train_model_list[*]}; do
                                 for rec_batch_size in ${rec_batch_size_list[*]}; do    
                                     save_log_path="${log_path}/${model_name}_${slim_trainer}_cpu_usemkldnn_${use_mkldnn}_cputhreads_${threads}_recbatchnum_${rec_batch_size}_infer.log"
                                     command="${python} ${inference} --enable_mkldnn=${use_mkldnn} --use_gpu=False --cpu_threads=${threads} --benchmark=True --det_model_dir=${save_log}/export_inference/ --rec_batch_num=${rec_batch_size} --rec_model_dir=${rec_model_dir}  --image_dir=${img_dir}  --save_log_path=${save_log_path}"
-                                    ${python} ${inference} --enable_mkldnn=${use_mkldnn} --use_gpu=False --cpu_threads=${threads} --benchmark=True --det_model_dir=${save_log}/export_inference/ --rec_batch_num=${rec_batch_size} --rec_model_dir=${rec_model_dir}  --image_dir=${img_dir}  --save_log_path=${save_log_path}
-                                    status_check $? "${inference}" "${command}" "${save_log}"
+                                    echo ${python} ${inference} --enable_mkldnn=${use_mkldnn} --use_gpu=False --cpu_threads=${threads} --benchmark=True --det_model_dir=${save_log}/export_inference/ --rec_batch_num=${rec_batch_size} --rec_model_dir=${rec_model_dir}  --image_dir=${img_dir}  --save_log_path=${save_log_path}
+                                    # status_check $? "${inference}" "${command}" "${save_log}"
                                 done
                             done
                         done
@@ -151,8 +161,8 @@ for train_model in ${train_model_list[*]}; do
                                 fi
                                 for rec_batch_size in ${rec_batch_size_list[*]}; do
                                     save_log_path="${log_path}/${model_name}_${slim_trainer}_gpu_usetensorrt_${use_trt}_usefp16_${precision}_recbatchnum_${rec_batch_size}_infer.log"
-                                    ${python} ${inference} --use_gpu=True --use_tensorrt=${use_trt}  --precision=${precision} --benchmark=True --det_model_dir=${save_log}/export_inference/ --rec_batch_num=${rec_batch_size} --rec_model_dir=${rec_model_dir} --image_dir=${img_dir} --save_log_path=${save_log_path}
-                                    status_check $? "${inference}" "${command}" "${save_log}"
+                                    echo ${python} ${inference} --use_gpu=True --use_tensorrt=${use_trt}  --precision=${precision} --benchmark=True --det_model_dir=${save_log}/export_inference/ --rec_batch_num=${rec_batch_size} --rec_model_dir=${rec_model_dir} --image_dir=${img_dir} --save_log_path=${save_log_path}
+                                    # status_check $? "${inference}" "${command}" "${save_log}"
                                 done
                             done
                         done

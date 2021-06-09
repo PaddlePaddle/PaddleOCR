@@ -4,7 +4,7 @@ auto_cast_list: False
 trainer_list: norm|quant|prune
 python: python3.7
 
-inference: python|C++
+inference: python
 devices: cpu|gpu
 use_mkldnn_list: True|False
 cpu_threads_list: 1|6
@@ -12,4 +12,4 @@ rec_batch_size_list: 1|6
 gpu_trt_list: True|False
 gpu_precision_list: fp32|fp16|int8
 
-
+log_path: ./output
