@@ -79,7 +79,7 @@ class DMLLoss(nn.Layer):
         log_out2 = paddle.log(out2)
         loss = (F.kl_div(
             log_out1, out2, reduction='batchmean') + F.kl_div(
-                log_out2, log_out1, reduction='batchmean')) / 2.0
+                log_out2, out1, reduction='batchmean')) / 2.0
         return loss
 
 
