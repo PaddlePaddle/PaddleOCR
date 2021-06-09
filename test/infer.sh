@@ -14,8 +14,6 @@ function func_parser(){
 IFS=$'\n'
 # The training params
 train_model_list=$(func_parser "${lines[0]}")
-gpu_list=$(func_parser "${lines[1]}")
-auto_cast_list=$(func_parser "${lines[2]}")
 slim_trainer_list=$(func_parser "${lines[3]}")
 python=$(func_parser "${lines[4]}")
 # inference params
@@ -27,13 +25,15 @@ rec_batch_size_list=$(func_parser "${lines[9]}")
 gpu_trt_list=$(func_parser "${lines[10]}")
 gpu_precision_list=$(func_parser "${lines[11]}")
 
+infer_gpu_id=$(func_parser "${lines[12]}")
+log_path=$(func_parser "${lines[13]}")
+
 
 function status_check(){
     last_status=$1   # the exit code
     run_model=$2
     run_command=$3
     save_log=$4
-    echo ${case3}
     if [ $last_status -eq 0 ]; then
         echo -e "\033[33m $run_model successfully with command - ${run_command}!  \033[0m" | tee -a ${save_log}
     else
@@ -45,11 +45,13 @@ for train_model in ${train_model_list[*]}; do
     if [ ${train_model} = "det" ];then
         model_name="det"
         yml_file="configs/det/det_mv3_db.yml"
-        img_dir=""
+        wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar && tar xf ./inference/ch_det_data_50.tar 
+        img_dir="./inference/ch_det_data_50/"
     elif [ ${train_model} = "rec" ];then
         model_name="rec"
         yml_file="configs/rec/rec_mv3_none_bilstm_ctc.yml"
-        img_dir=""
+        wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_rec_data_200.tar && tar xf ./inference/ch_rec_data_200.tar 
+        img_dir="./inference/ch_rec_data_200/"
     fi
 
     # eval 
@@ -126,6 +128,7 @@ for train_model in ${train_model_list[*]}; do
                 done
             done
         else 
+            env="CUDA_VISIBLE_DEVICES=${infer_gpu_id}"
             for use_trt in ${gpu_trt_list[*]}; do
                 for precision in ${gpu_precision_list[*]}; do
                     if [ ${use_trt} = "False" ] && [ ${precision} != "fp32" ]; then
@@ -133,8 +136,8 @@ for train_model in ${train_model_list[*]}; do
                     fi
                     for rec_batch_size in ${rec_batch_size_list[*]}; do
                         save_log_path="${log_path}/${model_name}_${slim_trainer}_gpu_usetensorrt_${use_trt}_usefp16_${precision}_recbatchnum_${rec_batch_size}_infer.log"
-                        command="${python} ${inference} --use_gpu=True --use_tensorrt=${use_trt}  --precision=${precision} --benchmark=True --det_model_dir=${log_path}/${eval_model_name}_infer --rec_batch_num=${rec_batch_size} --rec_model_dir=${rec_model_dir} --image_dir=${img_dir} --save_log_path=${save_log_path}"
-                        ${python} ${inference} --use_gpu=True --use_tensorrt=${use_trt}  --precision=${precision} --benchmark=True --det_model_dir=${log_path}/${eval_model_name}_infer --rec_batch_num=${rec_batch_size} --rec_model_dir=${rec_model_dir} --image_dir=${img_dir} --save_log_path=${save_log_path}
+                        command="${env} ${python} ${inference} --use_gpu=True --use_tensorrt=${use_trt}  --precision=${precision} --benchmark=True --det_model_dir=${log_path}/${eval_model_name}_infer --rec_batch_num=${rec_batch_size} --rec_model_dir=${rec_model_dir} --image_dir=${img_dir} --save_log_path=${save_log_path}"
+                        ${env} ${python} ${inference} --use_gpu=True --use_tensorrt=${use_trt}  --precision=${precision} --benchmark=True --det_model_dir=${log_path}/${eval_model_name}_infer --rec_batch_num=${rec_batch_size} --rec_model_dir=${rec_model_dir} --image_dir=${img_dir} --save_log_path=${save_log_path}
                         status_check $? "${trainer}" "${command}" "${save_log_path}"
                     done
                 done

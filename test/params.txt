@@ -11,5 +11,5 @@ cpu_threads_list: 1|6
 rec_batch_size_list: 1|6
 gpu_trt_list: True|False
 gpu_precision_list: fp32|fp16|int8
-
+infer_gpu_id: 0
 log_path: ./output
