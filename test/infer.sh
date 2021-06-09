@@ -34,11 +34,11 @@ function status_check(){
     last_status=$1   # the exit code
     run_model=$2
     run_command=$3
-    save_log=$4
+    run_log=$4
     if [ $last_status -eq 0 ]; then
-        echo -e "\033[33m $run_model successfully with command - ${run_command}!  \033[0m" | tee -a ${save_log}
+        echo -e "\033[33m $run_model successfully with command - ${run_command}!  \033[0m" | tee -a ${run_log}
     else
-        echo -e "\033[33m $case failed with command - ${run_command}!  \033[0m" | tee -a ${save_log}
+        echo -e "\033[33m $case failed with command - ${run_command}!  \033[0m" | tee -a ${run_log}
     fi
 }
 IFS='|'
