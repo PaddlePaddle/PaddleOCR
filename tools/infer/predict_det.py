@@ -41,7 +41,7 @@ class TextDetector(object):
         pre_process_list = [{
             'DetResizeForTest': {
                 'limit_side_len': args.det_limit_side_len,
-                'limit_type': args.det_limit_type
+                'limit_type': args.det_limit_type,
             }
         }, {
             'NormalizeImage': {
