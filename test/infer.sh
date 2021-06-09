@@ -45,10 +45,12 @@ IFS='|'
 for train_model in ${train_model_list[*]}; do 
     if [ ${train_model} = "ocr_det" ];then
         model_name="det"
-        yml_file="configs/det/det_mv3_db.yml"
+        yml_file="configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml"
         wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar
         cd ./inference && tar xf ch_det_data_50.tar && cd ../
-        img_dir="./inference/ch_det_data_50/all-sum-50"
+        img_dir="./inference/ch_det_data_50/all-sum-510"
+        data_dir=./inference/ch_det_data_50/
+        data_label_file=[./inference/ch_det_data_50/test_gt_50.txt]
     elif [ ${train_model} = "ocr_rec" ];then
         model_name="rec"
         yml_file="configs/rec/rec_mv3_none_bilstm_ctc.yml"
@@ -102,9 +104,8 @@ for train_model in ${train_model_list[*]}; do
         fi
 
         save_log_path="${log_path}/${eval_model_name}"
-        eval_img="Eval.dataset.data_dir=./inference/ch_det_data_50/ Eval.dataset.label_file_list=./inference/ch_det_data_50/test_gt_50.txt"
-        command="${python} tools/eval.py -c ${yml_file} -o Global.pretrained_model='${eval_model_name}/best_accuracy' Global.save_model_dir=${save_log_path} ${eval_img}"
-        ${python} tools/eval.py -c ${yml_file} -o Global.pretrained_model='./inference/${eval_model_name}/best_accuracy' Global.save_model_dir=${save_log_path} ${eval_img}
+        command="${python} tools/eval.py -c ${yml_file} -o Global.pretrained_model='./inference/${eval_model_name}/best_accuracy' Global.save_model_dir=${save_log_path} Eval.dataset.data_dir=${data_dir}  Eval.dataset.label_file_list=${data_label_file}"
+        ${python} tools/eval.py -c ${yml_file} -o Global.pretrained_model=./inference/${eval_model_name}/best_accuracy Global.save_model_dir=${save_log_path} Eval.dataset.data_dir=${data_dir}  Eval.dataset.label_file_list=${data_label_file}
         status_check $? "${trainer}" "${command}" "${status_log}"
 
         command="${python} tools/export_model.py -c ${yml_file} -o Global.pretrained_model="${eval_model_name}/best_accuracy" Global.save_inference_dir=${log_path}/${eval_model_name}_infer Global.save_model_dir=${save_log_path}"
@@ -120,11 +121,11 @@ for train_model in ${train_model_list[*]}; do
         if [ "${model_name}" = "det" ]; then 
             export rec_batch_size_list=( "1" )
             inference="tools/infer/predict_det.py"
-            det_model_dir="./inference/${log_path}/${eval_model_name}_infer"
+            det_model_dir="${log_path}/${eval_model_name}_infer"
             rec_model_dir=""
         elif [ "${model_name}" = "rec" ]; then
             inference="tools/infer/predict_rec.py"
-            rec_model_dir="./inference/${log_path}/${eval_model_name}_infer"
+            rec_model_dir="${log_path}/${eval_model_name}_infer"
             det_model_dir=""
         fi
         # inference 
@@ -140,8 +141,8 @@ for train_model in ${train_model_list[*]}; do
                         done
                     done
                 done
-            else 
-                env="CUDA_VISIBLE_DEVICES=${infer_gpu_id}"
+            else
+                # env="export CUDA_VISIBLE_DEVICES=${infer_gpu_id}"
                 for use_trt in ${gpu_trt_list[*]}; do
                     for precision in ${gpu_precision_list[*]}; do
                         if [ ${use_trt} = "False" ] && [ ${precision} != "fp32" ]; then
@@ -149,8 +150,8 @@ for train_model in ${train_model_list[*]}; do
                         fi
                         for rec_batch_size in ${rec_batch_size_list[*]}; do
                             save_log_path="${log_path}/${model_name}_${slim_trainer}_gpu_usetensorrt_${use_trt}_usefp16_${precision}_recbatchnum_${rec_batch_size}_infer.log"
-                            command="${env} ${python} ${inference} --use_gpu=True --use_tensorrt=${use_trt}  --precision=${precision} --benchmark=True --det_model_dir=${log_path}/${eval_model_name}_infer --rec_batch_num=${rec_batch_size} --rec_model_dir=${rec_model_dir} --image_dir=${img_dir} --save_log_path=${save_log_path}"
-                            ${env} ${python} ${inference} --use_gpu=True --use_tensorrt=${use_trt}  --precision=${precision} --benchmark=True --det_model_dir=${log_path}/${eval_model_name}_infer --rec_batch_num=${rec_batch_size} --rec_model_dir=${rec_model_dir} --image_dir=${img_dir} --save_log_path=${save_log_path}
+                            command="${python} ${inference} --use_gpu=True --use_tensorrt=${use_trt}  --precision=${precision} --benchmark=True --det_model_dir=${log_path}/${eval_model_name}_infer --rec_batch_num=${rec_batch_size} --rec_model_dir=${rec_model_dir} --image_dir=${img_dir} --save_log_path=${save_log_path}"
+                            ${python} ${inference} --use_gpu=True --use_tensorrt=${use_trt}  --precision=${precision} --benchmark=True --det_model_dir=${log_path}/${eval_model_name}_infer --rec_batch_num=${rec_batch_size} --rec_model_dir=${rec_model_dir} --image_dir=${img_dir} --save_log_path=${save_log_path}
                             status_check $? "${trainer}" "${command}" "${status_log}"
                         done
                     done
