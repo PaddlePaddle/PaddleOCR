@@ -29,6 +29,11 @@ infer_gpu_id=$(func_parser "${lines[12]}")
 log_path=$(func_parser "${lines[13]}")
 status_log="${log_path}/result.log"
 
+# install requirments
+${python} -m pip install pynvml;
+${python} -m pip install psutil;
+${python} -m pip install GPUtil;
+
 
 function status_check(){
     last_status=$1   # the exit code

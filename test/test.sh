@@ -69,6 +69,11 @@ gpu_precision_list=$(func_parser "${lines[11]}")
 log_path=$(func_parser "${lines[13]}")
 status_log="${log_path}/result.log"
 
+# install requirments
+${python} -m pip install pynvml;
+${python} -m pip install psutil;
+${python} -m pip install GPUtil;
+
 function status_check(){
     last_status=$1   # the exit code
     run_model=$2
