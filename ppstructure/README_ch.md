@@ -57,3 +57,13 @@ paddlestructure --image_dir=../doc/table/1.png
 ```
 
 ### 参数说明
+大部分参数和paddleocr whl包保持一致，见 [whl包文档](../doc/doc_ch/whl.md)
+
+| 字段                    | 说明                                            | 默认值           |
+|------------------------|------------------------------------------------------|------------------|
+| output                 | excel和识别结果保存的地址                    | ./output/table            |
+| structure_max_len      |  structure模型预测时，图像的长边resize尺度             |  488            |
+| structure_model_dir      |  structure inference 模型地址             |  None            |
+| structure_char_type      |  structure 模型所用字典地址             |  ../ppocr/utils/dict/table_structure_dict.tx            |
+
+
