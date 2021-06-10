@@ -63,9 +63,6 @@ class TableStructurer(object):
             'name': 'TableLabelDecode',
             "character_type": args.structure_char_type,
             "character_dict_path": args.structure_char_dict_path,
-            "max_text_length": args.structure_max_text_length,
-            "max_elem_length": args.structure_max_elem_length,
-            "max_cell_num": args.structure_max_cell_num
         }
 
         self.preprocess_op = create_operators(pre_process_list)
