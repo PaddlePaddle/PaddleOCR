@@ -127,6 +127,7 @@ for train_model in ${train_model_list[*]}; do
                     trainer="deploy/slim/prune/sensitivity_anal.py"
                     export_model="deploy/slim/prune/export_prune_model.py"
                     pretrain="./pretrain_models/det_mv3_db_v2.0_train/best_accuracy"
+                    wget -nc -P https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/sen.pickle
                 elif [ ${slim_trainer} = "distill" ]; then
                     trainer="deploy/slim/distill/train_dml.py"
                     export_model="deploy/slim/distill/export_distill_model.py"
