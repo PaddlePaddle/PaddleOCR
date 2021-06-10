@@ -31,8 +31,6 @@ def init_args():
     parser.add_argument("--structure_char_type", type=str, default='en')
     parser.add_argument("--structure_char_dict_path", type=str, default="../ppocr/utils/dict/table_structure_dict.txt")
 
-    # params for layout detector
-    parser.add_argument("--layout_model_dir", type=str)
     return parser
 
 
