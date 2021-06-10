@@ -236,8 +236,8 @@ def create_predictor(args, mode, logger):
             config.enable_tensorrt_engine(
                 precision_mode=inference.PrecisionType.Float32,
                 max_batch_size=args.max_batch_size,
-                min_subgraph_size=args.
-                min_subgraph_size)  # skip the minmum trt subgraph
+                min_subgraph_size=args.min_subgraph_size)
+            # skip the minmum trt subgraph
         if mode == "det":
             min_input_shape = {
                 "x": [1, 3, 50, 50],
