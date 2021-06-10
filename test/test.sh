@@ -102,14 +102,11 @@ for train_model in ${train_model_list[*]}; do
     for gpu in ${gpu_list[*]}; do
         use_gpu=True
         if [ ${gpu} = "-1" ];then
-            lanuch=""
             use_gpu=False
             env=""
         elif [ ${#gpu} -le 1 ];then
-            launch=""
             env="CUDA_VISIBLE_DEVICES=${gpu}"
         else
-            launch="-m paddle.distributed.launch --log_dir=./debug/ --gpus ${gpu}"
             IFS=","
             array=(${gpu})
             env="CUDA_VISIBLE_DEVICES=${array[0]}"
@@ -139,8 +136,13 @@ for train_model in ${train_model_list[*]}; do
                     pretrain="./pretrain_models/MobileNetV3_large_x0_5_pretrained"
                 fi
                 save_log="${log_path}/${model_name}_${slim_trainer}_autocast_${auto_cast}_gpuid_${gpu}"
-                command="${python}  ${launch}  ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast} Global.pretrained_model=${pretrain}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu} Train.loader.batch_size_per_card=2"
-                ${python}  ${launch}  ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast} Global.pretrained_model=${pretrain}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu}  Train.loader.batch_size_per_card=2
+                if [ ${#gpu} -le 2 ];then
+                    command="${python} ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast} Global.pretrained_model=${pretrain}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu} Train.loader.batch_size_per_card=2"
+                    ${python} ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast} Global.pretrained_model=${pretrain}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu}  Train.loader.batch_size_per_card=2
+                else 
+                    command="${python} -m paddle.distributed.launch --log_dir=./debug/ --gpus ${gpu} ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast} Global.pretrained_model=${pretrain}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu} Train.loader.batch_size_per_card=2"
+                    ${python} -m paddle.distributed.launch --log_dir=./debug/ --gpus ${gpu} ${trainer}  -c ${yml_file} -o Global.epoch_num=${epoch} Global.eval_batch_step=${eval_batch_step} Global.auto_cast=${auto_cast} Global.pretrained_model=${pretrain}  Global.save_model_dir=${save_log} Global.use_gpu=${use_gpu}  Train.loader.batch_size_per_card=2
+                fi
                 status_check $? "${trainer}" "${command}" "${status_log}"
 
                 command="${python} ${export_model} -c ${yml_file} -o Global.pretrained_model=${save_log}/latest Global.save_inference_dir=${save_log}_infer/ Global.save_model_dir=${save_log}"
