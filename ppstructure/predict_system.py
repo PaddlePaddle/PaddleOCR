@@ -58,8 +58,6 @@ class OCRSystem(object):
             roi_img = ori_im[y1:y2, x1:x2, :]
             if region.type == 'Table':
                 res = self.table_system(roi_img)
-            elif region.type == 'Figure':
-                continue
             else:
                 filter_boxes, filter_rec_res = self.text_system(roi_img)
                 filter_boxes = [x + [x1, y1] for x in filter_boxes]
