@@ -32,6 +32,7 @@ from ppocr.data import create_operators, transform
 from ppocr.postprocess import build_post_process
 from ppocr.utils.logging import get_logger
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
+from ppstructure.utility import parse_args
 
 logger = get_logger()
 
@@ -69,7 +70,7 @@ class TableStructurer(object):
 
         self.preprocess_op = create_operators(pre_process_list)
         self.postprocess_op = build_post_process(postprocess_params)
-        self.predictor, self.input_tensor, self.output_tensors = \
+        self.predictor, self.input_tensor, self.output_tensors, self.config = \
             utility.create_predictor(args, 'structure', logger)
 
     def __call__(self, img):
@@ -138,4 +139,4 @@ def main(args):
 
 
 if __name__ == "__main__":
-    main(utility.parse_args())
+    main(parse_args())

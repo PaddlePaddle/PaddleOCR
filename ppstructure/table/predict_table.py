@@ -187,7 +187,7 @@ def main(args):
     for i, image_file in enumerate(image_file_list):
         logger.info("[{}/{}] {}".format(i, img_num, image_file))
         img, flag = check_and_read_gif(image_file)
-        excel_path = os.path.join(args.table_output, os.path.basename(image_file).split('.')[0] + '.xlsx')
+        excel_path = os.path.join(args.output, os.path.basename(image_file).split('.')[0] + '.xlsx')
         if not flag:
             img = cv2.imread(image_file)
         if img is None:
