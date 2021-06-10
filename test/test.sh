@@ -73,6 +73,7 @@ status_log="${log_path}/result.log"
 ${python} -m pip install pynvml;
 ${python} -m pip install psutil;
 ${python} -m pip install GPUtil;
+${python} -m pip install paddlesim==2.0.0
 
 function status_check(){
     last_status=$1   # the exit code
