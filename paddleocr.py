@@ -151,8 +151,8 @@ class PaddleOCR(predict_system.TextSystem):
         """
         params = parse_args(mMain=False)
         params.__dict__.update(**kwargs)
-        if params.show_log:
-            logger.setLevel(logging.DEBUG)
+        if not params.show_log:
+            logger.setLevel(logging.INFO)
         self.use_angle_cls = params.use_angle_cls
         lang = params.lang
         latin_lang = [

@@ -24,6 +24,7 @@ os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
 import cv2
 import numpy as np
 import time
+import logging
 
 import layoutparser as lp
 
@@ -31,7 +32,7 @@ from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.utils.logging import get_logger
 from tools.infer.predict_system import TextSystem
 from ppstructure.table.predict_table import TableSystem, to_excel
-from ppstructure.utility import parse_args,draw_result
+from ppstructure.utility import parse_args, draw_result
 
 logger = get_logger()
 
@@ -40,6 +41,8 @@ class OCRSystem(object):
     def __init__(self, args):
         args.det_limit_type = 'resize_long'
         args.drop_score = 0
+        if not args.show_log:
+            logger.setLevel(logging.INFO)
         self.text_system = TextSystem(args)
         self.table_system = TableSystem(args, self.text_system.text_detector, self.text_system.text_recognizer)
         self.table_layout = lp.PaddleDetectionLayoutModel("lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config",
@@ -66,6 +69,7 @@ class OCRSystem(object):
                 res = (filter_boxes, filter_rec_res)
             res_list.append({'type': region.type, 'bbox': [x1, y1, x2, y2], 'res': res})
         return res_list
+
 
 def save_res(res, save_folder, img_name):
     excel_save_folder = os.path.join(save_folder, img_name)
@@ -105,7 +109,7 @@ def main(args):
         starttime = time.time()
         res = structure_sys(img)
         save_res(res, save_folder, img_name)
-        draw_img = draw_result(img,res, args.vis_font_path)
+        draw_img = draw_result(img, res, args.vis_font_path)
         cv2.imwrite(os.path.join(save_folder, img_name, 'show.jpg'), draw_img)
         logger.info('result save to {}'.format(os.path.join(save_folder, img_name)))
         elapse = time.time() - starttime

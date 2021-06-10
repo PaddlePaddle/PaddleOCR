@@ -66,8 +66,8 @@ class PaddleStructure(OCRSystem):
     def __init__(self, **kwargs):
         params = parse_args(mMain=False)
         params.__dict__.update(**kwargs)
-        if params.show_log:
-            logger.setLevel(logging.DEBUG)
+        if not params.show_log:
+            logger.setLevel(logging.INFO)
         params.use_angle_cls = False
         # init model dir
         params.det_model_dir, det_url = confirm_model_dir_url(params.det_model_dir,
