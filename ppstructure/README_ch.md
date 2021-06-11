@@ -1,6 +1,6 @@
 # PaddleStructure
 
-## pipeline介绍
+## 1. pipeline介绍
 
 PaddleStructure 是一个用于复杂板式文字OCR的工具包，流程如下
 ![pipeline](../doc/table/pipeline.png)
@@ -16,18 +16,18 @@ PaddleStructure 是一个用于复杂板式文字OCR的工具包，流程如下
    
 1-4类走传统的OCR流程，5走表格的OCR流程。
 
-## LayoutParser
+## 2. LayoutParser
 
 
-## Table OCR
+## 3. Table OCR
 
 [文档](table/README_ch.md)
 
-## PaddleStructure whl包介绍
+## 4. PaddleStructure whl包介绍
 
-### 使用
+### 4.1 使用
 
-1. 代码使用
+4.1.1 代码使用
 ```python
 import cv2
 from paddlestructure import PaddleStructure,draw_result
@@ -51,7 +51,7 @@ im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
 
-2. 命令行使用
+4.1.2 命令行使用
 ```bash
 paddlestructure --image_dir=../doc/table/1.png
 ```
