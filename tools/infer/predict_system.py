@@ -85,9 +85,13 @@ class TextSystem(object):
             cv2.imwrite("./output/img_crop_%d.jpg" % bno, img_crop_list[bno])
             logger.info(bno, rec_res[bno])
 
-    def __call__(self, img):
+    def __call__(self, img, boxes_elapse):
         ori_im = img.copy()
-        dt_boxes, elapse = self.text_detector(img)
+
+        if boxes_elapse == False:
+            dt_boxes, elapse = self.text_detector(img)
+        else:
+            dt_boxes, elapse = boxes_elapse
         logger.info("dt_boxes num : {}, elapse : {}".format(
             len(dt_boxes), elapse))
         if dt_boxes is None:
