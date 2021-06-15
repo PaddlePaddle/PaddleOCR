@@ -109,11 +109,12 @@ def init_args():
     parser.add_argument("--use_mp", type=str2bool, default=False)
     parser.add_argument("--total_process_num", type=int, default=1)
     parser.add_argument("--process_id", type=int, default=0)
-    
+
     parser.add_argument("--benchmark", type=bool, default=False)
     parser.add_argument("--save_log_path", type=str, default="./log_output/")
 
 
+    parser.add_argument("--show_log", type=str2bool, default=True)
     return parser
 
 
@@ -199,6 +200,8 @@ def create_predictor(args, mode, logger):
         model_dir = args.cls_model_dir
     elif mode == 'rec':
         model_dir = args.rec_model_dir
+    elif mode == 'structure':
+        model_dir = args.structure_model_dir
     else:
         model_dir = args.e2e_model_dir
 
@@ -328,7 +331,9 @@ def create_predictor(args, mode, logger):
 
     config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
     config.switch_use_feed_fetch_ops(False)
-
+    config.switch_ir_optim(True)
+    if mode == 'structure':
+        config.switch_ir_optim(False)
     # create predictor
     predictor = inference.create_predictor(config)
     input_names = predictor.get_input_names()

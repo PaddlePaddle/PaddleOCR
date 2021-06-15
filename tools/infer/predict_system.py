@@ -24,6 +24,7 @@ import cv2
 import copy
 import numpy as np
 import time
+import logging
 from PIL import Image
 import tools.infer.utility as utility
 import tools.infer.predict_rec as predict_rec
@@ -38,6 +39,9 @@ logger = get_logger()
 
 class TextSystem(object):
     def __init__(self, args):
+        if not args.show_log:
+            logger.setLevel(logging.INFO)
+
         self.text_detector = predict_det.TextDetector(args)
         self.text_recognizer = predict_rec.TextRecognizer(args)
         self.use_angle_cls = args.use_angle_cls
@@ -88,7 +92,7 @@ class TextSystem(object):
         ori_im = img.copy()
         dt_boxes, elapse = self.text_detector(img)
 
-        logger.info("dt_boxes num : {}, elapse : {}".format(
+        logger.debug("dt_boxes num : {}, elapse : {}".format(
 
             len(dt_boxes), elapse))
         if dt_boxes is None:
@@ -104,11 +108,11 @@ class TextSystem(object):
         if self.use_angle_cls and cls:
             img_crop_list, angle_list, elapse = self.text_classifier(
                 img_crop_list)
-            logger.info("cls num  : {}, elapse : {}".format(
+            logger.debug("cls num  : {}, elapse : {}".format(
                 len(img_crop_list), elapse))
 
         rec_res, elapse = self.text_recognizer(img_crop_list)
-        logger.info("rec_res num  : {}, elapse : {}".format(
+        logger.debug("rec_res num  : {}, elapse : {}".format(
             len(rec_res), elapse))
         # self.print_draw_crop_rec_res(img_crop_list, rec_res)
         filter_boxes, filter_rec_res = [], []
