@@ -9,58 +9,38 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2021.6.1）](#近期更新)
+* [近期更新（2021.6.9）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
 * [【理论篇】OCR通用44个问题](#OCR通用问题)
-  * [基础知识13题](#基础知识)
+  * [基础知识14题](#基础知识)
   * [数据集9题](#数据集2)
   * [模型训练调优22题](#模型训练调优2)
 * [【实战篇】PaddleOCR实战179个问题](#PaddleOCR实战问题)
   * [使用咨询72题](#使用咨询)
-  * [数据集18题](#数据集3)
-  * [模型训练调优36题](#模型训练调优3)
+  * [数据集19题](#数据集3)
+  * [模型训练调优39题](#模型训练调优3)
   * [预测部署48题](#预测部署3)
 
 <a name="近期更新"></a>
-## 近期更新（2021.6.1）
+## 近期更新（2021.6.9）
 
-### Q3.1.73: 如何使用TensorRT加速PaddleOCR预测？
+#### Q2.1.14: 在识别模型中，为什么降采样残差结构的stride为(2, 1)？
+**A**: stride为(2, 1)，表示在图像y方向（高度方向）上stride为2，x方向（宽度方向）上为1。由于待识别的文本图像通常为长方形，这样只在高度方向做下采样，尽量保留宽度方向的序列信息，避免宽度方向下采样后丢失过多的文字信息。
 
-**A**： 目前paddle的dygraph分支已经支持了python和C++ TensorRT预测的代码，python端inference预测时把参数[--use_tensorrt=True](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L37)即可，
-C++TensorRT预测需要使用支持TRT的预测库并在编译时打开[-DWITH_TENSORRT=ON](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/deploy/cpp_infer/tools/build.sh#L15)。
-如果想修改其他分支代码支持TensorRT预测，可以参考[PR](https://github.com/PaddlePaddle/PaddleOCR/pull/2921)。
+#### Q3.2.19: 如何合成手写中文数据集？
+**A**: 手写数据集可以通过手写单字数据集合成得到。随机选取一定数量的单字图片和对应的label，将图片高度resize为随机的统一高度后拼接在一起，即可得到合成数据集。对于需要添加文字背景的情况，建议使用阈值化将单字图片的白色背景处理为透明背景，再与真实背景图进行合成。具体可以参考文档[手写数据集](https://github.com/PaddlePaddle/PaddleOCR/blob/a72d6f23be9979e0c103d911a9dca3e4613e8ccf/doc/doc_ch/handwritten_datasets.md)。
 
-注：建议使用TensorRT大于等于6.1.0.5以上的版本。
+#### Q3.3.37: 训练过程中，训练程序意外退出/挂起，应该如何解决？
+**A**: 考虑内存，显存（使用GPU训练的话）是否不足，可在配置文件中，将训练和评估的batch size调小一些。需要注意，训练batch size调小时，学习率learning rate也要调小，一般可按等比例调整。
 
-### Q3.1.74: ppocr检测效果不好，该如何优化？
+#### Q3.3.38: 训练程序启动后直到结束，看不到训练过程log？
+**A**: 可以从以下三方面考虑：
+  1. 检查训练进程是否正常退出、显存占用是否释放、是否有残留进程，如果确定是训练程序卡死，可以检查环境配置，遇到环境问题建议使用docker，可以参考说明文档[安装](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/installation.md)。
+  2. 检查数据集的数据量是否太小，可调小batch size从而增加一个epoch中的训练step数量，或在训练config文件中，将参数print_batch_step改为1，即每一个step打印一次log信息。
+  3. 如果使用私有数据集训练，可先用PaddleOCR提供/推荐的数据集进行训练，排查私有数据集是否存在问题。
 
-**A**： 具体问题具体分析:
-1. 如果在你的场景上检测效果不可用，首选是在你的数据上做finetune训练；
-2. 如果图像过大，文字过于密集，建议不要过度压缩图像，可以尝试修改检测预处理的[resize逻辑](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/predict_det.py#L42)，防止图像被过度压缩；
-3. 检测框大小过于紧贴文字或检测框过大，可以调整[db_unclip_ratio](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L51)这个参数，加大参数可以扩大检测框，减小参数可以减小检测框大小；
-4. 检测框存在很多漏检问题，可以减小DB检测后处理的阈值参数[det_db_box_thresh](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L50)，防止一些检测框被过滤掉，也可以尝试设置[det_db_score_mode](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L54)为'slow';
-5. 其他方法可以选择[use_dilation](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L53)为True，对检测输出的feature map做膨胀处理，一般情况下，会有效果改善；
-
-### Q3.1.75: lite预测库和nb模型版本不匹配，该如何解决？
-
-**A**： 如果可以正常预测就不用管，如果这个问题导致无法正常预测，可以尝试使用同一个commit的Paddle Lite代码编译预测库和opt文件，可以参考[移动端部署教程](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.1/deploy/lite/readme.md)。
-
-### Q3.1.76: 'SystemError: (Fatal) Blocking queue is killed because the data reader raises an exception.' 遇到这个错如何处理？
-
-这个报错说明dataloader的时候报错了，如果是还未开始训练就报错，需要检查下数据和标签格式是不是对的，ppocr的数据标签格式为
-```
-" 图像文件名                    json.dumps编码的图像标注信息"
-ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]]}, {...}]
-```
-提供的标注文件格式如上，中间用"\t"分隔，不是四个空格分隔。
-
-如果是训练期间报错了，需要检查下是不是遇到了异常数据，或者是共享内存不足导致了这个问题，可以使用tools/train.py中的test_reader进行调试，
-linux系统共享内存位于/dev/shm目录下，如果内存不足，可以清理/dev/shm目录，另外，如果是使用docker，在创建镜像时，可通过设置参数--shm_size=8G 设置较大的共享内存。
-
-### Q3.1.77: 使用mkldnn加速预测时遇到 'Please compile with MKLDNN first to use MKLDNN'
-
-**A**： 报错提示当前环境没有mkldnn，建议检查下当前CPU是否支持mlkdnn（MAC上是无法用mkldnn）；另外的可能是使用的预测库不支持mkldnn，
-建议从[这里](https://paddle-inference.readthedocs.io/en/latest/user_guides/download_lib.html#linux)下载支持mlkdnn的CPU预测库。
+#### Q3.3.39: 配置文件中的参数num workers是什么意思，应该如何设置？
+**A**: 训练数据的读取需要硬盘IO，而硬盘IO速度远小于GPU运算速度，为了避免数据读取成为训练速度瓶颈，可以使用多进程读取数据，num workers表示数据读取的进程数量，0表示不使用多进程读取。在Linux系统下，多进程读取数据时，进程间通信需要基于共享内存，因此使用多进程读取数据时，建议设置共享内存不低于2GB，最好可以达到8GB，此时，num workers可以设置为CPU核心数。如果机器硬件配置较低，或训练进程卡死、dataloader报错，可以将num workers设置为0，即不使用多进程读取数据。
 
 
 <a name="OCR精选10个问题"></a>
@@ -203,6 +183,10 @@ linux系统共享内存位于/dev/shm目录下，如果内存不足，可以清�
 
 #### Q2.1.13: PaddleOCR提供的文本识别算法包括哪些？
 **A**: PaddleOCR主要提供五种文本识别算法，包括CRNN\StarNet\RARE\Rosetta和SRN, 其中CRNN\StarNet和Rosetta是基于ctc的文字识别算法，RARE是基于attention的文字识别算法；SRN为百度自研的文本识别算法，引入了语义信息，显著提升了准确率。 详情可参照如下页面: [文本识别算法](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.0/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
+
+#### Q2.1.14: 在识别模型中，为什么降采样残差结构的stride为(2, 1)？
+**A**: stride为(2, 1)，表示在图像y方向（高度方向）上stride为2，x方向（宽度方向）上为1。由于待识别的文本图像通常为长方形，这样只在高度方向做下采样，尽量保留宽度方向的序列信息，避免宽度方向下采样后丢失过多的文字信息。
+
 
 <a name="数据集2"></a>
 ### 数据集
@@ -865,6 +849,9 @@ linux系统共享内存位于/dev/shm目录下，如果内存不足，可以清�
 #### Q3.2.18: PaddleOCR动态图版本如何finetune？
 **A**：finetune需要将配置文件里的 Global.load_static_weights设置为false，如果没有此字段可以手动添加，然后将模型地址放到Global.pretrained_model字段下即可。
 
+#### Q3.2.19: 如何合成手写中文数据集？
+**A**: 手写数据集可以通过手写单字数据集合成得到。随机选取一定数量的单字图片和对应的label，将图片高度resize为随机的统一高度后拼接在一起，即可得到合成数据集。对于需要添加文字背景的情况，建议使用阈值化将单字图片的白色背景处理为透明背景，再与真实背景图进行合成。具体可以参考文档[手写数据集](https://github.com/PaddlePaddle/PaddleOCR/blob/a72d6f23be9979e0c103d911a9dca3e4613e8ccf/doc/doc_ch/handwritten_datasets.md)。
+
 
 <a name="模型训练调优3"></a>
 
@@ -1047,6 +1034,19 @@ lr:
 
 #### Q3.3.36: 训练starnet网络，印章数据可以和非弯曲数据一起训练吗。
 **A**: 可以的，starnet里的tps模块会对印章图片进行校正，使其和非弯曲的图片一样。
+
+#### Q3.3.37: 训练过程中，训练程序意外退出/挂起，应该如何解决？
+**A**: 考虑内存，显存（使用GPU训练的话）是否不足，可在配置文件中，将训练和评估的batch size调小一些。需要注意，训练batch size调小时，学习率learning rate也要调小，一般可按等比例调整。
+
+#### Q3.3.38: 训练程序启动后直到结束，看不到训练过程log？
+**A**: 可以从以下三方面考虑：
+  1. 检查训练进程是否正常退出、显存占用是否释放、是否有残留进程，如果确定是训练程序卡死，可以检查环境配置，遇到环境问题建议使用docker，可以参考说明文档[安装](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/installation.md)。
+  2. 检查数据集的数据量是否太小，可调小batch size从而增加一个epoch中的训练step数量，或在训练config文件中，将参数print_batch_step改为1，即每一个step打印一次log信息。
+  3. 如果使用私有数据集训练，可先用PaddleOCR提供/推荐的数据集进行训练，排查私有数据集是否存在问题。
+
+#### Q3.3.39: 配置文件中的参数num workers是什么意思，应该如何设置？
+**A**: 训练数据的读取需要硬盘IO，而硬盘IO速度远小于GPU运算速度，为了避免数据读取成为训练速度瓶颈，可以使用多进程读取数据，num workers表示数据读取的进程数量，0表示不使用多进程读取。在Linux系统下，多进程读取数据时，进程间通信需要基于共享内存，因此使用多进程读取数据时，建议设置共享内存不低于2GB，最好可以达到8GB，此时，num workers可以设置为CPU核心数。如果机器硬件配置较低，或训练进程卡死、dataloader报错，可以将num workers设置为0，即不使用多进程读取数据。
+
 
 <a name="预测部署3"></a>
 
