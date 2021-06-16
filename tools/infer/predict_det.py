@@ -97,9 +97,19 @@ class TextDetector(object):
 
         self.preprocess_op = create_operators(pre_process_list)
         self.postprocess_op = build_post_process(postprocess_params)
-        self.predictor, self.input_tensor, self.output_tensors = utility.create_predictor(
+        self.predictor, self.input_tensor, self.output_tensors, infer_config = utility.create_predictor(
             args, 'det', logger)  # paddle.jit.load(args.det_model_dir)
         # self.predictor.eval()
+
+        import auto_log
+        self.auto_log = auto_log.AutoLogger(args.det_model_dir.split("/")[0],
+                 "fp32",
+                 batch_size=1,
+                 data_shape="dynamic",
+                 save_path="./log_test/",
+                 inference_config=infer_config,
+                 pids=None, process_name=None, gpu_ids=[0])
+        
 
     def order_points_clockwise(self, pts):
         """
@@ -157,6 +167,7 @@ class TextDetector(object):
     def __call__(self, img):
         ori_im = img.copy()
         data = {'image': img}
+        st_pre = time.time()
         data = transform(data, self.preprocess_op)
         img, shape_list = data
         if img is None:
@@ -166,12 +177,18 @@ class TextDetector(object):
         img = img.copy()
         starttime = time.time()
 
+        self.auto_log.preprocess_time.record(time.time() - st_pre)
+        st_infer = time.time()
+
         self.input_tensor.copy_from_cpu(img)
         self.predictor.run()
         outputs = []
         for output_tensor in self.output_tensors:
             output = output_tensor.copy_to_cpu()
             outputs.append(output)
+
+        self.auto_log.inference_time.record(time.time() - st_infer)
+        st_post = time.time()
 
         preds = {}
         if self.det_algorithm == "EAST":
@@ -193,6 +210,12 @@ class TextDetector(object):
             dt_boxes = self.filter_tag_det_res_only_clip(dt_boxes, ori_im.shape)
         else:
             dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
+        
+        self.auto_log.postprocess_time.record(time.time() - st_post)
+
+        self.auto_log.total_time.record(time.time() - st_pre)
+        self.auto_log.record_mem()
+        
         elapse = time.time() - starttime
         return dt_boxes, elapse
 
@@ -206,6 +229,12 @@ if __name__ == "__main__":
     draw_img_save = "./inference_results"
     if not os.path.exists(draw_img_save):
         os.makedirs(draw_img_save)
+    
+    # add warmup
+    for _ in range(10):
+        img = np.random.randint(0, 255, [640, 640, 3]).astype(np.uint8)
+        dt_boxes, elapse = text_detector(img)
+    
     for image_file in image_file_list:
         img, flag = check_and_read_gif(image_file)
         if not flag:
@@ -226,3 +255,7 @@ if __name__ == "__main__":
         logger.info("The visualized image saved in {}".format(img_path))
     if count > 1:
         logger.info("Avg Time: {}".format(total_time / (count - 1)))
+    
+    text_detector.auto_log.report() 
+    logger.info(f"gpu_ids: {text_detector.auto_log.GetMem.gpu_ids}")
+    logger.info(f"{text_detector.auto_log.GetMem.gpu_mem_uss}")

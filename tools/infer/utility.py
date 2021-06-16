@@ -166,7 +166,7 @@ def create_predictor(args, mode, logger):
     for output_name in output_names:
         output_tensor = predictor.get_output_handle(output_name)
         output_tensors.append(output_tensor)
-    return predictor, input_tensor, output_tensors
+    return predictor, input_tensor, output_tensors, config
 
 
 def draw_e2e_res(dt_boxes, strs, img_path):
