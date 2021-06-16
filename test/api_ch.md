@@ -18,6 +18,7 @@ PaddleStructure 是一个用于复杂板式文字OCR的工具包，流程如下
 
 ## 2. LayoutParser
 
+[文档](layout/README.md)
 
 ## 3. Table OCR
 
