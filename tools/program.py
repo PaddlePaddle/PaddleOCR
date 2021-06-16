@@ -186,7 +186,8 @@ def train(config,
     model.train()
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
-
+    model_type = config['Architecture']['model_type']
+    
     if 'start_epoch' in best_model_dict:
         start_epoch = best_model_dict['start_epoch']
     else:
@@ -211,6 +212,9 @@ def train(config,
                 others = batch[-4:]
                 preds = model(images, others)
                 model_average = True
+            elif model_type == "table":
+                others = batch[1:]
+                preds = model(images, others)
             else:
                 preds = model(images)
             loss = loss_class(preds, batch)
@@ -232,8 +236,11 @@ def train(config,
 
             if cal_metric_during_train:  # only rec and cls need
                 batch = [item.numpy() for item in batch]
-                post_result = post_process_class(preds, batch[1])
-                eval_class(post_result, batch)
+                if model_type == 'table':
+                    eval_class(preds, batch)
+                else:
+                    post_result = post_process_class(preds, batch[1])
+                    eval_class(post_result, batch)
                 metric = eval_class.get_metric()
                 train_stats.update(metric)
 
@@ -337,7 +344,7 @@ def train(config,
 
 
 def eval(model, valid_dataloader, post_process_class, eval_class,
-         use_srn=False):
+         model_type, use_srn=False):
     model.eval()
     with paddle.no_grad():
         total_frame = 0.0
@@ -359,10 +366,13 @@ def eval(model, valid_dataloader, post_process_class, eval_class,
 
             batch = [item.numpy() for item in batch]
             # Obtain usable results from post-processing methods
-            post_result = post_process_class(preds, batch[1])
             total_time += time.time() - start
             # Evaluate the results of the current batch
-            eval_class(post_result, batch)
+            if model_type == 'table':
+                eval_class(preds, batch)
+            else:
+                post_result = post_process_class(preds, batch[1])
+                eval_class(post_result, batch)
             pbar.update(1)
             total_frame += len(images)
         # Get final metric，eg. acc or hmean
@@ -386,7 +396,7 @@ def preprocess(is_train=False):
     alg = config['Architecture']['algorithm']
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
-        'CLS', 'PGNet', 'Distillation'
+        'CLS', 'PGNet', 'Distillation', 'TableAttn'
     ]
 
     device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'

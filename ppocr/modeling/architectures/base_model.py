@@ -69,7 +69,7 @@ class BaseModel(nn.Layer):
 
         self.return_all_feats = config.get("return_all_feats", False)
 
-    def forward(self, x, data=None):
+    def forward(self, x, data=None, mode='Train'):
         y = dict()
         if self.use_transform:
             x = self.transform(x)
@@ -81,7 +81,10 @@ class BaseModel(nn.Layer):
         if data is None:
             x = self.head(x)
         else:
-            x = self.head(x, data)
+            if mode == 'Eval' or mode == 'Test':
+                x = self.head(x, targets=data, mode=mode)
+            else:
+                x = self.head(x, targets=data)
         y["head_out"] = x
         if self.return_all_feats:
             return y
