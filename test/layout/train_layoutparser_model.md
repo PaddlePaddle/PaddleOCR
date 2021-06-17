@@ -125,8 +125,7 @@ python -m paddle.distributed.launch --gpus 0,1,2,3 tools/train.py -c configs/ppy
 
 ```bash
 export CUDA_VISIBLE_DEVICES=0,1,2,3
-python -m paddle.distributed.launch --gpus 0,1,2,3 tools/train.py -c configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml --eval \
-                        -r output/ppyolov2_r50vd_dcn_365e_coco/10000
+python -m paddle.distributed.launch --gpus 0,1,2,3 tools/train.py -c configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml --eval -r output/ppyolov2_r50vd_dcn_365e_coco/10000
 ```
 
 注意：如果遇到 "`Out of memory error`" 问题, 尝试在 `ppyolov2_reader.yml` 文件中调小`batch_size`
@@ -139,12 +138,7 @@ python -m paddle.distributed.launch --gpus 0,1,2,3 tools/train.py -c configs/ppy
 
 ```bash
 export CUDA_VISIBLE_DEVICES=0
-python tools/infer.py -c configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml \
-                    --infer_img=images/paper-image.jpg \
-                    --output_dir=infer_output/ \
-                    --draw_threshold=0.5 \
-                    -o weights=output/ppyolov2_r50vd_dcn_365e_coco/model_final \
-                    --use_vdl=Ture
+python tools/infer.py -c configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml --infer_img=images/paper-image.jpg --output_dir=infer_output/ --draw_threshold=0.5 -o weights=output/ppyolov2_r50vd_dcn_365e_coco/model_final --use_vdl=Ture
 ```
 
 `--draw_threshold` 是个可选参数. 根据 [NMS](https://ieeexplore.ieee.org/document/1699659) 的计算，不同阈值会产生不同的结果 `keep_top_k`表示设置输出目标的最大数量，默认值为100，用户可以根据自己的实际情况进行设定。
@@ -166,8 +160,7 @@ python tools/infer.py -c configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml \
 执行导出模型脚本：
 
 ```bash
-python tools/export_model.py -c configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml --output_dir=./inference \
- -o weights=output/ppyolov2_r50vd_dcn_365e_coco/model_final.pdparams
+python tools/export_model.py -c configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml --output_dir=./inference -o weights=output/ppyolov2_r50vd_dcn_365e_coco/model_final.pdparams
 ```
 
 预测模型会导出到`inference/ppyolov2_r50vd_dcn_365e_coco`目录下，分别为`infer_cfg.yml`(预测不需要), `inference.pdiparams`, `inference.pdiparams.info`,`inference.pdmodel` 。
@@ -176,7 +169,7 @@ python tools/export_model.py -c configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml 
 
 <a name="layout parser预测"></a>
 
-### 6.2 layout parser预测
+### 6.2 layout_parser预测
 
 `model_path`指定训练好的模型路径，使用layout parser进行预测：
 
