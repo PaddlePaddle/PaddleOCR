@@ -75,6 +75,7 @@ ${python} -m pip install psutil;
 ${python} -m pip install GPUtil;
 ${python} -m pip install paddlesim==2.0.0
 
+
 function status_check(){
     last_status=$1   # the exit code
     run_model=$2
@@ -119,11 +120,11 @@ for train_model in ${train_model_list[*]}; do
                     trainer="tools/train.py"
                     export_model="tools/export_model.py"
                     pretrain="./pretrain_models/MobileNetV3_large_x0_5_pretrained"
-                elif [ ${slim_trainer} = "quant" ]; then
+                elif [ ${slim_trainer} = "pact" ]; then
                     trainer="deploy/slim/quantization/quant.py"
                     export_model="deploy/slim/quantization/export_model.py"
                     pretrain="./pretrain_models/det_mv3_db_v2.0_train/best_accuracy"
-                elif [ ${slim_trainer} = "prune" ]; then
+                elif [ ${slim_trainer} = "fpgm" ]; then
                     trainer="deploy/slim/prune/sensitivity_anal.py"
                     export_model="deploy/slim/prune/export_prune_model.py"
                     pretrain="./pretrain_models/det_mv3_db_v2.0_train/best_accuracy"

@@ -76,7 +76,7 @@ for train_model in ${train_model_list[*]}; do
                 wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_train.tar
                 cd ./inference && tar xf ${eval_model_name}.tar && cd ../
             fi 
-        elif [ ${slim_trainer} = "quant" ]; then
+        elif [ ${slim_trainer} = "pact" ]; then
             if [ ${model_name} = "det" ]; then
                 eval_model_name="ch_ppocr_mobile_v2.0_det_quant_train"
                 wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_quant_train.tar
@@ -96,7 +96,7 @@ for train_model in ${train_model_list[*]}; do
                 wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_rec_distill_train.tar
                 cd ./inference && tar xf ${eval_model_name}.tar && cd ../
             fi 
-        elif [ ${slim_trainer} = "prune" ]; then
+        elif [ ${slim_trainer} = "fpgm" ]; then
             if [ ${model_name} = "det" ]; then
                 eval_model_name="ch_ppocr_mobile_v2.0_det_prune_train"
                 wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_prune_train.tar
