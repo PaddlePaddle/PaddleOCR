@@ -75,7 +75,7 @@ ${python} -m pip install psutil;
 ${python} -m pip install GPUtil;
 ${python} -m pip install paddlesim==2.0.0
 
-paddle_info="$(python3.7 -c "import paddle;print(f'paddle_version:{paddle.__version__}');print(f'paddle_commit:{paddle.__git_commit__}')")"
+paddle_info="$(${python} -c "import paddle;print(f'paddle_version:{paddle.__version__}');print(f'paddle_commit:{paddle.__git_commit__}')")"
 echo -e "\033[33m $paddle_info \033[0m" | tee -a ${status_log}
 cpu_model=`cat /proc/cpuinfo | grep "model name" | awk -F ':' '{print $2}' | sort | uniq`
 echo -e "\033[33m cpu_info:$cpu_model \033[0m" | tee -a ${status_log}
