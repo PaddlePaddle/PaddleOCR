@@ -34,6 +34,12 @@ ${python} -m pip install pynvml;
 ${python} -m pip install psutil;
 ${python} -m pip install GPUtil;
 
+paddle_info="$(python3.7 -c "import paddle;print(f'paddle_version:{paddle.__version__}');print(f'paddle_commit:{paddle.__git_commit__}')")"
+echo -e "\033[33m $paddle_info \033[0m" | tee -a ${status_log}
+cpu_model=`cat /proc/cpuinfo | grep "model name" | awk -F ':' '{print $2}' | sort | uniq`
+echo -e "\033[33m cpu_info:$cpu_model \033[0m" | tee -a ${status_log}
+ip=`ifconfig| grep -A 1 'eth0'|grep 'inet'|awk -F ':' '{print $2}'|awk '{print $1}'`
+echo -e "\033[33m ip_info:$ip \033[0m" | tee -a ${status_log}
 
 function status_check(){
     last_status=$1   # the exit code
