@@ -34,6 +34,7 @@ from ppocr.postprocess import build_post_process
 # import tools.infer.benchmark_utils as benchmark_utils
 
 logger = get_logger()
+import auto_log
 
 
 class TextDetector(object):
@@ -100,6 +101,18 @@ class TextDetector(object):
         self.predictor, self.input_tensor, self.output_tensors, self.config = utility.create_predictor(
             args, 'det', logger)
 
+        model_name = args.det_model_dir.split("/")[0]
+        self.auto_log = auto_log.AutoLogger(
+            model_name=model_name,
+            model_precision=args.precision,
+            batch_size=1,
+            data_shape="dynamic",
+            save_path=args.save_log_path,
+            inference_config=self.config,
+            pids=None,
+            process_name=None,
+            gpu_ids=[0])
+
     def order_points_clockwise(self, pts):
         """
         reference from: https://github.com/jrosebr1/imutils/blob/master/imutils/perspective.py
@@ -157,7 +170,7 @@ class TextDetector(object):
         ori_im = img.copy()
         data = {'image': img}
 
-        st = time.time()
+        st_pre = time.time()
         data = transform(data, self.preprocess_op)
         img, shape_list = data
         if img is None:
@@ -166,12 +179,18 @@ class TextDetector(object):
         shape_list = np.expand_dims(shape_list, axis=0)
         img = img.copy()
 
+        self.auto_log.preprocess_time.record(time.time() - st_pre)
+        st_infer = time.time()
+
         self.input_tensor.copy_from_cpu(img)
         self.predictor.run()
         outputs = []
         for output_tensor in self.output_tensors:
             output = output_tensor.copy_to_cpu()
             outputs.append(output)
+
+        self.auto_log.inference_time.record(time.time() - st_infer)
+        st_post = time.time()
 
         preds = {}
         if self.det_algorithm == "EAST":
@@ -196,7 +215,10 @@ class TextDetector(object):
             dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
 
         et = time.time()
-        return dt_boxes, et - st
+        self.auto_log.postprocess_time.record(et - st_post)
+        self.auto_log.total_time.record(et - st_pre)
+        self.auto_log.record_mem()
+        return dt_boxes, et - st_pre
 
 
 if __name__ == "__main__":
@@ -209,7 +231,7 @@ if __name__ == "__main__":
 
     # warmup 10 times
     fake_img = np.random.uniform(-1, 1, [640, 640, 3]).astype(np.float32)
-    for i in range(10):
+    for i in range(20):
         dt_boxes, _ = text_detector(fake_img)
 
     if not os.path.exists(draw_img_save):
@@ -235,3 +257,5 @@ if __name__ == "__main__":
                                 "det_res_{}".format(img_name_pure))
 
         logger.info("The visualized image saved in {}".format(img_path))
+
+    text_detector.auto_log.report()
