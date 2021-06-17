@@ -9,7 +9,7 @@
 * [5. PaddleDetection预测](#预测)
 * [6. 预测部署](#预测部署)
   * [6.1 模型导出](#模型导出)
-  * [6.2 layout parser预测](#layout parser预测)
+  * [6.2 layout parser预测](#layout_parser预测)
 
 <a name="安装"></a>
 
@@ -182,11 +182,7 @@ python tools/export_model.py -c configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml 
 
 ```bash
 import layoutparser as lp
-model = lp.PaddleDetectionLayoutModel(model_path="inference/ppyolov2_r50vd_dcn_365e_coco", 
-																			threshold=0.5,
-																			label_map={0: "Text", 1: "Title", 2: "List", 3:"Table", 4:"Figure"},
-																			enforce_cpu=True,
-																			enable_mkldnn=True)
+model = lp.PaddleDetectionLayoutModel(model_path="inference/ppyolov2_r50vd_dcn_365e_coco", threshold=0.5,label_map={0: "Text", 1: "Title", 2: "List", 3:"Table", 4:"Figure"},enforce_cpu=True,enable_mkldnn=True)
 ```
 
 
