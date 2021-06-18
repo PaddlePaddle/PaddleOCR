@@ -207,10 +207,12 @@ if __name__ == "__main__":
     total_time = 0
     draw_img_save = "./inference_results"
 
-    # warmup 10 times
-    fake_img = np.random.uniform(-1, 1, [640, 640, 3]).astype(np.float32)
-    for i in range(10):
-        dt_boxes, _ = text_detector(fake_img)
+    if args.warmup:
+        img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
+        for i in range(10):
+            res = text_detector(img)
+
+    cpu_mem, gpu_mem, gpu_util = 0, 0, 0
 
     if not os.path.exists(draw_img_save):
         os.makedirs(draw_img_save)

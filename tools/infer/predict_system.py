@@ -152,11 +152,19 @@ def main(args):
     is_visualize = True
     font_path = args.vis_font_path
     drop_score = args.drop_score
+
+    # warm up 10 times
+    if args.warmup:
+        img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
+        for i in range(10):
+            res = text_sys(img)
+            
     total_time = 0
     cpu_mem, gpu_mem, gpu_util = 0, 0, 0
     _st = time.time()
     count = 0
     for idx, image_file in enumerate(image_file_list):
+
         img, flag = check_and_read_gif(image_file)
         if not flag:
             img = cv2.imread(image_file)
