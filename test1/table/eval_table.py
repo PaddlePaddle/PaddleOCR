@@ -20,9 +20,9 @@ sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 import cv2
 import json
 from tqdm import tqdm
-from test.table.table_metric import TEDS
-from test.table.predict_table import TableSystem
-from test.utility import init_args
+from test1.table.table_metric import TEDS
+from test1.table.predict_table import TableSystem
+from test1.utility import init_args
 from ppocr.utils.logging import get_logger
 
 logger = get_logger()

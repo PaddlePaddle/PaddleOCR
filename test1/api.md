@@ -1,5 +1,11 @@
 # PaddleStructure
 
+install layoutparser
+```sh
+wget  https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
+pip3 install layoutparser-0.0.0-py3-none-any.whl
+```
+
 ## 1. Introduction to pipeline
 
 PaddleStructure is a toolkit for complex layout text OCR, the process is as follows

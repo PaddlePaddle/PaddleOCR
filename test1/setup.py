@@ -30,9 +30,9 @@ def readme():
     return README
 
 
-shutil.copytree('/table', './test/table')
-shutil.copyfile('/predict_system.py', './test/predict_system.py')
-shutil.copyfile('/utility.py', './test/utility.py')
+shutil.copytree('./table', './test1/table')
+shutil.copyfile('./predict_system.py', './test1/predict_system.py')
+shutil.copyfile('./utility.py', './test1/utility.py')
 shutil.copytree('../ppocr', './ppocr')
 shutil.copytree('../tools', './tools')
 shutil.copyfile('../LICENSE', './LICENSE')
@@ -68,5 +68,5 @@ setup(
 
 shutil.rmtree('ppocr')
 shutil.rmtree('tools')
-shutil.rmtree('test')
+shutil.rmtree('test1')
 os.remove('LICENSE')
