@@ -30,9 +30,9 @@ import tools.infer.predict_rec as predict_rec
 import tools.infer.predict_det as predict_det
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.utils.logging import get_logger
-from test.table.matcher import distance, compute_iou
-from test.utility import parse_args
-import test.table.predict_structure as predict_strture
+from test1.table.matcher import distance, compute_iou
+from test1.utility import parse_args
+import test1.table.predict_structure as predict_strture
 
 logger = get_logger()
 
