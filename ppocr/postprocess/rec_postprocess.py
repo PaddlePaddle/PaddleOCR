@@ -325,14 +325,8 @@ class TableLabelDecode(object):
     """  """
 
     def __init__(self,
-                 max_text_length,
-                 max_elem_length,
-                 max_cell_num,
                  character_dict_path,
                  **kwargs):
-        self.max_text_length = max_text_length
-        self.max_elem_length = max_elem_length
-        self.max_cell_num = max_cell_num
         list_character, list_elem = self.load_char_elem_dict(character_dict_path)
         list_character = self.add_special_char(list_character)
         list_elem = self.add_special_char(list_elem)
