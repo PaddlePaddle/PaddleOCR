@@ -1,4 +1,4 @@
-# copyright (c) 2020 PaddlePaddle Authors. All Rights Reserve.
+# copyright (c) 2021 PaddlePaddle Authors. All Rights Reserve.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ from paddle.io import Dataset
 import json
 
 from .imaug import transform, create_operators
+
 
 class PubTabDataSet(Dataset):
     def __init__(self, config, mode, logger, seed=None):
@@ -57,23 +58,6 @@ class PubTabDataSet(Dataset):
             random.seed(self.seed)
             random.shuffle(self.data_lines)
         return
-    
-    def load_hard_select_prob(self):
-        label_path = "./pretrained_model/teds_score_exp5_st2_train.txt"
-        img_select_prob = {}
-        with open(label_path, "rb") as fin:
-            lines = fin.readlines()
-            for lno in range(len(lines)):
-                substr = lines[lno].decode('utf-8').strip("\n").split(" ")
-                img_name = substr[0].strip(":")
-                score = float(substr[1])
-                if score <= 0.8:
-                    img_select_prob[img_name] = self.hard_prob[0]
-                elif score <= 0.98:
-                    img_select_prob[img_name] = self.hard_prob[1]
-                else:
-                    img_select_prob[img_name] = self.hard_prob[2]
-        return img_select_prob
 
     def __getitem__(self, idx):
         try:
@@ -93,8 +77,6 @@ class PubTabDataSet(Dataset):
                 table_type = "simple"
                 if 'colspan' in structure_str or 'rowspan' in structure_str:
                     table_type = "complex"
-#                 if self.table_select_type != table_type:
-#                     select_flag = False
                 if table_type == "complex":
                     if self.table_select_prob < random.uniform(0, 1):
                         select_flag = False                    

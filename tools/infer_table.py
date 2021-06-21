@@ -79,11 +79,9 @@ def main(config, device, logger, vdl_writer):
             img = f.read()
             data = {'image': img}
         batch = transform(data, ops)
-        sp_tokens = post_process_class.get_sp_tokens()
-        targets = [[], [], paddle.to_tensor([sp_tokens])]
         images = np.expand_dims(batch[0], axis=0)
         images = paddle.to_tensor(images)
-        preds = model(images, data=targets, mode='Test')
+        preds = model(images, data=None, mode='Test')
         post_result = post_process_class(preds)
         res_html_code = post_result['res_html_code']
         res_loc = post_result['res_loc']

@@ -21,13 +21,16 @@ import paddle.nn as nn
 import paddle.nn.functional as F
 import numpy as np
 
+
 class TableAttentionHead(nn.Layer):
     def __init__(self, in_channels, hidden_size, loc_type, in_max_len=488, **kwargs):
         super(TableAttentionHead, self).__init__()
         self.input_size = in_channels[-1]
         self.hidden_size = hidden_size
-        self.char_num = 280
         self.elem_num = 30
+        self.max_text_length = 100
+        self.max_elem_length = 500
+        self.max_cell_num = 500
 
         self.structure_attention_cell = AttentionGRUCell(
             self.input_size, hidden_size, self.elem_num, use_gru=False)
@@ -39,11 +42,11 @@ class TableAttentionHead(nn.Layer):
             self.loc_generator = nn.Linear(hidden_size, 4)
         else:
             if self.in_max_len == 640:
-                self.loc_fea_trans = nn.Linear(400, 801)
+                self.loc_fea_trans = nn.Linear(400, self.max_elem_length+1)
             elif self.in_max_len == 800:
-                self.loc_fea_trans = nn.Linear(625, 801)
+                self.loc_fea_trans = nn.Linear(625, self.max_elem_length+1)
             else:
-                self.loc_fea_trans = nn.Linear(256, 801)
+                self.loc_fea_trans = nn.Linear(256, self.max_elem_length+1)
             self.loc_generator = nn.Linear(self.input_size + hidden_size, 4)
             
     def _char_to_onehot(self, input_char, onehot_dim):
@@ -61,18 +64,12 @@ class TableAttentionHead(nn.Layer):
             fea = paddle.reshape(fea, [fea.shape[0], fea.shape[1], last_shape])
             fea = fea.transpose([0, 2, 1])  # (NTC)(batch, width, channels)
         batch_size = fea.shape[0]
-        #sp_tokens = targets[2].numpy()
-        #char_beg_idx, char_end_idx = sp_tokens[0, 0:2]
-        #elem_beg_idx, elem_end_idx = sp_tokens[0, 2:4]
-        #elem_char_idx1, elem_char_idx2 = sp_tokens[0, 4:6]
-        #max_text_length, max_elem_length, max_cell_num = sp_tokens[0, 6:9]
-        max_text_length, max_elem_length, max_cell_num = 100, 800, 500
         
         hidden = paddle.zeros((batch_size, self.hidden_size))
         output_hiddens = []
         if mode == 'Train' and targets is not None:
             structure = targets[0]
-            for i in range(max_elem_length+1):
+            for i in range(self.max_elem_length+1):
                 elem_onehots = self._char_to_onehot(
                     structure[:, i], onehot_dim=self.elem_num)
                 (outputs, hidden), alpha = self.structure_attention_cell(
@@ -97,7 +94,7 @@ class TableAttentionHead(nn.Layer):
             elem_onehots = None
             outputs = None
             alpha = None
-            max_elem_length = paddle.to_tensor(max_elem_length)
+            max_elem_length = paddle.to_tensor(self.max_elem_length)
             i = 0
             while i < max_elem_length+1:
                 elem_onehots = self._char_to_onehot(
@@ -124,6 +121,7 @@ class TableAttentionHead(nn.Layer):
                 loc_preds = F.sigmoid(loc_preds)
         return {'structure_probs':structure_probs, 'loc_preds':loc_preds}
 
+    
 class AttentionGRUCell(nn.Layer):
     def __init__(self, input_size, hidden_size, num_embeddings, use_gru=False):
         super(AttentionGRUCell, self).__init__()

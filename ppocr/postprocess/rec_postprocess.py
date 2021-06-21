@@ -368,18 +368,6 @@ class TableLabelDecode(object):
         self.end_str = "eos"
         list_character = [self.beg_str] + list_character + [self.end_str]
         return list_character
-
-    def get_sp_tokens(self):
-        char_beg_idx = self.get_beg_end_flag_idx('beg', 'char')
-        char_end_idx = self.get_beg_end_flag_idx('end', 'char')
-        elem_beg_idx = self.get_beg_end_flag_idx('beg', 'elem')
-        elem_end_idx = self.get_beg_end_flag_idx('end', 'elem')
-        elem_char_idx1 = self.dict_elem['<td>']
-        elem_char_idx2 = self.dict_elem['<td']
-        sp_tokens = np.array([char_beg_idx, char_end_idx, elem_beg_idx, 
-            elem_end_idx, elem_char_idx1, elem_char_idx2, self.max_text_length, 
-            self.max_elem_length, self.max_cell_num])
-        return sp_tokens
     
     def __call__(self, preds):
         structure_probs = preds['structure_probs']

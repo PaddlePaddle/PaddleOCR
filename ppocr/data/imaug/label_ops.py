@@ -412,7 +412,6 @@ class TableLabelEncode(object):
             return None
         elem_num = len(structure)
         structure = [0] + structure + [len(self.dict_elem) - 1]
-#         structure = [0] + structure + [0]
         structure = structure + [0] * (self.max_elem_length + 2 - len(structure))
         structure = np.array(structure)
         data['structure'] = structure
@@ -443,8 +442,6 @@ class TableLabelEncode(object):
                 if cand_span_idx < (self.max_elem_length + 2):
                     if structure[cand_span_idx] in span_idx_list:
                         structure_mask[cand_span_idx] = span_weight
-#                         structure_mask[td_idx] = self.span_weight
-#                         structure_mask[cand_span_idx] = self.span_weight
 
         data['bbox_list'] = bbox_list
         data['bbox_list_mask'] = bbox_list_mask
@@ -457,23 +454,6 @@ class TableLabelEncode(object):
             elem_end_idx, elem_char_idx1, elem_char_idx2, self.max_text_length, 
             self.max_elem_length, self.max_cell_num, elem_num])
         return data
-
-        ########
-        # for char decode
-#         cell_list = []
-#         for cell in cells:
-#             char_list = cell['tokens']
-#             cell = self.encode(char_list, 'char')
-#             if cell is None:
-#                 return None
-#             cell = [0] + cell + [len(self.dict_character) - 1]
-#             cell = cell + [0] * (self.max_text_length + 2 - len(cell))
-#             cell_list.append(cell)
-#         cell_list_padding = np.zeros((self.max_cell_num, self.max_text_length + 2))
-#         cell_list = np.array(cell_list)
-#         cell_list_padding[0:cell_list.shape[0]] = cell_list
-#         data['cells'] = cell_list_padding
-#         return data
 
     def encode(self, text, char_or_elem):
         """convert text-label into text-index.
