@@ -362,7 +362,7 @@ class TableLabelDecode(object):
         self.end_str = "eos"
         list_character = [self.beg_str] + list_character + [self.end_str]
         return list_character
-    
+
     def __call__(self, preds):
         structure_probs = preds['structure_probs']
         loc_preds = preds['loc_preds']
