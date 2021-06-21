@@ -9,38 +9,35 @@
 
 ## PaddleOCR常见问题汇总(持续更新)
 
-* [近期更新（2021.6.9）](#近期更新)
+* [近期更新（2021.6.22）](#近期更新)
 * [【精选】OCR精选10个问题](#OCR精选10个问题)
-* [【理论篇】OCR通用44个问题](#OCR通用问题)
-  * [基础知识14题](#基础知识)
-  * [数据集9题](#数据集2)
-  * [模型训练调优22题](#模型训练调优2)
-* [【实战篇】PaddleOCR实战179个问题](#PaddleOCR实战问题)
-  * [使用咨询72题](#使用咨询)
+* [【理论篇】OCR通用50个问题](#OCR通用问题)
+  * [基础知识16题](#基础知识)
+  * [数据集10题](#数据集2)
+  * [模型训练调优24题](#模型训练调优2)
+* [【实战篇】PaddleOCR实战183个问题](#PaddleOCR实战问题)
+  * [使用咨询77题](#使用咨询)
   * [数据集19题](#数据集3)
   * [模型训练调优39题](#模型训练调优3)
   * [预测部署48题](#预测部署3)
 
 <a name="近期更新"></a>
-## 近期更新（2021.6.9）
+## 近期更新（2021.6.22）
 
-#### Q2.1.14: 在识别模型中，为什么降采样残差结构的stride为(2, 1)？
-**A**: stride为(2, 1)，表示在图像y方向（高度方向）上stride为2，x方向（宽度方向）上为1。由于待识别的文本图像通常为长方形，这样只在高度方向做下采样，尽量保留宽度方向的序列信息，避免宽度方向下采样后丢失过多的文字信息。
+#### Q2.1.15: 文本识别方法CRNN关键技术有哪些？
+**A**: CRNN 关键技术包括三部分。（1）CNN提取图像卷积特征。（2）深层双向LSTM网络，在卷积特征的基础上继续提取文字序列特征。（3）Connectionist Temporal Classification(CTC)，解决训练时字符无法对齐的问题。
 
-#### Q3.2.19: 如何合成手写中文数据集？
-**A**: 手写数据集可以通过手写单字数据集合成得到。随机选取一定数量的单字图片和对应的label，将图片高度resize为随机的统一高度后拼接在一起，即可得到合成数据集。对于需要添加文字背景的情况，建议使用阈值化将单字图片的白色背景处理为透明背景，再与真实背景图进行合成。具体可以参考文档[手写数据集](https://github.com/PaddlePaddle/PaddleOCR/blob/a72d6f23be9979e0c103d911a9dca3e4613e8ccf/doc/doc_ch/handwritten_datasets.md)。
+#### Q2.1.16: 百度自研的SRN文本识别方法特点有哪些？
+**A**: SRN文本识别方法特点主要有四个部分：（1）使用Transformer Units（TUs）模块加强图像卷积特征的表达能力。（2）提出Parallel Visual Attention Module（PVAM）模块挖掘特征之间的相互关系。（3）提出Global Semantic Reasoning Module（GSRM）模块挖掘识别结果语义相互关系。（4）提出Visual-Semantic Fusion Decoder（VSFD）模块有效融合PVAM提取的视觉特征和GSRM提取的语义特征。
 
-#### Q3.3.37: 训练过程中，训练程序意外退出/挂起，应该如何解决？
-**A**: 考虑内存，显存（使用GPU训练的话）是否不足，可在配置文件中，将训练和评估的batch size调小一些。需要注意，训练batch size调小时，学习率learning rate也要调小，一般可按等比例调整。
+#### Q2.2.10: 文档版面分析常用数据集有哪些？ 
+**A**: 文档版面分析常用数据集常用数据集有PubLayNet、TableBank word、TableBank latex等。
 
-#### Q3.3.38: 训练程序启动后直到结束，看不到训练过程log？
-**A**: 可以从以下三方面考虑：
-  1. 检查训练进程是否正常退出、显存占用是否释放、是否有残留进程，如果确定是训练程序卡死，可以检查环境配置，遇到环境问题建议使用docker，可以参考说明文档[安装](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/installation.md)。
-  2. 检查数据集的数据量是否太小，可调小batch size从而增加一个epoch中的训练step数量，或在训练config文件中，将参数print_batch_step改为1，即每一个step打印一次log信息。
-  3. 如果使用私有数据集训练，可先用PaddleOCR提供/推荐的数据集进行训练，排查私有数据集是否存在问题。
+#### Q2.3.23: 文档版面分析常用方法有哪些？
+**A**: 文档版面分析通常使用通用目标检测方法，包括Faster RCNN系列，YOLO系列等。面向产业实践，建议使用PaddleDetection中精度和效率出色的PP-YOLO v2目标检测方法进行训练。
 
-#### Q3.3.39: 配置文件中的参数num workers是什么意思，应该如何设置？
-**A**: 训练数据的读取需要硬盘IO，而硬盘IO速度远小于GPU运算速度，为了避免数据读取成为训练速度瓶颈，可以使用多进程读取数据，num workers表示数据读取的进程数量，0表示不使用多进程读取。在Linux系统下，多进程读取数据时，进程间通信需要基于共享内存，因此使用多进程读取数据时，建议设置共享内存不低于2GB，最好可以达到8GB，此时，num workers可以设置为CPU核心数。如果机器硬件配置较低，或训练进程卡死、dataloader报错，可以将num workers设置为0，即不使用多进程读取数据。
+#### Q2.3.24: 如何识别招牌或者广告图中的艺术字？
+**A**: 招牌或者广告图中的艺术字是文本识别一个非常挑战的难题，因为艺术字中的单字和印刷体相比，变化非常大。如果需要识别的艺术字是在一个词典列表内，可以将改每个词典认为是一个待识别图像模板，通过通用图像检索识别系统解决识别问题。可以尝试使用PaddleClas的图像识别系统。
 
 
 <a name="OCR精选10个问题"></a>
@@ -187,6 +184,12 @@
 #### Q2.1.14: 在识别模型中，为什么降采样残差结构的stride为(2, 1)？
 **A**: stride为(2, 1)，表示在图像y方向（高度方向）上stride为2，x方向（宽度方向）上为1。由于待识别的文本图像通常为长方形，这样只在高度方向做下采样，尽量保留宽度方向的序列信息，避免宽度方向下采样后丢失过多的文字信息。
 
+#### Q2.1.15: 文本识别方法CRNN关键技术有哪些？
+**A**: CRNN 关键技术包括三部分。（1）CNN提取图像卷积特征。（2）深层双向LSTM网络，在卷积特征的基础上继续提取文字序列特征。（3）Connectionist Temporal Classification(CTC)，解决训练时字符无法对齐的问题。
+
+#### Q2.1.16: 百度自研的SRN文本识别方法特点有哪些？
+**A**: SRN文本识别方法特点主要有四个部分：（1）使用Transformer Units（TUs）模块加强图像卷积特征的表达能力。（2）提出Parallel Visual Attention Module（PVAM）模块挖掘特征之间的相互关系。（3）提出Global Semantic Reasoning Module（GSRM）模块挖掘识别结果语义相互关系。（4）提出Visual-Semantic Fusion Decoder（VSFD）模块有效融合PVAM提取的视觉特征和GSRM提取的语义特征。
+
 
 <a name="数据集2"></a>
 ### 数据集
@@ -224,6 +227,10 @@
 
 #### Q2.2.9: 端到端算法PGNet使用的是什么类型的数据集呢？
 **A**: PGNet目前可以使用四点标注数据集，也可以使用多点标注数据集（十四点），多点标注训练的效果要比四点的好，一种可以尝试的策略是先在四点数据集上训练，之后用多点数据集在此基础上继续训练。
+
+#### Q2.2.10: 文档版面分析常用数据集有哪些？ 
+**A**: 文档版面分析常用数据集常用数据集有PubLayNet、TableBank word、TableBank latex等。
+
 
 <a name="模型训练调优2"></a>
 ### 模型训练调优
@@ -287,7 +294,7 @@
 
 **A**：建议可以先了解OCR方向的基础知识，大概了解基础的检测和识别模型算法。然后在Github上可以查看OCR方向相关的repo。目前来看，从内容的完备性来看，PaddleOCR的中英文双语教程文档是有明显优势的，在数据集、模型训练、预测部署文档详实，可以快速入手。而且还有微信用户群答疑，非常适合学习实践。项目地址：[PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR)
 
-#### Q3.12：如何识别带空格的英文行文本图像？
+#### Q2.3.12：如何识别带空格的英文行文本图像？
 
 **A**：空格识别可以考虑以下两种方案：
 
@@ -337,6 +344,12 @@
 3. 基于关系的蒸馏，针对不同的样本（假设个数为N），教师模型会有不同的输出，那么可以基于不同样本的输出，计算一个NxN的相关性矩阵，可以让学生模型去学习教师模型关于不同样本的相关性矩阵。
 
 当然，知识蒸馏方法日新月异，也欢迎大家提出更多的总结与建议。
+
+#### Q2.3.23: 文档版面分析常用方法有哪些？
+**A**: 文档版面分析通常使用通用目标检测方法，包括Faster RCNN系列，YOLO系列等。面向产业实践，建议使用PaddleDetection中精度和效率出色的PP-YOLO v2目标检测方法进行训练。
+
+#### Q2.3.24: 如何识别招牌或者广告图中的艺术字？
+**A**: 招牌或者广告图中的艺术字是文本识别一个非常挑战的难题，因为艺术字中的单字和印刷体相比，变化非常大。如果需要识别的艺术字是在一个词典列表内，可以将改每个词典认为是一个待识别图像模板，通过通用图像检索识别系统解决识别问题。可以尝试使用PaddleClas的图像识别系统。
 
 <a name="PaddleOCR实战问题"></a>
 ## 【实战篇】PaddleOCR实战问题
@@ -713,7 +726,6 @@ src_im= cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
 **A**：文字识别主要有CTC和Attention两种方式，基于CTC的算法有CRNN、Rosetta、StarNet，基于Attention的方法有RARE、其他的算法PaddleOCR里没有提供复现代码。论文的链接可以参考：[PaddleOCR文本识别算法教程文档](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/algorithm_overview.md#%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
 
 
-
 ### Q3.1.73: 如何使用TensorRT加速PaddleOCR预测？
 
 **A**： 目前paddle的dygraph分支已经支持了python和C++ TensorRT预测的代码，python端inference预测时把参数[--use_tensorrt=True](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L37)即可，
@@ -751,7 +763,6 @@ linux系统共享内存位于/dev/shm目录下，如果内存不足，可以清�
 
 **A**： 报错提示当前环境没有mkldnn，建议检查下当前CPU是否支持mlkdnn（MAC上是无法用mkldnn）；另外的可能是使用的预测库不支持mkldnn，
 建议从[这里](https://paddle-inference.readthedocs.io/en/latest/user_guides/download_lib.html#linux)下载支持mlkdnn的CPU预测库。
-
 
 
 <a name="数据集3"></a>
