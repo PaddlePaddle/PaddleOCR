@@ -53,7 +53,7 @@ class TableAttentionHead(nn.Layer):
         input_ont_hot = F.one_hot(input_char, onehot_dim)
         return input_ont_hot
 
-    def forward(self, inputs, targets=None, mode='Train'):
+    def forward(self, inputs, targets=None):
         # if and else branch are both needed when you want to assign a variable
         # if you modify the var in just one branch, then the modification will not work.
         fea = inputs[-1]
@@ -67,7 +67,7 @@ class TableAttentionHead(nn.Layer):
         
         hidden = paddle.zeros((batch_size, self.hidden_size))
         output_hiddens = []
-        if mode == 'Train' and targets is not None:
+        if self.training and targets is not None:
             structure = targets[0]
             for i in range(self.max_elem_length+1):
                 elem_onehots = self._char_to_onehot(

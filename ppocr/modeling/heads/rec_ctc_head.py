@@ -44,7 +44,7 @@ class CTCHead(nn.Layer):
             bias_attr=bias_attr)
         self.out_channels = out_channels
 
-    def forward(self, x, labels=None):
+    def forward(self, x, targets=None):
         predicts = self.fc(x)
         if not self.training:
             predicts = F.softmax(predicts, axis=2)
