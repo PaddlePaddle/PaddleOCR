@@ -25,7 +25,7 @@ import paddle
 
 from ppocr.utils.logging import get_logger
 
-__all__ = ['init_model', 'save_model', 'load_pretrain_params']
+__all__ = ['init_model', 'save_model', 'load_dygraph_params']
 
 
 def _mkdir_if_not_exist(path, logger):
@@ -89,7 +89,7 @@ def init_model(config, model, optimizer=None, lr_scheduler=None):
     return best_model_dict
 
 
-def load_pretrain_params(config, model, logger, optimizer):
+def load_dygraph_params(config, model, logger, optimizer):
     ckp = config['Global']['checkpoints']
     if ckp and os.path.exists(ckp):
         pre_best_model_dict = init_model(config, model, optimizer)
