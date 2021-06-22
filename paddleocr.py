@@ -117,7 +117,7 @@ model_urls = {
     'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar'
 }
 
-SUPPORT_DET_MODEL = ['DB']
+SUPPORT_DET_MODEL = ['DB', 'SAST']
 VERSION = '2.1'
 SUPPORT_REC_MODEL = ['CRNN']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
@@ -200,6 +200,11 @@ def parse_args(mMain=True, add_help=True):
         parser.add_argument("--det_east_cover_thresh", type=float, default=0.1)
         parser.add_argument("--det_east_nms_thresh", type=float, default=0.2)
 
+        #SAST params
+        parser.add_argument("--det_sast_score_thresh", type=float, default=0.5)
+        parser.add_argument("--det_sast_nms_thresh", type=float, default=0.2)
+        parser.add_argument("--det_sast_polygon", type=bool, default=False)
+
         # params for text recognizer
         parser.add_argument("--rec_algorithm", type=str, default='CRNN')
         parser.add_argument("--rec_model_dir", type=str, default=None)
@@ -246,6 +251,9 @@ def parse_args(mMain=True, add_help=True):
             det_east_score_thresh=0.8,
             det_east_cover_thresh=0.1,
             det_east_nms_thresh=0.2,
+            det_sast_score_thresh=0.5,
+            det_sast_nms_thresh=0.2,
+            det_sast_polygon=False,
             rec_algorithm='CRNN',
             rec_model_dir=None,
             rec_image_shape="3, 32, 320",
@@ -325,7 +333,6 @@ class PaddleOCR(predict_system.TextSystem):
                                                             'rec', lang)
         if postprocess_params.cls_model_dir is None:
             postprocess_params.cls_model_dir = os.path.join(BASE_DIR, 'cls')
-        print(postprocess_params)
         # download model
         maybe_download(postprocess_params.det_model_dir,
                        model_urls['det'][det_lang])
