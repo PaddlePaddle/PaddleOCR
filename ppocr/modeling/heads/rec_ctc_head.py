@@ -45,7 +45,12 @@ class CTCHead(nn.Layer):
         self.out_channels = out_channels
 
     def forward(self, x, targets=None):
-        predicts = self.fc(x)
+        if self.mid_channels is None:
+            predicts = self.fc(x)
+        else:
+            predicts = self.fc1(x)
+            predicts = self.fc2(predicts)
+            
         if not self.training:
             predicts = F.softmax(predicts, axis=2)
         return predicts
