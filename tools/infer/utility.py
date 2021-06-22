@@ -105,14 +105,15 @@ def init_args():
     parser.add_argument("--enable_mkldnn", type=str2bool, default=False)
     parser.add_argument("--cpu_threads", type=int, default=10)
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
+    parser.add_argument("--warmup", type=str2bool, default=True)
 
+    # multi-process
     parser.add_argument("--use_mp", type=str2bool, default=False)
     parser.add_argument("--total_process_num", type=int, default=1)
     parser.add_argument("--process_id", type=int, default=0)
 
     parser.add_argument("--benchmark", type=bool, default=False)
     parser.add_argument("--save_log_path", type=str, default="./log_output/")
-
 
     parser.add_argument("--show_log", type=str2bool, default=True)
     return parser

@@ -257,13 +257,15 @@ def main(args):
     text_recognizer = TextRecognizer(args)
     valid_image_file_list = []
     img_list = []
-    cpu_mem, gpu_mem, gpu_util = 0, 0, 0
-    count = 0
 
     # warmup 10 times
-    fake_img = np.random.uniform(-1, 1, [1, 32, 320, 3]).astype(np.float32)
-    for i in range(10):
-        dt_boxes, _ = text_recognizer(fake_img)
+    if args.warmup:
+        img = np.random.uniform(0, 255, [32, 320, 3]).astype(np.uint8)
+        for i in range(10):
+            res = text_recognizer([img])
+
+    cpu_mem, gpu_mem, gpu_util = 0, 0, 0
+    count = 0
 
     for image_file in image_file_list:
         img, flag = check_and_read_gif(image_file)
