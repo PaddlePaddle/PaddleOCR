@@ -331,10 +331,11 @@ def create_predictor(args, mode, logger):
     config.disable_glog_info()
 
     config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
+    if mode == 'structure':
+        config.delete_pass("fc_fuse_pass") # not supported for table    
     config.switch_use_feed_fetch_ops(False)
     config.switch_ir_optim(True)
-    if mode == 'structure':
-        config.switch_ir_optim(False)
+
     # create predictor
     predictor = inference.create_predictor(config)
     input_names = predictor.get_input_names()
