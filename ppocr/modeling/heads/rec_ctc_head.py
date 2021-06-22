@@ -33,16 +33,39 @@ def get_para_bias_attr(l2_decay, k):
 
 
 class CTCHead(nn.Layer):
-    def __init__(self, in_channels, out_channels, fc_decay=0.0004, **kwargs):
+    def __init__(self,
+                 in_channels,
+                 out_channels,
+                 fc_decay=0.0004,
+                 mid_channels=None,
+                 **kwargs):
         super(CTCHead, self).__init__()
-        weight_attr, bias_attr = get_para_bias_attr(
-            l2_decay=fc_decay, k=in_channels)
-        self.fc = nn.Linear(
-            in_channels,
-            out_channels,
-            weight_attr=weight_attr,
-            bias_attr=bias_attr)
+        if mid_channels is None:
+            weight_attr, bias_attr = get_para_bias_attr(
+                l2_decay=fc_decay, k=in_channels)
+            self.fc = nn.Linear(
+                in_channels,
+                out_channels,
+                weight_attr=weight_attr,
+                bias_attr=bias_attr)
+        else:
+            weight_attr1, bias_attr1 = get_para_bias_attr(
+                l2_decay=fc_decay, k=in_channels)
+            self.fc1 = nn.Linear(
+                in_channels,
+                mid_channels,
+                weight_attr=weight_attr1,
+                bias_attr=bias_attr1)
+
+            weight_attr2, bias_attr2 = get_para_bias_attr(
+                l2_decay=fc_decay, k=mid_channels)
+            self.fc2 = nn.Linear(
+                mid_channels,
+                out_channels,
+                weight_attr=weight_attr2,
+                bias_attr=bias_attr2)
         self.out_channels = out_channels
+        self.mid_channels = mid_channels
 
     def forward(self, x, targets=None):
         if self.mid_channels is None:

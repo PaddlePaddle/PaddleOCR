@@ -52,9 +52,10 @@ Architecture:
       Neck:
         name: SequenceEncoder
         encoder_type: rnn
-        hidden_size: 48
+        hidden_size: 64
       Head:
         name: CTCHead
+        mid_channels: 96
         fc_decay: 0.00001
     Teacher:
       pretrained:
@@ -71,9 +72,10 @@ Architecture:
       Neck:
         name: SequenceEncoder
         encoder_type: rnn
-        hidden_size: 48
+        hidden_size: 64
       Head:
         name: CTCHead
+        mid_channels: 96
         fc_decay: 0.00001
   
 
