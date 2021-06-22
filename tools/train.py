@@ -35,7 +35,7 @@ from ppocr.losses import build_loss
 from ppocr.optimizer import build_optimizer
 from ppocr.postprocess import build_post_process
 from ppocr.metrics import build_metric
-from ppocr.utils.save_load import init_model, load_pretrain_params
+from ppocr.utils.save_load import init_model, load_dygraph_params
 import tools.program as program
 
 dist.get_world_size()
