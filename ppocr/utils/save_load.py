@@ -96,9 +96,10 @@ def load_dygraph_params(config, model, logger, optimizer):
         return pre_best_model_dict
     else:
         pm = config['Global']['pretrained_model']
-        pm = pm if pm.endswith('.pdparams') else pm + '.pdparams'
-        if os.path.exists(pm):
+        if os.path.exists(pm) or os.path.exists(pm + ".pdparams"):
             logger.info(f"The pretrained_model {pm} does not exists!")
+            return {}
+        pm = pm if pm.endswith('.pdparams') else pm + '.pdparams'
         params = paddle.load(pm)
         state_dict = model.state_dict()
         new_state_dict = {}
