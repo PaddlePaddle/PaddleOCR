@@ -47,16 +47,13 @@ void Normalize::Run(cv::Mat *im, const std::vector<float> &mean,
     e /= 255.0;
   }
   (*im).convertTo(*im, CV_32FC3, e);
-  for (int h = 0; h < im->rows; h++) {
-    for (int w = 0; w < im->cols; w++) {
-      im->at<cv::Vec3f>(h, w)[0] =
-          (im->at<cv::Vec3f>(h, w)[0] - mean[0]) * scale[0];
-      im->at<cv::Vec3f>(h, w)[1] =
-          (im->at<cv::Vec3f>(h, w)[1] - mean[1]) * scale[1];
-      im->at<cv::Vec3f>(h, w)[2] =
-          (im->at<cv::Vec3f>(h, w)[2] - mean[2]) * scale[2];
-    }
+  std::vector<cv::Mat> bgr_channels(3);
+  cv::split(*im, bgr_channels);
+  for (auto i = 0; i < bgr_channels.size(); i++) {
+    bgr_channels[i].convertTo(bgr_channels[i], CV_32FC1, 1.0 * scale[i],
+                              (0.0 - mean[i]) * scale[i]);
   }
+  cv::merge(bgr_channels, *im);
 }
 
 void ResizeImgType0::Run(const cv::Mat &img, cv::Mat &resize_img,
