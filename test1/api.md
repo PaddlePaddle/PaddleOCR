@@ -30,11 +30,19 @@ Types 1-4 follow the traditional OCR process, and 5 follow the Table OCR process
 
 [doc](table/README.md)
 
-## 4. PaddleStructure whl package introduction
+## 4. Predictive by inference engine
 
-### 4.1 Use
+Use the following commands to complete the inference
+```python
+python3 table/predict_system.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=EN --det_limit_side_len=736 --det_limit_type=min --output ../output/table
+```
+After running, each image will have a directory with the same name under the directory specified in the output field. Each table in the picture will be stored as an excel, and the excel file name will be the coordinates of the table in the image.
 
-4.1.1 Use by code
+## 5. PaddleStructure whl package introduction
+
+### 5.1 Use
+
+5.1.1 Use by code
 ```python
 import os
 import cv2
@@ -60,7 +68,7 @@ im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
 
-4.1.2 Use by command line
+5.1.2 Use by command line
 ```bash
 paddlestructure --image_dir=../doc/table/1.png
 ```

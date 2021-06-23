@@ -46,4 +46,4 @@ First cd to the PaddleOCR/ppstructure directory
 ```python
 python3 table/predict_table.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=EN --det_limit_side_len=736 --det_limit_type=min --output ../output/table
 ```
-After running, the excel sheet of each picture will be saved in the directory specified by the table_output field
+After running, the excel sheet of each picture will be saved in the directory specified by the output field

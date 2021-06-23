@@ -30,11 +30,19 @@ PaddleStructure 是一个用于复杂板式文字OCR的工具包，流程如下
 
 [文档](table/README_ch.md)
 
-## 4. PaddleStructure whl包介绍
+## 4. 预测引擎推理
 
-### 4.1 使用
+使用如下命令即可完成预测引擎的推理
+```python
+python3 table/predict_system.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=EN --det_limit_side_len=736 --det_limit_type=min --output ../output/table
+```
+运行完成后，每张图片会output字段指定的目录下有一个同名目录，图片里的每个表格会存储为一个excel，excel文件名为表格在图片里的坐标。
 
-4.1.1 代码使用
+## 5. PaddleStructure whl包介绍
+
+### 5.1 使用
+
+5.1.1 代码使用
 ```python
 import os
 import cv2
@@ -60,7 +68,7 @@ im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
 
-4.1.2 命令行使用
+5.1.2 命令行使用
 ```bash
 paddlestructure --image_dir=../doc/table/1.png
 ```
