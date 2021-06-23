@@ -60,7 +60,8 @@ def export_single_model(model, arch_config, save_path, logger):
                     "When there is tps in the network, variable length input is not supported, and the input size needs to be the same as during training"
                 )
                 infer_shape[-1] = 100
-
+        elif arch_config["model_type"] == "table":
+            infer_shape = [3, 488, 488]
         model = to_static(
             model,
             input_spec=[

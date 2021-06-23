@@ -106,7 +106,7 @@ class DBHead(nn.Layer):
     def step_function(self, x, y):
         return paddle.reciprocal(1 + paddle.exp(-self.k * (x - y)))
 
-    def forward(self, x):
+    def forward(self, x, targets=None):
         shrink_maps = self.binarize(x)
         if not self.training:
             return {'maps': shrink_maps}

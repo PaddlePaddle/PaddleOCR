@@ -55,6 +55,7 @@ def main():
 
     model = build_model(config['Architecture'])
     use_srn = config['Architecture']['algorithm'] == "SRN"
+    model_type = config['Architecture']['model_type']
 
     best_model_dict = init_model(config, model)
     if len(best_model_dict):
@@ -67,7 +68,7 @@ def main():
 
     # start eval
     metric = program.eval(model, valid_dataloader, post_process_class,
-                          eval_class, use_srn)
+                          eval_class, model_type, use_srn)
     logger.info('metric eval ***************')
     for k, v in metric.items():
         logger.info('{}:{}'.format(k, v))

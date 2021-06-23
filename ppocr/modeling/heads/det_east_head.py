@@ -109,7 +109,7 @@ class EASTHead(nn.Layer):
             act=None,
             name="f_geo")
 
-    def forward(self, x):
+    def forward(self, x, targets=None):
         f_det = self.det_conv1(x)
         f_det = self.det_conv2(f_det)
         f_score = self.score_conv(f_det)
