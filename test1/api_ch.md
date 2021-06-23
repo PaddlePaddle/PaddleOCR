@@ -36,16 +36,18 @@ PaddleStructure 是一个用于复杂板式文字OCR的工具包，流程如下
 
 4.1.1 代码使用
 ```python
+import os
 import cv2
-from paddlestructure import PaddleStructure,draw_result
+from paddlestructure import PaddleStructure,draw_result,save_res
 
-table_engine = PaddleStructure(
-    output='./output/table',
-    show_log=True)
+table_engine = PaddleStructure(show_log=True)
 
+save_folder = './output/table'
 img_path = '../doc/table/1.png'
 img = cv2.imread(img_path)
 result = table_engine(img)
+save_res(result, save_folder,os.path.basename(img_path).split('.')[0])
+
 for line in result:
     print(line)
 

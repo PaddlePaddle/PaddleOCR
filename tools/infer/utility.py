@@ -201,8 +201,8 @@ def create_predictor(args, mode, logger):
         model_dir = args.cls_model_dir
     elif mode == 'rec':
         model_dir = args.rec_model_dir
-    elif mode == 'structure':
-        model_dir = args.structure_model_dir
+    elif mode == 'table':
+        model_dir = args.table_model_dir
     else:
         model_dir = args.e2e_model_dir
 
@@ -331,7 +331,7 @@ def create_predictor(args, mode, logger):
     config.disable_glog_info()
 
     config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
-    if mode == 'structure':
+    if mode == 'table':
         config.delete_pass("fc_fuse_pass") # not supported for table    
     config.switch_use_feed_fetch_ops(False)
     config.switch_ir_optim(True)
