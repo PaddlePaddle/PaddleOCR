@@ -73,10 +73,10 @@ im_show.save('result.jpg')
 paddlestructure --image_dir=../doc/table/1.png
 ```
 
-### 参数说明
-大部分参数和paddleocr whl包保持一致，见 [whl包文档](../doc/doc_ch/whl.md)
+### Parameter Description
+Most of the parameters are consistent with the paddleocr whl package, see [whl package documentation](../doc/doc_ch/whl.md)
 
-| 字段                    | 说明                                            | 默认值           |
+| Parameter                    | Description                                            | Default           |
 |------------------------|------------------------------------------------------|------------------|
 | output                 | The path where excel and recognition results are saved                    | ./output/table            |
 | structure_max_len      |  When the table structure model predicts, the long side of the image is resized             |  488            |
