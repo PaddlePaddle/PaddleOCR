@@ -78,9 +78,9 @@ paddlestructure --image_dir=../doc/table/1.png
 
 | 字段                    | 说明                                            | 默认值           |
 |------------------------|------------------------------------------------------|------------------|
-| output                 | excel和识别结果保存的地址                    | ./output/table            |
-| structure_max_len      |  structure模型预测时，图像的长边resize尺度             |  488            |
-| structure_model_dir      |  structure inference 模型地址             |  None            |
-| structure_char_type      |  structure 模型所用字典地址             |  ../ppocr/utils/dict/table_structure_dict.tx            |
+| output                 | The path where excel and recognition results are saved                    | ./output/table            |
+| structure_max_len      |  When the table structure model predicts, the long side of the image is resized             |  488            |
+| structure_model_dir      |  Table structure inference model path             |  None            |
+| structure_char_type      | Dictionary path used by table structure model             |  ../ppocr/utils/dict/table_structure_dict.tx            |
 
 
