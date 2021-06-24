@@ -109,7 +109,7 @@ function func_inference(){
                     for batch_size in ${batch_size_list[*]}; do
                         _save_log_path="${_log_path}/infer_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_batchsize_${batch_size}"
                         command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_mkldnn_key}=${use_mkldnn} ${cpu_threads_key}=${threads} ${model_dir_key}=${_model_dir} ${batch_size_key}=${batch_size} ${image_dir_key}=${_img_dir}  ${save_log_key}=${_save_log_path}"
-                        echo $command
+                        eval $command
                         status_check $? "${command}" "${status_log}"
                     done
                 done
@@ -123,7 +123,7 @@ function func_inference(){
                     for batch_size in ${batch_size_list[*]}; do
                         _save_log_path="${_log_path}/infer_gpu_usetrt_${use_trt}_precision_${precision}_batchsize_${batch_size}"
                         command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_trt_key}=${use_trt} ${precision_key}=${precision} ${model_dir_key}=${_model_dir} ${batch_size_key}=${batch_size} ${image_dir_key}=${_img_dir}  ${save_log_key}=${_save_log_path}"
-                        echo $command
+                        eval $command
                         status_check $? "${command}" "${status_log}"
                     done
                 done
@@ -178,25 +178,25 @@ for gpu in ${gpu_list[*]}; do
 
             save_log="${LOG_PATH}/${trainer}_gpus_${gpu}_autocast_${autocast}"
             if [ ${#gpu} -le 2 ];then  # epoch_num #TODO
-                cmd="${python} ${run_train} ${use_gpu_key}=${use_gpu} ${epoch_key}=${epoch_num} ${save_model_key}=${save_log} "
+                cmd="${python} ${run_train} ${use_gpu_key}=${use_gpu} ${autocast_key}={autocast} ${epoch_key}=${epoch_num} ${save_model_key}=${save_log} "
             elif [ ${#gpu} -le 15 ];then
-                cmd="${python} -m paddle.distributed.launch --gpus=${gpu}  ${run_train} ${epoch_key}=${epoch_num}  ${save_model_key}=${save_log}"
+                cmd="${python} -m paddle.distributed.launch --gpus=${gpu} ${run_train} ${autocast_key}={autocast} ${epoch_key}=${epoch_num}  ${save_model_key}=${save_log}"
             else
-                cmd="${python} -m paddle.distributed.launch --ips=${ips} --gpus=${gpu}  ${run_train} ${epoch_key}=${epoch_num} ${save_model_key}=${save_log}"
+                cmd="${python} -m paddle.distributed.launch --ips=${ips} --gpus=${gpu} ${run_train} ${autocast_key}={autocast} ${epoch_key}=${epoch_num} ${save_model_key}=${save_log}"
             fi
             # run train
-            echo $cmd
+            eval $cmd
             status_check $? "${cmd}" "${status_log}"
 
             # run eval
             eval_cmd="${python} ${eval_py} ${save_model_key}=${save_log} ${pretrain_model_key}=${save_log}/latest" 
-            echo $eval_cmd
+            eval $eval_cmd
             status_check $? "${eval_cmd}" "${status_log}"
 
             # run export model
             save_infer_path="${save_log}"
             export_cmd="${python} ${run_export} ${save_model_key}=${save_log} ${pretrain_model_key}=${save_log}/latest ${save_infer_key}=${save_infer_path}"
-            echo $export_cmd
+            eval $export_cmd
             status_check $? "${export_cmd}" "${status_log}"
 
             #run inference
