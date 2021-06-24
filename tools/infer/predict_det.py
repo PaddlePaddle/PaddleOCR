@@ -101,21 +101,22 @@ class TextDetector(object):
         self.predictor, self.input_tensor, self.output_tensors, self.config = utility.create_predictor(
             args, 'det', logger)
 
-        pid = os.getpid()
-        self.autolog = auto_log.AutoLogger(
-            model_name="det",
-            model_precision="fp32",
-            batch_size=1,
-            data_shape="dynamic",
-            save_path="./output/auto_log.lpg",
-            inference_config=self.config,
-            pids=pid,
-            process_name=None,
-            gpu_ids=0,
-            time_keys=[
-                'preprocess_time', 'inference_time', 'postprocess_time'
-            ],
-            warmup=10)
+        if args.benchmark:
+            pid = os.getpid()
+            self.autolog = auto_log.AutoLogger(
+                model_name="det",
+                model_precision=args.precision,
+                batch_size=1,
+                data_shape="dynamic",
+                save_path="./output/auto_log.lpg",
+                inference_config=self.config,
+                pids=pid,
+                process_name=None,
+                gpu_ids=0,
+                time_keys=[
+                    'preprocess_time', 'inference_time', 'postprocess_time'
+                ],
+                warmup=10)
 
     def order_points_clockwise(self, pts):
         """
