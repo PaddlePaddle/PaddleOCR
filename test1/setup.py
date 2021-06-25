@@ -20,8 +20,6 @@ import shutil
 with open('../requirements.txt', encoding="utf-8-sig") as f:
     requirements = f.readlines()
     requirements.append('tqdm')
-    requirements.append('layoutparser')
-    requirements.append('iopath')
 
 
 def readme():
