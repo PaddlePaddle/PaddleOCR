@@ -48,10 +48,6 @@ def term_mp(sig_num, frame):
     os.killpg(pgid, signal.SIGKILL)
 
 
-signal.signal(signal.SIGINT, term_mp)
-signal.signal(signal.SIGTERM, term_mp)
-
-
 def build_dataloader(config, mode, device, logger, seed=None):
     config = copy.deepcopy(config)
 
