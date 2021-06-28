@@ -10,7 +10,7 @@ IFS=$'\n'
 lines=(${dataline})
 function func_parser_key(){
     strs=$1
-    IFS=": "
+    IFS=":"
     array=(${strs})
     tmp=${array[0]}
     echo ${tmp}
