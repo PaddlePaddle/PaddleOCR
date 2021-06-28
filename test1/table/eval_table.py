@@ -20,9 +20,12 @@ sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 import cv2
 import json
 from tqdm import tqdm
-from ppstructure.table.table_metric import TEDS
-from ppstructure.table.predict_table import TableSystem
-from ppstructure.utility import init_args
+from test1.table.table_metric import TEDS
+from test1.table.predict_table import TableSystem
+from test1.utility import init_args
+from ppocr.utils.logging import get_logger
+
+logger = get_logger()
 
 
 def parse_args():
@@ -47,7 +50,7 @@ def main(gt_path, img_root, args):
         gt_html, gt = get_gt_html(gt_structures, contents_with_block)
         gt_htmls.append(gt_html)
     scores = teds.batch_evaluate_html(gt_htmls, pred_htmls)
-    print('teds:', sum(scores) / len(scores))
+    logger.info('teds:', sum(scores) / len(scores))
 
 
 def get_gt_html(gt_structures, contents_with_block):

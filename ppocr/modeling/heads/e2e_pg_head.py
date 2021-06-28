@@ -220,7 +220,7 @@ class PGHead(nn.Layer):
             weight_attr=ParamAttr(name="conv_f_direc{}".format(4)),
             bias_attr=False)
 
-    def forward(self, x):
+    def forward(self, x, targets=None):
         f_score = self.conv_f_score1(x)
         f_score = self.conv_f_score2(f_score)
         f_score = self.conv_f_score3(f_score)

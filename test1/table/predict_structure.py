@@ -32,6 +32,7 @@ from ppocr.data import create_operators, transform
 from ppocr.postprocess import build_post_process
 from ppocr.utils.logging import get_logger
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
+from test1.utility import parse_args
 
 logger = get_logger()
 
@@ -40,7 +41,7 @@ class TableStructurer(object):
     def __init__(self, args):
         pre_process_list = [{
             'ResizeTableImage': {
-                'max_len': args.structure_max_len
+                'max_len': args.table_max_len
             }
         }, {
             'NormalizeImage': {
@@ -60,17 +61,14 @@ class TableStructurer(object):
         }]
         postprocess_params = {
             'name': 'TableLabelDecode',
-            "character_type": args.structure_char_type,
-            "character_dict_path": args.structure_char_dict_path,
-            "max_text_length": args.structure_max_text_length,
-            "max_elem_length": args.structure_max_elem_length,
-            "max_cell_num": args.structure_max_cell_num
+            "character_type": args.table_char_type,
+            "character_dict_path": args.table_char_dict_path,
         }
 
         self.preprocess_op = create_operators(pre_process_list)
         self.postprocess_op = build_post_process(postprocess_params)
-        self.predictor, self.input_tensor, self.output_tensors = \
-            utility.create_predictor(args, 'structure', logger)
+        self.predictor, self.input_tensor, self.output_tensors, self.config = \
+            utility.create_predictor(args, 'table', logger)
 
     def __call__(self, img):
         ori_im = img.copy()
@@ -138,4 +136,4 @@ def main(args):
 
 
 if __name__ == "__main__":
-    main(utility.parse_args())
+    main(parse_args())

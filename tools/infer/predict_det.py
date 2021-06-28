@@ -31,7 +31,7 @@ from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.data import create_operators, transform
 from ppocr.postprocess import build_post_process
 
-import tools.infer.benchmark_utils as benchmark_utils
+# import tools.infer.benchmark_utils as benchmark_utils
 
 logger = get_logger()
 
@@ -100,8 +100,6 @@ class TextDetector(object):
         self.predictor, self.input_tensor, self.output_tensors, self.config = utility.create_predictor(
             args, 'det', logger)
 
-        self.det_times = utility.Timer()
-
     def order_points_clockwise(self, pts):
         """
         reference from: https://github.com/jrosebr1/imutils/blob/master/imutils/perspective.py
@@ -158,8 +156,8 @@ class TextDetector(object):
     def __call__(self, img):
         ori_im = img.copy()
         data = {'image': img}
-        self.det_times.total_time.start()
-        self.det_times.preprocess_time.start()
+
+        st = time.time()
         data = transform(data, self.preprocess_op)
         img, shape_list = data
         if img is None:
@@ -168,16 +166,12 @@ class TextDetector(object):
         shape_list = np.expand_dims(shape_list, axis=0)
         img = img.copy()
 
-        self.det_times.preprocess_time.end()
-        self.det_times.inference_time.start()
-
         self.input_tensor.copy_from_cpu(img)
         self.predictor.run()
         outputs = []
         for output_tensor in self.output_tensors:
             output = output_tensor.copy_to_cpu()
             outputs.append(output)
-        self.det_times.inference_time.end()
 
         preds = {}
         if self.det_algorithm == "EAST":
@@ -193,8 +187,6 @@ class TextDetector(object):
         else:
             raise NotImplementedError
 
-        self.det_times.postprocess_time.start()
-
         self.predictor.try_shrink_memory()
         post_result = self.postprocess_op(preds, shape_list)
         dt_boxes = post_result[0]['points']
@@ -203,10 +195,8 @@ class TextDetector(object):
         else:
             dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
 
-        self.det_times.postprocess_time.end()
-        self.det_times.total_time.end()
-        self.det_times.img_num += 1
-        return dt_boxes, self.det_times.total_time.value()
+        et = time.time()
+        return dt_boxes, et - st
 
 
 if __name__ == "__main__":
@@ -216,12 +206,13 @@ if __name__ == "__main__":
     count = 0
     total_time = 0
     draw_img_save = "./inference_results"
-    cpu_mem, gpu_mem, gpu_util = 0, 0, 0
 
-    # warmup 10 times
-    fake_img = np.random.uniform(-1, 1, [640, 640, 3]).astype(np.float32)
-    for i in range(10):
-        dt_boxes, _ = text_detector(fake_img)
+    if args.warmup:
+        img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
+        for i in range(10):
+            res = text_detector(img)
+
+    cpu_mem, gpu_mem, gpu_util = 0, 0, 0
 
     if not os.path.exists(draw_img_save):
         os.makedirs(draw_img_save)
@@ -239,50 +230,11 @@ if __name__ == "__main__":
             total_time += elapse
         count += 1
 
-        if args.benchmark:
-            cm, gm, gu = utility.get_current_memory_mb(0)
-            cpu_mem += cm
-            gpu_mem += gm
-            gpu_util += gu
-
         logger.info("Predict time of {}: {}".format(image_file, elapse))
         src_im = utility.draw_text_det_res(dt_boxes, image_file)
         img_name_pure = os.path.split(image_file)[-1]
         img_path = os.path.join(draw_img_save,
                                 "det_res_{}".format(img_name_pure))
-
+        cv2.imwrite(img_path, src_im)
         logger.info("The visualized image saved in {}".format(img_path))
-    # print the information about memory and time-spent
-    if args.benchmark:
-        mems = {
-            'cpu_rss_mb': cpu_mem / count,
-            'gpu_rss_mb': gpu_mem / count,
-            'gpu_util': gpu_util * 100 / count
-        }
-    else:
-        mems = None
-    logger.info("The predict time about detection module is as follows: ")
-    det_time_dict = text_detector.det_times.report(average=True)
-    det_model_name = args.det_model_dir
 
-    if args.benchmark:
-        # construct log information
-        model_info = {
-            'model_name': args.det_model_dir.split('/')[-1],
-            'precision': args.precision
-        }
-        data_info = {
-            'batch_size': 1,
-            'shape': 'dynamic_shape',
-            'data_num': det_time_dict['img_num']
-        }
-        perf_info = {
-            'preprocess_time_s': det_time_dict['preprocess_time'],
-            'inference_time_s': det_time_dict['inference_time'],
-            'postprocess_time_s': det_time_dict['postprocess_time'],
-            'total_time_s': det_time_dict['total_time']
-        }
-        benchmark_log = benchmark_utils.PaddleInferBenchmark(
-            text_detector.config, model_info, data_info, perf_info, mems,
-            args.save_log_path)
-        benchmark_log("Det")

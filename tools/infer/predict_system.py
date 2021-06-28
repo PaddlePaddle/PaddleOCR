@@ -13,6 +13,7 @@
 # limitations under the License.
 import os
 import sys
+import subprocess
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
@@ -24,6 +25,7 @@ import cv2
 import copy
 import numpy as np
 import time
+import logging
 from PIL import Image
 import tools.infer.utility as utility
 import tools.infer.predict_rec as predict_rec
@@ -38,6 +40,9 @@ logger = get_logger()
 
 class TextSystem(object):
     def __init__(self, args):
+        if not args.show_log:
+            logger.setLevel(logging.INFO)
+
         self.text_detector = predict_det.TextDetector(args)
         self.text_recognizer = predict_rec.TextRecognizer(args)
         self.use_angle_cls = args.use_angle_cls
@@ -142,20 +147,29 @@ def sorted_boxes(dt_boxes):
 
 def main(args):
     image_file_list = get_image_file_list(args.image_dir)
+    image_file_list = image_file_list[args.process_id::args.total_process_num]
     text_sys = TextSystem(args)
     is_visualize = True
     font_path = args.vis_font_path
     drop_score = args.drop_score
+
+    # warm up 10 times
+    if args.warmup:
+        img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
+        for i in range(10):
+            res = text_sys(img)
+            
     total_time = 0
     cpu_mem, gpu_mem, gpu_util = 0, 0, 0
     _st = time.time()
     count = 0
     for idx, image_file in enumerate(image_file_list):
+
         img, flag = check_and_read_gif(image_file)
         if not flag:
             img = cv2.imread(image_file)
         if img is None:
-            logger.error("error in loading image:{}".format(image_file))
+            logger.info("error in loading image:{}".format(image_file))
             continue
         starttime = time.time()
         dt_boxes, rec_res = text_sys(img)
@@ -259,4 +273,18 @@ def main(args):
 
 
 if __name__ == "__main__":
-    main(utility.parse_args())
+    args = utility.parse_args()
+    if args.use_mp:
+        p_list = []
+        total_process_num = args.total_process_num
+        for process_id in range(total_process_num):
+            cmd = [sys.executable, "-u"] + sys.argv + [
+                "--process_id={}".format(process_id),
+                "--use_mp={}".format(False)
+            ]
+            p = subprocess.Popen(cmd, stdout=sys.stdout, stderr=sys.stdout)
+            p_list.append(p)
+        for p in p_list:
+            p.wait()
+    else:
+        main(args)

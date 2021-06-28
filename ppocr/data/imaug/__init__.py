@@ -29,6 +29,7 @@ from .label_ops import *
 from .east_process import *
 from .sast_process import *
 from .pg_process import *
+from .gen_table_mask import *
 
 
 def transform(data, ops=None):

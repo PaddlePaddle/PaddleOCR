@@ -24,15 +24,15 @@ import numpy as np
 from pathlib import Path
 
 from ppocr.utils.logging import get_logger
-from ppstructure.predict_system import OCRSystem, save_res
-from ppstructure.table.predict_table import to_excel
-from ppstructure.utility import init_args, draw_result
+from test1.predict_system import OCRSystem, save_res
+from test1.table.predict_table import to_excel
+from test1.utility import init_args, draw_result
 
 logger = get_logger()
 from ppocr.utils.utility import check_and_read_gif, get_image_file_list
 from ppocr.utils.network import maybe_download, download_with_progressbar, confirm_model_dir_url, is_link
 
-__all__ = ['PaddleStructure', 'draw_result', 'to_excel']
+__all__ = ['PaddleStructure', 'draw_result', 'save_res']
 
 VERSION = '2.1'
 BASE_DIR = os.path.expanduser("~/.paddlestructure/")
@@ -40,7 +40,7 @@ BASE_DIR = os.path.expanduser("~/.paddlestructure/")
 model_urls = {
     'det': 'https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_det_infer.tar',
     'rec': 'https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar',
-    'structure': 'https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar'
+    'table': 'https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar'
 
 }
 
@@ -51,7 +51,7 @@ def parse_args(mMain=True):
     parser.add_help = mMain
 
     for action in parser._actions:
-        if action.dest in ['rec_char_dict_path', 'structure_char_dict_path']:
+        if action.dest in ['rec_char_dict_path', 'table_char_dict_path']:
             action.default = None
     if mMain:
         return parser.parse_args()
@@ -66,8 +66,8 @@ class PaddleStructure(OCRSystem):
     def __init__(self, **kwargs):
         params = parse_args(mMain=False)
         params.__dict__.update(**kwargs)
-        if params.show_log:
-            logger.setLevel(logging.DEBUG)
+        if not params.show_log:
+            logger.setLevel(logging.INFO)
         params.use_angle_cls = False
         # init model dir
         params.det_model_dir, det_url = confirm_model_dir_url(params.det_model_dir,
@@ -76,13 +76,13 @@ class PaddleStructure(OCRSystem):
         params.rec_model_dir, rec_url = confirm_model_dir_url(params.rec_model_dir,
                                                               os.path.join(BASE_DIR, VERSION, 'rec'),
                                                               model_urls['rec'])
-        params.structure_model_dir, structure_url = confirm_model_dir_url(params.structure_model_dir,
-                                                                          os.path.join(BASE_DIR, VERSION, 'structure'),
-                                                                          model_urls['structure'])
+        params.table_model_dir, table_url = confirm_model_dir_url(params.table_model_dir,
+                                                                          os.path.join(BASE_DIR, VERSION, 'table'),
+                                                                          model_urls['table'])
         # download model
         maybe_download(params.det_model_dir, det_url)
         maybe_download(params.rec_model_dir, rec_url)
-        maybe_download(params.structure_model_dir, structure_url)
+        maybe_download(params.table_model_dir, table_url)
 
         if params.rec_char_dict_path is None:
             params.rec_char_type = 'EN'
@@ -90,12 +90,12 @@ class PaddleStructure(OCRSystem):
                 params.rec_char_dict_path = str(Path(__file__).parent / 'ppocr/utils/dict/table_dict.txt')
             else:
                 params.rec_char_dict_path = str(Path(__file__).parent.parent / 'ppocr/utils/dict/table_dict.txt')
-        if params.structure_char_dict_path is None:
+        if params.table_char_dict_path is None:
             if os.path.exists(str(Path(__file__).parent / 'ppocr/utils/dict/table_structure_dict.txt')):
-                params.structure_char_dict_path = str(
+                params.table_char_dict_path = str(
                     Path(__file__).parent / 'ppocr/utils/dict/table_structure_dict.txt')
             else:
-                params.structure_char_dict_path = str(
+                params.table_char_dict_path = str(
                     Path(__file__).parent.parent / 'ppocr/utils/dict/table_structure_dict.txt')
 
         print(params)
@@ -146,3 +146,23 @@ def main():
             logger.info(item['res'])
         save_res(result, save_folder, img_name)
         logger.info('result save to {}'.format(os.path.join(save_folder, img_name)))
+
+if __name__ == '__main__':
+    table_engine = PaddleStructure(show_log=True)
+
+    img_path = '../test/test_imgs/PMC1173095_006_00.png'
+    img = cv2.imread(img_path)
+    result = table_engine(img)
+    save_res(result, '/Users/zhoujun20/Desktop/工作相关/table/table_pr/PaddleOCR/output/table',
+             os.path.basename(img_path).split('.')[0])
+
+    for line in result:
+        print(line)
+
+    from PIL import Image
+
+    font_path = '../doc/fonts/simfang.ttf'
+    image = Image.open(img_path).convert('RGB')
+    im_show = draw_result(image, result, font_path=font_path)
+    im_show = Image.fromarray(im_show)
+    im_show.save('result.jpg')

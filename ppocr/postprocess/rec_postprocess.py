@@ -125,6 +125,37 @@ class CTCLabelDecode(BaseRecLabelDecode):
         return dict_character
 
 
+class DistillationCTCLabelDecode(CTCLabelDecode):
+    """
+    Convert 
+    Convert between text-label and text-index
+    """
+
+    def __init__(self,
+                 character_dict_path=None,
+                 character_type='ch',
+                 use_space_char=False,
+                 model_name=["student"],
+                 key=None,
+                 **kwargs):
+        super(DistillationCTCLabelDecode, self).__init__(
+            character_dict_path, character_type, use_space_char)
+        if not isinstance(model_name, list):
+            model_name = [model_name]
+        self.model_name = model_name
+
+        self.key = key
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        output = dict()
+        for name in self.model_name:
+            pred = preds[name]
+            if self.key is not None:
+                pred = pred[self.key]
+            output[name] = super().__call__(pred, label=label, *args, **kwargs)
+        return output
+
+
 class AttnLabelDecode(BaseRecLabelDecode):
     """ Convert between text-label and text-index """
 
@@ -294,14 +325,8 @@ class TableLabelDecode(object):
     """  """
 
     def __init__(self,
-                 max_text_length,
-                 max_elem_length,
-                 max_cell_num,
                  character_dict_path,
                  **kwargs):
-        self.max_text_length = max_text_length
-        self.max_elem_length = max_elem_length
-        self.max_cell_num = max_cell_num
         list_character, list_elem = self.load_char_elem_dict(character_dict_path)
         list_character = self.add_special_char(list_character)
         list_elem = self.add_special_char(list_elem)
@@ -337,18 +362,6 @@ class TableLabelDecode(object):
         self.end_str = "eos"
         list_character = [self.beg_str] + list_character + [self.end_str]
         return list_character
-
-    def get_sp_tokens(self):
-        char_beg_idx = self.get_beg_end_flag_idx('beg', 'char')
-        char_end_idx = self.get_beg_end_flag_idx('end', 'char')
-        elem_beg_idx = self.get_beg_end_flag_idx('beg', 'elem')
-        elem_end_idx = self.get_beg_end_flag_idx('end', 'elem')
-        elem_char_idx1 = self.dict_elem['<td>']
-        elem_char_idx2 = self.dict_elem['<td']
-        sp_tokens = np.array([char_beg_idx, char_end_idx, elem_beg_idx,
-                              elem_end_idx, elem_char_idx1, elem_char_idx2, self.max_text_length,
-                              self.max_elem_length, self.max_cell_num])
-        return sp_tokens
 
     def __call__(self, preds):
         structure_probs = preds['structure_probs']

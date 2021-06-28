@@ -23,16 +23,11 @@ def init_args():
     # params for output
     parser.add_argument("--output", type=str, default='./output/table')
     # params for table structure
-    parser.add_argument("--structure_max_len", type=int, default=488)
-    parser.add_argument("--structure_max_text_length", type=int, default=100)
-    parser.add_argument("--structure_max_elem_length", type=int, default=800)
-    parser.add_argument("--structure_max_cell_num", type=int, default=500)
-    parser.add_argument("--structure_model_dir", type=str)
-    parser.add_argument("--structure_char_type", type=str, default='en')
-    parser.add_argument("--structure_char_dict_path", type=str, default="../ppocr/utils/dict/table_structure_dict.txt")
+    parser.add_argument("--table_max_len", type=int, default=488)
+    parser.add_argument("--table_model_dir", type=str)
+    parser.add_argument("--table_char_type", type=str, default='en')
+    parser.add_argument("--table_char_dict_path", type=str, default="../ppocr/utils/dict/table_structure_dict.txt")
 
-    # params for layout detector
-    parser.add_argument("--layout_model_dir", type=str)
     return parser
 
 
