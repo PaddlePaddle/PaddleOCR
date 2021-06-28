@@ -37,6 +37,7 @@ def init_args():
     parser.add_argument("--use_gpu", type=str2bool, default=True)
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
+    parser.add_argument("--min_subgraph_size", type=int, default=3)
     parser.add_argument("--precision", type=str, default="fp32")
     parser.add_argument("--gpu_mem", type=int, default=500)
 
@@ -165,12 +166,14 @@ def create_predictor(args, mode, logger):
             config.enable_tensorrt_engine(
                 precision_mode=inference.PrecisionType.Float32,
                 max_batch_size=args.max_batch_size,
-                min_subgraph_size=3)  # skip the minmum trt subgraph
-        if mode == "det" and "mobile" in model_file_path:
+                min_subgraph_size=args.min_subgraph_size)
+            # skip the minmum trt subgraph
+        if mode == "det":
             min_input_shape = {
                 "x": [1, 3, 50, 50],
                 "conv2d_92.tmp_0": [1, 96, 20, 20],
                 "conv2d_91.tmp_0": [1, 96, 10, 10],
+                "conv2d_59.tmp_0": [1, 96, 20, 20],
                 "nearest_interp_v2_1.tmp_0": [1, 96, 10, 10],
                 "nearest_interp_v2_2.tmp_0": [1, 96, 20, 20],
                 "nearest_interp_v2_3.tmp_0": [1, 24, 20, 20],
@@ -183,6 +186,7 @@ def create_predictor(args, mode, logger):
                 "x": [1, 3, 2000, 2000],
                 "conv2d_92.tmp_0": [1, 96, 400, 400],
                 "conv2d_91.tmp_0": [1, 96, 200, 200],
+                "conv2d_59.tmp_0": [1, 96, 400, 400],
                 "nearest_interp_v2_1.tmp_0": [1, 96, 200, 200],
                 "nearest_interp_v2_2.tmp_0": [1, 96, 400, 400],
                 "nearest_interp_v2_3.tmp_0": [1, 24, 400, 400],
@@ -195,6 +199,7 @@ def create_predictor(args, mode, logger):
                 "x": [1, 3, 640, 640],
                 "conv2d_92.tmp_0": [1, 96, 160, 160],
                 "conv2d_91.tmp_0": [1, 96, 80, 80],
+                "conv2d_59.tmp_0": [1, 96, 160, 160],
                 "nearest_interp_v2_1.tmp_0": [1, 96, 80, 80],
                 "nearest_interp_v2_2.tmp_0": [1, 96, 160, 160],
                 "nearest_interp_v2_3.tmp_0": [1, 24, 160, 160],
@@ -202,31 +207,6 @@ def create_predictor(args, mode, logger):
                 "nearest_interp_v2_5.tmp_0": [1, 24, 160, 160],
                 "elementwise_add_7": [1, 56, 40, 40],
                 "nearest_interp_v2_0.tmp_0": [1, 96, 40, 40]
-            }
-        if mode == "det" and "server" in model_file_path:
-            min_input_shape = {
-                "x": [1, 3, 50, 50],
-                "conv2d_59.tmp_0": [1, 96, 20, 20],
-                "nearest_interp_v2_2.tmp_0": [1, 96, 20, 20],
-                "nearest_interp_v2_3.tmp_0": [1, 24, 20, 20],
-                "nearest_interp_v2_4.tmp_0": [1, 24, 20, 20],
-                "nearest_interp_v2_5.tmp_0": [1, 24, 20, 20]
-            }
-            max_input_shape = {
-                "x": [1, 3, 2000, 2000],
-                "conv2d_59.tmp_0": [1, 96, 400, 400],
-                "nearest_interp_v2_2.tmp_0": [1, 96, 400, 400],
-                "nearest_interp_v2_3.tmp_0": [1, 24, 400, 400],
-                "nearest_interp_v2_4.tmp_0": [1, 24, 400, 400],
-                "nearest_interp_v2_5.tmp_0": [1, 24, 400, 400]
-            }
-            opt_input_shape = {
-                "x": [1, 3, 640, 640],
-                "conv2d_59.tmp_0": [1, 96, 160, 160],
-                "nearest_interp_v2_2.tmp_0": [1, 96, 160, 160],
-                "nearest_interp_v2_3.tmp_0": [1, 24, 160, 160],
-                "nearest_interp_v2_4.tmp_0": [1, 24, 160, 160],
-                "nearest_interp_v2_5.tmp_0": [1, 24, 160, 160]
             }
         elif mode == "rec":
             min_input_shape = {"x": [args.rec_batch_num, 3, 32, 10]}
