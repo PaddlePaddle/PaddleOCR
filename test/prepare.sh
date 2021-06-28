@@ -26,7 +26,7 @@ IFS=$'\n'
 # The training params
 model_name=$(func_parser_value "${lines[0]}")
 train_model_list=$(func_parser_value "${lines[0]}")
-slim_trainer_list=$(func_parser_value "${lines[12]}")
+trainer_list=$(func_parser_value "${lines[10]}")
 
 # MODE be one of ['lite_train_infer' 'whole_infer' 'whole_train_infer']
 MODE=$2
@@ -76,7 +76,7 @@ fi
 IFS='|'
 for train_model in ${train_model_list[*]}; do 
     if [ ${train_model} = "ocr_det" ];then
-        model_name="det"
+        model_name="ocr_det"
         yml_file="configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml"
         wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar
         cd ./inference && tar xf ch_det_data_50.tar && cd ../
@@ -84,7 +84,7 @@ for train_model in ${train_model_list[*]}; do
         data_dir=./inference/ch_det_data_50/
         data_label_file=[./inference/ch_det_data_50/test_gt_50.txt]
     elif [ ${train_model} = "ocr_rec" ];then
-        model_name="rec"
+        model_name="ocr_rec"
         yml_file="configs/rec/rec_mv3_none_bilstm_ctc.yml"
         wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_rec_data_200.tar 
         cd ./inference && tar xf ch_rec_data_200.tar  && cd ../
@@ -92,7 +92,7 @@ for train_model in ${train_model_list[*]}; do
     fi
 
     # eval 
-    for slim_trainer in ${slim_trainer_list[*]}; do 
+    for slim_trainer in ${trainer_list[*]}; do 
         if [ ${slim_trainer} = "norm" ]; then
             if [ ${model_name} = "det" ]; then
                 eval_model_name="ch_ppocr_mobile_v2.0_det_train"
