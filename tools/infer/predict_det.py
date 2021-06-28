@@ -31,8 +31,6 @@ from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.data import create_operators, transform
 from ppocr.postprocess import build_post_process
 
-# import tools.infer.benchmark_utils as benchmark_utils
-
 logger = get_logger()
 import auto_log
 
@@ -221,7 +219,6 @@ class TextDetector(object):
 
         self.autolog.times.end(stamp=True)
         et = time.time()
-        self.autolog.get_avg_mem_mb()
         return dt_boxes, et - st
 
 
@@ -237,8 +234,6 @@ if __name__ == "__main__":
         img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
         for i in range(10):
             res = text_detector(img)
-
-    text_detector.autolog.mem_info._start_subprocess()
 
     if not os.path.exists(draw_img_save):
         os.makedirs(draw_img_save)
