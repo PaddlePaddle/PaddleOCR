@@ -195,6 +195,16 @@ If necessary, you can read related documents:
 The deployment tutorial uses the Chinese model by default. If you need to use other language models,
 please replace the model files and dictionaries yourself:
 
+The detection model are as follows:
+
+|model name| description|config|download|
+| --- | --- | --- | --- |
+| en_mobile_v2.0_det |The multi-language detection model |[en_det_mv3_db.yml](../../configs/det/det_mv3_db.yml)| [inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/en_ppocr_mobile_v2.0_det_infer.tar) /[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/en_ppocr_mobile_v2.0_det_train.tar) |
+|ch_ppocr_mobile_v2.0_det | The chinese detection model | [ch_det_mv3_db.yml](../../configs/det/ch_ppocr_v2.0/ch_det_mv3_db.yml) | [inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar) |
+
+The recognition model are as follows:
+
+
 |model name| dict file | description|config|model size|download|
 | --- | --- | --- |--- | --- | --- |
 | french_mobile_v2.0_rec | ppocr/utils/dict/french_dict.txt | Lightweight model for French recognition|[rec_french_lite_train.yml](../../configs/rec/multi_language/rec_french_lite_train.yml)|2.65M|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/french_mobile_v2.0_rec_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/french_mobile_v2.0_rec_train.tar) |

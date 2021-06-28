@@ -186,6 +186,13 @@ ppocr 支持使用自己的数据进行自定义训练或finetune, 其中识别�
 
 部署教程默认使用中文模型，如需使用其他语种模型，请自行替换模型文件和字典：
 
+多语言检测模型列表：
+|模型名称|模型简介|配置文件|下载地址|
+| --- | --- | --- | --- |
+| en_mobile_v2.0_det|多语言检测|[en_det_mv3_db.yml](../../configs/det/det_mv3_db.yml)|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/en_ppocr_mobile_v2.0_det_infer.tar) /[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/en_ppocr_mobile_v2.0_det_train.tar) |
+|ch_mobile_v2.0_det|中文检测|[ch_det_mv3_db.yml](../../configs/det/ch_ppocr_v2.0/ch_det_mv3_db.yml)|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar)|
+
+
 |模型名称|字典文件|模型简介|配置文件|下载地址|
 | --- | --- | --- | --- | --- |
 | french_mobile_v2.0_rec | ppocr/utils/dict/french_dict.txt | 法文识别 | [rec_french_lite_train.yml](../../configs/rec/multi_language/rec_french_lite_train.yml) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/french_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/french_mobile_v2.0_rec_train.tar) |
