@@ -33,8 +33,7 @@ import tools.infer.predict_det as predict_det
 import tools.infer.predict_cls as predict_cls
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.utils.logging import get_logger
-from tools.infer.utility import draw_ocr_box_txt, get_current_memory_mb
-import tools.infer.benchmark_utils as benchmark_utils
+from tools.infer.utility import draw_ocr_box_txt
 logger = get_logger()
 
 

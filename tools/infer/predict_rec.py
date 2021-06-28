@@ -219,15 +219,12 @@ class TextRecognizer(object):
                         i])
                     input_tensor.copy_from_cpu(inputs[i])
                 self.predictor.run()
-                self.rec_times.inference_time.end()
                 outputs = []
                 for output_tensor in self.output_tensors:
                     output = output_tensor.copy_to_cpu()
                     outputs.append(output)
                 preds = {"predict": outputs[2]}
             else:
-                self.rec_times.preprocess_time.end()
-                self.rec_times.inference_time.start()
                 self.input_tensor.copy_from_cpu(norm_img_batch)
                 self.predictor.run()
 
@@ -239,8 +236,6 @@ class TextRecognizer(object):
             rec_result = self.postprocess_op(preds)
             for rno in range(len(rec_result)):
                 rec_res[indices[beg_img_no + rno]] = rec_result[rno]
-            self.rec_times.postprocess_time.end()
-            self.rec_times.img_num += int(norm_img_batch.shape[0])
 
         return rec_res, time.time() - st
 
