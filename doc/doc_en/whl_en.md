@@ -59,7 +59,7 @@ Visualization of results
 from paddleocr import PaddleOCR,draw_ocr
 ocr = PaddleOCR(lang='en') # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs_en/img_12.jpg'
-result = ocr.ocr(img_path)
+result = ocr.ocr(img_path, cls=False)
 for line in result:
     print(line)
 
@@ -362,3 +362,5 @@ im_show.save('result.jpg')
 | det                     | Enable detction when `ppocr.ocr` func exec                                                                                                                                                                                                   | TRUE                    |
 | rec                     | Enable recognition when `ppocr.ocr` func exec                                                                                                                                                                                                   | TRUE                    |
 | cls                     | Enable classification when `ppocr.ocr` func exec((Use use_angle_cls in command line mode to control whether to start classification in the forward direction)                                                                                                                                                                                                   | FALSE                    |
+| show_log                     | Whether to print log in det and rec 
+                                                                                                                                                                                               | FALSE                    |

@@ -21,18 +21,23 @@ import json
 from PIL import Image, ImageDraw, ImageFont
 import math
 from paddle import inference
+import time
+from ppocr.utils.logging import get_logger
+
+logger = get_logger()
 
 
-def parse_args():
-    def str2bool(v):
-        return v.lower() in ("true", "t", "1")
+def str2bool(v):
+    return v.lower() in ("true", "t", "1")
 
+
+def init_args():
     parser = argparse.ArgumentParser()
     # params for prediction engine
     parser.add_argument("--use_gpu", type=str2bool, default=True)
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
-    parser.add_argument("--use_fp16", type=str2bool, default=False)
+    parser.add_argument("--precision", type=str, default="fp32")
     parser.add_argument("--gpu_mem", type=int, default=500)
 
     # params for text detector
@@ -98,13 +103,95 @@ def parse_args():
     parser.add_argument("--cls_thresh", type=float, default=0.9)
 
     parser.add_argument("--enable_mkldnn", type=str2bool, default=False)
+    parser.add_argument("--cpu_threads", type=int, default=10)
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
+    parser.add_argument("--warmup", type=str2bool, default=True)
 
+    # multi-process
     parser.add_argument("--use_mp", type=str2bool, default=False)
     parser.add_argument("--total_process_num", type=int, default=1)
     parser.add_argument("--process_id", type=int, default=0)
 
+    parser.add_argument("--benchmark", type=bool, default=False)
+    parser.add_argument("--save_log_path", type=str, default="./log_output/")
+
+    parser.add_argument("--show_log", type=str2bool, default=True)
+    return parser
+
+
+def parse_args():
+    parser = init_args()
     return parser.parse_args()
+
+
+class Times(object):
+    def __init__(self):
+        self.time = 0.
+        self.st = 0.
+        self.et = 0.
+
+    def start(self):
+        self.st = time.time()
+
+    def end(self, accumulative=True):
+        self.et = time.time()
+        if accumulative:
+            self.time += self.et - self.st
+        else:
+            self.time = self.et - self.st
+
+    def reset(self):
+        self.time = 0.
+        self.st = 0.
+        self.et = 0.
+
+    def value(self):
+        return round(self.time, 4)
+
+
+class Timer(Times):
+    def __init__(self):
+        super(Timer, self).__init__()
+        self.total_time = Times()
+        self.preprocess_time = Times()
+        self.inference_time = Times()
+        self.postprocess_time = Times()
+        self.img_num = 0
+
+    def info(self, average=False):
+        logger.info("----------------------- Perf info -----------------------")
+        logger.info("total_time: {}, img_num: {}".format(self.total_time.value(
+        ), self.img_num))
+        preprocess_time = round(self.preprocess_time.value() / self.img_num,
+                                4) if average else self.preprocess_time.value()
+        postprocess_time = round(
+            self.postprocess_time.value() / self.img_num,
+            4) if average else self.postprocess_time.value()
+        inference_time = round(self.inference_time.value() / self.img_num,
+                               4) if average else self.inference_time.value()
+
+        average_latency = self.total_time.value() / self.img_num
+        logger.info("average_latency(ms): {:.2f}, QPS: {:2f}".format(
+            average_latency * 1000, 1 / average_latency))
+        logger.info(
+            "preprocess_latency(ms): {:.2f}, inference_latency(ms): {:.2f}, postprocess_latency(ms): {:.2f}".
+            format(preprocess_time * 1000, inference_time * 1000,
+                   postprocess_time * 1000))
+
+    def report(self, average=False):
+        dic = {}
+        dic['preprocess_time'] = round(
+            self.preprocess_time.value() / self.img_num,
+            4) if average else self.preprocess_time.value()
+        dic['postprocess_time'] = round(
+            self.postprocess_time.value() / self.img_num,
+            4) if average else self.postprocess_time.value()
+        dic['inference_time'] = round(
+            self.inference_time.value() / self.img_num,
+            4) if average else self.inference_time.value()
+        dic['img_num'] = self.img_num
+        dic['total_time'] = round(self.total_time.value(), 4)
+        return dic
 
 
 def create_predictor(args, mode, logger):
@@ -114,6 +201,8 @@ def create_predictor(args, mode, logger):
         model_dir = args.cls_model_dir
     elif mode == 'rec':
         model_dir = args.rec_model_dir
+    elif mode == 'table':
+        model_dir = args.table_model_dir
     else:
         model_dir = args.e2e_model_dir
 
@@ -131,30 +220,121 @@ def create_predictor(args, mode, logger):
 
     config = inference.Config(model_file_path, params_file_path)
 
+    if hasattr(args, 'precision'):
+        if args.precision == "fp16" and args.use_tensorrt:
+            precision = inference.PrecisionType.Half
+        elif args.precision == "int8":
+            precision = inference.PrecisionType.Int8
+        else:
+            precision = inference.PrecisionType.Float32
+    else:
+        precision = inference.PrecisionType.Float32
+
     if args.use_gpu:
         config.enable_use_gpu(args.gpu_mem, 0)
         if args.use_tensorrt:
             config.enable_tensorrt_engine(
-                precision_mode=inference.PrecisionType.Half
-                if args.use_fp16 else inference.PrecisionType.Float32,
-                max_batch_size=args.max_batch_size)
+                precision_mode=inference.PrecisionType.Float32,
+                max_batch_size=args.max_batch_size,
+                min_subgraph_size=3)  # skip the minmum trt subgraph
+        if mode == "det" and "mobile" in model_file_path:
+            min_input_shape = {
+                "x": [1, 3, 50, 50],
+                "conv2d_92.tmp_0": [1, 96, 20, 20],
+                "conv2d_91.tmp_0": [1, 96, 10, 10],
+                "nearest_interp_v2_1.tmp_0": [1, 96, 10, 10],
+                "nearest_interp_v2_2.tmp_0": [1, 96, 20, 20],
+                "nearest_interp_v2_3.tmp_0": [1, 24, 20, 20],
+                "nearest_interp_v2_4.tmp_0": [1, 24, 20, 20],
+                "nearest_interp_v2_5.tmp_0": [1, 24, 20, 20],
+                "elementwise_add_7": [1, 56, 2, 2],
+                "nearest_interp_v2_0.tmp_0": [1, 96, 2, 2]
+            }
+            max_input_shape = {
+                "x": [1, 3, 2000, 2000],
+                "conv2d_92.tmp_0": [1, 96, 400, 400],
+                "conv2d_91.tmp_0": [1, 96, 200, 200],
+                "nearest_interp_v2_1.tmp_0": [1, 96, 200, 200],
+                "nearest_interp_v2_2.tmp_0": [1, 96, 400, 400],
+                "nearest_interp_v2_3.tmp_0": [1, 24, 400, 400],
+                "nearest_interp_v2_4.tmp_0": [1, 24, 400, 400],
+                "nearest_interp_v2_5.tmp_0": [1, 24, 400, 400],
+                "elementwise_add_7": [1, 56, 400, 400],
+                "nearest_interp_v2_0.tmp_0": [1, 96, 400, 400]
+            }
+            opt_input_shape = {
+                "x": [1, 3, 640, 640],
+                "conv2d_92.tmp_0": [1, 96, 160, 160],
+                "conv2d_91.tmp_0": [1, 96, 80, 80],
+                "nearest_interp_v2_1.tmp_0": [1, 96, 80, 80],
+                "nearest_interp_v2_2.tmp_0": [1, 96, 160, 160],
+                "nearest_interp_v2_3.tmp_0": [1, 24, 160, 160],
+                "nearest_interp_v2_4.tmp_0": [1, 24, 160, 160],
+                "nearest_interp_v2_5.tmp_0": [1, 24, 160, 160],
+                "elementwise_add_7": [1, 56, 40, 40],
+                "nearest_interp_v2_0.tmp_0": [1, 96, 40, 40]
+            }
+        if mode == "det" and "server" in model_file_path:
+            min_input_shape = {
+                "x": [1, 3, 50, 50],
+                "conv2d_59.tmp_0": [1, 96, 20, 20],
+                "nearest_interp_v2_2.tmp_0": [1, 96, 20, 20],
+                "nearest_interp_v2_3.tmp_0": [1, 24, 20, 20],
+                "nearest_interp_v2_4.tmp_0": [1, 24, 20, 20],
+                "nearest_interp_v2_5.tmp_0": [1, 24, 20, 20]
+            }
+            max_input_shape = {
+                "x": [1, 3, 2000, 2000],
+                "conv2d_59.tmp_0": [1, 96, 400, 400],
+                "nearest_interp_v2_2.tmp_0": [1, 96, 400, 400],
+                "nearest_interp_v2_3.tmp_0": [1, 24, 400, 400],
+                "nearest_interp_v2_4.tmp_0": [1, 24, 400, 400],
+                "nearest_interp_v2_5.tmp_0": [1, 24, 400, 400]
+            }
+            opt_input_shape = {
+                "x": [1, 3, 640, 640],
+                "conv2d_59.tmp_0": [1, 96, 160, 160],
+                "nearest_interp_v2_2.tmp_0": [1, 96, 160, 160],
+                "nearest_interp_v2_3.tmp_0": [1, 24, 160, 160],
+                "nearest_interp_v2_4.tmp_0": [1, 24, 160, 160],
+                "nearest_interp_v2_5.tmp_0": [1, 24, 160, 160]
+            }
+        elif mode == "rec":
+            min_input_shape = {"x": [args.rec_batch_num, 3, 32, 10]}
+            max_input_shape = {"x": [args.rec_batch_num, 3, 32, 2000]}
+            opt_input_shape = {"x": [args.rec_batch_num, 3, 32, 320]}
+        elif mode == "cls":
+            min_input_shape = {"x": [args.rec_batch_num, 3, 48, 10]}
+            max_input_shape = {"x": [args.rec_batch_num, 3, 48, 2000]}
+            opt_input_shape = {"x": [args.rec_batch_num, 3, 48, 320]}
+        else:
+            min_input_shape = {"x": [1, 3, 10, 10]}
+            max_input_shape = {"x": [1, 3, 1000, 1000]}
+            opt_input_shape = {"x": [1, 3, 500, 500]}
+        config.set_trt_dynamic_shape_info(min_input_shape, max_input_shape,
+                                          opt_input_shape)
+
     else:
         config.disable_gpu()
-        config.set_cpu_math_library_num_threads(6)
+        if hasattr(args, "cpu_threads"):
+            config.set_cpu_math_library_num_threads(args.cpu_threads)
+        else:
+            # default cpu threads as 10
+            config.set_cpu_math_library_num_threads(10)
         if args.enable_mkldnn:
             # cache 10 different shapes for mkldnn to avoid memory leak
             config.set_mkldnn_cache_capacity(10)
             config.enable_mkldnn()
-            #  TODO LDOUBLEV: fix mkldnn bug when bach_size  > 1
-            #config.set_mkldnn_op({'conv2d', 'depthwise_conv2d', 'pool2d', 'batch_norm'})
-            args.rec_batch_num = 1
 
     # enable memory optim
     config.enable_memory_optim()
     config.disable_glog_info()
 
     config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
+    if mode == 'table':
+        config.delete_pass("fc_fuse_pass") # not supported for table    
     config.switch_use_feed_fetch_ops(False)
+    config.switch_ir_optim(True)
 
     # create predictor
     predictor = inference.create_predictor(config)
@@ -166,7 +346,7 @@ def create_predictor(args, mode, logger):
     for output_name in output_names:
         output_tensor = predictor.get_output_handle(output_name)
         output_tensors.append(output_tensor)
-    return predictor, input_tensor, output_tensors
+    return predictor, input_tensor, output_tensors, config
 
 
 def draw_e2e_res(dt_boxes, strs, img_path):
@@ -210,7 +390,7 @@ def draw_ocr(image,
              txts=None,
              scores=None,
              drop_score=0.5,
-             font_path="./doc/simfang.ttf"):
+             font_path="./doc/fonts/simfang.ttf"):
     """
     Visualize the results of OCR detection and recognition
     args:
@@ -417,23 +597,30 @@ def draw_boxes(image, boxes, scores=None, drop_score=0.5):
     return image
 
 
+def get_current_memory_mb(gpu_id=None):
+    """
+    It is used to Obtain the memory usage of the CPU and GPU during the running of the program.
+    And this function Current program is time-consuming.
+    """
+    import pynvml
+    import psutil
+    import GPUtil
+    pid = os.getpid()
+    p = psutil.Process(pid)
+    info = p.memory_full_info()
+    cpu_mem = info.uss / 1024. / 1024.
+    gpu_mem = 0
+    gpu_percent = 0
+    if gpu_id is not None:
+        GPUs = GPUtil.getGPUs()
+        gpu_load = GPUs[gpu_id].load
+        gpu_percent = gpu_load
+        pynvml.nvmlInit()
+        handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+        meminfo = pynvml.nvmlDeviceGetMemoryInfo(handle)
+        gpu_mem = meminfo.used / 1024. / 1024.
+    return round(cpu_mem, 4), round(gpu_mem, 4), round(gpu_percent, 4)
+
+
 if __name__ == '__main__':
-    test_img = "./doc/test_v2"
-    predict_txt = "./doc/predict.txt"
-    f = open(predict_txt, 'r')
-    data = f.readlines()
-    img_path, anno = data[0].strip().split('\t')
-    img_name = os.path.basename(img_path)
-    img_path = os.path.join(test_img, img_name)
-    image = Image.open(img_path)
-
-    data = json.loads(anno)
-    boxes, txts, scores = [], [], []
-    for dic in data:
-        boxes.append(dic['points'])
-        txts.append(dic['transcription'])
-        scores.append(round(dic['scores'], 3))
-
-    new_img = draw_ocr(image, boxes, txts, scores)
-
-    cv2.imwrite(img_name, new_img)
+    pass

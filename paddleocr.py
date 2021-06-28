@@ -19,102 +19,101 @@ __dir__ = os.path.dirname(__file__)
 sys.path.append(os.path.join(__dir__, ''))
 
 import cv2
+import logging
 import numpy as np
 from pathlib import Path
-import tarfile
-import requests
-from tqdm import tqdm
 
 from tools.infer import predict_system
 from ppocr.utils.logging import get_logger
 
 logger = get_logger()
 from ppocr.utils.utility import check_and_read_gif, get_image_file_list
-from tools.infer.utility import draw_ocr
+from ppocr.utils.network import maybe_download, download_with_progressbar, is_link, confirm_model_dir_url
+from tools.infer.utility import draw_ocr, init_args, str2bool
 
 __all__ = ['PaddleOCR']
 
 model_urls = {
     'det': {
         'ch':
-        'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar',
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar',
         'en':
-        'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/en_ppocr_mobile_v2.0_det_infer.tar'
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/en_ppocr_mobile_v2.0_det_infer.tar'
     },
     'rec': {
         'ch': {
             'url':
-            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar',
+                'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/ppocr_keys_v1.txt'
         },
         'en': {
             'url':
-            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/en_number_mobile_v2.0_rec_infer.tar',
+                'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/en_number_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/en_dict.txt'
         },
         'french': {
             'url':
-            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/french_mobile_v2.0_rec_infer.tar',
+                'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/french_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/dict/french_dict.txt'
         },
         'german': {
             'url':
-            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/german_mobile_v2.0_rec_infer.tar',
+                'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/german_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/dict/german_dict.txt'
         },
         'korean': {
             'url':
-            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/korean_mobile_v2.0_rec_infer.tar',
+                'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/korean_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/dict/korean_dict.txt'
         },
         'japan': {
             'url':
-            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/japan_mobile_v2.0_rec_infer.tar',
+                'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/japan_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/dict/japan_dict.txt'
         },
         'chinese_cht': {
             'url':
-            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/chinese_cht_mobile_v2.0_rec_infer.tar',
+                'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/chinese_cht_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/dict/chinese_cht_dict.txt'
         },
         'ta': {
             'url':
-            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ta_mobile_v2.0_rec_infer.tar',
+                'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ta_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/dict/ta_dict.txt'
         },
         'te': {
             'url':
-            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/te_mobile_v2.0_rec_infer.tar',
+                'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/te_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/dict/te_dict.txt'
         },
         'ka': {
             'url':
-            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ka_mobile_v2.0_rec_infer.tar',
+                'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/ka_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/dict/ka_dict.txt'
         },
         'latin': {
             'url':
-            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/latin_ppocr_mobile_v2.0_rec_infer.tar',
+                'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/latin_ppocr_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/dict/latin_dict.txt'
         },
         'arabic': {
             'url':
-            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/arabic_ppocr_mobile_v2.0_rec_infer.tar',
+                'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/arabic_ppocr_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/dict/arabic_dict.txt'
         },
         'cyrillic': {
             'url':
-            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/cyrillic_ppocr_mobile_v2.0_rec_infer.tar',
+                'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/cyrillic_ppocr_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/dict/cyrillic_dict.txt'
         },
         'devanagari': {
             'url':
-            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/devanagari_ppocr_mobile_v2.0_rec_infer.tar',
+                'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/devanagari_ppocr_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/dict/devanagari_dict.txt'
         }
     },
     'cls':
-    'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar'
+        'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar'
 }
 
 SUPPORT_DET_MODEL = ['DB']
@@ -123,150 +122,24 @@ SUPPORT_REC_MODEL = ['CRNN']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
 
-def download_with_progressbar(url, save_path):
-    response = requests.get(url, stream=True)
-    total_size_in_bytes = int(response.headers.get('content-length', 0))
-    block_size = 1024  # 1 Kibibyte
-    progress_bar = tqdm(total=total_size_in_bytes, unit='iB', unit_scale=True)
-    with open(save_path, 'wb') as file:
-        for data in response.iter_content(block_size):
-            progress_bar.update(len(data))
-            file.write(data)
-    progress_bar.close()
-    if total_size_in_bytes == 0 or progress_bar.n != total_size_in_bytes:
-        logger.error("Something went wrong while downloading models")
-        sys.exit(0)
-
-
-def maybe_download(model_storage_directory, url):
-    # using custom model
-    tar_file_name_list = [
-        'inference.pdiparams', 'inference.pdiparams.info', 'inference.pdmodel'
-    ]
-    if not os.path.exists(
-            os.path.join(model_storage_directory, 'inference.pdiparams')
-    ) or not os.path.exists(
-            os.path.join(model_storage_directory, 'inference.pdmodel')):
-        tmp_path = os.path.join(model_storage_directory, url.split('/')[-1])
-        print('download {} to {}'.format(url, tmp_path))
-        os.makedirs(model_storage_directory, exist_ok=True)
-        download_with_progressbar(url, tmp_path)
-        with tarfile.open(tmp_path, 'r') as tarObj:
-            for member in tarObj.getmembers():
-                filename = None
-                for tar_file_name in tar_file_name_list:
-                    if tar_file_name in member.name:
-                        filename = tar_file_name
-                if filename is None:
-                    continue
-                file = tarObj.extractfile(member)
-                with open(
-                        os.path.join(model_storage_directory, filename),
-                        'wb') as f:
-                    f.write(file.read())
-        os.remove(tmp_path)
-
-
-def parse_args(mMain=True, add_help=True):
+def parse_args(mMain=True):
     import argparse
+    parser = init_args()
+    parser.add_help = mMain
+    parser.add_argument("--lang", type=str, default='ch')
+    parser.add_argument("--det", type=str2bool, default=True)
+    parser.add_argument("--rec", type=str2bool, default=True)
 
-    def str2bool(v):
-        return v.lower() in ("true", "t", "1")
-
+    for action in parser._actions:
+        if action.dest == 'rec_char_dict_path':
+            action.default = None
     if mMain:
-        parser = argparse.ArgumentParser(add_help=add_help)
-        # params for prediction engine
-        parser.add_argument("--use_gpu", type=str2bool, default=True)
-        parser.add_argument("--ir_optim", type=str2bool, default=True)
-        parser.add_argument("--use_tensorrt", type=str2bool, default=False)
-        parser.add_argument("--gpu_mem", type=int, default=8000)
-
-        # params for text detector
-        parser.add_argument("--image_dir", type=str)
-        parser.add_argument("--det_algorithm", type=str, default='DB')
-        parser.add_argument("--det_model_dir", type=str, default=None)
-        parser.add_argument("--det_limit_side_len", type=float, default=960)
-        parser.add_argument("--det_limit_type", type=str, default='max')
-
-        # DB parmas
-        parser.add_argument("--det_db_thresh", type=float, default=0.3)
-        parser.add_argument("--det_db_box_thresh", type=float, default=0.5)
-        parser.add_argument("--det_db_unclip_ratio", type=float, default=1.6)
-        parser.add_argument("--use_dilation", type=bool, default=False)
-        parser.add_argument("--det_db_score_mode", type=str, default="fast")
-
-        # EAST parmas
-        parser.add_argument("--det_east_score_thresh", type=float, default=0.8)
-        parser.add_argument("--det_east_cover_thresh", type=float, default=0.1)
-        parser.add_argument("--det_east_nms_thresh", type=float, default=0.2)
-
-        # params for text recognizer
-        parser.add_argument("--rec_algorithm", type=str, default='CRNN')
-        parser.add_argument("--rec_model_dir", type=str, default=None)
-        parser.add_argument("--rec_image_shape", type=str, default="3, 32, 320")
-        parser.add_argument("--rec_char_type", type=str, default='ch')
-        parser.add_argument("--rec_batch_num", type=int, default=6)
-        parser.add_argument("--max_text_length", type=int, default=25)
-        parser.add_argument("--rec_char_dict_path", type=str, default=None)
-        parser.add_argument("--use_space_char", type=bool, default=True)
-        parser.add_argument("--drop_score", type=float, default=0.5)
-
-        # params for text classifier
-        parser.add_argument("--cls_model_dir", type=str, default=None)
-        parser.add_argument("--cls_image_shape", type=str, default="3, 48, 192")
-        parser.add_argument("--label_list", type=list, default=['0', '180'])
-        parser.add_argument("--cls_batch_num", type=int, default=6)
-        parser.add_argument("--cls_thresh", type=float, default=0.9)
-
-        parser.add_argument("--enable_mkldnn", type=bool, default=False)
-        parser.add_argument("--use_zero_copy_run", type=bool, default=False)
-        parser.add_argument("--use_pdserving", type=str2bool, default=False)
-
-        parser.add_argument("--lang", type=str, default='ch')
-        parser.add_argument("--det", type=str2bool, default=True)
-        parser.add_argument("--rec", type=str2bool, default=True)
-        parser.add_argument("--use_angle_cls", type=str2bool, default=False)
         return parser.parse_args()
     else:
-        return argparse.Namespace(
-            use_gpu=True,
-            ir_optim=True,
-            use_tensorrt=False,
-            gpu_mem=8000,
-            image_dir='',
-            det_algorithm='DB',
-            det_model_dir=None,
-            det_limit_side_len=960,
-            det_limit_type='max',
-            det_db_thresh=0.3,
-            det_db_box_thresh=0.5,
-            det_db_unclip_ratio=1.6,
-            use_dilation=False,
-            det_db_score_mode="fast",
-            det_east_score_thresh=0.8,
-            det_east_cover_thresh=0.1,
-            det_east_nms_thresh=0.2,
-            rec_algorithm='CRNN',
-            rec_model_dir=None,
-            rec_image_shape="3, 32, 320",
-            rec_char_type='ch',
-            rec_batch_num=6,
-            max_text_length=25,
-            rec_char_dict_path=None,
-            use_space_char=True,
-            drop_score=0.5,
-            cls_model_dir=None,
-            cls_image_shape="3, 48, 192",
-            label_list=['0', '180'],
-            cls_batch_num=6,
-            cls_thresh=0.9,
-            enable_mkldnn=False,
-            use_zero_copy_run=False,
-            use_pdserving=False,
-            lang='ch',
-            det=True,
-            rec=True,
-            use_angle_cls=False)
+        inference_args_dict = {}
+        for action in parser._actions:
+            inference_args_dict[action.dest] = action.default
+        return argparse.Namespace(**inference_args_dict)
 
 
 class PaddleOCR(predict_system.TextSystem):
@@ -276,10 +149,12 @@ class PaddleOCR(predict_system.TextSystem):
         args:
             **kwargs: other params show in paddleocr --help
         """
-        postprocess_params = parse_args(mMain=False, add_help=False)
-        postprocess_params.__dict__.update(**kwargs)
-        self.use_angle_cls = postprocess_params.use_angle_cls
-        lang = postprocess_params.lang
+        params = parse_args(mMain=False)
+        params.__dict__.update(**kwargs)
+        if not params.show_log:
+            logger.setLevel(logging.INFO)
+        self.use_angle_cls = params.use_angle_cls
+        lang = params.lang
         latin_lang = [
             'af', 'az', 'bs', 'cs', 'cy', 'da', 'de', 'es', 'et', 'fr', 'ga',
             'hr', 'hu', 'id', 'is', 'it', 'ku', 'la', 'lt', 'lv', 'mi', 'ms',
@@ -305,48 +180,47 @@ class PaddleOCR(predict_system.TextSystem):
             lang = "devanagari"
         assert lang in model_urls[
             'rec'], 'param lang must in {}, but got {}'.format(
-                model_urls['rec'].keys(), lang)
+            model_urls['rec'].keys(), lang)
         if lang == "ch":
             det_lang = "ch"
         else:
             det_lang = "en"
         use_inner_dict = False
-        if postprocess_params.rec_char_dict_path is None:
+        if params.rec_char_dict_path is None:
             use_inner_dict = True
-            postprocess_params.rec_char_dict_path = model_urls['rec'][lang][
+            params.rec_char_dict_path = model_urls['rec'][lang][
                 'dict_path']
 
         # init model dir
-        if postprocess_params.det_model_dir is None:
-            postprocess_params.det_model_dir = os.path.join(BASE_DIR, VERSION,
-                                                            'det', det_lang)
-        if postprocess_params.rec_model_dir is None:
-            postprocess_params.rec_model_dir = os.path.join(BASE_DIR, VERSION,
-                                                            'rec', lang)
-        if postprocess_params.cls_model_dir is None:
-            postprocess_params.cls_model_dir = os.path.join(BASE_DIR, 'cls')
-        print(postprocess_params)
+        params.det_model_dir, det_url = confirm_model_dir_url(params.det_model_dir,
+                                                              os.path.join(BASE_DIR, VERSION, 'det', det_lang),
+                                                              model_urls['det'][det_lang])
+        params.rec_model_dir, rec_url = confirm_model_dir_url(params.rec_model_dir,
+                                                              os.path.join(BASE_DIR, VERSION, 'rec', lang),
+                                                              model_urls['rec'][lang]['url'])
+        params.cls_model_dir, cls_url = confirm_model_dir_url(params.cls_model_dir,
+                                                              os.path.join(BASE_DIR, VERSION, 'cls'),
+                                                              model_urls['cls'])
         # download model
-        maybe_download(postprocess_params.det_model_dir,
-                       model_urls['det'][det_lang])
-        maybe_download(postprocess_params.rec_model_dir,
-                       model_urls['rec'][lang]['url'])
-        maybe_download(postprocess_params.cls_model_dir, model_urls['cls'])
+        maybe_download(params.det_model_dir, det_url)
+        maybe_download(params.rec_model_dir, rec_url)
+        maybe_download(params.cls_model_dir, cls_url)
 
-        if postprocess_params.det_algorithm not in SUPPORT_DET_MODEL:
+        if params.det_algorithm not in SUPPORT_DET_MODEL:
             logger.error('det_algorithm must in {}'.format(SUPPORT_DET_MODEL))
             sys.exit(0)
-        if postprocess_params.rec_algorithm not in SUPPORT_REC_MODEL:
+        if params.rec_algorithm not in SUPPORT_REC_MODEL:
             logger.error('rec_algorithm must in {}'.format(SUPPORT_REC_MODEL))
             sys.exit(0)
         if use_inner_dict:
-            postprocess_params.rec_char_dict_path = str(
-                Path(__file__).parent / postprocess_params.rec_char_dict_path)
+            params.rec_char_dict_path = str(
+                Path(__file__).parent / params.rec_char_dict_path)
 
+        print(params)
         # init det_model and rec_model
-        super().__init__(postprocess_params)
+        super().__init__(params)
 
-    def ocr(self, img, det=True, rec=True, cls=False):
+    def ocr(self, img, det=True, rec=True, cls=True):
         """
         ocr with paddleocr
         args：
@@ -358,9 +232,7 @@ class PaddleOCR(predict_system.TextSystem):
         if isinstance(img, list) and det == True:
             logger.error('When input a list of images, det must be false')
             exit(0)
-        if cls == False:
-            self.use_angle_cls = False
-        elif cls == True and self.use_angle_cls == False:
+        if cls == True and self.use_angle_cls == False:
             logger.warning(
                 'Since the angle classifier is not initialized, the angle classifier will not be uesd during the forward process'
             )
@@ -382,7 +254,7 @@ class PaddleOCR(predict_system.TextSystem):
         if isinstance(img, np.ndarray) and len(img.shape) == 2:
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
         if det and rec:
-            dt_boxes, rec_res = self.__call__(img)
+            dt_boxes, rec_res = self.__call__(img, cls)
             return [[box.tolist(), res] for box, res in zip(dt_boxes, rec_res)]
         elif det and not rec:
             dt_boxes, elapse = self.text_detector(img)
@@ -392,7 +264,7 @@ class PaddleOCR(predict_system.TextSystem):
         else:
             if not isinstance(img, list):
                 img = [img]
-            if self.use_angle_cls:
+            if self.use_angle_cls and cls:
                 img, cls_res, elapse = self.text_classifier(img)
                 if not rec:
                     return cls_res
@@ -404,7 +276,7 @@ def main():
     # for cmd
     args = parse_args(mMain=True)
     image_dir = args.image_dir
-    if image_dir.startswith('http'):
+    if is_link(image_dir):
         download_with_progressbar(image_dir, 'tmp.jpg')
         image_file_list = ['tmp.jpg']
     else:

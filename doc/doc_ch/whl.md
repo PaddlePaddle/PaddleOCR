@@ -59,7 +59,7 @@ im_show.save('result.jpg')
 from paddleocr import PaddleOCR, draw_ocr
 ocr = PaddleOCR() # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs/11.jpg'
-result = ocr.ocr(img_path)
+result = ocr.ocr(img_path,cls=False)
 for line in result:
     print(line)
 
@@ -355,3 +355,4 @@ im_show.save('result.jpg')
 | det                     | 前向时使用启动检测                                                                                                                                                                                                   | TRUE                    |
 | rec                     | 前向时是否启动识别                                                                                                                                                                                                   | TRUE                    |
 | cls                     | 前向时是否启动分类 (命令行模式下使用use_angle_cls控制前向是否启动分类)                                                                                                                                                                                                | FALSE                    |
+| show_log                     | 是否打印det和rec等信息                                                                                                                                                                                                | FALSE                    |
