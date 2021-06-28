@@ -31,8 +31,6 @@ from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.data import create_operators, transform
 from ppocr.postprocess import build_post_process
 
-# import tools.infer.benchmark_utils as benchmark_utils
-
 logger = get_logger()
 
 
