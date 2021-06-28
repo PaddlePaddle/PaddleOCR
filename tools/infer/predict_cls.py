@@ -112,6 +112,7 @@ class TextClassifier(object):
                 if '180' in label and score > self.cls_thresh:
                     img_list[indices[beg_img_no + rno]] = cv2.rotate(
                         img_list[indices[beg_img_no + rno]], 1)
+        elapse = time.time() - starttime
         return img_list, cls_res, elapse
 
 
