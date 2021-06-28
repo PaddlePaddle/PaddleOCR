@@ -4,6 +4,7 @@ FILENAME=$1
 MODE=$2
 
 dataline=$(cat ${FILENAME})
+
 # parser params
 IFS=$'\n'
 lines=(${dataline})
@@ -90,7 +91,7 @@ elif [ ${MODE} = "whole_train_infer" ]; then
     export epoch_num=300
 else
     export infer_img_dir="./inference/ch_det_data_50/all-sum-510"
-    export infer_model_dir="./inference/ch_ppocr_mobile_det_v2.0_train/best_accuracy"
+    export infer_model_dir="./inference/ch_ppocr_mobile_v2.0_det_train/best_accuracy"
 fi
 
 
@@ -210,8 +211,9 @@ done
 
 else
     save_infer_path="${LOG_PATH}/${MODE}"
+    run_export=${norm_export}
     export_cmd="${python} ${run_export} ${save_model_key}=${save_infer_path} ${pretrain_model_key}=${infer_model_dir} ${save_infer_key}=${save_infer_path}"
-    echo $export_cmd
+    eval $export_cmd
     status_check $? "${export_cmd}" "${status_log}"
 
     #run inference

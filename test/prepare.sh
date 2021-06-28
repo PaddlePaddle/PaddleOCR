@@ -1,18 +1,30 @@
 #!/bin/bash
 FILENAME=$1
+# MODE be one of ['lite_train_infer' 'whole_infer' 'whole_train_infer', 'infer']
+MODE=$2
+
 dataline=$(cat ${FILENAME})
+
 # parser params
 IFS=$'\n'
 lines=(${dataline})
-function func_parser_value(){
+function func_parser_key(){
     strs=$1
     IFS=": "
+    array=(${strs})
+    tmp=${array[0]}
+    echo ${tmp}
+}
+function func_parser_value(){
+    strs=$1
+    IFS=":"
     array=(${strs})
     tmp=${array[1]}
     echo ${tmp}
 }
 IFS=$'\n'
 # The training params
+model_name=$(func_parser_value "${lines[0]}")
 train_model_list=$(func_parser_value "${lines[0]}")
 slim_trainer_list=$(func_parser_value "${lines[12]}")
 
@@ -49,7 +61,15 @@ elif [ ${MODE} = "whole_infer" ];then
 else
     rm -rf ./train_data/icdar2015
     wget -nc -P ./train_data https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar
-
+    if [ ${model_name} = "ocr_det" ]; then
+        eval_model_name="ch_ppocr_mobile_v2.0_det_train"
+        wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar
+        cd ./inference && tar xf ${eval_model_name}.tar && cd ../
+    else 
+        eval_model_name="ch_ppocr_mobile_v2.0_rec_train"
+        wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_train.tar
+        cd ./inference && tar xf ${eval_model_name}.tar && cd ../
+    fi 
 fi
 
 
