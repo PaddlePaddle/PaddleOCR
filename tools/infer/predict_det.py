@@ -257,7 +257,8 @@ if __name__ == "__main__":
         img_name_pure = os.path.split(image_file)[-1]
         img_path = os.path.join(draw_img_save,
                                 "det_res_{}".format(img_name_pure))
-
+        cv2.imwrite(img_path, src_im)
         logger.info("The visualized image saved in {}".format(img_path))
 
     text_detector.autolog.report()
+
