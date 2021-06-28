@@ -66,8 +66,6 @@ class TextRecognizer(object):
         self.predictor, self.input_tensor, self.output_tensors, self.config = \
             utility.create_predictor(args, 'rec', logger)
 
-        self.rec_times = utility.Timer()
-
     def resize_norm_img(self, img, max_wh_ratio):
         imgC, imgH, imgW = self.rec_image_shape
         assert imgC == img.shape[2]
@@ -168,14 +166,13 @@ class TextRecognizer(object):
             width_list.append(img.shape[1] / float(img.shape[0]))
         # Sorting can speed up the recognition process
         indices = np.argsort(np.array(width_list))
-        self.rec_times.total_time.start()
         rec_res = [['', 0.0]] * img_num
         batch_num = self.rec_batch_num
+        st = time.time()
         for beg_img_no in range(0, img_num, batch_num):
             end_img_no = min(img_num, beg_img_no + batch_num)
             norm_img_batch = []
             max_wh_ratio = 0
-            self.rec_times.preprocess_time.start()
             for ino in range(beg_img_no, end_img_no):
                 h, w = img_list[indices[ino]].shape[0:2]
                 wh_ratio = w * 1.0 / h
@@ -216,8 +213,6 @@ class TextRecognizer(object):
                     gsrm_slf_attn_bias1_list,
                     gsrm_slf_attn_bias2_list,
                 ]
-                self.rec_times.preprocess_time.end()
-                self.rec_times.inference_time.start()
                 input_names = self.predictor.get_input_names()
                 for i in range(len(input_names)):
                     input_tensor = self.predictor.get_input_handle(input_names[
@@ -241,15 +236,13 @@ class TextRecognizer(object):
                     output = output_tensor.copy_to_cpu()
                     outputs.append(output)
                 preds = outputs[0]
-            self.rec_times.inference_time.end()
-            self.rec_times.postprocess_time.start()
             rec_result = self.postprocess_op(preds)
             for rno in range(len(rec_result)):
                 rec_res[indices[beg_img_no + rno]] = rec_result[rno]
             self.rec_times.postprocess_time.end()
             self.rec_times.img_num += int(norm_img_batch.shape[0])
-        self.rec_times.total_time.end()
-        return rec_res, self.rec_times.total_time.value()
+
+        return rec_res, time.time() - st
 
 
 def main(args):
@@ -278,12 +271,6 @@ def main(args):
         img_list.append(img)
     try:
         rec_res, _ = text_recognizer(img_list)
-        if args.benchmark:
-            cm, gm, gu = utility.get_current_memory_mb(0)
-            cpu_mem += cm
-            gpu_mem += gm
-            gpu_util += gu
-            count += 1
 
     except Exception as E:
         logger.info(traceback.format_exc())
@@ -292,38 +279,6 @@ def main(args):
     for ino in range(len(img_list)):
         logger.info("Predicts of {}:{}".format(valid_image_file_list[ino],
                                                rec_res[ino]))
-    if args.benchmark:
-        mems = {
-            'cpu_rss_mb': cpu_mem / count,
-            'gpu_rss_mb': gpu_mem / count,
-            'gpu_util': gpu_util * 100 / count
-        }
-    else:
-        mems = None
-    logger.info("The predict time about recognizer module is as follows: ")
-    rec_time_dict = text_recognizer.rec_times.report(average=True)
-    rec_model_name = args.rec_model_dir
-
-    if args.benchmark:
-        # construct log information
-        model_info = {
-            'model_name': args.rec_model_dir.split('/')[-1],
-            'precision': args.precision
-        }
-        data_info = {
-            'batch_size': args.rec_batch_num,
-            'shape': 'dynamic_shape',
-            'data_num': rec_time_dict['img_num']
-        }
-        perf_info = {
-            'preprocess_time_s': rec_time_dict['preprocess_time'],
-            'inference_time_s': rec_time_dict['inference_time'],
-            'postprocess_time_s': rec_time_dict['postprocess_time'],
-            'total_time_s': rec_time_dict['total_time']
-        }
-        benchmark_log = benchmark_utils.PaddleInferBenchmark(
-            text_recognizer.config, model_info, data_info, perf_info, mems)
-        benchmark_log("Rec")
 
 
 if __name__ == "__main__":
