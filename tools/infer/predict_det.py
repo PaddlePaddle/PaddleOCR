@@ -237,3 +237,4 @@ if __name__ == "__main__":
                                 "det_res_{}".format(img_name_pure))
         cv2.imwrite(img_path, src_im)
         logger.info("The visualized image saved in {}".format(img_path))
+
