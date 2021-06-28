@@ -43,7 +43,7 @@ epoch_key=$(func_parser_key "${lines[4]}")
 save_model_key=$(func_parser_key "${lines[5]}")
 save_infer_key=$(func_parser_key "${lines[6]}")
 train_batch_key=$(func_parser_key "${lines[7]}")
-use_gpu_key=$(func_parser_key "${lines[8]}")
+train_use_gpu_key=$(func_parser_key "${lines[8]}")
 pretrain_model_key=$(func_parser_key "${lines[9]}")
 
 trainer_list=$(func_parser_value "${lines[10]}")
@@ -76,6 +76,7 @@ image_dir_key=$(func_parser_key "${lines[28]}")
 save_log_key=$(func_parser_key "${lines[29]}")
 
 LOG_PATH="./test/output"
+mkdir -p ${LOG_PATH}
 status_log="${LOG_PATH}/results.log"
 
 if [ ${MODE} = "lite_train_infer" ]; then
@@ -134,6 +135,7 @@ function func_inference(){
 
 if [ ${MODE} != "infer" ]; then
 
+IFS="|"
 for gpu in ${gpu_list[*]}; do
     use_gpu=True
     if [ ${gpu} = "-1" ];then
@@ -178,11 +180,11 @@ for gpu in ${gpu_list[*]}; do
 
             save_log="${LOG_PATH}/${trainer}_gpus_${gpu}_autocast_${autocast}"
             if [ ${#gpu} -le 2 ];then  # epoch_num #TODO
-                cmd="${python} ${run_train} ${use_gpu_key}=${use_gpu} ${autocast_key}={autocast} ${epoch_key}=${epoch_num} ${save_model_key}=${save_log} "
+                cmd="${python} ${run_train} ${train_use_gpu_key}=${use_gpu} ${autocast_key}=${autocast} ${epoch_key}=${epoch_num} ${save_model_key}=${save_log} "
             elif [ ${#gpu} -le 15 ];then
-                cmd="${python} -m paddle.distributed.launch --gpus=${gpu} ${run_train} ${autocast_key}={autocast} ${epoch_key}=${epoch_num}  ${save_model_key}=${save_log}"
+                cmd="${python} -m paddle.distributed.launch --gpus=${gpu} ${run_train} ${autocast_key}=${autocast} ${epoch_key}=${epoch_num}  ${save_model_key}=${save_log}"
             else
-                cmd="${python} -m paddle.distributed.launch --ips=${ips} --gpus=${gpu} ${run_train} ${autocast_key}={autocast} ${epoch_key}=${epoch_num} ${save_model_key}=${save_log}"
+                cmd="${python} -m paddle.distributed.launch --ips=${ips} --gpus=${gpu} ${run_train} ${autocast_key}=${autocast} ${epoch_key}=${epoch_num} ${save_model_key}=${save_log}"
             fi
             # run train
             eval $cmd

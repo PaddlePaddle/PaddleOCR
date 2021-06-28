@@ -114,5 +114,5 @@ for train_model in ${train_model_list[*]}; do
                 cd ./inference && tar xf ${eval_model_name}.tar && cd ../
             fi
         fi
-
-
+    done
+done
