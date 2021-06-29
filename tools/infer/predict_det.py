@@ -174,8 +174,9 @@ class TextDetector(object):
         data = {'image': img}
 
         st = time.time()
-
-        self.autolog.times.start()
+        
+        if args.benchmark:
+            self.autolog.times.start()
 
         data = transform(data, self.preprocess_op)
         img, shape_list = data
@@ -185,7 +186,8 @@ class TextDetector(object):
         shape_list = np.expand_dims(shape_list, axis=0)
         img = img.copy()
 
-        self.autolog.times.stamp()
+        if args.benchmark:
+            self.autolog.times.stamp()
 
         self.input_tensor.copy_from_cpu(img)
         self.predictor.run()
@@ -193,8 +195,8 @@ class TextDetector(object):
         for output_tensor in self.output_tensors:
             output = output_tensor.copy_to_cpu()
             outputs.append(output)
-
-        self.autolog.times.stamp()
+        if args.benchmark:
+            self.autolog.times.stamp()
 
         preds = {}
         if self.det_algorithm == "EAST":
@@ -218,7 +220,8 @@ class TextDetector(object):
         else:
             dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
 
-        self.autolog.times.end(stamp=True)
+        if args.benchmark:
+            self.autolog.times.end(stamp=True)
         et = time.time()
         return dt_boxes, et - st
 
@@ -259,6 +262,7 @@ if __name__ == "__main__":
                                 "det_res_{}".format(img_name_pure))
         cv2.imwrite(img_path, src_im)
         logger.info("The visualized image saved in {}".format(img_path))
-
-    text_detector.autolog.report()
+    
+    if args.benchmark:
+        text_detector.autolog.report()
 
