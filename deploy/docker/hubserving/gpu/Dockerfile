@@ -1,5 +1,5 @@
 # Version: 2.0.0
-FROM registry.baidubce.com/paddlepaddle/paddle:2.0.0-gpu-cuda10.1-cudnn7
+FROM registry.baidubce.com/paddlepaddle/paddle:2.1.0-gpu-cuda10.2-cudnn7
 
 # PaddleOCR base on Python3.7
 RUN pip3.7 install --upgrade pip -i https://mirror.baidu.com/pypi/simple
