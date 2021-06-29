@@ -111,11 +111,11 @@ class TextSystem(object):
             len(rec_res), elapse))
         # self.print_draw_crop_rec_res(img_crop_list, rec_res)
         filter_boxes, filter_rec_res = [], []
-        for box, rec_reuslt in zip(dt_boxes, rec_res):
-            text, score = rec_reuslt
+        for box, rec_result in zip(dt_boxes, rec_res):
+            text, score = rec_result
             if score >= self.drop_score:
                 filter_boxes.append(box)
-                filter_rec_res.append(rec_reuslt)
+                filter_rec_res.append(rec_result)
         return filter_boxes, filter_rec_res
 
 
