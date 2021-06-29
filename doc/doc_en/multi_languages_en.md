@@ -197,6 +197,8 @@ please replace the model files and dictionaries yourself:
 
 The detection model are as follows:
 
+There are two detection models, namely the Chinese detection model and the English detection model. The Chinese detection model performs better on Chinese and English images. The English detection model is based on the Chinese model and is fine-tuned using English scene data and other language data finetune. Better in the English scene.
+
 |model name| description|config|download|
 | --- | --- | --- | --- |
 | en_mobile_v2.0_det |The multi-language detection model |[en_det_mv3_db.yml](../../configs/det/det_mv3_db.yml)| [inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/en_ppocr_mobile_v2.0_det_infer.tar) /[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/en_ppocr_mobile_v2.0_det_train.tar) |
