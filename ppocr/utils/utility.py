@@ -16,7 +16,7 @@ import logging
 import os
 import imghdr
 import cv2
-
+from PIL import Image
 
 def print_dict(d, logger, delimiter=0):
     """
@@ -45,14 +45,13 @@ def get_check_global_params(mode):
         check_params = check_params + ['test_batch_size_per_card']
     return check_params
 
-
 def get_image_file_list(img_file):
     imgs_lists = []
     if img_file is None or not os.path.exists(img_file):
         raise Exception("not found any img file in {}".format(img_file))
 
     img_end = {'jpg', 'bmp', 'png', 'jpeg', 'rgb', 'tif', 'tiff', 'gif', 'GIF'}
-    if os.path.isfile(img_file) and imghdr.what(img_file) in img_end:
+    if os.path.isfile(img_file) and Image.open(img_file).format in img_end:
         imgs_lists.append(img_file)
     elif os.path.isdir(img_file):
         for single_file in os.listdir(img_file):
