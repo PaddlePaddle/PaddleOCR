@@ -30,6 +30,7 @@ from .east_process import *
 from .sast_process import *
 from .pg_process import *
 
+from .det_aug import *
 
 def transform(data, ops=None):
     """ transform """
@@ -61,3 +62,35 @@ def create_operators(op_param_list, global_config=None):
         op = eval(op_name)(**param)
         ops.append(op)
     return ops
+
+
+class OneOf(object):
+    def __init__(self, ops, **kwargs):
+        self.ops = []
+        ext_data_num = 0
+        for op in ops:
+            if isinstance(op, dict):
+                op = [op]
+            op = create_operators(op, kwargs)
+            for opop in op:
+                if hasattr(opop, 'ext_data_num'):
+                    ext_data_num = getattr(opop, 'ext_data_num')
+                    break
+            self.ops.append(op)
+        self.ext_data_num = ext_data_num
+        self._small_area_text_contrib = 0
+
+    @property
+    def small_area_text_contrib(self,):
+        return self._small_area_text_contrib
+
+    @small_area_text_contrib.setter
+    def small_area_text_contrib(self,value):
+        for op in self.ops:
+            for o in op:
+                if hasattr(o, 'small_area_text_contrib'):
+                    setattr(o, 'small_area_text_contrib', value)
+
+    def __call__(self, data):
+        op = np.random.choice(self.ops)
+        return transform(data, op)
