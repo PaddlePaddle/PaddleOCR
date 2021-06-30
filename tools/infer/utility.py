@@ -625,6 +625,7 @@ def get_rotate_crop_image(img, points):
     points[:, 0] = points[:, 0] - left
     points[:, 1] = points[:, 1] - top
     '''
+    assert len(points) == 4, "shape of points must be 4*2"
     img_crop_width = int(
         max(
             np.linalg.norm(points[0] - points[1]),
