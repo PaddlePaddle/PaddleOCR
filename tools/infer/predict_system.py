@@ -13,6 +13,7 @@
 # limitations under the License.
 import os
 import sys
+import subprocess
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
@@ -24,6 +25,7 @@ import cv2
 import copy
 import numpy as np
 import time
+import logging
 from PIL import Image
 import tools.infer.utility as utility
 import tools.infer.predict_rec as predict_rec
@@ -38,6 +40,9 @@ logger = get_logger()
 
 class TextSystem(object):
     def __init__(self, args):
+        if not args.show_log:
+            logger.setLevel(logging.INFO)
+
         self.text_detector = predict_det.TextDetector(args)
         self.text_recognizer = predict_rec.TextRecognizer(args)
         self.use_angle_cls = args.use_angle_cls
@@ -55,7 +60,7 @@ class TextSystem(object):
         ori_im = img.copy()
         dt_boxes, elapse = self.text_detector(img)
 
-        logger.info("dt_boxes num : {}, elapse : {}".format(
+        logger.debug("dt_boxes num : {}, elapse : {}".format(
             len(dt_boxes), elapse))
         if dt_boxes is None:
             return None, None
@@ -70,11 +75,11 @@ class TextSystem(object):
         if self.use_angle_cls and cls:
             img_crop_list, angle_list, elapse = self.text_classifier(
                 img_crop_list)
-            logger.info("cls num  : {}, elapse : {}".format(
+            logger.debug("cls num  : {}, elapse : {}".format(
                 len(img_crop_list), elapse))
 
         rec_res, elapse = self.text_recognizer(img_crop_list)
-        logger.info("rec_res num  : {}, elapse : {}".format(
+        logger.debug("rec_res num  : {}, elapse : {}".format(
             len(rec_res), elapse))
         # self.print_draw_crop_rec_res(img_crop_list, rec_res)
         filter_boxes, filter_rec_res = [], []
@@ -109,15 +114,24 @@ def sorted_boxes(dt_boxes):
 
 def main(args):
     image_file_list = get_image_file_list(args.image_dir)
+    image_file_list = image_file_list[args.process_id::args.total_process_num]
     text_sys = TextSystem(args)
     is_visualize = True
     font_path = args.vis_font_path
     drop_score = args.drop_score
+
+    # warm up 10 times
+    if args.warmup:
+        img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
+        for i in range(10):
+            res = text_sys(img)
+
     total_time = 0
     cpu_mem, gpu_mem, gpu_util = 0, 0, 0
     _st = time.time()
     count = 0
     for idx, image_file in enumerate(image_file_list):
+
         img, flag = check_and_read_gif(image_file)
         if not flag:
             img = cv2.imread(image_file)
@@ -226,4 +240,18 @@ def main(args):
 
 
 if __name__ == "__main__":
-    main(utility.parse_args())
+    args = utility.parse_args()
+    if args.use_mp:
+        p_list = []
+        total_process_num = args.total_process_num
+        for process_id in range(total_process_num):
+            cmd = [sys.executable, "-u"] + sys.argv + [
+                "--process_id={}".format(process_id),
+                "--use_mp={}".format(False)
+            ]
+            p = subprocess.Popen(cmd, stdout=sys.stdout, stderr=sys.stdout)
+            p_list.append(p)
+        for p in p_list:
+            p.wait()
+    else:
+        main(args)
