@@ -164,34 +164,18 @@ def get_intersection(pD, pG):
 
 
 def rotate_bbox(img, text_polys, angle, scale=1):
-    """
-    从给定的角度中选择一个角度，对图片和文本框进行旋转
-    :param img: 图片
-    :param text_polys: 文本框
-    :param degrees: 角度，可以是一个数值或者list
-    :param same_size: 是否保持和原图一样大
-    :return: 旋转后的图片和角度
-    """
-    # ---------------------- 旋转图像 ----------------------
     w = img.shape[1]
     h = img.shape[0]
 
-    # 角度变弧度
     rangle = np.deg2rad(angle)
-    # 计算旋转之后图像的w, h
     nw = (abs(np.sin(rangle) * h) + abs(np.cos(rangle) * w))
     nh = (abs(np.cos(rangle) * h) + abs(np.sin(rangle) * w))
-    # 构造仿射矩阵
     rot_mat = cv2.getRotationMatrix2D((nw * 0.5, nh * 0.5), angle, scale)
-    # 计算原图中心点到新图中心点的偏移量
     rot_move = np.dot(rot_mat, np.array([(nw - w) * 0.5, (nh - h) * 0.5, 0]))
-    # 更新仿射矩阵
     rot_mat[0, 2] += rot_move[0]
     rot_mat[1, 2] += rot_move[1]
 
-    # ---------------------- 矫正bbox坐标 ----------------------
-    # rot_mat是最终的旋转矩阵
-    # 获取原始bbox的四个中点，然后将这四个点转换到旋转后的坐标系下
+    # ---------------------- rotate box ----------------------
     rot_text_polys = list()
     for bbox in text_polys:
         point1 = np.dot(rot_mat, np.array([bbox[0, 0], bbox[0, 1], 1]))
