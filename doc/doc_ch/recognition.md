@@ -243,7 +243,7 @@ Optimizer:
 
 Train:
   dataset:
-    # 数据集格式，支持LMDBDateSet以及SimpleDataSet
+    # 数据集格式，支持LMDBDataSet以及SimpleDataSet
     name: SimpleDataSet
     # 数据集路径
     data_dir: ./train_data/
@@ -263,7 +263,7 @@ Train:
 
 Eval:
   dataset:
-    # 数据集格式，支持LMDBDateSet以及SimpleDataSet
+    # 数据集格式，支持LMDBDataSet以及SimpleDataSet
     name: SimpleDataSet
     # 数据集路径
     data_dir: ./train_data
@@ -393,7 +393,7 @@ Global:
 
 Train:
   dataset:
-    # 数据集格式，支持LMDBDateSet以及SimpleDataSet
+    # 数据集格式，支持LMDBDataSet以及SimpleDataSet
     name: SimpleDataSet
     # 数据集路径
     data_dir: ./train_data/
@@ -403,7 +403,7 @@ Train:
 
 Eval:
   dataset:
-    # 数据集格式，支持LMDBDateSet以及SimpleDataSet
+    # 数据集格式，支持LMDBDataSet以及SimpleDataSet
     name: SimpleDataSet
     # 数据集路径
     data_dir: ./train_data

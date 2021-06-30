@@ -25,6 +25,7 @@ import cv2
 import copy
 import numpy as np
 import time
+import logging
 from PIL import Image
 import tools.infer.utility as utility
 import tools.infer.predict_rec as predict_rec
@@ -32,13 +33,16 @@ import tools.infer.predict_det as predict_det
 import tools.infer.predict_cls as predict_cls
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.utils.logging import get_logger
-from tools.infer.utility import draw_ocr_box_txt
-
+from tools.infer.utility import draw_ocr_box_txt, get_current_memory_mb
+import tools.infer.benchmark_utils as benchmark_utils
 logger = get_logger()
 
 
 class TextSystem(object):
     def __init__(self, args):
+        if not args.show_log:
+            logger.setLevel(logging.INFO)
+
         self.text_detector = predict_det.TextDetector(args)
         self.text_recognizer = predict_rec.TextRecognizer(args)
         self.use_angle_cls = args.use_angle_cls
@@ -85,10 +89,11 @@ class TextSystem(object):
             cv2.imwrite("./output/img_crop_%d.jpg" % bno, img_crop_list[bno])
             logger.info(bno, rec_res[bno])
 
-    def __call__(self, img):
+    def __call__(self, img, cls=True):
         ori_im = img.copy()
         dt_boxes, elapse = self.text_detector(img)
-        logger.info("dt_boxes num : {}, elapse : {}".format(
+
+        logger.debug("dt_boxes num : {}, elapse : {}".format(
             len(dt_boxes), elapse))
         if dt_boxes is None:
             return None, None
@@ -100,14 +105,14 @@ class TextSystem(object):
             tmp_box = copy.deepcopy(dt_boxes[bno])
             img_crop = self.get_rotate_crop_image(ori_im, tmp_box)
             img_crop_list.append(img_crop)
-        if self.use_angle_cls:
+        if self.use_angle_cls and cls:
             img_crop_list, angle_list, elapse = self.text_classifier(
                 img_crop_list)
-            logger.info("cls num  : {}, elapse : {}".format(
+            logger.debug("cls num  : {}, elapse : {}".format(
                 len(img_crop_list), elapse))
 
         rec_res, elapse = self.text_recognizer(img_crop_list)
-        logger.info("rec_res num  : {}, elapse : {}".format(
+        logger.debug("rec_res num  : {}, elapse : {}".format(
             len(rec_res), elapse))
         # self.print_draw_crop_rec_res(img_crop_list, rec_res)
         filter_boxes, filter_rec_res = [], []
@@ -147,7 +152,19 @@ def main(args):
     is_visualize = True
     font_path = args.vis_font_path
     drop_score = args.drop_score
-    for image_file in image_file_list:
+
+    # warm up 10 times
+    if args.warmup:
+        img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
+        for i in range(10):
+            res = text_sys(img)
+            
+    total_time = 0
+    cpu_mem, gpu_mem, gpu_util = 0, 0, 0
+    _st = time.time()
+    count = 0
+    for idx, image_file in enumerate(image_file_list):
+
         img, flag = check_and_read_gif(image_file)
         if not flag:
             img = cv2.imread(image_file)
@@ -157,8 +174,16 @@ def main(args):
         starttime = time.time()
         dt_boxes, rec_res = text_sys(img)
         elapse = time.time() - starttime
-        logger.info("Predict time of %s: %.3fs" % (image_file, elapse))
+        total_time += elapse
+        if args.benchmark and idx % 20 == 0:
+            cm, gm, gu = get_current_memory_mb(0)
+            cpu_mem += cm
+            gpu_mem += gm
+            gpu_util += gu
+            count += 1
 
+        logger.info(
+            str(idx) + "  Predict time of %s: %.3fs" % (image_file, elapse))
         for text, score in rec_res:
             logger.info("{}, {:.3f}".format(text, score))
 
@@ -178,11 +203,73 @@ def main(args):
             draw_img_save = "./inference_results/"
             if not os.path.exists(draw_img_save):
                 os.makedirs(draw_img_save)
+            if flag:
+                image_file = image_file[:-3] + "png"
             cv2.imwrite(
                 os.path.join(draw_img_save, os.path.basename(image_file)),
                 draw_img[:, :, ::-1])
             logger.info("The visualized image saved in {}".format(
                 os.path.join(draw_img_save, os.path.basename(image_file))))
+
+    logger.info("The predict total time is {}".format(time.time() - _st))
+    logger.info("\nThe predict total time is {}".format(total_time))
+
+    img_num = text_sys.text_detector.det_times.img_num
+    if args.benchmark:
+        mems = {
+            'cpu_rss_mb': cpu_mem / count,
+            'gpu_rss_mb': gpu_mem / count,
+            'gpu_util': gpu_util * 100 / count
+        }
+    else:
+        mems = None
+    det_time_dict = text_sys.text_detector.det_times.report(average=True)
+    rec_time_dict = text_sys.text_recognizer.rec_times.report(average=True)
+    det_model_name = args.det_model_dir
+    rec_model_name = args.rec_model_dir
+
+    # construct det log information
+    model_info = {
+        'model_name': args.det_model_dir.split('/')[-1],
+        'precision': args.precision
+    }
+    data_info = {
+        'batch_size': 1,
+        'shape': 'dynamic_shape',
+        'data_num': det_time_dict['img_num']
+    }
+    perf_info = {
+        'preprocess_time_s': det_time_dict['preprocess_time'],
+        'inference_time_s': det_time_dict['inference_time'],
+        'postprocess_time_s': det_time_dict['postprocess_time'],
+        'total_time_s': det_time_dict['total_time']
+    }
+
+    benchmark_log = benchmark_utils.PaddleInferBenchmark(
+        text_sys.text_detector.config, model_info, data_info, perf_info, mems,
+        args.save_log_path)
+    benchmark_log("Det")
+
+    # construct rec log information
+    model_info = {
+        'model_name': args.rec_model_dir.split('/')[-1],
+        'precision': args.precision
+    }
+    data_info = {
+        'batch_size': args.rec_batch_num,
+        'shape': 'dynamic_shape',
+        'data_num': rec_time_dict['img_num']
+    }
+    perf_info = {
+        'preprocess_time_s': rec_time_dict['preprocess_time'],
+        'inference_time_s': rec_time_dict['inference_time'],
+        'postprocess_time_s': rec_time_dict['postprocess_time'],
+        'total_time_s': rec_time_dict['total_time']
+    }
+    benchmark_log = benchmark_utils.PaddleInferBenchmark(
+        text_sys.text_recognizer.config, model_info, data_info, perf_info, mems,
+        args.save_log_path)
+    benchmark_log("Rec")
 
 
 if __name__ == "__main__":

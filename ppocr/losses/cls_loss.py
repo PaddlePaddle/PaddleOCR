@@ -24,7 +24,7 @@ class ClsLoss(nn.Layer):
         super(ClsLoss, self).__init__()
         self.loss_func = nn.CrossEntropyLoss(reduction='mean')
 
-    def __call__(self, predicts, batch):
+    def forward(self, predicts, batch):
         label = batch[1]
         loss = self.loss_func(input=predicts, label=label)
         return {'loss': loss}

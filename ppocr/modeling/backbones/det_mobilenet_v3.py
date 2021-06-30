@@ -102,8 +102,7 @@ class MobileNetV3(nn.Layer):
             padding=1,
             groups=1,
             if_act=True,
-            act='hardswish',
-            name='conv1')
+            act='hardswish')
 
         self.stages = []
         self.out_channels = []
@@ -125,8 +124,7 @@ class MobileNetV3(nn.Layer):
                     kernel_size=k,
                     stride=s,
                     use_se=se,
-                    act=nl,
-                    name="conv" + str(i + 2)))
+                    act=nl))
             inplanes = make_divisible(scale * c)
             i += 1
         block_list.append(
@@ -138,8 +136,7 @@ class MobileNetV3(nn.Layer):
                 padding=0,
                 groups=1,
                 if_act=True,
-                act='hardswish',
-                name='conv_last'))
+                act='hardswish'))
         self.stages.append(nn.Sequential(*block_list))
         self.out_channels.append(make_divisible(scale * cls_ch_squeeze))
         for i, stage in enumerate(self.stages):
@@ -163,8 +160,7 @@ class ConvBNLayer(nn.Layer):
                  padding,
                  groups=1,
                  if_act=True,
-                 act=None,
-                 name=None):
+                 act=None):
         super(ConvBNLayer, self).__init__()
         self.if_act = if_act
         self.act = act
@@ -175,16 +171,9 @@ class ConvBNLayer(nn.Layer):
             stride=stride,
             padding=padding,
             groups=groups,
-            weight_attr=ParamAttr(name=name + '_weights'),
             bias_attr=False)
 
-        self.bn = nn.BatchNorm(
-            num_channels=out_channels,
-            act=None,
-            param_attr=ParamAttr(name=name + "_bn_scale"),
-            bias_attr=ParamAttr(name=name + "_bn_offset"),
-            moving_mean_name=name + "_bn_mean",
-            moving_variance_name=name + "_bn_variance")
+        self.bn = nn.BatchNorm(num_channels=out_channels, act=None)
 
     def forward(self, x):
         x = self.conv(x)
@@ -209,8 +198,7 @@ class ResidualUnit(nn.Layer):
                  kernel_size,
                  stride,
                  use_se,
-                 act=None,
-                 name=''):
+                 act=None):
         super(ResidualUnit, self).__init__()
         self.if_shortcut = stride == 1 and in_channels == out_channels
         self.if_se = use_se
@@ -222,8 +210,7 @@ class ResidualUnit(nn.Layer):
             stride=1,
             padding=0,
             if_act=True,
-            act=act,
-            name=name + "_expand")
+            act=act)
         self.bottleneck_conv = ConvBNLayer(
             in_channels=mid_channels,
             out_channels=mid_channels,
@@ -232,10 +219,9 @@ class ResidualUnit(nn.Layer):
             padding=int((kernel_size - 1) // 2),
             groups=mid_channels,
             if_act=True,
-            act=act,
-            name=name + "_depthwise")
+            act=act)
         if self.if_se:
-            self.mid_se = SEModule(mid_channels, name=name + "_se")
+            self.mid_se = SEModule(mid_channels)
         self.linear_conv = ConvBNLayer(
             in_channels=mid_channels,
             out_channels=out_channels,
@@ -243,8 +229,7 @@ class ResidualUnit(nn.Layer):
             stride=1,
             padding=0,
             if_act=False,
-            act=None,
-            name=name + "_linear")
+            act=None)
 
     def forward(self, inputs):
         x = self.expand_conv(inputs)
@@ -258,7 +243,7 @@ class ResidualUnit(nn.Layer):
 
 
 class SEModule(nn.Layer):
-    def __init__(self, in_channels, reduction=4, name=""):
+    def __init__(self, in_channels, reduction=4):
         super(SEModule, self).__init__()
         self.avg_pool = nn.AdaptiveAvgPool2D(1)
         self.conv1 = nn.Conv2D(
@@ -266,17 +251,13 @@ class SEModule(nn.Layer):
             out_channels=in_channels // reduction,
             kernel_size=1,
             stride=1,
-            padding=0,
-            weight_attr=ParamAttr(name=name + "_1_weights"),
-            bias_attr=ParamAttr(name=name + "_1_offset"))
+            padding=0)
         self.conv2 = nn.Conv2D(
             in_channels=in_channels // reduction,
             out_channels=in_channels,
             kernel_size=1,
             stride=1,
-            padding=0,
-            weight_attr=ParamAttr(name + "_2_weights"),
-            bias_attr=ParamAttr(name=name + "_2_offset"))
+            padding=0)
 
     def forward(self, inputs):
         outputs = self.avg_pool(inputs)

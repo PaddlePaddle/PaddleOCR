@@ -74,7 +74,7 @@ class SimpleDataSet(Dataset):
         data_line = self.data_lines[file_idx]
         try:
             data_line = data_line.decode('utf-8')
-            substr = data_line.strip("\n").split(self.delimiter)
+            substr = data_line.strip("\n").strip("\r").split(self.delimiter)
             file_name = substr[0]
             label = substr[1]
             img_path = os.path.join(self.data_dir, file_name)

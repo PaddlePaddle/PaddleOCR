@@ -25,7 +25,7 @@ class CTCLoss(nn.Layer):
         super(CTCLoss, self).__init__()
         self.loss_func = nn.CTCLoss(blank=0, reduction='none')
 
-    def __call__(self, predicts, batch):
+    def forward(self, predicts, batch):
         predicts = predicts.transpose((1, 0, 2))
         N, B, _ = predicts.shape
         preds_lengths = paddle.to_tensor([N] * B, dtype='int64')

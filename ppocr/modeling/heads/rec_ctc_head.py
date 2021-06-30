@@ -23,32 +23,57 @@ from paddle import ParamAttr, nn
 from paddle.nn import functional as F
 
 
-def get_para_bias_attr(l2_decay, k, name):
+def get_para_bias_attr(l2_decay, k):
     regularizer = paddle.regularizer.L2Decay(l2_decay)
     stdv = 1.0 / math.sqrt(k * 1.0)
     initializer = nn.initializer.Uniform(-stdv, stdv)
-    weight_attr = ParamAttr(
-        regularizer=regularizer, initializer=initializer, name=name + "_w_attr")
-    bias_attr = ParamAttr(
-        regularizer=regularizer, initializer=initializer, name=name + "_b_attr")
+    weight_attr = ParamAttr(regularizer=regularizer, initializer=initializer)
+    bias_attr = ParamAttr(regularizer=regularizer, initializer=initializer)
     return [weight_attr, bias_attr]
 
 
 class CTCHead(nn.Layer):
-    def __init__(self, in_channels, out_channels, fc_decay=0.0004, **kwargs):
+    def __init__(self,
+                 in_channels,
+                 out_channels,
+                 fc_decay=0.0004,
+                 mid_channels=None,
+                 **kwargs):
         super(CTCHead, self).__init__()
-        weight_attr, bias_attr = get_para_bias_attr(
-            l2_decay=fc_decay, k=in_channels, name='ctc_fc')
-        self.fc = nn.Linear(
-            in_channels,
-            out_channels,
-            weight_attr=weight_attr,
-            bias_attr=bias_attr,
-            name='ctc_fc')
-        self.out_channels = out_channels
+        if mid_channels is None:
+            weight_attr, bias_attr = get_para_bias_attr(
+                l2_decay=fc_decay, k=in_channels)
+            self.fc = nn.Linear(
+                in_channels,
+                out_channels,
+                weight_attr=weight_attr,
+                bias_attr=bias_attr)
+        else:
+            weight_attr1, bias_attr1 = get_para_bias_attr(
+                l2_decay=fc_decay, k=in_channels)
+            self.fc1 = nn.Linear(
+                in_channels,
+                mid_channels,
+                weight_attr=weight_attr1,
+                bias_attr=bias_attr1)
 
-    def forward(self, x, labels=None):
-        predicts = self.fc(x)
+            weight_attr2, bias_attr2 = get_para_bias_attr(
+                l2_decay=fc_decay, k=mid_channels)
+            self.fc2 = nn.Linear(
+                mid_channels,
+                out_channels,
+                weight_attr=weight_attr2,
+                bias_attr=bias_attr2)
+        self.out_channels = out_channels
+        self.mid_channels = mid_channels
+
+    def forward(self, x, targets=None):
+        if self.mid_channels is None:
+            predicts = self.fc(x)
+        else:
+            predicts = self.fc1(x)
+            predicts = self.fc2(predicts)
+            
         if not self.training:
             predicts = F.softmax(predicts, axis=2)
         return predicts
