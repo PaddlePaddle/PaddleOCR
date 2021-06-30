@@ -20,40 +20,7 @@ from shapely.geometry import Polygon
 
 from ppocr.data.imaug.iaa_augment import IaaAugment
 from ppocr.data.imaug.random_crop_data import is_poly_outside_rect
-
-
-def get_rotate_crop_image(img, points):
-    '''
-    img_height, img_width = img.shape[0:2]
-    left = int(np.min(points[:, 0]))
-    right = int(np.max(points[:, 0]))
-    top = int(np.min(points[:, 1]))
-    bottom = int(np.max(points[:, 1]))
-    img_crop = img[top:bottom, left:right, :].copy()
-    points[:, 0] = points[:, 0] - left
-    points[:, 1] = points[:, 1] - top
-    '''
-    img_crop_width = int(
-        max(
-            np.linalg.norm(points[0] - points[1]),
-            np.linalg.norm(points[2] - points[3])))
-    img_crop_height = int(
-        max(
-            np.linalg.norm(points[0] - points[3]),
-            np.linalg.norm(points[1] - points[2])))
-    pts_std = np.float32([[0, 0], [img_crop_width, 0],
-                          [img_crop_width, img_crop_height],
-                          [0, img_crop_height]])
-    M = cv2.getPerspectiveTransform(points, pts_std)
-    dst_img = cv2.warpPerspective(
-        img,
-        M, (img_crop_width, img_crop_height),
-        borderMode=cv2.BORDER_REPLICATE,
-        flags=cv2.INTER_CUBIC)
-    dst_img_height, dst_img_width = dst_img.shape[0:2]
-    if dst_img_height * 1.0 / dst_img_width >= 1.5:
-        dst_img = np.rot90(dst_img)
-    return dst_img
+from tools.infer.utility import get_rotate_crop_image
 
 
 class CopyPaste(object):
@@ -164,6 +131,17 @@ def get_intersection(pD, pG):
 
 
 def rotate_bbox(img, text_polys, angle, scale=1):
+    """
+    from https://github.com/WenmuZhou/DBNet.pytorch/blob/master/data_loader/modules/augment.py
+    Args:
+        img: np.ndarray
+        text_polys: np.ndarray N*4*2
+        angle: int
+        scale: int
+
+    Returns:
+
+    """
     w = img.shape[1]
     h = img.shape[0]
 
