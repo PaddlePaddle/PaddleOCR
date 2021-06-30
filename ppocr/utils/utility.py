@@ -51,7 +51,12 @@ def get_image_file_list(img_file):
         raise Exception("not found any img file in {}".format(img_file))
 
     img_end = {'jpg', 'bmp', 'png', 'jpeg', 'rgb', 'tif', 'tiff', 'gif', 'GIF'}
-    if os.path.isfile(img_file) and Image.open(img_file).format in img_end:
+    PIL_Checker=False
+    try:
+        PIL_Checker=(Image.open(img_file).format.lower() in [img_end_lower.lower() for img_end_lower in img_end])
+    except:
+        pass
+    if os.path.isfile(img_file) and (PIL_Checker or (imghdr.what(img_file) in img_end)):
         imgs_lists.append(img_file)
     elif os.path.isdir(img_file):
         for single_file in os.listdir(img_file):
