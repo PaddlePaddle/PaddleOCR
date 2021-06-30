@@ -32,7 +32,7 @@ Optimizer:
     warmup_epoch: 5
   regularizer:
     name: L2
-    factor: 1.0e-05
+    factor: 2.0e-05
 Architecture:
   model_type: rec
   name: DistillationModel
@@ -55,7 +55,7 @@ Architecture:
       Head:
         name: CTCHead
         mid_channels: 96
-        fc_decay: 0.00001
+        fc_decay: 0.00002
     Student:
       pretrained:
       freeze_params: false
@@ -73,7 +73,7 @@ Architecture:
       Head:
         name: CTCHead
         mid_channels: 96
-        fc_decay: 0.00001
+        fc_decay: 0.00002
   
 
 Loss:
