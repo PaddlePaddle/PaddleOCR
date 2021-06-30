@@ -33,8 +33,7 @@ import tools.infer.predict_det as predict_det
 import tools.infer.predict_cls as predict_cls
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.utils.logging import get_logger
-from tools.infer.utility import draw_ocr_box_txt, get_current_memory_mb
-import tools.infer.benchmark_utils as benchmark_utils
+from tools.infer.utility import draw_ocr_box_txt
 logger = get_logger()
 
 
@@ -158,7 +157,7 @@ def main(args):
         img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
         for i in range(10):
             res = text_sys(img)
-            
+
     total_time = 0
     cpu_mem, gpu_mem, gpu_util = 0, 0, 0
     _st = time.time()
@@ -175,12 +174,6 @@ def main(args):
         dt_boxes, rec_res = text_sys(img)
         elapse = time.time() - starttime
         total_time += elapse
-        if args.benchmark and idx % 20 == 0:
-            cm, gm, gu = get_current_memory_mb(0)
-            cpu_mem += cm
-            gpu_mem += gm
-            gpu_util += gu
-            count += 1
 
         logger.info(
             str(idx) + "  Predict time of %s: %.3fs" % (image_file, elapse))
@@ -215,61 +208,6 @@ def main(args):
     logger.info("\nThe predict total time is {}".format(total_time))
 
     img_num = text_sys.text_detector.det_times.img_num
-    if args.benchmark:
-        mems = {
-            'cpu_rss_mb': cpu_mem / count,
-            'gpu_rss_mb': gpu_mem / count,
-            'gpu_util': gpu_util * 100 / count
-        }
-    else:
-        mems = None
-    det_time_dict = text_sys.text_detector.det_times.report(average=True)
-    rec_time_dict = text_sys.text_recognizer.rec_times.report(average=True)
-    det_model_name = args.det_model_dir
-    rec_model_name = args.rec_model_dir
-
-    # construct det log information
-    model_info = {
-        'model_name': args.det_model_dir.split('/')[-1],
-        'precision': args.precision
-    }
-    data_info = {
-        'batch_size': 1,
-        'shape': 'dynamic_shape',
-        'data_num': det_time_dict['img_num']
-    }
-    perf_info = {
-        'preprocess_time_s': det_time_dict['preprocess_time'],
-        'inference_time_s': det_time_dict['inference_time'],
-        'postprocess_time_s': det_time_dict['postprocess_time'],
-        'total_time_s': det_time_dict['total_time']
-    }
-
-    benchmark_log = benchmark_utils.PaddleInferBenchmark(
-        text_sys.text_detector.config, model_info, data_info, perf_info, mems,
-        args.save_log_path)
-    benchmark_log("Det")
-
-    # construct rec log information
-    model_info = {
-        'model_name': args.rec_model_dir.split('/')[-1],
-        'precision': args.precision
-    }
-    data_info = {
-        'batch_size': args.rec_batch_num,
-        'shape': 'dynamic_shape',
-        'data_num': rec_time_dict['img_num']
-    }
-    perf_info = {
-        'preprocess_time_s': rec_time_dict['preprocess_time'],
-        'inference_time_s': rec_time_dict['inference_time'],
-        'postprocess_time_s': rec_time_dict['postprocess_time'],
-        'total_time_s': rec_time_dict['total_time']
-    }
-    benchmark_log = benchmark_utils.PaddleInferBenchmark(
-        text_sys.text_recognizer.config, model_info, data_info, perf_info, mems,
-        args.save_log_path)
-    benchmark_log("Rec")
 
 
 if __name__ == "__main__":

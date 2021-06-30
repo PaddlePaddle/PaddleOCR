@@ -125,76 +125,6 @@ def parse_args():
     return parser.parse_args()
 
 
-class Times(object):
-    def __init__(self):
-        self.time = 0.
-        self.st = 0.
-        self.et = 0.
-
-    def start(self):
-        self.st = time.time()
-
-    def end(self, accumulative=True):
-        self.et = time.time()
-        if accumulative:
-            self.time += self.et - self.st
-        else:
-            self.time = self.et - self.st
-
-    def reset(self):
-        self.time = 0.
-        self.st = 0.
-        self.et = 0.
-
-    def value(self):
-        return round(self.time, 4)
-
-
-class Timer(Times):
-    def __init__(self):
-        super(Timer, self).__init__()
-        self.total_time = Times()
-        self.preprocess_time = Times()
-        self.inference_time = Times()
-        self.postprocess_time = Times()
-        self.img_num = 0
-
-    def info(self, average=False):
-        logger.info("----------------------- Perf info -----------------------")
-        logger.info("total_time: {}, img_num: {}".format(self.total_time.value(
-        ), self.img_num))
-        preprocess_time = round(self.preprocess_time.value() / self.img_num,
-                                4) if average else self.preprocess_time.value()
-        postprocess_time = round(
-            self.postprocess_time.value() / self.img_num,
-            4) if average else self.postprocess_time.value()
-        inference_time = round(self.inference_time.value() / self.img_num,
-                               4) if average else self.inference_time.value()
-
-        average_latency = self.total_time.value() / self.img_num
-        logger.info("average_latency(ms): {:.2f}, QPS: {:2f}".format(
-            average_latency * 1000, 1 / average_latency))
-        logger.info(
-            "preprocess_latency(ms): {:.2f}, inference_latency(ms): {:.2f}, postprocess_latency(ms): {:.2f}".
-            format(preprocess_time * 1000, inference_time * 1000,
-                   postprocess_time * 1000))
-
-    def report(self, average=False):
-        dic = {}
-        dic['preprocess_time'] = round(
-            self.preprocess_time.value() / self.img_num,
-            4) if average else self.preprocess_time.value()
-        dic['postprocess_time'] = round(
-            self.postprocess_time.value() / self.img_num,
-            4) if average else self.postprocess_time.value()
-        dic['inference_time'] = round(
-            self.inference_time.value() / self.img_num,
-            4) if average else self.inference_time.value()
-        dic['img_num'] = self.img_num
-        dic['total_time'] = round(self.total_time.value(), 4)
-        return dic
-
-
 def create_predictor(args, mode, logger):
     if mode == "det":
         model_dir = args.det_model_dir
@@ -213,11 +143,10 @@ def create_predictor(args, mode, logger):
     model_file_path = model_dir + "/inference.pdmodel"
     params_file_path = model_dir + "/inference.pdiparams"
     if not os.path.exists(model_file_path):
-        logger.info("not find model file path {}".format(model_file_path))
-        sys.exit(0)
+        raise ValueError("not find model file path {}".format(model_file_path))
     if not os.path.exists(params_file_path):
-        logger.info("not find params file path {}".format(params_file_path))
-        sys.exit(0)
+        raise ValueError("not find params file path {}".format(
+            params_file_path))
 
     config = inference.Config(model_file_path, params_file_path)
 
@@ -312,7 +241,7 @@ def create_predictor(args, mode, logger):
 
     config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
     if mode == 'table':
-        config.delete_pass("fc_fuse_pass") # not supported for table    
+        config.delete_pass("fc_fuse_pass")  # not supported for table    
     config.switch_use_feed_fetch_ops(False)
     config.switch_ir_optim(True)
 
@@ -575,31 +504,6 @@ def draw_boxes(image, boxes, scores=None, drop_score=0.5):
         box = np.reshape(np.array(box), [-1, 1, 2]).astype(np.int64)
         image = cv2.polylines(np.array(image), [box], True, (255, 0, 0), 2)
     return image
-
-
-def get_current_memory_mb(gpu_id=None):
-    """
-    It is used to Obtain the memory usage of the CPU and GPU during the running of the program.
-    And this function Current program is time-consuming.
-    """
-    import pynvml
-    import psutil
-    import GPUtil
-    pid = os.getpid()
-    p = psutil.Process(pid)
-    info = p.memory_full_info()
-    cpu_mem = info.uss / 1024. / 1024.
-    gpu_mem = 0
-    gpu_percent = 0
-    if gpu_id is not None:
-        GPUs = GPUtil.getGPUs()
-        gpu_load = GPUs[gpu_id].load
-        gpu_percent = gpu_load
-        pynvml.nvmlInit()
-        handle = pynvml.nvmlDeviceGetHandleByIndex(0)
-        meminfo = pynvml.nvmlDeviceGetMemoryInfo(handle)
-        gpu_mem = meminfo.used / 1024. / 1024.
-    return round(cpu_mem, 4), round(gpu_mem, 4), round(gpu_percent, 4)
 
 
 if __name__ == '__main__':
