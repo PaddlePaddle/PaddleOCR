@@ -59,7 +59,7 @@ Architecture:
       algorithm: CRNN              # 子网络的算法名称，该子网络剩余参与均为构造参数，与普通的模型训练配置一致
       Transform:
       Backbone:
-        name: MobileNet
+        name: MobileNetV1Enhance
         scale: 0.5
       Neck:
         name: SequenceEncoder
@@ -77,7 +77,7 @@ Architecture:
       algorithm: CRNN
       Transform:
       Backbone:
-        name: MobileNet
+        name: MobileNetV1Enhance
         scale: 0.5
       Neck:
         name: SequenceEncoder
