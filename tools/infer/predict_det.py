@@ -98,6 +98,24 @@ class TextDetector(object):
         self.predictor, self.input_tensor, self.output_tensors, self.config = utility.create_predictor(
             args, 'det', logger)
 
+        if args.benchmark:
+            import auto_log
+            pid = os.getpid()
+            self.autolog = auto_log.AutoLogger(
+                model_name="det",
+                model_precision=args.precision,
+                batch_size=1,
+                data_shape="dynamic",
+                save_path="./output/auto_log.lpg",
+                inference_config=self.config,
+                pids=pid,
+                process_name=None,
+                gpu_ids=0,
+                time_keys=[
+                    'preprocess_time', 'inference_time', 'postprocess_time'
+                ],
+                warmup=10)
+
     def order_points_clockwise(self, pts):
         """
         reference from: https://github.com/jrosebr1/imutils/blob/master/imutils/perspective.py
@@ -156,6 +174,10 @@ class TextDetector(object):
         data = {'image': img}
 
         st = time.time()
+        
+        if args.benchmark:
+            self.autolog.times.start()
+
         data = transform(data, self.preprocess_op)
         img, shape_list = data
         if img is None:
@@ -164,12 +186,17 @@ class TextDetector(object):
         shape_list = np.expand_dims(shape_list, axis=0)
         img = img.copy()
 
+        if args.benchmark:
+            self.autolog.times.stamp()
+
         self.input_tensor.copy_from_cpu(img)
         self.predictor.run()
         outputs = []
         for output_tensor in self.output_tensors:
             output = output_tensor.copy_to_cpu()
             outputs.append(output)
+        if args.benchmark:
+            self.autolog.times.stamp()
 
         preds = {}
         if self.det_algorithm == "EAST":
@@ -193,6 +220,8 @@ class TextDetector(object):
         else:
             dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
 
+        if args.benchmark:
+            self.autolog.times.end(stamp=True)
         et = time.time()
         return dt_boxes, et - st
 
@@ -209,8 +238,6 @@ if __name__ == "__main__":
         img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
         for i in range(10):
             res = text_detector(img)
-
-    cpu_mem, gpu_mem, gpu_util = 0, 0, 0
 
     if not os.path.exists(draw_img_save):
         os.makedirs(draw_img_save)
@@ -235,4 +262,7 @@ if __name__ == "__main__":
                                 "det_res_{}".format(img_name_pure))
         cv2.imwrite(img_path, src_im)
         logger.info("The visualized image saved in {}".format(img_path))
+    
+    if args.benchmark:
+        text_detector.autolog.report()
 
