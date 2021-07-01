@@ -107,11 +107,11 @@ def main():
             else:
                 preds = model(images)
             post_result = post_process_class(preds)
-            for rec_reuslt in post_result:
-                logger.info('\t result: {}'.format(rec_reuslt))
-                if len(rec_reuslt) >= 2:
-                    fout.write(file + "\t" + rec_reuslt[0] + "\t" + str(
-                        rec_reuslt[1]) + "\n")
+            for rec_result in post_result:
+                logger.info('\t result: {}'.format(rec_result))
+                if len(rec_result) >= 2:
+                    fout.write(file + "\t" + rec_result[0] + "\t" + str(
+                        rec_result[1]) + "\n")
     logger.info("success!")
 
 
