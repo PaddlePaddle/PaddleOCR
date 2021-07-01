@@ -141,7 +141,7 @@ def create_predictor(args, mode, logger):
                 max_batch_size=args.max_batch_size)
     else:
         config.disable_gpu()
-        cpu_threads = args.cpu_threads if hasattr(args, cpu_threads) else 10
+        cpu_threads = args.cpu_threads if hasattr(args, "cpu_threads") else 10
         config.set_cpu_math_library_num_threads(cpu_threads)
         if args.enable_mkldnn:
             # cache 10 different shapes for mkldnn to avoid memory leak
