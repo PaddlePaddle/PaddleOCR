@@ -98,7 +98,7 @@ def load_dygraph_params(config, model, logger, optimizer):
         pm = config['Global']['pretrained_model']
         if pm is None:
             return {}
-        if not os.path.exists(pm) or not os.path.exists(pm + ".pdparams"):
+        if not os.path.exists(pm) and not os.path.exists(pm + ".pdparams"):
             logger.info(f"The pretrained_model {pm} does not exists!")
             return {}
         pm = pm if pm.endswith('.pdparams') else pm + '.pdparams'
