@@ -91,7 +91,7 @@ def init_model(config, model, optimizer=None, lr_scheduler=None):
 
 def load_dygraph_params(config, model, logger, optimizer):
     ckp = config['Global']['checkpoints']
-    if ckp and os.path.exists(ckp):
+    if ckp and os.path.exists(ckp + ".pdparams"):
         pre_best_model_dict = init_model(config, model, optimizer)
         return pre_best_model_dict
     else:
