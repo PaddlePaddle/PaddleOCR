@@ -27,8 +27,9 @@ Optimizer:
   beta1: 0.9
   beta2: 0.999
   lr:
-    name: Cosine
-    learning_rate: 0.0005
+    name: Piecewise
+    decay_epochs : [700, 800]
+    values : [0.001, 0.0001]
     warmup_epoch: 5
   regularizer:
     name: L2
@@ -47,7 +48,7 @@ Architecture:
       algorithm: CRNN
       Transform:
       Backbone:
-        name: MobileNet
+        name: MobileNetV1Enhance
         scale: 0.5
       Neck:
         name: SequenceEncoder
@@ -65,7 +66,7 @@ Architecture:
       algorithm: CRNN
       Transform:
       Backbone:
-        name: MobileNet
+        name: MobileNetV1Enhance
         scale: 0.5
       Neck:
         name: SequenceEncoder

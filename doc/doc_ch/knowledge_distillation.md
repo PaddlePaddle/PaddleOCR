@@ -89,7 +89,73 @@ Architecture:
         fc_decay: 0.00002
 ```
 
-当然，这里如果希望添加更多的子网络进行训练，也可以按照`Student`与`Teacher`的添加方式，在配置文件中添加相应的字段。蒸馏模型`DistillationModel`类的具体实现代码可以参考[distillation_model.py](../../ppocr/modeling/architectures/distillation_model.py)。
+当然，这里如果希望添加更多的子网络进行训练，也可以按照`Student`与`Teacher`的添加方式，在配置文件中添加相应的字段。比如说如果希望有3个模型互相监督，共同训练，那么`Architecture`可以写为如下格式。
+
+```yaml
+Architecture:
+  model_type: &model_type "rec"
+  name: DistillationModel
+  algorithm: Distillation
+  Models:
+    Teacher:
+      pretrained:
+      freeze_params: false
+      return_all_feats: true
+      model_type: *model_type
+      algorithm: CRNN
+      Transform:
+      Backbone:
+        name: MobileNetV1Enhance
+        scale: 0.5
+      Neck:
+        name: SequenceEncoder
+        encoder_type: rnn
+        hidden_size: 64
+      Head:
+        name: CTCHead
+        mid_channels: 96
+        fc_decay: 0.00002
+    Student:
+      pretrained:
+      freeze_params: false
+      return_all_feats: true
+      model_type: *model_type
+      algorithm: CRNN
+      Transform:
+      Backbone:
+        name: MobileNetV1Enhance
+        scale: 0.5
+      Neck:
+        name: SequenceEncoder
+        encoder_type: rnn
+        hidden_size: 64
+      Head:
+        name: CTCHead
+        mid_channels: 96
+        fc_decay: 0.00002
+    Student2:                       # 知识蒸馏任务中引入的新的子网络，其他部分与上述配置相同
+      pretrained:
+      freeze_params: false
+      return_all_feats: true
+      model_type: *model_type
+      algorithm: CRNN
+      Transform:
+      Backbone:
+        name: MobileNetV1Enhance
+        scale: 0.5
+      Neck:
+        name: SequenceEncoder
+        encoder_type: rnn
+        hidden_size: 64
+      Head:
+        name: CTCHead
+        mid_channels: 96
+        fc_decay: 0.00002
+```
+
+最终该模型训练时，包含3个子网络：`Teacher`, `Student`, `Student2`。
+
+蒸馏模型`DistillationModel`类的具体实现代码可以参考[distillation_model.py](../../ppocr/modeling/architectures/distillation_model.py)。
 
 最终模型`forward`输出为一个字典，key为所有的子网络名称，例如这里为`Student`与`Teacher`，value为对应子网络的输出，可以为`Tensor`（只返回该网络的最后一层）和`dict`（也返回了中间的特征信息）。
 

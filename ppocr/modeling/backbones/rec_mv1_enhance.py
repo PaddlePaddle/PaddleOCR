@@ -109,9 +109,9 @@ class DepthwiseSeparable(nn.Layer):
         return y
 
 
-class MobileNet(nn.Layer):
+class MobileNetV1Enhance(nn.Layer):
     def __init__(self, in_channels=3, scale=0.5, **kwargs):
-        super(MobileNet, self).__init__()
+        super().__init__()
         self.scale = scale
         self.block_list = []
 
@@ -177,7 +177,7 @@ class MobileNet(nn.Layer):
             scale=scale)
         self.block_list.append(conv4_2)
 
-        for i in range(5):
+        for _ in range(5):
             conv5 = DepthwiseSeparable(
                 num_channels=int(512 * scale),
                 num_filters1=512,
