@@ -33,8 +33,9 @@ Optimizer:
   regularizer:
     name: L2
     factor: 2.0e-05
+
 Architecture:
-  model_type: rec
+  model_type: &model_type "rec"
   name: DistillationModel
   algorithm: Distillation
   Models:
@@ -42,7 +43,7 @@ Architecture:
       pretrained:
       freeze_params: false
       return_all_feats: true
-      model_type: rec
+      model_type: *model_type
       algorithm: CRNN
       Transform:
       Backbone:
@@ -60,7 +61,7 @@ Architecture:
       pretrained:
       freeze_params: false
       return_all_feats: true
-      model_type: rec
+      model_type: *model_type
       algorithm: CRNN
       Transform:
       Backbone:

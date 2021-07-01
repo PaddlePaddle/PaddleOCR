@@ -70,7 +70,7 @@ Architecture:
         mid_channels: 96
         fc_decay: 0.00002
     Student:                       # 另外一个子网络，这里给的是DML的蒸馏示例，两个子网络结构相同，均需要学习参数
-      pretrained:                  # 下面同上
+      pretrained:                  # 下面的组网参数同上
       freeze_params: false
       return_all_feats: true
       model_type: *model_type
@@ -93,8 +93,93 @@ Architecture:
 
 最终模型`forward`输出为一个字典，key为所有的子网络名称，例如这里为`Student`与`Teacher`，value为对应子网络的输出，可以为`Tensor`（只返回该网络的最后一层）和`dict`（也返回了中间的特征信息）。
 
-#### 2.1.1 模型结构
+在识别任务中，为了添加更多损失函数，保证蒸馏方法的可扩展性，将每个子网络的输出保存为`dict`，其中包含子模块输出。以该识别模型为例，每个子网络的输出结果均为`dict`，key包含`backbone_out`,`neck_out`, `head_out`，`value`为对应模块的tensor，最终对于上述配置文件，`DistillationModel`的输出格式如下。
 
+```json
+{
+  "Teacher": {
+    "backbone_out": tensor,
+    "neck_out": tensor,
+    "head_out": tensor,
+  },
+  "Student": {
+    "backbone_out": tensor,
+    "neck_out": tensor,
+    "head_out": tensor,
+  }
+}
+```
+
+#### 2.1.2 损失函数
+
+知识蒸馏任务中，损失函数配置如下所示。
+
+```yaml
+Loss:
+  name: CombinedLoss                           # 损失函数名称，基于改名称，构建用于损失函数的类
+  loss_config_list:                            # 损失函数配置文件列表，为CombinedLoss的必备函数
+  - DistillationCTCLoss:                       # 基于蒸馏的CTC损失函数，继承自标准的CTC loss
+      weight: 1.0                              # 损失函数的权重，loss_config_list中，每个损失函数的配置都必须包含该字段
+      model_name_list: ["Student", "Teacher"]  # 对于蒸馏模型的预测结果，提取这两个子网络的输出，与gt计算CTC loss
+      key: head_out                            # 取子网络输出dict中，该key对应的tensor
+  - DistillationDMLLoss:                       # 蒸馏的DML损失函数，继承自标准的DMLLoss
+      weight: 1.0                              # 权重
+      act: "softmax"                           # 激活函数，对输入使用激活函数处理，可以为softmax, sigmoid或者为None，默认为None
+      model_name_pairs:                        # 用于计算DML loss的子网络名称对，如果希望计算其他子网络的DML loss，可以在列表下面继续填充
+      - ["Student", "Teacher"]
+      key: head_out                            # 取子网络输出dict中，该key对应的tensor
+  - DistillationDistanceLoss:                  # 蒸馏的距离损失函数
+      weight: 1.0                              # 权重
+      mode: "l2"                               # 距离计算方法，目前支持l1, l2, smooth_l1
+      model_name_pairs:                        # 用于计算distance loss的子网络名称对
+      - ["Student", "Teacher"]
+      key: backbone_out                        # 取子网络输出dict中，该key对应的tensor
+```
+
+上述损失函数中，所有的蒸馏损失函数均继承自标准的损失函数类，主要功能为: 对蒸馏模型的输出进行解析，找到用于计算损失的中间节点(tensor)，再使用标准的损失函数类去计算。
+
+以上述配置为例，最终蒸馏训练的损失函数包含下面3个部分。
+
+- `Student`和`Teacher`的最终输出(`head_out`)与gt的CTC loss，权重为1。在这里因为2个子网络都需要更新参数，因此2者都需要计算与g的loss。
+- `Student`和`Teacher`的最终输出(`head_out`)之间的DML loss，权重为1。
+- `Student`和`Teacher`的骨干网络输出(`backbone_out`)之间的l2 loss，权重为1。
+
+关于`CombinedLoss`更加具体的实现可以参考: [combined_loss.py](../../ppocr/losses/combined_loss.py#L23)。关于`DistillationCTCLoss`等蒸馏损失函数更加具体的实现可以参考[distillation_loss.py](../../ppocr/losses/distillation_loss.py)。
+
+
+#### 2.1.3 后处理
+
+知识蒸馏任务中，后处理配置如下所示。
+
+```yaml
+PostProcess:
+  name: DistillationCTCLabelDecode       # 蒸馏任务的CTC解码后处理，继承自标准的CTCLabelDecode类
+  model_name: ["Student", "Teacher"]     # 对于蒸馏模型的预测结果，提取这两个子网络的输出，进行解码
+  key: head_out                          # 取子网络输出dict中，该key对应的tensor
+```
+
+以上述配置为例，最终会同时计算`Student`和`Teahcer` 2个子网络的CTC解码输出，返回一个`dict`，`key`为用于处理的子网络名称，`value`为用于处理的子网络列表。
+
+关于`DistillationCTCLabelDecode`更加具体的实现可以参考: [rec_postprocess.py](../../ppocr/postprocess/rec_postprocess.py#L128)
+
+
+#### 2.1.4 指标计算
+
+知识蒸馏任务中，指标计算配置如下所示。
+
+```yaml
+Metric:
+  name: DistillationMetric         # 蒸馏任务的CTC解码后处理，继承自标准的CTCLabelDecode类
+  base_metric_name: RecMetric      # 指标计算的基类，对于模型的输出，会基于该类，计算指标
+  main_indicator: acc              # 指标的名称
+  key: "Student"                   # 选取该子网络的 main_indicator 作为作为保存保存best model的判断标准
+```
+
+以上述配置为例，最终会使用`Student`子网络的acc指标作为保存best model的判断指标，同时，日志中也会打印出所有子网络的acc指标。
+
+关于`DistillationMetric`更加具体的实现可以参考: [distillation_metric.py](../../ppocr/metrics/distillation_metric.py#L24)。
 
 
 ### 2.2 检测配置文件解析
+
+* coming soon!
