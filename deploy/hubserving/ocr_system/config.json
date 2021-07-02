@@ -3,7 +3,7 @@
         "ocr_system": {
             "init_args": {
                 "version": "1.0.0",
-                "use_gpu": true
+                "use_gpu": false
             },
             "predict_args": {
             }
