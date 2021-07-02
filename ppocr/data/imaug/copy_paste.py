@@ -105,7 +105,7 @@ class CopyPaste(object):
 
                 num_poly_in_rect = 0
                 for poly in src_polys:
-                    if not is_poly_outside_rect(poly, xmax1, ymin1,
+                    if not is_poly_outside_rect(poly, xmin1, ymin1,
                                                 xmax1 - xmin1, ymax1 - ymin1):
                         num_poly_in_rect += 1
                         break
