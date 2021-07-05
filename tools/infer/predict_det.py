@@ -175,7 +175,7 @@ class TextDetector(object):
 
         st = time.time()
         
-        if args.benchmark:
+        if self.args.benchmark:
             self.autolog.times.start()
 
         data = transform(data, self.preprocess_op)
@@ -186,7 +186,7 @@ class TextDetector(object):
         shape_list = np.expand_dims(shape_list, axis=0)
         img = img.copy()
 
-        if args.benchmark:
+        if self.args.benchmark:
             self.autolog.times.stamp()
 
         self.input_tensor.copy_from_cpu(img)
@@ -195,7 +195,7 @@ class TextDetector(object):
         for output_tensor in self.output_tensors:
             output = output_tensor.copy_to_cpu()
             outputs.append(output)
-        if args.benchmark:
+        if self.args.benchmark:
             self.autolog.times.stamp()
 
         preds = {}
@@ -220,7 +220,7 @@ class TextDetector(object):
         else:
             dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
 
-        if args.benchmark:
+        if self.args.benchmark:
             self.autolog.times.end(stamp=True)
         et = time.time()
         return dt_boxes, et - st
