@@ -209,7 +209,7 @@ for gpu in ${gpu_list[*]}; do
 
             # run export model
             save_infer_path="${save_log}"
-            export_cmd="${python} ${run_export} ${save_model_key}=${save_log} ${pretrain_model_key}=${save_log}/latest ${save_infer_key}=${save_infer_path}"
+            export_cmd="${python} ${run_export} ${save_model_key}=${save_log} ${export_weight}=${save_log}/latest ${save_infer_key}=${save_infer_path}"
             echo $export_cmd
             status_check $? "${export_cmd}" "${status_log}"
 
