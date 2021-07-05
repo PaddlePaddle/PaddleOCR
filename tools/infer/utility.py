@@ -176,6 +176,7 @@ def create_predictor(args, mode, logger):
                 "conv2d_59.tmp_0": [1, 96, 20, 20],
                 "nearest_interp_v2_1.tmp_0": [1, 96, 10, 10],
                 "nearest_interp_v2_2.tmp_0": [1, 96, 20, 20],
+                "conv2d_124.tmp_0": [1, 96, 20, 20],
                 "nearest_interp_v2_3.tmp_0": [1, 24, 20, 20],
                 "nearest_interp_v2_4.tmp_0": [1, 24, 20, 20],
                 "nearest_interp_v2_5.tmp_0": [1, 24, 20, 20],
@@ -188,6 +189,7 @@ def create_predictor(args, mode, logger):
                 "conv2d_91.tmp_0": [1, 96, 200, 200],
                 "conv2d_59.tmp_0": [1, 96, 400, 400],
                 "nearest_interp_v2_1.tmp_0": [1, 96, 200, 200],
+                "conv2d_124.tmp_0": [1, 256, 400, 400],
                 "nearest_interp_v2_2.tmp_0": [1, 96, 400, 400],
                 "nearest_interp_v2_3.tmp_0": [1, 24, 400, 400],
                 "nearest_interp_v2_4.tmp_0": [1, 24, 400, 400],
@@ -202,6 +204,7 @@ def create_predictor(args, mode, logger):
                 "conv2d_59.tmp_0": [1, 96, 160, 160],
                 "nearest_interp_v2_1.tmp_0": [1, 96, 80, 80],
                 "nearest_interp_v2_2.tmp_0": [1, 96, 160, 160],
+                "conv2d_124.tmp_0": [1, 256, 160, 160],
                 "nearest_interp_v2_3.tmp_0": [1, 24, 160, 160],
                 "nearest_interp_v2_4.tmp_0": [1, 24, 160, 160],
                 "nearest_interp_v2_5.tmp_0": [1, 24, 160, 160],
@@ -237,7 +240,7 @@ def create_predictor(args, mode, logger):
 
     # enable memory optim
     config.enable_memory_optim()
-    config.disable_glog_info()
+    #config.disable_glog_info()
 
     config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
     if mode == 'table':
