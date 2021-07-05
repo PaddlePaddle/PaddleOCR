@@ -212,7 +212,7 @@ class TextDetector(object):
         else:
             raise NotImplementedError
 
-        self.predictor.try_shrink_memory()
+        #self.predictor.try_shrink_memory()
         post_result = self.postprocess_op(preds, shape_list)
         dt_boxes = post_result[0]['points']
         if self.det_algorithm == "SAST" and self.det_sast_polygon:
