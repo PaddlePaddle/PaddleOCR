@@ -1,6 +1,6 @@
 model_name:ocr_det
 python:python3.7
-gpu_list:0
+gpu_list:0|0,1
 Global.auto_cast:False
 Global.epoch_num:10
 Global.save_model_dir:./output/
