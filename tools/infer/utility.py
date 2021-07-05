@@ -37,6 +37,7 @@ def init_args():
     parser.add_argument("--use_gpu", type=str2bool, default=True)
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
+    parser.add_argument("--min_subgraph_size", type=int, default=3)
     parser.add_argument("--precision", type=str, default="fp32")
     parser.add_argument("--gpu_mem", type=int, default=500)
 
@@ -124,76 +125,6 @@ def parse_args():
     return parser.parse_args()
 
 
-class Times(object):
-    def __init__(self):
-        self.time = 0.
-        self.st = 0.
-        self.et = 0.
-
-    def start(self):
-        self.st = time.time()
-
-    def end(self, accumulative=True):
-        self.et = time.time()
-        if accumulative:
-            self.time += self.et - self.st
-        else:
-            self.time = self.et - self.st
-
-    def reset(self):
-        self.time = 0.
-        self.st = 0.
-        self.et = 0.
-
-    def value(self):
-        return round(self.time, 4)
-
-
-class Timer(Times):
-    def __init__(self):
-        super(Timer, self).__init__()
-        self.total_time = Times()
-        self.preprocess_time = Times()
-        self.inference_time = Times()
-        self.postprocess_time = Times()
-        self.img_num = 0
-
-    def info(self, average=False):
-        logger.info("----------------------- Perf info -----------------------")
-        logger.info("total_time: {}, img_num: {}".format(self.total_time.value(
-        ), self.img_num))
-        preprocess_time = round(self.preprocess_time.value() / self.img_num,
-                                4) if average else self.preprocess_time.value()
-        postprocess_time = round(
-            self.postprocess_time.value() / self.img_num,
-            4) if average else self.postprocess_time.value()
-        inference_time = round(self.inference_time.value() / self.img_num,
-                               4) if average else self.inference_time.value()
-
-        average_latency = self.total_time.value() / self.img_num
-        logger.info("average_latency(ms): {:.2f}, QPS: {:2f}".format(
-            average_latency * 1000, 1 / average_latency))
-        logger.info(
-            "preprocess_latency(ms): {:.2f}, inference_latency(ms): {:.2f}, postprocess_latency(ms): {:.2f}".
-            format(preprocess_time * 1000, inference_time * 1000,
-                   postprocess_time * 1000))
-
-    def report(self, average=False):
-        dic = {}
-        dic['preprocess_time'] = round(
-            self.preprocess_time.value() / self.img_num,
-            4) if average else self.preprocess_time.value()
-        dic['postprocess_time'] = round(
-            self.postprocess_time.value() / self.img_num,
-            4) if average else self.postprocess_time.value()
-        dic['inference_time'] = round(
-            self.inference_time.value() / self.img_num,
-            4) if average else self.inference_time.value()
-        dic['img_num'] = self.img_num
-        dic['total_time'] = round(self.total_time.value(), 4)
-        return dic
-
-
 def create_predictor(args, mode, logger):
     if mode == "det":
         model_dir = args.det_model_dir
@@ -212,11 +143,10 @@ def create_predictor(args, mode, logger):
     model_file_path = model_dir + "/inference.pdmodel"
     params_file_path = model_dir + "/inference.pdiparams"
     if not os.path.exists(model_file_path):
-        logger.info("not find model file path {}".format(model_file_path))
-        sys.exit(0)
+        raise ValueError("not find model file path {}".format(model_file_path))
     if not os.path.exists(params_file_path):
-        logger.info("not find params file path {}".format(params_file_path))
-        sys.exit(0)
+        raise ValueError("not find params file path {}".format(
+            params_file_path))
 
     config = inference.Config(model_file_path, params_file_path)
 
@@ -236,14 +166,17 @@ def create_predictor(args, mode, logger):
             config.enable_tensorrt_engine(
                 precision_mode=inference.PrecisionType.Float32,
                 max_batch_size=args.max_batch_size,
-                min_subgraph_size=3)  # skip the minmum trt subgraph
-        if mode == "det" and "mobile" in model_file_path:
+                min_subgraph_size=args.min_subgraph_size)
+            # skip the minmum trt subgraph
+        if mode == "det":
             min_input_shape = {
                 "x": [1, 3, 50, 50],
                 "conv2d_92.tmp_0": [1, 96, 20, 20],
                 "conv2d_91.tmp_0": [1, 96, 10, 10],
+                "conv2d_59.tmp_0": [1, 96, 20, 20],
                 "nearest_interp_v2_1.tmp_0": [1, 96, 10, 10],
                 "nearest_interp_v2_2.tmp_0": [1, 96, 20, 20],
+                "conv2d_124.tmp_0": [1, 96, 20, 20],
                 "nearest_interp_v2_3.tmp_0": [1, 24, 20, 20],
                 "nearest_interp_v2_4.tmp_0": [1, 24, 20, 20],
                 "nearest_interp_v2_5.tmp_0": [1, 24, 20, 20],
@@ -254,7 +187,9 @@ def create_predictor(args, mode, logger):
                 "x": [1, 3, 2000, 2000],
                 "conv2d_92.tmp_0": [1, 96, 400, 400],
                 "conv2d_91.tmp_0": [1, 96, 200, 200],
+                "conv2d_59.tmp_0": [1, 96, 400, 400],
                 "nearest_interp_v2_1.tmp_0": [1, 96, 200, 200],
+                "conv2d_124.tmp_0": [1, 256, 400, 400],
                 "nearest_interp_v2_2.tmp_0": [1, 96, 400, 400],
                 "nearest_interp_v2_3.tmp_0": [1, 24, 400, 400],
                 "nearest_interp_v2_4.tmp_0": [1, 24, 400, 400],
@@ -266,38 +201,15 @@ def create_predictor(args, mode, logger):
                 "x": [1, 3, 640, 640],
                 "conv2d_92.tmp_0": [1, 96, 160, 160],
                 "conv2d_91.tmp_0": [1, 96, 80, 80],
+                "conv2d_59.tmp_0": [1, 96, 160, 160],
                 "nearest_interp_v2_1.tmp_0": [1, 96, 80, 80],
                 "nearest_interp_v2_2.tmp_0": [1, 96, 160, 160],
+                "conv2d_124.tmp_0": [1, 256, 160, 160],
                 "nearest_interp_v2_3.tmp_0": [1, 24, 160, 160],
                 "nearest_interp_v2_4.tmp_0": [1, 24, 160, 160],
                 "nearest_interp_v2_5.tmp_0": [1, 24, 160, 160],
                 "elementwise_add_7": [1, 56, 40, 40],
                 "nearest_interp_v2_0.tmp_0": [1, 96, 40, 40]
-            }
-        if mode == "det" and "server" in model_file_path:
-            min_input_shape = {
-                "x": [1, 3, 50, 50],
-                "conv2d_59.tmp_0": [1, 96, 20, 20],
-                "nearest_interp_v2_2.tmp_0": [1, 96, 20, 20],
-                "nearest_interp_v2_3.tmp_0": [1, 24, 20, 20],
-                "nearest_interp_v2_4.tmp_0": [1, 24, 20, 20],
-                "nearest_interp_v2_5.tmp_0": [1, 24, 20, 20]
-            }
-            max_input_shape = {
-                "x": [1, 3, 2000, 2000],
-                "conv2d_59.tmp_0": [1, 96, 400, 400],
-                "nearest_interp_v2_2.tmp_0": [1, 96, 400, 400],
-                "nearest_interp_v2_3.tmp_0": [1, 24, 400, 400],
-                "nearest_interp_v2_4.tmp_0": [1, 24, 400, 400],
-                "nearest_interp_v2_5.tmp_0": [1, 24, 400, 400]
-            }
-            opt_input_shape = {
-                "x": [1, 3, 640, 640],
-                "conv2d_59.tmp_0": [1, 96, 160, 160],
-                "nearest_interp_v2_2.tmp_0": [1, 96, 160, 160],
-                "nearest_interp_v2_3.tmp_0": [1, 24, 160, 160],
-                "nearest_interp_v2_4.tmp_0": [1, 24, 160, 160],
-                "nearest_interp_v2_5.tmp_0": [1, 24, 160, 160]
             }
         elif mode == "rec":
             min_input_shape = {"x": [args.rec_batch_num, 3, 32, 10]}
@@ -328,11 +240,11 @@ def create_predictor(args, mode, logger):
 
     # enable memory optim
     config.enable_memory_optim()
-    config.disable_glog_info()
+    #config.disable_glog_info()
 
     config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
     if mode == 'table':
-        config.delete_pass("fc_fuse_pass") # not supported for table    
+        config.delete_pass("fc_fuse_pass")  # not supported for table
     config.switch_use_feed_fetch_ops(False)
     config.switch_ir_optim(True)
 
@@ -597,29 +509,39 @@ def draw_boxes(image, boxes, scores=None, drop_score=0.5):
     return image
 
 
-def get_current_memory_mb(gpu_id=None):
-    """
-    It is used to Obtain the memory usage of the CPU and GPU during the running of the program.
-    And this function Current program is time-consuming.
-    """
-    import pynvml
-    import psutil
-    import GPUtil
-    pid = os.getpid()
-    p = psutil.Process(pid)
-    info = p.memory_full_info()
-    cpu_mem = info.uss / 1024. / 1024.
-    gpu_mem = 0
-    gpu_percent = 0
-    if gpu_id is not None:
-        GPUs = GPUtil.getGPUs()
-        gpu_load = GPUs[gpu_id].load
-        gpu_percent = gpu_load
-        pynvml.nvmlInit()
-        handle = pynvml.nvmlDeviceGetHandleByIndex(0)
-        meminfo = pynvml.nvmlDeviceGetMemoryInfo(handle)
-        gpu_mem = meminfo.used / 1024. / 1024.
-    return round(cpu_mem, 4), round(gpu_mem, 4), round(gpu_percent, 4)
+def get_rotate_crop_image(img, points):
+    '''
+    img_height, img_width = img.shape[0:2]
+    left = int(np.min(points[:, 0]))
+    right = int(np.max(points[:, 0]))
+    top = int(np.min(points[:, 1]))
+    bottom = int(np.max(points[:, 1]))
+    img_crop = img[top:bottom, left:right, :].copy()
+    points[:, 0] = points[:, 0] - left
+    points[:, 1] = points[:, 1] - top
+    '''
+    assert len(points) == 4, "shape of points must be 4*2"
+    img_crop_width = int(
+        max(
+            np.linalg.norm(points[0] - points[1]),
+            np.linalg.norm(points[2] - points[3])))
+    img_crop_height = int(
+        max(
+            np.linalg.norm(points[0] - points[3]),
+            np.linalg.norm(points[1] - points[2])))
+    pts_std = np.float32([[0, 0], [img_crop_width, 0],
+                          [img_crop_width, img_crop_height],
+                          [0, img_crop_height]])
+    M = cv2.getPerspectiveTransform(points, pts_std)
+    dst_img = cv2.warpPerspective(
+        img,
+        M, (img_crop_width, img_crop_height),
+        borderMode=cv2.BORDER_REPLICATE,
+        flags=cv2.INTER_CUBIC)
+    dst_img_height, dst_img_width = dst_img.shape[0:2]
+    if dst_img_height * 1.0 / dst_img_width >= 1.5:
+        dst_img = np.rot90(dst_img)
+    return dst_img
 
 
 if __name__ == '__main__':
