@@ -110,7 +110,7 @@ function func_inference(){
                 for threads in ${cpu_threads_list[*]}; do
                     for batch_size in ${batch_size_list[*]}; do
                         _save_log_path="${_log_path}/infer_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_batchsize_${batch_size}"
-                        command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_mkldnn_key}=${use_mkldnn} ${cpu_threads_key}=${threads} ${model_dir_key}=${_model_dir} ${batch_size_key}=${batch_size} ${image_dir_key}=${_img_dir}  ${save_log_key}=${_save_log_path}  --benchmark=True"
+                        command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_mkldnn_key}=${use_mkldnn} ${cpu_threads_key}=${threads} ${model_dir_key}=${_model_dir} ${batch_size_key}=${batch_size} ${image_dir_key}=${_img_dir}  ${save_log_key}=${_save_log_path}  --benchmark=True "
                         eval $command
                         status_check $? "${command}" "${status_log}"
                     done
@@ -124,7 +124,7 @@ function func_inference(){
                     fi
                     for batch_size in ${batch_size_list[*]}; do
                         _save_log_path="${_log_path}/infer_gpu_usetrt_${use_trt}_precision_${precision}_batchsize_${batch_size}"
-                        command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_trt_key}=${use_trt} ${precision_key}=${precision} ${model_dir_key}=${_model_dir} ${batch_size_key}=${batch_size} ${image_dir_key}=${_img_dir}  ${save_log_key}=${_save_log_path}  --benchmark=True"
+                        command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_trt_key}=${use_trt} ${precision_key}=${precision} ${model_dir_key}=${_model_dir} ${batch_size_key}=${batch_size} ${image_dir_key}=${_img_dir}  ${save_log_key}=${_save_log_path}  --benchmark=True "
                         eval $command
                         status_check $? "${command}" "${status_log}"
                     done

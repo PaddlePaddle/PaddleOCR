@@ -106,7 +106,7 @@ class TextDetector(object):
                 model_precision=args.precision,
                 batch_size=1,
                 data_shape="dynamic",
-                save_path="./output/auto_log.lpg",
+                save_path=args.save_log_path,
                 inference_config=self.config,
                 pids=pid,
                 process_name=None,
@@ -174,7 +174,7 @@ class TextDetector(object):
         data = {'image': img}
 
         st = time.time()
-        
+
         if args.benchmark:
             self.autolog.times.start()
 
@@ -262,7 +262,6 @@ if __name__ == "__main__":
                                 "det_res_{}".format(img_name_pure))
         cv2.imwrite(img_path, src_im)
         logger.info("The visualized image saved in {}".format(img_path))
-    
+
     if args.benchmark:
         text_detector.autolog.report()
-
