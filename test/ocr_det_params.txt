@@ -1,7 +1,7 @@
 model_name:ocr_det
 python:python3.7
-gpu_list:-1|0|0,1
-Global.auto_cast:False|True
+gpu_list:0|0,1
+Global.auto_cast:False
 Global.epoch_num:10
 Global.save_model_dir:./output/
 Global.save_inference_dir:./output/
@@ -9,7 +9,7 @@ Train.loader.batch_size_per_card:
 Global.use_gpu
 Global.pretrained_model
 
-trainer:norm|pact|fpgm
+trainer:norm|pact
 norm_train:tools/train.py -c configs/det/det_mv3_db.yml -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
 quant_train:deploy/slim/quantization/quant.py -c configs/det/det_mv3_db.yml -o Global.pretrained_model=./pretrain_models/det_mv3_db_v2.0_train/best_accuracy
 fpgm_train:null

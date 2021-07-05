@@ -110,10 +110,12 @@ def main():
     # build dataloader
     valid_dataloader = build_dataloader(config, 'Eval', device, logger)
 
-    # start eval
+    use_srn = config['Architecture']['algorithm'] == "SRN"
     model_type = config['Architecture']['model_type']
-    metric = program.eval(model, valid_dataloader, post_process_class,
-                          eval_class, model_type)
+    # start eval
+    metirc = program.eval(model, valid_dataloader, post_process_class,
+                          eval_class, model_type, use_srn)
+
     logger.info('metric eval ***************')
     for k, v in metric.items():
         logger.info('{}:{}'.format(k, v))
