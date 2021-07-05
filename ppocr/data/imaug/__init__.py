@@ -23,6 +23,7 @@ from .random_crop_data import EastRandomCropData, PSERandomCrop
 
 from .rec_img_aug import RecAug, RecResizeImg, ClsResizeImg, SRNRecResizeImg
 from .randaugment import RandAugment
+from .copy_paste import CopyPaste
 from .operators import *
 from .label_ops import *
 

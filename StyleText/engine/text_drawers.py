@@ -66,6 +66,7 @@ class StdTextDrawer(object):
                     corpus_list.append(corpus[0:i])
                     text_input_list.append(text_input)
                     corpus = corpus[i:]
+                    i = 0
                     break
                 draw.text((char_x, 2), char_i, fill=(0, 0, 0), font=font)
                 char_x += char_size
@@ -78,7 +79,6 @@ class StdTextDrawer(object):
 
                 corpus_list.append(corpus[0:i])
                 text_input_list.append(text_input)
-                corpus = corpus[i:]
                 break
 
         return corpus_list, text_input_list

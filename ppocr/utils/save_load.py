@@ -25,7 +25,7 @@ import paddle
 
 from ppocr.utils.logging import get_logger
 
-__all__ = ['init_model', 'save_model', 'load_dygraph_pretrain']
+__all__ = ['init_model', 'save_model', 'load_dygraph_params']
 
 
 def _mkdir_if_not_exist(path, logger):
@@ -87,6 +87,34 @@ def init_model(config, model, optimizer=None, lr_scheduler=None):
     else:
         logger.info('train from scratch')
     return best_model_dict
+
+
+def load_dygraph_params(config, model, logger, optimizer):
+    ckp = config['Global']['checkpoints']
+    if ckp and os.path.exists(ckp + ".pdparams"):
+        pre_best_model_dict = init_model(config, model, optimizer)
+        return pre_best_model_dict
+    else:
+        pm = config['Global']['pretrained_model']
+        if pm is None:
+            return {}
+        if not os.path.exists(pm) and not os.path.exists(pm + ".pdparams"):
+            logger.info(f"The pretrained_model {pm} does not exists!")
+            return {}
+        pm = pm if pm.endswith('.pdparams') else pm + '.pdparams'
+        params = paddle.load(pm)
+        state_dict = model.state_dict()
+        new_state_dict = {}
+        for k1, k2 in zip(state_dict.keys(), params.keys()):
+            if list(state_dict[k1].shape) == list(params[k2].shape):
+                new_state_dict[k1] = params[k2]
+        else:
+            logger.info(
+                f"The shape of model params {k1} {state_dict[k1].shape} not matched with loaded params {k2} {params[k2].shape} !"
+            )
+        model.set_state_dict(new_state_dict)
+        logger.info(f"loaded pretrained_model successful from {pm}")
+        return {}
 
 
 def save_model(model,

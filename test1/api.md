@@ -30,22 +30,32 @@ Types 1-4 follow the traditional OCR process, and 5 follow the Table OCR process
 
 [doc](table/README.md)
 
-## 4. PaddleStructure whl package introduction
+## 4. Predictive by inference engine
 
-### 4.1 Use
-
-4.1.1 Use by code
+Use the following commands to complete the inference
 ```python
+python3 table/predict_system.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=EN --det_limit_side_len=736 --det_limit_type=min --output ../output/table
+```
+After running, each image will have a directory with the same name under the directory specified in the output field. Each table in the picture will be stored as an excel, and the excel file name will be the coordinates of the table in the image.
+
+## 5. PaddleStructure whl package introduction
+
+### 5.1 Use
+
+5.1.1 Use by code
+```python
+import os
 import cv2
-from paddlestructure import PaddleStructure,draw_result
+from paddlestructure import PaddleStructure,draw_result,save_res
 
-table_engine = PaddleStructure(
-    output='./output/table',
-    show_log=True)
+table_engine = PaddleStructure(show_log=True)
 
+save_folder = './output/table'
 img_path = '../doc/table/1.png'
 img = cv2.imread(img_path)
 result = table_engine(img)
+save_res(result, save_folder,os.path.basename(img_path).split('.')[0])
+
 for line in result:
     print(line)
 
@@ -58,19 +68,19 @@ im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
 
-4.1.2 Use by command line
+5.1.2 Use by command line
 ```bash
 paddlestructure --image_dir=../doc/table/1.png
 ```
 
-### 参数说明
-大部分参数和paddleocr whl包保持一致，见 [whl包文档](../doc/doc_ch/whl.md)
+### Parameter Description
+Most of the parameters are consistent with the paddleocr whl package, see [whl package documentation](../doc/doc_ch/whl.md)
 
-| 字段                    | 说明                                            | 默认值           |
+| Parameter                    | Description                                            | Default           |
 |------------------------|------------------------------------------------------|------------------|
-| output                 | excel和识别结果保存的地址                    | ./output/table            |
-| structure_max_len      |  structure模型预测时，图像的长边resize尺度             |  488            |
-| structure_model_dir      |  structure inference 模型地址             |  None            |
-| structure_char_type      |  structure 模型所用字典地址             |  ../ppocr/utils/dict/table_structure_dict.tx            |
+| output                 | The path where excel and recognition results are saved                    | ./output/table            |
+| structure_max_len      |  When the table structure model predicts, the long side of the image is resized             |  488            |
+| structure_model_dir      |  Table structure inference model path             |  None            |
+| structure_char_type      | Dictionary path used by table structure model             |  ../ppocr/utils/dict/table_structure_dict.tx            |
 
 
