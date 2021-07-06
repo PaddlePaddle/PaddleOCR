@@ -53,8 +53,9 @@ class CombinedLoss(nn.Layer):
             for key in loss:
                 if key == "loss":
                     loss_all += loss[key] * weight
-                # else:
-                #     loss[f"{key}_{idx}"] = loss[key]
+                else:
+                    loss["{}_{}".format(key, idx)] = loss[key]
+                    # loss[f"{key}_{idx}"] = loss[key]
             loss_dict.update(loss)
         loss_dict["loss"] = loss_all
         return loss_dict
