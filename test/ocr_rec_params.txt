@@ -1,0 +1,34 @@
+model_name:ocr_rec
+python:python3.7
+gpu_list:0|0,1
+Global.auto_cast:False
+Global.epoch_num:10
+Global.save_model_dir:./output/
+Global.save_inference_dir:./output/
+Train.loader.batch_size_per_card:
+Global.use_gpu
+Global.pretrained_model
+
+trainer:norm|pact
+norm_train:tools/train.py -c configs/rec/rec_mv3_none_bilstm_ctc.yml
+quant_train:deploy/slim/quantization/quant.py -c configs/rec/rec_mv3_none_bilstm_ctc.yml
+fpgm_train:null
+distill_train:null
+
+eval:tools/eval.py -c configs/rec/rec_mv3_none_bilstm_ctc.yml -o
+
+norm_export:tools/export_model.py -c configs/rec/rec_mv3_none_bilstm_ctc.yml -o
+quant_export:deploy/slim/quantization/export_model.py -c configs/rec/rec_mv3_none_bilstm_ctc.yml -o
+fpgm_export:null
+distill_export:null
+
+inference:tools/infer/predict_rec.py
+--use_gpu:True|False
+--enable_mkldnn:True|False
+--cpu_threads:1|6
+--rec_batch_num:6
+--use_tensorrt:True|False
+--precision:fp32|fp16|int8
+--rec_model_dir
+--image_dir
+--save_log_path
