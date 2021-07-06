@@ -29,7 +29,7 @@ deploy/hubserving/ocr_system/
 ### 1. 准备环境
 ```shell
 # 安装paddlehub  
-pip3 install paddlehub==1.8.3 --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip3 install paddlehub==2.1.0 --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 ### 2. 下载推理模型
