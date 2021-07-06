@@ -136,6 +136,7 @@ for gpu in ${gpu_list[*]}; do
         env=""
     elif [ ${#gpu} -le 1 ];then
         env="export CUDA_VISIBLE_DEVICES=${gpu}"
+        eval ${env}
     elif [ ${#gpu} -le 15 ];then
         IFS=","
         array=(${gpu})
@@ -215,7 +216,7 @@ for gpu in ${gpu_list[*]}; do
             status_check $? "${export_cmd}" "${status_log}"
 
             #run inference
-            echo $env
+            eval $env
             save_infer_path="${save_log}"
             func_inference "${python}" "${inference_py}" "${save_infer_path}" "${LOG_PATH}" "${infer_img_dir}"
         done
