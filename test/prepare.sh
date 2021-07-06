@@ -26,9 +26,7 @@ IFS=$'\n'
 # The training params
 model_name=$(func_parser_value "${lines[0]}")
 train_model_list=$(func_parser_value "${lines[0]}")
-
 trainer_list=$(func_parser_value "${lines[10]}")
-
 
 # MODE be one of ['lite_train_infer' 'whole_infer' 'whole_train_infer']
 MODE=$2
