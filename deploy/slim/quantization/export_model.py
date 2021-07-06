@@ -101,7 +101,7 @@ def main():
     quanter = QAT(config=quant_config)
     quanter.quantize(model)
 
-    init_model(config, model, logger)
+    init_model(config, model)
     model.eval()
 
     # build metric
