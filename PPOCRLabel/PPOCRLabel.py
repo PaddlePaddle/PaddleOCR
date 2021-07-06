@@ -360,7 +360,6 @@ class MainWindow(QMainWindow, WindowMixin):
         opendir = action(getStr('openDir'), self.openDirDialog,
                          'Ctrl+u', 'open', getStr('openDir'))
 
-
         save = action(getStr('save'), self.saveFile,
                       'Ctrl+V', 'verify', getStr('saveDetail'), enabled=False)
 
@@ -399,7 +398,6 @@ class MainWindow(QMainWindow, WindowMixin):
         help = action(getStr('tutorial'), self.showTutorialDialog, None, 'help', getStr('tutorialDetail'))
         showInfo = action(getStr('info'), self.showInfoDialog, None, 'help', getStr('info'))
         showSteps = action(getStr('steps'), self.showStepsDialog, None, 'help', getStr('steps'))
-        showKeys = action(getStr('keys'), self.showKeysDialog, None, 'help', getStr('keys'))
 
         zoom = QWidgetAction(self)
         zoom.setDefaultWidget(self.zoomWidget)
@@ -567,7 +565,7 @@ class MainWindow(QMainWindow, WindowMixin):
         addActions(self.menus.file,
                    (opendir, None, saveLabel, saveRec, self.autoSaveOption, None, resetAll, deleteImg, quit))
 
-        addActions(self.menus.help, (showKeys,showSteps, showInfo))
+        addActions(self.menus.help, (showSteps, showInfo))
         addActions(self.menus.view, (
             self.displayLabelOption, self.labelDialogOption,
              None,
@@ -760,10 +758,6 @@ class MainWindow(QMainWindow, WindowMixin):
 
     def showStepsDialog(self):
         msg = stepsInfo(self.lang)
-        QMessageBox.information(self, u'Information', msg)
-
-    def showKeysDialog(self):
-        msg = keysInfo(self.lang)
         QMessageBox.information(self, u'Information', msg)
 
     def createShape(self):
