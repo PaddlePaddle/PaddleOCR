@@ -79,7 +79,7 @@ class BaseModel(nn.Layer):
             x = self.neck(x)
         y["neck_out"] = x
         x = self.head(x, targets=data)
-        if type(x) is dict:
+        if isinstance(x, dict):
             y.update(x)
         else:
             y["head_out"] = x
