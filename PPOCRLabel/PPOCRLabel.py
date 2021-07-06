@@ -360,6 +360,9 @@ class MainWindow(QMainWindow, WindowMixin):
         opendir = action(getStr('openDir'), self.openDirDialog,
                          'Ctrl+u', 'open', getStr('openDir'))
 
+        open_dataset_dir = action(getStr('openDatasetDir'), self.openDatasetDirDialog,
+                         'Ctrl+p', 'open', getStr('openDatasetDir'), enabled=False)
+
         save = action(getStr('save'), self.saveFile,
                       'Ctrl+V', 'verify', getStr('saveDetail'), enabled=False)
 
@@ -519,9 +522,9 @@ class MainWindow(QMainWindow, WindowMixin):
                               zoom=zoom, zoomIn=zoomIn, zoomOut=zoomOut, zoomOrg=zoomOrg,
                               fitWindow=fitWindow, fitWidth=fitWidth,
                               zoomActions=zoomActions, saveLabel=saveLabel,
-                              undo=undo, undoLastPoint=undoLastPoint,
+                              undo=undo, undoLastPoint=undoLastPoint,open_dataset_dir=open_dataset_dir,
                               fileMenuActions=(
-                                  opendir, saveLabel,  resetAll, quit),
+                                  opendir,  open_dataset_dir, saveLabel,  resetAll, quit),
                               beginner=(), advanced=(),
                               editMenu=(createpoly, edit, copy, delete,singleRere,None, undo, undoLastPoint,
                                         None, color1, self.drawSquaresOption),
@@ -563,7 +566,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.autoSaveOption.triggered.connect(self.autoSaveFunc)
 
         addActions(self.menus.file,
-                   (opendir, None, saveLabel, saveRec, self.autoSaveOption, None, resetAll, deleteImg, quit))
+                   (opendir, open_dataset_dir, None, saveLabel, saveRec, self.autoSaveOption, None, resetAll, deleteImg, quit))
 
         addActions(self.menus.help, (showSteps, showInfo))
         addActions(self.menus.view, (
@@ -1448,6 +1451,23 @@ class MainWindow(QMainWindow, WindowMixin):
         self.lastOpenDir = targetDirPath
         self.importDirImages(targetDirPath)
 
+    def openDatasetDirDialog(self, _value=False): #1458
+        if not self.mayContinue():
+            return
+
+        if self.lastOpenDir and os.path.exists(self.lastOpenDir):
+            os.startfile(self.lastOpenDir)
+            defaultOpenDirPath = self.lastOpenDir
+        else:
+            if self.lang == 'ch':
+                self.actions.open_dataset_dir.setEnabled(False)
+                self.msgBox.warning(self, "提示", "\n 原文件夹已不存在,请从新选择数据集路径!")
+                defaultOpenDirPath = os.path.dirname(self.filePath) if self.filePath else '.'
+            else:
+                self.actions.open_dataset_dir.setEnabled (False)
+                self.msgBox.warning (self, "Warn", "\n The original folder no longer exists, please choose the data set path again!")
+                defaultOpenDirPath = os.path.dirname (self.filePath) if self.filePath else '.'
+
     def importDirImages(self, dirpath, isDelete = False):
         if not self.mayContinue() or not dirpath:
             return
@@ -1495,6 +1515,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.reRecogButton.setEnabled(True)
         self.actions.AutoRec.setEnabled(True)
         self.actions.reRec.setEnabled(True)
+        self.actions.open_dataset_dir.setEnabled(True)
 
 
     def openPrevImg(self, _value=False):
