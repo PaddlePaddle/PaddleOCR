@@ -101,7 +101,7 @@ function func_inference(){
             for use_mkldnn in ${use_mkldnn_list[*]}; do
                 for threads in ${cpu_threads_list[*]}; do
                     for batch_size in ${batch_size_list[*]}; do
-                        _save_log_path="${_log_path}/infer_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_batchsize_${batch_size}"
+                        _save_log_path="${_log_path}/infer_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_batchsize_${batch_size}.log"
                         command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_mkldnn_key}=${use_mkldnn} ${cpu_threads_key}=${threads} ${infer_model_key}=${_model_dir} ${batch_size_key}=${batch_size} ${image_dir_key}=${_img_dir}  ${save_log_key}=${_save_log_path} --benchmark=True"
                         eval $command
                         status_check $? "${command}" "${status_log}"
@@ -115,7 +115,7 @@ function func_inference(){
                         continue
                     fi
                     for batch_size in ${batch_size_list[*]}; do
-                        _save_log_path="${_log_path}/infer_gpu_usetrt_${use_trt}_precision_${precision}_batchsize_${batch_size}"
+                        _save_log_path="${_log_path}/infer_gpu_usetrt_${use_trt}_precision_${precision}_batchsize_${batch_size}.log"
                         command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_trt_key}=${use_trt} ${precision_key}=${precision} ${infer_model_key}=${_model_dir} ${batch_size_key}=${batch_size} ${image_dir_key}=${_img_dir}  ${save_log_key}=${_save_log_path}  --benchmark=True"
                         eval $command
                         status_check $? "${command}" "${status_log}"
@@ -136,6 +136,7 @@ for gpu in ${gpu_list[*]}; do
         env=""
     elif [ ${#gpu} -le 1 ];then
         env="export CUDA_VISIBLE_DEVICES=${gpu}"
+        eval ${env}
     elif [ ${#gpu} -le 15 ];then
         IFS=","
         array=(${gpu})
@@ -215,7 +216,7 @@ for gpu in ${gpu_list[*]}; do
             status_check $? "${export_cmd}" "${status_log}"
 
             #run inference
-            echo $env
+            eval $env
             save_infer_path="${save_log}"
             func_inference "${python}" "${inference_py}" "${save_infer_path}" "${LOG_PATH}" "${infer_img_dir}"
         done
