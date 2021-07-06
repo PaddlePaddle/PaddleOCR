@@ -195,6 +195,7 @@ def stepsInfo(lang='en'):
 def keysInfo(lang='en'):
     if lang == 'ch':
         msg = "快捷键\t\t\t说明\n" \
+              "———————————————————————\n"\
               "Ctrl + shift + R\t\t对当前图片的所有标记重新识别\n" \
               "W\t\t\t新建矩形框\n" \
               "Q\t\t\t新建四点框\n" \
@@ -209,10 +210,13 @@ def keysInfo(lang='en'):
               "A\t\t\t上一张图片\n" \
               "Ctrl++\t\t\t缩小\n" \
               "Ctrl--\t\t\t放大\n" \
-              "↑→↓←\t\t\t移动标记框" \
+              "↑→↓←\t\t\t移动标记框\n" \
+              "———————————————————————\n" \
+              "注：Mac用户Command键替换上述Ctrl键"
 
     else:
-        msg = "Shortcut keys\t\tDescription\n" \
+        msg = "Shortcut Keys\t\tDescription\n" \
+              "———————————————————————\n" \
               "Ctrl + shift + R\t\tRe-recognize all the labels\n" \
               "\t\t\tof the current image\n" \
               "\n"\
@@ -233,5 +237,8 @@ def keysInfo(lang='en'):
               "A\t\t\tPrevious image\n" \
               "Ctrl++\t\t\tZoom in\n" \
               "Ctrl--\t\t\tZoom out\n" \
-              "↑→↓←\t\t\tMove selected box"
+              "↑→↓←\t\t\tMove selected box" \
+              "———————————————————————\n" \
+              "Notice:For Mac users, use the 'Command' key instead of the 'Ctrl' key"
+
     return msg
