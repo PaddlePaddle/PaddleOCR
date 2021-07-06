@@ -79,7 +79,10 @@ class BaseModel(nn.Layer):
             x = self.neck(x)
         y["neck_out"] = x
         x = self.head(x, targets=data)
-        y["head_out"] = x
+        if type(x) is dict:
+            y.update(x)
+        else:
+            y["head_out"] = x
         if self.return_all_feats:
             return y
         else:
