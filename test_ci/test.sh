@@ -147,6 +147,7 @@ for gpu in ${gpu_list[*]}; do
         ips=${array[0]}
         gpu=${array[1]}
         IFS="|"
+        env=" "
     fi
     for autocast in ${autocast_list[*]}; do 
         for trainer in ${trainer_list[*]}; do 
@@ -214,6 +215,7 @@ for gpu in ${gpu_list[*]}; do
             status_check $? "${export_cmd}" "${status_log}"
 
             #run inference
+            echo $env
             save_infer_path="${save_log}"
             func_inference "${python}" "${inference_py}" "${save_infer_path}" "${LOG_PATH}" "${infer_img_dir}"
         done
@@ -221,7 +223,13 @@ for gpu in ${gpu_list[*]}; do
 done
 
 else
-
+    GPUID=$3
+    if [ ${#GPUID} -le 0 ];then
+        env=" "
+    else
+        env="export CUDA_VISIBLE_DEVICES=${GPUID}"
+    fi
+    echo $env
     #run inference
     func_inference "${python}" "${inference_py}" "${infer_model}" "${LOG_PATH}" "${infer_img_dir}"
 fi
