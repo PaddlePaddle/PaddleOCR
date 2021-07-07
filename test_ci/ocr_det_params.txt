@@ -17,7 +17,7 @@ distill_train:null
 eval:tools/eval.py -c configs/det/det_mv3_db.yml -o 
 
 Global.save_inference_dir:./output/
-Global.checkpoints:
+Global.pretrained_model:
 norm_export:tools/export_model.py -c configs/det/det_mv3_db.yml -o 
 quant_export:deploy/slim/quantization/export_model.py -c configs/det/det_mv3_db.yml -o 
 fpgm_export:deploy/slim/prune/export_prune_model.py
