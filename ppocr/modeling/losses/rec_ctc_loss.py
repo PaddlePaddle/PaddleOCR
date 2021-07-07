@@ -30,6 +30,7 @@ class CTCLoss(object):
     def __call__(self, predicts, labels):
         predict = predicts['predict']
         label = labels['label']
+        # calculate ctc loss
         cost = fluid.layers.warpctc(
             input=predict, label=label, blank=self.char_num, norm_by_times=True)
         sum_cost = fluid.layers.reduce_sum(cost)

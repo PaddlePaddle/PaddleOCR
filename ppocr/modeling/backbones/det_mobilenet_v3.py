@@ -32,6 +32,7 @@ class MobileNetV3():
         """
         self.scale = params['scale']
         model_name = params['model_name']
+        self.model_name = model_name
         self.inplanes = 16
         if model_name == "large":
             self.cfg = [
@@ -79,6 +80,8 @@ class MobileNetV3():
         assert self.scale in supported_scale, \
             "supported scale are {} but input scale is {}".format(supported_scale, self.scale)
 
+        self.disable_se = params.get('disable_se', False)
+
     def __call__(self, input):
         scale = self.scale
         inplanes = self.inplanes
@@ -100,7 +103,8 @@ class MobileNetV3():
         inplanes = self.make_divisible(inplanes * scale)
         outs = []
         for layer_cfg in cfg:
-            if layer_cfg[5] == 2 and i > 2:
+            start_idx = 2 if self.model_name == 'large' else 0
+            if layer_cfg[5] == 2 and i > start_idx:
                 outs.append(conv)
             conv = self.residual_unit(
                 input=conv,
@@ -232,7 +236,7 @@ class MobileNetV3():
             num_groups=num_mid_filter,
             use_cudnn=False,
             name=name + '_depthwise')
-        if use_se:
+        if use_se and not self.disable_se:
             conv1 = self.se_block(
                 input=conv1, num_out_filter=num_mid_filter, name=name + '_se')
 

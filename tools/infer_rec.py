@@ -41,6 +41,7 @@ import tools.program as program
 from paddle import fluid
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
+from ppocr.utils.utility import enable_static_mode
 from ppocr.data.reader_main import reader_main
 from ppocr.utils.save_load import init_model
 from ppocr.utils.character import CharacterOps
@@ -145,7 +146,7 @@ def main():
             preds = preds.reshape(-1)
             probs = np.array(predict[1])
             ind = np.argmax(probs, axis=1)
-            valid_ind = np.where(preds != int(char_num-1))[0]
+            valid_ind = np.where(preds != int(char_num - 1))[0]
             if len(valid_ind) == 0:
                 continue
             score = np.mean(probs[valid_ind, ind[valid_ind]])
@@ -171,6 +172,7 @@ def main():
 
 
 if __name__ == '__main__':
+    enable_static_mode()
     parser = program.ArgsParser()
     FLAGS = parser.parse_args()
     main()

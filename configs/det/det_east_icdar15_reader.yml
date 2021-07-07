@@ -17,7 +17,6 @@ EvalReader:
 TestReader:
   reader_function: ppocr.data.det.dataset_traversal,EvalTestReader
   process_function: ppocr.data.det.east_process,EASTProcessTest
-  infer_img:
   img_set_dir: ./train_data/icdar2015/text_localization/
   label_file_path: ./train_data/icdar2015/text_localization/test_icdar2015_label.txt
   do_eval: True

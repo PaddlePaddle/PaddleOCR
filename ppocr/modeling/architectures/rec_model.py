@@ -16,6 +16,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from collections import OrderedDict
+
 from paddle import fluid
 
 from ppocr.utils.utility import create_module
@@ -25,6 +27,12 @@ from copy import deepcopy
 
 
 class RecModel(object):
+    """
+    Rec model architecture
+    Args:
+        params(object): Params from yaml file and settings from command line
+    """
+
     def __init__(self, params):
         super(RecModel, self).__init__()
         global_params = params['Global']
@@ -64,10 +72,17 @@ class RecModel(object):
             self.num_heads = None
 
     def create_feed(self, mode):
+        """
+        Create feed dict and DataLoader object
+        Args:
+            mode(str): runtime mode, can be "train", "eval" or "test"
+        Return: image, labels, loader
+        """
         image_shape = deepcopy(self.image_shape)
         image_shape.insert(0, -1)
         if mode == "train":
             image = fluid.data(name='image', shape=image_shape, dtype='float32')
+            image.stop_gradient = False
             if self.loss_type == "attention":
                 label_in = fluid.data(
                     name='label_in',
@@ -136,7 +151,7 @@ class RecModel(object):
         else:
             labels = None
             loader = None
-            if self.char_type == "ch" and self.infer_img:
+            if self.char_type == "ch" and self.infer_img and self.loss_type != "srn":
                 image_shape[-1] = -1
                 if self.tps != None:
                     logger.info(
@@ -145,7 +160,9 @@ class RecModel(object):
                         "We set img_shape to be the same , it may affect the inference effect"
                     )
                     image_shape = deepcopy(self.image_shape)
+                    image_shape.insert(0, -1)
             image = fluid.data(name='image', shape=image_shape, dtype='float32')
+            image.stop_gradient = False
             if self.loss_type == "srn":
                 encoder_word_pos = fluid.data(
                     name="encoder_word_pos",
@@ -172,16 +189,13 @@ class RecModel(object):
                         self.max_text_length
                     ],
                     dtype="float32")
-                feed_list = [
-                    image, encoder_word_pos, gsrm_word_pos, gsrm_slf_attn_bias1,
-                    gsrm_slf_attn_bias2
-                ]
                 labels = {
                     'encoder_word_pos': encoder_word_pos,
                     'gsrm_word_pos': gsrm_word_pos,
                     'gsrm_slf_attn_bias1': gsrm_slf_attn_bias1,
                     'gsrm_slf_attn_bias2': gsrm_slf_attn_bias2
                 }
+
         return image, labels, loader
 
     def __call__(self, mode):
@@ -190,9 +204,12 @@ class RecModel(object):
             inputs = image
         else:
             inputs = self.tps(image)
+        # backbone
         conv_feas = self.backbone(inputs)
+        # predict
         predicts = self.head(conv_feas, labels, mode)
         decoded_out = predicts['decoded_out']
+        # loss
         if mode == "train":
             loss = self.loss(predicts, labels)
             if self.loss_type == "attention":
@@ -201,28 +218,32 @@ class RecModel(object):
                 label = labels['label']
             if self.loss_type == 'srn':
                 total_loss, img_loss, word_loss = self.loss(predicts, labels)
-                outputs = {
-                    'total_loss': total_loss,
-                    'img_loss': img_loss,
-                    'word_loss': word_loss,
-                    'decoded_out': decoded_out,
-                    'label': label
-                }
+                outputs = OrderedDict([('total_loss', total_loss), 
+                                       ('img_loss', img_loss), 
+                                       ('word_loss', word_loss), 
+                                       ('decoded_out', decoded_out),
+                                       ('label', label)])
             else:
-                outputs = {'total_loss':loss, 'decoded_out':\
-                    decoded_out, 'label':label}
+                outputs = OrderedDict([('total_loss', loss), 
+                                       ('decoded_out', decoded_out),
+                                       ('label', label)])
             return loader, outputs
-
+        # export_model
         elif mode == "export":
             predict = predicts['predict']
             if self.loss_type == "ctc":
                 predict = fluid.layers.softmax(predict)
             if self.loss_type == "srn":
-                raise Exception(
-                    "Warning! SRN does not support export model currently")
-            return [image, {'decoded_out': decoded_out, 'predicts': predict}]
+                return [
+                    image, labels, OrderedDict([('decoded_out', decoded_out), 
+                                                ('predicts', predict)])]
+
+            return [image, OrderedDict([('decoded_out', decoded_out), 
+                                        ('predicts', predict)])]
+        # eval or test
         else:
             predict = predicts['predict']
             if self.loss_type == "ctc":
                 predict = fluid.layers.softmax(predict)
-            return loader, {'decoded_out': decoded_out, 'predicts': predict}
+            return loader, OrderedDict([('decoded_out', decoded_out), 
+                                        ('predicts', predict)])

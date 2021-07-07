@@ -1,67 +1,49 @@
 # 效果展示
-- [超轻量级中文OCR效果展示](#超轻量级中文OCR)
-- [通用中文OCR效果展示](#通用中文OCR)
-- [支持空格的中文OCR效果展示](#支持空格的中文OCR)
 
-<a name="超轻量级中文OCR"></a>
-## 超轻量级中文OCR效果展示
+<a name="通用ppocr_server_1.1效果展示"></a>
+## 通用ppocr_server_1.1效果展示
+
+<div align="center">
+    <img src="../imgs_results/1101.jpg" width="800">
+    <img src="../imgs_results/1102.jpg" width="800">
+    <img src="../imgs_results/1103.jpg" width="800">
+    <img src="../imgs_results/1104.jpg" width="800">
+    <img src="../imgs_results/1105.jpg" width="800">
+    <img src="../imgs_results/1106.jpg" width="800">
+</div>
+
+
+<a name="英文识别模型效果展示"></a>
+## 英文识别模型效果展示
+<div align="center">
+    <img src="../imgs_results/img_12.jpg" width="800">
+</div>
+
+
+<a name="多语言识别模型效果展示"></a>
+## 多语言识别模型效果展示
+<div align="center">
+    <img src="../imgs_results/1110.jpg" width="800">
+    <img src="../imgs_results/1112.jpg" width="800">
+</div>
+
+
+<a name="超轻量ppocr_mobile_1.0效果展示"></a>
+## 超轻量ppocr_mobile_1.0效果展示
 
 <div align="center">
     <img src="../imgs_results/1.jpg" width="800">
-</div>
-
-<div align="center">
     <img src="../imgs_results/7.jpg" width="800">
-</div>
-
-<div align="center">
-    <img src="../imgs_results/12.jpg" width="800">
-</div>
-
-<div align="center">
-    <img src="../imgs_results/4.jpg" width="800">
-</div>
-
-<div align="center">
     <img src="../imgs_results/6.jpg" width="800">
-</div>
-
-<div align="center">
-    <img src="../imgs_results/9.jpg" width="800">
-</div>
-
-<div align="center">
     <img src="../imgs_results/16.png" width="800">
 </div>
 
-<div align="center">
-    <img src="../imgs_results/22.jpg" width="800">
-</div>
 
-<a name="通用中文OCR"></a>
-## 通用中文OCR效果展示
+<a name="通用ppocr_server_1.0效果展示"></a>
+## 通用ppocr_server_1.0效果展示
 
 <div align="center">
     <img src="../imgs_results/chinese_db_crnn_server/11.jpg" width="800">
-</div>
-
-<div align="center">
     <img src="../imgs_results/chinese_db_crnn_server/2.jpg" width="800">
-</div>
-
-<div align="center">
     <img src="../imgs_results/chinese_db_crnn_server/8.jpg" width="800">
-</div>
-
-<a name="支持空格的中文OCR"></a>
-## 支持空格的中文OCR效果展示
-
-### 轻量级模型
-<div align="center">
-    <img src="../imgs_results/img_11.jpg" width="800">
-</div>
-
-### 通用模型
-<div align="center">
-    <img src="../imgs_results/chinese_db_crnn_server/en_paper.jpg" width="800">
 </div>

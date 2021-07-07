@@ -112,7 +112,7 @@ OrderPointsClockwise(std::vector<std::vector<int>> pts) {
 }
 
 std::vector<std::vector<float>> GetMiniBoxes(cv::RotatedRect box, float &ssid) {
-  ssid = std::max(box.size.width, box.size.height);
+  ssid = std::min(box.size.width, box.size.height);
 
   cv::Mat points;
   cv::boxPoints(box, points);
@@ -293,7 +293,7 @@ FilterTagDetRes(std::vector<std::vector<std::vector<int>>> boxes, float ratio_h,
     rect_height =
         static_cast<int>(sqrt(pow(boxes[n][0][0] - boxes[n][3][0], 2) +
                               pow(boxes[n][0][1] - boxes[n][3][1], 2)));
-    if (rect_width <= 10 || rect_height <= 10)
+    if (rect_width <= 4 || rect_height <= 4)
       continue;
     root_points.push_back(boxes[n]);
   }

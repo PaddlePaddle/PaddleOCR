@@ -5,32 +5,38 @@ The inference model (the model saved by `fluid.io.save_inference_model`) is gene
 
 The model saved during the training process is the checkpoints model, which saves the parameters of the model and is mostly used to resume training.
 
-Compared with the checkpoints model, the inference model will additionally save the structural information of the model. It has superior performance in predicting in deployment and accelerating inferencing, is flexible and convenient, and is suitable for integration with actual systems. For more details, please refer to the document [Classification Framework](https://paddleclas.readthedocs.io/zh_CN/latest/extension/paddle_inference.html).
+Compared with the checkpoints model, the inference model will additionally save the structural information of the model. It has superior performance in predicting in deployment and accelerating inferencing, is flexible and convenient, and is suitable for integration with actual systems. For more details, please refer to the document [Classification Framework](https://github.com/PaddlePaddle/PaddleClas/blob/master/docs/zh_CN/extension/paddle_inference.md).
 
 Next, we first introduce how to convert a trained model into an inference model, and then we will introduce text detection, text recognition, and the concatenation of them based on inference model.
 
 - [CONVERT TRAINING MODEL TO INFERENCE MODEL](#CONVERT)
     - [Convert detection model to inference model](#Convert_detection_model)
     - [Convert recognition model to inference model](#Convert_recognition_model)
-    
-    
+    - [Convert angle classification model to inference model](#Convert_angle_class_model)
+
+
 - [TEXT DETECTION MODEL INFERENCE](#DETECTION_MODEL_INFERENCE)
     - [1. LIGHTWEIGHT CHINESE DETECTION MODEL INFERENCE](#LIGHTWEIGHT_DETECTION)
     - [2. DB TEXT DETECTION MODEL INFERENCE](#DB_DETECTION)
     - [3. EAST TEXT DETECTION MODEL INFERENCE](#EAST_DETECTION)
     - [4. SAST TEXT DETECTION MODEL INFERENCE](#SAST_DETECTION)
-    
+    - [5. Multilingual model inference](#Multilingual model inference)
+
 - [TEXT RECOGNITION MODEL INFERENCE](#RECOGNITION_MODEL_INFERENCE)
     - [1. LIGHTWEIGHT CHINESE MODEL](#LIGHTWEIGHT_RECOGNITION)
     - [2. CTC-BASED TEXT RECOGNITION MODEL INFERENCE](#CTC-BASED_RECOGNITION)
     - [3. ATTENTION-BASED TEXT RECOGNITION MODEL INFERENCE](#ATTENTION-BASED_RECOGNITION)
-    - [4. TEXT RECOGNITION MODEL INFERENCE USING CUSTOM CHARACTERS DICTIONARY](#USING_CUSTOM_CHARACTERS)
-    
-    
-- [TEXT DETECTION AND RECOGNITION INFERENCE CONCATENATION](#CONCATENATION)
+    - [4. SRN-BASED TEXT RECOGNITION MODEL INFERENCE](#SRN-BASED_RECOGNITION)
+    - [5. TEXT RECOGNITION MODEL INFERENCE USING CUSTOM CHARACTERS DICTIONARY](#USING_CUSTOM_CHARACTERS)
+    - [6. MULTILINGUAL MODEL INFERENCE](MULTILINGUAL_MODEL_INFERENCE)
+
+- [ANGLE CLASSIFICATION MODEL INFERENCE](#ANGLE_CLASS_MODEL_INFERENCE)
+    - [1. ANGLE CLASSIFICATION MODEL INFERENCE](#ANGLE_CLASS_MODEL_INFERENCE)
+
+- [TEXT DETECTION ANGLE CLASSIFICATION AND RECOGNITION INFERENCE CONCATENATION](#CONCATENATION)
     - [1. LIGHTWEIGHT CHINESE MODEL](#LIGHTWEIGHT_CHINESE_MODEL)
     - [2. OTHER MODELS](#OTHER_MODELS)
-    
+
 <a name="CONVERT"></a>
 ## CONVERT TRAINING MODEL TO INFERENCE MODEL
 <a name="Convert_detection_model"></a>
@@ -38,8 +44,9 @@ Next, we first introduce how to convert a trained model into an inference model,
 
 Download the lightweight Chinese detection model:
 ```
-wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_det_mv3_db.tar && tar xf ./ch_lite/ch_det_mv3_db.tar -C ./ch_lite/
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/20-09-22/mobile/det/ch_ppocr_mobile_v1.1_det_train.tar && tar xf ./ch_lite/ch_ppocr_mobile_v1.1_det_train.tar -C ./ch_lite/
 ```
+
 The above model is a DB algorithm trained with MobileNetV3 as the backbone. To convert the trained model into an inference model, just run the following command:
 ```
 # -c Set the training algorithm yml configuration file
@@ -47,9 +54,9 @@ The above model is a DB algorithm trained with MobileNetV3 as the backbone. To c
 #  Global.checkpoints parameter Set the training model address to be converted without adding the file suffix .pdmodel, .pdopt or .pdparams.
 #  Global.save_inference_dir Set the address where the converted model will be saved.
 
-python3 tools/export_model.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./ch_lite/det_mv3_db/best_accuracy \
-        Global.save_inference_dir=./inference/det_db/
+python3 tools/export_model.py -c configs/det/det_mv3_db_v1.1.yml -o Global.checkpoints=./ch_lite/ch_ppocr_mobile_v1.1_det_train/best_accuracy Global.save_inference_dir=./inference/det_db/
 ```
+
 When converting to an inference model, the configuration file used is the same as the configuration file used during training. In addition, you also need to set the `Global.checkpoints` and `Global.save_inference_dir` parameters in the configuration file.
 `Global.checkpoints` points to the model parameter file saved during training, and `Global.save_inference_dir` is the directory where the generated inference model is saved.
 After the conversion is successful, there are two files in the `save_inference_dir` directory:
@@ -64,7 +71,7 @@ inference/det_db/
 
 Download the lightweight Chinese recognition model:
 ```
-wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn.tar && tar xf ./ch_lite/ch_rec_mv3_crnn.tar -C ./ch_lite/
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/20-09-22/mobile/rec/ch_ppocr_mobile_v1.1_rec_train.tar && tar xf ch_ppocr_mobile_v1.1_rec_train.tar -C ./ch_lite/
 ```
 
 The recognition model is converted to the inference model in the same way as the detection, as follows:
@@ -74,8 +81,7 @@ The recognition model is converted to the inference model in the same way as the
 #  Global.checkpoints parameter Set the training model address to be converted without adding the file suffix .pdmodel, .pdopt or .pdparams.
 #  Global.save_inference_dir Set the address where the converted model will be saved.
 
-python3 tools/export_model.py -c configs/rec/rec_chinese_lite_train.yml -o Global.checkpoints=./ch_lite/rec_mv3_crnn/best_accuracy \
-        Global.save_inference_dir=./inference/rec_crnn/
+python3 tools/export_model.py -c configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml -o Global.checkpoints=./ch_lite/ch_ppocr_mobile_v1.1_rec_train/best_accuracy \
 ```
 
 If you have a model trained on your own dataset with a different dictionary file, please make sure that you modify the `character_dict_path` in the configuration file to your dictionary file path.
@@ -86,6 +92,33 @@ After the conversion is successful, there are two files in the directory:
   └─  model     Identify the saved model files
   └─  params    Identify the parameter files of the inference model
 ```
+
+<a name="Convert_angle_class_model"></a>
+### Convert angle classification model to inference model
+
+Download the angle classification model:
+```
+wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/20-09-22/cls/ch_ppocr_mobile_v1.1_cls_train.tar && tar xf ./ch_lite/ch_ppocr_mobile_v1.1_cls_train.tar -C ./ch_lite/
+```
+
+The angle classification model is converted to the inference model in the same way as the detection, as follows:
+```
+# -c Set the training algorithm yml configuration file
+# -o Set optional parameters
+#  Global.checkpoints parameter Set the training model address to be converted without adding the file suffix .pdmodel, .pdopt or .pdparams.
+#  Global.save_inference_dir Set the address where the converted model will be saved.
+
+python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o Global.checkpoints=./ch_lite/ch_ppocr_mobile_v1.1_cls_train/best_accuracy \
+        Global.save_inference_dir=./inference/cls/
+```
+
+After the conversion is successful, there are two files in the directory:
+```
+/inference/cls/
+  └─  model     Identify the saved model files
+  └─  params    Identify the parameter files of the inference model
+```
+
 
 <a name="DETECTION_MODEL_INFERENCE"></a>
 ## TEXT DETECTION MODEL INFERENCE
@@ -268,24 +301,83 @@ self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
 dict_character = list(self.character_str)
 ```
 
+<a name="SRN-BASED_RECOGNITION"></a>
+### 4. SRN-BASED TEXT RECOGNITION MODEL INFERENCE
+
+The recognition model based on SRN requires additional setting of the recognition algorithm parameter --rec_algorithm="SRN".
+At the same time, it is necessary to ensure that the predicted shape is consistent with the training, such as: --rec_image_shape="1, 64, 256"
+
+```
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" \
+                                    --rec_model_dir="./inference/srn/" \
+                                    --rec_image_shape="1, 64, 256" \
+                                    --rec_char_type="en" \
+                                    --rec_algorithm="SRN"
+```
+
+
 <a name="USING_CUSTOM_CHARACTERS"></a>
-### 4. TEXT RECOGNITION MODEL INFERENCE USING CUSTOM CHARACTERS DICTIONARY
+### 5. TEXT RECOGNITION MODEL INFERENCE USING CUSTOM CHARACTERS DICTIONARY
 If the chars dictionary is modified during training, you need to specify the new dictionary path by setting the parameter `rec_char_dict_path` when using your inference model to predict.
 
 ```
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="en" --rec_char_dict_path="your text dict path"
 ```
 
+<a name="MULTILINGUAL_MODEL_INFERENCE"></a>
+### 6. MULTILINGAUL MODEL INFERENCE
+If you need to predict other language models, when using inference model prediction, you need to specify the dictionary path used by `--rec_char_dict_path`. At the same time, in order to get the correct visualization results,
+You need to specify the visual font path through `--vis_font_path`. There are small language fonts provided by default under the `doc/` path, such as Korean recognition:
+
+```
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" --rec_model_dir="./your inference model" --rec_char_type="korean" --rec_char_dict_path="ppocr/utils/dict/korean_dict.txt" --vis_font_path="doc/korean.ttf"
+```
+![](../imgs_words/korean/1.jpg)
+
+After executing the command, the prediction result of the above figure is:
+
+``` text
+2020-09-19 16:15:05,076-INFO:      index: [205 206  38  39]
+2020-09-19 16:15:05,077-INFO:      word : 바탕으로
+2020-09-19 16:15:05,077-INFO:      score: 0.9171358942985535
+```
+
+<a name="ANGLE_CLASSIFICATION_MODEL_INFERENCE"></a>
+## ANGLE CLASSIFICATION MODEL INFERENCE
+
+The following will introduce the angle classification model inference.
+
+
+<a name="ANGLE_CLASS_MODEL_INFERENCE"></a>
+### 1.ANGLE CLASSIFICATION MODEL INFERENCE
+
+For angle classification model inference, you can execute the following commands:
+
+```
+python3 tools/infer/predict_cls.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --cls_model_dir="./inference/cls/"
+```
+
+![](../imgs_words/ch/word_4.jpg)
+
+After executing the command, the prediction results (classification angle and score) of the above image will be printed on the screen.
+
+Predicts of ./doc/imgs_words/ch/word_4.jpg:['0', 0.9999963]
+
+
 <a name="CONCATENATION"></a>
-## TEXT DETECTION AND RECOGNITION INFERENCE CONCATENATION
+## TEXT DETECTION ANGLE CLASSIFICATION AND RECOGNITION INFERENCE CONCATENATION
 
 <a name="LIGHTWEIGHT_CHINESE_MODEL"></a>
 ### 1. LIGHTWEIGHT CHINESE MODEL
 
-When performing prediction, you need to specify the path of a single image or a folder of images through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to detect the inference model, and the parameter `rec_model_dir` specifies the path to identify the inference model. The visualized recognition results are saved to the `./inference_results` folder by default.
+When performing prediction, you need to specify the path of a single image or a folder of images through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to detect the inference model, the parameter `cls_model_dir` specifies the path to angle classification inference model and the parameter `rec_model_dir` specifies the path to identify the inference model. The parameter `use_angle_cls` is used to control whether to enable the angle classification model.The visualized recognition results are saved to the `./inference_results` folder by default.
 
 ```
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/"  --rec_model_dir="./inference/rec_crnn/"
+# use direction classifier
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --cls_model_dir="./inference/cls/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls=true
+
+# not use use direction classifier
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --rec_model_dir="./inference/rec_crnn/"
 ```
 
 After executing the command, the recognition result image is as follows:

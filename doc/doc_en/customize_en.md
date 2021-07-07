@@ -6,7 +6,7 @@ The process of making a customized ultra-lightweight OCR models can be divided i
 
 PaddleOCR provides two text detection algorithms: EAST and DB. Both support MobileNetV3 and ResNet50_vd backbone networks, select the corresponding configuration file as needed and start training. For example, to train with MobileNetV3 as the backbone network for DB detection model :
 ```
-python3 tools/train.py -c configs/det/det_mv3_db.yml
+python3 tools/train.py -c configs/det/det_mv3_db.yml 2>&1 | tee det_db.log
 ```
 For more details about data preparation and training tutorials, refer to the documentation [Text detection model training/evaluation/prediction](./detection_en.md)
 
@@ -14,7 +14,7 @@ For more details about data preparation and training tutorials, refer to the doc
 
 PaddleOCR provides four text recognition algorithms: CRNN, Rosetta, STAR-Net, and RARE. They all support two backbone networks: MobileNetV3 and ResNet34_vd, select the corresponding configuration files as needed to start training. For example, to train a CRNN recognition model that uses MobileNetV3 as the backbone network:
 ```
-python3 tools/train.py -c configs/rec/rec_chinese_lite_train.yml
+python3 tools/train.py -c configs/rec/rec_chinese_lite_train.yml 2>&1 | tee rec_ch_lite.log
 ```
 For more details about data preparation and training tutorials, refer to the documentation [Text recognition model training/evaluation/prediction](./recognition_en.md)
 

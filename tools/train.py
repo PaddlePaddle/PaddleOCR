@@ -39,6 +39,7 @@ set_paddle_flags(
 import tools.program as program
 from paddle import fluid
 from ppocr.utils.utility import initial_logger
+from ppocr.utils.utility import enable_static_mode
 logger = initial_logger()
 from ppocr.data.reader_main import reader_main
 from ppocr.utils.save_load import init_model
@@ -46,6 +47,7 @@ from paddle.fluid.contrib.model_stat import summary
 
 
 def main():
+    # build train program
     train_build_outputs = program.build(
         config, train_program, startup_program, mode='train')
     train_loader = train_build_outputs[0]
@@ -54,6 +56,7 @@ def main():
     train_opt_loss_name = train_build_outputs[3]
     model_average = train_build_outputs[-1]
 
+    # build eval program
     eval_program = fluid.Program()
     eval_build_outputs = program.build(
         config, eval_program, startup_program, mode='eval')
@@ -61,9 +64,11 @@ def main():
     eval_fetch_varname_list = eval_build_outputs[2]
     eval_program = eval_program.clone(for_test=True)
 
+    # initialize train reader
     train_reader = reader_main(config=config, mode="train")
     train_loader.set_sample_list_generator(train_reader, places=place)
 
+    # initialize eval reader
     eval_reader = reader_main(config=config, mode="eval")
 
     exe = fluid.Executor(place)
@@ -75,7 +80,8 @@ def main():
 
     # dump mode structure
     if config['Global']['debug']:
-        if train_alg_type == 'rec' and 'attention' in config['Global']['loss_type']:
+        if train_alg_type == 'rec' and 'attention' in config['Global'][
+                'loss_type']:
             logger.warning('Does not suport dump attention...')
         else:
             summary(train_program)
@@ -96,8 +102,10 @@ def main():
 
     if train_alg_type == 'det':
         program.train_eval_det_run(config, exe, train_info_dict, eval_info_dict)
-    else:
+    elif train_alg_type == 'rec':
         program.train_eval_rec_run(config, exe, train_info_dict, eval_info_dict)
+    else:
+        program.train_eval_cls_run(config, exe, train_info_dict, eval_info_dict)
 
 
 def test_reader():
@@ -112,13 +120,18 @@ def test_reader():
             if count % 1 == 0:
                 batch_time = time.time() - starttime
                 starttime = time.time()
-                logger.info("reader:", count, len(data), batch_time)
+                logger.info("[reader]count: {}, data length: {}, time: {}".
+                            format(count, len(data), batch_time))
     except Exception as e:
         logger.info(e)
     logger.info("finish reader: {}, Success!".format(count))
 
 
 if __name__ == '__main__':
-    startup_program, train_program, place, config, train_alg_type = program.preprocess()
+    enable_static_mode()
+    startup_program, train_program, place, config, train_alg_type = program.preprocess(
+    )
+    # run the train process
     main()
-#     test_reader()
+    # if you want to check the reader, you can comment `main` and run test_reader
+    # test_reader()

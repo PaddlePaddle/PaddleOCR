@@ -121,7 +121,8 @@ public class Predictor {
         config.cpuThreadNum = cpuThreadNum;
         config.detModelFilename = realPath + File.separator + "ch_det_mv3_db_opt.nb";
         config.recModelFilename = realPath + File.separator + "ch_rec_mv3_crnn_opt.nb";
-        Log.e("Predictor", "model path" + config.detModelFilename + " ; " + config.recModelFilename);
+        config.clsModelFilename = realPath + File.separator + "cls_opt_arm.nb";
+        Log.e("Predictor", "model path" + config.detModelFilename + " ; " + config.recModelFilename + ";" + config.clsModelFilename);
         config.cpuPower = cpuPowerMode;
         paddlePredictor = new OCRPredictorNative(config);
 
@@ -134,7 +135,7 @@ public class Predictor {
 
     public void releaseModel() {
         if (paddlePredictor != null) {
-            paddlePredictor.release();
+            paddlePredictor.destory();
             paddlePredictor = null;
         }
         isLoaded = false;

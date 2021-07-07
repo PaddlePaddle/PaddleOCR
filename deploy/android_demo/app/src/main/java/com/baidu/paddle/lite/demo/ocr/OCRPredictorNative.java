@@ -29,18 +29,12 @@ public class OCRPredictorNative {
     public OCRPredictorNative(Config config) {
         this.config = config;
         loadLibrary();
-        nativePointer = init(config.detModelFilename, config.recModelFilename,
+        nativePointer = init(config.detModelFilename, config.recModelFilename,config.clsModelFilename,
                 config.cpuThreadNum, config.cpuPower);
         Log.i("OCRPredictorNative", "load success " + nativePointer);
 
     }
 
-    public void release() {
-        if (nativePointer != 0) {
-            nativePointer = 0;
-            destory(nativePointer);
-        }
-    }
 
     public ArrayList<OcrResultModel> runImage(float[] inputData, int width, int height, int channels, Bitmap originalImage) {
         Log.i("OCRPredictorNative", "begin to run image " + inputData.length + " " + width + " " + height);
@@ -55,14 +49,22 @@ public class OCRPredictorNative {
         public String cpuPower;
         public String detModelFilename;
         public String recModelFilename;
+        public String clsModelFilename;
 
     }
 
-    protected native long init(String detModelPath, String recModelPath, int threadNum, String cpuMode);
+    public void destory(){
+        if (nativePointer > 0) {
+            release(nativePointer);
+            nativePointer = 0;
+        }
+    }
+
+    protected native long init(String detModelPath, String recModelPath,String clsModelPath, int threadNum, String cpuMode);
 
     protected native float[] forward(long pointer, float[] buf, float[] ddims, Bitmap originalImage);
 
-    protected native void destory(long pointer);
+    protected native void release(long pointer);
 
     private ArrayList<OcrResultModel> postprocess(float[] raw) {
         ArrayList<OcrResultModel> results = new ArrayList<OcrResultModel>();

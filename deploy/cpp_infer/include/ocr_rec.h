@@ -27,6 +27,7 @@
 #include <fstream>
 #include <numeric>
 
+#include <include/ocr_cls.h>
 #include <include/postprocess_op.h>
 #include <include/preprocess_op.h>
 #include <include/utility.h>
@@ -56,7 +57,8 @@ public:
   // Load Paddle inference model
   void LoadModel(const std::string &model_dir);
 
-  void Run(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat &img);
+  void Run(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat &img,
+           Classifier *cls);
 
 private:
   std::shared_ptr<PaddlePredictor> predictor_;
