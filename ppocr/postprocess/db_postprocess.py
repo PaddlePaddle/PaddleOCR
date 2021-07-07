@@ -200,12 +200,9 @@ class DistillationDBPostProcess(DBPostProcess):
                  use_dilation=False,
                  score_mode="fast",
                  **kwargs):
-        super(DistillationDBPostProcess, self).__init__(thresh, 
-                                                        box_thresh,
-                                                        max_candidates,
-                                                        unclip_ratio,
-                                                        use_dilation,
-                                                        score_mode)
+        super(DistillationDBPostProcess, self).__init__(
+            thresh, box_thresh, max_candidates, unclip_ratio, use_dilation,
+            score_mode)
         if not isinstance(model_name, list):
             model_name = [model_name]
         self.model_name = model_name
@@ -221,10 +218,3 @@ class DistillationDBPostProcess(DBPostProcess):
             results[name] = super().__call__(pred, shape_list=label)
 
         return results
-
-
-
-
-
-
-

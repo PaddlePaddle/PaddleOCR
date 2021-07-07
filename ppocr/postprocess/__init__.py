@@ -34,7 +34,8 @@ def build_post_process(config, global_config=None):
     support_dict = [
         'DBPostProcess', 'EASTPostProcess', 'SASTPostProcess', 'CTCLabelDecode',
         'AttnLabelDecode', 'ClsPostProcess', 'SRNLabelDecode', 'PGPostProcess',
-        'DistillationCTCLabelDecode', 'TableLabelDecode', 'DistillationDBPostProcess'
+        'DistillationCTCLabelDecode', 'TableLabelDecode',
+        'DistillationDBPostProcess'
     ]
 
     config = copy.deepcopy(config)

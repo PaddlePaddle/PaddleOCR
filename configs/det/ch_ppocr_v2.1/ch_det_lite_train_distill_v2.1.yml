@@ -88,7 +88,7 @@ Loss:
   - DistillationDMLLoss:
       model_name_pairs:
       - ["Student", "Student2"]
-      maps_name: ["thrink_maps"]
+      maps_name: "thrink_maps"
       weight: 1.0
       act: "softmax"
       model_name_pairs: ["Student", "Student2"]
@@ -96,7 +96,7 @@ Loss:
   - DistillationDBLoss:
       weight: 1.0
       model_name_list: ["Student", "Student2"]
-      key: maps
+      # key: maps
       name: DBLoss
       balance_loss: true
       main_loss_type: DiceLoss

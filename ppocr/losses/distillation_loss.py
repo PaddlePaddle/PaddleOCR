@@ -24,7 +24,6 @@ from .det_db_loss import DBLoss
 from .det_basic_loss import BalanceLoss, MaskL1Loss, DiceLoss
 
 
-
 def _sum_loss(loss_dict):
     if "loss" in loss_dict.keys():
         return loss_dict
@@ -51,9 +50,17 @@ class DistillationDMLLoss(DMLLoss):
         super().__init__(act=act)
         assert isinstance(model_name_pairs, list)
         self.key = key
-        self.model_name_pairs = model_name_pairs
+        self.model_name_pairs = self._check_model_name_pairs(model_name_pairs)
         self.name = name
         self.maps_name = maps_name
+    
+    def _check_model_name_pairs(self, model_name_pairs):
+        if not isinstance(model_name_pairs, list):
+            return []
+        elif isinstance(model_name_pairs[0], list) and isinstance(model_name_pairs[0][0], str):
+            return model_name_pairs
+        else:
+            return [model_name_pairs]
 
     def _check_maps_name(self, maps_name):
         if maps_name is None:
@@ -69,13 +76,14 @@ class DistillationDMLLoss(DMLLoss):
         new_outs = {}
         for k in self.maps_name:
             if k == "thrink_maps":
-                new_outs[k] = paddle.slice(outs, axes=1, starts=0, ends=1)
+                new_outs[k] = paddle.slice(outs, axes=[1], starts=[0], ends=[1])
             elif k == "threshold_maps":
-                new_outs[k] = paddle.slice(outs, axes=1, starts=1, ends=2)
+                new_outs[k] = paddle.slice(outs, axes=[1], starts=[1], ends=[2])
             elif k == "binary_maps":
-                new_outs[k] = paddle.slice(outs, axes=1, starts=2, ends=3)
+                new_outs[k] = paddle.slice(outs, axes=[1], starts=[2], ends=[3])
             else:
                 continue
+        return new_outs
 
     def forward(self, predicts, batch):
         loss_dict = dict()
@@ -104,7 +112,7 @@ class DistillationDMLLoss(DMLLoss):
                             loss_dict["{}_{}_{}_{}_{}".format(key, pair[
                                 0], pair[1], map_name, idx)] = loss[key]
                     else:
-                        loss_dict["{}_{}_{}".format(self.name, map_name,
+                        loss_dict["{}_{}_{}".format(self.name, self.maps_name,
                                                     idx)] = loss
 
         loss_dict = _sum_loss(loss_dict)
@@ -151,7 +159,7 @@ class DistillationDBLoss(DBLoss):
         self.name = name
         self.key = None
 
-    def forward(self, preicts, batch):
+    def forward(self, predicts, batch):
         loss_dict = {}
         for idx, model_name in enumerate(self.model_name_list):
             out = predicts[model_name]
