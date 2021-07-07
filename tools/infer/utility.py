@@ -24,9 +24,6 @@ from paddle import inference
 import time
 from ppocr.utils.logging import get_logger
 
-logger = get_logger()
-
-
 def str2bool(v):
     return v.lower() in ("true", "t", "1")
 
