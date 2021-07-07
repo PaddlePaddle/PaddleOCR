@@ -219,6 +219,7 @@ for gpu in ${gpu_list[*]}; do
             eval $env
             save_infer_path="${save_log}"
             func_inference "${python}" "${inference_py}" "${save_infer_path}" "${LOG_PATH}" "${infer_img_dir}"
+            eval "unset CUDA_VISIBLE_DEVICES"
         done
     done
 done
