@@ -90,14 +90,14 @@ Loss:
       - ["Student", "Student2"]
       maps_name: "thrink_maps"
       weight: 1.0
-      act: "softmax"
+      # act: None
       model_name_pairs: ["Student", "Student2"]
       key: maps
   - DistillationDBLoss:
       weight: 1.0
       model_name_list: ["Student", "Student2"]
       # key: maps
-      name: DBLoss
+      # name: DBLoss
       balance_loss: true
       main_loss_type: DiceLoss
       alpha: 5
@@ -119,8 +119,8 @@ Optimizer:
 
 PostProcess:
   name: DistillationDBPostProcess
-  model_name: ["Student", "Student2"]
-  key: head_out
+  model_name: ["Student", "Student2", "Teacher"]
+  # key: maps
   thresh: 0.3
   box_thresh: 0.6
   max_candidates: 1000

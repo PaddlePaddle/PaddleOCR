@@ -46,13 +46,13 @@ class DistillationDMLLoss(DMLLoss):
                  act=None,
                  key=None,
                  maps_name=None,
-                 name="loss_dml"):
+                 name="dml"):
         super().__init__(act=act)
         assert isinstance(model_name_pairs, list)
         self.key = key
         self.model_name_pairs = self._check_model_name_pairs(model_name_pairs)
         self.name = name
-        self.maps_name = maps_name
+        self.maps_name = self._check_maps_name(maps_name)
     
     def _check_model_name_pairs(self, model_name_pairs):
         if not isinstance(model_name_pairs, list):
@@ -76,11 +76,11 @@ class DistillationDMLLoss(DMLLoss):
         new_outs = {}
         for k in self.maps_name:
             if k == "thrink_maps":
-                new_outs[k] = paddle.slice(outs, axes=[1], starts=[0], ends=[1])
+                new_outs[k] = outs[:, 0, :, :]
             elif k == "threshold_maps":
-                new_outs[k] = paddle.slice(outs, axes=[1], starts=[1], ends=[2])
+                new_outs[k] = outs[:, 1, :, :]
             elif k == "binary_maps":
-                new_outs[k] = paddle.slice(outs, axes=[1], starts=[2], ends=[3])
+                new_outs[k] = outs[:, 2, :, :]
             else:
                 continue
         return new_outs
@@ -105,16 +105,16 @@ class DistillationDMLLoss(DMLLoss):
             else:
                 outs1 = self._slice_out(out1)
                 outs2 = self._slice_out(out2)
-                for k in outs1.keys():
+                for _c, k in enumerate(outs1.keys()):
                     loss = super().forward(outs1[k], outs2[k])
                     if isinstance(loss, dict):
                         for key in loss:
                             loss_dict["{}_{}_{}_{}_{}".format(key, pair[
                                 0], pair[1], map_name, idx)] = loss[key]
                     else:
-                        loss_dict["{}_{}_{}".format(self.name, self.maps_name,
+                        loss_dict["{}_{}_{}".format(self.name, self.maps_name[_c],
                                                     idx)] = loss
-
+        
         loss_dict = _sum_loss(loss_dict)
 
         return loss_dict
@@ -152,7 +152,7 @@ class DistillationDBLoss(DBLoss):
                  beta=10,
                  ohem_ratio=3,
                  eps=1e-6,
-                 name="db_loss",
+                 name="db",
                  **kwargs):
         super().__init__()
         self.model_name_list = model_name_list

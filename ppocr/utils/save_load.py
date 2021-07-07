@@ -130,11 +130,12 @@ def load_pretrained_params(model, path):
     for k1, k2 in zip(state_dict.keys(), params.keys()):
         if list(state_dict[k1].shape) == list(params[k2].shape):
             new_state_dict[k1] = params[k2]
-    else:
-        print(
-            f"The shape of model params {k1} {state_dict[k1].shape} not matched with loaded params {k2} {params[k2].shape} !"
-        )
+        else:
+            print(
+                f"The shape of model params {k1} {state_dict[k1].shape} not matched with loaded params {k2} {params[k2].shape} !"
+            )
     model.set_state_dict(new_state_dict)
+    print(f"load pretrain successful from {path}")
     return True
 
 def save_model(model,
