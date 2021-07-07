@@ -36,39 +36,40 @@ Architecture:
       Head:
         name: DBHead
         k: 50
-    Teacher:
-      pretrained: ./pretrain_models/ch_ppocr_server_v2.0_det_train/best_accuracy
-      freeze_params: true
+    Student2:
+      pretrained: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
+      freeze_params: false
       return_all_feats: false
       model_type: det
       algorithm: DB
       Transform:
       Backbone:
-        name: ResNet
-        layers: 18
+        name: MobileNetV3
+        scale: 0.5
+        model_name: large
+        disable_se: True
       Neck:
         name: DBFPN
-        out_channels: 256
+        out_channels: 96
       Head:
         name: DBHead
         k: 50
 
+
 Loss:
   name: CombinedLoss
   loss_config_list:
-  - DistillationDilaDBLoss:
-      weight: 1.0
+  - DistillationDMLLoss:
       model_name_pairs:
-      - ["Student", "Teacher"]
+      - ["Student", "Student2"]
+      maps_name: "thrink_maps"
+      weight: 1.0
+      act: "softmax"
+      model_name_pairs: ["Student", "Student2"]
       key: maps
-      balance_loss: true
-      main_loss_type: DiceLoss
-      alpha: 5
-      beta: 10
-      ohem_ratio: 3
   - DistillationDBLoss:
       weight: 1.0
-      model_name_list: ["Student", "Teacher"]
+      model_name_list: ["Student", "Student2"]
       # key: maps
       name: DBLoss
       balance_loss: true
@@ -76,6 +77,7 @@ Loss:
       alpha: 5
       beta: 10
       ohem_ratio: 3
+
 
 Optimizer:
   name: Adam
