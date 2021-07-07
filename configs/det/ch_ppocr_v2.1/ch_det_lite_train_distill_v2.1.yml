@@ -20,7 +20,7 @@ Architecture:
   algorithm: Distillation
   Models:
     Student:
-      pretrained:
+      pretrained: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
       freeze_params: false
       return_all_feats: false
       model_type: det
@@ -37,7 +37,7 @@ Architecture:
         name: DBHead
         k: 50
     Student2:
-      pretrained:
+      pretrained: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
       freeze_params: false
       return_all_feats: false
       model_type: det
@@ -55,6 +55,9 @@ Architecture:
         name: DBHead
         k: 50
     Teacher:
+      pretrained: ./pretrain_models/ch_ppocr_server_v2.0_det_train/best_accuracy
+      freeze_params: true
+      return_all_feats: false
       model_type: det
       algorithm: DB
       Transform:
@@ -73,7 +76,9 @@ Loss:
   loss_config_list:
   - DistillationDilaDBLoss:
       weight: 1.0
-      model_name_list: ["Student", "Student2", "Teacher"]
+      model_name_pairs:
+      - ["Student", "Teacher"]
+      - ["Student2", "Teacher"]
       key: maps
       balance_loss: true
       main_loss_type: DiceLoss
@@ -81,13 +86,16 @@ Loss:
       beta: 10
       ohem_ratio: 3
   - DistillationDMLLoss:
+      model_name_pairs:
+      - ["Student", "Student2"]
       maps_name: ["thrink_maps"]
       weight: 1.0
       act: "softmax"
       model_name_pairs: ["Student", "Student2"]
       key: maps
   - DistillationDBLoss:
-      model_name_list: ["Student", "Teacher"]
+      weight: 1.0
+      model_name_list: ["Student", "Student2"]
       key: maps
       name: DBLoss
       balance_loss: true
@@ -110,7 +118,7 @@ Optimizer:
     factor: 0
 
 PostProcess:
-  name: DistillationCTDBPostProcessCLabelDecode
+  name: DistillationDBPostProcess
   model_name: ["Student", "Student2"]
   key: head_out
   thresh: 0.3

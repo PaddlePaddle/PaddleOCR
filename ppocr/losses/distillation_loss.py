@@ -14,12 +14,15 @@
 
 import paddle
 import paddle.nn as nn
+import numpy as np
+import cv2
 
 from .rec_ctc_loss import CTCLoss
 from .basic_loss import DMLLoss
 from .basic_loss import DistanceLoss
 from .det_db_loss import DBLoss
 from .det_basic_loss import BalanceLoss, MaskL1Loss, DiceLoss
+
 
 
 def _sum_loss(loss_dict):
@@ -50,7 +53,7 @@ class DistillationDMLLoss(DMLLoss):
         self.key = key
         self.model_name_pairs = model_name_pairs
         self.name = name
-        self.maps_name = self.maps_name
+        self.maps_name = maps_name
 
     def _check_maps_name(self, maps_name):
         if maps_name is None:
@@ -172,6 +175,7 @@ class DistillationDBLoss(DBLoss):
 class DistillationDilaDBLoss(DBLoss):
     def __init__(self,
                  model_name_pairs=[],
+                 key=None,
                  balance_loss=True,
                  main_loss_type='DiceLoss',
                  alpha=5,
@@ -182,6 +186,7 @@ class DistillationDilaDBLoss(DBLoss):
         super().__init__()
         self.model_name_pairs = model_name_pairs
         self.name = name
+        self.key = key
 
     def forward(self, predicts, batch):
         loss_dict = dict()
@@ -219,7 +224,7 @@ class DistillationDilaDBLoss(DBLoss):
             loss_dict[k] = bce_loss + loss_binary_maps
 
         loss_dict = _sum_loss(loss_dict)
-        return loss
+        return loss_dict
 
 
 class DistillationDistanceLoss(DistanceLoss):
