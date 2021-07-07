@@ -2020,7 +2020,7 @@ def main():
 
 
 if __name__ == '__main__':
-        
+    # example: python PPOCRLabel.py --lang ch
     resource_file = './libs/resources.py'
     if not os.path.exists(resource_file):
         output = os.system('pyrcc5 -o libs/resources.py resources.qrc')
