@@ -25,13 +25,21 @@ from functools import partial
 from collections import defaultdict
 import json
 
+# 配置参数
+from settings import use_default_ocr, ocr_reg_url
+
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 sys.path.append("..")
 
-from paddleocr import PaddleOCR
+if use_default_ocr:
+    from paddleocr import PaddleOCR
+else:
+    # 如果使用上游ocr服务，则无需安装paddleocr
+    from libs.upstream_ocr import UpstreamOcr
+    assert len(ocr_reg_url) > 10
 
 try:
     from PyQt5 import QtCore, QtGui, QtWidgets
@@ -106,7 +114,11 @@ class MainWindow(QMainWindow, WindowMixin):
         getStr = lambda strId: self.stringBundle.getString(strId)
 
         self.defaultSaveDir = defaultSaveDir
-        self.ocr = PaddleOCR(use_pdserving=False, use_angle_cls=True, det=True, cls=True, use_gpu=False, lang=lang)
+        if use_default_ocr:
+            self.ocr = PaddleOCR(use_pdserving=False, use_angle_cls=True, det=True, cls=True, 
+                                 use_gpu=False, lang=lang)
+        else:
+            self.ocr = UpstreamOcr(ocr_reg_url)
 
         if os.path.exists('./data/paddle.png'):
             result = self.ocr.ocr('./data/paddle.png', cls=True, det=True)
@@ -1871,8 +1883,12 @@ class MainWindow(QMainWindow, WindowMixin):
         lg_idx = {'Chinese & English': 'ch', 'English': 'en', 'French': 'french', 'German': 'german',
                   'Korean': 'korean', 'Japanese': 'japan'}
         del self.ocr
-        self.ocr = PaddleOCR(use_pdserving=False, use_angle_cls=True, det=True, cls=True, use_gpu=False,
-                             lang=lg_idx[self.comboBox.currentText()])
+        if use_default_ocr:
+            self.ocr = PaddleOCR(use_pdserving=False, use_angle_cls=True, det=True, cls=True,
+                                 use_gpu=False, lang=lg_idx[self.comboBox.currentText()])
+        else:
+            self.ocr = UpstreamOcr(ocr_reg_url)
+
         self.dialog.close()
 
     def cancel(self):
