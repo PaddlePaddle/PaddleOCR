@@ -164,7 +164,7 @@ def create_predictor(args, mode, logger):
         config.enable_use_gpu(args.gpu_mem, 0)
         if args.use_tensorrt:
             config.enable_tensorrt_engine(
-                precision_mode=inference.PrecisionType.Float32,
+                precision_mode=precision,
                 max_batch_size=args.max_batch_size,
                 min_subgraph_size=args.min_subgraph_size)
             # skip the minmum trt subgraph
