@@ -97,8 +97,8 @@ def main(config, device, logger, vdl_writer):
     # build metric
     eval_class = build_metric(config['Metric'])
     # load pretrain model
-    pre_best_model_dict = load_dygraph_params(config, model, logger, optimizer)
-
+    #pre_best_model_dict = load_dygraph_params(config, model, logger, optimizer)
+    pre_best_model_dict = {}
     logger.info('train dataloader has {} iters'.format(len(train_dataloader)))
     if valid_dataloader is not None:
         logger.info('valid dataloader has {} iters'.format(

@@ -136,7 +136,7 @@ def load_pretrained_params(model, path):
             )
     model.set_state_dict(new_state_dict)
     print(f"load pretrain successful from {path}")
-    return True
+    return model
 
 def save_model(model,
                optimizer,

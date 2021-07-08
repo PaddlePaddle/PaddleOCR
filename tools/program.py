@@ -374,6 +374,7 @@ def eval(model,
                 eval_class(preds, batch)
             else:
                 post_result = post_process_class(preds, batch[1])
+                # post_result = post_result_["Student"]
                 eval_class(post_result, batch)
             pbar.update(1)
             total_frame += len(images)

@@ -189,29 +189,27 @@ class DBPostProcess(object):
         return boxes_batch
 
 
-class DistillationDBPostProcess(DBPostProcess):
-    def __init__(self,
-                 model_name=["student"],
+class DistillationDBPostProcess(object):
+    def __init__(self, model_name=["student"],
                  key=None,
                  thresh=0.3,
-                 box_thresh=0.7,
+                 box_thresh=0.6,
                  max_candidates=1000,
-                 unclip_ratio=2.0,
+                 unclip_ratio=1.5,
                  use_dilation=False,
                  score_mode="fast",
                  **kwargs):
-        super().__init__()
-        if not isinstance(model_name, list):
-            model_name = [model_name]
         self.model_name = model_name
         self.key = key
+        self.post_process = DBPostProcess(thresh=thresh,
+                 box_thresh=box_thresh,
+                 max_candidates=max_candidates,
+                 unclip_ratio=unclip_ratio,
+                 use_dilation=use_dilation,
+                 score_mode=score_mode)
 
     def __call__(self, predicts, shape_list):
         results = {}
-        for name in self.model_name:
-            pred = predicts[name]
-            if self.key is not None:
-                pred = pred[self.key]
-            results[name] = super().__call__(pred, shape_list=shape_list)
-
+        for k in self.model_name:
+            results[k] = self.post_process(predicts[k], shape_list=shape_list)
         return results
