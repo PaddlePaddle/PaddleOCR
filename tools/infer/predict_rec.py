@@ -71,9 +71,9 @@ class TextRecognizer(object):
             self.autolog = auto_log.AutoLogger(
                 model_name="rec",
                 model_precision=args.precision,
-                batch_size=6,
+                batch_size=args.rec_batch_num,
                 data_shape="dynamic",
-                save_path="./output/auto_log.lpg",
+                save_path=args.save_log_path,
                 inference_config=self.config,
                 pids=pid,
                 process_name=None,
