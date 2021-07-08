@@ -1460,13 +1460,12 @@ class MainWindow(QMainWindow, WindowMixin):
             defaultOpenDirPath = self.lastOpenDir
         else:
             if self.lang == 'ch':
-                self.actions.open_dataset_dir.setEnabled(False)
                 self.msgBox.warning(self, "提示", "\n 原文件夹已不存在,请从新选择数据集路径!")
-                defaultOpenDirPath = os.path.dirname(self.filePath) if self.filePath else '.'
             else:
-                self.actions.open_dataset_dir.setEnabled (False)
                 self.msgBox.warning (self, "Warn", "\n The original folder no longer exists, please choose the data set path again!")
-                defaultOpenDirPath = os.path.dirname (self.filePath) if self.filePath else '.'
+
+            self.actions.open_dataset_dir.setEnabled(False)
+            defaultOpenDirPath = os.path.dirname(self.filePath) if self.filePath else '.'
 
     def importDirImages(self, dirpath, isDelete = False):
         if not self.mayContinue() or not dirpath:
