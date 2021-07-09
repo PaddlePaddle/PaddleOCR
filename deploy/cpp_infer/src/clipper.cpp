@@ -668,7 +668,7 @@ void DisposeOutPts(OutPt *&pp) {
 //------------------------------------------------------------------------------
 
 inline void InitEdge(TEdge *e, TEdge *eNext, TEdge *ePrev, const IntPoint &Pt) {
-  std::memset(e, 0, sizeof(TEdge));
+  std::memset(e, int(0), sizeof(TEdge));
   e->Next = eNext;
   e->Prev = ePrev;
   e->Curr = Pt;
@@ -1895,17 +1895,17 @@ void Clipper::InsertLocalMinimaIntoAEL(const cInt botY) {
     TEdge *rb = lm->RightBound;
 
     OutPt *Op1 = 0;
-    if (!lb) {
+    if (!lb || !rb) {
       // nb: don't insert LB into either AEL or SEL
       InsertEdgeIntoAEL(rb, 0);
       SetWindingCount(*rb);
       if (IsContributing(*rb))
         Op1 = AddOutPt(rb, rb->Bot);
-    } else if (!rb) {
-      InsertEdgeIntoAEL(lb, 0);
-      SetWindingCount(*lb);
-      if (IsContributing(*lb))
-        Op1 = AddOutPt(lb, lb->Bot);
+      //} else if (!rb) {
+      //  InsertEdgeIntoAEL(lb, 0);
+      //  SetWindingCount(*lb);
+      //  if (IsContributing(*lb))
+      //    Op1 = AddOutPt(lb, lb->Bot);
       InsertScanbeam(lb->Top.Y);
     } else {
       InsertEdgeIntoAEL(lb, 0);
@@ -2547,13 +2547,13 @@ void Clipper::ProcessHorizontal(TEdge *horzEdge) {
     if (dir == dLeftToRight) {
       maxIt = m_Maxima.begin();
       while (maxIt != m_Maxima.end() && *maxIt <= horzEdge->Bot.X)
-        maxIt++;
+        ++maxIt;
       if (maxIt != m_Maxima.end() && *maxIt >= eLastHorz->Top.X)
         maxIt = m_Maxima.end();
     } else {
       maxRit = m_Maxima.rbegin();
       while (maxRit != m_Maxima.rend() && *maxRit > horzEdge->Bot.X)
-        maxRit++;
+        ++maxRit;
       if (maxRit != m_Maxima.rend() && *maxRit <= eLastHorz->Top.X)
         maxRit = m_Maxima.rend();
     }
@@ -2576,13 +2576,13 @@ void Clipper::ProcessHorizontal(TEdge *horzEdge) {
           while (maxIt != m_Maxima.end() && *maxIt < e->Curr.X) {
             if (horzEdge->OutIdx >= 0 && !IsOpen)
               AddOutPt(horzEdge, IntPoint(*maxIt, horzEdge->Bot.Y));
-            maxIt++;
+            ++maxIt;
           }
         } else {
           while (maxRit != m_Maxima.rend() && *maxRit > e->Curr.X) {
             if (horzEdge->OutIdx >= 0 && !IsOpen)
               AddOutPt(horzEdge, IntPoint(*maxRit, horzEdge->Bot.Y));
-            maxRit++;
+            ++maxRit;
           }
         }
       };
