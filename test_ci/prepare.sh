@@ -92,49 +92,6 @@ for train_model in ${train_model_list[*]}; do
         cd ./inference && tar xf ch_rec_data_200.tar  && cd ../
         img_dir="./inference/ch_rec_data_200/"
     fi
-
-    # eval 
-    for slim_trainer in ${trainer_list[*]}; do 
-        if [ ${slim_trainer} = "norm" ]; then
-            if [ ${model_name} = "det" ]; then
-                eval_model_name="ch_ppocr_mobile_v2.0_det_train"
-                wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar
-                cd ./inference && tar xf ${eval_model_name}.tar && cd ../
-            else 
-                eval_model_name="ch_ppocr_mobile_v2.0_rec_train"
-                wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_train.tar
-                cd ./inference && tar xf ${eval_model_name}.tar && cd ../
-            fi 
-        elif [ ${slim_trainer} = "pact" ]; then
-            if [ ${model_name} = "det" ]; then
-                eval_model_name="ch_ppocr_mobile_v2.0_det_quant_train"
-                wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_quant_train.tar
-                cd ./inference && tar xf ${eval_model_name}.tar && cd ../
-            else
-                eval_model_name="ch_ppocr_mobile_v2.0_rec_quant_train"
-                wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_rec_quant_train.tar
-                cd ./inference && tar xf ${eval_model_name}.tar && cd ../
-            fi
-        elif [ ${slim_trainer} = "distill" ]; then
-            if [ ${model_name} = "det" ]; then
-                eval_model_name="ch_ppocr_mobile_v2.0_det_distill_train"
-                wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_distill_train.tar
-                cd ./inference && tar xf ${eval_model_name}.tar && cd ../
-            else
-                eval_model_name="ch_ppocr_mobile_v2.0_rec_distill_train"
-                wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_rec_distill_train.tar
-                cd ./inference && tar xf ${eval_model_name}.tar && cd ../
-            fi 
-        elif [ ${slim_trainer} = "fpgm" ]; then
-            if [ ${model_name} = "det" ]; then
-                eval_model_name="ch_ppocr_mobile_v2.0_det_prune_train"
-                wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_prune_train.tar
-                cd ./inference && tar xf ${eval_model_name}.tar && cd ../
-            else
-                eval_model_name="ch_ppocr_mobile_v2.0_rec_prune_train"
-                wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_rec_prune_train.tar
-                cd ./inference && tar xf ${eval_model_name}.tar && cd ../
-            fi
-        fi
-    done
 done
+
+
