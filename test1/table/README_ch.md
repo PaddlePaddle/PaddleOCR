@@ -19,7 +19,29 @@
 
 
 ### 2.1 训练
-TBD
+#### 数据准备  
+训练数据使用公开数据集[PubTabNet](https://arxiv.org/abs/1911.10683)，可以从[官网](https://github.com/ibm-aur-nlp/PubTabNet)下载。PubTabNet数据集包含约50万张表格数据的图像，以及图像对应的html格式的注释。
+
+#### 启动训练  
+*如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false*
+```shell
+# 单机单卡训练
+python3 tools/train.py -c configs/table/table_mv3.yml
+# 单机多卡训练，通过 --gpus 参数设置使用的GPU ID
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/table/table_mv3.yml
+```
+
+上述指令中，通过-c 选择训练使用configs/table/table_mv3.yml配置文件。有关配置文件的详细解释，请参考[链接](./config.md)。
+
+#### 断点训练
+
+如果训练程序中断，如果希望加载训练中断的模型从而恢复训练，可以通过指定Global.checkpoints指定要加载的模型路径：
+```shell
+python3 tools/train.py -c configs/table/table_mv3.yml -o Global.checkpoints=./your/trained/model
+```
+
+**注意**：`Global.checkpoints`的优先级高于`Global.pretrain_weights`的优先级，即同时指定两个参数时，优先加载`Global.checkpoints`指定的模型，如果`Global.checkpoints`指定的模型路径有误，会加载`Global.pretrain_weights`指定的模型。
+
 
 ### 2.2 评估
 先cd到PaddleOCR/ppstructure目录下

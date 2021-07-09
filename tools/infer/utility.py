@@ -37,7 +37,7 @@ def init_args():
     parser.add_argument("--use_gpu", type=str2bool, default=True)
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
-    parser.add_argument("--min_subgraph_size", type=int, default=3)
+    parser.add_argument("--min_subgraph_size", type=int, default=10)
     parser.add_argument("--precision", type=str, default="fp32")
     parser.add_argument("--gpu_mem", type=int, default=500)
 
@@ -164,7 +164,7 @@ def create_predictor(args, mode, logger):
         config.enable_use_gpu(args.gpu_mem, 0)
         if args.use_tensorrt:
             config.enable_tensorrt_engine(
-                precision_mode=inference.PrecisionType.Float32,
+                precision_mode=precision,
                 max_batch_size=args.max_batch_size,
                 min_subgraph_size=args.min_subgraph_size)
             # skip the minmum trt subgraph

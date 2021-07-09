@@ -26,9 +26,9 @@ IFS=$'\n'
 # The training params
 model_name=$(func_parser_value "${lines[0]}")
 train_model_list=$(func_parser_value "${lines[0]}")
+
 trainer_list=$(func_parser_value "${lines[10]}")
 
-echo $train_model_list
 # MODE be one of ['lite_train_infer' 'whole_infer' 'whole_train_infer']
 MODE=$2
 # prepare pretrained weights and dataset
@@ -68,8 +68,8 @@ else
     rm -rf ./train_data/icdar2015
     wget -nc -P ./train_data https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar
     if [ ${model_name} = "ocr_det" ]; then
-        eval_model_name="ch_ppocr_mobile_v2.0_det_train"
-        wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar
+        eval_model_name="ch_ppocr_mobile_v2.0_det_infer"
+        wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar
         cd ./inference && tar xf ${eval_model_name}.tar && cd ../
     else 
         eval_model_name="ch_ppocr_mobile_v2.0_rec_train"
@@ -102,7 +102,7 @@ for train_model in ${train_model_list[*]}; do
     # eval 
     for slim_trainer in ${trainer_list[*]}; do 
         if [ ${slim_trainer} = "norm" ]; then
-            if [ ${model_name} = "ocr_det" ]; then
+            if [ ${model_name} = "det" ]; then
                 eval_model_name="ch_ppocr_mobile_v2.0_det_train"
                 wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar
                 cd ./inference && tar xf ${eval_model_name}.tar && cd ../
@@ -112,7 +112,7 @@ for train_model in ${train_model_list[*]}; do
                 cd ./inference && tar xf ${eval_model_name}.tar && cd ../
             fi 
         elif [ ${slim_trainer} = "pact" ]; then
-            if [ ${model_name} = "ocr_det" ]; then
+            if [ ${model_name} = "det" ]; then
                 eval_model_name="ch_ppocr_mobile_v2.0_det_quant_train"
                 wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_quant_train.tar
                 cd ./inference && tar xf ${eval_model_name}.tar && cd ../
@@ -122,7 +122,7 @@ for train_model in ${train_model_list[*]}; do
                 cd ./inference && tar xf ${eval_model_name}.tar && cd ../
             fi
         elif [ ${slim_trainer} = "distill" ]; then
-            if [ ${model_name} = "ocr_det" ]; then
+            if [ ${model_name} = "det" ]; then
                 eval_model_name="ch_ppocr_mobile_v2.0_det_distill_train"
                 wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_distill_train.tar
                 cd ./inference && tar xf ${eval_model_name}.tar && cd ../
@@ -132,7 +132,7 @@ for train_model in ${train_model_list[*]}; do
                 cd ./inference && tar xf ${eval_model_name}.tar && cd ../
             fi 
         elif [ ${slim_trainer} = "fpgm" ]; then
-            if [ ${model_name} = "ocr_det" ]; then
+            if [ ${model_name} = "det" ]; then
                 eval_model_name="ch_ppocr_mobile_v2.0_det_prune_train"
                 wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_prune_train.tar
                 cd ./inference && tar xf ${eval_model_name}.tar && cd ../
