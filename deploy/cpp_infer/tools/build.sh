@@ -1,7 +1,7 @@
-OPENCV_DIR=your_opencv_dir
-LIB_DIR=your_paddle_inference_dir
-CUDA_LIB_DIR=your_cuda_lib_dir
-CUDNN_LIB_DIR=your_cudnn_lib_dir
+OPENCV_DIR=/paddle/test/opencv-3.4.7/opencv3
+LIB_DIR=/paddle/test/PaddleOCR/deploy/paddle_inference
+CUDA_LIB_DIR=/usr/local/cuda/lib64
+CUDNN_LIB_DIR=/usr/lib/x86_64-linux-gnu/
 
 BUILD_DIR=build
 rm -rf ${BUILD_DIR}
@@ -18,3 +18,5 @@ cmake .. \
     -DCUDA_LIB=${CUDA_LIB_DIR} \
 
 make -j
+
+
