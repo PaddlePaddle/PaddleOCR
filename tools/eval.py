@@ -55,6 +55,10 @@ def main():
 
     model = build_model(config['Architecture'])
     use_srn = config['Architecture']['algorithm'] == "SRN"
+    if "model_type" in config['Architecture'].keys():
+        model_type = config['Architecture']['model_type']
+    else:
+        model_type = None
 
     best_model_dict = init_model(config, model)
     if len(best_model_dict):
