@@ -1988,7 +1988,8 @@ class MainWindow(QMainWindow, WindowMixin):
             for key in self.fileStatedict:
                 idx = self.getImglabelidx(key)
                 try:
-                    img = cv2.imread(key)
+                    # img = cv2.imread(key)
+                    img = cv2.imdecode(np.fromfile(key, dtype=np.uint8), cv2.IMREAD_COLOR)
                     for i, label in enumerate(self.PPlabel[idx]):
                         if label['difficult']: continue
                         img_crop = get_rotate_crop_image(img, np.array(label['points'], np.float32))
