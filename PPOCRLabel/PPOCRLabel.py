@@ -1451,7 +1451,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.lastOpenDir = targetDirPath
         self.importDirImages(targetDirPath)
 
-    def openDatasetDirDialog(self, _value=False): #1458
+    def openDatasetDirDialog(self, _value=False):
         if not self.mayContinue():
             return
 
