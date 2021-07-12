@@ -24,8 +24,8 @@ from .cls_metric import ClsMetric
 class DistillationMetric(object):
     def __init__(self,
                  key=None,
-                 base_metric_name="RecMetric",
-                 main_indicator='acc',
+                 base_metric_name=None,
+                 main_indicator=None,
                  **kwargs):
         self.main_indicator = main_indicator
         self.key = key
@@ -42,16 +42,13 @@ class DistillationMetric(object):
                 main_indicator=self.main_indicator, **self.kwargs)
             self.metrics[key].reset()
 
-    def __call__(self, preds, *args, **kwargs):
+    def __call__(self, preds, batch, **kwargs):
         assert isinstance(preds, dict)
         if self.metrics is None:
             self._init_metrcis(preds)
         output = dict()
         for key in preds:
-            metric = self.metrics[key].__call__(preds[key], *args, **kwargs)
-            for sub_key in metric:
-                output["{}_{}".format(key, sub_key)] = metric[sub_key]
-        return output
+            self.metrics[key].__call__(preds[key], batch, **kwargs)
 
     def get_metric(self):
         """
