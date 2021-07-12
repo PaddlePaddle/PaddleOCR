@@ -27,7 +27,7 @@ import json
 import cv2
 
 # 配置参数
-from settings import use_default_ocr, ocr_reg_url
+from settings import use_default_ocr, ocr_reg_url, default_lang
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
@@ -100,7 +100,7 @@ class WindowMixin(object):
 class MainWindow(QMainWindow, WindowMixin):
     FIT_WINDOW, FIT_WIDTH, MANUAL_ZOOM = list(range(3))
 
-    def __init__(self, lang="ch", defaultFilename=None, defaultPrefdefClassFile=None, defaultSaveDir=None):
+    def __init__(self, lang=default_lang, defaultFilename=None, defaultPrefdefClassFile=None, defaultSaveDir=None):
         super(MainWindow, self).__init__()
         self.setWindowTitle(__appname__)
 
@@ -111,7 +111,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.lang = lang
         # Load string bundle for i18n
         if lang not in ['ch', 'en']:
-            lang = 'en'
+            lang = default_lang
         self.stringBundle = StringBundle.getBundle(localeStr='zh-CN' if lang=='ch' else 'en') # 'en'
         getStr = lambda strId: self.stringBundle.getString(strId)
 
@@ -1993,7 +1993,8 @@ class MainWindow(QMainWindow, WindowMixin):
                         if label['difficult']: continue
                         img_crop = get_rotate_crop_image(img, np.array(label['points'], np.float32))
                         img_name = os.path.splitext(os.path.basename(idx))[0] + '_crop_'+str(i)+'.jpg'
-                        cv2.imwrite(crop_img_dir+img_name, img_crop)
+                        # cv2.imwrite(crop_img_dir+img_name, img_crop)
+                        cv2.imencode('.jpg', img_crop)[1].tofile(crop_img_dir+img_name)
                         f.write('crop_img/'+ img_name + '\t')
                         f.write(label['transcription'] + '\n')
                 except Exception as e:
@@ -2063,7 +2064,7 @@ def get_main_app(argv=[]):
     app.setWindowIcon(newIcon("app"))
     # Tzutalin 201705+: Accept extra agruments to change predefined class file
     argparser = argparse.ArgumentParser()
-    argparser.add_argument("--lang", default='en', nargs="?")
+    argparser.add_argument("--lang", default=default_lang, nargs="?")
     argparser.add_argument("--predefined_classes_file",
                            default=os.path.join(os.path.dirname(__file__), "data", "predefined_classes.txt"),
                            nargs="?")
@@ -2082,7 +2083,6 @@ def main():
 
 
 if __name__ == '__main__':
-        
     resource_file = './libs/resources.py'
     if not os.path.exists(resource_file):
         output = os.system('pyrcc5 -o libs/resources.py resources.qrc')

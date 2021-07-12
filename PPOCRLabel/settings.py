@@ -5,6 +5,9 @@
 # Email: cyy0523xc@gmail.com
 # Created Time: 2021-07-07
 
+# 界面默认语言
+default_lang = 'ch'
+
 # 是否使用默认的ocr识别
 # 默认使用paddleocr，需要按照paddleocr及相关工具
 # 如果该值为False，则可以定义上游的OCR识别接口
