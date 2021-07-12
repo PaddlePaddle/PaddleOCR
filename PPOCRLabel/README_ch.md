@@ -90,7 +90,7 @@ python3 PPOCRLabel.py --lang ch
 |  rec_gt.txt   | 识别标签。可直接用于PPOCR识别模型训练。需用户手动点击菜单栏“文件” - "保存识别结果"后产生。 |
 |   crop_img    |   识别数据。按照检测框切割后的图片。与rec_gt.txt同时产生。   |
 
-[5] PPOCRLabel首次使用时是需要联网下载模型权重的，如果无法联网会提示无法下载权重文件。离线使用请PPOCRLabel参考此[文档](offline_tutorial.md)。
+[5] PPOCRLabel首次使用时是需要联网下载模型权重的，如果无法联网会提示无法下载权重文件。离线使用PPOCRLabel请参考此[文档](offline_tutorial.md)。
 
 ## 说明
 
