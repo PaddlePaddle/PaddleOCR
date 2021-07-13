@@ -32,7 +32,7 @@
 │                     └── inference.pdmodel
 ```
 
-权重摆放完成后。通过指令再次启动即可成功使用:
+权重摆放完成后，在PPOCRLabel文件下打开终端，通过指令再次启动即可成功使用:
 ```
 python PPOCRLabel.py --lang ch
 ```
