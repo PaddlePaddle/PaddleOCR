@@ -20,10 +20,10 @@ cls_thresh  0.9
 
 # rec config
 rec_model_dir  ./inference/ch_ppocr_mobile_v2.0_rec_infer/
-char_list_file ../../ppocr/utils/ppocr_keys_v1.txt
+char_list_file  ../../ppocr/utils/ppocr_keys_v1.txt
 
 # show the detection results
-visualize 1
+visualize 0
 
 # use_tensorrt
 use_tensorrt 0

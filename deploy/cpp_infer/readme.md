@@ -228,10 +228,7 @@ char_list_file ../../ppocr/utils/ppocr_keys_v1.txt # 字典文件
 visualize 1 # 是否对结果进行可视化，为1时，会在当前文件夹下保存文件名为`ocr_vis.png`的预测结果。
 ```
 
-* PaddleOCR也支持多语言的预测，更多支持的语言和模型可以参考[识别文档](../../doc/doc_ch/recognition.md) 中的多语言字典与模型部分，
-如果希望进行多语言预测，只需将修改`tools/config.txt`中的`char_list_file`（字典文件路径）以及`rec_model_dir`（inference模型路径）字段即可。
-
-多语言模型和字典文件对应关系可以参考[文档](../../doc/doc_ch/multi_languages.md#预测部署)
+* PaddleOCR也支持多语言的预测，更多支持的语言和模型可以参考[识别文档](../../doc/doc_ch/recognition.md)中的多语言字典与模型部分，如果希望进行多语言预测，只需将修改`tools/config.txt`中的`char_list_file`（字典文件路径）以及`rec_model_dir`（inference模型路径）字段即可。
 
 最终屏幕上会输出检测结果如下。
 
