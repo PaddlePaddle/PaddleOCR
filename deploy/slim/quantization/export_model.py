@@ -101,7 +101,7 @@ def main():
     quanter = QAT(config=quant_config)
     quanter.quantize(model)
 
-    init_model(config, model, logger)
+    init_model(config, model)
     model.eval()
 
     # build metric
@@ -113,7 +113,7 @@ def main():
     use_srn = config['Architecture']['algorithm'] == "SRN"
     model_type = config['Architecture']['model_type']
     # start eval
-    metirc = program.eval(model, valid_dataloader, post_process_class,
+    metric = program.eval(model, valid_dataloader, post_process_class,
                           eval_class, model_type, use_srn)
 
     logger.info('metric eval ***************')
