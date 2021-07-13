@@ -375,7 +375,9 @@ PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi
 
 更多支持语种请参考: [多语言模型](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/multi_languages.md#%E8%AF%AD%E7%A7%8D%E7%BC%A9%E5%86%99)
 
-多语言模型训练方式与中文模型一致，训练数据集均为100w的合成数据，少量的字体可以在 [百度网盘](https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA) 上下载，提取码：frgi。
+多语言模型训练方式与中文模型一致，训练数据集均为100w的合成数据，少量的字体可以通过下面两种方式下载。
+* [百度网盘](https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA)。提取码：frgi。
+* [google drive](https://drive.google.com/file/d/18cSWX7wXSy4G0tbKJ0d9PuIaiwRLHpjA/view)
 
 如您希望在现有模型效果的基础上调优，请参考下列说明修改配置文件：
 

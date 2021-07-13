@@ -17,7 +17,7 @@ import paddle.nn as nn
 
 from .distillation_loss import DistillationCTCLoss
 from .distillation_loss import DistillationDMLLoss
-from .distillation_loss import DistillationDistanceLoss
+from .distillation_loss import DistillationDistanceLoss, DistillationDBLoss, DistillationDilaDBLoss
 
 
 class CombinedLoss(nn.Layer):
@@ -44,15 +44,16 @@ class CombinedLoss(nn.Layer):
 
     def forward(self, input, batch, **kargs):
         loss_dict = {}
+        loss_all = 0.
         for idx, loss_func in enumerate(self.loss_func):
             loss = loss_func(input, batch, **kargs)
             if isinstance(loss, paddle.Tensor):
                 loss = {"loss_{}_{}".format(str(loss), idx): loss}
             weight = self.loss_weight[idx]
-            loss = {
-                "{}_{}".format(key, idx): loss[key] * weight
-                for key in loss
-            }
-            loss_dict.update(loss)
-        loss_dict["loss"] = paddle.add_n(list(loss_dict.values()))
+            for key in loss.keys():
+                if key == "loss":
+                    loss_all += loss[key] * weight
+                else:
+                    loss_dict["{}_{}".format(key, idx)] = loss[key]
+        loss_dict["loss"] = loss_all
         return loss_dict

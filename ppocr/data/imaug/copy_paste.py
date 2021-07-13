@@ -73,11 +73,14 @@ class CopyPaste(object):
         box_img_pil = Image.fromarray(box_img).convert('RGBA')
         src_w, src_h = src_img.size
         box_w, box_h = box_img_pil.size
-        if box_w > src_w or box_h > src_h:
-            return src_img, None
+
         angle = np.random.randint(0, 360)
         box = np.array([[[0, 0], [box_w, 0], [box_w, box_h], [0, box_h]]])
         box = rotate_bbox(box_img, box, angle)[0]
+        box_img_pil = box_img_pil.rotate(angle, expand=1)
+        box_w, box_h = box_img_pil.width, box_img_pil.height
+        if src_w - box_w < 0 or src_h - box_h < 0:
+            return src_img, None
 
         paste_x, paste_y = self.select_coord(src_polys, box, src_w - box_w,
                                              src_h - box_h)
@@ -85,7 +88,6 @@ class CopyPaste(object):
             return src_img, None
         box[:, 0] += paste_x
         box[:, 1] += paste_y
-        box_img_pil = box_img_pil.rotate(angle, expand=1)
         r, g, b, A = box_img_pil.split()
         src_img.paste(box_img_pil, (paste_x, paste_y), mask=A)
 
@@ -105,7 +107,7 @@ class CopyPaste(object):
 
                 num_poly_in_rect = 0
                 for poly in src_polys:
-                    if not is_poly_outside_rect(poly, xmax1, ymin1,
+                    if not is_poly_outside_rect(poly, xmin1, ymin1,
                                                 xmax1 - xmin1, ymax1 - ymin1):
                         num_poly_in_rect += 1
                         break
