@@ -1993,14 +1993,16 @@ class MainWindow(QMainWindow, WindowMixin):
                     for i, label in enumerate(self.PPlabel[idx]):
                         if label['difficult']: continue
                         img_crop = get_rotate_crop_image(img, np.array(label['points'], np.float32))
-                        img_name = os.path.splitext(os.path.basename(idx))[0] + '_crop_'+str(i)+'.jpg'
+                        # 如果文件名相同的话，这里会造成混乱，例如：a.jpg和a.png
+                        # img_name = os.path.splitext(os.path.basename(idx))[0] + '_crop_'+str(i)+'.jpg'
+                        img_name = os.path.basename(idx) + '_crop_' + str(i) + '.jpg'
                         # cv2.imwrite(crop_img_dir+img_name, img_crop)
                         cv2.imencode('.jpg', img_crop)[1].tofile(crop_img_dir+img_name)
                         f.write('crop_img/'+ img_name + '\t')
                         f.write(label['transcription'] + '\n')
                 except Exception as e:
                     ques_img.append(key)
-                    print("Can not read image ",e)
+                    print("Can not read image: %s" % idx, e)
         if ques_img:
             QMessageBox.information(self, "Information", "The following images can not be saved, "
                                                          "please check the image path and labels.\n" + "".join(str(i)+'\n' for i in ques_img))
