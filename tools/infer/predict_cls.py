@@ -145,7 +145,6 @@ def main(args):
                                                cls_res[ino]))
     logger.info(
         "The predict time about text angle classify module is as follows: ")
-    text_classifier.cls_times.info(average=False)
 
 
 if __name__ == "__main__":
