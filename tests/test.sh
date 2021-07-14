@@ -50,14 +50,15 @@ IFS=$'\n'
 model_name=$(func_parser_value "${lines[1]}")
 python=$(func_parser_value "${lines[2]}")
 gpu_list=$(func_parser_value "${lines[3]}")
-autocast_list=$(func_parser_value "${lines[4]}")
-autocast_key=$(func_parser_key "${lines[4]}")
-epoch_key=$(func_parser_key "${lines[5]}")
-epoch_num=$(func_parser_value "${lines[5]}")
-save_model_key=$(func_parser_key "${lines[6]}")
-train_batch_key=$(func_parser_key "${lines[7]}")
-train_batch_value=$(func_parser_value "${lines[7]}")
-train_use_gpu_key=$(func_parser_key "${lines[8]}")
+train_use_gpu_key=$(func_parser_key "${lines[4]}")
+train_use_gpu_value=$(func_parser_value "${lines[4]}")
+autocast_list=$(func_parser_value "${lines[5]}")
+autocast_key=$(func_parser_key "${lines[5]}")
+epoch_key=$(func_parser_key "${lines[6]}")
+epoch_num=$(func_parser_value "${lines[6]}")
+save_model_key=$(func_parser_key "${lines[7]}")
+train_batch_key=$(func_parser_key "${lines[8]}")
+train_batch_value=$(func_parser_value "${lines[8]}")
 pretrain_model_key=$(func_parser_key "${lines[9]}")
 pretrain_model_value=$(func_parser_value "${lines[9]}")
 train_model_name=$(func_parser_value "${lines[10]}")
@@ -132,7 +133,7 @@ function func_inference(){
     _flag_quant=$6
     # inference 
     for use_gpu in ${use_gpu_list[*]}; do
-        if [ ${use_gpu} = "False" ]; then
+        if [ ${use_gpu} = "False" ] || [ ${use_gpu} = "cpu" ]; then
             for use_mkldnn in ${use_mkldnn_list[*]}; do
                 if [ ${use_mkldnn} = "False" ] && [ ${_flag_quant} = "True" ]; then
                     continue
@@ -149,7 +150,7 @@ function func_inference(){
                     done
                 done
             done
-        else
+        elif [ ${use_gpu} = "True" ] || [ ${use_gpu} = "gpu" ]; then
             for use_trt in ${use_trt_list[*]}; do
                 for precision in ${precision_list[*]}; do
                     if [ ${use_trt} = "False" ] && [ ${precision} != "fp32" ]; then
@@ -171,6 +172,8 @@ function func_inference(){
                     done
                 done
             done
+        else
+            echo "Currently does not support hardware other than CPU and GPU"
         fi
     done
 }
@@ -178,10 +181,12 @@ function func_inference(){
 if [ ${MODE} != "infer" ]; then
 
 IFS="|"
+export Count=0
+USE_GPU_KEY=(${train_use_gpu_value})
 for gpu in ${gpu_list[*]}; do
-    use_gpu=True
+    use_gpu=${USE_GPU_KEY[Count]}
+    Count=$(($Count + 1))
     if [ ${gpu} = "-1" ];then
-        use_gpu=False
         env=""
     elif [ ${#gpu} -le 1 ];then
         env="export CUDA_VISIBLE_DEVICES=${gpu}"
@@ -232,10 +237,11 @@ for gpu in ${gpu_list[*]}; do
             set_pretrain=$(func_set_params "${pretrain_model_key}" "${pretrain_model_value}")
             set_batchsize=$(func_set_params "${train_batch_key}" "${train_batch_value}")
             set_train_params1=$(func_set_params "${train_param_key1}" "${train_param_value1}")
+            set_use_gpu=$(func_set_params "${train_use_gpu_key}" "${use_gpu}")
 
             save_log="${LOG_PATH}/${trainer}_gpus_${gpu}_autocast_${autocast}"
             if [ ${#gpu} -le 2 ];then  # train with cpu or single gpu
-                cmd="${python} ${run_train} ${train_use_gpu_key}=${use_gpu}  ${save_model_key}=${save_log} ${set_epoch} ${set_pretrain} ${set_autocast} ${set_batchsize} ${set_train_params1} "
+                cmd="${python} ${run_train} ${set_use_gpu}  ${save_model_key}=${save_log} ${set_epoch} ${set_pretrain} ${set_autocast} ${set_batchsize} ${set_train_params1} "
             elif [ ${#gpu} -le 15 ];then  # train with multi-gpu
                 cmd="${python} -m paddle.distributed.launch --gpus=${gpu} ${run_train} ${save_model_key}=${save_log}  ${set_epoch} ${set_pretrain} ${set_autocast} ${set_batchsize} ${set_train_params1}"
             else     # train with multi-machine
@@ -247,7 +253,7 @@ for gpu in ${gpu_list[*]}; do
 
             # run eval 
             if [ ${eval_py} != "null" ]; then
-                eval_cmd="${python} ${eval_py} ${save_model_key}=${save_log} ${pretrain_model_key}=${save_log}/${train_model_name}" 
+                eval_cmd="${python} ${eval_py} ${save_model_key}=${save_log} ${pretrain_model_key}=${save_log}/${train_model_name} ${set_use_gpu}" 
                 eval $eval_cmd
                 status_check $? "${eval_cmd}" "${status_log}"
             fi
