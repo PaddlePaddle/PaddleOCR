@@ -106,7 +106,7 @@ class TextDetector(object):
                 model_precision=args.precision,
                 batch_size=1,
                 data_shape="dynamic",
-                save_path=args.save_log_path,
+                save_path=None,
                 inference_config=self.config,
                 pids=pid,
                 process_name=None,
@@ -114,7 +114,8 @@ class TextDetector(object):
                 time_keys=[
                     'preprocess_time', 'inference_time', 'postprocess_time'
                 ],
-                warmup=10)
+                warmup=10,
+                logger=logger)
 
     def order_points_clockwise(self, pts):
         """
