@@ -132,11 +132,11 @@ function func_inference(){
     _flag_quant=$6
     # inference 
     for use_gpu in ${use_gpu_list[*]}; do
-        if [ ${use_gpu} = "False" ] && [ ${_flag_quant} = "True" ]; then
-            continue
-        fi
         if [ ${use_gpu} = "False" ]; then
             for use_mkldnn in ${use_mkldnn_list[*]}; do
+                if [ ${use_mkldnn} = "False" ] && [ ${_flag_quant} = "True" ]; then
+                    continue
+                fi
                 for threads in ${cpu_threads_list[*]}; do
                     for batch_size in ${batch_size_list[*]}; do
                         _save_log_path="${_log_path}/infer_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_batchsize_${batch_size}.log"
