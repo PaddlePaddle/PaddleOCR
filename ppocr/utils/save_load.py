@@ -77,7 +77,7 @@ def init_model(config, model, optimizer=None, lr_scheduler=None):
             pretrained_model = [pretrained_model]
         for pretrained in pretrained_model:
             if not (os.path.isdir(pretrained) or
-                    os.path.exists(pretrained + '.pdparams')):
+                    not os.path.exists(pretrained + '.pdparams')):
                 raise ValueError("Model pretrain path {} does not "
                                  "exists.".format(pretrained))
             param_state_dict = paddle.load(pretrained + '.pdparams')
