@@ -2,7 +2,7 @@
 model_name:ocr_det
 python:python3.7
 gpu_list:0|0,1
-Global.use_gpu:True|False
+Global.use_gpu:True|True
 Global.auto_cast:null
 Global.epoch_num:2
 Global.save_model_dir:./output/
