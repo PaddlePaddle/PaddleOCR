@@ -50,7 +50,7 @@ function func_parser_params(){
         if [[ ${mode} = ${MODE} ]]; then
             IFS="|"
             #echo $(func_set_params "${mode}" "${value}")
-            echo value
+            echo $value
             break
         fi
         IFS="|"
