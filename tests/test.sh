@@ -141,10 +141,12 @@ function func_inference(){
                 for threads in ${cpu_threads_list[*]}; do
                     for batch_size in ${batch_size_list[*]}; do
                         _save_log_path="${_log_path}/infer_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_batchsize_${batch_size}.log"
-                        #${image_dir_key}=${_img_dir}  ${save_log_key}=${_save_log_path} --benchmark=True
                         set_infer_data=$(func_set_params "${image_dir_key}" "${_img_dir}")
                         set_benchmark=$(func_set_params "${benchmark_key}" "${benchmark_value}")
-                        command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_mkldnn_key}=${use_mkldnn} ${cpu_threads_key}=${threads} ${infer_model_key}=${_model_dir} ${batch_size_key}=${batch_size} ${set_infer_data} ${set_benchmark} > ${_save_log_path} 2>&1 "
+                        set_batchsize=$(func_set_params "${batch_size_key}" "${batch_size}")
+                        set_cpu_threads=$(func_set_params "${cpu_threads_key}" "${threads}")
+                        set_model_dir=$(func_set_params "${infer_model_key}" "${_model_dir}")
+                        command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} > ${_save_log_path} 2>&1 "
                         eval $command
                         status_check $? "${command}" "${status_log}"
                     done
@@ -166,7 +168,11 @@ function func_inference(){
                         _save_log_path="${_log_path}/infer_gpu_usetrt_${use_trt}_precision_${precision}_batchsize_${batch_size}.log"
                         set_infer_data=$(func_set_params "${image_dir_key}" "${_img_dir}")
                         set_benchmark=$(func_set_params "${benchmark_key}" "${benchmark_value}")
-                        command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_trt_key}=${use_trt} ${precision_key}=${precision} ${infer_model_key}=${_model_dir} ${batch_size_key}=${batch_size} ${set_infer_data} ${set_benchmark} > ${_save_log_path} 2>&1 "
+                        set_batchsize=$(func_set_params "${batch_size_key}" "${batch_size}")
+                        set_tensorrt=$(func_set_params "${use_trt_key}" "${use_trt}")
+                        set_precision=$(func_set_params "${precision_key}" "${precision}")
+                        set_model_dir=$(func_set_params "${infer_model_key}" "${_model_dir}")
+                        command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${set_tensorrt} ${set_precision} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} > ${_save_log_path} 2>&1 "
                         eval $command
                         status_check $? "${command}" "${status_log}"
                     done
@@ -233,28 +239,30 @@ for gpu in ${gpu_list[*]}; do
             fi
             
             set_autocast=$(func_set_params "${autocast_key}" "${autocast}")
-            set_autocast=$(func_set_params "${epoch_key}" "${epoch_num}")
+            set_epoch=$(func_set_params "${epoch_key}" "${epoch_num}")
             set_pretrain=$(func_set_params "${pretrain_model_key}" "${pretrain_model_value}")
             set_batchsize=$(func_set_params "${train_batch_key}" "${train_batch_value}")
             set_train_params1=$(func_set_params "${train_param_key1}" "${train_param_value1}")
             set_use_gpu=$(func_set_params "${train_use_gpu_key}" "${use_gpu}")
-
             save_log="${LOG_PATH}/${trainer}_gpus_${gpu}_autocast_${autocast}"
+
+            set_save_model=$(func_set_params "${save_model_key}" "${save_log}")
             if [ ${#gpu} -le 2 ];then  # train with cpu or single gpu
-                cmd="${python} ${run_train} ${set_use_gpu}  ${save_model_key}=${save_log} ${set_epoch} ${set_pretrain} ${set_autocast} ${set_batchsize} ${set_train_params1} "
+                cmd="${python} ${run_train} ${set_use_gpu}  ${set_save_model} ${set_epoch} ${set_pretrain} ${set_autocast} ${set_batchsize} ${set_train_params1} "
             elif [ ${#gpu} -le 15 ];then  # train with multi-gpu
-                cmd="${python} -m paddle.distributed.launch --gpus=${gpu} ${run_train} ${save_model_key}=${save_log}  ${set_epoch} ${set_pretrain} ${set_autocast} ${set_batchsize} ${set_train_params1}"
+                cmd="${python} -m paddle.distributed.launch --gpus=${gpu} ${run_train} ${set_save_model} ${set_epoch} ${set_pretrain} ${set_autocast} ${set_batchsize} ${set_train_params1}"
             else     # train with multi-machine
-                cmd="${python} -m paddle.distributed.launch --ips=${ips} --gpus=${gpu} ${run_train} ${save_model_key}=${save_log} ${set_pretrain} ${set_epoch} ${set_autocast} ${set_batchsize} ${set_train_params1}"
+                cmd="${python} -m paddle.distributed.launch --ips=${ips} --gpus=${gpu} ${run_train} ${set_save_model} ${set_pretrain} ${set_epoch} ${set_autocast} ${set_batchsize} ${set_train_params1}"
             fi
             # run train
             eval "unset CUDA_VISIBLE_DEVICES"
             eval $cmd
             status_check $? "${cmd}" "${status_log}"
 
+            set_eval_pretrain=$(func_set_params "${pretrain_model_key}" "${save_log}/${train_model_name}")
             # run eval 
             if [ ${eval_py} != "null" ]; then
-                eval_cmd="${python} ${eval_py} ${save_model_key}=${save_log} ${pretrain_model_key}=${save_log}/${train_model_name} ${set_use_gpu}" 
+                eval_cmd="${python} ${eval_py} ${set_eval_pretrain} ${set_use_gpu}" 
                 eval $eval_cmd
                 status_check $? "${eval_cmd}" "${status_log}"
             fi
@@ -262,7 +270,7 @@ for gpu in ${gpu_list[*]}; do
             if [ ${run_export} != "null" ]; then 
                 # run export model
                 save_infer_path="${save_log}"
-                export_cmd="${python} ${run_export} ${save_model_key}=${save_log} ${export_weight}=${save_log}/${train_model_name} ${save_infer_key}=${save_infer_path}"
+                export_cmd="${python} ${run_export} ${export_weight}=${save_log}/${train_model_name} ${save_infer_key}=${save_infer_path}"
                 eval $export_cmd
                 status_check $? "${export_cmd}" "${status_log}"
 

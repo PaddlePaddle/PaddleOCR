@@ -3,7 +3,7 @@ model_name:ocr_det
 python:python3.7
 gpu_list:0|0,1
 Global.use_gpu:True|True
-Global.auto_cast:null
+Global.auto_cast:False
 Global.epoch_num:2
 Global.save_model_dir:./output/
 Train.loader.batch_size_per_card:2
