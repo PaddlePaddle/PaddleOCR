@@ -99,7 +99,7 @@ distill_key=$(func_parser_key "${lines[18]}")
 distill_trainer=$(func_parser_value "${lines[18]}")
 trainer_key1=$(func_parser_key "${lines[19]}")
 trainer_value1=$(func_parser_value "${lines[19]}")
-trainer_key1=$(func_parser_key "${lines[20]}")
+trainer_key2=$(func_parser_key "${lines[20]}")
 trainer_value2=$(func_parser_value "${lines[20]}")
 
 eval_py=$(func_parser_value "${lines[23]}")
