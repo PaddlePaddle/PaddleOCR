@@ -49,7 +49,8 @@ function func_parser_params(){
         value=${array[1]}
         if [[ ${mode} = ${MODE} ]]; then
             IFS="|"
-            echo $(func_set_params "${mode}" "${value}")
+            #echo $(func_set_params "${mode}" "${value}")
+            echo value
             break
         fi
         IFS="|"
