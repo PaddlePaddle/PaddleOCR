@@ -34,6 +34,28 @@ function func_set_params(){
         echo "${key}=${value}"
     fi
 }
+function func_parser_params(){
+    strs=$1
+    IFS=":"
+    array=(${strs})
+    key=${array[0]}
+    tmp=${array[1]}
+    IFS="|"
+    res=""
+    for _params in ${tmp[*]}; do
+        IFS="="
+        array=(${_params})
+        mode=${array[0]}
+        value=${array[1]}
+        if [[ ${mode} = ${MODE} ]]; then
+            IFS="|"
+            echo $(func_set_params "${mode}" "${value}")
+            break
+        fi
+        IFS="|"
+    done
+    echo ${res}
+}
 function status_check(){
     last_status=$1   # the exit code
     run_command=$2
@@ -55,10 +77,10 @@ train_use_gpu_value=$(func_parser_value "${lines[4]}")
 autocast_list=$(func_parser_value "${lines[5]}")
 autocast_key=$(func_parser_key "${lines[5]}")
 epoch_key=$(func_parser_key "${lines[6]}")
-epoch_num=$(func_parser_value "${lines[6]}")
+epoch_num=$(func_parser_params "${lines[6]}")
 save_model_key=$(func_parser_key "${lines[7]}")
 train_batch_key=$(func_parser_key "${lines[8]}")
-train_batch_value=$(func_parser_value "${lines[8]}")
+train_batch_value=$(func_parser_params "${lines[8]}")
 pretrain_model_key=$(func_parser_key "${lines[9]}")
 pretrain_model_value=$(func_parser_value "${lines[9]}")
 train_model_name=$(func_parser_value "${lines[10]}")
