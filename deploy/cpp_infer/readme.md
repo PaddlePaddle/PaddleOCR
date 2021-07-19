@@ -18,6 +18,7 @@ PaddleOCR模型部署。
 * 首先需要从opencv官网上下载在Linux环境下源码编译的包，以opencv3.4.7为例，下载命令如下。
 
 ```
+cd deploy/cpp_infer
 wget https://github.com/opencv/opencv/archive/3.4.7.tar.gz
 tar -xf 3.4.7.tar.gz
 ```
