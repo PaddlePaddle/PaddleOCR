@@ -114,7 +114,7 @@ class TextDetector(object):
                 time_keys=[
                     'preprocess_time', 'inference_time', 'postprocess_time'
                 ],
-                warmup=10,
+                warmup=2,
                 logger=logger)
 
     def order_points_clockwise(self, pts):
@@ -237,7 +237,7 @@ if __name__ == "__main__":
 
     if args.warmup:
         img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
-        for i in range(10):
+        for i in range(2):
             res = text_detector(img)
 
     if not os.path.exists(draw_img_save):

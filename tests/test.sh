@@ -138,8 +138,8 @@ infer_img_dir=$(func_parser_value "${lines[44]}")
 save_log_key=$(func_parser_key "${lines[45]}")
 benchmark_key=$(func_parser_key "${lines[46]}")
 benchmark_value=$(func_parser_value "${lines[46]}")
-infer_key2=$(func_parser_key "${lines[47]}")
-infer_value2=$(func_parser_value "${lines[47]}")
+infer_key1=$(func_parser_key "${lines[47]}")
+infer_value1=$(func_parser_value "${lines[47]}")
 
 LOG_PATH="./tests/output"
 mkdir -p ${LOG_PATH}
@@ -169,7 +169,8 @@ function func_inference(){
                         set_batchsize=$(func_set_params "${batch_size_key}" "${batch_size}")
                         set_cpu_threads=$(func_set_params "${cpu_threads_key}" "${threads}")
                         set_model_dir=$(func_set_params "${infer_model_key}" "${_model_dir}")
-                        command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} > ${_save_log_path} 2>&1 "
+                        set_infer_params1=$(func_set_params "${infer_key1}" "${infer_value1}")
+                        command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} ${set_infer_params1} > ${_save_log_path} 2>&1 "
                         eval $command
                         status_check $? "${command}" "${status_log}"
                     done
@@ -285,7 +286,8 @@ for gpu in ${gpu_list[*]}; do
             set_eval_pretrain=$(func_set_params "${pretrain_model_key}" "${save_log}/${train_model_name}")
             # run eval 
             if [ ${eval_py} != "null" ]; then
-                eval_cmd="${python} ${eval_py} ${set_eval_pretrain} ${set_use_gpu}" 
+                set_eval_params1=$(func_set_params "${eval_key1}" "${eval_value1}")
+                eval_cmd="${python} ${eval_py} ${set_eval_pretrain} ${set_use_gpu} ${set_eval_params1}" 
                 eval $eval_cmd
                 status_check $? "${eval_cmd}" "${status_log}"
             fi
@@ -318,3 +320,4 @@ else
     #run inference
     func_inference "${python}" "${inference_py}" "${infer_model}" "${LOG_PATH}" "${infer_img_dir}" "False"
 fi
+
