@@ -14,7 +14,7 @@ null:null
 ##
 trainer:norm_train|pact_train
 norm_train:tools/train.py -c configs/det/det_mv3_db.yml -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
-pact_train:deploy/slim/quantization/quant.py -c configs/det/det_mv3_db.yml -o Global.pretrained_model=./pretrain_models/det_mv3_db_v2.0_train/best_accuracy
+pact_train:deploy/slim/quantization/quant.py -c configs/det/det_mv3_db.yml -o
 fpgm_train:null
 distill_train:null
 null:null

@@ -25,34 +25,27 @@ function func_parser_value(){
 IFS=$'\n'
 # The training params
 model_name=$(func_parser_value "${lines[1]}")
-train_model_list=$(func_parser_value "${lines[1]}")
 
 trainer_list=$(func_parser_value "${lines[14]}")
 
-
 # MODE be one of ['lite_train_infer' 'whole_infer' 'whole_train_infer']
 MODE=$2
-# prepare pretrained weights and dataset 
-wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams
-wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar
-cd pretrain_models && tar xf det_mv3_db_v2.0_train.tar && cd ../
 
 if [ ${MODE} = "lite_train_infer" ];then
     # pretrain lite train data
+    wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams
     rm -rf ./train_data/icdar2015
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015_lite.tar
     cd ./train_data/ && tar xf icdar2015_lite.tar
     ln -s ./icdar2015_lite ./icdar2015
     cd ../
-    epoch=10
-    eval_batch_step=10
 elif [ ${MODE} = "whole_train_infer" ];then
+    wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams
     rm -rf ./train_data/icdar2015
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015.tar
     cd ./train_data/ && tar xf icdar2015.tar && cd ../
-    epoch=500
-    eval_batch_step=200
 elif [ ${MODE} = "whole_infer" ];then
+    wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams
     rm -rf ./train_data/icdar2015
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015_infer.tar
     cd ./train_data/ && tar xf icdar2015_infer.tar
