@@ -55,6 +55,7 @@ class DetMetric(object):
             result = self.evaluator.evaluate_image(gt_info_list, det_info_list)
             self.results.append(result)
 
+
     def get_metric(self):
         """
         return metrics {

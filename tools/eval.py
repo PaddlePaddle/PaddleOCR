@@ -27,7 +27,7 @@ from ppocr.data import build_dataloader
 from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
 from ppocr.metrics import build_metric
-from ppocr.utils.save_load import init_model
+from ppocr.utils.save_load import init_model, load_pretrained_params
 from ppocr.utils.utility import print_dict
 import tools.program as program
 
@@ -55,7 +55,10 @@ def main():
 
     model = build_model(config['Architecture'])
     use_srn = config['Architecture']['algorithm'] == "SRN"
-    model_type = config['Architecture']['model_type']
+    if "model_type" in config['Architecture'].keys():
+        model_type = config['Architecture']['model_type']
+    else:
+        model_type = None
 
     best_model_dict = init_model(config, model)
     if len(best_model_dict):
@@ -68,7 +71,7 @@ def main():
 
     # start eval
     metric = program.eval(model, valid_dataloader, post_process_class,
-                          eval_class, model_type, use_srn)
+                        eval_class, model_type, use_srn)
     logger.info('metric eval ***************')
     for k, v in metric.items():
         logger.info('{}:{}'.format(k, v))
