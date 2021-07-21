@@ -186,7 +186,10 @@ def train(config,
     model.train()
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
-    model_type = config['Architecture']['model_type']
+    try: 
+        model_type = config['Architecture']['model_type']
+    except: 
+        model_type = None
 
     if 'start_epoch' in best_model_dict:
         start_epoch = best_model_dict['start_epoch']
