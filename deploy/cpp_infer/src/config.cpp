@@ -21,10 +21,10 @@ std::vector<std::string> OCRConfig::split(const std::string &str,
   std::vector<std::string> res;
   if ("" == str)
     return res;
-  char *strs = new char[str.length() + 1];
+  char strs[str.length() + 1];
   std::strcpy(strs, str.c_str());
 
-  char *d = new char[delim.length() + 1];
+  char d[delim.length() + 1];
   std::strcpy(d, delim.c_str());
 
   char *p = std::strtok(strs, d);
