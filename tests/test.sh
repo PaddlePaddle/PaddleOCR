@@ -182,7 +182,7 @@ function func_inference(){
                     if [ ${use_trt} = "False" ] && [ ${precision} != "fp32" ]; then
                         continue
                     fi
-                    if [ ${use_trt} = "False" || ${precision} != "int8"]  && [ ${_flag_quant} = "True" ]; then
+                    if [[ ${use_trt} = "False" || ${precision} != "int8" ]] && [ ${_flag_quant} = "True" ]; then
                         continue
                     fi
                     for batch_size in ${batch_size_list[*]}; do
