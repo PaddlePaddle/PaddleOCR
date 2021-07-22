@@ -26,12 +26,15 @@ def build_head(config):
     from .rec_ctc_head import CTCHead
     from .rec_att_head import AttentionHead
     from .rec_srn_head import SRNHead
+    from .rec_aster_head import AttentionRecognitionHead, AsterHead
 
     # cls head
     from .cls_head import ClsHead
     support_dict = [
         'DBHead', 'EASTHead', 'SASTHead', 'CTCHead', 'ClsHead', 'AttentionHead',
-        'SRNHead', 'PGHead', 'TableAttentionHead']
+        'SRNHead', 'PGHead', 'TableAttentionHead', 'AttentionRecognitionHead',
+        'AsterHead'
+    ]
 
     #table head
     from .table_att_head import TableAttentionHead
@@ -39,5 +42,6 @@ def build_head(config):
     module_name = config.pop('name')
     assert module_name in support_dict, Exception('head only support {}'.format(
         support_dict))
+    print(config)
     module_class = eval(module_name)(**config)
     return module_class

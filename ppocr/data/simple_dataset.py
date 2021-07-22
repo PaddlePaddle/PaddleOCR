@@ -22,6 +22,7 @@ from .imaug import transform, create_operators
 
 class SimpleDataSet(Dataset):
     def __init__(self, config, mode, logger, seed=None):
+        print("===== simpledataset ========")
         super(SimpleDataSet, self).__init__()
         self.logger = logger
         self.mode = mode.lower()

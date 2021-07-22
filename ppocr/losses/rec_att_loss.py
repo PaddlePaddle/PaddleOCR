@@ -35,5 +35,7 @@ class AttentionLoss(nn.Layer):
 
         inputs = paddle.reshape(predicts, [-1, predicts.shape[-1]])
         targets = paddle.reshape(targets, [-1])
+        print("input:", paddle.argmax(inputs, axis=1))
+        print("targets:", targets)
 
         return {'loss': paddle.sum(self.loss_func(inputs, targets))}

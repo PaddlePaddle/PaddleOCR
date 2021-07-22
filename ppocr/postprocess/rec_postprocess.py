@@ -170,8 +170,10 @@ class AttnLabelDecode(BaseRecLabelDecode):
     def add_special_char(self, dict_character):
         self.beg_str = "sos"
         self.end_str = "eos"
+        self.unkonwn = "UNKNOWN"
         dict_character = dict_character
-        dict_character = [self.beg_str] + dict_character + [self.end_str]
+        dict_character = [self.beg_str] + dict_character + [self.end_str
+                                                            ] + [self.unkonwn]
         return dict_character
 
     def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
@@ -212,6 +214,7 @@ class AttnLabelDecode(BaseRecLabelDecode):
             label = self.decode(label, is_remove_duplicate=False)
             return text, label
         """
+        preds = preds["rec_pred"]
         if isinstance(preds, paddle.Tensor):
             preds = preds.numpy()
 
@@ -324,10 +327,9 @@ class SRNLabelDecode(BaseRecLabelDecode):
 class TableLabelDecode(object):
     """  """
 
-    def __init__(self,
-                 character_dict_path,
-                 **kwargs):
-        list_character, list_elem = self.load_char_elem_dict(character_dict_path)
+    def __init__(self, character_dict_path, **kwargs):
+        list_character, list_elem = self.load_char_elem_dict(
+            character_dict_path)
         list_character = self.add_special_char(list_character)
         list_elem = self.add_special_char(list_elem)
         self.dict_character = {}
@@ -366,14 +368,14 @@ class TableLabelDecode(object):
     def __call__(self, preds):
         structure_probs = preds['structure_probs']
         loc_preds = preds['loc_preds']
-        if isinstance(structure_probs,paddle.Tensor):
+        if isinstance(structure_probs, paddle.Tensor):
             structure_probs = structure_probs.numpy()
-        if isinstance(loc_preds,paddle.Tensor):
+        if isinstance(loc_preds, paddle.Tensor):
             loc_preds = loc_preds.numpy()
         structure_idx = structure_probs.argmax(axis=2)
         structure_probs = structure_probs.max(axis=2)
-        structure_str, structure_pos, result_score_list, result_elem_idx_list = self.decode(structure_idx,
-                                                                                            structure_probs, 'elem')
+        structure_str, structure_pos, result_score_list, result_elem_idx_list = self.decode(
+            structure_idx, structure_probs, 'elem')
         res_html_code_list = []
         res_loc_list = []
         batch_num = len(structure_str)
@@ -388,8 +390,13 @@ class TableLabelDecode(object):
             res_loc = np.array(res_loc)
             res_html_code_list.append(res_html_code)
             res_loc_list.append(res_loc)
-        return {'res_html_code': res_html_code_list, 'res_loc': res_loc_list, 'res_score_list': result_score_list,
-                'res_elem_idx_list': result_elem_idx_list,'structure_str_list':structure_str}
+        return {
+            'res_html_code': res_html_code_list,
+            'res_loc': res_loc_list,
+            'res_score_list': result_score_list,
+            'res_elem_idx_list': result_elem_idx_list,
+            'structure_str_list': structure_str
+        }
 
     def decode(self, text_index, structure_probs, char_or_elem):
         """convert text-label into text-index.

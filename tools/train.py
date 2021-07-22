@@ -72,6 +72,8 @@ def main(config, device, logger, vdl_writer):
     # for rec algorithm
     if hasattr(post_process_class, 'character'):
         char_num = len(getattr(post_process_class, 'character'))
+        character = getattr(post_process_class, 'character')
+        print("getattr character:", character)
         if config['Architecture']["algorithm"] in ["Distillation",
                                                    ]:  # distillation model
             for key in config['Architecture']["Models"]:

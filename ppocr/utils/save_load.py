@@ -105,13 +105,16 @@ def load_dygraph_params(config, model, logger, optimizer):
         params = paddle.load(pm)
         state_dict = model.state_dict()
         new_state_dict = {}
-        for k1, k2 in zip(state_dict.keys(), params.keys()):
-            if list(state_dict[k1].shape) == list(params[k2].shape):
-                new_state_dict[k1] = params[k2]
-        else:
-            logger.info(
-                f"The shape of model params {k1} {state_dict[k1].shape} not matched with loaded params {k2} {params[k2].shape} !"
-            )
+        # for k1, k2 in zip(state_dict.keys(), params.keys()):
+        for k1 in state_dict.keys():
+            if k1 not in params:
+                continue
+            if list(state_dict[k1].shape) == list(params[k1].shape):
+                new_state_dict[k1] = params[k1]
+            else:
+                logger.info(
+                    f"The shape of model params {k1} {state_dict[k1].shape} not matched with loaded params {k1} {params[k1].shape} !"
+                )
         model.set_state_dict(new_state_dict)
         logger.info(f"loaded pretrained_model successful from {pm}")
         return {}
