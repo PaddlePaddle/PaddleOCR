@@ -800,13 +800,20 @@ class MainWindow(QMainWindow, WindowMixin):
         filename = self.mImgList[self.currIndex]
 
         if os.path.exists(filename):
-            _value = True
-            self.actions.rotateLeft.setEnabled(_value)
-            pix = cv2.imread(filename)
-            pix = np.rot90(pix, k=1)
-            cv2.imwrite(filename, pix)
-            self.canvas.update()
-            self.loadFile(filename)
+            if self.itemsToShapesbox:
+                if self.lang == 'ch':
+                    self.msgBox.warning(self, "提示", "\n 该图片已经有标注框,旋转操作会打乱标注,建议清除标注框后旋转。")
+                else:
+                    self.msgBox.warning(self, "Warn", "\n The picture already has a label box, and rotation will disrupt the label.\
+                     It is recommended to clear the label box and rotate it.")
+            else:
+                _value = True
+                self.actions.rotateLeft.setEnabled(_value)
+                pix = cv2.imread(filename)
+                pix = np.rot90(pix, k=1)
+                cv2.imwrite(filename, pix)
+                self.canvas.update()
+                self.loadFile(filename)
         else:
             _value = False
             if self.lang == 'ch':
@@ -821,13 +828,20 @@ class MainWindow(QMainWindow, WindowMixin):
         filename = self.mImgList[self.currIndex]
 
         if os.path.exists(filename):
-            _value = True
-            self.actions.rotateRight.setEnabled(_value)
-            pix = cv2.imread(filename)
-            pix = np.rot90(pix, k=-1)
-            cv2.imwrite(filename, pix)
-            self.canvas.update()
-            self.loadFile(filename)
+            if self.itemsToShapesbox:
+                if self.lang == 'ch':
+                    self.msgBox.warning(self, "提示", "\n 该图片已经有标注框,旋转操作会打乱标注,建议清除标注框后旋转。")
+                else:
+                    self.msgBox.warning(self, "Warn", "\n The picture already has a label box, and rotation will disrupt the label.\
+                     It is recommended to clear the label box and rotate it.")
+            else:
+                _value = True
+                self.actions.rotateRight.setEnabled(_value)
+                pix = cv2.imread(filename)
+                pix = np.rot90(pix, k=-1)
+                cv2.imwrite(filename, pix)
+                self.canvas.update()
+                self.loadFile(filename)
         else:
             _value = False
 
