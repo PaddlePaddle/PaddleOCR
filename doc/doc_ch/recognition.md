@@ -296,7 +296,7 @@ PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi
 - 以意大利语为例，如果您的数据是按如下格式准备的：
     ```
     |-train_data
-        |- itali_train.txt # 训练集标签
+        |- it_train.txt # 训练集标签
         |- it_val.txt # 验证集标签
         |- data
             |- word_001.jpg
