@@ -329,6 +329,7 @@ There are two ways to create the required configuration file:：
     ...
 
     ```
+Italian is made up of Latin letters, so after executing the command, you will get the rec_latin_lite_train.yml.
 
 2. Manually modify the configuration file
 

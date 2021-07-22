@@ -296,7 +296,7 @@ PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi
 - 以意大利语为例，如果您的数据是按如下格式准备的：
     ```
     |-train_data
-        |- it_train.txt # 训练集标签
+        |- itali_train.txt # 训练集标签
         |- it_val.txt # 验证集标签
         |- data
             |- word_001.jpg
@@ -329,6 +329,8 @@ PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi
     ...
 
     ```
+
+意大利文由拉丁字母组成，因此执行完命令后会得到名为 rec_latin_lite_train.yml 的配置文件。
 
 2. 手动修改配置文件
 
