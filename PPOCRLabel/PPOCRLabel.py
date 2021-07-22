@@ -31,7 +31,7 @@ import cv2
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 
 import numpy as np
-from labelme import LabelFile
+
 
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
@@ -795,47 +795,50 @@ class MainWindow(QMainWindow, WindowMixin):
         self.actions.create.setEnabled(False)
         self.actions.undoLastPoint.setEnabled(True)
 
+    def rotateImg(self, filename, k, _value):
+
+        self.actions.rotateRight.setEnabled(_value)
+        pix = cv2.imread(filename)
+        pix = np.rot90(pix, k)
+        cv2.imwrite(filename, pix)
+        self.canvas.update()
+        self.loadFile(filename)
+
+    def rotateImgWarn(self):
+        if self.lang == 'ch':
+            self.msgBox.warning (self, "提示", "\n 该图片已经有标注框,旋转操作会打乱标注,建议清除标注框后旋转。")
+        else:
+            self.msgBox.warning (self, "Warn", "\n The picture already has a label box, and rotation will disrupt the label.\
+             It is recommended to clear the label box and rotate it.")
+
     def rotateLeftImg(self, _value=False):
 
         filename = self.mImgList[self.currIndex]
 
         if os.path.exists(filename):
-            _value = True
-            self.actions.rotateLeft.setEnabled(_value)
-            pix = cv2.imread(filename)
-            pix = np.rot90(pix, k=1)
-            cv2.imwrite(filename, pix)
-            self.canvas.update()
-            self.loadFile(filename)
+            if self.itemsToShapesbox:
+                self.rotateImgWarn()
+            else:
+                _value = True
+                self.rotateImg(filename=filename, k=1, _value=_value)
         else:
             _value = False
-            if self.lang == 'ch':
-                self.msgBox.warning(self, "提示", "\n 请从图片列表选择一个需要旋转的图片,且确保图片存在!")
-            else:
-                self.msgBox.warning(self, "Warn", "\n Please select an image from the list of images to rotate and make sure the image exists!")
-
-            self.actions.rotateLeft.setEnabled(_value)
+            self.rotateImgWarn()
+            self.actions.rotateRight.setEnabled(_value)
 
     def rotateRightImg(self, _value=False):
 
         filename = self.mImgList[self.currIndex]
 
         if os.path.exists(filename):
-            _value = True
-            self.actions.rotateRight.setEnabled(_value)
-            pix = cv2.imread(filename)
-            pix = np.rot90(pix, k=-1)
-            cv2.imwrite(filename, pix)
-            self.canvas.update()
-            self.loadFile(filename)
+            if self.itemsToShapesbox:
+                self.rotateImgWarn()
+            else:
+                _value = True
+                self.rotateImg(filename=filename, k=-1, _value=_value)
         else:
             _value = False
-
-            if self.lang == 'ch':
-                self.msgBox.warning(self, "提示", "\n 请从图片列表选择一个需要旋转的图片,且确保图片存在!")
-            else:
-                self.msgBox.warning(self, "Warn", "\n Please select an image from the list of images to rotate and make sure the image exists!")
-
+            self.rotateImgWarn()
             self.actions.rotateRight.setEnabled(_value)
 
     def toggleDrawingSensitive(self, drawing=True):
