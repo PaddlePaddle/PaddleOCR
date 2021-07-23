@@ -118,28 +118,32 @@ export_value1=$(func_parser_value "${lines[33]}")
 export_key2=$(func_parser_key "${lines[34]}")
 export_value2=$(func_parser_value "${lines[34]}")
 
-inference_py=$(func_parser_value "${lines[36]}")
-use_gpu_key=$(func_parser_key "${lines[37]}")
-use_gpu_list=$(func_parser_value "${lines[37]}")
-use_mkldnn_key=$(func_parser_key "${lines[38]}")
-use_mkldnn_list=$(func_parser_value "${lines[38]}")
-cpu_threads_key=$(func_parser_key "${lines[39]}")
-cpu_threads_list=$(func_parser_value "${lines[39]}")
-batch_size_key=$(func_parser_key "${lines[40]}")
-batch_size_list=$(func_parser_value "${lines[40]}")
-use_trt_key=$(func_parser_key "${lines[41]}")
-use_trt_list=$(func_parser_value "${lines[41]}")
-precision_key=$(func_parser_key "${lines[42]}")
-precision_list=$(func_parser_value "${lines[42]}")
-infer_model_key=$(func_parser_key "${lines[43]}")
-infer_model=$(func_parser_value "${lines[43]}")
-image_dir_key=$(func_parser_key "${lines[44]}")
-infer_img_dir=$(func_parser_value "${lines[44]}")
-save_log_key=$(func_parser_key "${lines[45]}")
-benchmark_key=$(func_parser_key "${lines[46]}")
-benchmark_value=$(func_parser_value "${lines[46]}")
-infer_key1=$(func_parser_key "${lines[47]}")
-infer_value1=$(func_parser_value "${lines[47]}")
+# parser inference model 
+infer_model_dir_list=$(func_parser_value "${lines[36]}")
+infer_export_list=$(func_parser_value "${lines[37]}")
+infer_is_quant=$(func_parser_value "${lines[38]}")
+# parser inference 
+inference_py=$(func_parser_value "${lines[39]}")
+use_gpu_key=$(func_parser_key "${lines[40]}")
+use_gpu_list=$(func_parser_value "${lines[40]}")
+use_mkldnn_key=$(func_parser_key "${lines[41]}")
+use_mkldnn_list=$(func_parser_value "${lines[41]}")
+cpu_threads_key=$(func_parser_key "${lines[42]}")
+cpu_threads_list=$(func_parser_value "${lines[42]}")
+batch_size_key=$(func_parser_key "${lines[43]}")
+batch_size_list=$(func_parser_value "${lines[43]}")
+use_trt_key=$(func_parser_key "${lines[44]}")
+use_trt_list=$(func_parser_value "${lines[44]}")
+precision_key=$(func_parser_key "${lines[45]}")
+precision_list=$(func_parser_value "${lines[45]}")
+infer_model_key=$(func_parser_key "${lines[46]}")
+image_dir_key=$(func_parser_key "${lines[47]}")
+infer_img_dir=$(func_parser_value "${lines[47]}")
+save_log_key=$(func_parser_key "${lines[48]}")
+benchmark_key=$(func_parser_key "${lines[49]}")
+benchmark_value=$(func_parser_value "${lines[49]}")
+infer_key1=$(func_parser_key "${lines[50]}")
+infer_value1=$(func_parser_value "${lines[50]}")
 
 LOG_PATH="./tests/output"
 mkdir -p ${LOG_PATH}
@@ -179,10 +183,10 @@ function func_inference(){
         elif [ ${use_gpu} = "True" ] || [ ${use_gpu} = "gpu" ]; then
             for use_trt in ${use_trt_list[*]}; do
                 for precision in ${precision_list[*]}; do
-                    if [ ${use_trt} = "False" ] && [ ${precision} != "fp32" ]; then
+                    if [[ ${precision} =~ "fp16" || ${precision} =~ "int8" ]] && [ ${use_trt} = "False" ]; then
                         continue
                     fi
-                    if [[ ${use_trt} = "False" || ${precision} != "int8" ]] && [ ${_flag_quant} = "True" ]; then
+                    if [[ ${use_trt} = "False" || ${precision} =~ "int8" ]] && [ ${_flag_quant} = "True" ]; then
                         continue
                     fi
                     for batch_size in ${batch_size_list[*]}; do
@@ -200,7 +204,7 @@ function func_inference(){
                 done
             done
         else
-            echo "Currently does not support hardware other than CPU and GPU"
+            echo "Does not support hardware other than CPU and GPU Currently!"
         fi
     done
 }
@@ -212,9 +216,28 @@ if [ ${MODE} = "infer" ]; then
     else
         env="export CUDA_VISIBLE_DEVICES=${GPUID}"
     fi
-    echo $env
-    #run inference
-    func_inference "${python}" "${inference_py}" "${infer_model}" "${LOG_PATH}" "${infer_img_dir}" "False"
+    # set CUDA_VISIBLE_DEVICES
+    eval $env
+    export Count=0
+    IFS="|"
+    infer_run_exports=(${infer_export_list})
+    infer_quant_flag=(${infer_is_quant})
+    for infer_model in ${infer_model_dir_list[*]}; do
+        # run export
+        if [ ${infer_run_exports[Count]} != "null" ];then
+            export_cmd="${python} ${norm_export} ${export_weight}=${infer_model} ${save_infer_key}=${infer_model}"
+            eval $export_cmd
+            status_export=$?
+            if [ ${status_export} = 0 ];then
+                status_check $status_export "${export_cmd}" "${status_log}"
+            fi
+        fi
+        #run inference
+        is_quant=${infer_quant_flag[Count]}
+        echo "is_quant: ${is_quant}"
+        func_inference "${python}" "${inference_py}" "${infer_model}" "${LOG_PATH}" "${infer_img_dir}" ${is_quant}
+        Count=$(($Count + 1))
+    done
 
 else
     IFS="|"
