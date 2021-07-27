@@ -5,5 +5,5 @@ recursive-include ppocr/utils *.txt utility.py logging.py network.py
 recursive-include ppocr/data/ *.py
 recursive-include ppocr/postprocess *.py
 recursive-include tools/infer *.py
-recursive-include test1 *.py
+recursive-include ppstructure *.py
 

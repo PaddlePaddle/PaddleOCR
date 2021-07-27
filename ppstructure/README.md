@@ -10,7 +10,7 @@ pip3 install layoutparser-0.0.0-py3-none-any.whl
 
 PaddleStructure is a toolkit for complex layout text OCR, the process is as follows
 
-![pipeline](../doc/table/pipeline.png)
+![pipeline](../doc/table/pipeline.jpg)
 
 In PaddleStructure, the image will be analyzed by layoutparser first. In the layout analysis, the area in the image will be classified, and the OCR process will be carried out according to the category.
 
