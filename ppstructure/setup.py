@@ -23,14 +23,14 @@ with open('../requirements.txt', encoding="utf-8-sig") as f:
 
 
 def readme():
-    with open('api_ch.md', encoding="utf-8-sig") as f:
+    with open('README_ch.md', encoding="utf-8-sig") as f:
         README = f.read()
     return README
 
 
-shutil.copytree('./table', './test1/table')
-shutil.copyfile('./predict_system.py', './test1/predict_system.py')
-shutil.copyfile('./utility.py', './test1/utility.py')
+shutil.copytree('./table', './ppstructure/table')
+shutil.copyfile('./predict_system.py', './ppstructure/predict_system.py')
+shutil.copyfile('./utility.py', './ppstructure/utility.py')
 shutil.copytree('../ppocr', './ppocr')
 shutil.copytree('../tools', './tools')
 shutil.copyfile('../LICENSE', './LICENSE')
@@ -66,5 +66,5 @@ setup(
 
 shutil.rmtree('ppocr')
 shutil.rmtree('tools')
-shutil.rmtree('test1')
+shutil.rmtree('ppstructure')
 os.remove('LICENSE')
