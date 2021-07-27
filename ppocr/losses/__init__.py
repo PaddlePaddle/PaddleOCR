@@ -13,13 +13,12 @@
 # limitations under the License.
 
 import copy
-import paddle
-import paddle.nn as nn
 
 # det loss
 from .det_db_loss import DBLoss
 from .det_east_loss import EASTLoss
 from .det_sast_loss import SASTLoss
+from .det_pse_loss import PSELoss
 
 # rec loss
 from .rec_ctc_loss import CTCLoss
@@ -41,9 +40,10 @@ from .combined_loss import CombinedLoss
 # table loss
 from .table_att_loss import TableAttentionLoss
 
+
 def build_loss(config):
     support_dict = [
-        'DBLoss', 'EASTLoss', 'SASTLoss', 'CTCLoss', 'ClsLoss', 'AttentionLoss',
+        'DBLoss', 'PSELoss', 'EASTLoss', 'SASTLoss', 'CTCLoss', 'ClsLoss', 'AttentionLoss',
         'SRNLoss', 'PGLoss', 'CombinedLoss', 'TableAttentionLoss'
     ]
     config = copy.deepcopy(config)

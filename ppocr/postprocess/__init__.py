@@ -28,13 +28,14 @@ from .rec_postprocess import CTCLabelDecode, AttnLabelDecode, SRNLabelDecode, Di
     TableLabelDecode
 from .cls_postprocess import ClsPostProcess
 from .pg_postprocess import PGPostProcess
+from .pse_postprocess import PSEPostProcess
 
 
 def build_post_process(config, global_config=None):
     support_dict = [
         'DBPostProcess', 'EASTPostProcess', 'SASTPostProcess', 'CTCLabelDecode',
         'AttnLabelDecode', 'ClsPostProcess', 'SRNLabelDecode', 'PGPostProcess',
-        'DistillationCTCLabelDecode', 'TableLabelDecode'
+        'DistillationCTCLabelDecode', 'TableLabelDecode', 'PSEPostProcess'
     ]
 
     config = copy.deepcopy(config)
