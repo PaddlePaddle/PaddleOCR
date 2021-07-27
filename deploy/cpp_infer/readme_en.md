@@ -18,6 +18,7 @@ PaddleOCR model deployment.
 * First of all, you need to download the source code compiled package in the Linux environment from the opencv official website. Taking opencv3.4.7 as an example, the download command is as follows.
 
 ```
+cd deploy/cpp_infer
 wget https://github.com/opencv/opencv/archive/3.4.7.tar.gz
 tar -xf 3.4.7.tar.gz
 ```

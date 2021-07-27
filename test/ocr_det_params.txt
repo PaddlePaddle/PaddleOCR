@@ -1,13 +1,12 @@
 model_name:ocr_det
 python:python3.7
 gpu_list:0|0,1
-Global.auto_cast:False
+Global.auto_cast:null
 Global.epoch_num:10
 Global.save_model_dir:./output/
-Global.save_inference_dir:./output/
 Train.loader.batch_size_per_card:
-Global.use_gpu
-Global.pretrained_model
+Global.use_gpu:
+Global.pretrained_model:null
 
 trainer:norm|pact
 norm_train:tools/train.py -c configs/det/det_mv3_db.yml -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
@@ -17,6 +16,8 @@ distill_train:null
 
 eval:tools/eval.py -c configs/det/det_mv3_db.yml -o 
 
+Global.save_inference_dir:./output/
+Global.pretrained_model:
 norm_export:tools/export_model.py -c configs/det/det_mv3_db.yml -o 
 quant_export:deploy/slim/quantization/export_model.py -c configs/det/det_mv3_db.yml -o 
 fpgm_export:deploy/slim/prune/export_prune_model.py
@@ -29,7 +30,6 @@ inference:tools/infer/predict_det.py
 --rec_batch_num:1
 --use_tensorrt:True|False
 --precision:fp32|fp16|int8
---det_model_dir
---image_dir
---save_log_path
-
+--det_model_dir:./inference/ch_ppocr_mobile_v2.0_det_infer/
+--image_dir:./inference/ch_det_data_50/all-sum-510/
+--save_log_path:./test/output/
