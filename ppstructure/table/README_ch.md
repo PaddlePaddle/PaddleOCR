@@ -19,6 +19,8 @@
 
 
 ### 2.1 训练
+在这一章节中，我们仅介绍表格结构模型的训练，[文字检测](../../doc/doc_ch/detection.md)和[文字识别](../../doc/doc_ch/recognition.md)的模型训练请参考对应的文档。
+
 #### 数据准备  
 训练数据使用公开数据集[PubTabNet](https://arxiv.org/abs/1911.10683)，可以从[官网](https://github.com/ibm-aur-nlp/PubTabNet)下载。PubTabNet数据集包含约50万张表格数据的图像，以及图像对应的html格式的注释。
 
@@ -31,7 +33,7 @@ python3 tools/train.py -c configs/table/table_mv3.yml
 python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/table/table_mv3.yml
 ```
 
-上述指令中，通过-c 选择训练使用configs/table/table_mv3.yml配置文件。有关配置文件的详细解释，请参考[链接](./config.md)。
+上述指令中，通过-c 选择训练使用configs/table/table_mv3.yml配置文件。有关配置文件的详细解释，请参考[链接](../../doc/doc_ch/config.md)。
 
 #### 断点训练
 
