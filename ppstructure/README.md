@@ -34,7 +34,7 @@ Types 1-4 follow the traditional OCR process, and 5 follow the Table OCR process
 
 Use the following commands to complete the inference
 ```python
-python3 table/predict_system.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=EN --det_limit_side_len=736 --det_limit_type=min --output ../output/table
+python3 predict_system.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=EN --det_limit_side_len=736 --det_limit_type=min --output ../output/table
 ```
 After running, each image will have a directory with the same name under the directory specified in the output field. Each table in the picture will be stored as an excel, and the excel file name will be the coordinates of the table in the image.
 
@@ -61,7 +61,7 @@ for line in result:
 
 from PIL import Image
 
-font_path = 'path/tp/PaddleOCR/doc/fonts/simfang.ttf'
+font_path = 'path/to/PaddleOCR/doc/fonts/simfang.ttf'
 image = Image.open(img_path).convert('RGB')
 im_show = draw_result(image, result,font_path=font_path)
 im_show = Image.fromarray(im_show)
