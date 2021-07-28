@@ -22,17 +22,14 @@ os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
 
 import cv2
 import numpy as np
-import math
 import time
-import traceback
-import paddle
 
 import tools.infer.utility as utility
 from ppocr.data import create_operators, transform
 from ppocr.postprocess import build_post_process
 from ppocr.utils.logging import get_logger
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
-from test1.utility import parse_args
+from ppstructure.utility import parse_args
 
 logger = get_logger()
 

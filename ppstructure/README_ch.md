@@ -9,7 +9,7 @@ pip3 install layoutparser-0.0.0-py3-none-any.whl
 ## 1. pipeline介绍
 
 PaddleStructure 是一个用于复杂板式文字OCR的工具包，流程如下
-![pipeline](../doc/table/pipeline.png)
+![pipeline](../doc/table/pipeline.jpg)
 
 在PaddleStructure中，图片会先经由layoutparser进行版面分析，在版面分析中，会对图片里的区域进行分类，根据根据类别进行对于的ocr流程。
 
