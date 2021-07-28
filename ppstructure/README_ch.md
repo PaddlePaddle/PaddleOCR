@@ -2,8 +2,7 @@
 
 安装layoutparser
 ```sh
-wget  https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
-pip3 install layoutparser-0.0.0-py3-none-any.whl
+pip3 install https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
 ```
 
 ## 1. pipeline介绍
