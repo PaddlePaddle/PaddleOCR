@@ -66,5 +66,3 @@ else
         cd ./inference && tar xf ${eval_model_name}.tar && cd ../
     fi 
 fi
-
-
