@@ -230,7 +230,9 @@ if [ ${MODE} = "infer" ]; then
     for infer_model in ${infer_model_dir_list[*]}; do
         # run export
         if [ ${infer_run_exports[Count]} != "null" ];then
-            export_cmd="${python} ${norm_export} ${export_weight}=${infer_model} ${save_infer_key}=${infer_model}"
+            set_export_weight=$(func_set_params "${export_weight}" "${infer_model}")
+            set_save_infer_key=$(func_set_params "${save_infer_key}" "${infer_model}")
+            export_cmd="${python} ${norm_export} ${set_export_weight} ${set_save_infer_key}"
             eval $export_cmd
             status_export=$?
             if [ ${status_export} = 0 ];then
@@ -339,7 +341,9 @@ else
                 if [ ${run_export} != "null" ]; then 
                     # run export model
                     save_infer_path="${save_log}"
-                    export_cmd="${python} ${run_export} ${export_weight}=${save_log}/${train_model_name} ${save_infer_key}=${save_infer_path}"
+                    set_export_weight=$(func_set_params "${export_weight}" "${save_log}/${train_model_name}")
+                    set_save_infer_key=$(func_set_params "${save_infer_key}" "${save_infer_path}")
+                    export_cmd="${python} ${run_export} ${set_export_weight} ${set_save_infer_key}"
                     eval $export_cmd
                     status_check $? "${export_cmd}" "${status_log}"
 
