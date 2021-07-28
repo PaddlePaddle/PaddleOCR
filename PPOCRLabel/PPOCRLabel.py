@@ -885,16 +885,15 @@ class MainWindow(QMainWindow, WindowMixin):
             self.updateComboBox()
 
     def updateBoxlist(self):
+        self.canvas.selectedShapes_hShape = []
         if self.canvas.hShape != None:
-            for shape in self.canvas.selectedShapes + [self.canvas.hShape]:
-                item = self.shapesToItemsbox[shape]  # listitem
-                text = [(int(p.x()), int(p.y())) for p in shape.points]
-                item.setText(str(text))
+            self.canvas.selectedShapes_hShape = self.canvas.selectedShapes + [self.canvas.hShape]
         else:
-            for shape in self.canvas.selectedShapes:
-                item = self.shapesToItemsbox[shape]  # listitem
-                text = [(int(p.x()), int(p.y())) for p in shape.points]
-                item.setText(str(text))
+            self.canvas.selectedShapes_hShape = self.canvas.selectedShapes
+        for shape in self.canvas.selectedShapes_hShape:
+            item = self.shapesToItemsbox[shape]  # listitem
+            text = [(int(p.x()), int(p.y())) for p in shape.points]
+            item.setText(str(text))
         self.actions.undo.setEnabled(True)
         self.setDirty()
 
