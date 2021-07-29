@@ -67,8 +67,12 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
 # multi-GPU training
 # Set the GPU ID used by the '--gpus' parameter.
 python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
+```
 
-
+If you train the PSE algorithm, you need to compile the post-processing first.
+```bash
+cd ppocr/postprocess/pse_postprocess/pse
+python3 setup.py build_ext --inplace
 ```
 
 #### load trained model and continue training

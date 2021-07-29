@@ -45,8 +45,8 @@ json.dumps编码前的图像标注信息是包含多个字典的list，字典中
 ## 快速启动训练
 
 首先下载模型backbone的pretrain model，PaddleOCR的检测模型目前支持两种backbone，分别是MobileNetV3、ResNet_vd系列，
-您可以根据需求使用[PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/develop/ppcls/modeling/architectures)中的模型更换backbone，
-对应的backbone预训练模型可以从[PaddleClas repo 主页中找到下载链接](https://github.com/PaddlePaddle/PaddleClas#mobile-series)。
+您可以根据需求使用[PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/develop/ppcls/modeling/architectures) 中的模型更换backbone，
+对应的backbone预训练模型可以从[PaddleClas repo 主页](https://github.com/PaddlePaddle/PaddleClas#mobile-series) 中找到下载链接。
 ```shell
 cd PaddleOCR/
 # 根据backbone的不同选择下载对应的预训练模型
@@ -79,6 +79,13 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/
 您也可以通过-o参数在不需要修改yml文件的情况下，改变训练的参数，比如，调整训练的学习率为0.0001
 ```shell
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
+```
+
+若训练PSE算法，需先编译后处理
+
+```bash
+cd ppocr/postprocess/pse_postprocess/pse
+python3 setup.py build_ext --inplace
 ```
 
 #### 断点训练
