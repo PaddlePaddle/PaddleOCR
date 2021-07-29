@@ -25,7 +25,6 @@ from pathlib import Path
 
 from ppocr.utils.logging import get_logger
 from ppstructure.predict_system import OCRSystem, save_res
-from ppstructure.table.predict_table import to_excel
 from ppstructure.utility import init_args, draw_result
 
 logger = get_logger()
