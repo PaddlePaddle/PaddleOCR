@@ -8,7 +8,7 @@ PaddleStructure是一个用于复杂版面分析的OCR工具包，其能够对�
 
 **安装 layoutparser**
 ```sh
-pip3 install https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
+pip3 install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
 ```
 **安装 paddlestructure**
 
@@ -80,15 +80,15 @@ im_show.save('result.jpg')
 
 在PaddleStructure中，图片会先经由layoutparser进行版面分析，在版面分析中，会对图片里的区域进行分类，包括**文字、标题、图片、列表和表格**5类。对于前4类区域，直接使用PP-OCR完成对应区域文字检测与识别。对于表格类区域，经过Table OCR处理后，表格图片转换为相同表格样式的Excel文件。
 
-### 2.1 LayoutParser
+### 2.1 版面分析
 
 版面分析对文档数据进行区域分类，其中包括版面分析工具的Python脚本使用、提取指定类别检测框、性能指标以及自定义训练版面分析模型，详细内容可以参考[文档](layout/README.md)。
 
-### 2.2 Table OCR
+### 2.2 表格识别
 
 Table OCR将表格图片转换为excel文档，其中包含对于表格文本的检测和识别以及对于表格结构和单元格坐标的预测，详细说明参考[文档](table/README_ch.md)
 
-### 3. 预测引擎推理
+## 3. 预测引擎推理
 
 使用如下命令即可完成预测引擎的推理
 
@@ -97,8 +97,7 @@ python3 table/predict_system.py --det_model_dir=path/to/det_model_dir --rec_mode
 ```
 运行完成后，每张图片会output字段指定的目录下有一个同名目录，图片里的每个表格会存储为一个excel，excel文件名为表格在图片里的坐标。
 
-# 3. Model List
-
+**Model List**
 
 |模型名称|模型简介|配置文件|推理模型大小|下载地址|
 | --- | --- | --- | --- | --- |

@@ -7,7 +7,7 @@ PaddleStructure is an OCR toolkit for complex layout analysis. It can divide doc
 
 **install layoutparser**
 ```sh
-pip3 install https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
+pip3 install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
 ```
 **install paddlestructure**
 
@@ -86,7 +86,7 @@ Layout analysis divides the document data into regions, including the use of Pyt
 
 Table OCR converts table image into excel documents, which include the detection and recognition of table text and the prediction of table structure and cell coordinates. For detailed, please refer to [document](table/README.md)
 
-### 3. Predictive by inference engine
+## 3. Predictive by inference engine
 
 Use the following commands to complete the inference. 
 
@@ -95,7 +95,7 @@ python3 table/predict_system.py --det_model_dir=path/to/det_model_dir --rec_mode
 ```
 After running, each image will have a directory with the same name under the directory specified in the output field. Each table in the picture will be stored as an excel, and the excel file name will be the coordinates of the table in the image.
 
-# 3. Model List
+**Model List**
 
 
 |model name|description|config|model size|download|

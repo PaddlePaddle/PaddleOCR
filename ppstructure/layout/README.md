@@ -10,8 +10,7 @@
 
 ## 1.  安装whl包
 ```bash
-wget https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
-pip install -U layoutparser-0.0.0-py3-none-any.whl
+pip install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
 ```
 
 <a name="使用"></a>
@@ -21,6 +20,7 @@ pip install -U layoutparser-0.0.0-py3-none-any.whl
 使用layoutparser识别给定文档的布局：
 
 ```python
+import cv2
 import layoutparser as lp
 image = cv2.imread("imags/paper-image.jpg")
 image = image[..., ::-1]
@@ -67,7 +67,7 @@ lp.draw_box(image, layout, box_width=3, show_element_type=True)
 | [PubLayNet](https://github.com/ibm-aur-nlp/PubLayNet)        | lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config      | {0: "Text", 1: "Title", 2: "List", 3:"Table", 4:"Figure"} |
 
 * TableBank word和TableBank latex分别在word文档、latex文档数据集训练；
-* 下载TableBank数据集同时包含word和latex。
+* 下载的TableBank数据集里同时包含word和latex。
 
 <a name="后处理"></a>
 
