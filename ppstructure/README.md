@@ -80,7 +80,7 @@ In PaddleStructure, the image will be analyzed by layoutparser first. In the lay
 
 ### 2.1 LayoutParser
 
-Layout analysis divides the document data into regions, including the use of Python scripts for layout analysis tools, extraction of special category detection boxes, performance indicators, and custom training layout analysis models. For details, please refer to [document](layout/README.md).
+Layout analysis divides the document data into regions, including the use of Python scripts for layout analysis tools, extraction of special category detection boxes, performance indicators, and custom training layout analysis models. For details, please refer to [document](layout/README_en.md).
 
 ### 2.2 Table OCR
 
