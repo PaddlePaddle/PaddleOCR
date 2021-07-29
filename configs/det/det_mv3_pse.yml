@@ -3,12 +3,12 @@ Global:
   epoch_num: 600
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/det_r50_vd_pse/
+  save_model_dir: ./output/det_mv3_pse/
   save_epoch_step: 600
-  # evaluation is run every 125 iterations
-  eval_batch_step: [ 0,125 ]
+  # evaluation is run every 63 iterations
+  eval_batch_step: [ 0,63 ]
   cal_metric_during_train: False
-  pretrained_model: ./pretrain_models/ResNet50_vd_ssld_pretrained
+  pretrained_model: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
   checkpoints: #./output/det_r50_vd_pse_batch8_ColorJitter/best_accuracy
   save_inference_dir:
   use_visualdl: False
@@ -18,16 +18,17 @@ Global:
 Architecture:
   model_type: det
   algorithm: PSE
-  Transform:
+  Transform: null
   Backbone:
-    name: ResNet
-    layers: 50
+    name: MobileNetV3
+    scale: 0.5
+    model_name: large
   Neck:
     name: FPN
-    out_channels: 256
+    out_channels: 96
   Head:
     name: PSEHead
-    hidden_dim: 256
+    hidden_dim: 96
     out_channels: 7
 
 Loss:
@@ -43,7 +44,7 @@ Optimizer:
   beta2: 0.999
   lr:
     name: Step
-    learning_rate: 0.0001
+    learning_rate: 0.001
     step_size: 200
     gamma: 0.1
   regularizer:
@@ -101,7 +102,7 @@ Train:
   loader:
     shuffle: True
     drop_last: False
-    batch_size_per_card: 8
+    batch_size_per_card: 16
     num_workers: 8
 
 Eval:

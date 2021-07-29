@@ -11,9 +11,10 @@ This tutorial lists the text detection algorithms and text recognition algorithm
 ### 1. Text Detection Algorithm
 
 PaddleOCR open source text detection algorithms list:
-- [x]  EAST([paper](https://arxiv.org/abs/1704.03155))[2]
-- [x]  DB([paper](https://arxiv.org/abs/1911.08947))[1]
-- [x]  SAST([paper](https://arxiv.org/abs/1908.05498))[4]
+- [x]  EAST([paper](https://arxiv.org/abs/1704.03155))
+- [x]  DB([paper](https://arxiv.org/abs/1911.08947))
+- [x]  SAST([paper](https://arxiv.org/abs/1908.05498))
+- [x]  PSE([paper](https://arxiv.org/abs/1903.12473v2))
 
 On the ICDAR2015 dataset, the text detection result is as follows:
 
@@ -24,6 +25,8 @@ On the ICDAR2015 dataset, the text detection result is as follows:
 |DB|ResNet50_vd|86.41%|78.72%|82.38%|[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_db_v2.0_train.tar)|
 |DB|MobileNetV3|77.29%|73.08%|75.12%|[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar)|
 |SAST|ResNet50_vd|91.39%|83.77%|87.42%|[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_icdar15_v2.0_train.tar)|
+|PSE|ResNet50_vd|85.81%|79.53%|82.55%|[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_r50_vd_pse_v2.0_train.tar)|
+|PSE|MobileNetV3|82.20%|70.47%|75.89%|[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_mv3_pse_v2.0_train.tar)|
 
 On Total-Text dataset, the text detection result is as follows:
 
@@ -41,11 +44,11 @@ For the training guide and use of PaddleOCR text detection algorithms, please re
 ### 2. Text Recognition Algorithm
 
 PaddleOCR open-source text recognition algorithms list:
-- [x]  CRNN([paper](https://arxiv.org/abs/1507.05717))[7]
-- [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))[10]
-- [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))[11]
-- [x]  RARE([paper](https://arxiv.org/abs/1603.03915v1))[12]
-- [x]  SRN([paper](https://arxiv.org/abs/2003.12294))[5]
+- [x]  CRNN([paper](https://arxiv.org/abs/1507.05717))
+- [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))
+- [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))
+- [x]  RARE([paper](https://arxiv.org/abs/1603.03915v1))
+- [x]  SRN([paper](https://arxiv.org/abs/2003.12294))
 
 Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation result of these above text recognition (using MJSynth and SynthText for training, evaluate on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE) is as follow:
 
