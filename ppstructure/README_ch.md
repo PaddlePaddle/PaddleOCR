@@ -102,5 +102,5 @@ python3 table/predict_system.py --det_model_dir=path/to/det_model_dir --rec_mode
 |模型名称|模型简介|配置文件|推理模型大小|下载地址|
 | --- | --- | --- | --- | --- |
 |en_ppocr_mobile_v2.0_table_det|英文表格场景的文字检测|[ch_det_mv3_db_v2.0.yml](../configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml)| 4.7M |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_det_infer.tar) |
-|en_ppocr_mobile_v2.0_table_rec|英文表格场景的文字识别|[rec_chinese_lite_train_v2.0.yml](..//configs/rec/rec_mv3_none_bilstm_ctc.yml)|6.9M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar) |
+|en_ppocr_mobile_v2.0_table_rec|英文表格场景的文字识别|[rec_chinese_lite_train_v2.0.yml](../configs/rec/rec_mv3_none_bilstm_ctc.yml)|6.9M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar) |
 |en_ppocr_mobile_v2.0_table_structure|英文表格场景的表格结构预测|[table_mv3.yml](../configs/table/table_mv3.yml)|18.6M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar) |
