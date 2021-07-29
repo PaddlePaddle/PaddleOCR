@@ -8,7 +8,7 @@
 
 具体流程图如下
 
-![tableocr_pipeline](../../doc/table/tableocr_pipeline.png)
+![tableocr_pipeline](../../doc/table/tableocr_pipeline.jpg)
 
 1. 图片由单行文字检测检测模型到单行文字的坐标，然后送入识别模型拿到识别结果。
 2. 图片由表格结构和cell坐标预测模型拿到表格的结构信息和单元格的坐标信息。
@@ -16,7 +16,6 @@
 4. 单元格的识别结果和表格结构一起构造表格的html字符串。
 
 ## 2. 使用
-
 
 ### 2.1 训练
 在这一章节中，我们仅介绍表格结构模型的训练，[文字检测](../../doc/doc_ch/detection.md)和[文字识别](../../doc/doc_ch/recognition.md)的模型训练请参考对应的文档。
