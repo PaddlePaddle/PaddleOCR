@@ -223,9 +223,7 @@ class TextDetector(object):
         #self.predictor.try_shrink_memory()
         post_result = self.postprocess_op(preds, shape_list)
         dt_boxes = post_result[0]['points']
-        if self.det_algorithm == "SAST" and self.det_sast_polygon:
-            dt_boxes = self.filter_tag_det_res_only_clip(dt_boxes, ori_im.shape)
-        elif self.det_algorithm == "PSE" and self.det_pse_box_type=='poly':
+        if (self.det_algorithm == "SAST" and self.det_sast_polygon) or (self.det_algorithm == "PSE" and self.det_pse_box_type=='poly'):
             dt_boxes = self.filter_tag_det_res_only_clip(dt_boxes, ori_im.shape)
         else:
             dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
