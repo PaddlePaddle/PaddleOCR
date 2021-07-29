@@ -74,7 +74,7 @@ After running, each image will have a directory with the same name under the dir
 ## 2. PaddleStructure Pipeline
 
 the process is as follows
-![pipeline](../doc/table/pipeline.jpg)
+![pipeline](../doc/table/pipeline_en.jpg)
 
 In PaddleStructure, the image will be analyzed by layoutparser first. In the layout analysis, the area in the image will be classified, including **text, title, image, list and table** 5 categories. For the first 4 types of areas, directly use the PP-OCR to complete the text detection and recognition. The table area will  be converted to an excel file of the same table style via Table OCR.
 
