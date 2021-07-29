@@ -70,33 +70,31 @@ class FPN(nn.Layer):
                 m.bias = paddle.create_parameter(shape=m.bias.shape, dtype='float32',
                                                  default_initializer=paddle.nn.initializer.Constant(0.0))
 
-    def _upsample(self, x, y, scale=1):
-        _, _, H, W = y.shape
-        return F.upsample(x, size=(H // scale, W // scale), mode='bilinear')
+    def _upsample(self, x, scale=1):
+        return F.upsample(x, scale_factor=scale, mode='bilinear')
 
-    def _upsample_add(self, x, y):
-        _, _, H, W = y.shape
-        return F.upsample(x, size=(H, W), mode='bilinear') + y
+    def _upsample_add(self, x, y, scale=1):
+        return F.upsample(x, scale_factor=scale, mode='bilinear') + y
 
     def forward(self, x):
         f2, f3, f4, f5 = x
         p5 = self.toplayer_(f5)
 
         f4 = self.latlayer1_(f4)
-        p4 = self._upsample_add(p5, f4)
+        p4 = self._upsample_add(p5, f4,2)
         p4 = self.smooth1_(p4)
 
         f3 = self.latlayer2_(f3)
-        p3 = self._upsample_add(p4, f3)
+        p3 = self._upsample_add(p4, f3,2)
         p3 = self.smooth2_(p3)
 
         f2 = self.latlayer3_(f2)
-        p2 = self._upsample_add(p3, f2)
+        p2 = self._upsample_add(p3, f2,2)
         p2 = self.smooth3_(p2)
 
-        p3 = self._upsample(p3, p2)
-        p4 = self._upsample(p4, p2)
-        p5 = self._upsample(p5, p2)
+        p3 = self._upsample(p3, 2)
+        p4 = self._upsample(p4, 4)
+        p5 = self._upsample(p5, 8)
 
         fuse = paddle.concat([p2, p3, p4, p5], axis=1)
         return fuse
