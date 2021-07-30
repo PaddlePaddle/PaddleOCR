@@ -81,13 +81,6 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
 ```
 
-若训练PSE算法，需先编译后处理
-
-```bash
-cd ppocr/postprocess/pse_postprocess/pse
-python3 setup.py build_ext --inplace
-```
-
 #### 断点训练
 
 如果训练程序中断，如果希望加载训练中断的模型从而恢复训练，可以通过指定Global.checkpoints指定要加载的模型路径：
