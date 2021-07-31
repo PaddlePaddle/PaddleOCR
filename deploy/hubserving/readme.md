@@ -29,6 +29,7 @@ deploy/hubserving/ocr_system/
 ### 1. 准备环境
 ```shell
 # 安装paddlehub  
+# paddlehub 需要 python>3.6.2
 pip3 install paddlehub==2.1.0 --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 

@@ -24,9 +24,8 @@ import numpy as np
 from pathlib import Path
 
 from ppocr.utils.logging import get_logger
-from test1.predict_system import OCRSystem, save_res
-from test1.table.predict_table import to_excel
-from test1.utility import init_args, draw_result
+from ppstructure.predict_system import OCRSystem, save_res
+from ppstructure.utility import init_args, draw_result
 
 logger = get_logger()
 from ppocr.utils.utility import check_and_read_gif, get_image_file_list

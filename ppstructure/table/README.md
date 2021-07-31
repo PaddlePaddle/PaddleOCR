@@ -8,7 +8,7 @@ The ocr of the table mainly contains three models
 
 The table ocr flow chart is as follows
 
-![tableocr_pipeline](../../doc/table/tableocr_pipeline.png)
+![tableocr_pipeline](../../doc/table/tableocr_pipeline_en.jpg)
 
 1. The coordinates of single-line text is detected by DB model, and then sends it to the recognition model to get the recognition result.
 2. The table structure and cell coordinates is predicted by RARE model.
@@ -19,7 +19,34 @@ The table ocr flow chart is as follows
 
 
 ### 2.1 Train
-TBD
+
+In this chapter, we only introduce the training of the table structure model, For model training of [text detection](../../doc/doc_en/detection_en.md) and [text recognition](../../doc/doc_en/recognition_en.md), please refer to the corresponding documents
+
+#### data preparation  
+The training data uses public data set [PubTabNet](https://arxiv.org/abs/1911.10683 ), Can be downloaded from the official [website](https://github.com/ibm-aur-nlp/PubTabNet) 。The PubTabNet data set contains about 500,000 images, as well as annotations in html format。
+
+#### Start training  
+*If you are installing the cpu version of paddle, please modify the `use_gpu` field in the configuration file to false*
+```shell
+# single GPU training
+python3 tools/train.py -c configs/table/table_mv3.yml
+# multi-GPU training
+# Set the GPU ID used by the '--gpus' parameter.
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/table/table_mv3.yml
+```
+
+In the above instruction, use `-c` to select the training to use the `configs/table/table_mv3.yml` configuration file.
+For a detailed explanation of the configuration file, please refer to [config](../../doc/doc_en/config_en.md).
+
+#### load trained model and continue training
+
+If you expect to load trained model and continue the training again, you can specify the parameter `Global.checkpoints` as the model path to be loaded.
+
+```shell
+python3 tools/train.py -c configs/table/table_mv3.yml -o Global.checkpoints=./your/trained/model
+```
+
+**Note**: The priority of `Global.checkpoints` is higher than that of `Global.pretrain_weights`, that is, when two parameters are specified at the same time, the model specified by `Global.checkpoints` will be loaded first. If the model path specified by `Global.checkpoints` is wrong, the one specified by `Global.pretrain_weights` will be loaded.
 
 ### 2.2 Eval
 First cd to the PaddleOCR/ppstructure directory
