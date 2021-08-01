@@ -57,8 +57,28 @@ im_show = draw_result(image, result,font_path=font_path)
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
+#### 1.2.3 返回结果说明
+The return result of PaddleStructure is a list composed of a dict, an example is as follows
 
-#### 1.2.3 Parameter Description：
+```shell
+[
+  {   'type': 'Text', 
+      'bbox': [34, 432, 345, 462], 
+      'res': ([[36.0, 437.0, 341.0, 437.0, 341.0, 446.0, 36.0, 447.0], [41.0, 454.0, 125.0, 453.0, 125.0, 459.0, 41.0, 460.0]], 
+                [('Tigure-6. The performance of CNN and IPT models using difforen', 0.90060663), ('Tent  ', 0.465441)])
+  }
+]
+```
+The description of each field in dict is as follows
+
+| Parameter            | Description           | 
+| --------------- | -------------|
+|type|Type of image area|
+|bbox|The coordinates of the image area in the original image, respectively [left upper x, left upper y, right bottom x, right bottom y]|
+|res|OCR or table recognition result of image area。<br> Table: HTML string of the table; <br> OCR: A tuple containing the detection coordinates and recognition results of each single line of text|
+
+
+#### 1.2.4 Parameter Description：
 
 | Parameter            | Description                                     | Default value                                        |
 | --------------- | ---------------------------------------- | ------------------------------------------- |
