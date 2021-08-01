@@ -7,7 +7,7 @@ PaddleStructure is an OCR toolkit for complex layout analysis. It can divide doc
 
 **install layoutparser**
 ```sh
-pip3 install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
+pip3 install -U premailer paddleocr https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
 ```
 **install paddlestructure**
 

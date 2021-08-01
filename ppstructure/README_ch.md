@@ -8,7 +8,7 @@ PaddleStructure是一个用于复杂版面分析的OCR工具包，其能够对�
 
 **安装 layoutparser**
 ```sh
-pip3 install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
+pip3 install -U premailer paddleocr https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
 ```
 **安装 paddlestructure**
 
