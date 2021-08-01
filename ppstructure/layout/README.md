@@ -26,7 +26,7 @@ pip install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-a
 ```python
 import cv2
 import layoutparser as lp
-image = cv2.imread("doc/table/layout.png")
+image = cv2.imread("doc/table/layout.jpg")
 image = image[..., ::-1]
 
 # 加载模型

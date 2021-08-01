@@ -27,7 +27,7 @@ Use LayoutParser to identify the layout of a given document:
 ```python
 import cv2
 import layoutparser as lp
-image = cv2.imread("doc/table/layout.png")
+image = cv2.imread("doc/table/layout.jpg")
 image = image[..., ::-1]
 
 # load model
