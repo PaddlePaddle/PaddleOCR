@@ -65,8 +65,17 @@ class OCRSystem(object):
                 filter_boxes, filter_rec_res = self.text_system(roi_img)
                 filter_boxes = [x + [x1, y1] for x in filter_boxes]
                 filter_boxes = [x.reshape(-1).tolist() for x in filter_boxes]
-
-                res = (filter_boxes, filter_rec_res)
+                # remove style char
+                style_token = ['<strike>','<strike>','<sup>','</sub>','<b>','</b>','<sub>','</sup>',
+                               '<overline>','</overline>','<underline>','</underline>','<i>','</i>']
+                filter_rec_res_tmp = []
+                for rec_res in filter_rec_res:
+                    rec_str, rec_conf = rec_res
+                    for token in style_token:
+                        if token in rec_str:
+                            rec_str = rec_str.replace(token, '')
+                    filter_rec_res_tmp.append((rec_str,rec_conf))
+                res = (filter_boxes, filter_rec_res_tmp)
             res_list.append({'type': region.type, 'bbox': [x1, y1, x2, y2], 'res': res})
         return res_list
 
@@ -75,14 +84,12 @@ def save_res(res, save_folder, img_name):
     excel_save_folder = os.path.join(save_folder, img_name)
     os.makedirs(excel_save_folder, exist_ok=True)
     # save res
-    for region in res:
-        if region['type'] == 'Table':
-            excel_path = os.path.join(excel_save_folder, '{}.xlsx'.format(region['bbox']))
-            to_excel(region['res'], excel_path)
-        elif region['type'] == 'Figure':
-            pass
-        else:
-            with open(os.path.join(excel_save_folder, 'res.txt'), 'a', encoding='utf8') as f:
+    with open(os.path.join(excel_save_folder, 'res.txt'), 'w', encoding='utf8') as f:
+        for region in res:
+            if region['type'] == 'Table':
+                excel_path = os.path.join(excel_save_folder, '{}.xlsx'.format(region['bbox']))
+                to_excel(region['res'], excel_path)
+            else:
                 for box, rec_res in zip(region['res'][0], region['res'][1]):
                     f.write('{}\t{}\n'.format(np.array(box).reshape(-1).tolist(), rec_res))
 
