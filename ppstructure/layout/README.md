@@ -26,7 +26,7 @@ pip install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-a
 ```python
 import cv2
 import layoutparser as lp
-image = cv2.imread("imags/paper-image.jpg")
+image = cv2.imread("doc/table/layout.png")
 image = image[..., ::-1]
 
 # 加载模型
@@ -39,7 +39,8 @@ model = lp.PaddleDetectionLayoutModel(config_path="lp://PubLayNet/ppyolov2_r50vd
 layout = model.detect(image)
 
 # 显示结果
-lp.draw_box(image, layout, box_width=3, show_element_type=True)
+show_img = lp.draw_box(image, layout, box_width=3, show_element_type=True)
+show_img.show()
 ```
 
 下图展示了结果，不同颜色的检测框表示不同的类别，并通过`show_element_type`在框的左上角显示具体类别：
@@ -80,6 +81,7 @@ lp.draw_box(image, layout, box_width=3, show_element_type=True)
 版面分析检测包含多个类别，如果只想获取指定类别(如"Text"类别)的检测框、可以使用下述代码：
 
 ```python
+# 接上面代码
 # 首先过滤特定文本类型的区域
 text_blocks = lp.Layout([b for b in layout if b.type=='Text'])
 figure_blocks = lp.Layout([b for b in layout if b.type=='Figure'])
@@ -103,9 +105,10 @@ right_blocks.sort(key = lambda b:b.coordinates[1])
 text_blocks = lp.Layout([b.set(id = idx) for idx, b in enumerate(left_blocks + right_blocks)])
 
 # 显示结果
-lp.draw_box(image, text_blocks,
+show_img = lp.draw_box(image, text_blocks,
             box_width=3, 
             show_element_id=True)
+show_img.show()
 ```
 
 显示只有"Text"类别的结果：

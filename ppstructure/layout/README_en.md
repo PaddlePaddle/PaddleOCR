@@ -25,8 +25,9 @@ pip install -U layoutparser-0.0.0-py3-none-any.whl
 Use LayoutParser to identify the layout of a given document:
 
 ```python
+import cv2
 import layoutparser as lp
-image = cv2.imread("imags/paper-image.jpg")
+image = cv2.imread("doc/table/layout.png")
 image = image[..., ::-1]
 
 # load model
@@ -39,7 +40,8 @@ model = lp.PaddleDetectionLayoutModel(config_path="lp://PubLayNet/ppyolov2_r50vd
 layout = model.detect(image)
 
 # show result
-lp.draw_box(image, layout, box_width=3, show_element_type=True)
+show_img = lp.draw_box(image, layout, box_width=3, show_element_type=True)
+show_img.show()
 ```
 
 The following figure shows the result, with different colored detection boxes representing different categories and displaying specific categories in the upper left corner of the box with `show_element_type`
@@ -79,6 +81,7 @@ The following model configurations and label maps are currently supported, which
 Layout parser contains multiple categories, if you only want to get the detection box for a specific category (such as the "Text" category), you can use the following code:
 
 ```python
+# follow the above code
 # filter areas for a specific text type
 text_blocks = lp.Layout([b for b in layout if b.type=='Text'])
 figure_blocks = lp.Layout([b for b in layout if b.type=='Figure'])
@@ -102,9 +105,10 @@ right_blocks.sort(key = lambda b:b.coordinates[1])
 text_blocks = lp.Layout([b.set(id = idx) for idx, b in enumerate(left_blocks + right_blocks)])
 
 # display result
-lp.draw_box(image, text_blocks,
+show_img = lp.draw_box(image, text_blocks,
             box_width=3, 
             show_element_id=True)
+show_img.show()
 ```
 
 Displays results with only the "Text" category：
