@@ -6,9 +6,47 @@ PaddleStructure是一个用于复杂版面分析的OCR工具包，其能够对�
 
 ### 1.1 安装
 
+**安装PaddlePaddle2.0**
+
+```bash
+pip3 install --upgrade pip
+
+# 如果您的机器安装的是CUDA9或CUDA10，请运行以下命令安装
+python3 -m pip install paddlepaddle-gpu==2.0.0 -i https://mirror.baidu.com/pypi/simple
+
+# 如果您的机器是CPU，请运行以下命令安装
+ 
+python3 -m pip install paddlepaddle==2.0.0 -i https://mirror.baidu.com/pypi/simple
+
+# 更多的版本需求，请参照[安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
+```
+
+**克隆PaddleOCR repo代码**
+
+```bash
+【推荐】git clone https://github.com/PaddlePaddle/PaddleOCR
+
+如果因为网络问题无法pull成功，也可选择使用码云上的托管：
+
+git clone https://gitee.com/paddlepaddle/PaddleOCR
+
+注：码云托管代码可能无法实时同步本github项目更新，存在3~5天延时，请优先使用推荐方式。
+
+```
+
 **安装 paddleocr**
 
-参考 [paddleocr whl文档](../doc/doc_ch/whl.md)
+pip安装
+```bash
+cd PaddleOCR
+pip install "paddleocr>=2.0.1" # 推荐使用2.0.1+版本
+```
+
+本地构建并安装
+```bash
+python3 setup.py bdist_wheel
+pip3 install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x是paddleocr的版本号
+```
 
 **安装 layoutparser**
 ```sh
@@ -106,7 +144,7 @@ Table OCR将表格图片转换为excel文档，其中包含对于表格文本的
 使用如下命令即可完成预测引擎的推理
 
 ```python
-cd PaddleOCR/ppstructure
+cd ppstructure
 
 # 下载模型
 mkdir inference && cd inference

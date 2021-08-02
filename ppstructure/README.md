@@ -4,11 +4,47 @@ PPStructure is an OCR toolkit for complex layout analysis. It can divide documen
 ## 1. Quick start
 
 ### install
+**install PaddlePaddle2.0**
+
+```bash
+pip3 install --upgrade pip
+
+# If you have cuda9 or cuda10 installed on your machine, please run the following command to install
+python3 -m pip install paddlepaddle-gpu==2.0.0 -i https://mirror.baidu.com/pypi/simple
+
+# If you only have cpu on your machine, please run the following command to install
+
+python3 -m pip install paddlepaddle==2.0.0 -i https://mirror.baidu.com/pypi/simple
+
+For more version requirements, please refer to the instructions in the [installation document](https://www.paddlepaddle.org.cn/install/quick) .
+```
+
+**Clone PaddleOCR repo**
+
+```bash
+# Recommend
+git clone https://github.com/PaddlePaddle/PaddleOCR
+
+# If you cannot pull successfully due to network problems, you can also choose to use the code hosting on the cloud:
+git clone https://gitee.com/paddlepaddle/PaddleOCR
+
+# Note: The cloud-hosting code may not be able to synchronize the update with this GitHub project in real time. There might be a delay of 3-5 days. Please give priority to the recommended method.
+```
 
 **install paddleocr**
 
-ref to [paddleocr whl doc](../doc/doc_en/whl_en.md)
+install by pypi
+```bash
+cd PaddleOCR
+pip install "paddleocr>=2.2" #  # Recommend to use version 2.2
+```
 
+build own whl package and install
+
+```bash
+python3 setup.py bdist_wheel
+pip3 install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x is the version of paddleocr
+```
 **install layoutparser**
 ```sh
 pip3 install -U premailer https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
