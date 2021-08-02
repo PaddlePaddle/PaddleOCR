@@ -24,6 +24,7 @@ from paddle import inference
 import time
 from ppocr.utils.logging import get_logger
 
+
 def str2bool(v):
     return v.lower() in ("true", "t", "1")
 
@@ -47,8 +48,8 @@ def init_args():
 
     # DB parmas
     parser.add_argument("--det_db_thresh", type=float, default=0.3)
-    parser.add_argument("--det_db_box_thresh", type=float, default=0.5)
-    parser.add_argument("--det_db_unclip_ratio", type=float, default=1.6)
+    parser.add_argument("--det_db_box_thresh", type=float, default=0.6)
+    parser.add_argument("--det_db_unclip_ratio", type=float, default=1.5)
     parser.add_argument("--max_batch_size", type=int, default=10)
     parser.add_argument("--use_dilation", type=bool, default=False)
     parser.add_argument("--det_db_score_mode", type=str, default="fast")
