@@ -33,7 +33,7 @@ from tools.infer.utility import draw_ocr, str2bool
 from ppstructure.utility import init_args, draw_structure_result
 from ppstructure.predict_system import OCRSystem, save_structure_res
 
-__all__ = ['PaddleOCR','PPStructure','draw_ocr','draw_structure_result','save_structure_res']
+__all__ = ['PaddleOCR', 'PPStructure', 'draw_ocr', 'draw_structure_result', 'save_structure_res']
 
 model_urls = {
     'det': {
@@ -153,6 +153,42 @@ def parse_args(mMain=True):
         return argparse.Namespace(**inference_args_dict)
 
 
+def parse_lang(lang):
+    latin_lang = [
+        'af', 'az', 'bs', 'cs', 'cy', 'da', 'de', 'es', 'et', 'fr', 'ga',
+        'hr', 'hu', 'id', 'is', 'it', 'ku', 'la', 'lt', 'lv', 'mi', 'ms',
+        'mt', 'nl', 'no', 'oc', 'pi', 'pl', 'pt', 'ro', 'rs_latin', 'sk',
+        'sl', 'sq', 'sv', 'sw', 'tl', 'tr', 'uz', 'vi'
+    ]
+    arabic_lang = ['ar', 'fa', 'ug', 'ur']
+    cyrillic_lang = [
+        'ru', 'rs_cyrillic', 'be', 'bg', 'uk', 'mn', 'abq', 'ady', 'kbd',
+        'ava', 'dar', 'inh', 'che', 'lbe', 'lez', 'tab'
+    ]
+    devanagari_lang = [
+        'hi', 'mr', 'ne', 'bh', 'mai', 'ang', 'bho', 'mah', 'sck', 'new',
+        'gom', 'sa', 'bgc'
+    ]
+    if lang in latin_lang:
+        lang = "latin"
+    elif lang in arabic_lang:
+        lang = "arabic"
+    elif lang in cyrillic_lang:
+        lang = "cyrillic"
+    elif lang in devanagari_lang:
+        lang = "devanagari"
+    assert lang in model_urls[
+        'rec'], 'param lang must in {}, but got {}'.format(
+        model_urls['rec'].keys(), lang)
+    if lang == "ch":
+        det_lang = "ch"
+    elif lang == 'structure':
+        det_lang = 'structure'
+    else:
+        det_lang = "en"
+    return lang, det_lang
+
+
 class PaddleOCR(predict_system.TextSystem):
     def __init__(self, **kwargs):
         """
@@ -165,42 +201,7 @@ class PaddleOCR(predict_system.TextSystem):
         if not params.show_log:
             logger.setLevel(logging.INFO)
         self.use_angle_cls = params.use_angle_cls
-        lang = params.lang
-        latin_lang = [
-            'af', 'az', 'bs', 'cs', 'cy', 'da', 'de', 'es', 'et', 'fr', 'ga',
-            'hr', 'hu', 'id', 'is', 'it', 'ku', 'la', 'lt', 'lv', 'mi', 'ms',
-            'mt', 'nl', 'no', 'oc', 'pi', 'pl', 'pt', 'ro', 'rs_latin', 'sk',
-            'sl', 'sq', 'sv', 'sw', 'tl', 'tr', 'uz', 'vi'
-        ]
-        arabic_lang = ['ar', 'fa', 'ug', 'ur']
-        cyrillic_lang = [
-            'ru', 'rs_cyrillic', 'be', 'bg', 'uk', 'mn', 'abq', 'ady', 'kbd',
-            'ava', 'dar', 'inh', 'che', 'lbe', 'lez', 'tab'
-        ]
-        devanagari_lang = [
-            'hi', 'mr', 'ne', 'bh', 'mai', 'ang', 'bho', 'mah', 'sck', 'new',
-            'gom', 'sa', 'bgc'
-        ]
-        if lang in latin_lang:
-            lang = "latin"
-        elif lang in arabic_lang:
-            lang = "arabic"
-        elif lang in cyrillic_lang:
-            lang = "cyrillic"
-        elif lang in devanagari_lang:
-            lang = "devanagari"
-        assert lang in model_urls[
-            'rec'], 'param lang must in {}, but got {}'.format(
-            model_urls['rec'].keys(), lang)
-        if lang == "ch":
-            det_lang = "ch"
-        else:
-            det_lang = "en"
-        use_inner_dict = False
-        if params.rec_char_dict_path is None:
-            use_inner_dict = True
-            params.rec_char_dict_path = model_urls['rec'][lang][
-                'dict_path']
+        lang, det_lang = parse_lang(params.lang)
 
         # init model dir
         params.det_model_dir, det_url = confirm_model_dir_url(params.det_model_dir,
@@ -223,9 +224,9 @@ class PaddleOCR(predict_system.TextSystem):
         if params.rec_algorithm not in SUPPORT_REC_MODEL:
             logger.error('rec_algorithm must in {}'.format(SUPPORT_REC_MODEL))
             sys.exit(0)
-        if use_inner_dict:
-            params.rec_char_dict_path = str(
-                Path(__file__).parent / params.rec_char_dict_path)
+
+        if params.rec_char_dict_path is None:
+            params.rec_char_dict_path = str(Path(__file__).parent / model_urls['rec'][lang]['dict_path'])
 
         print(params)
         # init det_model and rec_model
@@ -289,16 +290,17 @@ class PPStructure(OCRSystem):
         params.__dict__.update(**kwargs)
         if not params.show_log:
             logger.setLevel(logging.INFO)
-        params.use_angle_cls = False
+        lang, det_lang = parse_lang(params.lang)
+
         # init model dir
         params.det_model_dir, det_url = confirm_model_dir_url(params.det_model_dir,
-                                                              os.path.join(BASE_DIR, VERSION, 'structure', 'det'),
-                                                              model_urls['det']['structure'])
+                                                              os.path.join(BASE_DIR, VERSION, 'ocr', 'det', det_lang),
+                                                              model_urls['det'][det_lang])
         params.rec_model_dir, rec_url = confirm_model_dir_url(params.rec_model_dir,
-                                                              os.path.join(BASE_DIR, VERSION, 'structure', 'rec'),
-                                                              model_urls['rec']['structure']['url'])
+                                                              os.path.join(BASE_DIR, VERSION, 'ocr', 'rec', lang),
+                                                              model_urls['rec'][lang]['url'])
         params.table_model_dir, table_url = confirm_model_dir_url(params.table_model_dir,
-                                                                  os.path.join(BASE_DIR, VERSION, 'structure', 'table'),
+                                                                  os.path.join(BASE_DIR, VERSION, 'ocr', 'table'),
                                                                   model_urls['table']['url'])
         # download model
         maybe_download(params.det_model_dir, det_url)
@@ -306,16 +308,9 @@ class PPStructure(OCRSystem):
         maybe_download(params.table_model_dir, table_url)
 
         if params.rec_char_dict_path is None:
-            params.rec_char_type = 'EN'
-            if os.path.exists(str(Path(__file__).parent / model_urls['rec']['structure']['dict_path'])):
-                params.rec_char_dict_path = str(Path(__file__).parent / model_urls['rec']['structure']['dict_path'])
-            else:
-                params.rec_char_dict_path = str(Path(__file__).parent.parent / model_urls['rec']['structure']['dict_path'])
+            params.rec_char_dict_path = str(Path(__file__).parent / model_urls['rec'][lang]['dict_path'])
         if params.table_char_dict_path is None:
-            if os.path.exists(str(Path(__file__).parent / model_urls['table']['dict_path'])):
-                params.table_char_dict_path = str(Path(__file__).parent / model_urls['table']['dict_path'])
-            else:
-                params.table_char_dict_path = str(Path(__file__).parent.parent / model_urls['table']['dict_path'])
+            params.table_char_dict_path = str(Path(__file__).parent / model_urls['table']['dict_path'])
 
         print(params)
         super().__init__(params)
@@ -354,9 +349,9 @@ def main():
     if len(image_file_list) == 0:
         logger.error('no images find in {}'.format(args.image_dir))
         return
-    if args.type=='ocr':
+    if args.type == 'ocr':
         engine = PaddleOCR(**(args.__dict__))
-    elif args.type=='structure':
+    elif args.type == 'structure':
         engine = PPStructure(**(args.__dict__))
     else:
         raise NotImplementedError
@@ -366,9 +361,9 @@ def main():
         logger.info('{}{}{}'.format('*' * 10, img_path, '*' * 10))
         if args.type == 'ocr':
             result = engine.ocr(img_path,
-                                    det=args.det,
-                                    rec=args.rec,
-                                    cls=args.use_angle_cls)
+                                det=args.det,
+                                rec=args.rec,
+                                cls=args.use_angle_cls)
             if result is not None:
                 for line in result:
                     logger.info(line)

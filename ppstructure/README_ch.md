@@ -1,4 +1,4 @@
-# PaddleStructure
+# PPStructure
 
 PaddleStructure是一个用于复杂版面分析的OCR工具包，其能够对图片形式的文档数据划分**文字、表格、标题、图片以及列表**5类区域，并将表格区域提取为excel
 
@@ -6,29 +6,21 @@ PaddleStructure是一个用于复杂版面分析的OCR工具包，其能够对�
 
 ### 1.1 安装
 
+**安装 paddleocr**
+
+参考 [paddleocr whl文档](../doc/doc_ch/whl.md)
+
 **安装 layoutparser**
 ```sh
 pip3 install -U premailer paddleocr https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
 ```
-**安装 paddlestructure**
 
-pip安装
-```bash
-pip install paddlestructure
-```
-
-本地构建并安装
-```bash
-python3 setup.py bdist_wheel
-pip3 install dist/paddlestructure-x.x.x-py3-none-any.whl # x.x.x是 paddlestructure 的版本号
-```
-
-### 1.2 PaddleStructure whl包使用
+### 1.2 PPStructure whl包使用
 
 #### 1.2.1 命令行使用
 
 ```bash
-paddlestructure --image_dir=../doc/table/1.png
+paddleocr --image_dir=../doc/table/1.png --type=structure
 ```
 
 #### 1.2.2 Python脚本使用
@@ -36,15 +28,15 @@ paddlestructure --image_dir=../doc/table/1.png
 ```python
 import os
 import cv2
-from paddlestructure import PaddleStructure,draw_result,save_res
+from paddleocr import PPStructure,draw_structure_result,save_structure_res
 
-table_engine = PaddleStructure(show_log=True)
+table_engine = PPStructure(show_log=True)
 
 save_folder = './output/table'
 img_path = '../doc/table/1.png'
 img = cv2.imread(img_path)
 result = table_engine(img)
-save_res(result, save_folder,os.path.basename(img_path).split('.')[0])
+save_structure_res(result, save_folder,os.path.basename(img_path).split('.')[0])
 
 for line in result:
     print(line)
@@ -53,7 +45,7 @@ from PIL import Image
 
 font_path = '../doc/fonts/simfang.ttf' # PaddleOCR下提供字体包
 image = Image.open(img_path).convert('RGB')
-im_show = draw_result(image, result,font_path=font_path)
+im_show = draw_structure_result(image, result,font_path=font_path)
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
@@ -93,12 +85,12 @@ dict 里各个字段说明如下
 运行完成后，每张图片会在`output`字段指定的目录下有一个同名目录，图片里的每个表格会存储为一个excel，excel文件名为表格在图片里的坐标。
 
 
-## 2. PaddleStructure Pipeline
+## 2. PPStructure Pipeline
 
 流程如下
 ![pipeline](../doc/table/pipeline.jpg)
 
-在PaddleStructure中，图片会先经由layoutparser进行版面分析，在版面分析中，会对图片里的区域进行分类，包括**文字、标题、图片、列表和表格**5类。对于前4类区域，直接使用PP-OCR完成对应区域文字检测与识别。对于表格类区域，经过Table OCR处理后，表格图片转换为相同表格样式的Excel文件。
+在PPStructure中，图片会先经由layoutparser进行版面分析，在版面分析中，会对图片里的区域进行分类，包括**文字、标题、图片、列表和表格**5类。对于前4类区域，直接使用PP-OCR完成对应区域文字检测与识别。对于表格类区域，经过Table OCR处理后，表格图片转换为相同表格样式的Excel文件。
 
 ### 2.1 版面分析
 

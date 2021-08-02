@@ -1,26 +1,17 @@
-# PaddleStructure
+# PPStructure
 
-PaddleStructure is an OCR toolkit for complex layout analysis. It can divide document data in the form of pictures into **text, table, title, picture and list** 5 types of areas, and extract the table area as excel
+PPStructure is an OCR toolkit for complex layout analysis. It can divide document data in the form of pictures into **text, table, title, picture and list** 5 types of areas, and extract the table area as excel
 ## 1. Quick start
 
 ### install
 
+**install paddleocr**
+
+ref to [paddleocr whl doc](../doc/doc_en/whl_en.md)
+
 **install layoutparser**
 ```sh
-pip3 install -U premailer paddleocr https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
-```
-**install paddlestructure**
-
-install by pypi
-
-```bash
-pip install paddlestructure
-```
-
-build own whl package and install
-```bash
-python3 setup.py bdist_wheel
-pip3 install dist/paddlestructure-x.x.x-py3-none-any.whl # x.x.x is the version of paddlestructure
+pip3 install -U premailer https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
 ```
 
 ### 1.2 Use
@@ -28,7 +19,7 @@ pip3 install dist/paddlestructure-x.x.x-py3-none-any.whl # x.x.x is the version 
 #### 1.2.1 Use by command line
 
 ```bash
-paddlestructure --image_dir=../doc/table/1.png
+paddleocr --image_dir=../doc/table/1.png --type=structure
 ```
 
 #### 1.2.2 Use by code
@@ -36,29 +27,29 @@ paddlestructure --image_dir=../doc/table/1.png
 ```python
 import os
 import cv2
-from paddlestructure import PaddleStructure,draw_result,save_res
+from paddleocr import PPStructure,draw_structure_result,save_structure_res
 
-table_engine = PaddleStructure(show_log=True)
+table_engine = PPStructure(show_log=True)
 
 save_folder = './output/table'
 img_path = '../doc/table/1.png'
 img = cv2.imread(img_path)
 result = table_engine(img)
-save_res(result, save_folder,os.path.basename(img_path).split('.')[0])
+save_structure_res(result, save_folder,os.path.basename(img_path).split('.')[0])
 
 for line in result:
     print(line)
 
 from PIL import Image
 
-font_path = '../doc/fonts/simfang.ttf' # PaddleOCR下提供字体包
+font_path = '../doc/fonts/simfang.ttf'
 image = Image.open(img_path).convert('RGB')
-im_show = draw_result(image, result,font_path=font_path)
+im_show = draw_structure_result(image, result,font_path=font_path)
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
 #### 1.2.3 返回结果说明
-The return result of PaddleStructure is a list composed of a dict, an example is as follows
+The return result of PPStructure is a list composed of a dict, an example is as follows
 
 ```shell
 [
@@ -91,12 +82,12 @@ Most of the parameters are consistent with the paddleocr whl package, see [doc o
 
 After running, each image will have a directory with the same name under the directory specified in the output field. Each table in the picture will be stored as an excel, and the excel file name will be the coordinates of the table in the image.
 
-## 2. PaddleStructure Pipeline
+## 2. PPStructure Pipeline
 
 the process is as follows
 ![pipeline](../doc/table/pipeline_en.jpg)
 
-In PaddleStructure, the image will be analyzed by layoutparser first. In the layout analysis, the area in the image will be classified, including **text, title, image, list and table** 5 categories. For the first 4 types of areas, directly use the PP-OCR to complete the text detection and recognition. The table area will  be converted to an excel file of the same table style via Table OCR.
+In PPStructure, the image will be analyzed by layoutparser first. In the layout analysis, the area in the image will be classified, including **text, title, image, list and table** 5 categories. For the first 4 types of areas, directly use the PP-OCR to complete the text detection and recognition. The table area will  be converted to an excel file of the same table style via Table OCR.
 
 ### 2.1 LayoutParser
 
