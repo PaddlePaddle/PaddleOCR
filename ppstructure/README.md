@@ -7,7 +7,7 @@ PaddleStructure is an OCR toolkit for complex layout analysis. It can divide doc
 
 **install layoutparser**
 ```sh
-pip3 install https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
+pip3 install -U premailer paddleocr https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
 ```
 **install paddlestructure**
 
@@ -57,8 +57,28 @@ im_show = draw_result(image, result,font_path=font_path)
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
+#### 1.2.3 返回结果说明
+The return result of PaddleStructure is a list composed of a dict, an example is as follows
 
-#### 1.2.3 Parameter Description：
+```shell
+[
+  {   'type': 'Text', 
+      'bbox': [34, 432, 345, 462], 
+      'res': ([[36.0, 437.0, 341.0, 437.0, 341.0, 446.0, 36.0, 447.0], [41.0, 454.0, 125.0, 453.0, 125.0, 459.0, 41.0, 460.0]], 
+                [('Tigure-6. The performance of CNN and IPT models using difforen', 0.90060663), ('Tent  ', 0.465441)])
+  }
+]
+```
+The description of each field in dict is as follows
+
+| Parameter            | Description           | 
+| --------------- | -------------|
+|type|Type of image area|
+|bbox|The coordinates of the image area in the original image, respectively [left upper x, left upper y, right bottom x, right bottom y]|
+|res|OCR or table recognition result of image area。<br> Table: HTML string of the table; <br> OCR: A tuple containing the detection coordinates and recognition results of each single line of text|
+
+
+#### 1.2.4 Parameter Description：
 
 | Parameter            | Description                                     | Default value                                        |
 | --------------- | ---------------------------------------- | ------------------------------------------- |
@@ -80,22 +100,22 @@ In PaddleStructure, the image will be analyzed by layoutparser first. In the lay
 
 ### 2.1 LayoutParser
 
-Layout analysis divides the document data into regions, including the use of Python scripts for layout analysis tools, extraction of special category detection boxes, performance indicators, and custom training layout analysis models. For details, please refer to [document](layout/README.md).
+Layout analysis divides the document data into regions, including the use of Python scripts for layout analysis tools, extraction of special category detection boxes, performance indicators, and custom training layout analysis models. For details, please refer to [document](layout/README_en.md).
 
 ### 2.2 Table OCR
 
 Table OCR converts table image into excel documents, which include the detection and recognition of table text and the prediction of table structure and cell coordinates. For detailed, please refer to [document](table/README.md)
 
-### 3. Predictive by inference engine
+## 3. Predictive by inference engine
 
 Use the following commands to complete the inference. 
 
 ```python
-python3 table/predict_system.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=EN --det_limit_side_len=736 --det_limit_type=min --output ../output/table
+python3 table/predict_system.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=EN --det_limit_side_len=736 --det_limit_type=min --output=../output/table --vis_font_path=../doc/fonts/simfang.ttf
 ```
 After running, each image will have a directory with the same name under the directory specified in the output field. Each table in the picture will be stored as an excel, and the excel file name will be the coordinates of the table in the image.
 
-# 3. Model List
+**Model List**
 
 
 |model name|description|config|model size|download|
