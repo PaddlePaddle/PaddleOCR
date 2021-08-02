@@ -39,6 +39,7 @@ result = table_engine(img)
 save_structure_res(result, save_folder,os.path.basename(img_path).split('.')[0])
 
 for line in result:
+    line.pop('img')
     print(line)
 
 from PIL import Image
@@ -82,7 +83,7 @@ dict 里各个字段说明如下
 
 大部分参数和paddleocr whl包保持一致，见 [whl包文档](../doc/doc_ch/whl.md)
 
-运行完成后，每张图片会在`output`字段指定的目录下有一个同名目录，图片里的每个表格会存储为一个excel，excel文件名为表格在图片里的坐标。
+运行完成后，每张图片会在`output`字段指定的目录下有一个同名目录，图片里的每个表格会存储为一个excel，图片区域会被裁剪之后保存下来，excel文件和图片名名为表格在图片里的坐标。
 
 
 ## 2. PPStructure Pipeline

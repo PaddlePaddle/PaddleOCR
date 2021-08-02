@@ -38,6 +38,7 @@ result = table_engine(img)
 save_structure_res(result, save_folder,os.path.basename(img_path).split('.')[0])
 
 for line in result:
+    line.pop('img')
     print(line)
 
 from PIL import Image
@@ -80,7 +81,7 @@ The description of each field in dict is as follows
 
 Most of the parameters are consistent with the paddleocr whl package, see [doc of whl](../doc/doc_en/whl_en.md)
 
-After running, each image will have a directory with the same name under the directory specified in the output field. Each table in the picture will be stored as an excel, and the excel file name will be the coordinates of the table in the image.
+After running, each image will have a directory with the same name under the directory specified in the output field. Each table in the picture will be stored as an excel and figure area will be cropped and saved, the excel and image file name will be the coordinates of the table in the image.
 
 ## 2. PPStructure Pipeline
 

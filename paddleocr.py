@@ -369,6 +369,8 @@ def main():
                     logger.info(line)
         elif args.type == 'structure':
             result = engine(img_path)
-            for item in result:
-                logger.info(item['res'])
             save_structure_res(result, args.output, img_name)
+
+            for item in result:
+                item.pop('img')
+                logger.info(item['res'])
