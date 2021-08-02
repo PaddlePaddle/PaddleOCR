@@ -94,7 +94,7 @@ In PPStructure, the image will be analyzed by layoutparser first. In the layout 
 
 Layout analysis divides the document data into regions, including the use of Python scripts for layout analysis tools, extraction of special category detection boxes, performance indicators, and custom training layout analysis models. For details, please refer to [document](layout/README_en.md).
 
-### 2.2 Table OCR
+### 2.2 Table Structure
 
 Table OCR converts table image into excel documents, which include the detection and recognition of table text and the prediction of table structure and cell coordinates. For detailed, please refer to [document](table/README.md)
 

@@ -1,4 +1,4 @@
-# Table structure and content prediction
+# Table structure
 
 ## 1. pipeline
 The ocr of the table mainly contains three models
