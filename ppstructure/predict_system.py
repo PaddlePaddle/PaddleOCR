@@ -26,19 +26,18 @@ import numpy as np
 import time
 import logging
 
-import layoutparser as lp
-
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.utils.logging import get_logger
 from tools.infer.predict_system import TextSystem
 from ppstructure.table.predict_table import TableSystem, to_excel
-from ppstructure.utility import parse_args, draw_result
+from ppstructure.utility import parse_args, draw_structure_result
 
 logger = get_logger()
 
 
 class OCRSystem(object):
     def __init__(self, args):
+        import layoutparser as lp
         args.det_limit_type = 'resize_long'
         args.drop_score = 0
         if not args.show_log:
@@ -80,7 +79,7 @@ class OCRSystem(object):
         return res_list
 
 
-def save_res(res, save_folder, img_name):
+def save_structure_res(res, save_folder, img_name):
     excel_save_folder = os.path.join(save_folder, img_name)
     os.makedirs(excel_save_folder, exist_ok=True)
     # save res
@@ -115,8 +114,8 @@ def main(args):
             continue
         starttime = time.time()
         res = structure_sys(img)
-        save_res(res, save_folder, img_name)
-        draw_img = draw_result(img, res, args.vis_font_path)
+        save_structure_res(res, save_folder, img_name)
+        draw_img = draw_structure_result(img, res, args.vis_font_path)
         cv2.imwrite(os.path.join(save_folder, img_name, 'show.jpg'), draw_img)
         logger.info('result save to {}'.format(os.path.join(save_folder, img_name)))
         elapse = time.time() - starttime

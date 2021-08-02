@@ -29,16 +29,19 @@ from ppocr.utils.logging import get_logger
 logger = get_logger()
 from ppocr.utils.utility import check_and_read_gif, get_image_file_list
 from ppocr.utils.network import maybe_download, download_with_progressbar, is_link, confirm_model_dir_url
-from tools.infer.utility import draw_ocr, init_args, str2bool
+from tools.infer.utility import draw_ocr, str2bool
+from ppstructure.utility import init_args, draw_structure_result
+from ppstructure.predict_system import OCRSystem, save_structure_res
 
-__all__ = ['PaddleOCR']
+__all__ = ['PaddleOCR','PPStructure','draw_ocr','draw_structure_result','save_structure_res']
 
 model_urls = {
     'det': {
         'ch':
             'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar',
         'en':
-            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/en_ppocr_mobile_v2.0_det_infer.tar'
+            'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/en_ppocr_mobile_v2.0_det_infer.tar',
+        'structure': 'https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_det_infer.tar'
     },
     'rec': {
         'ch': {
@@ -110,10 +113,17 @@ model_urls = {
             'url':
                 'https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/devanagari_ppocr_mobile_v2.0_rec_infer.tar',
             'dict_path': './ppocr/utils/dict/devanagari_dict.txt'
+        },
+        'structure': {
+            'url': 'https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar',
+            'dict_path': 'ppocr/utils/dict/table_dict.txt'
         }
     },
-    'cls':
-        'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar'
+    'cls': 'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar',
+    'table': {
+        'url': 'https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar',
+        'dict_path': 'ppocr/utils/dict/table_structure_dict.txt'
+    }
 }
 
 SUPPORT_DET_MODEL = ['DB']
@@ -129,9 +139,10 @@ def parse_args(mMain=True):
     parser.add_argument("--lang", type=str, default='ch')
     parser.add_argument("--det", type=str2bool, default=True)
     parser.add_argument("--rec", type=str2bool, default=True)
+    parser.add_argument("--type", type=str, default='ocr')
 
     for action in parser._actions:
-        if action.dest == 'rec_char_dict_path':
+        if action.dest in ['rec_char_dict_path', 'table_char_dict_path']:
             action.default = None
     if mMain:
         return parser.parse_args()
@@ -193,13 +204,13 @@ class PaddleOCR(predict_system.TextSystem):
 
         # init model dir
         params.det_model_dir, det_url = confirm_model_dir_url(params.det_model_dir,
-                                                              os.path.join(BASE_DIR, VERSION, 'det', det_lang),
+                                                              os.path.join(BASE_DIR, VERSION, 'ocr', 'det', det_lang),
                                                               model_urls['det'][det_lang])
         params.rec_model_dir, rec_url = confirm_model_dir_url(params.rec_model_dir,
-                                                              os.path.join(BASE_DIR, VERSION, 'rec', lang),
+                                                              os.path.join(BASE_DIR, VERSION, 'ocr', 'rec', lang),
                                                               model_urls['rec'][lang]['url'])
         params.cls_model_dir, cls_url = confirm_model_dir_url(params.cls_model_dir,
-                                                              os.path.join(BASE_DIR, VERSION, 'cls'),
+                                                              os.path.join(BASE_DIR, VERSION, 'ocr', 'cls'),
                                                               model_urls['cls'])
         # download model
         maybe_download(params.det_model_dir, det_url)
@@ -272,6 +283,65 @@ class PaddleOCR(predict_system.TextSystem):
             return rec_res
 
 
+class PPStructure(OCRSystem):
+    def __init__(self, **kwargs):
+        params = parse_args(mMain=False)
+        params.__dict__.update(**kwargs)
+        if not params.show_log:
+            logger.setLevel(logging.INFO)
+        params.use_angle_cls = False
+        # init model dir
+        params.det_model_dir, det_url = confirm_model_dir_url(params.det_model_dir,
+                                                              os.path.join(BASE_DIR, VERSION, 'structure', 'det'),
+                                                              model_urls['det']['structure'])
+        params.rec_model_dir, rec_url = confirm_model_dir_url(params.rec_model_dir,
+                                                              os.path.join(BASE_DIR, VERSION, 'structure', 'rec'),
+                                                              model_urls['rec']['structure']['url'])
+        params.table_model_dir, table_url = confirm_model_dir_url(params.table_model_dir,
+                                                                  os.path.join(BASE_DIR, VERSION, 'structure', 'table'),
+                                                                  model_urls['table']['url'])
+        # download model
+        maybe_download(params.det_model_dir, det_url)
+        maybe_download(params.rec_model_dir, rec_url)
+        maybe_download(params.table_model_dir, table_url)
+
+        if params.rec_char_dict_path is None:
+            params.rec_char_type = 'EN'
+            if os.path.exists(str(Path(__file__).parent / model_urls['rec']['structure']['dict_path'])):
+                params.rec_char_dict_path = str(Path(__file__).parent / model_urls['rec']['structure']['dict_path'])
+            else:
+                params.rec_char_dict_path = str(Path(__file__).parent.parent / model_urls['rec']['structure']['dict_path'])
+        if params.table_char_dict_path is None:
+            if os.path.exists(str(Path(__file__).parent / model_urls['table']['dict_path'])):
+                params.table_char_dict_path = str(Path(__file__).parent / model_urls['table']['dict_path'])
+            else:
+                params.table_char_dict_path = str(Path(__file__).parent.parent / model_urls['table']['dict_path'])
+
+        print(params)
+        super().__init__(params)
+
+    def __call__(self, img):
+        if isinstance(img, str):
+            # download net image
+            if img.startswith('http'):
+                download_with_progressbar(img, 'tmp.jpg')
+                img = 'tmp.jpg'
+            image_file = img
+            img, flag = check_and_read_gif(image_file)
+            if not flag:
+                with open(image_file, 'rb') as f:
+                    np_arr = np.frombuffer(f.read(), dtype=np.uint8)
+                    img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+            if img is None:
+                logger.error("error in loading image:{}".format(image_file))
+                return None
+        if isinstance(img, np.ndarray) and len(img.shape) == 2:
+            img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+
+        res = super().__call__(img)
+        return res
+
+
 def main():
     # for cmd
     args = parse_args(mMain=True)
@@ -284,14 +354,26 @@ def main():
     if len(image_file_list) == 0:
         logger.error('no images find in {}'.format(args.image_dir))
         return
+    if args.type=='ocr':
+        engine = PaddleOCR(**(args.__dict__))
+    elif args.type=='structure':
+        engine = PPStructure(**(args.__dict__))
+    else:
+        raise NotImplementedError
 
-    ocr_engine = PaddleOCR(**(args.__dict__))
     for img_path in image_file_list:
+        img_name = os.path.basename(img_path).split('.')[0]
         logger.info('{}{}{}'.format('*' * 10, img_path, '*' * 10))
-        result = ocr_engine.ocr(img_path,
-                                det=args.det,
-                                rec=args.rec,
-                                cls=args.use_angle_cls)
-        if result is not None:
-            for line in result:
-                logger.info(line)
+        if args.type == 'ocr':
+            result = engine.ocr(img_path,
+                                    det=args.det,
+                                    rec=args.rec,
+                                    cls=args.use_angle_cls)
+            if result is not None:
+                for line in result:
+                    logger.info(line)
+        elif args.type == 'structure':
+            result = engine(img_path)
+            for item in result:
+                logger.info(item['res'])
+            save_structure_res(result, args.output, img_name)
