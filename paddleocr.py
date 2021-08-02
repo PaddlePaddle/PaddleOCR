@@ -127,7 +127,7 @@ model_urls = {
 }
 
 SUPPORT_DET_MODEL = ['DB']
-VERSION = '2.1'
+VERSION = '2.2'
 SUPPORT_REC_MODEL = ['CRNN']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
