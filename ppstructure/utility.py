@@ -36,7 +36,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def draw_result(image, result, font_path):
+def draw_structure_result(image, result, font_path):
     if isinstance(image, np.ndarray):
         image = Image.fromarray(image)
     boxes, txts, scores = [], [], []

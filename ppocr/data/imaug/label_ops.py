@@ -380,14 +380,14 @@ class TableLabelEncode(object):
         list_elem = []
         with open(character_dict_path, "rb") as fin:
             lines = fin.readlines()
-            substr = lines[0].decode('utf-8').strip("\n").split("\t")
+            substr = lines[0].decode('utf-8').strip("\r\n").split("\t")
             character_num = int(substr[0])
             elem_num = int(substr[1])
             for cno in range(1, 1+character_num):
-                character = lines[cno].decode('utf-8').strip("\n")
+                character = lines[cno].decode('utf-8').strip("\r\n")
                 list_character.append(character)
             for eno in range(1+character_num, 1+character_num+elem_num):
-                elem = lines[eno].decode('utf-8').strip("\n")
+                elem = lines[eno].decode('utf-8').strip("\r\n")
                 list_elem.append(elem)
         return list_character, list_elem
         
