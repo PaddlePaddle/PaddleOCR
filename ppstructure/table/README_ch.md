@@ -1,6 +1,6 @@
-# Table OCR
+# 表格结构化
 
-## 1. Table OCR pineline
+## 1. 表格结构化 pineline
 表格的ocr主要包含三个模型
 1. 单行文本检测-DB
 2. 单行文本识别-CRNN
@@ -19,7 +19,26 @@
 
 ## 2. 使用
 
-### 2.1 训练
+### 2.1 快速开始
+
+```python
+cd PaddleOCR/ppstructure
+
+# 下载模型
+mkdir inference && cd inference
+# 下载超轻量级中文OCR模型的检测模型并解压
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_ppocr_mobile_v2.0_det_infer.tar
+# 下载超轻量级中文OCR模型的识别模型并解压
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf ch_ppocr_mobile_v2.0_rec_infer.tar
+# 下载超轻量级英文表格英寸模型并解压
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar
+cd ..
+# 执行预测
+python3 table/predict_table.py --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer --table_model_dir=inference/en_ppocr_mobile_v2.0_table_structure_infer --image_dir=../doc/table/table.jpg --rec_char_dict_path=../ppocr/utils/ppocr_keys_v1.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=ch --det_limit_side_len=736 --det_limit_type=min --output ../output/table
+```
+运行完成后，每张图片的excel表格会保存到output字段指定的目录下
+
+### 2.2 训练
 在这一章节中，我们仅介绍表格结构模型的训练，[文字检测](../../doc/doc_ch/detection.md)和[文字识别](../../doc/doc_ch/recognition.md)的模型训练请参考对应的文档。
 
 #### 数据准备  
@@ -46,7 +65,7 @@ python3 tools/train.py -c configs/table/table_mv3.yml -o Global.checkpoints=./yo
 **注意**：`Global.checkpoints`的优先级高于`Global.pretrain_weights`的优先级，即同时指定两个参数时，优先加载`Global.checkpoints`指定的模型，如果`Global.checkpoints`指定的模型路径有误，会加载`Global.pretrain_weights`指定的模型。
 
 
-### 2.2 评估
+### 2.3 评估
 
 表格使用 TEDS(Tree-Edit-Distance-based Similarity) 作为模型的评估指标。在进行模型评估之前，需要将pipeline中的三个模型分别导出为inference模型(我们已经提供好)，还需要准备评估的gt， gt示例如下:
 ```json
@@ -56,7 +75,7 @@ python3 tools/train.py -c configs/table/table_mv3.yml -o Global.checkpoints=./yo
   [["<b>", "F", "e", "a", "t", "u", "r", "e", "</b>"], ["<b>", "G", "b", "3", " ", "+", "</b>"], ["<b>", "G", "b", "3", " ", "-", "</b>"], ["<b>", "P", "a", "t", "i", "e", "n", "t", "s", "</b>"], ["6", "2"], ["4", "5"]]
 ]}
 ```
-json 中，key为图片名，value为对应的gt，gt是一个由四个item组成的list，每个item分别为
+json 中，key为图片名，value为对应的gt，gt是一个由三个item组成的list，每个item分别为
 1. 表格结构的html字符串list
 2. 每个cell的坐标 (不包括cell里文字为空的)
 3. 每个cell里的文字信息 (不包括cell里文字为空的)
@@ -67,10 +86,9 @@ cd PaddleOCR/ppstructure
 python3 table/eval_table.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=EN --det_limit_side_len=736 --det_limit_type=min --gt_path=path/to/gt.json
 ```
 
+### 2.4 预测
 
-### 2.3 预测
 ```python
 cd PaddleOCR/ppstructure
 python3 table/predict_table.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=EN --det_limit_side_len=736 --det_limit_type=min --output ../output/table
 ```
-运行完成后，每张图片的excel表格会保存到output字段指定的目录下

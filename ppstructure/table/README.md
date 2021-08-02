@@ -17,8 +17,26 @@ The table ocr flow chart is as follows
 
 ## 2. How to use
 
+### 2.1 quick start
 
-### 2.1 Train
+```python
+cd PaddleOCR/ppstructure
+
+# download model
+mkdir inference && cd inference
+# Download the detection model of the ultra-lightweight Chinese OCR model and uncompress it
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_ppocr_mobile_v2.0_det_infer.tar
+# Download the recognition model of the ultra-lightweight Chinese OCR model and uncompress it
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf ch_ppocr_mobile_v2.0_rec_infer.tar
+# Download the table structure model of the ultra-lightweight Chinese OCR model and uncompress it
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar
+cd ..
+
+python3 table/predict_table.py --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer --table_model_dir=inference/en_ppocr_mobile_v2.0_table_structure_infer --image_dir=../doc/table/table.jpg --rec_char_dict_path=../ppocr/utils/ppocr_keys_v1.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=ch --det_limit_side_len=736 --det_limit_type=min --output ../output/table
+```
+After running, the excel sheet of each picture will be saved in the directory specified by the output field
+
+### 2.2 Train
 
 In this chapter, we only introduce the training of the table structure model, For model training of [text detection](../../doc/doc_en/detection_en.md) and [text recognition](../../doc/doc_en/recognition_en.md), please refer to the corresponding documents
 
@@ -48,7 +66,7 @@ python3 tools/train.py -c configs/table/table_mv3.yml -o Global.checkpoints=./yo
 
 **Note**: The priority of `Global.checkpoints` is higher than that of `Global.pretrain_weights`, that is, when two parameters are specified at the same time, the model specified by `Global.checkpoints` will be loaded first. If the model path specified by `Global.checkpoints` is wrong, the one specified by `Global.pretrain_weights` will be loaded.
 
-### 2.2 Eval
+### 2.3 Eval
 
 The table uses TEDS (Tree-Edit-Distance-based Similarity) as the evaluation metric of the model. Before the model evaluation, the three models in the pipeline need to be exported as inference models (we have provided them), and the gt for evaluation needs to be prepared. Examples of gt are as follows:
 ```json
@@ -70,7 +88,7 @@ python3 table/eval_table.py --det_model_dir=path/to/det_model_dir --rec_model_di
 ```
 
 
-### 2.3 Inference
+### 2.4 Inference
 
 ```python
 cd PaddleOCR/ppstructure

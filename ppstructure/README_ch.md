@@ -97,7 +97,7 @@ dict 里各个字段说明如下
 
 版面分析对文档数据进行区域分类，其中包括版面分析工具的Python脚本使用、提取指定类别检测框、性能指标以及自定义训练版面分析模型，详细内容可以参考[文档](layout/README.md)。
 
-### 2.2 表格识别
+### 2.2 表格结构化
 
 Table OCR将表格图片转换为excel文档，其中包含对于表格文本的检测和识别以及对于表格结构和单元格坐标的预测，详细说明参考[文档](table/README_ch.md)
 
@@ -106,14 +106,24 @@ Table OCR将表格图片转换为excel文档，其中包含对于表格文本的
 使用如下命令即可完成预测引擎的推理
 
 ```python
-python3 table/predict_system.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=EN --det_limit_side_len=736 --det_limit_type=min --output=../output/table --vis_font_path=../doc/fonts/simfang.ttf
+cd PaddleOCR/ppstructure
+
+# 下载模型
+mkdir inference && cd inference
+# 下载超轻量级中文OCR模型的检测模型并解压
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_ppocr_mobile_v2.0_det_infer.tar
+# 下载超轻量级中文OCR模型的识别模型并解压
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf ch_ppocr_mobile_v2.0_rec_infer.tar
+# 下载超轻量级英文表格英寸模型并解压
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar
+cd ..
+
+python3 table/predict_system.py --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer --table_model_dir=inference/en_ppocr_mobile_v2.0_table_structure_infer --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/ppocr_keys_v1.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=ch --det_limit_side_len=736 --det_limit_type=min --output=../output/table --vis_font_path=../doc/fonts/simfang.ttf
 ```
-运行完成后，每张图片会output字段指定的目录下有一个同名目录，图片里的每个表格会存储为一个excel，excel文件名为表格在图片里的坐标。
+运行完成后，每张图片会在`output`字段指定的目录下有一个同名目录，图片里的每个表格会存储为一个excel，图片区域会被裁剪之后保存下来，excel文件和图片名名为表格在图片里的坐标。
 
 **Model List**
 
 |模型名称|模型简介|配置文件|推理模型大小|下载地址|
 | --- | --- | --- | --- | --- |
-|en_ppocr_mobile_v2.0_table_det|英文表格场景的文字检测|[ch_det_mv3_db_v2.0.yml](../configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml)| 4.7M |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_det_infer.tar) |
-|en_ppocr_mobile_v2.0_table_rec|英文表格场景的文字识别|[rec_chinese_lite_train_v2.0.yml](../configs/rec/rec_mv3_none_bilstm_ctc.yml)|6.9M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar) |
 |en_ppocr_mobile_v2.0_table_structure|英文表格场景的表格结构预测|[table_mv3.yml](../configs/table/table_mv3.yml)|18.6M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar) |
