@@ -8,7 +8,7 @@ PaddleStructure是一个用于复杂版面分析的OCR工具包，其能够对�
 
 **安装 layoutparser**
 ```sh
-pip3 install https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
+pip3 install -U premailer paddleocr https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
 ```
 **安装 paddlestructure**
 
@@ -58,8 +58,28 @@ im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
 
+#### 1.2.3 返回结果说明
+PaddleStructure 的返回结果为一个dict组成的list，示例如下
 
-#### 1.2.3 参数说明
+```shell
+[
+  {   'type': 'Text', 
+      'bbox': [34, 432, 345, 462], 
+      'res': ([[36.0, 437.0, 341.0, 437.0, 341.0, 446.0, 36.0, 447.0], [41.0, 454.0, 125.0, 453.0, 125.0, 459.0, 41.0, 460.0]], 
+                [('Tigure-6. The performance of CNN and IPT models using difforen', 0.90060663), ('Tent  ', 0.465441)])
+  }
+]
+```
+dict 里各个字段说明如下
+
+| 字段            | 说明           | 
+| --------------- | -------------|
+|type|图片区域的类型|
+|bbox|图片区域的在原图的坐标，分别[左上角x，左上角y，右下角x，右下角y]|
+|res|图片区域的OCR或表格识别结果。<br> 表格: 表格的HTML字符串; <br> OCR: 一个包含各个单行文字的检测坐标和识别结果的元组|
+
+
+#### 1.2.4 参数说明
 
 | 字段            | 说明                                     | 默认值                                      |
 | --------------- | ---------------------------------------- | ------------------------------------------- |
@@ -80,28 +100,27 @@ im_show.save('result.jpg')
 
 在PaddleStructure中，图片会先经由layoutparser进行版面分析，在版面分析中，会对图片里的区域进行分类，包括**文字、标题、图片、列表和表格**5类。对于前4类区域，直接使用PP-OCR完成对应区域文字检测与识别。对于表格类区域，经过Table OCR处理后，表格图片转换为相同表格样式的Excel文件。
 
-### 2.1 LayoutParser
+### 2.1 版面分析
 
 版面分析对文档数据进行区域分类，其中包括版面分析工具的Python脚本使用、提取指定类别检测框、性能指标以及自定义训练版面分析模型，详细内容可以参考[文档](layout/README.md)。
 
-### 2.2 Table OCR
+### 2.2 表格识别
 
 Table OCR将表格图片转换为excel文档，其中包含对于表格文本的检测和识别以及对于表格结构和单元格坐标的预测，详细说明参考[文档](table/README_ch.md)
 
-### 3. 预测引擎推理
+## 3. 预测引擎推理
 
 使用如下命令即可完成预测引擎的推理
 
 ```python
-python3 table/predict_system.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=EN --det_limit_side_len=736 --det_limit_type=min --output ../output/table
+python3 table/predict_system.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=EN --det_limit_side_len=736 --det_limit_type=min --output=../output/table --vis_font_path=../doc/fonts/simfang.ttf
 ```
 运行完成后，每张图片会output字段指定的目录下有一个同名目录，图片里的每个表格会存储为一个excel，excel文件名为表格在图片里的坐标。
 
-# 3. Model List
-
+**Model List**
 
 |模型名称|模型简介|配置文件|推理模型大小|下载地址|
 | --- | --- | --- | --- | --- |
 |en_ppocr_mobile_v2.0_table_det|英文表格场景的文字检测|[ch_det_mv3_db_v2.0.yml](../configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml)| 4.7M |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_det_infer.tar) |
-|en_ppocr_mobile_v2.0_table_rec|英文表格场景的文字识别|[rec_chinese_lite_train_v2.0.yml](..//configs/rec/rec_mv3_none_bilstm_ctc.yml)|6.9M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar) |
+|en_ppocr_mobile_v2.0_table_rec|英文表格场景的文字识别|[rec_chinese_lite_train_v2.0.yml](../configs/rec/rec_mv3_none_bilstm_ctc.yml)|6.9M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar) |
 |en_ppocr_mobile_v2.0_table_structure|英文表格场景的表格结构预测|[table_mv3.yml](../configs/table/table_mv3.yml)|18.6M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar) |

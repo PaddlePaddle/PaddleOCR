@@ -43,8 +43,6 @@ def draw_result(image, result, font_path):
     for region in result:
         if region['type'] == 'Table':
             pass
-        elif region['type'] == 'Figure':
-            pass
         else:
             for box, rec_res in zip(region['res'][0], region['res'][1]):
                 boxes.append(np.array(box).reshape(-1, 2))
