@@ -26,10 +26,10 @@ PP-Structure是一个可用于复杂文档结构分析和处理的OCR工具包�
 pip3 install --upgrade pip
 
 # GPU安装
-python3 -m pip install paddlepaddle-gpu==2.1.2 -i https://mirror.baidu.com/pypi/simple
+python3 -m pip install paddlepaddle-gpu==2.1.1 -i https://mirror.baidu.com/pypi/simple
 
 # CPU安装
- python3 -m pip install paddlepaddle==2.1.2 -i https://mirror.baidu.com/pypi/simple
+ python3 -m pip install paddlepaddle==2.1.1 -i https://mirror.baidu.com/pypi/simple
 
 # 更多需求，请参照[安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
 ```
@@ -45,7 +45,7 @@ pip3 install -U premailer paddleocr https://paddleocr.bj.bcebos.com/whl/layoutpa
 - **（1) PIP快速安装PaddleOCR whl包（仅预测）**
 
 ```bash
-pip install "paddleocr>=2.0.6" # 推荐使用2.0.1+版本
+pip install "paddleocr>=2.2" # 推荐使用2.2+版本
 ```
 
 - **（2) 完整克隆PaddleOCR源码（预测+训练）**
