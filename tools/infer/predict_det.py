@@ -99,7 +99,6 @@ class TextDetector(object):
             sys.exit(0)
 
         self.preprocess_op = create_operators(pre_process_list)
-        # self.preprocess_op.insert(1,pad_Op)
         self.postprocess_op = build_post_process(postprocess_params)
         self.predictor, self.input_tensor, self.output_tensors, self.config = utility.create_predictor(
             args, 'det', logger)
