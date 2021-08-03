@@ -36,7 +36,7 @@ python3 -m pip install paddlepaddle-gpu==2.1.1 -i https://mirror.baidu.com/pypi/
 - **(2) 安装 Layout-Parser**
 
 ```bash
-pip3 install -U premailer paddleocr https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
+pip3 install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
 ```
 
 ### 2.2 安装PaddleOCR（包含PP-OCR和PP-Structure）
