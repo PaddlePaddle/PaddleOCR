@@ -209,6 +209,27 @@ def create_predictor(args, mode, logger):
                 "elementwise_add_7": [1, 56, 40, 40],
                 "nearest_interp_v2_0.tmp_0": [1, 256, 40, 40]
             }
+            min_pact_shape = {
+                "nearest_interp_v2_26.tmp_0":[1,256,20,20],
+                "nearest_interp_v2_27.tmp_0":[1,64,20,20],
+                "nearest_interp_v2_28.tmp_0":[1,64,20,20],
+                "nearest_interp_v2_29.tmp_0":[1,64,20,20]
+            }
+            max_pact_shape = {
+                "nearest_interp_v2_26.tmp_0":[1,256,400,400],
+                "nearest_interp_v2_27.tmp_0":[1,64,400,400],
+                "nearest_interp_v2_28.tmp_0":[1,64,400,400],
+                "nearest_interp_v2_29.tmp_0":[1,64,400,400]
+            }
+            opt_pact_shape = {
+                "nearest_interp_v2_26.tmp_0":[1,256,160,160],
+                "nearest_interp_v2_27.tmp_0":[1,64,160,160],
+                "nearest_interp_v2_28.tmp_0":[1,64,160,160],
+                "nearest_interp_v2_29.tmp_0":[1,64,160,160]
+            }
+            min_input_shape.update(min_pact_shape)
+            max_input_shape.update(max_pact_shape)
+            opt_input_shape.update(opt_pact_shape)
         elif mode == "rec":
             min_input_shape = {"x": [args.rec_batch_num, 3, 32, 10]}
             max_input_shape = {"x": [args.rec_batch_num, 3, 32, 2000]}
