@@ -8,7 +8,6 @@ PP-Structure is an OCR toolkit that can be used for complex documents analysis. 
 - Support to extract excel files from the table areas
 - Support python whl package and command line usage, easy to use
 - Support custom training for layout analysis and table structure tasks
-- The total model size is only about 18.6M (continuous optimization)
 
 ## 1. Visualization
 
