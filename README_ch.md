@@ -21,7 +21,7 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 - 静态图版本：develop分支
 
 **近期更新**
-- PaddleOCR研发团队对最新发版内容技术深入解读，8月4日晚上20:30，[直播地址](https://live.bilibili.com/21689802)。
+- PaddleOCR研发团队对最新发版内容技术深入解读，8月4日晚上20:15，[直播地址](https://live.bilibili.com/21689802)。
 - 2021.8.3 正式发布PaddleOCR v2.2，新增文档结构分析[PP-Structure](./ppstructure/README_ch.md)工具包，支持版面分析与表格识别（含Excel导出）。
 - 2021.6.29 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，总数248个，每周一都会更新，欢迎大家持续关注。
 - 2021.4.8 release 2.1版本，新增AAAI 2021论文[端到端识别算法PGNet](./doc/doc_ch/pgnet.md)开源，[多语言模型](./doc/doc_ch/multi_languages.md)支持种类增加到80+。
