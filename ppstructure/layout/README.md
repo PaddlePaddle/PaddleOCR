@@ -138,4 +138,4 @@ Displays results with only the "Text" category：
 
 ## 5. Training
 
-The above model is based on [PaddleDetection](https://github.com/PaddlePaddle/PaddleDetection) ，if you want to train your own layout parser model，please refer to：[train_layoutparser_model](train_layoutparser_model.md)
+The above model is based on [PaddleDetection](https://github.com/PaddlePaddle/PaddleDetection). If you want to train your own layout parser model，please refer to：[train_layoutparser_model](train_layoutparser_model.md)
