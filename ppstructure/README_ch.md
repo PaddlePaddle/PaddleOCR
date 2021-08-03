@@ -60,7 +60,7 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 ```
 
 
-## 3 PP-Structure 快速开始
+## 3. PP-Structure 快速开始
 
 ### 3.1 命令行使用（默认参数，极简）
 
