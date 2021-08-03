@@ -90,8 +90,8 @@ im_show = draw_structure_result(image, result,font_path=font_path)
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
-### 3.3 Return results
-The return result of PPStructure is a list composed of a dict, an example is as follows
+### 3.3 Returned results format
+The returned results of PP-Structure is a list composed of a dict, an example is as follows
 
 ```shell
 [
@@ -111,7 +111,7 @@ The description of each field in dict is as follows
 |res|OCR or table recognition result of image area。<br> Table: HTML string of the table; <br> OCR: A tuple containing the detection coordinates and recognition results of each single line of text|
 
 
-### 3.4 Parameter Description：
+### 3.4 Parameter description：
 
 | Parameter            | Description                                     | Default value                                        |
 | --------------- | ---------------------------------------- | ------------------------------------------- |
@@ -139,7 +139,7 @@ Layout analysis divides the document data into regions, including the use of Pyt
 
 Table Recognition converts table image into excel documents, which include the detection and recognition of table text and the prediction of table structure and cell coordinates. For detailed, please refer to [document](table/README.md)
 
-## 5. Predictive by inference engine
+## 5. Prediction by inference engine
 
 Use the following commands to complete the inference.
 
