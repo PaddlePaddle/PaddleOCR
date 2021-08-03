@@ -53,9 +53,11 @@ class DetLabelEncode(object):
                 txt_tags.append(True)
             else:
                 txt_tags.append(False)
+        if len(boxes) == 0:
+            return None
         boxes = self.expand_points_num(boxes)
-        #boxes = np.array(boxes, dtype=np.float32)
-        #txt_tags = np.array(txt_tags, dtype=np.bool)
+        boxes = np.array(boxes, dtype=np.float32)
+        txt_tags = np.array(txt_tags, dtype=np.bool)
 
         data['polys'] = boxes
         data['texts'] = txts
@@ -387,10 +389,10 @@ class TableLabelEncode(object):
             character_num = int(substr[0])
             elem_num = int(substr[1])
 
-            for cno in range(1, 1+character_num):
+            for cno in range(1, 1 + character_num):
                 character = lines[cno].decode('utf-8').strip("\r\n")
                 list_character.append(character)
-            for eno in range(1+character_num, 1+character_num+elem_num):
+            for eno in range(1 + character_num, 1 + character_num + elem_num):
                 elem = lines[eno].decode('utf-8').strip("\r\n")
                 list_elem.append(elem)
         return list_character, list_elem
