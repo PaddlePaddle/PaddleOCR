@@ -297,6 +297,7 @@ paddleocr --image_dir http://n.sinaimg.cn/ent/transform/w630h933/20171222/o111-f
 ### 4.2 numpy数组
 仅通过代码使用时支持numpy数组作为输入
 ```python
+import cv2
 from paddleocr import PaddleOCR, draw_ocr
 # Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换
 # 参数依次为`ch`, `en`, `french`, `german`, `korean`, `japan`。
