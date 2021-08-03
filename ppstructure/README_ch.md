@@ -97,7 +97,7 @@ im_show.save('result.jpg')
 ```
 
 ### 3.3 返回结果说明
-PaddleStructure 的返回结果为一个dict组成的list，示例如下
+PP-Structure的返回结果为一个dict组成的list，示例如下
 
 ```shell
 [
