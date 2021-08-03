@@ -306,7 +306,7 @@ Support numpy array as input only when used by code
 
 ```python
 import cv2
-from paddleocr import PaddleOCR, draw_ocr
+from paddleocr import PaddleOCR, draw_ocr, download_with_progressbar
 ocr = PaddleOCR(use_angle_cls=True, lang="ch") # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs/11.jpg'
 img = cv2.imread(img_path)
@@ -317,7 +317,9 @@ for line in result:
 
 # show result
 from PIL import Image
-image = Image.open(img_path).convert('RGB')
+
+download_with_progressbar(img_path, 'tmp.jpg')
+image = Image.open('tmp.jpg').convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
 scores = [line[1][1] for line in result]
