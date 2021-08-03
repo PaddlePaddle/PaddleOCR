@@ -85,7 +85,7 @@ im_show = draw_structure_result(image, result,font_path=font_path)
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
-#### 1.2.3 返回结果说明
+#### 1.2.3 Result description
 The return result of PPStructure is a list composed of a dict, an example is as follows
 
 ```shell
