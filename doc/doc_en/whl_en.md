@@ -305,6 +305,7 @@ paddleocr --image_dir http://n.sinaimg.cn/ent/transform/w630h933/20171222/o111-f
 Support numpy array as input only when used by code
 
 ```python
+import cv2
 from paddleocr import PaddleOCR, draw_ocr
 ocr = PaddleOCR(use_angle_cls=True, lang="ch") # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs/11.jpg'
