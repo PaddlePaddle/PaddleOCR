@@ -26,10 +26,10 @@ PP-Structure is an OCR toolkit that can be used for complex documents analysis. 
 pip3 install --upgrade pip
 
 # GPU
-python3 -m pip install paddlepaddle-gpu==2.1.2 -i https://mirror.baidu.com/pypi/simple
+python3 -m pip install paddlepaddle-gpu==2.1.1 -i https://mirror.baidu.com/pypi/simple
 
 # CPU
- python3 -m pip install paddlepaddle==2.1.2 -i https://mirror.baidu.com/pypi/simple
+ python3 -m pip install paddlepaddle==2.1.1 -i https://mirror.baidu.com/pypi/simple
 
 # For more，refer[Installation](https://www.paddlepaddle.org.cn/install/quick)。
 ```
@@ -45,7 +45,7 @@ pip3 install -U premailer paddleocr https://paddleocr.bj.bcebos.com/whl/layoutpa
 - **（1) PIP install PaddleOCR whl package（inference only）**
 
 ```bash
-pip install "paddleocr>=2.0.6"
+pip install "paddleocr>=2.2"
 ```
 
 - **（2) Clone PaddleOCR（Inference+training）**
