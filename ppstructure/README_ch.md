@@ -64,7 +64,7 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 ### 3.1 命令行使用（默认参数，极简）
 
 ```bash
-paddleocr --image_dir=../doc/table/1.png --type=structure
+paddleocr --image_dir=../doc/table/1.png --det_db_box_thresh=0.4 --type=structure
 ```
 
 ### 3.2 Python脚本使用（自定义参数，灵活）
@@ -74,7 +74,7 @@ import os
 import cv2
 from paddleocr import PPStructure,draw_structure_result,save_structure_res
 
-table_engine = PPStructure(show_log=True)
+table_engine = PPStructure(show_log=True, det_db_box_thresh=0.4)
 
 save_folder = './output/table'
 img_path = '../doc/table/1.png'
@@ -161,7 +161,7 @@ wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_in
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar
 cd ..
 
-python3 predict_system.py --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer --table_model_dir=inference/en_ppocr_mobile_v2.0_table_structure_infer --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/ppocr_keys_v1.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=ch --output=../output/table --vis_font_path=../doc/fonts/simfang.ttf
+python3 predict_system.py --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer --table_model_dir=inference/en_ppocr_mobile_v2.0_table_structure_infer --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/ppocr_keys_v1.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=ch --output=../output/table --vis_font_path=../doc/fonts/simfang.ttf --det_db_box_thresh=0.4
 ```
 运行完成后，每张图片会在`output`字段指定的目录下有一个同名目录，图片里的每个表格会存储为一个excel，图片区域会被裁剪之后保存下来，excel文件和图片名名为表格在图片里的坐标。
 
