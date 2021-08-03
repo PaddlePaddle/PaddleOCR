@@ -57,6 +57,11 @@ class TextDetector(object):
                 'keep_keys': ['image', 'shape']
             }
         }]
+        if args.det_pad_small_img:
+            pre_process_list.insert(1,{'PadSmallImg': {
+                'size': (args.det_pad_size, args.det_pad_size)
+            }})
+
         postprocess_params = {}
         if self.det_algorithm == "DB":
             postprocess_params['name'] = 'DBPostProcess'
@@ -94,6 +99,7 @@ class TextDetector(object):
             sys.exit(0)
 
         self.preprocess_op = create_operators(pre_process_list)
+        # self.preprocess_op.insert(1,pad_Op)
         self.postprocess_op = build_post_process(postprocess_params)
         self.predictor, self.input_tensor, self.output_tensors, self.config = utility.create_predictor(
             args, 'det', logger)
@@ -212,7 +218,7 @@ class TextDetector(object):
         else:
             raise NotImplementedError
 
-        #self.predictor.try_shrink_memory()
+        # self.predictor.try_shrink_memory()
         post_result = self.postprocess_op(preds, shape_list)
         dt_boxes = post_result[0]['points']
         if self.det_algorithm == "SAST" and self.det_sast_polygon:
@@ -234,10 +240,10 @@ if __name__ == "__main__":
     total_time = 0
     draw_img_save = "./inference_results"
 
-    if args.warmup:
-        img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
-        for i in range(10):
-            res = text_detector(img)
+    # if args.warmup:
+    #     img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
+    #     for i in range(10):
+    #         res = text_detector(img)
 
     if not os.path.exists(draw_img_save):
         os.makedirs(draw_img_save)

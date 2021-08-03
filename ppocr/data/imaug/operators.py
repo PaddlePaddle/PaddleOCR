@@ -294,3 +294,30 @@ class E2EResizeForTest(object):
         ratio_w = resize_w / float(w)
 
         return im, (ratio_h, ratio_w)
+
+
+class PadSmallImg(object):
+    def __init__(self, size=(640, 640)):
+        self.size = size
+        self.max_size = max(size)
+
+    def __call__(self, data):
+        img = data['image']
+        h, w, c = img.shape
+
+        max_side_len = max(h, w)
+        if max_side_len < self.max_size:
+            ratio = self.max_size / max_side_len
+            resize_h = int(h * ratio)
+            resize_w = int(w * ratio)
+            img = cv2.resize(img, (int(resize_w), int(resize_h)))
+            ratio_h = self.size[0] / float(h)
+            ratio_w = self.size[1] / float(w)
+        else:
+            return data
+
+        padding_im = np.zeros((self.size[0], self.size[1], c), dtype=np.float32)
+        padding_im[:resize_h, :resize_w, :] = img
+        data['image'] = padding_im
+        data['shape'] = np.array([h, w, ratio_h, ratio_w])
+        return data

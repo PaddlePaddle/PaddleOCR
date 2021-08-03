@@ -53,6 +53,8 @@ def init_args():
     parser.add_argument("--max_batch_size", type=int, default=10)
     parser.add_argument("--use_dilation", type=bool, default=False)
     parser.add_argument("--det_db_score_mode", type=str, default="fast")
+    parser.add_argument("--det_pad_small_img", type=str2bool, default=True)
+    parser.add_argument("--det_pad_size", type=int, default=640)
     # EAST parmas
     parser.add_argument("--det_east_score_thresh", type=float, default=0.8)
     parser.add_argument("--det_east_cover_thresh", type=float, default=0.1)
