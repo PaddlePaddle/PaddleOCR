@@ -3,9 +3,9 @@ English | [简体中文](README_ch.md)
 
 # Getting Started
 
-[1. Install whl package](#Install whl package)
+[1. Install whl package](#Install)
 
-[2. Quick Start](#Quick Start)
+[2. Quick Start](#QuickStart)
 
 [3. PostProcess](#PostProcess)
 
@@ -13,7 +13,7 @@ English | [简体中文](README_ch.md)
 
 [5. Training](#Training)
 
-<a name="Install whl package"></a>
+<a name="Install"></a>
 
 ## 1.  Install whl package
 ```bash
@@ -21,7 +21,7 @@ wget https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
 pip install -U layoutparser-0.0.0-py3-none-any.whl
 ```
 
-<a name="Quick Start"></a>
+<a name="QuickStart"></a>
 
 ## 2. Quick Start
 
