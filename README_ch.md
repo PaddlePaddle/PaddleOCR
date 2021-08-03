@@ -1,6 +1,6 @@
 [English](README.md) | 简体中文
 <p align="center">
- <img src="./doc/PaddleOCR_log.png" align="middle" width = "400" height = "200" />
+ <img src="./doc/PaddleOCR_log.png" align="middle" width = "600" height = "300" />
 <p align="center">
 
 ------------------------------------------------------------------------------------------
