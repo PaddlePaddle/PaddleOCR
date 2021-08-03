@@ -1,17 +1,22 @@
+[English](README.md) | 简体中文
+
 # 版面分析使用说明
 
-* [1. 安装whl包](#安装whl包)
-* [2. 使用](#使用)
-* [3. 后处理](#后处理)
-* [4. 指标](#指标)
-* [5. 训练版面分析模型](#训练版面分析模型)
+[1. 安装whl包](#安装whl包)
+
+[2. 使用](#使用)
+
+[3. 后处理](#后处理)
+
+[4. 指标](#指标)
+
+[5. 训练版面分析模型](#训练版面分析模型)
 
 <a name="安装whl包"></a>
 
 ## 1.  安装whl包
 ```bash
-wget https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
-pip install -U layoutparser-0.0.0-py3-none-any.whl
+pip install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
 ```
 
 <a name="使用"></a>
@@ -21,21 +26,23 @@ pip install -U layoutparser-0.0.0-py3-none-any.whl
 使用layoutparser识别给定文档的布局：
 
 ```python
+import cv2
 import layoutparser as lp
-image = cv2.imread("imags/paper-image.jpg")
+image = cv2.imread("doc/table/layout.jpg")
 image = image[..., ::-1]
 
 # 加载模型
-model = lp.PaddleDetectionLayoutModel(config_path="lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config", 
+model = lp.PaddleDetectionLayoutModel(config_path="lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config",
                                 threshold=0.5,
                                 label_map={0: "Text", 1: "Title", 2: "List", 3:"Table", 4:"Figure"},
-                                enforce_cpu=False, 
+                                enforce_cpu=False,
                                 enable_mkldnn=True)
 # 检测
 layout = model.detect(image)
 
 # 显示结果
-lp.draw_box(image, layout, box_width=3, show_element_type=True)
+show_img = lp.draw_box(image, layout, box_width=3, show_element_type=True)
+show_img.show()
 ```
 
 下图展示了结果，不同颜色的检测框表示不同的类别，并通过`show_element_type`在框的左上角显示具体类别：
@@ -67,7 +74,7 @@ lp.draw_box(image, layout, box_width=3, show_element_type=True)
 | [PubLayNet](https://github.com/ibm-aur-nlp/PubLayNet)        | lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config      | {0: "Text", 1: "Title", 2: "List", 3:"Table", 4:"Figure"} |
 
 * TableBank word和TableBank latex分别在word文档、latex文档数据集训练；
-* 下载TableBank数据集同时包含word和latex。
+* 下载的TableBank数据集里同时包含word和latex。
 
 <a name="后处理"></a>
 
@@ -76,6 +83,7 @@ lp.draw_box(image, layout, box_width=3, show_element_type=True)
 版面分析检测包含多个类别，如果只想获取指定类别(如"Text"类别)的检测框、可以使用下述代码：
 
 ```python
+# 接上面代码
 # 首先过滤特定文本类型的区域
 text_blocks = lp.Layout([b for b in layout if b.type=='Text'])
 figure_blocks = lp.Layout([b for b in layout if b.type=='Figure'])
@@ -84,7 +92,7 @@ figure_blocks = lp.Layout([b for b in layout if b.type=='Figure'])
 text_blocks = lp.Layout([b for b in text_blocks \
                    if not any(b.is_in(b_fig) for b_fig in figure_blocks)])
 
-# 对文本区域排序并分配id 
+# 对文本区域排序并分配id
 h, w = image.shape[:2]
 
 left_interval = lp.Interval(0, w/2*1.05, axis='x').put_on_canvas(image)
@@ -99,9 +107,10 @@ right_blocks.sort(key = lambda b:b.coordinates[1])
 text_blocks = lp.Layout([b.set(id = idx) for idx, b in enumerate(left_blocks + right_blocks)])
 
 # 显示结果
-lp.draw_box(image, text_blocks,
-            box_width=3, 
+show_img = lp.draw_box(image, text_blocks,
+            box_width=3,
             show_element_id=True)
+show_img.show()
 ```
 
 显示只有"Text"类别的结果：
@@ -119,15 +128,14 @@ lp.draw_box(image, text_blocks,
 | PubLayNet | 93.6 | 1713.7ms      | 66.6ms        |
 | TableBank | 96.2 | 1968.4ms      | 65.1ms        |
 
-**Envrionment：**	
+**Envrionment：**
 
-​	**CPU：**  Intel(R) Xeon(R) CPU E5-2650 v4 @ 2.20GHz，24core
+​    **CPU：**  Intel(R) Xeon(R) CPU E5-2650 v4 @ 2.20GHz，24core
 
-​	**GPU：**  a single NVIDIA Tesla P40
+​    **GPU：**  a single NVIDIA Tesla P40
 
 <a name="训练版面分析模型"></a>
 
 ## 5. 训练版面分析模型
 
-上述模型基于[PaddleDetection](https://github.com/PaddlePaddle/PaddleDetection) 训练，如果您想训练自己的版面分析模型，请参考：[train_layoutparser_model](train_layoutparser_model.md)
-
+上述模型基于[PaddleDetection](https://github.com/PaddlePaddle/PaddleDetection) 训练，如果您想训练自己的版面分析模型，请参考：[train_layoutparser_model](train_layoutparser_model_ch.md)
