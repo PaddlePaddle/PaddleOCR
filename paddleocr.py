@@ -373,4 +373,5 @@ def main():
 
             for item in result:
                 item.pop('img')
-                logger.info(item['res'])
+                logger.info(item)
+                

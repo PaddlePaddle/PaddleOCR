@@ -1,12 +1,12 @@
-# Table structure
+# Table Recognition
 
 ## 1. pipeline
-The ocr of the table mainly contains three models
+The table recognition mainly contains three models
 1. Single line text detection-DB
 2. Single line text recognition-CRNN
 3. Table structure and cell coordinate prediction-RARE
 
-The table ocr flow chart is as follows
+The table recognition flow chart is as follows
 
 ![tableocr_pipeline](../../doc/table/tableocr_pipeline_en.jpg)
 
