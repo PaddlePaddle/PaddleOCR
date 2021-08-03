@@ -33,7 +33,7 @@ from tools.infer.utility import draw_ocr, str2bool
 from ppstructure.utility import init_args, draw_structure_result
 from ppstructure.predict_system import OCRSystem, save_structure_res
 
-__all__ = ['PaddleOCR', 'PPStructure', 'draw_ocr', 'draw_structure_result', 'save_structure_res']
+__all__ = ['PaddleOCR', 'PPStructure', 'draw_ocr', 'draw_structure_result', 'save_structure_res','download_with_progressbar']
 
 model_urls = {
     'det': {

@@ -15,9 +15,18 @@ The table recognition flow chart is as follows
 3. The recognition result of the cell is combined by the coordinates, recognition result of the single line and the coordinates of the cell.
 4. The cell recognition result and the table structure together construct the html string of the table.
 
-## 2. How to use
+## 2. Performance
+We evaluated the algorithm on the PubTabNet<sup>[1]</sup> eval dataset, and the performance is as follows:
 
-### 2.1 quick start
+
+|Method|[TEDS(Tree-Edit-Distance-based Similarity)](https://github.com/ibm-aur-nlp/PubTabNet/tree/master/src)|
+| --- | --- | 
+| EDD<sup>[2]</sup> | 88.3 | 
+| Ours | 93.32 | 
+
+## 3. How to use
+
+### 3.1 quick start
 
 ```python
 cd PaddleOCR/ppstructure
@@ -38,7 +47,7 @@ Note: The above model is trained on the PubLayNet dataset and only supports Engl
 
 After running, the excel sheet of each picture will be saved in the directory specified by the output field
 
-### 2.2 Train
+### 3.2 Train
 
 In this chapter, we only introduce the training of the table structure model, For model training of [text detection](../../doc/doc_en/detection_en.md) and [text recognition](../../doc/doc_en/recognition_en.md), please refer to the corresponding documents
 
@@ -68,9 +77,9 @@ python3 tools/train.py -c configs/table/table_mv3.yml -o Global.checkpoints=./yo
 
 **Note**: The priority of `Global.checkpoints` is higher than that of `Global.pretrain_weights`, that is, when two parameters are specified at the same time, the model specified by `Global.checkpoints` will be loaded first. If the model path specified by `Global.checkpoints` is wrong, the one specified by `Global.pretrain_weights` will be loaded.
 
-### 2.3 Eval
+### 3.3 Eval
 
-The table uses TEDS (Tree-Edit-Distance-based Similarity) as the evaluation metric of the model. Before the model evaluation, the three models in the pipeline need to be exported as inference models (we have provided them), and the gt for evaluation needs to be prepared. Examples of gt are as follows:
+The table uses [TEDS(Tree-Edit-Distance-based Similarity)](https://github.com/ibm-aur-nlp/PubTabNet/tree/master/src) as the evaluation metric of the model. Before the model evaluation, the three models in the pipeline need to be exported as inference models (we have provided them), and the gt for evaluation needs to be prepared. Examples of gt are as follows:
 ```json
 {"PMC4289340_004_00.png": [
   ["<html>", "<body>", "<table>", "<thead>", "<tr>", "<td>", "</td>", "<td>", "</td>", "<td>", "</td>", "</tr>", "</thead>", "<tbody>", "<tr>", "<td>", "</td>", "<td>", "</td>", "<td>", "</td>", "</tr>",  "</tbody>", "</table>", "</body>", "</html>"], 
@@ -89,11 +98,19 @@ cd PaddleOCR/ppstructure
 python3 table/eval_table.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=EN --det_limit_side_len=736 --det_limit_type=min --gt_path=path/to/gt.json
 ```
 
+If the PubLatNet eval dataset is used, it will be output
+```bash
+teds: 93.32
+```
 
-### 2.4 Inference
+### 3.4 Inference
 
 ```python
 cd PaddleOCR/ppstructure
 python3 table/predict_table.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=EN --det_limit_side_len=736 --det_limit_type=min --output ../output/table
 ```
 After running, the excel sheet of each picture will be saved in the directory specified by the output field
+
+Reference
+1. https://github.com/ibm-aur-nlp/PubTabNet
+2. https://arxiv.org/pdf/1911.10683
