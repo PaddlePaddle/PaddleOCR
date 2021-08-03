@@ -25,7 +25,7 @@ pip install -U layoutparser-0.0.0-py3-none-any.whl
 
 ## 2. Quick Start
 
-Use LayoutParser to identify the layout of a given document:
+Use LayoutParser to identify the layout of a document:
 
 ```python
 import cv2
