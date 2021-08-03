@@ -38,13 +38,21 @@ logger = get_logger()
 class OCRSystem(object):
     def __init__(self, args):
         import layoutparser as lp
-        args.det_limit_type = 'resize_long'
+        # args.det_limit_type = 'resize_long'
         args.drop_score = 0
         if not args.show_log:
             logger.setLevel(logging.INFO)
         self.text_system = TextSystem(args)
         self.table_system = TableSystem(args, self.text_system.text_detector, self.text_system.text_recognizer)
-        self.table_layout = lp.PaddleDetectionLayoutModel("lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config",
+
+        config_path = None
+        model_path = None
+        if os.path.isdir(args.layout_path_model):
+            model_path = args.layout_path_model
+        else:
+            config_path = args.layout_path_model
+        self.table_layout = lp.PaddleDetectionLayoutModel(config_path=config_path,
+                                                          model_path=model_path,
                                                           threshold=0.5, enable_mkldnn=args.enable_mkldnn,
                                                           enforce_cpu=not args.use_gpu, thread_num=args.cpu_threads)
         self.use_angle_cls = args.use_angle_cls
