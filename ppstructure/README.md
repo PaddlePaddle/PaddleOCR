@@ -3,12 +3,11 @@ English | [简体中文](README_ch.md)
 # PP-Structure
 
 PP-Structure is an OCR toolkit that can be used for complex documents analysis. The main features are as follows:
-- Support the layout analysis of documents, divide the documents into 5 types of areas **text, title, table, image and list** (conjunction with Layout-Parser)
-- Support to extract the texts from the text, title, picture and list areas (used in conjunction with PP-OCR)
+- Support the layout analysis of documents, divide the documents into 5 types of areas **text, title, table, image and list** (combined with Layout-Parser)
+- Support to extract the texts from the text, title, picture and list areas (combined with PP-OCR)
 - Support to extract excel files from the table areas
-- Support python whl package and command line usage, easy to use
+- Support to use with python whl package and command line easily
 - Support custom training for layout analysis and table structure tasks
-- The total model size is only about 18.6M (continuous optimization)
 
 ## 1. Visualization
 
