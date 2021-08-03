@@ -51,8 +51,6 @@ elif [ ${MODE} = "whole_infer" ];then
     cd ./train_data/ && tar xf icdar2015_infer.tar
     ln -s ./icdar2015_infer ./icdar2015
     cd ../
-    epoch=10
-    eval_batch_step=10
 else
     rm -rf ./train_data/icdar2015
     if [[ ${model_name} = "ocr_det" ]]; then
