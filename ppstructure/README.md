@@ -55,7 +55,7 @@ git clone https://github.com/PaddlePaddle/PaddleOCR
 ```
 
 
-## 3 Quick Start
+## 3. Quick Start
 
 ### 3.1 Use by command line
 
@@ -124,20 +124,20 @@ Most of the parameters are consistent with the paddleocr whl package, see [doc o
 
 After running, each image will have a directory with the same name under the directory specified in the output field. Each table in the picture will be stored as an excel and figure area will be cropped and saved, the excel and image file name will be the coordinates of the table in the image.
 
-## 4. PPStructure Pipeline
+## 4. PP-Structure Pipeline
 
 the process is as follows
 ![pipeline](../doc/table/pipeline_en.jpg)
 
-In PPStructure, the image will be analyzed by layoutparser first. In the layout analysis, the area in the image will be classified, including **text, title, image, list and table** 5 categories. For the first 4 types of areas, directly use the PP-OCR to complete the text detection and recognition. The table area will  be converted to an excel file of the same table style via Table OCR.
+In PP-Structure, the image will be analyzed by layoutparser first. In the layout analysis, the area in the image will be classified, including **text, title, image, list and table** 5 categories. For the first 4 types of areas, directly use the PP-OCR to complete the text detection and recognition. The table area will  be converted to an excel file of the same table style via Table OCR.
 
 ### 4.1 LayoutParser
 
 Layout analysis divides the document data into regions, including the use of Python scripts for layout analysis tools, extraction of special category detection boxes, performance indicators, and custom training layout analysis models. For details, please refer to [document](layout/README_en.md).
 
-### 4.2 Table Structure
+### 4.2 Table Recognition
 
-Table OCR converts table image into excel documents, which include the detection and recognition of table text and the prediction of table structure and cell coordinates. For detailed, please refer to [document](table/README.md)
+Table Recognition converts table image into excel documents, which include the detection and recognition of table text and the prediction of table structure and cell coordinates. For detailed, please refer to [document](table/README.md)
 
 ## 5. Predictive by inference engine
 
