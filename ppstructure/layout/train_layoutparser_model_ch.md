@@ -1,15 +1,24 @@
 # 训练版面分析
 
-* [1. 安装](#安装)
-  * [1.1 环境要求](#环境要求)
-  * [1.2 安装PaddleDetection](#安装PaddleDetection)
-* [2. 准备数据](#准备数据)
-* [3. 配置文件改动和说明](#配置文件改动和说明)
-* [4. PaddleDetection训练](#训练)
-* [5. PaddleDetection预测](#预测)
-* [6. 预测部署](#预测部署)
-  * [6.1 模型导出](#模型导出)
-  * [6.2 layout parser预测](#layout_parser预测)
+[1. 安装](#安装)
+
+​        [1.1 环境要求](#环境要求)
+
+​        [1.2 安装PaddleDetection](#安装PaddleDetection)
+
+[2. 准备数据](#准备数据)
+
+[3. 配置文件改动和说明](#配置文件改动和说明)
+
+[4. PaddleDetection训练](#训练)
+
+[5. PaddleDetection预测](#预测)
+
+[6. 预测部署](#预测部署)
+
+​        [6.1 模型导出](#模型导出)
+
+​        [6.2 layout parser预测](#layout_parser预测)
 
 <a name="安装"></a>
 
@@ -64,10 +73,10 @@ tar -xvf publaynet.tar.gz
 | `train/`       | Images in the training subset                    | 335,703 |
 | `val/`         | Images in the validation subset                  | 11,245  |
 | `test/`        | Images in the testing subset                     | 11,405  |
-| `train.json`   | Annotations for training images                  |         |
-| `val.json`     | Annotations for validation images                |         |
-| `LICENSE.txt`  | Plaintext version of the CDLA-Permissive license |         |
-| `README.txt`   | Text file with the file names and description    |         |
+| `train.json`   | Annotations for training images                  | 1       |
+| `val.json`     | Annotations for validation images                | 1       |
+| `LICENSE.txt`  | Plaintext version of the CDLA-Permissive license | 1       |
+| `README.txt`   | Text file with the file names and description    | 1       |
 
 如果使用其它数据集，请参考[准备训练数据](https://github.com/PaddlePaddle/PaddleDetection/blob/release/2.1/docs/tutorials/PrepareDataSet.md)
 
@@ -77,23 +86,30 @@ tar -xvf publaynet.tar.gz
 
 我们使用 `configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml`配置进行训练，配置文件摘要如下：
 
-<div align='center'>
-  <img src='../../doc/table/PaddleDetection_config.png' width='600px'/>
-</div>
+```bash
+_BASE_: [
+  '../datasets/coco_detection.yml',
+  '../runtime.yml',
+  './_base_/ppyolov2_r50vd_dcn.yml',
+  './_base_/optimizer_365e.yml',
+  './_base_/ppyolov2_reader.yml',
+]
 
-从上图看到 `ppyolov2_r50vd_dcn_365e_coco.yml` 配置需要依赖其他的配置文件，在该例子中需要依赖:
-
+snapshot_epoch: 8
+weights: output/ppyolov2_r50vd_dcn_365e_coco/model_final
 ```
-coco_detection.yml：主要说明了训练数据和验证数据的路径
+从中可以看到 `ppyolov2_r50vd_dcn_365e_coco.yml` 配置需要依赖其他的配置文件，在该例子中需要依赖:
 
-runtime.yml：主要说明了公共的运行参数，比如是否使用GPU、每多少个epoch存储checkpoint等
+- coco_detection.yml：主要说明了训练数据和验证数据的路径
 
-optimizer_365e.yml：主要说明了学习率和优化器的配置
+- runtime.yml：主要说明了公共的运行参数，比如是否使用GPU、每多少个epoch存储checkpoint等
 
-ppyolov2_r50vd_dcn.yml：主要说明模型和主干网络的情况
+- optimizer_365e.yml：主要说明了学习率和优化器的配置
 
-ppyolov2_reader.yml：主要说明数据读取器配置，如batch size，并发加载子进程数等，同时包含读取后预处理操作，如resize、数据增强等等
-```
+- ppyolov2_r50vd_dcn.yml：主要说明模型和主干网络的情况
+
+- ppyolov2_reader.yml：主要说明数据读取器配置，如batch size，并发加载子进程数等，同时包含读取后预处理操作，如resize、数据增强等等
+
 
 根据实际情况，修改上述文件，比如数据集路径、batch size等。
 
@@ -147,7 +163,7 @@ python tools/infer.py -c configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml --infer
 
 ## 6. 预测部署
 
-在layout parser中使用自己训练好的模型，
+在layout parser中使用自己训练好的模型。
 
 <a name="模型导出"></a>
 
@@ -185,4 +201,3 @@ model = lp.PaddleDetectionLayoutModel(model_path="inference/ppyolov2_r50vd_dcn_3
 更多PaddleDetection训练教程，请参考：[PaddleDetection训练](https://github.com/PaddlePaddle/PaddleDetection/blob/release/2.1/docs/tutorials/GETTING_STARTED_cn.md)
 
 ***
-
