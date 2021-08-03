@@ -60,18 +60,17 @@ class PSEPostProcess(object):
 
         boxes_batch = []
         for batch_index in range(pred.shape[0]):
-            src_h, src_w, ratio_h, ratio_w = shape_list[batch_index]
-            boxes, scores = self.boxes_from_bitmap(score[batch_index], kernels[batch_index], src_h, src_w)
+            boxes, scores = self.boxes_from_bitmap(score[batch_index], kernels[batch_index], shape_list[batch_index])
 
             boxes_batch.append({'points': boxes, 'scores': scores})
         return boxes_batch
 
-    def boxes_from_bitmap(self, score, kernels, src_h, src_w):
+    def boxes_from_bitmap(self, score, kernels, shape):
         label = pse(kernels, self.min_area)
-        return self.generate_box(score, label, src_h, src_w)
+        return self.generate_box(score, label, shape)
 
-    def generate_box(self, score, label, src_h, src_w):
-        height, width = label.shape
+    def generate_box(self, score, label, shape):
+        src_h, src_w, ratio_h, ratio_w = shape
         label_num = np.max(label) + 1
 
         boxes = []
@@ -105,24 +104,9 @@ class PSEPostProcess(object):
                 raise NotImplementedError
 
             bbox[:, 0] = np.clip(
-                np.round(bbox[:, 0] / width * src_w), 0, src_w)
+                np.round(bbox[:, 0] / ratio_w), 0, src_w)
             bbox[:, 1] = np.clip(
-                np.round(bbox[:, 1] / height * src_h), 0, src_h)
-
+                np.round(bbox[:, 1] / ratio_h), 0, src_h)
             boxes.append(bbox)
             scores.append(score_i)
         return boxes, scores
-
-
-if __name__ == '__main__':
-    post = PSEPostProcess(thresh=0.5,
-                          box_thresh=0.85,
-                          min_area=16,
-                          box_type='poly',
-                          scale=4)
-    out = np.load('/Users/zhoujun20/Desktop/工作相关/OCR/论文复现/pan_pp.pytorch/out.npy')
-    res = np.load('/Users/zhoujun20/Desktop/工作相关/OCR/论文复现/pan_pp.pytorch/det_res.npy', allow_pickle=True).tolist()
-    out = {'maps': paddle.to_tensor(out)}
-    det_res = post(out, shape_list=[[720, 1280, 1, 1]])
-    print(det_res)
-    print(res)
