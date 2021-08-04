@@ -24,8 +24,6 @@ from paddle import inference
 import time
 from ppocr.utils.logging import get_logger
 
-logger = get_logger()
-
 
 def str2bool(v):
     return v.lower() in ("true", "t", "1")
@@ -50,8 +48,8 @@ def init_args():
 
     # DB parmas
     parser.add_argument("--det_db_thresh", type=float, default=0.3)
-    parser.add_argument("--det_db_box_thresh", type=float, default=0.5)
-    parser.add_argument("--det_db_unclip_ratio", type=float, default=1.6)
+    parser.add_argument("--det_db_box_thresh", type=float, default=0.6)
+    parser.add_argument("--det_db_unclip_ratio", type=float, default=1.5)
     parser.add_argument("--max_batch_size", type=int, default=10)
     parser.add_argument("--use_dilation", type=bool, default=False)
     parser.add_argument("--det_db_score_mode", type=str, default="fast")
@@ -171,45 +169,45 @@ def create_predictor(args, mode, logger):
         if mode == "det":
             min_input_shape = {
                 "x": [1, 3, 50, 50],
-                "conv2d_92.tmp_0": [1, 96, 20, 20],
-                "conv2d_91.tmp_0": [1, 96, 10, 10],
+                "conv2d_92.tmp_0": [1, 120, 20, 20],
+                "conv2d_91.tmp_0": [1, 24, 10, 10],
                 "conv2d_59.tmp_0": [1, 96, 20, 20],
-                "nearest_interp_v2_1.tmp_0": [1, 96, 10, 10],
-                "nearest_interp_v2_2.tmp_0": [1, 96, 20, 20],
-                "conv2d_124.tmp_0": [1, 96, 20, 20],
-                "nearest_interp_v2_3.tmp_0": [1, 24, 20, 20],
-                "nearest_interp_v2_4.tmp_0": [1, 24, 20, 20],
-                "nearest_interp_v2_5.tmp_0": [1, 24, 20, 20],
+                "nearest_interp_v2_1.tmp_0": [1, 256, 10, 10],
+                "nearest_interp_v2_2.tmp_0": [1, 256, 20, 20],
+                "conv2d_124.tmp_0": [1, 256, 20, 20],
+                "nearest_interp_v2_3.tmp_0": [1, 64, 20, 20],
+                "nearest_interp_v2_4.tmp_0": [1, 64, 20, 20],
+                "nearest_interp_v2_5.tmp_0": [1, 64, 20, 20],
                 "elementwise_add_7": [1, 56, 2, 2],
-                "nearest_interp_v2_0.tmp_0": [1, 96, 2, 2]
+                "nearest_interp_v2_0.tmp_0": [1, 256, 2, 2]
             }
             max_input_shape = {
                 "x": [1, 3, 2000, 2000],
-                "conv2d_92.tmp_0": [1, 96, 400, 400],
-                "conv2d_91.tmp_0": [1, 96, 200, 200],
+                "conv2d_92.tmp_0": [1, 120, 400, 400],
+                "conv2d_91.tmp_0": [1, 24, 200, 200],
                 "conv2d_59.tmp_0": [1, 96, 400, 400],
-                "nearest_interp_v2_1.tmp_0": [1, 96, 200, 200],
+                "nearest_interp_v2_1.tmp_0": [1, 256, 200, 200],
                 "conv2d_124.tmp_0": [1, 256, 400, 400],
-                "nearest_interp_v2_2.tmp_0": [1, 96, 400, 400],
-                "nearest_interp_v2_3.tmp_0": [1, 24, 400, 400],
-                "nearest_interp_v2_4.tmp_0": [1, 24, 400, 400],
-                "nearest_interp_v2_5.tmp_0": [1, 24, 400, 400],
+                "nearest_interp_v2_2.tmp_0": [1, 256, 400, 400],
+                "nearest_interp_v2_3.tmp_0": [1, 64, 400, 400],
+                "nearest_interp_v2_4.tmp_0": [1, 64, 400, 400],
+                "nearest_interp_v2_5.tmp_0": [1, 64, 400, 400],
                 "elementwise_add_7": [1, 56, 400, 400],
-                "nearest_interp_v2_0.tmp_0": [1, 96, 400, 400]
+                "nearest_interp_v2_0.tmp_0": [1, 256, 400, 400]
             }
             opt_input_shape = {
                 "x": [1, 3, 640, 640],
-                "conv2d_92.tmp_0": [1, 96, 160, 160],
-                "conv2d_91.tmp_0": [1, 96, 80, 80],
+                "conv2d_92.tmp_0": [1, 120, 160, 160],
+                "conv2d_91.tmp_0": [1, 24, 80, 80],
                 "conv2d_59.tmp_0": [1, 96, 160, 160],
-                "nearest_interp_v2_1.tmp_0": [1, 96, 80, 80],
-                "nearest_interp_v2_2.tmp_0": [1, 96, 160, 160],
+                "nearest_interp_v2_1.tmp_0": [1, 256, 80, 80],
+                "nearest_interp_v2_2.tmp_0": [1, 256, 160, 160],
                 "conv2d_124.tmp_0": [1, 256, 160, 160],
-                "nearest_interp_v2_3.tmp_0": [1, 24, 160, 160],
-                "nearest_interp_v2_4.tmp_0": [1, 24, 160, 160],
-                "nearest_interp_v2_5.tmp_0": [1, 24, 160, 160],
+                "nearest_interp_v2_3.tmp_0": [1, 64, 160, 160],
+                "nearest_interp_v2_4.tmp_0": [1, 64, 160, 160],
+                "nearest_interp_v2_5.tmp_0": [1, 64, 160, 160],
                 "elementwise_add_7": [1, 56, 40, 40],
-                "nearest_interp_v2_0.tmp_0": [1, 96, 40, 40]
+                "nearest_interp_v2_0.tmp_0": [1, 256, 40, 40]
             }
         elif mode == "rec":
             min_input_shape = {"x": [args.rec_batch_num, 3, 32, 10]}

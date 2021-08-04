@@ -20,9 +20,9 @@ sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 import cv2
 import json
 from tqdm import tqdm
-from test1.table.table_metric import TEDS
-from test1.table.predict_table import TableSystem
-from test1.utility import init_args
+from ppstructure.table.table_metric import TEDS
+from ppstructure.table.predict_table import TableSystem
+from ppstructure.utility import init_args
 from ppocr.utils.logging import get_logger
 
 logger = get_logger()
@@ -46,20 +46,20 @@ def main(gt_path, img_root, args):
         pred_html = text_sys(img)
         pred_htmls.append(pred_html)
 
-        gt_structures, gt_bboxes, gt_contents, contents_with_block = jsons_gt[img_name]
-        gt_html, gt = get_gt_html(gt_structures, contents_with_block)
+        gt_structures, gt_bboxes, gt_contents = jsons_gt[img_name]
+        gt_html, gt = get_gt_html(gt_structures, gt_contents)
         gt_htmls.append(gt_html)
     scores = teds.batch_evaluate_html(gt_htmls, pred_htmls)
     logger.info('teds:', sum(scores) / len(scores))
 
 
-def get_gt_html(gt_structures, contents_with_block):
+def get_gt_html(gt_structures, gt_contents):
     end_html = []
     td_index = 0
     for tag in gt_structures:
         if '</td>' in tag:
-            if contents_with_block[td_index] != []:
-                end_html.extend(contents_with_block[td_index])
+            if gt_contents[td_index] != []:
+                end_html.extend(gt_contents[td_index])
             end_html.append(tag)
             td_index += 1
         else:

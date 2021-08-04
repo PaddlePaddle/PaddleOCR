@@ -14,7 +14,6 @@
 import numpy as np
 import os
 import random
-import traceback
 from paddle.io import Dataset
 
 from .imaug import transform, create_operators
@@ -105,7 +104,7 @@ class SimpleDataSet(Dataset):
         data_line = self.data_lines[file_idx]
         try:
             data_line = data_line.decode('utf-8')
-            substr = data_line.strip("\n").strip("\r").split(self.delimiter)
+            substr = data_line.strip("\n").split(self.delimiter)
             file_name = substr[0]
             label = substr[1]
             img_path = os.path.join(self.data_dir, file_name)
@@ -117,11 +116,10 @@ class SimpleDataSet(Dataset):
                 data['image'] = img
             data['ext_data'] = self.get_ext_data()
             outs = transform(data, self.ops)
-        except:
-            error_meg = traceback.format_exc()
+        except Exception as e:
             self.logger.error(
                 "When parsing line {}, error happened with msg: {}".format(
-                    data_line, error_meg))
+                    data_line, e))
             outs = None
         if outs is None:
             # during evaluation, we should fix the idx to get same results for many times of evaluation.

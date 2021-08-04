@@ -18,9 +18,9 @@ PaddleOCR 也提供了数据格式转换脚本，可以将官网 label 转换支
 
 ```
 # 将官网下载的标签文件转换为 train_icdar2015_label.txt
-python gen_label.py --mode="det" --root_path="icdar_c4_train_imgs/"  \
-                    --input_path="ch4_training_localization_transcription_gt" \
-                    --output_label="train_icdar2015_label.txt"
+python gen_label.py --mode="det" --root_path="/path/to/icdar_c4_train_imgs/"  \
+                    --input_path="/path/to/ch4_training_localization_transcription_gt" \
+                    --output_label="/path/to/train_icdar2015_label.txt"
 ```
 
 解压数据集和下载标注文件后，PaddleOCR/train_data/ 有两个文件夹和两个文件，分别是：
