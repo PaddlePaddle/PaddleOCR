@@ -185,6 +185,9 @@ function func_inference(){
         elif [ ${use_gpu} = "True" ] || [ ${use_gpu} = "gpu" ]; then
             for use_trt in ${use_trt_list[*]}; do
                 for precision in ${precision_list[*]}; do
+                    if [[ ${_flag_quant} = "False" ]] && [[ ${precision} =~ "int8" ]]; then
+                        continue
+                    fi 
                     if [[ ${precision} =~ "fp16" || ${precision} =~ "int8" ]] && [ ${use_trt} = "False" ]; then
                         continue
                     fi
@@ -241,7 +244,6 @@ if [ ${MODE} = "infer" ]; then
         fi
         #run inference
         is_quant=${infer_quant_flag[Count]}
-        echo "is_quant: ${is_quant}"
         func_inference "${python}" "${inference_py}" "${infer_model}" "${LOG_PATH}" "${infer_img_dir}" ${is_quant}
         Count=$(($Count + 1))
     done
