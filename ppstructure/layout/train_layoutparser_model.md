@@ -1,23 +1,32 @@
-# 训练版面分析
+# Training layout-parse
 
-* [1. 安装](#安装)
-  * [1.1 环境要求](#环境要求)
-  * [1.2 安装PaddleDetection](#安装PaddleDetection)
-* [2. 准备数据](#准备数据)
-* [3. 配置文件改动和说明](#配置文件改动和说明)
-* [4. PaddleDetection训练](#训练)
-* [5. PaddleDetection预测](#预测)
-* [6. 预测部署](#预测部署)
-  * [6.1 模型导出](#模型导出)
-  * [6.2 layout parser预测](#layout_parser预测)
+[1. Installation](#Installation)
 
-<a name="安装"></a>
+​  [1.1 Requirements](#Requirements)
 
-## 1. 安装
+​  [1.2 Install PaddleDetection](#Install PaddleDetection)
 
-<a name="环境要求"></a>
+[2.  Data preparation](#Data preparation)
 
-### 1.1 环境要求
+[3. Configuration](#Configuration)
+
+[4. Training](#Training)
+
+[5. Prediction](#Prediction)
+
+[6. Deployment](#Deployment)
+
+​  [6.1 Export model](#Export model)
+
+​  [6.2 Inference](#Inference)  
+
+<a name="Installation"></a>
+
+## 1.  Installation
+
+<a name="Requirements"></a>
+
+### 1.1 Requirements
 
 - PaddlePaddle 2.1
 - OS 64 bit
@@ -26,152 +35,159 @@
 - CUDA >= 10.1
 - cuDNN >= 7.6
 
-<a name="安装PaddleDetection"></a>
+<a name="Install PaddleDetection"></a>
 
-### 1.2 安装PaddleDetection
+### 1.2 Install PaddleDetection
 
 ```bash
-# 克隆PaddleDetection仓库
+# Clone PaddleDetection repository
 cd <path/to/clone/PaddleDetection>
 git clone https://github.com/PaddlePaddle/PaddleDetection.git
 
 cd PaddleDetection
-# 安装其他依赖
+# Install other dependencies
 pip install -r requirements.txt
 ```
 
-更多安装教程，请参考: [Install doc](https://github.com/PaddlePaddle/PaddleDetection/blob/release/2.1/docs/tutorials/INSTALL_cn.md)
+For more installation tutorials, please refer to： [Install doc](https://github.com/PaddlePaddle/PaddleDetection/blob/release/2.1/docs/tutorials/INSTALL_cn.md)
 
-<a name="数据准备"></a>
+<a name="Data preparation"></a>
 
-## 2. 准备数据
+## 2. Data preparation
 
-下载 [PubLayNet](https://github.com/ibm-aur-nlp/PubLayNet) 数据集：
+Download the [PubLayNet](https://github.com/ibm-aur-nlp/PubLayNet) dataset
 
 ```bash
 cd PaddleDetection/dataset/
 mkdir publaynet
-# 执行命令，下载
+# execute the command，download PubLayNet
 wget -O publaynet.tar.gz https://dax-cdn.cdn.appdomain.cloud/dax-publaynet/1.0.0/publaynet.tar.gz?_ga=2.104193024.1076900768.1622560733-649911202.1622560733
-# 解压
+# unpack
 tar -xvf publaynet.tar.gz
 ```
 
-解压之后PubLayNet目录结构：
+PubLayNet directory structure after decompressing ：
 
 | File or Folder | Description                                      | num     |
 | :------------- | :----------------------------------------------- | ------- |
 | `train/`       | Images in the training subset                    | 335,703 |
 | `val/`         | Images in the validation subset                  | 11,245  |
 | `test/`        | Images in the testing subset                     | 11,405  |
-| `train.json`   | Annotations for training images                  |         |
-| `val.json`     | Annotations for validation images                |         |
-| `LICENSE.txt`  | Plaintext version of the CDLA-Permissive license |         |
-| `README.txt`   | Text file with the file names and description    |         |
+| `train.json`   | Annotations for training images                  |  1       |
+| `val.json`     | Annotations for validation images                |  1       |
+| `LICENSE.txt`  | Plaintext version of the CDLA-Permissive license |   1      |
+| `README.txt`   | Text file with the file names and description    |   1      |
 
-如果使用其它数据集，请参考[准备训练数据](https://github.com/PaddlePaddle/PaddleDetection/blob/release/2.1/docs/tutorials/PrepareDataSet.md)
+For other datasets，please refer to [the PrepareDataSet]((https://github.com/PaddlePaddle/PaddleDetection/blob/release/2.1/docs/tutorials/PrepareDataSet.md) )
 
-<a name="配置文件改动和说明"></a>
+<a name="Configuration"></a>
 
-## 3. 配置文件改动和说明
+## 3. Configuration
 
-我们使用 `configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml`配置进行训练，配置文件摘要如下：
-
-<div align='center'>
-  <img src='../../doc/table/PaddleDetection_config.png' width='600px'/>
-</div>
-
-从上图看到 `ppyolov2_r50vd_dcn_365e_coco.yml` 配置需要依赖其他的配置文件，在该例子中需要依赖:
-
-```
-coco_detection.yml：主要说明了训练数据和验证数据的路径
-
-runtime.yml：主要说明了公共的运行参数，比如是否使用GPU、每多少个epoch存储checkpoint等
-
-optimizer_365e.yml：主要说明了学习率和优化器的配置
-
-ppyolov2_r50vd_dcn.yml：主要说明模型和主干网络的情况
-
-ppyolov2_reader.yml：主要说明数据读取器配置，如batch size，并发加载子进程数等，同时包含读取后预处理操作，如resize、数据增强等等
-```
-
-根据实际情况，修改上述文件，比如数据集路径、batch size等。
-
-<a name="训练"></a>
-
-## 4. PaddleDetection训练
-
-PaddleDetection提供了单卡/多卡训练模式，满足用户多种训练需求
-
-* GPU 单卡训练
+We use the  `configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml` configuration for training，the configuration file is as follows
 
 ```bash
-export CUDA_VISIBLE_DEVICES=0 #windows和Mac下不需要执行该命令
+_BASE_: [
+  '../datasets/coco_detection.yml',
+  '../runtime.yml',
+  './_base_/ppyolov2_r50vd_dcn.yml',
+  './_base_/optimizer_365e.yml',
+  './_base_/ppyolov2_reader.yml',
+]
+
+snapshot_epoch: 8
+weights: output/ppyolov2_r50vd_dcn_365e_coco/model_final
+```
+The `ppyolov2_r50vd_dcn_365e_coco.yml` configuration depends on other configuration files, in this case:
+
+- coco_detection.yml：mainly explains the path of training data and verification data
+
+- runtime.yml：mainly describes the common parameters, such as whether to use the GPU and how many epoch to save model etc.
+
+- optimizer_365e.yml：mainly explains the learning rate and optimizer configuration
+
+- ppyolov2_r50vd_dcn.yml：mainly describes the model and the  network
+
+- ppyolov2_reader.yml：mainly describes the configuration of data readers, such as batch size and number of concurrent loading child processes, and also includes post preprocessing, such as resize and data augmention etc.
+
+
+Modify the preceding files, such as the dataset path and batch size etc.
+
+<a name="Training"></a>
+
+## 4. Training
+
+PaddleDetection provides single-card/multi-card training mode to meet various training needs of users:
+
+* GPU single card training
+
+```bash
+export CUDA_VISIBLE_DEVICES=0 #Don't need to run this command on Windows and Mac
 python tools/train.py -c configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml
 ```
 
-* GPU多卡训练
+* GPU multi-card training
 
 ```bash
 export CUDA_VISIBLE_DEVICES=0,1,2,3
 python -m paddle.distributed.launch --gpus 0,1,2,3 tools/train.py -c configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml --eval
 ```
 
---eval：表示边训练边验证
+--eval: training while verifying
 
-* 模型恢复训练
+* Model recovery training
 
-在日常训练过程中，有的用户由于一些原因导致训练中断，用户可以使用-r的命令恢复训练:
+During the daily training, if training is interrupted due to some reasons, you can use the -r command to resume the training:
 
 ```bash
 export CUDA_VISIBLE_DEVICES=0,1,2,3
 python -m paddle.distributed.launch --gpus 0,1,2,3 tools/train.py -c configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml --eval -r output/ppyolov2_r50vd_dcn_365e_coco/10000
 ```
 
-注意：如果遇到 "`Out of memory error`" 问题, 尝试在 `ppyolov2_reader.yml` 文件中调小`batch_size`
+Note: If you encounter "`Out of memory error`" , try reducing `batch_size` in the `ppyolov2_reader.yml`  file
 
-<a name="预测"></a>
+prediction<a name="Prediction"></a>
 
-## 5. PaddleDetection预测
+## 5. Prediction
 
-设置参数，使用PaddleDetection预测：
+Set parameters and use PaddleDetection to predict：
 
 ```bash
 export CUDA_VISIBLE_DEVICES=0
 python tools/infer.py -c configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml --infer_img=images/paper-image.jpg --output_dir=infer_output/ --draw_threshold=0.5 -o weights=output/ppyolov2_r50vd_dcn_365e_coco/model_final --use_vdl=Ture
 ```
 
-`--draw_threshold` 是个可选参数. 根据 [NMS](https://ieeexplore.ieee.org/document/1699659) 的计算，不同阈值会产生不同的结果 `keep_top_k`表示设置输出目标的最大数量，默认值为100，用户可以根据自己的实际情况进行设定。
+`--draw_threshold` is an optional parameter. According to the calculation of [NMS](https://ieeexplore.ieee.org/document/1699659), different threshold will produce different results, ` keep_top_k ` represent  the maximum amount of output target, the default value is 10. You can set different value according to your own actual situation。
 
-<a name="预测部署"></a>
+<a name="Deployment"></a>
 
-## 6. 预测部署
+## 6. Deployment
 
-在layout parser中使用自己训练好的模型，
+Use your trained model in Layout Parser
 
-<a name="模型导出"></a>
+<a name="Export model"></a>
 
-### 6.1 模型导出
+### 6.1 Export model
 
-在模型训练过程中保存的模型文件是包含前向预测和反向传播的过程，在实际的工业部署则不需要反向传播，因此需要将模型进行导成部署需要的模型格式。 在PaddleDetection中提供了 `tools/export_model.py`脚本来导出模型。
+n the process of model training, the model file saved contains the process of forward prediction and back propagation. In the actual industrial deployment, there is no need for back propagation. Therefore, the model should be translated into the model format required by the deployment. The `tools/export_model.py` script is provided in PaddleDetection to export the model.
 
-导出模型名称默认是`model.*`，layout parser代码模型名称是`inference.*`,  所以修改[PaddleDetection/ppdet/engine/trainer.py ](https://github.com/PaddlePaddle/PaddleDetection/blob/b87a1ea86fa18ce69e44a17ad1b49c1326f19ff9/ppdet/engine/trainer.py#L512) (点开链接查看详细代码行)，将`model`改为`inference`即可。
+The exported model name defaults to `model.*`, Layout Parser's code model is `inference.*`, So change [PaddleDetection/ppdet/engine/trainer. Py ](https://github.com/PaddlePaddle/PaddleDetection/blob/b87a1ea86fa18ce69e44a17ad1b49c1326f19ff9/ppdet/engine/trainer.py# L512) (click on the link to see the detailed line of code), change 'model' to 'inference'.
 
-执行导出模型脚本：
+Execute the script to export model:
 
 ```bash
 python tools/export_model.py -c configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml --output_dir=./inference -o weights=output/ppyolov2_r50vd_dcn_365e_coco/model_final.pdparams
 ```
 
-预测模型会导出到`inference/ppyolov2_r50vd_dcn_365e_coco`目录下，分别为`infer_cfg.yml`(预测不需要), `inference.pdiparams`, `inference.pdiparams.info`,`inference.pdmodel` 。
+The prediction model is exported to `inference/ppyolov2_r50vd_dcn_365e_coco` ,including:`infer_cfg.yml`(prediction not required), `inference.pdiparams`, `inference.pdiparams.info`,`inference.pdmodel`
 
-更多模型导出教程，请参考：[EXPORT_MODEL](https://github.com/PaddlePaddle/PaddleDetection/blob/release/2.1/deploy/EXPORT_MODEL.md)
+More model export tutorials, please refer to：[EXPORT_MODEL](https://github.com/PaddlePaddle/PaddleDetection/blob/release/2.1/deploy/EXPORT_MODEL.md)
 
-<a name="layout parser预测"></a>
+<a name="Inference"></a>
 
-### 6.2 layout_parser预测
+### 6.2 Inference
 
-`model_path`指定训练好的模型路径，使用layout parser进行预测：
+`model_path` represent  the trained model path, and layoutparser is used to predict:
 
 ```bash
 import layoutparser as lp
@@ -182,7 +198,6 @@ model = lp.PaddleDetectionLayoutModel(model_path="inference/ppyolov2_r50vd_dcn_3
 
 ***
 
-更多PaddleDetection训练教程，请参考：[PaddleDetection训练](https://github.com/PaddlePaddle/PaddleDetection/blob/release/2.1/docs/tutorials/GETTING_STARTED_cn.md)
+More PaddleDetection training tutorials，please reference：[PaddleDetection Training](https://github.com/PaddlePaddle/PaddleDetection/blob/release/2.1/docs/tutorials/GETTING_STARTED_cn.md)
 
 ***
-

@@ -73,7 +73,7 @@ class TextRecognizer(object):
                 model_precision=args.precision,
                 batch_size=args.rec_batch_num,
                 data_shape="dynamic",
-                save_path=args.save_log_path,
+                save_path=None,  #args.save_log_path,
                 inference_config=self.config,
                 pids=pid,
                 process_name=None,
@@ -81,7 +81,8 @@ class TextRecognizer(object):
                 time_keys=[
                     'preprocess_time', 'inference_time', 'postprocess_time'
                 ],
-                warmup=10)
+                warmup=2,
+                logger=logger)
 
     def resize_norm_img(self, img, max_wh_ratio):
         imgC, imgH, imgW = self.rec_image_shape
@@ -272,10 +273,10 @@ def main(args):
     valid_image_file_list = []
     img_list = []
 
-    # warmup 10 times
+    # warmup 2 times
     if args.warmup:
         img = np.random.uniform(0, 255, [32, 320, 3]).astype(np.uint8)
-        for i in range(10):
+        for i in range(2):
             res = text_recognizer([img])
 
     for image_file in image_file_list:
