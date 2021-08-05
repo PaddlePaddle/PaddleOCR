@@ -819,12 +819,10 @@ class MainWindow(QMainWindow, WindowMixin):
             if self.itemsToShapesbox:
                 self.rotateImgWarn()
             else:
-                _value = True
-                self.rotateImg(filename=filename, k=1, _value=_value)
+                self.rotateImg(filename=filename, k=1, _value=True)
         else:
-            _value = False
             self.rotateImgWarn()
-            self.actions.rotateRight.setEnabled(_value)
+            self.actions.rotateRight.setEnabled(False)
 
     def rotateRightImg(self, _value=False):
 
@@ -834,12 +832,10 @@ class MainWindow(QMainWindow, WindowMixin):
             if self.itemsToShapesbox:
                 self.rotateImgWarn()
             else:
-                _value = True
-                self.rotateImg(filename=filename, k=-1, _value=_value)
+                self.rotateImg(filename=filename, k=-1, _value=True)
         else:
-            _value = False
             self.rotateImgWarn()
-            self.actions.rotateRight.setEnabled(_value)
+            self.actions.rotateRight.setEnabled(False)
 
     def toggleDrawingSensitive(self, drawing=True):
         """In the middle of drawing, toggling between modes should be disabled."""
@@ -1582,7 +1578,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.actions.reRec.setEnabled(True)
         self.actions.open_dataset_dir.setEnabled(True)
         self.actions.rotateLeft.setEnabled(True)
-        self.actions.rotateRight.setEnabled (True)
+        self.actions.rotateRight.setEnabled(True)
 
 
 

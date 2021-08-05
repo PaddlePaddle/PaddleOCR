@@ -106,7 +106,7 @@ class TextDetector(object):
                 model_precision=args.precision,
                 batch_size=1,
                 data_shape="dynamic",
-                save_path=args.save_log_path,
+                save_path=None,
                 inference_config=self.config,
                 pids=pid,
                 process_name=None,
@@ -114,7 +114,8 @@ class TextDetector(object):
                 time_keys=[
                     'preprocess_time', 'inference_time', 'postprocess_time'
                 ],
-                warmup=10)
+                warmup=2,
+                logger=logger)
 
     def order_points_clockwise(self, pts):
         """
@@ -236,7 +237,7 @@ if __name__ == "__main__":
 
     if args.warmup:
         img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
-        for i in range(10):
+        for i in range(2):
             res = text_detector(img)
 
     if not os.path.exists(draw_img_save):
