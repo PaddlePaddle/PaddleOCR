@@ -234,21 +234,21 @@ if [ ${MODE} = "infer" ]; then
     for infer_model in ${infer_model_dir_list[*]}; do
         # run export
         if [ ${infer_run_exports[Count]} != "null" ];then
+            save_infer_dir=$(dirname $infer_model)
             set_export_weight=$(func_set_params "${export_weight}" "${infer_model}")
-            set_save_infer_key=$(func_set_params "${save_infer_key}" "${infer_model}_infer")
+            set_save_infer_key=$(func_set_params "${save_infer_key}" "${save_infer_dir}")
             export_cmd="${python} ${norm_export} ${set_export_weight} ${set_save_infer_key}"
             eval $export_cmd
             status_export=$?
             if [ ${status_export} = 0 ];then
                 status_check $status_export "${export_cmd}" "${status_log}"
             fi
-            load_infer_model="${infer_model}_infer"
         else
-            load_infer_model="${infer_model}"
+            save_infer_dir=${infer_model}
         fi
         #run inference
         is_quant=${infer_quant_flag[Count]}
-        func_inference "${python}" "${inference_py}" "${load_infer_model}" "${LOG_PATH}" "${infer_img_dir}" ${is_quant}
+        func_inference "${python}" "${inference_py}" "${save_infer_dir}" "${LOG_PATH}" "${infer_img_dir}" ${is_quant}
         Count=$(($Count + 1))
     done
 
