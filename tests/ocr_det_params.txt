@@ -49,3 +49,4 @@ inference:tools/infer/predict_det.py
 --save_log_path:null
 --benchmark:True
 null:null
+
