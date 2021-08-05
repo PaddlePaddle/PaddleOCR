@@ -30,7 +30,8 @@ The following steps take the 2-stage series service as an example. If only the d
 ### 1. Prepare the environment
 ```shell
 # Install paddlehub  
-pip3 install paddlehub --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
+# python>3.6.2 is required bt paddlehub
+pip3 install paddlehub==2.1.0 --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 ### 2. Download inference model

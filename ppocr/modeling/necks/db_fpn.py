@@ -32,61 +32,53 @@ class DBFPN(nn.Layer):
             in_channels=in_channels[0],
             out_channels=self.out_channels,
             kernel_size=1,
-            weight_attr=ParamAttr(
-                name='conv2d_51.w_0', initializer=weight_attr),
+            weight_attr=ParamAttr(initializer=weight_attr),
             bias_attr=False)
         self.in3_conv = nn.Conv2D(
             in_channels=in_channels[1],
             out_channels=self.out_channels,
             kernel_size=1,
-            weight_attr=ParamAttr(
-                name='conv2d_50.w_0', initializer=weight_attr),
+            weight_attr=ParamAttr(initializer=weight_attr),
             bias_attr=False)
         self.in4_conv = nn.Conv2D(
             in_channels=in_channels[2],
             out_channels=self.out_channels,
             kernel_size=1,
-            weight_attr=ParamAttr(
-                name='conv2d_49.w_0', initializer=weight_attr),
+            weight_attr=ParamAttr(initializer=weight_attr),
             bias_attr=False)
         self.in5_conv = nn.Conv2D(
             in_channels=in_channels[3],
             out_channels=self.out_channels,
             kernel_size=1,
-            weight_attr=ParamAttr(
-                name='conv2d_48.w_0', initializer=weight_attr),
+            weight_attr=ParamAttr(initializer=weight_attr),
             bias_attr=False)
         self.p5_conv = nn.Conv2D(
             in_channels=self.out_channels,
             out_channels=self.out_channels // 4,
             kernel_size=3,
             padding=1,
-            weight_attr=ParamAttr(
-                name='conv2d_52.w_0', initializer=weight_attr),
+            weight_attr=ParamAttr(initializer=weight_attr),
             bias_attr=False)
         self.p4_conv = nn.Conv2D(
             in_channels=self.out_channels,
             out_channels=self.out_channels // 4,
             kernel_size=3,
             padding=1,
-            weight_attr=ParamAttr(
-                name='conv2d_53.w_0', initializer=weight_attr),
+            weight_attr=ParamAttr(initializer=weight_attr),
             bias_attr=False)
         self.p3_conv = nn.Conv2D(
             in_channels=self.out_channels,
             out_channels=self.out_channels // 4,
             kernel_size=3,
             padding=1,
-            weight_attr=ParamAttr(
-                name='conv2d_54.w_0', initializer=weight_attr),
+            weight_attr=ParamAttr(initializer=weight_attr),
             bias_attr=False)
         self.p2_conv = nn.Conv2D(
             in_channels=self.out_channels,
             out_channels=self.out_channels // 4,
             kernel_size=3,
             padding=1,
-            weight_attr=ParamAttr(
-                name='conv2d_55.w_0', initializer=weight_attr),
+            weight_attr=ParamAttr(initializer=weight_attr),
             bias_attr=False)
 
     def forward(self, x):

@@ -96,8 +96,7 @@ class MobileNetV3(nn.Layer):
             padding=1,
             groups=1,
             if_act=True,
-            act='hardswish',
-            name='conv1')
+            act='hardswish')
         i = 0
         block_list = []
         inplanes = make_divisible(inplanes * scale)
@@ -110,8 +109,7 @@ class MobileNetV3(nn.Layer):
                     kernel_size=k,
                     stride=s,
                     use_se=se,
-                    act=nl,
-                    name='conv' + str(i + 2)))
+                    act=nl))
             inplanes = make_divisible(scale * c)
             i += 1
         self.blocks = nn.Sequential(*block_list)
@@ -124,8 +122,7 @@ class MobileNetV3(nn.Layer):
             padding=0,
             groups=1,
             if_act=True,
-            act='hardswish',
-            name='conv_last')
+            act='hardswish')
 
         self.pool = nn.MaxPool2D(kernel_size=2, stride=2, padding=0)
         self.out_channels = make_divisible(scale * cls_ch_squeeze)

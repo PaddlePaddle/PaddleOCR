@@ -41,7 +41,7 @@ class TextDetector(object):
         pre_process_list = [{
             'DetResizeForTest': {
                 'limit_side_len': args.det_limit_side_len,
-                'limit_type': args.det_limit_type
+                'limit_type': args.det_limit_type,
             }
         }, {
             'NormalizeImage': {
@@ -95,9 +95,27 @@ class TextDetector(object):
 
         self.preprocess_op = create_operators(pre_process_list)
         self.postprocess_op = build_post_process(postprocess_params)
-        self.predictor, self.input_tensor, self.output_tensors = utility.create_predictor(
-            args, 'det', logger)  # paddle.jit.load(args.det_model_dir)
-        # self.predictor.eval()
+        self.predictor, self.input_tensor, self.output_tensors, self.config = utility.create_predictor(
+            args, 'det', logger)
+
+        if args.benchmark:
+            import auto_log
+            pid = os.getpid()
+            self.autolog = auto_log.AutoLogger(
+                model_name="det",
+                model_precision=args.precision,
+                batch_size=1,
+                data_shape="dynamic",
+                save_path=None,
+                inference_config=self.config,
+                pids=pid,
+                process_name=None,
+                gpu_ids=0,
+                time_keys=[
+                    'preprocess_time', 'inference_time', 'postprocess_time'
+                ],
+                warmup=2,
+                logger=logger)
 
     def order_points_clockwise(self, pts):
         """
@@ -155,6 +173,12 @@ class TextDetector(object):
     def __call__(self, img):
         ori_im = img.copy()
         data = {'image': img}
+
+        st = time.time()
+
+        if self.args.benchmark:
+            self.autolog.times.start()
+
         data = transform(data, self.preprocess_op)
         img, shape_list = data
         if img is None:
@@ -162,7 +186,9 @@ class TextDetector(object):
         img = np.expand_dims(img, axis=0)
         shape_list = np.expand_dims(shape_list, axis=0)
         img = img.copy()
-        starttime = time.time()
+
+        if self.args.benchmark:
+            self.autolog.times.stamp()
 
         self.input_tensor.copy_from_cpu(img)
         self.predictor.run()
@@ -170,6 +196,8 @@ class TextDetector(object):
         for output_tensor in self.output_tensors:
             output = output_tensor.copy_to_cpu()
             outputs.append(output)
+        if self.args.benchmark:
+            self.autolog.times.stamp()
 
         preds = {}
         if self.det_algorithm == "EAST":
@@ -184,15 +212,19 @@ class TextDetector(object):
             preds['maps'] = outputs[0]
         else:
             raise NotImplementedError
-        self.predictor.try_shrink_memory()
+
+        #self.predictor.try_shrink_memory()
         post_result = self.postprocess_op(preds, shape_list)
         dt_boxes = post_result[0]['points']
         if self.det_algorithm == "SAST" and self.det_sast_polygon:
             dt_boxes = self.filter_tag_det_res_only_clip(dt_boxes, ori_im.shape)
         else:
             dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
-        elapse = time.time() - starttime
-        return dt_boxes, elapse
+
+        if self.args.benchmark:
+            self.autolog.times.end(stamp=True)
+        et = time.time()
+        return dt_boxes, et - st
 
 
 if __name__ == "__main__":
@@ -202,6 +234,12 @@ if __name__ == "__main__":
     count = 0
     total_time = 0
     draw_img_save = "./inference_results"
+
+    if args.warmup:
+        img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
+        for i in range(2):
+            res = text_detector(img)
+
     if not os.path.exists(draw_img_save):
         os.makedirs(draw_img_save)
     for image_file in image_file_list:
@@ -211,10 +249,13 @@ if __name__ == "__main__":
         if img is None:
             logger.info("error in loading image:{}".format(image_file))
             continue
-        dt_boxes, elapse = text_detector(img)
+        st = time.time()
+        dt_boxes, _ = text_detector(img)
+        elapse = time.time() - st
         if count > 0:
             total_time += elapse
         count += 1
+
         logger.info("Predict time of {}: {}".format(image_file, elapse))
         src_im = utility.draw_text_det_res(dt_boxes, image_file)
         img_name_pure = os.path.split(image_file)[-1]
@@ -222,5 +263,6 @@ if __name__ == "__main__":
                                 "det_res_{}".format(img_name_pure))
         cv2.imwrite(img_path, src_im)
         logger.info("The visualized image saved in {}".format(img_path))
-    if count > 1:
-        logger.info("Avg Time: {}".format(total_time / (count - 1)))
+
+    if args.benchmark:
+        text_detector.autolog.report()

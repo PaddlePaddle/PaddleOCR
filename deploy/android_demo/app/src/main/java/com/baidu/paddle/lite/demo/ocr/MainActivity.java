@@ -465,8 +465,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void btn_load_model_click(View view) {
-        tvStatus.setText("STATUS: load model ......");
-        loadModel();
+        if (predictor.isLoaded()){
+            tvStatus.setText("STATUS: model has been loaded");
+        }else{
+            tvStatus.setText("STATUS: load model ......");
+            loadModel();
+        }
     }
 
     public void btn_run_model_click(View view) {

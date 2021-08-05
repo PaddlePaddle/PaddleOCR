@@ -37,6 +37,17 @@ from paddleslim.dygraph.quant import QAT
 from ppocr.data import build_dataloader
 
 
+def export_single_model(quanter, model, infer_shape, save_path, logger):
+    quanter.save_quantized_model(
+        model,
+        save_path,
+        input_spec=[
+            paddle.static.InputSpec(
+                shape=[None] + infer_shape, dtype='float32')
+        ])
+    logger.info('inference QAT model is saved to {}'.format(save_path))
+
+
 def main():
     ############################################################################################################
     # 1. quantization configs
@@ -76,14 +87,21 @@ def main():
     # for rec algorithm
     if hasattr(post_process_class, 'character'):
         char_num = len(getattr(post_process_class, 'character'))
-        config['Architecture']["Head"]['out_channels'] = char_num
+        if config['Architecture']["algorithm"] in ["Distillation",
+                                                   ]:  # distillation model
+            for key in config['Architecture']["Models"]:
+                config['Architecture']["Models"][key]["Head"][
+                    'out_channels'] = char_num
+        else:  # base rec model
+            config['Architecture']["Head"]['out_channels'] = char_num
+
     model = build_model(config['Architecture'])
 
     # get QAT model
     quanter = QAT(config=quant_config)
     quanter.quantize(model)
 
-    init_model(config, model, logger)
+    init_model(config, model)
     model.eval()
 
     # build metric
@@ -92,25 +110,30 @@ def main():
     # build dataloader
     valid_dataloader = build_dataloader(config, 'Eval', device, logger)
 
+    use_srn = config['Architecture']['algorithm'] == "SRN"
+    model_type = config['Architecture']['model_type']
     # start eval
-    metirc = program.eval(model, valid_dataloader, post_process_class,
-                          eval_class)
+    metric = program.eval(model, valid_dataloader, post_process_class,
+                          eval_class, model_type, use_srn)
+
     logger.info('metric eval ***************')
-    for k, v in metirc.items():
+    for k, v in metric.items():
         logger.info('{}:{}'.format(k, v))
 
-    save_path = '{}/inference'.format(config['Global']['save_inference_dir'])
     infer_shape = [3, 32, 100] if config['Architecture'][
         'model_type'] != "det" else [3, 640, 640]
 
-    quanter.save_quantized_model(
-        model,
-        save_path,
-        input_spec=[
-            paddle.static.InputSpec(
-                shape=[None] + infer_shape, dtype='float32')
-        ])
-    logger.info('inference QAT model is saved to {}'.format(save_path))
+    save_path = config["Global"]["save_inference_dir"]
+
+    arch_config = config["Architecture"]
+    if arch_config["algorithm"] in ["Distillation", ]:  # distillation model
+        for idx, name in enumerate(model.model_name_list):
+            sub_model_save_path = os.path.join(save_path, name, "inference")
+            export_single_model(quanter, model.model_list[idx], infer_shape,
+                                sub_model_save_path, logger)
+    else:
+        save_path = os.path.join(save_path, "inference")
+        export_single_model(quanter, model, infer_shape, save_path, logger)
 
 
 if __name__ == "__main__":

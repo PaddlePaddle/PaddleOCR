@@ -116,7 +116,7 @@ class SASTHead(nn.Layer):
         self.head1 = SAST_Header1(in_channels)
         self.head2 = SAST_Header2(in_channels)
 
-    def forward(self, x):
+    def forward(self, x, targets=None):
         f_score, f_border = self.head1(x)
         f_tvo, f_tco = self.head2(x)
 

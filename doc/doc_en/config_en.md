@@ -110,9 +110,9 @@ In ppocr, the network is divided into four stages: Transform, Backbone, Neck and
 |         Parameter             |            Use            |      Defaults        |            Note             |
 | :---------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
 |      **dataset**        |         Return one sample per iteration          |  -  |  -  |
-|      name        |        dataset class name         |  SimpleDataSet |   Currently support`SimpleDataSet`,`LMDBDateSet`  |
+|      name        |        dataset class name         |  SimpleDataSet |   Currently support`SimpleDataSet`,`LMDBDataSet`  |
 |      data_dir        |        Image folder path        |  ./train_data |  \  |
-|      label_file_list        |        Groundtruth file path         |  ["./train_data/train_list.txt"] | This parameter is not required when dataset is LMDBDateSet   |
+|      label_file_list        |        Groundtruth file path         |  ["./train_data/train_list.txt"] | This parameter is not required when dataset is LMDBDataSet   |
 |      ratio_list        |        Ratio of data set         |  [1.0] | If there are two train_lists in label_file_list and ratio_list is [0.4,0.6], 40% will be sampled from train_list1, and 60% will be sampled from train_list2 to combine the entire dataset   |
 |      transforms        |        List of methods to transform images and labels         |  [DecodeImage,CTCLabelEncode,RecResizeImg,KeepKeys] |   see[ppocr/data/imaug](../../ppocr/data/imaug)  |
 |      **loader**        |        dataloader related         |  - |   |

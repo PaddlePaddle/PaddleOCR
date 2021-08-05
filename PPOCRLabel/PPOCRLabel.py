@@ -92,7 +92,7 @@ class WindowMixin(object):
 class MainWindow(QMainWindow, WindowMixin):
     FIT_WINDOW, FIT_WIDTH, MANUAL_ZOOM = list(range(3))
 
-    def __init__(self, lang="ch", defaultFilename=None, defaultPrefdefClassFile=None, defaultSaveDir=None):
+    def __init__(self, lang="ch", gpu=False, defaultFilename=None, defaultPrefdefClassFile=None, defaultSaveDir=None):
         super(MainWindow, self).__init__()
         self.setWindowTitle(__appname__)
 
@@ -108,7 +108,7 @@ class MainWindow(QMainWindow, WindowMixin):
         getStr = lambda strId: self.stringBundle.getString(strId)
 
         self.defaultSaveDir = defaultSaveDir
-        self.ocr = PaddleOCR(use_pdserving=False, use_angle_cls=True, det=True, cls=True, use_gpu=False, lang=lang)
+        self.ocr = PaddleOCR(use_pdserving=False, use_angle_cls=True, det=True, cls=True, use_gpu=gpu, lang=lang)
 
         if os.path.exists('./data/paddle.png'):
             result = self.ocr.ocr('./data/paddle.png', cls=True, det=True)
@@ -398,6 +398,7 @@ class MainWindow(QMainWindow, WindowMixin):
         help = action(getStr('tutorial'), self.showTutorialDialog, None, 'help', getStr('tutorialDetail'))
         showInfo = action(getStr('info'), self.showInfoDialog, None, 'help', getStr('info'))
         showSteps = action(getStr('steps'), self.showStepsDialog, None, 'help', getStr('steps'))
+        showKeys = action(getStr('keys'), self.showKeysDialog, None, 'help', getStr('keys'))
 
         zoom = QWidgetAction(self)
         zoom.setDefaultWidget(self.zoomWidget)
@@ -565,7 +566,7 @@ class MainWindow(QMainWindow, WindowMixin):
         addActions(self.menus.file,
                    (opendir, None, saveLabel, saveRec, self.autoSaveOption, None, resetAll, deleteImg, quit))
 
-        addActions(self.menus.help, (showSteps, showInfo))
+        addActions(self.menus.help, (showKeys,showSteps, showInfo))
         addActions(self.menus.view, (
             self.displayLabelOption, self.labelDialogOption,
              None,
@@ -758,6 +759,10 @@ class MainWindow(QMainWindow, WindowMixin):
 
     def showStepsDialog(self):
         msg = stepsInfo(self.lang)
+        QMessageBox.information(self, u'Information', msg)
+
+    def showKeysDialog(self):
+        msg = keysInfo(self.lang)
         QMessageBox.information(self, u'Information', msg)
 
     def createShape(self):
@@ -1239,6 +1244,8 @@ class MainWindow(QMainWindow, WindowMixin):
 
     def loadFile(self, filePath=None):
         """Load the specified file, or the last opened file if None."""
+        if self.dirty:
+            self.mayContinue()
         self.resetState()
         self.canvas.setEnabled(False)
         if filePath is None:
@@ -2037,6 +2044,8 @@ def read(filename, default=None):
     except:
         return default
 
+def str2bool(v):
+    return v.lower() in ("true", "t", "1")
 
 def get_main_app(argv=[]):
     """
@@ -2048,13 +2057,14 @@ def get_main_app(argv=[]):
     app.setWindowIcon(newIcon("app"))
     # Tzutalin 201705+: Accept extra agruments to change predefined class file
     argparser = argparse.ArgumentParser()
-    argparser.add_argument("--lang", default='en', nargs="?")
+    argparser.add_argument("--lang", type=str, default='en', nargs="?")
+    argparser.add_argument("--gpu", type=str2bool, default=False, nargs="?")
     argparser.add_argument("--predefined_classes_file",
                            default=os.path.join(os.path.dirname(__file__), "data", "predefined_classes.txt"),
                            nargs="?")
     args = argparser.parse_args(argv[1:])
     # Usage : labelImg.py image predefClassFile saveDir
-    win = MainWindow(lang=args.lang,
+    win = MainWindow(lang=args.lang, gpu=args.gpu,
                      defaultPrefdefClassFile=args.predefined_classes_file)
     win.show()
     return app, win

@@ -237,7 +237,7 @@ Optimizer:
 
 Train:
   dataset:
-    # Type of dataset，we support LMDBDateSet and SimpleDataSet
+    # Type of dataset，we support LMDBDataSet and SimpleDataSet
     name: SimpleDataSet
     # Path of dataset
     data_dir: ./train_data/
@@ -257,7 +257,7 @@ Train:
 
 Eval:
   dataset:
-    # Type of dataset，we support LMDBDateSet and SimpleDataSet
+    # Type of dataset，we support LMDBDataSet and SimpleDataSet
     name: SimpleDataSet
     # Path of dataset
     data_dir: ./train_data
@@ -329,6 +329,7 @@ There are two ways to create the required configuration file:：
     ...
 
     ```
+Italian is made up of Latin letters, so after executing the command, you will get the rec_latin_lite_train.yml.
 
 2. Manually modify the configuration file
 
@@ -375,7 +376,9 @@ Currently, the multi-language algorithms supported by PaddleOCR are:
 
 For more supported languages, please refer to : [Multi-language model](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_en/multi_languages_en.md#4-support-languages-and-abbreviations)
 
-The multi-language model training method is the same as the Chinese model. The training data set is 100w synthetic data. A small amount of fonts and test data can be downloaded on [Baidu Netdisk](https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA),Extraction code:frgi.
+The multi-language model training method is the same as the Chinese model. The training data set is 100w synthetic data. A small amount of fonts and test data can be downloaded using the following two methods.
+* [Baidu Netdisk](https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA),Extraction code:frgi.
+* [Google drive](https://drive.google.com/file/d/18cSWX7wXSy4G0tbKJ0d9PuIaiwRLHpjA/view)
 
 If you want to finetune on the basis of the existing model effect, please refer to the following instructions to modify the configuration file:
 
@@ -394,7 +397,7 @@ Global:
 
 Train:
   dataset:
-    # Type of dataset，we support LMDBDateSet and SimpleDataSet
+    # Type of dataset，we support LMDBDataSet and SimpleDataSet
     name: SimpleDataSet
     # Path of dataset
     data_dir: ./train_data/
@@ -404,7 +407,7 @@ Train:
 
 Eval:
   dataset:
-    # Type of dataset，we support LMDBDateSet and SimpleDataSet
+    # Type of dataset，we support LMDBDataSet and SimpleDataSet
     name: SimpleDataSet
     # Path of dataset
     data_dir: ./train_data
