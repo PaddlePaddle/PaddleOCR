@@ -67,9 +67,9 @@ else
         cd ./inference && tar xf ${eval_model_name}.tar && tar xf ch_det_data_50.tar && cd ../
     else 
         rm -rf ./train_data/ic15_data
-        eval_model_name="ch_ppocr_mobile_v2.0_rec_train"
+        eval_model_name="ch_ppocr_mobile_v2.0_rec_infer"
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ic15_data.tar
-        wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_train.tar
+        wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar
         cd ./inference && tar xf ${eval_model_name}.tar && tar xf ic15_data.tar && cd ../
     fi 
 fi
