@@ -30,8 +30,8 @@ python3 -m pip install paddlepaddle-gpu==2.1.1 -i https://mirror.baidu.com/pypi/
 # CPU
  python3 -m pip install paddlepaddle==2.1.1 -i https://mirror.baidu.com/pypi/simple
 
-# For more，refer[Installation](https://www.paddlepaddle.org.cn/install/quick)。
 ```
+For more，refer [Installation](https://www.paddlepaddle.org.cn/install/quick) .
 
 - **(2) Install Layout-Parser**
 
