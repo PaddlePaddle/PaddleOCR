@@ -11,10 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import sys
 import os
 import subprocess
 
-if subprocess.call('cd ppocr/postprocess/pse_postprocess/pse;python3 setup.py build_ext --inplace;cd -', shell=True) != 0:
+python_path = sys.executable
+
+if subprocess.call('cd ppocr/postprocess/pse_postprocess/pse;{} setup.py build_ext --inplace;cd -'.format(python_path), shell=True) != 0:
     raise RuntimeError('Cannot compile pse: {}'.format(os.path.dirname(os.path.realpath(__file__))))
 
 from .pse import pse
