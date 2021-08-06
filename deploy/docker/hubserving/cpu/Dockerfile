@@ -1,5 +1,5 @@
 # Version: 2.0.0
-FROM registry.baidubce.com/paddlepaddle/paddle:2.0.0
+FROM registry.baidubce.com/paddlepaddle/paddle:2.1.2
 
 # PaddleOCR base on Python3.7
 RUN pip3.7 install --upgrade pip -i https://mirror.baidu.com/pypi/simple
@@ -7,6 +7,8 @@ RUN pip3.7 install --upgrade pip -i https://mirror.baidu.com/pypi/simple
 RUN pip3.7 install paddlehub --upgrade -i https://mirror.baidu.com/pypi/simple
 
 RUN git clone https://github.com/PaddlePaddle/PaddleOCR.git /PaddleOCR
+
+ADD https://raw.githubusercontent.com/python/cpython/3.7/Lib/typing.py /usr/local/lib/python3.7
 
 WORKDIR /PaddleOCR
 
