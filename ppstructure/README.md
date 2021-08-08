@@ -13,7 +13,7 @@ PP-Structure is an OCR toolkit that can be used for complex documents analysis. 
 
 <img src="../doc/table/ppstructure.GIF" width="100%"/>
 
-
+<img src="../doc/table/tabel_vis_en.png" width="100%"/>
 
 ## 2. Installation
 

@@ -13,7 +13,7 @@ PP-Structure是一个可用于复杂文档结构分析和处理的OCR工具包�
 
 <img src="../doc/table/ppstructure.GIF" width="100%"/>
 
-
+<img src="../doc/table/tabel_vis_ch.png" width="100%"/>
 
 ## 2. 安装
 
