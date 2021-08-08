@@ -305,7 +305,8 @@ paddleocr --image_dir http://n.sinaimg.cn/ent/transform/w630h933/20171222/o111-f
 Support numpy array as input only when used by code
 
 ```python
-from paddleocr import PaddleOCR, draw_ocr
+import cv2
+from paddleocr import PaddleOCR, draw_ocr, download_with_progressbar
 ocr = PaddleOCR(use_angle_cls=True, lang="ch") # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs/11.jpg'
 img = cv2.imread(img_path)
@@ -316,7 +317,9 @@ for line in result:
 
 # show result
 from PIL import Image
-image = Image.open(img_path).convert('RGB')
+
+download_with_progressbar(img_path, 'tmp.jpg')
+image = Image.open('tmp.jpg').convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
 scores = [line[1][1] for line in result]
@@ -362,5 +365,5 @@ im_show.save('result.jpg')
 | det                     | Enable detction when `ppocr.ocr` func exec                                                                                                                                                                                                   | TRUE                    |
 | rec                     | Enable recognition when `ppocr.ocr` func exec                                                                                                                                                                                                   | TRUE                    |
 | cls                     | Enable classification when `ppocr.ocr` func exec((Use use_angle_cls in command line mode to control whether to start classification in the forward direction)                                                                                                                                                                                                   | FALSE                    |
-| show_log                     | Whether to print log in det and rec 
-                                                                                                                                                                                               | FALSE                    |
+| show_log                     | Whether to print log in det and rec | FALSE                    |
+| type                     | Perform ocr or table structuring, the value is selected in ['ocr','structure']                                                                                                                                                                                             | ocr                    |
