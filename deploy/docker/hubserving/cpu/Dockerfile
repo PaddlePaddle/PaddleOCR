@@ -8,7 +8,7 @@ RUN pip3.7 install paddlehub --upgrade -i https://mirror.baidu.com/pypi/simple
 
 RUN git clone https://github.com/PaddlePaddle/PaddleOCR.git /PaddleOCR
 
-ADD https://raw.githubusercontent.com/python/cpython/3.7/Lib/typing.py /usr/local/lib/python3.7
+ADD https://raw.githubusercontent.com/python/cpython/3.7/Lib/typing.py /usr/local/python3.7.0/lib/python3.7/
 
 WORKDIR /PaddleOCR
 
