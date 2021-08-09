@@ -35,32 +35,42 @@ if [ ${MODE} = "lite_train_infer" ];then
     # pretrain lite train data
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams
     rm -rf ./train_data/icdar2015
+    rm -rf ./train_data/ic15_data
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015_lite.tar
-    cd ./train_data/ && tar xf icdar2015_lite.tar
+    wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ic15_data.tar # todo change to bcebos
+
+    cd ./train_data/ && tar xf icdar2015_lite.tar && tar xf ic15_data.tar
     ln -s ./icdar2015_lite ./icdar2015
     cd ../
 elif [ ${MODE} = "whole_train_infer" ];then
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams
     rm -rf ./train_data/icdar2015
+    rm -rf ./train_data/ic15_data
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015.tar
-    cd ./train_data/ && tar xf icdar2015.tar && cd ../
+    wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ic15_data.tar
+    cd ./train_data/ && tar xf icdar2015.tar && tar xf ic15_data.tar && cd ../
 elif [ ${MODE} = "whole_infer" ];then
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams
     rm -rf ./train_data/icdar2015
+    rm -rf ./train_data/ic15_data
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015_infer.tar
-    cd ./train_data/ && tar xf icdar2015_infer.tar
+    wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ic15_data.tar
+    cd ./train_data/ && tar xf icdar2015_infer.tar && tar xf ic15_data.tar
     ln -s ./icdar2015_infer ./icdar2015
     cd ../
 else
-    rm -rf ./train_data/icdar2015
-    if [[ ${model_name} = "ocr_det" ]]; then
-        wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar
+    if [ ${model_name} = "ocr_det" ]; then
         eval_model_name="ch_ppocr_mobile_v2.0_det_infer"
+        rm -rf ./train_data/icdar2015
+        wget -nc -P ./train_data https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar
         cd ./inference && tar xf ${eval_model_name}.tar && tar xf ch_det_data_50.tar && cd ../
     else 
-        eval_model_name="ch_ppocr_mobile_v2.0_rec_train"
-        wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_train.tar
-        cd ./inference && tar xf ${eval_model_name}.tar && cd ../
+        rm -rf ./train_data/ic15_data
+        eval_model_name="ch_ppocr_mobile_v2.0_rec_infer"
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ic15_data.tar
+        wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar
+        cd ./inference && tar xf ${eval_model_name}.tar && tar xf ic15_data.tar && cd ../
     fi 
 fi
+
