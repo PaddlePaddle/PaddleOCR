@@ -27,7 +27,12 @@ import json
 import cv2
 
 
+
 __dir__ = os.path.dirname(os.path.abspath(__file__))
+
+import numpy as np
+
+
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 sys.path.append("..")
@@ -78,7 +83,7 @@ class WindowMixin(object):
             addActions(menu, actions)
         return menu
 
-    def toolbar(self, title, actions=None):  
+    def toolbar(self, title, actions=None):
         toolbar = ToolBar(title)
         toolbar.setObjectName(u'%sToolBar' % title)
         # toolbar.setOrientation(Qt.Vertical)
@@ -98,7 +103,7 @@ class MainWindow(QMainWindow, WindowMixin):
 
         # Load setting in the main thread
         self.settings = Settings()
-        self.settings.load()  
+        self.settings.load()
         settings = self.settings
         self.lang = lang
         # Load string bundle for i18n
@@ -159,7 +164,7 @@ class MainWindow(QMainWindow, WindowMixin):
         filelistLayout = QVBoxLayout()
         filelistLayout.setContentsMargins(0, 0, 0, 0)
         filelistLayout.addWidget(self.fileListWidget)
-        
+
         self.AutoRecognition = QToolButton()
         self.AutoRecognition.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
         self.AutoRecognition.setIcon(newIcon('Auto'))
@@ -176,7 +181,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.filedock.setObjectName(getStr('files'))
         self.filedock.setWidget(fileListContainer)
         self.addDockWidget(Qt.LeftDockWidgetArea, self.filedock)
-        
+
         ######## Right area ##########
         listLayout = QVBoxLayout()
         listLayout.setContentsMargins(0, 0, 0, 0)
@@ -250,7 +255,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.imgsplider.setMaximum(150)
         self.imgsplider.setSingleStep(1)
         self.imgsplider.setTickPosition(QSlider.TicksBelow)
-        self.imgsplider.setTickInterval(1) 
+        self.imgsplider.setTickInterval(1)
         op = QGraphicsOpacityEffect()
         op.setOpacity(0.2)
         self.imgsplider.setGraphicsEffect(op)
@@ -266,7 +271,9 @@ class MainWindow(QMainWindow, WindowMixin):
         self.zoomWidget = ZoomWidget()
         self.colorDialog = ColorDialog(parent=self)
         self.zoomWidgetValue = self.zoomWidget.value()
-        
+
+        self.msgBox = QMessageBox()
+
         ########## thumbnail #########
         hlayout = QHBoxLayout()
         m = (0, 0, 0, 0)
@@ -294,7 +301,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.nextButton.setStyleSheet('border: none;')
         self.nextButton.clicked.connect(self.openNextImg)
         self.nextButton.setShortcut('d')
-        
+
         hlayout.addWidget(self.preButton)
         hlayout.addWidget(self.iconlist)
         hlayout.addWidget(self.nextButton)
@@ -303,7 +310,7 @@ class MainWindow(QMainWindow, WindowMixin):
         iconListContainer = QWidget()
         iconListContainer.setLayout(hlayout)
         iconListContainer.setFixedHeight(100)
-        
+
         ########### Canvas ###########
         self.canvas = Canvas(parent=self)
         self.canvas.zoomRequest.connect(self.zoomRequest)
@@ -359,6 +366,9 @@ class MainWindow(QMainWindow, WindowMixin):
 
         opendir = action(getStr('openDir'), self.openDirDialog,
                          'Ctrl+u', 'open', getStr('openDir'))
+
+        open_dataset_dir = action(getStr('openDatasetDir'), self.openDatasetDirDialog,
+                         'Ctrl+p', 'open', getStr('openDatasetDir'), enabled=False)
 
         save = action(getStr('save'), self.saveFile,
                       'Ctrl+V', 'verify', getStr('saveDetail'), enabled=False)
@@ -439,7 +449,7 @@ class MainWindow(QMainWindow, WindowMixin):
         AutoRec = action(getStr('autoRecognition'), self.autoRecognition,
                       '', 'Auto', getStr('autoRecognition'), enabled=False)
 
-        reRec = action(getStr('reRecognition'), self.reRecognition, 
+        reRec = action(getStr('reRecognition'), self.reRecognition,
                       'Ctrl+Shift+R', 'reRec', getStr('reRecognition'), enabled=False)
 
         singleRere = action(getStr('singleRe'), self.singleRerecognition,
@@ -456,6 +466,12 @@ class MainWindow(QMainWindow, WindowMixin):
 
         undoLastPoint = action(getStr("undoLastPoint"), self.canvas.undoLastPoint,
                                'Ctrl+Z', "undo", getStr("undoLastPoint"), enabled=False)
+
+        rotateLeft = action(getStr("rotateLeft"), self.rotateLeftImg,
+                               'Ctrl+Alt+L', "rotateLeft", getStr("rotateLeft"), enabled=False)
+
+        rotateRight = action(getStr("rotateRight"), self.rotateRightImg,
+                               'Ctrl+Alt+R', "rotateRight", getStr("rotateRight"), enabled=False)
 
         undo = action(getStr("undo"), self.undoShapeEdit,
                       'Ctrl+Z', "undo", getStr("undo"), enabled=False)
@@ -520,13 +536,14 @@ class MainWindow(QMainWindow, WindowMixin):
                               zoom=zoom, zoomIn=zoomIn, zoomOut=zoomOut, zoomOrg=zoomOrg,
                               fitWindow=fitWindow, fitWidth=fitWidth,
                               zoomActions=zoomActions, saveLabel=saveLabel,
-                              undo=undo, undoLastPoint=undoLastPoint,
+                              undo=undo, undoLastPoint=undoLastPoint,open_dataset_dir=open_dataset_dir,
+                              rotateLeft=rotateLeft,rotateRight=rotateRight,
                               fileMenuActions=(
-                                  opendir, saveLabel,  resetAll, quit),
+                                  opendir,  open_dataset_dir, saveLabel,  resetAll, quit),
                               beginner=(), advanced=(),
                               editMenu=(createpoly, edit, copy, delete,singleRere,None, undo, undoLastPoint,
-                                        None, color1, self.drawSquaresOption),
-                              beginnerContext=(create, edit, copy, delete, singleRere),
+                                        None, rotateLeft, rotateRight, None, color1, self.drawSquaresOption),
+                              beginnerContext=(create, edit, copy, delete, singleRere, rotateLeft, rotateRight,),
                               advancedContext=(createMode, editMode, edit, copy,
                                                delete, shapeLineColor, shapeFillColor),
                               onLoadActive=(
@@ -564,7 +581,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.autoSaveOption.triggered.connect(self.autoSaveFunc)
 
         addActions(self.menus.file,
-                   (opendir, None, saveLabel, saveRec, self.autoSaveOption, None, resetAll, deleteImg, quit))
+                   (opendir, open_dataset_dir, None, saveLabel, saveRec, self.autoSaveOption, None, resetAll, deleteImg, quit))
 
         addActions(self.menus.help, (showKeys,showSteps, showInfo))
         addActions(self.menus.view, (
@@ -777,6 +794,48 @@ class MainWindow(QMainWindow, WindowMixin):
         self.canvas.fourpoint = True
         self.actions.create.setEnabled(False)
         self.actions.undoLastPoint.setEnabled(True)
+
+    def rotateImg(self, filename, k, _value):
+
+        self.actions.rotateRight.setEnabled(_value)
+        pix = cv2.imread(filename)
+        pix = np.rot90(pix, k)
+        cv2.imwrite(filename, pix)
+        self.canvas.update()
+        self.loadFile(filename)
+
+    def rotateImgWarn(self):
+        if self.lang == 'ch':
+            self.msgBox.warning (self, "提示", "\n 该图片已经有标注框,旋转操作会打乱标注,建议清除标注框后旋转。")
+        else:
+            self.msgBox.warning (self, "Warn", "\n The picture already has a label box, and rotation will disrupt the label.\
+             It is recommended to clear the label box and rotate it.")
+
+    def rotateLeftImg(self, _value=False):
+
+        filename = self.mImgList[self.currIndex]
+
+        if os.path.exists(filename):
+            if self.itemsToShapesbox:
+                self.rotateImgWarn()
+            else:
+                self.rotateImg(filename=filename, k=1, _value=True)
+        else:
+            self.rotateImgWarn()
+            self.actions.rotateRight.setEnabled(False)
+
+    def rotateRightImg(self, _value=False):
+
+        filename = self.mImgList[self.currIndex]
+
+        if os.path.exists(filename):
+            if self.itemsToShapesbox:
+                self.rotateImgWarn()
+            else:
+                self.rotateImg(filename=filename, k=-1, _value=True)
+        else:
+            self.rotateImgWarn()
+            self.actions.rotateRight.setEnabled(False)
 
     def toggleDrawingSensitive(self, drawing=True):
         """In the middle of drawing, toggling between modes should be disabled."""
@@ -1279,7 +1338,7 @@ class MainWindow(QMainWindow, WindowMixin):
                         titem = self.iconlist.item(i)
                         titem.setSelected(True)
                         self.iconlist.scrollToItem(titem)
-                        break 
+                        break
             else:
                 self.fileListWidget.clear()
                 self.mImgList.clear()
@@ -1287,7 +1346,7 @@ class MainWindow(QMainWindow, WindowMixin):
 
         # if unicodeFilePath and self.iconList.count() > 0:
         #     if unicodeFilePath in self.mImgList:
-                
+
         if unicodeFilePath and os.path.exists(unicodeFilePath):
             self.canvas.verified = False
 
@@ -1318,7 +1377,7 @@ class MainWindow(QMainWindow, WindowMixin):
             self.addRecentFile(self.filePath)
             self.toggleActions(True)
             self.showBoundingBoxFromPPlabel(filePath)
-            
+
             self.setWindowTitle(__appname__ + ' ' + filePath)
 
             # Default : select last item if there is at least one item
@@ -1330,7 +1389,7 @@ class MainWindow(QMainWindow, WindowMixin):
             return True
         return False
 
-    
+
     def showBoundingBoxFromPPlabel(self, filePath):
         imgidx = self.getImglabelidx(filePath)
         if imgidx not in self.PPlabel.keys():
@@ -1423,6 +1482,7 @@ class MainWindow(QMainWindow, WindowMixin):
 
     def loadRecent(self, filename):
         if self.mayContinue():
+            print(filename,"======")
             self.loadFile(filename)
 
     def scanAllImages(self, folderPath):
@@ -1457,6 +1517,22 @@ class MainWindow(QMainWindow, WindowMixin):
             targetDirPath = ustr(defaultOpenDirPath)
         self.lastOpenDir = targetDirPath
         self.importDirImages(targetDirPath)
+
+    def openDatasetDirDialog(self,):
+        if not self.mayContinue():
+            return
+
+        if self.lastOpenDir and os.path.exists(self.lastOpenDir):
+            os.startfile(self.lastOpenDir)
+            defaultOpenDirPath = self.lastOpenDir
+        else:
+            if self.lang == 'ch':
+                self.msgBox.warning(self, "提示", "\n 原文件夹已不存在,请从新选择数据集路径!")
+            else:
+                self.msgBox.warning(self, "Warn", "\n The original folder no longer exists, please choose the data set path again!")
+
+            self.actions.open_dataset_dir.setEnabled(False)
+            defaultOpenDirPath = os.path.dirname(self.filePath) if self.filePath else '.'
 
     def importDirImages(self, dirpath, isDelete = False):
         if not self.mayContinue() or not dirpath:
@@ -1505,6 +1581,10 @@ class MainWindow(QMainWindow, WindowMixin):
         self.reRecogButton.setEnabled(True)
         self.actions.AutoRec.setEnabled(True)
         self.actions.reRec.setEnabled(True)
+        self.actions.open_dataset_dir.setEnabled(True)
+        self.actions.rotateLeft.setEnabled(True)
+        self.actions.rotateRight.setEnabled(True)
+
 
 
     def openPrevImg(self, _value=False):
@@ -1513,7 +1593,7 @@ class MainWindow(QMainWindow, WindowMixin):
 
         if self.filePath is None:
             return
-        
+
         currIndex = self.mImgList.index(self.filePath)
         self.mImgList5 = self.mImgList[:5]
         if currIndex - 1 >= 0:
@@ -1543,7 +1623,7 @@ class MainWindow(QMainWindow, WindowMixin):
         if filename:
             print('file name in openNext is ',filename)
             self.loadFile(filename)
-        
+
     def updateFileListIcon(self, filename):
         pass
 
@@ -1655,7 +1735,7 @@ class MainWindow(QMainWindow, WindowMixin):
         proc.startDetached(os.path.abspath(__file__))
 
     def mayContinue(self):  #
-        if not self.dirty:                                    
+        if not self.dirty:
             return True
         else:
             discardChanges = self.discardChangesDialog()
@@ -2082,7 +2162,7 @@ def main():
 
 
 if __name__ == '__main__':
-        
+
     resource_file = './libs/resources.py'
     if not os.path.exists(resource_file):
         output = os.system('pyrcc5 -o libs/resources.py resources.qrc')
