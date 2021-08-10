@@ -189,33 +189,35 @@ or the generated Paddle inference library path (`build/paddle_inference_install_
 * Execute the built executable file by ```./build/ocr_***```. You'll get some command line parameter information. 
 ##### 1. run ocr_det demo:
 ```shell
-./build/ocr_det 
-    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer 
+./build/ocr_det \
+    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
     --image_dir=../../doc/imgs/12.jpg
 ```
 ##### 2. run ocr_rec demo:
 ```shell
-./build/ocr_rec 
-    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer 
+./build/ocr_rec \
+    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
     --image_dir=../../doc/imgs_words/ch/
 ```
 ##### 3. run ocr_system demo:
 ```shell
 # without text direction classifier
-./build/ocr_rec 
-    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer 
-    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer 
+./build/ocr_system \
+    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
+    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
     --image_dir=../../doc/imgs/12.jpg
 # with text direction classifier
-./build/ocr_rec 
-    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer 
-    --use_angle_cls=true 
-    --cls_model_dir=inference/ch_ppocr_mobile_v2.0_cls_infer 
-    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer 
+./build/ocr_system \
+    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
+    --use_angle_cls=true \
+    --cls_model_dir=inference/ch_ppocr_mobile_v2.0_cls_infer \
+    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
     --image_dir=../../doc/imgs/12.jpg
 ```
 
 More parameters are as follows,  
+
+- common parameters
 
 |parameter|data type|default|meaning|
 | --- | --- | --- | --- |
@@ -224,7 +226,11 @@ More parameters are as follows,
 |gpu_mem|int|4000|GPU memory requested|
 |cpu_math_library_num_threads|int|10|Number of threads when using CPU inference. When machine cores is enough, the large the value, the faster the inference speed|
 |use_mkldnn|bool|true|Whether to use mkdlnn library|
-|**detection related**|
+
+- detection related parameters
+
+|parameter|data type|default|meaning|
+| --- | --- | --- | --- |
 |det_model_dir|string|-|Address of detection inference model|
 |max_side_len|int|960|Limit the maximum image height and width to 960|
 |det_db_thresh|float|0.3|Used to filter the binarized image of DB prediction, setting 0.-0.3 has no obvious effect on the result|
@@ -232,11 +238,19 @@ More parameters are as follows,
 |det_db_unclip_ratio|float|1.6|Indicates the compactness of the text box, the smaller the value, the closer the text box to the text|
 |use_polygon_score|bool|false|Whether to use polygon box to calculate bbox score, false means to use rectangle box to calculate. Use rectangular box to calculate faster, and polygonal box more accurate for curved text area.|
 |visualize|bool|true|Whether to visualize the results，when it is set as true, The prediction result will be save in the image file `./ocr_vis.png`.|
-|**recogniton related**|
+
+- classifier related parameters
+
+|parameter|data type|default|meaning|
+| --- | --- | --- | --- |
 |use_angle_cls|bool|false|Whether to use the direction classifier|
 |cls_model_dir|string|-|Address of direction classifier inference model|
 |cls_thresh|float|0.9|Score threshold of the  direction classifier|
-|**classification related**|
+
+- recogniton related parameters
+
+|parameter|data type|default|meaning|
+| --- | --- | --- | --- |
 |rec_model_dir|string|-|Address of recognition inference model|
 |char_list_file|string|../../ppocr/utils/ppocr_keys_v1.txt|dictionary file|
 

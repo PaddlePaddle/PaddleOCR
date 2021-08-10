@@ -184,33 +184,35 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 直接运行编译好的可执行文件：```./build/ocr_***```，可获得参数信息提示。
 ##### 1. 检测demo运行方式：
 ```shell
-./build/ocr_det 
-    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer 
+./build/ocr_det \
+    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
     --image_dir=../../doc/imgs/12.jpg
 ```
 ##### 2. 识别demo运行方式：
 ```shell
-./build/ocr_rec 
-    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer 
+./build/ocr_rec \
+    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
     --image_dir=../../doc/imgs_words/ch/
 ```
 ##### 3. 串联demo运行方式：
 ```shell
 # 不使用方向分类器
-./build/ocr_rec 
-    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer 
-    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer 
+./build/ocr_system \
+    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
+    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
     --image_dir=../../doc/imgs/12.jpg
 # 使用方向分类器
-./build/ocr_rec 
-    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer 
-    --use_angle_cls=true 
-    --cls_model_dir=inference/ch_ppocr_mobile_v2.0_cls_infer 
-    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer 
+./build/ocr_system \
+    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
+    --use_angle_cls=true \
+    --cls_model_dir=inference/ch_ppocr_mobile_v2.0_cls_infer \
+    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
     --image_dir=../../doc/imgs/12.jpg
 ```
 
 更多参数如下：
+
+- 通用参数
 
 |参数名称|类型|默认参数|意义|
 | --- | --- | --- | --- |
@@ -219,7 +221,11 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 |gpu_mem|int|4000|申请的GPU内存|
 |cpu_math_library_num_threads|int|10|CPU预测时的线程数，在机器核数充足的情况下，该值越大，预测速度越快|
 |use_mkldnn|bool|true|是否使用mkldnn库|
-|**检测模型相关**|
+
+- 检测模型相关
+
+|参数名称|类型|默认参数|意义|
+| --- | --- | --- | --- |
 |det_model_dir|string|-|检测模型inference model地址|
 |max_side_len|int|960|输入图像长宽大于960时，等比例缩放图像，使得图像最长边为960|
 |det_db_thresh|float|0.3|用于过滤DB预测的二值化图像，设置为0.-0.3对结果影响不明显|
@@ -227,11 +233,19 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 |det_db_unclip_ratio|float|1.6|表示文本框的紧致程度，越小则文本框更靠近文本|
 |use_polygon_score|bool|false|是否使用多边形框计算bbox score，false表示使用矩形框计算。矩形框计算速度更快，多边形框对弯曲文本区域计算更准确。|
 |visualize|bool|true|是否对结果进行可视化，为1时，会在当前文件夹下保存文件名为`ocr_vis.png`的预测结果。|
-|**方向分类器相关**|
+
+- 方向分类器相关
+
+|参数名称|类型|默认参数|意义|
+| --- | --- | --- | --- |
 |use_angle_cls|bool|false|是否使用方向分类器|
 |cls_model_dir|string|-|方向分类器inference model地址|
 |cls_thresh|float|0.9|方向分类器的得分阈值|
-|**识别模型相关**|
+
+- 识别模型相关
+
+|参数名称|类型|默认参数|意义|
+| --- | --- | --- | --- |
 |rec_model_dir|string|-|识别模型inference model地址|
 |char_list_file|string|../../ppocr/utils/ppocr_keys_v1.txt|字典文件|
 
