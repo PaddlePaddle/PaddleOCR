@@ -23,15 +23,12 @@ std::vector<std::string> OCRConfig::split(const std::string &str,
     return res;
 
   int strlen = str.length() + 1;
-  chars *strs = new char[strlen];
+  char *strs = new char[strlen];
   std::strcpy(strs, str.c_str());
 
   int delimlen = delim.length() + 1;
   char *d = new char[delimlen];
   std::strcpy(d, delim.c_str());
-
-  delete[] strs;
-  delete[] d;
 
   char *p = std::strtok(strs, d);
   while (p) {
@@ -39,6 +36,9 @@ std::vector<std::string> OCRConfig::split(const std::string &str,
     res.push_back(s);
     p = std::strtok(NULL, d);
   }
+
+  delete[] strs;
+  delete[] d;
 
   return res;
 }
