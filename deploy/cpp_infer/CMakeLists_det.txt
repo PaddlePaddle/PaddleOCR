@@ -38,10 +38,8 @@ endif()
 
 
 if (WIN32)
-  include_directories("${PADDLE_LIB}/paddle/fluid/inference")
   include_directories("${PADDLE_LIB}/paddle/include")
   link_directories("${PADDLE_LIB}/paddle/lib")
-  link_directories("${PADDLE_LIB}/paddle/fluid/inference")
   find_package(OpenCV REQUIRED PATHS ${OPENCV_DIR}/build/ NO_DEFAULT_PATH)
 
 else ()
