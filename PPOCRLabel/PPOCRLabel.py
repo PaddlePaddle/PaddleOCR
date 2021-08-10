@@ -25,6 +25,7 @@ from functools import partial
 from collections import defaultdict
 import json
 import cv2
+import platform
 
 
 
@@ -801,14 +802,13 @@ class MainWindow(QMainWindow, WindowMixin):
         pix = cv2.imread(filename)
         pix = np.rot90(pix, k)
         cv2.imwrite(filename, pix)
-        self.canvas.update()
-        self.loadFile(filename)
+        self.loadFile(filename, True)
 
     def rotateImgWarn(self):
         if self.lang == 'ch':
-            self.msgBox.warning (self, "提示", "\n 该图片已经有标注框,旋转操作会打乱标注,建议清除标注框后旋转。")
+            self.msgBox.warning(self, "提示", "\n 该图片已经有标注框,旋转操作会打乱标注,建议清除标注框后旋转。")
         else:
-            self.msgBox.warning (self, "Warn", "\n The picture already has a label box, and rotation will disrupt the label.\
+            self.msgBox.warning(self, "Warn", "\n The picture already has a label box, and rotation will disrupt the label.\
              It is recommended to clear the label box and rotate it.")
 
     def rotateLeftImg(self, _value=False):
@@ -909,7 +909,7 @@ class MainWindow(QMainWindow, WindowMixin):
             # shape.line_color = generateColorByText(shape.label)
             self.setDirty()
         else:  # User probably changed item visibility
-            self.canvas.setShapeVisible(shape, True)#item.checkState() == Qt.Checked
+            self.canvas.setShapeVisible(shape, True)  #item.checkState() == Qt.Checked
 
     def editBox(self):  # ADD
         if not self.canvas.editing():
@@ -1306,10 +1306,15 @@ class MainWindow(QMainWindow, WindowMixin):
         for item, shape in self.itemsToShapes.items():
             self.canvas.setShapeVisible(shape, value)
 
-    def loadFile(self, filePath=None):
+    def loadFile(self, filePath=None, saveDirectly=False):
         """Load the specified file, or the last opened file if None."""
-        if self.dirty:
-            self.mayContinue()
+        if not saveDirectly:
+            if self.dirty:
+                self.mayContinue()
+        else:
+            if self.dirty:
+                self.saveFile()
+
         self.resetState()
         self.canvas.setEnabled(False)
         if filePath is None:
@@ -1519,11 +1524,15 @@ class MainWindow(QMainWindow, WindowMixin):
         self.importDirImages(targetDirPath)
 
     def openDatasetDirDialog(self,):
-        if not self.mayContinue():
-            return
 
         if self.lastOpenDir and os.path.exists(self.lastOpenDir):
-            os.startfile(self.lastOpenDir)
+            systemInfo = platform.platform()
+
+            if "Windows" in systemInfo:
+                os.startfile(self.lastOpenDir)
+            else:
+                os.system('open ' + os.path.normpath(self.lastOpenDir))
+
             defaultOpenDirPath = self.lastOpenDir
         else:
             if self.lang == 'ch':
