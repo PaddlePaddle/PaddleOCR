@@ -150,7 +150,8 @@ void DBDetector::Run(cv::Mat &img,
       this->det_db_unclip_ratio_, this->use_polygon_score_);
 
   boxes = post_processor_.FilterTagDetRes(boxes, ratio_h, ratio_w, srcimg);
-
+  std::cout << "Detected boxes num: " << boxes.size() << endl;
+    
   //// visualization
   if (this->visualize_) {
     Utility::VisualizeBboxes(srcimg, boxes);

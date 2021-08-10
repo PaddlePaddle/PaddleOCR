@@ -62,8 +62,7 @@ public:
   // Load Paddle inference model
   void LoadModel(const std::string &model_dir);
 
-  void Run(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat &img,
-           Classifier *cls);
+  void Run(cv::Mat &img);
 
 private:
   std::shared_ptr<Predictor> predictor_;

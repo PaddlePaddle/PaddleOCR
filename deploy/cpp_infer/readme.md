@@ -156,80 +156,87 @@ inference/
 
 
 ```shell
-sh tools/build.sh
+sh tools/build.sh MODE(['det', 'rec', 'system'])
+```
+其中`MODE`表示demo功能，支持3种参数，**按需选择一种参数即可**，相应解释如下：
+```shell
+sh tools/build.sh det # 编译检测demo
+sh tools/build.sh rec # 编译识别demo
+sh tools/build.sh system # 编译串联demo（包括方向分类器）
 ```
 
-具体地，`tools/build.sh`中内容如下。
+此外，需要修改`tools/build.sh`中环境路径，相关内容如下：
 
 ```shell
 OPENCV_DIR=your_opencv_dir
 LIB_DIR=your_paddle_inference_dir
 CUDA_LIB_DIR=your_cuda_lib_dir
 CUDNN_LIB_DIR=/your_cudnn_lib_dir
-
-BUILD_DIR=build
-rm -rf ${BUILD_DIR}
-mkdir ${BUILD_DIR}
-cd ${BUILD_DIR}
-cmake .. \
-    -DPADDLE_LIB=${LIB_DIR} \
-    -DWITH_MKL=ON \
-    -DDEMO_NAME=ocr_system \
-    -DWITH_GPU=OFF \
-    -DWITH_STATIC_LIB=OFF \
-    -DUSE_TENSORRT=OFF \
-    -DOPENCV_DIR=${OPENCV_DIR} \
-    -DCUDNN_LIB=${CUDNN_LIB_DIR} \
-    -DCUDA_LIB=${CUDA_LIB_DIR} \
-
-make -j
 ```
 
-`OPENCV_DIR`为opencv编译安装的地址；`LIB_DIR`为下载(`paddle_inference`文件夹)或者编译生成的Paddle预测库地址(`build/paddle_inference_install_dir`文件夹)；`CUDA_LIB_DIR`为cuda库文件地址，在docker中为`/usr/local/cuda/lib64`；`CUDNN_LIB_DIR`为cudnn库文件地址，在docker中为`/usr/lib/x86_64-linux-gnu/`。**注意**：以上路径都写绝对路径，不要写相对路径。
+其中，`OPENCV_DIR`为opencv编译安装的地址；`LIB_DIR`为下载(`paddle_inference`文件夹)或者编译生成的Paddle预测库地址(`build/paddle_inference_install_dir`文件夹)；`CUDA_LIB_DIR`为cuda库文件地址，在docker中为`/usr/local/cuda/lib64`；`CUDNN_LIB_DIR`为cudnn库文件地址，在docker中为`/usr/lib/x86_64-linux-gnu/`。**注意：以上路径都写绝对路径，不要写相对路径。**
 
 
-* 编译完成之后，会在`build`文件夹下生成一个名为`ocr_system`的可执行文件。
+* 编译完成之后，会在`build`文件夹下生成一个名为`ocr_det`或`ocr_rec`或`ocr_system`的可执行文件。
 
 
 ### 运行demo
-* 执行以下命令，完成对一幅图像的OCR识别与检测。
-
+直接运行编译好的可执行文件：```./build/ocr_***```，可获得参数信息提示。
+##### 1. 检测demo运行方式：
 ```shell
-sh tools/run.sh
+./build/ocr_det 
+    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer 
+    --image_dir=../../doc/imgs/12.jpg
+```
+##### 2. 识别demo运行方式：
+```shell
+./build/ocr_rec 
+    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer 
+    --image_dir=../../doc/imgs_words/ch/
+```
+##### 3. 串联demo运行方式：
+```shell
+# 不使用方向分类器
+./build/ocr_rec 
+    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer 
+    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer 
+    --image_dir=../../doc/imgs/12.jpg
+# 使用方向分类器
+./build/ocr_rec 
+    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer 
+    --use_angle_cls=true 
+    --cls_model_dir=inference/ch_ppocr_mobile_v2.0_cls_infer 
+    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer 
+    --image_dir=../../doc/imgs/12.jpg
 ```
 
-* 若需要使用方向分类器，则需要将`tools/config.txt`中的`use_angle_cls`参数修改为1，表示开启方向分类器的预测。
-* 更多地，tools/config.txt中的参数及解释如下。
+更多参数如下：
 
-```
-use_gpu  0 # 是否使用GPU，1表示使用，0表示不使用
-gpu_id  0 # GPU id，使用GPU时有效
-gpu_mem  4000  # 申请的GPU内存
-cpu_math_library_num_threads  10 # CPU预测时的线程数，在机器核数充足的情况下，该值越大，预测速度越快
-use_mkldnn 1 # 是否使用mkldnn库
+|参数名称|类型|默认参数|意义|
+| --- | --- | --- | --- |
+|use_gpu|bool|false|是否使用GPU|
+|gpu_id|int|0|GPU id，使用GPU时有效|
+|gpu_mem|int|4000|申请的GPU内存|
+|cpu_math_library_num_threads|int|10|CPU预测时的线程数，在机器核数充足的情况下，该值越大，预测速度越快|
+|use_mkldnn|bool|true|是否使用mkldnn库|
+|**检测模型相关**|
+|det_model_dir|string|-|检测模型inference model地址|
+|max_side_len|int|960|输入图像长宽大于960时，等比例缩放图像，使得图像最长边为960|
+|det_db_thresh|float|0.3|用于过滤DB预测的二值化图像，设置为0.-0.3对结果影响不明显|
+|det_db_box_thresh|float|0.5|DB后处理过滤box的阈值，如果检测存在漏框情况，可酌情减小|
+|det_db_unclip_ratio|float|1.6|表示文本框的紧致程度，越小则文本框更靠近文本|
+|use_polygon_score|bool|false|是否使用多边形框计算bbox score，false表示使用矩形框计算。矩形框计算速度更快，多边形框对弯曲文本区域计算更准确。|
+|visualize|bool|true|是否对结果进行可视化，为1时，会在当前文件夹下保存文件名为`ocr_vis.png`的预测结果。|
+|**方向分类器相关**|
+|use_angle_cls|bool|false|是否使用方向分类器|
+|cls_model_dir|string|-|方向分类器inference model地址|
+|cls_thresh|float|0.9|方向分类器的得分阈值|
+|**识别模型相关**|
+|rec_model_dir|string|-|识别模型inference model地址|
+|char_list_file|string|../../ppocr/utils/ppocr_keys_v1.txt|字典文件|
 
-# det config
-max_side_len  960 # 输入图像长宽大于960时，等比例缩放图像，使得图像最长边为960
-det_db_thresh  0.3 # 用于过滤DB预测的二值化图像，设置为0.-0.3对结果影响不明显
-det_db_box_thresh  0.5 # DB后处理过滤box的阈值，如果检测存在漏框情况，可酌情减小
-det_db_unclip_ratio  1.6 # 表示文本框的紧致程度，越小则文本框更靠近文本
-use_polygon_score 1 # 是否使用多边形框计算bbox score，0表示使用矩形框计算。矩形框计算速度更快，多边形框对弯曲文本区域计算更准确。
-det_model_dir  ./inference/det_db # 检测模型inference model地址
 
-# cls config
-use_angle_cls 0 # 是否使用方向分类器，0表示不使用，1表示使用
-cls_model_dir ./inference/cls # 方向分类器inference model地址
-cls_thresh  0.9 # 方向分类器的得分阈值
-
-# rec config
-rec_model_dir  ./inference/rec_crnn # 识别模型inference model地址
-char_list_file ../../ppocr/utils/ppocr_keys_v1.txt # 字典文件
-
-# show the detection results
-visualize 1 # 是否对结果进行可视化，为1时，会在当前文件夹下保存文件名为`ocr_vis.png`的预测结果。
-```
-
-* PaddleOCR也支持多语言的预测，更多支持的语言和模型可以参考[识别文档](../../doc/doc_ch/recognition.md)中的多语言字典与模型部分，如果希望进行多语言预测，只需将修改`tools/config.txt`中的`char_list_file`（字典文件路径）以及`rec_model_dir`（inference模型路径）字段即可。
+* PaddleOCR也支持多语言的预测，更多支持的语言和模型可以参考[识别文档](../../doc/doc_ch/recognition.md)中的多语言字典与模型部分，如果希望进行多语言预测，只需将修改`char_list_file`（字典文件路径）以及`rec_model_dir`（inference模型路径）字段即可。
 
 最终屏幕上会输出检测结果如下。
 

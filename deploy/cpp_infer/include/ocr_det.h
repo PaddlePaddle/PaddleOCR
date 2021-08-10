@@ -38,15 +38,20 @@ namespace PaddleOCR {
 
 class DBDetector {
 public:
-  explicit DBDetector(const std::string &model_dir, const bool &use_gpu,
-                      const int &gpu_id, const int &gpu_mem,
-                      const int &cpu_math_library_num_threads,
-                      const bool &use_mkldnn, const int &max_side_len,
-                      const double &det_db_thresh,
-                      const double &det_db_box_thresh,
-                      const double &det_db_unclip_ratio,
-                      const bool &use_polygon_score, const bool &visualize,
-                      const bool &use_tensorrt, const bool &use_fp16) {
+  explicit DBDetector(const std::string &model_dir,
+                      const bool &use_gpu=false,
+                      const int &gpu_id=0,
+                      const int &gpu_mem=4000,
+                      const int &cpu_math_library_num_threads=1,
+                      const bool &use_mkldnn=false,
+                      const int &max_side_len=960,
+                      const double &det_db_thresh=0.3,
+                      const double &det_db_box_thresh=0.5,
+                      const double &det_db_unclip_ratio=2.0,
+                      const bool &use_polygon_score=false,
+                      const bool &visualize=false,
+                      const bool &use_tensorrt=false, 
+                      const bool &use_fp16=false) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
