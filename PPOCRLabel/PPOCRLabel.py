@@ -467,10 +467,10 @@ class MainWindow(QMainWindow, WindowMixin):
         undoLastPoint = action(getStr("undoLastPoint"), self.canvas.undoLastPoint,
                                'Ctrl+Z', "undo", getStr("undoLastPoint"), enabled=False)
 
-        rotateLeft = action(getStr("rotateLeft"), self.rotateLeftImg,
+        rotateLeft = action(getStr("rotateLeft"), partial(self.rotateImgAction,1),
                                'Ctrl+Alt+L', "rotateLeft", getStr("rotateLeft"), enabled=False)
 
-        rotateRight = action(getStr("rotateRight"), self.rotateRightImg,
+        rotateRight = action(getStr("rotateRight"), partial(self.rotateImgAction,-1),
                                'Ctrl+Alt+R', "rotateRight", getStr("rotateRight"), enabled=False)
 
         undo = action(getStr("undo"), self.undoShapeEdit,
@@ -811,7 +811,7 @@ class MainWindow(QMainWindow, WindowMixin):
             self.msgBox.warning (self, "Warn", "\n The picture already has a label box, and rotation will disrupt the label.\
              It is recommended to clear the label box and rotate it.")
 
-    def rotateLeftImg(self, _value=False):
+    def rotateImgAction(self, k=1, _value=False):
 
         filename = self.mImgList[self.currIndex]
 
@@ -819,23 +819,13 @@ class MainWindow(QMainWindow, WindowMixin):
             if self.itemsToShapesbox:
                 self.rotateImgWarn()
             else:
-                self.rotateImg(filename=filename, k=1, _value=True)
+                self.saveFile()
+                self.dirty = False
+                self.rotateImg(filename=filename, k=k, _value=True)
         else:
             self.rotateImgWarn()
             self.actions.rotateRight.setEnabled(False)
-
-    def rotateRightImg(self, _value=False):
-
-        filename = self.mImgList[self.currIndex]
-
-        if os.path.exists(filename):
-            if self.itemsToShapesbox:
-                self.rotateImgWarn()
-            else:
-                self.rotateImg(filename=filename, k=-1, _value=True)
-        else:
-            self.rotateImgWarn()
-            self.actions.rotateRight.setEnabled(False)
+            self.actions.rotateLeft.setEnabled(False)
 
     def toggleDrawingSensitive(self, drawing=True):
         """In the middle of drawing, toggling between modes should be disabled."""
@@ -1519,12 +1509,13 @@ class MainWindow(QMainWindow, WindowMixin):
         self.importDirImages(targetDirPath)
 
     def openDatasetDirDialog(self,):
-        if not self.mayContinue():
-            return
-
         if self.lastOpenDir and os.path.exists(self.lastOpenDir):
-            os.startfile(self.lastOpenDir)
+            if platform.system() == 'Windows':
+                os.startfile(self.lastOpenDir)
+            else:
+                os.system('open ' + os.path.normpath(self.lastOpenDir))
             defaultOpenDirPath = self.lastOpenDir
+
         else:
             if self.lang == 'ch':
                 self.msgBox.warning(self, "提示", "\n 原文件夹已不存在,请从新选择数据集路径!")

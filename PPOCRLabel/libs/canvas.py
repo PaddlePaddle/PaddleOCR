@@ -754,11 +754,11 @@ class Canvas(QWidget):
                 self.selectedShape.points[1] += QPointF(0, 1.0)
                 self.selectedShape.points[2] += QPointF(0, 1.0)
                 self.selectedShape.points[3] += QPointF(0, 1.0)
-            shapesBackup = []
-            shapesBackup = copy.deepcopy(self.shapes)
-            self.shapesBackups.append(shapesBackup)
-            self.shapeMoved.emit()
-            self.repaint()
+        shapesBackup = []
+        shapesBackup = copy.deepcopy(self.shapes)
+        self.shapesBackups.append(shapesBackup)
+        self.shapeMoved.emit()
+        self.repaint()
 
     def moveOutOfBound(self, step):
         points = [p1+p2 for p1, p2 in zip(self.selectedShape.points, [step]*4)]
@@ -853,10 +853,7 @@ class Canvas(QWidget):
     def restoreShape(self):
         if not self.isShapeRestorable:
             return
-        if self.selectCountShape:
-            if len(self.shapesBackups) > 2:
-                for i in range(1,self.selectCount):
-                    self.shapesBackups.pop()
+
         self.shapesBackups.pop()  # latest
         shapesBackup = self.shapesBackups.pop()
         self.shapes = shapesBackup
