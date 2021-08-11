@@ -22,7 +22,8 @@ import sys
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
-
+import paddle
+import numpy as np
 from ppocr.data import build_dataloader
 from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
@@ -30,7 +31,7 @@ from ppocr.metrics import build_metric
 from ppocr.utils.save_load import init_model
 from ppocr.utils.utility import print_dict
 import tools.program as program
-
+from ppocr.data.rec_nrtr_dataset import make_data_loader
 
 def main():
     global_config = config['Global']

@@ -25,6 +25,7 @@ def build_loss(config):
     from .rec_ctc_loss import CTCLoss
     from .rec_att_loss import AttentionLoss
     from .rec_srn_loss import SRNLoss
+    from .rec_nrtr_loss import NRTRLoss
 
     # cls loss
     from .cls_loss import ClsLoss
@@ -33,7 +34,7 @@ def build_loss(config):
     from .e2e_pg_loss import PGLoss
     support_dict = [
         'DBLoss', 'EASTLoss', 'SASTLoss', 'CTCLoss', 'ClsLoss', 'AttentionLoss',
-        'SRNLoss', 'PGLoss']
+        'SRNLoss', 'PGLoss','NRTRLoss']
 
     config = copy.deepcopy(config)
     module_name = config.pop('name')
