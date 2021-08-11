@@ -28,10 +28,8 @@
 #include <numeric>
 
 #include <glog/logging.h>
-// #include <include/config.h>
 #include <include/ocr_det.h>
 #include <include/ocr_rec.h>
-// #include <include/utility.h>
 #include <sys/stat.h>
 
 #include <gflags/gflags.h>

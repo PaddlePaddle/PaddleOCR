@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include <include/ocr_rec.h>
+#include <include/preprocess_op.cpp>
 
 namespace PaddleOCR {
 

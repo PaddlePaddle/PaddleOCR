@@ -30,6 +30,7 @@
 #include "include/clipper.h"
 #include "include/utility.h"
 
+
 using namespace std;
 
 namespace PaddleOCR {
