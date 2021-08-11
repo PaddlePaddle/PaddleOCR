@@ -186,7 +186,7 @@ def train(config,
     model.train()
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
-
+    use_nrtr = config['Architecture']['algorithm'] == "NRTR"
     if 'start_epoch' in best_model_dict:
         start_epoch = best_model_dict['start_epoch']
     else:
@@ -211,6 +211,9 @@ def train(config,
                 others = batch[-4:]
                 preds = model(images, others)
                 model_average = True
+            elif use_nrtr:
+                max_len = batch[2].max()
+                preds = model(images, batch[1][:,:2+max_len])
             else:
                 preds = model(images)
             loss = loss_class(preds, batch)
@@ -350,13 +353,11 @@ def eval(model, valid_dataloader, post_process_class, eval_class,
                 break
             images = batch[0]
             start = time.time()
-
             if use_srn:
                 others = batch[-4:]
                 preds = model(images, others)
             else:
                 preds = model(images)
-
             batch = [item.numpy() for item in batch]
             # Obtain usable results from post-processing methods
             post_result = post_process_class(preds, batch[1])
@@ -386,7 +387,7 @@ def preprocess(is_train=False):
     alg = config['Architecture']['algorithm']
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
-        'CLS', 'PGNet', 'Distillation'
+        'CLS', 'PGNet', 'Distillation','NRTR'
     ]
 
     device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'

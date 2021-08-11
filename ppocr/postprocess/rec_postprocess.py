@@ -28,7 +28,7 @@ class BaseRecLabelDecode(object):
             'ch', 'en', 'EN_symbol', 'french', 'german', 'japan', 'korean',
             'it', 'xi', 'pu', 'ru', 'ar', 'ta', 'ug', 'fa', 'ur', 'rs', 'oc',
             'rsc', 'bg', 'uk', 'be', 'te', 'ka', 'chinese_cht', 'hi', 'mr',
-            'ne', 'EN', 'latin', 'arabic', 'cyrillic', 'devanagari'
+            'ne', 'EN', 'latin', 'arabic', 'cyrillic', 'devanagari','dict_99'
         ]
         assert character_type in support_character_type, "Only {} are supported now but get {}".format(
             support_character_type, character_type)
@@ -256,8 +256,7 @@ class AttnLabelDecode(BaseRecLabelDecode):
                     if idx > 0 and text_index[batch_idx][idx - 1] == text_index[
                             batch_idx][idx]:
                         continue
-                char_list.append(self.character[int(text_index[batch_idx][
-                    idx])])
+                char_list.append(self.character[int(text_index[batch_idx][idx])])
                 if text_prob is not None:
                     conf_list.append(text_prob[batch_idx][idx])
                 else:
