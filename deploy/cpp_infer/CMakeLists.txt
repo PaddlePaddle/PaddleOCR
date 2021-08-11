@@ -1,4 +1,4 @@
-project(ocr_system CXX C)
+project(ppocr CXX C)
 
 option(WITH_MKL        "Compile demo with MKL/OpenBlas support, default use MKL."       ON)
 option(WITH_GPU        "Compile demo with GPU/CPU, default use CPU."                    OFF)
@@ -11,7 +11,7 @@ SET(CUDA_LIB "" CACHE PATH "Location of libraries")
 SET(CUDNN_LIB "" CACHE PATH "Location of libraries")
 SET(TENSORRT_DIR "" CACHE PATH "Compile demo with TensorRT")
 
-set(DEMO_NAME "ocr_system")
+set(DEMO_NAME "ppocr")
 
 
 macro(safe_set_static_flag)
@@ -206,7 +206,7 @@ endif()
 
 set(DEPS ${DEPS} ${OpenCV_LIBS})
 
-AUX_SOURCE_DIRECTORY(./src_system SRCS)
+AUX_SOURCE_DIRECTORY(./src SRCS)
 add_executable(${DEMO_NAME} ${SRCS})
 
 target_link_libraries(${DEMO_NAME} ${DEPS})
