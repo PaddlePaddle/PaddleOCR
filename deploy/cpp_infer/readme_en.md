@@ -159,13 +159,7 @@ inference/
 * The compilation commands are as follows. The addresses of Paddle C++ inference library, opencv and other Dependencies need to be replaced with the actual addresses on your own machines.
 
 ```shell
-sh tools/build.sh MODE(['det', 'rec', 'system'])
-```
-Here, `MODE` should be one of ['det', 'rec', 'system']. Choose one as your need. The explanation is as follows: 
-```shell
-sh tools/build.sh det # build demo for detection only
-sh tools/build.sh rec # build demo for recogniton only
-sh tools/build.sh system # build demo for a system (including the text direction classifier)
+sh tools/build.sh
 ```
 
 Specifically, you should modify the paths in `tools/build.sh`. The related content is as follows.
@@ -182,32 +176,37 @@ or the generated Paddle inference library path (`build/paddle_inference_install_
 `CUDA_LIB_DIR` is the cuda library file path, in docker; it is `/usr/local/cuda/lib64`; `CUDNN_LIB_DIR` is the cudnn library file path, in docker it is `/usr/lib/x86_64-linux-gnu/`.
 
 
-* After the compilation is completed, an executable file named `ocr_det` or `ocr_rec` or `ocr_system` will be generated in the `build` folder.
+* After the compilation is completed, an executable file named `ppocr` will be generated in the `build` folder.
 
 
 ### Run the demo
-* Execute the built executable file by ```./build/ocr_***```. You'll get some command line parameter information. 
-##### 1. run ocr_det demo:
+Execute the built executable file:  
 ```shell
-./build/ocr_det \
+./build/ppocr <mode> [--param1] [--param2] [...]
+```  
+Here, `mode` is a required parameter，and the value range is ['det', 'rec', 'system'], representing using detection only, using recognition only and using the end-to-end system respectively. Specifically,
+
+##### 1. run det demo:
+```shell
+./build/ppocr det \
     --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
     --image_dir=../../doc/imgs/12.jpg
 ```
-##### 2. run ocr_rec demo:
+##### 2. run rec demo:
 ```shell
-./build/ocr_rec \
+./build/ppocr rec \
     --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
     --image_dir=../../doc/imgs_words/ch/
 ```
-##### 3. run ocr_system demo:
+##### 3. run system demo:
 ```shell
 # without text direction classifier
-./build/ocr_system \
+./build/ppocr system \
     --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
     --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
     --image_dir=../../doc/imgs/12.jpg
 # with text direction classifier
-./build/ocr_system \
+./build/ppocr system \
     --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
     --use_angle_cls=true \
     --cls_model_dir=inference/ch_ppocr_mobile_v2.0_cls_infer \

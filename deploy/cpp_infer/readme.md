@@ -154,18 +154,11 @@ inference/
 
 * 编译命令如下，其中Paddle C++预测库、opencv等其他依赖库的地址需要换成自己机器上的实际地址。
 
-
 ```shell
-sh tools/build.sh MODE(['det', 'rec', 'system'])
-```
-其中`MODE`表示demo功能，支持3种参数，**按需选择一种参数即可**，相应解释如下：
-```shell
-sh tools/build.sh det # 编译检测demo
-sh tools/build.sh rec # 编译识别demo
-sh tools/build.sh system # 编译串联demo（包括方向分类器）
+sh tools/build.sh
 ```
 
-此外，需要修改`tools/build.sh`中环境路径，相关内容如下：
+* 具体的，需要修改`tools/build.sh`中环境路径，相关内容如下：
 
 ```shell
 OPENCV_DIR=your_opencv_dir
@@ -177,32 +170,38 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 其中，`OPENCV_DIR`为opencv编译安装的地址；`LIB_DIR`为下载(`paddle_inference`文件夹)或者编译生成的Paddle预测库地址(`build/paddle_inference_install_dir`文件夹)；`CUDA_LIB_DIR`为cuda库文件地址，在docker中为`/usr/local/cuda/lib64`；`CUDNN_LIB_DIR`为cudnn库文件地址，在docker中为`/usr/lib/x86_64-linux-gnu/`。**注意：以上路径都写绝对路径，不要写相对路径。**
 
 
-* 编译完成之后，会在`build`文件夹下生成一个名为`ocr_det`或`ocr_rec`或`ocr_system`的可执行文件。
+* 编译完成之后，会在`build`文件夹下生成一个名为`ppocr`的可执行文件。
 
 
 ### 运行demo
-直接运行编译好的可执行文件：```./build/ocr_***```，可获得参数信息提示。
-##### 1. 检测demo运行方式：
+
+运行方式：  
 ```shell
-./build/ocr_det \
+./build/ppocr <mode> [--param1] [--param2] [...]
+```  
+其中，`mode`为必选参数，表示选择的功能，取值范围['det', 'rec', 'system']，分别表示调用检测、识别、检测识别串联（包括方向分类器）。具体命令如下：
+
+##### 1. 只调用检测：
+```shell
+./build/ppocr det \
     --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
     --image_dir=../../doc/imgs/12.jpg
 ```
-##### 2. 识别demo运行方式：
+##### 2. 只调用识别：
 ```shell
-./build/ocr_rec \
+./build/ppocr rec \
     --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
     --image_dir=../../doc/imgs_words/ch/
 ```
-##### 3. 串联demo运行方式：
+##### 3. 调用串联：
 ```shell
 # 不使用方向分类器
-./build/ocr_system \
+./build/ppocr system \
     --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
     --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
     --image_dir=../../doc/imgs/12.jpg
 # 使用方向分类器
-./build/ocr_system \
+./build/ppocr system \
     --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
     --use_angle_cls=true \
     --cls_model_dir=inference/ch_ppocr_mobile_v2.0_cls_infer \
