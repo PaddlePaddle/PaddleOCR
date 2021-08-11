@@ -63,7 +63,7 @@ Metric:
 Train:
   dataset:
     name: LMDBDataSet
-    data_dir: /paddle/data/ocr_data/training/
+    data_dir: ./train_data/data_lmdb_release/training/
     transforms:
       - NRTRDecodeImage: # load image
           img_mode: BGR
@@ -82,7 +82,7 @@ Train:
 Eval:
   dataset:
     name: LMDBDataSet
-    data_dir: /paddle/data/ocr_data/evaluation/
+    data_dir: ./train_data/data_lmdb_release/evaluation/
     transforms:
       - NRTRDecodeImage: # load image
           img_mode: BGR
