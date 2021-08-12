@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#pragma once
+
 #include "opencv2/core.hpp"
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/imgproc.hpp"
@@ -62,8 +64,7 @@ public:
   // Load Paddle inference model
   void LoadModel(const std::string &model_dir);
 
-  void Run(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat &img,
-           Classifier *cls);
+  void Run(cv::Mat &img);
 
 private:
   std::shared_ptr<Predictor> predictor_;
