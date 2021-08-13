@@ -49,4 +49,13 @@ inference:tools/infer/predict_det.py
 --save_log_path:null
 --benchmark:True
 null:null
-
+===========================deploy_params===========================
+trans_model:-m paddle_serving_client.convert
+--dirname:./inference/ch_ppocr_mobile_v2.0_det_infer/
+--model_filename:inference.pdmodel
+--params_filename:inference.pdiparams
+--serving_server:./deploy/pdserving/ppocr_det_mobile_2.0_serving/
+--serving_client:./deploy/pdserving/ppocr_det_mobile_2.0_client/
+serving_dir:./deploy/pdserving
+web_service:web_service_det.py &>log.txt &
+pipline:pipeline_http_client.py --image_dir=../../doc/imgs

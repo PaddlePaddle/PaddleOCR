@@ -74,3 +74,13 @@ else
     fi 
 fi
 
+# prepare serving env
+python_name=$(func_parser_value "${lines[2]}")
+${python_name} -m pip install install paddle-serving-server-gpu==0.6.1.post101
+${python_name} -m pip install paddle_serving_client==0.6.1
+${python_name} -m pip install paddle-serving-app==0.6.1
+wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar
+wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar
+cd ./inference && tar xf ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_ppocr_mobile_v2.0_rec_infer.tar
+
+

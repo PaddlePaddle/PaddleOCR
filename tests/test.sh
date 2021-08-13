@@ -144,6 +144,22 @@ benchmark_key=$(func_parser_key "${lines[49]}")
 benchmark_value=$(func_parser_value "${lines[49]}")
 infer_key1=$(func_parser_key "${lines[50]}")
 infer_value1=$(func_parser_value "${lines[50]}")
+# parser serving
+trans_model_py=$(func_parser_value "${lines[52]}")
+infer_model_dir_key=$(func_parser_key "${lines[53]}")
+infer_model_dir_value=$(func_parser_value "${lines[53]}")
+model_filename_key=$(func_parser_key "${lines[54]}")
+model_filename_value=$(func_parser_value "${lines[54]}")
+params_filename_key=$(func_parser_key "${lines[55]}")
+params_filename_value=$(func_parser_value "${lines[55]}")
+serving_server_key=$(func_parser_key "${lines[56]}")
+serving_server_value=$(func_parser_value "${lines[56]}")
+serving_client_key=$(func_parser_key "${lines[57]}")
+serving_client_value=$(func_parser_value "${lines[57]}")
+serving_dir_value=$(func_parser_value "${lines[58]}")
+web_service_py=$(func_parser_value "${lines[59]}")
+pipline_py=$(func_parser_value "${lines[60]}")
+
 
 LOG_PATH="./tests/output"
 mkdir -p ${LOG_PATH}
@@ -250,6 +266,23 @@ if [ ${MODE} = "infer" ]; then
         is_quant=${infer_quant_flag[Count]}
         func_inference "${python}" "${inference_py}" "${save_infer_dir}" "${LOG_PATH}" "${infer_img_dir}" ${is_quant}
         Count=$(($Count + 1))
+        #run serving
+        set_dirname=$(func_set_params "${infer_model_dir_key}" "${infer_model_dir_value}")
+        set_model_filename=$(func_set_params "${model_filename_key}" "${model_filename_value}")
+        set_params_filename=$(func_set_params "${params_filename_key}" "${params_filename_value}")
+        set_serving_server=$(func_set_params "${serving_server_key}" "${serving_server_value}")
+        set_serving_client=$(func_set_params "${serving_client_key}" "${serving_client_value}")
+        trans_model_cmd="${python} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
+        eval $trans_model_cmd
+        cd ${serving_dir_value}
+        echo $PWD
+        web_service_cmd="${python} ${web_service_py}"
+        echo $web_service_cmd
+        eval $web_service_cmd
+        pipline_cmd="${python} ${pipline_py}"
+        echo $pipline_cmd
+        eval $pipline_cmd
+
     done
 
 else
@@ -363,3 +396,4 @@ else
         done      # done with:    for autocast in ${autocast_list[*]}; do 
     done          # done with:    for gpu in ${gpu_list[*]}; do
 fi  # end if [ ${MODE} = "infer" ]; then
+
