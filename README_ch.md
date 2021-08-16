@@ -96,6 +96,7 @@ PaddleOCR同时支持动态图与静态图两种编程范式
     - [文本检测](./doc/doc_ch/algorithm_overview.md)
     - [文本识别](./doc/doc_ch/algorithm_overview.md)
     - [PP-OCR Pipeline](#PP-OCR)
+    - [PP-Structure Pipeline](./ppstructure/README_ch.md)
     - [端到端PGNet算法](./doc/doc_ch/pgnet.md)
 - 模型训练/评估
     - [文本检测](./doc/doc_ch/detection.md)
