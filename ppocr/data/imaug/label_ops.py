@@ -98,7 +98,7 @@ class BaseRecLabelEncode(object):
             'ch', 'en', 'EN_symbol', 'french', 'german', 'japan', 'korean',
             'EN', 'it', 'xi', 'pu', 'ru', 'ar', 'ta', 'ug', 'fa', 'ur', 'rs',
             'oc', 'rsc', 'bg', 'uk', 'be', 'te', 'ka', 'chinese_cht', 'hi',
-            'mr', 'ne', 'latin', 'arabic', 'cyrillic', 'devanagari','dict_99'
+            'mr', 'ne', 'latin', 'arabic', 'cyrillic', 'devanagari'
         ]
         assert character_type in support_character_type, "Only {} are supported now but get {}".format(
             support_character_type, character_type)
@@ -167,7 +167,7 @@ class NRTRLabelEncode(BaseRecLabelEncode):
     def __init__(self,
                  max_text_length,
                  character_dict_path=None,
-                 character_type='dict_99',
+                 character_type='EN_symbol',
                  use_space_char=False,
                  **kwargs):
 

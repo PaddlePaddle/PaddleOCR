@@ -3,22 +3,22 @@ Global:
   epoch_num: 21
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/rec/piloptimnrtr/
+  save_model_dir: ./output/rec/nrtr_final/
   save_epoch_step: 1
   # evaluation is run every 2000 iterations
   eval_batch_step: [0, 2000]
-  cal_metric_during_train: False
+  cal_metric_during_train: True
   pretrained_model:
   checkpoints: 
   save_inference_dir:
   use_visualdl: False
   infer_img: doc/imgs_words_en/word_10.png
   # for data or label process
-  character_dict_path: ppocr/utils/dict_99.txt
-  character_type: dict_99
+  character_dict_path: 
+  character_type: EN_symbol
   max_text_length: 25
   infer_mode: False
-  use_space_char: False
+  use_space_char: True
   save_res_path: ./output/rec/predicts_nrtr.txt
 
 Optimizer:

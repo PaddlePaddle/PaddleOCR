@@ -28,6 +28,7 @@ def build_head(config):
     from .rec_srn_head import SRNHead
     from .rec_nrtr_head import Transformer
     from .rec_nrtr_optim_head import TransformerOptim
+   
 
     # cls head
     from .cls_head import ClsHead
