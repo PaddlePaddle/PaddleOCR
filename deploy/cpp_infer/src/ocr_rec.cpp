@@ -16,13 +16,13 @@
 
 namespace PaddleOCR {
 
-void CRNNRecognizer::Run(cv::Mat &img) {
+void CRNNRecognizer::Run(cv::Mat &img, std::vector<double> *times) {
   cv::Mat srcimg;
   img.copyTo(srcimg);
   cv::Mat resize_img;
 
   float wh_ratio = float(srcimg.cols) / float(srcimg.rows);
-
+  auto preprocess_start = std::chrono::steady_clock::now();
   this->resize_op_.Run(srcimg, resize_img, wh_ratio, this->use_tensorrt_);
 
   this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
@@ -31,8 +31,10 @@ void CRNNRecognizer::Run(cv::Mat &img) {
   std::vector<float> input(1 * 3 * resize_img.rows * resize_img.cols, 0.0f);
 
   this->permute_op_.Run(&resize_img, input.data());
+  auto preprocess_end = std::chrono::steady_clock::now();
 
   // Inference.
+  auto inference_start = std::chrono::steady_clock::now();
   auto input_names = this->predictor_->GetInputNames();
   auto input_t = this->predictor_->GetInputHandle(input_names[0]);
   input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
@@ -49,8 +51,10 @@ void CRNNRecognizer::Run(cv::Mat &img) {
   predict_batch.resize(out_num);
 
   output_t->CopyToCpu(predict_batch.data());
+  auto inference_end = std::chrono::steady_clock::now();
 
   // ctc decode
+  auto postprocess_start = std::chrono::steady_clock::now();
   std::vector<std::string> str_res;
   int argmax_idx;
   int last_index = 0;
@@ -78,6 +82,14 @@ void CRNNRecognizer::Run(cv::Mat &img) {
     std::cout << str_res[i];
   }
   std::cout << "\tscore: " << score << std::endl;
+  auto postprocess_end = std::chrono::steady_clock::now();
+
+  std::chrono::duration<float> preprocess_diff = preprocess_end - preprocess_start;
+  times->push_back(double(preprocess_diff.count() * 1000));
+  std::chrono::duration<float> inference_diff = inference_end - inference_start;
+  times->push_back(double(inference_diff.count() * 1000));
+  std::chrono::duration<float> postprocess_diff = postprocess_end - postprocess_start;
+  times->push_back(double(postprocess_diff.count() * 1000));
 }
 
 void CRNNRecognizer::LoadModel(const std::string &model_dir) {
@@ -89,10 +101,16 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
   if (this->use_gpu_) {
     config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
     if (this->use_tensorrt_) {
+      auto precision = paddle_infer::Config::Precision::kFloat32;
+      if (this->precision_ == "fp16") {
+        precision = paddle_infer::Config::Precision::kHalf;
+      }
+     if (this->precision_ == "int8") {
+        precision = paddle_infer::Config::Precision::kInt8;
+      } 
       config.EnableTensorRtEngine(
           1 << 20, 10, 3,
-          this->use_fp16_ ? paddle_infer::Config::Precision::kHalf
-                          : paddle_infer::Config::Precision::kFloat32,
+          precision,
           false, false);
       std::map<std::string, std::vector<int>> min_input_shape = {
           {"x", {1, 3, 32, 10}}};
