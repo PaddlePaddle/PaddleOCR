@@ -91,6 +91,7 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 - [快速安装](./doc/doc_ch/installation.md)
 - [中文OCR模型快速使用](./doc/doc_ch/quickstart.md)
 - [多语言OCR模型快速使用](./doc/doc_ch/multi_languages.md)
+- [版面分析与表格识别快速使用](./ppstructure/README_ch.md)
 - [代码组织结构](./doc/doc_ch/tree.md)
 - 算法介绍
     - [文本检测](./doc/doc_ch/algorithm_overview.md)
