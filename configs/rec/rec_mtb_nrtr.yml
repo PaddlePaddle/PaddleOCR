@@ -1,0 +1,100 @@
+Global:
+  use_gpu: True
+  epoch_num: 21
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: ./output/rec/nrtr_final/
+  save_epoch_step: 1
+  # evaluation is run every 2000 iterations
+  eval_batch_step: [0, 2000]
+  cal_metric_during_train: True
+  pretrained_model:
+  checkpoints: 
+  save_inference_dir:
+  use_visualdl: False
+  infer_img: doc/imgs_words_en/word_10.png
+  # for data or label process
+  character_dict_path: 
+  character_type: EN_symbol
+  max_text_length: 25
+  infer_mode: False
+  use_space_char: True
+  save_res_path: ./output/rec/predicts_nrtr.txt
+
+Optimizer:
+  name: Adam
+  beta1: 0.9
+  beta2: 0.99
+  clip_norm: 5.0
+  lr:
+    name: Cosine
+    learning_rate: 0.0005
+    warmup_epoch: 2
+  regularizer:
+    name: 'L2'
+    factor: 0.
+
+Architecture:
+  model_type: rec
+  algorithm: NRTR
+  in_channels: 1
+  Transform:
+  Backbone:
+    name: MTB
+    cnn_num: 2
+  Head:
+    name: TransformerOptim
+    d_model: 512
+    num_encoder_layers: 6
+    beam_size: -1    # When Beam size is greater than 0, it means to use beam search when evaluation.
+    
+
+Loss:
+  name: NRTRLoss
+  smoothing: True
+
+PostProcess:
+  name: NRTRLabelDecode
+
+Metric:
+  name: RecMetric
+  main_indicator: acc
+
+Train:
+  dataset:
+    name: LMDBDataSet
+    data_dir: /paddle/data/ocr_data/training/
+    transforms:
+      - NRTRDecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - NRTRLabelEncode: # Class handling label
+      - PILResize:
+          image_shape: [100, 32]
+      - KeepKeys:
+          keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
+  loader:
+    shuffle: True
+    batch_size_per_card: 512
+    drop_last: True
+    num_workers: 8
+
+Eval:
+  dataset:
+    name: LMDBDataSet
+    data_dir: /paddle/data/ocr_data/evaluation/
+    transforms:
+      - NRTRDecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - NRTRLabelEncode: # Class handling label
+      - PILResize:
+          image_shape: [100, 32]
+      - KeepKeys:
+          keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 256
+    num_workers: 1
+    use_shared_memory: False
