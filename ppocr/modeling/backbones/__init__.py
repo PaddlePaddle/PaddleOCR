@@ -27,7 +27,7 @@ def build_backbone(config, model_type):
         from .rec_resnet_fpn import ResNetFPN
         from .rec_nrtr_mtb import MTB
         from .rec_swin import SwinTransformer
-        support_dict = ['MobileNetV3', 'ResNet', 'ResNetFPN','MTB','SwinTransformer']
+        support_dict = ['MobileNetV3', 'ResNet', 'ResNetFPN', 'MTB', 'SwinTransformer']
         
     elif model_type == 'e2e':
         from .e2e_resnet_vd_pg import ResNet

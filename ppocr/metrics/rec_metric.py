@@ -30,7 +30,7 @@ class RecMetric(object):
             target = target.replace(" ", "")
             norm_edit_dis += Levenshtein.distance(pred, target) / max(
                 len(pred), len(target), 1)
-            if pred.lower() == target.lower():
+            if pred == target:
                 correct_num += 1
             all_num += 1
         self.correct_num += correct_num
