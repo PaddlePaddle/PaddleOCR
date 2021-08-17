@@ -111,7 +111,7 @@ class TextDetector(object):
                 inference_config=self.config,
                 pids=pid,
                 process_name=None,
-                gpu_ids=gpu_id,
+                gpu_ids=gpu_id if args.use_gpu else None,
                 time_keys=[
                     'preprocess_time', 'inference_time', 'postprocess_time'
                 ],
