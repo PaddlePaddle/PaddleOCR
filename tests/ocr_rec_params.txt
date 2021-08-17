@@ -9,7 +9,7 @@ Global.save_model_dir:./output/
 Train.loader.batch_size_per_card:lite_train_infer=128|whole_train_infer=128
 Global.pretrained_model:null
 train_model_name:latest
-train_infer_img_dir:./train_data/ic15_data/test
+train_infer_img_dir:./inference/rec_inference
 null:null
 ##
 trainer:norm_train|pact_train
