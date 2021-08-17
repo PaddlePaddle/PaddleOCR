@@ -1,4 +1,4 @@
-# Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.
+# Copyright (c) 2021 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -186,7 +186,14 @@ def train(config,
     model.train()
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
+
     use_nrtr = config['Architecture']['algorithm'] == "NRTR"
+
+    try: 
+        model_type = config['Architecture']['model_type']
+    except: 
+        model_type = None
+
     if 'start_epoch' in best_model_dict:
         start_epoch = best_model_dict['start_epoch']
     else:
@@ -208,9 +215,9 @@ def train(config,
             lr = optimizer.get_lr()
             images = batch[0]
             if use_srn:
-                others = batch[-4:]
-                preds = model(images, others)
                 model_average = True
+            if use_srn or model_type == 'table':
+                preds = model(images, data=batch[1:])
             elif use_nrtr:
                 max_len = batch[2].max()
                 preds = model(images, batch[1][:,:2+max_len])
@@ -235,8 +242,11 @@ def train(config,
 
             if cal_metric_during_train:  # only rec and cls need
                 batch = [item.numpy() for item in batch]
-                post_result = post_process_class(preds, batch[1])
-                eval_class(post_result, batch)
+                if model_type == 'table':
+                    eval_class(preds, batch)
+                else:
+                    post_result = post_process_class(preds, batch[1])
+                    eval_class(post_result, batch)
                 metric = eval_class.get_metric()
                 train_stats.update(metric)
 
@@ -272,6 +282,7 @@ def train(config,
                     valid_dataloader,
                     post_process_class,
                     eval_class,
+                    model_type,
                     use_srn=use_srn)
                 cur_metric_str = 'cur metric, {}'.format(', '.join(
                     ['{}: {}'.format(k, v) for k, v in cur_metric.items()]))
@@ -339,7 +350,11 @@ def train(config,
     return
 
 
-def eval(model, valid_dataloader, post_process_class, eval_class,
+def eval(model,
+         valid_dataloader,
+         post_process_class,
+         eval_class,
+         model_type,
          use_srn=False):
     model.eval()
     with paddle.no_grad():
@@ -353,17 +368,20 @@ def eval(model, valid_dataloader, post_process_class, eval_class,
                 break
             images = batch[0]
             start = time.time()
-            if use_srn:
-                others = batch[-4:]
-                preds = model(images, others)
+
+            if use_srn or model_type == 'table':
+                preds = model(images, data=batch[1:])
             else:
                 preds = model(images)
             batch = [item.numpy() for item in batch]
             # Obtain usable results from post-processing methods
-            post_result = post_process_class(preds, batch[1])
             total_time += time.time() - start
             # Evaluate the results of the current batch
-            eval_class(post_result, batch)
+            if model_type == 'table':
+                eval_class(preds, batch)
+            else:
+                post_result = post_process_class(preds, batch[1])
+                eval_class(post_result, batch)
             pbar.update(1)
             total_frame += len(images)
         # Get final metric，eg. acc or hmean
@@ -387,7 +405,9 @@ def preprocess(is_train=False):
     alg = config['Architecture']['algorithm']
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
-        'CLS', 'PGNet', 'Distillation', 'NRTR'
+
+        'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn'
+
     ]
 
     device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'

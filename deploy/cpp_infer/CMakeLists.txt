@@ -1,4 +1,4 @@
-project(ocr_system CXX C)
+project(ppocr CXX C)
 
 option(WITH_MKL        "Compile demo with MKL/OpenBlas support, default use MKL."       ON)
 option(WITH_GPU        "Compile demo with GPU/CPU, default use CPU."                    OFF)
@@ -11,7 +11,7 @@ SET(CUDA_LIB "" CACHE PATH "Location of libraries")
 SET(CUDNN_LIB "" CACHE PATH "Location of libraries")
 SET(TENSORRT_DIR "" CACHE PATH "Compile demo with TensorRT")
 
-set(DEMO_NAME "ocr_system")
+set(DEMO_NAME "ppocr")
 
 
 macro(safe_set_static_flag)
@@ -38,10 +38,8 @@ endif()
 
 
 if (WIN32)
-  include_directories("${PADDLE_LIB}/paddle/fluid/inference")
   include_directories("${PADDLE_LIB}/paddle/include")
   link_directories("${PADDLE_LIB}/paddle/lib")
-  link_directories("${PADDLE_LIB}/paddle/fluid/inference")
   find_package(OpenCV REQUIRED PATHS ${OPENCV_DIR}/build/ NO_DEFAULT_PATH)
 
 else ()

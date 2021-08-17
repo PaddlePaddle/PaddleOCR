@@ -26,11 +26,11 @@ from .rec_metric import RecMetric
 from .cls_metric import ClsMetric
 from .e2e_metric import E2EMetric
 from .distillation_metric import DistillationMetric
-
+from .table_metric import TableMetric
 
 def build_metric(config):
     support_dict = [
-        "DetMetric", "RecMetric", "ClsMetric", "E2EMetric", "DistillationMetric"
+        "DetMetric", "RecMetric", "ClsMetric", "E2EMetric", "DistillationMetric", "TableMetric"
     ]
 
     config = copy.deepcopy(config)

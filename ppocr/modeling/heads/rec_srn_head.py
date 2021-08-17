@@ -250,7 +250,8 @@ class SRNHead(nn.Layer):
 
         self.gsrm.wrap_encoder1.prepare_decoder.emb0 = self.gsrm.wrap_encoder0.prepare_decoder.emb0
 
-    def forward(self, inputs, others):
+    def forward(self, inputs, targets=None):
+        others = targets[-4:]
         encoder_word_pos = others[0]
         gsrm_word_pos = others[1]
         gsrm_slf_attn_bias1 = others[2]

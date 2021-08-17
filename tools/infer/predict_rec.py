@@ -28,7 +28,6 @@ import traceback
 import paddle
 
 import tools.infer.utility as utility
-import tools.infer.benchmark_utils as benchmark_utils
 from ppocr.postprocess import build_post_process
 from ppocr.utils.logging import get_logger
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
@@ -65,8 +64,25 @@ class TextRecognizer(object):
         self.postprocess_op = build_post_process(postprocess_params)
         self.predictor, self.input_tensor, self.output_tensors, self.config = \
             utility.create_predictor(args, 'rec', logger)
-
-        self.rec_times = utility.Timer()
+        self.benchmark = args.benchmark
+        if args.benchmark:
+            import auto_log
+            pid = os.getpid()
+            self.autolog = auto_log.AutoLogger(
+                model_name="rec",
+                model_precision=args.precision,
+                batch_size=args.rec_batch_num,
+                data_shape="dynamic",
+                save_path=None,  #args.save_log_path,
+                inference_config=self.config,
+                pids=pid,
+                process_name=None,
+                gpu_ids=0 if args.use_gpu else None,
+                time_keys=[
+                    'preprocess_time', 'inference_time', 'postprocess_time'
+                ],
+                warmup=2,
+                logger=logger)
 
     def resize_norm_img(self, img, max_wh_ratio):
         imgC, imgH, imgW = self.rec_image_shape
@@ -168,14 +184,15 @@ class TextRecognizer(object):
             width_list.append(img.shape[1] / float(img.shape[0]))
         # Sorting can speed up the recognition process
         indices = np.argsort(np.array(width_list))
-        self.rec_times.total_time.start()
         rec_res = [['', 0.0]] * img_num
         batch_num = self.rec_batch_num
+        st = time.time()
+        if self.benchmark:
+            self.autolog.times.start()
         for beg_img_no in range(0, img_num, batch_num):
             end_img_no = min(img_num, beg_img_no + batch_num)
             norm_img_batch = []
             max_wh_ratio = 0
-            self.rec_times.preprocess_time.start()
             for ino in range(beg_img_no, end_img_no):
                 h, w = img_list[indices[ino]].shape[0:2]
                 wh_ratio = w * 1.0 / h
@@ -200,6 +217,8 @@ class TextRecognizer(object):
                     norm_img_batch.append(norm_img[0])
             norm_img_batch = np.concatenate(norm_img_batch)
             norm_img_batch = norm_img_batch.copy()
+            if self.benchmark:
+                self.autolog.times.stamp()
 
             if self.rec_algorithm == "SRN":
                 encoder_word_pos_list = np.concatenate(encoder_word_pos_list)
@@ -216,23 +235,20 @@ class TextRecognizer(object):
                     gsrm_slf_attn_bias1_list,
                     gsrm_slf_attn_bias2_list,
                 ]
-                self.rec_times.preprocess_time.end()
-                self.rec_times.inference_time.start()
                 input_names = self.predictor.get_input_names()
                 for i in range(len(input_names)):
                     input_tensor = self.predictor.get_input_handle(input_names[
                         i])
                     input_tensor.copy_from_cpu(inputs[i])
                 self.predictor.run()
-                self.rec_times.inference_time.end()
                 outputs = []
                 for output_tensor in self.output_tensors:
                     output = output_tensor.copy_to_cpu()
                     outputs.append(output)
+                if self.benchmark:
+                    self.autolog.times.stamp()
                 preds = {"predict": outputs[2]}
             else:
-                self.rec_times.preprocess_time.end()
-                self.rec_times.inference_time.start()
                 self.input_tensor.copy_from_cpu(norm_img_batch)
                 self.predictor.run()
 
@@ -240,16 +256,15 @@ class TextRecognizer(object):
                 for output_tensor in self.output_tensors:
                     output = output_tensor.copy_to_cpu()
                     outputs.append(output)
+                if self.benchmark:
+                    self.autolog.times.stamp()
                 preds = outputs[0]
-            self.rec_times.inference_time.end()
-            self.rec_times.postprocess_time.start()
             rec_result = self.postprocess_op(preds)
             for rno in range(len(rec_result)):
                 rec_res[indices[beg_img_no + rno]] = rec_result[rno]
-            self.rec_times.postprocess_time.end()
-            self.rec_times.img_num += int(norm_img_batch.shape[0])
-        self.rec_times.total_time.end()
-        return rec_res, self.rec_times.total_time.value()
+            if self.benchmark:
+                self.autolog.times.end(stamp=True)
+        return rec_res, time.time() - st
 
 
 def main(args):
@@ -257,13 +272,12 @@ def main(args):
     text_recognizer = TextRecognizer(args)
     valid_image_file_list = []
     img_list = []
-    cpu_mem, gpu_mem, gpu_util = 0, 0, 0
-    count = 0
 
-    # warmup 10 times
-    fake_img = np.random.uniform(-1, 1, [1, 32, 320, 3]).astype(np.float32)
-    for i in range(10):
-        dt_boxes, _ = text_recognizer(fake_img)
+    # warmup 2 times
+    if args.warmup:
+        img = np.random.uniform(0, 255, [32, 320, 3]).astype(np.uint8)
+        for i in range(2):
+            res = text_recognizer([img])
 
     for image_file in image_file_list:
         img, flag = check_and_read_gif(image_file)
@@ -276,12 +290,6 @@ def main(args):
         img_list.append(img)
     try:
         rec_res, _ = text_recognizer(img_list)
-        if args.benchmark:
-            cm, gm, gu = utility.get_current_memory_mb(0)
-            cpu_mem += cm
-            gpu_mem += gm
-            gpu_util += gu
-            count += 1
 
     except Exception as E:
         logger.info(traceback.format_exc())
@@ -291,37 +299,7 @@ def main(args):
         logger.info("Predicts of {}:{}".format(valid_image_file_list[ino],
                                                rec_res[ino]))
     if args.benchmark:
-        mems = {
-            'cpu_rss_mb': cpu_mem / count,
-            'gpu_rss_mb': gpu_mem / count,
-            'gpu_util': gpu_util * 100 / count
-        }
-    else:
-        mems = None
-    logger.info("The predict time about recognizer module is as follows: ")
-    rec_time_dict = text_recognizer.rec_times.report(average=True)
-    rec_model_name = args.rec_model_dir
-
-    if args.benchmark:
-        # construct log information
-        model_info = {
-            'model_name': args.rec_model_dir.split('/')[-1],
-            'precision': args.precision
-        }
-        data_info = {
-            'batch_size': args.rec_batch_num,
-            'shape': 'dynamic_shape',
-            'data_num': rec_time_dict['img_num']
-        }
-        perf_info = {
-            'preprocess_time_s': rec_time_dict['preprocess_time'],
-            'inference_time_s': rec_time_dict['inference_time'],
-            'postprocess_time_s': rec_time_dict['postprocess_time'],
-            'total_time_s': rec_time_dict['total_time']
-        }
-        benchmark_log = benchmark_utils.PaddleInferBenchmark(
-            text_recognizer.config, model_info, data_info, perf_info, mems)
-        benchmark_log("Rec")
+        text_recognizer.autolog.report()
 
 
 if __name__ == "__main__":

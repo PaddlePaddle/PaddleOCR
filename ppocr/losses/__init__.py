@@ -38,11 +38,15 @@ from .basic_loss import DistanceLoss
 # combined loss function
 from .combined_loss import CombinedLoss
 
+# table loss
+from .table_att_loss import TableAttentionLoss
 
 def build_loss(config):
     support_dict = [
         'DBLoss', 'EASTLoss', 'SASTLoss', 'CTCLoss', 'ClsLoss', 'AttentionLoss',
-        'SRNLoss', 'PGLoss', 'CombinedLoss', 'NRTRLoss']
+
+        'SRNLoss', 'PGLoss', 'CombinedLoss', 'NRTRLoss', 'TableAttentionLoss'
+    ]
 
     config = copy.deepcopy(config)
     module_name = config.pop('name')

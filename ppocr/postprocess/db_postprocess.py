@@ -187,3 +187,29 @@ class DBPostProcess(object):
 
             boxes_batch.append({'points': boxes})
         return boxes_batch
+
+
+class DistillationDBPostProcess(object):
+    def __init__(self, model_name=["student"],
+                 key=None,
+                 thresh=0.3,
+                 box_thresh=0.6,
+                 max_candidates=1000,
+                 unclip_ratio=1.5,
+                 use_dilation=False,
+                 score_mode="fast",
+                 **kwargs):
+        self.model_name = model_name
+        self.key = key
+        self.post_process = DBPostProcess(thresh=thresh,
+                 box_thresh=box_thresh,
+                 max_candidates=max_candidates,
+                 unclip_ratio=unclip_ratio,
+                 use_dilation=use_dilation,
+                 score_mode=score_mode)
+
+    def __call__(self, predicts, shape_list):
+        results = {}
+        for k in self.model_name:
+            results[k] = self.post_process(predicts[k], shape_list=shape_list)
+        return results
