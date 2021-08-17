@@ -90,9 +90,6 @@ private:
   // post-process
   PostProcessor post_processor_;
 
-  cv::Mat GetRotateCropImage(const cv::Mat &srcimage,
-                             std::vector<std::vector<int>> box);
-
 }; // class CrnnRecognizer
 
 } // namespace PaddleOCR

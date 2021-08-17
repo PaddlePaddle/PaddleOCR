@@ -118,10 +118,10 @@ void DBDetector::Run(cv::Mat &img,
   auto preprocess_end = std::chrono::steady_clock::now();
     
   // Inference.
-  auto inference_start = std::chrono::steady_clock::now();
   auto input_names = this->predictor_->GetInputNames();
   auto input_t = this->predictor_->GetInputHandle(input_names[0]);
   input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
+  auto inference_start = std::chrono::steady_clock::now();
   input_t->CopyFromCpu(input.data());
   
   this->predictor_->Run();
@@ -165,8 +165,8 @@ void DBDetector::Run(cv::Mat &img,
       this->det_db_unclip_ratio_, this->use_polygon_score_);
 
   boxes = post_processor_.FilterTagDetRes(boxes, ratio_h, ratio_w, srcimg);
-  std::cout << "Detected boxes num: " << boxes.size() << endl;
   auto postprocess_end = std::chrono::steady_clock::now();
+  std::cout << "Detected boxes num: " << boxes.size() << endl;
 
   std::chrono::duration<float> preprocess_diff = preprocess_end - preprocess_start;
   times->push_back(double(preprocess_diff.count() * 1000));
