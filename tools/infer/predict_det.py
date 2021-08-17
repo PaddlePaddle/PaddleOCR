@@ -101,6 +101,7 @@ class TextDetector(object):
         if args.benchmark:
             import auto_log
             pid = os.getpid()
+            gpu_id = self.get_infer_gpuid()
             self.autolog = auto_log.AutoLogger(
                 model_name="det",
                 model_precision=args.precision,
@@ -110,12 +111,25 @@ class TextDetector(object):
                 inference_config=self.config,
                 pids=pid,
                 process_name=None,
-                gpu_ids=0,
+                gpu_ids=gpu_id,
                 time_keys=[
                     'preprocess_time', 'inference_time', 'postprocess_time'
                 ],
                 warmup=2,
                 logger=logger)
+
+    def get_infer_gpuid(self):
+        cmd = "nvidia-smi"
+        res = os.popen(cmd).readlines()
+        if len(res) == 0:
+            return None
+        cmd = "env | grep CUDA_VISIBLE_DEVICES"
+        env_cuda = os.popen(cmd).readlines()
+        if len(env_cuda) == 0:
+            return 0
+        else:
+            gpu_id = env_cuda[0].strip().split("=")[1]
+            return int(gpu_id[0])
 
     def order_points_clockwise(self, pts):
         """
