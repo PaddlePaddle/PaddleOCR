@@ -280,6 +280,20 @@ def create_predictor(args, mode, logger):
     return predictor, input_tensor, output_tensors, config
 
 
+def get_infer_gpuid():
+    cmd = "nvidia-smi"
+    res = os.popen(cmd).readlines()
+    if len(res) == 0:
+        return None
+    cmd = "env | grep CUDA_VISIBLE_DEVICES"
+    env_cuda = os.popen(cmd).readlines()
+    if len(env_cuda) == 0:
+        return 0
+    else:
+        gpu_id = env_cuda[0].strip().split("=")[1]
+        return int(gpu_id[0])
+
+
 def draw_e2e_res(dt_boxes, strs, img_path):
     src_im = cv2.imread(img_path)
     for box, str in zip(dt_boxes, strs):
