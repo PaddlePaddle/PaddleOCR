@@ -159,6 +159,11 @@ def create_predictor(args, mode, logger):
         precision = inference.PrecisionType.Float32
 
     if args.use_gpu:
+        gpu_id = get_infer_gpuid()
+        if gpu_id is None:
+            raise ValueError(
+                "Not found GPU in current device. Please check your device or set args.use_gpu as False"
+            )
         config.enable_use_gpu(args.gpu_mem, 0)
         if args.use_tensorrt:
             config.enable_tensorrt_engine(
