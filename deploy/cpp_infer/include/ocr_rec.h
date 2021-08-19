@@ -44,14 +44,14 @@ public:
                           const int &gpu_id, const int &gpu_mem,
                           const int &cpu_math_library_num_threads,
                           const bool &use_mkldnn, const string &label_path,
-                          const bool &use_tensorrt, const bool &use_fp16) {
+                          const bool &use_tensorrt, const std::string &precision) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
     this->cpu_math_library_num_threads_ = cpu_math_library_num_threads;
     this->use_mkldnn_ = use_mkldnn;
     this->use_tensorrt_ = use_tensorrt;
-    this->use_fp16_ = use_fp16;
+    this->precision_ = precision;
 
     this->label_list_ = Utility::ReadDict(label_path);
     this->label_list_.insert(this->label_list_.begin(),
@@ -64,7 +64,7 @@ public:
   // Load Paddle inference model
   void LoadModel(const std::string &model_dir);
 
-  void Run(cv::Mat &img);
+  void Run(cv::Mat &img, std::vector<double> *times);
 
 private:
   std::shared_ptr<Predictor> predictor_;
@@ -81,7 +81,7 @@ private:
   std::vector<float> scale_ = {1 / 0.5f, 1 / 0.5f, 1 / 0.5f};
   bool is_scale_ = true;
   bool use_tensorrt_ = false;
-  bool use_fp16_ = false;
+  std::string precision_ = "fp32";
   // pre-process
   CrnnResizeImg resize_op_;
   Normalize normalize_op_;
@@ -89,9 +89,6 @@ private:
 
   // post-process
   PostProcessor post_processor_;
-
-  cv::Mat GetRotateCropImage(const cv::Mat &srcimage,
-                             std::vector<std::vector<int>> box);
 
 }; // class CrnnRecognizer
 
