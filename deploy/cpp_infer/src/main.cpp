@@ -39,8 +39,8 @@
 DEFINE_bool(use_gpu, false, "Infering with GPU or CPU.");
 DEFINE_int32(gpu_id, 0, "Device id of GPU to execute.");
 DEFINE_int32(gpu_mem, 4000, "GPU id when infering with GPU.");
-DEFINE_int32(cpu_math_library_num_threads, 10, "Num of threads with CPU.");
-DEFINE_bool(use_mkldnn, false, "Whether use mkldnn with CPU.");
+DEFINE_int32(cpu_threads, 10, "Num of threads with CPU.");
+DEFINE_bool(enable_mkldnn, false, "Whether use mkldnn with CPU.");
 DEFINE_bool(use_tensorrt, false, "Whether use tensorrt.");
 DEFINE_string(precision, "fp32", "Precision be one of fp32/fp16/int8");
 DEFINE_bool(benchmark, true, "Whether use benchmark.");
@@ -60,6 +60,7 @@ DEFINE_string(cls_model_dir, "", "Path of cls inference model.");
 DEFINE_double(cls_thresh, 0.9, "Threshold of cls_thresh.");
 // recognition related
 DEFINE_string(rec_model_dir, "", "Path of rec inference model.");
+DEFINE_int32(rec_batch_num, 1, "rec_batch_num.");
 DEFINE_string(char_list_file, "../../ppocr/utils/ppocr_keys_v1.txt", "Path of dictionary.");
 
 
@@ -78,8 +79,8 @@ void PrintBenchmarkLog(std::string model_name,
   LOG(INFO) << "ir_optim: " << "True";
   LOG(INFO) << "enable_memory_optim: " << "True";
   LOG(INFO) << "enable_tensorrt: " << FLAGS_use_tensorrt;
-  LOG(INFO) << "enable_mkldnn: " << (FLAGS_use_mkldnn ? "True" : "False");
-  LOG(INFO) << "cpu_math_library_num_threads: " << FLAGS_cpu_math_library_num_threads;
+  LOG(INFO) << "enable_mkldnn: " << (FLAGS_enable_mkldnn ? "True" : "False");
+  LOG(INFO) << "cpu_math_library_num_threads: " << FLAGS_cpu_threads;
   LOG(INFO) << "----------------------- Data info -----------------------";
   LOG(INFO) << "batch_size: " << batch_size;
   LOG(INFO) << "input_shape: " << input_shape;
@@ -110,8 +111,8 @@ static bool PathExists(const std::string& path){
 int main_det(std::vector<cv::String> cv_all_img_names) {
     std::vector<double> time_info = {0, 0, 0};
     DBDetector det(FLAGS_det_model_dir, FLAGS_use_gpu, FLAGS_gpu_id,
-                   FLAGS_gpu_mem, FLAGS_cpu_math_library_num_threads, 
-                   FLAGS_use_mkldnn, FLAGS_max_side_len, FLAGS_det_db_thresh,
+                   FLAGS_gpu_mem, FLAGS_cpu_threads, 
+                   FLAGS_enable_mkldnn, FLAGS_max_side_len, FLAGS_det_db_thresh,
                    FLAGS_det_db_box_thresh, FLAGS_det_db_unclip_ratio,
                    FLAGS_use_polygon_score, FLAGS_visualize,
                    FLAGS_use_tensorrt, FLAGS_precision);
@@ -144,8 +145,8 @@ int main_det(std::vector<cv::String> cv_all_img_names) {
 int main_rec(std::vector<cv::String> cv_all_img_names) {
     std::vector<double> time_info = {0, 0, 0};
     CRNNRecognizer rec(FLAGS_rec_model_dir, FLAGS_use_gpu, FLAGS_gpu_id,
-                       FLAGS_gpu_mem, FLAGS_cpu_math_library_num_threads,
-                       FLAGS_use_mkldnn, FLAGS_char_list_file,
+                       FLAGS_gpu_mem, FLAGS_cpu_threads,
+                       FLAGS_enable_mkldnn, FLAGS_char_list_file,
                        FLAGS_use_tensorrt, FLAGS_precision);
 
     for (int i = 0; i < cv_all_img_names.size(); ++i) {
@@ -175,8 +176,8 @@ int main_rec(std::vector<cv::String> cv_all_img_names) {
 
 int main_system(std::vector<cv::String> cv_all_img_names) {
     DBDetector det(FLAGS_det_model_dir, FLAGS_use_gpu, FLAGS_gpu_id,
-                   FLAGS_gpu_mem, FLAGS_cpu_math_library_num_threads, 
-                   FLAGS_use_mkldnn, FLAGS_max_side_len, FLAGS_det_db_thresh,
+                   FLAGS_gpu_mem, FLAGS_cpu_threads, 
+                   FLAGS_enable_mkldnn, FLAGS_max_side_len, FLAGS_det_db_thresh,
                    FLAGS_det_db_box_thresh, FLAGS_det_db_unclip_ratio,
                    FLAGS_use_polygon_score, FLAGS_visualize,
                    FLAGS_use_tensorrt, FLAGS_precision);
@@ -184,14 +185,14 @@ int main_system(std::vector<cv::String> cv_all_img_names) {
     Classifier *cls = nullptr;
     if (FLAGS_use_angle_cls) {
       cls = new Classifier(FLAGS_cls_model_dir, FLAGS_use_gpu, FLAGS_gpu_id,
-                           FLAGS_gpu_mem, FLAGS_cpu_math_library_num_threads,
-                           FLAGS_use_mkldnn, FLAGS_cls_thresh,
+                           FLAGS_gpu_mem, FLAGS_cpu_threads,
+                           FLAGS_enable_mkldnn, FLAGS_cls_thresh,
                            FLAGS_use_tensorrt, FLAGS_precision);
     }
 
     CRNNRecognizer rec(FLAGS_rec_model_dir, FLAGS_use_gpu, FLAGS_gpu_id,
-                       FLAGS_gpu_mem, FLAGS_cpu_math_library_num_threads,
-                       FLAGS_use_mkldnn, FLAGS_char_list_file,
+                       FLAGS_gpu_mem, FLAGS_cpu_threads,
+                       FLAGS_enable_mkldnn, FLAGS_char_list_file,
                        FLAGS_use_tensorrt, FLAGS_precision);
 
     auto start = std::chrono::system_clock::now();
