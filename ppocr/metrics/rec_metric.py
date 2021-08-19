@@ -48,8 +48,8 @@ class RecMetric(object):
                  'norm_edit_dis': 0,
             }
         """
-        acc = 1.0 * self.correct_num / (self.all_num)
-        norm_edit_dis = 1 - self.norm_edit_dis / (self.all_num)
+        acc = 1.0 * self.correct_num / self.all_num
+        norm_edit_dis = 1 - self.norm_edit_dis / self.all_num
         self.reset()
         return {'acc': acc, 'norm_edit_dis': norm_edit_dis}
 
