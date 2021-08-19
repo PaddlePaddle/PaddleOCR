@@ -46,7 +46,7 @@ Architecture:
     name: TransformerOptim
     d_model: 512
     num_encoder_layers: 6
-    beam_size: 10    # When Beam size is greater than 0, it means to use beam search when evaluation.
+    beam_size: 10 # When Beam size is greater than 0, it means to use beam search when evaluation.
     
 
 Loss:
