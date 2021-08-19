@@ -145,34 +145,32 @@ benchmark_value=$(func_parser_value "${lines[49]}")
 infer_key1=$(func_parser_key "${lines[50]}")
 infer_value1=$(func_parser_value "${lines[50]}")
 
-# parser cpp inference model 
-cpp_infer_model_dir_list=$(func_parser_value "${lines[52]}")
-cpp_infer_is_quant=$(func_parser_value "${lines[53]}")
-# parser cpp inference 
-inference_cmd=$(func_parser_value "${lines[54]}")
-cpp_use_gpu_key=$(func_parser_key "${lines[55]}")
-cpp_use_gpu_list=$(func_parser_value "${lines[55]}")
-cpp_use_mkldnn_key=$(func_parser_key "${lines[56]}")
-cpp_use_mkldnn_list=$(func_parser_value "${lines[56]}")
-cpp_cpu_threads_key=$(func_parser_key "${lines[57]}")
-cpp_cpu_threads_list=$(func_parser_value "${lines[57]}")
-cpp_batch_size_key=$(func_parser_key "${lines[58]}")
-cpp_batch_size_list=$(func_parser_value "${lines[58]}")
-cpp_use_trt_key=$(func_parser_key "${lines[59]}")
-cpp_use_trt_list=$(func_parser_value "${lines[59]}")
-cpp_precision_key=$(func_parser_key "${lines[60]}")
-cpp_precision_list=$(func_parser_value "${lines[60]}")
-cpp_infer_model_key=$(func_parser_key "${lines[61]}")
-cpp_image_dir_key=$(func_parser_key "${lines[62]}")
-cpp_infer_img_dir=$(func_parser_value "${lines[62]}")
-cpp_save_log_key=$(func_parser_key "${lines[63]}")
-cpp_benchmark_key=$(func_parser_key "${lines[64]}")
-cpp_benchmark_value=$(func_parser_value "${lines[64]}")
+if [ ${MODE} = "cpp_infer" ]; then
+    # parser cpp inference model 
+    cpp_infer_model_dir_list=$(func_parser_value "${lines[52]}")
+    cpp_infer_is_quant=$(func_parser_value "${lines[53]}")
+    # parser cpp inference 
+    inference_cmd=$(func_parser_value "${lines[54]}")
+    cpp_use_gpu_key=$(func_parser_key "${lines[55]}")
+    cpp_use_gpu_list=$(func_parser_value "${lines[55]}")
+    cpp_use_mkldnn_key=$(func_parser_key "${lines[56]}")
+    cpp_use_mkldnn_list=$(func_parser_value "${lines[56]}")
+    cpp_cpu_threads_key=$(func_parser_key "${lines[57]}")
+    cpp_cpu_threads_list=$(func_parser_value "${lines[57]}")
+    cpp_batch_size_key=$(func_parser_key "${lines[58]}")
+    cpp_batch_size_list=$(func_parser_value "${lines[58]}")
+    cpp_use_trt_key=$(func_parser_key "${lines[59]}")
+    cpp_use_trt_list=$(func_parser_value "${lines[59]}")
+    cpp_precision_key=$(func_parser_key "${lines[60]}")
+    cpp_precision_list=$(func_parser_value "${lines[60]}")
+    cpp_infer_model_key=$(func_parser_key "${lines[61]}")
+    cpp_image_dir_key=$(func_parser_key "${lines[62]}")
+    cpp_infer_img_dir=$(func_parser_value "${lines[62]}")
+    cpp_save_log_key=$(func_parser_key "${lines[63]}")
+    cpp_benchmark_key=$(func_parser_key "${lines[64]}")
+    cpp_benchmark_value=$(func_parser_value "${lines[64]}")
+fi
 
-echo $inference_cmd
-echo $cpp_cpu_threads_key $cpp_cpu_threads_list
-echo $cpp_precision_key $cpp_precision_list
-echo $cpp_benchmark_key $cpp_benchmark_value
 
 LOG_PATH="./tests/output"
 mkdir -p ${LOG_PATH}

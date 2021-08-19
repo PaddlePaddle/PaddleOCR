@@ -75,7 +75,7 @@ elif [ ${MODE} = "infer" ] || [ ${MODE} = "cpp_infer" ];then
 fi
 
 if [ ${MODE} = "cpp_infer" ];then
-    ################### build opencv ###################
+    echo "################### build opencv ###################"
     cd deploy/cpp_infer
     rm -rf 3.4.7.tar.gz opencv-3.4.7/
     wget https://github.com/opencv/opencv/archive/3.4.7.tar.gz
@@ -109,34 +109,10 @@ if [ ${MODE} = "cpp_infer" ];then
     make -j
     make install
     cd ../
-    ################### build opencv finished ###################
+    echo "################### build opencv finished ###################"
 
 
-#     ################### build paddle inference ###################
-#     rm -rf Paddle
-#     git clone https://github.com/PaddlePaddle/Paddle.git
-
-#     cd Paddle
-#     rm -rf build
-#     mkdir build
-#     cd build
-
-#     cmake  .. \
-#         -DWITH_CONTRIB=OFF \
-#         -DWITH_MKL=ON \
-#         -DWITH_MKLDNN=ON  \
-#         -DWITH_TESTING=OFF \
-#         -DCMAKE_BUILD_TYPE=Release \
-#         -DWITH_INFERENCE_API_TEST=OFF \
-#         -DON_INFER=ON \
-#         -DWITH_PYTHON=ON
-#     make -j
-#     make inference_lib_dist
-#     cd ../
-#     ################### build paddle inference finished ###################
-
-
-    ################### build PaddleOCR demo ###################
+    echo "################### build PaddleOCR demo ####################"
     OPENCV_DIR=$(pwd)/opencv-3.4.7/opencv3/
     LIB_DIR=$(pwd)/Paddle/build/paddle_inference_install_dir/
     CUDA_LIB_DIR=/usr/local/cuda/lib64/
@@ -158,5 +134,5 @@ if [ ${MODE} = "cpp_infer" ];then
         -DTENSORRT_DIR=${TENSORRT_DIR} \
 
     make -j
-    ################### build PaddleOCR demo finished ###################
+    echo "################### build PaddleOCR demo finished ###################"
 fi
