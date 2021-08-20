@@ -35,6 +35,7 @@
 #include <sys/stat.h>
 
 #include <gflags/gflags.h>
+#include <include/autolog.h>
 
 DEFINE_bool(use_gpu, false, "Infering with GPU or CPU.");
 DEFINE_int32(gpu_id, 0, "Device id of GPU to execute.");
@@ -67,34 +68,6 @@ DEFINE_string(char_list_file, "../../ppocr/utils/ppocr_keys_v1.txt", "Path of di
 using namespace std;
 using namespace cv;
 using namespace PaddleOCR;
-
-
-void PrintBenchmarkLog(std::string model_name, 
-                       int batch_size, 
-                       std::string input_shape,
-                       std::vector<double> time_info,
-                       int img_num){
-  LOG(INFO) << "----------------------- Config info -----------------------";
-  LOG(INFO) << "runtime_device: " << (FLAGS_use_gpu ? "gpu" : "cpu");
-  LOG(INFO) << "ir_optim: " << "True";
-  LOG(INFO) << "enable_memory_optim: " << "True";
-  LOG(INFO) << "enable_tensorrt: " << FLAGS_use_tensorrt;
-  LOG(INFO) << "enable_mkldnn: " << (FLAGS_enable_mkldnn ? "True" : "False");
-  LOG(INFO) << "cpu_math_library_num_threads: " << FLAGS_cpu_threads;
-  LOG(INFO) << "----------------------- Data info -----------------------";
-  LOG(INFO) << "batch_size: " << batch_size;
-  LOG(INFO) << "input_shape: " << input_shape;
-  LOG(INFO) << "data_num: " << img_num;
-  LOG(INFO) << "----------------------- Model info -----------------------";
-  LOG(INFO) << "model_name: " << model_name;
-  LOG(INFO) << "precision: " << FLAGS_precision;
-  LOG(INFO) << "----------------------- Perf info ------------------------";
-  LOG(INFO) << "Total time spent(ms): "
-            << std::accumulate(time_info.begin(), time_info.end(), 0);
-  LOG(INFO) << "preprocess_time(ms): " << time_info[0] / img_num
-            << ", inference_time(ms): " << time_info[1] / img_num
-            << ", postprocess_time(ms): " << time_info[2] / img_num;
-}
 
 
 static bool PathExists(const std::string& path){
@@ -136,7 +109,17 @@ int main_det(std::vector<cv::String> cv_all_img_names) {
     }
     
     if (FLAGS_benchmark) {
-        PrintBenchmarkLog("det", 1, "dynamic", time_info, cv_all_img_names.size());
+        AutoLogger autolog("ocr_det", 
+                           FLAGS_use_gpu,
+                           FLAGS_use_tensorrt,
+                           FLAGS_enable_mkldnn,
+                           FLAGS_cpu_threads,
+                           1, 
+                           "dynamic", 
+                           FLAGS_precision, 
+                           time_info, 
+                           cv_all_img_names.size());
+        autolog.report();
     }
     return 0;
 }
@@ -164,10 +147,6 @@ int main_rec(std::vector<cv::String> cv_all_img_names) {
       time_info[0] += rec_times[0];
       time_info[1] += rec_times[1];
       time_info[2] += rec_times[2];
-    }
-    
-    if (FLAGS_benchmark) {
-        PrintBenchmarkLog("rec", 1, "dynamic", time_info, cv_all_img_names.size());
     }
     
     return 0;
