@@ -186,7 +186,6 @@ def train(config,
     model.train()
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
-
     use_nrtr = config['Architecture']['algorithm'] == "NRTR"
 
     try:
