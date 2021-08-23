@@ -364,7 +364,6 @@ def eval(model,
                 break
             images = batch[0]
             start = time.time()
-
             if use_srn or model_type == 'table':
                 preds = model(images, data=batch[1:])
             else:
