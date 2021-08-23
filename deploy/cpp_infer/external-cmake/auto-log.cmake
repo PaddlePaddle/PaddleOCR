@@ -8,7 +8,7 @@ ExternalProject_Add(
     extern_Autolog
     PREFIX autolog
     GIT_REPOSITORY ${AUTOLOG_REPOSITORY}
-    GIT_TAG support_cpp_log
+    GIT_TAG main
     DOWNLOAD_NO_EXTRACT True
     INSTALL_COMMAND cmake -E echo "Skipping install step."
 )
