@@ -24,10 +24,8 @@ __all__ = ['build_post_process']
 from .db_postprocess import DBPostProcess, DistillationDBPostProcess
 from .east_postprocess import EASTPostProcess
 from .sast_postprocess import SASTPostProcess
-
 from .rec_postprocess import CTCLabelDecode, AttnLabelDecode, SRNLabelDecode, DistillationCTCLabelDecode, NRTRLabelDecode, \
     TableLabelDecode
-
 from .cls_postprocess import ClsPostProcess
 from .pg_postprocess import PGPostProcess
 
