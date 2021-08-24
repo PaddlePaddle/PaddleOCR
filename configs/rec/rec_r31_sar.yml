@@ -3,16 +3,16 @@ Global:
   epoch_num: 5
   log_smooth_window: 20
   print_batch_step: 20
-  save_model_dir: /paddle/backup/sar_rec/sar_train_v3
+  save_model_dir: ./sar_rec
   save_epoch_step: 1
   # evaluation is run every 2000 iterations
   eval_batch_step: [0, 2000]
   cal_metric_during_train: True
-  pretrained_model: #/paddle/backup/sar_rec/sar_train_v2/best_accuracy
+  pretrained_model:
   checkpoints: 
   save_inference_dir:
   use_visualdl: False
-  infer_img: demo_text_recog.jpg 
+  infer_img: 
   # for data or label process
   character_dict_path: ppocr/utils/dict90.txt
   character_type: ch
@@ -54,11 +54,11 @@ Metric:
 
 Train:
   dataset:
-    name: LMDBDataSet #SimpleDataSet
-    # delimiter: ' '
-    # label_file_list: ['/paddle/data/concat_data/icdar_2013_train20.txt', '/paddle/data/concat_data/icdar_2015_train20.txt', '/paddle/data/concat_data/coco_text_train20.txt', '/paddle/data/concat_data/IIIt5k_train20.txt', '/paddle/data/concat_data/SynthAdd_train.txt', '/paddle/data/concat_data/SynthText_train.txt', '/paddle/data/concat_data/Syn90k_train.txt']
-    data_dir: /paddle/data/ocr_data/training/ #/paddle/data/concat_data/
-    # ratio_list: 1.0
+    name: SimpleDataSet
+    delimiter: ' '
+    label_file_list: ['/paddle/data/concat_data/icdar_2013_train20.txt', '/paddle/data/concat_data/icdar_2015_train20.txt', '/paddle/data/concat_data/coco_text_train20.txt', '/paddle/data/concat_data/IIIt5k_train20.txt', '/paddle/data/concat_data/SynthAdd_train.txt', '/paddle/data/concat_data/SynthText_train.txt', '/paddle/data/concat_data/Syn90k_train.txt']
+    data_dir: /paddle/data/concat_data/
+    ratio_list: 1.0
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
