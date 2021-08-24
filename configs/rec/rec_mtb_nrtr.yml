@@ -43,7 +43,7 @@ Architecture:
     name: MTB
     cnn_num: 2
   Head:
-    name: TransformerOptim
+    name: Transformer
     d_model: 512
     num_encoder_layers: 6
     beam_size: 10 # When Beam size is greater than 0, it means to use beam search when evaluation.
@@ -69,8 +69,9 @@ Train:
           img_mode: BGR
           channel_first: False
       - NRTRLabelEncode: # Class handling label
-      - PILResize:
+      - NRTRRecResizeImg:
           image_shape: [100, 32]
+          resize_type: PIL # PIL or OpenCV
       - KeepKeys:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
   loader:
@@ -88,8 +89,9 @@ Eval:
           img_mode: BGR
           channel_first: False
       - NRTRLabelEncode: # Class handling label
-      - PILResize:
+      - NRTRRecResizeImg:
           image_shape: [100, 32]
+          resize_type: PIL # PIL or OpenCV
       - KeepKeys:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
   loader:

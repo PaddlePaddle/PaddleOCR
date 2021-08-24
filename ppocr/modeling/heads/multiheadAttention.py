@@ -24,7 +24,7 @@ zeros_ = constant_(value=0.)
 ones_ = constant_(value=1.)
 
 
-class MultiheadAttentionOptim(nn.Layer):
+class MultiheadAttention(nn.Layer):
     """Allows the model to jointly attend to information
     from different representation subspaces.
     See reference: Attention Is All You Need
@@ -46,7 +46,7 @@ class MultiheadAttentionOptim(nn.Layer):
                  bias=True,
                  add_bias_kv=False,
                  add_zero_attn=False):
-        super(MultiheadAttentionOptim, self).__init__()
+        super(MultiheadAttention, self).__init__()
         self.embed_dim = embed_dim
         self.num_heads = num_heads
         self.dropout = dropout

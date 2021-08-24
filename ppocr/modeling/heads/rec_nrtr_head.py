@@ -21,7 +21,7 @@ from paddle.nn import LayerList
 from paddle.nn.initializer import XavierNormal as xavier_uniform_
 from paddle.nn import Dropout, Linear, LayerNorm, Conv2D
 import numpy as np
-from ppocr.modeling.heads.multiheadAttention import MultiheadAttentionOptim
+from ppocr.modeling.heads.multiheadAttention import MultiheadAttention
 from paddle.nn.initializer import Constant as constant_
 from paddle.nn.initializer import XavierNormal as xavier_normal_
 
@@ -29,7 +29,7 @@ zeros_ = constant_(value=0.)
 ones_ = constant_(value=1.)
 
 
-class TransformerOptim(nn.Layer):
+class Transformer(nn.Layer):
     """A transformer model. User is able to modify the attributes as needed. The architechture
     is based on the paper "Attention Is All You Need". Ashish Vaswani, Noam Shazeer,
     Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Lukasz Kaiser, and
@@ -63,7 +63,7 @@ class TransformerOptim(nn.Layer):
                  out_channels=0,
                  dst_vocab_size=99,
                  scale_embedding=True):
-        super(TransformerOptim, self).__init__()
+        super(Transformer, self).__init__()
         self.embedding = Embeddings(
             d_model=d_model,
             vocab=dst_vocab_size,
@@ -215,8 +215,7 @@ class TransformerOptim(nn.Layer):
             n_curr_active_inst = len(curr_active_inst_idx)
             new_shape = (n_curr_active_inst * n_bm, *d_hs)
 
-            beamed_tensor = beamed_tensor.reshape(
-                [n_prev_active_inst, -1])
+            beamed_tensor = beamed_tensor.reshape([n_prev_active_inst, -1])
             beamed_tensor = beamed_tensor.index_select(
                 paddle.to_tensor(curr_active_inst_idx), axis=0)
             beamed_tensor = beamed_tensor.reshape([*new_shape])
@@ -486,7 +485,7 @@ class TransformerEncoderLayer(nn.Layer):
                  attention_dropout_rate=0.0,
                  residual_dropout_rate=0.1):
         super(TransformerEncoderLayer, self).__init__()
-        self.self_attn = MultiheadAttentionOptim(
+        self.self_attn = MultiheadAttention(
             d_model, nhead, dropout=attention_dropout_rate)
 
         self.conv1 = Conv2D(
@@ -555,9 +554,9 @@ class TransformerDecoderLayer(nn.Layer):
                  attention_dropout_rate=0.0,
                  residual_dropout_rate=0.1):
         super(TransformerDecoderLayer, self).__init__()
-        self.self_attn = MultiheadAttentionOptim(
+        self.self_attn = MultiheadAttention(
             d_model, nhead, dropout=attention_dropout_rate)
-        self.multihead_attn = MultiheadAttentionOptim(
+        self.multihead_attn = MultiheadAttention(
             d_model, nhead, dropout=attention_dropout_rate)
 
         self.conv1 = Conv2D(

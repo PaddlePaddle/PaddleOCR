@@ -26,13 +26,13 @@ def build_head(config):
     from .rec_ctc_head import CTCHead
     from .rec_att_head import AttentionHead
     from .rec_srn_head import SRNHead
-    from .rec_nrtr_optim_head import TransformerOptim
+    from .rec_nrtr_head import Transformer
 
     # cls head
     from .cls_head import ClsHead
     support_dict = [
         'DBHead', 'EASTHead', 'SASTHead', 'CTCHead', 'ClsHead', 'AttentionHead',
-        'SRNHead', 'PGHead', 'TransformerOptim', 'TableAttentionHead'
+        'SRNHead', 'PGHead', 'Transformer', 'TableAttentionHead'
     ]
 
     #table head

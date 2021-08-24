@@ -42,30 +42,21 @@ class ClsResizeImg(object):
         data['image'] = norm_img
         return data
 
-class PILResize(object):
-    def __init__(self, image_shape, **kwargs):
+
+class NRTRRecResizeImg(object):
+    def __init__(self, image_shape, resize_type, **kwargs):
         self.image_shape = image_shape
+        self.resize_type = resize_type
 
     def __call__(self, data):
         img = data['image']
-        image_pil = Image.fromarray(np.uint8(img))
-        norm_img = image_pil.resize(self.image_shape, Image.ANTIALIAS)
-        norm_img = np.array(norm_img)
-        norm_img = np.expand_dims(norm_img, -1)
-        norm_img = norm_img.transpose((2, 0, 1))
-        data['image'] = norm_img.astype(np.float32) / 128. - 1.
-        return data
-
-
-class CVResize(object):
-    def __init__(self, image_shape, **kwargs):
-        self.image_shape = image_shape
-
-    def __call__(self, data):
-        img = data['image']
-        #print(img)
-        norm_img = cv2.resize(img,self.image_shape)
-        norm_img = np.expand_dims(norm_img, -1)
+        if self.resize_type == 'PIL':
+            image_pil = Image.fromarray(np.uint8(img))
+            img = image_pil.resize(self.image_shape, Image.ANTIALIAS)
+            img = np.array(img)
+        if self.resize_type == 'OpenCV':
+            img = cv2.resize(img, self.image_shape)
+        norm_img = np.expand_dims(img, -1)
         norm_img = norm_img.transpose((2, 0, 1))
         data['image'] = norm_img.astype(np.float32) / 128. - 1.
         return data
