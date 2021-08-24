@@ -25,7 +25,7 @@ from .db_postprocess import DBPostProcess, DistillationDBPostProcess
 from .east_postprocess import EASTPostProcess
 from .sast_postprocess import SASTPostProcess
 from .rec_postprocess import CTCLabelDecode, AttnLabelDecode, SRNLabelDecode, DistillationCTCLabelDecode, \
-    TableLabelDecode
+    TableLabelDecode, SARLabelDecode
 from .cls_postprocess import ClsPostProcess
 from .pg_postprocess import PGPostProcess
 
@@ -35,7 +35,7 @@ def build_post_process(config, global_config=None):
         'DBPostProcess', 'EASTPostProcess', 'SASTPostProcess', 'CTCLabelDecode',
         'AttnLabelDecode', 'ClsPostProcess', 'SRNLabelDecode', 'PGPostProcess',
         'DistillationCTCLabelDecode', 'TableLabelDecode',
-        'DistillationDBPostProcess'
+        'DistillationDBPostProcess', 'SARLabelDecode'
     ]
 
     config = copy.deepcopy(config)

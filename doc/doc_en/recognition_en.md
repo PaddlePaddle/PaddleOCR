@@ -207,6 +207,7 @@ If the evaluation set is large, the test will be time-consuming. It is recommend
 | rec_mv3_tps_bilstm_att.yml |  CRNN |   Mobilenet_v3 |  TPS   |  BiLSTM |  att  |
 | rec_r34_vd_tps_bilstm_att.yml |  CRNN |   Resnet34_vd |  TPS   |  BiLSTM |  att  |
 | rec_r50fpn_vd_none_srn.yml    | SRN | Resnet50_fpn_vd    | None    | rnn | srn |
+| rec_r31_sar.yml               | SAR | ResNet31 | None | LSTM encoder | LSTM decoder |
 
 
 For training Chinese data, it is recommended to use
