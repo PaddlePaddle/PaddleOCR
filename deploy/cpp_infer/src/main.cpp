@@ -35,7 +35,6 @@
 #include <sys/stat.h>
 
 #include <gflags/gflags.h>
-#include <include/autolog.h>
 
 DEFINE_bool(use_gpu, false, "Infering with GPU or CPU.");
 DEFINE_int32(gpu_id, 0, "Device id of GPU to execute.");
