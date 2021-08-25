@@ -91,11 +91,13 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 - [快速安装](./doc/doc_ch/installation.md)
 - [中文OCR模型快速使用](./doc/doc_ch/quickstart.md)
 - [多语言OCR模型快速使用](./doc/doc_ch/multi_languages.md)
+- [版面分析与表格识别快速使用](./ppstructure/README_ch.md)
 - [代码组织结构](./doc/doc_ch/tree.md)
 - 算法介绍
     - [文本检测](./doc/doc_ch/algorithm_overview.md)
     - [文本识别](./doc/doc_ch/algorithm_overview.md)
     - [PP-OCR Pipeline](#PP-OCR)
+    - [PP-Structure Pipeline](./ppstructure/README_ch.md)
     - [端到端PGNet算法](./doc/doc_ch/pgnet.md)
 - 模型训练/评估
     - [文本检测](./doc/doc_ch/detection.md)
@@ -106,7 +108,7 @@ PaddleOCR同时支持动态图与静态图两种编程范式
     - [基于pip安装whl包快速推理](./doc/doc_ch/whl.md)
     - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
     - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
-    - [服务化部署](./deploy/hubserving/readme.md)
+    - [服务化部署](./deploy/pdserving/README_CN.md)
     - [端侧部署](./deploy/lite/readme.md)
     - [Benchmark](./doc/doc_ch/benchmark.md)
 - 数据集
