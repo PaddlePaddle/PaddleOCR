@@ -88,9 +88,8 @@ class TextRecognizer(object):
     def resize_norm_img(self, img, max_wh_ratio):
         imgC, imgH, imgW = self.rec_image_shape
         assert imgC == img.shape[2]
-        if self.character_type == "ch":
-            max_wh_ratio = max(max_wh_ratio, imgW / imgH)
-            imgW = int((32 * max_wh_ratio))
+        max_wh_ratio = max(max_wh_ratio, imgW / imgH)
+        imgW = int((32 * max_wh_ratio))
         h, w = img.shape[:2]
         ratio = w / float(h)
         if math.ceil(imgH * ratio) > imgW:
