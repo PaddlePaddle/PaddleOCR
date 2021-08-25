@@ -206,6 +206,10 @@ endif()
 
 set(DEPS ${DEPS} ${OpenCV_LIBS})
 
+include(ExternalProject)
+include(external-cmake/auto-log.cmake)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/autolog/src/extern_Autolog/auto_log)
+
 AUX_SOURCE_DIRECTORY(./src SRCS)
 add_executable(${DEMO_NAME} ${SRCS})
 
