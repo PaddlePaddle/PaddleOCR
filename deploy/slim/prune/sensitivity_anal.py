@@ -75,7 +75,7 @@ def main(config, device, logger, vdl_writer):
     model = build_model(config['Architecture'])
 
     flops = paddle.flops(model, [1, 3, 640, 640])
-    logger.info(f"FLOPs before pruning: {flops}")
+    logger.info("FLOPs before pruning: {}".format(flops))
 
     from paddleslim.dygraph import FPGMFilterPruner
     model.train()
@@ -106,8 +106,8 @@ def main(config, device, logger, vdl_writer):
 
     def eval_fn():
         metric = program.eval(model, valid_dataloader, post_process_class,
-                              eval_class)
-        logger.info(f"metric['hmean']: {metric['hmean']}")
+                              eval_class, False)
+        logger.info("metric['hmean']: {}".format(metric['hmean']))
         return metric['hmean']
 
     params_sensitive = pruner.sensitive(
@@ -123,16 +123,17 @@ def main(config, device, logger, vdl_writer):
     # calculate pruned params's ratio
     params_sensitive = pruner._get_ratios_by_loss(params_sensitive, loss=0.02)
     for key in params_sensitive.keys():
-        logger.info(f"{key}, {params_sensitive[key]}")
+        logger.info("{}, {}".format(key, params_sensitive[key]))
+
+    #params_sensitive = {}
+    #for param in model.parameters():
+    #    if 'transpose' not in param.name and 'linear' not in param.name:
+    #        params_sensitive[param.name] = 0.1  
 
     plan = pruner.prune_vars(params_sensitive, [0])
-    for param in model.parameters():
-        if ("weights" in param.name and "conv" in param.name) or (
-                "w_0" in param.name and "conv2d" in param.name):
-            logger.info(f"{param.name}: {param.shape}")
 
     flops = paddle.flops(model, [1, 3, 640, 640])
-    logger.info(f"FLOPs after pruning: {flops}")
+    logger.info("FLOPs after pruning: {}".format(flops))
 
     # start train
 
