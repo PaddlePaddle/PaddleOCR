@@ -34,6 +34,8 @@ MODE=$2
 if [ ${MODE} = "lite_train_infer" ];then
     # pretrain lite train data
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams
+    wget -nc -P ./pretrain_models/  https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar
+    cd ./pretrain_models/ && tar xf det_mv3_db_v2.0_train.tar && cd ../
     rm -rf ./train_data/icdar2015
     rm -rf ./train_data/ic15_data
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015_lite.tar
