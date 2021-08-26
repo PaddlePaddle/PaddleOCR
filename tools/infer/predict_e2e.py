@@ -74,7 +74,7 @@ class TextE2E(object):
 
         self.preprocess_op = create_operators(pre_process_list)
         self.postprocess_op = build_post_process(postprocess_params)
-        self.predictor, self.input_tensor, self.output_tensors = utility.create_predictor(
+        self.predictor, self.input_tensor, self.output_tensors, _ = utility.create_predictor(
             args, 'e2e', logger)  # paddle.jit.load(args.det_model_dir)
         # self.predictor.eval()
 
