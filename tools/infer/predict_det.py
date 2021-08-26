@@ -260,7 +260,7 @@ if __name__ == "__main__":
             json.dumps(np.array(dt_boxes).astype(np.int32).tolist())) + "\n"
         save_results.append(save_pred)
         logger.info(save_pred)
-        logger.info("Predict time of {}: {}".format(image_file, elapse))
+        logger.info("The predict time of {}: {}".format(image_file, elapse))
         src_im = utility.draw_text_det_res(dt_boxes, image_file)
         img_name_pure = os.path.split(image_file)[-1]
         img_path = os.path.join(draw_img_save,
