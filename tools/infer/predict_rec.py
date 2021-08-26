@@ -88,8 +88,8 @@ class TextRecognizer(object):
     def resize_norm_img(self, img, max_wh_ratio):
         imgC, imgH, imgW = self.rec_image_shape
         assert imgC == img.shape[2]
-        if self.character_type == "ch":
-            imgW = int((32 * max_wh_ratio))
+        max_wh_ratio = max(max_wh_ratio, imgW / imgH)
+        imgW = int((32 * max_wh_ratio))
         h, w = img.shape[:2]
         ratio = w / float(h)
         if math.ceil(imgH * ratio) > imgW:
@@ -278,7 +278,7 @@ def main(args):
     if args.warmup:
         img = np.random.uniform(0, 255, [32, 320, 3]).astype(np.uint8)
         for i in range(2):
-            res = text_recognizer([img])
+            res = text_recognizer([img] * int(args.rec_batch_num))
 
     for image_file in image_file_list:
         img, flag = check_and_read_gif(image_file)
