@@ -98,23 +98,23 @@ class TextDetector(object):
         self.predictor, self.input_tensor, self.output_tensors, self.config = utility.create_predictor(
             args, 'det', logger)
 
-        if args.benchmark:
-            import auto_log
-            pid = os.getpid()
-            self.autolog = auto_log.AutoLogger(
-                model_name="det",
-                model_precision=args.precision,
-                batch_size=1,
-                data_shape="dynamic",
-                save_path=args.save_log_path,
-                inference_config=self.config,
-                pids=pid,
-                process_name=None,
-                gpu_ids=0,
-                time_keys=[
-                    'preprocess_time', 'inference_time', 'postprocess_time'
-                ],
-                warmup=10)
+        # if args.benchmark:
+        #     import auto_log
+        #     pid = os.getpid()
+        #     self.autolog = auto_log.AutoLogger(
+        #         model_name="det",
+        #         model_precision=args.precision,
+        #         batch_size=1,
+        #         data_shape="dynamic",
+        #         save_path=args.save_log_path,
+        #         inference_config=self.config,
+        #         pids=pid,
+        #         process_name=None,
+        #         gpu_ids=0,
+        #         time_keys=[
+        #             'preprocess_time', 'inference_time', 'postprocess_time'
+        #         ],
+        #         warmup=10)
 
     def order_points_clockwise(self, pts):
         """
@@ -175,8 +175,8 @@ class TextDetector(object):
 
         st = time.time()
 
-        if self.args.benchmark:
-            self.autolog.times.start()
+        # if self.args.benchmark:
+        #     self.autolog.times.start()
 
         data = transform(data, self.preprocess_op)
         img, shape_list = data
@@ -186,8 +186,8 @@ class TextDetector(object):
         shape_list = np.expand_dims(shape_list, axis=0)
         img = img.copy()
 
-        if self.args.benchmark:
-            self.autolog.times.stamp()
+        # if self.args.benchmark:
+        #     self.autolog.times.stamp()
 
         self.input_tensor.copy_from_cpu(img)
         self.predictor.run()
@@ -195,8 +195,8 @@ class TextDetector(object):
         for output_tensor in self.output_tensors:
             output = output_tensor.copy_to_cpu()
             outputs.append(output)
-        if self.args.benchmark:
-            self.autolog.times.stamp()
+        # if self.args.benchmark:
+        #     self.autolog.times.stamp()
 
         preds = {}
         if self.det_algorithm == "EAST":
@@ -220,8 +220,8 @@ class TextDetector(object):
         else:
             dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
 
-        if self.args.benchmark:
-            self.autolog.times.end(stamp=True)
+        # if self.args.benchmark:
+        #     self.autolog.times.end(stamp=True)
         et = time.time()
         return dt_boxes, et - st
 
@@ -263,5 +263,5 @@ if __name__ == "__main__":
         cv2.imwrite(img_path, src_im)
         logger.info("The visualized image saved in {}".format(img_path))
 
-    if args.benchmark:
-        text_detector.autolog.report()
+    # if args.benchmark:
+    #     text_detector.autolog.report()
