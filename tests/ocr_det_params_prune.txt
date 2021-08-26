@@ -2,7 +2,7 @@
 model_name:ocr_det
 python:python3.7
 gpu_list:3
-Global.use_gpu:True|True
+Global.use_gpu:True
 Global.auto_cast:null
 Global.epoch_num:lite_train_infer=1|whole_train_infer=300
 Global.save_model_dir:./output/
@@ -12,9 +12,9 @@ train_model_name:latest
 train_infer_img_dir:./train_data/icdar2015/text_localization/ch4_test_images/
 null:null
 ##
-trainer:norm_train|pact_train
-norm_train:tools/train.py -c configs/det/det_mv3_db.yml -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
-pact_train:deploy/slim/quantization/quant.py -c configs/det/det_mv3_db.yml -o
+trainer:fpgm_train
+norm_train:null
+pact_train:null
 fpgm_train:deploy/slim/prune/sensitivity_anal.py -c configs/det/det_mv3_db.yml -o 
 distill_train:null
 null:null

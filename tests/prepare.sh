@@ -38,7 +38,8 @@ if [ ${MODE} = "lite_train_infer" ];then
     rm -rf ./train_data/ic15_data
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015_lite.tar
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ic15_data.tar # todo change to bcebos
-
+    wget -nc -P ./deploy/slim/prune https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/sen.pickle
+    
     cd ./train_data/ && tar xf icdar2015_lite.tar && tar xf ic15_data.tar
     ln -s ./icdar2015_lite ./icdar2015
     cd ../
