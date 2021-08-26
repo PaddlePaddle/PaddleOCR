@@ -8,7 +8,7 @@ import glob
 
 def init_args():
     parser = argparse.ArgumentParser()
-    # params for prediction engine
+    # params for testing assert allclose
     parser.add_argument("--atol", type=float, default=1e-3)
     parser.add_argument("--rtol", type=float, default=1e-3)
     parser.add_argument("--gt_file", type=str, default="")
