@@ -332,9 +332,7 @@ if [ ${MODE} = "infer" ]; then
             export_cmd="${python} ${norm_export} ${set_export_weight} ${set_save_infer_key}"
             eval $export_cmd
             status_export=$?
-            if [ ${status_export} = 0 ];then
-                status_check $status_export "${export_cmd}" "${status_log}"
-            fi
+            status_check $status_export "${export_cmd}" "${status_log}"
         else
             save_infer_dir=${infer_model}
         fi
