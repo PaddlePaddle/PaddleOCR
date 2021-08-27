@@ -70,7 +70,7 @@ paddle_inference
 下面给出with GPU的配置示例：
 ![step5](./vs2019_build_withgpu_config.png)
 **注意：**
-  CMAKE的版本要根据平台安装的版本进行设置。
+  CMAKE_BACKWARDS的版本要根据平台安装cmake的版本进行设置。
 
 **设置完成后**, 点击上图中`保存并生成CMake缓存以加载变量`。
 
@@ -103,8 +103,8 @@ ppocr.exe rec --rec_model_dir=D:\projects\PaddleOCR\inference\rec_mv3crnn --imag
 ### 注意
 * 在Windows下的终端中执行文件exe时，可能会发生乱码的现象，此时需要在终端中输入`CHCP 65001`，将终端的编码方式由GBK编码(默认)改为UTF-8编码，更加具体的解释可以参考这篇博客：[https://blog.csdn.net/qq_35038153/article/details/78430359](https://blog.csdn.net/qq_35038153/article/details/78430359)。
 
-* 编译时，如果报错`错误：C1083 无法打开包括文件:"dirent.h":No such file or directory`，可以参考该[文档](https://blog.csdn.net/Dora_blank/article/details/117740837#41_C1083_direnthNo_such_file_or_directory_54)，新建`dirent.h`文件，并添加到`utility.cpp`的包含目录中。同时修改`utility.cpp`70行：`lstat`改成`stat`。
+* 编译时，如果报错`错误：C1083 无法打开包括文件:"dirent.h":No such file or directory`，可以参考该[文档](https://blog.csdn.net/Dora_blank/article/details/117740837#41_C1083_direnthNo_such_file_or_directory_54)，新建`dirent.h`文件，并添加到`utility.cpp`的头文件引用中。同时修改`utility.cpp`70行：`lstat`改成`stat`。
 
-* 编译时，如果报错`Autolog未定义`，新建`autolog.h`文件，内容为：[https://github.com/LDOUBLEV/AutoLog/blob/main/auto_log/autolog.h]，并添加到`main.cpp`的包含目录中。
+* 编译时，如果报错`Autolog未定义`，新建`autolog.h`文件，内容为：[autolog.h](https://github.com/LDOUBLEV/AutoLog/blob/main/auto_log/autolog.h)，并添加到`main.cpp`的头文件引用中。
 
 * 运行时，如果弹窗报错找不到`paddle_inference.dll`或者`openblas.dll`，在`D:\projects\paddle_inference`预测库内找到这个这两个文件，复制到`D:\projects\PaddleOCR\deploy\cpp_infer\out\build\x64-Release\Release`目录下。不用重新编译，再次运行即可。
