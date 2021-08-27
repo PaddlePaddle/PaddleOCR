@@ -68,6 +68,7 @@ class TextRecognizer(object):
         if args.benchmark:
             import auto_log
             pid = os.getpid()
+            gpu_id = utility.get_infer_gpuid()
             self.autolog = auto_log.AutoLogger(
                 model_name="rec",
                 model_precision=args.precision,
@@ -77,7 +78,7 @@ class TextRecognizer(object):
                 inference_config=self.config,
                 pids=pid,
                 process_name=None,
-                gpu_ids=0 if args.use_gpu else None,
+                gpu_ids=gpu_id if args.use_gpu else None,
                 time_keys=[
                     'preprocess_time', 'inference_time', 'postprocess_time'
                 ],
@@ -87,8 +88,8 @@ class TextRecognizer(object):
     def resize_norm_img(self, img, max_wh_ratio):
         imgC, imgH, imgW = self.rec_image_shape
         assert imgC == img.shape[2]
-        if self.character_type == "ch":
-            imgW = int((32 * max_wh_ratio))
+        max_wh_ratio = max(max_wh_ratio, imgW / imgH)
+        imgW = int((32 * max_wh_ratio))
         h, w = img.shape[:2]
         ratio = w / float(h)
         if math.ceil(imgH * ratio) > imgW:
@@ -277,7 +278,7 @@ def main(args):
     if args.warmup:
         img = np.random.uniform(0, 255, [32, 320, 3]).astype(np.uint8)
         for i in range(2):
-            res = text_recognizer([img])
+            res = text_recognizer([img] * int(args.rec_batch_num))
 
     for image_file in image_file_list:
         img, flag = check_and_read_gif(image_file)

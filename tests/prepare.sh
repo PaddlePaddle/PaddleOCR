@@ -1,6 +1,6 @@
 #!/bin/bash
 FILENAME=$1
-# MODE be one of ['lite_train_infer' 'whole_infer' 'whole_train_infer', 'infer']
+# MODE be one of ['lite_train_infer' 'whole_infer' 'whole_train_infer', 'infer', 'cpp_infer']
 MODE=$2
 
 dataline=$(cat ${FILENAME})
@@ -58,7 +58,7 @@ elif [ ${MODE} = "whole_infer" ];then
     cd ./train_data/ && tar xf icdar2015_infer.tar && tar xf ic15_data.tar
     ln -s ./icdar2015_infer ./icdar2015
     cd ../
-else
+elif [ ${MODE} = "infer" ] || [ ${MODE} = "cpp_infer" ];then
     if [ ${model_name} = "ocr_det" ]; then
         eval_model_name="ch_ppocr_mobile_v2.0_det_infer"
         rm -rf ./train_data/icdar2015
@@ -74,3 +74,72 @@ else
     fi 
 fi
 
+if [ ${MODE} = "cpp_infer" ];then
+    cd deploy/cpp_infer
+    use_opencv=$(func_parser_value "${lines[52]}")
+    if [ ${use_opencv} = "True" ]; then
+        echo "################### build opencv ###################"
+        rm -rf 3.4.7.tar.gz opencv-3.4.7/
+        wget https://github.com/opencv/opencv/archive/3.4.7.tar.gz
+        tar -xf 3.4.7.tar.gz
+
+        cd opencv-3.4.7/
+        install_path=$(pwd)/opencv-3.4.7/opencv3
+
+        rm -rf build
+        mkdir build
+        cd build
+
+        cmake .. \
+            -DCMAKE_INSTALL_PREFIX=${install_path} \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DWITH_IPP=OFF \
+            -DBUILD_IPP_IW=OFF \
+            -DWITH_LAPACK=OFF \
+            -DWITH_EIGEN=OFF \
+            -DCMAKE_INSTALL_LIBDIR=lib64 \
+            -DWITH_ZLIB=ON \
+            -DBUILD_ZLIB=ON \
+            -DWITH_JPEG=ON \
+            -DBUILD_JPEG=ON \
+            -DWITH_PNG=ON \
+            -DBUILD_PNG=ON \
+            -DWITH_TIFF=ON \
+            -DBUILD_TIFF=ON
+
+        make -j
+        make install
+        cd ../
+        echo "################### build opencv finished ###################"
+    fi
+
+
+    echo "################### build PaddleOCR demo ####################"
+    if [ ${use_opencv} = "True" ]; then
+        OPENCV_DIR=$(pwd)/opencv-3.4.7/opencv3/
+    else
+        OPENCV_DIR=''
+    fi
+    LIB_DIR=$(pwd)/Paddle/build/paddle_inference_install_dir/
+    CUDA_LIB_DIR=$(dirname `find /usr -name libcudart.so`)
+    CUDNN_LIB_DIR=$(dirname `find /usr -name libcudnn.so`)
+    
+    BUILD_DIR=build
+    rm -rf ${BUILD_DIR}
+    mkdir ${BUILD_DIR}
+    cd ${BUILD_DIR}
+    cmake .. \
+        -DPADDLE_LIB=${LIB_DIR} \
+        -DWITH_MKL=ON \
+        -DWITH_GPU=OFF \
+        -DWITH_STATIC_LIB=OFF \
+        -DWITH_TENSORRT=OFF \
+        -DOPENCV_DIR=${OPENCV_DIR} \
+        -DCUDNN_LIB=${CUDNN_LIB_DIR} \
+        -DCUDA_LIB=${CUDA_LIB_DIR} \
+        -DTENSORRT_DIR=${TENSORRT_DIR} \
+
+    make -j
+    echo "################### build PaddleOCR demo finished ###################"
+fi

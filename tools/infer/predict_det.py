@@ -101,6 +101,7 @@ class TextDetector(object):
         if args.benchmark:
             import auto_log
             pid = os.getpid()
+            gpu_id = utility.get_infer_gpuid()
             self.autolog = auto_log.AutoLogger(
                 model_name="det",
                 model_precision=args.precision,
@@ -110,7 +111,7 @@ class TextDetector(object):
                 inference_config=self.config,
                 pids=pid,
                 process_name=None,
-                gpu_ids=0,
+                gpu_ids=gpu_id if args.use_gpu else None,
                 time_keys=[
                     'preprocess_time', 'inference_time', 'postprocess_time'
                 ],
