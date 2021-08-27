@@ -68,7 +68,7 @@ paddle_inference
 ![step4](https://paddleseg.bj.bcebos.com/inference/vs2019_step5.png)
 
 下面给出with GPU的配置示例：
-![step5](../vs2019_build_withgpu_config.png)
+![step5](./vs2019_build_withgpu_config.png)
 **注意：**
   CMAKE的版本要根据平台安装的版本进行设置。
 
