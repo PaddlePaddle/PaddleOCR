@@ -177,6 +177,7 @@ def main(args):
         text_sys.text_detector.autolog.report()
         text_sys.text_recognizer.autolog.report()
 
+
 if __name__ == "__main__":
     args = utility.parse_args()
     if args.use_mp:
