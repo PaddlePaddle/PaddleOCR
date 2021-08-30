@@ -276,9 +276,7 @@ class AttnLabelEncode(BaseRecLabelEncode):
     def add_special_char(self, dict_character):
         self.beg_str = "sos"
         self.end_str = "eos"
-        self.unknown = "UNKNOWN"
-        dict_character = [self.beg_str] + dict_character + [self.end_str
-                                                            ] + [self.unknown]
+        dict_character = [self.beg_str] + dict_character + [self.end_str]
         return dict_character
 
     def __call__(self, data):
@@ -291,7 +289,6 @@ class AttnLabelEncode(BaseRecLabelEncode):
         data['length'] = np.array(len(text))
         text = [0] + text + [len(self.character) - 1] + [0] * (self.max_text_len
                                                                - len(text) - 2)
-
         data['label'] = np.array(text)
         return data
 
@@ -309,6 +306,39 @@ class AttnLabelEncode(BaseRecLabelEncode):
             assert False, "Unsupport type %s in get_beg_end_flag_idx" \
                           % beg_or_end
         return idx
+
+
+class SEEDLabelEncode(BaseRecLabelEncode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 character_type='ch',
+                 use_space_char=False,
+                 **kwargs):
+        super(SEEDLabelEncode,
+              self).__init__(max_text_length, character_dict_path,
+                             character_type, use_space_char)
+
+    def add_special_char(self, dict_character):
+        self.beg_str = "sos"
+        self.end_str = "eos"
+        dict_character = dict_character + [self.end_str]
+        return dict_character
+
+    def __call__(self, data):
+        text = data['label']
+        text = self.encode(text)
+        if text is None:
+            return None
+        if len(text) >= self.max_text_len:
+            return None
+        data['length'] = np.array(len(text)) + 1  # conclue eos
+        text = text + [len(self.character) - 1] * (self.max_text_len - len(text)
+                                                   )
+        data['label'] = np.array(text)
+        return data
 
 
 class SRNLabelEncode(BaseRecLabelEncode):

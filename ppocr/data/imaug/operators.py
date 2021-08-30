@@ -23,6 +23,7 @@ import sys
 import six
 import cv2
 import numpy as np
+import fasttext
 
 
 class DecodeImage(object):
@@ -81,7 +82,7 @@ class NormalizeImage(object):
         assert isinstance(img,
                           np.ndarray), "invalid input 'img' in NormalizeImage"
         data['image'] = (
-                                img.astype('float32') * self.scale - self.mean) / self.std
+            img.astype('float32') * self.scale - self.mean) / self.std
         return data
 
 
@@ -98,6 +99,17 @@ class ToCHWImage(object):
         if isinstance(img, Image.Image):
             img = np.array(img)
         data['image'] = img.transpose((2, 0, 1))
+        return data
+
+
+class Fasttext(object):
+    def __init__(self, path="None", **kwargs):
+        self.fast_model = fasttext.load_model(path)
+
+    def __call__(self, data):
+        label = data['label']
+        fast_label = self.fast_model[label]
+        data['fast_label'] = fast_label
         return data
 
 
@@ -183,7 +195,7 @@ class DetResizeForTest(object):
             else:
                 ratio = 1.
         elif self.limit_type == 'resize_long':
-            ratio = float(limit_side_len) / max(h,w)
+            ratio = float(limit_side_len) / max(h, w)
         else:
             raise Exception('not support limit type, image ')
         resize_h = int(h * ratio)

@@ -44,13 +44,10 @@ class AttentionHead(nn.Layer):
         hidden = paddle.zeros((batch_size, self.hidden_size))
         output_hiddens = []
 
-        targets = targets[0]
-        print(targets)
         if targets is not None:
             for i in range(num_steps):
                 char_onehots = self._char_to_onehot(
                     targets[:, i], onehot_dim=self.num_classes)
-                # print("char_onehots:", char_onehots)
                 (outputs, hidden), alpha = self.attention_cell(hidden, inputs,
                                                                char_onehots)
                 output_hiddens.append(paddle.unsqueeze(outputs, axis=1))
@@ -107,8 +104,6 @@ class AttentionGRUCell(nn.Layer):
         alpha = paddle.transpose(alpha, [0, 2, 1])
         context = paddle.squeeze(paddle.mm(alpha, batch_H), axis=1)
         concat_context = paddle.concat([context, char_onehots], 1)
-        # print("concat_context:", concat_context.shape)
-        # print("prev_hidden:", prev_hidden.shape)
 
         cur_hidden = self.rnn(concat_context, prev_hidden)
 

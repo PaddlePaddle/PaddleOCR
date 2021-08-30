@@ -136,7 +136,8 @@ class TPSSpatialTransformer(nn.Layer):
         assert source_control_points.ndimension() == 3
         assert source_control_points.shape[1] == self.num_control_points
         assert source_control_points.shape[2] == 2
-        batch_size = source_control_points.shape[0]
+        #batch_size = source_control_points.shape[0]
+        batch_size = paddle.shape(source_control_points)[0]
 
         self.padding_matrix = paddle.expand(
             self.padding_matrix, shape=[batch_size, 3, 2])
@@ -151,28 +152,6 @@ class TPSSpatialTransformer(nn.Layer):
         grid = paddle.clip(grid, 0,
                            1)  # the source_control_points may be out of [0, 1].
         # the input to grid_sample is normalized [-1, 1], but what we get is [0, 1]
-        # grid = 2.0 * grid - 1.0
+        grid = 2.0 * grid - 1.0
         output_maps = grid_sample(input, grid, canvas=None)
         return output_maps, source_coordinate
-
-
-if __name__ == "__main__":
-    from stn import STN
-    in_planes = 3
-    num_ctrlpoints = 20
-    np.random.seed(100)
-    activation = 'none'  # 'sigmoid'
-    stn_head = STN(in_planes, num_ctrlpoints, activation)
-    data = np.random.randn(10, 3, 32, 64).astype("float32")
-    input = paddle.to_tensor(data)
-    #input = paddle.randn([10, 3, 32, 64])
-    control_points = stn_head(input)
-    #print("control points:", control_points)
-    #input = paddle.randn(shape=[10,3,32,100])
-    tps = TPSSpatialTransformer(
-        output_image_size=[32, 320],
-        num_control_points=20,
-        margins=[0.05, 0.05])
-    out = tps(input, control_points[1])
-    print("out 0 :", out[0].shape)
-    print("out 1:", out[1].shape)

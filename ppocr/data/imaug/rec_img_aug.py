@@ -63,6 +63,18 @@ class RecResizeImg(object):
         return data
 
 
+class SEEDResize(object):
+    def __init__(self, image_shape, infer_mode=False, **kwargs):
+        self.image_shape = image_shape
+        self.infer_mode = infer_mode
+
+    def __call__(self, data):
+        img = data['image']
+        norm_img = resize_no_padding_img(img, self.image_shape)
+        data['image'] = norm_img
+        return data
+
+
 class SRNRecResizeImg(object):
     def __init__(self, image_shape, num_heads, max_text_length, **kwargs):
         self.image_shape = image_shape
@@ -104,6 +116,17 @@ def resize_norm_img(img, image_shape):
     padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
     padding_im[:, :, 0:resized_w] = resized_image
     return padding_im
+
+
+def resize_no_padding_img(img, image_shape):
+    imgC, imgH, imgW = image_shape
+    resized_image = cv2.resize(
+        img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+    resized_image = resized_image.astype('float32')
+    resized_image = resized_image.transpose((2, 0, 1)) / 255
+    resized_image -= 0.5
+    resized_image /= 0.5
+    return resized_image
 
 
 def resize_norm_img_chinese(img, image_shape):

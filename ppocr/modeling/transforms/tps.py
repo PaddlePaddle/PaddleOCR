@@ -326,5 +326,6 @@ class STN_ON(nn.Layer):
             image, self.tps_inputsize, mode="bilinear", align_corners=True)
         stn_img_feat, ctrl_points = self.stn_head(stn_input)
         x, _ = self.tps(image, ctrl_points)
+        #print("x:", np.sum(x.numpy()))
         # print(x.shape)
         return x

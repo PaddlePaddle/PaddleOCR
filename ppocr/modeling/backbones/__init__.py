@@ -26,10 +26,8 @@ def build_backbone(config, model_type):
         from .rec_resnet_vd import ResNet
         from .rec_resnet_fpn import ResNetFPN
         from .rec_mv1_enhance import MobileNetV1Enhance
-        from .rec_resnet_aster import ResNet_ASTER
         support_dict = [
-            "MobileNetV1Enhance", "MobileNetV3", "ResNet", "ResNetFPN",
-            "ResNet_ASTER"
+            "MobileNetV1Enhance", "MobileNetV3", "ResNet", "ResNetFPN"
         ]
     elif model_type == "e2e":
         from .e2e_resnet_vd_pg import ResNet
@@ -38,6 +36,9 @@ def build_backbone(config, model_type):
         from .table_resnet_vd import ResNet
         from .table_mobilenet_v3 import MobileNetV3
         support_dict = ["ResNet", "MobileNetV3"]
+    elif model_type == "seed":
+        from .rec_resnet_aster import ResNet_ASTER
+        support_dict = ["ResNet_ASTER"]
     else:
         raise NotImplementedError
 

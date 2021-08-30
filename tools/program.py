@@ -211,11 +211,10 @@ def train(config,
             images = batch[0]
             if use_srn:
                 model_average = True
-            # if use_srn or model_type == 'table' or algorithm == "ASTER":
-            #     preds = model(images, data=batch[1:])
-            # else:
-            #     preds = model(images)
-            preds = model(images, data=batch[1:])
+            if use_srn or model_type == 'table' or model_type == "seed":
+                preds = model(images, data=batch[1:])
+            else:
+                preds = model(images)
             state_dict = model.state_dict()
             # for key in state_dict:
             #     print(key)
@@ -415,6 +414,7 @@ def preprocess(is_train=False):
             yaml.dump(
                 dict(config), f, default_flow_style=False, sort_keys=False)
         log_file = '{}/train.log'.format(save_model_dir)
+        print("log has save in {}/train.log".format(save_model_dir))
     else:
         log_file = None
     logger = get_logger(name='root', log_file=log_file)

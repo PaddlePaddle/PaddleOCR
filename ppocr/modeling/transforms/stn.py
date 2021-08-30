@@ -106,16 +106,3 @@ class STN(nn.Layer):
             x = F.sigmoid(x)
         x = paddle.reshape(x, shape=[-1, self.num_ctrlpoints, 2])
         return img_feat, x
-
-
-if __name__ == "__main__":
-    in_planes = 3
-    num_ctrlpoints = 20
-    np.random.seed(100)
-    activation = 'none'  # 'sigmoid'
-    stn_head = STN(in_planes, num_ctrlpoints, activation)
-    data = np.random.randn(10, 3, 32, 64).astype("float32")
-    print("data:", np.sum(data))
-    input = paddle.to_tensor(data)
-    #input = paddle.randn([10, 3, 32, 64])
-    control_points = stn_head(input)
