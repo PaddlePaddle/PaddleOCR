@@ -79,10 +79,6 @@ Train:
           size: [640, 640]
           max_tries: 50
           keep_ratio: true
-      - EastRandomCropData:
-          size: [640, 640]
-          max_tries: 50
-          keep_ratio: true
       - MakeBorderMap:
           shrink_ratio: 0.4
           thresh_min: 0.3
