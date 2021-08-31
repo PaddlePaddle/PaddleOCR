@@ -166,6 +166,11 @@ def create_predictor(args, mode, logger):
         precision = inference.PrecisionType.Float32
 
     if args.use_gpu:
+        gpu_id = get_infer_gpuid()
+        if gpu_id is None:
+            raise ValueError(
+                "Not found GPU in current device. Please check your device or set args.use_gpu as False"
+            )
         config.enable_use_gpu(args.gpu_mem, 0)
         if args.use_tensorrt:
             config.enable_tensorrt_engine(
@@ -285,6 +290,20 @@ def create_predictor(args, mode, logger):
         output_tensor = predictor.get_output_handle(output_name)
         output_tensors.append(output_tensor)
     return predictor, input_tensor, output_tensors, config
+
+
+def get_infer_gpuid():
+    cmd = "nvidia-smi"
+    res = os.popen(cmd).readlines()
+    if len(res) == 0:
+        return None
+    cmd = "env | grep CUDA_VISIBLE_DEVICES"
+    env_cuda = os.popen(cmd).readlines()
+    if len(env_cuda) == 0:
+        return 0
+    else:
+        gpu_id = env_cuda[0].strip().split("=")[1]
+        return int(gpu_id[0])
 
 
 def draw_e2e_res(dt_boxes, strs, img_path):

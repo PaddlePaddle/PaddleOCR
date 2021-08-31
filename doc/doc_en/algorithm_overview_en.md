@@ -49,6 +49,7 @@ PaddleOCR open-source text recognition algorithms list:
 - [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))
 - [x]  RARE([paper](https://arxiv.org/abs/1603.03915v1))
 - [x]  SRN([paper](https://arxiv.org/abs/2003.12294))
+- [x]  NRTR([paper](https://arxiv.org/abs/1806.00926v2))
 
 Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation result of these above text recognition (using MJSynth and SynthText for training, evaluate on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE) is as follow:
 
@@ -63,5 +64,6 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 |RARE|MobileNetV3|82.5%|rec_mv3_tps_bilstm_att |[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_tps_bilstm_att_v2.0_train.tar)|
 |RARE|Resnet34_vd|83.6%|rec_r34_vd_tps_bilstm_att |[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_tps_bilstm_att_v2.0_train.tar)|
 |SRN|Resnet50_vd_fpn| 88.52% | rec_r50fpn_vd_none_srn |[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r50_vd_srn_train.tar)|
+|NRTR|NRTR_MTB| 84.3% | rec_mtb_nrtr | [Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mtb_nrtr_train.tar) |
 
 Please refer to the document for training guide and use of PaddleOCR text recognition algorithms [Text recognition model training/evaluation/prediction](./recognition_en.md)

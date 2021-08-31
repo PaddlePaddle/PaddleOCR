@@ -109,6 +109,7 @@ class TextDetector(object):
         if args.benchmark:
             import auto_log
             pid = os.getpid()
+            gpu_id = utility.get_infer_gpuid()
             self.autolog = auto_log.AutoLogger(
                 model_name="det",
                 model_precision=args.precision,
@@ -118,7 +119,7 @@ class TextDetector(object):
                 inference_config=self.config,
                 pids=pid,
                 process_name=None,
-                gpu_ids=0,
+                gpu_ids=gpu_id if args.use_gpu else None,
                 time_keys=[
                     'preprocess_time', 'inference_time', 'postprocess_time'
                 ],
@@ -216,7 +217,7 @@ class TextDetector(object):
             preds['f_score'] = outputs[1]
             preds['f_tco'] = outputs[2]
             preds['f_tvo'] = outputs[3]
-        elif self.det_algorithm in ['DB','PSE']:
+        elif self.det_algorithm in ['DB', 'PSE']:
             preds['maps'] = outputs[0]
         else:
             raise NotImplementedError
@@ -224,7 +225,9 @@ class TextDetector(object):
         #self.predictor.try_shrink_memory()
         post_result = self.postprocess_op(preds, shape_list)
         dt_boxes = post_result[0]['points']
-        if (self.det_algorithm == "SAST" and self.det_sast_polygon) or (self.det_algorithm == "PSE" and self.det_pse_box_type=='poly'):
+        if (self.det_algorithm == "SAST" and
+                self.det_sast_polygon) or (self.det_algorithm == "PSE" and
+                                           self.det_pse_box_type == 'poly'):
             dt_boxes = self.filter_tag_det_res_only_clip(dt_boxes, ori_im.shape)
         else:
             dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)

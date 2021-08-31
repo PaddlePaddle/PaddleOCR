@@ -27,14 +27,17 @@ def build_head(config):
     from .rec_ctc_head import CTCHead
     from .rec_att_head import AttentionHead
     from .rec_srn_head import SRNHead
+    from .rec_nrtr_head import Transformer
 
     # cls head
     from .cls_head import ClsHead
     support_dict = [
-        'DBHead', 'PSEHead', 'EASTHead', 'SASTHead', 'CTCHead', 'ClsHead', 'AttentionHead',
-        'SRNHead', 'PGHead', 'TableAttentionHead']
+        'DBHead', 'PSEHead', 'EASTHead', 'SASTHead', 'CTCHead', 'ClsHead',
+        'AttentionHead', 'SRNHead', 'PGHead', 'Transformer',
+        'TableAttentionHead'
+    ]
 
-    # table head
+    #table head
     from .table_att_head import TableAttentionHead
 
     module_name = config.pop('name')

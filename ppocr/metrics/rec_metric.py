@@ -57,3 +57,4 @@ class RecMetric(object):
         self.correct_num = 0
         self.all_num = 0
         self.norm_edit_dis = 0
+        
