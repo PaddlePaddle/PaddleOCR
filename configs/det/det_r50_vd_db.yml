@@ -75,10 +75,12 @@ Train:
             - { 'type': Fliplr, 'args': { 'p': 0.5 } }
             - { 'type': Affine, 'args': { 'rotate': [-10, 10] } }
             - { 'type': Resize, 'args': { 'size': [0.5, 3] } }
-      - EastRandomCropData:
+      - Resize:
           size: [640, 640]
-          max_tries: 50
-          keep_ratio: true
+#      - EastRandomCropData:
+#          size: [640, 640]
+#          max_tries: 50
+#          keep_ratio: true
       - MakeBorderMap:
           shrink_ratio: 0.4
           thresh_min: 0.3
@@ -95,10 +97,10 @@ Train:
       - KeepKeys:
           keep_keys: ['image', 'threshold_map', 'threshold_mask', 'shrink_map', 'shrink_mask'] # the order of the dataloader list
   loader:
-    shuffle: True
+    shuffle: False
     drop_last: False
-    batch_size_per_card: 16
-    num_workers: 8
+    batch_size_per_card: 4
+    num_workers: 2
 
 Eval:
   dataset:
