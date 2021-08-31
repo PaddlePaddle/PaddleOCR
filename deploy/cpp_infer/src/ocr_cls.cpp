@@ -77,10 +77,16 @@ void Classifier::LoadModel(const std::string &model_dir) {
   if (this->use_gpu_) {
     config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
     if (this->use_tensorrt_) {
+      auto precision = paddle_infer::Config::Precision::kFloat32;
+      if (this->precision_ == "fp16") {
+        precision = paddle_infer::Config::Precision::kHalf;
+      }
+     if (this->precision_ == "int8") {
+        precision = paddle_infer::Config::Precision::kInt8;
+      } 
       config.EnableTensorRtEngine(
           1 << 20, 10, 3,
-          this->use_fp16_ ? paddle_infer::Config::Precision::kHalf
-                          : paddle_infer::Config::Precision::kFloat32,
+          precision,
           false, false);
     }
   } else {

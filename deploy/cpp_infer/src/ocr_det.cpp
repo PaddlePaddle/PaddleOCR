@@ -14,6 +14,7 @@
 
 #include <include/ocr_det.h>
 
+
 namespace PaddleOCR {
 
 void DBDetector::LoadModel(const std::string &model_dir) {
@@ -25,10 +26,16 @@ void DBDetector::LoadModel(const std::string &model_dir) {
   if (this->use_gpu_) {
     config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
     if (this->use_tensorrt_) {
+      auto precision = paddle_infer::Config::Precision::kFloat32;
+      if (this->precision_ == "fp16") {
+        precision = paddle_infer::Config::Precision::kHalf;
+      }
+     if (this->precision_ == "int8") {
+        precision = paddle_infer::Config::Precision::kInt8;
+      } 
       config.EnableTensorRtEngine(
           1 << 20, 10, 3,
-          this->use_fp16_ ? paddle_infer::Config::Precision::kHalf
-                          : paddle_infer::Config::Precision::kFloat32,
+          precision,
           false, false);
       std::map<std::string, std::vector<int>> min_input_shape = {
           {"x", {1, 3, 50, 50}},
@@ -90,13 +97,16 @@ void DBDetector::LoadModel(const std::string &model_dir) {
 }
 
 void DBDetector::Run(cv::Mat &img,
-                     std::vector<std::vector<std::vector<int>>> &boxes) {
+                     std::vector<std::vector<std::vector<int>>> &boxes,
+                     std::vector<double> *times) {
   float ratio_h{};
   float ratio_w{};
 
   cv::Mat srcimg;
   cv::Mat resize_img;
   img.copyTo(srcimg);
+  
+  auto preprocess_start = std::chrono::steady_clock::now();
   this->resize_op_.Run(img, resize_img, this->max_side_len_, ratio_h, ratio_w,
                        this->use_tensorrt_);
 
@@ -105,14 +115,17 @@ void DBDetector::Run(cv::Mat &img,
 
   std::vector<float> input(1 * 3 * resize_img.rows * resize_img.cols, 0.0f);
   this->permute_op_.Run(&resize_img, input.data());
-
+  auto preprocess_end = std::chrono::steady_clock::now();
+    
   // Inference.
   auto input_names = this->predictor_->GetInputNames();
   auto input_t = this->predictor_->GetInputHandle(input_names[0]);
   input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
+  auto inference_start = std::chrono::steady_clock::now();
   input_t->CopyFromCpu(input.data());
+  
   this->predictor_->Run();
-
+    
   std::vector<float> out_data;
   auto output_names = this->predictor_->GetOutputNames();
   auto output_t = this->predictor_->GetOutputHandle(output_names[0]);
@@ -122,7 +135,9 @@ void DBDetector::Run(cv::Mat &img,
 
   out_data.resize(out_num);
   output_t->CopyToCpu(out_data.data());
-
+  auto inference_end = std::chrono::steady_clock::now();
+  
+  auto postprocess_start = std::chrono::steady_clock::now();
   int n2 = output_shape[2];
   int n3 = output_shape[3];
   int n = n2 * n3;
@@ -150,7 +165,16 @@ void DBDetector::Run(cv::Mat &img,
       this->det_db_unclip_ratio_, this->use_polygon_score_);
 
   boxes = post_processor_.FilterTagDetRes(boxes, ratio_h, ratio_w, srcimg);
+  auto postprocess_end = std::chrono::steady_clock::now();
+  std::cout << "Detected boxes num: " << boxes.size() << endl;
 
+  std::chrono::duration<float> preprocess_diff = preprocess_end - preprocess_start;
+  times->push_back(double(preprocess_diff.count() * 1000));
+  std::chrono::duration<float> inference_diff = inference_end - inference_start;
+  times->push_back(double(inference_diff.count() * 1000));
+  std::chrono::duration<float> postprocess_diff = postprocess_end - postprocess_start;
+  times->push_back(double(postprocess_diff.count() * 1000));
+    
   //// visualization
   if (this->visualize_) {
     Utility::VisualizeBboxes(srcimg, boxes);

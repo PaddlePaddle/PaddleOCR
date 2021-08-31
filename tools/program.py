@@ -186,9 +186,11 @@ def train(config,
     model.train()
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
-    try: 
+    use_nrtr = config['Architecture']['algorithm'] == "NRTR"
+
+    try:
         model_type = config['Architecture']['model_type']
-    except: 
+    except:
         model_type = None
 
     if 'start_epoch' in best_model_dict:
@@ -213,7 +215,7 @@ def train(config,
             images = batch[0]
             if use_srn:
                 model_average = True
-            if use_srn or model_type == 'table':
+            if use_srn or model_type == 'table' or use_nrtr:
                 preds = model(images, data=batch[1:])
             else:
                 preds = model(images)
@@ -398,7 +400,7 @@ def preprocess(is_train=False):
     alg = config['Architecture']['algorithm']
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
-        'CLS', 'PGNet', 'Distillation', 'TableAttn'
+        'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn'
     ]
 
     device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'
