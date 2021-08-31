@@ -81,30 +81,32 @@ paddle_inference
 
 ### Step4: 预测
 
-上述`Visual Studio 2019`编译产出的可执行文件在`out\build\x64-Release\Release`目录下，打开`cmd`，并切换到该目录：
+上述`Visual Studio 2019`编译产出的可执行文件在`out\build\x64-Release\Release`目录下，打开`cmd`，并切换到`D:\projects\PaddleOCR\deploy\cpp_infer\`：
 
 ```
-cd D:\projects\PaddleOCR\deploy\cpp_infer\out\build\x64-Release\Release
+cd D:\projects\PaddleOCR\deploy\cpp_infer
 ```
-可执行文件`ppocr.exe`即为样例的预测程序，其主要使用方法如下，更多使用方法可以参考[说明文档](../readme.md)运行demo部分。
+可执行文件`ppocr.exe`即为样例的预测程序，其主要使用方法如下，更多使用方法可以参考[说明文档](../readme.md)`运行demo`部分。
 
 ```shell
 #识别中文图片 `D:\projects\PaddleOCR\doc\imgs_words\ch\`  
-ppocr.exe rec --rec_model_dir=D:\projects\PaddleOCR\ch_ppocr_mobile_v2.0_rec_infer --image_dir=D:\projects\PaddleOCR\doc\imgs_words\ch\
+.\out\build\x64-Release\Release\ppocr.exe rec --rec_model_dir=D:\projects\PaddleOCR\ch_ppocr_mobile_v2.0_rec_infer --image_dir=D:\projects\PaddleOCR\doc\imgs_words\ch\
 
 #识别英文图片 'D:\projects\PaddleOCR\doc\imgs_words\en\'
-ppocr.exe rec --rec_model_dir=D:\projects\PaddleOCR\inference\rec_mv3crnn --image_dir=D:\projects\PaddleOCR\doc\imgs_words\en\ --char_list_file=D:\projects\PaddleOCR\ppocr\utils\dict\en_dict.txt
+.\out\build\x64-Release\Release\ppocr.exe rec --rec_model_dir=D:\projects\PaddleOCR\inference\rec_mv3crnn --image_dir=D:\projects\PaddleOCR\doc\imgs_words\en\ --char_list_file=D:\projects\PaddleOCR\ppocr\utils\dict\en_dict.txt
 ```
 
 
 第一个参数为配置文件路径，第二个参数为需要预测的图片路径，第三个参数为配置文本识别的字典。
 
 
-### 注意
+### FQA
 * 在Windows下的终端中执行文件exe时，可能会发生乱码的现象，此时需要在终端中输入`CHCP 65001`，将终端的编码方式由GBK编码(默认)改为UTF-8编码，更加具体的解释可以参考这篇博客：[https://blog.csdn.net/qq_35038153/article/details/78430359](https://blog.csdn.net/qq_35038153/article/details/78430359)。
 
 * 编译时，如果报错`错误：C1083 无法打开包括文件:"dirent.h":No such file or directory`，可以参考该[文档](https://blog.csdn.net/Dora_blank/article/details/117740837#41_C1083_direnthNo_such_file_or_directory_54)，新建`dirent.h`文件，并添加到`utility.cpp`的头文件引用中。同时修改`utility.cpp`70行：`lstat`改成`stat`。
 
-* 编译时，如果报错`Autolog未定义`，新建`autolog.h`文件，内容为：[autolog.h](https://github.com/LDOUBLEV/AutoLog/blob/main/auto_log/autolog.h)，并添加到`main.cpp`的头文件引用中。
+* 编译时，如果报错`Autolog未定义`，新建`autolog.h`文件，内容为：[autolog.h](https://github.com/LDOUBLEV/AutoLog/blob/main/auto_log/autolog.h)，并添加到`main.cpp`的头文件引用中，再次编译。
 
-* 运行时，如果弹窗报错找不到`paddle_inference.dll`或者`openblas.dll`，在`D:\projects\paddle_inference`预测库内找到这个这两个文件，复制到`D:\projects\PaddleOCR\deploy\cpp_infer\out\build\x64-Release\Release`目录下。不用重新编译，再次运行即可。
+* 运行时，如果弹窗报错找不到`paddle_inference.dll`或者`openblas.dll`，在`D:\projects\paddle_inference`预测库内找到这两个文件，复制到`D:\projects\PaddleOCR\deploy\cpp_infer\out\build\x64-Release\Release`目录下。不用重新编译，再次运行即可。
+
+* 运行时，弹窗报错提示`应用程序无法正常启动(0xc0000142)`，并且`cmd`窗口内提示`You are using Paddle compiled with TensorRT, but TensorRT dynamic library is not found.`，把tensort目录下的lib里面的所有dll文件复制到release目录下，再次运行即可。
