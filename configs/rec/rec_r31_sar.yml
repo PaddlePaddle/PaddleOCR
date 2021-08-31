@@ -56,7 +56,7 @@ Train:
   dataset:
     name: SimpleDataSet
     delimiter: ' '
-    label_file_list: ['/paddle/data/concat_data/icdar_2013_train20.txt', '/paddle/data/concat_data/icdar_2015_train20.txt', '/paddle/data/concat_data/coco_text_train20.txt', '/paddle/data/concat_data/IIIt5k_train20.txt', '/paddle/data/concat_data/SynthAdd_train.txt', '/paddle/data/concat_data/SynthText_train.txt', '/paddle/data/concat_data/Syn90k_train.txt']
+    label_file_list: ['/paddle/data/concat_data/train_list.txt']
     data_dir: /paddle/data/concat_data/
     ratio_list: 1.0
     transforms:
@@ -71,7 +71,7 @@ Train:
           keep_keys: ['image', 'label', 'valid_ratio'] # dataloader will return list in this order
   loader:
     shuffle: True
-    batch_size_per_card: 64 # 32
+    batch_size_per_card: 64
     drop_last: True
     num_workers: 8
     use_shared_memory: False
