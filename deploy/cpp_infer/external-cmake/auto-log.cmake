@@ -1,14 +1,13 @@
 find_package(Git REQUIRED)
-message("${CMAKE_BUILD_TYPE}")
+include(FetchContent)
 
-set(AUTOLOG_REPOSITORY     https://github.com/LDOUBLEV/AutoLog.git)
-SET(AUTOLOG_INSTALL_DIR   ${CMAKE_CURRENT_BINARY_DIR}/install/Autolog)
+set(FETCHCONTENT_BASE_DIR "${CMAKE_CURRENT_BINARY_DIR}/third-party")
 
-ExternalProject_Add(
-    extern_Autolog
-    PREFIX autolog
-    GIT_REPOSITORY ${AUTOLOG_REPOSITORY}
-    GIT_TAG main
-    DOWNLOAD_NO_EXTRACT True
-    INSTALL_COMMAND cmake -E echo "Skipping install step."
+FetchContent_Declare(
+  extern_Autolog
+  PREFIX autolog
+  GIT_REPOSITORY https://github.com/LDOUBLEV/AutoLog.git
+  GIT_TAG        main
 )
+FetchContent_MakeAvailable(extern_Autolog)
+
