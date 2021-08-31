@@ -1,14 +1,14 @@
 Global:
   use_gpu: true
-  epoch_num: 1200
+  epoch_num: 5
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/det_r50_vd/
+  save_model_dir: ./output/db_mv3/
   save_epoch_step: 1200
   # evaluation is run every 2000 iterations
-  eval_batch_step: [0,2000]
+  eval_batch_step: [0, 2000]
   cal_metric_during_train: False
-  pretrained_model: ./pretrain_models/ResNet50_vd_ssld_pretrained
+  pretrained_model: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
   checkpoints:
   save_inference_dir:
   use_visualdl: False
@@ -20,8 +20,9 @@ Architecture:
   algorithm: DB
   Transform:
   Backbone:
-    name: ResNet
-    layers: 50
+    name: MobileNetV3
+    scale: 0.5
+    model_name: large
   Neck:
     name: DBFPN
     out_channels: 256
@@ -50,7 +51,7 @@ Optimizer:
 PostProcess:
   name: DBPostProcess
   thresh: 0.3
-  box_thresh: 0.7
+  box_thresh: 0.6
   max_candidates: 1000
   unclip_ratio: 1.5
 
@@ -70,19 +71,13 @@ Train:
           img_mode: BGR
           channel_first: False
       - DetLabelEncode: # Class handling label
-      - IaaAugment:
-          augmenter_args:
-            - { 'type': Fliplr, 'args': { 'p': 0.5 } }
-            - { 'type': Affine, 'args': { 'rotate': [-10, 10] } }
-            - { 'type': Resize, 'args': { 'size': [0.5, 3] } }
-      - EastRandomCropData:
+#      - IaaAugment:
+#          augmenter_args:
+#            - { 'type': Fliplr, 'args': { 'p': 0.5 } }
+#            - { 'type': Affine, 'args': { 'rotate': [-10, 10] } }
+#            - { 'type': Resize, 'args': { 'size': [0.5, 3] } }
+      - Resize:
           size: [640, 640]
-          max_tries: 50
-          keep_ratio: true
-      - EastRandomCropData:
-          size: [640, 640]
-          max_tries: 50
-          keep_ratio: true
       - MakeBorderMap:
           shrink_ratio: 0.4
           thresh_min: 0.3
@@ -99,10 +94,11 @@ Train:
       - KeepKeys:
           keep_keys: ['image', 'threshold_map', 'threshold_mask', 'shrink_map', 'shrink_mask'] # the order of the dataloader list
   loader:
-    shuffle: True
+    shuffle: False
     drop_last: False
-    batch_size_per_card: 4
-    num_workers: 2
+    batch_size_per_card: 1
+    num_workers: 0
+    use_shared_memory: False
 
 Eval:
   dataset:
@@ -130,3 +126,4 @@ Eval:
     drop_last: False
     batch_size_per_card: 1 # must be 1
     num_workers: 8
+    use_shared_memory: False
