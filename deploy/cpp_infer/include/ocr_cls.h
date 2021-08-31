@@ -42,7 +42,7 @@ public:
                       const int &gpu_id, const int &gpu_mem,
                       const int &cpu_math_library_num_threads,
                       const bool &use_mkldnn, const double &cls_thresh,
-                      const bool &use_tensorrt, const bool &use_fp16) {
+                      const bool &use_tensorrt, const std::string &precision) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
@@ -51,7 +51,7 @@ public:
 
     this->cls_thresh = cls_thresh;
     this->use_tensorrt_ = use_tensorrt;
-    this->use_fp16_ = use_fp16;
+    this->precision_ = precision;
 
     LoadModel(model_dir);
   }
@@ -75,7 +75,7 @@ private:
   std::vector<float> scale_ = {1 / 0.5f, 1 / 0.5f, 1 / 0.5f};
   bool is_scale_ = true;
   bool use_tensorrt_ = false;
-  bool use_fp16_ = false;
+  std::string precision_ = "fp32";
   // pre-process
   ClsResizeImg resize_op_;
   Normalize normalize_op_;

@@ -187,11 +187,11 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 <a name="数据增强"></a>
 #### 2.1 数据增强
 
-PaddleOCR提供了多种数据增强方式，如果您希望在训练时加入扰动，请在配置文件中设置 `distort: true`。
+PaddleOCR提供了多种数据增强方式，默认配置文件中已经添加了数据增广。
 
-默认的扰动方式有：颜色空间转换(cvtColor)、模糊(blur)、抖动(jitter)、噪声(Gasuss noise)、随机切割(random crop)、透视(perspective)、颜色反转(reverse)。
+默认的扰动方式有：颜色空间转换(cvtColor)、模糊(blur)、抖动(jitter)、噪声(Gasuss noise)、随机切割(random crop)、透视(perspective)、颜色反转(reverse)、TIA数据增广。
 
-训练过程中每种扰动方式以50%的概率被选择，具体代码实现请参考：[img_tools.py](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/rec/img_tools.py)
+训练过程中每种扰动方式以40%的概率被选择，具体代码实现请参考：[rec_img_aug.py](../../ppocr/data/imaug/rec_img_aug.py)
 
 *由于OpenCV的兼容性问题，扰动操作暂时只支持Linux*
 
@@ -217,6 +217,7 @@ PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_t
 | rec_mv3_tps_bilstm_att.yml |  CRNN |   Mobilenet_v3 |  TPS   |  BiLSTM |  att  |
 | rec_r34_vd_tps_bilstm_att.yml |  CRNN |   Resnet34_vd |  TPS   |  BiLSTM |  att  |
 | rec_r50fpn_vd_none_srn.yml    | SRN | Resnet50_fpn_vd    | None    | rnn | srn |
+| rec_mtb_nrtr.yml    | NRTR | nrtr_mtb    | None    | transformer encoder | transformer decoder |
 | rec_r31_sar.yml               | SAR | ResNet31 | None | LSTM encoder | LSTM decoder |
 
 训练中文数据，推荐使用[rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：

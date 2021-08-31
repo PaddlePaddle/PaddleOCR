@@ -16,7 +16,7 @@ import math
 import cv2
 import numpy as np
 import random
-
+from PIL import Image
 from .text_image_aug import tia_perspective, tia_stretch, tia_distort
 
 
@@ -40,6 +40,25 @@ class ClsResizeImg(object):
         img = data['image']
         norm_img = resize_norm_img(img, self.image_shape)
         data['image'] = norm_img
+        return data
+
+
+class NRTRRecResizeImg(object):
+    def __init__(self, image_shape, resize_type, **kwargs):
+        self.image_shape = image_shape
+        self.resize_type = resize_type
+
+    def __call__(self, data):
+        img = data['image']
+        if self.resize_type == 'PIL':
+            image_pil = Image.fromarray(np.uint8(img))
+            img = image_pil.resize(self.image_shape, Image.ANTIALIAS)
+            img = np.array(img)
+        if self.resize_type == 'OpenCV':
+            img = cv2.resize(img, self.image_shape)
+        norm_img = np.expand_dims(img, -1)
+        norm_img = norm_img.transpose((2, 0, 1))
+        data['image'] = norm_img.astype(np.float32) / 128. - 1.
         return data
 
 
