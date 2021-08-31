@@ -158,7 +158,17 @@ serving_client_key=$(func_parser_key "${lines[57]}")
 serving_client_value=$(func_parser_value "${lines[57]}")
 serving_dir_value=$(func_parser_value "${lines[58]}")
 web_service_py=$(func_parser_value "${lines[59]}")
-pipline_py=$(func_parser_value "${lines[60]}")
+web_use_gpu_key=$(func_parser_key "${lines[60]}")
+web_use_gpu_list=$(func_parser_value "${lines[60]}")
+web_use_mkldnn_key=$(func_parser_key "${lines[61]}")
+web_use_mkldnn_list=$(func_parser_value "${lines[61]}")
+web_cpu_threads_key=$(func_parser_key "${lines[62]}")
+web_cpu_threads_list=$(func_parser_value "${lines[62]}")
+web_use_trt_key=$(func_parser_key "${lines[63]}")
+web_use_trt_list=$(func_parser_value "${lines[63]}")
+web_precision_key=$(func_parser_key "${lines[64]}")
+web_precision_list=$(func_parser_value "${lines[64]}")
+pipline_py=$(func_parser_value "${lines[65]}")
 
 
 LOG_PATH="./tests/output"
@@ -234,6 +244,69 @@ function func_inference(){
     done
 }
 
+function func_serving(){
+    IFS='|'
+    _python=$1
+    _script=$2
+    _model_dir=$3
+    # pdserving
+    set_dirname=$(func_set_params "${infer_model_dir_key}" "${infer_model_dir_value}")
+    set_model_filename=$(func_set_params "${model_filename_key}" "${model_filename_value}")
+    set_params_filename=$(func_set_params "${params_filename_key}" "${params_filename_value}")
+    set_serving_server=$(func_set_params "${serving_server_key}" "${serving_server_value}")
+    set_serving_client=$(func_set_params "${serving_client_key}" "${serving_client_value}")
+    trans_model_cmd="${python} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
+    eval $trans_model_cmd
+    cd ${serving_dir_value}
+    echo $PWD
+    for use_gpu in ${web_use_gpu_list[*]}; do
+        echo ${ues_gpu}
+        if [ ${use_gpu} = "null" ]; then
+            for use_mkldnn in ${web_use_mkldnn_list[*]}; do
+                if [ ${use_mkldnn} = "False" ]; then
+                    continue
+                fi
+                for threads in ${web_cpu_threads_list[*]}; do
+                      _save_log_path="${_log_path}/server_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_batchsize_1.log"
+                      set_cpu_threads=$(func_set_params "${web_cpu_threads_key}" "${threads}")
+                      web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}=${use_gpu} ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} &>log.txt &"
+                      echo $web_service_cmd
+                      eval $web_service_cmd
+                      pipline_cmd="${python} ${pipline_py}"
+                      echo $pipline_cmd
+                      eval $pipline_cmd
+                done
+            done
+        elif [ ${use_gpu} = "0" ]; then
+            for use_trt in ${web_use_trt_list[*]}; do
+                for precision in ${web_precision_list[*]}; do
+                    if [[ ${_flag_quant} = "False" ]] && [[ ${precision} =~ "int8" ]]; then
+                        continue
+                    fi
+                    if [[ ${precision} =~ "fp16" || ${precision} =~ "int8" ]] && [ ${use_trt} = "False" ]; then
+                        continue
+                    fi
+                    if [[ ${use_trt} = "False" || ${precision} =~ "int8" ]] && [ ${_flag_quant} = "True" ]; then
+                        continue
+                    fi
+                    _save_log_path="${_log_path}/infer_gpu_usetrt_${use_trt}_precision_${precision}_batchsize_1.log"
+                    set_tensorrt=$(func_set_params "${web_use_trt_key}" "${use_trt}")
+                    set_precision=$(func_set_params "${web_precision_key}" "${precision}")
+                    web_service_cmd="${_python} ${web_service_py} ${web_use_gpu_key}=${use_gpu} ${web_use_trt_key}=${set_tensorrt} ${set_precision} > ${_save_log_path} &>log.txt & "
+                    echo $web_service_cmd
+                    eval $web_service_cmd
+                    pipline_cmd="${python} ${pipline_py}"
+                    echo $pipline_cmd
+                    eval $pipline_cmd
+                done
+            done
+        else
+            echo "Does not support hardware other than CPU and GPU Currently!"
+        fi
+    done
+}
+
+
 if [ ${MODE} = "infer" ]; then
     GPUID=$3
     if [ ${#GPUID} -le 0 ];then
@@ -266,25 +339,21 @@ if [ ${MODE} = "infer" ]; then
         is_quant=${infer_quant_flag[Count]}
         func_inference "${python}" "${inference_py}" "${save_infer_dir}" "${LOG_PATH}" "${infer_img_dir}" ${is_quant}
         Count=$(($Count + 1))
-        #run serving
-        set_dirname=$(func_set_params "${infer_model_dir_key}" "${infer_model_dir_value}")
-        set_model_filename=$(func_set_params "${model_filename_key}" "${model_filename_value}")
-        set_params_filename=$(func_set_params "${params_filename_key}" "${params_filename_value}")
-        set_serving_server=$(func_set_params "${serving_server_key}" "${serving_server_value}")
-        set_serving_client=$(func_set_params "${serving_client_key}" "${serving_client_value}")
-        trans_model_cmd="${python} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
-        eval $trans_model_cmd
-        cd ${serving_dir_value}
-        echo $PWD
-        web_service_cmd="${python} ${web_service_py}"
-        echo $web_service_cmd
-        eval $web_service_cmd
-        pipline_cmd="${python} ${pipline_py}"
-        echo $pipline_cmd
-        eval $pipline_cmd
-
     done
 
+elif [ ${MODE} = "serving_infer" ]; then
+    GPUID=$3
+    if [ ${#GPUID} -le 0 ];then
+        env=" "
+    else
+        env="export CUDA_VISIBLE_DEVICES=${GPUID}"
+    fi
+    # set CUDA_VISIBLE_DEVICES
+    eval $env
+    export Count=0
+    IFS="|"
+    #run serving
+    func_serving "${web_service_cmd}"
 else
     IFS="|"
     export Count=0
@@ -396,4 +465,5 @@ else
         done      # done with:    for autocast in ${autocast_list[*]}; do 
     done          # done with:    for gpu in ${gpu_list[*]}; do
 fi  # end if [ ${MODE} = "infer" ]; then
+
 

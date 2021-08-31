@@ -57,5 +57,11 @@ trans_model:-m paddle_serving_client.convert
 --serving_server:./deploy/pdserving/ppocr_det_mobile_2.0_serving/
 --serving_client:./deploy/pdserving/ppocr_det_mobile_2.0_client/
 serving_dir:./deploy/pdserving
-web_service:web_service_det.py &>log.txt &
+web_service:web_service_det.py --config=config.yml --opt op.det.concurrency=1
+op.det.local_service_conf.devices:null|0
+op.det.local_service_conf.use_mkldnn:True|False
+op.det.local_service_conf.thread_num:1|6
+op.det.local_service_conf.use_trt:False|True
+op.det.local_service_conf.precision:fp32|fp16|int8
 pipline:pipeline_http_client.py --image_dir=../../doc/imgs
+
