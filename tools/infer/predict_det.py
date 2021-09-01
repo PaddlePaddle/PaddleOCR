@@ -30,7 +30,7 @@ from ppocr.utils.logging import get_logger
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.data import create_operators, transform
 from ppocr.postprocess import build_post_process
-
+import json
 logger = get_logger()
 
 
@@ -101,6 +101,7 @@ class TextDetector(object):
         if args.benchmark:
             import auto_log
             pid = os.getpid()
+            gpu_id = utility.get_infer_gpuid()
             self.autolog = auto_log.AutoLogger(
                 model_name="det",
                 model_precision=args.precision,
@@ -110,7 +111,7 @@ class TextDetector(object):
                 inference_config=self.config,
                 pids=pid,
                 process_name=None,
-                gpu_ids=0,
+                gpu_ids=gpu_id if args.use_gpu else None,
                 time_keys=[
                     'preprocess_time', 'inference_time', 'postprocess_time'
                 ],
@@ -242,6 +243,7 @@ if __name__ == "__main__":
 
     if not os.path.exists(draw_img_save):
         os.makedirs(draw_img_save)
+    save_results = []
     for image_file in image_file_list:
         img, flag = check_and_read_gif(image_file)
         if not flag:
@@ -255,8 +257,11 @@ if __name__ == "__main__":
         if count > 0:
             total_time += elapse
         count += 1
-
-        logger.info("Predict time of {}: {}".format(image_file, elapse))
+        save_pred = os.path.basename(image_file) + "\t" + str(
+            json.dumps(np.array(dt_boxes).astype(np.int32).tolist())) + "\n"
+        save_results.append(save_pred)
+        logger.info(save_pred)
+        logger.info("The predict time of {}: {}".format(image_file, elapse))
         src_im = utility.draw_text_det_res(dt_boxes, image_file)
         img_name_pure = os.path.split(image_file)[-1]
         img_path = os.path.join(draw_img_save,
@@ -264,5 +269,8 @@ if __name__ == "__main__":
         cv2.imwrite(img_path, src_im)
         logger.info("The visualized image saved in {}".format(img_path))
 
+    with open(os.path.join(draw_img_save, "det_results.txt"), 'w') as f:
+        f.writelines(save_results)
+        f.close()
     if args.benchmark:
         text_detector.autolog.report()
