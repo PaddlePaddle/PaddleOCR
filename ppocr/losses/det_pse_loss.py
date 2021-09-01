@@ -25,7 +25,8 @@ class PSELoss(nn.Layer):
                  ohem_ratio=3,
                  kernel_sample_mask='pred',
                  reduction='sum',
-                 eps=1e-6**kwargs):
+                 eps=1e-6,
+                 **kwargs):
         """Implement PSE Loss.
         """
         super(PSELoss, self).__init__()
