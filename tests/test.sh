@@ -168,7 +168,7 @@ web_use_trt_key=$(func_parser_key "${lines[63]}")
 web_use_trt_list=$(func_parser_value "${lines[63]}")
 web_precision_key=$(func_parser_key "${lines[64]}")
 web_precision_list=$(func_parser_value "${lines[64]}")
-pipline_py=$(func_parser_value "${lines[65]}")
+pipeline_py=$(func_parser_value "${lines[65]}")
 
 
 LOG_PATH="./tests/output"
@@ -259,6 +259,8 @@ function func_serving(){
     eval $trans_model_cmd
     cd ${serving_dir_value}
     echo $PWD
+    unset https_proxy
+    unset http_proxy
     for use_gpu in ${web_use_gpu_list[*]}; do
         echo ${ues_gpu}
         if [ ${use_gpu} = "null" ]; then
@@ -269,12 +271,18 @@ function func_serving(){
                 for threads in ${web_cpu_threads_list[*]}; do
                       _save_log_path="${_log_path}/server_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_batchsize_1.log"
                       set_cpu_threads=$(func_set_params "${web_cpu_threads_key}" "${threads}")
-                      web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}=${use_gpu} ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} &>log.txt &"
-                      echo $web_service_cmd
+                      web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}=${use_gpu} ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} &>${_save_log_path} &"
                       eval $web_service_cmd
-                      pipline_cmd="${python} ${pipline_py}"
-                      echo $pipline_cmd
-                      eval $pipline_cmd
+                      sleep 2s
+                      pipeline_cmd="${python} ${pipeline_py}"
+                      eval $pipeline_cmd
+                      last_status=${PIPESTATUS[0]}
+                      eval "cat ${_save_log_path}"
+                      status_check $last_status "${pipeline_cmd}" "${status_log}"
+                      PID=$!
+                      kill $PID
+                      sleep 2s
+                      ps ux | grep -E 'web_service|pipeline' | awk '{print $2}' | xargs kill -s 9
                 done
             done
         elif [ ${use_gpu} = "0" ]; then
@@ -286,18 +294,24 @@ function func_serving(){
                     if [[ ${precision} =~ "fp16" || ${precision} =~ "int8" ]] && [ ${use_trt} = "False" ]; then
                         continue
                     fi
-                    if [[ ${use_trt} = "False" || ${precision} =~ "int8" ]] && [ ${_flag_quant} = "True" ]; then
+                    if [[ ${use_trt} = "Falg_quantse" || ${precision} =~ "int8" ]]; then
                         continue
                     fi
                     _save_log_path="${_log_path}/infer_gpu_usetrt_${use_trt}_precision_${precision}_batchsize_1.log"
                     set_tensorrt=$(func_set_params "${web_use_trt_key}" "${use_trt}")
                     set_precision=$(func_set_params "${web_precision_key}" "${precision}")
-                    web_service_cmd="${_python} ${web_service_py} ${web_use_gpu_key}=${use_gpu} ${web_use_trt_key}=${set_tensorrt} ${set_precision} > ${_save_log_path} &>log.txt & "
-                    echo $web_service_cmd
+                    web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}=${use_gpu} ${set_tensorrt} ${set_precision} &>${_save_log_path} & "
                     eval $web_service_cmd
-                    pipline_cmd="${python} ${pipline_py}"
-                    echo $pipline_cmd
-                    eval $pipline_cmd
+                    sleep 2s
+                    pipeline_cmd="${python} ${pipeline_py}"
+                    eval $pipeline_cmd
+                    last_status=${PIPESTATUS[0]}
+                    eval "cat ${_save_log_path}"
+                    status_check $last_status "${pipeline_cmd}" "${status_log}"
+                    PID=$!
+                    kill $PID
+                    sleep 2s
+                    ps ux | grep -E 'web_service|pipeline' | awk '{print $2}' | xargs kill -s 9
                 done
             done
         else
