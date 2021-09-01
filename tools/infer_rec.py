@@ -121,7 +121,7 @@ def main():
                     if len(post_result[key][0]) >= 2:
                         rec_info[key] = {
                             "label": post_result[key][0][0],
-                            "score": post_result[key][0][1],
+                            "score": float(post_result[key][0][1]),
                         }
                 info = json.dumps(rec_info)
             else:
