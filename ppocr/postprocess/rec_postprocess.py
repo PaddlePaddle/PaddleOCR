@@ -529,6 +529,7 @@ class SARLabelDecode(BaseRecLabelDecode):
                  **kwargs):
         super(SARLabelDecode, self).__init__(character_dict_path,
                                               character_type, use_space_char)
+	
 	self.rm_symbol = kwargs.get('rm_symbol', True)
 
     def add_special_char(self, dict_character):
