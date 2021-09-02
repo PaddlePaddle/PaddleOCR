@@ -15,7 +15,7 @@ Global:
   infer_img: 
   # for data or label process
   character_dict_path: ppocr/utils/dict90.txt
-  character_type: ch
+  character_type: EN_symbol
   max_text_length: 30
   infer_mode: False
   use_space_char: False
@@ -47,6 +47,7 @@ Loss:
 
 PostProcess:
   name: SARLabelDecode
+  rm_symbol: True
 
 Metric:
   name: RecMetric
@@ -56,8 +57,8 @@ Train:
   dataset:
     name: SimpleDataSet
     delimiter: ' '
-    label_file_list: ['/paddle/data/concat_data/train_list.txt']
-    data_dir: /paddle/data/concat_data/
+    label_file_list: ['./train_data/train_list.txt']
+    data_dir: ./train_data/
     ratio_list: 1.0
     transforms:
       - DecodeImage: # load image
@@ -79,7 +80,7 @@ Train:
 Eval:
   dataset:
     name: LMDBDataSet
-    data_dir: /paddle/data/ocr_data/evaluation/
+    data_dir: ./eval_data/evaluation/
     transforms:
       - DecodeImage: # load image
           img_mode: BGR

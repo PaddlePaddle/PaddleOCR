@@ -526,6 +526,7 @@ class SARLabelDecode(BaseRecLabelDecode):
                  character_dict_path=None,
                  character_type='ch',
                  use_space_char=False,
+                 rm_symbol=True,
                  **kwargs):
         super(SARLabelDecode, self).__init__(character_dict_path,
                                               character_type, use_space_char)
@@ -572,9 +573,10 @@ class SARLabelDecode(BaseRecLabelDecode):
                 else:
                     conf_list.append(1)
             text = ''.join(char_list)
-            comp = re.compile('[^A-Z^a-z^0-9^\u4e00-\u9fa5]')
-            text = text.lower()
-            text = comp.sub('', text)
+            if self.rm_symbol:
+                comp = re.compile('[^A-Z^a-z^0-9^\u4e00-\u9fa5]')
+                text = text.lower()
+                text = comp.sub('', text)
             result_list.append((text, np.mean(conf_list)))
         return result_list
 
