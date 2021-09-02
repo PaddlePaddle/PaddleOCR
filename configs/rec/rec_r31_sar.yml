@@ -19,6 +19,7 @@ Global:
   max_text_length: 30
   infer_mode: False
   use_space_char: False
+  rm_symbol: True
   save_res_path: ./output/rec/predicts_sar.txt
 
 Optimizer:
@@ -47,7 +48,6 @@ Loss:
 
 PostProcess:
   name: SARLabelDecode
-  rm_symbol: True
 
 Metric:
   name: RecMetric
