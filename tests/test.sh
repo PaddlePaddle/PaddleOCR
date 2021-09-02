@@ -270,7 +270,6 @@ function func_inference(){
         fi
     done
 }
-
 function func_serving(){
     IFS='|'
     _python=$1
@@ -339,6 +338,14 @@ function func_serving(){
                     kill $PID
                     sleep 2s
                     ps ux | grep -E 'web_service|pipeline' | awk '{print $2}' | xargs kill -s 9
+                done
+            done
+        else
+            echo "Does not support hardware other than CPU and GPU Currently!"
+        fi
+    done
+}
+
 function func_cpp_inference(){
     IFS='|'
     _script=$1
@@ -582,5 +589,3 @@ else
         done      # done with:    for autocast in ${autocast_list[*]}; do 
     done          # done with:    for gpu in ${gpu_list[*]}; do
 fi  # end if [ ${MODE} = "infer" ]; then
-
-
