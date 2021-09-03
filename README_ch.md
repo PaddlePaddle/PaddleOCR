@@ -72,36 +72,39 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 更多模型下载（包括多语言），可以参考[PP-OCR v2.0 系列模型下载](./doc/doc_ch/models_list.md)
 
 ## 文档教程
-- [快速安装](./doc/doc_ch/installation.md)
-- [中文OCR模型快速使用](./doc/doc_ch/quickstart.md)
-- [多语言OCR模型快速使用](./doc/doc_ch/multi_languages.md)
-- [代码组织结构](./doc/doc_ch/tree.md)
-- 算法介绍
-    - [文本检测](./doc/doc_ch/algorithm_overview.md)
-    - [文本识别](./doc/doc_ch/algorithm_overview.md)
-    - [PP-OCR Pipeline](#PP-OCR)
-    - [端到端PGNet算法](./doc/doc_ch/pgnet.md)
-- 模型训练/评估
-    - [文本检测](./doc/doc_ch/detection.md)
-    - [文本识别](./doc/doc_ch/recognition.md)
-    - [方向分类器](./doc/doc_ch/angle_class.md)
-    - [yml参数配置文件介绍](./doc/doc_ch/config.md)
-- 预测部署
-    - [基于pip安装whl包快速推理](./doc/doc_ch/whl.md)
-    - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
-    - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
-    - [服务化部署](./deploy/pdserving/README_CN.md)
-    - [端侧部署](./deploy/lite/readme.md)
-    - [Benchmark](./doc/doc_ch/benchmark.md)
-- 数据集
-    - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
-    - [手写中文OCR数据集](./doc/doc_ch/handwritten_datasets.md)
-    - [垂类多语言OCR数据集](./doc/doc_ch/vertical_and_multilingual_datasets.md)
+- [快速开始](./doc/doc_ch/quickstart.md)
+- [PaddleOCR全景图与安装](./doc/doc_ch/paddleOCR_overview.md)
+- PP-OCR产业落地：从训练到部署
+    - [PP-OCR模型与配置文件](./doc/doc_ch/models_and_config.md)
+        - [PP-OCR模型下载](./doc/doc_ch/models_list.md)
+        - [配置文件内容与生成](./doc/doc_ch/config.md)
+        - [模型库快速使用](./doc/doc_ch/inference.md)
+    - [PP-OCR模型训练](./doc/doc_ch/training.md)
+        - [文本检测](./doc/doc_ch/detection.md)
+        - [文本识别](./doc/doc_ch/recognition.md)
+        - [方向分类器](./doc/doc_ch/angle_class.md)
+    - PP-OCR模型推理部署
+        - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
+        - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
+        - [服务化部署](./deploy/pdserving/README_CN.md)
+        - [端侧部署](./deploy/lite/readme.md)
+        - [Benchmark](./doc/doc_ch/benchmark.md)
+- [PP-Structure信息提取](./ppstructure/README_ch.md)
+    - [版面分析](./ppstructure/layout/README_ch.md)
+    - [表格识别](./ppstructure/table/README_ch.md)
 - 数据标注与合成
     - [半自动标注工具PPOCRLabel](./PPOCRLabel/README_ch.md)
     - [数据合成工具Style-Text](./StyleText/README_ch.md)
     - [其它数据标注工具](./doc/doc_ch/data_annotation.md)
     - [其它数据合成工具](./doc/doc_ch/data_synthesis.md)
+- OCR学术圈
+    - [两阶段模型介绍与下载](./doc/doc_ch/algorithm_overview.md)
+    - [端到端PGNet算法](./doc/doc_ch/pgnet.md)
+    - 模型训练
+- 数据集
+    - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
+    - [手写中文OCR数据集](./doc/doc_ch/handwritten_datasets.md)
+    - [垂类多语言OCR数据集](./doc/doc_ch/vertical_and_multilingual_datasets.md)
 - [效果展示](#效果展示)
 - FAQ
     - [【精选】OCR精选10个问题](./doc/doc_ch/FAQ.md)
@@ -111,6 +114,7 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 - [参考文献](./doc/doc_ch/reference.md)
 - [许可证书](#许可证书)
 - [贡献代码](#贡献代码)
+- [代码组织结构](./doc/doc_ch/tree.md)
 
 
 <a name="PP-OCR"></a>

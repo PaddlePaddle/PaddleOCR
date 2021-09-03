@@ -78,25 +78,29 @@ For more model downloads (including multiple languages), please refer to [PP-OCR
 For a new language request, please refer to [Guideline for new language_requests](#language_requests).
 
 ## Tutorials
-- [Installation](./doc/doc_en/installation_en.md)
 - [Quick Start](./doc/doc_en/quickstart_en.md)
-- [Code Structure](./doc/doc_en/tree_en.md)
-- Algorithm Introduction
-    - [Text Detection Algorithm](./doc/doc_en/algorithm_overview_en.md)
-    - [Text Recognition Algorithm](./doc/doc_en/algorithm_overview_en.md)
-    - [PP-OCR Pipeline](#PP-OCR-Pipeline)
-- Model Training/Evaluation
-    - [Text Detection](./doc/doc_en/detection_en.md)
-    - [Text Recognition](./doc/doc_en/recognition_en.md)
-    - [Direction Classification](./doc/doc_en/angle_class_en.md)
-    - [Yml Configuration](./doc/doc_en/config_en.md)
-- Inference and Deployment
-    - [Quick Inference Based on PIP](./doc/doc_en/whl_en.md)
-    - [Python Inference](./doc/doc_en/inference_en.md)
-    - [C++ Inference](./deploy/cpp_infer/readme_en.md)
-    - [Serving](./deploy/pdserving/README.md)
-    - [Mobile](./deploy/lite/readme_en.md)
-    - [Benchmark](./doc/doc_en/benchmark_en.md)  
+- [PaddleOCR Overview and Installation](./doc/doc_en/paddleOCR_overview.md)
+- PP-OCR Industry Landing: from Training to Deployment
+    - [PP-OCR Model and Configuration](./doc/doc_en/models_and_config_en.md)
+        - [PP-OCR Model Download](./doc/doc_en/models_list_en.md)
+        - [Yml Configuration](./doc/doc_en/config_en.md)
+        - [Python Inference](./doc/doc_en/inference_en.md)
+    - [PP-OCR Training](./doc/doc_en/training.md)
+        - [Text Detection](./doc/doc_en/detection_en.md)
+        - [Text Recognition](./doc/doc_en/recognition_en.md)
+        - [Direction Classification](./doc/doc_en/angle_class_en.md)
+    - Inference and Deployment
+        - [Python Inference](./doc/doc_en/inference_en.md)
+        - [C++ Inference](./deploy/cpp_infer/readme_en.md)
+        - [Serving](./deploy/pdserving/README.md)
+        - [Mobile](./deploy/lite/readme_en.md)
+        - [Benchmark](./doc/doc_en/benchmark_en.md)  
+- [PP-Structure: Information Extraction](./ppstructure/README.md)
+    - [Layout Parser](./ppstructure/layout/README.md)
+    - [Table Recognition](./ppstructure/table/README.md)
+- Academic Circles
+    - [Two-stage Algorithm](./doc/doc_en/algorithm_overview_en.md)
+    - [PGNet Algorithm](./doc/doc_en/algorithm_overview_en.md)
 - Data Annotation and Synthesis
     - [Semi-automatic Annotation Tool: PPOCRLabel](./PPOCRLabel/README.md)
     - [Data Synthesis Tool: Style-Text](./StyleText/README.md)
