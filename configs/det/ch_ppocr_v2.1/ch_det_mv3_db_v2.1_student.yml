@@ -2,13 +2,13 @@ Global:
   use_gpu: true
   epoch_num: 1200
   log_smooth_window: 20
-  print_batch_step: 2
+  print_batch_step: 10
   save_model_dir: ./output/ch_db_mv3/
   save_epoch_step: 1200
   # evaluation is run every 5000 iterations after the 4000th iteration
-  eval_batch_step: [3000, 2000]
+  eval_batch_step: [0, 400]
   cal_metric_during_train: False
-  pretrained_model: ./pretrain_models/ch_ppocr_mobile_v2.1_det_distill_train/best_accuracy
+  pretrained_model: ./pretrain_models/student.pdparams
   checkpoints:
   save_inference_dir:
   use_visualdl: False
@@ -16,91 +16,28 @@ Global:
   save_res_path: ./output/det_db/predicts_db.txt
 
 Architecture:
-  name: DistillationModel
-  algorithm: Distillation
-  Models:
-    Student:
-      freeze_params: false
-      return_all_feats: false
-      model_type: det
-      algorithm: DB
-      Backbone:
-        name: MobileNetV3
-        scale: 0.5
-        model_name: large
-        disable_se: True
-      Neck:
-        name: DBFPN
-        out_channels: 96
-      Head:
-        name: DBHead
-        k: 50
-    Student2:
-      freeze_params: false
-      return_all_feats: false
-      model_type: det
-      algorithm: DB
-      Transform:
-      Backbone:
-        name: MobileNetV3
-        scale: 0.5
-        model_name: large
-        disable_se: True
-      Neck:
-        name: DBFPN
-        out_channels: 96
-      Head:
-        name: DBHead
-        k: 50
-    Teacher:
-      freeze_params: true
-      return_all_feats: false
-      model_type: det
-      algorithm: DB
-      Transform:
-      Backbone:
-        name: ResNet
-        layers: 18
-      Neck:
-        name: DBFPN
-        out_channels: 256
-      Head:
-        name: DBHead
-        k: 50
+  model_type: det
+  algorithm: DB
+  Transform:
+  Backbone:
+    name: MobileNetV3
+    scale: 0.5
+    model_name: large
+    disable_se: True
+  Neck:
+    name: DBFPN
+    out_channels: 96
+  Head:
+    name: DBHead
+    k: 50
 
 Loss:
-  name: CombinedLoss
-  loss_config_list:
-  - DistillationDilaDBLoss:
-      weight: 1.0
-      model_name_pairs:
-      - ["Student", "Teacher"]
-      - ["Student2", "Teacher"]
-      key: maps
-      balance_loss: true
-      main_loss_type: DiceLoss
-      alpha: 5
-      beta: 10
-      ohem_ratio: 3
-  - DistillationDMLLoss:
-      model_name_pairs:
-      - ["Student", "Student2"]
-      maps_name: "thrink_maps"
-      weight: 1.0
-      # act: None
-      model_name_pairs: ["Student", "Student2"]
-      key: maps
-  - DistillationDBLoss:
-      weight: 1.0
-      model_name_list: ["Student", "Student2"]
-      # key: maps
-      # name: DBLoss
-      balance_loss: true
-      main_loss_type: DiceLoss
-      alpha: 5
-      beta: 10
-      ohem_ratio: 3
-
+  name: DBLoss
+  balance_loss: true
+  main_loss_type: DiceLoss
+  alpha: 5
+  beta: 10
+  ohem_ratio: 3
 
 Optimizer:
   name: Adam
@@ -115,19 +52,15 @@ Optimizer:
     factor: 0
 
 PostProcess:
-  name: DistillationDBPostProcess
-  model_name: ["Student", "Student2", "Teacher"]
-  # key: maps
+  name: DBPostProcess
   thresh: 0.3
   box_thresh: 0.6
   max_candidates: 1000
   unclip_ratio: 1.5
 
 Metric:
-  name: DistillationMetric
-  base_metric_name: DetMetric
+  name: DetMetric
   main_indicator: hmean
-  key: "Student"
 
 Train:
   dataset:
