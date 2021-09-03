@@ -21,13 +21,16 @@ from .make_border_map import MakeBorderMap
 from .make_shrink_map import MakeShrinkMap
 from .random_crop_data import EastRandomCropData, PSERandomCrop
 
-from .rec_img_aug import RecAug, RecResizeImg, ClsResizeImg, SRNRecResizeImg
+from .rec_img_aug import RecAug, RecResizeImg, ClsResizeImg, SRNRecResizeImg, NRTRRecResizeImg
 from .randaugment import RandAugment
+from .copy_paste import CopyPaste
 from .operators import *
 from .label_ops import *
 
 from .east_process import *
 from .sast_process import *
+from .pg_process import *
+from .gen_table_mask import *
 
 
 def transform(data, ops=None):

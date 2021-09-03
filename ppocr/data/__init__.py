@@ -34,6 +34,8 @@ import paddle.distributed as dist
 from ppocr.data.imaug import transform, create_operators
 from ppocr.data.simple_dataset import SimpleDataSet
 from ppocr.data.lmdb_dataset import LMDBDataSet
+from ppocr.data.pgnet_dataset import PGDataSet
+from ppocr.data.pubtab_dataset import PubTabDataSet
 
 __all__ = ['build_dataloader', 'transform', 'create_operators']
 
@@ -47,14 +49,12 @@ def term_mp(sig_num, frame):
     os.killpg(pgid, signal.SIGKILL)
 
 
-signal.signal(signal.SIGINT, term_mp)
-signal.signal(signal.SIGTERM, term_mp)
-
-
 def build_dataloader(config, mode, device, logger, seed=None):
     config = copy.deepcopy(config)
 
-    support_dict = ['SimpleDataSet', 'LMDBDataSet']
+    support_dict = [
+        'SimpleDataSet', 'LMDBDataSet', 'PGDataSet', 'PubTabDataSet'
+    ]
     module_name = config[mode]['dataset']['name']
     assert module_name in support_dict, Exception(
         'DataSet only support {}'.format(support_dict))
@@ -72,14 +72,14 @@ def build_dataloader(config, mode, device, logger, seed=None):
     else:
         use_shared_memory = True
     if mode == "Train":
-        #Distribute data to multiple cards
+        # Distribute data to multiple cards
         batch_sampler = DistributedBatchSampler(
             dataset=dataset,
             batch_size=batch_size,
             shuffle=shuffle,
             drop_last=drop_last)
     else:
-        #Distribute data to single card
+        # Distribute data to single card
         batch_sampler = BatchSampler(
             dataset=dataset,
             batch_size=batch_size,
@@ -93,5 +93,9 @@ def build_dataloader(config, mode, device, logger, seed=None):
         num_workers=num_workers,
         return_list=True,
         use_shared_memory=use_shared_memory)
+
+    # support exit using ctrl+c
+    signal.signal(signal.SIGINT, term_mp)
+    signal.signal(signal.SIGTERM, term_mp)
 
     return data_loader

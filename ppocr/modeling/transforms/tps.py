@@ -230,15 +230,8 @@ class GridGenerator(nn.Layer):
     def build_inv_delta_C_paddle(self, C):
         """ Return inv_delta_C which is needed to calculate T """
         F = self.F
-        hat_C = paddle.zeros((F, F), dtype='float64')  # F x F
-        for i in range(0, F):
-            for j in range(i, F):
-                if i == j:
-                    hat_C[i, j] = 1
-                else:
-                    r = paddle.norm(C[i] - C[j])
-                    hat_C[i, j] = r
-                    hat_C[j, i] = r
+        hat_eye = paddle.eye(F, dtype='float64')  # F x F
+        hat_C = paddle.norm(C.reshape([1, F, 2]) - C.reshape([F, 1, 2]), axis=2) + hat_eye
         hat_C = (hat_C**2) * paddle.log(hat_C)
         delta_C = paddle.concat(  # F+3 x F+3
             [

@@ -18,9 +18,9 @@ PaddleOCR 也提供了数据格式转换脚本，可以将官网 label 转换支
 
 ```
 # 将官网下载的标签文件转换为 train_icdar2015_label.txt
-python gen_label.py --mode="det" --root_path="icdar_c4_train_imgs/"  \
-                    --input_path="ch4_training_localization_transcription_gt" \
-                    --output_label="train_icdar2015_label.txt"
+python gen_label.py --mode="det" --root_path="/path/to/icdar_c4_train_imgs/"  \
+                    --input_path="/path/to/ch4_training_localization_transcription_gt" \
+                    --output_label="/path/to/train_icdar2015_label.txt"
 ```
 
 解压数据集和下载标注文件后，PaddleOCR/train_data/ 有两个文件夹和两个文件，分别是：
@@ -45,26 +45,17 @@ json.dumps编码前的图像标注信息是包含多个字典的list，字典中
 ## 快速启动训练
 
 首先下载模型backbone的pretrain model，PaddleOCR的检测模型目前支持两种backbone，分别是MobileNetV3、ResNet_vd系列，
-您可以根据需求使用[PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/master/ppcls/modeling/architectures)中的模型更换backbone。
+您可以根据需求使用[PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/develop/ppcls/modeling/architectures)中的模型更换backbone，
+对应的backbone预训练模型可以从[PaddleClas repo 主页中找到下载链接](https://github.com/PaddlePaddle/PaddleClas#mobile-series)。
 ```shell
 cd PaddleOCR/
+# 根据backbone的不同选择下载对应的预训练模型
 # 下载MobileNetV3的预训练模型
-wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/MobileNetV3_large_x0_5_pretrained.tar
+wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams
 # 或，下载ResNet18_vd的预训练模型
-wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/ResNet18_vd_pretrained.tar
+wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/ResNet18_vd_pretrained.pdparams
 # 或，下载ResNet50_vd的预训练模型
-wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/ResNet50_vd_ssld_pretrained.tar
-
-# 解压预训练模型文件，以MobileNetV3为例
-tar -xf ./pretrain_models/MobileNetV3_large_x0_5_pretrained.tar ./pretrain_models/
-
-# 注：正确解压backbone预训练权重文件后，文件夹下包含众多以网络层命名的权重文件，格式如下：
-./pretrain_models/MobileNetV3_large_x0_5_pretrained/
-  └─ conv_last_bn_mean
-  └─ conv_last_bn_offset
-  └─ conv_last_bn_scale
-  └─ conv_last_bn_variance
-  └─ ......
+wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/ResNet50_vd_ssld_pretrained.pdparams
 
 ```
 
@@ -120,16 +111,16 @@ python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="{pat
 
 测试单张图像的检测效果
 ```shell
-python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./doc/imgs_en/img_10.jpg" Global.pretrained_model="./output/det_db/best_accuracy" Global.load_static_weights=false
+python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./doc/imgs_en/img_10.jpg" Global.pretrained_model="./output/det_db/best_accuracy"
 ```
 
 测试DB模型时，调整后处理阈值，
 ```shell
-python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./doc/imgs_en/img_10.jpg" Global.pretrained_model="./output/det_db/best_accuracy" Global.load_static_weights=false PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
+python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./doc/imgs_en/img_10.jpg" Global.pretrained_model="./output/det_db/best_accuracy"  PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
 ```
 
 
 测试文件夹下所有图像的检测效果
 ```shell
-python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./doc/imgs_en/" Global.pretrained_model="./output/det_db/best_accuracy" Global.load_static_weights=false
+python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./doc/imgs_en/" Global.pretrained_model="./output/det_db/best_accuracy"
 ```

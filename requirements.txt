@@ -3,8 +3,11 @@ scikit-image==0.17.2
 imgaug==0.4.0
 pyclipper
 lmdb
-opencv-python==4.2.0.32
 tqdm
 numpy
 visualdl
 python-Levenshtein
+opencv-contrib-python==4.4.0.46
+lxml
+premailer
+openpyxl

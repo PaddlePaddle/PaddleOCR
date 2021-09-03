@@ -14,7 +14,7 @@ PaddleOCR在Windows 平台下基于`Visual Studio 2019 Community` 进行了测�
 
 ### Step1: 下载PaddlePaddle C++ 预测库 fluid_inference
 
-PaddlePaddle C++ 预测库针对不同的`CPU`和`CUDA`版本提供了不同的预编译版本，请根据实际情况下载:  [C++预测库下载列表](https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/guides/05_inference_deployment/inference/windows_cpp_inference.html)
+PaddlePaddle C++ 预测库针对不同的`CPU`和`CUDA`版本提供了不同的预编译版本，请根据实际情况下载:  [C++预测库下载列表](https://paddleinference.paddlepaddle.org.cn/user_guides/download_lib.html#windows)
 
 解压后`D:\projects\fluid_inference`目录包含内容为：
 ```
@@ -93,3 +93,5 @@ cd D:\projects\PaddleOCR\deploy\cpp_infer\out\build\x64-Release
 
 ### 注意
 * 在Windows下的终端中执行文件exe时，可能会发生乱码的现象，此时需要在终端中输入`CHCP 65001`，将终端的编码方式由GBK编码(默认)改为UTF-8编码，更加具体的解释可以参考这篇博客：[https://blog.csdn.net/qq_35038153/article/details/78430359](https://blog.csdn.net/qq_35038153/article/details/78430359)。
+
+* 编译时，如果报错`错误：C1083 无法打开包括文件:"dirent.h":No such file or directory`，可以参考该[文档](https://blog.csdn.net/Dora_blank/article/details/117740837#41_C1083_direnthNo_such_file_or_directory_54)，新建`dirent.h`文件，并添加到`VC++`的包含目录中。

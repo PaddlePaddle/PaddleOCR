@@ -7,6 +7,8 @@ import os
 import sys
 sys.path.insert(0, ".")
 
+import copy
+
 from paddlehub.common.logger import logger
 from paddlehub.module.module import moduleinfo, runnable, serving
 import cv2
@@ -15,6 +17,8 @@ import paddlehub as hub
 
 from tools.infer.utility import base64_to_cv2
 from tools.infer.predict_det import TextDetector
+from tools.infer.utility import parse_args
+from deploy.hubserving.ocr_system.params import read_params
 
 
 @moduleinfo(
@@ -29,8 +33,7 @@ class OCRDet(hub.Module):
         """
         initialize with the necessary elements
         """
-        from ocr_det.params import read_params
-        cfg = read_params()
+        cfg = self.merge_configs()
 
         cfg.use_gpu = use_gpu
         if use_gpu:
@@ -48,6 +51,20 @@ class OCRDet(hub.Module):
         cfg.enable_mkldnn = enable_mkldnn
 
         self.text_detector = TextDetector(cfg)
+
+    def merge_configs(self, ):
+        # deafult cfg
+        backup_argv = copy.deepcopy(sys.argv)
+        sys.argv = sys.argv[:1]
+        cfg = parse_args()
+
+        update_cfg_map = vars(read_params())
+
+        for key in update_cfg_map:
+            cfg.__setattr__(key, update_cfg_map[key])
+
+        sys.argv = copy.deepcopy(backup_argv)
+        return cfg
 
     def read_images(self, paths=[]):
         images = []
