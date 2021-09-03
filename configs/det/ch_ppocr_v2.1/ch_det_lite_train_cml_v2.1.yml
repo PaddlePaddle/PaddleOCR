@@ -19,6 +19,21 @@ Architecture:
   name: DistillationModel
   algorithm: Distillation
   Models:
+    Teacher:
+      freeze_params: true
+      return_all_feats: false
+      model_type: det
+      algorithm: DB
+      Transform:
+      Backbone:
+        name: ResNet
+        layers: 18
+      Neck:
+        name: DBFPN
+        out_channels: 256
+      Head:
+        name: DBHead
+        k: 50
     Student:
       freeze_params: false
       return_all_feats: false
@@ -52,22 +67,7 @@ Architecture:
       Head:
         name: DBHead
         k: 50
-    Teacher:
-      freeze_params: true
-      return_all_feats: false
-      model_type: det
-      algorithm: DB
-      Transform:
-      Backbone:
-        name: ResNet
-        layers: 18
-      Neck:
-        name: DBFPN
-        out_channels: 256
-      Head:
-        name: DBHead
-        k: 50
-
+    
 Loss:
   name: CombinedLoss
   loss_config_list:
