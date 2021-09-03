@@ -69,7 +69,7 @@ If you do not use the provided test image, you can replace the following `--imag
 
 <a name="211-english-and-chinese-model"></a>
 
-#### 2.1.1 English and Chinese Model
+#### 2.1.1 Chinese and English Model
 
 * Detection, direction classification and recognition: set the direction classifier parameter`--use_angle_cls true` to recognize vertical text.
 
