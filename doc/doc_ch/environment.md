@@ -1,7 +1,5 @@
 # 零基础Python环境搭建
 
-[toc]
-
 ## Windows
 
 ### 第1步：安装Anaconda

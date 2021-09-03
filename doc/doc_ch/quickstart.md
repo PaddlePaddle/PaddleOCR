@@ -1,14 +1,27 @@
 # PaddleOCR快速开始
+[PaddleOCR快速开始](#paddleocr)
 
-[TOC]
+* [1. 轻量安装](#1)
+  + [1.0 运行环境准备](#10)
+  + [1.1 安装PaddlePaddle2.0](#11)
+  + [1.2 安装PaddleOCR whl包](#12)
+* [2. 便捷使用](#2)
+  + [2.1 命令行使用](#21)
+    - [2.1.1 中英文模型](#211)
+    - [2.1.2 多语言模型](#212)
+    - [2.1.3 版面分析](#213)
+  + [2.2 Python脚本使用](#22)
+    - [2.2.1 中英文与多语言使用](#221)
+    - [2.2.2 版面分析使用](#222)
 
+<a name="1"></a>
 
 ## 1. 轻量安装
-
+<a name="10"></a>
 ### 1.0 运行环境准备
 
 如果您未搭建过Python环境，可以通过[零基础Python环境搭建文档](./environment.)进行环境搭建
-
+<a name="11"></a>
 ### 1.1 安装PaddlePaddle2.0
 
 - 如果您的机器安装的是CUDA9或CUDA10，请运行以下命令安装
@@ -24,7 +37,7 @@ python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
 ```
 
 更多的版本需求，请参照[飞桨官网安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
-
+<a name="12"></a>
 ### 1.2 安装PaddleOCR whl包
 
 ```bash
@@ -42,9 +55,9 @@ pip install "paddleocr>=2.0.1" # 推荐使用2.0.1+版本
   ```
 
 
-
+<a name="2"></a>
 ## 2. 便捷使用
-
+<a name="21"></a>
 ### 2.1 命令行使用
 
 PaddleOCR提供了一系列测试图片，点击xx下载，然后在终端中切换到相应目录
@@ -54,7 +67,7 @@ cd /path/to/ppocr_img
 ```
 
 如果不使用提供的测试图片，可以将下方`--image_dir`参数替换为相应的测试图片路径
-
+<a name="211"></a>
 #### 2.1.1 中英文模型
 
 * 检测+方向分类器+识别全流程：设置方向分类器参数`--use_angle_cls true`后可对竖排文本进行识别。
@@ -103,7 +116,7 @@ cd /path/to/ppocr_img
 更多whl包使用包括， whl包参数说明
 
 
-
+<a name="212"></a>
 #### 2.1.2 多语言模型
 
 Paddleocr目前支持80个语种，可以通过修改`--lang`参数进行切换，对于英文模型，指定`--lang=en`。
@@ -139,7 +152,7 @@ paddleocr --image_dir ./imgs_en/254.jpg --lang=en
 | 繁体中文 | chinese_cht |      | 意大利文 | it     |      | 俄罗斯文 | ru     |
 
 全部语种及其对应的缩写列表可查看[多语言模型教程](./multi_languages.md)
-
+<a name="213"></a>
 #### 2.1.3 版面分析
 
 使用PaddleOCR的版面分析功能，需要指定`--type=structure`
@@ -192,8 +205,9 @@ paddleocr --image_dir=./table/1.png --type=structure
 
   
 
+<a name="22"></a>
 ### 2.2 Python脚本使用
-
+<a name="221"></a>
 #### 2.2.1 中英文与多语言使用
 
 通过脚本使用PaddleOCR whl包。whl包会自动下载ppocr轻量级模型作为默认模型，
@@ -237,7 +251,7 @@ im_show.save('result.jpg')
 <div align="center">
     <img src="../imgs_results/whl/11_det_rec.jpg" width="800">
 </div>
-
+<a name="222"></a>
 #### 2.2.2 版面分析使用
 
 ```python
@@ -265,4 +279,3 @@ im_show = draw_structure_result(image, result,font_path=font_path)
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
-
