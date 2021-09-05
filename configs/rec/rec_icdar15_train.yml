@@ -10,7 +10,7 @@ Global:
   cal_metric_during_train: True
   pretrained_model:
   checkpoints:
-  save_inference_dir:
+  save_inference_dir: ./
   use_visualdl: False
   infer_img: doc/imgs_words_en/word_10.png
   # for data or label process
@@ -60,8 +60,8 @@ Metric:
 Train:
   dataset:
     name: SimpleDataSet
-    data_dir: ./train_data/
-    label_file_list: ["./train_data/train_list.txt"]
+    data_dir: ./train_data/ic15_data/
+    label_file_list: ["./train_data/ic15_data/rec_gt_train.txt"]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
@@ -81,8 +81,8 @@ Train:
 Eval:
   dataset:
     name: SimpleDataSet
-    data_dir: ./train_data/
-    label_file_list: ["./train_data/val_list.txt"]
+    data_dir: ./train_data/ic15_data
+    label_file_list: ["./train_data/ic15_data/rec_gt_test.txt"]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR

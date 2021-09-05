@@ -23,7 +23,7 @@
 
 ```bash
 git clone https://github.com/PaddlePaddle/PaddleSlim.git
-cd Paddleslim
+cd PaddleSlim
 python setup.py install
 ```
 
@@ -37,12 +37,12 @@ PaddleOCR提供了一系列训练好的[模型](../../../doc/doc_ch/models_list.
 
 量化训练的代码位于slim/quantization/quant.py 中，比如训练检测模型，训练指令如下：
 ```bash
-python deploy/slim/quantization/quant.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights='your trained model'   Global.save_model_dir=./output/quant_model
+python deploy/slim/quantization/quant.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrained_model='your trained model'   Global.save_model_dir=./output/quant_model
 
 # 比如下载提供的训练模型
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar
 tar -xf ch_ppocr_mobile_v2.0_det_train.tar
-python deploy/slim/quantization/quant.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=./ch_ppocr_mobile_v2.0_det_train/best_accuracy   Global.save_inference_dir=./output/quant_inference_model
+python deploy/slim/quantization/quant.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrained_model=./ch_ppocr_mobile_v2.0_det_train/best_accuracy   Global.save_model_dir=./output/quant_inference_model
 
 ```
 如果要训练识别模型的量化，修改配置文件和加载的模型参数即可。
@@ -52,7 +52,7 @@ python deploy/slim/quantization/quant.py -c configs/det/det_mv3_db.yml -o Global
 在得到量化训练保存的模型后，我们可以将其导出为inference_model，用于预测部署：
 
 ```bash
-python deploy/slim/quantization/export_model.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=output/quant_model/best_accuracy Global.save_model_dir=./output/quant_inference_model
+python deploy/slim/quantization/export_model.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.checkpoints=output/quant_model/best_accuracy Global.save_inference_dir=./output/quant_inference_model
 ```
 
 ### 5. 量化模型部署

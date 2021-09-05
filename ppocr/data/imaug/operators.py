@@ -57,6 +57,38 @@ class DecodeImage(object):
         return data
 
 
+class NRTRDecodeImage(object):
+    """ decode image """
+
+    def __init__(self, img_mode='RGB', channel_first=False, **kwargs):
+        self.img_mode = img_mode
+        self.channel_first = channel_first
+
+    def __call__(self, data):
+        img = data['image']
+        if six.PY2:
+            assert type(img) is str and len(
+                img) > 0, "invalid input 'img' in DecodeImage"
+        else:
+            assert type(img) is bytes and len(
+                img) > 0, "invalid input 'img' in DecodeImage"
+        img = np.frombuffer(img, dtype='uint8')
+
+        img = cv2.imdecode(img, 1)
+
+        if img is None:
+            return None
+        if self.img_mode == 'GRAY':
+            img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+        elif self.img_mode == 'RGB':
+            assert img.shape[2] == 3, 'invalid shape of image[%s]' % (img.shape)
+            img = img[:, :, ::-1]
+        img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+        if self.channel_first:
+            img = img.transpose((2, 0, 1))
+        data['image'] = img
+        return data
+
 class NormalizeImage(object):
     """ normalize image such as substract mean, divide std
     """
@@ -81,7 +113,7 @@ class NormalizeImage(object):
         assert isinstance(img,
                           np.ndarray), "invalid input 'img' in NormalizeImage"
         data['image'] = (
-            img.astype('float32') * self.scale - self.mean) / self.std
+                                img.astype('float32') * self.scale - self.mean) / self.std
         return data
 
 
@@ -163,7 +195,7 @@ class DetResizeForTest(object):
             img, (ratio_h, ratio_w)
         """
         limit_side_len = self.limit_side_len
-        h, w, _ = img.shape
+        h, w, c = img.shape
 
         # limit the max side
         if self.limit_type == 'max':
@@ -174,7 +206,7 @@ class DetResizeForTest(object):
                     ratio = float(limit_side_len) / w
             else:
                 ratio = 1.
-        else:
+        elif self.limit_type == 'min':
             if min(h, w) < limit_side_len:
                 if h < w:
                     ratio = float(limit_side_len) / h
@@ -182,6 +214,10 @@ class DetResizeForTest(object):
                     ratio = float(limit_side_len) / w
             else:
                 ratio = 1.
+        elif self.limit_type == 'resize_long':
+            ratio = float(limit_side_len) / max(h,w)
+        else:
+            raise Exception('not support limit type, image ')
         resize_h = int(h * ratio)
         resize_w = int(w * ratio)
 

@@ -177,11 +177,11 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 <a name="Data_Augmentation"></a>
 #### 2.1 Data Augmentation
 
-PaddleOCR provides a variety of data augmentation methods. If you want to add disturbance during training, please set `distort: true` in the configuration file.
+PaddleOCR provides a variety of data augmentation methods. All the augmentation methods are enabled by default.
 
-The default perturbation methods are: cvtColor, blur, jitter, Gasuss noise, random crop, perspective, color reverse.
+The default perturbation methods are: cvtColor, blur, jitter, Gasuss noise, random crop, perspective, color reverse, TIA augmentation.
 
-Each disturbance method is selected with a 50% probability during the training process. For specific code implementation, please refer to: [img_tools.py](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/data/rec/img_tools.py)
+Each disturbance method is selected with a 40% probability during the training process. For specific code implementation, please refer to: [rec_img_aug.py](../../ppocr/data/imaug/rec_img_aug.py)
 
 <a name="Training"></a>
 #### 2.2 Training
@@ -207,7 +207,7 @@ If the evaluation set is large, the test will be time-consuming. It is recommend
 | rec_mv3_tps_bilstm_att.yml |  CRNN |   Mobilenet_v3 |  TPS   |  BiLSTM |  att  |
 | rec_r34_vd_tps_bilstm_att.yml |  CRNN |   Resnet34_vd |  TPS   |  BiLSTM |  att  |
 | rec_r50fpn_vd_none_srn.yml    | SRN | Resnet50_fpn_vd    | None    | rnn | srn |
-
+| rec_mtb_nrtr.yml    | NRTR | nrtr_mtb    | None    | transformer encoder | transformer decoder |
 
 For training Chinese data, it is recommended to use
 [rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml). If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:
@@ -237,7 +237,7 @@ Optimizer:
 
 Train:
   dataset:
-    # Type of dataset，we support LMDBDateSet and SimpleDataSet
+    # Type of dataset，we support LMDBDataSet and SimpleDataSet
     name: SimpleDataSet
     # Path of dataset
     data_dir: ./train_data/
@@ -257,7 +257,7 @@ Train:
 
 Eval:
   dataset:
-    # Type of dataset，we support LMDBDateSet and SimpleDataSet
+    # Type of dataset，we support LMDBDataSet and SimpleDataSet
     name: SimpleDataSet
     # Path of dataset
     data_dir: ./train_data
@@ -329,6 +329,7 @@ There are two ways to create the required configuration file:：
     ...
 
     ```
+Italian is made up of Latin letters, so after executing the command, you will get the rec_latin_lite_train.yml.
 
 2. Manually modify the configuration file
 
@@ -375,7 +376,9 @@ Currently, the multi-language algorithms supported by PaddleOCR are:
 
 For more supported languages, please refer to : [Multi-language model](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_en/multi_languages_en.md#4-support-languages-and-abbreviations)
 
-The multi-language model training method is the same as the Chinese model. The training data set is 100w synthetic data. A small amount of fonts and test data can be downloaded on [Baidu Netdisk](https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA),Extraction code:frgi.
+The multi-language model training method is the same as the Chinese model. The training data set is 100w synthetic data. A small amount of fonts and test data can be downloaded using the following two methods.
+* [Baidu Netdisk](https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA),Extraction code:frgi.
+* [Google drive](https://drive.google.com/file/d/18cSWX7wXSy4G0tbKJ0d9PuIaiwRLHpjA/view)
 
 If you want to finetune on the basis of the existing model effect, please refer to the following instructions to modify the configuration file:
 
@@ -394,7 +397,7 @@ Global:
 
 Train:
   dataset:
-    # Type of dataset，we support LMDBDateSet and SimpleDataSet
+    # Type of dataset，we support LMDBDataSet and SimpleDataSet
     name: SimpleDataSet
     # Path of dataset
     data_dir: ./train_data/
@@ -404,7 +407,7 @@ Train:
 
 Eval:
   dataset:
-    # Type of dataset，we support LMDBDateSet and SimpleDataSet
+    # Type of dataset，we support LMDBDataSet and SimpleDataSet
     name: SimpleDataSet
     # Path of dataset
     data_dir: ./train_data

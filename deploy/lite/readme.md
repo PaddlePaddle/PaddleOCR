@@ -125,7 +125,7 @@ cd build.opt/lite/api/
 ```
 # 【推荐】 下载PaddleOCR V2.0版本的中英文 inference模型
 wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_det_slim_infer.tar
-wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_rec_slim_nfer.tar && tar xf  ch_ppocr_mobile_v2.0_rec_slim_infer.tar
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_rec_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_rec_slim_infer.tar
 wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_cls_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_cls_slim_infer.tar
 # 转换V2.0检测模型
 ./opt --model_file=./ch_ppocr_mobile_v2.0_det_slim_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_det_slim_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_det_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
@@ -238,7 +238,7 @@ use_direction_classify  0  # 是否使用方向分类器，0表示不使用，1�
  上述步骤完成后就可以使用adb将文件push到手机上运行，步骤如下：
 
  ```
- # 执行编译，得到可执行文件ocr_db_crnn
+ # 执行编译，得到可执行文件ocr_db_crnn, 第一次执行此命令会下载opencv等依赖库，下载完成后，需要再执行一次
  make -j
 
  # 将编译的可执行文件移动到debug文件夹中

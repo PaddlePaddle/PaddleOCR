@@ -43,7 +43,7 @@ class ClsHead(nn.Layer):
                 initializer=nn.initializer.Uniform(-stdv, stdv)),
             bias_attr=ParamAttr(name="fc_0.b_0"), )
 
-    def forward(self, x):
+    def forward(self, x, targets=None):
         x = self.pool(x)
         x = paddle.reshape(x, shape=[x.shape[0], x.shape[1]])
         x = self.fc(x)

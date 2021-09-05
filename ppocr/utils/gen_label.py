@@ -1,16 +1,16 @@
-#copyright (c) 2020 PaddlePaddle Authors. All Rights Reserve.
+# copyright (c) 2020 PaddlePaddle Authors. All Rights Reserve.
 #
-#Licensed under the Apache License, Version 2.0 (the "License");
-#you may not use this file except in compliance with the License.
-#You may obtain a copy of the License at
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
 #    http://www.apache.org/licenses/LICENSE-2.0
 #
-#Unless required by applicable law or agreed to in writing, software
-#distributed under the License is distributed on an "AS IS" BASIS,
-#WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#See the License for the specific language governing permissions and
-#limitations under the License.
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 import os
 import argparse
 import json
@@ -31,7 +31,9 @@ def gen_det_label(root_path, input_dir, out_label):
         for label_file in os.listdir(input_dir):
             img_path = root_path + label_file[3:-4] + ".jpg"
             label = []
-            with open(os.path.join(input_dir, label_file), 'r') as f:
+            with open(
+                    os.path.join(input_dir, label_file), 'r',
+                    encoding='utf-8-sig') as f:
                 for line in f.readlines():
                     tmp = line.strip("\n\r").replace("\xef\xbb\xbf",
                                                      "").split(',')

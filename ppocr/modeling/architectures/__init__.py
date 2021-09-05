@@ -13,12 +13,20 @@
 # limitations under the License.
 
 import copy
+import importlib
+
+from .base_model import BaseModel
+from .distillation_model import DistillationModel
 
 __all__ = ['build_model']
 
+
 def build_model(config):
-    from .base_model import BaseModel
-    
     config = copy.deepcopy(config)
-    module_class = BaseModel(config)
-    return module_class
+    if not "name" in config:
+        arch = BaseModel(config)
+    else:
+        name = config.pop("name")
+        mod = importlib.import_module(__name__)
+        arch = getattr(mod, name)(config)
+    return arch
