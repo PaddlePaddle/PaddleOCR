@@ -59,7 +59,7 @@ pip install "paddleocr>=2.0.1" # Recommend to use version 2.0.1+
 
 ### 2.1 Use by command line
 
-PaddleOCR provides a series of test images, click xx to download, and then switch to the corresponding directory in the terminal
+PaddleOCR provides a series of test images, click [here](https://paddleocr.bj.bcebos.com/dygraph_v2.1/ppocr_img.zip) to download, and then switch to the corresponding directory in the terminal
 
 ```bash
 cd /path/to/ppocr_img

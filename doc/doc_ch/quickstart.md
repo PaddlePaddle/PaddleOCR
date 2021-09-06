@@ -34,7 +34,7 @@ pip install "paddleocr>=2.0.1" # 推荐使用2.0.1+版本
 <a name="21"></a>
 ### 2.1 命令行使用
 
-PaddleOCR提供了一系列测试图片，点击xx下载，然后在终端中切换到相应目录
+PaddleOCR提供了一系列测试图片，点击[这里](https://paddleocr.bj.bcebos.com/dygraph_v2.1/ppocr_img.zip)下载并解压，然后在终端中切换到相应目录
 
 ```
 cd /path/to/ppocr_img

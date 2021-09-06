@@ -306,7 +306,7 @@ Linux用户可选择Anaconda或Docker两种方式运行。如果你熟悉Docker�
 
 **注意：第一次使用这个镜像，会自动下载该镜像，请耐心等待。**
 
-```
+```bash
 # 切换到工作目录下
 cd /home/Projects
 # 首次运行需创建一个docker容器，再次运行时不需要运行当前命令
