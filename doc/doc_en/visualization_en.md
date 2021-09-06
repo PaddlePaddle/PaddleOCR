@@ -1,5 +1,10 @@
 # Visualization
 
+<a name="PP-OCRv2"></a>
+## PP-OCRv2
+   <img src="../imgs_results/PP-OCRv2/PP-OCRv2-pic001.jpg" width="800">
+   <img src="../imgs_results/PP-OCRv2/PP-OCRv2-pic002.jpg" width="800">
+   <img src="../imgs_results/PP-OCRv2/PP-OCRv2-pic003.jpg" width="800">
 
 <a name="ppocr_server_2.0"></a>
 ## ch_ppocr_server_2.0
