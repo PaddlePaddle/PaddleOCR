@@ -168,7 +168,7 @@ PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi
     --dict {path/of/dict} \             # 字典文件路径
     -o Global.use_gpu=False             # 是否使用gpu
     ...
-
+    
     ```
 
 意大利文由拉丁字母组成，因此执行完命令后会得到名为 rec_latin_lite_train.yml 的配置文件。
@@ -184,21 +184,21 @@ PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi
       ...
       character_type: it  # 需要识别的语种
       character_dict_path:  {path/of/dict} # 字典文件所在路径
-
+   
    Train:
       dataset:
         name: SimpleDataSet
         data_dir: train_data/ # 数据存放根目录
         label_file_list: ["./train_data/train_list.txt"] # 训练集label路径
       ...
-
+   
    Eval:
       dataset:
         name: SimpleDataSet
         data_dir: train_data/ # 数据存放根目录
         label_file_list: ["./train_data/val_list.txt"] # 验证集label路径
       ...
-
+   
    ```
 
 目前PaddleOCR支持的多语言算法有：
@@ -217,7 +217,3 @@ PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi
 | rec_devanagari_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 梵文字母  | devanagari |
 
 更多支持语种请参考: [多语言模型](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/multi_languages.md#%E8%AF%AD%E7%A7%8D%E7%BC%A9%E5%86%99)
-
-多语言模型训练方式与中文模型一致，训练数据集均为100w的合成数据，少量的字体可以通过下面两种方式下载。
-* [百度网盘](https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA)。提取码：frgi。
-* [google drive](https://drive.google.com/file/d/18cSWX7wXSy4G0tbKJ0d9PuIaiwRLHpjA/view)
