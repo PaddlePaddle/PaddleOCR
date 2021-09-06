@@ -1,5 +1,8 @@
 # PaddleOCR快速开始
+
+
 - [PaddleOCR快速开始](#paddleocr)
+  
   + [1. 安装PaddleOCR whl包](#1)
   * [2. 便捷使用](#2)
     + [2.1 命令行使用](#21)
@@ -8,7 +11,7 @@
       - [2.1.3 版面分析](#213)
     + [2.2 Python脚本使用](#22)
       - [2.2.1 中英文与多语言使用](#221)
-      - [2.2.2 版面分析使用](#222)
+      - [2.2.2 版面分析](#222)
 
 <a name="1"></a>
 
@@ -87,7 +90,7 @@ cd /path/to/ppocr_img
   ```
 
 
-更多whl包使用包括， whl包参数说明
+更多whl包使用可参考[whl包文档](./whl.md)
 
 
 <a name="212"></a>
@@ -127,7 +130,10 @@ paddleocr --image_dir ./imgs_en/254.jpg --lang=en
 
 全部语种及其对应的缩写列表可查看[多语言模型教程](./multi_languages.md)
 <a name="213"></a>
+
 #### 2.1.3 版面分析
+
+版面分析是指对文档图片中的文字、标题、列表、图片和表格5类区域进行划分。对于前三类区域，直接使用OCR模型完成对应区域文字检测与识别，并将结果保存在txt中。对于表格类区域，经过表格结构化处理后，表格图片转换为相同表格样式的Excel文件。图片区域会被单独裁剪成图像。
 
 使用PaddleOCR的版面分析功能，需要指定`--type=structure`
 
@@ -175,7 +181,7 @@ paddleocr --image_dir=./table/1.png --type=structure
   | table_model_dir | 表格结构模型 inference 模型地址          | None                                         |
   | table_char_type | 表格结构模型所用字典地址                 | ../ppocr/utils/dict/table_structure_dict.txt |
 
-  大部分参数和paddleocr whl包保持一致，见 [whl包文档](../doc/doc_ch/whl.md)
+  大部分参数和paddleocr whl包保持一致，见 [whl包文档](./whl.md)
 
   
 
@@ -184,7 +190,7 @@ paddleocr --image_dir=./table/1.png --type=structure
 <a name="221"></a>
 #### 2.2.1 中英文与多语言使用
 
-通过脚本使用PaddleOCR whl包。whl包会自动下载ppocr轻量级模型作为默认模型，
+通过Python脚本使用PaddleOCR whl包，whl包会自动下载ppocr轻量级模型作为默认模型。
 
 * 检测+方向分类器+识别全流程
 
@@ -226,7 +232,7 @@ im_show.save('result.jpg')
     <img src="../imgs_results/whl/11_det_rec.jpg" width="800">
 </div>
 <a name="222"></a>
-#### 2.2.2 版面分析使用
+#### 2.2.2 版面分析
 
 ```python
 import os

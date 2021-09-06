@@ -1,5 +1,4 @@
-# CONTENT
-- [Paste Your Document In Here](#paste-your-document-in-here)
+# PP-OCR Model and Configuration
 - [INTRODUCTION ABOUT OCR](#introduction-about-ocr)
   * [BASIC CONCEPTS OF OCR DETECTION MODEL](#basic-concepts-of-ocr-detection-model)
   * [Basic concepts of OCR recognition model](#basic-concepts-of-ocr-recognition-model)
@@ -8,7 +7,7 @@
   * [On the right](#on-the-right)
 
 
-# INTRODUCTION ABOUT OCR
+## 1. INTRODUCTION ABOUT OCR
 
 This section briefly introduces the basic concepts of OCR detection model and recognition model, and introduces PaddleOCR's PP-OCR model.
 
@@ -17,7 +16,7 @@ OCR (Optical Character Recognition, Optical Character Recognition) is currently 
 OCR text recognition generally includes two parts, text detection and text recognition. The text detection module first uses detection algorithms to detect text lines in the image. And then the recognition algorithm to identify the specific text in the text line.
 
 
-## BASIC CONCEPTS OF OCR DETECTION MODEL
+### 1.1 BASIC CONCEPTS OF OCR DETECTION MODEL
 
 Text detection can locate the text area in the image, and then usually mark the word or text line in the form of a bounding box. Traditional text detection algorithms mostly extract features manually, which are characterized by fast speed and good effect in simple scenes, but the effect will be greatly reduced when faced with natural scenes. Currently, deep learning methods are mostly used.
 
@@ -27,14 +26,14 @@ Text detection algorithms based on deep learning can be roughly divided into the
 3. Hybrid target detection and segmentation method.
 
 
-## Basic concepts of OCR recognition model
+### 1.2 Basic concepts of OCR recognition model
 
 The input of the OCR recognition algorithm is generally text lines images which has less background information, and the text information occupies the main part. The recognition algorithm can be divided into two types of algorithms:
 1. CTC-based method. The text prediction module of the recognition algorithm is based on CTC, and the commonly used algorithm combination is CNN+RNN+CTC. There are also some algorithms that try to add transformer modules to the network and so on.
 2. Attention-based method. The text prediction module of the recognition algorithm is based on Attention, and the commonly used algorithm combination is CNN+RNN+Attention.
 
 
-## PP-OCR model
+### 1.3 PP-OCR model
 
 PaddleOCR integrates many OCR algorithms, text detection algorithms include DB, EAST, SAST, etc., text recognition algorithms include CRNN, RARE, StarNet, Rosetta, SRN and other algorithms.
 

@@ -8,10 +8,10 @@
   + [2.1 Use by command line](#21-use-by-command-line)
     - [2.1.1 English and Chinese Model](#211-english-and-chinese-model)
     - [2.1.2 Multi-language Model](#212-multi-language-model)
-    - [2.1.3 LayoutParser](#213-layoutparser)
+    - [2.1.3 Layout Analysis](#213-layoutAnalysis)
   + [2.2 Use by Code](#22-use-by-code)
     - [2.2.1 Chinese & English Model and Multilingual Model](#221-chinese---english-model-and-multilingual-model)
-    - [2.2.2 LayoutParser](#222-layoutparser)
+    - [2.2.2 Layout Analysis](#222-layoutAnalysis)
 
 
 
@@ -132,9 +132,11 @@ Commonly used multilingual abbreviations include
 | Chinese Traditional | chinese_cht  |      | Italian  | it           |      | Russian  | ru           |
 
 A list of all languages and their corresponding abbreviations can be found in [Multi-Language Model Tutorial](./multi_languages_en.md)
-<a name="213-layoutparser"></a>
+<a name="213-layoutAnalysis"></a>
 
-#### 2.1.3 LayoutParser
+#### 2.1.3 Layout Analysis
+
+Layout analysis refers to the division of 5 types of areas of the document, including text, title, list, picture and table. For the first three types of regions, directly use the OCR model to complete the text detection and recognition of the corresponding regions, and save the results in txt. For the table area, after the table structuring process, the table picture is converted into an Excel file of the same table style. The picture area will be individually cropped into an image.
 
 To use the layout analysis function of PaddleOCR, you need to specify `--type=structure`
 
@@ -219,9 +221,9 @@ Visualization of results
 <div align="center">
     <img src="../imgs_results/whl/12_det_rec.jpg" width="800">
 </div>
-<a name="222-layoutparser"></a>
+<a name="222-layoutAnalysis"></a>
 
-#### 2.2.2 LayoutParser
+#### 2.2.2 Layout Analysis
 
 ```python
 import os
@@ -248,4 +250,3 @@ im_show = draw_structure_result(image, result,font_path=font_path)
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
-
