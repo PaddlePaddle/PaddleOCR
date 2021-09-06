@@ -1,8 +1,9 @@
-## OCR模型列表（V2.0，2021年1月20日更新）
+## OCR模型列表（V2.1，2021年9月6日更新）
 
 > **说明**
-> 1. 2.0版模型和[1.1版模型](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/models_list.md) 的主要区别在于动态图训练vs.静态图训练，模型性能上无明显差距。
-> 2. 本文档提供的是PPOCR自研模型列表，更多基于公开数据集的算法介绍与预训练模型可以参考：[算法概览文档](./algorithm_overview.md)。
+> 1. 2.1版模型相比2.0版模型，2.1的模型在模型精度上做了提升
+> 2. 2.0版模型和[1.1版模型](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/models_list.md) 的主要区别在于动态图训练vs.静态图训练，模型性能上无明显差距。
+> 3. 本文档提供的是PPOCR自研模型列表，更多基于公开数据集的算法介绍与预训练模型可以参考：[算法概览文档](./algorithm_overview.md)。
 
 
 - [一、文本检测模型](#文本检测模型)
