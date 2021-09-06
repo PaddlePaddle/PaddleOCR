@@ -128,4 +128,77 @@
 
 ## 3. 多语言配置文件生成
 
-【参考识别模型训练补充内容】
+PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi_languages` 路径下提供了一个多语言的配置文件模版: [rec_multi_language_lite_train.yml](../../configs/rec/multi_language/rec_multi_language_lite_train.yml)。
+
+您有两种方式创建所需的配置文件：
+
+1. 通过脚本自动生成
+
+[generate_multi_language_configs.py](../../configs/rec/multi_language/generate_multi_language_configs.py) 可以帮助您生成多语言模型的配置文件
+
+- 以意大利语为例，如果您的数据是按如下格式准备的：
+    ```
+    |-train_data
+        |- it_train.txt # 训练集标签
+        |- it_val.txt # 验证集标签
+        |- data
+            |- word_001.jpg
+            |- word_002.jpg
+            |- word_003.jpg
+            | ...
+    ```
+
+    可以使用默认参数，生成配置文件：
+
+    ```bash
+    # 该代码需要在指定目录运行
+    cd PaddleOCR/configs/rec/multi_language/
+    # 通过-l或者--language参数设置需要生成的语种的配置文件，该命令会将默认参数写入配置文件
+    python3 generate_multi_language_configs.py -l it
+    ```
+
+- 如果您的数据放置在其他位置，或希望使用自己的字典，可以通过指定相关参数来生成配置文件:
+
+    ```bash
+    # -l或者--language字段是必须的
+    # --train修改训练集，--val修改验证集，--data_dir修改数据集目录，--dict修改字典路径， -o修改对应默认参数
+    cd PaddleOCR/configs/rec/multi_language/
+    python3 generate_multi_language_configs.py -l it \  # 语种
+    --train {path/of/train_label.txt} \ # 训练标签文件的路径
+    --val {path/of/val_label.txt} \     # 验证集标签文件的路径
+    --data_dir {train_data/path} \      # 训练数据的根目录
+    --dict {path/of/dict} \             # 字典文件路径
+    -o Global.use_gpu=False             # 是否使用gpu
+    ...
+
+    ```
+
+意大利文由拉丁字母组成，因此执行完命令后会得到名为 rec_latin_lite_train.yml 的配置文件。
+
+2. 手动修改配置文件
+
+   您也可以手动修改模版中的以下几个字段得到配置文件:
+
+   ```
+    Global:
+      use_gpu: True
+      epoch_num: 500
+      ...
+      character_type: it  # 需要识别的语种
+      character_dict_path:  {path/of/dict} # 字典文件所在路径
+
+   Train:
+      dataset:
+        name: SimpleDataSet
+        data_dir: train_data/ # 数据存放根目录
+        label_file_list: ["./train_data/train_list.txt"] # 训练集label路径
+      ...
+
+   Eval:
+      dataset:
+        name: SimpleDataSet
+        data_dir: train_data/ # 数据存放根目录
+        label_file_list: ["./train_data/val_list.txt"] # 验证集label路径
+      ...
+
+   ```
