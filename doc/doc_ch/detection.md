@@ -12,12 +12,12 @@
 - [2. FAQ](#2-faq)
 
 
-<a name="1"></a>
+<a name="1-----"></a>
 # 1. 文字检测
 
 本节以icdar2015数据集为例，介绍PaddleOCR中检测模型训练、评估、测试的使用方式。
 
-<a name="11"></a>
+<a name="11-----"></a>
 ## 1.1 数据准备
 icdar2015数据集可以从[官网](https://rrc.cvc.uab.es/?ch=4&com=downloads)下载到，首次下载需注册。
 
@@ -64,7 +64,7 @@ json.dumps编码前的图像标注信息是包含多个字典的list，字典中
 
 如果您想在其他数据集上训练，可以按照上述形式构建标注文件。
 
-<a name="12"></a>
+<a name="12--------"></a>
 ## 1.2 下载预训练模型
 
 首先下载模型backbone的pretrain model，PaddleOCR的检测模型目前支持两种backbone，分别是MobileNetV3、ResNet_vd系列，
@@ -82,7 +82,7 @@ wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dyg
 wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/ResNet50_vd_ssld_pretrained.pdparams
 ```
 
-<a name="13"></a>
+<a name="13-----"></a>
 ## 1.3 启动训练
 
 *如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false*
@@ -105,7 +105,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
 ```
 
-<a name="14"></a>
+<a name="14-----"></a>
 ## 1.4 断点训练
 
 如果训练程序中断，如果希望加载训练中断的模型从而恢复训练，可以通过指定Global.checkpoints指定要加载的模型路径：
@@ -115,7 +115,7 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./you
 
 **注意**：`Global.checkpoints`的优先级高于`Global.pretrain_weights`的优先级，即同时指定两个参数时，优先加载`Global.checkpoints`指定的模型，如果`Global.checkpoints`指定的模型路径有误，会加载`Global.pretrain_weights`指定的模型。
 
-<a name="15"></a>
+<a name="15---backbone---"></a>
 ## 1.5 更换Backbone 训练
 
 PaddleOCR将网络划分为四部分，分别在[ppocr/modeling](../../ppocr/modeling)下。 进入网络的数据将按照顺序(transforms->backbones->
@@ -163,7 +163,7 @@ args1: args1
 
 **注意**：如果要更换网络的其他模块，可以参考[文档](./add_new_algorithm.md)。
 
-<a name="16"></a>
+<a name="16-----"></a>
 ## 1.6 指标评估
 
 PaddleOCR计算三个OCR检测相关的指标，分别是：Precision、Recall、Hmean（F-Score）。
@@ -176,7 +176,7 @@ python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="{pat
 
 * 注：`box_thresh`、`unclip_ratio`是DB后处理所需要的参数，在评估EAST模型时不需要设置
 
-<a name="17"></a>
+<a name="17-------"></a>
 ## 1.7 测试检测效果
 
 测试单张图像的检测效果
@@ -194,7 +194,7 @@ python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./
 python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./doc/imgs_en/" Global.pretrained_model="./output/det_db/best_accuracy"
 ```
 
-<a name="#18--inference----"></a>
+<a name="18--inference----"></a>
 ## 1.8 转inference模型测试
 
 inference 模型（`paddle.jit.save`保存的模型）
