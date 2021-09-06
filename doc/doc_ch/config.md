@@ -126,7 +126,6 @@
 
 ## 3. 多语言配置文件生成
 
-
 PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi_languages` 路径下提供了一个多语言的配置文件模版: [rec_multi_language_lite_train.yml](../../configs/rec/multi_language/rec_multi_language_lite_train.yml)。
 
 您有两种方式创建所需的配置文件：
@@ -176,7 +175,7 @@ PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi
 
 2. 手动修改配置文件
 
-   您也可以手动修改模版中的以下几个字段:
+   您也可以手动修改模版中的以下几个字段得到配置文件:
 
    ```
     Global:

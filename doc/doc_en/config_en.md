@@ -122,7 +122,7 @@ In PaddleOCR, the network is divided into four stages: Transform, Backbone, Neck
 |      num_workers        |        The number of sub-processes used to load data, if it is 0, the sub-process is not started, and the data is loaded in the main process       |  8 | \  |
 
 
-## 3. Multi-language config yml file generation
+## 3. MULTILINGUAL CONFIG FILE GENERATION
 
 PaddleOCR currently supports 80 (except Chinese) language recognition. A multi-language configuration file template is
 provided under the path `configs/rec/multi_languages`: [rec_multi_language_lite_train.yml](../../configs/rec/multi_language/rec_multi_language_lite_train.yml)。
@@ -203,6 +203,7 @@ Italian is made up of Latin letters, so after executing the command, you will ge
       ...
 
    ```
+
 
 Currently, the multi-language algorithms supported by PaddleOCR are:
 
