@@ -1,4 +1,4 @@
-## TEXT RECOGNITION
+# TEXT RECOGNITION
 
 - [1 DATA PREPARATION](#DATA_PREPARATION)
     - [1.1 Costom Dataset](#Costom_Dataset)
@@ -17,7 +17,7 @@
     - [4.1 Training engine prediction](#Training_engine_prediction)
 
 <a name="DATA_PREPARATION"></a>
-### DATA PREPARATION
+## 1 DATA PREPARATION
 
 
 PaddleOCR supports two data formats:
@@ -36,7 +36,7 @@ mklink /d <path/to/paddle_ocr>/train_data/dataset <path/to/dataset>
 ```
 
 <a name="Costom_Dataset"></a>
-#### 1.1 Costom dataset
+### 1.1 Costom dataset
 
 If you want to use your own data for training, please refer to the following to organize your data.
 
@@ -84,7 +84,7 @@ Similar to the training set, the test set also needs to be provided a folder con
 ```
 
 <a name="Dataset_download"></a>
-#### 1.2 Dataset download
+### 1.2 Dataset download
 
 - ICDAR2015
 
@@ -121,7 +121,7 @@ The multi-language model training method is the same as the Chinese model. The t
 
 
 <a name="Dictionary"></a>
-#### 1.3 Dictionary
+### 1.3 Dictionary
 
 Finally, a dictionary ({word_dict_name}.txt) needs to be provided so that when the model is trained, all the characters that appear can be mapped to the dictionary index.
 
@@ -166,17 +166,17 @@ To customize the dict file, please modify the `character_dict_path` field in `co
 If you need to customize dic file, please add character_dict_path field in configs/rec/rec_icdar15_train.yml to point to your dictionary path. And set character_type to ch.
 
 <a name="Add_space_category"></a>
-#### 1.4 Add space category
+### 1.4 Add space category
 
 If you want to support the recognition of the `space` category, please set the `use_space_char` field in the yml file to `True`.
 
 **Note: use_space_char only takes effect when character_type=ch**
 
 <a name="TRAINING"></a>
-### 2 TRAINING
+## 2 TRAINING
 
 <a name="Data_Augmentation"></a>
-#### 2.1 Data Augmentation
+### 2.1 Data Augmentation
 
 PaddleOCR provides a variety of data augmentation methods. All the augmentation methods are enabled by default.
 
@@ -185,7 +185,7 @@ The default perturbation methods are: cvtColor, blur, jitter, Gasuss noise, rand
 Each disturbance method is selected with a 40% probability during the training process. For specific code implementation, please refer to: [rec_img_aug.py](../../ppocr/data/imaug/rec_img_aug.py)
 
 <a name="Training"></a>
-#### 2.2 General Training
+### 2.2 General Training
 
 PaddleOCR provides training scripts, evaluation scripts, and prediction scripts. In this section, the CRNN recognition model will be used as an example:
 
@@ -304,7 +304,7 @@ Eval:
 **Note that the configuration file for prediction/evaluation must be consistent with the training.**
 
 <a name="Multi_language"></a>
-#### 2.3 Multi-language Training
+### 2.3 Multi-language Training
 
 Currently, the multi-language algorithms supported by PaddleOCR are:
 
@@ -361,7 +361,7 @@ Eval:
 ```
 
 <a name="EVALUATION"></a>
-### 3 EVALUATION
+## 3 EVALUATION
 
 The evaluation dataset can be set by modifying the `Eval.dataset.label_file_list` field in the `configs/rec/rec_icdar15_train.yml` file.
 
@@ -371,7 +371,7 @@ python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec
 ```
 
 <a name="PREDICTION"></a>
-### 4 PREDICTION
+## 4 PREDICTION
 
 
 Using the model trained by paddleocr, you can quickly get prediction through the following script.

@@ -1,4 +1,4 @@
-## 文字识别
+# 文字识别
 
 本文提供了PaddleOCR文本识别任务的全流程指南，包括数据准备、模型训练、调优、评估、预测，各个阶段的详细说明：
 
@@ -19,7 +19,7 @@
 
 
 <a name="数据准备"></a>
-### 1. 数据准备
+## 1. 数据准备
 
 
 PaddleOCR 支持两种数据格式:
@@ -36,7 +36,7 @@ mklink /d <path/to/paddle_ocr>/train_data/dataset <path/to/dataset>
 ```
 
 <a name="准备数据集"></a>
-#### 1.1 自定义数据集
+### 1.1 自定义数据集
 下面以通用数据集为例， 介绍如何准备数据集：
 
 * 训练集
@@ -82,7 +82,7 @@ train_data/rec/train/word_002.jpg   用科技让复杂的世界更简单
 
 <a name="数据下载"></a>
 
-#### 1.2 数据下载
+### 1.2 数据下载
 
 - ICDAR2015
 
@@ -114,7 +114,7 @@ python gen_label.py --mode="rec" --input_path="{path/of/origin/label}" --output_
 
 
 <a name="字典"></a>
-#### 1.3 字典
+### 1.3 字典
 
 最后需要提供一个字典（{word_dict_name}.txt），使模型在训练时，可以将所有出现的字符映射为字典的索引。
 
@@ -161,16 +161,16 @@ PaddleOCR内置了一部分字典，可以按需使用。
 并将 `character_type` 设置为 `ch`。
 
 <a name="支持空格"></a>
-#### 1.4 添加空格类别
+### 1.4 添加空格类别
 
 如果希望支持识别"空格"类别, 请将yml文件中的 `use_space_char` 字段设置为 `True`。
 
 
 <a name="启动训练"></a>
-### 2. 启动训练
+## 2. 启动训练
 
 <a name="数据增强"></a>
-#### 2.1 数据增强
+### 2.1 数据增强
 
 PaddleOCR提供了多种数据增强方式，默认配置文件中已经添加了数据增广。
 
@@ -181,7 +181,7 @@ PaddleOCR提供了多种数据增强方式，默认配置文件中已经添加�
 *由于OpenCV的兼容性问题，扰动操作暂时只支持Linux*
 
 <a name="通用模型训练"></a>
-#### 2.2 通用模型训练
+### 2.2 通用模型训练
 
 PaddleOCR提供了训练脚本、评估脚本和预测脚本，本节将以 CRNN 识别模型为例：
 
@@ -300,7 +300,7 @@ Eval:
 **注意，预测/评估时的配置文件请务必与训练一致。**
 
 <a name="多语言模型训练"></a>
-#### 2.3 多语言模型训练
+### 2.3 多语言模型训练
 
 PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi_languages` 路径下提供了一个多语言的配置文件模版: [rec_multi_language_lite_train.yml](../../configs/rec/multi_language/rec_multi_language_lite_train.yml)。
 
@@ -356,7 +356,7 @@ Eval:
     ...
 ```
 <a name="评估"></a>
-### 3 评估
+## 3 评估
 
 评估数据集可以通过 `configs/rec/rec_icdar15_train.yml`  修改Eval中的 `label_file_path` 设置。
 
@@ -366,7 +366,7 @@ python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec
 ```
 
 <a name="预测"></a>
-### 4 预测
+## 4 预测
 
 使用 PaddleOCR 训练好的模型，可以通过以下脚本进行快速预测。
 
