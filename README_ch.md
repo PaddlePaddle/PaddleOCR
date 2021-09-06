@@ -1,22 +1,42 @@
 [English](README.md) | 简体中文
 
+<p align="center">
+ <img src="./doc/PaddleOCR_log.png" align="middle" width = "600"/>
+<p align="center">
+
+
+------------------------------------------------------------------------------------------
+
+<p align="left">
+    <a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-dfd.svg"></a>
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/releases"><img src="https://img.shields.io/github/v/release/PaddlePaddle/PaddleOCR?color=ffa"></a>
+    <a href=""><img src="https://img.shields.io/badge/python-3.7+-aff.svg"></a>
+    <a href=""><img src="https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg"></a>
+    <a href=""><img src="https://img.shields.io/pypi/format/PaddleOCR?color=c77"></a>
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/graphs/contributors"><img src="https://img.shields.io/github/contributors/PaddlePaddle/PaddleOCR?color=9ea"></a>
+    <a href="https://pypi.org/project/PaddleOCR/"><img src="https://img.shields.io/pypi/dm/PaddleOCR?color=9cf"></a>
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/stargazers"><img src="https://img.shields.io/github/stars/PaddlePaddle/PaddleOCR?color=ccf"></a>
+</p>
+
 ## 简介
+
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力使用者训练出更好的模型，并应用落地。
 ## 注意
 PaddleOCR同时支持动态图与静态图两种编程范式
-- 动态图版本：dygraph分支（默认），需将paddle版本升级至2.0.0（[快速安装](./doc/doc_ch/installation.md)）
+
+- 动态图版本：release/2.2（默认分支，开发分支为dygraph分支），需将paddle版本升级至2.0.0或以上版本（[快速安装](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/doc/doc_ch/installation.md)）
+
 - 静态图版本：develop分支
 
 **近期更新**
-- 2021.4.8 release 2.1版本，新增AAAI 2021论文[端到端识别算法PGNet](./doc/doc_ch/pgnet.md)开源，[多语言模型](./doc/doc_ch/multi_languages.md)支持种类增加到80+。
-- 2021.2.1 [FAQ](./doc/doc_ch/FAQ.md)新增5个高频问题，总数162个，每周一都会更新，欢迎大家持续关注。
-- 2021.1.21 更新多语言识别模型，目前支持语种超过27种，包括中文简体、中文繁体、英文、法文、德文、韩文、日文、意大利文、西班牙文、葡萄牙文、俄罗斯文、阿拉伯文等，后续计划可以参考[多语言研发计划](https://github.com/PaddlePaddle/PaddleOCR/issues/1048)
-- 2020.12.15 更新数据合成工具[Style-Text](./StyleText/README_ch.md)，可以批量合成大量与目标场景类似的图像，在多个场景验证，效果明显提升。
-- 2020.11.25 更新半自动标注工具[PPOCRLabel](./PPOCRLabel/README_ch.md)，辅助开发者高效完成标注任务，输出格式与PP-OCR训练任务完美衔接。
-- 2020.9.22 更新PP-OCR技术文章，https://arxiv.org/abs/2009.09941
-- [More](./doc/doc_ch/update.md)
 
-
+- PaddleOCR研发团队对最新发版内容技术深入解读，8月4日晚上20:15，[直播地址](https://live.bilibili.com/21689802)。
+- 2021.8.3 正式发布PaddleOCR v2.2，新增文档结构分析[PP-Structure](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/ppstructure/README_ch.md)工具包，支持版面分析与表格识别（含Excel导出）。
+- 2021.6.29 [FAQ](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/doc/doc_ch/FAQ.md)新增5个高频问题，总数248个，每周一都会更新，欢迎大家持续关注。
+- 2021.4.8 release 2.1版本，新增AAAI 2021论文[端到端识别算法PGNet](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/doc/doc_ch/pgnet.md)开源，[多语言模型](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/doc/doc_ch/multi_languages.md)支持种类增加到80+。
+- 2021.2.8 正式发布PaddleOCRv2.0(branch release/2.0)并设置为推荐用户使用的默认分支. 发布的详细内容，请参考: https://github.com/PaddlePaddle/PaddleOCR/releases/tag/v2.0.0
+- 2021.1.26,28,29 PaddleOCR官方研发团队带来技术深入解读三日直播课，1月26日、28日、29日晚上19:30，[直播地址](https://live.bilibili.com/21689802)
+- [More](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/doc/doc_ch/update.md)
 
 ## 特性
 
@@ -72,36 +92,39 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 更多模型下载（包括多语言），可以参考[PP-OCR v2.0 系列模型下载](./doc/doc_ch/models_list.md)
 
 ## 文档教程
-- [快速安装](./doc/doc_ch/installation.md)
-- [中文OCR模型快速使用](./doc/doc_ch/quickstart.md)
-- [多语言OCR模型快速使用](./doc/doc_ch/multi_languages.md)
-- [代码组织结构](./doc/doc_ch/tree.md)
-- 算法介绍
-    - [文本检测](./doc/doc_ch/algorithm_overview.md)
-    - [文本识别](./doc/doc_ch/algorithm_overview.md)
-    - [PP-OCR Pipeline](#PP-OCR)
-    - [端到端PGNet算法](./doc/doc_ch/pgnet.md)
-- 模型训练/评估
-    - [文本检测](./doc/doc_ch/detection.md)
-    - [文本识别](./doc/doc_ch/recognition.md)
-    - [方向分类器](./doc/doc_ch/angle_class.md)
-    - [yml参数配置文件介绍](./doc/doc_ch/config.md)
-- 预测部署
-    - [基于pip安装whl包快速推理](./doc/doc_ch/whl.md)
-    - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
-    - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
-    - [服务化部署](./deploy/pdserving/README_CN.md)
-    - [端侧部署](./deploy/lite/readme.md)
-    - [Benchmark](./doc/doc_ch/benchmark.md)
-- 数据集
-    - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
-    - [手写中文OCR数据集](./doc/doc_ch/handwritten_datasets.md)
-    - [垂类多语言OCR数据集](./doc/doc_ch/vertical_and_multilingual_datasets.md)
+- [快速开始](./doc/doc_ch/quickstart.md)
+- [PaddleOCR全景图与安装](./doc/doc_ch/paddleOCR_overview.md)
+- PP-OCR产业落地：从训练到部署
+    - [PP-OCR模型与配置文件](./doc/doc_ch/models_and_config.md)
+        - [PP-OCR模型下载](./doc/doc_ch/models_list.md)
+        - [配置文件内容与生成](./doc/doc_ch/config.md)
+        - [模型库快速使用](./doc/doc_ch/inference.md)
+    - [PP-OCR模型训练](./doc/doc_ch/training.md)
+        - [文本检测](./doc/doc_ch/detection.md)
+        - [文本识别](./doc/doc_ch/recognition.md)
+        - [方向分类器](./doc/doc_ch/angle_class.md)
+    - PP-OCR模型推理部署
+        - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
+        - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
+        - [服务化部署](./deploy/pdserving/README_CN.md)
+        - [端侧部署](./deploy/lite/readme.md)
+        - [Benchmark](./doc/doc_ch/benchmark.md)
+- [PP-Structure信息提取](./ppstructure/README_ch.md)
+    - [版面分析](./ppstructure/layout/README_ch.md)
+    - [表格识别](./ppstructure/table/README_ch.md)
 - 数据标注与合成
     - [半自动标注工具PPOCRLabel](./PPOCRLabel/README_ch.md)
     - [数据合成工具Style-Text](./StyleText/README_ch.md)
     - [其它数据标注工具](./doc/doc_ch/data_annotation.md)
     - [其它数据合成工具](./doc/doc_ch/data_synthesis.md)
+- OCR学术圈
+    - [两阶段模型介绍与下载](./doc/doc_ch/algorithm_overview.md)
+    - [端到端PGNet算法](./doc/doc_ch/pgnet.md)
+    - 模型训练
+- 数据集
+    - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
+    - [手写中文OCR数据集](./doc/doc_ch/handwritten_datasets.md)
+    - [垂类多语言OCR数据集](./doc/doc_ch/vertical_and_multilingual_datasets.md)
 - [效果展示](#效果展示)
 - FAQ
     - [【精选】OCR精选10个问题](./doc/doc_ch/FAQ.md)
@@ -111,6 +134,7 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 - [参考文献](./doc/doc_ch/reference.md)
 - [许可证书](#许可证书)
 - [贡献代码](#贡献代码)
+- [代码组织结构](./doc/doc_ch/tree.md)
 
 
 <a name="PP-OCR"></a>

@@ -1,6 +1,25 @@
 English | [简体中文](README_ch.md)
 
+<p align="center">
+ <img src="./doc/PaddleOCR_log.png" align="middle" width = "600"/>
+<p align="center">
+
+
+------------------------------------------------------------------------------------------
+
+<p align="left">
+    <a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-dfd.svg"></a>
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/releases"><img src="https://img.shields.io/github/v/release/PaddlePaddle/PaddleOCR?color=ffa"></a>
+    <a href=""><img src="https://img.shields.io/badge/python-3.7+-aff.svg"></a>
+    <a href=""><img src="https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg"></a>
+    <a href=""><img src="https://img.shields.io/pypi/format/PaddleOCR?color=c77"></a>
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/graphs/contributors"><img src="https://img.shields.io/github/contributors/PaddlePaddle/PaddleOCR?color=9ea"></a>
+    <a href="https://pypi.org/project/PaddleOCR/"><img src="https://img.shields.io/pypi/dm/PaddleOCR?color=9cf"></a>
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/stargazers"><img src="https://img.shields.io/github/stars/PaddlePaddle/PaddleOCR?color=ccf"></a>
+</p>
+
 ## Introduction
+
 PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools that help users train better models and apply them into practice.
 
 ## Notice
@@ -9,6 +28,11 @@ PaddleOCR supports both dynamic graph and static graph programming paradigm
 - Static graph: develop branch
 
 **Recent updates**
+
+- PaddleOCR R&D team would like to share the released tools with developers, at 20:15 pm on August 4th, [Live Address](https://live.bilibili.com/21689802).
+- 2021.8.3 released PaddleOCR v2.2, add a new structured documents analysis toolkit, i.e., [PP-Structure](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/ppstructure/README.md), support layout analysis and table recognition (One-key to export chart images to Excel files).
+- 2021.4.8 release end-to-end text recognition algorithm [PGNet](https://www.aaai.org/AAAI21Papers/AAAI-2885.WangP.pdf) which is published in AAAI 2021. Find tutorial [here](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_en/pgnet_en.md)；release multi language recognition [models](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_en/multi_languages_en.md), support more than 80 languages recognition; especically, the performance of [English recognition model](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_en/models_list_en.md#English) is Optimized.
+
 - 2021.1.21 update more than 25+ multilingual recognition models [models list](./doc/doc_en/models_list_en.md), including：English, Chinese, German, French, Japanese，Spanish，Portuguese Russia Arabic and so on.  Models for more languages will continue to be updated [Develop Plan](https://github.com/PaddlePaddle/PaddleOCR/issues/1048).
 - 2020.12.15 update Data synthesis tool, i.e., [Style-Text](./StyleText/README.md)，easy to synthesize a large number of images which are similar to the target scene image.
 - 2020.11.25 Update a new data annotation tool, i.e., [PPOCRLabel](./PPOCRLabel/README.md), which is helpful to improve the labeling efficiency. Moreover, the labeling results can be used in training of the PP-OCR system directly.
@@ -78,25 +102,29 @@ For more model downloads (including multiple languages), please refer to [PP-OCR
 For a new language request, please refer to [Guideline for new language_requests](#language_requests).
 
 ## Tutorials
-- [Installation](./doc/doc_en/installation_en.md)
 - [Quick Start](./doc/doc_en/quickstart_en.md)
-- [Code Structure](./doc/doc_en/tree_en.md)
-- Algorithm Introduction
-    - [Text Detection Algorithm](./doc/doc_en/algorithm_overview_en.md)
-    - [Text Recognition Algorithm](./doc/doc_en/algorithm_overview_en.md)
-    - [PP-OCR Pipeline](#PP-OCR-Pipeline)
-- Model Training/Evaluation
-    - [Text Detection](./doc/doc_en/detection_en.md)
-    - [Text Recognition](./doc/doc_en/recognition_en.md)
-    - [Direction Classification](./doc/doc_en/angle_class_en.md)
-    - [Yml Configuration](./doc/doc_en/config_en.md)
-- Inference and Deployment
-    - [Quick Inference Based on PIP](./doc/doc_en/whl_en.md)
-    - [Python Inference](./doc/doc_en/inference_en.md)
-    - [C++ Inference](./deploy/cpp_infer/readme_en.md)
-    - [Serving](./deploy/pdserving/README.md)
-    - [Mobile](./deploy/lite/readme_en.md)
-    - [Benchmark](./doc/doc_en/benchmark_en.md)  
+- [PaddleOCR Overview and Installation](./doc/doc_en/paddleOCR_overview_en.md)
+- PP-OCR Industry Landing: from Training to Deployment
+    - [PP-OCR Model and Configuration](./doc/doc_en/models_and_config_en.md)
+        - [PP-OCR Model Download](./doc/doc_en/models_list_en.md)
+        - [Yml Configuration](./doc/doc_en/config_en.md)
+        - [Python Inference](./doc/doc_en/inference_en.md)
+    - [PP-OCR Training](./doc/doc_en/training_en.md)
+        - [Text Detection](./doc/doc_en/detection_en.md)
+        - [Text Recognition](./doc/doc_en/recognition_en.md)
+        - [Direction Classification](./doc/doc_en/angle_class_en.md)
+    - Inference and Deployment
+        - [Python Inference](./doc/doc_en/inference_en.md)
+        - [C++ Inference](./deploy/cpp_infer/readme_en.md)
+        - [Serving](./deploy/pdserving/README.md)
+        - [Mobile](./deploy/lite/readme_en.md)
+        - [Benchmark](./doc/doc_en/benchmark_en.md)  
+- [PP-Structure: Information Extraction](./ppstructure/README.md)
+    - [Layout Parser](./ppstructure/layout/README.md)
+    - [Table Recognition](./ppstructure/table/README.md)
+- Academic Circles
+    - [Two-stage Algorithm](./doc/doc_en/algorithm_overview_en.md)
+    - [PGNet Algorithm](./doc/doc_en/algorithm_overview_en.md)
 - Data Annotation and Synthesis
     - [Semi-automatic Annotation Tool: PPOCRLabel](./PPOCRLabel/README.md)
     - [Data Synthesis Tool: Style-Text](./StyleText/README.md)
