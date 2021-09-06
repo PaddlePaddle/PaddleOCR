@@ -1,4 +1,17 @@
+# CONTENT
+- [Paste Your Document In Here](#paste-your-document-in-here)
+- [INTRODUCTION ABOUT OCR](#introduction-about-ocr)
+  * [BASIC CONCEPTS OF OCR DETECTION MODEL](#basic-concepts-of-ocr-detection-model)
+  * [Basic concepts of OCR recognition model](#basic-concepts-of-ocr-recognition-model)
+  * [PP-OCR model](#pp-ocr-model)
+  * [And a table of contents](#and-a-table-of-contents)
+  * [On the right](#on-the-right)
+
+
 # INTRODUCTION ABOUT OCR
+
+This section briefly introduces the basic concepts of OCR detection model and recognition model, and introduces PaddleOCR's PP-OCR model.
+
 OCR (Optical Character Recognition, Optical Character Recognition) is currently the general term for text recognition. It is not limited to document or book text recognition, but also includes recognizing text in natural scenes. It can also be called STR (Scene Text Recognition).
 
 OCR text recognition generally includes two parts, text detection and text recognition. The text detection module first uses detection algorithms to detect text lines in the image. And then the recognition algorithm to identify the specific text in the text line.
@@ -21,8 +34,8 @@ The input of the OCR recognition algorithm is generally text lines images which 
 2. Attention-based method. The text prediction module of the recognition algorithm is based on Attention, and the commonly used algorithm combination is CNN+RNN+Attention.
 
 
-## PPOCR model
+## PP-OCR model
 
 PaddleOCR integrates many OCR algorithms, text detection algorithms include DB, EAST, SAST, etc., text recognition algorithms include CRNN, RARE, StarNet, Rosetta, SRN and other algorithms.
 
-Among them, PaddleOCR has released the PPOCR series model for the general OCR in Chinese and English natural scenes. The PPOCR model is composed of the DB+CRNN algorithm. It uses massive Chinese data training and model tuning methods to have high text detection and recognition capabilities in Chinese scenes. And PaddleOCR has launched a high-precision and ultra-lightweight PPOCR-v2 model. The detection model is only 3M, and the recognition model is only 8.5M. Using [PaddleSlim](https://github.com/PaddlePaddle/PaddleSlim)'s model quantification method, the detection model can be compressed to 0.8M without reducing the accuracy. The recognition is compressed to 3M, which is more suitable for mobile deployment scenarios.
+Among them, PaddleOCR has released the PP-OCR series model for the general OCR in Chinese and English natural scenes. The PP-OCR model is composed of the DB+CRNN algorithm. It uses massive Chinese data training and model tuning methods to have high text detection and recognition capabilities in Chinese scenes. And PaddleOCR has launched a high-precision and ultra-lightweight PP-OCRv2 model. The detection model is only 3M, and the recognition model is only 8.5M. Using [PaddleSlim](https://github.com/PaddlePaddle/PaddleSlim)'s model quantification method, the detection model can be compressed to 0.8M without reducing the accuracy. The recognition is compressed to 3M, which is more suitable for mobile deployment scenarios.
