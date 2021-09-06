@@ -1,7 +1,5 @@
 # Environment Preparation
 
-[Environment Preparation](#Environment Preparation)
-
 * [1. Python Environment Setup](#1)
   + [1.1 Windows](#1.1)
   + [1.2 Mac](#1.2)
