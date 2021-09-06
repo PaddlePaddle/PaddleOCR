@@ -102,6 +102,7 @@ For more model downloads (including multiple languages), please refer to [PP-OCR
 For a new language request, please refer to [Guideline for new language_requests](#language_requests).
 
 ## Tutorials
+- [Environment Preparation](./doc/doc_en/environment_en.md)
 - [Quick Start](./doc/doc_en/quickstart_en.md)
 - [PaddleOCR Overview and Installation](./doc/doc_en/paddleOCR_overview_en.md)
 - PP-OCR Industry Landing: from Training to Deployment

@@ -92,6 +92,7 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 更多模型下载（包括多语言），可以参考[PP-OCR v2.0 系列模型下载](./doc/doc_ch/models_list.md)
 
 ## 文档教程
+- [运行环境准备](./doc/doc_ch/environment.md)
 - [快速开始](./doc/doc_ch/quickstart.md)
 - [PaddleOCR全景图与安装](./doc/doc_ch/paddleOCR_overview.md)
 - PP-OCR产业落地：从训练到部署
@@ -120,7 +121,6 @@ PaddleOCR同时支持动态图与静态图两种编程范式
 - OCR学术圈
     - [两阶段模型介绍与下载](./doc/doc_ch/algorithm_overview.md)
     - [端到端PGNet算法](./doc/doc_ch/pgnet.md)
-    - 模型训练
 - 数据集
     - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
     - [手写中文OCR数据集](./doc/doc_ch/handwritten_datasets.md)

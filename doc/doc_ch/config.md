@@ -1,7 +1,5 @@
 # 配置文件内容与生成
 
-[toc]
-
 ## 1. 可选参数列表
 
 以下列表可以通过`--help`查看
@@ -56,7 +54,7 @@
 
 
 ### Architecture ([ppocr/modeling](../../ppocr/modeling))
-在ppocr中，网络被划分为Transform,Backbone,Neck和Head四个阶段
+在PaddleOCR中，网络被划分为Transform,Backbone,Neck和Head四个阶段
 
 |         字段             |            用途            |      默认值        |            备注             |
 | :---------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
@@ -202,3 +200,24 @@ PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi
       ...
 
    ```
+
+目前PaddleOCR支持的多语言算法有：
+
+| 配置文件 |  算法名称 |   backbone |   trans   |   seq      |     pred     |  language | character_type |
+| :--------: |  :-------:   | :-------:  |   :-------:   |   :-----:   |  :-----:   | :-----:  | :-----:  |
+| rec_chinese_cht_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 中文繁体  | chinese_cht|
+| rec_en_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 英语（区分大小写）   | EN |
+| rec_french_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 法语 |  french |
+| rec_ger_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 德语   | german |
+| rec_japan_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 日语  | japan |
+| rec_korean_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 韩语  | korean |
+| rec_latin_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 拉丁字母  | latin |
+| rec_arabic_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 阿拉伯字母 |  ar |
+| rec_cyrillic_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 斯拉夫字母  | cyrillic |
+| rec_devanagari_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 梵文字母  | devanagari |
+
+更多支持语种请参考: [多语言模型](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/multi_languages.md#%E8%AF%AD%E7%A7%8D%E7%BC%A9%E5%86%99)
+
+多语言模型训练方式与中文模型一致，训练数据集均为100w的合成数据，少量的字体可以通过下面两种方式下载。
+* [百度网盘](https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA)。提取码：frgi。
+* [google drive](https://drive.google.com/file/d/18cSWX7wXSy4G0tbKJ0d9PuIaiwRLHpjA/view)
