@@ -3,9 +3,7 @@
 
 [PaddleOCR Quick Start](#paddleocr-quick-start)
 
-* [1. Light Installation](#1-light-installation)
-  + [1.1 Install PaddlePaddle2.0](#11-install-paddlepaddle20)
-  + [1.2 Install PaddleOCR Whl Package](#12-install-paddleocr-whl-package)
++ [1. Install PaddleOCR Whl Package](#1-install-paddleocr-whl-package)
 * [2. Easy-to-Use](#2-easy-to-use)
   + [2.1 Use by command line](#21-use-by-command-line)
     - [2.1.1 English and Chinese Model](#211-english-and-chinese-model)
@@ -15,27 +13,11 @@
     - [2.2.1 Chinese & English Model and Multilingual Model](#221-chinese---english-model-and-multilingual-model)
     - [2.2.2 LayoutParser](#222-layoutparser)
 
-<a name="1-light-installation"></a>
 
-## 1. Light Installation
 
-<a name="11-install-paddlepaddle20"></a>
+<a name="1-install-paddleocr-whl-package"></a>
 
-### 1.1 Install PaddlePaddle2.0
-
-```bash
-# If you have cuda9 or cuda10 installed on your machine, please run the following command to install
-python3 -m pip install paddlepaddle-gpu==2.0.0 -i https://mirror.baidu.com/pypi/simple
-
-# If you only have cpu on your machine, please run the following command to install
-python3 -m pip install paddlepaddle==2.0.0 -i https://mirror.baidu.com/pypi/simple
-```
-
-For more software version requirements, please refer to the instructions in [Installation Document](https://www.paddlepaddle.org.cn/install/quick) for operation.
-
-<a name="12-install-paddleocr-whl-package"></a>
-
-### 1.2 Install PaddleOCR Whl Package
+## 1. Install PaddleOCR Whl Package
 
 ```bash
 pip install "paddleocr>=2.0.1" # Recommend to use version 2.0.1+
