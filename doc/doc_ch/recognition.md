@@ -375,7 +375,7 @@ python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec
 根据配置文件中设置的的 `save_model_dir` 和 `save_epoch_step` 字段，会有以下几种参数被保存下来：
 
 ```
-seed_ch/  
+output/rec/
 ├── best_accuracy.pdopt  
 ├── best_accuracy.pdparams  
 ├── best_accuracy.states  
