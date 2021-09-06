@@ -29,7 +29,7 @@
 
   - Most Win10 computers are 64-bit operating systems, choose x86_64 version; if the computer is a 32-bit operating system, choose x86.exe
 
-    <img src="../install/windows/Anaconda_download.png" alt="anaconda download" width="800" align="left "/>
+    <img src="../install/windows/Anaconda_download.png" alt="anaconda download" width="800" align="center "/>
 
   - After the download is complete, double-click the installer to enter the graphical interface
 
@@ -39,13 +39,14 @@
 
   - Check conda to add environment variables and ignore the warning that
 
-    <img src="../install/windows/anaconda_install_env.png" alt="add conda to path" width="500" align="left"/>
+    <img src="../install/windows/anaconda_install_env.png" alt="add conda to path" width="500" align="center"/>
+    
 
 #### 1.1.2 Opening the terminal and creating the conda environment
 
 - Open Anaconda Prompt terminal: bottom left Windows Start Menu -> Anaconda3 -> Anaconda Prompt start console
 
-  <img src="../install/windows/anaconda_prompt.png" alt="anaconda download" width="300" align="left"/>
+  <img src="../install/windows/anaconda_prompt.png" alt="anaconda download" width="300" align="center"/>
 
 
 - Create a new conda environment
@@ -60,7 +61,7 @@
 
   The command line will then output a prompt, type y and enter to continue the installation
 
-  <img src="../install/windows/conda_new_env.png" alt="conda create" width="700" align="left"/>
+  <img src="../install/windows/conda_new_env.png" alt="conda create" width="700" align="center"/>
 
 - To activate the conda environment you just created, enter the following command at the command line.
 
@@ -71,7 +72,7 @@
   where python
   ```
   
-  <img src="../install/windows/conda_list_env.png" alt="create environment" width="600" align="left"/>
+  <img src="../install/windows/conda_list_env.png" alt="create environment" width="600" align="center"/>
 
 The above anaconda environment and python environment are installed
 
@@ -92,7 +93,7 @@ The above anaconda environment and python environment are installed
 
   - Address: https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/?C=M&O=D
 
-  <img src="../install/mac/anaconda_start.png" alt="anaconda download" width="800" align="left"/>
+  <img src="../install/mac/anaconda_start.png" alt="anaconda download" width="800" align="center"/>
 
   - Select `Anaconda3-2021.05-MacOSX-x86_64.pkg` at the bottom to download
 
@@ -165,7 +166,7 @@ The above anaconda environment and python environment are installed
 
   - The command line will then output a prompt, type y and enter to continue the installation
 
-    - <img src="../install/mac/conda_create.png" alt="conda_create" width="600" align="left"/>
+    - <img src="../install/mac/conda_create.png" alt="conda_create" width="600" align="center"/>
 
 - To activate the conda environment you just created, enter the following command at the command line.
 
@@ -176,7 +177,7 @@ The above anaconda environment and python environment are installed
   where python
   ```
 
-  <img src="../install/mac/conda_activate.png" alt="conda_actviate" width="600" align="left"/>
+  <img src="../install/mac/conda_activate.png" alt="conda_actviate" width="600" align="center"/>
 
 The above anaconda environment and python environment are installed
 
@@ -200,7 +201,7 @@ Linux users can choose to run either Anaconda or Docker. If you are familiar wit
   - Download at: https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/?C=M&O=D
     
 
-  <img src="../install/linux/anaconda_download.png" akt="anaconda download" width="800" align="left"/>
+  <img src="../install/linux/anaconda_download.png" akt="anaconda download" width="800" align="center"/>
 
   
 
@@ -287,7 +288,7 @@ Linux users can choose to run either Anaconda or Docker. If you are familiar wit
 
   - The command line will then output a prompt, type y and enter to continue the installation
 
-    <img src="../install/linux/conda_create.png" alt="conda_create" width="500" align="left"/>
+    <img src="../install/linux/conda_create.png" alt="conda_create" width="500" align="center"/>
 
 - To activate the conda environment you just created, enter the following command at the command line.
 
@@ -297,6 +298,7 @@ Linux users can choose to run either Anaconda or Docker. If you are familiar wit
   ```
 
 The above anaconda environment and python environment are installed
+
 
 #### 1.3.2 Docker environment preparation
 
@@ -308,7 +310,7 @@ cd /home/Projects
 # You need to create a docker container for the first run, and do not need to run the current command when you run it again
 # Create a docker container named ppocr and map the current directory to the /paddle directory of the container
 
-#If using CPU, use docker instead of nvidia-docker to create docker
+# If using CPU, use docker instead of nvidia-docker to create docker
 sudo docker run --name ppocr -v $PWD:/paddle --network=host -it  paddlepaddle/paddle:latest-dev-cuda10.1-cudnn7-gcc82  /bin/bash
 ```
 

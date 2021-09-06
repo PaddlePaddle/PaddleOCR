@@ -25,20 +25,20 @@
   - 地址：https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/?C=M&O=D
   - 大部分win10电脑均为64位操作系统，选择x86_64版本；若电脑为32位操作系统，则选择x86.exe
 
-    <img src="../install/windows/Anaconda_download.png" alt="anaconda download" width="800" align="left"/>
+    <img src="../install/windows/Anaconda_download.png" alt="anaconda download" width="800" align="center"/>
   - 下载完成后，双击安装程序进入图形界面
   - 默认安装位置为C盘，建议将安装位置更改到D盘：
 
-    <img src="../install/windows/anaconda_install_folder.png" alt="install config" width="500" align="left"/>
+    <img src="../install/windows/anaconda_install_folder.png" alt="install config" width="500" align="center"/>
   - 勾选conda加入环境变量，忽略警告：
 
-    <img src="../install/windows/anaconda_install_env.png" alt="add conda to path" width="500" align="left"/>
+    <img src="../install/windows/anaconda_install_env.png" alt="add conda to path" width="500" align="center"/>
 
 #### 1.1.2 打开终端并创建conda环境
 
 - 打开Anaconda Prompt终端：左下角Windows Start Menu -> Anaconda3 -> Anaconda Prompt启动控制台
 
-  <img src="../install/windows/anaconda_prompt.png" alt="anaconda download" width="300" align="left"/>
+  <img src="../install/windows/anaconda_prompt.png" alt="anaconda download" width="300" align="center"/>
 
 
 - 创建新的conda环境
@@ -53,7 +53,7 @@
 
   之后命令行中会输出提示信息，输入y并回车继续安装
 
-  <img src="../install/windows/conda_new_env.png" alt="conda create" width="700" align="left"/>
+  <img src="../install/windows/conda_new_env.png" alt="conda create" width="700" align="center"/>
 
 - 激活刚创建的conda环境，在命令行中输入以下命令：
 
@@ -64,10 +64,7 @@
   where python
   ```
 
-    <img src="../install/windows/conda_list_env.png" alt="create environment" width="600" align="left"/>
-  
-    
-  
+    <img src="../install/windows/conda_list_env.png" alt="create environment" width="600" align="center"/>
   
   
   
@@ -86,7 +83,7 @@
 - Anaconda下载：
   - 地址：https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/?C=M&O=D
   
-  <img src="../install/mac/anaconda_start.png" alt="anaconda download" width="800" align="left"/>
+  <img src="../install/mac/anaconda_start.png" alt="anaconda download" width="800" align="center"/>
   
   - 选择最下方的`Anaconda3-2021.05-MacOSX-x86_64.pkg`下载
 - 下载完成后，双击.pkg文件进入图形界面
@@ -156,7 +153,7 @@
 
   - 之后命令行中会输出提示信息，输入y并回车继续安装
 
-    - <img src="../install/mac/conda_create.png" alt="conda_create" width="600" align="left"/>
+    - <img src="../install/mac/conda_create.png" alt="conda_create" width="600" align="center"/>
 
 - 激活刚创建的conda环境，在命令行中输入以下命令：
 
@@ -167,7 +164,7 @@
   where python
   ```
 
-  <img src="../install/mac/conda_activate.png" alt="conda_actviate" width="600" align="left"/>
+  <img src="../install/mac/conda_activate.png" alt="conda_actviate" width="600" align="center"/>
 
 以上anaconda环境和python环境安装完毕
 
@@ -186,43 +183,27 @@ Linux用户可选择Anaconda或Docker两种方式运行。如果你熟悉Docker�
 - **下载Anaconda**：
 
   - 下载地址：https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/?C=M&O=D
-    <img src="../install/linux/anaconda_download.png" akt="anaconda download" width="800" align="left"/>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
+    <img src="../install/linux/anaconda_download.png" akt="anaconda download" width="800" align="center"/>
 
     - 选择适合您操作系统的版本
-      - 可在终端输入`uname -m`查询系统所用的指令集
-
-  - 下载法1：本地下载，再将安装包传到linux服务器上
-
-  - 下载法2：直接使用linux命令行下载
-
-    ```shell
+    - 可在终端输入`uname -m`查询系统所用的指令集
+    
+- 下载法1：本地下载，再将安装包传到linux服务器上
+  
+- 下载法2：直接使用linux命令行下载
+  
+  ```shell
     # 首先安装wget
-    sudo apt-get install wget  # Ubuntu
+  sudo apt-get install wget  # Ubuntu
     sudo yum install wget  # CentOS
-    ```
-
-    ```shell
+  ```
+  
+  ```shell
     # 然后使用wget从清华源上下载
-    # 如要下载Anaconda3-2021.05-Linux-x86_64.sh，则下载命令如下：
+  # 如要下载Anaconda3-2021.05-Linux-x86_64.sh，则下载命令如下：
     wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-2021.05-Linux-x86_64.sh
     
-    # 若您要下载其他版本，需要将最后1个/后的文件名改成您希望下载的版本
+  # 若您要下载其他版本，需要将最后1个/后的文件名改成您希望下载的版本
     ```
 
 - 安装Anaconda：
@@ -290,7 +271,7 @@ Linux用户可选择Anaconda或Docker两种方式运行。如果你熟悉Docker�
 
   - 之后命令行中会输出提示信息，输入y并回车继续安装
 
-    <img src="../install/linux/conda_create.png" alt="conda_create" width="500" align="left"/>
+    <img src="../install/linux/conda_create.png" alt="conda_create" width="500" align="center"/>
 
 - 激活刚创建的conda环境，在命令行中输入以下命令：
 
