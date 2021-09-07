@@ -25,7 +25,7 @@ icdar2015数据集可以从[官网](https://rrc.cvc.uab.es/?ch=4&com=downloads)�
 注册完成登陆后，下载下图中红色框标出的部分，其中， `Training Set Images`下载的内容保存为`icdar_c4_train_imgs`文件夹下，`Test Set Images` 下载的内容保存为`ch4_test_images`文件夹下
 
 <p align="center">
- <img src="../datasets/ic15_location_download.png" align="middle" width = "600"/>
+ <img src="../datasets/ic15_location_download.png" align="middle" width = "700"/>
 <p align="center">
 
 将下载到的数据集解压到工作目录下，假设解压在 PaddleOCR/train_data/下。另外，PaddleOCR将零散的标注文件整理成单独的标注文件
