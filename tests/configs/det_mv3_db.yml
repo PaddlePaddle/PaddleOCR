@@ -23,9 +23,10 @@ Architecture:
     name: MobileNetV3
     scale: 0.5
     model_name: large
+    disable_se: True
   Neck:
     name: DBFPN
-    out_channels: 256
+    out_channels: 96
   Head:
     name: DBHead
     k: 50
@@ -34,8 +35,8 @@ Loss:
   name: DBLoss
   balance_loss: true
   main_loss_type: DiceLoss
-  alpha: 5 #5
-  beta: 10 #10
+  alpha: 5 
+  beta: 10 
   ohem_ratio: 3
 
 Optimizer:
