@@ -1,4 +1,7 @@
 # 运行环境准备
+Windows和Mac用户推荐使用Anaconda搭建Python环境，Linux用户建议使用docker搭建PyThon环境。
+
+如果对于Python环境熟悉的用户可以直接跳到第2步安装PaddlePaddle。
 
 * [1. Python环境搭建](#1)
   + [1.1 Windows](#1.1)
@@ -63,9 +66,9 @@
   ```
 
     <img src="../install/windows/conda_list_env.png" alt="create environment" width="600" align="center"/>
-  
-  
-  
+
+
+
 
 以上anaconda环境和python环境安装完毕
 
@@ -80,9 +83,9 @@
   - 安装完Anaconda后，可以安装python环境，以及numpy等所需的工具包环境
 - Anaconda下载：
   - 地址：https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/?C=M&O=D
-  
+
   <img src="../install/mac/anaconda_start.png" alt="anaconda download" width="800" align="center"/>
-  
+
   - 选择最下方的`Anaconda3-2021.05-MacOSX-x86_64.pkg`下载
 - 下载完成后，双击.pkg文件进入图形界面
   - 按默认设置即可，安装需要花费一段时间
@@ -177,7 +180,7 @@ Linux用户可选择Anaconda或Docker两种方式运行。如果你熟悉Docker�
 - 说明：使用paddlepaddle需要先安装python环境，这里我们选择python集成环境Anaconda工具包
   - Anaconda是1个常用的python包管理程序
   - 安装完Anaconda后，可以安装python环境，以及numpy等所需的工具包环境
-  
+
 - **下载Anaconda**：
 
   - 下载地址：https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/?C=M&O=D
@@ -185,22 +188,22 @@ Linux用户可选择Anaconda或Docker两种方式运行。如果你熟悉Docker�
 
     - 选择适合您操作系统的版本
     - 可在终端输入`uname -m`查询系统所用的指令集
-    
+
 - 下载法1：本地下载，再将安装包传到linux服务器上
-  
+
 - 下载法2：直接使用linux命令行下载
-  
+
   ```shell
     # 首先安装wget
   sudo apt-get install wget  # Ubuntu
     sudo yum install wget  # CentOS
   ```
-  
+
   ```shell
     # 然后使用wget从清华源上下载
   # 如要下载Anaconda3-2021.05-Linux-x86_64.sh，则下载命令如下：
     wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-2021.05-Linux-x86_64.sh
-    
+
   # 若您要下载其他版本，需要将最后1个/后的文件名改成您希望下载的版本
     ```
 
@@ -210,7 +213,7 @@ Linux用户可选择Anaconda或Docker两种方式运行。如果你熟悉Docker�
     - 若您下载的是其它版本，则将该命令的文件名替换为您下载的文件名
   - 按照安装提示安装即可
     - 查看许可时可输入q来退出
-  
+
 - **将conda加入环境变量**
 
   - 加入环境变量是为了让系统能识别conda命令，若您在安装时已将conda加入环境变量path，则可跳过本步
@@ -277,13 +280,13 @@ Linux用户可选择Anaconda或Docker两种方式运行。如果你熟悉Docker�
   # 激活paddle_env环境
   conda activate paddle_env
   ```
-  
+
 
 以上anaconda环境和python环境安装完毕
 
 #### 1.3.2 Docker环境配置
 
-**注意：第一次使用这个镜像，会自动下载该镜像，请耐心等待。**
+**注意：第一次使用这个镜像，会自动下载该镜像，请耐心等待。您也可以访问[DockerHub](https://hub.docker.com/r/paddlepaddle/paddle/tags/)获取与您机器适配的镜像。**
 
 ```bash
 # 切换到工作目录下
@@ -296,8 +299,6 @@ sudo docker run --name ppocr -v $PWD:/paddle --network=host -it paddlepaddle/pad
 
 如果使用CUDA10，请运行以下命令创建容器，设置docker容器共享内存shm-size为64G，建议设置32G以上
 sudo nvidia-docker run --name ppocr -v $PWD:/paddle --shm-size=64G --network=host -it paddlepaddle/paddle:latest-dev-cuda10.1-cudnn7-gcc82 /bin/bash
-
-您也可以访问[DockerHub](https://hub.docker.com/r/paddlepaddle/paddle/tags/)获取与您机器适配的镜像。
 
 # ctrl+P+Q可退出docker 容器，重新进入docker 容器使用如下命令
 sudo docker container exec -it ppocr /bin/bash
