@@ -103,13 +103,12 @@ For a new language request, please refer to [Guideline for new language_requests
     - [PP-OCR Model and Configuration](./doc/doc_en/models_and_config_en.md)
         - [PP-OCR Model Download](./doc/doc_en/models_list_en.md)
         - [Yml Configuration](./doc/doc_en/config_en.md)
-        - [Python Inference](./doc/doc_en/inference_en.md)
+        - [Python Inference for PP-OCR Model Library](./doc/doc_en/inference_ppocr_en.md)
     - [PP-OCR Training](./doc/doc_en/training_en.md)
         - [Text Detection](./doc/doc_en/detection_en.md)
         - [Text Recognition](./doc/doc_en/recognition_en.md)
         - [Direction Classification](./doc/doc_en/angle_class_en.md)
     - Inference and Deployment
-        - [Python Inference](./doc/doc_en/inference_en.md)
         - [C++ Inference](./deploy/cpp_infer/readme_en.md)
         - [Serving](./deploy/pdserving/README.md)
         - [Mobile](./deploy/lite/readme_en.md)
@@ -120,6 +119,7 @@ For a new language request, please refer to [Guideline for new language_requests
 - Academic Circles
     - [Two-stage Algorithm](./doc/doc_en/algorithm_overview_en.md)
     - [PGNet Algorithm](./doc/doc_en/algorithm_overview_en.md)
+    - [Python Inference](./doc/doc_en/inference_en.md)
 - Data Annotation and Synthesis
     - [Semi-automatic Annotation Tool: PPOCRLabel](./PPOCRLabel/README.md)
     - [Data Synthesis Tool: Style-Text](./StyleText/README.md)

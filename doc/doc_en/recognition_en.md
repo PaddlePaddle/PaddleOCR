@@ -15,6 +15,7 @@
 
 - [4 PREDICTION](#PREDICTION)
     - [4.1 Training engine prediction](#Training_engine_prediction)
+- [5 CONVERT TO INFERENCE MODEL](#Inference)
 
 <a name="DATA_PREPARATION"></a>
 ## 1 DATA PREPARATION
@@ -361,6 +362,7 @@ Eval:
 ```
 
 <a name="EVALUATION"></a>
+
 ## 3 EVALUATION
 
 The evaluation dataset can be set by modifying the `Eval.dataset.label_file_list` field in the `configs/rec/rec_icdar15_train.yml` file.
@@ -432,3 +434,40 @@ Get the prediction result of the input image:
 infer_img: doc/imgs_words/ch/word_1.jpg
         result: ('韩国小馆', 0.997218)
 ```
+
+<a name="Inference"></a>
+
+## 5 CONVERT TO INFERENCE MODEL
+
+The recognition model is converted to the inference model in the same way as the detection, as follows:
+
+```
+# -c Set the training algorithm yml configuration file
+# -o Set optional parameters
+# Global.pretrained_model parameter Set the training model address to be converted without adding the file suffix .pdmodel, .pdopt or .pdparams.
+# Global.save_inference_dir Set the address where the converted model will be saved.
+
+python3 tools/export_model.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml -o Global.pretrained_model=./ch_lite/ch_ppocr_mobile_v2.0_rec_train/best_accuracy  Global.save_inference_dir=./inference/rec_crnn/
+```
+
+If you have a model trained on your own dataset with a different dictionary file, please make sure that you modify the `character_dict_path` in the configuration file to your dictionary file path.
+
+After the conversion is successful, there are three files in the model save directory:
+
+```
+inference/det_db/
+    ├── inference.pdiparams         # The parameter file of recognition inference model
+    ├── inference.pdiparams.info    # The parameter information of recognition inference model, which can be ignored
+    └── inference.pdmodel           # The program file of recognition model
+```
+
+- Text recognition model Inference using custom characters dictionary
+
+  If the text dictionary is modified during training, when using the inference model to predict, you need to specify the dictionary path used by `--rec_char_dict_path`, and set `rec_char_type=ch`
+
+  ```
+  python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="ch" --rec_char_dict_path="your text dict path"
+  ```
+
+  
+

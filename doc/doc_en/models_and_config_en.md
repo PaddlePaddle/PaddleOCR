@@ -1,4 +1,12 @@
 # PP-OCR Model and Configuration
+The chapter on PP-OCR model and configuration file mainly adds some basic concepts of OCR model and the content and role of configuration file to have a better experience in the subsequent parameter adjustment and training of the model.
+
+This chapter contains three parts. Firstly, [PP-OCR Model Download](. /models_list_en.md) explains the concept of PP-OCR model types and provides links to download all models. Then in [Yml Configuration](. /config_en.md) details the parameters needed to fine-tune the PP-OCR models. The final [Python Inference for PP-OCR Model Library](. /inference_ppocr_en.md) is an introduction to the use of the PP-OCR model library in the first section, which can quickly utilize the rich model library models to obtain test results through the Python inference engine.
+
+------
+
+Let's first understand some basic concepts.
+
 - [INTRODUCTION ABOUT OCR](#introduction-about-ocr)
   * [BASIC CONCEPTS OF OCR DETECTION MODEL](#basic-concepts-of-ocr-detection-model)
   * [Basic concepts of OCR recognition model](#basic-concepts-of-ocr-recognition-model)

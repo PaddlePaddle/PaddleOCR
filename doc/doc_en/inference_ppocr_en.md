@@ -1,22 +1,22 @@
 
-# Reasoning based on Python prediction engine
+# Python Inference for PP-OCR Model Library
 
 This article introduces the use of the Python inference engine for the PP-OCR model library. The content is in order of text detection, text recognition, direction classifier and the prediction method of the three in series on the CPU and GPU.
 
 
-- [TEXT DETECTION MODEL INFERENCE](#DETECTION_MODEL_INFERENCE)
+- [Text Detection Model Inference](#DETECTION_MODEL_INFERENCE)
 
-- [TEXT RECOGNITION MODEL INFERENCE](#RECOGNITION_MODEL_INFERENCE)
-    - [1. LIGHTWEIGHT CHINESE MODEL](#LIGHTWEIGHT_RECOGNITION)
-    - [2. MULTILINGUAL MODEL INFERENCE](MULTILINGUAL_MODEL_INFERENCE)
+- [Text Recognition Model Inference](#RECOGNITION_MODEL_INFERENCE)
+    - [1. Lightweight Chinese Recognition Model Inference](#LIGHTWEIGHT_RECOGNITION)
+    - [2. Multilingaul Model Inference](#MULTILINGUAL_MODEL_INFERENCE)
     
-- [ANGLE CLASSIFICATION MODEL INFERENCE](#ANGLE_CLASS_MODEL_INFERENCE)
+- [Angle Classification Model Inference](#ANGLE_CLASS_MODEL_INFERENCE)
 
-- [TEXT DETECTION ANGLE CLASSIFICATION AND RECOGNITION INFERENCE CONCATENATION](#CONCATENATION)
+- [Text Detection Angle Classification and Recognition Inference Concatenation](#CONCATENATION)
 
 <a name="DETECTION_MODEL_INFERENCE"></a>
 
-## TEXT DETECTION MODEL INFERENCE
+## Text Detection Model Inference
 
 The default configuration is based on the inference setting of the DB text detection model. For lightweight Chinese detection model inference, you can execute the following commands:
 
@@ -52,11 +52,11 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_di
 
 <a name="RECOGNITION_MODEL_INFERENCE"></a>
 
-## TEXT RECOGNITION MODEL INFERENCE
+## Text Recognition Model Inference
 
 
 <a name="LIGHTWEIGHT_RECOGNITION"></a>
-### 1. LIGHTWEIGHT CHINESE TEXT RECOGNITION MODEL REFERENCE
+### 1. Lightweight Chinese Recognition Model Inference
 
 For lightweight Chinese recognition model inference, you can execute the following commands:
 
@@ -77,7 +77,7 @@ Predicts of ./doc/imgs_words_en/word_10.png:('PAIN', 0.9897658)
 
 <a name="MULTILINGUAL_MODEL_INFERENCE"></a>
 
-### 2. MULTILINGAUL MODEL INFERENCE
+### 2. Multilingaul Model Inference
 If you need to predict other language models, when using inference model prediction, you need to specify the dictionary path used by `--rec_char_dict_path`. At the same time, in order to get the correct visualization results,
 You need to specify the visual font path through `--vis_font_path`. There are small language fonts provided by default under the `doc/fonts` path, such as Korean recognition:
 
@@ -94,7 +94,7 @@ Predicts of ./doc/imgs_words/korean/1.jpg:('바탕으로', 0.9948904)
 
 <a name="ANGLE_CLASS_MODEL_INFERENCE"></a>
 
-## ANGLE CLASSIFICATION MODEL INFERENCE
+## Angle Classification Model Inference
 
 For angle classification model inference, you can execute the following commands:
 
@@ -114,7 +114,7 @@ After executing the command, the prediction results (classification angle and sc
 ```
 
 <a name="CONCATENATION"></a>
-## TEXT DETECTION ANGLE CLASSIFICATION AND RECOGNITION INFERENCE CONCATENATION
+## Text Detection Angle Classification and Recognition Inference Concatenation
 
 When performing prediction, you need to specify the path of a single image or a folder of images through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to detect the inference model, the parameter `cls_model_dir` specifies the path to angle classification inference model and the parameter `rec_model_dir` specifies the path to identify the inference model. The parameter `use_angle_cls` is used to control whether to enable the angle classification model. The parameter `use_mp` specifies whether to use multi-process to infer `total_process_num` specifies process number when using multi-process. The parameter . The visualized recognition results are saved to the `./inference_results` folder by default.
 
