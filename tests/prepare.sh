@@ -64,7 +64,7 @@ elif [ ${MODE} = "whole_infer" ];then
     cd ./train_data/ && tar xf icdar2015_infer.tar && tar xf ic15_data.tar
     ln -s ./icdar2015_infer ./icdar2015
     cd ../
-elif [ ${MODE} = "infer" ] || [ ${MODE} = "cpp_infer" ];then
+elif [ ${MODE} = "infer" ];then
     if [ ${model_name} = "ocr_det" ]; then
         eval_model_name="ch_ppocr_mobile_v2.0_det_train"
         rm -rf ./train_data/icdar2015
@@ -86,6 +86,21 @@ elif [ ${MODE} = "infer" ] || [ ${MODE} = "cpp_infer" ];then
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/rec_inference.tar
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar
         cd ./inference && tar xf ${eval_model_name}.tar && tar xf rec_inference.tar && cd ../
+    fi 
+elif [ ${MODE} = "cpp_infer" ];then
+    if [ ${model_name} = "ocr_det" ]; then
+        wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar
+        wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar
+        cd ./inference && tar xf ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_det_data_50.tar && cd ../
+    elif [ ${model_name} = "ocr_rec" ]; then
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/rec_inference.tar
+        wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar
+        cd ./inference && tar xf ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf rec_inference.tar && cd ../
+    elif  [ ${model_name} = "ocr_system" ]; then
+        wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar
+        wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar
+        wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar
+        cd ./inference && tar xf ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf ch_det_data_50.tar && cd ../
     fi 
 fi
 
