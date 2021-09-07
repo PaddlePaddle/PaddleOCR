@@ -56,7 +56,6 @@ Metric:
 Train:
   dataset:
     name: SimpleDataSet
-    delimiter: ' '
     label_file_list: ['./train_data/train_list.txt']
     data_dir: ./train_data/
     ratio_list: 1.0
