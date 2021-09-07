@@ -9,7 +9,7 @@ from paddle import nn
 class SARLoss(nn.Layer):
     def __init__(self, **kwargs):
         super(SARLoss, self).__init__()
-        self.loss_func = paddle.nn.loss.CrossEntropyLoss(reduction="mean", ignore_index=92)
+        self.loss_func = paddle.nn.loss.CrossEntropyLoss(reduction="mean", ignore_index=96)
 
     def forward(self, predicts, batch):
         predict = predicts[:, :-1, :] # ignore last index of outputs to be in same seq_len with targets
