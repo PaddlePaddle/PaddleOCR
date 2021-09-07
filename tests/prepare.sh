@@ -40,11 +40,13 @@ if [ ${MODE} = "lite_train_infer" ];then
     rm -rf ./train_data/ic15_data
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015_lite.tar
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ic15_data.tar # todo change to bcebos
+    wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/rec_inference.tar
     wget -nc -P ./deploy/slim/prune https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/sen.pickle
     
     cd ./train_data/ && tar xf icdar2015_lite.tar && tar xf ic15_data.tar
     ln -s ./icdar2015_lite ./icdar2015
     cd ../
+    cd ./inference && tar xf rec_inference.tar && cd ../
 elif [ ${MODE} = "whole_train_infer" ];then
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams
     rm -rf ./train_data/icdar2015
@@ -80,11 +82,22 @@ elif [ ${MODE} = "infer" ] || [ ${MODE} = "cpp_infer" ];then
     else 
         rm -rf ./train_data/ic15_data
         eval_model_name="ch_ppocr_mobile_v2.0_rec_infer"
-        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ic15_data.tar
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/rec_inference.tar
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar
-        cd ./inference && tar xf ${eval_model_name}.tar && tar xf ic15_data.tar && cd ../
+        cd ./inference && tar xf ${eval_model_name}.tar && tar xf rec_inference.tar && cd ../
     fi 
 fi
+
+# prepare serving env
+python_name=$(func_parser_value "${lines[2]}")
+wget https://paddle-serving.bj.bcebos.com/chain/paddle_serving_server_gpu-0.0.0.post101-py3-none-any.whl
+${python_name} -m pip install install paddle_serving_server_gpu-0.0.0.post101-py3-none-any.whl
+${python_name} -m pip install paddle_serving_client==0.6.1
+${python_name} -m pip install paddle-serving-app==0.6.3
+wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar
+wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar
+cd ./inference && tar xf ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_ppocr_mobile_v2.0_rec_infer.tar
+
 
 if [ ${MODE} = "cpp_infer" ];then
     cd deploy/cpp_infer

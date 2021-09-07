@@ -1,7 +1,7 @@
 ===========================train_params===========================
 model_name:ocr_rec
 python:python3.7
-gpu_list:0|2,3
+gpu_list:0|0,1
 Global.use_gpu:True|True
 Global.auto_cast:null
 Global.epoch_num:lite_train_infer=2|whole_train_infer=300
@@ -9,7 +9,7 @@ Global.save_model_dir:./output/
 Train.loader.batch_size_per_card:lite_train_infer=128|whole_train_infer=128
 Global.pretrained_model:null
 train_model_name:latest
-train_infer_img_dir:./train_data/ic15_data/train
+train_infer_img_dir:./inference/rec_inference
 null:null
 ##
 trainer:norm_train|pact_train
@@ -41,7 +41,7 @@ inference:tools/infer/predict_rec.py
 --use_gpu:True|False
 --enable_mkldnn:True|False
 --cpu_threads:1|6
---rec_batch_num:1
+--rec_batch_num:1|6
 --use_tensorrt:True|False
 --precision:fp32|fp16|int8
 --rec_model_dir:

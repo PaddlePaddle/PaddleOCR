@@ -144,6 +144,32 @@ benchmark_key=$(func_parser_key "${lines[49]}")
 benchmark_value=$(func_parser_value "${lines[49]}")
 infer_key1=$(func_parser_key "${lines[50]}")
 infer_value1=$(func_parser_value "${lines[50]}")
+# parser serving
+trans_model_py=$(func_parser_value "${lines[67]}")
+infer_model_dir_key=$(func_parser_key "${lines[68]}")
+infer_model_dir_value=$(func_parser_value "${lines[68]}")
+model_filename_key=$(func_parser_key "${lines[69]}")
+model_filename_value=$(func_parser_value "${lines[69]}")
+params_filename_key=$(func_parser_key "${lines[70]}")
+params_filename_value=$(func_parser_value "${lines[70]}")
+serving_server_key=$(func_parser_key "${lines[71]}")
+serving_server_value=$(func_parser_value "${lines[71]}")
+serving_client_key=$(func_parser_key "${lines[72]}")
+serving_client_value=$(func_parser_value "${lines[72]}")
+serving_dir_value=$(func_parser_value "${lines[73]}")
+web_service_py=$(func_parser_value "${lines[74]}")
+web_use_gpu_key=$(func_parser_key "${lines[75]}")
+web_use_gpu_list=$(func_parser_value "${lines[75]}")
+web_use_mkldnn_key=$(func_parser_key "${lines[76]}")
+web_use_mkldnn_list=$(func_parser_value "${lines[76]}")
+web_cpu_threads_key=$(func_parser_key "${lines[77]}")
+web_cpu_threads_list=$(func_parser_value "${lines[77]}")
+web_use_trt_key=$(func_parser_key "${lines[78]}")
+web_use_trt_list=$(func_parser_value "${lines[78]}")
+web_precision_key=$(func_parser_key "${lines[79]}")
+web_precision_list=$(func_parser_value "${lines[79]}")
+pipeline_py=$(func_parser_value "${lines[80]}")
+
 
 if [ ${MODE} = "cpp_infer" ]; then
     # parser cpp inference model 
@@ -237,6 +263,81 @@ function func_inference(){
                         status_check $last_status "${command}" "${status_log}"
                         
                     done
+                done
+            done
+        else
+            echo "Does not support hardware other than CPU and GPU Currently!"
+        fi
+    done
+}
+function func_serving(){
+    IFS='|'
+    _python=$1
+    _script=$2
+    _model_dir=$3
+    # pdserving
+    set_dirname=$(func_set_params "${infer_model_dir_key}" "${infer_model_dir_value}")
+    set_model_filename=$(func_set_params "${model_filename_key}" "${model_filename_value}")
+    set_params_filename=$(func_set_params "${params_filename_key}" "${params_filename_value}")
+    set_serving_server=$(func_set_params "${serving_server_key}" "${serving_server_value}")
+    set_serving_client=$(func_set_params "${serving_client_key}" "${serving_client_value}")
+    trans_model_cmd="${python} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
+    eval $trans_model_cmd
+    cd ${serving_dir_value}
+    echo $PWD
+    unset https_proxy
+    unset http_proxy
+    for use_gpu in ${web_use_gpu_list[*]}; do
+        echo ${ues_gpu}
+        if [ ${use_gpu} = "null" ]; then
+            for use_mkldnn in ${web_use_mkldnn_list[*]}; do
+                if [ ${use_mkldnn} = "False" ]; then
+                    continue
+                fi
+                for threads in ${web_cpu_threads_list[*]}; do
+                      _save_log_path="${_log_path}/server_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_batchsize_1.log"
+                      set_cpu_threads=$(func_set_params "${web_cpu_threads_key}" "${threads}")
+                      web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}=${use_gpu} ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} &>${_save_log_path} &"
+                      eval $web_service_cmd
+                      sleep 2s
+                      pipeline_cmd="${python} ${pipeline_py}"
+                      eval $pipeline_cmd
+                      last_status=${PIPESTATUS[0]}
+                      eval "cat ${_save_log_path}"
+                      status_check $last_status "${pipeline_cmd}" "${status_log}"
+                      PID=$!
+                      kill $PID
+                      sleep 2s
+                      ps ux | grep -E 'web_service|pipeline' | awk '{print $2}' | xargs kill -s 9
+                done
+            done
+        elif [ ${use_gpu} = "0" ]; then
+            for use_trt in ${web_use_trt_list[*]}; do
+                for precision in ${web_precision_list[*]}; do
+                    if [[ ${_flag_quant} = "False" ]] && [[ ${precision} =~ "int8" ]]; then
+                        continue
+                    fi
+                    if [[ ${precision} =~ "fp16" || ${precision} =~ "int8" ]] && [ ${use_trt} = "False" ]; then
+                        continue
+                    fi
+                    if [[ ${use_trt} = "Falg_quantse" || ${precision} =~ "int8" ]]; then
+                        continue
+                    fi
+                    _save_log_path="${_log_path}/infer_gpu_usetrt_${use_trt}_precision_${precision}_batchsize_1.log"
+                    set_tensorrt=$(func_set_params "${web_use_trt_key}" "${use_trt}")
+                    set_precision=$(func_set_params "${web_precision_key}" "${precision}")
+                    web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}=${use_gpu} ${set_tensorrt} ${set_precision} &>${_save_log_path} & "
+                    eval $web_service_cmd
+                    sleep 2s
+                    pipeline_cmd="${python} ${pipeline_py}"
+                    eval $pipeline_cmd
+                    last_status=${PIPESTATUS[0]}
+                    eval "cat ${_save_log_path}"
+                    status_check $last_status "${pipeline_cmd}" "${status_log}"
+                    PID=$!
+                    kill $PID
+                    sleep 2s
+                    ps ux | grep -E 'web_service|pipeline' | awk '{print $2}' | xargs kill -s 9
                 done
             done
         else
@@ -360,6 +461,20 @@ elif [ ${MODE} = "cpp_infer" ]; then
         func_cpp_inference "${inference_cmd}" "${infer_model}" "${LOG_PATH}" "${cpp_infer_img_dir}" ${is_quant}
         Count=$(($Count + 1))
     done
+    
+elif [ ${MODE} = "serving_infer" ]; then
+    GPUID=$3
+    if [ ${#GPUID} -le 0 ];then
+        env=" "
+    else
+        env="export CUDA_VISIBLE_DEVICES=${GPUID}"
+    fi
+    # set CUDA_VISIBLE_DEVICES
+    eval $env
+    export Count=0
+    IFS="|"
+    #run serving
+    func_serving "${web_service_cmd}"
 
 else
     IFS="|"
