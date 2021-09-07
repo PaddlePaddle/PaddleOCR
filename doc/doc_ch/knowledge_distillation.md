@@ -39,7 +39,7 @@ PaddleOCR中集成了知识蒸馏的算法，具体地，有以下几个主要�
 
 ### 2.1 识别配置文件解析
 
-配置文件在[rec_chinese_lite_train_distillation_v2.1.yml](../../configs/rec/ch_ppocr_v2.1/rec_chinese_lite_train_distillation_v2.1.yml)。
+配置文件在[ch_PP-OCRv2_rec.yml](../../configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec.yml)。
 
 #### 2.1.1 模型结构
 
