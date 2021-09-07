@@ -8,7 +8,7 @@ Global:
   # evaluation is run every 5000 iterations after the 4000th iteration
   eval_batch_step: [3000, 2000]
   cal_metric_during_train: False
-  pretrained_model: ./pretrain_models/ch_ppocr_mobile_v2.1_det_distill_train/best_accuracy
+  pretrained_model: ./pretrain_models/ch_PP-OCRv2_det_distill_train/best_accuracy
   checkpoints:
   save_inference_dir:
   use_visualdl: False
