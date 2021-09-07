@@ -49,13 +49,13 @@ MODEL_URLS = {
         'det': {
             'ch': {
                 'url':
-                'https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_ppocr_mobile_v2.1_det_infer.tar',
+                'https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar',
             },
         },
         'rec': {
             'ch': {
                 'url':
-                'https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_ppocr_mobile_v2.1_rec_infer.tar',
+                'https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar',
                 'dict_path': './ppocr/utils/ppocr_keys_v1.txt'
             }
         }
