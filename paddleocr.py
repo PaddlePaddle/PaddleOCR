@@ -39,13 +39,13 @@ __all__ = [
 ]
 
 SUPPORT_DET_MODEL = ['DB']
-VERSION = '2.3'
+VERSION = '2.3.0.1'
 SUPPORT_REC_MODEL = ['CRNN']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
-DEFAULT_MODEL_VERSION = '2.0'
+DEFAULT_MODEL_VERSION = 'PP-OCR'
 MODEL_URLS = {
-    '2.1': {
+    'PP-OCRv2': {
         'det': {
             'ch': {
                 'url':
@@ -60,7 +60,7 @@ MODEL_URLS = {
             }
         }
     },
-    '2.0': {
+    DEFAULT_MODEL_VERSION: {
         'det': {
             'ch': {
                 'url':
@@ -180,9 +180,9 @@ def parse_args(mMain=True):
     parser.add_argument(
         "--version",
         type=str,
-        default='2.1',
+        default='PP-OCRv2',
         help='Model version number, the current model support list \
-    is as follows 2.1 Support Chinese detection and recognition model, 2.0 support Chinese detection, recognition and \
+    is as follows PP-OCRv2 Support Chinese detection and recognition model, PP-OCR support Chinese detection, recognition and \
     direction classifier, multilingual recognition model and table structure model'
     )
 
