@@ -429,7 +429,6 @@ class PPStructure(OCRSystem):
 def main():
     # for cmd
     args = parse_args(mMain=True)
-    print(args)
     image_dir = args.image_dir
     if is_link(image_dir):
         download_with_progressbar(image_dir, 'tmp.jpg')
