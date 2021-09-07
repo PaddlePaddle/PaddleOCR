@@ -49,7 +49,7 @@ MODEL_URLS = {
         'det': {
             'ch': {
                 'url':
-                'https://paddleocr.bj.bcebos.com/dPP-OCRv2/chinese/ch_ppocr_mobile_v2.1_det_infer.tar',
+                'https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_ppocr_mobile_v2.1_det_infer.tar',
             },
         },
         'rec': {
