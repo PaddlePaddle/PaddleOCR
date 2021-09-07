@@ -1,5 +1,5 @@
 # 运行环境准备
-Windows和Mac用户推荐使用Anaconda搭建Python环境，Linux用户建议使用docker搭建PyThon环境。
+Windows和Mac用户推荐使用Anaconda搭建Python环境，Linux用户建议使用docker搭建Python环境。
 
 如果对于Python环境熟悉的用户可以直接跳到第2步安装PaddlePaddle。
 
