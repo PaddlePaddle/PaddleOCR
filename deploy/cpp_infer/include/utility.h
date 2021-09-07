@@ -47,6 +47,9 @@ public:
 
   static void GetAllFiles(const char *dir_name,
                           std::vector<std::string> &all_inputs);
+    
+  static cv::Mat GetRotateCropImage(const cv::Mat &srcimage,
+                          std::vector<std::vector<int>> box);
 };
 
 } // namespace PaddleOCR

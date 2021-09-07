@@ -1,9 +1,32 @@
-# TEXT DETECTION
+# CONTENT
+
+- [Paste Your Document In Here](#paste-your-document-in-here)
+- [1. TEXT DETECTION](#1-text-detection)
+  * [1.1 DATA PREPARATION](#11-data-preparation)
+  * [1.2 DOWNLOAD PRETRAINED MODEL](#12-download-pretrained-model)
+  * [1.3 START TRAINING](#13-start-training)
+  * [1.4 LOAD TRAINED MODEL AND CONTINUE TRAINING](#14-load-trained-model-and-continue-training)
+  * [1.5 TRAINING WITH NEW BACKBONE](#15-training-with-new-backbone)
+  * [1.6 EVALUATION](#16-evaluation)
+  * [1.7 TEST](#17-test)
+  * [1.8 INFERENCE MODEL PREDICTION](#18-inference-model-prediction)
+- [2. FAQ](#2-faq)
+
+
+# 1. TEXT DETECTION
 
 This section uses the icdar2015 dataset as an example to introduce the training, evaluation, and testing of the detection model in PaddleOCR.
 
-## DATA PREPARATION
-The icdar2015 dataset can be obtained from [official website](https://rrc.cvc.uab.es/?ch=4&com=downloads). Registration is required for downloading.
+## 1.1 DATA PREPARATION
+
+The icdar2015 dataset contains train set which has 1000 images obtained with wearable cameras and test set which has 500 images obtained with wearable cameras. The icdar2015 can be obtained from [official website](https://rrc.cvc.uab.es/?ch=4&com=downloads). Registration is required for downloading.
+
+
+After registering and logging in, download the part marked in the red box in the figure below. And, the content downloaded by `Training Set Images` should be saved as the folder `icdar_c4_train_imgs`, and the content downloaded by `Test Set Images` is saved as the folder `ch4_test_images`
+
+<p align="center">
+ <img src="../datasets/ic15_location_download.png" align="middle" width = "700"/>
+<p align="center">
 
 Decompress the downloaded dataset to the working directory, assuming it is decompressed under PaddleOCR/train_data/. In addition, PaddleOCR organizes many scattered annotation files into two separate annotation files for train and test respectively, which can be downloaded by wget:
 ```shell
@@ -36,10 +59,11 @@ The `points` in the dictionary represent the coordinates (x, y) of the four poin
 If you want to train PaddleOCR on other datasets, please build the annotation file according to the above format.
 
 
-## TRAINING
+## 1.2 DOWNLOAD PRETRAINED MODEL
 
-First download the pretrained model. The detection model of PaddleOCR currently supports 3 backbones, namely MobileNetV3, ResNet18_vd and ResNet50_vd. You can use the model in [PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/develop/ppcls/modeling/architectures) to replace backbone according to your needs.
-And the responding download link of backbone pretrain weights can be found in [PaddleClas repo](https://github.com/PaddlePaddle/PaddleClas#mobile-series).
+First download the pretrained model. The detection model of PaddleOCR currently supports 3 backbones, namely MobileNetV3, ResNet18_vd and ResNet50_vd. You can use the model in [PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/release/2.0/ppcls/modeling/architectures) to replace backbone according to your needs.
+And the responding download link of backbone pretrain weights can be found in (https://github.com/PaddlePaddle/PaddleClas/blob/release%2F2.0/README_cn.md#resnet%E5%8F%8A%E5%85%B6vd%E7%B3%BB%E5%88%97).
+
 ```shell
 cd PaddleOCR/
 # Download the pre-trained model of MobileNetV3
@@ -49,11 +73,13 @@ wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dyg
 # or, download the pre-trained model of ResNet50_vd
 wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/ResNet50_vd_ssld_pretrained.pdparams
 
+```
 
-#### START TRAINING
+## 1.3 START TRAINING
 *If CPU version installed, please set the parameter `use_gpu` to `false` in the configuration.*
 ```shell
-python3 tools/train.py -c configs/det/det_mv3_db.yml
+python3 tools/train.py -c configs/det/det_mv3_db.yml  \
+         -o Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained
 ```
 
 In the above instruction, use `-c` to select the training to use the `configs/det/det_db_mv3.yml` configuration file.
@@ -62,16 +88,17 @@ For a detailed explanation of the configuration file, please refer to [config](.
 You can also use `-o` to change the training parameters without modifying the yml file. For example, adjust the training learning rate to 0.0001
 ```shell
 # single GPU training
-python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
+python3 tools/train.py -c configs/det/det_mv3_db.yml -o   \
+         Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained  \
+         Optimizer.base_lr=0.0001
 
 # multi-GPU training
 # Set the GPU ID used by the '--gpus' parameter.
-python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
-
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained
 
 ```
 
-#### load trained model and continue training
+## 1.4 LOAD TRAINED MODEL AND CONTINUE TRAINING
 If you expect to load trained model and continue the training again, you can specify the parameter `Global.checkpoints` as the model path to be loaded.
 
 For example:
@@ -82,9 +109,59 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./you
 **Note**: The priority of `Global.checkpoints` is higher than that of `Global.pretrain_weights`, that is, when two parameters are specified at the same time, the model specified by `Global.checkpoints` will be loaded first. If the model path specified by `Global.checkpoints` is wrong, the one specified by `Global.pretrain_weights` will be loaded.
 
 
-## EVALUATION
+## 1.5 TRAINING WITH NEW BACKBONE
 
-PaddleOCR calculates three indicators for evaluating performance of OCR detection task: Precision, Recall, and Hmean.
+The network part completes the construction of the network, and PaddleOCR divides the network into four parts, which are under [ppocr/modeling](../../ppocr/modeling). The data entering the network will pass through these four parts in sequence(transforms->backbones->
+necks->heads).
+
+```bash
+├── architectures # Code for building network
+├── transforms    # Image Transformation Module
+├── backbones     # Feature extraction module
+├── necks         # Feature enhancement module
+└── heads         # Output module
+```
+
+If the Backbone to be replaced has a corresponding implementation in PaddleOCR, you can directly modify the parameters in the `Backbone` part of the configuration yml file.
+
+However, if you want to use a new Backbone, an example of replacing the backbones is as follows:
+
+1. Create a new file under the [ppocr/modeling/backbones](../../ppocr/modeling/backbones) folder, such as my_backbone.py.
+2. Add code in the my_backbone.py file, the sample code is as follows:
+
+```python
+import paddle
+import paddle.nn as nn
+import paddle.nn.functional as F
+
+
+class MyBackbone(nn.Layer):
+    def __init__(self, *args, **kwargs):
+        super(MyBackbone, self).__init__()
+        # your init code
+        self.conv = nn.xxxx
+
+    def forward(self, inputs):
+        # your network forward
+        y = self.conv(inputs)
+        return y
+```
+
+3. Import the added module in the [ppocr/modeling/backbones/\__init\__.py](../../ppocr/modeling/backbones/__init__.py) file.
+
+After adding the four-part modules of the network, you only need to configure them in the configuration file to use, such as:
+
+```yaml
+  Backbone:
+    name: MyBackbone
+    args1: args1
+```
+
+**NOTE**: More details about replace Backbone and other mudule can be found in [doc](add_new_algorithm_en.md).
+
+## 1.6 EVALUATION
+
+PaddleOCR calculates three indicators for evaluating performance of OCR detection task: Precision, Recall, and Hmean(F-Score).
 
 Run the following code to calculate the evaluation indicators. The result will be saved in the test result file specified by `save_res_path` in the configuration file `det_db_mv3.yml`
 
@@ -95,10 +172,9 @@ The model parameters during training are saved in the `Global.save_model_dir` di
 python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="{path/to/weights}/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
 ```
 
+* Note: `box_thresh` and `unclip_ratio` are parameters required for DB post-processing, and not need to be set when evaluating the EAST and SAST model.
 
-* Note: `box_thresh` and `unclip_ratio` are parameters required for DB post-processing, and not need to be set when evaluating the EAST model.
-
-## TEST
+## 1.7 TEST
 
 Test the detection result on a single image:
 ```shell
@@ -107,7 +183,7 @@ python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./
 
 When testing the DB model, adjust the post-processing threshold:
 ```shell
-python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./doc/imgs_en/img_10.jpg" Global.pretrained_model="./output/det_db/best_accuracy"  PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
+python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./doc/imgs_en/img_10.jpg" Global.pretrained_model="./output/det_db/best_accuracy"  PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=2.0
 ```
 
 
@@ -115,3 +191,33 @@ Test the detection result on all images in the folder:
 ```shell
 python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./doc/imgs_en/" Global.pretrained_model="./output/det_db/best_accuracy"
 ```
+
+## 1.8 INFERENCE MODEL PREDICTION
+
+The inference model (the model saved by `paddle.jit.save`) is generally a solidified model saved after the model training is completed, and is mostly used to give prediction in deployment.
+
+The model saved during the training process is the checkpoints model, which saves the parameters of the model and is mostly used to resume training.
+
+Compared with the checkpoints model, the inference model will additionally save the structural information of the model. Therefore, it is easier to deploy because the model structure and model parameters are already solidified in the inference model file, and is suitable for integration with actual systems.
+
+Firstly, we can convert DB trained model to inference model:
+```shell
+python3 tools/export_model.py -c configs/det/det_mv3_db.yml -o Global.pretrained_model="./output/det_db/best_accuracy" Global.save_inference_dir="./output/det_db_inference/"
+```
+
+The detection inference model prediction：
+```shell
+python3 tools/infer/predict_det.py --det_algorithm="DB" --det_model_dir="./output/det_db_inference/" --image_dir="./doc/imgs/" --use_gpu=True
+```
+
+If it is other detection algorithms, such as the EAST, the det_algorithm parameter needs to be modified to EAST, and the default is the DB algorithm:
+```shell
+python3 tools/infer/predict_det.py --det_algorithm="EAST" --det_model_dir="./output/det_db_inference/" --image_dir="./doc/imgs/" --use_gpu=True
+```
+
+# 2. FAQ
+
+Q1: The prediction results of trained model and inference model are inconsistent?
+**A**: Most of the problems are caused by the inconsistency of the pre-processing and post-processing parameters during the prediction of the trained model and the pre-processing and post-processing parameters during the prediction of the inference model. Taking the model trained by the det_mv3_db.yml configuration file as an example, the solution to the problem of inconsistent prediction results between the training model and the inference model is as follows:
+- Check whether the [trained model preprocessing](https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/configs/det/det_mv3_db.yml#L116) is consistent with the prediction [preprocessing function of the inference model](https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/tools/infer/predict_det.py#L42). When the algorithm is evaluated, the input image size will affect the accuracy. In order to be consistent with the paper, the image is resized to [736, 1280] in the training icdar15 configuration file, but there is only a set of default parameters when the inference model predicts, which will be considered To predict the speed problem, the longest side of the image is limited to 960 for resize by default. The preprocessing function of the training model preprocessing and the inference model is located in [ppocr/data/imaug/operators.py](https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/ppocr/data/imaug/operators.py#L147)
+- Check whether the [post-processing of the trained model](https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/configs/det/det_mv3_db.yml#L51) is consistent with the [post-processing parameters of the inference](https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/tools/infer/utility.py#L50).

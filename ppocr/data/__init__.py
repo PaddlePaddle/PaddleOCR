@@ -49,14 +49,12 @@ def term_mp(sig_num, frame):
     os.killpg(pgid, signal.SIGKILL)
 
 
-signal.signal(signal.SIGINT, term_mp)
-signal.signal(signal.SIGTERM, term_mp)
-
-
 def build_dataloader(config, mode, device, logger, seed=None):
     config = copy.deepcopy(config)
 
-    support_dict = ['SimpleDataSet', 'LMDBDataSet', 'PGDataSet', 'PubTabDataSet']
+    support_dict = [
+        'SimpleDataSet', 'LMDBDataSet', 'PGDataSet', 'PubTabDataSet'
+    ]
     module_name = config[mode]['dataset']['name']
     assert module_name in support_dict, Exception(
         'DataSet only support {}'.format(support_dict))
@@ -95,5 +93,9 @@ def build_dataloader(config, mode, device, logger, seed=None):
         num_workers=num_workers,
         return_list=True,
         use_shared_memory=use_shared_memory)
+
+    # support exit using ctrl+c
+    signal.signal(signal.SIGINT, term_mp)
+    signal.signal(signal.SIGTERM, term_mp)
 
     return data_loader

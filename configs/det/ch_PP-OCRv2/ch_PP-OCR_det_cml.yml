@@ -8,7 +8,7 @@ Global:
   # evaluation is run every 5000 iterations after the 4000th iteration
   eval_batch_step: [3000, 2000]
   cal_metric_during_train: False
-  pretrained_model: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
+  pretrained_model: ./pretrain_models/ch_PP-OCRv2_det_distill_train/best_accuracy
   checkpoints:
   save_inference_dir:
   use_visualdl: False
@@ -19,8 +19,22 @@ Architecture:
   name: DistillationModel
   algorithm: Distillation
   Models:
+    Teacher:
+      freeze_params: true
+      return_all_feats: false
+      model_type: det
+      algorithm: DB
+      Transform:
+      Backbone:
+        name: ResNet
+        layers: 18
+      Neck:
+        name: DBFPN
+        out_channels: 256
+      Head:
+        name: DBHead
+        k: 50
     Student:
-      pretrained: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
       freeze_params: false
       return_all_feats: false
       model_type: det
@@ -37,7 +51,6 @@ Architecture:
         name: DBHead
         k: 50
     Student2:
-      pretrained: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
       freeze_params: false
       return_all_feats: false
       model_type: det
@@ -54,23 +67,7 @@ Architecture:
       Head:
         name: DBHead
         k: 50
-    Teacher:
-      pretrained: ./pretrain_models/ch_ppocr_server_v2.0_det_train/best_accuracy
-      freeze_params: true
-      return_all_feats: false
-      model_type: det
-      algorithm: DB
-      Transform:
-      Backbone:
-        name: ResNet
-        layers: 18
-      Neck:
-        name: DBFPN
-        out_channels: 256
-      Head:
-        name: DBHead
-        k: 50
-
+    
 Loss:
   name: CombinedLoss
   loss_config_list:

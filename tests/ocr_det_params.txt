@@ -4,7 +4,7 @@ python:python3.7
 gpu_list:0|0,1
 Global.use_gpu:True|True
 Global.auto_cast:null
-Global.epoch_num:lite_train_infer=2|whole_train_infer=300
+Global.epoch_num:lite_train_infer=1|whole_train_infer=300
 Global.save_model_dir:./output/
 Train.loader.batch_size_per_card:lite_train_infer=2|whole_train_infer=4
 Global.pretrained_model:null
@@ -13,34 +13,34 @@ train_infer_img_dir:./train_data/icdar2015/text_localization/ch4_test_images/
 null:null
 ##
 trainer:norm_train|pact_train
-norm_train:tools/train.py -c configs/det/det_mv3_db.yml -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
-pact_train:deploy/slim/quantization/quant.py -c configs/det/det_mv3_db.yml -o
-fpgm_train:null
+norm_train:tools/train.py -c tests/configs/det_mv3_db.yml -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
+pact_train:deploy/slim/quantization/quant.py -c tests/configs/det_mv3_db.yml -o
+fpgm_train:deploy/slim/prune/sensitivity_anal.py -c tests/configs/det_mv3_db.yml -o Global.pretrained_model=./pretrain_models/det_mv3_db_v2.0_train/best_accuracy
 distill_train:null
 null:null
 null:null
 ##
 ===========================eval_params=========================== 
-eval:tools/eval.py -c configs/det/det_mv3_db.yml -o
+eval:tools/eval.py -c tests/configs/det_mv3_db.yml -o
 null:null
 ##
 ===========================infer_params===========================
 Global.save_inference_dir:./output/
 Global.pretrained_model:
-norm_export:tools/export_model.py -c configs/det/det_mv3_db.yml -o 
-quant_export:deploy/slim/quantization/export_model.py -c configs/det/det_mv3_db.yml -o 
-fpgm_export:deploy/slim/prune/export_prune_model.py
+norm_export:tools/export_model.py -c tests/configs/det_mv3_db.yml -o 
+quant_export:deploy/slim/quantization/export_model.py -c tests/configs/det_mv3_db.yml -o 
+fpgm_export:deploy/slim/prune/export_prune_model.py -c tests/configs/det_mv3_db.yml -o 
 distill_export:null
 export1:null
 export2:null
 ##
-infer_model:./inference/ch_ppocr_mobile_v2.0_det_infer/
-infer_export:null
+train_model:./inference/ch_ppocr_mobile_v2.0_det_train/best_accuracy
+infer_export:tools/export_model.py -c configs/det/det_mv3_db.yml -o
 infer_quant:False
 inference:tools/infer/predict_det.py
 --use_gpu:True|False
 --enable_mkldnn:True|False
---cpu_threads:1|6
+--cpu_threads:6
 --rec_batch_num:1
 --use_tensorrt:False|True
 --precision:fp32|fp16|int8
@@ -49,7 +49,22 @@ inference:tools/infer/predict_det.py
 --save_log_path:null
 --benchmark:True
 null:null
-===========================deploy_params===========================
+===========================cpp_infer_params===========================
+use_opencv:True
+infer_model:./inference/ch_ppocr_mobile_v2.0_det_infer/
+infer_quant:False
+inference:./deploy/cpp_infer/build/ppocr det
+--use_gpu:True|False
+--enable_mkldnn:True|False
+--cpu_threads:1|6
+--rec_batch_num:1
+--use_tensorrt:False|True
+--precision:fp32|fp16
+--det_model_dir:
+--image_dir:./inference/ch_det_data_50/all-sum-510/
+--save_log_path:null
+--benchmark:True
+===========================serving_params===========================
 trans_model:-m paddle_serving_client.convert
 --dirname:./inference/ch_ppocr_mobile_v2.0_det_infer/
 --model_filename:inference.pdmodel
@@ -57,5 +72,11 @@ trans_model:-m paddle_serving_client.convert
 --serving_server:./deploy/pdserving/ppocr_det_mobile_2.0_serving/
 --serving_client:./deploy/pdserving/ppocr_det_mobile_2.0_client/
 serving_dir:./deploy/pdserving
-web_service:web_service_det.py &>log.txt &
+web_service:web_service_det.py --config=config.yml --opt op.det.concurrency=1
+op.det.local_service_conf.devices:null|0
+op.det.local_service_conf.use_mkldnn:True|False
+op.det.local_service_conf.thread_num:1|6
+op.det.local_service_conf.use_trt:False|True
+op.det.local_service_conf.precision:fp32|fp16|int8
 pipline:pipeline_http_client.py --image_dir=../../doc/imgs
+
