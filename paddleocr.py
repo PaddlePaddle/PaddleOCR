@@ -177,7 +177,14 @@ def parse_args(mMain=True):
     parser.add_argument("--det", type=str2bool, default=True)
     parser.add_argument("--rec", type=str2bool, default=True)
     parser.add_argument("--type", type=str, default='ocr')
-    parser.add_argument("--version", type=str, default='2.1')
+    parser.add_argument(
+        "--version",
+        type=str,
+        default='2.1',
+        help='Model version number, the current model support list \
+    is as follows 2.1 Support Chinese detection and recognition model, 2.0 support Chinese detection, recognition and \
+    direction classifier, multilingual recognition model and table structure model'
+    )
 
     for action in parser._actions:
         if action.dest in ['rec_char_dict_path', 'table_char_dict_path']:
