@@ -2,7 +2,7 @@
 
 
 - [PaddleOCR快速开始](#paddleocr)
-  
+
   + [1. 安装PaddleOCR whl包](#1)
   * [2. 便捷使用](#2)
     + [2.1 命令行使用](#21)
@@ -166,7 +166,7 @@ paddleocr --image_dir=./table/1.png --type=structure
 
   ```
   /output/table/1/
-    └─ res.txt										
+    └─ res.txt
     └─ [454, 360, 824, 658].xlsx  表格识别结果
     └─ [16, 2, 828, 305].jpg			被裁剪出的图片区域
     └─ [17, 361, 404, 711].xlsx		表格识别结果
@@ -183,7 +183,7 @@ paddleocr --image_dir=./table/1.png --type=structure
 
   大部分参数和paddleocr whl包保持一致，见 [whl包文档](./whl.md)
 
-  
+
 
 <a name="22"></a>
 ### 2.2 Python脚本使用
@@ -232,6 +232,7 @@ im_show.save('result.jpg')
     <img src="../imgs_results/whl/11_det_rec.jpg" width="800">
 </div>
 <a name="222"></a>
+
 #### 2.2.2 版面分析
 
 ```python
