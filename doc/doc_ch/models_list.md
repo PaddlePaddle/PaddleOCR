@@ -93,6 +93,7 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 |ch_ppocr_mobile_slim_v2.0_cls|slim量化版模型，对检测到的文本行文字角度分类|[cls_mv3.yml](../../configs/cls/cls_mv3.yml)| 2.1M |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_slim_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_infer.tar) |
 |ch_ppocr_mobile_v2.0_cls|原始分类器模型，对检测到的文本行文字角度分类|[cls_mv3.yml](../../configs/cls/cls_mv3.yml)|1.38M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |
 
+
 <a name="Paddle-Lite模型"></a>
 ### 四、Paddle-Lite 模型
 
