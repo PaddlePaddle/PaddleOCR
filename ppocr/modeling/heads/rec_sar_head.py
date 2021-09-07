@@ -151,11 +151,11 @@ class ParallelSARDecoder(BaseDecoder):
                 **kwargs):
         super().__init__()
 
-        self.num_classes = num_classes
+        self.num_classes = out_channels
         self.enc_bi_rnn = enc_bi_rnn
         self.d_k = d_k
         self.start_idx = out_channels - 2
-	self.padding_idx = out_channels - 1
+        self.padding_idx = out_channels - 1
         self.max_seq_len = max_text_length
         self.mask = mask
         self.pred_concat = pred_concat
