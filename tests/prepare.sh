@@ -90,40 +90,44 @@ if [ ${MODE} = "cpp_infer" ];then
     cd deploy/cpp_infer
     use_opencv=$(func_parser_value "${lines[52]}")
     if [ ${use_opencv} = "True" ]; then
-        echo "################### build opencv ###################"
-        rm -rf 3.4.7.tar.gz opencv-3.4.7/
-        wget https://github.com/opencv/opencv/archive/3.4.7.tar.gz
-        tar -xf 3.4.7.tar.gz
+        if [ -d "opencv-3.4.7/opencv3/" ] && [ $(md5sum opencv-3.4.7.tar.gz | awk -F ' ' '{print $1}') = "faa2b5950f8bee3f03118e600c74746a" ];then
+            echo "################### build opencv skipped ###################"
+        else
+            echo "################### build opencv ###################"
+            rm -rf opencv-3.4.7.tar.gz opencv-3.4.7/
+            wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/opencv-3.4.7.tar.gz
+            tar -xf opencv-3.4.7.tar.gz
 
-        cd opencv-3.4.7/
-        install_path=$(pwd)/opencv-3.4.7/opencv3
+            cd opencv-3.4.7/
+            install_path=$(pwd)/opencv3
 
-        rm -rf build
-        mkdir build
-        cd build
+            rm -rf build
+            mkdir build
+            cd build
 
-        cmake .. \
-            -DCMAKE_INSTALL_PREFIX=${install_path} \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DBUILD_SHARED_LIBS=OFF \
-            -DWITH_IPP=OFF \
-            -DBUILD_IPP_IW=OFF \
-            -DWITH_LAPACK=OFF \
-            -DWITH_EIGEN=OFF \
-            -DCMAKE_INSTALL_LIBDIR=lib64 \
-            -DWITH_ZLIB=ON \
-            -DBUILD_ZLIB=ON \
-            -DWITH_JPEG=ON \
-            -DBUILD_JPEG=ON \
-            -DWITH_PNG=ON \
-            -DBUILD_PNG=ON \
-            -DWITH_TIFF=ON \
-            -DBUILD_TIFF=ON
+            cmake .. \
+                -DCMAKE_INSTALL_PREFIX=${install_path} \
+                -DCMAKE_BUILD_TYPE=Release \
+                -DBUILD_SHARED_LIBS=OFF \
+                -DWITH_IPP=OFF \
+                -DBUILD_IPP_IW=OFF \
+                -DWITH_LAPACK=OFF \
+                -DWITH_EIGEN=OFF \
+                -DCMAKE_INSTALL_LIBDIR=lib64 \
+                -DWITH_ZLIB=ON \
+                -DBUILD_ZLIB=ON \
+                -DWITH_JPEG=ON \
+                -DBUILD_JPEG=ON \
+                -DWITH_PNG=ON \
+                -DBUILD_PNG=ON \
+                -DWITH_TIFF=ON \
+                -DBUILD_TIFF=ON
 
-        make -j
-        make install
-        cd ../
-        echo "################### build opencv finished ###################"
+            make -j
+            make install
+            cd ../
+            echo "################### build opencv finished ###################"
+        fi
     fi
 
 
