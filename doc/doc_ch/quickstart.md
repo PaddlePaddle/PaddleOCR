@@ -90,7 +90,7 @@ cd /path/to/ppocr_img
   ```
 
 
-更多whl包使用可参考[whl包文档](./whl.md)
+如需使用2.0模型，请指定参数`--version 2.0`，paddleocr默认使用2.1模型。更多whl包使用可参考[whl包文档](./whl.md)
 
 
 <a name="212"></a>
