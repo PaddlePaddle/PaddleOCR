@@ -181,7 +181,7 @@ def parse_args(mMain=True):
         "--version",
         type=str,
         default='PP-OCRv2',
-        help='Model version number, the current model support list \
+        help='Model version, the current model support list \
     is as follows PP-OCRv2 Support Chinese detection and recognition model, PP-OCR support Chinese detection, recognition and \
     direction classifier, multilingual recognition model and table structure model'
     )
