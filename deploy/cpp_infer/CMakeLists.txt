@@ -1,4 +1,5 @@
 project(ppocr CXX C)
+cmake_minimum_required(VERSION 3.14)
 
 option(WITH_MKL        "Compile demo with MKL/OpenBlas support, default use MKL."       ON)
 option(WITH_GPU        "Compile demo with GPU/CPU, default use CPU."                    OFF)
@@ -206,13 +207,12 @@ endif()
 
 set(DEPS ${DEPS} ${OpenCV_LIBS})
 
-include(ExternalProject)
+include(FetchContent)
 include(external-cmake/auto-log.cmake)
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/autolog/src/extern_Autolog/auto_log)
+include_directories(${FETCHCONTENT_BASE_DIR}/extern_autolog-src)
 
 AUX_SOURCE_DIRECTORY(./src SRCS)
 add_executable(${DEMO_NAME} ${SRCS})
-
 target_link_libraries(${DEMO_NAME} ${DEPS})
 
 if (WIN32 AND WITH_MKL)

@@ -124,8 +124,6 @@ Most of the parameters are consistent with the paddleocr whl package, see [doc o
 After running, each image will have a directory with the same name under the directory specified in the output field. Each table in the picture will be stored as an excel and figure area will be cropped and saved, the excel and image file name will be the coordinates of the table in the image.
 
 ## 4. PP-Structure Pipeline
-
-the process is as follows
 ![pipeline](../doc/table/pipeline_en.jpg)
 
 In PP-Structure, the image will be analyzed by layoutparser first. In the layout analysis, the area in the image will be classified, including **text, title, image, list and table** 5 categories. For the first 4 types of areas, directly use the PP-OCR to complete the text detection and recognition. The table area will  be converted to an excel file of the same table style via Table OCR.

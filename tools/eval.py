@@ -27,7 +27,7 @@ from ppocr.data import build_dataloader
 from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
 from ppocr.metrics import build_metric
-from ppocr.utils.save_load import init_model, load_pretrained_params
+from ppocr.utils.save_load import init_model, load_dygraph_params
 from ppocr.utils.utility import print_dict
 import tools.program as program
 
@@ -61,7 +61,7 @@ def main():
     else:
         model_type = None
 
-    best_model_dict = init_model(config, model)
+    best_model_dict = load_dygraph_params(config, model, logger, None)
     if len(best_model_dict):
         logger.info('metric in ckpt ***************')
         for k, v in best_model_dict.items():

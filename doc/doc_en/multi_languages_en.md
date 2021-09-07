@@ -198,13 +198,13 @@ If necessary, you can read related documents:
 
 | Language  | Abbreviation | | Language  | Abbreviation |
 | ---  | --- | --- | ---  | --- |
-|chinese and english|ch| |Arabic|ar|
-|english|en| |Hindi|hi|
-|french|fr| |Uyghur|ug|
-|german|german| |Persian|fa|
-|japan|japan| |Urdu|ur|
-|korean|korean| | Serbian(latin) |rs_latin|
-|chinese traditional |ch_tra| |Occitan |oc|
+|Chinese & English|ch| |Arabic|ar|
+|English|en| |Hindi|hi|
+|French|fr| |Uyghur|ug|
+|German|german| |Persian|fa|
+|Japan|japan| |Urdu|ur|
+|Korean|korean| | Serbian(latin) |rs_latin|
+|Chinese Traditional |chinese_cht| |Occitan |oc|
 | Italian |it| |Marathi|mr|
 |Spanish |es| |Nepali|ne|
 | Portuguese|pt| |Serbian(cyrillic)|rs_cyrillic|

@@ -1,5 +1,6 @@
-## 文字识别
+# 文字识别
 
+本文提供了PaddleOCR文本识别任务的全流程指南，包括数据准备、模型训练、调优、评估、预测，各个阶段的详细说明：
 
 - [1 数据准备](#数据准备)
     - [1.1 自定义数据集](#自定义数据集)
@@ -9,22 +10,21 @@
 
 - [2 启动训练](#启动训练)
     - [2.1 数据增强](#数据增强)
-    - [2.2 训练](#训练)
-    - [2.3 小语种](#小语种)
+    - [2.2 通用模型训练](#通用模型训练)
+    - [2.3 多语言模型训练](#多语言模型训练)
 
 - [3 评估](#评估)
 
 - [4 预测](#预测)
-    - [4.1 训练引擎预测](#训练引擎预测)
 
 
 <a name="数据准备"></a>
-### 1. 数据准备
+## 1. 数据准备
 
 
 PaddleOCR 支持两种数据格式:
- - `lmdb` 用于训练以lmdb格式存储的数据集;
- - `通用数据` 用于训练以文本文件存储的数据集:
+ - `lmdb` 用于训练以lmdb格式存储的数据集(LMDBDataSet);
+ - `通用数据` 用于训练以文本文件存储的数据集(SimpleDataSet);
 
 训练数据的默认存储路径是 `PaddleOCR/train_data`,如果您的磁盘上已有数据集，只需创建软链接至数据集目录：
 
@@ -36,7 +36,7 @@ mklink /d <path/to/paddle_ocr>/train_data/dataset <path/to/dataset>
 ```
 
 <a name="准备数据集"></a>
-#### 1.1 自定义数据集
+### 1.1 自定义数据集
 下面以通用数据集为例， 介绍如何准备数据集：
 
 * 训练集
@@ -82,15 +82,15 @@ train_data/rec/train/word_002.jpg   用科技让复杂的世界更简单
 
 <a name="数据下载"></a>
 
-1.2 数据下载
+### 1.2 数据下载
 
-若您本地没有数据集，可以在官网下载 [icdar2015](http://rrc.cvc.uab.es/?ch=4&com=downloads) 数据，用于快速验证。也可以参考[DTRB](https://github.com/clovaai/deep-text-recognition-benchmark#download-lmdb-dataset-for-traininig-and-evaluation-from-here) ，下载 benchmark 所需的lmdb格式数据集。
+- ICDAR2015
 
-如果你使用的是icdar2015的公开数据集，PaddleOCR 提供了一份用于训练 icdar2015 数据集的标签文件，通过以下方式下载：
-
-如果希望复现SRN的论文指标，需要下载离线[增广数据](https://pan.baidu.com/s/1-HSZ-ZVdqBF2HaBZ5pRAKA),提取码: y3ry。增广数据是由MJSynth和SynthText做旋转和扰动得到的。数据下载完成后请解压到 {your_path}/PaddleOCR/train_data/data_lmdb_release/training/ 路径下。
+若您本地没有数据集，可以在官网下载 [ICDAR2015](http://rrc.cvc.uab.es/?ch=4&com=downloads) 数据，用于快速验证。也可以参考[DTRB](https://github.com/clovaai/deep-text-recognition-benchmark#download-lmdb-dataset-for-traininig-and-evaluation-from-here) ，下载 benchmark 所需的lmdb格式数据集。
 
 如果希望复现SAR的论文指标，需要下载[SynthAdd](https://pan.baidu.com/share/init?surl=uV0LtoNmcxbO-0YA7Ch4dg), 提取码：627x。此外，真实数据集icdar2013, icdar2015, cocotext, IIIT5也作为训练数据的一部分。具体数据细节可以参考论文SAR。
+
+如果你使用的是icdar2015的公开数据集，PaddleOCR 提供了一份用于训练 ICDAR2015 数据集的标签文件，通过以下方式下载：
 
 ```
 # 训练集标签
@@ -99,15 +99,25 @@ wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_t
 wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_test.txt
 ```
 
-PaddleOCR 也提供了数据格式转换脚本，可以将官网 label 转换支持的数据格式。 数据转换工具在 `ppocr/utils/gen_label.py`, 这里以训练集为例：
+PaddleOCR 也提供了数据格式转换脚本，可以将ICDAR官网 label 转换为PaddleOCR支持的数据格式。 数据转换工具在 `ppocr/utils/gen_label.py`, 这里以训练集为例：
 
 ```
 # 将官网下载的标签文件转换为 rec_gt_label.txt
 python gen_label.py --mode="rec" --input_path="{path/of/origin/label}" --output_label="rec_gt_label.txt"
 ```
 
+数据样式格式如下，(a)为原始图片,(b)为每张图片对应的 Ground Truth 文本文件：
+![](../datasets/icdar_rec.png)
+
+- 多语言数据集
+
+多语言模型的训练数据集均为100w的合成数据，使用了开源合成工具 [text_renderer](https://github.com/Sanster/text_renderer) ，少量的字体可以通过下面两种方式下载。
+* [百度网盘](https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA) 提取码：frgi
+* [google drive](https://drive.google.com/file/d/18cSWX7wXSy4G0tbKJ0d9PuIaiwRLHpjA/view)
+
+
 <a name="字典"></a>
-1.3 字典
+### 1.3 字典
 
 最后需要提供一个字典（{word_dict_name}.txt），使模型在训练时，可以将所有出现的字符映射为字典的索引。
 
@@ -154,13 +164,27 @@ PaddleOCR内置了一部分字典，可以按需使用。
 并将 `character_type` 设置为 `ch`。
 
 <a name="支持空格"></a>
-1.4 添加空格类别
+### 1.4 添加空格类别
 
 如果希望支持识别"空格"类别, 请将yml文件中的 `use_space_char` 字段设置为 `True`。
 
 
 <a name="启动训练"></a>
-### 2. 启动训练
+## 2. 启动训练
+
+<a name="数据增强"></a>
+### 2.1 数据增强
+
+PaddleOCR提供了多种数据增强方式，默认配置文件中已经添加了数据增广。
+
+默认的扰动方式有：颜色空间转换(cvtColor)、模糊(blur)、抖动(jitter)、噪声(Gasuss noise)、随机切割(random crop)、透视(perspective)、颜色反转(reverse)、TIA数据增广。
+
+训练过程中每种扰动方式以40%的概率被选择，具体代码实现请参考：[rec_img_aug.py](../../ppocr/data/imaug/rec_img_aug.py)
+
+*由于OpenCV的兼容性问题，扰动操作暂时只支持Linux*
+
+<a name="通用模型训练"></a>
+### 2.2 通用模型训练
 
 PaddleOCR提供了训练脚本、评估脚本和预测脚本，本节将以 CRNN 识别模型为例：
 
@@ -180,23 +204,16 @@ tar -xf rec_mv3_none_bilstm_ctc_v2.0_train.tar && rm -rf rec_mv3_none_bilstm_ctc
 *如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false*
 
 ```
-# GPU训练 支持单卡，多卡训练，通过--gpus参数指定卡号
+# GPU训练 支持单卡，多卡训练
 # 训练icdar15英文数据 训练日志会自动保存为 "{save_model_dir}" 下的train.log
+
+#单卡训练（训练周期长，不建议）
+python3 tools/train.py -c configs/rec/rec_icdar15_train.yml
+
+#多卡训练，通过--gpus参数指定卡号
 python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_icdar15_train.yml
 ```
-<a name="数据增强"></a>
-#### 2.1 数据增强
 
-PaddleOCR提供了多种数据增强方式，默认配置文件中已经添加了数据增广。
-
-默认的扰动方式有：颜色空间转换(cvtColor)、模糊(blur)、抖动(jitter)、噪声(Gasuss noise)、随机切割(random crop)、透视(perspective)、颜色反转(reverse)、TIA数据增广。
-
-训练过程中每种扰动方式以40%的概率被选择，具体代码实现请参考：[rec_img_aug.py](../../ppocr/data/imaug/rec_img_aug.py)
-
-*由于OpenCV的兼容性问题，扰动操作暂时只支持Linux*
-
-<a name="训练"></a>
-#### 2.2 训练
 
 PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_train.yml` 中修改 `eval_batch_step` 设置评估频率，默认每500个iter评估一次。评估过程中默认将最佳acc模型，保存为 `output/rec_CRNN/best_accuracy` 。
 
@@ -286,85 +303,12 @@ Eval:
 ```
 **注意，预测/评估时的配置文件请务必与训练一致。**
 
-<a name="小语种"></a>
-#### 2.3 小语种
+<a name="多语言模型训练"></a>
+### 2.3 多语言模型训练
 
 PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi_languages` 路径下提供了一个多语言的配置文件模版: [rec_multi_language_lite_train.yml](../../configs/rec/multi_language/rec_multi_language_lite_train.yml)。
 
-您有两种方式创建所需的配置文件：
-
-1. 通过脚本自动生成
-
-[generate_multi_language_configs.py](../../configs/rec/multi_language/generate_multi_language_configs.py) 可以帮助您生成多语言模型的配置文件
-
-- 以意大利语为例，如果您的数据是按如下格式准备的：
-    ```
-    |-train_data
-        |- it_train.txt # 训练集标签
-        |- it_val.txt # 验证集标签
-        |- data
-            |- word_001.jpg
-            |- word_002.jpg
-            |- word_003.jpg
-            | ...
-    ```
-
-    可以使用默认参数，生成配置文件：
-
-    ```bash
-    # 该代码需要在指定目录运行
-    cd PaddleOCR/configs/rec/multi_language/
-    # 通过-l或者--language参数设置需要生成的语种的配置文件，该命令会将默认参数写入配置文件
-    python3 generate_multi_language_configs.py -l it
-    ```
-
-- 如果您的数据放置在其他位置，或希望使用自己的字典，可以通过指定相关参数来生成配置文件:
-
-    ```bash
-    # -l或者--language字段是必须的
-    # --train修改训练集，--val修改验证集，--data_dir修改数据集目录，--dict修改字典路径， -o修改对应默认参数
-    cd PaddleOCR/configs/rec/multi_language/
-    python3 generate_multi_language_configs.py -l it \  # 语种
-    --train {path/of/train_label.txt} \ # 训练标签文件的路径
-    --val {path/of/val_label.txt} \     # 验证集标签文件的路径
-    --data_dir {train_data/path} \      # 训练数据的根目录
-    --dict {path/of/dict} \             # 字典文件路径
-    -o Global.use_gpu=False             # 是否使用gpu
-    ...
-
-    ```
-
-意大利文由拉丁字母组成，因此执行完命令后会得到名为 rec_latin_lite_train.yml 的配置文件。
-
-2. 手动修改配置文件
-
-   您也可以手动修改模版中的以下几个字段:
-
-   ```
-    Global:
-      use_gpu: True
-      epoch_num: 500
-      ...
-      character_type: it  # 需要识别的语种
-      character_dict_path:  {path/of/dict} # 字典文件所在路径
-
-   Train:
-      dataset:
-        name: SimpleDataSet
-        data_dir: train_data/ # 数据存放根目录
-        label_file_list: ["./train_data/train_list.txt"] # 训练集label路径
-      ...
-
-   Eval:
-      dataset:
-        name: SimpleDataSet
-        data_dir: train_data/ # 数据存放根目录
-        label_file_list: ["./train_data/val_list.txt"] # 验证集label路径
-      ...
-
-   ```
-
-目前PaddleOCR支持的多语言算法有：
+按语系划分，目前PaddleOCR支持的语种有：
 
 | 配置文件 |  算法名称 |   backbone |   trans   |   seq      |     pred     |  language | character_type |
 | :--------: |  :-------:   | :-------:  |   :-------:   |   :-----:   |  :-----:   | :-----:  | :-----:  |
@@ -380,10 +324,6 @@ PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi
 | rec_devanagari_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 梵文字母  | devanagari |
 
 更多支持语种请参考: [多语言模型](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/multi_languages.md#%E8%AF%AD%E7%A7%8D%E7%BC%A9%E5%86%99)
-
-多语言模型训练方式与中文模型一致，训练数据集均为100w的合成数据，少量的字体可以通过下面两种方式下载。
-* [百度网盘](https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA)。提取码：frgi。
-* [google drive](https://drive.google.com/file/d/18cSWX7wXSy4G0tbKJ0d9PuIaiwRLHpjA/view)
 
 如您希望在现有模型效果的基础上调优，请参考下列说明修改配置文件：
 
@@ -420,7 +360,7 @@ Eval:
     ...
 ```
 <a name="评估"></a>
-### 3 评估
+## 3 评估
 
 评估数据集可以通过 `configs/rec/rec_icdar15_train.yml`  修改Eval中的 `label_file_path` 设置。
 
@@ -430,14 +370,29 @@ python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec
 ```
 
 <a name="预测"></a>
-### 4 预测
-
-<a name="训练引擎预测"></a>
-#### 4.1 训练引擎的预测
+## 4 预测
 
 使用 PaddleOCR 训练好的模型，可以通过以下脚本进行快速预测。
 
-默认预测图片存储在 `infer_img` 里，通过 `-o Global.checkpoints` 指定权重：
+默认预测图片存储在 `infer_img` 里，通过 `-o Global.checkpoints` 加载训练好的参数文件：
+
+根据配置文件中设置的的 `save_model_dir` 和 `save_epoch_step` 字段，会有以下几种参数被保存下来：
+
+```
+output/rec/
+├── best_accuracy.pdopt  
+├── best_accuracy.pdparams  
+├── best_accuracy.states  
+├── config.yml  
+├── iter_epoch_3.pdopt  
+├── iter_epoch_3.pdparams  
+├── iter_epoch_3.states  
+├── latest.pdopt  
+├── latest.pdparams  
+├── latest.states  
+└── train.log
+```
+其中 best_accuracy.* 是评估集上的最优模型；iter_epoch_x.* 是以 `save_epoch_step` 为间隔保存下来的模型；latest.* 是最后一个epoch的模型。
 
 ```
 # 预测英文结果
