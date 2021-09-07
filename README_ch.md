@@ -92,14 +92,14 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - [快速开始（中英文/多语言/文档分析）](./doc/doc_ch/quickstart.md)
 - [PaddleOCR全景图与项目克隆](./doc/doc_ch/paddleOCR_overview.md)
 - PP-OCR产业落地：从训练到部署
-    - [PP-OCR模型与配置文件](./doc/doc_ch/models_and_config.md)
+    - [PP-OCR模型库](./doc/doc_ch/models.md)
         - [PP-OCR模型下载](./doc/doc_ch/models_list.md)
-        - [配置文件内容与生成](./doc/doc_ch/config.md)
-        - [PP-OCR模型库快速推理](./doc/doc_ch/inference_ppocr.md)
+        - [PP-OCR模型库Python推理](./doc/doc_ch/inference_ppocr.md)
     - [PP-OCR模型训练](./doc/doc_ch/training.md)
         - [文本检测](./doc/doc_ch/detection.md)
         - [文本识别](./doc/doc_ch/recognition.md)
         - [方向分类器](./doc/doc_ch/angle_class.md)
+        - [配置文件内容与生成](./doc/doc_ch/config.md)
     - PP-OCR模型推理部署
         - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
         - [服务化部署](./deploy/pdserving/README_CN.md)
