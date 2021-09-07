@@ -25,7 +25,7 @@ The icdar2015 dataset contains train set which has 1000 images obtained with wea
 After registering and logging in, download the part marked in the red box in the figure below. And, the content downloaded by `Training Set Images` should be saved as the folder `icdar_c4_train_imgs`, and the content downloaded by `Test Set Images` is saved as the folder `ch4_test_images`
 
 <p align="center">
- <img src="../datasets/ic15_location_download.png" align="middle" width = "600"/>
+ <img src="../datasets/ic15_location_download.png" align="middle" width = "700"/>
 <p align="center">
 
 Decompress the downloaded dataset to the working directory, assuming it is decompressed under PaddleOCR/train_data/. In addition, PaddleOCR organizes many scattered annotation files into two separate annotation files for train and test respectively, which can be downloaded by wget:
