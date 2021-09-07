@@ -195,7 +195,7 @@ class ParallelSARDecoder(BaseDecoder):
 
         # Prediction layer
         self.pred_dropout = nn.Dropout(pred_dropout)
-        pred_num_classes = num_classes - 1
+        pred_num_classes = self.num_classes - 1
         if pred_concat:
             fc_in_channel = decoder_rnn_out_size + d_model + d_enc
         else:
