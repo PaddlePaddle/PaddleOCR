@@ -21,12 +21,14 @@
 
 ```
 # 下载超轻量中文检测模型：
-wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tartar xf ch_ppocr_mobile_v2.0_det_infer.tarpython3 tools/infer/predict_det.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_ppocr_mobile_v2.0_det_infer/"
+wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar
+tar xf ch_ppocr_mobile_v2.0_det_infer.tar
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_ppocr_mobile_v2.0_det_infer/"
 ```
 
 可视化文本检测结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
 
-![](/Users/zhulingfeng01/OCR/PaddleOCR/doc/imgs_results/det_res_00018069.jpg)
+![](../imgs_results/det_res_00018069.jpg)
 
 通过参数`limit_type`和`det_limit_side_len`来对图片的尺寸进行限制，
 `limit_type`可选参数为[`max`, `min`]，
@@ -67,7 +69,7 @@ tar xf ch_ppocr_mobile_v2.0_rec_infer.tar
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --rec_model_dir="ch_ppocr_mobile_v2.0_rec_infer"
 ```
 
-![](/Users/zhulingfeng01/OCR/PaddleOCR/doc/imgs_words/ch/word_4.jpg)
+![](../imgs_words/ch/word_4.jpg)
 
 执行命令后，上面图像的预测结果（识别的文本和得分）会打印到屏幕上，示例如下：
 
@@ -86,7 +88,7 @@ Predicts of ./doc/imgs_words/ch/word_4.jpg:('实力活力', 0.98458153)
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" --rec_model_dir="./your inference model" --rec_char_type="korean" --rec_char_dict_path="ppocr/utils/dict/korean_dict.txt" --vis_font_path="doc/fonts/korean.ttf"
 ```
 
-![](/Users/zhulingfeng01/OCR/PaddleOCR/doc/imgs_words/korean/1.jpg)
+![](../imgs_words/korean/1.jpg)
 
 执行命令后，上图的预测结果为：
 
@@ -107,7 +109,7 @@ tar xf ch_ppocr_mobile_v2.0_cls_infer.tar
 python3 tools/infer/predict_cls.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --cls_model_dir="ch_ppocr_mobile_v2.0_cls_infer"
 ```
 
-![](/Users/zhulingfeng01/OCR/PaddleOCR/doc/imgs_words/ch/word_1.jpg)
+![](../imgs_words/ch/word_1.jpg)
 
 执行命令后，上面图像的预测结果（分类的方向和得分）会打印到屏幕上，示例如下：
 
@@ -132,5 +134,5 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --de
 
 执行命令后，识别结果图像如下：
 
-![](/Users/zhulingfeng01/OCR/PaddleOCR/doc/imgs_results/system_res_00018069.jpg)
+![](../imgs_results/system_res_00018069.jpg)
 
