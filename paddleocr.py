@@ -39,7 +39,7 @@ __all__ = [
 ]
 
 SUPPORT_DET_MODEL = ['DB']
-VERSION = '2.2.1'
+VERSION = '2.3'
 SUPPORT_REC_MODEL = ['CRNN']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
@@ -49,13 +49,13 @@ MODEL_URLS = {
         'det': {
             'ch': {
                 'url':
-                'https://paddleocr.bj.bcebos.com/dygraph_v2.1/chinese/ch_ppocr_mobile_v2.1_det_infer.tar',
+                'https://paddleocr.bj.bcebos.com/dygraph_v2.1/chinese/ch_PP-OCRv2_det_infer.tar',
             },
         },
         'rec': {
             'ch': {
                 'url':
-                'https://paddleocr.bj.bcebos.com/dygraph_v2.1/chinese/ch_ppocr_mobile_v2.1_rec_infer.tar',
+                'https://paddleocr.bj.bcebos.com/dygraph_v2.1/chinese/ch_PP-OCRv2_rec_infer.tar',
                 'dict_path': './ppocr/utils/ppocr_keys_v1.txt'
             }
         }
@@ -429,6 +429,7 @@ class PPStructure(OCRSystem):
 def main():
     # for cmd
     args = parse_args(mMain=True)
+    print(args)
     image_dir = args.image_dir
     if is_link(image_dir):
         download_with_progressbar(image_dir, 'tmp.jpg')
