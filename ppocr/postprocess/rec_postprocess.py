@@ -536,7 +536,7 @@ class SARLabelDecode(BaseRecLabelDecode):
         super(SARLabelDecode, self).__init__(character_dict_path,
                                              character_type, use_space_char)
 
-        self.rm_symbol = kwargs.get('rm_symbol', True)
+        self.rm_symbol = kwargs.get('rm_symbol', False)
 
     def add_special_char(self, dict_character):
         beg_end_str = "<BOS/EOS>"
