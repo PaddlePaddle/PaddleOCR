@@ -179,7 +179,7 @@ int main_system(std::vector<cv::String> cv_all_img_names) {
     for (int i = 0; i < cv_all_img_names.size(); ++i) {
       LOG(INFO) << "The predict img: " << cv_all_img_names[i];
 
-      cv::Mat srcimg = cv::imread(FLAGS_image_dir, cv::IMREAD_COLOR);
+      cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
       if (!srcimg.data) {
         std::cerr << "[ERROR] image read failed! image path: " << cv_all_img_names[i] << endl;
         exit(1);
