@@ -63,6 +63,7 @@ DEFINE_double(cls_thresh, 0.9, "Threshold of cls_thresh.");
 DEFINE_string(rec_model_dir, "", "Path of rec inference model.");
 DEFINE_int32(rec_batch_num, 1, "rec_batch_num.");
 DEFINE_string(char_list_file, "../../ppocr/utils/ppocr_keys_v1.txt", "Path of dictionary.");
+// DEFINE_string(char_list_file, "./ppocr/utils/ppocr_keys_v1.txt", "Path of dictionary.");
 
 
 using namespace std;
@@ -193,7 +194,7 @@ int main_system(std::vector<cv::String> cv_all_img_names) {
     for (int i = 0; i < cv_all_img_names.size(); ++i) {
       LOG(INFO) << "The predict img: " << cv_all_img_names[i];
 
-      cv::Mat srcimg = cv::imread(FLAGS_image_dir, cv::IMREAD_COLOR);
+      cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
       if (!srcimg.data) {
         std::cerr << "[ERROR] image read failed! image path: " << cv_all_img_names[i] << endl;
         exit(1);
