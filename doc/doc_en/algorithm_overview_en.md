@@ -1,5 +1,14 @@
+# Two-stage Algorithm
+
+- [1. Algorithm Introduction](#1-algorithm-introduction)
+  * [1.1 Text Detection Algorithm](#11-text-detection-algorithm)
+  * [1.2 Text Recognition Algorithm](#12-text-recognition-algorithm)
+- [2. Training](#2-training)
+- [3. Inference](#3-inference)
+
 <a name="Algorithm_introduction"></a>
-## Algorithm introduction
+
+## 1. Algorithm Introduction
 
 This tutorial lists the text detection algorithms and text recognition algorithms supported by PaddleOCR, as well as the models and metrics of each algorithm on **English public datasets**. It is mainly used for algorithm introduction and algorithm performance comparison. For more models on other datasets including Chinese, please refer to [PP-OCR v2.0 models list](./models_list_en.md).
 
@@ -8,7 +17,8 @@ This tutorial lists the text detection algorithms and text recognition algorithm
 - [2. Text Recognition Algorithm](#TEXTRECOGNITIONALGORITHM)
 
 <a name="TEXTDETECTIONALGORITHM"></a>
-### 1. Text Detection Algorithm
+
+### 1.1 Text Detection Algorithm
 
 PaddleOCR open source text detection algorithms list:
 - [x]  EAST([paper](https://arxiv.org/abs/1704.03155))[2]
@@ -38,7 +48,7 @@ On Total-Text dataset, the text detection result is as follows:
 For the training guide and use of PaddleOCR text detection algorithms, please refer to the document [Text detection model training/evaluation/prediction](./detection_en.md)
 
 <a name="TEXTRECOGNITIONALGORITHM"></a>
-### 2. Text Recognition Algorithm
+### 1.2 Text Recognition Algorithm
 
 PaddleOCR open-source text recognition algorithms list:
 - [x]  CRNN([paper](https://arxiv.org/abs/1507.05717))[7]
@@ -63,4 +73,12 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 |SRN|Resnet50_vd_fpn| 88.52% | rec_r50fpn_vd_none_srn |[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r50_vd_srn_train.tar)|
 |NRTR|NRTR_MTB| 84.3% | rec_mtb_nrtr | [Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mtb_nrtr_train.tar) |
 
-Please refer to the document for training guide and use of PaddleOCR text recognition algorithms [Text recognition model training/evaluation/prediction](./recognition_en.md)
+Please refer to the document for training guide and use of PaddleOCR 
+
+## 2. Training
+
+For the training guide and use of PaddleOCR text detection algorithms, please refer to the document [Text detection model training/evaluation/prediction](./detection_en.md). For text recognition algorithms, please refer to [Text recognition model training/evaluation/prediction](./recognition_en.md)
+
+## 3. Inference
+
+Except for the PP-OCR series models of the above models, the other models only support inference based on the Python engine. For details, please refer to [Inference based on Python prediction engine](./inference_en.md)
