@@ -44,7 +44,7 @@ DEFINE_int32(cpu_threads, 10, "Num of threads with CPU.");
 DEFINE_bool(enable_mkldnn, false, "Whether use mkldnn with CPU.");
 DEFINE_bool(use_tensorrt, false, "Whether use tensorrt.");
 DEFINE_string(precision, "fp32", "Precision be one of fp32/fp16/int8");
-DEFINE_bool(benchmark, true, "Whether use benchmark.");
+DEFINE_bool(benchmark, false, "Whether use benchmark.");
 DEFINE_string(save_log_path, "./log_output/", "Save benchmark log path.");
 // detection related
 DEFINE_string(image_dir, "", "Dir of input image.");
@@ -63,7 +63,6 @@ DEFINE_double(cls_thresh, 0.9, "Threshold of cls_thresh.");
 DEFINE_string(rec_model_dir, "", "Path of rec inference model.");
 DEFINE_int32(rec_batch_num, 1, "rec_batch_num.");
 DEFINE_string(char_list_file, "../../ppocr/utils/ppocr_keys_v1.txt", "Path of dictionary.");
-// DEFINE_string(char_list_file, "./ppocr/utils/ppocr_keys_v1.txt", "Path of dictionary.");
 
 
 using namespace std;
@@ -128,9 +127,15 @@ int main_det(std::vector<cv::String> cv_all_img_names) {
 
 int main_rec(std::vector<cv::String> cv_all_img_names) {
     std::vector<double> time_info = {0, 0, 0};
+    
+    std::string char_list_file = FLAGS_char_list_file;
+    if (FLAGS_benchmark) 
+        char_list_file = FLAGS_char_list_file.substr(6);
+    cout << "label file: " << char_list_file << endl;
+        
     CRNNRecognizer rec(FLAGS_rec_model_dir, FLAGS_use_gpu, FLAGS_gpu_id,
                        FLAGS_gpu_mem, FLAGS_cpu_threads,
-                       FLAGS_enable_mkldnn, FLAGS_char_list_file,
+                       FLAGS_enable_mkldnn, char_list_file,
                        FLAGS_use_tensorrt, FLAGS_precision);
 
     for (int i = 0; i < cv_all_img_names.size(); ++i) {
@@ -186,9 +191,14 @@ int main_system(std::vector<cv::String> cv_all_img_names) {
                            FLAGS_use_tensorrt, FLAGS_precision);
     }
 
+    std::string char_list_file = FLAGS_char_list_file;
+    if (FLAGS_benchmark) 
+        char_list_file = FLAGS_char_list_file.substr(6);
+    cout << "label file: " << char_list_file << endl;
+        
     CRNNRecognizer rec(FLAGS_rec_model_dir, FLAGS_use_gpu, FLAGS_gpu_id,
                        FLAGS_gpu_mem, FLAGS_cpu_threads,
-                       FLAGS_enable_mkldnn, FLAGS_char_list_file,
+                       FLAGS_enable_mkldnn, char_list_file,
                        FLAGS_use_tensorrt, FLAGS_precision);
 
     for (int i = 0; i < cv_all_img_names.size(); ++i) {
