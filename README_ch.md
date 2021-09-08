@@ -94,7 +94,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - PP-OCR产业落地：从训练到部署
     - [PP-OCR模型库](./doc/doc_ch/models.md)
         - [PP-OCR模型下载](./doc/doc_ch/models_list.md)
-        - [PP-OCR模型库Python推理](./doc/doc_ch/inference_ppocr.md)
+        - [基于Python引擎的PP-OCR模型库推理](./doc/doc_ch/inference_ppocr.md)
     - [PP-OCR模型训练](./doc/doc_ch/training.md)
         - [文本检测](./doc/doc_ch/detection.md)
         - [文本识别](./doc/doc_ch/recognition.md)
@@ -114,9 +114,10 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [其它数据标注工具](./doc/doc_ch/data_annotation.md)
     - [其它数据合成工具](./doc/doc_ch/data_synthesis.md)
 - OCR学术圈
-    - [两阶段模型介绍与下载](./doc/doc_ch/algorithm_overview.md)
+    - [两阶段算法](./doc/doc_ch/algorithm_overview.md)
     - [端到端PGNet算法](./doc/doc_ch/pgnet.md)
     - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
+    - [使用PaddleOCR架构添加新算法](./doc/doc_ch/add_new_algorithm.md)
 - 数据集
     - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
     - [手写中文OCR数据集](./doc/doc_ch/handwritten_datasets.md)
