@@ -192,7 +192,8 @@ if [ ${MODE} = "cpp_infer" ]; then
     cpp_infer_model_key=$(func_parser_key "${lines[62]}")
     cpp_image_dir_key=$(func_parser_key "${lines[63]}")
     cpp_infer_img_dir=$(func_parser_value "${lines[63]}")
-    cpp_save_log_key=$(func_parser_key "${lines[64]}")
+    cpp_infer_key1=$(func_parser_key "${lines[64]}")
+    cpp_infer_value1=$(func_parser_value "${lines[64]}")
     cpp_benchmark_key=$(func_parser_key "${lines[65]}")
     cpp_benchmark_value=$(func_parser_value "${lines[65]}")
 fi
@@ -368,7 +369,8 @@ function func_cpp_inference(){
                         set_batchsize=$(func_set_params "${cpp_batch_size_key}" "${batch_size}")
                         set_cpu_threads=$(func_set_params "${cpp_cpu_threads_key}" "${threads}")
                         set_model_dir=$(func_set_params "${cpp_infer_model_key}" "${_model_dir}")
-                        command="${_script} ${cpp_use_gpu_key}=${use_gpu} ${cpp_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} > ${_save_log_path} 2>&1 "
+                        set_infer_params1=$(func_set_params "${cpp_infer_key1}" "${cpp_infer_value1}")
+                        command="${_script} ${cpp_use_gpu_key}=${use_gpu} ${cpp_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} ${set_infer_params1} > ${_save_log_path} 2>&1 "
                         eval $command
                         last_status=${PIPESTATUS[0]}
                         eval "cat ${_save_log_path}"
@@ -396,7 +398,8 @@ function func_cpp_inference(){
                         set_tensorrt=$(func_set_params "${cpp_use_trt_key}" "${use_trt}")
                         set_precision=$(func_set_params "${cpp_precision_key}" "${precision}")
                         set_model_dir=$(func_set_params "${cpp_infer_model_key}" "${_model_dir}")
-                        command="${_script} ${cpp_use_gpu_key}=${use_gpu} ${set_tensorrt} ${set_precision} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} > ${_save_log_path} 2>&1 "
+                        set_infer_params1=$(func_set_params "${cpp_infer_key1}" "${cpp_infer_value1}")
+                        command="${_script} ${cpp_use_gpu_key}=${use_gpu} ${set_tensorrt} ${set_precision} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} ${set_infer_params1} > ${_save_log_path} 2>&1 "
                         eval $command
                         last_status=${PIPESTATUS[0]}
                         eval "cat ${_save_log_path}"
