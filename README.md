@@ -120,6 +120,7 @@ For a new language request, please refer to [Guideline for new language_requests
     - [Two-stage Algorithm](./doc/doc_en/algorithm_overview_en.md)
     - [PGNet Algorithm](./doc/doc_en/algorithm_overview_en.md)
     - [Python Inference](./doc/doc_en/inference_en.md)
+    - [Use PaddleOCR Architecture to Add New Algorithms](./doc/doc_en/add_new_algorithm_en.md)
 - Data Annotation and Synthesis
     - [Semi-automatic Annotation Tool: PPOCRLabel](./PPOCRLabel/README.md)
     - [Data Synthesis Tool: Style-Text](./StyleText/README.md)
@@ -127,7 +128,7 @@ For a new language request, please refer to [Guideline for new language_requests
     - [Other Data Synthesis Tools](./doc/doc_en/data_synthesis_en.md)
 - Datasets
     - [General OCR Datasets(Chinese/English)](./doc/doc_en/datasets_en.md)
-    - [HandWritten_OCR_Datasets(Chinese)](./doc/doc_en/handwritten_datasets_en.md)
+    - [Handwritten OCR Datasets(Chinese)](./doc/doc_en/handwritten_datasets_en.md)
     - [Various OCR Datasets(multilingual)](./doc/doc_en/vertical_and_multilingual_datasets_en.md)
 - [Visualization](#Visualization)
 - [New language requests](#language_requests)
