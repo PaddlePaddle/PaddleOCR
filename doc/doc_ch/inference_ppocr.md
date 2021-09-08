@@ -1,4 +1,4 @@
-# PP-OCR模型库快速推理
+# PP-OCR模型库Python推理
 
 本文介绍针对PP-OCR模型库的Python推理引擎使用方法，内容依次为文本检测、文本识别、方向分类器以及三者串联在CPU、GPU上的预测方法。
 
@@ -24,11 +24,12 @@
 wget  https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar
 tar xf ch_PP-OCRv2_det_infer.tar
 python3 tools/infer/predict_det.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_PP-OCRv2_det_infer.tar/"
+
 ```
 
 可视化文本检测结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
 
-![](/Users/zhulingfeng01/OCR/PaddleOCR/doc/imgs_results/det_res_00018069.jpg)
+![](../imgs_results/det_res_00018069.jpg)
 
 通过参数`limit_type`和`det_limit_side_len`来对图片的尺寸进行限制，
 `limit_type`可选参数为[`max`, `min`]，
@@ -69,7 +70,7 @@ tar xf ch_PP-OCRv2_rec_infer.tar
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --rec_model_dir="./ch_PP-OCRv2_rec_infer/"
 ```
 
-![](/Users/zhulingfeng01/OCR/PaddleOCR/doc/imgs_words/ch/word_4.jpg)
+![](../imgs_words/ch/word_4.jpg)
 
 执行命令后，上面图像的预测结果（识别的文本和得分）会打印到屏幕上，示例如下：
 
@@ -87,7 +88,7 @@ wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/korean_mobile_v2.
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" --rec_model_dir="./your inference model" --rec_char_type="korean" --rec_char_dict_path="ppocr/utils/dict/korean_dict.txt" --vis_font_path="doc/fonts/korean.ttf"
 ```
 
-![](/Users/zhulingfeng01/OCR/PaddleOCR/doc/imgs_words/korean/1.jpg)
+![](../imgs_words/korean/1.jpg)
 
 执行命令后，上图的预测结果为：
 
@@ -108,7 +109,7 @@ tar xf ch_ppocr_mobile_v2.0_cls_infer.tar
 python3 tools/infer/predict_cls.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --cls_model_dir="ch_ppocr_mobile_v2.0_cls_infer"
 ```
 
-![](/Users/zhulingfeng01/OCR/PaddleOCR/doc/imgs_words/ch/word_1.jpg)
+![](../imgs_words/ch/word_1.jpg)
 
 执行命令后，上面图像的预测结果（分类的方向和得分）会打印到屏幕上，示例如下：
 
@@ -133,4 +134,4 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --de
 
 执行命令后，识别结果图像如下：
 
-![](/Users/zhulingfeng01/OCR/PaddleOCR/doc/imgs_results/system_res_00018069.jpg)
+![](../imgs_results/system_res_00018069.jpg)
