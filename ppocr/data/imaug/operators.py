@@ -113,7 +113,7 @@ class NormalizeImage(object):
         assert isinstance(img,
                           np.ndarray), "invalid input 'img' in NormalizeImage"
         data['image'] = (
-                                img.astype('float32') * self.scale - self.mean) / self.std
+            img.astype('float32') * self.scale - self.mean) / self.std
         return data
 
 
@@ -142,6 +142,34 @@ class KeepKeys(object):
         for key in self.keep_keys:
             data_list.append(data[key])
         return data_list
+
+
+class Resize(object):
+    def __init__(self, size=(640, 640), **kwargs):
+        self.size = size
+
+    def resize_image(self, img):
+        resize_h, resize_w = self.size
+        ori_h, ori_w = img.shape[:2]  # (h, w, c)
+        ratio_h = float(resize_h) / ori_h
+        ratio_w = float(resize_w) / ori_w
+        img = cv2.resize(img, (int(resize_w), int(resize_h)))
+        return img, [ratio_h, ratio_w]
+
+    def __call__(self, data):
+        img = data['image']
+        text_polys = data['polys']
+
+        img_resize, [ratio_h, ratio_w] = self.resize_image(img)
+        new_boxes = []
+        for box in text_polys:
+            new_box = []
+            for cord in box:
+                new_box.append([cord[0] * ratio_w, cord[1] * ratio_h])
+            new_boxes.append(new_box)
+        data['image'] = img_resize
+        data['polys'] = np.array(new_boxes, dtype=np.float32)
+        return data
 
 
 class DetResizeForTest(object):
@@ -215,7 +243,7 @@ class DetResizeForTest(object):
             else:
                 ratio = 1.
         elif self.limit_type == 'resize_long':
-            ratio = float(limit_side_len) / max(h,w)
+            ratio = float(limit_side_len) / max(h, w)
         else:
             raise Exception('not support limit type, image ')
         resize_h = int(h * ratio)

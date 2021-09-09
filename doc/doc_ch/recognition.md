@@ -7,15 +7,13 @@
     - [1.2 数据下载](#数据下载)
     - [1.3 字典](#字典)  
     - [1.4 支持空格](#支持空格)
-
 - [2 启动训练](#启动训练)
     - [2.1 数据增强](#数据增强)
     - [2.2 通用模型训练](#通用模型训练)
     - [2.3 多语言模型训练](#多语言模型训练)
-
 - [3 评估](#评估)
-
 - [4 预测](#预测)
+- [5 转Inference模型测试](#Inference)
 
 
 <a name="数据准备"></a>
@@ -88,7 +86,10 @@ train_data/rec/train/word_002.jpg   用科技让复杂的世界更简单
 
 若您本地没有数据集，可以在官网下载 [ICDAR2015](http://rrc.cvc.uab.es/?ch=4&com=downloads) 数据，用于快速验证。也可以参考[DTRB](https://github.com/clovaai/deep-text-recognition-benchmark#download-lmdb-dataset-for-traininig-and-evaluation-from-here) ，下载 benchmark 所需的lmdb格式数据集。
 
+如果希望复现SAR的论文指标，需要下载[SynthAdd](https://pan.baidu.com/share/init?surl=uV0LtoNmcxbO-0YA7Ch4dg), 提取码：627x。此外，真实数据集icdar2013, icdar2015, cocotext, IIIT5也作为训练数据的一部分。具体数据细节可以参考论文SAR。
+
 如果你使用的是icdar2015的公开数据集，PaddleOCR 提供了一份用于训练 ICDAR2015 数据集的标签文件，通过以下方式下载：
+
 ```
 # 训练集标签
 wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_train.txt
@@ -232,6 +233,7 @@ PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/rec_icdar15_t
 | rec_r34_vd_tps_bilstm_att.yml |  CRNN |   Resnet34_vd |  TPS   |  BiLSTM |  att  |
 | rec_r50fpn_vd_none_srn.yml    | SRN | Resnet50_fpn_vd    | None    | rnn | srn |
 | rec_mtb_nrtr.yml    | NRTR | nrtr_mtb    | None    | transformer encoder | transformer decoder |
+| rec_r31_sar.yml               | SAR | ResNet31 | None | LSTM encoder | LSTM decoder |
 
 训练中文数据，推荐使用[rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：
 
@@ -424,3 +426,39 @@ python3 tools/infer_rec.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v
 infer_img: doc/imgs_words/ch/word_1.jpg
         result: ('韩国小馆', 0.997218)
 ```
+
+<a name="Inference"></a>
+
+## 5. 转Inference模型测试
+
+识别模型转inference模型与检测的方式相同，如下：
+
+```
+# -c 后面设置训练算法的yml配置文件
+# -o 配置可选参数
+# Global.pretrained_model 参数设置待转换的训练模型地址，不用添加文件后缀 .pdmodel，.pdopt或.pdparams。
+# Global.save_inference_dir参数设置转换的模型将保存的地址。
+
+python3 tools/export_model.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml -o Global.pretrained_model=./ch_lite/ch_ppocr_mobile_v2.0_rec_train/best_accuracy  Global.save_inference_dir=./inference/rec_crnn/
+```
+
+**注意：**如果您是在自己的数据集上训练的模型，并且调整了中文字符的字典文件，请注意修改配置文件中的`character_dict_path`是否是所需要的字典文件。
+
+转换成功后，在目录下有三个文件：
+
+```
+/inference/rec_crnn/
+    ├── inference.pdiparams         # 识别inference模型的参数文件
+    ├── inference.pdiparams.info    # 识别inference模型的参数信息，可忽略
+    └── inference.pdmodel           # 识别inference模型的program文件
+```
+
+- 自定义模型推理
+
+  如果训练时修改了文本的字典，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径，并且设置 `rec_char_type=ch`
+
+  ```
+  python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="ch" --rec_char_dict_path="your text dict path"
+  ```
+
+  
