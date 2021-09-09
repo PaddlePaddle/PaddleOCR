@@ -108,13 +108,14 @@ def load_dygraph_params(config, model, logger, optimizer):
         for k1, k2 in zip(state_dict.keys(), params.keys()):
             if list(state_dict[k1].shape) == list(params[k2].shape):
                 new_state_dict[k1] = params[k2]
-        else:
-            logger.info(
-                f"The shape of model params {k1} {state_dict[k1].shape} not matched with loaded params {k2} {params[k2].shape} !"
-            )
+            else:
+                logger.info(
+                    f"The shape of model params {k1} {state_dict[k1].shape} not matched with loaded params {k2} {params[k2].shape} !"
+                )
         model.set_state_dict(new_state_dict)
         logger.info(f"loaded pretrained_model successful from {pm}")
         return {}
+
 
 def load_pretrained_params(model, path):
     if path is None:
@@ -137,6 +138,7 @@ def load_pretrained_params(model, path):
     model.set_state_dict(new_state_dict)
     print(f"load pretrain successful from {path}")
     return model
+
 
 def save_model(model,
                optimizer,

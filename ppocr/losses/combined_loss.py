@@ -49,11 +49,15 @@ class CombinedLoss(nn.Layer):
             loss = loss_func(input, batch, **kargs)
             if isinstance(loss, paddle.Tensor):
                 loss = {"loss_{}_{}".format(str(loss), idx): loss}
+
             weight = self.loss_weight[idx]
-            for key in loss.keys():
-                if key == "loss":
-                    loss_all += loss[key] * weight
-                else:
-                    loss_dict["{}_{}".format(key, idx)] = loss[key]
+
+            loss = {key: loss[key] * weight for key in loss}
+
+            if "loss" in loss:
+                loss_all += loss["loss"]
+            else:
+                loss_all += paddle.add_n(list(loss.values()))
+            loss_dict.update(loss)
         loss_dict["loss"] = loss_all
         return loss_dict
