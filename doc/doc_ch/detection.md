@@ -14,7 +14,6 @@
   * [3.1 指标评估](#31-----)
   * [3.2 测试检测效果](#32-------)
 - [4. 模型导出与预测](#4--------)
-  * [4.1 转inference模型测试](#41--inference----)
 - [5. FAQ](#5-faq)
 
 <a name="1--------"></a>
@@ -206,9 +205,6 @@ python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./
 
 <a name="4--------"></a>
 # 4. 模型导出与预测
-
-<a name="41--inference----"></a>
-## 4.1 转inference模型测试
 
 inference 模型（`paddle.jit.save`保存的模型）
 一般是模型训练，把模型结构和模型参数保存在文件中的固化模型，多用于预测部署场景。

@@ -13,7 +13,6 @@ This section uses the icdar2015 dataset as an example to introduce the training,
   * [3.1 EVALUATION](#31-evaluation)
   * [3.2 TEST](#32-test)
 - [4. INFERENCE](#4-inference)
-  * [4.1 INFERENCE MODEL PREDICTION](#41-inference-model-prediction)
 - [2. FAQ](#2-faq)
 
 # 1 DATA AND WEIGHTS PREPARATIO
@@ -199,8 +198,6 @@ python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./
 ```
 
 # 4. INFERENCE
-
-## 4.1 INFERENCE MODEL PREDICTION
 
 The inference model (the model saved by `paddle.jit.save`) is generally a solidified model saved after the model training is completed, and is mostly used to give prediction in deployment.
 
