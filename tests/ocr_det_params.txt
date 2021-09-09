@@ -27,7 +27,7 @@ null:null
 ===========================infer_params===========================
 Global.save_inference_dir:./output/
 Global.pretrained_model:
-norm_export:tools/export_model.py -c tests/configs/det_mv3_db.yml -o 
+norm_export:tools/export_model.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o 
 quant_export:deploy/slim/quantization/export_model.py -c tests/configs/det_mv3_db.yml -o 
 fpgm_export:deploy/slim/prune/export_prune_model.py -c tests/configs/det_mv3_db.yml -o 
 distill_export:null
