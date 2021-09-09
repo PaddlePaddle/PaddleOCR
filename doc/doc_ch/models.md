@@ -2,7 +2,7 @@
 # PP-OCR模型库
 PP-OCR模型一节主要补充一些OCR模型的基本概念以及如何快速运用PP-OCR模型库中的模型。
 
-本节包含两个部分，首先在[PP-OCR模型下载](./models_list.md)中解释PP-OCR模型的类型概念，并提供所有模型的下载链接。然后在[PP-OCR模型库Python推理](./inference_ppocr.md)中介绍PP-OCR模型库的使用方法，可以通过Python推理引擎快速利用丰富的模型库模型获得测试结果。
+本节包含两个部分，首先在[PP-OCR模型下载](./models_list.md)中解释PP-OCR模型的类型概念，并提供所有模型的下载链接。然后在[基于Python引擎的PP-OCR模型库推理](./inference_ppocr.md)中介绍PP-OCR模型库的使用方法，可以通过Python推理引擎快速利用丰富的模型库模型获得测试结果。
 
 ------
 

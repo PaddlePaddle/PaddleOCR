@@ -1,5 +1,5 @@
 
-# Python Inference for PP-OCR Model Library
+# Python Inference for PP-OCR Model Zoo
 
 This article introduces the use of the Python inference engine for the PP-OCR model library. The content is in order of text detection, text recognition, direction classifier and the prediction method of the three in series on the CPU and GPU.
 
