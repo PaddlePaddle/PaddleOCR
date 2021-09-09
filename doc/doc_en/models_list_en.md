@@ -1,4 +1,4 @@
-## OCR model list（V2.1, updated on 2021.9.6）
+# OCR Model List（V2.1, updated on 2021.9.6）
 > **Note**
 > 1. Compared with the model v2.0, the 2.1 version of the detection model has a improvement in accuracy, and the 2.1 version of the recognition model is optimized in accuracy and CPU speed.
 > 2. Compared with [models 1.1](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/models_list_en.md), which are trained with static graph programming paradigm, models 2.0 are the dynamic graph trained version and achieve close performance.
@@ -6,9 +6,9 @@
 
 - [1. Text Detection Model](#Detection)
 - [2. Text Recognition Model](#Recognition)
-    - [Chinese Recognition Model](#Chinese)
-    - [English Recognition Model](#English)
-    - [Multilingual Recognition Model](#Multilingual)
+    - [2.1 Chinese Recognition Model](#Chinese)
+    - [2.2 English Recognition Model](#English)
+    - [2.3 Multilingual Recognition Model](#Multilingual)
 - [3. Text Angle Classification Model](#Angle)
 - [4. Paddle-Lite Model](#Paddle-Lite)
 
@@ -25,7 +25,7 @@ Relationship of the above models is as follows.
 ![](../imgs_en/model_prod_flow_en.png)
 
 <a name="Detection"></a>
-### 1. Text Detection Model
+## 1. Text Detection Model
 
 |model name|description|config|model size|download|
 | --- | --- | --- | --- | --- |
@@ -36,10 +36,10 @@ Relationship of the above models is as follows.
 |ch_ppocr_server_v2.0_det|General model, which is larger than the lightweight model, but achieved better performance|[ch_det_res18_db_v2.0.yml](../../configs/det/ch_ppocr_v2.0/ch_det_res18_db_v2.0.yml)|47M|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar)|
 
 <a name="Recognition"></a>
-### 2. Text Recognition Model
+## 2. Text Recognition Model
 
 <a name="Chinese"></a>
-#### Chinese Recognition Model
+### 2.1 Chinese Recognition Model
 
 |model name|description|config|model size|download|
 | --- | --- | --- | --- | --- |
@@ -53,7 +53,7 @@ Relationship of the above models is as follows.
 **Note:** The `trained model` is finetuned on the `pre-trained model` with real data and synthsized vertical text data, which achieved better performance in real scene. The `pre-trained model` is directly trained on the full amount of real data and synthsized data, which is more suitable for finetune on your own dataset.
 
 <a name="English"></a>
-#### English Recognition Model
+### 2.2 English Recognition Model
 
 |model name|description|config|model size|download|
 | --- | --- | --- | --- | --- |
@@ -61,7 +61,7 @@ Relationship of the above models is as follows.
 |en_number_mobile_v2.0_rec|Original lightweight model, supporting English and number recognition|[rec_en_number_lite_train.yml](../../configs/rec/multi_language/rec_en_number_lite_train.yml)|2.6M|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/en_number_mobile_v2.0_rec_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/en_number_mobile_v2.0_rec_train.tar) |
 
 <a name="Multilingual"></a>
-#### Multilingual Recognition Model（Updating...）
+### 2.3 Multilingual Recognition Model（Updating...）
 
 |model name| dict file | description|config|model size|download|
 | --- | --- | --- |--- | --- | --- |
@@ -82,7 +82,7 @@ For more supported languages, please refer to : [Multi-language model](./multi_l
 
 
 <a name="Angle"></a>
-### 3. Text Angle Classification Model
+## 3. Text Angle Classification Model
 
 |model name|description|config|model size|download|
 | --- | --- | --- | --- | --- |
@@ -90,7 +90,7 @@ For more supported languages, please refer to : [Multi-language model](./multi_l
 |ch_ppocr_mobile_v2.0_cls|Original model for text angle classification|[cls_mv3.yml](../../configs/cls/cls_mv3.yml)|1.38M|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |
 
 <a name="Paddle-Lite"></a>
-### 4. Paddle-Lite Model
+## 4. Paddle-Lite Model
 |Version|Introduction|Model size|Detection model|Text Direction model|Recognition model|Paddle-Lite branch|
 |---|---|---|---|---|---|---|
 |PP-OCRv2|extra-lightweight chinese OCR optimized model|11M|[download link](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer_opt.nb)|[download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_opt.nb)|[download link](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer_opt.nb)|v2.9|
