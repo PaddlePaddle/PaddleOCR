@@ -17,11 +17,11 @@ norm_train:tools/train.py -c configs/rec/rec_icdar15_train.yml -o
 pact_train:deploy/slim/quantization/quant.py -c configs/rec/rec_icdar15_train.yml -o
 fpgm_train:null
 distill_train:null
-null:null
+kl_quant:deploy/slim/quantization/quant_kl.py -c  configs/rec/rec_icdar15_train.yml -o Global.pretrained_model=./inference/ch_ppocr_mobile_v2.0_rec_infer/
 null:null
 ##
 ===========================eval_params===========================
-eval:tools/eval.py -c configs/rec/rec_icdar15_train.yml -o
+eval:null
 null:null
 ##
 ===========================infer_params===========================
