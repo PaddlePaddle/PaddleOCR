@@ -47,13 +47,12 @@ PaddleOCR提供2种服务部署方式：
     在[下载链接](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md)中找到对应python版本的client安装包，这里推荐python3.7版本：
 
     ```
-    wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_client-0.0.0-cp37-none-any.whl
-    pip3 install paddle_serving_client-0.0.0-cp37-none-any.whl
+    pip3 install paddle-serving-client==0.6.3
     ```
 
 3. 安装serving-app
     ```
-    pip3 install paddle-serving-app==0.6.1
+    pip3 install paddle-serving-app==0.6.3
     ```
 
     **Note:** 如果要安装最新版本的PaddleServing参考[链接](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md)。
