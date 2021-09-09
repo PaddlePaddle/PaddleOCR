@@ -1,14 +1,14 @@
 # PP-OCR Model Zoo
 The PP-OCR model zoo section explains some basic concepts of the OCR model and how to quickly use the models in the PP-OCR model library.
 
-This section contains two parts. Firstly, [PP-OCR Model Download](. /models_list_en.md) explains the concept of PP-OCR model types and provides links to download all models.  The next [Python Inference for PP-OCR Model Library](. /inference_ppocr_en.md) is an introduction to the use of the PP-OCR model library, which can quickly utilize the rich model library models to obtain test results through the Python inference engine.
+This section contains two parts. Firstly, [PP-OCR Model Download](./models_list_en.md) explains the concept of PP-OCR model types and provides links to download all models.  The next [Python Inference for PP-OCR Model Zoo](./inference_ppocr_en.md) is an introduction to the use of the PP-OCR model library, which can quickly utilize the rich model library models to obtain test results through the Python inference engine.
 
 ------
 
 Let's first understand some basic concepts.
 
 - [INTRODUCTION ABOUT OCR](#introduction-about-ocr)
-  * [BASIC CONCEPTS OF OCR DETECTION MODEL](#basic-concepts-of-ocr-detection-model)
+  * [Basic concepts of OCR detection model](#basic-concepts-of-ocr-detection-model)
   * [Basic concepts of OCR recognition model](#basic-concepts-of-ocr-recognition-model)
   * [PP-OCR model](#pp-ocr-model)
   * [And a table of contents](#and-a-table-of-contents)
@@ -24,7 +24,7 @@ OCR (Optical Character Recognition, Optical Character Recognition) is currently 
 OCR text recognition generally includes two parts, text detection and text recognition. The text detection module first uses detection algorithms to detect text lines in the image. And then the recognition algorithm to identify the specific text in the text line.
 
 
-### 1.1 BASIC CONCEPTS OF OCR DETECTION MODEL
+### 1.1 Basic concepts of OCR detection model
 
 Text detection can locate the text area in the image, and then usually mark the word or text line in the form of a bounding box. Traditional text detection algorithms mostly extract features manually, which are characterized by fast speed and good effect in simple scenes, but the effect will be greatly reduced when faced with natural scenes. Currently, deep learning methods are mostly used.
 
