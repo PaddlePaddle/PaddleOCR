@@ -5,13 +5,10 @@ This article introduces the use of the Python inference engine for the PP-OCR mo
 
 
 - [Text Detection Model Inference](#DETECTION_MODEL_INFERENCE)
-
 - [Text Recognition Model Inference](#RECOGNITION_MODEL_INFERENCE)
     - [1. Lightweight Chinese Recognition Model Inference](#LIGHTWEIGHT_RECOGNITION)
     - [2. Multilingaul Model Inference](#MULTILINGUAL_MODEL_INFERENCE)
-
 - [Angle Classification Model Inference](#ANGLE_CLASS_MODEL_INFERENCE)
-
 - [Text Detection Angle Classification and Recognition Inference Concatenation](#CONCATENATION)
 
 <a name="DETECTION_MODEL_INFERENCE"></a>
