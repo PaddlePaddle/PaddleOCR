@@ -430,7 +430,9 @@ if [ ${MODE} = "infer" ]; then
             save_infer_dir=$(dirname $infer_model)
             set_export_weight=$(func_set_params "${export_weight}" "${infer_model}")
             set_save_infer_key=$(func_set_params "${save_infer_key}" "${save_infer_dir}")
-            export_cmd="${python} ${norm_export} ${set_export_weight} ${set_save_infer_key}"
+            export_cmd="${python} ${infer_run_exports[Count]} ${set_export_weight} ${set_save_infer_key}"
+            echo ${infer_run_exports[Count]} 
+            echo  $export_cmd
             eval $export_cmd
             status_export=$?
             status_check $status_export "${export_cmd}" "${status_log}"
