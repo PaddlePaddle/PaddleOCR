@@ -1,21 +1,21 @@
-# CONTENT
-
-- [Paste Your Document In Here](#paste-your-document-in-here)
-- [1. TEXT DETECTION](#1-text-detection)
-  * [1.1 DATA PREPARATION](#11-data-preparation)
-  * [1.2 DOWNLOAD PRETRAINED MODEL](#12-download-pretrained-model)
-  * [1.3 START TRAINING](#13-start-training)
-  * [1.4 LOAD TRAINED MODEL AND CONTINUE TRAINING](#14-load-trained-model-and-continue-training)
-  * [1.5 TRAINING WITH NEW BACKBONE](#15-training-with-new-backbone)
-  * [1.6 EVALUATION](#16-evaluation)
-  * [1.7 TEST](#17-test)
-  * [1.8 INFERENCE MODEL PREDICTION](#18-inference-model-prediction)
-- [2. FAQ](#2-faq)
-
-
-# 1. TEXT DETECTION
+# TEXT DETECTION
 
 This section uses the icdar2015 dataset as an example to introduce the training, evaluation, and testing of the detection model in PaddleOCR.
+
+- [1. DATA AND WEIGHTS PREPARATIO](#1-data-and-weights-preparatio)
+  * [1.1 DATA PREPARATION](#11-data-preparation)
+  * [1.2 DOWNLOAD PRETRAINED MODEL](#12-download-pretrained-model)
+- [2. TRAINING](#2-training)
+  * [2.1 START TRAINING](#21-start-training)
+  * [2.2 LOAD TRAINED MODEL AND CONTINUE TRAINING](#22-load-trained-model-and-continue-training)
+  * [2.3 TRAINING WITH NEW BACKBONE](#23-training-with-new-backbone)
+- [3. EVALUATION AND TEST](#3-evaluation-and-test)
+  * [3.1 EVALUATION](#31-evaluation)
+  * [3.2 TEST](#32-test)
+- [4. INFERENCE](#4-inference)
+- [2. FAQ](#2-faq)
+
+# 1 DATA AND WEIGHTS PREPARATIO
 
 ## 1.1 DATA PREPARATION
 
@@ -75,7 +75,10 @@ wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dyg
 
 ```
 
-## 1.3 START TRAINING
+# 2. TRAINING
+
+## 2.1 START TRAINING
+
 *If CPU version installed, please set the parameter `use_gpu` to `false` in the configuration.*
 ```shell
 python3 tools/train.py -c configs/det/det_mv3_db.yml  \
@@ -98,7 +101,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 
 ```
 
-## 1.4 LOAD TRAINED MODEL AND CONTINUE TRAINING
+## 2.2 LOAD TRAINED MODEL AND CONTINUE TRAINING
 If you expect to load trained model and continue the training again, you can specify the parameter `Global.checkpoints` as the model path to be loaded.
 
 For example:
@@ -109,7 +112,7 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./you
 **Note**: The priority of `Global.checkpoints` is higher than that of `Global.pretrain_weights`, that is, when two parameters are specified at the same time, the model specified by `Global.checkpoints` will be loaded first. If the model path specified by `Global.checkpoints` is wrong, the one specified by `Global.pretrain_weights` will be loaded.
 
 
-## 1.5 TRAINING WITH NEW BACKBONE
+## 2.3 TRAINING WITH NEW BACKBONE
 
 The network part completes the construction of the network, and PaddleOCR divides the network into four parts, which are under [ppocr/modeling](../../ppocr/modeling). The data entering the network will pass through these four parts in sequence(transforms->backbones->
 necks->heads).
@@ -159,7 +162,9 @@ After adding the four-part modules of the network, you only need to configure th
 
 **NOTE**: More details about replace Backbone and other mudule can be found in [doc](add_new_algorithm_en.md).
 
-## 1.6 EVALUATION
+# 3. EVALUATION AND TEST
+
+## 3.1 EVALUATION
 
 PaddleOCR calculates three indicators for evaluating performance of OCR detection task: Precision, Recall, and Hmean(F-Score).
 
@@ -174,7 +179,7 @@ python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="{pat
 
 * Note: `box_thresh` and `unclip_ratio` are parameters required for DB post-processing, and not need to be set when evaluating the EAST and SAST model.
 
-## 1.7 TEST
+## 3.2 TEST
 
 Test the detection result on a single image:
 ```shell
@@ -192,7 +197,7 @@ Test the detection result on all images in the folder:
 python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./doc/imgs_en/" Global.pretrained_model="./output/det_db/best_accuracy"
 ```
 
-## 1.8 INFERENCE MODEL PREDICTION
+# 4. INFERENCE
 
 The inference model (the model saved by `paddle.jit.save`) is generally a solidified model saved after the model training is completed, and is mostly used to give prediction in deployment.
 
