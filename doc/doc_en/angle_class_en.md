@@ -1,13 +1,22 @@
-## TEXT ANGLE CLASSIFICATION
+# TEXT ANGLE CLASSIFICATION
 
-### Method introduction
+- [Method Introduction](#method-introduction)
+- [Data Preparation](#data-preparation)
+- [Training](#training)
+- [Evaluation](#evaluation)
+- [Prediction](#prediction)
+
+<a name="method-introduction"></a>
+## Method Introduction
 The angle classification is used in the scene where the image is not 0 degrees. In this scene, it is necessary to perform a correction operation on the text line detected in the picture. In the PaddleOCR system,
 The text line image obtained after text detection is sent to the recognition model after affine transformation. At this time, only a 0 and 180 degree angle classification of the text is required, so the built-in PaddleOCR text angle classifier **only supports 0 and 180 degree classification**. If you want to support more angles, you can modify the algorithm yourself to support.
 
 Example of 0 and 180 degree data samples：
 
 ![](../imgs_results/angle_class_example.jpg)
-### DATA PREPARATION
+
+<a name="data-preparation"></a>
+## Data Preparation
 
 Please organize the dataset as follows:
 
@@ -62,8 +71,8 @@ containing all images (test) and a cls_gt_test.txt. The structure of the test se
             |- word_003.jpg
             | ...
 ```
-
-### TRAINING
+<a name="training"></a>
+## Training
 Write the prepared txt file and image folder path into the configuration file under the `Train/Eval.dataset.label_file_list` and `Train/Eval.dataset.data_dir` fields, the absolute path of the image consists of the `Train/Eval.dataset.data_dir` field and the image name recorded in the txt file.
 
 PaddleOCR provides training scripts, evaluation scripts, and prediction scripts.
@@ -107,7 +116,8 @@ If the evaluation set is large, the test will be time-consuming. It is recommend
 
 **Note that the configuration file for prediction/evaluation must be consistent with the training.**
 
-### EVALUATION
+<a name="evaluation"></a>
+## Evaluation
 
 The evaluation dataset can be set by modifying the `Eval.dataset.label_file_list` field in the `configs/cls/cls_mv3.yml` file.
 
@@ -116,8 +126,8 @@ export CUDA_VISIBLE_DEVICES=0
 # GPU evaluation, Global.checkpoints is the weight to be tested
 python3 tools/eval.py -c configs/cls/cls_mv3.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
-
-### PREDICTION
+<a name="prediction"></a>
+## Prediction
 
 * Training engine prediction
 
