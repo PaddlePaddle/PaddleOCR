@@ -21,7 +21,7 @@ null:null
 null:null
 ##
 ===========================eval_params===========================
-eval:null
+eval:tools/eval.py -c configs/rec/rec_icdar15_train.yml -o
 null:null
 ##
 ===========================infer_params===========================
