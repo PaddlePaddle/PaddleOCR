@@ -137,7 +137,8 @@ def main(config, device, logger, vdl_writer):
         sample_generator=sample_generator(train_dataloader),
         save_model_filename='inference.pdmodel',
         save_params_filename='inference.pdiparams',
-        batch_nums=10)
+        batch_size=1,
+        batch_nums=None)
 
 
 if __name__ == '__main__':
