@@ -49,13 +49,12 @@ PaddleOCR operating environment and Paddle Serving operating environment are nee
     The python3.7 version is recommended here:
 
     ```
-    wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_client-0.0.0-cp37-none-any.whl
-    pip3 install paddle_serving_client-0.0.0-cp37-none-any.whl
+    pip3 install paddle-serving-client==0.6.3
     ```
 
 4. Install serving-app
     ```
-    pip3 install paddle-serving-app==0.6.1
+    pip3 install paddle-serving-app==0.6.3
     ```
 
    **note:** If you want to install the latest version of PaddleServing, refer to [link](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md).
