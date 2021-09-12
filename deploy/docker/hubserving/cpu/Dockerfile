@@ -14,8 +14,8 @@ RUN pip3.7 install -r requirements.txt -i https://mirror.baidu.com/pypi/simple
 
 RUN mkdir -p /PaddleOCR/inference/
 # Download orc detect model(light version). if you want to change normal version, you can change ch_ppocr_mobile_v2.0_det_infer to ch_ppocr_server_v2.0_det_infer, also remember change det_model_dir in deploy/hubserving/ocr_system/params.py）
-ADD https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar /PaddleOCR/inference/
-RUN tar xf /PaddleOCR/inference/ch_ppocr_server_v2.0_det_infer.tar -C /PaddleOCR/inference/
+ADD http://124.232.163.91:9000/aifacen/20210912/89364402b421460d89322bd29a6512a8.tar /PaddleOCR/inference/
+RUN tar xf /PaddleOCR/inference/89364402b421460d89322bd29a6512a8.tar -C /PaddleOCR/inference/
 
 # Download direction classifier(light version). If you want to change normal version, you can change ch_ppocr_mobile_v2.0_cls_infer to ch_ppocr_mobile_v2.0_cls_infer, also remember change cls_model_dir in deploy/hubserving/ocr_system/params.py）
 ADD https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar /PaddleOCR/inference/

@@ -13,7 +13,7 @@ def read_params():
 
     #params for text detector
     cfg.det_algorithm = "DB"
-    cfg.det_model_dir = "./inference/ch_ppocr_server_v2.0_det_infer"
+    cfg.det_model_dir = "./inference/det_ch_db_res18_v20210902"
     cfg.det_limit_side_len = 960
     cfg.det_limit_type = 'max'
 
