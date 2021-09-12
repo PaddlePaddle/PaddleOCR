@@ -10,7 +10,7 @@ sys.path.insert(0, ".")
 import copy
 
 import time
-
+from gettext import gettext as _
 from paddlehub.common.logger import logger
 from paddlehub.module.module import moduleinfo, serving
 import cv2
@@ -50,8 +50,8 @@ class OCRSystem(hub.Module):
                 )
         cfg.ir_optim = True
         cfg.enable_mkldnn = enable_mkldnn
-        logger.info("TextSystem dumps cfg")
-        print(list(cfg))
+        msg = _('arguments: %s')
+        logger.info(msg % ' '.join(cfg))
         self.text_sys = TextSystem(cfg)
 
     def merge_configs(self, ):
