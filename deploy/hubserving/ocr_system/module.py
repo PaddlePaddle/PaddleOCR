@@ -16,7 +16,6 @@ from paddlehub.module.module import moduleinfo, serving
 import cv2
 import numpy as np
 import paddlehub as hub
-import json
 from tools.infer.utility import base64_to_cv2
 from tools.infer.predict_system import TextSystem
 from tools.infer.utility import parse_args
@@ -51,7 +50,8 @@ class OCRSystem(hub.Module):
                 )
         cfg.ir_optim = True
         cfg.enable_mkldnn = enable_mkldnn
-        logger.info("TextSystem dumps cfg: {}", json.dumps(cfg, sort_keys=True, indent=4, separators=(', ', ': ')))
+        logger.info("TextSystem dumps cfg")
+        print(list(cfg))
         self.text_sys = TextSystem(cfg)
 
     def merge_configs(self, ):
