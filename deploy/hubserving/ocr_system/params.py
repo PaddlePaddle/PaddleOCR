@@ -32,7 +32,7 @@ def read_params():
 
     # params for text recognizer
     cfg.rec_algorithm = "CRNN"
-    cfg.rec_model_dir = "./inference/ch_ppocr_server_v2.0_rec_infer"
+    cfg.rec_model_dir = "./inference/rec_chinese_common_train_v2.0_v20210821"
 
     cfg.rec_image_shape = "3, 32, 320"
     cfg.rec_char_type = 'ch'

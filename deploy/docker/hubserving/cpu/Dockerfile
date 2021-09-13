@@ -14,16 +14,16 @@ RUN pip3.7 install -r requirements.txt -i https://mirror.baidu.com/pypi/simple
 
 RUN mkdir -p /PaddleOCR/inference/
 # Download orc detect model(light version). if you want to change normal version, you can change ch_ppocr_mobile_v2.0_det_infer to ch_ppocr_server_v2.0_det_infer, also remember change det_model_dir in deploy/hubserving/ocr_system/params.py）
-ADD http://124.232.163.91:9000/aifacen/20210912/89364402b421460d89322bd29a6512a8.tar /PaddleOCR/inference/
-RUN tar xf /PaddleOCR/inference/89364402b421460d89322bd29a6512a8.tar -C /PaddleOCR/inference/
+ADD http://124.232.163.91:9000/openaifacen/stor/20210913/det_ch_db_res18_v20210902.tar /PaddleOCR/inference/
+RUN tar xf /PaddleOCR/inference/det_ch_db_res18_v20210902.tar -C /PaddleOCR/inference/
 
 # Download direction classifier(light version). If you want to change normal version, you can change ch_ppocr_mobile_v2.0_cls_infer to ch_ppocr_mobile_v2.0_cls_infer, also remember change cls_model_dir in deploy/hubserving/ocr_system/params.py）
 ADD https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar /PaddleOCR/inference/
 RUN tar xf /PaddleOCR/inference/ch_ppocr_mobile_v2.0_cls_infer.tar -C /PaddleOCR/inference/
 
 # Download orc recognition model(light version). If you want to change normal version, you can change ch_ppocr_mobile_v2.0_rec_infer to ch_ppocr_server_v2.0_rec_infer, also remember change rec_model_dir in deploy/hubserving/ocr_system/params.py）
-ADD https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar /PaddleOCR/inference/
-RUN tar xf /PaddleOCR/inference/ch_ppocr_server_v2.0_rec_infer.tar -C /PaddleOCR/inference/
+ADD http://124.232.163.91:9000/openaifacen/stor/20210913/rec_chinese_common_train_v2.0_v20210821.tar /PaddleOCR/inference/
+RUN tar xf /PaddleOCR/inference/rec_chinese_common_train_v2.0_v20210821.tar -C /PaddleOCR/inference/
 
 RUN ls -lshR /PaddleOCR/inference/
 
