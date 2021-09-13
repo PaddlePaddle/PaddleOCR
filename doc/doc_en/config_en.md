@@ -1,4 +1,12 @@
-## Optional parameter list
+# Configuration 
+
+- [1. Optional Parameter List](#1-optional-parameter-list)
+- [2. Intorduction to Global Parameters of Configuration File](#2-intorduction-to-global-parameters-of-configuration-file)
+- [3. Multilingual Config File Generation](#3-multilingual-config-file-generation)
+
+<a name="1-optional-parameter-list"></a>
+
+## 1. Optional Parameter List
 
 The following list can be viewed through `--help`
 
@@ -7,7 +15,9 @@ The following list can be viewed through `--help`
 |          -c              |      ALL       |  Specify configuration file to use  |  None  |  **Please refer to the parameter introduction for configuration file usage** |
 |          -o              |      ALL       |  set configuration options  |  None  |  Configuration using -o has higher priority than the configuration file selected with -c. E.g: -o Global.use_gpu=false |
 
-## INTRODUCTION TO GLOBAL PARAMETERS OF CONFIGURATION FILE
+<a name="2-intorduction-to-global-parameters-of-configuration-file"></a>
+
+## 2. Intorduction to Global Parameters of Configuration File
 
 Take rec_chinese_lite_train_v2.0.yml as an example
 ### Global
@@ -121,8 +131,9 @@ In PaddleOCR, the network is divided into four stages: Transform, Backbone, Neck
 |      drop_last        |        Whether to discard the last incomplete mini-batch because the number of samples in the data set cannot be divisible by batch_size        |  True | \  |
 |      num_workers        |        The number of sub-processes used to load data, if it is 0, the sub-process is not started, and the data is loaded in the main process       |  8 | \  |
 
+<a name="3-multilingual-config-file-generation"></a>
 
-## 3. MULTILINGUAL CONFIG FILE GENERATION
+## 3. Multilingual Config File Generation
 
 PaddleOCR currently supports 80 (except Chinese) language recognition. A multi-language configuration file template is
 provided under the path `configs/rec/multi_languages`: [rec_multi_language_lite_train.yml](../../configs/rec/multi_language/rec_multi_language_lite_train.yml)。
@@ -187,21 +198,21 @@ Italian is made up of Latin letters, so after executing the command, you will ge
       ...
       character_type: it  # language
       character_dict_path:  {path/of/dict} # path of dict
-
+   
    Train:
       dataset:
         name: SimpleDataSet
         data_dir: train_data/ # root directory of training data
         label_file_list: ["./train_data/train_list.txt"] # train label path
       ...
-
+   
    Eval:
       dataset:
         name: SimpleDataSet
         data_dir: train_data/ # root directory of val data
         label_file_list: ["./train_data/val_list.txt"] # val label path
       ...
-
+   
    ```
 
 

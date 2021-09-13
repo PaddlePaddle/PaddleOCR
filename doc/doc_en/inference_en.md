@@ -1,5 +1,5 @@
 
-# Reasoning based on Python prediction engine
+# Inference based on Python Prediction Engine
 
 The inference model (the model saved by `paddle.jit.save`) is generally a solidified model saved after the model training is completed, and is mostly used to give prediction in deployment.
 
@@ -10,21 +10,21 @@ For more details, please refer to the document [Classification Framework](https:
 
 Next, we first introduce how to convert a trained model into an inference model, and then we will introduce text detection, text recognition, angle class, and the concatenation of them based on inference model.
 
-- [CONVERT TRAINING MODEL TO INFERENCE MODEL](#CONVERT)
-    - [Convert detection model to inference model](#Convert_detection_model)
-    - [Convert recognition model to inference model](#Convert_recognition_model)
-    - [Convert angle classification model to inference model](#Convert_angle_class_model)
+- [1. Convert Training Model to Inference Model](#CONVERT)
+    - [1.1 Convert Detection Model to Inference Model](#Convert_detection_model)
+    - [1.2 Convert Recognition Model to Inference Model](#Convert_recognition_model)
+    - [1.3 Convert Angle Classification Model to Inference Model](#Convert_angle_class_model)
 
 
-- [TEXT DETECTION MODEL INFERENCE](#DETECTION_MODEL_INFERENCE)
-    - [1. LIGHTWEIGHT CHINESE DETECTION MODEL INFERENCE](#LIGHTWEIGHT_DETECTION)
-    - [2. DB TEXT DETECTION MODEL INFERENCE](#DB_DETECTION)
-    - [3. EAST TEXT DETECTION MODEL INFERENCE](#EAST_DETECTION)
-    - [4. SAST TEXT DETECTION MODEL INFERENCE](#SAST_DETECTION)
+- [2. Text Detection Model Inference](#DETECTION_MODEL_INFERENCE)
+    - [2.1 Lightweight Chinese Detection Model Inference](#LIGHTWEIGHT_DETECTION)
+    - [2.2 DB Text Detection Model Inference](#DB_DETECTION)
+    - [2.3 East Text Detection Model Inference](#EAST_DETECTION)
+    - [2.4 Sast Text Detection Model Inference](#SAST_DETECTION)
     - [5. Multilingual model inference](#Multilingual model inference)
 
-- [TEXT RECOGNITION MODEL INFERENCE](#RECOGNITION_MODEL_INFERENCE)
-    - [1. LIGHTWEIGHT CHINESE MODEL](#LIGHTWEIGHT_RECOGNITION)
+- [3. Text Recognition Model Inference](#RECOGNITION_MODEL_INFERENCE)
+    - [3.1 Lightweight Chinese Text Recognition Model Reference](#LIGHTWEIGHT_RECOGNITION)
     - [2. CTC-BASED TEXT RECOGNITION MODEL INFERENCE](#CTC-BASED_RECOGNITION)
     - [3. SRN-BASED TEXT RECOGNITION MODEL INFERENCE](#SRN-BASED_RECOGNITION)
     - [3. TEXT RECOGNITION MODEL INFERENCE USING CUSTOM CHARACTERS DICTIONARY](#USING_CUSTOM_CHARACTERS)
@@ -38,9 +38,9 @@ Next, we first introduce how to convert a trained model into an inference model,
     - [2. OTHER MODELS](#OTHER_MODELS)
 
 <a name="CONVERT"></a>
-## CONVERT TRAINING MODEL TO INFERENCE MODEL
+## 1. Convert Training Model to Inference Model
 <a name="Convert_detection_model"></a>
-### Convert detection model to inference model
+### 1.1 Convert Detection Model to Inference Model
 
 Download the lightweight Chinese detection model:
 ```
@@ -67,7 +67,7 @@ inference/det_db/
 ```
 
 <a name="Convert_recognition_model"></a>
-### Convert recognition model to inference model
+### 1.2 Convert Recognition Model to Inference Model
 
 Download the lightweight Chinese recognition model:
 ```
@@ -95,7 +95,7 @@ inference/det_db/
 ```
 
 <a name="Convert_angle_class_model"></a>
-### Convert angle classification model to inference model
+### 1.3 Convert Angle Classification Model to Inference Model
 
 Download the angle classification model:
 ```
@@ -122,13 +122,13 @@ inference/det_db/
 
 
 <a name="DETECTION_MODEL_INFERENCE"></a>
-## TEXT DETECTION MODEL INFERENCE
+## 2. Text Detection Model Inference
 
 The following will introduce the lightweight Chinese detection model inference, DB text detection model inference and EAST text detection model inference. The default configuration is based on the inference setting of the DB text detection model.
 Because EAST and DB algorithms are very different, when inference, it is necessary to **adapt the EAST text detection algorithm by passing in corresponding parameters**.
 
 <a name="LIGHTWEIGHT_DETECTION"></a>
-### 1. LIGHTWEIGHT CHINESE DETECTION MODEL INFERENCE
+### 2.1 Lightweight Chinese Detection Model Inference
 
 For lightweight Chinese detection model inference, you can execute the following commands:
 
@@ -163,7 +163,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_di
 ```
 
 <a name="DB_DETECTION"></a>
-### 2. DB TEXT DETECTION MODEL INFERENCE
+### 2.2 DB Text Detection Model Inference
 
 First, convert the model saved in the DB text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the ICDAR2015 English dataset as an example ([model download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_db_v2.0_train.tar)), you can use the following command to convert:
 
@@ -184,7 +184,7 @@ The visualized text detection results are saved to the `./inference_results` fol
 **Note**: Since the ICDAR2015 dataset has only 1,000 training images, mainly for English scenes, the above model has very poor detection result on Chinese text images.
 
 <a name="EAST_DETECTION"></a>
-### 3. EAST TEXT DETECTION MODEL INFERENCE
+### 2.3 EAST TEXT DETECTION MODEL INFERENCE
 
 First, convert the model saved in the EAST text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the ICDAR2015 English dataset as an example ([model download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar)), you can use the following command to convert:
 
@@ -205,7 +205,7 @@ The visualized text detection results are saved to the `./inference_results` fol
 
 
 <a name="SAST_DETECTION"></a>
-### 4. SAST TEXT DETECTION MODEL INFERENCE
+### 2.4 Sast Text Detection Model Inference
 #### (1). Quadrangle text detection model (ICDAR2015)  
 First, convert the model saved in the SAST text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the ICDAR2015 English dataset as an example ([model download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_icdar15_v2.0_train.tar)), you can use the following command to convert:
 
@@ -243,13 +243,13 @@ The visualized text detection results are saved to the `./inference_results` fol
 **Note**: SAST post-processing locality aware NMS has two versions: Python and C++. The speed of C++ version is obviously faster than that of Python version. Due to the compilation version problem of NMS of C++ version, C++ version NMS will be called only in Python 3.5 environment, and python version NMS will be called in other cases.
 
 <a name="RECOGNITION_MODEL_INFERENCE"></a>
-## TEXT RECOGNITION MODEL INFERENCE
+## 3. Text Recognition Model Inference
 
 The following will introduce the lightweight Chinese recognition model inference, other CTC-based and Attention-based text recognition models inference. For Chinese text recognition, it is recommended to choose the recognition model based on CTC loss. In practice, it is also found that the result of the model based on Attention loss is not as good as the one based on CTC loss. In addition, if the characters dictionary is modified during training, make sure that you use the same characters set during inferencing. Please check below for details.
 
 
 <a name="LIGHTWEIGHT_RECOGNITION"></a>
-### 1. LIGHTWEIGHT CHINESE TEXT RECOGNITION MODEL REFERENCE
+### 3.1 Lightweight Chinese Text Recognition Model Reference
 
 For lightweight Chinese recognition model inference, you can execute the following commands:
 

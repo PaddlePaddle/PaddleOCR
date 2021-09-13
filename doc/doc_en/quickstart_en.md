@@ -5,7 +5,7 @@
 
 + [1. Install PaddleOCR Whl Package](#1-install-paddleocr-whl-package)
 * [2. Easy-to-Use](#2-easy-to-use)
-  + [2.1 Use by command line](#21-use-by-command-line)
+  + [2.1 Use by Command Line](#21-use-by-command-line)
     - [2.1.1 English and Chinese Model](#211-english-and-chinese-model)
     - [2.1.2 Multi-language Model](#212-multi-language-model)
     - [2.1.3 Layout Analysis](#213-layoutAnalysis)
@@ -39,7 +39,7 @@ pip install "paddleocr>=2.0.1" # Recommend to use version 2.0.1+
 
 <a name="21-use-by-command-line"></a>
 
-### 2.1 Use by command line
+### 2.1 Use by Command Line
 
 PaddleOCR provides a series of test images, click [here](https://paddleocr.bj.bcebos.com/dygraph_v2.1/ppocr_img.zip) to download, and then switch to the corresponding directory in the terminal
 
@@ -95,7 +95,7 @@ If you do not use the provided test image, you can replace the following `--imag
   ['PAIN', 0.990372]
   ```
 
-If you need to use the 2.0 model, please specify the parameter `--version 2.0`, paddleocr uses the 2.1 model by default. More whl package usage can be found in [whl package](./whl_en.md)
+If you need to use the 2.0 model, please specify the parameter `--version PP-OCR`, paddleocr uses the 2.1 model by default(`--versioin PP-OCRv2`). More whl package usage can be found in [whl package](./whl_en.md)
 <a name="212-multi-language-model"></a>
 
 #### 2.1.2 Multi-language Model
