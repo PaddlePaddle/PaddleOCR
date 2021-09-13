@@ -50,8 +50,6 @@ class OCRSystem(hub.Module):
                 )
         cfg.ir_optim = True
         cfg.enable_mkldnn = enable_mkldnn
-        msg = _('arguments: %s')
-        logger.info(msg % ' '.join(cfg))
         self.text_sys = TextSystem(cfg)
 
     def merge_configs(self, ):
