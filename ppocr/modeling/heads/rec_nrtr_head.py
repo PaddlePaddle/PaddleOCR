@@ -61,12 +61,12 @@ class Transformer(nn.Layer):
                  custom_decoder=None,
                  in_channels=0,
                  out_channels=0,
-                 dst_vocab_size=99,
                  scale_embedding=True):
         super(Transformer, self).__init__()
+        self.out_channels = out_channels + 1
         self.embedding = Embeddings(
             d_model=d_model,
-            vocab=dst_vocab_size,
+            vocab=self.out_channels,
             padding_idx=0,
             scale_embedding=scale_embedding)
         self.positional_encoding = PositionalEncoding(
@@ -96,9 +96,10 @@ class Transformer(nn.Layer):
         self.beam_size = beam_size
         self.d_model = d_model
         self.nhead = nhead
-        self.tgt_word_prj = nn.Linear(d_model, dst_vocab_size, bias_attr=False)
+        self.tgt_word_prj = nn.Linear(
+            d_model, self.out_channels, bias_attr=False)
         w0 = np.random.normal(0.0, d_model**-0.5,
-                              (d_model, dst_vocab_size)).astype(np.float32)
+                              (d_model, self.out_channels)).astype(np.float32)
         self.tgt_word_prj.weight.set_value(w0)
         self.apply(self._init_weights)
 
@@ -156,46 +157,41 @@ class Transformer(nn.Layer):
                 return self.forward_test(src)
 
     def forward_test(self, src):
-        bs = src.shape[0]
+        bs = paddle.shape(src)[0]
         if self.encoder is not None:
-            src = self.positional_encoding(src.transpose([1, 0, 2]))
+            src = self.positional_encoding(paddle.transpose(src, [1, 0, 2]))
             memory = self.encoder(src)
         else:
-            memory = src.squeeze(2).transpose([2, 0, 1])
+            memory = paddle.transpose(paddle.squeeze(src, 2), [2, 0, 1])
         dec_seq = paddle.full((bs, 1), 2, dtype=paddle.int64)
+        dec_prob = paddle.full((bs, 1), 1., dtype=paddle.float32)
         for len_dec_seq in range(1, 25):
-            src_enc = memory.clone()
-            tgt_key_padding_mask = self.generate_padding_mask(dec_seq)
-            dec_seq_embed = self.embedding(dec_seq).transpose([1, 0, 2])
+            dec_seq_embed = paddle.transpose(self.embedding(dec_seq), [1, 0, 2])
             dec_seq_embed = self.positional_encoding(dec_seq_embed)
-            tgt_mask = self.generate_square_subsequent_mask(dec_seq_embed.shape[
-                0])
+            tgt_mask = self.generate_square_subsequent_mask(
+                paddle.shape(dec_seq_embed)[0])
             output = self.decoder(
                 dec_seq_embed,
-                src_enc,
+                memory,
                 tgt_mask=tgt_mask,
                 memory_mask=None,
-                tgt_key_padding_mask=tgt_key_padding_mask,
+                tgt_key_padding_mask=None,
                 memory_key_padding_mask=None)
-            dec_output = output.transpose([1, 0, 2])
-
-            dec_output = dec_output[:,
-                                    -1, :]  # Pick the last step: (bh * bm) * d_h
-            word_prob = F.log_softmax(self.tgt_word_prj(dec_output), axis=1)
-            word_prob = word_prob.reshape([1, bs, -1])
-            preds_idx = word_prob.argmax(axis=2)
-
+            dec_output = paddle.transpose(output, [1, 0, 2])
+            dec_output = dec_output[:, -1, :]
+            word_prob = F.softmax(self.tgt_word_prj(dec_output), axis=1)
+            preds_idx = paddle.argmax(word_prob, axis=1)
             if paddle.equal_all(
-                    preds_idx[-1],
+                    preds_idx,
                     paddle.full(
-                        preds_idx[-1].shape, 3, dtype='int64')):
+                        paddle.shape(preds_idx), 3, dtype='int64')):
                 break
-
-            preds_prob = word_prob.max(axis=2)
+            preds_prob = paddle.max(word_prob, axis=1)
             dec_seq = paddle.concat(
-                [dec_seq, preds_idx.reshape([-1, 1])], axis=1)
-
-        return dec_seq
+                [dec_seq, paddle.reshape(preds_idx, [-1, 1])], axis=1)
+            dec_prob = paddle.concat(
+                [dec_prob, paddle.reshape(preds_prob, [-1, 1])], axis=1)
+        return [dec_seq, dec_prob]
 
     def forward_beam(self, images):
         ''' Translation work in one batch '''
@@ -211,14 +207,15 @@ class Transformer(nn.Layer):
                                 n_prev_active_inst, n_bm):
             ''' Collect tensor parts associated to active instances. '''
 
-            _, *d_hs = beamed_tensor.shape
+            beamed_tensor_shape = paddle.shape(beamed_tensor)
             n_curr_active_inst = len(curr_active_inst_idx)
-            new_shape = (n_curr_active_inst * n_bm, *d_hs)
+            new_shape = (n_curr_active_inst * n_bm, beamed_tensor_shape[1],
+                         beamed_tensor_shape[2])
 
             beamed_tensor = beamed_tensor.reshape([n_prev_active_inst, -1])
             beamed_tensor = beamed_tensor.index_select(
-                paddle.to_tensor(curr_active_inst_idx), axis=0)
-            beamed_tensor = beamed_tensor.reshape([*new_shape])
+                curr_active_inst_idx, axis=0)
+            beamed_tensor = beamed_tensor.reshape(new_shape)
 
             return beamed_tensor
 
@@ -249,44 +246,26 @@ class Transformer(nn.Layer):
                     b.get_current_state() for b in inst_dec_beams if not b.done
                 ]
                 dec_partial_seq = paddle.stack(dec_partial_seq)
-
                 dec_partial_seq = dec_partial_seq.reshape([-1, len_dec_seq])
                 return dec_partial_seq
 
-            def prepare_beam_memory_key_padding_mask(
-                    inst_dec_beams, memory_key_padding_mask, n_bm):
-                keep = []
-                for idx in (memory_key_padding_mask):
-                    if not inst_dec_beams[idx].done:
-                        keep.append(idx)
-                memory_key_padding_mask = memory_key_padding_mask[
-                    paddle.to_tensor(keep)]
-                len_s = memory_key_padding_mask.shape[-1]
-                n_inst = memory_key_padding_mask.shape[0]
-                memory_key_padding_mask = paddle.concat(
-                    [memory_key_padding_mask for i in range(n_bm)], axis=1)
-                memory_key_padding_mask = memory_key_padding_mask.reshape(
-                    [n_inst * n_bm, len_s])  #repeat(1, n_bm)
-                return memory_key_padding_mask
-
             def predict_word(dec_seq, enc_output, n_active_inst, n_bm,
                              memory_key_padding_mask):
-                tgt_key_padding_mask = self.generate_padding_mask(dec_seq)
-                dec_seq = self.embedding(dec_seq).transpose([1, 0, 2])
+                dec_seq = paddle.transpose(self.embedding(dec_seq), [1, 0, 2])
                 dec_seq = self.positional_encoding(dec_seq)
-                tgt_mask = self.generate_square_subsequent_mask(dec_seq.shape[
-                    0])
+                tgt_mask = self.generate_square_subsequent_mask(
+                    paddle.shape(dec_seq)[0])
                 dec_output = self.decoder(
                     dec_seq,
                     enc_output,
                     tgt_mask=tgt_mask,
-                    tgt_key_padding_mask=tgt_key_padding_mask,
-                    memory_key_padding_mask=memory_key_padding_mask,
-                ).transpose([1, 0, 2])
+                    tgt_key_padding_mask=None,
+                    memory_key_padding_mask=memory_key_padding_mask, )
+                dec_output = paddle.transpose(dec_output, [1, 0, 2])
                 dec_output = dec_output[:,
                                         -1, :]  # Pick the last step: (bh * bm) * d_h
-                word_prob = F.log_softmax(self.tgt_word_prj(dec_output), axis=1)
-                word_prob = word_prob.reshape([n_active_inst, n_bm, -1])
+                word_prob = F.softmax(self.tgt_word_prj(dec_output), axis=1)
+                word_prob = paddle.reshape(word_prob, [n_active_inst, n_bm, -1])
                 return word_prob
 
             def collect_active_inst_idx_list(inst_beams, word_prob,
@@ -302,9 +281,8 @@ class Transformer(nn.Layer):
 
             n_active_inst = len(inst_idx_to_position_map)
             dec_seq = prepare_beam_dec_seq(inst_dec_beams, len_dec_seq)
-            memory_key_padding_mask = None
             word_prob = predict_word(dec_seq, enc_output, n_active_inst, n_bm,
-                                     memory_key_padding_mask)
+                                     None)
             # Update the beam with predicted word prob information and collect incomplete instances
             active_inst_idx_list = collect_active_inst_idx_list(
                 inst_dec_beams, word_prob, inst_idx_to_position_map)
@@ -324,27 +302,21 @@ class Transformer(nn.Layer):
 
         with paddle.no_grad():
             #-- Encode
-
             if self.encoder is not None:
                 src = self.positional_encoding(images.transpose([1, 0, 2]))
-                src_enc = self.encoder(src).transpose([1, 0, 2])
+                src_enc = self.encoder(src)
             else:
                 src_enc = images.squeeze(2).transpose([0, 2, 1])
 
-            #-- Repeat data for beam search
             n_bm = self.beam_size
-            n_inst, len_s, d_h = src_enc.shape
-            src_enc = paddle.concat([src_enc for i in range(n_bm)], axis=1)
-            src_enc = src_enc.reshape([n_inst * n_bm, len_s, d_h]).transpose(
-                [1, 0, 2])
-            #-- Prepare beams
-            inst_dec_beams = [Beam(n_bm) for _ in range(n_inst)]
-
-            #-- Bookkeeping for active or not
-            active_inst_idx_list = list(range(n_inst))
+            src_shape = paddle.shape(src_enc)
+            inst_dec_beams = [Beam(n_bm) for _ in range(1)]
+            active_inst_idx_list = list(range(1))
+            # Repeat data for beam search
+            src_enc = paddle.tile(src_enc, [1, n_bm, 1])
             inst_idx_to_position_map = get_inst_idx_to_tensor_position_map(
                 active_inst_idx_list)
-            #-- Decode
+            # Decode
             for len_dec_seq in range(1, 25):
                 src_enc_copy = src_enc.clone()
                 active_inst_idx_list = beam_decode_step(
@@ -358,10 +330,19 @@ class Transformer(nn.Layer):
         batch_hyp, batch_scores = collect_hypothesis_and_scores(inst_dec_beams,
                                                                 1)
         result_hyp = []
-        for bs_hyp in batch_hyp:
-            bs_hyp_pad = bs_hyp[0] + [3] * (25 - len(bs_hyp[0]))
+        hyp_scores = []
+        for bs_hyp, score in zip(batch_hyp, batch_scores):
+            l = len(bs_hyp[0])
+            bs_hyp_pad = bs_hyp[0] + [3] * (25 - l)
             result_hyp.append(bs_hyp_pad)
-        return paddle.to_tensor(np.array(result_hyp), dtype=paddle.int64)
+            score = float(score) / l
+            hyp_score = [score for _ in range(25)]
+            hyp_scores.append(hyp_score)
+        return [
+            paddle.to_tensor(
+                np.array(result_hyp), dtype=paddle.int64),
+            paddle.to_tensor(hyp_scores)
+        ]
 
     def generate_square_subsequent_mask(self, sz):
         """Generate a square mask for the sequence. The masked positions are filled with float('-inf').
@@ -376,7 +357,7 @@ class Transformer(nn.Layer):
         return mask
 
     def generate_padding_mask(self, x):
-        padding_mask = x.equal(paddle.to_tensor(0, dtype=x.dtype))
+        padding_mask = paddle.equal(x, paddle.to_tensor(0, dtype=x.dtype))
         return padding_mask
 
     def _reset_parameters(self):
@@ -514,17 +495,17 @@ class TransformerEncoderLayer(nn.Layer):
             src,
             src,
             attn_mask=src_mask,
-            key_padding_mask=src_key_padding_mask)[0]
+            key_padding_mask=src_key_padding_mask)
         src = src + self.dropout1(src2)
         src = self.norm1(src)
 
-        src = src.transpose([1, 2, 0])
+        src = paddle.transpose(src, [1, 2, 0])
         src = paddle.unsqueeze(src, 2)
         src2 = self.conv2(F.relu(self.conv1(src)))
         src2 = paddle.squeeze(src2, 2)
-        src2 = src2.transpose([2, 0, 1])
+        src2 = paddle.transpose(src2, [2, 0, 1])
         src = paddle.squeeze(src, 2)
-        src = src.transpose([2, 0, 1])
+        src = paddle.transpose(src, [2, 0, 1])
 
         src = src + self.dropout2(src2)
         src = self.norm2(src)
@@ -598,7 +579,7 @@ class TransformerDecoderLayer(nn.Layer):
             tgt,
             tgt,
             attn_mask=tgt_mask,
-            key_padding_mask=tgt_key_padding_mask)[0]
+            key_padding_mask=tgt_key_padding_mask)
         tgt = tgt + self.dropout1(tgt2)
         tgt = self.norm1(tgt)
         tgt2 = self.multihead_attn(
@@ -606,18 +587,18 @@ class TransformerDecoderLayer(nn.Layer):
             memory,
             memory,
             attn_mask=memory_mask,
-            key_padding_mask=memory_key_padding_mask)[0]
+            key_padding_mask=memory_key_padding_mask)
         tgt = tgt + self.dropout2(tgt2)
         tgt = self.norm2(tgt)
 
         # default
-        tgt = tgt.transpose([1, 2, 0])
+        tgt = paddle.transpose(tgt, [1, 2, 0])
         tgt = paddle.unsqueeze(tgt, 2)
         tgt2 = self.conv2(F.relu(self.conv1(tgt)))
         tgt2 = paddle.squeeze(tgt2, 2)
-        tgt2 = tgt2.transpose([2, 0, 1])
+        tgt2 = paddle.transpose(tgt2, [2, 0, 1])
         tgt = paddle.squeeze(tgt, 2)
-        tgt = tgt.transpose([2, 0, 1])
+        tgt = paddle.transpose(tgt, [2, 0, 1])
 
         tgt = tgt + self.dropout3(tgt2)
         tgt = self.norm3(tgt)
@@ -656,8 +637,8 @@ class PositionalEncoding(nn.Layer):
             (-math.log(10000.0) / dim))
         pe[:, 0::2] = paddle.sin(position * div_term)
         pe[:, 1::2] = paddle.cos(position * div_term)
-        pe = pe.unsqueeze(0)
-        pe = pe.transpose([1, 0, 2])
+        pe = paddle.unsqueeze(pe, 0)
+        pe = paddle.transpose(pe, [1, 0, 2])
         self.register_buffer('pe', pe)
 
     def forward(self, x):
@@ -670,7 +651,7 @@ class PositionalEncoding(nn.Layer):
         Examples:
             >>> output = pos_encoder(x)
         """
-        x = x + self.pe[:x.shape[0], :]
+        x = x + self.pe[:paddle.shape(x)[0], :]
         return self.dropout(x)
 
 
@@ -702,7 +683,7 @@ class PositionalEncoding_2d(nn.Layer):
             (-math.log(10000.0) / dim))
         pe[:, 0::2] = paddle.sin(position * div_term)
         pe[:, 1::2] = paddle.cos(position * div_term)
-        pe = pe.unsqueeze(0).transpose([1, 0, 2])
+        pe = paddle.transpose(paddle.unsqueeze(pe, 0), [1, 0, 2])
         self.register_buffer('pe', pe)
 
         self.avg_pool_1 = nn.AdaptiveAvgPool2D((1, 1))
@@ -722,22 +703,23 @@ class PositionalEncoding_2d(nn.Layer):
         Examples:
             >>> output = pos_encoder(x)
         """
-        w_pe = self.pe[:x.shape[-1], :]
+        w_pe = self.pe[:paddle.shape(x)[-1], :]
         w1 = self.linear1(self.avg_pool_1(x).squeeze()).unsqueeze(0)
         w_pe = w_pe * w1
-        w_pe = w_pe.transpose([1, 2, 0])
-        w_pe = w_pe.unsqueeze(2)
+        w_pe = paddle.transpose(w_pe, [1, 2, 0])
+        w_pe = paddle.unsqueeze(w_pe, 2)
 
-        h_pe = self.pe[:x.shape[-2], :]
+        h_pe = self.pe[:paddle.shape(x).shape[-2], :]
         w2 = self.linear2(self.avg_pool_2(x).squeeze()).unsqueeze(0)
         h_pe = h_pe * w2
-        h_pe = h_pe.transpose([1, 2, 0])
-        h_pe = h_pe.unsqueeze(3)
+        h_pe = paddle.transpose(h_pe, [1, 2, 0])
+        h_pe = paddle.unsqueeze(h_pe, 3)
 
         x = x + w_pe + h_pe
-        x = x.reshape(
-            [x.shape[0], x.shape[1], x.shape[2] * x.shape[3]]).transpose(
-                [2, 0, 1])
+        x = paddle.transpose(
+            paddle.reshape(x,
+                           [x.shape[0], x.shape[1], x.shape[2] * x.shape[3]]),
+            [2, 0, 1])
 
         return self.dropout(x)
 
@@ -817,7 +799,7 @@ class Beam():
     def sort_scores(self):
         "Sort the scores."
         return self.scores, paddle.to_tensor(
-            [i for i in range(self.scores.shape[0])], dtype='int32')
+            [i for i in range(int(self.scores.shape[0]))], dtype='int32')
 
     def get_the_best_score_and_idx(self):
         "Get the score of the best in the beam."

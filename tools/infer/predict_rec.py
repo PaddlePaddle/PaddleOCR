@@ -13,7 +13,7 @@
 # limitations under the License.
 import os
 import sys
-
+from PIL import Image
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
@@ -61,6 +61,13 @@ class TextRecognizer(object):
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }
+        elif self.rec_algorithm == 'NRTR':
+            postprocess_params = {
+                'name': 'NRTRLabelDecode',
+                "character_type": args.rec_char_type,
+                "character_dict_path": args.rec_char_dict_path,
+                "use_space_char": args.use_space_char
+            }
         self.postprocess_op = build_post_process(postprocess_params)
         self.predictor, self.input_tensor, self.output_tensors, self.config = \
             utility.create_predictor(args, 'rec', logger)
@@ -87,6 +94,30 @@ class TextRecognizer(object):
 
     def resize_norm_img(self, img, max_wh_ratio):
         imgC, imgH, imgW = self.rec_image_shape
+        if imgC == 1:
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            # h = img.shape[0]
+            # w = img.shape[1]
+            # ratio = w / float(h)
+            # if math.ceil(imgH * ratio) > imgW:
+            #     resized_w = imgW
+            # else:
+            #     resized_w = int(math.ceil(imgH * ratio))
+            # resized_image = cv2.resize(img, (resized_w, imgH))
+            # #norm_img = np.expand_dims(resized_image, -1)
+            # #norm_img = norm_img.transpose((2, 0, 1))
+            # resized_image = resized_image.astype(np.float32) / 128. - 1.
+            # padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
+            # padding_im[0, :, 0:resized_w] = resized_image
+
+            # return padding_im
+            image_pil = Image.fromarray(np.uint8(img))
+            img = image_pil.resize([100, 32], Image.ANTIALIAS)
+            img = np.array(img)
+            norm_img = np.expand_dims(img, -1)
+            norm_img = norm_img.transpose((2, 0, 1))
+            return norm_img.astype(np.float32) / 128. - 1.
+
         assert imgC == img.shape[2]
         max_wh_ratio = max(max_wh_ratio, imgW / imgH)
         imgW = int((32 * max_wh_ratio))
@@ -252,14 +283,16 @@ class TextRecognizer(object):
             else:
                 self.input_tensor.copy_from_cpu(norm_img_batch)
                 self.predictor.run()
-
                 outputs = []
                 for output_tensor in self.output_tensors:
                     output = output_tensor.copy_to_cpu()
                     outputs.append(output)
                 if self.benchmark:
                     self.autolog.times.stamp()
-                preds = outputs[0]
+                if len(outputs) != 1:
+                    preds = outputs
+                else:
+                    preds = outputs[0]
             rec_result = self.postprocess_op(preds)
             for rno in range(len(rec_result)):
                 rec_res[indices[beg_img_no + rno]] = rec_result[rno]
