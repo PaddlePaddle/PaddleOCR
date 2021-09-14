@@ -38,4 +38,4 @@ Compares the time-consuming on CPU and T4 GPU (ms):
 | PP-OCR mobile | 356  | 116|
 | PP-OCR server | 1056 | 200 |
 
-More indicators of PP-OCR series models can be referred to [PP-OCR Benchamrk](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/doc/doc_en/benchmark_en.md)
+More indicators of PP-OCR series models can be referred to [PP-OCR Benchmark](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/doc/doc_en/benchmark_en.md)
