@@ -79,7 +79,7 @@ Train:
 Eval:
   dataset:
     name: LMDBDataSet
-    data_dir: ./eval_data/evaluation/
+    data_dir: ./train_data/data_lmdb_release/evaluation/
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
