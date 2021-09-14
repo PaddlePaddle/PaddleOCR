@@ -35,10 +35,10 @@ pip3 install paddlehub==2.1.0 --upgrade -i https://pypi.tuna.tsinghua.edu.cn/sim
 ```
 
 ### 2. Download inference model
-Before installing the service module, you need to prepare the inference model and put it in the correct path. By default, the ultra lightweight model of v2.0 is used, and the default model path is:  
+Before installing the service module, you need to prepare the inference model and put it in the correct path. By default, the PP-OCRv2 models are used, and the default model path is:  
 ```
-detection model: ./inference/ch_ppocr_mobile_v2.0_det_infer/
-recognition model: ./inference/ch_ppocr_mobile_v2.0_rec_infer/
+detection model: ./inference/ch_PP-OCRv2_det_infer/
+recognition model: ./inference/ch_PP-OCRv2_rec_infer/
 text direction classifier: ./inference/ch_ppocr_mobile_v2.0_cls_infer/
 ```  
 
