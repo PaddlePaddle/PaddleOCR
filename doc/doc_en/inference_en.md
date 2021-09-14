@@ -1,5 +1,5 @@
 
-# Inference based on Python Prediction Engine
+# Inference Based on Python Prediction Engine
 
 The inference model (the model saved by `paddle.jit.save`) is generally a solidified model saved after the model training is completed, and is mostly used to give prediction in deployment.
 
@@ -21,25 +21,24 @@ Next, we first introduce how to convert a trained model into an inference model,
     - [2.2 DB Text Detection Model Inference](#DB_DETECTION)
     - [2.3 East Text Detection Model Inference](#EAST_DETECTION)
     - [2.4 Sast Text Detection Model Inference](#SAST_DETECTION)
-    - [5. Multilingual model inference](#Multilingual model inference)
-
+    
 - [3. Text Recognition Model Inference](#RECOGNITION_MODEL_INFERENCE)
     - [3.1 Lightweight Chinese Text Recognition Model Reference](#LIGHTWEIGHT_RECOGNITION)
-    - [2. CTC-BASED TEXT RECOGNITION MODEL INFERENCE](#CTC-BASED_RECOGNITION)
-    - [3. SRN-BASED TEXT RECOGNITION MODEL INFERENCE](#SRN-BASED_RECOGNITION)
-    - [3. TEXT RECOGNITION MODEL INFERENCE USING CUSTOM CHARACTERS DICTIONARY](#USING_CUSTOM_CHARACTERS)
-    - [4. MULTILINGUAL MODEL INFERENCE](MULTILINGUAL_MODEL_INFERENCE)
+    - [3.2 CTC-Based Text Recognition Model Inference](#CTC-BASED_RECOGNITION)
+    - [3.3 SRN-Based Text Recognition Model Inference](#SRN-BASED_RECOGNITION)
+    - [3.4 Text Recognition Model Inference Using Custom Characters Dictionary](#USING_CUSTOM_CHARACTERS)
+    - [3.5 Multilingual Model Inference](#MULTILINGUAL_MODEL_INFERENCE)
 
-- [ANGLE CLASSIFICATION MODEL INFERENCE](#ANGLE_CLASS_MODEL_INFERENCE)
-    - [1. ANGLE CLASSIFICATION MODEL INFERENCE](#ANGLE_CLASS_MODEL_INFERENCE)
+- [4. Angle Classification Model Inference](#ANGLE_CLASS_MODEL_INFERENCE)
 
-- [TEXT DETECTION ANGLE CLASSIFICATION AND RECOGNITION INFERENCE CONCATENATION](#CONCATENATION)
-    - [1. LIGHTWEIGHT CHINESE MODEL](#LIGHTWEIGHT_CHINESE_MODEL)
-    - [2. OTHER MODELS](#OTHER_MODELS)
+- [5. Text Detection Angle Classification And Recognition Inference Concatenation](#CONCATENATION)
+    - [5.1 Lightweight Chinese Model](#LIGHTWEIGHT_CHINESE_MODEL)
+    - [5.2 Other Models](#OTHER_MODELS)
 
 <a name="CONVERT"></a>
 ## 1. Convert Training Model to Inference Model
 <a name="Convert_detection_model"></a>
+
 ### 1.1 Convert Detection Model to Inference Model
 
 Download the lightweight Chinese detection model:
@@ -269,7 +268,7 @@ Predicts of ./doc/imgs_words_en/word_10.png:('PAIN', 0.9897658)
 ```
 
 <a name="CTC-BASED_RECOGNITION"></a>
-### 2. CTC-BASED TEXT RECOGNITION MODEL INFERENCE
+### 3.2 CTC-Based Text Recognition Model Inference
 
 Taking CRNN as an example, we introduce the recognition model inference based on CTC loss. Rosetta and Star-Net are used in a similar way, No need to set the recognition algorithm parameter rec_algorithm.
 
@@ -292,6 +291,7 @@ After executing the command, the recognition result of the above image is as fol
 ```bash
 Predicts of ./doc/imgs_words_en/word_336.png:('super', 0.9999073)
 ```
+
 **Note**：Since the above model refers to [DTRB](https://arxiv.org/abs/1904.01906) text recognition training and evaluation process, it is different from the training of lightweight Chinese recognition model in two aspects:
 
 - The image resolution used in training is different: the image resolution used in training the above model is [3，32，100], while during our Chinese model training, in order to ensure the recognition effect of long text, the image resolution used in training is [3, 32, 320]. The default shape parameter of the inference stage is the image resolution used in training phase, that is [3, 32, 320]. Therefore, when running inference of the above English model here, you need to set the shape of the recognition image through the parameter `rec_image_shape`.
@@ -304,7 +304,7 @@ dict_character = list(self.character_str)
 ```
 
 <a name="SRN-BASED_RECOGNITION"></a>
-### 3. SRN-BASED TEXT RECOGNITION MODEL INFERENCE
+### 3.3 SRN-Based Text Recognition Model Inference
 
 The recognition model based on SRN requires additional setting of the recognition algorithm parameter
 --rec_algorithm="SRN". At the same time, it is necessary to ensure that the predicted shape is consistent
@@ -319,7 +319,7 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png
 ```
 
 <a name="USING_CUSTOM_CHARACTERS"></a>
-### 4. TEXT RECOGNITION MODEL INFERENCE USING CUSTOM CHARACTERS DICTIONARY
+### 3.4 Text Recognition Model Inference Using Custom Characters Dictionary
 If the text dictionary is modified during training, when using the inference model to predict, you need to specify the dictionary path used by `--rec_char_dict_path`, and set `rec_char_type=ch`
 
 ```
@@ -327,7 +327,8 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png
 ```
 
 <a name="MULTILINGUAL_MODEL_INFERENCE"></a>
-### 5. MULTILINGAUL MODEL INFERENCE
+
+### 3.5 Multilingual Model Inference
 If you need to predict other language models, when using inference model prediction, you need to specify the dictionary path used by `--rec_char_dict_path`. At the same time, in order to get the correct visualization results,
 You need to specify the visual font path through `--vis_font_path`. There are small language fonts provided by default under the `doc/fonts` path, such as Korean recognition:
 
@@ -343,13 +344,7 @@ Predicts of ./doc/imgs_words/korean/1.jpg:('바탕으로', 0.9948904)
 ```
 
 <a name="ANGLE_CLASSIFICATION_MODEL_INFERENCE"></a>
-## ANGLE CLASSIFICATION MODEL INFERENCE
-
-The following will introduce the angle classification model inference.
-
-
-<a name="ANGLE_CLASS_MODEL_INFERENCE"></a>
-### 1.ANGLE CLASSIFICATION MODEL INFERENCE
+## 4. Angle Classification Model Inference
 
 For angle classification model inference, you can execute the following commands:
 
@@ -371,10 +366,10 @@ After executing the command, the prediction results (classification angle and sc
 ```
 
 <a name="CONCATENATION"></a>
-## TEXT DETECTION ANGLE CLASSIFICATION AND RECOGNITION INFERENCE CONCATENATION
+## 5. Text Detection Angle Classification and Recognition Inference Concatenation
 
 <a name="LIGHTWEIGHT_CHINESE_MODEL"></a>
-### 1. LIGHTWEIGHT CHINESE MODEL
+### 5.1 Lightweight Chinese Model
 
 When performing prediction, you need to specify the path of a single image or a folder of images through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to detect the inference model, the parameter `cls_model_dir` specifies the path to angle classification inference model and the parameter `rec_model_dir` specifies the path to identify the inference model. The parameter `use_angle_cls` is used to control whether to enable the angle classification model. The parameter `use_mp` specifies whether to use multi-process to infer `total_process_num` specifies process number when using multi-process. The parameter . The visualized recognition results are saved to the `./inference_results` folder by default.
 
@@ -388,14 +383,14 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --de
 # use multi-process
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./inference/det_db/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls=false --use_mp=True --total_process_num=6
 ```
-```
+
 
 After executing the command, the recognition result image is as follows:
 
 ![](../imgs_results/system_res_00018069.jpg)
 
 <a name="OTHER_MODELS"></a>
-### 2. OTHER MODELS
+### 5.2 Other Models
 
 If you want to try other detection algorithms or recognition algorithms, please refer to the above text detection model inference and text recognition model inference, update the corresponding configuration and model.
 
