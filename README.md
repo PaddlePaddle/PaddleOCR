@@ -82,7 +82,7 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
 <a name="Supported-Chinese-model-list"></a>
 
 
-## PP-OCR series model list（Update on September 8th）
+## PP-OCR Series Model List（Update on September 8th）
 
 | Model introduction                                           | Model name                   | Recommended scene | Detection model                                              | Direction classifier                                         | Recognition model                                            |
 | ------------------------------------------------------------ | ---------------------------- | ----------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -174,7 +174,7 @@ For a new language request, please refer to [Guideline for new language_requests
 
 
 <a name="language_requests"></a>
-## Guideline for new language requests
+## Guideline for New Language Requests
 
 If you want to request a new language support, a PR with 2 following files are needed：
 
