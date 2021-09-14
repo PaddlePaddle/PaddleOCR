@@ -94,22 +94,8 @@ class TextRecognizer(object):
 
     def resize_norm_img(self, img, max_wh_ratio):
         imgC, imgH, imgW = self.rec_image_shape
-        if imgC == 1:
+        if self.rec_algorithm == 'NRTR':
             img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            # h = img.shape[0]
-            # w = img.shape[1]
-            # ratio = w / float(h)
-            # if math.ceil(imgH * ratio) > imgW:
-            #     resized_w = imgW
-            # else:
-            #     resized_w = int(math.ceil(imgH * ratio))
-            # resized_image = cv2.resize(img, (resized_w, imgH))
-            # #norm_img = np.expand_dims(resized_image, -1)
-            # #norm_img = norm_img.transpose((2, 0, 1))
-            # resized_image = resized_image.astype(np.float32) / 128. - 1.
-            # padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
-            # padding_im[0, :, 0:resized_w] = resized_image
-
             # return padding_im
             image_pil = Image.fromarray(np.uint8(img))
             img = image_pil.resize([100, 32], Image.ANTIALIAS)
