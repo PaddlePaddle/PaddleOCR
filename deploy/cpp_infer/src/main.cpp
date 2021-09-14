@@ -44,7 +44,7 @@ DEFINE_int32(cpu_threads, 10, "Num of threads with CPU.");
 DEFINE_bool(enable_mkldnn, false, "Whether use mkldnn with CPU.");
 DEFINE_bool(use_tensorrt, false, "Whether use tensorrt.");
 DEFINE_string(precision, "fp32", "Precision be one of fp32/fp16/int8");
-DEFINE_bool(benchmark, true, "Whether use benchmark.");
+DEFINE_bool(benchmark, false, "Whether use benchmark.");
 DEFINE_string(save_log_path, "./log_output/", "Save benchmark log path.");
 // detection related
 DEFINE_string(image_dir, "", "Dir of input image.");
@@ -127,9 +127,15 @@ int main_det(std::vector<cv::String> cv_all_img_names) {
 
 int main_rec(std::vector<cv::String> cv_all_img_names) {
     std::vector<double> time_info = {0, 0, 0};
+    
+    std::string char_list_file = FLAGS_char_list_file;
+    if (FLAGS_benchmark) 
+        char_list_file = FLAGS_char_list_file.substr(6);
+    cout << "label file: " << char_list_file << endl;
+        
     CRNNRecognizer rec(FLAGS_rec_model_dir, FLAGS_use_gpu, FLAGS_gpu_id,
                        FLAGS_gpu_mem, FLAGS_cpu_threads,
-                       FLAGS_enable_mkldnn, FLAGS_char_list_file,
+                       FLAGS_enable_mkldnn, char_list_file,
                        FLAGS_use_tensorrt, FLAGS_precision);
 
     for (int i = 0; i < cv_all_img_names.size(); ++i) {
@@ -148,12 +154,28 @@ int main_rec(std::vector<cv::String> cv_all_img_names) {
       time_info[1] += rec_times[1];
       time_info[2] += rec_times[2];
     }
-    
+        
+    if (FLAGS_benchmark) {
+        AutoLogger autolog("ocr_rec", 
+                           FLAGS_use_gpu,
+                           FLAGS_use_tensorrt,
+                           FLAGS_enable_mkldnn,
+                           FLAGS_cpu_threads,
+                           1, 
+                           "dynamic", 
+                           FLAGS_precision, 
+                           time_info, 
+                           cv_all_img_names.size());
+        autolog.report();
+    }
     return 0;
 }
 
 
 int main_system(std::vector<cv::String> cv_all_img_names) {
+    std::vector<double> time_info_det = {0, 0, 0};
+    std::vector<double> time_info_rec = {0, 0, 0};
+
     DBDetector det(FLAGS_det_model_dir, FLAGS_use_gpu, FLAGS_gpu_id,
                    FLAGS_gpu_mem, FLAGS_cpu_threads, 
                    FLAGS_enable_mkldnn, FLAGS_max_side_len, FLAGS_det_db_thresh,
@@ -169,17 +191,20 @@ int main_system(std::vector<cv::String> cv_all_img_names) {
                            FLAGS_use_tensorrt, FLAGS_precision);
     }
 
+    std::string char_list_file = FLAGS_char_list_file;
+    if (FLAGS_benchmark) 
+        char_list_file = FLAGS_char_list_file.substr(6);
+    cout << "label file: " << char_list_file << endl;
+        
     CRNNRecognizer rec(FLAGS_rec_model_dir, FLAGS_use_gpu, FLAGS_gpu_id,
                        FLAGS_gpu_mem, FLAGS_cpu_threads,
-                       FLAGS_enable_mkldnn, FLAGS_char_list_file,
+                       FLAGS_enable_mkldnn, char_list_file,
                        FLAGS_use_tensorrt, FLAGS_precision);
-
-    auto start = std::chrono::system_clock::now();
 
     for (int i = 0; i < cv_all_img_names.size(); ++i) {
       LOG(INFO) << "The predict img: " << cv_all_img_names[i];
 
-      cv::Mat srcimg = cv::imread(FLAGS_image_dir, cv::IMREAD_COLOR);
+      cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
       if (!srcimg.data) {
         std::cerr << "[ERROR] image read failed! image path: " << cv_all_img_names[i] << endl;
         exit(1);
@@ -189,7 +214,10 @@ int main_system(std::vector<cv::String> cv_all_img_names) {
       std::vector<double> rec_times;
         
       det.Run(srcimg, boxes, &det_times);
-    
+      time_info_det[0] += det_times[0];
+      time_info_det[1] += det_times[1];
+      time_info_det[2] += det_times[2];
+        
       cv::Mat crop_img;
       for (int j = 0; j < boxes.size(); j++) {
         crop_img = Utility::GetRotateCropImage(srcimg, boxes[j]);
@@ -198,18 +226,36 @@ int main_system(std::vector<cv::String> cv_all_img_names) {
           crop_img = cls->Run(crop_img);
         }
         rec.Run(crop_img, &rec_times);
+        time_info_rec[0] += rec_times[0];
+        time_info_rec[1] += rec_times[1];
+        time_info_rec[2] += rec_times[2];
       }
-        
-      auto end = std::chrono::system_clock::now();
-      auto duration =
-          std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-      std::cout << "Cost  "
-                << double(duration.count()) *
-                       std::chrono::microseconds::period::num /
-                       std::chrono::microseconds::period::den
-                << "s" << std::endl;
     }
-      
+    if (FLAGS_benchmark) {
+        AutoLogger autolog_det("ocr_det", 
+                            FLAGS_use_gpu,
+                            FLAGS_use_tensorrt,
+                            FLAGS_enable_mkldnn,
+                            FLAGS_cpu_threads,
+                            1, 
+                            "dynamic", 
+                            FLAGS_precision, 
+                            time_info_det, 
+                            cv_all_img_names.size());
+        AutoLogger autolog_rec("ocr_rec", 
+                            FLAGS_use_gpu,
+                            FLAGS_use_tensorrt,
+                            FLAGS_enable_mkldnn,
+                            FLAGS_cpu_threads,
+                            1, 
+                            "dynamic", 
+                            FLAGS_precision, 
+                            time_info_rec, 
+                            cv_all_img_names.size());
+        autolog_det.report();
+        std::cout << endl;
+        autolog_rec.report();
+    }  
     return 0;
 }
 

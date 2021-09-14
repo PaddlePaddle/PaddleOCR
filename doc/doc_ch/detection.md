@@ -19,15 +19,16 @@
 
 <a name="11-----"></a>
 ## 1.1 数据准备
-icdar2015数据集可以从[官网](https://rrc.cvc.uab.es/?ch=4&com=downloads)下载到，首次下载需注册。
 
+icdar2015 TextLocalization数据集是文本检测的数据集，包含1000张训练图像和500张测试图像。
+icdar2015数据集可以从[官网](https://rrc.cvc.uab.es/?ch=4&com=downloads)下载到，首次下载需注册。
 注册完成登陆后，下载下图中红色框标出的部分，其中， `Training Set Images`下载的内容保存为`icdar_c4_train_imgs`文件夹下，`Test Set Images` 下载的内容保存为`ch4_test_images`文件夹下
 
 <p align="center">
- <img src="./doc/datasets/ic15_location_download.png" align="middle" width = "600"/>
+ <img src="../datasets/ic15_location_download.png" align="middle" width = "700"/>
 <p align="center">
 
-将下载到的数据集解压到工作目录下，假设解压在 PaddleOCR/train_data/ 下。另外，PaddleOCR将零散的标注文件整理成单独的标注文件
+将下载到的数据集解压到工作目录下，假设解压在 PaddleOCR/train_data/下。另外，PaddleOCR将零散的标注文件整理成单独的标注文件
 ，您可以通过wget的方式进行下载。
 ```shell
 # 在PaddleOCR路径下

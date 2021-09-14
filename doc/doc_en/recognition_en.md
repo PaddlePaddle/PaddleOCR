@@ -15,6 +15,7 @@
 
 - [4 PREDICTION](#PREDICTION)
     - [4.1 Training engine prediction](#Training_engine_prediction)
+- [5 CONVERT TO INFERENCE MODEL](#Inference)
 
 <a name="DATA_PREPARATION"></a>
 ## 1 DATA PREPARATION
@@ -90,6 +91,8 @@ Similar to the training set, the test set also needs to be provided a folder con
 
 If you do not have a dataset locally, you can download it on the official website [icdar2015](http://rrc.cvc.uab.es/?ch=4&com=downloads).
 Also refer to [DTRB](https://github.com/clovaai/deep-text-recognition-benchmark#download-lmdb-dataset-for-traininig-and-evaluation-from-here) ，download the lmdb format dataset required for benchmark
+
+If you want to reproduce the paper SAR, you need to download extra dataset [SynthAdd](https://pan.baidu.com/share/init?surl=uV0LtoNmcxbO-0YA7Ch4dg), extraction code: 627x. Besides, icdar2013, icdar2015, cocotext, IIIT5k datasets are also used to train. For specific details, please refer to the paper SAR.
 
 PaddleOCR provides label files for training the icdar2015 dataset, which can be downloaded in the following ways:
 
@@ -235,6 +238,8 @@ If the evaluation set is large, the test will be time-consuming. It is recommend
 | rec_r34_vd_tps_bilstm_att.yml |  CRNN |   Resnet34_vd |  TPS   |  BiLSTM |  att  |
 | rec_r50fpn_vd_none_srn.yml    | SRN | Resnet50_fpn_vd    | None    | rnn | srn |
 | rec_mtb_nrtr.yml    | NRTR | nrtr_mtb    | None    | transformer encoder | transformer decoder |
+| rec_r31_sar.yml               | SAR | ResNet31 | None | LSTM encoder | LSTM decoder |
+
 
 For training Chinese data, it is recommended to use
 [rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml). If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:
@@ -361,6 +366,7 @@ Eval:
 ```
 
 <a name="EVALUATION"></a>
+
 ## 3 EVALUATION
 
 The evaluation dataset can be set by modifying the `Eval.dataset.label_file_list` field in the `configs/rec/rec_icdar15_train.yml` file.
@@ -432,3 +438,40 @@ Get the prediction result of the input image:
 infer_img: doc/imgs_words/ch/word_1.jpg
         result: ('韩国小馆', 0.997218)
 ```
+
+<a name="Inference"></a>
+
+## 5 CONVERT TO INFERENCE MODEL
+
+The recognition model is converted to the inference model in the same way as the detection, as follows:
+
+```
+# -c Set the training algorithm yml configuration file
+# -o Set optional parameters
+# Global.pretrained_model parameter Set the training model address to be converted without adding the file suffix .pdmodel, .pdopt or .pdparams.
+# Global.save_inference_dir Set the address where the converted model will be saved.
+
+python3 tools/export_model.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml -o Global.pretrained_model=./ch_lite/ch_ppocr_mobile_v2.0_rec_train/best_accuracy  Global.save_inference_dir=./inference/rec_crnn/
+```
+
+If you have a model trained on your own dataset with a different dictionary file, please make sure that you modify the `character_dict_path` in the configuration file to your dictionary file path.
+
+After the conversion is successful, there are three files in the model save directory:
+
+```
+inference/det_db/
+    ├── inference.pdiparams         # The parameter file of recognition inference model
+    ├── inference.pdiparams.info    # The parameter information of recognition inference model, which can be ignored
+    └── inference.pdmodel           # The program file of recognition model
+```
+
+- Text recognition model Inference using custom characters dictionary
+
+  If the text dictionary is modified during training, when using the inference model to predict, you need to specify the dictionary path used by `--rec_char_dict_path`, and set `rec_char_type=ch`
+
+  ```
+  python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="ch" --rec_char_dict_path="your text dict path"
+  ```
+
+  
+

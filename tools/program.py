@@ -187,7 +187,7 @@ def train(config,
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
     use_nrtr = config['Architecture']['algorithm'] == "NRTR"
-
+    use_sar = config['Architecture']['algorithm'] == 'SAR'
     try:
         model_type = config['Architecture']['model_type']
     except:
@@ -215,7 +215,7 @@ def train(config,
             images = batch[0]
             if use_srn:
                 model_average = True
-            if use_srn or model_type == 'table' or use_nrtr:
+            if use_srn or model_type == 'table' or use_nrtr or use_sar:
                 preds = model(images, data=batch[1:])
             else:
                 preds = model(images)
@@ -279,7 +279,8 @@ def train(config,
                     post_process_class,
                     eval_class,
                     model_type,
-                    use_srn=use_srn)
+                    use_srn=use_srn,
+                    use_sar=use_sar)
                 cur_metric_str = 'cur metric, {}'.format(', '.join(
                     ['{}: {}'.format(k, v) for k, v in cur_metric.items()]))
                 logger.info(cur_metric_str)
@@ -351,7 +352,8 @@ def eval(model,
          post_process_class,
          eval_class,
          model_type,
-         use_srn=False):
+         use_srn=False,
+         use_sar=False):
     model.eval()
     with paddle.no_grad():
         total_frame = 0.0
@@ -364,7 +366,7 @@ def eval(model,
                 break
             images = batch[0]
             start = time.time()
-            if use_srn or model_type == 'table':
+            if use_srn or model_type == 'table' or use_sar:
                 preds = model(images, data=batch[1:])
             else:
                 preds = model(images)
@@ -400,7 +402,7 @@ def preprocess(is_train=False):
     alg = config['Architecture']['algorithm']
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
-        'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'PSE'
+        'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE'
     ]
 
     device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'

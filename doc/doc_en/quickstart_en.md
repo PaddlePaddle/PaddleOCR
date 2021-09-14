@@ -95,7 +95,7 @@ If you do not use the provided test image, you can replace the following `--imag
   ['PAIN', 0.990372]
   ```
 
-More whl package usage can be found in [whl package](./whl_en.md)
+If you need to use the 2.0 model, please specify the parameter `--version 2.0`, paddleocr uses the 2.1 model by default. More whl package usage can be found in [whl package](./whl_en.md)
 <a name="212-multi-language-model"></a>
 
 #### 2.1.2 Multi-language Model

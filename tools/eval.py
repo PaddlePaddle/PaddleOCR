@@ -55,6 +55,7 @@ def main():
 
     model = build_model(config['Architecture'])
     use_srn = config['Architecture']['algorithm'] == "SRN"
+    use_sar = config['Architecture']['algorithm'] == "SAR"
     if "model_type" in config['Architecture'].keys():
         model_type = config['Architecture']['model_type']
     else:
@@ -71,7 +72,7 @@ def main():
 
     # start eval
     metric = program.eval(model, valid_dataloader, post_process_class,
-                          eval_class, model_type, use_srn)
+                        eval_class, model_type, use_srn, use_sar)
     logger.info('metric eval ***************')
     for k, v in metric.items():
         logger.info('{}:{}'.format(k, v))

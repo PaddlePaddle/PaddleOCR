@@ -1,12 +1,12 @@
 Global:
-  use_gpu: true
-  epoch_num: 1200
+  use_gpu: false
+  epoch_num: 5
   log_smooth_window: 20
-  print_batch_step: 10
+  print_batch_step: 1
   save_model_dir: ./output/db_mv3/
   save_epoch_step: 1200
   # evaluation is run every 2000 iterations
-  eval_batch_step: [0, 2000]
+  eval_batch_step: [0, 400]
   cal_metric_during_train: False
   pretrained_model: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
   checkpoints:
@@ -20,9 +20,8 @@ Architecture:
   algorithm: DB
   Transform:
   Backbone:
-    name: MobileNetV3
-    scale: 0.5
-    model_name: large
+    name: ResNet  #MobileNetV3
+    layers: 50
   Neck:
     name: DBFPN
     out_channels: 256
@@ -34,12 +33,13 @@ Loss:
   name: DBLoss
   balance_loss: true
   main_loss_type: DiceLoss
-  alpha: 5
-  beta: 10
+  alpha: 5 #5
+  beta: 10 #10
   ohem_ratio: 3
 
 Optimizer:
-  name: Adam
+  name: Adam #Momentum
+  #momentum: 0.9
   beta1: 0.9
   beta2: 0.999
   lr:
@@ -71,15 +71,8 @@ Train:
           img_mode: BGR
           channel_first: False
       - DetLabelEncode: # Class handling label
-      - IaaAugment:
-          augmenter_args:
-            - { 'type': Fliplr, 'args': { 'p': 0.5 } }
-            - { 'type': Affine, 'args': { 'rotate': [-10, 10] } }
-            - { 'type': Resize, 'args': { 'size': [0.5, 3] } }
-      - EastRandomCropData:
-          size: [640, 640]
-          max_tries: 50
-          keep_ratio: true
+      - Resize:
+          # size: [640, 640]
       - MakeBorderMap:
           shrink_ratio: 0.4
           thresh_min: 0.3
@@ -96,10 +89,10 @@ Train:
       - KeepKeys:
           keep_keys: ['image', 'threshold_map', 'threshold_mask', 'shrink_map', 'shrink_mask'] # the order of the dataloader list
   loader:
-    shuffle: True
+    shuffle: False
     drop_last: False
-    batch_size_per_card: 16
-    num_workers: 8
+    batch_size_per_card: 1
+    num_workers: 0
     use_shared_memory: False
 
 Eval:
@@ -127,5 +120,5 @@ Eval:
     shuffle: False
     drop_last: False
     batch_size_per_card: 1 # must be 1
-    num_workers: 8
+    num_workers: 0
     use_shared_memory: False
