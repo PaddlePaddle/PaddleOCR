@@ -94,7 +94,7 @@ class TextRecognizer(object):
 
     def resize_norm_img(self, img, max_wh_ratio):
         imgC, imgH, imgW = self.rec_image_shape
-        if imgC == 1:
+        if self.rec_algorithm == 'NRTR':
             img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             # return padding_im
             image_pil = Image.fromarray(np.uint8(img))
