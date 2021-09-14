@@ -174,10 +174,13 @@ class NRTRLabelEncode(BaseRecLabelEncode):
         super(NRTRLabelEncode,
               self).__init__(max_text_length, character_dict_path,
                              character_type, use_space_char)
+
     def __call__(self, data):
         text = data['label']
         text = self.encode(text)
         if text is None:
+            return None
+        if len(text) >= self.max_text_len - 1:
             return None
         data['length'] = np.array(len(text))
         text.insert(0, 2)
@@ -185,9 +188,11 @@ class NRTRLabelEncode(BaseRecLabelEncode):
         text = text + [0] * (self.max_text_len - len(text))
         data['label'] = np.array(text)
         return data
+
     def add_special_char(self, dict_character):
-        dict_character = ['blank','<unk>','<s>','</s>'] + dict_character
+        dict_character = ['blank', '<unk>', '<s>', '</s>'] + dict_character
         return dict_character
+
 
 class CTCLabelEncode(BaseRecLabelEncode):
     """ Convert between text-label and text-index """
@@ -588,7 +593,7 @@ class SARLabelEncode(BaseRecLabelEncode):
         data['length'] = np.array(len(text))
         target = [self.start_idx] + text + [self.end_idx]
         padded_text = [self.padding_idx for _ in range(self.max_text_len)]
-        
+
         padded_text[:len(target)] = target
         data['label'] = np.array(padded_text)
         return data

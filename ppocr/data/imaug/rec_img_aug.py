@@ -44,12 +44,33 @@ class ClsResizeImg(object):
 
 
 class NRTRRecResizeImg(object):
-    def __init__(self, image_shape, resize_type, **kwargs):
+    def __init__(self, image_shape, resize_type, padding=False, **kwargs):
         self.image_shape = image_shape
         self.resize_type = resize_type
+        self.padding = padding
 
     def __call__(self, data):
         img = data['image']
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        image_shape = self.image_shape
+        if self.padding:
+            imgC, imgH, imgW = image_shape
+            # todo: change to 0 and modified image shape
+            h = img.shape[0]
+            w = img.shape[1]
+            ratio = w / float(h)
+            if math.ceil(imgH * ratio) > imgW:
+                resized_w = imgW
+            else:
+                resized_w = int(math.ceil(imgH * ratio))
+            resized_image = cv2.resize(img, (resized_w, imgH))
+            norm_img = np.expand_dims(resized_image, -1)
+            norm_img = norm_img.transpose((2, 0, 1))
+            resized_image = norm_img.astype(np.float32) / 128. - 1.
+            padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
+            padding_im[:, :, 0:resized_w] = resized_image
+            data['image'] = padding_im
+            return data
         if self.resize_type == 'PIL':
             image_pil = Image.fromarray(np.uint8(img))
             img = image_pil.resize(self.image_shape, Image.ANTIALIAS)
@@ -109,7 +130,8 @@ class SARRecResizeImg(object):
 
     def __call__(self, data):
         img = data['image']
-        norm_img, resize_shape, pad_shape, valid_ratio = resize_norm_img_sar(img, self.image_shape, self.width_downsample_ratio)
+        norm_img, resize_shape, pad_shape, valid_ratio = resize_norm_img_sar(
+            img, self.image_shape, self.width_downsample_ratio)
         data['image'] = norm_img
         data['resized_shape'] = resize_shape
         data['pad_shape'] = pad_shape
