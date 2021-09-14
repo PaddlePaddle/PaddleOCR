@@ -1,4 +1,4 @@
-# Text Angle Classification
+# Text Direction Classification
 
 - [1. Method Introduction](#method-introduction)
 - [2. Data Preparation](#data-preparation)
