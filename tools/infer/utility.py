@@ -17,7 +17,7 @@ import os
 import sys
 import cv2
 import numpy as np
-import json
+import paddle
 from PIL import Image, ImageDraw, ImageFont
 import math
 from paddle import inference
@@ -115,6 +115,11 @@ def init_args():
     parser.add_argument("--save_log_path", type=str, default="./log_output/")
 
     parser.add_argument("--show_log", type=str2bool, default=True)
+    parser.add_argument(
+        "--disable_glog_info",
+        type=str2bool,
+        default=False,
+        help='remove Paddle Inference LOG')
     return parser
 
 
@@ -264,13 +269,16 @@ def create_predictor(args, mode, logger):
 
     # enable memory optim
     config.enable_memory_optim()
-    #config.disable_glog_info()
+    # config.disable_glog_info()
 
     config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
     if mode == 'table':
         config.delete_pass("fc_fuse_pass")  # not supported for table
     config.switch_use_feed_fetch_ops(False)
     config.switch_ir_optim(True)
+    if args.disable_glog_info:
+        # remove Paddle Inference LOG
+        config.disable_glog_info()
 
     # create predictor
     predictor = inference.create_predictor(config)
@@ -580,6 +588,13 @@ def get_rotate_crop_image(img, points):
     if dst_img_height * 1.0 / dst_img_width >= 1.5:
         dst_img = np.rot90(dst_img)
     return dst_img
+
+
+def check_gpu(use_gpu):
+    if use_gpu and not paddle.is_compiled_with_cuda():
+
+        use_gpu = False
+    return use_gpu
 
 
 if __name__ == '__main__':
