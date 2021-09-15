@@ -303,17 +303,20 @@ class PaddleOCR(predict_system.TextSystem):
         lang, det_lang = parse_lang(params.lang)
 
         # init model dir
-        det_model_config = get_model_config(params.ocr_version, 'det', det_lang)
+        det_model_config = get_model_config('OCR', params.ocr_version, 'det',
+                                            det_lang)
         params.det_model_dir, det_url = confirm_model_dir_url(
             params.det_model_dir,
             os.path.join(BASE_DIR, VERSION, 'ocr', 'det', det_lang),
             det_model_config['url'])
-        rec_model_config = get_model_config(params.ocr_version, 'rec', lang)
+        rec_model_config = get_model_config('OCR', params.ocr_version, 'rec',
+                                            lang)
         params.rec_model_dir, rec_url = confirm_model_dir_url(
             params.rec_model_dir,
             os.path.join(BASE_DIR, VERSION, 'ocr', 'rec', lang),
             rec_model_config['url'])
-        cls_model_config = get_model_config(params.ocr_version, 'cls', 'ch')
+        cls_model_config = get_model_config('OCR', params.ocr_version, 'cls',
+                                            'ch')
         params.cls_model_dir, cls_url = confirm_model_dir_url(
             params.cls_model_dir,
             os.path.join(BASE_DIR, VERSION, 'ocr', 'cls'),

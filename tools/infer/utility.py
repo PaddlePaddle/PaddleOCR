@@ -277,7 +277,7 @@ def create_predictor(args, mode, logger):
     config.switch_use_feed_fetch_ops(False)
     config.switch_ir_optim(True)
     if args.disable_glog_info:
-        # remove Paddle Inference LOG
+        # remove Paddle Inference model init LOG
         config.disable_glog_info()
 
     # create predictor
