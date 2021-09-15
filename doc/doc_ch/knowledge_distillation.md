@@ -39,7 +39,7 @@ PaddleOCR中集成了知识蒸馏的算法，具体地，有以下几个主要�
 
 ### 2.1 识别配置文件解析
 
-配置文件在[rec_chinese_lite_train_distillation_v2.1.yml](../../configs/rec/ch_ppocr_v2.1/rec_chinese_lite_train_distillation_v2.1.yml)。
+配置文件在[ch_PP-OCRv2_rec_distillation.yml](../../configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec_distillation.yml)。
 
 #### 2.1.1 模型结构
 
@@ -245,6 +245,39 @@ Metric:
 
 关于`DistillationMetric`更加具体的实现可以参考: [distillation_metric.py](../../ppocr/metrics/distillation_metric.py#L24)。
 
+
+#### 2.1.5 蒸馏模型微调
+
+对蒸馏得到的识别蒸馏进行微调有2种方式。
+
+（1）基于知识蒸馏的微调：这种情况比较简单，下载预训练模型，在[ch_PP-OCRv2_rec_distillation.yml](../../configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec_distillation.yml)中配置好预训练模型路径以及自己的数据路径，即可进行模型微调训练。
+
+（2）微调时不使用知识蒸馏：这种情况，需要首先将预训练模型中的学生模型参数提取出来，具体步骤如下。
+
+* 首先下载预训练模型并解压。
+```shell
+# 下面预训练模型并解压
+wget https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_train.tar
+tar -xf ch_PP-OCRv2_rec_train.tar
+```
+
+* 然后使用python，对其中的学生模型参数进行提取
+
+```python
+import paddle
+# 加载预训练模型
+all_params = paddle.load("ch_PP-OCRv2_rec_train/best_accuracy.pdparams")
+# 查看权重参数的keys
+print(all_params.keys())
+# 学生模型的权重提取
+s_params = {key[len("Student."):]: all_params[key] for key in all_params if "Student." in key}
+# 查看学生模型权重参数的keys
+print(s_params.keys())
+# 保存
+paddle.save(s_params, "ch_PP-OCRv2_rec_train/student.pdparams")
+```
+
+转化完成之后，使用[ch_PP-OCRv2_rec.yml](../../configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec.yml)，修改预训练模型的路径（为导出的`student.pdparams`模型路径）以及自己的数据路径，即可进行模型微调。
 
 ### 2.2 检测配置文件解析
 

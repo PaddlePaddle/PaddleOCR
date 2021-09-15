@@ -3,39 +3,21 @@
 
 [PaddleOCR Quick Start](#paddleocr-quick-start)
 
-* [1. Light Installation](#1-light-installation)
-  + [1.1 Install PaddlePaddle2.0](#11-install-paddlepaddle20)
-  + [1.2 Install PaddleOCR Whl Package](#12-install-paddleocr-whl-package)
++ [1. Install PaddleOCR Whl Package](#1-install-paddleocr-whl-package)
 * [2. Easy-to-Use](#2-easy-to-use)
   + [2.1 Use by command line](#21-use-by-command-line)
     - [2.1.1 English and Chinese Model](#211-english-and-chinese-model)
     - [2.1.2 Multi-language Model](#212-multi-language-model)
-    - [2.1.3 LayoutParser](#213-layoutparser)
+    - [2.1.3 Layout Analysis](#213-layoutAnalysis)
   + [2.2 Use by Code](#22-use-by-code)
     - [2.2.1 Chinese & English Model and Multilingual Model](#221-chinese---english-model-and-multilingual-model)
-    - [2.2.2 LayoutParser](#222-layoutparser)
+    - [2.2.2 Layout Analysis](#222-layoutAnalysis)
 
-<a name="1-light-installation"></a>
 
-## 1. Light Installation
 
-<a name="11-install-paddlepaddle20"></a>
+<a name="1-install-paddleocr-whl-package"></a>
 
-### 1.1 Install PaddlePaddle2.0
-
-```bash
-# If you have cuda9 or cuda10 installed on your machine, please run the following command to install
-python3 -m pip install paddlepaddle-gpu==2.0.0 -i https://mirror.baidu.com/pypi/simple
-
-# If you only have cpu on your machine, please run the following command to install
-python3 -m pip install paddlepaddle==2.0.0 -i https://mirror.baidu.com/pypi/simple
-```
-
-For more software version requirements, please refer to the instructions in [Installation Document](https://www.paddlepaddle.org.cn/install/quick) for operation.
-
-<a name="12-install-paddleocr-whl-package"></a>
-
-### 1.2 Install PaddleOCR Whl Package
+## 1. Install PaddleOCR Whl Package
 
 ```bash
 pip install "paddleocr>=2.0.1" # Recommend to use version 2.0.1+
@@ -59,7 +41,7 @@ pip install "paddleocr>=2.0.1" # Recommend to use version 2.0.1+
 
 ### 2.1 Use by command line
 
-PaddleOCR provides a series of test images, click xx to download, and then switch to the corresponding directory in the terminal
+PaddleOCR provides a series of test images, click [here](https://paddleocr.bj.bcebos.com/dygraph_v2.1/ppocr_img.zip) to download, and then switch to the corresponding directory in the terminal
 
 ```bash
 cd /path/to/ppocr_img
@@ -113,7 +95,7 @@ If you do not use the provided test image, you can replace the following `--imag
   ['PAIN', 0.990372]
   ```
 
-More whl package usage can be found in [whl package](./whl_en.md)
+If you need to use the 2.0 model, please specify the parameter `--version 2.0`, paddleocr uses the 2.1 model by default. More whl package usage can be found in [whl package](./whl_en.md)
 <a name="212-multi-language-model"></a>
 
 #### 2.1.2 Multi-language Model
@@ -150,9 +132,11 @@ Commonly used multilingual abbreviations include
 | Chinese Traditional | chinese_cht  |      | Italian  | it           |      | Russian  | ru           |
 
 A list of all languages and their corresponding abbreviations can be found in [Multi-Language Model Tutorial](./multi_languages_en.md)
-<a name="213-layoutparser"></a>
+<a name="213-layoutAnalysis"></a>
 
-#### 2.1.3 LayoutParser
+#### 2.1.3 Layout Analysis
+
+Layout analysis refers to the division of 5 types of areas of the document, including text, title, list, picture and table. For the first three types of regions, directly use the OCR model to complete the text detection and recognition of the corresponding regions, and save the results in txt. For the table area, after the table structuring process, the table picture is converted into an Excel file of the same table style. The picture area will be individually cropped into an image.
 
 To use the layout analysis function of PaddleOCR, you need to specify `--type=structure`
 
@@ -237,9 +221,9 @@ Visualization of results
 <div align="center">
     <img src="../imgs_results/whl/12_det_rec.jpg" width="800">
 </div>
-<a name="222-layoutparser"></a>
+<a name="222-layoutAnalysis"></a>
 
-#### 2.2.2 LayoutParser
+#### 2.2.2 Layout Analysis
 
 ```python
 import os
@@ -266,4 +250,3 @@ im_show = draw_structure_result(image, result,font_path=font_path)
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
-
