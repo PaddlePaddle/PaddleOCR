@@ -169,21 +169,10 @@ class DetectionIoUEvaluator(object):
         numGlobalCareDet += numDetCare
 
         perSampleMetrics = {
-            'precision': precision,
-            'recall': recall,
-            'hmean': hmean,
-            'pairs': pairs,
-            'iouMat': [] if len(detPols) > 100 else iouMat.tolist(),
-            'gtPolPoints': gtPolPoints,
-            'detPolPoints': detPolPoints,
             'gtCare': numGtCare,
             'detCare': numDetCare,
-            'gtDontCare': gtDontCarePolsNum,
-            'detDontCare': detDontCarePolsNum,
             'detMatched': detMatched,
-            'evaluationLog': evaluationLog
         }
-
         return perSampleMetrics
 
     def combine_results(self, results):

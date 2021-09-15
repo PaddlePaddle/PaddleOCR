@@ -164,47 +164,55 @@ class EastRandomCropData(object):
         return data
 
 
-class PSERandomCrop(object):
-    def __init__(self, size, **kwargs):
+class RandomCropImgMask(object):
+    def __init__(self, size, main_key, crop_keys, p=3 / 8, **kwargs):
         self.size = size
+        self.main_key = main_key
+        self.crop_keys = crop_keys
+        self.p = p
 
     def __call__(self, data):
-        imgs = data['imgs']
+        image = data['image']
 
-        h, w = imgs[0].shape[0:2]
+        h, w = image.shape[0:2]
         th, tw = self.size
         if w == tw and h == th:
-            return imgs
+            return data
 
-        # label中存在文本实例，并且按照概率进行裁剪，使用threshold_label_map控制
-        if np.max(imgs[2]) > 0 and random.random() > 3 / 8:
-            # 文本实例的左上角点
-            tl = np.min(np.where(imgs[2] > 0), axis=1) - self.size
+        mask = data[self.main_key]
+        if np.max(mask) > 0 and random.random() > self.p:
+            # make sure to crop the text region
+            tl = np.min(np.where(mask > 0), axis=1) - (th, tw)
             tl[tl < 0] = 0
-            # 文本实例的右下角点
-            br = np.max(np.where(imgs[2] > 0), axis=1) - self.size
+            br = np.max(np.where(mask > 0), axis=1) - (th, tw)
             br[br < 0] = 0
-            # 保证选到右下角点时，有足够的距离进行crop
+
             br[0] = min(br[0], h - th)
             br[1] = min(br[1], w - tw)
 
-            for _ in range(50000):
-                i = random.randint(tl[0], br[0])
-                j = random.randint(tl[1], br[1])
-                # 保证shrink_label_map有文本
-                if imgs[1][i:i + th, j:j + tw].sum() <= 0:
-                    continue
-                else:
-                    break
+            i = random.randint(tl[0], br[0]) if tl[0] < br[0] else 0
+            j = random.randint(tl[1], br[1]) if tl[1] < br[1] else 0
         else:
-            i = random.randint(0, h - th)
-            j = random.randint(0, w - tw)
+            i = random.randint(0, h - th) if h - th > 0 else 0
+            j = random.randint(0, w - tw) if w - tw > 0 else 0
 
         # return i, j, th, tw
-        for idx in range(len(imgs)):
-            if len(imgs[idx].shape) == 3:
-                imgs[idx] = imgs[idx][i:i + th, j:j + tw, :]
-            else:
-                imgs[idx] = imgs[idx][i:i + th, j:j + tw]
-        data['imgs'] = imgs
+        for k in data:
+            if k in self.crop_keys:
+                if len(data[k].shape) == 3:
+                    if np.argmin(data[k].shape) == 0:
+                        img = data[k][:, i:i + th, j:j + tw]
+                        if img.shape[1] != img.shape[2]:
+                            a = 1
+                    elif np.argmin(data[k].shape) == 2:
+                        img = data[k][i:i + th, j:j + tw, :]
+                        if img.shape[1] != img.shape[0]:
+                            a = 1
+                    else:
+                        img = data[k]
+                else:
+                    img = data[k][i:i + th, j:j + tw]
+                    if img.shape[0] != img.shape[1]:
+                        a = 1
+                data[k] = img
         return data
