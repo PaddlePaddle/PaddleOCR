@@ -2,16 +2,17 @@
 # 基于Python预测引擎推理
 
 inference 模型（`paddle.jit.save`保存的模型）
-一般是模型训练完成后保存的固化模型，多用于预测部署。训练过程中保存的模型是checkpoints模型，保存的是模型的参数，多用于恢复训练等。
-与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合与实际系统集成。
+一般是模型训练，把模型结构和模型参数保存在文件中的固化模型，多用于预测部署场景。
+训练过程中保存的模型是checkpoints模型，保存的只有模型的参数，多用于恢复训练等。
+与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合于实际系统集成。
 
-接下来首先介绍如何将训练的模型转换成inference模型，然后将依次介绍文本检测、文本角度分类器、文本识别以及三者串联基于预测引擎推理。
+接下来首先介绍如何将训练的模型转换成inference模型，然后将依次介绍文本检测、文本角度分类器、文本识别以及三者串联在CPU、GPU上的预测方法。
 
 
 - [一、训练模型转inference模型](#训练模型转inference模型)
     - [检测模型转inference模型](#检测模型转inference模型)
     - [识别模型转inference模型](#识别模型转inference模型)  
-    - [方向分类模型转inference模型](#方向分类模型转inference模型)  
+    - [方向分类模型转inference模型](#方向分类模型转inference模型)
 
 - [二、文本检测模型推理](#文本检测模型推理)
     - [1. 超轻量中文检测模型推理](#超轻量中文检测模型推理)
@@ -22,8 +23,9 @@ inference 模型（`paddle.jit.save`保存的模型）
 - [三、文本识别模型推理](#文本识别模型推理)
     - [1. 超轻量中文识别模型推理](#超轻量中文识别模型推理)
     - [2. 基于CTC损失的识别模型推理](#基于CTC损失的识别模型推理)
-    - [3. 自定义文本识别字典的推理](#自定义文本识别字典的推理)
-    - [4. 多语言模型的推理](#多语言模型的推理)
+    - [3. 基于SRN损失的识别模型推理](#基于SRN损失的识别模型推理)
+    - [4. 自定义文本识别字典的推理](#自定义文本识别字典的推理)
+    - [5. 多语言模型的推理](#多语言模型的推理)
 
 - [四、方向分类模型推理](#方向识别模型推理)
     - [1. 方向分类模型推理](#方向分类模型推理)
@@ -47,10 +49,9 @@ wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobi
 # -c 后面设置训练算法的yml配置文件
 # -o 配置可选参数
 # Global.pretrained_model 参数设置待转换的训练模型地址，不用添加文件后缀 .pdmodel，.pdopt或.pdparams。
-# Global.load_static_weights 参数需要设置为 False。
 # Global.save_inference_dir参数设置转换的模型将保存的地址。
 
-python3 tools/export_model.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrained_model=./ch_lite/ch_ppocr_mobile_v2.0_det_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/det_db/
+python3 tools/export_model.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrained_model=./ch_lite/ch_ppocr_mobile_v2.0_det_train/best_accuracy Global.save_inference_dir=./inference/det_db/
 ```
 转inference模型时，使用的配置文件和训练时使用的配置文件相同。另外，还需要设置配置文件中的`Global.pretrained_model`参数，其指向训练中保存的模型参数文件。
 转换成功后，在模型保存目录下有三个文件：
@@ -74,10 +75,9 @@ wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobi
 # -c 后面设置训练算法的yml配置文件
 # -o 配置可选参数
 # Global.pretrained_model 参数设置待转换的训练模型地址，不用添加文件后缀 .pdmodel，.pdopt或.pdparams。
-# Global.load_static_weights 参数需要设置为 False。
 # Global.save_inference_dir参数设置转换的模型将保存的地址。
 
-python3 tools/export_model.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml -o Global.pretrained_model=./ch_lite/ch_ppocr_mobile_v2.0_rec_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/rec_crnn/
+python3 tools/export_model.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml -o Global.pretrained_model=./ch_lite/ch_ppocr_mobile_v2.0_rec_train/best_accuracy  Global.save_inference_dir=./inference/rec_crnn/
 ```
 
 **注意：**如果您是在自己的数据集上训练的模型，并且调整了中文字符的字典文件，请注意修改配置文件中的`character_dict_path`是否是所需要的字典文件。
@@ -103,10 +103,9 @@ wget -P ./ch_lite/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobi
 # -c 后面设置训练算法的yml配置文件
 # -o 配置可选参数
 # Global.pretrained_model 参数设置待转换的训练模型地址，不用添加文件后缀 .pdmodel，.pdopt或.pdparams。
-# Global.load_static_weights 参数需要设置为 False。
 # Global.save_inference_dir参数设置转换的模型将保存的地址。
 
-python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o Global.pretrained_model=./ch_lite/ch_ppocr_mobile_v2.0_cls_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/cls/
+python3 tools/export_model.py -c configs/cls/cls_mv3.yml -o Global.pretrained_model=./ch_lite/ch_ppocr_mobile_v2.0_cls_train/best_accuracy  Global.save_inference_dir=./inference/cls/
 ```
 
 转换成功后，在目录下有三个文件：
@@ -139,7 +138,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/00018069.jpg" --det_m
 ![](../imgs_results/det_res_00018069.jpg)
 
 通过参数`limit_type`和`det_limit_side_len`来对图片的尺寸进行限制，
-`litmit_type`可选参数为[`max`, `min`]，
+`limit_type`可选参数为[`max`, `min`]，
 `det_limit_size_len` 为正整数，一般设置为32 的倍数，比如960。
 
 参数默认设置为`limit_type='max', det_limit_side_len=960`。表示网络输入图像的最长边不能超过960，
@@ -148,12 +147,12 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/00018069.jpg" --det_m
 
 如果输入图片的分辨率比较大，而且想使用更大的分辨率预测，可以设置det_limit_side_len 为想要的值，比如1216：
 ```
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --det_limit_type=max --det_limit_side_len=1216
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./inference/det_db/" --det_limit_type=max --det_limit_side_len=1216
 ```
 
 如果想使用CPU进行预测，执行命令如下
 ```
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/"  --use_gpu=False
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./inference/det_db/"  --use_gpu=False
 ```
 
 <a name="DB文本检测模型推理"></a>
@@ -162,7 +161,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/2.jpg" --det_model_di
 首先将DB文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例（ [模型下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_db_v2.0_train.tar) )，可以使用如下命令进行转换：
 
 ```
-python3 tools/export_model.py -c configs/det/det_r50_vd_db.yml -o Global.pretrained_model=./det_r50_vd_db_v2.0_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/det_db
+python3 tools/export_model.py -c configs/det/det_r50_vd_db.yml -o Global.pretrained_model=./det_r50_vd_db_v2.0_train/best_accuracy  Global.save_inference_dir=./inference/det_db
 ```
 
 DB文本检测模型推理，可以执行如下命令：
@@ -183,7 +182,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_
 首先将EAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例（ [模型下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar) )，可以使用如下命令进行转换：
 
 ```
-python3 tools/export_model.py -c configs/det/det_r50_vd_east.yml -o Global.pretrained_model=./det_r50_vd_east_v2.0_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/det_east
+python3 tools/export_model.py -c configs/det/det_r50_vd_east.yml -o Global.pretrained_model=./det_r50_vd_east_v2.0_train/best_accuracy  Global.save_inference_dir=./inference/det_east
 ```
 
 **EAST文本检测模型推理，需要设置参数`--det_algorithm="EAST"`**，可以执行如下命令：
@@ -203,7 +202,7 @@ python3 tools/infer/predict_det.py --det_algorithm="EAST" --image_dir="./doc/img
 #### (1). 四边形文本检测模型（ICDAR2015）  
 首先将SAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例([模型下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_icdar15_v2.0_train.tar))，可以使用如下命令进行转换：
 ```
-python3 tools/export_model.py -c configs/det/det_r50_vd_sast_icdar15.yml -o Global.pretrained_model=./det_r50_vd_sast_icdar15_v2.0_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/det_sast_ic15
+python3 tools/export_model.py -c configs/det/det_r50_vd_sast_icdar15.yml -o Global.pretrained_model=./det_r50_vd_sast_icdar15_v2.0_train/best_accuracy  Global.save_inference_dir=./inference/det_sast_ic15
 
 ```
 **SAST文本检测模型推理，需要设置参数`--det_algorithm="SAST"`**，可以执行如下命令：
@@ -218,11 +217,11 @@ python3 tools/infer/predict_det.py --det_algorithm="SAST" --image_dir="./doc/img
 首先将SAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在Total-Text英文数据集训练的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_totaltext_v2.0_train.tar))，可以使用如下命令进行转换：
 
 ```
-python3 tools/export_model.py -c configs/det/det_r50_vd_sast_totaltext.yml -o Global.pretrained_model=./det_r50_vd_sast_totaltext_v2.0_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/det_sast_tt
+python3 tools/export_model.py -c configs/det/det_r50_vd_sast_totaltext.yml -o Global.pretrained_model=./det_r50_vd_sast_totaltext_v2.0_train/best_accuracy  Global.save_inference_dir=./inference/det_sast_tt
 
 ```
 
-**SAST文本检测模型推理，需要设置参数`--det_algorithm="SAST"`，同时，还需要增加参数`--det_sast_polygon=True`，**可以执行如下命令：
+SAST文本检测模型推理，需要设置参数`--det_algorithm="SAST"`，同时，还需要增加参数`--det_sast_polygon=True`，可以执行如下命令：
 ```
 python3 tools/infer/predict_det.py --det_algorithm="SAST" --image_dir="./doc/imgs_en/img623.jpg" --det_model_dir="./inference/det_sast_tt/" --det_sast_polygon=True
 ```
@@ -268,7 +267,7 @@ Predicts of ./doc/imgs_words/ch/word_4.jpg:('实力活力', 0.98458153)
 的模型为例（ [模型下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_none_bilstm_ctc_v2.0_train.tar) )，可以使用如下命令进行转换：
 
 ```
-python3 tools/export_model.py -c configs/rec/rec_r34_vd_none_bilstm_ctc.yml -o Global.pretrained_model=./rec_r34_vd_none_bilstm_ctc_v2.0_train/best_accuracy Global.load_static_weights=False Global.save_inference_dir=./inference/rec_crnn
+python3 tools/export_model.py -c configs/rec/rec_r34_vd_none_bilstm_ctc.yml -o Global.pretrained_model=./rec_r34_vd_none_bilstm_ctc_v2.0_train/best_accuracy  Global.save_inference_dir=./inference/rec_crnn
 ```
 
 CRNN 文本识别模型推理，可以执行如下命令：
@@ -295,8 +294,20 @@ Predicts of ./doc/imgs_words_en/word_336.png:('super', 0.9999073)
 self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
 dict_character = list(self.character_str)
 ```
+<a name="基于SRN损失的识别模型推理"></a>
+### 3. 基于SRN损失的识别模型推理
+基于SRN损失的识别模型，需要额外设置识别算法参数 --rec_algorithm="SRN"。
+同时需要保证预测shape与训练时一致，如： --rec_image_shape="1, 64, 256"
 
-### 3. 自定义文本识别字典的推理
+```
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" \
+                                   --rec_model_dir="./inference/srn/" \
+                                   --rec_image_shape="1, 64, 256" \
+                                   --rec_char_type="en" \
+                                   --rec_algorithm="SRN"
+```
+
+### 4. 自定义文本识别字典的推理
 如果训练时修改了文本的字典，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径，并且设置 `rec_char_type=ch`
 
 ```
@@ -304,12 +315,12 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png
 ```
 
 <a name="多语言模型的推理"></a>
-### 4. 多语言模型的推理
+### 5. 多语言模型的推理
 如果您需要预测的是其他语言模型，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径, 同时为了得到正确的可视化结果，
-需要通过 `--vis_font_path` 指定可视化的字体路径，`doc/` 路径下有默认提供的小语种字体，例如韩文识别：
+需要通过 `--vis_font_path` 指定可视化的字体路径，`doc/fonts/` 路径下有默认提供的小语种字体，例如韩文识别：
 
 ```
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" --rec_model_dir="./your inference model" --rec_char_type="korean" --rec_char_dict_path="ppocr/utils/dict/korean_dict.txt" --vis_font_path="doc/korean.ttf"
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" --rec_model_dir="./your inference model" --rec_char_type="korean" --rec_char_dict_path="ppocr/utils/dict/korean_dict.txt" --vis_font_path="doc/fonts/korean.ttf"
 ```
 ![](../imgs_words/korean/1.jpg)
 
@@ -348,23 +359,24 @@ Predicts of ./doc/imgs_words/ch/word_4.jpg:['0', 0.9999982]
 <a name="超轻量中文OCR模型推理"></a>
 ### 1. 超轻量中文OCR模型推理
 
-在执行预测时，需要通过参数`image_dir`指定单张图像或者图像集合的路径、参数`det_model_dir`,`cls_model_dir`和`rec_model_dir`分别指定检测，方向分类和识别的inference模型路径。参数`use_angle_cls`用于控制是否启用方向分类模型。可视化识别结果默认保存到 ./inference_results 文件夹里面。
+在执行预测时，需要通过参数`image_dir`指定单张图像或者图像集合的路径、参数`det_model_dir`,`cls_model_dir`和`rec_model_dir`分别指定检测，方向分类和识别的inference模型路径。参数`use_angle_cls`用于控制是否启用方向分类模型。`use_mp`表示是否使用多进程。`total_process_num`表示在使用多进程时的进程数。可视化识别结果默认保存到 ./inference_results 文件夹里面。
 
-```
+```shell
 # 使用方向分类器
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --cls_model_dir="./inference/cls/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls=true
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./inference/det_db/" --cls_model_dir="./inference/cls/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls=true
 
 # 不使用方向分类器
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/2.jpg" --det_model_dir="./inference/det_db/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls=false
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./inference/det_db/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls=false
+
+# 使用多进程
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./inference/det_db/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls=false --use_mp=True --total_process_num=6
 ```
-
-
 
 
 
 执行命令后，识别结果图像如下：
 
-![](../imgs_results/2.jpg)
+![](../imgs_results/system_res_00018069.jpg)
 
 <a name="其他模型推理"></a>
 ### 2. 其他模型推理
@@ -381,4 +393,4 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_10.jpg" --d
 
 执行命令后，识别结果图像如下：
 
-(coming soon)
+![](../imgs_results/img_10_east_starnet.jpg)

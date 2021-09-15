@@ -47,20 +47,18 @@ void Normalize::Run(cv::Mat *im, const std::vector<float> &mean,
     e /= 255.0;
   }
   (*im).convertTo(*im, CV_32FC3, e);
-  for (int h = 0; h < im->rows; h++) {
-    for (int w = 0; w < im->cols; w++) {
-      im->at<cv::Vec3f>(h, w)[0] =
-          (im->at<cv::Vec3f>(h, w)[0] - mean[0]) * scale[0];
-      im->at<cv::Vec3f>(h, w)[1] =
-          (im->at<cv::Vec3f>(h, w)[1] - mean[1]) * scale[1];
-      im->at<cv::Vec3f>(h, w)[2] =
-          (im->at<cv::Vec3f>(h, w)[2] - mean[2]) * scale[2];
-    }
+  std::vector<cv::Mat> bgr_channels(3);
+  cv::split(*im, bgr_channels);
+  for (auto i = 0; i < bgr_channels.size(); i++) {
+    bgr_channels[i].convertTo(bgr_channels[i], CV_32FC1, 1.0 * scale[i],
+                              (0.0 - mean[i]) * scale[i]);
   }
+  cv::merge(bgr_channels, *im);
 }
 
 void ResizeImgType0::Run(const cv::Mat &img, cv::Mat &resize_img,
-                         int max_size_len, float &ratio_h, float &ratio_w) {
+                         int max_size_len, float &ratio_h, float &ratio_w,
+                         bool use_tensorrt) {
   int w = img.cols;
   int h = img.rows;
 
@@ -76,27 +74,17 @@ void ResizeImgType0::Run(const cv::Mat &img, cv::Mat &resize_img,
 
   int resize_h = int(float(h) * ratio);
   int resize_w = int(float(w) * ratio);
-  if (resize_h % 32 == 0)
-    resize_h = resize_h;
-  else if (resize_h / 32 < 1 + 1e-5)
-    resize_h = 32;
-  else
-    resize_h = (resize_h / 32) * 32;
 
-  if (resize_w % 32 == 0)
-    resize_w = resize_w;
-  else if (resize_w / 32 < 1 + 1e-5)
-    resize_w = 32;
-  else
-    resize_w = (resize_w / 32) * 32;
+  resize_h = max(int(round(float(resize_h) / 32) * 32), 32);
+  resize_w = max(int(round(float(resize_w) / 32) * 32), 32);
 
   cv::resize(img, resize_img, cv::Size(resize_w, resize_h));
-
   ratio_h = float(resize_h) / float(h);
   ratio_w = float(resize_w) / float(w);
 }
 
 void CrnnResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img, float wh_ratio,
+                        bool use_tensorrt,
                         const std::vector<int> &rec_image_shape) {
   int imgC, imgH, imgW;
   imgC = rec_image_shape[0];
@@ -114,9 +102,13 @@ void CrnnResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img, float wh_ratio,
 
   cv::resize(img, resize_img, cv::Size(resize_w, imgH), 0.f, 0.f,
              cv::INTER_LINEAR);
+  cv::copyMakeBorder(resize_img, resize_img, 0, 0, 0,
+                     int(imgW - resize_img.cols), cv::BORDER_CONSTANT,
+                     {127, 127, 127});
 }
 
 void ClsResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img,
+                       bool use_tensorrt,
                        const std::vector<int> &rec_image_shape) {
   int imgC, imgH, imgW;
   imgC = rec_image_shape[0];

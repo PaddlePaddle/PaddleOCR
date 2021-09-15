@@ -124,6 +124,15 @@ def natural_sort(list, key=lambda s:s):
 
 
 def get_rotate_crop_image(img, points):
+    # Use Green's theory to judge clockwise or counterclockwise
+    # author: biyanhua
+    d = 0.0
+    for index in range(-1, 3):
+        d += -0.5 * (points[index + 1][1] + points[index][1]) * (
+                    points[index + 1][0] - points[index][0])
+    if d < 0: # counterclockwise
+        tmp = np.array(points)
+        points[1], points[3] = tmp[3], tmp[1]
 
     try:
         img_crop_width = int(
@@ -165,6 +174,7 @@ def stepsInfo(lang='en'):
               "10. 标注结果：关闭应用程序或切换文件路径后，手动保存过的标签将会被存放在所打开图片文件夹下的" \
               "*Label.txt*中。在菜单栏点击 “PaddleOCR” - 保存识别结果后，会将此类图片的识别训练数据保存在*crop_img*文件夹下，" \
               "识别标签保存在*rec_gt.txt*中。\n"
+
     else:
         msg = "1. Build and launch using the instructions above.\n" \
               "2. Click 'Open Dir' in Menu/File to select the folder of the picture.\n"\
@@ -178,5 +188,57 @@ def stepsInfo(lang='en'):
               "8. Click 'Save', the image status will switch to '√',then the program automatically jump to the next.\n"\
               "9. Click 'Delete Image' and the image will be deleted to the recycle bin.\n"\
               "10. Labeling result: After closing the application or switching the file path, the manually saved label will be stored in *Label.txt* under the opened picture folder.\n"\
-              "    Click PaddleOCR-Save Recognition Results in the menu bar, the recognition training data of such pictures will be saved in the *crop_img* folder, and the recognition label will be saved in *rec_gt.txt*.\n"
+              "    Click PaddleOCR-Save Recognition Results in the menu bar, the recognition training data of such pictures will be saved in the *crop_img* folder, and the recognition label will be saved in *rec_gt.txt*.\n" 
+
+    return msg
+
+def keysInfo(lang='en'):
+    if lang == 'ch':
+        msg = "快捷键\t\t\t说明\n" \
+              "———————————————————————\n"\
+              "Ctrl + shift + R\t\t对当前图片的所有标记重新识别\n" \
+              "W\t\t\t新建矩形框\n" \
+              "Q\t\t\t新建四点框\n" \
+              "Ctrl + E\t\t编辑所选框标签\n" \
+              "Ctrl + R\t\t重新识别所选标记\n" \
+              "Ctrl + C\t\t复制并粘贴选中的标记框\n" \
+              "Ctrl + 鼠标左键\t\t多选标记框\n" \
+              "Backspace\t\t删除所选框\n" \
+              "Ctrl + V\t\t确认本张图片标记\n" \
+              "Ctrl + Shift + d\t删除本张图片\n" \
+              "D\t\t\t下一张图片\n" \
+              "A\t\t\t上一张图片\n" \
+              "Ctrl++\t\t\t缩小\n" \
+              "Ctrl--\t\t\t放大\n" \
+              "↑→↓←\t\t\t移动标记框\n" \
+              "———————————————————————\n" \
+              "注：Mac用户Command键替换上述Ctrl键"
+
+    else:
+        msg = "Shortcut Keys\t\tDescription\n" \
+              "———————————————————————\n" \
+              "Ctrl + shift + R\t\tRe-recognize all the labels\n" \
+              "\t\t\tof the current image\n" \
+              "\n"\
+              "W\t\t\tCreate a rect box\n" \
+              "Q\t\t\tCreate a four-points box\n" \
+              "Ctrl + E\t\tEdit label of the selected box\n" \
+              "Ctrl + R\t\tRe-recognize the selected box\n" \
+              "Ctrl + C\t\tCopy and paste the selected\n" \
+              "\t\t\tbox\n" \
+              "\n"\
+              "Ctrl + Left Mouse\tMulti select the label\n" \
+              "Button\t\t\tbox\n" \
+              "\n"\
+              "Backspace\t\tDelete the selected box\n" \
+              "Ctrl + V\t\tCheck image\n" \
+              "Ctrl + Shift + d\tDelete image\n" \
+              "D\t\t\tNext image\n" \
+              "A\t\t\tPrevious image\n" \
+              "Ctrl++\t\t\tZoom in\n" \
+              "Ctrl--\t\t\tZoom out\n" \
+              "↑→↓←\t\t\tMove selected box" \
+              "———————————————————————\n" \
+              "Notice:For Mac users, use the 'Command' key instead of the 'Ctrl' key"
+
     return msg

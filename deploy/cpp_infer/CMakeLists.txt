@@ -1,4 +1,5 @@
-project(ocr_system CXX C)
+project(ppocr CXX C)
+cmake_minimum_required(VERSION 3.14)
 
 option(WITH_MKL        "Compile demo with MKL/OpenBlas support, default use MKL."       ON)
 option(WITH_GPU        "Compile demo with GPU/CPU, default use CPU."                    OFF)
@@ -11,7 +12,7 @@ SET(CUDA_LIB "" CACHE PATH "Location of libraries")
 SET(CUDNN_LIB "" CACHE PATH "Location of libraries")
 SET(TENSORRT_DIR "" CACHE PATH "Compile demo with TensorRT")
 
-set(DEMO_NAME "ocr_system")
+set(DEMO_NAME "ppocr")
 
 
 macro(safe_set_static_flag)
@@ -38,9 +39,8 @@ endif()
 
 
 if (WIN32)
-  include_directories("${PADDLE_LIB}/paddle/fluid/inference")
   include_directories("${PADDLE_LIB}/paddle/include")
-  link_directories("${PADDLE_LIB}/paddle/fluid/inference")
+  link_directories("${PADDLE_LIB}/paddle/lib")
   find_package(OpenCV REQUIRED PATHS ${OPENCV_DIR}/build/ NO_DEFAULT_PATH)
 
 else ()
@@ -133,21 +133,35 @@ if(WITH_MKL)
     endif ()
   endif()
 else()
-  set(MATH_LIB ${PADDLE_LIB}/third_party/install/openblas/lib/libopenblas${CMAKE_STATIC_LIBRARY_SUFFIX})
+  if (WIN32)
+    set(MATH_LIB ${PADDLE_LIB}/third_party/install/openblas/lib/openblas${CMAKE_STATIC_LIBRARY_SUFFIX})
+  else ()
+    set(MATH_LIB ${PADDLE_LIB}/third_party/install/openblas/lib/libopenblas${CMAKE_STATIC_LIBRARY_SUFFIX})
+  endif ()
 endif()
 
-# Note: libpaddle_inference_api.so/a must put before libpaddle_fluid.so/a
+# Note: libpaddle_inference_api.so/a must put before libpaddle_inference.so/a
 if(WITH_STATIC_LIB)
-  set(DEPS
-      ${PADDLE_LIB}/paddle/lib/libpaddle_fluid${CMAKE_STATIC_LIBRARY_SUFFIX})
+  if(WIN32)
+    set(DEPS
+        ${PADDLE_LIB}/paddle/lib/paddle_inference${CMAKE_STATIC_LIBRARY_SUFFIX})
+  else()
+    set(DEPS
+        ${PADDLE_LIB}/paddle/lib/libpaddle_inference${CMAKE_STATIC_LIBRARY_SUFFIX})
+  endif()
 else()
-  set(DEPS
-      ${PADDLE_LIB}/paddle/lib/libpaddle_fluid${CMAKE_SHARED_LIBRARY_SUFFIX})
-endif()
+  if(WIN32)
+    set(DEPS
+        ${PADDLE_LIB}/paddle/lib/paddle_inference${CMAKE_SHARED_LIBRARY_SUFFIX})
+  else()
+    set(DEPS
+        ${PADDLE_LIB}/paddle/lib/libpaddle_inference${CMAKE_SHARED_LIBRARY_SUFFIX})
+  endif()
+endif(WITH_STATIC_LIB)
 
 if (NOT WIN32)
     set(DEPS ${DEPS}
-        ${MATH_LIB} ${MKLDNN_LIB} 
+        ${MATH_LIB} ${MKLDNN_LIB}
         glog gflags protobuf z xxhash
         )
     if(EXISTS "${PADDLE_LIB}/third_party/install/snappystream/lib")
@@ -193,9 +207,12 @@ endif()
 
 set(DEPS ${DEPS} ${OpenCV_LIBS})
 
+include(FetchContent)
+include(external-cmake/auto-log.cmake)
+include_directories(${FETCHCONTENT_BASE_DIR}/extern_autolog-src)
+
 AUX_SOURCE_DIRECTORY(./src SRCS)
 add_executable(${DEMO_NAME} ${SRCS})
-
 target_link_libraries(${DEMO_NAME} ${DEPS})
 
 if (WIN32 AND WITH_MKL)

@@ -7,8 +7,6 @@ Global:
   save_epoch_step: 1200
   # evaluation is run every 5000 iterations after the 4000th iteration
   eval_batch_step: [3000, 2000]
-  # if pretrained_model is saved in static mode, load_static_weights must set to True
-  load_static_weights: True
   cal_metric_during_train: False
   pretrained_model: ./pretrain_models/ResNet18_vd_pretrained
   checkpoints:

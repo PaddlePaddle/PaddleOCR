@@ -18,13 +18,14 @@ __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 
+os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
+
 import cv2
 import copy
 import numpy as np
 import math
 import time
 import traceback
-import paddle.fluid as fluid
 
 import tools.infer.utility as utility
 from ppocr.postprocess import build_post_process
@@ -39,13 +40,12 @@ class TextClassifier(object):
         self.cls_image_shape = [int(v) for v in args.cls_image_shape.split(",")]
         self.cls_batch_num = args.cls_batch_num
         self.cls_thresh = args.cls_thresh
-        self.use_zero_copy_run = args.use_zero_copy_run
         postprocess_params = {
             'name': 'ClsPostProcess',
             "label_list": args.label_list,
         }
         self.postprocess_op = build_post_process(postprocess_params)
-        self.predictor, self.input_tensor, self.output_tensors = \
+        self.predictor, self.input_tensor, self.output_tensors, _ = \
             utility.create_predictor(args, 'cls', logger)
 
     def resize_norm_img(self, img):
@@ -84,9 +84,11 @@ class TextClassifier(object):
         batch_num = self.cls_batch_num
         elapse = 0
         for beg_img_no in range(0, img_num, batch_num):
+
             end_img_no = min(img_num, beg_img_no + batch_num)
             norm_img_batch = []
             max_wh_ratio = 0
+            starttime = time.time()
             for ino in range(beg_img_no, end_img_no):
                 h, w = img_list[indices[ino]].shape[0:2]
                 wh_ratio = w * 1.0 / h
@@ -97,15 +99,11 @@ class TextClassifier(object):
                 norm_img_batch.append(norm_img)
             norm_img_batch = np.concatenate(norm_img_batch)
             norm_img_batch = norm_img_batch.copy()
-            starttime = time.time()
 
-            if self.use_zero_copy_run:
-                self.input_tensor.copy_from_cpu(norm_img_batch)
-                self.predictor.zero_copy_run()
-            else:
-                norm_img_batch = fluid.core.PaddleTensor(norm_img_batch)
-                self.predictor.run([norm_img_batch])
+            self.input_tensor.copy_from_cpu(norm_img_batch)
+            self.predictor.run()
             prob_out = self.output_tensors[0].copy_to_cpu()
+            self.predictor.try_shrink_memory()
             cls_result = self.postprocess_op(prob_out)
             elapse += time.time() - starttime
             for rno in range(len(cls_result)):
@@ -143,10 +141,11 @@ def main(args):
             "Please set --rec_image_shape='3,32,100' and --rec_char_type='en' ")
         exit()
     for ino in range(len(img_list)):
-        logger.info("Predicts of {}:{}".format(valid_image_file_list[ino], cls_res[
-            ino]))
-    logger.info("Total predict time for {} images, cost: {:.3f}".format(
-        len(img_list), predict_time))
+        logger.info("Predicts of {}:{}".format(valid_image_file_list[ino],
+                                               cls_res[ino]))
+    logger.info(
+        "The predict time about text angle classify module is as follows: ")
+
 
 if __name__ == "__main__":
     main(utility.parse_args())

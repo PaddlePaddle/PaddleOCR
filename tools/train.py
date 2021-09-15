@@ -35,7 +35,7 @@ from ppocr.losses import build_loss
 from ppocr.optimizer import build_optimizer
 from ppocr.postprocess import build_post_process
 from ppocr.metrics import build_metric
-from ppocr.utils.save_load import init_model
+from ppocr.utils.save_load import init_model, load_dygraph_params
 import tools.program as program
 
 dist.get_world_size()
@@ -50,6 +50,15 @@ def main(config, device, logger, vdl_writer):
 
     # build dataloader
     train_dataloader = build_dataloader(config, 'Train', device, logger)
+    if len(train_dataloader) == 0:
+        logger.error(
+            "No Images in train dataset, please ensure\n" +
+            "\t1. The images num in the train label_file_list should be larger than or equal with batch size.\n"
+            +
+            "\t2. The annotation file and path in the configuration file are provided normally."
+        )
+        return
+
     if config['Eval']:
         valid_dataloader = build_dataloader(config, 'Eval', device, logger)
     else:
@@ -63,7 +72,14 @@ def main(config, device, logger, vdl_writer):
     # for rec algorithm
     if hasattr(post_process_class, 'character'):
         char_num = len(getattr(post_process_class, 'character'))
-        config['Architecture']["Head"]['out_channels'] = char_num
+        if config['Architecture']["algorithm"] in ["Distillation",
+                                                   ]:  # distillation model
+            for key in config['Architecture']["Models"]:
+                config['Architecture']["Models"][key]["Head"][
+                    'out_channels'] = char_num
+        else:  # base rec model
+            config['Architecture']["Head"]['out_channels'] = char_num
+
     model = build_model(config['Architecture'])
     if config['Global']['distributed']:
         model = paddle.DataParallel(model)
@@ -81,10 +97,11 @@ def main(config, device, logger, vdl_writer):
     # build metric
     eval_class = build_metric(config['Metric'])
     # load pretrain model
-    pre_best_model_dict = init_model(config, model, logger, optimizer)
-
-    logger.info('train dataloader has {} iters, valid dataloader has {} iters'.
-                format(len(train_dataloader), len(valid_dataloader)))
+    pre_best_model_dict = load_dygraph_params(config, model, logger, optimizer)
+    logger.info('train dataloader has {} iters'.format(len(train_dataloader)))
+    if valid_dataloader is not None:
+        logger.info('valid dataloader has {} iters'.format(
+            len(valid_dataloader)))
     # start train
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,

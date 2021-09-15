@@ -1,27 +1,36 @@
 # paddleocr package使用说明
 
-## 快速上手
+## 1 快速上手
 
-### 安装whl包
+### 1.1 安装whl包
 
 pip安装
+
 ```bash
 pip install "paddleocr>=2.0.1" # 推荐使用2.0.1+版本
 ```
 
 本地构建并安装
+
 ```bash
 python3 setup.py bdist_wheel
 pip3 install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x是paddleocr的版本号
 ```
-### 1. 代码使用
 
-* 检测+分类+识别全流程
+## 2 使用
+
+### 2.1 代码使用
+
+paddleocr whl包会自动下载ppocr轻量级模型作为默认模型，可以根据第3节**自定义模型**进行自定义更换。
+
+* 检测+方向分类器+识别全流程
+
 ```python
 from paddleocr import PaddleOCR, draw_ocr
+
 # Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换
 # 参数依次为`ch`, `en`, `french`, `german`, `korean`, `japan`。
-ocr = PaddleOCR(use_angle_cls=True, lang="ch") # need to run only once to download and load model into memory
+ocr = PaddleOCR(use_angle_cls=True, lang="ch")  # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs/11.jpg'
 result = ocr.ocr(img_path, cls=True)
 for line in result:
@@ -29,79 +38,93 @@ for line in result:
 
 # 显示结果
 from PIL import Image
+
 image = Image.open(img_path).convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
 scores = [line[1][1] for line in result]
-im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/simfang.ttf')
+im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
+
 结果是一个list，每个item包含了文本框，文字和识别置信度
+
 ```bash
 [[[24.0, 36.0], [304.0, 34.0], [304.0, 72.0], [24.0, 74.0]], ['纯臻营养护发素', 0.964739]]
 [[[24.0, 80.0], [172.0, 80.0], [172.0, 104.0], [24.0, 104.0]], ['产品信息/参数', 0.98069626]]
 [[[24.0, 109.0], [333.0, 109.0], [333.0, 136.0], [24.0, 136.0]], ['（45元/每公斤，100公斤起订）', 0.9676722]]
 ......
 ```
+
 结果可视化
 
 <div align="center">
     <img src="../imgs_results/whl/11_det_rec.jpg" width="800">
 </div>
 
-
 * 检测+识别
+
 ```python
 from paddleocr import PaddleOCR, draw_ocr
-ocr = PaddleOCR() # need to run only once to download and load model into memory
+
+ocr = PaddleOCR()  # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs/11.jpg'
-result = ocr.ocr(img_path)
+result = ocr.ocr(img_path, cls=False)
 for line in result:
     print(line)
 
 # 显示结果
 from PIL import Image
+
 image = Image.open(img_path).convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
 scores = [line[1][1] for line in result]
-im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/simfang.ttf')
+im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
+
 结果是一个list，每个item包含了文本框，文字和识别置信度
+
 ```bash
 [[[24.0, 36.0], [304.0, 34.0], [304.0, 72.0], [24.0, 74.0]], ['纯臻营养护发素', 0.964739]]
 [[[24.0, 80.0], [172.0, 80.0], [172.0, 104.0], [24.0, 104.0]], ['产品信息/参数', 0.98069626]]
 [[[24.0, 109.0], [333.0, 109.0], [333.0, 136.0], [24.0, 136.0]], ['（45元/每公斤，100公斤起订）', 0.9676722]]
 ......
 ```
+
 结果可视化
 
 <div align="center">
     <img src="../imgs_results/whl/11_det_rec.jpg" width="800">
 </div>
 
+* 方向分类器+识别
 
-* 分类+识别
 ```python
 from paddleocr import PaddleOCR
-ocr = PaddleOCR(use_angle_cls=True) # need to run only once to download and load model into memory
+
+ocr = PaddleOCR(use_angle_cls=True)  # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs_words/ch/word_1.jpg'
 result = ocr.ocr(img_path, det=False, cls=True)
 for line in result:
     print(line)
 ```
+
 结果是一个list，每个item只包含识别结果和识别置信度
+
 ```bash
 ['韩国小馆', 0.9907421]
 ```
 
 * 单独执行检测
+
 ```python
 from paddleocr import PaddleOCR, draw_ocr
-ocr = PaddleOCR() # need to run only once to download and load model into memory
+
+ocr = PaddleOCR()  # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs/11.jpg'
 result = ocr.ocr(img_path, rec=False)
 for line in result:
@@ -111,17 +134,20 @@ for line in result:
 from PIL import Image
 
 image = Image.open(img_path).convert('RGB')
-im_show = draw_ocr(image, result, txts=None, scores=None, font_path='/path/to/PaddleOCR/doc/simfang.ttf')
+im_show = draw_ocr(image, result, txts=None, scores=None, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
+
 结果是一个list，每个item只包含文本框
+
 ```bash
 [[26.0, 457.0], [137.0, 457.0], [137.0, 477.0], [26.0, 477.0]]
 [[25.0, 425.0], [372.0, 425.0], [372.0, 448.0], [25.0, 448.0]]
 [[128.0, 397.0], [273.0, 397.0], [273.0, 414.0], [128.0, 414.0]]
 ......
 ```
+
 结果可视化
 
 
@@ -130,57 +156,72 @@ im_show.save('result.jpg')
 </div>
 
 * 单独执行识别
+
 ```python
 from paddleocr import PaddleOCR
-ocr = PaddleOCR() # need to run only once to download and load model into memory
+
+ocr = PaddleOCR()  # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs_words/ch/word_1.jpg'
 result = ocr.ocr(img_path, det=False)
 for line in result:
     print(line)
 ```
+
 结果是一个list，每个item只包含识别结果和识别置信度
+
 ```bash
 ['韩国小馆', 0.9907421]
 ```
 
-* 单独执行分类
+* 单独执行方向分类器
+
 ```python
 from paddleocr import PaddleOCR
-ocr = PaddleOCR(use_angle_cls=True) # need to run only once to download and load model into memory
+
+ocr = PaddleOCR(use_angle_cls=True)  # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs_words/ch/word_1.jpg'
 result = ocr.ocr(img_path, det=False, rec=False, cls=True)
 for line in result:
     print(line)
 ```
+
 结果是一个list，每个item只包含分类结果和分类置信度
+
 ```bash
 ['0', 0.9999924]
 ```
 
-### 通过命令行使用
+### 2.2 通过命令行使用
 
 查看帮助信息
+
 ```bash
 paddleocr -h
 ```
 
-* 检测+分类+识别全流程
+* 检测+方向分类器+识别全流程
+
 ```bash
 paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --use_angle_cls true
 ```
+
 结果是一个list，每个item包含了文本框，文字和识别置信度
+
 ```bash
 [[[24.0, 36.0], [304.0, 34.0], [304.0, 72.0], [24.0, 74.0]], ['纯臻营养护发素', 0.964739]]
 [[[24.0, 80.0], [172.0, 80.0], [172.0, 104.0], [24.0, 104.0]], ['产品信息/参数', 0.98069626]]
-[[[24.0, 109.0], [333.0, 109.0], [333.0, 136.0], [24.0, 136.0]], ['（45元/每公斤，100公斤起订）', 0.9676722]]
+[[[24.0, 109.0], [333.0, 109.0], [333.0, 136.0], [24.0, 136.0]], ['（45元/每公斤，100公斤起订）', 0.9676722]]µ
 ......
 ```
 
 * 检测+识别
+
 ```bash
 paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg
 ```
+
 结果是一个list，每个item包含了文本框，文字和识别置信度
+
 ```bash
 [[[24.0, 36.0], [304.0, 34.0], [304.0, 72.0], [24.0, 74.0]], ['纯臻营养护发素', 0.964739]]
 [[[24.0, 80.0], [172.0, 80.0], [172.0, 104.0], [24.0, 104.0]], ['产品信息/参数', 0.98069626]]
@@ -188,21 +229,26 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg
 ......
 ```
 
-* 分类+识别
+* 方向分类器+识别
+
 ```bash
 paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --use_angle_cls true --det false
 ```
 
 结果是一个list，每个item只包含识别结果和识别置信度
+
 ```bash
 ['韩国小馆', 0.9907421]
 ```
 
 * 单独执行检测
+
 ```bash
 paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --rec false
 ```
+
 结果是一个list，每个item只包含文本框
+
 ```bash
 [[26.0, 457.0], [137.0, 457.0], [137.0, 477.0], [26.0, 477.0]]
 [[25.0, 425.0], [372.0, 425.0], [372.0, 448.0], [25.0, 448.0]]
@@ -211,34 +257,42 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --rec false
 ```
 
 * 单独执行识别
+
 ```bash
 paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --det false
 ```
 
 结果是一个list，每个item只包含识别结果和识别置信度
+
 ```bash
 ['韩国小馆', 0.9907421]
 ```
 
-* 单独执行分类
+* 单独执行方向分类器
+
 ```bash
 paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --use_angle_cls true --det false --rec false
 ```
 
 结果是一个list，每个item只包含分类结果和分类置信度
+
 ```bash
 ['0', 0.9999924]
 ```
 
-## 自定义模型
-当内置模型无法满足需求时，需要使用到自己训练的模型。
-首先，参照[inference.md](./inference.md) 第一节转换将检测、分类和识别模型转换为inference模型，然后按照如下方式使用
+## 3 自定义模型
 
-### 代码使用
+当内置模型无法满足需求时，需要使用到自己训练的模型。 首先，参照[inference.md](./inference.md) 第一节转换将检测、分类和识别模型转换为inference模型，然后按照如下方式使用
+
+### 3.1 代码使用
+
 ```python
 from paddleocr import PaddleOCR, draw_ocr
+
 # 模型路径下必须含有model和params文件
-ocr = PaddleOCR(det_model_dir='{your_det_model_dir}', rec_model_dir='{your_rec_model_dir}', rec_char_dict_path='{your_rec_char_dict_path}', cls_model_dir='{your_cls_model_dir}', use_angle_cls=True)
+ocr = PaddleOCR(det_model_dir='{your_det_model_dir}', rec_model_dir='{your_rec_model_dir}',
+                rec_char_dict_path='{your_rec_char_dict_path}', cls_model_dir='{your_cls_model_dir}',
+                use_angle_cls=True)
 img_path = 'PaddleOCR/doc/imgs/11.jpg'
 result = ocr.ocr(img_path, cls=True)
 for line in result:
@@ -246,31 +300,34 @@ for line in result:
 
 # 显示结果
 from PIL import Image
+
 image = Image.open(img_path).convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
 scores = [line[1][1] for line in result]
-im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/simfang.ttf')
+im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
 
-### 通过命令行使用
+### 3.2 通过命令行使用
 
 ```bash
 paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --det_model_dir {your_det_model_dir} --rec_model_dir {your_rec_model_dir} --rec_char_dict_path {your_rec_char_dict_path} --cls_model_dir {your_cls_model_dir} --use_angle_cls true
 ```
 
-### 使用网络图片或者numpy数组作为输入
+## 4 使用网络图片或者numpy数组作为输入
 
-1. 网络图片
+### 4.1 网络图片
 
-代码使用
+- 代码使用
+
 ```python
-from paddleocr import PaddleOCR, draw_ocr
+from paddleocr import PaddleOCR, draw_ocr, download_with_progressbar
+
 # Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换
 # 参数依次为`ch`, `en`, `french`, `german`, `korean`, `japan`。
-ocr = PaddleOCR(use_angle_cls=True, lang="ch") # need to run only once to download and load model into memory
+ocr = PaddleOCR(use_angle_cls=True, lang="ch")  # need to run only once to download and load model into memory
 img_path = 'http://n.sinaimg.cn/ent/transform/w630h933/20171222/o111-fypvuqf1838418.jpg'
 result = ocr.ocr(img_path, cls=True)
 for line in result:
@@ -278,45 +335,54 @@ for line in result:
 
 # 显示结果
 from PIL import Image
-image = Image.open(img_path).convert('RGB')
+
+download_with_progressbar(img_path, 'tmp.jpg')
+image = Image.open('tmp.jpg').convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
 scores = [line[1][1] for line in result]
-im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/simfang.ttf')
+im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
-命令行模式
+
+- 命令行模式
+
 ```bash
 paddleocr --image_dir http://n.sinaimg.cn/ent/transform/w630h933/20171222/o111-fypvuqf1838418.jpg --use_angle_cls=true
 ```
 
-2. numpy数组
+### 4.2 numpy数组
+
 仅通过代码使用时支持numpy数组作为输入
+
 ```python
+import cv2
 from paddleocr import PaddleOCR, draw_ocr
+
 # Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换
 # 参数依次为`ch`, `en`, `french`, `german`, `korean`, `japan`。
-ocr = PaddleOCR(use_angle_cls=True, lang="ch") # need to run only once to download and load model into memory
+ocr = PaddleOCR(use_angle_cls=True, lang="ch")  # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs/11.jpg'
 img = cv2.imread(img_path)
 # img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY), 如果你自己训练的模型支持灰度图，可以将这句话的注释取消
-result = ocr.ocr(img_path, cls=True)
+result = ocr.ocr(img, cls=True)
 for line in result:
     print(line)
 
 # 显示结果
 from PIL import Image
+
 image = Image.open(img_path).convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
 scores = [line[1][1] for line in result]
-im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/simfang.ttf')
+im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
 
-## 参数说明
+## 5 参数说明
 
 | 字段                    | 说明                                                                                                                                                                                                                 | 默认值                  |
 |-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
@@ -352,3 +418,5 @@ im_show.save('result.jpg')
 | det                     | 前向时使用启动检测                                                                                                                                                                                                   | TRUE                    |
 | rec                     | 前向时是否启动识别                                                                                                                                                                                                   | TRUE                    |
 | cls                     | 前向时是否启动分类 (命令行模式下使用use_angle_cls控制前向是否启动分类)                                                                                                                                                                                                | FALSE                    |
+| show_log                     | 是否打印det和rec等信息                                                                                                                                                                                                | FALSE                    |
+| type                     | 执行ocr或者表格结构化, 值可选['ocr','structure']                                                                                                                                                                                             | ocr                    |

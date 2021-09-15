@@ -7,8 +7,6 @@ Global:
   save_epoch_step: 1200
   # evaluation is run every 2000 iterations
   eval_batch_step: [0, 2000]
-  # if pretrained_model is saved in static mode, load_static_weights must set to True
-  load_static_weights: True
   cal_metric_during_train: False
   pretrained_model: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
   checkpoints:
@@ -67,7 +65,7 @@ Train:
     data_dir: ./train_data/icdar2015/text_localization/
     label_file_list:
       - ./train_data/icdar2015/text_localization/train_icdar2015_label.txt
-    ratio_list: [0.5]
+    ratio_list: [1.0]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
@@ -102,6 +100,7 @@ Train:
     drop_last: False
     batch_size_per_card: 16
     num_workers: 8
+    use_shared_memory: False
 
 Eval:
   dataset:
@@ -129,3 +128,4 @@ Eval:
     drop_last: False
     batch_size_per_card: 1 # must be 1
     num_workers: 8
+    use_shared_memory: False

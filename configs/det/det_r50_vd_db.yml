@@ -7,8 +7,6 @@ Global:
   save_epoch_step: 1200
   # evaluation is run every 2000 iterations
   eval_batch_step: [0,2000]
-  # if pretrained_model is saved in static mode, load_static_weights must set to True
-  load_static_weights: True
   cal_metric_during_train: False
   pretrained_model: ./pretrain_models/ResNet50_vd_ssld_pretrained
   checkpoints:
@@ -66,7 +64,7 @@ Train:
     data_dir: ./train_data/icdar2015/text_localization/
     label_file_list:
       - ./train_data/icdar2015/text_localization/train_icdar2015_label.txt
-    ratio_list: [0.5]
+    ratio_list: [1.0]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
