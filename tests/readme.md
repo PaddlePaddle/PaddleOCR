@@ -36,7 +36,7 @@ test.sh包含四种运行模式，每种模式的运行数据不同，分别用�
 
 - 模式1：lite_train_infer，使用少量数据训练，用于快速验证训练到预测的走通流程，不验证精度和速度；
 ```shell
-bash test/prepare.sh ./tests/ocr_det_params.txt 'lite_train_infer'
+bash tests/prepare.sh ./tests/ocr_det_params.txt 'lite_train_infer'
 bash tests/test.sh ./tests/ocr_det_params.txt 'lite_train_infer'
 ```  
 
