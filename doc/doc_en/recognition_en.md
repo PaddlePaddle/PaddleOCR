@@ -1,24 +1,23 @@
-# TEXT RECOGNITION
+# Text Recognition
 
-- [1 DATA PREPARATION](#DATA_PREPARATION)
+- [1. Data Preparation](#DATA_PREPARATION)
     - [1.1 Costom Dataset](#Costom_Dataset)
     - [1.2 Dataset Download](#Dataset_download)
     - [1.3 Dictionary](#Dictionary)  
     - [1.4 Add Space Category](#Add_space_category)
 
-- [2 TRAINING](#TRAINING)
+- [2. Training](#TRAINING)
     - [2.1 Data Augmentation](#Data_Augmentation)
     - [2.2 General Training](#Training)
     - [2.3 Multi-language Training](#Multi_language)
 
-- [3 EVALUATION](#EVALUATION)
+- [3. Evaluation](#EVALUATION)
 
-- [4 PREDICTION](#PREDICTION)
-    - [4.1 Training engine prediction](#Training_engine_prediction)
-- [5 CONVERT TO INFERENCE MODEL](#Inference)
+- [4. Prediction](#PREDICTION)
+- [5. Convert to Inference Model](#Inference)
 
 <a name="DATA_PREPARATION"></a>
-## 1 DATA PREPARATION
+## 1. Data Preparation
 
 
 PaddleOCR supports two data formats:
@@ -37,7 +36,7 @@ mklink /d <path/to/paddle_ocr>/train_data/dataset <path/to/dataset>
 ```
 
 <a name="Costom_Dataset"></a>
-### 1.1 Costom dataset
+### 1.1 Costom Dataset
 
 If you want to use your own data for training, please refer to the following to organize your data.
 
@@ -85,7 +84,7 @@ Similar to the training set, the test set also needs to be provided a folder con
 ```
 
 <a name="Dataset_download"></a>
-### 1.2 Dataset download
+### 1.2 Dataset Download
 
 - ICDAR2015
 
@@ -169,14 +168,14 @@ To customize the dict file, please modify the `character_dict_path` field in `co
 If you need to customize dic file, please add character_dict_path field in configs/rec/rec_icdar15_train.yml to point to your dictionary path. And set character_type to ch.
 
 <a name="Add_space_category"></a>
-### 1.4 Add space category
+### 1.4 Add Space Category
 
 If you want to support the recognition of the `space` category, please set the `use_space_char` field in the yml file to `True`.
 
 **Note: use_space_char only takes effect when character_type=ch**
 
 <a name="TRAINING"></a>
-## 2 TRAINING
+## 2.Training
 
 <a name="Data_Augmentation"></a>
 ### 2.1 Data Augmentation
@@ -367,7 +366,7 @@ Eval:
 
 <a name="EVALUATION"></a>
 
-## 3 EVALUATION
+## 3. Evalution
 
 The evaluation dataset can be set by modifying the `Eval.dataset.label_file_list` field in the `configs/rec/rec_icdar15_train.yml` file.
 
@@ -377,7 +376,7 @@ python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec
 ```
 
 <a name="PREDICTION"></a>
-## 4 PREDICTION
+## 4. Prediction
 
 
 Using the model trained by paddleocr, you can quickly get prediction through the following script.
@@ -441,7 +440,7 @@ infer_img: doc/imgs_words/ch/word_1.jpg
 
 <a name="Inference"></a>
 
-## 5 CONVERT TO INFERENCE MODEL
+## 5. Convert to Inference Model
 
 The recognition model is converted to the inference model in the same way as the detection, as follows:
 
