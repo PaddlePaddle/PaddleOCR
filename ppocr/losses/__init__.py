@@ -20,6 +20,7 @@ import paddle.nn as nn
 from .det_db_loss import DBLoss
 from .det_east_loss import EASTLoss
 from .det_sast_loss import SASTLoss
+from .det_pse_loss import PSELoss
 
 # rec loss
 from .rec_ctc_loss import CTCLoss
@@ -42,10 +43,12 @@ from .combined_loss import CombinedLoss
 # table loss
 from .table_att_loss import TableAttentionLoss
 
+
 def build_loss(config):
     support_dict = [
-        'DBLoss', 'EASTLoss', 'SASTLoss', 'CTCLoss', 'ClsLoss', 'AttentionLoss',
-        'SRNLoss', 'PGLoss', 'CombinedLoss', 'NRTRLoss', 'TableAttentionLoss', 'SARLoss'
+        'DBLoss', 'PSELoss', 'EASTLoss', 'SASTLoss', 'CTCLoss', 'ClsLoss',
+        'AttentionLoss', 'SRNLoss', 'PGLoss', 'CombinedLoss', 'NRTRLoss',
+        'TableAttentionLoss', 'SARLoss'
     ]
 
     config = copy.deepcopy(config)

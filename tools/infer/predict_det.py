@@ -89,6 +89,14 @@ class TextDetector(object):
                 postprocess_params["sample_pts_num"] = 2
                 postprocess_params["expand_scale"] = 1.0
                 postprocess_params["shrink_ratio_of_width"] = 0.3
+        elif self.det_algorithm == "PSE":
+            postprocess_params['name'] = 'PSEPostProcess'
+            postprocess_params["thresh"] = args.det_pse_thresh
+            postprocess_params["box_thresh"] = args.det_pse_box_thresh
+            postprocess_params["min_area"] = args.det_pse_min_area
+            postprocess_params["box_type"] = args.det_pse_box_type
+            postprocess_params["scale"] = args.det_pse_scale
+            self.det_pse_box_type = args.det_pse_box_type
         else:
             logger.info("unknown det_algorithm:{}".format(self.det_algorithm))
             sys.exit(0)
@@ -209,7 +217,7 @@ class TextDetector(object):
             preds['f_score'] = outputs[1]
             preds['f_tco'] = outputs[2]
             preds['f_tvo'] = outputs[3]
-        elif self.det_algorithm == 'DB':
+        elif self.det_algorithm in ['DB', 'PSE']:
             preds['maps'] = outputs[0]
         else:
             raise NotImplementedError
@@ -217,7 +225,9 @@ class TextDetector(object):
         #self.predictor.try_shrink_memory()
         post_result = self.postprocess_op(preds, shape_list)
         dt_boxes = post_result[0]['points']
-        if self.det_algorithm == "SAST" and self.det_sast_polygon:
+        if (self.det_algorithm == "SAST" and
+                self.det_sast_polygon) or (self.det_algorithm == "PSE" and
+                                           self.det_pse_box_type == 'poly'):
             dt_boxes = self.filter_tag_det_res_only_clip(dt_boxes, ori_im.shape)
         else:
             dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)

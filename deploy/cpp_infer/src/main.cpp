@@ -91,7 +91,7 @@ int main_det(std::vector<cv::String> cv_all_img_names) {
                    FLAGS_use_tensorrt, FLAGS_precision);
     
     for (int i = 0; i < cv_all_img_names.size(); ++i) {
-      LOG(INFO) << "The predict img: " << cv_all_img_names[i];
+//       LOG(INFO) << "The predict img: " << cv_all_img_names[i];
 
       cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
       if (!srcimg.data) {
@@ -106,6 +106,16 @@ int main_det(std::vector<cv::String> cv_all_img_names) {
       time_info[0] += det_times[0];
       time_info[1] += det_times[1];
       time_info[2] += det_times[2];
+    
+      if (FLAGS_benchmark) {
+          cout << cv_all_img_names[i] << '\t';
+          for (int n = 0; n < boxes.size(); n++) {
+            for (int m = 0; m < boxes[n].size(); m++) {
+              cout << boxes[n][m][0] << ' ' << boxes[n][m][1] << ' ';
+            }
+          }
+          cout << endl;
+      }        
     }
     
     if (FLAGS_benchmark) {

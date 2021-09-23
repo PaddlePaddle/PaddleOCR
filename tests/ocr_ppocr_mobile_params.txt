@@ -1,5 +1,5 @@
 ===========================train_params===========================
-model_name:ocr_system
+model_name:ocr_system_mobile
 python:python3.7
 gpu_list:null
 Global.use_gpu:null

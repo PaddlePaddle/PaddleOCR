@@ -321,7 +321,7 @@ function func_serving(){
                     if [[ ${precision} =~ "fp16" || ${precision} =~ "int8" ]] && [ ${use_trt} = "False" ]; then
                         continue
                     fi
-                    if [[ ${use_trt} = "Falg_quantse" || ${precision} =~ "int8" ]]; then
+                    if [[ ${use_trt} = "False" || ${precision} =~ "int8" ]] && [[ ${_flag_quant} = "True" ]]; then
                         continue
                     fi
                     _save_log_path="${_log_path}/infer_gpu_usetrt_${use_trt}_precision_${precision}_batchsize_1.log"
@@ -433,7 +433,9 @@ if [ ${MODE} = "infer" ]; then
             save_infer_dir=$(dirname $infer_model)
             set_export_weight=$(func_set_params "${export_weight}" "${infer_model}")
             set_save_infer_key=$(func_set_params "${save_infer_key}" "${save_infer_dir}")
-            export_cmd="${python} ${norm_export} ${set_export_weight} ${set_save_infer_key}"
+            export_cmd="${python} ${infer_run_exports[Count]} ${set_export_weight} ${set_save_infer_key}"
+            echo ${infer_run_exports[Count]} 
+            echo  $export_cmd
             eval $export_cmd
             status_export=$?
             status_check $status_export "${export_cmd}" "${status_log}"
