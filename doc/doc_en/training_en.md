@@ -1,30 +1,38 @@
-# MODEL TRAINING
+# Model Training
 
-- [1. Basic concepts](#1-basic-concepts)
-  * [1.1 Learning rate](#11-learning-rate)
-  * [1.2 Regularization](#12-regularization)
-  * [1.3 Evaluation indicators](#13-evaluation-indicators-)
-- [2. Data and vertical scenes](#2-data-and-vertical-scenes)
-  * [2.1 Training data](#21-training-data)
-  * [2.2 Vertical scene](#22-vertical-scene)
-  * [2.3 Build your own data set](#23-build-your-own-data-set)
-* [3. FAQ](#3-faq)
+- [1.Yml Configuration ](#1-Yml-Configuration)
+- [2. Basic Concepts](#1-basic-concepts)
+  * [2.1 Learning Rate](#11-learning-rate)
+  * [2.2 Regularization](#12-regularization)
+  * [2.3 Evaluation Indicators](#13-evaluation-indicators-)
+- [3. Data and Vertical Scenes](#2-data-and-vertical-scenes)
+  * [3.1 Training Data](#21-training-data)
+  * [3.2 Vertical Scene](#22-vertical-scene)
+  * [3.3 Build Your Own Dataset](#23-build-your-own-data-set)
+* [4. FAQ](#3-faq)
 
 
 This article will introduce the basic concepts that need to be mastered during model training and the tuning methods during training.
 
 At the same time, it will briefly introduce the components of the PaddleOCR model training data and how to prepare the data finetune model in the vertical scene.
 
+<a name="1-Yml-Configuration"></a>
+
+## 1. Yml Configuration
+
+The PaddleOCR model uses configuration files to manage network training and evaluation parameters. In the configuration file, you can set the model, optimizer, loss function, and pre- and post-processing parameters of the model. PaddleOCR reads these parameters from the configuration file, and then builds a complete training process to complete the model training. When optimized, the configuration can be completed by modifying the parameters in the configuration file, which is simple to use and convenient to modify.
+
+For the complete configuration file description, please refer to [Configuration File](./config_en.md)
+
 <a name="1-basic-concepts"></a>
 # 1. Basic concepts
 
-OCR (Optical Character Recognition) refers to the process of analyzing and recognizing images to obtain text and layout information. It is a typical computer vision task.
-It usually consists of two subtasks: text detection and text recognition.
+## 2. Basic Concepts
 
 The following parameters need to be paid attention to when tuning the model:
 
 <a name="11-learning-rate"></a>
-## 1.1 Learning rate
+### 2.1 Learning Rate
 
 The learning rate is one of the important hyperparameters for training neural networks. It represents the step length of the gradient moving to the optimal solution of the loss function in each iteration.
 A variety of learning rate update strategies are provided in PaddleOCR, which can be modified through configuration files, for example:
@@ -61,7 +69,7 @@ Optimizer:
     factor: 2.0e-05
 ```
 <a name="13-evaluation-indicators-"></a>
-## 1.3 Evaluation indicators
+### 2.3 Evaluation Indicators
 
 (1) Detection stage: First, evaluate according to the IOU of the detection frame and the labeled frame. If the IOU is greater than a certain threshold, it is judged that the detection is accurate. Here, the detection frame and the label frame are different from the general general target detection frame, and they are represented by polygons. Detection accuracy: the percentage of the correct detection frame number in all detection frames is mainly used to judge the detection index. Detection recall rate: the percentage of correct detection frames in all marked frames, which is mainly an indicator of missed detection.
 
@@ -71,11 +79,11 @@ Optimizer:
 
 <a name="2-data-and-vertical-scenes"></a>
 
-# 2. Data and vertical scenes
+## 3. Data and Vertical Scenes
 
 <a name="21-training-data"></a>
 
-## 2.1 Training data
+### 3.1 Training Data
 
 The current open source models, data sets and magnitudes are as follows:
 
@@ -92,14 +100,14 @@ Among them, the public data sets are all open source, users can search and downl
 
 <a name="22-vertical-scene"></a>
 
-## 2.2 Vertical scene
+### 3.2 Vertical Scene
 
 PaddleOCR mainly focuses on general OCR. If you have vertical requirements, you can use PaddleOCR + vertical data to train yourself;
 If there is a lack of labeled data, or if you do not want to invest in research and development costs, it is recommended to directly call the open API, which covers some of the more common vertical categories.  
 
 <a name="23-build-your-own-data-set"></a>
 
-## 2.3 Build your own data set
+### 3.3 Build Your Own Dataset
 
 There are several experiences for reference when constructing the data set:
 

@@ -1,23 +1,23 @@
-# CONTENT
-
-- [Paste Your Document In Here](#paste-your-document-in-here)
-- [1. TEXT DETECTION](#1-text-detection)
-  * [1.1 DATA PREPARATION](#11-data-preparation)
-  * [1.2 DOWNLOAD PRETRAINED MODEL](#12-download-pretrained-model)
-  * [1.3 START TRAINING](#13-start-training)
-  * [1.4 LOAD TRAINED MODEL AND CONTINUE TRAINING](#14-load-trained-model-and-continue-training)
-  * [1.5 TRAINING WITH NEW BACKBONE](#15-training-with-new-backbone)
-  * [1.6 EVALUATION](#16-evaluation)
-  * [1.7 TEST](#17-test)
-  * [1.8 INFERENCE MODEL PREDICTION](#18-inference-model-prediction)
-- [2. FAQ](#2-faq)
-
-
-# 1. TEXT DETECTION
+# Text Detection
 
 This section uses the icdar2015 dataset as an example to introduce the training, evaluation, and testing of the detection model in PaddleOCR.
 
-## 1.1 DATA PREPARATION
+- [1. Data and Weights Preparation](#1-data-and-weights-preparatio)
+  * [1.1 Data Preparation](#11-data-preparation)
+  * [1.2 Download Pretrained Model](#12-download-pretrained-model)
+- [2. Training](#2-training)
+  * [2.1 Start Training](#21-start-training)
+  * [2.2 Load Trained Model and Continue Training](#22-load-trained-model-and-continue-training)
+  * [2.3 Training with New Backbone](#23-training-with-new-backbone)
+- [3. Evaluation and Test](#3-evaluation-and-test)
+  * [3.1 Evaluation](#31-evaluation)
+  * [3.2 Test](#32-test)
+- [4. Inference](#4-inference)
+- [5. FAQ](#2-faq)
+
+## 1. Data and Weights Preparation
+
+### 1.1 Data Preparation
 
 The icdar2015 dataset contains train set which has 1000 images obtained with wearable cameras and test set which has 500 images obtained with wearable cameras. The icdar2015 can be obtained from [official website](https://rrc.cvc.uab.es/?ch=4&com=downloads). Registration is required for downloading.
 
@@ -59,7 +59,7 @@ The `points` in the dictionary represent the coordinates (x, y) of the four poin
 If you want to train PaddleOCR on other datasets, please build the annotation file according to the above format.
 
 
-## 1.2 DOWNLOAD PRETRAINED MODEL
+### 1.2 Download Pretrained Model
 
 First download the pretrained model. The detection model of PaddleOCR currently supports 3 backbones, namely MobileNetV3, ResNet18_vd and ResNet50_vd. You can use the model in [PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/release/2.0/ppcls/modeling/architectures) to replace backbone according to your needs.
 And the responding download link of backbone pretrain weights can be found in (https://github.com/PaddlePaddle/PaddleClas/blob/release%2F2.0/README_cn.md#resnet%E5%8F%8A%E5%85%B6vd%E7%B3%BB%E5%88%97).
@@ -75,7 +75,10 @@ wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dyg
 
 ```
 
-## 1.3 START TRAINING
+# 2. TRAINING
+
+### 2.1 Start Training
+
 *If CPU version installed, please set the parameter `use_gpu` to `false` in the configuration.*
 ```shell
 python3 tools/train.py -c configs/det/det_mv3_db.yml  \
@@ -98,7 +101,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 
 ```
 
-## 1.4 LOAD TRAINED MODEL AND CONTINUE TRAINING
+### 2.2 Load Trained Model and Continue Training
 If you expect to load trained model and continue the training again, you can specify the parameter `Global.checkpoints` as the model path to be loaded.
 
 For example:
@@ -109,7 +112,7 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./you
 **Note**: The priority of `Global.checkpoints` is higher than that of `Global.pretrain_weights`, that is, when two parameters are specified at the same time, the model specified by `Global.checkpoints` will be loaded first. If the model path specified by `Global.checkpoints` is wrong, the one specified by `Global.pretrain_weights` will be loaded.
 
 
-## 1.5 TRAINING WITH NEW BACKBONE
+### 2.3 Training with New Backbone
 
 The network part completes the construction of the network, and PaddleOCR divides the network into four parts, which are under [ppocr/modeling](../../ppocr/modeling). The data entering the network will pass through these four parts in sequence(transforms->backbones->
 necks->heads).
@@ -159,7 +162,9 @@ After adding the four-part modules of the network, you only need to configure th
 
 **NOTE**: More details about replace Backbone and other mudule can be found in [doc](add_new_algorithm_en.md).
 
-## 1.6 EVALUATION
+## 3. Evaluation and Test
+
+### 3.1 Evaluation
 
 PaddleOCR calculates three indicators for evaluating performance of OCR detection task: Precision, Recall, and Hmean(F-Score).
 
@@ -174,7 +179,7 @@ python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="{pat
 
 * Note: `box_thresh` and `unclip_ratio` are parameters required for DB post-processing, and not need to be set when evaluating the EAST and SAST model.
 
-## 1.7 TEST
+### 3.2 Test
 
 Test the detection result on a single image:
 ```shell
@@ -192,7 +197,7 @@ Test the detection result on all images in the folder:
 python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./doc/imgs_en/" Global.pretrained_model="./output/det_db/best_accuracy"
 ```
 
-## 1.8 INFERENCE MODEL PREDICTION
+## 4. Inference
 
 The inference model (the model saved by `paddle.jit.save`) is generally a solidified model saved after the model training is completed, and is mostly used to give prediction in deployment.
 
@@ -215,7 +220,7 @@ If it is other detection algorithms, such as the EAST, the det_algorithm paramet
 python3 tools/infer/predict_det.py --det_algorithm="EAST" --det_model_dir="./output/det_db_inference/" --image_dir="./doc/imgs/" --use_gpu=True
 ```
 
-# 2. FAQ
+## 5. FAQ
 
 Q1: The prediction results of trained model and inference model are inconsistent?
 **A**: Most of the problems are caused by the inconsistency of the pre-processing and post-processing parameters during the prediction of the trained model and the pre-processing and post-processing parameters during the prediction of the inference model. Taking the model trained by the det_mv3_db.yml configuration file as an example, the solution to the problem of inconsistent prediction results between the training model and the inference model is as follows:

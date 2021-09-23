@@ -99,7 +99,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [PP-OCR模型训练](./doc/doc_ch/training.md)
         - [文本检测](./doc/doc_ch/detection.md)
         - [文本识别](./doc/doc_ch/recognition.md)
-        - [方向分类器](./doc/doc_ch/angle_class.md)
+        - [文本方向分类器](./doc/doc_ch/angle_class.md)
+        - [配置文件内容与生成](./doc/doc_ch/config.md)
     - PP-OCR模型推理部署
         - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
         - [服务化部署](./deploy/pdserving/README_CN.md)
