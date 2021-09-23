@@ -23,10 +23,10 @@ Architecture:
     name: MobileNetV3
     scale: 0.5
     model_name: large
-    disable_se: True
+    disable_se: False
   Neck:
     name: DBFPN
-    out_channels: 96
+    out_channels: 256
   Head:
     name: DBHead
     k: 50
@@ -74,7 +74,7 @@ Train:
           channel_first: False
       - DetLabelEncode: # Class handling label
       - Resize:
-          # size: [640, 640]
+          size: [640, 640]
       - MakeBorderMap:
           shrink_ratio: 0.4
           thresh_min: 0.3
