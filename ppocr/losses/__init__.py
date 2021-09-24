@@ -50,7 +50,6 @@ def build_loss(config):
         'AttentionLoss', 'SRNLoss', 'PGLoss', 'CombinedLoss', 'NRTRLoss',
         'TableAttentionLoss', 'SARLoss'
     ]
-
     config = copy.deepcopy(config)
     module_name = config.pop('name')
     assert module_name in support_dict, Exception('loss only support {}'.format(

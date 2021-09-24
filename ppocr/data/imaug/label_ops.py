@@ -215,6 +215,11 @@ class CTCLabelEncode(BaseRecLabelEncode):
         data['length'] = np.array(len(text))
         text = text + [0] * (self.max_text_len - len(text))
         data['label'] = np.array(text)
+
+        label = [0] * len(self.character)
+        for x in text:
+            label[x] += 1
+        data['label_ace'] = np.array(label)
         return data
 
     def add_special_char(self, dict_character):

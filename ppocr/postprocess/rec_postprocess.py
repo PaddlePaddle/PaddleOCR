@@ -111,6 +111,8 @@ class CTCLabelDecode(BaseRecLabelDecode):
                                              character_type, use_space_char)
 
     def __call__(self, preds, label=None, *args, **kwargs):
+        if isinstance(preds, tuple):
+            preds = preds[-1]
         if isinstance(preds, paddle.Tensor):
             preds = preds.numpy()
         preds_idx = preds.argmax(axis=2)
