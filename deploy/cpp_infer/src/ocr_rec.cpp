@@ -112,12 +112,16 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
           1 << 20, 10, 3,
           precision,
           false, false);
+
       std::map<std::string, std::vector<int>> min_input_shape = {
-          {"x", {1, 3, 32, 10}}};
+          {"x", {1, 3, 32, 10}},
+          {"lstm_0.tmp_0", {10, 1, 96}}};
       std::map<std::string, std::vector<int>> max_input_shape = {
-          {"x", {1, 3, 32, 2000}}};
+          {"x", {1, 3, 32, 2000}},
+          {"lstm_0.tmp_0", {1000, 1, 96}}};
       std::map<std::string, std::vector<int>> opt_input_shape = {
-          {"x", {1, 3, 32, 320}}};
+          {"x", {1, 3, 32, 320}},
+          {"lstm_0.tmp_0", {25, 1, 96}}};
 
       config.SetTRTDynamicShapeInfo(min_input_shape, max_input_shape,
                                     opt_input_shape);
@@ -139,7 +143,7 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
   config.SwitchIrOptim(true);
 
   config.EnableMemoryOptim();
-  config.DisableGlogInfo();
+//   config.DisableGlogInfo();
 
   this->predictor_ = CreatePredictor(config);
 }
