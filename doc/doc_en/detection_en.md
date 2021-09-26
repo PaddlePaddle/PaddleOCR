@@ -75,14 +75,14 @@ wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dyg
 
 ```
 
-# 2. TRAINING
+## 2. Training
 
 ### 2.1 Start Training
 
 *If CPU version installed, please set the parameter `use_gpu` to `false` in the configuration.*
 ```shell
 python3 tools/train.py -c configs/det/det_mv3_db.yml  \
-         -o Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained
+         -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
 ```
 
 In the above instruction, use `-c` to select the training to use the `configs/det/det_db_mv3.yml` configuration file.
@@ -92,12 +92,12 @@ You can also use `-o` to change the training parameters without modifying the ym
 ```shell
 # single GPU training
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o   \
-         Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained  \
+         Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained  \
          Optimizer.base_lr=0.0001
 
 # multi-GPU training
 # Set the GPU ID used by the '--gpus' parameter.
-python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/det/det_mv3_db.yml -o Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/det/det_mv3_db.yml -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
 
 ```
 
@@ -109,7 +109,7 @@ For example:
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./your/trained/model
 ```
 
-**Note**: The priority of `Global.checkpoints` is higher than that of `Global.pretrain_weights`, that is, when two parameters are specified at the same time, the model specified by `Global.checkpoints` will be loaded first. If the model path specified by `Global.checkpoints` is wrong, the one specified by `Global.pretrain_weights` will be loaded.
+**Note**: The priority of `Global.checkpoints` is higher than that of `Global.pretrained_model`, that is, when two parameters are specified at the same time, the model specified by `Global.checkpoints` will be loaded first. If the model path specified by `Global.checkpoints` is wrong, the one specified by `Global.pretrained_model` will be loaded.
 
 
 ### 2.3 Training with New Backbone
