@@ -351,7 +351,7 @@ def eval(model,
          valid_dataloader,
          post_process_class,
          eval_class,
-         model_type,
+         model_type=None,
          use_srn=False,
          use_sar=False):
     model.eval()
