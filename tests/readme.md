@@ -25,14 +25,15 @@ test.sh和params.txt文件配合使用，完成OCR轻量检测和识别模型从
 tests/
 ├── ocr_det_params.txt            # 测试OCR检测模型的参数配置文件
 ├── ocr_rec_params.txt            # 测试OCR识别模型的参数配置文件
-├── ocr_ppocr_mobile_params.txt   # 测试OCR检测+识别模型串联的参数配置文件
+├── ocr_ppocr_mobile_params.txt   # 测试OCR检测+识别移动端模型串联的参数配置文件
+├── ocr_ppocr_server_params.txt   # 测试OCR检测+识别服务端模型串联的参数配置文件
 └── prepare.sh                    # 完成test.sh运行所需要的数据和模型下载
 └── test.sh                       # 测试主程序
 ```
 
 # 使用方法
 
-test.sh包含四种运行模式，每种模式的运行数据不同，分别用于测试速度和精度，分别是：
+test.sh包含六种运行模式，每种模式的运行数据不同，分别用于测试速度和精度，分别是：
 
 - 模式1：lite_train_infer，使用少量数据训练，用于快速验证训练到预测的走通流程，不验证精度和速度；
 ```shell
@@ -61,12 +62,16 @@ bash tests/prepare.sh ./tests/ocr_det_params.txt 'whole_train_infer'
 bash tests/test.sh ./tests/ocr_det_params.txt 'whole_train_infer'
 ```  
 
-- 模式5：cpp_infer , CE： 验证inference model的c++预测是否走通；
+- 模式5：cpp_infer , CI： 验证inference model的c++预测是否走通；
 ```shell
 bash tests/prepare.sh ./tests/ocr_det_params.txt 'cpp_infer'
 bash tests/test.sh ./tests/ocr_det_params.txt 'cpp_infer'
 ```  
 
+- 模式6：serving_infer , CI： 验证inference model的serving预测是否走通；
+```shell
+bash tests/prepare.sh ./tests/ocr_det_params.txt 'serving_infer'
+bash tests/test.sh ./tests/ocr_det_params.txt 'serving_infer'
+```  
 # 日志输出
 最终在```tests/output```目录下生成.log后缀的日志文件
-
