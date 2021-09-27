@@ -150,7 +150,6 @@ class AttentionRecognitionHead(nn.Layer):
 
         # https://github.com/IBM/pytorch-seq2seq/blob/fede87655ddce6c94b38886089e05321dc9802af/seq2seq/models/TopKDecoder.py
         batch_size, l, d = x.shape
-        # inflated_encoder_feats = _inflate(encoder_feats, beam_width, 0) # ABC --> AABBCC -/-> ABCABC
         x = paddle.tile(
             paddle.transpose(
                 x.unsqueeze(1), perm=[1, 0, 2, 3]), [beam_width, 1, 1, 1])

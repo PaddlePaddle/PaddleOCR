@@ -138,10 +138,3 @@ class ResNet_ASTER(nn.Layer):
             return rnn_feat
         else:
             return cnn_feat
-
-
-if __name__ == "__main__":
-    x = paddle.randn([3, 3, 32, 100])
-    net = ResNet_ASTER()
-    encoder_feat = net(x)
-    print(encoder_feat.shape)

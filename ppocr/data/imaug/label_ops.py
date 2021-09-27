@@ -369,7 +369,7 @@ class SEEDLabelEncode(BaseRecLabelEncode):
             return None
         if len(text) >= self.max_text_len:
             return None
-        data['length'] = np.array(len(text)) + 1  # conclue eos
+        data['length'] = np.array(len(text)) + 1  # conclude eos
         text = text + [len(self.character) - 1] * (self.max_text_len - len(text)
                                                    )
         data['label'] = np.array(text)

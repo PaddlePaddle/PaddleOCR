@@ -63,8 +63,6 @@ def build_output_control_points(num_control_points, margins):
     ctrl_pts_y_bottom = np.ones(num_ctrl_pts_per_side) * (1.0 - margin_y)
     ctrl_pts_top = np.stack([ctrl_pts_x, ctrl_pts_y_top], axis=1)
     ctrl_pts_bottom = np.stack([ctrl_pts_x, ctrl_pts_y_bottom], axis=1)
-    # ctrl_pts_top = ctrl_pts_top[1:-1,:]
-    # ctrl_pts_bottom = ctrl_pts_bottom[1:-1,:]
     output_ctrl_pts_arr = np.concatenate(
         [ctrl_pts_top, ctrl_pts_bottom], axis=0)
     output_ctrl_pts = paddle.to_tensor(output_ctrl_pts_arr)
@@ -85,7 +83,6 @@ class TPSSpatialTransformer(nn.Layer):
         target_control_points = build_output_control_points(num_control_points,
                                                             margins)
         N = num_control_points
-        # N = N - 4
 
         # create padded kernel matrix
         forward_kernel = paddle.zeros(shape=[N + 3, N + 3])
@@ -112,7 +109,6 @@ class TPSSpatialTransformer(nn.Layer):
         target_coordinate = paddle.to_tensor(target_coordinate)  # HW x 2
         Y, X = paddle.split(
             target_coordinate, target_coordinate.shape[1], axis=1)
-        #Y, X = target_coordinate.split(1, dim = 1)
         Y = Y / (self.target_height - 1)
         X = X / (self.target_width - 1)
         target_coordinate = paddle.concat(
@@ -136,7 +132,6 @@ class TPSSpatialTransformer(nn.Layer):
         assert source_control_points.ndimension() == 3
         assert source_control_points.shape[1] == self.num_control_points
         assert source_control_points.shape[2] == 2
-        #batch_size = source_control_points.shape[0]
         batch_size = paddle.shape(source_control_points)[0]
 
         self.padding_matrix = paddle.expand(
