@@ -106,6 +106,7 @@ class BaseRecLabelEncode(object):
         self.max_text_len = max_text_length
         self.beg_str = "sos"
         self.end_str = "eos"
+        self.unknown = "UNKNOWN"
         if character_type == "en":
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
@@ -174,6 +175,7 @@ class NRTRLabelEncode(BaseRecLabelEncode):
         super(NRTRLabelEncode,
               self).__init__(max_text_length, character_dict_path,
                              character_type, use_space_char)
+
     def __call__(self, data):
         text = data['label']
         text = self.encode(text)
@@ -185,9 +187,11 @@ class NRTRLabelEncode(BaseRecLabelEncode):
         text = text + [0] * (self.max_text_len - len(text))
         data['label'] = np.array(text)
         return data
+
     def add_special_char(self, dict_character):
-        dict_character = ['blank','<unk>','<s>','</s>'] + dict_character
+        dict_character = ['blank', '<unk>', '<s>', '</s>'] + dict_character
         return dict_character
+
 
 class CTCLabelEncode(BaseRecLabelEncode):
     """ Convert between text-label and text-index """
@@ -337,6 +341,39 @@ class AttnLabelEncode(BaseRecLabelEncode):
         return idx
 
 
+class SEEDLabelEncode(BaseRecLabelEncode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 character_type='ch',
+                 use_space_char=False,
+                 **kwargs):
+        super(SEEDLabelEncode,
+              self).__init__(max_text_length, character_dict_path,
+                             character_type, use_space_char)
+
+    def add_special_char(self, dict_character):
+        self.beg_str = "sos"
+        self.end_str = "eos"
+        dict_character = dict_character + [self.end_str]
+        return dict_character
+
+    def __call__(self, data):
+        text = data['label']
+        text = self.encode(text)
+        if text is None:
+            return None
+        if len(text) >= self.max_text_len:
+            return None
+        data['length'] = np.array(len(text)) + 1  # conclue eos
+        text = text + [len(self.character) - 1] * (self.max_text_len - len(text)
+                                                   )
+        data['label'] = np.array(text)
+        return data
+
+
 class SRNLabelEncode(BaseRecLabelEncode):
     """ Convert between text-label and text-index """
 
@@ -416,7 +453,6 @@ class TableLabelEncode(object):
             substr = lines[0].decode('utf-8').strip("\r\n").split("\t")
             character_num = int(substr[0])
             elem_num = int(substr[1])
-
             for cno in range(1, 1 + character_num):
                 character = lines[cno].decode('utf-8').strip("\r\n")
                 list_character.append(character)
@@ -588,7 +624,7 @@ class SARLabelEncode(BaseRecLabelEncode):
         data['length'] = np.array(len(text))
         target = [self.start_idx] + text + [self.end_idx]
         padded_text = [self.padding_idx for _ in range(self.max_text_len)]
-        
+
         padded_text[:len(target)] = target
         data['label'] = np.array(padded_text)
         return data

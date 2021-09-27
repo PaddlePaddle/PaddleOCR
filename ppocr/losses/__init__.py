@@ -42,10 +42,14 @@ from .combined_loss import CombinedLoss
 # table loss
 from .table_att_loss import TableAttentionLoss
 
+from .rec_aster_loss import AsterLoss
+
+
 def build_loss(config):
     support_dict = [
         'DBLoss', 'EASTLoss', 'SASTLoss', 'CTCLoss', 'ClsLoss', 'AttentionLoss',
-        'SRNLoss', 'PGLoss', 'CombinedLoss', 'NRTRLoss', 'TableAttentionLoss', 'SARLoss'
+        'SRNLoss', 'PGLoss', 'CombinedLoss', 'NRTRLoss', 'TableAttentionLoss',
+        'SARLoss', 'AsterLoss'
     ]
 
     config = copy.deepcopy(config)
