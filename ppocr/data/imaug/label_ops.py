@@ -181,6 +181,8 @@ class NRTRLabelEncode(BaseRecLabelEncode):
         text = self.encode(text)
         if text is None:
             return None
+        if len(text) >= self.max_text_len - 1:
+            return None
         data['length'] = np.array(len(text))
         text.insert(0, 2)
         text.append(3)

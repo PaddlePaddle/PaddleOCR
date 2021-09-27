@@ -1,4 +1,4 @@
-# Server-side C++ inference
+# Server-side C++ Inference
 
 This chapter introduces the C++ deployment method of the PaddleOCR model, and the corresponding python predictive deployment method refers to [document](../../doc/doc_ch/inference.md).
 C++ is better than python in terms of performance calculation. Therefore, in most CPU and GPU deployment scenarios, C++ deployment is mostly used.
@@ -6,14 +6,14 @@ This section will introduce how to configure the C++ environment and complete it
 PaddleOCR model deployment.
 
 
-## 1. Prepare the environment
+## 1. Prepare the Environment
 
 ### Environment
 
 - Linux, docker is recommended.
 
 
-### 1.1 Compile opencv
+### 1.1 Compile OpenCV
 
 * First of all, you need to download the source code compiled package in the Linux environment from the opencv official website. Taking opencv3.4.7 as an example, the download command is as follows.
 
@@ -73,7 +73,7 @@ opencv3/
 |-- share
 ```
 
-### 1.2 Compile or download or  the Paddle inference library
+### 1.2 Compile or Download or the Paddle Inference Library
 
 * There are 2 ways to obtain the Paddle inference library, described in detail below.
 
@@ -136,7 +136,7 @@ build/paddle_inference_install_dir/
 Among them, `paddle` is the Paddle library required for C++ prediction later, and `version.txt` contains the version information of the current inference library.
 
 
-## 2. Compile and run the demo
+## 2. Compile and Run the Demo
 
 ### 2.1 Export the inference model
 
@@ -183,7 +183,7 @@ or the generated Paddle inference library path (`build/paddle_inference_install_
 Execute the built executable file:  
 ```shell
 ./build/ppocr <mode> [--param1] [--param2] [...]
-```  
+```
 Here, `mode` is a required parameter，and the value range is ['det', 'rec', 'system'], representing using detection only, using recognition only and using the end-to-end system respectively. Specifically,
 
 ##### 1. run det demo:

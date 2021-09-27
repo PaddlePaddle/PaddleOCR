@@ -91,11 +91,11 @@ wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dyg
 ```shell
 # 单机单卡训练 mv3_db 模型
 python3 tools/train.py -c configs/det/det_mv3_db.yml \
-     -o Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained
+     -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
 
 # 单机多卡训练，通过 --gpus 参数设置使用的GPU ID
 python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/det_mv3_db.yml \
-     -o Global.pretrain_weights=./pretrain_models/MobileNetV3_large_x0_5_pretrained
+     -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
 ```
 
 上述指令中，通过-c 选择训练使用configs/det/det_db_mv3.yml配置文件。
@@ -114,7 +114,7 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./your/trained/model
 ```
 
-**注意**：`Global.checkpoints`的优先级高于`Global.pretrain_weights`的优先级，即同时指定两个参数时，优先加载`Global.checkpoints`指定的模型，如果`Global.checkpoints`指定的模型路径有误，会加载`Global.pretrain_weights`指定的模型。
+**注意**：`Global.checkpoints`的优先级高于`Global.pretrained_model`的优先级，即同时指定两个参数时，优先加载`Global.checkpoints`指定的模型，如果`Global.checkpoints`指定的模型路径有误，会加载`Global.pretrained_model`指定的模型。
 
 <a name="15---backbone---"></a>
 ## 1.5 更换Backbone 训练

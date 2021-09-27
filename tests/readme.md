@@ -1,5 +1,5 @@
 
-# 介绍
+# 从训练到推理部署工具链测试方法介绍
 
 test.sh和params.txt文件配合使用，完成OCR轻量检测和识别模型从训练到预测的流程测试。
 
@@ -36,7 +36,7 @@ test.sh包含四种运行模式，每种模式的运行数据不同，分别用�
 
 - 模式1：lite_train_infer，使用少量数据训练，用于快速验证训练到预测的走通流程，不验证精度和速度；
 ```shell
-bash test/prepare.sh ./tests/ocr_det_params.txt 'lite_train_infer'
+bash tests/prepare.sh ./tests/ocr_det_params.txt 'lite_train_infer'
 bash tests/test.sh ./tests/ocr_det_params.txt 'lite_train_infer'
 ```  
 
@@ -66,3 +66,7 @@ bash tests/test.sh ./tests/ocr_det_params.txt 'whole_train_infer'
 bash tests/prepare.sh ./tests/ocr_det_params.txt 'cpp_infer'
 bash tests/test.sh ./tests/ocr_det_params.txt 'cpp_infer'
 ```  
+
+# 日志输出
+最终在```tests/output```目录下生成.log后缀的日志文件
+

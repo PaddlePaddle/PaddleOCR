@@ -63,6 +63,13 @@ def init_args():
     parser.add_argument("--det_sast_nms_thresh", type=float, default=0.2)
     parser.add_argument("--det_sast_polygon", type=str2bool, default=False)
 
+    # PSE parmas
+    parser.add_argument("--det_pse_thresh", type=float, default=0)
+    parser.add_argument("--det_pse_box_thresh", type=float, default=0.85)
+    parser.add_argument("--det_pse_min_area", type=float, default=16)
+    parser.add_argument("--det_pse_box_type", type=str, default='box')
+    parser.add_argument("--det_pse_scale", type=int, default=1)
+
     # params for text recognizer
     parser.add_argument("--rec_algorithm", type=str, default='CRNN')
     parser.add_argument("--rec_model_dir", type=str)

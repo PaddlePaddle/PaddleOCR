@@ -353,7 +353,7 @@ def eval(model,
          valid_dataloader,
          post_process_class,
          eval_class,
-         model_type,
+         model_type=None,
          use_srn=False,
          use_sar=False):
     model.eval()
@@ -404,7 +404,8 @@ def preprocess(is_train=False):
     alg = config['Architecture']['algorithm']
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
-        'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'ASTER'
+        'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
+        'ASTER'
     ]
 
     device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'

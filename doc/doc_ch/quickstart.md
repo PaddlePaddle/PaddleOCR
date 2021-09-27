@@ -90,10 +90,10 @@ cd /path/to/ppocr_img
   ```
 
 
-如需使用2.0模型，请指定参数`--version 2.0`，paddleocr默认使用2.1模型。更多whl包使用可参考[whl包文档](./whl.md)
-
+如需使用2.0模型，请指定参数`--version PP-OCR`，paddleocr默认使用2.1模型(`--versioin PP-OCRv2`)。更多whl包使用可参考[whl包文档](./whl.md)
 
 <a name="212"></a>
+
 #### 2.1.2 多语言模型
 
 Paddleocr目前支持80个语种，可以通过修改`--lang`参数进行切换，对于英文模型，指定`--lang=en`。

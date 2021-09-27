@@ -46,7 +46,7 @@ Architecture:
     name: Transformer
     d_model: 512
     num_encoder_layers: 6
-    beam_size: 10 # When Beam size is greater than 0, it means to use beam search when evaluation.
+    beam_size: -1 # When Beam size is greater than 0, it means to use beam search when evaluation.
     
 
 Loss:
@@ -65,7 +65,7 @@ Train:
     name: LMDBDataSet
     data_dir: ./train_data/data_lmdb_release/training/
     transforms:
-      - NRTRDecodeImage: # load image
+      - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
       - NRTRLabelEncode: # Class handling label
@@ -85,7 +85,7 @@ Eval:
     name: LMDBDataSet
     data_dir: ./train_data/data_lmdb_release/evaluation/
     transforms:
-      - NRTRDecodeImage: # load image
+      - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
       - NRTRLabelEncode: # Class handling label
