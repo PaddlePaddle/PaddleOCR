@@ -41,7 +41,7 @@ import tools.program as program
 dist.get_world_size()
 
 
-def main(config, device, logger, vdl_writer):
+def main(config, device, logger, vdl_writer, profiler_options):
     # init dist environment
     if config['Global']['distributed']:
         dist.init_parallel_env()
@@ -105,7 +105,8 @@ def main(config, device, logger, vdl_writer):
     # start train
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,
-                  eval_class, pre_best_model_dict, logger, vdl_writer)
+                  eval_class, pre_best_model_dict, logger, vdl_writer,
+                  profiler_options)
 
 
 def test_reader(config, device, logger):
@@ -127,6 +128,8 @@ def test_reader(config, device, logger):
 
 
 if __name__ == '__main__':
-    config, device, logger, vdl_writer = program.preprocess(is_train=True)
-    main(config, device, logger, vdl_writer)
+    config, device, logger, vdl_writer, profiler_options = program.preprocess(
+        is_train=True)
+    main(config, device, logger, vdl_writer, profiler_options)
+    # test_reader(config, device, logger)
     # test_reader(config, device, logger)
