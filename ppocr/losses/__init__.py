@@ -28,6 +28,8 @@ from .rec_att_loss import AttentionLoss
 from .rec_srn_loss import SRNLoss
 from .rec_nrtr_loss import NRTRLoss
 from .rec_sar_loss import SARLoss
+from .rec_aster_loss import AsterLoss
+
 # cls loss
 from .cls_loss import ClsLoss
 
@@ -48,7 +50,7 @@ def build_loss(config):
     support_dict = [
         'DBLoss', 'PSELoss', 'EASTLoss', 'SASTLoss', 'CTCLoss', 'ClsLoss',
         'AttentionLoss', 'SRNLoss', 'PGLoss', 'CombinedLoss', 'NRTRLoss',
-        'TableAttentionLoss', 'SARLoss'
+        'TableAttentionLoss', 'SARLoss', 'AsterLoss'
     ]
 
     config = copy.deepcopy(config)
