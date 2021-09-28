@@ -17,7 +17,7 @@ __all__ = ['build_transform']
 
 def build_transform(config):
     from .tps import TPS
-    from .tps import STN_ON
+    from .stn import STN_ON
 
     support_dict = ['TPS', 'STN_ON']
 

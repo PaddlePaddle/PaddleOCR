@@ -88,29 +88,19 @@ class RecResizeImg(object):
                  image_shape,
                  infer_mode=False,
                  character_type='ch',
+                 padding=True,
                  **kwargs):
         self.image_shape = image_shape
         self.infer_mode = infer_mode
         self.character_type = character_type
+        self.padding = padding
 
     def __call__(self, data):
         img = data['image']
         if self.infer_mode and self.character_type == "ch":
             norm_img = resize_norm_img_chinese(img, self.image_shape)
         else:
-            norm_img = resize_norm_img(img, self.image_shape)
-        data['image'] = norm_img
-        return data
-
-
-class SEEDResize(object):
-    def __init__(self, image_shape, infer_mode=False, **kwargs):
-        self.image_shape = image_shape
-        self.infer_mode = infer_mode
-
-    def __call__(self, data):
-        img = data['image']
-        norm_img = resize_no_padding_img(img, self.image_shape)
+            norm_img = resize_norm_img(img, self.image_shape, self.padding)
         data['image'] = norm_img
         return data
 
@@ -186,16 +176,21 @@ def resize_norm_img_sar(img, image_shape, width_downsample_ratio=0.25):
     return padding_im, resize_shape, pad_shape, valid_ratio
 
 
-def resize_norm_img(img, image_shape):
+def resize_norm_img(img, image_shape, padding=True):
     imgC, imgH, imgW = image_shape
     h = img.shape[0]
     w = img.shape[1]
-    ratio = w / float(h)
-    if math.ceil(imgH * ratio) > imgW:
+    if not padding:
+        resized_image = cv2.resize(
+            img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
         resized_w = imgW
     else:
-        resized_w = int(math.ceil(imgH * ratio))
-    resized_image = cv2.resize(img, (resized_w, imgH))
+        ratio = w / float(h)
+        if math.ceil(imgH * ratio) > imgW:
+            resized_w = imgW
+        else:
+            resized_w = int(math.ceil(imgH * ratio))
+        resized_image = cv2.resize(img, (resized_w, imgH))
     resized_image = resized_image.astype('float32')
     if image_shape[0] == 1:
         resized_image = resized_image / 255
@@ -207,17 +202,6 @@ def resize_norm_img(img, image_shape):
     padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
     padding_im[:, :, 0:resized_w] = resized_image
     return padding_im
-
-
-def resize_no_padding_img(img, image_shape):
-    imgC, imgH, imgW = image_shape
-    resized_image = cv2.resize(
-        img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
-    resized_image = resized_image.astype('float32')
-    resized_image = resized_image.transpose((2, 0, 1)) / 255
-    resized_image -= 0.5
-    resized_image /= 0.5
-    return resized_image
 
 
 def resize_norm_img_chinese(img, image_shape):

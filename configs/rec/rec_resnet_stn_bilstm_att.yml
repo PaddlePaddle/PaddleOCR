@@ -19,7 +19,6 @@ Global:
   max_text_length: 100
   infer_mode: False
   use_space_char: False
-  eval_filter: True
   save_res_path: ./output/rec/predicts_seed.txt
 
 
@@ -37,8 +36,8 @@ Optimizer:
 
 
 Architecture:
-  model_type: seed
-  algorithm: ASTER
+  model_type: rec
+  algorithm: seed
   Transform:
     name: STN_ON
     tps_inputsize: [32, 64]
@@ -76,8 +75,10 @@ Train:
           img_mode: BGR
           channel_first: False
       - SEEDLabelEncode: # Class handling label
-      - SEEDResize:
+      - RecResizeImg:
+          character_type: en
           image_shape: [3, 64, 256]
+          padding: False
       - KeepKeys:
           keep_keys: ['image', 'label', 'length', 'fast_label'] # dataloader will return list in this order
   loader:
@@ -95,8 +96,10 @@ Eval:
           img_mode: BGR
           channel_first: False
       - SEEDLabelEncode: # Class handling label
-      - SEEDResize:
+      - RecResizeImg:
+          character_type: en
           image_shape: [3, 64, 256]
+          padding: False
       - KeepKeys:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
   loader:

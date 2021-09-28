@@ -106,7 +106,6 @@ class BaseRecLabelEncode(object):
         self.max_text_len = max_text_length
         self.beg_str = "sos"
         self.end_str = "eos"
-        self.unknown = "UNKNOWN"
         if character_type == "en":
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
@@ -357,7 +356,6 @@ class SEEDLabelEncode(BaseRecLabelEncode):
                              character_type, use_space_char)
 
     def add_special_char(self, dict_character):
-        self.beg_str = "sos"
         self.end_str = "eos"
         dict_character = dict_character + [self.end_str]
         return dict_character

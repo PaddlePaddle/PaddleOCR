@@ -22,9 +22,6 @@ from paddle import nn, ParamAttr
 from paddle.nn import functional as F
 import numpy as np
 
-from .tps_spatial_transformer import TPSSpatialTransformer
-from .stn import STN
-
 
 class ConvBNLayer(nn.Layer):
     def __init__(self,
@@ -305,25 +302,3 @@ class TPS(nn.Layer):
             [-1, image.shape[2], image.shape[3], 2])
         batch_I_r = F.grid_sample(x=image, grid=batch_P_prime)
         return batch_I_r
-
-
-class STN_ON(nn.Layer):
-    def __init__(self, in_channels, tps_inputsize, tps_outputsize,
-                 num_control_points, tps_margins, stn_activation):
-        super(STN_ON, self).__init__()
-        self.tps = TPSSpatialTransformer(
-            output_image_size=tuple(tps_outputsize),
-            num_control_points=num_control_points,
-            margins=tuple(tps_margins))
-        self.stn_head = STN(in_channels=in_channels,
-                            num_ctrlpoints=num_control_points,
-                            activation=stn_activation)
-        self.tps_inputsize = tps_inputsize
-        self.out_channels = in_channels
-
-    def forward(self, image):
-        stn_input = paddle.nn.functional.interpolate(
-            image, self.tps_inputsize, mode="bilinear", align_corners=True)
-        stn_img_feat, ctrl_points = self.stn_head(stn_input)
-        x, _ = self.tps(image, ctrl_points)
-        return x

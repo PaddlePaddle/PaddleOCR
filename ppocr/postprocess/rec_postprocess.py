@@ -322,7 +322,6 @@ class SEEDLabelDecode(BaseRecLabelDecode):
     def add_special_char(self, dict_character):
         self.beg_str = "sos"
         self.end_str = "eos"
-        dict_character = dict_character
         dict_character = dict_character + [self.end_str]
         return dict_character
 
