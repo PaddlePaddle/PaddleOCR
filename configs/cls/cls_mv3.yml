@@ -5,7 +5,7 @@ Global:
   print_batch_step: 10
   save_model_dir: ./output/cls/mv3/
   save_epoch_step: 3
-  # evaluation is run every 5000 iterations after the 4000th iteration
+  # evaluation is run every 1000 iterations after the 0th iteration
   eval_batch_step: [0, 1000]
   cal_metric_during_train: True
   pretrained_model:
