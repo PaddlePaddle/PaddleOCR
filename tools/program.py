@@ -31,6 +31,7 @@ from ppocr.utils.stats import TrainingStats
 from ppocr.utils.save_load import save_model
 from ppocr.utils.utility import print_dict
 from ppocr.utils.logging import get_logger
+from ppocr.utils import profiler
 from ppocr.data import build_dataloader
 import numpy as np
 
