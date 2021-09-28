@@ -20,9 +20,7 @@ function _train(){
     echo "Train on ${num_gpu_devices} GPUs"
     echo "current CUDA_VISIBLE_DEVICES=$CUDA_VISIBLE_DEVICES, gpus=$num_gpu_devices, batch_size=$batch_size"
 
-    train_cmd="-c configs/det/${model_name}.yml
-               -o Train.loader.batch_size_per_card=${batch_size}
-               -o Global.epoch_num=${max_iter} "   
+    train_cmd="-c configs/det/${model_name}.yml -o Train.loader.batch_size_per_card=${batch_size} Global.epoch_num=${max_iter} "   
     case ${run_mode} in
       sp) 
         train_cmd="python3.7 tools/train.py "${train_cmd}""

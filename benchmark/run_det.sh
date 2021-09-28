@@ -8,20 +8,20 @@ python3.7 -m pip install -r requirements.txt
 #wget -p ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/ResNet50_vd_pretrained.pdparams
 # 3 批量运行（如不方便批量，1，2需放到单个模型中）
 
-model_mode_list=(det_mv3_db det_r50_vd_east)
+model_mode_list=(ch_ppocr_v2.0/ch_det_res18_db_v2.0 det_r50_vd_east)
 fp_item_list=(fp32)
-bs_list=(4 8)
+bs_list=(8 16)
 for model_mode in ${model_mode_list[@]}; do
       for fp_item in ${fp_item_list[@]}; do
           for bs_item in ${bs_list[@]}; do
             echo "index is speed, 1gpus, begin, ${model_name}"
             run_mode=sp
-            CUDA_VISIBLE_DEVICES=3 bash benchmark/run_benchmark_det.sh ${run_mode} ${bs_item} ${fp_item} 10 ${model_mode}     #  (5min)
+            CUDA_VISIBLE_DEVICES=0 bash benchmark/run_benchmark_det.sh ${run_mode} ${bs_item} ${fp_item} 10 ${model_mode}     #  (5min)
             sleep 60
             echo "index is speed, 8gpus, run_mode is multi_process, begin, ${model_name}"
-            #run_mode=mp
-            #CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 bash benchmark/run_benchmark.sh ${run_mode} ${bs_item} ${fp_item} 10 ${model_mode} 
-            #sleep 60
+            run_mode=mp
+            CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 bash benchmark/run_benchmark_det.sh ${run_mode} ${bs_item} ${fp_item} 10 ${model_mode} 
+            sleep 60
             done
       done
 done
