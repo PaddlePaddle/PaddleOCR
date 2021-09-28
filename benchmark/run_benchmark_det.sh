@@ -45,6 +45,10 @@ function _train(){
         rm ${log_file}
         cp mylog/workerlog.0 ${log_file}
     fi
+
+    # run log analysis
+    analysis_cmd="python3.7 benchmark/analysis.py --filename ${log_file}  --mission_name ${model_name} --run_mode ${mode} --direction_id 0 --keyword 'ips:' --base_batch_size ${batch_szie} --skip_steps 1 --gpu_num ${num_gpu_devices}  --index 1  --model_mode=-1  --ips_unit=samples/sec"
+    eval $analysis_cmd
 }
 
 _set_params $@

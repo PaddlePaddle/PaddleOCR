@@ -8,7 +8,7 @@ python3.7 -m pip install -r requirements.txt
 #wget -p ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/ResNet50_vd_pretrained.pdparams
 # 3 批量运行（如不方便批量，1，2需放到单个模型中）
 
-model_mode_list=(ch_ppocr_v2.0/ch_det_res18_db_v2.0 det_r50_vd_east)
+model_mode_list=(det_res18_db_v2.0 det_r50_vd_east)
 fp_item_list=(fp32)
 bs_list=(8 16)
 for model_mode in ${model_mode_list[@]}; do
