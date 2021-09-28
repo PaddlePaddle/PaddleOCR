@@ -21,7 +21,6 @@ import copy
 import platform
 
 __all__ = ['build_post_process']
-from ppocr.utils.logging import get_logger
 
 from .db_postprocess import DBPostProcess, DistillationDBPostProcess
 from .east_postprocess import EASTPostProcess
