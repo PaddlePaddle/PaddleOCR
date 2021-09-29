@@ -18,6 +18,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import copy
+import platform
 
 __all__ = ['build_post_process']
 
@@ -28,7 +29,10 @@ from .rec_postprocess import CTCLabelDecode, AttnLabelDecode, SRNLabelDecode, Di
     TableLabelDecode, NRTRLabelDecode, SARLabelDecode , SEEDLabelDecode
 from .cls_postprocess import ClsPostProcess
 from .pg_postprocess import PGPostProcess
-from .pse_postprocess import PSEPostProcess
+
+if platform.system() != "Windows":
+    # pse is not support in Windows
+    from .pse_postprocess import PSEPostProcess
 
 
 def build_post_process(config, global_config=None):

@@ -394,21 +394,6 @@ def preprocess(is_train=False):
     config = load_config(FLAGS.config)
     merge_config(FLAGS.opt)
 
-    # check if set use_gpu=True in paddlepaddle cpu version
-    use_gpu = config['Global']['use_gpu']
-    check_gpu(use_gpu)
-
-    alg = config['Architecture']['algorithm']
-    assert alg in [
-        'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
-        'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
-        'ASTER'
-    ]
-
-    device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'
-    device = paddle.set_device(device)
-
-    config['Global']['distributed'] = dist.get_world_size() != 1
     if is_train:
         # save_config
         save_model_dir = config['Global']['save_model_dir']
@@ -420,6 +405,28 @@ def preprocess(is_train=False):
     else:
         log_file = None
     logger = get_logger(name='root', log_file=log_file)
+
+    # check if set use_gpu=True in paddlepaddle cpu version
+    use_gpu = config['Global']['use_gpu']
+    check_gpu(use_gpu)
+
+    alg = config['Architecture']['algorithm']
+    assert alg in [
+        'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
+        'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
+        'ASTER'
+    ]
+    windows_not_support_list = ['PSE']
+    if platform.system() == "Windows" and alg in windows_not_support_list:
+        logger.warning('{} is not support in Windows now'.format(
+            windows_not_support_list))
+        sys.exit()
+
+    device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'
+    device = paddle.set_device(device)
+
+    config['Global']['distributed'] = dist.get_world_size() != 1
+
     if config['Global']['use_visualdl']:
         from visualdl import LogWriter
         save_model_dir = config['Global']['save_model_dir']
