@@ -37,7 +37,7 @@ Optimizer:
 
 Architecture:
   model_type: rec
-  algorithm: seed
+  algorithm: SEED
   Transform:
     name: STN_ON
     tps_inputsize: [32, 64]

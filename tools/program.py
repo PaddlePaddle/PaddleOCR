@@ -414,8 +414,7 @@ def preprocess(is_train=False):
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
-        'ASTER'
-    ]
+        'SEED']
     windows_not_support_list = ['PSE']
     if platform.system() == "Windows" and alg in windows_not_support_list:
         logger.warning('{} is not support in Windows now'.format(
