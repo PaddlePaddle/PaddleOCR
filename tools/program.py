@@ -159,14 +159,15 @@ def train(config,
           eval_class,
           pre_best_model_dict,
           logger,
-          vdl_writer=None,
-          profiler_options=None):
+          vdl_writer=None):
     cal_metric_during_train = config['Global'].get('cal_metric_during_train',
                                                    False)
     log_smooth_window = config['Global']['log_smooth_window']
     epoch_num = config['Global']['epoch_num']
     print_batch_step = config['Global']['print_batch_step']
     eval_batch_step = config['Global']['eval_batch_step']
+
+    profiler_options = config['profiler_options']
 
     global_step = 0
     if 'global_step' in pre_best_model_dict:
@@ -405,6 +406,8 @@ def preprocess(is_train=False):
     profiler_options = FLAGS.profiler_options
     config = load_config(FLAGS.config)
     merge_config(FLAGS.opt)
+    profile_dic = {"profiler_options": FLAGS.profiler_options}
+    merge_config(profile_dic)
 
     # check if set use_gpu=True in paddlepaddle cpu version
     use_gpu = config['Global']['use_gpu']
@@ -442,4 +445,4 @@ def preprocess(is_train=False):
     print_dict(config, logger)
     logger.info('train with paddle {} and device {}'.format(paddle.__version__,
                                                             device))
-    return config, device, logger, vdl_writer, profiler_options
+    return config, device, logger, vdl_writer
