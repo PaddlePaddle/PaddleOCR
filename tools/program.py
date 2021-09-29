@@ -166,7 +166,6 @@ def train(config,
     epoch_num = config['Global']['epoch_num']
     print_batch_step = config['Global']['print_batch_step']
     eval_batch_step = config['Global']['eval_batch_step']
-
     profiler_options = config['profiler_options']
 
     global_step = 0

@@ -127,8 +127,6 @@ def test_reader(config, device, logger):
 
 
 if __name__ == '__main__':
-    config, device, logger, vdl_writer = program.preprocess(
-        is_train=True)
-    logger.info(f"config.profiler_options: {config.profiler_options}")
+    config, device, logger, vdl_writer = program.preprocess(is_train=True)
     main(config, device, logger, vdl_writer)
     # test_reader(config, device, logger)
