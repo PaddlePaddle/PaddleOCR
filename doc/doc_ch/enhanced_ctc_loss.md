@@ -5,10 +5,14 @@
 ## 1. Focal-CTC Loss
 Focal Loss 出自论文《Focal Loss for Dense Object Detection》, 该loss最先提出的时候主要是为了解决one-stage目标检测中正负样本比例严重失衡的问题。该损失函数降低了大量简单负样本在训练中所占的权重，也可理解为一种困难样本挖掘。
 其损失函数形式如下：
-    <center>![Image text](./focal_loss_formula.png)</center>
+<div align=center>
+    ![Image text](./focal_loss_formula.png)
+</div>
  
-其中,  y' 是经过激活函数的输出，取值在0-1之间。其在原始的交叉熵损失的基础上加了一个调制系数（1 – y’)^ &gamma;和平衡因子&alpha;。 当&alpha; = 1，y=1时，其损失函数与交叉熵损失的对比如下图所示:     
+其中,  y' 是经过激活函数的输出，取值在0-1之间。其在原始的交叉熵损失的基础上加了一个调制系数（1 – y’)^ &gamma;和平衡因子&alpha;。 当&alpha; = 1，y=1时，其损失函数与交叉熵损失的对比如下图所示:   
+<div align=center>  
     ![Image text](./focal_loss_image.png)
+</div>   
 
 从上图可以看到, 当&gamma;> 0时，调整系数（1-y’）^&gamma; 赋予易分类样本损失一个更小的权重，使得网络更关注于困难的、错分的样本。 调整因子&gamma;用于调节简单样本权重降低的速率，当&gamma;为0时即为交叉熵损失函数，当&gamma;增加时，调整因子的影响也会随之增大。实验发现&gamma;为2是最优。平衡因子&alpha;用来平衡正负样本本身的比例不均，文中&alpha;取0.25。
 
@@ -56,11 +60,12 @@ C_CTC Loss定义如下：
 + 将相同index的feature进行聚合，计算平均值，得到各自字符的初始center. 
     
 ## 4. Experiments
-对于上述的三种方案，我们基于百度内部数据集进行了训练、评测，实验情况如下表前三列所示：
-
+对于上述的三种方案，我们基于百度内部数据集进行了训练、评测，实验情况如下表所示：
+<div align=center>
 |Algo| Focal_CTC | A_CTC | C-CTC |
 |:------| :------| ------: | :------: |
 |Gain| +0.3% | +0.7% | +1.7% | 
+</div>
 
 基于上述实验结论，我们在PP-OCR V2中，采用了C-CTC的策略。 值得一提的是，由于PP-OCRV2 处理的是6648个中文字符的识别任务，字符集比较大，形似字较多，所以在该任务上C-CTC 方案带来的提升较大。 但如果换做其他OCR识别任务，结论可能会有所不同。大家可以尝试Focal-CTC，A-CTC, C-CTC以及组合方案EnhancedCTC，相信会带来不同程度的提升效果。
 统一的融合方案见如下文件： [rec_enhanced_ctc_loss.py](../../ppocr/losses/rec_enhanced_ctc_loss.py)
