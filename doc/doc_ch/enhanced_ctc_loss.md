@@ -30,9 +30,7 @@ A-CTC Loss是CTC Loss + ACE Loss的简称。 其中ACE Loss出自论文< Aggrega
 ![Image text](./rec_algo_compare.png)
  
 虽然ACELoss确实如上图所说，可以处理2D预测，在内存占用及推理速度方面具备优势，但在实践过程中，我们发现单独使用ACE Loss,  识别效果并不如CTCLoss.  因此，我们尝试将CTCLoss和ACELoss进行组合，同时以CTCLoss为主，将ACELoss 定位为一个辅助监督loss。 这一尝试收到了效果，在我们内部的实验数据集上，相比单独使用CTCLoss，识别准确率可以提升1%左右。
-A_CTC Loss定义如下: 
-   L<sub>(A-CTC)</sub>  =  L<sub>CTC</sub> + λ * L<sub>ACE</sub>
-
+A_CTC Loss定义如下: L<sub>(A-CTC)</sub>  =  L<sub>CTC</sub> + λ * L<sub>ACE</sub>
 实验中，λ = 0.1.  ACE loss实现代码见：[ace_loss.py](../../ppocr/losses/ace_loss.py)
 
 ## 3. C-CTC
