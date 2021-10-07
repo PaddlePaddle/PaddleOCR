@@ -1,4 +1,4 @@
-# <div align=center>Enhanced CTC Loss</div>
+# Enhanced CTC Loss
 
 在OCR识别中， CRNN是一种在工业界广泛使用的文字识别算法。 在训练阶段，其采用CTCLoss来计算网络损失； 在推理阶段，其采用CTCDecode来获得解码结果。虽然CRNN算法在实际业务中被证明能够获得很好的识别效果， 然而用户对识别准确率的要求却是无止境的，如何进一步提升文字识别的准确率呢？ 本文以CTCLoss为切人点，分别从难例挖掘、 多任务学习、 Metric Learning 3个不同的角度探索了CTCLoss的改进融合方案，提出了EnhancedCTCLoss，其包括如下3个组成部分： Focal-CTC Loss，A-CTC Loss， C-CTC Loss。
 
