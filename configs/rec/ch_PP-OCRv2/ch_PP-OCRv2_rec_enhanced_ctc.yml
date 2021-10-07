@@ -4,7 +4,7 @@ Global:
   epoch_num: 800
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/rec_mobile_pp-OCRv2_enhanced_ctc_loss
+  save_model_dir: ./output/rec_mobile_pp-OCRv2_enhanced_ctc
   save_epoch_step: 3
   eval_batch_step: [0, 2000]
   cal_metric_during_train: true
@@ -19,7 +19,7 @@ Global:
   infer_mode: false
   use_space_char: true
   distributed: true
-  save_res_path: ./output/rec/predicts_mobile_pp-OCRv2_enhanced_ctc_loss.txt
+  save_res_path: ./output/rec/predicts_mobile_pp-OCRv2_enhanced_ctc.txt
 
 
 Optimizer:
@@ -65,7 +65,7 @@ Loss:
       feat_dim: 96
       init_center: false
       center_file_path: "./train_center.pkl"
-  # you can also try to add ace loss on your own dataset
+  #you can also try to add ace loss on your own dataset
   # - ACELoss:
   #     weight: 0.1
 
