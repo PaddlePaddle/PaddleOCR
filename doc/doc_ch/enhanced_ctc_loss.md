@@ -23,8 +23,8 @@ L<sub>Focal_CTC</sub> =  &alpha; * (1 - y') ^ &gamma; * log(y')
 
 ## 2. A-CTC
 A-CTC Loss是CTC Loss + ACE Loss的简称。 其中ACE Loss出自论文< Aggregation Cross-Entropy for Sequence Recognition>.  ACE Loss相比于CTCLoss，主要有如下两点优势: 
-	ACE Loss能够解决2-D文本的识别问题;  CTCLoss只能够处理1-D文本
-	ACE Loss 在时间复杂度和空间复杂度上优于CTC loss
++ ACE Loss能够解决2-D文本的识别问题;  CTCLoss只能够处理1-D文本
++ ACE Loss 在时间复杂度和空间复杂度上优于CTC loss
 
 前人总结的OCR识别算法的优劣如下图所示：
 ![Image text](./rec_algo_compare.png)
