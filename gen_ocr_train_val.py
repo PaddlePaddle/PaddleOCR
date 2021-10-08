@@ -4,6 +4,7 @@ import shutil
 import random
 import argparse
 
+
 # 删除划分的训练集和验证集文件夹，重新创建一个空的文件夹
 def isCreateOrDeleteFolder(path, flag):
     flagPath = os.path.join(path, flag)
@@ -45,15 +46,21 @@ def splitTrainVal(root, dir, absTrainRootPath, absValRootPath, trainTxt, valTxt,
             valTxt.write("{}\t{}".format(imageCopyPath, imageLabel))
 
 
+# 删掉存在的文件
+def removeFile(path):
+    if os.path.exists(path):
+        os.remove(path)
+
+
 def genDetRecTrainVal(args):
     detAbsTrainRootPath = isCreateOrDeleteFolder(args.detRootPath, "train")
     detAbsValRootPath = isCreateOrDeleteFolder(args.detRootPath, "val")
     recAbsTrainRootPath = isCreateOrDeleteFolder(args.recRootPath, "train")
     recAbsValRootPath = isCreateOrDeleteFolder(args.recRootPath, "val")
-    os.remove(os.path.join(args.detRootPath, "train.txt"))
-    os.remove(os.path.join(args.detRootPath, "val.txt"))
-    os.remove(os.path.join(args.recRootPath, "train.txt"))
-    os.remove(os.path.join(args.recRootPath, "val.txt"))
+    removeFile(os.path.join(args.detRootPath, "train.txt"))
+    removeFile(os.path.join(args.detRootPath, "val.txt"))
+    removeFile(os.path.join(args.recRootPath, "train.txt"))
+    removeFile(os.path.join(args.recRootPath, "val.txt"))
     detTrainTxt = open(os.path.join(args.detRootPath, "train.txt"), "a", encoding="UTF-8")
     detValTxt = open(os.path.join(args.detRootPath, "val.txt"), "a", encoding="UTF-8")
     recTrainTxt = open(os.path.join(args.recRootPath, "train.txt"), "a", encoding="UTF-8")
