@@ -311,6 +311,7 @@ sudo nvidia-docker run --name ppocr -v $PWD:/paddle --shm-size=64G --network=hos
 # ctrl+P+Q可退出docker 容器，重新进入docker 容器使用如下命令
 sudo docker container exec -it ppocr /bin/bash
 ```
+
 docker 环境中默认的python3 版本为python3.5，PaddleOCR 建议使用Python3.7，在执行python命令时，可以使用python3.7而不是python3。如下，输入python3.7命令并回车，可以看到使用的是python3.7版本。
 ```
 λ root@Linux /paddle  python3.7
@@ -327,12 +328,14 @@ Type "help", "copyright", "credits" or "license" for more information.
 - 如果您的机器安装的是CUDA9或CUDA10，请运行以下命令安装
 
 ```bash
+# use python3.7 instead of python3 in docker
 python3 -m pip install paddlepaddle-gpu -i https://mirror.baidu.com/pypi/simple
 ```
 
 - 如果您的机器是CPU，请运行以下命令安装
 
 ```bash
+# use python3.7 instead of python3 in docker
 python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
 ```
 

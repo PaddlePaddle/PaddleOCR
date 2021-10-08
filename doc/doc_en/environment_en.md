@@ -346,12 +346,14 @@ Type "help", "copyright", "credits" or "license" for more information.
 - If you have cuda9 or cuda10 installed on your machine, please run the following command to install
 
 ```bash
+# use python3.7 instead of python3 in docker
 python3 -m pip install paddlepaddle-gpu -i https://mirror.baidu.com/pypi/simple
 ```
 
 - If you only have cpu on your machine, please run the following command to install
 
 ```bash
+# use python3.7 instead of python3 in docker
 python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
 ```
 
