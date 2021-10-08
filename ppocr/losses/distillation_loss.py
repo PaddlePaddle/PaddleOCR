@@ -112,7 +112,7 @@ class DistillationDMLLoss(DMLLoss):
                     if isinstance(loss, dict):
                         for key in loss:
                             loss_dict["{}_{}_{}_{}_{}".format(key, pair[
-                                0], pair[1], map_name, idx)] = loss[key]
+                                0], pair[1], self.maps_name, idx)] = loss[key]
                     else:
                         loss_dict["{}_{}_{}".format(self.name, self.maps_name[
                             _c], idx)] = loss
