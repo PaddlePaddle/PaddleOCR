@@ -1,5 +1,12 @@
 # 运行环境准备
+
 Windows和Mac用户推荐使用Anaconda搭建Python环境，Linux用户建议使用docker搭建PyThon环境。
+
+推荐环境：
+- PaddlePaddle >= 2.0.0 (2.1.2)
+- python3.7
+- CUDA10.1 / CUDA10.2
+- CUDNN 7.6
 
 如果对于Python环境熟悉的用户可以直接跳到第2步安装PaddlePaddle。
 
@@ -8,6 +15,7 @@ Windows和Mac用户推荐使用Anaconda搭建Python环境，Linux用户建议使
   + [1.2 Mac](#1.2)
   + [1.3 Linux](#1.3)
 * [2. 安装PaddlePaddle](#2)
+* [3. 安装PaddleOCR依赖](#3)
 
 <a name="1"></a>
 
@@ -123,13 +131,13 @@ Windows和Mac用户推荐使用Anaconda搭建Python环境，Linux用户建议使
     # !! Contents within this block are managed by 'conda init' !!
     __conda_setup="$('/Users/xxx/opt/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
     if [ $? -eq 0 ]; then
-    		eval "$__conda_setup"
+            eval "$__conda_setup"
     else
-    		if [ -f "/Users/xxx/opt/anaconda3/etc/profile.d/conda.sh" ]; then
-    				. "/Users/xxx/opt/anaconda3/etc/profile.d/conda.sh"
-    		else
-    				export PATH="/Users/xxx/opt/anaconda3/bin:$PATH"
-    		fi
+            if [ -f "/Users/xxx/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+                    . "/Users/xxx/opt/anaconda3/etc/profile.d/conda.sh"
+            else
+                    export PATH="/Users/xxx/opt/anaconda3/bin:$PATH"
+            fi
     fi
     unset __conda_setup
     # <<< conda initialize <<<
@@ -303,6 +311,14 @@ sudo nvidia-docker run --name ppocr -v $PWD:/paddle --shm-size=64G --network=hos
 # ctrl+P+Q可退出docker 容器，重新进入docker 容器使用如下命令
 sudo docker container exec -it ppocr /bin/bash
 ```
+docker 环境中默认的python3 版本为python3.5，PaddleOCR 建议使用Python3.7，在执行python命令时，可以使用python3.7而不是python3。如下，输入python3.7命令并回车，可以看到使用的是python3.7版本。
+```
+λ root@Linux /paddle  python3.7
+Python 3.7.0 (default, Aug  2 2021, 05:30:22)
+[GCC 8.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+```
 
 <a name="2"></a>
 
@@ -322,7 +338,26 @@ python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
 
 更多的版本需求，请参照[飞桨官网安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
 
+<a name="3"></a>
+## 3. 安装PaddleOCR依赖
 
+下载paddleOCR 代码
+```
+【推荐】git clone https://github.com/PaddlePaddle/PaddleOCR
 
+如果因为网络问题无法pull成功，也可选择使用码云上的托管：
 
+git clone https://gitee.com/paddlepaddle/PaddleOCR
 
+注：码云托管代码可能无法实时同步本github项目更新，存在3~5天延时，请优先使用推荐方式。
+```
+
+安装PaddleOCR 依赖
+```
+cd PaddleOCR
+pip3 install -r requirements.txt
+# docker 中使用pip3.7 代替pip3
+# pip3.7 install -r requirements.txt
+```
+
+注意，windows环境下，建议从[这里](https://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely)下载shapely安装包完成安装， 直接通过pip安装的shapely库可能出现[winRrror 126] 找不到指定模块的问题。
