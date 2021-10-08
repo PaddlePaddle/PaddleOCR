@@ -4,11 +4,10 @@
 
 3、使用方法：
 
-3.1 首先使用PPOCRLabel标注好图像，一般是分批次标注，多个标注好的图像文件夹存放目录结构如下，把自己的数据集放在train_data目录下的label文件夹里，文件夹没有自己创建，label同级路径下创建det文件夹存放划分好的文本检测数据集，label同级路径下创建rec文件夹存放划分好的字符识别数据集，目录结构如下图所示：
+3.1 首先使用PPOCRLabel标注好图像，一般是分批次标注，多个标注好的图像文件夹存放在train_data目录下的label文件夹里，文件夹没有自己创建，label同级路径下创建det文件夹存放划分好的文本检测数据集，label同级路径下创建rec文件夹存放划分好的字符识别数据集，目录结构如下图所示：
 
-![image-20211008140656452](image-20211008140656452.png)
-
-![image-20211008140833352](image-20211008140833352.png)
+![20211008154929](20211008154929.png)
+![20211008155029](20211008155029.png)
 
 3.2  gen_ocr_train_val.py参数说明
 
@@ -27,5 +26,7 @@ recLabelFileName 使用PPOCRLabel标注图像时，点击导出识别结果后�
 recImageDirName 使用PPOCRLabel标注图像时，点击导出识别结果后，会把裁剪后的字符图像保存到crop_img文件夹内
 
 3.3 执行gen_ocr_train_val.py方法
-
+如果目录结构和文件夹名称是严格按照以上说明创建的，可以直接在windows环境下执行gen_ocr_train_val.bat，在linux环境下需要执行gen_ocr_train_val.sh，默认划分比例是0.8
+也可以在终端中输入以下命令执行：
 python gen_ocr_train_val.py --trainValRatio 0.8 --labelRootPath ./train_data/label --detRootPath ./train_data/det --recRootPath ./train_data/rec
+如果想创建自己的目录结构和文件夹名称，需要手动修改命令里的路径

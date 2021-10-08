@@ -91,12 +91,12 @@ if __name__ == "__main__":
     parser.add_argument(
         "--detRootPath",
         type=str,
-        default="./train_data/det/demPanel",
+        default="./train_data/det",
         help="the path where the divided detection dataset is placed")
     parser.add_argument(
         "--recRootPath",
         type=str,
-        default="./train_data/rec/demPanel",
+        default="./train_data/rec",
         help="the path where the divided recognition dataset is placed"
     )
     parser.add_argument(
