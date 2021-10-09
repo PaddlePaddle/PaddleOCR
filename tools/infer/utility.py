@@ -264,7 +264,7 @@ def create_predictor(args, mode, logger):
 
     # enable memory optim
     config.enable_memory_optim()
-    #config.disable_glog_info()
+    config.disable_glog_info()
 
     config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
     if mode == 'table':
