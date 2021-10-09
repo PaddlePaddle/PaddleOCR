@@ -18,6 +18,8 @@ from __future__ import print_function
 
 import paddle
 from paddle import nn
+import numpy as np
+import cv2
 
 __all__ = ["Kie_backbone"]
 
@@ -26,11 +28,21 @@ class Encoder(nn.Layer):
     def __init__(self, num_channels, num_filters):
         super(Encoder, self).__init__()
         self.conv1 = nn.Conv2D(
-            num_channels, num_filters, kernel_size=3, stride=1, padding=1)
+            num_channels,
+            num_filters,
+            kernel_size=3,
+            stride=1,
+            padding=1,
+            bias_attr=False)
         self.bn1 = nn.BatchNorm(num_filters, act='relu')
 
         self.conv2 = nn.Conv2D(
-            num_filters, num_filters, kernel_size=3, stride=1, padding=1)
+            num_filters,
+            num_filters,
+            kernel_size=3,
+            stride=1,
+            padding=1,
+            bias_attr=False)
         self.bn2 = nn.BatchNorm(num_filters, act='relu')
 
         self.pool = nn.MaxPool2D(kernel_size=3, stride=2, padding=1)
@@ -41,28 +53,45 @@ class Encoder(nn.Layer):
         x = self.conv2(x)
         x = self.bn2(x)
         x_pooled = self.pool(x)
-
         return x, x_pooled
 
 
 class Decoder(nn.Layer):
     def __init__(self, num_channels, num_filters):
         super(Decoder, self).__init__()
-        self.up = nn.Conv2DTranspose(
-            in_channels=num_channels,
-            out_channels=num_filters,
-            kernel_size=2,
-            stride=2)
+
         self.conv1 = nn.Conv2D(
-            num_channels, num_filters, kernel_size=3, stride=1, padding=1)
+            num_channels,
+            num_filters,
+            kernel_size=3,
+            stride=1,
+            padding=1,
+            bias_attr=False)
         self.bn1 = nn.BatchNorm(num_filters, act='relu')
 
         self.conv2 = nn.Conv2D(
-            num_filters, num_filters, kernel_size=3, stride=1, padding=1)
+            num_filters,
+            num_filters,
+            kernel_size=3,
+            stride=1,
+            padding=1,
+            bias_attr=False)
         self.bn2 = nn.BatchNorm(num_filters, act='relu')
 
+        self.conv0 = nn.Conv2D(
+            num_channels,
+            num_filters,
+            kernel_size=1,
+            stride=1,
+            padding=0,
+            bias_attr=False)
+        self.bn0 = nn.BatchNorm(num_filters, act='relu')
+
     def forward(self, inputs_prev, inputs):
-        x = self.up(inputs)
+        x = self.conv0(inputs)
+        x = self.bn0(x)
+        x = paddle.nn.functional.interpolate(
+            x, scale_factor=2, mode='bilinear', align_corners=False)
         x = paddle.concat([inputs_prev, x], axis=1)
         x = self.conv1(x)
         x = self.bn1(x)
@@ -80,18 +109,18 @@ class UNet(nn.Layer):
         self.down4 = Encoder(num_channels=64, num_filters=128)
         self.down5 = Encoder(num_channels=128, num_filters=256)
 
-        self.up4 = Decoder(256, 128)
-        self.up3 = Decoder(128, 64)
-        self.up2 = Decoder(64, 32)
         self.up1 = Decoder(32, 16)
+        self.up2 = Decoder(64, 32)
+        self.up3 = Decoder(128, 64)
+        self.up4 = Decoder(256, 128)
         self.out_channels = 16
 
     def forward(self, inputs):
-        x1, x = self.down1(inputs)
-        x2, x = self.down2(x)
-        x3, x = self.down3(x)
-        x4, x = self.down4(x)
-        x5, x = self.down5(x)
+        x1, _ = self.down1(inputs)
+        _, x2 = self.down2(x1)
+        _, x3 = self.down3(x2)
+        _, x4 = self.down4(x3)
+        _, x5 = self.down5(x4)
 
         x = self.up4(x4, x5)
         x = self.up3(x3, x)
@@ -117,10 +146,13 @@ class Kie_backbone(nn.Layer):
         rois_num = paddle.to_tensor(rois_num, dtype='int32')
         return rois, rois_num
 
-    def pre_process(self, relations, texts, gt_bboxes, tag):
-        relations, texts, gt_bboxes, tag = relations.numpy(), texts.numpy(
-        ), gt_bboxes.numpy(), tag.numpy().tolist()
+    def pre_process(self, img, relations, texts, gt_bboxes, tag, img_size):
+        img, relations, texts, gt_bboxes, tag, img_size = img.numpy(
+        ), relations.numpy(), texts.numpy(), gt_bboxes.numpy(), tag.numpy(
+        ).tolist(), img_size.numpy()
         temp_relations, temp_texts, temp_gt_bboxes = [], [], []
+        h, w = int(np.max(img_size[:, 0])), int(np.max(img_size[:, 1]))
+        img = paddle.to_tensor(img[:, :, :h, :w])
         batch = len(tag)
         for i in range(batch):
             num, recoder_len = tag[i][0], tag[i][1]
@@ -133,13 +165,22 @@ class Kie_backbone(nn.Layer):
             temp_gt_bboxes.append(
                 paddle.to_tensor(
                     gt_bboxes[i, :num, ...], dtype='float32'))
-        return temp_relations, temp_texts, temp_gt_bboxes
+        return img, temp_relations, temp_texts, temp_gt_bboxes
 
     def forward(self, inputs):
-        img, relations, texts, gt_bboxes, tag = inputs[0], inputs[1], inputs[
-            2], inputs[3], inputs[5]
-        relations, texts, gt_bboxes = self.pre_process(relations, texts,
-                                                       gt_bboxes, tag)
+        img, relations, texts, gt_bboxes, tag, img_size = inputs[0], inputs[
+            1], inputs[2], inputs[3], inputs[5], inputs[-1]
+        img, relations, texts, gt_bboxes = self.pre_process(
+            img, relations, texts, gt_bboxes, tag, img_size)
+        # for i in range(4):
+        #     img_t = (img[i].numpy().transpose([1, 2, 0]) * 255.0).astype('uint8')
+        #     img_t = img_t.copy()
+        #     gt_bboxes_t = gt_bboxes[i].cpu().numpy()
+        #     box = gt_bboxes_t.astype(np.int32).reshape((-1, 1, 2))
+        #     cv2.polylines(img_t, [box], True, color=(255, 255, 0), thickness=1)
+        #     cv2.imwrite("/Users/hongyongjie/project/PaddleOCR/output/{}.png".format(i), img_t)
+        #     # cv2.imwrite("/Users/hongyongjie/project/PaddleOCR/output/{}.png".format(i), img_t * 255.0)
+        # exit()
         x = self.img_feat(img)
         boxes, rois_num = self.bbox2roi(gt_bboxes)
         feats = paddle.fluid.layers.roi_align(

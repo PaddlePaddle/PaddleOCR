@@ -301,33 +301,37 @@ class KieResize(object):
         img = data['image']
         points = data['points']
         src_h, src_w, _ = img.shape
-        im_resized, scale_factor, [ratio_h, ratio_w] = self.resize_image(img)
+        im_resized, scale_factor, [ratio_h, ratio_w
+                                   ], [new_h, new_w] = self.resize_image(img)
         resize_points = self.resize_boxes(img, points, scale_factor)
         data['ori_image'] = img
         data['ori_boxes'] = points
         data['points'] = resize_points
         data['image'] = im_resized
-        data['shape'] = np.array([src_h, src_w, ratio_h, ratio_w])
+        data['shape'] = np.array([new_h, new_w])
         return data
 
     def resize_image(self, img):
-        norm_img = np.zeros([1024, 512, 3], dtype='float32')
+        norm_img = np.zeros([1024, 1024, 3], dtype='float32')
         scale = [512, 1024]
         h, w = img.shape[:2]
         max_long_edge = max(scale)
         max_short_edge = min(scale)
         scale_factor = min(max_long_edge / max(h, w),
                            max_short_edge / min(h, w))
-        new_size = (int(w * float(scale_factor) + 0.5),
-                    int(h * float(scale_factor) + 0.5))
-        im = cv2.resize(img, new_size)
+        resize_w, resize_h = int(w * float(scale_factor) + 0.5), int(h * float(
+            scale_factor) + 0.5)
+        max_stride = 32
+        resize_h = (resize_h + max_stride - 1) // max_stride * max_stride
+        resize_w = (resize_w + max_stride - 1) // max_stride * max_stride
+        im = cv2.resize(img, (resize_w, resize_h))
         new_h, new_w = im.shape[:2]
         w_scale = new_w / w
         h_scale = new_h / h
         scale_factor = np.array(
             [w_scale, h_scale, w_scale, h_scale], dtype=np.float32)
         norm_img[:new_h, :new_w, :] = im
-        return norm_img, scale_factor, [h_scale, w_scale]
+        return norm_img, scale_factor, [h_scale, w_scale], [new_h, new_w]
 
     def resize_boxes(self, im, points, scale_factor):
         points = points * scale_factor
