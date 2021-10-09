@@ -5,9 +5,8 @@ Global:
   print_batch_step: 10
   save_model_dir: ./output/rec_cyrillic_lite
   save_epoch_step: 3
-  eval_batch_step:
-  - 0
-  - 2000
+  # evaluation is run every 2000 iterations after the 0th iteration
+  eval_batch_step: [0, 2000]
   cal_metric_during_train: true
   pretrained_model: null
   checkpoints: null

@@ -5,7 +5,7 @@ Global:
   print_batch_step: 10
   save_model_dir: ./output/pgnet_r50_vd_totaltext/
   save_epoch_step: 10
-  # evaluation is run every 0 iterationss after the 1000th iteration
+  # evaluation is run every 1000 iterationss after the 0th iteration
   eval_batch_step: [ 0, 1000 ]
   cal_metric_during_train: False
   pretrained_model:
