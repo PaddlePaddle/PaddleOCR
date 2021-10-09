@@ -74,7 +74,7 @@ class TextE2E(object):
 
         self.preprocess_op = create_operators(pre_process_list)
         self.postprocess_op = build_post_process(postprocess_params)
-        self.predictor, self.input_tensor, self.output_tensors = utility.create_predictor(
+        self.predictor, self.input_tensor, self.output_tensors, _ = utility.create_predictor(
             args, 'e2e', logger)  # paddle.jit.load(args.det_model_dir)
         # self.predictor.eval()
 
@@ -122,7 +122,7 @@ class TextE2E(object):
         else:
             raise NotImplementedError
         post_result = self.postprocess_op(preds, shape_list)
-        points, strs = post_result['points'], post_result['strs']
+        points, strs = post_result['points'], post_result['texts']
         dt_boxes = self.filter_tag_det_res_only_clip(points, ori_im.shape)
         elapse = time.time() - starttime
         return dt_boxes, strs, elapse
@@ -141,6 +141,7 @@ if __name__ == "__main__":
         img, flag = check_and_read_gif(image_file)
         if not flag:
             img = cv2.imread(image_file)
+            img = img[:, :, ::-1]
         if img is None:
             logger.info("error in loading image:{}".format(image_file))
             continue

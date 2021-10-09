@@ -18,21 +18,30 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import copy
+import platform
 
 __all__ = ['build_post_process']
 
+from .db_postprocess import DBPostProcess, DistillationDBPostProcess
+from .east_postprocess import EASTPostProcess
+from .sast_postprocess import SASTPostProcess
+from .rec_postprocess import CTCLabelDecode, AttnLabelDecode, SRNLabelDecode, DistillationCTCLabelDecode, \
+    TableLabelDecode, NRTRLabelDecode, SARLabelDecode , SEEDLabelDecode
+from .cls_postprocess import ClsPostProcess
+from .pg_postprocess import PGPostProcess
+
+if platform.system() != "Windows":
+    # pse is not support in Windows
+    from .pse_postprocess import PSEPostProcess
+
 
 def build_post_process(config, global_config=None):
-    from .db_postprocess import DBPostProcess
-    from .east_postprocess import EASTPostProcess
-    from .sast_postprocess import SASTPostProcess
-    from .rec_postprocess import CTCLabelDecode, AttnLabelDecode, SRNLabelDecode
-    from .cls_postprocess import ClsPostProcess
-    from .pg_postprocess import PGPostProcess
-
     support_dict = [
-        'DBPostProcess', 'EASTPostProcess', 'SASTPostProcess', 'CTCLabelDecode',
-        'AttnLabelDecode', 'ClsPostProcess', 'SRNLabelDecode', 'PGPostProcess'
+        'DBPostProcess', 'PSEPostProcess', 'EASTPostProcess', 'SASTPostProcess',
+        'CTCLabelDecode', 'AttnLabelDecode', 'ClsPostProcess', 'SRNLabelDecode',
+        'PGPostProcess', 'DistillationCTCLabelDecode', 'TableLabelDecode',
+        'DistillationDBPostProcess', 'NRTRLabelDecode', 'SARLabelDecode',
+        'SEEDLabelDecode'
     ]
 
     config = copy.deepcopy(config)

@@ -29,14 +29,15 @@ deploy/hubserving/ocr_system/
 ### 1. 准备环境
 ```shell
 # 安装paddlehub  
-pip3 install paddlehub --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
+# paddlehub 需要 python>3.6.2
+pip3 install paddlehub==2.1.0 --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 ### 2. 下载推理模型
-安装服务模块前，需要准备推理模型并放到正确路径。默认使用的是v2.0版的超轻量模型，默认模型路径为：
+安装服务模块前，需要准备推理模型并放到正确路径。默认使用的是PP-OCRv2模型，默认模型路径为：
 ```
-检测模型：./inference/ch_ppocr_mobile_v2.0_det_infer/
-识别模型：./inference/ch_ppocr_mobile_v2.0_rec_infer/
+检测模型：./inference/ch_PP-OCRv2_det_infer/
+识别模型：./inference/ch_PP-OCRv2_rec_infer/
 方向分类器：./inference/ch_ppocr_mobile_v2.0_cls_infer/
 ```  
 

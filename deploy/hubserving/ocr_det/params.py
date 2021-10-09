@@ -13,7 +13,7 @@ def read_params():
 
     #params for text detector
     cfg.det_algorithm = "DB"
-    cfg.det_model_dir = "./inference/ch_ppocr_mobile_v2.0_det_infer/"
+    cfg.det_model_dir = "./inference/ch_PP-OCRv2_det_infer/"
     cfg.det_limit_side_len = 960
     cfg.det_limit_type = 'max'
 
@@ -22,6 +22,7 @@ def read_params():
     cfg.det_db_box_thresh = 0.5
     cfg.det_db_unclip_ratio = 1.6
     cfg.use_dilation = False
+    cfg.det_db_score_mode = "fast"
 
     # #EAST parmas
     # cfg.det_east_score_thresh = 0.8

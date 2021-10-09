@@ -1,4 +1,4 @@
-# Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.
+# Copyright (c) 2021 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ from __future__ import print_function
 
 import os
 import sys
+import platform
 import yaml
 import time
 import shutil
@@ -30,6 +31,7 @@ from ppocr.utils.stats import TrainingStats
 from ppocr.utils.save_load import save_model
 from ppocr.utils.utility import print_dict
 from ppocr.utils.logging import get_logger
+from ppocr.utils import profiler
 from ppocr.data import build_dataloader
 import numpy as np
 
@@ -41,6 +43,13 @@ class ArgsParser(ArgumentParser):
         self.add_argument("-c", "--config", help="configuration file to use")
         self.add_argument(
             "-o", "--opt", nargs='+', help="set configuration options")
+        self.add_argument(
+            '-p',
+            '--profiler_options',
+            type=str,
+            default=None,
+            help='The option of profiler, which should be in format \"key1=value1;key2=value2;key3=value3\".'
+        )
 
     def parse_args(self, argv=None):
         args = super(ArgsParser, self).parse_args(argv)
@@ -158,8 +167,11 @@ def train(config,
     epoch_num = config['Global']['epoch_num']
     print_batch_step = config['Global']['print_batch_step']
     eval_batch_step = config['Global']['eval_batch_step']
+    profiler_options = config['profiler_options']
 
     global_step = 0
+    if 'global_step' in pre_best_model_dict:
+        global_step = pre_best_model_dict['global_step']
     start_eval_step = 0
     if type(eval_batch_step) == list and len(eval_batch_step) >= 2:
         start_eval_step = eval_batch_step[0]
@@ -184,6 +196,13 @@ def train(config,
     model.train()
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
+    extra_input = config['Architecture'][
+        'algorithm'] in ["SRN", "NRTR", "SAR", "SEED"]
+    try:
+        model_type = config['Architecture']['model_type']
+    except:
+        model_type = None
+    algorithm = config['Architecture']['algorithm']
 
     if 'start_epoch' in best_model_dict:
         start_epoch = best_model_dict['start_epoch']
@@ -197,16 +216,19 @@ def train(config,
         train_reader_cost = 0.0
         batch_sum = 0
         batch_start = time.time()
+        max_iter = len(train_dataloader) - 1 if platform.system(
+        ) == "Windows" else len(train_dataloader)
         for idx, batch in enumerate(train_dataloader):
+            profiler.add_profiler_step(profiler_options)
             train_reader_cost += time.time() - batch_start
-            if idx >= len(train_dataloader):
+            if idx >= max_iter:
                 break
             lr = optimizer.get_lr()
             images = batch[0]
             if use_srn:
-                others = batch[-4:]
-                preds = model(images, others)
                 model_average = True
+            if model_type == 'table' or extra_input:
+                preds = model(images, data=batch[1:])
             else:
                 preds = model(batch)
             loss = loss_class(preds, batch)
@@ -228,8 +250,11 @@ def train(config,
 
             if cal_metric_during_train:  # only rec and cls need
                 batch = [item.numpy() for item in batch]
-                post_result = post_process_class(preds, batch[1])
-                eval_class(post_result, batch)
+                if model_type == 'table':
+                    eval_class(preds, batch)
+                else:
+                    post_result = post_process_class(preds, batch[1])
+                    eval_class(post_result, batch)
                 metric = eval_class.get_metric()
                 train_stats.update(metric)
 
@@ -265,7 +290,8 @@ def train(config,
                     valid_dataloader,
                     post_process_class,
                     eval_class,
-                    use_srn=use_srn)
+                    model_type,
+                    extra_input=extra_input)
                 cur_metric_str = 'cur metric, {}'.format(', '.join(
                     ['{}: {}'.format(k, v) for k, v in cur_metric.items()]))
                 logger.info(cur_metric_str)
@@ -288,7 +314,8 @@ def train(config,
                         is_best=True,
                         prefix='best_accuracy',
                         best_model_dict=best_model_dict,
-                        epoch=epoch)
+                        epoch=epoch,
+                        global_step=global_step)
                 best_str = 'best metric, {}'.format(', '.join([
                     '{}: {}'.format(k, v) for k, v in best_model_dict.items()
                 ]))
@@ -310,7 +337,8 @@ def train(config,
                 is_best=False,
                 prefix='latest',
                 best_model_dict=best_model_dict,
-                epoch=epoch)
+                epoch=epoch,
+                global_step=global_step)
         if dist.get_rank() == 0 and epoch > 0 and epoch % save_epoch_step == 0:
             save_model(
                 model,
@@ -320,7 +348,8 @@ def train(config,
                 is_best=False,
                 prefix='iter_epoch_{}'.format(epoch),
                 best_model_dict=best_model_dict,
-                epoch=epoch)
+                epoch=epoch,
+                global_step=global_step)
     best_str = 'best metric, {}'.format(', '.join(
         ['{}: {}'.format(k, v) for k, v in best_model_dict.items()]))
     logger.info(best_str)
@@ -329,31 +358,38 @@ def train(config,
     return
 
 
-def eval(model, valid_dataloader, post_process_class, eval_class,
-         use_srn=False):
+def eval(model,
+         valid_dataloader,
+         post_process_class,
+         eval_class,
+         model_type=None,
+         extra_input=False):
     model.eval()
     with paddle.no_grad():
         total_frame = 0.0
         total_time = 0.0
         pbar = tqdm(total=len(valid_dataloader), desc='eval model:')
+        max_iter = len(valid_dataloader) - 1 if platform.system(
+        ) == "Windows" else len(valid_dataloader)
         for idx, batch in enumerate(valid_dataloader):
-            if idx >= len(valid_dataloader):
+            if idx >= max_iter:
                 break
             images = batch[0]
             start = time.time()
-
-            if use_srn:
-                others = batch[-4:]
-                preds = model(images, others)
+            if model_type == 'table' or extra_input:
+                preds = model(images, data=batch[1:])
             else:
                 preds = model(batch)
-
             batch = [item.numpy() for item in batch]
             # Obtain usable results from post-processing methods
-            # post_result = post_process_class(preds, batch[1])
             total_time += time.time() - start
             # Evaluate the results of the current batch
-            eval_class(preds, batch)
+            if model_type == 'table':
+                eval_class(preds, batch)
+            else:
+                post_result = post_process_class(preds, batch[1])
+                eval_class(post_result, batch)
+
             pbar.update(1)
             total_frame += len(images)
         # Get final metric，eg. acc or hmean
@@ -367,23 +403,12 @@ def eval(model, valid_dataloader, post_process_class, eval_class,
 
 def preprocess(is_train=False):
     FLAGS = ArgsParser().parse_args()
+    profiler_options = FLAGS.profiler_options
     config = load_config(FLAGS.config)
     merge_config(FLAGS.opt)
+    profile_dic = {"profiler_options": FLAGS.profiler_options}
+    merge_config(profile_dic)
 
-    # check if set use_gpu=True in paddlepaddle cpu version
-    use_gpu = config['Global']['use_gpu']
-    check_gpu(use_gpu)
-
-    alg = config['Architecture']['algorithm']
-    assert alg in [
-        'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
-        'CLS', 'PGNet', 'SDMGR'
-    ]
-
-    device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'
-    device = paddle.set_device(device)
-
-    config['Global']['distributed'] = dist.get_world_size() != 1
     if is_train:
         # save_config
         save_model_dir = config['Global']['save_model_dir']
@@ -395,6 +420,28 @@ def preprocess(is_train=False):
     else:
         log_file = None
     logger = get_logger(name='root', log_file=log_file)
+
+    # check if set use_gpu=True in paddlepaddle cpu version
+    use_gpu = config['Global']['use_gpu']
+    check_gpu(use_gpu)
+
+    alg = config['Architecture']['algorithm']
+    assert alg in [
+        'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
+        'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
+        'SEED', 'SDMGR'
+    ]
+    windows_not_support_list = ['PSE']
+    if platform.system() == "Windows" and alg in windows_not_support_list:
+        logger.warning('{} is not support in Windows now'.format(
+            windows_not_support_list))
+        sys.exit()
+
+    device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'
+    device = paddle.set_device(device)
+
+    config['Global']['distributed'] = dist.get_world_size() != 1
+
     if config['Global']['use_visualdl']:
         from visualdl import LogWriter
         save_model_dir = config['Global']['save_model_dir']

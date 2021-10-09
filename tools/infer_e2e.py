@@ -68,7 +68,7 @@ def main():
     # build model
     model = build_model(config['Architecture'])
 
-    init_model(config, model, logger)
+    init_model(config, model)
 
     # build post process
     post_process_class = build_post_process(config['PostProcess'],
@@ -103,7 +103,7 @@ def main():
             images = paddle.to_tensor(images)
             preds = model(images)
             post_result = post_process_class(preds, shape_list)
-            points, strs = post_result['points'], post_result['strs']
+            points, strs = post_result['points'], post_result['texts']
             # write resule
             dt_boxes_json = []
             for poly, str in zip(points, strs):

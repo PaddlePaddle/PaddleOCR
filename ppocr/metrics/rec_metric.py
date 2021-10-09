@@ -13,12 +13,19 @@
 # limitations under the License.
 
 import Levenshtein
+import string
 
 
 class RecMetric(object):
-    def __init__(self, main_indicator='acc', **kwargs):
+    def __init__(self, main_indicator='acc', is_filter=False, **kwargs):
         self.main_indicator = main_indicator
+        self.is_filter = is_filter
         self.reset()
+
+    def _normalize_text(self, text):
+        text = ''.join(
+            filter(lambda x: x in (string.digits + string.ascii_letters), text))
+        return text.lower()
 
     def __call__(self, pred_label, *args, **kwargs):
         preds, labels = pred_label
@@ -28,6 +35,9 @@ class RecMetric(object):
         for (pred, pred_conf), (target, _) in zip(preds, labels):
             pred = pred.replace(" ", "")
             target = target.replace(" ", "")
+            if self.is_filter:
+                pred = self._normalize_text(pred)
+                target = self._normalize_text(target)
             norm_edit_dis += Levenshtein.distance(pred, target) / max(
                 len(pred), len(target), 1)
             if pred == target:

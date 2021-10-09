@@ -17,7 +17,7 @@ import sys
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
+sys.path.append(os.path.abspath(os.path.join(__dir__, "..")))
 
 import argparse
 
@@ -31,6 +31,57 @@ from ppocr.utils.logging import get_logger
 from tools.program import load_config, merge_config, ArgsParser
 
 
+def export_single_model(model, arch_config, save_path, logger):
+    if arch_config["algorithm"] == "SRN":
+        max_text_length = arch_config["Head"]["max_text_length"]
+        other_shape = [
+            paddle.static.InputSpec(
+                shape=[None, 1, 64, 256], dtype="float32"), [
+                    paddle.static.InputSpec(
+                        shape=[None, 256, 1],
+                        dtype="int64"), paddle.static.InputSpec(
+                            shape=[None, max_text_length, 1], dtype="int64"),
+                    paddle.static.InputSpec(
+                        shape=[None, 8, max_text_length, max_text_length],
+                        dtype="int64"), paddle.static.InputSpec(
+                            shape=[None, 8, max_text_length, max_text_length],
+                            dtype="int64")
+                ]
+        ]
+        model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] == "SAR":
+        other_shape = [
+            paddle.static.InputSpec(
+                shape=[None, 3, 48, 160], dtype="float32"),
+        ]
+        model = to_static(model, input_spec=other_shape)
+    else:
+        infer_shape = [3, -1, -1]
+        if arch_config["model_type"] == "rec":
+            infer_shape = [3, 32, -1]  # for rec model, H must be 32
+            if "Transform" in arch_config and arch_config[
+                    "Transform"] is not None and arch_config["Transform"][
+                        "name"] == "TPS":
+                logger.info(
+                    "When there is tps in the network, variable length input is not supported, and the input size needs to be the same as during training"
+                )
+                infer_shape[-1] = 100
+            if arch_config["algorithm"] == "NRTR":
+                infer_shape = [1, 32, 100]
+        elif arch_config["model_type"] == "table":
+            infer_shape = [3, 488, 488]
+        model = to_static(
+            model,
+            input_spec=[
+                paddle.static.InputSpec(
+                    shape=[None] + infer_shape, dtype="float32")
+            ])
+
+    paddle.jit.save(model, save_path)
+    logger.info("inference model is saved to {}".format(save_path))
+    return
+
+
 def main():
     FLAGS = ArgsParser().parse_args()
     config = load_config(FLAGS.config)
@@ -38,55 +89,40 @@ def main():
     logger = get_logger()
     # build post process
 
-    post_process_class = build_post_process(config['PostProcess'],
-                                            config['Global'])
+    post_process_class = build_post_process(config["PostProcess"],
+                                            config["Global"])
 
     # build model
     # for rec algorithm
-    if hasattr(post_process_class, 'character'):
-        char_num = len(getattr(post_process_class, 'character'))
-        config['Architecture']["Head"]['out_channels'] = char_num
-    model = build_model(config['Architecture'])
-    init_model(config, model, logger)
+    if hasattr(post_process_class, "character"):
+        char_num = len(getattr(post_process_class, "character"))
+        if config["Architecture"]["algorithm"] in ["Distillation",
+                                                   ]:  # distillation model
+            for key in config["Architecture"]["Models"]:
+                config["Architecture"]["Models"][key]["Head"][
+                    "out_channels"] = char_num
+                # just one final tensor needs to to exported for inference
+                config["Architecture"]["Models"][key][
+                    "return_all_feats"] = False
+        else:  # base rec model
+            config["Architecture"]["Head"]["out_channels"] = char_num
+    model = build_model(config["Architecture"])
+    init_model(config, model)
     model.eval()
 
-    save_path = '{}/inference'.format(config['Global']['save_inference_dir'])
+    save_path = config["Global"]["save_inference_dir"]
 
-    if config['Architecture']['algorithm'] == "SRN":
-        other_shape = [
-            paddle.static.InputSpec(
-                shape=[None, 1, 64, 256], dtype='float32'), [
-                    paddle.static.InputSpec(
-                        shape=[None, 256, 1],
-                        dtype="int64"), paddle.static.InputSpec(
-                            shape=[None, 25, 1],
-                            dtype="int64"), paddle.static.InputSpec(
-                                shape=[None, 8, 25, 25], dtype="int64"),
-                    paddle.static.InputSpec(
-                        shape=[None, 8, 25, 25], dtype="int64")
-                ]
-        ]
-        model = to_static(model, input_spec=other_shape)
+    arch_config = config["Architecture"]
+
+    if arch_config["algorithm"] in ["Distillation", ]:  # distillation model
+        archs = list(arch_config["Models"].values())
+        for idx, name in enumerate(model.model_name_list):
+            sub_model_save_path = os.path.join(save_path, name, "inference")
+            export_single_model(model.model_list[idx], archs[idx],
+                                sub_model_save_path, logger)
     else:
-        infer_shape = [3, -1, -1]
-        if config['Architecture']['model_type'] == "rec":
-            infer_shape = [3, 32, -1]  # for rec model, H must be 32
-            if 'Transform' in config['Architecture'] and config['Architecture'][
-                    'Transform'] is not None and config['Architecture'][
-                        'Transform']['name'] == 'TPS':
-                logger.info(
-                    'When there is tps in the network, variable length input is not supported, and the input size needs to be the same as during training'
-                )
-                infer_shape[-1] = 100
-        model = to_static(
-            model,
-            input_spec=[
-                paddle.static.InputSpec(
-                    shape=[None] + infer_shape, dtype='float32')
-            ])
-
-    paddle.jit.save(model, save_path)
-    logger.info('inference model is saved to {}'.format(save_path))
+        save_path = os.path.join(save_path, "inference")
+        export_single_model(model, arch_config, save_path, logger)
 
 
 if __name__ == "__main__":

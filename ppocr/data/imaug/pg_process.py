@@ -88,7 +88,7 @@ class PGProcessTrain(object):
 
         return min_area_quad
 
-    def check_and_validate_polys(self, polys, tags, xxx_todo_changeme):
+    def check_and_validate_polys(self, polys, tags, im_size):
         """
         check so that the text poly is in the same direction,
         and also filter some invalid polygons
@@ -96,7 +96,7 @@ class PGProcessTrain(object):
         :param tags:
         :return:
         """
-        (h, w) = xxx_todo_changeme
+        (h, w) = im_size
         if polys.shape[0] == 0:
             return polys, np.array([]), np.array([])
         polys[:, :, 0] = np.clip(polys[:, :, 0], 0, w - 1)
@@ -750,8 +750,8 @@ class PGProcessTrain(object):
         input_size = 512
         im = data['image']
         text_polys = data['polys']
-        text_tags = data['tags']
-        text_strs = data['strs']
+        text_tags = data['ignore_tags']
+        text_strs = data['texts']
         h, w, _ = im.shape
         text_polys, text_tags, hv_tags = self.check_and_validate_polys(
             text_polys, text_tags, (h, w))

@@ -13,7 +13,7 @@ Among them, the English model supports the detection and recognition of uppercas
 letters and common punctuation, and the recognition of space characters is optimized:
 
 <div align="center">
-    <img src="../imgs_results/multi_lang/en_1.jpg" width="400" height="600">
+    <img src="../imgs_results/multi_lang/img_12.jpg" width="900" height="300">
 </div>
 
 The multilingual models cover Latin, Arabic, Traditional Chinese, Korean, Japanese, etc.:
@@ -21,6 +21,8 @@ The multilingual models cover Latin, Arabic, Traditional Chinese, Korean, Japane
 <div align="center">
     <img src="../imgs_results/multi_lang/japan_2.jpg" width="600" height="300">
     <img src="../imgs_results/multi_lang/french_0.jpg" width="300" height="300">
+    <img src="../imgs_results/multi_lang/korean_0.jpg" width="500" height="300">
+    <img src="../imgs_results/multi_lang/arabic_0.jpg" width="300" height="300">
 </div>
 
 This document will briefly introduce how to use the multilingual model.
@@ -31,14 +33,9 @@ This document will briefly introduce how to use the multilingual model.
 
 - [2 Quick Use](#Quick_Use)
     - [2.1 Command line operation](#Command_line_operation)
-     - [2.1.1 Prediction of the whole image](#bash_detection+recognition)
-     - [2.1.2 Recognition](#bash_Recognition)
-     - [2.1.3 Detection](#bash_detection)
     - [2.2 python script running](#python_Script_running)
-     - [2.2.1 Whole image prediction](#python_detection+recognition)
-     - [2.2.2 Recognition](#python_Recognition)
-     - [2.2.3 Detection](#python_detection)
 - [3 Custom Training](#Custom_Training)
+- [4 Inference and Deployment](#inference)
 - [4 Supported languages and abbreviations](#language_abbreviations)
 
 <a name="Install"></a>
@@ -51,7 +48,7 @@ This document will briefly introduce how to use the multilingual model.
 pip install paddlepaddle
 
 # gpu
-pip instll paddlepaddle-gpu
+pip install paddlepaddle-gpu
 ```
 
 <a name="paddleocr_package_install"></a>
@@ -86,32 +83,37 @@ Paddleocr currently supports 80 languages, which can be switched by modifying th
 The specific supported [language] (#language_abbreviations) can be viewed in the table.
 
 ``` bash
-
-paddleocr --image_dir doc/imgs/japan_2.jpg --lang=japan
+paddleocr --image_dir doc/imgs_en/254.jpg --lang=en
 ```
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs/japan_2.jpg)
+<div align="center">
+    <img src="../imgs_en/254.jpg" width="300" height="600">
+    <img src="../imgs_results/multi_lang/img_02.jpg" width="600" height="600">
+</div>
 
 The result is a list, each item contains a text box, text and recognition confidence
 ```text
-[[[671.0, 60.0], [847.0, 63.0], [847.0, 104.0], [671.0, 102.0]], ('もちもち', 0.9993342)]
-[[[394.0, 82.0], [536.0, 77.0], [538.0, 127.0], [396.0, 132.0]], ('自然の', 0.9919842)]
-[[[880.0, 89.0], [1014.0, 93.0], [1013.0, 127.0], [879.0, 124.0]], ('とろっと', 0.9976762)]
-[[[1067.0, 101.0], [1294.0, 101.0], [1294.0, 138.0], [1067.0, 138.0]], ('后味のよい', 0.9988712)]
+[('PHO CAPITAL', 0.95723116), [[66.0, 50.0], [327.0, 44.0], [327.0, 76.0], [67.0, 82.0]]]
+[('107 State Street', 0.96311164), [[72.0, 90.0], [451.0, 84.0], [452.0, 116.0], [73.0, 121.0]]]
+[('Montpelier Vermont', 0.97389287), [[69.0, 132.0], [501.0, 126.0], [501.0, 158.0], [70.0, 164.0]]]
+[('8022256183', 0.99810505), [[71.0, 175.0], [363.0, 170.0], [364.0, 202.0], [72.0, 207.0]]]
+[('REG 07-24-201706:59 PM', 0.93537045), [[73.0, 299.0], [653.0, 281.0], [654.0, 318.0], [74.0, 336.0]]]
+[('045555', 0.99346405), [[509.0, 331.0], [651.0, 325.0], [652.0, 356.0], [511.0, 362.0]]]
+[('CT1', 0.9988654), [[535.0, 367.0], [654.0, 367.0], [654.0, 406.0], [535.0, 406.0]]]
 ......
 ```
 
 * Recognition
 
 ```bash
-paddleocr --image_dir doc/imgs_words/japan/1.jpg --det false --lang=japan
+paddleocr --image_dir doc/imgs_words_en/word_308.png --det false --lang=en
 ```
 
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_words/japan/1.jpg)
+![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_words_en/word_308.png)
 
 The result is a tuple, which returns the recognition result and recognition confidence
 
 ```text
-('したがって', 0.99965394)
+(0.99879867, 'LITTLE')
 ```
 
 * Detection
@@ -143,6 +145,9 @@ from paddleocr import PaddleOCR, draw_ocr
 ocr = PaddleOCR(lang="korean") # The model file will be downloaded automatically when executed for the first time
 img_path ='doc/imgs/korean_1.jpg'
 result = ocr.ocr(img_path)
+# Recognition and detection can be performed separately through parameter control
+# result = ocr.ocr(img_path, det=False)  Only perform recognition
+# result = ocr.ocr(img_path, rec=False)  Only perform detection
 # Print detection frame and recognition result
 for line in result:
     print(line)
@@ -162,54 +167,6 @@ Visualization of results:
 ![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_results/korean.jpg)
 
 
-* Recognition
-
-```
-from paddleocr import PaddleOCR
-ocr = PaddleOCR(lang="german")
-img_path ='PaddleOCR/doc/imgs_words/german/1.jpg'
-result = ocr.ocr(img_path, det=False, cls=True)
-for line in result:
-    print(line)
-```
-
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_words/german/1.jpg)
-
-The result is a tuple, which only contains the recognition result and recognition confidence
-
-```
-('leider auch jetzt', 0.97538936)
-```
-
-* Detection
-
-```python
-from paddleocr import PaddleOCR, draw_ocr
-ocr = PaddleOCR() # need to run only once to download and load model into memory
-img_path ='PaddleOCR/doc/imgs_en/img_12.jpg'
-result = ocr.ocr(img_path, rec=False)
-for line in result:
-    print(line)
-
-# show result
-from PIL import Image
-
-image = Image.open(img_path).convert('RGB')
-im_show = draw_ocr(image, result, txts=None, scores=None, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')
-im_show = Image.fromarray(im_show)
-im_show.save('result.jpg')
-```
-The result is a list, each item contains only text boxes
-```bash
-[[26.0, 457.0], [137.0, 457.0], [137.0, 477.0], [26.0, 477.0]]
-[[25.0, 425.0], [372.0, 425.0], [372.0, 448.0], [25.0, 448.0]]
-[[128.0, 397.0], [273.0, 397.0], [273.0, 414.0], [128.0, 414.0]]
-......
-```
-
-Visualization of results:
-![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_results/whl/12_det.jpg)
-
 ppocr also supports direction classification. For more usage methods, please refer to: [whl package instructions](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.0/doc/doc_ch/whl.md).
 
 <a name="Custom_training"></a>
@@ -221,84 +178,61 @@ Modify the training data path, dictionary and other parameters.
 For specific data preparation and training process, please refer to: [Text Detection](../doc_en/detection_en.md), [Text Recognition](../doc_en/recognition_en.md), more functions such as predictive deployment,
 For functions such as data annotation, you can read the complete [Document Tutorial](../../README.md).
 
-<a name="language_abbreviation"></a>
-## 4 Support languages and abbreviations
 
-| Language  | Abbreviation |
-| ---  | --- |
-|chinese and english|ch|
-|english|en|
-|french|fr|
-|german|german|
-|japan|japan|
-|korean|korean|
-|chinese traditional |chinese_cht|
-| Italian |it|
-|Spanish |es|
-| Portuguese|pt|
-|Russia|ru|
-|Arabic|ar|
-|Hindi|hi|
-|Uyghur|ug|
-|Persian|fa|
-|Urdu|ur|
-| Serbian(latin) |rs_latin|
-|Occitan |oc|
-|Marathi|mr|
-|Nepali|ne|
-|Serbian(cyrillic)|rs_cyrillic|
-|Bulgarian |bg|
-|Ukranian|uk|
-|Belarusian|be|
-|Telugu |te|
-|Tamil |ta|
-|Afrikaans |af|
-|Azerbaijani    |az|
-|Bosnian|bs|
-|Czech|cs|
-|Welsh |cy|
-|Danish|da|
-|Estonian |et|
-|Irish |ga|
-|Croatian |hr|
-|Hungarian |hu|
-|Indonesian|id|
-|Icelandic|is|
-|Kurdish|ku|
-|Lithuanian |lt|
- |Latvian |lv|
-|Maori|mi|
-|Malay|ms|
-|Maltese |mt|
-|Dutch |nl|
-|Norwegian |no|
-|Polish |pl|
-|Romanian |ro|
-|Slovak |sk|
-|Slovenian |sl|
-|Albanian |sq|
-|Swedish |sv|
-|Swahili |sw|
-|Tagalog |tl|
-|Turkish |tr|
-|Uzbek |uz|
-|Vietnamese |vi|
-|Mongolian |mn|
-|Abaza |abq|
-|Adyghe |ady|
-|Kabardian |kbd|
-|Avar |ava|
-|Dargwa |dar|
-|Ingush |inh|
-|Lak |lbe|
-|Lezghian |lez|
-|Tabassaran |tab|
-|Bihari |bh|
-|Maithili |mai|
-|Angika |ang|
-|Bhojpuri |bho|
-|Magahi |mah|
-|Nagpur |sck|
-|Newari |new|
-|Goan Konkani|gom|
-|Saudi Arabia|sa|
+<a name="inference"></a>
+## 4 Inference and Deployment
+
+In addition to installing the whl package for quick forecasting,
+ppocr also provides a variety of forecasting deployment methods.
+If necessary, you can read related documents:
+
+- [Python Inference](./inference_en.md)
+- [C++ Inference](../../deploy/cpp_infer/readme_en.md)
+- [Serving](../../deploy/hubserving/readme_en.md)
+- [Mobile](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme_en.md)
+- [Benchmark](./benchmark_en.md)
+
+
+<a name="language_abbreviations"></a>
+## 5 Support languages and abbreviations
+
+| Language  | Abbreviation | | Language  | Abbreviation |
+| ---  | --- | --- | ---  | --- |
+|Chinese & English|ch| |Arabic|ar|
+|English|en| |Hindi|hi|
+|French|fr| |Uyghur|ug|
+|German|german| |Persian|fa|
+|Japan|japan| |Urdu|ur|
+|Korean|korean| | Serbian(latin) |rs_latin|
+|Chinese Traditional |chinese_cht| |Occitan |oc|
+| Italian |it| |Marathi|mr|
+|Spanish |es| |Nepali|ne|
+| Portuguese|pt| |Serbian(cyrillic)|rs_cyrillic|
+|Russia|ru||Bulgarian |bg|
+|Ukranian|uk| |Estonian |et|
+|Belarusian|be| |Irish |ga|
+|Telugu |te| |Croatian |hr|
+|Saudi Arabia|sa| |Hungarian |hu|
+|Tamil |ta| |Indonesian|id|
+|Afrikaans |af| |Icelandic|is|
+|Azerbaijani  |az||Kurdish|ku|
+|Bosnian|bs| |Lithuanian |lt|
+|Czech|cs| |Latvian |lv|
+|Welsh |cy| |Maori|mi|
+|Danish|da| |Malay|ms|
+|Maltese |mt| |Adyghe |ady|
+|Dutch |nl| |Kabardian |kbd|
+|Norwegian |no| |Avar |ava|
+|Polish |pl| |Dargwa |dar|
+|Romanian |ro| |Ingush |inh|
+|Slovak |sk| |Lak |lbe|
+|Slovenian |sl| |Lezghian |lez|
+|Albanian |sq| |Tabassaran |tab|
+|Swedish |sv| |Bihari |bh|
+|Swahili |sw| |Maithili |mai|
+|Tagalog |tl| |Angika |ang|
+|Turkish |tr| |Bhojpuri |bho|
+|Uzbek |uz| |Magahi |mah|
+|Vietnamese |vi| |Nagpur |sck|
+|Mongolian |mn| |Newari |new|
+|Abaza |abq| |Goan Konkani|gom|

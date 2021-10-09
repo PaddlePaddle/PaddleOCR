@@ -23,6 +23,7 @@ import sys
 import six
 import cv2
 import numpy as np
+import fasttext
 
 
 class DecodeImage(object):
@@ -53,6 +54,39 @@ class DecodeImage(object):
         if self.channel_first:
             img = img.transpose((2, 0, 1))
 
+        data['image'] = img
+        return data
+
+
+class NRTRDecodeImage(object):
+    """ decode image """
+
+    def __init__(self, img_mode='RGB', channel_first=False, **kwargs):
+        self.img_mode = img_mode
+        self.channel_first = channel_first
+
+    def __call__(self, data):
+        img = data['image']
+        if six.PY2:
+            assert type(img) is str and len(
+                img) > 0, "invalid input 'img' in DecodeImage"
+        else:
+            assert type(img) is bytes and len(
+                img) > 0, "invalid input 'img' in DecodeImage"
+        img = np.frombuffer(img, dtype='uint8')
+
+        img = cv2.imdecode(img, 1)
+
+        if img is None:
+            return None
+        if self.img_mode == 'GRAY':
+            img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+        elif self.img_mode == 'RGB':
+            assert img.shape[2] == 3, 'invalid shape of image[%s]' % (img.shape)
+            img = img[:, :, ::-1]
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        if self.channel_first:
+            img = img.transpose((2, 0, 1))
         data['image'] = img
         return data
 
@@ -100,6 +134,17 @@ class ToCHWImage(object):
         return data
 
 
+class Fasttext(object):
+    def __init__(self, path="None", **kwargs):
+        self.fast_model = fasttext.load_model(path)
+
+    def __call__(self, data):
+        label = data['label']
+        fast_label = self.fast_model[label]
+        data['fast_label'] = fast_label
+        return data
+
+
 class KeepKeys(object):
     def __init__(self, keep_keys, **kwargs):
         self.keep_keys = keep_keys
@@ -109,6 +154,34 @@ class KeepKeys(object):
         for key in self.keep_keys:
             data_list.append(data[key])
         return data_list
+
+
+class Resize(object):
+    def __init__(self, size=(640, 640), **kwargs):
+        self.size = size
+
+    def resize_image(self, img):
+        resize_h, resize_w = self.size
+        ori_h, ori_w = img.shape[:2]  # (h, w, c)
+        ratio_h = float(resize_h) / ori_h
+        ratio_w = float(resize_w) / ori_w
+        img = cv2.resize(img, (int(resize_w), int(resize_h)))
+        return img, [ratio_h, ratio_w]
+
+    def __call__(self, data):
+        img = data['image']
+        text_polys = data['polys']
+
+        img_resize, [ratio_h, ratio_w] = self.resize_image(img)
+        new_boxes = []
+        for box in text_polys:
+            new_box = []
+            for cord in box:
+                new_box.append([cord[0] * ratio_w, cord[1] * ratio_h])
+            new_boxes.append(new_box)
+        data['image'] = img_resize
+        data['polys'] = np.array(new_boxes, dtype=np.float32)
+        return data
 
 
 class DetResizeForTest(object):
@@ -162,7 +235,7 @@ class DetResizeForTest(object):
             img, (ratio_h, ratio_w)
         """
         limit_side_len = self.limit_side_len
-        h, w, _ = img.shape
+        h, w, c = img.shape
 
         # limit the max side
         if self.limit_type == 'max':
@@ -173,7 +246,7 @@ class DetResizeForTest(object):
                     ratio = float(limit_side_len) / w
             else:
                 ratio = 1.
-        else:
+        elif self.limit_type == 'min':
             if min(h, w) < limit_side_len:
                 if h < w:
                     ratio = float(limit_side_len) / h
@@ -181,6 +254,10 @@ class DetResizeForTest(object):
                     ratio = float(limit_side_len) / w
             else:
                 ratio = 1.
+        elif self.limit_type == 'resize_long':
+            ratio = float(limit_side_len) / max(h, w)
+        else:
+            raise Exception('not support limit type, image ')
         resize_h = int(h * ratio)
         resize_w = int(w * ratio)
 

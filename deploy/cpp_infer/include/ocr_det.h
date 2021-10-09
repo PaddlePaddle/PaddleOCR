@@ -44,8 +44,9 @@ public:
                       const bool &use_mkldnn, const int &max_side_len,
                       const double &det_db_thresh,
                       const double &det_db_box_thresh,
-                      const double &det_db_unclip_ratio, const bool &visualize,
-                      const bool &use_tensorrt, const bool &use_fp16) {
+                      const double &det_db_unclip_ratio,
+                      const bool &use_polygon_score, const bool &visualize,
+                      const bool &use_tensorrt, const std::string &precision) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
@@ -57,10 +58,11 @@ public:
     this->det_db_thresh_ = det_db_thresh;
     this->det_db_box_thresh_ = det_db_box_thresh;
     this->det_db_unclip_ratio_ = det_db_unclip_ratio;
+    this->use_polygon_score_ = use_polygon_score;
 
     this->visualize_ = visualize;
     this->use_tensorrt_ = use_tensorrt;
-    this->use_fp16_ = use_fp16;
+    this->precision_ = precision;
 
     LoadModel(model_dir);
   }
@@ -69,7 +71,7 @@ public:
   void LoadModel(const std::string &model_dir);
 
   // Run predictor
-  void Run(cv::Mat &img, std::vector<std::vector<std::vector<int>>> &boxes);
+  void Run(cv::Mat &img, std::vector<std::vector<std::vector<int>>> &boxes, std::vector<double> *times);
 
 private:
   std::shared_ptr<Predictor> predictor_;
@@ -85,10 +87,11 @@ private:
   double det_db_thresh_ = 0.3;
   double det_db_box_thresh_ = 0.5;
   double det_db_unclip_ratio_ = 2.0;
+  bool use_polygon_score_ = false;
 
   bool visualize_ = true;
   bool use_tensorrt_ = false;
-  bool use_fp16_ = false;
+  std::string precision_ = "fp32";
 
   std::vector<float> mean_ = {0.485f, 0.456f, 0.406f};
   std::vector<float> scale_ = {1 / 0.229f, 1 / 0.224f, 1 / 0.225f};

@@ -109,10 +109,15 @@ def main(config, device, logger, vdl_writer):
     # for rec algorithm
     if hasattr(post_process_class, 'character'):
         char_num = len(getattr(post_process_class, 'character'))
-        config['Architecture']["Head"]['out_channels'] = char_num
+        if config['Architecture']["algorithm"] in ["Distillation",
+                                                   ]:  # distillation model
+            for key in config['Architecture']["Models"]:
+                config['Architecture']["Models"][key]["Head"][
+                    'out_channels'] = char_num
+        else:  # base rec model
+            config['Architecture']["Head"]['out_channels'] = char_num
     model = build_model(config['Architecture'])
 
-    # prepare to quant
     quanter = QAT(config=quant_config, act_preprocess=PACT)
     quanter.quantize(model)
 
@@ -136,31 +141,13 @@ def main(config, device, logger, vdl_writer):
 
     logger.info('train dataloader has {} iters, valid dataloader has {} iters'.
                 format(len(train_dataloader), len(valid_dataloader)))
+
     # start train
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,
                   eval_class, pre_best_model_dict, logger, vdl_writer)
 
 
-def test_reader(config, device, logger):
-    loader = build_dataloader(config, 'Train', device, logger)
-    import time
-    starttime = time.time()
-    count = 0
-    try:
-        for data in loader():
-            count += 1
-            if count % 1 == 0:
-                batch_time = time.time() - starttime
-                starttime = time.time()
-                logger.info("reader: {}, {}, {}".format(
-                    count, len(data[0]), batch_time))
-    except Exception as e:
-        logger.info(e)
-    logger.info("finish reader: {}, Success!".format(count))
-
-
 if __name__ == '__main__':
     config, device, logger, vdl_writer = program.preprocess(is_train=True)
     main(config, device, logger, vdl_writer)
-    # test_reader(config, device, logger)

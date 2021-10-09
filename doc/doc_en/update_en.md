@@ -1,4 +1,9 @@
 # RECENT UPDATES
+- 2021.9.7 release PaddleOCR v2.3, [PP-OCRv2](#PP-OCRv2) is proposed. The CPU inference speed of PP-OCRv2 is 220% higher than that of PP-OCR server. The F-score of PP-OCRv2 is 7% higher than that of PP-OCR mobile.
+- 2021.8.3 released PaddleOCR v2.2, add a new structured documents analysis toolkit, i.e., [PP-Structure](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/ppstructure/README.md), support layout analysis and table recognition (One-key to export chart images to Excel files).
+- 2021.4.8 release end-to-end text recognition algorithm [PGNet](https://www.aaai.org/AAAI21Papers/AAAI-2885.WangP.pdf) which is published in AAAI 2021. Find tutorial [here](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_en/pgnet_en.md)；release multi language recognition [models](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_en/multi_languages_en.md), support more than 80 languages recognition; especically, the performance of [English recognition model](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_en/models_list_en.md#English) is Optimized.
+
+- 2021.1.21 update more than 25+ multilingual recognition models [models list](./doc/doc_en/models_list_en.md), including：English, Chinese, German, French, Japanese，Spanish，Portuguese Russia Arabic and so on.  Models for more languages will continue to be updated [Develop Plan](https://github.com/PaddlePaddle/PaddleOCR/issues/1048).
 - 2020.12.15 update Data synthesis tool, i.e., [Style-Text](../../StyleText/README.md)，easy to synthesize a large number of images which are similar to the target scene image.
 - 2020.11.25 Update a new data annotation tool, i.e., [PPOCRLabel](../../PPOCRLabel/README.md), which is helpful to improve the labeling efficiency. Moreover, the labeling results can be used in training of the PP-OCR system directly.
 - 2020.9.22 Update the PP-OCR technical article, https://arxiv.org/abs/2009.09941
@@ -13,8 +18,6 @@
 - 2020.7.9 Add a new model to support recognize the  character "space".
 - 2020.7.9 Add the data augument and learning rate decay strategies during training.
 - 2020.6.8 Add [datasets](./datasets_en.md) and keep updating
-- 2020.6.5 Support exporting `attention` model to `inference_model`
-- 2020.6.5 Support separate prediction and recognition, output result score
 - 2020.6.5 Support exporting `attention` model to `inference_model`
 - 2020.6.5 Support separate prediction and recognition, output result score
 - 2020.5.30 Provide Lightweight Chinese OCR online experience
