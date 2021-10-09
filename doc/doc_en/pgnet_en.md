@@ -80,15 +80,15 @@ Download and unzip [totaltext](https://github.com/cs-chan/Total-Text-Dataset/blo
 ```
 /PaddleOCR/train_data/total_text/train/
   |- rgb/            # total_text training data of dataset
-      |- img11.png
+      |- gt_0.png
       | ...  
-  |- train.txt       # total_text training annotation of dataset
+  |- total_text.txt  # total_text training annotation of dataset
 ```
 
 total_text.txt: the format of dimension file is as follows，the file name and annotation information are separated by "\t"：
 ```
 " Image file name             Image annotation information encoded by json.dumps"
-rgb/img11.jpg    [{"transcription": "ASRAMA", "points": [[214.0, 325.0], [235.0, 308.0], [259.0, 296.0], [286.0, 291.0], [313.0, 295.0], [338.0, 305.0], [362.0, 320.0], [349.0, 347.0], [330.0, 337.0], [310.0, 329.0], [290.0, 324.0], [269.0, 328.0], [249.0, 336.0], [231.0, 346.0]]}, {...}]
+rgb/gt_0.png    [{"transcription": "EST", "points": [[1004.0,689.0],[1019.0,698.0],[1034.0,708.0],[1049.0,718.0],[1064.0,728.0],[1079.0,738.0],[1095.0,748.0],[1094.0,774.0],[1079.0,765.0],[1065.0,756.0],[1050.0,747.0],[1036.0,738.0],[1021.0,729.0],[1007.0,721.0]]}, {...}]
 ```
 The image annotation after **json.dumps()** encoding is a list containing multiple dictionaries.
 

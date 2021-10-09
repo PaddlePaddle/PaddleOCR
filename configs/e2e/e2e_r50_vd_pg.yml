@@ -69,7 +69,7 @@ Metric:
 Train:
   dataset:
     name: PGDataSet
-    label_file_list: [.././train_data/total_text/train/total_text.txt]
+    label_file_list: [.././train_data/total_text/train/]
     ratio_list: [1.0]
     data_format: icdar #two data format: icdar/textnet
     transforms:
@@ -93,7 +93,7 @@ Eval:
   dataset:
     name: PGDataSet
     data_dir: ./train_data/
-    label_file_list: [./train_data/total_text/test/total_text.txt]
+    label_file_list: [./train_data/total_text/test/]
     transforms:
       - DecodeImage: # load image
           img_mode: RGB
