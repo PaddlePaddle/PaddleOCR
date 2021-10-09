@@ -197,7 +197,7 @@ def train(config,
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
     extra_input = config['Architecture'][
-        'algorithm'] in ["SRN", "NRTR", "SAR", "SEED"]
+        'algorithm'] in ["SRN", "NRTR", "SAR", "SEED", "SDMGR"]
     try:
         model_type = config['Architecture']['model_type']
     except:
@@ -230,7 +230,7 @@ def train(config,
             if model_type == 'table' or extra_input:
                 preds = model(images, data=batch[1:])
             else:
-                preds = model(batch)
+                preds = model(images)
             loss = loss_class(preds, batch)
             avg_loss = loss['loss']
             avg_loss.backward()
@@ -379,7 +379,7 @@ def eval(model,
             if model_type == 'table' or extra_input:
                 preds = model(images, data=batch[1:])
             else:
-                preds = model(batch)
+                preds = model(images)
             batch = [item.numpy() for item in batch]
             # Obtain usable results from post-processing methods
             total_time += time.time() - start
