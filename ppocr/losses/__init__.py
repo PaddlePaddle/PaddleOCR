@@ -31,9 +31,14 @@ def build_loss(config):
 
     # e2e loss
     from .e2e_pg_loss import PGLoss
+
+    # kie loss
+    from .kie_sdmgr_loss import SDMGRLoss
+
     support_dict = [
         'DBLoss', 'EASTLoss', 'SASTLoss', 'CTCLoss', 'ClsLoss', 'AttentionLoss',
-        'SRNLoss', 'PGLoss']
+        'SRNLoss', 'PGLoss', 'SDMGRLoss'
+    ]
 
     config = copy.deepcopy(config)
     module_name = config.pop('name')

@@ -44,6 +44,7 @@ class ArgsParser(ArgumentParser):
 
     def parse_args(self, argv=None):
         args = super(ArgsParser, self).parse_args(argv)
+        # args.config = "/Users/hongyongjie/project/PaddleOCR/configs/kie/kie_unet_sdmgr.yml"
         assert args.config is not None, \
             "Please specify --config=configure_file_path."
         args.opt = self._parse_opt(args.opt)
@@ -207,7 +208,7 @@ def train(config,
                 preds = model(images, others)
                 model_average = True
             else:
-                preds = model(images)
+                preds = model(batch)
             loss = loss_class(preds, batch)
             avg_loss = loss['loss']
             avg_loss.backward()
@@ -345,14 +346,14 @@ def eval(model, valid_dataloader, post_process_class, eval_class,
                 others = batch[-4:]
                 preds = model(images, others)
             else:
-                preds = model(images)
+                preds = model(batch)
 
             batch = [item.numpy() for item in batch]
             # Obtain usable results from post-processing methods
-            post_result = post_process_class(preds, batch[1])
+            # post_result = post_process_class(preds, batch[1])
             total_time += time.time() - start
             # Evaluate the results of the current batch
-            eval_class(post_result, batch)
+            eval_class(preds, batch)
             pbar.update(1)
             total_frame += len(images)
         # Get final metric，eg. acc or hmean
@@ -376,7 +377,7 @@ def preprocess(is_train=False):
     alg = config['Architecture']['algorithm']
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
-        'CLS', 'PGNet'
+        'CLS', 'PGNet', 'SDMGR'
     ]
 
     device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'

@@ -1,0 +1,111 @@
+Global:
+  use_gpu: True
+  epoch_num: 300
+  log_smooth_window: 20
+  print_batch_step: 50
+  save_model_dir: ./output/kie_5/
+  save_epoch_step: 50
+  # evaluation is run every 5000 iterations after the 4000th iteration
+  eval_batch_step: [ 0, 80 ]
+  # 1. If pretrained_model is saved in static mode, such as classification pretrained model
+  #    from static branch, load_static_weights must be set as True.
+  # 2. If you want to finetune the pretrained models we provide in the docs,
+  #    you should set load_static_weights as False.
+  load_static_weights: False
+  cal_metric_during_train: False
+  pretrained_model: ./output/kie_4/best_accuracy
+  checkpoints:
+  save_inference_dir:
+  use_visualdl: False
+  class_path: ./train_data/wildreceipt/class_list.txt
+  infer_img: ./train_data/wildreceipt/1.txt
+  save_res_path: ./output/sdmgr_kie/predicts_kie.txt
+  img_scale: [ 1024, 512 ]
+
+Architecture:
+  model_type: kie
+  algorithm: SDMGR
+  Transform:
+  Backbone:
+    name: Kie_backbone
+  Head:
+    name: SDMGRHead
+
+Loss:
+  name: SDMGRLoss
+
+Optimizer:
+  name: Adam
+  beta1: 0.9
+  beta2: 0.999
+  lr:
+    name: Piecewise
+    learning_rate: 0.001
+    decay_epochs: [ 60, 80, 100]
+    values: [ 0.001, 0.0001, 0.00001]
+    warmup_epoch: 2
+  regularizer:
+    name: 'L2'
+    factor: 0.00005
+
+PostProcess:
+  name: None
+
+Metric:
+  name: KIEMetric
+  main_indicator: hmean
+
+Train:
+  dataset:
+    name: SimpleDataSet
+    data_dir: ./train_data/wildreceipt/
+    label_file_list: [ './train_data/wildreceipt/wildreceipt_train.txt' ]
+    ratio_list: [ 1.0 ]
+    transforms:
+      - DecodeImage: # load image
+          img_mode: RGB
+          channel_first: False
+      - NormalizeImage:
+          scale: 1
+          mean: [ 123.675, 116.28, 103.53 ]
+          std: [ 58.395, 57.12, 57.375 ]
+          order: 'hwc'
+      - KieLabelEncode: # Class handling label
+          character_dict_path: ./train_data/wildreceipt/dict.txt
+      - KieResize:
+      - ToCHWImage:
+      - KeepKeys:
+          keep_keys: [ 'image', 'relations', 'texts', 'points', 'labels', 'tag', 'shape'] # dataloader will return list in this order
+  loader:
+    shuffle: True
+    drop_last: False
+    batch_size_per_card: 4
+    num_workers: 4
+
+Eval:
+  dataset:
+    name: SimpleDataSet
+    data_dir: ./train_data/wildreceipt
+    label_file_list:
+      - ./train_data/wildreceipt/wildreceipt_test.txt
+      # - /paddle/data/PaddleOCR/train_data/wildreceipt/1.txt
+    transforms:
+      - DecodeImage: # load image
+          img_mode: RGB
+          channel_first: False
+      - KieLabelEncode: # Class handling label
+          character_dict_path: ./train_data/wildreceipt/dict.txt
+      - KieResize:
+      - NormalizeImage:
+          scale: 1
+          mean: [ 123.675, 116.28, 103.53 ]
+          std: [ 58.395, 57.12, 57.375 ]
+          order: 'hwc'
+      - ToCHWImage:
+      - KeepKeys:
+          keep_keys: [ 'image', 'relations', 'texts', 'points', 'labels', 'tag', 'ori_image', 'ori_boxes', 'shape']
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 1 # must be 1
+    num_workers: 4

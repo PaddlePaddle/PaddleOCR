@@ -29,10 +29,14 @@ def build_head(config):
 
     # cls head
     from .cls_head import ClsHead
+
+    #kie head
+    from .kie_sdmgr_head import SDMGRHead
+
     support_dict = [
         'DBHead', 'EASTHead', 'SASTHead', 'CTCHead', 'ClsHead', 'AttentionHead',
-        'SRNHead', 'PGHead']
-
+        'SRNHead', 'PGHead', 'SDMGRHead'
+    ]
 
     module_name = config.pop('name')
     assert module_name in support_dict, Exception('head only support {}'.format(

@@ -77,7 +77,6 @@ class NormalizeImage(object):
         from PIL import Image
         if isinstance(img, Image.Image):
             img = np.array(img)
-
         assert isinstance(img,
                           np.ndarray), "invalid input 'img' in NormalizeImage"
         data['image'] = (
@@ -290,3 +289,49 @@ class E2EResizeForTest(object):
         ratio_w = resize_w / float(w)
 
         return im, (ratio_h, ratio_w)
+
+
+class KieResize(object):
+    def __init__(self, **kwargs):
+        super(KieResize, self).__init__()
+        self.max_side, self.min_side = kwargs['img_scale'][0], kwargs[
+            'img_scale'][1]
+
+    def __call__(self, data):
+        img = data['image']
+        points = data['points']
+        src_h, src_w, _ = img.shape
+        im_resized, scale_factor, [ratio_h, ratio_w] = self.resize_image(img)
+        resize_points = self.resize_boxes(img, points, scale_factor)
+        data['ori_image'] = img
+        data['ori_boxes'] = points
+        data['points'] = resize_points
+        data['image'] = im_resized
+        data['shape'] = np.array([src_h, src_w, ratio_h, ratio_w])
+        return data
+
+    def resize_image(self, img):
+        norm_img = np.zeros([1024, 512, 3], dtype='float32')
+        scale = [512, 1024]
+        h, w = img.shape[:2]
+        max_long_edge = max(scale)
+        max_short_edge = min(scale)
+        scale_factor = min(max_long_edge / max(h, w),
+                           max_short_edge / min(h, w))
+        new_size = (int(w * float(scale_factor) + 0.5),
+                    int(h * float(scale_factor) + 0.5))
+        im = cv2.resize(img, new_size)
+        new_h, new_w = im.shape[:2]
+        w_scale = new_w / w
+        h_scale = new_h / h
+        scale_factor = np.array(
+            [w_scale, h_scale, w_scale, h_scale], dtype=np.float32)
+        norm_img[:new_h, :new_w, :] = im
+        return norm_img, scale_factor, [h_scale, w_scale]
+
+    def resize_boxes(self, im, points, scale_factor):
+        points = points * scale_factor
+        img_shape = im.shape[:2]
+        points[:, 0::2] = np.clip(points[:, 0::2], 0, img_shape[1])
+        points[:, 1::2] = np.clip(points[:, 1::2], 0, img_shape[0])
+        return points
