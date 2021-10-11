@@ -74,5 +74,5 @@ python tools/export_center.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_trai
 |:------| :------| ------: | :------: |
 |gain| +0.3% | +0.7% | +1.7% | 
 
-基于上述实验结论，我们在PP-OCR V2中，采用了C-CTC的策略。 值得一提的是，由于PP-OCRV2 处理的是6625个中文字符的识别任务，字符集比较大，形似字较多，所以在该任务上C-CTC 方案带来的提升较大。 但如果换做其他OCR识别任务，结论可能会有所不同。大家可以尝试Focal-CTC，A-CTC, C-CTC以及组合方案EnhancedCTC，相信会带来不同程度的提升效果。
+基于上述实验结论，我们在PP-OCRv2中，采用了C-CTC的策略。 值得一提的是，由于PP-OCRv2 处理的是6625个中文字符的识别任务，字符集比较大，形似字较多，所以在该任务上C-CTC 方案带来的提升较大。 但如果换做其他OCR识别任务，结论可能会有所不同。大家可以尝试Focal-CTC，A-CTC, C-CTC以及组合方案EnhancedCTC，相信会带来不同程度的提升效果。
 统一的融合方案见如下文件：  [rec_enhanced_ctc_loss.py](../../ppocr/losses/rec_enhanced_ctc_loss.py)
