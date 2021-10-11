@@ -30,7 +30,7 @@ class EnhancedCTCLoss(nn.Layer):
                  ace_loss_weight=0.1,
                  use_center_loss=False,
                  center_loss_weight=0.05,
-                 num_classes=6624,
+                 num_classes=6625,
                  feat_dim=96,
                  init_center=False,
                  center_file_path=None,
