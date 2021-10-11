@@ -18,6 +18,7 @@ from __future__ import print_function
 
 import os
 import sys
+import pickle
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)

@@ -423,9 +423,7 @@ def update_center(char_center, post_result, preds):
 
 
 def get_center(model, train_dataloader, post_process_class):
-    total_frame = 0.0
-    total_time = 0.0
-    pbar = tqdm(total=len(train_dataloader), desc='eval model:')
+    pbar = tqdm(total=len(train_dataloader), desc='get center:')
     max_iter = len(train_dataloader) - 1 if platform.system(
     ) == "Windows" else len(train_dataloader)
     char_center = dict()
@@ -445,7 +443,6 @@ def get_center(model, train_dataloader, post_process_class):
         #update char_center
         char_center = update_center(char_center, post_result, preds)
         pbar.update(1)
-        total_frame += len(images)
 
     pbar.close()
     for key in char_center.keys():
