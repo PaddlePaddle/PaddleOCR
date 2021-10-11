@@ -80,8 +80,7 @@ def draw_kie_result(batch, node, idx_to_cls, count):
     vis_img = np.ones((h, w * 3, 3), dtype=np.uint8) * 255
     vis_img[:, :w] = img
     vis_img[:, w:] = pred_img
-    save_kie_path = os.path.dirname(config['Global'][
-        'save_res_path']) + "/kie_results/"
+    save_kie_path = os.path.dirname(config['Global']['save_res_path']) + "/kie_results/"
     if not os.path.exists(save_kie_path):
         os.makedirs(save_kie_path)
     save_path = os.path.join(save_kie_path, str(count) + ".png")
@@ -129,8 +128,7 @@ def main():
                     batch_pred[i] = paddle.to_tensor(
                         np.expand_dims(
                             batch[i], axis=0))
-
-                node, edge = model(batch[0], batch[1:])
+                node, edge = model(batch_pred)
                 node = F.softmax(node, -1)
                 draw_kie_result(batch, node, idx_to_cls, index)
     logger.info("success!")

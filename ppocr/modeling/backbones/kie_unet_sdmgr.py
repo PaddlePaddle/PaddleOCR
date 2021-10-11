@@ -167,10 +167,10 @@ class Kie_backbone(nn.Layer):
                     gt_bboxes[i, :num, ...], dtype='float32'))
         return img, temp_relations, temp_texts, temp_gt_bboxes
 
-    def forward(self, images, inputs):
-        img = images
-        relations, texts, gt_bboxes, tag, img_size = inputs[0], inputs[
-            1], inputs[2], inputs[4], inputs[-1]
+    def forward(self, inputs):
+        img = inputs[0]
+        relations, texts, gt_bboxes, tag, img_size = inputs[1], inputs[
+            2], inputs[3], inputs[5], inputs[-1]
         img, relations, texts, gt_bboxes = self.pre_process(
             img, relations, texts, gt_bboxes, tag, img_size)
         x = self.img_feat(img)

@@ -49,7 +49,7 @@ class SDMGRHead(nn.Layer):
         self.node_cls = nn.Linear(node_embed, num_classes)
         self.edge_cls = nn.Linear(edge_embed, 2)
 
-    def forward(self, input):
+    def forward(self, input, targets):
         relations, texts, x = input
         node_nums, char_nums = [], []
         for text in texts:

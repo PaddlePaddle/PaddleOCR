@@ -54,7 +54,7 @@ def main():
             config['Architecture']["Head"]['out_channels'] = char_num
 
     model = build_model(config['Architecture'])
-    extra_input = config['Architecture']['algorithm'] in ["SRN", "SAR"]
+    extra_input = config['Architecture']['algorithm'] in  ["SRN", "NRTR", "SAR", "SEED"] 
     if "model_type" in config['Architecture'].keys():
         model_type = config['Architecture']['model_type']
     else:
@@ -68,7 +68,7 @@ def main():
 
     # build metric
     eval_class = build_metric(config['Metric'])
-
+    logger.info(f"extra_inputs: {extra_input}")
     # start eval
     metric = program.eval(model, valid_dataloader, post_process_class,
                           eval_class, model_type, extra_input)
