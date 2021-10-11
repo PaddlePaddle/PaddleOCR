@@ -118,7 +118,7 @@ For a new language request, please refer to [Guideline for new language_requests
     - [Table Recognition](./ppstructure/table/README.md)
 - Academic Circles
     - [Two-stage Algorithm](./doc/doc_en/algorithm_overview_en.md)
-    - [PGNet Algorithm](./doc/doc_en/algorithm_overview_en.md)
+    - [PGNet Algorithm](./doc/doc_en/pgnet_en.md)
     - [Python Inference](./doc/doc_en/inference_en.md)
     - [Use PaddleOCR Architecture to Add New Algorithms](./doc/doc_en/add_new_algorithm_en.md)
 - Data Annotation and Synthesis
