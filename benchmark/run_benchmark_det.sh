@@ -20,9 +20,7 @@ function _train(){
     echo "Train on ${num_gpu_devices} GPUs"
     echo "current CUDA_VISIBLE_DEVICES=$CUDA_VISIBLE_DEVICES, gpus=$num_gpu_devices, batch_size=$batch_size"
 
-    train_cmd="-c configs/det/${model_name}.yml
-               -o Train.loader.batch_size_per_card=${batch_size}
-               -o Global.epoch_num=${max_iter} "   
+    train_cmd="-c configs/det/${model_name}.yml -o Train.loader.batch_size_per_card=${batch_size} Global.epoch_num=${max_iter} "   
     case ${run_mode} in
       sp) 
         train_cmd="python3.7 tools/train.py "${train_cmd}""
@@ -47,6 +45,10 @@ function _train(){
         rm ${log_file}
         cp mylog/workerlog.0 ${log_file}
     fi
+
+    # run log analysis
+    analysis_cmd="python3.7 benchmark/analysis.py --filename ${log_file}  --mission_name ${model_name} --run_mode ${mode} --direction_id 0 --keyword 'ips:' --base_batch_size ${batch_szie} --skip_steps 1 --gpu_num ${num_gpu_devices}  --index 1  --model_mode=-1  --ips_unit=samples/sec"
+    eval $analysis_cmd
 }
 
 _set_params $@
