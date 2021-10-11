@@ -64,7 +64,7 @@ C-CTC Loss是CTC Loss + Center Loss的简称。 其中Center Loss出自论文 < 
 
 以配置文件`configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml`为例， center提取命令如下所示:
 ```
-    python tools/export_center.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml -o  Global.pretrained_model: "./output/rec_chinese_lite_v2.0/best_accuracy"
+python tools/export_center.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml -o  Global.pretrained_model: "./output/rec_chinese_lite_v2.0/best_accuracy"
 ```
 运行完后，会在PaddleOCR主目录下生成`char_center.pkl`.
 
