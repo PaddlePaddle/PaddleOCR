@@ -61,7 +61,13 @@ C-CTC Loss是CTC Loss + Center Loss的简称。 其中Center Loss出自论文 < 
 + 挑选出训练集中，识别完全正确的部分, 组成集合G
 + 将G中的每个样本送入网络，进行前向计算， 提取最后一个FC层的输入（即feature）及其经过argmax计算的结果（即index）之间的对应关系
 + 将相同index的feature进行聚合，计算平均值，得到各自字符的初始center. 
-    
+
+以配置文件`configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml`为例， center提取命令如下所示:
+```
+    python tools/export_center.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml -o  Global.pretrained_model: "./output/rec_chinese_lite_v2.0/best_accuracy"
+```
+运行完后，会在PaddleOCR主目录下生成`char_center.pkl`.
+
 ## 4. 实验
 对于上述的三种方案，我们基于百度内部数据集进行了训练、评测，实验情况如下表所示：
 |algorithm| Focal_CTC | A_CTC | C-CTC |
