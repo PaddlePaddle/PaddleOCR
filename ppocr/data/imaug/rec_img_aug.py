@@ -87,17 +87,17 @@ class RecResizeImg(object):
     def __init__(self,
                  image_shape,
                  infer_mode=False,
-                 character_type='ch',
+                 character_dict_path='./ppocr/utils/ppocr_keys_v1.txt',
                  padding=True,
                  **kwargs):
         self.image_shape = image_shape
         self.infer_mode = infer_mode
-        self.character_type = character_type
+        self.character_dict_path = character_dict_path
         self.padding = padding
 
     def __call__(self, data):
         img = data['image']
-        if self.infer_mode and self.character_type == "ch":
+        if self.infer_mode and self.character_dict_path is not None:
             norm_img = resize_norm_img_chinese(img, self.image_shape)
         else:
             norm_img = resize_norm_img(img, self.image_shape, self.padding)

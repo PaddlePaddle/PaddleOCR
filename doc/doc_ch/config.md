@@ -39,8 +39,7 @@
 |      infer_img            |    设置预测图像路径或文件夹路径     |       ./infer_img | \|
 |      character_dict_path |    设置字典路径            |  ./ppocr/utils/ppocr_keys_v1.txt  |    \                 |
 |      max_text_length     |    设置文本最大长度        |       25          |                \                 |
-|      character_type      |    设置字符类型            |       ch          |    en/ch, en时将使用默认dict，ch时使用自定义dict|
-|      use_space_char     |    设置是否识别空格             |        True      |          仅在 character_type=ch 时支持空格                 |
+|      use_space_char     |    设置是否识别空格             |        True      |                           |
 |      label_list          |    设置方向分类器支持的角度       |    ['0','180']    |     仅在方向分类器中生效 |
 |      save_res_path          |    设置检测模型的结果保存地址       |    ./output/det_db/predicts_db.txt    |     仅在检测模型中生效 |
 
@@ -177,7 +176,7 @@ PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi
     --dict {path/of/dict} \             # 字典文件路径
     -o Global.use_gpu=False             # 是否使用gpu
     ...
-    
+
     ```
 
 意大利文由拉丁字母组成，因此执行完命令后会得到名为 rec_latin_lite_train.yml 的配置文件。
@@ -191,38 +190,37 @@ PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi
       use_gpu: True
       epoch_num: 500
       ...
-      character_type: it  # 需要识别的语种
       character_dict_path:  {path/of/dict} # 字典文件所在路径
-   
+
    Train:
       dataset:
         name: SimpleDataSet
         data_dir: train_data/ # 数据存放根目录
         label_file_list: ["./train_data/train_list.txt"] # 训练集label路径
       ...
-   
+
    Eval:
       dataset:
         name: SimpleDataSet
         data_dir: train_data/ # 数据存放根目录
         label_file_list: ["./train_data/val_list.txt"] # 验证集label路径
       ...
-   
+
    ```
 
 目前PaddleOCR支持的多语言算法有：
 
-| 配置文件 |  算法名称 |   backbone |   trans   |   seq      |     pred     |  language | character_type |
-| :--------: |  :-------:   | :-------:  |   :-------:   |   :-----:   |  :-----:   | :-----:  | :-----:  |
-| rec_chinese_cht_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 中文繁体  | chinese_cht|
-| rec_en_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 英语（区分大小写）   | EN |
-| rec_french_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 法语 |  french |
-| rec_ger_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 德语   | german |
-| rec_japan_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 日语  | japan |
-| rec_korean_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 韩语  | korean |
-| rec_latin_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 拉丁字母  | latin |
-| rec_arabic_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 阿拉伯字母 |  ar |
-| rec_cyrillic_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 斯拉夫字母  | cyrillic |
-| rec_devanagari_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 梵文字母  | devanagari |
+| 配置文件 |  算法名称 |   backbone |   trans   |   seq      |     pred     |  language |
+| :--------: |  :-------:   | :-------:  |   :-------:   |   :-----:   |  :-----:   | :-----:  |
+| rec_chinese_cht_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 中文繁体  |
+| rec_en_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 英语（区分大小写）   |
+| rec_french_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 法语 |  
+| rec_ger_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 德语   |
+| rec_japan_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 日语  |
+| rec_korean_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 韩语  |
+| rec_latin_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 拉丁字母  |
+| rec_arabic_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 阿拉伯字母 |  
+| rec_cyrillic_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 斯拉夫字母  |
+| rec_devanagari_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 梵文字母  |
 
 更多支持语种请参考: [多语言模型](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/multi_languages.md#%E8%AF%AD%E7%A7%8D%E7%BC%A9%E5%86%99)
