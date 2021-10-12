@@ -215,6 +215,11 @@ class CTCLabelEncode(BaseRecLabelEncode):
         data['length'] = np.array(len(text))
         text = text + [0] * (self.max_text_len - len(text))
         data['label'] = np.array(text)
+
+        label = [0] * len(self.character)
+        for x in text:
+            label[x] += 1
+        data['label_ace'] = np.array(label)
         return data
 
     def add_special_char(self, dict_character):
@@ -342,6 +347,38 @@ class AttnLabelEncode(BaseRecLabelEncode):
         return idx
 
 
+class SEEDLabelEncode(BaseRecLabelEncode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 character_type='ch',
+                 use_space_char=False,
+                 **kwargs):
+        super(SEEDLabelEncode,
+              self).__init__(max_text_length, character_dict_path,
+                             character_type, use_space_char)
+
+    def add_special_char(self, dict_character):
+        self.end_str = "eos"
+        dict_character = dict_character + [self.end_str]
+        return dict_character
+
+    def __call__(self, data):
+        text = data['label']
+        text = self.encode(text)
+        if text is None:
+            return None
+        if len(text) >= self.max_text_len:
+            return None
+        data['length'] = np.array(len(text)) + 1  # conclude eos
+        text = text + [len(self.character) - 1] * (self.max_text_len - len(text)
+                                                   )
+        data['label'] = np.array(text)
+        return data
+
+
 class SRNLabelEncode(BaseRecLabelEncode):
     """ Convert between text-label and text-index """
 
@@ -421,7 +458,6 @@ class TableLabelEncode(object):
             substr = lines[0].decode('utf-8').strip("\r\n").split("\t")
             character_num = int(substr[0])
             elem_num = int(substr[1])
-
             for cno in range(1, 1 + character_num):
                 character = lines[cno].decode('utf-8').strip("\r\n")
                 list_character.append(character)

@@ -23,6 +23,7 @@ import sys
 import six
 import cv2
 import numpy as np
+import fasttext
 
 
 class DecodeImage(object):
@@ -83,11 +84,12 @@ class NRTRDecodeImage(object):
         elif self.img_mode == 'RGB':
             assert img.shape[2] == 3, 'invalid shape of image[%s]' % (img.shape)
             img = img[:, :, ::-1]
-        img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         if self.channel_first:
             img = img.transpose((2, 0, 1))
         data['image'] = img
         return data
+
 
 class NormalizeImage(object):
     """ normalize image such as substract mean, divide std
@@ -130,6 +132,17 @@ class ToCHWImage(object):
         if isinstance(img, Image.Image):
             img = np.array(img)
         data['image'] = img.transpose((2, 0, 1))
+        return data
+
+
+class Fasttext(object):
+    def __init__(self, path="None", **kwargs):
+        self.fast_model = fasttext.load_model(path)
+
+    def __call__(self, data):
+        label = data['label']
+        fast_label = self.fast_model[label]
+        data['fast_label'] = fast_label
         return data
 
 
