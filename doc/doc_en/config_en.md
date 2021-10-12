@@ -37,7 +37,7 @@ Take rec_chinese_lite_train_v2.0.yml as an example
 |      checkpoints         |    set model parameter path            |       None        |   Used to load parameters after interruption to continue training|
 |      use_visualdl  |    Set whether to enable visualdl for visual log display |          False        |    [Tutorial](https://www.paddlepaddle.org.cn/paddle/visualdl) |
 |      infer_img            |    Set inference image path or folder path     |       ./infer_img | \|
-|      character_dict_path |    Set dictionary path            |  ./ppocr/utils/ppocr_keys_v1.txt  |    \                 |
+|      character_dict_path |    Set dictionary path            |  ./ppocr/utils/ppocr_keys_v1.txt  |    If the character_dict_path is None, model can only recognize number and lower letters                 |
 |      max_text_length     |    Set the maximum length of text        |       25          |                \                 |
 |      use_space_char     |    Set whether to recognize spaces             |        True      |          Only support in character_type=ch mode                 |
 |      label_list          |    Set the angle supported by the direction classifier       |    ['0','180']    |     Only valid in angle classifier model |

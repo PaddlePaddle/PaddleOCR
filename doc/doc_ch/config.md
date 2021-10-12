@@ -37,7 +37,7 @@
 |      checkpoints         |    加载模型参数路径            |       None        |    用于中断后加载参数继续训练 |
 |      use_visualdl  |    设置是否启用visualdl进行可视化log展示 |          False        |    [教程地址](https://www.paddlepaddle.org.cn/paddle/visualdl) |
 |      infer_img            |    设置预测图像路径或文件夹路径     |       ./infer_img | \|
-|      character_dict_path |    设置字典路径            |  ./ppocr/utils/ppocr_keys_v1.txt  |    \                 |
+|      character_dict_path |    设置字典路径            |  ./ppocr/utils/ppocr_keys_v1.txt  |    如果为空，则默认使用小写字母+数字作为字典                 |
 |      max_text_length     |    设置文本最大长度        |       25          |                \                 |
 |      use_space_char     |    设置是否识别空格             |        True      |                           |
 |      label_list          |    设置方向分类器支持的角度       |    ['0','180']    |     仅在方向分类器中生效 |
