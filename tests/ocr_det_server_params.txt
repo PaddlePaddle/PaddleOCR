@@ -12,10 +12,10 @@ train_model_name:latest
 train_infer_img_dir:./train_data/icdar2015/text_localization/ch4_test_images/
 null:null
 ##
-trainer:norm_train|pact_train
-norm_train:tools/train.py -c tests/configs/det_r50_vd_db.yml -o Global.pretrained_model=""
-pact_train:null
-fpgm_train:null
+trainer:norm_train|pact_train|fpgm_export
+norm_train:tools/train.py -c tests/configs/det_r50_vd_db.yml -o 
+quant_export:deploy/slim/quantization/export_model.py -c tests/configs/det_r50_vd_db.yml -o 
+fpgm_export:deploy/slim/prune/export_prune_model.py -c tests/configs/det_r50_vd_db.yml -o 
 distill_train:null
 null:null
 null:null
