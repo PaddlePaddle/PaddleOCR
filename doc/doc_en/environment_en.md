@@ -11,7 +11,6 @@ Recommended working environment:
   + [1.2 Mac](#1.2)
   + [1.3 Linux](#1.3)
 * [2. Install PaddlePaddle 2.0](#2)
-* [3. Install PaddleOCR Dependencies](#3)
 
 
 <a name="1"></a>
@@ -210,7 +209,6 @@ Linux users can choose to run either Anaconda or Docker. If you are familiar wit
   <img src="../install/linux/anaconda_download.png" akt="anaconda download" width="800" align="center"/>
 
 
-
   - Select the appropriate version for your operating system
       - Type `uname -m` in the terminal to check the command set used by your system
 
@@ -317,10 +315,11 @@ cd /home/Projects
 # Create a docker container named ppocr and map the current directory to the /paddle directory of the container
 
 # If using CPU, use docker instead of nvidia-docker to create docker
-sudo docker run --name ppocr -v $PWD:/paddle --network=host -it  paddlepaddle/paddle:latest-dev-cuda10.1-cudnn7-gcc82  /bin/bash
+sudo docker run --name ppocr -v $PWD:/paddle --network=host -it  registry.baidubce.com/paddlepaddle/paddle:2.1.3-gpu-cuda10.2-cudnn7  /bin/bash
 
 # If using GPU, use nvidia-docker to create docker
-sudo nvidia-docker run --name ppocr -v $PWD:/paddle --shm-size=64G --network=host -it paddlepaddle/paddle:latest-dev-cuda10.1-cudnn7-gcc82 /bin/bash
+# docker image registry.baidubce.com/paddlepaddle/paddle:2.1.3-gpu-cuda11.2-cudnn8 is recommended for CUDA11.2 + CUDNN8.
+sudo nvidia-docker run --name ppocr -v $PWD:/paddle --shm-size=64G --network=host -it registry.baidubce.com/paddlepaddle/paddle:2.1.3-gpu-cuda10.2-cudnn7 /bin/bash
 
 ```
 You can also visit [DockerHub](https://hub.docker.com/r/paddlepaddle/paddle/tags/) to get the image that fits your machine.
@@ -330,15 +329,6 @@ You can also visit [DockerHub](https://hub.docker.com/r/paddlepaddle/paddle/tags
 sudo docker container exec -it ppocr /bin/bash
 ```
 
-The default python3 version in the docker environment is python3.5. Python3.7 is recommended to run PaddleOCR. When executing python commands, you can use python3.7 instead of python3. As follows, enter the python3.7 command and press Enter, you can see that the python3.7 version is used.
-```
-λ root@Linux /paddle python3.7
-Python 3.7.0 (default, Aug 2 2021, 05:30:22)
-[GCC 8.2.0] on linux
-Type "help", "copyright", "credits" or "license" for more information.
->>>
-```
-
 <a name="2"></a>
 
 ## 2. Install PaddlePaddle 2.0
@@ -346,45 +336,13 @@ Type "help", "copyright", "credits" or "license" for more information.
 - If you have cuda9 or cuda10 installed on your machine, please run the following command to install
 
 ```bash
-# use python3.7 instead of python3 in docker
 python3 -m pip install paddlepaddle-gpu -i https://mirror.baidu.com/pypi/simple
 ```
 
 - If you only have cpu on your machine, please run the following command to install
 
 ```bash
-# use python3.7 instead of python3 in docker
 python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
 ```
 
 For more software version requirements, please refer to the instructions in [Installation Document](https://www.paddlepaddle.org.cn/install/quick) for operation.
-
-
-## 3. Install PaddleOCR Dependencies
-
-Download PaddleOCR code.
-```
-# Recommend
-git clone https://github.com/PaddlePaddle/PaddleOCR
-
-# If you cannot pull successfully due to network problems, you can also choose to use the code hosting on the cloud:
-
-git clone https://gitee.com/paddlepaddle/PaddleOCR
-
-# Note: The cloud-hosting code may not be able to synchronize the update with this GitHub project in real time. There might be a delay of 3-5 days. Please give priority to the recommended method.
-```
-
-Install third-party libraries
-```
-cd PaddleOCR
-pip3 install -r requirements.txt
-# use pip3.7 instead of pip3 in docker
-# pip3.7 install -r requirements.txt
-
-```
-
-If you getting this error OSError: [WinError 126] The specified module could not be found when you install shapely on windows.
-
-Please try to download Shapely whl file using [http://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely](http://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely).
-
-Reference: [Solve shapely installation on windows](https://stackoverflow.com/questions/44398265/install-shapely-oserror-winerror-126-the-specified-module-could-not-be-found)
