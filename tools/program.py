@@ -422,12 +422,12 @@ def update_center(char_center, post_result, preds):
     return char_center
 
 
-def get_center(model, train_dataloader, post_process_class):
-    pbar = tqdm(total=len(train_dataloader), desc='get center:')
-    max_iter = len(train_dataloader) - 1 if platform.system(
-    ) == "Windows" else len(train_dataloader)
+def get_center(model, eval_dataloader, post_process_class):
+    pbar = tqdm(total=len(eval_dataloader), desc='get center:')
+    max_iter = len(eval_dataloader) - 1 if platform.system(
+    ) == "Windows" else len(eval_dataloader)
     char_center = dict()
-    for idx, batch in enumerate(train_dataloader):
+    for idx, batch in enumerate(eval_dataloader):
         if idx >= max_iter:
             break
         images = batch[0]

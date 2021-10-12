@@ -27,7 +27,6 @@ sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
 from ppocr.data import build_dataloader
 from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
-from ppocr.metrics import build_metric
 from ppocr.utils.save_load import init_model, load_dygraph_params
 from ppocr.utils.utility import print_dict
 import tools.program as program
@@ -36,7 +35,12 @@ import tools.program as program
 def main():
     global_config = config['Global']
     # build dataloader
-    train_dataloader = build_dataloader(config, 'Train', device, logger)
+    config['Eval']['dataset']['name'] = config['Train']['dataset']['name']
+    config['Eval']['dataset']['data_dir'] = config['Train']['dataset'][
+        'data_dir']
+    config['Eval']['dataset']['label_file_list'] = config['Train']['dataset'][
+        'label_file_list']
+    eval_dataloader = build_dataloader(config, 'Eval', device, logger)
 
     # build post process
     post_process_class = build_post_process(config['PostProcess'],
@@ -60,13 +64,11 @@ def main():
             logger.info('{}:{}'.format(k, v))
 
     # get features from train data
-    char_center = program.get_center(model, train_dataloader,
-                                     post_process_class)
+    char_center = program.get_center(model, eval_dataloader, post_process_class)
 
     #serialize to disk
-    f = open("char_center.pkl", 'wb')
-    pickle.dump(char_center, f)
-    f.close()
+    with open("train_center.pkl", 'wb') as f:
+        pickle.dump(char_center, f)
     return
 
 
