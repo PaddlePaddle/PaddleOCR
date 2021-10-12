@@ -1,9 +1,16 @@
 #!/bin/bash
 FILENAME=$1
-# MODE be one of ['lite_train_infer' 'whole_infer' 'whole_train_infer', 'infer', 'cpp_infer']
+# MODE be one of ['lite_train_infer' 'whole_infer' 'whole_train_infer', 'infer', 'cpp_infer', 'serving_infer', 'klquant_infer']
 MODE=$2
-
-dataline=$(cat ${FILENAME})
+if [ ${MODE} = "cpp_infer" ]; then
+    dataline=$(awk 'NR==67, NR==81{print}'  $FILENAME)
+elif [ ${MODE} = "serving_infer" ]; then
+    dataline=$(awk 'NR==52, NR==66{print}'  $FILENAME)
+elif [ ${MODE} = "klquant_infer" ]; then
+    dataline=$(awk 'NR==82, NR==98{print}'  $FILENAME)
+else
+    dataline=$(awk 'NR==1, NR==51{print}'  $FILENAME)
+fi
 
 # parser params
 IFS=$'\n'
@@ -144,59 +151,91 @@ benchmark_key=$(func_parser_key "${lines[49]}")
 benchmark_value=$(func_parser_value "${lines[49]}")
 infer_key1=$(func_parser_key "${lines[50]}")
 infer_value1=$(func_parser_value "${lines[50]}")
-# parser serving
-trans_model_py=$(func_parser_value "${lines[67]}")
-infer_model_dir_key=$(func_parser_key "${lines[68]}")
-infer_model_dir_value=$(func_parser_value "${lines[68]}")
-model_filename_key=$(func_parser_key "${lines[69]}")
-model_filename_value=$(func_parser_value "${lines[69]}")
-params_filename_key=$(func_parser_key "${lines[70]}")
-params_filename_value=$(func_parser_value "${lines[70]}")
-serving_server_key=$(func_parser_key "${lines[71]}")
-serving_server_value=$(func_parser_value "${lines[71]}")
-serving_client_key=$(func_parser_key "${lines[72]}")
-serving_client_value=$(func_parser_value "${lines[72]}")
-serving_dir_value=$(func_parser_value "${lines[73]}")
-web_service_py=$(func_parser_value "${lines[74]}")
-web_use_gpu_key=$(func_parser_key "${lines[75]}")
-web_use_gpu_list=$(func_parser_value "${lines[75]}")
-web_use_mkldnn_key=$(func_parser_key "${lines[76]}")
-web_use_mkldnn_list=$(func_parser_value "${lines[76]}")
-web_cpu_threads_key=$(func_parser_key "${lines[77]}")
-web_cpu_threads_list=$(func_parser_value "${lines[77]}")
-web_use_trt_key=$(func_parser_key "${lines[78]}")
-web_use_trt_list=$(func_parser_value "${lines[78]}")
-web_precision_key=$(func_parser_key "${lines[79]}")
-web_precision_list=$(func_parser_value "${lines[79]}")
-pipeline_py=$(func_parser_value "${lines[80]}")
 
+# parser serving
+if [ ${MODE} = "klquant_infer" ]; then
+    # parser inference model 
+    infer_model_dir_list=$(func_parser_value "${lines[1]}")
+    infer_export_list=$(func_parser_value "${lines[2]}")
+    infer_is_quant=$(func_parser_value "${lines[3]}")
+    # parser inference 
+    inference_py=$(func_parser_value "${lines[4]}")
+    use_gpu_key=$(func_parser_key "${lines[5]}")
+    use_gpu_list=$(func_parser_value "${lines[5]}")
+    use_mkldnn_key=$(func_parser_key "${lines[6]}")
+    use_mkldnn_list=$(func_parser_value "${lines[6]}")
+    cpu_threads_key=$(func_parser_key "${lines[7]}")
+    cpu_threads_list=$(func_parser_value "${lines[7]}")
+    batch_size_key=$(func_parser_key "${lines[8]}")
+    batch_size_list=$(func_parser_value "${lines[8]}")
+    use_trt_key=$(func_parser_key "${lines[9]}")
+    use_trt_list=$(func_parser_value "${lines[9]}")
+    precision_key=$(func_parser_key "${lines[10]}")
+    precision_list=$(func_parser_value "${lines[10]}")
+    infer_model_key=$(func_parser_key "${lines[11]}")
+    image_dir_key=$(func_parser_key "${lines[12]}")
+    infer_img_dir=$(func_parser_value "${lines[12]}")
+    save_log_key=$(func_parser_key "${lines[13]}")
+    benchmark_key=$(func_parser_key "${lines[14]}")
+    benchmark_value=$(func_parser_value "${lines[14]}")
+    infer_key1=$(func_parser_key "${lines[15]}")
+    infer_value1=$(func_parser_value "${lines[15]}")
+fi
+# parser serving
+if [ ${MODE} = "server_infer" ]; then
+    trans_model_py=$(func_parser_value "${lines[1]}")
+    infer_model_dir_key=$(func_parser_key "${lines[2]}")
+    infer_model_dir_value=$(func_parser_value "${lines[2]}")
+    model_filename_key=$(func_parser_key "${lines[3]}")
+    model_filename_value=$(func_parser_value "${lines[3]}")
+    params_filename_key=$(func_parser_key "${lines[4]}")
+    params_filename_value=$(func_parser_value "${lines[4]}")
+    serving_server_key=$(func_parser_key "${lines[5]}")
+    serving_server_value=$(func_parser_value "${lines[5]}")
+    serving_client_key=$(func_parser_key "${lines[6]}")
+    serving_client_value=$(func_parser_value "${lines[6]}")
+    serving_dir_value=$(func_parser_value "${lines[7]}")
+    web_service_py=$(func_parser_value "${lines[8]}")
+    web_use_gpu_key=$(func_parser_key "${lines[9]}")
+    web_use_gpu_list=$(func_parser_value "${lines[9]}")
+    web_use_mkldnn_key=$(func_parser_key "${lines[10]}")
+    web_use_mkldnn_list=$(func_parser_value "${lines[10]}")
+    web_cpu_threads_key=$(func_parser_key "${lines[11]}")
+    web_cpu_threads_list=$(func_parser_value "${lines[11]}")
+    web_use_trt_key=$(func_parser_key "${lines[12]}")
+    web_use_trt_list=$(func_parser_value "${lines[12]}")
+    web_precision_key=$(func_parser_key "${lines[13]}")
+    web_precision_list=$(func_parser_value "${lines[13]}")
+    pipeline_py=$(func_parser_value "${lines[14]}")
+fi
 
 if [ ${MODE} = "cpp_infer" ]; then
     # parser cpp inference model 
-    cpp_infer_model_dir_list=$(func_parser_value "${lines[53]}")
-    cpp_infer_is_quant=$(func_parser_value "${lines[54]}")
+    cpp_infer_model_dir_list=$(func_parser_value "${lines[1]}")
+    cpp_infer_is_quant=$(func_parser_value "${lines[2]}")
     # parser cpp inference 
-    inference_cmd=$(func_parser_value "${lines[55]}")
-    cpp_use_gpu_key=$(func_parser_key "${lines[56]}")
-    cpp_use_gpu_list=$(func_parser_value "${lines[56]}")
-    cpp_use_mkldnn_key=$(func_parser_key "${lines[57]}")
-    cpp_use_mkldnn_list=$(func_parser_value "${lines[57]}")
-    cpp_cpu_threads_key=$(func_parser_key "${lines[58]}")
-    cpp_cpu_threads_list=$(func_parser_value "${lines[58]}")
-    cpp_batch_size_key=$(func_parser_key "${lines[59]}")
-    cpp_batch_size_list=$(func_parser_value "${lines[59]}")
-    cpp_use_trt_key=$(func_parser_key "${lines[60]}")
-    cpp_use_trt_list=$(func_parser_value "${lines[60]}")
-    cpp_precision_key=$(func_parser_key "${lines[61]}")
-    cpp_precision_list=$(func_parser_value "${lines[61]}")
-    cpp_infer_model_key=$(func_parser_key "${lines[62]}")
-    cpp_image_dir_key=$(func_parser_key "${lines[63]}")
-    cpp_infer_img_dir=$(func_parser_value "${lines[63]}")
-    cpp_infer_key1=$(func_parser_key "${lines[64]}")
-    cpp_infer_value1=$(func_parser_value "${lines[64]}")
-    cpp_benchmark_key=$(func_parser_key "${lines[65]}")
-    cpp_benchmark_value=$(func_parser_value "${lines[65]}")
+    inference_cmd=$(func_parser_value "${lines[3]}")
+    cpp_use_gpu_key=$(func_parser_key "${lines[4]}")
+    cpp_use_gpu_list=$(func_parser_value "${lines[4]}")
+    cpp_use_mkldnn_key=$(func_parser_key "${lines[5]}")
+    cpp_use_mkldnn_list=$(func_parser_value "${lines[5]}")
+    cpp_cpu_threads_key=$(func_parser_key "${lines[6]}")
+    cpp_cpu_threads_list=$(func_parser_value "${lines[6]}")
+    cpp_batch_size_key=$(func_parser_key "${lines[7]}")
+    cpp_batch_size_list=$(func_parser_value "${lines[7]}")
+    cpp_use_trt_key=$(func_parser_key "${lines[8]}")
+    cpp_use_trt_list=$(func_parser_value "${lines[8]}")
+    cpp_precision_key=$(func_parser_key "${lines[9]}")
+    cpp_precision_list=$(func_parser_value "${lines[9]}")
+    cpp_infer_model_key=$(func_parser_key "${lines[10]}")
+    cpp_image_dir_key=$(func_parser_key "${lines[11]}")
+    cpp_infer_img_dir=$(func_parser_value "${lines[12]}")
+    cpp_infer_key1=$(func_parser_key "${lines[13]}")
+    cpp_infer_value1=$(func_parser_value "${lines[13]}")
+    cpp_benchmark_key=$(func_parser_key "${lines[14]}")
+    cpp_benchmark_value=$(func_parser_value "${lines[14]}")
 fi
+
 
 
 LOG_PATH="./tests/output"
@@ -414,7 +453,7 @@ function func_cpp_inference(){
     done
 }
 
-if [ ${MODE} = "infer" ]; then
+if [ ${MODE} = "infer" ] || [ ${MODE} = "klquant_infer" ]; then
     GPUID=$3
     if [ ${#GPUID} -le 0 ];then
         env=" "
@@ -447,7 +486,6 @@ if [ ${MODE} = "infer" ]; then
         func_inference "${python}" "${inference_py}" "${save_infer_dir}" "${LOG_PATH}" "${infer_img_dir}" ${is_quant}
         Count=$(($Count + 1))
     done
-
 elif [ ${MODE} = "cpp_infer" ]; then
     GPUID=$3
     if [ ${#GPUID} -le 0 ];then
@@ -480,6 +518,8 @@ elif [ ${MODE} = "serving_infer" ]; then
     IFS="|"
     #run serving
     func_serving "${web_service_cmd}"
+
+
 
 else
     IFS="|"
