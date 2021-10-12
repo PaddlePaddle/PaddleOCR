@@ -21,6 +21,8 @@ import numpy as np
 import string
 import json
 
+from ppocr.utils.logging import get_logger
+
 
 class ClsLabelEncode(object):
     def __init__(self, label_list, **kwargs):
@@ -92,31 +94,22 @@ class BaseRecLabelEncode(object):
     def __init__(self,
                  max_text_length,
                  character_dict_path=None,
-                 character_type='ch',
                  use_space_char=False):
-        support_character_type = [
-            'ch', 'en', 'EN_symbol', 'french', 'german', 'japan', 'korean',
-            'EN', 'it', 'xi', 'pu', 'ru', 'ar', 'ta', 'ug', 'fa', 'ur', 'rs',
-            'oc', 'rsc', 'bg', 'uk', 'be', 'te', 'ka', 'chinese_cht', 'hi',
-            'mr', 'ne', 'latin', 'arabic', 'cyrillic', 'devanagari'
-        ]
-        assert character_type in support_character_type, "Only {} are supported now but get {}".format(
-            support_character_type, character_type)
 
         self.max_text_len = max_text_length
         self.beg_str = "sos"
         self.end_str = "eos"
-        if character_type == "en":
+
+        if character_dict_path is None:
+            logger = get_logger()
+            logger.warning(
+                "The character_dict_path is None, model can only recognize number and lower letters"
+            )
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
-        elif character_type == "EN_symbol":
-            # same with ASTER setting (use 94 char).
-            self.character_str = string.printable[:-6]
-            dict_character = list(self.character_str)
-        elif character_type in support_character_type:
+            self.lower = True
+        else:
             self.character_str = ""
-            assert character_dict_path is not None, "character_dict_path should not be None when character_type is {}".format(
-                character_type)
             with open(character_dict_path, "rb") as fin:
                 lines = fin.readlines()
                 for line in lines:
@@ -125,7 +118,6 @@ class BaseRecLabelEncode(object):
             if use_space_char:
                 self.character_str += " "
             dict_character = list(self.character_str)
-        self.character_type = character_type
         dict_character = self.add_special_char(dict_character)
         self.dict = {}
         for i, char in enumerate(dict_character):
@@ -147,7 +139,7 @@ class BaseRecLabelEncode(object):
         """
         if len(text) == 0 or len(text) > self.max_text_len:
             return None
-        if self.character_type == "en":
+        if self.lower:
             text = text.lower()
         text_list = []
         for char in text:
@@ -167,13 +159,11 @@ class NRTRLabelEncode(BaseRecLabelEncode):
     def __init__(self,
                  max_text_length,
                  character_dict_path=None,
-                 character_type='EN_symbol',
                  use_space_char=False,
                  **kwargs):
 
-        super(NRTRLabelEncode,
-              self).__init__(max_text_length, character_dict_path,
-                             character_type, use_space_char)
+        super(NRTRLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
 
     def __call__(self, data):
         text = data['label']
@@ -200,12 +190,10 @@ class CTCLabelEncode(BaseRecLabelEncode):
     def __init__(self,
                  max_text_length,
                  character_dict_path=None,
-                 character_type='ch',
                  use_space_char=False,
                  **kwargs):
-        super(CTCLabelEncode,
-              self).__init__(max_text_length, character_dict_path,
-                             character_type, use_space_char)
+        super(CTCLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
 
     def __call__(self, data):
         text = data['label']
@@ -231,12 +219,10 @@ class E2ELabelEncodeTest(BaseRecLabelEncode):
     def __init__(self,
                  max_text_length,
                  character_dict_path=None,
-                 character_type='EN',
                  use_space_char=False,
                  **kwargs):
-        super(E2ELabelEncodeTest,
-              self).__init__(max_text_length, character_dict_path,
-                             character_type, use_space_char)
+        super(E2ELabelEncodeTest, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
 
     def __call__(self, data):
         import json
@@ -305,12 +291,10 @@ class AttnLabelEncode(BaseRecLabelEncode):
     def __init__(self,
                  max_text_length,
                  character_dict_path=None,
-                 character_type='ch',
                  use_space_char=False,
                  **kwargs):
-        super(AttnLabelEncode,
-              self).__init__(max_text_length, character_dict_path,
-                             character_type, use_space_char)
+        super(AttnLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
 
     def add_special_char(self, dict_character):
         self.beg_str = "sos"
@@ -353,12 +337,10 @@ class SEEDLabelEncode(BaseRecLabelEncode):
     def __init__(self,
                  max_text_length,
                  character_dict_path=None,
-                 character_type='ch',
                  use_space_char=False,
                  **kwargs):
-        super(SEEDLabelEncode,
-              self).__init__(max_text_length, character_dict_path,
-                             character_type, use_space_char)
+        super(SEEDLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
 
     def add_special_char(self, dict_character):
         self.end_str = "eos"
@@ -385,12 +367,10 @@ class SRNLabelEncode(BaseRecLabelEncode):
     def __init__(self,
                  max_text_length=25,
                  character_dict_path=None,
-                 character_type='en',
                  use_space_char=False,
                  **kwargs):
-        super(SRNLabelEncode,
-              self).__init__(max_text_length, character_dict_path,
-                             character_type, use_space_char)
+        super(SRNLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
 
     def add_special_char(self, dict_character):
         dict_character = dict_character + [self.beg_str, self.end_str]
@@ -598,12 +578,10 @@ class SARLabelEncode(BaseRecLabelEncode):
     def __init__(self,
                  max_text_length,
                  character_dict_path=None,
-                 character_type='ch',
                  use_space_char=False,
                  **kwargs):
-        super(SARLabelEncode,
-              self).__init__(max_text_length, character_dict_path,
-                             character_type, use_space_char)
+        super(SARLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
 
     def add_special_char(self, dict_character):
         beg_end_str = "<BOS/EOS>"
