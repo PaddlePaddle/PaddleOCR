@@ -399,6 +399,57 @@ def eval(model,
     return metric
 
 
+def update_center(char_center, post_result, preds):
+    result, label = post_result
+    feats, logits = preds
+    logits = paddle.argmax(logits, axis=-1)
+    feats = feats.numpy()
+    logits = logits.numpy()
+
+    for idx_sample in range(len(label)):
+        if result[idx_sample][0] == label[idx_sample][0]:
+            feat = feats[idx_sample]
+            logit = logits[idx_sample]
+            for idx_time in range(len(logit)):
+                index = logit[idx_time]
+                if index in char_center.keys():
+                    char_center[index][0] = (
+                        char_center[index][0] * char_center[index][1] +
+                        feat[idx_time]) / (char_center[index][1] + 1)
+                    char_center[index][1] += 1
+                else:
+                    char_center[index] = [feat[idx_time], 1]
+    return char_center
+
+
+def get_center(model, eval_dataloader, post_process_class):
+    pbar = tqdm(total=len(eval_dataloader), desc='get center:')
+    max_iter = len(eval_dataloader) - 1 if platform.system(
+    ) == "Windows" else len(eval_dataloader)
+    char_center = dict()
+    for idx, batch in enumerate(eval_dataloader):
+        if idx >= max_iter:
+            break
+        images = batch[0]
+        start = time.time()
+        preds = model(images)
+
+        batch = [item.numpy() for item in batch]
+        # Obtain usable results from post-processing methods
+        total_time += time.time() - start
+        # Evaluate the results of the current batch
+        post_result = post_process_class(preds, batch[1])
+
+        #update char_center
+        char_center = update_center(char_center, post_result, preds)
+        pbar.update(1)
+
+    pbar.close()
+    for key in char_center.keys():
+        char_center[key] = char_center[key][0]
+    return char_center
+
+
 def preprocess(is_train=False):
     FLAGS = ArgsParser().parse_args()
     profiler_options = FLAGS.profiler_options
@@ -427,7 +478,8 @@ def preprocess(is_train=False):
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
-        'SEED']
+        'SEED'
+    ]
     windows_not_support_list = ['PSE']
     if platform.system() == "Windows" and alg in windows_not_support_list:
         logger.warning('{} is not support in Windows now'.format(

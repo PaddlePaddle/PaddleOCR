@@ -38,7 +38,7 @@ class CTCLoss(nn.Layer):
         if self.use_focal_loss:
             weight = paddle.exp(-loss)
             weight = paddle.subtract(paddle.to_tensor([1.0]), weight)
-            weight = paddle.square(weight) * self.focal_loss_alpha
+            weight = paddle.square(weight)
             loss = paddle.multiply(loss, weight)
-        loss = loss.mean()  # sum
+        loss = loss.mean()
         return {'loss': loss}
