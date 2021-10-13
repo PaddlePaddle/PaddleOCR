@@ -33,8 +33,7 @@ cpp_infer_key1=$(func_parser_key "${lines[13]}")
 cpp_infer_value1=$(func_parser_value "${lines[13]}")
 cpp_benchmark_key=$(func_parser_key "${lines[14]}")
 cpp_benchmark_value=$(func_parser_value "${lines[14]}")
-echo $use_opencv
-echo $cpp_infer_img_dir
+
 
 LOG_PATH="./tests/output"
 mkdir -p ${LOG_PATH}
