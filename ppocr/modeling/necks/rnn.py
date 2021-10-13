@@ -51,7 +51,7 @@ class EncoderWithFC(nn.Layer):
         super(EncoderWithFC, self).__init__()
         self.out_channels = hidden_size
         weight_attr, bias_attr = get_para_bias_attr(
-            l2_decay=0.00001, k=in_channels, name='reduce_encoder_fea')
+            l2_decay=0.00001, k=in_channels)
         self.fc = nn.Linear(
             in_channels,
             hidden_size,
