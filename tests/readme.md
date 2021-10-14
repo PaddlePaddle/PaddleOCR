@@ -11,12 +11,12 @@
 
 | 算法论文 | 模型名称 | 模型类型 | python训练预测 |   其他  |
 | :--- | :--- |  :----  | :-------- |  :----  |
-| DB     |ch_ppocr_mobile_v2.0_det_infer | 检测  | 支持 | C++预测 <br> Paddle Serving: Python, C++  <br> Paddle-Lite: Python, C++ / ARM CPU |
-| DB     |ch_ppocr_server_v2.0_det_infer | 检测  | 支持 | C++预测 <br> Paddle Serving: Python, C++  <br> Paddle-Lite: Python, C++ / ARM CPU |
-| DB     |ch_PP-OCRv2_det_infer          | 检测  |
-| CRNN   |ch_ppocr_mobile_v2.0_rec_infer | 识别  | 支持 | C++预测 <br> Paddle Serving: Python, C++  <br> Paddle-Lite: Python, C++ / ARM CPU |
-| CRNN   |ch_ppocr_server_v2.0_rec_infer | 识别  | 支持 | C++预测 <br> Paddle Serving: Python, C++  <br> Paddle-Lite: Python, C++ / ARM CPU |
-| CRNN   |ch_PP-OCRv2_rec_infer          | 识别  |
+| DB     |ch_ppocr_mobile_v2.0_det | 检测  | 支持 | Paddle Inference: C++预测 <br> Paddle Serving: Python, C++  <br> Paddle-Lite: Python, C++ / ARM CPU |
+| DB     |ch_ppocr_server_v2.0_det | 检测  | 支持 | Paddle Inference: C++预测 <br> Paddle Serving: Python, C++  <br> Paddle-Lite: Python, C++ / ARM CPU |
+| DB     |ch_PP-OCRv2_det          | 检测  |
+| CRNN   |ch_ppocr_mobile_v2.0_rec | 识别  | 支持 | Paddle Inference: C++预测 <br> Paddle Serving: Python, C++  <br> Paddle-Lite: Python, C++ / ARM CPU |
+| CRNN   |ch_ppocr_server_v2.0_rec | 识别  | 支持 | Paddle Inference: C++预测 <br> Paddle Serving: Python, C++  <br> Paddle-Lite: Python, C++ / ARM CPU |
+| CRNN   |ch_PP-OCRv2_rec          | 识别  |
 | DB     |det_mv3_db_v2.0                | 检测  |
 | DB     |det_r50_vd_db_v2.0             | 检测  |
 | EAST   |det_mv3_east_v2.0              | 检测  |
@@ -78,7 +78,7 @@ tests/
 
 1. 运行prepare.sh准备测试所需数据和模型；
 2. 运行要测试的功能对应的测试脚本`test_*.sh`，产出log，由log可以看到不同配置是否运行成功；
-3. 【可选】用`compare_results.py`对比log中的预测结果和预存在results目录下的结果，判断预测精度是否符合预期（在误差范围内）。
+3. 用`compare_results.py`对比log中的预测结果和预存在results目录下的结果，判断预测精度是否符合预期（在误差范围内）。
 
 其中，有4个测试主程序，功能如下：
 - `test_python.sh`：测试基于Python的模型训练、评估、推理等基本功能，包括裁剪、量化、蒸馏。

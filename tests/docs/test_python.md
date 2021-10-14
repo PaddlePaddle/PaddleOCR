@@ -7,22 +7,37 @@ Python功能测试的主程序为`test_python.sh`，可以测试基于Python的�
 训练相关：方式包括：
 【单机单卡、单机多卡、多机多卡】*【正常训练、混合精度训练】*【裁剪、在线量化、蒸馏】
 
-| 模型名称 | 算法名称 | 模型类型 |单机单卡 | 单机多卡 | 多机多卡 | |
-|  ----  |   ----  |    ----  |  ----   |  ----   |    ----    |  ----  |
-|ch_ppocr_mobile_v2.0_det_infer| DB     | 检测   | 
-|ch_ppocr_mobile_v2.0_rec_infer| CRNN   | 识别   | 
-|ch_ppocr_server_v2.0_det_infer| DB     | 检测   | 
-|ch_ppocr_server_v2.0_rec_infer| CRNN   | 识别   | 
+| 算法名称 | 模型名称 | 单机单卡 | 单机多卡 | 多机多卡 | 模型压缩 |
+|  :----  |   :----  |    :----  |  :----   |  :----   |  :----   |
+|  DB  | ch_ppocr_mobile_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 裁剪、在线/离线量化、蒸馏 |
+|  DB  | ch_ppocr_server_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 裁剪、在线/离线量化、蒸馏 |
+| CRNN | ch_ppocr_mobile_v2.0_rec| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 裁剪、在线/离线量化、蒸馏 |
+| CRNN | ch_ppocr_server_v2.0_rec| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 裁剪、在线/离线量化、蒸馏 |
+|PP-OCR| ch_ppocr_server_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 裁剪、在线/离线量化、蒸馏 |
+|PP-OCR| ch_ppocr_server_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 裁剪、在线/离线量化、蒸馏 |
+
+| 算法名称 | 模型名称 | 单机单卡 | 单机多卡 | 多机多卡 |
+|  :----  |   :----  |    :----  |  :----   |  :----   |
+|  DB  | ch_ppocr_mobile_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 
+|  DB  | ch_ppocr_server_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 
+|  DB  | ch_ppocr_mobile_v2.0_det_pact| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 
+|  DB  | ch_ppocr_mobile_v2.0_det_fpgm| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 
+| CRNN | ch_ppocr_mobile_v2.0_rec| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 |
+| CRNN | ch_ppocr_server_v2.0_rec| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 |
+| CRNN | ch_ppocr_mobile_v2.0_rec_pact| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 |
+| CRNN | ch_ppocr_mobile_v2.0_rec_fpgm| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 |
+|PP-OCR| ch_ppocr_server_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 |
+|PP-OCR| ch_ppocr_server_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 |
 
 
 预测相关：
 
-| 模型名称 | 算法名称 | 模型类型 |device | batch>1 | mkldnn | tensorrt | cpu多线程 | 
+| 模型名称 | 算法名称 | 模型类型 |device | batchsize=1/6 | mkldnn | tensorrt | cpu多线程 | 
 |  ----  |   ----  |  ----  |  ---- |  ---- |  ----  |  ----| --- | 
-|ch_ppocr_mobile_v2.0_det_infer| DB     | 检测   | CPU/GPU | 支持 | 支持 | fp32/fp16/int8 | 支持 |  
-|ch_ppocr_mobile_v2.0_rec_infer| CRNN   | 识别   | CPU/GPU | 支持 | 支持 | fp32/fp16/int8 | 支持 |  
-|ch_ppocr_server_v2.0_det_infer| DB     | 检测   | CPU/GPU | 支持 | 支持 | fp32/fp16/int8 | 支持 |  
-|ch_ppocr_server_v2.0_rec_infer| CRNN   | 识别   | CPU/GPU | 支持 | 支持 | fp32/fp16/int8 | 支持 |  
+|ch_ppocr_mobile_v2.0_det| DB     | 检测   | CPU/GPU | 支持 | 支持 | fp32/fp16/int8 | 支持 |  
+|ch_ppocr_mobile_v2.0_rec| CRNN   | 识别   | CPU/GPU | 支持 | 支持 | fp32/fp16/int8 | 支持 |  
+|ch_ppocr_server_v2.0_det| DB     | 检测   | CPU/GPU | 支持 | 支持 | fp32/fp16/int8 | 支持 |  
+|ch_ppocr_server_v2.0_rec| CRNN   | 识别   | CPU/GPU | 支持 | 支持 | fp32/fp16/int8 | 支持 |  
 
 
 
