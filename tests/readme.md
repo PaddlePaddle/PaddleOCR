@@ -4,7 +4,7 @@
 飞桨除了基本的模型训练和预测，还提供了支持多端多平台的高性能推理部署工具。本文档提供了PaddleOCR中所有模型的推理部署导航，方便用户查阅每种模型的推理部署打通情况，并可以进行一键测试。
 
 <div align="center">
-    <img src="docs/guide.png" width="800">
+    <img src="docs/guide.png" width="1000">
 </div>
 
 打通情况分为以下四种情况：
