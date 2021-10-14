@@ -15,7 +15,7 @@
 
 | 算法论文 | 模型名称 | 模型类型 | python训练预测 |   其他  |
 | --- | :--- |  ----  | :-------- |  :----  |
-| DB     |ch_ppocr_mobile_v2.0_det_infer | 检测  | 支持 | 支持：C++预测/Serving/Lite <br> 待支持：PaddleJS |
+| DB     |ch_ppocr_mobile_v2.0_det_infer | 检测  | 已支持 | 已支持：C++预测 / Paddle Serving / Paddle-Lite <br> 待支持：Paddle.js |
 | DB     |ch_ppocr_server_v2.0_det_infer | 检测  | 支持 | |
 | DB     |ch_PP-OCRv2_det_infer          | 检测  |
 | CRNN   |ch_ppocr_mobile_v2.0_rec_infer | 识别  | 支持 | |
