@@ -13,33 +13,33 @@
 - **未覆盖**：PaddleOCR未进行打通测试，也没有接入一键测试
 - **不支持**：由于飞桨框架限制，暂时无法支持该功能
 
-| 模型名称 | 算法名称 | 模型类型 |python训练预测 | c++预测 | serving部署 | lite部署 |
-|  ----  |   ----  |    ----  |  ----   |  ----   |    ----    |  ----  |
-|ch_ppocr_mobile_v2.0_det_infer| DB     | 检测   | 支持  | 支持  | 支持  | 支持  |
-|ch_ppocr_mobile_v2.0_rec_infer| CRNN   | 识别   | 支持  | 支持  | 支持  | 支持  |
-|ch_ppocr_server_v2.0_det_infer| DB     | 检测   | 支持  | 支持  | 支持  | 支持  |
-|ch_ppocr_server_v2.0_rec_infer| CRNN   | 识别   | 支持  | 支持  | 支持  | 支持  |
-|ch_PP-OCRv2_det_infer         | DB     | 检测   | 未接入 | 未接入 |未接入 |未接入 |
-|ch_PP-OCRv2_rec_infer         | CRNN   | 识别   | 未接入 | 未接入 |未接入 |未接入 |
-|det_mv3_db_v2.0               | DB     | 检测   | 未接入 | 未接入 |未接入 |未接入 |
-|det_r50_vd_db_v2.0            | DB     | 检测   | 未接入 | 未接入 |未接入 |未接入 |
-|det_mv3_east_v2.0             | EAST   | 检测   | 未接入 | 未覆盖 | 未接入 | 未覆盖 |
-|det_r50_vd_east_v2.0          | EAST   | 检测   | 未接入 | 未覆盖 | 未接入 | 未覆盖 |
-|det_mv3_pse_v2.0              | PSENet | 检测   | 未接入 | 未覆盖 | 未接入 | 未覆盖 |
-|det_r50_vd_pse_v2.0           | PSENet | 检测   | 未接入 | 未覆盖 | 未覆盖 | 未覆盖 |
-|det_r50_vd_sast_totaltext_v2.0| SAST   | 检测   | 未接入 | 未覆盖 | 未覆盖 | 未覆盖 |
-|rec_mv3_none_none_ctc_v2.0    | Rosetta| 识别   |
-|rec_r34_vd_none_none_ctc_v2.0 | Rosetta| 识别   |
-|rec_mv3_none_bilstm_ctc_v2.0   | CRNN   | 识别  |
-|rec_r34_vd_none_bilstm_ctc_v2.0| CRNN   | 识别  |
-|rec_mv3_tps_bilstm_ctc_v2.0    | StarNet| 识别  |
-|rec_r34_vd_tps_bilstm_ctc_v2.0 | StarNet| 识别  |
-|rec_mv3_tps_bilstm_att_v2.0    | RARE   | 识别  |
-|rec_r34_vd_tps_bilstm_att_v2.0 | RARE   | 识别  |
-|rec_r50fpn_vd_none_srn         | SRN    | 识别  |
-|rec_mtb_nrtr                   | NRTR   | 识别  |
-|rec_r31_sar                    | SAR    | 识别  |
-|rec_r34_vd_none_none_ctc_v2.0  | PGNet  | 端到端|
+| 算法论文 | 模型名称 | 模型类型 | python训练预测 |   其他  |
+|  :----:   |:  ----   |  ----  |   : --------   |  :----  |
+| DB     |ch_ppocr_mobile_v2.0_det_infer | 检测  | 支持 | 支持：C++预测/Serving/Lite <br> 待支持：PaddleJS |
+| DB     |ch_ppocr_server_v2.0_det_infer | 检测  | 支持 | |
+| DB     |ch_PP-OCRv2_det_infer          | 检测  |
+| CRNN   |ch_ppocr_mobile_v2.0_rec_infer | 识别  | 支持 | |
+| CRNN   |ch_ppocr_server_v2.0_rec_infer | 识别  | 支持 | |
+| CRNN   |ch_PP-OCRv2_rec_infer          | 识别  |
+| DB     |det_mv3_db_v2.0                | 检测  |
+| DB     |det_r50_vd_db_v2.0             | 检测  |
+| EAST   |det_mv3_east_v2.0              | 检测  |
+| EAST   |det_r50_vd_east_v2.0           | 检测  |
+| PSENet |det_mv3_pse_v2.0               | 检测  |
+| PSENet |det_r50_vd_pse_v2.0            | 检测  |
+| SAST   |det_r50_vd_sast_totaltext_v2.0 | 检测  |
+| Rosetta|rec_mv3_none_none_ctc_v2.0     | 识别  |
+| Rosetta|rec_r34_vd_none_none_ctc_v2.0  | 识别  |
+| CRNN   |rec_mv3_none_bilstm_ctc_v2.0   | 识别  |
+| CRNN   |rec_r34_vd_none_bilstm_ctc_v2.0| 识别  |
+| StarNet|rec_mv3_tps_bilstm_ctc_v2.0    | 识别  |
+| StarNet|rec_r34_vd_tps_bilstm_ctc_v2.0 | 识别  |
+| RARE   |rec_mv3_tps_bilstm_att_v2.0    | 识别  |
+| RARE   |rec_r34_vd_tps_bilstm_att_v2.0 | 识别  |
+| SRN    |rec_r50fpn_vd_none_srn         | 识别  |
+| NRTR   |rec_mtb_nrtr                   | 识别  |
+| SAR    |rec_r31_sar                    | 识别  |
+| PGNet  |rec_r34_vd_none_none_ctc_v2.0  | 端到端|
 
 
 
