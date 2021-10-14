@@ -91,7 +91,7 @@ benchmark_value=$(func_parser_value "${lines[49]}")
 infer_key1=$(func_parser_key "${lines[50]}")
 infer_value1=$(func_parser_value "${lines[50]}")
 
-# parser serving
+# parser klquant_infer
 if [ ${MODE} = "klquant_infer" ]; then
     # parser inference model 
     infer_model_dir_list=$(func_parser_value "${lines[1]}")
@@ -123,7 +123,7 @@ fi
 
 LOG_PATH="./tests/output"
 mkdir -p ${LOG_PATH}
-status_log="${LOG_PATH}/results.log"
+status_log="${LOG_PATH}/results_python.log"
 
 
 function func_inference(){
