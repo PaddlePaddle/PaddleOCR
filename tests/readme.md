@@ -11,7 +11,7 @@
 
 | 算法论文 | 模型名称 | 模型类型 | python训练预测 |   其他  |
 | :--- | :--- |  :----  | :-------- |  :----  |
-| DB     |ch_ppocr_mobile_v2.0_det_infer | 检测  | 支持 | C++预测 / Paddle Serving / Paddle-Lite |
+| DB     |ch_ppocr_mobile_v2.0_det_infer | 检测  | 支持 | C++预测 <br> Paddle Serving: Python, C++  <br> Paddle-Lite: Python, C++ / ARM CPU |
 | DB     |ch_ppocr_server_v2.0_det_infer | 检测  | 支持 | C++预测 / Paddle Serving / Paddle-Lite |
 | DB     |ch_PP-OCRv2_det_infer          | 检测  |
 | CRNN   |ch_ppocr_mobile_v2.0_rec_infer | 识别  | 支持 | C++预测 / Paddle Serving / Paddle-Lite |
