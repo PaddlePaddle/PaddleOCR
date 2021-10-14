@@ -42,9 +42,9 @@
 |rec_r34_vd_none_none_ctc_v2.0  | PGNet  | 端到端|
 
 
-***
-# 一键测试工具使用
-## 目录介绍
+
+## 一键测试工具使用
+### 目录介绍
 
 ```shell
 tests/
@@ -74,7 +74,7 @@ tests/
 └── readme.md                 # 使用文档
 ```
 
-## 测试流程
+### 测试流程
 使用本工具，可以测试不同功能的支持情况，以及预测结果是否对齐，测试流程如下：
 <div align="center">
     <img src="docs/test.png" width="800">
