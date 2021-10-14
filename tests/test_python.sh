@@ -15,7 +15,6 @@ fi
 IFS=$'\n'
 lines=(${dataline})
 
-IFS=$'\n'
 # The training params
 model_name=$(func_parser_value "${lines[1]}")
 python=$(func_parser_value "${lines[2]}")
