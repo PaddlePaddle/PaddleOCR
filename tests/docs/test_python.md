@@ -18,14 +18,14 @@ Python功能测试的主程序为`test_python.sh`，可以测试基于Python的�
 
 - 预测相关：
 
-| 算法名称 | 模型名称 |device | batchsize=1/6 | mkldnn | cpu多线程 | tensorrt | 离线量化 |
+| 算法名称 | 模型名称 |device | batchsize | mkldnn | cpu多线程 | tensorrt | 离线量化 |
 |  ----  |   ----  |  ----  |  ---- |  ---- |  ----  |  ----| --- | 
-| DB   |ch_ppocr_mobile_v2.0_det| CPU/GPU | 支持 | 支持 | 支持 | fp32/fp16/int8 | 支持 |
-| DB   |ch_ppocr_server_v2.0_det| CPU/GPU | 支持 | 支持 | 支持 | fp32/fp16/int8 | 支持 
-| CRNN |ch_ppocr_mobile_v2.0_rec| CPU/GPU | 支持 | 支持 | 支持 | fp32/fp16/int8 | 支持 |
-| CRNN |ch_ppocr_server_v2.0_rec| CPU/GPU | 支持 | 支持 | 支持 | fp32/fp16/int8 | 支持 |
-|PP-OCR|ch_ppocr_server_v2.0    | CPU/GPU | 支持 | 支持 | 支持 | fp32/fp16/int8 | 支持 |
-|PP-OCR|ch_ppocr_server_v2.0    | CPU/GPU | 支持 | 支持 | 支持 | fp32/fp16/int8 | 支持 |
+| DB   |ch_ppocr_mobile_v2.0_det| CPU/GPU | 1/6 | 支持 | 支持 | fp32/fp16/int8 | 支持 |
+| DB   |ch_ppocr_server_v2.0_det| CPU/GPU | 1/6 | 支持 | 支持 | fp32/fp16/int8 | 支持 |
+| CRNN |ch_ppocr_mobile_v2.0_rec| CPU/GPU | 1/6 | 支持 | 支持 | fp32/fp16/int8 | 支持 |
+| CRNN |ch_ppocr_server_v2.0_rec| CPU/GPU | 1/6 | 支持 | 支持 | fp32/fp16/int8 | 支持 |
+|PP-OCR|ch_ppocr_server_v2.0    | CPU/GPU | 1/6 | 支持 | 支持 | fp32/fp16/int8 | 支持 |
+|PP-OCR|ch_ppocr_server_v2.0    | CPU/GPU | 1/6 | 支持 | 支持 | fp32/fp16/int8 | 支持 |
 
 
 
@@ -47,7 +47,7 @@ Python功能测试的主程序为`test_python.sh`，可以测试基于Python的�
 
 
 ## 2. 功能测试
-先运行`prepare.sh`准备数据和模型，然后运行`test_python.sh`进行测试，最终在```tests/output```目录下生成.log后缀的日志文件。
+先运行`prepare.sh`准备数据和模型，然后运行`test_python.sh`进行测试，最终在```tests/output```目录下生成`infer_*.log`格式的日志文件。
 
 test_python.sh包含四种运行模式，每种模式的运行数据不同，分别用于测试速度和精度，分别是：
 
