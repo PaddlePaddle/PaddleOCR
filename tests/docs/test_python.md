@@ -4,40 +4,28 @@ Python功能测试的主程序为`test_python.sh`，可以测试基于Python的�
 
 ## 测试结论汇总
 
-训练相关：方式包括：
-【单机单卡、单机多卡、多机多卡】*【正常训练、混合精度训练】*【裁剪、在线量化、蒸馏】
+- 训练相关：
 
-| 算法名称 | 模型名称 | 单机单卡 | 单机多卡 | 多机多卡 | 模型压缩 |
+| 算法名称 | 模型名称 | 单机单卡 | 单机多卡 | 多机多卡 | 模型压缩（单机多卡） |
 |  :----  |   :----  |    :----  |  :----   |  :----   |  :----   |
-|  DB  | ch_ppocr_mobile_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 裁剪、在线/离线量化、蒸馏 |
-|  DB  | ch_ppocr_server_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 裁剪、在线/离线量化、蒸馏 |
-| CRNN | ch_ppocr_mobile_v2.0_rec| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 裁剪、在线/离线量化、蒸馏 |
-| CRNN | ch_ppocr_server_v2.0_rec| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 裁剪、在线/离线量化、蒸馏 |
-|PP-OCR| ch_ppocr_server_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 裁剪、在线/离线量化、蒸馏 |
-|PP-OCR| ch_ppocr_server_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 裁剪、在线/离线量化、蒸馏 |
-
-| 算法名称 | 模型名称 | 单机单卡 | 单机多卡 | 多机多卡 |
-|  :----  |   :----  |    :----  |  :----   |  :----   |
-|  DB  | ch_ppocr_mobile_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 
-|  DB  | ch_ppocr_server_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 
-|  DB  | ch_ppocr_mobile_v2.0_det_pact| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 
-|  DB  | ch_ppocr_mobile_v2.0_det_fpgm| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 
-| CRNN | ch_ppocr_mobile_v2.0_rec| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 |
-| CRNN | ch_ppocr_server_v2.0_rec| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 |
-| CRNN | ch_ppocr_mobile_v2.0_rec_pact| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 |
-| CRNN | ch_ppocr_mobile_v2.0_rec_fpgm| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 |
-|PP-OCR| ch_ppocr_server_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 |
-|PP-OCR| ch_ppocr_server_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 |
+|  DB  | ch_ppocr_mobile_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练：FPGM裁剪、PACT量化 |
+|  DB  | ch_ppocr_server_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练：FPGM裁剪、PACT量化 |
+| CRNN | ch_ppocr_mobile_v2.0_rec| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练：FPGM裁剪、PACT量化 |
+| CRNN | ch_ppocr_server_v2.0_rec| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练：FPGM裁剪、PACT量化 |
+|PP-OCR| ch_ppocr_mobile_v2.0| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练：FPGM裁剪、PACT量化 |
+|PP-OCR| ch_ppocr_server_v2.0| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练：FPGM裁剪、PACT量化 |
 
 
-预测相关：
+- 预测相关：
 
-| 模型名称 | 算法名称 | 模型类型 |device | batchsize=1/6 | mkldnn | tensorrt | cpu多线程 | 
+| 算法名称 | 模型名称 |device | batchsize=1/6 | mkldnn | cpu多线程 | tensorrt | 离线量化 |
 |  ----  |   ----  |  ----  |  ---- |  ---- |  ----  |  ----| --- | 
-|ch_ppocr_mobile_v2.0_det| DB     | 检测   | CPU/GPU | 支持 | 支持 | fp32/fp16/int8 | 支持 |  
-|ch_ppocr_mobile_v2.0_rec| CRNN   | 识别   | CPU/GPU | 支持 | 支持 | fp32/fp16/int8 | 支持 |  
-|ch_ppocr_server_v2.0_det| DB     | 检测   | CPU/GPU | 支持 | 支持 | fp32/fp16/int8 | 支持 |  
-|ch_ppocr_server_v2.0_rec| CRNN   | 识别   | CPU/GPU | 支持 | 支持 | fp32/fp16/int8 | 支持 |  
+| DB   |ch_ppocr_mobile_v2.0_det| CPU/GPU | 支持 | 支持 | 支持 | fp32/fp16/int8 | 支持 |
+| DB   |ch_ppocr_server_v2.0_det| CPU/GPU | 支持 | 支持 | 支持 | fp32/fp16/int8 | 支持 
+| CRNN |ch_ppocr_mobile_v2.0_rec| CPU/GPU | 支持 | 支持 | 支持 | fp32/fp16/int8 | 支持 |
+| CRNN |ch_ppocr_server_v2.0_rec| CPU/GPU | 支持 | 支持 | 支持 | fp32/fp16/int8 | 支持 |
+|PP-OCR|ch_ppocr_server_v2.0    | CPU/GPU | 支持 | 支持 | 支持 | fp32/fp16/int8 | 支持 |
+|PP-OCR|ch_ppocr_server_v2.0    | CPU/GPU | 支持 | 支持 | 支持 | fp32/fp16/int8 | 支持 |
 
 
 
@@ -92,3 +80,28 @@ bash tests/test.sh ./tests/configs/ppocr_det_mobile_params.txt 'whole_train_infe
 
 
 ## 3. 精度测试
+
+使用compare_results.py脚本比较模型预测的结果是否符合预期，主要步骤包括：
+- 提取日志中的预测坐标；
+- 从本地文件中提取保存好的坐标结果；
+- 比较上述两个结果是否符合精度预期，误差大于设置阈值时会报错。
+
+### 使用方式
+运行命令：
+```shell
+python3.7 tests/compare_results.py --gt_file=./tests/results/*.txt  --log_file=./tests/output/infer_*.log --atol=1e-3 --rtol=1e-3
+```
+
+参数介绍：  
+- gt_file： 指向事先保存好的预测结果路径，支持*.txt 结尾，会自动索引*.txt格式的文件，文件默认保存在tests/result/ 文件夹下
+- log_file: 指向运行tests/test.sh 脚本的infer模式保存的预测日志，预测日志中打印的有预测结果，比如：文本框，预测文本，类别等等，同样支持infer_*.log格式传入
+- atol: 设置的绝对误差
+- rtol: 设置的相对误差
+
+### 运行结果
+
+正常运行效果如下图：
+<img src="compare_right.png" width="1000">
+
+出现不一致结果时的运行输出：
+<img src="compare_wrong.png" width="1000">
