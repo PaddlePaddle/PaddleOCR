@@ -141,6 +141,7 @@ Train:
           img_mode: BGR
           channel_first: False
       - DetLabelEncode: # Class handling label
+      - CopyPaste:
       - IaaAugment:
           augmenter_args:
             - { 'type': Fliplr, 'args': { 'p': 0.5 } }
