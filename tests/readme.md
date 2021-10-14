@@ -14,7 +14,7 @@
 - **不支持**：由于飞桨框架限制，暂时无法支持该功能
 
 | 算法论文 | 模型名称 | 模型类型 | python训练预测 |   其他  |
-|  :----:   |:  ----   |  ----  |   : --------   |  :----  |
+| --- | :--- |  ----  | :-------- |  :----  |
 | DB     |ch_ppocr_mobile_v2.0_det_infer | 检测  | 支持 | 支持：C++预测/Serving/Lite <br> 待支持：PaddleJS |
 | DB     |ch_ppocr_server_v2.0_det_infer | 检测  | 支持 | |
 | DB     |ch_PP-OCRv2_det_infer          | 检测  |
