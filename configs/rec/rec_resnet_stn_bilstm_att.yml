@@ -1,0 +1,109 @@
+Global:
+  use_gpu: True
+  epoch_num: 400
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: ./output/rec/seed
+  save_epoch_step: 3
+  # evaluation is run every 5000 iterations after the 4000th iteration
+  eval_batch_step: [0, 2000]
+  cal_metric_during_train: True
+  pretrained_model:
+  checkpoints:
+  save_inference_dir:
+  use_visualdl: False
+  infer_img: doc/imgs_words_en/word_10.png
+  # for data or label process
+  character_dict_path: 
+  character_type: EN_symbol
+  max_text_length: 100
+  infer_mode: False
+  use_space_char: False
+  save_res_path: ./output/rec/predicts_seed.txt
+
+
+Optimizer:
+  name: Adadelta
+  weight_deacy: 0.0
+  momentum: 0.9
+  lr:
+    name: Piecewise
+    decay_epochs: [4,5,8]
+    values: [1.0, 0.1, 0.01]
+  regularizer:
+    name: 'L2'
+    factor: 2.0e-05
+
+
+Architecture:
+  model_type: rec
+  algorithm: SEED
+  Transform:
+    name: STN_ON
+    tps_inputsize: [32, 64]
+    tps_outputsize: [32, 100]
+    num_control_points: 20
+    tps_margins: [0.05,0.05]
+    stn_activation: none
+  Backbone:
+    name: ResNet_ASTER
+  Head:
+    name: AsterHead  # AttentionHead
+    sDim: 512
+    attDim: 512
+    max_len_labels: 100
+
+Loss:
+  name: AsterLoss
+
+PostProcess:
+  name: SEEDLabelDecode
+
+Metric:
+  name: RecMetric
+  main_indicator: acc
+  is_filter: True
+
+Train:
+  dataset:
+    name: LMDBDataSet
+    data_dir: ./train_data/data_lmdb_release/training/
+    transforms:
+      - Fasttext:
+          path: "./cc.en.300.bin"
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - SEEDLabelEncode: # Class handling label
+      - RecResizeImg:
+          character_type: en
+          image_shape: [3, 64, 256]
+          padding: False
+      - KeepKeys:
+          keep_keys: ['image', 'label', 'length', 'fast_label'] # dataloader will return list in this order
+  loader:
+    shuffle: True
+    batch_size_per_card: 256
+    drop_last: True
+    num_workers: 6
+
+Eval:
+  dataset:
+    name: LMDBDataSet
+    data_dir: ./train_data/data_lmdb_release/evaluation/
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - SEEDLabelEncode: # Class handling label
+      - RecResizeImg:
+          character_type: en
+          image_shape: [3, 64, 256]
+          padding: False
+      - KeepKeys:
+          keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
+  loader:
+    shuffle: False
+    drop_last: True
+    batch_size_per_card: 256
+    num_workers: 4

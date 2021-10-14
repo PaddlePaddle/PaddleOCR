@@ -68,8 +68,7 @@ Loss:
       ohem_ratio: 3
   - DistillationDBLoss:
       weight: 1.0
-      model_name_list: ["Student", "Teacher"]
-      # key: maps
+      model_name_list: ["Student"]
       name: DBLoss
       balance_loss: true
       main_loss_type: DiceLoss
@@ -116,6 +115,7 @@ Train:
           img_mode: BGR
           channel_first: False
       - DetLabelEncode: # Class handling label
+      - CopyPaste:
       - IaaAugment:
           augmenter_args:
             - { 'type': Fliplr, 'args': { 'p': 0.5 } }

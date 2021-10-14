@@ -141,7 +141,6 @@ if __name__ == "__main__":
         img, flag = check_and_read_gif(image_file)
         if not flag:
             img = cv2.imread(image_file)
-            img = img[:, :, ::-1]
         if img is None:
             logger.info("error in loading image:{}".format(image_file))
             continue

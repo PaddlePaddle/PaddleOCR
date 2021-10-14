@@ -15,6 +15,10 @@
 import paddle
 import paddle.nn as nn
 
+from .rec_ctc_loss import CTCLoss
+from .center_loss import CenterLoss
+from .ace_loss import ACELoss
+
 from .distillation_loss import DistillationCTCLoss
 from .distillation_loss import DistillationDMLLoss
 from .distillation_loss import DistillationDistanceLoss, DistillationDBLoss, DistillationDilaDBLoss

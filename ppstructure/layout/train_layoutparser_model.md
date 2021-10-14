@@ -4,9 +4,9 @@
 
 ​  [1.1 Requirements](#Requirements)
 
-​  [1.2 Install PaddleDetection](#Install PaddleDetection)
+​  [1.2 Install PaddleDetection](#Install_PaddleDetection)
 
-[2.  Data preparation](#Data preparation)
+[2.  Data preparation](#Data_reparation)
 
 [3. Configuration](#Configuration)
 
@@ -16,7 +16,7 @@
 
 [6. Deployment](#Deployment)
 
-​  [6.1 Export model](#Export model)
+​  [6.1 Export model](#Export_model)
 
 ​  [6.2 Inference](#Inference)  
 
@@ -35,7 +35,7 @@
 - CUDA >= 10.1
 - cuDNN >= 7.6
 
-<a name="Install PaddleDetection"></a>
+<a name="Install_PaddleDetection"></a>
 
 ### 1.2 Install PaddleDetection
 
@@ -51,7 +51,7 @@ pip install -r requirements.txt
 
 For more installation tutorials, please refer to： [Install doc](https://github.com/PaddlePaddle/PaddleDetection/blob/release/2.1/docs/tutorials/INSTALL_cn.md)
 
-<a name="Data preparation"></a>
+<a name="Data_preparation"></a>
 
 ## 2. Data preparation
 
@@ -165,7 +165,7 @@ python tools/infer.py -c configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml --infer
 
 Use your trained model in Layout Parser
 
-<a name="Export model"></a>
+<a name="Export_model"></a>
 
 ### 6.1 Export model
 
