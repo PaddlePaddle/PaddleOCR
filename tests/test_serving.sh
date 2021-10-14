@@ -2,38 +2,39 @@
 source tests/common_func.sh
 
 FILENAME=$1
-dataline=$(awk 'NR==67, NR==81{print}'  $FILENAME)
+dataline=$(awk 'NR==67, NR==83{print}'  $FILENAME)
 
 # parser params
 IFS=$'\n'
 lines=(${dataline})
 
 # parser serving
-trans_model_py=$(func_parser_value "${lines[1]}")
-infer_model_dir_key=$(func_parser_key "${lines[2]}")
-infer_model_dir_value=$(func_parser_value "${lines[2]}")
-model_filename_key=$(func_parser_key "${lines[3]}")
-model_filename_value=$(func_parser_value "${lines[3]}")
-params_filename_key=$(func_parser_key "${lines[4]}")
-params_filename_value=$(func_parser_value "${lines[4]}")
-serving_server_key=$(func_parser_key "${lines[5]}")
-serving_server_value=$(func_parser_value "${lines[5]}")
-serving_client_key=$(func_parser_key "${lines[6]}")
-serving_client_value=$(func_parser_value "${lines[6]}")
-serving_dir_value=$(func_parser_value "${lines[7]}")
-web_service_py=$(func_parser_value "${lines[8]}")
-web_use_gpu_key=$(func_parser_key "${lines[9]}")
-web_use_gpu_list=$(func_parser_value "${lines[9]}")
-web_use_mkldnn_key=$(func_parser_key "${lines[10]}")
-web_use_mkldnn_list=$(func_parser_value "${lines[10]}")
-web_cpu_threads_key=$(func_parser_key "${lines[11]}")
-web_cpu_threads_list=$(func_parser_value "${lines[11]}")
-web_use_trt_key=$(func_parser_key "${lines[12]}")
-web_use_trt_list=$(func_parser_value "${lines[12]}")
-web_precision_key=$(func_parser_key "${lines[13]}")
-web_precision_list=$(func_parser_value "${lines[13]}")
-pipeline_py=$(func_parser_value "${lines[14]}")
-
+model_name=$(func_parser_value "${lines[1]}")
+python=$(func_parser_value "${lines[2]}")
+trans_model_py=$(func_parser_value "${lines[3]}")
+infer_model_dir_key=$(func_parser_key "${lines[4]}")
+infer_model_dir_value=$(func_parser_value "${lines[4]}")
+model_filename_key=$(func_parser_key "${lines[5]}")
+model_filename_value=$(func_parser_value "${lines[5]}")
+params_filename_key=$(func_parser_key "${lines[6]}")
+params_filename_value=$(func_parser_value "${lines[6]}")
+serving_server_key=$(func_parser_key "${lines[7]}")
+serving_server_value=$(func_parser_value "${lines[7]}")
+serving_client_key=$(func_parser_key "${lines[8]}")
+serving_client_value=$(func_parser_value "${lines[8]}")
+serving_dir_value=$(func_parser_value "${lines[9]}")
+web_service_py=$(func_parser_value "${lines[10]}")
+web_use_gpu_key=$(func_parser_key "${lines[11]}")
+web_use_gpu_list=$(func_parser_value "${lines[11]}")
+web_use_mkldnn_key=$(func_parser_key "${lines[12]}")
+web_use_mkldnn_list=$(func_parser_value "${lines[12]}")
+web_cpu_threads_key=$(func_parser_key "${lines[13]}")
+web_cpu_threads_list=$(func_parser_value "${lines[13]}")
+web_use_trt_key=$(func_parser_key "${lines[14]}")
+web_use_trt_list=$(func_parser_value "${lines[14]}")
+web_precision_key=$(func_parser_key "${lines[15]}")
+web_precision_list=$(func_parser_value "${lines[15]}")
+pipeline_py=$(func_parser_value "${lines[16]}")
 
 LOG_PATH="./tests/output"
 mkdir -p ${LOG_PATH}
