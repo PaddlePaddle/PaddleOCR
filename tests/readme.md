@@ -7,18 +7,16 @@
     <img src="docs/guide.png" width="1000">
 </div>
 
-打通情况分为以下四种情况：
-- **已支持**：可以一键测试
-- **待支持**：PaddleOCR已支持该功能，但还未接入一键测试
+打通情况汇总如下，已填写的部分表示可以使用本工具进行一键测试，未填写的表示正在支持中。
 
 | 算法论文 | 模型名称 | 模型类型 | python训练预测 |   其他  |
 | :--- | :--- |  :----  | :-------- |  :----  |
-| DB     |ch_ppocr_mobile_v2.0_det_infer | 检测  | 已支持 | 已支持：C++预测 / Paddle Serving / Paddle-Lite <br> 待支持：Paddle.js |
-| DB     |ch_ppocr_server_v2.0_det_infer | 检测  | 已支持 | 已支持：C++预测 / Paddle Serving / Paddle-Lite <br> 待支持：Paddle.js |
-| DB     |ch_PP-OCRv2_det_infer          | 检测  | 待支持 | 待支持 |
-| CRNN   |ch_ppocr_mobile_v2.0_rec_infer | 识别  | 已支持 | 已支持：C++预测 / Paddle Serving / Paddle-Lite <br> 待支持：Paddle.js |
-| CRNN   |ch_ppocr_server_v2.0_rec_infer | 识别  | 已支持 | 已支持：C++预测 / Paddle Serving / Paddle-Lite <br> 待支持：Paddle.js |
-| CRNN   |ch_PP-OCRv2_rec_infer          | 识别  | 待支持 | 待支持 |
+| DB     |ch_ppocr_mobile_v2.0_det_infer | 检测  | 支持 | C++预测 / Paddle Serving / Paddle-Lite |
+| DB     |ch_ppocr_server_v2.0_det_infer | 检测  | 支持 | C++预测 / Paddle Serving / Paddle-Lite |
+| DB     |ch_PP-OCRv2_det_infer          | 检测  |
+| CRNN   |ch_ppocr_mobile_v2.0_rec_infer | 识别  | 支持 | C++预测 / Paddle Serving / Paddle-Lite |
+| CRNN   |ch_ppocr_server_v2.0_rec_infer | 识别  | 支持 | C++预测 / Paddle Serving / Paddle-Lite |
+| CRNN   |ch_PP-OCRv2_rec_infer          | 识别  |
 | DB     |det_mv3_db_v2.0                | 检测  |
 | DB     |det_r50_vd_db_v2.0             | 检测  |
 | EAST   |det_mv3_east_v2.0              | 检测  |
