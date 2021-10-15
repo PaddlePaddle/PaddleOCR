@@ -253,6 +253,11 @@ else
             env=" "
         fi
         for autocast in ${autocast_list[*]}; do 
+            if [ ${autocast} = "amp" ]; then
+                set_amp_config="Gloabl.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True"
+            else
+                set_amp_config=" "
+            fi          
             for trainer in ${trainer_list[*]}; do 
                 flag_quant=False
                 if [ ${trainer} = ${pact_key} ]; then
@@ -279,7 +284,6 @@ else
                 if [ ${run_train} = "null" ]; then
                     continue
                 fi
-                
                 set_autocast=$(func_set_params "${autocast_key}" "${autocast}")
                 set_epoch=$(func_set_params "${epoch_key}" "${epoch_num}")
                 set_pretrain=$(func_set_params "${pretrain_model_key}" "${pretrain_model_value}")
@@ -295,11 +299,11 @@ else
 
                 set_save_model=$(func_set_params "${save_model_key}" "${save_log}")
                 if [ ${#gpu} -le 2 ];then  # train with cpu or single gpu
-                    cmd="${python} ${run_train} ${set_use_gpu}  ${set_save_model} ${set_epoch} ${set_pretrain} ${set_autocast} ${set_batchsize} ${set_train_params1} "
+                    cmd="${python} ${run_train} ${set_use_gpu}  ${set_save_model} ${set_epoch} ${set_pretrain} ${set_autocast} ${set_batchsize} ${set_train_params1} ${set_amp_config} "
                 elif [ ${#gpu} -le 15 ];then  # train with multi-gpu
-                    cmd="${python} -m paddle.distributed.launch --gpus=${gpu} ${run_train} ${set_save_model} ${set_epoch} ${set_pretrain} ${set_autocast} ${set_batchsize} ${set_train_params1}"
+                    cmd="${python} -m paddle.distributed.launch --gpus=${gpu} ${run_train} ${set_save_model} ${set_epoch} ${set_pretrain} ${set_autocast} ${set_batchsize} ${set_train_params1} ${set_amp_config}"
                 else     # train with multi-machine
-                    cmd="${python} -m paddle.distributed.launch --ips=${ips} --gpus=${gpu} ${run_train} ${set_save_model} ${set_pretrain} ${set_epoch} ${set_autocast} ${set_batchsize} ${set_train_params1}"
+                    cmd="${python} -m paddle.distributed.launch --ips=${ips} --gpus=${gpu} ${run_train} ${set_save_model} ${set_pretrain} ${set_epoch} ${set_autocast} ${set_batchsize} ${set_train_params1} ${set_amp_config}"
                 fi
                 # run train
                 eval "unset CUDA_VISIBLE_DEVICES"

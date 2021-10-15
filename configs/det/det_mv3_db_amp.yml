@@ -14,8 +14,8 @@ Global:
   use_visualdl: False
   infer_img: doc/imgs_en/img_10.jpg
   save_res_path: ./output/det_db/predicts_db.txt
-
-AMP:
+  #amp related
+  use_amp: True
   scale_loss: 1024.0
   use_dynamic_loss_scaling: True
 
