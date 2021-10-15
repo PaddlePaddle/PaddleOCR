@@ -78,6 +78,11 @@ bash tests/prepare.sh ./tests/configs/ppocr_det_mobile_params.txt 'whole_train_i
 bash tests/test.sh ./tests/configs/ppocr_det_mobile_params.txt 'whole_train_infer'
 ```  
 
+- 模式5：klquant_infer , 测试离线量化；
+```shell
+bash tests/test_python.sh tests/configs/ppocr_det_mobile_params.txt  'klquant_infer'
+```
+
 
 ## 3. 精度测试
 
@@ -89,7 +94,7 @@ bash tests/test.sh ./tests/configs/ppocr_det_mobile_params.txt 'whole_train_infe
 ### 使用方式
 运行命令：
 ```shell
-python3.7 tests/compare_results.py --gt_file=./tests/results/*.txt  --log_file=./tests/output/infer_*.log --atol=1e-3 --rtol=1e-3
+python3.7 tests/compare_results.py --gt_file=./tests/results/python_*.txt  --log_file=./tests/output/python_*.log --atol=1e-3 --rtol=1e-3
 ```
 
 参数介绍：  

@@ -38,7 +38,7 @@ bash tests/test_cpp.sh ./tests/configs/ppocr_det_mobile_params.txt '1'
 ### 使用方式
 运行命令：
 ```shell
-python3.7 tests/compare_results.py --gt_file=./tests/results/*.txt  --log_file=./tests/output/infer_*.log --atol=1e-3 --rtol=1e-3
+python3.7 tests/compare_results.py --gt_file=./tests/results/cpp_*.txt  --log_file=./tests/output/cpp_*.log --atol=1e-3 --rtol=1e-3
 ```
 
 参数介绍：  

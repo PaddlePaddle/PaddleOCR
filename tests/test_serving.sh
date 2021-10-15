@@ -93,7 +93,7 @@ function func_serving(){
                     if [[ ${use_trt} = "False" || ${precision} =~ "int8" ]] && [[ ${_flag_quant} = "True" ]]; then
                         continue
                     fi
-                    _save_log_path="${_log_path}/infer_gpu_usetrt_${use_trt}_precision_${precision}_batchsize_1.log"
+                    _save_log_path="${_log_path}/server_gpu_usetrt_${use_trt}_precision_${precision}_batchsize_1.log"
                     set_tensorrt=$(func_set_params "${web_use_trt_key}" "${use_trt}")
                     set_precision=$(func_set_params "${web_precision_key}" "${precision}")
                     web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}=${use_gpu} ${set_tensorrt} ${set_precision} &>${_save_log_path} & "
