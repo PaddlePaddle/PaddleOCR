@@ -226,14 +226,29 @@ def train(config,
             images = batch[0]
             if use_srn:
                 model_average = True
-            if model_type == 'table' or extra_input:
-                preds = model(images, data=batch[1:])
+
+            # use amp
+            if scaler:
+                with paddle.amp.auto_cast():
+                    if model_type == 'table' or extra_input:
+                        preds = model(images, data=batch[1:])
+                    else:
+                        preds = model(images)
             else:
-                preds = model(images)
+                if model_type == 'table' or extra_input:
+                    preds = model(images, data=batch[1:])
+                else:
+                    preds = model(images)
             loss = loss_class(preds, batch)
             avg_loss = loss['loss']
-            avg_loss.backward()
-            optimizer.step()
+
+            if scaler:
+                scaled_avg_loss = scaler.scale(avg_loss)
+                scaled_avg_loss.backward()
+                scaler.minimize(optimizer, scaled_avg_loss)
+            else:
+                avg_loss.backward()
+                optimizer.step()
             optimizer.clear_grad()
 
             train_batch_cost += time.time() - batch_start
