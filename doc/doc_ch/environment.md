@@ -1,5 +1,12 @@
 # 运行环境准备
+
 Windows和Mac用户推荐使用Anaconda搭建Python环境，Linux用户建议使用docker搭建PyThon环境。
+
+推荐环境：
+- PaddlePaddle >= 2.0.0 (2.1.2)
+- python3.7
+- CUDA10.1 / CUDA10.2
+- CUDNN 7.6
 
 如果对于Python环境熟悉的用户可以直接跳到第2步安装PaddlePaddle。
 
@@ -123,13 +130,13 @@ Windows和Mac用户推荐使用Anaconda搭建Python环境，Linux用户建议使
     # !! Contents within this block are managed by 'conda init' !!
     __conda_setup="$('/Users/xxx/opt/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
     if [ $? -eq 0 ]; then
-    		eval "$__conda_setup"
+            eval "$__conda_setup"
     else
-    		if [ -f "/Users/xxx/opt/anaconda3/etc/profile.d/conda.sh" ]; then
-    				. "/Users/xxx/opt/anaconda3/etc/profile.d/conda.sh"
-    		else
-    				export PATH="/Users/xxx/opt/anaconda3/bin:$PATH"
-    		fi
+            if [ -f "/Users/xxx/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+                    . "/Users/xxx/opt/anaconda3/etc/profile.d/conda.sh"
+            else
+                    export PATH="/Users/xxx/opt/anaconda3/bin:$PATH"
+            fi
     fi
     unset __conda_setup
     # <<< conda initialize <<<
@@ -294,11 +301,12 @@ cd /home/Projects
 # 首次运行需创建一个docker容器，再次运行时不需要运行当前命令
 # 创建一个名字为ppocr的docker容器，并将当前目录映射到容器的/paddle目录下
 
-如果您希望在CPU环境下使用docker，使用docker而不是nvidia-docker创建docker
-sudo docker run --name ppocr -v $PWD:/paddle --network=host -it paddlepaddle/paddle:latest-dev-cuda10.1-cudnn7-gcc82 /bin/bash
+#如果您希望在CPU环境下使用docker，使用docker而不是nvidia-docker创建docker
+sudo docker run --name ppocr -v $PWD:/paddle --network=host -it registry.baidubce.com/paddlepaddle/paddle:2.1.3-gpu-cuda10.2-cudnn7 /bin/bash
 
-如果使用CUDA10，请运行以下命令创建容器，设置docker容器共享内存shm-size为64G，建议设置32G以上
-sudo nvidia-docker run --name ppocr -v $PWD:/paddle --shm-size=64G --network=host -it paddlepaddle/paddle:latest-dev-cuda10.1-cudnn7-gcc82 /bin/bash
+#如果使用CUDA10，请运行以下命令创建容器，设置docker容器共享内存shm-size为64G，建议设置32G以上
+# 如果是CUDA11+CUDNN8，推荐使用镜像registry.baidubce.com/paddlepaddle/paddle:2.1.3-gpu-cuda11.2-cudnn8
+sudo nvidia-docker run --name ppocr -v $PWD:/paddle --shm-size=64G --network=host -it registry.baidubce.com/paddlepaddle/paddle:2.1.3-gpu-cuda10.2-cudnn7 /bin/bash
 
 # ctrl+P+Q可退出docker 容器，重新进入docker 容器使用如下命令
 sudo docker container exec -it ppocr /bin/bash
@@ -321,8 +329,3 @@ python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
 ```
 
 更多的版本需求，请参照[飞桨官网安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
-
-
-
-
-
