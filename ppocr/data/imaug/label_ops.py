@@ -99,6 +99,7 @@ class BaseRecLabelEncode(object):
         self.max_text_len = max_text_length
         self.beg_str = "sos"
         self.end_str = "eos"
+        self.lower = False
 
         if character_dict_path is None:
             logger = get_logger()

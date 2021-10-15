@@ -29,7 +29,6 @@ class BaseRecLabelDecode(object):
         if character_dict_path is None:
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
-            self.lower = True
         else:
             with open(character_dict_path, "rb") as fin:
                 lines = fin.readlines()
