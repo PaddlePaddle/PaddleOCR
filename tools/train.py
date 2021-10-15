@@ -122,7 +122,7 @@ def main(config, device, logger, vdl_writer):
     # start train
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,
-                  eval_class, pre_best_model_dict, logger, vdl_writer)
+                  eval_class, pre_best_model_dict, logger, vdl_writer, scaler)
 
 
 def test_reader(config, device, logger):

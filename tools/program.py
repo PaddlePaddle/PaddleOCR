@@ -159,7 +159,8 @@ def train(config,
           eval_class,
           pre_best_model_dict,
           logger,
-          vdl_writer=None):
+          vdl_writer=None,
+          scaler=None):
     cal_metric_during_train = config['Global'].get('cal_metric_during_train',
                                                    False)
     log_smooth_window = config['Global']['log_smooth_window']
