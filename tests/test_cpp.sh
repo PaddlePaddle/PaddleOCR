@@ -57,7 +57,7 @@ function func_cpp_inference(){
                 for threads in ${cpp_cpu_threads_list[*]}; do
                     for batch_size in ${cpp_batch_size_list[*]}; do
                         precision="fp32"
-                        if [ ${_flag_quant} = "True" ]; then
+                        if [ ${use_mkldnn} = "False" ] && [ ${_flag_quant} = "True" ]; then
                             precison="int8"
                         fi
                         _save_log_path="${_log_path}/cpp_infer_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_precision_${precision}_batchsize_${batch_size}.log"
