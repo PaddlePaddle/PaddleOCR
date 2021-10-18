@@ -80,6 +80,7 @@ bash tests/test.sh ./tests/configs/ppocr_det_mobile_params.txt 'whole_train_infe
 
 - 模式5：klquant_infer , 测试离线量化；
 ```shell
+bash tests/prepare.sh ./tests/configs/ppocr_det_mobile_params.txt 'klquant_infer'
 bash tests/test_python.sh tests/configs/ppocr_det_mobile_params.txt  'klquant_infer'
 ```
 
@@ -110,3 +111,8 @@ python3.7 tests/compare_results.py --gt_file=./tests/results/python_*.txt  --log
 
 出现不一致结果时的运行输出：
 <img src="compare_wrong.png" width="1000">
+
+***
+本文档为功能测试用，更丰富的训练预测使用教程请参考：  
+[模型训练](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/training.md)  
+[基于Python预测引擎推理](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/inference.md)

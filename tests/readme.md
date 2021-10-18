@@ -9,13 +9,13 @@
 
 打通情况汇总如下，已填写的部分表示可以使用本工具进行一键测试，未填写的表示正在支持中。
 
-| 算法论文 | 模型名称 | 模型类型 | python训练预测 |   其他  |
-| :--- | :--- |  :----  | :-------- |  :----  |
-| DB     |ch_ppocr_mobile_v2.0_det | 检测  | 支持 | Paddle Inference: C++预测 <br> Paddle Serving: Python, C++  <br> Paddle-Lite: Python, C++ / ARM CPU |
-| DB     |ch_ppocr_server_v2.0_det | 检测  | 支持 | Paddle Inference: C++预测 <br> Paddle Serving: Python, C++  <br> Paddle-Lite: Python, C++ / ARM CPU |
+| 算法论文 | 模型名称 | 模型类型 | 基础训练预测 <br> （模型训练&Python预测） |   其他  |
+| :--- | :--- |  :----  | :--------: |  :----  |
+| DB     |ch_ppocr_mobile_v2.0_det | 检测  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++  <br> Paddle-Lite: ARM CPU(C++) |
+| DB     |ch_ppocr_server_v2.0_det | 检测  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++  <br> Paddle-Lite: ARM CPU(C++) |
 | DB     |ch_PP-OCRv2_det          | 检测  |
-| CRNN   |ch_ppocr_mobile_v2.0_rec | 识别  | 支持 | Paddle Inference: C++预测 <br> Paddle Serving: Python, C++  <br> Paddle-Lite: Python, C++ / ARM CPU |
-| CRNN   |ch_ppocr_server_v2.0_rec | 识别  | 支持 | Paddle Inference: C++预测 <br> Paddle Serving: Python, C++  <br> Paddle-Lite: Python, C++ / ARM CPU |
+| CRNN   |ch_ppocr_mobile_v2.0_rec | 识别  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++  <br> Paddle-Lite: ARM CPU(C++) |
+| CRNN   |ch_ppocr_server_v2.0_rec | 识别  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++  <br> Paddle-Lite: ARM CPU(C++) |
 | CRNN   |ch_PP-OCRv2_rec          | 识别  |
 | DB     |det_mv3_db_v2.0                | 检测  |
 | DB     |det_r50_vd_db_v2.0             | 检测  |
@@ -56,10 +56,10 @@ tests/
 	├── ppocr_rec_server_params.txt     # 测试server版ppocr识别模型的参数配置文件
 	├── ...                                
 ├── results/   # 预先保存的预测结果，用于和实际预测结果进行精读比对
-	├── ppocr_det_mobile_results_fp32.txt           # 预存的mobile版ppocr检测模型fp32精度的结果
-	├── ppocr_det_mobile_results_fp16.txt           # 预存的mobile版ppocr检测模型fp16精度的结果
-	├── ppocr_det_mobile_results_fp32_cpp.txt       # 预存的mobile版ppocr检测模型c++预测的fp32精度的结果
-	├── ppocr_det_mobile_results_fp16_cpp.txt       # 预存的mobile版ppocr检测模型c++预测的fp16精度的结果
+	├── python_ppocr_det_mobile_results_fp32.txt           # 预存的mobile版ppocr检测模型python预测fp32精度的结果
+	├── python_ppocr_det_mobile_results_fp16.txt           # 预存的mobile版ppocr检测模型python预测fp16精度的结果
+	├── cpp_ppocr_det_mobile_results_fp32.txt       # 预存的mobile版ppocr检测模型c++预测的fp32精度的结果
+	├── cpp_ppocr_det_mobile_results_fp16.txt       # 预存的mobile版ppocr检测模型c++预测的fp16精度的结果
 	├── ...
 ├── prepare.sh                # 完成test_*.sh运行所需要的数据和模型下载
 ├── test_python.sh            # 测试python训练预测的主程序

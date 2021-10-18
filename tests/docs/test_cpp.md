@@ -19,7 +19,7 @@ C++预测功能测试的主程序为`test_cpp.sh`，可以测试基于C++预测�
 先运行`prepare.sh`准备数据和模型，然后运行`test_cpp.sh`进行测试，最终在```tests/output```目录下生成`cpp_infer_*.log`后缀的日志文件。
 
 ```shell
-bash tests/prepare.sh ./tests/configs/ppocr_det_mobile_params.txt
+bash tests/prepare.sh ./tests/configs/ppocr_det_mobile_params.txt "cpp_infer"
 
 # 用法1:
 bash tests/test_cpp.sh ./tests/configs/ppocr_det_mobile_params.txt
@@ -50,7 +50,10 @@ python3.7 tests/compare_results.py --gt_file=./tests/results/cpp_*.txt  --log_fi
 ### 运行结果
 
 正常运行效果如下图：
-<img src="compare_right.png" width="1000">
+<img src="compare_cpp_right.png" width="1000">
 
 出现不一致结果时的运行输出：
-<img src="compare_wrong.png" width="1000">
+<img src="compare_cpp_wrong.png" width="1000">
+
+***
+本文档为功能测试用，更详细的c++预测使用教程请参考：[服务器端C++预测](https://github.com/PaddlePaddle/PaddleOCR/tree/dygraph/deploy/cpp_infer)  
