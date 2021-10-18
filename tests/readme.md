@@ -9,13 +9,18 @@
 
 打通情况汇总如下，已填写的部分表示可以使用本工具进行一键测试，未填写的表示正在支持中。
 
-| 算法论文 | 模型名称 | 模型类型 | 基础训练预测 <br> （模型训练&Python预测） |   其他  |
+**字段说明：**
+- 基础训练预测：必选支持功能，包括模型训练、Paddle Inference Python预测。
+- 其他：可选支持功能，包括Paddle Inference C++预测、Paddle Serving部署、Paddle-Lite部署。
+
+
+| 算法论文 | 模型名称 | 模型类型 | 基础训练预测 |   其他  |
 | :--- | :--- |  :----  | :--------: |  :----  |
-| DB     |ch_ppocr_mobile_v2.0_det | 检测  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++  <br> Paddle-Lite: ARM CPU(C++) |
-| DB     |ch_ppocr_server_v2.0_det | 检测  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++  <br> Paddle-Lite: ARM CPU(C++) |
+| DB     |ch_ppocr_mobile_v2.0_det | 检测  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
+| DB     |ch_ppocr_server_v2.0_det | 检测  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
 | DB     |ch_PP-OCRv2_det          | 检测  |
-| CRNN   |ch_ppocr_mobile_v2.0_rec | 识别  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++  <br> Paddle-Lite: ARM CPU(C++) |
-| CRNN   |ch_ppocr_server_v2.0_rec | 识别  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++  <br> Paddle-Lite: ARM CPU(C++) |
+| CRNN   |ch_ppocr_mobile_v2.0_rec | 识别  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
+| CRNN   |ch_ppocr_server_v2.0_rec | 识别  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
 | CRNN   |ch_PP-OCRv2_rec          | 识别  |
 | DB     |det_mv3_db_v2.0                | 检测  |
 | DB     |det_r50_vd_db_v2.0             | 检测  |
