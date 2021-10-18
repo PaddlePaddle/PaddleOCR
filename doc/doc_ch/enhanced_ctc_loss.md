@@ -16,7 +16,7 @@ Focal Loss 出自论文《Focal Loss for Dense Object Detection》, 该loss最�
 
 从上图可以看到, 当&gamma;> 0时，调整系数（1-y’）^&gamma; 赋予易分类样本损失一个更小的权重，使得网络更关注于困难的、错分的样本。 调整因子&gamma;用于调节简单样本权重降低的速率，当&gamma;为0时即为交叉熵损失函数，当&gamma;增加时，调整因子的影响也会随之增大。实验发现&gamma;为2是最优。平衡因子&alpha;用来平衡正负样本本身的比例不均，文中&alpha;取0.25。
 
-对于经典的CTC算法，假设某个特征序列（f<sub>1</sub>, f<sub>2</sub>, ......f<sub>t</sub>), 经过CTC解码之后结果等于label的概率为y’, 则CTC解码结果不为label的概率即为（1-y’)；不难发现 CTCLoss值和y’有如下关系：
+对于经典的CTC算法，假设某个特征序列（f<sub>1</sub>, f<sub>2</sub>, ......f<sub>t</sub>), 经过CTC解码之后结果等于label的概率为y’, 则CTC解码结果不为label的概率即为（1-y’)；不难发现, CTCLoss值和y’有如下关系：
 <div align="center"> 
 <img src="./equation_ctcloss.png" width = "250" /> 
 </div>
@@ -38,7 +38,7 @@ A-CTC Loss是CTC Loss + ACE Loss的简称。 其中ACE Loss出自论文< Aggrega
 <img src="./rec_algo_compare.png" width = "1000" /> 
 </div>
  
-虽然ACELoss确实如上图所说，可以处理2D预测，在内存占用及推理速度方面具备优势，但在实践过程中，我们发现单独使用ACE Loss,  识别效果并不如CTCLoss.  因此，我们尝试将CTCLoss和ACELoss进行组合，同时以CTCLoss为主，将ACELoss 定位为一个辅助监督loss。 这一尝试收到了效果，在我们内部的实验数据集上，相比单独使用CTCLoss，识别准确率可以提升1%左右。
+虽然ACELoss确实如上图所说，可以处理2D预测，在内存占用及推理速度方面具备优势，但在实践过程中，我们发现单独使用ACE Loss,  识别效果并不如CTCLoss.  因此，我们尝试将CTCLoss和ACELoss进行结合，同时以CTCLoss为主，将ACELoss 定位为一个辅助监督loss。 这一尝试收到了效果，在我们内部的实验数据集上，相比单独使用CTCLoss，识别准确率可以提升1%左右。
 A_CTC Loss定义如下:  
 <div align="center">
 <img src="./equation_a_ctc.png" width = "300" /> 
@@ -47,7 +47,7 @@ A_CTC Loss定义如下:
 实验中，λ = 0.1.  ACE loss实现代码见:  [ace_loss.py](../../ppocr/losses/ace_loss.py)
 
 ## 3. C-CTC Loss
-C-CTC Loss是CTC Loss + Center Loss的简称。 其中Center Loss出自论文 < A Discriminative Feature Learning Approach for Deep Face Recognition>.  最早用于人脸识别任务，用于增大累间距离，减小类内距离,  是Metric Learning领域一种较早的、也比较常用的一种算法。 
+C-CTC Loss是CTC Loss + Center Loss的简称。 其中Center Loss出自论文 < A Discriminative Feature Learning Approach for Deep Face Recognition>.  最早用于人脸识别任务，用于增大类间距离，减小类内距离,  是Metric Learning领域一种较早的、也比较常用的一种算法。 
 在中文OCR识别任务中，通过对badcase分析， 我们发现中文识别的一大难点是相似字符多，容易误识。 由此我们想到是否可以借鉴Metric Learing的想法， 增大相似字符的类间距，从而提高识别准确率。然而，MetricLearning主要用于图像识别领域，训练数据的标签为一个固定的值；而对于OCR识别来说，其本质上是一个序列识别任务，特征和label之间并不具有显式的对齐关系，因此两者如何结合依然是一个值得探索的方向。
 通过尝试Arcmargin, Cosmargin等方法， 我们最终发现Centerloss 有助于进一步提升识别的准确率。C_CTC Loss定义如下：
 <div align="center">

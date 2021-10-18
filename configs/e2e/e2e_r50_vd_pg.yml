@@ -94,7 +94,7 @@ Eval:
     label_file_list: [./train_data/total_text/test/test.txt]
     transforms:
       - DecodeImage: # load image
-          img_mode: RGB
+          img_mode: BGR
           channel_first: False
       - E2ELabelEncodeTest:
       - E2EResizeForTest:
