@@ -65,6 +65,8 @@ inference:./deploy/cpp_infer/build/ppocr det
 null:null
 --benchmark:True
 ===========================serving_params===========================
+model_name:ocr_det
+python:python3.7
 trans_model:-m paddle_serving_client.convert
 --dirname:./inference/ch_ppocr_mobile_v2.0_det_infer/
 --model_filename:inference.pdmodel
