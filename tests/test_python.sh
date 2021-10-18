@@ -5,11 +5,7 @@ FILENAME=$1
 # MODE be one of ['lite_train_infer' 'whole_infer' 'whole_train_infer', 'infer', 'klquant_infer']
 MODE=$2
 
-if [ ${MODE} = "klquant_infer" ]; then
-    dataline=$(awk 'NR==82, NR==98{print}'  $FILENAME)
-else
-    dataline=$(awk 'NR==1, NR==51{print}'  $FILENAME)
-fi
+dataline=$(awk 'NR==1, NR==51{print}'  $FILENAME)
 
 # parser params
 IFS=$'\n'
@@ -93,6 +89,8 @@ infer_value1=$(func_parser_value "${lines[50]}")
 
 # parser klquant_infer
 if [ ${MODE} = "klquant_infer" ]; then
+    dataline=$(awk 'NR==82, NR==98{print}'  $FILENAME)
+    lines=(${dataline})
     # parser inference model 
     infer_model_dir_list=$(func_parser_value "${lines[1]}")
     infer_export_list=$(func_parser_value "${lines[2]}")
@@ -143,7 +141,11 @@ function func_inference(){
                 fi
                 for threads in ${cpu_threads_list[*]}; do
                     for batch_size in ${batch_size_list[*]}; do
-                        _save_log_path="${_log_path}/python_infer_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_batchsize_${batch_size}.log"
+                        precison="fp32"
+                        if [ ${use_mkldnn} = "False" ] && [ ${_flag_quant} = "True" ]; then
+                            precision="int8"
+                        fi
+                        _save_log_path="${_log_path}/python_infer_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_precision_${precision}_batchsize_${batch_size}.log"
                         set_infer_data=$(func_set_params "${image_dir_key}" "${_img_dir}")
                         set_benchmark=$(func_set_params "${benchmark_key}" "${benchmark_value}")
                         set_batchsize=$(func_set_params "${batch_size_key}" "${batch_size}")
@@ -224,6 +226,9 @@ if [ ${MODE} = "infer" ] || [ ${MODE} = "klquant_infer" ]; then
         fi
         #run inference
         is_quant=${infer_quant_flag[Count]}
+        if [ ${MODE} = "klquant_infer" ]; then
+            is_quant="True"
+        fi
         func_inference "${python}" "${inference_py}" "${save_infer_dir}" "${LOG_PATH}" "${infer_img_dir}" ${is_quant}
         Count=$(($Count + 1))
     done
