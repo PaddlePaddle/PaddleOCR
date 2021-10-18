@@ -1,17 +1,21 @@
 
 # 推理部署导航
 
+## 1. 简介
+
 飞桨除了基本的模型训练和预测，还提供了支持多端多平台的高性能推理部署工具。本文档提供了PaddleOCR中所有模型的推理部署导航，方便用户查阅每种模型的推理部署打通情况，并可以进行一键测试。
 
 <div align="center">
     <img src="docs/guide.png" width="1000">
 </div>
 
+## 2. 汇总信息
+
 打通情况汇总如下，已填写的部分表示可以使用本工具进行一键测试，未填写的表示正在支持中。
 
 **字段说明：**
-- 基础训练预测：必选支持功能，包括模型训练、Paddle Inference Python预测。
-- 其他：可选支持功能，包括Paddle Inference C++预测、Paddle Serving部署、Paddle-Lite部署。
+- 基础训练预测：包括模型训练、Paddle Inference Python预测。
+- 其他：包括Paddle Inference C++预测、Paddle Serving部署、Paddle-Lite部署等。
 
 
 | 算法论文 | 模型名称 | 模型类型 | 基础训练预测 |   其他  |
@@ -44,7 +48,7 @@
 
 
 
-## 一键测试工具使用
+## 3. 一键测试工具使用
 ### 目录介绍
 
 ```shell
