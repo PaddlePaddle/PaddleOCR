@@ -40,7 +40,6 @@ LOG_PATH="./tests/output"
 mkdir -p ${LOG_PATH}
 status_log="${LOG_PATH}/results_serving.log"
 
-
 function func_serving(){
     IFS='|'
     _python=$1
@@ -66,7 +65,7 @@ function func_serving(){
                     continue
                 fi
                 for threads in ${web_cpu_threads_list[*]}; do
-                      _save_log_path="${_log_path}/server_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_batchsize_1.log"
+                      _save_log_path="${LOG_PATH}/server_infer_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_batchsize_1.log"
                       set_cpu_threads=$(func_set_params "${web_cpu_threads_key}" "${threads}")
                       web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}=${use_gpu} ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} &>${_save_log_path} &"
                       eval $web_service_cmd
@@ -94,7 +93,7 @@ function func_serving(){
                     if [[ ${use_trt} = "False" || ${precision} =~ "int8" ]] && [[ ${_flag_quant} = "True" ]]; then
                         continue
                     fi
-                    _save_log_path="${_log_path}/infer_gpu_usetrt_${use_trt}_precision_${precision}_batchsize_1.log"
+                    _save_log_path="${LOG_PATH}/server_infer_gpu_usetrt_${use_trt}_precision_${precision}_batchsize_1.log"
                     set_tensorrt=$(func_set_params "${web_use_trt_key}" "${use_trt}")
                     set_precision=$(func_set_params "${web_precision_key}" "${precision}")
                     web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}=${use_gpu} ${set_tensorrt} ${set_precision} &>${_save_log_path} & "
