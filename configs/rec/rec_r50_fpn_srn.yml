@@ -14,8 +14,7 @@ Global:
   use_visualdl: False
   infer_img: doc/imgs_words/ch/word_1.jpg
   # for data or label process
-  character_dict_path: 
-  character_type: en
+  character_dict_path:
   max_text_length: 25
   num_heads: 8
   infer_mode: False
