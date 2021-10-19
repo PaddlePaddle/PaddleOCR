@@ -141,22 +141,28 @@ function func_inference(){
                 fi
                 for threads in ${cpu_threads_list[*]}; do
                     for batch_size in ${batch_size_list[*]}; do
-                        precison="fp32"
-                        if [ ${use_mkldnn} = "False" ] && [ ${_flag_quant} = "True" ]; then
-                            precision="int8"
-                        fi
-                        _save_log_path="${_log_path}/python_infer_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_precision_${precision}_batchsize_${batch_size}.log"
-                        set_infer_data=$(func_set_params "${image_dir_key}" "${_img_dir}")
-                        set_benchmark=$(func_set_params "${benchmark_key}" "${benchmark_value}")
-                        set_batchsize=$(func_set_params "${batch_size_key}" "${batch_size}")
-                        set_cpu_threads=$(func_set_params "${cpu_threads_key}" "${threads}")
-                        set_model_dir=$(func_set_params "${infer_model_key}" "${_model_dir}")
-                        set_infer_params1=$(func_set_params "${infer_key1}" "${infer_value1}")
-                        command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} ${set_infer_params1} > ${_save_log_path} 2>&1 "
-                        eval $command
-                        last_status=${PIPESTATUS[0]}
-                        eval "cat ${_save_log_path}"
-                        status_check $last_status "${command}" "${status_log}"
+                        for precision in ${precision_list[*]}; do
+                            if [ ${use_mkldnn} = "False" ] && [ ${precision} = "fp16" ]; then
+                                continue
+                            fi # skip when enable fp16 but disable mkldnn
+                            if [ ${_flag_quant} = "True" ] && [ ${precision} != "int8" ]; then
+                                continue
+                            fi # skip when quant model inference but precision is not int8
+                            set_precision=$(func_set_params "${precision_key}" "${precision}")
+                            
+                            _save_log_path="${_log_path}/python_infer_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_precision_${precision}_batchsize_${batch_size}.log"
+                            set_infer_data=$(func_set_params "${image_dir_key}" "${_img_dir}")
+                            set_benchmark=$(func_set_params "${benchmark_key}" "${benchmark_value}")
+                            set_batchsize=$(func_set_params "${batch_size_key}" "${batch_size}")
+                            set_cpu_threads=$(func_set_params "${cpu_threads_key}" "${threads}")
+                            set_model_dir=$(func_set_params "${infer_model_key}" "${_model_dir}")
+                            set_infer_params1=$(func_set_params "${infer_key1}" "${infer_value1}")
+                            command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} ${set_precision} ${set_infer_params1} > ${_save_log_path} 2>&1 "
+                            eval $command
+                            last_status=${PIPESTATUS[0]}
+                            eval "cat ${_save_log_path}"
+                            status_check $last_status "${command}" "${status_log}"
+                        done
                     done
                 done
             done
