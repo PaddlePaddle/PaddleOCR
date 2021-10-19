@@ -10,10 +10,10 @@ Python功能测试的主程序为`test_python.sh`，可以测试基于Python的�
 |  :----  |   :----  |    :----  |  :----   |  :----   |  :----   |
 |  DB  | ch_ppocr_mobile_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练：FPGM裁剪、PACT量化 <br> 离线量化（无需训练） |
 |  DB  | ch_ppocr_server_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练：FPGM裁剪、PACT量化 <br> 离线量化（无需训练） |
-| CRNN | ch_ppocr_mobile_v2.0_rec| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练：FPGM裁剪、PACT量化 <br> 离线量化（无需训练） |
-| CRNN | ch_ppocr_server_v2.0_rec| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练：FPGM裁剪、PACT量化 <br> 离线量化（无需训练） |
-|PP-OCR| ch_ppocr_mobile_v2.0| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练：FPGM裁剪、PACT量化 <br> 离线量化（无需训练） |
-|PP-OCR| ch_ppocr_server_v2.0| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练：FPGM裁剪、PACT量化 <br> 离线量化（无需训练） |
+| CRNN | ch_ppocr_mobile_v2.0_rec| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练：PACT量化 <br> 离线量化（无需训练） |
+| CRNN | ch_ppocr_server_v2.0_rec| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练：PACT量化 <br> 离线量化（无需训练） |
+|PP-OCR| ch_ppocr_mobile_v2.0| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | - |
+|PP-OCR| ch_ppocr_server_v2.0| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | - |
 
 
 - 预测相关：基于训练是否使用量化，可以将训练产出的模型可以分为`正常模型`和`量化模型`，这两类模型对应的预测功能汇总如下，
@@ -24,6 +24,7 @@ Python功能测试的主程序为`test_python.sh`，可以测试基于Python的�
 | 正常模型 | CPU | 1/6 | - | fp32 | 支持 |
 | 量化模型 | GPU | 1/6 | int8 | - | - |
 | 量化模型 | CPU | 1/6 | - | int8 | 支持 |
+
 
 ## 2. 测试流程
 ### 2.1 安装依赖
@@ -44,7 +45,8 @@ Python功能测试的主程序为`test_python.sh`，可以测试基于Python的�
 
 
 ### 2.2 功能测试
-先运行`prepare.sh`准备数据和模型，然后运行`test_python.sh`进行测试，最终在```tests/output```目录下生成`infer_*.log`格式的日志文件。
+先运行`prepare.sh`准备数据和模型，然后运行`test_python.sh`进行测试，最终在```tests/output```目录下生成`python_infer_*.log`格式的日志文件。
+
 
 test_python.sh包含四种运行模式，每种模式的运行数据不同，分别用于测试速度和精度，分别是：
 
