@@ -26,7 +26,8 @@
 | CRNN   |ch_ppocr_mobile_v2.0_rec | 识别  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
 | CRNN   |ch_ppocr_server_v2.0_rec | 识别  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
 | CRNN   |ch_PP-OCRv2_rec          | 识别  |
-| PP-OCR |ch_PP-OCR | 检测+识别  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
+| PP-OCR |ch_ppocr_mobile_v2.0 | 检测+识别  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
+| PP-OCR |ch_ppocr_server_v2.0 | 检测+识别  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
 |PP-OCRv2|ch_PP-OCRv2 | 检测+识别  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
 | DB     |det_mv3_db_v2.0                | 检测  |
 | DB     |det_r50_vd_db_v2.0             | 检测  |
@@ -97,7 +98,7 @@ tests/
 - `test_serving.sh`：测试基于Paddle Serving的服务化部署功能。
 - `test_lite.sh`：测试基于Paddle-Lite的端侧预测部署功能。
 
-各功能测试中涉及GPU/CPU、mkldnn、Tensorrt等多种参数配置，点击相应链接了解更多细节和使用教程：  
+各功能测试中涉及混合精度、裁剪、量化等训练相关，及mkldnn、Tensorrt等多种预测相关参数配置，请点击下方相应链接了解更多细节和使用教程：  
 [test_train_inference_python 使用](docs/test_train_inference_python.md)  
 [test_inference_cpp 使用](docs/test_inference_cpp.md)  
 [test_serving 使用](docs/test_serving.md)  
