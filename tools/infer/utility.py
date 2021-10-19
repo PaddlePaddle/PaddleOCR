@@ -268,10 +268,11 @@ def create_predictor(args, mode, logger):
             # cache 10 different shapes for mkldnn to avoid memory leak
             config.set_mkldnn_cache_capacity(10)
             config.enable_mkldnn()
-
+            if args.precision == "fp16":
+                config.enable_mkldnn_bfloat16()
     # enable memory optim
     config.enable_memory_optim()
-    #config.disable_glog_info()
+    config.disable_glog_info()
 
     config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
     if mode == 'table':
