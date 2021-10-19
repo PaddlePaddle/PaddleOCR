@@ -1,6 +1,6 @@
 # C++预测功能测试
 
-C++预测功能测试的主程序为`test_cpp.sh`，可以测试基于C++预测库的模型推理功能。
+C++预测功能测试的主程序为`test_inference_cpp.sh`，可以测试基于C++预测库的模型推理功能。
 
 ## 1. 测试结论汇总
 
@@ -15,15 +15,15 @@ C++预测功能测试的主程序为`test_cpp.sh`，可以测试基于C++预测�
 
 ## 2. 测试流程
 ### 2.1 功能测试
-先运行`prepare.sh`准备数据和模型，然后运行`test_cpp.sh`进行测试，最终在```tests/output```目录下生成`cpp_infer_*.log`后缀的日志文件。
+先运行`prepare.sh`准备数据和模型，然后运行`test_inference_cpp.sh`进行测试，最终在```tests/output```目录下生成`cpp_infer_*.log`后缀的日志文件。
 
 ```shell
 bash tests/prepare.sh ./tests/configs/ppocr_det_mobile_params.txt "cpp_infer"
 
 # 用法1:
-bash tests/test_cpp.sh ./tests/configs/ppocr_det_mobile_params.txt
+bash tests/test_inference_cpp.sh ./tests/configs/ppocr_det_mobile_params.txt
 # 用法2: 指定GPU卡预测，第三个传入参数为GPU卡号
-bash tests/test_cpp.sh ./tests/configs/ppocr_det_mobile_params.txt '1'
+bash tests/test_inference_cpp.sh ./tests/configs/ppocr_det_mobile_params.txt '1'
 ```  
  
 
