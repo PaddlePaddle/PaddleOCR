@@ -17,7 +17,15 @@ cd /paddle
 # 安装带TRT的paddle
 pip3.7 install https://paddle-wheel.bj.bcebos.com/with-trt/2.1.3/linux-gpu-cuda10.1-cudnn7-mkl-gcc8.2-trt6-avx/paddlepaddle_gpu-2.1.3.post101-cp37-cp37m-linux_x86_64.whl
 
+# 安装AutoLog
+git clone https://github.com/LDOUBLEV/AutoLog
+pip3.7 install -r requirements.txt
+python3.7 setup.py bdist_wheel
+pip3.7 install ./dist/auto_log-1.0.0-py3-none-any.whl
+
+
 # 下载OCR代码
+cd ../
 git clone https://github.com/PaddlePaddle/PaddleOCR
 
 ```
