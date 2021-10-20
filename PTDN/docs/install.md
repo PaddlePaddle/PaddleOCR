@@ -19,6 +19,7 @@ pip3.7 install https://paddle-wheel.bj.bcebos.com/with-trt/2.1.3/linux-gpu-cuda1
 
 # 安装AutoLog
 git clone https://github.com/LDOUBLEV/AutoLog
+cd AutoLog
 pip3.7 install -r requirements.txt
 python3.7 setup.py bdist_wheel
 pip3.7 install ./dist/auto_log-1.0.0-py3-none-any.whl
