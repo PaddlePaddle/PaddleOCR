@@ -259,7 +259,7 @@ else
         fi
         for autocast in ${autocast_list[*]}; do 
             if [ ${autocast} = "amp" ]; then
-                set_amp_config="Gloabl.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True"
+                set_amp_config="Global.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True"
             else
                 set_amp_config=" "
             fi          
