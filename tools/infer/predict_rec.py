@@ -38,40 +38,34 @@ logger = get_logger()
 class TextRecognizer(object):
     def __init__(self, args):
         self.rec_image_shape = [int(v) for v in args.rec_image_shape.split(",")]
-        self.character_type = args.rec_char_type
         self.rec_batch_num = args.rec_batch_num
         self.rec_algorithm = args.rec_algorithm
         postprocess_params = {
             'name': 'CTCLabelDecode',
-            "character_type": args.rec_char_type,
             "character_dict_path": args.rec_char_dict_path,
             "use_space_char": args.use_space_char
         }
         if self.rec_algorithm == "SRN":
             postprocess_params = {
                 'name': 'SRNLabelDecode',
-                "character_type": args.rec_char_type,
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }
         elif self.rec_algorithm == "RARE":
             postprocess_params = {
                 'name': 'AttnLabelDecode',
-                "character_type": args.rec_char_type,
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }
         elif self.rec_algorithm == 'NRTR':
             postprocess_params = {
                 'name': 'NRTRLabelDecode',
-                "character_type": args.rec_char_type,
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }
         elif self.rec_algorithm == "SAR":
             postprocess_params = {
                 'name': 'SARLabelDecode',
-                "character_type": args.rec_char_type,
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }

@@ -2,43 +2,43 @@
 source tests/common_func.sh
 
 FILENAME=$1
-dataline=$(awk 'NR==67, NR==81{print}'  $FILENAME)
+dataline=$(awk 'NR==67, NR==83{print}'  $FILENAME)
 
 # parser params
 IFS=$'\n'
 lines=(${dataline})
 
 # parser serving
-trans_model_py=$(func_parser_value "${lines[1]}")
-infer_model_dir_key=$(func_parser_key "${lines[2]}")
-infer_model_dir_value=$(func_parser_value "${lines[2]}")
-model_filename_key=$(func_parser_key "${lines[3]}")
-model_filename_value=$(func_parser_value "${lines[3]}")
-params_filename_key=$(func_parser_key "${lines[4]}")
-params_filename_value=$(func_parser_value "${lines[4]}")
-serving_server_key=$(func_parser_key "${lines[5]}")
-serving_server_value=$(func_parser_value "${lines[5]}")
-serving_client_key=$(func_parser_key "${lines[6]}")
-serving_client_value=$(func_parser_value "${lines[6]}")
-serving_dir_value=$(func_parser_value "${lines[7]}")
-web_service_py=$(func_parser_value "${lines[8]}")
-web_use_gpu_key=$(func_parser_key "${lines[9]}")
-web_use_gpu_list=$(func_parser_value "${lines[9]}")
-web_use_mkldnn_key=$(func_parser_key "${lines[10]}")
-web_use_mkldnn_list=$(func_parser_value "${lines[10]}")
-web_cpu_threads_key=$(func_parser_key "${lines[11]}")
-web_cpu_threads_list=$(func_parser_value "${lines[11]}")
-web_use_trt_key=$(func_parser_key "${lines[12]}")
-web_use_trt_list=$(func_parser_value "${lines[12]}")
-web_precision_key=$(func_parser_key "${lines[13]}")
-web_precision_list=$(func_parser_value "${lines[13]}")
-pipeline_py=$(func_parser_value "${lines[14]}")
+model_name=$(func_parser_value "${lines[1]}")
+python=$(func_parser_value "${lines[2]}")
+trans_model_py=$(func_parser_value "${lines[3]}")
+infer_model_dir_key=$(func_parser_key "${lines[4]}")
+infer_model_dir_value=$(func_parser_value "${lines[4]}")
+model_filename_key=$(func_parser_key "${lines[5]}")
+model_filename_value=$(func_parser_value "${lines[5]}")
+params_filename_key=$(func_parser_key "${lines[6]}")
+params_filename_value=$(func_parser_value "${lines[6]}")
+serving_server_key=$(func_parser_key "${lines[7]}")
+serving_server_value=$(func_parser_value "${lines[7]}")
+serving_client_key=$(func_parser_key "${lines[8]}")
+serving_client_value=$(func_parser_value "${lines[8]}")
+serving_dir_value=$(func_parser_value "${lines[9]}")
+web_service_py=$(func_parser_value "${lines[10]}")
+web_use_gpu_key=$(func_parser_key "${lines[11]}")
+web_use_gpu_list=$(func_parser_value "${lines[11]}")
+web_use_mkldnn_key=$(func_parser_key "${lines[12]}")
+web_use_mkldnn_list=$(func_parser_value "${lines[12]}")
+web_cpu_threads_key=$(func_parser_key "${lines[13]}")
+web_cpu_threads_list=$(func_parser_value "${lines[13]}")
+web_use_trt_key=$(func_parser_key "${lines[14]}")
+web_use_trt_list=$(func_parser_value "${lines[14]}")
+web_precision_key=$(func_parser_key "${lines[15]}")
+web_precision_list=$(func_parser_value "${lines[15]}")
+pipeline_py=$(func_parser_value "${lines[16]}")
 
-
-LOG_PATH="./tests/output"
-mkdir -p ${LOG_PATH}
+LOG_PATH="../../tests/output"
+mkdir -p ./tests/output
 status_log="${LOG_PATH}/results_serving.log"
-
 
 function func_serving(){
     IFS='|'
@@ -65,12 +65,12 @@ function func_serving(){
                     continue
                 fi
                 for threads in ${web_cpu_threads_list[*]}; do
-                      _save_log_path="${_log_path}/server_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_batchsize_1.log"
+                      _save_log_path="${LOG_PATH}/server_infer_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_batchsize_1.log"
                       set_cpu_threads=$(func_set_params "${web_cpu_threads_key}" "${threads}")
-                      web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}=${use_gpu} ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} &>${_save_log_path} &"
+                      web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}=${use_gpu} ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} &"
                       eval $web_service_cmd
                       sleep 2s
-                      pipeline_cmd="${python} ${pipeline_py}"
+                      pipeline_cmd="${python} ${pipeline_py} > ${_save_log_path} 2>&1 "
                       eval $pipeline_cmd
                       last_status=${PIPESTATUS[0]}
                       eval "cat ${_save_log_path}"
@@ -93,13 +93,13 @@ function func_serving(){
                     if [[ ${use_trt} = "False" || ${precision} =~ "int8" ]] && [[ ${_flag_quant} = "True" ]]; then
                         continue
                     fi
-                    _save_log_path="${_log_path}/infer_gpu_usetrt_${use_trt}_precision_${precision}_batchsize_1.log"
+                    _save_log_path="${LOG_PATH}/server_infer_gpu_usetrt_${use_trt}_precision_${precision}_batchsize_1.log"
                     set_tensorrt=$(func_set_params "${web_use_trt_key}" "${use_trt}")
                     set_precision=$(func_set_params "${web_precision_key}" "${precision}")
-                    web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}=${use_gpu} ${set_tensorrt} ${set_precision} &>${_save_log_path} & "
+                    web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}=${use_gpu} ${set_tensorrt} ${set_precision} & "
                     eval $web_service_cmd
                     sleep 2s
-                    pipeline_cmd="${python} ${pipeline_py}"
+                    pipeline_cmd="${python} ${pipeline_py} > ${_save_log_path} 2>&1"
                     eval $pipeline_cmd
                     last_status=${PIPESTATUS[0]}
                     eval "cat ${_save_log_path}"
@@ -129,3 +129,7 @@ eval $env
 
 
 echo "################### run test ###################"
+
+export Count=0
+IFS="|"
+func_serving "${web_service_cmd}"

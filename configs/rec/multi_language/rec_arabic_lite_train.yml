@@ -15,7 +15,6 @@ Global:
   use_visualdl: false
   infer_img: null
   character_dict_path: ppocr/utils/dict/arabic_dict.txt
-  character_type: arabic
   max_text_length: 25
   infer_mode: false
   use_space_char: true
