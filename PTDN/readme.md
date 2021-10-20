@@ -55,7 +55,7 @@
 ### 目录介绍
 
 ```shell
-tests/
+PTDN/
 ├── configs/  # 配置文件目录
 	├── det_mv3_db.yml               # 测试mobile版ppocr检测模型训练的yml文件
 	├── det_r50_vd_db.yml            # 测试server版ppocr检测模型训练的yml文件
