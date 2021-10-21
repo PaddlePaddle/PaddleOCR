@@ -1,6 +1,6 @@
 # PaddleServing预测功能测试
 
-PaddleServing预测功能测试的主程序为`test_inference_serving.sh`，可以测试基于PaddleServing的部署功能。
+PaddleServing预测功能测试的主程序为`test_serving.sh`，可以测试基于PaddleServing的部署功能。
 
 ## 1. 测试结论汇总
 
@@ -15,13 +15,13 @@ PaddleServing预测功能测试的主程序为`test_inference_serving.sh`，可�
 
 ## 2. 测试流程
 ### 2.1 功能测试
-先运行`prepare.sh`准备数据和模型，然后运行`test_inference_serving.sh`进行测试，最终在```PTDN/output```目录下生成`serving_infer_*.log`后缀的日志文件。
+先运行`prepare.sh`准备数据和模型，然后运行`test_serving.sh`进行测试，最终在```PTDN/output```目录下生成`serving_infer_*.log`后缀的日志文件。
 
 ```shell
 bash PTDN/prepare.sh ./PTDN/configs/ppocr_det_mobile_params.txt "serving_infer"
 
 # 用法:
-bash PTND/test_inference_serving.sh ./PTDN/configs/ppocr_det_mobile_params.txt
+bash PTND/test_serving.sh ./PTDN/configs/ppocr_det_mobile_params.txt
 ```  
 
 #### 运行结果
