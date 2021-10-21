@@ -15,20 +15,21 @@
 
 **字段说明：**
 - 基础训练预测：包括模型训练、Paddle Inference Python预测。
-- 其他：包括Paddle Inference C++预测、Paddle Serving部署、Paddle-Lite部署等。
+- 训练扩展：包括多机多卡、混合精度。
+- 模型压缩：包括裁剪、离线/在线量化、蒸馏。
+- 其他预测部署：包括Paddle Inference C++预测、Paddle Serving部署、Paddle-Lite部署等。
 
-
-| 算法论文 | 模型名称 | 模型类型 | 基础训练预测 |   其他  |
-| :--- | :--- |  :----:  | :--------: |  :----  |
-| DB     |ch_ppocr_mobile_v2.0_det | 检测  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
-| DB     |ch_ppocr_server_v2.0_det | 检测  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
+| 算法论文 | 模型名称 | 模型类型 | 基础训练预测 | 训练扩展 | 模型压缩 |  其他预测部署  |
+| :--- | :--- |  :----:  | :--------: |  :----  |   :----  |   :----  |
+| DB     |ch_ppocr_mobile_v2.0_det | 检测  | 支持 | 多机多卡 <br> 混合精度 | 正常训练：PACT量化 <br> 离线量化（无需训练）| Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
+| DB     |ch_ppocr_server_v2.0_det | 检测  | 支持 | 多机多卡 <br> 混合精度 | 正常训练：PACT量化 <br> 离线量化（无需训练） Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
 | DB     |ch_PP-OCRv2_det          | 检测  |
-| CRNN   |ch_ppocr_mobile_v2.0_rec | 识别  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
-| CRNN   |ch_ppocr_server_v2.0_rec | 识别  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
+| CRNN   |ch_ppocr_mobile_v2.0_rec | 识别  | 支持 | 多机多卡 <br> 混合精度 | 正常训练：PACT量化 <br> 离线量化（无需训练） Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
+| CRNN   |ch_ppocr_server_v2.0_rec | 识别  | 支持 | 多机多卡 <br> 混合精度 | 正常训练：PACT量化 <br> 离线量化（无需训练） Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
 | CRNN   |ch_PP-OCRv2_rec          | 识别  |
-| PP-OCR |ch_ppocr_mobile_v2.0 | 检测+识别  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
-| PP-OCR |ch_ppocr_server_v2.0 | 检测+识别  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
-|PP-OCRv2|ch_PP-OCRv2 | 检测+识别  | 支持 | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
+| PP-OCR |ch_ppocr_mobile_v2.0 | 检测+识别  | 支持 | 多机多卡 <br> 混合精度 | 正常训练：PACT量化 <br> 离线量化（无需训练） Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
+| PP-OCR |ch_ppocr_server_v2.0 | 检测+识别  | 支持 | 多机多卡 <br> 混合精度 | 正常训练：PACT量化 <br> 离线量化（无需训练） Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
+|PP-OCRv2|ch_PP-OCRv2 | 检测+识别  | 支持 | 多机多卡 <br> 混合精度 | 正常训练：PACT量化 <br> 离线量化（无需训练） Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
 | DB     |det_mv3_db_v2.0                | 检测  |
 | DB     |det_r50_vd_db_v2.0             | 检测  |
 | EAST   |det_mv3_east_v2.0              | 检测  |
