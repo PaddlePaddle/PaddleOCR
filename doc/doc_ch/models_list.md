@@ -1,8 +1,9 @@
-## OCR模型列表（V2.0，2021年1月20日更新）
+## OCR模型列表（V2.1，2021年9月6日更新）
 
 > **说明**
-> 1. 2.0版模型和[1.1版模型](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/models_list.md) 的主要区别在于动态图训练vs.静态图训练，模型性能上无明显差距。
-> 2. 本文档提供的是PPOCR自研模型列表，更多基于公开数据集的算法介绍与预训练模型可以参考：[算法概览文档](./algorithm_overview.md)。
+> 1. 2.1版模型相比2.0版模型，2.1的模型在模型精度上做了提升
+> 2. 2.0版模型和[1.1版模型](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/models_list.md) 的主要区别在于动态图训练vs.静态图训练，模型性能上无明显差距。
+> 3. 本文档提供的是PPOCR自研模型列表，更多基于公开数据集的算法介绍与预训练模型可以参考：[算法概览文档](./algorithm_overview.md)。
 
 
 - [一、文本检测模型](#文本检测模型)
@@ -32,6 +33,8 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 
 |模型名称|模型简介|配置文件|推理模型大小|下载地址|
 | --- | --- | --- | --- | --- |
+|ch_PP-OCRv2_det_slim|slim量化+蒸馏版超轻量模型，支持中英文、多语种文本检测|[ch_PP-OCRv2_det_cml.yml](../../configs/det/ch_PP-OCRv2/ch_PP-OCR_det_cml.yml)| 3M |[推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_slim_quant_infer.tar)|
+|ch_PP-OCRv2_det|原始超轻量模型，支持中英文、多语种文本检测|[ch_PP-OCRv2_det_cml.yml](../../configs/det/ch_PP-OCRv2/ch_PP-OCR_det_cml.yml)|3M|[推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_distill_train.tar)|
 |ch_ppocr_mobile_slim_v2.0_det|slim裁剪版超轻量模型，支持中英文、多语种文本检测|[ch_det_mv3_db_v2.0.yml](../../configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml)| 2.6M |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_prune_infer.tar)|
 |ch_ppocr_mobile_v2.0_det|原始超轻量模型，支持中英文、多语种文本检测|[ch_det_mv3_db_v2.0.yml](../../configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml)|3M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar)|
 |ch_ppocr_server_v2.0_det|通用模型，支持中英文、多语种文本检测，比超轻量模型更大，但效果更好|[ch_det_res18_db_v2.0.yml](../../configs/det/ch_ppocr_v2.0/ch_det_res18_db_v2.0.yml)|47M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar)|
@@ -45,6 +48,8 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 
 |模型名称|模型简介|配置文件|推理模型大小|下载地址|
 | --- | --- | --- | --- | --- |
+|ch_PP-OCRv2_rec_slim|slim量化版超轻量模型，支持中英文、数字识别|[ch_PP-OCRv2_rec.yml](../../configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec.yml)| 9M |[推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_quant_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_quant_train.tar) |
+|ch_PP-OCRv2_rec|原始超轻量模型，支持中英文、数字识别|[ch_PP-OCRv2_rec.yml](../../configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec.yml)|8.5M|[推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_train.tar) |
 |ch_ppocr_mobile_slim_v2.0_rec|slim裁剪量化版超轻量模型，支持中英文、数字识别|[rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)| 6M |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_train.tar) |
 |ch_ppocr_mobile_v2.0_rec|原始超轻量模型，支持中英文、数字识别|[rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)|5.2M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_train.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_pre.tar) |
 |ch_ppocr_server_v2.0_rec|通用模型，支持中英文、数字识别|[rec_chinese_common_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_common_train_v2.0.yml)|94.8M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_train.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_pre.tar) |
@@ -61,46 +66,6 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 
 <a name="多语言识别模型"></a>
 #### 3. 多语言识别模型（更多语言持续更新中...）
-
-**说明：** 新增的多语言模型的配置文件通过代码方式生成，您可以通过`--help`参数查看当前PaddleOCR支持生成哪些多语言的配置文件：
-```bash
-# 该代码需要在指定目录运行
-cd {your/path/}PaddleOCR/configs/rec/multi_language/
-python3 generate_multi_language_configs.py --help
-```
-下面以生成意大利语配置文件为例：
-##### 1. 生成意大利语配置文件测试现有模型
-
-如果您仅仅想用配置文件测试PaddleOCR提供的多语言模型可以通过下面命令生成默认的配置文件，使用PaddleOCR提供的小语种字典进行预测。
-```bash
-# 该代码需要在指定目录运行
-cd {your/path/}PaddleOCR/configs/rec/multi_language/
-# 通过-l或者--language参数设置需要生成的语种的配置文件，该命令会将默认参数写入配置文件
-python3 generate_multi_language_configs.py -l it
-```
-##### 2. 生成意大利语配置文件训练自己的数据
-如果您想训练自己的小语种模型，可以准备好训练集文件、验证集文件、字典文件和训练数据路径，这里假设准备的意大利语的训练集、验证集、字典和训练数据路径为：
-- 训练集:{your/path/}PaddleOCR/train_data/train_list.txt
-- 验证集:{your/path/}PaddleOCR/train_data/val_list.txt
-- 使用PaddleOCR提供的默认字典：{your/path/}PaddleOCR/ppocr/utils/dict/it_dict.txt
-- 训练数据路径:{your/path/}PaddleOCR/train_data
-
-使用以下命令生成配置文件：
-```bash
-# 该代码需要在指定目录运行
-cd {your/path/}PaddleOCR/configs/rec/multi_language/
-# -l或者--language字段是必须的
-# --train修改训练集，--val修改验证集，--data_dir修改数据集目录，-o修改对应默认参数
-# --dict命令改变字典路径，示例使用默认字典路径则该参数可不填
-python3 generate_multi_language_configs.py -l it \
---train train_data/train_list.txt \
---val train_data/val_list.txt \
---data_dir train_data \
--o Global.use_gpu=False
-```
-
-<a name="多语言模型与配置文件"></a>
-##### 3. 多语言模型与配置文件
 
 |模型名称|字典文件|模型简介|配置文件|推理模型大小|下载地址|
 | --- | --- | --- | --- |--- | --- |
@@ -125,13 +90,16 @@ python3 generate_multi_language_configs.py -l it \
 
 |模型名称|模型简介|配置文件|推理模型大小|下载地址|
 | --- | --- | --- | --- | --- |
-|ch_ppocr_mobile_slim_v2.0_cls|slim量化版模型|[cls_mv3.yml](../../configs/cls/cls_mv3.yml)| 2.1M |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_slim_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_infer.tar) |
-|ch_ppocr_mobile_v2.0_cls|原始模型|[cls_mv3.yml](../../configs/cls/cls_mv3.yml)|1.38M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |
+|ch_ppocr_mobile_slim_v2.0_cls|slim量化版模型，对检测到的文本行文字角度分类|[cls_mv3.yml](../../configs/cls/cls_mv3.yml)| 2.1M |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_slim_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_infer.tar) |
+|ch_ppocr_mobile_v2.0_cls|原始分类器模型，对检测到的文本行文字角度分类|[cls_mv3.yml](../../configs/cls/cls_mv3.yml)|1.38M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |
+
 
 <a name="Paddle-Lite模型"></a>
 ### 四、Paddle-Lite 模型
 
 |模型版本|模型简介|模型大小|检测模型|文本方向分类模型|识别模型|Paddle-Lite版本|
 |---|---|---|---|---|---|---|
-|V2.0|超轻量中文OCR 移动端模型|7.8M|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_det_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_rec_opt.nb)|v2.9|
-|V2.0(slim)|超轻量中文OCR 移动端模型|3.3M|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_det_slim_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_slim_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_rec_slim_opt.nb)|v2.9|
+|PP-OCRv2|蒸馏版超轻量中文OCR移动端模型|11M|[下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer_opt.nb)|v2.9|
+|PP-OCRv2(slim)|蒸馏版超轻量中文OCR移动端模型|4.9M|[下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_slim_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_slim_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_opt.nb)|v2.9|
+|V2.0|ppocr_v2.0超轻量中文OCR移动端模型|7.8M|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_det_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_rec_opt.nb)|v2.9|
+|V2.0(slim)|ppocr_v2.0超轻量中文OCR移动端模型|3.3M|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_det_slim_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_slim_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_rec_slim_opt.nb)|v2.9|

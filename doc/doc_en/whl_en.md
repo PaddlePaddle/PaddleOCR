@@ -1,4 +1,4 @@
-# paddleocr package
+# Paddleocr Package
 
 ## 1 Get started quickly
 ### 1.1 install package

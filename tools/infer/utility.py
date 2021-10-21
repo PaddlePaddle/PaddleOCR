@@ -35,7 +35,7 @@ def init_args():
     parser.add_argument("--use_gpu", type=str2bool, default=True)
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
-    parser.add_argument("--min_subgraph_size", type=int, default=10)
+    parser.add_argument("--min_subgraph_size", type=int, default=15)
     parser.add_argument("--precision", type=str, default="fp32")
     parser.add_argument("--gpu_mem", type=int, default=500)
 
@@ -63,11 +63,17 @@ def init_args():
     parser.add_argument("--det_sast_nms_thresh", type=float, default=0.2)
     parser.add_argument("--det_sast_polygon", type=str2bool, default=False)
 
+    # PSE parmas
+    parser.add_argument("--det_pse_thresh", type=float, default=0)
+    parser.add_argument("--det_pse_box_thresh", type=float, default=0.85)
+    parser.add_argument("--det_pse_min_area", type=float, default=16)
+    parser.add_argument("--det_pse_box_type", type=str, default='box')
+    parser.add_argument("--det_pse_scale", type=int, default=1)
+
     # params for text recognizer
     parser.add_argument("--rec_algorithm", type=str, default='CRNN')
     parser.add_argument("--rec_model_dir", type=str)
     parser.add_argument("--rec_image_shape", type=str, default="3, 32, 320")
-    parser.add_argument("--rec_char_type", type=str, default='ch')
     parser.add_argument("--rec_batch_num", type=int, default=6)
     parser.add_argument("--max_text_length", type=int, default=25)
     parser.add_argument(
@@ -236,11 +242,11 @@ def create_predictor(args, mode, logger):
             max_input_shape.update(max_pact_shape)
             opt_input_shape.update(opt_pact_shape)
         elif mode == "rec":
-            min_input_shape = {"x": [args.rec_batch_num, 3, 32, 10]}
+            min_input_shape = {"x": [1, 3, 32, 10]}
             max_input_shape = {"x": [args.rec_batch_num, 3, 32, 2000]}
             opt_input_shape = {"x": [args.rec_batch_num, 3, 32, 320]}
         elif mode == "cls":
-            min_input_shape = {"x": [args.rec_batch_num, 3, 48, 10]}
+            min_input_shape = {"x": [1, 3, 48, 10]}
             max_input_shape = {"x": [args.rec_batch_num, 3, 48, 2000]}
             opt_input_shape = {"x": [args.rec_batch_num, 3, 48, 320]}
         else:
@@ -261,10 +267,11 @@ def create_predictor(args, mode, logger):
             # cache 10 different shapes for mkldnn to avoid memory leak
             config.set_mkldnn_cache_capacity(10)
             config.enable_mkldnn()
-
+            if args.precision == "fp16":
+                config.enable_mkldnn_bfloat16()
     # enable memory optim
     config.enable_memory_optim()
-    #config.disable_glog_info()
+    config.disable_glog_info()
 
     config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
     if mode == 'table':

@@ -16,7 +16,7 @@ import math
 import cv2
 import numpy as np
 import random
-
+from PIL import Image
 from .text_image_aug import tia_perspective, tia_stretch, tia_distort
 
 
@@ -43,22 +43,64 @@ class ClsResizeImg(object):
         return data
 
 
+class NRTRRecResizeImg(object):
+    def __init__(self, image_shape, resize_type, padding=False, **kwargs):
+        self.image_shape = image_shape
+        self.resize_type = resize_type
+        self.padding = padding
+
+    def __call__(self, data):
+        img = data['image']
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        image_shape = self.image_shape
+        if self.padding:
+            imgC, imgH, imgW = image_shape
+            # todo: change to 0 and modified image shape
+            h = img.shape[0]
+            w = img.shape[1]
+            ratio = w / float(h)
+            if math.ceil(imgH * ratio) > imgW:
+                resized_w = imgW
+            else:
+                resized_w = int(math.ceil(imgH * ratio))
+            resized_image = cv2.resize(img, (resized_w, imgH))
+            norm_img = np.expand_dims(resized_image, -1)
+            norm_img = norm_img.transpose((2, 0, 1))
+            resized_image = norm_img.astype(np.float32) / 128. - 1.
+            padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
+            padding_im[:, :, 0:resized_w] = resized_image
+            data['image'] = padding_im
+            return data
+        if self.resize_type == 'PIL':
+            image_pil = Image.fromarray(np.uint8(img))
+            img = image_pil.resize(self.image_shape, Image.ANTIALIAS)
+            img = np.array(img)
+        if self.resize_type == 'OpenCV':
+            img = cv2.resize(img, self.image_shape)
+        norm_img = np.expand_dims(img, -1)
+        norm_img = norm_img.transpose((2, 0, 1))
+        data['image'] = norm_img.astype(np.float32) / 128. - 1.
+        return data
+
+
 class RecResizeImg(object):
     def __init__(self,
                  image_shape,
                  infer_mode=False,
-                 character_type='ch',
+                 character_dict_path='./ppocr/utils/ppocr_keys_v1.txt',
+                 padding=True,
                  **kwargs):
         self.image_shape = image_shape
         self.infer_mode = infer_mode
-        self.character_type = character_type
+        self.character_dict_path = character_dict_path
+        self.padding = padding
 
     def __call__(self, data):
         img = data['image']
-        if self.infer_mode and self.character_type == "ch":
+        if self.infer_mode and self.character_dict_path is not None:
             norm_img = resize_norm_img_chinese(img, self.image_shape)
         else:
-            norm_img = resize_norm_img(img, self.image_shape)
+            norm_img = resize_norm_img(img, self.image_shape, self.padding)
         data['image'] = norm_img
         return data
 
@@ -83,16 +125,72 @@ class SRNRecResizeImg(object):
         return data
 
 
-def resize_norm_img(img, image_shape):
+class SARRecResizeImg(object):
+    def __init__(self, image_shape, width_downsample_ratio=0.25, **kwargs):
+        self.image_shape = image_shape
+        self.width_downsample_ratio = width_downsample_ratio
+
+    def __call__(self, data):
+        img = data['image']
+        norm_img, resize_shape, pad_shape, valid_ratio = resize_norm_img_sar(
+            img, self.image_shape, self.width_downsample_ratio)
+        data['image'] = norm_img
+        data['resized_shape'] = resize_shape
+        data['pad_shape'] = pad_shape
+        data['valid_ratio'] = valid_ratio
+        return data
+
+
+def resize_norm_img_sar(img, image_shape, width_downsample_ratio=0.25):
+    imgC, imgH, imgW_min, imgW_max = image_shape
+    h = img.shape[0]
+    w = img.shape[1]
+    valid_ratio = 1.0
+    # make sure new_width is an integral multiple of width_divisor.
+    width_divisor = int(1 / width_downsample_ratio)
+    # resize
+    ratio = w / float(h)
+    resize_w = math.ceil(imgH * ratio)
+    if resize_w % width_divisor != 0:
+        resize_w = round(resize_w / width_divisor) * width_divisor
+    if imgW_min is not None:
+        resize_w = max(imgW_min, resize_w)
+    if imgW_max is not None:
+        valid_ratio = min(1.0, 1.0 * resize_w / imgW_max)
+        resize_w = min(imgW_max, resize_w)
+    resized_image = cv2.resize(img, (resize_w, imgH))
+    resized_image = resized_image.astype('float32')
+    # norm 
+    if image_shape[0] == 1:
+        resized_image = resized_image / 255
+        resized_image = resized_image[np.newaxis, :]
+    else:
+        resized_image = resized_image.transpose((2, 0, 1)) / 255
+    resized_image -= 0.5
+    resized_image /= 0.5
+    resize_shape = resized_image.shape
+    padding_im = -1.0 * np.ones((imgC, imgH, imgW_max), dtype=np.float32)
+    padding_im[:, :, 0:resize_w] = resized_image
+    pad_shape = padding_im.shape
+
+    return padding_im, resize_shape, pad_shape, valid_ratio
+
+
+def resize_norm_img(img, image_shape, padding=True):
     imgC, imgH, imgW = image_shape
     h = img.shape[0]
     w = img.shape[1]
-    ratio = w / float(h)
-    if math.ceil(imgH * ratio) > imgW:
+    if not padding:
+        resized_image = cv2.resize(
+            img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
         resized_w = imgW
     else:
-        resized_w = int(math.ceil(imgH * ratio))
-    resized_image = cv2.resize(img, (resized_w, imgH))
+        ratio = w / float(h)
+        if math.ceil(imgH * ratio) > imgW:
+            resized_w = imgW
+        else:
+            resized_w = int(math.ceil(imgH * ratio))
+        resized_image = cv2.resize(img, (resized_w, imgH))
     resized_image = resized_image.astype('float32')
     if image_shape[0] == 1:
         resized_image = resized_image / 255

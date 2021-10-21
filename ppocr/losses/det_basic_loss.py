@@ -75,12 +75,6 @@ class BalanceLoss(nn.Layer):
             mask (variable): masked maps.
         return: (variable) balanced loss
         """
-        # if self.main_loss_type in ['DiceLoss']:
-        #     # For the loss that returns to scalar value, perform ohem on the mask
-        #     mask = ohem_batch(pred, gt, mask, self.negative_ratio)
-        #     loss = self.loss(pred, gt, mask)
-        #     return loss
-
         positive = gt * mask
         negative = (1 - gt) * mask
 
@@ -154,52 +148,3 @@ class BCELoss(nn.Layer):
     def forward(self, input, label, mask=None, weight=None, name=None):
         loss = F.binary_cross_entropy(input, label, reduction=self.reduction)
         return loss
-
-
-def ohem_single(score, gt_text, training_mask, ohem_ratio):
-    pos_num = (int)(np.sum(gt_text > 0.5)) - (
-        int)(np.sum((gt_text > 0.5) & (training_mask <= 0.5)))
-
-    if pos_num == 0:
-        # selected_mask = gt_text.copy() * 0 # may be not good
-        selected_mask = training_mask
-        selected_mask = selected_mask.reshape(
-            1, selected_mask.shape[0], selected_mask.shape[1]).astype('float32')
-        return selected_mask
-
-    neg_num = (int)(np.sum(gt_text <= 0.5))
-    neg_num = (int)(min(pos_num * ohem_ratio, neg_num))
-
-    if neg_num == 0:
-        selected_mask = training_mask
-        selected_mask = selected_mask.reshape(
-            1, selected_mask.shape[0], selected_mask.shape[1]).astype('float32')
-        return selected_mask
-
-    neg_score = score[gt_text <= 0.5]
-    # 将负样本得分从高到低排序
-    neg_score_sorted = np.sort(-neg_score)
-    threshold = -neg_score_sorted[neg_num - 1]
-    # 选出 得分高的 负样本 和正样本 的 mask
-    selected_mask = ((score >= threshold) |
-                     (gt_text > 0.5)) & (training_mask > 0.5)
-    selected_mask = selected_mask.reshape(
-        1, selected_mask.shape[0], selected_mask.shape[1]).astype('float32')
-    return selected_mask
-
-
-def ohem_batch(scores, gt_texts, training_masks, ohem_ratio):
-    scores = scores.numpy()
-    gt_texts = gt_texts.numpy()
-    training_masks = training_masks.numpy()
-
-    selected_masks = []
-    for i in range(scores.shape[0]):
-        selected_masks.append(
-            ohem_single(scores[i, :, :], gt_texts[i, :, :], training_masks[
-                i, :, :], ohem_ratio))
-
-    selected_masks = np.concatenate(selected_masks, 0)
-    selected_masks = paddle.to_tensor(selected_masks)
-
-    return selected_masks

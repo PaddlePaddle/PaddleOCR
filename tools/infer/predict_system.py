@@ -173,6 +173,9 @@ def main(args):
 
     logger.info("The predict total time is {}".format(time.time() - _st))
     logger.info("\nThe predict total time is {}".format(total_time))
+    if args.benchmark:
+        text_sys.text_detector.autolog.report()
+        text_sys.text_recognizer.autolog.report()
 
 
 if __name__ == "__main__":

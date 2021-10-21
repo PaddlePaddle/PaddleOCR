@@ -44,20 +44,22 @@ class DistillationDMLLoss(DMLLoss):
     def __init__(self,
                  model_name_pairs=[],
                  act=None,
+                 use_log=False,
                  key=None,
                  maps_name=None,
                  name="dml"):
-        super().__init__(act=act)
+        super().__init__(act=act, use_log=use_log)
         assert isinstance(model_name_pairs, list)
         self.key = key
         self.model_name_pairs = self._check_model_name_pairs(model_name_pairs)
         self.name = name
         self.maps_name = self._check_maps_name(maps_name)
-    
+
     def _check_model_name_pairs(self, model_name_pairs):
         if not isinstance(model_name_pairs, list):
             return []
-        elif isinstance(model_name_pairs[0], list) and isinstance(model_name_pairs[0][0], str):
+        elif isinstance(model_name_pairs[0], list) and isinstance(
+                model_name_pairs[0][0], str):
             return model_name_pairs
         else:
             return [model_name_pairs]
@@ -110,11 +112,11 @@ class DistillationDMLLoss(DMLLoss):
                     if isinstance(loss, dict):
                         for key in loss:
                             loss_dict["{}_{}_{}_{}_{}".format(key, pair[
-                                0], pair[1], map_name, idx)] = loss[key]
+                                0], pair[1], self.maps_name, idx)] = loss[key]
                     else:
-                        loss_dict["{}_{}_{}".format(self.name, self.maps_name[_c],
-                                                    idx)] = loss
-        
+                        loss_dict["{}_{}_{}".format(self.name, self.maps_name[
+                            _c], idx)] = loss
+
         loss_dict = _sum_loss(loss_dict)
 
         return loss_dict

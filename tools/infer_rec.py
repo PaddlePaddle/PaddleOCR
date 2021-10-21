@@ -74,6 +74,10 @@ def main():
                     'image', 'encoder_word_pos', 'gsrm_word_pos',
                     'gsrm_slf_attn_bias1', 'gsrm_slf_attn_bias2'
                 ]
+            elif config['Architecture']['algorithm'] == "SAR":
+                op[op_name]['keep_keys'] = [
+                    'image', 'valid_ratio'
+                ]
             else:
                 op[op_name]['keep_keys'] = ['image']
         transforms.append(op)
@@ -106,11 +110,16 @@ def main():
                     paddle.to_tensor(gsrm_slf_attn_bias1_list),
                     paddle.to_tensor(gsrm_slf_attn_bias2_list)
                 ]
+            if config['Architecture']['algorithm'] == "SAR":
+                valid_ratio = np.expand_dims(batch[-1], axis=0)
+                img_metas = [paddle.to_tensor(valid_ratio)]
 
             images = np.expand_dims(batch[0], axis=0)
             images = paddle.to_tensor(images)
             if config['Architecture']['algorithm'] == "SRN":
                 preds = model(images, others)
+            elif config['Architecture']['algorithm'] == "SAR":
+                preds = model(images, img_metas)
             else:
                 preds = model(images)
             post_result = post_process_class(preds)
@@ -121,7 +130,7 @@ def main():
                     if len(post_result[key][0]) >= 2:
                         rec_info[key] = {
                             "label": post_result[key][0][0],
-                            "score": post_result[key][0][1],
+                            "score": float(post_result[key][0][1]),
                         }
                 info = json.dumps(rec_info)
             else:

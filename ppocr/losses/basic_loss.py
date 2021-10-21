@@ -56,31 +56,34 @@ class CELoss(nn.Layer):
 
 class KLJSLoss(object):
     def __init__(self, mode='kl'):
-        assert mode in ['kl', 'js', 'KL', 'JS'], "mode can only be one of ['kl', 'js', 'KL', 'JS']"
+        assert mode in ['kl', 'js', 'KL', 'JS'
+                        ], "mode can only be one of ['kl', 'js', 'KL', 'JS']"
         self.mode = mode
 
     def __call__(self, p1, p2, reduction="mean"):
 
-        loss = paddle.multiply(p2, paddle.log( (p2+1e-5)/(p1+1e-5) + 1e-5))
+        loss = paddle.multiply(p2, paddle.log((p2 + 1e-5) / (p1 + 1e-5) + 1e-5))
 
         if self.mode.lower() == "js":
-            loss += paddle.multiply(p1, paddle.log((p1+1e-5)/(p2+1e-5) + 1e-5))
+            loss += paddle.multiply(
+                p1, paddle.log((p1 + 1e-5) / (p2 + 1e-5) + 1e-5))
             loss *= 0.5
         if reduction == "mean":
-            loss = paddle.mean(loss, axis=[1,2])
-        elif reduction=="none" or reduction is None:
-            return loss 
+            loss = paddle.mean(loss, axis=[1, 2])
+        elif reduction == "none" or reduction is None:
+            return loss
         else:
-            loss = paddle.sum(loss, axis=[1,2])
+            loss = paddle.sum(loss, axis=[1, 2])
 
-        return loss 
+        return loss
+
 
 class DMLLoss(nn.Layer):
     """
     DMLLoss
     """
 
-    def __init__(self, act=None):
+    def __init__(self, act=None, use_log=False):
         super().__init__()
         if act is not None:
             assert act in ["softmax", "sigmoid"]
@@ -90,20 +93,24 @@ class DMLLoss(nn.Layer):
             self.act = nn.Sigmoid()
         else:
             self.act = None
-        
+
+        self.use_log = use_log
+
         self.jskl_loss = KLJSLoss(mode="js")
 
     def forward(self, out1, out2):
         if self.act is not None:
             out1 = self.act(out1)
             out2 = self.act(out2)
-        if len(out1.shape) < 2:
+        if self.use_log:
+            # for recognition distillation, log is needed for feature map
             log_out1 = paddle.log(out1)
             log_out2 = paddle.log(out2)
             loss = (F.kl_div(
                 log_out1, out2, reduction='batchmean') + F.kl_div(
                     log_out2, out1, reduction='batchmean')) / 2.0
         else:
+            # for detection distillation log is not needed
             loss = self.jskl_loss(out1, out2)
         return loss
 

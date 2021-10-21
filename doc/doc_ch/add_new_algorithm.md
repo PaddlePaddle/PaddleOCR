@@ -2,16 +2,18 @@
 
 PaddleOCR将一个算法分解为以下几个部分，并对各部分进行模块化处理，方便快速组合出新的算法。
 
-* 数据加载和处理
-* 网络
-* 后处理
-* 损失函数
-* 指标评估
-* 优化器
+* [1. 数据加载和处理](#1)
+* [2. 网络](#2)
+* [3. 后处理](#3)
+* [4. 损失函数](#4)
+* [5. 指标评估](#5)
+* [6. 优化器](#6)
 
 下面将分别对每个部分进行介绍，并介绍如何在该部分里添加新算法所需模块。
 
-## 数据加载和处理
+<a name="1"></a>
+
+## 1. 数据加载和处理
 
 数据加载和处理由不同的模块(module)组成，其完成了图片的读取、数据增强和label的制作。这一部分在[ppocr/data](../../ppocr/data)下。 各个文件及文件夹作用说明如下:
 
@@ -64,7 +66,9 @@ transforms:
       keep_keys: [ 'image', 'label' ] # dataloader will return list in this order
 ```
 
-## 网络
+<a name="2"></a>
+
+## 2. 网络
 
 网络部分完成了网络的组网操作，PaddleOCR将网络划分为四部分，这一部分在[ppocr/modeling](../../ppocr/modeling)下。 进入网络的数据将按照顺序(transforms->backbones->
 necks->heads)依次通过这四个部分。
@@ -123,7 +127,9 @@ Architecture:
     args1: args1
 ```
 
-## 后处理
+<a name="3"></a>
+
+## 3. 后处理
 
 后处理实现解码网络输出获得文本框或者识别到的文字。这一部分在[ppocr/postprocess](../../ppocr/postprocess)下。
 PaddleOCR内置了DB,EAST,SAST,CRNN和Attention等算法相关的后处理模块，对于没有内置的组件可通过如下步骤添加:
@@ -171,7 +177,9 @@ PostProcess:
   args2: args2
 ```
 
-## 损失函数
+<a name="4"></a>
+
+## 4. 损失函数
 
 损失函数用于计算网络输出和label之间的距离。这一部分在[ppocr/losses](../../ppocr/losses)下。
 PaddleOCR内置了DB,EAST,SAST,CRNN和Attention等算法相关的损失函数模块，对于没有内置的模块可通过如下步骤添加:
@@ -208,7 +216,9 @@ Loss:
   args2: args2
 ```
 
-## 指标评估
+<a name="5"></a>
+
+## 5. 指标评估
 
 指标评估用于计算网络在当前batch上的性能。这一部分在[ppocr/metrics](../../ppocr/metrics)下。 PaddleOCR内置了检测，分类和识别等算法相关的指标评估模块，对于没有内置的模块可通过如下步骤添加:
 
@@ -262,7 +272,9 @@ Metric:
   main_indicator: acc
 ```
 
-## 优化器
+<a name="6"></a>
+
+## 6. 优化器
 
 优化器用于训练网络。优化器内部还包含了网络正则化和学习率衰减模块。 这一部分在[ppocr/optimizer](../../ppocr/optimizer)下。 PaddleOCR内置了`Momentum`,`Adam`
 和`RMSProp`等常用的优化器模块，`Linear`,`Cosine`,`Step`和`Piecewise`等常用的正则化模块与`L1Decay`和`L2Decay`等常用的学习率衰减模块。

@@ -49,6 +49,12 @@ def export_single_model(model, arch_config, save_path, logger):
                 ]
         ]
         model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] == "SAR":
+        other_shape = [
+            paddle.static.InputSpec(
+                shape=[None, 3, 48, 160], dtype="float32"),
+        ]
+        model = to_static(model, input_spec=other_shape)
     else:
         infer_shape = [3, -1, -1]
         if arch_config["model_type"] == "rec":
@@ -60,6 +66,8 @@ def export_single_model(model, arch_config, save_path, logger):
                     "When there is tps in the network, variable length input is not supported, and the input size needs to be the same as during training"
                 )
                 infer_shape[-1] = 100
+            if arch_config["algorithm"] == "NRTR":
+                infer_shape = [1, 32, 100]
         elif arch_config["model_type"] == "table":
             infer_shape = [3, 488, 488]
         model = to_static(
@@ -93,6 +101,9 @@ def main():
             for key in config["Architecture"]["Models"]:
                 config["Architecture"]["Models"][key]["Head"][
                     "out_channels"] = char_num
+                # just one final tensor needs to to exported for inference
+                config["Architecture"]["Models"][key][
+                    "return_all_feats"] = False
         else:  # base rec model
             config["Architecture"]["Head"]["out_channels"] = char_num
     model = build_model(config["Architecture"])

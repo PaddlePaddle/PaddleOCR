@@ -15,7 +15,6 @@ import numpy as np
 import os
 import random
 from paddle.io import Dataset
-
 from .imaug import transform, create_operators
 
 
