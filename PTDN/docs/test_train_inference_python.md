@@ -100,7 +100,7 @@ python3.7 PTDN/compare_results.py --gt_file=./PTDN/results/python_*.txt  --log_f
 
 参数介绍：  
 - gt_file： 指向事先保存好的预测结果路径，支持*.txt 结尾，会自动索引*.txt格式的文件，文件默认保存在PTDN/result/ 文件夹下
-- log_file: 指向运行PTDN/test.sh 脚本的infer模式保存的预测日志，预测日志中打印的有预测结果，比如：文本框，预测文本，类别等等，同样支持infer_*.log格式传入
+- log_file: 指向运行PTDN/test_train_inference_python.sh 脚本的infer模式保存的预测日志，预测日志中打印的有预测结果，比如：文本框，预测文本，类别等等，同样支持python_infer_*.log格式传入
 - atol: 设置的绝对误差
 - rtol: 设置的相对误差
 
