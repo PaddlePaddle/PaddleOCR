@@ -15,11 +15,13 @@
 
 **字段说明：**
 - 基础训练预测：包括模型训练、Paddle Inference Python预测。
-- 训练扩展：包括多机多卡、混合精度。
+- 更多训练方式：包括多机多卡、混合精度。
 - 模型压缩：包括裁剪、离线/在线量化、蒸馏。
 - 其他预测部署：包括Paddle Inference C++预测、Paddle Serving部署、Paddle-Lite部署等。
 
-| 算法论文 | 模型名称 | 模型类型 | 基础<br>训练预测 | 训练扩展 | 模型压缩 |  其他预测部署  |
+更详细的mkldnn、Tensorrt等预测加速相关功能的支持情况可以查看各测试工具的[更多教程](#more)。
+
+| 算法论文 | 模型名称 | 模型类型 | 基础<br>训练预测 | 更多<br>训练方式 | 模型压缩 |  其他预测部署  |
 | :--- | :--- |  :----:  | :--------: |  :----  |   :----  |   :----  |
 | DB     |ch_ppocr_mobile_v2.0_det | 检测  | 支持 | 多机多卡 <br> 混合精度 | FPGM裁剪 <br> 离线量化| Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
 | DB     |ch_ppocr_server_v2.0_det | 检测  | 支持 | 多机多卡 <br> 混合精度 | FPGM裁剪 <br> 离线量化| Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
@@ -99,6 +101,8 @@ PTDN/
 - `test_serving.sh`：测试基于Paddle Serving的服务化部署功能。
 - `test_lite.sh`：测试基于Paddle-Lite的端侧预测部署功能。
 
+<a name="more"></a>
+#### 更多教程
 各功能测试中涉及混合精度、裁剪、量化等训练相关，及mkldnn、Tensorrt等多种预测相关参数配置，请点击下方相应链接了解更多细节和使用教程：  
 [test_train_inference_python 使用](docs/test_train_inference_python.md)  
 [test_inference_cpp 使用](docs/test_inference_cpp.md)  
