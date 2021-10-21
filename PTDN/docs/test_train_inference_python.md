@@ -19,7 +19,7 @@
 
 - 预测相关：基于训练是否使用量化，可以将训练产出的模型可以分为`正常模型`和`量化模型`，这两类模型对应的预测功能汇总如下，
 
-| 模型类型 |device | batchsize | tensorrt | mkldnn | cpu多线程 | 
+| 模型类型 |device | batchsize | tensorrt | mkldnn | cpu多线程 |
 |  ----   |  ---- |   ----   |  :----:  |   :----:   |  :----:  |
 | 正常模型 | GPU | 1/6 | fp32/fp16 | - | - |
 | 正常模型 | CPU | 1/6 | - | fp32 | 支持 |
@@ -46,42 +46,42 @@
 
 
 ### 2.2 功能测试
-先运行`prepare.sh`准备数据和模型，然后运行`test_train_inference_python.sh`进行测试，最终在```tests/output```目录下生成`python_infer_*.log`格式的日志文件。
+先运行`prepare.sh`准备数据和模型，然后运行`test_train_inference_python.sh`进行测试，最终在```PTDN/output```目录下生成`python_infer_*.log`格式的日志文件。
 
 
 `test_train_inference_python.sh`包含5种运行模式，每种模式的运行数据不同，分别用于测试速度和精度，分别是：
 
 - 模式1：lite_train_infer，使用少量数据训练，用于快速验证训练到预测的走通流程，不验证精度和速度；
 ```shell
-bash tests/prepare.sh ./tests/configs/ppocr_det_mobile_params.txt 'lite_train_infer'
-bash tests/test_train_inference_python.sh ./tests/configs/ppocr_det_mobile_params.txt 'lite_train_infer'
+bash PTDN/prepare.sh ./PTDN/configs/ppocr_det_mobile_params.txt 'lite_train_infer'
+bash PTDN/test_train_inference_python.sh ./PTDN/configs/ppocr_det_mobile_params.txt 'lite_train_infer'
 ```  
 
 - 模式2：whole_infer，使用少量数据训练，一定量数据预测，用于验证训练后的模型执行预测，预测速度是否合理；
 ```shell
-bash tests/prepare.sh ./tests/configs/ppocr_det_mobile_params.txt 'whole_infer'
-bash tests/test_train_inference_python.sh ./tests/configs/ppocr_det_mobile_params.txt 'whole_infer'
+bash PTDN/prepare.sh ./PTDN/configs/ppocr_det_mobile_params.txt 'whole_infer'
+bash PTDN/test_train_inference_python.sh ./PTDN/configs/ppocr_det_mobile_params.txt 'whole_infer'
 ```  
 
 - 模式3：infer，不训练，全量数据预测，走通开源模型评估、动转静，检查inference model预测时间和精度;
 ```shell
-bash tests/prepare.sh ./tests/configs/ppocr_det_mobile_params.txt 'infer'
+bash PTDN/prepare.sh ./PTDN/configs/ppocr_det_mobile_params.txt 'infer'
 # 用法1:
-bash tests/test_train_inference_python.sh ./tests/configs/ppocr_det_mobile_params.txt 'infer'
+bash PTDN/test_train_inference_python.sh ./PTDN/configs/ppocr_det_mobile_params.txt 'infer'
 # 用法2: 指定GPU卡预测，第三个传入参数为GPU卡号
-bash tests/test_train_inference_python.sh ./tests/configs/ppocr_det_mobile_params.txt 'infer' '1'
+bash PTDN/test_train_inference_python.sh ./PTDN/configs/ppocr_det_mobile_params.txt 'infer' '1'
 ```  
 
 - 模式4：whole_train_infer，CE： 全量数据训练，全量数据预测，验证模型训练精度，预测精度，预测速度；
 ```shell
-bash tests/prepare.sh ./tests/configs/ppocr_det_mobile_params.txt 'whole_train_infer'
-bash tests/test_train_inference_python.sh ./tests/configs/ppocr_det_mobile_params.txt 'whole_train_infer'
+bash PTDN/prepare.sh ./PTDN/configs/ppocr_det_mobile_params.txt 'whole_train_infer'
+bash PTDN/test_train_inference_python.sh ./PTDN/configs/ppocr_det_mobile_params.txt 'whole_train_infer'
 ```  
 
 - 模式5：klquant_infer，测试离线量化；
 ```shell
-bash tests/prepare.sh ./tests/configs/ppocr_det_mobile_params.txt 'klquant_infer'
-bash tests/test_train_inference_python.sh tests/configs/ppocr_det_mobile_params.txt  'klquant_infer'
+bash PTDN/prepare.sh ./PTDN/configs/ppocr_det_mobile_params.txt 'klquant_infer'
+bash PTDN/test_train_inference_python.sh PTDN/configs/ppocr_det_mobile_params.txt  'klquant_infer'
 ```
 
 
@@ -95,12 +95,12 @@ bash tests/test_train_inference_python.sh tests/configs/ppocr_det_mobile_params.
 #### 使用方式
 运行命令：
 ```shell
-python3.7 tests/compare_results.py --gt_file=./tests/results/python_*.txt  --log_file=./tests/output/python_*.log --atol=1e-3 --rtol=1e-3
+python3.7 PTDN/compare_results.py --gt_file=./PTDN/results/python_*.txt  --log_file=./PTDN/output/python_*.log --atol=1e-3 --rtol=1e-3
 ```
 
 参数介绍：  
-- gt_file： 指向事先保存好的预测结果路径，支持*.txt 结尾，会自动索引*.txt格式的文件，文件默认保存在tests/result/ 文件夹下
-- log_file: 指向运行tests/test.sh 脚本的infer模式保存的预测日志，预测日志中打印的有预测结果，比如：文本框，预测文本，类别等等，同样支持infer_*.log格式传入
+- gt_file： 指向事先保存好的预测结果路径，支持*.txt 结尾，会自动索引*.txt格式的文件，文件默认保存在PTDN/result/ 文件夹下
+- log_file: 指向运行PTDN/test.sh 脚本的infer模式保存的预测日志，预测日志中打印的有预测结果，比如：文本框，预测文本，类别等等，同样支持infer_*.log格式传入
 - atol: 设置的绝对误差
 - rtol: 设置的相对误差
 
