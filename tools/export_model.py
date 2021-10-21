@@ -26,7 +26,7 @@ from paddle.jit import to_static
 
 from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
-from ppocr.utils.save_load import init_model
+from ppocr.utils.save_load import load_dygraph_params
 from ppocr.utils.logging import get_logger
 from tools.program import load_config, merge_config, ArgsParser
 
@@ -60,6 +60,8 @@ def export_single_model(model, arch_config, save_path, logger):
                     "When there is tps in the network, variable length input is not supported, and the input size needs to be the same as during training"
                 )
                 infer_shape[-1] = 100
+            if arch_config["algorithm"] == "NRTR":
+                infer_shape = [1, 32, 100]
         elif arch_config["model_type"] == "table":
             infer_shape = [3, 488, 488]
         model = to_static(
@@ -99,7 +101,7 @@ def main():
         else:  # base rec model
             config["Architecture"]["Head"]["out_channels"] = char_num
     model = build_model(config["Architecture"])
-    init_model(config, model)
+    _ = load_dygraph_params(config, model, logger, None)
     model.eval()
 
     save_path = config["Global"]["save_inference_dir"]

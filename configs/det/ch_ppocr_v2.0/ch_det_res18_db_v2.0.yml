@@ -5,7 +5,7 @@ Global:
   print_batch_step: 2
   save_model_dir: ./output/ch_db_res18/
   save_epoch_step: 1200
-  # evaluation is run every 5000 iterations after the 4000th iteration
+  # evaluation is run every 2000 iterations after the 3000th iteration
   eval_batch_step: [3000, 2000]
   cal_metric_during_train: False
   pretrained_model: ./pretrain_models/ResNet18_vd_pretrained

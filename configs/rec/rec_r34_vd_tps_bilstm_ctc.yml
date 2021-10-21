@@ -5,7 +5,7 @@ Global:
   print_batch_step: 10
   save_model_dir: ./output/rec/r34_vd_tps_bilstm_ctc/
   save_epoch_step: 3
-  # evaluation is run every 2000 iterations
+  # evaluation is run every 2000 iterations after the 0th iteration
   eval_batch_step: [0, 2000]
   cal_metric_during_train: True
   pretrained_model:
