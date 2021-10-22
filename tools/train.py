@@ -102,10 +102,27 @@ def main(config, device, logger, vdl_writer):
     if valid_dataloader is not None:
         logger.info('valid dataloader has {} iters'.format(
             len(valid_dataloader)))
+
+    use_amp = config["Global"].get("use_amp", False)
+    if use_amp:
+        AMP_RELATED_FLAGS_SETTING = {
+            'FLAGS_cudnn_batchnorm_spatial_persistent': 1,
+            'FLAGS_max_inplace_grad_add': 8,
+        }
+        paddle.fluid.set_flags(AMP_RELATED_FLAGS_SETTING)
+        scale_loss = config["Global"].get("scale_loss", 1.0)
+        use_dynamic_loss_scaling = config["Global"].get(
+            "use_dynamic_loss_scaling", False)
+        scaler = paddle.amp.GradScaler(
+            init_loss_scaling=scale_loss,
+            use_dynamic_loss_scaling=use_dynamic_loss_scaling)
+    else:
+        scaler = None
+
     # start train
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,
-                  eval_class, pre_best_model_dict, logger, vdl_writer)
+                  eval_class, pre_best_model_dict, logger, vdl_writer, scaler)
 
 
 def test_reader(config, device, logger):
