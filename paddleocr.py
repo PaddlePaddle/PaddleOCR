@@ -318,7 +318,7 @@ class PaddleOCR(predict_system.TextSystem):
         if isinstance(img, list) and det == True:
             logger.error('When input a list of images, det must be false')
             exit(0)
-        if cls == True and self.use_angle_cls == False:
+        if cls and not self.use_angle_cls:
             logger.warning(
                 'Since the angle classifier is not initialized, the angle classifier will not be uesd during the forward process'
             )
