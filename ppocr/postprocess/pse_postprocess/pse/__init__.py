@@ -17,7 +17,12 @@ import subprocess
 
 python_path = sys.executable
 
-if subprocess.call('cd ppocr/postprocess/pse_postprocess/pse;{} setup.py build_ext --inplace;cd -'.format(python_path), shell=True) != 0:
-    raise RuntimeError('Cannot compile pse: {}'.format(os.path.dirname(os.path.realpath(__file__))))
+ori_path = os.getcwd()
+os.chdir('ppocr/postprocess/pse_postprocess/pse')
+if subprocess.call(
+        '{} setup.py build_ext --inplace'.format(python_path), shell=True) != 0:
+    raise RuntimeError('Cannot compile pse: {}'.format(
+        os.path.dirname(os.path.realpath(__file__))))
+os.chdir(ori_path)
 
 from .pse import pse
