@@ -1,9 +1,9 @@
 ===========================train_params===========================
 model_name:ocr_det
 python:python3.7
-gpu_list:0|0,1
-Global.use_gpu:True|True
-Global.auto_cast:null
+gpu_list:0|0,1|10.21.226.181,10.21.226.133;0,1
+Global.use_gpu:True|True|True
+Global.auto_cast:fp32|amp
 Global.epoch_num:lite_train_infer=1|whole_train_infer=300
 Global.save_model_dir:./output/
 Train.loader.batch_size_per_card:lite_train_infer=2|whole_train_infer=4
