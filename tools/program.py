@@ -496,11 +496,6 @@ def preprocess(is_train=False):
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
         'SEED'
     ]
-    windows_not_support_list = ['PSE']
-    if platform.system() == "Windows" and alg in windows_not_support_list:
-        logger.warning('{} is not support in Windows now'.format(
-            windows_not_support_list))
-        sys.exit()
 
     device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'
     device = paddle.set_device(device)
