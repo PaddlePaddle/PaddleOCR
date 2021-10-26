@@ -5,11 +5,7 @@ FILENAME=$1
 # MODE be one of ['lite_train_infer' 'whole_infer' 'whole_train_infer', 'infer', 'klquant_infer']
 MODE=$2
 
-if [ ${MODE} = "klquant_infer" ]; then
-    dataline=$(awk 'NR==82, NR==98{print}'  $FILENAME)
-else
-    dataline=$(awk 'NR==1, NR==51{print}'  $FILENAME)
-fi
+dataline=$(awk 'NR==1, NR==51{print}'  $FILENAME)
 
 # parser params
 IFS=$'\n'
@@ -93,6 +89,8 @@ infer_value1=$(func_parser_value "${lines[50]}")
 
 # parser klquant_infer
 if [ ${MODE} = "klquant_infer" ]; then
+    dataline=$(awk 'NR==82, NR==98{print}'  $FILENAME)
+    lines=(${dataline})
     # parser inference model 
     infer_model_dir_list=$(func_parser_value "${lines[1]}")
     infer_export_list=$(func_parser_value "${lines[2]}")
@@ -143,18 +141,28 @@ function func_inference(){
                 fi
                 for threads in ${cpu_threads_list[*]}; do
                     for batch_size in ${batch_size_list[*]}; do
-                        _save_log_path="${_log_path}/python_infer_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_batchsize_${batch_size}.log"
-                        set_infer_data=$(func_set_params "${image_dir_key}" "${_img_dir}")
-                        set_benchmark=$(func_set_params "${benchmark_key}" "${benchmark_value}")
-                        set_batchsize=$(func_set_params "${batch_size_key}" "${batch_size}")
-                        set_cpu_threads=$(func_set_params "${cpu_threads_key}" "${threads}")
-                        set_model_dir=$(func_set_params "${infer_model_key}" "${_model_dir}")
-                        set_infer_params1=$(func_set_params "${infer_key1}" "${infer_value1}")
-                        command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} ${set_infer_params1} > ${_save_log_path} 2>&1 "
-                        eval $command
-                        last_status=${PIPESTATUS[0]}
-                        eval "cat ${_save_log_path}"
-                        status_check $last_status "${command}" "${status_log}"
+                        for precision in ${precision_list[*]}; do
+                            if [ ${use_mkldnn} = "False" ] && [ ${precision} = "fp16" ]; then
+                                continue
+                            fi # skip when enable fp16 but disable mkldnn
+                            if [ ${_flag_quant} = "True" ] && [ ${precision} != "int8" ]; then
+                                continue
+                            fi # skip when quant model inference but precision is not int8
+                            set_precision=$(func_set_params "${precision_key}" "${precision}")
+                            
+                            _save_log_path="${_log_path}/python_infer_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_precision_${precision}_batchsize_${batch_size}.log"
+                            set_infer_data=$(func_set_params "${image_dir_key}" "${_img_dir}")
+                            set_benchmark=$(func_set_params "${benchmark_key}" "${benchmark_value}")
+                            set_batchsize=$(func_set_params "${batch_size_key}" "${batch_size}")
+                            set_cpu_threads=$(func_set_params "${cpu_threads_key}" "${threads}")
+                            set_model_dir=$(func_set_params "${infer_model_key}" "${_model_dir}")
+                            set_infer_params1=$(func_set_params "${infer_key1}" "${infer_value1}")
+                            command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} ${set_precision} ${set_infer_params1} > ${_save_log_path} 2>&1 "
+                            eval $command
+                            last_status=${PIPESTATUS[0]}
+                            eval "cat ${_save_log_path}"
+                            status_check $last_status "${command}" "${status_log}"
+                        done
                     done
                 done
             done
@@ -224,6 +232,9 @@ if [ ${MODE} = "infer" ] || [ ${MODE} = "klquant_infer" ]; then
         fi
         #run inference
         is_quant=${infer_quant_flag[Count]}
+        if [ ${MODE} = "klquant_infer" ]; then
+            is_quant="True"
+        fi
         func_inference "${python}" "${inference_py}" "${save_infer_dir}" "${LOG_PATH}" "${infer_img_dir}" ${is_quant}
         Count=$(($Count + 1))
     done
@@ -234,6 +245,7 @@ else
     for gpu in ${gpu_list[*]}; do
         use_gpu=${USE_GPU_KEY[Count]}
         Count=$(($Count + 1))
+        ips=""
         if [ ${gpu} = "-1" ];then
             env=""
         elif [ ${#gpu} -le 1 ];then
@@ -253,6 +265,11 @@ else
             env=" "
         fi
         for autocast in ${autocast_list[*]}; do 
+            if [ ${autocast} = "amp" ]; then
+                set_amp_config="Global.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True"
+            else
+                set_amp_config=" "
+            fi          
             for trainer in ${trainer_list[*]}; do 
                 flag_quant=False
                 if [ ${trainer} = ${pact_key} ]; then
@@ -279,7 +296,6 @@ else
                 if [ ${run_train} = "null" ]; then
                     continue
                 fi
-                
                 set_autocast=$(func_set_params "${autocast_key}" "${autocast}")
                 set_epoch=$(func_set_params "${epoch_key}" "${epoch_num}")
                 set_pretrain=$(func_set_params "${pretrain_model_key}" "${pretrain_model_value}")
@@ -295,11 +311,11 @@ else
 
                 set_save_model=$(func_set_params "${save_model_key}" "${save_log}")
                 if [ ${#gpu} -le 2 ];then  # train with cpu or single gpu
-                    cmd="${python} ${run_train} ${set_use_gpu}  ${set_save_model} ${set_epoch} ${set_pretrain} ${set_autocast} ${set_batchsize} ${set_train_params1} "
-                elif [ ${#gpu} -le 15 ];then  # train with multi-gpu
-                    cmd="${python} -m paddle.distributed.launch --gpus=${gpu} ${run_train} ${set_save_model} ${set_epoch} ${set_pretrain} ${set_autocast} ${set_batchsize} ${set_train_params1}"
+                    cmd="${python} ${run_train} ${set_use_gpu}  ${set_save_model} ${set_epoch} ${set_pretrain} ${set_autocast} ${set_batchsize} ${set_train_params1} ${set_amp_config} "
+                elif [ ${#ips} -le 26 ];then  # train with multi-gpu
+                    cmd="${python} -m paddle.distributed.launch --gpus=${gpu} ${run_train} ${set_use_gpu} ${set_save_model} ${set_epoch} ${set_pretrain} ${set_autocast} ${set_batchsize} ${set_train_params1} ${set_amp_config}"
                 else     # train with multi-machine
-                    cmd="${python} -m paddle.distributed.launch --ips=${ips} --gpus=${gpu} ${run_train} ${set_save_model} ${set_pretrain} ${set_epoch} ${set_autocast} ${set_batchsize} ${set_train_params1}"
+                    cmd="${python} -m paddle.distributed.launch --ips=${ips} --gpus=${gpu} ${set_use_gpu} ${run_train} ${set_save_model} ${set_pretrain} ${set_epoch} ${set_autocast} ${set_batchsize} ${set_train_params1} ${set_amp_config}"
                 fi
                 # run train
                 eval "unset CUDA_VISIBLE_DEVICES"

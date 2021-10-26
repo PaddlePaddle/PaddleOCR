@@ -65,12 +65,14 @@ inference:./deploy/cpp_infer/build/ppocr rec
 null:null
 --benchmark:True
 ===========================serving_params===========================
+model_name:ocr_server_rec
+python:python3.7
 trans_model:-m paddle_serving_client.convert
 --dirname:./inference/ch_ppocr_server_v2.0_rec_infer/
 --model_filename:inference.pdmodel
 --params_filename:inference.pdiparams
---serving_server:./deploy/pdserving/ppocr_rec_server_2.0_serving/
---serving_client:./deploy/pdserving/ppocr_rec_server_2.0_client/
+--serving_server:./deploy/pdserving/ppocr_rec_mobile_2.0_serving/
+--serving_client:./deploy/pdserving/ppocr_rec_mobile_2.0_client/
 serving_dir:./deploy/pdserving
 web_service:web_service_rec.py --config=config.yml --opt op.rec.concurrency=1
 op.rec.local_service_conf.devices:null|0
