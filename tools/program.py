@@ -452,8 +452,6 @@ def get_center(model, eval_dataloader, post_process_class):
 
         batch = [item.numpy() for item in batch]
         # Obtain usable results from post-processing methods
-        total_time += time.time() - start
-        # Evaluate the results of the current batch
         post_result = post_process_class(preds, batch[1])
 
         #update char_center
