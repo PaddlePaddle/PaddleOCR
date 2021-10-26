@@ -59,6 +59,7 @@ export_key1=$(func_parser_key "${lines[33]}")
 export_value1=$(func_parser_value "${lines[33]}")
 export_key2=$(func_parser_key "${lines[34]}")
 export_value2=$(func_parser_value "${lines[34]}")
+inference_dir=$(func_parser_value "${lines[35]}")
 
 # parser inference model 
 infer_model_dir_list=$(func_parser_value "${lines[36]}")
@@ -347,7 +348,13 @@ else
                     #run inference
                     eval $env
                     save_infer_path="${save_log}"
-                    func_inference "${python}" "${inference_py}" "${save_infer_path}" "${LOG_PATH}" "${train_infer_img_dir}" "${flag_quant}"
+                    if [ ${inference_dir} != "null" ] && [ ${inference_dir} != '##' ]; then
+                        infer_model_dir="${save_infer_path}/${inference_dir}"
+                    else
+                        infer_model_dir=${save_infer_path}
+                    fi
+                    func_inference "${python}" "${inference_py}" "${infer_model_dir}" "${LOG_PATH}" "${train_infer_img_dir}" "${flag_quant}"
+                    
                     eval "unset CUDA_VISIBLE_DEVICES"
                 fi
             done  # done with:    for trainer in ${trainer_list[*]}; do 
