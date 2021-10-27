@@ -38,6 +38,10 @@ if [ ${MODE} = "lite_train_infer" ];then
     # pretrain lite train data
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams
     wget -nc -P ./pretrain_models/  https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar
+    if [ ${model_name} == "PPOCRv2_ocr_det" ]; then
+        wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_distill_train.tar
+        cd ./pretrain_models/ && tar xf ch_PP-OCRv2_det_distill_train.tar && cd ../
+    fi
     cd ./pretrain_models/ && tar xf det_mv3_db_v2.0_train.tar && cd ../
     rm -rf ./train_data/icdar2015
     rm -rf ./train_data/ic15_data
@@ -57,6 +61,10 @@ elif [ ${MODE} = "whole_train_infer" ];then
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015.tar
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ic15_data.tar
     cd ./train_data/ && tar xf icdar2015.tar && tar xf ic15_data.tar && cd ../
+    if [ ${model_name} == "PPOCRv2_ocr_det" ]; then
+        wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_distill_train.tar
+        cd ./pretrain_models/ && tar xf ch_PP-OCRv2_det_distill_train.tar && cd ../
+    fi
 elif [ ${MODE} = "whole_infer" ];then
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams
     rm -rf ./train_data/icdar2015
@@ -66,6 +74,10 @@ elif [ ${MODE} = "whole_infer" ];then
     cd ./train_data/ && tar xf icdar2015_infer.tar && tar xf ic15_data.tar
     ln -s ./icdar2015_infer ./icdar2015
     cd ../
+    if [ ${model_name} == "PPOCRv2_ocr_det" ]; then
+        wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_distill_train.tar
+        cd ./pretrain_models/ && tar xf ch_PP-OCRv2_det_distill_train.tar && cd ../
+    fi
 elif [ ${MODE} = "infer" ];then
     if [ ${model_name} = "ocr_det" ]; then
         eval_model_name="ch_ppocr_mobile_v2.0_det_train"
@@ -100,12 +112,24 @@ elif [ ${MODE} = "infer" ];then
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar
         cd ./inference && tar xf ${eval_model_name}.tar && tar xf rec_inference.tar && cd ../
     fi 
+    elif [ ${model_name} = "PPOCRv2_ocr_det" ]; then
+        eval_model_name="ch_PP-OCRv2_det_infer"
+        wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar
+        cd ./inference && tar xf ${eval_model_name}.tar && tar xf ch_det_data_50.tar && cd ../
+    fi 
 elif [ ${MODE} = "klquant_infer" ];then
     if [ ${model_name} = "ocr_det" ]; then
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar
         wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar
         cd ./inference && tar xf ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_det_data_50.tar && cd ../
     fi
+    if [ ${model_name} = "PPOCRv2_ocr_det" ]; then
+        eval_model_name="ch_PP-OCRv2_det_infer"
+        wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar
+        cd ./inference && tar xf ${eval_model_name}.tar && tar xf ch_det_data_50.tar && cd ../
+    fi 
 elif [ ${MODE} = "cpp_infer" ];then
     if [ ${model_name} = "ocr_det" ]; then
         wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar
