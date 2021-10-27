@@ -15,18 +15,18 @@ PaddleServing预测功能测试的主程序为`test_serving.sh`，可以测试�
 
 ## 2. 测试流程
 ### 2.1 功能测试
-先运行`prepare.sh`准备数据和模型，然后运行`test_serving.sh`进行测试，最终在```PTDN/output```目录下生成`serving_infer_*.log`后缀的日志文件。
+先运行`prepare.sh`准备数据和模型，然后运行`test_serving.sh`进行测试，最终在```test_tipc/output```目录下生成`serving_infer_*.log`后缀的日志文件。
 
 ```shell
-bash PTDN/prepare.sh ./PTDN/configs/ppocr_det_mobile_params.txt "serving_infer"
+bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile_params.txt "serving_infer"
 
 # 用法:
-bash PTND/test_serving.sh ./PTDN/configs/ppocr_det_mobile_params.txt
+bash test_tipc/test_serving.sh ./test_tipc/configs/ppocr_det_mobile_params.txt
 ```  
 
 #### 运行结果
 
-各测试的运行情况会打印在 `PTDN/output/results_serving.log` 中：
+各测试的运行情况会打印在 `test_tipc/output/results_serving.log` 中：
 运行成功时会输出：
 
 ```
@@ -44,7 +44,7 @@ Run failed with command - xxxxx
 ...
 ```
 
-详细的预测结果会存在 PTDN/output/ 文件夹下，例如`server_infer_gpu_usetrt_True_precision_fp16_batchsize_1.log`中会返回检测框的坐标:
+详细的预测结果会存在 test_tipc/output/ 文件夹下，例如`server_infer_gpu_usetrt_True_precision_fp16_batchsize_1.log`中会返回检测框的坐标:
 
 ```
 {'err_no': 0, 'err_msg': '', 'key': ['dt_boxes'], 'value': ['[[[ 78. 642.]\n  [409. 640.]\n  [409. 657.]\n  
