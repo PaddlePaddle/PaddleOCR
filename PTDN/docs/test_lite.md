@@ -25,7 +25,7 @@ Lite预测功能测试的主程序为`test_lite.sh`，可以测试基于Lite预�
 bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile_params.txt "lite_infer"
 
 # 手机端测试:
-bash PTND/test_lite.sh ./test_tipc/configs/ppocr_det_mobile_params.txt
+bash test_lite.sh ppocr_det_mobile_params.txt
 
 ```  
 
