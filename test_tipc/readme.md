@@ -69,7 +69,7 @@ PTDN/
 	├── ppocr_sys_server_params.txt     # 测试server版ppocr检测+识别模型串联的参数配置文件
 	├── ppocr_det_server_params.txt     # 测试server版ppocr检测模型的参数配置文件
 	├── ppocr_rec_server_params.txt     # 测试server版ppocr识别模型的参数配置文件
-	├── ...                                
+	├── ...  
 ├── results/   # 预先保存的预测结果，用于和实际预测结果进行精读比对
 	├── python_ppocr_det_mobile_results_fp32.txt           # 预存的mobile版ppocr检测模型python预测fp32精度的结果
 	├── python_ppocr_det_mobile_results_fp16.txt           # 预存的mobile版ppocr检测模型python预测fp16精度的结果

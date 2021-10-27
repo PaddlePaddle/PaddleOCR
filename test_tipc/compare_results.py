@@ -32,6 +32,7 @@ def run_shell_command(cmd):
     else:
         return None
 
+
 def parser_results_from_log_by_name(log_path, names_list):
     if not os.path.exists(log_path):
         raise ValueError("The log file {} does not exists!".format(log_path))
@@ -51,6 +52,7 @@ def parser_results_from_log_by_name(log_path, names_list):
             result = np.array([int(r) for r in result.split()]).reshape(-1, 4)
         parser_results[name] = result
     return parser_results
+
 
 def load_gt_from_file(gt_file):
     if not os.path.exists(gt_file):
