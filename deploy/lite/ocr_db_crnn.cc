@@ -12,12 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "paddle_api.h" // NOLINT
 #include <chrono>
+#include "paddle_api.h" // NOLINT
+#include "paddle_place.h"
 
 #include "cls_process.h"
 #include "crnn_process.h"
 #include "db_post_process.h"
+#include "AutoLog/auto_log/lite_autolog.h"
 
 using namespace paddle::lite_api; // NOLINT
 using namespace std;
@@ -27,7 +29,7 @@ void NeonMeanScale(const float *din, float *dout, int size,
                    const std::vector<float> mean,
                    const std::vector<float> scale) {
   if (mean.size() != 3 || scale.size() != 3) {
-    std::cerr << "[ERROR] mean or scale size must equal to 3\n";
+    std::cerr << "[ERROR] mean or scale size must equal to 3" << std::endl;
     exit(1);
   }
   float32x4_t vmean0 = vdupq_n_f32(mean[0]);
@@ -159,7 +161,8 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
                  std::vector<float> &rec_text_score,
                  std::vector<std::string> charactor_dict,
                  std::shared_ptr<PaddlePredictor> predictor_cls,
-                 int use_direction_classify) {
+                 int use_direction_classify,
+                 std::vector<double> *times) {
   std::vector<float> mean = {0.5f, 0.5f, 0.5f};
   std::vector<float> scale = {1 / 0.5f, 1 / 0.5f, 1 / 0.5f};
 
@@ -226,14 +229,15 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
 
 std::vector<std::vector<std::vector<int>>>
 RunDetModel(std::shared_ptr<PaddlePredictor> predictor, cv::Mat img,
-            std::map<std::string, double> Config) {
+            std::map<std::string, double> Config, std::vector<double> *times) {
   // Read img
   int max_side_len = int(Config["max_side_len"]);
   int det_db_use_dilate = int(Config["det_db_use_dilate"]);
 
   cv::Mat srcimg;
   img.copyTo(srcimg);
-
+  
+  auto preprocess_start = std::chrono::steady_clock::now();
   std::vector<float> ratio_hw;
   img = DetResizeImg(img, max_side_len, ratio_hw);
   cv::Mat img_fp;
@@ -248,8 +252,10 @@ RunDetModel(std::shared_ptr<PaddlePredictor> predictor, cv::Mat img,
   std::vector<float> scale = {1 / 0.229f, 1 / 0.224f, 1 / 0.225f};
   const float *dimg = reinterpret_cast<const float *>(img_fp.data);
   NeonMeanScale(dimg, data0, img_fp.rows * img_fp.cols, mean, scale);
+  auto preprocess_end = std::chrono::steady_clock::now();
 
   // Run predictor
+  auto inference_start = std::chrono::steady_clock::now();
   predictor->Run();
 
   // Get output and post process
@@ -257,8 +263,10 @@ RunDetModel(std::shared_ptr<PaddlePredictor> predictor, cv::Mat img,
       std::move(predictor->GetOutput(0)));
   auto *outptr = output_tensor->data<float>();
   auto shape_out = output_tensor->shape();
+  auto inference_end = std::chrono::steady_clock::now();
 
   // Save output
+  auto postprocess_start = std::chrono::steady_clock::now();
   float pred[shape_out[2] * shape_out[3]];
   unsigned char cbuf[shape_out[2] * shape_out[3]];
 
@@ -287,13 +295,34 @@ RunDetModel(std::shared_ptr<PaddlePredictor> predictor, cv::Mat img,
 
   std::vector<std::vector<std::vector<int>>> filter_boxes =
       FilterTagDetRes(boxes, ratio_hw[0], ratio_hw[1], srcimg);
+  auto postprocess_end = std::chrono::steady_clock::now();
+
+  std::chrono::duration<float> preprocess_diff = preprocess_end - preprocess_start;
+  times->push_back(double(preprocess_diff.count() * 1000));
+  std::chrono::duration<float> inference_diff = inference_end - inference_start;
+  times->push_back(double(inference_diff.count() * 1000));
+  std::chrono::duration<float> postprocess_diff = postprocess_end - postprocess_start;
+  times->push_back(double(postprocess_diff.count() * 1000));
 
   return filter_boxes;
 }
 
-std::shared_ptr<PaddlePredictor> loadModel(std::string model_file) {
+std::shared_ptr<PaddlePredictor> loadModel(std::string model_file, std::string power_mode, int num_threads) {
   MobileConfig config;
   config.set_model_from_file(model_file);
+
+  if (power_mode == "LITE_POWER_HIGH"){
+      config.set_power_mode(LITE_POWER_HIGH);
+  } else {
+      if (power_mode == "LITE_POWER_LOW") {
+          config.set_power_mode(LITE_POWER_HIGH);
+      } else {
+          std::cerr << "Only support LITE_POWER_HIGH or LITE_POWER_HIGH." << std::endl;
+          exit(1);
+      }
+  }
+
+  config.set_threads(num_threads);
 
   std::shared_ptr<PaddlePredictor> predictor =
       CreatePaddlePredictor<MobileConfig>(config);
@@ -354,60 +383,255 @@ std::map<std::string, double> LoadConfigTxt(std::string config_path) {
   return dict;
 }
 
-int main(int argc, char **argv) {
-  if (argc < 5) {
-    std::cerr << "[ERROR] usage: " << argv[0]
-              << " det_model_file cls_model_file rec_model_file image_path "
-                 "charactor_dict\n";
+void check_params(int argc, char **argv) {
+  if (argc<=1 || (strcmp(argv[1], "det")!=0 && strcmp(argv[1], "rec")!=0 && strcmp(argv[1], "system")!=0)) {
+    std::cerr << "Please choose one mode of [det, rec, system] !" << std::endl;
     exit(1);
   }
-  std::string det_model_file = argv[1];
-  std::string rec_model_file = argv[2];
-  std::string cls_model_file = argv[3];
-  std::string img_path = argv[4];
-  std::string dict_path = argv[5];
+  if (strcmp(argv[1], "det") == 0) {
+      if (argc < 9){
+        std::cerr << "[ERROR] usage:" << argv[0]
+                  << " det det_model num_threads batchsize power_mode img_dir det_config lite_benchmark_value" << std::endl;
+        exit(1);
+      }
+  }
+
+  if (strcmp(argv[1], "rec") == 0) {
+      if (argc < 9){
+        std::cerr << "[ERROR] usage:" << argv[0]
+                  << " rec rec_model num_threads batchsize power_mode img_dir key_txt lite_benchmark_value" << std::endl;
+        exit(1);
+      }
+  }
+
+  if (strcmp(argv[1], "system") == 0) {
+      if (argc < 12){
+        std::cerr << "[ERROR] usage:" << argv[0]
+                  << " system det_model rec_model clas_model num_threads batchsize power_mode img_dir det_config key_txt lite_benchmark_value" << std::endl;
+        exit(1);
+      }
+  }
+}
+
+void system(char **argv){
+  std::string det_model_file = argv[2];
+  std::string rec_model_file = argv[3];
+  std::string cls_model_file = argv[4];
+  std::string precision = argv[5];
+  std::string num_threads = argv[6];
+  std::string batchsize = argv[7];
+  std::string power_mode = argv[8];
+  std::string img_dir = argv[9];
+  std::string det_config_path = argv[10];
+  std::string dict_path = argv[11];
+
+  if (strcmp(argv[5], "FP32") != 0 && strcmp(argv[5], "INT8") != 0) {
+      std::cerr << "Only support FP32 or INT8." << std::endl;
+      exit(1);
+  }
+
+  std::vector<cv::String> cv_all_img_names;
+  cv::glob(img_dir, cv_all_img_names);
 
   //// load config from txt file
-  auto Config = LoadConfigTxt("./config.txt");
+  auto Config = LoadConfigTxt(det_config_path);
   int use_direction_classify = int(Config["use_direction_classify"]);
-
-  auto start = std::chrono::system_clock::now();
-
-  auto det_predictor = loadModel(det_model_file);
-  auto rec_predictor = loadModel(rec_model_file);
-  auto cls_predictor = loadModel(cls_model_file);
 
   auto charactor_dict = ReadDict(dict_path);
   charactor_dict.insert(charactor_dict.begin(), "#"); // blank char for ctc
   charactor_dict.push_back(" ");
 
-  cv::Mat srcimg = cv::imread(img_path, cv::IMREAD_COLOR);
-  auto boxes = RunDetModel(det_predictor, srcimg, Config);
+  auto det_predictor = loadModel(det_model_file, power_mode, std::stoi(num_threads));
+  auto rec_predictor = loadModel(rec_model_file, power_mode, std::stoi(num_threads));
+  auto cls_predictor = loadModel(cls_model_file, power_mode, std::stoi(num_threads));
 
-  std::vector<std::string> rec_text;
-  std::vector<float> rec_text_score;
+  for (int i = 0; i < cv_all_img_names.size(); ++i) {
+    std::cout << "The predict img: " << cv_all_img_names[i] << std::endl;
+    cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
 
-  RunRecModel(boxes, srcimg, rec_predictor, rec_text, rec_text_score,
-              charactor_dict, cls_predictor, use_direction_classify);
+    if (!srcimg.data) {
+      std::cerr << "[ERROR] image read failed! image path: " << cv_all_img_names[i] << std::endl;
+      exit(1);
+    }
 
-  auto end = std::chrono::system_clock::now();
-  auto duration =
-      std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    std::vector<double> det_times;
+    auto boxes = RunDetModel(det_predictor, srcimg, Config, &det_times);
+  
+    std::vector<std::string> rec_text;
+    std::vector<float> rec_text_score;
+  
+    std::vector<double> rec_times;
+    RunRecModel(boxes, srcimg, rec_predictor, rec_text, rec_text_score,
+                charactor_dict, cls_predictor, use_direction_classify, &rec_times);
+  
+    //// visualization
+    auto img_vis = Visualization(srcimg, boxes);
+  
+    //// print recognized text
+    for (int i = 0; i < rec_text.size(); i++) {
+      std::cout << i << "\t" << rec_text[i] << "\t" << rec_text_score[i]
+                << std::endl;
+    }
+  }
+}
 
-  //// visualization
-  auto img_vis = Visualization(srcimg, boxes);
+void det(int argc, char **argv) {
+  std::string det_model_file = argv[2];
+  std::string precision = argv[3];
+  std::string num_threads = argv[4];
+  std::string batchsize = argv[5];
+  std::string power_mode = argv[6];
+  std::string img_dir = argv[7];
+  std::string det_config_path = argv[8];
 
-  //// print recognized text
-  for (int i = 0; i < rec_text.size(); i++) {
-    std::cout << i << "\t" << rec_text[i] << "\t" << rec_text_score[i]
-              << std::endl;
+  if (strcmp(argv[3], "FP32") != 0 && strcmp(argv[3], "INT8") != 0) {
+      std::cerr << "Only support FP32 or INT8." << std::endl;
+      exit(1);
   }
 
-  std::cout << "花费了"
-            << double(duration.count()) *
-                   std::chrono::microseconds::period::num /
-                   std::chrono::microseconds::period::den
-            << "秒" << std::endl;
+  std::vector<cv::String> cv_all_img_names;
+  cv::glob(img_dir, cv_all_img_names);
+
+  //// load config from txt file
+  auto Config = LoadConfigTxt(det_config_path);
+
+  auto det_predictor = loadModel(det_model_file, power_mode, std::stoi(num_threads));
+
+  std::vector<double> time_info = {0, 0, 0};
+  for (int i = 0; i < cv_all_img_names.size(); ++i) {
+    std::cout << "The predict img: " << cv_all_img_names[i] << std::endl;
+    cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
+
+    if (!srcimg.data) {
+      std::cerr << "[ERROR] image read failed! image path: " << cv_all_img_names[i] << std::endl;
+      exit(1);
+    }
+
+    std::vector<double> times;
+    auto boxes = RunDetModel(det_predictor, srcimg, Config, &times);
+
+    //// visualization
+    auto img_vis = Visualization(srcimg, boxes);
+    std::cout << boxes.size() << " bboxes have detected:" << std::endl;
+
+    // for (int i=0; i<boxes.size(); i++){
+    //   std::cout << "The " << i << " box:" << std::endl;
+    //   for (int j=0; j<4; j++){
+    //     for (int k=0; k<2; k++){
+    //       std::cout << boxes[i][j][k] << "\t";
+    //     }
+    //   }
+    //   std::cout << std::endl;
+    // }
+    time_info[0] += times[0];
+    time_info[1] += times[1];
+    time_info[2] += times[2];
+  }
+
+  if (strcmp(argv[9], "True") == 0) {
+    AutoLogger autolog(det_model_file, 
+                       0,
+                       0,
+                       0,
+                       std::stoi(num_threads),
+                       std::stoi(batchsize), 
+                       "dynamic", 
+                       precision, 
+                       power_mode,
+                       time_info, 
+                       cv_all_img_names.size());
+    autolog.report();
+  }
+}
+
+void rec(int argc, char **argv) {
+  std::string rec_model_file = argv[2];
+  std::string precision = argv[3];
+  std::string num_threads = argv[4];
+  std::string batchsize = argv[5];
+  std::string power_mode = argv[6];
+  std::string img_dir = argv[7];
+  std::string dict_path = argv[8];
+
+  if (strcmp(argv[3], "FP32") != 0 && strcmp(argv[3], "INT8") != 0) {
+      std::cerr << "Only support FP32 or INT8." << std::endl;
+      exit(1);
+  }
+
+  std::vector<cv::String> cv_all_img_names;
+  cv::glob(img_dir, cv_all_img_names);
+
+  auto charactor_dict = ReadDict(dict_path);
+  charactor_dict.insert(charactor_dict.begin(), "#"); // blank char for ctc
+  charactor_dict.push_back(" ");
+
+  auto rec_predictor = loadModel(rec_model_file, power_mode, std::stoi(num_threads));
+
+  std::shared_ptr<PaddlePredictor> cls_predictor;
+
+  std::vector<double> time_info = {0, 0, 0};
+  for (int i = 0; i < cv_all_img_names.size(); ++i) {
+    std::cout << "The predict img: " << cv_all_img_names[i] << std::endl;
+    cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
+
+    if (!srcimg.data) {
+      std::cerr << "[ERROR] image read failed! image path: " << cv_all_img_names[i] << std::endl;
+      exit(1);
+    }
+
+    int width = srcimg.cols;
+    int height = srcimg.rows;
+    std::vector<int> upper_left = {0, 0};
+    std::vector<int> upper_right = {width, 0};
+    std::vector<int> lower_right = {width, height};
+    std::vector<int> lower_left  = {0, height};
+    std::vector<std::vector<int>> box = {upper_left, upper_right, lower_right, lower_left};
+    std::vector<std::vector<std::vector<int>>> boxes = {box};
+
+    std::vector<std::string> rec_text;
+    std::vector<float> rec_text_score;
+    std::vector<double> times;
+    RunRecModel(boxes, srcimg, rec_predictor, rec_text, rec_text_score,
+                charactor_dict, cls_predictor, 0, &times);
+  
+    //// print recognized text
+    for (int i = 0; i < rec_text.size(); i++) {
+      std::cout << i << "\t" << rec_text[i] << "\t" << rec_text_score[i]
+                << std::endl;
+    }
+  }
+  // TODO: support autolog
+  if (strcmp(argv[9], "True") == 0) {
+    AutoLogger autolog(rec_model_file, 
+                       0,
+                       0,
+                       0,
+                       std::stoi(num_threads),
+                       std::stoi(batchsize), 
+                       "dynamic", 
+                       precision, 
+                       power_mode,
+                       time_info, 
+                       cv_all_img_names.size());
+    autolog.report();
+  }
+}
+
+int main(int argc, char **argv) {
+  check_params(argc, argv);
+  std::cout << "mode: " << argv[1] << endl;
+
+  if (strcmp(argv[1], "system") == 0) {
+    system(argv);
+  }
+
+  if (strcmp(argv[1], "det") == 0) {
+    det(argc, argv);
+  }
+
+  if (strcmp(argv[1], "rec") == 0) {
+    rec(argc, argv);
+  }
 
   return 0;
 }
