@@ -22,10 +22,10 @@ Lite预测功能测试的主程序为`test_lite.sh`，可以测试基于Lite预�
 ```shell
 
 # 数据和模型准备
-bash PTDN/prepare.sh ./PTDN/configs/ppocr_det_mobile_params.txt "lite_infer"
+bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile_params.txt "lite_infer"
 
 # 手机端测试:
-bash PTND/test_lite.sh ./PTDN/configs/ppocr_det_mobile_params.txt
+bash PTND/test_lite.sh ./test_tipc/configs/ppocr_det_mobile_params.txt
 
 ```  
 
