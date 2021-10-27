@@ -1,9 +1,9 @@
 ===========================train_params===========================
 model_name:ocr_det
 python:python3.7
-gpu_list:0|0,1
-Global.use_gpu:True|True
-Global.auto_cast:null
+gpu_list:0|0,1|10.21.226.181,10.21.226.133;0,1
+Global.use_gpu:True|True|True
+Global.auto_cast:fp32|amp
 Global.epoch_num:lite_train_infer=1|whole_train_infer=300
 Global.save_model_dir:./output/
 Train.loader.batch_size_per_card:lite_train_infer=2|whole_train_infer=4
@@ -98,3 +98,13 @@ null:null
 --benchmark:True
 null:null
 null:null
+===========================lite_params===========================
+inference:./ocr_db_crnn det
+infer_model:./models/ch_ppocr_mobile_v2.0_det_opt.nb|./models/ch_ppocr_mobile_v2.0_det_slim_opt.nb
+--cpu_threads:1|4
+--batch_size:1
+--power_mode:LITE_POWER_HIGH|LITE_POWER_LOW
+--image_dir:./test_data/icdar2015_lite/text_localization/ch4_test_images/|./test_data/icdar2015_lite/text_localization/ch4_test_images/img_233.jpg
+--config_dir:./config.txt
+--rec_dict_dir:./ppocr_keys_v1.txt
+--benchmark:True

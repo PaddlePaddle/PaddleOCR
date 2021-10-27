@@ -29,10 +29,7 @@ from .rec_postprocess import CTCLabelDecode, AttnLabelDecode, SRNLabelDecode, Di
     TableLabelDecode, NRTRLabelDecode, SARLabelDecode , SEEDLabelDecode
 from .cls_postprocess import ClsPostProcess
 from .pg_postprocess import PGPostProcess
-
-if platform.system() != "Windows":
-    # pse is not support in Windows
-    from .pse_postprocess import PSEPostProcess
+from .pse_postprocess import PSEPostProcess
 
 
 def build_post_process(config, global_config=None):
