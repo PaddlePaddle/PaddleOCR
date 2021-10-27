@@ -19,6 +19,7 @@ from __future__ import unicode_literals
 
 import numpy as np
 import string
+import json
 
 
 class ClsLabelEncode(object):
@@ -39,7 +40,6 @@ class DetLabelEncode(object):
         pass
 
     def __call__(self, data):
-        import json
         label = data['label']
         label = json.loads(label)
         nBox = len(label)
@@ -53,6 +53,8 @@ class DetLabelEncode(object):
                 txt_tags.append(True)
             else:
                 txt_tags.append(False)
+        if len(boxes) == 0:
+            return None
         boxes = self.expand_points_num(boxes)
         boxes = np.array(boxes, dtype=np.float32)
         txt_tags = np.array(txt_tags, dtype=np.bool)
@@ -283,7 +285,7 @@ class AttnLabelEncode(BaseRecLabelEncode):
         text = self.encode(text)
         if text is None:
             return None
-        if len(text) >= self.max_text_len:
+        if len(text) >= self.max_text_len - 1:
             return None
         data['length'] = np.array(len(text))
         text = [0] + text + [len(self.character) - 1] + [0] * (self.max_text_len
