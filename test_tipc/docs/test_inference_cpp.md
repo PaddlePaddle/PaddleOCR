@@ -15,15 +15,15 @@ C++预测功能测试的主程序为`test_inference_cpp.sh`，可以测试基于
 
 ## 2. 测试流程
 ### 2.1 功能测试
-先运行`prepare.sh`准备数据和模型，然后运行`test_inference_cpp.sh`进行测试，最终在```PTDN/output```目录下生成`cpp_infer_*.log`后缀的日志文件。
+先运行`prepare.sh`准备数据和模型，然后运行`test_inference_cpp.sh`进行测试，最终在```test_tipc/output```目录下生成`cpp_infer_*.log`后缀的日志文件。
 
 ```shell
-bash PTDN/prepare.sh ./PTDN/configs/ppocr_det_mobile_params.txt "cpp_infer"
+bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile_params.txt "cpp_infer"
 
 # 用法1:
-bash PTDN/test_inference_cpp.sh ./PTDN/configs/ppocr_det_mobile_params.txt
+bash test_tipc/test_inference_cpp.sh ./test_tipc/configs/ppocr_det_mobile_params.txt
 # 用法2: 指定GPU卡预测，第三个传入参数为GPU卡号
-bash PTDN/test_inference_cpp.sh ./PTDN/configs/ppocr_det_mobile_params.txt '1'
+bash test_tipc/test_inference_cpp.sh ./test_tipc/configs/ppocr_det_mobile_params.txt '1'
 ```  
 
 
@@ -37,12 +37,12 @@ bash PTDN/test_inference_cpp.sh ./PTDN/configs/ppocr_det_mobile_params.txt '1'
 #### 使用方式
 运行命令：
 ```shell
-python3.7 PTDN/compare_results.py --gt_file=./PTDN/results/cpp_*.txt  --log_file=./PTDN/output/cpp_*.log --atol=1e-3 --rtol=1e-3
+python3.7 test_tipc/compare_results.py --gt_file=./test_tipc/results/cpp_*.txt  --log_file=./test_tipc/output/cpp_*.log --atol=1e-3 --rtol=1e-3
 ```
 
 参数介绍：  
-- gt_file： 指向事先保存好的预测结果路径，支持*.txt 结尾，会自动索引*.txt格式的文件，文件默认保存在PTDN/result/ 文件夹下
-- log_file: 指向运行PTDN/test_inference_cpp.sh 脚本的infer模式保存的预测日志，预测日志中打印的有预测结果，比如：文本框，预测文本，类别等等，同样支持cpp_infer_*.log格式传入
+- gt_file： 指向事先保存好的预测结果路径，支持*.txt 结尾，会自动索引*.txt格式的文件，文件默认保存在test_tipc/result/ 文件夹下
+- log_file: 指向运行test_tipc/test_inference_cpp.sh 脚本的infer模式保存的预测日志，预测日志中打印的有预测结果，比如：文本框，预测文本，类别等等，同样支持cpp_infer_*.log格式传入
 - atol: 设置的绝对误差
 - rtol: 设置的相对误差
 
