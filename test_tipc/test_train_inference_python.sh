@@ -120,7 +120,7 @@ if [ ${MODE} = "klquant_whole_infer" ]; then
     infer_value1=$(func_parser_value "${lines[15]}")
 fi
 
-LOG_PATH="./tests/output"
+LOG_PATH="./test_tipc/output"
 mkdir -p ${LOG_PATH}
 status_log="${LOG_PATH}/results_python.log"
 

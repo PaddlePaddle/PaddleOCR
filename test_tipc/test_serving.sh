@@ -1,5 +1,5 @@
 #!/bin/bash
-source PTDN/common_func.sh
+source test_tipc/common_func.sh
 
 FILENAME=$1
 dataline=$(awk 'NR==67, NR==83{print}'  $FILENAME)
@@ -36,8 +36,8 @@ web_precision_key=$(func_parser_key "${lines[15]}")
 web_precision_list=$(func_parser_value "${lines[15]}")
 pipeline_py=$(func_parser_value "${lines[16]}")
 
-LOG_PATH="../../PTDN/output"
-mkdir -p ./PTDN/output
+LOG_PATH="../../test_tipc/output"
+mkdir -p ./test_tipc/output
 status_log="${LOG_PATH}/results_serving.log"
 
 function func_serving(){
