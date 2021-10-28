@@ -51,37 +51,37 @@
 
 `test_train_inference_python.sh`包含5种运行模式，每种模式的运行数据不同，分别用于测试速度和精度，分别是：
 
-- 模式1：lite_train_infer，使用少量数据训练，用于快速验证训练到预测的走通流程，不验证精度和速度；
+- 模式1：lite_train_lite_infer，使用少量数据训练，用于快速验证训练到预测的走通流程，不验证精度和速度；
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'lite_train_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'lite_train_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'lite_train_lite_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'lite_train_lite_infer'
 ```  
 
-- 模式2：whole_infer，使用少量数据训练，一定量数据预测，用于验证训练后的模型执行预测，预测速度是否合理；
+- 模式2：lite_train_whole_infer，使用少量数据训练，一定量数据预测，用于验证训练后的模型执行预测，预测速度是否合理；
+```shell
+bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'lite_train_whole_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'lite_train_whole_infer'
+```  
+
+- 模式3：whole_infer，不训练，全量数据预测，走通开源模型评估、动转静，检查inference model预测时间和精度;
 ```shell
 bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'whole_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'whole_infer'
-```  
-
-- 模式3：infer，不训练，全量数据预测，走通开源模型评估、动转静，检查inference model预测时间和精度;
-```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'infer'
 # 用法1:
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'whole_infer'
 # 用法2: 指定GPU卡预测，第三个传入参数为GPU卡号
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'infer' '1'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'whole_infer' '1'
 ```  
 
-- 模式4：whole_train_infer，CE： 全量数据训练，全量数据预测，验证模型训练精度，预测精度，预测速度；
+- 模式4：whole_train_whole_infer，CE： 全量数据训练，全量数据预测，验证模型训练精度，预测精度，预测速度；
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'whole_train_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'whole_train_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'whole_train_whole_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'whole_train_whole_infer'
 ```  
 
-- 模式5：klquant_infer，测试离线量化；
+- 模式5：klquant_whole_infer，测试离线量化；
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'klquant_infer'
-bash test_tipc/test_train_inference_python.sh test_tipc/configs/ppocr_det_mobile_params.txt  'klquant_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'klquant_whole_infer'
+bash test_tipc/test_train_inference_python.sh test_tipc/configs/ppocr_det_mobile_params.txt  'klquant_whole_infer'
 ```
 
 

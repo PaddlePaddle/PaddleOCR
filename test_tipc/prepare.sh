@@ -1,8 +1,9 @@
 #!/bin/bash
 FILENAME=$1
 
-# MODE be one of ['lite_train_infer' 'whole_infer' 'whole_train_infer',  'infer', 
-#                 'cpp_infer', 'serving_infer', 'klquant_infer', 'lite_infer']
+# MODE be one of ['lite_train_lite_infer' 'lite_train_whole_infer' 'whole_train_whole_infer',  
+#                 'whole_infer', 'klquant_whole_infer',
+#                 'cpp_infer', 'serving_infer',  'lite_infer']
 
 MODE=$2
 
@@ -34,7 +35,7 @@ trainer_list=$(func_parser_value "${lines[14]}")
 # MODE be one of ['lite_train_infer' 'whole_infer' 'whole_train_infer']
 MODE=$2
 
-if [ ${MODE} = "lite_train_infer" ];then
+if [ ${MODE} = "lite_train_lite_infer" ];then
     # pretrain lite train data
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams
     wget -nc -P ./pretrain_models/  https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar
@@ -50,14 +51,14 @@ if [ ${MODE} = "lite_train_infer" ];then
     ln -s ./icdar2015_lite ./icdar2015
     cd ../
     cd ./inference && tar xf rec_inference.tar && cd ../
-elif [ ${MODE} = "whole_train_infer" ];then
+elif [ ${MODE} = "whole_train_whole_infer" ];then
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams
     rm -rf ./train_data/icdar2015
     rm -rf ./train_data/ic15_data
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015.tar
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ic15_data.tar
     cd ./train_data/ && tar xf icdar2015.tar && tar xf ic15_data.tar && cd ../
-elif [ ${MODE} = "whole_infer" ];then
+elif [ ${MODE} = "lite_train_whole_infer" ];then
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams
     rm -rf ./train_data/icdar2015
     rm -rf ./train_data/ic15_data
@@ -66,7 +67,7 @@ elif [ ${MODE} = "whole_infer" ];then
     cd ./train_data/ && tar xf icdar2015_infer.tar && tar xf ic15_data.tar
     ln -s ./icdar2015_infer ./icdar2015
     cd ../
-elif [ ${MODE} = "infer" ];then
+elif [ ${MODE} = "whole_infer" ];then
     if [ ${model_name} = "ocr_det" ]; then
         eval_model_name="ch_ppocr_mobile_v2.0_det_train"
         rm -rf ./train_data/icdar2015
@@ -100,7 +101,7 @@ elif [ ${MODE} = "infer" ];then
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar
         cd ./inference && tar xf ${eval_model_name}.tar && tar xf rec_inference.tar && cd ../
     fi 
-elif [ ${MODE} = "klquant_infer" ];then
+elif [ ${MODE} = "klquant_whole_infer" ];then
     if [ ${model_name} = "ocr_det" ]; then
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar
         wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar
