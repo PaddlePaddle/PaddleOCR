@@ -2,7 +2,7 @@
 source tests/common_func.sh
 
 FILENAME=$1
-# MODE be one of ['lite_train_infer' 'whole_infer' 'whole_train_infer', 'infer', 'klquant_infer']
+# MODE be one of ['lite_train_lite_infer' 'lite_train_whole_infer' 'whole_train_whole_infer', 'whole_infer', 'klquant_whole_infer']
 MODE=$2
 
 dataline=$(awk 'NR==1, NR==51{print}'  $FILENAME)
@@ -88,7 +88,7 @@ infer_key1=$(func_parser_key "${lines[50]}")
 infer_value1=$(func_parser_value "${lines[50]}")
 
 # parser klquant_infer
-if [ ${MODE} = "klquant_infer" ]; then
+if [ ${MODE} = "klquant_whole_infer" ]; then
     dataline=$(awk 'NR==82, NR==98{print}'  $FILENAME)
     lines=(${dataline})
     # parser inference model 
@@ -202,7 +202,7 @@ function func_inference(){
     done
 }
 
-if [ ${MODE} = "infer" ] || [ ${MODE} = "klquant_infer" ]; then
+if [ ${MODE} = "whole_infer" ] || [ ${MODE} = "klquant_whole_infer" ]; then
     GPUID=$3
     if [ ${#GPUID} -le 0 ];then
         env=" "
