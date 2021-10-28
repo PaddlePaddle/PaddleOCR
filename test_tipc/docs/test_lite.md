@@ -4,20 +4,26 @@ Lite预测功能测试的主程序为`test_lite.sh`，可以测试基于Lite预�
 
 ## 1. 测试结论汇总
 
-目前Lite端的样本间支持以下四种方式的组合，共16个链条：
+目前Lite端的样本间支持以下四种方式的组合：
 
-| 模型类型 | 样本数量 | 功耗模式 | cpu多线程 |
-|  ----   |   ----   |  :----:  |  :----:  |
-| 正常模型 | 单样本/多样本 | LITE_POWER_HIGH/LITE_POWER_LOW | 支持 |
-| 正常模型 | 单样本/多样本 | LITE_POWER_HIGH/LITE_POWER_LOW | 支持 |
-| 量化模型 | 单样本/多样本 | LITE_POWER_HIGH/LITE_POWER_LOW | 支持 |
-| 量化模型 | 单样本/多样本 | LITE_POWER_HIGH/LITE_POWER_LOW | 支持 |
+**字段说明：**
+- 输入设置：包括C++预测、python预测、java预测
+- 模型类型：包括正常模型（FP32）和量化模型（FP16）
+- 样本数量：即batch-size数量，包括1和4
+- predictor数量：包括多predictor预测和单predictor预测
+- 功耗模式：包括高性能模式（LITE_POWER_HIGH）和省电模式（LITE_POWER_LOW）
+- 预测库来源：包括下载方式和编译方式，其中编译方式分为以下目标硬件：(1)ARM CPU;(2)Linux XPU;(3)OpenCL GPU;(4)Metal GPU
+
+| 输入设置 | 模型类型 | 样本数量 | predictor数量 | 功耗模式 | 预测库来源 |
+|  ----   |   ----   |  :----:  |  :----:  |  :----:  |  :----:  |
+| C++预测 | 正常模型/量化模型 | 1/4 | 1 | 高性能模式/省电模式 | 下载方式 |
+
 
 ## 2. 测试流程
 
 ### 2.1 功能测试
 
-先运行`prepare.sh`准备数据和模型，模型和数据会打包到test_lite.tar中，将test_lite.tar上传到手机上，然后运行`test_lite.sh`进行测试，最终在`test_lite/output`目录下生成`lite_*.log`后缀的日志文件。
+先运行`prepare.sh`准备数据和模型，模型和数据会打包到test_lite.tar中，将test_lite.tar上传到手机上，解压后进`入test_lite`目录中，然后运行`test_lite.sh`进行测试，最终在`test_lite/output`目录下生成`lite_*.log`后缀的日志文件。
 
 ```shell
 
@@ -29,7 +35,7 @@ bash test_lite.sh ppocr_det_mobile_params.txt
 
 ```  
 
-**注意**：数据上传到手机的方式有两种，一种是通过adb的方式通过数据线连接，可以参考[Lite端部署文档](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme.md)。另外一种是通过在手机上开启虚拟终端在局域网内通过ssh的方式连接，无需数据线，第二种方式可以在手机上支持大部分linux命令，如vim、bash等，比较推荐，可以参考[安卓手机termux连接电脑](./termux_for_android.md)。
+**注意**：由于运行该项目需要bash等命令，传统的adb方式不能很好的安装。所以此处推荐通在手机上开启虚拟终端的方式连接电脑，连接方式可以参考[安卓手机termux连接电脑](./termux_for_android.md)。
 
 #### 运行结果
 
