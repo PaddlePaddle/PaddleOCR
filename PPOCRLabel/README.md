@@ -175,13 +175,17 @@ python3 PPOCRLabel.py
 PPOCRLabel supports three ways to export Label.txt
 
 - Automatically export: After selecting "File - Auto Export Label Mode", the program will automatically write the annotations into Label.txt every time the user confirms an image. If this option is not turned on, it will be automatically exported after detecting that the user has manually checked 5 images.
+
+  > The automatically export mode is turned off by default
+
 - Manual export: Click "File-Export Marking Results" to manually export the label.
+
 - Close application export
 
 
 ### 3.4 Export Partial Recognition Results
 
-For some data that are difficult to recognize, the recognition results will not be exported by **unchecking** the corresponding tags in the recognition results checkbox.
+For some data that are difficult to recognize, the recognition results will not be exported by **unchecking** the corresponding tags in the recognition results checkbox. The unchecked recognition result is saved as `True` in the `difficult` variable in the label file `label.txt`.
 
 > *Note: The status of the checkboxes in the recognition results still needs to be saved manually by clicking Save Button.*
 
