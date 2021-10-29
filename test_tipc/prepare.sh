@@ -150,7 +150,7 @@ if [ ${MODE} = "lite_infer" ];then
     export https_proxy=http://172.19.57.45:3128
     paddlelite_url=https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.9/inference_lite_lib.android.armv8.gcc.c++_shared.with_extra.with_cv.tar.gz
     paddlelite_zipfile=$(echo $paddlelite_url | awk -F "/" '{print $NF}')
-    paddlelite_file=inference_lite_lib.android.armv8.gcc.c++_shared.with_extra.with_cv
+    paddlelite_file=${paddlelite_zipfile:0:66}
     wget ${paddlelite_url}
     tar -xf ${paddlelite_zipfile}
     mkdir -p  ${paddlelite_file}/demo/cxx/ocr/test_lite
@@ -158,7 +158,7 @@ if [ ${MODE} = "lite_infer" ];then
     cp ppocr/utils/ppocr_keys_v1.txt deploy/lite/config.txt ${paddlelite_file}/demo/cxx/ocr/test_lite
     cp ./deploy/lite/* ${paddlelite_file}/demo/cxx/ocr/
     cp ${paddlelite_file}/cxx/lib/libpaddle_light_api_shared.so ${paddlelite_file}/demo/cxx/ocr/test_lite
-    cp PTDN/configs/ppocr_det_mobile_params.txt PTDN/test_lite.sh PTDN/common_func.sh ${paddlelite_file}/demo/cxx/ocr/test_lite
+    cp test_tipc/configs/ppocr_det_mobile_params.txt test_tipc/test_lite.sh test_tipc/common_func.sh ${paddlelite_file}/demo/cxx/ocr/test_lite
     cd ${paddlelite_file}/demo/cxx/ocr/
     git clone https://github.com/LDOUBLEV/AutoLog.git
     unset http_proxy
