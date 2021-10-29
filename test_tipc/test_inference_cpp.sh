@@ -1,5 +1,5 @@
 #!/bin/bash
-source tests/common_func.sh
+source test_tipc/common_func.sh
 
 FILENAME=$1
 dataline=$(awk 'NR==52, NR==66{print}'  $FILENAME)
@@ -35,7 +35,7 @@ cpp_benchmark_key=$(func_parser_key "${lines[14]}")
 cpp_benchmark_value=$(func_parser_value "${lines[14]}")
 
 
-LOG_PATH="./tests/output"
+LOG_PATH="./test_tipc/output"
 mkdir -p ${LOG_PATH}
 status_log="${LOG_PATH}/results_cpp.log"
 
