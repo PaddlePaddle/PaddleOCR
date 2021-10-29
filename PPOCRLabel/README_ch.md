@@ -21,16 +21,12 @@ PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，内置P
   - 识别结果更改为单击修改。（如果无法修改，请切换为系统自带输入法，或再次切回原输入法）
 - 2020.12.18： 支持对单个标记框进行重新识别（by [ninetailskim](https://github.com/ninetailskim)），完善快捷键。
 
-#### 尽请期待
-
-- 锁定框模式：针对同一场景数据，被锁定的检测框的大小与位置能在不同图片之间传递。
-
 如果您对以上内容感兴趣或对完善工具有不一样的想法，欢迎加入我们的SIG队伍与我们共同开发。可以在[此处](https://github.com/PaddlePaddle/PaddleOCR/issues/1728)完成问卷和前置任务，经过我们确认相关内容后即可正式加入，享受SIG福利，共同为OCR开源事业贡献（特别说明：针对PPOCRLabel的改进也属于PaddleOCR前置任务）
 
 
-## 安装
+## 1. 安装
 
-### 1. 环境搭建
+### 1.1 环境搭建
 #### 安装PaddlePaddle
 
 ```bash
@@ -67,7 +63,7 @@ pip3 install -r requirements.txt
 
 注意，windows环境下，建议从[这里](https://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely)下载shapely安装包完成安装， 直接通过pip安装的shapely库可能出现`[winRrror 126] 找不到指定模块的问题`。
 
-### 2. 安装PPOCRLabel
+### 1.2 安装PPOCRLabel
 
 #### Windows
 
@@ -95,11 +91,9 @@ cd ./PPOCRLabel # 将目录切换到PPOCRLabel文件夹下
 python3 PPOCRLabel.py --lang ch
 ```
 
+## 2. 使用
 
-
-## 使用
-
-### 操作步骤
+### 2.1 操作步骤
 
 1. 安装与运行：使用上述命令安装与运行程序。
 2. 打开文件夹：在菜单栏点击 “文件” - "打开目录" 选择待标记图片的文件夹<sup>[1]</sup>.
@@ -130,9 +124,9 @@ python3 PPOCRLabel.py --lang ch
 |  rec_gt.txt   | 识别标签。可直接用于PPOCR识别模型训练。需用户手动点击菜单栏“文件” - "导出识别结果"后产生。 |
 |   crop_img    |   识别数据。按照检测框切割后的图片。与rec_gt.txt同时产生。   |
 
-## 说明
+## 3. 说明
 
-### 快捷键
+### 3.1 快捷键
 
 | 快捷键           | 说明                         |
 | ---------------- | ---------------------------- |
@@ -152,29 +146,35 @@ python3 PPOCRLabel.py --lang ch
 | Ctrl--           | 放大                         |
 | ↑→↓←             | 移动标记框                   |
 
-### 内置模型
+### 3.2 内置模型
 
  - 默认模型：PPOCRLabel默认使用PaddleOCR中的中英文超轻量OCR模型，支持中英文与数字识别，多种语言检测。
 
  - 模型语言切换：用户可通过菜单栏中 "PaddleOCR" - "选择模型" 切换内置模型语言，目前支持的语言包括法文、德文、韩文、日文。具体模型下载链接可参考[PaddleOCR模型列表](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/models_list.md).
 
- - 自定义模型：用户可根据[自定义模型代码使用](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/whl.md#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B)，通过修改PPOCRLabel.py中针对[PaddleOCR类的实例化](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/PPOCRLabel/PPOCRLabel.py#L110)替换成自己训练的模型。
+ - **自定义模型**：如果用户想将内置模型更换为自己的推理模型，可根据[自定义模型代码使用](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/whl.md#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B)，通过修改PPOCRLabel.py中针对[PaddleOCR类的实例化](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/PPOCRLabel/PPOCRLabel.py#L116) :
 
-### 导出标记结果
+   `self.ocr = PaddleOCR(use_pdserving=False, use_angle_cls=True, det=True, cls=True, use_gpu=gpu, lang=lang) `，在 `det_model_dir` 中传入  自己的模型即可。 
+
+### 3.3 导出标记结果
 
 PPOCRLabel支持三种导出方式：
 
 - 自动导出：点击“文件 - 自动导出标记结果”后，用户每确认过一张图片，程序自动将标记结果写入Label.txt中。若未开启此选项，则检测到用户手动确认过5张图片后进行自动导出。
+
+  > 默认情况下自动导出功能为关闭状态
+
 - 手动导出：点击“文件 - 导出标记结果”手动导出标记。
+
 - 关闭应用程序导出
 
-### 导出部分识别结果
+### 3.4 导出部分识别结果
 
-针对部分难以识别的数据，通过在识别结果的复选框中**取消勾选**相应的标记，其识别结果不会被导出。
+针对部分难以识别的数据，通过在识别结果的复选框中**取消勾选**相应的标记，其识别结果不会被导出。被取消勾选的识别结果在标记文件 `label.txt` 中的 `difficult` 变量保存为 `True` 。
 
-*注意：识别结果中的复选框状态仍需用户手动点击确认后才能保留*
+> *注意：识别结果中的复选框状态仍需用户手动点击确认后才能保留*
 
-### 错误提示
+### 3.5 错误提示
 - 如果同时使用whl包安装了paddleocr，其优先级大于通过paddleocr.py调用PaddleOCR类，whl包未更新时会导致程序异常。
 
 - PPOCRLabel**不支持对中文文件名**的图片进行自动标注。
@@ -194,6 +194,6 @@ PPOCRLabel支持三种导出方式：
     pip install opencv-contrib-python-headless==4.2.0.32
     ```
 
-### 参考资料
+### 4. 参考资料
 
 1.[Tzutalin. LabelImg. Git code (2015)](https://github.com/tzutalin/labelImg)
