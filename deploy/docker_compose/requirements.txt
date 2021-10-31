@@ -1,0 +1,3 @@
+paddlepaddle==2.1.3
+paddleocr==2.0.1
+flask

@@ -1,0 +1,15 @@
+version: "3.7"
+services:
+  app:
+    build:
+      context: .
+      args:
+        - work_dir=/app
+    environment:
+      - FLASK_APP_PATH=/app/server.py
+      - FLASK_PORT=5000
+    working_dir: /app
+    volumes:
+      - "./:/app"
+    ports:
+      - 5000:5000

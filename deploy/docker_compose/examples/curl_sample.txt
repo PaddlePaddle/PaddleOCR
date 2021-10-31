@@ -1,0 +1,1 @@
+ curl "http://localhost:5000/api/ocr_dec" -X POST -d "img_url=https://ai.bdstatic.com/file/5419067D0B374C12A8CFB5C74684CC06"
