@@ -275,7 +275,6 @@ class ParallelSARDecoder(BaseDecoder):
         if img_metas is not None and self.mask:
             valid_ratios = img_metas[-1]
 
-        label = label.cuda()
         lab_embedding = self.embedding(label)
         # bsz * seq_len * emb_dim
         out_enc = out_enc.unsqueeze(1)
