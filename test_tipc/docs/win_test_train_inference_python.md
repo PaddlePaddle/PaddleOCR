@@ -16,7 +16,7 @@ Windows端基础训练预测功能测试的主程序为`test_train_inference_pyt
 | 模型类型 |device | batchsize | tensorrt | mkldnn | cpu多线程 |
 |  ----   |  ---- |   ----   |  :----:  |   :----:   |  :----:  |
 | 正常模型 | GPU | 1/6 | fp32/fp16 | - | - |
-| 正常模型 | CPU | 1/6 | - | fp32 | 支持 |
+| 正常模型 | CPU | 1/6 | - | fp32/fp16 | 支持 |
 | 量化模型 | GPU | 1/6 | int8 | - | - |
 | 量化模型 | CPU | 1/6 | - | int8 | 支持 |
 
