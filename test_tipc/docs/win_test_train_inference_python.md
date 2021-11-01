@@ -1,6 +1,6 @@
-# 基础训练预测功能测试
+# Windows端基础训练预测功能测试
 
-基础训练预测功能测试的主程序为`test_train_inference_python.sh`，可以测试基于Python的模型训练、评估、推理等基本功能，包括裁剪、量化、蒸馏。
+Windows端基础训练预测功能测试的主程序为`test_train_inference_python.sh`，可以测试基于Python的模型训练、评估、推理等基本功能，包括裁剪、量化、蒸馏。
 
 ## 1. 测试结论汇总
 
@@ -8,16 +8,10 @@
 
 | 算法名称 | 模型名称 | 单机单卡 | 单机多卡 | 多机多卡 | 模型压缩（单机多卡） |
 |  :----  |   :----  |    :----  |  :----   |  :----   |  :----   |
-|  DB  | ch_ppocr_mobile_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练：FPGM裁剪、PACT量化 <br> 离线量化（无需训练） |
-|  DB  | ch_ppocr_server_v2.0_det| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练：FPGM裁剪、PACT量化 <br> 离线量化（无需训练） |
-| CRNN | ch_ppocr_mobile_v2.0_rec| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练：PACT量化 <br> 离线量化（无需训练） |
-| CRNN | ch_ppocr_server_v2.0_rec| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练：PACT量化 <br> 离线量化（无需训练） |
-|PP-OCR| ch_ppocr_mobile_v2.0| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | - |
-|PP-OCR| ch_ppocr_server_v2.0| 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | - |
-|PP-OCRv2| ch_PP-OCRv2 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | 正常训练 <br> 混合精度 | - |
+|  DB  | ch_ppocr_mobile_v2.0_det| 正常训练 <br> 混合精度 | - | - | 正常训练：FPGM裁剪、PACT量化 <br> 离线量化（无需训练） |
 
 
-- 预测相关：基于训练是否使用量化，可以将训练产出的模型可以分为`正常模型`和`量化模型`，这两类模型对应的预测功能汇总如下，
+- 预测相关：基于训练是否使用量化，可以将训练产出的模型可以分为`正常模型`和`量化模型`，这两类模型对应的预测功能汇总如下：
 
 | 模型类型 |device | batchsize | tensorrt | mkldnn | cpu多线程 |
 |  ----   |  ---- |   ----   |  :----:  |   :----:   |  :----:  |
@@ -31,25 +25,28 @@
 
 运行环境配置请参考[文档](./install.md)的内容配置tipc的运行环境。
 
+另外，由于Windows上和linux的路径管理方式不同，可以在win上安装gitbash终端，在gitbash中执行指令的方式和在linux端执行指令方式相同，更方便tipc测试。gitbash[下载链接](https://git-scm.com/download/win)。
+
+
 ### 2.1 安装依赖
 - 安装PaddlePaddle >= 2.0
 - 安装PaddleOCR依赖
     ```
-    pip3 install  -r ../requirements.txt
+    pip install  -r ../requirements.txt
     ```
 - 安装autolog（规范化日志输出工具）
     ```
     git clone https://github.com/LDOUBLEV/AutoLog
     cd AutoLog
-    pip3 install -r requirements.txt
-    python3 setup.py bdist_wheel
-    pip3 install ./dist/auto_log-1.0.0-py3-none-any.whl
+    pip  install -r requirements.txt
+    python setup.py bdist_wheel
+    pip  install ./dist/auto_log-1.0.0-py3-none-any.whl
     cd ../
     ```
 - 安装PaddleSlim (可选)
    ```
    # 如果要测试量化、裁剪等功能，需要安装PaddleSlim
-   pip3 install paddleslim
+   pip install paddleslim
    ```
 
 
@@ -61,36 +58,37 @@
 
 - 模式1：lite_train_lite_infer，使用少量数据训练，用于快速验证训练到预测的走通流程，不验证精度和速度；
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'lite_train_lite_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'lite_train_lite_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/win_ppocr_det_mobile_params.txt 'lite_train_lite_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/win_ppocr_det_mobile_params.txt 'lite_train_lite_infer'
 ```  
 
 - 模式2：lite_train_whole_infer，使用少量数据训练，一定量数据预测，用于验证训练后的模型执行预测，预测速度是否合理；
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'lite_train_whole_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'lite_train_whole_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/win_ppocr_det_mobile_params.txt 'lite_train_whole_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/win_ppocr_det_mobile_params.txt 'lite_train_whole_infer'
 ```  
 
 - 模式3：whole_infer，不训练，全量数据预测，走通开源模型评估、动转静，检查inference model预测时间和精度;
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'whole_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/win_ppocr_det_mobile_params.txt 'whole_infer'
 # 用法1:
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'whole_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/win_ppocr_det_mobile_params.txt 'whole_infer'
 # 用法2: 指定GPU卡预测，第三个传入参数为GPU卡号
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'whole_infer' '1'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/win_ppocr_det_mobile_params.txt 'whole_infer' '1'
 ```  
 
 - 模式4：whole_train_whole_infer，CE： 全量数据训练，全量数据预测，验证模型训练精度，预测精度，预测速度；
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'whole_train_whole_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'whole_train_whole_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/win_ppocr_det_mobile_params.txt 'whole_train_whole_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/win_ppocr_det_mobile_params.txt 'whole_train_whole_infer'
 ```  
 
 - 模式5：klquant_whole_infer，测试离线量化；
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile_params.txt 'klquant_whole_infer'
-bash test_tipc/test_train_inference_python.sh test_tipc/configs/ppocr_det_mobile_params.txt  'klquant_whole_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/win_ppocr_det_mobile_params.txt 'klquant_whole_infer'
+bash test_tipc/test_train_inference_python.sh test_tipc/configs/win_ppocr_det_mobile_params.txt  'klquant_whole_infer'
 ```
+
 
 运行相应指令后，在`test_tipc/output`文件夹下自动会保存运行日志。如'lite_train_lite_infer'模式下，会运行训练+inference的链条，因此，在`test_tipc/output`文件夹有以下文件：
 ```
@@ -129,7 +127,7 @@ Run failed with command - python3.7 tools/export_model.py -c tests/configs/det_m
 #### 使用方式
 运行命令：
 ```shell
-python3.7 test_tipc/compare_results.py --gt_file=./test_tipc/results/python_*.txt  --log_file=./test_tipc/output/python_*.log --atol=1e-3 --rtol=1e-3
+python test_tipc/compare_results.py --gt_file=./test_tipc/results/python_*.txt  --log_file=./test_tipc/output/python_*.log --atol=1e-3 --rtol=1e-3
 ```
 
 参数介绍：  
