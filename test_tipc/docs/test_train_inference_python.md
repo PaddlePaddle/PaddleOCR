@@ -1,6 +1,9 @@
-# 基础训练预测功能测试
+# Linux端基础训练预测功能测试
 
-基础训练预测功能测试的主程序为`test_train_inference_python.sh`，可以测试基于Python的模型训练、评估、推理等基本功能，包括裁剪、量化、蒸馏。
+Linux端基础训练预测功能测试的主程序为`test_train_inference_python.sh`，可以测试基于Python的模型训练、评估、推理等基本功能，包括裁剪、量化、蒸馏。
+
+- Mac端基础训练预测功能测试参考[链接](./mac_test_train_inference_python.md)
+- Windows端基础训练预测功能测试参考[链接](./win_test_train_inference_python.md)
 
 ## 1. 测试结论汇总
 
