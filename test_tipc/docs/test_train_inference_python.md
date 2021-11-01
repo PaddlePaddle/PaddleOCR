@@ -43,6 +43,11 @@
     pip3 install ./dist/auto_log-1.0.0-py3-none-any.whl
     cd ../
     ```
+- 安装PaddleSlim (可选)
+   ```
+   # 如果要测试量化、裁剪等功能，需要安装PaddleSlim
+   pip3 install paddleslim
+   ```
 
 
 ### 2.2 功能测试
