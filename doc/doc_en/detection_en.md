@@ -99,7 +99,7 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml -o   \
 # Set the GPU ID used by the '--gpus' parameter.
 python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/det/det_mv3_db.yml -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
  
-# mulit-Node, multi-GPU training
+# multi-Node, multi-GPU training
 # Set the IPs of your nodes used by the '--ips' parameter. Set the GPU ID used by the '--gpus' parameter.
 python3 -m paddle.distributed.launch --ips="10.21.226.181,10.21.226.133" --gpus '0,1,2,3' tools/train.py -c configs/det/det_mv3_db.yml \
      -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
