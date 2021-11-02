@@ -98,7 +98,19 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml -o   \
 # multi-GPU training
 # Set the GPU ID used by the '--gpus' parameter.
 python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/det/det_mv3_db.yml -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
-
+ 
+# mulit-Node, multi-GPU training
+# Set the IPs of your nodes used by the '--ips' parameter. Set the GPU ID used by the '--gpus' parameter.
+python3 -m paddle.distributed.launch --ips="10.21.226.181,10.21.226.133" --gpus '0,1,2,3' tools/train.py -c configs/det/det_mv3_db.yml \
+     -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
+```
+**Note:** For multi-Node multi-GPU training, you need to replace the `ips` value in the preceding command with the address of your machine, and the machines must be able to ping each other. The command for viewing the IP address of the machine is `ifconfig`.
+ 
+If you want to further speed up the training, you can use [automatic mixed precision training](https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/01_paddle2.0_introduction/basic_concept/amp_cn.html). for single card training, the command is as follows:
+```
+python3 tools/train.py -c configs/det/det_mv3_db.yml \
+     -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained \
+     Global.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True
 ```
 
 ### 2.2 Load Trained Model and Continue Training
