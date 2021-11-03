@@ -38,7 +38,6 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list, std::vector<double> *tim
             float wh_ratio = w * 1.0 / h;
             max_wh_ratio = max(max_wh_ratio, wh_ratio);
         }
-//         cout << "max_wh_ratio: " << max_wh_ratio << endl;
         std::vector<cv::Mat> norm_img_batch;
         for (int ino = beg_img_no; ino < end_img_no; ino ++) {
             cv::Mat srcimg;
