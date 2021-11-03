@@ -147,7 +147,6 @@ cv::Mat Utility::GetRotateCropImage(const cv::Mat &srcimage,
   }
 }
 
-// 实现argsort功能
 std::vector<int> Utility::argsort(const std::vector<float>& array)
 {
     const int array_len(array.size());

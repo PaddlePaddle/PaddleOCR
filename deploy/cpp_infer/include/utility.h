@@ -51,7 +51,6 @@ public:
   static cv::Mat GetRotateCropImage(const cv::Mat &srcimage,
                           std::vector<std::vector<int>> box);
     
-  // 实现argsort功能
   static std::vector<int> argsort(const std::vector<float>& array);
 
 };
