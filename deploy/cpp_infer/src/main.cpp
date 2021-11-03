@@ -61,7 +61,7 @@ DEFINE_string(cls_model_dir, "", "Path of cls inference model.");
 DEFINE_double(cls_thresh, 0.9, "Threshold of cls_thresh.");
 // recognition related
 DEFINE_string(rec_model_dir, "", "Path of rec inference model.");
-DEFINE_int32(rec_batch_num, 1, "rec_batch_num.");
+DEFINE_int32(rec_batch_num, 6, "rec_batch_num.");
 DEFINE_string(char_list_file, "../../ppocr/utils/ppocr_keys_v1.txt", "Path of dictionary.");
 
 
@@ -146,8 +146,9 @@ int main_rec(std::vector<cv::String> cv_all_img_names) {
     CRNNRecognizer rec(FLAGS_rec_model_dir, FLAGS_use_gpu, FLAGS_gpu_id,
                        FLAGS_gpu_mem, FLAGS_cpu_threads,
                        FLAGS_enable_mkldnn, char_list_file,
-                       FLAGS_use_tensorrt, FLAGS_precision);
+                       FLAGS_use_tensorrt, FLAGS_precision, FLAGS_rec_batch_num);
 
+    std::vector<cv::Mat> img_list;
     for (int i = 0; i < cv_all_img_names.size(); ++i) {
       LOG(INFO) << "The predict img: " << cv_all_img_names[i];
 
@@ -156,22 +157,21 @@ int main_rec(std::vector<cv::String> cv_all_img_names) {
         std::cerr << "[ERROR] image read failed! image path: " << cv_all_img_names[i] << endl;
         exit(1);
       }
-
-      std::vector<double> rec_times;
-      rec.Run(srcimg, &rec_times);
-        
-      time_info[0] += rec_times[0];
-      time_info[1] += rec_times[1];
-      time_info[2] += rec_times[2];
+      img_list.push_back(srcimg);
     }
-        
+    std::vector<double> rec_times;
+    rec.Run(img_list, &rec_times);
+    time_info[0] += rec_times[0];
+    time_info[1] += rec_times[1];
+    time_info[2] += rec_times[2];
+    
     if (FLAGS_benchmark) {
         AutoLogger autolog("ocr_rec", 
                            FLAGS_use_gpu,
                            FLAGS_use_tensorrt,
                            FLAGS_enable_mkldnn,
                            FLAGS_cpu_threads,
-                           1, 
+                           FLAGS_rec_batch_num, 
                            "dynamic", 
                            FLAGS_precision, 
                            time_info, 
@@ -209,7 +209,7 @@ int main_system(std::vector<cv::String> cv_all_img_names) {
     CRNNRecognizer rec(FLAGS_rec_model_dir, FLAGS_use_gpu, FLAGS_gpu_id,
                        FLAGS_gpu_mem, FLAGS_cpu_threads,
                        FLAGS_enable_mkldnn, char_list_file,
-                       FLAGS_use_tensorrt, FLAGS_precision);
+                       FLAGS_use_tensorrt, FLAGS_precision, FLAGS_rec_batch_num);
 
     for (int i = 0; i < cv_all_img_names.size(); ++i) {
       LOG(INFO) << "The predict img: " << cv_all_img_names[i];
@@ -228,19 +228,22 @@ int main_system(std::vector<cv::String> cv_all_img_names) {
       time_info_det[1] += det_times[1];
       time_info_det[2] += det_times[2];
         
-      cv::Mat crop_img;
+      std::vector<cv::Mat> img_list;
       for (int j = 0; j < boxes.size(); j++) {
-        crop_img = Utility::GetRotateCropImage(srcimg, boxes[j]);
-
-        if (cls != nullptr) {
-          crop_img = cls->Run(crop_img);
-        }
-        rec.Run(crop_img, &rec_times);
-        time_info_rec[0] += rec_times[0];
-        time_info_rec[1] += rec_times[1];
-        time_info_rec[2] += rec_times[2];
+          cv::Mat crop_img;
+          crop_img = Utility::GetRotateCropImage(srcimg, boxes[j]);
+          if (cls != nullptr) {
+              crop_img = cls->Run(crop_img);
+          }
+          img_list.push_back(crop_img);
       }
+
+      rec.Run(img_list, &rec_times);
+      time_info_rec[0] += rec_times[0];
+      time_info_rec[1] += rec_times[1];
+      time_info_rec[2] += rec_times[2];
     }
+    
     if (FLAGS_benchmark) {
         AutoLogger autolog_det("ocr_det", 
                             FLAGS_use_gpu,
@@ -257,7 +260,7 @@ int main_system(std::vector<cv::String> cv_all_img_names) {
                             FLAGS_use_tensorrt,
                             FLAGS_enable_mkldnn,
                             FLAGS_cpu_threads,
-                            1, 
+                            FLAGS_rec_batch_num, 
                             "dynamic", 
                             FLAGS_precision, 
                             time_info_rec, 
