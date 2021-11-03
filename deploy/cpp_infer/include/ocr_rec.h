@@ -89,7 +89,7 @@ private:
   // pre-process
   CrnnResizeImg resize_op_;
   Normalize normalize_op_;
-  Permute_batch permute_op_;
+  PermuteBatch permute_op_;
 
   // post-process
   PostProcessor post_processor_;

@@ -40,7 +40,7 @@ void Permute::Run(const cv::Mat *im, float *data) {
   }
 }
 
-void Permute_batch::Run(const std::vector<cv::Mat> imgs, float *data) {
+void PermuteBatch::Run(const std::vector<cv::Mat> imgs, float *data) {
     for (int j = 0; j < imgs.size(); j ++){
         int rh = imgs[j].rows;
         int rw = imgs[j].cols;

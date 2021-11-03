@@ -44,7 +44,7 @@ public:
   virtual void Run(const cv::Mat *im, float *data);
 };
 
-class Permute_batch {
+class PermuteBatch {
 public:
   virtual void Run(const std::vector<cv::Mat> imgs, float *data);
 };
