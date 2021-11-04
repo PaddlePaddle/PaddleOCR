@@ -12,7 +12,7 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 """
-This part code is refer from: 
+This part code is refered from: 
 https://github.com/songdejia/EAST/blob/master/data_utils.py
 """
 import math
