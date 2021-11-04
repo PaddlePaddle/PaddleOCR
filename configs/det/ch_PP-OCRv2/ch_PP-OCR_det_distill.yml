@@ -90,7 +90,7 @@ Optimizer:
 
 PostProcess:
   name: DistillationDBPostProcess
-  model_name: ["Student", "Student2"]
+  model_name: ["Student"]
   key: head_out
   thresh: 0.3
   box_thresh: 0.6
