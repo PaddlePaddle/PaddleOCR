@@ -168,14 +168,6 @@ class NRTRLabelDecode(BaseRecLabelDecode):
                                              character_type, use_space_char)
 
     def __call__(self, preds, label=None, *args, **kwargs):
-        if preds.dtype == paddle.int64:
-            if isinstance(preds, paddle.Tensor):
-                preds = preds.numpy()
-            if preds[0][0]==2:
-                preds_idx = preds[:,1:]
-            else:
-                preds_idx = preds
-
         if len(preds) == 2:
             preds_id = preds[0]
             preds_prob = preds[1]

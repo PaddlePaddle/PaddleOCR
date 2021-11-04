@@ -33,7 +33,7 @@ ln -sf <path/to/dataset> <path/to/paddle_ocr>/train_data/dataset
 mklink /d <path/to/paddle_ocr>/train_data/dataset <path/to/dataset>
 ```
 
-<a name="准备数据集"></a>
+<a name="自定义数据集"></a>
 ### 1.1 自定义数据集
 下面以通用数据集为例， 介绍如何准备数据集：
 
