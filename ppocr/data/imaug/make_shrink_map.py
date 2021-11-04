@@ -1,4 +1,8 @@
 # -*- coding:utf-8 -*- 
+"""
+This code is refer from:
+https://github.com/WenmuZhou/DBNet.pytorch/blob/master/data_loader/modules/make_shrink_map.py
+"""
 
 from __future__ import absolute_import
 from __future__ import division
