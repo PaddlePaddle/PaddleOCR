@@ -50,7 +50,7 @@ PaddleOCR基于动态图开源的文本识别算法列表：
 - [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))[11]
 - [x]  RARE([paper](https://arxiv.org/abs/1603.03915v1))[12]
 - [x]  SRN([paper](https://arxiv.org/abs/2003.12294))[5]
-- [x]  NRTR([paper](https://arxiv.org/abs/1806.00926v2))
+- [x]  NRTR([paper](https://arxiv.org/abs/1806.00926v2))[13]
 
 参考[DTRB][3](https://arxiv.org/abs/1904.01906)文字识别训练和评估流程，使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估，算法效果如下：
 
@@ -78,4 +78,3 @@ PaddleOCR文本检测算法的训练和使用请参考文档教程中[模型训�
 ## 3. 模型推理
 
 上述模型中除PP-OCR系列模型以外，其余模型仅支持基于Python引擎的推理，具体内容可参考[基于Python预测引擎推理](./inference.md)
-
