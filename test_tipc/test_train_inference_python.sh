@@ -90,7 +90,7 @@ infer_value1=$(func_parser_value "${lines[50]}")
 
 # parser klquant_infer
 if [ ${MODE} = "klquant_whole_infer" ]; then
-    dataline=$(awk 'NR==82, NR==98{print}'  $FILENAME)
+    dataline=$(awk 'NR==85 NR==101{print}'  $FILENAME)
     lines=(${dataline})
     # parser inference model 
     infer_model_dir_list=$(func_parser_value "${lines[1]}")

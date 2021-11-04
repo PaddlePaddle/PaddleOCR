@@ -30,7 +30,12 @@ def cv2_to_base64(image):
     return base64.b64encode(image).decode('utf8')
 
 
-test_img_dir = "imgs/"
+import argparse
+parser = argparse.ArgumentParser(description="args for paddleserving")
+parser.add_argument("--image_dir", type=str, default="../../doc/imgs/")
+args = parser.parse_args()
+test_img_dir = args.image_dir
+
 for img_file in os.listdir(test_img_dir):
     with open(os.path.join(test_img_dir, img_file), 'rb') as file:
         image_data = file.read()
