@@ -11,7 +11,10 @@
 #WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #See the License for the specific language governing permissions and
 #limitations under the License.
-
+"""
+This code is refer from: 
+https://github.com/songdejia/EAST/blob/master/data_utils.py
+"""
 import math
 import cv2
 import numpy as np
@@ -24,10 +27,10 @@ __all__ = ['EASTProcessTrain']
 
 class EASTProcessTrain(object):
     def __init__(self,
-                 image_shape = [512, 512],
-                 background_ratio = 0.125,
-                 min_crop_side_ratio = 0.1,
-                 min_text_size = 10,
+                 image_shape=[512, 512],
+                 background_ratio=0.125,
+                 min_crop_side_ratio=0.1,
+                 min_text_size=10,
                  **kwargs):
         self.input_size = image_shape[1]
         self.random_scale = np.array([0.5, 1, 2.0, 3.0])
@@ -282,12 +285,7 @@ class EASTProcessTrain(object):
                 1.0 / max(min(poly_h, poly_w), 1.0)
         return score_map, geo_map, training_mask
 
-    def crop_area(self,
-                  im,
-                  polys,
-                  tags,
-                  crop_background=False,
-                  max_tries=50):
+    def crop_area(self, im, polys, tags, crop_background=False, max_tries=50):
         """
         make random crop from the input image
         :param im:
@@ -435,5 +433,4 @@ class EASTProcessTrain(object):
         data['score_map'] = score_map
         data['geo_map'] = geo_map
         data['training_mask'] = training_mask
-        # print(im.shape, score_map.shape, geo_map.shape, training_mask.shape)
         return data
