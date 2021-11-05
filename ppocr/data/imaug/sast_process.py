@@ -11,7 +11,10 @@
 #WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #See the License for the specific language governing permissions and
 #limitations under the License.
-
+"""
+This part code is refered from: 
+https://github.com/songdejia/EAST/blob/master/data_utils.py
+"""
 import math
 import cv2
 import numpy as np
