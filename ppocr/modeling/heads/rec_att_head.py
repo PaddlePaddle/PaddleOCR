@@ -75,7 +75,7 @@ class AttentionHead(nn.Layer):
                             probs_step, axis=1)], axis=1)
                 next_input = probs_step.argmax(axis=1)
                 targets = next_input
-
+            probs = paddle.nn.functional.softmax(probs, axis=2)
         return probs
 
 
