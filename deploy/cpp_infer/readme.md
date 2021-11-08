@@ -4,14 +4,31 @@
 C++在性能计算上优于python，因此，在大多数CPU、GPU部署场景，多采用C++的部署方式，本节将介绍如何在Linux\Windows (CPU\GPU)环境下配置C++环境并完成
 PaddleOCR模型部署。
 
+* [1. 准备环境](#1)
+  + [1.0 运行准备](#10)
+  + [1.1 编译opencv库](#11)
+  + [1.2 下载或者编译Paddle预测库](#12)
+    - [1.2.1 直接下载安装](#121)
+    - [1.2.2 预测库源码编译](#122)
+* [2 开始运行](#2)
+  + [2.1 将模型导出为inference model](#21)
+  + [2.2 编译PaddleOCR C++预测demo](#22)
+  + [2.3运行demo](#23)
+
+<a name="1"></a>
 
 ## 1. 准备环境
 
-### 运行准备
+<a name="10"></a>
+
+### 1.0 运行准备
+
 - Linux环境，推荐使用docker。
 - Windows环境，目前支持基于`Visual Studio 2019 Community`进行编译。
 
 * 该文档主要介绍基于Linux环境的PaddleOCR C++预测流程，如果需要在Windows下基于预测库进行C++预测，具体编译方法请参考[Windows下编译教程](./docs/windows_vs2019_build.md)
+
+<a name="11"></a>
 
 ### 1.1 编译opencv库
 
@@ -70,6 +87,8 @@ opencv3/
 |-- lib64
 |-- share
 ```
+
+<a name="12"></a>
 
 ### 1.2 下载或者编译Paddle预测库
 
@@ -132,8 +151,11 @@ build/paddle_inference_install_dir/
 
 其中`paddle`就是C++预测所需的Paddle库，`version.txt`中包含当前预测库的版本信息。
 
+<a name="2"></a>
 
 ## 2 开始运行
+
+<a name="21"></a>
 
 ### 2.1 将模型导出为inference model
 
@@ -149,6 +171,7 @@ inference/
 |   |--inference.pdmodel
 ```
 
+<a name="22"></a>
 
 ### 2.2 编译PaddleOCR C++预测demo
 
@@ -172,13 +195,14 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 
 * 编译完成之后，会在`build`文件夹下生成一个名为`ppocr`的可执行文件。
 
+<a name="23"></a>
 
-### 运行demo
+### 2.3 运行demo
 
 运行方式：  
 ```shell
 ./build/ppocr <mode> [--param1] [--param2] [...]
-```  
+```
 其中，`mode`为必选参数，表示选择的功能，取值范围['det', 'rec', 'system']，分别表示调用检测、识别、检测识别串联（包括方向分类器）。具体命令如下：
 
 ##### 1. 只调用检测：
@@ -258,6 +282,4 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 </div>
 
 
-### 2.3 注意
-
-* 在使用Paddle预测库时，推荐使用2.0.0版本的预测库。
+**注意：在使用Paddle预测库时，推荐使用2.0.0版本的预测库。**

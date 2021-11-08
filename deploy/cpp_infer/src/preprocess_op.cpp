@@ -40,6 +40,17 @@ void Permute::Run(const cv::Mat *im, float *data) {
   }
 }
 
+void PermuteBatch::Run(const std::vector<cv::Mat> imgs, float *data) {
+    for (int j = 0; j < imgs.size(); j ++){
+        int rh = imgs[j].rows;
+        int rw = imgs[j].cols;
+        int rc = imgs[j].channels();
+        for (int i = 0; i < rc; ++i) {
+            cv::extractChannel(imgs[j], cv::Mat(rh, rw, CV_32FC1, data + (j * rc + i) * rh * rw), i);
+        }
+    }
+}
+    
 void Normalize::Run(cv::Mat *im, const std::vector<float> &mean,
                     const std::vector<float> &scale, const bool is_scale) {
   double e = 1.0;
@@ -90,16 +101,17 @@ void CrnnResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img, float wh_ratio,
   imgC = rec_image_shape[0];
   imgH = rec_image_shape[1];
   imgW = rec_image_shape[2];
-
+    
   imgW = int(32 * wh_ratio);
 
   float ratio = float(img.cols) / float(img.rows);
   int resize_w, resize_h;
+
   if (ceilf(imgH * ratio) > imgW)
     resize_w = imgW;
   else
     resize_w = int(ceilf(imgH * ratio));
-
+    
   cv::resize(img, resize_img, cv::Size(resize_w, imgH), 0.f, 0.f,
              cv::INTER_LINEAR);
   cv::copyMakeBorder(resize_img, resize_img, 0, 0, 0,

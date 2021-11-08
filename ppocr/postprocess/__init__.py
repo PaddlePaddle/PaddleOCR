@@ -24,18 +24,24 @@ __all__ = ['build_post_process']
 from .db_postprocess import DBPostProcess, DistillationDBPostProcess
 from .east_postprocess import EASTPostProcess
 from .sast_postprocess import SASTPostProcess
-from .rec_postprocess import CTCLabelDecode, AttnLabelDecode, SRNLabelDecode, DistillationCTCLabelDecode, NRTRLabelDecode, \
-    TableLabelDecode, SARLabelDecode
+from .rec_postprocess import CTCLabelDecode, AttnLabelDecode, SRNLabelDecode, DistillationCTCLabelDecode, \
+    TableLabelDecode, NRTRLabelDecode, SARLabelDecode, SEEDLabelDecode
 from .cls_postprocess import ClsPostProcess
 from .pg_postprocess import PGPostProcess
+
 
 def build_post_process(config, global_config=None):
     support_dict = [
         'DBPostProcess', 'EASTPostProcess', 'SASTPostProcess', 'CTCLabelDecode',
         'AttnLabelDecode', 'ClsPostProcess', 'SRNLabelDecode', 'PGPostProcess',
         'DistillationCTCLabelDecode', 'TableLabelDecode',
-        'DistillationDBPostProcess', 'NRTRLabelDecode', 'SARLabelDecode'
+        'DistillationDBPostProcess', 'NRTRLabelDecode', 'SARLabelDecode',
+        'SEEDLabelDecode'
     ]
+
+    if config['name'] == 'PSEPostProcess':
+        from .pse_postprocess import PSEPostProcess
+        support_dict.append('PSEPostProcess')
 
     config = copy.deepcopy(config)
     module_name = config.pop('name')

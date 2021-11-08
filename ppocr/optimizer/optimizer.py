@@ -127,3 +127,34 @@ class RMSProp(object):
             grad_clip=self.grad_clip,
             parameters=parameters)
         return opt
+
+
+class Adadelta(object):
+    def __init__(self,
+                 learning_rate=0.001,
+                 epsilon=1e-08,
+                 rho=0.95,
+                 parameter_list=None,
+                 weight_decay=None,
+                 grad_clip=None,
+                 name=None,
+                 **kwargs):
+        self.learning_rate = learning_rate
+        self.epsilon = epsilon
+        self.rho = rho
+        self.parameter_list = parameter_list
+        self.learning_rate = learning_rate
+        self.weight_decay = weight_decay
+        self.grad_clip = grad_clip
+        self.name = name
+
+    def __call__(self, parameters):
+        opt = optim.Adadelta(
+            learning_rate=self.learning_rate,
+            epsilon=self.epsilon,
+            rho=self.rho,
+            weight_decay=self.weight_decay,
+            grad_clip=self.grad_clip,
+            name=self.name,
+            parameters=parameters)
+        return opt

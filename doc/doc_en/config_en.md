@@ -1,4 +1,12 @@
-## Optional parameter list
+# Configuration
+
+- [1. Optional Parameter List](#1-optional-parameter-list)
+- [2. Intorduction to Global Parameters of Configuration File](#2-intorduction-to-global-parameters-of-configuration-file)
+- [3. Multilingual Config File Generation](#3-multilingual-config-file-generation)
+
+<a name="1-optional-parameter-list"></a>
+
+## 1. Optional Parameter List
 
 The following list can be viewed through `--help`
 
@@ -7,7 +15,9 @@ The following list can be viewed through `--help`
 |          -c              |      ALL       |  Specify configuration file to use  |  None  |  **Please refer to the parameter introduction for configuration file usage** |
 |          -o              |      ALL       |  set configuration options  |  None  |  Configuration using -o has higher priority than the configuration file selected with -c. E.g: -o Global.use_gpu=false |
 
-## INTRODUCTION TO GLOBAL PARAMETERS OF CONFIGURATION FILE
+<a name="2-intorduction-to-global-parameters-of-configuration-file"></a>
+
+## 2. Intorduction to Global Parameters of Configuration File
 
 Take rec_chinese_lite_train_v2.0.yml as an example
 ### Global
@@ -27,9 +37,8 @@ Take rec_chinese_lite_train_v2.0.yml as an example
 |      checkpoints         |    set model parameter path            |       None        |   Used to load parameters after interruption to continue training|
 |      use_visualdl  |    Set whether to enable visualdl for visual log display |          False        |    [Tutorial](https://www.paddlepaddle.org.cn/paddle/visualdl) |
 |      infer_img            |    Set inference image path or folder path     |       ./infer_img | \|
-|      character_dict_path |    Set dictionary path            |  ./ppocr/utils/ppocr_keys_v1.txt  |    \                 |
+|      character_dict_path |    Set dictionary path            |  ./ppocr/utils/ppocr_keys_v1.txt  |    If the character_dict_path is None, model can only recognize number and lower letters                 |
 |      max_text_length     |    Set the maximum length of text        |       25          |                \                 |
-|      character_type      |    Set character type            |       ch          |    en/ch, the default dict will be used for en, and the custom dict will be used for ch |
 |      use_space_char     |    Set whether to recognize spaces             |        True      |          Only support in character_type=ch mode                 |
 |      label_list          |    Set the angle supported by the direction classifier       |    ['0','180']    |     Only valid in angle classifier model |
 |      save_res_path          |    Set the save address of the test model results       |    ./output/det_db/predicts_db.txt    |     Only valid in the text detection model |
@@ -121,8 +130,9 @@ In PaddleOCR, the network is divided into four stages: Transform, Backbone, Neck
 |      drop_last        |        Whether to discard the last incomplete mini-batch because the number of samples in the data set cannot be divisible by batch_size        |  True | \  |
 |      num_workers        |        The number of sub-processes used to load data, if it is 0, the sub-process is not started, and the data is loaded in the main process       |  8 | \  |
 
+<a name="3-multilingual-config-file-generation"></a>
 
-## 3. MULTILINGUAL CONFIG FILE GENERATION
+## 3. Multilingual Config File Generation
 
 PaddleOCR currently supports 80 (except Chinese) language recognition. A multi-language configuration file template is
 provided under the path `configs/rec/multi_languages`: [rec_multi_language_lite_train.yml](../../configs/rec/multi_language/rec_multi_language_lite_train.yml)。
@@ -185,7 +195,6 @@ Italian is made up of Latin letters, so after executing the command, you will ge
       use_gpu: True
       epoch_num: 500
       ...
-      character_type: it  # language
       character_dict_path:  {path/of/dict} # path of dict
 
    Train:
@@ -207,18 +216,18 @@ Italian is made up of Latin letters, so after executing the command, you will ge
 
 Currently, the multi-language algorithms supported by PaddleOCR are:
 
-| Configuration file |  Algorithm name |   backbone |   trans   |   seq      |     pred     |  language | character_type |
-| :--------: |  :-------:   | :-------:  |   :-------:   |   :-----:   |  :-----:   | :-----:  | :-----:  |
-| rec_chinese_cht_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | chinese traditional  | chinese_cht|
-| rec_en_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | English(Case sensitive)   | EN |
-| rec_french_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | French |  french |
-| rec_ger_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | German   | german |
-| rec_japan_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Japanese | japan |
-| rec_korean_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Korean  | korean |
-| rec_latin_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Latin  | latin |
-| rec_arabic_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | arabic |  ar |
-| rec_cyrillic_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | cyrillic   | cyrillic |
-| rec_devanagari_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | devanagari  | devanagari |
+| Configuration file |  Algorithm name |   backbone |   trans   |   seq      |     pred     |  language |
+| :--------: |  :-------:   | :-------:  |   :-------:   |   :-----:   |  :-----:   | :-----:  |
+| rec_chinese_cht_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | chinese traditional  |
+| rec_en_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | English(Case sensitive)   |
+| rec_french_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | French |  
+| rec_ger_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | German   |
+| rec_japan_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Japanese |
+| rec_korean_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Korean  |
+| rec_latin_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Latin  |
+| rec_arabic_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | arabic |  
+| rec_cyrillic_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | cyrillic   |
+| rec_devanagari_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | devanagari  |
 
 For more supported languages, please refer to : [Multi-language model](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_en/multi_languages_en.md#4-support-languages-and-abbreviations)
 

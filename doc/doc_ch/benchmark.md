@@ -35,4 +35,4 @@
 | PP-OCR mobile | 356  | 11 6|
 | PP-OCR server | 1056  | 200 |
 
-更多 PP-OCR 系列模型的预测指标可以参考[PP-OCR Benchamrk](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/doc/doc_ch/benchmark.md)
+更多 PP-OCR 系列模型的预测指标可以参考[PP-OCR Benchmark](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/doc/doc_ch/benchmark.md)

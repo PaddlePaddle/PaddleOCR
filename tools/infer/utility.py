@@ -63,11 +63,17 @@ def init_args():
     parser.add_argument("--det_sast_nms_thresh", type=float, default=0.2)
     parser.add_argument("--det_sast_polygon", type=str2bool, default=False)
 
+    # PSE parmas
+    parser.add_argument("--det_pse_thresh", type=float, default=0)
+    parser.add_argument("--det_pse_box_thresh", type=float, default=0.85)
+    parser.add_argument("--det_pse_min_area", type=float, default=16)
+    parser.add_argument("--det_pse_box_type", type=str, default='box')
+    parser.add_argument("--det_pse_scale", type=int, default=1)
+
     # params for text recognizer
     parser.add_argument("--rec_algorithm", type=str, default='CRNN')
     parser.add_argument("--rec_model_dir", type=str)
     parser.add_argument("--rec_image_shape", type=str, default="3, 32, 320")
-    parser.add_argument("--rec_char_type", type=str, default='ch')
     parser.add_argument("--rec_batch_num", type=int, default=6)
     parser.add_argument("--max_text_length", type=int, default=25)
     parser.add_argument(
@@ -115,11 +121,6 @@ def init_args():
     parser.add_argument("--save_log_path", type=str, default="./log_output/")
 
     parser.add_argument("--show_log", type=str2bool, default=True)
-    parser.add_argument(
-        "--disable_glog_info",
-        type=str2bool,
-        default=False,
-        help='remove Paddle Inference LOG')
     return parser
 
 
@@ -266,19 +267,17 @@ def create_predictor(args, mode, logger):
             # cache 10 different shapes for mkldnn to avoid memory leak
             config.set_mkldnn_cache_capacity(10)
             config.enable_mkldnn()
-
+            if args.precision == "fp16":
+                config.enable_mkldnn_bfloat16()
     # enable memory optim
     config.enable_memory_optim()
-    # config.disable_glog_info()
+    config.disable_glog_info()
 
     config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
     if mode == 'table':
         config.delete_pass("fc_fuse_pass")  # not supported for table
     config.switch_use_feed_fetch_ops(False)
     config.switch_ir_optim(True)
-    if args.disable_glog_info:
-        # remove Paddle Inference model init LOG
-        config.disable_glog_info()
 
     # create predictor
     predictor = inference.create_predictor(config)
