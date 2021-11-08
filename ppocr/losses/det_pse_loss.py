@@ -11,6 +11,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""
+This code is refer from:
+https://github.com/whai362/PSENet/blob/python3/models/head/psenet_head.py
+"""
 
 import paddle
 from paddle import nn
