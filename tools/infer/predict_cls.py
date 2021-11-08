@@ -47,6 +47,7 @@ class TextClassifier(object):
         self.postprocess_op = build_post_process(postprocess_params)
         self.predictor, self.input_tensor, self.output_tensors, _ = \
             utility.create_predictor(args, 'cls', logger)
+        self.use_onnx = args.use_onnx
 
     def resize_norm_img(self, img):
         imgC, imgH, imgW = self.cls_image_shape
@@ -100,10 +101,16 @@ class TextClassifier(object):
             norm_img_batch = np.concatenate(norm_img_batch)
             norm_img_batch = norm_img_batch.copy()
 
-            self.input_tensor.copy_from_cpu(norm_img_batch)
-            self.predictor.run()
-            prob_out = self.output_tensors[0].copy_to_cpu()
-            self.predictor.try_shrink_memory()
+            if self.use_onnx:
+                input_dict = {}
+                input_dict[self.input_tensor.name] = norm_img_batch
+                outputs = self.predictor.run(self.output_tensors, input_dict)
+                prob_out = outputs[0]
+            else:
+                self.input_tensor.copy_from_cpu(norm_img_batch)
+                self.predictor.run()
+                prob_out = self.output_tensors[0].copy_to_cpu()
+                self.predictor.try_shrink_memory()
             cls_result = self.postprocess_op(prob_out)
             elapse += time.time() - starttime
             for rno in range(len(cls_result)):

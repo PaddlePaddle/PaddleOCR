@@ -11,7 +11,7 @@ python=$(func_parser_value "${lines[2]}")
 
 
 # parser params
-dataline=$(awk 'NR==111, NR==122{print}'  $FILENAME)
+dataline=$(awk 'NR==111, NR==123{print}'  $FILENAME)
 IFS=$'\n'
 lines=(${dataline})
 
@@ -63,7 +63,7 @@ function func_paddle2onnx(){
     set_gpu=$(func_set_params "${use_gpu_key}" "${use_gpu_value}")
     set_model_dir=$(func_set_params "${det_model_key}" "${save_file_value}")
     set_img_dir=$(func_set_params "${image_dir_key}" "${image_dir_value}")
-    infer_model_cmd="${python} ${inference_py} ${set_gpu} ${set_img_dir} ${set_model_dir} > ${_save_log_path} 2>&1 "
+    infer_model_cmd="${python} ${inference_py} ${set_gpu} ${set_img_dir} ${set_model_dir} --use_onnx=True > ${_save_log_path} 2>&1 "
     eval $infer_model_cmd
     status_check $last_status "${infer_model_cmd}" "${status_log}"
 }
