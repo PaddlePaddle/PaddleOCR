@@ -159,7 +159,8 @@ def train(config,
           eval_class,
           pre_best_model_dict,
           logger,
-          vdl_writer=None):
+          vdl_writer=None,
+          scaler=None):
     cal_metric_during_train = config['Global'].get('cal_metric_during_train',
                                                    False)
     log_smooth_window = config['Global']['log_smooth_window']
@@ -211,33 +212,49 @@ def train(config,
     for epoch in range(start_epoch, epoch_num + 1):
         train_dataloader = build_dataloader(
             config, 'Train', device, logger, seed=epoch)
-        train_batch_cost = 0.0
         train_reader_cost = 0.0
-        batch_sum = 0
-        batch_start = time.time()
+        train_run_cost = 0.0
+        total_samples = 0
+        reader_start = time.time()
         max_iter = len(train_dataloader) - 1 if platform.system(
         ) == "Windows" else len(train_dataloader)
         for idx, batch in enumerate(train_dataloader):
             profiler.add_profiler_step(profiler_options)
-            train_reader_cost += time.time() - batch_start
+            train_reader_cost += time.time() - reader_start
             if idx >= max_iter:
                 break
             lr = optimizer.get_lr()
             images = batch[0]
             if use_srn:
                 model_average = True
-            if model_type == 'table' or extra_input:
-                preds = model(images, data=batch[1:])
+
+            train_start = time.time()
+            # use amp
+            if scaler:
+                with paddle.amp.auto_cast():
+                    if model_type == 'table' or extra_input:
+                        preds = model(images, data=batch[1:])
+                    else:
+                        preds = model(images)
             else:
-                preds = model(images)
+                if model_type == 'table' or extra_input:
+                    preds = model(images, data=batch[1:])
+                else:
+                    preds = model(images)
             loss = loss_class(preds, batch)
             avg_loss = loss['loss']
-            avg_loss.backward()
-            optimizer.step()
+
+            if scaler:
+                scaled_avg_loss = scaler.scale(avg_loss)
+                scaled_avg_loss.backward()
+                scaler.minimize(optimizer, scaled_avg_loss)
+            else:
+                avg_loss.backward()
+                optimizer.step()
             optimizer.clear_grad()
 
-            train_batch_cost += time.time() - batch_start
-            batch_sum += len(images)
+            train_run_cost += time.time() - train_start
+            total_samples += len(images)
 
             if not isinstance(lr_scheduler, float):
                 lr_scheduler.step()
@@ -268,12 +285,13 @@ def train(config,
                 logs = train_stats.log()
                 strs = 'epoch: [{}/{}], iter: {}, {}, reader_cost: {:.5f} s, batch_cost: {:.5f} s, samples: {}, ips: {:.5f}'.format(
                     epoch, epoch_num, global_step, logs, train_reader_cost /
-                    print_batch_step, train_batch_cost / print_batch_step,
-                    batch_sum, batch_sum / train_batch_cost)
+                    print_batch_step, (train_reader_cost + train_run_cost) /
+                    print_batch_step, total_samples,
+                    total_samples / (train_reader_cost + train_run_cost))
                 logger.info(strs)
-                train_batch_cost = 0.0
                 train_reader_cost = 0.0
-                batch_sum = 0
+                train_run_cost = 0.0
+                total_samples = 0
             # eval
             if global_step > start_eval_step and \
                     (global_step - start_eval_step) % eval_batch_step == 0 and dist.get_rank() == 0:
@@ -326,7 +344,7 @@ def train(config,
                                           global_step)
             global_step += 1
             optimizer.clear_grad()
-            batch_start = time.time()
+            reader_start = time.time()
         if dist.get_rank() == 0:
             save_model(
                 model,
@@ -367,7 +385,11 @@ def eval(model,
     with paddle.no_grad():
         total_frame = 0.0
         total_time = 0.0
-        pbar = tqdm(total=len(valid_dataloader), desc='eval model:')
+        pbar = tqdm(
+            total=len(valid_dataloader),
+            desc='eval model:',
+            position=0,
+            leave=True)
         max_iter = len(valid_dataloader) - 1 if platform.system(
         ) == "Windows" else len(valid_dataloader)
         for idx, batch in enumerate(valid_dataloader):
@@ -436,8 +458,6 @@ def get_center(model, eval_dataloader, post_process_class):
 
         batch = [item.numpy() for item in batch]
         # Obtain usable results from post-processing methods
-        total_time += time.time() - start
-        # Evaluate the results of the current batch
         post_result = post_process_class(preds, batch[1])
 
         #update char_center
@@ -480,11 +500,6 @@ def preprocess(is_train=False):
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
         'SEED'
     ]
-    windows_not_support_list = ['PSE']
-    if platform.system() == "Windows" and alg in windows_not_support_list:
-        logger.warning('{} is not support in Windows now'.format(
-            windows_not_support_list))
-        sys.exit()
 
     device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'
     device = paddle.set_device(device)

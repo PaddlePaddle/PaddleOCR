@@ -21,12 +21,9 @@ PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field, w
   - Click to modify the recognition result.(If you can't change the result, please switch to the system default input method, or switch back to the original input method again)
 - 2020.12.18: Support re-recognition of a single label box (by [ninetailskim](https://github.com/ninetailskim) ), perfect shortcut keys.
 
-### TODO:
-- Lock box mode: For the same scene data, the size and position of the locked detection box can be transferred between different pictures.
+## 1. Installation
 
-## Installation
-
-### 1. Environment Preparation
+### 1.1 Environment Preparation
 
 #### **Install PaddlePaddle 2.0**
 
@@ -66,7 +63,7 @@ If you getting this error `OSError: [WinError 126] The specified module could no
 
 Reference: [Solve shapely installation on windows](https://stackoverflow.com/questions/44398265/install-shapely-oserror-winerror-126-the-specified-module-could-not-be-found)
 
-### 2. Install PPOCRLabel
+### 1.2 Install PPOCRLabel
 
 #### Windows
 
@@ -94,9 +91,9 @@ cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
 python3 PPOCRLabel.py
 ```
 
-## Usage
+## 2. Usage
 
-### Steps
+### 2.1 Steps
 
 1. Build and launch using the instructions above.
 
@@ -140,9 +137,9 @@ python3 PPOCRLabel.py
 |  rec_gt.txt   | The recognition label file, which can be directly used for PPOCR identification model training, is generated after the user clicks on the menu bar "File"-"Export recognition result". |
 |   crop_img    | The recognition data, generated at the same time with *rec_gt.txt* |
 
-## Explanation
+## 3. Explanation
 
-### Shortcut keys
+### 3.1 Shortcut keys
 
 | Shortcut keys            | Description                                      |
 | ------------------------ | ------------------------------------------------ |
@@ -162,31 +159,37 @@ python3 PPOCRLabel.py
 | Ctrl--                   | Zoom out                                         |
 | ↑→↓←                     | Move selected box                                |
 
-### Built-in Model
+### 3.2 Built-in Model
 
 - Default model: PPOCRLabel uses the Chinese and English ultra-lightweight OCR model in PaddleOCR by default, supports Chinese, English and number recognition, and multiple language detection.
 
 - Model language switching: Changing the built-in model language is supportable by clicking "PaddleOCR"-"Choose OCR Model" in the menu bar. Currently supported languages​include French, German, Korean, and Japanese.
   For specific model download links, please refer to [PaddleOCR Model List](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/models_list_en.md#multilingual-recognition-modelupdating)
 
-- Custom model: The model trained by users can be replaced by modifying PPOCRLabel.py in [PaddleOCR class instantiation](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/PPOCRLabel/PPOCRLabel.py#L110) referring [Custom Model Code](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/whl_en.md#use-custom-model)
+- **Custom Model**: If users want to replace the built-in model with their own inference model, they can follow the [Custom Model Code Usage](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/doc/doc_en/whl_en.md#31-use-by-code) by modifying PPOCRLabel.py for [Instantiation of PaddleOCR class](https://github.com/PaddlePaddle/PaddleOCR/blob/release/ 2.3/PPOCRLabel/PPOCRLabel.py#L116) :
 
-### Export Label Result
+  add parameter `det_model_dir`  in `self.ocr = PaddleOCR(use_pdserving=False, use_angle_cls=True, det=True, cls=True, use_gpu=gpu, lang=lang) `
+
+### 3.3 Export Label Result
 
 PPOCRLabel supports three ways to export Label.txt
 
 - Automatically export: After selecting "File - Auto Export Label Mode", the program will automatically write the annotations into Label.txt every time the user confirms an image. If this option is not turned on, it will be automatically exported after detecting that the user has manually checked 5 images.
+
+  > The automatically export mode is turned off by default
+
 - Manual export: Click "File-Export Marking Results" to manually export the label.
+
 - Close application export
 
 
-### Export Partial Recognition Results
+### 3.4 Export Partial Recognition Results
 
-For some data that are difficult to recognize, the recognition results will not be exported by **unchecking** the corresponding tags in the recognition results checkbox.
+For some data that are difficult to recognize, the recognition results will not be exported by **unchecking** the corresponding tags in the recognition results checkbox. The unchecked recognition result is saved as `True` in the `difficult` variable in the label file `label.txt`.
 
-*Note: The status of the checkboxes in the recognition results still needs to be saved manually by clicking Save Button.*
+> *Note: The status of the checkboxes in the recognition results still needs to be saved manually by clicking Save Button.*
 
-### Error message
+### 3.5 Error message
 
 - If paddleocr is installed with whl, it has a higher priority than calling PaddleOCR class with paddleocr.py, which may cause an exception if whl package is not updated.
 

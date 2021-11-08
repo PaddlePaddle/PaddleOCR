@@ -109,15 +109,16 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - [PP-Structure信息提取](./ppstructure/README_ch.md)
     - [版面分析](./ppstructure/layout/README_ch.md)
     - [表格识别](./ppstructure/table/README_ch.md)
+- OCR学术圈
+    - [两阶段模型介绍与下载](./doc/doc_ch/algorithm_overview.md)
+    - [端到端PGNet算法](./doc/doc_ch/pgnet.md)
+    - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
+    - [使用PaddleOCR架构添加新算法](./doc/doc_ch/add_new_algorithm.md)
 - 数据标注与合成
     - [半自动标注工具PPOCRLabel](./PPOCRLabel/README_ch.md)
     - [数据合成工具Style-Text](./StyleText/README_ch.md)
     - [其它数据标注工具](./doc/doc_ch/data_annotation.md)
     - [其它数据合成工具](./doc/doc_ch/data_synthesis.md)
-- OCR学术圈
-    - [两阶段模型介绍与下载](./doc/doc_ch/algorithm_overview.md)
-    - [端到端PGNet算法](./doc/doc_ch/pgnet.md)
-    - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
 - 数据集
     - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
     - [手写中文OCR数据集](./doc/doc_ch/handwritten_datasets.md)

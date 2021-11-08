@@ -38,6 +38,7 @@ class TextDetector(object):
     def __init__(self, args):
         self.args = args
         self.det_algorithm = args.det_algorithm
+        self.use_onnx = args.use_onnx
         pre_process_list = [{
             'DetResizeForTest': {
                 'limit_side_len': args.det_limit_side_len,
@@ -100,7 +101,12 @@ class TextDetector(object):
         else:
             logger.info("unknown det_algorithm:{}".format(self.det_algorithm))
             sys.exit(0)
-
+        if self.use_onnx:
+            pre_process_list[0] = {
+                'DetResizeForTest': {
+                    'image_shape': [640, 640]
+                }
+            }
         self.preprocess_op = create_operators(pre_process_list)
         self.postprocess_op = build_post_process(postprocess_params)
         self.predictor, self.input_tensor, self.output_tensors, self.config = utility.create_predictor(
@@ -198,15 +204,19 @@ class TextDetector(object):
 
         if self.args.benchmark:
             self.autolog.times.stamp()
-
-        self.input_tensor.copy_from_cpu(img)
-        self.predictor.run()
-        outputs = []
-        for output_tensor in self.output_tensors:
-            output = output_tensor.copy_to_cpu()
-            outputs.append(output)
-        if self.args.benchmark:
-            self.autolog.times.stamp()
+        if self.use_onnx:
+            input_dict = {}
+            input_dict[self.input_tensor.name] = img
+            outputs = self.predictor.run(self.output_tensors, input_dict)
+        else:
+            self.input_tensor.copy_from_cpu(img)
+            self.predictor.run()
+            outputs = []
+            for output_tensor in self.output_tensors:
+                output = output_tensor.copy_to_cpu()
+                outputs.append(output)
+            if self.args.benchmark:
+                self.autolog.times.stamp()
 
         preds = {}
         if self.det_algorithm == "EAST":

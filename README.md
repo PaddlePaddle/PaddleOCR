@@ -119,7 +119,7 @@ For a new language request, please refer to [Guideline for new language_requests
     - [Table Recognition](./ppstructure/table/README.md)
 - Academic Circles
     - [Two-stage Algorithm](./doc/doc_en/algorithm_overview_en.md)
-    - [PGNet Algorithm](./doc/doc_en/algorithm_overview_en.md)
+    - [PGNet Algorithm](./doc/doc_en/pgnet_en.md)
     - [Python Inference](./doc/doc_en/inference_en.md)
 - Data Annotation and Synthesis
     - [Semi-automatic Annotation Tool: PPOCRLabel](./PPOCRLabel/README.md)
