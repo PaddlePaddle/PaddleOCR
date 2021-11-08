@@ -12,6 +12,8 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 
+# This code is refer from: https://github.com/KaiyangZhou/pytorch-center-loss
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -27,6 +29,7 @@ class CenterLoss(nn.Layer):
     """
     Reference: Wen et al. A Discriminative Feature Learning Approach for Deep Face Recognition. ECCV 2016.
     """
+
     def __init__(self,
                  num_classes=6625,
                  feat_dim=96,

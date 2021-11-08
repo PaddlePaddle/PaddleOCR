@@ -44,6 +44,11 @@ public:
   virtual void Run(const cv::Mat *im, float *data);
 };
 
+class PermuteBatch {
+public:
+  virtual void Run(const std::vector<cv::Mat> imgs, float *data);
+};
+    
 class ResizeImgType0 {
 public:
   virtual void Run(const cv::Mat &img, cv::Mat &resize_img, int max_size_len,

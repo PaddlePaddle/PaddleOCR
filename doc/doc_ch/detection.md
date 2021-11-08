@@ -96,15 +96,28 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml \
 # 单机多卡训练，通过 --gpus 参数设置使用的GPU ID
 python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/det_mv3_db.yml \
      -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
+ 
+# 多机多卡训练，通过 --ips 参数设置使用的机器IP地址，通过 --gpus 参数设置使用的GPU ID
+python3 -m paddle.distributed.launch --ips="10.21.226.181,10.21.226.133" --gpus '0,1,2,3' tools/train.py -c configs/det/det_mv3_db.yml \
+     -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
 ```
 
 上述指令中，通过-c 选择训练使用configs/det/det_db_mv3.yml配置文件。
 有关配置文件的详细解释，请参考[链接](./config.md)。
-
+ 
 您也可以通过-o参数在不需要修改yml文件的情况下，改变训练的参数，比如，调整训练的学习率为0.0001
 ```shell
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
 ```
+ 
+**注意:** 采用多机多卡训练时，需要替换上面命令中的ips值为您机器的地址，机器之间需要能够相互ping通。查看机器ip地址的命令为`ifconfig`。
+ 
+如果您想进一步加快训练速度，可以使用[自动混合精度训练](https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/01_paddle2.0_introduction/basic_concept/amp_cn.html)， 以单机单卡为例，命令如下：
+```shell
+python3 tools/train.py -c configs/det/det_mv3_db.yml \
+     -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained \
+     Global.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True
+ ```
 
 <a name="14-----"></a>
 ## 1.4 断点训练
