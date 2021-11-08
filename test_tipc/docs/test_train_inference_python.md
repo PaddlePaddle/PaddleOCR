@@ -32,7 +32,7 @@ Linux端基础训练预测功能测试的主程序为`test_train_inference_pytho
 
 ## 2. 测试流程
 
-运行环境配置请参考[文档](./install.md)的内容配置tipc的运行环境。
+运行环境配置请参考[文档](./install.md)的内容配置TIPC的运行环境。
 
 ### 2.1 安装依赖
 - 安装PaddlePaddle >= 2.0
