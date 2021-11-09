@@ -25,11 +25,10 @@ The PaddleOCR model uses configuration files to manage network training and eval
 For the complete configuration file description, please refer to [Configuration File](./config_en.md)
 
 <a name="1-basic-concepts"></a>
-# 1. Basic concepts
 
 ## 2. Basic Concepts
 
-The following parameters need to be paid attention to when tuning the model:
+In the process of model training, some hyperparameters need to be manually adjusted to help the model obtain the optimal index at the least loss. Different data volumes may require different hyper-parameters. When you want to finetune your own data or tune the model effect, there are several parameter adjustment strategies for reference:
 
 <a name="11-learning-rate"></a>
 ### 2.1 Learning Rate
@@ -53,7 +52,7 @@ and the learning rate is the same in each stage.
 warmup_epoch means that in the first 5 epochs, the learning rate will gradually increase from 0 to base_lr. For all strategies, please refer to the code [learning_rate.py](../../ppocr/optimizer/learning_rate.py).
 
 <a name="12-regularization"></a>
-## 1.2 Regularization
+### 2.2 Regularization
 
 Regularization can effectively avoid algorithm overfitting. PaddleOCR provides L1 and L2 regularization methods.
 L1 and L2 regularization are the most commonly used regularization methods.
@@ -125,7 +124,7 @@ There are several experiences for reference when constructing the data set:
 
 <a name="3-faq"></a>
 
-# 3. FAQ
+## 4. FAQ
 
 **Q**: How to choose a suitable network input shape when training CRNN recognition?
 
@@ -147,9 +146,3 @@ There are several experiences for reference when constructing the data set:
 
     A: It is normal for the acc to be 0 at the beginning of the recognition model training, and the indicator will come up after a longer training period.
 
-
-***
-Click the following links for detailed training tutorial:  
-- [text detection model training](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/doc/doc_ch/detection.md)  
-- [text recognition model training](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/doc/doc_ch/recognition.md)  
-- [text direction classification model training](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/doc/doc_ch/angle_class.md)  

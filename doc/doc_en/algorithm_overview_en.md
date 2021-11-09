@@ -1,5 +1,14 @@
+# Two-stage Algorithm
+
+- [1. Algorithm Introduction](#1-algorithm-introduction)
+  * [1.1 Text Detection Algorithm](#11-text-detection-algorithm)
+  * [1.2 Text Recognition Algorithm](#12-text-recognition-algorithm)
+- [2. Training](#2-training)
+- [3. Inference](#3-inference)
+
 <a name="Algorithm_introduction"></a>
-## Algorithm introduction
+
+## 1. Algorithm Introduction
 
 This tutorial lists the text detection algorithms and text recognition algorithms supported by PaddleOCR, as well as the models and metrics of each algorithm on **English public datasets**. It is mainly used for algorithm introduction and algorithm performance comparison. For more models on other datasets including Chinese, please refer to [PP-OCR v2.0 models list](./models_list_en.md).
 
@@ -8,13 +17,13 @@ This tutorial lists the text detection algorithms and text recognition algorithm
 - [2. Text Recognition Algorithm](#TEXTRECOGNITIONALGORITHM)
 
 <a name="TEXTDETECTIONALGORITHM"></a>
-### 1. Text Detection Algorithm
+
+### 1.1 Text Detection Algorithm
 
 PaddleOCR open source text detection algorithms list:
-- [x]  EAST([paper](https://arxiv.org/abs/1704.03155))
-- [x]  DB([paper](https://arxiv.org/abs/1911.08947))
-- [x]  SAST([paper](https://arxiv.org/abs/1908.05498))
-- [x]  PSE([paper](https://arxiv.org/abs/1903.12473v2))
+- [x]  EAST([paper](https://arxiv.org/abs/1704.03155))[2]
+- [x]  DB([paper](https://arxiv.org/abs/1911.08947))[1]
+- [x]  SAST([paper](https://arxiv.org/abs/1908.05498))[4]
 
 On the ICDAR2015 dataset, the text detection result is as follows:
 
@@ -25,8 +34,6 @@ On the ICDAR2015 dataset, the text detection result is as follows:
 |DB|ResNet50_vd|86.41%|78.72%|82.38%|[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_db_v2.0_train.tar)|
 |DB|MobileNetV3|77.29%|73.08%|75.12%|[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar)|
 |SAST|ResNet50_vd|91.39%|83.77%|87.42%|[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_icdar15_v2.0_train.tar)|
-|PSE|ResNet50_vd|85.81%|79.53%|82.55%|[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_r50_vd_pse_v2.0_train.tar)|
-|PSE|MobileNetV3|82.20%|70.48%|75.89%|[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_mv3_pse_v2.0_train.tar)|
 
 On Total-Text dataset, the text detection result is as follows:
 
@@ -41,16 +48,15 @@ On Total-Text dataset, the text detection result is as follows:
 For the training guide and use of PaddleOCR text detection algorithms, please refer to the document [Text detection model training/evaluation/prediction](./detection_en.md)
 
 <a name="TEXTRECOGNITIONALGORITHM"></a>
-### 2. Text Recognition Algorithm
+### 1.2 Text Recognition Algorithm
 
 PaddleOCR open-source text recognition algorithms list:
-- [x]  CRNN([paper](https://arxiv.org/abs/1507.05717))
-- [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))
-- [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))
-- [x]  RARE([paper](https://arxiv.org/abs/1603.03915v1))
-- [x]  SRN([paper](https://arxiv.org/abs/2003.12294))
+- [x]  CRNN([paper](https://arxiv.org/abs/1507.05717))[7]
+- [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))[10]
+- [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))[11]
+- [x]  RARE([paper](https://arxiv.org/abs/1603.03915v1))[12]
+- [x]  SRN([paper](https://arxiv.org/abs/2003.12294))[5]
 - [x]  NRTR([paper](https://arxiv.org/abs/1806.00926v2))
-- [x]  SAR([paper](https://arxiv.org/abs/1811.00751v2))
 
 Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation result of these above text recognition (using MJSynth and SynthText for training, evaluate on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE) is as follow:
 
@@ -66,6 +72,13 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 |RARE|Resnet34_vd|83.6%|rec_r34_vd_tps_bilstm_att |[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_tps_bilstm_att_v2.0_train.tar)|
 |SRN|Resnet50_vd_fpn| 88.52% | rec_r50fpn_vd_none_srn |[Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r50_vd_srn_train.tar)|
 |NRTR|NRTR_MTB| 84.3% | rec_mtb_nrtr | [Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mtb_nrtr_train.tar) |
-|SAR|Resnet31| 87.2% | rec_r31_sar | [Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_r31_sar_train.tar) |
 
-Please refer to the document for training guide and use of PaddleOCR text recognition algorithms [Text recognition model training/evaluation/prediction](./recognition_en.md)
+Please refer to the document for training guide and use of PaddleOCR 
+
+## 2. Training
+
+For the training guide and use of PaddleOCR text detection algorithms, please refer to the document [Text detection model training/evaluation/prediction](./detection_en.md). For text recognition algorithms, please refer to [Text recognition model training/evaluation/prediction](./recognition_en.md)
+
+## 3. Inference
+
+Except for the PP-OCR series models of the above models, the other models only support inference based on the Python engine. For details, please refer to [Inference based on Python prediction engine](./inference_en.md)

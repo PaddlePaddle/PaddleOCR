@@ -21,7 +21,7 @@ Next, we first introduce how to convert a trained model into an inference model,
     - [2.2 DB Text Detection Model Inference](#DB_DETECTION)
     - [2.3 East Text Detection Model Inference](#EAST_DETECTION)
     - [2.4 Sast Text Detection Model Inference](#SAST_DETECTION)
-
+    
 - [3. Text Recognition Model Inference](#RECOGNITION_MODEL_INFERENCE)
     - [3.1 Lightweight Chinese Text Recognition Model Reference](#LIGHTWEIGHT_RECOGNITION)
     - [3.2 CTC-Based Text Recognition Model Inference](#CTC-BASED_RECOGNITION)
@@ -281,7 +281,7 @@ python3 tools/export_model.py -c configs/det/rec_r34_vd_none_bilstm_ctc.yml -o G
 For CRNN text recognition model inference, execute the following commands:
 
 ```
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./inference/starnet/" --rec_image_shape="3, 32, 100" --rec_char_dict_path="./ppocr/utils/ic15_dict.txt"
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./inference/starnet/" --rec_image_shape="3, 32, 100" --rec_char_type="en"
 ```
 
 ![](../imgs_words_en/word_336.png)
@@ -314,7 +314,7 @@ with the training, such as: --rec_image_shape="1, 64, 256"
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" \
                                     --rec_model_dir="./inference/srn/" \
                                     --rec_image_shape="1, 64, 256" \
-                                    --rec_char_dict_path="./ppocr/utils/ic15_dict.txt" \
+                                    --rec_char_type="en" \
                                     --rec_algorithm="SRN"
 ```
 
@@ -323,7 +323,7 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png
 If the text dictionary is modified during training, when using the inference model to predict, you need to specify the dictionary path used by `--rec_char_dict_path`, and set `rec_char_type=ch`
 
 ```
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100"  --rec_char_dict_path="your text dict path"
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="ch" --rec_char_dict_path="your text dict path"
 ```
 
 <a name="MULTILINGUAL_MODEL_INFERENCE"></a>
@@ -333,7 +333,7 @@ If you need to predict other language models, when using inference model predict
 You need to specify the visual font path through `--vis_font_path`. There are small language fonts provided by default under the `doc/fonts` path, such as Korean recognition:
 
 ```
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" --rec_model_dir="./your inference model"  --rec_char_dict_path="ppocr/utils/dict/korean_dict.txt" --vis_font_path="doc/fonts/korean.ttf"
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" --rec_model_dir="./your inference model" --rec_char_type="korean" --rec_char_dict_path="ppocr/utils/dict/korean_dict.txt" --vis_font_path="doc/fonts/korean.ttf"
 ```
 ![](../imgs_words/korean/1.jpg)
 
@@ -399,7 +399,7 @@ If you want to try other detection algorithms or recognition algorithms, please 
 The following command uses the combination of the EAST text detection and STAR-Net text recognition:
 
 ```
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_east/" --det_algorithm="EAST" --rec_model_dir="./inference/starnet/" --rec_image_shape="3, 32, 100" --rec_char_dict_path="./ppocr/utils/ic15_dict.txt"
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_east/" --det_algorithm="EAST" --rec_model_dir="./inference/starnet/" --rec_image_shape="3, 32, 100" --rec_char_type="en"
 ```
 
 After executing the command, the recognition result image is as follows:

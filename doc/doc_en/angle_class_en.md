@@ -15,7 +15,6 @@ The text line image obtained after text detection is sent to the recognition mod
 Example of 0 and 180 degree data samples：
 
 ![](../imgs_results/angle_class_example.jpg)
-### DATA PREPARATION
 
 <a name="data-preparation"></a>
 ## 2. Data Preparation
@@ -130,8 +129,6 @@ python3 tools/eval.py -c configs/cls/cls_mv3.yml -o Global.checkpoints={path/to/
 ```
 <a name="prediction"></a>
 ## 5. Prediction
-
-### PREDICTION
 
 * Training engine prediction
 
