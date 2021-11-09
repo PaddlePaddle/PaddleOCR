@@ -1,5 +1,5 @@
 shapely
-scikit-image==0.18.3
+scikit-image
 imgaug==0.4.0
 pyclipper
 lmdb
