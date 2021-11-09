@@ -23,7 +23,7 @@ Windows端基础训练预测功能测试的主程序为`test_train_inference_pyt
 
 ## 2. 测试流程
 
-运行环境配置请参考[文档](./install.md)的内容配置tipc的运行环境。
+运行环境配置请参考[文档](./install.md)的内容配置TIPC的运行环境。
 
 另外，由于Windows上和linux的路径管理方式不同，可以在win上安装gitbash终端，在gitbash中执行指令的方式和在linux端执行指令方式相同，更方便tipc测试。gitbash[下载链接](https://git-scm.com/download/win)。
 

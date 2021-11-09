@@ -193,7 +193,23 @@ PPOCRLabel支持三种导出方式：
     ```
     pip install opencv-contrib-python-headless==4.2.0.32
     ```
+### 数据集划分
+- 在终端中输入以下命令执行数据集划分脚本：
+    ```
+    cd ./PPOCRLabel # 将目录切换到PPOCRLabel文件夹下
+    python gen_ocr_train_val_test.py --trainValTestRatio 6:2:2 --labelRootPath ../train_data/label --detRootPath ../train_data/det --recRootPath ../train_data/rec
+    ```
+- 参数说明：
 
+    trainValTestRatio是训练集、验证集、测试集的图像数量划分比例，根据你的实际情况设定，默认是6:2:2
+
+    labelRootPath是PPOCRLabel标注的数据集存放路径，默认是../train_data/label
+
+    detRootPath是根据PPOCRLabel标注的数据集划分后的文本检测数据集存放的路径，默认是../train_data/det 
+
+    recRootPath是根据PPOCRLabel标注的数据集划分后的字符识别数据集存放的路径，默认是../train_data/rec
+    
+    
 ### 4. 参考资料
 
 1.[Tzutalin. LabelImg. Git code (2015)](https://github.com/tzutalin/labelImg)
