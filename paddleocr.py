@@ -259,13 +259,13 @@ def get_model_config(type, version, model_type, lang):
         raise NotImplementedError
     model_urls = MODEL_URLS[type]
     if version not in model_urls:
-        logger.warning('version {} not in {}, use version {} instead'.format(
+        logger.warning('version {} not in {}, auto switch to version {}'.format(
             version, model_urls.keys(), DEFAULT_MODEL_VERSION))
         version = DEFAULT_MODEL_VERSION
     if model_type not in model_urls[version]:
         if model_type in model_urls[DEFAULT_MODEL_VERSION]:
             logger.warning(
-                'version {} not support {} models, use version {} instead'.
+                'version {} not support {} models, auto switch to version {}'.
                 format(version, model_type, DEFAULT_MODEL_VERSION))
             version = DEFAULT_MODEL_VERSION
         else:
@@ -274,8 +274,9 @@ def get_model_config(type, version, model_type, lang):
             sys.exit(-1)
     if lang not in model_urls[version][model_type]:
         if lang in model_urls[DEFAULT_MODEL_VERSION][model_type]:
-            logger.warning('lang {} is not support in {}, use {} instead'.
-                           format(lang, version, DEFAULT_MODEL_VERSION))
+            logger.warning(
+                'lang {} is not support in {}, auto switch to version {}'.
+                format(lang, version, DEFAULT_MODEL_VERSION))
             version = DEFAULT_MODEL_VERSION
         else:
             logger.error(
