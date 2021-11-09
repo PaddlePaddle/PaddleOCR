@@ -4,7 +4,7 @@ PaddleServing预测功能测试的主程序为`test_serving.sh`，可以测试�
 
 ## 1. 测试结论汇总
 
-基于训练是否使用量化，进行本测试的模型可以分为`正常模型`和`量化模型`，这两类模型对应的C++预测功能汇总如下：
+基于训练是否使用量化，进行本测试的模型可以分为`正常模型`和`量化模型`，这两类模型对应的Serving预测功能汇总如下：
 
 | 模型类型 |device | batchsize | tensorrt | mkldnn | cpu多线程 |
 |  ----   |  ---- |   ----   |  :----:  |   :----:   |  :----:  |
@@ -14,6 +14,8 @@ PaddleServing预测功能测试的主程序为`test_serving.sh`，可以测试�
 | 量化模型 | CPU | 1/6 | - | int8 | 支持 |
 
 ## 2. 测试流程
+运行环境配置请参考[文档](./install.md)的内容配置TIPC的运行环境。
+
 ### 2.1 功能测试
 先运行`prepare.sh`准备数据和模型，然后运行`test_serving.sh`进行测试，最终在```test_tipc/output```目录下生成`serving_infer_*.log`后缀的日志文件。
 

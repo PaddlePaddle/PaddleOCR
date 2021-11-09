@@ -90,7 +90,7 @@ infer_value1=$(func_parser_value "${lines[50]}")
 
 # parser klquant_infer
 if [ ${MODE} = "klquant_whole_infer" ]; then
-    dataline=$(awk 'NR==82, NR==98{print}'  $FILENAME)
+    dataline=$(awk 'NR==85 NR==101{print}'  $FILENAME)
     lines=(${dataline})
     # parser inference model 
     infer_model_dir_list=$(func_parser_value "${lines[1]}")
@@ -316,7 +316,7 @@ else
                 elif [ ${#ips} -le 26 ];then  # train with multi-gpu
                     cmd="${python} -m paddle.distributed.launch --gpus=${gpu} ${run_train} ${set_use_gpu} ${set_save_model} ${set_epoch} ${set_pretrain} ${set_autocast} ${set_batchsize} ${set_train_params1} ${set_amp_config}"
                 else     # train with multi-machine
-                    cmd="${python} -m paddle.distributed.launch --ips=${ips} --gpus=${gpu} ${set_use_gpu} ${run_train} ${set_save_model} ${set_pretrain} ${set_epoch} ${set_autocast} ${set_batchsize} ${set_train_params1} ${set_amp_config}"
+                    cmd="${python} -m paddle.distributed.launch --ips=${ips} --gpus=${gpu} ${run_train} ${set_use_gpu} ${set_save_model} ${set_pretrain} ${set_epoch} ${set_autocast} ${set_batchsize} ${set_train_params1} ${set_amp_config}"
                 fi
                 # run train
                 eval "unset CUDA_VISIBLE_DEVICES"
