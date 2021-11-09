@@ -303,8 +303,16 @@ else
                 set_batchsize=$(func_set_params "${train_batch_key}" "${train_batch_value}")
                 set_train_params1=$(func_set_params "${train_param_key1}" "${train_param_value1}")
                 set_use_gpu=$(func_set_params "${train_use_gpu_key}" "${use_gpu}")
-                save_log="${LOG_PATH}/${trainer}_gpus_${gpu}_autocast_${autocast}"
-                
+                if [ ${#ips} -le 26 ];then
+                    save_log="${LOG_PATH}/${trainer}_gpus_${gpu}_autocast_${autocast}"
+                else
+                    IFS=","
+                    ips_array=(${ips})
+                    IFS="|"
+                    nodes=${#ips_array[@]}
+                    save_log="${LOG_PATH}/${trainer}_gpus_${gpu}_autocast_${autocast}_nodes_${nodes}"
+                fi
+
                 # load pretrain from norm training if current trainer is pact or fpgm trainer
                 if [ ${trainer} = ${pact_key} ] || [ ${trainer} = ${fpgm_key} ]; then
                     set_pretrain="${load_norm_train_model}"
