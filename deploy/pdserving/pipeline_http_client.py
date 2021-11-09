@@ -18,13 +18,19 @@ import json
 import base64
 import os
 
+import argparse
+parser = argparse.ArgumentParser(description="args for paddleserving")
+parser.add_argument("--image_dir", type=str, default="../../doc/imgs/")
+args = parser.parse_args()
+
 
 def cv2_to_base64(image):
     return base64.b64encode(image).decode('utf8')
 
 
 url = "http://127.0.0.1:9998/ocr/prediction"
-test_img_dir = "../../doc/imgs/"
+test_img_dir = args.image_dir
+
 for idx, img_file in enumerate(os.listdir(test_img_dir)):
     with open(os.path.join(test_img_dir, img_file), 'rb') as file:
         image_data1 = file.read()
@@ -36,5 +42,4 @@ for idx, img_file in enumerate(os.listdir(test_img_dir)):
         r = requests.post(url=url, data=json.dumps(data))
         print(r.json())
 
-test_img_dir = "../../doc/imgs/"
 print("==> total number of test imgs: ", len(os.listdir(test_img_dir)))
