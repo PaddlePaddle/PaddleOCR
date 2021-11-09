@@ -121,6 +121,7 @@ def init_args():
     parser.add_argument("--save_log_path", type=str, default="./log_output/")
 
     parser.add_argument("--show_log", type=str2bool, default=True)
+    parser.add_argument("--use_onnx", type=str2bool, default=False)
     return parser
 
 
@@ -144,152 +145,163 @@ def create_predictor(args, mode, logger):
     if model_dir is None:
         logger.info("not find {} model file path {}".format(mode, model_dir))
         sys.exit(0)
-    model_file_path = model_dir + "/inference.pdmodel"
-    params_file_path = model_dir + "/inference.pdiparams"
-    if not os.path.exists(model_file_path):
-        raise ValueError("not find model file path {}".format(model_file_path))
-    if not os.path.exists(params_file_path):
-        raise ValueError("not find params file path {}".format(
-            params_file_path))
+    if args.use_onnx:
+        import onnxruntime as ort
+        model_file_path = model_dir
+        if not os.path.exists(model_file_path):
+            raise ValueError("not find model file path {}".format(
+                model_file_path))
+        sess = ort.InferenceSession(model_file_path)
+        return sess, sess.get_inputs()[0], None, None
 
-    config = inference.Config(model_file_path, params_file_path)
+    else:
+        model_file_path = model_dir + "/inference.pdmodel"
+        params_file_path = model_dir + "/inference.pdiparams"
+        if not os.path.exists(model_file_path):
+            raise ValueError("not find model file path {}".format(
+                model_file_path))
+        if not os.path.exists(params_file_path):
+            raise ValueError("not find params file path {}".format(
+                params_file_path))
 
-    if hasattr(args, 'precision'):
-        if args.precision == "fp16" and args.use_tensorrt:
-            precision = inference.PrecisionType.Half
-        elif args.precision == "int8":
-            precision = inference.PrecisionType.Int8
+        config = inference.Config(model_file_path, params_file_path)
+
+        if hasattr(args, 'precision'):
+            if args.precision == "fp16" and args.use_tensorrt:
+                precision = inference.PrecisionType.Half
+            elif args.precision == "int8":
+                precision = inference.PrecisionType.Int8
+            else:
+                precision = inference.PrecisionType.Float32
         else:
             precision = inference.PrecisionType.Float32
-    else:
-        precision = inference.PrecisionType.Float32
 
-    if args.use_gpu:
-        gpu_id = get_infer_gpuid()
-        if gpu_id is None:
-            raise ValueError(
-                "Not found GPU in current device. Please check your device or set args.use_gpu as False"
-            )
-        config.enable_use_gpu(args.gpu_mem, 0)
-        if args.use_tensorrt:
-            config.enable_tensorrt_engine(
-                precision_mode=precision,
-                max_batch_size=args.max_batch_size,
-                min_subgraph_size=args.min_subgraph_size)
-            # skip the minmum trt subgraph
-        if mode == "det":
-            min_input_shape = {
-                "x": [1, 3, 50, 50],
-                "conv2d_92.tmp_0": [1, 120, 20, 20],
-                "conv2d_91.tmp_0": [1, 24, 10, 10],
-                "conv2d_59.tmp_0": [1, 96, 20, 20],
-                "nearest_interp_v2_1.tmp_0": [1, 256, 10, 10],
-                "nearest_interp_v2_2.tmp_0": [1, 256, 20, 20],
-                "conv2d_124.tmp_0": [1, 256, 20, 20],
-                "nearest_interp_v2_3.tmp_0": [1, 64, 20, 20],
-                "nearest_interp_v2_4.tmp_0": [1, 64, 20, 20],
-                "nearest_interp_v2_5.tmp_0": [1, 64, 20, 20],
-                "elementwise_add_7": [1, 56, 2, 2],
-                "nearest_interp_v2_0.tmp_0": [1, 256, 2, 2]
-            }
-            max_input_shape = {
-                "x": [1, 3, 1280, 1280],
-                "conv2d_92.tmp_0": [1, 120, 400, 400],
-                "conv2d_91.tmp_0": [1, 24, 200, 200],
-                "conv2d_59.tmp_0": [1, 96, 400, 400],
-                "nearest_interp_v2_1.tmp_0": [1, 256, 200, 200],
-                "conv2d_124.tmp_0": [1, 256, 400, 400],
-                "nearest_interp_v2_2.tmp_0": [1, 256, 400, 400],
-                "nearest_interp_v2_3.tmp_0": [1, 64, 400, 400],
-                "nearest_interp_v2_4.tmp_0": [1, 64, 400, 400],
-                "nearest_interp_v2_5.tmp_0": [1, 64, 400, 400],
-                "elementwise_add_7": [1, 56, 400, 400],
-                "nearest_interp_v2_0.tmp_0": [1, 256, 400, 400]
-            }
-            opt_input_shape = {
-                "x": [1, 3, 640, 640],
-                "conv2d_92.tmp_0": [1, 120, 160, 160],
-                "conv2d_91.tmp_0": [1, 24, 80, 80],
-                "conv2d_59.tmp_0": [1, 96, 160, 160],
-                "nearest_interp_v2_1.tmp_0": [1, 256, 80, 80],
-                "nearest_interp_v2_2.tmp_0": [1, 256, 160, 160],
-                "conv2d_124.tmp_0": [1, 256, 160, 160],
-                "nearest_interp_v2_3.tmp_0": [1, 64, 160, 160],
-                "nearest_interp_v2_4.tmp_0": [1, 64, 160, 160],
-                "nearest_interp_v2_5.tmp_0": [1, 64, 160, 160],
-                "elementwise_add_7": [1, 56, 40, 40],
-                "nearest_interp_v2_0.tmp_0": [1, 256, 40, 40]
-            }
-            min_pact_shape = {
-                "nearest_interp_v2_26.tmp_0": [1, 256, 20, 20],
-                "nearest_interp_v2_27.tmp_0": [1, 64, 20, 20],
-                "nearest_interp_v2_28.tmp_0": [1, 64, 20, 20],
-                "nearest_interp_v2_29.tmp_0": [1, 64, 20, 20]
-            }
-            max_pact_shape = {
-                "nearest_interp_v2_26.tmp_0": [1, 256, 400, 400],
-                "nearest_interp_v2_27.tmp_0": [1, 64, 400, 400],
-                "nearest_interp_v2_28.tmp_0": [1, 64, 400, 400],
-                "nearest_interp_v2_29.tmp_0": [1, 64, 400, 400]
-            }
-            opt_pact_shape = {
-                "nearest_interp_v2_26.tmp_0": [1, 256, 160, 160],
-                "nearest_interp_v2_27.tmp_0": [1, 64, 160, 160],
-                "nearest_interp_v2_28.tmp_0": [1, 64, 160, 160],
-                "nearest_interp_v2_29.tmp_0": [1, 64, 160, 160]
-            }
-            min_input_shape.update(min_pact_shape)
-            max_input_shape.update(max_pact_shape)
-            opt_input_shape.update(opt_pact_shape)
-        elif mode == "rec":
-            min_input_shape = {"x": [1, 3, 32, 10]}
-            max_input_shape = {"x": [args.rec_batch_num, 3, 32, 1024]}
-            opt_input_shape = {"x": [args.rec_batch_num, 3, 32, 320]}
-        elif mode == "cls":
-            min_input_shape = {"x": [1, 3, 48, 10]}
-            max_input_shape = {"x": [args.rec_batch_num, 3, 48, 1024]}
-            opt_input_shape = {"x": [args.rec_batch_num, 3, 48, 320]}
+        if args.use_gpu:
+            gpu_id = get_infer_gpuid()
+            if gpu_id is None:
+                raise ValueError(
+                    "Not found GPU in current device. Please check your device or set args.use_gpu as False"
+                )
+            config.enable_use_gpu(args.gpu_mem, 0)
+            if args.use_tensorrt:
+                config.enable_tensorrt_engine(
+                    precision_mode=precision,
+                    max_batch_size=args.max_batch_size,
+                    min_subgraph_size=args.min_subgraph_size)
+                # skip the minmum trt subgraph
+            if mode == "det":
+                min_input_shape = {
+                    "x": [1, 3, 50, 50],
+                    "conv2d_92.tmp_0": [1, 120, 20, 20],
+                    "conv2d_91.tmp_0": [1, 24, 10, 10],
+                    "conv2d_59.tmp_0": [1, 96, 20, 20],
+                    "nearest_interp_v2_1.tmp_0": [1, 256, 10, 10],
+                    "nearest_interp_v2_2.tmp_0": [1, 256, 20, 20],
+                    "conv2d_124.tmp_0": [1, 256, 20, 20],
+                    "nearest_interp_v2_3.tmp_0": [1, 64, 20, 20],
+                    "nearest_interp_v2_4.tmp_0": [1, 64, 20, 20],
+                    "nearest_interp_v2_5.tmp_0": [1, 64, 20, 20],
+                    "elementwise_add_7": [1, 56, 2, 2],
+                    "nearest_interp_v2_0.tmp_0": [1, 256, 2, 2]
+                }
+                max_input_shape = {
+                    "x": [1, 3, 1280, 1280],
+                    "conv2d_92.tmp_0": [1, 120, 400, 400],
+                    "conv2d_91.tmp_0": [1, 24, 200, 200],
+                    "conv2d_59.tmp_0": [1, 96, 400, 400],
+                    "nearest_interp_v2_1.tmp_0": [1, 256, 200, 200],
+                    "conv2d_124.tmp_0": [1, 256, 400, 400],
+                    "nearest_interp_v2_2.tmp_0": [1, 256, 400, 400],
+                    "nearest_interp_v2_3.tmp_0": [1, 64, 400, 400],
+                    "nearest_interp_v2_4.tmp_0": [1, 64, 400, 400],
+                    "nearest_interp_v2_5.tmp_0": [1, 64, 400, 400],
+                    "elementwise_add_7": [1, 56, 400, 400],
+                    "nearest_interp_v2_0.tmp_0": [1, 256, 400, 400]
+                }
+                opt_input_shape = {
+                    "x": [1, 3, 640, 640],
+                    "conv2d_92.tmp_0": [1, 120, 160, 160],
+                    "conv2d_91.tmp_0": [1, 24, 80, 80],
+                    "conv2d_59.tmp_0": [1, 96, 160, 160],
+                    "nearest_interp_v2_1.tmp_0": [1, 256, 80, 80],
+                    "nearest_interp_v2_2.tmp_0": [1, 256, 160, 160],
+                    "conv2d_124.tmp_0": [1, 256, 160, 160],
+                    "nearest_interp_v2_3.tmp_0": [1, 64, 160, 160],
+                    "nearest_interp_v2_4.tmp_0": [1, 64, 160, 160],
+                    "nearest_interp_v2_5.tmp_0": [1, 64, 160, 160],
+                    "elementwise_add_7": [1, 56, 40, 40],
+                    "nearest_interp_v2_0.tmp_0": [1, 256, 40, 40]
+                }
+                min_pact_shape = {
+                    "nearest_interp_v2_26.tmp_0": [1, 256, 20, 20],
+                    "nearest_interp_v2_27.tmp_0": [1, 64, 20, 20],
+                    "nearest_interp_v2_28.tmp_0": [1, 64, 20, 20],
+                    "nearest_interp_v2_29.tmp_0": [1, 64, 20, 20]
+                }
+                max_pact_shape = {
+                    "nearest_interp_v2_26.tmp_0": [1, 256, 400, 400],
+                    "nearest_interp_v2_27.tmp_0": [1, 64, 400, 400],
+                    "nearest_interp_v2_28.tmp_0": [1, 64, 400, 400],
+                    "nearest_interp_v2_29.tmp_0": [1, 64, 400, 400]
+                }
+                opt_pact_shape = {
+                    "nearest_interp_v2_26.tmp_0": [1, 256, 160, 160],
+                    "nearest_interp_v2_27.tmp_0": [1, 64, 160, 160],
+                    "nearest_interp_v2_28.tmp_0": [1, 64, 160, 160],
+                    "nearest_interp_v2_29.tmp_0": [1, 64, 160, 160]
+                }
+                min_input_shape.update(min_pact_shape)
+                max_input_shape.update(max_pact_shape)
+                opt_input_shape.update(opt_pact_shape)
+            elif mode == "rec":
+                min_input_shape = {"x": [1, 3, 32, 10]}
+                max_input_shape = {"x": [args.rec_batch_num, 3, 32, 1024]}
+                opt_input_shape = {"x": [args.rec_batch_num, 3, 32, 320]}
+            elif mode == "cls":
+                min_input_shape = {"x": [1, 3, 48, 10]}
+                max_input_shape = {"x": [args.rec_batch_num, 3, 48, 1024]}
+                opt_input_shape = {"x": [args.rec_batch_num, 3, 48, 320]}
+            else:
+                min_input_shape = {"x": [1, 3, 10, 10]}
+                max_input_shape = {"x": [1, 3, 512, 512]}
+                opt_input_shape = {"x": [1, 3, 256, 256]}
+            config.set_trt_dynamic_shape_info(min_input_shape, max_input_shape,
+                                              opt_input_shape)
+
         else:
-            min_input_shape = {"x": [1, 3, 10, 10]}
-            max_input_shape = {"x": [1, 3, 512, 512]}
-            opt_input_shape = {"x": [1, 3, 256, 256]}
-        config.set_trt_dynamic_shape_info(min_input_shape, max_input_shape,
-                                          opt_input_shape)
+            config.disable_gpu()
+            if hasattr(args, "cpu_threads"):
+                config.set_cpu_math_library_num_threads(args.cpu_threads)
+            else:
+                # default cpu threads as 10
+                config.set_cpu_math_library_num_threads(10)
+            if args.enable_mkldnn:
+                # cache 10 different shapes for mkldnn to avoid memory leak
+                config.set_mkldnn_cache_capacity(10)
+                config.enable_mkldnn()
+                if args.precision == "fp16":
+                    config.enable_mkldnn_bfloat16()
+        # enable memory optim
+        config.enable_memory_optim()
+        config.disable_glog_info()
 
-    else:
-        config.disable_gpu()
-        if hasattr(args, "cpu_threads"):
-            config.set_cpu_math_library_num_threads(args.cpu_threads)
-        else:
-            # default cpu threads as 10
-            config.set_cpu_math_library_num_threads(10)
-        if args.enable_mkldnn:
-            # cache 10 different shapes for mkldnn to avoid memory leak
-            config.set_mkldnn_cache_capacity(10)
-            config.enable_mkldnn()
-            if args.precision == "fp16":
-                config.enable_mkldnn_bfloat16()
-    # enable memory optim
-    config.enable_memory_optim()
-    config.disable_glog_info()
+        config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
+        if mode == 'table':
+            config.delete_pass("fc_fuse_pass")  # not supported for table
+        config.switch_use_feed_fetch_ops(False)
+        config.switch_ir_optim(True)
 
-    config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
-    if mode == 'table':
-        config.delete_pass("fc_fuse_pass")  # not supported for table
-    config.switch_use_feed_fetch_ops(False)
-    config.switch_ir_optim(True)
-
-    # create predictor
-    predictor = inference.create_predictor(config)
-    input_names = predictor.get_input_names()
-    for name in input_names:
-        input_tensor = predictor.get_input_handle(name)
-    output_names = predictor.get_output_names()
-    output_tensors = []
-    for output_name in output_names:
-        output_tensor = predictor.get_output_handle(output_name)
-        output_tensors.append(output_tensor)
-    return predictor, input_tensor, output_tensors, config
+        # create predictor
+        predictor = inference.create_predictor(config)
+        input_names = predictor.get_input_names()
+        for name in input_names:
+            input_tensor = predictor.get_input_handle(name)
+        output_names = predictor.get_output_names()
+        output_tensors = []
+        for output_name in output_names:
+            output_tensor = predictor.get_output_handle(output_name)
+            output_tensors.append(output_tensor)
+        return predictor, input_tensor, output_tensors, config
 
 
 def get_infer_gpuid():

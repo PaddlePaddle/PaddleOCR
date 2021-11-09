@@ -3,7 +3,7 @@ model_name:ocr_det
 python:python3.7
 gpu_list:0|0,1
 Global.use_gpu:True|True
-Global.auto_cast:null
+Global.auto_cast:amp
 Global.epoch_num:lite_train_lite_infer=1|whole_train_whole_infer=300
 Global.save_model_dir:./output/
 Train.loader.batch_size_per_card:lite_train_lite_infer=2|whole_train_whole_infer=4
@@ -108,15 +108,3 @@ infer_model:./models/ch_ppocr_mobile_v2.0_det_opt.nb|./models/ch_ppocr_mobile_v2
 --config_dir:./config.txt
 --rec_dict_dir:./ppocr_keys_v1.txt
 --benchmark:True
-===========================paddle2onnx_params===========================
-2onnx: paddle2onnx 
---model_dir:./inference/ch_ppocr_mobile_v2.0_det_infer/
---model_filename:inference.pdmodel
---params_filename:inference.pdiparams
---save_file:./inference/det_mobile_onnx/model.onnx
---opset_version:10 
---enable_onnx_checker:True
-inference:tools/infer/predict_det.py
---use_gpu:False
---det_model_dir:
---image_dir:./inference/ch_det_data_50/all-sum-510/
