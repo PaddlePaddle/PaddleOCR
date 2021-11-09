@@ -2,7 +2,7 @@
 model_name:ocr_det
 python:python
 gpu_list:null
-Global.use_gpu:False
+Global.use_gpu:null
 Global.auto_cast:null
 Global.epoch_num:null
 Global.save_model_dir:null
@@ -38,9 +38,9 @@ train_model:./inference/ch_ppocr_mobile_v2.0_det_infer
 infer_export:null
 infer_quant:False
 inference:tools/infer/predict_det.py
---use_gpu:True
+--use_gpu:True|False
 --enable_mkldnn:False
---cpu_threads:6
+--cpu_threads:1|6
 --rec_batch_num:1
 --use_tensorrt:False|True
 --precision:fp16|fp32

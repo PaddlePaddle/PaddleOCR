@@ -7,6 +7,7 @@
 需要准备 Paddle2ONNX 模型转化环境，和 ONNX 模型预测环境
 
 ###  Paddle2ONNX
+
 Paddle2ONNX 支持将 PaddlePaddle 模型格式转化到 ONNX 模型格式，算子目前稳定支持导出 ONNX Opset 9~11，部分Paddle算子支持更低的ONNX Opset转换。
 更多细节可参考 [Paddle2ONNX](https://github.com/PaddlePaddle/Paddle2ONNX/blob/develop/README_zh.md)
 
@@ -51,6 +52,9 @@ paddle2onnx --model_dir=./inference/ch_ppocr_mobile_v2.0_det_infer/ \
 
 执行完毕后，ONNX 模型会被保存在 `./inference/det_mobile_onnx/` 路径下
 
+* 注意：以下几个模型暂不支持转换为 ONNX 模型：
+NRTR、SAR、RARE、SRN
+
 ## 3. onnx 预测
 
 以检测模型为例，使用 ONNX 预测可执行如下命令：
@@ -69,4 +73,4 @@ The predict time of ../../doc/imgs/1.jpg: 0.06162881851196289
 The visualized image saved in ./inference_results/det_res_1.jpg
 ```
 
-* 注意：ONNX暂时不支持变长预测，因为需要将输入resize到固定输入，预测结果可能与直接使用Paddle预测有细微不同。
+* 注意：ONNX暂时不支持变长预测，需要将输入resize到固定输入，预测结果可能与直接使用Paddle预测有细微不同。
