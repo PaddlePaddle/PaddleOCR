@@ -101,7 +101,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
  
 # multi-Node, multi-GPU training
 # Set the IPs of your nodes used by the '--ips' parameter. Set the GPU ID used by the '--gpus' parameter.
-python3 -m paddle.distributed.launch --ips="10.21.226.181,10.21.226.133" --gpus '0,1,2,3' tools/train.py -c configs/det/det_mv3_db.yml \
+python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1,2,3' tools/train.py -c configs/det/det_mv3_db.yml \
      -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
 ```
 **Note:** For multi-Node multi-GPU training, you need to replace the `ips` value in the preceding command with the address of your machine, and the machines must be able to ping each other. The command for viewing the IP address of the machine is `ifconfig`.
