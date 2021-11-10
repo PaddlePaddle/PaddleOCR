@@ -18,10 +18,10 @@ PaddleServing预测功能测试的主程序为`test_paddle2onnx.sh`，可以测�
 先运行`prepare.sh`准备数据和模型，然后运行`test_paddle2onnx.sh`进行测试，最终在```test_tipc/output```目录下生成`paddle2onnx_infer_*.log`后缀的日志文件。
 
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile_params.txt "paddle2onnx_infer"
+bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile/model_linux_gpu_normal_normal_paddle2onnx_python_linux_cpu.txt "paddle2onnx_infer"
 
 # 用法:
-bash test_tipc/test_paddle2onnx.sh ./test_tipc/configs/ppocr_det_mobile_params.txt
+bash test_tipc/test_paddle2onnx.sh ./test_tipc/configs/ppocr_det_mobile/model_linux_gpu_normal_normal_paddle2onnx_python_linux_cpu.txt
 ```  
 
 #### 运行结果

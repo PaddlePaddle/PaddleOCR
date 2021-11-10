@@ -11,7 +11,7 @@ python=$(func_parser_value "${lines[2]}")
 
 
 # parser params
-dataline=$(awk 'NR==111, NR==123{print}'  $FILENAME)
+dataline=$(awk 'NR==1, NR==12{print}'  $FILENAME)
 IFS=$'\n'
 lines=(${dataline})
 

@@ -2,7 +2,7 @@
 source test_tipc/common_func.sh
 
 FILENAME=$1
-dataline=$(awk 'NR==67, NR==84{print}'  $FILENAME)
+dataline=$(awk 'NR==1, NR==18{print}'  $FILENAME)
 
 # parser params
 IFS=$'\n'
