@@ -24,6 +24,7 @@ PaddleOCR open source text detection algorithms list:
 - [x]  EAST([paper](https://arxiv.org/abs/1704.03155))[2]
 - [x]  DB([paper](https://arxiv.org/abs/1911.08947))[1]
 - [x]  SAST([paper](https://arxiv.org/abs/1908.05498))[4]
+- [x]  PSENet([paper](https://arxiv.org/abs/1903.12473v2)）
 
 On the ICDAR2015 dataset, the text detection result is as follows:
 
@@ -34,6 +35,8 @@ On the ICDAR2015 dataset, the text detection result is as follows:
 |DB|ResNet50_vd|86.41%|78.72%|82.38%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_db_v2.0_train.tar)|
 |DB|MobileNetV3|77.29%|73.08%|75.12%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar)|
 |SAST|ResNet50_vd|91.39%|83.77%|87.42%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_icdar15_v2.0_train.tar)|
+|PSE|ResNet50_vd|85.81%|79.53%|82.55%|[trianed model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_r50_vd_pse_v2.0_train.tar)|
+|PSE|MobileNetV3|82.20%|70.48%|75.89%|[trianed model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_mv3_pse_v2.0_train.tar)|
 
 On Total-Text dataset, the text detection result is as follows:
 
@@ -56,7 +59,9 @@ PaddleOCR open-source text recognition algorithms list:
 - [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))[11]
 - [x]  RARE([paper](https://arxiv.org/abs/1603.03915v1))[12]
 - [x]  SRN([paper](https://arxiv.org/abs/2003.12294))[5]
-- [x]  NRTR([paper](https://arxiv.org/abs/1806.00926v2))
+- [x]  NRTR([paper](https://arxiv.org/abs/1806.00926v2))[13]
+- [x]  SAR([paper](https://arxiv.org/abs/1811.00751v2))
+- [x] SEED([paper](https://arxiv.org/pdf/2005.10977.pdf))
 
 Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation result of these above text recognition (using MJSynth and SynthText for training, evaluate on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE) is as follow:
 
@@ -71,7 +76,9 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 |RARE|MobileNetV3|82.5%|rec_mv3_tps_bilstm_att |[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_tps_bilstm_att_v2.0_train.tar)|
 |RARE|Resnet34_vd|83.6%|rec_r34_vd_tps_bilstm_att |[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_tps_bilstm_att_v2.0_train.tar)|
 |SRN|Resnet50_vd_fpn| 88.52% | rec_r50fpn_vd_none_srn |[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r50_vd_srn_train.tar)|
-|NRTR|NRTR_MTB| 84.3% | rec_mtb_nrtr | [Download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mtb_nrtr_train.tar) |
+|NRTR|NRTR_MTB| 84.3% | rec_mtb_nrtr | [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mtb_nrtr_train.tar) |
+|SAR|Resnet31| 87.2% | rec_r31_sar | [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_r31_sar_train.tar) |
+|SEED|Aster_Resnet| 85.2% | rec_resnet_stn_bilstm_att | [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_resnet_stn_bilstm_att.tar) |
 
 Please refer to the document for training guide and use of PaddleOCR 
 

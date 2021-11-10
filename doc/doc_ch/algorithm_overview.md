@@ -20,6 +20,7 @@ PaddleOCR开源的文本检测算法列表：
 - [x]  DB([paper]( https://arxiv.org/abs/1911.08947)) [2]（ppocr推荐）
 - [x]  EAST([paper](https://arxiv.org/abs/1704.03155))[1]
 - [x]  SAST([paper](https://arxiv.org/abs/1908.05498))[4]
+- [x]  PSENet([paper](https://arxiv.org/abs/1903.12473v2)）
 
 在ICDAR2015文本检测公开数据集上，算法效果如下：
 |模型|骨干网络|precision|recall|Hmean|下载链接|
@@ -29,6 +30,8 @@ PaddleOCR开源的文本检测算法列表：
 |DB|ResNet50_vd|86.41%|78.72%|82.38%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_db_v2.0_train.tar)|
 |DB|MobileNetV3|77.29%|73.08%|75.12%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar)|
 |SAST|ResNet50_vd|91.39%|83.77%|87.42%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_icdar15_v2.0_train.tar)|
+|PSE|ResNet50_vd|85.81%|79.53%|82.55%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_r50_vd_pse_v2.0_train.tar)|
+|PSE|MobileNetV3|82.20%|70.48%|75.89%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_mv3_pse_v2.0_train.tar)|
 
 在Total-text文本检测公开数据集上，算法效果如下：
 
@@ -51,6 +54,8 @@ PaddleOCR基于动态图开源的文本识别算法列表：
 - [x]  RARE([paper](https://arxiv.org/abs/1603.03915v1))[12]
 - [x]  SRN([paper](https://arxiv.org/abs/2003.12294))[5]
 - [x]  NRTR([paper](https://arxiv.org/abs/1806.00926v2))[13]
+- [x]  SAR([paper](https://arxiv.org/abs/1811.00751v2))
+- [x] SEED([paper](https://arxiv.org/pdf/2005.10977.pdf))
 
 参考[DTRB][3](https://arxiv.org/abs/1904.01906)文字识别训练和评估流程，使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估，算法效果如下：
 
@@ -66,6 +71,8 @@ PaddleOCR基于动态图开源的文本识别算法列表：
 |RARE|Resnet34_vd|83.6%|rec_r34_vd_tps_bilstm_att |[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_tps_bilstm_att_v2.0_train.tar)|
 |SRN|Resnet50_vd_fpn| 88.52% | rec_r50fpn_vd_none_srn | [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r50_vd_srn_train.tar) |
 |NRTR|NRTR_MTB| 84.3% | rec_mtb_nrtr | [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mtb_nrtr_train.tar) |
+|SAR|Resnet31| 87.2% | rec_r31_sar | [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_r31_sar_train.tar) |
+|SEED|Aster_Resnet| 85.2% | rec_resnet_stn_bilstm_att | [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_resnet_stn_bilstm_att.tar) |
 
 <a name="2"></a>
 
