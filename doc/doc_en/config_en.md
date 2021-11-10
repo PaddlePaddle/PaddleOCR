@@ -39,7 +39,6 @@ Take rec_chinese_lite_train_v2.0.yml as an example
 |      infer_img            |    Set inference image path or folder path     |       ./infer_img | \||
 |      character_dict_path |    Set dictionary path            |  ./ppocr/utils/ppocr_keys_v1.txt  | If the character_dict_path is None, model can only recognize number and lower letters |
 |      max_text_length     |    Set the maximum length of text        |       25          |                \                 |
-|      character_type      |    Set character type            |       ch          |    en/ch, the default dict will be used for en, and the custom dict will be used for ch |
 |      use_space_char     |    Set whether to recognize spaces             |        True      |          Only support in character_type=ch mode                 |
 |      label_list          |    Set the angle supported by the direction classifier       |    ['0','180']    |     Only valid in angle classifier model |
 |      save_res_path          |    Set the save address of the test model results       |    ./output/det_db/predicts_db.txt    |     Only valid in the text detection model |

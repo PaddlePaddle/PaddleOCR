@@ -39,7 +39,6 @@
 |      infer_img            |    设置预测图像路径或文件夹路径     |       ./infer_img | \||
 |      character_dict_path |    设置字典路径            |  ./ppocr/utils/ppocr_keys_v1.txt  | 如果为空，则默认使用小写字母+数字作为字典 |
 |      max_text_length     |    设置文本最大长度        |       25          |                \                 |
-|      character_type      |    设置字符类型            |       ch          |    en/ch, en时将使用默认dict，ch时使用自定义dict|
 |      use_space_char     |    设置是否识别空格             |        True      |          仅在 character_type=ch 时支持空格                 |
 |      label_list          |    设置方向分类器支持的角度       |    ['0','180']    |     仅在方向分类器中生效 |
 |      save_res_path          |    设置检测模型的结果保存地址       |    ./output/det_db/predicts_db.txt    |     仅在检测模型中生效 |
