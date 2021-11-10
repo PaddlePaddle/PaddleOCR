@@ -207,6 +207,24 @@ For some data that are difficult to recognize, the recognition results will not 
     pip install opencv-contrib-python-headless==4.2.0.32
     ```
 
+### Dataset division
+
+- Enter the following command in the terminal to execute the dataset division script:
+    ```
+    cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
+    python gen_ocr_train_val_test.py --trainValTestRatio 6:2:2 --labelRootPath ../train_data/label --detRootPath ../train_data/det --recRootPath ../train_data/rec
+    ```
+
+- Parameter Description:
+
+    trainValTestRatio is the division ratio of the number of images in the training set, validation set, and test set, set according to your actual situation, the default is 6:2:2
+    
+    labelRootPath is the storage path of the dataset labeled by PPOCRLabel, the default is ../train_data/label
+    
+    detRootPath is the path where the text detection dataset is divided according to the dataset marked by PPOCRLabel. The default is ../train_data/det
+    
+    recRootPath is the path where the character recognition dataset is divided according to the dataset marked by PPOCRLabel. The default is ../train_data/rec
+
 ### Related
 
 1.[Tzutalin. LabelImg. Git code (2015)](https://github.com/tzutalin/labelImg)

@@ -3,7 +3,7 @@ source ./common_func.sh
 export LD_LIBRARY_PATH=${PWD}:$LD_LIBRARY_PATH
 
 FILENAME=$1
-dataline=$(awk 'NR==101, NR==110{print}'  $FILENAME)
+dataline=$(awk 'NR==102, NR==111{print}'  $FILENAME)
 echo $dataline
 # parser params
 IFS=$'\n'
