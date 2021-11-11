@@ -11,10 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import math
+
 import numpy as np
 import string
 import paddle
 from paddle.nn import functional as F
+from jieba import Tokenizer
 
 
 class BaseRecLabelDecode(object):
@@ -108,6 +111,14 @@ class CTCLabelDecode(BaseRecLabelDecode):
                  **kwargs):
         super(CTCLabelDecode, self).__init__(character_dict_path,
                                              character_type, use_space_char)
+        self.jb_tokenizer = Tokenizer()
+        self.jb_tokenizer.initialize()
+
+        # hyper param
+        self.use_lm = True
+        self.epsilon = 1e-5
+        self.top_n = 15
+        self.conf_level = 0.95
 
     def __call__(self, preds, label=None, *args, **kwargs):
         if isinstance(preds, paddle.Tensor):
@@ -115,10 +126,107 @@ class CTCLabelDecode(BaseRecLabelDecode):
         preds_idx = preds.argmax(axis=2)
         preds_prob = preds.max(axis=2)
         text = self.decode(preds_idx, preds_prob, is_remove_duplicate=True)
+        if self.use_lm:
+            text = self.lm_logic(preds)
         if label is None:
             return text
         label = self.decode(label)
         return text, label
+
+    def original_logic(self, preds):
+        return preds.argmax(axis=2), preds.max(axis=2)
+
+    def lm_logic(self, preds):
+        result_list = []
+        ignored_tokens = self.get_ignored_tokens()
+        max_preds_index = preds.argmax(axis=2)
+        max_preds_prob = preds.max(axis=2)
+        for batch_idx in range(len(max_preds_index)):
+            possible_char_list = []
+            possible_prob_list = []
+            for idx in range(len(max_preds_index[batch_idx])):
+                if max_preds_index[batch_idx][idx] in ignored_tokens:
+                    continue
+                if max_preds_prob[batch_idx][idx] > self.conf_level:
+                    possible_char_list.append([self.character[int(max_preds_index[batch_idx][idx])]])
+                    possible_prob_list.append([max_preds_prob[batch_idx][idx]])
+                else:
+                    # the OCR model does not sure
+                    possible_char = []
+                    possible_prob = []
+                    partitioned_index = np.argpartition(preds[batch_idx][idx], (-1, -1 * self.top_n))
+                    for i in range(self.top_n):
+                        char_idx = partitioned_index[-1 - i]
+                        if self.character[char_idx] == "blank":
+                            continue
+                        possible_char.append(self.character[char_idx])
+                        possible_prob.append(preds[batch_idx][idx][char_idx])
+                    possible_char_list.append(possible_char)
+                    possible_prob_list.append(possible_prob)
+            sentence_and_prob, max_log_prob = self.calculate_lm_result(possible_char_list, possible_prob_list)
+            char_list = list(map(lambda e: e[0], sentence_and_prob))
+            final_sentence = ''.join(char_list)
+            prob_list = list(map(lambda e: e[1], sentence_and_prob))
+            result_list.append((final_sentence, np.mean(prob_list)))
+            print(possible_char_list)
+            print(possible_prob_list)
+            print(self.calculate_lm_result(possible_char_list, possible_prob_list))
+        return result_list
+
+    def calculate_lm_result(self, possible_char_list, possible_prob_list):
+        self.best_sentence = []
+        self.max_prob = float('-inf')
+        self.dfs(None, 0, possible_char_list, possible_prob_list)
+        return self.best_sentence, self.max_prob
+
+    def dfs(self, sentence, level, possible_char_list, possible_prob_list):
+        if level >= len(possible_char_list):
+            sum_of_log_prob = 0
+            for i in range(len(sentence)):
+                prob = self.calculate_probability_of_char_at_index(sentence, i)
+                sum_of_log_prob += math.log10(prob) + math.log10(sentence[i][1])
+            if sum_of_log_prob > self.max_prob:
+                self.max_prob = sum_of_log_prob
+                self.best_sentence = sentence
+            return
+
+        for i in range(len(possible_char_list[level])):
+            if sentence is None:
+                next_sentence = []
+            else:
+                next_sentence = sentence.copy()
+            next_sentence.append((possible_char_list[level][i], possible_prob_list[level][i]))
+            self.dfs(next_sentence, level + 1, possible_char_list, possible_prob_list)
+
+    # p(char at position i) = max(p(char | previous char), p(char | next char))
+    def calculate_probability_of_char_at_index(self, sentence, index):
+        char = sentence[index][0]
+        prev_prob = self.epsilon
+        if index - 1 > 0:
+            prev_char = sentence[index - 1][0]
+            prev_prob = self.prob_given_a_follow_b(prev_char, char)
+        next_prob = self.epsilon
+        if index + 1 < len(sentence):
+            next_char = sentence[index + 1][0]
+            next_prob = self.prob_given_a_follow_b(char, next_char)
+        final_prob = max(prev_prob, next_prob)
+        return final_prob
+
+    def prob_given_a_follow_b(self, a, b):
+        c_a = self.jb_tokenizer.FREQ.get(a)
+        c_b = self.jb_tokenizer.FREQ.get(b)
+        c_ab = self.jb_tokenizer.FREQ.get(a + b)
+        if c_ab is None or c_ab == 0:
+            return self.epsilon
+        if c_a is None or c_a == 0:
+            p_a = self.epsilon
+        else:
+            p_a = c_ab / c_a
+        if c_b is None or c_b == 0:
+            p_b = self.epsilon
+        else:
+            p_b = c_ab / c_b
+        return p_a #(p_a + p_b) / 2
 
     def add_special_char(self, dict_character):
         dict_character = ['blank'] + dict_character
