@@ -146,3 +146,10 @@ There are several experiences for reference when constructing the data set:
 
     A: It is normal for the acc to be 0 at the beginning of the recognition model training, and the indicator will come up after a longer training period.
 
+***
+
+Click the following links for detailed training tutorial:  
+
+- [text detection model training](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/doc/doc_ch/detection.md)  
+- [text recognition model training](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/doc/doc_ch/recognition.md)  
+- [text direction classification model training](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/doc/doc_ch/angle_class.md)  
