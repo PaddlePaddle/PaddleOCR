@@ -36,7 +36,7 @@ setup(
     version=VERSION,
     install_requires=requirements,
     license='Apache License 2.0',
-    description='PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field, with built-in PPOCR model to automatically detect and re-recognize data. It is written in python3 and pyqt5, supporting rectangular box annotation and four-point annotation modes. Annotations can be directly used for the training of PPOCR detection and recognition models.',
+    description='Awesome OCR toolkits based on PaddlePaddle （8.6M ultra-lightweight pre-trained model, support training and deployment among server, mobile, embeded and IoT devices',
     long_description=readme(),
     long_description_content_type='text/markdown',
     url='https://github.com/PaddlePaddle/PaddleOCR',
@@ -46,7 +46,12 @@ setup(
     ],
     classifiers=[
         'Intended Audience :: Developers', 'Operating System :: OS Independent',
-        'Natural Language :: English',
+        'Natural Language :: Chinese (Simplified)',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.2',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7', 'Topic :: Utilities'
     ], )
