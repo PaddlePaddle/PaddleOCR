@@ -27,7 +27,7 @@ sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
 from ppocr.data import build_dataloader
 from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
-from ppocr.utils.save_load import init_model, load_dygraph_params
+from ppocr.utils.save_load import load_model
 from ppocr.utils.utility import print_dict
 import tools.program as program
 
@@ -57,7 +57,7 @@ def main():
 
     model = build_model(config['Architecture'])
 
-    best_model_dict = load_dygraph_params(config, model, logger, None)
+    best_model_dict = load_model(config, model)
     if len(best_model_dict):
         logger.info('metric in ckpt ***************')
         for k, v in best_model_dict.items():
