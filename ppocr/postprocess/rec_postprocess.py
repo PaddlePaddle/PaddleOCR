@@ -127,7 +127,7 @@ class CTCLabelDecode(BaseRecLabelDecode):
         preds_prob = preds.max(axis=2)
         text = self.decode(preds_idx, preds_prob, is_remove_duplicate=True)
         if self.use_lm:
-            text = self.lm_logic(preds)
+            text = self.lm_logic(preds, True)
         if label is None:
             return text
         label = self.decode(label)
@@ -136,7 +136,7 @@ class CTCLabelDecode(BaseRecLabelDecode):
     def original_logic(self, preds):
         return preds.argmax(axis=2), preds.max(axis=2)
 
-    def lm_logic(self, preds):
+    def lm_logic(self, preds, is_remove_duplicate=False):
         result_list = []
         ignored_tokens = self.get_ignored_tokens()
         max_preds_index = preds.argmax(axis=2)
@@ -147,6 +147,10 @@ class CTCLabelDecode(BaseRecLabelDecode):
             for idx in range(len(max_preds_index[batch_idx])):
                 if max_preds_index[batch_idx][idx] in ignored_tokens:
                     continue
+                if is_remove_duplicate:
+                    # only for predict
+                    if idx > 0 and max_preds_index[batch_idx][idx - 1] == max_preds_index[batch_idx][idx]:
+                        continue
                 if max_preds_prob[batch_idx][idx] > self.conf_level:
                     possible_char_list.append([self.character[int(max_preds_index[batch_idx][idx])]])
                     possible_prob_list.append([max_preds_prob[batch_idx][idx]])
@@ -170,7 +174,7 @@ class CTCLabelDecode(BaseRecLabelDecode):
             result_list.append((final_sentence, np.mean(prob_list)))
             print(possible_char_list)
             print(possible_prob_list)
-            print(self.calculate_lm_result(possible_char_list, possible_prob_list))
+            print(sentence_and_prob, max_log_prob)
         return result_list
 
     def calculate_lm_result(self, possible_char_list, possible_prob_list):
@@ -181,10 +185,7 @@ class CTCLabelDecode(BaseRecLabelDecode):
 
     def dfs(self, sentence, level, possible_char_list, possible_prob_list):
         if level >= len(possible_char_list):
-            sum_of_log_prob = 0
-            for i in range(len(sentence)):
-                prob = self.calculate_probability_of_char_at_index(sentence, i)
-                sum_of_log_prob += math.log10(prob) + math.log10(sentence[i][1])
+            sum_of_log_prob = self.calculate_log_probability(sentence)
             if sum_of_log_prob > self.max_prob:
                 self.max_prob = sum_of_log_prob
                 self.best_sentence = sentence
@@ -198,35 +199,42 @@ class CTCLabelDecode(BaseRecLabelDecode):
             next_sentence.append((possible_char_list[level][i], possible_prob_list[level][i]))
             self.dfs(next_sentence, level + 1, possible_char_list, possible_prob_list)
 
-    # p(char at position i) = max(p(char | previous char), p(char | next char))
-    def calculate_probability_of_char_at_index(self, sentence, index):
-        char = sentence[index][0]
-        prev_prob = self.epsilon
-        if index - 1 > 0:
-            prev_char = sentence[index - 1][0]
-            prev_prob = self.prob_given_a_follow_b(prev_char, char)
-        next_prob = self.epsilon
-        if index + 1 < len(sentence):
-            next_char = sentence[index + 1][0]
-            next_prob = self.prob_given_a_follow_b(char, next_char)
-        final_prob = max(prev_prob, next_prob)
-        return final_prob
+    def calculate_log_probability(self, sentence):
+        if len(sentence) <= 0:
+            return float("-inf")
+        dp = [float("-inf")] * len(sentence)
+        for i in range(0, len(sentence)):
+            dp[i] = self.get_dp_state(dp, i - 1) + math.log10(sentence[i][1])
+            if i - 1 >= 0:
+                freq = self.jb_tokenizer.FREQ.get(sentence[i-1][0] + sentence[i][0])
+                if freq is not None and freq > 10: # There are some noise in bigram dataset
+                    mean_prob = (sentence[i-1][1] + sentence[i][1]) / 2
+                    max_prob = max(sentence[i-1][1], sentence[i][1]) * 3
+                    dp[i] = max(dp[i], self.get_dp_state(dp, i - 2) + math.log10(mean_prob) + math.log10(max_prob))
+            if i - 2 >= 0:
+                freq = self.jb_tokenizer.FREQ.get(sentence[i-2][0] + sentence[i-1][0] + sentence[i][0])
+                if freq is not None and freq > 0:
+                    mean_prob = (sentence[i-2][1] + sentence[i-1][1] + sentence[i][1]) / 3
+                    max_prob = max(sentence[i-2][1], sentence[i-1][1], sentence[i][1]) * 6
+                    dp[i] = max(dp[i], self.get_dp_state(dp, i - 3) + math.log10(mean_prob) + math.log10(max_prob))
+            if i - 3 >= 0:
+                freq = self.jb_tokenizer.FREQ.get(sentence[i-3][0] + sentence[i-2][0] + sentence[i-1][0] + sentence[i][0])
+                if freq is not None and freq > 0:
+                    mean_prob = (sentence[i-3][1] + sentence[i-2][1] + sentence[i-1][1] + sentence[i][1]) / 3
+                    max_prob = max(sentence[i-3][1], sentence[i-2][1], sentence[i-1][1], sentence[i][1]) * 15
+                    dp[i] = max(dp[i], self.get_dp_state(dp, i - 4) + math.log10(mean_prob) + math.log10(max_prob))
+            if i - 4 >= 0:
+                freq = self.jb_tokenizer.FREQ.get(sentence[i-4][0] + sentence[i-3][0] + sentence[i-2][0] + sentence[i-1][0] + sentence[i][0])
+                if freq is not None and freq > 0:
+                    mean_prob = (sentence[i-4][1] + sentence[i-3][1] + sentence[i-2][1] + sentence[i-1][1] + sentence[i][1]) / 3
+                    max_prob = max(sentence[i-4][1], sentence[i-3][1], sentence[i-2][1], sentence[i-1][1], sentence[i][1]) * 30
+                    dp[i] = max(dp[i], self.get_dp_state(dp, i - 5) + math.log10(mean_prob) + math.log10(max_prob))
+        return dp[-1]
 
-    def prob_given_a_follow_b(self, a, b):
-        c_a = self.jb_tokenizer.FREQ.get(a)
-        c_b = self.jb_tokenizer.FREQ.get(b)
-        c_ab = self.jb_tokenizer.FREQ.get(a + b)
-        if c_ab is None or c_ab == 0:
-            return self.epsilon
-        if c_a is None or c_a == 0:
-            p_a = self.epsilon
-        else:
-            p_a = c_ab / c_a
-        if c_b is None or c_b == 0:
-            p_b = self.epsilon
-        else:
-            p_b = c_ab / c_b
-        return p_a #(p_a + p_b) / 2
+    def get_dp_state(self, dp, index):
+        if index < 0:
+            return 0
+        return dp[index]
 
     def add_special_char(self, dict_character):
         dict_character = ['blank'] + dict_character
