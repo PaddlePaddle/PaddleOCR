@@ -22,7 +22,6 @@ for model in ${lite_model_list[*]}; do
     model_file=${model_dir}/inference.pdmodel
     param_file=${model_dir}/inference.pdiparams
     paddle_lite_opt --model_dir=${model_dir} --model_file=${model_file} --param_file=${param_file} --valid_targets=arm --optimize_out=${model_dir}_opt
-    echo "paddle_lite_opt --model_dir=${model_dir} --model_file=${model_file} --param_file=${param_file} --valid_targets=arm --optimize_out=${model_dir}_opt"
 done
 
 # prepare test data
