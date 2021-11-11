@@ -41,6 +41,6 @@ for img_file in os.listdir(test_img_dir):
         image_data = file.read()
     image = cv2_to_base64(image_data)
 
-for i in range(1):
-    ret = client.predict(feed_dict={"image": image}, fetch=["res"])
-    print(ret)
+    for i in range(1):
+        ret = client.predict(feed_dict={"image": image}, fetch=["res"])
+        print(ret)
