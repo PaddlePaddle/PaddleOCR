@@ -1,4 +1,4 @@
-## OCR模型列表（V2.1，2021年9月6日更新）
+# OCR模型列表（V2.1，2021年9月6日更新）
 
 > **说明**
 > 1. 2.1版模型相比2.0版模型，2.1的模型在模型精度上做了提升
@@ -6,13 +6,13 @@
 > 3. 本文档提供的是PPOCR自研模型列表，更多基于公开数据集的算法介绍与预训练模型可以参考：[算法概览文档](./algorithm_overview.md)。
 
 
-- [一、文本检测模型](#文本检测模型)
-- [二、文本识别模型](#文本识别模型)
-    - [1. 中文识别模型](#中文识别模型)
-    - [2. 英文识别模型](#英文识别模型)
-    - [3. 多语言识别模型](#多语言识别模型)
-- [三、文本方向分类模型](#文本方向分类模型)
-- [四、Paddle-Lite 模型](#Paddle-Lite模型)
+- [1. 文本检测模型](#文本检测模型)
+- [2. 文本识别模型](#文本识别模型)
+    - [2.1 中文识别模型](#中文识别模型)
+    - [2.2 英文识别模型](#英文识别模型)
+    - [2.3 多语言识别模型](#多语言识别模型)
+- [3. 文本方向分类模型](#文本方向分类模型)
+- [4. Paddle-Lite 模型](#Paddle-Lite模型)
 
 PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训练模型`、`slim模型`，模型区别说明如下：
 
@@ -29,27 +29,28 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 
 
 <a name="文本检测模型"></a>
-### 一、文本检测模型
+## 1. 文本检测模型
 
 |模型名称|模型简介|配置文件|推理模型大小|下载地址|
 | --- | --- | --- | --- | --- |
-|ch_PP-OCRv2_det_slim|slim量化+蒸馏版超轻量模型，支持中英文、多语种文本检测|[ch_PP-OCRv2_det_cml.yml](../../configs/det/ch_PP-OCRv2/ch_PP-OCR_det_cml.yml)| 3M |[推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_slim_quant_infer.tar)|
-|ch_PP-OCRv2_det|原始超轻量模型，支持中英文、多语种文本检测|[ch_PP-OCRv2_det_cml.yml](../../configs/det/ch_PP-OCRv2/ch_PP-OCR_det_cml.yml)|3M|[推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_distill_train.tar)|
+|ch_PP-OCRv2_det_slim|【最新】slim量化+蒸馏版超轻量模型，支持中英文、多语种文本检测|[ch_PP-OCRv2_det_cml.yml](../../configs/det/ch_PP-OCRv2/ch_PP-OCR_det_cml.yml)| 3M |[推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_slim_quant_infer.tar)|
+|ch_PP-OCRv2_det|【最新】原始超轻量模型，支持中英文、多语种文本检测|[ch_PP-OCRv2_det_cml.yml](../../configs/det/ch_PP-OCRv2/ch_PP-OCR_det_cml.yml)|3M|[推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_distill_train.tar)|
 |ch_ppocr_mobile_slim_v2.0_det|slim裁剪版超轻量模型，支持中英文、多语种文本检测|[ch_det_mv3_db_v2.0.yml](../../configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml)| 2.6M |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_prune_infer.tar)|
 |ch_ppocr_mobile_v2.0_det|原始超轻量模型，支持中英文、多语种文本检测|[ch_det_mv3_db_v2.0.yml](../../configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml)|3M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar)|
 |ch_ppocr_server_v2.0_det|通用模型，支持中英文、多语种文本检测，比超轻量模型更大，但效果更好|[ch_det_res18_db_v2.0.yml](../../configs/det/ch_ppocr_v2.0/ch_det_res18_db_v2.0.yml)|47M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar)|
 
 
 <a name="文本识别模型"></a>
-### 二、文本识别模型
+## 2. 文本识别模型
 
 <a name="中文识别模型"></a>
-#### 1. 中文识别模型
+
+### 2.1 中文识别模型
 
 |模型名称|模型简介|配置文件|推理模型大小|下载地址|
 | --- | --- | --- | --- | --- |
-|ch_PP-OCRv2_rec_slim|slim量化版超轻量模型，支持中英文、数字识别|[ch_PP-OCRv2_rec.yml](../../configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec.yml)| 9M |[推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_quant_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_quant_train.tar) |
-|ch_PP-OCRv2_rec|原始超轻量模型，支持中英文、数字识别|[ch_PP-OCRv2_rec.yml](../../configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec.yml)|8.5M|[推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_train.tar) |
+|ch_PP-OCRv2_rec_slim|【最新】slim量化版超轻量模型，支持中英文、数字识别|[ch_PP-OCRv2_rec.yml](../../configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec.yml)| 9M |[推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_quant_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_quant_train.tar) |
+|ch_PP-OCRv2_rec|【最新】原始超轻量模型，支持中英文、数字识别|[ch_PP-OCRv2_rec.yml](../../configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec.yml)|8.5M|[推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_train.tar) |
 |ch_ppocr_mobile_slim_v2.0_rec|slim裁剪量化版超轻量模型，支持中英文、数字识别|[rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)| 6M |[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_train.tar) |
 |ch_ppocr_mobile_v2.0_rec|原始超轻量模型，支持中英文、数字识别|[rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)|5.2M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_train.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_pre.tar) |
 |ch_ppocr_server_v2.0_rec|通用模型，支持中英文、数字识别|[rec_chinese_common_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_common_train_v2.0.yml)|94.8M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_train.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_pre.tar) |
@@ -57,7 +58,7 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 **说明：** `训练模型`是基于预训练模型在真实数据与竖排合成文本数据上finetune得到的模型，在真实应用场景中有着更好的表现，`预训练模型`则是直接基于全量真实数据与合成数据训练得到，更适合用于在自己的数据集上finetune。
 
 <a name="英文识别模型"></a>
-#### 2. 英文识别模型
+### 2.2 英文识别模型
 
 |模型名称|模型简介|配置文件|推理模型大小|下载地址|
 | --- | --- | --- | --- | --- |
@@ -65,7 +66,7 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 |en_number_mobile_v2.0_rec|原始超轻量模型，支持英文、数字识别|[rec_en_number_lite_train.yml](../../configs/rec/multi_language/rec_en_number_lite_train.yml)|2.6M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/en_number_mobile_v2.0_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/en_number_mobile_v2.0_rec_train.tar) |
 
 <a name="多语言识别模型"></a>
-#### 3. 多语言识别模型（更多语言持续更新中...）
+### 2.3 多语言识别模型（更多语言持续更新中...）
 
 |模型名称|字典文件|模型简介|配置文件|推理模型大小|下载地址|
 | --- | --- | --- | --- |--- | --- |
@@ -86,7 +87,7 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 
 
 <a name="文本方向分类模型"></a>
-### 三、文本方向分类模型
+## 3. 文本方向分类模型
 
 |模型名称|模型简介|配置文件|推理模型大小|下载地址|
 | --- | --- | --- | --- | --- |
@@ -95,7 +96,7 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 
 
 <a name="Paddle-Lite模型"></a>
-### 四、Paddle-Lite 模型
+## 4. Paddle-Lite 模型
 
 |模型版本|模型简介|模型大小|检测模型|文本方向分类模型|识别模型|Paddle-Lite版本|
 |---|---|---|---|---|---|---|

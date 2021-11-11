@@ -112,4 +112,14 @@
   year={2016}
 }
 
+13.NRTR
+@misc{sheng2019nrtr,
+      title={NRTR: A No-Recurrence Sequence-to-Sequence Model For Scene Text Recognition},
+      author={Fenfen Sheng and Zhineng Chen and Bo Xu},
+      year={2019},
+      eprint={1806.00926},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+
 ```

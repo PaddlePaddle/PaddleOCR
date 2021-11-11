@@ -47,10 +47,10 @@ cd /path/to/ppocr_img
 <a name="211"></a>
 #### 2.1.1 中英文模型
 
-* 检测+方向分类器+识别全流程：设置方向分类器参数`--use_angle_cls true`后可对竖排文本进行识别。
+* 检测+方向分类器+识别全流程：`--use_angle_cls true`设置使用方向分类器识别180度旋转文字，`--use_gpu false`设置不使用GPU
 
   ```bash
-  paddleocr --image_dir ./imgs/11.jpg --use_angle_cls true
+  paddleocr --image_dir ./imgs/11.jpg --use_angle_cls true --use_gpu false
   ```
 
   结果是一个list，每个item包含了文本框，文字和识别置信度

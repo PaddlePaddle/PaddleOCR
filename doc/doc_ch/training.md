@@ -1,4 +1,4 @@
-# 模型训练
+# PP-OCR模型训练
 
 本文将介绍模型训练时需掌握的基本概念，和训练时的调优方法。
 
@@ -15,13 +15,19 @@
   * [3.3 自己构建数据集](#自己构建数据集)
 * [4. 常见问题](#常见问题)
 
+<a name="配置文件"></a>
+
+## 1. 配置文件说明
+
+PaddleOCR模型使用配置文件管理网络训练、评估的参数。在配置文件中，可以设置组建模型、优化器、损失函数、模型前后处理的参数，PaddleOCR从配置文件中读取到这些参数，进而组建出完整的训练流程，完成模型训练，在需要对模型进行优化的时，可以通过修改配置文件中的参数完成配置，使用简单且方便修改。
+
+完整的配置文件说明可以参考[配置文件](./config.md)
+
 <a name="基本概念"></a>
-## 1. 基本概念
 
-OCR(Optical Character Recognition,光学字符识别)是指对图像进行分析识别处理，获取文字和版面信息的过程，是典型的计算机视觉任务，
-通常由文本检测和文本识别两个子任务构成。
+## 2. 基本概念
 
-模型调优时需要关注以下参数：
+模型训练过程中需要手动调整一些超参数，帮助模型以最小的代价获得最优指标。不同的数据量可能需要不同的超参，当您希望在自己的数据上finetune或对模型效果调优时，有以下几个参数调整策略可供参考：
 
 <a name="学习率"></a>
 ### 2.1 学习率
@@ -132,8 +138,13 @@ PaddleOCR主要聚焦通用OCR，如果有垂类需求，您可以用PaddleOCR+�
     A：识别模型训练初期acc为0是正常的，多训一段时间指标就上来了。
 
 
+
 ***
-具体的训练教程可点击下方链接跳转：  
-- [文本检测模型训练](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/doc/doc_ch/detection.md)  
-- [文本识别模型训练](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/doc/doc_ch/recognition.md)  
-- [文本方向分类器训练](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/doc/doc_ch/angle_class.md)  
+
+具体的训练教程可点击下方链接跳转： 
+
+\- [文本检测模型训练](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/doc/doc_ch/detection.md) 
+
+\- [文本识别模型训练](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/doc/doc_ch/recognition.md)  
+
+\- [文本方向分类器训练](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/doc/doc_ch/angle_class.md)  

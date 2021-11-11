@@ -28,9 +28,9 @@ PGNet算法细节详见[论文](https://www.aaai.org/AAAI21Papers/AAAI-2885.Wang
 
 ### 性能指标
 
-测试集: Total Text
+#### 测试集: Total Text
 
-测试环境: NVIDIA Tesla V100-SXM2-16GB
+#### 测试环境: NVIDIA Tesla V100-SXM2-16GB
 
 |PGNetA|det_precision|det_recall|det_f_score|e2e_precision|e2e_recall|e2e_f_score|FPS|下载|
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -43,7 +43,7 @@ PGNet算法细节详见[论文](https://www.aaai.org/AAAI21Papers/AAAI-2885.Wang
 
 <a name="环境配置"></a>
 ## 二、环境配置
-请先参考[快速安装](./installation.md)配置PaddleOCR运行环境。
+请先参考[《运行环境准备》](./environment.md)配置PaddleOCR运行环境，参考[《PaddleOCR全景图与项目克隆》](./paddleOCR_overview.md)克隆项目
 
 <a name="快速使用"></a>
 ## 三、快速使用
@@ -92,7 +92,7 @@ python3 tools/infer/predict_e2e.py --e2e_algorithm="PGNet" --image_dir="./doc/im
   |- train.txt       # total_text数据集的训练标注
 ```
 
-total_text.txt标注文件格式如下，文件名和标注信息中间用"\t"分隔：
+train.txt标注文件格式如下，文件名和标注信息中间用"\t"分隔：
 ```
 " 图像文件名                    json.dumps编码的图像标注信息"
 rgb/img11.jpg    [{"transcription": "ASRAMA", "points": [[214.0, 325.0], [235.0, 308.0], [259.0, 296.0], [286.0, 291.0], [313.0, 295.0], [338.0, 305.0], [362.0, 320.0], [349.0, 347.0], [330.0, 337.0], [310.0, 329.0], [290.0, 324.0], [269.0, 328.0], [249.0, 336.0], [231.0, 346.0]]}, {...}]
