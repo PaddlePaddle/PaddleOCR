@@ -24,9 +24,9 @@ The results of detection and recognition are as follows:
 ![](../imgs_results/e2e_res_img293_pgnet.png)
 ![](../imgs_results/e2e_res_img295_pgnet.png)
 ### Performance
-####Test set: Total Text
+#### Test set: Total Text
 
-####Test environment: NVIDIA Tesla V100-SXM2-16GB
+#### Test environment: NVIDIA Tesla V100-SXM2-16GB
 |PGNetA|det_precision|det_recall|det_f_score|e2e_precision|e2e_recall|e2e_f_score|FPS|download|
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 |Paper|85.30|86.80|86.1|-|-|61.7|38.20 (size=640)|-|
@@ -36,7 +36,7 @@ The results of detection and recognition are as follows:
 
 <a name="Environment_Configuration"></a>
 ## 2. Environment Configuration
-Please refer to [Quick Installation](./installation_en.md) Configure the PaddleOCR running environment.
+Please refer to [Operation Environment Preparation](./environment_en.md) to configure PaddleOCR operating environment first, refer to [PaddleOCR Overview and Project Clone](./paddleOCR_overview_en.md) to clone the project
 
 <a name="Quick_Use"></a>
 ## 3. Quick Use

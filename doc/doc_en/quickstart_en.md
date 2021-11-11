@@ -53,10 +53,10 @@ If you do not use the provided test image, you can replace the following `--imag
 
 #### 2.1.1 Chinese and English Model
 
-* Detection, direction classification and recognition: set the direction classifier parameter`--use_angle_cls true` to recognize vertical text.
+* Detection, direction classification and recognition: set the parameter`--use_gpu false` to disable the gpu device
 
   ```bash
-  paddleocr --image_dir ./imgs_en/img_12.jpg --use_angle_cls true --lang en
+  paddleocr --image_dir ./imgs_en/img_12.jpg --use_angle_cls true --lang en --use_gpu false
   ```
 
   Output will be a list, each item contains bounding box, text and recognition confidence

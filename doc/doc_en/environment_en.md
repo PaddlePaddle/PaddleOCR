@@ -1,5 +1,7 @@
 # Environment Preparation
 
+Windows and Mac users are recommended to use Anaconda to build a Python environment, and Linux users are recommended to use docker to build a Python environment. If you are familiar with the Python environment, you can skip to step 2 to install PaddlePaddle.
+
 Recommended working environment:
 - PaddlePaddle >= 2.0.0 (2.1.2)
 - python3.7

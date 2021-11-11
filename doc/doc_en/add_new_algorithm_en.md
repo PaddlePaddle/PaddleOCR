@@ -1,4 +1,4 @@
-# Add new algorithm
+# Add New Algorithm
 
 PaddleOCR decomposes an algorithm into the following parts, and modularizes each part to make it more convenient to develop new algorithms.
 
@@ -263,7 +263,7 @@ Metric:
   main_indicator: acc
 ```
 
-## 优化器
+## Optimizer
 
 The optimizer is used to train the network. The optimizer also contains network regularization and learning rate decay modules. This part is under [ppocr/optimizer](../../ppocr/optimizer). PaddleOCR has built-in
 Commonly used optimizer modules such as `Momentum`, `Adam` and `RMSProp`, common regularization modules such as `Linear`, `Cosine`, `Step` and `Piecewise`, and common learning rate decay modules such as `L1Decay` and `L2Decay`.
