@@ -1,21 +1,23 @@
 
-# 目录
-- [1. 文字检测](#1-----)
-  * [1.1 数据准备](#11-----)
-  * [1.2 下载预训练模型](#12--------)
-  * [1.3 启动训练](#13-----)
-  * [1.4 断点训练](#14-----)
-  * [1.5 更换Backbone 训练](#15---backbone---)
-  * [1.6 指标评估](#16-----)
-  * [1.7 测试检测效果](#17-------)
-  * [1.8 转inference模型测试](#18--inference----)
-- [2. FAQ](#2-faq)
-
-
-<a name="1-----"></a>
-# 1. 文字检测
+# 文字检测
 
 本节以icdar2015数据集为例，介绍PaddleOCR中检测模型训练、评估、测试的使用方式。
+
+- [1. 准备数据和模型](#1--------)
+  * [1.1 数据准备](#11-----)
+  * [1.2 下载预训练模型](#12--------)
+- [2. 开始训练](#2-----)
+  * [2.1 启动训练](#21-----)
+  * [2.2 断点训练](#22-----)
+  * [2.3 更换Backbone 训练](#23---backbone---)
+- [3. 模型评估与预测](#3--------)
+  * [3.1 指标评估](#31-----)
+  * [3.2 测试检测效果](#32-------)
+- [4. 模型导出与预测](#4--------)
+- [5. FAQ](#5-faq)
+
+<a name="1--------"></a>
+# 1. 准备数据和模型
 
 <a name="11-----"></a>
 ## 1.1 数据准备
@@ -83,8 +85,11 @@ wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dyg
 wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/ResNet50_vd_ssld_pretrained.pdparams
 ```
 
-<a name="13-----"></a>
-## 1.3 启动训练
+<a name="2-----"></a>
+# 2. 开始训练
+
+<a name="21-----"></a>
+## 2.1 启动训练
 
 *如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false*
 
@@ -96,7 +101,7 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml \
 # 单机多卡训练，通过 --gpus 参数设置使用的GPU ID
 python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/det_mv3_db.yml \
      -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
- 
+
 # 多机多卡训练，通过 --ips 参数设置使用的机器IP地址，通过 --gpus 参数设置使用的GPU ID
 python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1,2,3' tools/train.py -c configs/det/det_mv3_db.yml \
      -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
@@ -104,14 +109,14 @@ python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1
 
 上述指令中，通过-c 选择训练使用configs/det/det_db_mv3.yml配置文件。
 有关配置文件的详细解释，请参考[链接](./config.md)。
- 
+
 您也可以通过-o参数在不需要修改yml文件的情况下，改变训练的参数，比如，调整训练的学习率为0.0001
 ```shell
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
 ```
- 
-**注意:** 采用多机多卡训练时，需要替换上面命令中的ips值为您机器的地址，机器之间需要能够相互ping通。查看机器ip地址的命令为`ifconfig`。
- 
+
+**注意:** 采用多机多卡训练时，需要替换上面命令中的ips值为您机器的地址，机器之间需要能够相互ping通。另外，训练时需要在多个机器上分别启动命令。查看机器ip地址的命令为`ifconfig`。
+
 如果您想进一步加快训练速度，可以使用[自动混合精度训练](https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/01_paddle2.0_introduction/basic_concept/amp_cn.html)， 以单机单卡为例，命令如下：
 ```shell
 python3 tools/train.py -c configs/det/det_mv3_db.yml \
@@ -119,8 +124,8 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml \
      Global.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True
  ```
 
-<a name="14-----"></a>
-## 1.4 断点训练
+<a name="22-----"></a>
+## 2.2 断点训练
 
 如果训练程序中断，如果希望加载训练中断的模型从而恢复训练，可以通过指定Global.checkpoints指定要加载的模型路径：
 ```shell
@@ -129,8 +134,8 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./you
 
 **注意**：`Global.checkpoints`的优先级高于`Global.pretrained_model`的优先级，即同时指定两个参数时，优先加载`Global.checkpoints`指定的模型，如果`Global.checkpoints`指定的模型路径有误，会加载`Global.pretrained_model`指定的模型。
 
-<a name="15---backbone---"></a>
-## 1.5 更换Backbone 训练
+<a name="23---backbone---"></a>
+## 2.3 更换Backbone 训练
 
 PaddleOCR将网络划分为四部分，分别在[ppocr/modeling](../../ppocr/modeling)下。 进入网络的数据将按照顺序(transforms->backbones->
 necks->heads)依次通过这四个部分。
@@ -177,8 +182,11 @@ args1: args1
 
 **注意**：如果要更换网络的其他模块，可以参考[文档](./add_new_algorithm.md)。
 
-<a name="16-----"></a>
-## 1.6 指标评估
+<a name="3--------"></a>
+# 3. 模型评估与预测
+
+<a name="31-----"></a>
+## 3.1 指标评估
 
 PaddleOCR计算三个OCR检测相关的指标，分别是：Precision、Recall、Hmean（F-Score）。
 
@@ -190,8 +198,8 @@ python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="{pat
 
 * 注：`box_thresh`、`unclip_ratio`是DB后处理所需要的参数，在评估EAST模型时不需要设置
 
-<a name="17-------"></a>
-## 1.7 测试检测效果
+<a name="32-------"></a>
+## 3.2 测试检测效果
 
 测试单张图像的检测效果
 ```shell
@@ -208,8 +216,8 @@ python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./
 python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./doc/imgs_en/" Global.pretrained_model="./output/det_db/best_accuracy"
 ```
 
-<a name="18--inference----"></a>
-## 1.8 转inference模型测试
+<a name="4--------"></a>
+# 4. 模型导出与预测
 
 inference 模型（`paddle.jit.save`保存的模型）
 一般是模型训练，把模型结构和模型参数保存在文件中的固化模型，多用于预测部署场景。
@@ -231,10 +239,11 @@ python3 tools/infer/predict_det.py --det_algorithm="DB" --det_model_dir="./outpu
 python3 tools/infer/predict_det.py --det_algorithm="EAST" --det_model_dir="./output/det_db_inference/" --image_dir="./doc/imgs/" --use_gpu=True
 ```
 
-<a name="2"></a>
-# 2. FAQ
+<a name="5-faq"></a>
+# 5. FAQ
 
 Q1: 训练模型转inference 模型之后预测效果不一致？
+
 **A**：此类问题出现较多，问题多是trained model预测时候的预处理、后处理参数和inference model预测的时候的预处理、后处理参数不一致导致的。以det_mv3_db.yml配置文件训练的模型为例，训练模型、inference模型预测结果不一致问题解决方式如下：
 - 检查[trained model预处理](https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/configs/det/det_mv3_db.yml#L116)，和[inference model的预测预处理](https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/tools/infer/predict_det.py#L42)函数是否一致。算法在评估的时候，输入图像大小会影响精度，为了和论文保持一致，训练icdar15配置文件中将图像resize到[736, 1280]，但是在inference model预测的时候只有一套默认参数，会考虑到预测速度问题，默认限制图像最长边为960做resize的。训练模型预处理和inference模型的预处理函数位于[ppocr/data/imaug/operators.py](https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/ppocr/data/imaug/operators.py#L147)
 - 检查[trained model后处理](https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/configs/det/det_mv3_db.yml#L51)，和[inference 后处理参数](https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/tools/infer/utility.py#L50)是否一致。
