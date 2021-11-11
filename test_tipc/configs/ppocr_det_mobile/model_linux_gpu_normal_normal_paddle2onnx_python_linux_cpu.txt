@@ -1,4 +1,6 @@
 ===========================paddle2onnx_params===========================
+model_name:ocr_det_mobile
+python:python3.7
 2onnx: paddle2onnx
 --model_dir:./inference/ch_ppocr_mobile_v2.0_det_infer/
 --model_filename:inference.pdmodel
