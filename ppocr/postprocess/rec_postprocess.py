@@ -114,8 +114,8 @@ class CTCLabelDecode(BaseRecLabelDecode):
         self.jb_tokenizer = Tokenizer()
         self.jb_tokenizer.initialize()
 
-        # hyper param
-        self.use_lm = True
+        # hyper params
+        self.use_lm = True  # to use the original logic, set this var to false
         self.epsilon = 1e-5
         self.top_n = 15
         self.conf_level = 0.95
@@ -155,10 +155,12 @@ class CTCLabelDecode(BaseRecLabelDecode):
                     possible_char_list.append([self.character[int(max_preds_index[batch_idx][idx])]])
                     possible_prob_list.append([max_preds_prob[batch_idx][idx]])
                 else:
-                    # the OCR model does not sure
+                    # the OCR model is not sure
                     possible_char = []
                     possible_prob = []
                     partitioned_index = np.argpartition(preds[batch_idx][idx], (-1, -1 * self.top_n))
+
+                    # pick top n char as candidate pool
                     for i in range(self.top_n):
                         char_idx = partitioned_index[-1 - i]
                         if self.character[char_idx] == "blank":
@@ -199,6 +201,7 @@ class CTCLabelDecode(BaseRecLabelDecode):
             next_sentence.append((possible_char_list[level][i], possible_prob_list[level][i]))
             self.dfs(next_sentence, level + 1, possible_char_list, possible_prob_list)
 
+    # This is not traditional ngram prob, just a hack
     def calculate_log_probability(self, sentence):
         if len(sentence) <= 0:
             return float("-inf")
@@ -207,9 +210,9 @@ class CTCLabelDecode(BaseRecLabelDecode):
             dp[i] = self.get_dp_state(dp, i - 1) + math.log10(sentence[i][1])
             if i - 1 >= 0:
                 freq = self.jb_tokenizer.FREQ.get(sentence[i-1][0] + sentence[i][0])
-                if freq is not None and freq > 10: # There are some noise in bigram dataset
+                if freq is not None and freq > 10:  # There is some noise in the dataset
                     mean_prob = (sentence[i-1][1] + sentence[i][1]) / 2
-                    max_prob = max(sentence[i-1][1], sentence[i][1]) * 3
+                    max_prob = max(sentence[i-1][1], sentence[i][1]) * 3  # put prob a booster here as a hack
                     dp[i] = max(dp[i], self.get_dp_state(dp, i - 2) + math.log10(mean_prob) + math.log10(max_prob))
             if i - 2 >= 0:
                 freq = self.jb_tokenizer.FREQ.get(sentence[i-2][0] + sentence[i-1][0] + sentence[i][0])
