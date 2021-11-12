@@ -24,15 +24,17 @@ from ppocr.utils.logging import get_logger
 def download_with_progressbar(url, save_path):
     logger = get_logger()
     response = requests.get(url, stream=True)
-    total_size_in_bytes = int(response.headers.get('content-length', 0))
-    block_size = 1024  # 1 Kibibyte
-    progress_bar = tqdm(total=total_size_in_bytes, unit='iB', unit_scale=True)
-    with open(save_path, 'wb') as file:
-        for data in response.iter_content(block_size):
-            progress_bar.update(len(data))
-            file.write(data)
-    progress_bar.close()
-    if total_size_in_bytes == 0 or progress_bar.n != total_size_in_bytes:
+    if response.status_code == 200:
+        total_size_in_bytes = int(response.headers.get('content-length', 1))
+        block_size = 1024  # 1 Kibibyte
+        progress_bar = tqdm(
+            total=total_size_in_bytes, unit='iB', unit_scale=True)
+        with open(save_path, 'wb') as file:
+            for data in response.iter_content(block_size):
+                progress_bar.update(len(data))
+                file.write(data)
+        progress_bar.close()
+    else:
         logger.error("Something went wrong while downloading models")
         sys.exit(0)
 
@@ -45,7 +47,7 @@ def maybe_download(model_storage_directory, url):
     if not os.path.exists(
             os.path.join(model_storage_directory, 'inference.pdiparams')
     ) or not os.path.exists(
-        os.path.join(model_storage_directory, 'inference.pdmodel')):
+            os.path.join(model_storage_directory, 'inference.pdmodel')):
         assert url.endswith('.tar'), 'Only supports tar compressed package'
         tmp_path = os.path.join(model_storage_directory, url.split('/')[-1])
         print('download {} to {}'.format(url, tmp_path))

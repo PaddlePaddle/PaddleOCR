@@ -307,20 +307,9 @@ RunDetModel(std::shared_ptr<PaddlePredictor> predictor, cv::Mat img,
   return filter_boxes;
 }
 
-std::shared_ptr<PaddlePredictor> loadModel(std::string model_file, std::string power_mode, int num_threads) {
+std::shared_ptr<PaddlePredictor> loadModel(std::string model_file, int num_threads) {
   MobileConfig config;
   config.set_model_from_file(model_file);
-
-  if (power_mode == "LITE_POWER_HIGH"){
-      config.set_power_mode(LITE_POWER_HIGH);
-  } else {
-      if (power_mode == "LITE_POWER_LOW") {
-          config.set_power_mode(LITE_POWER_HIGH);
-      } else {
-          std::cerr << "Only support LITE_POWER_HIGH or LITE_POWER_HIGH." << std::endl;
-          exit(1);
-      }
-  }
 
   config.set_threads(num_threads);
 
@@ -391,7 +380,7 @@ void check_params(int argc, char **argv) {
   if (strcmp(argv[1], "det") == 0) {
       if (argc < 9){
         std::cerr << "[ERROR] usage:" << argv[0]
-                  << " det det_model num_threads batchsize power_mode img_dir det_config lite_benchmark_value" << std::endl;
+                  << " det det_model runtime_device num_threads batchsize img_dir det_config lite_benchmark_value" << std::endl;
         exit(1);
       }
   }
@@ -399,7 +388,7 @@ void check_params(int argc, char **argv) {
   if (strcmp(argv[1], "rec") == 0) {
       if (argc < 9){
         std::cerr << "[ERROR] usage:" << argv[0]
-                  << " rec rec_model num_threads batchsize power_mode img_dir key_txt lite_benchmark_value" << std::endl;
+                  << " rec rec_model runtime_device num_threads batchsize img_dir key_txt lite_benchmark_value" << std::endl;
         exit(1);
       }
   }
@@ -407,7 +396,7 @@ void check_params(int argc, char **argv) {
   if (strcmp(argv[1], "system") == 0) {
       if (argc < 12){
         std::cerr << "[ERROR] usage:" << argv[0]
-                  << " system det_model rec_model clas_model num_threads batchsize power_mode img_dir det_config key_txt lite_benchmark_value" << std::endl;
+                  << " system det_model rec_model clas_model runtime_device num_threads batchsize img_dir det_config key_txt lite_benchmark_value" << std::endl;
         exit(1);
       }
   }
@@ -417,15 +406,15 @@ void system(char **argv){
   std::string det_model_file = argv[2];
   std::string rec_model_file = argv[3];
   std::string cls_model_file = argv[4];
-  std::string precision = argv[5];
-  std::string num_threads = argv[6];
-  std::string batchsize = argv[7];
-  std::string power_mode = argv[8];
+  std::string runtime_device = argv[5];
+  std::string precision = argv[6];
+  std::string num_threads = argv[7];
+  std::string batchsize = argv[8];
   std::string img_dir = argv[9];
   std::string det_config_path = argv[10];
   std::string dict_path = argv[11];
 
-  if (strcmp(argv[5], "FP32") != 0 && strcmp(argv[5], "INT8") != 0) {
+  if (strcmp(argv[6], "FP32") != 0 && strcmp(argv[6], "INT8") != 0) {
       std::cerr << "Only support FP32 or INT8." << std::endl;
       exit(1);
   }
@@ -441,9 +430,9 @@ void system(char **argv){
   charactor_dict.insert(charactor_dict.begin(), "#"); // blank char for ctc
   charactor_dict.push_back(" ");
 
-  auto det_predictor = loadModel(det_model_file, power_mode, std::stoi(num_threads));
-  auto rec_predictor = loadModel(rec_model_file, power_mode, std::stoi(num_threads));
-  auto cls_predictor = loadModel(cls_model_file, power_mode, std::stoi(num_threads));
+  auto det_predictor = loadModel(det_model_file, std::stoi(num_threads));
+  auto rec_predictor = loadModel(rec_model_file, std::stoi(num_threads));
+  auto cls_predictor = loadModel(cls_model_file, std::stoi(num_threads));
 
   for (int i = 0; i < cv_all_img_names.size(); ++i) {
     std::cout << "The predict img: " << cv_all_img_names[i] << std::endl;
@@ -477,14 +466,14 @@ void system(char **argv){
 
 void det(int argc, char **argv) {
   std::string det_model_file = argv[2];
-  std::string precision = argv[3];
-  std::string num_threads = argv[4];
-  std::string batchsize = argv[5];
-  std::string power_mode = argv[6];
+  std::string runtime_device = argv[3];
+  std::string precision = argv[4];
+  std::string num_threads = argv[5];
+  std::string batchsize = argv[6];
   std::string img_dir = argv[7];
   std::string det_config_path = argv[8];
 
-  if (strcmp(argv[3], "FP32") != 0 && strcmp(argv[3], "INT8") != 0) {
+  if (strcmp(argv[4], "FP32") != 0 && strcmp(argv[4], "INT8") != 0) {
       std::cerr << "Only support FP32 or INT8." << std::endl;
       exit(1);
   }
@@ -495,7 +484,7 @@ void det(int argc, char **argv) {
   //// load config from txt file
   auto Config = LoadConfigTxt(det_config_path);
 
-  auto det_predictor = loadModel(det_model_file, power_mode, std::stoi(num_threads));
+  auto det_predictor = loadModel(det_model_file, std::stoi(num_threads));
 
   std::vector<double> time_info = {0, 0, 0};
   for (int i = 0; i < cv_all_img_names.size(); ++i) {
@@ -530,14 +519,11 @@ void det(int argc, char **argv) {
 
   if (strcmp(argv[9], "True") == 0) {
     AutoLogger autolog(det_model_file, 
-                       0,
-                       0,
-                       0,
+                       runtime_device,
                        std::stoi(num_threads),
                        std::stoi(batchsize), 
                        "dynamic", 
                        precision, 
-                       power_mode,
                        time_info, 
                        cv_all_img_names.size());
     autolog.report();
@@ -546,14 +532,14 @@ void det(int argc, char **argv) {
 
 void rec(int argc, char **argv) {
   std::string rec_model_file = argv[2];
-  std::string precision = argv[3];
-  std::string num_threads = argv[4];
-  std::string batchsize = argv[5];
-  std::string power_mode = argv[6];
+  std::string runtime_device = argv[3];
+  std::string precision = argv[4];
+  std::string num_threads = argv[5];
+  std::string batchsize = argv[6];
   std::string img_dir = argv[7];
   std::string dict_path = argv[8];
 
-  if (strcmp(argv[3], "FP32") != 0 && strcmp(argv[3], "INT8") != 0) {
+  if (strcmp(argv[4], "FP32") != 0 && strcmp(argv[4], "INT8") != 0) {
       std::cerr << "Only support FP32 or INT8." << std::endl;
       exit(1);
   }
@@ -565,7 +551,7 @@ void rec(int argc, char **argv) {
   charactor_dict.insert(charactor_dict.begin(), "#"); // blank char for ctc
   charactor_dict.push_back(" ");
 
-  auto rec_predictor = loadModel(rec_model_file, power_mode, std::stoi(num_threads));
+  auto rec_predictor = loadModel(rec_model_file, std::stoi(num_threads));
 
   std::shared_ptr<PaddlePredictor> cls_predictor;
 
@@ -603,14 +589,11 @@ void rec(int argc, char **argv) {
   // TODO: support autolog
   if (strcmp(argv[9], "True") == 0) {
     AutoLogger autolog(rec_model_file, 
-                       0,
-                       0,
-                       0,
+                       runtime_device,
                        std::stoi(num_threads),
                        std::stoi(batchsize), 
                        "dynamic", 
                        precision, 
-                       power_mode,
                        time_info, 
                        cv_all_img_names.size());
     autolog.report();

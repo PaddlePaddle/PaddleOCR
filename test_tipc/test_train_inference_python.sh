@@ -244,7 +244,7 @@ else
     export Count=0
     USE_GPU_KEY=(${train_use_gpu_value})
     for gpu in ${gpu_list[*]}; do
-        use_gpu=${USE_GPU_KEY[Count]}
+        train_use_gpu=${USE_GPU_KEY[Count]}
         Count=$(($Count + 1))
         ips=""
         if [ ${gpu} = "-1" ];then
@@ -302,11 +302,20 @@ else
                 set_pretrain=$(func_set_params "${pretrain_model_key}" "${pretrain_model_value}")
                 set_batchsize=$(func_set_params "${train_batch_key}" "${train_batch_value}")
                 set_train_params1=$(func_set_params "${train_param_key1}" "${train_param_value1}")
-                set_use_gpu=$(func_set_params "${train_use_gpu_key}" "${use_gpu}")
-                save_log="${LOG_PATH}/${trainer}_gpus_${gpu}_autocast_${autocast}"
-                
+                set_use_gpu=$(func_set_params "${train_use_gpu_key}" "${train_use_gpu}")
+                if [ ${#ips} -le 26 ];then
+                    save_log="${LOG_PATH}/${trainer}_gpus_${gpu}_autocast_${autocast}"
+                    nodes=1
+                else
+                    IFS=","
+                    ips_array=(${ips})
+                    IFS="|"
+                    nodes=${#ips_array[@]}
+                    save_log="${LOG_PATH}/${trainer}_gpus_${gpu}_autocast_${autocast}_nodes_${nodes}"
+                fi
+
                 # load pretrain from norm training if current trainer is pact or fpgm trainer
-                if [ ${trainer} = ${pact_key} ] || [ ${trainer} = ${fpgm_key} ]; then
+                if ([ ${trainer} = ${pact_key} ] || [ ${trainer} = ${fpgm_key} ]) && [ ${nodes} -le 1 ]; then
                     set_pretrain="${load_norm_train_model}"
                 fi
 
@@ -325,7 +334,7 @@ else
 
                 set_eval_pretrain=$(func_set_params "${pretrain_model_key}" "${save_log}/${train_model_name}")
                 # save norm trained models to set pretrain for pact training and fpgm training 
-                if [ ${trainer} = ${trainer_norm} ]; then
+                if [ ${trainer} = ${trainer_norm} ] && [ ${nodes} -le 1]; then
                     load_norm_train_model=${set_eval_pretrain}
                 fi
                 # run eval 
