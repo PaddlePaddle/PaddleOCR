@@ -28,7 +28,7 @@ from paddle.jit import to_static
 
 from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
-from ppocr.utils.save_load import init_model
+from ppocr.utils.save_load import load_model
 from ppocr.utils.logging import get_logger
 from tools.program import load_config, merge_config, ArgsParser
 from ppocr.metrics import build_metric
@@ -101,7 +101,7 @@ def main():
     quanter = QAT(config=quant_config)
     quanter.quantize(model)
 
-    init_model(config, model)
+    load_model(config, model)
     model.eval()
 
     # build metric
