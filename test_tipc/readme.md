@@ -60,7 +60,7 @@
 ```shell
 test_tipc/
 ├── configs/  # 配置文件目录
-	├── ppocr_det_mobile             # ppocr_det_mobile模型的测试配置文件目录
+    ├── ppocr_det_mobile             # ppocr_det_mobile模型的测试配置文件目录
         ├── det_mv3_db.yml                  # 测试mobile版ppocr检测模型训练的yml文件
         ├── train_infer_python.txt.txt      # 测试Linux上python训练预测（基础训练预测）的配置文件
         ├── model_linux_gpu_normal_normal_infer_cpp_linux_gpu_cpu.txt     # 测试Linux上c++预测的配置文件
