@@ -13,21 +13,21 @@ train_infer_img_dir:./train_data/icdar2015/text_localization/ch4_test_images/
 null:null
 ##
 trainer:norm_train|pact_train|fpgm_export
-norm_train:tools/train.py -c tests/configs/det_r50_vd_db.yml -o 
-quant_export:deploy/slim/quantization/export_model.py -c tests/configs/det_r50_vd_db.yml -o 
-fpgm_export:deploy/slim/prune/export_prune_model.py -c tests/configs/det_r50_vd_db.yml -o 
+norm_train:tools/train.py -c test_tipc/configs/ppocr_det_server/det_r50_vd_db.yml -o 
+quant_export:deploy/slim/quantization/export_model.py -c test_tipc/configs/ppocr_det_server/det_r50_vd_db.yml -o 
+fpgm_export:deploy/slim/prune/export_prune_model.py -c test_tipc/configs/ppocr_det_server/det_r50_vd_db.yml -o 
 distill_train:null
 null:null
 null:null
 ##
 ===========================eval_params=========================== 
-eval:tools/eval.py -c tests/configs/det_r50_vd_db.yml -o
+eval:tools/eval.py -c test_tipc/configs/ppocr_det_server/det_r50_vd_db.yml -o
 null:null
 ##
 ===========================infer_params===========================
 Global.save_inference_dir:./output/
 Global.pretrained_model:
-norm_export:tools/export_model.py -c tests/configs/det_r50_vd_db.yml -o 
+norm_export:tools/export_model.py -c test_tipc/configs/ppocr_det_server/det_r50_vd_db.yml -o 
 quant_export:null 
 fpgm_export:null
 distill_export:null
