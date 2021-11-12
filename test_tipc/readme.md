@@ -115,6 +115,7 @@ test_tipc/
 - `test_inference_cpp.sh`：测试基于C++的模型推理。
 - `test_serving.sh`：测试基于Paddle Serving的服务化部署功能。
 - `test_lite_arm_cpu_cpp.sh`：测试基于Paddle-Lite的ARM CPU端c++预测部署功能。
+- `test_paddle2onnx.sh`：测试Paddle2ONNX的模型转化功能，并验证正确性。
 
 <a name="more"></a>
 #### 更多教程
@@ -123,3 +124,4 @@ test_tipc/
 [test_inference_cpp 使用](docs/test_inference_cpp.md)  
 [test_serving 使用](docs/test_serving.md)  
 [test_lite_arm_cpu_cpp 使用](docs/test_lite_arm_cpu_cpp.md)  
+[test_paddle2onnx 使用](docs/test_paddle2onnx.md)  
