@@ -22,6 +22,7 @@ import cv2
 import logging
 import numpy as np
 from pathlib import Path
+from urllib.parse import urlparse
 
 from tools.infer import predict_system
 from ppocr.utils.logging import get_logger
@@ -325,7 +326,7 @@ class PaddleOCR(predict_system.TextSystem):
 
         if isinstance(img, str):
             # download net image
-            if img.startswith('http'):
+            if urlparse(img).scheme in {'http', 'https'}:
                 download_with_progressbar(img, 'tmp.jpg')
                 img = 'tmp.jpg'
             image_file = img
