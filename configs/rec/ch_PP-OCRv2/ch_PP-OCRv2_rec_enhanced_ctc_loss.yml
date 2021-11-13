@@ -62,7 +62,7 @@ Loss:
       weight: 0.05
       num_classes: 6625
       feat_dim: 96
-      init_center: false
+      init_center: true
       center_file_path: "./train_center.pkl"
   # you can also try to add ace loss on your own dataset
   # - ACELoss:
