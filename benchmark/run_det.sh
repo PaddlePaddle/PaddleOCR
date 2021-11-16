@@ -5,6 +5,7 @@ python3.7 -m pip install -r requirements.txt
 # 2 拷贝该模型需要数据、预训练模型
 wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015.tar && cd train_data  && tar xf icdar2015.tar && cd ../
 wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/ResNet50_vd_pretrained.pdparams
+wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/ResNet18_vd_pretrained.pdparams
 # 3 批量运行（如不方便批量，1，2需放到单个模型中）
 
 model_mode_list=(det_res18_db_v2.0 det_r50_vd_east det_r50_vd_pse)
