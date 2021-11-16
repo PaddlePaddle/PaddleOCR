@@ -1,16 +1,13 @@
-# PP-OCR模型库快速推理
+# 基于Python引擎的PP-OCR模型库推理
 
 本文介绍针对PP-OCR模型库的Python推理引擎使用方法，内容依次为文本检测、文本识别、方向分类器以及三者串联在CPU、GPU上的预测方法。
 
 
 - [1. 文本检测模型推理](#文本检测模型推理)
-
 - [2. 文本识别模型推理](#文本识别模型推理)
   - [2.1 超轻量中文识别模型推理](#超轻量中文识别模型推理)
   - [2.2 多语言模型的推理](#多语言模型的推理)
-
 - [3. 方向分类模型推理](#方向分类模型推理)
-
 - [4. 文本检测、方向分类和文字识别串联推理](#文本检测、方向分类和文字识别串联推理)
 
 <a name="文本检测模型推理"></a>
@@ -21,12 +18,15 @@
 
 ```
 # 下载超轻量中文检测模型：
-wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tartar xf ch_ppocr_mobile_v2.0_det_infer.tarpython3 tools/infer/predict_det.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_ppocr_mobile_v2.0_det_infer/"
+wget  https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar
+tar xf ch_PP-OCRv2_det_infer.tar
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_PP-OCRv2_det_infer/"
+
 ```
 
 可视化文本检测结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
 
-![](/Users/zhulingfeng01/OCR/PaddleOCR/doc/imgs_results/det_res_00018069.jpg)
+![](../imgs_results/det_res_00018069.jpg)
 
 通过参数`limit_type`和`det_limit_side_len`来对图片的尺寸进行限制，
 `limit_type`可选参数为[`max`, `min`]，
@@ -39,13 +39,13 @@ wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_i
 如果输入图片的分辨率比较大，而且想使用更大的分辨率预测，可以设置det_limit_side_len 为想要的值，比如1216：
 
 ```
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./inference/det_db/" --det_limit_type=max --det_limit_side_len=1216
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./inference/ch_PP-OCRv2_det_infer/" --det_limit_type=max --det_limit_side_len=1216
 ```
 
 如果想使用CPU进行预测，执行命令如下
 
 ```
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./inference/det_db/"  --use_gpu=False
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./inference/ch_PP-OCRv2_det_infer/"  --use_gpu=False
 ```
 
 
@@ -62,12 +62,12 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_di
 
 ```
 # 下载超轻量中文识别模型：
-wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar
-tar xf ch_ppocr_mobile_v2.0_rec_infer.tar
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --rec_model_dir="ch_ppocr_mobile_v2.0_rec_infer"
+wget  https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar
+tar xf ch_PP-OCRv2_rec_infer.tar
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --rec_model_dir="./ch_PP-OCRv2_rec_infer/"
 ```
 
-![](/Users/zhulingfeng01/OCR/PaddleOCR/doc/imgs_words/ch/word_4.jpg)
+![](../imgs_words/ch/word_4.jpg)
 
 执行命令后，上面图像的预测结果（识别的文本和得分）会打印到屏幕上，示例如下：
 
@@ -79,14 +79,13 @@ Predicts of ./doc/imgs_words/ch/word_4.jpg:('实力活力', 0.98458153)
 
 ### 2.2 多语言模型的推理
 
-如果您需要预测的是其他语言模型，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径, 同时为了得到正确的可视化结果，
-需要通过 `--vis_font_path` 指定可视化的字体路径，`doc/fonts/` 路径下有默认提供的小语种字体，例如韩文识别：
-
+如果您需要预测的是其他语言模型，可以在[此链接](./models_list.md#%E5%A4%9A%E8%AF%AD%E8%A8%80%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9E%8B)中找到对应语言的inference模型，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径, 同时为了得到正确的可视化结果，需要通过 `--vis_font_path` 指定可视化的字体路径，`doc/fonts/` 路径下有默认提供的小语种字体，例如韩文识别：
 ```
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/korean_mobile_v2.0_rec_infer.tar
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" --rec_model_dir="./your inference model" --rec_char_type="korean" --rec_char_dict_path="ppocr/utils/dict/korean_dict.txt" --vis_font_path="doc/fonts/korean.ttf"
 ```
 
-![](/Users/zhulingfeng01/OCR/PaddleOCR/doc/imgs_words/korean/1.jpg)
+![](../imgs_words/korean/1.jpg)
 
 执行命令后，上图的预测结果为：
 
@@ -107,7 +106,7 @@ tar xf ch_ppocr_mobile_v2.0_cls_infer.tar
 python3 tools/infer/predict_cls.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --cls_model_dir="ch_ppocr_mobile_v2.0_cls_infer"
 ```
 
-![](/Users/zhulingfeng01/OCR/PaddleOCR/doc/imgs_words/ch/word_1.jpg)
+![](../imgs_words/ch/word_1.jpg)
 
 执行命令后，上面图像的预测结果（分类的方向和得分）会打印到屏幕上，示例如下：
 
@@ -123,14 +122,13 @@ Predicts of ./doc/imgs_words/ch/word_4.jpg:['0', 0.9999982]
 
 ```shell
 # 使用方向分类器
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./inference/det_db/" --cls_model_dir="./inference/cls/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls=true
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./inference/ch_PP-OCRv2_det_infer/" --cls_model_dir="./inference/cls/" --rec_model_dir="./inference/ch_PP-OCRv2_rec_infer/" --use_angle_cls=true
 # 不使用方向分类器
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./inference/det_db/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls=false
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./inference/ch_PP-OCRv2_det_infer/" --rec_model_dir="./inference/ch_PP-OCRv2_rec_infer/" --use_angle_cls=false
 # 使用多进程
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./inference/det_db/" --rec_model_dir="./inference/rec_crnn/" --use_angle_cls=false --use_mp=True --total_process_num=6
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./inference/ch_PP-OCRv2_det_infer/" --rec_model_dir="./inference/ch_PP-OCRv2_rec_infer/" --use_angle_cls=false --use_mp=True --total_process_num=6
 ```
 
 执行命令后，识别结果图像如下：
 
-![](/Users/zhulingfeng01/OCR/PaddleOCR/doc/imgs_results/system_res_00018069.jpg)
-
+![](../imgs_results/system_res_00018069.jpg)

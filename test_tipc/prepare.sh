@@ -1,9 +1,11 @@
 #!/bin/bash
+source test_tipc/common_func.sh
+
 FILENAME=$1
 
 # MODE be one of ['lite_train_lite_infer' 'lite_train_whole_infer' 'whole_train_whole_infer',  
 #                 'whole_infer', 'klquant_whole_infer',
-#                 'cpp_infer', 'serving_infer',  'lite_infer']
+#                 'cpp_infer', 'serving_infer']
 
 MODE=$2
 
@@ -12,30 +14,12 @@ dataline=$(cat ${FILENAME})
 # parser params
 IFS=$'\n'
 lines=(${dataline})
-function func_parser_key(){
-    strs=$1
-    IFS=":"
-    array=(${strs})
-    tmp=${array[0]}
-    echo ${tmp}
-}
-function func_parser_value(){
-    strs=$1
-    IFS=":"
-    array=(${strs})
-    tmp=${array[1]}
-    echo ${tmp}
-}
-IFS=$'\n'
+
 # The training params
 model_name=$(func_parser_value "${lines[1]}")
 
 trainer_list=$(func_parser_value "${lines[14]}")
 
-# MODE be one of ['lite_train_lite_infer' 'lite_train_whole_infer' 'whole_train_whole_infer',  
-#                 'whole_infer', 'klquant_whole_infer',
-#                 'cpp_infer', 'serving_infer',  'lite_infer']
-MODE=$2
 
 if [ ${MODE} = "lite_train_lite_infer" ];then
     # pretrain lite train data
@@ -168,40 +152,6 @@ if [ ${MODE} = "serving_infer" ];then
     wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar
     cd ./inference && tar xf ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf ch_ppocr_server_v2.0_rec_infer.tar && tar xf ch_ppocr_server_v2.0_det_infer.tar && cd ../
 fi
-
-
-if [ ${MODE} = "lite_infer" ];then    
-    # prepare lite nb model and test data
-    current_dir=${PWD}
-    wget -nc  -P ./models https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_det_opt.nb
-    wget -nc  -P ./models https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_det_slim_opt.nb
-    wget -nc  -P ./test_data https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015_lite.tar
-    cd ./test_data && tar -xf icdar2015_lite.tar && rm icdar2015_lite.tar && cd ../
-    # prepare lite env
-    export http_proxy=http://172.19.57.45:3128
-    export https_proxy=http://172.19.57.45:3128
-    paddlelite_url=https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.9/inference_lite_lib.android.armv8.gcc.c++_shared.with_extra.with_cv.tar.gz
-    paddlelite_zipfile=$(echo $paddlelite_url | awk -F "/" '{print $NF}')
-    paddlelite_file=${paddlelite_zipfile:0:66}
-    wget ${paddlelite_url}
-    tar -xf ${paddlelite_zipfile}
-    mkdir -p  ${paddlelite_file}/demo/cxx/ocr/test_lite
-    mv models test_data ${paddlelite_file}/demo/cxx/ocr/test_lite
-    cp ppocr/utils/ppocr_keys_v1.txt deploy/lite/config.txt ${paddlelite_file}/demo/cxx/ocr/test_lite
-    cp ./deploy/lite/* ${paddlelite_file}/demo/cxx/ocr/
-    cp ${paddlelite_file}/cxx/lib/libpaddle_light_api_shared.so ${paddlelite_file}/demo/cxx/ocr/test_lite
-    cp test_tipc/configs/ppocr_det_mobile_params.txt test_tipc/test_lite.sh test_tipc/common_func.sh ${paddlelite_file}/demo/cxx/ocr/test_lite
-    cd ${paddlelite_file}/demo/cxx/ocr/
-    git clone https://github.com/LDOUBLEV/AutoLog.git
-    unset http_proxy
-    unset https_proxy
-    make -j
-    sleep 1
-    make -j
-    cp ocr_db_crnn test_lite && cp test_lite/libpaddle_light_api_shared.so test_lite/libc++_shared.so
-    tar -cf test_lite.tar ./test_lite && cp test_lite.tar ${current_dir} && cd ${current_dir}
-fi
-
 
 if [ ${MODE} = "paddle2onnx_infer" ];then
     # prepare serving env

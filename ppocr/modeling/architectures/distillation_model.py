@@ -21,7 +21,7 @@ from ppocr.modeling.backbones import build_backbone
 from ppocr.modeling.necks import build_neck
 from ppocr.modeling.heads import build_head
 from .base_model import BaseModel
-from ppocr.utils.save_load import init_model, load_pretrained_params
+from ppocr.utils.save_load import load_pretrained_params
 
 __all__ = ['DistillationModel']
 

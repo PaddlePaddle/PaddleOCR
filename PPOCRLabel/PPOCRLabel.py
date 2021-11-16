@@ -35,6 +35,7 @@ import numpy as np
 
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
+sys.path.append(os.path.abspath(os.path.join(__dir__, '../PaddleOCR')))
 sys.path.append("..")
 
 from paddleocr import PaddleOCR
@@ -390,7 +391,7 @@ class MainWindow(QMainWindow, WindowMixin):
                           'Ctrl+J', 'edit', u'Move and edit Boxs', enabled=False)
 
         create = action(getStr('crtBox'), self.createShape,
-                        'w', 'new', getStr('crtBoxDetail'), enabled=False)
+                        'w', 'objects', getStr('crtBoxDetail'), enabled=False)
 
         delete = action(getStr('delBox'), self.deleteSelectedShape,
                         'backspace', 'delete', getStr('delBoxDetail'), enabled=False)

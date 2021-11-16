@@ -2,38 +2,38 @@
 source test_tipc/common_func.sh
 
 FILENAME=$1
-dataline=$(awk 'NR==52, NR==66{print}'  $FILENAME)
+dataline=$(awk 'NR==1, NR==16{print}'  $FILENAME)
 
 # parser params
 IFS=$'\n'
 lines=(${dataline})
 
 # parser cpp inference model 
-use_opencv=$(func_parser_value "${lines[1]}")
-cpp_infer_model_dir_list=$(func_parser_value "${lines[2]}")
-cpp_infer_is_quant=$(func_parser_value "${lines[3]}")
+model_name=$(func_parser_value "${lines[1]}")
+use_opencv=$(func_parser_value "${lines[2]}")
+cpp_infer_model_dir_list=$(func_parser_value "${lines[3]}")
+cpp_infer_is_quant=$(func_parser_value "${lines[4]}")
 # parser cpp inference 
-inference_cmd=$(func_parser_value "${lines[4]}")
-cpp_use_gpu_key=$(func_parser_key "${lines[5]}")
-cpp_use_gpu_list=$(func_parser_value "${lines[5]}")
-cpp_use_mkldnn_key=$(func_parser_key "${lines[6]}")
-cpp_use_mkldnn_list=$(func_parser_value "${lines[6]}")
-cpp_cpu_threads_key=$(func_parser_key "${lines[7]}")
-cpp_cpu_threads_list=$(func_parser_value "${lines[7]}")
-cpp_batch_size_key=$(func_parser_key "${lines[8]}")
-cpp_batch_size_list=$(func_parser_value "${lines[8]}")
-cpp_use_trt_key=$(func_parser_key "${lines[9]}")
-cpp_use_trt_list=$(func_parser_value "${lines[9]}")
-cpp_precision_key=$(func_parser_key "${lines[10]}")
-cpp_precision_list=$(func_parser_value "${lines[10]}")
-cpp_infer_model_key=$(func_parser_key "${lines[11]}")
-cpp_image_dir_key=$(func_parser_key "${lines[12]}")
-cpp_infer_img_dir=$(func_parser_value "${lines[12]}")
-cpp_infer_key1=$(func_parser_key "${lines[13]}")
-cpp_infer_value1=$(func_parser_value "${lines[13]}")
-cpp_benchmark_key=$(func_parser_key "${lines[14]}")
-cpp_benchmark_value=$(func_parser_value "${lines[14]}")
-
+inference_cmd=$(func_parser_value "${lines[5]}")
+cpp_use_gpu_key=$(func_parser_key "${lines[6]}")
+cpp_use_gpu_list=$(func_parser_value "${lines[6]}")
+cpp_use_mkldnn_key=$(func_parser_key "${lines[7]}")
+cpp_use_mkldnn_list=$(func_parser_value "${lines[7]}")
+cpp_cpu_threads_key=$(func_parser_key "${lines[8]}")
+cpp_cpu_threads_list=$(func_parser_value "${lines[8]}")
+cpp_batch_size_key=$(func_parser_key "${lines[9]}")
+cpp_batch_size_list=$(func_parser_value "${lines[9]}")
+cpp_use_trt_key=$(func_parser_key "${lines[10]}")
+cpp_use_trt_list=$(func_parser_value "${lines[10]}")
+cpp_precision_key=$(func_parser_key "${lines[11]}")
+cpp_precision_list=$(func_parser_value "${lines[11]}")
+cpp_infer_model_key=$(func_parser_key "${lines[12]}")
+cpp_image_dir_key=$(func_parser_key "${lines[13]}")
+cpp_infer_img_dir=$(func_parser_value "${lines[13]}")
+cpp_infer_key1=$(func_parser_key "${lines[14]}")
+cpp_infer_value1=$(func_parser_value "${lines[14]}")
+cpp_benchmark_key=$(func_parser_key "${lines[15]}")
+cpp_benchmark_value=$(func_parser_value "${lines[15]}")
 
 LOG_PATH="./test_tipc/output"
 mkdir -p ${LOG_PATH}
