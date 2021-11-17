@@ -60,7 +60,7 @@ class TextSystem(object):
                 os.path.join(output_dir,
                              f"mg_crop_{bno+self.crop_image_res_index}.jpg"),
                 img_crop_list[bno])
-            logger.info(f"{bno}, {rec_res[bno]}")
+            logger.debug(f"{bno}, {rec_res[bno]}")
         self.crop_image_res_index += bbox_num
 
     def __call__(self, img, cls=True):
@@ -145,17 +145,17 @@ def main(args):
         if not flag:
             img = cv2.imread(image_file)
         if img is None:
-            logger.info("error in loading image:{}".format(image_file))
+            logger.debug("error in loading image:{}".format(image_file))
             continue
         starttime = time.time()
         dt_boxes, rec_res = text_sys(img)
         elapse = time.time() - starttime
         total_time += elapse
 
-        logger.info(
+        logger.debug(
             str(idx) + "  Predict time of %s: %.3fs" % (image_file, elapse))
         for text, score in rec_res:
-            logger.info("{}, {:.3f}".format(text, score))
+            logger.debug("{}, {:.3f}".format(text, score))
 
         if is_visualize:
             image = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
@@ -177,11 +177,10 @@ def main(args):
             cv2.imwrite(
                 os.path.join(draw_img_save_dir, os.path.basename(image_file)),
                 draw_img[:, :, ::-1])
-            logger.info("The visualized image saved in {}".format(
+            logger.debug("The visualized image saved in {}".format(
                 os.path.join(draw_img_save_dir, os.path.basename(image_file))))
 
     logger.info("The predict total time is {}".format(time.time() - _st))
-    logger.info("\nThe predict total time is {}".format(total_time))
     if args.benchmark:
         text_sys.text_detector.autolog.report()
         text_sys.text_recognizer.autolog.report()
