@@ -112,6 +112,12 @@ def init_args():
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
     parser.add_argument("--warmup", type=str2bool, default=False)
 
+    #
+    parser.add_argument(
+        "--draw_img_save_dir", type=str, default="./inference_results")
+    parser.add_argument("--save_crop_res", type=str2bool, default=False)
+    parser.add_argument("--crop_res_save_dir", type=str, default="./output")
+
     # multi-process
     parser.add_argument("--use_mp", type=str2bool, default=False)
     parser.add_argument("--total_process_num", type=int, default=1)
