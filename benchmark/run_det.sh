@@ -18,11 +18,11 @@ for model_mode in ${model_mode_list[@]}; do
             echo "index is speed, 1gpus, begin, ${model_name}"
             run_mode=sp
             CUDA_VISIBLE_DEVICES=0 bash benchmark/run_benchmark_det.sh ${run_mode} ${bs_item} ${fp_item} 1 ${model_mode}     #  (5min)
-            sleep 6
+            sleep 60
             echo "index is speed, 8gpus, run_mode is multi_process, begin, ${model_name}"
             run_mode=mp
             CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 bash benchmark/run_benchmark_det.sh ${run_mode} ${bs_item} ${fp_item} 2 ${model_mode} 
-            sleep 6
+            sleep 60
             done
       done
 done
