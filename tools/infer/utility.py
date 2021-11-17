@@ -110,7 +110,7 @@ def init_args():
     parser.add_argument("--enable_mkldnn", type=str2bool, default=False)
     parser.add_argument("--cpu_threads", type=int, default=10)
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
-    parser.add_argument("--warmup", type=str2bool, default=True)
+    parser.add_argument("--warmup", type=str2bool, default=False)
 
     # multi-process
     parser.add_argument("--use_mp", type=str2bool, default=False)
