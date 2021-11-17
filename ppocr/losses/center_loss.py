@@ -30,21 +30,17 @@ class CenterLoss(nn.Layer):
     Reference: Wen et al. A Discriminative Feature Learning Approach for Deep Face Recognition. ECCV 2016.
     """
 
-    def __init__(self,
-                 num_classes=6625,
-                 feat_dim=96,
-                 init_center=False,
-                 center_file_path=None):
+    def __init__(self, num_classes=6625, feat_dim=96, center_file_path=None):
         super().__init__()
         self.num_classes = num_classes
         self.feat_dim = feat_dim
         self.centers = paddle.randn(
             shape=[self.num_classes, self.feat_dim]).astype("float64")
 
-        if init_center:
+        if center_file_path is not None:
             assert os.path.exists(
                 center_file_path
-            ), f"center path({center_file_path}) must exist when init_center is set as True."
+            ), f"center path({center_file_path}) must exist when it is not None."
             with open(center_file_path, 'rb') as f:
                 char_dict = pickle.load(f)
                 for key in char_dict.keys():
