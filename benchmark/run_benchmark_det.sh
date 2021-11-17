@@ -13,7 +13,7 @@ function _set_params(){
     base_batch_size=${batch_size}
     mission_name="OCR"
     direction_id="0"
-    ips_unit="instance/sec"
+    ips_unit="images/sec"
     skip_steps=2                 # 解析日志，有些模型前几个step耗时长，需要跳过                                    (必填)
     keyword="ips:"               # 解析日志，筛选出数据所在行的关键字                                             (必填)
     index="1"
