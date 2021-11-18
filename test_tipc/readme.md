@@ -77,11 +77,11 @@ test_tipc/
         ├── ...  
     ├── ...  
 ├── results/   # 预先保存的预测结果，用于和实际预测结果进行精读比对
-	├── python_ppocr_det_mobile_results_fp32.txt           # 预存的mobile版ppocr检测模型python预测fp32精度的结果
-	├── python_ppocr_det_mobile_results_fp16.txt           # 预存的mobile版ppocr检测模型python预测fp16精度的结果
-	├── cpp_ppocr_det_mobile_results_fp32.txt       # 预存的mobile版ppocr检测模型c++预测的fp32精度的结果
-	├── cpp_ppocr_det_mobile_results_fp16.txt       # 预存的mobile版ppocr检测模型c++预测的fp16精度的结果
-	├── ...
+    ├── python_ppocr_det_mobile_results_fp32.txt           # 预存的mobile版ppocr检测模型python预测fp32精度的结果
+    ├── python_ppocr_det_mobile_results_fp16.txt           # 预存的mobile版ppocr检测模型python预测fp16精度的结果
+    ├── cpp_ppocr_det_mobile_results_fp32.txt       # 预存的mobile版ppocr检测模型c++预测的fp32精度的结果
+    ├── cpp_ppocr_det_mobile_results_fp16.txt       # 预存的mobile版ppocr检测模型c++预测的fp16精度的结果
+    ├── ...
 ├── prepare.sh                        # 完成test_*.sh运行所需要的数据和模型下载
 ├── test_train_inference_python.sh    # 测试python训练预测的主程序
 ├── test_inference_cpp.sh             # 测试c++预测的主程序
