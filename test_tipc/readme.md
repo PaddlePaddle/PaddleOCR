@@ -27,13 +27,13 @@
 | DB     |ch_ppocr_mobile_v2.0_det_FPGM | 检测  | 支持 | 多机多卡 <br> 混合精度 | FPGM裁剪 | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
 | DB     |ch_ppocr_mobile_v2.0_det_PACT | 检测  | 支持 | 多机多卡 <br> 混合精度 | PACT量化 | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
 | DB     |ch_ppocr_mobile_v2.0_det_KL | 检测  | 支持 | 多机多卡 <br> 混合精度 | 离线量化| Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
-| DB     |ch_ppocr_server_v2.0_det | 检测  | 支持 | 多机多卡 <br> 混合精度 | - | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
+| DB     |ch_ppocr_server_v2.0_det | 检测  | 支持 | 多机多卡 <br> 混合精度 | - | Paddle Inference: C++ <br> Paddle Serving: Python, C++ |
 | DB     |ch_PP-OCRv2_det          | 检测  |
 | CRNN   |ch_ppocr_mobile_v2.0_rec | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
-| CRNN   |ch_ppocr_server_v2.0_rec | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
+| CRNN   |ch_ppocr_server_v2.0_rec | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | Paddle Inference: C++ <br> Paddle Serving: Python, C++ |
 | CRNN   |ch_PP-OCRv2_rec          | 识别  |
 | PP-OCR |ch_ppocr_mobile_v2.0 | 检测+识别  | 支持 | 多机多卡 <br> 混合精度 | - | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
-| PP-OCR |ch_ppocr_server_v2.0 | 检测+识别  | 支持 | 多机多卡 <br> 混合精度 | - | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
+| PP-OCR |ch_ppocr_server_v2.0 | 检测+识别  | 支持 | 多机多卡 <br> 混合精度 | - | Paddle Inference: C++ <br> Paddle Serving: Python, C++ |
 |PP-OCRv2|ch_PP-OCRv2 | 检测+识别  |
 | DB     |det_mv3_db_v2.0                | 检测  |
 | DB     |det_r50_vd_db_v2.0             | 检测  |
@@ -63,25 +63,24 @@
 ```shell
 test_tipc/
 ├── configs/  # 配置文件目录
-    ├── ppocr_det_mobile             # ppocr_det_mobile模型的测试配置文件目录
-        ├── det_mv3_db.yml                  # 测试mobile版ppocr检测模型训练的yml文件
-        ├── train_infer_python.txt.txt      # 测试Linux上python训练预测（基础训练预测）的配置文件
+    ├── ch_ppocr_mobile_v2.0_det    # ch_ppocr_mobile_v2.0_det模型的测试配置文件目录
+        ├── train_infer_python.txt      # 测试Linux上python训练预测（基础训练预测）的配置文件
         ├── model_linux_gpu_normal_normal_infer_cpp_linux_gpu_cpu.txt     # 测试Linux上c++预测的配置文件
         ├── model_linux_gpu_normal_normal_infer_python_jetson.txt         # 测试Jetson上python预测的配置文件
         ├── train_linux_gpu_fleet_amp_infer_python_linux_gpu_cpu.txt      # 测试Linux上多机多卡、混合精度训练和python预测的配置文件
         ├── ...  
-    ├── ppocr_det_server               # ppocr_det_server模型的测试配置文件目录
+    ├── ch_ppocr_server_v2.0_det               # ch_ppocr_server_v2.0_det模型的测试配置文件目录
         ├── ...  
-    ├── ppocr_rec_mobile               # ppocr_rec_mobile模型的测试配置文件目录
+    ├── ch_ppocr_mobile_v2.0_rec               # ch_ppocr_mobile_v2.0_rec模型的测试配置文件目录
         ├── ...  
-    ├── ppocr_rec_server               # ppocr_rec_server模型的测试配置文件目录
+    ├── ch_ppocr_server_v2.0_det               # ch_ppocr_server_v2.0_det模型的测试配置文件目录
         ├── ...  
     ├── ...  
 ├── results/   # 预先保存的预测结果，用于和实际预测结果进行精读比对
-	├── python_ppocr_det_mobile_results_fp32.txt           # 预存的mobile版ppocr检测模型python预测fp32精度的结果
-	├── python_ppocr_det_mobile_results_fp16.txt           # 预存的mobile版ppocr检测模型python预测fp16精度的结果
-	├── cpp_ppocr_det_mobile_results_fp32.txt       # 预存的mobile版ppocr检测模型c++预测的fp32精度的结果
-	├── cpp_ppocr_det_mobile_results_fp16.txt       # 预存的mobile版ppocr检测模型c++预测的fp16精度的结果
+	├── python_ch_ppocr_mobile_v2.0_det_results_fp32.txt           # 预存的mobile版ppocr检测模型python预测fp32精度的结果
+	├── python_ch_ppocr_mobile_v2.0_det_results_fp16.txt           # 预存的mobile版ppocr检测模型python预测fp16精度的结果
+	├── cpp_ch_ppocr_mobile_v2.0_det_results_fp32.txt       # 预存的mobile版ppocr检测模型c++预测的fp32精度的结果
+	├── cpp_ch_ppocr_mobile_v2.0_det_results_fp16.txt       # 预存的mobile版ppocr检测模型c++预测的fp16精度的结果
 	├── ...
 ├── prepare.sh                        # 完成test_*.sh运行所需要的数据和模型下载
 ├── test_train_inference_python.sh    # 测试python训练预测的主程序
@@ -95,9 +94,9 @@ test_tipc/
 ### 配置文件命名规范
 在`configs`目录下，按模型名称划分为子目录，子目录中存放所有该模型测试需要用到的配置文件，配置文件的命名遵循如下规范：
 
-1. 基础训练预测配置简单命名为：`train_infer_python.txt`，表示**Linux环境下单机、不使用混合精度训练+python预测**，其完整命名对应`train_linux_gpu_fleet_amp_infer_python_linux_gpu_cpu.txt`，由于本配置文件使用频率较高，这里进行了名称简化。
+1. 基础训练预测配置简单命名为：`train_infer_python.txt`，表示**Linux环境下单机、不使用混合精度训练+python预测**，其完整命名对应`train_linux_gpu_normal_normal_infer_python_linux_gpu_cpu.txt`，由于本配置文件使用频率较高，这里进行了名称简化。
 
-2. 其他带训练配置命名格式为：`train_训练硬件环境(linux_gpu/linux_dcu/…)_是否多机(fleet/normal)_是否混合精度(amp/normal)_预测模式(infer/lite/serving/js)_语言(cpp/python/java)_预测硬件环境(linux_gpu/mac/jetson/opencl_arm_gpu/...).txt`。如，linux gpu下多机多卡+混合精度链条测试对应配置 `train_linux_gpu_fleet_amp_infer_python_linux_gpu_cpu.txt`，linux dcu下基础训练预测对应配置 `train_linux_dcu_normal_normal_infer_python_dcu.txt`。
+2. 其他带训练配置命名格式为：`train_训练硬件环境(linux_gpu/linux_dcu/…)_是否多机(fleet/normal)_是否混合精度(amp/normal)_预测模式(infer/lite/serving/js)_语言(cpp/python/java)_预测硬件环境(linux_gpu/mac/jetson/opencl_arm_gpu/...).txt`。如，linux gpu下多机多卡+混合精度链条测试对应配置 `train_linux_gpu_fleet_amp_infer_python_linux_gpu_cpu.txt`，linux dcu下基础训练预测对应配置 `train_linux_dcu_normal_normal_infer_python_linux_dcu.txt`。
 
 3. 仅预测的配置（如serving、lite等）命名格式：`model_训练硬件环境(linux_gpu/linux_dcu/…)_是否多机(fleet/normal)_是否混合精度(amp/normal)_(infer/lite/serving/js)_语言(cpp/python/java)_预测硬件环境(linux_gpu/mac/jetson/opencl_arm_gpu/...).txt`，即，与2相比，仅第一个字段从train换为model，测试时模型直接下载获取，这里的“训练硬件环境”表示所测试的模型是在哪种环境下训练得到的。
 
