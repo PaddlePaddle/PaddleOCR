@@ -83,10 +83,11 @@ test_tipc/
 	├── cpp_ppocr_det_mobile_results_fp16.txt       # 预存的mobile版ppocr检测模型c++预测的fp16精度的结果
 	├── ...
 ├── prepare.sh                        # 完成test_*.sh运行所需要的数据和模型下载
+├── prepare_lite_cpp.sh               # 完成手机端test_*.sh运行所需要的数据、模型、可执行文件
 ├── test_train_inference_python.sh    # 测试python训练预测的主程序
 ├── test_inference_cpp.sh             # 测试c++预测的主程序
 ├── test_serving.sh                   # 测试serving部署预测的主程序
-├── test_lite_arm_cpu_cpp.sh          # 测试lite在arm_cpu上部署的C++预测的主程序
+├── test_lite_arm_cpp.sh          # 测试lite在arm上部署的C++预测的主程序
 ├── compare_results.py                # 用于对比log中的预测结果与results中的预存结果精度误差是否在限定范围内
 └── readme.md                         # 使用文档
 ```
@@ -125,5 +126,5 @@ test_tipc/
 [test_train_inference_python 使用](docs/test_train_inference_python.md)  
 [test_inference_cpp 使用](docs/test_inference_cpp.md)  
 [test_serving 使用](docs/test_serving.md)  
-[test_lite_arm_cpu_cpp 使用](docs/test_lite_arm_cpu_cpp.md)  
+[test_lite_arm_cpp 使用](docs/test_lite_arm_cpp.md)  
 [test_paddle2onnx 使用](docs/test_paddle2onnx.md)  
