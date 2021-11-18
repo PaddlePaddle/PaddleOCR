@@ -47,11 +47,11 @@ Jeston端基础训练预测功能测试的主程序为`test_train_inference_pyth
 ```
 - 模式3：whole_infer，不训练，全量数据预测，走通开源模型评估、动转静，检查inference model预测时间和精度;
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile/model_linux_gpu_normal_normal_infer_python_jetson.txt 'whole_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_linux_gpu_normal_normal_infer_python_jetson.txt 'whole_infer'
 # 用法1:
-bash test_tipc/test_inference_jeston.sh ./test_tipc/configs/ppocr_det_mobile/model_linux_gpu_normal_normal_infer_python_jetson.txt 'whole_infer'
+bash test_tipc/test_inference_jeston.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_linux_gpu_normal_normal_infer_python_jetson.txt 'whole_infer'
 # 用法2: 指定GPU卡预测，第三个传入参数为GPU卡号
-bash test_tipc/test_inference_jeston.sh ./test_tipc/configs/ppocr_det_mobile/model_linux_gpu_normal_normal_infer_python_jetson.txt 'whole_infer' '1'
+bash test_tipc/test_inference_jeston.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_linux_gpu_normal_normal_infer_python_jetson.txt 'whole_infer' '1'
 ```
 
 运行相应指令后，在`test_tipc/output`文件夹下自动会保存运行日志。如`lite_train_lite_infer`模式下，会运行训练+inference的链条，因此，在`test_tipc/output`文件夹有以下文件：

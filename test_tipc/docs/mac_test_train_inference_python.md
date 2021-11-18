@@ -57,36 +57,36 @@ Mac端无GPU，环境准备只需要Python环境即可，安装PaddlePaddle等�
 ```shell
 # 同linux端运行不同的是，Mac端测试使用新的配置文件mac_ppocr_det_mobile_params.txt，
 # 配置文件中默认去掉了GPU和mkldnn相关的测试链条
-bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt 'lite_train_lite_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ppocr_det_mobile/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt 'lite_train_lite_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt 'lite_train_lite_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt 'lite_train_lite_infer'
 ```  
 
 - 模式2：lite_train_whole_infer，使用少量数据训练，一定量数据预测，用于验证训练后的模型执行预测，预测速度是否合理；
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt 'lite_train_whole_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ppocr_det_mobile/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt  'lite_train_whole_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt 'lite_train_whole_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt  'lite_train_whole_infer'
 ```  
 
 - 模式3：whole_infer，不训练，全量数据预测，走通开源模型评估、动转静，检查inference model预测时间和精度;
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt 'whole_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt 'whole_infer'
 # 用法1:
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ppocr_det_mobile/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt 'whole_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt 'whole_infer'
 # 用法2: 指定GPU卡预测，第三个传入参数为GPU卡号
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ppocr_det_mobile/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt 'whole_infer' '1'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt 'whole_infer' '1'
 ```  
 
 - 模式4：whole_train_whole_infer，CE： 全量数据训练，全量数据预测，验证模型训练精度，预测精度，预测速度；（Mac端不建议运行此模式）
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt 'whole_train_whole_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ppocr_det_mobile/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt 'whole_train_whole_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt 'whole_train_whole_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt 'whole_train_whole_infer'
 ```  
 
 - 模式5：klquant_whole_infer，测试离线量化；
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/ppocr_det_mobile/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt 'klquant_whole_infer'
+bash test_tipc/prepare.sh ./test_tipc/ch_ppocr_mobile_v2.0_det/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt 'klquant_whole_infer'
 
-bash test_tipc/test_train_inference_python.sh test_tipc/configs/ppocr_det_mobile/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt  'klquant_whole_infer'
+bash test_tipc/test_train_inference_python.sh test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_mac_cpu_normal_normal_infer_python_mac_cpu.txt  'klquant_whole_infer'
 ```
 
 运行相应指令后，在`test_tipc/output`文件夹下自动会保存运行日志。如`lite_train_lite_infer`模式下，会运行训练+inference的链条，因此，在`test_tipc/output`文件夹有以下文件：
