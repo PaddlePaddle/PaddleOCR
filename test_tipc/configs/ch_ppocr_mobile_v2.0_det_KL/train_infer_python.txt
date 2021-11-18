@@ -1,19 +1,19 @@
 ===========================train_params===========================
 model_name:ocr_det
 python:python3.7
-gpu_list:0|0,1
-Global.use_gpu:True|True
+gpu_list:null
+Global.use_gpu:null
 Global.auto_cast:null
-Global.epoch_num:lite_train_lite_infer=1|whole_train_whole_infer=300
-Global.save_model_dir:./output/
-Train.loader.batch_size_per_card:lite_train_lite_infer=2|whole_train_whole_infer=4
+Global.epoch_num:null
+Global.save_model_dir:null
+Train.loader.batch_size_per_card:null
 Global.pretrained_model:null
 train_model_name:latest
-train_infer_img_dir:./train_data/icdar2015/text_localization/ch4_test_images/
+train_infer_img_dir:null
 null:null
 ##
-trainer:norm_train
-norm_train:tools/train.py -c test_tipc/configs/ppocr_det_mobile/det_mv3_db.yml -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
+trainer:null
+norm_train:null
 pact_train:null
 fpgm_train:null
 distill_train:null
@@ -27,31 +27,31 @@ null:null
 ===========================infer_params===========================
 Global.save_inference_dir:./output/
 Global.pretrained_model:
-norm_export:tools/export_model.py -c test_tipc/configs/ppocr_det_mobile/det_mv3_db.yml -o 
+norm_export:null
 quant_export:null
 fpgm_export:null
 distill_export:null
 export1:null
 export2:null
 inference_dir:null
-train_model:./inference/ch_ppocr_mobile_v2.0_det_train/best_accuracy
-infer_export:tools/export_model.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o
-infer_quant:False
-inference:tools/infer/predict_det.py
---use_gpu:True|False
---enable_mkldnn:True|False
---cpu_threads:1|6
---rec_batch_num:1
---use_tensorrt:False|True
---precision:fp32|fp16|int8
+train_model:null
+infer_export:null
+infer_quant:null
+inference:null
+--use_gpu:null
+--enable_mkldnn:null
+--cpu_threads:null
+--rec_batch_num:null
+--use_tensorrt:null
+--precision:null
 --det_model_dir:
---image_dir:./inference/ch_det_data_50/all-sum-510/
+--image_dir:null
 null:null
 --benchmark:True
 null:null
 ===========================kl_quant_params===========================
 infer_model:./inference/ch_ppocr_mobile_v2.0_det_infer/
-infer_export:tools/export_model.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o
+infer_export:deploy/slim/quantization/quant_kl.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o
 infer_quant:True
 inference:tools/infer/predict_det.py
 --use_gpu:False
