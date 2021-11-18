@@ -1,6 +1,6 @@
 # Lite\_arm\_cpp预测功能测试
 
-Lite\_arm\_cpp预测功能测试的主程序为`test_lite_arm_cpp.sh`，可以在ARM CPU上基于Lite预测库测试模型的C++推理功能。
+Lite\_arm\_cpp预测功能测试的主程序为`test_lite_arm_cpp.sh`，可以在ARM上基于Lite预测库测试模型的C++推理功能。
 
 ## 1. 测试结论汇总
 
