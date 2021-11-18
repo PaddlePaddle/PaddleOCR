@@ -332,7 +332,6 @@ std::shared_ptr<PaddlePredictor> loadModel(std::string model_file, int num_threa
   config.set_model_from_file(model_file);
 
   config.set_threads(num_threads);
-  std::cout<<num_threads<<std::endl;
   std::shared_ptr<PaddlePredictor> predictor =
       CreatePaddlePredictor<MobileConfig>(config);
   return predictor;

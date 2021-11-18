@@ -56,7 +56,6 @@ function func_test_det(){
 	for det_batchsize in ${det_batch_size_list[*]}; do
             _save_log_path="${_log_path}/lite_${_det_model}_runtime_device_${runtime_device}_precision_${precision}_det_batchsize_${det_batchsize}_threads_${num_threads}.log"
             command="${_script} ${_det_model} ${runtime_device} ${precision} ${num_threads} ${det_batchsize}  ${_img_dir} ${_config} ${benchmark_value} > ${_save_log_path} 2>&1"
-	    echo ${command}
             eval ${command}
             status_check $? "${command}" "${status_log}"
         done
@@ -84,7 +83,6 @@ function func_test_rec(){
 	for rec_batchsize in ${rec_batch_size_list[*]}; do
             _save_log_path="${_log_path}/lite_${_rec_model}_${cls_model}_runtime_device_${runtime_device}_precision_${_precision}_rec_batchsize_${rec_batchsize}_threads_${num_threads}.log"
             command="${_script} ${_rec_model} ${_cls_model} ${runtime_device} ${_precision} ${num_threads} ${rec_batchsize}  ${_img_dir} ${_config} ${_rec_dict_dir} ${benchmark_value} > ${_save_log_path} 2>&1"
-	    echo ${command}
             eval ${command}
             status_check $? "${command}" "${status_log}"
         done
@@ -113,7 +111,6 @@ function func_test_system(){
 	   for rec_batchsize in ${rec_batch_size_list[*]}; do
                 _save_log_path="${_log_path}/lite_${_det_model}_${_rec_model}_${_cls_model}_runtime_device_${runtime_device}_precision_${_precision}_det_batchsize_${det_batchsize}_rec_batchsize_${rec_batchsize}_threads_${num_threads}.log"
                 command="${_script} ${_det_model} ${_rec_model} ${_cls_model} ${runtime_device} ${_precision} ${num_threads} ${det_batchsize}  ${_img_dir} ${_config} ${_rec_dict_dir} ${benchmark_value} > ${_save_log_path} 2>&1"
-	       echo ${command}
                eval ${command}
                status_check $? "${command}" "${status_log}"
 	    done
