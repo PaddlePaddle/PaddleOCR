@@ -1,5 +1,5 @@
 ===========================lite_params===========================
-inference:./ocr_db_crnn det
+inference:./ocr_db_crnn system
 runtime_device:ARM_CPU
 det_infer_model:ch_PP-OCRv2_det_infer|ch_PP-OCRv2_det_slim_quant_infer
 rec_infer_model:ch_PP-OCRv2_rec_infer|ch_PP-OCRv2_rec_slim_quant_infer

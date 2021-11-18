@@ -172,7 +172,10 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
   cv::Mat resize_img;
 
   int index = 0;
+
+  std::vector<double> time_info = {0, 0, 0};
   for (int i = boxes.size() - 1; i >= 0; i--) {
+    auto preprocess_start = std::chrono::steady_clock::now();
     crop_img = GetRotateCropImage(srcimg, boxes[i]);
     if (use_direction_classify >= 1) {
       crop_img = RunClsModel(crop_img, predictor_cls);
@@ -191,7 +194,9 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
     auto *data0 = input_tensor0->mutable_data<float>();
 
     NeonMeanScale(dimg, data0, resize_img.rows * resize_img.cols, mean, scale);
+    auto preprocess_end = std::chrono::steady_clock::now();
     //// Run CRNN predictor
+    auto inference_start = std::chrono::steady_clock::now();
     predictor_crnn->Run();
 
     // Get output and run postprocess
@@ -199,8 +204,10 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
         std::move(predictor_crnn->GetOutput(0)));
     auto *predict_batch = output_tensor0->data<float>();
     auto predict_shape = output_tensor0->shape();
+    auto inference_end = std::chrono::steady_clock::now();
 
     // ctc decode
+    auto postprocess_start = std::chrono::steady_clock::now();
     std::string str_res;
     int argmax_idx;
     int last_index = 0;
@@ -224,7 +231,20 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
     score /= count;
     rec_text.push_back(str_res);
     rec_text_score.push_back(score);
+    auto postprocess_end = std::chrono::steady_clock::now();
+
+    std::chrono::duration<float> preprocess_diff = preprocess_end - preprocess_start;
+    time_info[0] += double(preprocess_diff.count() * 1000);
+    std::chrono::duration<float> inference_diff = inference_end - inference_start;
+    time_info[1] += double(inference_diff.count() * 1000);
+    std::chrono::duration<float> postprocess_diff = postprocess_end - postprocess_start;
+    time_info[2] += double(postprocess_diff.count() * 1000);
+
   }
+
+times->push_back(time_info[0]);
+times->push_back(time_info[1]);
+times->push_back(time_info[2]);
 }
 
 std::vector<std::vector<std::vector<int>>>
@@ -312,7 +332,7 @@ std::shared_ptr<PaddlePredictor> loadModel(std::string model_file, int num_threa
   config.set_model_from_file(model_file);
 
   config.set_threads(num_threads);
-
+  std::cout<<num_threads<<std::endl;
   std::shared_ptr<PaddlePredictor> predictor =
       CreatePaddlePredictor<MobileConfig>(config);
   return predictor;
@@ -434,6 +454,9 @@ void system(char **argv){
   auto rec_predictor = loadModel(rec_model_file, std::stoi(num_threads));
   auto cls_predictor = loadModel(cls_model_file, std::stoi(num_threads));
 
+  std::vector<double> det_time_info = {0, 0, 0};
+  std::vector<double> rec_time_info = {0, 0, 0};
+
   for (int i = 0; i < cv_all_img_names.size(); ++i) {
     std::cout << "The predict img: " << cv_all_img_names[i] << std::endl;
     cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
@@ -459,8 +482,38 @@ void system(char **argv){
     //// print recognized text
     for (int i = 0; i < rec_text.size(); i++) {
       std::cout << i << "\t" << rec_text[i] << "\t" << rec_text_score[i]
-                << std::endl;
+                <<  std::endl;
+
     }
+
+    det_time_info[0] += det_times[0];
+    det_time_info[1] += det_times[1];
+    det_time_info[2] += det_times[2];
+    rec_time_info[0] += rec_times[0];
+    rec_time_info[1] += rec_times[1];
+    rec_time_info[2] += rec_times[2];
+  }
+  if (strcmp(argv[12], "True") == 0) {
+    AutoLogger autolog_det(det_model_file, 
+                       runtime_device,
+                       std::stoi(num_threads),
+                       std::stoi(batchsize), 
+                       "dynamic", 
+                       precision, 
+                       det_time_info, 
+                       cv_all_img_names.size());
+    AutoLogger autolog_rec(rec_model_file, 
+                       runtime_device,
+                       std::stoi(num_threads),
+                       std::stoi(batchsize), 
+                       "dynamic", 
+                       precision, 
+                       rec_time_info, 
+                       cv_all_img_names.size());
+
+    autolog_det.report();
+    std::cout << std::endl;
+    autolog_rec.report();
   }
 }
 
@@ -503,15 +556,15 @@ void det(int argc, char **argv) {
     auto img_vis = Visualization(srcimg, boxes);
     std::cout << boxes.size() << " bboxes have detected:" << std::endl;
 
-    // for (int i=0; i<boxes.size(); i++){
-    //   std::cout << "The " << i << " box:" << std::endl;
-    //   for (int j=0; j<4; j++){
-    //     for (int k=0; k<2; k++){
-    //       std::cout << boxes[i][j][k] << "\t";
-    //     }
-    //   }
-    //   std::cout << std::endl;
-    // }
+    for (int i=0; i<boxes.size(); i++){
+      std::cout << "The " << i << " box:" << std::endl;
+      for (int j=0; j<4; j++){
+        for (int k=0; k<2; k++){
+          std::cout << boxes[i][j][k] << "\t";
+        }
+      }
+      std::cout << std::endl;
+    }
     time_info[0] += times[0];
     time_info[1] += times[1];
     time_info[2] += times[2];
@@ -585,6 +638,9 @@ void rec(int argc, char **argv) {
       std::cout << i << "\t" << rec_text[i] << "\t" << rec_text_score[i]
                 << std::endl;
     }
+    time_info[0] += times[0];
+    time_info[1] += times[1];
+    time_info[2] += times[2];
   }
   // TODO: support autolog
   if (strcmp(argv[9], "True") == 0) {

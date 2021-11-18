@@ -1,6 +1,6 @@
 ===========================lite_params===========================
 inference:./ocr_db_crnn det
-runtime_device:ARM_CPU
+runtime_device:ARM_GPU_OPENCL
 det_infer_model:ch_PP-OCRv2_det_infer|ch_PP-OCRv2_det_slim_quant_infer
 rec_infer_model:ch_PP-OCRv2_rec_infer|ch_PP-OCRv2_rec_slim_quant_infer
 cls_infer_model:ch_ppocr_mobile_v2.0_cls_infer|ch_ppocr_mobile_v2.0_cls_slim_infer
