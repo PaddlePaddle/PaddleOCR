@@ -72,8 +72,6 @@ cd ./inference_models && tar -xf ${inference_model} && cd ../
 cd ./test_data && tar -xf ${data_file} && rm ${data_file} && cd ../
 
 # prepare lite env
-export http_proxy=http://172.19.57.45:3128
-export https_proxy=http://172.19.57.45:3128
 paddlelite_zipfile=$(echo $paddlelite_url | awk -F "/" '{print $NF}')
 paddlelite_file=${paddlelite_zipfile:0:${end_index}}
 wget ${paddlelite_url} && tar -xf ${paddlelite_zipfile}
@@ -85,8 +83,8 @@ cp ${paddlelite_file}/cxx/lib/libpaddle_light_api_shared.so ${paddlelite_file}/d
 cp ${FILENAME} test_tipc/test_lite_arm_cpp.sh test_tipc/common_func.sh ${paddlelite_file}/demo/cxx/ocr/test_lite
 cd ${paddlelite_file}/demo/cxx/ocr/
 git clone https://github.com/cuicheng01/AutoLog.git
-unset http_proxy
-unset https_proxy
+
+# make
 make -j
 sleep 1
 make -j
