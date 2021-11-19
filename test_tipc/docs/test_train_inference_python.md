@@ -91,8 +91,8 @@ bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobil
 
 - 模式5：klquant_whole_infer，测试离线量化；
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det_KL/train_infer_python.txt  'klquant_whole_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det_KL/train_infer_python.txt  'klquant_whole_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det_KL/infer_python.txt  'klquant_whole_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det_KL/infer_python.txt  'klquant_whole_infer'
 ```
 
 运行相应指令后，在`test_tipc/output`文件夹下自动会保存运行日志。如'lite_train_lite_infer'模式下，会运行训练+inference的链条，因此，在`test_tipc/output`文件夹有以下文件：
