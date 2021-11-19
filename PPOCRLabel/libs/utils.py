@@ -33,9 +33,9 @@ except ImportError:
 
 def newIcon(icon, iconSize=None):
     if iconSize is not None:
-        return QIcon(QIcon(__iconpath__ + "\\" + icon + ".png").pixmap(iconSize,iconSize))
+        return QIcon(QIcon(__iconpath__ + "/" + icon + ".png").pixmap(iconSize,iconSize))
     else:
-        return QIcon(__iconpath__ + "\\" + icon + ".png")
+        return QIcon(__iconpath__ + "/" + icon + ".png")
 
 
 def newButton(text, icon=None, slot=None):
