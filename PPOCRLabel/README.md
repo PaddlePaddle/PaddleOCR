@@ -8,7 +8,10 @@ PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field, w
 
 ### Recent Update
 
-- 2021.8.11：
+- 2021.11.17:
+  - Support install and start PPOCRLabel through the whl package (by [d2623587501](https://github.com/d2623587501))
+  - Dataset segmentation: Divide the annotation file into training, verification and testing parts (refer to section 3.5 below, by [MrCuiHao](https://github.com/MrCuiHao))
+- 2021.8.11:
   - New functions: Open the dataset folder, image rotation (Note: Please delete the label box before rotating the image) (by [Wei-JL](https://github.com/Wei-JL))
   - Added shortcut key description (Help-Shortcut Key), repaired the direction shortcut key movement function under batch processing (by [d2623587501](https://github.com/d2623587501))
 - 2021.2.5: New batch processing and undo functions (by [Evezerest](https://github.com/Evezerest)):
@@ -21,11 +24,11 @@ PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field, w
   - Click to modify the recognition result.(If you can't change the result, please switch to the system default input method, or switch back to the original input method again)
 - 2020.12.18: Support re-recognition of a single label box (by [ninetailskim](https://github.com/ninetailskim) ), perfect shortcut keys.
 
-## 1. Installation
 
-### 1.1 Environment Preparation
 
-#### **Install PaddlePaddle 2.0**
+## 1. Installation and Run
+
+### 1.1 Install PaddlePaddle
 
 ```bash
 pip3 install --upgrade pip
@@ -39,57 +42,53 @@ python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
 
 For more software version requirements, please refer to the instructions in [Installation Document](https://www.paddlepaddle.org.cn/install/quick) for operation.
 
-#### **Install PaddleOCR**
+### 1.2 Install and Run PPOCRLabel
 
-```bash
-# Recommend
-git clone https://github.com/PaddlePaddle/PaddleOCR
-
-# If you cannot pull successfully due to network problems, you can also choose to use the code hosting on the cloud:
-
-git clone https://gitee.com/paddlepaddle/PaddleOCR
-
-# Note: The cloud-hosting code may not be able to synchronize the update with this GitHub project in real time. There might be a delay of 3-5 days. Please give priority to the recommended method.
-```
-
-#### **Install Third-party Libraries**
-
-```bash
-cd PaddleOCR
-pip3 install -r requirements.txt
-```
-
-If you getting this error `OSError: [WinError 126] The specified module could not be found` when you install shapely on windows. Please try to download Shapely whl file using http://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely.
-
-Reference: [Solve shapely installation on windows](https://stackoverflow.com/questions/44398265/install-shapely-oserror-winerror-126-the-specified-module-could-not-be-found)
-
-### 1.2 Install PPOCRLabel
+PPOCRLabel can be started in two ways: whl package and Python script. The whl package form is more convenient to start, and the python script to start is convenient for secondary development.
 
 #### Windows
 
 ```bash
-pip install pyqt5
-cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
-python PPOCRLabel.py
+pip install PPOCRLabel  # install
+PPOCRLabel  # run
 ```
+
+> If you getting this error `OSError: [WinError 126] The specified module could not be found` when you install shapely on windows. Please try to download Shapely whl file using http://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely.
+>
+> Reference: [Solve shapely installation on windows](https://stackoverflow.com/questions/44398265/install-shapely-oserror-winerror-126-the-specified-module-could-not-be-found)
+>
 
 #### Ubuntu Linux
 
 ```bash
-pip3 install pyqt5
+pip3 install PPOCRLabel
 pip3 install trash-cli
-cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
-python3 PPOCRLabel.py
+PPOCRLabel
 ```
 
 #### MacOS
 ```bash
-pip3 install pyqt5
-pip3 uninstall opencv-python # Uninstall opencv manually as it conflicts with pyqt
-pip3 install opencv-contrib-python-headless==4.2.0.32 # Install the headless version of opencv
-cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
-python3 PPOCRLabel.py
+pip3 install PPOCRLabel
+pip3 install opencv-contrib-python-headless==4.2.0.32
+PPOCRLabel # run
 ```
+
+#### 1.2.2 Build and Install the Whl Package Locally
+
+```bash
+cd PaddleOCR/PPOCRLabel
+python3 setup.py bdist_wheel 
+pip3 install dist/PPOCRLabel-1.0.0-py2.py3-none-any.whl
+```
+
+#### 1.2.3 Run PPOCRLabel by Python Script
+
+```bash
+cd ./PPOCRLabel  # Switch to the PPOCRLabel directory
+python PPOCRLabel.py --lang ch
+```
+
+
 
 ## 2. Usage
 
@@ -119,7 +118,7 @@ python3 PPOCRLabel.py
 
 10. Labeling result: the user can export the label result manually through the menu "File - Export Label", while the program will also export automatically if "File - Auto export Label Mode" is selected. The manually checked label will be stored in *Label.txt* under the opened picture folder. Click "File"-"Export Recognition Results" in the menu bar, the recognition training data of such pictures will be saved in the *crop_img* folder, and the recognition label will be saved in *rec_gt.txt*<sup>[4]</sup>.
 
-### Note
+### 2.2 Note
 
 [1] PPOCRLabel uses the opened folder as the project. After opening the image folder, the picture will not be displayed in the dialog. Instead, the pictures under the folder will be directly imported into the program after clicking "Open Dir".
 
@@ -136,6 +135,8 @@ python3 PPOCRLabel.py
 |  Cache.cach   |    Cache files to save the results of model recognition.     |
 |  rec_gt.txt   | The recognition label file, which can be directly used for PPOCR identification model training, is generated after the user clicks on the menu bar "File"-"Export recognition result". |
 |   crop_img    | The recognition data, generated at the same time with *rec_gt.txt* |
+
+
 
 ## 3. Explanation
 
@@ -189,7 +190,26 @@ For some data that are difficult to recognize, the recognition results will not 
 
 > *Note: The status of the checkboxes in the recognition results still needs to be saved manually by clicking Save Button.*
 
-### 3.5 Error message
+### 3.5 Dataset division
+
+- Enter the following command in the terminal to execute the dataset division script:
+
+  ```
+  cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
+  python gen_ocr_train_val_test.py --trainValTestRatio 6:2:2 --labelRootPath ../train_data/label --detRootPath ../train_data/det --recRootPath ../train_data/rec
+  ```
+
+  Parameter Description:
+
+  - `trainValTestRatio` is the division ratio of the number of images in the training set, validation set, and test set, set according to your actual situation, the default is `6:2:2`
+
+  - `labelRootPath` is the storage path of the dataset labeled by PPOCRLabel, the default is `../train_data/label`
+
+  - `detRootPath` is the path where the text detection dataset is divided according to the dataset marked by PPOCRLabel. The default is `../train_data/det`
+
+  - `recRootPath` is the path where the character recognition dataset is divided according to the dataset marked by PPOCRLabel. The default is `../train_data/rec`
+
+### 3.6 Error message
 
 - If paddleocr is installed with whl, it has a higher priority than calling PaddleOCR class with paddleocr.py, which may cause an exception if whl package is not updated.
 
@@ -207,24 +227,8 @@ For some data that are difficult to recognize, the recognition results will not 
     pip install opencv-contrib-python-headless==4.2.0.32
     ```
 
-### Dataset division
 
-- Enter the following command in the terminal to execute the dataset division script:
-    ```
-    cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
-    python gen_ocr_train_val_test.py --trainValTestRatio 6:2:2 --labelRootPath ../train_data/label --detRootPath ../train_data/det --recRootPath ../train_data/rec
-    ```
 
-- Parameter Description:
-
-    trainValTestRatio is the division ratio of the number of images in the training set, validation set, and test set, set according to your actual situation, the default is 6:2:2
-    
-    labelRootPath is the storage path of the dataset labeled by PPOCRLabel, the default is ../train_data/label
-    
-    detRootPath is the path where the text detection dataset is divided according to the dataset marked by PPOCRLabel. The default is ../train_data/det
-    
-    recRootPath is the path where the character recognition dataset is divided according to the dataset marked by PPOCRLabel. The default is ../train_data/rec
-
-### Related
+### 4. Related
 
 1.[Tzutalin. LabelImg. Git code (2015)](https://github.com/tzutalin/labelImg)
