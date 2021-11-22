@@ -68,7 +68,6 @@ class TextE2E(object):
             postprocess_params["character_dict_path"] = args.e2e_char_dict_path
             postprocess_params["valid_set"] = args.e2e_pgnet_valid_set
             postprocess_params["mode"] = args.e2e_pgnet_mode
-            self.e2e_pgnet_polygon = args.e2e_pgnet_polygon
         else:
             logger.info("unknown e2e_algorithm:{}".format(self.e2e_algorithm))
             sys.exit(0)
