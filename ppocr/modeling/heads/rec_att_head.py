@@ -45,7 +45,6 @@ class AttentionHead(nn.Layer):
         output_hiddens = []
 
         if targets is not None:
-            print("target is not None")
             for i in range(num_steps):
                 char_onehots = self._char_to_onehot(
                     targets[:, i], onehot_dim=self.num_classes)
@@ -55,7 +54,6 @@ class AttentionHead(nn.Layer):
             output = paddle.concat(output_hiddens, axis=1)
             probs = self.generator(output)
         else:
-            print("target is None")
             targets = paddle.zeros(shape=[batch_size], dtype="int32")
             probs = None
             char_onehots = None
