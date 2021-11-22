@@ -45,7 +45,7 @@ tar -xf opencv-3.4.7.tar.gz
 * 编译opencv，设置opencv源码路径(`root_path`)以及安装路径(`install_path`)。进入opencv源码路径下，按照下面的方式进行编译。
 
 ```shell
-root_path="/paddle/code/gry/PaddleOCR_pub/deploy/cpp_infer/opencv-3.4.7"
+root_path="your_opencv_root_path"
 install_path=${root_path}/opencv3
 build_dir=${root_path}/build
 
