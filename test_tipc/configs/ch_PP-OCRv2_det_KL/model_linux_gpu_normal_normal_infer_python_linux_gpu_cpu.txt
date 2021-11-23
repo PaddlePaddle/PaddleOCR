@@ -1,8 +1,8 @@
 ===========================kl_quant_params===========================
-model_name:PPOCRv2_ocr_det
+model_name:PPOCRv2_ocr_det_kl
 python:python3.7
-infer_model:./inference/ch_ppocr_mobile_v2.0_det_infer/
-infer_export:deploy/slim/quantization/quant_kl.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o
+infer_model:./inference/ch_PP-OCRv2_det_infer/
+infer_export:deploy/slim/quantization/quant_kl.py -c configs/det/ch_PP-OCRv2/ch_PP-OCRv2_det_cml.yml -o
 infer_quant:True
 inference:tools/infer/predict_det.py
 --use_gpu:False
