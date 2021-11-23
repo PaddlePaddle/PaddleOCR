@@ -35,7 +35,7 @@ class BaseModel(nn.Layer):
         model_type = config['model_type']
         # build transfrom,
         # for rec, transfrom can be TPS,None
-        # for det and cls, transfrom shoule to be None,
+        # for det and cls, transfrom should be None,
         # if you make model differently, you can use transfrom in det and cls
         if 'Transform' not in config or config['Transform'] is None:
             self.use_transform = False
@@ -45,7 +45,7 @@ class BaseModel(nn.Layer):
             self.transform = build_transform(config['Transform'])
             in_channels = self.transform.out_channels
 
-        # build backbone, backbone is need for del, rec and cls
+        # build backbone, backbone is needed for del, rec and cls
         config["Backbone"]['in_channels'] = in_channels
         self.backbone = build_backbone(config["Backbone"], model_type)
         in_channels = self.backbone.out_channels
@@ -62,7 +62,7 @@ class BaseModel(nn.Layer):
             self.neck = build_neck(config['Neck'])
             in_channels = self.neck.out_channels
 
-        # # build head, head is need for det, rec and cls
+        # # build head, head is needed for det, rec and cls
         config["Head"]['in_channels'] = in_channels
         self.head = build_head(config["Head"])
 
