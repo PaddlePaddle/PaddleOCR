@@ -4,9 +4,9 @@ python:python3.7
 gpu_list:0|0,1
 Global.use_gpu:True|True
 Global.auto_cast:null
-Global.epoch_num:lite_train_infer=2|whole_train_infer=300
+Global.epoch_num:lite_train_lite_infer=2|whole_train_whole_infer=300
 Global.save_model_dir:./output/
-Train.loader.batch_size_per_card:lite_train_infer=2|whole_train_infer=4
+Train.loader.batch_size_per_card:lite_train_lite_infer=2|whole_train_lite_infer=4
 Global.pretrained_model:null
 train_model_name:latest
 train_infer_img_dir:./train_data/icdar2015/text_localization/ch4_test_images/
