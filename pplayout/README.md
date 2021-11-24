@@ -72,7 +72,16 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 # 注：码云托管代码可能无法实时同步本github项目更新，存在3~5天延时，请优先使用推荐方式。
 ```
 
-- **（3）安装PP-Layout的`requirements`**
+- **（3）安装PaddleNLP**
+
+```bash
+git clone https://github.com/PaddlePaddle/PaddleNLP -b develop
+cd PaddleNLP
+pip install -e .
+```
+
+
+- **（4）安装PP-Layout的`requirements`**
 
 ```bash
 pip install -r requirements.txt
