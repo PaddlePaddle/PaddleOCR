@@ -311,10 +311,6 @@ def create_predictor(args, mode, logger):
 
 
 def get_infer_gpuid():
-    #cmd = "nvidia-smi"
-    #res = os.popen(cmd).readlines()
-    #if len(res) == 0:
-    #    return None
     cmd = "env | grep CUDA_VISIBLE_DEVICES"
     env_cuda = os.popen(cmd).readlines()
     if len(env_cuda) == 0:
