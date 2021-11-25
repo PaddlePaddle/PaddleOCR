@@ -16,7 +16,7 @@ Lite\_arm\_cpp预测功能测试的主程序为`test_lite_arm_cpp.sh`，可以�
 
 | 模型类型 | batch-size | threads | predictor数量 | 预测库来源 | 测试硬件 |
 |  :----:   |  :----:  | :----:  |  :----:  |  :----:  |  :----:  |
-| 正常模型/量化模型 | 1 | 1/4 |  单/多 | 下载方式 | ARM\_CPU/ARM\_GPU_OPENCL |
+| 正常模型/量化模型 | 1 | 1/4 |  单/多 | 下载方式/编译方式 | ARM\_CPU/ARM\_GPU_OPENCL |
 
 
 ## 2. 测试流程
@@ -30,8 +30,11 @@ Lite\_arm\_cpp预测功能测试的主程序为`test_lite_arm_cpp.sh`，可以�
 
 ```shell
 
-# 数据和模型准备
-bash test_tipc/prepare_lite_cpp.sh ./test_tipc/configs/ppocr_det_mobile/model_linux_gpu_normal_normal_lite_cpp_arm_cpu.txt
+# 数据、模型、Paddle-Lite预测库准备
+#预测库为下载方式
+bash test_tipc/prepare_lite_cpp.sh ./test_tipc/configs/ch_PP-OCRv2_det/model_linux_gpu_normal_normal_lite_cpp_arm_cpu.txt download
+#预测库为编译方式
+bash test_tipc/prepare_lite_cpp.sh ./test_tipc/configs/ch_PP-OCRv2_det/model_linux_gpu_normal_normal_lite_cpp_arm_cpu.txt compile
 
 # 手机端测试:
 bash test_lite_arm_cpp.sh model_linux_gpu_normal_normal_lite_cpp_arm_cpu.txt
@@ -42,8 +45,11 @@ bash test_lite_arm_cpp.sh model_linux_gpu_normal_normal_lite_cpp_arm_cpu.txt
 
 ```shell
 
-# 数据和模型准备
-bash test_tipc/prepare_lite_cpp.sh ./test_tipc/configs/ppocr_det_mobile/model_linux_gpu_normal_normal_lite_cpp_arm_gpu_opencl.txt
+# 数据、模型、Paddle-Lite预测库准备
+#预测库下载方式
+bash test_tipc/prepare_lite_cpp.sh ./test_tipc/configs/ch_PP-OCRv2_det/model_linux_gpu_normal_normal_lite_cpp_arm_gpu_opencl.txt download
+#预测库编译方式
+bash test_tipc/prepare_lite_cpp.sh ./test_tipc/configs/ch_PP-OCRv2_det/model_linux_gpu_normal_normal_lite_cpp_arm_gpu_opencl.txt compile
 
 # 手机端测试:
 bash test_lite_arm_cpp.sh model_linux_gpu_normal_normal_lite_cpp_arm_gpu_opencl.txt
@@ -53,9 +59,7 @@ bash test_lite_arm_cpp.sh model_linux_gpu_normal_normal_lite_cpp_arm_gpu_opencl.
 
 **注意**：
 
-1.由于运行该项目需要bash等命令，传统的adb方式不能很好的安装。所以此处推荐通在手机上开启虚拟终端的方式连接电脑，连接方式可以参考[安卓手机termux连接电脑](./termux_for_android.md)。
-
-2.如果测试文本检测和识别完整的pipeline，在执行`prepare_lite_cpp.sh`时，配置文件需替换为`test_tipc/configs/ppocr_system_mobile/model_linux_gpu_normal_normal_lite_cpp_arm_cpu.txt`。在手机端测试阶段，配置文件同样修改为该文件。
+由于运行该项目需要bash等命令，传统的adb方式不能很好的安装。所以此处推荐通在手机上开启虚拟终端的方式连接电脑，连接方式可以参考[安卓手机termux连接电脑](./termux_for_android.md)。
 
 ### 2.2 运行结果
 
