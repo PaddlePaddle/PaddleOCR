@@ -47,6 +47,12 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         cd ./pretrain_models/ && tar xf en_server_pgnetA.tar && cd ../
         cd ./train_data && tar xf total_text_lite.tar && ln -s total_text && cd ../
     fi
+    if [ ${model_name} == "sast_icdar15" ] || [ ${model_name} == "sast_totaltext" ]; then
+        wget -nc -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/ResNet50_vd_ssld_pretrained.pdparams --no-check-certificate
+        wget -nc -P ./train_data/ wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/total_text_lite.tar --no-check-certificate
+        cd ./train_data && tar xf total_text_lite.tar && ln -s total_text && cd ../
+    fi
+
 elif [ ${MODE} = "whole_train_whole_infer" ];then
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams --no-check-certificate
     rm -rf ./train_data/icdar2015
@@ -57,6 +63,17 @@ elif [ ${MODE} = "whole_train_whole_infer" ];then
     if [ ${model_name} == "PPOCRv2_ocr_det" ]; then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_distill_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf ch_PP-OCRv2_det_distill_train.tar && cd ../
+    fi
+    if [ ${model_name} == "en_pgnetA" ]; then
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/total_text.tar --no-check-certificate
+        wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/en_server_pgnetA.tar --no-check-certificate
+        cd ./pretrain_models/ && tar xf en_server_pgnetA.tar && cd ../
+        cd ./train_data && tar xf total_text.tar && ln -s total_text && cd ../
+    fi
+    if [ ${model_name} == "sast_totaltext" ]; then
+        wget -nc -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/ResNet50_vd_ssld_pretrained.pdparams --no-check-certificate
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/total_text.tar --no-check-certificate
+        cd ./train_data && tar xf total_text.tar && ln -s total_text && cd ../
     fi
 elif [ ${MODE} = "lite_train_whole_infer" ];then
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams --no-check-certificate
@@ -72,6 +89,7 @@ elif [ ${MODE} = "lite_train_whole_infer" ];then
         cd ./pretrain_models/ && tar xf ch_PP-OCRv2_det_distill_train.tar && cd ../
     fi
 elif [ ${MODE} = "whole_infer" ];then
+    wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar --no-check-certificate
     if [ ${model_name} = "ocr_det" ]; then
         eval_model_name="ch_ppocr_mobile_v2.0_det_train"
         rm -rf ./train_data/icdar2015
@@ -106,7 +124,6 @@ elif [ ${MODE} = "whole_infer" ];then
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar --no-check-certificate
         cd ./inference && tar xf ${eval_model_name}.tar && tar xf rec_inference.tar && cd ../
     fi 
-
     elif [ ${model_name} = "PPOCRv2_ocr_det" ]; then
         eval_model_name="ch_PP-OCRv2_det_infer"
         wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar --no-check-certificate
@@ -117,6 +134,14 @@ elif [ ${MODE} = "whole_infer" ];then
         wget -nc -P ./inference/  https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar --no-check-certificate
         wget -nc -P ./inference/  https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/e2e_server_pgnetA_infer.tar --no-check-certificate
          cd ./inference && tar xf e2e_server_pgnetA_infer.tar && tar xf ch_det_data_50.tar && cd ../ 
+    fi
+    if [ ${model_name} == "en_pgnetA" ]; then
+        wget -nc -P ./inference/  https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/en_server_pgnetA.tar  --no-check-certificate
+        cd ./inference && tar xf en_server_pgnetA.tar && cd ../
+    fi
+    if [ ${model_name} == "sast_icdar15" ]; then
+        wget -nc -P  ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_icdar15_v2.0_train.tar --no-check-certificate
+        cd ./inference/ && tar det_r50_vd_sast_icdar15_v2.0_train.tar && cd ../
     fi
 
 if [ ${MODE} = "klquant_whole_infer" ]; then
