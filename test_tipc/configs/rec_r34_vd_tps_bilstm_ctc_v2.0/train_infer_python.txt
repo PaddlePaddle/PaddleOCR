@@ -1,5 +1,5 @@
 ===========================train_params===========================
-model_name:ocr_rec
+model_name:rec_r34_vd_tps_bilstm_ctc_v2.0
 python:python3.7
 gpu_list:0|0,1
 Global.use_gpu:True|True
