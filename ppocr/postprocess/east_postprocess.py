@@ -20,7 +20,6 @@ import numpy as np
 from .locality_aware_nms import nms_locality
 import cv2
 import paddle
-import lanms
 
 import os
 import sys
@@ -61,6 +60,12 @@ class EASTPostProcess(object):
         """
         restore text boxes from score map and geo map
         """
+        try:
+            import lanms
+        except:
+            raise Exception(
+                'you should install lanms by pip3 install lanms-nova')
+
         score_map = score_map[0]
         geo_map = np.swapaxes(geo_map, 1, 0)
         geo_map = np.swapaxes(geo_map, 1, 2)
