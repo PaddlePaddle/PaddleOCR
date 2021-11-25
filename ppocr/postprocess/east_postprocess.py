@@ -20,6 +20,7 @@ import numpy as np
 from .locality_aware_nms import nms_locality
 import cv2
 import paddle
+import lanms
 
 import os
 import sys
@@ -29,6 +30,7 @@ class EASTPostProcess(object):
     """
     The post process for EAST.
     """
+
     def __init__(self,
                  score_thresh=0.8,
                  cover_thresh=0.1,
@@ -38,11 +40,6 @@ class EASTPostProcess(object):
         self.score_thresh = score_thresh
         self.cover_thresh = cover_thresh
         self.nms_thresh = nms_thresh
-        
-        # c++ la-nms is faster, but only support python 3.5
-        self.is_python35 = False
-        if sys.version_info.major == 3 and sys.version_info.minor == 5:
-            self.is_python35 = True
 
     def restore_rectangle_quad(self, origin, geometry):
         """
@@ -79,11 +76,8 @@ class EASTPostProcess(object):
         boxes = np.zeros((text_box_restored.shape[0], 9), dtype=np.float32)
         boxes[:, :8] = text_box_restored.reshape((-1, 8))
         boxes[:, 8] = score_map[xy_text[:, 0], xy_text[:, 1]]
-        if self.is_python35:
-            import lanms
-            boxes = lanms.merge_quadrangle_n9(boxes, nms_thresh)
-        else:
-            boxes = nms_locality(boxes.astype(np.float64), nms_thresh)
+        boxes = lanms.merge_quadrangle_n9(boxes, nms_thresh)
+        # boxes = nms_locality(boxes.astype(np.float64), nms_thresh)
         if boxes.shape[0] == 0:
             return []
         # Here we filter some low score boxes by the average score map, 

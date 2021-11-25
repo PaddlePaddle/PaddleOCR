@@ -190,6 +190,7 @@ def create_predictor(args, mode, logger):
             config.enable_use_gpu(args.gpu_mem, 0)
             if args.use_tensorrt:
                 config.enable_tensorrt_engine(
+                    workspace_size=1 << 30,
                     precision_mode=precision,
                     max_batch_size=args.max_batch_size,
                     min_subgraph_size=args.min_subgraph_size)
@@ -310,10 +311,6 @@ def create_predictor(args, mode, logger):
 
 
 def get_infer_gpuid():
-    cmd = "nvidia-smi"
-    res = os.popen(cmd).readlines()
-    if len(res) == 0:
-        return None
     cmd = "env | grep CUDA_VISIBLE_DEVICES"
     env_cuda = os.popen(cmd).readlines()
     if len(env_cuda) == 0:
