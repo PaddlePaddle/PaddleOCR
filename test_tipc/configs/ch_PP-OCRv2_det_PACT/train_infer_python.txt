@@ -1,5 +1,5 @@
 ===========================train_params===========================
-model_name:ch_PPOCRv2_det
+model_name:PPOCRv2_ocr_det
 python:python3.7
 gpu_list:0|0,1
 Global.use_gpu:True|True
@@ -12,8 +12,8 @@ train_model_name:latest
 train_infer_img_dir:./train_data/icdar2015/text_localization/ch4_test_images/
 null:null
 ##
-trainer:norm_train|pact_train
-norm_train:tools/train.py -c configs/det/ch_PP-OCRv2/ch_PP-OCRv2_det_cml.yml -o 
+trainer:pact_train
+norm_train:null
 pact_train:deploy/slim/quantization/quant.py -c configs/det/ch_PP-OCRv2/ch_PP-OCRv2_det_cml.yml -o
 fpgm_train:null
 distill_train:null
@@ -27,7 +27,7 @@ null:null
 ===========================infer_params===========================
 Global.save_inference_dir:./output/
 Global.pretrained_model:
-norm_export:tools/export_model.py -c configs/det/ch_PP-OCRv2/ch_PP-OCRv2_det_cml.yml -o 
+norm_export:null
 quant_export:deploy/slim/quantization/export_model.py -c configs/det/ch_PP-OCRv2/ch_PP-OCRv2_det_cml.yml -o 
 fpgm_export: 
 distill_export:null

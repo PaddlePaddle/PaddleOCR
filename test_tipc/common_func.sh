@@ -30,6 +30,7 @@ function func_set_params(){
 
 function func_parser_params(){
     strs=$1
+    MODE=$2
     IFS=":"
     array=(${strs})
     key=${array[0]}
