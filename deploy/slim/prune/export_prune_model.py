@@ -30,7 +30,7 @@ from ppocr.modeling.architectures import build_model
 
 from ppocr.postprocess import build_post_process
 from ppocr.metrics import build_metric
-from ppocr.utils.save_load import init_model
+from ppocr.utils.save_load import load_model
 import tools.program as program
 
 
@@ -89,7 +89,7 @@ def main(config, device, logger, vdl_writer):
     logger.info(f"FLOPs after pruning: {flops}")
 
     # load pretrain model
-    pre_best_model_dict = init_model(config, model, logger, None)
+    load_model(config, model)
     metric = program.eval(model, valid_dataloader, post_process_class,
                           eval_class)
     logger.info(f"metric['hmean']: {metric['hmean']}")

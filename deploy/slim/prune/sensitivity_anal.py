@@ -32,7 +32,7 @@ from ppocr.losses import build_loss
 from ppocr.optimizer import build_optimizer
 from ppocr.postprocess import build_post_process
 from ppocr.metrics import build_metric
-from ppocr.utils.save_load import init_model
+from ppocr.utils.save_load import load_model
 import tools.program as program
 
 dist.get_world_size()
@@ -94,7 +94,7 @@ def main(config, device, logger, vdl_writer):
     # build metric
     eval_class = build_metric(config['Metric'])
     # load pretrain model
-    pre_best_model_dict = init_model(config, model, logger, optimizer)
+    pre_best_model_dict = load_model(config, model, optimizer)
 
     logger.info('train dataloader has {} iters, valid dataloader has {} iters'.
                 format(len(train_dataloader), len(valid_dataloader)))

@@ -34,7 +34,7 @@ import paddle
 from ppocr.data import create_operators, transform
 from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
-from ppocr.utils.save_load import init_model, load_dygraph_params
+from ppocr.utils.save_load import load_model
 from ppocr.utils.utility import get_image_file_list
 import tools.program as program
 
@@ -59,7 +59,7 @@ def main():
     # build model
     model = build_model(config['Architecture'])
 
-    _ = load_dygraph_params(config, model, logger, None)
+    load_model(config, model)
     # build post process
     post_process_class = build_post_process(config['PostProcess'])
 

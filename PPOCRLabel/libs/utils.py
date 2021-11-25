@@ -17,6 +17,10 @@ import re
 import sys
 import cv2
 import numpy as np
+import os
+
+__dir__ = os.path.dirname(os.path.abspath(__file__)) # 获取本程序文件路径
+__iconpath__ = os.path.abspath(os.path.join(__dir__, '../resources/icons'))
 
 try:
     from PyQt5.QtGui import *
@@ -29,9 +33,9 @@ except ImportError:
 
 def newIcon(icon, iconSize=None):
     if iconSize is not None:
-        return QIcon(QIcon(':/' + icon).pixmap(iconSize,iconSize))
+        return QIcon(QIcon(__iconpath__ + "/" + icon + ".png").pixmap(iconSize,iconSize))
     else:
-        return QIcon(':/' + icon)
+        return QIcon(__iconpath__ + "/" + icon + ".png")
 
 
 def newButton(text, icon=None, slot=None):

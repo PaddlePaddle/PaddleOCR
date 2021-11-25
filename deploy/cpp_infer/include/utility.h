@@ -50,6 +50,9 @@ public:
     
   static cv::Mat GetRotateCropImage(const cv::Mat &srcimage,
                           std::vector<std::vector<int>> box);
+    
+  static std::vector<int> argsort(const std::vector<float>& array);
+
 };
 
 } // namespace PaddleOCR

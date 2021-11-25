@@ -1,28 +1,27 @@
 Global:
   use_gpu: true
-  epoch_num: 50
+  epoch_num: 400
   log_smooth_window: 20
   print_batch_step: 5
   save_model_dir: ./output/table_mv3/
-  save_epoch_step: 5
+  save_epoch_step: 3
   # evaluation is run every 400 iterations after the 0th iteration
   eval_batch_step: [0, 400]
   cal_metric_during_train: True
-  pretrained_model: 
+  pretrained_model:
   checkpoints: 
   save_inference_dir:
   use_visualdl: False
-  infer_img: doc/imgs_words/ch/word_1.jpg
+  infer_img: doc/table/table.jpg
   # for data or label process
   character_dict_path: ppocr/utils/dict/table_structure_dict.txt
   character_type: en
   max_text_length: 100
-  max_elem_length: 500
+  max_elem_length: 800
   max_cell_num: 500
   infer_mode: False
   process_total_num: 0
   process_cut_num: 0
-
 
 Optimizer:
   name: Adam
@@ -41,13 +40,15 @@ Architecture:
   Backbone:
     name: MobileNetV3
     scale: 1.0
-    model_name: small
-    disable_se: True
+    model_name: large
   Head:
     name: TableAttentionHead
     hidden_size: 256
     l2_decay: 0.00001
     loc_type: 2
+    max_text_length: 100
+    max_elem_length: 800
+    max_cell_num: 500
 
 Loss:
   name: TableAttentionLoss

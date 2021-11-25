@@ -34,10 +34,11 @@ from paddle.jit import to_static
 from ppocr.data import create_operators, transform
 from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
-from ppocr.utils.save_load import init_model
+from ppocr.utils.save_load import load_model
 from ppocr.utils.utility import get_image_file_list
 import tools.program as program
 import cv2
+
 
 def main(config, device, logger, vdl_writer):
     global_config = config['Global']
@@ -53,7 +54,7 @@ def main(config, device, logger, vdl_writer):
 
     model = build_model(config['Architecture'])
 
-    init_model(config, model, logger)
+    load_model(config, model)
 
     # create data ops
     transforms = []
@@ -104,4 +105,3 @@ def main(config, device, logger, vdl_writer):
 if __name__ == '__main__':
     config, device, logger, vdl_writer = program.preprocess()
     main(config, device, logger, vdl_writer)
-

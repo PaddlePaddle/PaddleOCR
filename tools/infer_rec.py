@@ -33,7 +33,7 @@ import paddle
 from ppocr.data import create_operators, transform
 from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
-from ppocr.utils.save_load import init_model
+from ppocr.utils.save_load import load_model
 from ppocr.utils.utility import get_image_file_list
 import tools.program as program
 
@@ -58,7 +58,7 @@ def main():
 
     model = build_model(config['Architecture'])
 
-    init_model(config, model)
+    load_model(config, model)
 
     # create data ops
     transforms = []
@@ -75,9 +75,7 @@ def main():
                     'gsrm_slf_attn_bias1', 'gsrm_slf_attn_bias2'
                 ]
             elif config['Architecture']['algorithm'] == "SAR":
-                op[op_name]['keep_keys'] = [
-                    'image', 'valid_ratio'
-                ]
+                op[op_name]['keep_keys'] = ['image', 'valid_ratio']
             else:
                 op[op_name]['keep_keys'] = ['image']
         transforms.append(op)

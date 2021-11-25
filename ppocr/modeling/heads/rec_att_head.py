@@ -53,7 +53,6 @@ class AttentionHead(nn.Layer):
                 output_hiddens.append(paddle.unsqueeze(outputs, axis=1))
             output = paddle.concat(output_hiddens, axis=1)
             probs = self.generator(output)
-
         else:
             targets = paddle.zeros(shape=[batch_size], dtype="int32")
             probs = None
@@ -75,7 +74,8 @@ class AttentionHead(nn.Layer):
                             probs_step, axis=1)], axis=1)
                 next_input = probs_step.argmax(axis=1)
                 targets = next_input
-
+        if not self.training:
+            probs = paddle.nn.functional.softmax(probs, axis=2)
         return probs
 
 

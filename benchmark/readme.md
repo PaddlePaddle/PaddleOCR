@@ -1,5 +1,5 @@
 
-# PaddleOCR DB/EAST 算法训练benchmark测试
+# PaddleOCR DB/EAST/PSE 算法训练benchmark测试
 
 PaddleOCR/benchmark目录下的文件用于获取并分析训练日志。
 训练采用icdar2015数据集，包括1000张训练图像和500张测试图像。模型配置采用resnet18_vd作为backbone，分别训练batch_size=8和batch_size=16的情况。
@@ -18,7 +18,7 @@ run_det.sh 执行方式如下:
 
 ```
 # cd PaddleOCR/
-bash benchmark/run_det.sh 
+bash benchmark/run_det.sh
 ```
 
 以DB为例，将得到四个日志文件，如下：
@@ -28,7 +28,3 @@ det_res18_db_v2.0_sp_bs8_fp32_1
 det_res18_db_v2.0_mp_bs16_fp32_1
 det_res18_db_v2.0_mp_bs8_fp32_1
 ```
-
-
-
-
