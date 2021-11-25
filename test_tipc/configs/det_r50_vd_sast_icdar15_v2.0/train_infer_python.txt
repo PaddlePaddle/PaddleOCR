@@ -1,5 +1,5 @@
 ===========================train_params===========================
-model_name:sast_icdar15
+model_name:det_r50_vd_sast_icdar15_v2.0
 python:python3.7
 gpu_list:0|0,1
 Global.use_gpu:True|True

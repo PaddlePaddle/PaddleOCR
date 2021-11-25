@@ -1,5 +1,5 @@
 ===========================train_params===========================
-model_name:en_pgnetA
+model_name:en_server_pgnetA
 python:python3.7
 gpu_list:0|0,1
 Global.use_gpu:True|True

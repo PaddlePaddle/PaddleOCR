@@ -1,5 +1,5 @@
 ===========================train_params===========================
-model_name:ocr_server_det
+model_name:ch_ppocr_server_v2.0_det
 python:python3.7
 gpu_list:0|0,1
 Global.use_gpu:True|True
