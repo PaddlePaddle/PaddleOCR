@@ -103,7 +103,7 @@ if [ ${MODE} = "klquant_whole_infer" ]; then
     # parser inference 
     inference_py=$(func_parser_value "${lines[8]}")
     use_gpu_key=$(func_parser_key "${lines[9]}")
-    use_gpu_list=$(func_parser_value "${lines[10]}")
+    use_gpu_list=$(func_parser_value "${lines[9]}")
     use_mkldnn_key=$(func_parser_key "${lines[10]}")
     use_mkldnn_list=$(func_parser_value "${lines[10]}")
     cpu_threads_key=$(func_parser_key "${lines[11]}")
