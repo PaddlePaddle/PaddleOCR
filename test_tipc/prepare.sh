@@ -45,7 +45,7 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/total_text_lite.tar --no-check-certificate
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/en_server_pgnetA.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf en_server_pgnetA.tar && cd ../
-        cd ./train_data && tar xf total_text_lite.tar && ln -s total_text && cd ../
+        cd ./train_data && tar xf total_text_lite.tar && ln -s total_text_lite total_text && cd ../
     fi
     if [ ${model_name} == "det_r50_vd_sast_icdar15_v2.0" ] || [ ${model_name} == "det_r50_vd_sast_totaltext_v2.0" ]; then
         wget -nc -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/ResNet50_vd_ssld_pretrained.pdparams --no-check-certificate
