@@ -1,5 +1,5 @@
 ===========================kl_quant_params===========================
-model_name:PPOCRv2_ocr_det
+model_name:ch_ppocr_mobile_v2.0_det_KL
 python:python3.7
 infer_model:./inference/ch_ppocr_mobile_v2.0_det_infer/
 infer_export:deploy/slim/quantization/quant_kl.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o

@@ -162,7 +162,7 @@ elif [ ${MODE} = "whole_infer" ];then
     fi
 fi
 if [ ${MODE} = "klquant_whole_infer" ]; then
-    if [ ${model_name} = "ch_ppocr_mobile_v2.0_det" ]; then
+    if [ ${model_name} = "ch_ppocr_mobile_v2.0_det_KL" ]; then
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar --no-check-certificate
         wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar  --no-check-certificate
         cd ./inference && tar xf ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_det_data_50.tar && cd ../ 
