@@ -1,9 +1,11 @@
 ===========================ch_ppocr_mobile_v2.0===========================
 model_name:ch_PP-OCRv2
 python:python3.7
+null:null
+null:null
 infer_model:./inference/ch_PP-OCRv2_det_infer/
 infer_export:null
-infer_quant:True
+infer_quant:False
 inference:tools/infer/predict_system.py
 --use_gpu:False|True
 --enable_mkldnn:False|True
