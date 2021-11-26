@@ -62,9 +62,11 @@ def main(config, device, logger, vdl_writer):
     # build metric
     eval_class = build_metric(config['Metric'])
 
+    # eval 缺少参数 model_type
+    model_type = config['Architecture']['model_type']
     def eval_fn():
         metric = program.eval(model, valid_dataloader, post_process_class,
-                              eval_class)
+                              eval_class,model_type)
         logger.info(f"metric['hmean']: {metric['hmean']}")
         return metric['hmean']
 
