@@ -174,6 +174,13 @@ if [ ${MODE} = "klquant_whole_infer" ]; then
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar  --no-check-certificate
         cd ./inference && tar xf ${eval_model_name}.tar && tar xf ch_det_data_50.tar && cd ../
     fi 
+    if [ ${model_name} = "ch_ppocr_mobile_v2.0_rec_KL" ]; then
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar --no-check-certificate
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/rec_inference.tar  --no-check-certificate
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ic15_data.tar --no-check-certificate
+        cd ./train_data/ && tar xf ic15_data.tar && cd ../
+        cd ./inference && tar xf ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf rec_inference.tar &&  cd ../ 
+    fi 
 fi
 
 if [ ${MODE} = "cpp_infer" ];then
