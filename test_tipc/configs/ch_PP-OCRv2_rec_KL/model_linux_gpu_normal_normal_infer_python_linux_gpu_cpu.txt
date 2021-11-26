@@ -1,6 +1,8 @@
 ===========================kl_quant_params===========================
 model_name:PPOCRv2_ocr_rec_kl
 python:python3.7
+Global.pretrained_model:null
+Global.save_inference_dir:null
 infer_model:./inference/ch_PP-OCRv2_rec_infer/
 infer_export:deploy/slim/quantization/quant_kl.py -c test_tipc/configs/ch_PP-OCRv2_rec/ch_PP-OCRv2_rec_distillation.yml -o
 infer_quant:True
