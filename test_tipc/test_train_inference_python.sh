@@ -237,7 +237,7 @@ if [ ${MODE} = "whole_infer" ] || [ ${MODE} = "klquant_whole_infer" ]; then
         fi
         #run inference
         is_quant=${infer_quant_flag[Count]}
-        if [ ${MODE} = "klquant_infer" ]; then
+        if [ ${MODE} = "klquant_whole_infer" ]; then
             is_quant="True"
         fi
         func_inference "${python}" "${inference_py}" "${save_infer_dir}" "${LOG_PATH}" "${infer_img_dir}" ${is_quant}
