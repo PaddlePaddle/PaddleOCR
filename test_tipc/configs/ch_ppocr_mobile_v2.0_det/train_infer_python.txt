@@ -13,7 +13,7 @@ train_infer_img_dir:./train_data/icdar2015/text_localization/ch4_test_images/
 null:null
 ##
 trainer:norm_train
-norm_train:tools/train.py -c test_tipc/configs/ppocr_det_mobile/det_mv3_db.yml -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
+norm_train:tools/train.py -c test_tipc/configs/ch_ppocr_mobile_v2.0/det_mv3_db.yml -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
 pact_train:null
 fpgm_train:null
 distill_train:null
@@ -27,7 +27,7 @@ null:null
 ===========================infer_params===========================
 Global.save_inference_dir:./output/
 Global.pretrained_model:
-norm_export:tools/export_model.py -c test_tipc/configs/ppocr_det_mobile/det_mv3_db.yml -o 
+norm_export:tools/export_model.py -c test_tipc/configs/ch_ppocr_mobile_v2.0/det_mv3_db.yml -o 
 quant_export:null
 fpgm_export:null
 distill_export:null
