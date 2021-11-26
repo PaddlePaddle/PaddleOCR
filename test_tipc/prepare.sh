@@ -160,7 +160,7 @@ elif [ ${MODE} = "whole_infer" ];then
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_db_v2.0_train.tar  --no-check-certificate
         cd ./inference/ && tar xf det_r50_vd_db_v2.0_train.tar && cd ../
     fi
-
+fi
 if [ ${MODE} = "klquant_whole_infer" ]; then
     if [ ${model_name} = "ch_ppocr_mobile_v2.0_det" ]; then
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar --no-check-certificate
