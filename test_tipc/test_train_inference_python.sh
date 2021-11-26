@@ -336,7 +336,7 @@ else
 
                 set_eval_pretrain=$(func_set_params "${pretrain_model_key}" "${save_log}/${train_model_name}")
                 # save norm trained models to set pretrain for pact training and fpgm training 
-                if [ ${trainer} = ${trainer_norm} ] && [ ${nodes} -le 1]; then
+                if [ ${trainer} = ${trainer_norm} ] && [ ${nodes} -le 1 ]; then
                     load_norm_train_model=${set_eval_pretrain}
                 fi
                 # run eval 
