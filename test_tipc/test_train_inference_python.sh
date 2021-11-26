@@ -207,7 +207,7 @@ function func_inference(){
     done
 }
 
-if [ ${MODE} = "whole_infer" ] || [ ${MODE} = "klquant_whole_infer" ]; then
+if [ ${MODE} = "whole_infer" ] || [ ${MODE} = "klquant_whole_infer" ] || [ ${MODE} = "system_infer" ] ; then
     GPUID=$3
     if [ ${#GPUID} -le 0 ];then
         env=" "
