@@ -60,11 +60,6 @@ class EASTPostProcess(object):
         """
         restore text boxes from score map and geo map
         """
-        try:
-            import lanms
-        except:
-            raise Exception(
-                'you should install lanms by pip3 install lanms-nova')
 
         score_map = score_map[0]
         geo_map = np.swapaxes(geo_map, 1, 0)
@@ -81,8 +76,15 @@ class EASTPostProcess(object):
         boxes = np.zeros((text_box_restored.shape[0], 9), dtype=np.float32)
         boxes[:, :8] = text_box_restored.reshape((-1, 8))
         boxes[:, 8] = score_map[xy_text[:, 0], xy_text[:, 1]]
-        boxes = lanms.merge_quadrangle_n9(boxes, nms_thresh)
-        # boxes = nms_locality(boxes.astype(np.float64), nms_thresh)
+
+        try:
+            import lanms
+            boxes = lanms.merge_quadrangle_n9(boxes, nms_thresh)
+        except:
+            print(
+                'you should install lanms by pip3 install lanms-nova to speed up nms_locality'
+            )
+            boxes = nms_locality(boxes.astype(np.float64), nms_thresh)
         if boxes.shape[0] == 0:
             return []
         # Here we filter some low score boxes by the average score map, 
