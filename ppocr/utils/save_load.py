@@ -57,7 +57,7 @@ def load_model(config, model, optimizer=None):
         if checkpoints.endswith('.pdparams'):
             checkpoints = checkpoints.replace('.pdparams', '')
         assert os.path.exists(checkpoints + ".pdparams"), \
-            "The {}.pdparams is not exists!".format(checkpoints)
+            "The {}.pdparams does not exists!".format(checkpoints)
 
         # load params from trained model
         params = paddle.load(checkpoints + '.pdparams')
@@ -106,7 +106,7 @@ def load_pretrained_params(model, path):
     if path.endswith('.pdparams'):
         path = path.replace('.pdparams', '')
     assert os.path.exists(path + ".pdparams"), \
-        "The {}.pdparams is not exists!".format(path)
+        "The {}.pdparams does not exists!".format(path)
 
     params = paddle.load(path + '.pdparams')
     state_dict = model.state_dict()
