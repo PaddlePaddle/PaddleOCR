@@ -93,12 +93,11 @@ void CrnnResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img, float wh_ratio,
 
   imgW = int(32 * wh_ratio);
 
-  float ratio = float(img.cols) / float(img.rows);
   int resize_w, resize_h;
-  if (ceilf(imgH * ratio) > imgW)
+  if (ceilf(imgH * wh_ratio) > imgW)
     resize_w = imgW;
   else
-    resize_w = int(ceilf(imgH * ratio));
+    resize_w = int(ceilf(imgH * wh_ratio));
 
   cv::resize(img, resize_img, cv::Size(resize_w, imgH), 0.f, 0.f,
              cv::INTER_LINEAR);
