@@ -90,8 +90,9 @@ void CrnnResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img, float wh_ratio,
   imgC = rec_image_shape[0];
   imgH = rec_image_shape[1];
   imgW = rec_image_shape[2];
-
-  imgW = int(32 * wh_ratio);
+  float max_wh_radio=imgW * 1.0 / imgH;
+  max_wh_radio = std::max(max_wh_radio,wh_ratio);
+  imgW = int(32 * max_wh_radio);
 
   int resize_w, resize_h;
   if (ceilf(imgH * wh_ratio) > imgW)
