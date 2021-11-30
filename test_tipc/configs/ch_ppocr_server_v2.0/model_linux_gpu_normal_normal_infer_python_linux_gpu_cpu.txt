@@ -1,4 +1,4 @@
-===========================ch_ppocr_mobile_v2.0===========================
+===========================ch_ppocr_server_v2.0===========================
 model_name:ch_ppocr_server_v2.0
 python:python3.7
 null:null
