@@ -432,7 +432,7 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs_en/img_10.jpg" --d
 |  use_gpu | bool | True | 是否使用GPU进行预测 |
 |  ir_optim | bool | True | 是否对计算图进行分析与优化，开启后可以加速预测过程 |
 |  use_tensorrt | bool | False | 是否开启tensorrt |
-|  min_subgraph_size | int | 15 | trt中最小子图size |
+|  min_subgraph_size | int | 15 | tensorrt中最小子图size，当子图的size大于该值时，才会尝试对该子图使用trt engine计算 |
 |  precision | str | fp32 | 预测的精度，支持`fp32`, `fp16`, `int8` 3种输入 |
 |  enable_mkldnn | bool | True | 是否开启mkldnn |
 |  cpu_threads | int | 10 | 开启mkldnn时，cpu预测的线程数 |
