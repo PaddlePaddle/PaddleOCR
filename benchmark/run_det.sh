@@ -15,10 +15,10 @@ model_mode_list=(det_res18_db_v2.0 det_r50_vd_east det_r50_vd_pse)
 fp_item_list=(fp32)
 for model_mode in ${model_mode_list[@]}; do
       for fp_item in ${fp_item_list[@]}; do
-          if [ ${model_mode} == "det_res18_db_v2.0" ]; then
-              bs_list=(8 16)
-          else
+          if [ ${model_mode} == "det_r50_vd_east" ]; then
               bs_list=(16)
+          else
+              bs_list=(8 16)
           fi
           for bs_item in ${bs_list[@]}; do
             log_name=ocr_${model_mode}_bs${bs_item}_${fp_item}
