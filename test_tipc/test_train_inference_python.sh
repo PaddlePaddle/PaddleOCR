@@ -89,7 +89,7 @@ infer_key1=$(func_parser_key "${lines[50]}")
 infer_value1=$(func_parser_value "${lines[50]}")
 
 # parser klquant_infer
-if [ ${MODE} = "klquant_whole_infer" ] || [ ${MODE} = "system_infer" ] ; then
+if [ ${MODE} = "klquant_whole_infer" ]; then
     dataline=$(awk 'NR==1, NR==17{print}'  $FILENAME)
     lines=(${dataline})
     model_name=$(func_parser_value "${lines[1]}")
@@ -210,7 +210,7 @@ function func_inference(){
     done
 }
 
-if [ ${MODE} = "whole_infer" ] || [ ${MODE} = "klquant_whole_infer" ] || [ ${MODE} = "system_infer" ] ; then
+if [ ${MODE} = "whole_infer" ] || [ ${MODE} = "klquant_whole_infer" ]; then
     GPUID=$3
     if [ ${#GPUID} -le 0 ];then
         env=" "
