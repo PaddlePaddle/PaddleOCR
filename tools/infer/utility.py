@@ -211,7 +211,7 @@ def create_predictor(args, mode, logger):
                     "nearest_interp_v2_0.tmp_0": [1, 256, 2, 2]
                 }
                 max_input_shape = {
-                    "x": [1, 3, 1280, 1280],
+                    "x": [1, 3, 1536, 1536],
                     "conv2d_92.tmp_0": [1, 120, 400, 400],
                     "conv2d_91.tmp_0": [1, 24, 200, 200],
                     "conv2d_59.tmp_0": [1, 96, 400, 400],
