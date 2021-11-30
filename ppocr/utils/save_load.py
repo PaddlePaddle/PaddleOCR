@@ -67,6 +67,7 @@ def load_model(config, model, optimizer=None):
             if key not in params:
                 logger.warning("{} not in loaded params {} !".format(
                     key, params.keys()))
+                continue
             pre_value = params[key]
             if list(value.shape) == list(pre_value.shape):
                 new_state_dict[key] = pre_value
@@ -76,9 +77,14 @@ def load_model(config, model, optimizer=None):
                     format(key, value.shape, pre_value.shape))
         model.set_state_dict(new_state_dict)
 
-        optim_dict = paddle.load(checkpoints + '.pdopt')
         if optimizer is not None:
-            optimizer.set_state_dict(optim_dict)
+            if os.path.exists(checkpoints + '.pdopt'):
+                optim_dict = paddle.load(checkpoints + '.pdopt')
+                optimizer.set_state_dict(optim_dict)
+            else:
+                logger.warning(
+                    "{}.pdopt is not exists, params of optimizer is not loaded".
+                    format(checkpoints))
 
         if os.path.exists(checkpoints + '.states'):
             with open(checkpoints + '.states', 'rb') as f:

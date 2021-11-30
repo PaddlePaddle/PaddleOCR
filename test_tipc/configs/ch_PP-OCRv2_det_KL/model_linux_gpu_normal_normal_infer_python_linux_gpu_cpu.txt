@@ -1,15 +1,17 @@
 ===========================kl_quant_params===========================
 model_name:PPOCRv2_ocr_det_kl
 python:python3.7
+Global.pretrained_model:null
+Global.save_inference_dir:null
 infer_model:./inference/ch_PP-OCRv2_det_infer/
 infer_export:deploy/slim/quantization/quant_kl.py -c configs/det/ch_PP-OCRv2/ch_PP-OCRv2_det_cml.yml -o
 infer_quant:True
 inference:tools/infer/predict_det.py
---use_gpu:False
---enable_mkldnn:False
+--use_gpu:False|True
+--enable_mkldnn:True
 --cpu_threads:1|6
 --rec_batch_num:1
---use_tensorrt:False
+--use_tensorrt:False|True
 --precision:int8
 --det_model_dir:
 --image_dir:./inference/ch_det_data_50/all-sum-510/

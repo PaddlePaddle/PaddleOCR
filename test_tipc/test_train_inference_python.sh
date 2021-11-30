@@ -90,36 +90,38 @@ infer_value1=$(func_parser_value "${lines[50]}")
 
 # parser klquant_infer
 if [ ${MODE} = "klquant_whole_infer" ]; then
-    dataline=$(awk 'NR==1 NR==17{print}'  $FILENAME)
+    dataline=$(awk 'NR==1, NR==17{print}'  $FILENAME)
     lines=(${dataline})
     model_name=$(func_parser_value "${lines[1]}")
     python=$(func_parser_value "${lines[2]}")
+    export_weight=$(func_parser_key "${lines[3]}")
+    save_infer_key=$(func_parser_key "${lines[4]}")
     # parser inference model 
-    infer_model_dir_list=$(func_parser_value "${lines[3]}")
-    infer_export_list=$(func_parser_value "${lines[4]}")
-    infer_is_quant=$(func_parser_value "${lines[5]}")
+    infer_model_dir_list=$(func_parser_value "${lines[5]}")
+    infer_export_list=$(func_parser_value "${lines[6]}")
+    infer_is_quant=$(func_parser_value "${lines[7]}")
     # parser inference 
-    inference_py=$(func_parser_value "${lines[6]}")
-    use_gpu_key=$(func_parser_key "${lines[7]}")
-    use_gpu_list=$(func_parser_value "${lines[7]}")
-    use_mkldnn_key=$(func_parser_key "${lines[8]}")
-    use_mkldnn_list=$(func_parser_value "${lines[8]}")
-    cpu_threads_key=$(func_parser_key "${lines[9]}")
-    cpu_threads_list=$(func_parser_value "${lines[9]}")
-    batch_size_key=$(func_parser_key "${lines[10]}")
-    batch_size_list=$(func_parser_value "${lines[10]}")
-    use_trt_key=$(func_parser_key "${lines[11]}")
-    use_trt_list=$(func_parser_value "${lines[11]}")
-    precision_key=$(func_parser_key "${lines[12]}")
-    precision_list=$(func_parser_value "${lines[12]}")
-    infer_model_key=$(func_parser_key "${lines[13]}")
-    image_dir_key=$(func_parser_key "${lines[14]}")
-    infer_img_dir=$(func_parser_value "${lines[14]}")
-    save_log_key=$(func_parser_key "${lines[15]}")
-    benchmark_key=$(func_parser_key "${lines[16]}")
-    benchmark_value=$(func_parser_value "${lines[16]}")
-    infer_key1=$(func_parser_key "${lines[17]}")
-    infer_value1=$(func_parser_value "${lines[17]}")
+    inference_py=$(func_parser_value "${lines[8]}")
+    use_gpu_key=$(func_parser_key "${lines[9]}")
+    use_gpu_list=$(func_parser_value "${lines[9]}")
+    use_mkldnn_key=$(func_parser_key "${lines[10]}")
+    use_mkldnn_list=$(func_parser_value "${lines[10]}")
+    cpu_threads_key=$(func_parser_key "${lines[11]}")
+    cpu_threads_list=$(func_parser_value "${lines[11]}")
+    batch_size_key=$(func_parser_key "${lines[12]}")
+    batch_size_list=$(func_parser_value "${lines[12]}")
+    use_trt_key=$(func_parser_key "${lines[13]}")
+    use_trt_list=$(func_parser_value "${lines[13]}")
+    precision_key=$(func_parser_key "${lines[14]}")
+    precision_list=$(func_parser_value "${lines[14]}")
+    infer_model_key=$(func_parser_key "${lines[15]}")
+    image_dir_key=$(func_parser_key "${lines[16]}")
+    infer_img_dir=$(func_parser_value "${lines[16]}")
+    save_log_key=$(func_parser_key "${lines[17]}")
+    benchmark_key=$(func_parser_key "${lines[18]}")
+    benchmark_value=$(func_parser_value "${lines[18]}")
+    infer_key1=$(func_parser_key "${lines[19]}")
+    infer_value1=$(func_parser_value "${lines[19]}")
 fi
 
 LOG_PATH="./test_tipc/output"
@@ -235,7 +237,7 @@ if [ ${MODE} = "whole_infer" ] || [ ${MODE} = "klquant_whole_infer" ]; then
         fi
         #run inference
         is_quant=${infer_quant_flag[Count]}
-        if [ ${MODE} = "klquant_infer" ]; then
+        if [ ${MODE} = "klquant_whole_infer" ]; then
             is_quant="True"
         fi
         func_inference "${python}" "${inference_py}" "${save_infer_dir}" "${LOG_PATH}" "${infer_img_dir}" ${is_quant}
