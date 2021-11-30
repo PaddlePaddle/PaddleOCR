@@ -1,8 +1,6 @@
 ===========================ch_ppocr_server_v2.0===========================
 model_name:ch_ppocr_server_v2.0
 python:python3.7
-null:null
-null:null
 infer_model:./inference/ch_ppocr_server_v2.0_det_infer/
 infer_export:null
 infer_quant:True

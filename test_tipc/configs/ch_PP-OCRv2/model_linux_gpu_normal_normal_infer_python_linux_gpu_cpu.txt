@@ -1,8 +1,6 @@
 ===========================ch_PP-OCRv2===========================
 model_name:ch_PP-OCRv2
 python:python3.7
-null:null
-null:null
 infer_model:./inference/ch_PP-OCRv2_det_infer/
 infer_export:null
 infer_quant:False
