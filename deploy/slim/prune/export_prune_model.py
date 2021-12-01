@@ -52,12 +52,17 @@ def main(config, device, logger, vdl_writer):
         config['Architecture']["Head"]['out_channels'] = char_num
     model = build_model(config['Architecture'])
 
-    flops = paddle.flops(model, [1, 3, 640, 640])
-    logger.info(f"FLOPs before pruning: {flops}")
+    if config['Architecture']['model_type'] == 'det':
+        input_shape = [1, 3, 640, 640]
+    elif config['Architecture']['model_type'] == 'rec':
+        input_shape = [1, 3, 32, 320]
+
+    flops = paddle.flops(model, input_shape)
+    logger.info("FLOPs before pruning: {}".format(flops))
 
     from paddleslim.dygraph import FPGMFilterPruner
     model.train()
-    pruner = FPGMFilterPruner(model, [1, 3, 640, 640])
+    pruner = FPGMFilterPruner(model, input_shape)
 
     # build metric
     eval_class = build_metric(config['Metric'])
@@ -65,8 +70,13 @@ def main(config, device, logger, vdl_writer):
     def eval_fn():
         metric = program.eval(model, valid_dataloader, post_process_class,
                               eval_class)
-        logger.info(f"metric['hmean']: {metric['hmean']}")
-        return metric['hmean']
+        if config['Architecture']['model_type'] == 'det':
+            main_indicator = 'hmean'
+        else:
+            main_indicator = 'acc'
+        logger.info("metric[{}]: {}".format(main_indicator, metric[
+            main_indicator]))
+        return metric[main_indicator]
 
     params_sensitive = pruner.sensitive(
         eval_func=eval_fn,
@@ -81,18 +91,22 @@ def main(config, device, logger, vdl_writer):
     # calculate pruned params's ratio
     params_sensitive = pruner._get_ratios_by_loss(params_sensitive, loss=0.02)
     for key in params_sensitive.keys():
-        logger.info(f"{key}, {params_sensitive[key]}")
+        logger.info("{}, {}".format(key, params_sensitive[key]))
 
     plan = pruner.prune_vars(params_sensitive, [0])
 
-    flops = paddle.flops(model, [1, 3, 640, 640])
-    logger.info(f"FLOPs after pruning: {flops}")
+    flops = paddle.flops(model, input_shape)
+    logger.info("FLOPs after pruning: {}".format(flops))
 
     # load pretrain model
     load_model(config, model)
     metric = program.eval(model, valid_dataloader, post_process_class,
                           eval_class)
-    logger.info(f"metric['hmean']: {metric['hmean']}")
+    if config['Architecture']['model_type'] == 'det':
+        main_indicator = 'hmean'
+    else:
+        main_indicator = 'acc'
+    logger.info("metric['']: {}".format(main_indicator, metric[main_indicator]))
 
     # start export model
     from paddle.jit import to_static

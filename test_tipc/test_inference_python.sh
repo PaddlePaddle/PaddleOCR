@@ -6,7 +6,7 @@ FILENAME=$1
 # MODE be one of ['whole_infer']
 MODE=$2
 
-dataline=$(awk 'NR==1, NR==17{print}'  $FILENAME)
+dataline=$(awk 'NR==1, NR==20{print}'  $FILENAME)
 
 # parser params
 IFS=$'\n'
@@ -14,7 +14,6 @@ lines=(${dataline})
 
 model_name=$(func_parser_value "${lines[1]}")
 python=$(func_parser_value "${lines[2]}")
-
 
 infer_model_dir_list=$(func_parser_value "${lines[3]}")
 infer_export_list=$(func_parser_value "${lines[4]}")
@@ -43,14 +42,11 @@ benchmark_value=$(func_parser_value "${lines[16]}")
 infer_key1=$(func_parser_key "${lines[17]}")
 infer_value1=$(func_parser_value "${lines[17]}")
 
-echo "DEBUG"
-echo "${lines[16]}"
-echo "line17" ${lines[17]}
+
 
 LOG_PATH="./test_tipc/output"
 mkdir -p ${LOG_PATH}
 status_log="${LOG_PATH}/results_python.log"
-
 
 
 function func_inference(){
@@ -61,7 +57,6 @@ function func_inference(){
     _log_path=$4
     _img_dir=$5
     _flag_quant=$6
-    echo "FUCNTION "
     # inference 
     for use_gpu in ${use_gpu_list[*]}; do
         if [ ${use_gpu} = "False" ] || [ ${use_gpu} = "cpu" ]; then
@@ -89,8 +84,6 @@ function func_inference(){
                             set_infer_params0=$(func_set_params "${rec_model_key}" "${rec_model_value}")
                             set_infer_params1=$(func_set_params "${infer_key1}" "${infer_value1}")
                             command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_model_dir} ${set_batchsize} ${set_infer_params0} ${set_infer_data} ${set_benchmark} ${set_precision} ${set_infer_params1} > ${_save_log_path} 2>&1 "
-                            echo "before cpu command"
-                            echo $command
                             eval $command
                             last_status=${PIPESTATUS[0]}
                             eval "cat ${_save_log_path}"
@@ -122,7 +115,6 @@ function func_inference(){
                         set_infer_params0=$(func_set_params "${save_log_key}" "${save_log_value}")
                         set_infer_params1=$(func_set_params "${infer_key1}" "${infer_value1}")
                         command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${set_tensorrt} ${set_precision} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} ${set_infer_params1} ${set_infer_params0} > ${_save_log_path} 2>&1 "
-                        echo "before gpu command"
                         eval $command
                         last_status=${PIPESTATUS[0]}
                         eval "cat ${_save_log_path}"
@@ -150,9 +142,7 @@ if [ ${MODE} = "whole_infer" ]; then
     IFS="|"
     infer_run_exports=(${infer_export_list})
     infer_quant_flag=(${infer_is_quant})
-    echo "DEBUG2"
     for infer_model in ${infer_model_dir_list[*]}; do
-        echo "DEBUG#"
         # run export
         if [ ${infer_run_exports[Count]} != "null" ];then
             save_infer_dir=$(dirname $infer_model)
@@ -160,14 +150,12 @@ if [ ${MODE} = "whole_infer" ]; then
             set_save_infer_key=$(func_set_params "${save_infer_key}" "${save_infer_dir}")
             export_cmd="${python} ${infer_run_exports[Count]} ${set_export_weight} ${set_save_infer_key}"
             echo ${infer_run_exports[Count]} 
-            echo  $export_cmd
             eval $export_cmd
             status_export=$?
             status_check $status_export "${export_cmd}" "${status_log}"
         else
             save_infer_dir=${infer_model}
         fi
-        echo "FUCK@"
         #run inference
         is_quant=${infer_quant_flag[Count]}
         if [ ${MODE} = "klquant_infer" ]; then

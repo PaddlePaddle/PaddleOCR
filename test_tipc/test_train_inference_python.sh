@@ -89,7 +89,7 @@ infer_key1=$(func_parser_key "${lines[50]}")
 infer_value1=$(func_parser_value "${lines[50]}")
 
 # parser klquant_infer
-if [ ${MODE} = "klquant_whole_infer" ] || [ ${MODE} = "system_infer" ] ; then
+if [ ${MODE} = "klquant_whole_infer" ]; then
     dataline=$(awk 'NR==1, NR==17{print}'  $FILENAME)
     lines=(${dataline})
     model_name=$(func_parser_value "${lines[1]}")
@@ -210,7 +210,7 @@ function func_inference(){
     done
 }
 
-if [ ${MODE} = "whole_infer" ] || [ ${MODE} = "klquant_whole_infer" ] || [ ${MODE} = "system_infer" ] ; then
+if [ ${MODE} = "whole_infer" ] || [ ${MODE} = "klquant_whole_infer" ]; then
     GPUID=$3
     if [ ${#GPUID} -le 0 ];then
         env=" "
@@ -231,7 +231,7 @@ if [ ${MODE} = "whole_infer" ] || [ ${MODE} = "klquant_whole_infer" ] || [ ${MOD
             set_save_infer_key=$(func_set_params "${save_infer_key}" "${save_infer_dir}")
             export_cmd="${python} ${infer_run_exports[Count]} ${set_export_weight} ${set_save_infer_key}"
             echo ${infer_run_exports[Count]} 
-            echo  $export_cmd
+            echo $export_cmd
             eval $export_cmd
             status_export=$?
             status_check $status_export "${export_cmd}" "${status_log}"
@@ -364,7 +364,7 @@ else
                     #run inference
                     eval $env
                     save_infer_path="${save_log}"
-                    if [ ${inference_dir} != "null" ] && [ ${inference_dir} != '##' ]; then
+                    if [[ ${inference_dir} != "null" ]] && [[ ${inference_dir} != '##' ]]; then
                         infer_model_dir="${save_infer_path}/${inference_dir}"
                     else
                         infer_model_dir=${save_infer_path}
