@@ -211,7 +211,7 @@ def create_predictor(args, mode, logger):
                     "nearest_interp_v2_0.tmp_0": [1, 256, 2, 2]
                 }
                 max_input_shape = {
-                    "x": [1, 3, 1280, 1280],
+                    "x": [1, 3, 1536, 1536],
                     "conv2d_92.tmp_0": [1, 120, 400, 400],
                     "conv2d_91.tmp_0": [1, 24, 200, 200],
                     "conv2d_59.tmp_0": [1, 96, 400, 400],
@@ -261,7 +261,7 @@ def create_predictor(args, mode, logger):
                 opt_input_shape.update(opt_pact_shape)
             elif mode == "rec":
                 min_input_shape = {"x": [1, 3, 32, 10]}
-                max_input_shape = {"x": [args.rec_batch_num, 3, 32, 1024]}
+                max_input_shape = {"x": [args.rec_batch_num, 3, 32, 1536]}
                 opt_input_shape = {"x": [args.rec_batch_num, 3, 32, 320]}
             elif mode == "cls":
                 min_input_shape = {"x": [1, 3, 48, 10]}
