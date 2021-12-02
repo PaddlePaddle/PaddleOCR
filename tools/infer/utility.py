@@ -20,6 +20,7 @@ import numpy as np
 import json
 from PIL import Image, ImageDraw, ImageFont
 import math
+import paddle
 from paddle import inference
 import time
 from ppocr.utils.logging import get_logger
@@ -286,11 +287,17 @@ def create_predictor(args, mode, logger):
 
 
 def get_infer_gpuid():
-    cmd = "nvidia-smi"
+    if not paddle.fluid.core.is_compiled_with_rocm():
+        cmd = "nvidia-smi"
+    else:
+        cmd = "rocm-smi"
     res = os.popen(cmd).readlines()
     if len(res) == 0:
         return None
-    cmd = "env | grep CUDA_VISIBLE_DEVICES"
+    if not paddle.fluid.core.is_compiled_with_rocm():
+        cmd = "env | grep CUDA_VISIBLE_DEVICES"
+    else:
+        cmd = "env | grep HIP_VISIBLE_DEVICES"
     env_cuda = os.popen(cmd).readlines()
     if len(env_cuda) == 0:
         return 0
