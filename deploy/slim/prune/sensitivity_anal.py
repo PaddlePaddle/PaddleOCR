@@ -73,13 +73,18 @@ def main(config, device, logger, vdl_writer):
         char_num = len(getattr(post_process_class, 'character'))
         config['Architecture']["Head"]['out_channels'] = char_num
     model = build_model(config['Architecture'])
+    if config['Architecture']['model_type'] == 'det':
+        input_shape = [1, 3, 640, 640]
+    elif config['Architecture']['model_type'] == 'rec':
+        input_shape = [1, 3, 32, 320]
+    flops = paddle.flops(model, input_shape)
 
-    flops = paddle.flops(model, [1, 3, 640, 640])
     logger.info("FLOPs before pruning: {}".format(flops))
 
     from paddleslim.dygraph import FPGMFilterPruner
     model.train()
-    pruner = FPGMFilterPruner(model, [1, 3, 640, 640])
+
+    pruner = FPGMFilterPruner(model, input_shape)
 
     # build loss
     loss_class = build_loss(config['Loss'])
@@ -107,8 +112,14 @@ def main(config, device, logger, vdl_writer):
     def eval_fn():
         metric = program.eval(model, valid_dataloader, post_process_class,
                               eval_class, False)
-        logger.info("metric['hmean']: {}".format(metric['hmean']))
-        return metric['hmean']
+        if config['Architecture']['model_type'] == 'det':
+            main_indicator = 'hmean'
+        else:
+            main_indicator = 'acc'
+
+        logger.info("metric[{}]: {}".format(main_indicator, metric[
+            main_indicator]))
+        return metric[main_indicator]
 
     run_sensitive_analysis = False
     """
@@ -149,7 +160,7 @@ def main(config, device, logger, vdl_writer):
 
     plan = pruner.prune_vars(params_sensitive, [0])
 
-    flops = paddle.flops(model, [1, 3, 640, 640])
+    flops = paddle.flops(model, input_shape)
     logger.info("FLOPs after pruning: {}".format(flops))
 
     # start train

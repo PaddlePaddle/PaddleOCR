@@ -20,12 +20,12 @@ C++预测功能测试的主程序为`test_inference_cpp.sh`，可以测试基于
 先运行`prepare.sh`准备数据和模型，然后运行`test_inference_cpp.sh`进行测试，最终在```test_tipc/output```目录下生成`cpp_infer_*.log`后缀的日志文件。
 
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile/model_linux_gpu_normal_normal_infer_cpp_linux_gpu_cpu.txt "cpp_infer"
+bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_linux_gpu_normal_normal_infer_cpp_linux_gpu_cpu.txt "cpp_infer"
 
 # 用法1:
-bash test_tipc/test_inference_cpp.sh test_tipc/configs/ppocr_det_mobile/model_linux_gpu_normal_normal_infer_cpp_linux_gpu_cpu.txt
+bash test_tipc/test_inference_cpp.sh test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_linux_gpu_normal_normal_infer_cpp_linux_gpu_cpu.txt
 # 用法2: 指定GPU卡预测，第三个传入参数为GPU卡号
-bash test_tipc/test_inference_cpp.sh test_tipc/configs/ppocr_det_mobile/model_linux_gpu_normal_normal_infer_cpp_linux_gpu_cpu.txt '1'
+bash test_tipc/test_inference_cpp.sh test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_linux_gpu_normal_normal_infer_cpp_linux_gpu_cpu.txt '1'
 ```  
 
 运行预测指令后，在`test_tipc/output`文件夹下自动会保存运行日志，包括以下文件：

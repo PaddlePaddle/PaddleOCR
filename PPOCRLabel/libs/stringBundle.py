@@ -60,14 +60,14 @@ class StringBundle:
 
     def __createLookupFallbackList(self, localeStr):
         resultPaths = []
-        basePath = "\strings"
+        basePath = "\strings" if os.name == 'nt' else ":/strings"
         resultPaths.append(basePath)
         if localeStr is not None:
             # Don't follow standard BCP47. Simple fallback
             tags = re.split('[^a-zA-Z]', localeStr)
             for tag in tags:
                 lastPath = resultPaths[-1]
-                resultPaths[-1] = lastPath + '-' + tag
+                resultPaths.append(lastPath + '-' + tag)
             resultPaths[-1] = __dirpath__ + resultPaths[-1] + ".properties"
 
         return resultPaths

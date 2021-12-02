@@ -91,7 +91,7 @@ class TextRecognizer(object):
                 time_keys=[
                     'preprocess_time', 'inference_time', 'postprocess_time'
                 ],
-                warmup=2,
+                warmup=0,
                 logger=logger)
 
     def resize_norm_img(self, img, max_wh_ratio):

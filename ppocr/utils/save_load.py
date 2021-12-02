@@ -54,14 +54,37 @@ def load_model(config, model, optimizer=None):
     pretrained_model = global_config.get('pretrained_model')
     best_model_dict = {}
     if checkpoints:
-        if checkpoints.endswith('pdparams'):
+        if checkpoints.endswith('.pdparams'):
             checkpoints = checkpoints.replace('.pdparams', '')
-        assert os.path.exists(checkpoints + ".pdopt"), \
-            f"The {checkpoints}.pdopt does not exists!"
-        load_pretrained_params(model, checkpoints)
-        optim_dict = paddle.load(checkpoints + '.pdopt')
+        assert os.path.exists(checkpoints + ".pdparams"), \
+            "The {}.pdparams does not exists!".format(checkpoints)
+
+        # load params from trained model
+        params = paddle.load(checkpoints + '.pdparams')
+        state_dict = model.state_dict()
+        new_state_dict = {}
+        for key, value in state_dict.items():
+            if key not in params:
+                logger.warning("{} not in loaded params {} !".format(
+                    key, params.keys()))
+                continue
+            pre_value = params[key]
+            if list(value.shape) == list(pre_value.shape):
+                new_state_dict[key] = pre_value
+            else:
+                logger.warning(
+                    "The shape of model params {} {} not matched with loaded params shape {} !".
+                    format(key, value.shape, pre_value.shape))
+        model.set_state_dict(new_state_dict)
+
         if optimizer is not None:
-            optimizer.set_state_dict(optim_dict)
+            if os.path.exists(checkpoints + '.pdopt'):
+                optim_dict = paddle.load(checkpoints + '.pdopt')
+                optimizer.set_state_dict(optim_dict)
+            else:
+                logger.warning(
+                    "{}.pdopt is not exists, params of optimizer is not loaded".
+                    format(checkpoints))
 
         if os.path.exists(checkpoints + '.states'):
             with open(checkpoints + '.states', 'rb') as f:
@@ -80,10 +103,10 @@ def load_model(config, model, optimizer=None):
 
 def load_pretrained_params(model, path):
     logger = get_logger()
-    if path.endswith('pdparams'):
+    if path.endswith('.pdparams'):
         path = path.replace('.pdparams', '')
     assert os.path.exists(path + ".pdparams"), \
-        f"The {path}.pdparams does not exists!"
+        "The {}.pdparams does not exists!".format(path)
 
     params = paddle.load(path + '.pdparams')
     state_dict = model.state_dict()
@@ -92,11 +115,11 @@ def load_pretrained_params(model, path):
         if list(state_dict[k1].shape) == list(params[k2].shape):
             new_state_dict[k1] = params[k2]
         else:
-            logger.info(
-                f"The shape of model params {k1} {state_dict[k1].shape} not matched with loaded params {k2} {params[k2].shape} !"
-            )
+            logger.warning(
+                "The shape of model params {} {} not matched with loaded params {} {} !".
+                format(k1, state_dict[k1].shape, k2, params[k2].shape))
     model.set_state_dict(new_state_dict)
-    logger.info(f"load pretrain successful from {path}")
+    logger.info("load pretrain successful from {}".format(path))
     return model
 
 

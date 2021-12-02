@@ -20,10 +20,10 @@ train_use_gpu_value=$(func_parser_value "${lines[4]}")
 autocast_list=$(func_parser_value "${lines[5]}")
 autocast_key=$(func_parser_key "${lines[5]}")
 epoch_key=$(func_parser_key "${lines[6]}")
-epoch_num=$(func_parser_params "${lines[6]}")
+epoch_num=$(func_parser_params "${lines[6]}" "${MODE}")
 save_model_key=$(func_parser_key "${lines[7]}")
 train_batch_key=$(func_parser_key "${lines[8]}")
-train_batch_value=$(func_parser_params "${lines[8]}")
+train_batch_value=$(func_parser_params "${lines[8]}" "${MODE}")
 pretrain_model_key=$(func_parser_key "${lines[9]}")
 pretrain_model_value=$(func_parser_value "${lines[9]}")
 train_model_name=$(func_parser_value "${lines[10]}")
@@ -90,34 +90,39 @@ infer_value1=$(func_parser_value "${lines[50]}")
 
 # parser klquant_infer
 if [ ${MODE} = "klquant_whole_infer" ]; then
-    dataline=$(awk 'NR==85 NR==101{print}'  $FILENAME)
+    dataline=$(awk 'NR==1, NR==17{print}'  $FILENAME)
     lines=(${dataline})
+    model_name=$(func_parser_value "${lines[1]}")
+    python=$(func_parser_value "${lines[2]}")
+    export_weight=$(func_parser_key "${lines[3]}")
+    save_infer_key=$(func_parser_key "${lines[4]}")
     # parser inference model 
-    infer_model_dir_list=$(func_parser_value "${lines[1]}")
-    infer_export_list=$(func_parser_value "${lines[2]}")
-    infer_is_quant=$(func_parser_value "${lines[3]}")
+    infer_model_dir_list=$(func_parser_value "${lines[5]}")
+    infer_export_list=$(func_parser_value "${lines[6]}")
+    infer_is_quant=$(func_parser_value "${lines[7]}")
     # parser inference 
-    inference_py=$(func_parser_value "${lines[4]}")
-    use_gpu_key=$(func_parser_key "${lines[5]}")
-    use_gpu_list=$(func_parser_value "${lines[5]}")
-    use_mkldnn_key=$(func_parser_key "${lines[6]}")
-    use_mkldnn_list=$(func_parser_value "${lines[6]}")
-    cpu_threads_key=$(func_parser_key "${lines[7]}")
-    cpu_threads_list=$(func_parser_value "${lines[7]}")
-    batch_size_key=$(func_parser_key "${lines[8]}")
-    batch_size_list=$(func_parser_value "${lines[8]}")
-    use_trt_key=$(func_parser_key "${lines[9]}")
-    use_trt_list=$(func_parser_value "${lines[9]}")
-    precision_key=$(func_parser_key "${lines[10]}")
-    precision_list=$(func_parser_value "${lines[10]}")
-    infer_model_key=$(func_parser_key "${lines[11]}")
-    image_dir_key=$(func_parser_key "${lines[12]}")
-    infer_img_dir=$(func_parser_value "${lines[12]}")
-    save_log_key=$(func_parser_key "${lines[13]}")
-    benchmark_key=$(func_parser_key "${lines[14]}")
-    benchmark_value=$(func_parser_value "${lines[14]}")
-    infer_key1=$(func_parser_key "${lines[15]}")
-    infer_value1=$(func_parser_value "${lines[15]}")
+    inference_py=$(func_parser_value "${lines[8]}")
+    use_gpu_key=$(func_parser_key "${lines[9]}")
+    use_gpu_list=$(func_parser_value "${lines[9]}")
+    use_mkldnn_key=$(func_parser_key "${lines[10]}")
+    use_mkldnn_list=$(func_parser_value "${lines[10]}")
+    cpu_threads_key=$(func_parser_key "${lines[11]}")
+    cpu_threads_list=$(func_parser_value "${lines[11]}")
+    batch_size_key=$(func_parser_key "${lines[12]}")
+    batch_size_list=$(func_parser_value "${lines[12]}")
+    use_trt_key=$(func_parser_key "${lines[13]}")
+    use_trt_list=$(func_parser_value "${lines[13]}")
+    precision_key=$(func_parser_key "${lines[14]}")
+    precision_list=$(func_parser_value "${lines[14]}")
+    infer_model_key=$(func_parser_key "${lines[15]}")
+    image_dir_key=$(func_parser_key "${lines[16]}")
+    infer_img_dir=$(func_parser_value "${lines[16]}")
+    save_log_key=$(func_parser_key "${lines[17]}")
+    save_log_value=$(func_parser_value "${lines[17]}")
+    benchmark_key=$(func_parser_key "${lines[18]}")
+    benchmark_value=$(func_parser_value "${lines[18]}")
+    infer_key1=$(func_parser_key "${lines[19]}")
+    infer_value1=$(func_parser_value "${lines[19]}")
 fi
 
 LOG_PATH="./test_tipc/output"
@@ -157,8 +162,9 @@ function func_inference(){
                             set_batchsize=$(func_set_params "${batch_size_key}" "${batch_size}")
                             set_cpu_threads=$(func_set_params "${cpu_threads_key}" "${threads}")
                             set_model_dir=$(func_set_params "${infer_model_key}" "${_model_dir}")
+                            set_infer_params0=$(func_set_params "${save_log_key}" "${save_log_value}")
                             set_infer_params1=$(func_set_params "${infer_key1}" "${infer_value1}")
-                            command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} ${set_precision} ${set_infer_params1} > ${_save_log_path} 2>&1 "
+                            command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_model_dir} ${set_batchsize} ${set_infer_params0} ${set_infer_data} ${set_benchmark} ${set_precision} ${set_infer_params1} > ${_save_log_path} 2>&1 "
                             eval $command
                             last_status=${PIPESTATUS[0]}
                             eval "cat ${_save_log_path}"
@@ -187,8 +193,9 @@ function func_inference(){
                         set_tensorrt=$(func_set_params "${use_trt_key}" "${use_trt}")
                         set_precision=$(func_set_params "${precision_key}" "${precision}")
                         set_model_dir=$(func_set_params "${infer_model_key}" "${_model_dir}")
+                        set_infer_params0=$(func_set_params "${save_log_key}" "${save_log_value}")
                         set_infer_params1=$(func_set_params "${infer_key1}" "${infer_value1}")
-                        command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${set_tensorrt} ${set_precision} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} ${set_infer_params1} > ${_save_log_path} 2>&1 "
+                        command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${set_tensorrt} ${set_precision} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} ${set_infer_params1} ${set_infer_params0} > ${_save_log_path} 2>&1 "
                         eval $command
                         last_status=${PIPESTATUS[0]}
                         eval "cat ${_save_log_path}"
@@ -224,7 +231,7 @@ if [ ${MODE} = "whole_infer" ] || [ ${MODE} = "klquant_whole_infer" ]; then
             set_save_infer_key=$(func_set_params "${save_infer_key}" "${save_infer_dir}")
             export_cmd="${python} ${infer_run_exports[Count]} ${set_export_weight} ${set_save_infer_key}"
             echo ${infer_run_exports[Count]} 
-            echo  $export_cmd
+            echo $export_cmd
             eval $export_cmd
             status_export=$?
             status_check $status_export "${export_cmd}" "${status_log}"
@@ -233,7 +240,7 @@ if [ ${MODE} = "whole_infer" ] || [ ${MODE} = "klquant_whole_infer" ]; then
         fi
         #run inference
         is_quant=${infer_quant_flag[Count]}
-        if [ ${MODE} = "klquant_infer" ]; then
+        if [ ${MODE} = "klquant_whole_infer" ]; then
             is_quant="True"
         fi
         func_inference "${python}" "${inference_py}" "${save_infer_dir}" "${LOG_PATH}" "${infer_img_dir}" ${is_quant}
@@ -334,7 +341,7 @@ else
 
                 set_eval_pretrain=$(func_set_params "${pretrain_model_key}" "${save_log}/${train_model_name}")
                 # save norm trained models to set pretrain for pact training and fpgm training 
-                if [ ${trainer} = ${trainer_norm} ] && [ ${nodes} -le 1]; then
+                if [ ${trainer} = ${trainer_norm} ] && [ ${nodes} -le 1 ]; then
                     load_norm_train_model=${set_eval_pretrain}
                 fi
                 # run eval 
@@ -357,7 +364,7 @@ else
                     #run inference
                     eval $env
                     save_infer_path="${save_log}"
-                    if [ ${inference_dir} != "null" ] && [ ${inference_dir} != '##' ]; then
+                    if [[ ${inference_dir} != "null" ]] && [[ ${inference_dir} != '##' ]]; then
                         infer_model_dir="${save_infer_path}/${inference_dir}"
                     else
                         infer_model_dir=${save_infer_path}
