@@ -1,6 +1,6 @@
-# PP-Layout
+# 视觉问答（VQA）
 
-PP-Layout是一个针对图像文本内容进行语义实体识别与关系抽取的OCR工具包，主要特性如下：
+VQA主要特性如下：
 
 - 集成[LayoutXLM](https://arxiv.org/pdf/2104.08836.pdf)模型以及PP-OCR预测引擎。
 - 支持基于多模态方法的语义实体识别 (Semantic Entity Recognition, SER) 以及关系抽取 (Relation Extraction, RE) 任务。基于 SER 任务，可以完成对图像中的文本识别与分类；基于 RE 任务，可以完成对图象中的文本内容的关系提取（比如判断问题对）
@@ -22,7 +22,7 @@ PP-Layout是一个针对图像文本内容进行语义实体识别与关系抽�
 </div>
 
 <div align="center">
-<img src="./images/result_ser/zh_val_1_ser.jpg"  width = "600" />
+<img src="./images/result_ser/zh_val_42_ser.jpg"  width = "600" />
 </div>
 
 其中不同颜色的框表示不同的类别，对于XFUN数据集，有`QUESTION`, `ANSWER`, `HEADER` 3种类别，在OCR检测框的左上方也标出了对应的类别和OCR识别结果。
@@ -53,7 +53,7 @@ python3 -m pip install paddlepaddle==2.2 -i https://mirror.baidu.com/pypi/simple
 更多需求，请参照[安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
 
 
-### 2.2 安装PaddleOCR（包含PP-OCR和PP-Layout）
+### 2.2 安装PaddleOCR（包含 PP-OCR 和 VQA ）
 
 - **（1）pip快速安装PaddleOCR whl包（仅预测）**
 
@@ -61,7 +61,7 @@ python3 -m pip install paddlepaddle==2.2 -i https://mirror.baidu.com/pypi/simple
 pip install "paddleocr>=2.2" # 推荐使用2.2+版本
 ```
 
-- **（2）下载PP-Layout源码（预测+训练）**
+- **（2）下载VQA源码（预测+训练）**
 
 ```bash
 【推荐】git clone https://github.com/PaddlePaddle/PaddleOCR
@@ -82,7 +82,7 @@ pip install -e .
 ```
 
 
-- **（4）安装PP-Layout的`requirements`**
+- **（4）安装VQA的`requirements`**
 
 ```bash
 pip install -r requirements.txt
