@@ -311,7 +311,10 @@ def create_predictor(args, mode, logger):
 
 
 def get_infer_gpuid():
-    cmd = "env | grep CUDA_VISIBLE_DEVICES"
+    if not paddle.fluid.core.is_compiled_with_rocm():
+        cmd = "env | grep CUDA_VISIBLE_DEVICES"
+    else:
+        cmd = "env | grep HIP_VISIBLE_DEVICES"
     env_cuda = os.popen(cmd).readlines()
     if len(env_cuda) == 0:
         return 0
