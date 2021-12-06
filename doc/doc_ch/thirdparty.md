@@ -14,13 +14,22 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 
 ### 1.1 基于PaddleOCR的社区贡献
 
-- 【最新】完整的C#版本标注工具 [FastOCRLabel](https://gitee.com/BaoJianQiang/FastOCRLabel) (@ [包建强](https://gitee.com/BaoJianQiang) )
-- 通用型桌面级即时翻译工具 [DangoOCR离线版](https://github.com/PantsuDango/DangoOCR) (@ [PantsuDango](https://github.com/PantsuDango))
-- 获取OCR识别结果的key-value [paddleOCRCorrectOutputs](https://github.com/yuranusduke/paddleOCRCorrectOutputs) (@ [yuranusduke](https://github.com/yuranusduke))
-- 截屏转文字工具  [scr2txt](https://github.com/lstwzd/scr2txt) (@ [lstwzd](https://github.com/lstwzd))
-- 身份证复印件识别 [id_card_ocr](https://github.com/baseli/id_card_ocr)(@ [baseli](https://github.com/baseli))
-- 能看懂表格图片的数据助手：[Paddle_Table_Image_Reader](https://github.com/thunder95/Paddle_Table_Image_Reader) (@ [thunder95](https://github.com/thunder95]))
-- 英文视频自动生成字幕 [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/1054614?channelType=0&channel=0)( @ [叶月水狐](https://aistudio.baidu.com/aistudio/personalcenter/thirdview/322052))
+- 【最新】 [FastOCRLabel](https://gitee.com/BaoJianQiang/FastOCRLabel)：完整的C#版本标注工具 (@ [包建强](https://gitee.com/BaoJianQiang) )
+
+#### 1.1.1 通用工具
+
+- [DangoOCR离线版](https://github.com/PantsuDango/DangoOCR)：通用型桌面级即时翻译工具 (@ [PantsuDango](https://github.com/PantsuDango))
+- [scr2txt](https://github.com/lstwzd/scr2txt)：截屏转文字工具 (@ [lstwzd](https://github.com/lstwzd))
+- [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/1054614?channelType=0&channel=0)：英文视频自动生成字幕( @ [叶月水狐](https://aistudio.baidu.com/aistudio/personalcenter/thirdview/322052))
+
+#### 1.1.2 垂类场景工具
+
+- [id_card_ocr](https://github.com/baseli/id_card_ocr)：身份证复印件识别(@ [baseli](https://github.com/baseli))
+- [Paddle_Table_Image_Reader](https://github.com/thunder95/Paddle_Table_Image_Reader)：能看懂表格图片的数据助手(@ [thunder95](https://github.com/thunder95]))
+
+#### 1.1.3 前后处理
+
+- [paddleOCRCorrectOutputs](https://github.com/yuranusduke/paddleOCRCorrectOutputs)：获取OCR识别结果的key-value(@ [yuranusduke](https://github.com/yuranusduke))
 
 ### 1.2 为PaddleOCR新增功能
 

@@ -71,6 +71,8 @@ pip3 install opencv-contrib-python-headless==4.2.0.32 # 如果下载过慢请添
 PPOCRLabel --lang ch # 启动
 ```
 
+> 如果上述安装出现问题，可以参考3.6节 错误提示
+
 #### 1.2.2 本地构建whl包并安装
 
 ```bash

@@ -139,7 +139,7 @@ PaddleOCR欢迎大家向repo中积极贡献代码，下面给出一些贡献代�
 
 - 在PaddleOCR的 [GitHub首页](https://github.com/PaddlePaddle/PaddleOCR)，点击左上角 `Fork`  按钮，在你的个人目录下创建 `远程仓库`，比如`https://github.com/{your_name}/PaddleOCR`。
 
-![banner](/Users/zhulingfeng01/OCR/PaddleOCR/doc/banner.png)
+![banner](../banner.png)
 
 - 将 `远程仓库` Clone到本地
 
@@ -230,7 +230,7 @@ pre-commit
 
 重复上述步骤，直到pre-comit格式检查不报错。如下所示。
 
-[![img](https://github.com/PaddlePaddle/PaddleClas/raw/release/2.3/docs/images/quick_start/community/003_precommit_pass.png)](https://github.com/PaddlePaddle/PaddleClas/blob/release/2.3/docs/images/quick_start/community/003_precommit_pass.png)
+![img](../precommit_pass.png)
 
 使用下面的命令完成提交。
 
@@ -258,7 +258,7 @@ git push origin new_branch
 
 点击new pull request，选择本地分支和目标分支，如下图所示。在PR的描述说明中，填写该PR所完成的功能。接下来等待review，如果有需要修改的地方，参照上述步骤更新 origin 中的对应分支即可。
 
-![banner](/Users/zhulingfeng01/OCR/PaddleOCR/doc/pr.png)
+![banner](../pr.png)
 
 #### 3.2.8 签署CLA协议和通过单元测试
 
