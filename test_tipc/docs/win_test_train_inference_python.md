@@ -58,35 +58,35 @@ Windows端基础训练预测功能测试的主程序为`test_train_inference_pyt
 
 - 模式1：lite_train_lite_infer，使用少量数据训练，用于快速验证训练到预测的走通流程，不验证精度和速度；
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/win_ppocr_det_mobile_params.txt 'lite_train_lite_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/win_ppocr_det_mobile_params.txt 'lite_train_lite_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'lite_train_lite_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'lite_train_lite_infer'
 ```  
 
 - 模式2：lite_train_whole_infer，使用少量数据训练，一定量数据预测，用于验证训练后的模型执行预测，预测速度是否合理；
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/win_ppocr_det_mobile_params.txt 'lite_train_whole_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/win_ppocr_det_mobile_params.txt 'lite_train_whole_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'lite_train_whole_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'lite_train_whole_infer'
 ```  
 
 - 模式3：whole_infer，不训练，全量数据预测，走通开源模型评估、动转静，检查inference model预测时间和精度;
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/win_ppocr_det_mobile_params.txt 'whole_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'whole_infer'
 # 用法1:
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/win_ppocr_det_mobile_params.txt 'whole_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'whole_infer'
 # 用法2: 指定GPU卡预测，第三个传入参数为GPU卡号
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/win_ppocr_det_mobile_params.txt 'whole_infer' '1'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'whole_infer' '1'
 ```  
 
 - 模式4：whole_train_whole_infer，CE： 全量数据训练，全量数据预测，验证模型训练精度，预测精度，预测速度；
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/win_ppocr_det_mobile_params.txt 'whole_train_whole_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/win_ppocr_det_mobile_params.txt 'whole_train_whole_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'whole_train_whole_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'whole_train_whole_infer'
 ```  
 
 - 模式5：klquant_whole_infer，测试离线量化；
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/win_ppocr_det_mobile_params.txt 'klquant_whole_infer'
-bash test_tipc/test_train_inference_python.sh test_tipc/configs/win_ppocr_det_mobile_params.txt  'klquant_whole_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det_KL/model_linux_gpu_normal_normal_infer_python_windows_gpu_cpu.txt  'klquant_whole_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det_KL/model_linux_gpu_normal_normal_infer_python_windows_gpu_cpu.txt  'klquant_whole_infer'
 ```
 
 
@@ -138,11 +138,19 @@ python test_tipc/compare_results.py --gt_file=./test_tipc/results/python_*.txt  
 
 #### 运行结果
 
-正常运行效果如下图：
-<img src="compare_right.png" width="1000">
+正常运行效果如下：
+```
+Assert allclose passed! The results of python_infer_cpu_usemkldnn_False_threads_1_batchsize_1.log and ./test_tipc/results/python_ppocr_det_mobile_results_fp32.txt are consistent!
+```
 
 出现不一致结果时的运行输出：
-<img src="compare_wrong.png" width="1000">
+```
+......
+Traceback (most recent call last):
+  File "test_tipc/compare_results.py", line 140, in <module>
+    format(filename, gt_filename))
+ValueError: The results of python_infer_cpu_usemkldnn_False_threads_1_batchsize_1.log and the results of ./test_tipc/results/python_ppocr_det_mobile_results_fp32.txt are inconsistent!
+```
 
 
 ## 3. 更多教程

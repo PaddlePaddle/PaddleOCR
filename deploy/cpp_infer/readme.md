@@ -34,10 +34,10 @@ PaddleOCR模型部署。
 
 * 首先需要从opencv官网上下载在Linux环境下源码编译的包，以opencv3.4.7为例，下载命令如下。
 
-```
+```bash
 cd deploy/cpp_infer
-wget https://github.com/opencv/opencv/archive/3.4.7.tar.gz
-tar -xf 3.4.7.tar.gz
+wget https://paddleocr.bj.bcebos.com/libs/opencv/opencv-3.4.7.tar.gz
+tar -xf opencv-3.4.7.tar.gz
 ```
 
 最终可以在当前目录下看到`opencv-3.4.7/`的文件夹。
@@ -45,12 +45,13 @@ tar -xf 3.4.7.tar.gz
 * 编译opencv，设置opencv源码路径(`root_path`)以及安装路径(`install_path`)。进入opencv源码路径下，按照下面的方式进行编译。
 
 ```shell
-root_path=your_opencv_root_path
+root_path="your_opencv_root_path"
 install_path=${root_path}/opencv3
+build_dir=${root_path}/build
 
-rm -rf build
-mkdir build
-cd build
+rm -rf ${build_dir}
+mkdir ${build_dir}
+cd ${build_dir}
 
 cmake .. \
     -DCMAKE_INSTALL_PREFIX=${install_path} \
@@ -74,6 +75,11 @@ make -j
 make install
 ```
 
+也可以直接修改`tools/build_opencv.sh`的内容，然后直接运行下面的命令进行编译。
+
+```shell
+sh tools/build_opencv.sh
+```
 
 其中`root_path`为下载的opencv源码路径，`install_path`为opencv的安装路径，`make install`完成之后，会在该文件夹下生成opencv头文件和库文件，用于后面的OCR代码编译。
 
@@ -233,12 +239,12 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
     --image_dir=../../doc/imgs/12.jpg
 ```
 
-更多参数如下：
+更多支持的可调节参数解释如下：
 
 - 通用参数
 
 |参数名称|类型|默认参数|意义|
-| --- | --- | --- | --- |
+| :---: | :---: | :---: | :---: |
 |use_gpu|bool|false|是否使用GPU|
 |gpu_id|int|0|GPU id，使用GPU时有效|
 |gpu_mem|int|4000|申请的GPU内存|
@@ -248,7 +254,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 - 检测模型相关
 
 |参数名称|类型|默认参数|意义|
-| --- | --- | --- | --- |
+| :---: | :---: | :---: | :---: |
 |det_model_dir|string|-|检测模型inference model地址|
 |max_side_len|int|960|输入图像长宽大于960时，等比例缩放图像，使得图像最长边为960|
 |det_db_thresh|float|0.3|用于过滤DB预测的二值化图像，设置为0.-0.3对结果影响不明显|
@@ -260,7 +266,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 - 方向分类器相关
 
 |参数名称|类型|默认参数|意义|
-| --- | --- | --- | --- |
+| :---: | :---: | :---: | :---: |
 |use_angle_cls|bool|false|是否使用方向分类器|
 |cls_model_dir|string|-|方向分类器inference model地址|
 |cls_thresh|float|0.9|方向分类器的得分阈值|
@@ -268,7 +274,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 - 识别模型相关
 
 |参数名称|类型|默认参数|意义|
-| --- | --- | --- | --- |
+| :---: | :---: | :---: | :---: |
 |rec_model_dir|string|-|识别模型inference model地址|
 |char_list_file|string|../../ppocr/utils/ppocr_keys_v1.txt|字典文件|
 

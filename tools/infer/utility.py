@@ -96,7 +96,6 @@ def init_args():
     parser.add_argument(
         "--e2e_char_dict_path", type=str, default="./ppocr/utils/ic15_dict.txt")
     parser.add_argument("--e2e_pgnet_valid_set", type=str, default='totaltext')
-    parser.add_argument("--e2e_pgnet_polygon", type=str2bool, default=True)
     parser.add_argument("--e2e_pgnet_mode", type=str, default='fast')
 
     # params for text classifier
@@ -110,7 +109,13 @@ def init_args():
     parser.add_argument("--enable_mkldnn", type=str2bool, default=False)
     parser.add_argument("--cpu_threads", type=int, default=10)
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
-    parser.add_argument("--warmup", type=str2bool, default=True)
+    parser.add_argument("--warmup", type=str2bool, default=False)
+
+    #
+    parser.add_argument(
+        "--draw_img_save_dir", type=str, default="./inference_results")
+    parser.add_argument("--save_crop_res", type=str2bool, default=False)
+    parser.add_argument("--crop_res_save_dir", type=str, default="./output")
 
     # multi-process
     parser.add_argument("--use_mp", type=str2bool, default=False)
@@ -185,6 +190,7 @@ def create_predictor(args, mode, logger):
             config.enable_use_gpu(args.gpu_mem, 0)
             if args.use_tensorrt:
                 config.enable_tensorrt_engine(
+                    workspace_size=1 << 30,
                     precision_mode=precision,
                     max_batch_size=args.max_batch_size,
                     min_subgraph_size=args.min_subgraph_size)
@@ -205,7 +211,7 @@ def create_predictor(args, mode, logger):
                     "nearest_interp_v2_0.tmp_0": [1, 256, 2, 2]
                 }
                 max_input_shape = {
-                    "x": [1, 3, 1280, 1280],
+                    "x": [1, 3, 1536, 1536],
                     "conv2d_92.tmp_0": [1, 120, 400, 400],
                     "conv2d_91.tmp_0": [1, 24, 200, 200],
                     "conv2d_59.tmp_0": [1, 96, 400, 400],
@@ -255,7 +261,7 @@ def create_predictor(args, mode, logger):
                 opt_input_shape.update(opt_pact_shape)
             elif mode == "rec":
                 min_input_shape = {"x": [1, 3, 32, 10]}
-                max_input_shape = {"x": [args.rec_batch_num, 3, 32, 1024]}
+                max_input_shape = {"x": [args.rec_batch_num, 3, 32, 1536]}
                 opt_input_shape = {"x": [args.rec_batch_num, 3, 32, 320]}
             elif mode == "cls":
                 min_input_shape = {"x": [1, 3, 48, 10]}
@@ -305,11 +311,10 @@ def create_predictor(args, mode, logger):
 
 
 def get_infer_gpuid():
-    cmd = "nvidia-smi"
-    res = os.popen(cmd).readlines()
-    if len(res) == 0:
-        return None
-    cmd = "env | grep CUDA_VISIBLE_DEVICES"
+    if not paddle.fluid.core.is_compiled_with_rocm():
+        cmd = "env | grep CUDA_VISIBLE_DEVICES"
+    else:
+        cmd = "env | grep HIP_VISIBLE_DEVICES"
     env_cuda = os.popen(cmd).readlines()
     if len(env_cuda) == 0:
         return 0
