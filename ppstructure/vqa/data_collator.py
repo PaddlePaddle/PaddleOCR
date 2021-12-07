@@ -18,6 +18,10 @@ import numpy as np
 
 
 class DataCollator:
+    """
+    data batch
+    """
+
     def __call__(self, batch):
         data_dict = {}
         to_tensor_keys = []
@@ -32,8 +36,3 @@ class DataCollator:
         for k in to_tensor_keys:
             data_dict[k] = paddle.to_tensor(data_dict[k])
         return data_dict
-
-
-class DataCollatorNoBatch:
-    def __call__(self, batch):
-        return batch[0]

@@ -1,14 +1,14 @@
 # 文档视觉问答（DOC-VQA）
 
-DOC-VQA是VQA任务中的一种，DOC-VQA主要针对文本图像的文字内容提出问题。
+VQA指视觉问答，主要针对图像内容进行提问和回答,DOC-VQA是VQA任务中的一种，DOC-VQA主要针对文本图像的文字内容提出问题。
 
 PP-Structure 里的 DOC-VQA算法基于PaddleNLP自然语言处理算法库进行开发。
 
 主要特性如下：
 
 - 集成[LayoutXLM](https://arxiv.org/pdf/2104.08836.pdf)模型以及PP-OCR预测引擎。
-- 支持基于多模态方法的语义实体识别 (Semantic Entity Recognition, SER) 以及关系抽取 (Relation Extraction, RE) 任务。基于 SER 任务，可以完成对图像中的文本识别与分类；基于 RE 任务，可以完成对图象中的文本内容的关系提取，如判断问题对
-- 支持SER任务和RE任务的自定义训练
+- 支持基于多模态方法的语义实体识别 (Semantic Entity Recognition, SER) 以及关系抽取 (Relation Extraction, RE) 任务。基于 SER 任务，可以完成对图像中的文本识别与分类；基于 RE 任务，可以完成对图象中的文本内容的关系提取，如判断问题对(pair)。
+- 支持SER任务和RE任务的自定义训练。
 - 支持OCR+SER的端到端系统预测与评估。
 - 支持OCR+SER+RE的端到端系统预测。
 
@@ -20,7 +20,7 @@ PP-Structure 里的 DOC-VQA算法基于PaddleNLP自然语言处理算法库进�
 
 我们在 [XFUN](https://github.com/doc-analysis/XFUND) 评估数据集上对算法进行了评估，性能如下
 
-|任务|	Hmean| 模型下载地址|
+|任务|    f1 | 模型下载地址|
 |:---:|:---:| :---:|
 |SER|0.9056| [链接](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_ser_pretrained.tar)|
 |RE|0.7113| [链接](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_re_pretrained.tar)|
