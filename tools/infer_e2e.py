@@ -61,7 +61,7 @@ def draw_e2e_res(dt_boxes, strs, config, img, img_name):
         cv2.imwrite(save_path, src_im)
         logger.info("The e2e Image saved in {}".format(save_path))
 
-
+@paddle.no_grad()
 def main():
     global_config = config['Global']
 
