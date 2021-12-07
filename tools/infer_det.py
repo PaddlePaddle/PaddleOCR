@@ -52,7 +52,7 @@ def draw_det_res(dt_boxes, config, img, img_name, save_path):
         cv2.imwrite(save_path, src_im)
         logger.info("The detected Image saved in {}".format(save_path))
 
-
+@paddle.no_grad()
 def main():
     global_config = config['Global']
 
