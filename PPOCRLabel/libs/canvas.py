@@ -704,8 +704,9 @@ class Canvas(QWidget):
 
     def keyPressEvent(self, ev):
         key = ev.key()
-        shapesBackup = []
         shapesBackup = copy.deepcopy(self.shapes)
+        if len(shapesBackup) == 0:
+            return
         self.shapesBackups.pop()
         self.shapesBackups.append(shapesBackup)
         if key == Qt.Key_Escape and self.current:
