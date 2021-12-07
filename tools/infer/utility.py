@@ -195,6 +195,7 @@ def create_predictor(args, mode, logger):
                     max_batch_size=args.max_batch_size,
                     min_subgraph_size=args.min_subgraph_size)
                 # skip the minmum trt subgraph
+            use_dynamic_shape = True
             if mode == "det":
                 min_input_shape = {
                     "x": [1, 3, 50, 50],
@@ -260,6 +261,8 @@ def create_predictor(args, mode, logger):
                 max_input_shape.update(max_pact_shape)
                 opt_input_shape.update(opt_pact_shape)
             elif mode == "rec":
+                if args.rec_algorithm != "CRNN":
+                    use_dynamic_shape = False
                 min_input_shape = {"x": [1, 3, 32, 10]}
                 max_input_shape = {"x": [args.rec_batch_num, 3, 32, 1536]}
                 opt_input_shape = {"x": [args.rec_batch_num, 3, 32, 320]}
@@ -268,14 +271,8 @@ def create_predictor(args, mode, logger):
                 max_input_shape = {"x": [args.rec_batch_num, 3, 48, 1024]}
                 opt_input_shape = {"x": [args.rec_batch_num, 3, 48, 320]}
             else:
-                min_input_shape = {"x": [1, 3, 10, 10]}
-                max_input_shape = {"x": [1, 3, 512, 512]}
-                opt_input_shape = {"x": [1, 3, 256, 256]}
-            if mode == "rec":
-                if args.rec_algorithm == "CRNN":
-                    config.set_trt_dynamic_shape_info(
-                        min_input_shape, max_input_shape, opt_input_shape)
-            else:
+                use_dynamic_shape = False
+            if use_dynamic_shape:
                 config.set_trt_dynamic_shape_info(
                     min_input_shape, max_input_shape, opt_input_shape)
 
