@@ -211,8 +211,7 @@ def preprocess(
     height = ori_img.shape[0]
     width = ori_img.shape[1]
 
-    img = cv2.resize(ori_img,
-                     (224, 224)).transpose([2, 0, 1]).astype(np.float32)
+    img = cv2.resize(ori_img, img_size).transpose([2, 0, 1]).astype(np.float32)
 
     segment_offset_id = []
     words_list = []
