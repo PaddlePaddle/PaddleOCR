@@ -40,10 +40,7 @@ class TextDetector(object):
         self.det_algorithm = args.det_algorithm
         self.use_onnx = args.use_onnx
         pre_process_list = [{
-            'DetResizeForTest': {
-                'limit_side_len': args.det_limit_side_len,
-                'limit_type': args.det_limit_type,
-            }
+            'DetResizeForTest': None
         }, {
             'NormalizeImage': {
                 'std': [0.229, 0.224, 0.225],
