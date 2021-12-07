@@ -196,7 +196,7 @@ def create_predictor(args, mode, logger):
                     min_subgraph_size=args.min_subgraph_size)
                 # skip the minmum trt subgraph
             use_dynamic_shape = True
-            if mode == "det" and args.rec_algorithm == "DB":
+            if mode == "det":
                 min_input_shape = {
                     "x": [1, 3, 50, 50],
                     "conv2d_92.tmp_0": [1, 120, 20, 20],
