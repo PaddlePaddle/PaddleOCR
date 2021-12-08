@@ -25,7 +25,7 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     # pretrain lite train data
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams  --no-check-certificate
     wget -nc -P ./pretrain_models/  https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar  --no-check-certificate
-    if [ ${model_name} =~ "ch_PPOCRv2_det" ]; then
+    if [ ${model_name} =~ "PPOCRv2_det" ]; then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_distill_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf ch_PP-OCRv2_det_distill_train.tar && cd ../
     fi
