@@ -53,7 +53,7 @@ def compute_partial_repr(input_points, control_points):
                                                                          1]
     repr_matrix = 0.5 * pairwise_dist * paddle.log(pairwise_dist)
     # fix numerical error for 0 * log(0), substitute all nan with 0
-    mask = repr_matrix != repr_matrix
+    mask = np.array(repr_matrix != repr_matrix)
     repr_matrix[mask] = 0
     return repr_matrix
 
