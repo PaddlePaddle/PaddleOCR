@@ -12,8 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
 import os
+import sys
+
+__dir__ = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(__dir__)
+sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
+
 import random
 import copy
 import logging
@@ -26,8 +31,9 @@ from paddlenlp.transformers import LayoutXLMModel, LayoutXLMTokenizer, LayoutXLM
 from xfun import XFUNDataset
 from utils import parse_args
 from utils import get_bio_label_maps
+from utils import print_arguments
 
-logger = logging.getLogger(__name__)
+from ppocr.utils.logging import get_logger
 
 
 def set_seed(args):
@@ -38,17 +44,8 @@ def set_seed(args):
 
 def train(args):
     os.makedirs(args.output_dir, exist_ok=True)
-    logging.basicConfig(
-        filename=os.path.join(args.output_dir, "train.log")
-        if paddle.distributed.get_rank() == 0 else None,
-        format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
-        datefmt="%m/%d/%Y %H:%M:%S",
-        level=logging.INFO
-        if paddle.distributed.get_rank() == 0 else logging.WARN, )
-
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
-    logger.addHandler(ch)
+    logger = get_logger(log_file=os.path.join(args.output_dir, "train.log"))
+    print_arguments(args, logger)
 
     label2id_map, id2label_map = get_bio_label_maps(args.label_map_path)
     pad_token_label_id = paddle.nn.CrossEntropyLoss().ignore_index
@@ -136,10 +133,10 @@ def train(args):
             loss = outputs[0]
             loss = loss.mean()
             logger.info(
-                "[epoch {}/{}][iter: {}/{}] lr: {:.5f}, train loss: {:.5f}, ".
+                "epoch: [{}/{}], iter: [{}/{}], global_step:{}, train loss: {}, lr: {}".
                 format(epoch_id, args.num_train_epochs, step,
-                       len(train_dataloader),
-                       lr_scheduler.get_lr(), loss.numpy()[0]))
+                       len(train_dataloader), global_step,
+                       loss.numpy()[0], lr_scheduler.get_lr()))
 
             loss.backward()
             tr_loss += loss.item()
@@ -154,13 +151,9 @@ def train(args):
                 # Only evaluate when single GPU otherwise metrics may not average well
                 if paddle.distributed.get_rank(
                 ) == 0 and args.evaluate_during_training:
-                    results, _ = evaluate(
-                        args,
-                        model,
-                        tokenizer,
-                        label2id_map,
-                        id2label_map,
-                        pad_token_label_id, )
+                    results, _ = evaluate(args, model, tokenizer, label2id_map,
+                                          id2label_map, pad_token_label_id,
+                                          logger)
 
                     if best_metrics is None or results["f1"] >= best_metrics[
                             "f1"]:
@@ -204,6 +197,7 @@ def evaluate(args,
              label2id_map,
              id2label_map,
              pad_token_label_id,
+             logger,
              prefix=""):
     eval_dataset = XFUNDataset(
         tokenizer,
@@ -299,15 +293,6 @@ def evaluate(args,
     return results, preds_list
 
 
-def print_arguments(args):
-    """print arguments"""
-    print('-----------  Configuration Arguments -----------')
-    for arg, value in sorted(vars(args).items()):
-        print('%s: %s' % (arg, value))
-    print('------------------------------------------------')
-
-
 if __name__ == "__main__":
     args = parse_args()
-    print_arguments(args)
     train(args)
