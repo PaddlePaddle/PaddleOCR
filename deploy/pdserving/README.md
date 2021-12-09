@@ -45,7 +45,7 @@ PaddleOCR operating environment and Paddle Serving operating environment are nee
     ```
 
 3. Install the client to send requests to the service
-    In [download link](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md) find the client installation package corresponding to the python version.
+    In [download link](https://github.com/PaddlePaddle/Serving/blob/v0.6.3/doc/LATEST_PACKAGES.md) find the client installation package corresponding to the python version.
     The python3.7 version is recommended here:
 
     ```
@@ -56,8 +56,6 @@ PaddleOCR operating environment and Paddle Serving operating environment are nee
     ```
     pip3 install paddle-serving-app==0.6.3
     ```
-
-   **note:** If you want to install the latest version of PaddleServing, refer to [link](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md).
 
 
 <a name="model-conversion"></a>
@@ -196,7 +194,7 @@ The recognition model is the same.
 
 ## WINDOWS Users
 
-Windows does not support Pipeline Serving, if we want to lauch paddle serving on Windows, we should use Web Service, for more infomation please refer to [Paddle Serving for Windows Users](https://github.com/PaddlePaddle/Serving/blob/develop/doc/WINDOWS_TUTORIAL.md)
+Windows does not support Pipeline Serving, if we want to lauch paddle serving on Windows, we should use Web Service, for more infomation please refer to [Paddle Serving for Windows Users](https://github.com/PaddlePaddle/Serving/blob/v0.6.3/doc/WINDOWS_TUTORIAL.md)
 
 
 **WINDOWS user can only use version 0.5.0 CPU Mode**
