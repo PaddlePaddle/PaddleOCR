@@ -120,8 +120,7 @@ def main():
     for k, v in metric.items():
         logger.info('{}:{}'.format(k, v))
 
-    infer_shape = [3, 32, 100] if config['Architecture'][
-        'model_type'] != "det" else [3, 640, 640]
+    infer_shape = [3, 32, 100] if model_type != "det" else [3, 640, 640]
 
     save_path = config["Global"]["save_inference_dir"]
 
