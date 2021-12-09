@@ -111,7 +111,7 @@ def main():
     valid_dataloader = build_dataloader(config, 'Eval', device, logger)
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
-    model_type = config['Architecture']['model_type']
+    model_type = None
     # start eval
     metric = program.eval(model, valid_dataloader, post_process_class,
                           eval_class, model_type, use_srn)
