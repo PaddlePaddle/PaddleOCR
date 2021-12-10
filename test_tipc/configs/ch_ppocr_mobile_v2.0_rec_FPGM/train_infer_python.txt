@@ -34,7 +34,7 @@ distill_export:null
 export1:null
 export2:null
 inference_dir:null
-train_model:null
+train_model:./inference/ch_PP-OCRv2_rec_train/best_accuracy
 infer_export:null
 infer_quant:False
 inference:tools/infer/predict_rec.py
