@@ -13,8 +13,8 @@ train_infer_img_dir:./inference/rec_inference
 null:null
 ##
 trainer:pact_train
-norm_train:deploy/slim/quantization/quant.py -c test_tipc/configs/ch_PP-OCRv2_rec/ch_PP-OCRv2_rec_distillation.yml -o 
-pact_train:null
+norm_train:null
+pact_train:deploy/slim/quantization/quant.py -c test_tipc/configs/ch_PP-OCRv2_rec/ch_PP-OCRv2_rec_distillation.yml -o 
 fpgm_train:null
 distill_train:null
 null:null
@@ -27,14 +27,14 @@ null:null
 ===========================infer_params===========================
 Global.save_inference_dir:./output/
 Global.pretrained_model:
-norm_export:deploy/slim/quantization/export_model.py -c test_tipc/configs/ch_PP-OCRv2_rec/ch_PP-OCRv2_rec_distillation.yml -o 
-quant_export:
-fpgm_export: 
+norm_export:null
+quant_export:deploy/slim/quantization/export_model.py -c test_tipc/configs/ch_PP-OCRv2_rec/ch_PP-OCRv2_rec_distillation.yml -o 
+fpgm_export: null
 distill_export:null
 export1:null
 export2:null
 inference_dir:Student
-infer_model:./inference/ch_PP-OCRv2_rec_infer/
+infer_model:./inference/ch_PP-OCRv2_rec_infer
 infer_export:null
 infer_quant:True
 inference:tools/infer/predict_rec.py
