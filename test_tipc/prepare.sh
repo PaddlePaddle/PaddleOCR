@@ -144,7 +144,7 @@ elif [ ${MODE} = "whole_infer" ];then
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar --no-check-certificate
         cd ./inference && tar xf ${eval_model_name}.tar && tar xf ch_det_data_50.tar && cd ../
     fi
-    if [ ${model_name} == "PPOCRv2_ocr_rec" ]; then
+    if [[ ${model_name} =~ "PPOCRv2_ocr_rec" ]]; then
         eval_model_name="ch_PP-OCRv2_rec_infer"
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar --no-check-certificate
         cd ./inference && tar xf ${eval_model_name}.tar && cd ../

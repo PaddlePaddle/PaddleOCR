@@ -45,7 +45,7 @@ inference:tools/infer/predict_rec.py
 --use_tensorrt:False|True
 --precision:fp32|fp16|int8
 --rec_model_dir:
---image_dir:/inference/rec_inference
+--image_dir:./inference/rec_inference
 null:null
 --benchmark:True
 null:null
