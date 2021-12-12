@@ -30,6 +30,7 @@ from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.utils.logging import get_logger
 from tools.infer.predict_system import TextSystem
 from ppstructure.table.predict_table import TableSystem, to_excel
+from ppstructure.table.docx import convert_info_docx
 from ppstructure.utility import parse_args, draw_structure_result
 
 logger = get_logger()
@@ -130,6 +131,8 @@ def main(args):
         draw_img = draw_structure_result(img, res, args.vis_font_path)
         cv2.imwrite(os.path.join(save_folder, img_name, 'show.jpg'), draw_img)
         logger.info('result save to {}'.format(os.path.join(save_folder, img_name)))
+        if args.convert_docx:
+            convert_info_docx(img, res, save_folder, img_name)        
         elapse = time.time() - starttime
         logger.info("Predict time : {:.3f}s".format(elapse))
 

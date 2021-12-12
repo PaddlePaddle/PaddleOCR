@@ -28,6 +28,7 @@ def init_args():
     parser.add_argument("--table_char_type", type=str, default='en')
     parser.add_argument("--table_char_dict_path", type=str, default="../ppocr/utils/dict/table_structure_dict.txt")
     parser.add_argument("--layout_path_model", type=str, default="lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config")
+    parser.add_argument("--convert_docx", type=bool, default=False)
     return parser
 
 
