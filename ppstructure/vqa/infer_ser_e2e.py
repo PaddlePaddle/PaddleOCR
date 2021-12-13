@@ -23,12 +23,10 @@ from PIL import Image
 import paddle
 from paddlenlp.transformers import LayoutXLMModel, LayoutXLMTokenizer, LayoutXLMForTokenClassification
 
-from paddleocr import PaddleOCR
-
 # relative reference
-from utils import parse_args, get_image_file_list, draw_ser_results, get_bio_label_maps
+from .utils import parse_args, get_image_file_list, draw_ser_results, get_bio_label_maps
 
-from utils import pad_sentences, split_page, preprocess, postprocess, merge_preds_list_with_ocr_info
+from .utils import pad_sentences, split_page, preprocess, postprocess, merge_preds_list_with_ocr_info
 
 
 def trans_poly_to_bbox(poly):
@@ -52,6 +50,7 @@ def parse_ocr_info_for_ser(ocr_result):
 
 class SerPredictor(object):
     def __init__(self, args):
+
         self.max_seq_length = args.max_seq_length
 
         # init ser token and model
@@ -62,9 +61,11 @@ class SerPredictor(object):
         self.model.eval()
 
         # init ocr_engine
+        from paddleocr import PaddleOCR
+
         self.ocr_engine = PaddleOCR(
-            rec_model_dir=args.ocr_rec_model_dir,
-            det_model_dir=args.ocr_det_model_dir,
+            rec_model_dir=args.rec_model_dir,
+            det_model_dir=args.det_model_dir,
             use_angle_cls=False,
             show_log=False)
         # init dict

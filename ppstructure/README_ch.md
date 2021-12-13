@@ -8,11 +8,37 @@ PP-Structure是一个可用于复杂文档结构分析和处理的OCR工具包�
 - 支持表格区域进行结构化分析，最终结果输出Excel文件
 - 支持python whl包和命令行两种方式，简单易用
 - 支持版面分析和表格结构化两类任务自定义训练
+- 支持文档关键信息提取-SER和RE任务
+
 
 ## 1. 效果展示
 
+### 1.1 版面分析和表格识别
+
 <img src="../doc/table/ppstructure.GIF" width="100%"/>
 
+### 1.2 VQA
+
+* SER
+
+![](./vqa/images/result_ser/zh_val_0_ser.jpg) | ![](./vqa/images/result_ser/zh_val_42_ser.jpg)
+---|---
+
+图中不同颜色的框表示不同的类别，对于XFUN数据集，有`QUESTION`, `ANSWER`, `HEADER` 3种类别
+
+* 深紫色：HEADER
+* 浅紫色：QUESTION
+* 军绿色：ANSWER
+
+在OCR检测框的左上方也标出了对应的类别和OCR识别结果。
+
+* RE
+
+![](./vqa/images/result_re/zh_val_21_re.jpg) | ![](./vqa/images/result_re/zh_val_40_re.jpg)
+---|---
+
+
+图中红色框表示问题，蓝色框表示答案，问题和答案之间使用绿色线连接。在OCR检测框的左上方也标出了对应的类别和OCR识别结果。
 
 
 ## 2. 安装
@@ -33,10 +59,16 @@ python3 -m pip install paddlepaddle-gpu==2.1.1 -i https://mirror.baidu.com/pypi/
 ```
 更多需求，请参照[安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
 
-- **(2) 安装 Layout-Parser**
+- **(2) 安装依赖 **
 
 ```bash
+# 版面分析所需  Layout-Parser
 pip3 install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
+
+# VQA所需 PaddleNLP
+git clone https://github.com/PaddlePaddle/PaddleNLP -b develop
+cd PaddleNLP
+pip3 install -e .
 ```
 
 ### 2.2 安装PaddleOCR（包含PP-OCR和PP-Structure）
@@ -44,7 +76,7 @@ pip3 install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-
 - **（1) PIP快速安装PaddleOCR whl包（仅预测）**
 
 ```bash
-pip install "paddleocr>=2.2" # 推荐使用2.2+版本
+pip3 install "paddleocr>=2.2" # 推荐使用2.2+版本
 ```
 
 - **（2) 完整克隆PaddleOCR源码（预测+训练）**
@@ -63,12 +95,14 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 
 ### 3.1 命令行使用（默认参数，极简）
 
+* 版面分析+表格识别
 ```bash
 paddleocr --image_dir=../doc/table/1.png --type=structure
 ```
 
 ### 3.2 Python脚本使用（自定义参数，灵活）
 
+* 版面分析+表格识别
 ```python
 import os
 import cv2
@@ -98,6 +132,7 @@ im_show.save('result.jpg')
 ### 3.3 返回结果说明
 PP-Structure的返回结果为一个dict组成的list，示例如下
 
+* 版面分析+表格识别
 ```shell
 [
   {   'type': 'Text',
@@ -130,7 +165,7 @@ dict 里各个字段说明如下
 运行完成后，每张图片会在`output`字段指定的目录下有一个同名目录，图片里的每个表格会存储为一个excel，图片区域会被裁剪之后保存下来，excel文件和图片名名为表格在图片里的坐标。
 
 
-## 4. PP-Structure Pipeline介绍
+## 4. PP-Structure 版面分析+表格识别 Pipeline介绍
 
 ![pipeline](../doc/table/pipeline.jpg)
 
@@ -148,6 +183,8 @@ dict 里各个字段说明如下
 
 使用如下命令即可完成预测引擎的推理
 
+* 版面分析+表格识别
+
 ```python
 cd ppstructure
 
@@ -161,9 +198,24 @@ wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_in
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar
 cd ..
 
-python3 predict_system.py --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer --table_model_dir=inference/en_ppocr_mobile_v2.0_table_structure_infer --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/ppocr_keys_v1.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --rec_char_type=ch --output=../output/table --vis_font_path=../doc/fonts/simfang.ttf
+python3 predict_system.py --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer --table_model_dir=inference/en_ppocr_mobile_v2.0_table_structure_infer --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/ppocr_keys_v1.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --output=../output/table --vis_font_path=../doc/fonts/simfang.ttf
 ```
-运行完成后，每张图片会在`output`字段指定的目录下有一个同名目录，图片里的每个表格会存储为一个excel，图片区域会被裁剪之后保存下来，excel文件和图片名名为表格在图片里的坐标。
+运行完成后，每张图片会在`output`字段指定的目录下的`talbe`目录下有一个同名目录，图片里的每个表格会存储为一个excel，图片区域会被裁剪之后保存下来，excel文件和图片名名为表格在图片里的坐标。
+
+* VQA
+
+```python
+cd ppstructure
+
+# 下载模型
+mkdir inference && cd inference
+# 下载SER xfun 模型并解压
+wget https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_ser_pretrained.tar && tar xf PP-Layout_v1.0_ser_pretrained.tar
+cd ..
+
+python3 predict_system.py --model_name_or_path=vqa/PP-Layout_v1.0_ser_pretrained/ --mode=vqa --image_dir=vqa/images/input/zh_val_0.jpg  --vis_font_path=../doc/fonts/simfang.ttf
+```
+运行完成后，每张图片会在`output`字段指定的目录下的`vqa`目录下存放可视化之后的图片，图片名和输入图片名一致。
 
 **Model List**
 
@@ -184,5 +236,12 @@ OCR和表格识别模型
 |en_ppocr_mobile_v2.0_table_det|PubLayNet数据集训练的英文表格场景的文字检测|4.7M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/table/en_ppocr_mobile_v2.0_table_det_train.tar) |
 |en_ppocr_mobile_v2.0_table_rec|PubLayNet数据集训练的英文表格场景的文字识别|6.9M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/table/en_ppocr_mobile_v2.0_table_rec_train.tar) |
 |en_ppocr_mobile_v2.0_table_structure|PubLayNet数据集训练的英文表格场景的表格结构预测|18.6M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/table/en_ppocr_mobile_v2.0_table_structure_train.tar) |
+
+VQA
+
+|模型名称|模型简介|推理模型大小|下载地址|
+| --- | --- | --- | --- |
+|PP-Layout_v1.0_ser_pretrained|基于LayoutXLM在xfun中文数据集上训练的SER模型|1.4G|[coming soon]() / [训练模型](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_ser_pretrained.tar) |
+|PP-Layout_v1.0_re_pretrained|基于LayoutXLM在xfun中文数据集上训练的RE模型|1.4G|[coming soon]() / [训练模型](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_re_pretrained.tar) |
 
 如需要使用其他模型，可以在 [model_list](../doc/doc_ch/models_list.md) 下载模型或者使用自己训练好的模型配置到`det_model_dir`,`rec_model_dir`,`table_model_dir`三个字段即可。
