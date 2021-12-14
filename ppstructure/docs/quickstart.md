@@ -128,7 +128,7 @@ comming soon
 
 * 版面分析+表格识别
 
-```python
+```bash
 cd ppstructure
 
 # 下载模型
@@ -154,7 +154,7 @@ python3 predict_system.py --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_inf
 
 * VQA
 
-```python
+```bash
 cd ppstructure
 
 # 下载模型

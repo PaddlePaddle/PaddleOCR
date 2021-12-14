@@ -14,7 +14,7 @@ PP-Structure是一个可用于复杂文档结构分析和处理的OCR工具包�
 - 支持表格区域进行结构化分析，最终结果输出Excel文件
 - 支持python whl包和命令行两种方式，简单易用
 - 支持版面分析和表格结构化两类任务自定义训练
-- 支持VQA任务-SER和RE
+- 支持文档视觉问答(Document Visual Question Answering，DOC-VQA)任务-语义实体识别(Semantic Entity Recognition，SER)和关系抽取(Relation Extraction，RE)
 
 
 ## 1. 效果展示
@@ -84,7 +84,7 @@ PP-Structure系列模型列表（更新中）
 
 * OCR和表格识别模型
 
-|模型名称|模型简介|推理模型大小|下载地址|
+|模型名称|模型简介|模型大小|下载地址|
 | --- | --- | --- | --- |
 |ch_ppocr_mobile_slim_v2.0_det|slim裁剪版超轻量模型，支持中英文、多语种文本检测|2.6M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_prune_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_prune_infer.tar) |
 |ch_ppocr_mobile_slim_v2.0_rec|slim裁剪量化版超轻量模型，支持中英文、数字识别|6M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_train.tar) |
