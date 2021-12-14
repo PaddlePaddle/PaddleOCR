@@ -79,11 +79,12 @@ function func_inference(){
                             set_infer_data=$(func_set_params "${image_dir_key}" "${_img_dir}")
                             set_benchmark=$(func_set_params "${benchmark_key}" "${benchmark_value}")
                             set_batchsize=$(func_set_params "${batch_size_key}" "${batch_size}")
+                            set_mkldnn=$(func_set_params "${use_mkldnn_key}" "${use_mkldnn}")
                             set_cpu_threads=$(func_set_params "${cpu_threads_key}" "${threads}")
                             set_model_dir=$(func_set_params "${infer_model_key}" "${_model_dir}")
                             set_infer_params0=$(func_set_params "${rec_model_key}" "${rec_model_value}")
                             set_infer_params1=$(func_set_params "${infer_key1}" "${infer_value1}")
-                            command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_model_dir} ${set_batchsize} ${set_infer_params0} ${set_infer_data} ${set_benchmark} ${set_precision} ${set_infer_params1} > ${_save_log_path} 2>&1 "
+                            command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${set_mkldnn} ${set_cpu_threads} ${set_model_dir} ${set_batchsize} ${set_infer_params0} ${set_infer_data} ${set_benchmark} ${set_precision} ${set_infer_params1} > ${_save_log_path} 2>&1 "
                             eval $command
                             last_status=${PIPESTATUS[0]}
                             eval "cat ${_save_log_path}"
