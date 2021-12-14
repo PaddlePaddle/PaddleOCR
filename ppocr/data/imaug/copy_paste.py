@@ -32,6 +32,7 @@ class CopyPaste(object):
         self.aug = IaaAugment(augmenter_args)
 
     def __call__(self, data):
+        point_num = data['polys'].shape[1]
         src_img = data['image']
         src_polys = data['polys'].tolist()
         src_ignores = data['ignore_tags'].tolist()
@@ -57,6 +58,9 @@ class CopyPaste(object):
 
             src_img, box = self.paste_img(src_img, box_img, src_polys)
             if box is not None:
+                box = box.tolist() 
+                for _ in range(len(box), point_num):
+                    box.append(box[-1])
                 src_polys.append(box)
                 src_ignores.append(tag)
         src_img = cv2.cvtColor(np.array(src_img), cv2.COLOR_RGB2BGR)
