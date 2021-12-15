@@ -111,7 +111,7 @@ def main():
     valid_dataloader = build_dataloader(config, 'Eval', device, logger)
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
-    model_type = config['Architecture']['model_type']
+    model_type = config['Architecture'].get('model_type', None)
     # start eval
     metric = program.eval(model, valid_dataloader, post_process_class,
                           eval_class, model_type, use_srn)
@@ -120,8 +120,7 @@ def main():
     for k, v in metric.items():
         logger.info('{}:{}'.format(k, v))
 
-    infer_shape = [3, 32, 100] if config['Architecture'][
-        'model_type'] != "det" else [3, 640, 640]
+    infer_shape = [3, 32, 100] if model_type == "rec" else [3, 640, 640]
 
     save_path = config["Global"]["save_inference_dir"]
 

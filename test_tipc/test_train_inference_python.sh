@@ -160,11 +160,12 @@ function func_inference(){
                             set_infer_data=$(func_set_params "${image_dir_key}" "${_img_dir}")
                             set_benchmark=$(func_set_params "${benchmark_key}" "${benchmark_value}")
                             set_batchsize=$(func_set_params "${batch_size_key}" "${batch_size}")
+                            set_mkldnn=$(func_set_params "${use_mkldnn_key}" "${use_mkldnn}")
                             set_cpu_threads=$(func_set_params "${cpu_threads_key}" "${threads}")
                             set_model_dir=$(func_set_params "${infer_model_key}" "${_model_dir}")
                             set_infer_params0=$(func_set_params "${save_log_key}" "${save_log_value}")
                             set_infer_params1=$(func_set_params "${infer_key1}" "${infer_value1}")
-                            command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_model_dir} ${set_batchsize} ${set_infer_params0} ${set_infer_data} ${set_benchmark} ${set_precision} ${set_infer_params1} > ${_save_log_path} 2>&1 "
+                            command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${set_mkldnn} ${set_cpu_threads} ${set_model_dir} ${set_batchsize} ${set_infer_params0} ${set_infer_data} ${set_benchmark} ${set_precision} ${set_infer_params1} > ${_save_log_path} 2>&1 "
                             eval $command
                             last_status=${PIPESTATUS[0]}
                             eval "cat ${_save_log_path}"
@@ -321,10 +322,6 @@ else
                     save_log="${LOG_PATH}/${trainer}_gpus_${gpu}_autocast_${autocast}_nodes_${nodes}"
                 fi
 
-                # load pretrain from norm training if current trainer is pact or fpgm trainer
-                if ([ ${trainer} = ${pact_key} ] || [ ${trainer} = ${fpgm_key} ]) && [ ${nodes} -le 1 ]; then
-                    set_pretrain="${load_norm_train_model}"
-                fi
 
                 set_save_model=$(func_set_params "${save_model_key}" "${save_log}")
                 if [ ${#gpu} -le 2 ];then  # train with cpu or single gpu
@@ -340,10 +337,7 @@ else
                 status_check $? "${cmd}" "${status_log}"
 
                 set_eval_pretrain=$(func_set_params "${pretrain_model_key}" "${save_log}/${train_model_name}")
-                # save norm trained models to set pretrain for pact training and fpgm training 
-                if [ ${trainer} = ${trainer_norm} ] && [ ${nodes} -le 1 ]; then
-                    load_norm_train_model=${set_eval_pretrain}
-                fi
+
                 # run eval 
                 if [ ${eval_py} != "null" ]; then
                     set_eval_params1=$(func_set_params "${eval_key1}" "${eval_value1}")

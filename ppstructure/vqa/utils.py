@@ -24,8 +24,6 @@ import paddle
 
 from PIL import Image, ImageDraw, ImageFont
 
-from paddleocr import PaddleOCR
-
 
 def get_bio_label_maps(label_map_path):
     with open(label_map_path, "r") as fin:
@@ -66,9 +64,9 @@ def get_image_file_list(img_file):
 
 def draw_ser_results(image,
                      ocr_results,
-                     font_path="../doc/fonts/simfang.ttf",
+                     font_path="../../doc/fonts/simfang.ttf",
                      font_size=18):
-    np.random.seed(0)
+    np.random.seed(2021)
     color = (np.random.permutation(range(255)),
              np.random.permutation(range(255)),
              np.random.permutation(range(255)))
@@ -82,38 +80,64 @@ def draw_ser_results(image,
     draw = ImageDraw.Draw(img_new)
 
     font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
-
     for ocr_info in ocr_results:
         if ocr_info["pred_id"] not in color_map:
             continue
         color = color_map[ocr_info["pred_id"]]
-
-        # draw ocr results outline
-        bbox = ocr_info["bbox"]
-        bbox = ((bbox[0], bbox[1]), (bbox[2], bbox[3]))
-        draw.rectangle(bbox, fill=color)
-
-        # draw ocr results
         text = "{}: {}".format(ocr_info["pred"], ocr_info["text"])
-        start_y = max(0, bbox[0][1] - font_size)
-        tw = font.getsize(text)[0]
-        draw.rectangle(
-            [(bbox[0][0] + 1, start_y), (bbox[0][0] + tw + 1,
-                                         start_y + font_size)],
-            fill=(0, 0, 255))
-        draw.text(
-            (bbox[0][0] + 1, start_y), text, fill=(255, 255, 255), font=font)
+
+        draw_box_txt(ocr_info["bbox"], text, draw, font, font_size, color)
 
     img_new = Image.blend(image, img_new, 0.5)
     return np.array(img_new)
 
 
-def build_ocr_engine(rec_model_dir, det_model_dir):
-    ocr_engine = PaddleOCR(
-        rec_model_dir=rec_model_dir,
-        det_model_dir=det_model_dir,
-        use_angle_cls=False)
-    return ocr_engine
+def draw_box_txt(bbox, text, draw, font, font_size, color):
+    # draw ocr results outline
+    bbox = ((bbox[0], bbox[1]), (bbox[2], bbox[3]))
+    draw.rectangle(bbox, fill=color)
+
+    # draw ocr results
+    start_y = max(0, bbox[0][1] - font_size)
+    tw = font.getsize(text)[0]
+    draw.rectangle(
+        [(bbox[0][0] + 1, start_y), (bbox[0][0] + tw + 1, start_y + font_size)],
+        fill=(0, 0, 255))
+    draw.text((bbox[0][0] + 1, start_y), text, fill=(255, 255, 255), font=font)
+
+
+def draw_re_results(image,
+                    result,
+                    font_path="../../doc/fonts/simfang.ttf",
+                    font_size=18):
+    np.random.seed(0)
+    if isinstance(image, np.ndarray):
+        image = Image.fromarray(image)
+    img_new = image.copy()
+    draw = ImageDraw.Draw(img_new)
+
+    font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
+    color_head = (0, 0, 255)
+    color_tail = (255, 0, 0)
+    color_line = (0, 255, 0)
+
+    for ocr_info_head, ocr_info_tail in result:
+        draw_box_txt(ocr_info_head["bbox"], ocr_info_head["text"], draw, font,
+                     font_size, color_head)
+        draw_box_txt(ocr_info_tail["bbox"], ocr_info_tail["text"], draw, font,
+                     font_size, color_tail)
+
+        center_head = (
+            (ocr_info_head['bbox'][0] + ocr_info_head['bbox'][2]) // 2,
+            (ocr_info_head['bbox'][1] + ocr_info_head['bbox'][3]) // 2)
+        center_tail = (
+            (ocr_info_tail['bbox'][0] + ocr_info_tail['bbox'][2]) // 2,
+            (ocr_info_tail['bbox'][1] + ocr_info_tail['bbox'][3]) // 2)
+
+        draw.line([center_head, center_tail], fill=color_line, width=5)
+
+    img_new = Image.blend(image, img_new, 0.5)
+    return np.array(img_new)
 
 
 # pad sentences
@@ -130,7 +154,7 @@ def pad_sentences(tokenizer,
         len(encoded_inputs["input_ids"]) // max_seq_len + 1) * max_seq_len
 
     needs_to_be_padded = pad_to_max_seq_len and \
-                         max_seq_len and len(encoded_inputs["input_ids"]) < max_seq_len
+        max_seq_len and len(encoded_inputs["input_ids"]) < max_seq_len
 
     if needs_to_be_padded:
         difference = max_seq_len - len(encoded_inputs["input_ids"])
@@ -162,6 +186,9 @@ def split_page(encoded_inputs, max_seq_len=512):
     truncate is often used in training process
     """
     for key in encoded_inputs:
+        if key == 'entities':
+            encoded_inputs[key] = [encoded_inputs[key]]
+            continue
         encoded_inputs[key] = paddle.to_tensor(encoded_inputs[key])
         if encoded_inputs[key].ndim <= 1:  # for input_ids, att_mask and so on
             encoded_inputs[key] = encoded_inputs[key].reshape([-1, max_seq_len])
@@ -184,14 +211,14 @@ def preprocess(
     height = ori_img.shape[0]
     width = ori_img.shape[1]
 
-    img = cv2.resize(ori_img,
-                     (224, 224)).transpose([2, 0, 1]).astype(np.float32)
+    img = cv2.resize(ori_img, img_size).transpose([2, 0, 1]).astype(np.float32)
 
     segment_offset_id = []
     words_list = []
     bbox_list = []
     input_ids_list = []
     token_type_ids_list = []
+    entities = []
 
     for info in ocr_info:
         # x1, y1, x2, y2
@@ -211,6 +238,13 @@ def preprocess(
             encode_res["token_type_ids"] = encode_res["token_type_ids"][1:-1]
             encode_res["attention_mask"] = encode_res["attention_mask"][1:-1]
 
+        # for re
+        entities.append({
+            "start": len(input_ids_list),
+            "end": len(input_ids_list) + len(encode_res["input_ids"]),
+            "label": "O",
+        })
+
         input_ids_list.extend(encode_res["input_ids"])
         token_type_ids_list.extend(encode_res["token_type_ids"])
         bbox_list.extend([bbox] * len(encode_res["input_ids"]))
@@ -222,6 +256,7 @@ def preprocess(
         "token_type_ids": token_type_ids_list,
         "bbox": bbox_list,
         "attention_mask": [1] * len(input_ids_list),
+        "entities": entities
     }
 
     encoded_inputs = pad_sentences(
@@ -294,35 +329,64 @@ def merge_preds_list_with_ocr_info(ocr_info, segment_offset_id, preds_list,
     return ocr_info
 
 
+def print_arguments(args, logger=None):
+    print_func = logger.info if logger is not None else print
+    """print arguments"""
+    print_func('-----------  Configuration Arguments -----------')
+    for arg, value in sorted(vars(args).items()):
+        print_func('%s: %s' % (arg, value))
+    print_func('------------------------------------------------')
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
     # Required parameters
     # yapf: disable
-    parser.add_argument("--model_name_or_path", default=None, type=str, required=True,)
-    parser.add_argument("--train_data_dir", default=None, type=str, required=False,)
-    parser.add_argument("--train_label_path", default=None, type=str, required=False,)
-    parser.add_argument("--eval_data_dir", default=None, type=str, required=False,)
-    parser.add_argument("--eval_label_path", default=None, type=str, required=False,)
+    parser.add_argument("--model_name_or_path",
+                        default=None, type=str, required=True,)
+    parser.add_argument("--re_model_name_or_path",
+                        default=None, type=str, required=False,)
+    parser.add_argument("--train_data_dir", default=None,
+                        type=str, required=False,)
+    parser.add_argument("--train_label_path", default=None,
+                        type=str, required=False,)
+    parser.add_argument("--eval_data_dir", default=None,
+                        type=str, required=False,)
+    parser.add_argument("--eval_label_path", default=None,
+                        type=str, required=False,)
     parser.add_argument("--output_dir", default=None, type=str, required=True,)
     parser.add_argument("--max_seq_length", default=512, type=int,)
     parser.add_argument("--evaluate_during_training", action="store_true",)
-    parser.add_argument("--per_gpu_train_batch_size", default=8, type=int, help="Batch size per GPU/CPU for training.",)
-    parser.add_argument("--per_gpu_eval_batch_size", default=8, type=int, help="Batch size per GPU/CPU for eval.",)
-    parser.add_argument("--learning_rate", default=5e-5, type=float, help="The initial learning rate for Adam.",)
-    parser.add_argument("--weight_decay", default=0.0, type=float, help="Weight decay if we apply some.",)
-    parser.add_argument("--adam_epsilon", default=1e-8, type=float, help="Epsilon for Adam optimizer.",)
-    parser.add_argument("--max_grad_norm", default=1.0, type=float, help="Max gradient norm.",)
-    parser.add_argument("--num_train_epochs", default=3, type=int, help="Total number of training epochs to perform.",)
-    parser.add_argument("--warmup_steps", default=0, type=int, help="Linear warmup over warmup_steps.",)
-    parser.add_argument("--eval_steps", type=int, default=10, help="eval every X updates steps.",)
-    parser.add_argument("--save_steps", type=int, default=50, help="Save checkpoint every X updates steps.",)
-    parser.add_argument("--seed", type=int, default=2048, help="random seed for initialization",)
+    parser.add_argument("--per_gpu_train_batch_size", default=8,
+                        type=int, help="Batch size per GPU/CPU for training.",)
+    parser.add_argument("--per_gpu_eval_batch_size", default=8,
+                        type=int, help="Batch size per GPU/CPU for eval.",)
+    parser.add_argument("--learning_rate", default=5e-5,
+                        type=float, help="The initial learning rate for Adam.",)
+    parser.add_argument("--weight_decay", default=0.0,
+                        type=float, help="Weight decay if we apply some.",)
+    parser.add_argument("--adam_epsilon", default=1e-8,
+                        type=float, help="Epsilon for Adam optimizer.",)
+    parser.add_argument("--max_grad_norm", default=1.0,
+                        type=float, help="Max gradient norm.",)
+    parser.add_argument("--num_train_epochs", default=3, type=int,
+                        help="Total number of training epochs to perform.",)
+    parser.add_argument("--warmup_steps", default=0, type=int,
+                        help="Linear warmup over warmup_steps.",)
+    parser.add_argument("--eval_steps", type=int, default=10,
+                        help="eval every X updates steps.",)
+    parser.add_argument("--save_steps", type=int, default=50,
+                        help="Save checkpoint every X updates steps.",)
+    parser.add_argument("--seed", type=int, default=2048,
+                        help="random seed for initialization",)
 
     parser.add_argument("--ocr_rec_model_dir", default=None, type=str, )
     parser.add_argument("--ocr_det_model_dir", default=None, type=str, )
-    parser.add_argument("--label_map_path", default="./labels/labels_ser.txt", type=str, required=False, )
+    parser.add_argument(
+        "--label_map_path", default="./labels/labels_ser.txt", type=str, required=False, )
     parser.add_argument("--infer_imgs", default=None, type=str, required=False)
-    parser.add_argument("--ocr_json_path", default=None, type=str, required=False, help="ocr prediction results")
+    parser.add_argument("--ocr_json_path", default=None,
+                        type=str, required=False, help="ocr prediction results")
     # yapf: enable
     args = parser.parse_args()
     return args

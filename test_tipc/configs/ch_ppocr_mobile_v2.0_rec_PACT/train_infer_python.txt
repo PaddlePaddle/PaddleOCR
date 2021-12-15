@@ -28,7 +28,7 @@ null:null
 Global.save_inference_dir:./output/
 Global.checkpoints:
 norm_export:null
-quant_export:deploy/slim/quantization/export_model.py -ctest_tipc/configs/ch_ppocr_mobile_v2.0_rec_PACT/rec_chinese_lite_train_v2.0.yml -o 
+quant_export:deploy/slim/quantization/export_model.py -c test_tipc/configs/ch_ppocr_mobile_v2.0_rec_PACT/rec_chinese_lite_train_v2.0.yml -o 
 fpgm_export:null
 distill_export:null
 export1:null
