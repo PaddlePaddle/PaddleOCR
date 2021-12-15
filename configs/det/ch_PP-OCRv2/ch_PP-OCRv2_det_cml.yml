@@ -18,6 +18,7 @@ Global:
 Architecture:
   name: DistillationModel
   algorithm: Distillation
+  model_type: det
   Models:
     Teacher:
       freeze_params: true

@@ -12,30 +12,37 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 
 ## 1. 社区贡献
 
-### 1.1 为PaddleOCR新增功能
+### 1.1 基于PaddleOCR的社区贡献
+
+- 【最新】 [FastOCRLabel](https://gitee.com/BaoJianQiang/FastOCRLabel)：完整的C#版本标注工具 (@ [包建强](https://gitee.com/BaoJianQiang) )
+
+#### 1.1.1 通用工具
+
+- [DangoOCR离线版](https://github.com/PantsuDango/DangoOCR)：通用型桌面级即时翻译工具 (@ [PantsuDango](https://github.com/PantsuDango))
+- [scr2txt](https://github.com/lstwzd/scr2txt)：截屏转文字工具 (@ [lstwzd](https://github.com/lstwzd))
+- [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/1054614?channelType=0&channel=0)：英文视频自动生成字幕( @ [叶月水狐](https://aistudio.baidu.com/aistudio/personalcenter/thirdview/322052))
+
+#### 1.1.2 垂类场景工具
+
+- [id_card_ocr](https://github.com/baseli/id_card_ocr)：身份证复印件识别(@ [baseli](https://github.com/baseli))
+- [Paddle_Table_Image_Reader](https://github.com/thunder95/Paddle_Table_Image_Reader)：能看懂表格图片的数据助手(@ [thunder95](https://github.com/thunder95]))
+
+#### 1.1.3 前后处理
+
+- [paddleOCRCorrectOutputs](https://github.com/yuranusduke/paddleOCRCorrectOutputs)：获取OCR识别结果的key-value(@ [yuranusduke](https://github.com/yuranusduke))
+
+### 1.2 为PaddleOCR新增功能
 
 - 非常感谢 [authorfu](https://github.com/authorfu) 贡献Android([#340](https://github.com/PaddlePaddle/PaddleOCR/pull/340))和[xiadeye](https://github.com/xiadeye) 贡献IOS的demo代码([#325](https://github.com/PaddlePaddle/PaddleOCR/pull/325))
 - 非常感谢 [tangmq](https://gitee.com/tangmq) 给PaddleOCR增加Docker化部署服务，支持快速发布可调用的Restful API服务([#507](https://github.com/PaddlePaddle/PaddleOCR/pull/507))。
 - 非常感谢 [lijinhan](https://github.com/lijinhan) 给PaddleOCR增加java SpringBoot 调用OCR Hubserving接口完成对OCR服务化部署的使用([#1027](https://github.com/PaddlePaddle/PaddleOCR/pull/1027))。
 - 非常感谢 [Evezerest](https://github.com/Evezerest)， [ninetailskim](https://github.com/ninetailskim)， [edencfc](https://github.com/edencfc)， [BeyondYourself](https://github.com/BeyondYourself)， [1084667371](https://github.com/1084667371) 贡献了[PPOCRLabel](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/PPOCRLabel/README_ch.md) 的完整代码。
 
-### 1.2 基于PaddleOCR的社区贡献
-
-- 【最新】完整的C#版本标注工具 [FastOCRLabel](https://gitee.com/BaoJianQiang/FastOCRLabel) (@ [包建强](https://gitee.com/BaoJianQiang) )
-- 通用型桌面级即时翻译工具 [DangoOCR离线版](https://github.com/PantsuDango/DangoOCR) (@ [PantsuDango](https://github.com/PantsuDango))
-- 获取OCR识别结果的key-value [paddleOCRCorrectOutputs](https://github.com/yuranusduke/paddleOCRCorrectOutputs) (@ [yuranusduke](https://github.com/yuranusduke))
-- 截屏转文字工具  [scr2txt](https://github.com/lstwzd/scr2txt) (@ [lstwzd](https://github.com/lstwzd))
-- 身份证复印件识别 [id_card_ocr](https://github.com/baseli/id_card_ocr)(@ [baseli](https://github.com/baseli))
-- 能看懂表格图片的数据助手：[Paddle_Table_Image_Reader](https://github.com/thunder95/Paddle_Table_Image_Reader) (@ [thunder95][https://github.com/thunder95])
-- 英文视频自动生成字幕 [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/1054614?channelType=0&channel=0)( @ [叶月水狐](https://aistudio.baidu.com/aistudio/personalcenter/thirdview/322052))
-
 ### 1.3 代码与文档优化
-
 
 - 非常感谢 [zhangxin](https://github.com/ZhangXinNan)([Blog](https://blog.csdn.net/sdlypyzq)) 贡献新的可视化方式、添加.gitgnore、处理手动设置PYTHONPATH环境变量的问题([#210](https://github.com/PaddlePaddle/PaddleOCR/pull/210))。
 - 非常感谢 [lyl120117](https://github.com/lyl120117) 贡献打印网络结构的代码([#304](https://github.com/PaddlePaddle/PaddleOCR/pull/304))。
 - 非常感谢 [BeyondYourself](https://github.com/BeyondYourself) 给PaddleOCR提了很多非常棒的建议，并简化了PaddleOCR的部分代码风格([so many commits)](https://github.com/PaddlePaddle/PaddleOCR/commits?author=BeyondYourself)。
-
 - 非常感谢 [Khanh Tran](https://github.com/xxxpsyduck) 和 [Karl Horky](https://github.com/karlhorky) 贡献修改英文文档。
 
 ### 1.4 多语言语料
