@@ -12,9 +12,9 @@ train_model_name:latest
 train_infer_img_dir:./train_data/icdar2015/text_localization/ch4_test_images/
 null:null
 ##
-trainer:norm_train|pact_train
+trainer:norm_train
 norm_train:tools/train.py -c configs/det/ch_PP-OCRv2/ch_PP-OCRv2_det_cml.yml -o 
-pact_train:deploy/slim/quantization/quant.py -c configs/det/ch_PP-OCRv2/ch_PP-OCRv2_det_cml.yml -o
+pact_train:null
 fpgm_train:null
 distill_train:null
 null:null
@@ -28,7 +28,7 @@ null:null
 Global.save_inference_dir:./output/
 Global.checkpoints:
 norm_export:tools/export_model.py -c configs/det/ch_PP-OCRv2/ch_PP-OCRv2_det_cml.yml -o 
-quant_export:deploy/slim/quantization/export_model.py -c configs/det/ch_PP-OCRv2/ch_PP-OCRv2_det_cml.yml -o 
+quant_export:null
 fpgm_export: 
 distill_export:null
 export1:null
