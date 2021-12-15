@@ -54,7 +54,7 @@ class DetOp(Op):
         _, self.new_h, self.new_w = det_img.shape
         return {"x": det_img[np.newaxis, :].copy()}, False, None, ""
 
-    def postprocess(self, input_dicts, fetch_dict, log_id):
+    def postprocess(self, input_dicts, fetch_dict, data_id, log_id):
         det_out = fetch_dict["save_infer_model/scale_0.tmp_1"]
         ratio_list = [
             float(self.new_h) / self.ori_h, float(self.new_w) / self.ori_w
