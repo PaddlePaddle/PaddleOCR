@@ -380,8 +380,8 @@ def parse_args():
     parser.add_argument("--seed", type=int, default=2048,
                         help="random seed for initialization",)
 
-    parser.add_argument("--ocr_rec_model_dir", default=None, type=str, )
-    parser.add_argument("--ocr_det_model_dir", default=None, type=str, )
+    parser.add_argument("--rec_model_dir", default=None, type=str, )
+    parser.add_argument("--det_model_dir", default=None, type=str, )
     parser.add_argument(
         "--label_map_path", default="./labels/labels_ser.txt", type=str, required=False, )
     parser.add_argument("--infer_imgs", default=None, type=str, required=False)

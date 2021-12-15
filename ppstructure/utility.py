@@ -21,13 +21,31 @@ def init_args():
     parser = infer_args()
 
     # params for output
-    parser.add_argument("--output", type=str, default='./output/table')
+    parser.add_argument("--output", type=str, default='./output')
     # params for table structure
     parser.add_argument("--table_max_len", type=int, default=488)
     parser.add_argument("--table_model_dir", type=str)
     parser.add_argument("--table_char_type", type=str, default='en')
-    parser.add_argument("--table_char_dict_path", type=str, default="../ppocr/utils/dict/table_structure_dict.txt")
-    parser.add_argument("--layout_path_model", type=str, default="lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config")
+    parser.add_argument(
+        "--table_char_dict_path",
+        type=str,
+        default="../ppocr/utils/dict/table_structure_dict.txt")
+    parser.add_argument(
+        "--layout_path_model",
+        type=str,
+        default="lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config")
+
+    # params for ser
+    parser.add_argument("--model_name_or_path", type=str)
+    parser.add_argument("--max_seq_length", type=int, default=512)
+    parser.add_argument(
+        "--label_map_path", type=str, default='./vqa/labels/labels_ser.txt')
+
+    parser.add_argument(
+        "--mode",
+        type=str,
+        default='structure',
+        help='structure and vqa is supported')
     return parser
 
 
@@ -48,5 +66,6 @@ def draw_structure_result(image, result, font_path):
                 boxes.append(np.array(box).reshape(-1, 2))
                 txts.append(rec_res[0])
                 scores.append(rec_res[1])
-    im_show = draw_ocr_box_txt(image, boxes, txts, scores, font_path=font_path,drop_score=0)
+    im_show = draw_ocr_box_txt(
+        image, boxes, txts, scores, font_path=font_path, drop_score=0)
     return im_show
