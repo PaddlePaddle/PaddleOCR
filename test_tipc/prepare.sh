@@ -187,8 +187,8 @@ elif [ ${MODE} = "whole_infer" ];then
         cd ./inference/ && tar xf det_mv3_east_v2.0_train.tar & cd ../
     fi
     if [ ${model_name} == "det_r50_vd_east_v2.0" ]; then
-        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_east_v2.0_train.tar --no-check-certificate
-        cd ./inference/ && tar xf det_mv3_east_v2.0_train.tar & cd ../
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar --no-check-certificate
+        cd ./inference/ && tar xf det_r50_vd_east_v2.0_train.tar & cd ../
     fi
 fi
 
