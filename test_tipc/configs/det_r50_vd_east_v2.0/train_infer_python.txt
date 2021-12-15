@@ -42,7 +42,7 @@ inference:tools/infer/predict_det.py
 --enable_mkldnn:True|False
 --cpu_threads:1|6
 --rec_batch_num:1
---use_tensorrt:False|True
+--use_tensorrt:False
 --precision:fp32|fp16|int8
 --det_model_dir:
 --image_dir:./inference/ch_det_data_50/all-sum-510/
