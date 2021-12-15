@@ -92,7 +92,7 @@ PP-Structure系列模型列表（更新中）
 
 * VQA模型
 
-|模型名称|模型简介|推理模型大小|下载地址|
+|模型名称|模型简介|模型大小|下载地址|
 | --- | --- | --- | --- |
 |PP-Layout_v1.0_ser_pretrained|基于LayoutXLM在xfun中文数据集上训练的SER模型|1.4G|[推理模型 coming soon]() / [训练模型](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_ser_pretrained.tar) |
 |PP-Layout_v1.0_re_pretrained|基于LayoutXLM在xfun中文数据集上训练的RE模型|1.4G|[推理模型 coming soon]() / [训练模型](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_re_pretrained.tar) |
