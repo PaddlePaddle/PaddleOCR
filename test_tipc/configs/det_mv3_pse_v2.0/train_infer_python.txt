@@ -35,7 +35,7 @@ export1:null
 export2:null
 ##
 train_model:./inference/det_mv3_pse_v2.0_train/best_accuracy
-infer_export:tools/export_model.py -c test_tipc/cconfigs/det_mv3_pse_v2.0/det_mv3_pse.yml  -o
+infer_export:tools/export_model.py -c test_tipc/configs/det_mv3_pse_v2.0/det_mv3_pse.yml  -o
 infer_quant:False
 inference:tools/infer/predict_det.py
 --use_gpu:True|False
