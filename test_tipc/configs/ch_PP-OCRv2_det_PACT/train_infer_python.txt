@@ -1,5 +1,5 @@
 ===========================train_params===========================
-model_name:PPOCRv2_det
+model_name:ch_PPOCRv2_det_PACT
 python:python3.7
 gpu_list:0|0,1
 Global.use_gpu:True|True
