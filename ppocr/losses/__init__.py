@@ -35,6 +35,7 @@ from .cls_loss import ClsLoss
 
 # e2e loss
 from .e2e_pg_loss import PGLoss
+from .kie_sdmgr_loss import SDMGRLoss
 
 # basic loss function
 from .basic_loss import DistanceLoss
@@ -50,7 +51,7 @@ def build_loss(config):
     support_dict = [
         'DBLoss', 'PSELoss', 'EASTLoss', 'SASTLoss', 'CTCLoss', 'ClsLoss',
         'AttentionLoss', 'SRNLoss', 'PGLoss', 'CombinedLoss', 'NRTRLoss',
-        'TableAttentionLoss', 'SARLoss', 'AsterLoss'
+        'TableAttentionLoss', 'SARLoss', 'AsterLoss', 'SDMGRLoss'
     ]
     config = copy.deepcopy(config)
     module_name = config.pop('name')

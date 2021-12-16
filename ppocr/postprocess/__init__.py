@@ -45,6 +45,8 @@ def build_post_process(config, global_config=None):
 
     config = copy.deepcopy(config)
     module_name = config.pop('name')
+    if module_name == "None":
+        return
     if global_config is not None:
         config.update(global_config)
     assert module_name in support_dict, Exception(

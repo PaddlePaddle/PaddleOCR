@@ -21,6 +21,7 @@ PaddleOCR开源的文本检测算法列表：
 - [x]  EAST([paper](https://arxiv.org/abs/1704.03155))[1]
 - [x]  SAST([paper](https://arxiv.org/abs/1908.05498))[4]
 - [x]  PSENet([paper](https://arxiv.org/abs/1903.12473v2)）
+- [x]  SDMGR([paper](https://arxiv.org/pdf/2103.14470.pdf))
 
 在ICDAR2015文本检测公开数据集上，算法效果如下：
 |模型|骨干网络|precision|recall|Hmean|下载链接|
@@ -32,6 +33,7 @@ PaddleOCR开源的文本检测算法列表：
 |SAST|ResNet50_vd|91.39%|83.77%|87.42%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_icdar15_v2.0_train.tar)|
 |PSE|ResNet50_vd|85.81%|79.53%|82.55%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_r50_vd_pse_v2.0_train.tar)|
 |PSE|MobileNetV3|82.20%|70.48%|75.89%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_mv3_pse_v2.0_train.tar)|
+|SDMGR|VGG16|-|-|87.11%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/kie/kie_vgg16.tar)|
 
 在Total-text文本检测公开数据集上，算法效果如下：
 

@@ -35,7 +35,14 @@ def build_backbone(config, model_type):
         ]
     elif model_type == "e2e":
         from .e2e_resnet_vd_pg import ResNet
-        support_dict = ["ResNet"]
+        support_dict = ['ResNet']
+    elif model_type == 'kie':
+        from .kie_unet_sdmgr import Kie_backbone
+        support_dict = ['Kie_backbone']
+    elif model_type == "table":
+        from .table_resnet_vd import ResNet
+        from .table_mobilenet_v3 import MobileNetV3
+        support_dict = ["ResNet", "MobileNetV3"]
     else:
         raise NotImplementedError
 
