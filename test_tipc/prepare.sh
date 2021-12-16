@@ -162,6 +162,35 @@ elif [ ${MODE} = "whole_infer" ];then
         wget -nc -P  ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_icdar15_v2.0_train.tar --no-check-certificate
         cd ./inference/ && tar xf det_r50_vd_sast_icdar15_v2.0_train.tar && tar xf ch_det_data_50.tar && cd ../
     fi
+    if [ ${model_name} == "rec_mv3_none_none_ctc_v2.0" ]; then
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_none_none_ctc_v2.0_train.tar --no-check-certificate
+        cd ./inference/ && tar xf rec_mv3_none_none_ctc_v2.0_train.tar && cd ../
+    fi
+    if [ ${model_name} == "rec_r34_vd_none_none_ctc_v2.0" ]; then
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_none_none_ctc_v2.0_train.tar --no-check-certificate
+        cd ./inference/ && tar xf rec_r34_vd_none_none_ctc_v2.0_train.tar && cd ../
+    fi
+    if [ ${model_name} == "rec_mv3_none_bilstm_ctc_v2.0" ]; then
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_none_bilstm_ctc_v2.0_train.tar --no-check-certificate
+        cd ./inference/ && tar xf rec_mv3_none_bilstm_ctc_v2.0_train.tar && cd ../
+    fi
+    if [ ${model_name} == "rec_r34_vd_none_bilstm_ctc_v2.0" ]; then
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_none_bilstm_ctc_v2.0_train.tar --no-check-certificate
+        cd ./inference/ && tar xf rec_r34_vd_none_bilstm_ctc_v2.0_train.tar && cd ../
+    fi
+    if [ ${model_name} == "rec_mv3_tps_bilstm_ctc_v2.0" ]; then
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_tps_bilstm_ctc_v2.0_train.tar --no-check-certificate
+        cd ./inference/ && tar xf rec_mv3_tps_bilstm_ctc_v2.0_train.tar && cd ../
+    fi
+    if [ ${model_name} == "rec_r34_vd_tps_bilstm_ctc_v2.0" ]; then
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_tps_bilstm_ctc_v2.0_train.tar --no-check-certificate
+        cd ./inference/ && tar xf rec_r34_vd_tps_bilstm_ctc_v2.0_train.tar && cd ../
+    fi
+    if [ ${model_name} == "ch_ppocr_server_v2.0_rec" ]; then
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/ch_ppocr_server_v2.0_rec_train.tar --no-check-certificate
+        cd ./inference/ && tar xf ch_ppocr_server_v2.0_rec_train.tar && cd ../
+    fi
+    
     if [ ${model_name} == "det_r50_vd_sast_totaltext_v2.0" ]; then
         wget -nc -P  ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_totaltext_v2.0_train.tar --no-check-certificate
         cd ./inference/ && tar xf det_r50_vd_sast_totaltext_v2.0_train.tar && cd ../
