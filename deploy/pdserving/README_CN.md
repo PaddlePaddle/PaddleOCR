@@ -37,18 +37,18 @@ PaddleOCR提供2种服务部署方式：
 ```bash
 # 安装serving，用于启动服务
 wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_server_gpu-0.7.0.post102-py3-none-any.whl
-pip install paddle_serving_server_gpu-0.7.0.post102-py3-none-any.whl
+pip3 install paddle_serving_server_gpu-0.7.0.post102-py3-none-any.whl
 # 如果是cuda10.1环境，可以使用下面的命令安装paddle-serving-server
 # wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_server_gpu-0.7.0.post101-py3-none-any.whl
-# pip install paddle_serving_server_gpu-0.7.0.post101-py3-none-any.whl
+# pip3 install paddle_serving_server_gpu-0.7.0.post101-py3-none-any.whl
 
 # 安装client，用于向服务发送请求
 wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_client-0.7.0-cp37-none-any.whl
-pip install paddle_serving_client-0.7.0-cp37-none-any.whl
+pip3 install paddle_serving_client-0.7.0-cp37-none-any.whl
 
 # 安装serving-app
 wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_app-0.7.0-py3-none-any.whl
-pip install paddle_serving_app-0.7.0-py3-none-any.whl
+pip3 install paddle_serving_app-0.7.0-py3-none-any.whl
 ```
 
 **Note:** 如果要安装最新版本的PaddleServing参考[链接](https://github.com/PaddlePaddle/Serving/blob/v0.7.0/doc/Latest_Packages_CN.md)。
@@ -58,7 +58,7 @@ pip install paddle_serving_app-0.7.0-py3-none-any.whl
 
 使用PaddleServing做服务化部署时，需要将保存的inference模型转换为serving易于部署的模型。
 
-首先，下载PPOCR的[inference模型](https://github.com/PaddlePaddle/PaddleOCR#pp-ocr-20-series-model-listupdate-on-dec-15)
+首先，下载PPOCR的[inference模型](https://github.com/PaddlePaddle/PaddleOCR#pp-ocr-series-model-listupdate-on-september-8th)
 
 ```bash
 # 下载并解压 OCR 文本检测模型
@@ -71,14 +71,14 @@ wget https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar 
 
 ```bash
 # 转换检测模型
-python -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_det_infer/ \
+python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_det_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
                                          --serving_server ./ppocrv2_det_serving/ \
                                          --serving_client ./ppocrv2_det_client/
 
 # 转换识别模型
-python -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_rec_infer/ \
+python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_rec_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
                                          --serving_server ./ppocrv2_rec_serving/  \

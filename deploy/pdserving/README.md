@@ -45,63 +45,67 @@ PaddleOCR operating environment and Paddle Serving operating environment are nee
     ```
 
 3. Install the client to send requests to the service
-    In [download link](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md) find the client installation package corresponding to the python version.
-    The python3.7 version is recommended here:
 
-    ```
-    wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_client-0.0.0-cp37-none-any.whl
-    pip3 install paddle_serving_client-0.0.0-cp37-none-any.whl
-    ```
+```bash
+# 安装serving，用于启动服务
+wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_server_gpu-0.7.0.post102-py3-none-any.whl
+pip3 install paddle_serving_server_gpu-0.7.0.post102-py3-none-any.whl
+# 如果是cuda10.1环境，可以使用下面的命令安装paddle-serving-server
+# wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_server_gpu-0.7.0.post101-py3-none-any.whl
+# pip3 install paddle_serving_server_gpu-0.7.0.post101-py3-none-any.whl
 
-4. Install serving-app
-    ```
-    pip3 install paddle-serving-app==0.6.1
-    ```
+# 安装client，用于向服务发送请求
+wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_client-0.7.0-cp37-none-any.whl
+pip3 install paddle_serving_client-0.7.0-cp37-none-any.whl
 
-   **note:** If you want to install the latest version of PaddleServing, refer to [link](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md).
+# 安装serving-app
+wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_app-0.7.0-py3-none-any.whl
+pip3 install paddle_serving_app-0.7.0-py3-none-any.whl
+```
+
+   **note:** If you want to install the latest version of PaddleServing, refer to [link](https://github.com/PaddlePaddle/Serving/blob/v0.7.0/doc/Latest_Packages_CN.md).
 
 
 <a name="model-conversion"></a>
 ## Model conversion
 When using PaddleServing for service deployment, you need to convert the saved inference model into a serving model that is easy to deploy.
 
-Firstly, download the [inference model](https://github.com/PaddlePaddle/PaddleOCR#pp-ocr-20-series-model-listupdate-on-dec-15) of PPOCR
+Firstly, download the [inference model](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/README_ch.md#pp-ocr%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E5%88%97%E8%A1%A8%E6%9B%B4%E6%96%B0%E4%B8%AD) of PPOCR
 ```
 # Download and unzip the OCR text detection model
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_ppocr_mobile_v2.0_det_infer.tar
+wget https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar -O ch_PP-OCRv2_det_infer.tar && tar -xf ch_PP-OCRv2_det_infer.tar
 # Download and unzip the OCR text recognition model
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf ch_ppocr_mobile_v2.0_rec_infer.tar
-
+wget https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar -O ch_PP-OCRv2_rec_infer.tar &&  tar -xf ch_PP-OCRv2_rec_infer.tar
 ```
 Then, you can use installed paddle_serving_client tool to convert inference model to mobile model.
 ```
 #  Detection model conversion
-python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_mobile_v2.0_det_infer/ \
+python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_det_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
-                                         --serving_server ./ppocr_det_mobile_2.0_serving/ \
-                                         --serving_client ./ppocr_det_mobile_2.0_client/
+                                         --serving_server ./ppocrv2_det_serving/ \
+                                         --serving_client ./ppocrv2_det_client/
 
 #  Recognition model conversion
-python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_mobile_v2.0_rec_infer/ \
+python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_rec_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
-                                         --serving_server ./ppocr_rec_mobile_2.0_serving/  \
-                                         --serving_client ./ppocr_rec_mobile_2.0_client/
+                                         --serving_server ./ppocrv2_rec_serving/  \
+                                         --serving_client ./ppocrv2_rec_client/
 
 ```
 
 After the detection model is converted, there will be additional folders of `ppocr_det_mobile_2.0_serving` and `ppocr_det_mobile_2.0_client` in the current folder, with the following format:
 ```
-|- ppocr_det_mobile_2.0_serving/
-   |- __model__
-   |- __params__
-   |- serving_server_conf.prototxt
-   |- serving_server_conf.stream.prototxt
+|- ppocrv2_det_serving/
+  |- __model__  
+  |- __params__
+  |- serving_server_conf.prototxt  
+  |- serving_server_conf.stream.prototxt
 
-|- ppocr_det_mobile_2.0_client
-   |- serving_client_conf.prototxt
-   |- serving_client_conf.stream.prototxt
+|- ppocrv2_det_client
+  |- serving_client_conf.prototxt  
+  |- serving_client_conf.stream.prototxt
 
 ```
 The recognition model is the same.
