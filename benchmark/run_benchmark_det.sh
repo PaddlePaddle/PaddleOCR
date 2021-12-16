@@ -17,7 +17,7 @@ function _set_params(){
     skip_steps=2                 # 解析日志，有些模型前几个step耗时长，需要跳过                                    (必填)
     keyword="ips:"               # 解析日志，筛选出数据所在行的关键字                                             (必填)
     index="1"
-    model_name=${model_item}_${run_mode}_bs${batch_size}_${fp_item}        # model_item 用于yml文件名匹配，model_name 用于数据入库前端展示
+    model_name=${model_item}_bs${batch_size}_${fp_item}        # model_item 用于yml文件名匹配，model_name 用于数据入库前端展示
 #   以下不用修改   
     device=${CUDA_VISIBLE_DEVICES//,/ }
     arr=(${device})

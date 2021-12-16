@@ -26,8 +26,10 @@ class MobileNetV3(nn.Layer):
                  scale=0.5,
                  large_stride=None,
                  small_stride=None,
+                 disable_se=False,
                  **kwargs):
         super(MobileNetV3, self).__init__()
+        self.disable_se = disable_se
         if small_stride is None:
             small_stride = [2, 2, 2, 2]
         if large_stride is None:
@@ -101,6 +103,7 @@ class MobileNetV3(nn.Layer):
         block_list = []
         inplanes = make_divisible(inplanes * scale)
         for (k, exp, c, se, nl, s) in cfg:
+            se = se and not self.disable_se
             block_list.append(
                 ResidualUnit(
                     in_channels=inplanes,

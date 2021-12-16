@@ -10,7 +10,7 @@ lines=(${dataline})
 
 # parser serving
 model_name=$(func_parser_value "${lines[1]}")
-python=$(func_parser_value "${lines[2]}")
+python_list=$(func_parser_value "${lines[2]}")
 trans_model_py=$(func_parser_value "${lines[3]}")
 infer_model_dir_key=$(func_parser_key "${lines[4]}")
 infer_model_dir_value=$(func_parser_value "${lines[4]}")
@@ -54,14 +54,15 @@ function func_serving(){
     set_serving_server=$(func_set_params "${serving_server_key}" "${serving_server_value}")
     set_serving_client=$(func_set_params "${serving_client_key}" "${serving_client_value}")
     set_image_dir=$(func_set_params "${image_dir_key}" "${image_dir_value}")
-    trans_model_cmd="${python} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
+    python_list=(${python_list})
+    trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
     eval $trans_model_cmd
     cd ${serving_dir_value}
     echo $PWD
     unset https_proxy
     unset http_proxy
-    for python in ${python[*]}; do
-        if [ ${python} = "cpp"]; then
+    for python in ${python_list[*]}; do
+        if [ ${python} = "cpp" ]; then
             for use_gpu in ${web_use_gpu_list[*]}; do
                 if [ ${use_gpu} = "null" ]; then
                     web_service_cpp_cmd="${python} -m paddle_serving_server.serve --model ppocr_det_mobile_2.0_serving/ ppocr_rec_mobile_2.0_serving/ --port 9293"
@@ -91,9 +92,6 @@ function func_serving(){
                 echo ${ues_gpu}
                 if [ ${use_gpu} = "null" ]; then
                     for use_mkldnn in ${web_use_mkldnn_list[*]}; do
-                        if [ ${use_mkldnn} = "False" ]; then
-                            continue
-                        fi
                         for threads in ${web_cpu_threads_list[*]}; do
                             set_cpu_threads=$(func_set_params "${web_cpu_threads_key}" "${threads}")
                             web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}=${use_gpu} ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} &"
@@ -124,6 +122,9 @@ function func_serving(){
                                 continue
                             fi
                             set_tensorrt=$(func_set_params "${web_use_trt_key}" "${use_trt}")
+                            if [ ${use_trt} = True ]; then
+                                device_type=2
+                            fi
                             set_precision=$(func_set_params "${web_precision_key}" "${precision}")
                             web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}=${use_gpu} ${set_tensorrt} ${set_precision} & "
                             eval $web_service_cmd

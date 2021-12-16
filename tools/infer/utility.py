@@ -195,6 +195,7 @@ def create_predictor(args, mode, logger):
                     max_batch_size=args.max_batch_size,
                     min_subgraph_size=args.min_subgraph_size)
                 # skip the minmum trt subgraph
+            use_dynamic_shape = True
             if mode == "det":
                 min_input_shape = {
                     "x": [1, 3, 50, 50],
@@ -211,7 +212,7 @@ def create_predictor(args, mode, logger):
                     "nearest_interp_v2_0.tmp_0": [1, 256, 2, 2]
                 }
                 max_input_shape = {
-                    "x": [1, 3, 1280, 1280],
+                    "x": [1, 3, 1536, 1536],
                     "conv2d_92.tmp_0": [1, 120, 400, 400],
                     "conv2d_91.tmp_0": [1, 24, 200, 200],
                     "conv2d_59.tmp_0": [1, 96, 400, 400],
@@ -260,19 +261,20 @@ def create_predictor(args, mode, logger):
                 max_input_shape.update(max_pact_shape)
                 opt_input_shape.update(opt_pact_shape)
             elif mode == "rec":
+                if args.rec_algorithm != "CRNN":
+                    use_dynamic_shape = False
                 min_input_shape = {"x": [1, 3, 32, 10]}
-                max_input_shape = {"x": [args.rec_batch_num, 3, 32, 1024]}
+                max_input_shape = {"x": [args.rec_batch_num, 3, 32, 1536]}
                 opt_input_shape = {"x": [args.rec_batch_num, 3, 32, 320]}
             elif mode == "cls":
                 min_input_shape = {"x": [1, 3, 48, 10]}
                 max_input_shape = {"x": [args.rec_batch_num, 3, 48, 1024]}
                 opt_input_shape = {"x": [args.rec_batch_num, 3, 48, 320]}
             else:
-                min_input_shape = {"x": [1, 3, 10, 10]}
-                max_input_shape = {"x": [1, 3, 512, 512]}
-                opt_input_shape = {"x": [1, 3, 256, 256]}
-            config.set_trt_dynamic_shape_info(min_input_shape, max_input_shape,
-                                              opt_input_shape)
+                use_dynamic_shape = False
+            if use_dynamic_shape:
+                config.set_trt_dynamic_shape_info(
+                    min_input_shape, max_input_shape, opt_input_shape)
 
         else:
             config.disable_gpu()
@@ -311,7 +313,10 @@ def create_predictor(args, mode, logger):
 
 
 def get_infer_gpuid():
-    cmd = "env | grep CUDA_VISIBLE_DEVICES"
+    if not paddle.fluid.core.is_compiled_with_rocm():
+        cmd = "env | grep CUDA_VISIBLE_DEVICES"
+    else:
+        cmd = "env | grep HIP_VISIBLE_DEVICES"
     env_cuda = os.popen(cmd).readlines()
     if len(env_cuda) == 0:
         return 0
