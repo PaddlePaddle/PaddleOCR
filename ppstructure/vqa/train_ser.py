@@ -48,9 +48,15 @@ def train(args):
         paddle.distributed.init_parallel_env()
 
     tokenizer = LayoutXLMTokenizer.from_pretrained(args.model_name_or_path)
-    base_model = LayoutXLMModel.from_pretrained(args.model_name_or_path)
-    model = LayoutXLMForTokenClassification(
-        base_model, num_classes=len(label2id_map), dropout=None)
+    if not args.resume:
+        model = LayoutXLMModel.from_pretrained(args.model_name_or_path)
+        model = LayoutXLMForTokenClassification(
+            model, num_classes=len(label2id_map), dropout=None)
+        logger.info('train from scratch')
+    else:
+        logger.info('resume from {}'.format(args.model_name_or_path))
+        model = LayoutXLMForTokenClassification.from_pretrained(
+            args.model_name_or_path)
 
     # dist mode
     if paddle.distributed.get_world_size() > 1:
@@ -207,11 +213,9 @@ def train(args):
                     if best_metrics is not None:
                         logger.info("best metrics: {}".format(best_metrics))
 
-            if paddle.distributed.get_rank(
-            ) == 0 and args.save_steps > 0 and global_step % args.save_steps == 0:
+            if paddle.distributed.get_rank() == 0:
                 # Save model checkpoint
-                output_dir = os.path.join(args.output_dir,
-                                          "checkpoint-{}".format(global_step))
+                output_dir = os.path.join(args.output_dir, "latest_model")
                 os.makedirs(output_dir, exist_ok=True)
                 if paddle.distributed.get_rank() == 0:
                     model.save_pretrained(output_dir)

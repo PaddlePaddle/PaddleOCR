@@ -49,9 +49,14 @@ def train(args):
         paddle.distributed.init_parallel_env()
 
     tokenizer = LayoutXLMTokenizer.from_pretrained(args.model_name_or_path)
-
-    model = LayoutXLMModel.from_pretrained(args.model_name_or_path)
-    model = LayoutXLMForRelationExtraction(model, dropout=None)
+    if not args.resume:
+        model = LayoutXLMModel.from_pretrained(args.model_name_or_path)
+        model = LayoutXLMForRelationExtraction(model, dropout=None)
+        logger.info('train from scratch')
+    else:
+        logger.info('resume from {}'.format(args.model_name_or_path))
+        model = LayoutXLMForRelationExtraction.from_pretrained(
+            args.model_name_or_path)
 
     # dist mode
     if paddle.distributed.get_world_size() > 1:
@@ -200,8 +205,7 @@ def train(args):
                     logger.info("eval results: {}".format(results))
                     logger.info("best_metirc: {}".format(best_metirc))
 
-            if (paddle.distributed.get_rank() == 0 and args.save_steps > 0 and
-                    global_step % args.save_steps == 0):
+            if paddle.distributed.get_rank() == 0:
                 # Save model checkpoint
                 output_dir = os.path.join(args.output_dir, "latest_model")
                 os.makedirs(output_dir, exist_ok=True)

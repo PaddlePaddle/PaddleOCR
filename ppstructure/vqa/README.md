@@ -141,7 +141,6 @@ python3.7 train_ser.py \
     --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
     --num_train_epochs 200 \
     --eval_steps 10 \
-    --save_steps 500 \
     --output_dir "./output/ser/" \
     --learning_rate 5e-5 \
     --warmup_steps 50 \
@@ -150,6 +149,25 @@ python3.7 train_ser.py \
 ```
 
 最终会打印出`precision`, `recall`, `f1`等指标，模型和训练日志会保存在`./output/ser/`文件夹中。
+
+* 恢复训练
+
+```shell
+python3.7 train_ser.py \
+    --model_name_or_path "model_path" \
+    --train_data_dir "XFUND/zh_train/image" \
+    --train_label_path "XFUND/zh_train/xfun_normalize_train.json" \
+    --eval_data_dir "XFUND/zh_val/image" \
+    --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
+    --num_train_epochs 200 \
+    --eval_steps 10 \
+    --output_dir "./output/ser/" \
+    --learning_rate 5e-5 \
+    --warmup_steps 50 \
+    --evaluate_during_training \
+    --seed 2048 \
+    --resume
+```
 
 * 评估
 ```shell
@@ -221,7 +239,6 @@ python3 train_re.py \
     --label_map_path 'labels/labels_ser.txt' \
     --num_train_epochs 2 \
     --eval_steps 10 \
-    --save_steps 500 \
     --output_dir "output/re/"  \
     --learning_rate 5e-5 \
     --warmup_steps 50 \
@@ -229,6 +246,30 @@ python3 train_re.py \
     --per_gpu_eval_batch_size 8 \
     --evaluate_during_training \
     --seed 2048
+
+```
+
+* 回复训练
+
+```shell
+export CUDA_VISIBLE_DEVICES=0
+python3 train_re.py \
+    --model_name_or_path "model_path" \
+    --train_data_dir "XFUND/zh_train/image" \
+    --train_label_path "XFUND/zh_train/xfun_normalize_train.json" \
+    --eval_data_dir "XFUND/zh_val/image" \
+    --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
+    --label_map_path 'labels/labels_ser.txt' \
+    --num_train_epochs 2 \
+    --eval_steps 10 \
+    --output_dir "output/re/"  \
+    --learning_rate 5e-5 \
+    --warmup_steps 50 \
+    --per_gpu_train_batch_size 8 \
+    --per_gpu_eval_batch_size 8 \
+    --evaluate_during_training \
+    --seed 2048 \
+    --resume
 
 ```
 
