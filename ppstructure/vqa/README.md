@@ -98,7 +98,7 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 # 需要使用PaddleNLP最新的代码版本进行安装
 git clone https://github.com/PaddlePaddle/PaddleNLP -b develop
 cd PaddleNLP
-pip install -e .
+pip3 install -e .
 ```
 
 
@@ -151,6 +151,29 @@ python3.7 train_ser.py \
 
 最终会打印出`precision`, `recall`, `f1`等指标，模型和训练日志会保存在`./output/ser/`文件夹中。
 
+* 评估
+```shell
+export CUDA_VISIBLE_DEVICES=0
+python3 eval_ser.py \
+    --model_name_or_path "PP-Layout_v1.0_ser_pretrained/" \
+    --eval_data_dir "XFUND/zh_val/image" \
+    --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
+    --per_gpu_eval_batch_size 8 \
+    --output_dir "output/ser/"  \
+    --seed 2048
+```
+最终会打印出`precision`, `recall`, `f1`等指标
+
+
+```shell
+export CUDA_VISIBLE_DEVICES=0
+python3.7 infer_ser.py \
+    --model_name_or_path "./PP-Layout_v1.0_ser_pretrained/" \
+    --output_dir "output_res/" \
+    --infer_imgs "XFUND/zh_val/image/" \
+    --ocr_json_path "XFUND/zh_val/xfun_normalize_val.json"
+```
+
 * 使用评估集合中提供的OCR识别结果进行预测
 
 ```shell
@@ -188,6 +211,7 @@ python3.7 helper/eval_with_label_end2end.py --gt_json_path XFUND/zh_val/xfun_nor
 * 启动训练
 
 ```shell
+export CUDA_VISIBLE_DEVICES=0
 python3 train_re.py \
     --model_name_or_path "layoutxlm-base-uncased" \
     --train_data_dir "XFUND/zh_train/image" \
@@ -210,6 +234,22 @@ python3 train_re.py \
 
 最终会打印出`precision`, `recall`, `f1`等指标，模型和训练日志会保存在`./output/re/`文件夹中。
 
+* 评估
+```shell
+export CUDA_VISIBLE_DEVICES=0
+python3 eval_re.py \
+    --model_name_or_path "output/check/checkpoint-best" \
+    --max_seq_length 512 \
+    --eval_data_dir "XFUND/zh_val/image" \
+    --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
+    --label_map_path 'labels/labels_ser.txt' \
+    --output_dir "output/re_test/"  \
+    --per_gpu_eval_batch_size 8 \
+    --seed 2048
+```
+最终会打印出`precision`, `recall`, `f1`等指标
+
+
 * 使用评估集合中提供的OCR识别结果进行预测
 
 ```shell
@@ -231,7 +271,7 @@ python3 infer_re.py \
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
-# python3.7 infer_ser_re_e2e.py \
+python3.7 infer_ser_re_e2e.py \
     --model_name_or_path "./PP-Layout_v1.0_ser_pretrained/" \
     --re_model_name_or_path "./PP-Layout_v1.0_re_pretrained/" \
     --max_seq_length 512 \

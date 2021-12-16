@@ -25,6 +25,12 @@ import paddle
 from PIL import Image, ImageDraw, ImageFont
 
 
+def set_seed(seed):
+    random.seed(seed)
+    np.random.seed(seed)
+    paddle.seed(seed)
+
+
 def get_bio_label_maps(label_map_path):
     with open(label_map_path, "r") as fin:
         lines = fin.readlines()

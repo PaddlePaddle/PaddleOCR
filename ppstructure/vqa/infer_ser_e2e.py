@@ -24,9 +24,9 @@ import paddle
 from paddlenlp.transformers import LayoutXLMModel, LayoutXLMTokenizer, LayoutXLMForTokenClassification
 
 # relative reference
-from .utils import parse_args, get_image_file_list, draw_ser_results, get_bio_label_maps
+from utils import parse_args, get_image_file_list, draw_ser_results, get_bio_label_maps
 
-from .utils import pad_sentences, split_page, preprocess, postprocess, merge_preds_list_with_ocr_info
+from utils import pad_sentences, split_page, preprocess, postprocess, merge_preds_list_with_ocr_info
 
 
 def trans_poly_to_bbox(poly):
