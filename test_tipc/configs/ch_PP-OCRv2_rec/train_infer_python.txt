@@ -26,7 +26,7 @@ null:null
 ##
 ===========================infer_params===========================
 Global.save_inference_dir:./output/
-Global.pretrained_model:
+Global.checkpoints:
 norm_export:tools/export_model.py -c test_tipc/configs/ch_PP-OCRv2_rec/ch_PP-OCRv2_rec_distillation.yml -o 
 quant_export:
 fpgm_export: 
