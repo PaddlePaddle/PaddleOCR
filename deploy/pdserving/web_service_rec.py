@@ -56,7 +56,7 @@ class RecOp(Op):
         feed_list.append(feed)
         return feed_list, False, None, ""
 
-    def postprocess(self, input_dicts, fetch_data, log_id):
+    def postprocess(self, input_dicts, fetch_data, data_id, log_id):
         res_list = []
         if isinstance(fetch_data, dict):
             if len(fetch_data) > 0:
