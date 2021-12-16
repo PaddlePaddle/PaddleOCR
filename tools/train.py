@@ -35,7 +35,7 @@ from ppocr.losses import build_loss
 from ppocr.optimizer import build_optimizer
 from ppocr.postprocess import build_post_process
 from ppocr.metrics import build_metric
-from ppocr.utils.save_load import init_model, load_dygraph_params
+from ppocr.utils.save_load import load_model
 import tools.program as program
 
 dist.get_world_size()
@@ -97,15 +97,32 @@ def main(config, device, logger, vdl_writer):
     # build metric
     eval_class = build_metric(config['Metric'])
     # load pretrain model
-    pre_best_model_dict = load_dygraph_params(config, model, logger, optimizer)
+    pre_best_model_dict = load_model(config, model, optimizer)
     logger.info('train dataloader has {} iters'.format(len(train_dataloader)))
     if valid_dataloader is not None:
         logger.info('valid dataloader has {} iters'.format(
             len(valid_dataloader)))
+
+    use_amp = config["Global"].get("use_amp", False)
+    if use_amp:
+        AMP_RELATED_FLAGS_SETTING = {
+            'FLAGS_cudnn_batchnorm_spatial_persistent': 1,
+            'FLAGS_max_inplace_grad_add': 8,
+        }
+        paddle.fluid.set_flags(AMP_RELATED_FLAGS_SETTING)
+        scale_loss = config["Global"].get("scale_loss", 1.0)
+        use_dynamic_loss_scaling = config["Global"].get(
+            "use_dynamic_loss_scaling", False)
+        scaler = paddle.amp.GradScaler(
+            init_loss_scaling=scale_loss,
+            use_dynamic_loss_scaling=use_dynamic_loss_scaling)
+    else:
+        scaler = None
+
     # start train
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,
-                  eval_class, pre_best_model_dict, logger, vdl_writer)
+                  eval_class, pre_best_model_dict, logger, vdl_writer, scaler)
 
 
 def test_reader(config, device, logger):

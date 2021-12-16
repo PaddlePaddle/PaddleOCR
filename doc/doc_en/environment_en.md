@@ -1,10 +1,19 @@
 # Environment Preparation
 
+Windows and Mac users are recommended to use Anaconda to build a Python environment, and Linux users are recommended to use docker to build a Python environment. If you are familiar with the Python environment, you can skip to step 2 to install PaddlePaddle.
+
+Recommended working environment:
+- PaddlePaddle >= 2.0.0 (2.1.2)
+- python3.7
+- CUDA10.1 / CUDA10.2
+- CUDNN 7.6
+
 * [1. Python Environment Setup](#1)
   + [1.1 Windows](#1.1)
   + [1.2 Mac](#1.2)
   + [1.3 Linux](#1.3)
 * [2. Install PaddlePaddle 2.0](#2)
+
 
 <a name="1"></a>
 
@@ -38,7 +47,7 @@
   - Check conda to add environment variables and ignore the warning that
 
     <img src="../install/windows/anaconda_install_env.png" alt="add conda to path" width="500" align="center"/>
-    
+
 
 #### 1.1.2 Opening the terminal and creating the conda environment
 
@@ -69,7 +78,7 @@
   # View the current location of python
   where python
   ```
-  
+
   <img src="../install/windows/conda_list_env.png" alt="create environment" width="600" align="center"/>
 
 The above anaconda environment and python environment are installed
@@ -133,13 +142,13 @@ The above anaconda environment and python environment are installed
     # !!! Contents within this block are managed by 'conda init' !!!
     __conda_setup="$('/Users/xxx/opt/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
     if [ $? -eq 0 ]; then
-    		eval "$__conda_setup"
+            eval "$__conda_setup"
     else
-    		if [ -f "/Users/xxx/opt/anaconda3/etc/profile.d/conda.sh" ]; then
-    				. "/Users/xxx/opt/anaconda3/etc/profile.d/conda.sh"
-    		else
-    				export PATH="/Users/xxx/opt/anaconda3/bin:$PATH"
-    		fi
+            if [ -f "/Users/xxx/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+                    . "/Users/xxx/opt/anaconda3/etc/profile.d/conda.sh"
+            else
+                    export PATH="/Users/xxx/opt/anaconda3/bin:$PATH"
+            fi
     fi
     unset __conda_setup
     # <<< conda initialize <<<
@@ -197,11 +206,10 @@ Linux users can choose to run either Anaconda or Docker. If you are familiar wit
 - **Download Anaconda**.
 
   - Download at: https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/?C=M&O=D
-    
+
 
   <img src="../install/linux/anaconda_download.png" akt="anaconda download" width="800" align="center"/>
 
-  
 
   - Select the appropriate version for your operating system
       - Type `uname -m` in the terminal to check the command set used by your system
@@ -216,12 +224,12 @@ Linux users can choose to run either Anaconda or Docker. If you are familiar wit
     sudo yum install wget # CentOS
     ```
     ```bash
-    # Then use wget to download from Tsinghua source 
+    # Then use wget to download from Tsinghua source
     # If you want to download Anaconda3-2021.05-Linux-x86_64.sh, the download command is as follows
     wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-2021.05-Linux-x86_64.sh
     # If you want to download another version, you need to change the file name after the last 1 / to the version you want to download
     ```
-  
+
 - To install Anaconda.
 
   - Type `sh Anaconda3-2021.05-Linux-x86_64.sh` at the command line
@@ -309,7 +317,18 @@ cd /home/Projects
 # Create a docker container named ppocr and map the current directory to the /paddle directory of the container
 
 # If using CPU, use docker instead of nvidia-docker to create docker
-sudo docker run --name ppocr -v $PWD:/paddle --network=host -it  paddlepaddle/paddle:latest-dev-cuda10.1-cudnn7-gcc82  /bin/bash
+sudo docker run --name ppocr -v $PWD:/paddle --network=host -it  registry.baidubce.com/paddlepaddle/paddle:2.1.3-gpu-cuda10.2-cudnn7  /bin/bash
+
+# If using GPU, use nvidia-docker to create docker
+# docker image registry.baidubce.com/paddlepaddle/paddle:2.1.3-gpu-cuda11.2-cudnn8 is recommended for CUDA11.2 + CUDNN8.
+sudo nvidia-docker run --name ppocr -v $PWD:/paddle --shm-size=64G --network=host -it registry.baidubce.com/paddlepaddle/paddle:2.1.3-gpu-cuda10.2-cudnn7 /bin/bash
+
+```
+You can also visit [DockerHub](https://hub.docker.com/r/paddlepaddle/paddle/tags/) to get the image that fits your machine.
+
+```
+# ctrl+P+Q to exit docker, to re-enter docker using the following command:
+sudo docker container exec -it ppocr /bin/bash
 ```
 
 <a name="2"></a>
@@ -329,4 +348,3 @@ python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
 ```
 
 For more software version requirements, please refer to the instructions in [Installation Document](https://www.paddlepaddle.org.cn/install/quick) for operation.
-

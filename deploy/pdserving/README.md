@@ -114,7 +114,7 @@ The recognition model is the same.
     git clone https://github.com/PaddlePaddle/PaddleOCR
 
     # Enter the working directory  
-    cd PaddleOCR/deploy/pdserver/
+    cd PaddleOCR/deploy/pdserving/
     ```
 
     The pdserver directory contains the code to start the pipeline service and send prediction requests, including:

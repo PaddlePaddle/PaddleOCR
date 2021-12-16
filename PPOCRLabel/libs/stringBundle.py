@@ -19,6 +19,9 @@ import sys
 import locale
 from libs.ustr import ustr
 
+__dir__ = os.path.dirname(os.path.abspath(__file__)) # 获取本程序文件路径
+__dirpath__ = os.path.abspath(os.path.join(__dir__, '../resources/strings'))
+
 try:
     from PyQt5.QtCore import *
 except ImportError:
@@ -57,7 +60,7 @@ class StringBundle:
 
     def __createLookupFallbackList(self, localeStr):
         resultPaths = []
-        basePath = ":/strings"
+        basePath = "\strings" if os.name == 'nt' else ":/strings"
         resultPaths.append(basePath)
         if localeStr is not None:
             # Don't follow standard BCP47. Simple fallback
@@ -65,6 +68,7 @@ class StringBundle:
             for tag in tags:
                 lastPath = resultPaths[-1]
                 resultPaths.append(lastPath + '-' + tag)
+            resultPaths[-1] = __dirpath__ + resultPaths[-1] + ".properties"
 
         return resultPaths
 

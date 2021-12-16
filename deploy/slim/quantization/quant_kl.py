@@ -37,7 +37,7 @@ from ppocr.losses import build_loss
 from ppocr.optimizer import build_optimizer
 from ppocr.postprocess import build_post_process
 from ppocr.metrics import build_metric
-from ppocr.utils.save_load import init_model
+from ppocr.utils.save_load import load_model
 import tools.program as program
 import paddleslim
 from paddleslim.dygraph.quant import QAT

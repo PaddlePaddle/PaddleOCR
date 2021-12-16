@@ -38,40 +38,34 @@ logger = get_logger()
 class TextRecognizer(object):
     def __init__(self, args):
         self.rec_image_shape = [int(v) for v in args.rec_image_shape.split(",")]
-        self.character_type = args.rec_char_type
         self.rec_batch_num = args.rec_batch_num
         self.rec_algorithm = args.rec_algorithm
         postprocess_params = {
             'name': 'CTCLabelDecode',
-            "character_type": args.rec_char_type,
             "character_dict_path": args.rec_char_dict_path,
             "use_space_char": args.use_space_char
         }
         if self.rec_algorithm == "SRN":
             postprocess_params = {
                 'name': 'SRNLabelDecode',
-                "character_type": args.rec_char_type,
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }
         elif self.rec_algorithm == "RARE":
             postprocess_params = {
                 'name': 'AttnLabelDecode',
-                "character_type": args.rec_char_type,
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }
         elif self.rec_algorithm == 'NRTR':
             postprocess_params = {
                 'name': 'NRTRLabelDecode',
-                "character_type": args.rec_char_type,
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }
         elif self.rec_algorithm == "SAR":
             postprocess_params = {
                 'name': 'SARLabelDecode',
-                "character_type": args.rec_char_type,
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }
@@ -79,6 +73,7 @@ class TextRecognizer(object):
         self.predictor, self.input_tensor, self.output_tensors, self.config = \
             utility.create_predictor(args, 'rec', logger)
         self.benchmark = args.benchmark
+        self.use_onnx = args.use_onnx
         if args.benchmark:
             import auto_log
             pid = os.getpid()
@@ -96,7 +91,7 @@ class TextRecognizer(object):
                 time_keys=[
                     'preprocess_time', 'inference_time', 'postprocess_time'
                 ],
-                warmup=2,
+                warmup=0,
                 logger=logger)
 
     def resize_norm_img(self, img, max_wh_ratio):
@@ -112,8 +107,9 @@ class TextRecognizer(object):
             return norm_img.astype(np.float32) / 128. - 1.
 
         assert imgC == img.shape[2]
-        max_wh_ratio = max(max_wh_ratio, imgW / imgH)
         imgW = int((32 * max_wh_ratio))
+        if self.use_onnx:
+            imgW = 100
         h, w = img.shape[:2]
         ratio = w / float(h)
         if math.ceil(imgH * ratio) > imgW:
@@ -303,51 +299,72 @@ class TextRecognizer(object):
                     gsrm_slf_attn_bias1_list,
                     gsrm_slf_attn_bias2_list,
                 ]
-                input_names = self.predictor.get_input_names()
-                for i in range(len(input_names)):
-                    input_tensor = self.predictor.get_input_handle(input_names[
-                        i])
-                    input_tensor.copy_from_cpu(inputs[i])
-                self.predictor.run()
-                outputs = []
-                for output_tensor in self.output_tensors:
-                    output = output_tensor.copy_to_cpu()
-                    outputs.append(output)
-                if self.benchmark:
-                    self.autolog.times.stamp()
-                preds = {"predict": outputs[2]}
+                if self.use_onnx:
+                    input_dict = {}
+                    input_dict[self.input_tensor.name] = norm_img_batch
+                    outputs = self.predictor.run(self.output_tensors,
+                                                 input_dict)
+                    preds = {"predict": outputs[2]}
+                else:
+                    input_names = self.predictor.get_input_names()
+                    for i in range(len(input_names)):
+                        input_tensor = self.predictor.get_input_handle(
+                            input_names[i])
+                        input_tensor.copy_from_cpu(inputs[i])
+                    self.predictor.run()
+                    outputs = []
+                    for output_tensor in self.output_tensors:
+                        output = output_tensor.copy_to_cpu()
+                        outputs.append(output)
+                    if self.benchmark:
+                        self.autolog.times.stamp()
+                    preds = {"predict": outputs[2]}
             elif self.rec_algorithm == "SAR":
                 valid_ratios = np.concatenate(valid_ratios)
                 inputs = [
                     norm_img_batch,
                     valid_ratios,
                 ]
-                input_names = self.predictor.get_input_names()
-                for i in range(len(input_names)):
-                    input_tensor = self.predictor.get_input_handle(input_names[
-                        i])
-                    input_tensor.copy_from_cpu(inputs[i])
-                self.predictor.run()
-                outputs = []
-                for output_tensor in self.output_tensors:
-                    output = output_tensor.copy_to_cpu()
-                    outputs.append(output)
-                if self.benchmark:
-                    self.autolog.times.stamp()
-                preds = outputs[0]
-            else:
-                self.input_tensor.copy_from_cpu(norm_img_batch)
-                self.predictor.run()
-                outputs = []
-                for output_tensor in self.output_tensors:
-                    output = output_tensor.copy_to_cpu()
-                    outputs.append(output)
-                if self.benchmark:
-                    self.autolog.times.stamp()
-                if len(outputs) != 1:
-                    preds = outputs
-                else:
+                if self.use_onnx:
+                    input_dict = {}
+                    input_dict[self.input_tensor.name] = norm_img_batch
+                    outputs = self.predictor.run(self.output_tensors,
+                                                 input_dict)
                     preds = outputs[0]
+                else:
+                    input_names = self.predictor.get_input_names()
+                    for i in range(len(input_names)):
+                        input_tensor = self.predictor.get_input_handle(
+                            input_names[i])
+                        input_tensor.copy_from_cpu(inputs[i])
+                    self.predictor.run()
+                    outputs = []
+                    for output_tensor in self.output_tensors:
+                        output = output_tensor.copy_to_cpu()
+                        outputs.append(output)
+                    if self.benchmark:
+                        self.autolog.times.stamp()
+                    preds = outputs[0]
+            else:
+                if self.use_onnx:
+                    input_dict = {}
+                    input_dict[self.input_tensor.name] = norm_img_batch
+                    outputs = self.predictor.run(self.output_tensors,
+                                                 input_dict)
+                    preds = outputs[0]
+                else:
+                    self.input_tensor.copy_from_cpu(norm_img_batch)
+                    self.predictor.run()
+                    outputs = []
+                    for output_tensor in self.output_tensors:
+                        output = output_tensor.copy_to_cpu()
+                        outputs.append(output)
+                    if self.benchmark:
+                        self.autolog.times.stamp()
+                    if len(outputs) != 1:
+                        preds = outputs
+                    else:
+                        preds = outputs[0]
             rec_result = self.postprocess_op(preds)
             for rno in range(len(rec_result)):
                 rec_res[indices[beg_img_no + rno]] = rec_result[rno]

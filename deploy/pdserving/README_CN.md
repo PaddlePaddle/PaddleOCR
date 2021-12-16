@@ -112,7 +112,7 @@ python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_mobile_v2.0_rec_in
     git clone https://github.com/PaddlePaddle/PaddleOCR
 
     # 进入到工作目录
-    cd PaddleOCR/deploy/pdserver/
+    cd PaddleOCR/deploy/pdserving/
     ```
     pdserver目录包含启动pipeline服务和发送预测请求的代码，包括：
     ```
@@ -206,7 +206,7 @@ pip3 install paddle-serving-app==0.3.1
 1. 启动服务端程序
 
 ```
-cd win 
+cd win
 python3 ocr_web_server.py gpu(使用gpu方式)
 或者
 python3 ocr_web_server.py cpu(使用cpu方式)

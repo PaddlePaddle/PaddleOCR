@@ -35,7 +35,7 @@
 <file alias="prev">resources/icons/prev.png</file>
 <file alias="resetall">resources/icons/resetall.png</file>
 <file alias="verify">resources/icons/verify.png</file>
-<file alias="strings">resources/strings/strings.properties</file>
+<file alias="strings">resources/strings/strings-en.properties</file>
 <file alias="strings-zh-CN">resources/strings/strings-zh-CN.properties</file>
 </qresource>
 </RCC>

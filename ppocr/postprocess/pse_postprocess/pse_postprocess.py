@@ -1,16 +1,20 @@
-# Copyright (c) 2021 PaddlePaddle Authors. All Rights Reserved.
+# copyright (c) 2021 PaddlePaddle Authors. All Rights Reserve.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#    http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""
+This code is refer from:
+https://github.com/whai362/PSENet/blob/python3/models/head/psenet_head.py
+"""
 
 from __future__ import absolute_import
 from __future__ import division
@@ -47,7 +51,8 @@ class PSEPostProcess(object):
         pred = outs_dict['maps']
         if not isinstance(pred, paddle.Tensor):
             pred = paddle.to_tensor(pred)
-        pred = F.interpolate(pred, scale_factor=4 // self.scale, mode='bilinear')
+        pred = F.interpolate(
+            pred, scale_factor=4 // self.scale, mode='bilinear')
 
         score = F.sigmoid(pred[:, 0, :, :])
 
@@ -60,7 +65,9 @@ class PSEPostProcess(object):
 
         boxes_batch = []
         for batch_index in range(pred.shape[0]):
-            boxes, scores = self.boxes_from_bitmap(score[batch_index], kernels[batch_index], shape_list[batch_index])
+            boxes, scores = self.boxes_from_bitmap(score[batch_index],
+                                                   kernels[batch_index],
+                                                   shape_list[batch_index])
 
             boxes_batch.append({'points': boxes, 'scores': scores})
         return boxes_batch
@@ -98,15 +105,14 @@ class PSEPostProcess(object):
                 mask = np.zeros((box_height, box_width), np.uint8)
                 mask[points[:, 1], points[:, 0]] = 255
 
-                contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL,
+                                               cv2.CHAIN_APPROX_SIMPLE)
                 bbox = np.squeeze(contours[0], 1)
             else:
                 raise NotImplementedError
 
-            bbox[:, 0] = np.clip(
-                np.round(bbox[:, 0] / ratio_w), 0, src_w)
-            bbox[:, 1] = np.clip(
-                np.round(bbox[:, 1] / ratio_h), 0, src_h)
+            bbox[:, 0] = np.clip(np.round(bbox[:, 0] / ratio_w), 0, src_w)
+            bbox[:, 1] = np.clip(np.round(bbox[:, 1] / ratio_h), 0, src_h)
             boxes.append(bbox)
             scores.append(score_i)
         return boxes, scores

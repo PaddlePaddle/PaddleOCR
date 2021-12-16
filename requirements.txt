@@ -1,5 +1,5 @@
 shapely
-scikit-image==0.17.2
+scikit-image
 imgaug==0.4.0
 pyclipper
 lmdb
@@ -12,4 +12,4 @@ cython
 lxml
 premailer
 openpyxl
-fasttext
+fasttext==0.9.1

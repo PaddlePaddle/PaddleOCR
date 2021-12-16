@@ -21,33 +21,15 @@ import re
 class BaseRecLabelDecode(object):
     """ Convert between text-label and text-index """
 
-    def __init__(self,
-                 character_dict_path=None,
-                 character_type='ch',
-                 use_space_char=False):
-        support_character_type = [
-            'ch', 'en', 'EN_symbol', 'french', 'german', 'japan', 'korean',
-            'it', 'xi', 'pu', 'ru', 'ar', 'ta', 'ug', 'fa', 'ur', 'rs', 'oc',
-            'rsc', 'bg', 'uk', 'be', 'te', 'ka', 'chinese_cht', 'hi', 'mr',
-            'ne', 'EN', 'latin', 'arabic', 'cyrillic', 'devanagari'
-        ]
-        assert character_type in support_character_type, "Only {} are supported now but get {}".format(
-            support_character_type, character_type)
-
+    def __init__(self, character_dict_path=None, use_space_char=False):
         self.beg_str = "sos"
         self.end_str = "eos"
 
-        if character_type == "en":
+        self.character_str = []
+        if character_dict_path is None:
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
-        elif character_type == "EN_symbol":
-            # same with ASTER setting (use 94 char).
-            self.character_str = string.printable[:-6]
-            dict_character = list(self.character_str)
-        elif character_type in support_character_type:
-            self.character_str = []
-            assert character_dict_path is not None, "character_dict_path should not be None when character_type is {}".format(
-                character_type)
+        else:
             with open(character_dict_path, "rb") as fin:
                 lines = fin.readlines()
                 for line in lines:
@@ -57,9 +39,6 @@ class BaseRecLabelDecode(object):
                 self.character_str.append(" ")
             dict_character = list(self.character_str)
 
-        else:
-            raise NotImplementedError
-        self.character_type = character_type
         dict_character = self.add_special_char(dict_character)
         self.dict = {}
         for i, char in enumerate(dict_character):
@@ -102,13 +81,10 @@ class BaseRecLabelDecode(object):
 class CTCLabelDecode(BaseRecLabelDecode):
     """ Convert between text-label and text-index """
 
-    def __init__(self,
-                 character_dict_path=None,
-                 character_type='ch',
-                 use_space_char=False,
+    def __init__(self, character_dict_path=None, use_space_char=False,
                  **kwargs):
         super(CTCLabelDecode, self).__init__(character_dict_path,
-                                             character_type, use_space_char)
+                                             use_space_char)
 
     def __call__(self, preds, label=None, *args, **kwargs):
         if isinstance(preds, tuple):
@@ -136,13 +112,12 @@ class DistillationCTCLabelDecode(CTCLabelDecode):
 
     def __init__(self,
                  character_dict_path=None,
-                 character_type='ch',
                  use_space_char=False,
                  model_name=["student"],
                  key=None,
                  **kwargs):
-        super(DistillationCTCLabelDecode, self).__init__(
-            character_dict_path, character_type, use_space_char)
+        super(DistillationCTCLabelDecode, self).__init__(character_dict_path,
+                                                         use_space_char)
         if not isinstance(model_name, list):
             model_name = [model_name]
         self.model_name = model_name
@@ -162,13 +137,9 @@ class DistillationCTCLabelDecode(CTCLabelDecode):
 class NRTRLabelDecode(BaseRecLabelDecode):
     """ Convert between text-label and text-index """
 
-    def __init__(self,
-                 character_dict_path=None,
-                 character_type='EN_symbol',
-                 use_space_char=True,
-                 **kwargs):
+    def __init__(self, character_dict_path=None, use_space_char=True, **kwargs):
         super(NRTRLabelDecode, self).__init__(character_dict_path,
-                                              character_type, use_space_char)
+                                              use_space_char)
 
     def __call__(self, preds, label=None, *args, **kwargs):
 
@@ -230,13 +201,10 @@ class NRTRLabelDecode(BaseRecLabelDecode):
 class AttnLabelDecode(BaseRecLabelDecode):
     """ Convert between text-label and text-index """
 
-    def __init__(self,
-                 character_dict_path=None,
-                 character_type='ch',
-                 use_space_char=False,
+    def __init__(self, character_dict_path=None, use_space_char=False,
                  **kwargs):
         super(AttnLabelDecode, self).__init__(character_dict_path,
-                                              character_type, use_space_char)
+                                              use_space_char)
 
     def add_special_char(self, dict_character):
         self.beg_str = "sos"
@@ -313,13 +281,10 @@ class AttnLabelDecode(BaseRecLabelDecode):
 class SEEDLabelDecode(BaseRecLabelDecode):
     """ Convert between text-label and text-index """
 
-    def __init__(self,
-                 character_dict_path=None,
-                 character_type='ch',
-                 use_space_char=False,
+    def __init__(self, character_dict_path=None, use_space_char=False,
                  **kwargs):
         super(SEEDLabelDecode, self).__init__(character_dict_path,
-                                              character_type, use_space_char)
+                                              use_space_char)
 
     def add_special_char(self, dict_character):
         self.beg_str = "sos"
@@ -394,13 +359,10 @@ class SEEDLabelDecode(BaseRecLabelDecode):
 class SRNLabelDecode(BaseRecLabelDecode):
     """ Convert between text-label and text-index """
 
-    def __init__(self,
-                 character_dict_path=None,
-                 character_type='en',
-                 use_space_char=False,
+    def __init__(self, character_dict_path=None, use_space_char=False,
                  **kwargs):
         super(SRNLabelDecode, self).__init__(character_dict_path,
-                                             character_type, use_space_char)
+                                             use_space_char)
         self.max_text_length = kwargs.get('max_text_length', 25)
 
     def __call__(self, preds, label=None, *args, **kwargs):
@@ -616,13 +578,10 @@ class TableLabelDecode(object):
 class SARLabelDecode(BaseRecLabelDecode):
     """ Convert between text-label and text-index """
 
-    def __init__(self,
-                 character_dict_path=None,
-                 character_type='ch',
-                 use_space_char=False,
+    def __init__(self, character_dict_path=None, use_space_char=False,
                  **kwargs):
         super(SARLabelDecode, self).__init__(character_dict_path,
-                                             character_type, use_space_char)
+                                             use_space_char)
 
         self.rm_symbol = kwargs.get('rm_symbol', False)
 

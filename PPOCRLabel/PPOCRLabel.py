@@ -35,6 +35,7 @@ import numpy as np
 
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
+sys.path.append(os.path.abspath(os.path.join(__dir__, '../PaddleOCR')))
 sys.path.append("..")
 
 from paddleocr import PaddleOCR
@@ -113,7 +114,7 @@ class MainWindow(QMainWindow, WindowMixin):
         getStr = lambda strId: self.stringBundle.getString(strId)
 
         self.defaultSaveDir = defaultSaveDir
-        self.ocr = PaddleOCR(use_pdserving=False, use_angle_cls=True, det=True, cls=True, use_gpu=gpu, lang=lang)
+        self.ocr = PaddleOCR(use_pdserving=False, use_angle_cls=True, det=True, cls=True, use_gpu=gpu, lang=lang, show_log=False)
 
         if os.path.exists('./data/paddle.png'):
             result = self.ocr.ocr('./data/paddle.png', cls=True, det=True)
@@ -390,7 +391,7 @@ class MainWindow(QMainWindow, WindowMixin):
                           'Ctrl+J', 'edit', u'Move and edit Boxs', enabled=False)
 
         create = action(getStr('crtBox'), self.createShape,
-                        'w', 'new', getStr('crtBoxDetail'), enabled=False)
+                        'w', 'objects', getStr('crtBoxDetail'), enabled=False)
 
         delete = action(getStr('delBox'), self.deleteSelectedShape,
                         'backspace', 'delete', getStr('delBoxDetail'), enabled=False)
@@ -1388,7 +1389,6 @@ class MainWindow(QMainWindow, WindowMixin):
         for box in self.PPlabel[imgidx]:
             shapes.append((box['transcription'], box['points'], None, None, box['difficult']))
 
-        print(shapes)
         self.loadLabels(shapes)
         self.canvas.verified = False
 

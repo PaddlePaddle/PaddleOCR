@@ -14,7 +14,6 @@ Global:
   use_visualdl: false
   infer_img: doc/imgs_words/ch/word_1.jpg
   character_dict_path: ppocr/utils/ppocr_keys_v1.txt
-  character_type: ch
   max_text_length: 25
   infer_mode: false
   use_space_char: true
@@ -63,8 +62,7 @@ Loss:
       weight: 0.05
       num_classes: 6625
       feat_dim: 96
-      init_center: false
-      center_file_path: "./train_center.pkl"
+      center_file_path:
   # you can also try to add ace loss on your own dataset
   # - ACELoss:
   #     weight: 0.1
