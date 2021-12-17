@@ -25,6 +25,12 @@ import paddle
 from PIL import Image, ImageDraw, ImageFont
 
 
+def set_seed(seed):
+    random.seed(seed)
+    np.random.seed(seed)
+    paddle.seed(seed)
+
+
 def get_bio_label_maps(label_map_path):
     with open(label_map_path, "r") as fin:
         lines = fin.readlines()
@@ -375,8 +381,6 @@ def parse_args():
                         help="Linear warmup over warmup_steps.",)
     parser.add_argument("--eval_steps", type=int, default=10,
                         help="eval every X updates steps.",)
-    parser.add_argument("--save_steps", type=int, default=50,
-                        help="Save checkpoint every X updates steps.",)
     parser.add_argument("--seed", type=int, default=2048,
                         help="random seed for initialization",)
 
@@ -385,6 +389,7 @@ def parse_args():
     parser.add_argument(
         "--label_map_path", default="./labels/labels_ser.txt", type=str, required=False, )
     parser.add_argument("--infer_imgs", default=None, type=str, required=False)
+    parser.add_argument("--resume", action='store_true')
     parser.add_argument("--ocr_json_path", default=None,
                         type=str, required=False, help="ocr prediction results")
     # yapf: enable

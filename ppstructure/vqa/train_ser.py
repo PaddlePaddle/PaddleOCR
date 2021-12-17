@@ -20,6 +20,7 @@ sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 
 import random
+import time
 import copy
 import logging
 
@@ -29,17 +30,9 @@ import numpy as np
 from seqeval.metrics import classification_report, f1_score, precision_score, recall_score
 from paddlenlp.transformers import LayoutXLMModel, LayoutXLMTokenizer, LayoutXLMForTokenClassification
 from xfun import XFUNDataset
-from utils import parse_args
-from utils import get_bio_label_maps
-from utils import print_arguments
-
+from utils import parse_args, get_bio_label_maps, print_arguments, set_seed
+from eval_ser import evaluate
 from ppocr.utils.logging import get_logger
-
-
-def set_seed(args):
-    random.seed(args.seed)
-    np.random.seed(args.seed)
-    paddle.seed(args.seed)
 
 
 def train(args):
@@ -55,9 +48,15 @@ def train(args):
         paddle.distributed.init_parallel_env()
 
     tokenizer = LayoutXLMTokenizer.from_pretrained(args.model_name_or_path)
-    base_model = LayoutXLMModel.from_pretrained(args.model_name_or_path)
-    model = LayoutXLMForTokenClassification(
-        base_model, num_classes=len(label2id_map), dropout=None)
+    if not args.resume:
+        model = LayoutXLMModel.from_pretrained(args.model_name_or_path)
+        model = LayoutXLMForTokenClassification(
+            model, num_classes=len(label2id_map), dropout=None)
+        logger.info('train from scratch')
+    else:
+        logger.info('resume from {}'.format(args.model_name_or_path))
+        model = LayoutXLMForTokenClassification.from_pretrained(
+            args.model_name_or_path)
 
     # dist mode
     if paddle.distributed.get_world_size() > 1:
@@ -67,6 +66,17 @@ def train(args):
         tokenizer,
         data_dir=args.train_data_dir,
         label_path=args.train_label_path,
+        label2id_map=label2id_map,
+        img_size=(224, 224),
+        pad_token_label_id=pad_token_label_id,
+        contains_re=False,
+        add_special_ids=False,
+        return_attention_mask=True,
+        load_mode='all')
+    eval_dataset = XFUNDataset(
+        tokenizer,
+        data_dir=args.eval_data_dir,
+        label_path=args.eval_label_path,
         label2id_map=label2id_map,
         img_size=(224, 224),
         pad_token_label_id=pad_token_label_id,
@@ -84,6 +94,13 @@ def train(args):
     train_dataloader = paddle.io.DataLoader(
         train_dataset,
         batch_sampler=train_sampler,
+        num_workers=0,
+        use_shared_memory=True,
+        collate_fn=None, )
+
+    eval_dataloader = paddle.io.DataLoader(
+        eval_dataset,
+        batch_size=args.per_gpu_eval_batch_size,
         num_workers=0,
         use_shared_memory=True,
         collate_fn=None, )
@@ -122,28 +139,49 @@ def train(args):
 
     global_step = 0
     tr_loss = 0.0
-    set_seed(args)
+    set_seed(ags.seed)
     best_metrics = None
 
+    train_reader_cost = 0.0
+    train_run_cost = 0.0
+    total_samples = 0
+    reader_start = time.time()
+
+    print_step = 1
+    model.train()
     for epoch_id in range(args.num_train_epochs):
         for step, batch in enumerate(train_dataloader):
-            model.train()
+            train_reader_cost += time.time() - reader_start
+
+            train_start = time.time()
             outputs = model(**batch)
+            train_run_cost += time.time() - train_start
+
             # model outputs are always tuple in ppnlp (see doc)
             loss = outputs[0]
             loss = loss.mean()
-            logger.info(
-                "epoch: [{}/{}], iter: [{}/{}], global_step:{}, train loss: {}, lr: {}".
-                format(epoch_id, args.num_train_epochs, step,
-                       len(train_dataloader), global_step,
-                       loss.numpy()[0], lr_scheduler.get_lr()))
-
             loss.backward()
             tr_loss += loss.item()
             optimizer.step()
             lr_scheduler.step()  # Update learning rate schedule
             optimizer.clear_grad()
             global_step += 1
+            total_samples += batch['image'].shape[0]
+
+            if step % print_step == 0:
+                logger.info(
+                    "epoch: [{}/{}], iter: [{}/{}], global_step:{}, train loss: {:.6f}, lr: {:.6f}, avg_reader_cost: {:.5f} sec, avg_batch_cost: {:.5f} sec, avg_samples: {:.5f}, ips: {:.5f} images/sec".
+                    format(epoch_id, args.num_train_epochs, step,
+                           len(train_dataloader), global_step,
+                           loss.numpy()[0],
+                           lr_scheduler.get_lr(), train_reader_cost /
+                           print_step, (train_reader_cost + train_run_cost) /
+                           print_step, total_samples / print_step, total_samples
+                           / (train_reader_cost + train_run_cost)))
+
+                train_reader_cost = 0.0
+                train_run_cost = 0.0
+                total_samples = 0
 
             if (paddle.distributed.get_rank() == 0 and args.eval_steps > 0 and
                     global_step % args.eval_steps == 0):
@@ -151,9 +189,9 @@ def train(args):
                 # Only evaluate when single GPU otherwise metrics may not average well
                 if paddle.distributed.get_rank(
                 ) == 0 and args.evaluate_during_training:
-                    results, _ = evaluate(args, model, tokenizer, label2id_map,
-                                          id2label_map, pad_token_label_id,
-                                          logger)
+                    results, _ = evaluate(
+                        args, model, tokenizer, eval_dataloader, label2id_map,
+                        id2label_map, pad_token_label_id, logger)
 
                     if best_metrics is None or results["f1"] >= best_metrics[
                             "f1"]:
@@ -175,11 +213,9 @@ def train(args):
                     if best_metrics is not None:
                         logger.info("best metrics: {}".format(best_metrics))
 
-            if paddle.distributed.get_rank(
-            ) == 0 and args.save_steps > 0 and global_step % args.save_steps == 0:
+            if paddle.distributed.get_rank() == 0:
                 # Save model checkpoint
-                output_dir = os.path.join(args.output_dir,
-                                          "checkpoint-{}".format(global_step))
+                output_dir = os.path.join(args.output_dir, "latest_model")
                 os.makedirs(output_dir, exist_ok=True)
                 if paddle.distributed.get_rank() == 0:
                     model.save_pretrained(output_dir)
@@ -187,110 +223,8 @@ def train(args):
                     paddle.save(args,
                                 os.path.join(output_dir, "training_args.bin"))
                     logger.info("Saving model checkpoint to %s", output_dir)
-
+            reader_start = time.time()
     return global_step, tr_loss / global_step
-
-
-def evaluate(args,
-             model,
-             tokenizer,
-             label2id_map,
-             id2label_map,
-             pad_token_label_id,
-             logger,
-             prefix=""):
-    eval_dataset = XFUNDataset(
-        tokenizer,
-        data_dir=args.eval_data_dir,
-        label_path=args.eval_label_path,
-        label2id_map=label2id_map,
-        img_size=(224, 224),
-        pad_token_label_id=pad_token_label_id,
-        contains_re=False,
-        add_special_ids=False,
-        return_attention_mask=True,
-        load_mode='all')
-
-    args.eval_batch_size = args.per_gpu_eval_batch_size * max(
-        1, paddle.distributed.get_world_size())
-
-    eval_dataloader = paddle.io.DataLoader(
-        eval_dataset,
-        batch_size=args.eval_batch_size,
-        num_workers=0,
-        use_shared_memory=True,
-        collate_fn=None, )
-
-    # Eval!
-    logger.info("***** Running evaluation %s *****", prefix)
-    logger.info("  Num examples = %d", len(eval_dataset))
-    logger.info("  Batch size = %d", args.eval_batch_size)
-    eval_loss = 0.0
-    nb_eval_steps = 0
-    preds = None
-    out_label_ids = None
-    model.eval()
-    for idx, batch in enumerate(eval_dataloader):
-        with paddle.no_grad():
-            outputs = model(**batch)
-            tmp_eval_loss, logits = outputs[:2]
-
-            tmp_eval_loss = tmp_eval_loss.mean()
-
-            if paddle.distributed.get_rank() == 0:
-                logger.info("[Eval]process: {}/{}, loss: {:.5f}".format(
-                    idx, len(eval_dataloader), tmp_eval_loss.numpy()[0]))
-
-            eval_loss += tmp_eval_loss.item()
-        nb_eval_steps += 1
-        if preds is None:
-            preds = logits.numpy()
-            out_label_ids = batch["labels"].numpy()
-        else:
-            preds = np.append(preds, logits.numpy(), axis=0)
-            out_label_ids = np.append(
-                out_label_ids, batch["labels"].numpy(), axis=0)
-
-    eval_loss = eval_loss / nb_eval_steps
-    preds = np.argmax(preds, axis=2)
-
-    # label_map = {i: label.upper() for i, label in enumerate(labels)}
-
-    out_label_list = [[] for _ in range(out_label_ids.shape[0])]
-    preds_list = [[] for _ in range(out_label_ids.shape[0])]
-
-    for i in range(out_label_ids.shape[0]):
-        for j in range(out_label_ids.shape[1]):
-            if out_label_ids[i, j] != pad_token_label_id:
-                out_label_list[i].append(id2label_map[out_label_ids[i][j]])
-                preds_list[i].append(id2label_map[preds[i][j]])
-
-    results = {
-        "loss": eval_loss,
-        "precision": precision_score(out_label_list, preds_list),
-        "recall": recall_score(out_label_list, preds_list),
-        "f1": f1_score(out_label_list, preds_list),
-    }
-
-    with open(os.path.join(args.output_dir, "test_gt.txt"), "w") as fout:
-        for lbl in out_label_list:
-            for l in lbl:
-                fout.write(l + "\t")
-            fout.write("\n")
-    with open(os.path.join(args.output_dir, "test_pred.txt"), "w") as fout:
-        for lbl in preds_list:
-            for l in lbl:
-                fout.write(l + "\t")
-            fout.write("\n")
-
-    report = classification_report(out_label_list, preds_list)
-    logger.info("\n" + report)
-
-    logger.info("***** Eval results %s *****", prefix)
-    for key in sorted(results.keys()):
-        logger.info("  %s = %s", key, str(results[key]))
-
-    return results, preds_list
 
 
 if __name__ == "__main__":
