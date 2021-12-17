@@ -249,7 +249,7 @@ python3 train_re.py \
 
 ```
 
-* 回复训练
+* 恢复训练
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
