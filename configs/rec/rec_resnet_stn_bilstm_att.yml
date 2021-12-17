@@ -75,7 +75,7 @@ Train:
           channel_first: False
       - SEEDLabelEncode: # Class handling label
       - RecResizeImg:
-          character_type: en
+          character_dict_path:
           image_shape: [3, 64, 256]
           padding: False
       - KeepKeys:
@@ -96,7 +96,7 @@ Eval:
           channel_first: False
       - SEEDLabelEncode: # Class handling label
       - RecResizeImg:
-          character_type: en
+          character_dict_path:
           image_shape: [3, 64, 256]
           padding: False
       - KeepKeys:
