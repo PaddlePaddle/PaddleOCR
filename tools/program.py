@@ -239,7 +239,7 @@ def train(config,
             else:
                 if model_type == 'table' or extra_input:
                     preds = model(images, data=batch[1:])
-                if model_type == "kie":
+                elif model_type == "kie":
                     preds = model(batch)
                 else:
                     preds = model(images)
