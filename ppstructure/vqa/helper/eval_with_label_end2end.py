@@ -114,10 +114,6 @@ def eval_e2e(args):
     # pred
     dt_results = parse_ser_results_fp(args.pred_json_path, "pred",
                                       args.ignore_background)
-    # print(gt_results.keys())
-    # print(dt_results.keys())
-    # assert set(gt_results.keys()) == set(dt_results.keys())
-
     iou_thresh = args.iou_thres
     num_gt_chars = 0
     gt_count = 0
