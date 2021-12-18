@@ -36,6 +36,9 @@ from ppocr.utils.logging import get_logger
 
 def train(args):
     logger = get_logger(log_file=os.path.join(args.output_dir, "train.log"))
+    rank = paddle.distributed.get_rank()
+    distributed = paddle.distributed.get_world_size() > 1
+
     print_arguments(args, logger)
 
     # Added here for reproducibility (even between python 2 and 3)
@@ -45,7 +48,7 @@ def train(args):
     pad_token_label_id = paddle.nn.CrossEntropyLoss().ignore_index
 
     # dist mode
-    if paddle.distributed.get_world_size() > 1:
+    if distributed:
         paddle.distributed.init_parallel_env()
 
     tokenizer = LayoutXLMTokenizer.from_pretrained(args.model_name_or_path)
@@ -59,8 +62,8 @@ def train(args):
             args.model_name_or_path)
 
     # dist mode
-    if paddle.distributed.get_world_size() > 1:
-        model = paddle.distributed.DataParallel(model)
+    if distributed:
+        model = paddle.DataParallel(model)
 
     train_dataset = XFUNDataset(
         tokenizer,
@@ -90,8 +93,7 @@ def train(args):
 
     train_sampler = paddle.io.DistributedBatchSampler(
         train_dataset, batch_size=args.per_gpu_train_batch_size, shuffle=True)
-    args.train_batch_size = args.per_gpu_train_batch_size * \
-                            max(1, paddle.distributed.get_world_size())
+
     train_dataloader = paddle.io.DataLoader(
         train_dataset,
         batch_sampler=train_sampler,
@@ -136,7 +138,8 @@ def train(args):
         args.per_gpu_train_batch_size))
     logger.info(
         "  Total train batch size (w. parallel, distributed & accumulation) = {}".
-        format(args.train_batch_size * paddle.distributed.get_world_size()))
+        format(args.per_gpu_train_batch_size *
+               paddle.distributed.get_world_size()))
     logger.info("  Total optimization steps = {}".format(t_total))
 
     global_step = 0
@@ -170,7 +173,7 @@ def train(args):
             global_step += 1
             total_samples += batch['image'].shape[0]
 
-            if step % print_step == 0:
+            if rank == 0 and step % print_step == 0:
                 logger.info(
                     "epoch: [{}/{}], iter: [{}/{}], global_step:{}, train loss: {:.6f}, lr: {:.6f}, avg_reader_cost: {:.5f} sec, avg_batch_cost: {:.5f} sec, avg_samples: {:.5f}, ips: {:.5f} images/sec".
                     format(epoch, args.num_train_epochs, step,
@@ -185,38 +188,38 @@ def train(args):
                 train_run_cost = 0.0
                 total_samples = 0
 
-            if (paddle.distributed.get_rank() == 0 and args.eval_steps > 0 and
-                    global_step % args.eval_steps == 0):
+            if rank == 0 and args.eval_steps > 0 and global_step % args.eval_steps == 0 and args.evaluate_during_training:
                 # Log metrics
-                if (paddle.distributed.get_rank() == 0 and args.
-                        evaluate_during_training):  # Only evaluate when single GPU otherwise metrics may not average well
-                    results = evaluate(model, eval_dataloader, logger)
-                    if results['f1'] >= best_metirc['f1']:
-                        best_metirc = results
-                        output_dir = os.path.join(args.output_dir, "best_model")
-                        os.makedirs(output_dir, exist_ok=True)
+                # Only evaluate when single GPU otherwise metrics may not average well
+                results = evaluate(model, eval_dataloader, logger)
+                if results['f1'] >= best_metirc['f1']:
+                    best_metirc = results
+                    output_dir = os.path.join(args.output_dir, "best_model")
+                    os.makedirs(output_dir, exist_ok=True)
+                    if distributed:
+                        model._layers.save_pretrained(output_dir)
+                    else:
                         model.save_pretrained(output_dir)
-                        tokenizer.save_pretrained(output_dir)
-                        paddle.save(args,
-                                    os.path.join(output_dir,
-                                                 "training_args.bin"))
-                        logger.info("Saving model checkpoint to {}".format(
-                            output_dir))
-                    logger.info("eval results: {}".format(results))
-                    logger.info("best_metirc: {}".format(best_metirc))
-
-            if paddle.distributed.get_rank() == 0:
-                # Save model checkpoint
-                output_dir = os.path.join(args.output_dir, "latest_model")
-                os.makedirs(output_dir, exist_ok=True)
-                if paddle.distributed.get_rank() == 0:
-                    model.save_pretrained(output_dir)
                     tokenizer.save_pretrained(output_dir)
                     paddle.save(args,
                                 os.path.join(output_dir, "training_args.bin"))
                     logger.info("Saving model checkpoint to {}".format(
                         output_dir))
+                logger.info("eval results: {}".format(results))
+                logger.info("best_metirc: {}".format(best_metirc))
             reader_start = time.time()
+
+        if rank == 0:
+            # Save model checkpoint
+            output_dir = os.path.join(args.output_dir, "latest_model")
+            os.makedirs(output_dir, exist_ok=True)
+            if distributed:
+                model._layers.save_pretrained(output_dir)
+            else:
+                model.save_pretrained(output_dir)
+            tokenizer.save_pretrained(output_dir)
+            paddle.save(args, os.path.join(output_dir, "training_args.bin"))
+            logger.info("Saving model checkpoint to {}".format(output_dir))
     logger.info("best_metirc: {}".format(best_metirc))
 
 
