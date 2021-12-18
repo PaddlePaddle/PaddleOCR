@@ -139,7 +139,7 @@ def train(args):
 
     global_step = 0
     tr_loss = 0.0
-    set_seed(ags.seed)
+    set_seed(args.seed)
     best_metrics = None
 
     train_reader_cost = 0.0

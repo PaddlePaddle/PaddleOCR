@@ -182,16 +182,6 @@ python3 eval_ser.py \
 ```
 最终会打印出`precision`, `recall`, `f1`等指标
 
-
-```shell
-export CUDA_VISIBLE_DEVICES=0
-python3.7 infer_ser.py \
-    --model_name_or_path "./PP-Layout_v1.0_ser_pretrained/" \
-    --output_dir "output_res/" \
-    --infer_imgs "XFUND/zh_val/image/" \
-    --ocr_json_path "XFUND/zh_val/xfun_normalize_val.json"
-```
-
 * 使用评估集合中提供的OCR识别结果进行预测
 
 ```shell
@@ -237,7 +227,7 @@ python3 train_re.py \
     --eval_data_dir "XFUND/zh_val/image" \
     --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
     --label_map_path 'labels/labels_ser.txt' \
-    --num_train_epochs 2 \
+    --num_train_epochs 200 \
     --eval_steps 10 \
     --output_dir "output/re/"  \
     --learning_rate 5e-5 \
