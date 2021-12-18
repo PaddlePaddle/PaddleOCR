@@ -44,22 +44,10 @@ def main():
     # build model
     # for rec algorithm
     if hasattr(post_process_class, 'character'):
-        char_num = len(getattr(post_process_class, 'character'))
-        if config['Architecture']["algorithm"] in ["Distillation",
-                                                   ]:  # distillation model
-            for key in config['Architecture']["Models"]:
-                config['Architecture']["Models"][key]["Head"][
-                    'out_channels'] = char_num
-        else:  # base rec model
-            config['Architecture']["Head"]['out_channels'] = char_num
-
+        config['Architecture']["Head"]['out_channels'] = len(
+            getattr(post_process_class, 'character'))
     model = build_model(config['Architecture'])
-    extra_input = config['Architecture'][
-        'algorithm'] in ["SRN", "NRTR", "SAR", "SEED"]
-    if "model_type" in config['Architecture'].keys():
-        model_type = config['Architecture']['model_type']
-    else:
-        model_type = None
+    use_srn = config['Architecture']['algorithm'] == "SRN"
 
     best_model_dict = load_model(config, model)
     if len(best_model_dict):
@@ -69,9 +57,10 @@ def main():
 
     # build metric
     eval_class = build_metric(config['Metric'])
+
     # start eval
     metric = program.eval(model, valid_dataloader, post_process_class,
-                          eval_class, model_type, extra_input)
+                          eval_class, use_srn)
     logger.info('metric eval ***************')
     for k, v in metric.items():
         logger.info('{}:{}'.format(k, v))

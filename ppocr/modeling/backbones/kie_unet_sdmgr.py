@@ -168,11 +168,19 @@ class Kie_backbone(nn.Layer):
         return img, temp_relations, temp_texts, temp_gt_bboxes
 
     def forward(self, inputs):
-        img = inputs[0]
-        relations, texts, gt_bboxes, tag, img_size = inputs[1], inputs[
-            2], inputs[3], inputs[5], inputs[-1]
+        img, relations, texts, gt_bboxes, tag, img_size = inputs[0], inputs[
+            1], inputs[2], inputs[3], inputs[5], inputs[-1]
         img, relations, texts, gt_bboxes = self.pre_process(
             img, relations, texts, gt_bboxes, tag, img_size)
+        # for i in range(4):
+        #     img_t = (img[i].numpy().transpose([1, 2, 0]) * 255.0).astype('uint8')
+        #     img_t = img_t.copy()
+        #     gt_bboxes_t = gt_bboxes[i].cpu().numpy()
+        #     box = gt_bboxes_t.astype(np.int32).reshape((-1, 1, 2))
+        #     cv2.polylines(img_t, [box], True, color=(255, 255, 0), thickness=1)
+        #     cv2.imwrite("/Users/hongyongjie/project/PaddleOCR/output/{}.png".format(i), img_t)
+        #     # cv2.imwrite("/Users/hongyongjie/project/PaddleOCR/output/{}.png".format(i), img_t * 255.0)
+        # exit()
         x = self.img_feat(img)
         boxes, rois_num = self.bbox2roi(gt_bboxes)
         feats = paddle.fluid.layers.roi_align(
