@@ -144,7 +144,7 @@ def main():
     logger.info("success!")
     logger.info("It took {} s for predict {} images.".format(
         np.sum(count_t), len(count_t)))
-    ips = np.sum(count_t[warmup_times:]) / len(count_t[warmup_times:])
+    ips = len(count_t[warmup_times:]) / np.sum(count_t[warmup_times:])
     logger.info("The ips is {} images/s".format(ips))
 
 
