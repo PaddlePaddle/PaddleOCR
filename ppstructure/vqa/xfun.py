@@ -162,7 +162,7 @@ class XFUNDataset(Dataset):
         return encoded_inputs
 
     def read_all_lines(self, ):
-        with open(self.label_path, "r") as fin:
+        with open(self.label_path, "r", encoding='utf-8') as fin:
             lines = fin.readlines()
         return lines
 
