@@ -59,7 +59,8 @@ def pad_sentences(tokenizer,
             encoded_inputs["bbox"] = encoded_inputs["bbox"] + [[0, 0, 0, 0]
                                                                ] * difference
         else:
-            assert False, f"padding_side of tokenizer just supports [\"right\"] but got {tokenizer.padding_side}"
+            assert False, "padding_side of tokenizer just supports [\"right\"] but got {}".format(
+                tokenizer.padding_side)
     else:
         if return_attention_mask:
             encoded_inputs["attention_mask"] = [1] * len(encoded_inputs[
@@ -224,7 +225,7 @@ def infer(args):
 
     # load ocr results json
     ocr_results = dict()
-    with open(args.ocr_json_path, "r") as fin:
+    with open(args.ocr_json_path, "r", encoding='utf-8') as fin:
         lines = fin.readlines()
         for line in lines:
             img_name, json_info = line.split("\t")
@@ -234,7 +235,10 @@ def infer(args):
     infer_imgs = get_image_file_list(args.infer_imgs)
 
     # loop for infer
-    with open(os.path.join(args.output_dir, "infer_results.txt"), "w") as fout:
+    with open(
+            os.path.join(args.output_dir, "infer_results.txt"),
+            "w",
+            encoding='utf-8') as fout:
         for idx, img_path in enumerate(infer_imgs):
             print("process: [{}/{}]".format(idx, len(infer_imgs), img_path))
 

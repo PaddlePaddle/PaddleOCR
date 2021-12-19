@@ -92,7 +92,7 @@ def infer(args):
 def load_ocr(img_folder, json_path):
     import json
     d = []
-    with open(json_path, "r") as fin:
+    with open(json_path, "r", encoding='utf-8') as fin:
         lines = fin.readlines()
         for line in lines:
             image_name, info_str = line.split("\t")

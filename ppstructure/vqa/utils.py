@@ -32,7 +32,7 @@ def set_seed(seed):
 
 
 def get_bio_label_maps(label_map_path):
-    with open(label_map_path, "r") as fin:
+    with open(label_map_path, "r", encoding='utf-8') as fin:
         lines = fin.readlines()
     lines = [line.strip() for line in lines]
     if "O" not in lines:

@@ -37,7 +37,7 @@ def parse_ser_results_fp(fp, fp_type="gt", ignore_background=True):
     assert fp_type in ["gt", "pred"]
     key = "label" if fp_type == "gt" else "pred"
     res_dict = dict()
-    with open(fp, "r") as fin:
+    with open(fp, "r", encoding='utf-8') as fin:
         lines = fin.readlines()
 
     for _, line in enumerate(lines):

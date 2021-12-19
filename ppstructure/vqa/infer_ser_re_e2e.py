@@ -112,7 +112,10 @@ if __name__ == "__main__":
 
     # loop for infer
     ser_re_engine = SerReSystem(args)
-    with open(os.path.join(args.output_dir, "infer_results.txt"), "w") as fout:
+    with open(
+            os.path.join(args.output_dir, "infer_results.txt"),
+            "w",
+            encoding='utf-8') as fout:
         for idx, img_path in enumerate(infer_imgs):
             print("process: [{}/{}], {}".format(idx, len(infer_imgs), img_path))
 
