@@ -37,6 +37,9 @@ from ppocr.utils.logging import get_logger
 
 def train(args):
     os.makedirs(args.output_dir, exist_ok=True)
+    rank = paddle.distributed.get_rank()
+    distributed = paddle.distributed.get_world_size() > 1
+
     logger = get_logger(log_file=os.path.join(args.output_dir, "train.log"))
     print_arguments(args, logger)
 
@@ -44,7 +47,7 @@ def train(args):
     pad_token_label_id = paddle.nn.CrossEntropyLoss().ignore_index
 
     # dist mode
-    if paddle.distributed.get_world_size() > 1:
+    if distributed:
         paddle.distributed.init_parallel_env()
 
     tokenizer = LayoutXLMTokenizer.from_pretrained(args.model_name_or_path)
@@ -59,7 +62,7 @@ def train(args):
             args.model_name_or_path)
 
     # dist mode
-    if paddle.distributed.get_world_size() > 1:
+    if distributed:
         model = paddle.DataParallel(model)
 
     train_dataset = XFUNDataset(
@@ -87,9 +90,6 @@ def train(args):
 
     train_sampler = paddle.io.DistributedBatchSampler(
         train_dataset, batch_size=args.per_gpu_train_batch_size, shuffle=True)
-
-    args.train_batch_size = args.per_gpu_train_batch_size * max(
-        1, paddle.distributed.get_world_size())
 
     train_dataloader = paddle.io.DataLoader(
         train_dataset,
@@ -134,7 +134,7 @@ def train(args):
                 args.per_gpu_train_batch_size)
     logger.info(
         "  Total train batch size (w. parallel, distributed) = %d",
-        args.train_batch_size * paddle.distributed.get_world_size(), )
+        args.per_gpu_train_batch_size * paddle.distributed.get_world_size(), )
     logger.info("  Total optimization steps = %d", t_total)
 
     global_step = 0
@@ -168,7 +168,7 @@ def train(args):
             global_step += 1
             total_samples += batch['image'].shape[0]
 
-            if step % print_step == 0:
+            if rank == 0 and step % print_step == 0:
                 logger.info(
                     "epoch: [{}/{}], iter: [{}/{}], global_step:{}, train loss: {:.6f}, lr: {:.6f}, avg_reader_cost: {:.5f} sec, avg_batch_cost: {:.5f} sec, avg_samples: {:.5f}, ips: {:.5f} images/sec".
                     format(epoch_id, args.num_train_epochs, step,
@@ -183,47 +183,43 @@ def train(args):
                 train_run_cost = 0.0
                 total_samples = 0
 
-            if (paddle.distributed.get_rank() == 0 and args.eval_steps > 0 and
-                    global_step % args.eval_steps == 0):
+            if rank == 0 and args.eval_steps > 0 and global_step % args.eval_steps == 0 and args.evaluate_during_training:
                 # Log metrics
                 # Only evaluate when single GPU otherwise metrics may not average well
-                if paddle.distributed.get_rank(
-                ) == 0 and args.evaluate_during_training:
-                    results, _ = evaluate(
-                        args, model, tokenizer, eval_dataloader, label2id_map,
-                        id2label_map, pad_token_label_id, logger)
+                results, _ = evaluate(args, model, tokenizer, eval_dataloader,
+                                      label2id_map, id2label_map,
+                                      pad_token_label_id, logger)
 
-                    if best_metrics is None or results["f1"] >= best_metrics[
-                            "f1"]:
-                        best_metrics = copy.deepcopy(results)
-                        output_dir = os.path.join(args.output_dir, "best_model")
-                        os.makedirs(output_dir, exist_ok=True)
-                        if paddle.distributed.get_rank() == 0:
-                            model.save_pretrained(output_dir)
-                            tokenizer.save_pretrained(output_dir)
-                            paddle.save(
-                                args,
-                                os.path.join(output_dir, "training_args.bin"))
-                            logger.info("Saving model checkpoint to %s",
-                                        output_dir)
-
-                    logger.info("[epoch {}/{}][iter: {}/{}] results: {}".format(
-                        epoch_id, args.num_train_epochs, step,
-                        len(train_dataloader), results))
-                    if best_metrics is not None:
-                        logger.info("best metrics: {}".format(best_metrics))
-
-            if paddle.distributed.get_rank() == 0:
-                # Save model checkpoint
-                output_dir = os.path.join(args.output_dir, "latest_model")
-                os.makedirs(output_dir, exist_ok=True)
-                if paddle.distributed.get_rank() == 0:
-                    model.save_pretrained(output_dir)
+                if best_metrics is None or results["f1"] >= best_metrics["f1"]:
+                    best_metrics = copy.deepcopy(results)
+                    output_dir = os.path.join(args.output_dir, "best_model")
+                    os.makedirs(output_dir, exist_ok=True)
+                    if distributed:
+                        model._layers.save_pretrained(output_dir)
+                    else:
+                        model.save_pretrained(output_dir)
                     tokenizer.save_pretrained(output_dir)
                     paddle.save(args,
                                 os.path.join(output_dir, "training_args.bin"))
                     logger.info("Saving model checkpoint to %s", output_dir)
+
+                logger.info("[epoch {}/{}][iter: {}/{}] results: {}".format(
+                    epoch_id, args.num_train_epochs, step,
+                    len(train_dataloader), results))
+                if best_metrics is not None:
+                    logger.info("best metrics: {}".format(best_metrics))
             reader_start = time.time()
+        if rank == 0:
+            # Save model checkpoint
+            output_dir = os.path.join(args.output_dir, "latest_model")
+            os.makedirs(output_dir, exist_ok=True)
+            if distributed:
+                model._layers.save_pretrained(output_dir)
+            else:
+                model.save_pretrained(output_dir)
+            tokenizer.save_pretrained(output_dir)
+            paddle.save(args, os.path.join(output_dir, "training_args.bin"))
+            logger.info("Saving model checkpoint to %s", output_dir)
     return global_step, tr_loss / global_step
 
 
