@@ -291,7 +291,7 @@ class KieLabelEncode(object):
     def __init__(self, character_dict_path, norm=10, directed=False, **kwargs):
         super(KieLabelEncode, self).__init__()
         self.dict = dict({'': 0})
-        with open(character_dict_path, 'r') as fr:
+        with open(character_dict_path, 'r', encoding='utf-8') as fr:
             idx = 1
             for line in fr:
                 char = line.strip()
