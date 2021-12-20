@@ -136,7 +136,7 @@ wget https://paddleocr.bj.bcebos.com/dataset/XFUND.tar
 ```shell
 python3.7 train_ser.py \
     --model_name_or_path "layoutxlm-base-uncased" \
-    --ser_model_type "LayoutLM" \
+    --ser_model_type "LayoutXLM" \
     --train_data_dir "XFUND/zh_train/image" \
     --train_label_path "XFUND/zh_train/xfun_normalize_train.json" \
     --eval_data_dir "XFUND/zh_val/image" \
@@ -316,6 +316,7 @@ export CUDA_VISIBLE_DEVICES=0
 python3.7 infer_ser_re_e2e.py \
     --model_name_or_path "./PP-Layout_v1.0_ser_pretrained/" \
     --re_model_name_or_path "./PP-Layout_v1.0_re_pretrained/" \
+    --ser_model_type "LayoutXLM" \
     --max_seq_length 512 \
     --output_dir "output/ser_re_e2e/" \
     --infer_imgs "images/input/zh_val_21.jpg"
