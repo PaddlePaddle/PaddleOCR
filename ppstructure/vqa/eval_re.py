@@ -112,7 +112,7 @@ def eval(args):
     eval_dataloader = paddle.io.DataLoader(
         eval_dataset,
         batch_size=args.per_gpu_eval_batch_size,
-        num_workers=8,
+        num_workers=args.num_workers,
         shuffle=False,
         collate_fn=DataCollator())
 
