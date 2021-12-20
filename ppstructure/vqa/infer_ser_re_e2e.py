@@ -120,7 +120,7 @@ if __name__ == "__main__":
             save_img_path = os.path.join(
                 args.output_dir,
                 os.path.splitext(os.path.basename(img_path))[0] + "_re.jpg")
-            print("process: [{}/{}], save_result to {}".format(
+            print("process: [{}/{}], save result to {}".format(
                 idx, len(infer_imgs), save_img_path))
 
             img = cv2.imread(img_path)

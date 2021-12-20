@@ -250,7 +250,7 @@ def infer(args):
         for idx, img_path in enumerate(infer_imgs):
             save_img_path = os.path.join(args.output_dir,
                                          os.path.basename(img_path))
-            print("process: [{}/{}], save_result to {}".format(
+            print("process: [{}/{}], save result to {}".format(
                 idx, len(infer_imgs), save_img_path))
 
             img = cv2.imread(img_path)

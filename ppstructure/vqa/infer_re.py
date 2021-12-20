@@ -63,7 +63,7 @@ def infer(args):
         save_img_path = os.path.join(
             args.output_dir,
             os.path.splitext(os.path.basename(image_path))[0] + "_re.jpg")
-        logger.info("[Infer] process: {}/{}, save_result to {}".format(
+        logger.info("[Infer] process: {}/{}, save result to {}".format(
             idx, len(eval_dataloader), save_img_path))
         with paddle.no_grad():
             outputs = model(**batch)
