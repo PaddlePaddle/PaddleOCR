@@ -47,7 +47,7 @@ class AsterHead(nn.Layer):
         self.time_step = time_step
         self.embeder = Embedding(self.time_step, in_channels)
         self.beam_width = beam_width
-        self.eos = self.num_classes - 1
+        self.eos = self.num_classes - 3
 
     def forward(self, x, targets=None, embed=None):
         return_dict = {}
