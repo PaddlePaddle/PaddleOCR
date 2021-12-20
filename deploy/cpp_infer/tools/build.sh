@@ -1,7 +1,7 @@
-OPENCV_DIR=/paddle/cpp/PaddleOCR/deploy/cpp_infer/opencv-3.4.7/opencv3
-LIB_DIR=/paddle/cpp/paddle_inference
-CUDA_LIB_DIR=/usr/local/cuda/lib64
-CUDNN_LIB_DIR=/usr/lib/x86_64-linux-gnu/
+OPENCV_DIR=your_opencv_dir
+LIB_DIR=your_paddle_inference_dir
+CUDA_LIB_DIR=your_cuda_lib_dir
+CUDNN_LIB_DIR=your_cudnn_lib_dir
 
 BUILD_DIR=build
 rm -rf ${BUILD_DIR}
