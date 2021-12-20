@@ -110,6 +110,8 @@ PaddleOCR的Python代码遵循 [PEP8规范](https://www.python.org/dev/peps/pep-
 
 - 变量引用：如果在行内引用到代码变量或命令参数，需要用行内代码表示，例如上方  `--use_angle_cls true` ，并在前后各空一格
 
+- 统一命名：如PP-OCRv2、PP-OCR mobile、`paddleocr` whl包、PPOCRLabel、Paddle Lite等
+
 - 补充说明：通过引用格式 `>` 补充说明，或对注意事项进行说明
 
 - 图片：如果在说明文档中增加了图片，请规范图片的命名形式（描述图片内容），并将图片添加在 `doc/` 下
