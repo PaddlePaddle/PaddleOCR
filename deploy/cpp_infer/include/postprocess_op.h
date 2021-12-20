@@ -38,7 +38,13 @@ class PostProcessor {
 public:
   void GetContourArea(const std::vector<std::vector<float>> &box,
                       float unclip_ratio, float &distance);
+  
+  cv::Point2f calc_polygon_point(cv::Point2f vec1, cv::Point2f vec2, float distance);
 
+  void generate_enclose_polygon(std::vector<std::vector<float>> &box,float distance,std::vector<cv::Point2f> &points);
+
+  cv::RotatedRect UnClipNew(std::vector<std::vector<float>> box,const float &unclip_ratio);
+  
   cv::RotatedRect UnClip(std::vector<std::vector<float>> box,
                          const float &unclip_ratio);
 

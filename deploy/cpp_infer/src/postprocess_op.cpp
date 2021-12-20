@@ -67,6 +67,74 @@ cv::RotatedRect PostProcessor::UnClip(std::vector<std::vector<float>> box,
   return res;
 }
 
+cv::Point2f PostProcessor::calc_polygon_point(cv::Point2f vec1,
+                                                    cv::Point2f vec2,
+                                                    float distance){
+
+    cv::Point2f vec2_verticle_a = cv::Point2f(vec2.y, -vec2.x);
+    cv::Point2f vec2_verticle_b = cv::Point2f(-vec2.y, vec2.x);
+
+    float tmp_a = vec1.x * vec2_verticle_a.x + vec1.y * vec2_verticle_a.y;
+    float tmp_b = vec1.x * vec2_verticle_b.x + vec1.y * vec2_verticle_b.y;
+
+    cv::Point2f vec2_verticle;
+    if (tmp_a > 0 && tmp_b <= 0){
+        vec2_verticle = vec2_verticle_a;
+    } else{
+        vec2_verticle = vec2_verticle_b;
+    }
+
+    float vec2_verticle_len = sqrt(vec2_verticle.x * vec2_verticle.x + vec2_verticle.y * vec2_verticle.y);
+    vec2_verticle *= (1. / vec2_verticle_len);
+
+    return distance * vec2_verticle;
+}
+
+void PostProcessor::generate_enclose_polygon(std::vector<std::vector<float>> &box,
+                                                   float distance,
+                                                   std::vector<cv::Point2f> &points){
+    cv::Point2f p0 = cv::Point2f(box[0][0], box[0][1]);
+    cv::Point2f p1 = cv::Point2f(box[1][0], box[1][1]);
+    cv::Point2f p2 = cv::Point2f(box[2][0], box[2][1]);
+    cv::Point2f p3 = cv::Point2f(box[3][0], box[3][1]);
+
+    cv::Point2f t1 = calc_polygon_point(p0 - p1, p0 - p3, distance);
+    cv::Point2f t2 = calc_polygon_point(p0 - p3, p0 - p1, distance);
+
+    cv::Point2f t3 = calc_polygon_point(p1 - p2, p1 - p0, distance);
+    cv::Point2f t4 = calc_polygon_point(p1 - p0, p1 - p2, distance);
+
+    cv::Point2f t5 = calc_polygon_point(p2 - p3, p2 - p1, distance);
+    cv::Point2f t6 = calc_polygon_point(p2 - p1, p2 - p3, distance);
+
+    cv::Point2f t7 = calc_polygon_point(p3 - p0, p3 - p2, distance);
+    cv::Point2f t8 = calc_polygon_point(p3 - p2, p3 - p0, distance);
+
+    points.clear();
+    points = std::vector<cv::Point2f>{
+            p0 + t1, p0 + (t1 + t2) * (1. / 1.414), p0 + t2,
+            p1 + t3, p1 + (t3 + t4) * (1. / 1.414), p1 + t4,
+            p2 + t5, p2 + (t5 + t6) * (1. / 1.414), p2 + t6,
+            p3 + t7, p3 + (t7 + t8) * (1. / 1.414), p3 + t8,
+    };
+}
+
+cv::RotatedRect PostProcessor::UnClipNew(std::vector<std::vector<float>> box,const float &unclip_ratio) {
+
+  float distance = 1.0;
+  GetContourArea(box, unclip_ratio, distance);
+  std::vector<cv::Point2f> points;
+  generate_enclose_polygon(box, distance, points);
+  cv::RotatedRect res;
+  if (points.size() <= 0) {
+    res = cv::RotatedRect(cv::Point2f(0, 0), cv::Size2f(1, 1), 0);
+  } else {
+    res = cv::minAreaRect(points);
+  }
+  return res;
+}
+
+
 float **PostProcessor::Mat2Vec(cv::Mat mat) {
   auto **array = new float *[mat.rows];
   for (int i = 0; i < mat.rows; ++i)
