@@ -18,12 +18,13 @@ PP-Structure 里的 DOC-VQA算法基于PaddleNLP自然语言处理算法库进�
 
 ## 1 性能
 
-我们在 [XFUN](https://github.com/doc-analysis/XFUND) 评估数据集上对算法进行了评估，性能如下
+我们在 [XFUN](https://github.com/doc-analysis/XFUND) 的中文数据集上对算法进行了评估，性能如下
 
-|任务|    f1 | 模型下载地址|
-|:---:|:---:| :---:|
-|SER|0.9056| [链接](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_ser_pretrained.tar)|
-|RE|0.7113| [链接](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_re_pretrained.tar)|
+| 模型 | 任务 | f1 | 模型下载地址 |
+|:---:|:---:|:---:| :---:|
+| LayoutXLM | RE | 0.7113 | [链接](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_re_pretrained.tar) |
+| LayoutXLM | SER | 0.9056 | [链接](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_ser_pretrained.tar) |
+| LayoutLM | SER | 0.78 | [链接](https://paddleocr.bj.bcebos.com/pplayout/LayoutLM_ser_pretrained.tar) |
 
 
 
@@ -135,6 +136,7 @@ wget https://paddleocr.bj.bcebos.com/dataset/XFUND.tar
 ```shell
 python3.7 train_ser.py \
     --model_name_or_path "layoutxlm-base-uncased" \
+    --ser_model_type "LayoutLM" \
     --train_data_dir "XFUND/zh_train/image" \
     --train_label_path "XFUND/zh_train/xfun_normalize_train.json" \
     --eval_data_dir "XFUND/zh_val/image" \
@@ -155,6 +157,7 @@ python3.7 train_ser.py \
 ```shell
 python3.7 train_ser.py \
     --model_name_or_path "model_path" \
+    --ser_model_type "LayoutXLM" \
     --train_data_dir "XFUND/zh_train/image" \
     --train_label_path "XFUND/zh_train/xfun_normalize_train.json" \
     --eval_data_dir "XFUND/zh_val/image" \
@@ -175,6 +178,7 @@ python3.7 train_ser.py \
 export CUDA_VISIBLE_DEVICES=0
 python3 eval_ser.py \
     --model_name_or_path "PP-Layout_v1.0_ser_pretrained/" \
+    --ser_model_type "LayoutXLM" \
     --eval_data_dir "XFUND/zh_val/image" \
     --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
     --per_gpu_eval_batch_size 8 \
@@ -190,6 +194,7 @@ python3 eval_ser.py \
 export CUDA_VISIBLE_DEVICES=0
 python3.7 infer_ser.py \
     --model_name_or_path "./PP-Layout_v1.0_ser_pretrained/" \
+    --ser_model_type "LayoutXLM" \
     --output_dir "output_res/" \
     --infer_imgs "XFUND/zh_val/image/" \
     --ocr_json_path "XFUND/zh_val/xfun_normalize_val.json"
@@ -203,6 +208,7 @@ python3.7 infer_ser.py \
 export CUDA_VISIBLE_DEVICES=0
 python3.7 infer_ser_e2e.py \
     --model_name_or_path "./output/PP-Layout_v1.0_ser_pretrained/" \
+    --ser_model_type "LayoutXLM" \
     --max_seq_length 512 \
     --output_dir "output_res_e2e/" \
     --infer_imgs "images/input/zh_val_0.jpg"

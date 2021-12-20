@@ -350,6 +350,8 @@ def parse_args():
     # yapf: disable
     parser.add_argument("--model_name_or_path",
                         default=None, type=str, required=True,)
+    parser.add_argument("--ser_model_type",
+                        default='LayoutXLM', type=str)
     parser.add_argument("--re_model_name_or_path",
                         default=None, type=str, required=False,)
     parser.add_argument("--train_data_dir", default=None,

@@ -29,10 +29,20 @@ import paddle
 import numpy as np
 from seqeval.metrics import classification_report, f1_score, precision_score, recall_score
 from paddlenlp.transformers import LayoutXLMModel, LayoutXLMTokenizer, LayoutXLMForTokenClassification
+from paddlenlp.transformers import LayoutLMModel, LayoutLMTokenizer, LayoutLMForTokenClassification
+
 from xfun import XFUNDataset
 from utils import parse_args, get_bio_label_maps, print_arguments, set_seed
 from eval_ser import evaluate
+from losses import SERLoss
 from ppocr.utils.logging import get_logger
+
+MODELS = {
+    'LayoutXLM':
+    (LayoutXLMTokenizer, LayoutXLMModel, LayoutXLMForTokenClassification),
+    'LayoutLM':
+    (LayoutLMTokenizer, LayoutLMModel, LayoutLMForTokenClassification)
+}
 
 
 def train(args):
@@ -44,22 +54,24 @@ def train(args):
     print_arguments(args, logger)
 
     label2id_map, id2label_map = get_bio_label_maps(args.label_map_path)
-    pad_token_label_id = paddle.nn.CrossEntropyLoss().ignore_index
+    loss_class = SERLoss(len(label2id_map))
+
+    pad_token_label_id = loss_class.ignore_index
 
     # dist mode
     if distributed:
         paddle.distributed.init_parallel_env()
 
-    tokenizer = LayoutXLMTokenizer.from_pretrained(args.model_name_or_path)
+    tokenizer_class, base_model_class, model_class = MODELS[args.ser_model_type]
+    tokenizer = tokenizer_class.from_pretrained(args.model_name_or_path)
     if not args.resume:
-        model = LayoutXLMModel.from_pretrained(args.model_name_or_path)
-        model = LayoutXLMForTokenClassification(
-            model, num_classes=len(label2id_map), dropout=None)
+        base_model = base_model_class.from_pretrained(args.model_name_or_path)
+        model = model_class(
+            base_model, num_classes=len(label2id_map), dropout=None)
         logger.info('train from scratch')
     else:
         logger.info('resume from {}'.format(args.model_name_or_path))
-        model = LayoutXLMForTokenClassification.from_pretrained(
-            args.model_name_or_path)
+        model = model_class.from_pretrained(args.model_name_or_path)
 
     # dist mode
     if distributed:
@@ -153,12 +165,19 @@ def train(args):
         for step, batch in enumerate(train_dataloader):
             train_reader_cost += time.time() - reader_start
 
+            if args.ser_model_type == 'LayoutLM':
+                if 'image' in batch:
+                    batch.pop('image')
+            labels = batch.pop('labels')
+
             train_start = time.time()
             outputs = model(**batch)
             train_run_cost += time.time() - train_start
+            if args.ser_model_type == 'LayoutXLM':
+                outputs = outputs[0]
+            loss = loss_class(labels, outputs, batch['attention_mask'])
 
             # model outputs are always tuple in ppnlp (see doc)
-            loss = outputs[0]
             loss = loss.mean()
             loss.backward()
             tr_loss += loss.item()
@@ -166,7 +185,7 @@ def train(args):
             lr_scheduler.step()  # Update learning rate schedule
             optimizer.clear_grad()
             global_step += 1
-            total_samples += batch['image'].shape[0]
+            total_samples += batch['input_ids'].shape[0]
 
             if rank == 0 and step % print_step == 0:
                 logger.info(
@@ -186,9 +205,9 @@ def train(args):
             if rank == 0 and args.eval_steps > 0 and global_step % args.eval_steps == 0 and args.evaluate_during_training:
                 # Log metrics
                 # Only evaluate when single GPU otherwise metrics may not average well
-                results, _ = evaluate(args, model, tokenizer, eval_dataloader,
-                                      label2id_map, id2label_map,
-                                      pad_token_label_id, logger)
+                results, _ = evaluate(args, model, tokenizer, loss_class,
+                                      eval_dataloader, label2id_map,
+                                      id2label_map, pad_token_label_id, logger)
 
                 if best_metrics is None or results["f1"] >= best_metrics["f1"]:
                     best_metrics = copy.deepcopy(results)
@@ -201,7 +220,8 @@ def train(args):
                     tokenizer.save_pretrained(output_dir)
                     paddle.save(args,
                                 os.path.join(output_dir, "training_args.bin"))
-                    logger.info("Saving model checkpoint to %s", output_dir)
+                    logger.info("Saving model checkpoint to {}".format(
+                        output_dir))
 
                 logger.info("[epoch {}/{}][iter: {}/{}] results: {}".format(
                     epoch_id, args.num_train_epochs, step,
@@ -219,7 +239,7 @@ def train(args):
                 model.save_pretrained(output_dir)
             tokenizer.save_pretrained(output_dir)
             paddle.save(args, os.path.join(output_dir, "training_args.bin"))
-            logger.info("Saving model checkpoint to %s", output_dir)
+            logger.info("Saving model checkpoint to {}".format(output_dir))
     return global_step, tr_loss / global_step
 
 

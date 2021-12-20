@@ -29,10 +29,20 @@ import paddle
 import numpy as np
 from seqeval.metrics import classification_report, f1_score, precision_score, recall_score
 from paddlenlp.transformers import LayoutXLMModel, LayoutXLMTokenizer, LayoutXLMForTokenClassification
+from paddlenlp.transformers import LayoutLMModel, LayoutLMTokenizer, LayoutLMForTokenClassification
+
 from xfun import XFUNDataset
+from losses import SERLoss
 from utils import parse_args, get_bio_label_maps, print_arguments
 
 from ppocr.utils.logging import get_logger
+
+MODELS = {
+    'LayoutXLM':
+    (LayoutXLMTokenizer, LayoutXLMModel, LayoutXLMForTokenClassification),
+    'LayoutLM':
+    (LayoutLMTokenizer, LayoutLMModel, LayoutLMForTokenClassification)
+}
 
 
 def eval(args):
@@ -42,9 +52,9 @@ def eval(args):
     label2id_map, id2label_map = get_bio_label_maps(args.label_map_path)
     pad_token_label_id = paddle.nn.CrossEntropyLoss().ignore_index
 
-    tokenizer = LayoutXLMTokenizer.from_pretrained(args.model_name_or_path)
-    model = LayoutXLMForTokenClassification.from_pretrained(
-        args.model_name_or_path)
+    tokenizer_class, base_model_class, model_class = MODELS[args.ser_model_type]
+    tokenizer = tokenizer_class.from_pretrained(args.model_name_or_path)
+    model = model_class.from_pretrained(args.model_name_or_path)
 
     eval_dataset = XFUNDataset(
         tokenizer,
@@ -65,8 +75,11 @@ def eval(args):
         use_shared_memory=True,
         collate_fn=None, )
 
-    results, _ = evaluate(args, model, tokenizer, eval_dataloader, label2id_map,
-                          id2label_map, pad_token_label_id, logger)
+    loss_class = SERLoss(len(label2id_map))
+
+    results, _ = evaluate(args, model, tokenizer, loss_class, eval_dataloader,
+                          label2id_map, id2label_map, pad_token_label_id,
+                          logger)
 
     logger.info(results)
 
@@ -74,6 +87,7 @@ def eval(args):
 def evaluate(args,
              model,
              tokenizer,
+             loss_class,
              eval_dataloader,
              label2id_map,
              id2label_map,
@@ -88,24 +102,29 @@ def evaluate(args,
     model.eval()
     for idx, batch in enumerate(eval_dataloader):
         with paddle.no_grad():
+            if args.ser_model_type == 'LayoutLM':
+                if 'image' in batch:
+                    batch.pop('image')
+            labels = batch.pop('labels')
             outputs = model(**batch)
-            tmp_eval_loss, logits = outputs[:2]
+            if args.ser_model_type == 'LayoutXLM':
+                outputs = outputs[0]
+            loss = loss_class(labels, outputs, batch['attention_mask'])
 
-            tmp_eval_loss = tmp_eval_loss.mean()
+            loss = loss.mean()
 
             if paddle.distributed.get_rank() == 0:
                 logger.info("[Eval]process: {}/{}, loss: {:.5f}".format(
-                    idx, len(eval_dataloader), tmp_eval_loss.numpy()[0]))
+                    idx, len(eval_dataloader), loss.numpy()[0]))
 
-            eval_loss += tmp_eval_loss.item()
+            eval_loss += loss.item()
         nb_eval_steps += 1
         if preds is None:
-            preds = logits.numpy()
-            out_label_ids = batch["labels"].numpy()
+            preds = outputs.numpy()
+            out_label_ids = labels.numpy()
         else:
-            preds = np.append(preds, logits.numpy(), axis=0)
-            out_label_ids = np.append(
-                out_label_ids, batch["labels"].numpy(), axis=0)
+            preds = np.append(preds, outputs.numpy(), axis=0)
+            out_label_ids = np.append(out_label_ids, labels.numpy(), axis=0)
 
     eval_loss = eval_loss / nb_eval_steps
     preds = np.argmax(preds, axis=2)
