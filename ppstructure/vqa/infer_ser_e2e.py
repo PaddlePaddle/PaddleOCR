@@ -98,13 +98,13 @@ class SerPredictor(object):
             ocr_info=ocr_info,
             max_seq_len=self.max_seq_length)
 
-        if args.ser_model_type == 'LayoutLM':
+        if self.args.ser_model_type == 'LayoutLM':
             preds = self.model(
                 input_ids=inputs["input_ids"],
                 bbox=inputs["bbox"],
                 token_type_ids=inputs["token_type_ids"],
                 attention_mask=inputs["attention_mask"])
-        elif args.ser_model_type == 'LayoutXLM':
+        elif self.args.ser_model_type == 'LayoutXLM':
             preds = self.model(
                 input_ids=inputs["input_ids"],
                 bbox=inputs["bbox"],

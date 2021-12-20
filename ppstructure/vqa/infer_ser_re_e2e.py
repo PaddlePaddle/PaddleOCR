@@ -117,7 +117,11 @@ if __name__ == "__main__":
             "w",
             encoding='utf-8') as fout:
         for idx, img_path in enumerate(infer_imgs):
-            print("process: [{}/{}], {}".format(idx, len(infer_imgs), img_path))
+            save_img_path = os.path.join(
+                args.output_dir,
+                os.path.splitext(os.path.basename(img_path))[0] + "_re.jpg")
+            print("process: [{}/{}], save_result to {}".format(
+                idx, len(infer_imgs), save_img_path))
 
             img = cv2.imread(img_path)
 
@@ -128,7 +132,4 @@ if __name__ == "__main__":
                 }, ensure_ascii=False) + "\n")
 
             img_res = draw_re_results(img, result)
-            cv2.imwrite(
-                os.path.join(args.output_dir,
-                             os.path.splitext(os.path.basename(img_path))[0] +
-                             "_re.jpg"), img_res)
+            cv2.imwrite(save_img_path, img_res)
