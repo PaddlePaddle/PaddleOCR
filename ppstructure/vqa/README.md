@@ -165,6 +165,7 @@ python3.7 train_ser.py \
     --learning_rate 5e-5 \
     --warmup_steps 50 \
     --evaluate_during_training \
+    --num_workers 8 \
     --seed 2048 \
     --resume
 ```
@@ -177,6 +178,7 @@ python3 eval_ser.py \
     --eval_data_dir "XFUND/zh_val/image" \
     --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
     --per_gpu_eval_batch_size 8 \
+    --num_workers 8 \
     --output_dir "output/ser/"  \
     --seed 2048
 ```
@@ -234,6 +236,7 @@ python3 train_re.py \
     --warmup_steps 50 \
     --per_gpu_train_batch_size 8 \
     --per_gpu_eval_batch_size 8 \
+    --num_workers 8 \
     --evaluate_during_training \
     --seed 2048
 
@@ -257,6 +260,7 @@ python3 train_re.py \
     --warmup_steps 50 \
     --per_gpu_train_batch_size 8 \
     --per_gpu_eval_batch_size 8 \
+    --num_workers 8 \
     --evaluate_during_training \
     --seed 2048 \
     --resume
@@ -276,6 +280,7 @@ python3 eval_re.py \
     --label_map_path 'labels/labels_ser.txt' \
     --output_dir "output/re_test/"  \
     --per_gpu_eval_batch_size 8 \
+    --num_workers 8 \
     --seed 2048
 ```
 最终会打印出`precision`, `recall`, `f1`等指标

@@ -94,14 +94,14 @@ def train(args):
     train_dataloader = paddle.io.DataLoader(
         train_dataset,
         batch_sampler=train_sampler,
-        num_workers=8,
+        num_workers=args.num_workers,
         use_shared_memory=True,
         collate_fn=None, )
 
     eval_dataloader = paddle.io.DataLoader(
         eval_dataset,
         batch_size=args.per_gpu_eval_batch_size,
-        num_workers=8,
+        num_workers=args.num_workers,
         use_shared_memory=True,
         collate_fn=None, )
 
