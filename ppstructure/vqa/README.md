@@ -193,7 +193,7 @@ python3 eval_ser.py \
 ```shell
 export CUDA_VISIBLE_DEVICES=0
 python3.7 infer_ser.py \
-    --model_name_or_path "./PP-Layout_v1.0_ser_pretrained/" \
+    --model_name_or_path "PP-Layout_v1.0_ser_pretrained/" \
     --ser_model_type "LayoutXLM" \
     --output_dir "output/ser/" \
     --infer_imgs "XFUND/zh_val/image/" \
@@ -207,7 +207,7 @@ python3.7 infer_ser.py \
 ```shell
 export CUDA_VISIBLE_DEVICES=0
 python3.7 infer_ser_e2e.py \
-    --model_name_or_path "./output/PP-Layout_v1.0_ser_pretrained/" \
+    --model_name_or_path "PP-Layout_v1.0_ser_pretrained/" \
     --ser_model_type "LayoutXLM" \
     --max_seq_length 512 \
     --output_dir "output/ser_e2e/" \
@@ -279,7 +279,7 @@ python3 train_re.py \
 ```shell
 export CUDA_VISIBLE_DEVICES=0
 python3 eval_re.py \
-    --model_name_or_path "output/check/checkpoint-best" \
+    --model_name_or_path "PP-Layout_v1.0_re_pretrained/" \
     --max_seq_length 512 \
     --eval_data_dir "XFUND/zh_val/image" \
     --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
@@ -297,7 +297,7 @@ python3 eval_re.py \
 ```shell
 export CUDA_VISIBLE_DEVICES=0
 python3 infer_re.py \
-    --model_name_or_path "./PP-Layout_v1.0_re_pretrained/" \
+    --model_name_or_path "PP-Layout_v1.0_re_pretrained/" \
     --max_seq_length 512 \
     --eval_data_dir "XFUND/zh_val/image" \
     --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
@@ -314,8 +314,8 @@ python3 infer_re.py \
 ```shell
 export CUDA_VISIBLE_DEVICES=0
 python3.7 infer_ser_re_e2e.py \
-    --model_name_or_path "./PP-Layout_v1.0_ser_pretrained/" \
-    --re_model_name_or_path "./PP-Layout_v1.0_re_pretrained/" \
+    --model_name_or_path "PP-Layout_v1.0_ser_pretrained/" \
+    --re_model_name_or_path "PP-Layout_v1.0_re_pretrained/" \
     --ser_model_type "LayoutXLM" \
     --max_seq_length 512 \
     --output_dir "output/ser_re_e2e/" \
