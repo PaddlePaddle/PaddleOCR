@@ -29,3 +29,5 @@ paddleocr.egg-info/
 /deploy/android_demo/app/PaddleLite/
 /deploy/android_demo/app/.cxx/
 /deploy/android_demo/app/cache/
+test_tipc/web/models/
+test_tipc/web/node_modules/
