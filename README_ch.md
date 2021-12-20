@@ -51,7 +51,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - 加入社区：微信扫描下方二维码加入官方交流群，与各行各业开发者充分交流，期待您的加入。
 - 社区贡献：[社区贡献](./doc/doc_ch/thirdparty.md)文档中包含了社区用户**使用PaddleOCR开发的各种工具、应用**以及**为PaddleOCR贡献的功能、优化的文档与代码**等，是官方为社区开发者打造的荣誉墙、也是帮助优质项目宣传的广播站。如果您的OCR项目未被收集在文档中，可根据文档说明与我们联系。最新社区贡献可查看[此处](#社区贡献)。
 
-- 社区常规赛：作为社区贡献的具体承载形式，社区常规赛是面向OCR开发者的积分赛事。首届社区常规赛与《动手学OCR · 十讲》课程联合推广，课程详情可参考[链接](https://aistudio.baidu.com/aistudio/course/introduce/25207)，课程作业说明可参考[链接]()
+- 社区常规赛：作为社区贡献的具体承载形式，社区常规赛是面向OCR开发者的积分赛事。首届社区常规赛与《动手学OCR · 十讲》课程联合推广，课程详情可参考[链接](https://aistudio.baidu.com/aistudio/course/introduce/25207)，课程奖励与作业说明可参考[链接](https://github.com/PaddlePaddle/PaddleOCR/issues/4982)。
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "200" height = "200" />
