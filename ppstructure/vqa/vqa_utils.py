@@ -366,9 +366,9 @@ def parse_args():
     parser.add_argument("--max_seq_length", default=512, type=int,)
     parser.add_argument("--evaluate_during_training", action="store_true",)
     parser.add_argument("--num_workers", default=8, type=int,)
-    parser.add_argument("--per_gpu_train_batch_size", default=1,
+    parser.add_argument("--per_gpu_train_batch_size", default=8,
                         type=int, help="Batch size per GPU/CPU for training.",)
-    parser.add_argument("--per_gpu_eval_batch_size", default=1,
+    parser.add_argument("--per_gpu_eval_batch_size", default=8,
                         type=int, help="Batch size per GPU/CPU for eval.",)
     parser.add_argument("--learning_rate", default=5e-5,
                         type=float, help="The initial learning rate for Adam.",)
