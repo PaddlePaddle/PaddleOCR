@@ -1,0 +1,1 @@
+/Users/mac/Downloads/PaddleOCR/PPOCRLabel/data/paddle.png	1

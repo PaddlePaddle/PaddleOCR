@@ -61,7 +61,7 @@ from combobox import ComboBox
 from libs.constants import *
 from libs.utils import *
 from libs.settings import Settings
-from libs.shape import Shape, DEFAULT_LINE_COLOR, DEFAULT_FILL_COLOR
+from libs.shape import Shape, DEFAULT_LINE_COLOR, DEFAULT_FILL_COLOR,DEFAULT_LOCK_COLOR  
 from libs.stringBundle import StringBundle
 from libs.canvas import Canvas
 from libs.zoomWidget import ZoomWidget
@@ -395,6 +395,7 @@ class MainWindow(QMainWindow, WindowMixin):
 
         delete = action(getStr('delBox'), self.deleteSelectedShape,
                         'backspace', 'delete', getStr('delBoxDetail'), enabled=False)
+        
         copy = action(getStr('dupBox'), self.copySelectedShape,
                       'Ctrl+C', 'copy', getStr('dupBoxDetail'),
                       enabled=False)
@@ -405,6 +406,7 @@ class MainWindow(QMainWindow, WindowMixin):
         showAll = action(getStr('showBox'), partial(self.togglePolygons, True),
                          'Ctrl+A', 'hide', getStr('showAllBoxDetail'),
                          enabled=False)
+            
 
         help = action(getStr('tutorial'), self.showTutorialDialog, None, 'help', getStr('tutorialDetail'))
         showInfo = action(getStr('info'), self.showInfoDialog, None, 'help', getStr('info'))
@@ -476,6 +478,10 @@ class MainWindow(QMainWindow, WindowMixin):
 
         undo = action(getStr("undo"), self.undoShapeEdit,
                       'Ctrl+Z', "undo", getStr("undo"), enabled=False)
+        
+        lock = action(getStr("lockBox"), self.lockSelectedShape,
+                      None, "lock", getStr("lockBoxDetail"),
+                      enabled=False)
 
         self.editButton.setDefaultAction(edit)
         self.newButton.setDefaultAction(create)
@@ -538,13 +544,13 @@ class MainWindow(QMainWindow, WindowMixin):
                               fitWindow=fitWindow, fitWidth=fitWidth,
                               zoomActions=zoomActions, saveLabel=saveLabel,
                               undo=undo, undoLastPoint=undoLastPoint,open_dataset_dir=open_dataset_dir,
-                              rotateLeft=rotateLeft,rotateRight=rotateRight,
+                              rotateLeft=rotateLeft,rotateRight=rotateRight,lock=lock,
                               fileMenuActions=(
                                   opendir,  open_dataset_dir, saveLabel,  resetAll, quit),
                               beginner=(), advanced=(),
                               editMenu=(createpoly, edit, copy, delete,singleRere,None, undo, undoLastPoint,
-                                        None, rotateLeft, rotateRight, None, color1, self.drawSquaresOption),
-                              beginnerContext=(create, edit, copy, delete, singleRere, rotateLeft, rotateRight,),
+                                        None, rotateLeft, rotateRight, None, color1, self.drawSquaresOption,lock),
+                              beginnerContext=(create, edit, copy, delete, singleRere, rotateLeft, rotateRight,lock),
                               advancedContext=(createMode, editMode, edit, copy,
                                                delete, shapeLineColor, shapeFillColor),
                               onLoadActive=(
@@ -998,6 +1004,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.actions.delete.setEnabled(n_selected)
         self.actions.copy.setEnabled(n_selected)
         self.actions.edit.setEnabled(n_selected == 1)
+        self.actions.lock.setEnabled(n_selected)
 
     def addLabel(self, shape):
         shape.paintLabel = self.displayLabelOption.isChecked()
@@ -1041,7 +1048,7 @@ class MainWindow(QMainWindow, WindowMixin):
     def loadLabels(self, shapes):
         s = []
         for label, points, line_color, fill_color, difficult in shapes:
-            shape = Shape(label=label)
+            shape = Shape(label=label,line_color=line_color)
             for x, y in points:
 
                 # Ensure the labels are within the bounds of the image. If not, fix them.
@@ -1065,8 +1072,10 @@ class MainWindow(QMainWindow, WindowMixin):
             #     shape.fill_color = generateColorByText(label)
 
             self.addLabel(shape)
+ 
         self.updateComboBox()
         self.canvas.loadShapes(s)
+         
 
     def singleLabel(self, shape):
         if shape is None:
@@ -1322,6 +1331,7 @@ class MainWindow(QMainWindow, WindowMixin):
                 ###
                 self.iconlist.clear()
                 self.additems5(None)
+             
                 for i in range(5):
                     item_tooltip = self.iconlist.item(i).toolTip()
                     # print(i,"---",item_tooltip)
@@ -1340,7 +1350,6 @@ class MainWindow(QMainWindow, WindowMixin):
 
         if unicodeFilePath and os.path.exists(unicodeFilePath):
             self.canvas.verified = False
-
             cvimg = cv2.imdecode(np.fromfile(unicodeFilePath, dtype=np.uint8), 1)
             height, width, depth = cvimg.shape
             cvimg = cv2.cvtColor(cvimg, cv2.COLOR_BGR2RGB)
@@ -1367,6 +1376,7 @@ class MainWindow(QMainWindow, WindowMixin):
             self.paintCanvas()
             self.addRecentFile(self.filePath)
             self.toggleActions(True)
+
             self.showBoundingBoxFromPPlabel(filePath)
 
             self.setWindowTitle(__appname__ + ' ' + filePath)
@@ -1380,15 +1390,18 @@ class MainWindow(QMainWindow, WindowMixin):
             return True
         return False
 
-
     def showBoundingBoxFromPPlabel(self, filePath):
+        width, height = self.image.width(), self.image.height()
         imgidx = self.getImglabelidx(filePath)
-        if imgidx not in self.PPlabel.keys():
-            return
-        shapes = []
-        for box in self.PPlabel[imgidx]:
-            shapes.append((box['transcription'], box['points'], None, None, box['difficult']))
-
+        shapes =[]
+        #box['ratio'] of the shapes saved in lockedShapes contains the ratio of the
+        # four corner coordinates of the shapes to the height and width of the image
+        for box in self.canvas.lockedShapes:
+            shapes.append(("锁定框：待识别", [[s[0]*width,s[1]*height]for s in box['ratio']],DEFAULT_LOCK_COLOR, None, box['difficult']))
+        if imgidx in self.PPlabel.keys():
+            for box in self.PPlabel[imgidx]:
+              #  print(box)
+                shapes.append((box['transcription'], box['points'], None, None, box['difficult']))
         self.loadLabels(shapes)
         self.canvas.verified = False
 
@@ -2107,6 +2120,34 @@ class MainWindow(QMainWindow, WindowMixin):
         self.labelList.clearSelection()
         self._noSelectionSlot = False
         self.canvas.loadShapes(shapes, replace=replace)
+        print("loadShapes")#1
+        
+    
+    def lockSelectedShape(self):
+        width, height = self.image.width(), self.image.height()
+        def format_shape(s):
+            return dict(label=s.label,  # str
+                        line_color=s.line_color.getRgb(),
+                        fill_color=s.fill_color.getRgb(),
+                        ratio=[[int(p.x())/width, int(p.y())/height] for p in s.points],  # QPonitF
+                       # add chris
+                        difficult=s.difficult)  # bool
+        #lock
+        if len(self.canvas.lockedShapes) == 0:
+            for s in self.canvas.selectedShapes:
+                s.line_color=DEFAULT_LOCK_COLOR
+            shapes=[format_shape(shape) for shape in self.canvas.selectedShapes]
+            trans_dic = []
+            for box in shapes:
+                trans_dic.append({"transcription": box['label'], "ratio": box['ratio'], 'difficult': box['difficult']})
+            self.canvas.lockedShapes = trans_dic
+        #    print("self.canvas.lockedShapes：",self.canvas.lockedShapes)
+        #unlock
+        else:
+            for s in self.canvas.shapes:
+                s.line_color=DEFAULT_LINE_COLOR
+            trans_dic = []
+            self.canvas.lockedShapes = trans_dic
 
 
 def inverted(color):
