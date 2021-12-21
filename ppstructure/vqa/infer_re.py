@@ -56,14 +56,18 @@ def infer(args):
     ocr_info_list = load_ocr(args.eval_data_dir, args.eval_label_path)
 
     for idx, batch in enumerate(eval_dataloader):
-        logger.info("[Infer] process: {}/{}".format(idx, len(eval_dataloader)))
-        with paddle.no_grad():
-            outputs = model(**batch)
-        pred_relations = outputs['pred_relations']
-
         ocr_info = ocr_info_list[idx]
         image_path = ocr_info['image_path']
         ocr_info = ocr_info['ocr_info']
+
+        save_img_path = os.path.join(
+            args.output_dir,
+            os.path.splitext(os.path.basename(image_path))[0] + "_re.jpg")
+        logger.info("[Infer] process: {}/{}, save result to {}".format(
+            idx, len(eval_dataloader), save_img_path))
+        with paddle.no_grad():
+            outputs = model(**batch)
+        pred_relations = outputs['pred_relations']
 
         # 根据entity里的信息，做token解码后去过滤不要的ocr_info
         ocr_info = filter_bg_by_txt(ocr_info, batch, tokenizer)
@@ -85,8 +89,7 @@ def infer(args):
 
         img = cv2.imread(image_path)
         img_show = draw_re_results(img, result)
-        save_path = os.path.join(args.output_dir, os.path.basename(image_path))
-        cv2.imwrite(save_path, img_show)
+        cv2.imwrite(save_img_path, img_show)
 
 
 def load_ocr(img_folder, json_path):
