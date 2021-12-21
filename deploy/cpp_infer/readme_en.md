@@ -97,7 +97,7 @@ Finally you can see the following files in the folder of `paddle_inference/`.
 
 ```shell
 git clone https://github.com/PaddlePaddle/Paddle.git
-git checkout dygraph
+git checkout develop
 ```
 
 * After entering the Paddle directory, the commands to compile the paddle inference library are as follows.

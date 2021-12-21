@@ -119,7 +119,7 @@ tar -xf paddle_inference.tgz
 
 ```shell
 git clone https://github.com/PaddlePaddle/Paddle.git
-git checkout dygraph
+git checkout develop
 ```
 
 * 进入Paddle目录后，编译方法如下。
