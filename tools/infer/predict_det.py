@@ -74,7 +74,7 @@ class TextDetector(object):
         elif self.det_algorithm == "SAST":
             pre_process_list[0] = {
                 'DetResizeForTest': {
-                    'resize_long': args.det_limit_side_len
+                    'resize_long': 1536
                 }
             }
             postprocess_params['name'] = 'SASTPostProcess'
