@@ -31,7 +31,10 @@ python3.7 tools/infer_kie.py -c configs/kie/kie_unet_sdmgr.yml -o Global.checkpo
 执行预测后的结果保存在`./output/sdmgr_kie/predicts_kie.txt`文件中，可视化结果保存在`/output/sdmgr_kie/kie_results/`目录下。
 
 可视化结果如下图所示：
-[img](./imgs/0.png)
+
+<div align="center">
+    <img src="./imgs/0.png" width="800">
+</div>
 
 <a name="2-----"></a>
 ## 2. 执行训练
