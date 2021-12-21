@@ -103,7 +103,7 @@ opencv3/
 
 #### 1.2.1 直接下载安装
 
-* [Paddle预测库官网](https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0/guides/05_inference_deployment/inference/build_and_install_lib_cn.html) 上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本（*建议选择paddle版本>=2.0.1版本的预测库* ）。
+* [Paddle预测库官网](https://paddle-inference.readthedocs.io/en/latest/user_guides/download_lib.html) 上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本（*建议选择paddle版本>=2.0.1版本的预测库* ）。
 
 * 下载之后使用下面的方法解压。
 
@@ -119,7 +119,7 @@ tar -xf paddle_inference.tgz
 
 ```shell
 git clone https://github.com/PaddlePaddle/Paddle.git
-git checkout release/2.1
+git checkout dygraph
 ```
 
 * 进入Paddle目录后，编译方法如下。
