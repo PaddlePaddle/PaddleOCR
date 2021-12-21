@@ -119,7 +119,7 @@ tar -xf paddle_inference.tgz
 
 ```shell
 git clone https://github.com/PaddlePaddle/Paddle.git
-git checkout release/2.4
+git checkout release/2.2
 ```
 
 * 进入Paddle目录后，编译方法如下。
