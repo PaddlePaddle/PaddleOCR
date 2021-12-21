@@ -49,7 +49,6 @@ https://aistudio.baidu.com/aistudio/datasetdetail/8429
     - 每个样本固定10个字符，字符随机截取自语料库中的句子
     - 图片分辨率统一为280x32  
     ![](../datasets/ch_doc1.jpg)  
-    ![](../datasets/ch_doc2.jpg)  
     ![](../datasets/ch_doc3.jpg)  
 - **下载地址**：https://pan.baidu.com/s/1QkI7kjah8SPHwOQ40rS1Pw (密码：lu7m)
 

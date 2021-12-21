@@ -37,7 +37,7 @@ from ppocr.utils.save_load import init_model
 from ppocr.utils.utility import get_image_file_list
 import tools.program as program
 
-
+@paddle.no_grad()
 def main():
     global_config = config['Global']
 
