@@ -291,7 +291,7 @@ class KieLabelEncode(object):
     def __init__(self, character_dict_path, norm=10, directed=False, **kwargs):
         super(KieLabelEncode, self).__init__()
         self.dict = dict({'': 0})
-        with open(character_dict_path, 'r') as fr:
+        with open(character_dict_path, 'r', encoding='utf-8') as fr:
             idx = 1
             for line in fr:
                 char = line.strip()
@@ -507,8 +507,12 @@ class SEEDLabelEncode(BaseRecLabelEncode):
             max_text_length, character_dict_path, use_space_char)
 
     def add_special_char(self, dict_character):
+        self.padding = "padding"
         self.end_str = "eos"
-        dict_character = dict_character + [self.end_str]
+        self.unknown = "unknown"
+        dict_character = dict_character + [
+            self.end_str, self.padding, self.unknown
+        ]
         return dict_character
 
     def __call__(self, data):
@@ -519,8 +523,8 @@ class SEEDLabelEncode(BaseRecLabelEncode):
         if len(text) >= self.max_text_len:
             return None
         data['length'] = np.array(len(text)) + 1  # conclude eos
-        text = text + [len(self.character) - 1] * (self.max_text_len - len(text)
-                                                   )
+        text = text + [len(self.character) - 3] + [len(self.character) - 2] * (
+            self.max_text_len - len(text) - 1)
         data['label'] = np.array(text)
         return data
 

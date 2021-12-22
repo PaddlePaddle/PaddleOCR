@@ -126,9 +126,6 @@ def main():
             otstr = file + "\t" + json.dumps(dt_boxes_json) + "\n"
             fout.write(otstr.encode())
 
-            save_det_path = os.path.dirname(config['Global'][
-                'save_res_path']) + "/det_results/"
-            draw_det_res(boxes, config, src_img, file, save_det_path)
     logger.info("success!")
 
 

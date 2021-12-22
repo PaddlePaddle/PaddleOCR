@@ -287,9 +287,12 @@ class SEEDLabelDecode(BaseRecLabelDecode):
                                               use_space_char)
 
     def add_special_char(self, dict_character):
-        self.beg_str = "sos"
+        self.padding_str = "padding"
         self.end_str = "eos"
-        dict_character = dict_character + [self.end_str]
+        self.unknown = "unknown"
+        dict_character = dict_character + [
+            self.end_str, self.padding_str, self.unknown
+        ]
         return dict_character
 
     def get_ignored_tokens(self):

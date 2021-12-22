@@ -79,7 +79,7 @@ opencv3/
 
 #### 1.2.1 Direct download and installation
 
-[Paddle inference library official website](https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0/guides/05_inference_deployment/inference/build_and_install_lib_cn.html). You can view and select the appropriate version of the inference library on the official website.
+[Paddle inference library official website](https://paddle-inference.readthedocs.io/en/latest/user_guides/download_lib.html). You can view and select the appropriate version of the inference library on the official website.
 
 
 * After downloading, use the following method to uncompress.
@@ -97,7 +97,7 @@ Finally you can see the following files in the folder of `paddle_inference/`.
 
 ```shell
 git clone https://github.com/PaddlePaddle/Paddle.git
-git checkout release/2.1
+git checkout develop
 ```
 
 * After entering the Paddle directory, the commands to compile the paddle inference library are as follows.

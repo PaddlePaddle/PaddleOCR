@@ -13,7 +13,6 @@ English | [简体中文](README_ch.md)
     <a href=""><img src="https://img.shields.io/badge/python-3.7+-aff.svg"></a>
     <a href=""><img src="https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg"></a>
     <a href=""><img src="https://img.shields.io/pypi/format/PaddleOCR?color=c77"></a>
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/graphs/contributors"><img src="https://img.shields.io/github/contributors/PaddlePaddle/PaddleOCR?color=9ea"></a>
     <a href="https://pypi.org/project/PaddleOCR/"><img src="https://img.shields.io/pypi/dm/PaddleOCR?color=9cf"></a>
     <a href="https://github.com/PaddlePaddle/PaddleOCR/stargazers"><img src="https://img.shields.io/github/stars/PaddlePaddle/PaddleOCR?color=ccf"></a>
 </p>
@@ -24,7 +23,8 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
 
 
 **Recent updates**
-
+- 2021.12.21 OCR open source online course starts. The lesson starts at 8:30 every night and lasts for ten days. Free registration: https://aistudio.baidu.com/aistudio/course/introduce/25207
+- 2021.12.21 release PaddleOCR v2.4, release 1 text detection algorithm (PSENet), 3 text recognition algorithms (NRTR、SEED、SAR), 1 key information extraction algorithm (SDMGR) and 3 DocVQA algorithms (LayoutLM、LayoutLMv2，LayoutXLM).
 - PaddleOCR R&D team would like to share the key points of PP-OCRv2, at 20:15 pm on September 8th, [Course Address](https://aistudio.baidu.com/aistudio/education/group/info/6758).
 - 2021.9.7 release PaddleOCR v2.3, [PP-OCRv2](#PP-OCRv2) is proposed. The inference speed of PP-OCRv2 is 220% higher than that of PP-OCR server in CPU device. The F-score of PP-OCRv2 is 7% higher than that of PP-OCR mobile.
 - 2021.8.3 released PaddleOCR v2.2, add a new structured documents analysis toolkit, i.e., [PP-Structure](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/ppstructure/README.md), support layout analysis and table recognition (One-key to export chart images to Excel files).
@@ -38,7 +38,11 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
     - Ultra lightweight PP-OCR mobile series models: detection (3.0M) + direction classifier (1.4M) + recognition (5.0M) = 9.4M
     - General PP-OCR server series models: detection (47.1M) + direction classifier (1.4M) + recognition (94.9M) = 143.4M
     - Support Chinese, English, and digit recognition, vertical text recognition, and long text recognition
-    - Support multi-language recognition: Korean, Japanese, German, French
+    - Support multi-language recognition: about 80 languages like Korean, Japanese, German, French, etc
+- document structurize system PP-Structure
+    - support layout analysis and table recognition (support export to Excel)
+    - support key information extraction
+    - support DocVQA
 - Rich toolkits related to the OCR areas
     - Semi-automatic data annotation tool, i.e., PPOCRLabel: support fast and efficient data annotation
     - Data synthesis tool, i.e., Style-Text: easy to synthesize a large number of images which are similar to the target scene image

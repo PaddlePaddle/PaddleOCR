@@ -1,6 +1,6 @@
 Global:
   use_gpu: True
-  epoch_num: 300
+  epoch_num: 60
   log_smooth_window: 20
   print_batch_step: 50
   save_model_dir: ./output/kie_5/
@@ -13,7 +13,7 @@ Global:
   #    you should set load_static_weights as False.
   load_static_weights: False
   cal_metric_during_train: False
-  pretrained_model: ./output/kie_4/best_accuracy
+  pretrained_model: 
   checkpoints:
   save_inference_dir:
   use_visualdl: False
