@@ -24,6 +24,14 @@ import paddle
 # relative reference
 from utils import parse_args, get_image_file_list, draw_ser_results, get_bio_label_maps
 from paddlenlp.transformers import LayoutXLMModel, LayoutXLMTokenizer, LayoutXLMForTokenClassification
+from paddlenlp.transformers import LayoutLMModel, LayoutLMTokenizer, LayoutLMForTokenClassification
+
+MODELS = {
+    'LayoutXLM':
+    (LayoutXLMTokenizer, LayoutXLMModel, LayoutXLMForTokenClassification),
+    'LayoutLM':
+    (LayoutLMTokenizer, LayoutLMModel, LayoutLMForTokenClassification)
+}
 
 
 def pad_sentences(tokenizer,
@@ -59,7 +67,8 @@ def pad_sentences(tokenizer,
             encoded_inputs["bbox"] = encoded_inputs["bbox"] + [[0, 0, 0, 0]
                                                                ] * difference
         else:
-            assert False, f"padding_side of tokenizer just supports [\"right\"] but got {tokenizer.padding_side}"
+            assert False, "padding_side of tokenizer just supports [\"right\"] but got {}".format(
+                tokenizer.padding_side)
     else:
         if return_attention_mask:
             encoded_inputs["attention_mask"] = [1] * len(encoded_inputs[
@@ -216,15 +225,15 @@ def infer(args):
     os.makedirs(args.output_dir, exist_ok=True)
 
     # init token and model
-    tokenizer = LayoutXLMTokenizer.from_pretrained(args.model_name_or_path)
-    # model = LayoutXLMModel.from_pretrained(args.model_name_or_path)
-    model = LayoutXLMForTokenClassification.from_pretrained(
-        args.model_name_or_path)
+    tokenizer_class, base_model_class, model_class = MODELS[args.ser_model_type]
+    tokenizer = tokenizer_class.from_pretrained(args.model_name_or_path)
+    model = model_class.from_pretrained(args.model_name_or_path)
+
     model.eval()
 
     # load ocr results json
     ocr_results = dict()
-    with open(args.ocr_json_path, "r") as fin:
+    with open(args.ocr_json_path, "r", encoding='utf-8') as fin:
         lines = fin.readlines()
         for line in lines:
             img_name, json_info = line.split("\t")
@@ -234,9 +243,15 @@ def infer(args):
     infer_imgs = get_image_file_list(args.infer_imgs)
 
     # loop for infer
-    with open(os.path.join(args.output_dir, "infer_results.txt"), "w") as fout:
+    with open(
+            os.path.join(args.output_dir, "infer_results.txt"),
+            "w",
+            encoding='utf-8') as fout:
         for idx, img_path in enumerate(infer_imgs):
-            print("process: [{}/{}]".format(idx, len(infer_imgs), img_path))
+            save_img_path = os.path.join(args.output_dir,
+                                         os.path.basename(img_path))
+            print("process: [{}/{}], save result to {}".format(
+                idx, len(infer_imgs), save_img_path))
 
             img = cv2.imread(img_path)
 
@@ -246,15 +261,21 @@ def infer(args):
                 ori_img=img,
                 ocr_info=ocr_info,
                 max_seq_len=args.max_seq_length)
+            if args.ser_model_type == 'LayoutLM':
+                preds = model(
+                    input_ids=inputs["input_ids"],
+                    bbox=inputs["bbox"],
+                    token_type_ids=inputs["token_type_ids"],
+                    attention_mask=inputs["attention_mask"])
+            elif args.ser_model_type == 'LayoutXLM':
+                preds = model(
+                    input_ids=inputs["input_ids"],
+                    bbox=inputs["bbox"],
+                    image=inputs["image"],
+                    token_type_ids=inputs["token_type_ids"],
+                    attention_mask=inputs["attention_mask"])
+                preds = preds[0]
 
-            outputs = model(
-                input_ids=inputs["input_ids"],
-                bbox=inputs["bbox"],
-                image=inputs["image"],
-                token_type_ids=inputs["token_type_ids"],
-                attention_mask=inputs["attention_mask"])
-
-            preds = outputs[0]
             preds = postprocess(inputs["attention_mask"], preds,
                                 args.label_map_path)
             ocr_info = merge_preds_list_with_ocr_info(
@@ -267,9 +288,7 @@ def infer(args):
                 }, ensure_ascii=False) + "\n")
 
             img_res = draw_ser_results(img, ocr_info)
-            cv2.imwrite(
-                os.path.join(args.output_dir, os.path.basename(img_path)),
-                img_res)
+            cv2.imwrite(save_img_path, img_res)
 
     return
 

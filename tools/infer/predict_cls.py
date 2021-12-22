@@ -145,8 +145,6 @@ def main(args):
     for ino in range(len(img_list)):
         logger.info("Predicts of {}:{}".format(valid_image_file_list[ino],
                                                cls_res[ino]))
-    logger.info(
-        "The predict time about text angle classify module is as follows: ")
 
 
 if __name__ == "__main__":

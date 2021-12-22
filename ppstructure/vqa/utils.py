@@ -25,8 +25,14 @@ import paddle
 from PIL import Image, ImageDraw, ImageFont
 
 
+def set_seed(seed):
+    random.seed(seed)
+    np.random.seed(seed)
+    paddle.seed(seed)
+
+
 def get_bio_label_maps(label_map_path):
-    with open(label_map_path, "r") as fin:
+    with open(label_map_path, "r", encoding='utf-8') as fin:
         lines = fin.readlines()
     lines = [line.strip() for line in lines]
     if "O" not in lines:
@@ -344,6 +350,8 @@ def parse_args():
     # yapf: disable
     parser.add_argument("--model_name_or_path",
                         default=None, type=str, required=True,)
+    parser.add_argument("--ser_model_type",
+                        default='LayoutXLM', type=str)
     parser.add_argument("--re_model_name_or_path",
                         default=None, type=str, required=False,)
     parser.add_argument("--train_data_dir", default=None,
@@ -357,6 +365,7 @@ def parse_args():
     parser.add_argument("--output_dir", default=None, type=str, required=True,)
     parser.add_argument("--max_seq_length", default=512, type=int,)
     parser.add_argument("--evaluate_during_training", action="store_true",)
+    parser.add_argument("--num_workers", default=8, type=int,)
     parser.add_argument("--per_gpu_train_batch_size", default=8,
                         type=int, help="Batch size per GPU/CPU for training.",)
     parser.add_argument("--per_gpu_eval_batch_size", default=8,
@@ -375,16 +384,15 @@ def parse_args():
                         help="Linear warmup over warmup_steps.",)
     parser.add_argument("--eval_steps", type=int, default=10,
                         help="eval every X updates steps.",)
-    parser.add_argument("--save_steps", type=int, default=50,
-                        help="Save checkpoint every X updates steps.",)
     parser.add_argument("--seed", type=int, default=2048,
                         help="random seed for initialization",)
 
-    parser.add_argument("--ocr_rec_model_dir", default=None, type=str, )
-    parser.add_argument("--ocr_det_model_dir", default=None, type=str, )
+    parser.add_argument("--rec_model_dir", default=None, type=str, )
+    parser.add_argument("--det_model_dir", default=None, type=str, )
     parser.add_argument(
         "--label_map_path", default="./labels/labels_ser.txt", type=str, required=False, )
     parser.add_argument("--infer_imgs", default=None, type=str, required=False)
+    parser.add_argument("--resume", action='store_true')
     parser.add_argument("--ocr_json_path", default=None,
                         type=str, required=False, help="ocr prediction results")
     # yapf: enable

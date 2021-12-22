@@ -18,12 +18,13 @@ PP-Structure 里的 DOC-VQA算法基于PaddleNLP自然语言处理算法库进�
 
 ## 1 性能
 
-我们在 [XFUN](https://github.com/doc-analysis/XFUND) 评估数据集上对算法进行了评估，性能如下
+我们在 [XFUN](https://github.com/doc-analysis/XFUND) 的中文数据集上对算法进行了评估，性能如下
 
-|任务|    f1 | 模型下载地址|
-|:---:|:---:| :---:|
-|SER|0.9056| [链接](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_ser_pretrained.tar)|
-|RE|0.7113| [链接](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_re_pretrained.tar)|
+| 模型 | 任务 | f1 | 模型下载地址 |
+|:---:|:---:|:---:| :---:|
+| LayoutXLM | RE | 0.7113 | [链接](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_re_pretrained.tar) |
+| LayoutXLM | SER | 0.9056 | [链接](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_ser_pretrained.tar) |
+| LayoutLM | SER | 0.78 | [链接](https://paddleocr.bj.bcebos.com/pplayout/LayoutLM_ser_pretrained.tar) |
 
 
 
@@ -98,7 +99,7 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 # 需要使用PaddleNLP最新的代码版本进行安装
 git clone https://github.com/PaddlePaddle/PaddleNLP -b develop
 cd PaddleNLP
-pip install -e .
+pip3 install -e .
 ```
 
 
@@ -135,13 +136,13 @@ wget https://paddleocr.bj.bcebos.com/dataset/XFUND.tar
 ```shell
 python3.7 train_ser.py \
     --model_name_or_path "layoutxlm-base-uncased" \
+    --ser_model_type "LayoutXLM" \
     --train_data_dir "XFUND/zh_train/image" \
     --train_label_path "XFUND/zh_train/xfun_normalize_train.json" \
     --eval_data_dir "XFUND/zh_val/image" \
     --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
     --num_train_epochs 200 \
     --eval_steps 10 \
-    --save_steps 500 \
     --output_dir "./output/ser/" \
     --learning_rate 5e-5 \
     --warmup_steps 50 \
@@ -151,13 +152,50 @@ python3.7 train_ser.py \
 
 最终会打印出`precision`, `recall`, `f1`等指标，模型和训练日志会保存在`./output/ser/`文件夹中。
 
+* 恢复训练
+
+```shell
+python3.7 train_ser.py \
+    --model_name_or_path "model_path" \
+    --ser_model_type "LayoutXLM" \
+    --train_data_dir "XFUND/zh_train/image" \
+    --train_label_path "XFUND/zh_train/xfun_normalize_train.json" \
+    --eval_data_dir "XFUND/zh_val/image" \
+    --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
+    --num_train_epochs 200 \
+    --eval_steps 10 \
+    --output_dir "./output/ser/" \
+    --learning_rate 5e-5 \
+    --warmup_steps 50 \
+    --evaluate_during_training \
+    --num_workers 8 \
+    --seed 2048 \
+    --resume
+```
+
+* 评估
+```shell
+export CUDA_VISIBLE_DEVICES=0
+python3 eval_ser.py \
+    --model_name_or_path "PP-Layout_v1.0_ser_pretrained/" \
+    --ser_model_type "LayoutXLM" \
+    --eval_data_dir "XFUND/zh_val/image" \
+    --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
+    --per_gpu_eval_batch_size 8 \
+    --num_workers 8 \
+    --output_dir "output/ser/"  \
+    --seed 2048
+```
+最终会打印出`precision`, `recall`, `f1`等指标
+
 * 使用评估集合中提供的OCR识别结果进行预测
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
 python3.7 infer_ser.py \
-    --model_name_or_path "./PP-Layout_v1.0_ser_pretrained/" \
-    --output_dir "output_res/" \
+    --model_name_or_path "PP-Layout_v1.0_ser_pretrained/" \
+    --ser_model_type "LayoutXLM" \
+    --output_dir "output/ser/" \
     --infer_imgs "XFUND/zh_val/image/" \
     --ocr_json_path "XFUND/zh_val/xfun_normalize_val.json"
 ```
@@ -169,9 +207,10 @@ python3.7 infer_ser.py \
 ```shell
 export CUDA_VISIBLE_DEVICES=0
 python3.7 infer_ser_e2e.py \
-    --model_name_or_path "./output/PP-Layout_v1.0_ser_pretrained/" \
+    --model_name_or_path "PP-Layout_v1.0_ser_pretrained/" \
+    --ser_model_type "LayoutXLM" \
     --max_seq_length 512 \
-    --output_dir "output_res_e2e/" \
+    --output_dir "output/ser_e2e/" \
     --infer_imgs "images/input/zh_val_0.jpg"
 ```
 
@@ -188,6 +227,7 @@ python3.7 helper/eval_with_label_end2end.py --gt_json_path XFUND/zh_val/xfun_nor
 * 启动训练
 
 ```shell
+export CUDA_VISIBLE_DEVICES=0
 python3 train_re.py \
     --model_name_or_path "layoutxlm-base-uncased" \
     --train_data_dir "XFUND/zh_train/image" \
@@ -195,32 +235,74 @@ python3 train_re.py \
     --eval_data_dir "XFUND/zh_val/image" \
     --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
     --label_map_path 'labels/labels_ser.txt' \
-    --num_train_epochs 2 \
+    --num_train_epochs 200 \
     --eval_steps 10 \
-    --save_steps 500 \
     --output_dir "output/re/"  \
     --learning_rate 5e-5 \
     --warmup_steps 50 \
     --per_gpu_train_batch_size 8 \
     --per_gpu_eval_batch_size 8 \
+    --num_workers 8 \
     --evaluate_during_training \
     --seed 2048
 
 ```
 
+* 恢复训练
+
+```shell
+export CUDA_VISIBLE_DEVICES=0
+python3 train_re.py \
+    --model_name_or_path "model_path" \
+    --train_data_dir "XFUND/zh_train/image" \
+    --train_label_path "XFUND/zh_train/xfun_normalize_train.json" \
+    --eval_data_dir "XFUND/zh_val/image" \
+    --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
+    --label_map_path 'labels/labels_ser.txt' \
+    --num_train_epochs 2 \
+    --eval_steps 10 \
+    --output_dir "output/re/"  \
+    --learning_rate 5e-5 \
+    --warmup_steps 50 \
+    --per_gpu_train_batch_size 8 \
+    --per_gpu_eval_batch_size 8 \
+    --num_workers 8 \
+    --evaluate_during_training \
+    --seed 2048 \
+    --resume
+
+```
+
 最终会打印出`precision`, `recall`, `f1`等指标，模型和训练日志会保存在`./output/re/`文件夹中。
+
+* 评估
+```shell
+export CUDA_VISIBLE_DEVICES=0
+python3 eval_re.py \
+    --model_name_or_path "PP-Layout_v1.0_re_pretrained/" \
+    --max_seq_length 512 \
+    --eval_data_dir "XFUND/zh_val/image" \
+    --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
+    --label_map_path 'labels/labels_ser.txt' \
+    --output_dir "output/re/"  \
+    --per_gpu_eval_batch_size 8 \
+    --num_workers 8 \
+    --seed 2048
+```
+最终会打印出`precision`, `recall`, `f1`等指标
+
 
 * 使用评估集合中提供的OCR识别结果进行预测
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
 python3 infer_re.py \
-    --model_name_or_path "./PP-Layout_v1.0_re_pretrained/" \
+    --model_name_or_path "PP-Layout_v1.0_re_pretrained/" \
     --max_seq_length 512 \
     --eval_data_dir "XFUND/zh_val/image" \
     --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
     --label_map_path 'labels/labels_ser.txt' \
-    --output_dir "output_res"  \
+    --output_dir "output/re/"  \
     --per_gpu_eval_batch_size 1 \
     --seed 2048
 ```
@@ -231,11 +313,12 @@ python3 infer_re.py \
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
-# python3.7 infer_ser_re_e2e.py \
-    --model_name_or_path "./PP-Layout_v1.0_ser_pretrained/" \
-    --re_model_name_or_path "./PP-Layout_v1.0_re_pretrained/" \
+python3.7 infer_ser_re_e2e.py \
+    --model_name_or_path "PP-Layout_v1.0_ser_pretrained/" \
+    --re_model_name_or_path "PP-Layout_v1.0_re_pretrained/" \
+    --ser_model_type "LayoutXLM" \
     --max_seq_length 512 \
-    --output_dir "output_ser_re_e2e_train/" \
+    --output_dir "output/ser_re_e2e/" \
     --infer_imgs "images/input/zh_val_21.jpg"
 ```
 

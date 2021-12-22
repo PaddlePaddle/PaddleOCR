@@ -16,13 +16,13 @@ import json
 
 
 def transfer_xfun_data(json_path=None, output_file=None):
-    with open(json_path, "r") as fin:
+    with open(json_path, "r", encoding='utf-8') as fin:
         lines = fin.readlines()
 
     json_info = json.loads(lines[0])
     documents = json_info["documents"]
     label_info = {}
-    with open(output_file, "w") as fout:
+    with open(output_file, "w", encoding='utf-8') as fout:
         for idx, document in enumerate(documents):
             img_info = document["img"]
             document = document["document"]

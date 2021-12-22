@@ -33,14 +33,19 @@ def build_head(config):
 
     # cls head
     from .cls_head import ClsHead
+
+    #kie head
+    from .kie_sdmgr_head import SDMGRHead
+
+    from .table_att_head import TableAttentionHead
+
     support_dict = [
         'DBHead', 'PSEHead', 'EASTHead', 'SASTHead', 'CTCHead', 'ClsHead',
         'AttentionHead', 'SRNHead', 'PGHead', 'Transformer',
-        'TableAttentionHead', 'SARHead', 'AsterHead'
+        'TableAttentionHead', 'SARHead', 'AsterHead', 'SDMGRHead'
     ]
 
     #table head
-    from .table_att_head import TableAttentionHead
 
     module_name = config.pop('name')
     assert module_name in support_dict, Exception('head only support {}'.format(

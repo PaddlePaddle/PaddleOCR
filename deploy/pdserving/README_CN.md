@@ -34,70 +34,66 @@ PaddleOCR提供2种服务部署方式：
 
 - 准备PaddleServing的运行环境，步骤如下
 
-1. 安装serving，用于启动服务
-    ```
-    pip3 install paddle-serving-server==0.6.1 # for CPU
-    pip3 install paddle-serving-server-gpu==0.6.1 # for GPU
-    # 其他GPU环境需要确认环境再选择执行如下命令
-    pip3 install paddle-serving-server-gpu==0.6.1.post101 # GPU with CUDA10.1 + TensorRT6
-    pip3 install paddle-serving-server-gpu==0.6.1.post11 # GPU with CUDA11 + TensorRT7
-    ```
+```bash
+# 安装serving，用于启动服务
+wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_server_gpu-0.7.0.post102-py3-none-any.whl
+pip3 install paddle_serving_server_gpu-0.7.0.post102-py3-none-any.whl
+# 如果是cuda10.1环境，可以使用下面的命令安装paddle-serving-server
+# wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_server_gpu-0.7.0.post101-py3-none-any.whl
+# pip3 install paddle_serving_server_gpu-0.7.0.post101-py3-none-any.whl
 
-2. 安装client，用于向服务发送请求
-    在[下载链接](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md)中找到对应python版本的client安装包，这里推荐python3.7版本：
+# 安装client，用于向服务发送请求
+wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_client-0.7.0-cp37-none-any.whl
+pip3 install paddle_serving_client-0.7.0-cp37-none-any.whl
 
-    ```
-    wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_client-0.0.0-cp37-none-any.whl
-    pip3 install paddle_serving_client-0.0.0-cp37-none-any.whl
-    ```
+# 安装serving-app
+wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_app-0.7.0-py3-none-any.whl
+pip3 install paddle_serving_app-0.7.0-py3-none-any.whl
+```
 
-3. 安装serving-app
-    ```
-    pip3 install paddle-serving-app==0.6.1
-    ```
-
-    **Note:** 如果要安装最新版本的PaddleServing参考[链接](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md)。
+**Note:** 如果要安装最新版本的PaddleServing参考[链接](https://github.com/PaddlePaddle/Serving/blob/v0.7.0/doc/Latest_Packages_CN.md)。
 
 <a name="模型转换"></a>
 ## 模型转换
 
 使用PaddleServing做服务化部署时，需要将保存的inference模型转换为serving易于部署的模型。
 
-首先，下载PPOCR的[inference模型](https://github.com/PaddlePaddle/PaddleOCR#pp-ocr-20-series-model-listupdate-on-dec-15)
-```
+首先，下载PPOCR的[inference模型](https://github.com/PaddlePaddle/PaddleOCR#pp-ocr-series-model-listupdate-on-september-8th)
+
+```bash
 # 下载并解压 OCR 文本检测模型
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_ppocr_mobile_v2.0_det_infer.tar
+wget https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar -O ch_PP-OCRv2_det_infer.tar && tar -xf ch_PP-OCRv2_det_infer.tar
 # 下载并解压 OCR 文本识别模型
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf ch_ppocr_mobile_v2.0_rec_infer.tar
+wget https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar -O ch_PP-OCRv2_rec_infer.tar &&  tar -xf ch_PP-OCRv2_rec_infer.tar
 ```
 
 接下来，用安装的paddle_serving_client把下载的inference模型转换成易于server部署的模型格式。
 
-```
+```bash
 # 转换检测模型
-python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_mobile_v2.0_det_infer/ \
+python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_det_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
-                                         --serving_server ./ppocr_det_mobile_2.0_serving/ \
-                                         --serving_client ./ppocr_det_mobile_2.0_client/
+                                         --serving_server ./ppocrv2_det_serving/ \
+                                         --serving_client ./ppocrv2_det_client/
 
 # 转换识别模型
-python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_mobile_v2.0_rec_infer/ \
+python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_rec_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
-                                         --serving_server ./ppocr_rec_mobile_2.0_serving/  \
-                                         --serving_client ./ppocr_rec_mobile_2.0_client/
+                                         --serving_server ./ppocrv2_rec_serving/  \
+                                         --serving_client ./ppocrv2_rec_client/
 ```
 
-检测模型转换完成后，会在当前文件夹多出`ppocr_det_mobile_2.0_serving` 和`ppocr_det_mobile_2.0_client`的文件夹，具备如下格式：
+检测模型转换完成后，会在当前文件夹多出`ppocrv2_det_serving` 和`ppocrv2_det_client`的文件夹，具备如下格式：
 ```
-|- ppocr_det_mobile_2.0_serving/
+|- ppocrv2_det_serving/
   |- __model__  
   |- __params__
   |- serving_server_conf.prototxt  
   |- serving_server_conf.stream.prototxt
 
-|- ppocr_det_mobile_2.0_client
+|- ppocrv2_det_client
   |- serving_client_conf.prototxt  
   |- serving_client_conf.stream.prototxt
 

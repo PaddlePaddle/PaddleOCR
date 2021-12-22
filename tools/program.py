@@ -239,6 +239,8 @@ def train(config,
             else:
                 if model_type == 'table' or extra_input:
                     preds = model(images, data=batch[1:])
+                elif model_type == "kie":
+                    preds = model(batch)
                 else:
                     preds = model(images)
             loss = loss_class(preds, batch)
@@ -266,7 +268,7 @@ def train(config,
 
             if cal_metric_during_train:  # only rec and cls need
                 batch = [item.numpy() for item in batch]
-                if model_type == 'table':
+                if model_type in ['table', 'kie']:
                     eval_class(preds, batch)
                 else:
                     post_result = post_process_class(preds, batch[1])
@@ -399,17 +401,20 @@ def eval(model,
             start = time.time()
             if model_type == 'table' or extra_input:
                 preds = model(images, data=batch[1:])
+            elif model_type == "kie":
+                preds = model(batch)
             else:
                 preds = model(images)
             batch = [item.numpy() for item in batch]
             # Obtain usable results from post-processing methods
             total_time += time.time() - start
             # Evaluate the results of the current batch
-            if model_type == 'table':
+            if model_type in ['table', 'kie']:
                 eval_class(preds, batch)
             else:
                 post_result = post_process_class(preds, batch[1])
                 eval_class(post_result, batch)
+
             pbar.update(1)
             total_frame += len(images)
         # Get final metric，eg. acc or hmean
@@ -498,8 +503,13 @@ def preprocess(is_train=False):
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
-        'SEED'
+        'SEED', 'SDMGR'
     ]
+    windows_not_support_list = ['PSE']
+    if platform.system() == "Windows" and alg in windows_not_support_list:
+        logger.warning('{} is not support in Windows now'.format(
+            windows_not_support_list))
+        sys.exit()
 
     device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'
     device = paddle.set_device(device)

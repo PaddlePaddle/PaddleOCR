@@ -15,13 +15,12 @@
 import os
 import re
 import sys
-# import Polygon
 import shapely
 from shapely.geometry import Polygon
 import numpy as np
 from collections import defaultdict
 import operator
-import editdistance
+import Levenshtein
 import argparse
 import json
 import copy
@@ -38,7 +37,7 @@ def parse_ser_results_fp(fp, fp_type="gt", ignore_background=True):
     assert fp_type in ["gt", "pred"]
     key = "label" if fp_type == "gt" else "pred"
     res_dict = dict()
-    with open(fp, "r") as fin:
+    with open(fp, "r", encoding='utf-8') as fin:
         lines = fin.readlines()
 
     for _, line in enumerate(lines):
@@ -95,7 +94,7 @@ def ed(args, str1, str2):
     if args.ignore_case:
         str1 = str1.lower()
         str2 = str2.lower()
-    return editdistance.eval(str1, str2)
+    return Levenshtein.distance(str1, str2)
 
 
 def convert_bbox_to_polygon(bbox):
@@ -115,8 +114,6 @@ def eval_e2e(args):
     # pred
     dt_results = parse_ser_results_fp(args.pred_json_path, "pred",
                                       args.ignore_background)
-    assert set(gt_results.keys()) == set(dt_results.keys())
-
     iou_thresh = args.iou_thres
     num_gt_chars = 0
     gt_count = 0
@@ -124,7 +121,7 @@ def eval_e2e(args):
     hit = 0
     ed_sum = 0
 
-    for img_name in gt_results:
+    for img_name in dt_results:
         gt_info = gt_results[img_name]
         gt_count += len(gt_info)
 
