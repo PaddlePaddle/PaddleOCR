@@ -36,5 +36,4 @@ for idx, img_file in enumerate(os.listdir(test_img_dir)):
         r = requests.post(url=url, data=json.dumps(data))
         print(r.json())
 
-test_img_dir = "../../doc/imgs/"
 print("==> total number of test imgs: ", len(os.listdir(test_img_dir)))
