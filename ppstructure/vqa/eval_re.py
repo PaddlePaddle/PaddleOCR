@@ -24,7 +24,7 @@ import paddle
 from paddlenlp.transformers import LayoutXLMTokenizer, LayoutXLMModel, LayoutXLMForRelationExtraction
 
 from xfun import XFUNDataset
-from utils import parse_args, get_bio_label_maps, print_arguments
+from vqa_utils import parse_args, get_bio_label_maps, print_arguments
 from data_collator import DataCollator
 from metric import re_score
 
