@@ -120,6 +120,8 @@ For a new language request, please refer to [Guideline for new language_requests
 - [PP-Structure: Information Extraction](./ppstructure/README.md)
     - [Layout Parser](./ppstructure/layout/README.md)
     - [Table Recognition](./ppstructure/table/README.md)
+    - [DocVQA](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.4/ppstructure/vqa)
+    - [Key Information Extraction](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.4/ppstructure/docs/kie.md)
 - Academic Circles
     - [Two-stage Algorithm](./doc/doc_en/algorithm_overview_en.md)
     - [PGNet Algorithm](./doc/doc_en/pgnet_en.md)
