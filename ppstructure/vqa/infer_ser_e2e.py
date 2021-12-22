@@ -40,13 +40,6 @@ MODELS = {
     (LayoutLMTokenizer, LayoutLMModel, LayoutLMForTokenClassification)
 }
 
-MODELS = {
-    'LayoutXLM':
-    (LayoutXLMTokenizer, LayoutXLMModel, LayoutXLMForTokenClassification),
-    'LayoutLM':
-    (LayoutLMTokenizer, LayoutLMModel, LayoutLMForTokenClassification)
-}
-
 
 def trans_poly_to_bbox(poly):
     x1 = np.min([p[0] for p in poly])
