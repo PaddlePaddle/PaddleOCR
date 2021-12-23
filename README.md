@@ -24,7 +24,7 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
 
 **Recent updates**
 - 2021.12.21 OCR open source online course starts. The lesson starts at 8:30 every night and lasts for ten days. Free registration: https://aistudio.baidu.com/aistudio/course/introduce/25207
-- 2021.12.21 release PaddleOCR v2.4, release 1 text detection algorithm (PSENet), 3 text recognition algorithms (NRTR、SEED、SAR), 1 key information extraction algorithm (SDMGR) and 3 DocVQA algorithms (LayoutLM、LayoutLMv2，LayoutXLM).
+- 2021.12.21 release PaddleOCR v2.4, release 1 text detection algorithm (PSENet), 3 text recognition algorithms (NRTR、SEED、SAR), 1 key information extraction algorithm (SDMGR, [tutorial](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.4/ppstructure/docs/kie.md)) and 3 DocVQA algorithms (LayoutLM, LayoutLMv2, LayoutXLM, [tutorial](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.4/ppstructure/vqa)).
 - PaddleOCR R&D team would like to share the key points of PP-OCRv2, at 20:15 pm on September 8th, [Course Address](https://aistudio.baidu.com/aistudio/education/group/info/6758).
 - 2021.9.7 release PaddleOCR v2.3, [PP-OCRv2](#PP-OCRv2) is proposed. The inference speed of PP-OCRv2 is 220% higher than that of PP-OCR server in CPU device. The F-score of PP-OCRv2 is 7% higher than that of PP-OCR mobile.
 - 2021.8.3 released PaddleOCR v2.2, add a new structured documents analysis toolkit, i.e., [PP-Structure](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/ppstructure/README.md), support layout analysis and table recognition (One-key to export chart images to Excel files).
@@ -120,6 +120,8 @@ For a new language request, please refer to [Guideline for new language_requests
 - [PP-Structure: Information Extraction](./ppstructure/README.md)
     - [Layout Parser](./ppstructure/layout/README.md)
     - [Table Recognition](./ppstructure/table/README.md)
+    - [DocVQA](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.4/ppstructure/vqa)
+    - [Key Information Extraction](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.4/ppstructure/docs/kie.md)
 - Academic Circles
     - [Two-stage Algorithm](./doc/doc_en/algorithm_overview_en.md)
     - [PGNet Algorithm](./doc/doc_en/pgnet_en.md)
