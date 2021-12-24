@@ -95,7 +95,7 @@ class SimpleDataSet(Dataset):
                 data['image'] = img
             data = transform(data, load_data_ops)
 
-            if data is None or data['polys'].shape[1]!=4:
+            if data is None or data['polys'].shape[1] != 4:
                 continue
             ext_data.append(data)
         return ext_data
@@ -112,9 +112,7 @@ class SimpleDataSet(Dataset):
             data = {'img_path': img_path, 'label': label}
             if not os.path.exists(img_path):
                 raise Exception("{} does not exist!".format(img_path))
-            with open(data['img_path'], 'rb') as f:
-                img = f.read()
-                data['image'] = img
+
             data['ext_data'] = self.get_ext_data()
             outs = transform(data, self.ops)
         except:

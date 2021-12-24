@@ -87,9 +87,6 @@ class PGDataSet(Dataset):
             data = {'img_path': img_path, 'label': label, 'img_id': img_id}
             if not os.path.exists(img_path):
                 raise Exception("{} does not exist!".format(img_path))
-            with open(data['img_path'], 'rb') as f:
-                img = f.read()
-                data['image'] = img
             outs = transform(data, self.ops)
         except Exception as e:
             self.logger.error(

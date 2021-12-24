@@ -22,6 +22,7 @@ from __future__ import unicode_literals
 import sys
 import six
 import cv2
+from PIL import Image
 import numpy as np
 import fasttext
 
@@ -34,15 +35,21 @@ class DecodeImage(object):
         self.channel_first = channel_first
 
     def __call__(self, data):
-        img = data['image']
-        if six.PY2:
-            assert type(img) is str and len(
-                img) > 0, "invalid input 'img' in DecodeImage"
+        if "image" in data:
+            img = data['image']
+            if six.PY2:
+                assert type(img) is str and len(
+                    img) > 0, "invalid input 'img' in DecodeImage"
+            else:
+                assert type(img) is bytes and len(
+                    img) > 0, "invalid input 'img' in DecodeImage"
+            img = np.frombuffer(img, dtype='uint8')
+            img = cv2.imdecode(img, 1)
         else:
-            assert type(img) is bytes and len(
-                img) > 0, "invalid input 'img' in DecodeImage"
-        img = np.frombuffer(img, dtype='uint8')
-        img = cv2.imdecode(img, 1)
+            img_path = data['img_path']
+            img = Image.open(img_path).convert('RGB')
+            img = cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
+
         if img is None:
             return None
         if self.img_mode == 'GRAY':

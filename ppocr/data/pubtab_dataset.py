@@ -70,7 +70,7 @@ class PubTabDataSet(Dataset):
                 prob = self.img_select_prob[file_name]
                 if prob < random.uniform(0, 1):
                     select_flag = False
-            
+
             if self.table_select_type:
                 structure = info['html']['structure']['tokens'].copy()
                 structure_str = ''.join(structure)
@@ -79,18 +79,19 @@ class PubTabDataSet(Dataset):
                     table_type = "complex"
                 if table_type == "complex":
                     if self.table_select_prob < random.uniform(0, 1):
-                        select_flag = False                    
-            
+                        select_flag = False
+
             if select_flag:
                 cells = info['html']['cells'].copy()
                 structure = info['html']['structure'].copy()
                 img_path = os.path.join(self.data_dir, file_name)
-                data = {'img_path': img_path, 'cells': cells, 'structure':structure}
+                data = {
+                    'img_path': img_path,
+                    'cells': cells,
+                    'structure': structure
+                }
                 if not os.path.exists(img_path):
                     raise Exception("{} does not exist!".format(img_path))
-                with open(data['img_path'], 'rb') as f:
-                    img = f.read()
-                    data['image'] = img
                 outs = transform(data, self.ops)
             else:
                 outs = None
