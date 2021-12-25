@@ -45,10 +45,20 @@ class DecodeImage(object):
                     img) > 0, "invalid input 'img' in DecodeImage"
             img = np.frombuffer(img, dtype='uint8')
             img = cv2.imdecode(img, 1)
+            if img is None:
+                return None
+            if self.img_mode == 'GRAY':
+                img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+            elif self.img_mode == 'RGB':
+                assert img.shape[2] == 3, 'invalid shape of image[%s]' % (
+                    img.shape)
+                img = img[:, :, ::-1]
         else:
             img_path = data['img_path']
             img = Image.open(img_path).convert('RGB')
             img = cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
+            if img is None:
+                return None
 
         if img is None:
             return None
