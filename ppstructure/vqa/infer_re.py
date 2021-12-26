@@ -15,7 +15,7 @@ import paddle
 from paddlenlp.transformers import LayoutXLMTokenizer, LayoutXLMModel, LayoutXLMForRelationExtraction
 
 from xfun import XFUNDataset
-from utils import parse_args, get_bio_label_maps, draw_re_results
+from vaq_utils import parse_args, get_bio_label_maps, draw_re_results
 from data_collator import DataCollator
 
 from ppocr.utils.logging import get_logger

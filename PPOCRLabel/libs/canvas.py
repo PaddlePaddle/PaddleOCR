@@ -86,7 +86,11 @@ class Canvas(QWidget):
 
         #initialisation for panning
         self.pan_initial_pos = QPoint()
+
+        #lockedshapes related 
         self.lockedShapes = []
+        self.isInTheSameImage = False
+
     def setDrawingColor(self, qColor):
         self.drawingLineColor = qColor
         self.drawingRectColor = qColor

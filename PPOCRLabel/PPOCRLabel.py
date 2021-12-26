@@ -36,6 +36,7 @@ import numpy as np
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../PaddleOCR')))
+sys.path.append("../ppstructure/vqa")
 sys.path.append("..")
 
 from paddleocr import PaddleOCR
@@ -126,7 +127,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.labelHist = []
         self.lastOpenDir = None
         self.result_dic = []
-
+        self.result_dic_locked = []
         self.changeFileFolder = False
         self.haveAutoReced = False
         self.labelFile = None
@@ -1058,6 +1059,7 @@ class MainWindow(QMainWindow, WindowMixin):
 
                 shape.addPoint(QPointF(x, y))
             shape.difficult = difficult
+            #shape.locked = False
             shape.close()
             s.append(shape)
 
@@ -1070,7 +1072,7 @@ class MainWindow(QMainWindow, WindowMixin):
             #     shape.fill_color = QColor(*fill_color)
             # else:
             #     shape.fill_color = generateColorByText(label)
-
+            
             self.addLabel(shape)
  
         self.updateComboBox()
@@ -1117,8 +1119,8 @@ class MainWindow(QMainWindow, WindowMixin):
         shapes = [] if mode == 'Auto' else \
             [format_shape(shape) for shape in self.canvas.shapes]
         # Can add differrent annotation formats here
-
-        for box in self.result_dic:
+        print("in save labels self.result_dic",self.result_dic)
+        for box in self.result_dic :
             trans_dic = {"label": box[1][0], "points": box[0], 'difficult': False}
             if trans_dic["label"] == "" and mode == 'Auto':
                 continue
@@ -1322,6 +1324,7 @@ class MainWindow(QMainWindow, WindowMixin):
         # unicodeFilePath = os.path.abspath(unicodeFilePath)
         # Tzutalin 20160906 : Add file list and dock to move faster
         # Highlight the file item
+        
         if unicodeFilePath and self.fileListWidget.count() > 0:
             if unicodeFilePath in self.mImgList:
                 index = self.mImgList.index(unicodeFilePath)
@@ -1370,7 +1373,8 @@ class MainWindow(QMainWindow, WindowMixin):
             else:
                 self.dirty = False
                 self.actions.save.setEnabled(True)
-
+            if len(self.canvas.lockedShapes) != 0:
+                self.actions.save.setEnabled(True)
             self.canvas.setEnabled(True)
             self.adjustScale(initial=True)
             self.paintCanvas()
@@ -1380,7 +1384,7 @@ class MainWindow(QMainWindow, WindowMixin):
             self.showBoundingBoxFromPPlabel(filePath)
 
             self.setWindowTitle(__appname__ + ' ' + filePath)
-
+            
             # Default : select last item if there is at least one item
             if self.labelList.count():
                 self.labelList.setCurrentItem(self.labelList.item(self.labelList.count() - 1))
@@ -1397,11 +1401,16 @@ class MainWindow(QMainWindow, WindowMixin):
         #box['ratio'] of the shapes saved in lockedShapes contains the ratio of the
         # four corner coordinates of the shapes to the height and width of the image
         for box in self.canvas.lockedShapes:
-            shapes.append(("锁定框：待识别", [[s[0]*width,s[1]*height]for s in box['ratio']],DEFAULT_LOCK_COLOR, None, box['difficult']))
+            if self.canvas.isInTheSameImage:
+                shapes.append((box['transcription'], [[s[0]*width,s[1]*height]for s in box['ratio']],
+                DEFAULT_LOCK_COLOR, None, box['difficult']))
+            else:
+                shapes.append(('锁定框：待检测', [[s[0]*width,s[1]*height]for s in box['ratio']],
+                DEFAULT_LOCK_COLOR, None, box['difficult']))
         if imgidx in self.PPlabel.keys():
             for box in self.PPlabel[imgidx]:
-              #  print(box)
                 shapes.append((box['transcription'], box['points'], None, None, box['difficult']))
+ 
         self.loadLabels(shapes)
         self.canvas.verified = False
 
@@ -1659,9 +1668,38 @@ class MainWindow(QMainWindow, WindowMixin):
             else:
                 return fullFilePath
         return ''
+    
+   
+    def saveLockedShapes(self):
+        self.canvas.lockedShapes = []
+        self.canvas.selectedShapes = []
+        for s in self.canvas.shapes:
+            if s.line_color == DEFAULT_LOCK_COLOR:
+                self.canvas.selectedShapes.append(s)
+        self.lockSelectedShape()
+        for s in self.canvas.shapes:
+            if s.line_color == DEFAULT_LOCK_COLOR:
+                self.canvas.selectedShapes.remove(s)
+                self.canvas.shapes.remove(s)
 
+    
     def _saveFile(self, annotationFilePath, mode='Manual'):
+        if len(self.canvas.lockedShapes) != 0:
+            self.saveLockedShapes()
+
         if mode == 'Manual':
+            if len(self.result_dic_locked) == 0:
+                img = cv2.imread(self.filePath)
+                width, height = self.image.width(), self.image.height()
+                for shape in self.canvas.lockedShapes:
+                    print(shape)
+                    box = [[int(p[0]*width), int(p[1]*height)] for p in shape['ratio']]
+                    assert len(box) == 4
+                    result = [(shape['transcription'],1)]
+                    result.insert(0, box)
+                    self.result_dic_locked.append(result)
+            self.result_dic += self.result_dic_locked
+            self.result_dic_locked = []
             if annotationFilePath and self.saveLabels(annotationFilePath, mode=mode):
                 self.setClean()
                 self.statusBar().showMessage('Saved to  %s' % annotationFilePath)
@@ -1676,13 +1714,13 @@ class MainWindow(QMainWindow, WindowMixin):
                     self.savePPlabel(mode='Auto')
 
                 self.fileListWidget.insertItem(int(currIndex), item)
-                self.openNextImg()
+                if not self.canvas.isInTheSameImage:
+                    self.openNextImg()
                 self.actions.saveRec.setEnabled(True)
                 self.actions.saveLabel.setEnabled(True)
 
         elif mode == 'Auto':
             if annotationFilePath and self.saveLabels(annotationFilePath, mode=mode):
-
                 self.setClean()
                 self.statusBar().showMessage('Saved to  %s' % annotationFilePath)
                 self.statusBar().show()
@@ -1746,7 +1784,9 @@ class MainWindow(QMainWindow, WindowMixin):
             if discardChanges == QMessageBox.No:
                 return True
             elif discardChanges == QMessageBox.Yes:
+                self.canvas.isInTheSameImage = True
                 self.saveFile()
+                self.canvas.isInTheSameImage = False
                 return True
             else:
                 return False
@@ -1885,6 +1925,7 @@ class MainWindow(QMainWindow, WindowMixin):
         # org_box = [dic['points'] for dic in self.PPlabel[self.getImglabelidx(self.filePath)]]
         if self.canvas.shapes:
             self.result_dic = []
+            self.result_dic_locked = []  # result_dic_locked stores the ocr result of self.canvas.lockedShapes
             rec_flag = 0
             for shape in self.canvas.shapes:
                 box = [[int(p.x()), int(p.y())] for p in shape.points]
@@ -1896,21 +1937,33 @@ class MainWindow(QMainWindow, WindowMixin):
                     return
                 result = self.ocr.ocr(img_crop, cls=True, det=False)
                 if result[0][0] != '':
-                    result.insert(0, box)
-                    print('result in reRec is ', result)
-                    self.result_dic.append(result)
+                    if shape.line_color == DEFAULT_LOCK_COLOR:
+                        shape.label = result[0][0]
+                        result.insert(0, box)
+                        self.result_dic_locked.append(result)
+                    else:
+                        result.insert(0, box)
+                        self.result_dic.append(result)
                 else:
                     print('Can not recognise the box')
-                    self.result_dic.append([box,(self.noLabelText,0)])
+                    if shape.line_color == DEFAULT_LOCK_COLOR:
+                        shape.label = result[0][0]
+                        self.result_dic_locked.append([box,(self.noLabelText,0)])
+                    else:
+                        self.result_dic.append([box,(self.noLabelText,0)])
+                try:
+                    if self.noLabelText == shape.label or result[1][0] == shape.label:
+                        print('label no change')
+                    else:
+                        rec_flag += 1
+                except IndexError as e:
+                    print('except:', e)           
 
-                if self.noLabelText == shape.label or result[1][0] == shape.label:
-                    print('label no change')
-                else:
-                    rec_flag += 1
-
-            if len(self.result_dic) > 0 and rec_flag > 0:
+            if (len(self.result_dic) > 0 and rec_flag > 0)or self.canvas.lockedShapes: 
+                self.canvas.isInTheSameImage = True              
                 self.saveFile(mode='Auto')
                 self.loadFile(self.filePath)
+                self.canvas.isInTheSameImage = False
                 self.setDirty()
             elif len(self.result_dic) == len(self.canvas.shapes) and rec_flag == 0:
                 QMessageBox.information(self, "Information", "The recognition result remains unchanged!")
@@ -2124,6 +2177,12 @@ class MainWindow(QMainWindow, WindowMixin):
         
     
     def lockSelectedShape(self):
+        """lock the selsected shapes.
+
+        Add self.selectedShapes to lock self.canvas.lockedShapes, 
+        which holds the ratio of the four coordinates of the locked shapes
+        to the width and height of the image
+        """
         width, height = self.image.width(), self.image.height()
         def format_shape(s):
             return dict(label=s.label,  # str
@@ -2135,19 +2194,23 @@ class MainWindow(QMainWindow, WindowMixin):
         #lock
         if len(self.canvas.lockedShapes) == 0:
             for s in self.canvas.selectedShapes:
-                s.line_color=DEFAULT_LOCK_COLOR
-            shapes=[format_shape(shape) for shape in self.canvas.selectedShapes]
+                s.line_color = DEFAULT_LOCK_COLOR
+                s.locked = True
+            shapes = [format_shape(shape) for shape in self.canvas.selectedShapes]
             trans_dic = []
             for box in shapes:
                 trans_dic.append({"transcription": box['label'], "ratio": box['ratio'], 'difficult': box['difficult']})
             self.canvas.lockedShapes = trans_dic
-        #    print("self.canvas.lockedShapes：",self.canvas.lockedShapes)
+            self.actions.save.setEnabled(True)
+
         #unlock
         else:
             for s in self.canvas.shapes:
-                s.line_color=DEFAULT_LINE_COLOR
-            trans_dic = []
-            self.canvas.lockedShapes = trans_dic
+                s.line_color = DEFAULT_LINE_COLOR
+            self.canvas.lockedShapes = []
+            self.result_dic_locked = []
+            self.setDirty()
+            self.actions.save.setEnabled(True)
 
 
 def inverted(color):
