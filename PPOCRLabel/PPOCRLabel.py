@@ -1117,9 +1117,8 @@ class MainWindow(QMainWindow, WindowMixin):
                         difficult=s.difficult)  # bool
 
         shapes = [] if mode == 'Auto' else \
-            [format_shape(shape) for shape in self.canvas.shapes]
+            [format_shape(shape) for shape in self.canvas.shapes if shape.line_color != DEFAULT_LOCK_COLOR]
         # Can add differrent annotation formats here
-        print("in save labels self.result_dic",self.result_dic)
         for box in self.result_dic :
             trans_dic = {"label": box[1][0], "points": box[0], 'difficult': False}
             if trans_dic["label"] == "" and mode == 'Auto':
@@ -1131,7 +1130,6 @@ class MainWindow(QMainWindow, WindowMixin):
             for box in shapes:
                 trans_dic.append({"transcription": box['label'], "points": box['points'], 'difficult': box['difficult']})
             self.PPlabel[annotationFilePath] = trans_dic
-
             if mode == 'Auto':
                 self.Cachelabel[annotationFilePath] = trans_dic
 
@@ -1375,6 +1373,7 @@ class MainWindow(QMainWindow, WindowMixin):
                 self.actions.save.setEnabled(True)
             if len(self.canvas.lockedShapes) != 0:
                 self.actions.save.setEnabled(True)
+                self.setDirty()
             self.canvas.setEnabled(True)
             self.adjustScale(initial=True)
             self.paintCanvas()
@@ -1688,16 +1687,15 @@ class MainWindow(QMainWindow, WindowMixin):
             self.saveLockedShapes()
 
         if mode == 'Manual':
-            if len(self.result_dic_locked) == 0:
-                img = cv2.imread(self.filePath)
-                width, height = self.image.width(), self.image.height()
-                for shape in self.canvas.lockedShapes:
-                    print(shape)
-                    box = [[int(p[0]*width), int(p[1]*height)] for p in shape['ratio']]
-                    assert len(box) == 4
-                    result = [(shape['transcription'],1)]
-                    result.insert(0, box)
-                    self.result_dic_locked.append(result)
+            self.result_dic_locked = []
+            img = cv2.imread(self.filePath)
+            width, height = self.image.width(), self.image.height()
+            for shape in self.canvas.lockedShapes:
+                box = [[int(p[0]*width), int(p[1]*height)] for p in shape['ratio']]
+                assert len(box) == 4
+                result = [(shape['transcription'],1)]
+                result.insert(0, box)
+                self.result_dic_locked.append(result)
             self.result_dic += self.result_dic_locked
             self.result_dic_locked = []
             if annotationFilePath and self.saveLabels(annotationFilePath, mode=mode):
@@ -1957,8 +1955,7 @@ class MainWindow(QMainWindow, WindowMixin):
                     else:
                         rec_flag += 1
                 except IndexError as e:
-                    print('except:', e)           
-
+                    print('Can not recognise the box')           
             if (len(self.result_dic) > 0 and rec_flag > 0)or self.canvas.lockedShapes: 
                 self.canvas.isInTheSameImage = True              
                 self.saveFile(mode='Auto')
