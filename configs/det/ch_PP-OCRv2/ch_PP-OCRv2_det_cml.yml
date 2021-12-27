@@ -21,6 +21,7 @@ Architecture:
   model_type: det
   Models:
     Teacher:
+      pretrained: ./pretrain_models/ch_ppocr_server_v2.0_det_train/best_accuracy
       freeze_params: true
       return_all_feats: false
       model_type: det
@@ -36,6 +37,7 @@ Architecture:
         name: DBHead
         k: 50
     Student:
+      pretrained:
       freeze_params: false
       return_all_feats: false
       model_type: det
@@ -52,6 +54,7 @@ Architecture:
         name: DBHead
         k: 50
     Student2:
+      pretrained:
       freeze_params: false
       return_all_feats: false
       model_type: det
