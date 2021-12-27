@@ -56,17 +56,17 @@ The following figure shows the result, with different colored detection boxes re
 
 |   parameter    |                       description                        |   default   |                            remark                            |
 | :------------: | :------------------------------------------------------: | :---------: | :----------------------------------------------------------: |
-|  config_path   |                    model config path                     |    None     | Specify config_ path will automatically download the model (only for the first time,the model will exist and will not be downloaded again) |
+|  config_path   |                    model config path                     |    None     | Specify config_path will automatically download the model (only for the first time,the model will exist and will not be downloaded again) |
 |   model_path   |                        model path                        |    None     | local model path, config_ path and model_ path must be set to one, cannot be none at the same time |
 |   threshold    |              threshold of prediction score               |     0.5     |                              \                               |
 |  input_shape   |                 picture size of reshape                  | [3,640,640] |                              \                               |
 |   batch_size   |                    testing batch size                    |      1      |                              \                               |
-|   label_map    |                  category mapping table                  |    None     | Setting config_ path, it can be none, and the label is automatically obtained according to the dataset name_ map |
+|   label_map    |                  category mapping table                  |    None     | Setting config_path, it can be none, and the label_map is automatically obtained according to the dataset name |
 |  enforce_cpu   |                    whether to use CPU                    |    False    |      False to use GPU, and True to force the use of CPU      |
 | enforce_mkldnn | whether mkldnn acceleration is enabled in CPU prediction |    True     |                              \                               |
 |   thread_num   |                the number of CPU threads                 |     10      |                              \                               |
 
-The following model configurations and label maps are currently supported, which you can use by modifying '--config_path' and '--label_map' to detect different types of content:
+The following model configurations and label maps are currently supported, which you can choose by modifying '--config_path' and '--label_map' to detect different types of content:
 
 | dataset                                                      | config_path                                                  | label_map                                                 |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | --------------------------------------------------------- |
@@ -114,7 +114,7 @@ show_img = lp.draw_box(image, text_blocks,
 show_img.show()
 ```
 
-Displays results with only the "Text" category：
+Visualization of results with only the "Text" category detected：
 
 <div align="center">
 <img src="../../doc/table/result_text.jpg"  width = "600" />
@@ -138,4 +138,4 @@ Displays results with only the "Text" category：
 
 ## 5. Training
 
-The above model is based on [PaddleDetection](https://github.com/PaddlePaddle/PaddleDetection). If you want to train your own layout parser model，please refer to：[train_layoutparser_model](train_layoutparser_model.md)
+The above models are trained based on [PaddleDetection](https://github.com/PaddlePaddle/PaddleDetection). If you want to train your own layout parser model，please refer to：[train_layoutparser_model](train_layoutparser_model.md)
