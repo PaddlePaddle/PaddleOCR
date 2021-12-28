@@ -143,8 +143,10 @@ PaddleOCR主要聚焦通用OCR，如果有垂类需求，您可以用PaddleOCR+�
 
 具体的训练教程可点击下方链接跳转： 
 
-\- [文本检测模型训练](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/doc/doc_ch/detection.md) 
+- [文本检测模型训练](./detection.md) 
 
-\- [文本识别模型训练](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/doc/doc_ch/recognition.md)  
+- [文本识别模型训练](./recognition.md)  
 
-\- [文本方向分类器训练](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/doc/doc_ch/angle_class.md)  
+- [文本方向分类器训练](./angle_class.md)  
+- [知识蒸馏](./knowledge_distillation.md)
+
