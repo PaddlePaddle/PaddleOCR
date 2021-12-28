@@ -39,7 +39,7 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
     - General PP-OCR server series models: detection (47.1M) + direction classifier (1.4M) + recognition (94.9M) = 143.4M
     - Support Chinese, English, and digit recognition, vertical text recognition, and long text recognition
     - Support multi-language recognition: about 80 languages like Korean, Japanese, German, French, etc
-- document structurize system PP-Structure
+- PP-Structure: a document structurize system
     - support layout analysis and table recognition (support export to Excel)
     - support key information extraction
     - support DocVQA
