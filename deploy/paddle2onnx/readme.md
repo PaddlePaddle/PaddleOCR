@@ -53,7 +53,7 @@ paddle2onnx --model_dir=./inference/ch_ppocr_mobile_v2.0_det_infer/ \
 
 执行完毕后，ONNX 模型会被保存在 `./inference/det_mobile_onnx/` 路径下
 
-* 注意：对于OCR模型，转化过程中最好采用动态shape的形式，即加入选项--input_shape_dict="{'x': [-1, 3, -1, -1]}"，否则预测结果可能与直接使用Paddle预测有细微不同。
+* 注意：对于OCR模型，转化过程中必须采用动态shape的形式，即加入选项--input_shape_dict="{'x': [-1, 3, -1, -1]}"，否则预测结果可能与直接使用Paddle预测有细微不同。
   另外，以下几个模型暂不支持转换为 ONNX 模型：
   NRTR、SAR、RARE、SRN
 
