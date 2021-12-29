@@ -12,7 +12,7 @@
       - [2.1.3 Post-processing](#213)
       - [2.1.4 Metric Calculation](#214)
       - [2.1.5 Fine-tuning Distillation Model](#215)
-    + [2.2 Detection Configuration File Analysis](#22)
+    + [2.2 Detection Model Configuration File Analysis](#22)
 
 
 <a name="1"></a>
@@ -311,6 +311,6 @@ paddle.save(s_params, "ch_PP-OCRv2_rec_train/student.pdparams")
 After the extraction is complete, use [ch_PP-OCRv2_rec.yml](../../configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec.yml) to modify the path of the pre-trained model (the path of the exported `student.pdparams` model) and your own data path to fine-tune the model.
 
 <a name="22"></a>
-### 2.2 Detection Configuration File Analysis
+### 2.2 Detection Model Configuration File Analysis
 
 - coming soon!
