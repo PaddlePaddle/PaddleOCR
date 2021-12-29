@@ -1,6 +1,7 @@
+<a name="0"></a>
 # Knowledge Distillation
 
-- [Knowledge Distillation](#Knowledge Distillation)
+- [Knowledge Distillation](#0)
   + [1. Introduction](#1)
     + [1.1 Introduction to Knowledge Distillation](#11)
     + [1.2 Introduction to PaddleOCR Knowledge Distillation](#12)
