@@ -179,7 +179,7 @@ elif [ ${MODE} = "whole_infer" ];then
         cd ./inference/ && tar xf rec_r34_vd_tps_bilstm_ctc_v2.0_train.tar && cd ../
     fi
     if [ ${model_name} == "ch_ppocr_server_v2.0_rec" ]; then
-        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/ch_ppocr_server_v2.0_rec_train.tar --no-check-certificate
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_train.tar --no-check-certificate
         cd ./inference/ && tar xf ch_ppocr_server_v2.0_rec_train.tar && cd ../
     fi
     if [ ${model_name} == "ch_ppocr_mobile_v2.0_rec" ]; then
