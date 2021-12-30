@@ -24,7 +24,7 @@ import paddle
 from paddlenlp.transformers import LayoutXLMModel, LayoutXLMTokenizer, LayoutXLMForRelationExtraction
 
 # relative reference
-from vaq_utils import parse_args, get_image_file_list, draw_re_results
+from utils import parse_args, get_image_file_list, draw_re_results
 from infer_ser_e2e import SerPredictor
 
 

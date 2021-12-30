@@ -1,1 +1,0 @@
-data/paddle.png	[{"transcription": "1/j飞浆", "points": [[27, 17], [158, 20], [160, 61], [27, 61]], "difficult": false}]

@@ -25,9 +25,9 @@ from paddlenlp.transformers import LayoutXLMModel, LayoutXLMTokenizer, LayoutXLM
 from paddlenlp.transformers import LayoutLMModel, LayoutLMTokenizer, LayoutLMForTokenClassification
 
 # relative reference
-from vaq_utils import parse_args, get_image_file_list, draw_ser_results, get_bio_label_maps
+from utils import parse_args, get_image_file_list, draw_ser_results, get_bio_label_maps
 
-from vaq_utils import pad_sentences, split_page, preprocess, postprocess, merge_preds_list_with_ocr_info
+from utils import pad_sentences, split_page, preprocess, postprocess, merge_preds_list_with_ocr_info
 
 MODELS = {
     'LayoutXLM':

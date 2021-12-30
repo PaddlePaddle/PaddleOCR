@@ -22,7 +22,7 @@ from copy import deepcopy
 import paddle
 
 # relative reference
-from vaq_utils import parse_args, get_image_file_list, draw_ser_results, get_bio_label_maps
+from utils import parse_args, get_image_file_list, draw_ser_results, get_bio_label_maps
 from paddlenlp.transformers import LayoutXLMModel, LayoutXLMTokenizer, LayoutXLMForTokenClassification
 from paddlenlp.transformers import LayoutLMModel, LayoutLMTokenizer, LayoutLMForTokenClassification
 

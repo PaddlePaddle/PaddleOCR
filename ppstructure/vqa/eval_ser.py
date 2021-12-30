@@ -33,7 +33,7 @@ from paddlenlp.transformers import LayoutLMModel, LayoutLMTokenizer, LayoutLMFor
 
 from xfun import XFUNDataset
 from losses import SERLoss
-from vaq_utils import parse_args, get_bio_label_maps, print_arguments
+from utils import parse_args, get_bio_label_maps, print_arguments
 
 from ppocr.utils.logging import get_logger
 
