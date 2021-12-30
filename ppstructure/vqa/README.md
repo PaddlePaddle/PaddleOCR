@@ -96,10 +96,7 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 - **（3）安装PaddleNLP**
 
 ```bash
-# 需要使用PaddleNLP最新的代码版本进行安装
-git clone https://github.com/PaddlePaddle/PaddleNLP -b develop
-cd PaddleNLP
-pip3 install -e .
+pip3 install "paddlenlp>=2.2.1"
 ```
 
 
