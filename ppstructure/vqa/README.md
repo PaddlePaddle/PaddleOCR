@@ -12,9 +12,8 @@ PP-Structure 里的 DOC-VQA算法基于PaddleNLP自然语言处理算法库进�
 - 支持OCR+SER的端到端系统预测与评估。
 - 支持OCR+SER+RE的端到端系统预测。
 
+**Note**：本项目基于 [LayoutXLM](https://arxiv.org/pdf/2104.08836.pdf) 在Paddle 2.2上的开源实现，同时经过飞桨团队与**中国工商银行**在不动产证场景深入打磨，联合开源。
 
-本项目是 [LayoutXLM: Multimodal Pre-training for Multilingual Visually-rich Document Understanding](https://arxiv.org/pdf/2104.08836.pdf) 在 Paddle 2.2上的开源实现，
-包含了在 [XFUND数据集](https://github.com/doc-analysis/XFUND) 上的微调代码。
 
 ## 1 性能
 
