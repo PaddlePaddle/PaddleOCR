@@ -36,7 +36,6 @@ import numpy as np
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../PaddleOCR')))
-sys.path.append("../ppstructure/vqa")
 sys.path.append("..")
 
 from paddleocr import PaddleOCR
