@@ -234,7 +234,7 @@ python3 train_re.py \
     --train_label_path "XFUND/zh_train/xfun_normalize_train.json" \
     --eval_data_dir "XFUND/zh_val/image" \
     --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
-    --label_map_path 'labels/labels_ser.txt' \
+    --label_map_path "labels/labels_ser.txt" \
     --num_train_epochs 200 \
     --eval_steps 10 \
     --output_dir "output/re/"  \
@@ -258,7 +258,7 @@ python3 train_re.py \
     --train_label_path "XFUND/zh_train/xfun_normalize_train.json" \
     --eval_data_dir "XFUND/zh_val/image" \
     --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
-    --label_map_path 'labels/labels_ser.txt' \
+    --label_map_path "labels/labels_ser.txt" \
     --num_train_epochs 2 \
     --eval_steps 10 \
     --output_dir "output/re/"  \
@@ -283,7 +283,7 @@ python3 eval_re.py \
     --max_seq_length 512 \
     --eval_data_dir "XFUND/zh_val/image" \
     --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
-    --label_map_path 'labels/labels_ser.txt' \
+    --label_map_path "labels/labels_ser.txt" \
     --output_dir "output/re/"  \
     --per_gpu_eval_batch_size 8 \
     --num_workers 8 \
@@ -301,7 +301,7 @@ python3 infer_re.py \
     --max_seq_length 512 \
     --eval_data_dir "XFUND/zh_val/image" \
     --eval_label_path "XFUND/zh_val/xfun_normalize_val.json" \
-    --label_map_path 'labels/labels_ser.txt' \
+    --label_map_path "labels/labels_ser.txt" \
     --output_dir "output/re/"  \
     --per_gpu_eval_batch_size 1 \
     --seed 2048
