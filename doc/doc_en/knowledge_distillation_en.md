@@ -1,10 +1,10 @@
 <a name="0"></a>
 # Knowledge Distillation
 
-- [Knowledge Distillation](#0)
++ [Knowledge Distillation](#0)
   + [1. Introduction](#1)
-    + [1.1 Introduction to Knowledge Distillation](#11)
-    + [1.2 Introduction to PaddleOCR Knowledge Distillation](#12)
+    - [1.1 Introduction to Knowledge Distillation](#11)
+    - [1.2 Introduction to PaddleOCR Knowledge Distillation](#12)
   + [2. Configuration File Analysis](#2)
     + [2.1 Recognition Model Configuration File Analysis](#21)
       - [2.1.1 Model Structure](#211)
