@@ -18,8 +18,8 @@ python3.7 -m pip install paddle2onnx
 
 - 安装 ONNX
 ```
-# 建议安装 1.4.0 版本，可根据环境更换版本号
-python3.7 -m pip install onnxruntime==1.4.0
+# 建议安装 1.9.0 版本，可根据环境更换版本号
+python3.7 -m pip install onnxruntime==1.9.0
 ```
 
 ## 2. 模型转换
@@ -47,13 +47,15 @@ paddle2onnx --model_dir=./inference/ch_ppocr_mobile_v2.0_det_infer/ \
 --params_filename=inference.pdiparams \
 --save_file=./inference/det_mobile_onnx/model.onnx \
 --opset_version=10 \
+--input_shape_dict="{'x': [-1, 3, -1, -1]}" \
 --enable_onnx_checker=True
 ```
 
 执行完毕后，ONNX 模型会被保存在 `./inference/det_mobile_onnx/` 路径下
 
-* 注意：以下几个模型暂不支持转换为 ONNX 模型：
-NRTR、SAR、RARE、SRN
+* 注意：对于OCR模型，转化过程中必须采用动态shape的形式，即加入选项--input_shape_dict="{'x': [-1, 3, -1, -1]}"，否则预测结果可能与直接使用Paddle预测有细微不同。
+  另外，以下几个模型暂不支持转换为 ONNX 模型：
+  NRTR、SAR、RARE、SRN
 
 ## 3. onnx 预测
 
@@ -72,5 +74,3 @@ root INFO: 1.jpg  [[[291, 295], [334, 292], [348, 844], [305, 847]], [[344, 296]
 The predict time of ../../doc/imgs/1.jpg: 0.06162881851196289
 The visualized image saved in ./inference_results/det_res_1.jpg
 ```
-
-* 注意：ONNX暂时不支持变长预测，需要将输入resize到固定输入，预测结果可能与直接使用Paddle预测有细微不同。
