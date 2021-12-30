@@ -102,11 +102,11 @@ For a new language request, please refer to [Guideline for new language_requests
 ## Tutorials
 - [Environment Preparation](./doc/doc_en/environment_en.md)
 - [Quick Start](./doc/doc_en/quickstart_en.md)
-- [PaddleOCR Overview and Installation](./doc/doc_en/paddleOCR_overview_en.md)
+- [PaddleOCR Overview and Project Clone](./doc/doc_en/paddleOCR_overview_en.md)
 - PP-OCR Industry Landing: from Training to Deployment
-    - [PP-OCR Model and Configuration](./doc/doc_en/models_and_config_en.md)
+    - [PP-OCR Model Zoo](./doc/doc_en/models_en.md)
         - [PP-OCR Model Download](./doc/doc_en/models_list_en.md)
-        - [Python Inference for PP-OCR Model Library](./doc/doc_en/inference_ppocr_en.md)
+        - [Python Inference for PP-OCR Model Zoo](./doc/doc_en/inference_ppocr_en.md)
     - [PP-OCR Training](./doc/doc_en/training_en.md)
         - [Text Detection](./doc/doc_en/detection_en.md)
         - [Text Recognition](./doc/doc_en/recognition_en.md)
