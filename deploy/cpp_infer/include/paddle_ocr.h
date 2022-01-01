@@ -1,6 +1,7 @@
 #pragma once
 
 #include "exports.h"
+#include <stddef.h>
 
 struct paddle_ocr_t;
 typedef int OCR_ERROR;
