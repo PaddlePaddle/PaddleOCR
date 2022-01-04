@@ -78,7 +78,7 @@ PPOCRLabel --lang ch # 启动
 ```bash
 cd PaddleOCR/PPOCRLabel
 python3 setup.py bdist_wheel 
-pip3 install dist/PPOCRLabel-1.0.0-py2.py3-none-any.whl -i https://mirror.baidu.com/pypi/simple
+pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl -i https://mirror.baidu.com/pypi/simple
 ```
 
 #### 1.2.3 通过Python脚本运行PPOCRLabel

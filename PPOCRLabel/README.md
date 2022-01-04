@@ -78,14 +78,14 @@ PPOCRLabel # run
 ```bash
 cd PaddleOCR/PPOCRLabel
 python3 setup.py bdist_wheel 
-pip3 install dist/PPOCRLabel-1.0.0-py2.py3-none-any.whl
+pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl
 ```
 
 #### 1.2.3 Run PPOCRLabel by Python Script
 
 ```bash
 cd ./PPOCRLabel  # Switch to the PPOCRLabel directory
-python PPOCRLabel.py --lang ch
+python PPOCRLabel.py
 ```
 
 

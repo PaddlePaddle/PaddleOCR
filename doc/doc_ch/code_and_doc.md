@@ -146,7 +146,7 @@ PaddleOCR欢迎大家向repo中积极贡献代码，下面给出一些贡献代�
 - 将 `远程仓库` Clone到本地
 
 ```
-# 拉取develop分支的代码
+# 拉取dygraph分支的代码
 git clone https://github.com/{your_name}/PaddleOCR.git -b dygraph
 cd PaddleOCR
 ```
@@ -191,11 +191,11 @@ git checkout -b new_branch
 也可以基于远程或者上游的分支创建新的分支，命令如下。
 
 ```
-# 基于用户远程仓库(origin)的develop创建new_branch分支
-git checkout -b new_branch origin/develop
-# 基于上游远程仓库(upstream)的develop创建new_branch分支
+# 基于用户远程仓库(origin)的dygraph创建new_branch分支
+git checkout -b new_branch origin/dygraph
+# 基于上游远程仓库(upstream)的dygraph创建new_branch分支
 # 如果需要从upstream创建新的分支，需要首先使用git fetch upstream获取上游代码
-git checkout -b new_branch upstream/develop
+git checkout -b new_branch upstream/dygraph
 ```
 
 最终会显示切换到新的分支，输出信息如下
@@ -246,8 +246,8 @@ git commit -m "your commit info"
 
 ```
 git fetch upstream
-# 如果是希望提交到其他分支，则需要从upstream的其他分支pull代码，这里是develop
-git pull upstream develop
+# 如果是希望提交到其他分支，则需要从upstream的其他分支pull代码，这里是dygraph
+git pull upstream dygraph
 ```
 
 #### 3.2.7 push到远程仓库
