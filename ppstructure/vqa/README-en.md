@@ -18,7 +18,7 @@ The main features are as follows:
 **Note**: This project is based on the open source implementation of  [LayoutXLM](https://arxiv.org/pdf/2104.08836.pdf) on Paddle 2.2, and at the same time, after in-depth polishing by the flying Paddle team and the Industrial and **Commercial Bank of China** in the scene of real estate certificate, jointly open source.
 
 
-## 1 .Performance
+## 1.Performance
 
 We evaluated the algorithm on  [XFUN](https://github.com/doc-analysis/XFUND) 's Chinese data set, and the performance is as follows
 
@@ -105,14 +105,14 @@ pip3 install -e .
 ```
 
 
-- **（4）Requirements for installing VQA`**
+- **（4）Install requirements for VQA **
 
 ```bash
 cd ppstructure/vqa
 pip install -r requirements.txt
 ```
 
-## 4. Use
+## 4. Usage
 
 
 ### 4.1 Data and pre training model preparation
@@ -216,7 +216,7 @@ python3.7 infer_ser_e2e.py \
     --infer_imgs "images/input/zh_val_0.jpg"
 ```
 
-* End to end evaluation of OCR engine + SER prediction system
+* End-to-end evaluation of OCR engine + SER prediction system
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
@@ -250,7 +250,7 @@ python3 train_re.py \
 
 ```
 
-* Recovery training
+* Resume training
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
@@ -324,7 +324,7 @@ python3.7 infer_ser_re_e2e.py \
     --infer_imgs "images/input/zh_val_21.jpg"
 ```
 
-## Reference Link
+## Reference
 
 - LayoutXLM: Multimodal Pre-training for Multilingual Visually-rich Document Understanding, https://arxiv.org/pdf/2104.08836.pdf
 - microsoft/unilm/layoutxlm, https://github.com/microsoft/unilm/tree/master/layoutxlm
