@@ -15,7 +15,7 @@ PP-Structure 里的 DOC-VQA算法基于PaddleNLP自然语言处理算法库进�
 **Note**：本项目基于 [LayoutXLM](https://arxiv.org/pdf/2104.08836.pdf) 在Paddle 2.2上的开源实现，同时经过飞桨团队与**中国工商银行**在不动产证场景深入打磨，联合开源。
 
 
-## 1 性能
+## 1.性能
 
 我们在 [XFUN](https://github.com/doc-analysis/XFUND) 的中文数据集上对算法进行了评估，性能如下
 
@@ -27,7 +27,7 @@ PP-Structure 里的 DOC-VQA算法基于PaddleNLP自然语言处理算法库进�
 
 
 
-## 2. 效果演示
+## 2.效果演示
 
 **注意：** 测试图片来源于XFUN数据集。
 
@@ -54,7 +54,7 @@ PP-Structure 里的 DOC-VQA算法基于PaddleNLP自然语言处理算法库进�
 图中红色框表示问题，蓝色框表示答案，问题和答案之间使用绿色线连接。在OCR检测框的左上方也标出了对应的类别和OCR识别结果。
 
 
-## 3. 安装
+## 3.安装
 
 ### 3.1 安装依赖
 
@@ -221,7 +221,7 @@ python3.7 helper/eval_with_label_end2end.py --gt_json_path XFUND/zh_val/xfun_nor
 ```
 
 
-### 3.3 RE任务
+### 4.3 RE任务
 
 * 启动训练
 
