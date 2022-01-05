@@ -1,6 +1,6 @@
 # Document Visual Q&A（DOC-VQA）
 
-Document Visual Q&A，Mainly for the image content of the question and answer, DOC-VQA is a type of VQA task，DOC-VQA mainly asks questions about the textual content of text images.
+Document Visual Q&A, mainly for the image content of the question and answer, DOC-VQA is a type of VQA task, DOC-VQA mainly asks questions about the textual content of text images.
 
 The DOC-VQA algorithm in PP-Structure is developed based on PaddleNLP natural language processing algorithm library.
 
@@ -30,11 +30,11 @@ We evaluated the algorithm on  [XFUN](https://github.com/doc-analysis/XFUND) 's 
 
 
 
-## 2. Demonstration
+## 2.Demonstration
 
 **Note**: the test images are from the xfun dataset.
 
-### 2.1 .SER
+### 2.1 SER
 
 ![](./images/result_ser/zh_val_0_ser.jpg) | ![](./images/result_ser/zh_val_42_ser.jpg)
 ---|---
@@ -95,7 +95,7 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 # Note: the code cloud hosting code may not be able to synchronize the update of this GitHub project in real time, with a delay of 3 ~ 5 days. Please give priority to the recommended method.
 ```
 
-- **（3）Install PaddleNLP**
+- **(3) Install PaddleNLP**
 
 ```bash
 # You need to use the latest code version of paddlenlp for installation
@@ -105,14 +105,14 @@ pip3 install -e .
 ```
 
 
-- **（4）Install requirements for VQA **
+- **(4) Install requirements for VQA **
 
 ```bash
 cd ppstructure/vqa
 pip install -r requirements.txt
 ```
 
-## 4. Usage
+## 4.Usage
 
 
 ### 4.1 Data and pre training model preparation
@@ -224,7 +224,7 @@ python3.7 helper/eval_with_label_end2end.py --gt_json_path XFUND/zh_val/xfun_nor
 ```
 
 
-### 3.3 RE Task
+### 4.3 RE Task
 
 * Start training
 
