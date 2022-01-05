@@ -345,7 +345,7 @@ class KieLabelEncode(object):
         max_num = 300
         temp_bboxes = np.zeros([max_num, 4])
         h, _ = bboxes.shape
-        temp_bboxes[:h, :h] = bboxes
+        temp_bboxes[:h, :] = bboxes
 
         temp_relations = np.zeros([max_num, max_num, 5])
         temp_relations[:h, :h, :] = relations

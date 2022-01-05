@@ -138,13 +138,16 @@ def load_pretrained_params(model, path):
     params = paddle.load(path + '.pdparams')
     state_dict = model.state_dict()
     new_state_dict = {}
-    for k1, k2 in zip(state_dict.keys(), params.keys()):
-        if list(state_dict[k1].shape) == list(params[k2].shape):
-            new_state_dict[k1] = params[k2]
+    for k1 in params.keys():
+        if k1 not in state_dict.keys():
+            logger.warning("The pretrained params {} not in model".format(k1))
         else:
-            logger.warning(
-                "The shape of model params {} {} not matched with loaded params {} {} !".
-                format(k1, state_dict[k1].shape, k2, params[k2].shape))
+            if list(state_dict[k1].shape) == list(params[k1].shape):
+                new_state_dict[k1] = params[k1]
+            else:
+                logger.warning(
+                    "The shape of model params {} {} not matched with loaded params {} {} !".
+                    format(k1, state_dict[k1].shape, k1, params[k1].shape))
     model.set_state_dict(new_state_dict)
     logger.info("load pretrain successful from {}".format(path))
     return model
