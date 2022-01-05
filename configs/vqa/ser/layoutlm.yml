@@ -38,7 +38,7 @@ Optimizer:
     epochs: *epoch_num
     warmup_epoch: 2
   regularizer:
-    name: Const
+    name: L2
     factor: 0.00000
     
 PostProcess:
