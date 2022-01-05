@@ -105,7 +105,7 @@ pip3 install -e .
 ```
 
 
-- **(4) Install requirements for VQA **
+- ** (4) Install requirements for VQA **
 
 ```bash
 cd ppstructure/vqa
