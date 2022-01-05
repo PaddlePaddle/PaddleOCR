@@ -42,7 +42,9 @@ def build_optimizer(config, epochs, step_each_epoch, parameters):
     # step2 build regularization
     if 'regularizer' in config and config['regularizer'] is not None:
         reg_config = config.pop('regularizer')
-        reg_name = reg_config.pop('name') + 'Decay'
+        reg_name = reg_config.pop('name')
+        if not hasattr(regularizer, reg_name):
+            reg_name += 'Decay'
         reg = getattr(regularizer, reg_name)(**reg_config)()
     else:
         reg = None

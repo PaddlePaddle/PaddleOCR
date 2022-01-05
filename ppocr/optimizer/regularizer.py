@@ -50,3 +50,18 @@ class L2Decay(object):
     def __call__(self):
         reg = paddle.regularizer.L2Decay(self.regularization_coeff)
         return reg
+
+
+class ConstDecay(object):
+    """
+    Const L2 Weight Decay Regularization, which encourages the weights to be sparse.
+    Args:
+        factor(float): regularization coeff. Default:0.0.
+    """
+
+    def __init__(self, factor=0.0):
+        super(ConstDecay, self).__init__()
+        self.regularization_coeff = factor
+
+    def __call__(self):
+        return self.regularization_coeff

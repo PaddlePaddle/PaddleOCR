@@ -1,3 +1,4 @@
 sentencepiece
 yacs
 seqeval
+paddlenlp>=2.2.1

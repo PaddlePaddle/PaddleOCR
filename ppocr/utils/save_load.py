@@ -44,7 +44,7 @@ def _mkdir_if_not_exist(path, logger):
                 raise OSError('Failed to mkdir {}'.format(path))
 
 
-def load_model(config, model, optimizer=None):
+def load_model(config, model, optimizer=None, model_type='det'):
     """
     load model from checkpoint or pretrained_model
     """
@@ -53,6 +53,33 @@ def load_model(config, model, optimizer=None):
     checkpoints = global_config.get('checkpoints')
     pretrained_model = global_config.get('pretrained_model')
     best_model_dict = {}
+
+    if model_type == 'vqa':
+        checkpoints = config['Architecture']['Backbone']['checkpoints']
+        # load vqa method metric
+        if checkpoints:
+            if os.path.exists(os.path.join(checkpoints, 'metric.states')):
+                with open(os.path.join(checkpoints, 'metric.states'),
+                          'rb') as f:
+                    states_dict = pickle.load(f) if six.PY2 else pickle.load(
+                        f, encoding='latin1')
+                best_model_dict = states_dict.get('best_model_dict', {})
+                if 'epoch' in states_dict:
+                    best_model_dict['start_epoch'] = states_dict['epoch'] + 1
+            logger.info("resume from {}".format(checkpoints))
+
+            if optimizer is not None:
+                if checkpoints[-1] in ['/', '\\']:
+                    checkpoints = checkpoints[:-1]
+                if os.path.exists(checkpoints + '.pdopt'):
+                    optim_dict = paddle.load(checkpoints + '.pdopt')
+                    optimizer.set_state_dict(optim_dict)
+                else:
+                    logger.warning(
+                        "{}.pdopt is not exists, params of optimizer is not loaded".
+                        format(checkpoints))
+        return best_model_dict
+
     if checkpoints:
         if checkpoints.endswith('.pdparams'):
             checkpoints = checkpoints.replace('.pdparams', '')
@@ -127,6 +154,7 @@ def save_model(model,
                optimizer,
                model_path,
                logger,
+               config,
                is_best=False,
                prefix='ppocr',
                **kwargs):
@@ -135,13 +163,20 @@ def save_model(model,
     """
     _mkdir_if_not_exist(model_path, logger)
     model_prefix = os.path.join(model_path, prefix)
-    paddle.save(model.state_dict(), model_prefix + '.pdparams')
     paddle.save(optimizer.state_dict(), model_prefix + '.pdopt')
-
+    if config['Architecture']["model_type"] != 'vqa':
+        paddle.save(model.state_dict(), model_prefix + '.pdparams')
+        metric_prefix = model_prefix
+    else:
+        if config['Global']['distributed']:
+            model._layers.backbone.model.save_pretrained(model_prefix)
+        else:
+            model.backbone.model.save_pretrained(model_prefix)
+        metric_prefix = os.path.join(model_prefix, 'metric')
     # save metric and config
-    with open(model_prefix + '.states', 'wb') as f:
-        pickle.dump(kwargs, f, protocol=2)
     if is_best:
+        with open(metric_prefix + '.states', 'wb') as f:
+            pickle.dump(kwargs, f, protocol=2)
         logger.info('save best model is to {}'.format(model_prefix))
     else:
         logger.info("save model in {}".format(model_prefix))
