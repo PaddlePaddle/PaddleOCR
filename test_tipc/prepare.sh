@@ -239,8 +239,7 @@ fi
 
 if [ ${MODE} = "klquant_whole_infer" ]; then
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015_lite.tar --no-check-certificate
-    cd ./train_data/ && tar xf icdar2015_lite.tar
-    ln -s ./icdar2015_lite ./icdar2015 && cd ../
+    cd ./train_data/ && tar xf icdar2015_lite.tar && rm -rf ./icdar2015 && ln -s ./icdar2015_lite ./icdar2015 && cd ../
     if [ ${model_name} = "ch_ppocr_mobile_v2.0_det_KL" ]; then
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar --no-check-certificate
         wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar  --no-check-certificate
