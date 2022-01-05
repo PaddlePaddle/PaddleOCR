@@ -34,7 +34,7 @@ class VQAReTokenLayoutLMPostProcess(object):
         entity_idx_dict_batch = kwargs['entity_idx_dict_batch']
         pred_relations = preds['pred_relations']
 
-        # 进行 relations 到 ocr信息的转换
+        # merge relations and ocr info
         results = []
         for pred_relation, ser_result, entity_idx_dict in zip(
                 pred_relations, ser_results, entity_idx_dict_batch):

@@ -104,7 +104,7 @@ def make_input(ser_inputs, ser_results):
 
     ser_inputs[8] = entities_batch
     ser_inputs.append(relations_batch)
-
+    # remove ocr_info segment_offset_id and label in ser input
     ser_inputs.pop(7)
     ser_inputs.pop(6)
     ser_inputs.pop(1)

@@ -122,7 +122,7 @@ class SimpleDataSet(Dataset):
             self.logger.error(
                 "When parsing line {}, error happened with msg: {}".format(
                     data_line, traceback.format_exc()))
-            # outs = None
+            outs = None
         if outs is None:
             # during evaluation, we should fix the idx to get same results for many times of evaluation.
             rnd_idx = np.random.randint(self.__len__(

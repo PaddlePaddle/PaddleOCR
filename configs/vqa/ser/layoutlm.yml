@@ -8,10 +8,10 @@ Global:
   # evaluation is run every 10 iterations after the 0th iteration
   eval_batch_step: [ 0, 19 ]
   cal_metric_during_train: False
-  pretrained_model: &pretrained_model layoutlm-base-uncased
+  pretrained_model: &pretrained_model layoutlm-base-uncased # This field can only be changed by modifying the configuration file
   save_inference_dir:
   use_visualdl: False
-  infer_img: ppstructure/vqa/images/input/zh_val_0.jpg
+  infer_img: doc/vqa/input/zh_val_0.jpg
   save_res_path: ./output/ser/predicts_layoutlm.txt
 
 Architecture:

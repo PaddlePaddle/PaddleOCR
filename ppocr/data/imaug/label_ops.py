@@ -787,7 +787,7 @@ class SARLabelEncode(BaseRecLabelEncode):
 
 class VQATokenLabelEncode(object):
     """
-    基于NLP的标签编码
+    Label encode for NLP VQA methods
     """
 
     def __init__(self,
