@@ -249,6 +249,8 @@ if [ ${MODE} = "klquant_whole_infer" ]; then
     if [ ${model_name} = "PPOCRv2_ocr_rec_kl" ]; then
         wget -nc -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar  --no-check-certificate
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/rec_inference.tar  --no-check-certificate
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ic15_data.tar --no-check-certificate
+        cd ./train_data/ && tar xf ic15_data.tar && cd ../
         cd ./inference && tar xf rec_inference.tar && tar xf ch_PP-OCRv2_rec_infer.tar && cd ../
     fi
     if [ ${model_name} = "PPOCRv2_ocr_det_kl" ]; then
