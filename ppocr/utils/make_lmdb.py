@@ -14,10 +14,10 @@
 import os
 import lmdb
 import cv2
-import numpy as np
 import shutil
 from tqdm import tqdm
 import json
+import numpy as np
 
 
 def checkImageIsValid(image_bin):
