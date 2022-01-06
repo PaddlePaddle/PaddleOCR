@@ -34,7 +34,7 @@ def checkImageIsValid(image_bin):
 def writeCache(env, cache):
     with env.begin(write=True) as txn:
         for k, v in cache.items():
-            txn.put(k.encode('utf-8'), str(v).encode('utf-8'))
+            txn.put(k.encode('utf-8'), v)
 
 
 def convert2lmdb(data_root_dir, label_file_path, lmdb_out_dir, is_check=False):
@@ -78,11 +78,11 @@ def convert2lmdb(data_root_dir, label_file_path, lmdb_out_dir, is_check=False):
                 image_key = 'image-%09d' % cnt
                 label_key = 'label-%09d' % cnt
                 cache[image_key] = image_bin
-                cache[label_key] = label
+                cache[label_key] = label.encode('utf-8')
                 if cnt % 1000 == 0:
                     writeCache(env, cache)
                     cache = {}
                 cnt += 1
-        cache['num-samples'] = str(cnt - 1)
+        cache['num-samples'] = str(cnt - 1).encode('utf-8')
         writeCache(env, cache)
         print(f'Created lmdb dataset with {nums} samples successfully')
