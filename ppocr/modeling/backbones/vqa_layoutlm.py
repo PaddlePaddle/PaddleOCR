@@ -24,21 +24,32 @@ from paddlenlp.transformers import LayoutLMModel, LayoutLMForTokenClassification
 
 __all__ = ["LayoutXLMForSer", 'LayoutLMForSer']
 
+pretrained_model_dict = {
+    LayoutXLMModel: 'layoutxlm-base-uncased',
+    LayoutLMModel: 'layoutlm-base-uncased'
+}
+
 
 class NLPBaseModel(nn.Layer):
     def __init__(self,
                  base_model_class,
                  model_class,
                  type='ser',
-                 pretrained_model=None,
+                 pretrained=True,
                  checkpoints=None,
                  **kwargs):
         super(NLPBaseModel, self).__init__()
-        assert pretrained_model is not None or checkpoints is not None, "one of pretrained_model and checkpoints must be not None"
         if checkpoints is not None:
             self.model = model_class.from_pretrained(checkpoints)
         else:
-            base_model = base_model_class.from_pretrained(pretrained_model)
+            pretrained_model_name = pretrained_model_dict[base_model_class]
+            if pretrained:
+                base_model = base_model_class.from_pretrained(
+                    pretrained_model_name)
+            else:
+                base_model = base_model_class(
+                    **base_model_class.pretrained_init_configuration[
+                        pretrained_model_name])
             if type == 'ser':
                 self.model = model_class(
                     base_model, num_classes=kwargs['num_classes'], dropout=None)
@@ -48,16 +59,13 @@ class NLPBaseModel(nn.Layer):
 
 
 class LayoutXLMForSer(NLPBaseModel):
-    def __init__(self,
-                 num_classes,
-                 pretrained_model='layoutxlm-base-uncased',
-                 checkpoints=None,
+    def __init__(self, num_classes, pretrained=True, checkpoints=None,
                  **kwargs):
         super(LayoutXLMForSer, self).__init__(
             LayoutXLMModel,
             LayoutXLMForTokenClassification,
             'ser',
-            pretrained_model,
+            pretrained,
             checkpoints,
             num_classes=num_classes)
 
@@ -75,16 +83,13 @@ class LayoutXLMForSer(NLPBaseModel):
 
 
 class LayoutLMForSer(NLPBaseModel):
-    def __init__(self,
-                 num_classes,
-                 pretrained_model='layoutxlm-base-uncased',
-                 checkpoints=None,
+    def __init__(self, num_classes, pretrained=True, checkpoints=None,
                  **kwargs):
         super(LayoutLMForSer, self).__init__(
             LayoutLMModel,
             LayoutLMForTokenClassification,
             'ser',
-            pretrained_model,
+            pretrained,
             checkpoints,
             num_classes=num_classes)
 
@@ -100,13 +105,10 @@ class LayoutLMForSer(NLPBaseModel):
 
 
 class LayoutXLMForRe(NLPBaseModel):
-    def __init__(self,
-                 pretrained_model='layoutxlm-base-uncased',
-                 checkpoints=None,
-                 **kwargs):
-        super(LayoutXLMForRe, self).__init__(
-            LayoutXLMModel, LayoutXLMForRelationExtraction, 're',
-            pretrained_model, checkpoints)
+    def __init__(self, pretrained=True, checkpoints=None, **kwargs):
+        super(LayoutXLMForRe, self).__init__(LayoutXLMModel,
+                                             LayoutXLMForRelationExtraction,
+                                             're', pretrained, checkpoints)
 
     def forward(self, x):
         x = self.model(

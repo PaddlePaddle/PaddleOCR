@@ -8,7 +8,6 @@ Global:
   # evaluation is run every 10 iterations after the 0th iteration
   eval_batch_step: [ 0, 19 ]
   cal_metric_during_train: False
-  pretrained_model: &pretrained_model layoutxlm-base-uncased # This field can only be changed by modifying the configuration file
   save_inference_dir:
   use_visualdl: False
   infer_img: doc/vqa/input/zh_val_42.jpg
@@ -20,7 +19,7 @@ Architecture:
   Transform:
   Backbone:
     name: LayoutXLMForSer
-    pretrained_model: *pretrained_model
+    pretrained: True
     checkpoints:
     num_classes: &num_classes 7
 
