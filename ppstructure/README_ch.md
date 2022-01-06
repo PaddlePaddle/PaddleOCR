@@ -45,6 +45,8 @@ PP-Structure是一个可用于复杂文档结构分析和处理的OCR工具包�
 
 <img src="../doc/table/ppstructure.GIF" width="100%"/>
 
+<a name="42"></a>
+
 ### 4.2 VQA
 
 * SER
@@ -78,7 +80,6 @@ PP-Structure是一个可用于复杂文档结构分析和处理的OCR工具包�
 
 ## 6. PP-Structure 介绍
 
-PP-Structure 内置
 <a name="61"></a>
 
 ### 6.1 版面分析+表格识别
