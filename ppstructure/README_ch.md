@@ -5,11 +5,11 @@
 - [3. 特性](#3)
 - [4. 效果展示](#4)
   * [4.1 版面分析和表格识别](#41)
-  * [4.2 VQA](#42)
+  * [4.2 DOC-VQA](#42)
 - [5. 快速体验](#5)
 - [6. PP-Structure 介绍](#6)
   * [6.1 版面分析+表格识别](#61)
-  * [6.2 VQA](#62)
+  * [6.2 DOC-VQA](#62)
 - [7. 模型库](#7)
 
 <a name="1"></a>
@@ -20,13 +20,13 @@ PP-Structure是一个可用于复杂文档结构分析和处理的OCR工具包�
 <a name="2"></a>
 
 ## 2. 近期更新
-* 2021.12.07 新增VQA任务-SER和RE。
+* 2021.12.07 新增DOC-VQA任务-SER和RE。
 
 <a name="3"></a>
 
 ## 3. 特性
 
-PP-Structure是一个可用于复杂文档结构分析和处理的OCR工具包，主要特性如下：
+PP-Structure的主要特性如下：
 - 支持对图片形式的文档进行版面分析，可以划分**文字、标题、表格、图片以及列表**5类区域（与Layout-Parser联合使用）
 - 支持文字、标题、图片以及列表区域提取为文字字段（与PP-OCR联合使用）
 - 支持表格区域进行结构化分析，最终结果输出Excel文件
@@ -47,7 +47,7 @@ PP-Structure是一个可用于复杂文档结构分析和处理的OCR工具包�
 
 <a name="42"></a>
 
-### 4.2 VQA
+### 4.2 DOC-VQA
 
 * SER
 
@@ -98,9 +98,9 @@ PP-Structure是一个可用于复杂文档结构分析和处理的OCR工具包�
 
 <a name="62"></a>
 
-### 6.2 VQA
+### 6.2 DOC-VQA
 
-VQA指文档视觉问答，其中包括语义实体识别 (Semantic Entity Recognition, SER) 和关系抽取 (Relation Extraction, RE) 任务。基于 SER 任务，可以完成对图像中的文本识别与分类；基于 RE 任务，可以完成对图象中的文本内容的关系提取，如判断问题对(pair)，详细说明参考[文档](vqa/README.md)
+DOC-VQA指文档视觉问答，其中包括语义实体识别 (Semantic Entity Recognition, SER) 和关系抽取 (Relation Extraction, RE) 任务。基于 SER 任务，可以完成对图像中的文本识别与分类；基于 RE 任务，可以完成对图象中的文本内容的关系提取，如判断问题对(pair)，详细说明参考[文档](vqa/README.md)
 
 <a name="7"></a>
 
@@ -108,7 +108,7 @@ VQA指文档视觉问答，其中包括语义实体识别 (Semantic Entity Recog
 
 PP-Structure系列模型列表（更新中）
 
-* LayoutParser 模型
+* 版面分析模型
 
 |模型名称|模型简介|下载地址|
 | --- | --- | --- |
@@ -123,7 +123,7 @@ PP-Structure系列模型列表（更新中）
 |ch_ppocr_mobile_slim_v2.0_rec|slim裁剪量化版超轻量模型，支持中英文、数字识别|6M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_train.tar) |
 |en_ppocr_mobile_v2.0_table_structure|PubLayNet数据集训练的英文表格场景的表格结构预测|18.6M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/table/en_ppocr_mobile_v2.0_table_structure_train.tar) |
 
-* VQA模型
+* DOC-VQA
 
 |模型名称|模型简介|模型大小|下载地址|
 | --- | --- | --- | --- |
@@ -131,4 +131,4 @@ PP-Structure系列模型列表（更新中）
 |PP-Layout_v1.0_re_pretrained|基于LayoutXLM在xfun中文数据集上训练的RE模型|1.4G|[推理模型 coming soon]() / [训练模型](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_re_pretrained.tar) |
 
 
-更多模型下载，可以参考 [模型库](./docs/model_list.md)
+更多模型下载，可以参考 [PPOCR model_list](../doc/doc_en/models_list.md) and  [PPStructure model_list](./docs/model_list.md)
