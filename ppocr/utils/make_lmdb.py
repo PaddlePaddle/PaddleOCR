@@ -56,6 +56,7 @@ def convert2lmdb(data_root_dir, label_file_path, lmdb_out_dir, is_check=False):
             if Yn in ['N', 'n']:
                 return
 
+    os.makedirs(lmdb_out_dir)
     with open(label_file_path, 'r', encoding='utf-8') as fp1:
         lines = fp1.read().strip('\n').split('\n')
         nums = len(lines)
