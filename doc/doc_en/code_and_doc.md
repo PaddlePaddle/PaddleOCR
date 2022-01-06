@@ -10,7 +10,7 @@
 
     <a name="Appendix1"></a>
 
-    ## Appendix 1：Python code specification
+    ## APPENDIX 1：PYTHON CODE SPECIFICATION
 
     The Python code of PaddleOCR follows [PEP8 Specification]( https://www.python.org/dev/peps/pep-0008/ ), some of the key concerns include the following
 
@@ -82,9 +82,9 @@
 
     <a name="Appendix2"></a>
 
-    ## Appendix 2: Document Specification
+    ## APPENDIX 2: DOCUMENT SPECIFICATION
 
-    ### 2.1 Overall description
+    ### 2.1 OVERALL DESCRIPTION
 
     - Document Location: If you add new features to your original Markdown file, please **Do not re-create** a new file. If you don't know where to add it, you can first PR the code and then ask the official in commit.
 
@@ -96,7 +96,7 @@
 
     - English and Chinese: Any changes or additions to the document need to be made in both Chinese and English documents.
 
-    ### 2.2 Format Specification
+    ### 2.2 FORMAT SPECIFICATION
 
     - Title format: The document title format follows the format of: Arabic decimal point combination-space-title (for example, `2.1 XXXX`, `2.XXXX`)
 
@@ -118,9 +118,9 @@
 
     <a name="Appendix3"></a>
 
-    ## Appendix 3: Pull Request Description
+    ## APPENDIX 3: PULL REQUEST DESCRIPTION
 
-    ### 3.1 PaddleOCR branch description
+    ### 3.1 PaddleOCR BRANCH DESCRIPTION
 
     PaddleOCR will maintain two branches in the future, one for each:
 
@@ -133,11 +133,11 @@
 
     PaddleOCR welcomes you to actively contribute code to repo. Here are some basic processes for contributing code.
 
-    ### 3.2 PaddleOCR Code Submission Process and Specification
+    ### 3.2 PaddleOCR CODE SUBMISSION PROCESS AND SPECIFICATION
 
-    > If you are familiar with Git use, you can jump directly to [some conventions for submitting code in 3.2.10](#some_conventions_for_submitting code)
+    > If you are familiar with Git use, you can jump directly to [some conventions for submitting code in 3.2.10](#Some_conventions_for_submitting_code)
 
-    #### 3.2.1 Create Your `Remote repo`
+    #### 3.2.1 CREATE YOUR `REMOTE REPO`
 
     - In PaddleOCR [GitHub Home]( https://github.com/PaddlePaddle/PaddleOCR ) Click the `Fork` button in the upper left corner to create a `remote repo`in your personal directory, such as ` https://github.com/ {your_name}/PaddleOCR`.
 
@@ -153,9 +153,9 @@
 
     > Clone failures are mostly due to network reasons, try again later or configure the proxy
 
-    #### 3.2.2 Connect with `Remote repo`
+    #### 3.2.2 LOGIN AND CONNECT USING A TOKEN
 
-    First view the current `remote repo`information.
+    Start by viewing the information for the current `remote repo`.
 
     ```
     git remote -v
@@ -163,13 +163,31 @@
     # origin    https://github.com/{your_name}/PaddleOCR.git (push)
     ```
 
-    Then create a remote host named upstream for the original PaddleOCR repo.
+    Only the information of the clone `remote repo`, i.e. the PaddleOCR under your username, is available. Due to the change in Github's login method, you need to reconfigure the `remote repo` address by means of a Token. The token is generated as follows:
+    
+    1. Find Personal Access Tokens: Click on your avatar in the upper right corner of the Github page and choose Settings --> Developer settings --> Personal access tokens,
+    
+    2. Click Generate new token: Fill in the token name in Note, such as 'paddle'. In Select scopes, select repo (required), admin:repo_hook, delete_repo, etc. You can check them according to your needs. Then click Generate token to generate the token, and finally copy the generated token.
+
+    Delete the original origin configuration
+   
+    ```
+    git remote rm origin
+    ```
+    
+    Change the remote branch to `https://oauth2:{token}@github.com/{your_name}/PaddleOCR.git`. For example, if the token value is 12345 and your user name is PPOCR, run the following command
+    
+    ```
+    git remote add origin https://oauth2:12345@github.com/PPOCR/PaddleOCR.git
+    ```
+    
+    This establishes a connection to our own `remote repo`. Next we create a remote host of the original PaddleOCR repo, named upstream.
 
     ```
     git remote add upstream https://github.com/PaddlePaddle/PaddleOCR.git
     ```
 
-    Use `git remote-v` to view current `remote warehouse` information, output as follows, found to include two origin and two upstream of `remote repo` .
+    Use `git remote -v` to view current `remote warehouse` information, output as follows, found to include two origin and two upstream of `remote repo` .
 
     ```
     origin    https://github.com/{your_name}/PaddleOCR.git (fetch)
@@ -180,23 +198,25 @@
 
     This is mainly to keep the local repository up to date when subsequent pull request (PR) submissions are made.
 
-    #### 3.2.3 Create Local Branch
+    #### 3.2.3 CREATE LOCAL BRANCH
 
-    You can create a new local branch based on the current branch with the following commands.
-
+    First get the latest code of upstream, then create a new_branch branch based on the dygraph of the upstream repo (upstream).
+    
     ```
-    git checkout -b new_branch
+    git fetch upstream
+    git checkout -b new_branch upstream/dygraph
     ```
-
-    You can also create a new branch based on a remote or upstream branch with the following commands.
-
-    ```
-    # Create new_branch branch on user remote repo (origin) based on develop branch
-    git checkout -b new_branch origin/develop
-    # Create new_branch branch based on upstream remote repo develop branch
-    # If you need to create a new branch from upstream, you need to first use git fetch upstream to get upstream code
-    git checkout -b new_branch upstream/develop
-    ```
+    
+    > If for a newly forked PaddleOCR project, the user's remote repo (origin) has the same branch updates as the upstream repository (upstream), you can also create a new local branch based on the default branch of the origin repo or a specified branch with the following command
+    >
+    > ```
+    > # Create new_branch branch on user remote repo (origin) based on develop branch
+    > git checkout -b new_branch origin/develop
+    > # Create new_branch branch based on upstream remote repo develop branch
+    > # If you need to create a new branch from upstream, 
+    > # you need to first use git fetch upstream to get upstream code
+    > git checkout -b new_branch upstream/develop
+    > ```
 
     The final switch to the new branch is displayed with the following output information.
 
@@ -204,8 +224,10 @@
     Branch new_branch set up to track remote branch develop from upstream.
     Switched to a new branch 'new_branch'
     ```
-
-    #### 3.2.4 Use pre-commit hook
+    
+    After switching branches, file changes can be made on this branch
+    
+    #### 3.2.4 USE PRE-COMMIT HOOK
 
     Paddle developers use the pre-commit tool to manage Git pre-submit hooks. It helps us format the source code (C++, Python) and automatically check for basic things (such as having only one EOL per file, not adding large files to Git) before committing it.
 
@@ -220,7 +242,7 @@
      >
      >  2. Yapf installed through pip install pre-commit is slightly different from conda install-c conda-forge pre-commit, and PaddleOCR developers use `pip install pre-commit`.
 
-    #### 3.2.5 Modify and submit code
+    #### 3.2.5 MODIFY AND SUBMIT CODE
 
      If you make some changes on `README.Md ` on PaddleOCR, you can view the changed file through `git status`, and then add the changed file using `git add`。
 
@@ -240,7 +262,7 @@
     git commit -m "your commit info"
     ```
 
-    #### 3.2.6 Keep local warehouses up to date
+    #### 3.2.6 KEEP LOCAL REPO UP TO DATE
 
     Get the latest code for upstream and update the current branch. Here the upstream comes from section 2.2, `Connecting to a remote repo`.
 
@@ -250,19 +272,19 @@
     git pull upstream develop
     ```
 
-    #### 3.2.7 Push to remote repo
+    #### 3.2.7 PUSH TO REMOTE REPO
 
     ```
     git push origin new_branch
     ```
 
-    #### 3.2.7 Submit Pull Request
+    #### 3.2.7 SUBMIT PULL REQUEST
 
     Click the new pull request to select the local branch and the target branch, as shown in the following figure. In the description of PR, fill in the functions completed by the PR. Next, wait for review, and if you need to modify something, update the corresponding branch in origin with the steps above.
 
     ![banner](../pr.png)
 
-    #### 3.2.8 Sign CLA agreement and pass unit tests
+    #### 3.2.8 SIGN CLA AGREEMENT AND PASS UNIT TESTS
 
     - Signing the CLA When submitting a Pull Request to PaddlePaddle for the first time, you need to sign a CLA (Contributor License Agreement) agreement to ensure that your code can be incorporated as follows:
 
@@ -270,7 +292,7 @@
 
       2. Click Sign in with GitHub to agree on the CLA website and when clicked, it will jump back to your Pull Request page
 
-    #### 3.2.9 Delete Branch
+    #### 3.2.9 DELETE BRANCH
 
     - Remove remote branch
 
@@ -293,7 +315,7 @@
 
     <a name="Some_conventions_for_submitting_code"></a>
 
-    #### 3.2.10 Some conventions for submitting code
+    #### 3.2.10 SOME CONVENTIONS FOR SUBMITTING CODE
 
     In order for official maintainers to better focus on the code itself when reviewing it, please follow the following conventions each time you submit your code:
 
