@@ -1,4 +1,4 @@
-# Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.
+# Copyright (c) 2021 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -83,6 +83,6 @@ def convert2lmdb(data_root_dir, label_file_path, lmdb_out_dir, is_check=False):
                     writeCache(env, cache)
                     cache = {}
                 cnt += 1
-        cache['num-samples'] = str(nums)
+        cache['num-samples'] = str(cnt - 1)
         writeCache(env, cache)
         print(f'Created lmdb dataset with {nums} samples successfully')
