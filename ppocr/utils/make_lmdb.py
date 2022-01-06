@@ -48,7 +48,7 @@ def convert2lmdb(data_root_dir, label_file_path, lmdb_out_dir, is_check=False):
     """
     if os.path.exists(lmdb_out_dir) and os.path.isdir(lmdb_out_dir):
         while True:
-            print(f'{lmdb_out_dir} already exist, delete or not? [Y/n]')
+            print(f'{lmdb_out_dir} already exist, delete or not? [y/n]')
             Yn = input().strip()
             if Yn in ['Y', 'y']:
                 shutil.rmtree(lmdb_out_dir)
