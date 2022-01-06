@@ -20,7 +20,7 @@ PP-Structure是一个可用于复杂文档结构分析和处理的OCR工具包�
 <a name="2"></a>
 
 ## 2. 近期更新
-* 2021.12.07 新增DOC-VQA任务-SER和RE。
+* 2021.12.07 新增DOC-[VQA任务SER和RE](vqa/README.md)。
 
 <a name="3"></a>
 
@@ -44,6 +44,9 @@ PP-Structure的主要特性如下：
 ### 4.1 版面分析和表格识别
 
 <img src="../doc/table/ppstructure.GIF" width="100%"/>
+
+图中展示了版面分析+表格识别的整体流程，图片先有版面分析划分为图像、文本、标题和表格四种区域，然后对图像、文本和标题三种区域进行OCR的检测识别，对表格进行表格识别，其中图像还会被存储下来以便使用。
+
 
 <a name="42"></a>
 
@@ -74,7 +77,7 @@ PP-Structure的主要特性如下：
 
 ## 5. 快速体验
 
-代码体验：从 [快速安装](./docs/quickstart.md) 开始
+请参考[快速安装](./docs/quickstart.md)教程。
 
 <a name="6"></a>
 
@@ -94,13 +97,13 @@ PP-Structure的主要特性如下：
 
 #### 6.1.2 表格识别
 
-表格识别将表格图片转换为excel文档，其中包含对于表格文本的检测和识别以及对于表格结构和单元格坐标的预测，详细说明参考[文档](table/README_ch.md)
+表格识别将表格图片转换为excel文档，其中包含对于表格文本的检测和识别以及对于表格结构和单元格坐标的预测，详细说明参考[文档](table/README_ch.md)。
 
 <a name="62"></a>
 
 ### 6.2 DOC-VQA
 
-DOC-VQA指文档视觉问答，其中包括语义实体识别 (Semantic Entity Recognition, SER) 和关系抽取 (Relation Extraction, RE) 任务。基于 SER 任务，可以完成对图像中的文本识别与分类；基于 RE 任务，可以完成对图象中的文本内容的关系提取，如判断问题对(pair)，详细说明参考[文档](vqa/README.md)
+DOC-VQA指文档视觉问答，其中包括语义实体识别 (Semantic Entity Recognition, SER) 和关系抽取 (Relation Extraction, RE) 任务。基于 SER 任务，可以完成对图像中的文本识别与分类；基于 RE 任务，可以完成对图象中的文本内容的关系提取，如判断问题对(pair)，详细说明参考[文档](vqa/README.md)。
 
 <a name="7"></a>
 

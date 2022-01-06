@@ -21,7 +21,7 @@ PP-Structure is an OCR toolkit that can be used for document analysis and proces
 <a name="2"></a>
 
 ## 2. Update log
-* 2021.12.07 add DOC-VQA SER and RE tasks。
+* 2021.12.07 add [DOC-VQA SER and RE tasks](vqa/README.md)。
 
 <a name="3"></a>
 
@@ -46,6 +46,8 @@ The main features of PP-Structure are as follows:
 ### 4.1 Layout analysis and table recognition
 
 <img src="../doc/table/ppstructure.GIF" width="100%"/>
+
+The figure shows the pipeline of layout analysis + table recognition. The image is first divided into four areas of image, text, title and table by layout analysis, and then OCR detection and recognition is performed on the three areas of image, text and title, and the table is performed table recognition, where the image will also be stored for use.
 
 <a name="42"></a>
 
