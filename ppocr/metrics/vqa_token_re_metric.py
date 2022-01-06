@@ -18,7 +18,6 @@ from __future__ import print_function
 
 import numpy as np
 import paddle
-from seqeval.metrics import f1_score, precision_score, recall_score
 
 __all__ = ['KIEMetric']
 
