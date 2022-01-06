@@ -83,6 +83,6 @@ def convert2lmdb(data_root_dir, label_file_path, lmdb_out_dir, is_check=False):
                     writeCache(env, cache)
                     cache = {}
                 cnt += 1
-        cache['num-samples'] = str(nums - 1)
+        cache['num-samples'] = str(nums)
         writeCache(env, cache)
         print(f'Created lmdb dataset with {nums} samples successfully')
