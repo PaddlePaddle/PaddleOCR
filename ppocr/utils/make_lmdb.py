@@ -43,7 +43,7 @@ def convert2lmdb(data_root_dir, label_file_path, lmdb_out_dir, is_check=False):
         data_root_dir: the root dir of total imgs or img subdirs.
         label_file_path: icdar2015 format label's path.
         lmdb_out_dir: output lmdb dir.
-        is_check: check the image is whether valid, if set True, may be
+        is_check: check the image whether it is valid or not, if set True, may
             slow down the lmdb conversion speed. 
     """
     if os.path.exists(lmdb_out_dir) and os.path.isdir(lmdb_out_dir):
