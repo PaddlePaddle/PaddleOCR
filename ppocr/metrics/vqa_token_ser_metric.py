@@ -18,7 +18,6 @@ from __future__ import print_function
 
 import numpy as np
 import paddle
-from seqeval.metrics import f1_score, precision_score, recall_score
 
 __all__ = ['KIEMetric']
 
@@ -34,6 +33,7 @@ class VQASerTokenMetric(object):
         self.gt_list.extend(labels)
 
     def get_metric(self):
+        from seqeval.metrics import f1_score, precision_score, recall_score
         metircs = {
             "precision": precision_score(self.gt_list, self.pred_list),
             "recall": recall_score(self.gt_list, self.pred_list),
