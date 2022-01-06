@@ -57,12 +57,12 @@ def convert2lmdb(data_root_dir, label_file_path, lmdb_out_dir, is_check=False):
                 return
 
     os.makedirs(lmdb_out_dir)
+    env = lmdb.open(lmdb_out_dir, map_size=1099511627776)
+    cache = {}
+    cnt = 1  # in lmdb_dataset.py, idx start from 1
     with open(label_file_path, 'r', encoding='utf-8') as fp1:
         lines = fp1.read().strip('\n').split('\n')
         nums = len(lines)
-        env = lmdb.open(lmdb_out_dir, map_size=1099511627776)
-        cache = {}
-        cnt = 1  # in lmdb_dataset.py, idx start from 1
         for i in tqdm(range(nums), desc='making lmdb...'):
             relative_img_path, label = lines[i].split('\t')
             img_path = os.path.join(data_root_dir, relative_img_path)
