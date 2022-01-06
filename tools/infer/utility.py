@@ -15,6 +15,7 @@
 import argparse
 import os
 import sys
+import platform
 import cv2
 import numpy as np
 import paddle
@@ -313,6 +314,10 @@ def create_predictor(args, mode, logger):
 
 
 def get_infer_gpuid():
+    sysstr = platform.system()
+    if sysstr == "Windows":
+        return 0
+
     if not paddle.fluid.core.is_compiled_with_rocm():
         cmd = "env | grep CUDA_VISIBLE_DEVICES"
     else:

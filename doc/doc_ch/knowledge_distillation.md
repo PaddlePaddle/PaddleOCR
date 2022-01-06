@@ -527,7 +527,6 @@ PostProcess:
 
 关于`DistillationDBPostProcess`更加具体的实现可以参考: [db_postprocess.py](../../ppocr/postprocess/db_postprocess.py#L195)
 
-
 <a name="224"></a>
 #### 2.2.4 蒸馏指标计算
 

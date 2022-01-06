@@ -101,16 +101,21 @@ class TextDetector(object):
         else:
             logger.info("unknown det_algorithm:{}".format(self.det_algorithm))
             sys.exit(0)
-        if self.use_onnx:
-            pre_process_list[0] = {
-                'DetResizeForTest': {
-                    'image_shape': [640, 640]
-                }
-            }
+
         self.preprocess_op = create_operators(pre_process_list)
         self.postprocess_op = build_post_process(postprocess_params)
         self.predictor, self.input_tensor, self.output_tensors, self.config = utility.create_predictor(
             args, 'det', logger)
+
+        if self.use_onnx:
+            img_h, img_w = self.input_tensor.shape[2:]
+            if img_h is not None and img_w is not None and img_h > 0 and img_w > 0:
+                pre_process_list[0] = {
+                    'DetResizeForTest': {
+                        'image_shape': [img_h, img_w]
+                    }
+                }
+        self.preprocess_op = create_operators(pre_process_list)
 
         if args.benchmark:
             import auto_log

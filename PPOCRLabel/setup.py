@@ -33,7 +33,7 @@ setup(
     package_dir={'PPOCRLabel': ''},
     include_package_data=True,
     entry_points={"console_scripts": ["PPOCRLabel= PPOCRLabel.PPOCRLabel:main"]},
-    version='1.0.0',
+    version='1.0.2',
     install_requires=requirements,
     license='Apache License 2.0',
     description='PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field, with built-in PPOCR model to automatically detect and re-recognize data. It is written in python3 and pyqt5, supporting rectangular box annotation and four-point annotation modes. Annotations can be directly used for the training of PPOCR detection and recognition models',

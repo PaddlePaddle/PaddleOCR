@@ -13,7 +13,7 @@ inference:tools/infer/predict_rec.py
 --rec_batch_num:1
 --use_tensorrt:False|True
 --precision:int8
---det_model_dir:
+--rec_model_dir:
 --image_dir:./inference/rec_inference
 null:null
 --benchmark:True

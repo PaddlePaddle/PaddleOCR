@@ -57,7 +57,7 @@ PaddleOCR基于动态图开源的文本识别算法列表：
 - [x]  SAR([paper](https://arxiv.org/abs/1811.00751v2))
 - [x] SEED([paper](https://arxiv.org/pdf/2005.10977.pdf))
 
-参考[DTRB][3](https://arxiv.org/abs/1904.01906)文字识别训练和评估流程，使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估，算法效果如下：
+参考[DTRB](https://arxiv.org/abs/1904.01906)[3]文字识别训练和评估流程，使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估，算法效果如下：
 
 |模型|骨干网络|Avg Accuracy|模型存储命名|下载链接|
 |---|---|---|---|---|

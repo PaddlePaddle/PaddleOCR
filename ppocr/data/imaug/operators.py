@@ -23,7 +23,6 @@ import sys
 import six
 import cv2
 import numpy as np
-import fasttext
 
 
 class DecodeImage(object):
@@ -136,6 +135,7 @@ class ToCHWImage(object):
 
 class Fasttext(object):
     def __init__(self, path="None", **kwargs):
+        import fasttext
         self.fast_model = fasttext.load_model(path)
 
     def __call__(self, data):

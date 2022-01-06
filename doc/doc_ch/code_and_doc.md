@@ -146,14 +146,14 @@ PaddleOCR欢迎大家向repo中积极贡献代码，下面给出一些贡献代�
 - 将 `远程仓库` Clone到本地
 
 ```
-# 拉取develop分支的代码
+# 拉取dygraph分支的代码
 git clone https://github.com/{your_name}/PaddleOCR.git -b dygraph
 cd PaddleOCR
 ```
 
 > 多数情况下clone失败是由于网络原因，请稍后重试或配置代理
 
-#### 3.2.2 和 `远程仓库` 建立连接
+#### 3.2.2 通过Token方式登录与建立连接
 
 首先查看当前 `远程仓库` 的信息。
 
@@ -163,7 +163,24 @@ git remote -v
 # origin    https://github.com/{your_name}/PaddleOCR.git (push)
 ```
 
-只有clone的 `远程仓库` 的信息，也就是自己用户名下的 PaddleOCR，接下来我们创建一个原始 PaddleOCR 仓库的远程主机，命名为 upstream。
+只有clone的 `远程仓库` 的信息，也就是自己用户名下的 PaddleOCR。由于Github的登录方式变化，需要通过Token的方式重新配置 `远程仓库` 的地址。生成Token的方式如下：
+
+1. 找到个人访问令牌（token）：在Github页面右上角点击自己的头像，然后依次选择 Settings --> Developer settings --> Personal access tokens
+2. 点击 Generate new token：在Note中填入token名称，例如’paddle‘。在Select scopes选择repo（必选）、admin:repo_hook、delete_repo等，可根据自身需要勾选。然后点击Generate token生成token。最后复制生成的token。
+
+删除原始的origin配置
+
+```
+git remote rm origin
+```
+
+将remote分支改成 `https://oauth2:{token}@github.com/{your_name}/PaddleOCR.git`。例如：如果token值为12345，你的用户名为PPOCR，则运行下方命令
+
+```
+git remote add origin https://oauth2:12345@github.com/PPOCR/PaddleOCR.git
+```
+
+这样我们就与自己的 `远程仓库` 建立了连接。接下来我们创建一个原始 PaddleOCR 仓库的远程主机，命名为 upstream。
 
 ```
 git remote add upstream https://github.com/PaddlePaddle/PaddleOCR.git
@@ -172,8 +189,8 @@ git remote add upstream https://github.com/PaddlePaddle/PaddleOCR.git
 使用 `git remote -v` 查看当前 `远程仓库` 的信息，输出如下，发现包括了origin和upstream 2个 `远程仓库` 。
 
 ```
-origin    https://github.com/{your_name}/PaddleOCR.git (fetch)
-origin    https://github.com/{your_name}/PaddleOCR.git (push)
+origin    https://oauth2:{token}@github.com/{your_name}/PaddleOCR.git (fetch)
+origin    https://oauth2:{token}@github.com/{your_name}/PaddleOCR.git (push)
 upstream    https://github.com/PaddlePaddle/PaddleOCR.git (fetch)
 upstream    https://github.com/PaddlePaddle/PaddleOCR.git (push)
 ```
@@ -182,21 +199,22 @@ upstream    https://github.com/PaddlePaddle/PaddleOCR.git (push)
 
 #### 3.2.3 创建本地分支
 
-可以基于当前分支创建新的本地分支，命令如下。
+首先获取 upstream 的最新代码，然后基于上游仓库 (upstream)的dygraph创建new_branch分支。
 
 ```
-git checkout -b new_branch
+git fetch upstream
+git checkout -b new_branch upstream/dygraph
 ```
 
-也可以基于远程或者上游的分支创建新的分支，命令如下。
-
-```
-# 基于用户远程仓库(origin)的develop创建new_branch分支
-git checkout -b new_branch origin/develop
-# 基于上游远程仓库(upstream)的develop创建new_branch分支
-# 如果需要从upstream创建新的分支，需要首先使用git fetch upstream获取上游代码
-git checkout -b new_branch upstream/develop
-```
+> 如果对于新Fork的PaddleOCR项目，用户远程仓库(origin)与上游(upstream)仓库的分支更新情况相同，也可以基于origin仓库的默认分支或指定分支创建新的本地分支，命令如下。
+>
+> ```
+> # 基于用户远程仓库(origin)的dygraph创建new_branch分支
+> git checkout -b new_branch origin/dygraph
+> 
+> # 基于用户远程仓库(origin)的默认分支创建new_branch分支
+> git checkout -b new_branch
+> ```
 
 最终会显示切换到新的分支，输出信息如下
 
@@ -204,6 +222,8 @@ git checkout -b new_branch upstream/develop
 Branch new_branch set up to track remote branch develop from upstream.
 Switched to a new branch 'new_branch'
 ```
+
+切换分支之后即可在此分支上进行文件改动
 
 #### 3.2.4 使用pre-commit勾子
 
@@ -234,23 +254,15 @@ pre-commit
 
 ![img](../precommit_pass.png)
 
-使用下面的命令完成提交。
+提交修改，并写明修改内容（"your commit info"）
 
 ```
-git commit -m "your commit info"
+git commit -m "your commit info" 
 ```
 
-#### 3.2.6 保持本地仓库最新
+#### 3.2.6 Push到远程仓库
 
-获取 upstream 的最新代码并更新当前分支。这里的upstream来自于2.2节的`和远程仓库建立连接`部分。
-
-```
-git fetch upstream
-# 如果是希望提交到其他分支，则需要从upstream的其他分支pull代码，这里是develop
-git pull upstream develop
-```
-
-#### 3.2.7 push到远程仓库
+使用push命令将修改的commit提交到 `远程仓库` 
 
 ```
 git push origin new_branch
@@ -258,7 +270,7 @@ git push origin new_branch
 
 #### 3.2.7 提交Pull Request
 
-点击new pull request，选择本地分支和目标分支，如下图所示。在PR的描述说明中，填写该PR所完成的功能。接下来等待review，如果有需要修改的地方，参照上述步骤更新 origin 中的对应分支即可。
+打开自己的远程仓库界面，选择提交的分支。点击new pull request或contribute进入PR界面。选择本地分支和目标分支，如下图所示。在PR的描述说明中，填写该PR所完成的功能。接下来等待review，如果有需要修改的地方，参照上述步骤更新 origin 中的对应分支即可。
 
 ![banner](../pr.png)
 
@@ -285,8 +297,8 @@ git push origin new_branch
 - 删除本地分支
 
   ```
-  # 切换到develop分支，否则无法删除当前分支
-  git checkout develop
+  # 切换到dygraph分支，否则无法删除当前分支
+  git checkout dygraph
   
   # 删除new_branch分支
   git branch -D new_branch
@@ -309,7 +321,6 @@ git push origin new_branch
   建议：每次提交时，保持尽量少的commit，可以通过git commit --amend补充上次的commit。对已经Push到远程仓库的多个commit，可以参考[squash commits after push](https://stackoverflow.com/questions/5667884/how-to-squash-commits-in-git-after-they-have-been-pushed)。
 
 - 请注意每个commit的名称：应能反映当前commit的内容，不能太随意。
-
 
 3）如果解决了某个Issue的问题，请在该Pull Request的第一个评论框中加上：fix #issue_number，这样当该Pull Request被合并后，会自动关闭对应的Issue。关键词包括：close, closes, closed, fix, fixes, fixed, resolve, resolves, resolved，请选择合适的词汇。详细可参考[Closing issues via commit messages](https://help.github.com/articles/closing-issues-via-commit-messages)。
 
