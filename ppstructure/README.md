@@ -1,187 +1,140 @@
 English | [简体中文](README_ch.md)
 
-# PP-Structure
+- [1. Introduction](#1)
+- [2. Update log](#2)
+- [3. Features](#3)
+- [4. Results](#4)
+  * [4.1 Layout analysis and table recognition](#41)
+  * [4.2 DOC-VQA](#42)
+- [5. Quick start](#5)
+- [6. PP-Structure System](#6)
+  * [6.1 Layout analysis and table recognition](#61)
+  * [6.2 DOC-VQA](#62)
+- [7. Model List](#7)
 
-PP-Structure is an OCR toolkit that can be used for complex documents analysis. The main features are as follows:
+<a name="1"></a>
+
+## 1. Introduction
+
+PP-Structure is an OCR toolkit that can be used for document analysis and processing with complex structures, designed to help developers better complete document understanding tasks
+
+<a name="2"></a>
+
+## 2. Update log
+* 2021.12.07 add [DOC-VQA SER and RE tasks](vqa/README.md)。
+
+<a name="3"></a>
+
+## 3. Features
+
+The main features of PP-Structure are as follows:
+
 - Support the layout analysis of documents, divide the documents into 5 types of areas **text, title, table, image and list** (conjunction with Layout-Parser)
 - Support to extract the texts from the text, title, picture and list areas (used in conjunction with PP-OCR)
 - Support to extract excel files from the table areas
 - Support python whl package and command line usage, easy to use
 - Support custom training for layout analysis and table structure tasks
+- Support Document Visual Question Answering (DOC-VQA) tasks: Semantic Entity Recognition (SER) and Relation Extraction (RE)
 
-## 1. Visualization
+
+<a name="4"></a>
+
+## 4. Results
+
+<a name="41"></a>
+
+### 4.1 Layout analysis and table recognition
 
 <img src="../doc/table/ppstructure.GIF" width="100%"/>
 
+The figure shows the pipeline of layout analysis + table recognition. The image is first divided into four areas of image, text, title and table by layout analysis, and then OCR detection and recognition is performed on the three areas of image, text and title, and the table is performed table recognition, where the image will also be stored for use.
+
+<a name="42"></a>
+
+### 4.2 DOC-VQA
+
+* SER
+
+![](./vqa/images/result_ser/zh_val_0_ser.jpg) | ![](./vqa/images/result_ser/zh_val_42_ser.jpg)
+---|---
+
+Different colored boxes in the figure represent different categories. For xfun dataset, there are three categories: query, answer and header:
+
+* Dark purple: header
+* Light purple: query
+* Army green: answer
+
+The corresponding category and OCR recognition results are also marked at the top left of the OCR detection box.
 
 
-## 2. Installation
+* RE
 
-### 2.1 Install requirements
-
-- **（1) Install PaddlePaddle**
-
-```bash
-pip3 install --upgrade pip
-
-# GPU
-python3 -m pip install paddlepaddle-gpu==2.1.1 -i https://mirror.baidu.com/pypi/simple
-
-# CPU
- python3 -m pip install paddlepaddle==2.1.1 -i https://mirror.baidu.com/pypi/simple
-
-```
-For more，refer [Installation](https://www.paddlepaddle.org.cn/install/quick) .
-
-- **(2) Install Layout-Parser**
-
-```bash
-pip3 install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
-```
-
-### 2.2 Install PaddleOCR（including PP-OCR and PP-Structure）
-
-- **（1) PIP install PaddleOCR whl package（inference only）**
-
-```bash
-pip install "paddleocr>=2.2"
-```
-
-- **（2) Clone PaddleOCR（Inference+training）**
-
-```bash
-git clone https://github.com/PaddlePaddle/PaddleOCR
-```
+![](./vqa/images/result_re/zh_val_21_re.jpg) | ![](./vqa/images/result_re/zh_val_40_re.jpg)
+---|---
 
 
-## 3. Quick Start
-
-### 3.1 Use by command line
-
-```bash
-paddleocr --image_dir=../doc/table/1.png --type=structure
-```
-
-### 3.2 Use by python API
-
-```python
-import os
-import cv2
-from paddleocr import PPStructure,draw_structure_result,save_structure_res
-
-table_engine = PPStructure(show_log=True)
-
-save_folder = './output/table'
-img_path = '../doc/table/1.png'
-img = cv2.imread(img_path)
-result = table_engine(img)
-save_structure_res(result, save_folder,os.path.basename(img_path).split('.')[0])
-
-for line in result:
-    line.pop('img')
-    print(line)
-
-from PIL import Image
-
-font_path = '../doc/fonts/simfang.ttf'
-image = Image.open(img_path).convert('RGB')
-im_show = draw_structure_result(image, result,font_path=font_path)
-im_show = Image.fromarray(im_show)
-im_show.save('result.jpg')
-```
-### 3.3 Returned results format
-The returned results of PP-Structure is a list composed of a dict, an example is as follows
-
-```shell
-[
-  {   'type': 'Text',
-      'bbox': [34, 432, 345, 462],
-      'res': ([[36.0, 437.0, 341.0, 437.0, 341.0, 446.0, 36.0, 447.0], [41.0, 454.0, 125.0, 453.0, 125.0, 459.0, 41.0, 460.0]],
-                [('Tigure-6. The performance of CNN and IPT models using difforen', 0.90060663), ('Tent  ', 0.465441)])
-  }
-]
-```
-The description of each field in dict is as follows
-
-| Parameter            | Description           |
-| --------------- | -------------|
-|type|Type of image area|
-|bbox|The coordinates of the image area in the original image, respectively [left upper x, left upper y, right bottom x, right bottom y]|
-|res|OCR or table recognition result of image area。<br> Table: HTML string of the table; <br> OCR: A tuple containing the detection coordinates and recognition results of each single line of text|
+In the figure, the red box represents the question, the blue box represents the answer, and the question and answer are connected by green lines. The corresponding category and OCR recognition results are also marked at the top left of the OCR detection box.
 
 
-### 3.4 Parameter description：
+<a name="5"></a>
 
-| Parameter            | Description                                     | Default value                                        |
-| --------------- | ---------------------------------------- | ------------------------------------------- |
-| output          | The path where excel and recognition results are saved                | ./output/table                              |
-| table_max_len   | The long side of the image is resized in table structure model  | 488                                         |
-| table_model_dir | inference model path of table structure model          | None                                        |
-| table_char_type | dict path of table structure model                 | ../ppocr/utils/dict/table_structure_dict.tx |
+## 5. Quick start
 
-Most of the parameters are consistent with the paddleocr whl package, see [doc of whl](../doc/doc_en/whl_en.md)
+Start from [Quick Installation](./docs/quickstart.md)
 
-After running, each image will have a directory with the same name under the directory specified in the output field. Each table in the picture will be stored as an excel and figure area will be cropped and saved, the excel and image file name will be the coordinates of the table in the image.
+<a name="6"></a>
 
-## 4. PP-Structure Pipeline
-![pipeline](../doc/table/pipeline_en.jpg)
+## 6. PP-Structure System
 
-In PP-Structure, the image will be analyzed by layoutparser first. In the layout analysis, the area in the image will be classified, including **text, title, image, list and table** 5 categories. For the first 4 types of areas, directly use the PP-OCR to complete the text detection and recognition. The table area will  be converted to an excel file of the same table style via Table OCR.
+<a name="61"></a>
 
-### 4.1 LayoutParser
+### 6.1 Layout analysis and table recognition
 
-Layout analysis divides the document data into regions, including the use of Python scripts for layout analysis tools, extraction of special category detection boxes, performance indicators, and custom training layout analysis models. For details, please refer to [document](layout/README_en.md).
+![pipeline](../doc/table/pipeline.jpg)
 
-### 4.2 Table Recognition
+In PP-Structure, the image will be divided into 5 types of areas **text, title, image list and table**. For the first 4 types of areas, directly use PP-OCR system to complete the text detection and recognition. For the table area, after the table structuring process, the table in image is converted into an Excel file with the same table style.
 
-Table Recognition converts table image into excel documents, which include the detection and recognition of table text and the prediction of table structure and cell coordinates. For detailed, please refer to [document](table/README.md)
+#### 6.1.1 Layout analysis
 
-## 5. Prediction by inference engine
+Layout analysis classifies image by region, including the use of Python scripts of layout analysis tools, extraction of designated category detection boxes, performance indicators, and custom training layout analysis models. For details, please refer to [document](layout/README.md).
 
-Use the following commands to complete the inference.
+#### 6.1.2 Table recognition
 
-```python
-cd PaddleOCR/ppstructure
+Table recognition converts table images into excel documents, which include the detection and recognition of table text and the prediction of table structure and cell coordinates. For detailed instructions, please refer to [document](table/README.md)
 
-# download model
-mkdir inference && cd inference
-# Download the detection model of the ultra-lightweight Chinese OCR model and uncompress it
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_ppocr_mobile_v2.0_det_infer.tar
-# Download the recognition model of the ultra-lightweight Chinese OCR model and uncompress it
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf ch_ppocr_mobile_v2.0_rec_infer.tar
-# Download the table structure model of the ultra-lightweight Chinese OCR model and uncompress it
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar
-cd ..
+<a name="62"></a>
 
-python3 predict_system.py --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer --table_model_dir=inference/en_ppocr_mobile_v2.0_table_structure_infer --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/ppocr_keys_v1.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --output=../output/table --vis_font_path=../doc/fonts/simfang.ttf
-```
-After running, each image will have a directory with the same name under the directory specified in the output field. Each table in the picture will be stored as an excel and figure area will be cropped and saved, the excel and image file name will be the coordinates of the table in the image.
+### 6.2 DOC-VQA
 
-**Model List**
+Document Visual Question Answering (DOC-VQA) if a type of Visual Question Answering (VQA), which includes Semantic Entity Recognition (SER) and Relation Extraction (RE) tasks. Based on SER task, text recognition and classification in images can be completed. Based on THE RE task, we can extract the relation of the text content in the image, such as judge the problem pair. For details, please refer to [document](vqa/README.md)
 
-|model name|description|config|model size|download|
-| --- | --- | --- | --- | --- |
-|en_ppocr_mobile_v2.0_table_structure|Table structure prediction for English table scenarios|[table_mv3.yml](../configs/table/table_mv3.yml)|18.6M|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar) |
 
-**Model List**
+<a name="7"></a>
 
-LayoutParser model
+## 7. Model List
+
+PP-Structure系列模型列表（更新中）
+
+* Layout analysis model
 
 |model name|description|download|
 | --- | --- | --- |
-| ppyolov2_r50vd_dcn_365e_publaynet | The layout analysis model trained on the PubLayNet data set can be divided into 5 types of areas **text, title, table, picture and list** | [PubLayNet](https://paddle-model-ecology.bj.bcebos.com/model/layout-parser/ppyolov2_r50vd_dcn_365e_publaynet.tar) |
-| ppyolov2_r50vd_dcn_365e_tableBank_word | The layout analysis model trained on the TableBank Word dataset can only detect tables | [TableBank Word](https://paddle-model-ecology.bj.bcebos.com/model/layout-parser/ppyolov2_r50vd_dcn_365e_tableBank_word.tar) |
-| ppyolov2_r50vd_dcn_365e_tableBank_latex | The layout analysis model trained on the TableBank Latex dataset can only detect tables | [TableBank Latex](https://paddle-model-ecology.bj.bcebos.com/model/layout-parser/ppyolov2_r50vd_dcn_365e_tableBank_latex.tar) |
+| ppyolov2_r50vd_dcn_365e_publaynet | The layout analysis model trained on the PubLayNet dataset can divide image into 5 types of areas **text, title, table, picture, and list** | [PubLayNet](https://paddle-model-ecology.bj.bcebos.com/model/layout-parser/ppyolov2_r50vd_dcn_365e_publaynet.tar) |
 
-OCR and table recognition model
+
+* OCR and table recognition model
 
 |model name|description|model size|download|
 | --- | --- | --- | --- |
 |ch_ppocr_mobile_slim_v2.0_det|Slim pruned lightweight model, supporting Chinese, English, multilingual text detection|2.6M|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_prune_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_prune_infer.tar) |
 |ch_ppocr_mobile_slim_v2.0_rec|Slim pruned and quantized lightweight model, supporting Chinese, English and number recognition|6M|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_train.tar) |
-|en_ppocr_mobile_v2.0_table_det|Text detection of English table scenes trained on PubLayNet dataset|4.7M|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_det_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/table/en_ppocr_mobile_v2.0_table_det_train.tar) |
-|en_ppocr_mobile_v2.0_table_rec|Text recognition of English table scene trained on PubLayNet dataset|6.9M|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar)  [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/table/en_ppocr_mobile_v2.0_table_rec_train.tar) |
-|en_ppocr_mobile_v2.0_table_structure|Table structure prediction of English table scene trained on PubLayNet dataset|18.6M|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/table/en_ppocr_mobile_v2.0_table_structure_train.tar) |
+|en_ppocr_mobile_v2.0_table_structure|Table structure prediction of English table scene trained on PubLayNet dataset|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/table/en_ppocr_mobile_v2.0_table_structure_train.tar) |
 
+* DOC-VQA model
 
-If you need to use other models, you can download the model in [model_list](../doc/doc_en/models_list_en.md) or use your own trained model to configure it to the three fields of `det_model_dir`, `rec_model_dir`, `table_model_dir` .
+|model name|description|model size|download|
+| --- | --- | --- | --- |
+|PP-Layout_v1.0_ser_pretrained|SER model trained on xfun Chinese dataset based on LayoutXLM|1.4G|[inference model coming soon]() / [trained model](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_ser_pretrained.tar) |
+|PP-Layout_v1.0_re_pretrained|RE model trained on xfun Chinese dataset based on LayoutXLM|1.4G|[inference model coming soon]() / [trained model](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_re_pretrained.tar) |
+
+If you need to use other models, you can download the model in [PPOCR model_list](../doc/doc_en/models_list_en.md) and  [PPStructure model_list](./docs/model_list.md)

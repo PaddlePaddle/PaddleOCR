@@ -61,7 +61,7 @@ PP-Structure 里的 DOC-VQA算法基于PaddleNLP自然语言处理算法库进�
 - **（1) 安装PaddlePaddle**
 
 ```bash
-pip3 install --upgrade pip
+python3 -m pip install --upgrade pip
 
 # GPU安装
 python3 -m pip install paddlepaddle-gpu==2.2 -i https://mirror.baidu.com/pypi/simple
@@ -78,7 +78,7 @@ python3 -m pip install paddlepaddle==2.2 -i https://mirror.baidu.com/pypi/simple
 - **（1）pip快速安装PaddleOCR whl包（仅预测）**
 
 ```bash
-pip install paddleocr
+python3 -m pip install paddleocr
 ```
 
 - **（2）下载VQA源码（预测+训练）**
@@ -92,21 +92,11 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 # 注：码云托管代码可能无法实时同步本github项目更新，存在3~5天延时，请优先使用推荐方式。
 ```
 
-- **（3）安装PaddleNLP**
-
-```bash
-# 需要使用PaddleNLP最新的代码版本进行安装
-git clone https://github.com/PaddlePaddle/PaddleNLP -b develop
-cd PaddleNLP
-pip3 install -e .
-```
-
-
-- **（4）安装VQA的`requirements`**
+- **（3）安装VQA的`requirements`**
 
 ```bash
 cd ppstructure/vqa
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 
 ## 4. 使用
@@ -133,7 +123,7 @@ wget https://paddleocr.bj.bcebos.com/dataset/XFUND.tar
 * 启动训练
 
 ```shell
-python3.7 train_ser.py \
+python3 train_ser.py \
     --model_name_or_path "layoutxlm-base-uncased" \
     --ser_model_type "LayoutXLM" \
     --train_data_dir "XFUND/zh_train/image" \
@@ -154,7 +144,7 @@ python3.7 train_ser.py \
 * 恢复训练
 
 ```shell
-python3.7 train_ser.py \
+python3 train_ser.py \
     --model_name_or_path "model_path" \
     --ser_model_type "LayoutXLM" \
     --train_data_dir "XFUND/zh_train/image" \
@@ -191,7 +181,7 @@ python3 eval_ser.py \
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
-python3.7 infer_ser.py \
+python3 infer_ser.py \
     --model_name_or_path "PP-Layout_v1.0_ser_pretrained/" \
     --ser_model_type "LayoutXLM" \
     --output_dir "output/ser/" \
@@ -205,7 +195,7 @@ python3.7 infer_ser.py \
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
-python3.7 infer_ser_e2e.py \
+python3 infer_ser_e2e.py \
     --model_name_or_path "PP-Layout_v1.0_ser_pretrained/" \
     --ser_model_type "LayoutXLM" \
     --max_seq_length 512 \
@@ -217,7 +207,7 @@ python3.7 infer_ser_e2e.py \
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
-python3.7 helper/eval_with_label_end2end.py --gt_json_path XFUND/zh_val/xfun_normalize_val.json  --pred_json_path output_res/infer_results.txt
+python3 helper/eval_with_label_end2end.py --gt_json_path XFUND/zh_val/xfun_normalize_val.json  --pred_json_path output_res/infer_results.txt
 ```
 
 
@@ -312,7 +302,7 @@ python3 infer_re.py \
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
-python3.7 infer_ser_re_e2e.py \
+python3 infer_ser_re_e2e.py \
     --model_name_or_path "PP-Layout_v1.0_ser_pretrained/" \
     --re_model_name_or_path "PP-Layout_v1.0_re_pretrained/" \
     --ser_model_type "LayoutXLM" \

@@ -42,7 +42,7 @@ __all__ = [
 ]
 
 SUPPORT_DET_MODEL = ['DB']
-VERSION = '2.3.0.2'
+VERSION = '2.4'
 SUPPORT_REC_MODEL = ['CRNN']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
