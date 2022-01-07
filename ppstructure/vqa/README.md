@@ -62,7 +62,7 @@ PP-Structure 里的 DOC-VQA算法基于PaddleNLP自然语言处理算法库进�
 - **（1) 安装PaddlePaddle**
 
 ```bash
-pip3 install --upgrade pip
+python3 -m pip install --upgrade pip
 
 # GPU安装
 python3 -m pip install "paddlepaddle-gpu>=2.2" -i https://mirror.baidu.com/pypi/simple
@@ -175,7 +175,7 @@ CUDA_VISIBLE_DEVICES=0 python3 tools/infer_vqa_token_ser.py -c configs/vqa/ser/l
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
-python3.7 helper/eval_with_label_end2end.py --gt_json_path XFUND/zh_val/xfun_normalize_val.json  --pred_json_path output_res/infer_results.txt
+python3 helper/eval_with_label_end2end.py --gt_json_path XFUND/zh_val/xfun_normalize_val.json  --pred_json_path output_res/infer_results.txt
 ```
 
 
