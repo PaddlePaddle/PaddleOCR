@@ -45,7 +45,7 @@ class L2Decay(object):
 
     def __init__(self, factor=0.0):
         super(L2Decay, self).__init__()
-        self.coeff = factor
+        self.coeff = float(factor)
 
     def __call__(self):
         return self.coeff
