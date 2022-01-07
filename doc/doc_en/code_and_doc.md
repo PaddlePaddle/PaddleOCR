@@ -2,15 +2,15 @@
 
     This appendix contains python, document specifications and Pull Request process. Please follow the relevant contents
 
-    - [Appendix 1：Python code specification](#Appendix1)
+    - [Appendix 1：Python Code Specification](#Appendix1)
 
-    - [Appendix 2：Document specification](#Appendix2)
+    - [Appendix 2：Document Specification](#Appendix2)
 
-    - [Appendix 3：Pull Request description](#Appendix3)
+    - [Appendix 3：Pull Request Description](#Appendix3)
 
     <a name="Appendix1"></a>
 
-    ## APPENDIX 1：PYTHON CODE SPECIFICATION
+    ## Appendix 1：Python Code Specification
 
     The Python code of PaddleOCR follows [PEP8 Specification]( https://www.python.org/dev/peps/pep-0008/ ), some of the key concerns include the following
 
@@ -45,9 +45,9 @@
 
       - Functions and methods: The definition of each function should include the following:
 
-        - Function description: Function function, input and output
+        - Function description: Utility, input and output of function
 
-        - Args: Name of each parameter and description of the parameter
+        - Args: Name and description of each parameter
         - Returns: The meaning and type of the return value
 
         ```python
@@ -82,9 +82,9 @@
 
     <a name="Appendix2"></a>
 
-    ## APPENDIX 2: DOCUMENT SPECIFICATION
+    ## Appendix 2: Document Specification
 
-    ### 2.1 OVERALL DESCRIPTION
+    ### 2.1 Overall Description
 
     - Document Location: If you add new features to your original Markdown file, please **Do not re-create** a new file. If you don't know where to add it, you can first PR the code and then ask the official in commit.
 
@@ -96,13 +96,13 @@
 
     - English and Chinese: Any changes or additions to the document need to be made in both Chinese and English documents.
 
-    ### 2.2 FORMAT SPECIFICATION
+    ### 2.2 Format Specification
 
     - Title format: The document title format follows the format of: Arabic decimal point combination-space-title (for example, `2.1 XXXX`, `2.XXXX`)
 
     - Code block: Displays code in code block format that needs to be run, describing the meaning of command parameters before the code block. for example:
 
-      > Whole Process Detect+Direction Classifier+Identify : Vertical text can be recognized after set direction classifier parameters`--use_angle_cls true`.
+      > Pipeline of detection + direction Classify + recognition: Vertical text can be recognized after set direction classifier parameters`--use_angle_cls true`.
       >
       > ```
       > paddleocr --image_dir ./imgs/11.jpg --use_angle_cls true
@@ -116,11 +116,13 @@
 
     - Picture: If a picture is added to the description document, specify the naming of the picture (describing its content) and add the picture under `doc/`.
 
+    - Title: Capitalize the first letter of each word in the title.
+
     <a name="Appendix3"></a>
 
-    ## APPENDIX 3: PULL REQUEST DESCRIPTION
+    ## Appendix 3: Pull Request Description
 
-    ### 3.1 PaddleOCR BRANCH DESCRIPTION
+    ### 3.1 PaddleOCR Branch Description
 
     PaddleOCR will maintain two branches in the future, one for each:
 
@@ -133,11 +135,11 @@
 
     PaddleOCR welcomes you to actively contribute code to repo. Here are some basic processes for contributing code.
 
-    ### 3.2 PaddleOCR CODE SUBMISSION PROCESS AND SPECIFICATION
+    ### 3.2 PaddleOCR Code Submission Process And Specification
 
-    > If you are familiar with Git use, you can jump directly to [some conventions for submitting code in 3.2.10](#Some_conventions_for_submitting_code)
+    > If you are familiar with Git use, you can jump directly to [Some Conventions For Submitting Code in 3.2.10](#Some_conventions_for_submitting_code)
 
-    #### 3.2.1 CREATE YOUR `REMOTE REPO`
+    #### 3.2.1 Create Your `Remote Repo`
 
     - In PaddleOCR [GitHub Home]( https://github.com/PaddlePaddle/PaddleOCR ) Click the `Fork` button in the upper left corner to create a `remote repo`in your personal directory, such as ` https://github.com/ {your_name}/PaddleOCR`.
 
@@ -153,7 +155,7 @@
 
     > Clone failures are mostly due to network reasons, try again later or configure the proxy
 
-    #### 3.2.2 LOGIN AND CONNECT USING A TOKEN
+    #### 3.2.2 Login And Connect Using Token
 
     Start by viewing the information for the current `remote repo`.
 
@@ -198,7 +200,7 @@
 
     This is mainly to keep the local repository up to date when subsequent pull request (PR) submissions are made.
 
-    #### 3.2.3 CREATE LOCAL BRANCH
+    #### 3.2.3 Create Local Branch
 
     First get the latest code of upstream, then create a new_branch branch based on the dygraph of the upstream repo (upstream).
     
@@ -227,7 +229,7 @@
     
     After switching branches, file changes can be made on this branch
     
-    #### 3.2.4 USE PRE-COMMIT HOOK
+    #### 3.2.4 Use Pre-Commit Hook
 
     Paddle developers use the pre-commit tool to manage Git pre-submit hooks. It helps us format the source code (C++, Python) and automatically check for basic things (such as having only one EOL per file, not adding large files to Git) before committing it.
 
@@ -242,7 +244,7 @@
      >
      >  2. Yapf installed through pip install pre-commit is slightly different from conda install-c conda-forge pre-commit, and PaddleOCR developers use `pip install pre-commit`.
 
-    #### 3.2.5 MODIFY AND SUBMIT CODE
+    #### 3.2.5 Modify And Submit Code
 
      If you make some changes on `README.Md ` on PaddleOCR, you can view the changed file through `git status`, and then add the changed file using `git add`。
 
@@ -262,7 +264,7 @@
     git commit -m "your commit info"
     ```
 
-    #### 3.2.6 KEEP LOCAL REPO UP TO DATE
+    #### 3.2.6 Keep Local Repo Up To Date
 
     Get the latest code for upstream and update the current branch. Here the upstream comes from section 2.2, `Connecting to a remote repo`.
 
@@ -272,19 +274,19 @@
     git pull upstream develop
     ```
 
-    #### 3.2.7 PUSH TO REMOTE REPO
+    #### 3.2.7 Push To Remote Repo
 
     ```
     git push origin new_branch
     ```
 
-    #### 3.2.7 SUBMIT PULL REQUEST
+    #### 3.2.7 Submit Pull Request
 
     Click the new pull request to select the local branch and the target branch, as shown in the following figure. In the description of PR, fill in the functions completed by the PR. Next, wait for review, and if you need to modify something, update the corresponding branch in origin with the steps above.
 
     ![banner](../pr.png)
 
-    #### 3.2.8 SIGN CLA AGREEMENT AND PASS UNIT TESTS
+    #### 3.2.8 Sign CLA Agreement And Pass Unit Tests
 
     - Signing the CLA When submitting a Pull Request to PaddlePaddle for the first time, you need to sign a CLA (Contributor License Agreement) agreement to ensure that your code can be incorporated as follows:
 
@@ -292,7 +294,7 @@
 
       2. Click Sign in with GitHub to agree on the CLA website and when clicked, it will jump back to your Pull Request page
 
-    #### 3.2.9 DELETE BRANCH
+    #### 3.2.9 Delete Branch
 
     - Remove remote branch
 
@@ -315,7 +317,7 @@
 
     <a name="Some_conventions_for_submitting_code"></a>
 
-    #### 3.2.10 SOME CONVENTIONS FOR SUBMITTING CODE
+    #### 3.2.10 Some Conventions For Submitting Code
 
     In order for official maintainers to better focus on the code itself when reviewing it, please follow the following conventions each time you submit your code:
 
