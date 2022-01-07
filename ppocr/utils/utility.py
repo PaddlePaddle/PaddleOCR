@@ -16,6 +16,9 @@ import logging
 import os
 import imghdr
 import cv2
+import random
+import numpy as np
+import paddle
 
 
 def print_dict(d, logger, delimiter=0):
@@ -96,3 +99,9 @@ def load_vqa_bio_label_maps(label_map_path):
     label2id_map = {label: idx for idx, label in enumerate(labels)}
     id2label_map = {idx: label for idx, label in enumerate(labels)}
     return label2id_map, id2label_map
+
+
+def set_seed(seed=1024):
+    random.seed(seed)
+    np.random.seed(seed)
+    paddle.seed(seed)

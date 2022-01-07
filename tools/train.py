@@ -27,8 +27,6 @@ import yaml
 import paddle
 import paddle.distributed as dist
 
-paddle.seed(2)
-
 from ppocr.data import build_dataloader
 from ppocr.modeling.architectures import build_model
 from ppocr.losses import build_loss
@@ -36,6 +34,7 @@ from ppocr.optimizer import build_optimizer
 from ppocr.postprocess import build_post_process
 from ppocr.metrics import build_metric
 from ppocr.utils.save_load import load_model
+from ppocr.utils.utility import set_seed
 import tools.program as program
 
 dist.get_world_size()
@@ -146,5 +145,7 @@ def test_reader(config, device, logger):
 
 if __name__ == '__main__':
     config, device, logger, vdl_writer = program.preprocess(is_train=True)
+    seed = config['Global']['seed'] if 'seed' in config['Global'] else 1024
+    set_seed(seed)
     main(config, device, logger, vdl_writer)
     # test_reader(config, device, logger)
