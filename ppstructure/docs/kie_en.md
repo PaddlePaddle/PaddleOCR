@@ -29,7 +29,7 @@ wget https://paddleocr.bj.bcebos.com/dygraph_v2.1/kie/kie_vgg16.tar && tar xf ki
 python3.7 tools/infer_kie.py -c configs/kie/kie_unet_sdmgr.yml -o Global.checkpoints=kie_vgg16/best_accuracy  Global.infer_img=../wildreceipt/1.txt
 ```
 
-The prediction result is saved as the folder`./output/sdmgr_kie/predicts_kie.txt`, and the visualization result is saved as the folder`/output/sdmgr_kie/kie_results/`.
+The prediction result is saved as `./output/sdmgr_kie/predicts_kie.txt`, and the visualization result is saved in the folder`/output/sdmgr_kie/kie_results/`.
 
 The visualization result is shown in the figure below:
 
