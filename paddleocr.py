@@ -398,7 +398,7 @@ class PPStructure(OCRSystem):
     def __init__(self, **kwargs):
         params = parse_args(mMain=False)
         params.__dict__.update(**kwargs)
-        assert params.structure_version in SUPPORT_STRUCTURE_MODEL_VERSION, "ocr_version must in {}, but get {}".format(
+        assert params.structure_version in SUPPORT_STRUCTURE_MODEL_VERSION, "structure_version must in {}, but get {}".format(
             SUPPORT_STRUCTURE_MODEL_VERSION, params.structure_version)
         params.use_gpu = check_gpu(params.use_gpu)
 
