@@ -272,7 +272,7 @@ def get_model_config(type, version, model_type, lang):
             logger.error('{} models is not support, we only support {}'.format(
                 model_type, model_urls[DEFAULT_MODEL_VERSION].keys()))
             sys.exit(-1)
-    
+
     if lang not in model_urls[version][model_type]:
         if lang in model_urls[DEFAULT_MODEL_VERSION][model_type]:
             version = DEFAULT_MODEL_VERSION
@@ -294,7 +294,8 @@ class PaddleOCR(predict_system.TextSystem):
         """
         params = parse_args(mMain=False)
         params.__dict__.update(**kwargs)
-        assert params.ocr_version in SUPPORT_OCR_MODEL_VERSION, "ocr_version must in {}, but get {}".format(SUPPORT_OCR_MODEL_VERSION,params.ocr_version) 
+        assert params.ocr_version in SUPPORT_OCR_MODEL_VERSION, "ocr_version must in {}, but get {}".format(
+            SUPPORT_OCR_MODEL_VERSION, params.ocr_version)
         params.use_gpu = check_gpu(params.use_gpu)
 
         if not params.show_log:
@@ -397,7 +398,8 @@ class PPStructure(OCRSystem):
     def __init__(self, **kwargs):
         params = parse_args(mMain=False)
         params.__dict__.update(**kwargs)
-        assert params.structure_version in SUPPORT_STRUCTURE_MODEL_VERSION, "ocr_version must in {}, but get {}".format(SUPPORT_STRUCTURE_MODEL_VERSION,params.structure_version) 
+        assert params.structure_version in SUPPORT_STRUCTURE_MODEL_VERSION, "ocr_version must in {}, but get {}".format(
+            SUPPORT_STRUCTURE_MODEL_VERSION, params.structure_version)
         params.use_gpu = check_gpu(params.use_gpu)
 
         if not params.show_log:
