@@ -190,6 +190,7 @@ def parse_args(mMain=True):
     parser.add_argument(
         "--ocr_version",
         type=str,
+        choices=['PP-OCR', 'PP-OCRv2'],
         default='PP-OCRv2',
         help='OCR Model version, the current model support list is as follows: '
         '1. PP-OCRv2 Support Chinese detection and recognition model. '
@@ -198,6 +199,7 @@ def parse_args(mMain=True):
     parser.add_argument(
         "--structure_version",
         type=str,
+        choices=['STRUCTURE'],
         default='STRUCTURE',
         help='Model version, the current model support list is as follows:'
         ' 1. STRUCTURE Support en table structure model.')
@@ -257,26 +259,20 @@ def get_model_config(type, version, model_type, lang):
         DEFAULT_MODEL_VERSION = DEFAULT_STRUCTURE_MODEL_VERSION
     else:
         raise NotImplementedError
+
     model_urls = MODEL_URLS[type]
     if version not in model_urls:
-        logger.warning('version {} not in {}, auto switch to version {}'.format(
-            version, model_urls.keys(), DEFAULT_MODEL_VERSION))
         version = DEFAULT_MODEL_VERSION
     if model_type not in model_urls[version]:
         if model_type in model_urls[DEFAULT_MODEL_VERSION]:
-            logger.warning(
-                'version {} not support {} models, auto switch to version {}'.
-                format(version, model_type, DEFAULT_MODEL_VERSION))
             version = DEFAULT_MODEL_VERSION
         else:
             logger.error('{} models is not support, we only support {}'.format(
                 model_type, model_urls[DEFAULT_MODEL_VERSION].keys()))
             sys.exit(-1)
+    
     if lang not in model_urls[version][model_type]:
         if lang in model_urls[DEFAULT_MODEL_VERSION][model_type]:
-            logger.warning(
-                'lang {} is not support in {}, auto switch to version {}'.
-                format(lang, version, DEFAULT_MODEL_VERSION))
             version = DEFAULT_MODEL_VERSION
         else:
             logger.error(
@@ -296,6 +292,7 @@ class PaddleOCR(predict_system.TextSystem):
         """
         params = parse_args(mMain=False)
         params.__dict__.update(**kwargs)
+        assert params.ocr_version in ['PP-OCR', 'PP-OCRv2']
         params.use_gpu = check_gpu(params.use_gpu)
 
         if not params.show_log:
@@ -398,6 +395,7 @@ class PPStructure(OCRSystem):
     def __init__(self, **kwargs):
         params = parse_args(mMain=False)
         params.__dict__.update(**kwargs)
+        assert params.structure_version in ['STRUCTURE']
         params.use_gpu = check_gpu(params.use_gpu)
 
         if not params.show_log:
