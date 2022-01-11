@@ -33,17 +33,17 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
 - [more](./doc/doc_en/update_en.md)
 
 ## Features
-- PP-OCR series of high-quality pre-trained models, comparable to commercial effects
+- PP-OCR - A series of high-quality pre-trained models, comparable to commercial products
     - Ultra lightweight PP-OCRv2 series models: detection (3.1M) + direction classifier (1.4M) + recognition 8.5M) = 13.0M
     - Ultra lightweight PP-OCR mobile series models: detection (3.0M) + direction classifier (1.4M) + recognition (5.0M) = 9.4M
     - General PP-OCR server series models: detection (47.1M) + direction classifier (1.4M) + recognition (94.9M) = 143.4M
     - Support Chinese, English, and digit recognition, vertical text recognition, and long text recognition
-    - Support multi-language recognition: about 80 languages like Korean, Japanese, German, French, etc
+    - Support multi-lingual recognition: about 80 languages like Korean, Japanese, German, French, etc
 - PP-Structure: a document structurize system
-    - support layout analysis and table recognition (support export to Excel)
-    - support key information extraction
-    - support DocVQA
-- Rich toolkits related to the OCR areas
+    - Support layout analysis and table recognition (support export to Excel)
+    - Support key information extraction
+    - Support DocVQA
+- Rich OCR toolkit
     - Semi-automatic data annotation tool, i.e., PPOCRLabel: support fast and efficient data annotation
     - Data synthesis tool, i.e., Style-Text: easy to synthesize a large number of images which are similar to the target scene image
 - Support user-defined training, provides rich predictive inference deployment solutions
@@ -62,7 +62,7 @@ The above pictures are the visualizations of the general ppocr_server model. For
 
 <a name="Community"></a>
 ## Community
-- Scan the QR code below with your Wechat, you can access to official technical exchange group. Look forward to your participation.
+- Scan the QR code below with your Wechat, you can join the official technical discussion group. Looking forward to your participation.
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "200" height = "200" />
@@ -120,8 +120,8 @@ For a new language request, please refer to [Guideline for new language_requests
 - [PP-Structure: Information Extraction](./ppstructure/README.md)
     - [Layout Parser](./ppstructure/layout/README.md)
     - [Table Recognition](./ppstructure/table/README.md)
-    - [DocVQA](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.4/ppstructure/vqa)
-    - [Key Information Extraction](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.4/ppstructure/docs/kie.md)
+    - [DocVQA](./ppstructure/vqa/README.md)
+    - [Key Information Extraction](./ppstructure/docs/kie.md)
 - Academic Circles
     - [Two-stage Algorithm](./doc/doc_en/algorithm_overview_en.md)
     - [PGNet Algorithm](./doc/doc_en/pgnet_en.md)
