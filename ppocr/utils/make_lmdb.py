@@ -15,7 +15,6 @@ import os
 import lmdb
 import cv2
 import shutil
-from tqdm import tqdm
 import json
 import numpy as np
 
@@ -26,7 +25,7 @@ def checkImageIsValid(image_bin):
     image_buf = np.fromstring(image_bin, dtype=np.uint8)
     img = cv2.imdecode(image_buf, cv2.IMREAD_GRAYSCALE)
     img_h, img_w = img.shape[0], img.shape[1]
-    if img_h * img_w == 0:
+    if img is None or img_h * img_w == 0:
         return False
     return True
 
@@ -63,7 +62,7 @@ def convert2lmdb(data_root_dir, label_file_path, lmdb_out_dir, is_check=False):
     with open(label_file_path, 'r', encoding='utf-8') as fp1:
         lines = fp1.read().strip().split('\n')
         nums = len(lines)
-        for i in tqdm(range(nums), desc='making lmdb...'):
+        for i in range(nums):
             relative_img_path, label = lines[i].split('\t')
             img_path = os.path.join(data_root_dir, relative_img_path)
             if not os.path.exists(img_path):
@@ -81,8 +80,10 @@ def convert2lmdb(data_root_dir, label_file_path, lmdb_out_dir, is_check=False):
                 cache[label_key] = label.encode('utf-8')
                 if cnt % 1000 == 0:
                     writeCache(env, cache)
+                    print(f'{cnt}/{nums} completed.', end='\r', flush=True)
                     cache = {}
                 cnt += 1
         cache['num-samples'] = str(cnt - 1).encode('utf-8')
         writeCache(env, cache)
-        print(f'Created lmdb dataset with {nums} samples successfully')
+        print(f'{cnt - 1}/{nums} completed.')
+        print(f'Created lmdb dataset with {nums} samples successfully.')
