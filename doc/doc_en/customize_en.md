@@ -22,7 +22,7 @@ For more details about data preparation and training tutorials, refer to the doc
 
 PaddleOCR provides a concatenation tool for detection and recognition models, which can connect any trained detection model and any recognition model into a two-stage text recognition system. The input image goes through four main stages: text detection, text rectification, text recognition, and score filtering to output the text position and recognition results, and at the same time, you can choose to visualize the results.
 
-When performing prediction, you need to specify the path of a single image or a image folder through the parameter `image_dir`, the parameter `det_model_dir` specifies the path of detection model, and the parameter `rec_model_dir` specifies the path of recogniton model. The visualized results are saved to the `./inference_results` folder by default.
+When performing prediction, you need to specify the path of a single image or a image folder through the parameter `image_dir`, the parameter `det_model_dir` specifies the path of detection model, and the parameter `rec_model_dir` specifies the path of recognition model. The visualized results are saved to the `./inference_results` folder by default.
 
 ```
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
