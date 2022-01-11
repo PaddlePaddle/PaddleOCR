@@ -85,6 +85,13 @@ class SimpleDataSet(Dataset):
             data_line = data_line.decode('utf-8')
             substr = data_line.strip("\n").split(self.delimiter)
             file_name = substr[0]
+            # multiple images -> one gt label
+            if file_name[0] == "[":
+                try:
+                    info = json.loads(file_name)
+                    file_name = random.choice(info)
+                except:
+                    pass
             label = substr[1]
             img_path = os.path.join(self.data_dir, file_name)
             data = {'img_path': img_path, 'label': label}
@@ -107,6 +114,13 @@ class SimpleDataSet(Dataset):
             data_line = data_line.decode('utf-8')
             substr = data_line.strip("\n").split(self.delimiter)
             file_name = substr[0]
+            # multiple images -> one gt label
+            if file_name[0] == "[":
+                try:
+                    info = json.loads(file_name)
+                    file_name = random.choice(info)
+                except:
+                    pass
             label = substr[1]
             img_path = os.path.join(self.data_dir, file_name)
             data = {'img_path': img_path, 'label': label}
