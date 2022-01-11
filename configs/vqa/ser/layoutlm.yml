@@ -12,7 +12,7 @@ Global:
   use_visualdl: False
   seed: 2022
   infer_img: doc/vqa/input/zh_val_0.jpg
-  save_res_path: ./output/ser/predicts_layoutlm.txt
+  save_res_path: ./output/ser/
 
 Architecture:
   model_type: vqa
