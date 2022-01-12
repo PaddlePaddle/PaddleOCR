@@ -38,6 +38,9 @@ class LMDBDataSet(Dataset):
             np.random.shuffle(self.data_idx_order_list)
         self.ops = create_operators(dataset_config['transforms'], global_config)
 
+        ratio_list = dataset_config.get("ratio_list", [1.0])
+        self.need_reset = True in [x < 1 for x in ratio_list]
+
     def load_hierarchical_lmdb_dataset(self, data_dir):
         lmdb_sets = {}
         dataset_idx = 0
