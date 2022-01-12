@@ -800,8 +800,15 @@ class MainWindow(QMainWindow, WindowMixin):
 
         self.actions.rotateRight.setEnabled(_value)
         pix = cv2.imread(filename)
+        is_path_ch = False
+        if pix is None:
+            is_path_ch = True
+            pix = cv2.imdecode(np.fromfile(filename,dtype=np.uint8),-1)
         pix = np.rot90(pix, k)
-        cv2.imwrite(filename, pix)
+        if is_path_ch:
+            cv2.imencode(os.path.splitext(filename)[-1],pix)[1].tofile(filename)
+        else:
+            cv2.imwrite(filename, pix)
         self.canvas.update()
         self.loadFile(filename)
 
@@ -1869,6 +1876,8 @@ class MainWindow(QMainWindow, WindowMixin):
 
     def reRecognition(self):
         img = cv2.imread(self.filePath)
+        if img is None:
+            img = cv2.imdecode(np.fromfile(self.filePath,dtype=np.uint8),-1)
         # org_box = [dic['points'] for dic in self.PPlabel[self.getImglabelidx(self.filePath)]]
         if self.canvas.shapes:
             self.result_dic = []
@@ -1908,6 +1917,8 @@ class MainWindow(QMainWindow, WindowMixin):
 
     def singleRerecognition(self):
         img = cv2.imread(self.filePath)
+        if img is None:
+            img = cv2.imdecode(np.fromfile(self.filePath,dtype=np.uint8),-1)
         for shape in self.canvas.selectedShapes:
             box = [[int(p.x()), int(p.y())] for p in shape.points]
             assert len(box) == 4
@@ -2057,11 +2068,18 @@ class MainWindow(QMainWindow, WindowMixin):
                 idx = self.getImglabelidx(key)
                 try:
                     img = cv2.imread(key)
+                    is_path_ch = False
+                    if img is None:
+                        is_path_ch = True
+                        img = cv2.imdecode(np.fromfile(self.filePath,dtype=np.uint8),-1)
                     for i, label in enumerate(self.PPlabel[idx]):
                         if label['difficult']: continue
                         img_crop = get_rotate_crop_image(img, np.array(label['points'], np.float32))
                         img_name = os.path.splitext(os.path.basename(idx))[0] + '_crop_'+str(i)+'.jpg'
-                        cv2.imwrite(crop_img_dir+img_name, img_crop)
+                        if is_path_ch:
+                            cv2.imencode(os.path.splitext(img_name)[-1],img_crop)[1].tofile(crop_img_dir+img_name)
+                        else:
+                            cv2.imwrite(crop_img_dir+img_name, img_crop)
                         f.write('crop_img/'+ img_name + '\t')
                         f.write(label['transcription'] + '\n')
                 except Exception as e:
