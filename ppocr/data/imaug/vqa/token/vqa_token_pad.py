@@ -94,8 +94,11 @@ class VQATokenPad(object):
                     'input_ids', 'labels', 'token_type_ids', 'bbox',
                     'attention_mask'
             ]:
-                if self.infer_mode and key == 'labels':
-                    continue
-                length = min(len(data[key]), self.max_seq_len)
-                data[key] = np.array(data[key][:length], dtype='int64')
+                if self.infer_mode:
+                    if key != 'labels':
+                        length = min(len(data[key]), self.max_seq_len)
+                        data[key] = data[key][:length]
+                    else:
+                        continue
+                data[key] = np.array(data[key], dtype='int64')
         return data
