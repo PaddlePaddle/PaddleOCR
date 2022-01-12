@@ -137,6 +137,7 @@ def main():
                         np.expand_dims(
                             batch[i], axis=0))
                 st = time.time()
+                batch_pred = model.backbone._preprocess(batch_pred)
                 node, edge = model(batch_pred)
                 node = F.softmax(node, -1)
                 count_t.append(time.time() - st)

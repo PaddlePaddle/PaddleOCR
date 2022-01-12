@@ -55,6 +55,15 @@ def export_single_model(model, arch_config, save_path, logger):
                 shape=[None, 3, 48, 160], dtype="float32"),
         ]
         model = to_static(model, input_spec=other_shape)
+    elif arch_config['algorithm'] == "SDMGR":
+        other_shape = [
+            [paddle.static.InputSpec(shape=[1, 3, 1024, 480], dtype="float32"),
+            [paddle.static.InputSpec(shape=[30, 30, 5], dtype="float32")],
+            [paddle.static.InputSpec(shape=[30, 15], dtype="float32")],
+            paddle.static.InputSpec(shape=[30, 4], dtype="float32"),
+            paddle.static.InputSpec(shape=[1], dtype="int32")]
+        ]
+        model = to_static(model, input_spec=other_shape)
     else:
         infer_shape = [3, -1, -1]
         if arch_config["model_type"] == "rec":

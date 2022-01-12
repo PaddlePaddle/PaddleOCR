@@ -166,15 +166,31 @@ class Kie_backbone(nn.Layer):
                 paddle.to_tensor(
                     gt_bboxes[i, :num, ...], dtype='float32'))
         return img, temp_relations, temp_texts, temp_gt_bboxes
-
-    def forward(self, inputs):
+    
+    def _preprocess(self, inputs):
         img = inputs[0]
         relations, texts, gt_bboxes, tag, img_size = inputs[1], inputs[
             2], inputs[3], inputs[5], inputs[-1]
         img, relations, texts, gt_bboxes = self.pre_process(
             img, relations, texts, gt_bboxes, tag, img_size)
-        x = self.img_feat(img)
+        
         boxes, rois_num = self.bbox2roi(gt_bboxes)
+        return img, relations, texts, boxes, rois_num
+
+
+    def forward(self, inputs):
+        if self.training:
+            img = inputs[0]
+            relations, texts, gt_bboxes, tag, img_size = inputs[1], inputs[
+                2], inputs[3], inputs[5], inputs[-1]
+            img, relations, texts, gt_bboxes = self.pre_process(
+                img, relations, texts, gt_bboxes, tag, img_size)
+            boxes, rois_num = self.bbox2roi(gt_bboxes)
+        else:
+            img, relations, texts, boxes, rois_num = inputs
+
+        x = self.img_feat(img)
+        
         feats = paddle.fluid.layers.roi_align(
             x,
             boxes,

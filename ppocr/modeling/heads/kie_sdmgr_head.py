@@ -52,9 +52,13 @@ class SDMGRHead(nn.Layer):
     def forward(self, input, targets):
         relations, texts, x = input
         node_nums, char_nums = [], []
+        if type(relations) is not list and type(texts) is not list:
+            texts = [texts] # only for batch_size = 1
+            releations = [relations] # only for batch_size = 1
         for text in texts:
             node_nums.append(text.shape[0])
-            char_nums.append(paddle.sum((text > -1).astype(int), axis=-1))
+            # char_nums.append(paddle.sum((text > -1).astype(int), axis=-1))
+            char_nums.append(paddle.sum(paddle.cast(text > -1, "int32"), axis=-1))
 
         max_num = max([char_num.max() for char_num in char_nums])
         all_nodes = paddle.concat([
