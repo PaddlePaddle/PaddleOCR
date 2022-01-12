@@ -18,7 +18,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from paddle.optimizer import lr
-from .lr_scheduler import CyclicalCosineDecay, OneCycleLR
+from .lr_scheduler import CyclicalCosineDecay, OneCycleDecay
 
 
 class Linear(object):
@@ -261,7 +261,7 @@ class OneCycle(object):
         self.warmup_epoch = round(warmup_epoch * step_each_epoch)
 
     def __call__(self):
-        learning_rate = OneCycleLR(
+        learning_rate = OneCycleDecay(
             max_lr=self.max_lr,
             epochs=self.epochs,
             steps_per_epoch=self.steps_per_epoch,

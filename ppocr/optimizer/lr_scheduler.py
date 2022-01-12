@@ -49,7 +49,7 @@ class CyclicalCosineDecay(LRScheduler):
         return lr
 
 
-class OneCycleLR(LRScheduler):
+class OneCycleDecay(LRScheduler):
     """
     One Cycle learning rate decay
     A learning rate which can be referred in https://arxiv.org/abs/1708.07120
@@ -130,7 +130,7 @@ class OneCycleLR(LRScheduler):
         elif anneal_strategy == 'linear':
             self.anneal_func = self._annealing_linear
 
-        super(OneCycleLR, self).__init__(max_lr, last_epoch, verbose)
+        super(OneCycleDecay, self).__init__(max_lr, last_epoch, verbose)
 
     def _annealing_cos(self, start, end, pct):
         "Cosine anneal from `start` to `end` as pct goes from 0.0 to 1.0."
