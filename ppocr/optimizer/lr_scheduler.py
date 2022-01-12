@@ -142,7 +142,7 @@ class OneCycleDecay(LRScheduler):
         return (end - start) * pct + start
 
     def get_lr(self):
-        lrs = []
+        computed_lr = 0.0
         step_num = self.last_epoch
 
         if step_num > self.total_steps:
@@ -159,6 +159,4 @@ class OneCycleDecay(LRScheduler):
                 break
             start_step = phase['end_step']
 
-        lrs.append(computed_lr)
-
-        return lrs[0]
+        return computed_lr
