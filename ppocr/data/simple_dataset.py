@@ -69,6 +69,16 @@ class SimpleDataSet(Dataset):
         random.shuffle(self.data_lines)
         return
 
+    def _try_parse_filename_list(self, file_name):
+        # multiple images -> one gt label
+        if len(file_name) > 0 and file_name[0] == "[":
+            try:
+                info = json.loads(file_name)
+                file_name = random.choice(info)
+            except:
+                pass
+        return file_name
+
     def get_ext_data(self):
         ext_data_num = 0
         for op in self.ops:
@@ -85,6 +95,7 @@ class SimpleDataSet(Dataset):
             data_line = data_line.decode('utf-8')
             substr = data_line.strip("\n").split(self.delimiter)
             file_name = substr[0]
+            file_name = self._try_parse_filename_list(file_name)
             label = substr[1]
             img_path = os.path.join(self.data_dir, file_name)
             data = {'img_path': img_path, 'label': label}
@@ -95,7 +106,7 @@ class SimpleDataSet(Dataset):
                 data['image'] = img
             data = transform(data, load_data_ops)
 
-            if data is None or data['polys'].shape[1]!=4:
+            if data is None or data['polys'].shape[1] != 4:
                 continue
             ext_data.append(data)
         return ext_data
@@ -107,6 +118,7 @@ class SimpleDataSet(Dataset):
             data_line = data_line.decode('utf-8')
             substr = data_line.strip("\n").split(self.delimiter)
             file_name = substr[0]
+            file_name = self._try_parse_filename_list(file_name)
             label = substr[1]
             img_path = os.path.join(self.data_dir, file_name)
             data = {'img_path': img_path, 'label': label}

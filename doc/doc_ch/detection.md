@@ -78,11 +78,11 @@ json.dumps编码前的图像标注信息是包含多个字典的list，字典中
 cd PaddleOCR/
 # 根据backbone的不同选择下载对应的预训练模型
 # 下载MobileNetV3的预训练模型
-wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams
+wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/pretrained/MobileNetV3_large_x0_5_pretrained.pdparams
 # 或，下载ResNet18_vd的预训练模型
-wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/ResNet18_vd_pretrained.pdparams
+wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/pretrained/ResNet18_vd_pretrained.pdparams
 # 或，下载ResNet50_vd的预训练模型
-wget -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/ResNet50_vd_ssld_pretrained.pdparams
+wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/pretrained/ResNet50_vd_ssld_pretrained.pdparams
 ```
 
 <a name="2-----"></a>
