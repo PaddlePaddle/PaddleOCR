@@ -128,6 +128,10 @@ def init_args():
 
     parser.add_argument("--show_log", type=str2bool, default=True)
     parser.add_argument("--use_onnx", type=str2bool, default=False)
+
+    # kie model
+    parser.add_argument("--kie_model_dir", type=str, default=False)
+
     return parser
 
 
@@ -145,6 +149,8 @@ def create_predictor(args, mode, logger):
         model_dir = args.rec_model_dir
     elif mode == 'table':
         model_dir = args.table_model_dir
+    elif mode == 'kie':
+        model_dir  = args.kie_model_dir
     else:
         model_dir = args.e2e_model_dir
 

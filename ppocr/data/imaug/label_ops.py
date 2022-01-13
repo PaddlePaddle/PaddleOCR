@@ -353,7 +353,10 @@ class KieLabelEncode(object):
         temp_padded_text_inds[:h, :] = padded_text_inds
 
         temp_labels = np.zeros([max_num, max_num])
-        temp_labels[:h, :h + 1] = labels
+        if labels is not None:
+            temp_labels[:h, :h + 1] = labels
+        else: 
+            temp_labels = []
 
         tag = np.array([h, recoder_len])
         return dict(
@@ -436,15 +439,17 @@ class KieLabelEncode(object):
             texts.append(ann['transcription'])
             text_ind = [self.dict[c] for c in text if c in self.dict]
             text_inds.append(text_ind)
-            labels.append(ann['label'])
+            if 'label' in ann:
+                labels.append(ann['label'])
             edges.append(ann.get('edge', 0))
         ann_infos = dict(
             image=data['image'],
             points=boxes,
             texts=texts,
             text_inds=text_inds,
-            edges=edges,
-            labels=labels)
+            edges=edges)
+        if len(labels) > 0:
+            ann_infos['lables'] = labels
 
         return self.list_to_numpy(ann_infos)
 

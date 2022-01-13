@@ -58,8 +58,8 @@ def export_single_model(model, arch_config, save_path, logger):
     elif arch_config['algorithm'] == "SDMGR":
         other_shape = [
             [paddle.static.InputSpec(shape=[1, 3, 1024, 480], dtype="float32"),
-            [paddle.static.InputSpec(shape=[30, 30, 5], dtype="float32")],
-            [paddle.static.InputSpec(shape=[30, 15], dtype="float32")],
+            paddle.static.InputSpec(shape=[30, 30, 5], dtype="float32"),
+            paddle.static.InputSpec(shape=[30, 15], dtype="float32"),
             paddle.static.InputSpec(shape=[30, 4], dtype="float32"),
             paddle.static.InputSpec(shape=[1], dtype="int32")]
         ]

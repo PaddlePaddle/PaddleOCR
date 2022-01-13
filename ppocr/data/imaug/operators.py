@@ -371,8 +371,9 @@ class E2EResizeForTest(object):
 class KieResize(object):
     def __init__(self, **kwargs):
         super(KieResize, self).__init__()
-        self.max_side, self.min_side = kwargs['img_scale'][0], kwargs[
-            'img_scale'][1]
+        # self.max_side, self.min_side = kwargs['img_scale'][0], kwargs[
+        #     'img_scale'][1]
+        pass
 
     def __call__(self, data):
         img = data['image']

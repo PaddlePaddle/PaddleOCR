@@ -185,7 +185,8 @@ class Block(nn.Layer):
         for x0_c, x1_c, m0, m1 in zip(x0_chunks, x1_chunks, self.merge_linears0,
                                       self.merge_linears1):
             m = m0(x0_c) * m1(x1_c)  # bs x split_size*rank
-            m = m.reshape([bs, self.rank, -1])
+            split_size = int(paddle.numel(m).numpy()[0] // self.rank // bs) 
+            m = m.reshape([bs, self.rank, split_size])
             z = paddle.sum(m, 1)
             if self.pos_norm == 'before_cat':
                 z = paddle.sqrt(F.relu(z)) - paddle.sqrt(F.relu(-z))

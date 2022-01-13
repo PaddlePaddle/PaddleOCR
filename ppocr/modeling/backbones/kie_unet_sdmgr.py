@@ -175,7 +175,7 @@ class Kie_backbone(nn.Layer):
             img, relations, texts, gt_bboxes, tag, img_size)
         
         boxes, rois_num = self.bbox2roi(gt_bboxes)
-        return img, relations, texts, boxes, rois_num
+        return img, relations[0], texts[0], boxes, rois_num
 
 
     def forward(self, inputs):
