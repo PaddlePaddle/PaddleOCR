@@ -29,9 +29,10 @@ def build_backbone(config, model_type):
         from .rec_nrtr_mtb import MTB
         from .rec_resnet_31 import ResNet31
         from .rec_resnet_aster import ResNet_ASTER
+        from .rec_micronet import MicroNet
         support_dict = [
             'MobileNetV1Enhance', 'MobileNetV3', 'ResNet', 'ResNetFPN', 'MTB',
-            "ResNet31", "ResNet_ASTER"
+            "ResNet31", "ResNet_ASTER", 'MicroNet'
         ]
     elif model_type == "e2e":
         from .e2e_resnet_vd_pg import ResNet
