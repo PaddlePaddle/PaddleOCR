@@ -87,13 +87,19 @@ def build_dataloader(config, mode, device, logger, seed=None):
             shuffle=shuffle,
             drop_last=drop_last)
 
+    if 'collate_fn' in loader_config:
+        from . import collate_fn
+        collate_fn = getattr(collate_fn, loader_config['collate_fn'])()
+    else:
+        collate_fn = None
     data_loader = DataLoader(
         dataset=dataset,
         batch_sampler=batch_sampler,
         places=device,
         num_workers=num_workers,
         return_list=True,
-        use_shared_memory=use_shared_memory)
+        use_shared_memory=use_shared_memory,
+        collate_fn=collate_fn)
 
     # support exit using ctrl+c
     signal.signal(signal.SIGINT, term_mp)

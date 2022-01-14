@@ -76,7 +76,7 @@ def main():
     }
     FLAGS = ArgsParser().parse_args()
     config = load_config(FLAGS.config)
-    merge_config(FLAGS.opt)
+    config = merge_config(config, FLAGS.opt)
     logger = get_logger()
     # build post process
 

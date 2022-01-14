@@ -12,4 +12,4 @@ cython
 lxml
 premailer
 openpyxl
-paddlenlp>=2.2.1
+fasttext==0.9.1

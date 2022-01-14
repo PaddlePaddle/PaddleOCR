@@ -41,7 +41,6 @@ class SimpleDataSet(Dataset):
         ) == data_source_num, "The length of ratio_list should be the same as the file_list."
         self.data_dir = dataset_config['data_dir']
         self.do_shuffle = loader_config['shuffle']
-
         self.seed = seed
         logger.info("Initialize indexs of datasets:%s" % label_file_list)
         self.data_lines = self.get_image_info_list(label_file_list, ratio_list)
@@ -49,6 +48,8 @@ class SimpleDataSet(Dataset):
         if self.mode == "train" and self.do_shuffle:
             self.shuffle_data_random()
         self.ops = create_operators(dataset_config['transforms'], global_config)
+
+        self.need_reset = True in [x < 1 for x in ratio_list]
 
     def get_image_info_list(self, file_list, ratio_list):
         if isinstance(file_list, str):

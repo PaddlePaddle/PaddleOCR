@@ -29,24 +29,23 @@ class L1Decay(object):
 
     def __init__(self, factor=0.0):
         super(L1Decay, self).__init__()
-        self.regularization_coeff = factor
+        self.coeff = factor
 
     def __call__(self):
-        reg = paddle.regularizer.L1Decay(self.regularization_coeff)
+        reg = paddle.regularizer.L1Decay(self.coeff)
         return reg
 
 
 class L2Decay(object):
     """
-    L2 Weight Decay Regularization, which encourages the weights to be sparse.
+    L2 Weight Decay Regularization, which helps to prevent the model over-fitting.
     Args:
         factor(float): regularization coeff. Default:0.0.
     """
 
     def __init__(self, factor=0.0):
         super(L2Decay, self).__init__()
-        self.regularization_coeff = factor
+        self.coeff = float(factor)
 
     def __call__(self):
-        reg = paddle.regularizer.L2Decay(self.regularization_coeff)
-        return reg
+        return self.coeff

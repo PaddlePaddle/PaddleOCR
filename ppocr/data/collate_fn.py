@@ -15,20 +15,20 @@
 import paddle
 import numbers
 import numpy as np
+from collections import defaultdict
 
 
-class DataCollator:
+class DictCollator(object):
     """
     data batch
     """
 
     def __call__(self, batch):
-        data_dict = {}
+        # todo：support batch operators 
+        data_dict = defaultdict(list)
         to_tensor_keys = []
         for sample in batch:
             for k, v in sample.items():
-                if k not in data_dict:
-                    data_dict[k] = []
                 if isinstance(v, (np.ndarray, paddle.Tensor, numbers.Number)):
                     if k not in to_tensor_keys:
                         to_tensor_keys.append(k)
@@ -36,3 +36,23 @@ class DataCollator:
         for k in to_tensor_keys:
             data_dict[k] = paddle.to_tensor(data_dict[k])
         return data_dict
+
+
+class ListCollator(object):
+    """
+    data batch
+    """
+
+    def __call__(self, batch):
+        # todo：support batch operators 
+        data_dict = defaultdict(list)
+        to_tensor_idxs = []
+        for sample in batch:
+            for idx, v in enumerate(sample):
+                if isinstance(v, (np.ndarray, paddle.Tensor, numbers.Number)):
+                    if idx not in to_tensor_idxs:
+                        to_tensor_idxs.append(idx)
+                data_dict[idx].append(v)
+        for idx in to_tensor_idxs:
+            data_dict[idx] = paddle.to_tensor(data_dict[idx])
+        return list(data_dict.values())

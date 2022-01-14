@@ -49,6 +49,8 @@ class PGDataSet(Dataset):
 
         self.ops = create_operators(dataset_config['transforms'], global_config)
 
+        self.need_reset = True in [x < 1 for x in ratio_list]
+
     def shuffle_data_random(self):
         if self.do_shuffle:
             random.seed(self.seed)

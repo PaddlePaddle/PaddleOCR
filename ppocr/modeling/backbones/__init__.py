@@ -43,6 +43,9 @@ def build_backbone(config, model_type):
         from .table_resnet_vd import ResNet
         from .table_mobilenet_v3 import MobileNetV3
         support_dict = ["ResNet", "MobileNetV3"]
+    elif model_type == 'vqa':
+        from .vqa_layoutlm import LayoutLMForSer, LayoutXLMForSer, LayoutXLMForRe
+        support_dict = ["LayoutLMForSer", "LayoutXLMForSer", 'LayoutXLMForRe']
     else:
         raise NotImplementedError
 
