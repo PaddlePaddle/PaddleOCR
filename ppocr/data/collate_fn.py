@@ -24,6 +24,7 @@ class DictCollator(object):
     """
 
     def __call__(self, batch):
+        # todo：support batch operators 
         data_dict = defaultdict(list)
         to_tensor_keys = []
         for sample in batch:
@@ -43,6 +44,7 @@ class ListCollator(object):
     """
 
     def __call__(self, batch):
+        # todo：support batch operators 
         data_dict = defaultdict(list)
         to_tensor_idxs = []
         for sample in batch:
