@@ -160,6 +160,7 @@ public class Predictor {
             for (String content : contents) {
                 wordLabels.add(content);
             }
+            wordLabels.add(" ");
             Log.i(TAG, "Word label size: " + wordLabels.size());
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
