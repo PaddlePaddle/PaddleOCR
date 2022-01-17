@@ -1,0 +1,26 @@
+===========================train_params===========================
+model_name:det_mv3_db_v2.0_benchmark
+python:python3.7
+gpu_list:0|0,1
+Global.use_gpu:True|True
+Global.auto_cast:null
+Global.epoch_num:lite_train_lite_infer=2
+Global.save_model_dir:./output/
+Train.loader.batch_size_per_card:lite_train_lite_infer=16
+Global.pretrained_model:null
+train_model_name:latest
+train_infer_img_dir:./train_data/icdar2015/text_localization/ch4_test_images/
+null:null
+##
+trainer:norm_train
+norm_train:tools/train.py -c configs/det/det_mv3_db.yml -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
+pact_train:null
+fpgm_train:null
+distill_train:null
+null:null
+null:null
+##
+===========================eval_params=========================== 
+eval:null
+null:null
+##
