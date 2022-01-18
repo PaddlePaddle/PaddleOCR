@@ -1382,7 +1382,7 @@ class MainWindow(QMainWindow, WindowMixin):
             # show file list image count
             select_indexes = self.fileListWidget.selectedIndexes()
             if len(select_indexes) > 0:
-                self.filedock.setWindowTitle(self.fileListName + f" ({select_indexes[0].row()}"
+                self.filedock.setWindowTitle(self.fileListName + f" ({select_indexes[0].row() + 1}"
                                                                  f"/{self.fileListWidget.count()})")
 
             self.canvas.setFocus(True)
