@@ -118,7 +118,7 @@ class AutoDialog(QDialog):
 
         # calculate time left of auto labeling
         avg_time = (time.time() - self.time_start) / i  # Use average time to prevent time fluctuations
-        time_left = str(datetime.timedelta(seconds=avg_time * (self.lender - i)))
+        time_left = str(datetime.timedelta(seconds=avg_time * (self.lender - i))).split(".")[0]  # Remove microseconds
         self.setWindowTitle("PPOCRLabel  --  " + f"Time Left: {time_left}")  # show
 
     def handleListWidgetSingal(self, i):
