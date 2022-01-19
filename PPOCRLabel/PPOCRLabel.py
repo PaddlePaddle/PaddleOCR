@@ -101,6 +101,8 @@ class MainWindow(QMainWindow, WindowMixin):
     def __init__(self, lang="ch", gpu=False, defaultFilename=None, defaultPrefdefClassFile=None, defaultSaveDir=None):
         super(MainWindow, self).__init__()
         self.setWindowTitle(__appname__)
+        self.setWindowState(Qt.WindowMaximized)  # set window max
+        self.activateWindow()  # PPOCRLabel goes to the front when activate
 
         # Load setting in the main thread
         self.settings = Settings()
