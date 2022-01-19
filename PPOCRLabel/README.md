@@ -143,7 +143,7 @@ python PPOCRLabel.py
 ### 3.1 Shortcut keys
 
 | Shortcut keys            | Description                                      |
-| ------------------------ | ------------------------------------------------ |
+|--------------------------| ------------------------------------------------ |
 | Ctrl + Shift + R         | Re-recognize all the labels of the current image |
 | W                        | Create a rect box                                |
 | Q                        | Create a four-points box                         |
@@ -151,7 +151,7 @@ python PPOCRLabel.py
 | Ctrl + R                 | Re-recognize the selected box                    |
 | Ctrl + C                 | Copy and paste the selected box                  |
 | Ctrl + Left Mouse Button | Multi select the label box                       |
-| Backspace                | Delete the selected box                          |
+| Ctrl+T                   | Delete the selected box                          |
 | Ctrl + V                 | Check image                                      |
 | Ctrl + Shift + d         | Delete image                                     |
 | D                        | Next image                                       |
