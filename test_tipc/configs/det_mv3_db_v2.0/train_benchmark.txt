@@ -24,3 +24,7 @@ null:null
 eval:null
 null:null
 ##
+===========================infer_params===========================
+Global.save_inference_dir:./output/
+Global.checkpoints:
+norm_export:null

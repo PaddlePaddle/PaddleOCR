@@ -323,14 +323,14 @@ else
                 set_train_params1=$(func_set_params "${train_param_key1}" "${train_param_value1}")
                 set_use_gpu=$(func_set_params "${train_use_gpu_key}" "${train_use_gpu}")
                 if [ ${#ips} -le 26 ];then
-                    save_log="${LOG_PATH}/${trainer}_gpus_${gpu}_autocast_${autocast}"
+                    save_log="${LOG_PATH}/${model_name}_gpus_${gpu}_autocast_${autocast}_bs_${train_batch_value}_sp"
                     nodes=1
                 else
                     IFS=","
                     ips_array=(${ips})
                     IFS="|"
                     nodes=${#ips_array[@]}
-                    save_log="${LOG_PATH}/${trainer}_gpus_${gpu}_autocast_${autocast}_nodes_${nodes}"
+                    save_log="${LOG_PATH}/${model_name}_gpus_${gpu}_autocast_${autocast}_bs_${train_batch_value}_mp"
                 fi
 
 
