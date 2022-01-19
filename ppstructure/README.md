@@ -96,7 +96,7 @@ In PP-Structure, the image will be divided into 5 types of areas **text, title, 
 
 #### 6.1.1 Layout analysis
 
-Layout analysis classifies image by region, including the use of Python scripts of layout analysis tools, extraction of designated category detection boxes, performance indicators, and custom training layout analysis models. For details, please refer to [document](layout/README.md).
+Layout analysis classifies image by region, including the use of Python scripts of layout analysis tools, extraction of designated category detection boxes, performance indicators, and custom training layout analysis models. For details, please refer to [document](layout/README_en.md).
 
 #### 6.1.2 Table recognition
 

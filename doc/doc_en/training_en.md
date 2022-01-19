@@ -12,15 +12,15 @@
 * [4. FAQ](#3-faq)
 
 
-This article will introduce the basic concepts that need to be mastered during model training and the tuning methods during training.
+This article will introduce the basic concepts that is necessary for model training and tuning.
 
-At the same time, it will briefly introduce the components of the PaddleOCR model training data and how to prepare the data finetune model in the vertical scene.
+At the same time, it will briefly introduce the structure of the training data and how to prepare the data to fine-tune model in vertical scenes.
 
 <a name="1-Yml-Configuration"></a>
 
 ## 1. Yml Configuration
 
-The PaddleOCR model uses configuration files to manage network training and evaluation parameters. In the configuration file, you can set the model, optimizer, loss function, and pre- and post-processing parameters of the model. PaddleOCR reads these parameters from the configuration file, and then builds a complete training process to complete the model training. When optimized, the configuration can be completed by modifying the parameters in the configuration file, which is simple to use and convenient to modify.
+The PaddleOCR uses configuration files to control network training and evaluation parameters. In the configuration file, you can set the model, optimizer, loss function, and pre- and post-processing parameters of the model. PaddleOCR reads these parameters from the configuration file, and then builds a complete training process to train the model. Fine-tuning can also be completed by modifying the parameters in the configuration file, which is simple and convenient.
 
 For the complete configuration file description, please refer to [Configuration File](./config_en.md)
 
@@ -28,13 +28,13 @@ For the complete configuration file description, please refer to [Configuration 
 
 ## 2. Basic Concepts
 
-In the process of model training, some hyperparameters need to be manually adjusted to help the model obtain the optimal index at the least loss. Different data volumes may require different hyper-parameters. When you want to finetune your own data or tune the model effect, there are several parameter adjustment strategies for reference:
+During the model training process, some hyper-parameters can be manually specified to obtain the optimal result at the least cost. Different data volumes may require different hyper-parameters. When you want to fine-tune the model based on your own data, there are several parameter adjustment strategies for reference:
 
 <a name="11-learning-rate"></a>
 ### 2.1 Learning Rate
 
-The learning rate is one of the important hyperparameters for training neural networks. It represents the step length of the gradient moving to the optimal solution of the loss function in each iteration.
-A variety of learning rate update strategies are provided in PaddleOCR, which can be modified through configuration files, for example:
+The learning rate is one of the most important hyper-parameters for training neural networks. It represents the step length of the gradient moving towards the optimal solution of the loss function in each iteration.
+A variety of learning rate update strategies are provided by PaddleOCR, which can be specified in configuration files. For example,
 
 ```
 Optimizer:
@@ -46,16 +46,15 @@ Optimizer:
     warmup_epoch: 5
 ```
 
-Piecewise stands for piecewise constant attenuation. Different learning rates are specified in different learning stages,
-and the learning rate is the same in each stage.
+`Piecewise` stands for piece-wise constant attenuation. Different learning rates are specified in different learning stages, and the learning rate stay the same in each stage.
 
-warmup_epoch means that in the first 5 epochs, the learning rate will gradually increase from 0 to base_lr. For all strategies, please refer to the code [learning_rate.py](../../ppocr/optimizer/learning_rate.py).
+`warmup_epoch` means that in the first 5 epochs, the learning rate will be increased gradually from 0 to base_lr. For all strategies, please refer to the code [learning_rate.py](../../ppocr/optimizer/learning_rate.py).
 
 <a name="12-regularization"></a>
 ### 2.2 Regularization
 
-Regularization can effectively avoid algorithm overfitting. PaddleOCR provides L1 and L2 regularization methods.
-L1 and L2 regularization are the most commonly used regularization methods.
+Regularization can effectively avoid algorithm over-fitting. PaddleOCR provides L1 and L2 regularization methods.
+L1 and L2 regularization are the most widely used regularization methods.
 L1 regularization adds a regularization term to the objective function to reduce the sum of absolute values of the parameters;
 while in L2 regularization, the purpose of adding a regularization term is to reduce the sum of squared parameters.
 The configuration method is as follows:
@@ -95,7 +94,7 @@ The current open source models, data sets and magnitudes are as follows:
     - Chinese data set, LSVT street view data set crops the image according to the truth value, and performs position calibration, a total of 30w images. In addition, based on the LSVT corpus, 500w of synthesized data.
     - Small language data set, using different corpora and fonts, respectively generated 100w synthetic data set, and using ICDAR-MLT as the verification set.
 
-Among them, the public data sets are all open source, users can search and download by themselves, or refer to [Chinese data set](./datasets.md), synthetic data is not open source, users can use open source synthesis tools to synthesize by themselves. Synthesis tools include [text_renderer](https://github.com/Sanster/text_renderer), [SynthText](https://github.com/ankush-me/SynthText), [TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator) etc.
+Among them, the public data sets are all open source, users can search and download by themselves, or refer to [Chinese data set](../doc_ch/datasets.md), synthetic data is not open source, users can use open source synthesis tools to synthesize by themselves. Synthesis tools include [text_renderer](https://github.com/Sanster/text_renderer), [SynthText](https://github.com/ankush-me/SynthText), [TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator) etc.
 
 <a name="22-vertical-scene"></a>
 
@@ -129,17 +128,17 @@ There are several experiences for reference when constructing the data set:
 **Q**: How to choose a suitable network input shape when training CRNN recognition?
 
     A: The general height is 32, the longest width is selected, there are two methods:
-    
+
     (1) Calculate the aspect ratio distribution of training sample images. The selection of the maximum aspect ratio considers 80% of the training samples.
-    
+
     (2) Count the number of texts in training samples. The selection of the longest number of characters considers the training sample that satisfies 80%. Then the aspect ratio of Chinese characters is approximately considered to be 1, and that of English is 3:1, and the longest width is estimated.
 
 **Q**: During the recognition training, the accuracy of the training set has reached 90, but the accuracy of the verification set has been kept at 70, what should I do?
 
     A: If the accuracy of the training set is 90 and the test set is more than 70, it should be over-fitting. There are two methods to try:
-    
+
     (1) Add more augmentation methods or increase the [probability] of augmented prob (https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/data/imaug/rec_img_aug.py#L341), The default is 0.4.
-    
+
     (2) Increase the [l2 dcay value] of the system (https://github.com/PaddlePaddle/PaddleOCR/blob/a501603d54ff5513fc4fc760319472e59da25424/configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml#L47)
 
 **Q**: When the recognition model is trained, loss can drop normally, but acc is always 0

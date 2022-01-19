@@ -28,12 +28,12 @@ The multilingual models cover Latin, Arabic, Traditional Chinese, Korean, Japane
 This document will briefly introduce how to use the multilingual model.
 
 - [1 Installation](#Install)
-    - [1.1 paddle installation](#paddleinstallation)
-    - [1.2 paddleocr package installation](#paddleocr_package_install)
+    - [1.1 Paddle installation](#paddleinstallation)
+    - [1.2 PaddleOCR package installation](#paddleocr_package_install)
 
 - [2 Quick Use](#Quick_Use)
     - [2.1 Command line operation](#Command_line_operation)
-    - [2.2 python script running](#python_Script_running)
+    - [2.2 Run with Python script](#python_Script_running)
 - [3 Custom Training](#Custom_Training)
 - [4 Inference and Deployment](#inference)
 - [4 Supported languages and abbreviations](#language_abbreviations)
@@ -42,7 +42,7 @@ This document will briefly introduce how to use the multilingual model.
 ## 1 Installation
 
 <a name="paddle_install"></a>
-### 1.1 paddle installation
+### 1.1 Paddle installation
 ```
 # cpu
 pip install paddlepaddle
@@ -52,7 +52,7 @@ pip install paddlepaddle-gpu
 ```
 
 <a name="paddleocr_package_install"></a>
-### 1.2 paddleocr package installation
+### 1.2 PaddleOCR package installation
 
 
 pip install
@@ -79,8 +79,8 @@ paddleocr -h
 
 * Whole image prediction (detection + recognition)
 
-Paddleocr currently supports 80 languages, which can be switched by modifying the --lang parameter.
-The specific supported [language] (#language_abbreviations) can be viewed in the table.
+PaddleOCR currently supports 80 languages, which can be specified by the --lang parameter.
+The supported languages are listed in the [table](#language_abbreviations).
 
 ``` bash
 paddleocr --image_dir doc/imgs_en/254.jpg --lang=en
@@ -90,7 +90,7 @@ paddleocr --image_dir doc/imgs_en/254.jpg --lang=en
     <img src="../imgs_results/multi_lang/img_02.jpg" width="600" height="600">
 </div>
 
-The result is a list, each item contains a text box, text and recognition confidence
+The result is a list. Each item contains a text box, text and recognition confidence
 ```text
 [('PHO CAPITAL', 0.95723116), [[66.0, 50.0], [327.0, 44.0], [327.0, 76.0], [67.0, 82.0]]]
 [('107 State Street', 0.96311164), [[72.0, 90.0], [451.0, 84.0], [452.0, 116.0], [73.0, 121.0]]]
@@ -110,7 +110,7 @@ paddleocr --image_dir doc/imgs_words_en/word_308.png --det false --lang=en
 
 ![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_words_en/word_308.png)
 
-The result is a tuple, which returns the recognition result and recognition confidence
+The result is a 2-tuple, which contains the recognition result and recognition confidence
 
 ```text
 (0.99879867, 'LITTLE')
@@ -122,7 +122,7 @@ The result is a tuple, which returns the recognition result and recognition conf
 paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --rec false
 ```
 
-The result is a list, each item contains only text boxes
+The result is a list. Each item represents the coordinates of a text box.
 
 ```
 [[26.0, 457.0], [137.0, 457.0], [137.0, 477.0], [26.0, 477.0]]
@@ -132,9 +132,9 @@ The result is a list, each item contains only text boxes
 ```
 
 <a name="python_script_running"></a>
-### 2.2 python script running
+### 2.2 Run with Python script
 
-ppocr also supports running in python scripts for easy embedding in your own code:
+PPOCR is able to run with Python scripts for easy integration with your own code:
 
 * Whole image prediction (detection + recognition)
 
@@ -167,12 +167,12 @@ Visualization of results:
 ![](https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_results/korean.jpg)
 
 
-ppocr also supports direction classification. For more usage methods, please refer to: [whl package instructions](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.0/doc/doc_ch/whl.md).
+PPOCR also supports direction classification. For more detailed usage, please refer to: [whl package instructions](whl_en.md).
 
 <a name="Custom_training"></a>
 ## 3 Custom training
 
-ppocr supports using your own data for custom training or finetune, where the recognition model can refer to [French configuration file](../../configs/rec/multi_language/rec_french_lite_train.yml)
+PPOCR supports using your own data for custom training or fine-tune, where the recognition model can refer to [French configuration file](../../configs/rec/multi_language/rec_french_lite_train.yml)
 Modify the training data path, dictionary and other parameters.
 
 For specific data preparation and training process, please refer to: [Text Detection](../doc_en/detection_en.md), [Text Recognition](../doc_en/recognition_en.md), more functions such as predictive deployment,
@@ -183,7 +183,7 @@ For functions such as data annotation, you can read the complete [Document Tutor
 ## 4 Inference and Deployment
 
 In addition to installing the whl package for quick forecasting,
-ppocr also provides a variety of forecasting deployment methods.
+PPOCR also provides a variety of forecasting deployment methods.
 If necessary, you can read related documents:
 
 - [Python Inference](./inference_en.md)
