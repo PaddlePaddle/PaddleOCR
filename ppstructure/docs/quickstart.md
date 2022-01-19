@@ -133,16 +133,16 @@ cd ppstructure
 
 # 下载模型
 mkdir inference && cd inference
-# 下载超轻量级中文OCR模型的检测模型并解压
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_ppocr_mobile_v2.0_det_infer.tar
-# 下载超轻量级中文OCR模型的识别模型并解压
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf ch_ppocr_mobile_v2.0_rec_infer.tar
-# 下载超轻量级英文表格英寸模型并解压
+# 下载PP-OCRv2文本检测模型并解压
+wget https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_slim_quant_infer.tar && tar xf ch_PP-OCRv2_det_slim_quant_infer.tar
+# 下载PP-OCRv2文本识别模型并解压
+wget https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_quant_infer.tar && tar xf ch_PP-OCRv2_rec_slim_quant_infer.tar
+# 下载超轻量级英文表格预测模型并解压
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar
 cd ..
 
-python3 predict_system.py --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
-                          --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
+python3 predict_system.py --det_model_dir=inference/ch_PP-OCRv2_det_slim_quant_infer \
+                          --rec_model_dir=inference/ch_PP-OCRv2_rec_slim_quant_infer \
                           --table_model_dir=inference/en_ppocr_mobile_v2.0_table_structure_infer \
                           --image_dir=../doc/table/1.png \
                           --rec_char_dict_path=../ppocr/utils/ppocr_keys_v1.txt \
