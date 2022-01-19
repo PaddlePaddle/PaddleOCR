@@ -1922,7 +1922,7 @@ class MainWindow(QMainWindow, WindowMixin):
         uncheckedList = [i for i in self.mImgList if i not in self.fileStatedict.keys()]
         self.autoDialog = AutoDialog(parent=self, ocr=self.ocr, mImgList=uncheckedList, lenbar=len(uncheckedList))
         self.autoDialog.popUp()
-        self.currIndex=len(self.mImgList)
+        self.currIndex = len(self.mImgList) - 1
         self.loadFile(self.filePath) # ADD
         self.haveAutoReced = True
         self.AutoRecognition.setEnabled(False)
