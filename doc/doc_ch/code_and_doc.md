@@ -16,7 +16,7 @@ PaddleOCR的Python代码遵循 [PEP8规范](https://www.python.org/dev/peps/pep-
 
 - 空格 
 
-  - 空格应该加在逗号、分号、冒号前，而非他们的后面
+  - 空格应该加在逗号、分号、冒号后，而非他们的前面
 
     ```python
     # 正确：
