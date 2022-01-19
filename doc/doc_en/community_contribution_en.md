@@ -67,17 +67,17 @@ PaddleOCR welcomes community contributions to various services, deployment examp
 
 If you encounter code bugs and unexpected functions when using PaddleOCR, you can contribute your modifications to PaddleOCR, including:
 
-- Python code specifications are available for reference [Appendix 1:Python code specifications](./code_and_doc.md/#Appendix1).
+- Python code specifications are available for reference [Appendix 1:Python code specifications](./code_and_doc_en.md/#Appendix1).
 
-- Before submitting the code, please confirm again and again that no new bugs will be introduced, and describe the optimization points in the PR. If the PR solves an issue, please connect to the issue in the PR. All PR shall comply with the requirements in Appendix [3.2.10 Some conventions for submitting code.](./code_and_doc.md/#Some conventions for submitting code)
+- Before submitting the code, please confirm again and again that no new bugs will be introduced, and describe the optimization points in the PR. If the PR solves an issue, please connect to the issue in the PR. All PR shall comply with the requirements in Appendix [3.2.10 Some conventions for submitting code.](./code_and_doc_en.md/#Some conventions for submitting code)
 
-- Please refer to the below before submitting. If you are not familiar with the git submission process, you can also refer to Section 3.2 of  [Appendix 3: description of Pull Request](./code_and_doc.md/#Appendix3).If you are not familiar with the git submission process, you can also refer to Section 3.2 of Appendix 3.
+- Please refer to the below before submitting. If you are not familiar with the git submission process, you can also refer to Section 3.2 of  [Appendix 3: description of Pull Request](./code_and_doc_en.md/#Appendix3).If you are not familiar with the git submission process, you can also refer to Section 3.2 of Appendix 3.
 
 **Finally, please add the label Third Party in the title of PR and @ Everest in the description , PR with this label will be treated with high priority`[third-part]`.**
 
 ### 2.3 Document Optimization
 
-If you encounter problems such as unclear document description, missing description and invalid link when using PaddleOCR, you can contribute your modifications to PaddleOCR. For document writing specifications, please refer to [Appendix 2: document specifications](./code_and_doc.md/#Appendix2). **Finally, please add the label Third Party in the title of PR and @ Everest in the description , PR with this label will be treated with high priority`[third-party].**
+If you encounter problems such as unclear document description, missing description and invalid link when using PaddleOCR, you can contribute your modifications to PaddleOCR. For document writing specifications, please refer to [Appendix 2: document specifications](./code_and_doc_en.md/#Appendix2). **Finally, please add the label Third Party in the title of PR and @ Everest in the description , PR with this label will be treated with high priority`[third-party].**
 
 ## 3. More Contribution Opportunities
 
