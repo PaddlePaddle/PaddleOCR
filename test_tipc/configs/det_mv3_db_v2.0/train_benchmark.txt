@@ -13,7 +13,7 @@ train_infer_img_dir:null
 null:null
 ##
 trainer:norm_train
-norm_train:tools/train.py -c configs/det/det_mv3_db.yml --profiler_options="batch_range=[10,20];state=GPU;tracer_option=Default;profile_path=model.profile" -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
+norm_train:tools/train.py -c configs/det/det_mv3_db.yml  -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
 pact_train:null
 fpgm_train:null
 distill_train:null
