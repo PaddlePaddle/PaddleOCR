@@ -21,6 +21,7 @@ model_name=$(func_parser_value "${lines[1]}")
 trainer_list=$(func_parser_value "${lines[14]}")
 
 if [ ${MODE} = "benchmark_train" ];then
+    pip install -r requirements.txt
     if [[ ${model_name} =~ "det_mv3_db_v2.0_benchmark" ]];then
         rm -rf ./train_data/icdar2015
         wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams  --no-check-certificate
