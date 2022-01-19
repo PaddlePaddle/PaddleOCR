@@ -2094,8 +2094,11 @@ class MainWindow(QMainWindow, WindowMixin):
                     f.write(key + '\t')
                     f.write(json.dumps(self.PPlabel[key], ensure_ascii=False) + '\n')
 
-        if mode=='Manual':
-            msg = 'Images that have been checked are saved in '+ self.PPlabelpath
+        if mode == 'Manual':
+            if self.lang == 'ch':
+                msg = '已将检查过的图片标签保存在 ' + self.PPlabelpath + " 文件中"
+            else:
+                msg = 'Images that have been checked are saved in ' + self.PPlabelpath
             QMessageBox.information(self, "Information", msg)
 
     def saveCacheLabel(self):
