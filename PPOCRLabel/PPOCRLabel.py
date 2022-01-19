@@ -180,7 +180,8 @@ class MainWindow(QMainWindow, WindowMixin):
 
         fileListContainer = QWidget()
         fileListContainer.setLayout(filelistLayout)
-        self.filedock = QDockWidget(getStr('fileList'), self)
+        self.fileListName = getStr('fileList')
+        self.filedock = QDockWidget(self.fileListName, self)
         self.filedock.setObjectName(getStr('files'))
         self.filedock.setWidget(fileListContainer)
         self.addDockWidget(Qt.LeftDockWidgetArea, self.filedock)
@@ -1390,6 +1391,13 @@ class MainWindow(QMainWindow, WindowMixin):
                 self.labelList.setCurrentItem(self.labelList.item(self.labelList.count() - 1))
                 self.labelList.item(self.labelList.count() - 1).setSelected(True)
 
+            # show file list image count
+            select_indexes = self.fileListWidget.selectedIndexes()
+            if len(select_indexes) > 0:
+                self.filedock.setWindowTitle(self.fileListName + f" ({select_indexes[0].row() + 1}"
+                                                                 f"/{self.fileListWidget.count()})")
+
+
             self.canvas.setFocus(True)
             return True
         return False
@@ -1598,7 +1606,8 @@ class MainWindow(QMainWindow, WindowMixin):
         self.actions.rotateLeft.setEnabled(True)
         self.actions.rotateRight.setEnabled(True)
 
-
+        self.fileListWidget.setCurrentRow(0)  # set list index to first
+        self.filedock.setWindowTitle(self.fileListName + f" (1/{self.fileListWidget.count()})")  # show image count
 
     def openPrevImg(self, _value=False):
         if len(self.mImgList) <= 0:
