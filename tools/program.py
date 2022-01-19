@@ -511,7 +511,7 @@ def preprocess(is_train=False):
 
     config['Global']['distributed'] = dist.get_world_size() != 1
 
-    if config['Global']['use_visualdl']:
+    if config['Global']['use_visualdl'] and dist.get_rank() == 0:
         from visualdl import LogWriter
         save_model_dir = config['Global']['save_model_dir']
         vdl_writer_path = '{}/vdl/'.format(save_model_dir)
