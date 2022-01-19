@@ -4,9 +4,9 @@ Windows and Mac users are recommended to use Anaconda to build a Python environm
 
 Recommended working environment:
 - PaddlePaddle >= 2.0.0 (2.1.2)
-- python3.7
-- CUDA10.1 / CUDA10.2
-- CUDNN 7.6
+- Python 3.7
+- CUDA 10.1 / CUDA 10.2
+- cuDNN 7.6
 
 * [1. Python Environment Setup](#1)
   + [1.1 Windows](#1.1)
@@ -25,7 +25,7 @@ Recommended working environment:
 
 #### 1.1.1 Install Anaconda
 
-- Note: To use paddlepaddle you need to install python environment first, here we choose python integrated environment Anaconda toolkit
+- Note: To use PaddlePaddle you need to install python environment first, here we choose python integrated environment Anaconda toolkit
 
   - Anaconda is a common python package manager
   - After installing Anaconda, you can install the python environment, as well as numpy and other required toolkit environment.
@@ -44,19 +44,19 @@ Recommended working environment:
 
     <img src="../install/windows/anaconda_install_folder.png" alt="install config" width="500" align=" left"/>
 
-  - Check conda to add environment variables and ignore the warning that
+  - Check Conda to add environment variables and ignore the warning that
 
     <img src="../install/windows/anaconda_install_env.png" alt="add conda to path" width="500" align="center"/>
 
 
-#### 1.1.2 Opening the terminal and creating the conda environment
+#### 1.1.2 Opening the terminal and creating the Conda environment
 
 - Open Anaconda Prompt terminal: bottom left Windows Start Menu -> Anaconda3 -> Anaconda Prompt start console
 
   <img src="../install/windows/anaconda_prompt.png" alt="anaconda download" width="300" align="center"/>
 
 
-- Create a new conda environment
+- Create a new Conda environment
 
   ```shell
   # Enter the following command at the command line to create an environment named paddle_env
@@ -70,7 +70,7 @@ Recommended working environment:
 
   <img src="../install/windows/conda_new_env.png" alt="conda create" width="700" align="center"/>
 
-- To activate the conda environment you just created, enter the following command at the command line.
+- To activate the Conda environment you just created, enter the following command at the command line.
 
   ```shell
   # Activate the paddle_env environment
@@ -91,7 +91,7 @@ The above anaconda environment and python environment are installed
 
 #### 1.2.1 Installing Anaconda
 
-- Note: To use paddlepaddle you need to install the python environment first, here we choose the python integrated environment Anaconda toolkit
+- Note: To use PaddlePaddle you need to install the python environment first, here we choose the python integrated environment Anaconda toolkit
 
   - Anaconda is a common python package manager
   - After installing Anaconda, you can install the python environment, as well as numpy and other required toolkit environment
@@ -108,17 +108,17 @@ The above anaconda environment and python environment are installed
 
   - Just follow the default settings, it will take a while to install
 
-- It is recommended to install a code editor such as vscode or pycharm
+- It is recommended to install a code editor such as VSCode or PyCharm
 
-#### 1.2.2 Open a terminal and create a conda environment
+#### 1.2.2 Open a terminal and create a Conda environment
 
 - Open the terminal
 
   - Press command and spacebar at the same time, type "terminal" in the focus search, double click to enter terminal
 
-- **Add conda to the environment variables**
+- **Add Conda to the environment variables**
 
-  - Environment variables are added so that the system can recognize the conda command
+  - Environment variables are added so that the system can recognize the Conda command
 
   - Open `~/.bash_profile` in the terminal by typing the following command.
 
@@ -126,7 +126,7 @@ The above anaconda environment and python environment are installed
     vim ~/.bash_profile
     ```
 
-  - Add conda as an environment variable in `~/.bash_profile`.
+  - Add Conda as an environment variable in `~/.bash_profile`.
 
     ```shell
     # Press i first to enter edit mode
@@ -156,12 +156,12 @@ The above anaconda environment and python environment are installed
 
     - When you are done, press `esc` to exit edit mode, then type `:wq!` and enter to save and exit
 
-  - Verify that the conda command is recognized.
+  - Verify that the Conda command is recognized.
 
     - Enter `source ~/.bash_profile` in the terminal to update the environment variables
-    - Enter `conda info --envs` in the terminal again, if it shows that there is a base environment, then conda has been added to the environment variables
+    - Enter `conda info --envs` in the terminal again, if it shows that there is a base environment, then Conda has been added to the environment variables
 
-- Create a new conda environment
+- Create a new Conda environment
 
   ```shell
   # Enter the following command at the command line to create an environment called paddle_env
@@ -175,7 +175,7 @@ The above anaconda environment and python environment are installed
 
     - <img src="../install/mac/conda_create.png" alt="conda_create" width="600" align="center"/>
 
-- To activate the conda environment you just created, enter the following command at the command line.
+- To activate the Conda environment you just created, enter the following command at the command line.
 
   ```shell
   # Activate the paddle_env environment
@@ -198,7 +198,7 @@ Linux users can choose to run either Anaconda or Docker. If you are familiar wit
 
 #### 1.3.1 Anaconda environment configuration
 
-- Note: To use paddlepaddle you need to install the python environment first, here we choose the python integrated environment Anaconda toolkit
+- Note: To use PaddlePaddle you need to install the python environment first, here we choose the python integrated environment Anaconda toolkit
 
   - Anaconda is a common python package manager
   - After installing Anaconda, you can install the python environment, as well as numpy and other required toolkit environment
@@ -214,9 +214,9 @@ Linux users can choose to run either Anaconda or Docker. If you are familiar wit
   - Select the appropriate version for your operating system
       - Type `uname -m` in the terminal to check the command set used by your system
 
-  - Download method 1: Download locally, then transfer the installation package to the linux server
+  - Download method 1: Download locally, then transfer the installation package to the Linux server
 
-  - Download method 2: Directly use linux command line to download
+  - Download method 2: Directly use Linux command line to download
 
     ```shell
     # First install wget
@@ -277,12 +277,12 @@ Linux users can choose to run either Anaconda or Docker. If you are familiar wit
 
     - When you are done, press `esc` to exit edit mode, then type `:wq!` and enter to save and exit
 
-  - Verify that the conda command is recognized.
+  - Verify that the Conda command is recognized.
 
     - Enter `source ~/.bash_profile` in the terminal to update the environment variables
-    - Enter `conda info --envs` in the terminal again, if it shows that there is a base environment, then conda has been added to the environment variables
+    - Enter `conda info --envs` in the terminal again, if it shows that there is a base environment, then Conda has been added to the environment variables
 
-- Create a new conda environment
+- Create a new Conda environment
 
   ```shell
   # Enter the following command at the command line to create an environment called paddle_env
@@ -296,7 +296,7 @@ Linux users can choose to run either Anaconda or Docker. If you are familiar wit
 
     <img src="../install/linux/conda_create.png" alt="conda_create" width="500" align="center"/>
 
-- To activate the conda environment you just created, enter the following command at the command line.
+- To activate the Conda environment you just created, enter the following command at the command line.
 
   ```shell
   # Activate the paddle_env environment
@@ -335,13 +335,13 @@ sudo docker container exec -it ppocr /bin/bash
 
 ## 2. Install PaddlePaddle 2.0
 
-- If you have cuda9 or cuda10 installed on your machine, please run the following command to install
+- If you have CUDA 9 or CUDA 10 installed on your machine, please run the following command to install
 
 ```bash
 python3 -m pip install paddlepaddle-gpu -i https://mirror.baidu.com/pypi/simple
 ```
 
-- If you only have cpu on your machine, please run the following command to install
+- If you have no available GPU on your machine, please run the following command to install the CPU version
 
 ```bash
 python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
