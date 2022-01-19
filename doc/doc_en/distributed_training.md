@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The high performance of distributed training is one of the core advantages of PaddlePaddle. In the classification task, distributed training can achieve almost linear speedup ratio. Generally, OCR training task need massive training data. Such as recognition, ppocrv2.0 model is trained based on 1800W dataset, which is very time-consuming if using single machine. Therefore, the distributed training is used in paddleocr to speedup the training task. For more information about distributed training, please refer to [distributed training quick start tutorial](https://fleet-x.readthedocs.io/en/latest/paddle_fleet_rst/parameter_server/ps_quick_start.html).
+The high performance of distributed training is one of the core advantages of PaddlePaddle. In the classification task, distributed training can achieve almost linear speedup ratio. Generally, OCR training task need massive training data. Such as recognition, PP-OCR v2.0 model is trained based on 1800W dataset, which is very time-consuming if using single machine. Therefore, the distributed training is used in PaddleOCR to speedup the training task. For more information about distributed training, please refer to [distributed training quick start tutorial](https://fleet-x.readthedocs.io/en/latest/paddle_fleet_rst/parameter_server/ps_quick_start.html).
 
 ## Quick Start
 
@@ -35,7 +35,7 @@ python3 -m paddle.distributed.launch \
 **Notice:**
 * The IP addresses of different machines need to be separated by commas, which can be queried through `ifconfig` or `ipconfig`.
 * Different machines need to be set to be secret free and can `ping` success with others directly, otherwise communication cannot establish between them.
-* The code, data and start command betweent different machines must be completely consistent and then all machines need to run start command. The first machine in the `ip_list` is set to `trainer0`, and so on.
+* The code, data and start command between different machines must be completely consistent and then all machines need to run start command. The first machine in the `ip_list` is set to `trainer0`, and so on.
 
 
 ## Performance comparison

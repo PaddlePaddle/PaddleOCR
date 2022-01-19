@@ -68,14 +68,14 @@ test_tipc/
         ├── model_linux_gpu_normal_normal_infer_cpp_linux_gpu_cpu.txt     # 测试Linux上c++预测的配置文件
         ├── model_linux_gpu_normal_normal_infer_python_jetson.txt         # 测试Jetson上python预测的配置文件
         ├── train_linux_gpu_fleet_amp_infer_python_linux_gpu_cpu.txt      # 测试Linux上多机多卡、混合精度训练和python预测的配置文件
-        ├── ...  
+        ├── ...
     ├── ch_ppocr_server_v2.0_det               # ch_ppocr_server_v2.0_det模型的测试配置文件目录
-        ├── ...  
+        ├── ...
     ├── ch_ppocr_mobile_v2.0_rec               # ch_ppocr_mobile_v2.0_rec模型的测试配置文件目录
-        ├── ...  
+        ├── ...
     ├── ch_ppocr_server_v2.0_det               # ch_ppocr_server_v2.0_det模型的测试配置文件目录
-        ├── ...  
-    ├── ...  
+        ├── ...
+    ├── ...
 ├── results/   # 预先保存的预测结果，用于和实际预测结果进行精读比对
     ├── python_ppocr_det_mobile_results_fp32.txt           # 预存的mobile版ppocr检测模型python预测fp32精度的结果
     ├── python_ppocr_det_mobile_results_fp16.txt           # 预存的mobile版ppocr检测模型python预测fp16精度的结果
@@ -119,7 +119,7 @@ bash test_tipc/test_train_inference_python.sh configs/[model_name]/[params_file_
 bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_infer_python.txt 'lite_train_lite_infer'
 # 运行测试
 bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_infer_python.txt 'lite_train_lite_infer'
-```  
+```
 关于本示例命令的更多信息可查看[基础训练预测使用文档](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/test_tipc/docs/test_train_inference_python.md#22-%E5%8A%9F%E8%83%BD%E6%B5%8B%E8%AF%95)。
 
 ### 配置文件命名规范
@@ -136,9 +136,9 @@ bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobil
 
 <a name="more"></a>
 ## 4. 开始测试
-各功能测试中涉及混合精度、裁剪、量化等训练相关，及mkldnn、Tensorrt等多种预测相关参数配置，请点击下方相应链接了解更多细节和使用教程：  
-- [test_train_inference_python 使用](docs/test_train_inference_python.md) ：测试基于Python的模型训练、评估、推理等基本功能，包括裁剪、量化、蒸馏。 
+各功能测试中涉及混合精度、裁剪、量化等训练相关，及mkldnn、Tensorrt等多种预测相关参数配置，请点击下方相应链接了解更多细节和使用教程：
+- [test_train_inference_python 使用](docs/test_train_inference_python.md) ：测试基于Python的模型训练、评估、推理等基本功能，包括裁剪、量化、蒸馏。
 - [test_inference_cpp 使用](docs/test_inference_cpp.md)：测试基于C++的模型推理。
 - [test_serving 使用](docs/test_serving.md)：测试基于Paddle Serving的服务化部署功能。
-- [test_lite_arm_cpu_cpp 使用](docs/test_lite_arm_cpu_cpp.md)：测试基于Paddle-Lite的ARM CPU端c++预测部署功能。
+- [test_lite_arm_cpp 使用](docs/test_lite_arm_cpp.md)：测试基于Paddle-Lite的ARM CPU端c++预测部署功能。
 - [test_paddle2onnx 使用](docs/test_paddle2onnx.md)：测试Paddle2ONNX的模型转化功能，并验证正确性。

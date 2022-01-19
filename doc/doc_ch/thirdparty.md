@@ -67,17 +67,17 @@ PaddleOCR非常欢迎社区贡献以PaddleOCR为核心的各种服务、部署�
 
 如果您在使用PaddleOCR时遇到了代码bug、功能不符合预期等问题，可以为PaddleOCR贡献您的修改，其中：
 
-- Python代码规范可参考[附录1：Python代码规范](./code_and_doc.md/#附录1)。
+- Python代码规范可参考[附录1：Python代码规范](./code_and_doc.md#附录1)。
 
--  提交代码前请再三确认不会引入新的bug，并在PR中描述优化点。如果该PR解决了某个issue，请在PR中连接到该issue。所有的PR都应该遵守附录3中的[3.2.10 提交代码的一些约定。](./code_and_doc.md/#提交代码的一些约定)
+-  提交代码前请再三确认不会引入新的bug，并在PR中描述优化点。如果该PR解决了某个issue，请在PR中连接到该issue。所有的PR都应该遵守附录3中的[3.2.10 提交代码的一些约定。](./code_and_doc.md#提交代码的一些约定)
 
-- 请在提交之前参考下方的[附录3：Pull Request说明](./code_and_doc.md/#附录3)。如果您对git的提交流程不熟悉，同样可以参考附录3的3.2节。
+- 请在提交之前参考下方的[附录3：Pull Request说明](./code_and_doc.md#附录3)。如果您对git的提交流程不熟悉，同样可以参考附录3的3.2节。
 
 **最后请在PR的题目中加上标签`【third-party】` , 在说明中@Evezerest，拥有此标签的PR将会被高优处理**。
 
 ### 2.3 文档优化
 
-如果您在使用PaddleOCR时遇到了文档表述不清楚、描述缺失、链接失效等问题，可以为PaddleOCR贡献您的修改。文档书写规范请参考[附录2：文档规范](./code_and_doc.md/#附录2)。**最后请在PR的题目中加上标签`【third-party】` , 在说明中@Evezerest，拥有此标签的PR将会被高优处理。**
+如果您在使用PaddleOCR时遇到了文档表述不清楚、描述缺失、链接失效等问题，可以为PaddleOCR贡献您的修改。文档书写规范请参考[附录2：文档规范](./code_and_doc.md#附录2)。**最后请在PR的题目中加上标签`【third-party】` , 在说明中@Evezerest，拥有此标签的PR将会被高优处理。**
 
 ## 3. 更多贡献机会
 

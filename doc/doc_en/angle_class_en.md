@@ -92,7 +92,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3,4,5,6,7'  tools/train.py -c
 
 PaddleOCR provides a variety of data augmentation methods. If you want to add disturbance during training, Please uncomment the `RecAug` and `RandAugment` fields under `Train.dataset.transforms` in the configuration file.
 
-The default perturbation methods are: cvtColor, blur, jitter, Gasuss noise, random crop, perspective, color reverse, RandAugment.
+The default perturbation methods are: cvtColor, blur, jitter, Gauss noise, random crop, perspective, color reverse, RandAugment.
 
 Except for RandAugment, each disturbance method is selected with a 50% probability during the training process. For specific code implementation, please refer to:
 [rec_img_aug.py](../../ppocr/data/imaug/rec_img_aug.py)
