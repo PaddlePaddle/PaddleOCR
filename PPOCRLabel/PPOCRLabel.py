@@ -101,6 +101,8 @@ class MainWindow(QMainWindow, WindowMixin):
     def __init__(self, lang="ch", gpu=False, defaultFilename=None, defaultPrefdefClassFile=None, defaultSaveDir=None):
         super(MainWindow, self).__init__()
         self.setWindowTitle(__appname__)
+        self.setWindowState(Qt.WindowMaximized)  # set window max
+        self.activateWindow()  # PPOCRLabel goes to the front when activate
 
         # Load setting in the main thread
         self.settings = Settings()
@@ -178,7 +180,8 @@ class MainWindow(QMainWindow, WindowMixin):
 
         fileListContainer = QWidget()
         fileListContainer.setLayout(filelistLayout)
-        self.filedock = QDockWidget(getStr('fileList'), self)
+        self.fileListName = getStr('fileList')
+        self.filedock = QDockWidget(self.fileListName, self)
         self.filedock.setObjectName(getStr('files'))
         self.filedock.setWidget(fileListContainer)
         self.addDockWidget(Qt.LeftDockWidgetArea, self.filedock)
@@ -394,7 +397,7 @@ class MainWindow(QMainWindow, WindowMixin):
                         'w', 'objects', getStr('crtBoxDetail'), enabled=False)
 
         delete = action(getStr('delBox'), self.deleteSelectedShape,
-                        'backspace', 'delete', getStr('delBoxDetail'), enabled=False)
+                        'Alt+X', 'delete', getStr('delBoxDetail'), enabled=False)
         
         copy = action(getStr('dupBox'), self.copySelectedShape,
                       'Ctrl+C', 'copy', getStr('dupBoxDetail'),
@@ -1388,6 +1391,13 @@ class MainWindow(QMainWindow, WindowMixin):
                 self.labelList.setCurrentItem(self.labelList.item(self.labelList.count() - 1))
                 self.labelList.item(self.labelList.count() - 1).setSelected(True)
 
+            # show file list image count
+            select_indexes = self.fileListWidget.selectedIndexes()
+            if len(select_indexes) > 0:
+                self.filedock.setWindowTitle(self.fileListName + f" ({select_indexes[0].row() + 1}"
+                                                                 f"/{self.fileListWidget.count()})")
+
+
             self.canvas.setFocus(True)
             return True
         return False
@@ -1596,7 +1606,8 @@ class MainWindow(QMainWindow, WindowMixin):
         self.actions.rotateLeft.setEnabled(True)
         self.actions.rotateRight.setEnabled(True)
 
-
+        self.fileListWidget.setCurrentRow(0)  # set list index to first
+        self.filedock.setWindowTitle(self.fileListName + f" (1/{self.fileListWidget.count()})")  # show image count
 
     def openPrevImg(self, _value=False):
         if len(self.mImgList) <= 0:
@@ -1790,7 +1801,10 @@ class MainWindow(QMainWindow, WindowMixin):
 
     def discardChangesDialog(self):
         yes, no, cancel = QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel
-        msg = u'You have unsaved changes, would you like to save them and proceed?\nClick "No" to undo all changes.'
+        if self.lang == 'ch':
+            msg = u'您有未保存的变更, 您想保存再继续吗?\n点击 "No" 丢弃所有未保存的变更.'
+        else:
+            msg = u'You have unsaved changes, would you like to save them and proceed?\nClick "No" to undo all changes.'
         return QMessageBox.warning(self, u'Attention', msg, yes | no | cancel)
 
     def errorMessage(self, title, message):
@@ -1908,7 +1922,7 @@ class MainWindow(QMainWindow, WindowMixin):
         uncheckedList = [i for i in self.mImgList if i not in self.fileStatedict.keys()]
         self.autoDialog = AutoDialog(parent=self, ocr=self.ocr, mImgList=uncheckedList, lenbar=len(uncheckedList))
         self.autoDialog.popUp()
-        self.currIndex=len(self.mImgList)
+        self.currIndex = len(self.mImgList) - 1
         self.loadFile(self.filePath) # ADD
         self.haveAutoReced = True
         self.AutoRecognition.setEnabled(False)
@@ -2089,8 +2103,11 @@ class MainWindow(QMainWindow, WindowMixin):
                     f.write(key + '\t')
                     f.write(json.dumps(self.PPlabel[key], ensure_ascii=False) + '\n')
 
-        if mode=='Manual':
-            msg = 'Images that have been checked are saved in '+ self.PPlabelpath
+        if mode == 'Manual':
+            if self.lang == 'ch':
+                msg = '已将检查过的图片标签保存在 ' + self.PPlabelpath + " 文件中"
+            else:
+                msg = 'Images that have been checked are saved in ' + self.PPlabelpath
             QMessageBox.information(self, "Information", msg)
 
     def saveCacheLabel(self):
