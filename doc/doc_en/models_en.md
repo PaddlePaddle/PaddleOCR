@@ -7,13 +7,13 @@ This section contains two parts. Firstly, [PP-OCR Model Download](./models_list_
 
 Let's first understand some basic concepts.
 
-- [Introduction about OCR](#introduction-about-ocr)
+- [Introduction to OCR](#introduction-to-ocr)
   * [Basic Concepts of OCR Detection Model](#basic-concepts-of-ocr-detection-model)
   * [Basic Concepts of OCR Recognition Model](#basic-concepts-of-ocr-recognition-model)
   * [PP-OCR Model](#pp-ocr-model)
 
 
-## 1. Introduction about OCR
+## 1. Introduction to OCR
 
 This section briefly introduces the basic concepts of OCR detection model and recognition model, and introduces PaddleOCR's PP-OCR model.
 

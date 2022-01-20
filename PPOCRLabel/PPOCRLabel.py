@@ -61,7 +61,7 @@ from combobox import ComboBox
 from libs.constants import *
 from libs.utils import *
 from libs.settings import Settings
-from libs.shape import Shape, DEFAULT_LINE_COLOR, DEFAULT_FILL_COLOR
+from libs.shape import Shape, DEFAULT_LINE_COLOR, DEFAULT_FILL_COLOR,DEFAULT_LOCK_COLOR  
 from libs.stringBundle import StringBundle
 from libs.canvas import Canvas
 from libs.zoomWidget import ZoomWidget
@@ -101,6 +101,8 @@ class MainWindow(QMainWindow, WindowMixin):
     def __init__(self, lang="ch", gpu=False, defaultFilename=None, defaultPrefdefClassFile=None, defaultSaveDir=None):
         super(MainWindow, self).__init__()
         self.setWindowTitle(__appname__)
+        self.setWindowState(Qt.WindowMaximized)  # set window max
+        self.activateWindow()  # PPOCRLabel goes to the front when activate
 
         # Load setting in the main thread
         self.settings = Settings()
@@ -126,7 +128,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.labelHist = []
         self.lastOpenDir = None
         self.result_dic = []
-
+        self.result_dic_locked = []
         self.changeFileFolder = False
         self.haveAutoReced = False
         self.labelFile = None
@@ -178,7 +180,8 @@ class MainWindow(QMainWindow, WindowMixin):
 
         fileListContainer = QWidget()
         fileListContainer.setLayout(filelistLayout)
-        self.filedock = QDockWidget(getStr('fileList'), self)
+        self.fileListName = getStr('fileList')
+        self.filedock = QDockWidget(self.fileListName, self)
         self.filedock.setObjectName(getStr('files'))
         self.filedock.setWidget(fileListContainer)
         self.addDockWidget(Qt.LeftDockWidgetArea, self.filedock)
@@ -394,7 +397,8 @@ class MainWindow(QMainWindow, WindowMixin):
                         'w', 'objects', getStr('crtBoxDetail'), enabled=False)
 
         delete = action(getStr('delBox'), self.deleteSelectedShape,
-                        'backspace', 'delete', getStr('delBoxDetail'), enabled=False)
+                        'Alt+X', 'delete', getStr('delBoxDetail'), enabled=False)
+        
         copy = action(getStr('dupBox'), self.copySelectedShape,
                       'Ctrl+C', 'copy', getStr('dupBoxDetail'),
                       enabled=False)
@@ -405,6 +409,7 @@ class MainWindow(QMainWindow, WindowMixin):
         showAll = action(getStr('showBox'), partial(self.togglePolygons, True),
                          'Ctrl+A', 'hide', getStr('showAllBoxDetail'),
                          enabled=False)
+            
 
         help = action(getStr('tutorial'), self.showTutorialDialog, None, 'help', getStr('tutorialDetail'))
         showInfo = action(getStr('info'), self.showInfoDialog, None, 'help', getStr('info'))
@@ -476,6 +481,10 @@ class MainWindow(QMainWindow, WindowMixin):
 
         undo = action(getStr("undo"), self.undoShapeEdit,
                       'Ctrl+Z', "undo", getStr("undo"), enabled=False)
+        
+        lock = action(getStr("lockBox"), self.lockSelectedShape,
+                      None, "lock", getStr("lockBoxDetail"),
+                      enabled=False)
 
         self.editButton.setDefaultAction(edit)
         self.newButton.setDefaultAction(create)
@@ -538,13 +547,13 @@ class MainWindow(QMainWindow, WindowMixin):
                               fitWindow=fitWindow, fitWidth=fitWidth,
                               zoomActions=zoomActions, saveLabel=saveLabel,
                               undo=undo, undoLastPoint=undoLastPoint,open_dataset_dir=open_dataset_dir,
-                              rotateLeft=rotateLeft,rotateRight=rotateRight,
+                              rotateLeft=rotateLeft,rotateRight=rotateRight,lock=lock,
                               fileMenuActions=(
                                   opendir,  open_dataset_dir, saveLabel,  resetAll, quit),
                               beginner=(), advanced=(),
                               editMenu=(createpoly, edit, copy, delete,singleRere,None, undo, undoLastPoint,
-                                        None, rotateLeft, rotateRight, None, color1, self.drawSquaresOption),
-                              beginnerContext=(create, edit, copy, delete, singleRere, rotateLeft, rotateRight,),
+                                        None, rotateLeft, rotateRight, None, color1, self.drawSquaresOption,lock),
+                              beginnerContext=(create, edit, copy, delete, singleRere, rotateLeft, rotateRight,lock),
                               advancedContext=(createMode, editMode, edit, copy,
                                                delete, shapeLineColor, shapeFillColor),
                               onLoadActive=(
@@ -998,6 +1007,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.actions.delete.setEnabled(n_selected)
         self.actions.copy.setEnabled(n_selected)
         self.actions.edit.setEnabled(n_selected == 1)
+        self.actions.lock.setEnabled(n_selected)
 
     def addLabel(self, shape):
         shape.paintLabel = self.displayLabelOption.isChecked()
@@ -1041,7 +1051,7 @@ class MainWindow(QMainWindow, WindowMixin):
     def loadLabels(self, shapes):
         s = []
         for label, points, line_color, fill_color, difficult in shapes:
-            shape = Shape(label=label)
+            shape = Shape(label=label,line_color=line_color)
             for x, y in points:
 
                 # Ensure the labels are within the bounds of the image. If not, fix them.
@@ -1051,6 +1061,7 @@ class MainWindow(QMainWindow, WindowMixin):
 
                 shape.addPoint(QPointF(x, y))
             shape.difficult = difficult
+            #shape.locked = False
             shape.close()
             s.append(shape)
 
@@ -1063,10 +1074,12 @@ class MainWindow(QMainWindow, WindowMixin):
             #     shape.fill_color = QColor(*fill_color)
             # else:
             #     shape.fill_color = generateColorByText(label)
-
+            
             self.addLabel(shape)
+ 
         self.updateComboBox()
         self.canvas.loadShapes(s)
+         
 
     def singleLabel(self, shape):
         if shape is None:
@@ -1106,10 +1119,9 @@ class MainWindow(QMainWindow, WindowMixin):
                         difficult=s.difficult)  # bool
 
         shapes = [] if mode == 'Auto' else \
-            [format_shape(shape) for shape in self.canvas.shapes]
+            [format_shape(shape) for shape in self.canvas.shapes if shape.line_color != DEFAULT_LOCK_COLOR]
         # Can add differrent annotation formats here
-
-        for box in self.result_dic:
+        for box in self.result_dic :
             trans_dic = {"label": box[1][0], "points": box[0], 'difficult': False}
             if trans_dic["label"] == "" and mode == 'Auto':
                 continue
@@ -1120,7 +1132,6 @@ class MainWindow(QMainWindow, WindowMixin):
             for box in shapes:
                 trans_dic.append({"transcription": box['label'], "points": box['points'], 'difficult': box['difficult']})
             self.PPlabel[annotationFilePath] = trans_dic
-
             if mode == 'Auto':
                 self.Cachelabel[annotationFilePath] = trans_dic
 
@@ -1313,6 +1324,7 @@ class MainWindow(QMainWindow, WindowMixin):
         # unicodeFilePath = os.path.abspath(unicodeFilePath)
         # Tzutalin 20160906 : Add file list and dock to move faster
         # Highlight the file item
+        
         if unicodeFilePath and self.fileListWidget.count() > 0:
             if unicodeFilePath in self.mImgList:
                 index = self.mImgList.index(unicodeFilePath)
@@ -1322,6 +1334,7 @@ class MainWindow(QMainWindow, WindowMixin):
                 ###
                 self.iconlist.clear()
                 self.additems5(None)
+             
                 for i in range(5):
                     item_tooltip = self.iconlist.item(i).toolTip()
                     # print(i,"---",item_tooltip)
@@ -1340,7 +1353,6 @@ class MainWindow(QMainWindow, WindowMixin):
 
         if unicodeFilePath and os.path.exists(unicodeFilePath):
             self.canvas.verified = False
-
             cvimg = cv2.imdecode(np.fromfile(unicodeFilePath, dtype=np.uint8), 1)
             height, width, depth = cvimg.shape
             cvimg = cv2.cvtColor(cvimg, cv2.COLOR_BGR2RGB)
@@ -1361,34 +1373,52 @@ class MainWindow(QMainWindow, WindowMixin):
             else:
                 self.dirty = False
                 self.actions.save.setEnabled(True)
-
+            if len(self.canvas.lockedShapes) != 0:
+                self.actions.save.setEnabled(True)
+                self.setDirty()
             self.canvas.setEnabled(True)
             self.adjustScale(initial=True)
             self.paintCanvas()
             self.addRecentFile(self.filePath)
             self.toggleActions(True)
+
             self.showBoundingBoxFromPPlabel(filePath)
 
             self.setWindowTitle(__appname__ + ' ' + filePath)
-
+            
             # Default : select last item if there is at least one item
             if self.labelList.count():
                 self.labelList.setCurrentItem(self.labelList.item(self.labelList.count() - 1))
                 self.labelList.item(self.labelList.count() - 1).setSelected(True)
 
+            # show file list image count
+            select_indexes = self.fileListWidget.selectedIndexes()
+            if len(select_indexes) > 0:
+                self.filedock.setWindowTitle(self.fileListName + f" ({select_indexes[0].row() + 1}"
+                                                                 f"/{self.fileListWidget.count()})")
+
+
             self.canvas.setFocus(True)
             return True
         return False
 
-
     def showBoundingBoxFromPPlabel(self, filePath):
+        width, height = self.image.width(), self.image.height()
         imgidx = self.getImglabelidx(filePath)
-        if imgidx not in self.PPlabel.keys():
-            return
-        shapes = []
-        for box in self.PPlabel[imgidx]:
-            shapes.append((box['transcription'], box['points'], None, None, box['difficult']))
-
+        shapes =[]
+        #box['ratio'] of the shapes saved in lockedShapes contains the ratio of the
+        # four corner coordinates of the shapes to the height and width of the image
+        for box in self.canvas.lockedShapes:
+            if self.canvas.isInTheSameImage:
+                shapes.append((box['transcription'], [[s[0]*width,s[1]*height]for s in box['ratio']],
+                DEFAULT_LOCK_COLOR, None, box['difficult']))
+            else:
+                shapes.append(('锁定框：待检测', [[s[0]*width,s[1]*height]for s in box['ratio']],
+                DEFAULT_LOCK_COLOR, None, box['difficult']))
+        if imgidx in self.PPlabel.keys():
+            for box in self.PPlabel[imgidx]:
+                shapes.append((box['transcription'], box['points'], None, None, box['difficult']))
+ 
         self.loadLabels(shapes)
         self.canvas.verified = False
 
@@ -1576,7 +1606,8 @@ class MainWindow(QMainWindow, WindowMixin):
         self.actions.rotateLeft.setEnabled(True)
         self.actions.rotateRight.setEnabled(True)
 
-
+        self.fileListWidget.setCurrentRow(0)  # set list index to first
+        self.filedock.setWindowTitle(self.fileListName + f" (1/{self.fileListWidget.count()})")  # show image count
 
     def openPrevImg(self, _value=False):
         if len(self.mImgList) <= 0:
@@ -1646,9 +1677,37 @@ class MainWindow(QMainWindow, WindowMixin):
             else:
                 return fullFilePath
         return ''
+    
+   
+    def saveLockedShapes(self):
+        self.canvas.lockedShapes = []
+        self.canvas.selectedShapes = []
+        for s in self.canvas.shapes:
+            if s.line_color == DEFAULT_LOCK_COLOR:
+                self.canvas.selectedShapes.append(s)
+        self.lockSelectedShape()
+        for s in self.canvas.shapes:
+            if s.line_color == DEFAULT_LOCK_COLOR:
+                self.canvas.selectedShapes.remove(s)
+                self.canvas.shapes.remove(s)
 
+    
     def _saveFile(self, annotationFilePath, mode='Manual'):
+        if len(self.canvas.lockedShapes) != 0:
+            self.saveLockedShapes()
+
         if mode == 'Manual':
+            self.result_dic_locked = []
+            img = cv2.imread(self.filePath)
+            width, height = self.image.width(), self.image.height()
+            for shape in self.canvas.lockedShapes:
+                box = [[int(p[0]*width), int(p[1]*height)] for p in shape['ratio']]
+                assert len(box) == 4
+                result = [(shape['transcription'],1)]
+                result.insert(0, box)
+                self.result_dic_locked.append(result)
+            self.result_dic += self.result_dic_locked
+            self.result_dic_locked = []
             if annotationFilePath and self.saveLabels(annotationFilePath, mode=mode):
                 self.setClean()
                 self.statusBar().showMessage('Saved to  %s' % annotationFilePath)
@@ -1663,13 +1722,13 @@ class MainWindow(QMainWindow, WindowMixin):
                     self.savePPlabel(mode='Auto')
 
                 self.fileListWidget.insertItem(int(currIndex), item)
-                self.openNextImg()
+                if not self.canvas.isInTheSameImage:
+                    self.openNextImg()
                 self.actions.saveRec.setEnabled(True)
                 self.actions.saveLabel.setEnabled(True)
 
         elif mode == 'Auto':
             if annotationFilePath and self.saveLabels(annotationFilePath, mode=mode):
-
                 self.setClean()
                 self.statusBar().showMessage('Saved to  %s' % annotationFilePath)
                 self.statusBar().show()
@@ -1733,14 +1792,19 @@ class MainWindow(QMainWindow, WindowMixin):
             if discardChanges == QMessageBox.No:
                 return True
             elif discardChanges == QMessageBox.Yes:
+                self.canvas.isInTheSameImage = True
                 self.saveFile()
+                self.canvas.isInTheSameImage = False
                 return True
             else:
                 return False
 
     def discardChangesDialog(self):
         yes, no, cancel = QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel
-        msg = u'You have unsaved changes, would you like to save them and proceed?\nClick "No" to undo all changes.'
+        if self.lang == 'ch':
+            msg = u'您有未保存的变更, 您想保存再继续吗?\n点击 "No" 丢弃所有未保存的变更.'
+        else:
+            msg = u'You have unsaved changes, would you like to save them and proceed?\nClick "No" to undo all changes.'
         return QMessageBox.warning(self, u'Attention', msg, yes | no | cancel)
 
     def errorMessage(self, title, message):
@@ -1858,7 +1922,7 @@ class MainWindow(QMainWindow, WindowMixin):
         uncheckedList = [i for i in self.mImgList if i not in self.fileStatedict.keys()]
         self.autoDialog = AutoDialog(parent=self, ocr=self.ocr, mImgList=uncheckedList, lenbar=len(uncheckedList))
         self.autoDialog.popUp()
-        self.currIndex=len(self.mImgList)
+        self.currIndex = len(self.mImgList) - 1
         self.loadFile(self.filePath) # ADD
         self.haveAutoReced = True
         self.AutoRecognition.setEnabled(False)
@@ -1872,6 +1936,7 @@ class MainWindow(QMainWindow, WindowMixin):
         # org_box = [dic['points'] for dic in self.PPlabel[self.getImglabelidx(self.filePath)]]
         if self.canvas.shapes:
             self.result_dic = []
+            self.result_dic_locked = []  # result_dic_locked stores the ocr result of self.canvas.lockedShapes
             rec_flag = 0
             for shape in self.canvas.shapes:
                 box = [[int(p.x()), int(p.y())] for p in shape.points]
@@ -1883,21 +1948,32 @@ class MainWindow(QMainWindow, WindowMixin):
                     return
                 result = self.ocr.ocr(img_crop, cls=True, det=False)
                 if result[0][0] != '':
-                    result.insert(0, box)
-                    print('result in reRec is ', result)
-                    self.result_dic.append(result)
+                    if shape.line_color == DEFAULT_LOCK_COLOR:
+                        shape.label = result[0][0]
+                        result.insert(0, box)
+                        self.result_dic_locked.append(result)
+                    else:
+                        result.insert(0, box)
+                        self.result_dic.append(result)
                 else:
                     print('Can not recognise the box')
-                    self.result_dic.append([box,(self.noLabelText,0)])
-
-                if self.noLabelText == shape.label or result[1][0] == shape.label:
-                    print('label no change')
-                else:
-                    rec_flag += 1
-
-            if len(self.result_dic) > 0 and rec_flag > 0:
+                    if shape.line_color == DEFAULT_LOCK_COLOR:
+                        shape.label = result[0][0]
+                        self.result_dic_locked.append([box,(self.noLabelText,0)])
+                    else:
+                        self.result_dic.append([box,(self.noLabelText,0)])
+                try:
+                    if self.noLabelText == shape.label or result[1][0] == shape.label:
+                        print('label no change')
+                    else:
+                        rec_flag += 1
+                except IndexError as e:
+                    print('Can not recognise the box')           
+            if (len(self.result_dic) > 0 and rec_flag > 0)or self.canvas.lockedShapes: 
+                self.canvas.isInTheSameImage = True              
                 self.saveFile(mode='Auto')
                 self.loadFile(self.filePath)
+                self.canvas.isInTheSameImage = False
                 self.setDirty()
             elif len(self.result_dic) == len(self.canvas.shapes) and rec_flag == 0:
                 QMessageBox.information(self, "Information", "The recognition result remains unchanged!")
@@ -2027,8 +2103,11 @@ class MainWindow(QMainWindow, WindowMixin):
                     f.write(key + '\t')
                     f.write(json.dumps(self.PPlabel[key], ensure_ascii=False) + '\n')
 
-        if mode=='Manual':
-            msg = 'Images that have been checked are saved in '+ self.PPlabelpath
+        if mode == 'Manual':
+            if self.lang == 'ch':
+                msg = '已将检查过的图片标签保存在 ' + self.PPlabelpath + " 文件中"
+            else:
+                msg = 'Images that have been checked are saved in ' + self.PPlabelpath
             QMessageBox.information(self, "Information", msg)
 
     def saveCacheLabel(self):
@@ -2107,6 +2186,44 @@ class MainWindow(QMainWindow, WindowMixin):
         self.labelList.clearSelection()
         self._noSelectionSlot = False
         self.canvas.loadShapes(shapes, replace=replace)
+        print("loadShapes")#1
+        
+    
+    def lockSelectedShape(self):
+        """lock the selsected shapes.
+
+        Add self.selectedShapes to lock self.canvas.lockedShapes, 
+        which holds the ratio of the four coordinates of the locked shapes
+        to the width and height of the image
+        """
+        width, height = self.image.width(), self.image.height()
+        def format_shape(s):
+            return dict(label=s.label,  # str
+                        line_color=s.line_color.getRgb(),
+                        fill_color=s.fill_color.getRgb(),
+                        ratio=[[int(p.x())/width, int(p.y())/height] for p in s.points],  # QPonitF
+                       # add chris
+                        difficult=s.difficult)  # bool
+        #lock
+        if len(self.canvas.lockedShapes) == 0:
+            for s in self.canvas.selectedShapes:
+                s.line_color = DEFAULT_LOCK_COLOR
+                s.locked = True
+            shapes = [format_shape(shape) for shape in self.canvas.selectedShapes]
+            trans_dic = []
+            for box in shapes:
+                trans_dic.append({"transcription": box['label'], "ratio": box['ratio'], 'difficult': box['difficult']})
+            self.canvas.lockedShapes = trans_dic
+            self.actions.save.setEnabled(True)
+
+        #unlock
+        else:
+            for s in self.canvas.shapes:
+                s.line_color = DEFAULT_LINE_COLOR
+            self.canvas.lockedShapes = []
+            self.result_dic_locked = []
+            self.setDirty()
+            self.actions.save.setEnabled(True)
 
 
 def inverted(color):

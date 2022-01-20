@@ -49,4 +49,16 @@ def transfer_xfun_data(json_path=None, output_file=None):
     print("===ok====")
 
 
-transfer_xfun_data("./xfun/zh.val.json", "./xfun_normalize_val.json")
+def parser_args():
+    import argparse
+    parser = argparse.ArgumentParser(description="args for paddleserving")
+    parser.add_argument(
+        "--ori_gt_path", type=str, required=True, help='origin xfun gt path')
+    parser.add_argument(
+        "--output_path", type=str, required=True, help='path to save')
+    args = parser.parse_args()
+    return args
+
+
+args = parser_args()
+transfer_xfun_data(args.ori_gt_path, args.output_path)

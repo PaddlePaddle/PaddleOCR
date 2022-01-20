@@ -18,7 +18,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from paddle.optimizer import lr
-from .lr_scheduler import CyclicalCosineDecay
+from .lr_scheduler import CyclicalCosineDecay, OneCycleDecay
 
 
 class Linear(object):
@@ -224,5 +224,55 @@ class CyclicalCosine(object):
                 warmup_steps=self.warmup_epoch,
                 start_lr=0.0,
                 end_lr=self.learning_rate,
+                last_epoch=self.last_epoch)
+        return learning_rate
+
+
+class OneCycle(object):
+    """
+    One Cycle learning rate decay
+    Args:
+        max_lr(float): Upper learning rate boundaries
+        epochs(int): total training epochs
+        step_each_epoch(int): steps each epoch
+        anneal_strategy(str): {‘cos’, ‘linear’} Specifies the annealing strategy: “cos” for cosine annealing, “linear” for linear annealing. 
+            Default: ‘cos’
+        three_phase(bool): If True, use a third phase of the schedule to annihilate the learning rate according to ‘final_div_factor’ 
+            instead of modifying the second phase (the first two phases will be symmetrical about the step indicated by ‘pct_start’).
+        last_epoch (int, optional):  The index of last epoch. Can be set to restart training. Default: -1, means initial learning rate.
+    """
+
+    def __init__(self,
+                 max_lr,
+                 epochs,
+                 step_each_epoch,
+                 anneal_strategy='cos',
+                 three_phase=False,
+                 warmup_epoch=0,
+                 last_epoch=-1,
+                 **kwargs):
+        super(OneCycle, self).__init__()
+        self.max_lr = max_lr
+        self.epochs = epochs
+        self.steps_per_epoch = step_each_epoch
+        self.anneal_strategy = anneal_strategy
+        self.three_phase = three_phase
+        self.last_epoch = last_epoch
+        self.warmup_epoch = round(warmup_epoch * step_each_epoch)
+
+    def __call__(self):
+        learning_rate = OneCycleDecay(
+            max_lr=self.max_lr,
+            epochs=self.epochs,
+            steps_per_epoch=self.steps_per_epoch,
+            anneal_strategy=self.anneal_strategy,
+            three_phase=self.three_phase,
+            last_epoch=self.last_epoch)
+        if self.warmup_epoch > 0:
+            learning_rate = lr.LinearWarmup(
+                learning_rate=learning_rate,
+                warmup_steps=self.warmup_epoch,
+                start_lr=0.0,
+                end_lr=self.max_lr,
                 last_epoch=self.last_epoch)
         return learning_rate

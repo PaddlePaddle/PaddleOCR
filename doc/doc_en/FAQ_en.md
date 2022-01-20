@@ -1,7 +1,7 @@
 ## FAQ
 
 1. **Prediction error: got an unexpected keyword argument 'gradient_clip'**  
-The installed version of paddle is incorrect. Currently, this project only supports paddle1.7, which will be adapted to 1.8 in the near future.
+The installed version of paddle is incorrect. Currently, this project only supports Paddle 1.7, which will be adapted to 1.8 in the near future.
 
 2. **Error when converting attention recognition model: KeyError: 'predict'**  
 Solved. Please update to the latest version of the code.
@@ -31,7 +31,7 @@ At present, PaddleOCR has opensourced two Chinese models, namely 8.6M ultra-ligh
 |General Chinese OCR model|Resnet50_vd+Resnet34_vd|det_r50_vd_db.yml|rec_chinese_common_train.yml|
 
 8. **Is there a plan to opensource a model that only recognizes numbers or only English + numbers?**  
-It is not planned to opensource numbers only, numbers + English only, or other vertical text models. Paddleocr has opensourced a variety of detection and recognition algorithms for customized training. The two Chinese models are also based on the training output of the open-source algorithm library. You can prepare the data according to the tutorial, choose the appropriate configuration file, train yourselves, and we believe that you can get good result. If you have any questions during the training, you are welcome to open issues or ask in the communication group. We will answer them in time.
+It is not planned to opensource numbers only, numbers + English only, or other vertical text models. PaddleOCR has opensourced a variety of detection and recognition algorithms for customized training. The two Chinese models are also based on the training output of the open-source algorithm library. You can prepare the data according to the tutorial, choose the appropriate configuration file, train yourselves, and we believe that you can get good result. If you have any questions during the training, you are welcome to open issues or ask in the communication group. We will answer them in time.
 
 9. **What is the training data used by the open-source model? Can it be opensourced?**  
 At present, the open source model, dataset and magnitude are as follows:
@@ -46,11 +46,11 @@ At present, the open source model, dataset and magnitude are as follows:
 
 10. **Error in using the model with TPS module for prediction**  
 Error message: Input(X) dims[3] and Input(Grid) dims[2] should be equal, but received X dimension[3]\(108) != Grid dimension[2]\(100)  
-Solution：TPS does not support variable shape. Please set --rec_image_shape='3,32,100' and --rec_char_type='en'
+Solution: TPS does not support variable shape. Please set --rec_image_shape='3,32,100' and --rec_char_type='en'
 
 11. **Custom dictionary used during training, the recognition results show that words do not appear in the dictionary**  
 The used custom dictionary path is not set when making prediction. The solution is setting parameter `rec_char_dict_path` to the corresponding dictionary file.
 
 
 12. **Results of cpp_infer and python_inference are very different**  
-Versions of exprted inference model and inference libraray should be same. For example, on Windows platform, version of the inference libraray that PaddlePaddle provides is 1.8, but version of the inference model that PaddleOCR provides is 1.7, you should export model yourself(`tools/export_model.py`) on PaddlePaddle1.8 and then use the exported model for inference.
+Versions of exported inference model and inference library should be same. For example, on Windows platform, version of the inference library that PaddlePaddle provides is 1.8, but version of the inference model that PaddleOCR provides is 1.7, you should export model yourself(`tools/export_model.py`) on PaddlePaddle 1.8 and then use the exported model for inference.

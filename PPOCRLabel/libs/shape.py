@@ -30,6 +30,7 @@ DEFAULT_SELECT_LINE_COLOR = QColor(255, 255, 255)
 DEFAULT_SELECT_FILL_COLOR = QColor(0, 128, 255, 155)
 DEFAULT_VERTEX_FILL_COLOR = QColor(0, 255, 0, 255)
 DEFAULT_HVERTEX_FILL_COLOR = QColor(255, 0, 0)
+DEFAULT_LOCK_COLOR = QColor(255, 0, 255)
 MIN_Y_LABEL = 10
 
 
@@ -57,7 +58,7 @@ class Shape(object):
         self.selected = False
         self.difficult = difficult
         self.paintLabel = paintLabel
-
+        self.locked = False
         self._highlightIndex = None
         self._highlightMode = self.NEAR_VERTEX
         self._highlightSettings = {
