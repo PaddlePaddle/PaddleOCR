@@ -16,22 +16,15 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 
 ### 1.1 基于PaddleOCR的社区项目
 
-- 【最新】 [FastOCRLabel](https://gitee.com/BaoJianQiang/FastOCRLabel)：完整的C#版本标注工具 (@ [包建强](https://gitee.com/BaoJianQiang) )
-
-#### 1.1.1 通用工具
-
-- [DangoOCR离线版](https://github.com/PantsuDango/DangoOCR)：通用型桌面级即时翻译工具 (@ [PantsuDango](https://github.com/PantsuDango))
-- [scr2txt](https://github.com/lstwzd/scr2txt)：截屏转文字工具 (@ [lstwzd](https://github.com/lstwzd))
-- [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/1054614?channelType=0&channel=0)：英文视频自动生成字幕( @ [叶月水狐](https://aistudio.baidu.com/aistudio/personalcenter/thirdview/322052))
-
-#### 1.1.2 垂类场景工具
-
-- [id_card_ocr](https://github.com/baseli/id_card_ocr)：身份证复印件识别(@ [baseli](https://github.com/baseli))
-- [Paddle_Table_Image_Reader](https://github.com/thunder95/Paddle_Table_Image_Reader)：能看懂表格图片的数据助手(@ [thunder95](https://github.com/thunder95]))
-
-#### 1.1.3 前后处理
-
-- [paddleOCRCorrectOutputs](https://github.com/yuranusduke/paddleOCRCorrectOutputs)：获取OCR识别结果的key-value(@ [yuranusduke](https://github.com/yuranusduke))
+| 类别     | 项目                                                         | 描述                       | 开发者                                                       |
+| -------- | ------------------------------------------------------------ | -------------------------- | ------------------------------------------------------------ |
+| 通用工具 | [FastOCRLabel](https://gitee.com/BaoJianQiang/FastOCRLabel)  | 完整的C#版本标注GUI        | [包建强](https://gitee.com/BaoJianQiang)                     |
+| 通用工具 | [DangoOCR离线版](https://github.com/PantsuDango/DangoOCR)    | 通用型桌面级即时翻译GUI    | [PantsuDango](https://github.com/PantsuDango)                |
+| 通用工具 | [scr2txt](https://github.com/lstwzd/scr2txt)                 | 截屏转文字GUI              | [lstwzd](https://github.com/lstwzd)                          |
+| 垂类工具 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/1054614?channelType=0&channel=0) | 英文视频自动生成字幕       | [叶月水狐](https://aistudio.baidu.com/aistudio/personalcenter/thirdview/322052) |
+| 垂类工具 | [id_card_ocr](https://github.com/baseli/id_card_ocr)         | 身份证复印件识别           | [baseli](https://github.com/baseli)                          |
+| 垂类工具 | [Paddle_Table_Image_Reader](https://github.com/thunder95/Paddle_Table_Image_Reader) | 能看懂表格图片的数据助手   | [thunder95](https://github.com/thunder95])                   |
+| 前后处理 | [paddleOCRCorrectOutputs](https://github.com/yuranusduke/paddleOCRCorrectOutputs) | 获取OCR识别结果的key-value | [yuranusduke](https://github.com/yuranusduke)                |
 
 ### 1.2 为PaddleOCR新增功能
 
@@ -71,7 +64,7 @@ PaddleOCR非常欢迎社区贡献以PaddleOCR为核心的各种服务、部署�
 
 -  提交代码前请再三确认不会引入新的bug，并在PR中描述优化点。如果该PR解决了某个issue，请在PR中连接到该issue。所有的PR都应该遵守附录3中的[3.2.10 提交代码的一些约定。](./code_and_doc.md/#提交代码的一些约定)
 
-- 请在提交之前参考下方的[附录3：Pull Request说明](./code_and_doc.md/#附录3)。如果您对git的提交流程不熟悉，同样可以参考附录3的3.2节。
+- 请在提交之前参考下方的[附录3：Pull Request说明](./code_and_doc.md#附录3)。如果您对git的提交流程不熟悉，同样可以参考附录3的3.2节。
 
 **最后请在PR的题目中加上标签`【third-party】` , 在说明中@Evezerest，拥有此标签的PR将会被高优处理**。
 
