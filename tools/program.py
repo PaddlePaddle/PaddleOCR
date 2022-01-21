@@ -46,8 +46,8 @@ class ArgsParser(ArgumentParser):
         self.add_argument(
             '-p',
             '--profiler_options',
-            type=bool,
-            default=False,
+            type=str,
+            default=None,
             help='The option of profiler, which should be in format \"key1=value1;key2=value2;key3=value3\".'
         )
 
@@ -150,10 +150,6 @@ def train(config,
     print_batch_step = config['Global']['print_batch_step']
     eval_batch_step = config['Global']['eval_batch_step']
     profiler_options = config['profiler_options']
-    if profiler_options is True:
-        profiler_options = "batch_range=[10,20];state=GPU;tracer_option=Default;profile_path=model.profile"
-    else:
-        profiler_options = None
 
     global_step = 0
     if 'global_step' in pre_best_model_dict:
