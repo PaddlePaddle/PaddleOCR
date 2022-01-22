@@ -222,24 +222,25 @@ class MainWindow(QMainWindow):
         self.dock.setWidget(labelListContainer)
 
         #  ================== Zoom Bar  ==================
-        self.imgsplider = QSlider(Qt.Horizontal)
-        self.imgsplider.valueChanged.connect(self.CanvasSizeChange)
-        self.imgsplider.setMinimum(-150)
-        self.imgsplider.setMaximum(150)
-        self.imgsplider.setSingleStep(1)
-        self.imgsplider.setTickPosition(QSlider.TicksBelow)
-        self.imgsplider.setTickInterval(1)
+        self.imageSlider = QSlider(Qt.Horizontal)
+        self.imageSlider.valueChanged.connect(self.CanvasSizeChange)
+        self.imageSlider.setMinimum(-9)
+        self.imageSlider.setMaximum(510)
+        self.imageSlider.setSingleStep(1)
+        self.imageSlider.setTickPosition(QSlider.TicksBelow)
+        self.imageSlider.setTickInterval(1)
+
         op = QGraphicsOpacityEffect()
         op.setOpacity(0.2)
-        self.imgsplider.setGraphicsEffect(op)
-        # self.imgsplider.setAttribute(Qt.WA_TranslucentBackground)
-        self.imgsplider.setStyleSheet("background-color:transparent")
-        self.imgsliderDock = QDockWidget(getStr('ImageResize'), self)
-        self.imgsliderDock.setObjectName(getStr('IR'))
-        self.imgsliderDock.setWidget(self.imgsplider)
-        self.imgsliderDock.setFeatures(QDockWidget.DockWidgetFloatable)
-        self.imgsliderDock.setAttribute(Qt.WA_TranslucentBackground)
-        self.addDockWidget(Qt.RightDockWidgetArea, self.imgsliderDock)
+        self.imageSlider.setGraphicsEffect(op)
+
+        self.imageSlider.setStyleSheet("background-color:transparent")
+        self.imageSliderDock = QDockWidget(getStr('ImageResize'), self)
+        self.imageSliderDock.setObjectName(getStr('IR'))
+        self.imageSliderDock.setWidget(self.imageSlider)
+        self.imageSliderDock.setFeatures(QDockWidget.DockWidgetFloatable)
+        self.imageSliderDock.setAttribute(Qt.WA_TranslucentBackground)
+        self.addDockWidget(Qt.RightDockWidgetArea, self.imageSliderDock)
 
         self.zoomWidget = ZoomWidget()
         self.colorDialog = ColorDialog(parent=self)
@@ -403,7 +404,7 @@ class MainWindow(QMainWindow):
                       'Ctrl+E', 'edit', getStr('editLabelDetail'),
                       enabled=False)
 
-        ######## New actions #######
+        #  ================== New Actions ==================
         AutoRec = action(getStr('autoRecognition'), self.autoRecognition,
                          '', 'Auto', getStr('autoRecognition'), enabled=False)
 
@@ -447,7 +448,7 @@ class MainWindow(QMainWindow):
         # self.preButton.setDefaultAction(openPrevImg)
         # self.nextButton.setDefaultAction(openNextImg)
 
-        ############# Zoom layout ##############
+        #  ================== Zoom layout ==================
         zoomLayout = QHBoxLayout()
         zoomLayout.addStretch()
         self.zoominButton = QToolButton()
@@ -929,8 +930,8 @@ class MainWindow(QMainWindow):
             self.loadFile(filename)
 
     def CanvasSizeChange(self):
-        if len(self.mImgList) > 0:
-            self.zoomWidget.setValue(self.zoomWidgetValue + self.imgsplider.value())
+        if len(self.mImgList) > 0 and self.imageSlider.hasFocus():
+            self.zoomWidget.setValue(self.imageSlider.value())
 
     def shapeSelectionChanged(self, selected_shapes):
         self._noSelectionSlot = True
@@ -1181,6 +1182,8 @@ class MainWindow(QMainWindow):
 
     def addZoom(self, increment=10):
         self.setZoom(self.zoomWidget.value() + increment)
+        print(self.zoomWidget.value() + increment)
+        self.imageSlider.setValue(self.zoomWidget.value() + increment)  # set zoom slider value
 
     def zoomRequest(self, delta):
         # get the current scrollbar positions
@@ -1273,7 +1276,6 @@ class MainWindow(QMainWindow):
                 fileWidgetItem = self.fileListWidget.item(index)
                 print('unicodeFilePath is', unicodeFilePath)
                 fileWidgetItem.setSelected(True)
-                ###
                 self.iconlist.clear()
                 self.additems5(None)
 
