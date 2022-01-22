@@ -191,7 +191,8 @@ class MainWindow(QMainWindow):
 
         # Connect to itemChanged to detect checkbox changes.
         self.labelList.itemChanged.connect(self.labelItemChanged)
-        self.labelListDock = QDockWidget(getStr('recognitionResult'), self)
+        self.labelListDockName = getStr('recognitionResult')
+        self.labelListDock = QDockWidget(self.labelListDockName, self)
         self.labelListDock.setWidget(self.labelList)
         self.labelListDock.setFeatures(QDockWidget.NoDockWidgetFeatures)
         listLayout.addWidget(self.labelListDock)
@@ -204,7 +205,8 @@ class MainWindow(QMainWindow):
         self.BoxList.itemDoubleClicked.connect(self.editBox)
         # Connect to itemChanged to detect checkbox changes.
         self.BoxList.itemChanged.connect(self.boxItemChanged)
-        self.BoxListDock = QDockWidget(getStr('detectionBoxposition'), self)
+        self.BoxListDockName = getStr('detectionBoxposition')
+        self.BoxListDock = QDockWidget(self.BoxListDockName, self)
         self.BoxListDock.setWidget(self.BoxList)
         self.BoxListDock.setFeatures(QDockWidget.NoDockWidgetFeatures)
         listLayout.addWidget(self.BoxListDock)
@@ -976,6 +978,10 @@ class MainWindow(QMainWindow):
             action.setEnabled(True)
         self.updateComboBox()
 
+        # update show counting
+        self.BoxListDock.setWindowTitle(self.BoxListDockName + f" ({self.BoxList.count()})")
+        self.labelListDock.setWindowTitle(self.labelListDockName + f" ({self.labelList.count()})")
+
     def remLabels(self, shapes):
         if shapes is None:
             # print('rm empty label')
@@ -1339,6 +1345,9 @@ class MainWindow(QMainWindow):
             if len(select_indexes) > 0:
                 self.file_dock.setWindowTitle(self.fileListName + f" ({select_indexes[0].row() + 1}"
                                                                   f"/{self.fileListWidget.count()})")
+            # update show counting
+            self.BoxListDock.setWindowTitle(self.BoxListDockName + f" ({self.BoxList.count()})")
+            self.labelListDock.setWindowTitle(self.labelListDockName + f" ({self.labelList.count()})")
 
             self.canvas.setFocus(True)
             return True
@@ -1745,6 +1754,8 @@ class MainWindow(QMainWindow):
         if self.noShapes():
             for action in self.actions.onShapesPresent:
                 action.setEnabled(False)
+        self.BoxListDock.setWindowTitle(self.BoxListDockName + f" ({self.BoxList.count()})")
+        self.labelListDock.setWindowTitle(self.labelListDockName + f" ({self.labelList.count()})")
 
     def chshapeLineColor(self):
         color = self.colorDialog.getColor(self.lineColor, u'Choose line color',
