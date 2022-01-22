@@ -26,11 +26,11 @@ docker build -t paddleocr:cpu .
 ## 3.启动Docker容器
 a. CPU 版本
 ```
-sudo docker run -dp 8868:8868 --name paddle_ocr paddleocr:cpu
+sudo docker run -dp 8866:8866 --name paddle_ocr paddleocr:cpu
 ```
 b. GPU 版本 (通过NVIDIA Container Toolkit)
 ```
-sudo nvidia-docker run -dp 8868:8868 --name paddle_ocr paddleocr:gpu
+sudo nvidia-docker run -dp 8866:8866 --name paddle_ocr paddleocr:gpu
 ```
 c. GPU 版本 (Docker 19.03以上版本，可以直接用如下命令)
 ```

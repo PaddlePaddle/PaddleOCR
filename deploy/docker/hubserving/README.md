@@ -26,11 +26,11 @@ docker build -t paddleocr:cpu .
 ## 3. Start container
 a. CPU version
 ```
-sudo docker run -dp 8868:8868 --name paddle_ocr paddleocr:cpu
+sudo docker run -dp 8866:8866 --name paddle_ocr paddleocr:cpu
 ```
 b. GPU version (base on NVIDIA Container Toolkit)
 ```
-sudo nvidia-docker run -dp 8868:8868 --name paddle_ocr paddleocr:gpu
+sudo nvidia-docker run -dp 8866:8866 --name paddle_ocr paddleocr:gpu
 ```
 c. GPU version (Docker 19.03++)
 ```
