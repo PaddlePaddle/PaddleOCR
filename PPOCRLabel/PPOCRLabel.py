@@ -186,9 +186,9 @@ class MainWindow(QMainWindow):
         self.labelList = EditInList()
         labelListContainer = QWidget()
         labelListContainer.setLayout(listLayout)
-        # self.labelList.itemActivated.connect(self.labelSelectionChanged)
         self.labelList.itemSelectionChanged.connect(self.labelSelectionChanged)
         self.labelList.clicked.connect(self.labelList.item_clicked)
+
         # Connect to itemChanged to detect checkbox changes.
         self.labelList.itemChanged.connect(self.labelItemChanged)
         self.labelListDock = QDockWidget(getStr('recognitionResult'), self)
@@ -1888,7 +1888,10 @@ class MainWindow(QMainWindow):
                 self.canvas.isInTheSameImage = False
                 self.setDirty()
             elif len(self.result_dic) == len(self.canvas.shapes) and rec_flag == 0:
-                QMessageBox.information(self, "Information", "The recognition result remains unchanged!")
+                if self.lang == 'ch':
+                    QMessageBox.information(self, "Information", "识别结果保持一致！")
+                else:
+                    QMessageBox.information(self, "Information", "The recognition result remains unchanged!")
             else:
                 print('Can not recgonise in ', self.filePath)
         else:
