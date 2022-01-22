@@ -1182,7 +1182,6 @@ class MainWindow(QMainWindow):
 
     def addZoom(self, increment=10):
         self.setZoom(self.zoomWidget.value() + increment)
-        print(self.zoomWidget.value() + increment)
         self.imageSlider.setValue(self.zoomWidget.value() + increment)  # set zoom slider value
 
     def zoomRequest(self, delta):
@@ -2162,10 +2161,10 @@ def get_main_app(argv=[]):
     app = QApplication(argv)
     app.setApplicationName(__appname__)
     app.setWindowIcon(newIcon("app"))
-    # Tzutalin 201705+: Accept extra agruments to change predefined class file
+    # Tzutalin 201705+: Accept extra arguments to change predefined class file
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("--lang", type=str, default='en', nargs="?")
-    arg_parser.add_argument("--gpu", type=str2bool, default=False, nargs="?")
+    arg_parser.add_argument("--gpu", type=str2bool, default=True, nargs="?")
     arg_parser.add_argument("--predefined_classes_file",
                             default=os.path.join(os.path.dirname(__file__), "data", "predefined_classes.txt"),
                             nargs="?")
