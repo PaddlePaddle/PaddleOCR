@@ -849,7 +849,7 @@ class MainWindow(QMainWindow):
 
         box = ast.literal_eval(item.text())
         # print('shape in labelItemChanged is',shape.points)
-        if box != [(p.x(), p.y()) for p in shape.points]:
+        if box != [(int(p.x()), int(p.y())) for p in shape.points]:
             # shape.points = box
             shape.points = [QPointF(p[0], p[1]) for p in box]
 
