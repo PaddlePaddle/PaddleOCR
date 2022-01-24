@@ -114,6 +114,7 @@ For a new language request, please refer to [Guideline for new language_requests
         - [Yml Configuration](./doc/doc_en/config_en.md)
     - Inference and Deployment
         - [C++ Inference](./deploy/cpp_infer/readme_en.md)
+        - [C# Inference](./deploy/csharp_infer/readme.md)
         - [Serving](./deploy/pdserving/README.md)
         - [Mobile](./deploy/lite/readme_en.md)
         - [Benchmark](./doc/doc_en/benchmark_en.md)  

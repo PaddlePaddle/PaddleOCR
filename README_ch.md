@@ -93,6 +93,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
         - [配置文件内容与生成](./doc/doc_ch/config.md)
     - PP-OCR模型推理部署
         - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
+        - [基于C#预测引擎推理](./deploy/csharp_infer/readme.md)
         - [服务化部署](./deploy/pdserving/README_CN.md)
         - [端侧部署](./deploy/lite/readme.md)
         - [Benchmark](./doc/doc_ch/benchmark.md)
