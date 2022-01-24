@@ -327,7 +327,6 @@ else
                     save_log="${LOG_PATH}/${trainer}_gpus_${gpu}_autocast_${autocast}_nodes_${nodes}"
                 fi
 
-                btrain_log="${LOG_PATH}/benchmark_train/${model_name}_bs${train_batch_value}_${autocast}"
 
                 set_save_model=$(func_set_params "${save_model_key}" "${save_log}")
                 if [ ${#gpu} -le 2 ];then  # train with cpu or single gpu
