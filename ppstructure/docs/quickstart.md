@@ -1,14 +1,15 @@
 # PP-Structure 快速开始
 
-* [1. 安装PaddleOCR whl包](#1)
-* [2. 便捷使用](#2)
-  + [2.1 命令行使用](#21)
-  + [2.2 Python脚本使用](#22)
-  + [2.3 返回结果说明](#23)
-  + [2.4 参数说明](#24)
-* [3. Python脚本使用](#3)
+- [PP-Structure 快速开始](#pp-structure-快速开始)
+  - [1. 安装依赖包](#1-安装依赖包)
+  - [2. 便捷使用](#2-便捷使用)
+    - [2.1 命令行使用](#21-命令行使用)
+    - [2.2 Python脚本使用](#22-python脚本使用)
+    - [2.3 返回结果说明](#23-返回结果说明)
+    - [2.4 参数说明](#24-参数说明)
+  - [3. Python脚本使用](#3-python脚本使用)
 
-`<a name="1"></a>`
+<a name="1"></a>
 
 ## 1. 安装依赖包
 
@@ -23,11 +24,11 @@ pip3 install -e .
 
 ```
 
-`<a name="2"></a>`
+<a name="2"></a>
 
 ## 2. 便捷使用
 
-`<a name="21"></a>`
+<a name="21"></a>
 
 ### 2.1 命令行使用
 
@@ -41,7 +42,7 @@ paddleocr --image_dir=../doc/table/1.png --type=structure
 
 coming soon
 
-`<a name="22"></a>`
+<a name="22"></a>
 
 ### 2.2 Python脚本使用
 
@@ -77,7 +78,7 @@ im_show.save('result.jpg')
 
 comming soon
 
-`<a name="23"></a>`
+<a name="23"></a>
 
 ### 2.3 返回结果说明
 
@@ -107,7 +108,7 @@ dict 里各个字段说明如下
 
 comming soon
 
-`<a name="24"></a>`
+<a name="24"></a>
 
 ### 2.4 参数说明
 
@@ -126,7 +127,7 @@ comming soon
 
 运行完成后，每张图片会在 `output`字段指定的目录下有一个同名目录，图片里的每个表格会存储为一个excel，图片区域会被裁剪之后保存下来，excel文件和图片名名为表格在图片里的坐标。
 
-`<a name="3"></a>`
+<a name="3"></a>
 
 ## 3. Python脚本使用
 

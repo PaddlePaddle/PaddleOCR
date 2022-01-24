@@ -1,14 +1,18 @@
 # 表格识别
 
-* [1. 表格识别 pipeline](#1)
-* [2. 性能](#2)
-* [3. 使用](#3)
-  + [3.1 快速开始](#31)
-  + [3.2 训练](#32)
-  + [3.3 评估](#33)
-  + [3.4 预测](#34)
+- [表格识别](#表格识别)
+  - [1. 表格识别 pipeline](#1-表格识别-pipeline)
+  - [2. 性能](#2-性能)
+  - [3. 使用](#3-使用)
+    - [3.1 快速开始](#31-快速开始)
+    - [3.2 训练](#32-训练)
+      - [数据准备](#数据准备)
+      - [启动训练](#启动训练)
+      - [断点训练](#断点训练)
+    - [3.3 评估](#33-评估)
+    - [3.4 预测](#34-预测)
 
-`<a name="1"></a>`
+<a name="1"></a>
 
 ## 1. 表格识别 pipeline
 
@@ -29,7 +33,7 @@
 3. 由单行文字的坐标、识别结果和单元格的坐标一起组合出单元格的识别结果。
 4. 单元格的识别结果和表格结构一起构造表格的html字符串。
 
-`<a name="2"></a>`
+<a name="2"></a>
 
 ## 2. 性能
 
@@ -40,11 +44,11 @@
 | EDD`<sup>`[2]`</sup>` | 88.3                                                                                               |
 | Ours                      | 93.32                                                                                              |
 
-`<a name="3"></a>`
+<a name="3"></a>
 
 ## 3. 使用
 
-`<a name="31"></a>`
+<a name="31"></a>
 
 ### 3.1 快速开始
 
@@ -67,7 +71,8 @@ python3 table/predict_table.py --det_model_dir=inference/en_ppocr_mobile_v2.0_ta
 运行完成后，每张图片的excel表格会保存到output字段指定的目录下
 
 note: 上述模型是在 PubLayNet 数据集上训练的表格识别模型，仅支持英文扫描场景，如需识别其他场景需要自己训练模型后替换 `det_model_dir`,`rec_model_dir`,`table_model_dir`三个字段即可。
-`<a name="32"></a>`
+
+<a name="32"></a>
 
 ### 3.2 训练
 
@@ -100,7 +105,7 @@ python3 tools/train.py -c configs/table/table_mv3.yml -o Global.checkpoints=./yo
 
 **注意**：`Global.checkpoints`的优先级高于 `Global.pretrain_weights`的优先级，即同时指定两个参数时，优先加载 `Global.checkpoints`指定的模型，如果 `Global.checkpoints`指定的模型路径有误，会加载 `Global.pretrain_weights`指定的模型。
 
-`<a name="33"></a>`
+<a name="33"></a>
 
 ### 3.3 评估
 
@@ -133,7 +138,7 @@ python3 table/eval_table.py --det_model_dir=path/to/det_model_dir --rec_model_di
 teds: 93.32
 ```
 
-`<a name="34"></a>`
+<a name="34"></a>
 
 ### 3.4 预测
 
