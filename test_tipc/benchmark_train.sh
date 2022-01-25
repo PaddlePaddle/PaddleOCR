@@ -147,8 +147,9 @@ else
     mkdir -p $log_path
     log_name="${repo_name}_${model_name}_bs${batch_size}_${precision}_${run_process_type}_${run_mode}_${device_num}_log"
     func_sed_params "$FILENAME" "4" "$gpu_id"  # sed used gpu_id 
-    func_sed_params "$FILENAME" "13" "$null"  # sed --profile_option as null
+    func_sed_params "$FILENAME" "13" "null"  # sed --profile_option as null
     cmd="bash test_tipc/test_train_inference_python.sh ${FILENAME} benchmark_train > ${log_path}/${log_name} 2>&1 "
+    echo $cmd
     eval $cmd
     eval "cat ${log_path}/${log_name}"
 fi
