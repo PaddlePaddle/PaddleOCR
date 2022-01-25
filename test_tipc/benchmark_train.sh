@@ -17,12 +17,7 @@ function func_sed_params(){
     filename=$1
     line=$2
     param_value=$3
-
-    # cmd="sed -n '${line}p' $filename"
-    # params=`eval $cmd`
     params=`sed -n "${line}p" $filename`
-    # params=`cmd`
-    #params=$($cmd)
     IFS=":"
     array=(${params})
     key=${array[0]}
@@ -35,7 +30,6 @@ function func_sed_params(){
     new_params="${key}:${param_value}"
     IFS=";"
     cmd="sed -i '${line}s/.*/${new_params}/' '${filename}'"
-    # echo $cmd
     eval $cmd
 }
 
@@ -60,16 +54,16 @@ function get_repo_name(){
     echo ${arr[-1]}
 }
 
-
-# FILENAME=$1
-# # MODE be one of ['benchmark_train']
-# MODE=$2
-# params=$3
+FILENAME=$1
+# MODE be one of ['benchmark_train']
+MODE=$2
+params=$3
+# bash test_tipc/benchmark_train.sh test_tipc/configs/det_mv3_db_v2.0/train_benchmark.txt  benchmark_train dynamic_bs8_null_SingleP_DP_N1C1
 IFS="\n"
 
-FILENAME="test_tipc/configs/det_mv3_db_v2.0/train_benchmark.txt"
-MODE="benchmark_train"
-params="dynamic_bs8_fp32_SingleP_DP_N1C4"
+# FILENAME="test_tipc/configs/det_mv3_db_v2.0/train_benchmark.txt"
+# MODE="benchmark_train"
+# params="dynamic_bs8_fp32_SingleP_DP_N1C4"
 
 # parser params from input: modeltype_bs${bs_item}_${fp_item}_${run_process_type}_${run_mode}_${device_num}
 IFS="_"
@@ -98,16 +92,12 @@ model_name=$(func_parser_value "${lines[1]}")
 
 # 获取benchmark_params所在的行数
 line_num=`grep -n "benchmark_params" $FILENAME  | cut -d ":" -f 1`
-echo $line_num # debug
-echo ${lines[$line_num]} # debug
 # for train log parser
 line_num=`expr $line_num + 3`
 ips_unit_value=$(func_parser_value "${lines[line_num]}")
 
 line_num=`expr $line_num + 1`
 skip_steps_value=$(func_parser_value "${lines[line_num]}")
-
-echo $skip_steps_value "haha"
 
 line_num=`expr $line_num + 1`
 keyword_value=$(func_parser_value "${lines[line_num]}")
@@ -118,44 +108,35 @@ convergence_key_value=$(func_parser_value "${lines[line_num]}")
 line_num=`expr $line_num + 1`
 flags_value=$(func_parser_value "${lines[line_num]}")
 
-# echo "device_num: $device_num"
-# gpu_id=$(set_gpu_id "N4C32")
-# echo "gpuid: $gpu_id"
-
 gpu_id=$(set_gpu_id $device_num)
-echo "gpu_id: $gpu_id"
 repo_name=$(get_repo_name )
-echo "repo_name: ${repo_name}"
 
-# train_log_file=${run_log_path}/${model_repo}_${model_name}_${device_num}_log
-# profiling_log_file=${profiling_log_path}/${model_repo}_${model_name}_${device_num}_profiling
 SAVE_LOG="benchmark_log"
 
 if [ ${#gpu_id} -le 1 ];then
-    echo "single_gpu train"
     log_path="$SAVE_LOG/profiling_log"
     mkdir -p $log_path
     log_name="${repo_name}_${model_name}_bs${batch_size}_${precision}_${run_process_type}_${run_mode}_${device_num}_profiling"
-    echo $log_name
     func_sed_params "$FILENAME" "4" "0"  # sed used gpu_id 
-    cmd="bash test_tipc/test_train_inference_python.sh benchmark_train > ${log_path}/${log_name} 2>&1 "
+    cmd="bash test_tipc/test_train_inference_python.sh ${FILENAME} benchmark_train > ${log_path}/${log_name} 2>&1 "
     echo $cmd
+    eval $cmd
     # without profile
     log_path="$SAVE_LOG/train_log"
     mkdir -p $log_path
     log_name="${repo_name}_${model_name}_bs${batch_size}_${precision}_${run_process_type}_${run_mode}_${device_num}_log"
     func_sed_params "$FILENAME" "13" "null"  # sed used gpu_id 
-    cmd="bash test_tipc/test_train_inference_python.sh benchmark_train > ${log_path}/${log_name} 2>&1 "
+    cmd="bash test_tipc/test_train_inference_python.sh ${FILENAME} benchmark_train > ${log_path}/${log_name} 2>&1 "
     echo $cmd
+    eval $cmd
 else
-    echo "multi_gpu training"
     log_path="$SAVE_LOG/train_log"
     mkdir -p $log_path
     log_name="${repo_name}_${model_name}_bs${batch_size}_${precision}_${run_process_type}_${run_mode}_${device_num}_log"
     func_sed_params "$FILENAME" "4" "$gpu_id"  # sed used gpu_id 
     func_sed_params "$FILENAME" "13" "$null"  # sed --profile_option as null
-    cmd="bash test_tipc/test_train_inference_python.sh benchmark_train > ${log_path}/${log_name} 2>&1 "
-    echo $cmd
+    cmd="bash test_tipc/test_train_inference_python.sh ${FILENAME} benchmark_train > ${log_path}/${log_name} 2>&1 "
+    eval $cmd
 fi
 
 
