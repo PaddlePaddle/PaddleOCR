@@ -9,16 +9,7 @@ PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field, w
 ### Recent Update
 
 - 2022.01：（by [PeterH0323](https://github.com/peterh0323) ）
-  - Optimize multiple Chinese prompt messages
-  - Optimize software startup
-  - Change the shortcut key for deletion to [Alt + x]
-  - New feature: Add count of pictures and labels on the left and right sides.
-  - New feature: Add time display when [Auto Label]
-  - New feature: use the shortcut keys [x] and [C] to rotate the box
-  - Fixed: After automatic recognition, rotating the picture directly without clicking on the file list will cause an error: the array exceeds the index
-  - Fixed: When zooming in and out with the shortcut keys, the zoom slider will not change
-  - Fixed: When using paddlepaddle-gpu to automatically label, the CPU is still used for infer
-  - Fixed: In the picture preview bar below, the tool tip background is black
+  - Improve user experience: prompt for the number of files and labels, optimize interaction, and fix bugs such as only use CPU when inference
 - 2021.11.17:
   - Support install and start PPOCRLabel through the whl package (by [d2623587501](https://github.com/d2623587501))
   - Dataset segmentation: Divide the annotation file into training, verification and testing parts (refer to section 3.5 below, by [MrCuiHao](https://github.com/MrCuiHao))

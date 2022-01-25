@@ -64,7 +64,7 @@ class MainWindow(QMainWindow):
                  lang="ch",
                  gpu=False,
                  default_filename=None,
-                 default_predicted_class_file=None,
+                 default_predefined_class_file=None,
                  default_save_dir=None):
         super(MainWindow, self).__init__()
         self.setWindowTitle(__appname__)
@@ -116,7 +116,7 @@ class MainWindow(QMainWindow):
         self.screencast = "https://github.com/PaddlePaddle/PaddleOCR"
 
         # Load predefined classes to the list
-        self.loadPredefinedClasses(default_predicted_class_file)
+        self.loadPredefinedClasses(default_predefined_class_file)
 
         # Main widgets and related state.
         self.labelDialog = LabelDialog(parent=self, listItem=self.labelHist)
@@ -153,10 +153,10 @@ class MainWindow(QMainWindow):
         fileListContainer = QWidget()
         fileListContainer.setLayout(filelistLayout)
         self.fileListName = getStr('fileList')
-        self.file_dock = QDockWidget(self.fileListName, self)
-        self.file_dock.setObjectName(getStr('files'))
-        self.file_dock.setWidget(fileListContainer)
-        self.addDockWidget(Qt.LeftDockWidgetArea, self.file_dock)
+        self.fileDock = QDockWidget(self.fileListName, self)
+        self.fileDock.setObjectName(getStr('files'))
+        self.fileDock.setWidget(fileListContainer)
+        self.addDockWidget(Qt.LeftDockWidgetArea, self.fileDock)
 
         #  ================== Right Area  ==================
         listLayout = QVBoxLayout()
@@ -317,7 +317,7 @@ class MainWindow(QMainWindow):
         self.addDockWidget(Qt.RightDockWidgetArea, self.dock)
 
         self.dock.setFeatures(QDockWidget.DockWidgetClosable | QDockWidget.DockWidgetFloatable)
-        self.file_dock.setFeatures(QDockWidget.NoDockWidgetFeatures)
+        self.fileDock.setFeatures(QDockWidget.NoDockWidgetFeatures)
 
         #  ================== Actions ==================
         action = partial(newAction, self)
@@ -1343,7 +1343,7 @@ class MainWindow(QMainWindow):
             # show file list image count
             select_indexes = self.fileListWidget.selectedIndexes()
             if len(select_indexes) > 0:
-                self.file_dock.setWindowTitle(self.fileListName + f" ({select_indexes[0].row() + 1}"
+                self.fileDock.setWindowTitle(self.fileListName + f" ({select_indexes[0].row() + 1}"
                                                                   f"/{self.fileListWidget.count()})")
             # update show counting
             self.BoxListDock.setWindowTitle(self.BoxListDockName + f" ({self.BoxList.count()})")
@@ -1555,7 +1555,7 @@ class MainWindow(QMainWindow):
         self.actions.rotateRight.setEnabled(True)
 
         self.fileListWidget.setCurrentRow(0)  # set list index to first
-        self.file_dock.setWindowTitle(self.fileListName + f" (1/{self.fileListWidget.count()})")  # show image count
+        self.fileDock.setWindowTitle(self.fileListName + f" (1/{self.fileListWidget.count()})")  # show image count
 
     def openPrevImg(self, _value=False):
         if len(self.mImgList) <= 0:
@@ -2186,7 +2186,7 @@ def get_main_app(argv=[]):
 
     win = MainWindow(lang=args.lang,
                      gpu=args.gpu,
-                     default_predicted_class_file=args.predefined_classes_file)
+                     default_predefined_class_file=args.predefined_classes_file)
     win.show()
     return app, win
 

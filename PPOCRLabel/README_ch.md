@@ -9,16 +9,7 @@ PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，内置P
 #### 近期更新
 
 - 2022.01：（by [PeterH0323](https://github.com/peterh0323) ）
-  - 优化多处中文提示信息
-  - 优化软件启动
-  - 更改删除快捷键为【Alt+X】
-  - 新功能：在左右两边的 ListWidget 加入数量显示
-  - 新功能：在【自动标注】的时候加上时间显示
-  - 新功能：使用快捷键【X】、【C】来对框进行旋转
-  - Fixed: 在自动识别后，不单击文件列表，直接执行旋转图片，会引发错误：数组超出索引
-  - Fixed: 使用快捷键放大缩小的时候，Zoom Slider 不会跟着变化
-  - Fixed: 使用 paddlepaddle-gpu 自动打标签的时候还是使用 CPU 进行推理
-  - Fixed: 下方图片预览栏，鼠标悬停显示的 Tool Tip 背景是黑色
+  - 提升用户体验：新增文件与标记数目提示、优化交互、修复gpu使用等问题
 - 2021.11.17：
   - 新增支持通过whl包安装和启动PPOCRLabel（by [d2623587501](https://github.com/d2623587501)）
   - 标注数据集切分：对标注数据进行训练、验证与测试集划分（参考下方3.5节，by [MrCuiHao](https://github.com/MrCuiHao)）
