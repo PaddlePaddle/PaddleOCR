@@ -8,6 +8,8 @@ PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field, w
 
 ### Recent Update
 
+- 2022.01：（by [PeterH0323](https://github.com/peterh0323) ）
+  - Improve user experience: prompt for the number of files and labels, optimize interaction, and fix bugs such as only use CPU when inference
 - 2021.11.17:
   - Support install and start PPOCRLabel through the whl package (by [d2623587501](https://github.com/d2623587501))
   - Dataset segmentation: Divide the annotation file into training, verification and testing parts (refer to section 3.5 below, by [MrCuiHao](https://github.com/MrCuiHao))
@@ -110,7 +112,7 @@ python PPOCRLabel.py
 
 6. Click 're-Recognition', model will rewrite ALL recognition results in ALL detection box<sup>[3]</sup>.
 
-7. Double click the result in 'recognition result' list to manually change inaccurate recognition results.
+7. Single click the result in 'recognition result' list to manually change inaccurate recognition results.
 
 8. **Click "Check", the image status will switch to "√",then the program automatically jump to the next.**
 
@@ -143,15 +145,17 @@ python PPOCRLabel.py
 ### 3.1 Shortcut keys
 
 | Shortcut keys            | Description                                      |
-|--------------------------| ------------------------------------------------ |
+|--------------------------|--------------------------------------------------|
 | Ctrl + Shift + R         | Re-recognize all the labels of the current image |
 | W                        | Create a rect box                                |
 | Q                        | Create a four-points box                         |
+| X                        | Rotate the box anti-clockwise                    |
+| C                        | Rotate the box clockwise                         |
 | Ctrl + E                 | Edit label of the selected box                   |
 | Ctrl + R                 | Re-recognize the selected box                    |
 | Ctrl + C                 | Copy and paste the selected box                  |
 | Ctrl + Left Mouse Button | Multi select the label box                       |
-| Ctrl + X                 | Delete the selected box                          |
+| Alt + X                  | Delete the selected box                          |
 | Ctrl + V                 | Check image                                      |
 | Ctrl + Shift + d         | Delete image                                     |
 | D                        | Next image                                       |
