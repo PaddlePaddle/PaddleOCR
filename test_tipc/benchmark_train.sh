@@ -124,7 +124,7 @@ if [ ${#gpu_id} -le 1 ];then
     eval $cmd
     last_status=${PIPESTATUS[0]}
     eval "cat ${log_path}/${log_name}"
-    status_check $last_status "${command}" "${status_log}"
+    status_check $last_status "${cmd}" "${status_log}"
     # without profile
     log_path="$SAVE_LOG/train_log"
     mkdir -p $log_path
@@ -135,7 +135,7 @@ if [ ${#gpu_id} -le 1 ];then
     eval $cmd
     last_status=${PIPESTATUS[0]}
     eval "cat ${log_path}/${log_name}"
-    status_check $last_status "${command}" "${status_log}"
+    status_check $last_status "${cmd}" "${status_log}"
 else
     log_path="$SAVE_LOG/train_log"
     mkdir -p $log_path
@@ -146,7 +146,7 @@ else
     eval $cmd
     last_status=${PIPESTATUS[0]}
     eval "cat ${log_path}/${log_name}"
-    status_check $last_status "${command}" "${status_log}"
+    status_check $last_status "${cmd}" "${status_log}"
 fi
 
 
