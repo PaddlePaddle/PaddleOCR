@@ -112,6 +112,7 @@ gpu_id=$(set_gpu_id $device_num)
 repo_name=$(get_repo_name )
 
 SAVE_LOG="benchmark_log"
+status_log="benchmark_log/results.log"
 
 if [ ${#gpu_id} -le 1 ];then
     log_path="$SAVE_LOG/profiling_log"
@@ -121,6 +122,9 @@ if [ ${#gpu_id} -le 1 ];then
     cmd="bash test_tipc/test_train_inference_python.sh ${FILENAME} benchmark_train > ${log_path}/${log_name} 2>&1 "
     echo $cmd
     eval $cmd
+    last_status=${PIPESTATUS[0]}
+    eval "cat ${log_path}/${log_name}"
+    status_check $last_status "${command}" "${status_log}"
     # without profile
     log_path="$SAVE_LOG/train_log"
     mkdir -p $log_path
@@ -129,6 +133,9 @@ if [ ${#gpu_id} -le 1 ];then
     cmd="bash test_tipc/test_train_inference_python.sh ${FILENAME} benchmark_train > ${log_path}/${log_name} 2>&1 "
     echo $cmd
     eval $cmd
+    last_status=${PIPESTATUS[0]}
+    eval "cat ${log_path}/${log_name}"
+    status_check $last_status "${command}" "${status_log}"
 else
     log_path="$SAVE_LOG/train_log"
     mkdir -p $log_path
@@ -137,6 +144,9 @@ else
     func_sed_params "$FILENAME" "13" "$null"  # sed --profile_option as null
     cmd="bash test_tipc/test_train_inference_python.sh ${FILENAME} benchmark_train > ${log_path}/${log_name} 2>&1 "
     eval $cmd
+    last_status=${PIPESTATUS[0]}
+    eval "cat ${log_path}/${log_name}"
+    status_check $last_status "${command}" "${status_log}"
 fi
 
 
