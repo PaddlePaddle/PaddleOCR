@@ -50,7 +50,6 @@ https://aistudio.baidu.com/aistudio/datasetdetail/8429
     - Each sample is fixed with 10 characters, and the characters are randomly intercepted from the sentences in the corpus
     - Image resolution is 280x32  
     ![](../datasets/ch_doc1.jpg)  
-    ![](../datasets/ch_doc2.jpg)  
     ![](../datasets/ch_doc3.jpg)  
 - **Download link**：https://pan.baidu.com/s/1QkI7kjah8SPHwOQ40rS1Pw (Password: lu7m)
 

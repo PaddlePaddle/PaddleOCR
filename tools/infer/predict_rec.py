@@ -13,6 +13,7 @@
 # limitations under the License.
 import os
 import sys
+import threading
 from PIL import Image
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
@@ -37,6 +38,7 @@ logger = get_logger()
 
 class TextRecognizer(object):
     def __init__(self, args):
+        self.lock = threading.RLock()
         self.rec_image_shape = [int(v) for v in args.rec_image_shape.split(",")]
         self.character_type = args.rec_char_type
         self.rec_batch_num = args.rec_batch_num
@@ -195,6 +197,7 @@ class TextRecognizer(object):
                 gsrm_slf_attn_bias2)
 
     def __call__(self, img_list):
+        self.lock.acquire()
         img_num = len(img_list)
         # Calculate the aspect ratio of all text bars
         width_list = []
@@ -284,6 +287,7 @@ class TextRecognizer(object):
                 rec_res[indices[beg_img_no + rno]] = rec_result[rno]
             if self.benchmark:
                 self.autolog.times.end(stamp=True)
+        self.lock.release()
         return rec_res, time.time() - st
 
 

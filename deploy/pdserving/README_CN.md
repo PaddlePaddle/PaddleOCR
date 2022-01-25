@@ -44,7 +44,7 @@ PaddleOCR提供2种服务部署方式：
     ```
 
 2. 安装client，用于向服务发送请求
-    在[下载链接](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md)中找到对应python版本的client安装包，这里推荐python3.7版本：
+    在[下载链接](https://github.com/PaddlePaddle/Serving/blob/v0.6.3/doc/LATEST_PACKAGES.md)中找到对应python版本的client安装包，这里推荐python3.7版本：
 
     ```
     pip3 install paddle-serving-client==0.6.3
@@ -54,8 +54,6 @@ PaddleOCR提供2种服务部署方式：
     ```
     pip3 install paddle-serving-app==0.6.3
     ```
-
-    **Note:** 如果要安装最新版本的PaddleServing参考[链接](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md)。
 
 <a name="模型转换"></a>
 ## 模型转换
@@ -192,7 +190,7 @@ python3 -m paddle_serving_client.convert --dirname ./ch_ppocr_mobile_v2.0_rec_in
 
 ## WINDOWS用户
 
-Windows用户不能使用上述的启动方式，需要使用Web Service，详情参见[Windows平台使用Paddle Serving指导](https://github.com/PaddlePaddle/Serving/blob/develop/doc/WINDOWS_TUTORIAL_CN.md)
+Windows用户不能使用上述的启动方式，需要使用Web Service，详情参见[Windows平台使用Paddle Serving指导](https://github.com/PaddlePaddle/Serving/blob/v0.6.3/doc/WINDOWS_TUTORIAL_CN.md)
 
 **WINDOWS只能使用0.5.0版本的CPU模式**
 
@@ -205,7 +203,7 @@ pip3 install paddle-serving-app==0.3.1
 1. 启动服务端程序
 
 ```
-cd win 
+cd win
 python3 ocr_web_server.py gpu(使用gpu方式)
 或者
 python3 ocr_web_server.py cpu(使用cpu方式)
