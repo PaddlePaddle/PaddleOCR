@@ -29,6 +29,7 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 | 前后处理 | [paddleOCRCorrectOutputs](https://github.com/yuranusduke/paddleOCRCorrectOutputs) | 获取OCR识别结果的key-value | [yuranusduke](https://github.com/yuranusduke)                |
 |前处理| [optlab](https://github.com/GreatV/optlab) |OCR前处理工具箱，基于Qt和Leptonica。|[GreatV](https://github.com/GreatV)|
 
+|应用部署| [PaddleOCRSharp](https://github.com/raoyutian/PaddleOCRSharp) |PaddleOCRSharp的.NET封装与应用部署。|[raoyutian](https://github.com/raoyutian/PaddleOCRSharp)|
 ### 1.2 为PaddleOCR新增功能
 
 - 非常感谢 [authorfu](https://github.com/authorfu) 贡献Android([#340](https://github.com/PaddlePaddle/PaddleOCR/pull/340))和[xiadeye](https://github.com/xiadeye) 贡献IOS的demo代码([#325](https://github.com/PaddlePaddle/PaddleOCR/pull/325))
