@@ -28,3 +28,13 @@ null:null
 Global.save_inference_dir:./output/
 Global.checkpoints:
 norm_export:null
+===========================benchmark_params==========================
+device_num:N1C1|N1C8|N4C32
+run_process_type:MultiP
+run_mode:DP|DP1-MP1-PP1|DP2-MP2-PP2
+ips_unit:"images/s"
+skip_steps:10
+keyword:"ips:" 
+convergence_key:"loss:"
+flags:FLAGS_eager_delete_tensor_gb=0.0;FLAGS_fraction_of_gpu_memory_to_use=0.98;FLAGS_conv_workspace_size_limit=4096
+null:null
