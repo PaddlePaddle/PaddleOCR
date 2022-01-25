@@ -269,8 +269,7 @@ class MainWindow(QMainWindow):
         self.iconlist.setMovement(QListView.Static)
         self.iconlist.setResizeMode(QListView.Adjust)
         self.iconlist.itemClicked.connect(self.iconitemDoubleClicked)
-        self.iconlist.setStyleSheet("QListWidget{ background-color:transparent; border: none;} "
-                                    "QToolTip{ background-color: gray }")
+        self.iconlist.setStyleSheet("QListWidget{ background-color:transparent; border: none;}")
         self.iconlist.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.nextButton = QToolButton()
         self.nextButton.setIcon(newIcon("next", 40))
