@@ -29,6 +29,7 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 | 前后处理 | [paddleOCRCorrectOutputs](https://github.com/yuranusduke/paddleOCRCorrectOutputs) | 获取OCR识别结果的key-value | [yuranusduke](https://github.com/yuranusduke)                |
 |前处理| [optlab](https://github.com/GreatV/optlab) |OCR前处理工具箱，基于Qt和Leptonica。|[GreatV](https://github.com/GreatV)|
 |应用部署| [PaddleOCRSharp](https://github.com/raoyutian/PaddleOCRSharp) |PaddleOCR的.NET封装与应用部署。|[raoyutian](https://github.com/raoyutian/PaddleOCRSharp)|
+|应用部署| [PaddleSharp](https://github.com/sdcb/PaddleSharp) |PaddleOCR的.NET封装与应用部署，支持跨平台、GPU|[sdcb](https://github.com/sdcb)|
 | 应用部署 | [PaddleOCR-Streamlit-Demo](https://github.com/Lovely-Pig/PaddleOCR-Streamlit-Demo) | 使用Streamlit部署PaddleOCR | [Lovely-Pig](https://github.com/Lovely-Pig) |
 | 应用部署 | [PaddleOCR-PyWebIO-Demo](https://github.com/Lovely-Pig/PaddleOCR-PyWebIO-Demo) | 使用PyWebIO部署PaddleOCR | [Lovely-Pig](https://github.com/Lovely-Pig) |
 | 应用部署 | [PaddleOCR-Paddlejs-Vue-Demo](https://github.com/Lovely-Pig/PaddleOCR-Paddlejs-Vue-Demo) | 使用Paddle.js和Vue部署PaddleOCR | [Lovely-Pig](https://github.com/Lovely-Pig) |
