@@ -73,8 +73,8 @@ def main():
         images = paddle.to_tensor(images)
         preds = model(images)
         post_result = post_process_class(preds)
-        for rec_reuslt in post_result:
-            logger.info('\t result: {}'.format(rec_reuslt))
+        for rec_result in post_result:
+            logger.info('\t result: {}'.format(rec_result))
     logger.info("success!")
 
 

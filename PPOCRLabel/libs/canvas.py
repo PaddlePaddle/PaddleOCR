@@ -11,27 +11,19 @@
 # CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-try:
-    from PyQt5.QtGui import *
-    from PyQt5.QtCore import *
-    from PyQt5.QtWidgets import *
-except ImportError:
-    from PyQt4.QtGui import *
-    from PyQt4.QtCore import *
+import copy
 
-#from PyQt4.QtOpenGL import *
-
+from PyQt5.QtCore import Qt, pyqtSignal, QPointF, QPoint
+from PyQt5.QtGui import QPainter, QBrush, QColor, QPixmap
+from PyQt5.QtWidgets import QWidget, QMenu, QApplication
 from libs.shape import Shape
 from libs.utils import distance
-import copy
 
 CURSOR_DEFAULT = Qt.ArrowCursor
 CURSOR_POINT = Qt.PointingHandCursor
 CURSOR_DRAW = Qt.CrossCursor
 CURSOR_MOVE = Qt.ClosedHandCursor
 CURSOR_GRAB = Qt.OpenHandCursor
-
-# class Canvas(QGLWidget):
 
 
 class Canvas(QWidget):
@@ -128,7 +120,6 @@ class Canvas(QWidget):
 
     def selectedVertex(self):
         return self.hVertex is not None
-
 
     def mouseMoveEvent(self, ev):
         """Update line with last point and current coordinates."""
@@ -333,7 +324,6 @@ class Canvas(QWidget):
 
              self.movingShape = False
 
-
     def endMove(self, copy=False):
         assert self.selectedShapes and self.selectedShapesCopy
         assert len(self.selectedShapesCopy) == len(self.selectedShapes)
@@ -409,7 +399,6 @@ class Canvas(QWidget):
         self.setHiding()
         self.selectionChanged.emit(shapes)
         self.update()
-
 
     def selectShapePoint(self, point, multiple_selection_mode):
         """Select the first shape created which contains this point."""
@@ -494,7 +483,6 @@ class Canvas(QWidget):
         else:
             shape.moveVertexBy(index, shiftPos)
 
-
     def boundedMoveShape(self, shapes, pos):
         if type(shapes).__name__ != 'list': shapes = [shapes]
         if self.outOfPixmap(pos):
@@ -515,6 +503,7 @@ class Canvas(QWidget):
         if dp:
             for shape in shapes:
                 shape.moveBy(dp)
+                shape.close()
             self.prevPoint = pos
             return True
         return False
@@ -728,6 +717,31 @@ class Canvas(QWidget):
              self.moveOnePixel('Up')
         elif key == Qt.Key_Down and self.selectedShapes:
              self.moveOnePixel('Down')
+        elif key == Qt.Key_X and self.selectedShapes:
+            for i in range(len(self.selectedShapes)):
+                self.selectedShape = self.selectedShapes[i]
+                if self.rotateOutOfBound(0.01):
+                    continue
+                self.selectedShape.rotate(0.01)
+            self.shapeMoved.emit()
+            self.update()
+
+        elif key == Qt.Key_C and self.selectedShapes:
+            for i in range(len(self.selectedShapes)):
+                self.selectedShape = self.selectedShapes[i]
+                if self.rotateOutOfBound(-0.01):
+                    continue
+                self.selectedShape.rotate(-0.01)
+            self.shapeMoved.emit()
+            self.update()
+
+    def rotateOutOfBound(self, angle):
+        for shape in range(len(self.selectedShapes)):
+            self.selectedShape = self.selectedShapes[shape]
+            for i, p in enumerate(self.selectedShape.points):
+                if self.outOfPixmap(self.selectedShape.rotatePoint(p, angle)):
+                    return True
+            return False
 
     def moveOnePixel(self, direction):
         # print(self.selectedShape.points)
