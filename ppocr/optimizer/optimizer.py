@@ -158,3 +158,38 @@ class Adadelta(object):
             name=self.name,
             parameters=parameters)
         return opt
+
+
+class AdamW(object):
+    def __init__(self,
+                 learning_rate=0.001,
+                 beta1=0.9,
+                 beta2=0.999,
+                 epsilon=1e-08,
+                 weight_decay=0.01,
+                 grad_clip=None,
+                 name=None,
+                 lazy_mode=False,
+                 **kwargs):
+        self.learning_rate = learning_rate
+        self.beta1 = beta1
+        self.beta2 = beta2
+        self.epsilon = epsilon
+        self.learning_rate = learning_rate
+        self.weight_decay = 0.01 if weight_decay is None else weight_decay
+        self.grad_clip = grad_clip
+        self.name = name
+        self.lazy_mode = lazy_mode
+
+    def __call__(self, parameters):
+        opt = optim.AdamW(
+            learning_rate=self.learning_rate,
+            beta1=self.beta1,
+            beta2=self.beta2,
+            epsilon=self.epsilon,
+            weight_decay=self.weight_decay,
+            grad_clip=self.grad_clip,
+            name=self.name,
+            lazy_mode=self.lazy_mode,
+            parameters=parameters)
+        return opt

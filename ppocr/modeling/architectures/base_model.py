@@ -63,8 +63,12 @@ class BaseModel(nn.Layer):
             in_channels = self.neck.out_channels
 
         # # build head, head is need for det, rec and cls
-        config["Head"]['in_channels'] = in_channels
-        self.head = build_head(config["Head"])
+        if 'Head' not in config or config['Head'] is None:
+            self.use_head = False
+        else:
+            self.use_head = True
+            config["Head"]['in_channels'] = in_channels
+            self.head = build_head(config["Head"])
 
         self.return_all_feats = config.get("return_all_feats", False)
 
@@ -77,7 +81,8 @@ class BaseModel(nn.Layer):
         if self.use_neck:
             x = self.neck(x)
         y["neck_out"] = x
-        x = self.head(x, targets=data)
+        if self.use_head:
+            x = self.head(x, targets=data)
         if isinstance(x, dict):
             y.update(x)
         else:

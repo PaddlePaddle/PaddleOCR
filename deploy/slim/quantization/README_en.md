@@ -1,7 +1,7 @@
 
 ## Introduction
 
-Generally, a more complex model would achive better performance in the task, but it also leads to some redundancy in the model.
+Generally, a more complex model would achieve better performance in the task, but it also leads to some redundancy in the model.
 Quantization is a technique that reduces this redundancy by reducing the full precision data to a fixed number,
 so as to reduce model calculation complexity and improve model inference performance.
 
@@ -31,14 +31,14 @@ python setup.py install
 ```
 
 
-### 2. Download Pretrain Model
-PaddleOCR provides a series of trained [models](../../../doc/doc_en/models_list_en.md).
+### 2. Download Pre-trained Model
+PaddleOCR provides a series of pre-trained [models](../../../doc/doc_en/models_list_en.md).
 If the model to be quantified is not in the list, you need to follow the [Regular Training](../../../doc/doc_en/quickstart_en.md) method to get the trained model.
 
 
 ### 3. Quant-Aware Training
 Quantization training includes offline quantization training and online quantization training.
-Online quantization training is more effective. It is necessary to load the pre-training model.
+Online quantization training is more effective. It is necessary to load the pre-trained model.
 After the quantization strategy is defined, the model can be quantified.
 
 The code for quantization training is located in `slim/quantization/quant.py`. For example, to train a detection model, the training instructions are as follows:
@@ -54,7 +54,7 @@ python deploy/slim/quantization/quant.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3
 
 ### 4. Export inference model
 
-After getting the model after pruning and finetuning we, can export it as inference_model for predictive deployment:
+Once we got the model after pruning and fine-tuning, we can export it as an inference model for the deployment of predictive tasks:
 
 ```bash
 python deploy/slim/quantization/export_model.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.checkpoints=output/quant_model/best_accuracy Global.save_inference_dir=./output/quant_inference_model

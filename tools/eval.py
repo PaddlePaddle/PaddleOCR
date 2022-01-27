@@ -61,7 +61,8 @@ def main():
     else:
         model_type = None
 
-    best_model_dict = load_model(config, model)
+    best_model_dict = load_model(
+        config, model, model_type=config['Architecture']["model_type"])
     if len(best_model_dict):
         logger.info('metric in ckpt ***************')
         for k, v in best_model_dict.items():

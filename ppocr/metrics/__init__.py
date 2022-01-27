@@ -28,12 +28,15 @@ from .e2e_metric import E2EMetric
 from .distillation_metric import DistillationMetric
 from .table_metric import TableMetric
 from .kie_metric import KIEMetric
+from .vqa_token_ser_metric import VQASerTokenMetric
+from .vqa_token_re_metric import VQAReTokenMetric
 
 
 def build_metric(config):
     support_dict = [
         "DetMetric", "RecMetric", "ClsMetric", "E2EMetric",
-        "DistillationMetric", "TableMetric", 'KIEMetric'
+        "DistillationMetric", "TableMetric", 'KIEMetric', 'VQASerTokenMetric',
+        'VQAReTokenMetric'
     ]
 
     config = copy.deepcopy(config)

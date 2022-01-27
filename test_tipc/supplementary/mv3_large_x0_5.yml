@@ -1,0 +1,49 @@
+
+class_dim: 100
+total_images: 50000
+epoch: 1000
+topk: 5
+save_model_dir: ./output/
+use_gpu: True
+model_type: cls
+use_custom_relu: false
+pretrained_model: 
+checkpoints: 
+save_model_dir: ./output/cls/
+
+# slim
+quant_train: false
+prune_train: false
+
+MODEL:
+    class_dim: 100
+    use_custom_relu: False
+    siamese: False
+
+AMP:
+    use_amp: False
+    scale_loss: 1024.0
+    use_dynamic_loss_scale: True
+
+LEARNING_RATE:
+    function: 'Cosine'
+    params:
+        lr: 0.001
+        warmup_epoch: 5
+
+OPTIMIZER:
+    function: 'Momentum'
+    params:
+        momentum: 0.9
+    regularizer:
+        function: 'L2'
+        factor: 0.00002
+
+TRAIN:
+    batch_size: 1280
+    num_workers: 4
+
+VALID:
+    batch_size: 64
+    num_workers: 4
+

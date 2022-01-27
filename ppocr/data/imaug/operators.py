@@ -170,17 +170,19 @@ class Resize(object):
 
     def __call__(self, data):
         img = data['image']
-        text_polys = data['polys']
+        if 'polys' in data:
+            text_polys = data['polys']
 
         img_resize, [ratio_h, ratio_w] = self.resize_image(img)
-        new_boxes = []
-        for box in text_polys:
-            new_box = []
-            for cord in box:
-                new_box.append([cord[0] * ratio_w, cord[1] * ratio_h])
-            new_boxes.append(new_box)
+        if 'polys' in data:
+            new_boxes = []
+            for box in text_polys:
+                new_box = []
+                for cord in box:
+                    new_box.append([cord[0] * ratio_w, cord[1] * ratio_h])
+                new_boxes.append(new_box)
+            data['polys'] = np.array(new_boxes, dtype=np.float32)
         data['image'] = img_resize
-        data['polys'] = np.array(new_boxes, dtype=np.float32)
         return data
 
 

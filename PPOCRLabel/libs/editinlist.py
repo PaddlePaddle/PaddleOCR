@@ -1,29 +1,27 @@
-import sys, time
-from PyQt5 import QtWidgets
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
+# !/usr/bin/env python
+# -*- coding: utf-8 -*-
+from PyQt5.QtCore import QModelIndex
+from PyQt5.QtWidgets import QListWidget
+
 
 class EditInList(QListWidget):
     def __init__(self):
-        super(EditInList,self).__init__()
-        # click to edit
-        self.clicked.connect(self.item_clicked)  
+        super(EditInList, self).__init__()
+        self.edited_item = None
 
-    def item_clicked(self, modelindex: QModelIndex) -> None:
-        self.edited_item = self.currentItem()
-        self.closePersistentEditor(self.edited_item)
-        item = self.item(modelindex.row())
-        # time.sleep(0.2)
-        self.edited_item = item
-        self.openPersistentEditor(item)
-        # time.sleep(0.2)
-        self.editItem(item)
+    def item_clicked(self, modelindex: QModelIndex):
+        try:
+            if self.edited_item is not None:
+                self.closePersistentEditor(self.edited_item)
+        except:
+            self.edited_item = self.currentItem()
+
+        self.edited_item = self.item(modelindex.row())
+        self.openPersistentEditor(self.edited_item)
+        self.editItem(self.edited_item)
 
     def mouseDoubleClickEvent(self, event):
-        # close edit
-        for i in range(self.count()):
-            self.closePersistentEditor(self.item(i))
+        pass
 
     def leaveEvent(self, event):
         # close edit

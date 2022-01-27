@@ -39,7 +39,7 @@ paddleocr --image_dir=../doc/table/1.png --type=structure
 
 * VQA
 
-coming soon
+请参考：[文档视觉问答](../vqa/README.md)。
 
 <a name="22"></a>
 
@@ -74,7 +74,7 @@ im_show.save('result.jpg')
 
 * VQA
 
-comming soon
+请参考：[文档视觉问答](../vqa/README.md)。
 
 <a name="23"></a>
 
@@ -101,7 +101,7 @@ dict 里各个字段说明如下
 
 * VQA
 
-comming soon
+请参考：[文档视觉问答](../vqa/README.md)。
 
 <a name="24"></a>
 
@@ -116,9 +116,9 @@ comming soon
 | model_name_or_path | VQA SER模型地址                | None |
 | max_seq_length | VQA SER模型最大支持token长度              | 512 |
 | label_map_path | VQA SER 标签文件地址              | ./vqa/labels/labels_ser.txt |
-| mode | pipeline预测模式，structure: 版面分析+表格识别; vqa: ser文档信息抽取              | structure |
+| mode | pipeline预测模式，structure: 版面分析+表格识别; VQA: SER文档信息抽取              | structure |
 
-大部分参数和paddleocr whl包保持一致，见 [whl包文档](../doc/doc_ch/whl.md)
+大部分参数和PaddleOCR whl包保持一致，见 [whl包文档](../../doc/doc_ch/whl.md)
 
 运行完成后，每张图片会在`output`字段指定的目录下有一个同名目录，图片里的每个表格会存储为一个excel，图片区域会被裁剪之后保存下来，excel文件和图片名名为表格在图片里的坐标。
 
@@ -133,16 +133,16 @@ cd ppstructure
 
 # 下载模型
 mkdir inference && cd inference
-# 下载超轻量级中文OCR模型的检测模型并解压
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_ppocr_mobile_v2.0_det_infer.tar
-# 下载超轻量级中文OCR模型的识别模型并解压
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf ch_ppocr_mobile_v2.0_rec_infer.tar
-# 下载超轻量级英文表格英寸模型并解压
+# 下载PP-OCRv2文本检测模型并解压
+wget https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_slim_quant_infer.tar && tar xf ch_PP-OCRv2_det_slim_quant_infer.tar
+# 下载PP-OCRv2文本识别模型并解压
+wget https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_quant_infer.tar && tar xf ch_PP-OCRv2_rec_slim_quant_infer.tar
+# 下载超轻量级英文表格预测模型并解压
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar
 cd ..
 
-python3 predict_system.py --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
-                          --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
+python3 predict_system.py --det_model_dir=inference/ch_PP-OCRv2_det_slim_quant_infer \
+                          --rec_model_dir=inference/ch_PP-OCRv2_rec_slim_quant_infer \
                           --table_model_dir=inference/en_ppocr_mobile_v2.0_table_structure_infer \
                           --image_dir=../doc/table/1.png \
                           --rec_char_dict_path=../ppocr/utils/ppocr_keys_v1.txt \

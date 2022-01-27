@@ -20,6 +20,7 @@ class RecMetric(object):
     def __init__(self, main_indicator='acc', is_filter=False, **kwargs):
         self.main_indicator = main_indicator
         self.is_filter = is_filter
+        self.eps = 1e-5
         self.reset()
 
     def _normalize_text(self, text):
@@ -47,8 +48,8 @@ class RecMetric(object):
         self.all_num += all_num
         self.norm_edit_dis += norm_edit_dis
         return {
-            'acc': correct_num / all_num,
-            'norm_edit_dis': 1 - norm_edit_dis / (all_num + 1e-3)
+            'acc': correct_num / (all_num + self.eps),
+            'norm_edit_dis': 1 - norm_edit_dis / (all_num + self.eps)
         }
 
     def get_metric(self):
@@ -58,8 +59,8 @@ class RecMetric(object):
                  'norm_edit_dis': 0,
             }
         """
-        acc = 1.0 * self.correct_num / (self.all_num + 1e-3)
-        norm_edit_dis = 1 - self.norm_edit_dis / (self.all_num + 1e-3)
+        acc = 1.0 * self.correct_num / (self.all_num + self.eps)
+        norm_edit_dis = 1 - self.norm_edit_dis / (self.all_num + self.eps)
         self.reset()
         return {'acc': acc, 'norm_edit_dis': norm_edit_dis}
 
