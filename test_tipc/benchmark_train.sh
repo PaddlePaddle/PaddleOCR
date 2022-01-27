@@ -129,9 +129,6 @@ export model_commit=$(git log|head -n1|awk '{print $2}')
 export str_tmp=$(echo `pip list|grep paddlepaddle-gpu|awk -F ' ' '{print $2}'`)
 export frame_version=${str_tmp%%.post*}
 export frame_commit=$(echo `python -c "import paddle;print(paddle.version.commit)"`)
-job_bt=`date '+%Y%m%d%H%M%S'`
-job_et=`date '+%Y%m%d%H%M%S'`
-export model_run_time=$((${job_et}-${job_bt}))
 
 
 if [ ${#gpu_id} -le 1 ];then
@@ -154,7 +151,10 @@ if [ ${#gpu_id} -le 1 ];then
     func_sed_params "$FILENAME" "13" "null"  # sed used gpu_id 
     cmd="bash test_tipc/test_train_inference_python.sh ${FILENAME} benchmark_train > ${log_path}/${log_name} 2>&1 "
     echo $cmd
+    job_bt=`date '+%Y%m%d%H%M%S'`
     eval $cmd
+    job_et=`date '+%Y%m%d%H%M%S'`
+    export model_run_time=$((${job_et}-${job_bt}))
     eval "cat ${log_path}/${log_name}"
 
     # parser log
@@ -185,7 +185,10 @@ else
     func_sed_params "$FILENAME" "13" "null"  # sed --profile_option as null
     cmd="bash test_tipc/test_train_inference_python.sh ${FILENAME} benchmark_train > ${log_path}/${log_name} 2>&1 "
     echo $cmd
+    job_bt=`date '+%Y%m%d%H%M%S'`
     eval $cmd
+    job_et=`date '+%Y%m%d%H%M%S'`
+    export model_run_time=$((${job_et}-${job_bt}))
     eval "cat ${log_path}/${log_name}"
     # parser log
     _model_name="${model_name}_bs${batch_size}_${precision}_${run_process_type}_${run_mode}"
@@ -204,6 +207,5 @@ else
             --convergence_key ${convergence_key_value}: "
     echo $cmd
     eval $cmd
-
 fi
 
