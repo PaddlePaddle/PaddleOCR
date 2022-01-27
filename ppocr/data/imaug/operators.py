@@ -60,9 +60,14 @@ class DecodeImage(object):
 class NRTRDecodeImage(object):
     """ decode image """
 
-    def __init__(self, img_mode='RGB', channel_first=False, **kwargs):
+    def __init__(self,
+                 img_mode='RGB',
+                 channel_first=False,
+                 ignore_orientation=False,
+                 **kwargs):
         self.img_mode = img_mode
         self.channel_first = channel_first
+        self.ignore_orientation = ignore_orientation
 
     def __call__(self, data):
         img = data['image']
@@ -74,7 +79,11 @@ class NRTRDecodeImage(object):
                 img) > 0, "invalid input 'img' in DecodeImage"
         img = np.frombuffer(img, dtype='uint8')
 
-        img = cv2.imdecode(img, 1)
+        if self.ignore_orientation:
+            img = cv2.imdecode(img, cv2.IMREAD_IGNORE_ORIENTATION |
+                               cv2.IMREAD_COLOR)
+        else:
+            img = cv2.imdecode(img, 1)
 
         if img is None:
             return None

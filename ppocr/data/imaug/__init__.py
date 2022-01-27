@@ -36,6 +36,9 @@ from .gen_table_mask import *
 
 from .vqa import *
 
+from .fce_aug import *
+from .fce_targets import FCENetTargets
+
 
 def transform(data, ops=None):
     """ transform """

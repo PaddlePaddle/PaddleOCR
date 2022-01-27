@@ -24,6 +24,7 @@ from .det_db_loss import DBLoss
 from .det_east_loss import EASTLoss
 from .det_sast_loss import SASTLoss
 from .det_pse_loss import PSELoss
+from .det_fce_loss import FCELoss
 
 # rec loss
 from .rec_ctc_loss import CTCLoss
@@ -55,9 +56,9 @@ from .vqa_token_layoutlm_loss import VQASerTokenLayoutLMLoss
 
 def build_loss(config):
     support_dict = [
-        'DBLoss', 'PSELoss', 'EASTLoss', 'SASTLoss', 'CTCLoss', 'ClsLoss',
-        'AttentionLoss', 'SRNLoss', 'PGLoss', 'CombinedLoss', 'NRTRLoss',
-        'TableAttentionLoss', 'SARLoss', 'AsterLoss', 'SDMGRLoss',
+        'DBLoss', 'PSELoss', 'EASTLoss', 'SASTLoss', 'FCELoss', 'CTCLoss',
+        'ClsLoss', 'AttentionLoss', 'SRNLoss', 'PGLoss', 'CombinedLoss',
+        'NRTRLoss', 'TableAttentionLoss', 'SARLoss', 'AsterLoss', 'SDMGRLoss',
         'VQASerTokenLayoutLMLoss', 'LossFromOutput'
     ]
     config = copy.deepcopy(config)

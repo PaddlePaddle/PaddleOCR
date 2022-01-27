@@ -24,6 +24,7 @@ __all__ = ['build_post_process']
 from .db_postprocess import DBPostProcess, DistillationDBPostProcess
 from .east_postprocess import EASTPostProcess
 from .sast_postprocess import SASTPostProcess
+from .fce_postprocess import FCEPostProcess
 from .rec_postprocess import CTCLabelDecode, AttnLabelDecode, SRNLabelDecode, DistillationCTCLabelDecode, \
     TableLabelDecode, NRTRLabelDecode, SARLabelDecode, SEEDLabelDecode
 from .cls_postprocess import ClsPostProcess
@@ -34,9 +35,9 @@ from .vqa_token_re_layoutlm_postprocess import VQAReTokenLayoutLMPostProcess
 
 def build_post_process(config, global_config=None):
     support_dict = [
-        'DBPostProcess', 'EASTPostProcess', 'SASTPostProcess', 'CTCLabelDecode',
-        'AttnLabelDecode', 'ClsPostProcess', 'SRNLabelDecode', 'PGPostProcess',
-        'DistillationCTCLabelDecode', 'TableLabelDecode',
+        'DBPostProcess', 'EASTPostProcess', 'SASTPostProcess', 'FCEPostProcess',
+        'CTCLabelDecode', 'AttnLabelDecode', 'ClsPostProcess', 'SRNLabelDecode',
+        'PGPostProcess', 'DistillationCTCLabelDecode', 'TableLabelDecode',
         'DistillationDBPostProcess', 'NRTRLabelDecode', 'SARLabelDecode',
         'SEEDLabelDecode', 'VQASerTokenLayoutLMPostProcess',
         'VQAReTokenLayoutLMPostProcess'
