@@ -108,8 +108,8 @@ flags_value=$(func_parser_value "${lines[line_num]}")
 gpu_id=$(set_gpu_id $device_num)
 repo_name=$(get_repo_name )
 
-SAVE_LOG="benchmark_log"
-status_log="benchmark_log/results.log"
+SAVE_LOG=${BENCHMARK_LOG_DIR:-$(pwd)}   # */benchmark_log
+status_log="${SAVE_LOG}/benchmark_log/results.log"
 
 # set export 
 IFS=";"
@@ -173,6 +173,8 @@ if [ ${#gpu_id} -le 1 ];then
             --convergence_key ${convergence_key_value}: "
     echo $cmd
     eval $cmd
+    last_status=${PIPESTATUS[0]}
+    status_check $last_status "${cmd}" "${status_log}"
 
 else
     log_path="$SAVE_LOG/train_log"
@@ -207,5 +209,7 @@ else
             --convergence_key ${convergence_key_value}: "
     echo $cmd
     eval $cmd
+    last_status=${PIPESTATUS[0]}
+    status_check $last_status "${cmd}" "${status_log}"
 fi
 
