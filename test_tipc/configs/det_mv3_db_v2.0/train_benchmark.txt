@@ -1,5 +1,5 @@
 ===========================train_params===========================
-model_name:det_mv3_db_v2.0
+model_name:det_mv3_db_v2
 python:python
 gpu_list:0
 Global.use_gpu:True
