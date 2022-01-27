@@ -18,6 +18,10 @@ bash test_tipc/prepare.sh test_tipc/configs/det_mv3_db_v2.0/train_benchmark.txt 
 ```shell
 # 运行格式：bash test_tipc/benchmark_train.sh train_benchmark.txt mode params
 bash test_tipc/benchmark_train.sh test_tipc/configs/det_mv3_db_v2.0/train_benchmark.txt benchmark_train dynamic_bs8_null_SingleP_DP_N1C1
+
+# 单机多卡训练，MultiP 表示多进程；单卡训练用SingleP
+# 运行格式：bash test_tipc/benchmark_train.sh train_benchmark.txt mode params
+bash test_tipc/benchmark_train.sh test_tipc/configs/det_mv3_db_v2.0/train_benchmark.txt benchmark_train dynamic_bs8_null_MultiP_DP_N1C4
 ```
 
 params为test_tipc/benchmark_train.sh传入的参数，包含：模型类型、batchsize、fp精度、进程类型、运行模式以及分布式等信息。
