@@ -61,10 +61,6 @@ params=$3
 # bash test_tipc/benchmark_train.sh test_tipc/configs/det_mv3_db_v2.0/train_benchmark.txt  benchmark_train dynamic_bs8_null_SingleP_DP_N1C1
 IFS="\n"
 
-# FILENAME="test_tipc/configs/det_mv3_db_v2.0/train_benchmark.txt"
-# MODE="benchmark_train"
-# params="dynamic_bs8_fp32_SingleP_DP_N1C4"
-
 # parser params from input: modeltype_bs${bs_item}_${fp_item}_${run_process_type}_${run_mode}_${device_num}
 IFS="_"
 params_list=(${params})
@@ -120,7 +116,6 @@ IFS=";"
 flags_list=(${flags_value})
 for _flag in ${flags_list[*]}; do
     cmd="export ${_flag}"
-    echo $cmd
     eval $cmd
 done
 
@@ -149,7 +144,6 @@ if [ ${#gpu_id} -le 1 ];then
     eval $cmd
     eval "cat ${log_path}/${log_name}"
 
-    # echo "debug"
     # parser log
     _model_name="${model_name}_bs${batch_size}_${precision}_${run_process_type}_${run_mode}"
     cmd="python3.7 analysis.py --filename ${log_path}/${log_name} \
