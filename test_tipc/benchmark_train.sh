@@ -126,9 +126,9 @@ fi
 # set env
 export model_branch=`git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3`
 export model_commit=$(git log|head -n1|awk '{print $2}') 
-export str_tmp=$(echo `pip3.7 list|grep paddlepaddle-gpu|awk -F ' ' '{print $2}'`)
+export str_tmp=$(echo `pip list|grep paddlepaddle-gpu|awk -F ' ' '{print $2}'`)
 export frame_version=${str_tmp%%.post*}
-export frame_commit=$(echo `python3.7 -c "import paddle;print(paddle.version.commit)"`)
+export frame_commit=$(echo `python -c "import paddle;print(paddle.version.commit)"`)
 job_bt=`date '+%Y%m%d%H%M%S'`
 job_et=`date '+%Y%m%d%H%M%S'`
 export model_run_time=$((${job_et}-${job_bt}))
