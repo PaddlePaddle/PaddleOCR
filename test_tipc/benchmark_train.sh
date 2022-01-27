@@ -123,6 +123,17 @@ if [ ${precision} = "null" ];then
     precision="fp32"
 fi
 
+# set env
+export model_branch=`git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3`
+export model_commit=$(git log|head -n1|awk '{print $2}') 
+export str_tmp=$(echo `pip3.7 list|grep paddlepaddle-gpu|awk -F ' ' '{print $2}'`)
+export frame_version=${str_tmp%%.post*}
+export frame_commit=$(echo `python3.7 -c "import paddle;print(paddle.version.commit)"`)
+job_bt=`date '+%Y%m%d%H%M%S'`
+job_et=`date '+%Y%m%d%H%M%S'`
+export model_run_time=$((${job_et}-${job_bt}))
+
+
 if [ ${#gpu_id} -le 1 ];then
     log_path="$SAVE_LOG/profiling_log"
     mkdir -p $log_path
@@ -163,7 +174,6 @@ if [ ${#gpu_id} -le 1 ];then
     echo $cmd
     eval $cmd
     
-
 else
     log_path="$SAVE_LOG/train_log"
     speed_log_path="$SAVE_LOG/index"
