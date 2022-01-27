@@ -1,8 +1,7 @@
 
 # TIPC Linux端Benchmark测试文档
 
-该文档为benchmark测试说明，包括参数介绍以及
-Benchmark预测功能测试的主程序为`benchmark_train.sh`，可以验证监控模型训练的性能。
+该文档为Benchmark测试说明，Benchmark预测功能测试的主程序为`benchmark_train.sh`，用于验证监控模型训练的性能。
 
 # 1. 测试流程
 ## 1.1 准备数据和环境安装
