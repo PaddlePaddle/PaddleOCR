@@ -78,7 +78,7 @@ device_num=${params_list[5]}
 device_num_copy=$device_num
 IFS=";"
 
-echo $precision
+
 # sed batchsize and precision
 func_sed_params "$FILENAME" "6" "$precision"
 func_sed_params "$FILENAME" "9" "$batch_size"
@@ -94,13 +94,14 @@ model_name=$(func_parser_value "${lines[1]}")
 line_num=`grep -n "benchmark_params" $FILENAME  | cut -d ":" -f 1`
 # for train log parser
 line_num=`expr $line_num + 3`
-ips_unit_value=$(func_parser_value "${lines[line_num]}")
+speed_unit_value=$(func_parser_value "${lines[line_num]}")
 
 line_num=`expr $line_num + 1`
 skip_steps_value=$(func_parser_value "${lines[line_num]}")
 
 line_num=`expr $line_num + 1`
 keyword_value=$(func_parser_value "${lines[line_num]}")
+echo $keyword_value
 
 line_num=`expr $line_num + 1`
 convergence_key_value=$(func_parser_value "${lines[line_num]}")
@@ -123,6 +124,10 @@ for _flag in ${flags_list[*]}; do
     eval $cmd
 done
 
+if [ ${precision} = "null" ];then
+    precision="fp32"
+fi
+
 if [ ${#gpu_id} -le 1 ];then
     log_path="$SAVE_LOG/profiling_log"
     mkdir -p $log_path
@@ -137,21 +142,60 @@ if [ ${#gpu_id} -le 1 ];then
     log_path="$SAVE_LOG/train_log"
     mkdir -p $log_path
     log_name="${repo_name}_${model_name}_bs${batch_size}_${precision}_${run_process_type}_${run_mode}_${device_num}_log"
+    speed_log_name=log_name="${repo_name}_${model_name}_bs${batch_size}_${precision}_${run_process_type}_${run_mode}_${device_num}_speed"
     func_sed_params "$FILENAME" "13" "null"  # sed used gpu_id 
     cmd="bash test_tipc/test_train_inference_python.sh ${FILENAME} benchmark_train > ${log_path}/${log_name} 2>&1 "
     echo $cmd
     eval $cmd
     eval "cat ${log_path}/${log_name}"
+
+    # echo "debug"
+    # parser log
+    _model_name="${model_name}_bs${batch_size}_${precision}_${run_process_type}_${run_mode}"
+    cmd="python3.7 analysis.py --filename ${log_path}/${log_name} \
+            --speed_log_file '${log_path}/${speed_log_name}' \
+            --model_name ${_model_name} \
+            --base_batch_size ${batch_size} \
+            --run_mode ${run_mode} \
+            --run_process_type ${run_process_type} \
+            --fp_item ${precision} \
+            --keyword ${keyword_value}: \
+            --skip_steps ${skip_steps_value} \
+            --device_num ${device_num} \
+            --speed_unit ${speed_unit_value} \
+            --convergence_key ${convergence_key_value}: "
+    echo $cmd
+    eval $cmd
+    
+
 else
     log_path="$SAVE_LOG/train_log"
     mkdir -p $log_path
     log_name="${repo_name}_${model_name}_bs${batch_size}_${precision}_${run_process_type}_${run_mode}_${device_num}_log"
+    speed_log_name=log_name="${repo_name}_${model_name}_bs${batch_size}_${precision}_${run_process_type}_${run_mode}_${device_num}_speed"
     func_sed_params "$FILENAME" "4" "$gpu_id"  # sed used gpu_id 
     func_sed_params "$FILENAME" "13" "null"  # sed --profile_option as null
     cmd="bash test_tipc/test_train_inference_python.sh ${FILENAME} benchmark_train > ${log_path}/${log_name} 2>&1 "
     echo $cmd
     eval $cmd
     eval "cat ${log_path}/${log_name}"
-fi
+    # parser log
+    _model_name="${model_name}_bs${batch_size}_${precision}_${run_process_type}_${run_mode}"
+    
+    cmd="python3.7 analysis.py --filename ${log_path}/${log_name} \
+            --speed_log_file '${log_path}/${speed_log_name}' \
+            --model_name ${_model_name} \
+            --base_batch_size ${batch_size} \
+            --run_mode ${run_mode} \
+            --run_process_type ${run_process_type} \
+            --fp_item ${precision} \
+            --keyword ${keyword_value}: \
+            --skip_steps ${skip_steps_value} \
+            --device_num ${device_num} \
+            --speed_unit ${speed_unit_value} \
+            --convergence_key ${convergence_key_value}: "
+    echo $cmd
+    eval $cmd
 
+fi
 
