@@ -159,7 +159,7 @@ if [ ${#gpu_id} -le 1 ];then
 
     # parser log
     _model_name="${model_name}_bs${batch_size}_${precision}_${run_process_type}_${run_mode}"
-    cmd="python3.7 analysis.py --filename ${log_path}/${log_name} \
+    cmd="python ${BENCHMARK_ROOT}/scripts/analysis.py --filename ${log_path}/${log_name} \
             --speed_log_file '${speed_log_path}/${speed_log_name}' \
             --model_name ${_model_name} \
             --base_batch_size ${batch_size} \
@@ -173,7 +173,7 @@ if [ ${#gpu_id} -le 1 ];then
             --convergence_key ${convergence_key_value}: "
     echo $cmd
     eval $cmd
-    
+
 else
     log_path="$SAVE_LOG/train_log"
     speed_log_path="$SAVE_LOG/index"
@@ -190,7 +190,7 @@ else
     # parser log
     _model_name="${model_name}_bs${batch_size}_${precision}_${run_process_type}_${run_mode}"
     
-    cmd="python3.7 analysis.py --filename ${log_path}/${log_name} \
+    cmd="python ${BENCHMARK_ROOT}/scripts/analysis.py --filename ${log_path}/${log_name} \
             --speed_log_file '${speed_log_path}/${speed_log_name}' \
             --model_name ${_model_name} \
             --base_batch_size ${batch_size} \
