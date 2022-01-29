@@ -21,7 +21,6 @@ import sys
 import platform
 import yaml
 import time
-import shutil
 import paddle
 import paddle.distributed as dist
 from tqdm import tqdm
@@ -31,9 +30,9 @@ from ppocr.utils.stats import TrainingStats
 from ppocr.utils.save_load import save_model
 from ppocr.utils.utility import print_dict
 from ppocr.utils.logging import get_logger
+from ppocr.utils.eta_timer import EtaTimer
 from ppocr.utils import profiler
 from ppocr.data import build_dataloader
-import numpy as np
 
 
 class ArgsParser(ArgumentParser):
@@ -48,7 +47,8 @@ class ArgsParser(ArgumentParser):
             '--profiler_options',
             type=str,
             default=None,
-            help='The option of profiler, which should be in format \"key1=value1;key2=value2;key3=value3\".'
+            help='The option of profiler, which should be in format ' \
+                 '\"key1=value1;key2=value2;key3=value3\".'
         )
 
     def parse_args(self, argv=None):
@@ -99,7 +99,8 @@ def merge_config(config, opts):
             sub_keys = key.split('.')
             assert (
                 sub_keys[0] in config
-            ), "the sub_keys can only be one of global_config: {}, but get: {}, please check your running command".format(
+            ), "the sub_keys can only be one of global_config: {}, but get: " \
+                "{}, please check your running command".format(
                 config.keys(), sub_keys[0])
             cur = config[sub_keys[0]]
             for idx, sub_key in enumerate(sub_keys[1:]):
@@ -160,11 +161,13 @@ def train(config,
         eval_batch_step = eval_batch_step[1]
         if len(valid_dataloader) == 0:
             logger.info(
-                'No Images in eval dataset, evaluation during training will be disabled'
+                'No Images in eval dataset, evaluation during training ' \
+                'will be disabled'
             )
             start_eval_step = 1e111
         logger.info(
-            "During the training process, after the {}th iteration, an evaluation is run every {} iterations".
+            "During the training process, after the {}th iteration, " \
+            "an evaluation is run every {} iterations".
             format(start_eval_step, eval_batch_step))
     save_epoch_step = config['Global']['save_epoch_step']
     save_model_dir = config['Global']['save_model_dir']
@@ -197,6 +200,7 @@ def train(config,
     max_iter = len(train_dataloader) - 1 if platform.system(
     ) == "Windows" else len(train_dataloader)
 
+    train_eta_timer = EtaTimer(epoch_num * len(train_dataloader), 0.9)
     for epoch in range(start_epoch, epoch_num + 1):
         if train_dataloader.dataset.need_reset:
             train_dataloader = build_dataloader(
@@ -273,11 +277,15 @@ def train(config,
                 (global_step > 0 and global_step % print_batch_step == 0) or
                 (idx >= len(train_dataloader) - 1)):
                 logs = train_stats.log()
-                strs = 'epoch: [{}/{}], global_step: {}, {}, avg_reader_cost: {:.5f} s, avg_batch_cost: {:.5f} s, avg_samples: {}, ips: {:.5f}'.format(
+                strs = 'epoch: [{}/{}], global_step: {}, {}, avg_reader_cost: ' \
+                       '{:.5f} s, avg_batch_cost: {:.5f} s, avg_samples: {}, ' \
+                       'ips: {:.5f}, eta: {}'.format(
                     epoch, epoch_num, global_step, logs, train_reader_cost /
                     print_batch_step, (train_reader_cost + train_run_cost) /
                     print_batch_step, total_samples / print_batch_step,
-                    total_samples / (train_reader_cost + train_run_cost))
+                    total_samples / (train_reader_cost + train_run_cost),
+                    train_eta_timer.get_eta(
+                        train_reader_cost + train_run_cost, print_batch_step))
                 logger.info(strs)
 
                 train_reader_cost = 0.0
@@ -285,7 +293,8 @@ def train(config,
                 total_samples = 0
             # eval
             if global_step > start_eval_step and \
-                    (global_step - start_eval_step) % eval_batch_step == 0 and dist.get_rank() == 0:
+                    (global_step - start_eval_step) % eval_batch_step == 0 \
+                    and dist.get_rank() == 0:
                 if model_average:
                     Model_Average = paddle.incubate.optimizer.ModelAverage(
                         0.15,
