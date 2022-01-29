@@ -100,7 +100,7 @@ def merge_config(config, opts):
             assert (
                 sub_keys[0] in config
             ), "the sub_keys can only be one of global_config: {}, but get: " \
-                "{}, please check your running command".format(
+               "{}, please check your running command".format(
                 config.keys(), sub_keys[0])
             cur = config[sub_keys[0]]
             for idx, sub_key in enumerate(sub_keys[1:]):
