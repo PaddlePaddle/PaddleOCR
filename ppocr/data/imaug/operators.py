@@ -35,11 +35,14 @@ class DecodeImage(object):
     def __call__(self, data):
         img = data['image']
         if six.PY2:
-            assert type(img) is str and len(
-                img) > 0, "invalid input 'img' in DecodeImage"
+            if not (type(img) is str and len(img) > 0):
+                print("invalid input 'img' in DecodeImage, continue")
+                return None
         else:
-            assert type(img) is bytes and len(
-                img) > 0, "invalid input 'img' in DecodeImage"
+            if not (type(img) is bytes and len(img) > 0):
+                print("invalid input 'img' in DecodeImage, continue")
+                return None
+
         img = np.frombuffer(img, dtype='uint8')
         img = cv2.imdecode(img, 1)
         if img is None:
