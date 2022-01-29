@@ -51,7 +51,7 @@ class EtaTimer:
         """Reset member variables of EtaTimer class.
         Args:
             new_total_steps: new value of self.surplus_steps, if set None, 
-                only reset to original total_steps
+                only reset self.surplus to original total_steps
         """
         self.surplus_steps = \
             new_total_steps if new_total_steps is not None else self.total_steps
