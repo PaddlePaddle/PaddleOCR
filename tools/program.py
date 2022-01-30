@@ -244,9 +244,9 @@ def train(config,
                 optimizer.step()
             optimizer.clear_grad()
 
-            batch_time = time.time() - reader_start
-            train_batch_cost += batch_time
-            eta_meter.update(batch_time)
+            train_batch_time = time.time() - reader_start
+            train_batch_cost += train_batch_time
+            eta_meter.update(train_batch_time)
             global_step += 1
             total_samples += len(images)
 
