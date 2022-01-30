@@ -21,16 +21,16 @@ import sys
 import platform
 import yaml
 import time
+import datetime
 import paddle
 import paddle.distributed as dist
 from tqdm import tqdm
-from argparse import ArgumentParser, RawDescriptionHelpFormatter
+from argparse import ArgumentError, ArgumentParser, RawDescriptionHelpFormatter
 
 from ppocr.utils.stats import TrainingStats
 from ppocr.utils.save_load import save_model
-from ppocr.utils.utility import print_dict
+from ppocr.utils.utility import print_dict, AverageMeter
 from ppocr.utils.logging import get_logger
-from ppocr.utils.eta_timer import EtaTimer
 from ppocr.utils import profiler
 from ppocr.data import build_dataloader
 
@@ -192,25 +192,23 @@ def train(config,
     start_epoch = best_model_dict[
         'start_epoch'] if 'start_epoch' in best_model_dict else 1
 
-    train_reader_cost = 0.0
-    train_run_cost = 0.0
     total_samples = 0
     reader_start = time.time()
+    reader_cost = AverageMeter()
+    batch_cost = AverageMeter()
 
     max_iter = len(train_dataloader) - 1 if platform.system(
     ) == "Windows" else len(train_dataloader)
 
-    train_eta_timer = EtaTimer(epoch_num * len(train_dataloader), 0.9)
     for epoch in range(start_epoch, epoch_num + 1):
         if train_dataloader.dataset.need_reset:
             train_dataloader = build_dataloader(
                 config, 'Train', device, logger, seed=epoch)
             max_iter = len(train_dataloader) - 1 if platform.system(
             ) == "Windows" else len(train_dataloader)
-
         for idx, batch in enumerate(train_dataloader):
             profiler.add_profiler_step(profiler_options)
-            train_reader_cost += time.time() - reader_start
+            reader_cost.update(time.time() - reader_start)
             if idx >= max_iter:
                 break
             lr = optimizer.get_lr()
@@ -218,7 +216,6 @@ def train(config,
             if use_srn:
                 model_average = True
 
-            train_start = time.time()
             # use amp
             if scaler:
                 with paddle.amp.auto_cast():
@@ -246,7 +243,7 @@ def train(config,
                 optimizer.step()
             optimizer.clear_grad()
 
-            train_run_cost += time.time() - train_start
+            batch_cost.update(time.time() - reader_start)
             global_step += 1
             total_samples += len(images)
 
@@ -277,19 +274,19 @@ def train(config,
                 (global_step > 0 and global_step % print_batch_step == 0) or
                 (idx >= len(train_dataloader) - 1)):
                 logs = train_stats.log()
+                eta_sec = ((epoch_num + 1 - epoch) * \
+                    len(train_dataloader) - idx) * batch_cost.avg
+                eta_sec_format = str(datetime.timedelta(seconds=int(eta_sec)))
                 strs = 'epoch: [{}/{}], global_step: {}, {}, avg_reader_cost: ' \
                        '{:.5f} s, avg_batch_cost: {:.5f} s, avg_samples: {}, ' \
                        'ips: {:.5f}, eta: {}'.format(
-                    epoch, epoch_num, global_step, logs, train_reader_cost /
-                    print_batch_step, (train_reader_cost + train_run_cost) /
-                    print_batch_step, total_samples / print_batch_step,
-                    total_samples / (train_reader_cost + train_run_cost),
-                    train_eta_timer.get_eta(
-                        train_reader_cost + train_run_cost, print_batch_step))
+                    epoch, epoch_num, global_step, logs,
+                    reader_cost.val / print_batch_step,
+                    batch_cost.val / print_batch_step,
+                    total_samples / print_batch_step,
+                    total_samples / batch_cost.val, eta_sec_format)
                 logger.info(strs)
 
-                train_reader_cost = 0.0
-                train_run_cost = 0.0
                 total_samples = 0
             # eval
             if global_step > start_eval_step and \
