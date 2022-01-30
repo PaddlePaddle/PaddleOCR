@@ -193,22 +193,23 @@ def train(config,
         'start_epoch'] if 'start_epoch' in best_model_dict else 1
 
     total_samples = 0
+    train_reader_cost = 0.0
+    train_batch_cost = 0.0
     reader_start = time.time()
-    reader_cost = AverageMeter()
-    batch_cost = AverageMeter()
+    batch_meter = AverageMeter()
 
     max_iter = len(train_dataloader) - 1 if platform.system(
     ) == "Windows" else len(train_dataloader)
 
     for epoch in range(start_epoch, epoch_num + 1):
-        if train_dataloader.dataset.need_reset:
-            train_dataloader = build_dataloader(
-                config, 'Train', device, logger, seed=epoch)
-            max_iter = len(train_dataloader) - 1 if platform.system(
-            ) == "Windows" else len(train_dataloader)
+        # if train_dataloader.dataset.need_reset:
+        #     train_dataloader = build_dataloader(
+        #         config, 'Train', device, logger, seed=epoch)
+        #     max_iter = len(train_dataloader) - 1 if platform.system(
+        #     ) == "Windows" else len(train_dataloader)
         for idx, batch in enumerate(train_dataloader):
             profiler.add_profiler_step(profiler_options)
-            reader_cost.update(time.time() - reader_start)
+            train_reader_cost += time.time() - reader_start
             if idx >= max_iter:
                 break
             lr = optimizer.get_lr()
@@ -243,7 +244,9 @@ def train(config,
                 optimizer.step()
             optimizer.clear_grad()
 
-            batch_cost.update(time.time() - reader_start)
+            batch_time = time.time() - reader_start
+            train_batch_cost += batch_time
+            batch_meter.update(batch_time)
             global_step += 1
             total_samples += len(images)
 
@@ -275,19 +278,21 @@ def train(config,
                 (idx >= len(train_dataloader) - 1)):
                 logs = train_stats.log()
                 eta_sec = ((epoch_num + 1 - epoch) * \
-                    len(train_dataloader) - idx) * batch_cost.avg
+                    len(train_dataloader) - idx) * batch_meter.avg
                 eta_sec_format = str(datetime.timedelta(seconds=int(eta_sec)))
                 strs = 'epoch: [{}/{}], global_step: {}, {}, avg_reader_cost: ' \
                        '{:.5f} s, avg_batch_cost: {:.5f} s, avg_samples: {}, ' \
                        'ips: {:.5f}, eta: {}'.format(
                     epoch, epoch_num, global_step, logs,
-                    reader_cost.val / print_batch_step,
-                    batch_cost.val / print_batch_step,
+                    train_reader_cost / print_batch_step,
+                    train_batch_cost / print_batch_step,
                     total_samples / print_batch_step,
-                    total_samples / batch_cost.val, eta_sec_format)
+                    total_samples / batch_meter.val, eta_sec_format)
                 logger.info(strs)
 
                 total_samples = 0
+                train_reader_cost = 0.0
+                train_batch_cost = 0.0
             # eval
             if global_step > start_eval_step and \
                     (global_step - start_eval_step) % eval_batch_step == 0 \
