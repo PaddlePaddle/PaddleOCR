@@ -25,7 +25,7 @@ import datetime
 import paddle
 import paddle.distributed as dist
 from tqdm import tqdm
-from argparse import ArgumentError, ArgumentParser, RawDescriptionHelpFormatter
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 from ppocr.utils.stats import TrainingStats
 from ppocr.utils.save_load import save_model
