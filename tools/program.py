@@ -278,7 +278,7 @@ def train(config,
                 (idx >= len(train_dataloader) - 1)):
                 logs = train_stats.log()
                 eta_sec = ((epoch_num + 1 - epoch) * \
-                    len(train_dataloader) - idx) * eta_meter.avg
+                    len(train_dataloader) - idx - 1) * eta_meter.avg
                 eta_sec_format = str(datetime.timedelta(seconds=int(eta_sec)))
                 strs = 'epoch: [{}/{}], global_step: {}, {}, avg_reader_cost: ' \
                        '{:.5f} s, avg_batch_cost: {:.5f} s, avg_samples: {}, ' \
