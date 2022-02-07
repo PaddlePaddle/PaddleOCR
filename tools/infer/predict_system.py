@@ -93,11 +93,11 @@ class TextSystem(object):
             self.draw_crop_rec_res(self.args.crop_res_save_dir, img_crop_list,
                                    rec_res)
         filter_boxes, filter_rec_res = [], []
-        for box, rec_reuslt in zip(dt_boxes, rec_res):
-            text, score = rec_reuslt
+        for box, rec_result in zip(dt_boxes, rec_res):
+            text, score = rec_result
             if score >= self.drop_score:
                 filter_boxes.append(box)
-                filter_rec_res.append(rec_reuslt)
+                filter_rec_res.append(rec_result)
         return filter_boxes, filter_rec_res
 
 
@@ -197,7 +197,6 @@ def main(args):
 
     with open(os.path.join(draw_img_save_dir, "system_results.txt"), 'w') as f:
         f.writelines(save_results)
-        f.close()
 
 
 if __name__ == "__main__":
