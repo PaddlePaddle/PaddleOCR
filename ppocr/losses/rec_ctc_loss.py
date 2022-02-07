@@ -31,7 +31,8 @@ class CTCLoss(nn.Layer):
             predicts = predicts[-1]
         predicts = predicts.transpose((1, 0, 2))
         N, B, _ = predicts.shape
-        preds_lengths = paddle.to_tensor([N] * B, dtype='int64')
+        preds_lengths = paddle.to_tensor(
+            [N] * B, dtype='int64', place=paddle.CPUPlace())
         labels = batch[1].astype("int32")
         label_lengths = batch[2].astype('int64')
         loss = self.loss_func(predicts, labels, preds_lengths, label_lengths)
