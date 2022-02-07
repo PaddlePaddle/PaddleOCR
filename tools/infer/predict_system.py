@@ -24,6 +24,7 @@ os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
 import cv2
 import copy
 import numpy as np
+import json
 import time
 import logging
 from PIL import Image
@@ -128,6 +129,9 @@ def main(args):
     is_visualize = True
     font_path = args.vis_font_path
     drop_score = args.drop_score
+    draw_img_save_dir = args.draw_img_save_dir
+    os.makedirs(draw_img_save_dir, exist_ok=True)
+    save_results = []
 
     # warm up 10 times
     if args.warmup:
@@ -157,6 +161,14 @@ def main(args):
         for text, score in rec_res:
             logger.debug("{}, {:.3f}".format(text, score))
 
+        res = [{
+            "transcription": rec_res[idx][0],
+            "points": np.array(dt_boxes[idx]).astype(np.int32).tolist(),
+        } for idx in range(len(dt_boxes))]
+        save_pred = os.path.basename(image_file) + "\t" + json.dumps(
+            res, ensure_ascii=False) + "\n"
+        save_results.append(save_pred)
+
         if is_visualize:
             image = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
             boxes = dt_boxes
@@ -170,8 +182,6 @@ def main(args):
                 scores,
                 drop_score=drop_score,
                 font_path=font_path)
-            draw_img_save_dir = args.draw_img_save_dir
-            os.makedirs(draw_img_save_dir, exist_ok=True)
             if flag:
                 image_file = image_file[:-3] + "png"
             cv2.imwrite(
@@ -184,6 +194,9 @@ def main(args):
     if args.benchmark:
         text_sys.text_detector.autolog.report()
         text_sys.text_recognizer.autolog.report()
+
+    with open(os.path.join(draw_img_save_dir, "system_results.txt"), 'w') as f:
+        f.writelines(save_results)
 
 
 if __name__ == "__main__":
