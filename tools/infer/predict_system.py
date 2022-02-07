@@ -164,7 +164,7 @@ def main(args):
         res = [{
             "transcription": rec_res[idx][0],
             "points": np.array(dt_boxes[idx]).astype(np.int32).tolist(),
-        } for idx in range(len(dt_boxes)) if rec_res[idx][1] >= drop_score]
+        } for idx in range(len(dt_boxes))]
         save_pred = os.path.basename(image_file) + "\t" + json.dumps(
             res, ensure_ascii=False) + "\n"
         save_results.append(save_pred)
