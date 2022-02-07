@@ -117,7 +117,7 @@ if [ ${precision} = "null" ];then
 fi
 
 # set env
-python=python3.7
+python=python
 export model_branch=`git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3`
 export model_commit=$(git log|head -n1|awk '{print $2}') 
 export str_tmp=$(echo `pip list|grep paddlepaddle-gpu|awk -F ' ' '{print $2}'`)
@@ -129,6 +129,7 @@ export frame_commit=$(echo `${python} -c "import paddle;print(paddle.version.com
 # line export_py: 30
 func_sed_params "$FILENAME" "24" "null"
 func_sed_params "$FILENAME" "30" "null"
+func_sed_params "$FILENAME" "3"  "python"
 
 
 if [ ${#gpu_id} -le 1 ];then
@@ -139,7 +140,7 @@ if [ ${#gpu_id} -le 1 ];then
     # set profile_option params
     IFS=";"
     cmd="sed -i '13s/.*/${profile_option}/' '${FILENAME}'"
-    eval $cmd  
+    eval $cmd
 
     # run test_train_inference_python.sh
     cmd="bash test_tipc/test_train_inference_python.sh ${FILENAME} benchmark_train > ${log_path}/${log_name} 2>&1 "
@@ -165,15 +166,14 @@ if [ ${#gpu_id} -le 1 ];then
 
     # parser log
     _model_name="${model_name}_bs${batch_size}_${precision}_${run_process_type}_${run_mode}"
-    # cmd="${python} ${BENCHMARK_ROOT}/scripts/analysis.py --filename ${log_path}/${log_name} \
-    cmd="${python} analysis.py --filename ${log_path}/${log_name} \
+    cmd="${python} ${BENCHMARK_ROOT}/scripts/analysis.py --filename ${log_path}/${log_name} \
             --speed_log_file '${speed_log_path}/${speed_log_name}' \
             --model_name ${_model_name} \
             --base_batch_size ${batch_size} \
             --run_mode ${run_mode} \
             --run_process_type ${run_process_type} \
             --fp_item ${precision} \
-            --keyword ips: \
+            --keyword samples/s: \
             --skip_steps 2 \
             --device_num ${device_num} \
             --speed_unit images/s \
@@ -203,15 +203,14 @@ else
     # parser log
     _model_name="${model_name}_bs${batch_size}_${precision}_${run_process_type}_${run_mode}"
     
-    # cmd="python3.7 ${BENCHMARK_ROOT}/scripts/analysis.py --filename ${log_path}/${log_name} \
-    cmd="${python} analysis.py --filename ${log_path}/${log_name} \
+    cmd="${python} ${BENCHMARK_ROOT}/scripts/analysis.py --filename ${log_path}/${log_name} \
             --speed_log_file '${speed_log_path}/${speed_log_name}' \
             --model_name ${_model_name} \
             --base_batch_size ${batch_size} \
             --run_mode ${run_mode} \
             --run_process_type ${run_process_type} \
             --fp_item ${precision} \
-            --keyword ips: \
+            --keyword samples/s: \
             --skip_steps 2 \
             --device_num ${device_num} \
             --speed_unit images/s \

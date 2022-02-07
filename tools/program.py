@@ -273,7 +273,7 @@ def train(config,
                 (global_step > 0 and global_step % print_batch_step == 0) or
                 (idx >= len(train_dataloader) - 1)):
                 logs = train_stats.log()
-                strs = 'epoch: [{}/{}], global_step: {}, {}, avg_reader_cost: {:.5f} s, avg_batch_cost: {:.5f} s, avg_samples: {}, ips: {:.5f}'.format(
+                strs = 'epoch: [{}/{}], global_step: {}, {}, avg_reader_cost: {:.5f} s, avg_batch_cost: {:.5f} s, avg_samples: {}, samples/s: {:.5f}'.format(
                     epoch, epoch_num, global_step, logs, train_reader_cost /
                     print_batch_step, (train_reader_cost + train_run_cost) /
                     print_batch_step, total_samples / print_batch_step,
