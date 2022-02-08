@@ -17,17 +17,17 @@ bash test_tipc/prepare.sh test_tipc/configs/det_mv3_db_v2_0/train_benchmark.txt 
 
 ```shell
 # 运行格式：bash test_tipc/benchmark_train.sh train_benchmark.txt mode
-bash test_tipc/benchmark_train.sh test_tipc/configs/det_mv3_db_v2_0/train_benchmark.txt benchmark_train
+bash test_tipc/benchmark_train.sh test_tipc/configs/det_mv3_db_v2_0/train_infer_python.txt benchmark_train
 
 # 单机多卡训练，MultiP 表示多进程；单卡训练用SingleP
 # 运行格式：bash test_tipc/benchmark_train.sh train_benchmark.txt mode
-bash test_tipc/benchmark_train.sh test_tipc/configs/det_mv3_db_v2_0/train_benchmark.txt benchmark_train
+bash test_tipc/benchmark_train.sh test_tipc/configs/det_mv3_db_v2_0/train_infer_python.txt benchmark_train
 ```
 
 `test_tipc/benchmark_train.sh`支持根据传入的第三个参数实现只运行某一个训练配置，如下：
 ```shell
 # 运行格式：bash test_tipc/benchmark_train.sh train_benchmark.txt mode
-bash test_tipc/benchmark_train.sh test_tipc/configs/det_mv3_db_v2_0/train_benchmark.txt benchmark_train  dynamic_bs8_null_SingleP_DP_N1C1
+bash test_tipc/benchmark_train.sh test_tipc/configs/det_mv3_db_v2_0/train_infer_python.txt benchmark_train  dynamic_bs8_null_SingleP_DP_N1C1
 ```
 dynamic_bs8_null_SingleP_DP_N1C1为test_tipc/benchmark_train.sh传入的参数，格式如下：
 `${modeltype}_${batch_size}_${fp_item}_${run_process_type}_${run_mode}_${device_num}`
