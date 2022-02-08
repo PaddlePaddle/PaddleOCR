@@ -41,7 +41,7 @@ dynamic_bs8_fp32_DP_N1C1为test_tipc/benchmark_train.sh传入的参数，格式�
 
 训练日志和日志解析结果保存在benchmark_log目录下，文件组织格式如下：
 ```
-benchmark_log/
+train_log/
 ├── index
 │   ├── PaddleOCR_det_mv3_db_v2_0_bs8_fp32_SingleP_DP_N1C1_speed
 │   └── PaddleOCR_det_mv3_db_v2_0_bs8_fp32_SingleP_DP_N1C4_speed
