@@ -72,7 +72,7 @@ FILENAME=$new_filename
 # MODE must be one of ['benchmark_train']
 MODE=$2
 PARAMS=$3
-# bash test_tipc/benchmark_train.sh test_tipc/configs/det_mv3_db_v2_0/train_benchmark.txt  benchmark_train dynamic_bs8_null_SingleP_DP_N1C1
+# bash test_tipc/benchmark_train.sh test_tipc/configs/det_mv3_db_v2_0/train_benchmark.txt  benchmark_train dynamic_bs8_null_DP_N1C1
 IFS=$'\n'
 # parser params from train_benchmark.txt
 dataline=`cat $FILENAME`
