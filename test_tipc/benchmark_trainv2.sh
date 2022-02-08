@@ -2,7 +2,7 @@
 source test_tipc/common_func.sh
 
 # set env
-python=python3.7
+python=python
 export model_branch=`git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3`
 export model_commit=$(git log|head -n1|awk '{print $2}') 
 export str_tmp=$(echo `pip list|grep paddlepaddle-gpu|awk -F ' ' '{print $2}'`)
@@ -124,8 +124,6 @@ if  [ ! -n "$PARAMS" ] ;then
     fp_items_list=(${fp_items})
     device_num_list=(N1C4)
     run_mode="DP"
-    echo "batchsize list: $batch_size_list ${batch_size_list[1]}"
-    echo "fp_item_lists: $fp_items_list ${fp_items_list[1]}"
 else
     # parser params from input: modeltype_bs${bs_item}_${fp_item}_${run_process_type}_${run_mode}_${device_num}
     IFS="_"
@@ -152,7 +150,6 @@ IFS="|"
 for batch_size in ${batch_size_list[*]}; do 
     for precision in ${fp_items_list[*]}; do
         for device_num in ${device_num_list[*]}; do
-            echo "for $batch_size $precision $device_num $epoch"
             # sed batchsize and precision
             func_sed_params "$FILENAME" "6" "$precision"
             func_sed_params "$FILENAME" "9" "$MODE=$batch_size"
@@ -166,7 +163,6 @@ for batch_size in ${batch_size_list[*]}; do
                 log_name="${repo_name}_${model_name}_bs${batch_size}_${precision}_${run_process_type}_${run_mode}_${device_num}_profiling"
                 func_sed_params "$FILENAME" "4" "0"  # sed used gpu_id 
                 # set profile_option params
-                echo "profile_option: ${profile_option}"
                 tmp=`sed -i "13s/.*/${profile_option}/" "${FILENAME}"`
 
                 # run test_train_inference_python.sh
