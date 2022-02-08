@@ -90,6 +90,7 @@ class MakeShrinkMap(object):
 
         data['shrink_map'] = gt
         data['shrink_mask'] = mask
+        data['ignore_tags'] = ignore_tags
         return data
 
     def validate_polygons(self, polygons, ignore_tags, h, w):
