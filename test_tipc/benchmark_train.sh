@@ -134,16 +134,16 @@ if  [ ! -n "$PARAMS" ] ;then
     device_num_list=(N1C4)
     run_mode="DP"
 else
-    # parser params from input: modeltype_bs${bs_item}_${fp_item}_${run_process_type}_${run_mode}_${device_num}
+    # parser params from input: modeltype_bs${bs_item}_${fp_item}_${run_mode}_${device_num}
     IFS="_"
     params_list=(${PARAMS})
     model_type=${params_list[0]}
     batch_size=${params_list[1]}
     batch_size=`echo  ${batch_size} | tr -cd "[0-9]" `
     precision=${params_list[2]}
-    run_process_type=${params_list[3]}
-    run_mode=${params_list[4]}
-    device_num=${params_list[5]}
+    # run_process_type=${params_list[3]}
+    run_mode=${params_list[3]}
+    device_num=${params_list[4]}
     IFS=";"
 
     if [ ${precision} = "null" ];then
