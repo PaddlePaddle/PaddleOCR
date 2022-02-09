@@ -35,7 +35,6 @@ use_share_conv_key=$(func_parser_key "${lines[13]}")
 use_share_conv_list=$(func_parser_value "${lines[13]}")
 run_train_py=$(func_parser_value "${lines[14]}")
 
-
 LOG_PATH="./test_tipc/extra_output"
 mkdir -p ${LOG_PATH}
 status_log="${LOG_PATH}/results_python.log"
@@ -98,6 +97,8 @@ if [ ${MODE} = "lite_train_lite_infer" ] || [ ${MODE} = "whole_train_whole_infer
                             cmd="${python} ${run_train_py} ${set_use_gpu}  ${set_save_model}  ${set_epoch}  ${set_pretrain} ${set_checkpoints}  ${set_autocast} ${set_batchsize}  ${set_use_custom_op} ${set_model_type} ${set_use_share_conv} ${set_amp_config}"
                         elif [ ${#ips} -le 26 ];then  # train with multi-gpu
                             cmd="${python} -m paddle.distributed.launch --gpus=${gpu} ${run_train_py} ${set_use_gpu}  ${set_save_model}  ${set_epoch}  ${set_pretrain} ${set_checkpoints}  ${set_autocast} ${set_batchsize}  ${set_use_custom_op} ${set_model_type} ${set_use_share_conv} ${set_amp_config}"
+                        else
+                            cmd="${python} -m paddle.distributed.launch --ips=${ips} --gpus=${gpu} ${run_train_py} ${set_use_gpu}  ${set_save_model}  ${set_epoch}  ${set_pretrain} ${set_checkpoints}  ${set_autocast} ${set_batchsize}  ${set_use_custom_op} ${set_model_type} ${set_use_share_conv} ${set_amp_config}"
                         fi
 
                         # run train

@@ -47,6 +47,13 @@ bash test_tipc/test_train_python.sh ./test_tipc/train_infer_python_PACT.txt 'lit
 bash test_tipc/test_train_python.sh ./test_tipc/train_infer_python_FPGM.txt 'lite_train_lite_infer'
 ```
 
+多机多卡的运行配置文件分别为 `train_infer_python_fleet.txt`, `train_infer_python_FPGM_fleet.txt` 和 `train_infer_python_PACT_fleet.txt`。
+运行时，需要修改配置文件中的 `gpu_list:xx.xx.xx.xx,yy.yy.yy.yy;0,1`。 将 `xx.xx.xx.xx` 替换为具体的 `ip` 地址，各个`ip`地址之间用`,`分隔。 另外，和单机训练
+不同，启动多机多卡训练需要在多机的每个节点上分别运行命令。以多机多卡量化训练为例，指令如下：
+```
+bash test_tipc/test_train_python.sh ./test_tipc/train_infer_python_PACT_fleet.txt 'lite_train_lite_infer'
+```
+
 运行相应指令后，在`test_tipc/output`文件夹下自动会保存运行日志。如'lite_train_lite_infer'模式运行后，在test_tipc/extra_output文件夹有以下文件：
 
 ```
