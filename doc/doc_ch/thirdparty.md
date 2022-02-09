@@ -16,22 +16,24 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 
 ### 1.1 基于PaddleOCR的社区项目
 
-- 【最新】 [FastOCRLabel](https://gitee.com/BaoJianQiang/FastOCRLabel)：完整的C#版本标注工具 (@ [包建强](https://gitee.com/BaoJianQiang) )
-
-#### 1.1.1 通用工具
-
-- [DangoOCR离线版](https://github.com/PantsuDango/DangoOCR)：通用型桌面级即时翻译工具 (@ [PantsuDango](https://github.com/PantsuDango))
-- [scr2txt](https://github.com/lstwzd/scr2txt)：截屏转文字工具 (@ [lstwzd](https://github.com/lstwzd))
-- [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/1054614?channelType=0&channel=0)：英文视频自动生成字幕( @ [叶月水狐](https://aistudio.baidu.com/aistudio/personalcenter/thirdview/322052))
-
-#### 1.1.2 垂类场景工具
-
-- [id_card_ocr](https://github.com/baseli/id_card_ocr)：身份证复印件识别(@ [baseli](https://github.com/baseli))
-- [Paddle_Table_Image_Reader](https://github.com/thunder95/Paddle_Table_Image_Reader)：能看懂表格图片的数据助手(@ [thunder95](https://github.com/thunder95]))
-
-#### 1.1.3 前后处理
-
-- [paddleOCRCorrectOutputs](https://github.com/yuranusduke/paddleOCRCorrectOutputs)：获取OCR识别结果的key-value(@ [yuranusduke](https://github.com/yuranusduke))
+| 类别     | 项目                                                         | 描述                       | 开发者                                                       |
+| -------- | ------------------------------------------------------------ | -------------------------- | ------------------------------------------------------------ |
+| 通用工具 | [FastOCRLabel](https://gitee.com/BaoJianQiang/FastOCRLabel)  | 完整的C#版本标注GUI        | [包建强](https://gitee.com/BaoJianQiang)                     |
+| 通用工具 | [DangoOCR离线版](https://github.com/PantsuDango/DangoOCR)    | 通用型桌面级即时翻译GUI    | [PantsuDango](https://github.com/PantsuDango)                |
+| 通用工具 | [scr2txt](https://github.com/lstwzd/scr2txt)                 | 截屏转文字GUI              | [lstwzd](https://github.com/lstwzd)                          |
+| 通用工具 | [ocr_sdk](https://github.com/mymagicpower/AIAS/blob/main/1_image_sdks/text_recognition/ocr_sdk)                 | OCR java SDK工具箱              | [Calvin](https://github.com/mymagicpower)                          |
+| 通用工具 | [iocr](https://github.com/mymagicpower/AIAS/blob/main/8_suite_hub/iocr)                 | IOCR 自定义模板识别(支持表格识别)              | [Calvin](https://github.com/mymagicpower)                          |
+| 通用工具 | [Lmdb Dataset Format Conversion Tool](https://github.com/OneYearIsEnough/PaddleOCR-Recog-LmdbDataset-Conversion) | 文本识别任务中lmdb数据格式转换工具 | [OneYearIsEnough](https://github.com/OneYearIsEnough) |
+| 垂类工具 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/1054614?channelType=0&channel=0) | 英文视频自动生成字幕       | [叶月水狐](https://aistudio.baidu.com/aistudio/personalcenter/thirdview/322052) |
+| 垂类工具 | [id_card_ocr](https://github.com/baseli/id_card_ocr)         | 身份证复印件识别           | [baseli](https://github.com/baseli)                          |
+| 垂类工具 | [Paddle_Table_Image_Reader](https://github.com/thunder95/Paddle_Table_Image_Reader) | 能看懂表格图片的数据助手   | [thunder95](https://github.com/thunder95])                   |
+| 垂类工具 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/3382897) | OCR流程中对手写体进行过滤       | [daassh](https://github.com/daassh) |
+| 垂类工具 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/2803693) | 电表读数和编号识别      | [深渊上的坑](https://github.com/edencfc) |
+| 前后处理 | [paddleOCRCorrectOutputs](https://github.com/yuranusduke/paddleOCRCorrectOutputs) | 获取OCR识别结果的key-value | [yuranusduke](https://github.com/yuranusduke)                |
+|前处理| [optlab](https://github.com/GreatV/optlab) |OCR前处理工具箱，基于Qt和Leptonica。|[GreatV](https://github.com/GreatV)|
+|应用部署| [PaddleOCRSharp](https://github.com/raoyutian/PaddleOCRSharp) |PaddleOCR的.NET封装与应用部署。|[raoyutian](https://github.com/raoyutian/PaddleOCRSharp)|
+|应用部署| [PaddleSharp](https://github.com/sdcb/PaddleSharp) |PaddleOCR的.NET封装与应用部署，支持跨平台、GPU|[sdcb](https://github.com/sdcb)|
+| 学术前沿模型训练与推理 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/3397137) | StarNet-MobileNetV3算法–中文训练 | [xiaoyangyang2](https://github.com/xiaoyangyang2)                |
 
 ### 1.2 为PaddleOCR新增功能
 

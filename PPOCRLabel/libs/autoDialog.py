@@ -6,6 +6,8 @@ except ImportError:
     from PyQt4.QtGui import *
     from PyQt4.QtCore import *
 
+import time
+import datetime
 import json
 import cv2
 import numpy as np
@@ -80,8 +82,9 @@ class AutoDialog(QDialog):
         self.parent = parent
         self.ocr = ocr
         self.mImgList = mImgList
+        self.lender = lenbar
         self.pb = QProgressBar()
-        self.pb.setRange(0, lenbar)
+        self.pb.setRange(0, self.lender)
         self.pb.setValue(0)
 
         layout = QVBoxLayout()
@@ -108,9 +111,15 @@ class AutoDialog(QDialog):
         self.thread_1.progressBarValue.connect(self.handleProgressBarSingal)
         self.thread_1.listValue.connect(self.handleListWidgetSingal)
         self.thread_1.endsignal.connect(self.handleEndsignalSignal)
+        self.time_start = time.time()  # save start time
 
     def handleProgressBarSingal(self, i):
         self.pb.setValue(i)
+
+        # calculate time left of auto labeling
+        avg_time = (time.time() - self.time_start) / i  # Use average time to prevent time fluctuations
+        time_left = str(datetime.timedelta(seconds=avg_time * (self.lender - i))).split(".")[0]  # Remove microseconds
+        self.setWindowTitle("PPOCRLabel  --  " + f"Time Left: {time_left}")  # show
 
     def handleListWidgetSingal(self, i):
         self.listWidget.addItem(i)
