@@ -4,9 +4,9 @@ python:python3.7
 gpu_list:0|0,1
 use_gpu:True|True
 AMP.use_amp:True|False
-epoch:lite_train_lite_infer=20|whole_train_whole_infer=1000
+epoch:lite_train_lite_infer=2|whole_train_whole_infer=1000
 save_model_dir:./output/
-TRAIN.batch_size:lite_train_lite_infer=2|whole_train_whole_infer=4
+TRAIN.batch_size:lite_train_lite_infer=1280|whole_train_whole_infer=1280
 pretrained_model:null
 checkpoints:null
 use_custom_relu:False|True
