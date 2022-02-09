@@ -47,7 +47,7 @@ bash test_tipc/test_train_python.sh ./test_tipc/train_infer_python_PACT.txt 'lit
 bash test_tipc/test_train_python.sh ./test_tipc/train_infer_python_FPGM.txt 'lite_train_lite_infer'
 ```
 
-多机多卡的运行配置文件分别为'train_infer_python_fleet.txt', 'train_infer_python_FPGM_fleet.txt', 'train_infer_python_PACT_fleet.txt'. 
+多机多卡的运行配置文件分别为`train_infer_python_fleet.txt`, `train_infer_python_FPGM_fleet.txt`, `train_infer_python_PACT_fleet.txt`. 
 运行时，需要修改配置文件中的`gpu_list:xx.xx.xx.xx,yy.yy.yy.yy;0,1`. 将`xx.xx.xx.xx` 和 `yy.yy.yy.yy`替换为具体的 `ip` 地址。 另外，和单机训练
 不同，多机多卡训练需要在多机的每个节点上分别运行命令。 以多机多卡量化训练为例， 指令如下：
 ```
