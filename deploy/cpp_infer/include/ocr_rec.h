@@ -40,13 +40,14 @@ public:
                           const int &gpu_id, const int &gpu_mem,
                           const int &cpu_math_library_num_threads,
                           const bool &use_mkldnn, const bool &use_zero_copy_run,
-                          const string &label_path) {
+                          const string &label_path, const int& rec_batch_num) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
     this->cpu_math_library_num_threads_ = cpu_math_library_num_threads;
     this->use_mkldnn_ = use_mkldnn;
     this->use_zero_copy_run_ = use_zero_copy_run;
+    this->rec_batch_num_ = rec_batch_num;
 
     this->label_list_ = Utility::ReadDict(label_path);
     this->label_list_.push_back(" ");
@@ -69,6 +70,7 @@ private:
   int cpu_math_library_num_threads_ = 4;
   bool use_mkldnn_ = false;
   bool use_zero_copy_run_ = false;
+  int rec_batch_num_ = 30;
 
   std::vector<std::string> label_list_;
 
