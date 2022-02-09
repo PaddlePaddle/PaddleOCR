@@ -1,16 +1,18 @@
 [English](README.md) | 简体中文
 
-- [1. 简介](#1)
-- [2. 近期更新](#2)
-- [3. 特性](#3)
-- [4. 效果展示](#4)
-  * [4.1 版面分析和表格识别](#41)
-  * [4.2 DOC-VQA](#42)
-- [5. 快速体验](#5)
-- [6. PP-Structure 介绍](#6)
-  * [6.1 版面分析+表格识别](#61)
-  * [6.2 DOC-VQA](#62)
-- [7. 模型库](#7)
+- [1. 简介](#1-简介)
+- [2. 近期更新](#2-近期更新)
+- [3. 特性](#3-特性)
+- [4. 效果展示](#4-效果展示)
+  - [4.1 版面分析和表格识别](#41-版面分析和表格识别)
+  - [4.2 DOC-VQA](#42-doc-vqa)
+- [5. 快速体验](#5-快速体验)
+- [6. PP-Structure 介绍](#6-pp-structure-介绍)
+  - [6.1 版面分析+表格识别](#61-版面分析表格识别)
+    - [6.1.1 版面分析](#611-版面分析)
+    - [6.1.2 表格识别](#612-表格识别)
+  - [6.2 DOC-VQA](#62-doc-vqa)
+- [7. 模型库](#7-模型库)
 
 <a name="1"></a>
 
@@ -54,7 +56,7 @@ PP-Structure的主要特性如下：
 
 * SER
 
-![](./vqa/images/result_ser/zh_val_0_ser.jpg) | ![](./vqa/images/result_ser/zh_val_42_ser.jpg)
+![](../doc/vqa/result_ser/zh_val_0_ser.jpg) | ![](../doc/vqa/result_ser/zh_val_42_ser.jpg)
 ---|---
 
 图中不同颜色的框表示不同的类别，对于XFUN数据集，有`QUESTION`, `ANSWER`, `HEADER` 3种类别
@@ -67,7 +69,7 @@ PP-Structure的主要特性如下：
 
 * RE
 
-![](./vqa/images/result_re/zh_val_21_re.jpg) | ![](./vqa/images/result_re/zh_val_40_re.jpg)
+![](../doc/vqa/result_re/zh_val_21_re.jpg) | ![](../doc/vqa/result_re/zh_val_40_re.jpg)
 ---|---
 
 
