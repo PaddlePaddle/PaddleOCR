@@ -188,7 +188,7 @@ python gen_ocr_train_val_test.py --trainValTestRatio 6:2:2 --datasetRootPath ../
 
 - `trainValTestRatio` 是训练集、验证集、测试集的图像数量划分比例，根据实际情况设定，默认是`6:2:2`
 
-- `datasetRootPath` 是PPOCRLabel标注的完整数据集存放路径。默认路径是PaddleOCR/train_data 分割数据集前应有如下结构：
+- `datasetRootPath` 是PPOCRLabel标注的完整数据集存放路径。默认路径是 `PaddleOCR/train_data` 分割数据集前应有如下结构：
   ```
   |-train_data
     |-crop_img
