@@ -203,7 +203,7 @@ For some data that are difficult to recognize, the recognition results will not 
 
   - `trainValTestRatio` is the division ratio of the number of images in the training set, validation set, and test set, set according to your actual situation, the default is `6:2:2`
 
-  - `datasetRootPath` is the storage path of the complete dataset labeled by PPOCRLabel. The default path is PaddleOCR/train_data.
+  - `datasetRootPath` is the storage path of the complete dataset labeled by PPOCRLabel. The default path is `PaddleOCR/train_data` .
   ```
   |-train_data
     |-crop_img
