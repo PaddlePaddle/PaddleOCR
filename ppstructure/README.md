@@ -1,16 +1,18 @@
 English | [简体中文](README_ch.md)
 
-- [1. Introduction](#1)
-- [2. Update log](#2)
-- [3. Features](#3)
-- [4. Results](#4)
-  * [4.1 Layout analysis and table recognition](#41)
-  * [4.2 DOC-VQA](#42)
-- [5. Quick start](#5)
-- [6. PP-Structure System](#6)
-  * [6.1 Layout analysis and table recognition](#61)
-  * [6.2 DOC-VQA](#62)
-- [7. Model List](#7)
+- [1. Introduction](#1-introduction)
+- [2. Update log](#2-update-log)
+- [3. Features](#3-features)
+- [4. Results](#4-results)
+  - [4.1 Layout analysis and table recognition](#41-layout-analysis-and-table-recognition)
+  - [4.2 DOC-VQA](#42-doc-vqa)
+- [5. Quick start](#5-quick-start)
+- [6. PP-Structure System](#6-pp-structure-system)
+  - [6.1 Layout analysis and table recognition](#61-layout-analysis-and-table-recognition)
+    - [6.1.1 Layout analysis](#611-layout-analysis)
+    - [6.1.2 Table recognition](#612-table-recognition)
+  - [6.2 DOC-VQA](#62-doc-vqa)
+- [7. Model List](#7-model-list)
 
 <a name="1"></a>
 
@@ -54,8 +56,8 @@ The figure shows the pipeline of layout analysis + table recognition. The image 
 ### 4.2 DOC-VQA
 
 * SER
-
-![](./vqa/images/result_ser/zh_val_0_ser.jpg) | ![](./vqa/images/result_ser/zh_val_42_ser.jpg)
+*
+![](../doc/vqa/result_ser/zh_val_0_ser.jpg) | ![](../doc/vqa/result_ser/zh_val_42_ser.jpg)
 ---|---
 
 Different colored boxes in the figure represent different categories. For xfun dataset, there are three categories: query, answer and header:
@@ -69,7 +71,7 @@ The corresponding category and OCR recognition results are also marked at the to
 
 * RE
 
-![](./vqa/images/result_re/zh_val_21_re.jpg) | ![](./vqa/images/result_re/zh_val_40_re.jpg)
+![](../doc/vqa/result_re/zh_val_21_re.jpg) | ![](../doc/vqa/result_re/zh_val_40_re.jpg)
 ---|---
 
 
@@ -96,7 +98,7 @@ In PP-Structure, the image will be divided into 5 types of areas **text, title, 
 
 #### 6.1.1 Layout analysis
 
-Layout analysis classifies image by region, including the use of Python scripts of layout analysis tools, extraction of designated category detection boxes, performance indicators, and custom training layout analysis models. For details, please refer to [document](layout/README_en.md).
+Layout analysis classifies image by region, including the use of Python scripts of layout analysis tools, extraction of designated category detection boxes, performance indicators, and custom training layout analysis models. For details, please refer to [document](layout/README.md).
 
 #### 6.1.2 Table recognition
 
