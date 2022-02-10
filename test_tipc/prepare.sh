@@ -223,7 +223,7 @@ elif [ ${MODE} = "whole_infer" ];then
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_mv3_pse_v2.0_train.tar --no-check-certificate
         cd ./inference/ && tar xf det_mv3_pse_v2.0_train.tar & cd ../
     fi
-    if [ ${model_name} == "det_r50_vd_pse_v2.0" ]; then
+    if [ ${model_name} == "det_r50_vd_pse_v2_0" ]; then
         wget -nc -P ./inference/  https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_r50_vd_pse_v2.0_train.tar  --no-check-certificate
         cd ./inference/ && tar xf det_r50_vd_pse_v2.0_train.tar & cd ../
     fi
