@@ -29,6 +29,7 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 | 垂类工具 | [Paddle_Table_Image_Reader](https://github.com/thunder95/Paddle_Table_Image_Reader) | 能看懂表格图片的数据助手   | [thunder95](https://github.com/thunder95])                   |
 | 垂类工具 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/3382897) | OCR流程中对手写体进行过滤       | [daassh](https://github.com/daassh) |
 | 垂类场景调优 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/2803693) | 电表读数和编号识别      | [深渊上的坑](https://github.com/edencfc) |
+| 垂类工具 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/3284199) | LCD液晶字符检测      | [Dream拒杰](https://github.com/zhangyingying520) |
 | 前后处理 | [paddleOCRCorrectOutputs](https://github.com/yuranusduke/paddleOCRCorrectOutputs) | 获取OCR识别结果的key-value | [yuranusduke](https://github.com/yuranusduke)                |
 |前处理| [optlab](https://github.com/GreatV/optlab) |OCR前处理工具箱，基于Qt和Leptonica。|[GreatV](https://github.com/GreatV)|
 |应用部署| [PaddleOCRSharp](https://github.com/raoyutian/PaddleOCRSharp) |PaddleOCR的.NET封装与应用部署。|[raoyutian](https://github.com/raoyutian/PaddleOCRSharp)|
