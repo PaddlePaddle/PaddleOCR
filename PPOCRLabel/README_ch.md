@@ -185,19 +185,29 @@ PPOCRLabel支持三种导出方式：
 
 ```
 cd ./PPOCRLabel # 将目录切换到PPOCRLabel文件夹下
-python gen_ocr_train_val_test.py --trainValTestRatio 6:2:2 --labelRootPath ../train_data/label --detRootPath ../train_data/det --recRootPath ../train_data/rec
+python gen_ocr_train_val_test.py --trainValTestRatio 6:2:2 --datasetRootPath ../train_data 
 ```
 
 参数说明：
 
 - `trainValTestRatio` 是训练集、验证集、测试集的图像数量划分比例，根据实际情况设定，默认是`6:2:2`
 
-- `labelRootPath` 是PPOCRLabel标注的数据集存放路径，默认是`../train_data/label`
-
-- `detRootPath` 是根据PPOCRLabel标注的数据集划分后的文本检测数据集存放的路径，默认是`../train_data/det `
-
-- `recRootPath` 是根据PPOCRLabel标注的数据集划分后的字符识别数据集存放的路径，默认是`../train_data/rec`
-
+- `datasetRootPath` 是PPOCRLabel标注的完整数据集存放路径。默认路径是 `PaddleOCR/train_data` 分割数据集前应有如下结构：
+  ```
+  |-train_data
+    |-crop_img
+      |- word_001_crop_0.png
+      |- word_002_crop_0.jpg
+      |- word_003_crop_0.jpg
+      | ...
+    | Label.txt
+    | rec_gt.txt
+    |- word_001.png
+    |- word_002.jpg
+    |- word_003.jpg
+    | ...
+  ```
+  
 ### 3.6 错误提示
 
 - 如果同时使用whl包安装了paddleocr，其优先级大于通过paddleocr.py调用PaddleOCR类，whl包未更新时会导致程序异常。
