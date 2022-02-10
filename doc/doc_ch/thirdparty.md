@@ -37,7 +37,8 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 | 应用部署 | [PaddleOCR-PyWebIO-Demo](https://github.com/Lovely-Pig/PaddleOCR-PyWebIO-Demo) | 使用PyWebIO部署PaddleOCR | [Lovely-Pig](https://github.com/Lovely-Pig) |
 | 应用部署 | [PaddleOCR-Paddlejs-Vue-Demo](https://github.com/Lovely-Pig/PaddleOCR-Paddlejs-Vue-Demo) | 使用Paddle.js和Vue部署PaddleOCR | [Lovely-Pig](https://github.com/Lovely-Pig) |
 | 应用部署 | [PaddleOCR-Paddlejs-React-Demo](https://github.com/Lovely-Pig/PaddleOCR-Paddlejs-React-Demo) | 使用Paddle.js和React部署PaddleOCR | [Lovely-Pig](https://github.com/Lovely-Pig) |
-| 学术前沿模型训练与推理 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/3397137) | StarNet-MobileNetV3算法–中文训练 | [xiaoyangyang2](https://github.com/xiaoyangyang2)                |
+| 学术前沿模型训练与推理 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/3397137) | StarNet-MobileNetV3算法–中文训练 | [xiaoyangyang2](https://github.com/xiaoyangyang2)    
+| 垂类工具 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/3284199) | LCD液晶字符检测      | [Dream拒杰](https://github.com/zhangyingying520) ||
 
 ### 1.2 为PaddleOCR新增功能
 
