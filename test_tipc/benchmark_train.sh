@@ -32,11 +32,7 @@ function func_sed_params(){
     array=(${params})
     key=${array[0]}
     value=${array[1]}
-    if [[ $value =~ 'benchmark_train' ]];then
-        IFS='='
-        _val=(${value})
-        param_value="${_val[0]}=${param_value}"
-    fi
+
     new_params="${key}:${param_value}"
     IFS=";"
     cmd="sed -i '${line}s/.*/${new_params}/' '${filename}'"
