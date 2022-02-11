@@ -34,6 +34,10 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 |前处理| [optlab](https://github.com/GreatV/optlab) |OCR前处理工具箱，基于Qt和Leptonica。|[GreatV](https://github.com/GreatV)|
 |应用部署| [PaddleOCRSharp](https://github.com/raoyutian/PaddleOCRSharp) |PaddleOCR的.NET封装与应用部署。|[raoyutian](https://github.com/raoyutian/PaddleOCRSharp)|
 |应用部署| [PaddleSharp](https://github.com/sdcb/PaddleSharp) |PaddleOCR的.NET封装与应用部署，支持跨平台、GPU|[sdcb](https://github.com/sdcb)|
+| 应用部署 | [PaddleOCR-Streamlit-Demo](https://github.com/Lovely-Pig/PaddleOCR-Streamlit-Demo) | 使用Streamlit部署PaddleOCR | [Lovely-Pig](https://github.com/Lovely-Pig) |
+| 应用部署 | [PaddleOCR-PyWebIO-Demo](https://github.com/Lovely-Pig/PaddleOCR-PyWebIO-Demo) | 使用PyWebIO部署PaddleOCR | [Lovely-Pig](https://github.com/Lovely-Pig) |
+| 应用部署 | [PaddleOCR-Paddlejs-Vue-Demo](https://github.com/Lovely-Pig/PaddleOCR-Paddlejs-Vue-Demo) | 使用Paddle.js和Vue部署PaddleOCR | [Lovely-Pig](https://github.com/Lovely-Pig) |
+| 应用部署 | [PaddleOCR-Paddlejs-React-Demo](https://github.com/Lovely-Pig/PaddleOCR-Paddlejs-React-Demo) | 使用Paddle.js和React部署PaddleOCR | [Lovely-Pig](https://github.com/Lovely-Pig) |
 | 学术前沿模型训练与推理 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/3397137) | StarNet-MobileNetV3算法–中文训练 | [xiaoyangyang2](https://github.com/xiaoyangyang2)                |
 
 ### 1.2 为PaddleOCR新增功能
@@ -51,7 +55,7 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 
 ### 1.4 文档优化与翻译
 
-- 非常感谢 **[RangeKing](https://github.com/RangeKing)** 贡献翻译《动手学OCR》notebook[电子书英文版](../../notebook/notebook_en)。
+- 非常感谢 **[RangeKing](https://github.com/RangeKing)** 贡献翻译《动手学OCR》notebook[电子书英文版](https://github.com/PaddlePaddle/PaddleOCR/tree/dygraph/notebook/notebook_en)。
 - 非常感谢 [thunderstudying](https://github.com/thunderstudying)，[RangeKing](https://github.com/RangeKing)，[livingbody](https://github.com/livingbody)， [WZMIAOMIAO](https://github.com/WZMIAOMIAO)，[haigang1975](https://github.com/haigang1975) 补充多个英文markdown文档。
 - 非常感谢 **[fanruinet](https://github.com/fanruinet)** 润色和修复35篇英文文档([#5205](https://github.com/PaddlePaddle/PaddleOCR/pull/5205))。
 - 非常感谢 [Khanh Tran](https://github.com/xxxpsyduck) 和 [Karl Horky](https://github.com/karlhorky) 贡献修改英文文档。
@@ -76,9 +80,9 @@ PaddleOCR非常欢迎社区贡献以PaddleOCR为核心的各种服务、部署�
 
 如果您在使用PaddleOCR时遇到了代码bug、功能不符合预期等问题，可以为PaddleOCR贡献您的修改，其中：
 
-- Python代码规范可参考[附录1：Python代码规范](./code_and_doc.md#附录1)。
+- Python代码规范可参考[附录1：Python代码规范](./code_and_doc.md/#附录1)。
 
--  提交代码前请再三确认不会引入新的bug，并在PR中描述优化点。如果该PR解决了某个issue，请在PR中连接到该issue。所有的PR都应该遵守附录3中的[3.2.10 提交代码的一些约定。](./code_and_doc.md#提交代码的一些约定)
+-  提交代码前请再三确认不会引入新的bug，并在PR中描述优化点。如果该PR解决了某个issue，请在PR中连接到该issue。所有的PR都应该遵守附录3中的[3.2.10 提交代码的一些约定。](./code_and_doc.md/#提交代码的一些约定)
 
 - 请在提交之前参考下方的[附录3：Pull Request说明](./code_and_doc.md#附录3)。如果您对git的提交流程不熟悉，同样可以参考附录3的3.2节。
 
@@ -86,7 +90,7 @@ PaddleOCR非常欢迎社区贡献以PaddleOCR为核心的各种服务、部署�
 
 ### 2.3 文档优化
 
-如果您在使用PaddleOCR时遇到了文档表述不清楚、描述缺失、链接失效等问题，可以为PaddleOCR贡献您的修改。文档书写规范请参考[附录2：文档规范](./code_and_doc.md#附录2)。**最后请在PR的题目中加上标签`【third-party】` , 在说明中@Evezerest，拥有此标签的PR将会被高优处理。**
+如果您在使用PaddleOCR时遇到了文档表述不清楚、描述缺失、链接失效等问题，可以为PaddleOCR贡献您的修改。文档书写规范请参考[附录2：文档规范](./code_and_doc.md/#附录2)。**最后请在PR的题目中加上标签`【third-party】` , 在说明中@Evezerest，拥有此标签的PR将会被高优处理。**
 
 ## 3. 更多贡献机会
 
