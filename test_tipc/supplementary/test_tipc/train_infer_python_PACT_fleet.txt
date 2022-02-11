@@ -1,8 +1,8 @@
 ===========================train_params===========================
 model_name:ch_PPOCRv2_det
 python:python3.7
-gpu_list:0|0,1
-use_gpu:True|True
+gpu_list:xx.xx.xx.xx,yy.yy.yy.yy;0,1
+use_gpu:True
 AMP.use_amp:True|False
 epoch:lite_train_lite_infer=2|whole_train_whole_infer=1000
 save_model_dir:./output/

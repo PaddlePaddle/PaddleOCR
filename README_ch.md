@@ -99,7 +99,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - [PP-Structure信息提取](./ppstructure/README_ch.md)
     - [版面分析](./ppstructure/layout/README_ch.md)
     - [表格识别](./ppstructure/table/README_ch.md)
-    - [DocVQA](./ppstructure/vqa/README_ch.md)
+    - [DocVQA](./ppstructure/vqa/README.md)
     - [关键信息提取](./ppstructure/docs/kie.md)
 - OCR学术圈
     - [两阶段模型介绍与下载](./doc/doc_ch/algorithm_overview.md)

@@ -146,6 +146,7 @@ def train(config,
           scaler=None):
     cal_metric_during_train = config['Global'].get('cal_metric_during_train',
                                                    False)
+    calc_epoch_interval = config['Global'].get('calc_epoch_interval', 1)
     log_smooth_window = config['Global']['log_smooth_window']
     epoch_num = config['Global']['epoch_num']
     print_batch_step = config['Global']['print_batch_step']
@@ -244,6 +245,16 @@ def train(config,
                 optimizer.step()
             optimizer.clear_grad()
 
+            if cal_metric_during_train and epoch % calc_epoch_interval == 0:  # only rec and cls need
+                batch = [item.numpy() for item in batch]
+                if model_type in ['table', 'kie']:
+                    eval_class(preds, batch)
+                else:
+                    post_result = post_process_class(preds, batch[1])
+                    eval_class(post_result, batch)
+                metric = eval_class.get_metric()
+                train_stats.update(metric)
+
             train_batch_time = time.time() - reader_start
             train_batch_cost += train_batch_time
             eta_meter.update(train_batch_time)
@@ -258,16 +269,6 @@ def train(config,
             stats['lr'] = lr
             train_stats.update(stats)
 
-            if cal_metric_during_train:  # only rec and cls need
-                batch = [item.numpy() for item in batch]
-                if model_type in ['table', 'kie']:
-                    eval_class(preds, batch)
-                else:
-                    post_result = post_process_class(preds, batch[1])
-                    eval_class(post_result, batch)
-                metric = eval_class.get_metric()
-                train_stats.update(metric)
-
             if vdl_writer is not None and dist.get_rank() == 0:
                 for k, v in train_stats.get().items():
                     vdl_writer.add_scalar('TRAIN/{}'.format(k), v, global_step)
@@ -277,12 +278,13 @@ def train(config,
                 (global_step > 0 and global_step % print_batch_step == 0) or
                 (idx >= len(train_dataloader) - 1)):
                 logs = train_stats.log()
+
                 eta_sec = ((epoch_num + 1 - epoch) * \
                     len(train_dataloader) - idx - 1) * eta_meter.avg
                 eta_sec_format = str(datetime.timedelta(seconds=int(eta_sec)))
                 strs = 'epoch: [{}/{}], global_step: {}, {}, avg_reader_cost: ' \
                        '{:.5f} s, avg_batch_cost: {:.5f} s, avg_samples: {}, ' \
-                       'ips: {:.5f}, eta: {}'.format(
+                       'ips: {:.5f} samples/s, eta: {}'.format(
                     epoch, epoch_num, global_step, logs,
                     train_reader_cost / print_batch_step,
                     train_batch_cost / print_batch_step,

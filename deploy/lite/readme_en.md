@@ -44,7 +44,7 @@ git checkout release/v2.8
 
 Note: When compiling Paddle-Lite to obtain the Paddle-Lite library, you need to turn on the two options `--with_cv=ON --with_extra=ON`, `--arch` means the `arm` version, here is designated as armv8,
 
-More compilation commands refer to the introduction [link](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_andriod.html) 。
+More compilation commands refer to the introduction [link](https://paddle-lite.readthedocs.io/zh/release-v2.10_a/source_compile/linux_x86_compile_android.html) 。
 
 After directly downloading the Paddle-Lite library and decompressing it, you can get the `inference_lite_lib.android.armv8/` folder, and the Paddle-Lite library obtained by compiling Paddle-Lite is located
 `Paddle-Lite/build.lite.android.armv8.gcc/inference_lite_lib.android.armv8/` folder.
