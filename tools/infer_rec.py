@@ -137,7 +137,7 @@ def main():
 
             if info is not None:
                 logger.info("\t result: {}".format(info))
-                fout.write(file + "\t" + info)
+                fout.write(os.path.basename(file) + "\t" + info + "\n")
     logger.info("success!")
 
 
