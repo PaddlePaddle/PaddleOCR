@@ -17,18 +17,13 @@
   - [7.2 OCR和表格识别模型](#72-ocr和表格识别模型)
   - [7.2 DOC-VQA 模型](#72-doc-vqa-模型)
 
-<a name="1"></a>
 
 ## 1. 简介
 PP-Structure是一个可用于复杂文档结构分析和处理的OCR工具包，旨在帮助开发者更好的完成文档理解相关任务。
 
-<a name="2"></a>
-
 ## 2. 近期更新
 * 2022.02.12 DOC-VQA增加LayoutLMv2模型。
 * 2021.12.07 新增[DOC-VQA任务SER和RE](vqa/README.md)。
-
-<a name="3"></a>
 
 ## 3. 特性
 
@@ -39,9 +34,6 @@ PP-Structure的主要特性如下：
 - 支持python whl包和命令行两种方式，简单易用
 - 支持版面分析和表格结构化两类任务自定义训练
 - 支持文档视觉问答(Document Visual Question Answering，DOC-VQA)任务-语义实体识别(Semantic Entity Recognition，SER)和关系抽取(Relation Extraction，RE)
-
-
-<a name="4"></a>
 
 ## 4. 效果展示
 
