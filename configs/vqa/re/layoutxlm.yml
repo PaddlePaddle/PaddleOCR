@@ -34,10 +34,8 @@ Optimizer:
   beta2: 0.999
   clip_norm: 10
   lr:
-    name: Piecewise
-    values: [0.000005, 0.00005]
-    decay_epochs: [10]
-    warmup_epoch: 0
+    learning_rate: 0.00005
+    warmup_epoch: 10
   regularizer:
     name: L2
     factor: 0.00000
