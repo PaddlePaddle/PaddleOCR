@@ -17,19 +17,13 @@ English | [简体中文](README_ch.md)
   - [7.2 OCR and table recognition model](#72-ocr-and-table-recognition-model)
   - [7.3 DOC-VQA model](#73-doc-vqa-model)
 
-<a name="1"></a>
-
 ## 1. Introduction
 
 PP-Structure is an OCR toolkit that can be used for document analysis and processing with complex structures, designed to help developers better complete document understanding tasks
 
-<a name="2"></a>
-
 ## 2. Update log
 * 2022.02.12 DOC-VQA add LayoutLMv2 model。
 * 2021.12.07 add [DOC-VQA SER and RE tasks](vqa/README.md)。
-
-<a name="3"></a>
 
 ## 3. Features
 
@@ -42,20 +36,13 @@ The main features of PP-Structure are as follows:
 - Support custom training for layout analysis and table structure tasks
 - Support Document Visual Question Answering (DOC-VQA) tasks: Semantic Entity Recognition (SER) and Relation Extraction (RE)
 
-
-<a name="4"></a>
-
 ## 4. Results
-
-<a name="41"></a>
 
 ### 4.1 Layout analysis and table recognition
 
 <img src="../doc/table/ppstructure.GIF" width="100%"/>
 
 The figure shows the pipeline of layout analysis + table recognition. The image is first divided into four areas of image, text, title and table by layout analysis, and then OCR detection and recognition is performed on the three areas of image, text and title, and the table is performed table recognition, where the image will also be stored for use.
-
-<a name="42"></a>
 
 ### 4.2 DOC-VQA
 
@@ -81,18 +68,11 @@ The corresponding category and OCR recognition results are also marked at the to
 
 In the figure, the red box represents the question, the blue box represents the answer, and the question and answer are connected by green lines. The corresponding category and OCR recognition results are also marked at the top left of the OCR detection box.
 
-
-<a name="5"></a>
-
 ## 5. Quick start
 
 Start from [Quick Installation](./docs/quickstart.md)
 
-<a name="6"></a>
-
 ## 6. PP-Structure System
-
-<a name="61"></a>
 
 ### 6.1 Layout analysis and table recognition
 
@@ -108,29 +88,19 @@ Layout analysis classifies image by region, including the use of Python scripts 
 
 Table recognition converts table images into excel documents, which include the detection and recognition of table text and the prediction of table structure and cell coordinates. For detailed instructions, please refer to [document](table/README.md)
 
-<a name="62"></a>
-
 ### 6.2 DOC-VQA
 
 Document Visual Question Answering (DOC-VQA) if a type of Visual Question Answering (VQA), which includes Semantic Entity Recognition (SER) and Relation Extraction (RE) tasks. Based on SER task, text recognition and classification in images can be completed. Based on THE RE task, we can extract the relation of the text content in the image, such as judge the problem pair. For details, please refer to [document](vqa/README.md)
 
-
-<a name="7"></a>
-
 ## 7. Model List
 
 PP-Structure Series Model List (Updating)
-
-
-<a name="71"></a>
 
 ### 7.1 Layout analysis model
 
 |model name|description|download|
 | --- | --- | --- |
 | ppyolov2_r50vd_dcn_365e_publaynet | The layout analysis model trained on the PubLayNet dataset can divide image into 5 types of areas **text, title, table, picture, and list** | [PubLayNet](https://paddle-model-ecology.bj.bcebos.com/model/layout-parser/ppyolov2_r50vd_dcn_365e_publaynet.tar) |
-
-<a name="72"></a>
 
 ### 7.2 OCR and table recognition model
 
@@ -139,8 +109,6 @@ PP-Structure Series Model List (Updating)
 |ch_PP-OCRv2_det_slim|Slim quantization with distillation lightweight model, supporting Chinese, English, multilingual text detection| 3M |[inference model](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_slim_quant_infer.tar)|
 |ch_PP-OCRv2_rec_slim|Slim qunatization with distillation lightweight model, supporting Chinese, English, multilingual text recognition| 9M |[inference model](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_quant_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_quant_train.tar) |
 |en_ppocr_mobile_v2.0_table_structure|Table structure prediction of English table scene trained on PubLayNet dataset| 18.6M |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/table/en_ppocr_mobile_v2.0_table_structure_train.tar) |
-
-<a name="73"></a>
 
 ### 7.3 DOC-VQA model
 

@@ -1,17 +1,14 @@
-
+- [Key Information Extraction(KIE)](#key-information-extractionkie)
+  - [1. Quick Use](#1-quick-use)
+  - [2. Model Training](#2-model-training)
+  - [3. Model Evaluation](#3-model-evaluation)
+  - [4. Reference](#4-reference)
 
 # Key Information Extraction(KIE)
 
 This section provides a tutorial example on how to quickly use, train, and evaluate a key information extraction(KIE) model, [SDMGR](https://arxiv.org/abs/2103.14470), in PaddleOCR.
 
 [SDMGR(Spatial Dual-Modality Graph Reasoning)](https://arxiv.org/abs/2103.14470) is a KIE algorithm that classifies each detected text region into predefined categories, such as order ID, invoice number, amount, and etc.
-
-
-* [1. Quick Use](#1-----)
-* [2. Model Training](#2-----)
-* [3. Model Evaluation](#3-----)
-
-<a name="1-----"></a>
 
 ## 1. Quick Use
 
@@ -37,7 +34,6 @@ The visualization results are shown in the figure below:
     <img src="./imgs/0.png" width="800">
 </div>
 
-<a name="2-----"></a>
 ## 2. Model Training
 
 Create a softlink to the folder, `PaddleOCR/train_data`:
@@ -51,7 +47,6 @@ The configuration file used for training is `configs/kie/kie_unet_sdmgr.yml`. Th
 ```shell
 python3.7 tools/train.py -c configs/kie/kie_unet_sdmgr.yml -o Global.save_model_dir=./output/kie/
 ```
-<a name="3-----"></a>
 
 ## 3. Model Evaluation
 
@@ -61,7 +56,7 @@ After training, you can execute the model evaluation with the following command:
 python3.7 tools/eval.py -c configs/kie/kie_unet_sdmgr.yml -o Global.checkpoints=./output/kie/best_accuracy
 ```
 
-**Reference:**
+## 4. Reference
 
 <!-- [ALGORITHM] -->
 
