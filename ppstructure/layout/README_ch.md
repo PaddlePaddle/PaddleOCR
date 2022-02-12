@@ -1,25 +1,17 @@
 [English](README.md) | 简体中文
+- [版面分析使用说明](#版面分析使用说明)
+  - [1.  安装whl包](#1--安装whl包)
+  - [2. 使用](#2-使用)
+  - [3. 后处理](#3-后处理)
+  - [4. 指标](#4-指标)
+  - [5. 训练版面分析模型](#5-训练版面分析模型)
 
 # 版面分析使用说明
-
-[1. 安装whl包](#安装whl包)
-
-[2. 使用](#使用)
-
-[3. 后处理](#后处理)
-
-[4. 指标](#指标)
-
-[5. 训练版面分析模型](#训练版面分析模型)
-
-<a name="安装whl包"></a>
 
 ## 1.  安装whl包
 ```bash
 pip install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
 ```
-
-<a name="使用"></a>
 
 ## 2. 使用
 
@@ -76,8 +68,6 @@ show_img.show()
 * TableBank word和TableBank latex分别在word文档、latex文档数据集训练；
 * 下载的TableBank数据集里同时包含word和latex。
 
-<a name="后处理"></a>
-
 ## 3. 后处理
 
 版面分析检测包含多个类别，如果只想获取指定类别(如"Text"类别)的检测框、可以使用下述代码：
@@ -119,8 +109,6 @@ show_img.show()
 <img src="../../doc/table/result_text.jpg"  width = "600" />
 </div>
 
-<a name="指标"></a>
-
 ## 4. 指标
 
 | Dataset   | mAP  | CPU time cost | GPU time cost |
@@ -133,8 +121,6 @@ show_img.show()
 ​    **CPU：**  Intel(R) Xeon(R) CPU E5-2650 v4 @ 2.20GHz，24core
 
 ​    **GPU：**  a single NVIDIA Tesla P40
-
-<a name="训练版面分析模型"></a>
 
 ## 5. 训练版面分析模型
 

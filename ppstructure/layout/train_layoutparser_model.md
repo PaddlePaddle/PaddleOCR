@@ -1,30 +1,19 @@
+English | [简体中文](train_layoutparser_model_ch.md)
+- [Training layout-parse](#training-layout-parse)
+  - [1.  Installation](#1--installation)
+    - [1.1 Requirements](#11-requirements)
+    - [1.2 Install PaddleDetection](#12-install-paddledetection)
+  - [2. Data preparation](#2-data-preparation)
+  - [3. Configuration](#3-configuration)
+  - [4. Training](#4-training)
+  - [5. Prediction](#5-prediction)
+  - [6. Deployment](#6-deployment)
+    - [6.1 Export model](#61-export-model)
+    - [6.2 Inference](#62-inference)
+
 # Training layout-parse
 
-[1. Installation](#Installation)
-
-​  [1.1 Requirements](#Requirements)
-
-​  [1.2 Install PaddleDetection](#Install_PaddleDetection)
-
-[2.  Data preparation](#Data_reparation)
-
-[3. Configuration](#Configuration)
-
-[4. Training](#Training)
-
-[5. Prediction](#Prediction)
-
-[6. Deployment](#Deployment)
-
-​  [6.1 Export model](#Export_model)
-
-​  [6.2 Inference](#Inference)  
-
-<a name="Installation"></a>
-
 ## 1.  Installation
-
-<a name="Requirements"></a>
 
 ### 1.1 Requirements
 
@@ -34,8 +23,6 @@
 - pip/pip3(9.0.1+), 64 bit
 - CUDA >= 10.1
 - cuDNN >= 7.6
-
-<a name="Install_PaddleDetection"></a>
 
 ### 1.2 Install PaddleDetection
 
@@ -50,8 +37,6 @@ pip install -r requirements.txt
 ```
 
 For more installation tutorials, please refer to： [Install doc](https://github.com/PaddlePaddle/PaddleDetection/blob/release/2.1/docs/tutorials/INSTALL_cn.md)
-
-<a name="Data_preparation"></a>
 
 ## 2. Data preparation
 
@@ -79,8 +64,6 @@ PubLayNet directory structure after decompressing ：
 | `README.txt`   | Text file with the file names and description    |   1      |
 
 For other datasets，please refer to [the PrepareDataSet]((https://github.com/PaddlePaddle/PaddleDetection/blob/release/2.1/docs/tutorials/PrepareDataSet.md) )
-
-<a name="Configuration"></a>
 
 ## 3. Configuration
 
@@ -113,8 +96,6 @@ The `ppyolov2_r50vd_dcn_365e_coco.yml` configuration depends on other configurat
 
 Modify the preceding files, such as the dataset path and batch size etc.
 
-<a name="Training"></a>
-
 ## 4. Training
 
 PaddleDetection provides single-card/multi-card training mode to meet various training needs of users:
@@ -146,8 +127,6 @@ python -m paddle.distributed.launch --gpus 0,1,2,3 tools/train.py -c configs/ppy
 
 Note: If you encounter "`Out of memory error`" , try reducing `batch_size` in the `ppyolov2_reader.yml`  file
 
-prediction<a name="Prediction"></a>
-
 ## 5. Prediction
 
 Set parameters and use PaddleDetection to predict：
@@ -159,13 +138,9 @@ python tools/infer.py -c configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml --infer
 
 `--draw_threshold` is an optional parameter. According to the calculation of [NMS](https://ieeexplore.ieee.org/document/1699659), different threshold will produce different results, ` keep_top_k ` represent  the maximum amount of output target, the default value is 10. You can set different value according to your own actual situation。
 
-<a name="Deployment"></a>
-
 ## 6. Deployment
 
 Use your trained model in Layout Parser
-
-<a name="Export_model"></a>
 
 ### 6.1 Export model
 
@@ -183,8 +158,6 @@ The prediction model is exported to `inference/ppyolov2_r50vd_dcn_365e_coco` ,in
 
 More model export tutorials, please refer to：[EXPORT_MODEL](https://github.com/PaddlePaddle/PaddleDetection/blob/release/2.1/deploy/EXPORT_MODEL.md)
 
-<a name="Inference"></a>
-
 ### 6.2 Inference
 
 `model_path` represent  the trained model path, and layoutparser is used to predict:
@@ -193,8 +166,6 @@ More model export tutorials, please refer to：[EXPORT_MODEL](https://github.com
 import layoutparser as lp
 model = lp.PaddleDetectionLayoutModel(model_path="inference/ppyolov2_r50vd_dcn_365e_coco", threshold=0.5,label_map={0: "Text", 1: "Title", 2: "List", 3:"Table", 4:"Figure"},enforce_cpu=True,enable_mkldnn=True)
 ```
-
-
 
 ***
 
