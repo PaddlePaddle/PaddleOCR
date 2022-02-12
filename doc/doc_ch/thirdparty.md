@@ -24,6 +24,7 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 | 通用工具 | [ocr_sdk](https://github.com/mymagicpower/AIAS/blob/main/1_image_sdks/text_recognition/ocr_sdk)                 | OCR java SDK工具箱              | [Calvin](https://github.com/mymagicpower)                          |
 | 通用工具 | [iocr](https://github.com/mymagicpower/AIAS/blob/main/8_suite_hub/iocr)                 | IOCR 自定义模板识别(支持表格识别)              | [Calvin](https://github.com/mymagicpower)                          |
 | 通用工具 | [Lmdb Dataset Format Conversion Tool](https://github.com/OneYearIsEnough/PaddleOCR-Recog-LmdbDataset-Conversion) | 文本识别任务中lmdb数据格式转换工具 | [OneYearIsEnough](https://github.com/OneYearIsEnough) |
+| 通用工具 | [用paddleocr打造一款“盗幕笔记”](https://github.com/kjf4096/paddleocr_dmbj) | 用PaddleOCR记笔记 | [kjf4096](https://github.com/kjf4096) |
 | 垂类工具 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/1054614?channelType=0&channel=0) | 英文视频自动生成字幕       | [叶月水狐](https://aistudio.baidu.com/aistudio/personalcenter/thirdview/322052) |
 | 垂类工具 | [id_card_ocr](https://github.com/baseli/id_card_ocr)         | 身份证复印件识别           | [baseli](https://github.com/baseli)                          |
 | 垂类工具 | [Paddle_Table_Image_Reader](https://github.com/thunder95/Paddle_Table_Image_Reader) | 能看懂表格图片的数据助手   | [thunder95](https://github.com/thunder95])                   |
