@@ -3,25 +3,25 @@ Global:
   epoch_num: &epoch_num 200
   log_smooth_window: 10
   print_batch_step: 10
-  save_model_dir: ./output/re_layoutxlm/
+  save_model_dir: ./output/re_layoutlmv2/
   save_epoch_step: 2000
   # evaluation is run every 10 iterations after the 0th iteration
   eval_batch_step: [ 0, 19 ]
   cal_metric_during_train: False
   save_inference_dir:
   use_visualdl: False
-  seed: 2022
+  seed: 2048
   infer_img: doc/vqa/input/zh_val_21.jpg
   save_res_path: ./output/re/
 
 Architecture:
   model_type: vqa
-  algorithm: &algorithm "LayoutXLM"
+  algorithm: &algorithm "LayoutLMv2"
   Transform:
   Backbone:
-    name: LayoutXLMForRe
+    name: LayoutLMv2ForRe
     pretrained: True
-    checkpoints:
+    checkpoints: 
 
 Loss:
   name: LossFromOutput
@@ -73,9 +73,9 @@ Train:
       - Resize:
           size: [224,224]
       - NormalizeImage:
-          scale: 1
-          mean: [ 123.675, 116.28, 103.53 ]
-          std: [ 58.395, 57.12, 57.375 ]
+          scale: 1./255.
+          mean: [0.485, 0.456, 0.406]
+          std: [0.229, 0.224, 0.225]
           order: 'hwc'
       - ToCHWImage:
       - KeepKeys:
@@ -110,9 +110,9 @@ Eval:
       - Resize:
           size: [224,224]
       - NormalizeImage:
-          scale: 1
-          mean: [ 123.675, 116.28, 103.53 ]
-          std: [ 58.395, 57.12, 57.375 ]
+          scale: 1./255.
+          mean: [0.485, 0.456, 0.406]
+          std: [0.229, 0.224, 0.225]
           order: 'hwc'
       - ToCHWImage:
       - KeepKeys:

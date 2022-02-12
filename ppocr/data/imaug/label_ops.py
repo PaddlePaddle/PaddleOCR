@@ -799,7 +799,7 @@ class VQATokenLabelEncode(object):
                  ocr_engine=None,
                  **kwargs):
         super(VQATokenLabelEncode, self).__init__()
-        from paddlenlp.transformers import LayoutXLMTokenizer, LayoutLMTokenizer
+        from paddlenlp.transformers import LayoutXLMTokenizer, LayoutLMTokenizer, LayoutLMv2Tokenizer
         from ppocr.utils.utility import load_vqa_bio_label_maps
         tokenizer_dict = {
             'LayoutXLM': {
@@ -809,6 +809,10 @@ class VQATokenLabelEncode(object):
             'LayoutLM': {
                 'class': LayoutLMTokenizer,
                 'pretrained_model': 'layoutlm-base-uncased'
+            },
+            'LayoutLMv2': {
+                'class': LayoutLMv2Tokenizer,
+                'pretrained_model': 'layoutlmv2-base-uncased'
             }
         }
         self.contains_re = contains_re
