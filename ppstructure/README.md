@@ -13,6 +13,9 @@ English | [简体中文](README_ch.md)
     - [6.1.2 Table recognition](#612-table-recognition)
   - [6.2 DOC-VQA](#62-doc-vqa)
 - [7. Model List](#7-model-list)
+  - [7.1 Layout analysis model](#71-layout-analysis-model)
+  - [7.2 OCR and table recognition model](#72-ocr-and-table-recognition-model)
+  - [7.3 DOC-VQA model](#73-doc-vqa-model)
 
 <a name="1"></a>
 
@@ -23,6 +26,7 @@ PP-Structure is an OCR toolkit that can be used for document analysis and proces
 <a name="2"></a>
 
 ## 2. Update log
+* 2022.02.12 DOC-VQA add LayoutLMv2 model。
 * 2021.12.07 add [DOC-VQA SER and RE tasks](vqa/README.md)。
 
 <a name="3"></a>
@@ -115,28 +119,34 @@ Document Visual Question Answering (DOC-VQA) if a type of Visual Question Answer
 
 ## 7. Model List
 
-PP-Structure系列模型列表（更新中）
+PP-Structure Series Model List (Updating)
 
-* Layout analysis model
+
+<a name="71"></a>
+
+### 7.1 Layout analysis model
 
 |model name|description|download|
 | --- | --- | --- |
 | ppyolov2_r50vd_dcn_365e_publaynet | The layout analysis model trained on the PubLayNet dataset can divide image into 5 types of areas **text, title, table, picture, and list** | [PubLayNet](https://paddle-model-ecology.bj.bcebos.com/model/layout-parser/ppyolov2_r50vd_dcn_365e_publaynet.tar) |
 
+<a name="72"></a>
 
-* OCR and table recognition model
-
-|model name|description|model size|download|
-| --- | --- | --- | --- |
-|ch_ppocr_mobile_slim_v2.0_det|Slim pruned lightweight model, supporting Chinese, English, multilingual text detection|2.6M|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_prune_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_prune_infer.tar) |
-|ch_ppocr_mobile_slim_v2.0_rec|Slim pruned and quantized lightweight model, supporting Chinese, English and number recognition|6M|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_train.tar) |
-|en_ppocr_mobile_v2.0_table_structure|Table structure prediction of English table scene trained on PubLayNet dataset|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/table/en_ppocr_mobile_v2.0_table_structure_train.tar) |
-
-* DOC-VQA model
+### 7.2 OCR and table recognition model
 
 |model name|description|model size|download|
 | --- | --- | --- | --- |
-|PP-Layout_v1.0_ser_pretrained|SER model trained on xfun Chinese dataset based on LayoutXLM|1.4G|[inference model coming soon]() / [trained model](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_ser_pretrained.tar) |
-|PP-Layout_v1.0_re_pretrained|RE model trained on xfun Chinese dataset based on LayoutXLM|1.4G|[inference model coming soon]() / [trained model](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_re_pretrained.tar) |
+|ch_PP-OCRv2_det_slim|Slim quantization with distillation lightweight model, supporting Chinese, English, multilingual text detection| 3M |[inference model](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_slim_quant_infer.tar)|
+|ch_PP-OCRv2_rec_slim|Slim qunatization with distillation lightweight model, supporting Chinese, English, multilingual text recognition| 9M |[inference model](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_quant_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_quant_train.tar) |
+|en_ppocr_mobile_v2.0_table_structure|Table structure prediction of English table scene trained on PubLayNet dataset| 18.6M |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/table/en_ppocr_mobile_v2.0_table_structure_train.tar) |
+
+<a name="73"></a>
+
+### 7.3 DOC-VQA model
+
+|model name|description|model size|download|
+| --- | --- | --- | --- |
+|ser_LayoutXLM_xfun_zhd|SER model trained on xfun Chinese dataset based on LayoutXLM|1.4G|[inference model coming soon]() / [trained model](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar) |
+|re_LayoutXLM_xfun_zh|RE model trained on xfun Chinese dataset based on LayoutXLM|1.4G|[inference model coming soon]() / [trained model](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh) |
 
 If you need to use other models, you can download the model in [PPOCR model_list](../doc/doc_en/models_list_en.md) and  [PPStructure model_list](./docs/model_list.md)

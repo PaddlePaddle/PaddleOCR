@@ -13,6 +13,9 @@
     - [6.1.2 表格识别](#612-表格识别)
   - [6.2 DOC-VQA](#62-doc-vqa)
 - [7. 模型库](#7-模型库)
+  - [7.1 版面分析模型](#71-版面分析模型)
+  - [7.2 OCR和表格识别模型](#72-ocr和表格识别模型)
+  - [7.2 DOC-VQA 模型](#72-doc-vqa-模型)
 
 <a name="1"></a>
 
@@ -22,7 +25,8 @@ PP-Structure是一个可用于复杂文档结构分析和处理的OCR工具包�
 <a name="2"></a>
 
 ## 2. 近期更新
-* 2021.12.07 新增DOC-[VQA任务SER和RE](vqa/README.md)。
+* 2022.02.12 DOC-VQA增加LayoutLMv2模型。
+* 2021.12.07 新增[DOC-VQA任务SER和RE](vqa/README.md)。
 
 <a name="3"></a>
 
@@ -113,27 +117,30 @@ DOC-VQA指文档视觉问答，其中包括语义实体识别 (Semantic Entity R
 
 PP-Structure系列模型列表（更新中）
 
-* 版面分析模型
+<a name="71"></a>
+
+### 7.1 版面分析模型
 
 |模型名称|模型简介|下载地址|
 | --- | --- | --- |
 | ppyolov2_r50vd_dcn_365e_publaynet | PubLayNet 数据集训练的版面分析模型，可以划分**文字、标题、表格、图片以及列表**5类区域 | [PubLayNet](https://paddle-model-ecology.bj.bcebos.com/model/layout-parser/ppyolov2_r50vd_dcn_365e_publaynet.tar) |
 
+<a name="72"></a>
 
-* OCR和表格识别模型
+### 7.2 OCR和表格识别模型
 
 |模型名称|模型简介|模型大小|下载地址|
 | --- | --- | --- | --- |
-|ch_ppocr_mobile_slim_v2.0_det|slim裁剪版超轻量模型，支持中英文、多语种文本检测|2.6M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_prune_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_det_prune_infer.tar) |
-|ch_ppocr_mobile_slim_v2.0_rec|slim裁剪量化版超轻量模型，支持中英文、数字识别|6M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_train.tar) |
+|ch_PP-OCRv2_det_slim|【最新】slim量化+蒸馏版超轻量模型，支持中英文、多语种文本检测| 3M |[推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_slim_quant_infer.tar)|
+|ch_PP-OCRv2_rec_slim|【最新】slim量化版超轻量模型，支持中英文、数字识别| 9M |[推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_quant_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_quant_train.tar) |
 |en_ppocr_mobile_v2.0_table_structure|PubLayNet数据集训练的英文表格场景的表格结构预测|18.6M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/table/en_ppocr_mobile_v2.0_table_structure_train.tar) |
 
-* DOC-VQA 模型
+### 7.2 DOC-VQA 模型
 
 |模型名称|模型简介|模型大小|下载地址|
 | --- | --- | --- | --- |
-|PP-Layout_v1.0_ser_pretrained|基于LayoutXLM在xfun中文数据集上训练的SER模型|1.4G|[推理模型 coming soon]() / [训练模型](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_ser_pretrained.tar) |
-|PP-Layout_v1.0_re_pretrained|基于LayoutXLM在xfun中文数据集上训练的RE模型|1.4G|[推理模型 coming soon]() / [训练模型](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_re_pretrained.tar) |
+|ser_LayoutXLM_xfun_zhd|基于LayoutXLM在xfun中文数据集上训练的SER模型|1.4G|[推理模型 coming soon]() / [训练模型](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar) |
+|re_LayoutXLM_xfun_zh|基于LayoutXLM在xfun中文数据集上训练的RE模型|1.4G|[推理模型 coming soon]() / [训练模型](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh) |
 
 
-更多模型下载，可以参考 [PPOCR model_list](../doc/doc_en/models_list.md) and  [PPStructure model_list](./docs/model_list.md)
+更多模型下载，可以参考 [PP-OCR model_list](../doc/doc_en/models_list.md) and  [PP-Structure model_list](./docs/models_list.md)

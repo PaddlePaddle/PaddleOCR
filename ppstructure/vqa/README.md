@@ -1,4 +1,24 @@
+- [文档视觉问答（DOC-VQA）](#文档视觉问答doc-vqa)
+  - [1. 简介](#1-简介)
+  - [2. 性能](#2-性能)
+  - [3. 效果演示](#3-效果演示)
+    - [3.1 SER](#31-ser)
+    - [3.2 RE](#32-re)
+  - [4. 安装](#4-安装)
+    - [4.1 安装依赖](#41-安装依赖)
+    - [4.2 安装PaddleOCR（包含 PP-OCR 和 VQA）](#42-安装paddleocr包含-pp-ocr-和-vqa)
+  - [5. 使用](#5-使用)
+    - [5.1 数据和预训练模型准备](#51-数据和预训练模型准备)
+    - [5.2 SER](#52-ser)
+    - [5.3 RE](#53-re)
+  - [6. 参考链接](#6-参考链接)
+
+
 # 文档视觉问答（DOC-VQA）
+
+<a name="1"></a>
+
+## 1. 简介
 
 VQA指视觉问答，主要针对图像内容进行提问和回答,DOC-VQA是VQA任务中的一种，DOC-VQA主要针对文本图像的文字内容提出问题。
 
@@ -16,25 +36,29 @@ PP-Structure 里的 DOC-VQA算法基于PaddleNLP自然语言处理算法库进�
 本项目是 [LayoutXLM: Multimodal Pre-training for Multilingual Visually-rich Document Understanding](https://arxiv.org/pdf/2104.08836.pdf) 在 Paddle 2.2上的开源实现，
 包含了在 [XFUND数据集](https://github.com/doc-analysis/XFUND) 上的微调代码。
 
-## 1 性能
+<a name="2"></a>
+
+## 2. 性能
 
 我们在 [XFUN](https://github.com/doc-analysis/XFUND) 的中文数据集上对算法进行了评估，性能如下
 
 | 模型 | 任务 | hmean | 模型下载地址 |
 |:---:|:---:|:---:| :---:|
-| LayoutXLM | RE | 0.7483 | [链接](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh.tar) |
 | LayoutXLM | SER | 0.9038 | [链接](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar) |
+| LayoutXLM | RE | 0.7483 | [链接](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh.tar) |
+| LayoutLMv2 | SER | 0.8544 | [链接](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutLMv2_xfun_zh.tar)
 | LayoutLMv2 | RE | 0.6777 | [链接](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutLMv2_xfun_zh.tar) |
-| LayoutLMv2 | SER | 0.8544 | [链接](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutLMv2_xfun_zh.tar) |
 | LayoutLM | SER | 0.7731 | [链接](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutLM_xfun_zh.tar) |
 
+<a name="3"></a>
 
-
-## 2. 效果演示
+## 3. 效果演示
 
 **注意：** 测试图片来源于XFUN数据集。
 
-### 2.1 SER
+<a name="31"></a>
+
+### 3.1 SER
 
 ![](../../doc/vqa/result_ser/zh_val_0_ser.jpg) | ![](../../doc/vqa/result_ser/zh_val_42_ser.jpg)
 ---|---
@@ -47,8 +71,9 @@ PP-Structure 里的 DOC-VQA算法基于PaddleNLP自然语言处理算法库进�
 
 在OCR检测框的左上方也标出了对应的类别和OCR识别结果。
 
+<a name="32"></a>
 
-### 2.2 RE
+### 3.2 RE
 
 ![](../../doc/vqa/result_re/zh_val_21_re.jpg) | ![](../../doc/vqa/result_re/zh_val_40_re.jpg)
 ---|---
@@ -56,10 +81,13 @@ PP-Structure 里的 DOC-VQA算法基于PaddleNLP自然语言处理算法库进�
 
 图中红色框表示问题，蓝色框表示答案，问题和答案之间使用绿色线连接。在OCR检测框的左上方也标出了对应的类别和OCR识别结果。
 
+<a name="4"></a>
 
-## 3. 安装
+## 4. 安装
 
-### 3.1 安装依赖
+<a name="41"></a>
+
+### 4.1 安装依赖
 
 - **（1) 安装PaddlePaddle**
 
@@ -75,8 +103,9 @@ python3 -m pip install "paddlepaddle>=2.2" -i https://mirror.baidu.com/pypi/simp
 ```
 更多需求，请参照[安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
 
+<a name="42"></a>
 
-### 3.2 安装PaddleOCR（包含 PP-OCR 和 VQA ）
+### 4.2 安装PaddleOCR（包含 PP-OCR 和 VQA）
 
 - **（1）pip快速安装PaddleOCR whl包（仅预测）**
 
@@ -100,11 +129,13 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 ```bash
 python3 -m pip install -r ppstructure/vqa/requirements.txt
 ```
+<a name="5"></a>
 
-## 4. 使用
+## 5. 使用
 
+<a name="51"></a>
 
-### 4.1 数据和预训练模型准备
+### 5.1 数据和预训练模型准备
 
 如果希望直接体验预测过程，可以下载我们提供的预训练模型，跳过训练过程，直接预测即可。
 
@@ -127,7 +158,9 @@ wget https://paddleocr.bj.bcebos.com/dataset/XFUND.tar
 python3 ppstructure/vqa/helper/trans_xfun_data.py --ori_gt_path=path/to/json_path --output_path=path/to/save_path
 ```
 
-### 4.2 SER任务
+<a name="52"></a>
+
+### 5.2 SER
 
 启动训练之前，需要修改下面的四个字段
 
@@ -180,8 +213,9 @@ export CUDA_VISIBLE_DEVICES=0
 python3 helper/eval_with_label_end2end.py --gt_json_path XFUND/zh_val/xfun_normalize_val.json  --pred_json_path output_res/infer_results.txt
 ```
 
+<a name="53"></a>
 
-### 3.3 RE任务
+### 5.3 RE
 
 * 启动训练
 
@@ -226,8 +260,9 @@ python3 tools/infer_vqa_token_ser_re.py -c configs/vqa/re/layoutxlm.yml -o Archi
 
 最终会在`config.Global.save_res_path`字段所配置的目录下保存预测结果可视化图像以及预测结果文本文件，预测结果文本文件名为`infer_results.txt`。
 
+<a name="6"></a>
 
-## 参考链接
+## 6. 参考链接
 
 - LayoutXLM: Multimodal Pre-training for Multilingual Visually-rich Document Understanding, https://arxiv.org/pdf/2104.08836.pdf
 - microsoft/unilm/layoutxlm, https://github.com/microsoft/unilm/tree/master/layoutxlm
