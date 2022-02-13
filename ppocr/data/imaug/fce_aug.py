@@ -1,63 +1,26 @@
+# copyright (c) 2022 PaddlePaddle Authors. All Rights Reserve.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+"""
+This code is refer from:
+https://github.com/open-mmlab/mmocr/blob/main/mmocr/datasets/pipelines/transforms.py
+"""
 import numpy as np
 from PIL import Image, ImageDraw
-import paddle.vision.transforms as paddle_trans
 import cv2
 import Polygon as plg
 import math
-
-
-def imresize(img,
-             size,
-             return_scale=False,
-             interpolation='bilinear',
-             out=None,
-             backend=None):
-    """Resize image to a given size.
-
-    Args:
-        img (ndarray): The input image.
-        size (tuple[int]): Target size (w, h).
-        return_scale (bool): Whether to return `w_scale` and `h_scale`.
-        interpolation (str): Interpolation method, accepted values are
-            "nearest", "bilinear", "bicubic", "area", "lanczos" for 'cv2'
-            backend, "nearest", "bilinear" for 'pillow' backend.
-        out (ndarray): The output destination.
-        backend (str | None): The image resize backend type. Options are `cv2`,
-            `pillow`, `None`. If backend is None, the global imread_backend
-            specified by ``mmcv.use_backend()`` will be used. Default: None.
-
-    Returns:
-        tuple | ndarray: (`resized_img`, `w_scale`, `h_scale`) or
-            `resized_img`.
-    """
-    cv2_interp_codes = {
-        'nearest': cv2.INTER_NEAREST,
-        'bilinear': cv2.INTER_LINEAR,
-        'bicubic': cv2.INTER_CUBIC,
-        'area': cv2.INTER_AREA,
-        'lanczos': cv2.INTER_LANCZOS4
-    }
-    h, w = img.shape[:2]
-    if backend is None:
-        backend = 'cv2'
-    if backend not in ['cv2', 'pillow']:
-        raise ValueError(f'backend: {backend} is not supported for resize.'
-                         f"Supported backends are 'cv2', 'pillow'")
-
-    if backend == 'pillow':
-        assert img.dtype == np.uint8, 'Pillow backend only support uint8 type'
-        pil_image = Image.fromarray(img)
-        pil_image = pil_image.resize(size, pillow_interp_codes[interpolation])
-        resized_img = np.array(pil_image)
-    else:
-        resized_img = cv2.resize(
-            img, size, dst=out, interpolation=cv2_interp_codes[interpolation])
-    if not return_scale:
-        return resized_img
-    else:
-        w_scale = size[0] / w
-        h_scale = size[1] / h
-        return resized_img, w_scale, h_scale
+from ppocr.utils.poly_nms import poly_intersection
 
 
 class RandomScaling:
@@ -83,43 +46,14 @@ class RandomScaling:
         scales = self.size * 1.0 / max(h, w) * aspect_ratio
         scales = np.array([scales, scales])
         out_size = (int(h * scales[1]), int(w * scales[0]))
-        image = imresize(image, out_size[::-1])
+        image = cv2.resize(image, out_size[::-1])
 
         data['image'] = image
         text_polys[:, :, 0::2] = text_polys[:, :, 0::2] * scales[1]
         text_polys[:, :, 1::2] = text_polys[:, :, 1::2] * scales[0]
         data['polys'] = text_polys
 
-        # import os
-        # base_name = os.path.split(data['img_path'])[-1]
-        # img = image[..., ::-1]
-        # img = Image.fromarray(img)
-        # draw = ImageDraw.Draw(img)
-        # for box in text_polys:
-        #     draw.polygon(box, outline=(0, 255, 255,), )
-        # import time
-        # img.save('tmp/{}.jpg'.format(base_name[:-4]))
-
         return data
-
-
-def poly_intersection(poly_det, poly_gt):
-    """Calculate the intersection area between two polygon.
-
-    Args:
-        poly_det (Polygon): A polygon predicted by detector.
-        poly_gt (Polygon): A gt polygon.
-
-    Returns:
-        intersection_area (float): The intersection area between two polygons.
-    """
-    assert isinstance(poly_det, plg.Polygon)
-    assert isinstance(poly_gt, plg.Polygon)
-
-    poly_inter = poly_det & poly_gt
-    if len(poly_inter) == 0:
-        return 0, poly_inter
-    return poly_inter.area(), poly_inter
 
 
 class RandomCropFlip:
@@ -352,12 +286,7 @@ class RandomCropPolyInstances:
         max_y_start = max(np.min(selected_mask[:, 1]) - 2, 0)
         min_y_end = min(np.max(selected_mask[:, 1]) + 3, h - 1)
 
-        # for key in results.get('mask_fields', []):
-        #     if len(results[key].masks) == 0:
-        #         continue
-        #     masks = results[key].masks
         for mask in key_masks:
-            # assert len(mask) == 1
             mask = mask.reshape((-1, 2)).astype(np.int32)
             clip_x = np.clip(mask[:, 0], 0, w - 1)
             clip_y = np.clip(mask[:, 1], 0, h - 1)
@@ -501,7 +430,8 @@ class RandomRotatePolyInstances:
             (h_ind, w_ind) = (np.random.randint(0, h * 7 // 8),
                               np.random.randint(0, w * 7 // 8))
             img_cut = img[h_ind:(h_ind + h // 9), w_ind:(w_ind + w // 9)]
-            img_cut = imresize(img_cut, (canvas_size[1], canvas_size[0]))
+            img_cut = cv2.resize(img_cut, (canvas_size[1], canvas_size[0]))
+
             mask = cv2.warpAffine(
                 mask,
                 rotation_matrix, (canvas_size[1], canvas_size[0]),
@@ -574,7 +504,7 @@ class SquareResizePad:
             t_w = self.target_size if h <= w else int(w * self.target_size / h)
         else:
             t_h = t_w = self.target_size
-        img = imresize(img, (t_w, t_h))
+        img = cv2.resize(img, (t_w, t_h))
         return img, (t_h, t_w)
 
     def square_pad(self, img):
@@ -589,7 +519,7 @@ class SquareResizePad:
             (h_ind, w_ind) = (np.random.randint(0, h * 7 // 8),
                               np.random.randint(0, w * 7 // 8))
             img_cut = img[h_ind:(h_ind + h // 9), w_ind:(w_ind + w // 9)]
-            expand_img = imresize(img_cut, (pad_size, pad_size))
+            expand_img = cv2.resize(img_cut, (pad_size, pad_size))
         if h > w:
             y0, x0 = 0, (h - w) // 2
         else:
@@ -617,13 +547,14 @@ class SquareResizePad:
         else:
             image, out_size = self.resize_img(image, keep_ratio=False)
             offset = (0, 0)
-        # image, out_size = self.resize_img(image, keep_ratio=True)
-        # image, offset = self.square_pad(image)
         results['image'] = image
-        polygons[:, :, 0::2] = polygons[:, :, 0::2] * out_size[1] / w + offset[
-            0]
-        polygons[:, :, 1::2] = polygons[:, :, 1::2] * out_size[0] / h + offset[
-            1]
+        try:
+            polygons[:, :, 0::2] = polygons[:, :, 0::2] * out_size[
+                1] / w + offset[0]
+            polygons[:, :, 1::2] = polygons[:, :, 1::2] * out_size[
+                0] / h + offset[1]
+        except:
+            pass
         results['polys'] = polygons
 
         return results

@@ -1,143 +1,26 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+# copyright (c) 2022 PaddlePaddle Authors. All Rights Reserve.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+"""
+This code is refer from:
+https://github.com/open-mmlab/mmocr/blob/v0.3.0/mmocr/models/textdet/postprocess/wrapper.py
+"""
 
-import numpy as np
 import cv2
 import paddle
+import numpy as np
 from numpy.fft import ifft
-import Polygon as plg
-
-
-def points2polygon(points):
-    """Convert k points to 1 polygon.
-
-    Args:
-        points (ndarray or list): A ndarray or a list of shape (2k)
-            that indicates k points.
-
-    Returns:
-        polygon (Polygon): A polygon object.
-    """
-    if isinstance(points, list):
-        points = np.array(points)
-
-    assert isinstance(points, np.ndarray)
-    assert (points.size % 2 == 0) and (points.size >= 8)
-
-    point_mat = points.reshape([-1, 2])
-    return plg.Polygon(point_mat)
-
-
-def poly_intersection(poly_det, poly_gt):
-    """Calculate the intersection area between two polygon.
-
-    Args:
-        poly_det (Polygon): A polygon predicted by detector.
-        poly_gt (Polygon): A gt polygon.
-
-    Returns:
-        intersection_area (float): The intersection area between two polygons.
-    """
-    assert isinstance(poly_det, plg.Polygon)
-    assert isinstance(poly_gt, plg.Polygon)
-
-    poly_inter = poly_det & poly_gt
-    if len(poly_inter) == 0:
-        return 0, poly_inter
-    return poly_inter.area(), poly_inter
-
-
-def poly_union(poly_det, poly_gt):
-    """Calculate the union area between two polygon.
-
-    Args:
-        poly_det (Polygon): A polygon predicted by detector.
-        poly_gt (Polygon): A gt polygon.
-
-    Returns:
-        union_area (float): The union area between two polygons.
-    """
-    assert isinstance(poly_det, plg.Polygon)
-    assert isinstance(poly_gt, plg.Polygon)
-
-    area_det = poly_det.area()
-    area_gt = poly_gt.area()
-    area_inters, _ = poly_intersection(poly_det, poly_gt)
-    return area_det + area_gt - area_inters
-
-
-def valid_boundary(x, with_score=True):
-    num = len(x)
-    if num < 8:
-        return False
-    if num % 2 == 0 and (not with_score):
-        return True
-    if num % 2 == 1 and with_score:
-        return True
-
-    return False
-
-
-def boundary_iou(src, target):
-    """Calculate the IOU between two boundaries.
-
-    Args:
-       src (list): Source boundary.
-       target (list): Target boundary.
-
-    Returns:
-       iou (float): The iou between two boundaries.
-    """
-    assert valid_boundary(src, False)
-    assert valid_boundary(target, False)
-    src_poly = points2polygon(src)
-    target_poly = points2polygon(target)
-
-    return poly_iou(src_poly, target_poly)
-
-
-def poly_iou(poly_det, poly_gt):
-    """Calculate the IOU between two polygons.
-
-    Args:
-        poly_det (Polygon): A polygon predicted by detector.
-        poly_gt (Polygon): A gt polygon.
-
-    Returns:
-        iou (float): The IOU between two polygons.
-    """
-    assert isinstance(poly_det, plg.Polygon)
-    assert isinstance(poly_gt, plg.Polygon)
-    area_inters, _ = poly_intersection(poly_det, poly_gt)
-    area_union = poly_union(poly_det, poly_gt)
-    if area_union == 0:
-        return 0.0
-    return area_inters / area_union
-
-
-def poly_nms(polygons, threshold):
-    assert isinstance(polygons, list)
-
-    polygons = np.array(sorted(polygons, key=lambda x: x[-1]))
-
-    keep_poly = []
-    index = [i for i in range(polygons.shape[0])]
-
-    while len(index) > 0:
-        keep_poly.append(polygons[index[-1]].tolist())
-        A = polygons[index[-1]][:-1]
-        index = np.delete(index, -1)
-
-        iou_list = np.zeros((len(index), ))
-        for i in range(len(index)):
-            B = polygons[index[i]][:-1]
-
-            iou_list[i] = boundary_iou(A, B)
-        remove_index = np.where(iou_list > threshold)
-        index = np.delete(index, remove_index)
-
-    return keep_poly
+from ppocr.utils.poly_nms import poly_nms, valid_boundary
 
 
 def fill_hole(input_mask):
@@ -175,96 +58,6 @@ def fourier2poly(fourier_coeff, num_reconstr_points=50):
     polygon[:, :, 0] = poly_complex.real
     polygon[:, :, 1] = poly_complex.imag
     return polygon.astype('int32').reshape((len(fourier_coeff), -1))
-
-
-def fcenet_decode(preds,
-                  fourier_degree,
-                  num_reconstr_points,
-                  scale,
-                  alpha=1.0,
-                  beta=2.0,
-                  text_repr_type='poly',
-                  score_thr=0.3,
-                  nms_thr=0.1):
-    """Decoding predictions of FCENet to instances.
-
-    Args:
-        preds (list(Tensor)): The head output tensors.
-        fourier_degree (int): The maximum Fourier transform degree k.
-        num_reconstr_points (int): The points number of the polygon
-            reconstructed from predicted Fourier coefficients.
-        scale (int): The down-sample scale of the prediction.
-        alpha (float) : The parameter to calculate final scores. Score_{final}
-                = (Score_{text region} ^ alpha)
-                * (Score_{text center region}^ beta)
-        beta (float) : The parameter to calculate final score.
-        text_repr_type (str):  Boundary encoding type 'poly' or 'quad'.
-        score_thr (float) : The threshold used to filter out the final
-            candidates.
-        nms_thr (float) :  The threshold of nms.
-
-    Returns:
-        boundaries (list[list[float]]): The instance boundary and confidence
-            list.
-    """
-    assert isinstance(preds, list)
-    assert len(preds) == 2
-    assert text_repr_type in ['poly', 'quad']
-
-    # import pdb;pdb.set_trace()
-    cls_pred = preds[0][0]
-    # tr_pred = F.softmax(cls_pred[0:2], axis=0).cpu().numpy()
-    # tcl_pred = F.softmax(cls_pred[2:], axis=0).cpu().numpy()
-
-    tr_pred = cls_pred[0:2]
-    tcl_pred = cls_pred[2:]
-
-    reg_pred = preds[1][0].transpose([1, 2, 0])  #.cpu().numpy()
-    x_pred = reg_pred[:, :, :2 * fourier_degree + 1]
-    y_pred = reg_pred[:, :, 2 * fourier_degree + 1:]
-
-    score_pred = (tr_pred[1]**alpha) * (tcl_pred[1]**beta)
-    tr_pred_mask = (score_pred) > score_thr
-    tr_mask = fill_hole(tr_pred_mask)
-
-    tr_contours, _ = cv2.findContours(
-        tr_mask.astype(np.uint8), cv2.RETR_TREE,
-        cv2.CHAIN_APPROX_SIMPLE)  # opencv4
-
-    mask = np.zeros_like(tr_mask)
-    boundaries = []
-    for cont in tr_contours:
-        deal_map = mask.copy().astype(np.int8)
-        cv2.drawContours(deal_map, [cont], -1, 1, -1)
-
-        score_map = score_pred * deal_map
-        score_mask = score_map > 0
-        xy_text = np.argwhere(score_mask)
-        dxy = xy_text[:, 1] + xy_text[:, 0] * 1j
-
-        x, y = x_pred[score_mask], y_pred[score_mask]
-        c = x + y * 1j
-        c[:, fourier_degree] = c[:, fourier_degree] + dxy
-        c *= scale
-
-        polygons = fourier2poly(c, num_reconstr_points)
-        score = score_map[score_mask].reshape(-1, 1)
-        polygons = poly_nms(np.hstack((polygons, score)).tolist(), nms_thr)
-
-        boundaries = boundaries + polygons
-
-    boundaries = poly_nms(boundaries, nms_thr)
-
-    if text_repr_type == 'quad':
-        new_boundaries = []
-        for boundary in boundaries:
-            poly = np.array(boundary[:-1]).reshape(-1, 2).astype(np.float32)
-            score = boundary[-1]
-            points = cv2.boxPoints(cv2.minAreaRect(poly))
-            points = np.int0(points)
-            new_boundaries.append(points.reshape(-1).tolist() + [score])
-
-    return boundaries
 
 
 class FCEPostProcess(object):
@@ -316,10 +109,6 @@ class FCEPostProcess(object):
         Returns:
             boundaries (list[list[float]]): The scaled boundaries.
         """
-        # assert check_argument.is_2dlist(boundaries)
-        # assert isinstance(scale_factor, np.ndarray)
-        # assert scale_factor.shape[0] == 4
-
         boxes = []
         scores = []
         for b in boundaries:
@@ -335,7 +124,6 @@ class FCEPostProcess(object):
 
     def get_boundary(self, score_maps, shape_list):
         assert len(score_maps) == len(self.scales)
-        # import pdb;pdb.set_trace()
         boundaries = []
         for idx, score_map in enumerate(score_maps):
             scale = self.scales[idx]
@@ -344,8 +132,6 @@ class FCEPostProcess(object):
 
         # nms
         boundaries = poly_nms(boundaries, self.nms_thr)
-        # if rescale:
-        # import pdb;pdb.set_trace()
         boundaries, scores = self.resize_boundary(
             boundaries, (1 / shape_list[0, 2:]).tolist()[::-1])
 
@@ -356,7 +142,7 @@ class FCEPostProcess(object):
         assert len(score_map) == 2
         assert score_map[1].shape[1] == 4 * self.fourier_degree + 2
 
-        return fcenet_decode(
+        return self.fcenet_decode(
             preds=score_map,
             fourier_degree=self.fourier_degree,
             num_reconstr_points=self.num_reconstr_points,
@@ -366,3 +152,89 @@ class FCEPostProcess(object):
             text_repr_type=self.text_repr_type,
             score_thr=self.score_thr,
             nms_thr=self.nms_thr)
+
+    def fcenet_decode(self,
+                      preds,
+                      fourier_degree,
+                      num_reconstr_points,
+                      scale,
+                      alpha=1.0,
+                      beta=2.0,
+                      text_repr_type='poly',
+                      score_thr=0.3,
+                      nms_thr=0.1):
+        """Decoding predictions of FCENet to instances.
+
+        Args:
+            preds (list(Tensor)): The head output tensors.
+            fourier_degree (int): The maximum Fourier transform degree k.
+            num_reconstr_points (int): The points number of the polygon
+                reconstructed from predicted Fourier coefficients.
+            scale (int): The down-sample scale of the prediction.
+            alpha (float) : The parameter to calculate final scores. Score_{final}
+                    = (Score_{text region} ^ alpha)
+                    * (Score_{text center region}^ beta)
+            beta (float) : The parameter to calculate final score.
+            text_repr_type (str):  Boundary encoding type 'poly' or 'quad'.
+            score_thr (float) : The threshold used to filter out the final
+                candidates.
+            nms_thr (float) :  The threshold of nms.
+
+        Returns:
+            boundaries (list[list[float]]): The instance boundary and confidence
+                list.
+        """
+        assert isinstance(preds, list)
+        assert len(preds) == 2
+        assert text_repr_type in ['poly', 'quad']
+
+        cls_pred = preds[0][0]
+        tr_pred = cls_pred[0:2]
+        tcl_pred = cls_pred[2:]
+
+        reg_pred = preds[1][0].transpose([1, 2, 0])
+        x_pred = reg_pred[:, :, :2 * fourier_degree + 1]
+        y_pred = reg_pred[:, :, 2 * fourier_degree + 1:]
+
+        score_pred = (tr_pred[1]**alpha) * (tcl_pred[1]**beta)
+        tr_pred_mask = (score_pred) > score_thr
+        tr_mask = fill_hole(tr_pred_mask)
+
+        tr_contours, _ = cv2.findContours(
+            tr_mask.astype(np.uint8), cv2.RETR_TREE,
+            cv2.CHAIN_APPROX_SIMPLE)  # opencv4
+
+        mask = np.zeros_like(tr_mask)
+        boundaries = []
+        for cont in tr_contours:
+            deal_map = mask.copy().astype(np.int8)
+            cv2.drawContours(deal_map, [cont], -1, 1, -1)
+
+            score_map = score_pred * deal_map
+            score_mask = score_map > 0
+            xy_text = np.argwhere(score_mask)
+            dxy = xy_text[:, 1] + xy_text[:, 0] * 1j
+
+            x, y = x_pred[score_mask], y_pred[score_mask]
+            c = x + y * 1j
+            c[:, fourier_degree] = c[:, fourier_degree] + dxy
+            c *= scale
+
+            polygons = fourier2poly(c, num_reconstr_points)
+            score = score_map[score_mask].reshape(-1, 1)
+            polygons = poly_nms(np.hstack((polygons, score)).tolist(), nms_thr)
+
+            boundaries = boundaries + polygons
+
+        boundaries = poly_nms(boundaries, nms_thr)
+
+        if text_repr_type == 'quad':
+            new_boundaries = []
+            for boundary in boundaries:
+                poly = np.array(boundary[:-1]).reshape(-1, 2).astype(np.float32)
+                score = boundary[-1]
+                points = cv2.boxPoints(cv2.minAreaRect(poly))
+                points = np.int0(points)
+                new_boundaries.append(points.reshape(-1).tolist() + [score])
+
+        return boundaries

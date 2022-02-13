@@ -503,7 +503,7 @@ def preprocess(is_train=False):
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
-        'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM'
+        'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'FCE'
     ]
 
     device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'

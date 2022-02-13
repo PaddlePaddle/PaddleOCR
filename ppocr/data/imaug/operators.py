@@ -23,6 +23,7 @@ import sys
 import six
 import cv2
 import numpy as np
+import math
 
 
 class DecodeImage(object):
@@ -163,6 +164,27 @@ class KeepKeys(object):
         for key in self.keep_keys:
             data_list.append(data[key])
         return data_list
+
+
+class Pad(object):
+    def __init__(self, size_div=32, **kwargs):
+        self.size_div = size_div
+
+    def __call__(self, data):
+
+        img = data['image']
+        resize_h2 = max(int(math.ceil(img.shape[0] / 32) * 32), 32)
+        resize_w2 = max(int(math.ceil(img.shape[1] / 32) * 32), 32)
+        img = cv2.copyMakeBorder(
+            img,
+            0,
+            resize_h2 - img.shape[0],
+            0,
+            resize_w2 - img.shape[1],
+            cv2.BORDER_CONSTANT,
+            value=0)
+        data['image'] = img
+        return data
 
 
 class Resize(object):

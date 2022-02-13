@@ -1,3 +1,21 @@
+# copyright (c) 2022 PaddlePaddle Authors. All Rights Reserve.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+"""
+This code is refer from:
+https://github.com/open-mmlab/mmocr/blob/main/mmocr/datasets/pipelines/textdet_targets/fcenet_targets.py
+"""
+
 import cv2
 import numpy as np
 from numpy.fft import fft
@@ -470,7 +488,6 @@ class FCENetTargets:
         """
 
         assert isinstance(img_size, tuple)
-        # assert check_argument.is_2dlist(text_polys)
 
         h, w = img_size
         k = self.fourier_degree
@@ -478,9 +495,6 @@ class FCENetTargets:
         imag_map = np.zeros((k * 2 + 1, h, w), dtype=np.float32)
 
         for poly in text_polys:
-            # assert len(poly) == 1
-            # text_instance = [[poly[i], poly[i + 1]]
-            #                  for i in range(0, len(poly), 2)]
             mask = np.zeros((h, w), dtype=np.uint8)
             polygon = np.array(poly).reshape((1, -1, 2))
             cv2.fillPoly(mask, polygon.astype(np.int32), 1)
@@ -512,15 +526,11 @@ class FCENetTargets:
         """
 
         assert isinstance(img_size, tuple)
-        # assert check_argument.is_2dlist(text_polys)
 
         h, w = img_size
         text_region_mask = np.zeros((h, w), dtype=np.uint8)
 
         for poly in text_polys:
-            # assert len(poly) == 1
-            # text_instance = [[poly[i], poly[i + 1]]
-            #                  for i in range(0, len(poly), 2)]
             polygon = np.array(poly, dtype=np.int32).reshape((1, -1, 2))
             cv2.fillPoly(text_region_mask, polygon, 1)
 
@@ -538,8 +548,6 @@ class FCENetTargets:
         Returns:
             mask (ndarray): The effective mask of (height, width).
         """
-
-        # assert check_argument.is_2dlist(polygons_ignore)
 
         mask = np.ones(mask_size, dtype=np.uint8)
 
@@ -566,9 +574,6 @@ class FCENetTargets:
         lv_ignore_polys = [[] for i in range(len(lv_size_divs))]
         level_maps = []
         for poly in text_polys:
-            # assert len(poly) == 1
-            # text_instance = [[poly[i], poly[i + 1]]
-            #                  for i in range(0, len(poly), 2)]
             polygon = np.array(poly, dtype=np.int).reshape((1, -1, 2))
             _, _, box_w, box_h = cv2.boundingRect(polygon)
             proportion = max(box_h, box_w) / (h + 1e-8)
@@ -578,9 +583,6 @@ class FCENetTargets:
                     lv_text_polys[ind].append(poly / lv_size_divs[ind])
 
         for ignore_poly in ignore_polys:
-            # assert len(ignore_poly) == 1
-            # text_instance = [[ignore_poly[i], ignore_poly[i + 1]]
-            #                  for i in range(0, len(ignore_poly), 2)]
             polygon = np.array(ignore_poly, dtype=np.int).reshape((1, -1, 2))
             _, _, box_w, box_h = cv2.boundingRect(polygon)
             proportion = max(box_h, box_w) / (h + 1e-8)
@@ -630,18 +632,6 @@ class FCENetTargets:
         ignore_tags = results['ignore_tags']
         h, w, _ = image.shape
 
-        # import time
-        # from PIL import Image, ImageDraw
-        # cur_time = time.time()
-        # image = results['image']
-        # text_polys = results['polys']
-        # img = image[..., ::-1]
-        # img = Image.fromarray(img)
-        # draw = ImageDraw.Draw(img)
-        # for box in text_polys:
-        #     draw.polygon(box, outline=(0, 255, 255,), )
-        # img.save('tmp/{}_resize_pad.jpg'.format(cur_time))
-
         polygon_masks = []
         polygon_masks_ignore = []
         for tag, polygon in zip(ignore_tags, polygons):
@@ -653,8 +643,6 @@ class FCENetTargets:
         level_maps = self.generate_level_targets((h, w), polygon_masks,
                                                  polygon_masks_ignore)
 
-        # results['mask_fields'].clear()  # rm gt_masks encoded by polygons
-        # import remote_pdb as pdb;pdb.set_trace()
         mapping = {
             'p3_maps': level_maps[0],
             'p4_maps': level_maps[1],
