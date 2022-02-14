@@ -276,3 +276,35 @@ class OneCycle(object):
                 end_lr=self.max_lr,
                 last_epoch=self.last_epoch)
         return learning_rate
+
+
+class Const(object):
+    """
+    Const learning rate decay
+    Args:
+        learning_rate(float): initial learning rate
+        step_each_epoch(int): steps each epoch
+        last_epoch (int, optional):  The index of last epoch. Can be set to restart training. Default: -1, means initial learning rate.
+    """
+
+    def __init__(self,
+                 learning_rate,
+                 step_each_epoch,
+                 warmup_epoch=0,
+                 last_epoch=-1,
+                 **kwargs):
+        super(Const, self).__init__()
+        self.learning_rate = learning_rate
+        self.last_epoch = last_epoch
+        self.warmup_epoch = round(warmup_epoch * step_each_epoch)
+
+    def __call__(self):
+        learning_rate = self.learning_rate
+        if self.warmup_epoch > 0:
+            learning_rate = lr.LinearWarmup(
+                learning_rate=learning_rate,
+                warmup_steps=self.warmup_epoch,
+                start_lr=0.0,
+                end_lr=self.learning_rate,
+                last_epoch=self.last_epoch)
+        return learning_rate

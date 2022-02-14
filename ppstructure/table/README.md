@@ -1,3 +1,13 @@
+- [Table Recognition](#table-recognition)
+  - [1. pipeline](#1-pipeline)
+  - [2. Performance](#2-performance)
+  - [3. How to use](#3-how-to-use)
+    - [3.1 quick start](#31-quick-start)
+    - [3.2 Train](#32-train)
+    - [3.3 Eval](#33-eval)
+    - [3.4 Inference](#34-inference)
+
+
 # Table Recognition
 
 ## 1. pipeline
@@ -51,10 +61,10 @@ After running, the excel sheet of each picture will be saved in the directory sp
 
 In this chapter, we only introduce the training of the table structure model, For model training of [text detection](../../doc/doc_en/detection_en.md) and [text recognition](../../doc/doc_en/recognition_en.md), please refer to the corresponding documents
 
-#### data preparation  
+* data preparation  
 The training data uses public data set [PubTabNet](https://arxiv.org/abs/1911.10683 ), Can be downloaded from the official [website](https://github.com/ibm-aur-nlp/PubTabNet) 。The PubTabNet data set contains about 500,000 images, as well as annotations in html format。
 
-#### Start training  
+* Start training  
 *If you are installing the cpu version of paddle, please modify the `use_gpu` field in the configuration file to false*
 ```shell
 # single GPU training
@@ -67,7 +77,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/
 In the above instruction, use `-c` to select the training to use the `configs/table/table_mv3.yml` configuration file.
 For a detailed explanation of the configuration file, please refer to [config](../../doc/doc_en/config_en.md).
 
-#### load trained model and continue training
+* load trained model and continue training
 
 If you expect to load trained model and continue the training again, you can specify the parameter `Global.checkpoints` as the model path to be loaded.
 
