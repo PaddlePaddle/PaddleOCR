@@ -21,7 +21,7 @@ Architecture:
   Backbone:
     name: LayoutXLMForRe
     pretrained: True
-    checkpoints: 
+    checkpoints:
 
 Loss:
   name: LossFromOutput
@@ -35,6 +35,7 @@ Optimizer:
   clip_norm: 10
   lr:
     learning_rate: 0.00005
+    warmup_epoch: 10
   regularizer:
     name: L2
     factor: 0.00000
@@ -81,7 +82,7 @@ Train:
     shuffle: True
     drop_last: False
     batch_size_per_card: 8
-    num_workers: 4
+    num_workers: 8
     collate_fn: ListCollator
 
 Eval:
@@ -118,5 +119,5 @@ Eval:
     shuffle: False
     drop_last: False
     batch_size_per_card: 8
-    num_workers: 4
+    num_workers: 8
     collate_fn: ListCollator
