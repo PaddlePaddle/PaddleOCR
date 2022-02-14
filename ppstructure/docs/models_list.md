@@ -1,10 +1,13 @@
-# Model List
+# PP-Structure 系列模型列表
 
-- [Model List](#model-list)
+> **说明**
+> 1. 本文档提供的是PP-Structure 模型列表，PPOCR自研模型可以参考： [PP-OCR model_list](../../doc/doc_ch/models_list.md) 。
+
+- [PP-Structure 系列模型列表](#pp-structure-系列模型列表)
   - [1. LayoutParser 模型](#1-layoutparser-模型)
   - [2. OCR和表格识别模型](#2-ocr和表格识别模型)
     - [2.1 OCR](#21-ocr)
-    - [2.2 格识别模型](#22-格识别模型)
+    - [2.2 表格识别模型](#22-表格识别模型)
   - [3. VQA模型](#3-vqa模型)
   - [4. KIE模型](#4-kie模型)
 
@@ -28,7 +31,7 @@
 
 如需要使用其他OCR模型，可以在 [PP-OCR model_list](../../doc/doc_ch/models_list.md) 下载模型或者使用自己训练好的模型配置到 `det_model_dir`, `rec_model_dir`两个字段即可。
 
-### 2.2 格识别模型
+### 2.2 表格识别模型
 
 |模型名称|模型简介|推理模型大小|下载地址|
 | --- | --- | --- | --- |
