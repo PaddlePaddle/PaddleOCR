@@ -1,3 +1,4 @@
+# Model List
 
 - [Model List](#model-list)
   - [1. LayoutParser 模型](#1-layoutparser-模型)
@@ -7,7 +8,6 @@
   - [3. VQA模型](#3-vqa模型)
   - [4. KIE模型](#4-kie模型)
 
-# Model List
 
 ## 1. LayoutParser 模型
 
