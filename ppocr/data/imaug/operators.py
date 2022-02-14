@@ -167,20 +167,37 @@ class KeepKeys(object):
 
 
 class Pad(object):
-    def __init__(self, size_div=32, **kwargs):
+    def __init__(self, size=None, size_div=32, **kwargs):
+        if size is not None and not isinstance(size, (int, list, tuple)):
+            raise TypeError("Type of target_size is invalid. Now is {}".format(
+                type(size)))
+        if isinstance(size, int):
+            size = [size, size]
+        self.size = size
         self.size_div = size_div
 
     def __call__(self, data):
 
         img = data['image']
-        resize_h2 = max(int(math.ceil(img.shape[0] / 32) * 32), 32)
-        resize_w2 = max(int(math.ceil(img.shape[1] / 32) * 32), 32)
+        img_h, img_w = img.shape[0], img.shape[1]
+        if self.size:
+            resize_h2, resize_w2 = self.size
+            assert (
+                img_h < resize_h2 and img_w < resize_w2
+            ), '(h, w) of target size should be greater than (img_h, img_w)'
+        else:
+            resize_h2 = max(
+                int(math.ceil(img.shape[0] / self.size_div) * self.size_div),
+                self.size_div)
+            resize_w2 = max(
+                int(math.ceil(img.shape[1] / self.size_div) * self.size_div),
+                self.size_div)
         img = cv2.copyMakeBorder(
             img,
             0,
-            resize_h2 - img.shape[0],
+            resize_h2 - img_h,
             0,
-            resize_w2 - img.shape[1],
+            resize_w2 - img_w,
             cv2.BORDER_CONSTANT,
             value=0)
         data['image'] = img
