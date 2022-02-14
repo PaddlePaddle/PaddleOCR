@@ -1,7 +1,7 @@
 # PP-Structure 系列模型列表
 
 > **说明**
-> 1. 本文档提供的是PP-Structure 模型列表，PPOCR自研模型可以参考： [PP-OCR model_list](../../doc/doc_ch/models_list.md) 。
+> 1. 本文档提供的是PP-Structure 模型列表，PP-OCR自研模型可以参考： [PP-OCR model_list](../../doc/doc_ch/models_list.md) 。
 
 - [PP-Structure 系列模型列表](#pp-structure-系列模型列表)
   - [1. LayoutParser 模型](#1-layoutparser-模型)
