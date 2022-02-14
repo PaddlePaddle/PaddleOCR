@@ -113,7 +113,7 @@ PP-Structure系列模型列表（更新中）
 |模型名称|模型简介|模型大小|下载地址|
 | --- | --- | --- | --- |
 |ser_LayoutXLM_xfun_zhd|基于LayoutXLM在xfun中文数据集上训练的SER模型|1.4G|[推理模型 coming soon]() / [训练模型](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar) |
-|re_LayoutXLM_xfun_zh|基于LayoutXLM在xfun中文数据集上训练的RE模型|1.4G|[推理模型 coming soon]() / [训练模型](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh) |
+|re_LayoutXLM_xfun_zh|基于LayoutXLM在xfun中文数据集上训练的RE模型|1.4G|[推理模型 coming soon]() / [训练模型](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh.tar) |
 
 
 更多模型下载，可以参考 [PP-OCR model_list](../doc/doc_en/models_list.md) and  [PP-Structure model_list](./docs/models_list.md)
