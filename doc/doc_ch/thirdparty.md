@@ -56,7 +56,7 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 
 ### 1.4 文档优化与翻译
 
-- 非常感谢 **[RangeKing](https://github.com/RangeKing)** 贡献翻译《动手学OCR》notebook[电子书英文版](https://github.com/PaddlePaddle/PaddleOCR/tree/dygraph/notebook/notebook_en)。
+- 非常感谢 **[RangeKing](https://github.com/RangeKing)，[HustBestCat](https://github.com/HustBestCat)** 贡献翻译《动手学OCR》notebook[电子书英文版](https://github.com/PaddlePaddle/PaddleOCR/tree/dygraph/notebook/notebook_en)。
 - 非常感谢 [thunderstudying](https://github.com/thunderstudying)，[RangeKing](https://github.com/RangeKing)，[livingbody](https://github.com/livingbody)， [WZMIAOMIAO](https://github.com/WZMIAOMIAO)，[haigang1975](https://github.com/haigang1975) 补充多个英文markdown文档。
 - 非常感谢 **[fanruinet](https://github.com/fanruinet)** 润色和修复35篇英文文档([#5205](https://github.com/PaddlePaddle/PaddleOCR/pull/5205))。
 - 非常感谢 [Khanh Tran](https://github.com/xxxpsyduck) 和 [Karl Horky](https://github.com/karlhorky) 贡献修改英文文档。
