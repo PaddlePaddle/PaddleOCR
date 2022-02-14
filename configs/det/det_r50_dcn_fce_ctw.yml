@@ -9,7 +9,7 @@ Global:
   eval_batch_step: [0, 835]
   cal_metric_during_train: False
   pretrained_model: ./pretrain_models/ResNet50_vd_ssld_pretrained 
-  checkpoints: #output/det_r50_dcn_fce_ctw/latest
+  checkpoints: 
   save_inference_dir: 
   use_visualdl: False
   infer_img: doc/imgs_en/img_10.jpg
