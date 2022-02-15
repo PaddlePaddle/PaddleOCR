@@ -1,27 +1,18 @@
 English | [简体中文](README_ch.md)
-
+- [Getting Started](#getting-started)
+  - [1.  Install whl package](#1--install-whl-package)
+  - [2. Quick Start](#2-quick-start)
+  - [3. PostProcess](#3-postprocess)
+  - [4. Results](#4-results)
+  - [5. Training](#5-training)
 
 # Getting Started
-
-[1. Install whl package](#Install)
-
-[2. Quick Start](#QuickStart)
-
-[3. PostProcess](#PostProcess)
-
-[4. Results](#Results)
-
-[5. Training](#Training)
-
-<a name="Install"></a>
 
 ## 1.  Install whl package
 ```bash
 wget https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
 pip install -U layoutparser-0.0.0-py3-none-any.whl
 ```
-
-<a name="QuickStart"></a>
 
 ## 2. Quick Start
 
@@ -77,8 +68,6 @@ The following model configurations and label maps are currently supported, which
 * TableBank word and TableBank latex are trained on datasets of word documents and latex documents respectively;
 * Download TableBank dataset contains both word and latex。
 
-<a name="PostProcess"></a>
-
 ## 3. PostProcess
 
 Layout parser contains multiple categories, if you only want to get the detection box for a specific category (such as the "Text" category), you can use the following code:
@@ -119,7 +108,6 @@ Displays results with only the "Text" category：
 <div align="center">
 <img src="../../doc/table/result_text.jpg"  width = "600" />
 </div>
-<a name="Results"></a>
 
 ## 4. Results
 
@@ -133,8 +121,6 @@ Displays results with only the "Text" category：
 ​    **CPU：**  Intel(R) Xeon(R) CPU E5-2650 v4 @ 2.20GHz，24core
 
 ​    **GPU：**  a single NVIDIA Tesla P40
-
-<a name="Training"></a>
 
 ## 5. Training
 

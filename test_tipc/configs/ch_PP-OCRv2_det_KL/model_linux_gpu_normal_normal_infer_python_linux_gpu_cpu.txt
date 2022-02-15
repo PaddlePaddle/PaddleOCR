@@ -3,7 +3,7 @@ model_name:PPOCRv2_ocr_det_kl
 python:python3.7
 Global.pretrained_model:null
 Global.save_inference_dir:null
-infer_model:./inference/ch_PP-OCRv2_det_infer
+infer_model:./inference/ch_PP-OCRv2_det_infer/
 infer_export:deploy/slim/quantization/quant_kl.py -c configs/det/ch_PP-OCRv2/ch_PP-OCRv2_det_cml.yml -o
 infer_quant:True
 inference:tools/infer/predict_det.py

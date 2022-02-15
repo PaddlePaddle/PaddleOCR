@@ -16,6 +16,9 @@ import logging
 import os
 import imghdr
 import cv2
+import random
+import numpy as np
+import paddle
 
 
 def print_dict(d, logger, delimiter=0):
@@ -78,3 +81,46 @@ def check_and_read_gif(img_path):
         imgvalue = frame[:, :, ::-1]
         return imgvalue, True
     return None, False
+
+
+def load_vqa_bio_label_maps(label_map_path):
+    with open(label_map_path, "r", encoding='utf-8') as fin:
+        lines = fin.readlines()
+    lines = [line.strip() for line in lines]
+    if "O" not in lines:
+        lines.insert(0, "O")
+    labels = []
+    for line in lines:
+        if line == "O":
+            labels.append("O")
+        else:
+            labels.append("B-" + line)
+            labels.append("I-" + line)
+    label2id_map = {label: idx for idx, label in enumerate(labels)}
+    id2label_map = {idx: label for idx, label in enumerate(labels)}
+    return label2id_map, id2label_map
+
+
+def set_seed(seed=1024):
+    random.seed(seed)
+    np.random.seed(seed)
+    paddle.seed(seed)
+
+
+class AverageMeter:
+    def __init__(self):
+        self.reset()
+
+    def reset(self):
+        """reset"""
+        self.val = 0
+        self.avg = 0
+        self.sum = 0
+        self.count = 0
+
+    def update(self, val, n=1):
+        """update"""
+        self.val = val
+        self.sum += val * n
+        self.count += n
+        self.avg = self.sum / self.count

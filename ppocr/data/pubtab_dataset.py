@@ -53,6 +53,9 @@ class PubTabDataSet(Dataset):
             self.shuffle_data_random()
         self.ops = create_operators(dataset_config['transforms'], global_config)
 
+        ratio_list = dataset_config.get("ratio_list", [1.0])
+        self.need_reset = True in [x < 1 for x in ratio_list]
+
     def shuffle_data_random(self):
         if self.do_shuffle:
             random.seed(self.seed)
@@ -70,7 +73,7 @@ class PubTabDataSet(Dataset):
                 prob = self.img_select_prob[file_name]
                 if prob < random.uniform(0, 1):
                     select_flag = False
-            
+
             if self.table_select_type:
                 structure = info['html']['structure']['tokens'].copy()
                 structure_str = ''.join(structure)
@@ -79,13 +82,17 @@ class PubTabDataSet(Dataset):
                     table_type = "complex"
                 if table_type == "complex":
                     if self.table_select_prob < random.uniform(0, 1):
-                        select_flag = False                    
-            
+                        select_flag = False
+
             if select_flag:
                 cells = info['html']['cells'].copy()
                 structure = info['html']['structure'].copy()
                 img_path = os.path.join(self.data_dir, file_name)
-                data = {'img_path': img_path, 'cells': cells, 'structure':structure}
+                data = {
+                    'img_path': img_path,
+                    'cells': cells,
+                    'structure': structure
+                }
                 if not os.path.exists(img_path):
                     raise Exception("{} does not exist!".format(img_path))
                 with open(data['img_path'], 'rb') as f:

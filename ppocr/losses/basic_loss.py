@@ -133,3 +133,18 @@ class DistanceLoss(nn.Layer):
 
     def forward(self, x, y):
         return self.loss_func(x, y)
+
+
+class LossFromOutput(nn.Layer):
+    def __init__(self, key='loss', reduction='none'):
+        super().__init__()
+        self.key = key
+        self.reduction = reduction
+
+    def forward(self, predicts, batch):
+        loss = predicts[self.key]
+        if self.reduction == 'mean':
+            loss = paddle.mean(loss)
+        elif self.reduction == 'sum':
+            loss = paddle.sum(loss)
+        return {'loss': loss}

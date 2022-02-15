@@ -34,6 +34,8 @@ from .sast_process import *
 from .pg_process import *
 from .gen_table_mask import *
 
+from .vqa import *
+
 
 def transform(data, ops=None):
     """ transform """

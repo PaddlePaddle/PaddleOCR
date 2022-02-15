@@ -1,15 +1,13 @@
 # PP-Structure 快速开始
 
-* [1. 安装PaddleOCR whl包](#1)
-* [2. 便捷使用](#2)
-    + [2.1 命令行使用](#21)
-    + [2.2 Python脚本使用](#22)
-    + [2.3 返回结果说明](#23)
-    + [2.4 参数说明](#24)
-* [3. Python脚本使用](#3)
-
-
-<a name="1"></a>
+- [PP-Structure 快速开始](#pp-structure-快速开始)
+  - [1. 安装依赖包](#1-安装依赖包)
+  - [2. 便捷使用](#2-便捷使用)
+    - [2.1 命令行使用](#21-命令行使用)
+    - [2.2 Python脚本使用](#22-python脚本使用)
+    - [2.3 返回结果说明](#23-返回结果说明)
+    - [2.4 参数说明](#24-参数说明)
+  - [3. Python脚本使用](#3-python脚本使用)
 
 ## 1. 安装依赖包
 
@@ -24,11 +22,7 @@ pip3 install -e .
 
 ```
 
-<a name="2"></a>
-
 ## 2. 便捷使用
-
-<a name="21"></a>
 
 ### 2.1 命令行使用
 
@@ -39,9 +33,7 @@ paddleocr --image_dir=../doc/table/1.png --type=structure
 
 * VQA
 
-coming soon
-
-<a name="22"></a>
+请参考：[文档视觉问答](../vqa/README.md)。
 
 ### 2.2 Python脚本使用
 
@@ -74,9 +66,7 @@ im_show.save('result.jpg')
 
 * VQA
 
-comming soon
-
-<a name="23"></a>
+请参考：[文档视觉问答](../vqa/README.md)。
 
 ### 2.3 返回结果说明
 PP-Structure的返回结果为一个dict组成的list，示例如下
@@ -101,9 +91,7 @@ dict 里各个字段说明如下
 
 * VQA
 
-comming soon
-
-<a name="24"></a>
+请参考：[文档视觉问答](../vqa/README.md)。
 
 ### 2.4 参数说明
 
@@ -116,13 +104,11 @@ comming soon
 | model_name_or_path | VQA SER模型地址                | None |
 | max_seq_length | VQA SER模型最大支持token长度              | 512 |
 | label_map_path | VQA SER 标签文件地址              | ./vqa/labels/labels_ser.txt |
-| mode | pipeline预测模式，structure: 版面分析+表格识别; vqa: ser文档信息抽取              | structure |
+| mode | pipeline预测模式，structure: 版面分析+表格识别; VQA: SER文档信息抽取              | structure |
 
-大部分参数和paddleocr whl包保持一致，见 [whl包文档](../doc/doc_ch/whl.md)
+大部分参数和PaddleOCR whl包保持一致，见 [whl包文档](../../doc/doc_ch/whl.md)
 
 运行完成后，每张图片会在`output`字段指定的目录下有一个同名目录，图片里的每个表格会存储为一个excel，图片区域会被裁剪之后保存下来，excel文件和图片名名为表格在图片里的坐标。
-
-<a name="3"></a>
 
 ## 3. Python脚本使用
 
@@ -133,16 +119,16 @@ cd ppstructure
 
 # 下载模型
 mkdir inference && cd inference
-# 下载超轻量级中文OCR模型的检测模型并解压
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_ppocr_mobile_v2.0_det_infer.tar
-# 下载超轻量级中文OCR模型的识别模型并解压
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf ch_ppocr_mobile_v2.0_rec_infer.tar
-# 下载超轻量级英文表格英寸模型并解压
+# 下载PP-OCRv2文本检测模型并解压
+wget https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_slim_quant_infer.tar && tar xf ch_PP-OCRv2_det_slim_quant_infer.tar
+# 下载PP-OCRv2文本识别模型并解压
+wget https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_quant_infer.tar && tar xf ch_PP-OCRv2_rec_slim_quant_infer.tar
+# 下载超轻量级英文表格预测模型并解压
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar
 cd ..
 
-python3 predict_system.py --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
-                          --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
+python3 predict_system.py --det_model_dir=inference/ch_PP-OCRv2_det_slim_quant_infer \
+                          --rec_model_dir=inference/ch_PP-OCRv2_rec_slim_quant_infer \
                           --table_model_dir=inference/en_ppocr_mobile_v2.0_table_structure_infer \
                           --image_dir=../doc/table/1.png \
                           --rec_char_dict_path=../ppocr/utils/ppocr_keys_v1.txt \

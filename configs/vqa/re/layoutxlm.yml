@@ -1,0 +1,123 @@
+Global:
+  use_gpu: True
+  epoch_num: &epoch_num 200
+  log_smooth_window: 10
+  print_batch_step: 10
+  save_model_dir: ./output/re_layoutxlm/
+  save_epoch_step: 2000
+  # evaluation is run every 10 iterations after the 0th iteration
+  eval_batch_step: [ 0, 19 ]
+  cal_metric_during_train: False
+  save_inference_dir:
+  use_visualdl: False
+  seed: 2022
+  infer_img: doc/vqa/input/zh_val_21.jpg
+  save_res_path: ./output/re/
+
+Architecture:
+  model_type: vqa
+  algorithm: &algorithm "LayoutXLM"
+  Transform:
+  Backbone:
+    name: LayoutXLMForRe
+    pretrained: True
+    checkpoints:
+
+Loss:
+  name: LossFromOutput
+  key: loss
+  reduction: mean
+
+Optimizer:
+  name: AdamW
+  beta1: 0.9
+  beta2: 0.999
+  clip_norm: 10
+  lr:
+    learning_rate: 0.00005
+    warmup_epoch: 10
+  regularizer:
+    name: L2
+    factor: 0.00000
+    
+PostProcess:
+  name: VQAReTokenLayoutLMPostProcess
+
+Metric:
+  name: VQAReTokenMetric
+  main_indicator: hmean
+
+Train:
+  dataset:
+    name: SimpleDataSet
+    data_dir: train_data/XFUND/zh_train/image
+    label_file_list: 
+      - train_data/XFUND/zh_train/xfun_normalize_train.json
+    ratio_list: [ 1.0 ]
+    transforms:
+      - DecodeImage: # load image
+          img_mode: RGB
+          channel_first: False
+      - VQATokenLabelEncode: # Class handling label
+          contains_re: True
+          algorithm: *algorithm
+          class_path: &class_path ppstructure/vqa/labels/labels_ser.txt
+      - VQATokenPad:
+          max_seq_len: &max_seq_len 512
+          return_attention_mask: True
+      - VQAReTokenRelation:
+      - VQAReTokenChunk:
+          max_seq_len: *max_seq_len
+      - Resize:
+          size: [224,224]
+      - NormalizeImage:
+          scale: 1
+          mean: [ 123.675, 116.28, 103.53 ]
+          std: [ 58.395, 57.12, 57.375 ]
+          order: 'hwc'
+      - ToCHWImage:
+      - KeepKeys:
+          keep_keys: [ 'input_ids', 'bbox', 'image', 'attention_mask', 'token_type_ids','entities', 'relations'] # dataloader will return list in this order
+  loader:
+    shuffle: True
+    drop_last: False
+    batch_size_per_card: 8
+    num_workers: 8
+    collate_fn: ListCollator
+
+Eval:
+  dataset:
+    name: SimpleDataSet
+    data_dir: train_data/XFUND/zh_val/image
+    label_file_list:
+      - train_data/XFUND/zh_val/xfun_normalize_val.json
+    transforms:
+      - DecodeImage: # load image
+          img_mode: RGB
+          channel_first: False
+      - VQATokenLabelEncode: # Class handling label
+          contains_re: True
+          algorithm: *algorithm
+          class_path: *class_path
+      - VQATokenPad:
+          max_seq_len: *max_seq_len
+          return_attention_mask: True
+      - VQAReTokenRelation:
+      - VQAReTokenChunk:
+          max_seq_len: *max_seq_len
+      - Resize:
+          size: [224,224]
+      - NormalizeImage:
+          scale: 1
+          mean: [ 123.675, 116.28, 103.53 ]
+          std: [ 58.395, 57.12, 57.375 ]
+          order: 'hwc'
+      - ToCHWImage:
+      - KeepKeys:
+          keep_keys: [ 'input_ids', 'bbox', 'image', 'attention_mask', 'token_type_ids','entities', 'relations'] # dataloader will return list in this order
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 8
+    num_workers: 8
+    collate_fn: ListCollator

@@ -16,6 +16,9 @@ import copy
 import paddle
 import paddle.nn as nn
 
+# basic_loss
+from .basic_loss import LossFromOutput
+
 # det loss
 from .det_db_loss import DBLoss
 from .det_east_loss import EASTLoss
@@ -46,12 +49,16 @@ from .combined_loss import CombinedLoss
 # table loss
 from .table_att_loss import TableAttentionLoss
 
+# vqa token loss
+from .vqa_token_layoutlm_loss import VQASerTokenLayoutLMLoss
+
 
 def build_loss(config):
     support_dict = [
         'DBLoss', 'PSELoss', 'EASTLoss', 'SASTLoss', 'CTCLoss', 'ClsLoss',
         'AttentionLoss', 'SRNLoss', 'PGLoss', 'CombinedLoss', 'NRTRLoss',
-        'TableAttentionLoss', 'SARLoss', 'AsterLoss', 'SDMGRLoss'
+        'TableAttentionLoss', 'SARLoss', 'AsterLoss', 'SDMGRLoss',
+        'VQASerTokenLayoutLMLoss', 'LossFromOutput'
     ]
     config = copy.deepcopy(config)
     module_name = config.pop('name')

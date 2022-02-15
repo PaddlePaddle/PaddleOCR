@@ -4,7 +4,7 @@ This section uses the icdar2015 dataset as an example to introduce the training,
 
 - [1. Data and Weights Preparation](#1-data-and-weights-preparatio)
   * [1.1 Data Preparation](#11-data-preparation)
-  * [1.2 Download Pretrained Model](#12-download-pretrained-model)
+  * [1.2 Download Pre-trained Model](#12-download-pretrained-model)
 - [2. Training](#2-training)
   * [2.1 Start Training](#21-start-training)
   * [2.2 Load Trained Model and Continue Training](#22-load-trained-model-and-continue-training)
@@ -45,7 +45,7 @@ After decompressing the data set and downloading the annotation file, PaddleOCR/
   └─ test_icdar2015_label.txt     Test annotation of icdar dataset
 ```
 
-The provided annotation file format is as follow, seperated by "\t":
+The provided annotation file format is as follow, separated by "\t":
 ```
 " Image file name             Image annotation information encoded by json.dumps"
 ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]]}, {...}]
@@ -59,10 +59,10 @@ The `points` in the dictionary represent the coordinates (x, y) of the four poin
 If you want to train PaddleOCR on other datasets, please build the annotation file according to the above format.
 
 
-### 1.2 Download Pretrained Model
+### 1.2 Download Pre-trained Model
 
-First download the pretrained model. The detection model of PaddleOCR currently supports 3 backbones, namely MobileNetV3, ResNet18_vd and ResNet50_vd. You can use the model in [PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/release/2.0/ppcls/modeling/architectures) to replace backbone according to your needs.
-And the responding download link of backbone pretrain weights can be found in (https://github.com/PaddlePaddle/PaddleClas/blob/release%2F2.0/README_cn.md#resnet%E5%8F%8A%E5%85%B6vd%E7%B3%BB%E5%88%97).
+First download the pre-trained model. The detection model of PaddleOCR currently supports 3 backbones, namely MobileNetV3, ResNet18_vd and ResNet50_vd. You can use the model in [PaddleClas](https://github.com/PaddlePaddle/PaddleClas/tree/release/2.0/ppcls/modeling/architectures) to replace backbone according to your needs.
+And the responding download link of backbone pre-trained weights can be found in (https://github.com/PaddlePaddle/PaddleClas/blob/release%2F2.0/README_cn.md#resnet%E5%8F%8A%E5%85%B6vd%E7%B3%BB%E5%88%97).
 
 ```shell
 cd PaddleOCR/
