@@ -20,7 +20,7 @@ File -> New ->New Project  to create  "Native C++" project
 
 **Agent add:**
 
-  Android Studio -> Perferences -> Appearance & Behavior -> System Settings -> HTTP Proxy -> Manual proxy configuration
+  Android Studio -> Preferences -> Appearance & Behavior -> System Settings -> HTTP Proxy -> Manual proxy configuration
 
 ![](../demo/proxy.png)
 

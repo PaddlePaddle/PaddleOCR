@@ -14,12 +14,12 @@ Demo测试的时候使用的是NDK 20b版本，20版本以上均可以支持编�
 
 
 1. Start a new Android Studio project
-    在项目模版中选择 Native C++ 选择PaddleOCR/depoly/android_demo 路径
+    在项目模版中选择 Native C++ 选择PaddleOCR/deploy/android_demo 路径
     进入项目后会自动编译，第一次编译会花费较长的时间，建议添加代理加速下载。
 
 **代理添加：**
 
-选择 Android Studio -> Perferences -> Appearance & Behavior -> System Settings -> HTTP Proxy -> Manual proxy configuration
+选择 Android Studio -> Preferences -> Appearance & Behavior -> System Settings -> HTTP Proxy -> Manual proxy configuration
 
 ![](../demo/proxy.png)
 
