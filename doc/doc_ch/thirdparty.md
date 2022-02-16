@@ -39,6 +39,7 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 | 应用部署 | [PaddleOCR-Paddlejs-Vue-Demo](https://github.com/Lovely-Pig/PaddleOCR-Paddlejs-Vue-Demo) | 使用Paddle.js和Vue部署PaddleOCR | [Lovely-Pig](https://github.com/Lovely-Pig) |
 | 应用部署 | [PaddleOCR-Paddlejs-React-Demo](https://github.com/Lovely-Pig/PaddleOCR-Paddlejs-React-Demo) | 使用Paddle.js和React部署PaddleOCR | [Lovely-Pig](https://github.com/Lovely-Pig) |
 | 学术前沿模型训练与推理 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/3397137) | StarNet-MobileNetV3算法–中文训练 | [xiaoyangyang2](https://github.com/xiaoyangyang2)                |
+| 学术前沿模型训练与推理 | [ABINet-paddle](https://github.com/Huntersdeng/abinet-paddle) | ABINet算法前向运算的paddle实现以及模型各部分的实现细节分析 | [Huntersdeng](https://github.com/Huntersdeng)                |
 
 ### 1.2 为PaddleOCR新增功能
 
@@ -55,7 +56,7 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 
 ### 1.4 文档优化与翻译
 
-- 非常感谢 **[RangeKing](https://github.com/RangeKing)** 贡献翻译《动手学OCR》notebook[电子书英文版](https://github.com/PaddlePaddle/PaddleOCR/tree/dygraph/notebook/notebook_en)。
+- 非常感谢 **[RangeKing](https://github.com/RangeKing)，[HustBestCat](https://github.com/HustBestCat)，[v3fc](https://github.com/v3fc)** 贡献翻译《动手学OCR》notebook[电子书英文版](https://github.com/PaddlePaddle/PaddleOCR/tree/dygraph/notebook/notebook_en)。
 - 非常感谢 [thunderstudying](https://github.com/thunderstudying)，[RangeKing](https://github.com/RangeKing)，[livingbody](https://github.com/livingbody)， [WZMIAOMIAO](https://github.com/WZMIAOMIAO)，[haigang1975](https://github.com/haigang1975) 补充多个英文markdown文档。
 - 非常感谢 **[fanruinet](https://github.com/fanruinet)** 润色和修复35篇英文文档([#5205](https://github.com/PaddlePaddle/PaddleOCR/pull/5205))。
 - 非常感谢 [Khanh Tran](https://github.com/xxxpsyduck) 和 [Karl Horky](https://github.com/karlhorky) 贡献修改英文文档。

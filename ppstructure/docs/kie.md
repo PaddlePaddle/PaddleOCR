@@ -1,4 +1,8 @@
-
+- [关键信息提取(Key Information Extraction)](#关键信息提取key-information-extraction)
+  - [1. 快速使用](#1-快速使用)
+  - [2. 执行训练](#2-执行训练)
+  - [3. 执行评估](#3-执行评估)
+  - [4. 参考文献](#4-参考文献)
 
 # 关键信息提取(Key Information Extraction)
 
@@ -7,11 +11,6 @@
 SDMGR是一个关键信息提取算法，将每个检测到的文本区域分类为预定义的类别，如订单ID、发票号码，金额等。
 
 
-* [1. 快速使用](#1-----)
-* [2. 执行训练](#2-----)
-* [3. 执行评估](#3-----)
-
-<a name="1-----"></a>
 ## 1. 快速使用
 
 训练和测试的数据采用wildreceipt数据集，通过如下指令下载数据集：
@@ -36,7 +35,6 @@ python3.7 tools/infer_kie.py -c configs/kie/kie_unet_sdmgr.yml -o Global.checkpo
     <img src="./imgs/0.png" width="800">
 </div>
 
-<a name="2-----"></a>
 ## 2. 执行训练
 
 创建数据集软链到PaddleOCR/train_data目录下：
@@ -50,7 +48,6 @@ ln -s ../../wildreceipt ./
 ```
 python3.7 tools/train.py -c configs/kie/kie_unet_sdmgr.yml -o Global.save_model_dir=./output/kie/
 ```
-<a name="3-----"></a>
 ## 3. 执行评估
 
 ```
@@ -58,7 +55,7 @@ python3.7 tools/eval.py -c configs/kie/kie_unet_sdmgr.yml -o Global.checkpoints=
 ```
 
 
-**参考文献：**
+## 4. 参考文献
 
 <!-- [ALGORITHM] -->
 
