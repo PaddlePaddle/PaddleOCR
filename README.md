@@ -181,15 +181,10 @@ For a new language request, please refer to [Guideline for new language_requests
 <a name="language_requests"></a>
 ## Guideline for New Language Requests
 
-If you want to request a new language support, a PR with 2 following files are needed：
+If you want to request a new language support, a PR with 1 following files are needed：
 
 1. In folder [ppocr/utils/dict](./ppocr/utils/dict),
 it is necessary to submit the dict text to this path and name it with `{language}_dict.txt` that contains a list of all characters. Please see the format example from other files in that folder.
-
-2. In folder [ppocr/utils/corpus](./ppocr/utils/corpus),
-it is necessary to submit the corpus to this path and name it with `{language}_corpus.txt` that contains a list of words in your language.
-Maybe, 50000 words per language is necessary at least.
-Of course, the more, the better.
 
 If your language has unique elements, please tell me in advance within any way, such as useful links, wikipedia and so on.
 
