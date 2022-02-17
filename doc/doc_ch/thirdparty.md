@@ -42,7 +42,6 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 | 学术前沿模型训练与推理 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/3397137) | StarNet-MobileNetV3算法–中文训练 | [xiaoyangyang2](https://github.com/xiaoyangyang2)                |
 | 学术前沿模型训练与推理 | [ABINet-paddle](https://github.com/Huntersdeng/abinet-paddle) | ABINet算法前向运算的paddle实现以及模型各部分的实现细节分析 | [Huntersdeng](https://github.com/Huntersdeng)                |
 
-
 ### 1.2 为PaddleOCR新增功能
 
 - 非常感谢 [authorfu](https://github.com/authorfu) 贡献Android([#340](https://github.com/PaddlePaddle/PaddleOCR/pull/340))和[xiadeye](https://github.com/xiadeye) 贡献IOS的demo代码([#325](https://github.com/PaddlePaddle/PaddleOCR/pull/325))
