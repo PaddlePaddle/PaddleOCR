@@ -26,7 +26,7 @@ PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，内置P
   - 识别结果更改为单击修改。（如果无法修改，请切换为系统自带输入法，或再次切回原输入法）
 - 2020.12.18： 支持对单个标记框进行重新识别（by [ninetailskim](https://github.com/ninetailskim)），完善快捷键。
 
-如果您对以上内容感兴趣或对完善工具有不一样的想法，欢迎加入我们的SIG队伍与我们共同开发。可以在[此处](https://github.com/PaddlePaddle/PaddleOCR/issues/1728)完成问卷和前置任务，经过我们确认相关内容后即可正式加入，享受SIG福利，共同为OCR开源事业贡献（特别说明：针对PPOCRLabel的改进也属于PaddleOCR前置任务）
+如果您对完善工具有不一样的想法，欢迎通过[社区常规赛](https://github.com/PaddlePaddle/PaddleOCR/issues/4982)报名相关更改，获得积分兑换奖励。
 
 
 
