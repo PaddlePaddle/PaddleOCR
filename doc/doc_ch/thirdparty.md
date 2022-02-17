@@ -48,6 +48,7 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 - 非常感谢 [tangmq](https://gitee.com/tangmq) 给PaddleOCR增加Docker化部署服务，支持快速发布可调用的Restful API服务([#507](https://github.com/PaddlePaddle/PaddleOCR/pull/507))。
 - 非常感谢 [lijinhan](https://github.com/lijinhan) 给PaddleOCR增加java SpringBoot 调用OCR Hubserving接口完成对OCR服务化部署的使用([#1027](https://github.com/PaddlePaddle/PaddleOCR/pull/1027))。
 - 非常感谢 [Evezerest](https://github.com/Evezerest)， [ninetailskim](https://github.com/ninetailskim)， [edencfc](https://github.com/edencfc)， [BeyondYourself](https://github.com/BeyondYourself)， [1084667371](https://github.com/1084667371) 贡献了[PPOCRLabel](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/PPOCRLabel/README_ch.md) 的完整代码。
+- 非常感谢 [bupt906](https://github.com/bupt906) 贡献MicroNet结构代码([#5251](https://github.com/PaddlePaddle/PaddleOCR/pull/5251))和贡献OneCycle学习率策略代码([#5252](https://github.com/PaddlePaddle/PaddleOCR/pull/5252))
 
 ### 1.3 代码修复
 
