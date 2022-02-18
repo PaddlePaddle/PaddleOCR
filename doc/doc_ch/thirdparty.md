@@ -111,3 +111,30 @@ PaddleOCR非常欢迎社区贡献以PaddleOCR为核心的各种服务、部署�
   - 合入代码之后会在本文档第一节中更新信息，默认链接为github名字及主页，如果有需要更换主页，也可以联系我们。
   - 新增重要功能类，会在用户群广而告之，享受开源社区荣誉时刻。
   - **如果您有基于PaddleOCR的项目，但未出现在上述列表中，请按照 `4. 联系我们` 的步骤与我们联系。**
+
+
+
+## 附录：社区常规赛积分榜
+
+| 开发者                                                  | 总积分 | 开发者                                                | 总积分 |
+| ------------------------------------------------------- | ------ | ----------------------------------------------------- | ------ |
+| [RangeKing](https://github.com/RangeKing)               | 220    | [WZMIAOMIAO](https://github.com/WZMIAOMIAO)           | 36     |
+| [hao6699](https://github.com/hao6699)                   | 145    | [v3fc](https://github.com/v3fc)                       | 35     |
+| [mymagicpower](https://github.com/mymagicpower)         | 140    | [imiyu](https://github.com/imiyu)                     | 30     |
+| [raoyutian](https://github.com/raoyutian)               | 90     | [haigang1975](https://github.com/haigang1975)         | 29     |
+| [sdcb](https://github.com/sdcb)                         | 80     | [daassh](https://github.com/daassh)                   | 23     |
+| [zhiminzhang0830](https://github.com/zhiminzhang0830)   | 70     | [xiaoyangyang2](https://github.com/xiaoyangyang2)     | 20     |
+| [Lovely-Pig](https://github.com/Lovely-Pig)             | 70     | [prettyocean85](https://github.com/prettyocean85)     | 20     |
+| [livingbody](https://github.com/livingbody)             | 70     | [nmusik](https://github.com/nmusik)                   | 20     |
+| [fanruinet](https://github.com/fanruinet)               | 70     | [kjf4096](https://github.com/kjf4096)                 | 20     |
+| [bupt906](https://github.com/bupt906)                   | 60     | [chccc1994](https://github.com/chccc1994)             | 20     |
+| [edencfc](https://github.com/edencfc)                   | 57     | [BeyondYourself ](https://github.com/BeyondYourself)  | 20     |
+| [zhangyingying520](https://github.com/zhangyingying520) | 57     | chenguoqi08161                                        | 18     |
+| [ITerydh](https://github.com/ITerydh)                   | 55     | [weiwenlan](https://github.com/weiwenlan)             | 10     |
+| [telppa](https://github.com/telppa)                     | 40     | [shaoshenchen thinc](https://github.com/shaoshenchen) | 10     |
+| sosojust1984                                            | 40     | [jordan2013](https://github.com/jordan2013)           | 10     |
+| [redearly123](https://github.com/redearly123)           | 40     | [JimEverest](https://github.com/JimEverest)           | 10     |
+| [OneYearIsEnough](https://github.com/OneYearIsEnough)   | 40     | [HustBestCat](https://github.com/HustBestCat)         | 10     |
+| [Huntersdeng](https://github.com/Huntersdeng)           | 40     |                                                       |        |
+| [GreatV](https://github.com/GreatV)                     | 40     |                                                       |        |
+| CLXK294                                                 | 40     |                                                       |        |
