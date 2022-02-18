@@ -19,10 +19,14 @@ The introduction and tutorial of Paddle Serving service deployment framework ref
 
 
 ## Contents
-- [Environmental preparation](#environmental-preparation)
-- [Model conversion](#model-conversion)
-- [Paddle Serving pipeline deployment](#paddle-serving-pipeline-deployment)
-- [FAQ](#faq)
+- [OCR Pipeline WebService](#ocr-pipeline-webservice)
+- [Service deployment based on PaddleServing](#service-deployment-based-on-paddleserving)
+  - [Contents](#contents)
+  - [Environmental preparation](#environmental-preparation)
+  - [Model conversion](#model-conversion)
+  - [Paddle Serving pipeline deployment](#paddle-serving-pipeline-deployment)
+  - [WINDOWS Users](#windows-users)
+  - [FAQ](#faq)
 
 <a name="environmental-preparation"></a>
 ## Environmental preparation
@@ -201,7 +205,7 @@ The recognition model is the same.
 
 ## WINDOWS Users
 
-Windows does not support Pipeline Serving, if we want to lauch paddle serving on Windows, we should use Web Service, for more infomation please refer to [Paddle Serving for Windows Users](https://github.com/PaddlePaddle/Serving/blob/develop/doc/WINDOWS_TUTORIAL.md)
+Windows does not support Pipeline Serving, if we want to lauch paddle serving on Windows, we should use Web Service, for more infomation please refer to [Paddle Serving for Windows Users](https://github.com/PaddlePaddle/Serving/blob/develop/doc/Windows_Tutorial_EN.md)
 
 
 **WINDOWS user can only use version 0.5.0 CPU Mode**

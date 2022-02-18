@@ -11,7 +11,7 @@ PaddleOCR收集整理了自从开源以来在issues和用户群中的常见问�
 OCR领域大佬众多，本文档回答主要依赖有限的项目实践，难免挂一漏万，如有遗漏和不足，也**希望有识之士帮忙补充和修正**，万分感谢。
 
 - [FAQ](#faq)
-  
+
   * [1. 通用问题](#1)
     + [1.1 检测](#11)
     + [1.2 识别](#12)
@@ -20,7 +20,7 @@ OCR领域大佬众多，本文档回答主要依赖有限的项目实践，难�
     + [1.5 垂类场景实现思路](#15)
     + [1.6 训练过程与模型调优](#16)
     + [1.7 补充资料](#17)
-  
+
   * [2. PaddleOCR实战问题](#2)
     + [2.1 PaddleOCR repo](#21)
     + [2.2 安装环境](#22)
@@ -734,7 +734,7 @@ C++TensorRT预测需要使用支持TRT的预测库并在编译时打开[-DWITH_T
 
 #### Q：PaddleOCR中，对于模型预测加速，CPU加速的途径有哪些？基于TenorRT加速GPU对输入有什么要求？
 
-**A**：（1）CPU可以使用mkldnn进行加速；对于python inference的话，可以把enable_mkldnn改为true，[参考代码](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/tools/infer/utility.py#L99)，对于cpp inference的话，在配置文件里面配置use_mkldnn 1即可，[参考代码](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/deploy/cpp_infer/tools/config.txt#L6)
+**A**：（1）CPU可以使用mkldnn进行加速；对于python inference的话，可以把enable_mkldnn改为true，[参考代码](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/tools/infer/utility.py#L99)，对于cpp inference的话，可参考[文档](https://github.com/PaddlePaddle/PaddleOCR/tree/dygraph/deploy/cpp_infer)
 
 （2）GPU需要注意变长输入问题等，TRT6 之后才支持变长输入
 

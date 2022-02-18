@@ -5,11 +5,11 @@ Generally, a more complex model would achieve better performance in the task, bu
 Quantization is a technique that reduces this redundancy by reducing the full precision data to a fixed number,
 so as to reduce model calculation complexity and improve model inference performance.
 
-This example uses PaddleSlim provided [APIs of Quantization](https://paddlepaddle.github.io/PaddleSlim/api/quantization_api/) to compress the OCR model.
+This example uses PaddleSlim provided [APIs of Quantization](https://github.com/PaddlePaddle/PaddleSlim/blob/develop/docs/zh_cn/api_cn/dygraph/quanter/qat.rst) to compress the OCR model.
 
 It is recommended that you could understand following pages before reading this example：
 - [The training strategy of OCR model](../../../doc/doc_en/quickstart_en.md)
-- [PaddleSlim Document](https://paddlepaddle.github.io/PaddleSlim/api/quantization_api/)
+- [PaddleSlim Document](https://github.com/PaddlePaddle/PaddleSlim/blob/develop/docs/zh_cn/api_cn/dygraph/quanter/qat.rst)
 
 ## Quick Start
 Quantization is mostly suitable for the deployment of lightweight models on mobile terminals.

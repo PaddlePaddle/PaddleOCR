@@ -20,7 +20,7 @@
 
 **Python操作指南：**
 
-目前Serving用于OCR的部分功能还在测试当中，因此在这里我们给出[Servnig latest package](https://github.com/PaddlePaddle/Serving/blob/develop/doc/LATEST_PACKAGES.md)
+目前Serving用于OCR的部分功能还在测试当中，因此在这里我们给出[Servnig latest package](https://github.com/PaddlePaddle/Serving/blob/develop/doc/Latest_Packages_CN.md)
 大家根据自己的环境选择需要安装的whl包即可，例如以Python 3.5为例，执行下列命令
 ```
 #CPU/GPU版本选择一个
