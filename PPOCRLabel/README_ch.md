@@ -206,6 +206,10 @@ python gen_ocr_train_val_test.py --trainValTestRatio 6:2:2 --datasetRootPath ../
 
 ### 3.6 错误提示
 
+- 【建议您只在python=3.7的虚拟环境下执行安装操作，勿使用python3.9】
+
+- 推荐您的安装顺序：pip install qtpy以及pyqt5，再顺序安装paddle、PPOCRLabel，**最后**才安装4.2.0.32版本的opencv，如果安装请卸载重装。
+
 - 如果同时使用whl包安装了paddleocr，其优先级大于通过paddleocr.py调用PaddleOCR类，whl包未更新时会导致程序异常。
 
 - PPOCRLabel**不支持对中文文件名**的图片进行自动标注。
