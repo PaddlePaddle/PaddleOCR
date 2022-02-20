@@ -42,6 +42,7 @@ sys.path.append("..")
 from paddleocr import PaddleOCR
 from libs.constants import *
 from libs.utils import *
+from libs.labelColor import label_colormap
 from libs.settings import Settings
 from libs.shape import Shape, DEFAULT_LINE_COLOR, DEFAULT_FILL_COLOR, DEFAULT_LOCK_COLOR
 from libs.stringBundle import StringBundle
@@ -57,6 +58,8 @@ from libs.unique_label_qlist_widget import UniqueLabelQListWidget
 from libs.keyDialog import KeyDialog
 
 __appname__ = 'PPOCRLabel'
+
+LABEL_COLORMAP = label_colormap()
 
 
 class MainWindow(QMainWindow):
@@ -167,9 +170,8 @@ class MainWindow(QMainWindow):
 
         #  ================== Key List  ==================
         if self.kie_mode:
+            # self.keyList = QListWidget()
             self.keyList = UniqueLabelQListWidget()
-
-            # self.keyList.itemActivated.connect(self.boxSelectionChanged)
             self.keyList.itemSelectionChanged.connect(self.keyListSelectionChanged)
             self.keyList.itemDoubleClicked.connect(self.editBox)
             # Connect to itemChanged to detect checkbox changes.
@@ -521,8 +523,7 @@ class MainWindow(QMainWindow):
         addActions(labelMenu, (edit, delete))
 
         self.labelList.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.labelList.customContextMenuRequested.connect(
-            self.popLabelListMenu)
+        self.labelList.customContextMenuRequested.connect(self.popLabelListMenu)
 
         # Draw squares/rectangles
         self.drawSquaresOption = QAction(getStr('drawSquares'), self)
@@ -1122,7 +1123,7 @@ class MainWindow(QMainWindow):
             for box in shapes:
                 trans_dic.append(
                     {"transcription": box['label'], "points": box['points'],
-                     "difficult": box['difficult'], "key": 0})
+                     "difficult": box['difficult'], "key": "None"})
             self.PPlabel[annotationFilePath] = trans_dic
             if mode == 'Auto':
                 self.Cachelabel[annotationFilePath] = trans_dic
@@ -1221,9 +1222,33 @@ class MainWindow(QMainWindow):
             self.canvas.resetAllLines()
 
         if self.kie_mode:
-            self.key_previous_text, flags = self.keyDialog.popUp(self.key_previous_text)
-            if not self.key_previous_text:
-                self.keyDialog.edit.setText(self.key_previous_text)
+            key_text, flags = self.keyDialog.popUp(self.key_previous_text)
+            if key_text is not None:
+                self.key_previous_text = key_text
+                if not self.keyList.findItemsByLabel(key_text):
+                    item = self.keyList.createItemFromLabel(key_text)
+                    self.keyList.addItem(item)
+                    rgb = self._get_rgb_by_label(key_text, self.kie_mode)
+                    self.keyList.setItemLabel(item, key_text, rgb)
+
+    def _update_shape_color(self, shape):
+        r, g, b = self._get_rgb_by_label(shape.label)
+        shape.line_color = QtGui.QColor(r, g, b)
+        shape.vertex_fill_color = QtGui.QColor(r, g, b)
+        shape.hvertex_fill_color = QtGui.QColor(255, 255, 255)
+        shape.fill_color = QtGui.QColor(r, g, b, 128)
+        shape.select_line_color = QtGui.QColor(255, 255, 255)
+        shape.select_fill_color = QtGui.QColor(r, g, b, 155)
+
+    def _get_rgb_by_label(self, label, kie_mode):
+        shift_auto_shape_color = 0  # use for random color
+        if kie_mode:
+            item = self.keyList.findItemsByLabel(label)[0]
+            label_id = self.keyList.indexFromItem(item).row() + 1
+            label_id += shift_auto_shape_color
+            return LABEL_COLORMAP[label_id % len(LABEL_COLORMAP)]
+        else:
+            return (0, 255, 0)
 
     def scrollRequest(self, delta, orientation):
         units = - delta / (8 * 15)
@@ -2188,7 +2213,7 @@ class MainWindow(QMainWindow):
             trans_dic = []
             for box in shapes:
                 trans_dic.append({"transcription": box['label'], "ratio": box['ratio'],
-                                  "difficult": box['difficult'], "key": 0 if "key" not in box else box["key"]})
+                                  "difficult": box['difficult'], "key": "None" if "key" not in box else box["key"]})
             self.canvas.lockedShapes = trans_dic
             self.actions.save.setEnabled(True)
 

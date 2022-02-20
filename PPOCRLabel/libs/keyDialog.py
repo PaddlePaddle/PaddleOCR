@@ -212,4 +212,4 @@ class KeyDialog(QtWidgets.QDialog):
         if self.exec_():
             return self.edit.text(), self.getFlags()
         else:
-            return None, None, None
+            return None, None
