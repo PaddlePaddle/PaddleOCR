@@ -1039,7 +1039,7 @@ class MainWindow(QMainWindow):
 
     def loadLabels(self, shapes):
         s = []
-        for label, points, line_color, fill_color, difficult in shapes:
+        for label, points, line_color, key, difficult in shapes:
             shape = Shape(label=label, line_color=line_color)
             for x, y in points:
 
@@ -1119,7 +1119,8 @@ class MainWindow(QMainWindow):
             trans_dic = []
             for box in shapes:
                 trans_dic.append(
-                    {"transcription": box['label'], "points": box['points'], 'difficult': box['difficult']})
+                    {"transcription": box['label'], "points": box['points'],
+                     "difficult": box['difficult'], "key": 0})
             self.PPlabel[annotationFilePath] = trans_dic
             if mode == 'Auto':
                 self.Cachelabel[annotationFilePath] = trans_dic
@@ -1410,13 +1411,13 @@ class MainWindow(QMainWindow):
         for box in self.canvas.lockedShapes:
             if self.canvas.isInTheSameImage:
                 shapes.append((box['transcription'], [[s[0] * width, s[1] * height] for s in box['ratio']],
-                               DEFAULT_LOCK_COLOR, None, box['difficult']))
+                               DEFAULT_LOCK_COLOR, box['key'], box['difficult']))
             else:
                 shapes.append(('锁定框：待检测', [[s[0] * width, s[1] * height] for s in box['ratio']],
-                               DEFAULT_LOCK_COLOR, None, box['difficult']))
+                               DEFAULT_LOCK_COLOR, box['key'], box['difficult']))
         if imgidx in self.PPlabel.keys():
             for box in self.PPlabel[imgidx]:
-                shapes.append((box['transcription'], box['points'], None, None, box['difficult']))
+                shapes.append((box['transcription'], box['points'], None, box['key'], box['difficult']))
 
         self.loadLabels(shapes)
         self.canvas.verified = False
@@ -2185,7 +2186,8 @@ class MainWindow(QMainWindow):
             shapes = [format_shape(shape) for shape in self.canvas.selectedShapes]
             trans_dic = []
             for box in shapes:
-                trans_dic.append({"transcription": box['label'], "ratio": box['ratio'], 'difficult': box['difficult']})
+                trans_dic.append({"transcription": box['label'], "ratio": box['ratio'],
+                                  "difficult": box['difficult'], "key": 0 if "key" not in box else box["key"]})
             self.canvas.lockedShapes = trans_dic
             self.actions.save.setEnabled(True)
 
