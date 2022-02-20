@@ -2289,9 +2289,9 @@ def get_main_app(argv=[]):
     app.setWindowIcon(newIcon("app"))
     # Tzutalin 201705+: Accept extra arguments to change predefined class file
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument("--lang", type=str, default='ch', nargs="?")
+    arg_parser.add_argument("--lang", type=str, default='en', nargs="?")
     arg_parser.add_argument("--gpu", type=str2bool, default=True, nargs="?")
-    arg_parser.add_argument("--kie", type=str2bool, default=True, nargs="?")
+    arg_parser.add_argument("--kie", type=str2bool, default=False, nargs="?")
     arg_parser.add_argument("--predefined_classes_file",
                             default=os.path.join(os.path.dirname(__file__), "data", "predefined_classes.txt"),
                             nargs="?")
