@@ -8,6 +8,8 @@ PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field, w
 
 ### Recent Update
 
+- 2022.02：（by [PeterH0323](https://github.com/peterh0323) ）
+  - Added KIE mode, for [detection + identification + keyword extraction] labeling.
 - 2022.01：（by [PeterH0323](https://github.com/peterh0323) ）
   - Improve user experience: prompt for the number of files and labels, optimize interaction, and fix bugs such as only use CPU when inference
 - 2021.11.17:
@@ -72,7 +74,8 @@ PPOCRLabel
 ```bash
 pip3 install PPOCRLabel
 pip3 install opencv-contrib-python-headless==4.2.0.32
-PPOCRLabel # run
+PPOCRLabel  # [Normal mode] for [detection + recognition] labeling
+PPOCRLabel --kie True # [KIE mode] for [detection + recognition + keyword extraction] labeling
 ```
 
 #### 1.2.2 Build and Install the Whl Package Locally
@@ -87,7 +90,8 @@ pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl
 
 ```bash
 cd ./PPOCRLabel  # Switch to the PPOCRLabel directory
-python PPOCRLabel.py
+python PPOCRLabel.py  # [Normal mode] for [detection + recognition] labeling
+python PPOCRLabel.py --kie True # [KIE mode] for [detection + recognition + keyword extraction] labeling
 ```
 
 

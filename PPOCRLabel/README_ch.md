@@ -8,6 +8,8 @@ PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，内置P
 
 #### 近期更新
 
+- 2022.02：（by [PeterH0323](https://github.com/peterh0323) ）
+  - 新增：KIE 功能，用于打【检测+识别+关键字提取】的标签
 - 2022.01：（by [PeterH0323](https://github.com/peterh0323) ）
   - 提升用户体验：新增文件与标记数目提示、优化交互、修复gpu使用等问题
 - 2021.11.17：
@@ -70,7 +72,8 @@ PPOCRLabel --lang ch
 ```bash
 pip3 install PPOCRLabel
 pip3 install opencv-contrib-python-headless==4.2.0.32 # 如果下载过慢请添加"-i https://mirror.baidu.com/pypi/simple"
-PPOCRLabel --lang ch # 启动
+PPOCRLabel --lang ch  # 启动【普通模式】，用于打【检测+识别】场景的标签
+PPOCRLabel --lang ch --kie True  # 启动 【KIE 模式】，用于打【检测+识别+关键字提取】场景的标签
 ```
 
 > 如果上述安装出现问题，可以参考3.6节 错误提示
@@ -89,7 +92,8 @@ pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl -i https://mirror.baidu.
 
 ```bash
 cd ./PPOCRLabel  # 切换到PPOCRLabel目录
-python PPOCRLabel.py --lang ch
+python PPOCRLabel.py --lang ch  # 启动【普通模式】，用于打【检测+识别】场景的标签
+python PPOCRLabel.py --lang ch --kie True  # 启动 【KIE 模式】，用于打【检测+识别+关键字提取】场景的标签
 ```
 
 

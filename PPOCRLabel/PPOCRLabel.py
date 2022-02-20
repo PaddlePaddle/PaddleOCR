@@ -980,9 +980,12 @@ class MainWindow(QMainWindow):
 
         self.labelList.scrollToItem(self.currentItem())  # QAbstractItemView.EnsureVisible
         self.BoxList.scrollToItem(self.currentBox())
-        if len(self.canvas.selectedShapes) == 1 and self.keyList.count() > 0:
-            selected_key_item_row = self.keyList.findItemsByLabel(self.canvas.selectedShapes[0].key_cls, get_row=True)
-            self.keyList.setCurrentRow(selected_key_item_row)
+
+        if self.kie_mode:
+            if len(self.canvas.selectedShapes) == 1 and self.keyList.count() > 0:
+                selected_key_item_row = self.keyList.findItemsByLabel(self.canvas.selectedShapes[0].key_cls,
+                                                                      get_row=True)
+                self.keyList.setCurrentRow(selected_key_item_row)
 
         self._noSelectionSlot = False
         n_selected = len(selected_shapes)
