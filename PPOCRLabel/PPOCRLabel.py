@@ -1230,6 +1230,7 @@ class MainWindow(QMainWindow):
                     self.keyList.addItem(item)
                     rgb = self._get_rgb_by_label(key_text, self.kie_mode)
                     self.keyList.setItemLabel(item, key_text, rgb)
+                self.keyDialog.addLabelHistory(key_text)
 
     def _update_shape_color(self, shape):
         r, g, b = self._get_rgb_by_label(shape.label)
