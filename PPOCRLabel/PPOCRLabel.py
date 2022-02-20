@@ -79,13 +79,18 @@ class MainWindow(QMainWindow):
         self.settings.load()
         settings = self.settings
         self.lang = lang
-        self.kie_mode = kie_mode
-        self.key_previous_text = ""
+
         # Load string bundle for i18n
         if lang not in ['ch', 'en']:
             lang = 'en'
         self.stringBundle = StringBundle.getBundle(localeStr='zh-CN' if lang == 'ch' else 'en')  # 'en'
         getStr = lambda strId: self.stringBundle.getString(strId)
+
+        # KIE setting
+        self.kie_mode = kie_mode
+        self.key_previous_text = ""
+        self.existed_key_cls_set = set()
+        self.key_dialog_tip = getStr('keyDialogTip')
 
         self.defaultSaveDir = default_save_dir
         self.ocr = PaddleOCR(use_pdserving=False,
@@ -425,26 +430,11 @@ class MainWindow(QMainWindow):
         }
 
         #  ================== New Actions ==================
-        # key list dialog
-        if kie_mode:
-            self.keyDialog = KeyDialog(
-                text=getStr('keyDialogTip'),
-                parent=self,
-                labels=None,
-                sort_labels=True,
-                show_text_field=True,
-                completion="startswith",
-                fit_to_content={'column': True, 'row': False},
-                flags=None
-            )
-        else:
-            self.keyDialog = None
 
         edit = action(getStr('editLabel'), self.editLabel,
                       'Ctrl+E', 'edit', getStr('editLabelDetail'),
                       enabled=False)
 
-        #  ================== New Actions ==================
         AutoRec = action(getStr('autoRecognition'), self.autoRecognition,
                          '', 'Auto', getStr('autoRecognition'), enabled=False)
 
@@ -651,6 +641,8 @@ class MainWindow(QMainWindow):
             self.queueEvent(partial(self.importDirImages, self.filePath or ""))
         elif self.filePath:
             self.queueEvent(partial(self.loadFile, self.filePath or ""))
+
+        self.keyDialog = None
 
         # Callbacks:
         self.zoomWidget.valueChanged.connect(self.paintCanvas)
@@ -1595,6 +1587,34 @@ class MainWindow(QMainWindow):
             self.Cachelabel = self.loadLabelFile(self.Cachelabelpath)
             if self.Cachelabel:
                 self.PPlabel = dict(self.Cachelabel, **self.PPlabel)
+
+            for image, info in self.PPlabel.items():
+                for box in info:
+                    if "key_cls" not in box:
+                        continue
+                    self.existed_key_cls_set.add(box["key_cls"])
+            if len(self.existed_key_cls_set) > 0:
+                for key_text in self.existed_key_cls_set:
+                    if not self.keyList.findItemsByLabel(key_text):
+                        item = self.keyList.createItemFromLabel(key_text)
+                        self.keyList.addItem(item)
+                        rgb = self._get_rgb_by_label(key_text, self.kie_mode)
+                        self.keyList.setItemLabel(item, key_text, rgb)
+
+        # key list dialog
+        if self.kie_mode:
+            self.keyDialog = KeyDialog(
+                text=self.key_dialog_tip,
+                parent=self,
+                labels=self.existed_key_cls_set,
+                sort_labels=True,
+                show_text_field=True,
+                completion="startswith",
+                fit_to_content={'column': True, 'row': False},
+                flags=None
+            )
+
+
         self.lastOpenDir = dirpath
         self.dirname = dirpath
 
