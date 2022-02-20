@@ -53,6 +53,8 @@ from libs.colorDialog import ColorDialog
 from libs.ustr import ustr
 from libs.hashableQListWidgetItem import HashableQListWidgetItem
 from libs.editinlist import EditInList
+from libs.unique_label_qlist_widget import UniqueLabelQListWidget
+from libs.keyDialog import KeyDialog
 
 __appname__ = 'PPOCRLabel'
 
@@ -63,7 +65,7 @@ class MainWindow(QMainWindow):
     def __init__(self,
                  lang="ch",
                  gpu=False,
-                 kei_mode=False,
+                 kie_mode=False,
                  default_filename=None,
                  default_predefined_class_file=None,
                  default_save_dir=None):
@@ -77,7 +79,7 @@ class MainWindow(QMainWindow):
         self.settings.load()
         settings = self.settings
         self.lang = lang
-        self.kie_mode = kei_mode
+        self.kie_mode = kie_mode
         # Load string bundle for i18n
         if lang not in ['ch', 'en']:
             lang = 'en'
@@ -164,7 +166,7 @@ class MainWindow(QMainWindow):
 
         #  ================== Key List  ==================
         if self.kie_mode:
-            self.keyList = QListWidget()
+            self.keyList = UniqueLabelQListWidget()
 
             # self.keyList.itemActivated.connect(self.boxSelectionChanged)
             self.keyList.itemSelectionChanged.connect(self.keyListSelectionChanged)
@@ -421,6 +423,21 @@ class MainWindow(QMainWindow):
             # Set to one to scale to 100% when loading files.
             self.MANUAL_ZOOM: lambda: 1,
         }
+
+        #  ================== New Actions ==================
+        # key list dialog
+        if kie_mode:
+            self.keyDialog = KeyDialog(
+                parent=self,
+                labels=None,
+                sort_labels=True,
+                show_text_field=True,
+                completion="startswith",
+                fit_to_content={'column': True, 'row': False},
+                flags=None
+            )
+        else:
+            self.keyDialog = None
 
         edit = action(getStr('editLabel'), self.editLabel,
                       'Ctrl+E', 'edit', getStr('editLabelDetail'),
@@ -1174,8 +1191,7 @@ class MainWindow(QMainWindow):
         position MUST be in global coordinates.
         """
         if len(self.labelHist) > 0:
-            self.labelDialog = LabelDialog(
-                parent=self, listItem=self.labelHist)
+            self.labelDialog = LabelDialog(parent=self, listItem=self.labelHist)
 
         if value:
             text = self.labelDialog.popUp(text=self.prevLabelText)
@@ -1200,6 +1216,12 @@ class MainWindow(QMainWindow):
         else:
             # self.canvas.undoLastLine()
             self.canvas.resetAllLines()
+
+        if self.kie_mode:
+            previous_text = self.keyDialog.edit.text()
+            text, flags, group_id = self.keyDialog.popUp(text)
+            if not text:
+                self.keyDialog.edit.setText(previous_text)
 
     def scrollRequest(self, delta, orientation):
         units = - delta / (8 * 15)
@@ -1370,7 +1392,7 @@ class MainWindow(QMainWindow):
             select_indexes = self.fileListWidget.selectedIndexes()
             if len(select_indexes) > 0:
                 self.fileDock.setWindowTitle(self.fileListName + f" ({select_indexes[0].row() + 1}"
-                                                                  f"/{self.fileListWidget.count()})")
+                                                                 f"/{self.fileListWidget.count()})")
             # update show counting
             self.BoxListDock.setWindowTitle(self.BoxListDockName + f" ({self.BoxList.count()})")
             self.labelListDock.setWindowTitle(self.labelListDockName + f" ({self.labelList.count()})")
@@ -2213,7 +2235,7 @@ def get_main_app(argv=[]):
 
     win = MainWindow(lang=args.lang,
                      gpu=args.gpu,
-                     kei_mode=args.kie,
+                     kie_mode=args.kie,
                      default_predefined_class_file=args.predefined_classes_file)
     win.show()
     return app, win
