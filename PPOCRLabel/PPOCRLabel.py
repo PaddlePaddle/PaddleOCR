@@ -464,6 +464,9 @@ class MainWindow(QMainWindow):
         undo = action(getStr("undo"), self.undoShapeEdit,
                       'Ctrl+Z', "undo", getStr("undo"), enabled=False)
 
+        change_cls = action(getStr("keyChange"), self.change_box_key,
+                            'Ctrl+B', "undo", getStr("keyChange"), enabled=False)
+
         lock = action(getStr("lockBox"), self.lockSelectedShape,
                       None, "lock", getStr("lockBoxDetail"),
                       enabled=False)
@@ -525,14 +528,15 @@ class MainWindow(QMainWindow):
                               shapeLineColor=shapeLineColor, shapeFillColor=shapeFillColor,
                               zoom=zoom, zoomIn=zoomIn, zoomOut=zoomOut, zoomOrg=zoomOrg,
                               fitWindow=fitWindow, fitWidth=fitWidth,
-                              zoomActions=zoomActions, saveLabel=saveLabel,
+                              zoomActions=zoomActions, saveLabel=saveLabel, change_cls=change_cls,
                               undo=undo, undoLastPoint=undoLastPoint, open_dataset_dir=open_dataset_dir,
                               rotateLeft=rotateLeft, rotateRight=rotateRight, lock=lock,
                               fileMenuActions=(opendir, open_dataset_dir, saveLabel, resetAll, quit),
                               beginner=(), advanced=(),
                               editMenu=(createpoly, edit, copy, delete, singleRere, None, undo, undoLastPoint,
                                         None, rotateLeft, rotateRight, None, color1, self.drawSquaresOption, lock),
-                              beginnerContext=(create, edit, copy, delete, singleRere, rotateLeft, rotateRight, lock),
+                              beginnerContext=(
+                              create, edit, copy, delete, singleRere, rotateLeft, rotateRight, lock, change_cls),
                               advancedContext=(createMode, editMode, edit, copy,
                                                delete, shapeLineColor, shapeFillColor),
                               onLoadActive=(create, createMode, editMode),
@@ -984,6 +988,7 @@ class MainWindow(QMainWindow):
         self.actions.copy.setEnabled(n_selected)
         self.actions.edit.setEnabled(n_selected == 1)
         self.actions.lock.setEnabled(n_selected)
+        self.actions.change_cls.setEnabled(n_selected)
 
     def addLabel(self, shape):
         shape.paintLabel = self.displayLabelOption.isChecked()
@@ -2177,6 +2182,15 @@ class MainWindow(QMainWindow):
         else:
             self.autoSaveNum = 5  # Used for backup
             print('The program will automatically save once after confirming 5 images (default)')
+
+    def change_box_key(self):
+        key_text, _ = self.keyDialog.popUp(self.key_previous_text)
+        if key_text is None:
+            return
+        self.key_previous_text = key_text
+        for shape in self.canvas.selectedShapes:
+            shape.key_cls = key_text
+            self._update_shape_color(shape)
 
     def undoShapeEdit(self):
         self.canvas.restoreShape()
