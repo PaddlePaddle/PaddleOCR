@@ -1106,14 +1106,16 @@ class MainWindow(QMainWindow):
                         line_color=s.line_color.getRgb(),
                         fill_color=s.fill_color.getRgb(),
                         points=[(int(p.x()), int(p.y())) for p in s.points],  # QPonitF
-                        # add chris
-                        difficult=s.difficult)  # bool
+                        difficult=s.difficult,
+                        key_cls=s.key_cls)  # bool
 
-        shapes = [] if mode == 'Auto' else \
-            [format_shape(shape) for shape in self.canvas.shapes if shape.line_color != DEFAULT_LOCK_COLOR]
+        if mode == 'Auto':
+            shapes = []
+        else:
+            shapes = [format_shape(shape) for shape in self.canvas.shapes if shape.line_color != DEFAULT_LOCK_COLOR]
         # Can add differrent annotation formats here
         for box in self.result_dic:
-            trans_dic = {"label": box[1][0], "points": box[0], 'difficult': False}
+            trans_dic = {"label": box[1][0], "points": box[0], "difficult": False, "key_cls": "None"}
             if trans_dic["label"] == "" and mode == 'Auto':
                 continue
             shapes.append(trans_dic)
@@ -1121,9 +1123,8 @@ class MainWindow(QMainWindow):
         try:
             trans_dic = []
             for box in shapes:
-                trans_dic.append(
-                    {"transcription": box['label'], "points": box['points'],
-                     "difficult": box['difficult'], "key": "None"})
+                trans_dic.append({"transcription": box['label'], "points": box['points'],
+                                  "difficult": box['difficult'], "key_cls": box['key_cls']})
             self.PPlabel[annotationFilePath] = trans_dic
             if mode == 'Auto':
                 self.Cachelabel[annotationFilePath] = trans_dic
@@ -1205,8 +1206,21 @@ class MainWindow(QMainWindow):
 
         if text is not None:
             self.prevLabelText = self.stringBundle.getString('tempLabel')
-            # generate_color = generateColorByText(text)
-            shape = self.canvas.setLastLabel(text, None, None)  # generate_color, generate_color
+
+            if self.kie_mode:
+                key_text, _ = self.keyDialog.popUp(self.key_previous_text)
+                if key_text is not None:
+                    shape = self.canvas.setLastLabel(text, None, None, key_text)  # generate_color, generate_color
+                    self.key_previous_text = key_text
+                    if not self.keyList.findItemsByLabel(key_text):
+                        item = self.keyList.createItemFromLabel(key_text)
+                        self.keyList.addItem(item)
+                        rgb = self._get_rgb_by_label(key_text, self.kie_mode)
+                        self.keyList.setItemLabel(item, key_text, rgb)
+                    self.keyDialog.addLabelHistory(key_text)
+            else:
+                shape = self.canvas.setLastLabel(text, None, None, None)  # generate_color, generate_color
+
             self.addLabel(shape)
             if self.beginner():  # Switch to edit mode.
                 self.canvas.setEditing(True)
@@ -1220,17 +1234,6 @@ class MainWindow(QMainWindow):
         else:
             # self.canvas.undoLastLine()
             self.canvas.resetAllLines()
-
-        if self.kie_mode:
-            key_text, flags = self.keyDialog.popUp(self.key_previous_text)
-            if key_text is not None:
-                self.key_previous_text = key_text
-                if not self.keyList.findItemsByLabel(key_text):
-                    item = self.keyList.createItemFromLabel(key_text)
-                    self.keyList.addItem(item)
-                    rgb = self._get_rgb_by_label(key_text, self.kie_mode)
-                    self.keyList.setItemLabel(item, key_text, rgb)
-                self.keyDialog.addLabelHistory(key_text)
 
     def _update_shape_color(self, shape):
         r, g, b = self._get_rgb_by_label(shape.label)
@@ -1438,13 +1441,13 @@ class MainWindow(QMainWindow):
         for box in self.canvas.lockedShapes:
             if self.canvas.isInTheSameImage:
                 shapes.append((box['transcription'], [[s[0] * width, s[1] * height] for s in box['ratio']],
-                               DEFAULT_LOCK_COLOR, box['key'], box['difficult']))
+                               DEFAULT_LOCK_COLOR, box['key_cls'], box['difficult']))
             else:
                 shapes.append(('锁定框：待检测', [[s[0] * width, s[1] * height] for s in box['ratio']],
-                               DEFAULT_LOCK_COLOR, box['key'], box['difficult']))
+                               DEFAULT_LOCK_COLOR, box['key_cls'], box['difficult']))
         if imgidx in self.PPlabel.keys():
             for box in self.PPlabel[imgidx]:
-                shapes.append((box['transcription'], box['points'], None, box['key'], box['difficult']))
+                shapes.append((box['transcription'], box['points'], None, box['key_cls'], box['difficult']))
 
         self.loadLabels(shapes)
         self.canvas.verified = False
@@ -2135,7 +2138,8 @@ class MainWindow(QMainWindow):
                 try:
                     img = cv2.imread(key)
                     for i, label in enumerate(self.PPlabel[idx]):
-                        if label['difficult']: continue
+                        if label['difficult']:
+                            continue
                         img_crop = get_rotate_crop_image(img, np.array(label['points'], np.float32))
                         img_name = os.path.splitext(os.path.basename(idx))[0] + '_crop_' + str(i) + '.jpg'
                         cv2.imwrite(crop_img_dir + img_name, img_crop)
@@ -2202,8 +2206,9 @@ class MainWindow(QMainWindow):
                         line_color=s.line_color.getRgb(),
                         fill_color=s.fill_color.getRgb(),
                         ratio=[[int(p.x()) / width, int(p.y()) / height] for p in s.points],  # QPonitF
-                        # add chris
-                        difficult=s.difficult)  # bool
+                        difficult=s.difficult,# bool
+                        key_cls=s.key_cls,# bool
+                        )
 
         # lock
         if len(self.canvas.lockedShapes) == 0:
@@ -2214,7 +2219,8 @@ class MainWindow(QMainWindow):
             trans_dic = []
             for box in shapes:
                 trans_dic.append({"transcription": box['label'], "ratio": box['ratio'],
-                                  "difficult": box['difficult'], "key": "None" if "key" not in box else box["key"]})
+                                  "difficult": box['difficult'],
+                                  "key_cls": "None" if "key_cls" not in box else box["key_cls"]})
             self.canvas.lockedShapes = trans_dic
             self.actions.save.setEnabled(True)
 
