@@ -1565,6 +1565,39 @@ class MainWindow(QMainWindow):
             self.actions.open_dataset_dir.setEnabled(False)
             defaultOpenDirPath = os.path.dirname(self.filePath) if self.filePath else '.'
 
+    def init_key_list(self, label_dict):
+        if not self.kie_mode:
+            return
+        # load key_cls
+        for image, info in label_dict.items():
+            for box in info:
+                if "key_cls" not in box:
+                    continue
+                self.existed_key_cls_set.add(box["key_cls"])
+        if len(self.existed_key_cls_set) > 0:
+            for key_text in self.existed_key_cls_set:
+                if not self.keyList.findItemsByLabel(key_text):
+                    item = self.keyList.createItemFromLabel(key_text)
+                    self.keyList.addItem(item)
+                    rgb = self._get_rgb_by_label(key_text, self.kie_mode)
+                    self.keyList.setItemLabel(item, key_text, rgb)
+
+        if self.keyDialog is None:
+            # key list dialog
+            self.keyDialog = KeyDialog(
+                text=self.key_dialog_tip,
+                parent=self,
+                labels=self.existed_key_cls_set,
+                sort_labels=True,
+                show_text_field=True,
+                completion="startswith",
+                fit_to_content={'column': True, 'row': False},
+                flags=None
+            )
+        else:
+            self.keyDialog.labelList.addItems(self.existed_key_cls_set)
+
+
     def importDirImages(self, dirpath, isDelete=False):
         if not self.mayContinue() or not dirpath:
             return
@@ -1580,32 +1613,7 @@ class MainWindow(QMainWindow):
             if self.Cachelabel:
                 self.PPlabel = dict(self.Cachelabel, **self.PPlabel)
 
-            if self.kie_mode:
-                # load key_cls
-                for image, info in self.PPlabel.items():
-                    for box in info:
-                        if "key_cls" not in box:
-                            continue
-                        self.existed_key_cls_set.add(box["key_cls"])
-                if len(self.existed_key_cls_set) > 0:
-                    for key_text in self.existed_key_cls_set:
-                        if not self.keyList.findItemsByLabel(key_text):
-                            item = self.keyList.createItemFromLabel(key_text)
-                            self.keyList.addItem(item)
-                            rgb = self._get_rgb_by_label(key_text, self.kie_mode)
-                            self.keyList.setItemLabel(item, key_text, rgb)
-
-                # key list dialog
-                self.keyDialog = KeyDialog(
-                    text=self.key_dialog_tip,
-                    parent=self,
-                    labels=self.existed_key_cls_set,
-                    sort_labels=True,
-                    show_text_field=True,
-                    completion="startswith",
-                    fit_to_content={'column': True, 'row': False},
-                    flags=None
-                )
+            self.init_key_list(self.PPlabel)
 
         self.lastOpenDir = dirpath
         self.dirname = dirpath
@@ -1942,6 +1950,8 @@ class MainWindow(QMainWindow):
         self.actions.AutoRec.setEnabled(False)
         self.setDirty()
         self.saveCacheLabel()
+
+        self.init_key_list(self.Cachelabel)
 
     def reRecognition(self):
         img = cv2.imread(self.filePath)
