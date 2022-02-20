@@ -80,6 +80,7 @@ class MainWindow(QMainWindow):
         settings = self.settings
         self.lang = lang
         self.kie_mode = kie_mode
+        self.key_previous_text = ""
         # Load string bundle for i18n
         if lang not in ['ch', 'en']:
             lang = 'en'
@@ -428,6 +429,7 @@ class MainWindow(QMainWindow):
         # key list dialog
         if kie_mode:
             self.keyDialog = KeyDialog(
+                text=getStr('keyDialogTip'),
                 parent=self,
                 labels=None,
                 sort_labels=True,
@@ -1219,10 +1221,9 @@ class MainWindow(QMainWindow):
             self.canvas.resetAllLines()
 
         if self.kie_mode:
-            previous_text = self.keyDialog.edit.text()
-            text, flags, group_id = self.keyDialog.popUp(text)
-            if not text:
-                self.keyDialog.edit.setText(previous_text)
+            self.key_previous_text, flags = self.keyDialog.popUp(self.key_previous_text)
+            if not self.key_previous_text:
+                self.keyDialog.edit.setText(self.key_previous_text)
 
     def scrollRequest(self, delta, orientation):
         units = - delta / (8 * 15)

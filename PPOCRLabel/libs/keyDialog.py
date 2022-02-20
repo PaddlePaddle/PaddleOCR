@@ -1,12 +1,9 @@
 import re
-import sys
 
 from PyQt5 import QtCore
 from PyQt5 import QtGui
 from PyQt5 import QtWidgets
-
 from libs.utils import newIcon, labelValidator
-
 
 QT5 = True
 
@@ -49,16 +46,11 @@ class KeyDialog(QtWidgets.QDialog):
         self.edit.editingFinished.connect(self.postProcess)
         if flags:
             self.edit.textChanged.connect(self.updateFlags)
-        self.edit_group_id = QtWidgets.QLineEdit()
-        self.edit_group_id.setPlaceholderText("Group ID")
-        self.edit_group_id.setValidator(
-            QtGui.QRegExpValidator(QtCore.QRegExp(r"\d*"), None)
-        )
+
         layout = QtWidgets.QVBoxLayout()
         if show_text_field:
             layout_edit = QtWidgets.QHBoxLayout()
             layout_edit.addWidget(self.edit, 6)
-            layout_edit.addWidget(self.edit_group_id, 2)
             layout.addLayout(layout_edit)
         # buttons
         self.buttonBox = bb = QtWidgets.QDialogButtonBox(
@@ -189,13 +181,7 @@ class KeyDialog(QtWidgets.QDialog):
             flags[item.text()] = item.isChecked()
         return flags
 
-    def getGroupId(self):
-        group_id = self.edit_group_id.text()
-        if group_id:
-            return int(group_id)
-        return None
-
-    def popUp(self, text=None, move=True, flags=None, group_id=None):
+    def popUp(self, text=None, move=True, flags=None):
         if self._fit_to_content["row"]:
             self.labelList.setMinimumHeight(
                 self.labelList.sizeHintForRow(0) * self.labelList.count() + 2
@@ -213,10 +199,7 @@ class KeyDialog(QtWidgets.QDialog):
             self.resetFlags(text)
         self.edit.setText(text)
         self.edit.setSelection(0, len(text))
-        if group_id is None:
-            self.edit_group_id.clear()
-        else:
-            self.edit_group_id.setText(str(group_id))
+
         items = self.labelList.findItems(text, QtCore.Qt.MatchFixedString)
         if items:
             if len(items) != 1:
@@ -227,6 +210,6 @@ class KeyDialog(QtWidgets.QDialog):
         if move:
             self.move(QtGui.QCursor.pos())
         if self.exec_():
-            return self.edit.text(), self.getFlags(), self.getGroupId()
+            return self.edit.text(), self.getFlags()
         else:
             return None, None, None
