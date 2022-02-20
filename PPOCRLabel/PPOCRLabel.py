@@ -465,7 +465,7 @@ class MainWindow(QMainWindow):
                       'Ctrl+Z', "undo", getStr("undo"), enabled=False)
 
         change_cls = action(getStr("keyChange"), self.change_box_key,
-                            'Ctrl+B', "undo", getStr("keyChange"), enabled=False)
+                            'Ctrl+B', "edit", getStr("keyChange"), enabled=False)
 
         lock = action(getStr("lockBox"), self.lockSelectedShape,
                       None, "lock", getStr("lockBoxDetail"),
@@ -980,6 +980,9 @@ class MainWindow(QMainWindow):
 
         self.labelList.scrollToItem(self.currentItem())  # QAbstractItemView.EnsureVisible
         self.BoxList.scrollToItem(self.currentBox())
+        if len(self.canvas.selectedShapes) == 1 and self.keyList.count() > 0:
+            selected_key_item_row = self.keyList.findItemsByLabel(self.canvas.selectedShapes[0].key_cls, get_row=True)
+            self.keyList.setCurrentRow(selected_key_item_row)
 
         self._noSelectionSlot = False
         n_selected = len(selected_shapes)
