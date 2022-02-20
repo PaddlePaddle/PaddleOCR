@@ -10,7 +10,6 @@
 # SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
 # CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 # pyrcc5 -o libs/resources.py resources.qrc
@@ -24,13 +23,11 @@ import subprocess
 import sys
 from functools import partial
 
-try:
-    from PyQt5 import QtCore, QtGui, QtWidgets
-    from PyQt5.QtGui import *
-    from PyQt5.QtCore import *
-    from PyQt5.QtWidgets import *
-except ImportError:
-    print("Please install pyqt5...")
+from PyQt5.QtCore import QSize, Qt, QPoint, QByteArray, QTimer, QFileInfo, QPointF, QProcess
+from PyQt5.QtGui import QImage, QCursor, QPixmap, QImageReader
+from PyQt5.QtWidgets import QMainWindow, QListWidget, QVBoxLayout, QToolButton, QHBoxLayout, QDockWidget, QWidget, \
+    QSlider, QGraphicsOpacityEffect, QMessageBox, QListView, QScrollArea, QWidgetAction, QApplication, QLabel, \
+    QFileDialog, QListWidgetItem, QComboBox, QDialog
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 
@@ -1238,12 +1235,12 @@ class MainWindow(QMainWindow):
 
     def _update_shape_color(self, shape):
         r, g, b = self._get_rgb_by_label(shape.key_cls, self.kie_mode)
-        shape.line_color = QtGui.QColor(r, g, b)
-        shape.vertex_fill_color = QtGui.QColor(r, g, b)
-        shape.hvertex_fill_color = QtGui.QColor(255, 255, 255)
-        shape.fill_color = QtGui.QColor(r, g, b, 128)
-        shape.select_line_color = QtGui.QColor(255, 255, 255)
-        shape.select_fill_color = QtGui.QColor(r, g, b, 155)
+        shape.line_color = QColor(r, g, b)
+        shape.vertex_fill_color = QColor(r, g, b)
+        shape.hvertex_fill_color = QColor(255, 255, 255)
+        shape.fill_color = QColor(r, g, b, 128)
+        shape.select_line_color = QColor(255, 255, 255)
+        shape.select_fill_color = QColor(r, g, b, 155)
 
     def _get_rgb_by_label(self, label, kie_mode):
         shift_auto_shape_color = 2  # use for random color

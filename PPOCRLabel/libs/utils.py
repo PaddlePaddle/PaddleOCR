@@ -10,30 +10,26 @@
 # SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
 # CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-from math import sqrt
-from libs.ustr import ustr
 import hashlib
+import os
 import re
 import sys
+from math import sqrt
+
 import cv2
 import numpy as np
-import os
+from PyQt5.QtCore import QRegExp, QT_VERSION_STR
+from PyQt5.QtGui import QIcon, QRegExpValidator, QColor
+from PyQt5.QtWidgets import QPushButton, QAction, QMenu
+from libs.ustr import ustr
 
-__dir__ = os.path.dirname(os.path.abspath(__file__)) # 获取本程序文件路径
+__dir__ = os.path.dirname(os.path.abspath(__file__))  # 获取本程序文件路径
 __iconpath__ = os.path.abspath(os.path.join(__dir__, '../resources/icons'))
-
-try:
-    from PyQt5.QtGui import *
-    from PyQt5.QtCore import *
-    from PyQt5.QtWidgets import *
-except ImportError:
-    from PyQt4.QtGui import *
-    from PyQt4.QtCore import *
 
 
 def newIcon(icon, iconSize=None):
     if iconSize is not None:
-        return QIcon(QIcon(__iconpath__ + "/" + icon + ".png").pixmap(iconSize,iconSize))
+        return QIcon(QIcon(__iconpath__ + "/" + icon + ".png").pixmap(iconSize, iconSize))
     else:
         return QIcon(__iconpath__ + "/" + icon + ".png")
 
@@ -105,24 +101,25 @@ def generateColorByText(text):
     s = ustr(text)
     hashCode = int(hashlib.sha256(s.encode('utf-8')).hexdigest(), 16)
     r = int((hashCode / 255) % 255)
-    g = int((hashCode / 65025)  % 255)
-    b = int((hashCode / 16581375)  % 255)
+    g = int((hashCode / 65025) % 255)
+    b = int((hashCode / 16581375) % 255)
     return QColor(r, g, b, 100)
+
 
 def have_qstring():
     '''p3/qt5 get rid of QString wrapper as py3 has native unicode str type'''
     return not (sys.version_info.major >= 3 or QT_VERSION_STR.startswith('5.'))
 
-def util_qt_strlistclass():
-    return QStringList if have_qstring() else list
 
-def natural_sort(list, key=lambda s:s):
+def natural_sort(list, key=lambda s: s):
     """
     Sort the list into natural alphanumeric order.
     """
+
     def get_alphanum_key_func(key):
         convert = lambda text: int(text) if text.isdigit() else text
         return lambda s: [convert(c) for c in re.split('([0-9]+)', key(s))]
+
     sort_key = get_alphanum_key_func(key)
     list.sort(key=sort_key)
 
@@ -133,8 +130,8 @@ def get_rotate_crop_image(img, points):
     d = 0.0
     for index in range(-1, 3):
         d += -0.5 * (points[index + 1][1] + points[index][1]) * (
-                    points[index + 1][0] - points[index][0])
-    if d < 0: # counterclockwise
+                points[index + 1][0] - points[index][0])
+    if d < 0:  # counterclockwise
         tmp = np.array(points)
         points[1], points[3] = tmp[3], tmp[1]
 
@@ -163,10 +160,11 @@ def get_rotate_crop_image(img, points):
     except Exception as e:
         print(e)
 
+
 def stepsInfo(lang='en'):
     if lang == 'ch':
         msg = "1. 安装与运行：使用上述命令安装与运行程序。\n" \
-              "2. 打开文件夹：在菜单栏点击 “文件” - 打开目录 选择待标记图片的文件夹.\n"\
+              "2. 打开文件夹：在菜单栏点击 “文件” - 打开目录 选择待标记图片的文件夹.\n" \
               "3. 自动标注：点击 ”自动标注“，使用PPOCR超轻量模型对图片文件名前图片状态为 “X” 的图片进行自动标注。\n" \
               "4. 手动标注：点击 “矩形标注”（推荐直接在英文模式下点击键盘中的 “W”)，用户可对当前图片中模型未检出的部分进行手动" \
               "绘制标记框。点击键盘P，则使用四点标注模式（或点击“编辑” - “四点标注”），用户依次点击4个点后，双击左键表示标注完成。\n" \
@@ -181,25 +179,26 @@ def stepsInfo(lang='en'):
 
     else:
         msg = "1. Build and launch using the instructions above.\n" \
-              "2. Click 'Open Dir' in Menu/File to select the folder of the picture.\n"\
-              "3. Click 'Auto recognition', use PPOCR model to automatically annotate images which marked with 'X' before the file name."\
-              "4. Create Box:\n"\
-                   "4.1 Click 'Create RectBox' or press 'W' in English keyboard mode to draw a new rectangle detection box. Click and release left mouse to select a region to annotate the text area.\n"\
-                   "4.2 Press 'P' to enter four-point labeling mode which enables you to create any four-point shape by clicking four points with the left mouse button in succession and DOUBLE CLICK the left mouse as the signal of labeling completion.\n"\
-              "5. After the marking frame is drawn, the user clicks 'OK', and the detection frame will be pre-assigned a TEMPORARY label.\n"\
-              "6. Click re-Recognition, model will rewrite ALL recognition results in ALL detection box.\n"\
-              "7. Double click the result in 'recognition result' list to manually change inaccurate recognition results.\n"\
-              "8. Click 'Save', the image status will switch to '√',then the program automatically jump to the next.\n"\
-              "9. Click 'Delete Image' and the image will be deleted to the recycle bin.\n"\
-              "10. Labeling result: After closing the application or switching the file path, the manually saved label will be stored in *Label.txt* under the opened picture folder.\n"\
-              "    Click PaddleOCR-Save Recognition Results in the menu bar, the recognition training data of such pictures will be saved in the *crop_img* folder, and the recognition label will be saved in *rec_gt.txt*.\n" 
+              "2. Click 'Open Dir' in Menu/File to select the folder of the picture.\n" \
+              "3. Click 'Auto recognition', use PPOCR model to automatically annotate images which marked with 'X' before the file name." \
+              "4. Create Box:\n" \
+              "4.1 Click 'Create RectBox' or press 'W' in English keyboard mode to draw a new rectangle detection box. Click and release left mouse to select a region to annotate the text area.\n" \
+              "4.2 Press 'P' to enter four-point labeling mode which enables you to create any four-point shape by clicking four points with the left mouse button in succession and DOUBLE CLICK the left mouse as the signal of labeling completion.\n" \
+              "5. After the marking frame is drawn, the user clicks 'OK', and the detection frame will be pre-assigned a TEMPORARY label.\n" \
+              "6. Click re-Recognition, model will rewrite ALL recognition results in ALL detection box.\n" \
+              "7. Double click the result in 'recognition result' list to manually change inaccurate recognition results.\n" \
+              "8. Click 'Save', the image status will switch to '√',then the program automatically jump to the next.\n" \
+              "9. Click 'Delete Image' and the image will be deleted to the recycle bin.\n" \
+              "10. Labeling result: After closing the application or switching the file path, the manually saved label will be stored in *Label.txt* under the opened picture folder.\n" \
+              "    Click PaddleOCR-Save Recognition Results in the menu bar, the recognition training data of such pictures will be saved in the *crop_img* folder, and the recognition label will be saved in *rec_gt.txt*.\n"
 
     return msg
+
 
 def keysInfo(lang='en'):
     if lang == 'ch':
         msg = "快捷键\t\t\t说明\n" \
-              "———————————————————————\n"\
+              "———————————————————————\n" \
               "Ctrl + shift + R\t\t对当前图片的所有标记重新识别\n" \
               "W\t\t\t新建矩形框\n" \
               "Q\t\t\t新建四点框\n" \
@@ -223,17 +222,17 @@ def keysInfo(lang='en'):
               "———————————————————————\n" \
               "Ctrl + shift + R\t\tRe-recognize all the labels\n" \
               "\t\t\tof the current image\n" \
-              "\n"\
+              "\n" \
               "W\t\t\tCreate a rect box\n" \
               "Q\t\t\tCreate a four-points box\n" \
               "Ctrl + E\t\tEdit label of the selected box\n" \
               "Ctrl + R\t\tRe-recognize the selected box\n" \
               "Ctrl + C\t\tCopy and paste the selected\n" \
               "\t\t\tbox\n" \
-              "\n"\
+              "\n" \
               "Ctrl + Left Mouse\tMulti select the label\n" \
               "Button\t\t\tbox\n" \
-              "\n"\
+              "\n" \
               "Backspace\t\tDelete the selected box\n" \
               "Ctrl + V\t\tCheck image\n" \
               "Ctrl + Shift + d\tDelete image\n" \

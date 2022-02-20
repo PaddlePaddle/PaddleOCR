@@ -3,9 +3,10 @@ import re
 from PyQt5 import QtCore
 from PyQt5 import QtGui
 from PyQt5 import QtWidgets
+from PyQt5.Qt import QT_VERSION_STR
 from libs.utils import newIcon, labelValidator
 
-QT5 = True
+QT5 = QT_VERSION_STR[0] == '5'
 
 
 # TODO(unknown):
