@@ -174,10 +174,9 @@ class MainWindow(QMainWindow):
         if self.kie_mode:
             # self.keyList = QListWidget()
             self.keyList = UniqueLabelQListWidget()
-            self.keyList.itemSelectionChanged.connect(self.keyListSelectionChanged)
-            self.keyList.itemDoubleClicked.connect(self.editBox)
-            # Connect to itemChanged to detect checkbox changes.
-            self.keyList.itemChanged.connect(self.keyListItemChanged)
+            # self.keyList.itemSelectionChanged.connect(self.keyListSelectionChanged)
+            # self.keyList.itemDoubleClicked.connect(self.editBox)
+            # self.keyList.itemChanged.connect(self.keyListItemChanged)
             self.keyListDockName = getStr('keyListTitle')
             self.keyListDock = QDockWidget(self.keyListDockName, self)
             self.keyListDock.setWidget(self.keyList)
@@ -1135,12 +1134,6 @@ class MainWindow(QMainWindow):
                 self.canvas.selectShapes(selected_shapes)
             else:
                 self.canvas.deSelectShape()
-
-    def keyListSelectionChanged(self):
-        pass
-
-    def keyListItemChanged(self):
-        pass
 
     def boxSelectionChanged(self):
         if self._noSelectionSlot:
