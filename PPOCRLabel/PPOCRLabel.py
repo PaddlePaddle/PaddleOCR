@@ -366,7 +366,7 @@ class MainWindow(QMainWindow):
 
         resetAll = action(getStr('resetAll'), self.resetAll, None, 'resetall', getStr('resetAllDetail'))
 
-        color1 = action(getStr('boxLineColor'), self.chooseColor1,
+        color1 = action(getStr('boxLineColor'), self.chooseColor,
                         'Ctrl+L', 'color_line', getStr('boxLineColorDetail'))
 
         createMode = action(getStr('crtBox'), self.setCreateMode,
@@ -1042,7 +1042,7 @@ class MainWindow(QMainWindow):
 
     def loadLabels(self, shapes):
         s = []
-        for label, points, line_color, key, difficult in shapes:
+        for label, points, line_color, key_cls, difficult in shapes:
             shape = Shape(label=label, line_color=line_color)
             for x, y in points:
 
@@ -1207,6 +1207,7 @@ class MainWindow(QMainWindow):
         if text is not None:
             self.prevLabelText = self.stringBundle.getString('tempLabel')
 
+            shape = self.canvas.setLastLabel(text, None, None, None)  # generate_color, generate_color
             if self.kie_mode:
                 key_text, _ = self.keyDialog.popUp(self.key_previous_text)
                 if key_text is not None:
@@ -1217,9 +1218,9 @@ class MainWindow(QMainWindow):
                         self.keyList.addItem(item)
                         rgb = self._get_rgb_by_label(key_text, self.kie_mode)
                         self.keyList.setItemLabel(item, key_text, rgb)
+
+                    self._update_shape_color(shape)
                     self.keyDialog.addLabelHistory(key_text)
-            else:
-                shape = self.canvas.setLastLabel(text, None, None, None)  # generate_color, generate_color
 
             self.addLabel(shape)
             if self.beginner():  # Switch to edit mode.
@@ -1236,7 +1237,7 @@ class MainWindow(QMainWindow):
             self.canvas.resetAllLines()
 
     def _update_shape_color(self, shape):
-        r, g, b = self._get_rgb_by_label(shape.label)
+        r, g, b = self._get_rgb_by_label(shape.key_cls, self.kie_mode)
         shape.line_color = QtGui.QColor(r, g, b)
         shape.vertex_fill_color = QtGui.QColor(r, g, b)
         shape.hvertex_fill_color = QtGui.QColor(255, 255, 255)
@@ -1245,8 +1246,8 @@ class MainWindow(QMainWindow):
         shape.select_fill_color = QtGui.QColor(r, g, b, 155)
 
     def _get_rgb_by_label(self, label, kie_mode):
-        shift_auto_shape_color = 0  # use for random color
-        if kie_mode:
+        shift_auto_shape_color = 2  # use for random color
+        if kie_mode and label != "None":
             item = self.keyList.findItemsByLabel(label)[0]
             label_id = self.keyList.indexFromItem(item).row() + 1
             label_id += shift_auto_shape_color
@@ -1816,7 +1817,7 @@ class MainWindow(QMainWindow):
     def currentPath(self):
         return os.path.dirname(self.filePath) if self.filePath else '.'
 
-    def chooseColor1(self):
+    def chooseColor(self):
         color = self.colorDialog.getColor(self.lineColor, u'Choose line color',
                                           default=DEFAULT_LINE_COLOR)
         if color:
@@ -2206,8 +2207,8 @@ class MainWindow(QMainWindow):
                         line_color=s.line_color.getRgb(),
                         fill_color=s.fill_color.getRgb(),
                         ratio=[[int(p.x()) / width, int(p.y()) / height] for p in s.points],  # QPonitF
-                        difficult=s.difficult,# bool
-                        key_cls=s.key_cls,# bool
+                        difficult=s.difficult,  # bool
+                        key_cls=s.key_cls,  # bool
                         )
 
         # lock
