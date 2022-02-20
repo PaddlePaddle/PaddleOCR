@@ -63,6 +63,7 @@ class MainWindow(QMainWindow):
     def __init__(self,
                  lang="ch",
                  gpu=False,
+                 kei_mode=False,
                  default_filename=None,
                  default_predefined_class_file=None,
                  default_save_dir=None):
@@ -76,6 +77,7 @@ class MainWindow(QMainWindow):
         self.settings.load()
         settings = self.settings
         self.lang = lang
+        self.kie_mode = kei_mode
         # Load string bundle for i18n
         if lang not in ['ch', 'en']:
             lang = 'en'
@@ -133,11 +135,13 @@ class MainWindow(QMainWindow):
         self.autoSaveNum = 5
 
         #  ================== File List  ==================
+
+        filelistLayout = QVBoxLayout()
+        filelistLayout.setContentsMargins(0, 0, 0, 0)
+
         self.fileListWidget = QListWidget()
         self.fileListWidget.itemClicked.connect(self.fileitemDoubleClicked)
         self.fileListWidget.setIconSize(QSize(25, 25))
-        filelistLayout = QVBoxLayout()
-        filelistLayout.setContentsMargins(0, 0, 0, 0)
         filelistLayout.addWidget(self.fileListWidget)
 
         self.AutoRecognition = QToolButton()
@@ -158,10 +162,26 @@ class MainWindow(QMainWindow):
         self.fileDock.setWidget(fileListContainer)
         self.addDockWidget(Qt.LeftDockWidgetArea, self.fileDock)
 
+        #  ================== Key List  ==================
+        if self.kie_mode:
+            self.keyList = QListWidget()
+
+            # self.keyList.itemActivated.connect(self.boxSelectionChanged)
+            self.keyList.itemSelectionChanged.connect(self.keyListSelectionChanged)
+            self.keyList.itemDoubleClicked.connect(self.editBox)
+            # Connect to itemChanged to detect checkbox changes.
+            self.keyList.itemChanged.connect(self.keyListItemChanged)
+            self.keyListDockName = getStr('keyListTitle')
+            self.keyListDock = QDockWidget(self.keyListDockName, self)
+            self.keyListDock.setWidget(self.keyList)
+            self.keyListDock.setFeatures(QDockWidget.NoDockWidgetFeatures)
+            filelistLayout.addWidget(self.keyListDock)
+
         #  ================== Right Area  ==================
         listLayout = QVBoxLayout()
         listLayout.setContentsMargins(0, 0, 0, 0)
 
+        # Buttons
         self.editButton = QToolButton()
         self.reRecogButton = QToolButton()
         self.reRecogButton.setIcon(newIcon('reRec', 30))
@@ -174,12 +194,12 @@ class MainWindow(QMainWindow):
         self.DelButton = QToolButton()
         self.DelButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
 
-        lefttoptoolbox = QHBoxLayout()
-        lefttoptoolbox.addWidget(self.newButton)
-        lefttoptoolbox.addWidget(self.reRecogButton)
-        lefttoptoolboxcontainer = QWidget()
-        lefttoptoolboxcontainer.setLayout(lefttoptoolbox)
-        listLayout.addWidget(lefttoptoolboxcontainer)
+        leftTopToolBox = QHBoxLayout()
+        leftTopToolBox.addWidget(self.newButton)
+        leftTopToolBox.addWidget(self.reRecogButton)
+        leftTopToolBoxContainer = QWidget()
+        leftTopToolBoxContainer.setLayout(leftTopToolBox)
+        listLayout.addWidget(leftTopToolBoxContainer)
 
         #  ================== Label List  ==================
         # Create and add a widget for showing current label items
@@ -1113,6 +1133,12 @@ class MainWindow(QMainWindow):
                 self.canvas.selectShapes(selected_shapes)
             else:
                 self.canvas.deSelectShape()
+
+    def keyListSelectionChanged(self):
+        pass
+
+    def keyListItemChanged(self):
+        pass
 
     def boxSelectionChanged(self):
         if self._noSelectionSlot:
@@ -2177,8 +2203,9 @@ def get_main_app(argv=[]):
     app.setWindowIcon(newIcon("app"))
     # Tzutalin 201705+: Accept extra arguments to change predefined class file
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument("--lang", type=str, default='en', nargs="?")
+    arg_parser.add_argument("--lang", type=str, default='ch', nargs="?")
     arg_parser.add_argument("--gpu", type=str2bool, default=True, nargs="?")
+    arg_parser.add_argument("--kie", type=str2bool, default=True, nargs="?")
     arg_parser.add_argument("--predefined_classes_file",
                             default=os.path.join(os.path.dirname(__file__), "data", "predefined_classes.txt"),
                             nargs="?")
@@ -2186,6 +2213,7 @@ def get_main_app(argv=[]):
 
     win = MainWindow(lang=args.lang,
                      gpu=args.gpu,
+                     kei_mode=args.kie,
                      default_predefined_class_file=args.predefined_classes_file)
     win.show()
     return app, win
