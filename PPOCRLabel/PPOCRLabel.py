@@ -1032,7 +1032,7 @@ class MainWindow(QMainWindow):
     def loadLabels(self, shapes):
         s = []
         for label, points, line_color, key_cls, difficult in shapes:
-            shape = Shape(label=label, line_color=line_color)
+            shape = Shape(label=label, line_color=line_color, key_cls=key_cls)
             for x, y in points:
 
                 # Ensure the labels are within the bounds of the image. If not, fix them.
@@ -1046,16 +1046,7 @@ class MainWindow(QMainWindow):
             shape.close()
             s.append(shape)
 
-            # if line_color:
-            #     shape.line_color = QColor(*line_color)
-            # else:
-            #     shape.line_color = generateColorByText(label)
-            #
-            # if fill_color:
-            #     shape.fill_color = QColor(*fill_color)
-            # else:
-            #     shape.fill_color = generateColorByText(label)
-
+            self._update_shape_color(shape)
             self.addLabel(shape)
 
         self.updateComboBox()
@@ -1588,32 +1579,32 @@ class MainWindow(QMainWindow):
             if self.Cachelabel:
                 self.PPlabel = dict(self.Cachelabel, **self.PPlabel)
 
-            for image, info in self.PPlabel.items():
-                for box in info:
-                    if "key_cls" not in box:
-                        continue
-                    self.existed_key_cls_set.add(box["key_cls"])
-            if len(self.existed_key_cls_set) > 0:
-                for key_text in self.existed_key_cls_set:
-                    if not self.keyList.findItemsByLabel(key_text):
-                        item = self.keyList.createItemFromLabel(key_text)
-                        self.keyList.addItem(item)
-                        rgb = self._get_rgb_by_label(key_text, self.kie_mode)
-                        self.keyList.setItemLabel(item, key_text, rgb)
+            if self.kie_mode:
+                # load key_cls
+                for image, info in self.PPlabel.items():
+                    for box in info:
+                        if "key_cls" not in box:
+                            continue
+                        self.existed_key_cls_set.add(box["key_cls"])
+                if len(self.existed_key_cls_set) > 0:
+                    for key_text in self.existed_key_cls_set:
+                        if not self.keyList.findItemsByLabel(key_text):
+                            item = self.keyList.createItemFromLabel(key_text)
+                            self.keyList.addItem(item)
+                            rgb = self._get_rgb_by_label(key_text, self.kie_mode)
+                            self.keyList.setItemLabel(item, key_text, rgb)
 
-        # key list dialog
-        if self.kie_mode:
-            self.keyDialog = KeyDialog(
-                text=self.key_dialog_tip,
-                parent=self,
-                labels=self.existed_key_cls_set,
-                sort_labels=True,
-                show_text_field=True,
-                completion="startswith",
-                fit_to_content={'column': True, 'row': False},
-                flags=None
-            )
-
+                # key list dialog
+                self.keyDialog = KeyDialog(
+                    text=self.key_dialog_tip,
+                    parent=self,
+                    labels=self.existed_key_cls_set,
+                    sort_labels=True,
+                    show_text_field=True,
+                    completion="startswith",
+                    fit_to_content={'column': True, 'row': False},
+                    flags=None
+                )
 
         self.lastOpenDir = dirpath
         self.dirname = dirpath
