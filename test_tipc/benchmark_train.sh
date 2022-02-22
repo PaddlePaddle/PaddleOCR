@@ -3,8 +3,6 @@ source test_tipc/common_func.sh
 
 # set env
 python=python
-export model_branch=`git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3`
-export model_commit=$(git log|head -n1|awk '{print $2}') 
 export str_tmp=$(echo `pip list|grep paddlepaddle-gpu|awk -F ' ' '{print $2}'`)
 export frame_version=${str_tmp%%.post*}
 export frame_commit=$(echo `${python} -c "import paddle;print(paddle.version.commit)"`)
