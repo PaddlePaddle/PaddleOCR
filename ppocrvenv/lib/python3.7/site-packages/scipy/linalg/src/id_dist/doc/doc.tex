@@ -1,0 +1,977 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\usepackage{supertabular}
+\usepackage{array}
+
+\def\T{{\hbox{\scriptsize{\rm T}}}}
+\def\epsilon{\varepsilon}
+\def\bigoh{\mathcal{O}}
+\def\phi{\varphi}
+\def\st{{\hbox{\scriptsize{\rm st}}}}
+\def\th{{\hbox{\scriptsize{\rm th}}}}
+\def\x{\mathbf{x}}
+
+
+\title{ID: A software package for low-rank approximation
+       of matrices via interpolative decompositions, Version 0.4}
+\author{Per-Gunnar Martinsson, Vladimir Rokhlin,\\
+        Yoel Shkolnisky, and Mark Tygert}
+
+
+\begin{document}
+
+\maketitle
+
+\newpage
+
+{\parindent=0pt
+
+The present document and all of the software
+in the accompanying distribution (which is contained in the directory
+{\tt id\_dist} and its subdirectories, or in the file
+{\tt id\_dist.tar.gz})\, is
+
+\bigskip
+
+Copyright \copyright\ 2014 by P.-G. Martinsson, V. Rokhlin,
+Y. Shkolnisky, and M. Tygert.
+
+\bigskip
+
+All rights reserved.
+
+\bigskip
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+\begin{enumerate}
+\item Redistributions of source code must retain the above copyright
+notice, this list of conditions, and the following disclaimer.
+\item Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions, and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+\item None of the names of the copyright holders may be used to endorse
+or promote products derived from this software without specific prior
+written permission.
+\end{enumerate}
+
+\bigskip
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS ``AS IS'' AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNERS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+
+
+\hrule
+
+\medskip
+
+\centerline{\Large \bf IMPORTANT}
+
+\medskip
+
+\hrule
+
+\medskip
+
+\noindent At the minimum, please read Subsection~\ref{warning}
+and Section~\ref{naming} below, and beware that the {\it N.B.}'s
+in the source code comments highlight key information about the routines;
+{\it N.B.} stands for {\it nota bene} (Latin for ``note well'').
+
+\medskip
+
+\hrule
+
+\bigskip
+
+
+
+\section{Introduction}
+
+This software distribution provides Fortran routines
+for computing low-rank approximations to matrices,
+in the forms of interpolative decompositions (IDs)
+and singular value decompositions (SVDs).
+The routines use algorithms based on the ID.
+The ID is also commonly known as
+the approximation obtained via skeletonization,
+the approximation obtained via subsampling,
+and the approximation obtained via subset selection.
+The ID provides many advantages in many applications,
+and we suspect that it will become increasingly popular
+once tools for its computation become more widely available.
+This software distribution includes some such tools,
+as well as tools for computing low-rank approximations
+in the form of SVDs.
+Section~\ref{defs} below defines IDs and SVDs,
+and provides references to detailed discussions of the algorithms
+used in this software package.
+
+Please beware that normalized power iterations are better suited than
+the software in this distribution
+for computing principal component analyses
+in the typical case when the square of the signal-to-noise ratio
+is not orders of magnitude greater than both dimensions
+of the data matrix; see~\cite{halko-martinsson-tropp}.
+
+The algorithms used in this distribution have been optimized
+for accuracy, efficiency, and reliability;
+as a somewhat counterintuitive consequence, many must be randomized.
+All randomized codes in this software package succeed
+with overwhelmingly high probability (see, for example,
+\cite{halko-martinsson-tropp}).
+The truly paranoid are welcome to use the routines {\tt idd\_diffsnorm}
+and {\tt idz\_diffsnorm} to evaluate rapidly the quality
+of the approximations produced by the randomized algorithms
+(as done, for example, in the files
+{\tt idd\_a\_test.f}, {\tt idd\_r\_test.f}, {\tt idz\_a\_test.f},
+and {\tt idz\_r\_test.f} in the {\tt test} subdirectory
+of the main directory {\tt id\_dist}).
+In most circumstances, evaluating the quality of an approximation
+via routines {\tt idd\_diffsnorm} or {\tt idz\_diffsnorm} is much faster
+than forming the approximation to be evaluated. Still, we are unaware
+of any instance in which a properly-compiled routine failed to produce
+an accurate approximation.
+To facilitate successful compilation, we encourage the user
+to read the instructions in the next section,
+and to read Section~\ref{naming}, too.
+
+
+
+\section{Compilation instructions}
+
+
+Followed in numerical order, the subsections of this section
+provide step-by-step instructions for compiling the software
+under a Unix-compatible operating system.
+
+
+\subsection{Beware that default command-line flags may not be
+            sufficient for compiling the source codes!}
+\label{warning}
+
+The Fortran source codes in this distribution pass {\tt real*8}
+variables as integer variables, integers as {\tt real*8}'s,
+{\tt real*8}'s as {\tt complex*16}'s, and so on.
+This is common practice in numerical codes, and is not an error;
+be sure to provide the relevant command-line flags to the compiler
+(for example, run {\tt fort77} and {\tt f2c} with the flag {\tt -!P}).
+When following the compilation instructions
+in Subsection~\ref{makefile_edit} below,
+be sure to set {\tt FFLAGS} appropriately.
+
+
+\subsection{Install LAPACK}
+
+The SVD routines in this distribution depend on LAPACK.
+Before compiling the present distribution,
+create the LAPACK and BLAS archive (library) {\tt .a} files;
+information about installing LAPACK is available
+at {\tt http://www.netlib.org/lapack/} (and several other web sites).
+
+
+\subsection{Decompress and untar the file {\tt id\_dist.tar.gz}}
+
+At the command line, decompress and untar the file
+{\tt id\_dist.tar.gz} by issuing a command such as
+{\tt tar -xvvzf id\_dist.tar.gz}.
+This will create a directory named {\tt id\_dist}.
+
+
+\subsection{Edit the Makefile}
+\label{makefile_edit}
+
+The directory {\tt id\_dist} contains a file named {\tt Makefile}.
+In {\tt Makefile}, set the following:
+%
+\begin{itemize}
+\item {\tt FC} is the Fortran compiler.
+\item {\tt FFLAGS} is the set of command-line flags
+      (specifying optimization settings, for example)
+      for the Fortran compiler specified by {\tt FC};
+      please heed the warning in Subsection~\ref{warning} above!
+\item {\tt BLAS\_LIB} is the file-system path to the BLAS archive
+      (library) {\tt .a} file.
+\item {\tt LAPACK\_LIB} is the file-system path to the LAPACK archive
+      (library) {\tt .a} file.
+\item {\tt ARCH} is the archiver utility (usually {\tt ar}).
+\item {\tt ARCHFLAGS} is the set of command-line flags
+      for the archiver specified by {\tt ARCH} needed
+      to create an archive (usually {\tt cr}).
+\item {\tt RANLIB} is to be set to {\tt ranlib}
+      when {\tt ranlib} is available, and is to be set to {\tt echo}
+      when {\tt ranlib} is not available.
+\end{itemize}
+
+
+\subsection{Make and test the libraries}
+
+At the command line in a shell that adheres
+to the Bourne shell conventions for redirection, issue the command
+``{\tt make clean; make}'' to both create the archive (library)
+{\tt id\_lib.a} and test it.
+(In most modern Unix distributions, {\tt sh} is the Bourne shell,
+or else is fully compatible with the Bourne shell;
+the Korn shell {\tt ksh} and the Bourne-again shell {\tt bash}
+also use the Bourne shell conventions for redirection.)
+{\tt make} places the file {\tt id\_lib.a}
+in the directory {\tt id\_dist}; the archive (library) file
+{\tt id\_lib.a} contains machine code for all user-callable routines
+in this distribution.
+
+
+
+\section{Naming conventions}
+\label{naming}
+
+The names of routines and files in this distribution
+start with prefixes, followed by an underscore (``\_'').
+The prefixes are two to four characters in length,
+and have the following meanings:
+%
+\begin{itemize}
+\item The first two letters are always ``{\tt id}'',
+      the name of this distribution.
+\item The third letter (when present) is either ``{\tt d}''
+      or ``{\tt z}'';
+      ``{\tt d}'' stands for double precision ({\tt real*8}),
+      and ``{\tt z}'' stands for double complex ({\tt complex*16}).
+\item The fourth letter (when present) is either ``{\tt r}''
+      or ``{\tt p}'';
+      ``{\tt r}'' stands for specified rank,
+      and ``{\tt p}'' stands for specified precision.
+      The specified rank routines require the user to provide
+      the rank of the approximation to be constructed,
+      while the specified precision routines adjust the rank adaptively
+      to attain the desired precision.
+\end{itemize}
+
+For example, {\tt iddr\_aid} is a {\tt real*8} routine which computes
+an approximation of specified rank.
+{\tt idz\_snorm} is a {\tt complex*16} routine.
+{\tt id\_randperm} is yet another routine in this distribution.
+
+
+
+\section{Example programs}
+
+For examples of how to use the user-callable routines
+in this distribution, see the source codes in subdirectory {\tt test}
+of the main directory {\tt id\_dist}.
+
+
+
+\section{Directory structure}
+
+The main {\tt id\_dist} directory contains a Makefile,
+the auxiliary text files {\tt README.txt} and {\tt size.txt},
+and the following subdirectories, described in the subsections below:
+%
+\begin{enumerate}
+\item {\tt bin}
+\item {\tt development}
+\item {\tt doc}
+\item {\tt src}
+\item {\tt test}
+\item {\tt tmp}
+\end{enumerate}
+%
+If a ``{\tt make all}'' command has completed successfully,
+then the main {\tt id\_dist} directory will also contain
+an archive (library) file {\tt id\_lib.a} containing machine code
+for all of the user-callable routines.
+
+
+\subsection{Subdirectory {\tt bin}}
+
+Once all of the libraries have been made via the Makefile
+in the main {\tt id\_dist} directory,
+the subdirectory {\tt bin} will contain object files (machine code),
+each compiled from the corresponding file of source code
+in the subdirectory {\tt src} of {\tt id\_dist}.
+
+
+\subsection{Subdirectory {\tt development}}
+
+Each Fortran file in the subdirectory {\tt development}
+(except for {\tt dfft.f} and {\tt prini.f})
+specifies its dependencies at the top, then provides a main program
+for testing and debugging, and finally provides source code
+for a library of user-callable subroutines.
+The Fortran file {\tt dfft.f} is a copy of P. N. Swarztrauber's FFTPACK library
+for computing fast Fourier transforms.
+The Fortran file {\tt prini.f} is a copy of V. Rokhlin's library
+of formatted printing routines.
+Both {\tt dfft.f} (version 4) and {\tt prini.f} are in the public domain.
+The shell script {\tt RUNME.sh} runs shell scripts {\tt make\_src.sh}
+and {\tt make\_test.sh}, which fill the subdirectories {\tt src}
+and {\tt test} of the main directory {\tt id\_dist}
+with source codes for user-callable routines
+and with the main program testing codes.
+
+
+\subsection{Subdirectory {\tt doc}}
+
+Subdirectory {\tt doc} contains this documentation,
+supplementing comments in the source codes.
+
+
+\subsection{Subdirectory {\tt src}}
+
+The files in the subdirectory {\tt src} provide source code
+for software libraries. Each file in the subdirectory {\tt src}
+(except for {\tt dfft.f} and {\tt prini.f}) is
+the bottom part of the corresponding file
+in the subdirectory {\tt development} of {\tt id\_dist}.
+The file {\tt dfft.f} is just a copy
+of P. N. Swarztrauber's FFTPACK library
+for computing fast Fourier transforms.
+The file {\tt prini.f} is a copy of V. Rokhlin's library
+of formatted printing routines.
+Both {\tt dfft.f} (version 4) and {\tt prini.f} are in the public domain.
+
+
+\subsection{Subdirectory {\tt test}}
+
+The files in subdirectory {\tt test} provide source code
+for testing and debugging. Each file in subdirectory {\tt test} is
+the top part of the corresponding file
+in subdirectory {\tt development} of {\tt id\_dist},
+and provides a main program and a list of its dependencies.
+These codes provide examples of how to call the user-callable routines.
+
+
+
+\section{Catalog of the routines}
+
+The main routines for decomposing {\tt real*8} matrices are:
+%
+\begin{enumerate}
+%
+\item IDs of arbitrary (generally dense) matrices:
+{\tt iddp\_id}, {\tt iddr\_id}, {\tt iddp\_aid}, {\tt iddr\_aid}
+%
+\item IDs of matrices that may be rapidly applied to arbitrary vectors
+(as may the matrices' transposes):
+{\tt iddp\_rid}, {\tt iddr\_rid}
+%
+\item SVDs of arbitrary (generally dense) matrices:
+{\tt iddp\_svd}, {\tt iddr\_svd}, {\tt iddp\_asvd},\\{\tt iddr\_asvd}
+%
+\item SVDs of matrices that may be rapidly applied to arbitrary vectors
+(as may the matrices' transposes):
+{\tt iddp\_rsvd}, {\tt iddr\_rsvd}
+%
+\end{enumerate}
+
+Similarly, the main routines for decomposing {\tt complex*16} matrices
+are:
+%
+\begin{enumerate}
+%
+\item IDs of arbitrary (generally dense) matrices:
+{\tt idzp\_id}, {\tt idzr\_id}, {\tt idzp\_aid}, {\tt idzr\_aid}
+%
+\item IDs of matrices that may be rapidly applied to arbitrary vectors
+(as may the matrices' adjoints):
+{\tt idzp\_rid}, {\tt idzr\_rid}
+%
+\item SVDs of arbitrary (generally dense) matrices:
+{\tt idzp\_svd}, {\tt idzr\_svd}, {\tt idzp\_asvd},\\{\tt idzr\_asvd}
+%
+\item SVDs of matrices that may be rapidly applied to arbitrary vectors
+(as may the matrices' adjoints):
+{\tt idzp\_rsvd}, {\tt idzr\_rsvd}
+%
+\end{enumerate}
+
+This distribution also includes routines for constructing pivoted $QR$
+decompositions (in {\tt idd\_qrpiv.f} and {\tt idz\_qrpiv.f}), for
+estimating the spectral norms of matrices that may be applied rapidly
+to arbitrary vectors as may their adjoints (in {\tt idd\_snorm.f}
+and {\tt idz\_snorm.f}), for converting IDs to SVDs (in
+{\tt idd\_id2svd.f} and {\tt idz\_id2svd.f}), and for computing rapidly
+arbitrary subsets of the entries of the discrete Fourier transforms
+of vectors (in {\tt idd\_sfft.f} and {\tt idz\_sfft.f}).
+
+
+\subsection{List of the routines}
+
+The following is an alphabetical list of the routines
+in this distribution, together with brief descriptions
+of their functionality and the names of the files containing
+the routines' source code:
+
+\begin{center}
+%
+\tablehead{\bf Routine & \bf Description & \bf Source file \\}
+\tabletail{\hline}
+%
+\begin{supertabular}{>{\raggedright}p{1.2in} p{.53\textwidth} l}
+%
+\hline
+{\tt id\_frand} & generates pseudorandom numbers drawn uniformly from
+the interval $[0,1]$; this routine is more efficient than routine
+{\tt id\_srand}, but cannot generate fewer than 55 pseudorandom numbers
+per call & {\tt id\_rand.f} \\\hline
+%
+{\tt id\_frandi} & initializes the seed values for routine
+{\tt id\_frand} to specified values & {\tt id\_rand.f} \\\hline
+%
+{\tt id\_frando} & initializes the seed values for routine
+{\tt id\_frand} to their original, default values & {\tt id\_rand.f}
+\\\hline
+%
+{\tt id\_randperm} & generates a uniformly random permutation &
+{\tt id\_rand.f} \\\hline
+%
+{\tt id\_srand} & generates pseudorandom numbers drawn uniformly from
+the interval $[0,1]$; this routine is less efficient than routine
+{\tt id\_frand}, but can generate fewer than 55 pseudorandom numbers
+per call & {\tt id\_rand.f} \\\hline
+%
+{\tt id\_srandi} & initializes the seed values for routine
+{\tt id\_srand} to specified values & {\tt id\_rand.f} \\\hline
+%
+{\tt id\_srando} & initializes the seed values for routine
+{\tt id\_srand} to their original, default values & {\tt id\_rand.f}
+\\\hline
+%
+{\tt idd\_copycols} & collects together selected columns of a matrix &
+{\tt idd\_id.f} \\\hline
+%
+{\tt idd\_diffsnorm} & estimates the spectral norm of the difference
+between two matrices specified by routines for applying the matrices
+and their transposes to arbitrary vectors; this routine uses the power
+method with a random starting vector & {\tt idd\_snorm.f} \\\hline
+%
+{\tt idd\_enorm} & calculates the Euclidean norm of a vector &
+{\tt idd\_snorm.f} \\\hline
+%
+{\tt idd\_estrank} & estimates the numerical rank of an arbitrary
+(generally dense) matrix to a specified precision; this routine is
+randomized, and must be initialized with routine {\tt idd\_frmi} &
+{\tt iddp\_aid.f} \\\hline
+%
+{\tt idd\_frm} & transforms a vector into a vector which is
+sufficiently scrambled to be subsampled, via a composition of Rokhlin's
+random transform, random subselection, and a fast Fourier transform &
+{\tt idd\_frm.f} \\\hline
+%
+{\tt idd\_frmi} & initializes routine {\tt idd\_frm} & {\tt idd\_frm.f}
+\\\hline
+%
+{\tt idd\_getcols} & collects together selected columns of a matrix
+specified by a routine for applying the matrix to arbitrary vectors &
+{\tt idd\_id.f} \\\hline
+%
+{\tt idd\_house} & calculates the vector and scalar needed to apply the
+Householder transformation reflecting a given vector into its first
+entry & {\tt idd\_house.f} \\\hline
+%
+{\tt idd\_houseapp} & applies a Householder matrix to a vector &
+{\tt idd\_house.f} \\\hline
+%
+{\tt idd\_id2svd} & converts an approximation to a matrix in the form
+of an ID into an approximation in the form of an SVD &
+{\tt idd\_id2svd.f} \\\hline
+%
+{\tt idd\_ldiv} & finds the greatest integer less than or equal to a
+specified integer, that is divisible by another (larger) specified
+integer & {\tt idd\_sfft.f} \\\hline
+%
+{\tt idd\_pairsamps} & calculates the indices of the pairs of integers
+that the individual integers in a specified set belong to &
+{\tt idd\_frm.f} \\\hline
+%
+{\tt idd\_permmult} & multiplies together a bunch of permutations &
+{\tt idd\_qrpiv.f} \\\hline
+%
+{\tt idd\_qinqr} & reconstructs the $Q$ matrix in a $QR$ decomposition
+from the output of routines {\tt iddp\_qrpiv} or {\tt iddr\_qrpiv} &
+{\tt idd\_qrpiv.f} \\\hline
+%
+{\tt idd\_qrmatmat} & applies to multiple vectors collected together as
+a matrix the $Q$ matrix (or its transpose) in the $QR$ decomposition of
+a matrix, as described by the output of routines {\tt iddp\_qrpiv} or
+{\tt iddr\_qrpiv}; to apply $Q$ (or its transpose) to a single vector
+without having to provide a work array, use routine {\tt idd\_qrmatvec}
+instead & {\tt idd\_qrpiv.f} \\\hline
+%
+{\tt idd\_qrmatvec} & applies to a single vector the $Q$ matrix (or its
+transpose) in the $QR$ decomposition of a matrix, as described by the
+output of routines {\tt iddp\_qrpiv} or {\tt iddr\_qrpiv}; to apply $Q$ 
+(or its transpose) to several vectors efficiently, use routine
+{\tt idd\_qrmatmat} instead & {\tt idd\_qrpiv.f} \\\hline
+%
+{\tt idd\_random\_} {\tt transf} & applies rapidly a
+random orthogonal matrix to a user-supplied vector & {\tt id\_rtrans.f}
+\\\hline
+%
+{\tt idd\_random\_ transf\_init} & \raggedright initializes routines
+{\tt idd\_random\_transf} and {\tt idd\_random\_transf\_inverse} &
+{\tt id\_rtrans.f} \\\hline
+%
+{\tt idd\_random\_} {\tt transf\_inverse} & applies
+rapidly the inverse of the operator applied by routine
+{\tt idd\_random\_transf} & {\tt id\_rtrans.f} \\\hline
+%
+{\tt idd\_reconid} & reconstructs a matrix from its ID &
+{\tt idd\_id.f} \\\hline
+%
+{\tt idd\_reconint} & constructs $P$ in the ID $A = B \, P$, where the
+columns of $B$ are a subset of the columns of $A$, and $P$ is the
+projection coefficient matrix, given {\tt list}, {\tt krank}, and
+{\tt proj} output by routines {\tt iddr\_id}, {\tt iddp\_id},
+{\tt iddr\_aid}, {\tt iddp\_aid}, {\tt iddr\_rid}, or {\tt iddp\_rid} &
+{\tt idd\_id.f} \\\hline
+%
+{\tt idd\_sfft} & rapidly computes a subset of the entries of the
+discrete Fourier transform of a vector, composed with permutation
+matrices both on input and on output & {\tt idd\_sfft.f} \\\hline
+%
+{\tt idd\_sffti} & initializes routine {\tt idd\_sfft} &
+{\tt idd\_sfft.f} \\\hline
+%
+{\tt idd\_sfrm} & transforms a vector into a scrambled vector of
+specified length, via a composition of Rokhlin's random transform,
+random subselection, and a fast Fourier transform & {\tt idd\_frm.f}
+\\\hline
+%
+{\tt idd\_sfrmi} & initializes routine {\tt idd\_sfrm} &
+{\tt idd\_frm.f} \\\hline
+%
+{\tt idd\_snorm} & estimates the spectral norm of a matrix specified by
+routines for applying the matrix and its transpose to arbitrary
+vectors; this routine uses the power method with a random starting
+vector & {\tt idd\_snorm.f} \\\hline
+%
+{\tt iddp\_aid} & computes the ID of an arbitrary (generally dense)
+matrix, to a specified precision; this routine is randomized, and must
+be initialized with routine {\tt idd\_frmi} & {\tt iddp\_aid.f}
+\\\hline
+%
+{\tt iddp\_asvd} & computes the SVD of an arbitrary (generally dense)
+matrix, to a specified precision; this routine is randomized, and must
+be initialized with routine {\tt idd\_frmi} & {\tt iddp\_asvd.f}
+\\\hline
+%
+{\tt iddp\_id} & computes the ID of an arbitrary (generally dense)
+matrix, to a specified precision; this routine is often less efficient
+than routine {\tt iddp\_aid} & {\tt idd\_id.f} \\\hline
+%
+{\tt iddp\_qrpiv} & computes the pivoted $QR$ decomposition of an
+arbitrary (generally dense) matrix via Householder transformations,
+stopping at a specified precision of the decomposition &
+{\tt idd\_qrpiv.f} \\\hline
+%
+{\tt iddp\_rid} & computes the ID, to a specified precision, of a
+matrix specified by a routine for applying its transpose to arbitrary
+vectors; this routine is randomized & {\tt iddp\_rid.f} \\\hline
+%
+{\tt iddp\_rsvd} & computes the SVD, to a specified precision, of a
+matrix specified by routines for applying the matrix and its transpose
+to arbitrary vectors; this routine is randomized & {\tt iddp\_rsvd.f}
+\\\hline
+%
+{\tt iddp\_svd} & computes the SVD of an arbitrary (generally dense)
+matrix, to a specified precision; this routine is often less efficient
+than routine {\tt iddp\_asvd} & {\tt idd\_svd.f} \\\hline
+%
+{\tt iddr\_aid} & computes the ID of an arbitrary (generally dense)
+matrix, to a specified rank; this routine is randomized, and must be
+initialized by routine {\tt iddr\_aidi} & {\tt iddr\_aid.f} \\\hline
+%
+{\tt iddr\_aidi} & initializes routine {\tt iddr\_aid} &
+{\tt iddr\_aid.f} \\\hline
+%
+{\tt iddr\_asvd} & computes the SVD of an arbitrary (generally dense)
+matrix, to a specified rank; this routine is randomized, and must be
+initialized with routine {\tt idd\_aidi} & {\tt iddr\_asvd.f}
+\\\hline
+%
+{\tt iddr\_id} & computes the ID of an arbitrary (generally dense)
+matrix, to a specified rank; this routine is often less efficient than
+routine {\tt iddr\_aid} & {\tt idd\_id.f} \\\hline
+%
+{\tt iddr\_qrpiv} & computes the pivoted $QR$ decomposition of an
+arbitrary (generally dense) matrix via Householder transformations,
+stopping at a specified rank of the decomposition & {\tt idd\_qrpiv.f}
+\\\hline
+%
+{\tt iddr\_rid} & computes the ID, to a specified rank, of a matrix
+specified by a routine for applying its transpose to arbitrary vectors;
+this routine is randomized & {\tt iddr\_rid.f} \\\hline
+%
+{\tt iddr\_rsvd} & computes the SVD, to a specified rank, of a matrix
+specified by routines for applying the matrix and its transpose to
+arbitrary vectors; this routine is randomized & {\tt iddr\_rsvd.f}
+\\\hline
+%
+{\tt iddr\_svd} & computes the SVD of an arbitrary (generally dense)
+matrix, to a specified rank; this routine is often less efficient than
+routine {\tt iddr\_asvd} & {\tt idd\_svd.f} \\\hline
+%
+{\tt idz\_copycols} & collects together selected columns of a matrix &
+{\tt idz\_id.f} \\\hline
+%
+{\tt idz\_diffsnorm} & estimates the spectral norm of the difference
+between two matrices specified by routines for applying the matrices
+and their adjoints to arbitrary vectors; this routine uses the power
+method with a random starting vector & {\tt idz\_snorm.f} \\\hline
+%
+{\tt idz\_enorm} & calculates the Euclidean norm of a vector &
+{\tt idz\_snorm.f} \\\hline
+%
+{\tt idz\_estrank} & estimates the numerical rank of an arbitrary
+(generally dense) matrix to a specified precision; this routine is
+randomized, and must be initialized with routine {\tt idz\_frmi} &
+{\tt idzp\_aid.f} \\\hline
+%
+{\tt idz\_frm} & transforms a vector into a vector which is
+sufficiently scrambled to be subsampled, via a composition of Rokhlin's
+random transform, random subselection, and a fast Fourier transform &
+{\tt idz\_frm.f} \\\hline
+%
+{\tt idz\_frmi} & initializes routine {\tt idz\_frm} & {\tt idz\_frm.f}
+\\\hline
+%
+{\tt idz\_getcols} & collects together selected columns of a matrix
+specified by a routine for applying the matrix to arbitrary vectors &
+{\tt idz\_id.f} \\\hline
+%
+{\tt idz\_house} & calculates the vector and scalar needed to apply the
+Householder transformation reflecting a given vector into its first
+entry & {\tt idz\_house.f} \\\hline
+%
+{\tt idz\_houseapp} & applies a Householder matrix to a vector &
+{\tt idz\_house.f} \\\hline
+%
+{\tt idz\_id2svd} & converts an approximation to a matrix in the form
+of an ID into an approximation in the form of an SVD &
+{\tt idz\_id2svd.f} \\\hline
+%
+{\tt idz\_ldiv} & finds the greatest integer less than or equal to a
+specified integer, that is divisible by another (larger) specified
+integer & {\tt idz\_sfft.f} \\\hline
+%
+{\tt idz\_permmult} & multiplies together a bunch of permutations &
+{\tt idz\_qrpiv.f} \\\hline
+%
+{\tt idz\_qinqr} & reconstructs the $Q$ matrix in a $QR$ decomposition
+from the output of routines {\tt idzp\_qrpiv} or {\tt idzr\_qrpiv} &
+{\tt idz\_qrpiv.f} \\\hline
+%
+{\tt idz\_qrmatmat} & applies to multiple vectors collected together as
+a matrix the $Q$ matrix (or its adjoint) in the $QR$ decomposition of
+a matrix, as described by the output of routines {\tt idzp\_qrpiv} or
+{\tt idzr\_qrpiv}; to apply $Q$ (or its adjoint) to a single vector
+without having to provide a work array, use routine {\tt idz\_qrmatvec}
+instead & {\tt idz\_qrpiv.f} \\\hline
+%
+{\tt idz\_qrmatvec} & applies to a single vector the $Q$ matrix (or its
+adjoint) in the $QR$ decomposition of a matrix, as described by the
+output of routines {\tt idzp\_qrpiv} or {\tt idzr\_qrpiv}; to apply $Q$ 
+(or its adjoint) to several vectors efficiently, use routine
+{\tt idz\_qrmatmat} instead & {\tt idz\_qrpiv.f} \\\hline
+%
+{\tt idz\_random\_ transf} & applies rapidly a random unitary matrix to
+a user-supplied vector & {\tt id\_rtrans.f} \\\hline
+%
+{\tt idz\_random\_ transf\_init} & \raggedright initializes routines
+{\tt idz\_random\_transf} and {\tt idz\_random\_transf\_inverse} &
+{\tt id\_rtrans.f} \\\hline
+%
+{\tt idz\_random\_ transf\_inverse} & applies rapidly the inverse of
+the operator applied by routine {\tt idz\_random\_transf} &
+{\tt id\_rtrans.f} \\\hline
+%
+{\tt idz\_reconid} & reconstructs a matrix from its ID &
+{\tt idz\_id.f} \\\hline
+%
+{\tt idz\_reconint} & constructs $P$ in the ID $A = B \, P$, where the
+columns of $B$ are a subset of the columns of $A$, and $P$ is the
+projection coefficient matrix, given {\tt list}, {\tt krank}, and
+{\tt proj} output by routines {\tt idzr\_id}, {\tt idzp\_id},
+{\tt idzr\_aid}, {\tt idzp\_aid}, {\tt idzr\_rid}, or {\tt idzp\_rid} &
+{\tt idz\_id.f} \\\hline
+%
+{\tt idz\_sfft} & rapidly computes a subset of the entries of the
+discrete Fourier transform of a vector, composed with permutation
+matrices both on input and on output & {\tt idz\_sfft.f} \\\hline
+%
+{\tt idz\_sffti} & initializes routine {\tt idz\_sfft} &
+{\tt idz\_sfft.f} \\\hline
+%
+{\tt idz\_sfrm} & transforms a vector into a scrambled vector of
+specified length, via a composition of Rokhlin's random transform,
+random subselection, and a fast Fourier transform & {\tt idz\_frm.f}
+\\\hline
+%
+{\tt idz\_sfrmi} & initializes routine {\tt idz\_sfrm} &
+{\tt idz\_frm.f} \\\hline
+%
+{\tt idz\_snorm} & estimates the spectral norm of a matrix specified by
+routines for applying the matrix and its adjoint to arbitrary
+vectors; this routine uses the power method with a random starting
+vector & {\tt idz\_snorm.f} \\\hline
+%
+{\tt idzp\_aid} & computes the ID of an arbitrary (generally dense)
+matrix, to a specified precision; this routine is randomized, and must
+be initialized with routine {\tt idz\_frmi} & {\tt idzp\_aid.f}
+\\\hline
+%
+{\tt idzp\_asvd} & computes the SVD of an arbitrary (generally dense)
+matrix, to a specified precision; this routine is randomized, and must
+be initialized with routine {\tt idz\_frmi} & {\tt idzp\_asvd.f}
+\\\hline
+%
+{\tt idzp\_id} & computes the ID of an arbitrary (generally dense)
+matrix, to a specified precision; this routine is often less efficient
+than routine {\tt idzp\_aid} & {\tt idz\_id.f} \\\hline
+%
+{\tt idzp\_qrpiv} & computes the pivoted $QR$ decomposition of an
+arbitrary (generally dense) matrix via Householder transformations,
+stopping at a specified precision of the decomposition &
+{\tt idz\_qrpiv.f} \\\hline
+%
+{\tt idzp\_rid} & computes the ID, to a specified precision, of a
+matrix specified by a routine for applying its adjoint to arbitrary
+vectors; this routine is randomized & {\tt idzp\_rid.f} \\\hline
+%
+{\tt idzp\_rsvd} & computes the SVD, to a specified precision, of a
+matrix specified by routines for applying the matrix and its adjoint
+to arbitrary vectors; this routine is randomized & {\tt idzp\_rsvd.f}
+\\\hline
+%
+{\tt idzp\_svd} & computes the SVD of an arbitrary (generally dense)
+matrix, to a specified precision; this routine is often less efficient
+than routine {\tt idzp\_asvd} & {\tt idz\_svd.f} \\\hline
+%
+{\tt idzr\_aid} & computes the ID of an arbitrary (generally dense)
+matrix, to a specified rank; this routine is randomized, and must be
+initialized by routine {\tt idzr\_aidi} & {\tt idzr\_aid.f} \\\hline
+%
+{\tt idzr\_aidi} & initializes routine {\tt idzr\_aid} &
+{\tt idzr\_aid.f} \\\hline
+%
+{\tt idzr\_asvd} & computes the SVD of an arbitrary (generally dense)
+matrix, to a specified rank; this routine is randomized, and must be
+initialized with routine {\tt idz\_aidi} & {\tt idzr\_asvd.f}
+\\\hline
+%
+{\tt idzr\_id} & computes the ID of an arbitrary (generally dense)
+matrix, to a specified rank; this routine is often less efficient than
+routine {\tt idzr\_aid} & {\tt idz\_id.f} \\\hline
+%
+{\tt idzr\_qrpiv} & computes the pivoted $QR$ decomposition of an
+arbitrary (generally dense) matrix via Householder transformations,
+stopping at a specified rank of the decomposition & {\tt idz\_qrpiv.f}
+\\\hline
+%
+{\tt idzr\_rid} & computes the ID, to a specified rank, of a matrix
+specified by a routine for applying its adjoint to arbitrary vectors;
+this routine is randomized & {\tt idzr\_rid.f} \\\hline
+%
+{\tt idzr\_rsvd} & computes the SVD, to a specified rank, of a matrix
+specified by routines for applying the matrix and its adjoint to
+arbitrary vectors; this routine is randomized & {\tt idzr\_rsvd.f}
+\\\hline
+%
+{\tt idzr\_svd} & computes the SVD of an arbitrary (generally dense)
+matrix, to a specified rank; this routine is often less efficient than
+routine {\tt idzr\_asvd} & {\tt idz\_svd.f} \\
+%
+\end{supertabular}
+\end{center}
+
+
+
+\section{Documentation in the source codes}
+
+Each routine in the source codes includes documentation
+in the comments immediately following the declaration
+of the subroutine's calling sequence.
+This documentation describes the purpose of the routine,
+the input and output variables, and the required work arrays (if any). 
+This documentation also cites relevant references.
+Please pay attention to the {\it N.B.}'s;
+{\it N.B.} stands for {\it nota bene} (Latin for ``note well'')
+and highlights important information about the routines.
+
+
+
+\section{Notation and decompositions}
+\label{defs}
+
+This section sets notational conventions employed
+in this documentation and the associated software,
+and defines both the singular value decomposition (SVD)
+and the interpolative decomposition (ID).
+For information concerning other mathematical objects
+used in the code (such as Householder transformations,
+pivoted $QR$ decompositions, and discrete and fast Fourier transforms
+--- DFTs and FFTs), see, for example,~\cite{golub-van_loan}.
+For detailed descriptions and proofs of the mathematical facts
+discussed in the present section, see, for example,
+\cite{golub-van_loan} and the references
+in~\cite{halko-martinsson-tropp}.
+
+Throughout this document and the accompanying software distribution,
+$\| \x \|$ always denotes the Euclidean norm of the vector $\x$,
+and $\| A \|$ always denotes the spectral norm of the matrix $A$.
+Subsection~\ref{Euclidean} below defines the Euclidean norm;
+Subsection~\ref{spectral} below defines the spectral norm.
+We use $A^*$ to denote the adjoint of the matrix $A$.
+
+
+\subsection{Euclidean norm}
+\label{Euclidean}
+
+For any positive integer $n$, and vector $\x$ of length $n$,
+the Euclidean ($l^2$) norm $\| \x \|$ is
+%
+\begin{equation}
+\| \x \| = \sqrt{ \sum_{k=1}^n |x_k|^2 },
+\end{equation}
+%
+where $x_1$,~$x_2$, \dots, $x_{n-1}$,~$x_n$ are the entries of $\x$.
+
+
+\subsection{Spectral norm}
+\label{spectral}
+
+For any positive integers $m$ and $n$, and $m \times n$ matrix $A$,
+the spectral ($l^2$ operator) norm $\| A \|$ is
+%
+\begin{equation}
+\| A_{m \times n} \|
+= \max \frac{\| A_{m \times n} \, \x_{n \times 1} \|}
+            {\| \x_{n \times 1} \|},
+\end{equation}
+%
+where the $\max$ is taken over all $n \times 1$ column vectors $\x$
+such that $\| \x \| \ne 0$.
+
+
+\subsection{Singular value decomposition (SVD)}
+
+For any positive real number $\epsilon$,
+positive integers $k$, $m$, and $n$ with $k \le m$ and $k \le n$,
+and any $m \times n$ matrix $A$,
+a rank-$k$ approximation to $A$ in the form of an SVD
+(to precision $\epsilon$) consists of an $m \times k$ matrix $U$
+whose columns are orthonormal, an $n \times k$ matrix $V$
+whose columns are orthonormal, and a diagonal $k \times k$ matrix
+$\Sigma$ with diagonal entries
+$\Sigma_{1,1} \ge \Sigma_{2,2} \ge \dots \ge \Sigma_{n-1,n-1}
+                                         \ge \Sigma_{n,n} \ge 0$,
+such that
+%
+\begin{equation}
+\| A_{m \times n} - U_{m \times k} \, \Sigma_{k \times k}
+                 \, (V^*)_{k \times n} \| \le \epsilon.
+\end{equation}
+%
+The product $U \, \Sigma \, V^*$ is known as an SVD.
+The columns of $U$ are known as left singular vectors;
+the columns of $V$ are known as right singular vectors.
+The diagonal entries of $\Sigma$ are known as singular values.
+
+When $k = m$ or $k = n$, and $A = U \, \Sigma \, V^*$,
+then $U \, \Sigma \, V^*$ is known as the SVD
+of $A$; the columns of $U$ are the left singular vectors of $A$,
+the columns of $V$ are the right singular vectors of $A$,
+and the diagonal entries of $\Sigma$ are the singular values of $A$.
+For any positive integer $k$ with $k < m$ and $k < n$,
+there exists a rank-$k$ approximation to $A$ in the form of an SVD,
+to precision $\sigma_{k+1}$, where $\sigma_{k+1}$ is the $(k+1)^\st$
+greatest singular value of $A$.
+
+
+\subsection{Interpolative decomposition (ID)}
+
+For any positive real number $\epsilon$,
+positive integers $k$, $m$, and $n$ with $k \le m$ and $k \le n$,
+and any $m \times n$ matrix $A$,
+a rank-$k$ approximation to $A$ in the form of an ID
+(to precision $\epsilon$) consists of a $k \times n$ matrix $P$,
+and an $m \times k$ matrix $B$ whose columns constitute a subset
+of the columns of $A$, such that
+%
+\begin{enumerate}
+\item $\| A_{m \times n} - B_{m \times k} \, P_{k \times n} \|
+      \le \epsilon$,
+\item some subset of the columns of $P$ makes up the $k \times k$
+      identity matrix, and
+\item every entry of $P$ has an absolute value less than or equal
+      to a reasonably small positive real number, say 2.
+\end{enumerate}
+%
+The product $B \, P$ is known as an ID.
+The matrix $P$ is known as the projection or interpolation matrix
+of the ID. Property~1 above approximates each column of $A$
+via a linear combination of the columns of $B$
+(which are themselves columns of $A$), with the coefficients
+in the linear combination given by the entries of $P$.
+
+The interpolative decomposition is ``interpolative''
+due to Property~2 above. The ID is numerically stable
+due to Property~3 above.
+It follows from Property~2 that the least ($k^\th$ greatest) singular value
+of $P$ is at least 1. Combining Properties~2 and~3 yields that
+%
+\begin{equation}
+\| P_{k \times n} \| \le \sqrt{4k(n-k)+1}.
+\end{equation}
+
+When $k = m$ or $k = n$, and $A = B \, P$,
+then $B \, P$ is known as the ID of $A$.
+For any positive integer $k$ with $k < m$ and $k < n$,
+there exists a rank-$k$ approximation to $A$ in the form of an ID,
+to precision $\sqrt{k(n-k)+1} \; \sigma_{k+1}$,
+where $\sigma_{k+1}$ is the $(k+1)^\st$ greatest singular value of $A$
+(in fact, there exists an ID in which every entry
+of the projection matrix $P$ has an absolute value less than or equal
+to 1).
+
+
+
+\section{Bug reports, feedback, and support}
+
+Please let us know about errors in the software or in the documentation
+via e-mail to {\tt tygert@aya.yale.edu}.
+We would also appreciate hearing about particular applications of the codes,
+especially in the form of journal articles
+e-mailed to {\tt tygert@aya.yale.edu}.
+Mathematical and technical support may also be available via e-mail. Enjoy!
+
+
+
+\bibliographystyle{siam}
+\bibliography{doc}
+
+
+\end{document}

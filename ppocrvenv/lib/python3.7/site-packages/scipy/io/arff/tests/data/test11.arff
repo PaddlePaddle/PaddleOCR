@@ -1,0 +1,11 @@
+@RELATION test11
+
+@ATTRIBUTE attr0	REAL
+@ATTRIBUTE attr1 	REAL
+@ATTRIBUTE attr2 	REAL
+@ATTRIBUTE attr3	REAL
+@ATTRIBUTE class 	{ class0, class1, class2, class3 }
+@DATA
+0.1, 0.2, 0.3, 0.4,class1
+-0.1, -0.2, -0.3, -0.4,class2
+1, 2, 3, 4,class3

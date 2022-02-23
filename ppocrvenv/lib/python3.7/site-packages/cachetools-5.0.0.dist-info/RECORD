@@ -1,0 +1,12 @@
+cachetools-5.0.0.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
+cachetools-5.0.0.dist-info/LICENSE,sha256=cJEEfa2G-tF5p3smluByDLAX4PRo1HT_PvXKLpe1qQY,1085
+cachetools-5.0.0.dist-info/METADATA,sha256=-sKxHa3F6F2-t62QhSVRKFm4-uiooU6PU5qKNb8QYtA,4470
+cachetools-5.0.0.dist-info/RECORD,,
+cachetools-5.0.0.dist-info/WHEEL,sha256=ewwEueio1C2XeHTvT17n8dZUJgOvyCWCt0WVNLClP9o,92
+cachetools-5.0.0.dist-info/top_level.txt,sha256=ai2FH78TGwoBcCgVfoqbzk5IQCtnDukdSs4zKuVPvDs,11
+cachetools/__init__.py,sha256=Yh_4CTkOY8lQAuktz_6j5UDpjtfukmBMQoiy8QXujbg,21131
+cachetools/__pycache__/__init__.cpython-37.pyc,,
+cachetools/__pycache__/func.cpython-37.pyc,,
+cachetools/__pycache__/keys.cpython-37.pyc,,
+cachetools/func.py,sha256=VuGyCt7cOllN1FUuEjBiU1qQgsWzrfCHuajeTufQwkA,4906
+cachetools/keys.py,sha256=SfGPnF5Goo1b8V-lrhB9Jxgqd3vm80R9h50k0hsAAjM,1466

@@ -1,0 +1,24 @@
+
+@import url("fineprint.css") print;
+@import url(bogus.css);
+@import url(  bogus.css  );
+
+@media screen {
+
+@three-dee {
+	@background-lighting {
+		azimuth: 30deg;
+		elevation: 190deg;
+	}
+	H1 { color: red }
+}
+
+h1 { foo: bar }
+h2 { thing: 1; whatsit: 2px }
+h3 { foo: 2 ! important }
+
+}
+
+h9 {  }
+
+b1 & b2 { }

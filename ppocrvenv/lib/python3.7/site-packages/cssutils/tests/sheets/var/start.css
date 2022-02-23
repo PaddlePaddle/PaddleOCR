@@ -1,0 +1,12 @@
+@import "vars.css";
+@import "vars2.css";
+@import "use.css";
+
+@variables {
+	TEST: 1px;
+	T2: 'T2'
+}
+
+a {
+	left: var(T2);
+}

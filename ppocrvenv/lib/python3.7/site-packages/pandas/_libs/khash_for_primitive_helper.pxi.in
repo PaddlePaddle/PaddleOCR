@@ -1,0 +1,44 @@
+"""
+Template for wrapping khash-tables for each primitive `dtype`
+
+WARNING: DO NOT edit .pxi FILE directly, .pxi is generated from .pxi.in
+"""
+
+{{py:
+
+# name, c_type
+primitive_types = [('int64', 'int64_t'),
+                   ('uint64', 'uint64_t'),
+                   ('float64', 'float64_t'),
+                   ('int32', 'int32_t'),
+                   ('uint32', 'uint32_t'),
+                   ('float32', 'float32_t'),
+                   ('int16', 'int16_t'),
+                   ('uint16', 'uint16_t'),
+                   ('int8', 'int8_t'),
+                   ('uint8', 'uint8_t'),
+                   ('complex64', 'khcomplex64_t'),
+                   ('complex128', 'khcomplex128_t'),
+                  ]
+}}
+
+{{for name, c_type in primitive_types}}
+
+cdef extern from "khash_python.h":
+    ctypedef struct kh_{{name}}_t:
+        khuint_t n_buckets, size, n_occupied, upper_bound
+        uint32_t *flags
+        {{c_type}} *keys
+        size_t *vals
+
+    kh_{{name}}_t* kh_init_{{name}}() nogil
+    void kh_destroy_{{name}}(kh_{{name}}_t*) nogil
+    void kh_clear_{{name}}(kh_{{name}}_t*) nogil
+    khuint_t kh_get_{{name}}(kh_{{name}}_t*, {{c_type}}) nogil
+    void kh_resize_{{name}}(kh_{{name}}_t*, khuint_t) nogil
+    khuint_t kh_put_{{name}}(kh_{{name}}_t*, {{c_type}}, int*) nogil
+    void kh_del_{{name}}(kh_{{name}}_t*, khuint_t) nogil
+
+    bint kh_exist_{{name}}(kh_{{name}}_t*, khiter_t) nogil
+
+{{endfor}}

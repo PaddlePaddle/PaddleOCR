@@ -1,0 +1,87 @@
+From the website for the L-BFGS-B code (from at
+http://www.ece.northwestern.edu/~nocedal/lbfgsb.html):
+
+"""
+L-BFGS-B is a limited-memory quasi-Newton code for bound-constrained
+optimization, i.e. for problems where the only constraints are of the
+form l<= x <= u.
+"""
+
+This is a Python wrapper (using F2PY) written by David M. Cooke
+<cookedm@physics.mcmaster.ca> and released as version 0.9 on April 9, 2004.
+The wrapper was slightly modified by Joonas Paalasmaa for the 3.0 version
+in March 2012.
+
+License of L-BFGS-B (Fortran code)
+==================================
+
+The version included here (in lbfgsb.f) is 3.0 (released April 25, 2011). It was
+written by Ciyou Zhu, Richard Byrd, and Jorge Nocedal <nocedal@ece.nwu.edu>. It
+carries the following condition for use:
+
+  """
+  This software is freely available, but we expect that all publications
+  describing work using this software, or all commercial products using it,
+  quote at least one of the references given below. This software is released
+  under the BSD License.
+  
+  References
+    * R. H. Byrd, P. Lu and J. Nocedal. A Limited Memory Algorithm for Bound
+      Constrained Optimization, (1995), SIAM Journal on Scientific and
+      Statistical Computing, 16, 5, pp. 1190-1208.
+    * C. Zhu, R. H. Byrd and J. Nocedal. L-BFGS-B: Algorithm 778: L-BFGS-B,
+      FORTRAN routines for large scale bound constrained optimization (1997),
+      ACM Transactions on Mathematical Software, 23, 4, pp. 550 - 560.
+    * J.L. Morales and J. Nocedal. L-BFGS-B: Remark on Algorithm 778: L-BFGS-B,
+      FORTRAN routines for large scale bound constrained optimization (2011),
+      ACM Transactions on Mathematical Software, 38, 1.
+  """
+
+The Python wrapper
+==================
+
+This code uses F2PY (http://cens.ioc.ee/projects/f2py2e/) to generate
+the wrapper around the Fortran code.
+
+The Python code and wrapper are copyrighted 2004 by David M. Cooke
+<cookedm@physics.mcmaster.ca>.
+
+Installation
+============
+
+Make sure you have F2PY, scipy_distutils, and a BLAS library that
+scipy_distutils can find. Then,
+
+$ python setup.py build
+$ python setup.py install
+
+and you're done.
+
+Example usage
+=============
+
+An example of the usage is given at the bottom of the lbfgsb.py file.
+Run it with 'python lbfgsb.py'.
+
+License for the Python wrapper
+==============================
+
+Copyright (c) 2004 David M. Cooke <cookedm@physics.mcmaster.ca>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

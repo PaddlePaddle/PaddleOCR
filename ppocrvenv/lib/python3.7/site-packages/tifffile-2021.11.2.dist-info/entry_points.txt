@@ -1,0 +1,6 @@
+[console_scripts]
+lsm2bin = tifffile.lsm2bin:main
+tiff2fsspec = tifffile.tiff2fsspec:main
+tiffcomment = tifffile.tiffcomment:main
+tifffile = tifffile:main
+

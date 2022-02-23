@@ -1,0 +1,169 @@
+#!/bin/bash
+
+function version(){
+        echo "PaddlePaddle 2.2.2, compiled with"
+        echo "    with_avx: ON"
+        echo "    with_gpu: OFF"
+        echo "    with_mkl: OFF"
+        echo "    with_mkldnn: OFF"
+        echo "    with_python: ON"
+}
+
+function ver2num() {
+  set -e
+  # convert version to number.
+  if [ -z "$1" ]; then # empty argument
+    printf "%03d%03d%03d%03d%03d" 0
+  else
+    local VERN=$(echo $1 | sed 's#v##g' | sed 's#\.# #g' \
+        | sed 's#a# 0 #g' | sed 's#b# 1 #g' | sed 's#rc# 2 #g')
+    if [ `echo $VERN | wc -w` -eq 3 ] ; then
+      printf "%03d%03d%03d%03d%03d" $VERN 999 999
+    else
+      printf "%03d%03d%03d%03d%03d" $VERN
+    fi
+  fi
+  set +e
+}
+
+function cpu_config() {
+  # auto set KMP_AFFINITY and OMP_DYNAMIC from Hyper Threading Status
+  # only when MKL enabled
+  if [ "OFF" == "OFF" ]; then
+    return 0
+  fi
+  platform="`uname -s`"
+  ht=0
+  if [ $platform == "Linux" ]; then
+    ht=`lscpu |grep "per core"|awk -F':' '{print $2}'|xargs`
+  elif [ $platform == "Darwin" ]; then
+    if [ `sysctl -n hw.physicalcpu` -eq `sysctl -n hw.logicalcpu` ]; then
+      # HT is OFF
+      ht=1
+    fi
+  else
+    return 0
+  fi
+  if [ $ht -eq 1 ]; then # HT is OFF
+    if [ -z "$KMP_AFFINITY" ]; then
+      export KMP_AFFINITY="granularity=fine,compact,0,0"
+    fi
+    if [ -z "$OMP_DYNAMIC" ]; then
+      export OMP_DYNAMIC="FALSE"
+    fi
+  else # HT is ON
+    if [ -z "$KMP_AFFINITY" ]; then
+      export KMP_AFFINITY="granularity=fine,compact,1,0"
+    fi
+    if [ -z "$OMP_DYNAMIC" ]; then
+      export OMP_DYNAMIC="True"
+    fi
+  fi
+}
+
+function threads_config() {
+  # auto set OMP_NUM_THREADS and MKL_NUM_THREADS
+  # according to trainer_count and total processors
+  # only when MKL enabled
+  # auto set OPENBLAS_NUM_THREADS when do not use MKL
+  platform="`uname -s`"
+  processors=0
+  if [ $platform == "Linux" ]; then
+    processors=`grep "processor" /proc/cpuinfo|sort -u|wc -l`
+  elif [ $platform == "Darwin" ]; then
+    processors=`sysctl -n hw.logicalcpu`
+  else
+    return 0
+  fi
+  trainers=`grep -Eo 'trainer_count.[0-9]+' <<< "$@" |grep -Eo '[0-9]+'|xargs`
+  if [ -z $trainers ]; then
+    trainers=1
+  fi
+  threads=$((processors / trainers))
+  if [ $threads -eq 0 ]; then
+    threads=1
+  fi
+  if [ "OFF" == "ON" ]; then
+    if [ -z "$OMP_NUM_THREADS" ]; then
+      export OMP_NUM_THREADS=$threads
+    fi
+    if [ -z "$MKL_NUM_THREADS" ]; then
+      export MKL_NUM_THREADS=$threads
+    fi
+  else
+    if [ -z "$OPENBLAS_NUM_THREADS" ]; then
+      export OPENBLAS_NUM_THREADS=$threads
+    fi
+    if [ $threads -gt 1 ] && [ -z "$OPENBLAS_MAIN_FREE" ]; then
+      export OPENBLAS_MAIN_FREE=1
+    fi
+  fi
+  
+}
+
+PADDLE_CONF_HOME="$HOME/.config/paddle"
+mkdir -p ${PADDLE_CONF_HOME}
+
+if [ -z "${PADDLE_NO_STAT+x}" ]; then
+    SERVER_VER=`curl -m 5 -X POST --data content="{ \"version\": \"2.2.2\" }"\
+        -b ${PADDLE_CONF_HOME}/paddle.cookie \
+        -c ${PADDLE_CONF_HOME}/paddle.cookie \
+        http://api.paddlepaddle.org/version 2>/dev/null`
+    if [ $? -eq 0 ] && [ "$(ver2num 2.2.2)" -lt  $(ver2num $SERVER_VER) ]; then
+      echo "Paddle release a new version ${SERVER_VER}, you can get the install package in http://www.paddlepaddle.org"
+    fi
+fi
+
+PADDLE_BIN_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+if [ ! -z "${DEBUGGER}" ]; then
+    echo "Using debug command ${DEBUGGER}"
+fi
+
+CUDNN_LIB_PATH=""
+
+if [ ! -z "${CUDNN_LIB_PATH}" ]; then
+    export LD_LIBRARY_PATH=${CUDNN_LIB_PATH}:${LD_LIBRARY_PATH}
+fi
+
+export PYTHONPATH=${PWD}:${PYTHONPATH}
+
+
+# Check python lib installed or not.
+pip --help > /dev/null
+if [ $? -ne 0 ]; then
+    echo "pip should be installed to run paddle."
+    exit 1
+fi
+
+if [ "OFF" == "ON" ]; then
+    PADDLE_NAME="paddlepaddle-gpu"
+else 
+    PADDLE_NAME="paddlepaddle"
+fi
+
+INSTALLED_VERSION=`pip freeze 2>/dev/null | grep "^${PADDLE_NAME}==" | sed 's/.*==//g'`
+
+if [ -z "${INSTALLED_VERSION}" ]; then
+   INSTALLED_VERSION="0.0.0"  # not installed
+fi
+cat <<EOF | python -
+from distutils.version import LooseVersion
+import sys
+if LooseVersion("${INSTALLED_VERSION}") < LooseVersion("2.2.2"):
+  sys.exit(1)
+else:
+  sys.exit(0)
+EOF
+
+cpu_config
+# echo $KMP_AFFINITY $OMP_DYNAMIC
+
+case "$1" in
+    "version")
+        version
+        ;;
+    *)
+        version
+        ;;
+ esac

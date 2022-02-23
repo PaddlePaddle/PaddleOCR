@@ -1,0 +1,10 @@
+The PyWavelets repository and source distributions bundle some code that is
+adapted from compatibly licensed projects. We list these here.
+
+Name: NumPy
+Files:  pywt/_pytesttester.py
+License: 3-clause BSD
+
+Name: SciPy
+Files:  setup.py, util/*
+License: 3-clause BSD

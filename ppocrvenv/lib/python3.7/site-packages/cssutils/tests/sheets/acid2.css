@@ -1,0 +1,109 @@
+   /* section numbers refer to CSS2.1 */
+
+   /* page setup */
+   html { font: 12px sans-serif; margin: 0; padding: 0; overflow: hidden; /* hides scrollbars on viewport, see 11.1.1:3 */ background: white; color: red; }
+   body { margin: 0; padding: 0; }
+
+   /* introduction message */
+   .intro { font: 2em sans-serif; margin: 3.5em 2em; padding: 0.5em; border: solid thin; background: white; color: black; position: relative; z-index: 2; /* should cover the black and red bars that are fixed-positioned */ }
+   .intro * { font: inherit; margin: 0; padding: 0; }
+   .intro h1 { font-size: 1em; font-weight: bolder; margin: 0; padding: 0; }
+   .intro :link { color: blue; }
+   .intro :visited { color: purple; }
+
+   /* picture setup */
+   #top { margin: 100em 3em 0; padding: 2em 0 0 .5em; text-align: left; font: 2em/24px sans-serif; color: navy; white-space: pre; } /* "Hello World!" text */
+   .picture { position: relative; border: 1em solid transparent; margin: 0 0 100em 3em; } /* containing block for face */
+   .picture { background: red; } /* overriden by preferred stylesheet below */
+
+   /* top line of face (scalp): fixed positioning and min/max height/width */
+   .picture p { position: fixed; margin: 0; padding: 0; border: 0; top: 9em; left: 11em; width: 140%; max-width: 4em; height: 8px; min-height: 1em; max-height: 2mm; /* min-height overrides max-height, see 10.7 */ background: black; border-bottom: 0.5em yellow solid; }
+
+   /* bits that shouldn't be part of the top line (and shouldn't be visible at all): HTML parsing, "+" combinator, stacking order */
+   .picture p.bad { border-bottom: red solid; /* shouldn't matter, because the "p + table + p" rule below should match it too, thus hiding it */ }
+   .picture p + p { background: maroon; z-index: 1; } /* shouldn't match anything */
+   .picture p + table + p { margin-top: 3em; /* should end up under the absolutely positioned table below, and thus not be visible */ }
+
+   /* second line of face: attribute selectors, float positioning */
+   [class~=one].first.one { position: absolute; top: 0; margin: 36px 0 0 60px; padding: 0; border: black 2em; border-style: none solid; /* shrink wraps around float */ }
+   [class~=one][class~=first] [class=second\ two][class="second two"] { float: right; width: 48px; height: 12px; background: yellow; margin: 0; padding: 0; } /* only content of abs pos block */
+
+   /* third line of face: width and overflow */
+   .forehead { margin: 4em; width: 8em; border-left: solid black 1em; border-right: solid black 1em; background: red url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR42mP4%2F58BAAT%2FAf9jgNErAAAAAElFTkSuQmCC); /* that's a 1x1 yellow pixel PNG */ }
+   .forehead * { width: 12em; line-height: 1em; }
+
+   /* class selectors headache */
+   .two.error.two { background: maroon; } /* shouldn't match */
+   .forehead.error.forehead { background: red; } /* shouldn't match */
+   [class=second two] { background: red; } /* this should be ignored (invalid selector -- grammar says it only accepts IDENTs or STRINGs) */
+
+   /* fourth and fifth lines of face, with eyes: paint order test (see appendix E) and fixed backgrounds */
+   /* the two images are identical: 2-by-2 squares with the top left
+      and bottom right pixels set to yellow and the other two set to
+      transparent. Since they are offset by one pixel from each other,
+      the second one paints exactly over the transparent parts of the
+      first one, thus creating a solid yellow block. */
+   .eyes { position: absolute; top: 5em; left: 3em; margin: 0; padding: 0; background: red; }
+   #eyes-a { height: 0; line-height: 2em; text-align: right; } /* contents should paint top-most because they're inline */
+   #eyes-a object { display: inline; vertical-align: bottom; }
+   #eyes-a object[type] { width: 7.5em; height: 2.5em; } /* should have no effect since that object should fallback to being inline (height/width don't apply to inlines) */
+   #eyes-a object object object { border-right: solid 1em black; padding: 0 12px 0 11px; background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAABnRSTlMAAAAAAABupgeRAAAABmJLR0QA%2FwD%2FAP%2BgvaeTAAAAEUlEQVR42mP4%2F58BCv7%2FZwAAHfAD%2FabwPj4AAAAASUVORK5CYII%3D) fixed 1px 0; }
+   #eyes-b { float: left; width: 10em; height: 2em; background: fixed url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAABnRSTlMAAAAAAABupgeRAAAABmJLR0QA%2FwD%2FAP%2BgvaeTAAAAEUlEQVR42mP4%2F58BCv7%2FZwAAHfAD%2FabwPj4AAAAASUVORK5CYII%3D); border-left: solid 1em black; border-right: solid 1em red; } /* should paint in the middle layer because it is a float */
+   #eyes-c { display: block; background: red; border-left: 2em solid yellow; width: 10em; height: 2em; } /* should paint bottom most because it is a block */
+
+   /* lines six to nine, with nose: auto margins */
+   .nose { float: left; margin: -2em 2em -1em; border: solid 1em black; border-top: 0; min-height: 80%; height: 60%; max-height: 3em; /* percentages become auto (see 10.5 and 10.7) and intrinsic height is more than 3em, so 3em wins */ padding: 0; width: 12em; }
+   .nose > div { padding: 1em 1em 3em; height: 0; background: yellow; }
+   .nose div div { width: 2em; height: 2em; background: red; margin: auto; }
+   .nose :hover div { border-color: blue; }
+   .nose div:hover :before { border-bottom-color: inherit; }
+   .nose div:hover :after { border-top-color: inherit; }
+   .nose div div:before { display: block; border-style: none solid solid; border-color: red yellow black yellow; border-width: 1em; content: ''; height: 0; }
+   .nose div    :after { display: block; border-style: solid solid none; border-color: black yellow red yellow; border-width: 1em; content: ''; height: 0; }
+
+   /* between lines nine and ten: margin collapsing with 'float' and 'clear' */
+   .empty { margin: 6.25em; height: 10%; /* computes to auto which makes it empty per 8.3.1:7 (own margins) */ }
+   .empty div { margin: 0 2em -6em 4em; }
+   .smile { margin: 5em 3em; clear: both; /* clearance is negative (see 8.3.1 and 9.5.1) */ }
+
+   /* line ten and eleven: containing block for abs pos */
+   .smile div { margin-top: 0.25em; background: black; width: 12em; height: 2em; position: relative; bottom: -1em; }
+   .smile div div { position: absolute; top: 0; right: 1em; width: auto; height: 0; margin: 0; border: yellow solid 1em; }
+
+   /* smile (over lines ten and eleven): backgrounds behind borders, inheritance of 'float', nested floats, negative heights */
+   .smile div div span { display: inline; margin: -1em 0 0 0; border: solid 1em transparent; border-style: none solid; float: right; background: black; height: 1em; }
+   .smile div div span em { float: inherit; border-top: solid yellow 1em; border-bottom: solid black 1em; } /* zero-height block; width comes from (zero-height) child. */
+   .smile div div span em strong { width: 6em; display: block; margin-bottom: -1em; /* should have no effect, since parent has top&bottom borders, so this margin doesn't collapse */ }
+
+   /* line twelve: line-height */
+   .chin { margin: -4em 4em 0; width: 8em; line-height: 1em; border-left: solid 1em black; border-right: solid 1em black; background: yellow url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAFSDNYfAAAAaklEQVR42u3XQQrAIAwAQeP%2F%2F6wf8CJBJTK9lnQ7FpHGaOurt1I34nfH9pMMZAZ8BwMGEvvh%2BBsJCAgICLwIOA8EBAQEBAQEBAQEBK79H5RfIQAAAAAAAAAAAAAAAAAAAAAAAAAAAID%2FABMSqAfj%2FsLmvAAAAABJRU5ErkJggg%3D%3D) /* 64x64 red square */ no-repeat fixed /* shouldn't be visible unless the smiley is moved to the top left of the viewport */; }
+   .chin div { display: inline; font: 2px/4px serif; }
+
+   /* line thirteen: cascade and selector tests */
+   .parser-container div { color: maroon; border: solid; color: orange; } /* setup */
+   div.parser-container * { border-color: black; /* overrides (implied) border-color on previous line */ } /* setup */
+   * div.parser { border-width: 0 2em; /* overrides (implied) declarations on earlier line */ } /* setup */
+
+   /* line thirteen continued: parser tests */
+   .parser { /* comment parsing test -- comment ends before the end of this line, the backslash should have no effect: \*/ }
+   .parser { margin: 0 5em 1em; padding: 0 1em; width: 2em; height: 1em; error: \}; background: yellow; } /* setup with parsing test */
+   * html .parser {  background: gray; }
+   \.parser { padding: 2em; }
+   .parser { m\argin: 2em; };
+   .parser { height: 3em; }
+   .parser { width: 200; }
+   .parser { border: 5em solid red ! error; }
+   .parser { background: red pink; }
+
+   /* line fourteen (last line of face): table */
+   ul { display: table; padding: 0; margin: -1em 7em 0; background: red; }
+   ul li { padding: 0; margin: 0; }
+   ul li.first-part { display: table-cell; height: 1em; width: 1em; background: black; }
+   ul li.second-part { display: table; height: 1em; width: 1em; background: black; } /* anonymous table cell wraps around this */
+   ul li.third-part { display: table-cell; height: 0.5em; /* gets stretched to fit row */ width: 1em; background: black; }
+   ul li.fourth-part { list-style: none; height: 1em; width: 1em; background: black; } /* anonymous table cell wraps around this */
+
+   /* bits that shouldn't appear: inline alignment in cells */
+   .image-height-test { height: 10px; overflow: hidden; font: 20em serif; } /* only the area between the top of the line box and the top of the image should be visible */
+   table { margin: 0; border-spacing: 0; }
+   td { padding: 0; }

@@ -1,0 +1,684 @@
+body
+{
+	font-family: "Verdana", "Arial", "XHelvetica", "Helvetica", sans-serif;
+	font-size: 12px;
+	background-color: #333;
+	background-image: url(images/Backdrops/Raster.gif);
+	background-attachment: fixed;
+	background-position: top left;
+	margin: 0px;
+	padding: 0px;
+}
+
+body table.body
+{
+	background-image: url(images/Backdrops/NautilusBlack.jpg);
+	background-attachment: fixed;
+	background-position: top left;
+	background-repeat: no-repeat;
+}
+
+td.header1,
+td.header2
+{
+	background-color: #0063a8;
+	background-image: url(images/Backdrops/NautilusBlue.jpg);
+	background-attachment: fixed;
+	background-position: top left;
+	background-repeat: no-repeat;
+}
+
+td.blank
+{
+	background-color: #000;
+}
+
+td.header2
+{
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+}
+
+td.header2 h1
+{
+	color: #fff;
+	font-family: "Trebuchet MS", sans-serif;
+	font-weight: normal;
+	font-size: 50px;
+	margin: 0px 0px 5px 30px;
+	padding: 0px;
+	line-height: 50px;
+}
+td.header2 h2
+{
+	color: #fff;
+	font-family: "Trebuchet MS", sans-serif;
+	font-weight: normal;
+	font-size: 18px;
+	margin: 0px 0px 10px 30px;
+	padding: 0px;
+	line-height: 18px;
+}
+
+td.header3
+{
+	width: 30px;
+}
+
+td.crumbs1,
+td.crumbs2
+{
+	font-family: "Verdana", "Arial", "XHelvetica", "Helvetica", sans-serif;
+	font-size: 11px;
+	background-color: #194b6e;
+	background-image: url(images/Backdrops/NautilusDarkBlue.jpg);
+	background-attachment: fixed;
+	background-position: top left;
+	background-repeat: no-repeat;
+}
+
+td.crumbs1
+{
+	border-top: 1px solid #000;
+}
+
+td.crumbs2
+{
+	padding: 4px 6px 4px 30px;
+	color: #fff;
+	border-top: 1px solid #000;
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+}
+
+td.crumbs2 td.alternate
+{
+	padding-left: 30px;
+	font-size: 9px;
+}
+
+td.crumbs2 a:link
+{
+	color: #fff;
+}
+
+td.crumbs2 a:visited
+{
+	color: #ccc;
+}
+
+td.crumbs2 a:hover
+{
+	color: #ffc;
+	border-bottom: 1px solid #fff;
+}
+
+td.crumbs2 span.here
+{
+	color: #fff;
+	font-weight: bold;
+}
+
+td.content
+{
+	border: 1px solid #000;
+	background-image: url(images/Backdrops/NautilusWhite.jpg);
+	background-attachment: fixed;
+	background-position: top left;
+	background-repeat: no-repeat;
+	background-color: #fff;
+	padding: 20px 30px;
+	line-height: 18px;
+}
+
+table, tr, td, th
+{
+	margin: 0px;
+	border: 0px solid #000;
+	padding: 0px;
+}
+
+a
+{
+	text-decoration: none;
+}
+
+td.content a
+{
+	border-bottom: 1px solid #cc8080;
+}
+
+a:link
+{
+	color: #900;
+}
+
+a:visited
+{
+	color: #633;
+}
+
+a:hover,
+a:active
+{
+	color: #f00;
+}
+
+td.links
+{
+	font-family: "Verdana", "Arial", "XHelvetica", "Helvetica", sans-serif;
+	border-top: 1px solid #000;
+	padding: 16px 0px 0px 0px;
+	color: #fff;
+}
+
+td.links ul,
+td.links li
+{
+	margin: 0px;
+	padding: 0px;
+}
+
+td.links div,
+td.links a
+{
+	display: block;
+	margin: 4px 0px 0px 0px;
+	padding: 2px 2px 2px 10px;
+	white-space: nowrap;
+	color: #fff;
+	font-size: 13px;
+	border-top: 1px solid #333;
+	border-bottom: 1px solid #000;
+	background-color: #858585;
+	background-image: url(images/Backdrops/NautilusGrey.jpg);
+	background-attachment: fixed;
+	background-position: top left;
+	background-repeat: no-repeat;
+}
+
+td.links>div,
+td.links>a
+{
+	padding: 6px 2px 6px 10px;
+}
+
+td.links div
+{
+	position: relative;
+	left: 1px;
+	background-color: #fff;
+	background-image: none;
+	color: #000;
+}
+
+td.links li li div,
+td.links li li a
+{
+	background-color: transparent;
+	background-image: none;
+	color: #fff;
+	font-size: 11px;
+	border: 0px;
+	margin: 1px 0px 0px 0px;
+	padding: 0px 3px 2px 3px;
+}
+
+td.links li li div
+{
+	position: relative;
+	left: 1px;
+	border-bottom: 2px solid #fff;
+	padding: 0px 4px 0px 2px;
+}
+
+td.links ul ul
+{
+	padding: 0px 0px 0px 30px;
+}
+
+td.links ul ul ul
+{
+	padding: 0px 0px 0px 20px;
+}
+
+td.links div,
+td.links a.path
+{
+	font-weight: bold;
+}
+
+td.links a span.visited
+{
+	display: none;
+}
+
+td.links a:visited span.visited
+{
+	display: block;
+	float: right;
+	font-size: 16px;
+	font-weight: normal;
+	padding: 1px 4px 1px 20px;
+	color: #bbb;
+}
+
+td.links a:link
+{
+	color: #fff;
+}
+
+td.links a:visited
+{
+	color: #fff;
+}
+
+td.links a:hover
+{
+	background-color: #0063a8;
+	border-top: 1px solid #333;
+	border-bottom: 1px solid #333;
+	color: #000;
+	background-color: #ccc;
+	background-image: none;
+}
+
+td.links a:hover span.visited
+{
+	color: #666;
+}
+
+td.links li li a:hover
+{
+	padding: 0px 2px 0px 2px;
+}
+
+td.links a:active
+{
+	color: #ff0;
+}
+
+span.tab
+{
+	color: #ccc;
+}
+
+abbr[title], acronym[title]
+{
+	border-bottom: 1px solid #ddd;
+}
+
+p, li, dd
+{
+	font-size: 12px;
+	line-height: 20px;
+	margin: 0px 0px 10px 0px;
+}
+
+dt
+{
+	font-size: 12px;
+	line-height: 20px;
+}
+
+h1, h2, h3, h4, h5, h6
+{
+	color: #0063a8;
+	font-family: "Trebuchet MS", sans-serif;
+	font-weight: normal;
+}
+
+h1 abbr[title], h2 abbr[title], h3 abbr[title], h4 abbr[title], h5 abbr[title], h6 abbr[title], h1 acronym[title], h2 acronym[title], h3 acronym[title], h4 acronym[title], h5 acronym[title], h6 acronym[title]
+{
+	border-bottom: 0px;
+}
+
+h1
+{
+	font-size: 20px;
+	margin: 36px 0 3px 0;
+	line-height: 30px;
+}
+
+h2
+{
+	font-size: 18px;
+	margin: 24px 0 2px 0;
+	line-height: 26px;
+}
+
+h3
+{
+	font-size: 18px;
+	margin: 16px 0 1px 0;
+	line-height: 22px;
+}
+
+h4, h5, h6
+{
+	font-size: 14px;
+	margin: 14px 0 1px 0;
+	line-height: 20px;
+}
+
+td.content div:first-child h1
+{
+	margin-top: 0px;
+}
+
+div.section.level1
+{
+}
+
+div.section.level1 h1
+{
+	margin-right: -30px;
+	border-bottom: 1px solid #666;
+	padding-right: 30px;
+}
+
+ol, ul, dl
+{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+li
+{
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+ul li
+{
+	list-style-type: square;
+}
+
+ol li
+{
+	list-style-type: decimal;
+}
+
+dd
+{
+	margin-left: 20px;
+	margin-top: 0px;
+	margin-bottom: 10px;
+}
+
+em
+{
+	font-weight: bold;
+	font-style: normal;
+}
+
+address
+{
+	font-style: normal;
+	font-size: 13px;
+	line-height: 16px;
+}
+
+div.display
+{
+	margin-left: 1.5em;
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+
+table.downloads span.note
+{
+	font-weight: normal;
+	font-size: 9px;
+}
+
+table.downloads
+{
+	margin-left: 30px;
+	margin-right: 30px;
+	margin-top: 4px;
+	margin-bottom: 10px;
+	font-size: 11px;
+	line-height: 16px;
+	border-bottom: 1px solid #ccc;
+}
+
+table.downloads th,
+table.downloads td
+{
+	font-size: 11px;
+}
+
+table.downloads th
+{
+	padding: 8px 0px 2px 0px;
+	border-bottom: 1px solid #999;
+}
+
+table.downloads th.version
+{
+	padding: 10px 10px 2px 3px;
+	text-align: left;
+}
+
+table.downloads th.type
+{
+	color: #666;
+	font-weight: normal;
+	padding: 10px 10px 2px 0px;
+	text-align: left;
+}
+
+table.downloads th.size
+{
+	color: #666;
+	font-weight: normal;
+	text-align: right;
+	padding: 10px 3px 2px 0px;
+}
+
+table.downloads tr.download
+{
+	background-color: #fafafa;
+}
+
+table.downloads td.file
+{
+	padding: 2px 10px 2px 20px;
+}
+
+table.downloads td.type
+{
+	padding: 2px 10px 2px 0px;
+}
+
+table.downloads td.size
+{
+	text-align: right;
+	padding: 2px 3px 2px 0px;
+}
+
+pre.prog, pre.tty
+{
+	margin: 0px 30px 10px 30px;
+	font-size: 12px;
+	line-height: 18px;
+	border: 1px solid #eee;
+	background-color: #fafafa;
+	padding: 1px 5px 2px 5px;
+	overflow: auto;
+}
+
+div.example-title
+{
+	font-family: "Verdana", "Arial", "XHelvetica", "Helvetica", sans-serif;
+	font-size: 9px;
+	margin-top: -8px;
+	margin-bottom: 4px;
+	margin-right: 30px;
+	color: #666;
+	text-align: right;
+	padding-top: 0px;
+	padding-right: 2px;
+}
+
+span.secnum
+{
+	background-color: #ccc;
+	color: #fff;
+	font-size: 6px;
+	padding: 1px;
+	vertical-align: middle;
+}
+
+div.class>h1,
+div.class>h2,
+div.class>h3,
+div.class>h4,
+div.class>h5,
+div.class>h6,
+div.function>h1,
+div.function>h2,
+div.function>h3,
+div.function>h4,
+div.function>h5,
+div.function>h6,
+div.method>h1,
+div.method>h2,
+div.method>h3,
+div.method>h4,
+div.method>h5,
+div.method>h6,
+div.property>h6,
+div.property>h1,
+div.property>h2,
+div.property>h3,
+div.property>h4,
+div.property>h5
+{
+	font-family: monospace;
+	margin-bottom: 0px;
+	padding: 0px 0px 2px 30px;
+	text-indent: -30px;
+	margin-right: -30px;
+	border-bottom: 1px solid #999;
+	padding-right: 30px;
+}
+
+div.method>div.content,
+div.function>div.content,
+div.property>div.content,
+div.class>div.content
+{
+	margin-left: 30px;
+}
+
+div.class>div.content
+{
+	border-right: 30px solid #eee;
+	margin-right: -30px;
+	padding-right: 30px;
+}
+
+div.class div.class>div.content
+{
+	margin-right: 0px;
+	border-right: 0px;
+	padding-right: 0px;
+}
+
+h1 code, h2 code, h3 code, h4 code, h5 code, h6 code
+{
+	letter-spacing: -1px;
+}
+
+div.class.nodoc,
+div.method.private,
+div.method.nodoc,
+div.function.nodoc,
+div.property.nodoc
+{
+	display: none;
+}
+
+code
+{
+	font-family: "Courier New", monospace;
+}
+
+code.option
+{
+}
+
+code.literal
+{
+}
+
+code.function
+{
+}
+
+code.method
+{
+}
+
+code.property
+{
+}
+
+code.class
+{
+}
+
+var.rep
+{
+}
+
+code.markup
+{
+}
+
+code.parameter
+{
+}
+
+code.module
+{
+}
+
+code.arg
+{
+}
+
+code.filename
+{
+}
+
+code.dirname
+{
+}
+
+code.hostname
+{
+}
+
+code.username
+{
+}
+
+code.prompt
+{
+}
+
+code.input
+{
+}
+
+pre code.input
+{
+	color: #060;
+}
+
+span.application
+{
+}

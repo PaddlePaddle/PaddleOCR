@@ -1,0 +1,85 @@
+NIST/ITL StRD 
+Dataset Name:   SiRstv     (SiRstv.dat)
+
+
+File Format:    ASCII
+                Certified Values   (lines 41 to 47)
+                Data               (lines 61 to 85) 
+
+
+Procedure:      Analysis of Variance
+
+
+Reference:      Ehrstein, James and Croarkin, M. Carroll.
+                Unpublished NIST dataset.
+
+
+Data:           1 Factor
+                5 Treatments
+                5  Replicates/Cell
+                25 Observations
+                3 Constant Leading Digits
+                Lower Level of Difficulty
+                Observed Data
+
+
+Model:          6 Parameters (mu,tau_1, ... , tau_5)
+                y_{ij} = mu + tau_i + epsilon_{ij}
+
+
+
+
+
+
+
+
+Certified Values:
+
+Source of                  Sums of               Mean               
+Variation          df      Squares              Squares             F Statistic
+
+Between Instrument  4 5.11462616000000E-02 1.27865654000000E-02 1.18046237440255E+00
+Within Instrument  20 2.16636560000000E-01 1.08318280000000E-02
+
+                   Certified R-Squared 1.90999039051129E-01
+
+                   Certified Residual
+                   Standard Deviation  1.04076068334656E-01
+
+
+
+
+
+
+
+
+
+
+
+
+Data:  Instrument   Resistance
+           1         196.3052
+           1         196.1240
+           1         196.1890
+           1         196.2569
+           1         196.3403
+           2         196.3042
+           2         196.3825
+           2         196.1669
+           2         196.3257
+           2         196.0422
+           3         196.1303
+           3         196.2005
+           3         196.2889
+           3         196.0343
+           3         196.1811
+           4         196.2795
+           4         196.1748
+           4         196.1494
+           4         196.1485
+           4         195.9885
+           5         196.2119
+           5         196.1051
+           5         196.1850
+           5         196.0052
+           5         196.2090

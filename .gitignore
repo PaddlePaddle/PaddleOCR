@@ -3,6 +3,7 @@ __pycache__/
 .ipynb_checkpoints/
 *.py[cod]
 *$py.class
+*.jpg
 
 # C extensions
 *.so

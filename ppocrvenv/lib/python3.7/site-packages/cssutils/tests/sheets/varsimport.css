@@ -1,0 +1,15 @@
+@variables {
+    c1: "c1 imported";
+    c2: "c2 imported (SHOULD BE OVERWRITTEN)";
+    }
+    
+.import1 {
+    content: var(c1);
+    }
+.import2 {
+    content: var(c2);
+    }
+.import3 {
+    /* not defined here! */
+    content: var(c3);
+    }

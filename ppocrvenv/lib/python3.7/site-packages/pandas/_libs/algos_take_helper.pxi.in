@@ -1,0 +1,251 @@
+"""
+Template for each `dtype` helper function for take
+
+WARNING: DO NOT edit .pxi FILE directly, .pxi is generated from .pxi.in
+"""
+
+# ----------------------------------------------------------------------
+# take_1d, take_2d
+# ----------------------------------------------------------------------
+
+
+{{py:
+
+# c_type_in, c_type_out
+dtypes = [
+    ('uint8_t', 'uint8_t'),
+    ('uint8_t', 'object'),
+    ('int8_t', 'int8_t'),
+    ('int8_t', 'int32_t'),
+    ('int8_t', 'int64_t'),
+    ('int8_t', 'float64_t'),
+    ('int16_t', 'int16_t'),
+    ('int16_t', 'int32_t'),
+    ('int16_t', 'int64_t'),
+    ('int16_t', 'float64_t'),
+    ('int32_t', 'int32_t'),
+    ('int32_t', 'int64_t'),
+    ('int32_t', 'float64_t'),
+    ('int64_t', 'int64_t'),
+    ('int64_t', 'float64_t'),
+    ('float32_t', 'float32_t'),
+    ('float32_t', 'float64_t'),
+    ('float64_t', 'float64_t'),
+    ('object', 'object'),
+]
+
+
+def get_dispatch(dtypes):
+
+    for (c_type_in, c_type_out) in dtypes:
+
+        def get_name(dtype_name):
+            if dtype_name == "object":
+                return "object"
+            if dtype_name == "uint8_t":
+                return "bool"
+            return dtype_name[:-2]
+
+        name = get_name(c_type_in)
+        dest = get_name(c_type_out)
+
+        args = dict(name=name, dest=dest, c_type_in=c_type_in,
+                    c_type_out=c_type_out)
+
+        yield (name, dest, c_type_in, c_type_out)
+
+}}
+
+
+{{for name, dest, c_type_in, c_type_out in get_dispatch(dtypes)}}
+
+
+@cython.wraparound(False)
+@cython.boundscheck(False)
+{{if c_type_in != "object"}}
+def take_1d_{{name}}_{{dest}}(const {{c_type_in}}[:] values,
+{{else}}
+def take_1d_{{name}}_{{dest}}(ndarray[{{c_type_in}}, ndim=1] values,
+{{endif}}
+                              const intp_t[:] indexer,
+                              {{c_type_out}}[:] out,
+                              fill_value=np.nan):
+
+    cdef:
+        Py_ssize_t i, n, idx
+        {{c_type_out}} fv
+
+    n = indexer.shape[0]
+
+    fv = fill_value
+
+    {{if c_type_out != "object"}}
+    with nogil:
+    {{else}}
+    if True:
+    {{endif}}
+        for i in range(n):
+            idx = indexer[i]
+            if idx == -1:
+                out[i] = fv
+            else:
+                {{if c_type_in == "uint8_t" and c_type_out == "object"}}
+                out[i] = True if values[idx] > 0 else False
+                {{else}}
+                out[i] = values[idx]
+                {{endif}}
+
+
+@cython.wraparound(False)
+@cython.boundscheck(False)
+{{if c_type_in != "object"}}
+def take_2d_axis0_{{name}}_{{dest}}(const {{c_type_in}}[:, :] values,
+{{else}}
+def take_2d_axis0_{{name}}_{{dest}}(ndarray[{{c_type_in}}, ndim=2] values,
+{{endif}}
+                                    ndarray[intp_t] indexer,
+                                    {{c_type_out}}[:, :] out,
+                                    fill_value=np.nan):
+    cdef:
+        Py_ssize_t i, j, k, n, idx
+        {{c_type_out}} fv
+
+    n = len(indexer)
+    k = values.shape[1]
+
+    fv = fill_value
+
+    IF {{True if c_type_in == c_type_out != "object" else False}}:
+        cdef:
+            const {{c_type_out}} *v
+            {{c_type_out}} *o
+
+        # GH#3130
+        if (values.strides[1] == out.strides[1] and
+            values.strides[1] == sizeof({{c_type_out}}) and
+            sizeof({{c_type_out}}) * n >= 256):
+
+            for i in range(n):
+                idx = indexer[i]
+                if idx == -1:
+                    for j in range(k):
+                        out[i, j] = fv
+                else:
+                    v = &values[idx, 0]
+                    o = &out[i, 0]
+                    memmove(o, v, <size_t>(sizeof({{c_type_out}}) * k))
+            return
+
+    for i in range(n):
+        idx = indexer[i]
+        if idx == -1:
+            for j in range(k):
+                out[i, j] = fv
+        else:
+            for j in range(k):
+                {{if c_type_in == "uint8_t" and c_type_out == "object"}}
+                out[i, j] = True if values[idx, j] > 0 else False
+                {{else}}
+                out[i, j] = values[idx, j]
+                {{endif}}
+
+
+@cython.wraparound(False)
+@cython.boundscheck(False)
+{{if c_type_in != "object"}}
+def take_2d_axis1_{{name}}_{{dest}}(const {{c_type_in}}[:, :] values,
+{{else}}
+def take_2d_axis1_{{name}}_{{dest}}(ndarray[{{c_type_in}}, ndim=2] values,
+{{endif}}
+                                    ndarray[intp_t] indexer,
+                                    {{c_type_out}}[:, :] out,
+                                    fill_value=np.nan):
+
+    cdef:
+        Py_ssize_t i, j, k, n, idx
+        {{c_type_out}} fv
+
+    n = len(values)
+    k = len(indexer)
+
+    if n == 0 or k == 0:
+        return
+
+    fv = fill_value
+
+    for i in range(n):
+        for j in range(k):
+            idx = indexer[j]
+            if idx == -1:
+                out[i, j] = fv
+            else:
+                {{if c_type_in == "uint8_t" and c_type_out == "object"}}
+                out[i, j] = True if values[i, idx] > 0 else False
+                {{else}}
+                out[i, j] = values[i, idx]
+                {{endif}}
+
+
+@cython.wraparound(False)
+@cython.boundscheck(False)
+def take_2d_multi_{{name}}_{{dest}}(ndarray[{{c_type_in}}, ndim=2] values,
+                                    indexer,
+                                    ndarray[{{c_type_out}}, ndim=2] out,
+                                    fill_value=np.nan):
+    cdef:
+        Py_ssize_t i, j, k, n, idx
+        ndarray[intp_t] idx0 = indexer[0]
+        ndarray[intp_t] idx1 = indexer[1]
+        {{c_type_out}} fv
+
+    n = len(idx0)
+    k = len(idx1)
+
+    fv = fill_value
+    for i in range(n):
+        idx = idx0[i]
+        if idx == -1:
+            for j in range(k):
+                out[i, j] = fv
+        else:
+            for j in range(k):
+                if idx1[j] == -1:
+                    out[i, j] = fv
+                else:
+                    {{if c_type_in == "uint8_t" and c_type_out == "object"}}
+                    out[i, j] = True if values[idx, idx1[j]] > 0 else False
+                    {{else}}
+                    out[i, j] = values[idx, idx1[j]]
+                    {{endif}}
+
+{{endfor}}
+
+# ----------------------------------------------------------------------
+# take_2d internal function
+# ----------------------------------------------------------------------
+
+ctypedef fused take_t:
+    float64_t
+    uint64_t
+    int64_t
+    object
+
+
+cdef _take_2d(ndarray[take_t, ndim=2] values, ndarray[intp_t, ndim=2] idx):
+    cdef:
+        Py_ssize_t i, j, N, K
+        ndarray[intp_t, ndim=2, cast=True] indexer = idx
+        ndarray[take_t, ndim=2] result
+
+    N, K = (<object>values).shape
+
+    if take_t is object:
+        # evaluated at compile-time
+        result = values.copy()
+    else:
+        result = np.empty_like(values)
+
+    for i in range(N):
+        for j in range(K):
+            result[i, j] = values[i, indexer[i, j]]
+    return result

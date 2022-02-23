@@ -1,0 +1,6 @@
+@media aural {
+   BLOCKQUOTE:after { content: url("beautiful-music.wav") }
+}
+a {
+    content: url("other.wav")
+}

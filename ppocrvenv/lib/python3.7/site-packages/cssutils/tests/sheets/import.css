@@ -1,0 +1,6 @@
+@import "import/import2.css";
+.import {
+	/* ./import.css */
+	background-image: url(images/example.gif)
+	}
+

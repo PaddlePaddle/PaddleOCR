@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: et-xmlfile
+Version: 1.1.0
+Summary: An implementation of lxml.xmlfile for the standard library
+Home-page: https://foss.heptapod.net/openpyxl/et_xmlfile
+Author: See ATUHORS.txt
+Author-email: charlie.clark@clark-consulting.eu
+License: MIT
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.6
+
+et_xmfile
+=========
+
+et_xmlfile is a low memory library for creating large XML files.
+
+It is based upon the `xmlfile module from lxml <http://lxml.de/api.html#incremental-xml-generation>`_ with the aim of allowing code to be developed that will work with both libraries. It was developed initially for the openpyxl project but is now a standalone module.
+
+The code was written by Elias Rabel as part of the `Python Düsseldorf <http://pyddf.de>`_ openpyxl sprint in September 2014.
+
+
+Note on performance
+-------------------
+
+The code was not developed with performance in mind but turned out to be faster than the existing SAX-based implementation but is significantly slower than lxml's xmlfile. There is one area where an optimisation for lxml will negatively affect the performance of et_xmfile and that is when using the `.element()` method on an xmlfile context manager. It is, therefore, recommended not to use this, though the method is provided for code compatibility.
+
+

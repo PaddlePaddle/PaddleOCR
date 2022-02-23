@@ -1,0 +1,9 @@
+/* import3 */
+.import3 {
+	/* from ./import/../import3.css */
+	background: url(images/example3.gif);
+	background: url(./images/example3.gif);
+	background: url(import/images2/example2.gif);
+	background: url(./import/images2/example2.gif);
+	background: url(import/images2/../../images/example3.gif);
+	}

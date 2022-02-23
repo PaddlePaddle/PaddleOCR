@@ -1,0 +1,48 @@
+[console_scripts]
+flake8 = flake8.main.cli:main
+
+[flake8.extension]
+F = flake8.plugins.pyflakes:FlakesChecker
+pycodestyle.ambiguous_identifier = pycodestyle:ambiguous_identifier
+pycodestyle.bare_except = pycodestyle:bare_except
+pycodestyle.blank_lines = pycodestyle:blank_lines
+pycodestyle.break_after_binary_operator = pycodestyle:break_after_binary_operator
+pycodestyle.break_before_binary_operator = pycodestyle:break_before_binary_operator
+pycodestyle.comparison_negative = pycodestyle:comparison_negative
+pycodestyle.comparison_to_singleton = pycodestyle:comparison_to_singleton
+pycodestyle.comparison_type = pycodestyle:comparison_type
+pycodestyle.compound_statements = pycodestyle:compound_statements
+pycodestyle.continued_indentation = pycodestyle:continued_indentation
+pycodestyle.explicit_line_join = pycodestyle:explicit_line_join
+pycodestyle.extraneous_whitespace = pycodestyle:extraneous_whitespace
+pycodestyle.imports_on_separate_lines = pycodestyle:imports_on_separate_lines
+pycodestyle.indentation = pycodestyle:indentation
+pycodestyle.maximum_doc_length = pycodestyle:maximum_doc_length
+pycodestyle.maximum_line_length = pycodestyle:maximum_line_length
+pycodestyle.missing_whitespace = pycodestyle:missing_whitespace
+pycodestyle.missing_whitespace_after_import_keyword = pycodestyle:missing_whitespace_after_import_keyword
+pycodestyle.missing_whitespace_around_operator = pycodestyle:missing_whitespace_around_operator
+pycodestyle.module_imports_on_top_of_file = pycodestyle:module_imports_on_top_of_file
+pycodestyle.python_3000_async_await_keywords = pycodestyle:python_3000_async_await_keywords
+pycodestyle.python_3000_backticks = pycodestyle:python_3000_backticks
+pycodestyle.python_3000_has_key = pycodestyle:python_3000_has_key
+pycodestyle.python_3000_invalid_escape_sequence = pycodestyle:python_3000_invalid_escape_sequence
+pycodestyle.python_3000_not_equal = pycodestyle:python_3000_not_equal
+pycodestyle.python_3000_raise_comma = pycodestyle:python_3000_raise_comma
+pycodestyle.tabs_obsolete = pycodestyle:tabs_obsolete
+pycodestyle.tabs_or_spaces = pycodestyle:tabs_or_spaces
+pycodestyle.trailing_blank_lines = pycodestyle:trailing_blank_lines
+pycodestyle.trailing_whitespace = pycodestyle:trailing_whitespace
+pycodestyle.whitespace_around_comma = pycodestyle:whitespace_around_comma
+pycodestyle.whitespace_around_keywords = pycodestyle:whitespace_around_keywords
+pycodestyle.whitespace_around_named_parameter_equals = pycodestyle:whitespace_around_named_parameter_equals
+pycodestyle.whitespace_around_operator = pycodestyle:whitespace_around_operator
+pycodestyle.whitespace_before_comment = pycodestyle:whitespace_before_comment
+pycodestyle.whitespace_before_parameters = pycodestyle:whitespace_before_parameters
+
+[flake8.report]
+default = flake8.formatting.default:Default
+pylint = flake8.formatting.default:Pylint
+quiet-filename = flake8.formatting.default:FilenameOnly
+quiet-nothing = flake8.formatting.default:Nothing
+

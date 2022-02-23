@@ -1,0 +1,15 @@
+@RELATION test2
+
+@ATTRIBUTE attr0	REAL
+@ATTRIBUTE attr1 	real
+@ATTRIBUTE attr2 	integer
+@ATTRIBUTE attr3	Integer
+@ATTRIBUTE attr4 	Numeric
+@ATTRIBUTE attr5	numeric
+@ATTRIBUTE attr6 	string
+@ATTRIBUTE attr7 	STRING
+@ATTRIBUTE attr8 	{bla}
+@ATTRIBUTE attr9 	{bla, bla}
+
+@DATA
+0.1, 0.2, 0.3, 0.4,class1

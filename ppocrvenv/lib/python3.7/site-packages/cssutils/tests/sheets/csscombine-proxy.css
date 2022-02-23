@@ -1,0 +1,7 @@
+﻿@charset "utf-8";
+/* proxy sheet were imported sheets should be combined */
+/* non-ascii chars: öäü */
+@import "csscombine-1.css";
+@import url(csscombine-2.css);
+@namespace other "other";
+proxy { top: 3px }

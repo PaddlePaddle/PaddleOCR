@@ -1,0 +1,14 @@
+@RELATION test9
+
+@ATTRIBUTE attr_date_number	    RELATIONAL
+	@ATTRIBUTE attr_date	DATE "yyyy-MM-dd"
+	@ATTRIBUTE attr_number	INTEGER
+@END attr_date_number
+
+@DATA
+"1999-01-31	1\n1935-11-27	10"
+"2004-12-01	2\n1942-08-13	20"
+"1817-04-28	3"
+"2100-09-10	4\n1957-04-17	40\n1721-01-14	400"
+"2013-11-30	5"
+"1631-10-15	6"

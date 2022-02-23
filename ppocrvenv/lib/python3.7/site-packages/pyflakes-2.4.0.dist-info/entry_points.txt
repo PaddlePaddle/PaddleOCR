@@ -1,0 +1,3 @@
+[console_scripts]
+pyflakes = pyflakes.api:main
+

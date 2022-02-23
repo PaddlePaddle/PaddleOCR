@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: Cython
+Version: 0.29.27
+Summary: The Cython compiler for writing C extensions for the Python language.
+Home-page: http://cython.org/
+Author: Robert Bradshaw, Stefan Behnel, Dag Seljebotn, Greg Ewing, et al.
+Author-email: cython-devel@python.org
+License: Apache
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.6
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Programming Language :: C
+Classifier: Programming Language :: Cython
+Classifier: Topic :: Software Development :: Code Generators
+Classifier: Topic :: Software Development :: Compilers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=2.6, !=3.0.*, !=3.1.*, !=3.2.*
+License-File: LICENSE.txt
+License-File: COPYING.txt
+
+The Cython language makes writing C extensions for the Python language as
+easy as Python itself.  Cython is a source code translator based on Pyrex_,
+but supports more cutting edge functionality and optimizations.
+
+The Cython language is a superset of the Python language (almost all Python
+code is also valid Cython code), but Cython additionally supports optional
+static typing to natively call C functions, operate with C++ classes and
+declare fast C types on variables and class attributes.  This allows the
+compiler to generate very efficient C code from Cython code.
+
+This makes Cython the ideal language for writing glue code for external
+C/C++ libraries, and for fast C modules that speed up the execution of
+Python code.
+
+Note that for one-time builds, e.g. for CI/testing, on platforms that are not
+covered by one of the wheel packages provided on PyPI *and* the pure Python wheel
+that we provide is not used, it is substantially faster than a full source build
+to install an uncompiled (slower) version of Cython with::
+
+    pip install Cython --install-option="--no-cython-compile"
+
+.. _Pyrex: http://www.cosc.canterbury.ac.nz/greg.ewing/python/Pyrex/
+
+

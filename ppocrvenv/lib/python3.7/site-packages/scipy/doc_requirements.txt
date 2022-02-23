@@ -1,0 +1,6 @@
+# Note: this should disappear at some point. For now, please keep it
+#       in sync with the doc dependencies in pyproject.toml
+Sphinx!=3.1.0, !=4.1.0
+pydata-sphinx-theme>=0.6.1
+sphinx-panels>=0.5.2
+matplotlib>2

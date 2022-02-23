@@ -1,0 +1,92 @@
+<kml xmlns="http://www.opengis.net/kml/2.2"
+     xmlns:gx="http://www.google.com/kml/ext/2.2"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.opengis.net/kml/2.2 http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd http://www.google.com/kml/ext/2.2 http://code.google.com/apis/kml/schema/kml22gx.xsd">
+   <Document id="CTA_RailLines">
+      <name>CTA_RailLines</name>
+      <Snippet/>
+      <Folder id="FeatureLayer0">
+         <name>CTA_RailLines</name>
+         <Snippet/>
+         <Placemark id="ID_00001">
+            <name>Blue Line (Forest Park)</name>
+            <Snippet/>
+            <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt"> <head> <META http-equiv="Content-Type" content="text/html"> <meta http-equiv="content-type" content="text/html; charset=UTF-8"> </head> <body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;"> <table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px"> <tr style="text-align:center;font-weight:bold;background:#9CBCE2"> <td>Blue Line (Forest Park)</td> </tr> <tr> <td> <table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px"> <tr> <td>OBJECTID_1</td> <td>1</td> </tr> <tr bgcolor="#D4E4F3"> <td>ASSET_ID</td> <td>21100001</td> </tr> <tr> <td>LINES</td> <td>Blue Line (Forest Park)</td> </tr> <tr bgcolor="#D4E4F3"> <td>DESCRIPTIO</td> <td>Oak Park to Austin</td> </tr> <tr> <td>TYPE</td> <td>Elevated or at Grade</td> </tr> <tr bgcolor="#D4E4F3"> <td>LEGEND</td> <td>BL</td> </tr> <tr> <td>ALT_LEGEND</td> <td>BL</td> </tr> <tr bgcolor="#D4E4F3"> <td>BRANCH</td> <td>Blue Line Forest Park</td> </tr> <tr> <td>SHAPE.LEN</td> <td>4060.368778</td> </tr> </table> </td> </tr> </table> </body> </html>]]></description>
+            <styleUrl>#LineStyle01</styleUrl>
+            <MultiGeometry>
+               <LineString>
+                  <extrude>0</extrude>
+                  <altitudeMode>clampedToGround</altitudeMode>
+                  <coordinates>-87.77678526964958,41.8708863930319,0 -87.77826234150609,41.87097820122218,0 -87.78251583439344,41.87130129991005,0 -87.78418294588424,41.87145055520308,0 -87.7872369165933,41.8717239119163,0 -87.79160214925886,41.87210797280065,0</coordinates>
+               </LineString>
+            </MultiGeometry>
+         </Placemark>
+         <Placemark id="ID_00002">
+            <name>Red, Purple Line</name>
+            <Snippet/>
+            <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt"> <head> <META http-equiv="Content-Type" content="text/html"> <meta http-equiv="content-type" content="text/html; charset=UTF-8"> </head> <body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;"> <table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px"> <tr style="text-align:center;font-weight:bold;background:#9CBCE2"> <td>Red, Purple Line</td> </tr> <tr> <td> <table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px"> <tr> <td>OBJECTID_1</td> <td>2</td> </tr> <tr bgcolor="#D4E4F3"> <td>ASSET_ID</td> <td>21100002</td> </tr> <tr> <td>LINES</td> <td>Red, Purple Line</td> </tr> <tr bgcolor="#D4E4F3"> <td>DESCRIPTIO</td> <td>Lawrence to Wilson</td> </tr> <tr> <td>TYPE</td> <td>Elevated or at Grade</td> </tr> <tr bgcolor="#D4E4F3"> <td>LEGEND</td> <td>RD</td> </tr> <tr> <td>ALT_LEGEND</td> <td>RDPR</td> </tr> <tr bgcolor="#D4E4F3"> <td>BRANCH</td> <td>Red Line North Side</td> </tr> <tr> <td>SHAPE.LEN</td> <td>1800.132896</td> </tr> </table> </td> </tr> </table> </body> </html>]]></description>
+            <styleUrl>#LineStyle01</styleUrl>
+            <MultiGeometry>
+               <LineString>
+                  <extrude>0</extrude>
+                  <altitudeMode>clampedToGround</altitudeMode>
+                  <coordinates>-87.65758750947528,41.96427269188822,0 -87.65802133507393,41.96581929055245,0 -87.65819033925305,41.96621846093642,0 -87.6583189819129,41.96650362897086,0 -87.65835858701473,41.96669002089185,0 -87.65838428411853,41.96688150295095,0 -87.65842208882658,41.96745896091846,0 -87.65846556843937,41.9683761425439,0 -87.65849296214573,41.96913893870342,0</coordinates>
+               </LineString>
+            </MultiGeometry>
+         </Placemark>
+         <Placemark id="ID_00003">
+            <name>Red, Purple Line</name>
+            <Snippet/>
+            <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt"> <head> <META http-equiv="Content-Type" content="text/html"> <meta http-equiv="content-type" content="text/html; charset=UTF-8"> </head> <body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;"> <table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px"> <tr style="text-align:center;font-weight:bold;background:#9CBCE2"> <td>Red, Purple Line</td> </tr> <tr> <td> <table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px"> <tr> <td>OBJECTID_1</td> <td>3</td> </tr> <tr bgcolor="#D4E4F3"> <td>ASSET_ID</td> <td>21100003</td> </tr> <tr> <td>LINES</td> <td>Red, Purple Line</td> </tr> <tr bgcolor="#D4E4F3"> <td>DESCRIPTIO</td> <td>Wilson to Sheridan</td> </tr> <tr> <td>TYPE</td> <td>Elevated or at Grade</td> </tr> <tr bgcolor="#D4E4F3"> <td>LEGEND</td> <td>RD</td> </tr> <tr> <td>ALT_LEGEND</td> <td>RDPR</td> </tr> <tr bgcolor="#D4E4F3"> <td>BRANCH</td> <td>Red Line North Side</td> </tr> <tr> <td>SHAPE.LEN</td> <td>4256.243677</td> </tr> </table> </td> </tr> </table> </body> </html>]]></description>
+            <styleUrl>#LineStyle01</styleUrl>
+            <MultiGeometry>
+               <LineString>
+                  <extrude>0</extrude>
+                  <altitudeMode>clampedToGround</altitudeMode>
+                  <coordinates>-87.65492939166126,41.95377494531437,0 -87.65557043199591,41.95376544118533,0 -87.65606302030132,41.95376391658746,0 -87.65623502146268,41.95377379126367,0 -87.65634748981634,41.95380103566435,0 -87.65646537904269,41.95387703994676,0 -87.65656532461145,41.95396622645799,0 -87.65664760856414,41.95404201996044,0 -87.65671750555913,41.95416647054043,0 -87.65673983607117,41.95429949810849,0 -87.65673866475777,41.95441024240925,0 -87.6567690255541,41.95490657227902,0 -87.65683672482363,41.95692259283837,0 -87.6568900886376,41.95861070983142,0 -87.65699865558875,41.96181418669004,0 -87.65756347177603,41.96397045777844,0 -87.65758750947528,41.96427269188822,0</coordinates>
+               </LineString>
+            </MultiGeometry>
+         </Placemark>
+         <Placemark id="ID_00004">
+            <name>Red, Purple Line</name>
+            <Snippet/>
+            <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt"> <head> <META http-equiv="Content-Type" content="text/html"> <meta http-equiv="content-type" content="text/html; charset=UTF-8"> </head> <body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;"> <table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px"> <tr style="text-align:center;font-weight:bold;background:#9CBCE2"> <td>Red, Purple Line</td> </tr> <tr> <td> <table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px"> <tr> <td>OBJECTID_1</td> <td>4</td> </tr> <tr bgcolor="#D4E4F3"> <td>ASSET_ID</td> <td>21100004</td> </tr> <tr> <td>LINES</td> <td>Red, Purple Line</td> </tr> <tr bgcolor="#D4E4F3"> <td>DESCRIPTIO</td> <td>Sheridan to Addison</td> </tr> <tr> <td>TYPE</td> <td>Elevated or at Grade</td> </tr> <tr bgcolor="#D4E4F3"> <td>LEGEND</td> <td>RD</td> </tr> <tr> <td>ALT_LEGEND</td> <td>RDPR</td> </tr> <tr bgcolor="#D4E4F3"> <td>BRANCH</td> <td>Red Line North Side</td> </tr> <tr> <td>SHAPE.LEN</td> <td>2581.713736</td> </tr> </table> </td> </tr> </table> </body> </html>]]></description>
+            <styleUrl>#LineStyle01</styleUrl>
+            <MultiGeometry>
+               <LineString>
+                  <extrude>0</extrude>
+                  <altitudeMode>clampedToGround</altitudeMode>
+                  <coordinates>-87.65362593118043,41.94742799535678,0 -87.65363554415794,41.94819886386848,0 -87.6536456393239,41.95059994675451,0 -87.65365831235026,41.95108288489359,0 -87.6536604873874,41.9519954657554,0 -87.65362592053201,41.95245597302328,0 -87.65367158496069,41.95311153649393,0 -87.65368468595476,41.9533202828916,0 -87.65369271253692,41.95343095587119,0 -87.65373335834569,41.95351536301472,0 -87.65378605844126,41.95358212680591,0 -87.65385067928185,41.95364452823767,0 -87.6539390793817,41.95370263886964,0 -87.6540786298351,41.95373403675265,0 -87.65430648647626,41.9537535411832,0 -87.65492939166126,41.95377494531437,0</coordinates>
+               </LineString>
+            </MultiGeometry>
+         </Placemark>
+         <Placemark id="ID_00005">
+            <name>Red, Purple Line</name>
+            <Snippet/>
+            <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt"> <head> <META http-equiv="Content-Type" content="text/html"> <meta http-equiv="content-type" content="text/html; charset=UTF-8"> </head> <body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;"> <table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px"> <tr style="text-align:center;font-weight:bold;background:#9CBCE2"> <td>Red, Purple Line</td> </tr> <tr> <td> <table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px"> <tr> <td>OBJECTID_1</td> <td>5</td> </tr> <tr bgcolor="#D4E4F3"> <td>ASSET_ID</td> <td>21100005</td> </tr> <tr> <td>LINES</td> <td>Red, Purple Line</td> </tr> <tr bgcolor="#D4E4F3"> <td>DESCRIPTIO</td> <td>Addison to Clark Junction</td> </tr> <tr> <td>TYPE</td> <td>Elevated or at Grade</td> </tr> <tr bgcolor="#D4E4F3"> <td>LEGEND</td> <td>RD</td> </tr> <tr> <td>ALT_LEGEND</td> <td>RDPR</td> </tr> <tr bgcolor="#D4E4F3"> <td>BRANCH</td> <td>Red Line North Side</td> </tr> <tr> <td>SHAPE.LEN</td> <td>1918.716686</td> </tr> </table> </td> </tr> </table> </body> </html>]]></description>
+            <styleUrl>#LineStyle01</styleUrl>
+            <MultiGeometry>
+               <LineString>
+                  <extrude>0</extrude>
+                  <altitudeMode>clampedToGround</altitudeMode>
+                  <coordinates>-87.65345391792157,41.94217681262115,0 -87.65342448305786,41.94237224420864,0 -87.65339745703922,41.94268217746244,0 -87.65337753982941,41.94288140770284,0 -87.65336256753105,41.94317369618263,0 -87.65338799707138,41.94357253961736,0 -87.65340240886648,41.94389158188269,0 -87.65341837392448,41.94406444407721,0 -87.65342275247338,41.94421065714904,0 -87.65347469646018,41.94434829382345,0 -87.65351486483024,41.94447699917548,0 -87.65353483605053,41.9453896864472,0 -87.65361975532807,41.94689193720703,0 -87.65362593118043,41.94742799535678,0</coordinates>
+               </LineString>
+            </MultiGeometry>
+         </Placemark>
+      </Folder>
+      <Style id="LineStyle01">
+         <LabelStyle>
+            <color>00000000</color>
+            <scale>0.000000</scale>
+         </LabelStyle>
+         <LineStyle>
+            <color>ff899e00</color>
+            <width>1.000000</width>
+         </LineStyle>
+         <PolyStyle>
+            <color>00000000</color>
+            <outline>0</outline>
+         </PolyStyle>
+      </Style>
+   </Document>
+</kml>

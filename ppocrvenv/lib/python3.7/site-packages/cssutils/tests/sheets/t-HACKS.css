@@ -1,0 +1,35 @@
+/* http://centricle.com/ref/css/filters/?highlight_columns=true */
+@import 'styles1.css';
+@import "styles2.css";
+@import url(styles3.css);
+@import url('styles4.css');
+@import url("styles5.css");
+@import "null?\"\{";
+@import "styles6.css";
+
+a {
+	color: red;
+	voice-family:"\"}\"";
+	voice-family:inherit;
+	color: green;
+}
+b { color: red;
+	 c\olor:green; }
+c { color: red;
+	/*/*/color:green;/* */ }
+/* NS4 only, should not work: */
+d { color: green;
+	/*/*//*/color:red;/* */    	 }
+
+e1{content:"\"/*"}
+e2{color:green}
+/* THIS SHOULD WORK??? */
+/* \*/
+div{color:green}
+/* */
+
+div#test { }
+head:first-child+body div {  }
+
+
+@media all{/* rules */}

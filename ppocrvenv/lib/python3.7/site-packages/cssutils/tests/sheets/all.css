@@ -1,0 +1,8 @@
+/* this sheet should be used in the HTML, deploy.py does resolve
+ * all imports so that only a single CSS is deployed to cut down
+ * the number of HTTP requests 
+ */  
+@import url(1.css);
+@import url(atrule.css);  
+@import url(simple.css);
+@namespace a 'x';

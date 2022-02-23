@@ -1,0 +1,397 @@
+Metadata-Version: 2.1
+Name: cached-property
+Version: 1.5.2
+Summary: A decorator for caching properties in classes.
+Home-page: https://github.com/pydanny/cached-property
+Author: Daniel Greenfeld
+Author-email: pydanny@gmail.com
+License: BSD
+Keywords: cached-property
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Description-Content-Type: text/x-rst
+
+===============================
+cached-property
+===============================
+
+.. image:: https://img.shields.io/pypi/v/cached-property.svg
+    :target: https://pypi.python.org/pypi/cached-property
+
+.. image:: https://github.com/pydanny/cached-property/workflows/Python%20package/badge.svg
+    :target: https://github.com/pydanny/cached-property/actions 
+
+
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/ambv/black
+    :alt: Code style: black        
+
+
+A decorator for caching properties in classes.
+
+Why?
+-----
+
+* Makes caching of time or computational expensive properties quick and easy.
+* Because I got tired of copy/pasting this code from non-web project to non-web project.
+* I needed something really simple that worked in Python 2 and 3.
+
+How to use it
+--------------
+
+Let's define a class with an expensive property. Every time you stay there the
+price goes up by $50!
+
+.. code-block:: python
+
+    class Monopoly(object):
+
+        def __init__(self):
+            self.boardwalk_price = 500
+
+        @property
+        def boardwalk(self):
+            # In reality, this might represent a database call or time
+            # intensive task like calling a third-party API.
+            self.boardwalk_price += 50
+            return self.boardwalk_price
+
+Now run it:
+
+.. code-block:: python
+
+    >>> monopoly = Monopoly()
+    >>> monopoly.boardwalk
+    550
+    >>> monopoly.boardwalk
+    600
+
+Let's convert the boardwalk property into a ``cached_property``.
+
+.. code-block:: python
+
+    from cached_property import cached_property
+
+    class Monopoly(object):
+
+        def __init__(self):
+            self.boardwalk_price = 500
+
+        @cached_property
+        def boardwalk(self):
+            # Again, this is a silly example. Don't worry about it, this is
+            #   just an example for clarity.
+            self.boardwalk_price += 50
+            return self.boardwalk_price
+
+Now when we run it the price stays at $550.
+
+.. code-block:: python
+
+    >>> monopoly = Monopoly()
+    >>> monopoly.boardwalk
+    550
+    >>> monopoly.boardwalk
+    550
+    >>> monopoly.boardwalk
+    550
+
+Why doesn't the value of ``monopoly.boardwalk`` change? Because it's a **cached property**!
+
+Invalidating the Cache
+----------------------
+
+Results of cached functions can be invalidated by outside forces. Let's demonstrate how to force the cache to invalidate:
+
+.. code-block:: python
+
+    >>> monopoly = Monopoly()
+    >>> monopoly.boardwalk
+    550
+    >>> monopoly.boardwalk
+    550
+    >>> # invalidate the cache
+    >>> del monopoly.__dict__['boardwalk']
+    >>> # request the boardwalk property again
+    >>> monopoly.boardwalk
+    600
+    >>> monopoly.boardwalk
+    600
+
+Working with Threads
+---------------------
+
+What if a whole bunch of people want to stay at Boardwalk all at once? This means using threads, which
+unfortunately causes problems with the standard ``cached_property``. In this case, switch to using the
+``threaded_cached_property``:
+
+.. code-block:: python
+
+    from cached_property import threaded_cached_property
+
+    class Monopoly(object):
+
+        def __init__(self):
+            self.boardwalk_price = 500
+
+        @threaded_cached_property
+        def boardwalk(self):
+            """threaded_cached_property is really nice for when no one waits
+                for other people to finish their turn and rudely start rolling
+                dice and moving their pieces."""
+
+            sleep(1)
+            self.boardwalk_price += 50
+            return self.boardwalk_price
+
+Now use it:
+
+.. code-block:: python
+
+    >>> from threading import Thread
+    >>> from monopoly import Monopoly
+    >>> monopoly = Monopoly()
+    >>> threads = []
+    >>> for x in range(10):
+    >>>     thread = Thread(target=lambda: monopoly.boardwalk)
+    >>>     thread.start()
+    >>>     threads.append(thread)
+
+    >>> for thread in threads:
+    >>>     thread.join()
+
+    >>> self.assertEqual(m.boardwalk, 550)
+
+
+Working with async/await (Python 3.5+)
+--------------------------------------
+
+The cached property can be async, in which case you have to use await
+as usual to get the value. Because of the caching, the value is only
+computed once and then cached:
+
+.. code-block:: python
+
+    from cached_property import cached_property
+
+    class Monopoly(object):
+
+        def __init__(self):
+            self.boardwalk_price = 500
+
+        @cached_property
+        async def boardwalk(self):
+            self.boardwalk_price += 50
+            return self.boardwalk_price
+
+Now use it:
+
+.. code-block:: python
+
+    >>> async def print_boardwalk():
+    ...     monopoly = Monopoly()
+    ...     print(await monopoly.boardwalk)
+    ...     print(await monopoly.boardwalk)
+    ...     print(await monopoly.boardwalk)
+    >>> import asyncio
+    >>> asyncio.get_event_loop().run_until_complete(print_boardwalk())
+    550
+    550
+    550
+
+Note that this does not work with threading either, most asyncio
+objects are not thread-safe. And if you run separate event loops in
+each thread, the cached version will most likely have the wrong event
+loop. To summarize, either use cooperative multitasking (event loop)
+or threading, but not both at the same time.
+
+
+Timing out the cache
+--------------------
+
+Sometimes you want the price of things to reset after a time. Use the ``ttl``
+versions of ``cached_property`` and ``threaded_cached_property``.
+
+.. code-block:: python
+
+    import random
+    from cached_property import cached_property_with_ttl
+
+    class Monopoly(object):
+
+        @cached_property_with_ttl(ttl=5) # cache invalidates after 5 seconds
+        def dice(self):
+            # I dare the reader to implement a game using this method of 'rolling dice'.
+            return random.randint(2,12)
+
+Now use it:
+
+.. code-block:: python
+
+    >>> monopoly = Monopoly()
+    >>> monopoly.dice
+    10
+    >>> monopoly.dice
+    10
+    >>> from time import sleep
+    >>> sleep(6) # Sleeps long enough to expire the cache
+    >>> monopoly.dice
+    3
+    >>> monopoly.dice
+    3
+
+**Note:** The ``ttl`` tools do not reliably allow the clearing of the cache. This
+is why they are broken out into seperate tools. See https://github.com/pydanny/cached-property/issues/16.
+
+Credits
+--------
+
+* Pip, Django, Werkzueg, Bottle, Pyramid, and Zope for having their own implementations. This package originally used an implementation that matched the Bottle version.
+* Reinout Van Rees for pointing out the `cached_property` decorator to me.
+* My awesome wife `@audreyr`_ who created `cookiecutter`_, which meant rolling this out took me just 15 minutes.
+* @tinche for pointing out the threading issue and providing a solution.
+* @bcho for providing the time-to-expire feature
+
+.. _`@audreyr`: https://github.com/audreyr
+.. _`cookiecutter`: https://github.com/audreyr/cookiecutter
+
+Support This Project
+---------------------------
+
+This project is maintained by volunteers. Support their efforts by spreading the word about:
+
+Django Crash Course
+++++++++++++++++++++++++++++++++++++
+
+.. image:: https://cdn.shopify.com/s/files/1/0304/6901/files/Django-Crash-Course-300x436.jpg
+   :name: Django Crash Course: Covers Django 3.0 and Python 3.8
+   :align: center
+   :alt: Django Crash Course
+   :target: https://www.roygreenfeld.com/products/django-crash-course
+
+Django Crash Course for Django 3.0 and Python 3.8 is the best cheese-themed Django reference in the universe!
+
+
+
+
+History
+-------
+
+1.5.2 (2020-09-21)
+++++++++++++++++++
+
+* Add formal support for Python 3.8
+* Remove formal support for Python 3.4
+* Switch from Travis to GitHub actions
+* Made tests pass flake8 for Python 2.7
+
+1.5.1 (2018-08-05)
+++++++++++++++++++
+
+* Added formal support for Python 3.7
+* Removed formal support for Python 3.3
+
+1.4.3  (2018-06-14)
++++++++++++++++++++
+
+* Catch SyntaxError from asyncio import on older versions of Python, thanks to @asottile
+
+1.4.2 (2018-04-08)
+++++++++++++++++++
+
+* Really fixed tests, thanks to @pydanny
+
+1.4.1 (2018-04-08)
+++++++++++++++++++
+
+* Added conftest.py to manifest so tests work properly off the tarball, thanks to @dotlambda
+* Ensured new asyncio tests didn't break Python 2.7 builds on Debian, thanks to @pydanny
+* Code formatting via black, thanks to @pydanny and @ambv
+
+
+1.4.0 (2018-02-25)
+++++++++++++++++++
+
+* Added asyncio support, thanks to @vbraun
+* Remove Python 2.6 support, whose end of life was 5 years ago, thanks to @pydanny
+
+
+1.3.1 (2017-09-21)
+++++++++++++++++++
+
+* Validate for Python 3.6
+
+
+1.3.0 (2015-11-24)
+++++++++++++++++++
+
+* Drop some non-ASCII characters from HISTORY.rst, thanks to @AdamWill
+* Added official support for Python 3.5, thanks to @pydanny and @audreyr
+* Removed confusingly placed lock from example, thanks to @ionelmc
+* Corrected invalidation cache documentation, thanks to @proofit404
+* Updated to latest Travis-CI environment, thanks to @audreyr
+
+1.2.0 (2015-04-28)
+++++++++++++++++++
+
+* Overall code and test refactoring, thanks to @gsakkis
+* Allow the del statement for resetting cached properties with ttl instead of del obj._cache[attr], thanks to @gsakkis.
+* Uncovered a bug in PyPy, https://bitbucket.org/pypy/pypy/issue/2033/attributeerror-object-attribute-is-read, thanks to @gsakkis
+* Fixed threaded_cached_property_with_ttl to actually be thread-safe, thanks to @gsakkis
+
+1.1.0 (2015-04-04)
+++++++++++++++++++
+
+* Regression: As the cache was not always clearing, we've broken out the time to expire feature to its own set of specific tools, thanks to @pydanny
+* Fixed typo in README, thanks to @zoidbergwill
+
+1.0.0 (2015-02-13)
+++++++++++++++++++
+
+* Added timed to expire feature to ``cached_property`` decorator.
+* **Backwards incompatiblity**: Changed ``del monopoly.boardwalk`` to ``del monopoly['boardwalk']`` in order to support the new TTL feature.
+
+0.1.5 (2014-05-20)
+++++++++++++++++++
+
+* Added threading support with new ``threaded_cached_property`` decorator
+* Documented cache invalidation
+* Updated credits
+* Sourced the bottle implementation
+
+0.1.4 (2014-05-17)
+++++++++++++++++++
+
+* Fix the dang-blarged py_modules argument.
+
+0.1.3 (2014-05-17)
+++++++++++++++++++
+
+* Removed import of package into ``setup.py``
+
+0.1.2 (2014-05-17)
+++++++++++++++++++
+
+* Documentation fixes. Not opening up a RTFD instance for this because it's so simple to use.
+
+0.1.1 (2014-05-17)
+++++++++++++++++++
+
+* setup.py fix. Whoops!
+
+0.1.0 (2014-05-17)
+++++++++++++++++++
+
+* First release on PyPI.
+
+

@@ -1,0 +1,6 @@
+numpy>=1.14.0
+scikit-learn>=0.21.3
+
+[cpu]
+
+[gpu]

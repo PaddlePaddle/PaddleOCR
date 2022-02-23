@@ -1,0 +1,5 @@
+# multilabel dataset in SVMlight format
+1,0 2:2.5   10:-5.2 15:1.5
+2 5:1.0 12:-3 
+ 2:3.5 11:26
+1,2 20:27

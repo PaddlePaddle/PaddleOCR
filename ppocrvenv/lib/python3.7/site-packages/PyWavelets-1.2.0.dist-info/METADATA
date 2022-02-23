@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: PyWavelets
+Version: 1.2.0
+Summary: PyWavelets, wavelet transform module
+Home-page: https://github.com/PyWavelets/pywt
+Maintainer: The PyWavelets Developers
+Maintainer-email: pywavelets@googlegroups.com
+License: MIT
+Download-URL: https://github.com/PyWavelets/pywt/releases
+Keywords: wavelets,wavelet transform,DWT,SWT,CWT,scientific
+Platform: Windows
+Platform: Linux
+Platform: Solaris
+Platform: Mac OS-X
+Platform: Unix
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: C
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.7
+License-File: LICENSE
+License-File: LICENSES_bundled.txt
+Requires-Dist: numpy (>=1.17.3)
+
+        PyWavelets is a Python wavelet transforms module that includes:
+
+        * nD Forward and Inverse Discrete Wavelet Transform (DWT and IDWT)
+        * 1D and 2D Forward and Inverse Stationary Wavelet Transform (Undecimated Wavelet Transform)
+        * 1D and 2D Wavelet Packet decomposition and reconstruction
+        * 1D Continuous Wavelet Tranfsorm
+        * Computing Approximations of wavelet and scaling functions
+        * Over 100 built-in wavelet filters and support for custom wavelets
+        * Single and double precision calculations
+        * Real and complex calculations
+        * Results compatible with Matlab Wavelet Toolbox (TM)
+        
+

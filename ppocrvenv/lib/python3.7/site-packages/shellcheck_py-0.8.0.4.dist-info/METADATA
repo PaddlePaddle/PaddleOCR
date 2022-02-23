@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: shellcheck-py
+Version: 0.8.0.4
+Summary: Python wrapper around invoking shellcheck (https://www.shellcheck.net/)
+Home-page: https://github.com/ryanrhee/shellcheck-py
+Author: Ryan Rhee
+Author-email: pypi@rhee.io
+License: MIT
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+[![Build Status](https://dev.azure.com/shellcheck-py/shellcheck-py/_apis/build/status/shellcheck-py.shellcheck-py?branchName=master)](https://dev.azure.com/shellcheck-py/shellcheck-py/_build/latest?definitionId=1&branchName=master)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/shellcheck-py/shellcheck-py/master.svg)](https://results.pre-commit.ci/latest/github/shellcheck-py/shellcheck-py/master)
+
+# shellcheck-py
+
+A python wrapper to provide a pip-installable [shellcheck] binary.
+
+Internally this package provides a convenient way to download the pre-built
+shellcheck binary for your particular platform.
+
+### installation
+
+```bash
+pip install shellcheck-py
+```
+
+### usage
+
+After installation, the `shellcheck` binary should be available in your
+environment (or `shellcheck.exe` on windows).
+
+### As a pre-commit hook
+
+See [pre-commit] for instructions
+
+Sample `.pre-commit-config.yaml`:
+
+```yaml
+-   repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.8.0.4
+    hooks:
+    -   id: shellcheck
+```
+
+[shellcheck]: https://shellcheck.net
+[pre-commit]: https://pre-commit.com
+
+

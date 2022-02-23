@@ -1,0 +1,22 @@
+Metadata-Version: 2.1
+Name: protobuf
+Version: 3.19.4
+Summary: Protocol Buffers
+Home-page: https://developers.google.com/protocol-buffers/
+Maintainer: protobuf@googlegroups.com
+Maintainer-email: protobuf@googlegroups.com
+License: 3-Clause BSD License
+Download-URL: https://github.com/protocolbuffers/protobuf/releases
+Platform: UNKNOWN
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.5
+
+Protocol Buffers are Google's data interchange format
+

@@ -1,0 +1,16 @@
+from typing import Union, Optional
+
+Buffer = Union[bytes, bytearray, memoryview]
+
+class K12_XOF(object):
+    def __init__(self,
+                 data:     Optional[Buffer] = ...,
+                 custom:   Optional[bytes] = ...) -> None: ...
+    def update(self, data: Buffer) -> K12_XOF: ...
+    def read(self, length: int) -> bytes: ...
+    def new(self,
+                 data:     Optional[Buffer] = ...,
+                 custom:   Optional[bytes] = ...) -> None: ...
+
+def new(data:     Optional[Buffer] = ...,
+        custom:   Optional[Buffer] = ...) -> K12_XOF: ...

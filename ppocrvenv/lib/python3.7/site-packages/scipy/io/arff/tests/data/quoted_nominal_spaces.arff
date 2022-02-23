@@ -1,0 +1,13 @@
+% Regression test for issue #10232 : Exception in loadarff with quoted nominal attributes
+% Spaces inside quotes are NOT stripped by the parser
+
+@relation SOME_DATA
+@attribute age numeric
+@attribute smoker {'  yes', 'no  '}
+@data
+18,'no  '
+24,'  yes'
+44,'no  '
+56,'no  '
+89,'  yes'
+11,'no  '

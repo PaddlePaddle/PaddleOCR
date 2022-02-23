@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: h5py
+Version: 3.6.0
+Summary: Read and write HDF5 files from Python
+Home-page: http://www.h5py.org
+Author: Andrew Collette
+Author-email: andrew.collette@gmail.com
+Maintainer: Andrew Collette
+Maintainer-email: andrew.collette@gmail.com
+License: BSD
+Download-URL: https://pypi.python.org/pypi/h5py
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Cython
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Database
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Operating System :: Unix
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Requires-Python: >=3.7
+License-File: LICENSE
+Requires-Dist: numpy (>=1.14.5)
+Requires-Dist: cached-property ; python_version < "3.8"
+
+
+The h5py package provides both a high- and low-level interface to the HDF5
+library from Python. The low-level interface is intended to be a complete
+wrapping of the HDF5 API, while the high-level component supports  access to
+HDF5 files, datasets and groups using established Python and NumPy concepts.
+
+A strong emphasis on automatic conversion between Python (Numpy) datatypes and
+data structures and their HDF5 equivalents vastly simplifies the process of
+reading and writing data from Python.
+
+Supports HDF5 versions 1.8.4 and higher.  On Windows, HDF5 is included with
+the installer.
+
+

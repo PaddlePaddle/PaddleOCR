@@ -1,0 +1,11 @@
+et_xmlfile-1.1.0.dist-info/AUTHORS.txt,sha256=Y6mQLe0ywXMVP7WVFrZgEW3CqhIv-plM1CaOtdtBuXs,64
+et_xmlfile-1.1.0.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
+et_xmlfile-1.1.0.dist-info/LICENCE.rst,sha256=r-YrNgzcqB-43m7kt2ENodhsORd3qAx6y20RRVxTxCk,1694
+et_xmlfile-1.1.0.dist-info/METADATA,sha256=B5hV5UW4GqmWGgwAW44C2ofZZEmV0MRnTEU98kzcUGw,1775
+et_xmlfile-1.1.0.dist-info/RECORD,,
+et_xmlfile-1.1.0.dist-info/WHEEL,sha256=OqRkF0eY5GHssMorFjlbTIq072vpHpF60fIQA6lS9xA,92
+et_xmlfile-1.1.0.dist-info/top_level.txt,sha256=34-74d5NNARgTsPxCMta5o28XpBNmSN0iCZhtmx2Fk8,11
+et_xmlfile/__init__.py,sha256=-oTKwE6upIG2gOmnOc4KLgV-pKbBwy-zhQfizbmCruQ,269
+et_xmlfile/__pycache__/__init__.cpython-37.pyc,,
+et_xmlfile/__pycache__/xmlfile.cpython-37.pyc,,
+et_xmlfile/xmlfile.py,sha256=_h20RRb3ptDZ6xXoxMU_Wrx8rG6UZsg0TS7HEOrotzg,3204

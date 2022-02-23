@@ -1,0 +1,16 @@
+toml-0.10.2.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
+toml-0.10.2.dist-info/LICENSE,sha256=LZKUgj32yJNXyL5JJ_znk2HWVh5e51MtWSbmOTmqpTY,1252
+toml-0.10.2.dist-info/METADATA,sha256=n_YkspvEihd_QXLIZZ50WVSFz3rZ_k7jQP-OU1WUpWY,7142
+toml-0.10.2.dist-info/RECORD,,
+toml-0.10.2.dist-info/WHEEL,sha256=ADKeyaGyKF5DwBNE0sRE5pvW-bSkFMJfBuhzZ3rceP4,110
+toml-0.10.2.dist-info/top_level.txt,sha256=2BO8ZRNnvJWgXyiQv66LBb_v87qBzcoUtEBefA75Ouk,5
+toml/__init__.py,sha256=Au3kqCwKD0cjbf4yJGOpUFwpsY0WHsC1ZRGvWgIKmpc,723
+toml/__pycache__/__init__.cpython-37.pyc,,
+toml/__pycache__/decoder.cpython-37.pyc,,
+toml/__pycache__/encoder.cpython-37.pyc,,
+toml/__pycache__/ordered.cpython-37.pyc,,
+toml/__pycache__/tz.cpython-37.pyc,,
+toml/decoder.py,sha256=hSGTLf-2WBDZ_ddoCHWFy6N647XyMSh1o3rN2o4dEFg,38942
+toml/encoder.py,sha256=XjBc8ayvvlsLyd_qDA4tMWDNmMFRS4DpwtuDSWBq7zo,9940
+toml/ordered.py,sha256=mz03lZmV0bmc9lsYRIUOuj7Dsu5Ptwq-UtGVq5FdVZ4,354
+toml/tz.py,sha256=-5vg8wkg_atnVi2TnEveexIVE7T_FxBVr_-2WVfO1oA,701

@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: paddlenlp
+Version: 2.2.4
+Summary: PaddlePaddle NLP Model Core Library
+Home-page: https://github.com/PaddlePaddle/PaddleNLP
+Author: PaddlePaddle Speech and Language Team
+Author-email: paddlesl@baidu.com
+License: Apache 2.0
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/plain
+Requires-Dist: jieba
+Requires-Dist: h5py
+Requires-Dist: colorlog
+Requires-Dist: colorama
+Requires-Dist: seqeval
+Requires-Dist: multiprocess
+
+PaddlePaddle NLP Model Core Library
+
+

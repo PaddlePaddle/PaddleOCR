@@ -1,0 +1,13 @@
+cssselect-1.1.0.dist-info/AUTHORS,sha256=0xOj3H8iII6M_KWmoDYQRuzTrYrLPbJ8K2kVSAoQ5zQ,171
+cssselect-1.1.0.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
+cssselect-1.1.0.dist-info/LICENSE,sha256=XI2p90Tgr7qBpIybXb5zBI95izKH1vGvigXuCOuxCJI,1517
+cssselect-1.1.0.dist-info/METADATA,sha256=L1k9gxlz3quPBMPepkTOo0tPXV2l8cQl-yZGnO-gNUc,2332
+cssselect-1.1.0.dist-info/RECORD,,
+cssselect-1.1.0.dist-info/WHEEL,sha256=h_aVn5OB2IERUjMbi2pucmR_zzWJtk303YXvhh60NJ8,110
+cssselect-1.1.0.dist-info/top_level.txt,sha256=GKK3Utu_ceog6CK27VXNdbyiqGnoyJo3970FLo5JdUU,10
+cssselect/__init__.py,sha256=fmdpKrz5-uYAzXUh3LMOrEPiJMENB1gf962v5Nq5yis,639
+cssselect/__pycache__/__init__.cpython-37.pyc,,
+cssselect/__pycache__/parser.cpython-37.pyc,,
+cssselect/__pycache__/xpath.cpython-37.pyc,,
+cssselect/parser.py,sha256=jrlRxEpSFfiqYHKfUHjgERdMQwFbvsh3sONi_HiTDys,26145
+cssselect/xpath.py,sha256=Izy4CXmK6zMHg13PP63bBp065eFZNBfPJeNyhjSsS7Q,28257

@@ -1,0 +1,10 @@
+Flask_Babel-2.0.0.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
+Flask_Babel-2.0.0.dist-info/LICENSE,sha256=pSYQCnBHI3Ngo5S6T3CugBtQ_5uMm55z53lUgKWfa34,1457
+Flask_Babel-2.0.0.dist-info/METADATA,sha256=PAc5Px_xpOvXOxW8pLJ7Hr5BlDu8sEECZZkGTXShwRo,2145
+Flask_Babel-2.0.0.dist-info/RECORD,,
+Flask_Babel-2.0.0.dist-info/WHEEL,sha256=EVRjI69F5qVjm_YgqcTXPnTAv3BfSUr0WVAHuSP3Xoo,92
+Flask_Babel-2.0.0.dist-info/top_level.txt,sha256=2CI1eTvkPSxyDsmIAjCSzvyC9vye6AnqevE4ByOoGpg,12
+flask_babel/__init__.py,sha256=pVPkON7P5p2JBIUJwkZb1uaGvrT81hlaf-MkcwTn88c,24625
+flask_babel/__pycache__/__init__.cpython-37.pyc,,
+flask_babel/__pycache__/speaklater.cpython-37.pyc,,
+flask_babel/speaklater.py,sha256=moGrHeg_M-c5sqUdmudwnKZ55-FH-Uh4iktpjiHGSpo,1669

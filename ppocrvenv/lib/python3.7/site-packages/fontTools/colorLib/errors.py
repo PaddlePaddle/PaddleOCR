@@ -1,0 +1,3 @@
+
+class ColorLibError(Exception):
+    pass

@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: lmdb
+Version: 1.3.0
+Summary: Universal Python binding for the LMDB 'Lightning' Database
+Home-page: http://github.com/jnwatson/py-lmdb/
+Author: David Wilson
+Maintainer: Nic Watson
+License: OLDAP-2.8
+Platform: UNKNOWN
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Database
+Classifier: Topic :: Database :: Database Engines/Servers
+Description-Content-Type: text/plain
+
+Universal Python binding for the LMDB 'Lightning' Database
+
+

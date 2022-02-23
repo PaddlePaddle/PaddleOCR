@@ -1,0 +1,621 @@
+body, div, form, #links ul li, #links ul, #topnav, img { font-size: 100%; }
+body { 
+	background: #fff; 
+	/* font: 85%/150% verdana, sans-serif; */
+	font: 84%/150% sans-serif;
+}
+
+* a { color: #006699; } 
+a:visited { color: #6a6a6a; }
+
+#topnav {
+	position: relative;
+	height: 55px;
+	margin: 5px 0 0 0;
+	background: #f57300 url(/images/topnav-orange-bg.png) repeat-x left;
+	clear: both;
+}
+
+#topnav div.search {
+    position: absolute;
+    top: 10px;
+    right: 1em;
+    text-align: right;
+    white-space: nowrap;
+}
+div.search input {
+    font-size: 93%;
+    width: 11.25em;
+}
+    div.search input.button { width: auto; margin-left: 5px; }
+
+	div.search fieldset { border: none; margin: 0; padding: 0; }
+  	#topnav div.search fieldset legend { display: none; }
+
+/* layout */
+#contents
+{
+	min-width: 37em;
+}
+
+#slashboxes #contents ul {
+  padding-left: 1.25em;
+  margin-bottom: 20px;
+}
+
+body #index #articles
+{
+	margin: 0 15.6em 1em .8em;
+	position: relative;
+}
+
+/* Header */
+
+#logo h1 a
+{
+	width: 642px;
+	height: 55px;
+	outline: none;
+	text-decoration: none;
+	background: url("/images/logo-bp-orange4.png") no-repeat left top;
+}
+
+#slogan h2
+{
+	color: #555;
+	font-family: sans-serif;
+	font-weight: bold;
+	font-size: 90%;
+	margin: -1em 0 1em 0;
+}
+
+#slashboxes #contents ul {
+  padding-left: 1.25em;
+  margin-bottom: 20px;
+}
+
+
+/* links */
+#links { background: #fff; }
+#links div.block { background: #fff url("/images/cbl.gif") bottom left no-repeat; }
+#links div.title { background: #f60 url("/images/ctl_grey.png") top left no-repeat; }
+
+#links h4
+{
+	font-weight: bold;
+	font-size: 84%;
+	font-family: sans-serif;
+}
+
+#links div.content
+{
+	padding: .3em .3em .6em .3em;
+	font-size: 85%;
+	line-height: 140%;
+	position: relative;
+	border: 1px #ddd solid;
+}
+
+/* Slashboxes (right sidebar) */
+div#slashboxes {
+  float: right;
+  width: 14.5em;
+  margin-left: 1.25em;
+}
+  div#slashboxes div.block {
+     margin-bottom: 1.25em;
+     font-size: 88%;
+  }
+  
+   div#slashboxes div.block div.title h4 {
+	background: #777 url(//images.slashdot.org/block-title-right.png) no-repeat right top;
+	padding: .1em .1em .1em .8em;
+	color: #fff;
+	font-size: 100%;
+    }
+    div#slashboxes div.block div.title h4 a { color: #fff; }
+    div#slashboxes div.block div.title h4 a:visited { color: #fff; }
+
+    div#slashboxes div.block div.content {
+      padding: .4em;
+      background: #fff url(//images.slashdot.org/slashbox-bottom-left.png) no-repeat left bottom;
+    }
+      div#slashboxes div.block div.content p { margin: 0;}
+      div#slashboxes div.block div.content ul { margin: 0; padding: 0; list-style-image: none; }
+      div#slashboxes div.block div.content ul li {
+        padding: .1em .1em .3em .5em;
+	/* list-style-image: url(/images//bullet.gif); */
+	list-style: none;
+        border-top: 1px solid #ddd;
+      }
+    div#slashboxes div.block div.right { padding: .5em .8em .6em .8em; }
+
+/* Links (left sidebar) */
+div#links {
+  float: left;
+  width: 7.1em;
+  padding-bottom: 10px;
+  margin-right: 0;
+}
+
+div#links div.block div.content ul li a {
+      display: block;
+      padding: .3em .2em .3em .2em;
+      font-size: 100%;
+      border-top: 1px solid #ddd;
+}
+
+div#links div.block div.content ul li a:hover {background: #ef8218 url(//images.slashdot.org/link-arrow.gif) no-repeat right center; color: #fff;}
+div#links div.block div.content, div#slashboxes div.block div.content { background: #eee; }
+div#links div.block div.title, 
+div#slashboxes div.block div.title,
+div#links div.block {
+  /* background: #ef8218 url(/images/article-title-orange-bg.png) repeat-x left top; */
+  background: #777;
+  }
+  div#links div.block div#sitebox-title, 
+  div#links div.block div#navigation-title {
+    background: url(//images.slashdot.org/block-title-right.png) no-repeat right top;
+    }
+
+div#links div.block div.content ul { border-bottom: 1px solid #fff; }
+    div#links div.block div.content ul li a { border-top: 1px solid #fff;}
+
+/* General */
+.generaltitle { background: url("/images/article-title-orange-bg.png") #ef8218 xrepeat-x; }
+.generaltitle div.title { background: #ef8218; }
+
+.generaltitle h3
+{
+	color: #fff;
+	font-family: sans-serif;
+	font-size: 120%; /* 16px */
+	font-weight: bold;
+}
+
+.generaltitle h3 a,
+.generaltitle h3 a:visited
+{
+	color: #fff;
+	font-family: sans-serif;
+	font-size: 100%; 
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.generalbody
+{
+	background: #fff;
+	border: 1px solid #eee;
+	border-top: none;
+}
+
+
+/* articles */
+.article div.title { background: #ef8218 url(/images/article-title-orange-bg.png) repeat-x left top; } 
+#journal div.title { background:  #ef8218 url(/images/article-title-orange-bg.png) repeat-x left top; }
+
+.article div.title h3 {
+	background: url(/images/article-title-left-orange.png) no-repeat left top;
+	color: #fff;
+	font-family: sans-serif;
+	font-size: 120%;
+}
+
+/* titulo secciones */
+.article div.title h3 a,
+.article div.title h3 a:visited { 
+	color: #006699;
+	text-decoration: underline;
+}
+
+#journal .article h3
+{
+	background: url(//article-title-left-orange.png) no-repeat left top;
+	color: #fff;
+	font-family: sans-serif;
+	font-size: 100%;
+}
+
+.article .details
+{
+	font-size: 84%;
+	padding: .2em .7em .5em .7em;
+	font-weight: normal;
+	font-family: sans-serif;
+	border: 1px solid #eee;
+	line-height: 130%;
+	/* background: #ddd url("/images/bg_details.gif") repeat-x left top; */
+	background: #ddd url(//images.slashdot.org/article-details-bg.png) repeat-x left top;
+}
+.article .body
+{
+	font-size: 100%;
+	/* border: 1px solid #eee;  */
+	border-top: none;
+	background: #fff url("/images/bg_white.gif") repeat-x;
+}
+
+div.article div.intro em {
+        display: block;
+        padding: 0 0 0 .85em;
+        margin: .25em 0 .6em 0;
+        font-style: normal;
+        border-left: 3px solid #ddd;
+}
+div.article div.intro i a { font-weight: normal; }
+
+div.storylinks { margin: 0 0 1.5em 0;}
+
+div.storylinks * { line-height: 110%; }
+div.storylinks div {
+        margin: 0; 
+	padding: 0;
+	background: url(//images.barrapunto.com/storylinks-bg.png) repeat-x left bottom;
+	}
+
+div.storylinks div ul {
+	margin: 0;
+	padding: .75em 12em .75em .6em;
+	background: url(//images.barrapunto.com/storylinks-right.png) no-repeat right bottom;
+}
+div.storylinks ul li { 
+        display: inline;
+        padding: 0;
+        list-style: none;
+        background: none;
+        border: none;
+}
+
+div.storylinks ul li.comments {
+        width: 11em;
+        right: 0;
+        position: absolute;
+        margin: -.1em 0;
+        padding: .1em 1em .2em 1em;
+        text-align: right;
+        text-shadow: #000 0 0 0;
+        background: none;
+}
+
+    div.storylinks ul li:before {content:"|"; color: #ccc;}
+    div.storylinks ul li.more:before,
+    div.storylinks ul li.comments:before {content:" ";}
+
+/* Footer */
+#footer { 
+	font-family: sans-serif; 
+	margin-top: 1.25em;
+	background: #e6e6e6 url(//images.slashdot.org/sections-bg.png) repeat-x left bottom;
+	clear: both;
+}
+
+#footer em
+{
+	font-size: 85%;
+	float: right;
+	width: 69%;
+}
+
+#footer .search
+{
+    float: left;
+    width: 15.25em;
+    padding: 1.35em 0 0 1.25em;
+    white-space: nowrap;
+  }
+
+
+#footer legend, #footer fieldset, #footer label
+{
+	margin: 0;
+	padding: 0;
+}
+
+.checkbox {padding: 0 0 0 0; float: left; }
+
+#footer .search input { margin: 0; }
+
+#footer .copyright
+{
+	padding: .85em 1.25em;
+	font-size: x-small;
+	text-align: center;
+	color: #000;
+}
+
+#footer	.admin li
+{
+	border-left: 1px solid #eee;
+	margin: 0;
+	padding: 0;
+	display: inline;
+	list-style: none;
+}
+
+/* Poll */
+.barColor { background: #f60; }
+
+/* Bottom Nav */
+.btmnav
+{
+	color: #eee;
+	font-size: 85%;
+}
+
+.btmnav ul li a { color: #006699; } 
+.btmnav ul li a:visited { color: #6a6a6a; }
+
+/* Journal */
+.journaldate { position: relative; }
+.generalbody #journalgeneric .article
+{
+	height: auto;
+	margin: 0 0 1em 0;
+}
+
+#journalgeneric div.intro em {display: inline; font-style: italic; border: none; margin: 0; padding: 0;}
+#journalgeneric div.intro em a {font-style: italic;}
+
+
+#journalgeneric div.storylinks ul li { margin: 0; padding: 0; border: none; }
+#journalgeneric div.storylinks ul li a { padding: 0 .4em 0 1em; border-left: 1px solid #000; }
+#journalgeneric div.storylinks ul li.edit a, #journalgeneric div.storylinks ul li.discussion a, #journalgeneric div.storylinks ul li.journalid a { border: none; }
+#journalslashdot .journaldate {font-weight: bold;}
+#journalslashdot .title { margin: 0 0 0 .6em; padding: 0; float: left;}
+#journalslashdot h3 { font-size: 65%; margin: 0; padding: 0; font-family: geneva,verdana,sans-serif;}
+#journalslashdot .details { float: left; font-style: italic; font-size: 65%; font-family: geneva,verdana,sans-serif; background: transparent; }
+#journalslashdot .intro { padding: 1em 0 2em 3.7em;}
+#journalslashdot div.storylinks { margin: 0; padding: 0; background: transparent;font-size: 65%;}
+#journalslashdot div.storylinks ul { margin: 0; padding: 0; background: transparent;}
+#journalslashdot div.storylinks ul li { margin: 0; padding: 0; border: none; font-family: geneva,verdana,sans-serif; }
+#journalslashdot div.storylinks ul li a { padding: 0 .4em 0 1em; border-left: 1px solid #000; }
+#journalslashdot div.storylinks ul li.edit a, #journalslashdot div.storylinks ul li.discussion a, #journalslashdot div.storylinks ul li.journalid a { border: none; }
+#journalslashdot .journalpage {font-size: 65.5%; font-family: geneva,verdana,sans-serif; text-align: right;}
+#journalgrey .journaldate { font-weight: bold; background: #eee; }
+#journalgrey .details { float: left; font-weight: bold; background: #eee; padding: 0 0.6em 0 0; }
+#journalgrey .title { background: #eee; padding: 0 0 0 0.6em; }
+#journalgrey .title h3 { background: #eee; }
+#journalgrey { border: 3px solid #999; padding: 3px 0 1em;}
+#journalgrey div.storylinks, #journalblue div.storylinks { background: transparent; }
+#journalgrey div.storylinks ul, #journalblue div.storylinks ul { background: transparent; }
+#journalgrey .body, #journalblue .body {min-height: 60px; padding: 0 .5em; }
+#journalblue div.storylinks ul li,  #journalgrey div.storylinks ul li { border: none; margin: 0; padding: 0; }
+#journalblue .journaldate { background: #369; font-weight: bold; padding: 3px; }
+#journalblue { border: 3px solid #000; }
+#journalblue .details { float: left; margin: 0 0.6em 0 0.3em; font-weight: bold; }
+#journalblue .title h3 { margin: 0; padding: 0; font-family: serif; }
+
+.generalbody ul.menu { padding: .5em 0; overflow: auto; }
+#usermenu ul.menu { padding: .5em 0; overflow: auto; }
+
+
+/* Forms */
+#journal input.button, #admin input.button { width: auto; }
+
+/* Submit */
+#submit .message {
+margin: 0 0 1em 0;
+padding: 0;
+}
+
+/* Related */
+div.briefarticle {position: relative;}
+    div.briefarticle a span {text-indent: -5000px; position: relative; float: left;}
+    div.briefarticle a span.expanded {width: 15px; background: url(//images.barrapunto.com/login-arrow-expanded.gif) no-repeat 0 50%; }
+    div.briefarticle a span, div.briefarticle a span.condensed  {width: 15px; background: url(//images.barrapunto.com/login-arrow-collapsed.gif) no-repeat 0 50%; }
+    div div.briefcomment { padding-left: 4em; padding-top: 0px }
+		
+
+
+/* User section menu */
+div#user-section {
+  margin-bottom: 1.25em;
+  white-space: nowrap;
+  font-size: 90%;
+  background: #ef8218 url(/images/userbar-title-orange-bg.png) repeat-x left bottom;
+}
+  div#user-section * { line-height: 100%; }
+  div#user-section div.content {
+    overflow: hidden;
+    padding: 0;
+  }
+    div#user-section ul { float: left; }
+    div#user-section ul { padding: .3em 0 .1em .6em; margin: 0; }
+      div#user-section ul li {
+        display: inline;
+	list-style: none;
+      }
+      div#user-section ul li.begin {font-weight: bold; padding-left: 0; }
+      div#user-section ul li.name a {
+        font-weight: bold;
+      }
+      div#user-section ul li.name {
+       	padding-left: 0; 
+      }
+        div#user-section ul li a {
+          font-size: 100%;
+          text-decoration: none;
+	  padding: 0 .3em;
+	  color: #fff;
+        }
+	div#user-section ul li a:visited { color: #fff; }
+	 
+div#user-section ul li:before {content:"|"; color: #ddd;}
+    div#user-section ul li:first-child:before {content:" ";}
+        div#user-section ul li a#loginlink {
+          padding-left: 1.2em;
+          background: url(//images.slashdot.org/login-arrow-collapsed.gif) no-repeat 0 50%;
+        }
+
+  	div#user-section ul#user-utils { float: right; padding: .3em .6em .3em 0; }
+        div#user-section ul li a#loginlink.expanded { background-image: url(//images.slashdot.org/login-arrow-expanded.gif); }
+        
+    
+  div#user-section div#loginform { clear: both; overflow: hidden; height: 0; width: 100%; padding: 0; margin: 0; }
+/* Curse the phantom */
+@media all and (min-width:0px) {
+	div#user-section div#loginform { height: auto; }
+	head~body div#user-section div#loginform { height: 0; }
+}
+    div#user-section div#loginform p {display: none;} 
+    div#user-section div#loginform form { padding: .75em 0 .25em 0; }
+      div#user-section div#loginform form input { width: 12em; margin-right: 1em;}
+      div#user-section div#loginform form input.button { width: auto; margin-right: 0; }
+      div#user-section div#loginform form label.checkbox { margin-right: 1em; }
+      div#user-section div#loginform form label {display: inline;}
+        div#user-section div#loginform form label.checkbox input { width: auto; margin-right: .25em; }
+
+
+/* System messages */   
+.indexhead {padding: 0; border-bottom: 1px solid #888; 
+	background: #ddd url("//images.barrapunto.com/article-details-bg.png") bottom repeat-x;
+        margin: 0 15.6em 1em .8em;
+	position: relative;
+}
+  .indexhead div.content { padding: 0; margin: 0; background: url(/images/block-title-left-messages.png) no-repeat left top; }
+      .indexhead div.content p {font-size: 85%; margin: 0; padding: .3em 1.5em; color: #000;}
+
+      .indexhead div.content a {color: #036;}
+      .indexhead div.content a:visited {color: #6a6a6a;}
+
+/* Ads */
+.ad1  {
+      width: 750px;
+      background-color: #eee;
+}
+.fad1 
+{
+  width: 468px;
+  margin: 0 240px 0 15px;
+}    
+
+.fad2 
+{
+  float: right;
+  width: 240px;
+  margin: -65px 15px 0 5px;
+}
+
+div#ad2 { 
+	text-align: center; 
+	margin: 1em 0 1em 0;
+}
+
+div#ad3 { text-align: center; }
+
+/* Tags */
+div.tags {
+  margin: 1em 0 0 0;
+  padding: 0;
+  font-size: 93%;
+  line-height: 100%;
+  background: #666 url(//images.slashdot.org/block-title-bg.png) repeat-x; 
+}
+  div.tags div.tagtitleclosed, 
+  div.tags div.tagtitleopen {
+	margin: 0; 
+	padding: .5em 0 .5em 20px;
+	position: relative;
+	background: #fff;
+  }
+  div.tags div.tagtitleopen {color: #fff;  background: url(//images.barrapunto.com/block-title-right.png) no-repeat top right; }
+    div.tags div.tagtitleopen a {color: #fff;}
+    div.tags div.tagtitleclosed a { text-decoration: none; }
+    div.tags div.tagtitleclosed .tagmenu a { text-decoration: underline; }
+  div.tags div.tagtitleopen span.tagsheader, 
+  div.tags div.tagtitleclosed span.tagsheader {text-indent: -5000px; position:absolute; left: 10px; } 
+   div.tags div.tagtitleopen span.tagsheader {width: 15px; background: url(//images.barrapunto.com/block-arrow-expanded.gif) no-repeat 0 50%; }
+  div.tags div.tagtitleclosed span.tagsheader {width: 15px; background: url(//images.barrapunto.com/login-arrow-collapsed.gif) no-repeat 0 50%; }
+  div.tags div.tagtitleopen i a, div.tags div.tagtitleclosed i a {background: transparent;}
+  div.tags div.tagbody {
+    background: #ddd url(//images.barrapunto.com/article-details-bg.png) repeat-x;
+    padding: .85em 0 0 .85em;
+    color: #666;
+border: #ccc 1px solid; border-top: none;
+  }
+    div.tags div.tagbody input {
+      width: 50%;
+      margin: .5em 0;
+    }
+    div.tags div.tagbody input.button { width: 5em }
+  div.tags div.tagshide { display: none }
+
+/* Misc */
+pre, code { font-size: 93%; }
+.tb_col { background: #eee;}
+
+.secpref_master td { border-bottom: solid 2px #069;}
+.secpref_nexus_row { color: #aaa; background: #ccc; }
+#sectionprefs_message  { background: #066; font-size: 120%; color: #fff; font-weight: bold; text-align: right; }
+#sectionprefs_hdr {text-align: right; background: #069; font-size: 120%; color: #fff; }
+#sectionprefs_hdr a {float: left; color: #fff;}
+
+.popup div.title span,
+.popup div.title span a { display: none}
+#vendorStory-26-popup {width: 18.5em; border: 2px solid #c5d1a6}
+#vendorStory-26-contents {background: #DBE8B8}
+#vendorStory-26-popup div.title h3
+{ background: #6d745f url(//images.slashdot.org/vendors-slc.gif) no-repeat top left; }
+#vendorStory-26-popup div.title h3 a {color: #fff}
+#vendorStory-26-popup div.title span a, #vendorStory-26-popup div.title span  { color: #DBE8B8; }
+#vendorStory-26-contents a { color: #6d745f; }
+#vendorStory-26-popup div.details {background: #DBE8B8}
+#vendorStory-26-title {background: #6D745F; padding: .3em}
+#sponsorlinks span {color: #069; text-decoration: underline}
+#contents {margin-top: 2em;}
+#vendorStory-26-popup #art1, #vendorStory-26-popup #art2, #sponsorlinks  #slink1, #sponsorlinks  #slink1 .comments {margin: 0}
+.popup iframe
+{
+        position:absolute;
+        top: -1px;
+        left:-3px;
+        z-index:-1;
+        width:18.5em;
+        height: 100%;
+        border: none;
+        opacity: 0;
+}
+
+#sectionprefs_hdr span a {float: none; color: #fff; font-size: 10px; font-weight: bold; text-decoration: none;}
+#sectionprefs_hdr span { margin: -.3em 0; padding: 0 4px; height: 11px; width: 11px;}
+.ps_23, .ps_22, .ps_26 { display: none; }
+.curstory { border-top: solid 2px #069; }
+.popup { border: solid 2px #069; }
+.popup .data { font-size: 100% }
+.popup-title {text-align: left; background: #069; font-size: 100%; color: #fff; padding-right: 4em; }
+.popup-title .buttons {
+  position: absolute;
+  right: 0.2em;
+}
+.popup-title .buttons span a {float: none; color: #fff; font-size: 10px; font-weight: bold; text-decoration: none;}
+.popup-title .buttons span { margin: -.3em 0; padding: 0 4px; height: 11px; width: 11px;}
+
+.popup-message { background: #069; color: #fff; }
+.popup-title a, .popup-message a { color: #fff }
+.popup-contents { background: #ccc; font-size: 80%; padding: 5px; }
+.popup-message  { background: #069; font-size: 100%; color: #fff; font-weight: bold; text-align: right; }
+#sectionprefs-contents { background: #fff }
+
+#subscribe div.generaltitle div.title {margin-bottom: 0;}
+
+#st-display table
+{
+	background: #069;
+	color: #fff;
+}
+  blockquote, .quote {
+    margin-bottom: .75em;
+    padding-left: .75em;
+    color: #555;
+    border-left: 3px solid #ddd;
+    position: relative;
+    display: block;
+  }
+  blockquote * { font-style: normal; }
+  .comment > .oneline blockquote {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+

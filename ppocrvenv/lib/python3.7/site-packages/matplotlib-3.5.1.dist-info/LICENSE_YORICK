@@ -1,0 +1,49 @@
+BSD-style license for gist/yorick colormaps.
+
+Copyright:
+
+  Copyright (c) 1996.  The Regents of the University of California.
+			 All rights reserved.
+
+Permission to use, copy, modify, and distribute this software for any
+purpose without fee is hereby granted, provided that this entire
+notice is included in all copies of any software which is or includes
+a copy or modification of this software and in all copies of the
+supporting documentation for such software.
+
+This work was produced at the University of California, Lawrence
+Livermore National Laboratory under contract no. W-7405-ENG-48 between
+the U.S. Department of Energy and The Regents of the University of
+California for the operation of UC LLNL.
+
+
+			      DISCLAIMER
+
+This software was prepared as an account of work sponsored by an
+agency of the United States Government.  Neither the United States
+Government nor the University of California nor any of their
+employees, makes any warranty, express or implied, or assumes any
+liability or responsibility for the accuracy, completeness, or
+usefulness of any information, apparatus, product, or process
+disclosed, or represents that its use would not infringe
+privately-owned rights.  Reference herein to any specific commercial
+products, process, or service by trade name, trademark, manufacturer,
+or otherwise, does not necessarily constitute or imply its
+endorsement, recommendation, or favoring by the United States
+Government or the University of California.  The views and opinions of
+authors expressed herein do not necessarily state or reflect those of
+the United States Government or the University of California, and
+shall not be used for advertising or product endorsement purposes.
+
+
+				AUTHOR
+
+David H. Munro wrote Yorick and Gist.  Berkeley Yacc (byacc) generated
+the Yorick parser.  The routines in Math are from LAPACK and FFTPACK;
+MathC contains C translations by David H. Munro.  The algorithms for
+Yorick's random number generator and several special functions in
+Yorick/include were taken from Numerical Recipes by Press, et. al.,
+although the Yorick implementations are unrelated to those in
+Numerical Recipes.  A small amount of code in Gist was adapted from
+the X11R4 release, copyright M.I.T. -- the complete copyright notice
+may be found in the (unused) file Gist/host.c.

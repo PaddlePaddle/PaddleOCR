@@ -1,0 +1,123 @@
+Metadata-Version: 2.1
+Name: flake8
+Version: 4.0.1
+Summary: the modular source code checker: pep8 pyflakes and co
+Home-page: https://github.com/pycqa/flake8
+Author: Tarek Ziade
+Author-email: tarek@ziade.org
+Maintainer: Ian Stapleton Cordasco
+Maintainer-email: graffatcolmingov@gmail.com
+License: MIT
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Console
+Classifier: Framework :: Flake8
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Quality Assurance
+Requires-Python: >=3.6
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Requires-Dist: mccabe (<0.7.0,>=0.6.0)
+Requires-Dist: pycodestyle (<2.9.0,>=2.8.0)
+Requires-Dist: pyflakes (<2.5.0,>=2.4.0)
+Requires-Dist: importlib-metadata (<4.3) ; python_version < "3.8"
+
+.. image:: https://github.com/PyCQA/flake8/workflows/main/badge.svg
+   :target: https://github.com/PyCQA/flake8/actions?query=workflow%3Amain
+   :alt: build status
+
+.. image:: https://results.pre-commit.ci/badge/github/PyCQA/flake8/main.svg
+   :target: https://results.pre-commit.ci/latest/github/PyCQA/flake8/main
+   :alt: pre-commit.ci status
+
+========
+ Flake8
+========
+
+Flake8 is a wrapper around these tools:
+
+- PyFlakes
+- pycodestyle
+- Ned Batchelder's McCabe script
+
+Flake8 runs all the tools by launching the single ``flake8`` command.
+It displays the warnings in a per-file, merged output.
+
+It also adds a few features:
+
+- files that contain this line are skipped::
+
+    # flake8: noqa
+
+- lines that contain a ``# noqa`` comment at the end will not issue warnings.
+- you can ignore specific errors on a line with ``# noqa: <error>``, e.g.,
+  ``# noqa: E234``. Multiple codes can be given, separated by comma. The ``noqa`` token is case insensitive, the colon before the list of codes is required otherwise the part after ``noqa`` is ignored
+- Git and Mercurial hooks
+- extendable through ``flake8.extension`` and ``flake8.formatting`` entry
+  points
+
+
+Quickstart
+==========
+
+See our `quickstart documentation
+<http://flake8.pycqa.org/en/latest/index.html#quickstart>`_ for how to install
+and get started with Flake8.
+
+
+Frequently Asked Questions
+==========================
+
+Flake8 maintains an `FAQ <http://flake8.pycqa.org/en/latest/faq.html>`_ in its
+documentation.
+
+
+Questions or Feedback
+=====================
+
+If you have questions you'd like to ask the developers, or feedback you'd like
+to provide, feel free to use the mailing list: code-quality@python.org
+
+We would love to hear from you. Additionally, if you have a feature you'd like
+to suggest, the mailing list would be the best place for it.
+
+
+Links
+=====
+
+* `Flake8 Documentation <http://flake8.pycqa.org/en/latest/>`_
+
+* `GitHub Project <https://github.com/pycqa/flake8>`_
+
+* `All (Open and Closed) Issues
+  <https://github.com/pycqa/flake8/issues?q=is%3Aissue>`_
+
+* `Code-Quality Archives
+  <https://mail.python.org/mailman/listinfo/code-quality>`_
+
+* `Code of Conduct
+  <http://flake8.pycqa.org/en/latest/internal/contributing.html#code-of-conduct>`_
+
+* `Getting Started Contributing
+  <http://flake8.pycqa.org/en/latest/internal/contributing.html>`_
+
+
+Maintenance
+===========
+
+Flake8 was created by Tarek Ziadé and is currently maintained by `Ian Cordasco
+<http://www.coglib.com/~icordasc/>`_
+
+

@@ -1,0 +1,4 @@
+# Note: this should disappear at some point. For now, please keep it
+#       in sync with the dev dependencies in pyproject.toml
+mypy
+typing_extensions

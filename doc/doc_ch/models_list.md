@@ -25,7 +25,7 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 
 各个模型的关系如下面的示意图所示。
 
-![](../imgs/model_prod_flow_ch.png)
+![](../imgs/others/model_prod_flow_ch.png)
 
 
 <a name="文本检测模型"></a>

@@ -1,0 +1,3 @@
+[console_scripts]
+skivi = skimage.scripts.skivi:main
+

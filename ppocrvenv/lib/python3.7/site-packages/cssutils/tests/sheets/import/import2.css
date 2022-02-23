@@ -1,0 +1,12 @@
+@import "../import3.css";
+@import "import-impossible.css" print;
+.import2 {
+	/* sheets/import2.css */
+	background: url(http://example.com/images/example.gif);
+	background: url(//example.com/images/example.gif);
+	background: url(/images/example.gif);
+	background: url(images2/example.gif);
+	background: url(./images2/example.gif);
+	background: url(../images/example.gif);
+	background: url(./../images/example.gif);
+	}

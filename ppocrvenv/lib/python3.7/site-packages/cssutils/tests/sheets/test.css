@@ -1,0 +1,188 @@
+
+/*
+ * This is a test file only - it doesn't represent a usable style sheet,
+ * it is meant only to test the lexer and parser.
+ */
+
+@import url(foo.css);
+@import "bar.css";
+@import url("fineprint.css") print;
+@import url("bluish.css") projection, tv;
+
+@import url(http://www.steadystate.com/primary.css) screen, tv;
+@import "sounds_good.css" aural;
+
+E[class~="hipster"][thing~="bob"]#myid { att1: hi; foo: bar; }
+E:lang(c)#unique
+E.hipster#myid { att1: hi; foo: bar; }
+
+@media tv, radio {
+	@page { foo: bar; }
+	H1 { fillcolor: blue }
+}
+
+/* @import url(bad_import.css); */
+
+H1, H2 {color:green;background-color:blue}
+
+H1, H2 {color: green;background-color: blue}
+
+H3, H4 & H5 {
+	color: red;
+	a: red;
+	b: red;
+	c: red;
+	d: red;
+	e: red;
+	f: red;
+	g: red;
+	h: red;
+	i: red;
+	j: red;
+	k: red;
+	l: red;
+	m: red;
+	n: red;
+	o: red;
+}
+
+H6 { color: black }
+
+H7 & H8 {
+	color: red;
+	@page { foo: bar }
+}
+
+P[example="public class foo\
+{\
+	private int x;\
+\
+	foo(int x) {\
+		this.x = x;\
+	}\
+\
+}"] { color: red }
+
+H1 { color: red; font-style: 12pt }  /* Invalid value: 12pt */
+
+P { color: blue;  font-vendor: any;  /* Invalid prop.: font-vendor */
+    font-variant: small-caps }
+
+EM EM { font-style: normal }
+
+H1 { color: red; rotation: 70minutes }
+
+IMG { float: left }       /* correct CSS2 */
+
+IMG { float: left here }  /* "here" is not a value of 'float' */
+
+IMG { background: "red" } /* keywords cannot be quoted in CSS2 */
+
+IMG { border-width: 3 }   /* a unit must be specified for length values */
+
+@three-dee {
+	@background-lighting {
+		azimuth: 30deg;
+		elevation: 190deg;
+	}
+	H1 { color: red }
+}
+
+H1 { color: blue !important }
+
+P {counter-increment: par-num ! important }
+H1 {counter-reset: par-num}
+P:before {content: counter(par-num, upper-roman) ". "}
+
+EM { color: #f00 }              /* #rgb */
+EM { color: #ff0000 }           /* #rrggbb */
+EM { color: rgb(255,0,0) }      /* integer range 0 - 255 */
+EM { color: rgb(100%, 0%, 0%) } /* float range 0.0% - 100.0% */
+
+FOO { content: "Argos\t\n" }
+
+R1 { a: U+aaaaa-ffffff }
+R2 { a: U+?????? }
+R3 { a: U+f????? }
+R4 { a: U+fffff? }
+R5 { a: U+ffffff }
+
+*             {}  /* a=0 b=0 c=0 -> specificity =   0 */
+LI            {}  /* a=0 b=0 c=1 -> specificity =   1 */
+UL LI         {}  /* a=0 b=0 c=2 -> specificity =   2 */
+UL OL+LI      {}  /* a=0 b=0 c=3 -> specificity =   3 */
+H1 + *[REL=up]{}  /* a=0 b=1 c=1 -> specificity =  11 */
+UL OL LI.red  {}  /* a=0 b=1 c=3 -> specificity =  13 */ 
+LI.red.level  {}  /* a=0 b=2 c=1 -> specificity =  21 */
+#x34y         {}  /* a=1 b=0 c=0 -> specificity = 100 */
+
+DIV > P:first-child { text-indent: 0 }
+
+HTML:lang(fr) { quotes: '« ' ' »' }
+HTML:lang(de) { quotes: '»' '«' '\2039' '\203A' }
+:lang(fr) > Q { quotes: '« ' ' »' }
+:lang(de) > Q { quotes: '»' '«' '\2039' '\203A' }
+
+H1 { bogus: alpha & beta }
+
+H2 { foo: inherit; ;; }
+
+/*
+ * Counters and stuff
+ */
+P {counter-increment: par-num}
+H1 {counter-reset: par-num}
+P:before {content: counter(par-num, upper-roman) ". "}
+H1:before {
+    content: "Chapter " counter(chapter) ". ";
+    counter-increment: chapter;  /* Add 1 to chapter */
+    counter-reset: section;      /* Set section to 0 */
+}
+H2:before {
+    content: counter(chapter) "." counter(section) " ";
+    counter-increment: section;
+}
+OL { counter-reset: item }
+LI { display: block }
+LI:before { content: counters(item, "."); counter-increment: item }
+H1:before        { content: counter(chno, upper-latin) ". " }
+H2:before        { content: counter(section, upper-roman) " - " }
+BLOCKQUOTE:after { content: " [" counter(bq, hebrew) "]" }
+DIV.note:before  { content: counter(notecntr, disc) " " }
+P:before         { content: counter(p, none) }
+
+/*
+ * Content stuff (w/attr function)
+ */
+@media aural {
+   BLOCKQUOTE:after { content: url("beautiful-music.wav") }
+}
+
+IMG:before { content: attr(alt) }
+
+H1:before {
+    display: block;
+    text-align: center;
+    content: "chapter\A hoofdstuk\A chapitre"
+}
+
+/*
+ * Clip (w/rect function)
+ */
+P { clip: rect(5px, 10px, 10px, 5px); }
+P { clip: rect(5px, -5px, 10px, 5px); }
+
+
+P { font-size: 12pt; line-height: 12pt }
+P:first-letter {
+    font-size: 200%;
+    font-style: italic;
+    font-weight: bold;
+    float: left;
+    bogus: foo(p1, p2, "hello", url(primary.css))
+}
+SPAN { text-transform: uppercase }
+
+P { color: red; font-size: 12pt }
+P:first-letter { color: green; font-size: 200% }
+P:first-line { color: blue }

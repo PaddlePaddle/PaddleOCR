@@ -1,0 +1,116 @@
+Metadata-Version: 2.1
+Name: imageio
+Version: 2.14.1
+Summary: Library for reading and writing a wide range of image, video, scientific, and volumetric data formats.
+Home-page: https://github.com/imageio/imageio
+Author: imageio contributors
+Author-email: almar.klein@gmail.com
+License: BSD-2-Clause
+Download-URL: http://pypi.python.org/pypi/imageio
+Keywords: image video volume imread imwrite io animation ffmpeg
+Platform: any
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Provides: imageio
+Requires-Python: >=3.5
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: pillow (>=8.3.2)
+Provides-Extra: bsdf
+Provides-Extra: build
+Requires-Dist: wheel ; extra == 'build'
+Provides-Extra: dev
+Requires-Dist: invoke ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: flake8 ; extra == 'dev'
+Provides-Extra: dicom
+Provides-Extra: docs
+Requires-Dist: sphinx ; extra == 'docs'
+Requires-Dist: numpydoc ; extra == 'docs'
+Requires-Dist: pydata-sphinx-theme ; extra == 'docs'
+Provides-Extra: feisem
+Provides-Extra: ffmpeg
+Requires-Dist: imageio-ffmpeg ; extra == 'ffmpeg'
+Requires-Dist: psutil ; extra == 'ffmpeg'
+Provides-Extra: fits
+Requires-Dist: astropy ; extra == 'fits'
+Provides-Extra: freeimage
+Provides-Extra: full
+Requires-Dist: astropy ; extra == 'full'
+Requires-Dist: black ; extra == 'full'
+Requires-Dist: flake8 ; extra == 'full'
+Requires-Dist: gdal ; extra == 'full'
+Requires-Dist: imageio-ffmpeg ; extra == 'full'
+Requires-Dist: invoke ; extra == 'full'
+Requires-Dist: itk ; extra == 'full'
+Requires-Dist: numpydoc ; extra == 'full'
+Requires-Dist: psutil ; extra == 'full'
+Requires-Dist: pydata-sphinx-theme ; extra == 'full'
+Requires-Dist: pytest ; extra == 'full'
+Requires-Dist: pytest-cov ; extra == 'full'
+Requires-Dist: sphinx ; extra == 'full'
+Requires-Dist: tifffile ; extra == 'full'
+Requires-Dist: wheel ; extra == 'full'
+Provides-Extra: gdal
+Requires-Dist: gdal ; extra == 'gdal'
+Provides-Extra: itk
+Requires-Dist: itk ; extra == 'itk'
+Provides-Extra: linting
+Requires-Dist: black ; extra == 'linting'
+Requires-Dist: flake8 ; extra == 'linting'
+Provides-Extra: lytro
+Provides-Extra: numpy
+Provides-Extra: pillow
+Provides-Extra: simpleitk
+Provides-Extra: spe
+Provides-Extra: swf
+Provides-Extra: test
+Requires-Dist: invoke ; extra == 'test'
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: pytest-cov ; extra == 'test'
+Provides-Extra: tifffile
+Requires-Dist: tifffile ; extra == 'tifffile'
+
+
+.. image:: https://github.com/imageio/imageio/workflows/CI/badge.svg
+    :target: https://github.com/imageio/imageio/actions
+
+
+Imageio is a Python library that provides an easy interface to read and
+write a wide range of image data, including animated images, volumetric
+data, and scientific formats. It is cross-platform, runs on Python 3.5+,
+and is easy to install.
+
+Main website: https://imageio.readthedocs.io/
+
+
+Release notes: https://github.com/imageio/imageio/blob/master/CHANGELOG.md
+
+Example:
+
+.. code-block:: python
+
+    >>> import imageio
+    >>> im = imageio.imread('imageio:astronaut.png')
+    >>> im.shape  # im is a numpy array
+    (512, 512, 3)
+    >>> imageio.imwrite('astronaut-gray.jpg', im[:, :, 0])
+
+See the `API Reference <https://imageio.readthedocs.io/en/stable/reference/index.html>`_
+or `examples <https://imageio.readthedocs.io/en/stable/examples.html>`_
+for more information.
+
+

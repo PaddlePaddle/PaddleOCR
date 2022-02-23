@@ -1,0 +1,309 @@
+"""
+Template for each `dtype` helper function for sparse ops
+
+WARNING: DO NOT edit .pxi FILE directly, .pxi is generated from .pxi.in
+"""
+
+# ----------------------------------------------------------------------
+# Sparse op
+# ----------------------------------------------------------------------
+
+ctypedef fused sparse_t:
+    float64_t
+    int64_t
+
+
+cdef inline float64_t __div__(sparse_t a, sparse_t b):
+    if b == 0:
+        if a > 0:
+            return INF
+        elif a < 0:
+            return -INF
+        else:
+            return NaN
+    else:
+        return float(a) / b
+
+
+cdef inline float64_t __truediv__(sparse_t a, sparse_t b):
+    return __div__(a, b)
+
+
+cdef inline sparse_t __mod__(sparse_t a, sparse_t b):
+    if b == 0:
+        if sparse_t is float64_t:
+            return NaN
+        else:
+            return 0
+    else:
+        return a % b
+
+
+cdef inline sparse_t __floordiv__(sparse_t a, sparse_t b):
+    if b == 0:
+        if sparse_t is float64_t:
+            return NaN
+        else:
+            return 0
+    else:
+        return a // b
+
+
+# ----------------------------------------------------------------------
+# sparse array op
+# ----------------------------------------------------------------------
+
+{{py:
+
+# dtype, arith_comp_group, logical_group
+dtypes = [('float64', True, False),
+          ('int64', True, True),
+          ('uint8', False, True)]
+# do not generate arithmetic / comparison template for uint8,
+# it should be done in fused types
+
+def get_op(tup):
+    assert isinstance(tup, tuple)
+    assert len(tup) == 4
+
+    opname, lval, rval, dtype = tup
+
+    ops_dict = {'add': '{0} + {1}',
+                'sub': '{0} - {1}',
+                'mul': '{0} * {1}',
+                'div': '__div__({0}, {1})',
+                'mod': '__mod__({0}, {1})',
+                'truediv': '__truediv__({0}, {1})',
+                'floordiv': '__floordiv__({0}, {1})',
+                'pow': '{0} ** {1}',
+                'eq': '{0} == {1}',
+                'ne': '{0} != {1}',
+                'lt': '{0} < {1}',
+                'gt': '{0} > {1}',
+                'le': '{0} <= {1}',
+                'ge': '{0} >= {1}',
+
+                'and': '{0} & {1}',     # logical op
+                'or': '{0} | {1}',
+                'xor': '{0} ^ {1}'}
+
+    return ops_dict[opname].format(lval, rval)
+
+
+def get_dispatch(dtypes):
+
+    ops_list = ['add', 'sub', 'mul', 'div', 'mod', 'truediv',
+                'floordiv', 'pow',
+                'eq', 'ne', 'lt', 'gt', 'le', 'ge',
+                'and', 'or', 'xor']
+
+    for opname in ops_list:
+        for dtype, arith_comp_group, logical_group in dtypes:
+
+            if opname in ('div', 'truediv'):
+                rdtype = 'float64'
+            elif opname in ('eq', 'ne', 'lt', 'gt', 'le', 'ge'):
+                # comparison op
+                rdtype = 'uint8'
+            elif opname in ('and', 'or', 'xor'):
+                # logical op
+                rdtype = 'uint8'
+            else:
+                rdtype = dtype
+
+            if opname in ('and', 'or', 'xor'):
+                if logical_group:
+                    yield opname, dtype, rdtype
+            else:
+                if arith_comp_group:
+                    yield opname, dtype, rdtype
+
+}}
+
+
+{{for opname, dtype, rdtype in get_dispatch(dtypes)}}
+
+
+@cython.wraparound(False)
+@cython.boundscheck(False)
+cdef inline tuple block_op_{{opname}}_{{dtype}}({{dtype}}_t[:] x_,
+                                                BlockIndex xindex,
+                                                {{dtype}}_t xfill,
+                                                {{dtype}}_t[:] y_,
+                                                BlockIndex yindex,
+                                                {{dtype}}_t yfill):
+    '''
+    Binary operator on BlockIndex objects with fill values
+    '''
+
+    cdef:
+        BlockIndex out_index
+        Py_ssize_t xi = 0, yi = 0, out_i = 0 # fp buf indices
+        int32_t xbp = 0, ybp = 0 # block positions
+        int32_t xloc, yloc
+        Py_ssize_t xblock = 0, yblock = 0 # block numbers
+
+        {{dtype}}_t[:] x, y
+        ndarray[{{rdtype}}_t, ndim=1] out
+
+    # to suppress Cython warning
+    x = x_
+    y = y_
+
+    out_index = xindex.make_union(yindex)
+    out = np.empty(out_index.npoints, dtype=np.{{rdtype}})
+
+    # Wow, what a hack job. Need to do something about this
+
+    # walk the two SparseVectors, adding matched locations...
+    for out_i in range(out_index.npoints):
+        if yblock == yindex.nblocks:
+            # use y fill value
+            out[out_i] = {{(opname, 'x[xi]', 'yfill', dtype) | get_op}}
+            xi += 1
+
+            # advance x location
+            xbp += 1
+            if xbp == xindex.lenbuf[xblock]:
+                xblock += 1
+                xbp = 0
+            continue
+
+        if xblock == xindex.nblocks:
+            # use x fill value
+            out[out_i] = {{(opname, 'xfill', 'y[yi]', dtype) | get_op}}
+            yi += 1
+
+            # advance y location
+            ybp += 1
+            if ybp == yindex.lenbuf[yblock]:
+                yblock += 1
+                ybp = 0
+            continue
+
+        yloc = yindex.locbuf[yblock] + ybp
+        xloc = xindex.locbuf[xblock] + xbp
+
+        # each index in the out_index had to come from either x, y, or both
+        if xloc == yloc:
+            out[out_i] = {{(opname, 'x[xi]', 'y[yi]', dtype) | get_op}}
+            xi += 1
+            yi += 1
+
+            # advance both locations
+            xbp += 1
+            if xbp == xindex.lenbuf[xblock]:
+                xblock += 1
+                xbp = 0
+
+            ybp += 1
+            if ybp == yindex.lenbuf[yblock]:
+                yblock += 1
+                ybp = 0
+
+        elif xloc < yloc:
+            # use y fill value
+            out[out_i] = {{(opname, 'x[xi]', 'yfill', dtype) | get_op}}
+            xi += 1
+
+            # advance x location
+            xbp += 1
+            if xbp == xindex.lenbuf[xblock]:
+                xblock += 1
+                xbp = 0
+        else:
+            # use x fill value
+            out[out_i] = {{(opname, 'xfill', 'y[yi]', dtype) | get_op}}
+            yi += 1
+
+            # advance y location
+            ybp += 1
+            if ybp == yindex.lenbuf[yblock]:
+                yblock += 1
+                ybp = 0
+
+    return out, out_index, {{(opname, 'xfill', 'yfill', dtype) | get_op}}
+
+
+@cython.wraparound(False)
+@cython.boundscheck(False)
+cdef inline tuple int_op_{{opname}}_{{dtype}}({{dtype}}_t[:] x_,
+                                              IntIndex xindex,
+                                              {{dtype}}_t xfill,
+                                              {{dtype}}_t[:] y_,
+                                              IntIndex yindex,
+                                              {{dtype}}_t yfill):
+    cdef:
+        IntIndex out_index
+        Py_ssize_t xi = 0, yi = 0, out_i = 0  # fp buf indices
+        int32_t xloc, yloc
+        int32_t[:] xindices, yindices, out_indices
+        {{dtype}}_t[:] x, y
+        ndarray[{{rdtype}}_t, ndim=1] out
+
+    # suppress Cython compiler warnings due to inlining
+    x = x_
+    y = y_
+
+    # need to do this first to know size of result array
+    out_index = xindex.make_union(yindex)
+    out = np.empty(out_index.npoints, dtype=np.{{rdtype}})
+
+    xindices = xindex.indices
+    yindices = yindex.indices
+    out_indices = out_index.indices
+
+    # walk the two SparseVectors, adding matched locations...
+    for out_i in range(out_index.npoints):
+        if xi == xindex.npoints:
+            # use x fill value
+            out[out_i] = {{(opname, 'xfill', 'y[yi]', dtype) | get_op}}
+            yi += 1
+            continue
+
+        if yi == yindex.npoints:
+            # use y fill value
+            out[out_i] = {{(opname, 'x[xi]', 'yfill', dtype) | get_op}}
+            xi += 1
+            continue
+
+        xloc = xindices[xi]
+        yloc = yindices[yi]
+
+        # each index in the out_index had to come from either x, y, or both
+        if xloc == yloc:
+            out[out_i] = {{(opname, 'x[xi]', 'y[yi]', dtype) | get_op}}
+            xi += 1
+            yi += 1
+        elif xloc < yloc:
+            # use y fill value
+            out[out_i] = {{(opname, 'x[xi]', 'yfill', dtype) | get_op}}
+            xi += 1
+        else:
+            # use x fill value
+            out[out_i] = {{(opname, 'xfill', 'y[yi]', dtype) | get_op}}
+            yi += 1
+
+    return out, out_index, {{(opname, 'xfill', 'yfill', dtype) | get_op}}
+
+
+cpdef sparse_{{opname}}_{{dtype}}({{dtype}}_t[:] x,
+                                  SparseIndex xindex, {{dtype}}_t xfill,
+                                  {{dtype}}_t[:] y,
+                                  SparseIndex yindex, {{dtype}}_t yfill):
+
+    if isinstance(xindex, BlockIndex):
+        return block_op_{{opname}}_{{dtype}}(x, xindex.to_block_index(), xfill,
+                                             y, yindex.to_block_index(), yfill)
+    elif isinstance(xindex, IntIndex):
+        return int_op_{{opname}}_{{dtype}}(x, xindex.to_int_index(), xfill,
+                                           y, yindex.to_int_index(), yfill)
+    else:
+        raise NotImplementedError
+
+
+cpdef sparse_fill_{{opname}}_{{dtype}}({{dtype}}_t xfill,
+                                       {{dtype}}_t yfill):
+    return {{(opname, 'xfill', 'yfill', dtype) | get_op}}
+
+{{endfor}}

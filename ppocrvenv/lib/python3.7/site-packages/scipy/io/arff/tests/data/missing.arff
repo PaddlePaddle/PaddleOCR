@@ -1,0 +1,8 @@
+% This arff file contains some missing data
+@relation missing
+@attribute yop real
+@attribute yap real
+@data
+1,5
+2,4
+?,?

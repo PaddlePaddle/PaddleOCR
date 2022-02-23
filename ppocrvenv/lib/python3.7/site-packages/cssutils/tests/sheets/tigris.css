@@ -1,0 +1,434 @@
+/* contains rules unsuitable for Netscape 4.x; simpler rules are in ns4_only.css. see <http://style.tigris.org/> */
+
+/* colors, backgrounds, borders, link indication */ 
+
+body {
+ background: #fff;
+ color: #000;
+ }
+.app h3, .app h4, .tabs td, .tabs th, .functnbar {
+ background-image: url(../images/nw_min.gif);
+ background-repeat: no-repeat;
+ }
+#toptabs td, #toptabs th {
+ background-image: url(../images/nw_min_036.gif);
+ }
+#navcolumn .body div, body.docs #toc li li  {
+ background-image: url(../images/strich.gif);
+ background-repeat: no-repeat;
+ background-position: .5em .5em;
+ }
+#search .body div, .body .heading  {
+ background-image: none;
+ }
+.app h3, .app h4 {
+ color: #fff;
+ }
+.app h3, #banner td {
+ background-color: #036;
+ color: #fff;
+ }
+body #banner td a {
+ color: #fff !important;
+ } 
+.app h4 { 
+ background-color: #888;
+ }
+.a td { 
+ background: #ddd;
+ }
+.b td { 
+ background: #efefef;
+ }
+table, th, td {
+ border: none
+ } 
+.mtb {
+ border-top: solid 1px #ddd;
+ }
+div.colbar {
+ background: #bbb;
+ }
+#banner {
+ border-top: 1px solid #369;
+ }
+.toolgroup {
+ background: #eee;
+ }
+.toolgroup .label {
+ border-bottom: 1px solid #666;
+ border-right: 1px solid #666;
+ background: #ccc;
+ }
+.toolgroup .body {
+ border-right: 1px solid #aaa;
+ border-bottom: 1px solid #aaa;
+ }
+#mytools .label, #projecttools .label, #admintools .label {
+ background: #fff;
+ border-top: 1px solid #666;
+ border-right: none;
+ border-bottom: none;
+ border-left: 1px solid #666;
+ }
+#mytools .body, #projecttools .body, #admintools .body {
+ background: #fff;
+ border-top: none;
+ border-right: none;
+ border-bottom: none;
+ border-left: 1px solid #666;
+ }
+#mytools, #projecttools, #admintools {
+ border-right: 1px solid #aaa;
+ border-bottom: 1px solid #aaa;
+ }
+#helptext {
+ background: #ffc;
+ }
+#helptext .label {
+ border-bottom: 1px solid #996;
+ border-right: 1px solid #996;
+ background: #cc9;
+ }
+#helptext .body {
+ border-bottom: 1px solid #cc9;
+ border-right: 1px solid #cc9;
+ }
+#breadcrumbs {
+ border-top: 1px solid #fff;
+ background-color: #ccc
+ }
+#main {
+ border-top: 1px solid #999;
+ }
+#rightcol div.www, #rightcol div.help {
+ border: 1px solid #ddd;
+ }
+body.docs div.docs { 
+ background: #fff;
+ border-left: 1px solid #ddd;
+ border-top: 1px solid #ddd;
+ }
+body.docs { 
+ background: #eee url(../images/help_logo.gif) top right no-repeat !important;
+ }
+.docs h3, .docs h4 {
+ border-top: solid 1px #000;
+ }
+#alerterrormessage { 
+ background: url(../images/icon_alert.gif) top left no-repeat !important;
+ }
+.functnbar {
+ background-color: #aaa;
+ }
+.functnbar2, .functnbar3  {
+ background: #aaa url(../images/sw_min.gif) no-repeat bottom left;
+ }
+.functnbar3 {
+ background-color: #ddd;
+ }
+.functnbar, .functnbar2, .functnbar3 {
+ color: #000;
+ }
+.functnbar a, .functnbar2 a, .functnbar3 a {
+ color: #000;
+ text-decoration: underline;
+ }
+#topmodule {
+ background: #ddd;
+ border-top: 1px solid #fff;
+ border-bottom: 1px solid #aaa; 
+ }
+#topmodule #issueid {
+ border-right: 1px solid #aaa;
+ }
+a:link, #navcolumn a:visited, .app a:visited, .tasknav a:visited {
+ color: blue;
+ }
+a:link.selfref, a:visited.selfref {
+ color: #555 !important;
+ text-decoration: none;
+ }
+a:active, a:hover, #leftcol a:active, #leftcol a:hover {
+ color: #f30 !important;
+ }
+#login a:link, #login a:visited {
+ color: white; 
+ text-decoration: underline;
+ }
+#banner a:active, #banner a:hover {
+ color: #f90 !important;
+ }
+#leftcol a, #breadcrumbs a  {
+ text-decoration: none;
+ }
+#apphead h2 em {
+ color: #777;
+ } 
+.app th {
+ background-color: #bbb;
+ }
+.tabs th {
+ border-right: 1px solid #333;
+ background-color: #ddd;
+ color: #fff;
+ }
+.tabs td {
+ background-color: #999;
+ border-bottom: 1px solid #fff;
+ border-right: 1px solid #fff;
+ }
+.tabs { 
+ border-bottom: 6px #ddd solid;
+ }
+.tabs th, .tabs th a:link, .tabs th a:visited {
+ color: #555;
+ }
+.tabs td, .tabs td a:link, .tabs td a:visited  { 
+ color: #fff;
+ }
+.tabs a  {
+ text-decoration: none;
+ }
+#toptabs td {
+ border-bottom: 1px solid #666;
+ border-right: 1px solid #333;
+ border-left: 1px solid #036;
+ }
+#toptabs th {
+ border-left: 1px solid #036;
+ }
+.axial th {
+ background-color: #ddd;
+ color: black
+ }
+.alert { 
+ color: #c00;
+ }
+.confirm {
+ color: green;
+ }
+.info {
+ color: blue;
+ }
+.selection {
+ background: #ffc;
+ }
+#login {
+ color: #fff;
+ }
+h4 a:link, h4 a:visited  {
+ text-decoration: underline;
+ color: #fff;
+ }
+
+/* font and text properties, exclusive of link indication, alignment, text-indent */
+
+body, th, td, input, select, textarea, h2 small {
+ font-family: Verdana, Helvetica, Arial, sans-serif;
+ }
+code, pre {
+ font-family: 'Andale Mono', Courier, monospace;
+ }
+html body, body th, body td, textarea, h2 small, .app h3, .app h4, #rightcol h3, #bodycol pre, #bodycol code {
+ font-size: x-small;
+ voice-family: "\"}\"";
+ voice-family: inherit;
+ font-size: small
+ }
+html>body, html>body th, html>body td, html>body input, html>body select, html>body textarea, html>body h2 small, html>body .app h3, html>body .app h4, html>body #rightcol h3, html>body #bodycol pre, html>body #bodycol code {
+ font-size: small
+ }
+small, div#footer td, div#login, div.tabs th, div.tabs td, input, select, .paginate, .functnbar, .functnbar2, .functnbar3, #breadcrumbs td, .courtesylinks, #rightcol div.help, .colbar, .tasknav, body.docs div#toc, #leftcol {
+ font-size: xx-small;
+ voice-family: "\"}\"";
+ voice-family: inherit;
+ font-size: x-small
+ }
+html>body small, html>body div#footer td, html>body div#login, html>body div.tabs th, html>body div.tabs td, html>body input, html>body select, html>body .paginate, html>body .functnbar, html>body .functnbar2, html>body .functnbar3, html>body #breadcrumbs td, html>body .courtesylinks, html>body #rightcol div.help, html>body .colbar, html>body .tasknav, html>body.docs #toc, html>body #leftcol {
+ font-size: x-small
+ }
+#bodycol h2 {
+ font-family: Tahoma, Verdana, Helvetica, Arial, sans-serif;
+ font-size: 1.5em;
+ font-weight: normal;
+ }
+.tabs td, .tabs th, dt, .tasknav .selfref, #login .username, .selection {
+ font-weight: bold
+ }
+h4 {
+ font-size: 1em;
+ }
+#apphead h2 em {
+	font-style: normal;
+ } 
+
+/* box properties (exclusive of borders), positioning, alignments, list types, text-indent */
+
+#bodycol h2 {
+ margin-top: .3em;
+ margin-bottom: .5em;
+ }
+p, ul, ol, dl {
+ margin-top: .67em;
+ margin-bottom: .67em;
+ }
+h3, h4 {
+ margin-bottom: 0;
+ }
+form {
+ margin-top: 0;
+ margin-bottom: 0;
+ }
+#bodycol {
+ padding-left: 12px;
+ padding-right: 12px;
+ width: 100%;
+ voice-family: "\"}\"";
+ voice-family: inherit;
+ width: auto;
+ }
+html>body #bodycol {
+ width: auto;
+ }
+.docs {
+ line-height: 1.4;
+ }
+.app h3, .app h4 {
+ padding: 5px;
+ margin-right: 2px;
+ margin-left: 2px;
+ }
+.h3 p, .h4 p, .h3 dt, .h4 dt {
+ margin-right: 7px;
+ margin-left: 7px;
+ }
+.tasknav {
+ margin-bottom: 1.33em
+ }
+div.colbar {
+ padding: 3px;
+ margin: 2px 2px 0;
+ }
+.tabs { 
+ margin-top: .67em;
+ margin-right: 2px;
+ margin-left: 2px;
+ }
+.tabs td, .tabs th {
+ padding: 3px 9px;
+ }
+#toptabs { 
+ margin: 0;
+ padding-top: .67em;
+ padding-left: 8px;
+ }
+#breadcrumbs td {
+ padding: 2px 8px;
+ } 
+#rightcol div.www, #rightcol div.help {
+ padding: 0 .5em
+ }
+body.docs #toc { 
+ position: absolute;
+ top: 15px;
+ left: 0px;
+ width: 120px;
+ padding: 0 20px 0 0
+ }
+body.docs #toc ul, #toc ol {
+ margin-left: 0;
+ padding-left: 0;
+ }
+body.docs #toc li {
+ margin-top: 7px;
+ padding-left: 10px;
+ list-style-type: none;
+ }
+body.docs div.docs { 
+ margin: 61px 0 0 150px;
+ padding: 1em 2em 1em 1em !important;
+ }
+.docs p+p {
+ text-indent: 5%;
+ margin-top: -.67em
+ }
+.docs h3, .docs h4 {
+ margin-bottom: .1em;
+ padding-top: .3em;
+ }
+#alerterrormessage { 
+ padding-left: 100px;
+ }
+.functnbar, .functnbar2, .functnbar3 {
+ padding: 5px;
+ margin: .67em 2px;
+ }
+#topmodule td {
+ vertical-align: middle;
+ padding: 2px 8px
+ } 
+body {
+ padding: 1em;
+ }
+body.composite, body.docs {
+ margin: 0;
+ padding: 0;
+ }
+th, td {
+ text-align: left;
+ vertical-align: top 
+ }
+.right {
+ text-align: right !important;
+ }
+.center {
+ text-align: center !important;
+ }
+.axial th {
+ text-align: right;
+ }
+.app .axial td th {
+ text-align: left;
+ }
+body td .stb {
+ margin-top: 1em;
+ text-indent: 0;
+ }
+body td .mtb {
+ margin-top: 2em;
+ text-indent: 0;
+ }
+.courtesylinks {
+ margin-top: 1em;
+ padding-top: 1em
+ }
+dd {
+ margin-bottom: .67em;
+ }
+.toolgroup {
+ margin-bottom: 6px
+ }
+.toolgroup .body {
+ padding: 4px 4px 4px 0;
+ } 
+.toolgroup .label {
+ padding: 4px;
+ }
+.toolgroup .body div {
+ padding-bottom: .3em;
+ padding-left: 1em;
+ }
+#banner td { 
+ vertical-align: bottom;
+ }
+#mytools .body, #projecttools .body, #admintools .body {
+ padding-top: 0;
+ } 
+#mytools, #projecttools, #admintools {
+ margin: -4px 0 6px -4px;
+ padding: 6px;
+ border-right: 1px solid #aaa;
+ border-bottom: 1px solid #aaa;
+ }
+

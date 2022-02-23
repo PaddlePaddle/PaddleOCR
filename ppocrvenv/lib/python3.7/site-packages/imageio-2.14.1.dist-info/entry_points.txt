@@ -1,0 +1,4 @@
+[console_scripts]
+imageio_download_bin = imageio.__main__:download_bin_main
+imageio_remove_bin = imageio.__main__:remove_bin_main
+

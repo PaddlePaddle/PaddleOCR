@@ -1,0 +1,120 @@
+@charset "US-ASCII";
+
+ADDRESS,
+BLOCKQUOTE, 
+BODY, DD, DIV, 
+DL, DT, 
+FIELDSET, FORM,
+FRAME, FRAMESET,
+H1, H2, H3, H4, 
+H5, H6, IFRAME, 
+NOFRAMES, 
+OBJECT, OL, P, 
+UL, APPLET, 
+CENTER, DIR, 
+HR, MENU, PRE   { display: block }
+LI              { display: list-item }
+HEAD            { display: none }
+TABLE           { display: table }
+TR              { display: table-row }
+THEAD           { display: table-header-group }
+TBODY           { display: table-row-group }
+TFOOT           { display: table-footer-group }
+COL             { display: table-column }
+COLGROUP        { display: table-column-group }
+TD, TH          { display: table-cell }
+CAPTION         { display: table-caption }
+TH              { font-weight: bolder; text-align: center }
+CAPTION         { text-align: center }
+BODY            { padding: 8px; line-height: 1.33 }
+H1              { font-size: 2em; margin: .67em 0 }
+H2              { font-size: 1.5em; margin: .83em 0 }
+H3              { font-size: 1.17em; margin: 1em 0 }
+H4, P,
+BLOCKQUOTE, UL,
+FIELDSET, FORM,
+OL, DL, DIR,
+MENU            { margin: 1.33em 0 }
+H5              { font-size: .83em; line-height: 1.17em; margin: 1.67em 0 }
+H6              { font-size: .67em; margin: 2.33em 0 }
+H1, H2, H3, H4,
+H5, H6, B,
+STRONG          { font-weight: bolder }
+BLOCKQUOTE      { margin-left: 40px; margin-right: 40px }
+I, CITE, EM,
+VAR, ADDRESS    { font-style: italic }
+PRE, TT, CODE,
+KBD, SAMP       { font-family: monospace }
+PRE             { white-space: pre }
+BIG             { font-size: 1.17em }
+SMALL, SUB, SUP { font-size: .83em }
+SUB             { vertical-align: sub }
+SUP             { vertical-align: super }
+S, STRIKE, DEL  { text-decoration: line-through }
+HR              { border: 1px inset }
+OL, UL, DIR,
+MENU, DD        { margin-left: 40px }
+OL              { list-style-type: decimal }
+OL UL, UL OL,
+UL UL, OL OL    { margin-top: 0; margin-bottom: 0 }
+U, INS          { text-decoration: underline }
+CENTER          { text-align: center }
+BR:before       { content: "\A" }
+
+/* An example of style for HTML 4.0's ABBR/ACRONYM elements */
+
+ABBR, ACRONYM   { font-variant: small-caps; letter-spacing: 0.1em }
+A[href]         { text-decoration: underline }
+:focus          { outline: thin dotted invert }
+
+
+/* Begin bidirectionality settings (do not change) */
+
+BDO[DIR="ltr"]  { direction: ltr; unicode-bidi: bidi-override }
+BDO[DIR="rtl"]  { direction: rtl; unicode-bidi: bidi-override }
+
+*[DIR="ltr"]    { direction: ltr; unicode-bidi: embed }
+*[DIR="rtl"]    { direction: rtl; unicode-bidi: embed }
+
+/* Elements that are block-level in HTML4 */
+ADDRESS, BLOCKQUOTE, BODY, DD, DIV, DL, DT, FIELDSET, 
+FORM, FRAME, FRAMESET, H1, H2, H3, H4, H5, H6, IFRAME,
+NOSCRIPT, NOFRAMES, OBJECT, OL, P, UL, APPLET, CENTER, 
+DIR, HR, MENU, PRE, LI, TABLE, TR, THEAD, TBODY, TFOOT, 
+COL, COLGROUP, TD, TH, CAPTION 
+				{ unicode-bidi: embed }
+/* End bidi settings */
+
+
+@media print {
+	@page         { margin: 10% }
+	H1, H2, H3,
+	H4, H5, H6    { page-break-after: avoid; page-break-inside: avoid }
+	BLOCKQUOTE, 
+	PRE           { page-break-inside: avoid }
+	UL, OL, DL    { page-break-before: avoid }
+}
+
+@media speech {
+	H1, H2, H3, 
+	H4, H5, H6    { voice-family: paul, male; stress: 20; richness: 90 }
+	H1            { pitch: x-low; pitch-range: 90 }
+	H2            { pitch: x-low; pitch-range: 80 }
+	H3            { pitch: low; pitch-range: 70 }
+	H4            { pitch: medium; pitch-range: 60 }
+	H5            { pitch: medium; pitch-range: 50 }
+	H6            { pitch: medium; pitch-range: 40 }
+	LI, DT, DD    { pitch: medium; richness: 60 }
+	DT            { stress: 80 }
+	PRE, CODE, TT { pitch: medium; pitch-range: 0; stress: 0; richness: 80 }
+	EM            { pitch: medium; pitch-range: 60; stress: 60; richness: 50 }
+	STRONG        { pitch: medium; pitch-range: 60; stress: 90; richness: 90 }
+	DFN           { pitch: high; pitch-range: 60; stress: 60 }
+	S, STRIKE     { richness: 0 }
+	I             { pitch: medium; pitch-range: 60; stress: 60; richness: 50 }
+	B             { pitch: medium; pitch-range: 60; stress: 90; richness: 90 }
+	U             { richness: 0 }
+	A:link        { voice-family: harry, male }
+	A:visited     { voice-family: betty, female }
+	A:active      { voice-family: betty, female; pitch-range: 80; pitch: x-high }
+}

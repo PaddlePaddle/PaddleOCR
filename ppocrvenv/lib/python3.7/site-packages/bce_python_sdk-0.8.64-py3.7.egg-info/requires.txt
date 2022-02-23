@@ -1,0 +1,3 @@
+pycryptodome>=3.8.0
+future>=0.6.0
+six>=1.4.0

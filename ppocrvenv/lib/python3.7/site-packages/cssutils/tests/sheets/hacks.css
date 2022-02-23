@@ -1,0 +1,17 @@
+.normal {background-color: gray;}
+.backslash {bac\kground-color: gray;}
+html>body .childselector {background-color: green;}
+html>/**/body .childselector-with-comment {background-color: orange}
+.colon-default2, x:default
+html>/**/body .colon-default, x:default
+*:not(hr) .not-hr {background-color: red;}
+* html .ie-only-1 {background-color: blue;}
+*+html .ie-only-2 {background-color: blue;}
+*+html .ie-only-3 {background-color: blue;}
+html:first-child .first-child-2 {background-color: red;}
+/* does not work as CSSUnknownRule read: 
+	@mediaall { .mediaall { background-color: red; }}
+*/
+.not-class:not([class='XXX']) {background-color: red;}
+@media all and (min-width: 0) { .mediaquery { background-color: red;} }
+

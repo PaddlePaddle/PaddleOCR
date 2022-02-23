@@ -1,0 +1,128 @@
+Metadata-Version: 2.1
+Name: Wand
+Version: 0.6.7
+Summary: Ctypes-based simple MagickWand API binding for Python
+Home-page: http://wand-py.org/
+Author: Hong Minhee
+Author-email: hongminhee@member.fsf.org
+Maintainer: E. McConville
+Maintainer-email: emcconville@emcconville.com
+License: MIT License
+Project-URL: Documentation, https://docs.wand-py.org
+Project-URL: Source, https://github.com/emcconville/wand
+Project-URL: Tracker, https://github.com/emcconville/wand/issues
+Keywords: ImageMagick ctypes
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Programming Language :: Python :: Implementation :: Stackless
+Classifier: Topic :: Multimedia :: Graphics
+Description-Content-Type: text/x-rst
+Provides-Extra: doc
+Requires-Dist: Sphinx (>=2.4.1) ; extra == 'doc'
+Provides-Extra: test
+Requires-Dist: pytest (>=5.3.5) ; extra == 'test'
+
+.. image:: https://docs.wand-py.org/en/latest/_static/wand.png
+   :width: 120
+   :height: 120
+
+Wand_
+=====
+
+Wand is a ``ctypes``-based simple ImageMagick_ binding for Python,
+supporting 2.7, 3.3+, and PyPy. All functionalities of MagickWand API are
+implemented in Wand.
+
+You can install the package from PyPI_ by using ``pip``:
+
+.. code-block:: console
+
+   $ pip install Wand
+
+Or would you like to enjoy the bleeding edge?  Check out the head
+revision of the source code from the `GitHub repository`__:
+
+.. code-block:: console
+
+   $ git clone git://github.com/emcconville/wand.git
+   $ cd wand/
+   $ python setup.py install
+
+.. _Wand: http://wand-py.org/
+.. _ImageMagick: https://www.imagemagick.org/
+.. _PyPI: https://pypi.python.org/pypi/Wand
+__ https://github.com/emcconville/wand
+
+
+Docs
+----
+
+Recent version
+   https://docs.wand-py.org/
+
+Development version
+   https://docs.wand-py.org/en/latest/
+
+   .. image:: https://readthedocs.org/projects/wand/badge/
+      :alt: Documentation Status
+      :target: https://docs.wand-py.org/en/latest/
+
+
+Community
+---------
+
+Website
+   http://wand-py.org/
+
+GitHub
+   https://github.com/emcconville/wand
+
+Package Index (Cheeseshop)
+   https://pypi.python.org/pypi/Wand
+
+   .. image:: https://badge.fury.io/py/Wand.svg?
+      :alt: Latest PyPI version
+      :target: https://pypi.python.org/pypi/Wand
+
+Discord
+   https://discord.gg/wtDWDE9fXK
+
+Stack Overflow tag (Q&A)
+   http://stackoverflow.com/questions/tagged/wand
+
+Continuous Integration (Travis CI)
+   https://travis-ci.org/emcconville/wand
+
+   .. image:: https://secure.travis-ci.org/emcconville/wand.svg?branch=master
+      :alt: Build Status
+      :target: https://travis-ci.org/emcconville/wand
+
+Continuous Integration (GitHub Actions)
+   https://github.com/emcconville/wand/actions
+
+   .. image:: https://github.com/emcconville/wand/workflows/Wand%20CI/badge.svg
+      :alt: Build Status
+      :target: https://github.com/emcconville/wand/actions?query=workflow%3A%22Wand+CI%22
+
+Code Coverage
+   https://coveralls.io/r/emcconville/wand
+
+   .. image:: https://coveralls.io/repos/github/emcconville/wand/badge.svg?branch=master
+      :target: https://coveralls.io/github/emcconville/wand?branch=master
+
+

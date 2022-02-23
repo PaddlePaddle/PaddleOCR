@@ -1,0 +1,3 @@
+[console_scripts]
+fleetrun = paddle.distributed.fleet.launch:launch
+

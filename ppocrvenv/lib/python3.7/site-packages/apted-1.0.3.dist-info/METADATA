@@ -1,0 +1,208 @@
+Metadata-Version: 2.0
+Name: apted
+Version: 1.0.3
+Summary: APTED algorithm for the Tree Edit Distance
+Home-page: https://github.com/JoaoFelipe/apted
+Author: Joao Pimentel
+Author-email: joaofelipenp@gmail.com
+License: MIT
+Keywords: APTED TED tree edit distance
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+
+Python APTED algorithm for the Tree Edit Distance
+=================================================
+
+Information
+-----------
+
+This is a Python implementation of the APTED algorithm, the
+state-of-the-art solution for computing the tree edit distance [1,2],
+which supersedes the RTED algorithm [3].
+
+It is a port of the original Java implementation available at
+https://github.com/DatabaseGroup/apted. During the port, some changes
+were made to reduce the duplication on symmetric operations and to make
+it look more Pythonic.
+
+You can find more information about APTED on the following website
+http://tree-edit-distance.dbresearch.uni-salzburg.at/
+
+Citing APTED
+------------
+
+If you want to refer to APTED in a publication, please cite [1] and [2].
+
+Licence
+-------
+
+The source code is published under the **MIT licence** found in the root
+directory of the project and in the header of each source file.
+
+Input
+-----
+
+Currently, we support only the so-called bracket notation for the input
+trees, for example, encoding ``{A{B{X}{Y}{F}}{C}}`` corresponds to the
+following tree:
+
+::
+
+        A
+       / \
+      B   C
+     /|\
+    X Y F
+
+Output
+------
+
+Our tool computes two outputs: - tree edit **distance** value - the
+minimum cost of transforming the source tree into the destination tree.
+- tree edit **mapping** - a mapping between nodes that corresponds to
+the tree edit distance value. Nodes that are not mapped are deleted
+(source tree) or inserted (destination tree).
+
+Getting started
+---------------
+
+This version were tested on Python 2.7, 3.4, 3.5, and 3.6.
+
+First, install it with pip:
+
+::
+
+    pip install apted
+
+If you want to compare the trees {a{b}{c}} and {a{b{d}}}, please run:
+
+::
+
+    python -m apted -t {a{b}{c}} {a{b{d}}} -mv
+
+The output is:
+
+::
+
+    distance:             2
+    runtime:              0.000270843505859
+    {a{b}{c}} -> {a{b{d}}}
+    {c} -> None
+    {b} -> {b{d}}
+    None -> {d}
+
+For more information on running options, please run
+
+::
+
+    python -m apted -h
+
+Customizing
+-----------
+
+It is possible to customize the algorithm to run with custom trees with
+labels different from simple strings or custom data-structures.
+Additionally it is possible to customize it to use a more sophisticated
+cost model than unit cost.
+
+For customizing the algorithm, you can create a custom *Config* class:
+
+.. code:: python
+
+    from apted import APTED, Config
+
+    class CustomConfig(Config):
+       def rename(self, node1, node2):
+            """Compares attribute .value of trees"""
+            return 1 if node1.value != node2.value else 0
+
+        def children(self, node):
+            """Get left and right children of binary tree"""
+            return [x for x in (node.left, node.right) if x]
+
+    apted = APTED(tree1, tree2, CustomConfig())
+    ted = apted.compute_edit_distance()
+    mapping = apted.compute_edit_mapping()
+
+By default, the included *Config* class consider trees with the atribute
+*name* as label and the atribute *children* as children in left to right
+preorder.
+
+In addition to the Config class, we also provide a
+*PerEditOperationConfig* class that allows you to specify weights for
+each operation:
+
+.. code:: python
+
+    from apted import APTED, PerEditOperationConfig
+
+    apted = APTED(tree1, tree2, PerEditOperationConfig(.4, .4, .6))
+    ted = apted.compute_edit_distance()
+    mapping = apted.compute_edit_mapping()
+
+If your main usage for APTED is to obtain the mapping, it is possible to
+configure the algorith to keep track of the mapping during the
+execution. To do so, we provide a function, *meta\_chained\_config*,
+that modifies existing *Config* classes:
+
+.. code:: python
+
+    from apted import APTED, PerEditOperationConfig, meta_chained_config
+
+    new_config = meta_chained_config(PerEditOperationConfig)
+    apted = APTED(tree1, tree2, new_config(.4, .4, .6))
+    ted = apted.compute_edit_distance()
+    mapping = apted.compute_edit_mapping()
+
+Note that this approach uses much more memory and we didn't evaluate if
+it is faster than the original algorithm for the mapping with huge
+trees. The execution time for the mapping tests were about the same as
+the original algorithm.
+
+Contributing
+------------
+
+Feel free to submit pull resquests to this repository.
+
+The codebase follows the PEP8 conventions. However it is not too strict.
+For instance, it is okay to have lines with a little more than 79
+characters, but try not to exceed too much.
+
+Please, run ``python test.py`` during your changes to make sure
+everything is working. It is also desirable to use coverage.py to check
+test coverage: ``coverage run test.py``.
+
+Original Authors
+----------------
+
+-  Mateusz Pawlik
+-  Nikolaus Augsten
+
+Implementation Author
+---------------------
+
+-  Joao Felipe Pimentel
+
+References
+----------
+
+1. M. Pawlik and N. Augsten. *Tree edit distance: Robust and memory-
+   efficient*. Information Systems 56. 2016.
+
+2. M. Pawlik and N. Augsten. *Efficient Computation of the Tree Edit
+   Distance*. ACM Transactions on Database Systems (TODS) 40(1). 2015.
+
+3. M. Pawlik and N. Augsten. *RTED: A Robust Algorithm for the Tree Edit
+   Distance*. PVLDB 5(4). 2011.
+
+

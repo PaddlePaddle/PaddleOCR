@@ -1,0 +1,3438 @@
+/* >> Zusaetzliche Steuerelemente (Zurueck, Drucken, Empfehlung versenden) */
+	/* Steuerelement Container oben*/
+	div.topAddContrContainer {
+		display: none;
+		margin-top: 5px;
+	}
+	/* Steuerelement Container unten*/
+	div.bottomAddContrContainer {
+		padding: 10px 15px;
+	}
+	* html div.bottomAddContrContainer {
+		width: 100%;
+	}
+	*+html div.bottomAddContrContainer {
+		width: 100%;
+	}
+	/* Anpassungen der Steuerelemente Tabelle*/
+	table.aCShell {
+		width: 100%;
+	}
+	table.aCShell td.rSpc {
+	}
+	/* Definiert das Icon fuer Zurueck */
+	img.backIcon {
+		width: 17px;
+		height: 14px;
+		border: 0;
+		vertical-align: text-top;
+		background: url(../xist4c/web/krusekopf/01/img/backIcon.gif) bottom left no-repeat;
+	}
+	img.recomButton {
+		width: 28px;
+		height: 17px;
+		border: 0;
+		vertical-align: middle;
+		background: url(../xist4c/web/krusekopf/01/img/recommendationButton.gif) bottom right no-repeat;
+	}
+	img.printButton {
+		width: 24px;
+		height: 17px;
+		border: 0;
+		vertical-align: middle;
+		background: url(../xist4c/web/krusekopf/01/img/printIcon.gif) bottom right no-repeat;
+	}
+	img.bFreeButton {
+		width: 24px;
+		height: 18px;
+		border: 0;
+		vertical-align: middle;
+		background: url(../xist4c/web/krusekopf/01/img/barrierFreeIcon.gif) bottom right no-repeat;
+		display: none;
+	}
+	img.cBlindButton,
+	img.cBlindResetButton {
+		width: 26px;
+		height: 18px;
+		border: 0;
+		vertical-align: middle;
+		background: url(../xist4c/web/krusekopf/01/img/colorBlindIcon.gif) center right no-repeat;
+		display: none;
+	}
+	img.cBlindResetButton {
+		background: url(../xist4c/web/krusekopf/01/img/colorBlindResetIcon.gif) center right no-repeat;
+	}
+/* << */
+
+
+/* >> Autonews Uebersicht */
+	/* Autonews Tabelle */
+	table.aN {
+	}
+	/* Definition fuer das Datum auf der Uebersicht */
+	table.aN td.date {
+		font-weight: bold;
+		color: #666;
+		padding-right: 8px;
+	}
+	/* Anpassungen der Beschreibungsspalte*/
+	table.aN td.item {
+		padding-bottom: 10px;
+	}
+	/* Anpassungen des Titels auf der Uebersicht */
+	table.aN td.item h3 {
+		margin: 0 0 8px 0;
+	}
+	/* Anpassungen des Untertitels auf der Uebersicht */
+	table.aN td.item h4 {
+		margin: 0 0 3px 0;
+	}
+	/* Definitionen fuer das Uebersichtsbild */
+	table.aN td.item a img,
+	table.aN td.item img {
+		float: right;
+		margin-left: 10px;
+		margin-bottom: 5px;
+	}
+	/* Anpassungen fuer die Autonews Beschreibung  auf der Uebersicht*/
+	table.aN td.item div.desc {
+		margin: 0;
+	}
+	/* Einstellungen des "mehr..." Links */
+	table.aN td.item div.more {
+		clear: both;
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+	/* Definitionen fuer das "mehr..." Link Icon */
+	table.aN td.item div.more img {
+		display: none;
+	}
+/* << */
+
+
+/* >> Autonews Panel */
+	/* Auto news Tabelle */
+	table.aNP {
+	}
+	/* Definition des Autonews Panel Datum */
+	table.aNP td span.date {
+		font-size: 10px;
+		padding-bottom: 3px;
+	}
+	/* Einstellungen des Autonews Titels */
+	table.aNP td h3.title {
+		display: inline;
+		margin: 0 0 1px 0;
+		font-size: 12px;
+	}
+	/* Formatiert die Trennlinie zwischen Ueberschrift und Unterueberschrift*/
+	table.aNP td img.line {
+		width: 100%;
+		margin: 2px 0 2px 0;
+		background: #000;
+	}
+	/* Einstellungen des Autonews Untertitels */
+	table.aNP td h4.subtitle {
+		margin: 0 0 3px 0;
+		font-size: 11px;
+	}
+	/* Einstellungen der Autonews Beschreibung */
+	table.aNP td div.desc {
+		margin: 0;
+		font-size: 11px;
+	}
+	/* Einstellungen fuer das Autonewsbild */
+	table.aNP td img.rFloat,
+	table.aNP td a img.rFloat {
+		float: right;
+		margin-left: 5px;
+		margin-bottom: 2px;
+	}
+	/* Definitionen fuer den "mehr..." Link */
+	table.aNP td div.more {
+		clear: both;
+		margin-top: 5px;
+		margin-bottom: 5px;
+		font-size: 11px;
+	}
+	/* Definitionen fuer das "mehr..." Link Icon */
+	table.aNP td div.more img {
+		display: none;
+	}
+	/* Autonews sublink Tabelle */
+	table.aNPSublink {
+	}
+	/* Definiert den Link mit dem es zu der Autonews Uebersicht geht */
+	table.aNPSublink td a {
+		font-size: 11px;
+	}
+	/* Anpassen des Autonews Panel "zur Uebersicht...." Icons */
+	table.aNPSublink td a img {
+		display: none;
+	}
+/* << */
+
+
+/* >> Sprungmarke */
+	/* Sprungmarkencontainer */
+	div.bToTop {
+		margin-top: 0;
+		margin-bottom: 15px;
+	}
+	/* Sprungmarkencontainer Designelement*/
+	div.bToTop div.des1 {
+		text-align: right;
+	}
+	/* Sprungmarkencontainer Prompt*/
+	div.bToTop div.des1 span {
+		font-size: 11px;
+	}
+	/* Sprungmarkencontainer Prompt Link*/
+	div.bToTop div.des1 span a.text {
+	}
+	/* Sprungmarkencontainer Bild*/
+	div.bToTop div.des1 img {
+		width: 18px;
+		height: 13px;
+		vertical-align: text-top;
+		background: url(../xist4c/web/krusekopf/01/img/bToTopImg.gif) top right no-repeat;
+		border: 0;
+	}
+	/* Sprungmarkencontainer Bildlink*/
+	div.bToTop div.des1 a.img {
+	}
+/* << */
+
+
+/* >> Standard body Definitionen */
+	/* Legt Hoehe und Breite fest */
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+	}
+	/* Anpassungen fuer die Standardeinstellungen des Bodys */
+	body {
+		background: #fff;
+		font-family: Arial, Verdana, Helvetica, XHelvetica, sans-serif;
+		font-size: 12px;
+		color: #333;
+	}
+/* << */
+
+
+/* >> Angaben nicht veraendern!!! */
+	/* for framesets */
+	body.mainFrame {
+		background: #fff;
+		font-family: Arial, Verdana, Helvetica, XHelvetica, sans-serif;
+		font-size: 12px;
+		color: #000;
+	}
+	/* for print page */
+	body.print {
+		background: #fff;
+		font-family: Arial, Verdana, Helvetica, XHelvetica, sans-serif;
+		font-size: 13px;
+		color: #000;
+	}
+/* << */
+
+
+/* >> Freie Inhaltscont*/
+	/* Standard Definition fuer die freien Inhaltscontainer. Diese Angabe bitte unveraendert lassen*/
+	div.stdSty {
+		height: 100px;
+		width: 100px;
+		position: absolute;
+		left: 0;
+		top: 0;
+		z-index: 0;
+	}
+	/* Hier koennen die angelegten Container definiert werden */
+	div.banner {
+		width: 468px;
+		height: auto;
+		position: absolute;
+		left: 280px;
+		top: 19px;
+		z-index: 4;
+		display: none;
+	}
+/* <<  */
+
+
+/* >> Dokumentenliste */
+	/* Document Liste Tabelle */
+	table.dList {
+		margin: 0 15px;
+	}
+	table.dList a {
+		font-weight: bold;
+	}
+	/* Einstellungen fuer die Dateibeschreibung */
+	table.dList td span.desc {
+		font-size: 11px;
+	}
+	/* Groesse des Listentitels */
+	table.dList td div.size {
+		font-size: 11px;
+		color: #000;
+		white-space: nowrap;
+	}
+/* << */
+
+
+/* >> Fragen und Antworten*/
+	/* Einstellungen fuer Gruppenkontainer */
+	div.faqGrShell {
+		margin-bottom: 15px;
+	}
+	/* Definition der Gruppentitel in der Fragenuebersicht */
+	div.faqGrShell h3 {
+		margin-bottom: 3px;
+	}
+	/* Anpassungen fuer den Listenelementekontainer */
+	div.faqGrShell ul {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	/* Definitionen des Listenelements */
+	div.faqGrShell ul li {
+		margin-bottom: 5px;
+	}
+	/* Einstellungen fuer den Fragekontainer in der Detailansicht*/
+	div.dQShell {
+		margin: 10px 0 15px 0;
+		border: 1px solid #000;
+		background: #dde5ee;
+	}
+	/* Anpassungen des "Frage" Titels auf der Detailseite */
+	div.dQShell div.prefix {
+		padding: 5px;
+		background: #a0b8cf;
+		font-weight: bold;
+		font-size: 16px;
+	}
+	/* Einstellungen der Detail Ansicht der Frage */
+	div.dQShell div.question {
+		padding: 5px 5px 5px 20px;
+	}
+/* << */
+
+
+/* >> Termin uebersicht */
+	div.appointmentOuterShell {
+	}
+	div.appointmentOuterShell div.grpShell {
+		margin-top: 10px;
+		margin-bottom: 15px;
+		background: #fff;
+	}
+	div.appointmentOuterShell div.grpShell h3 {
+		font-size: 14px;
+		margin: 0;
+		background: #E3DEC4;
+		padding: 2px 5px 2px 5px;
+	}
+	div.appointmentOuterShell div.grpShell div.item {
+		padding: 4px 5px 4px 5px;
+		border-bottom: 1px solid #dde5ee;
+	}
+	div.appointmentOuterShell div.grpShell div.item div.date {
+		float: left;
+		width: 70px;
+	}
+	div.appointmentOuterShell div.grpShell div.item div.title {
+		margin-left: 80px;
+		margin-bottom: 5px;
+	}
+	div.appointmentOuterShell div.grpShell div.item div.desc {
+		margin-left: 82px;
+		margin-bottom: 5px;
+		font-size: 11px;
+	}
+	div.appointmentOuterShell div.grpShell div.item div.img {
+		float: right;
+		margin-left: 5px;
+	}
+	div.appointmentOuterShell div.grpShell div.item div.more {
+		margin-bottom: 8px;
+	}
+	div.appointmentOuterShell div.grpShell div.item div.more div {
+		text-align: right;
+	}
+	div.appointmentOuterShell div.grpShell div.item div.more div a {
+		background: url(../xist4c/web/krusekopf/01/img/littleTeaserArrow.gif) 0 5px no-repeat;
+		padding-left: 10px;
+	}
+/* << */
+
+
+/* >>Erste Ebene Navigation*/
+	/* Erste Ebene Navigation aeusserer Navigationskontainer*/
+	div.fLOuterShell {
+		width: 989px;
+	}
+	/* Anpassungen der erste Ebene Navigationspalte */
+	div.fLOuterShell div.des1 {
+		background: #513E11 url(../xist4c/web/krusekopf/01/img/background.gif) top left repeat-y;
+	}
+	div.fLOuterShell div.des1 div.des2 {
+	}
+	/* Einstellungen fuer die erste Ebene Navigation */
+	div.fLOuterShell div.des1 table.nav {
+	}
+	/* Spacer fuer die Ausrichtung der erste Ebene Navigation*/
+	div.fLOuterShell div.des1 table.nav td.spcLeft {
+	}
+	div.fLOuterShell div.des1 table.nav td.spcLeft img {
+		width: 4px;
+		height: 1px;
+	}
+	div.fLOuterShell div.des1 table.nav td.spcRight {
+	}
+	div.fLOuterShell div.des1 table.nav td.spcRight img {
+		width: 4px;
+		height: 1px;
+	}
+	/* Spalte fuer ein erste Ebene Navigationselement */
+	div.fLOuterShell div.des1 table.nav td.navItem {
+	}
+	/* Grundeinstellung der erste Ebene Navigation fuer die Zustaende "normal", "im Pfad" und "hier"*/
+	div.fLOuterShell div.des1 table.nav td.navItem span.here,
+	div.fLOuterShell div.des1 table.nav td.navItem a.normal,
+	div.fLOuterShell div.des1 table.nav td.navItem a.inPath {
+		font-size: 12px;
+		color: #000;
+		display: block;
+		width: auto;
+		height: 34px;
+	}
+	div.fLOuterShell div.des1 table.nav td.navItem span.here span,
+	div.fLOuterShell div.des1 table.nav td.navItem a.normal span,
+	div.fLOuterShell div.des1 table.nav td.navItem a.inPath span {
+		display: none;
+	}
+	/* Abweichende einstellungen fuer den Zustand "im Pfad" */
+	div.fLOuterShell div.des1 table.nav td.navItem a.inPath {
+		font-style: italic;
+	}
+	/* Folgende Angaben definieren die Reaktion beim ueberfahren mit der Maus */
+	div.fLOuterShell div.des1 table.nav td.navItem a.normal:hover,
+	div.fLOuterShell div.des1 table.nav td.navItem a.inPath:hover {
+		color: #336;
+	}
+	/* Angabe fuer den Zustand "hier" */
+	div.fLOuterShell div.des1 table.nav td.navItem span.here {
+		color: #336;
+	}
+	/* Einstellung der Trennelemente */
+	div.fLOuterShell div.des1 table.nav td.sep img {
+		height: 34px;
+		background-color: #fff;
+	}
+
+	/* Kueche und Haushalt */
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav1 a.normal,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav1 a.normal:hover,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav1 span.here,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav1 a.inPath {
+		width: 125px;
+		background: url(../xist4c/web/krusekopf/01/img/nav_kueche.gif) top left no-repeat;
+	}
+	*+html div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav1 a.normal,
+	*+html div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav1 a.normal:hover,
+	*+html div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav1 span.here,
+	*+html div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav1 a.inPath {
+		width: 123px;
+	}
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav1 a.normal:hover,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav1 span.here,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav1 a.inPath {
+		background-image: url(../xist4c/web/krusekopf/01/img/nav_kueche2.gif);
+	}
+
+	/* Haus und Garten */
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav2 a.normal,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav2 a.normal:hover,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav2 span.here,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav2 a.inPath {
+		width: 110px;
+		background: url(../xist4c/web/krusekopf/01/img/nav_haus.gif) top left no-repeat;
+	}
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav2 a.normal:hover,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav2 span.here,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav2 a.inPath {
+		background-image: url(../xist4c/web/krusekopf/01/img/nav_haus2.gif);
+	}
+
+	/* Wellness und Beauty */
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav3 a.normal,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav3 a.normal:hover,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav3 span.here,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav3 a.inPath {
+		width: 135px;
+		background: url(../xist4c/web/krusekopf/01/img/nav_wellness.gif) top left no-repeat;
+	}
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav3 a.normal:hover,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav3 span.here,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav3 a.inPath {
+		background-image: url(../xist4c/web/krusekopf/01/img/nav_wellness2.gif);
+	}
+
+	/* Arbeit und Buero */
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav4 a.normal,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav4 a.normal:hover,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav4 span.here,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav4 a.inPath {
+		width: 100px;
+		background: url(../../upload/nav_arbeit_3430.gif) top left no-repeat;
+	}
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav4 a.normal:hover,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav4 span.here,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav4 a.inPath {
+		background-image: url(../../upload/nav_arbeit2_3431.gif);
+	}
+
+	/* Delikatessen und Suesses */
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav5 a.normal,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav5 a.normal:hover,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav5 span.here,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav5 a.inPath {
+		width: 154px;
+		background: url(../xist4c/web/krusekopf/01/img/nav_delikatessen.gif) top left no-repeat;
+	}
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav5 a.normal:hover,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav5 span.here,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav5 a.inPath {
+		background-image: url(../xist4c/web/krusekopf/01/img/nav_delikatessen2.gif);
+	}
+
+	/* Geschenke und Accessoires */
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav6 a.normal,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav6 a.normal:hover,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav6 span.here,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav6 a.inPath {
+		width: 170px;
+		background: url(.././upload/nav_geschenke_3432.gif) top left no-repeat;
+	}
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav6 a.normal:hover,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav6 span.here,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav6 a.inPath {
+		background-image: url(../../upload/nav_geschenke2_3433.gif);
+	}
+
+	/* Blumen Online */
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav7 a.normal,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav7 a.normal:hover,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav7 span.here,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav7 a.inPath {
+		width: 80px;
+		background: url(../../upload/blumen_9221.gif) top left no-repeat;
+	}
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav7 a.normal:hover,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav7 span.here,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav7 a.inPath {
+		background-image: url(../../upload/blumen2_9222.gif);
+	}
+
+	/* trendmagazin */
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav8 a.normal,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav8 a.normal:hover,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav8 span.here,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav8 a.inPath {
+		width: 100px;
+		background: url(../xist4c/web/krusekopf/01/img/nav_trend.gif) top left no-repeat;
+	}
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav8 a.normal:hover,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav8 span.here,
+	div.fLOuterShell div.des1 table.nav td.navItem div.co_flNav8 a.inPath {
+		background-image: url(../../upload/nav_trend2_2145.gif);
+	}
+/* << */
+
+
+/* >> Fusszeile*/
+	/* Spalte des Footers */
+	td.msFooter {
+		padding-bottom: 20px;
+	}
+	/* Anpassungen fuer den Fusszeilenkontainer*/
+	div.decoEl {
+		width: 989px;
+		background: #E3DEC4 url(../xist4c/web/krusekopf/01/img/background.gif) top left repeat-y;
+	}
+	div.deco_1 {
+		background: url(../xist4c/web/krusekopf/01/img/footerbg.gif) bottom left no-repeat;
+		position: relative;
+		top: 1px;
+	}
+	div.deco_2 {
+	}
+
+	/* Definitionen fuer die Fusszeilentabelle */
+	table.footer {
+		width: 951px;
+		margin: 0 auto;
+	}
+	/* Einstellungen der Fusszeilen Tabellenzelle */
+	table.footer td {
+		font-size: 11px;
+		color: #000;
+		text-align: left;
+		padding: 4px 0;
+	}
+	/* Anpassungen der Fusszeilen Inhaltselemente*/
+	table.footer td p,
+	table.footer td ul,
+	table.footer td ol,
+	table.footer td form,
+	table.footer td h1,
+	table.footer td h2,
+	table.footer td h3,
+	table.footer td h4,
+	table.footer td h5,
+	table.footer td h6 {
+		font-size: 11px;
+		padding-top: 0;
+		padding-bottom: 0;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	table.footer td a {
+		color: #5C4714;
+	}
+	table.footer td a:hover {
+		color: #000;
+	}
+/* <<  */
+
+
+/* >>Full Size Media*/
+	/* Voll Breite Media Container */
+	div.fsMediaShell {
+		margin-bottom: 10px;
+	}
+	/* Bildelement */
+	div.fsMediaShell div.img {
+	}
+	/* Freies XHTML Element */
+	div.fsMediaShell div.free {
+	}
+/* << */
+
+
+/* >> Standard Listenelement */
+	/* Anpassungen fuer den Listeneintragkontainer */
+	div.gOvItem {
+		margin: 12px 15px;
+		border-bottom: 1px solid #513E11;
+		font-size: 11px;
+	}
+	/* Definition des Titels des Listeneintrags */
+	div.gOvItem h3 {
+		margin: 0 0 5px 0;
+	}
+	/* Definition des Untertitels des Listeneintrags */
+	div.gOvItem h4 {
+		margin: 0 0 3px 0;
+	}
+	div.gOvItem p {
+		font-size: 11px;
+	}
+	/* Definition der Beschreibung des Listeneintrags */
+	div.gOvItem div {
+		margin: 0;
+	}
+	/* Definitionen fuer das Listenbild */
+	div.gOvItem a img.rFloat,
+	div.gOvItem img.rFloat {
+		float: left;
+		margin: 10px 10px 10px 0;
+	}
+	/* Einstellungen des Listen "mehr..." Links */
+	div.gOvItem div.more {
+		clear: both;
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+	/* Einstellungen des Listen "mehr..." Icons */
+	div.gOvItem div.more img {
+		display: none;
+	}
+	/*** Layouts ****/
+	/* layout three columns with image */
+	table.genOvVar1 {
+		width: 100%;
+	}
+	table.genOvVar1 td {
+		background: #edc352;
+	}
+	table.genOvVar1 td.vSpc,
+	table.genOvVar1 td.hSpc {
+		background: transparent;
+	}
+	table.genOvVar1 td.vSpc img,
+	table.genOvVar1 td.hSpc img {
+		height: 3px;
+		width: 3px;
+	}
+	table.genOvVar1 td.title {
+		vertical-align: top;
+	}
+	table.genOvVar1 td.title h3 {
+		font-size: 13px;
+		margin-top: 0;
+		margin-bottom: 8px;
+	}
+	table.genOvVar1 td.title h3 a {
+	}
+	table.genOvVar1 td.descShell {
+		vertical-align: top;
+	}
+	table.genOvVar1 td.descShell2 {
+		vertical-align: top;
+		white-space: nowrap;
+	}
+	table.genOvVar1 td.title,
+	table.genOvVar1 td.descShell,
+	table.genOvVar1 td.descShell2 {
+		padding: 5px;
+	}
+	table.genOvVar1 td.descShell2 {
+		text-align: center;
+	}
+/* <<  */
+
+
+/* >> Anpassungen des Logos und Bilder im Kopfbereich */
+	/* Einstellungen der positionierung des Logo Klickbereich */
+	div.linkCont1 {
+		width: auto;
+		position: absolute;
+		left: 270px;
+		top: 0;
+		z-index: 2;
+	}
+	div.linkCont2 {
+		width: auto;
+		position: absolute;
+		left: 651px;
+		top: 21px;
+		z-index: 3;
+		display: none;
+	}
+	/* Definition der groesse des Logo Klickbereichs*/
+	div.linkCont1 img {
+		width: 430px;
+		height: 80px;
+		border: 0;
+	}
+	div.linkCont2 img {
+		width: 153px;
+		height: 55px;
+		border: 0;
+	}
+
+	/* Tabelle fuer Kopfbilder */
+	table.headerImg {
+	}
+	/* Verhalten des 1 Kopfbereichsbild */
+	td.hImg {
+		width: 100%;
+		background: url(../../upload/topBg_4270.jpg) top left no-repeat;
+		height: 87px;
+	}
+	/* Verhalten des 2 Kopfbereichsbild */
+	td.hImg1 {
+		width: 100%;
+		display: none;
+	}
+	/* Verhalten des 3 Kopfbereichsbild */
+	td.hImg2 {
+		width: 151px;
+		display: none;
+	}
+/* << */
+
+
+/* >> Sprachumschalter*/
+	/* Definitionen fuer den Sprachumschalterkontainer */
+	div.lSwCont {
+		display: none;
+	}
+	/* Layout fuer Select Box */
+	div.lSwCont div.selectBox {
+		width: 165px;
+		position: absolute;
+		left: 8px;
+		top: 1px;
+		z-index: 5;
+	}
+	/* Sprachumschalter Formularfeld einstellungen */
+	div.lSwCont select {
+		font-family: Arial, Verdana, Helvetica, XHelvetica, sans-serif;
+		font-size: 10px;
+		width: 100%;
+	}
+	/* Layout fuer Flaggen */
+	div.lSwCont div.flags {
+		width: auto;
+		position: absolute;
+		left: 8px;
+		top: 1px;
+		z-index: 5;
+		font-size: 10px;
+	}
+	div.lSwCont div.flags div.active,
+	div.lSwCont div.flags div.passive {
+	}
+	div.lSwCont div.flags div.language,
+	div.lSwCont div.flags div.flag,
+	div.lSwCont div.flags div.spc {
+		float: left;
+	}
+	div.lSwCont div.flags div.spc,
+	div.lSwCont div.flags div.spc img {
+		display: none;
+	}
+	div.lSwCont div.flags div.language {
+		padding-top: 4px;
+		padding-right: 5px;
+	}
+	div.lSwCont div.flags div.language a {
+	}
+	div.lSwCont div.flags div.flag {
+		padding-right: 10px;
+	}
+/* << */
+
+
+/* >>Navigation links*/
+	/* Aeusserer Navigationskontainer */
+	div.navOuterShell {
+	}
+	/* Bild fue den Start der Navigation */
+	div.navOuterShell div.topImg {
+	}
+	div.navOuterShell div.topImg img {
+		display: none;
+	}
+	/* Bild fuer das Ende der Navigation */
+	div.navOuterShell div.bottomImg {
+	}
+	div.navOuterShell div.bottomImg img {
+		display: none;
+	}
+	/* Anpassung der minimalen Navigationskontainerhoehe */
+	div.navOuterShell img.minHeight {
+		display: block;
+		height: 1px;
+		float: left;
+	}
+	/*Angaben zur Navigationshuelle.
+		Je Ebene haben Sie die Moeglichkeit den Ebenenhintergrund zu veraendern.*/
+	div.navCHS_0,
+	div.navCHS_1,
+	div.navCHS_2,
+	div.navCHS_3 {
+	}
+
+	div.navCHS_1 {
+		border-bottom: 7px solid #E3DEC4;
+	}
+	/* Angaben zur Navigationsknotenhuelle */
+	div.navNS_0,
+	div.navNS_1,
+	div.navNS_2,
+	div.navNS_3 {
+		text-align: right;
+	}
+	/* Benutzen Sie folgende Klassen um die aeussere Huelle der Navigationslinks zu veraendern.*/
+	div.navEl_0_normal, div.navEl_0_inPath, div.navEl_0_here,
+	div.navEl_1_normal, div.navEl_1_inPath, div.navEl_1_here,
+	div.navEl_2_normal, div.navEl_2_inPath, div.navEl_2_here,
+	div.navEl_3_normal, div.navEl_3_inPath, div.navEl_3_here {
+	}
+	div.navEl_1_normal, div.navEl_1_inPath, div.navEl_1_here,
+	div.navEl_2_normal, div.navEl_2_inPath, div.navEl_2_here,
+	div.navEl_3_normal, div.navEl_3_inPath, div.navEl_3_here {
+		border-right: 1px solid #E3DEC4;
+	}
+	div.navEl_1_inPath, div.navEl_1_here,
+	div.navEl_2_normal, div.navEl_2_inPath, div.navEl_2_here,
+	div.navEl_3_normal, div.navEl_3_inPath, div.navEl_3_here,
+	div.navEl_4_normal, div.navEl_4_inPath, div.navEl_4_here {
+		border-right: 7px solid #9A2534;
+	}
+	div.navEl_1_normal, div.navEl_1_inPath, div.navEl_1_here {
+		border-top: 1px solid #E3DEC4;
+	}
+	/* Um Bullets vor die Navigationslinks zu Platzieren benutzen Sie die folgenden Klassen*/
+	div.navEl_0_normal div.outer,
+	div.navEl_0_inPath div.outer,
+	div.navEl_0_here div.outer,
+	div.navEl_1_normal div.outer,
+	div.navEl_1_inPath div.outer,
+	div.navEl_1_here div.outer,
+	div.navEl_2_normal div.outer,
+	div.navEl_2_inPath div.outer,
+	div.navEl_2_here div.outer,
+	div.navEl_3_normal div.outer,
+	div.navEl_3_inPath div.outer,
+	div.navEl_3_here div.outer {
+	}
+	div.navEl_0_normal div.outer,
+	div.navEl_0_inPath div.outer,
+	div.navEl_0_here div.outer {
+		display: none;
+	}
+	div.navEl_2_normal div.outer,
+	div.navEl_2_inPath div.outer,
+	div.navEl_2_here div.outer {
+		border-top: 1px solid #fff;
+	}
+	div.navEl_3_normal div.outer,
+	div.navEl_3_inPath div.outer,
+	div.navEl_3_here div.outer {
+		border-top: 1px solid #E3DEC4;
+	}
+	div.navEl_0_normal span.inner, div.navEl_0_inPath span.inner, div.navEl_0_here span.inner,
+	div.navEl_1_normal span.inner, div.navEl_1_inPath span.inner, div.navEl_1_here span.inner,
+	div.navEl_2_normal span.inner, div.navEl_2_inPath span.inner, div.navEl_2_here span.inner,
+	div.navEl_3_normal span.inner, div.navEl_3_inPath span.inner, div.navEl_3_here span.inner {
+	}
+	/* Ebene 0 */
+	div.navEl_0_here div.noLink,
+	div.navEl_0_normal a,
+	div.navEl_0_inPath a {
+		display: block;
+		font-weight: bold;
+		font-size: 12px;
+		color: #339;
+	}
+	div.navEl_0_normal a:hover,
+	div.navEl_0_inPath a:hover,
+	div.navEl_0_here div.noLink,
+	div.navEl_0_inPath a {
+		color: #000;
+	}
+	/* Ebene 1 */
+	div.navEl_1_here div.noLink,
+	div.navEl_1_normal a,
+	div.navEl_1_inPath a {
+		display: block;
+		font-weight: bold;
+		font-size: 12px;
+		color: #5C4714;
+		padding: 10px 20px 10px 0;
+	}
+	div.navEl_1_normal a:hover,
+	div.navEl_1_inPath a
+	div.navEl_1_here div.noLink {
+		color: #9A2534;
+	}
+	div.navEl_1_here div.noLink,
+	div.navEl_1_inPath a {
+		padding-right: 14px;
+	}
+	/* Ebene 2 */
+	div.navEl_2_here div.noLink,
+	div.navEl_2_normal a,
+	div.navEl_2_inPath a {
+		display: block;
+		font-size: 11px;
+		color: #000;
+		font-weight: bold;
+		padding: 4px 0 4px 0;
+		background: #E3DEC4;
+	}
+	div.navEl_2_normal a:hover,
+	div.navEl_2_here div.noLink,
+	div.navEl_2_inPath a {
+		color: #fff;
+		background: #9A2534;
+	}
+	div.navEl_2_here span.inner,
+	div.navEl_2_normal span.inner,
+	div.navEl_2_inPath span.inner {
+		padding-right: 14px;
+	}
+	/* Ebene 3 */
+	div.navEl_3_here div.noLink,
+	div.navEl_3_normal a,
+	div.navEl_3_inPath a {
+		display: block;
+		font-size: 11px;
+		color: #000;
+		font-weight: bold;
+		padding: 4px 14px 4px 0;
+		background: #fff;
+	}
+	div.navEl_3_normal a:hover,
+	div.navEl_3_here div.noLink,
+	div.navEl_3_inPath a {
+		color: #9A2534;
+	}
+
+	/* Ebene 4 */
+	div.navEl_4_here div.noLink,
+	div.navEl_4_normal a,
+	div.navEl_4_inPath a {
+		display: block;
+		font-size: 11px;
+		color: #000;
+		font-weight: normal;
+		padding: 2px 14px 2px 0;
+		background: #fff;
+	}
+	div.navEl_4_normal a:hover,
+	div.navEl_4_here div.noLink,
+	div.navEl_4_inPath a {
+		color: #9A2534;
+		font-weight: bold;
+	}
+
+
+	/* Navigationsbild Kontainer */
+	div.navigationImage {
+		text-align: center;
+	}
+/* << */
+
+/* Navigationsbilder */
+	/* A B C D E F G H I J K L M N O P Q R S T U V W X Y Z */
+	/* Aktionen */
+	div.co_aktionen div.navEl_1_here div.noLink, div.co_aktionen div.navEl_1_normal a, div.co_aktionen div.navEl_1_inPath a { background: url(../../upload/aktionen_3992.gif) 10px center no-repeat; }
+	div.co_aktionen div.navEl_1_normal a:hover, div.co_aktionen div.navEl_1_here div.noLink, div.co_aktionen div.navEl_1_inPath a { background-image: url(../../upload/aktionen2_3993.gif); }
+	/* ASA */
+	div.co_asa div.navEl_1_here div.noLink, div.co_asa div.navEl_1_normal a, div.co_asa div.navEl_1_inPath a { background: url(../../upload/asa_2772.gif) 10px center no-repeat; }
+	/* Blomus */
+	div.co_blomus div.navEl_1_here div.noLink, div.co_blomus div.navEl_1_normal a, div.co_blomus div.navEl_1_inPath a { background: url(../../upload/blomus_2773.gif) 10px center no-repeat; }
+	/* Brainstream */
+	div.co_brainstream div.navEl_1_here div.noLink, div.co_brainstream div.navEl_1_normal a, div.co_brainstream div.navEl_1_inPath a { background: url(../../upload/brainstream_2745.gif) 10px center no-repeat; }
+	div.co_brainstream div.navEl_1_normal a:hover, div.co_brainstream div.navEl_1_here div.noLink, div.co_brainstream div.navEl_1_inPath a { background-image: url(../../upload/brainstream2_2746.gif); }
+	/* Bodypaint */
+	div.co_bodypaint div.navEl_1_here div.noLink, div.co_bodypaint div.navEl_1_normal a, div.co_bodypaint div.navEl_1_inPath a { background: url(../../upload/bodypaint_2807.gif) 10px center no-repeat; }
+	div.co_bodypaint div.navEl_1_normal a:hover, div.co_bodypaint div.navEl_1_here div.noLink, div.co_bodypaint div.navEl_1_inPath a { background-image: url(../../upload/bodypaint2_2808.gif); }
+	/* Colony */
+	div.co_colony div.navEl_1_here div.noLink, div.co_colony div.navEl_1_normal a, div.co_colony div.navEl_1_inPath a { background: url(../../upload/colony_2774.gif) 10px center no-repeat; }
+	/* Conmoto */
+	div.co_conmoto div.navEl_1_here div.noLink, div.co_conmoto div.navEl_1_normal a, div.co_conmoto div.navEl_1_inPath a { background: url(../../upload/conmoto_2749.gif) 10px center no-repeat; }
+	div.co_conmoto div.navEl_1_normal a:hover, div.co_conmoto div.navEl_1_here div.noLink, div.co_conmoto div.navEl_1_inPath a { background-image: url(../../upload/conmoto2_2750.gif); }
+	/* Delux */
+	div.co_delux div.navEl_1_here div.noLink, div.co_delux div.navEl_1_normal a, div.co_delux div.navEl_1_inPath a { background: url(../../upload/deluxe2_6445.gif) 10px center no-repeat; }
+	div.co_delux div.navEl_1_normal a:hover, div.co_delux div.navEl_1_here div.noLink, div.co_delux div.navEl_1_inPath a { background-image: url(../../upload/deluxe_6444.gif); }
+	/* El Casco */
+	div.co_elcasco div.navEl_1_here div.noLink, div.co_elcasco div.navEl_1_normal a, div.co_elcasco div.navEl_1_inPath a { background: url(../../upload/elcasco_2775.gif) 10px center no-repeat; }
+	/* Eschenbach */
+	div.co_eschenbach div.navEl_1_here div.noLink, div.co_eschenbach div.navEl_1_normal a, div.co_eschenbach div.navEl_1_inPath a { background: url(../../upload/eschenbach2_7983.gif) 10px center no-repeat;}
+	div.co_eschenbach div.navEl_1_normal a:hover, div.co_eschenbach div.navEl_1_here div.noLink, div.co_eschenbach div.navEl_1_inPath a { background-image: url(../../upload/eschenbach_7982.gif); }
+	/* Herrnhuter Sterne */
+	div.co_hernhuter div.navEl_1_here div.noLink, div.co_hernhuter div.navEl_1_normal a, div.co_hernhuter div.navEl_1_inPath a { background: url(../../upload/hernhuter_2794.gif) 10px center no-repeat; }
+	div.co_hernhuter div.navEl_1_normal a:hover, div.co_hernhuter div.navEl_1_here div.noLink, div.co_hernhuter div.navEl_1_inPath a { background-image: url(../../upload/hernhuter2_2795.gif); }
+	/* Hussel */
+	div.co_hussel div.navEl_1_here div.noLink, div.co_hussel div.navEl_1_normal a, div.co_hussel div.navEl_1_inPath a { background: url(../../upload/hussel_2753.gif) 10px center no-repeat; }
+	div.co_hussel div.navEl_1_normal a:hover, div.co_hussel div.navEl_1_here div.noLink, div.co_hussel div.navEl_1_inPath a { background-image: url(../../upload/hussel2_2754.gif); }
+	/* Kneisz Design */
+	div.co_kneisz div.navEl_1_here div.noLink, div.co_kneisz div.navEl_1_normal a, div.co_kneisz div.navEl_1_inPath a { background: url(../../upload/kneisz_2813.gif) 10px center no-repeat; }
+	div.co_kneisz div.navEl_1_normal a:hover, div.co_kneisz div.navEl_1_here div.noLink, div.co_kneisz div.navEl_1_inPath a { background-image: url(../../upload/kneisz2_2814.gif); }
+	/* Kahla */
+	div.co_kahla div.navEl_1_here div.noLink, div.co_kahla div.navEl_1_normal a, div.co_kahla div.navEl_1_inPath a { background: url(../../upload/kahla_2776.gif) 10px center no-repeat; }
+	/* Keilbach */
+	div.co_keilbach div.navEl_1_here div.noLink, div.co_keilbach div.navEl_1_normal a, div.co_keilbach div.navEl_1_inPath a { background: url(../../upload/keilbach_2777.gif) 10px center no-repeat; }
+	div.co_keilbach div.navEl_1_normal a:hover, div.co_keilbach div.navEl_1_here div.noLink, div.co_keilbach div.navEl_1_inPath a { background-image: url(../../upload/keilbach2_2759.gif); }
+	/* Lardon */
+	div.co_lardon div.navEl_1_here div.noLink, div.co_lardon div.navEl_1_normal a, div.co_lardon div.navEl_1_inPath a { background: url(../../upload/lardon_sw_9042.gif) 10px center no-repeat; }
+	div.co_lardon div.navEl_1_normal a:hover, div.co_lardon div.navEl_1_here div.noLink, div.co_lardon div.navEl_1_inPath a { background-image: url(../../upload/lardon_9041.gif); }
+	/* LaNature */
+	div.co_lanature div.navEl_1_here div.noLink, div.co_lanature div.navEl_1_normal a, div.co_lanature div.navEl_1_inPath a { background: url(../../upload/lanature_2760.gif) 10px center no-repeat; }
+	div.co_lanature div.navEl_1_normal a:hover, div.co_lanature div.navEl_1_here div.noLink, div.co_lanature div.navEl_1_inPath a { background-image: url(../../upload/lanature2_2761.gif); }
+	/* Meybona */
+	div.co_meybona div.navEl_1_here div.noLink, div.co_meybona div.navEl_1_normal a, div.co_meybona div.navEl_1_inPath a { background: url(../../upload/meybona_2800.gif) 10px center no-repeat; }
+	div.co_meybona div.navEl_1_normal a:hover, div.co_meybona div.navEl_1_here div.noLink, div.co_meybona div.navEl_1_inPath a { background-image: url(../../upload/meybona2_2801.gif); }
+	/* MBM */
+	div.co_mbm div.navEl_1_here div.noLink, div.co_mbm div.navEl_1_normal a, div.co_mbm div.navEl_1_inPath a { background: url(../../upload/mbm_2778.gif) 10px center no-repeat; }
+	/* menue */
+	div.co_menu div.navEl_1_here div.noLink, div.co_menu div.navEl_1_normal a, div.co_menu div.navEl_1_inPath a { background: url(../../upload/menu_2779.gif) 10px center no-repeat; }
+	/* Oralfixation */
+	div.co_oralfixation div.navEl_1_here div.noLink, div.co_oralfixation div.navEl_1_normal a, div.co_oralfixation div.navEl_1_inPath a { background: url(../../upload/oralfixation_2780.gif) 10px center no-repeat; }
+	/* Philippi */
+	div.co_philippi div.navEl_1_here div.noLink, div.co_philippi div.navEl_1_normal a, div.co_philippi div.navEl_1_inPath a { background: url(../../upload/philippi_2781.gif) 10px center no-repeat; }
+	/* PatSaysNow */
+	div.co_patsaysnow div.navEl_1_here div.noLink, div.co_patsaysnow div.navEl_1_normal a, div.co_patsaysnow div.navEl_1_inPath a { background: url(../../upload/patsaysnow_2770.gif) 10px center no-repeat; }
+	div.co_patsaysnow div.navEl_1_normal a:hover, div.co_patsaysnow div.navEl_1_here div.noLink, div.co_patsaysnow div.navEl_1_inPath a { background-image: url(../../upload/patsaysnow2_2771.gif); }
+	/* Raeder Geschenke */
+	div.co_raeder div.navEl_1_here div.noLink, div.co_raeder div.navEl_1_normal a, div.co_raeder div.navEl_1_inPath a { background: url(../../upload/raeder_2782.gif) 10px center no-repeat; }
+	div.co_raeder div.navEl_1_normal a:hover, div.co_raeder div.navEl_1_here div.noLink, div.co_raeder div.navEl_1_inPath a { background-image: url(../../upload/raeder2_2783.gif); }
+	/* Sitting Bull */
+	div.co_sittingbull div.navEl_1_here div.noLink, div.co_sittingbull div.navEl_1_normal a, div.co_sittingbull div.navEl_1_inPath a { background: url(../../upload/sittingbull_sw_6802.gif) 10px center no-repeat; }
+	div.co_sittingbull div.navEl_1_normal a:hover, div.co_sittingbull div.navEl_1_here div.noLink, div.co_sittingbull div.navEl_1_inPath a { background-image: url(../../upload/sittingbull_6801.gif); }
+	/* Reed Diffuser */
+	div.co_reeddiffuser div.navEl_1_here div.noLink, div.co_reeddiffuser div.navEl_1_normal a, div.co_reeddiffuser div.navEl_1_inPath a { }
+	div.co_reeddiffuser div.navEl_1_normal a:hover, div.co_reeddiffuser div.navEl_1_here div.noLink, div.co_reeddiffuser div.navEl_1_inPath a { }
+	/* Roensch */
+	div.co_roensch div.navEl_1_here div.noLink, div.co_roensch div.navEl_1_normal a, div.co_roensch div.navEl_1_inPath a { background: url(../../upload/roensch_7981.gif) 10px center no-repeat; }
+	div.co_roensch div.navEl_1_normal a:hover, div.co_roensch div.navEl_1_here div.noLink, div.co_roensch div.navEl_1_inPath a { background-image: url(../../upload/roensch2_2811.gif); }
+	/* Sheepworld */
+	div.co_sheepworld div.navEl_1_here div.noLink, div.co_sheepworld div.navEl_1_normal a, div.co_sheepworld div.navEl_1_inPath a { background: url(../../upload/sheepworld_2789.gif) 10px center no-repeat; }
+	/* Skia */
+	div.co_skia div.navEl_1_here div.noLink, div.co_skia div.navEl_1_normal a, div.co_skia div.navEl_1_inPath a { background: url(../../upload/skia_2790.gif) 10px center no-repeat; }
+	div.co_skia div.navEl_1_normal a:hover, div.co_skia div.navEl_1_here div.noLink, div.co_skia div.navEl_1_inPath a { background-image: url(../../upload/skia2_2791.gif); }
+	/* Viteo */
+	div.co_viteo div.navEl_1_here div.noLink, div.co_viteo div.navEl_1_normal a, div.co_viteo div.navEl_1_inPath a { background: url(../../upload/viteo_3941.gif) 10px center no-repeat; }
+	div.co_viteo div.navEl_1_normal a:hover, div.co_viteo div.navEl_1_here div.noLink, div.co_viteo div.navEl_1_inPath a { background-image: url(../../upload/viteo2_3942.gif); }
+	/* Zotter */
+	div.co_zotter div.navEl_1_here div.noLink, div.co_zotter div.navEl_1_normal a, div.co_zotter div.navEl_1_inPath a { background: url(../../upload/zotter_2805.gif) 10px center no-repeat; }
+	div.co_zotter div.navEl_1_normal a:hover, div.co_zotter div.navEl_1_here div.noLink, div.co_zotter div.navEl_1_inPath a { background-image: url(../../upload/zotter2_2804.gif); }
+/* << */
+
+/* >> Teaser Navigation */
+	/* Servicecenter */
+	/* Titel */
+	div.co_servicecenter div.nssTitle div.tDes1 h3 {
+		font-size: 14px;
+		margin: 0;
+		color: #fff;
+		display: block;
+		background: url(../xist4c/web/krusekopf/01/img/teaserheadbg.gif) top left repeat-x;
+		padding: 4px 7px 4px 7px;
+	}
+	/* Aeussere Navigationsheulle */
+	div.co_servicecenter div.nssDes1 {
+		background: url(../xist4c/web/krusekopf/01/img/teaserbg.gif) top left repeat;
+	}
+	div.co_servicecenter div.nssDes2 {
+		background: url(../xist4c/web/krusekopf/01/img/teaserbgtop.gif) top left repeat-x;
+	}
+	/*Angaben zur Navigationshuelle.
+		Je Ebene haben Sie die Moeglichkeit den Ebenenhintergrund zu veraendern.*/
+	div.co_servicecenter div.navCHS_1,
+	div.co_servicecenter div.navCHS_2,
+	div.co_servicecenter div.navCHS_3 {
+		border: 0;
+	}
+	/* Angaben zur Navigationsknotenhuelle */
+	div.co_servicecenter div.navNS_0,
+	div.co_servicecenter div.navNS_1,
+	div.co_servicecenter div.navNS_2,
+	div.co_servicecenter div.navNS_3 {
+		text-align: left;
+	}
+	/* Benutzen Sie folgende Klassen um die aeussere Huelle der Navigationslinks zu veraendern.*/
+	div.co_servicecenter div.navEl_1_normal, div.co_servicecenter div.navEl_1_inPath, div.co_servicecenter div.navEl_1_here,
+	div.co_servicecenter div.navEl_2_normal, div.co_servicecenter div.navEl_2_inPath, div.co_servicecenter div.navEl_2_here,
+	div.co_servicecenter div.navEl_3_normal, div.co_servicecenter div.navEl_3_inPath, div.co_servicecenter div.navEl_3_here {
+		border: 0;
+	}
+	div.rElCont div.co_servicecenter div.navEl_1_normal, div.co_servicecenter div.navEl_1_inPath, div.co_servicecenter div.navEl_1_here {
+		border-bottom: 1px solid #fff;
+	}
+
+	/* Ebene 1 */
+	div.co_servicecenter div.navEl_1_here div.noLink,
+	div.co_servicecenter div.navEl_1_normal a,
+	div.co_servicecenter div.navEl_1_inPath a {
+		display: block;
+		font-size: 11px;
+		color: #000;
+		padding: 4px 5px 4px 7px;
+	}
+	div.co_servicecenter div.navEl_1_normal a:hover,
+	div.co_servicecenter div.navEl_1_inPath a:hover,
+	div.co_servicecenter div.navEl_1_here div.noLink,
+	div.co_servicecenter div.navEl_1_inPath a {
+		color: #6E6D26;
+	}
+
+	/* Infotek */
+	div.co_infotek {
+		margin-bottom: 20px;
+	}
+/* << */
+
+
+/* >> Linkliste */
+	/* Linkliste Tabelle */
+	table.llShell {
+		margin: 0 15px 20px 15px;
+	}
+	/* Einstellungen fuer den Linklisten Titel fuer normal, besucht und bei ueberfahren mit der Maus */
+	table.llShell td a {
+		font-size: 13px;
+		color: #f90;
+		font-weight: bold;
+	}
+	table.llShell td a:hover {
+		color: #000;
+	}
+	/* Linklisten Bullet */
+	table.llShell td img.bullet {
+		width: 6px;
+		height: 6px;
+		margin-top: 5px;
+		margin-right: 6px;
+		background: #574313;
+	}
+	/* Anpassungen der Linkbeschreibung */
+	table.llShell td.desc {
+		font-size: 11px;
+	}
+/* << */
+
+
+/* >> Login und Logout Element */
+	/* >>>>>Login */
+	/* Definitionen fuer den Schnelllogin- Schnelllogoutkontainer */
+	div.quickLogKontainer {
+		width: 165px;
+		position: absolute;
+		left: 823px;
+		top: 82px;
+		z-index: 4;
+		display: none;
+	}
+	/* Einstellungen fuer das Login und Logout Formular */
+	form.quicklogin,
+	form.login,
+	form.logoutFormField {
+		margin: 0;
+		padding: 0;
+	}
+	/* Angaben zu den Input Formularfeldern im Quicklogin Bereich*/
+	form.quicklogin table td input.text {
+		font-size: 10px;
+		width: 100%;
+	}
+	/* Angaben zu dem Input Button im Quicklogin Bereich*/
+	form.quicklogin table td input.button {
+		font-weight: auto;
+	}
+	/* Beschriftungen fuer den Standard Login */
+	form.login table td span {
+	}
+	/* Angaben zu den Input Formularfeldern im Standard Login Bereich*/
+	form.login table td input.text {
+		font-size: 10px;
+		width: 160px;
+	}
+	/* Angaben zu dem Input Button im Standard Login*/
+	form.login table td input.button {
+		cursor: pointer;
+		/cursor: hand;
+		width: auto;
+	}
+	/* Einstellungen zur Standard Login Tabelle */
+	table.designShell {
+		border: 1px solid #5C4714;
+		background: #E3DEC4;
+	}
+	/* Anpassen der Login Fehlermeldung bei missgluecktem Loginversuch*/
+	form.login table.designShell td table td div {
+		font-weight: bold;
+		color: #9A2534;
+	}
+	/* >>>>Logout */
+	/* logout Tabelle */
+	table.logout {
+	}
+	/* Anpassungen fuer den Beschreibungstext im Logout Bereich */
+	table.logout td span {
+		font-size: 9px;
+		font-weight: normal;
+	}
+	/* Formatierung des Benutzernamens im Logout Bereich.*/
+	table.logout td {
+		font-weight: bold;
+		font-size: 10px;
+		white-space: nowrap;
+		line-height: 10px;
+	}
+	/* Formatierung des Buttons im Logout Bereich.*/
+	table.logout td a img {
+	}
+/* >> */
+
+
+/* >> News Uebersicht*/
+	/* News Uebersicht Tabelle */
+	table.news {
+	}
+	/* Anpassungen fuer das News Datum in der Uebersicht*/
+	table.news td.date {
+		font-weight: bold;
+		color: #666;
+		font-size: 11px;
+		padding-right: 8px;
+	}
+	/* News Info Spalte */
+	table.news td.item {
+		padding-bottom: 12px;
+	}
+	/* Definition der News Uebersicht Ueberschrift */
+	table.news td.item h3 {
+		margin: 0 0 3px 0;
+	}
+	/* Definition der News Uebersicht Unterueberschrift */
+	table.news td.item h4 {
+		margin: 0 0 3px 0;
+	}
+	/* Einstellungen fuer die News Beschreibung */
+	table.news td.item div.desc {
+		margin: 0;
+	}
+	/* Definition fuer das News Bild */
+	table.news td.item img.rFloat {
+		float: right;
+		margin-left: 10px;
+		margin-bottom: 5px;
+	}
+	/* Anpassungen des News "mehr...." Links */
+	table.news td.item div.more {
+		clear: both;
+		margin-top: 5px;
+		margin-bottom: 5px;
+		text-align: left;
+		font-size: 11px;
+	}
+	/* Einstellungen des News "mehr..." Icons */
+	table.news td.item div.more img {
+	}
+/* << */
+
+
+/* >> News Teaser  */
+	div.newsTContShell {
+		padding-bottom: 10px;
+	}
+	div.newsTContShell div.inner {
+	}
+	div.newsTContShell div.inner div.date {
+		font-weight: bold;
+		color: #000;
+		font-size: 10px;
+	}
+	div.newsTContShell div.inner h3 {
+		font-size: 11px;
+		margin: 0;
+		font-weight: normal;
+		margin-bottom: 5px;
+		padding-left: 10px;
+	}
+	div.newsTContShell div.inner h3 a {
+	}
+/* << */
+
+
+/* >> Blaetterelement */
+	/* Pager Kontainer */
+	div.pager {
+		margin-bottom: 3px;
+	}
+	/* Einstellungen fuer die Informationen wieviel Seiten gefunden wurden bsp. "Seite (1 / 23)" */
+	div.pager table.pInfo td,
+	div.pager table.pInfo td span {
+		font-size: 11px;
+		color: #333;
+		display: none;
+	}
+	/* Definition der Schriftfarbe der Tabellenzelle fuer die gefundenen Seiten */
+	div.pager table.pPages td {
+		color: #369;
+	}
+	/* Einstellung der momentan angewaehlten Seite */
+	div.pager table.pPages td span {
+		font-weight: bold;
+		color: #fff;
+		display: block;
+		background: #9A2534;
+		height: 16px;
+		width: 20px;
+		padding: 0 5px;
+	}
+	/* Anpassen der Links */
+	div.pager table.pPages td a {
+		font-weight: bold;
+		vertical-align: middle;
+		color: #000;
+		display: block;
+		height: 16px;
+		width: 20px;
+		padding: 0 5px;
+	}
+	div.pager table.pPages td a:hover {
+		background: #9A2534;
+		color: #fff;
+	}
+
+	/*  Anpassungen fuer den linken Pager Pfeil aktiv und passiv */
+	div.pager table.pPages td a img.firstAct,
+	div.pager table.pPages td img.firstPass {
+		height: 16px;
+		width: 20px;
+		background: url(../xist4c/web/krusekopf/01/img/firstPageButtActive.gif) center center no-repeat;
+		margin: 0 4px 0 0;
+		border: 0;
+	}
+	div.pager table.pPages td a:hover img.firstAct,
+	div.pager table.pPages td img.firstPass {
+		background-image: url(../xist4c/web/krusekopf/01/img/firstPageButtPassive.gif);
+	}
+	/* Anpassungen fuer den halb linken Pager Pfeil aktiv und passiv */
+	div.pager table.pPages td a img.prevAct,
+	div.pager table.pPages td img.prevPass {
+		height: 16px;
+		width: 20px;
+		margin: 0 2px 0 0;
+		background: url(../xist4c/web/krusekopf/01/img/prevPageButtActive.gif) center center no-repeat;
+		border: 0;
+	}
+	div.pager table.pPages td a:hover img.prevAct,
+	div.pager table.pPages td img.prevPass {
+		background-image: url(../xist4c/web/krusekopf/01/img/prevPageButtPassive.gif);
+	}
+	/* Anpassungen fuer den halb rechten Pager Pfeil aktiv und passiv */
+	div.pager table.pPages td a img.nextAct,
+	div.pager table.pPages td img.nextPass {
+		height: 16px;
+		width: 20px;
+		margin: 0 0 0 2px;
+		background: url(../xist4c/web/krusekopf/01/img/nextPageButtActive.gif) center center no-repeat;
+		border: 0;
+	}
+	div.pager table.pPages td a:hover img.nextAct,
+	div.pager table.pPages td img.nextPass {
+		background-image: url(../xist4c/web/krusekopf/01/img/nextPageButtPassive.gif);
+	}
+	/* Anpassungen fuer den rechten Pager Pfeil aktiv und passiv */
+	div.pager table.pPages td a img.lastAct,
+	div.pager table.pPages td img.lastPass {
+		height: 16px;
+		width: 20px;
+		margin: 0 0 0 4px;
+		background: url(../xist4c/web/krusekopf/01/img/lastPageButtActive.gif) center center no-repeat;
+		border: 0;
+	}
+	div.pager table.pPages td a:hover img.lastAct,
+	div.pager table.pPages td img.lastPass {
+		background: url(../xist4c/web/krusekopf/01/img/lastPageButtPassive.gif) center center no-repeat;
+	}
+	/* Anpassungen fuer das Pager Trennelement */
+	div.pager table.pPages td img.sep {
+		height: 16px;
+		width: 1px;
+		border: 0;
+		background: #E3DEC4;
+	}
+/* << */
+
+
+/* >> Blaetterelement fuer Dokumentunterteilung */
+	div.topContentPager {
+	}
+	div.bottomContentPager {
+	}
+	div.contPagerShell {
+		background: #efefef;
+		margin-bottom: 10px;
+	}
+	div.contPagerShell div.outDes1 {
+		padding: 2px 5px 2px 5px;
+		border: 1px solid #b3b3b3;
+	}
+	div.contPagerShell div.outDes2 {
+		text-align: right;
+	}
+	div.contPagerShell div.outDes2 table {
+		margin-left: auto;
+	}
+	div.contPagerShell div.outDes2 table td {
+	}
+	div.contPagerShell div.outDes2 table td div.des1 {
+	}
+	div.contPagerShell div.outDes2 table td div.des2 {
+	}
+	/* Links des normalen pagers */
+	div.contPagerShell div.outDes2 table td div.here,
+	div.contPagerShell div.outDes2 table td a {
+		display: block;
+		font-size: 12px;
+		line-height: 12px;
+		font-weight: bold;
+		padding: 1px 4px 1px 4px;
+		border: 1px solid #000;
+		color: #fff;
+		background: #a0b8cf;
+	}
+	div.contPagerShell div.outDes2 table td a:hover {
+		background: #7ca4c7;
+	}
+	div.contPagerShell div.outDes2 table td div.here {
+		background: #5589b7;
+	}
+	div.contPagerShell div.outDes2 table td div.spc {
+		display: block;
+		width: 1px;
+		height: 10px;
+		margin: 1px 3px 0 3px;
+		background: #000;
+	}
+	/* Anordnung der simplen Bildpagerelemente */
+	div.smpContPagerShell {
+		background: #efefef;
+		margin-bottom: 10px;
+	}
+	* html div.smpContPagerShell {
+		width: 100%;
+	}
+	div.smpContPagerShell div.outDes1 {
+		border: 1px solid #b3b3b3;
+	}
+	div.smpContPagerShell div.outDes2 {
+		margin: 2px 5px 2px 5px;
+		text-align: right;
+	}
+	* html div.smpContPagerShell div.outDes2 {
+		width: 100%;
+	}
+	div.smpContPagerShell div.outDes2 table.outer {
+		margin-left: auto;
+	}
+	div.smpContPagerShell div.outDes2 table.outer td.left {
+		text-align: left;
+	}
+	div.smpContPagerShell div.outDes2 table.outer td.right {
+		text-align: right;
+	}
+	div.smpContPagerShell div.outDes2 table.outer td.left div.d1_left,
+	div.smpContPagerShell div.outDes2 table.outer td.right div.d1_right {
+	}
+	div.smpContPagerShell div.outDes2 table.outer td.left div.d2_left,
+	div.smpContPagerShell div.outDes2 table.outer td.right div.d2_right {
+	}
+	div.smpContPagerShell div.outDes2 table.outer td.sep {
+		width: 1px;
+	}
+	table.pElOuter_left,
+	table.pElOuter_right {
+	}
+	table.pElOuter_right {
+		margin-left: auto;
+	}
+	table.pElOuter_left td.spcL,
+	table.pElOuter_left td.spcR,
+	table.pElOuter_right td.spcL,
+	table.pElOuter_right td.spcR {
+	}
+	table.pElOuter_left td.spcR img,
+	table.pElOuter_right td.spcL img {
+		width: 3px;
+	}
+	table.pElOuter_left td.spcL img,
+	table.pElOuter_left td.spcR img,
+	table.pElOuter_right td.spcL img,
+	table.pElOuter_right td.spcR img {
+	}
+	/* Links des simplen Bildpagerelements */
+	table.pElOuter_left td.pEl div.noLink img,
+	table.pElOuter_right td.pEl div.noLink img,
+	table.pElOuter_left td.pEl a img,
+	table.pElOuter_right td.pEl a img {
+		height: 20px;
+		width: 24px;
+		background-position: left top;
+		background-repeat: no-repeat;
+		border: none;
+	}
+	table.pElOuter_left td.pEl a img {
+		background-image: url(../xist4c/web/krusekopf/01/img/smpPagArrowLeft.gif);
+	}
+	table.pElOuter_right td.pEl a img {
+		background-image: url(../xist4c/web/krusekopf/01/img/smpPagArrowRight.gif);
+	}
+	table.pElOuter_left td.pEl div.noLink img {
+		background-image: url(../xist4c/web/krusekopf/01/img/smpPagArrowLeftPass.gif);
+	}
+	table.pElOuter_right td.pEl div.noLink img {
+		background-image: url(../xist4c/web/krusekopf/01/img/smpPagArrowRightPass.gif);
+	}
+	/* Anordnung der simplen Textpagerelemente */
+	div.smpTxtContPagerShell {
+		background: #efefef;
+		margin-bottom: 10px;
+	}
+	* html div.smpTxtContPagerShell {
+		width: 100%;
+	}
+	div.smpTxtContPagerShell div.outDes1 {
+		border: 1px solid #b3b3b3;
+		padding: 2px 5px 2px 5px;
+	}
+	div.smpTxtContPagerShell div.outDes2 {
+		text-align: right;
+	}
+	* html div.smpTxtContPagerShell div.outDes2 {
+		width: 100%;
+	}
+	div.smpTxtContPagerShell div.outDes2 table.outer {
+		margin-left: auto;
+	}
+	div.smpTxtContPagerShell div.outDes2 table.outer td.left {
+		text-align: left;
+	}
+	div.smpTxtContPagerShell div.outDes2 table.outer td.right {
+		text-align: right;
+	}
+	div.smpTxtContPagerShell div.outDes2 table.outer td.left div.d1_left,
+	div.smpTxtContPagerShell div.outDes2 table.outer td.right div.d1_right {
+	}
+	div.smpTxtContPagerShell div.outDes2 table.outer td.left div.d2_left,
+	div.smpTxtContPagerShell div.outDes2 table.outer td.right div.d2_right {
+	}
+	div.smpTxtContPagerShell div.outDes2 table.outer td.sep {
+		width: 1px;
+		background: #000;
+	}
+	table.pTxtElOuter_left,
+	table.pTxtElOuter_right {
+	}
+	table.pTxtElOuter_right {
+		margin-left: auto;
+	}
+	table.pTxtElOuter_left td.spcL,
+	table.pTxtElOuter_left td.spcR,
+	table.pTxtElOuter_right td.spcL,
+	table.pTxtElOuter_right td.spcR {
+	}
+	table.pTxtElOuter_left td.spcR img,
+	table.pTxtElOuter_right td.spcL img {
+		width: 10px;
+	}
+	table.pTxtElOuter_left td.spcL img,
+	table.pTxtElOuter_left td.spcR img,
+	table.pTxtElOuter_right td.spcL img,
+	table.pTxtElOuter_right td.spcR img {
+	}
+	/* Links des simplen Textpagerelements */
+	table.pTxtElOuter_left td.pEl div.noLink,
+	table.pTxtElOuter_right td.pEl div.noLink,
+	table.pTxtElOuter_left td.pEl a,
+	table.pTxtElOuter_right td.pEl a {
+		display: block;
+		font-size: 12px;
+		border: none;
+	}
+	table.pTxtElOuter_left td.pEl div.noLink,
+	table.pTxtElOuter_left td.pEl a {
+		padding-left: 20px;
+		background: url(../xist4c/web/krusekopf/01/img/smpTxtPagArrowLeft.gif) 0 1px no-repeat;
+	}
+	table.pTxtElOuter_right td.pEl div.noLink,
+	table.pTxtElOuter_right td.pEl a {
+		padding-right: 20px;
+		background: url(../xist4c/web/krusekopf/01/img/smpTxtPagArrowRight.gif) right 1px no-repeat;
+	}
+	table.pTxtElOuter_left td.pEl div.noLink {
+		background-image: url(../xist4c/web/krusekopf/01/img/smpTxtPagArrowLeftPass.gif);
+		color: #666;
+	}
+	table.pTxtElOuter_right td.pEl div.noLink {
+		background-image: url(../xist4c/web/krusekopf/01/img/smpTxtPagArrowRightPass.gif);
+		color: #666;
+	}
+/* << */
+
+
+/* >> Absaetze im Panel Modus */
+	/* Panel Titelkontainer */
+	div.panelTitle,
+	table.footer td div.panelTitle {
+		padding: 4px 15px 4px 15px;
+		margin-bottom: 1px;
+	}
+	* html div.panelTitle,
+	* html table.foot er td div.panelTitle {
+		width: 100%;
+	}
+	/* Panel Titel */
+	div.panelTitle h3,
+	table.footer td div.panelTitle h3 {
+		font-size: 14px;
+		margin: 0;
+		color: #574313;
+	}
+	/* Enstellungen fuer den Panelkontainer */
+	div.panelOuter,
+	table.footer td div.panelOuter {
+		margin-bottom: 12px;
+	}
+	* html div.panelOuter,
+	* html table.footer td div.panelOuter {
+		width: 100%;
+	}
+	/* Einstellungen fuer den Inhaltskontainer */
+	div.panelOuter div.desOut1 div.des1 {
+	}
+	div.panelOuter div.desOut1 div.des2 {
+	}
+	div.panelOuter div.desOut1 div.des2 div.cont,
+	table.footer td div.panelOuter div.desOut1 div.des2 div.cont {
+		padding: 5px 15px;
+	}
+	* html div.panelOuter div.desOut1 div.des2 div.cont,
+	* html table.footer td div.panelOuter div.desOut1 div.des2 div.cont {
+		width: 100%;
+	}
+	div.panelOuter p,
+	table.footer td div.panelOuter p {
+		color: #574313;
+	}
+	div.panelOuter a,
+	table.footer td div.panelOuter a {
+		color: #000;
+	}
+	div.panelOuter a:hover,
+	table.footer td div.panelOuter a:hover {
+		color: #f90;
+	}
+
+	/* Design Panel Titelkontainer */
+	div.designTitle,
+	div.co_orange div.designTitle,
+	table.footer td div.designTitle {
+		background: url(../xist4c/web/krusekopf/01/img/paneltitlebg.gif) top left repeat-x;
+		padding: 4px 15px;
+		margin-bottom: 1px;
+	}
+	div.co_orange div.designTitle {
+		background-image: url(../xist4c/web/krusekopf/01/img/despaneltitlebg.gif);
+	}
+	* html div.designTitle,
+	* html table.footer td div.designTitle {
+		width: 100%;
+	}
+	/* Design Panel Titel */
+	div.designTitle h3,
+	div.co_orange div.designTitle h3,
+	table.footer td div.designTitle h3 {
+		font-size: 14px;
+		margin: 0;
+		color: #574313;
+	}
+	/* Enstellungen fuer den Design Panelkontainer */
+	div.desPanelOuter,
+	div.co_orange div.desPanelOuter,
+	table.footer td div.desPanelOuter {
+		margin-bottom: 12px;
+	}
+	* html div.desPanelOuter,
+	* html table.footer td div.desPanelOuter {
+		width: 100%;
+	}
+	/* Einstellungen fuer den Inhaltskontainer */
+	div.desPanelOuter div.desOut1 div.des1,
+	div.co_orange div.desPanelOuter div.desOut1 div.des1 {
+		background: url(../xist4c/web/krusekopf/01/img/panelbg.gif) top left repeat;
+	}
+	div.co_orange div.desPanelOuter div.desOut1 div.des1 {
+		background-image: url(../xist4c/web/krusekopf/01/img/despanelbg.gif);
+	}
+	div.desPanelOuter div.desOut1 div.des2,
+	div.co_orange div.desPanelOuter div.desOut1 div.des2 {
+		background: url(../xist4c/web/krusekopf/01/img/paneltopbg.gif) top left repeat-x;
+	}
+	div.co_orange div.desPanelOuter div.desOut1 div.des2 {
+		background-image: url(../xist4c/web/krusekopf/01/img/despaneltopbg.gif);
+	}
+	/*  Einstellungen fuer den Design Inhaltskontainer  */
+	div.desPanelOuter div.desOut1 div.des2 div.cont,
+	div.co_orange div.desPanelOuter div.desOut1 div.des2 div.cont,
+	table.footer td div.desPanelOuter div.desOut1 div.des2 div.cont	{
+		padding: 5px 15px;
+	}
+	* html div.desPanelOuter div.desOut1 div.des2 div.cont,
+	* html table.footer td div.desPanelOuter div.desOut1 div.des2 div.cont	{
+		width: 100%;
+	}
+	/* Farben */
+	div.desPanelOuter,
+	div.co_orange div.desPanelOuter {
+		color: #574313;
+	}
+	div.desPanelOuter a,
+	div.co_orange div.desPanelOuter a {
+		color: #000;
+	}
+	div.desPanelOuter a:hover,
+	div.co_orange div.desPanelOuter a:hover {
+		color: #f90;
+	}
+/* << */
+
+
+/* >> Absaetze Normal */
+	/* Absatz Titel */
+	h3.paraTitle {
+		display: block;
+		font-style: normal;
+		font-weight: bold;
+		padding-top: 6px;
+		margin-bottom: 5px;
+	}
+	/* Absatz Titel im Footerbereich*/
+	table.footer td h3.paraTitle {
+		display: block;
+		font-style: normal;
+		font-weight: bold;
+		font-size: 11px;
+		padding-top: 3px;
+		margin-bottom: 2px;
+	}
+	/* Einstellungen der Bild und Content ausrichtung */
+	div.paraImgOuter,
+	div.paraImgOuterL,
+	div.paraImgOuterR,
+	div.paraFxImgOuter {
+		padding-top: 2px;
+		margin-bottom: 3px;
+	}
+	/* Fuer Bild zu Textabstand bei links und rechts umfliessend */
+	div.paraImgOuterL {
+		padding-right: 6px;
+	}
+	div.paraImgOuterR {
+		padding-left: 6px;
+	}
+	div.paraContOuter,
+	div.paraContOuterL,
+	div.paraContOuterR {
+	}
+	/* Bild zu Textabstand bei rechts und links freibleibend*/
+	div.paraContOuterL {
+		padding-left: 6px;
+	}
+	div.paraContOuterR {
+		padding-right: 6px;
+	}
+	/* Innerer Bild Container  */
+	div.paraImgInner {
+		margin-left: auto;
+		margin-right: auto;
+	}
+	/* Bild zu Text im zentrierten Modus */
+	div.paraCeImgOuter {
+		text-align: center;
+	}
+	/* Definition Absatz Untertitel */
+	h4.paraSubtitle {
+		font-weight: bold;
+		font-size: 13px;
+		margin: 2px 0 5px 0;
+	}
+	/* Definition Absatz Untertitel im Footerbereich*/
+	table.footer td h4.paraSubtitle {
+		font-weight: bold;
+		font-size: 11px;
+		margin: 2px 0 2px 0;
+	}
+	/* Einstellungen Absatz Inhalt */
+	table.contentTable td.contentColumn p,
+	table.contentTable td.contentColumn p.paraEl {
+		margin: 0;
+		margin-bottom: 100px;
+	}
+	/* Einstellungen Absatz Inhalt im Footerbereich*/
+	table.footer td p,
+	table.footer td p.paraEl {
+		margin: 0;
+		margin-bottom: 5px;
+	}
+	/* Definition Bilduntertext */
+	div.paraImgInner div.sT {
+		margin-top: 2px;
+		margin-bottom: 3px;
+		font-size: 11px;
+		text-align: left;
+	}
+	/* Definition Bilduntertext im Footerbereich */
+	table.footer td div.paraImgInner div.sT {
+		margin-top: 1px;
+		margin-bottom: 2px;
+		font-size: 10px;
+		text-align: left;
+	}
+/* << */
+
+
+/* >> Allgemeine Absatz und Panel Definitionen */
+	/* Nicht aendern!! */
+	img.clearAll {
+		display: block;
+		clear: both;
+		visibility: hidden;
+	}
+	/* Standard definition des Absatzabstandes */
+	div.contentContainer table.contentTable td.contentColumn p {
+		margin: 0;
+		margin-bottom: 10px;
+	}
+	/* Standard definition des Absatzabstandes im Footerbereich*/
+	table.footer td div.contentContainer table.contentTable td.contentColumn p {
+		margin: 0;
+		margin-bottom: 7px;
+	}
+	/* Einstellungen fuer den Absatz  "mehr..." Link */
+	div.paraSublinkShell {
+		text-align: left;
+		margin-bottom: 5px;
+		font-size: 11px;
+	}
+	div.paraSublinkShell img {
+		padding-left: 5px;
+	}
+	/* Absatz Sublink */
+	div.paraSublinkShell span.sL {
+	}
+	/* Einstellungen fuer den Absatz  "mehr..." Link im Footerbereich */
+	table.footer td div.paraSublinkShell {
+	}
+	table.footer td div.paraSublinkShell span.sL {
+	}
+	/* Einstellungen der Absatz und Panel "mehr.." Link Icons */
+	div.paraSublinkShell span.sL img {
+		width: 8px;
+		height: 14px;
+		vertical-align: text-top;
+		border: 0;
+		background: url(../xist4c/web/krusekopf/01/img/paragraphArrow.gif) left 1px no-repeat;
+	}
+	/* Einstellungen der Absatz und Panel "mehr.." Link Icons im Footerbereich */
+	table.footer td div.paraSublinkShell span.sL img {
+		display: none;
+	}
+/* << */
+
+
+/* >> Schnellzugriff*/
+	/* Definitionen fuer den Schnellzugriffkontainer */
+	div.qAccessCont {
+		width: 155px;
+		position: absolute;
+		left: 7px;
+		top: 128px;
+		z-index: 6;
+		display: none;
+	}
+	/* Schnellzugriff Formularfeld einstellungen */
+	div.qAccessCont select {
+		font-family: Arial, Verdana, Helvetica, XHelvetica, sans-serif;
+		font-size: 10px;
+		width: 100%;
+	}
+/* << */
+
+
+/* >> Schnellsuche*/
+	/* Definitionen fuer den Schnellsuchekontainer */
+	div.qSearchCont {
+		width: 155px;
+		position: absolute;
+		left: 7px;
+		top: 107px;
+		z-index: 3;
+		display: none;
+	}
+	/* Schnellsuche Formulareinstellungen */
+	div.qSearchCont form {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	div.qSearchCont table.qSearch {
+	}
+	/* Schnellsuche Formularfeld Einstellungen */
+	div.qSearchCont table.qSearch td input.text {
+		font-size: 10px;
+		width: 100%;
+	}
+	/*  Schnellsuche "Go" button */
+	div.qSearchCont table.qSearch td input.button {
+	}
+/* << */
+
+
+/* >> Standard Suche */
+	/* Standard Suchfeld Einstellungen */
+	table.stdSearch td input.text {
+		font-size: 13px;
+		width: 300px;
+	}
+	/* Standard Suche Button Einstellungen */
+	table.stdSearch td input.button {
+		cursor: pointer;
+		/cursor: hand;
+		border: 1px solid #E3DEC4;
+		font-size: 12px;
+	}
+	/* Suche Formulareinstellungen */
+	table.stdSearch form {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	/* Einstellungen fuer die farbige Hinterlegung im Suchergebnis */
+	span.searchResult {
+		padding: 0 2px;
+		background: #E3DEC4;
+	}
+/* << */
+
+
+/* >> Empfehlung versenden */
+	/* Empfehlung versenden Tabelle */
+	table.recomShell {
+	}
+	/* Anpassungen des Formulars */
+	table.recomShell form {
+		padding: 0;
+		margin: 0;
+	}
+	/* Einstellungen fuer die Fehlermeldungen bei unkorrektem Ausfuellen der Formularelemente */
+	table.recomShell td ul li {
+		font-weight: bold;
+		font-size: 11px;
+		color: darkred;
+		margin: 3px 0 3px 0;
+	}
+	/* Anpassungen der Formular Tabellenspalten */
+	table.recomShell td form table td {
+		padding: 1px 8px 1px 8px;
+	}
+	/* Anpassungen der Formularelemente */
+	table.recomShell td form table td input.text,
+	table.recomShell td form table td textarea {
+		font-size: 11px;
+		font-family: Arial, Verdana, Helvetica, XHelvetica, sans-serif;
+		width: 100%;
+		margin-bottom: 5px;
+		padding-left: 1px;
+		padding-right: 1px;
+	}
+	table.recomShell td form table td textarea {
+		overflow: auto;
+	}
+	/* Einstellungen fuer die Input Formularelemente */
+	table.recomShell td form table td input.button {
+		font-size: 11px;
+		margin-bottom: 8px;
+		cursor: pointer;
+		/cursor: hand;
+	}
+	/* Angaben zum Kontainer der Sendebestaetigung */
+	div.recomSuccess {
+		font-weight: bold;
+		font-size: 13px;
+		color: #333;
+		margin: 10px 0;
+	}
+	/* Einstellungen fuer den Kontainer der Nutzungsbedingungen */
+	table.recomShell td div.policy {
+		font-size: 11px;
+		color: #333;
+		margin: 10px 0;
+	}
+	/* Anpassungen der Tabellenzelle des Paneltitels */
+	table.recomShell td form table td.title {
+		font-weight: bold;
+		color: #fff;
+		padding: 1px 4px 1px 4px;
+		background: #5C4714;
+	}
+	/* Definitionen fuer die Paneltabelle */
+	table.recomShell td form table {
+		background: #E3DEC4;
+	}
+	/* Angaben zu den Tabellenzellen der Feldbezeichner der Formularfelder */
+	table.recomShell td form table td.prompt {
+		font-size: 11px;
+	}
+	/* Angaben zu den Feldbezeichnern der Formularfelder */
+	table.recomShell td form table td.prompt span {
+		font-size: 11px;
+		color: #333;
+	}
+/* << */
+
+
+/* >> Trenner fuer Content Elemente */
+	/* Trennelement Container */
+	div.separatorShell {
+		margin-top: 7px;
+		margin-bottom: 15px;
+		background-color: #9A2534;
+	}
+	/* Trennelement Abstandshalter */
+	div.separatorShell img {
+	}
+/* << */
+
+
+/* >> Seitenstruktur */
+	/* Seitenstruktur Eintragcontainer */
+	div.sitemapEntry {
+	}
+	/* Definition der Links fuer normal, besucht und beim ueberfahren mit der Maus*/
+	div.sitemapEntry table td a {
+		text-decoration: none;
+	}
+	/* Anpassungen beim ueberfahren mit der Maus */
+	div.sitemapEntry table td a:hover {
+	}
+	/* Element definition fuer die momentan aktive Seite */
+	div.sitemapEntry table td em {
+		font-style: normal;
+		font-weight: bold;
+		color: #000;
+	}
+	/* Einstellungen fuer das Einrueckungselement */
+	div.sitemapEntry table td img.bullet {
+		height: 4px;
+		width: 4px;
+		margin: 5px 6px 10px 3px;
+		border: 1px solid #000;
+		background: #ccc;
+	}
+	/* Anpassungen fuer den Pfeil fuer die Seite von der aus man auf die Sitemap gegangen ist*/
+	div.sitemapEntry table td img.arrow {
+		height: 11px;
+		width: 7px;
+		margin: 1px 0 0 5px;
+		background: url(../xist4c/web/krusekopf/01/img/sitemapArrow.gif) left bottom no-repeat;
+	}
+/* << */
+
+
+/* >> Standardeinstellungen */
+	/* Anpassungen fuer die Seiten Stammtabelle */
+	table.mShell {
+		width: 100%;
+		height: auto;
+	}
+	/* Anpassungen fuer die Zellen der Stammtabelle */
+	table.mShell td.msCont {
+	}
+	/*Angaben zum Drucken (Diese Angaben bitte nicht veraendern) */
+	div.printHeader,
+	div.printButtonShell {
+		display: none;
+	}
+	img.printHeaderSpacer {
+		display: none;
+	}
+	/* Schaltet den Skip Link aus (Wird bei Barriere freien Seiten verwendet) */
+	div.skipNav {
+		display: none;
+	}
+	/* Globale Ebenen Shell */
+	div.globalLayerShell {
+		width: 989px;
+		position: absolute;
+		left: auto;
+		top: auto;
+		z-index: 31;
+	}
+	/* Breite der Kopfelemente */
+	table.headerElements {
+		width: 989px;
+	}
+	/* Anpassen der Topnavigation- und Loginzeile */
+	div.tNavKont,
+	div.tNavKont div.des1 {
+		width: 989px;
+	}
+	div.tNavKont {
+		width: 989px;
+		position: absolute;
+		left: auto;
+		top: 0;
+		width auto;
+	}
+	/* Topnavigation Designcontainer 1 */
+	div.tNavKont div.des1 {
+	}
+	/* Topnavigation Designcontainer 2 */
+	div.tNavKont div.des1 div.des2 {
+	}
+	/* Anpassungen der Topnavigationzelle */
+	div.tNavKont div.des1 div.des2 table.tNavOuter td.navCol {
+		width: 100%;
+	}
+	/* Einstellungen fuer die Schnelllogin- Schnelllogoutzelle */
+	div.tNavKont div.des1 div.des2 table.tNavOuter td.loginCol {
+	}
+	/* Einstellungen fuer die Schnelllogin- Schnelllogout Platzhalters */
+	div.tNavKont div.des1 div.des2 table.tNavOuter td.loginCol img {
+		width: 10px;
+		height: 1px;
+	}
+	/* Einstellungen fuer die Suche und Trail Tabelle*/
+	table.searchAndTrailBg {
+		width: 989px;
+		background: #dde5ee url(../xist4c/web/krusekopf/01/img/quickSearchBg.jpg) top left repeat-y;
+		display: none;
+	}
+	/* Einstellungen fuer die Schnellsuche Tabellenzelle */
+	td.quickSearchBg {
+		width: 170px;
+	}
+	/* Platzhalterzelle zwischen QuickSearch und Trail */
+	td.searchAndTrailSpacerColumn {
+		height: 22px;
+		width: 20px;
+	}
+	/* Platzhalter zwischen Quicksearch und Trail */
+	img.searchAndTrailSpacer {
+		width: 20px;
+	}
+	/* Einstellungen fuer die Trail Tabellenzelle */
+	td.trailbg {
+		width: 620px;
+	}
+	/* Platzhalter fuer Navigationszelle */
+	img.navigationColumnSpacer {
+		width: 170px;
+	}
+	/* Definition der Breite des linken Platzhalters */
+	img.spacerLeft {
+		width: 1px;
+	}
+	/* Definition des Platzhalters fuer den Inhalt */
+	img.contentSpacer {
+		display: none;
+	}
+	/* Definition der Breite des rechten Platzhalters */
+	img.spacerRight {
+		width: 1px;
+	}
+	/* Beseitigt ein Problem im Mozilla Browser */
+	img.block {
+		display: block;
+	}
+	/* Einstellungen fuer die Basistabelle des Inhalts */
+	table.contentMainTable {
+		width: 989px;
+		height: auto;
+		background: #fff url(../xist4c/web/krusekopf/01/img/background.gif) top left repeat-y;
+	}
+	/* Definitionen der Platzhalterzelle links*/
+	td.spacerColumnLeft {
+	}
+	/* Anpassungen fuer die Hauptspalte des Inhalts */
+	td.contentMainColumn {
+		width: 100%;
+	}
+	/* Container fuer den Inhalt */
+	div.contentContainer {
+	}
+	/* Anpassungen fuer die Inhaltstabelle */
+	table.contentTable {
+		width: 100%;
+	}
+	/* Definitionen des Inhaltsbereichs */
+	td.contentColumn {
+		width: 100%;
+	}
+	td.contentColumn div.contSpcShellStd,
+	td.contentColumn div.contSpcShellBL,
+	td.contentColumn div.contSpcContentPager {
+		padding: 0;
+	}
+	/* Definitionen der Platzhalterzelle rechts*/
+	td.spacerColumnRight {
+	}
+	/* Anpassungen fuer zweispaltigen Inhalt (linke Spalte, abstand zwischen den Spalten, rechte Spalte) */
+	table.twoColElShell {
+		width: 100%;
+	}
+	table.twoColElShell td.leftSpc img {
+		width: 190px;
+	}
+	table.twoColElShell td.middleSpc img {
+		width: 12px;
+	}
+	table.twoColElShell td.rightSpc img {
+		width: 190px;
+	}
+	table.twoColElShell td.l {
+	}
+	table.twoColElShell td.m {
+	}
+	table.twoColElShell td.r {
+	}
+
+	/* Grundeinstellungen  fuer einige Element festlegen */
+	th, td, p {
+		font-family: Arial, Verdana, Helvetica, XHelvetica, sans-serif;
+		font-size: 13px;
+	}
+	/* Anpassungen fuer die Standard Absaetze */
+	p {
+		margin-top: 0;
+	}
+
+	/* Allgemeine Einstellung fuer Aufzaehlungspunkte */
+	ul {
+		list-style-type: square;
+	}
+	/* Einstellungen fuer Ueberschriften */
+	h1 {
+		font-size: 15px;
+		margin: 0 0 12px 0;
+		color: #9A2534;
+	}
+	h2 {
+		font-size: 14px;
+		margin: 0 0 10px 0;
+		color: #5B4614;
+	}
+	h3 {
+		font-size: 13px;
+		margin: 0 0 8px 0;
+		color: #5B4614;
+	}
+	h4 {
+		font-size: 13px;
+		margin: 0 0 13px 0;
+	}
+
+	/*Standard Link einstellungen*/
+	a {
+		color: #9A2534;
+		text-decoration: none;
+	}
+	a:link, a:visited, a:hover {
+	}
+	a:hover {
+		color: #f90;
+	}
+
+	/* Formulare */
+	form {
+		margin: 0;
+	}
+	input,
+	textarea,
+	select {
+		font-family: Arial, Verdana, Helvetica, XHelvetica, sans-serif;
+		background: #fff;
+		border: 1px solid #E3DEC4;
+		font-size: 10px;
+		color: #000;
+		width: 100%;
+		-moz-opacity: 0.6;
+		filter: alpha(opacity=60);
+	}
+	input:hover, input:focus,
+	textarea:hover, textarea:focus,
+	select:hover, select:focus {
+		-moz-opacity: 1;
+		filter: alpha(opacity=100);
+	}
+	select {
+		width: auto;
+	}
+	input.button {
+		border: 0;
+		width: auto;
+	}
+
+	/* Bilder */
+	img {
+		border: 0;
+	}
+/* << */
+
+
+/* >> Seitentitelelement */
+	/*  Aeussere Elemethuelle */
+	div.titlesShell {
+		margin: 12px 0;
+		padding: 0 15px;
+	}
+	/* Links ausgerichtete Bildspalte */
+	div.titlesShell table td.imgL {
+		padding-right: 10px;
+		vertical-align: bottom;
+	}
+	/* Links ausgerichtetes Bild */
+	div.titlesShell table td.imgL div.img {
+	}
+	/* Rechts ausgerichtete Bildspalte */
+	div.titlesShell table td.imgR {
+		padding-left: 10px;
+		vertical-align: bottom;
+	}
+	/* Rechts ausgerichtetes Bild */
+	div.titlesShell table td.imgR div.img {
+	}
+	/* Linke Titelspalte */
+	div.titlesShell table td.titlesL {
+		vertical-align: bottom;
+	}
+	/* Rechte Titelspalte */
+	div.titlesShell table td.titlesR {
+		vertical-align: bottom;
+	}
+/* << */
+
+
+/* >> Umfragen Uebersicht*/
+	/* Umfrage Tabelle */
+	table.surveyOvShell {
+	}
+	/* Definition der Frage auf der Uebersichtsseite */
+	table.surveyOvShell td div span.question {
+		font-size: 13px;
+		font-weight: bold;
+	}
+	/* Einstellungen fuer den Hinweis ueber das Ende der Umfrage */
+	table.surveyOvShell td div span.date {
+		font-size: 10px;
+	}
+	/* Umfrage Beschreibung  */
+	table.surveyOvShell td div div.desc {
+	}
+/* << */
+
+
+/* >> Umfragen Detail */
+	/* Umfrage Formular */
+	form.surveyForm {
+	}
+	/* Anpassungen fuer die Tabellenzelle der Detailfrage */
+	form.surveyForm td.question {
+		font-weight: bold;
+		color: #339;
+	}
+	/* Einstellungen der Tabellenzelle fuer das Ende der Umfrage */
+	form.surveyForm td.date {
+		font-size: 10px;
+	}
+	/* Versenden Button */
+	form.surveyForm td input.button {
+		cursor: pointer;
+		/cursor: hand;
+		width: auto;
+	}
+	/* Ergebnistabelle */
+	table.surveyResult {
+	}
+	/*  Frage auf der Ergebnisseite */
+	table.surveyResult td.question {
+		font-weight: bold;
+		color: #339;
+	}
+	/* Einstellungen fuer den Hinweis ueber das Ende der Umfrage */
+	table.surveyResult td.date {
+		padding-top: 10px;
+		font-size: 10px;
+	}
+	/* Anpassen des Teilnehmerzusatz */
+	table.surveyResult td.participants {
+	}
+	/* Anpassungen der Grafik fuer den Ergebnissbalken */
+	table.surveyResult td div.gfx {
+		border-left: 1px solid #ffeea8;
+		border-top: 1px solid #ffeea8;
+		border-right: 1px solid #6a5503;
+		border-bottom: 1px solid #6a5503;
+		background: #f90 url("img/surveyGraphic.gif") repeat-x;
+	}
+	/* Anpassungen des Hintergrunds fuer den Ergebnissbalken */
+	table.surveyResult td.gfxBg {
+		background: #efefef;
+		border: 1px inset #ccc;
+		width: auto;
+	}
+/* << */
+
+
+/* >> Randbereich links */
+	/* Definition des linken Randbereichs */
+	td.leftBorderCol {
+		padding-left: 4px;
+	}
+	/* Anpassungen der Randbereich Breite und den Abstand von oben*/
+	td.leftBorderCol div.leBoElShell img.topSpc {
+		display: none;
+	}
+	td.leftBorderCol div.leBoElShell img.bottomSpc {
+		height: 1px;
+		width: 236px;
+	}
+	/* Randbereich Inhaltscontainer */
+	td.leftBorderCol div.lElCont {
+	}
+/* << */
+
+
+/* >> Randbereich rechts */
+	/* Definition des rechten Randbereichs */
+	td.rightBorderCol {
+		padding-right: 4px;
+	}
+	/* Anpassungen der Randbereich Breite und den Abstand von oben*/
+	td.rightBorderCol div.riBoElShell img.topSpc {
+		display: none;
+	}
+	td.rightBorderCol div.riBoElShell img.bottomSpc {
+		height: 1px;
+		width: 181px;
+	}
+	/* Randbereich Inhaltscontainer */
+	td.rightBorderCol div.rElCont {
+	}
+/* << */
+
+
+/* >> Teaser rechts */
+	/* Einstellung des Teaser Inhaltbereichs */
+	td.rightBorderCol div.rElCont div.title,
+	td.rightBorderCol div.rElCont div.titleBL {
+	}
+	/* Definition des Teasertitel */
+	td.rightBorderCol div.rElCont div.title h3,
+	td.rightBorderCol div.rElCont div.titleBL h3 {
+		font-size: 14px;
+		margin: 0;
+		color: #fff;
+		display: block;
+		background: url(../xist4c/web/krusekopf/01/img/teaserheadbg.gif) top left repeat-x;
+		padding: 4px 7px 4px 7px;
+	}
+	td.rightBorderCol div.rElCont div.titleBL h3 {
+		background: transparent;
+		padding: 0;
+		border-bottom: 1px solid #dde5ee;
+		color: #000;
+	}
+	/* Definition des Teaseruntertitel */
+	td.rightBorderCol div.rElCont div.tDesOut1 h4,
+	td.rightBorderCol div.rElCont div.tDesOut1BL h4 {
+		font-size: 11px;
+		margin: 0 0 3px 0;
+		color: #5C4714;
+	}
+	/* Einstellungen fuer die aeussere Teaserhuelle */
+	td.rightBorderCol div.rElCont div.tDesOut1,
+	td.rightBorderCol div.rElCont div.tDesOut1BL {
+	}
+	td.rightBorderCol div.rElCont div.tDesOut2,
+	td.rightBorderCol div.rElCont div.tDesOut2BL {
+	}
+	td.rightBorderCol div.rElCont div.tOuter,
+	td.rightBorderCol div.rElCont div.tOuterBL {
+		margin-bottom: 1px;
+	}
+	* html td.rightBorderCol div.rElCont div.tOuter,
+	* html td.rightBorderCol div.rElCont div.tOuterBL {
+		width: 100%;
+	}
+	/* Zusaetzliche Design Kontainer fuer den Teaser Inhaltsbereich*/
+	td.rightBorderCol div.rElCont div.tOuter div.des1,
+	td.rightBorderCol div.rElCont div.tOuterBL div.des1BL {
+		background: url(../xist4c/web/krusekopf/01/img/teaserbg.gif) top left repeat;
+	}
+	td.rightBorderCol div.rElCont div.tOuterBL div.des1BL {
+		background: transparent;
+	}
+	td.rightBorderCol div.rElCont div.tOuter div.des2,
+	td.rightBorderCol div.rElCont div.tOuterBL div.des2BL {
+		padding: 7px;
+		background: url(../xist4c/web/krusekopf/01/img/teaserbgtop.gif) top left repeat-x;
+	}
+	td.rightBorderCol div.rElCont div.tOuterBL div.des2BL {
+		padding: 0;
+		background: transparent;
+	}
+	td.rightBorderCol div.rElCont div.tOuter div.des1 div.des2 div.des3,
+	td.rightBorderCol div.rElCont div.tOuterBL div.des1BL div.des2BL div.des3BL {
+	}
+	/* Einstellungen fuer die Teaserhuelle */
+	td.rightBorderCol div.rElCont div.tOuter div.des1 div.des2 div.des3 div.content,
+	td.rightBorderCol div.rElCont div.tOuterBL div.des1BL div.des2BL div.des3BL div.contentBL {
+	}
+	* html td.rightBorderCol div.rElCont div.tOuter div.des1 div.des2 div.des3 div.content,
+	* html td.rightBorderCol div.rElCont div.tOuterBL div.des1BL div.des2BL div.des3BL div.contentBL {
+		width: 100%;
+	}
+	/* Anpassungen des Text Inhaltsbereich */
+	/* Einstellungen der Bild und Content ausrichtung */
+	td.rightBorderCol div.rElCont div.teaserImgOuter,
+	td.rightBorderCol div.rElCont div.teaserImgOuterL,
+	td.rightBorderCol div.rElCont div.teaserImgOuterR,
+	td.rightBorderCol div.rElCont div.teaserFxImgOuter {
+		padding-top: 2px;
+		margin-bottom: 3px;
+	}
+	/* Fuer Bild zu Textabstand bei links und rechts umfliessend */
+	td.rightBorderCol div.rElCont div.teaserImgOuterL {
+		padding-right: 6px;
+	}
+	td.rightBorderCol div.rElCont div.teaserImgOuterR {
+		padding-left: 6px;
+	}
+	td.rightBorderCol div.rElCont div.teaserContOuter {
+	}
+	/* Bild zu Textabstand bei rechts und links freibleibend*/
+	td.rightBorderCol div.rElCont div.teaserContOuterL {
+		padding-left: 6px;
+	}
+	td.rightBorderCol div.rElCont div.teaserContOuterR {
+		padding-right: 6px;
+	}
+	/* Innerer Bild Container  */
+	td.rightBorderCol div.rElCont div.teaserImgInner {
+		margin-left: auto;
+		margin-right: auto;
+	}
+	/* Bild zu Text im zentrierten Modus */
+	div.paraCeImgOuter {
+		text-align: center;
+	}
+	td.rightBorderCol div.rElCont p {
+		font-size: 11px;
+		margin: 0 0 10px 0;
+	}
+	/* Anpassungen des XHTML Inhaltsbereich */
+	td.rightBorderCol div.rElCont,
+	td.rightBorderCol div.rElCont p,
+	td.rightBorderCol div.rElCont ul,
+	td.rightBorderCol div.rElCont ol {
+		font-size: 11px;
+		color: #5C4714;
+	}
+	td.rightBorderCol div.rElCont div.tOuterBL,
+	td.rightBorderCol div.rElCont div.tOuterBL p,
+	td.rightBorderCol div.rElCont div.tOuterBL ul,
+	td.rightBorderCol div.rElCont div.tOuterBL ol {
+		color: #5C4714;
+	}
+	td.rightBorderCol div.rElCont div.tOuter a,
+	td.rightBorderCol div.rElCont div.tOuterBL a {
+		color: #000;
+	}
+	td.rightBorderCol div.rElCont div.tOuter a:hover,
+	td.rightBorderCol div.rElCont div.tOuterBL a:hover {
+		color: #5C4714;
+	}
+	/* Anpassungen des XHTML Inhaltsbereich */
+	td.rightBorderCol div.rElCont p,
+	td.rightBorderCol div.rElCont ul,
+	td.rightBorderCol div.rElCont ol {
+		margin-top: 0;
+		margin-bottom: 10px;
+	}
+	/* Einstellungen der Abstaende des Mehrlinks */
+	td.rightBorderCol div.rElCont div.teaserSublinkShell {
+		padding: 1px 3px 1px 3px;
+		text-align: left;
+	}
+	/* Anpassen der Schriftgroesse des "mehr..." Links */
+	td.rightBorderCol div.rElCont div.teaserSublinkShell span.sL a {
+		font-size: 11px;
+		color: #000;
+	}
+	td.rightBorderCol div.rElCont div.teaserSublinkShell span.sL a:hover {
+		color: #f90;
+	}
+	/* Definition fuer die "mehr..." Link Grafik */
+	td.rightBorderCol div.rElCont div.teaserSublinkShell span.sL img {
+		width: 10px;
+		height: 12px;
+		vertical-align: text-top;
+		border: 0;
+		background: url(../xist4c/web/krusekopf/01/img/littleTeaserArrow.gif) left 4px no-repeat;
+	}
+	/* Anpassungen der Platzhalterzelle der rechten Teaser Spalte*/
+	td.tRightSpcCol {
+		display: none;
+	}
+	/* Anpassungen des Platzhalters der rechten Teaser Spalte*/
+	td.tRightSpcCol img {
+		display: none;
+	}
+/* << */
+
+
+/* >> Teaser links */
+	/* Einstellung des Teaser Inhaltbereichs */
+	td.leftBorderCol div.lElCont div.title,
+	td.leftBorderCol div.lElCont div.titleBL {
+	}
+	/* Definition des Teasertitel */
+	td.leftBorderCol div.lElCont div.title h3,
+	td.leftBorderCol div.lElCont div.titleBL h3 {
+		font-size: 12px;
+		margin: 12px 0 0 0;
+		color: #000;
+		display: block;
+		padding: 1px 15px 1px 15px;
+		border-bottom: 1px solid #574313;
+	}
+	td.leftBorderCol div.lElCont div.titleBL h3 {
+		background: transparent;
+	}
+	/* Definition des Teaseruntertitel */
+	td.leftBorderCol div.lElCont div.tDesOut1 h4,
+	td.leftBorderCol div.lElCont div.tDesOut1BL h4 {
+		font-size: 11px;
+		margin: 0 0 3px 0;
+	}
+	/* Einstellungen fuer die aeussere Teaserhuelle */
+	td.leftBorderCol div.lElCont div.tDesOut1,
+	td.leftBorderCol div.lElCont div.tDesOut1BL {
+	}
+	td.leftBorderCol div.lElCont div.tDesOut2,
+	td.leftBorderCol div.lElCont div.tDesOut2BL {
+	}
+	td.leftBorderCol div.lElCont div.tOuter,
+	td.leftBorderCol div.lElCont div.tOuterBL {
+		margin-bottom: 1px;
+	}
+	/* Zusaetzliche Design Kontainer fuer den Teaser Inhaltsbereich*/
+	td.leftBorderCol div.lElCont div.tOuter div.des1,
+	td.leftBorderCol div.lElCont div.tOuterBL div.des1BL {
+		background: #F4F3EA;
+
+	}
+	td.leftBorderCol div.lElCont div.tOuterBL div.des1BL {
+		background: transparent;
+	}
+	td.leftBorderCol div.lElCont div.tOuter div.des2,
+	td.leftBorderCol div.lElCont div.tOuterBL div.des2BL {
+		padding: 7px 15px;
+	}
+	td.leftBorderCol div.lElCont div.tOuterBL div.des2BL {
+		padding: 0;
+	}
+	td.leftBorderCol div.lElCont div.tOuter div.des1 div.des3,
+	td.leftBorderCol div.lElCont div.tOuterBL div.des1BL div.des3BL {
+	}
+	/* Einstellungen fuer die Teaserhuelle */
+	td.leftBorderCol div.lElCont div.tOuter div.des1 div.des2 div.des3 div.content,
+	td.leftBorderCol div.lElCont div.tOuterBL div.des1BL div.des2BL div.des3BL div.contentBL {
+		margin-bottom: 5px;
+	}
+	* html td.leftBorderCol div.lElCont div.tOuter div.des1 div.des2 div.des3 div.content,
+	* html td.leftBorderCol div.lElCont div.tOuterBL div.des1BL div.des2BL div.des3BL div.contentBL {
+		width: 100%;
+	}
+	/* Anpassungen des Text Inhaltsbereich */
+	td.leftBorderCol div.lElCont p {
+		font-size: 11px;
+		margin: 0 0 10px 0;
+	}
+	/* Anpassungen des Text Inhaltsbereich */
+	/* Einstellungen der Bild und Content ausrichtung */
+	td.leftBorderCol div.lElCont div.teaserImgOuter,
+	td.leftBorderCol div.lElCont div.teaserImgOuterL,
+	td.leftBorderCol div.lElCont div.teaserImgOuterR,
+	td.leftBorderCol div.lElCont div.teaserFxImgOuter {
+		padding-top: 2px;
+		margin-bottom: 3px;
+	}
+	/* Fuer Bild zu Textabstand bei links und rechts umfliessend */
+	td.leftBorderCol div.lElCont div.teaserImgOuterL {
+		padding-right: 6px;
+	}
+	td.leftBorderCol div.lElCont div.teaserImgOuterR {
+		padding-left: 6px;
+	}
+	td.leftBorderCol div.lElCont div.teaserContOuter {
+	}
+	/* Bild zu Textabstand bei rechts und links freibleibend*/
+	td.leftBorderCol div.lElCont div.teaserContOuterL {
+		padding-left: 6px;
+	}
+	td.leftBorderCol div.lElCont div.teaserContOuterR {
+		padding-right: 6px;
+	}
+	/* Innerer Bild Container  */
+	td.leftBorderCol div.lElCont div.teaserImgInner {
+		margin-left: auto;
+		margin-right: auto;
+	}
+	/* Bild zu Text im zentrierten Modus */
+	td.leftBorderCol div.lElCont div.teaserCeImgOuter {
+		text-align: center;
+	}
+	/* Anpassungen des XHTML Inhaltsbereich */
+	td.leftBorderCol div.lElCont,
+	td.leftBorderCol div.lElCont p,
+	td.leftBorderCol div.lElCont ul,
+	td.leftBorderCol div.lElCont ol {
+		font-size: 11px;
+		color: #574313;
+	}
+	td.leftBorderCol div.lElCont div.tOuterBL,
+	td.leftBorderCol div.lElCont div.tOuterBL p,
+	td.leftBorderCol div.lElCont div.tOuterBL ul,
+	td.leftBorderCol div.lElCont div.tOuterBL ol {
+		color: #574313;
+	}
+	td.leftBorderCol div.lElCont div.tOuter a,
+	td.leftBorderCol div.lElCont div.tOuterBL a {
+		color: #000;
+	}
+	td.leftBorderCol div.lElCont div.tOuter a:hover,
+	td.leftBorderCol div.lElCont div.tOuterBL a:hover {
+		color: #574313;
+	}
+	/* Anpassungen des XHTML Inhaltsbereich */
+	td.leftBorderCol div.lElCont p,
+	td.leftBorderCol div.lElCont ul,
+	td.leftBorderCol div.lElCont ol {
+		margin-top: 0;
+		margin-bottom: 10px;
+	}
+	/* Einstellungen der Abstaende des Mehrlinks */
+	td.leftBorderCol div.lElCont div.teaserSublinkShell {
+		padding: 1px 3px 0 3px;
+		text-align: left;
+	}
+	/* Anpassen der Schriftgroesse des "mehr..." Links */
+	td.leftBorderCol div.lElCont div.teaserSublinkShell span.sL a {
+		font-size: 11px;
+		color: #000;
+	}
+	td.leftBorderCol div.lElCont div.teaserSublinkShell span.sL a:hover {
+		color: #574313;
+	}
+	/* Definition fuer die "mehr..." Link Grafik */
+	td.leftBorderCol div.lElCont div.teaserSublinkShell span.sL img {
+		width: 10px;
+		height: 12px;
+		vertical-align: text-top;
+		border: 0;
+		background: url(../xist4c/web/krusekopf/01/img/littleTeaserArrow.gif) left 4px no-repeat;
+	}
+/* << */
+
+
+/* >> Special Teaser rechts */
+	/* Einstellungen fuer die aeussere Teaserhuelle */
+	td.rightBorderCol div.rElCont div.el_wunschliste div.tOuter div.des2 {
+		background-image: url(../../upload/wunschlistebg_2116.jpg);
+	}
+	td.rightBorderCol div.rElCont div.el_gutscheine div.tOuter div.des2 {
+		background-image: url(../../upload/gutschein_3461.jpg);
+	}
+	td.rightBorderCol div.rElCont div.el_verpackung div.tOuter div.des2 {
+		background-image: url(../../upload/verpackungbg_2117.jpg);
+	}
+	/* Einstellungen fuer die Teaserhuelle */
+	td.rightBorderCol div.rElCont div.el_wunschliste div.tOuter div.des1 div.des2 div.des3 div.content,
+	td.rightBorderCol div.rElCont div.el_gutscheine div.tOuter div.des1 div.des2 div.des3 div.content,
+	td.rightBorderCol div.rElCont div.el_verpackung div.tOuter div.des1 div.des2 div.des3 div.content {
+		padding-top: 70px;
+	}
+
+	/* Einstellungen der Abstaende des Mehrlinks */
+	td.rightBorderCol div.rElCont div.el_nolink div.teaserSublinkShell {
+		display: none;
+	}
+	td.rightBorderCol div.rElCont div.el_nolink div.tOuterBL {
+		margin-bottom: 0;
+	}
+/* << */
+
+/* >> Special Teaser links */
+	/* Einstellungen der Abstaende des Mehrlinks */
+	td.leftBorderCol div.lElCont div.el_nolink div.teaserSublinkShell {
+		display: none;
+	}
+
+	/* Einstellungen der Abstaende des Mehrlinks */
+	td.leftBorderCol div.lElCont div.el_braun div.tOuterBL div.des1BL {
+		background: #F4F3EA;
+	}
+/* << */
+
+
+/* >>Top Navigation*/
+	/* Einstellungen fuer die Topnavigationtabelle */
+	table.tNav {
+		margin-top: 5px;
+	}
+	/* Spacereinstellungen fuer die Topnavigation */
+	table.tNav td.spcLeft {
+		width: 100%;
+	}
+	table.tNav td.spcRight {
+	}
+	/* Formatiert den Bezeichner fuer die Navigation */
+	table.tNav td.prompt {
+		display: none;
+		color: #574313;
+		font-weight: bold;
+		font-size: 12px;
+		white-space: nowrap;
+	}
+	/* Spalte fuer ein Topnavigations element */
+	table.tNav td.navItem {
+	}
+	/* Grundeinstellung der Top Navigation fuer die Zustaende "normal", "im Pfad" und "hier"*/
+	table.tNav td.navItem span.here,
+	table.tNav td.navItem a.normal,
+	table.tNav td.navItem a.inPath {
+		font-size: 11px;
+		font-weight: normal;
+		color: #574313;
+	}
+	table.tNav td.navItem span.here span,
+	table.tNav td.navItem a.normal span,
+	table.tNav td.navItem a.inPath span {
+	}
+	/* Abweichende einstellungen fuer den Zustand "im Pfad" */
+	table.tNav td.navItem a.inPath {
+	}
+	/* Folgende Angaben definieren die Reaktion beim ueberfahren mit der Maus */
+	table.tNav td.navItem a.normal:hover,
+	table.tNav td.navItem a.inPath:hover {
+		color: #f90;
+	}
+	/* Angabe fuer den Zustand "hier" */
+	table.tNav td.navItem span.here {
+		color: #f90;
+	}
+	/* Einstellung der Trennelemente */
+	table.tNav td.sep img {
+		height: 11px;
+		margin: 0 7px;
+		background-color: #574313;
+	}
+/* << */
+
+
+/* >> Navigationspfad */
+	/* Einstellungen fuer die Navigationspfad Tabelle */
+	table.trailShell {
+	}
+	/* Angaben zu den Tabellenzellen des Navigationspfad */
+	td.trailItemCol {
+	}
+	td.trailSepCol {
+	}
+	/* Gemeinsame Einstellungen fuer Trail items */
+	table.trailShell td a.hNormal,
+	table.trailShell td a.normal {
+		font-size: 10px;
+		text-decoration: none;
+	}
+	table.trailShell td span.hHere,
+	table.trailShell td span.here {
+		font-size: 10px;
+		font-weight: bold;
+	}
+	/* Anpassungen des Trail Homelinks fuer normalen Link,  besuchter Link und Reaktion beim Ueberfahren mit der Maus */
+	table.trailShell td a.hNormal {
+	}
+	table.trailShell td a.hNormal span {
+	}
+	/* Einstellung fuer die momentan aktive Seite */
+	table.trailShell td span.hHere {
+	}
+	/* Anpassungen der Trail links fuer normalen Link,  besuchter Link und Reaktion beim Ueberfahren mit der Maus */
+	table.trailShell td a.normal {
+	}
+	/* Einstellung fuer die momentan aktive Seite */
+	table.trailShell td span.here {
+	}
+	/* Anpassungen fuer das Navigationspfad Trennelement*/
+	table.trailShell td.sep img {
+		height: 9px;
+		width: 15px;
+		margin: 2px 3px 0 3px;
+		background: url(../xist4c/web/krusekopf/01/img/trailSeperator.gif) top left no-repeat;
+	}
+/* << */
+
+
+/* >>Panel with Product Table*/
+	/* Enstellungen fuer den Panelkontainer */
+	div.panelProductOuter {
+		margin: 0 0 20px 0;
+	}
+	* html div.panelProductOuter {
+		width: 100%;
+	}
+	/* Panel Titelkontainer */
+	div.panelProductOuter div.panelTitle {
+		border-bottom: 0;
+	}
+	* html div.panelProductOuter div.panelTitle {
+		width: 100%;
+	}
+	/* Panel Titel */
+	div.panelProductOuter div.panelTitle h3 {
+		margin: 0;
+	}
+	/* Einstellungen fuer den Inhaltskontainer */
+	div.panelProductOuter div.desOut1 div.des1 {
+		border: 1px solid #AFB0B2;
+	}
+	div.panelProductOuter div.desOut1 div.des2 {
+	}
+	div.panelProductOuter div.desOut1 div.des2 div.cont {
+		padding: 5px 5px 5px 5px;
+	}
+	/* Einstellungen fuer XHTML-Feld */
+	div.panelProductOuter div.paragraphProductDataRow {
+		padding: 5px 15px 5px 9px;
+		background-color: #ddd;
+	}
+	* html div.panelProductOuter div.paragraphProductDataRow {
+		width: 100%;
+	}
+	div.panelProductOuter form {
+		margin: 0;
+		padding: 0;
+	}
+	/* Einstellungen fuer Preis Tabelle */
+	div.panelProductOuter table.priceTable {
+		height: 19px;
+		font-size: 8px;
+		background: #72739A;
+	}
+	div.panelProductOuter table.priceTable td.amountCol,
+	div.panelProductOuter table.priceTable td.amountCol input,
+	div.panelProductOuter table.priceTable td.pricePrompt,
+	div.panelProductOuter table.priceTable td.buttonProductLinkShell,
+	div.panelProductOuter table.priceTable td.buttonProductLinkShell input {
+		white-space: nowrap;
+		font-size: 12px;
+	}
+	/* Einstellungen fuer Menge */
+	div.panelProductOuter table.priceTable td.amountCol {
+		padding: 1px 5px 0 10px;
+		color: #fff;
+	}
+	div.panelProductOuter table.priceTable td.amountCol input {
+		width: 20px;
+		font-size: 8px;
+		margin: 0 0 2px 5px;
+		padding: 1px 2px 1px 2px;
+		border: 1px solid #ccc;
+	}
+	/* Einstellungen fuer Preis */
+	div.panelProductOuter table.priceTable td.pricePrompt {
+		color: #fff;
+		padding-right: 5px;
+	}
+	div.panelProductOuter table.priceTable td.price {
+		width: 100%;
+		margin: 0;
+	}
+	div.panelProductOuter table.priceTable td.price div {
+		padding: 6px 0 5px 0;
+		text-align: left;
+		background: #fff;
+	}
+	div.panelProductOuter table.priceTable td.price div span {
+		padding-left: 5px;
+		margin-right: 10px;
+		font-size: 10px;
+		line-height: 10px;
+		font-weight: bold;
+		color: #000;
+	}
+	/* Einstellungen fuer Button */
+	div.panelProductOuter table.priceTable td.buttonProductLinkShell {
+		padding-left: 1px;
+		padding-right: 1px;
+	}
+	div.panelProductOuter table.priceTable td.buttonProductLinkShell div {
+		padding: 0 0 1px 0;
+	}
+	* html div.panelProductOuter table.priceTable td.buttonProductLinkShell div {
+		width: 100%;
+	}
+	div.panelProductOuter table.priceTable td.buttonProductLinkShell input {
+		width: 115px;
+		height: 21px;
+		margin: 0;
+		padding: 0 3px 1px 25px;
+		color: #000;
+		font-size: 11px;
+		line-height: 9px;
+		border: 1px solid #fff;
+		cursor: pointer;
+		cursor: hand;
+		background: #fff url(../xist4c/web/krusekopf/01/img/productRecomButton.gif) left center no-repeat;
+	}
+	div.floatTerm {
+		clear: both;
+	}
+/* << */
+
+
+/* >> photogallery items */
+ 	/* top bar */
+	table.povMain div.tbDes4 {
+		border: 1px solid #666;
+		background: #ccc;
+		font-size: 10px;
+		text-align: center;
+		padding: 2px 5px;
+	}
+	/* image */
+	table.povMain div.iDes3 {
+		border-left: 1px solid #666;
+		border-right: 1px solid #666;
+		background: #efefef;
+		padding-left: 3px;
+		padding-right: 3px;
+	}
+	table.povMain div.iDes4 {
+		text-align: center;
+		vertical-align: middle;
+		padding-top: 5px;
+	}
+	/* image shell */
+	table.povMain div.imgShell {
+		vertical-align: middle;
+		text-align: center;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	/* text box */
+	table.povMain div.textBox {
+		overflow: auto;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	table.povMain div.textBox div.tbInner {
+		padding: 0 0 2px 4px;
+	}
+	/* Title */
+	table.povMain div.title h4 {
+		margin: 0;
+		margin-bottom: 3px;
+		font-size: 13px;
+	}
+	/* description */
+	table.povMain div.desc p {
+		font-size: 11px;
+		text-align: left;
+	}
+	/* bottom bar */
+	table.povMain div.bbDes4 {
+		border: 1px solid #666;
+		background: #ccc;
+		font-size: 10px;
+		text-align: right;
+		padding: 2px 5px;
+	}
+/* << */
+
+
+/* >> photogallery elements table mode*/
+	table.povMain {
+		width: 100%;
+		margin-bottom: 12px;
+	}
+	table.povMain caption {
+		text-align: left;
+		font-size: 13px;
+		font-weight: bold;
+		margin-bottom: 10px;
+	}
+	table.povMain table.tableMode {
+	}
+	table.povMain table.tableMode td.iouter {
+		padding: 10px;
+	}
+/* << */
+
+
+/* >> photogallery elements float mode*/
+	table.povMain ul {
+		margin: 0;
+		padding: 0;
+	}
+	table.povMain ul li {
+		display: block;
+		float: left;
+	}
+	table.povMain ul li {
+		padding: 10px;
+	}
+/* << */
+
+
+/* >> Photogallery popup body elements*/
+	#leftPrevBar,
+	#rightPrevBar {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 2;
+		height: 100%;
+		width: 10px;
+		background: #ccc;
+	}
+	#leftPrevBar[id="leftPrevBar"],
+	#rightPrevBar[id="rightPrevBar"] {
+		position: fixed;
+		width: auto;
+	}
+	#rightPrevBar {
+		left: auto;
+		right: 0;
+		z-index: 3;
+	}
+	#leftDes1,
+	#rightDes1 {
+		height: 100%;
+		border-right: 1px solid #669;
+	}
+	#rightDes1 {
+		border-right: none;
+		border-left: 1px solid #669;
+	}
+	#cImgOuter1 {
+		padding-left: 200px;
+		padding-right: 200px;
+		height: 100%;
+		background: #999;
+	}
+	#cImgOuter1[id="cImgOuter1"] {
+		padding: 0;
+	}
+	#cIOuter2 {
+		padding-left: 30px;
+		padding-right: 30px;
+	}
+	#cIOuter2,
+	#cIOuter3,
+	#cIOuter4 {
+		height: 100%;
+	}
+/* << */
+
+
+/* >>Photogallery popup content elements */
+	div.thumb {
+		padding: 15px;
+	}
+	div.thumb div.thbInner {
+		text-align: center;
+		vertical-align: middle;
+	}
+	div.thumb div.thbInner img {
+	}
+	div.thumb div.thbDes1,
+	div.thumb div.thbDes2,
+	div.thumb div.thbDes3,
+	div.thumb div.thbDes4 {
+	}
+	div.thumb div.thbDes3 {
+		padding: 5px;
+		background: #ccc;
+	}
+	div.thumb div.thbDes4 {
+	}
+	#cImgOuter1 div.image img {
+		width: 100%;
+	}
+	#cImgOuter1 div.image div.imgD3 {
+		text-align: center;
+		padding: 20px;
+	}
+	#cImgOuter1 div.title h1 {
+		padding-left: 20px;
+		padding-right: 20px;
+		font-size: 16px;
+		margin-bottom: 4px;
+	}
+	#cImgOuter1 div.desc p {
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+/* << */
+
+
+/* >> Lightbox */
+	#lightbox {
+		position: absolute;
+		top: 40px;
+		left: 0;
+		width: 100%;
+		z-index: 999;
+		text-align: center;
+		line-height: 0;
+	}
+	#lightbox a img {
+		border: none;
+	}
+	#outerImageContainer {
+		position: relative;
+		background-color: #fff;
+		width: 250px;
+		height: 250px;
+		margin: 0 auto;
+	}
+	#imageContainer {
+		padding: 10px;
+	}
+	#loading {
+		position: absolute;
+		top: 40%;
+		left: 0%;
+		height: 25%;
+		width: 100%;
+		text-align: center;
+		line-height: 0;
+	}
+	#hoverNav {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		z-index: 997;
+	}
+	#imageContainer>#hoverNav {
+		left: 0;
+	}
+	#hoverNav a {
+		outline: none;
+	}
+	#prevLink, #nextLink {
+		width: 49%;
+		height: 100%;
+		background: transparent url(../xist4c/web/krusekopf/01/thirdParty/lightbox2_02/img/blank.gif) no-repeat; /* Trick IE into showing hover */
+		display: block;
+	}
+	#prevLink {
+		left: 0;
+		float: left;
+	}
+	#nextLink {
+		right: 0;
+		float: right;
+	}
+	#prevLink:hover,
+	#prevLink:visited:hover {
+		background: url(../xist4c/web/krusekopf/01/thirdParty/lightbox2_02/img/prevlabel.gif) left 15% no-repeat;
+	}
+	#nextLink:hover,
+	#nextLink:visited:hover {
+		background: url(../xist4c/web/krusekopf/01/thirdParty/lightbox2_02/img/nextlabel.gif) right 15% no-repeat;
+	}
+	#imageDataContainer {
+		font: 10px Verdana, Helvetica, sans-serif;
+		background-color: #fff;
+		margin: 0 auto;
+		line-height: 1.4em;
+	}
+	#imageData {
+		padding:0 10px;
+	}
+	#imageData #imageDetails {
+		width: 70%; float: left; text-align: left;
+	}
+	#imageData #caption {
+		font-weight: bold;
+	}
+	#imageData #numberDisplay {
+		display: block; clear: left; padding-bottom: 1.0em;
+	}
+	#imageData #bottomNavClose {
+		width: 105px; float: right;  padding-bottom: 0.7em;
+	}
+	#overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 998;
+		width: 100%;
+		height: 500px;
+		background-color: #000;
+		filter:alpha(opacity=60);
+		-moz-opacity: 0.6;
+		opacity: 0.6;
+	}
+	.clearfix:after {
+		content: ".";
+		display: block;
+		height: 0;
+		clear: both;
+		visibility: hidden;
+	}
+	* html>body .clearfix {
+		display: inline-block;
+		width: 100%;
+	}
+	* html .clearfix {
+		/* Hides from IE-mac \*/
+		height: 1%;
+		/* End hide from IE-mac */
+	}
+/* << */
+
+
+/* >> Mailform */
+	.mailForm {
+		width: 100%;
+		margin-left: 15px;
+	}
+	.mailForm label {
+		display: block;
+		clear: both;
+		margin: 5px 0 2px 0;
+	}
+	.mailForm input,
+	.mailForm textarea {
+		width: 100%;
+		border: 1px solid #ccc;
+		background: #F4F3EA;
+		font-size: 12px;
+	}
+	.mailForm input.button {
+		width: auto;
+		background: transparent;
+	}
+	.mailForm input.submit {
+		width: auto;
+		margin-top: 20px;
+		font-weight: bold;
+	}
+/* << */
+
+
+/* Sonstiges */
+	/* Designtabelle */
+	table.destable td,
+	table.destable p,
+	table.destable ul,
+	table.destable li,
+	table.destable a {
+		font-size: 11px;
+	}
+	table.destable a {
+		color: #5C4714;
+	}
+	table.destable a:hover {
+		color: #992534;
+	}
+
+	/* Logos */
+	div.co_logos div.cont {
+		text-align: center;
+	}
+	div.co_logos img {
+		margin: 3px 12px;
+	}
+/* << */

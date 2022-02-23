@@ -1,0 +1,3 @@
+[console_scripts]
+identify-cli = identify.cli:main
+

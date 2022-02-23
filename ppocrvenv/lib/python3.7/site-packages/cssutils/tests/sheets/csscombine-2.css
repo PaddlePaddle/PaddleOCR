@@ -1,0 +1,7 @@
+@charset "ascii";
+/* combined sheet 2 */
+@import "1.css";
+@namespace s2 "uri";
+s2|sheet-2 {
+	top: 2px;
+	}

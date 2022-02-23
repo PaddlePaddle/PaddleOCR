@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% if not head %}
+        <style type="text/css">
+            .railroad-heading {
+                font-family: monospace;
+            }
+        </style>
+    {% else %}
+        {{ hear | safe }}
+    {% endif %}
+</head>
+<body>
+{{ body | safe }}
+{% for diagram in diagrams %}
+    <div class="railroad-group">
+        <h1 class="railroad-heading">{{ diagram.title }}</h1>
+        <div class="railroad-description">{{ diagram.text }}</div>
+        <div class="railroad-svg">
+            {{ diagram.svg }}
+        </div>
+    </div>
+{% endfor %}
+</body>
+</html>

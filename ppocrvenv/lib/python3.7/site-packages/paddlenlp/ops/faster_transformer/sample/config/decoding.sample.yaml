@@ -1,0 +1,44 @@
+# Batch size during inference. 
+infer_batch_size: 32
+# Hyparams for generation:
+decoding_strategy: "beam_search"
+# The parameters for beam search.
+beam_size: 4
+# The parameters for topk sampling. 
+topk: 4
+# The parameters for topp sampling. 
+topp: 0.0
+max_out_len: 32
+# The number of decoded sentences to output.
+n_best: 1
+
+# Hyparams for model:
+# These following five vocabularies related configurations will be set
+# automatically according to the passed vocabulary path and special tokens.
+# Size of source word dictionary.
+src_vocab_size: 30000
+# Size of target word dictionay
+trg_vocab_size: 30000
+# Index for <bos> token
+bos_idx: 0
+# Index for <eos> token
+eos_idx: 1
+# Index for <unk> token
+unk_idx: 2
+# Max length of sequences deciding the size of position encoding table.
+max_length: 32
+# The dimension for word embeddings, which is also the last dimension of
+# the input and output of multi-head attention, position-wise feed-forward
+# networks, encoder and decoder.
+d_model: 512
+# Size of the hidden layer in position-wise feed-forward networks.
+d_inner_hid: 2048
+# Number of head used in multi-head attention.
+n_head: 8
+# Number of sub-layers to be stacked in the encoder and decoder.
+n_layer: 6
+# Dropout rates.
+dropout: 0.1
+# The flag indicating whether to share embedding and softmax weights.
+# Vocabularies in source and target should be same for weight sharing.
+weight_sharing: True

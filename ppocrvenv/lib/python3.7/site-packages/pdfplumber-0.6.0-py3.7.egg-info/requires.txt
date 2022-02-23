@@ -1,0 +1,3 @@
+pdfminer.six==20211012
+Pillow>=8.4
+Wand>=0.6.7

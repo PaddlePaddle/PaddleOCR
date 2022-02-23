@@ -1,0 +1,16 @@
+@import "varsimport.css";
+
+@variables {
+    c2: "c2 own file (OVERWRITTEN)";
+    c3: "c1 own file" 
+    }
+
+a1 {
+    content: var(c1);
+    }
+a2 {
+    content: var(c2);
+    }
+a3 {
+    content: var(c3);
+    }

@@ -1,0 +1,55 @@
+Metadata-Version: 2.1
+Name: scipy
+Version: 1.7.3
+Summary: SciPy: Scientific Library for Python
+Home-page: https://www.scipy.org
+Maintainer: SciPy Developers
+Maintainer-email: scipy-dev@python.org
+License: BSD
+Download-URL: https://github.com/scipy/scipy/releases
+Project-URL: Bug Tracker, https://github.com/scipy/scipy/issues
+Project-URL: Documentation, https://docs.scipy.org/doc/scipy/reference/
+Project-URL: Source Code, https://github.com/scipy/scipy
+Platform: Windows
+Platform: Linux
+Platform: Solaris
+Platform: Mac OS-X
+Platform: Unix
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: C
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Scientific/Engineering
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS
+Requires-Python: >=3.7,<3.11
+License-File: LICENSE.txt
+License-File: LICENSES_bundled.txt
+Requires-Dist: numpy (<1.23.0,>=1.16.5)
+
+SciPy (pronounced "Sigh Pie") is open-source software for mathematics,
+science, and engineering. The SciPy library
+depends on NumPy, which provides convenient and fast N-dimensional
+array manipulation. The SciPy library is built to work with NumPy
+arrays, and provides many user-friendly and efficient numerical
+routines such as routines for numerical integration and optimization.
+Together, they run on all popular operating systems, are quick to
+install, and are free of charge.  NumPy and SciPy are easy to use,
+but powerful enough to be depended upon by some of the world's
+leading scientists and engineers. If you need to manipulate
+numbers on a computer and display or publish the results,
+give SciPy a try!
+
+
+

@@ -1,0 +1,48 @@
+#ifndef _PANDAS_MATH_H_
+#define _PANDAS_MATH_H_
+
+// MSVC 2017 has a bug where `x == x` can be true for NaNs.
+// MSC_VER from https://stackoverflow.com/a/70630/1889400
+// Place upper bound on this check once a fixed MSVC is released.
+#if defined(_MSC_VER) && (_MSC_VER < 1800)
+#include <cmath>
+// In older versions of Visual Studio there wasn't a std::signbit defined
+// This defines it using _copysign
+namespace std {
+   __inline int isnan(double x) { return _isnan(x); }
+   __inline int signbit(double num) { return _copysign(1.0, num) < 0; }
+   __inline int notnan(double x) { return !isnan(x); }
+}
+#elif defined(_MSC_VER) && (_MSC_VER >= 1900)
+#include <cmath>
+namespace std {
+  __inline int isnan(double x) { return _isnan(x); }
+  __inline int notnan(double x) { return !isnan(x); }
+}
+#elif defined(_MSC_VER)
+#include <cmath>
+namespace std {
+  __inline int isnan(double x) { return _isnan(x); }
+  __inline int notnan(double x) { return x == x; }
+}
+#elif defined(__MVS__)
+#include <cmath>
+
+#define _signbit signbit
+#undef signbit
+#undef isnan
+
+namespace std {
+  __inline int notnan(double x) { return x == x; }
+  __inline int signbit(double num) { return _signbit(num); }
+  __inline int isnan(double x) { return isnan(x); }
+}
+#else
+#include <cmath>
+
+namespace std {
+  __inline int notnan(double x) { return x == x; }
+}
+
+#endif
+#endif

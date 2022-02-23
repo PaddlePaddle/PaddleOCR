@@ -1,0 +1,175 @@
+Metadata-Version: 2.1
+Name: layoutparser
+Version: 0.0.0
+Summary: Layout Parser is a deep learning assisted tool for Document Image Layout Analysis.
+Home-page: https://github.com/Layout-Parser/layout-parser
+Author: Zejiang Shen Ruochen Zhang
+License: Apache-2.0
+Keywords: layout analysis,deep learning
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: opencv-python
+Requires-Dist: pandas
+Requires-Dist: pillow
+Requires-Dist: pyyaml (>=5.1)
+Requires-Dist: iopath
+Requires-Dist: tqdm
+Provides-Extra: ocr
+Requires-Dist: google-cloud-vision (==1) ; extra == 'ocr'
+Requires-Dist: pytesseract ; extra == 'ocr'
+Provides-Extra: paddleocr
+Requires-Dist: paddleocr (>=2.0.1) ; extra == 'paddleocr'
+Provides-Extra: paddlepaddle
+Requires-Dist: paddlepaddle (>=2.1.0) ; extra == 'paddlepaddle'
+Provides-Extra: paddlepadle-gpu
+Requires-Dist: paddlepaddle-gpu (>=2.1.0) ; extra == 'paddlepadle-gpu'
+
+<p align="center">
+  <img src="https://github.com/Layout-Parser/layout-parser/raw/master/.github/layout-parser.png" alt="Layout Parser Logo" width="35%">
+  <p align="center">
+  A unified toolkit for Deep Learning Based Document Image Analysis
+  </p>
+</p>
+
+<p align=center>
+<a href="https://arxiv.org/abs/2103.15348"><img src="https://img.shields.io/badge/arXiv-2103.15348-b31b1b.svg" title="Layout Parser Paper"></a>
+<a href="https://layout-parser.github.io"><img src="https://img.shields.io/badge/website-layout--parser.github.io-informational.svg" title="Layout Parser Paper"></a>
+<a href="https://layout-parser.readthedocs.io/en/latest/"><img src="https://img.shields.io/badge/doc-layout--parser.readthedocs.io-light.svg" title="Layout Parser Documentation"></a>
+</p>
+
+<p align=center>
+<a href="https://pypi.org/project/layoutparser/"><img src="https://img.shields.io/pypi/v/layoutparser?color=%23099cec&label=PyPI%20package&logo=pypi&logoColor=white" title="The current version of Layout Parser"></a>
+<a href="https://pypi.org/project/layoutparser/"><img src="https://img.shields.io/pypi/pyversions/layoutparser?color=%23099cec&" alt="Python 3.6 3.7 3.8" title="Layout Parser supports Python 3.6 and above"></a>
+<img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/layoutparser">
+<a href="https://github.com/Layout-Parser/layout-parser/blob/master/LICENSE"><img src="https://img.shields.io/pypi/l/layoutparser" title="Layout Parser uses Apache 2 License"></a>
+</p>
+
+---
+
+## Installation 
+
+You can find detailed installation instructions in [installation.md](installation.md). But generally, it's just `pip install` 
+some libraries: 
+
+```bash
+pip install -U layoutparser
+
+# Install Detectron2 for using DL Layout Detection Model
+# Please make sure the PyTorch version is compatible with
+# the installed Detectron2 version. 
+pip install 'git+https://github.com/facebookresearch/detectron2.git@v0.4#egg=detectron2' 
+
+# Install the ocr components when necessary 
+pip install layoutparser[ocr]      
+```
+
+**For Windows Users:** Please read [installation.md](installation.md) for details about installing Detectron2.
+
+## **Recent updates**
+
+2021.6.8 Update new layout detection model (PaddleDetection) and ocr model (PaddleOCR). We test Detectron2 and PaddleDetection models on PubLayNet and TableBank datasets, the  indicators are as follows:
+
+PubLayNet Dataset:
+
+|      Model      |  mAP  | CPU time cost | GPU time cost |
+| :-------------: | :---: | :-----------: | :-----------: |
+|   Detectron2    | 88.98 |   16545.5ms   |    209.5ms    |
+| PaddleDetection | 93.6  |   1713.7ms    |    66.6ms     |
+
+TableBank Dataset:
+
+|      Model      |  mAP  | CPU time cost | GPU time cost |
+| :-------------: | :---: | :-----------: | :-----------: |
+|   Detectron2    | 91.26 |   7623.2ms    |   104.2.ms    |
+| PaddleDetection | 96.2  |   1968.4ms    |    65.1ms     |
+
+**Envrionment：**	
+
+​	**CPU：**  Intel(R) Xeon(R) CPU E5-2650 v4 @ 2.20GHz，24core
+
+​	**GPU：**  a single NVIDIA Tesla P40
+
+You can also find detailed installation instructions in [installation.md](installation.md). But generally, it's just `pip install` 
+some libraries: 
+
+```Python
+# Install PaddlePaddle
+# CUDA10.1
+python -m pip install paddlepaddle-gpu==2.1.0.post101 -f https://paddlepaddle.org.cn/whl/mkl/stable.html
+# CPU
+python -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
+
+# Install the paddle ocr components when necessary 
+pip install layoutparser[paddleocr] 
+```
+
+For more PaddlePaddle CUDA version or environment to quick install, please refer to the [PaddlePaddle Quick Installation document](https://www.paddlepaddle.org.cn/install/quick)
+
+## Quick Start
+
+We provide a series of examples for to help you start using the layout parser library: 
+
+1. [Table OCR and Results Parsing](https://github.com/Layout-Parser/layout-parser/blob/master/examples/OCR%20Tables%20and%20Parse%20the%20Output.ipynb): `layoutparser` can be used for conveniently OCR documents and convert the output in to structured data. 
+2. [Deep Layout Parsing Example](https://github.com/Layout-Parser/layout-parser/blob/master/examples/Deep%20Layout%20Parsing.ipynb): With the help of Deep Learning, `layoutparser` supports the analysis very complex documents and processing of the hierarchical structure in the layouts. 
+3. [Deep Layout Parsing using Paddle](examples/Deep%20Layout%20Parsing%20using%20Paddle.ipynb): `layoutparser` supports the analysis very complex documents and processing of the hierarchical structure in the layouts Using Paddle models.
+
+
+## DL Assisted Layout Prediction Example 
+
+![Example Usage](.github/example.png)
+
+*The images shown in the figure above are: a screenshot of [this paper](https://arxiv.org/abs/2004.08686), an image from the [PRIMA Layout Analysis Dataset](https://www.primaresearch.org/dataset/), a screenshot of the [WSJ website](http://wsj.com), and an image from the [HJDataset](https://dell-research-harvard.github.io/HJDataset/).*
+
+With only 4 lines of code in `layoutparse`, you can unlock the information from complex documents that existing tools could not provide. You can either choose a deep learning model from the [ModelZoo](docs/notes/modelzoo.md), or load the model that you trained on your own. And use the following code to predict the layout as well as visualize it: 
+
+```python
+>>> import layoutparser as lp
+>>> model = lp.Detectron2LayoutModel('lp://PrimaLayout/mask_rcnn_R_50_FPN_3x/config')
+>>> layout = model.detect(image) # You need to load the image somewhere else, e.g., image = cv2.imread(...)
+>>> lp.draw_box(image, layout,) # With extra configurations
+```
+
+Use PaddleDetection model：
+
+```python
+>>> import layoutparser as lp
+>>> model = lp.PaddleDetectionLayoutModel('lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config')
+>>> layout = model.detect(image) # You need to load the image somewhere else, e.g., image = cv2.imread(...)
+>>> lp.draw_box(image, layout,) # With extra configurations
+```
+
+If you want to train a Paddledetection model yourself, please refer to：[Train PaddleDetection model](https://github.com/PaddlePaddle/PaddleDetection/blob/release/2.1/docs/tutorials/GETTING_STARTED.md)
+
+If you want to learn more about PaddleOCR, please refer to: [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR)、[PaddleOCR infer](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/whl.md)
+
+## Contributing
+
+We encourage you to contribute to Layout Parser! Please check out the [Contributing guidelines](.github/CONTRIBUTING.md) for guidelines about how to proceed. Join us!
+
+## Citing `layoutparser`
+
+If you find `layoutparser` helpful to your work, please consider citing our tool and [paper](https://arxiv.org/pdf/2103.15348.pdf) using the following BibTeX entry.
+
+```
+@article{shen2021layoutparser,
+  title={LayoutParser: A Unified Toolkit for Deep Learning Based Document Image Analysis},
+  author={Shen, Zejiang and Zhang, Ruochen and Dell, Melissa and Lee, Benjamin Charles Germain and Carlson, Jacob and Li, Weining},
+  journal={arXiv preprint arXiv:2103.15348},
+  year={2021}
+}
+```
+
+
+

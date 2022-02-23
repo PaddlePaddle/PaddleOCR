@@ -1,0 +1,1201 @@
+Metadata-Version: 2.1
+Name: Shapely
+Version: 1.8.0
+Summary: Geometric objects, predicates, and operations
+Home-page: https://github.com/Toblerity/Shapely
+Author: Sean Gillies
+Author-email: sean.gillies@gmail.com
+Maintainer: Sean Gillies
+Maintainer-email: sean.gillies@gmail.com
+License: BSD
+Keywords: geometry topology gis
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Scientific/Engineering :: GIS
+Requires-Python: >=3.6
+License-File: LICENSE.txt
+Provides-Extra: all
+Requires-Dist: pytest ; extra == 'all'
+Requires-Dist: pytest-cov ; extra == 'all'
+Requires-Dist: numpy ; extra == 'all'
+Provides-Extra: test
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: pytest-cov ; extra == 'test'
+Provides-Extra: vectorized
+Requires-Dist: numpy ; extra == 'vectorized'
+
+=======
+Shapely
+=======
+
+|github-actions| |appveyor| |coveralls|
+
+.. |github-actions| image:: https://github.com/Toblerity/Shapely/workflows/Tests%20(Linux)/badge.svg
+   :target: https://github.com/Toblerity/Shapely/actions
+
+.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/github/Toblerity/Shapely?branch=master&svg=true
+   :target: https://ci.appveyor.com/project/frsci/shapely?branch=master
+
+.. |coveralls| image:: https://coveralls.io/repos/github/Toblerity/Shapely/badge.svg?branch=master
+   :target: https://coveralls.io/github/Toblerity/Shapely?branch=master
+
+Manipulation and analysis of geometric objects in the Cartesian plane.
+
+.. image:: https://c2.staticflickr.com/6/5560/31301790086_b3472ea4e9_c.jpg
+   :width: 800
+   :height: 378
+
+Shapely is a BSD-licensed Python package for manipulation and analysis of
+planar geometric objects. It is based on the widely deployed `GEOS
+<https://trac.osgeo.org/geos/>`__ (the engine of `PostGIS
+<http://postgis.org>`__) and `JTS
+<https://locationtech.github.io/jts/>`__ (from which GEOS is ported)
+libraries. Shapely is not concerned with data formats or coordinate systems,
+but can be readily integrated with packages that are. For more details, see:
+
+* `Shapely GitHub repository <https://github.com/Toblerity/Shapely>`__
+* `Shapely documentation and manual <https://shapely.readthedocs.io/en/latest/>`__
+
+Usage
+=====
+
+Here is the canonical example of building an approximately circular patch by
+buffering a point.
+
+.. code-block:: pycon
+
+    >>> from shapely.geometry import Point
+    >>> patch = Point(0.0, 0.0).buffer(10.0)
+    >>> patch
+    <shapely.geometry.polygon.Polygon object at 0x...>
+    >>> patch.area
+    313.65484905459385
+
+See the manual for more examples and guidance.
+
+Requirements
+============
+
+Shapely 1.8 requires
+
+* Python >=3.6
+* GEOS >=3.3
+
+Installing Shapely
+==================
+
+Shapely may be installed from a source distribution or one of several kinds
+of built distribution.
+
+Built distributions
+-------------------
+
+Built distributions are the only option for users who do not have or do not
+know how to use their platform's compiler and Python SDK, and a good option for
+users who would rather not bother.
+
+Linux, OS X, and Windows users can get Shapely wheels with GEOS included from the
+Python Package Index with a recent version of pip (8+):
+
+.. code-block:: console
+
+    $ pip install shapely
+
+Shapely is available via system package management tools like apt, yum, and
+Homebrew, and is also provided by popular Python distributions like Canopy and
+Anaconda. If you use the Conda package manager to install Shapely, be sure to
+use the conda-forge channel.
+
+Windows users have another good installation options: the wheels published at
+https://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely. These can be installed
+using pip by specifying the entire URL.
+
+Source distributions
+--------------------
+
+If you want to build Shapely from source for compatibility with other modules
+that depend on GEOS (such as cartopy or osgeo.ogr) or want to use a different
+version of GEOS than the one included in the project wheels you should first
+install the GEOS library, Cython, and Numpy on your system (using apt, yum,
+brew, or other means) and then direct pip to ignore the binary wheels.
+
+.. code-block:: console
+
+    $ pip install shapely --no-binary shapely
+
+If you've installed GEOS to a standard location, the geos-config program will
+be used to get compiler and linker options. If geos-config is not on your
+executable, it can be specified with a GEOS_CONFIG environment variable, e.g.:
+
+.. code-block:: console
+
+    $ GEOS_CONFIG=/path/to/geos-config pip install shapely
+
+Integration
+===========
+
+Shapely does not read or write data files, but it can serialize and deserialize
+using several well known formats and protocols. The shapely.wkb and shapely.wkt
+modules provide dumpers and loaders inspired by Python's pickle module.
+
+.. code-block:: pycon
+
+    >>> from shapely.wkt import dumps, loads
+    >>> dumps(loads('POINT (0 0)'))
+    'POINT (0.0000000000000000 0.0000000000000000)'
+
+Shapely can also integrate with other Python GIS packages using GeoJSON-like
+dicts.
+
+.. code-block:: pycon
+
+    >>> import json
+    >>> from shapely.geometry import mapping, shape
+    >>> s = shape(json.loads('{"type": "Point", "coordinates": [0.0, 0.0]}'))
+    >>> s
+    <shapely.geometry.point.Point object at 0x...>
+    >>> print(json.dumps(mapping(s)))
+    {"type": "Point", "coordinates": [0.0, 0.0]}
+
+Development and Testing
+=======================
+
+Dependencies for developing Shapely are listed in requirements-dev.txt. Cython
+and Numpy are not required for production installations, only for development.
+Use of a virtual environment is strongly recommended.
+
+.. code-block:: console
+
+    $ virtualenv .
+    $ source bin/activate
+    (env)$ pip install -r requirements-dev.txt
+    (env)$ pip install -e .
+
+The project uses pytest to run Shapely's suite of unittests and doctests.
+
+.. code-block:: console
+
+    (env)$ python -m pytest
+
+Support
+=======
+
+Questions about using Shapely may be asked on the `GIS StackExchange
+<https://gis.stackexchange.com/questions/tagged/shapely>`__ using the "shapely"
+tag.
+
+Bugs may be reported at https://github.com/Toblerity/Shapely/issues.
+
+
+Credits
+=======
+
+Shapely is written by:
+
+* Adi Shavit <adishavit@gmail.com>
+* Alberto Rubiales <arubiales11@gmail.com>
+* Allan Adair <allan.m.adair@gmail.com>
+* Andrew Blakey <ablakey@gmail.com>
+* Andy Freeland <andy@andyfreeland.net>
+* Ariel Kadouri <ariel@arielsartistry.com>
+* Aron Bierbaum <aronbierbaum@gmail.com>
+* Bart Broere <2715782+bartbroere@users.noreply.github.com>
+* Bas Couwenberg <sebastic@xs4all.nl>
+* Ben Beasley <code@musicinmybrain.net>
+* Benjamin Root <ben.v.root@gmail.com>
+* BertrandGervais <bertrand.gervais.pro@gmail.com>
+* Bhavika Tekwani <4955119+bhavika@users.noreply.github.com>
+* Bi0T1N <Bi0T1N@users.noreply.github.com>
+* Brad Hards <bradh@frogmouth.net>
+* Brandon Wood <btwood@geometeor.com>
+* Chad Hawkins <cwh@chadwhawkins.com>
+* Christian Prior <cprior@gmail.com>
+* Christian Quest <github@cquest.org>
+* Christophe Pradal <christophe.pradal@inria.fr>
+* Dan Baston <dbaston@gmail.com>
+* Dan Mahr <danmahr23@gmail.com>
+* Daniele Esposti <expobrain@users.noreply.github.com>
+* Dave Collins <dave@hopest.net>
+* David Baumgold <david@davidbaumgold.com>
+* David Swinkels <davidswinkelss@gmail.com>
+* Denis Rykov <rykovd@gmail.com>
+* Erwin Sterrenburg <e.w.sterrenburg@gmail.com>
+* Felix Divo <4403130+felixdivo@users.noreply.github.com>
+* Felix Yan <felixonmars@archlinux.org>
+* Filipe Fernandes <ocefpaf@gmail.com>
+* Frédéric Junod <frederic.junod@camptocamp.com>
+* Gabi Davar <grizzly.nyo@gmail.com>
+* Gerrit Holl <gerrit.holl@dwd.de>
+* Hannes <kannes@users.noreply.github.com>
+* Hao Zheng <Furioushaozheng@gmail.com>
+* Henry Walshaw <henry.walshaw@gmail.com>
+* Howard Butler <hobu.inc@gmail.com>
+* Hugo <hugovk@users.noreply.github.com>
+* Jacob Wasserman <jwasserman@gmail.com>
+* Jaeha Lee <jaehaaheaj@gmail.com>
+* James Douglass <jamesdouglassusa@gmail.com>
+* James Gaboardi <jgaboardi@gmail.com>
+* James Lamb <jaylamb20@gmail.com>
+* James McBride <jdmcbr@gmail.com>
+* James Spencer <james.s.spencer@gmail.com>
+* Jamie Hall <jamie1212@gmail.com>
+* Jason Sanford <jason.sanford@mapmyfitness.com>
+* Jeethu Rao <jeethu@jeethurao.com>
+* Jeremiah England <34973839+Jeremiah-England@users.noreply.github.com>
+* Jinkun Wang <mejkunw@gmail.com>
+* Johan Euphrosine <proppy@aminche.com>
+* Johannes Schönberger <jschoenberger@demuc.de>
+* Jonathan Schoonhoven <jschoonhoven@lyft.com>
+* Joris Van den Bossche <jorisvandenbossche@gmail.com>
+* Joshua Arnott <josh@snorfalorpagus.net>
+* Juan Luis Cano Rodríguez <juanlu@satellogic.com>
+* Justin Shenk <shenk.justin@gmail.com>
+* Kai Lautaportti <dokai@b426a367-1105-0410-b9ff-cdf4ab011145>
+* Kelsey Jordahl <kjordahl@enthought.com>
+* Kevin Wurster <wursterk@gmail.com>
+* Konstantin Veretennicov <kveretennicov@gmail.com>
+* Koshy Thomas <koshy1123@gmail.com>
+* Kristian Evers <kristianevers@gmail.com>
+* Kyle Barron <kylebarron2@gmail.com>
+* Leandro Lima <leandro@limaesilva.com.br>
+* Lukasz <uhho@users.noreply.github.com>
+* Luke Lee <durdenmisc@gmail.com>
+* Maarten Vermeyen <maarten.vermeyen@rwo.vlaanderen.be>
+* Marc Jansen <jansen@terrestris.de>
+* Marco De Nadai <me@marcodena.it>
+* Mathieu <mathieu.nivel@gmail.com>
+* Matt Amos <matt.amos@mapzen.com>
+* Matthias Cuntz <mcuntz@users.noreply.github.com>
+* MejstrikRudolf <68251685+MejstrikRudolf@users.noreply.github.com>
+* Michael K <michael-k@users.noreply.github.com>
+* Michel Blancard <michel.blancard@data.gouv.fr>
+* Mike Taves <mwtoews@gmail.com>
+* Morris Tweed <tweed.morris@gmail.com>
+* Naveen Michaud-Agrawal <naveen.michaudagrawal@gmail.com>
+* Oliver Tonnhofer <olt@bogosoft.com>
+* Paveł Tyślacki <tbicr@users.noreply.github.com>
+* Peter Sagerson <psagers.github@ignorare.net>
+* Phil Elson <pelson.pub@gmail.com>
+* Pierre PACI <villerupt@gmail.com>
+* Raja Gangopadhya <raja.gangopadhya@ridewithvia.com>
+* Ricardo Zilleruelo <51384295+zetaatlyft@users.noreply.github.com>
+* Rémy Phelipot <remy-phelipot@users.noreply.github.com>
+* S Murthy <sr-murthy@users.noreply.github.com>
+* Sampo Syrjanen <sampo.syrjanen@here.com>
+* Samuel Chin <samuelchin91@gmail.com>
+* Sean Gillies <sean.gillies@gmail.com>
+* Sobolev Nikita <mail@sobolevn.me>
+* Stephan Hügel <urschrei@gmail.com>
+* Steve M. Kim <steve@climate.com>
+* Taro Matsuzawa aka. btm <btm@tech.email.ne.jp>
+* Thibault Deutsch <thibault.deutsch@gmail.com>
+* Thomas Gratier <thomas_gratier@yahoo.fr>
+* Thomas Kluyver <takowl@gmail.com>
+* Tim Gates <tim.gates@iress.com>
+* Tobias Sauerwein <tobias.sauerwein@camptocamp.com>
+* Tom Caruso <carusot42@gmail.com>
+* Tom Clancy <17627475+clncy@users.noreply.github.com>
+* WANG Aiyong <gepcelway@gmail.com>
+* Will May <williamcmay@live.com>
+* Zachary Ware <zachary.ware@gmail.com>
+* aharfoot <aharfoot@users.noreply.github.com>
+* bstadlbauer <11799671+bstadlbauer@users.noreply.github.com>
+* cclauss <cclauss@me.com>
+* clefrks <33859587+clefrks@users.noreply.github.com>
+* davidh-ssec <david.hoese@ssec.wisc.edu>
+* georgeouzou <geothrock@gmail.com>
+* giumas <gmasetti@ccom.unh.edu>
+* joelostblom <joelostblom@users.noreply.github.com>
+* ljwolf <levi.john.wolf@gmail.com>
+* mindw <grizzly.nyo@gmail.com>
+* rsmb <rsmb@users.noreply.github.com>
+* shongololo <garethsimons@me.com>
+* solarjoe <walterwhite666@googlemail.com>
+* sshuair <sshuair@gmail.com>
+* stephenworsley <49274989+stephenworsley@users.noreply.github.com>
+
+See also: https://github.com/Toblerity/Shapely/graphs/contributors.
+
+Additional help from:
+
+* Justin Bronn (GeoDjango) for ctypes inspiration
+* Martin Davis (JTS)
+* Sandro Santilli, Mateusz Loskot, Paul Ramsey, et al (GEOS Project)
+
+Major portions of this work were supported by a grant (for Pleiades_) from the
+U.S. National Endowment for the Humanities (https://www.neh.gov).
+
+.. _Pleiades: https://pleiades.stoa.org
+
+
+Changes
+=======
+
+1.8.0 (2021-10-25)
+------------------
+
+This is the final 1.8.0 release. There have been no changes since 1.8rc2.
+
+1.8rc2 (2021-10-19)
+-------------------
+
+Build:
+
+A pyproject.toml file has been added to specify build dependencies for the
+_vectorized and _speedups modules (#1128). To install shapely without these
+build dependencies, use the features of your build tool that disable PEP 517
+and 518 support.
+
+Bug fixes:
+
+- Part of PR #1042, which added a new primary GEOS library name to be searched
+  for, has been reverted by PR #1201.
+
+1.8rc1 (2021-10-04)
+-------------------
+
+Deprecations:
+
+The almost_exact() method of BaseGeometry has been deprecated. It is confusing
+and will be removed in 2.0.0. The equals_exact() method is to be used instead.
+
+Bug fixes:
+
+- We ensure that the _speedups module is always imported before _vectorized to
+  avoid an unexplained condition on Windows with Python 3.8 and 3.9 (#1184).
+
+1.8a3 (2021-08-24)
+------------------
+
+Deprecations:
+
+The STRtree class deprecation warnings have been removed. The class in 2.0.0
+will be backwards compatible with the class in 1.8.0.
+
+Bug fixes:
+
+- The __array_interface__ raises only AttributeError, all other exceptions are
+  deprecated starting with Numpy 1.21 (#1173).
+- The STRtree class now uses a pair of item, geom sequences internally instead
+  of a dict (#1177).
+
+
+1.8a2 (2021-07-15)
+------------------
+
+Python version support:
+
+Shapely 1.8 will support only Python versions >= 3.6.
+
+New features:
+
+- The STRtree nearest*() methods now take an optional argument that
+  specifies exclusion of the input geometry from results (#1115).
+- A GeometryTypeError has been added to shapely.errors and is consistently
+  raised instead of TypeError or ValueError as in version 1.7. For backwards
+  compatibility, the new exception will derive from TypeError and Value error
+  until version 2.0 (#1099).
+- The STRtree class constructor now takes an optional second argument, a
+  sequence of objects to be stored in the tree. If not provided, the sequence
+  indices of the geometries will be stored, as before (#1112).
+- The STRtree class has new query_geoms(), query_items(), nearest_geom(), and
+  nearest_item() methods (#1112). The query() and nearest() methods remain as
+  aliases for query_geoms() and nearest_geom().
+
+Bug fixes:
+
+- We no longer attempt to load libc to get the free function on Linux, but get
+  it from the global symbol table.
+- GEOS error messages printed when GEOS_getCoordSeq() is passed an empty
+  geometry are avoided by never passing an empty geometry (#1134).
+- Python's builtin super() is now used only as described in PEP 3135 (#1109).
+- Only load conda GEOS dll if it exists (on Windows) (#1108).
+- Add /opt/homebrew/lib to the list of directories to be searched for the GEOS
+  shared library.
+- Added new library search path to assist app creation with cx_Freeze.
+
+1.8a1 (2021-03-03)
+------------------
+
+Shapely 1.8.0 will be a transitional version. There are a few bug fixes and new
+features, but it is mainly about warning of the upcoming changes in 2.0.0.
+Several more pre-releases before 1.8.0 are expected. See the migration guide
+to Shapely 1.8 / 2.0 for more details on how to update your code
+(https://shapely.readthedocs.io/en/latest/migration.html).
+
+Python version support:
+
+Shapely 1.8 will support only Python versions >= 3.5 (#884).
+
+Deprecations:
+
+The following functions and geometry attributes and methods will be removed in
+version 2.0.0.
+
+- ops.cascaded_union
+- geometry .empty()
+- geometry .ctypes and .__array_interface__
+- multi-part geometry .__len__
+- setting custom attributes on geometry objects
+
+Geometry objects will become immutable in version 2.0.0.
+
+The STRtree class will be entirely changed in 2.0.0. The exact future API is
+not yet decided, but will be decided before 1.8.0 is released.
+
+Deprecation warnings will be emitted in 1.8a1 when any of these features are
+used.
+
+The deprecated .to_wkb() and .to_wkt() methods on the geometry objects have
+been removed.
+
+New features:
+
+- Add a normalize() method to geometry classes, exposing the GEOSNormalize
+  algorithm (#1090).
+- Initialize STRtree with a capacity of 10 items per node (#1070).
+- Load libraries relocated to shapely/.libs by auditwheel versions < 3.1 or
+  relocated to Shapely.libs by auditwheel versions >= 3.1.
+- shapely.ops.voronoi_diagram() computes the Voronoi Diagram of a geometry or
+  geometry collection (#833, #851).
+- shapely.validation.make_valid() fixes invalid geometries (#883)
+
+Bug fixes:
+
+- For pyinstaller we now handle the case of more than one GEOS library in the
+  environment, such as when fiona and rasterio wheels are co-installed with
+  shapely (#1071).
+- The ops.split function now splits on touch to eliminate confusing
+  discrepancies between results using multi and single part splitters (#1034).
+- Several issues with duplication and order of vertices in ops.substring have
+  been fixed (#1008).
+
+Packaging:
+
+- The wheels uploaded to PyPI will include GEOS 3.9.1.
+
+1.7.1 (2020-08-20)
+------------------
+
+- ``STRtree`` now safely implements the pickle protocol (#915).
+- Documentation has been added for ``minimum_clearance`` (#875, #874).
+- In ``STRtree.__del__()`` we guard against calling ``GEOSSTRtree_destroy``
+  when the lgeos module has already been torn down on exit (#897, #830).
+- Documentation for the ``overlaps()`` method has been corrected (#920).
+- Correct the test in ``shapely.geometry.base.BaseGeometry.empty()`` to
+  eliminate memory leaks like the one reported in #745.
+- Get free() not from libc but from the processes global symbols (#891),
+  fixing a bug that manifests on OS X 10.15 and 10.16.
+- Extracting substrings from complex lines has been made more correct (#848,
+  #849).
+- Splitting of complex geometries has been sped up by preparing the input
+  geometry (#871).
+- Fix bug in concatenation of function argtypes (#866).
+- Improved documentation of STRtree usage (#857).
+- Improved handling for empty list or list of lists in GeoJSON coordinates
+  (#852).
+- The polylabel algorithm now accounts for polygon holes (#851, #817).
+
+1.7.0 (2020-01-28)
+------------------
+
+This is the final 1.7.0 release. There have been no changes since 1.7b1.
+
+1.7b1 (2020-01-13)
+------------------
+
+First beta release.
+
+1.7a3 (2019-12-31)
+------------------
+
+New features:
+
+- The buffer operation can now be single-sides (#806, #727).
+
+Bug fixes:
+
+- Add /usr/local/lib to the list of directories to be searched for the GEOS
+  shared library (#795).
+- ops.substring now returns a line with coords in end-to-front order when given
+  a start position that is greater than the end position (#628).
+- Implement ``__bool__()`` for geometry base classes so that ``bool(geom)``
+  returns the logical complement of ``geom.is_empty`` (#754).
+- Remove assertion on the number of version-like strings found in the GEOS
+  version string. It could be 2 or 3.
+
+1.7a2 (2019-06-21)
+------------------
+
+- Nearest neighbor search has been added to STRtree (#668).
+- Disallow sequences of MultiPolygons as arguments to the MultiPolygon
+  constructor, resolving #588.
+- Removed vendorized `functools` functions previously used to support
+  Python 2.5.
+
+Bug fixes:
+
+- Avoid reloading the GEOS shared library when using an installed binary wheel
+  on OS X (#735), resolving issue #553.
+- The shapely.ops.orient function can now orient multi polygons and geometry
+  collections as well as polygons (#733).
+- Polygons can now be constructed from sequences of point objects as well as
+  sequences of x, y sequences (#732).
+- The exterior of an empty polygon is now equal to an empty linear ring (#731).
+- The bounds property of an empty point object now returns an empty tuple,
+  consistent with other geometry types (#723).
+- Segmentation faults when non-string values are passed to the WKT loader are
+  avoided by #700.
+- Failure of ops.substring when the sub linestring coincides with the beginning
+  of the linestring has been fixed (#658).
+- Segmentation faults from interpolating on an empty linestring are prevented
+  by #655.
+- A missing special case for rectangular polygons has been added to the
+  polylabel algorithm (#644).
+- LinearRing can be created from a LineString (#638).
+- The prepared geoemtry validation condition has been tightened in #632 to fix
+  the bug reported in #631.
+- Attempting to interpolate an empty geometry no longer results in a
+  segmentation fault, raising `ValueError` instead (#653).
+
+1.7a1 (2018-07-29)
+------------------
+
+New features:
+
+- A Python version check is made by the package setup script. Shapely 1.7
+  supports only Python versions 2.7 and 3.4+ (#610).
+- Added a new `EmptyGeometry` class to support GeoPandas (#514).
+- Added new `shapely.ops.substring` function (#459).
+- Added new `shapely.ops.clip_by_rect` function (#583).
+- Use DLLs indicated in sys._MEIPASS' to support PyInstaller frozen apps
+  (#523).
+- `shapely.wkb.dumps` now accepts an `srid` integer keyword argument to write
+  WKB data including a spatial reference ID in the output data (#593).
+
+Bug fixes:
+
+- `shapely.geometry.shape` can now marshal empty GeoJSON representations
+  (#573).
+- An exception is raised when an attempt is made to `prepare`
+  a `PreparedGeometry` (#577, #595).
+- Keyword arguments have been removed from a geometry object's `wkt` property
+  getter (#581, #594).
+
+1.6.4.post1 (2018-01-24)
+------------------------
+
+- Fix broken markup in this change log, which restores our nicely formatted
+  readme on PyPI.
+
+1.6.4 (2018-01-24)
+------------------
+
+- Handle a ``TypeError`` that can occur when geometries are torn down (#473,
+  #528).
+
+
+1.6.3 (2017-12-09)
+------------------
+
+- AttributeError is no longer raised when accessing __geo_interface__ of an
+  empty polygon (#450).
+- ``asShape`` now handles empty coordinates in mappings as ``shape`` does
+  (#542). Please note that ``asShape`` is likely to be deprecated in a future
+  version of Shapely.
+- Check for length of LineString coordinates in speed mode, preventing crashes
+  when using LineStrings with only one coordinate (#546).
+
+1.6.2 (2017-10-30)
+------------------
+
+- A 1.6.2.post1 release has been made to fix a problem with macosx wheels
+  uploaded to PyPI.
+
+1.6.2 (2017-10-26)
+------------------
+
+- Splitting a linestring by one of its end points will now succeed instead of
+  failing with a ``ValueError`` (#524, #533).
+- Missing documentation of a geometry's ``overlaps`` predicate has been added
+  (#522).
+
+1.6.1 (2017-09-01)
+------------------
+
+- Avoid ``STRTree`` crashes due to dangling references (#505) by maintaining
+  references to added geometries.
+- Reduce log level to debug when reporting on calls to ctypes ``CDLL()`` that
+  don't succeed and are retried (#515).
+- Clarification: applications like GeoPandas that need an empty geometry object
+  should use ``BaseGeometry()`` instead of ``Point()`` or ``Polygon()``. An
+  ``EmptyGeometry`` class has been added in the master development branch and
+  will be available in the next non-bugfix release.
+
+1.6.0 (2017-08-21)
+------------------
+
+Shapely 1.6.0 adds new attributes to existing geometry classes and new
+functions (``split()`` and ``polylabel()``) to the shapely.ops module.
+Exceptions are consolidated in a shapely.errors module and logging practices
+have been improved. Shapely's optional features depending on Numpy are now
+gathered into a requirements set named "vectorized" and these may be installed
+like ``pip install shapely[vectorized]``.
+
+Much of the work on 1.6.0 was aimed to improve the project's build and
+packaging scripts and to minimize run-time dependencies. Shapely now vendorizes
+packaging to use during builds only and never again invokes the geos-config
+utility at run-time.
+
+In addition to the changes listed under the alpha and beta pre-releases below,
+the following change has been made to the project:
+
+- Project documentation is now hosted at 
+  https://shapely.readthedocs.io/en/latest/.
+
+Thank you all for using, promoting, and contributing to the Shapely project.
+
+1.6b5 (2017-08-18)
+------------------
+
+Bug fixes:
+
+- Passing a single coordinate to ``LineString()`` with speedups disabled now
+  raises a ValueError as happens with speedups enabled. This resolves #509.
+
+1.6b4 (2017-02-15)
+------------------
+
+Bug fixes:
+
+- Isolate vendorized packaging in a _vendor directory, remove obsolete
+  dist-info, and remove packaging from project requirements (resolves #468).
+
+1.6b3 (2016-12-31)
+------------------
+
+Bug fixes:
+
+- Level for log messages originating from the GEOS notice handler reduced from
+  WARNING to INFO (#447).
+- Permit speedups to be imported again without Numpy (#444).
+
+1.6b2 (2016-12-12)
+------------------
+
+New features:
+
+- Add support for GeometryCollection to shape and asShape functions (#422).
+
+1.6b1 (2016-12-12)
+------------------
+
+Bug fixes:
+
+- Implemented __array_interface__ for empty Points and LineStrings (#403).
+
+1.6a3 (2016-12-01)
+------------------
+
+Bug fixes:
+
+- Remove accidental hard requirement of Numpy (#431).
+
+Packaging:
+
+- Put Numpy in an optional requirement set named "vectorized" (#431).
+
+1.6a2 (2016-11-09)
+------------------
+
+Bug fixes:
+
+- Shapely no longer configures logging in ``geos.py`` (#415).
+
+Refactoring:
+
+- Consolidation of exceptions in ``shapely.errors``.
+- ``UnsupportedGEOSVersionError`` is raised when GEOS < 3.3.0 (#407).
+
+Packaging:
+
+- Added new library search paths to assist Anaconda (#413).
+- geos-config will now be bypassed when NO_GEOS_CONFIG env var is set. This
+  allows configuration of Shapely builds on Linux systems that for whatever
+  reasons do not include the geos-config program (#322).
+
+1.6a1 (2016-09-14)
+------------------
+
+New features:
+
+- A new error derived from NotImplementedError, with a more useful message, is
+  raised when the GEOS backend doesn't support a called method (#216).
+- The ``project()`` method of LineString has been extended to LinearRing
+  geometries (#286).
+- A new ``minimum_rotated_rectangle`` attribute has been added to the base
+  geometry class (#354).
+- A new ``shapely.ops.polylabel()`` function has been added. It
+  computes a point suited for labeling concave polygons (#395).
+- A new ``shapely.ops.split()`` function has been added. It splits a
+  geometry by another geometry of lesser dimension: polygon by line, line by
+  point (#293, #371).
+- ``Polygon.from_bounds()`` constructs a Polygon from bounding coordinates
+  (#392).
+- Support for testing with Numpy 1.4.1 has been added (#301).
+- Support creating all kinds of empty geometries from empty lists of Python
+  objects (#397, #404).
+
+Refactoring:
+
+- Switch from ``SingleSidedBuffer()`` to ``OffsetCurve()`` for GEOS >= 3.3
+  (#270).
+- Cython speedups are now enabled by default (#252).
+
+Packaging:
+
+- Packaging 16.7, a setup dependency, is vendorized (#314).
+- Infrastructure for building manylinux1 wheels has been added (#391).
+- The system's ``geos-config`` program is now only checked when ``setup.py``
+  is executed, never during normal use of the module (#244).
+- Added new library search paths to assist PyInstaller (#382) and Windows
+  (#343).
+
+1.5.17 (2016-08-31)
+-------------------
+- Bug fix: eliminate memory leak in geom_factory() (#408).
+- Bug fix: remove mention of negative distances in parallel_offset and note
+  that vertices of right hand offset lines are reversed (#284).
+
+1.5.16 (2016-05-26)
+-------------------
+- Bug fix: eliminate memory leak when unpickling geometry objects (#384, #385).
+- Bug fix: prevent crashes when attempting to pickle a prepared geometry,
+  raising ``PicklingError`` instead (#386).
+- Packaging: extension modules in the OS X wheels uploaded to PyPI link only
+  libgeos_c.dylib now (you can verify and compare to previous releases with
+  ``otool -L shapely/vectorized/_vectorized.so``).
+
+1.5.15 (2016-03-29)
+-------------------
+- Bug fix: use uintptr_t to store pointers instead of long in _geos.pxi,
+  preventing an overflow error (#372, #373). Note that this bug fix was
+  erroneously reported to have been made in 1.5.14, but was not.
+
+1.5.14 (2016-03-27)
+-------------------
+- Bug fix: use ``type()`` instead of ``isinstance()`` when evaluating geometry
+  equality, preventing instances of base and derived classes from 
+  being mistaken for equals (#317).
+- Bug fix: ensure that empty geometries are created when constructors have no
+  args (#332, #333).
+- Bug fix: support app "freezing" better on Windows by not relying on the
+  ``__file__`` attribute (#342, #377).
+- Bug fix: ensure that empty polygons evaluate to be ``==`` (#355).
+- Bug fix: filter out empty geometries that can cause segfaults when creating
+  and loading STRtrees (#345, #348).
+- Bug fix: no longer attempt to reuse GEOS DLLs already loaded by Rasterio
+  or Fiona on OS X (#374, #375).
+
+1.5.13 (2015-10-09)
+-------------------
+- Restore setup and runtime discovery and loading of GEOS shared library to
+  state at version 1.5.9 (#326).
+- On OS X we try to reuse any GEOS shared library that may have been loaded
+  via import of Fiona or Rasterio in order to avoid a bug involving the
+  GEOS AbstractSTRtree (#324, #327).
+
+1.5.12 (2015-08-27)
+-------------------
+- Remove configuration of root logger from libgeos.py (#312).
+- Skip test_fallbacks on Windows (#308).
+- Call setlocale(locale.LC_ALL, "") instead of resetlocale() on Windows when
+  tearing down the locale test (#308).
+- Fix for Sphinx warnings (#309).
+- Addition of .cache, .idea, .pyd, .pdb to .gitignore (#310).
+
+1.5.11 (2015-08-23)
+-------------------
+- Remove packaging module requirement added in 1.5.10 (#305). Distutils can't 
+  parse versions using 'rc', but if we stick to 'a' and 'b' we will be fine.
+
+1.5.10 (2015-08-22)
+-------------------
+- Monkey patch affinity module by absolute reference (#299).
+- Raise TopologicalError in relate() instead of crashing (#294, #295, #303).
+
+1.5.9 (2015-05-27)
+------------------
+- Fix for 64 bit speedups compatibility (#274).
+
+1.5.8 (2015-04-29)
+------------------
+- Setup file encoding bug fix (#254).
+- Support for pyinstaller (#261).
+- Major prepared geometry operation fix for Windows (#268, #269).
+- Major fix for OS X binary wheel (#262).
+
+1.5.7 (2015-03-16)
+------------------
+- Test and fix buggy error and notice handlers (#249).
+
+1.5.6 (2015-02-02)
+------------------
+- Fix setup regression (#232, #234).
+- SVG representation improvements (#233, #237).
+
+1.5.5 (2015-01-20)
+------------------
+- MANIFEST changes to restore _geox.pxi (#231).
+
+1.5.4 (2015-01-19)
+------------------
+- Fixed OS X binary wheel library load path (#224).
+
+1.5.3 (2015-01-12)
+------------------
+- Fixed ownership and potential memory leak in polygonize (#223).
+- Wider release of binary wheels for OS X.
+
+1.5.2 (2015-01-04)
+------------------
+- Fail installation if GEOS dependency is not met, preventing update breakage
+  (#218, #219).
+
+1.5.1 (2014-12-04)
+------------------
+- Restore geometry hashing (#209).
+
+1.5.0 (2014-12-02)
+------------------
+- Affine transformation speedups (#197).
+- New `==` rich comparison (#195).
+- Geometry collection constructor (#200).
+- ops.snap() backed by GEOSSnap (#201).
+- Clearer exceptions in cases of topological invalidity (#203).
+
+1.4.4 (2014-11-02)
+------------------
+- Proper conversion of numpy float32 vals to coords (#186).
+
+1.4.3 (2014-10-01)
+------------------
+- Fix for endianness bug in WKB writer (#174).
+
+1.4.2 (2014-09-29)
+------------------
+- Fix bungled 1.4.1 release (#176).
+
+1.4.1 (2014-09-23)
+------------------
+- Return of support for GEOS 3.2 (#176, #178).
+
+1.4.0 (2014-09-08)
+------------------
+- SVG representations for IPython's inline image protocol.
+- Efficient and fast vectorized contains().
+- Change mitre_limit default to 5.0; raise ValueError with 0.0 (#139).
+- Allow mix of tuples and Points in sped-up LineString ctor (#152).
+- New STRtree class (#73).
+- Add ops.nearest_points() (#147).
+- Faster creation of geometric objects from others (cloning) (#165).
+- Removal of tests from package.
+
+1.3.3 (2014-07-23)
+------------------
+- Allow single-part geometries as argument to ops.cacaded_union() (#135).
+- Support affine transformations of LinearRings (#112).
+
+1.3.2 (2014-05-13)
+------------------
+- Let LineString() take a sequence of Points (#130).
+
+1.3.1 (2014-04-22)
+------------------
+- More reliable proxy cleanup on exit (#106).
+- More robust DLL loading on all platforms (#114).
+
+1.3.0 (2013-12-31)
+------------------
+- Include support for Python 3.2 and 3.3 (#56), minimum version is now 2.6.
+- Switch to GEOS WKT/WKB Reader/Writer API, with defaults changed to enable 3D
+  output dimensions, and to 'trim' WKT output for GEOS >=3.3.0.
+- Use GEOS version instead of GEOS C API version to determine library
+  capabilities (#65).
+
+1.2.19 (2013-12-30)
+-------------------
+- Add buffering style options (#55).
+
+1.2.18 (2013-07-23)
+--------------------
+- Add shapely.ops.transform.
+- Permit empty sequences in collection constructors (#49, #50).
+- Individual polygons in MultiPolygon.__geo_interface__ are changed to tuples
+  to match Polygon.__geo_interface__ (#51).
+- Add shapely.ops.polygonize_full (#57).
+
+1.2.17 (2013-01-27)
+-------------------
+- Avoid circular import between wkt/wkb and geometry.base by moving calls
+  to GEOS serializers to the latter module.
+- Set _ndim when unpickling (issue #6).
+- Don't install DLLs to Python's DLL directory (#37).
+- Add affinity module of affine transformation (#31).
+- Fix NameError that blocked installation with PyPy (#40, #41).
+
+1.2.16 (2012-09-18)
+-------------------
+- Add ops.unary_union function.
+- Alias ops.cascaded_union to ops.unary_union when GEOS CAPI >= (1,7,0).
+- Add geos_version_string attribute to shapely.geos.
+- Ensure parent is set when child geometry is accessed.
+- Generate _speedups.c using Cython when building from repo when missing,
+  stale, or the build target is "sdist".
+- The is_simple predicate of invalid, self-intersecting linear rings now
+  returns ``False``.
+- Remove VERSION.txt from repo, it's now written by the distutils setup script
+  with value of shapely.__version__.
+
+1.2.15 (2012-06-27)
+-------------------
+- Eliminate numerical sensitivity in a method chaining test (Debian bug
+  #663210).
+- Account for cascaded union of random buffered test points being a polygon
+  or multipolygon (Debian bug #666655).
+- Use Cython to build speedups if it is installed.
+- Avoid stumbling over SVN revision numbers in GEOS C API version strings.
+
+1.2.14 (2012-01-23)
+-------------------
+- A geometry's coords property is now sliceable, yielding a list of coordinate
+  values.
+- Homogeneous collections are now sliceable, yielding a new collection of the
+  same type.
+
+1.2.13 (2011-09-16)
+-------------------
+- Fixed errors in speedups on 32bit systems when GEOS references memory above
+  2GB.
+- Add shapely.__version__ attribute.
+- Update the manual.
+
+1.2.12 (2011-08-15)
+-------------------
+- Build Windows distributions with VC7 or VC9 as appropriate.
+- More verbose report on failure to speed up.
+- Fix for prepared geometries broken in 1.2.11.
+- DO NOT INSTALL 1.2.11
+
+1.2.11 (2011-08-04)
+-------------------
+- Ignore AttributeError during exit.
+- PyPy 1.5 support.
+- Prevent operation on prepared geometry crasher (#12).
+- Optional Cython speedups for Windows.
+- Linux 3 platform support.
+
+1.2.10 (2011-05-09)
+-------------------
+- Add optional Cython speedups.
+- Add is_cww predicate to LinearRing.
+- Add function that forces orientation of Polygons.
+- Disable build of speedups on Windows pending packaging work.
+
+1.2.9 (2011-03-31)
+------------------
+- Remove extra glob import.
+- Move examples to shapely.examples.
+- Add box() constructor for rectangular polygons.
+- Fix extraneous imports.
+
+1.2.8 (2011-12-03)
+------------------
+- New parallel_offset method (#6).
+- Support for Python 2.4.
+
+1.2.7 (2010-11-05)
+------------------
+- Support for Windows eggs.
+
+1.2.6 (2010-10-21)
+------------------
+- The geoms property of an empty collection yields [] instead of a ValueError
+  (#3).
+- The coords and geometry type sproperties have the same behavior as above.
+- Ensure that z values carry through into products of operations (#4).
+
+1.2.5 (2010-09-19)
+------------------
+- Stop distributing docs/_build.
+- Include library fallbacks in test_dlls.py for linux platform.
+
+1.2.4 (2010-09-09)
+------------------
+- Raise AttributeError when there's no backend support for a method.
+- Raise OSError if libgeos_c.so (or variants) can't be found and loaded.
+- Add geos_c DLL loading support for linux platforms where find_library doesn't
+  work.
+
+1.2.3 (2010-08-17)
+------------------
+- Add mapping function.
+- Fix problem with GEOSisValidReason symbol for GEOS < 3.1.
+
+1.2.2 (2010-07-23)
+------------------
+- Add representative_point method.
+
+1.2.1 (2010-06-23)
+------------------
+- Fixed bounds of singular polygons.
+- Added shapely.validation.explain_validity function (#226).
+
+1.2 (2010-05-27)
+----------------
+- Final release.
+
+1.2rc2 (2010-05-26)
+-------------------
+- Add examples and tests to MANIFEST.in.
+- Release candidate 2.
+
+1.2rc1 (2010-05-25)
+-------------------
+- Release candidate.
+
+1.2b7 (2010-04-22)
+------------------
+- Memory leak associated with new empty geometry state fixed.
+
+1.2b6 (2010-04-13)
+------------------
+- Broken GeometryCollection fixed.
+
+1.2b5 (2010-04-09)
+------------------
+- Objects can be constructed from others of the same type, thereby making
+  copies. Collections can be constructed from sequences of objects, also making
+  copies.
+- Collections are now iterators over their component objects.
+- New code for manual figures, using the descartes package.
+
+1.2b4 (2010-03-19)
+------------------
+- Adds support for the "sunos5" platform.
+
+1.2b3 (2010-02-28)
+------------------
+- Only provide simplification implementations for GEOS C API >= 1.5.
+
+1.2b2 (2010-02-19)
+------------------
+- Fix cascaded_union bug introduced in 1.2b1 (#212).
+
+1.2b1 (2010-02-18)
+------------------
+- Update the README. Remove cruft from setup.py. Add some version 1.2 metadata
+  regarding required Python version (>=2.5,<3) and external dependency
+  (libgeos_c >= 3.1).
+
+1.2a6 (2010-02-09)
+------------------
+- Add accessor for separate arrays of X and Y values (#210).
+
+TODO: fill gap here
+
+1.2a1 (2010-01-20)
+------------------
+- Proper prototyping of WKB writer, and avoidance of errors on 64-bit systems
+  (#191).
+- Prototype libgeos_c functions in a way that lets py2exe apps import shapely
+  (#189).
+
+1.2 Branched (2009-09-19)
+
+1.0.12 (2009-04-09)
+-------------------
+- Fix for references held by topology and predicate descriptors.
+
+1.0.11 (2008-11-20)
+-------------------
+- Work around bug in GEOS 2.2.3, GEOSCoordSeq_getOrdinate not exported properly
+  (#178).
+
+1.0.10 (2008-11-17)
+-------------------
+- Fixed compatibility with GEOS 2.2.3 that was broken in 1.0.8 release (#176).
+
+1.0.9 (2008-11-16)
+------------------
+- Find and load MacPorts libgeos.
+
+1.0.8 (2008-11-01)
+------------------
+- Fill out GEOS function result and argument types to prevent faults on a
+  64-bit arch.
+
+1.0.7 (2008-08-22)
+------------------
+- Polygon rings now have the same dimensions as parent (#168).
+- Eliminated reference cycles in polygons (#169).
+
+1.0.6 (2008-07-10)
+------------------
+- Fixed adaptation of multi polygon data.
+- Raise exceptions earlier from binary predicates.
+- Beginning distributing new windows DLLs (#166).
+
+1.0.5 (2008-05-20)
+------------------
+- Added access to GEOS polygonizer function.
+- Raise exception when insufficient coordinate tuples are passed to LinearRing
+  constructor (#164).
+
+1.0.4 (2008-05-01)
+------------------
+- Disentangle Python and topological equality (#163).
+- Add shape(), a factory that copies coordinates from a geo interface provider.
+  To be used instead of asShape() unless you really need to store coordinates
+  outside shapely for efficient use in other code.
+- Cache GEOS geometries in adapters (#163).
+
+1.0.3 (2008-04-09)
+------------------
+- Do not release GIL when calling GEOS functions (#158).
+- Prevent faults when chaining multiple GEOS operators (#159).
+
+1.0.2 (2008-02-26)
+------------------
+- Fix loss of dimensionality in polygon rings (#155).
+
+1.0.1 (2008-02-08)
+------------------
+- Allow chaining expressions involving coordinate sequences and geometry parts
+  (#151).
+- Protect against abnormal use of coordinate accessors (#152).
+- Coordinate sequences now implement the numpy array protocol (#153).
+
+1.0 (2008-01-18)
+----------------
+- Final release.
+
+1.0 RC2 (2008-01-16)
+--------------------
+- Added temporary solution for #149.
+
+1.0 RC1 (2008-01-14)
+--------------------
+- First release candidate
+
+

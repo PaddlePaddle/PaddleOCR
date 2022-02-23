@@ -1,0 +1,5 @@
+[console_scripts]
+csscapture = cssutils.scripts.csscapture:main
+csscombine = cssutils.scripts.csscombine:main
+cssparse = cssutils.scripts.cssparse:main
+

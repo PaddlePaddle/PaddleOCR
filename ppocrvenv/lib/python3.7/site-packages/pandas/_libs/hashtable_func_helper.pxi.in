@@ -1,0 +1,472 @@
+"""
+Template for each `dtype` helper function for hashtable
+
+WARNING: DO NOT edit .pxi FILE directly, .pxi is generated from .pxi.in
+"""
+
+{{py:
+
+# name, dtype, ttype, c_type, to_c_type
+dtypes = [('Complex128', 'complex128', 'complex128',
+                         'khcomplex128_t', 'to_khcomplex128_t'),
+          ('Complex64', 'complex64', 'complex64',
+                        'khcomplex64_t', 'to_khcomplex64_t'),
+          ('Float64', 'float64', 'float64', 'float64_t', ''),
+          ('Float32', 'float32', 'float32', 'float32_t', ''),
+          ('UInt64', 'uint64', 'uint64', 'uint64_t', ''),
+          ('UInt32', 'uint32', 'uint32', 'uint32_t', ''),
+          ('UInt16', 'uint16', 'uint16', 'uint16_t', ''),
+          ('UInt8', 'uint8', 'uint8', 'uint8_t', ''),
+          ('Object', 'object', 'pymap', 'object', ''),
+          ('Int64', 'int64', 'int64', 'int64_t', ''),
+          ('Int32', 'int32', 'int32', 'int32_t', ''),
+          ('Int16', 'int16', 'int16', 'int16_t', ''),
+          ('Int8', 'int8', 'int8', 'int8_t', '')]
+
+}}
+
+{{for name, dtype, ttype, c_type, to_c_type in dtypes}}
+
+
+@cython.wraparound(False)
+@cython.boundscheck(False)
+{{if dtype == 'object'}}
+cdef value_count_{{dtype}}(ndarray[{{dtype}}] values, bint dropna, navalue=np.NaN):
+{{else}}
+cdef value_count_{{dtype}}(const {{dtype}}_t[:] values, bint dropna):
+{{endif}}
+    cdef:
+        Py_ssize_t i = 0
+        Py_ssize_t n = len(values)
+        kh_{{ttype}}_t *table
+
+        # Don't use Py_ssize_t, since table.n_buckets is unsigned
+        khiter_t k
+        bint is_null
+
+        {{c_type}} val
+
+        int ret = 0
+
+    # we track the order in which keys are first seen (GH39009),
+    # khash-map isn't insertion-ordered, thus:
+    #    table maps keys to counts
+    #    result_keys remembers the original order of keys
+
+    result_keys = {{name}}Vector()
+    table = kh_init_{{ttype}}()
+
+    {{if dtype == 'object'}}
+    kh_resize_{{ttype}}(table, n // 10)
+
+    for i in range(n):
+        val = values[i]
+        is_null = checknull(val)
+        if not is_null or not dropna:
+            # all nas become the same representative:
+            if is_null:
+                val = navalue
+            k = kh_get_{{ttype}}(table, <PyObject*>val)
+            if k != table.n_buckets:
+                table.vals[k] += 1
+            else:
+                k = kh_put_{{ttype}}(table, <PyObject*>val, &ret)
+                table.vals[k] = 1
+                result_keys.append(val)
+    {{else}}
+    kh_resize_{{ttype}}(table, n)
+
+    for i in range(n):
+        val = {{to_c_type}}(values[i])
+
+        if not is_nan_{{c_type}}(val) or not dropna:
+            k = kh_get_{{ttype}}(table, val)
+            if k != table.n_buckets:
+                table.vals[k] += 1
+            else:
+                k = kh_put_{{ttype}}(table, val, &ret)
+                table.vals[k] = 1
+                result_keys.append(val)
+    {{endif}}
+
+    # collect counts in the order corresponding to result_keys:
+    cdef int64_t[:] result_counts = np.empty(table.size, dtype=np.int64)
+    for i in range(table.size):
+        {{if dtype == 'object'}}
+        k = kh_get_{{ttype}}(table, result_keys.data[i])
+        {{else}}
+        k = kh_get_{{ttype}}(table, result_keys.data.data[i])
+        {{endif}}
+        result_counts[i] = table.vals[k]
+
+    kh_destroy_{{ttype}}(table)
+
+    return result_keys.to_array(), result_counts.base
+
+
+@cython.wraparound(False)
+@cython.boundscheck(False)
+{{if dtype == 'object'}}
+cdef duplicated_{{dtype}}(ndarray[{{dtype}}] values, object keep='first'):
+{{else}}
+cdef duplicated_{{dtype}}(const {{dtype}}_t[:] values, object keep='first'):
+{{endif}}
+    cdef:
+        int ret = 0
+        {{if dtype != 'object'}}
+        {{c_type}} value
+        {{endif}}
+        Py_ssize_t i, n = len(values)
+        khiter_t k
+        kh_{{ttype}}_t *table = kh_init_{{ttype}}()
+        ndarray[uint8_t, ndim=1, cast=True] out = np.empty(n, dtype='bool')
+
+    kh_resize_{{ttype}}(table, min(kh_needed_n_buckets(n), SIZE_HINT_LIMIT))
+
+    if keep not in ('last', 'first', False):
+        raise ValueError('keep must be either "first", "last" or False')
+
+    if keep == 'last':
+        {{if dtype == 'object'}}
+        for i in range(n - 1, -1, -1):
+            # equivalent: range(n)[::-1], which cython doesn't like in nogil
+            kh_put_{{ttype}}(table, <PyObject*>values[i], &ret)
+            out[i] = ret == 0
+        {{else}}
+        with nogil:
+            for i in range(n - 1, -1, -1):
+                # equivalent: range(n)[::-1], which cython doesn't like in nogil
+                value = {{to_c_type}}(values[i])
+                kh_put_{{ttype}}(table, value, &ret)
+                out[i] = ret == 0
+        {{endif}}
+    elif keep == 'first':
+        {{if dtype == 'object'}}
+        for i in range(n):
+            kh_put_{{ttype}}(table, <PyObject*>values[i], &ret)
+            out[i] = ret == 0
+        {{else}}
+        with nogil:
+            for i in range(n):
+                value = {{to_c_type}}(values[i])
+                kh_put_{{ttype}}(table, value, &ret)
+                out[i] = ret == 0
+        {{endif}}
+    else:
+        {{if dtype == 'object'}}
+        for i in range(n):
+            value = values[i]
+            k = kh_get_{{ttype}}(table, <PyObject*>value)
+            if k != table.n_buckets:
+                out[table.vals[k]] = 1
+                out[i] = 1
+            else:
+                k = kh_put_{{ttype}}(table, <PyObject*>value, &ret)
+                table.vals[k] = i
+                out[i] = 0
+        {{else}}
+        with nogil:
+            for i in range(n):
+                value = {{to_c_type}}(values[i])
+                k = kh_get_{{ttype}}(table, value)
+                if k != table.n_buckets:
+                    out[table.vals[k]] = 1
+                    out[i] = 1
+                else:
+                    k = kh_put_{{ttype}}(table, value, &ret)
+                    table.vals[k] = i
+                    out[i] = 0
+        {{endif}}
+    kh_destroy_{{ttype}}(table)
+    return out
+
+
+# ----------------------------------------------------------------------
+# Membership
+# ----------------------------------------------------------------------
+
+
+@cython.wraparound(False)
+@cython.boundscheck(False)
+{{if dtype == 'object'}}
+cdef ismember_{{dtype}}(ndarray[{{c_type}}] arr, ndarray[{{c_type}}] values):
+{{else}}
+cdef ismember_{{dtype}}(const {{dtype}}_t[:] arr, const {{dtype}}_t[:] values):
+{{endif}}
+    """
+    Return boolean of values in arr on an
+    element by-element basis
+
+    Parameters
+    ----------
+    arr : {{dtype}} ndarray
+    values : {{dtype}} ndarray
+
+    Returns
+    -------
+    boolean ndarry len of (arr)
+    """
+    cdef:
+        Py_ssize_t i, n
+        khiter_t k
+        int ret = 0
+        ndarray[uint8_t] result
+        {{c_type}} val
+        kh_{{ttype}}_t *table = kh_init_{{ttype}}()
+
+    # construct the table
+    n = len(values)
+    kh_resize_{{ttype}}(table, n)
+
+    {{if dtype == 'object'}}
+    for i in range(n):
+        kh_put_{{ttype}}(table, <PyObject*>values[i], &ret)
+    {{else}}
+    with nogil:
+        for i in range(n):
+            val = {{to_c_type}}(values[i])
+            kh_put_{{ttype}}(table, val, &ret)
+    {{endif}}
+
+    # test membership
+    n = len(arr)
+    result = np.empty(n, dtype=np.uint8)
+
+    {{if dtype == 'object'}}
+    for i in range(n):
+        val = arr[i]
+        k = kh_get_{{ttype}}(table, <PyObject*>val)
+        result[i] = (k != table.n_buckets)
+    {{else}}
+    with nogil:
+        for i in range(n):
+            val = {{to_c_type}}(arr[i])
+            k = kh_get_{{ttype}}(table, val)
+            result[i] = (k != table.n_buckets)
+    {{endif}}
+
+    kh_destroy_{{ttype}}(table)
+    return result.view(np.bool_)
+
+# ----------------------------------------------------------------------
+# Mode Computations
+# ----------------------------------------------------------------------
+
+
+@cython.wraparound(False)
+@cython.boundscheck(False)
+{{if dtype == 'object'}}
+cdef mode_{{dtype}}(ndarray[{{dtype}}] values, bint dropna):
+{{else}}
+cdef mode_{{dtype}}(const {{dtype}}_t[:] values, bint dropna):
+{{endif}}
+    cdef:
+        {{if dtype == 'object'}}
+        ndarray[{{dtype}}] keys
+        ndarray[{{dtype}}] modes
+        {{else}}
+        {{dtype}}_t[:] keys
+        ndarray[{{dtype}}_t] modes
+        {{endif}}
+        int64_t[:] counts
+        int64_t count, max_count = -1
+        Py_ssize_t k, j = 0
+
+    keys, counts = value_count_{{dtype}}(values, dropna)
+
+    {{if dtype == 'object'}}
+    modes = np.empty(len(keys), dtype=np.object_)
+    {{else}}
+    modes = np.empty(len(keys), dtype=np.{{dtype}})
+    {{endif}}
+
+    {{if dtype != 'object'}}
+    with nogil:
+        for k in range(len(keys)):
+            count = counts[k]
+            if count == max_count:
+                j += 1
+            elif count > max_count:
+                max_count = count
+                j = 0
+            else:
+                continue
+
+            modes[j] = keys[k]
+    {{else}}
+    for k in range(len(keys)):
+        count = counts[k]
+        if count == max_count:
+            j += 1
+        elif count > max_count:
+            max_count = count
+            j = 0
+        else:
+            continue
+
+        modes[j] = keys[k]
+    {{endif}}
+
+    return modes[:j + 1]
+
+{{endfor}}
+
+
+ctypedef fused htfunc_t:
+    complex128_t
+    complex64_t
+    float64_t
+    float32_t
+    uint64_t
+    uint32_t
+    uint16_t
+    uint8_t
+    int64_t
+    int32_t
+    int16_t
+    int8_t
+    object
+
+
+cpdef value_count(ndarray[htfunc_t] values, bint dropna):
+    if htfunc_t is object:
+        return value_count_object(values, dropna)
+
+    elif htfunc_t is int8_t:
+        return value_count_int8(values, dropna)
+    elif htfunc_t is int16_t:
+        return value_count_int16(values, dropna)
+    elif htfunc_t is int32_t:
+        return value_count_int32(values, dropna)
+    elif htfunc_t is int64_t:
+        return value_count_int64(values, dropna)
+
+    elif htfunc_t is uint8_t:
+        return value_count_uint8(values, dropna)
+    elif htfunc_t is uint16_t:
+        return value_count_uint16(values, dropna)
+    elif htfunc_t is uint32_t:
+        return value_count_uint32(values, dropna)
+    elif htfunc_t is uint64_t:
+        return value_count_uint64(values, dropna)
+
+    elif htfunc_t is float64_t:
+        return value_count_float64(values, dropna)
+    elif htfunc_t is float32_t:
+        return value_count_float32(values, dropna)
+
+    elif htfunc_t is complex128_t:
+        return value_count_complex128(values, dropna)
+    elif htfunc_t is complex64_t:
+        return value_count_complex64(values, dropna)
+
+    else:
+        raise TypeError(values.dtype)
+
+
+cpdef duplicated(ndarray[htfunc_t] values, object keep="first"):
+    if htfunc_t is object:
+        return duplicated_object(values, keep)
+
+    elif htfunc_t is int8_t:
+        return duplicated_int8(values, keep)
+    elif htfunc_t is int16_t:
+        return duplicated_int16(values, keep)
+    elif htfunc_t is int32_t:
+        return duplicated_int32(values, keep)
+    elif htfunc_t is int64_t:
+        return duplicated_int64(values, keep)
+
+    elif htfunc_t is uint8_t:
+        return duplicated_uint8(values, keep)
+    elif htfunc_t is uint16_t:
+        return duplicated_uint16(values, keep)
+    elif htfunc_t is uint32_t:
+        return duplicated_uint32(values, keep)
+    elif htfunc_t is uint64_t:
+        return duplicated_uint64(values, keep)
+
+    elif htfunc_t is float64_t:
+        return duplicated_float64(values, keep)
+    elif htfunc_t is float32_t:
+        return duplicated_float32(values, keep)
+
+    elif htfunc_t is complex128_t:
+        return duplicated_complex128(values, keep)
+    elif htfunc_t is complex64_t:
+        return duplicated_complex64(values, keep)
+
+    else:
+        raise TypeError(values.dtype)
+
+
+cpdef ismember(ndarray[htfunc_t] arr, ndarray[htfunc_t] values):
+    if htfunc_t is object:
+        return ismember_object(arr, values)
+
+    elif htfunc_t is int8_t:
+        return ismember_int8(arr, values)
+    elif htfunc_t is int16_t:
+        return ismember_int16(arr, values)
+    elif htfunc_t is int32_t:
+        return ismember_int32(arr, values)
+    elif htfunc_t is int64_t:
+        return ismember_int64(arr, values)
+
+    elif htfunc_t is uint8_t:
+        return ismember_uint8(arr, values)
+    elif htfunc_t is uint16_t:
+        return ismember_uint16(arr, values)
+    elif htfunc_t is uint32_t:
+        return ismember_uint32(arr, values)
+    elif htfunc_t is uint64_t:
+        return ismember_uint64(arr, values)
+
+    elif htfunc_t is float64_t:
+        return ismember_float64(arr, values)
+    elif htfunc_t is float32_t:
+        return ismember_float32(arr, values)
+
+    elif htfunc_t is complex128_t:
+        return ismember_complex128(arr, values)
+    elif htfunc_t is complex64_t:
+        return ismember_complex64(arr, values)
+
+    else:
+        raise TypeError(values.dtype)
+
+
+cpdef mode(ndarray[htfunc_t] values, bint dropna):
+    if htfunc_t is object:
+        return mode_object(values, dropna)
+
+    elif htfunc_t is int8_t:
+        return mode_int8(values, dropna)
+    elif htfunc_t is int16_t:
+        return mode_int16(values, dropna)
+    elif htfunc_t is int32_t:
+        return mode_int32(values, dropna)
+    elif htfunc_t is int64_t:
+        return mode_int64(values, dropna)
+
+    elif htfunc_t is uint8_t:
+        return mode_uint8(values, dropna)
+    elif htfunc_t is uint16_t:
+        return mode_uint16(values, dropna)
+    elif htfunc_t is uint32_t:
+        return mode_uint32(values, dropna)
+    elif htfunc_t is uint64_t:
+        return mode_uint64(values, dropna)
+
+    elif htfunc_t is float64_t:
+        return mode_float64(values, dropna)
+    elif htfunc_t is float32_t:
+        return mode_float32(values, dropna)
+
+    elif htfunc_t is complex128_t:
+        return mode_complex128(values, dropna)
+    elif htfunc_t is complex64_t:
+        return mode_complex64(values, dropna)
+
+    else:
+        raise TypeError(values.dtype)

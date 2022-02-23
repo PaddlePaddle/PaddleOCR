@@ -1,0 +1,57 @@
+Metadata-Version: 2.1
+Name: Flask-Babel
+Version: 2.0.0
+Summary: Adds i18n/l10n support to Flask applications
+Home-page: http://github.com/python-babel/flask-babel
+Author: Armin Ronacher
+Author-email: armin.ronacher@active-4.com
+Maintainer: Tyler Kennedy
+Maintainer-email: tk@tkte.ch
+License: BSD
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Description-Content-Type: text/markdown
+Requires-Dist: pytz
+Requires-Dist: Flask
+Requires-Dist: Babel (>=2.3)
+Requires-Dist: Jinja2 (>=2.5)
+Provides-Extra: dev
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pytest-mock ; extra == 'dev'
+Requires-Dist: bumpversion ; extra == 'dev'
+Requires-Dist: ghp-import ; extra == 'dev'
+Requires-Dist: sphinx ; extra == 'dev'
+Requires-Dist: Pallets-Sphinx-Themes ; extra == 'dev'
+
+# Flask Babel
+
+![Tests](https://github.com/python-babel/flask-babel/workflows/Tests/badge.svg?branch=master)
+[![PyPI](https://img.shields.io/pypi/v/flask-babel.svg?maxAge=2592000)](https://pypi.python.org/pypi/Flask-Babel)
+
+Implements i18n and l10n support for Flask.  This is based on the Python
+[babel][] module as well as [pytz][] both of which are installed automatically
+for you if you install this library.
+
+# Documention
+
+The latest documentation is available [here][docs].
+
+[babel]: https://github.com/python-babel/babel
+[pytz]: https://pypi.python.org/pypi/pytz/
+[docs]: https://flask-babel.tkte.ch/
+[semver]: https://semver.org/
+
+

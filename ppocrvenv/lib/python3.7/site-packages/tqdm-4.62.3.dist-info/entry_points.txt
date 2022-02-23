@@ -1,0 +1,3 @@
+[console_scripts]
+tqdm = tqdm.cli:main
+

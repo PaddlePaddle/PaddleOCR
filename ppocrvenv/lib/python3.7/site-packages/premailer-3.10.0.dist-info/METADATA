@@ -1,0 +1,465 @@
+Metadata-Version: 2.1
+Name: premailer
+Version: 3.10.0
+Summary: Turns CSS blocks into style attributes
+Home-page: http://github.com/peterbe/premailer
+Author: Peter Bengtsson
+Author-email: mail@peterbe.com
+License: Python
+Keywords: html lxml email mail style
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Other Environment
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Python Software Foundation License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Communications
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Other/Nonlisted Topic
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: lxml
+Requires-Dist: cssselect
+Requires-Dist: cssutils
+Requires-Dist: requests
+Requires-Dist: cachetools
+Provides-Extra: dev
+Requires-Dist: tox ; extra == 'dev'
+Requires-Dist: twine ; extra == 'dev'
+Requires-Dist: therapist ; extra == 'dev'
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: wheel ; extra == 'dev'
+Provides-Extra: test
+Requires-Dist: nose ; extra == 'test'
+Requires-Dist: mock ; extra == 'test'
+
+premailer
+=========
+
+.. image:: https://travis-ci.org/peterbe/premailer.svg?branch=master
+  :target: https://travis-ci.org/peterbe/premailer
+
+.. image:: https://badge.fury.io/py/premailer.svg
+  :target: https://pypi.python.org/pypi/premailer
+
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+  :target: https://github.com/ambv/black
+
+Looking for sponsors
+--------------------
+
+This project is actively looking for corporate sponsorship. If you want
+to help making this an active project consider `pinging
+Peter <https://www.peterbe.com/contact>`__ and we can talk about putting
+up logos and links to your company.
+
+Python versions
+---------------
+
+Our
+`tox.ini <https://github.com/peterbe/premailer/blob/master/tox.ini>`__
+makes sure premailer works in:
+
+-  Python 3.4
+-  Python 3.5
+-  Python 3.6
+-  Python 3.7
+-  Python 3.8
+-  PyPy
+
+Turns CSS blocks into style attributes
+--------------------------------------
+
+When you send HTML emails you can't use style tags but instead you have
+to put inline ``style`` attributes on every element. So from this:
+
+.. code:: html
+
+    <html>
+    <style type="text/css">
+    h1 { border:1px solid black }
+    p { color:red;}
+    </style>
+    <h1 style="font-weight:bolder">Peter</h1>
+    <p>Hej</p>
+    </html>
+
+You want this:
+
+.. code:: html
+
+    <html>
+    <h1 style="font-weight:bolder; border:1px solid black">Peter</h1>
+    <p style="color:red">Hej</p>
+    </html>
+
+premailer does this. It parses an HTML page, looks up ``style`` blocks
+and parses the CSS. It then uses the ``lxml.html`` parser to modify the
+DOM tree of the page accordingly.
+
+Warning!
+By default, premailer will attempt to download any external stylesheets by URL over the Internet.
+If you want to prevent this you can use the ``allow_network=False`` option.
+
+Getting started
+---------------
+
+If you haven't already done so, install ``premailer`` first:
+
+::
+
+    $ pip install premailer
+
+Next, the most basic use is to use the shortcut function, like this:
+
+.. code:: python
+
+    >>> from premailer import transform
+    >>> print(transform("""
+    ...         <html>
+    ...         <style type="text/css">
+    ...         h1 { border:1px solid black }
+    ...         p { color:red;}
+    ...         p::first-letter { float:left; }
+    ...         </style>
+    ...         <style type="text/css" data-premailer="ignore">
+    ...         h1 { color:blue; }
+    ...         </style>
+    ...         <h1 style="font-weight:bolder">Peter</h1>
+    ...         <p>Hej</p>
+    ...         </html>
+    ... """))
+    <html>
+    <head>
+        <style type="text/css">p::first-letter {float:left}</style>
+        <style type="text/css">
+        h1 { color:blue; }
+        </style>
+    </head>
+    <body>
+        <h1 style="border:1px solid black; font-weight:bolder">Peter</h1>
+        <p style="color:red">Hej</p>
+    </body>
+    </html>
+
+The ``transform`` shortcut function transforms the given HTML using the defaults for all options:
+
+.. code:: python
+
+    base_url=None, # Optional URL prepended to all relative links (both stylesheets and internal)
+    disable_link_rewrites=False, # Allow link rewrites (e.g. using base_url)
+    preserve_internal_links=False, # Do not preserve links to named anchors when using base_url
+    preserve_inline_attachments=True, # Preserve links with cid: scheme when base_url is specified
+    preserve_handlebar_syntax=False # Preserve handlebar syntax from being encoded
+    exclude_pseudoclasses=True, # Ignore pseudoclasses when processing styles
+    keep_style_tags=False, # Discard original style tag
+    include_star_selectors=False, # Ignore star selectors when processing styles
+    remove_classes=False, # Leave class attributes on HTML elements
+    capitalize_float_margin=False, # Do not capitalize float and margin properties
+    strip_important=True, # Remove !important from property values
+    external_styles=None, # Optional list of URLs to load and parse
+    css_text=None, # Optional CSS text to parse
+    method="html", # Parse input as HTML (as opposed to "xml")
+    base_path=None, # Optional base path to stylesheet in your file system
+    disable_basic_attributes=None, # Optional list of attribute names to preserve on HTML elements
+    disable_validation=False, # Validate CSS when parsing it with cssutils
+    cache_css_parsing=True, # Do cache parsed output for CSS
+    cssutils_logging_handler=None, # See "Capturing logging from cssutils" below
+    cssutils_logging_level=None,
+    disable_leftover_css=False, # Output CSS that was not inlined into the HEAD
+    align_floating_images=True, # Add align attribute for floated images
+    remove_unset_properties=True # Remove CSS properties if their value is unset when merged
+    allow_network=True # allow network access to fetch linked css files
+    allow_insecure_ssl=False # Don't allow unverified SSL certificates for external links
+    allow_loading_external_files=False # Allow loading any non-HTTP external file URL
+    session=None # Session used for http requests - supply your own for caching or to provide authentication
+
+For more advanced options, check out the code of the ``Premailer`` class
+and all its options in its constructor.
+
+You can also use premailer from the command line by using its main
+module.
+
+::
+
+    $ python -m premailer -h
+    usage: python -m premailer [options]
+
+    optional arguments:
+    -h, --help            show this help message and exit
+    -f [INFILE], --file [INFILE]
+                          Specifies the input file. The default is stdin.
+    -o [OUTFILE], --output [OUTFILE]
+                          Specifies the output file. The default is stdout.
+    --base-url BASE_URL
+    --remove-internal-links PRESERVE_INTERNAL_LINKS
+                          Remove links that start with a '#' like anchors.
+    --exclude-pseudoclasses
+                          Pseudo classes like p:last-child', p:first-child, etc
+    --preserve-style-tags
+                          Do not delete <style></style> tags from the html
+                          document.
+    --remove-star-selectors
+                          All wildcard selectors like '* {color: black}' will be
+                          removed.
+    --remove-classes      Remove all class attributes from all elements
+    --strip-important     Remove '!important' for all css declarations.
+    --method METHOD       The type of html to output. 'html' for HTML, 'xml' for
+                          XHTML.
+    --base-path BASE_PATH
+                          The base path for all external stylsheets.
+    --external-style EXTERNAL_STYLES
+                          The path to an external stylesheet to be loaded.
+    --disable-basic-attributes DISABLE_BASIC_ATTRIBUTES
+                          Disable provided basic attributes (comma separated)
+    --disable-validation  Disable CSSParser validation of attributes and values
+    --pretty              Pretty-print the outputted HTML.
+    --allow-insecure-ssl  Skip SSL certificate verification for external URLs.
+    --allow-loading-external-files Allow opening any non-HTTP external file URL.
+
+A basic example:
+
+::
+
+    $ python -m premailer --base-url=http://google.com/ -f newsletter.html
+    <html>
+    <head><style>.heading { color:red; }</style></head>
+    <body><h1 class="heading" style="color:red"><a href="http://google.com/">Title</a></h1></body>
+    </html>
+
+The command line interface supports standard input.
+
+::
+
+    $ echo '<style>.heading { color:red; }</style><h1 class="heading"><a href="/">Title</a></h1>' | python -m premailer --base-url=http://google.com/
+    <html>
+    <head><style>.heading { color:red; }</style></head>
+    <body><h1 class="heading" style="color:red"><a href="http://google.com/">Title</a></h1></body>
+    </html>
+
+Turning relative URLs into absolute URLs
+----------------------------------------
+
+Another thing premailer can do for you is to turn relative URLs (e.g.
+"/some/page.html" into "http://www.peterbe.com/some/page.html"). It does
+this to all ``href`` and ``src`` attributes that don't have a ``://``
+part in it. For example, turning this:
+
+.. code:: html
+
+    <html>
+    <body>
+    <a href="/">Home</a>
+    <a href="page.html">Page</a>
+    <a href="http://crosstips.org">External</a>
+    <img src="/folder/">Folder</a>
+    </body>
+    </html>
+
+Into this:
+
+.. code:: html
+
+    <html>
+    <body>
+    <a href="http://www.peterbe.com/">Home</a>
+    <a href="http://www.peterbe.com/page.html">Page</a>
+    <a href="http://crosstips.org">External</a>
+    <img src="http://www.peterbe.com/folder/">Folder</a>
+    </body>
+    </html>
+
+by using ``transform('...', base_url='http://www.peterbe.com/')``.
+
+Ignore certain ``<style>`` or ``<link>`` tags
+---------------------------------------------
+
+Suppose you have a style tag that you don't want to have processed and
+transformed you can simply set a data attribute on the tag like:
+
+.. code:: html
+
+    <head>
+    <style>/* this gets processed */</style>
+    <style data-premailer="ignore">/* this gets ignored */</style>
+    </head>
+
+That tag gets completely ignored except when the HTML is processed, the
+attribute ``data-premailer`` is removed.
+
+It works equally for a ``<link>`` tag like:
+
+.. code:: html
+
+    <head>
+    <link rel="stylesheet" href="foo.css" data-premailer="ignore">
+    </head>
+
+HTML attributes created additionally
+------------------------------------
+
+Certain HTML attributes are also created on the HTML if the CSS contains
+any ones that are easily translated into HTML attributes. For example,
+if you have this CSS: ``td { background-color:#eee; }`` then this is
+transformed into ``style="background-color:#eee"`` and as an HTML
+attribute ``bgcolor="#eee"``.
+
+Having these extra attributes basically as a "back up" for really shit
+email clients that can't even take the style attributes. A lot of
+professional HTML newsletters such as Amazon's use this. You can disable
+some attributes in ``disable_basic_attributes``.
+
+
+Capturing logging from ``cssutils``
+-----------------------------------
+
+`cssutils <https://pypi.python.org/pypi/cssutils/>`__ is the library that
+``premailer`` uses to parse CSS. It will use the python ``logging`` module
+to mention all issues it has with parsing your CSS. If you want to capture
+this, you have to pass in ``cssutils_logging_handler`` and
+``cssutils_logging_level`` (optional). For example like this:
+
+.. code:: python
+
+    >>> import logging
+    >>> import premailer
+    >>> from io import StringIO
+    >>> mylog = StringIO()
+    >>> myhandler = logging.StreamHandler(mylog)
+    >>> p = premailer.Premailer(
+    ...     cssutils_logging_handler=myhandler,
+    ...     cssutils_logging_level=logging.INFO
+    ... )
+    >>> result = p.transform("""
+    ...         <html>
+    ...         <style type="text/css">
+    ...         @keyframes foo { from { opacity: 0; } to { opacity: 1; } }
+    ...         </style>
+    ...         <p>Hej</p>
+    ...         </html>
+    ... """)
+    >>> mylog.getvalue()
+    'CSSStylesheet: Unknown @rule found. [2:1: @keyframes]\n'
+
+
+If execution speed is on your mind
+----------------------------------
+
+If execution speed is important, it's very plausible that you're not just converting
+1 HTML document but *a lot* of HTML documents. Then, the first thing you should do
+is avoid using the ``premailer.transform`` function because it creates a ``Premailer``
+class instance every time.
+
+.. code:: python
+
+    # WRONG WAY!
+    from premailer import transform
+
+    for html_string in get_html_documents():
+        transformed = transform(html_string, base_url=MY_BASE_URL)
+        # do something with 'transformed'
+
+Instead...
+
+.. code:: python
+
+    # RIGHT WAY
+    from premailer import Premailer
+
+    instance = Premailer(base_url=MY_BASE_URL)
+    for html_string in get_html_documents():
+        transformed = instance.transform(html_string)
+        # do something with 'transformed'
+
+Another thing to watch out for when you're reusing the same imported Python code
+and reusing it is that internal memoize function caches might build up. The
+environment variable to control is ``PREMAILER_CACHE_MAXSIZE``. This parameter
+requires a little bit of fine-tuning and calibration if your workload is really
+big and memory even becomes an issue.
+
+Advanced options
+----------------
+
+Below are some advanced configuration options that probably doesn't matter for
+most people with regular load.
+
+Choosing the cache implementation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+By default, ``premailer`` uses `LFUCache
+<https://cachetools.readthedocs.io/en/latest/#cachetools.LFUCache>`__ to cache
+selectors, styles and parsed CSS strings. If LFU doesn't serve your purpose, it
+is possible to switch to an alternate implementation using below environment
+variables.
+
+- ``PREMAILER_CACHE``: Can be LRU, LFU or TTL. Default is LFU.
+- ``PREMAILER_CACHE_MAXSIZE``: Maximum no. of items to be stored in cache. Defaults to 128.
+- ``PREMAILER_CACHE_TTL``: Time to live for cache entries. Only applicable for TTL cache. Defaults to 1 hour.
+
+
+Getting coding
+--------------
+
+First clone the code and create whatever virtualenv you need, then run:
+
+.. code:: bash
+
+    pip install -e ".[dev]"
+
+
+Then to run the tests, run:
+
+.. code:: bash
+
+    tox
+
+This will run the *whole test suite* for every possible version of Python
+it can find on your system. To run the tests more incrementally, open
+up the ``tox.ini`` and see how it works.
+
+Code style is all black
+-----------------------
+
+All code has to be formatted with `Black <https://pypi.org/project/black/>`_
+and the best tool for checking this is
+`therapist <https://pypi.org/project/therapist/>`_ since it can help you run
+all, help you fix things, and help you make sure linting is passing before
+you git commit. This project also uses ``flake8`` to check other things
+Black can't check.
+
+To check linting with ``tox`` use:
+
+.. code:: bash
+
+    tox -e lint
+
+To install the ``therapist`` pre-commit hook simply run:
+
+.. code:: bash
+
+    therapist install
+
+When you run ``therapist run`` it will only check the files you've touched.
+To run it for all files use:
+
+.. code:: bash
+
+    therapist run --use-tracked-files
+
+And to fix all/any issues run:
+
+.. code:: bash
+
+    therapist run --use-tracked-files --fix
+
+
+

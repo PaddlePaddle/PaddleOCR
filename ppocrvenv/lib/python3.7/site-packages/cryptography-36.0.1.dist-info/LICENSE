@@ -1,0 +1,6 @@
+This software is made available under the terms of *either* of the licenses
+found in LICENSE.APACHE or LICENSE.BSD. Contributions to cryptography are made
+under the terms of *both* these licenses.
+
+The code used in the OS random engine is derived from CPython, and is licensed
+under the terms of the PSF License Agreement.

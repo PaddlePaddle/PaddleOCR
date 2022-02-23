@@ -1,0 +1,4 @@
+@import url("a");
+b{color:red}
+a{float:left;bogus:foo(a, url(a))}
+b{color:red}

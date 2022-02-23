@@ -1,0 +1,183 @@
+@namespace url("http://www.w3.org/2002/06/xhtml2/");
+
+/*  A sample style sheet for XHTML 2.0
+
+    This style sheet describes a very incomplete, sample rendering of
+    XHTML 2.0 elements.
+
+    Editor: Masayasu Ishikawa <mimasa@w3.org>
+    Revision: $Id$
+*/
+
+/* new elements */
+
+section, h, nl, label, l, blockcode, separator, di
+                { display: block; }
+section, h, nl, label, l, blockcode, di
+                { 
+	unicode-bidi: embed }
+nl              { 
+	margin: 1.33em 0 }
+summary, standby, handler
+                { 
+	display: none }
+blockcode       { 
+	font-family: monospace; 
+	white-space: pre }
+separator       { 
+	border-bottom: thin black solid; 
+	border: 1px;
+                  inset; width 100%}
+h               { 
+	display: block; 
+	font-weight: bolder; 
+	font-family: sans-serif }
+h1, h2, h3, h4, h5, h6
+                { 
+	font-family: sans-serif; 
+	font-weight: bolder }
+body h, h1 {
+	font-size: 2em;
+	margin: .67em 0;
+}
+section h, h2 {
+	font-size: 1.5em;
+	margin: .83em 0;
+}
+section section h, h3 {
+	font-size: 1.17em;
+	margin: 1em 0;
+}
+section section section h, h4, p, blockquote, ul, ol, dl { 
+	margin: 1.33em 0; }
+
+section section section section h, h5 {
+	font-size: .83em;
+	line-height: 1.17em;
+	margin: 1.67em 0;
+}
+
+section section section section section h, h6 {
+	font-size: .67em;
+	margin: 2.33em 0;
+}
+
+*[edit="deleted"]  { display: none }
+/* no special presentation by default
+*[edit="inserted"] {  }
+*[edit="changed"]  {  }
+*[edit="moved"]    {  }
+*/
+
+/* experimental navigation list style */
+
+nl {
+  height: 1.5em;
+  overflow: hidden;
+  margin: 0;
+  line-height: normal !important;
+  white-space: nowrap;
+  text-align: start; 
+  cursor: default;
+  border-width: 2px !important;
+  border-style: inset !important;
+  vertical-align: baseline;
+  padding: 0;
+}
+
+nl:hover { height: auto; overflow: visible; }
+
+nl > li, nl > label {
+  display: block;
+  min-height: 1em;
+  line-height: normal !important;
+}
+nl > li, nl > label {
+  padding: 0 5px 0 3px;
+}
+nl > li {
+  margin-left: 1em;
+}
+nl > label {
+  font-weight: bold;
+}
+
+nl > nl > label {
+  display: block;
+  line-height: normal !important;
+  font-style: italic;
+  font-weight: bold;
+}
+
+nl > nl > li {
+  padding-left: 2em;
+  font-style: normal;
+  font-weight: normal;
+}
+
+/* inherited elements */
+
+html, body, div, p, h1, h2, h3, h4, h5, h6,
+address, blockquote, pre, ol, ul, dl, dt, dd
+                { display: block }
+li              { display: list-item }
+head, style, link, meta
+                { display: none }
+table           { display: table;
+                  border-spacing: 0;
+                  border-top: thin black solid;
+                  border-left: thin black solid }
+tr              { display: table-row }
+thead           { display: table-header-group }
+tbody           { display: table-row-group }
+tfoot           { display: table-footer-group }
+col             { display: table-column }
+colgroup        { display: table-column-group }
+td, th          { display: table-cell;
+                  border-right: thin black solid;
+                  border-bottom: thin black solid;
+                  padding 2px }
+caption         { display: table-caption }
+table:hover summary { display: block }
+th              { font-weight: bolder; text-align: center }
+caption         { text-align: center }
+body            { padding: 8px; line-height: 1.2 }
+strong          { font-weight: bolder }
+blockquote      { margin-left: 4em; margin-right: 4em }
+cite, em, q, var, address
+                { font-style: italic }
+pre code, kbd, samp
+                { font-family: monospace }
+pre             { white-space: pre }
+sub, sup        { font-size: smaller }
+sub             { vertical-align: sub }
+sup             { vertical-align: super }
+ol, ul, dd      { margin-left: 4em }
+ol              { list-style-type: decimal }
+ol ul, ul ol, ul ul, ol ol
+                { margin-top: 0; margin-bottom: 0 }
+
+abbr[title]     { border-bottom: dotted 1px }
+:link           { text-decoration: underline; color: blue; }
+:focus          { outline: thin dotted invert }
+
+/* Hover effects should be default */
+
+:link:hover,:link:visited   { color: #b7f }
+
+/* begin bidirectionality settings (do not change) */
+
+*[dir="ltr"]    { direction: ltr; unicode-bidi: embed }
+*[dir="rtl"]    { direction: rtl; unicode-bidi: embed }
+*[dir="lro"]    { direction: ltr; unicode-bidi: bidi-override }
+*[dir="rlo"]    { direction: rtl; unicode-bidi: bidi-override }
+
+/* block-level elements */
+body, div, p, hr, h1, h2, h3, h4, h5, h6,
+address, blockquote, pre, ol, ul, li, di, dt, dd,
+table, thead, tbody, tfoot, tr, td, th,
+col, colgroup, caption, object, summary, standby, blockcode
+                { unicode-bidi: embed }
+/* end bidi settings */
+
+/* end xhtml2.css */
