@@ -18,7 +18,7 @@ https://github.com/open-mmlab/mmocr/blob/main/mmocr/datasets/pipelines/transform
 import numpy as np
 from PIL import Image, ImageDraw
 import cv2
-import Polygon as plg
+from shapely.geometry import Polygon
 import math
 from ppocr.utils.poly_nms import poly_intersection
 
@@ -129,16 +129,16 @@ class RandomCropFlip:
 
             pts = np.stack([[xmin, xmax, xmax, xmin],
                             [ymin, ymin, ymax, ymax]]).T.astype(np.int32)
-            pp = plg.Polygon(pts)
+            pp = Polygon(pts)
             fail_flag = False
             for polygon, ignore_tag in zip(polygons, ignore_tags):
-                ppi = plg.Polygon(polygon.reshape(-1, 2))
+                ppi = Polygon(polygon.reshape(-1, 2))
                 ppiou, _ = poly_intersection(ppi, pp)
-                if np.abs(ppiou - float(ppi.area())) > self.epsilon and \
+                if np.abs(ppiou - float(ppi.area)) > self.epsilon and \
                         np.abs(ppiou) > self.epsilon:
                     fail_flag = True
                     break
-                elif np.abs(ppiou - float(ppi.area())) < self.epsilon:
+                elif np.abs(ppiou - float(ppi.area)) < self.epsilon:
                     polys_new.append(polygon)
                     ignore_tags_new.append(ignore_tag)
                 else:
