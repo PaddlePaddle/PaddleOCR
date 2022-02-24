@@ -1,14 +1,14 @@
+- [表格识别](#表格识别)
+  - [1. 表格识别 pipeline](#1-表格识别-pipeline)
+  - [2. 性能](#2-性能)
+  - [3. 使用](#3-使用)
+    - [3.1 快速开始](#31-快速开始)
+    - [3.2 训练](#32-训练)
+    - [3.3 评估](#33-评估)
+    - [3.4 预测](#34-预测)
+
 # 表格识别
 
-* [1. 表格识别 pipeline](#1)
-* [2. 性能](#2)
-* [3. 使用](#3)
-  + [3.1 快速开始](#31)
-  + [3.2 训练](#32)
-  + [3.3 评估](#33)
-  + [3.4 预测](#34)
-
-<a name="1"></a>
 ## 1. 表格识别 pipeline
 
 表格识别主要包含三个模型
@@ -28,7 +28,6 @@
 4. 单元格的识别结果和表格结构一起构造表格的html字符串。
 
 
-<a name="2"></a>
 ## 2. 性能
 我们在 PubTabNet<sup>[1]</sup> 评估数据集上对算法进行了评估，性能如下
 
@@ -38,9 +37,8 @@
 | EDD<sup>[2]</sup> | 88.3 |
 | Ours | 93.32 |
 
-<a name="3"></a>
 ## 3. 使用
-<a name="31"></a>
+
 ### 3.1 快速开始
 
 ```python
@@ -61,14 +59,17 @@ python3 table/predict_table.py --det_model_dir=inference/en_ppocr_mobile_v2.0_ta
 运行完成后，每张图片的excel表格会保存到output字段指定的目录下
 
 note: 上述模型是在 PubLayNet 数据集上训练的表格识别模型，仅支持英文扫描场景，如需识别其他场景需要自己训练模型后替换 `det_model_dir`,`rec_model_dir`,`table_model_dir`三个字段即可。
-<a name="32"></a>
+
 ### 3.2 训练
+
 在这一章节中，我们仅介绍表格结构模型的训练，[文字检测](../../doc/doc_ch/detection.md)和[文字识别](../../doc/doc_ch/recognition.md)的模型训练请参考对应的文档。
 
-#### 数据准备  
+* 数据准备  
+
 训练数据使用公开数据集PubTabNet ([论文](https://arxiv.org/abs/1911.10683)，[下载地址](https://github.com/ibm-aur-nlp/PubTabNet))。PubTabNet数据集包含约50万张表格数据的图像，以及图像对应的html格式的注释。
 
-#### 启动训练  
+* 启动训练
+
 *如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false*
 ```shell
 # 单机单卡训练
@@ -79,7 +80,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/
 
 上述指令中，通过-c 选择训练使用configs/table/table_mv3.yml配置文件。有关配置文件的详细解释，请参考[链接](../../doc/doc_ch/config.md)。
 
-#### 断点训练
+* 断点训练
 
 如果训练程序中断，如果希望加载训练中断的模型从而恢复训练，可以通过指定Global.checkpoints指定要加载的模型路径：
 ```shell
@@ -88,7 +89,6 @@ python3 tools/train.py -c configs/table/table_mv3.yml -o Global.checkpoints=./yo
 
 **注意**：`Global.checkpoints`的优先级高于`Global.pretrain_weights`的优先级，即同时指定两个参数时，优先加载`Global.checkpoints`指定的模型，如果`Global.checkpoints`指定的模型路径有误，会加载`Global.pretrain_weights`指定的模型。
 
-<a name="33"></a>
 ### 3.3 评估
 
 表格使用 [TEDS(Tree-Edit-Distance-based Similarity)](https://github.com/ibm-aur-nlp/PubTabNet/tree/master/src) 作为模型的评估指标。在进行模型评估之前，需要将pipeline中的三个模型分别导出为inference模型(我们已经提供好)，还需要准备评估的gt， gt示例如下:
@@ -113,7 +113,6 @@ python3 table/eval_table.py --det_model_dir=path/to/det_model_dir --rec_model_di
 ```bash
 teds: 93.32
 ```
-<a name="34"></a>
 ### 3.4 预测
 
 ```python

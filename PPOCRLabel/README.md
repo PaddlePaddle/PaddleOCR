@@ -8,6 +8,8 @@ PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field, w
 
 ### Recent Update
 
+- 2022.02：（by [PeterH0323](https://github.com/peterh0323) ）
+  - Added KIE mode, for [detection + identification + keyword extraction] labeling.
 - 2022.01：（by [PeterH0323](https://github.com/peterh0323) ）
   - Improve user experience: prompt for the number of files and labels, optimize interaction, and fix bugs such as only use CPU when inference
 - 2021.11.17:
@@ -72,7 +74,8 @@ PPOCRLabel
 ```bash
 pip3 install PPOCRLabel
 pip3 install opencv-contrib-python-headless==4.2.0.32
-PPOCRLabel # run
+PPOCRLabel  # [Normal mode] for [detection + recognition] labeling
+PPOCRLabel --kie True # [KIE mode] for [detection + recognition + keyword extraction] labeling
 ```
 
 #### 1.2.2 Build and Install the Whl Package Locally
@@ -87,7 +90,8 @@ pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl
 
 ```bash
 cd ./PPOCRLabel  # Switch to the PPOCRLabel directory
-python PPOCRLabel.py
+python PPOCRLabel.py  # [Normal mode] for [detection + recognition] labeling
+python PPOCRLabel.py --kie True # [KIE mode] for [detection + recognition + keyword extraction] labeling
 ```
 
 
@@ -198,21 +202,31 @@ For some data that are difficult to recognize, the recognition results will not 
 
 - Enter the following command in the terminal to execute the dataset division script:
 
-  ```
+    ```
   cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
-  python gen_ocr_train_val_test.py --trainValTestRatio 6:2:2 --labelRootPath ../train_data/label --detRootPath ../train_data/det --recRootPath ../train_data/rec
+  python gen_ocr_train_val_test.py --trainValTestRatio 6:2:2 --datasetRootPath ../train_data 
   ```
 
   Parameter Description:
 
   - `trainValTestRatio` is the division ratio of the number of images in the training set, validation set, and test set, set according to your actual situation, the default is `6:2:2`
 
-  - `labelRootPath` is the storage path of the dataset labeled by PPOCRLabel, the default is `../train_data/label`
-
-  - `detRootPath` is the path where the text detection dataset is divided according to the dataset marked by PPOCRLabel. The default is `../train_data/det`
-
-  - `recRootPath` is the path where the character recognition dataset is divided according to the dataset marked by PPOCRLabel. The default is `../train_data/rec`
-
+  - `datasetRootPath` is the storage path of the complete dataset labeled by PPOCRLabel. The default path is `PaddleOCR/train_data` .
+  ```
+  |-train_data
+    |-crop_img
+      |- word_001_crop_0.png
+      |- word_002_crop_0.jpg
+      |- word_003_crop_0.jpg
+      | ...
+    | Label.txt
+    | rec_gt.txt
+    |- word_001.png
+    |- word_002.jpg
+    |- word_003.jpg
+    | ...
+  ```
+  
 ### 3.6 Error message
 
 - If paddleocr is installed with whl, it has a higher priority than calling PaddleOCR class with paddleocr.py, which may cause an exception if whl package is not updated.

@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections import defaultdict
+
 
 class VQASerTokenChunk(object):
     def __init__(self, max_seq_len=512, infer_mode=False, **kwargs):
@@ -39,6 +41,8 @@ class VQASerTokenChunk(object):
                     encoded_inputs_example[key] = data[key]
 
             encoded_inputs_all.append(encoded_inputs_example)
+        if len(encoded_inputs_all) == 0:
+            return None
         return encoded_inputs_all[0]
 
 
@@ -101,17 +105,18 @@ class VQAReTokenChunk(object):
                 "entities": self.reformat(entities_in_this_span),
                 "relations": self.reformat(relations_in_this_span),
             })
-            item['entities']['label'] = [
-                self.entities_labels[x] for x in item['entities']['label']
-            ]
-            encoded_inputs_all.append(item)
+            if len(item['entities']) > 0:
+                item['entities']['label'] = [
+                    self.entities_labels[x] for x in item['entities']['label']
+                ]
+                encoded_inputs_all.append(item)
+        if len(encoded_inputs_all) == 0:
+            return None
         return encoded_inputs_all[0]
 
     def reformat(self, data):
-        new_data = {}
+        new_data = defaultdict(list)
         for item in data:
             for k, v in item.items():
-                if k not in new_data:
-                    new_data[k] = []
                 new_data[k].append(v)
         return new_data

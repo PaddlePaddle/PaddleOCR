@@ -66,7 +66,7 @@
 | :---------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
 |      model_type        |         网络类型          |  rec  |  目前支持`rec`,`det`,`cls`  |
 |      algorithm           |    模型名称  |       CRNN         |               支持列表见[algorithm_overview](./algorithm_overview.md)             |
-|      **Transform**           |    设置变换方式  |       -       |               目前仅rec类型的算法支持, 具体见[ppocr/modeling/transform](../../ppocr/modeling/transform)              |
+|      **Transform**           |    设置变换方式  |       -       |               目前仅rec类型的算法支持, 具体见[ppocr/modeling/transforms](../../ppocr/modeling/transforms)              |
 |        name    |      变换方式类名   |         TPS       | 目前支持`TPS` |
 |        num_fiducial      |    TPS控制点数        |       20      |  上下边各十个       |
 |        loc_lr      |    定位网络学习率        |       0.1      |  \      |
@@ -176,7 +176,7 @@ PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi
     --dict {path/of/dict} \             # 字典文件路径
     -o Global.use_gpu=False             # 是否使用gpu
     ...
-    
+
     ```
 
 意大利文由拉丁字母组成，因此执行完命令后会得到名为 rec_latin_lite_train.yml 的配置文件。
@@ -191,21 +191,21 @@ PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi
       epoch_num: 500
       ...
       character_dict_path:  {path/of/dict} # 字典文件所在路径
-   
+
    Train:
       dataset:
         name: SimpleDataSet
         data_dir: train_data/ # 数据存放根目录
         label_file_list: ["./train_data/train_list.txt"] # 训练集label路径
       ...
-   
+
    Eval:
       dataset:
         name: SimpleDataSet
         data_dir: train_data/ # 数据存放根目录
         label_file_list: ["./train_data/val_list.txt"] # 验证集label路径
       ...
-   
+
    ```
 
 目前PaddleOCR支持的多语言算法有：
