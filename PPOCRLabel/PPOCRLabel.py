@@ -2212,6 +2212,12 @@ class MainWindow(QMainWindow):
         self.key_previous_text = key_text
         for shape in self.canvas.selectedShapes:
             shape.key_cls = key_text
+            if not self.keyList.findItemsByLabel(key_text):
+                item = self.keyList.createItemFromLabel(key_text)
+                self.keyList.addItem(item)
+                rgb = self._get_rgb_by_label(key_text, self.kie_mode)
+                self.keyList.setItemLabel(item, key_text, rgb)
+
             self._update_shape_color(shape)
 
     def undoShapeEdit(self):
