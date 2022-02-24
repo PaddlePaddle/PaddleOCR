@@ -536,7 +536,7 @@ class MainWindow(QMainWindow):
                               editMenu=(createpoly, edit, copy, delete, singleRere, None, undo, undoLastPoint,
                                         None, rotateLeft, rotateRight, None, color1, self.drawSquaresOption, lock),
                               beginnerContext=(
-                              create, edit, copy, delete, singleRere, rotateLeft, rotateRight, lock, change_cls),
+                                  create, edit, copy, delete, singleRere, rotateLeft, rotateRight, lock, change_cls),
                               advancedContext=(createMode, editMode, edit, copy,
                                                delete, shapeLineColor, shapeFillColor),
                               onLoadActive=(create, createMode, editMode),
@@ -1105,7 +1105,9 @@ class MainWindow(QMainWindow):
             shapes = [format_shape(shape) for shape in self.canvas.shapes if shape.line_color != DEFAULT_LOCK_COLOR]
         # Can add differrent annotation formats here
         for box in self.result_dic:
-            trans_dic = {"label": box[1][0], "points": box[0], "difficult": False, "key_cls": "None"}
+            trans_dic = {"label": box[1][0], "points": box[0], "difficult": False}
+            if self.kie_mode:
+                trans_dic.update({"key_cls": "None"})
             if trans_dic["label"] == "" and mode == 'Auto':
                 continue
             shapes.append(trans_dic)
@@ -1113,8 +1115,10 @@ class MainWindow(QMainWindow):
         try:
             trans_dic = []
             for box in shapes:
-                trans_dic.append({"transcription": box['label'], "points": box['points'],
-                                  "difficult": box['difficult'], "key_cls": box['key_cls']})
+                trans_dict = {"transcription": box['label'], "points": box['points'], "difficult": box['difficult']}
+                if self.kie_mode:
+                    trans_dict.update({"key_cls": box['key_cls']})
+                trans_dic.append(trans_dict)
             self.PPlabel[annotationFilePath] = trans_dic
             if mode == 'Auto':
                 self.Cachelabel[annotationFilePath] = trans_dic
@@ -1424,15 +1428,17 @@ class MainWindow(QMainWindow):
         # box['ratio'] of the shapes saved in lockedShapes contains the ratio of the
         # four corner coordinates of the shapes to the height and width of the image
         for box in self.canvas.lockedShapes:
+            key_cls = None if not self.kie_mode else box['key_cls']
             if self.canvas.isInTheSameImage:
                 shapes.append((box['transcription'], [[s[0] * width, s[1] * height] for s in box['ratio']],
-                               DEFAULT_LOCK_COLOR, box['key_cls'], box['difficult']))
+                               DEFAULT_LOCK_COLOR, key_cls, box['difficult']))
             else:
                 shapes.append(('锁定框：待检测', [[s[0] * width, s[1] * height] for s in box['ratio']],
-                               DEFAULT_LOCK_COLOR, box['key_cls'], box['difficult']))
+                               DEFAULT_LOCK_COLOR, key_cls, box['difficult']))
         if imgidx in self.PPlabel.keys():
             for box in self.PPlabel[imgidx]:
-                shapes.append((box['transcription'], box['points'], None, box['key_cls'], box['difficult']))
+                key_cls = None if not self.kie_mode else box['key_cls']
+                shapes.append((box['transcription'], box['points'], None, key_cls, box['difficult']))
 
         self.loadLabels(shapes)
         self.canvas.verified = False
@@ -1599,7 +1605,6 @@ class MainWindow(QMainWindow):
             )
         else:
             self.keyDialog.labelList.addItems(self.existed_key_cls_set)
-
 
     def importDirImages(self, dirpath, isDelete=False):
         if not self.mayContinue() or not dirpath:
@@ -2250,9 +2255,10 @@ class MainWindow(QMainWindow):
             shapes = [format_shape(shape) for shape in self.canvas.selectedShapes]
             trans_dic = []
             for box in shapes:
-                trans_dic.append({"transcription": box['label'], "ratio": box['ratio'],
-                                  "difficult": box['difficult'],
-                                  "key_cls": "None" if "key_cls" not in box else box["key_cls"]})
+                trans_dict = {"transcription": box['label'], "ratio": box['ratio'], "difficult": box['difficult']}
+                if self.kie_mode:
+                    trans_dict.update({"key_cls": box["key_cls"]})
+                trans_dic.append(trans_dict)
             self.canvas.lockedShapes = trans_dic
             self.actions.save.setEnabled(True)
 
