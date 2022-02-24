@@ -785,6 +785,56 @@ class SARLabelEncode(BaseRecLabelEncode):
         return [self.padding_idx]
 
 
+class PRENLabelEncode(BaseRecLabelEncode):
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path,
+                 use_space_char=False,
+                 **kwargs):
+        super(PRENLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
+
+    def add_special_char(self, dict_character):
+        padding_str = '<PAD>'  # 0 
+        end_str = '<EOS>'  # 1
+        unknown_str = '<UNK>'  # 2
+
+        dict_character = [unknown_str] + dict_character
+        self.unknown_idx = 2
+        dict_character = [end_str] + dict_character
+        self.end_idx = 1
+        # <PAD> is zero idx, so that we can get the loss value conveniently.
+        dict_character = [padding_str] + dict_character
+        self.padding_idx = 0
+
+        return dict_character
+
+    def encode(self, text):
+        if len(text) == 0 or len(text) >= self.max_text_len:
+            return None
+        if self.lower:
+            text = text.lower()
+        text_list = []
+        for char in text:
+            if char not in self.dict:
+                text_list.append(self.unknown_idx)
+            else:
+                text_list.append(self.dict[char])
+        text_list.append(self.end_idx)
+        if len(text_list) < self.max_text_len:
+            text_list += [self.padding_idx] * (
+                self.max_text_len - len(text_list))
+        return text_list
+
+    def __call__(self, data):
+        text = data['label']
+        encoded_text = self.encode(text)
+        if encoded_text is None:
+            return None
+        data['label'] = np.array(encoded_text)
+        return data
+
+
 class VQATokenLabelEncode(object):
     """
     Label encode for NLP VQA methods
