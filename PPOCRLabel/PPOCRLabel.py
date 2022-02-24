@@ -1466,6 +1466,7 @@ class MainWindow(QMainWindow):
     def adjustScale(self, initial=False):
         value = self.scalers[self.FIT_WINDOW if initial else self.zoomMode]()
         self.zoomWidget.setValue(int(100 * value))
+        self.imageSlider.setValue(self.zoomWidget.value())  # set zoom slider value
 
     def scaleFitWindow(self):
         """Figure out the size of the pixmap in order to fit the main widget."""
