@@ -60,6 +60,7 @@ def export_single_model(model, arch_config, save_path, logger):
             paddle.static.InputSpec(
                 shape=[None, 3, 64, 512], dtype="float32"),
         ]
+        model = to_static(model, input_spec=other_shape)
     else:
         infer_shape = [3, -1, -1]
         if arch_config["model_type"] == "rec":
