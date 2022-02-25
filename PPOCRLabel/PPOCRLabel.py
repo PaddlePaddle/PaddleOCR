@@ -152,16 +152,6 @@ class MainWindow(QMainWindow):
         self.fileListWidget.setIconSize(QSize(25, 25))
         filelistLayout.addWidget(self.fileListWidget)
 
-        self.AutoRecognition = QToolButton()
-        self.AutoRecognition.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        self.AutoRecognition.setIcon(newIcon('Auto'))
-        autoRecLayout = QHBoxLayout()
-        autoRecLayout.setContentsMargins(0, 0, 0, 0)
-        autoRecLayout.addWidget(self.AutoRecognition)
-        autoRecContainer = QWidget()
-        autoRecContainer.setLayout(autoRecLayout)
-        filelistLayout.addWidget(autoRecContainer)
-
         fileListContainer = QWidget()
         fileListContainer.setLayout(filelistLayout)
         self.fileListName = getStr('fileList')
@@ -182,6 +172,16 @@ class MainWindow(QMainWindow):
             self.keyListDock.setWidget(self.keyList)
             self.keyListDock.setFeatures(QDockWidget.NoDockWidgetFeatures)
             filelistLayout.addWidget(self.keyListDock)
+
+        self.AutoRecognition = QToolButton()
+        self.AutoRecognition.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        self.AutoRecognition.setIcon(newIcon('Auto'))
+        autoRecLayout = QHBoxLayout()
+        autoRecLayout.setContentsMargins(0, 0, 0, 0)
+        autoRecLayout.addWidget(self.AutoRecognition)
+        autoRecContainer = QWidget()
+        autoRecContainer.setLayout(autoRecLayout)
+        filelistLayout.addWidget(autoRecContainer)
 
         #  ================== Right Area  ==================
         listLayout = QVBoxLayout()
