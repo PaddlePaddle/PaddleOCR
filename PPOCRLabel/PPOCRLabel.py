@@ -431,8 +431,7 @@ class MainWindow(QMainWindow):
         #  ================== New Actions ==================
 
         edit = action(getStr('editLabel'), self.editLabel,
-                      'Ctrl+E', 'edit', getStr('editLabelDetail'),
-                      enabled=False)
+                      'Ctrl+E', 'edit', getStr('editLabelDetail'), enabled=False)
 
         AutoRec = action(getStr('autoRecognition'), self.autoRecognition,
                          '', 'Auto', getStr('autoRecognition'), enabled=False)
@@ -465,11 +464,10 @@ class MainWindow(QMainWindow):
                       'Ctrl+Z', "undo", getStr("undo"), enabled=False)
 
         change_cls = action(getStr("keyChange"), self.change_box_key,
-                            'Ctrl+B', "edit", getStr("keyChange"), enabled=False)
+                            'Ctrl+X', "edit", getStr("keyChange"), enabled=False)
 
         lock = action(getStr("lockBox"), self.lockSelectedShape,
-                      None, "lock", getStr("lockBoxDetail"),
-                      enabled=False)
+                      None, "lock", getStr("lockBoxDetail"), enabled=False)
 
         self.editButton.setDefaultAction(edit)
         self.newButton.setDefaultAction(create)
@@ -534,7 +532,8 @@ class MainWindow(QMainWindow):
                               fileMenuActions=(opendir, open_dataset_dir, saveLabel, resetAll, quit),
                               beginner=(), advanced=(),
                               editMenu=(createpoly, edit, copy, delete, singleRere, None, undo, undoLastPoint,
-                                        None, rotateLeft, rotateRight, None, color1, self.drawSquaresOption, lock),
+                                        None, rotateLeft, rotateRight, None, color1, self.drawSquaresOption, lock,
+                                        None, change_cls),
                               beginnerContext=(
                                   create, edit, copy, delete, singleRere, rotateLeft, rotateRight, lock, change_cls),
                               advancedContext=(createMode, editMode, edit, copy,
@@ -2206,6 +2205,8 @@ class MainWindow(QMainWindow):
             print('The program will automatically save once after confirming 5 images (default)')
 
     def change_box_key(self):
+        if not self.kie_mode:
+            return
         key_text, _ = self.keyDialog.popUp(self.key_previous_text)
         if key_text is None:
             return
@@ -2219,6 +2220,7 @@ class MainWindow(QMainWindow):
                 self.keyList.setItemLabel(item, key_text, rgb)
 
             self._update_shape_color(shape)
+            self.keyDialog.addLabelHistory(key_text)
 
     def undoShapeEdit(self):
         self.canvas.restoreShape()

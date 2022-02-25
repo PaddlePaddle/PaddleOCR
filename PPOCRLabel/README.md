@@ -156,6 +156,7 @@ python PPOCRLabel.py --kie True # [KIE mode] for [detection + recognition + keyw
 | X                        | Rotate the box anti-clockwise                    |
 | C                        | Rotate the box clockwise                         |
 | Ctrl + E                 | Edit label of the selected box                   |
+| Ctrl + X                 | Change key class of the box when enable `--kie`  |
 | Ctrl + R                 | Re-recognize the selected box                    |
 | Ctrl + C                 | Copy and paste the selected box                  |
 | Ctrl + Left Mouse Button | Multi select the label box                       |
