@@ -138,6 +138,7 @@ class ConvBlock(nn.Layer):
     def drop_connect(self, inputs, p, training):
         if not training:
             return inputs
+            
         batch_size = inputs.shape[0]
         keep_prob = 1 - p
         random_tensor = keep_prob
