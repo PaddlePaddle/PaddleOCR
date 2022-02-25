@@ -138,7 +138,7 @@ class ConvBlock(nn.Layer):
     def drop_connect(self, inputs, p, training):
         if not training:
             return inputs
-            
+
         batch_size = inputs.shape[0]
         keep_prob = 1 - p
         random_tensor = keep_prob
@@ -216,6 +216,7 @@ class EfficientNetb3_PREN(nn.Layer):
 
     def forward(self, inputs):
         outs = []
+        
         x = self.swish(self.bn0(self.conv_stem(inputs)))
         for idx, block in enumerate(self.blocks):
             drop_connect_rate = self.global_params.drop_connect_rate
