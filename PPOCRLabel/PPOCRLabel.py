@@ -162,11 +162,14 @@ class MainWindow(QMainWindow):
 
         #  ================== Key List  ==================
         if self.kie_mode:
-            # self.keyList = QListWidget()
             self.keyList = UniqueLabelQListWidget()
-            # self.keyList.itemSelectionChanged.connect(self.keyListSelectionChanged)
-            # self.keyList.itemDoubleClicked.connect(self.editBox)
-            # self.keyList.itemChanged.connect(self.keyListItemChanged)
+
+            # set key list height
+            key_list_height = int(QApplication.desktop().height() // 4)
+            if key_list_height < 50:
+                key_list_height = 50
+            self.keyList.setMaximumHeight(key_list_height)
+
             self.keyListDockName = getStr('keyListTitle')
             self.keyListDock = QDockWidget(self.keyListDockName, self)
             self.keyListDock.setWidget(self.keyList)
