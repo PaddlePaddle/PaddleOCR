@@ -667,12 +667,10 @@ class PRENLabelDecode(BaseRecLabelDecode):
         end_str = '<EOS>'  # 1
         unknown_str = '<UNK>'  # 2
 
-        dict_character = [unknown_str] + dict_character
-        self.unknown_idx = 2
-        dict_character = [end_str] + dict_character
-        self.end_idx = 1
-        dict_character = [padding_str] + dict_character  # <PAD> is zero idx
+        dict_character = [padding_str, end_str, unknown_str] + dict_character
         self.padding_idx = 0
+        self.end_idx = 1
+        self.unknown_idx = 2
 
         return dict_character
 
