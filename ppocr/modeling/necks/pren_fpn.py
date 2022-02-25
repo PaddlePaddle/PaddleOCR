@@ -62,7 +62,7 @@ class PoolAggregate(nn.Layer):
         for agg in self.aggs:
             y = agg(x)
             p = F.adaptive_avg_pool2d(y, 1)
-            outs.append(p.reshape((b, 1, -1)))
+            outs.append(p.reshape((b, 1, self.d_out)))
         out = paddle.concat(outs, 1)
         return out
 
@@ -95,12 +95,13 @@ class WeightAggregate(nn.Layer):
                 bias_attr=False)), ('bn2', nn.BatchNorm(d_out)))
 
     def forward(self, x):
-        b = x.shape[0]
+        b, _, h, w = x.shape
+
         hmaps = self.conv_n(x)
         fmaps = self.conv_d(x)
         r = paddle.bmm(
-            hmaps.reshape((b, self.n_r, -1)),
-            fmaps.reshape((b, self.d_out, -1)).transpose((0, 2, 1)))
+            hmaps.reshape((b, self.n_r, h * w)),
+            fmaps.reshape((b, self.d_out, h * w)).transpose((0, 2, 1)))
         return r
 
 
