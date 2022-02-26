@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.content.res.AssetManager;
+import android.media.FaceDetector;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -27,7 +28,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,22 +71,23 @@ public class MainActivity extends AppCompatActivity {
     protected ImageView ivInputImage;
     protected TextView tvOutputResult;
     protected TextView tvInferenceTime;
+    protected CheckBox cbOpencl;
+    protected Spinner spRunMode;
 
-    // Model settings of object detection
+    // Model settings of ocr
     protected String modelPath = "";
     protected String labelPath = "";
     protected String imagePath = "";
     protected int cpuThreadNum = 1;
     protected String cpuPowerMode = "";
-    protected String inputColorFormat = "";
-    protected long[] inputShape = new long[]{};
-    protected float[] inputMean = new float[]{};
-    protected float[] inputStd = new float[]{};
+    protected int detLongSize = 960;
     protected float scoreThreshold = 0.1f;
     private String currentPhotoPath;
-    private AssetManager assetManager =null;
+    private AssetManager assetManager = null;
 
     protected Predictor predictor = new Predictor();
+
+    private Bitmap cur_predict_image = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,10 +102,12 @@ public class MainActivity extends AppCompatActivity {
 
         // Setup the UI components
         tvInputSetting = findViewById(R.id.tv_input_setting);
+        cbOpencl = findViewById(R.id.cb_opencl);
         tvStatus = findViewById(R.id.tv_model_img_status);
         ivInputImage = findViewById(R.id.iv_input_image);
         tvInferenceTime = findViewById(R.id.tv_inference_time);
         tvOutputResult = findViewById(R.id.tv_output_result);
+        spRunMode = findViewById(R.id.sp_run_mode);
         tvInputSetting.setMovementMethod(ScrollingMovementMethod.getInstance());
         tvOutputResult.setMovementMethod(ScrollingMovementMethod.getInstance());
 
@@ -111,26 +117,26 @@ public class MainActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case RESPONSE_LOAD_MODEL_SUCCESSED:
-                        if(pbLoadModel!=null && pbLoadModel.isShowing()){
+                        if (pbLoadModel != null && pbLoadModel.isShowing()) {
                             pbLoadModel.dismiss();
                         }
                         onLoadModelSuccessed();
                         break;
                     case RESPONSE_LOAD_MODEL_FAILED:
-                        if(pbLoadModel!=null && pbLoadModel.isShowing()){
+                        if (pbLoadModel != null && pbLoadModel.isShowing()) {
                             pbLoadModel.dismiss();
                         }
                         Toast.makeText(MainActivity.this, "Load model failed!", Toast.LENGTH_SHORT).show();
                         onLoadModelFailed();
                         break;
                     case RESPONSE_RUN_MODEL_SUCCESSED:
-                        if(pbRunModel!=null && pbRunModel.isShowing()){
+                        if (pbRunModel != null && pbRunModel.isShowing()) {
                             pbRunModel.dismiss();
                         }
                         onRunModelSuccessed();
                         break;
                     case RESPONSE_RUN_MODEL_FAILED:
-                        if(pbRunModel!=null && pbRunModel.isShowing()){
+                        if (pbRunModel != null && pbRunModel.isShowing()) {
                             pbRunModel.dismiss();
                         }
                         Toast.makeText(MainActivity.this, "Run model failed!", Toast.LENGTH_SHORT).show();
@@ -185,7 +191,6 @@ public class MainActivity extends AppCompatActivity {
         model_settingsChanged |= !model_path.equalsIgnoreCase(modelPath);
         settingsChanged |= !label_path.equalsIgnoreCase(labelPath);
         settingsChanged |= !image_path.equalsIgnoreCase(imagePath);
-
         int cpu_thread_num = Integer.parseInt(sharedPreferences.getString(getString(R.string.CPU_THREAD_NUM_KEY),
                 getString(R.string.CPU_THREAD_NUM_DEFAULT)));
         model_settingsChanged |= cpu_thread_num != cpuThreadNum;
@@ -194,33 +199,9 @@ public class MainActivity extends AppCompatActivity {
                         getString(R.string.CPU_POWER_MODE_DEFAULT));
         model_settingsChanged |= !cpu_power_mode.equalsIgnoreCase(cpuPowerMode);
 
-        String input_color_format =
-                sharedPreferences.getString(getString(R.string.INPUT_COLOR_FORMAT_KEY),
-                        getString(R.string.INPUT_COLOR_FORMAT_DEFAULT));
-        settingsChanged |= !input_color_format.equalsIgnoreCase(inputColorFormat);
-        long[] input_shape =
-                Utils.parseLongsFromString(sharedPreferences.getString(getString(R.string.INPUT_SHAPE_KEY),
-                        getString(R.string.INPUT_SHAPE_DEFAULT)), ",");
-        float[] input_mean =
-                Utils.parseFloatsFromString(sharedPreferences.getString(getString(R.string.INPUT_MEAN_KEY),
-                        getString(R.string.INPUT_MEAN_DEFAULT)), ",");
-        float[] input_std =
-                Utils.parseFloatsFromString(sharedPreferences.getString(getString(R.string.INPUT_STD_KEY)
-                        , getString(R.string.INPUT_STD_DEFAULT)), ",");
-        settingsChanged |= input_shape.length != inputShape.length;
-        settingsChanged |= input_mean.length != inputMean.length;
-        settingsChanged |= input_std.length != inputStd.length;
-        if (!settingsChanged) {
-            for (int i = 0; i < input_shape.length; i++) {
-                settingsChanged |= input_shape[i] != inputShape[i];
-            }
-            for (int i = 0; i < input_mean.length; i++) {
-                settingsChanged |= input_mean[i] != inputMean[i];
-            }
-            for (int i = 0; i < input_std.length; i++) {
-                settingsChanged |= input_std[i] != inputStd[i];
-            }
-        }
+        int det_long_size = Integer.parseInt(sharedPreferences.getString(getString(R.string.DET_LONG_SIZE_KEY),
+                getString(R.string.DET_LONG_SIZE_DEFAULT)));
+        settingsChanged |= det_long_size != detLongSize;
         float score_threshold =
                 Float.parseFloat(sharedPreferences.getString(getString(R.string.SCORE_THRESHOLD_KEY),
                         getString(R.string.SCORE_THRESHOLD_DEFAULT)));
@@ -228,20 +209,16 @@ public class MainActivity extends AppCompatActivity {
         if (settingsChanged) {
             labelPath = label_path;
             imagePath = image_path;
-            inputColorFormat = input_color_format;
-            inputShape = input_shape;
-            inputMean = input_mean;
-            inputStd = input_std;
+            detLongSize = det_long_size;
             scoreThreshold = score_threshold;
             set_img();
         }
-        if (model_settingsChanged){
+        if (model_settingsChanged) {
             modelPath = model_path;
             cpuThreadNum = cpu_thread_num;
             cpuPowerMode = cpu_power_mode;
             // Update UI
-            tvInputSetting.setText("Model: " + modelPath.substring(modelPath.lastIndexOf("/") + 1) + "\n" + "CPU" +
-                    " Thread Num: " + Integer.toString(cpuThreadNum) + "\n" + "CPU Power Mode: " + cpuPowerMode);
+            tvInputSetting.setText("Model: " + modelPath.substring(modelPath.lastIndexOf("/") + 1) + "\nOPENCL: " + cbOpencl.isChecked() + "\nCPU Thread Num: " + cpuThreadNum + "\nCPU Power Mode: " + cpuPowerMode);
             tvInputSetting.scrollTo(0, 0);
             // Reload model if configure has been changed
             loadModel();
@@ -259,20 +236,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean onLoadModel() {
-        return predictor.init(MainActivity.this, modelPath, labelPath, cpuThreadNum,
+        if (predictor.isLoaded()) {
+            predictor.releaseModel();
+        }
+        return predictor.init(MainActivity.this, modelPath, labelPath, cbOpencl.isChecked() ? 1 : 0, cpuThreadNum,
                 cpuPowerMode,
-                inputColorFormat,
-                inputShape, inputMean,
-                inputStd, scoreThreshold);
+                detLongSize, scoreThreshold);
     }
 
     public boolean onRunModel() {
-        return predictor.isLoaded() && predictor.runModel();
+        String run_mode = spRunMode.getSelectedItem().toString();
+        int run_det = run_mode.contains("检测") ? 1 : 0;
+        int run_cls = run_mode.contains("分类") ? 1 : 0;
+        int run_rec = run_mode.contains("识别") ? 1 : 0;
+        return predictor.isLoaded() && predictor.runModel(run_det, run_cls, run_rec);
     }
 
     public void onLoadModelSuccessed() {
         // Load test image from path and run model
+        tvInputSetting.setText("Model: " + modelPath.substring(modelPath.lastIndexOf("/") + 1) + "\nOPENCL: " + cbOpencl.isChecked() + "\nCPU Thread Num: " + cpuThreadNum + "\nCPU Power Mode: " + cpuPowerMode);
+        tvInputSetting.scrollTo(0, 0);
         tvStatus.setText("STATUS: load model successed");
+
     }
 
     public void onLoadModelFailed() {
@@ -306,9 +291,9 @@ public class MainActivity extends AppCompatActivity {
     public void set_img() {
         // Load test image from path and run model
         try {
-            assetManager= getAssets();
-            InputStream in=assetManager.open(imagePath);
-            Bitmap bmp=BitmapFactory.decodeStream(in);
+            assetManager = getAssets();
+            InputStream in = assetManager.open(imagePath);
+            Bitmap bmp = BitmapFactory.decodeStream(in);
             ivInputImage.setImageBitmap(bmp);
         } catch (IOException e) {
             Toast.makeText(MainActivity.this, "Load image failed!", Toast.LENGTH_SHORT).show();
@@ -469,28 +454,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void btn_load_model_click(View view) {
-        if (predictor.isLoaded()){
-            tvStatus.setText("STATUS: model has been loaded");
-        }else{
-            tvStatus.setText("STATUS: load model ......");
-            loadModel();
-        }
+    public void btn_reset_img_click(View view) {
+        ivInputImage.setImageBitmap(cur_predict_image);
+    }
+
+    public void cb_opencl_click(View view) {
+        tvStatus.setText("STATUS: load model ......");
+        loadModel();
     }
 
     public void btn_run_model_click(View view) {
-        Bitmap image =((BitmapDrawable)ivInputImage.getDrawable()).getBitmap();
-        if(image == null) {
+        cur_predict_image = ((BitmapDrawable) ivInputImage.getDrawable()).getBitmap();
+        if (cur_predict_image == null) {
             tvStatus.setText("STATUS: image is not exists");
-        }
-        else if (!predictor.isLoaded()){
+        } else if (!predictor.isLoaded()) {
             tvStatus.setText("STATUS: model is not loaded");
-        }else{
+        } else {
             tvStatus.setText("STATUS: run model ...... ");
-            predictor.setInputImage(image);
+            predictor.setInputImage(cur_predict_image);
             runModel();
         }
     }
+
     public void btn_choice_img_click(View view) {
         if (requestAllPermissions()) {
             openGallery();
@@ -510,5 +495,33 @@ public class MainActivity extends AppCompatActivity {
         }
         worker.quit();
         super.onDestroy();
+    }
+
+    public int get_run_mode() {
+        String run_mode = spRunMode.getSelectedItem().toString();
+        int mode;
+        switch (run_mode) {
+            case "检测+分类+识别":
+                mode = 1;
+                break;
+            case "检测+识别":
+                mode = 2;
+                break;
+            case "识别+分类":
+                mode = 3;
+                break;
+            case "检测":
+                mode = 4;
+                break;
+            case "识别":
+                mode = 5;
+                break;
+            case "分类":
+                mode = 6;
+                break;
+            default:
+                mode = 1;
+        }
+        return mode;
     }
 }
