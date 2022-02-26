@@ -175,22 +175,25 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean settingsChanged = false;
+        boolean model_settingsChanged = false;
         String model_path = sharedPreferences.getString(getString(R.string.MODEL_PATH_KEY),
                 getString(R.string.MODEL_PATH_DEFAULT));
         String label_path = sharedPreferences.getString(getString(R.string.LABEL_PATH_KEY),
                 getString(R.string.LABEL_PATH_DEFAULT));
         String image_path = sharedPreferences.getString(getString(R.string.IMAGE_PATH_KEY),
                 getString(R.string.IMAGE_PATH_DEFAULT));
-        settingsChanged |= !model_path.equalsIgnoreCase(modelPath);
+        model_settingsChanged |= !model_path.equalsIgnoreCase(modelPath);
         settingsChanged |= !label_path.equalsIgnoreCase(labelPath);
         settingsChanged |= !image_path.equalsIgnoreCase(imagePath);
+
         int cpu_thread_num = Integer.parseInt(sharedPreferences.getString(getString(R.string.CPU_THREAD_NUM_KEY),
                 getString(R.string.CPU_THREAD_NUM_DEFAULT)));
-        settingsChanged |= cpu_thread_num != cpuThreadNum;
+        model_settingsChanged |= cpu_thread_num != cpuThreadNum;
         String cpu_power_mode =
                 sharedPreferences.getString(getString(R.string.CPU_POWER_MODE_KEY),
                         getString(R.string.CPU_POWER_MODE_DEFAULT));
-        settingsChanged |= !cpu_power_mode.equalsIgnoreCase(cpuPowerMode);
+        model_settingsChanged |= !cpu_power_mode.equalsIgnoreCase(cpuPowerMode);
+
         String input_color_format =
                 sharedPreferences.getString(getString(R.string.INPUT_COLOR_FORMAT_KEY),
                         getString(R.string.INPUT_COLOR_FORMAT_DEFAULT));
@@ -223,23 +226,25 @@ public class MainActivity extends AppCompatActivity {
                         getString(R.string.SCORE_THRESHOLD_DEFAULT)));
         settingsChanged |= scoreThreshold != score_threshold;
         if (settingsChanged) {
-            modelPath = model_path;
             labelPath = label_path;
             imagePath = image_path;
-            cpuThreadNum = cpu_thread_num;
-            cpuPowerMode = cpu_power_mode;
             inputColorFormat = input_color_format;
             inputShape = input_shape;
             inputMean = input_mean;
             inputStd = input_std;
             scoreThreshold = score_threshold;
+            set_img();
+        }
+        if (model_settingsChanged){
+            modelPath = model_path;
+            cpuThreadNum = cpu_thread_num;
+            cpuPowerMode = cpu_power_mode;
             // Update UI
             tvInputSetting.setText("Model: " + modelPath.substring(modelPath.lastIndexOf("/") + 1) + "\n" + "CPU" +
                     " Thread Num: " + Integer.toString(cpuThreadNum) + "\n" + "CPU Power Mode: " + cpuPowerMode);
             tvInputSetting.scrollTo(0, 0);
             // Reload model if configure has been changed
-//            loadModel();
-            set_img();
+            loadModel();
         }
     }
 
