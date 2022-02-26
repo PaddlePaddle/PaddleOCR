@@ -2,9 +2,9 @@
 #include "common.h"
 
 namespace ppredictor {
-PPredictor::PPredictor(int thread_num, int net_flag,
+PPredictor::PPredictor(int use_opencl, int thread_num, int net_flag,
                        paddle::lite_api::PowerMode mode)
-    : _thread_num(thread_num), _net_flag(net_flag), _mode(mode) {}
+    : _use_opencl(use_opencl), _thread_num(thread_num), _net_flag(net_flag), _mode(mode) {}
 
 int PPredictor::init_nb(const std::string &model_content) {
   paddle::lite_api::MobileConfig config;
@@ -19,6 +19,36 @@ int PPredictor::init_from_file(const std::string &model_content) {
 }
 
 template <typename ConfigT> int PPredictor::_init(ConfigT &config) {
+  bool is_opencl_backend_valid = paddle::lite_api::IsOpenCLBackendValid(/*check_fp16_valid = false*/);
+  if (is_opencl_backend_valid) {
+    if (_use_opencl != 0) {
+      // Make sure you have write permission of the binary path.
+      // We strongly recommend each model has a unique binary name.
+      const std::string bin_path = "/data/local/tmp/";
+      const std::string bin_name = "lite_opencl_kernel.bin";
+      config.set_opencl_binary_path_name(bin_path, bin_name);
+
+      // opencl tune option
+      // CL_TUNE_NONE: 0
+      // CL_TUNE_RAPID: 1
+      // CL_TUNE_NORMAL: 2
+      // CL_TUNE_EXHAUSTIVE: 3
+      const std::string tuned_path = "/data/local/tmp/";
+      const std::string tuned_name = "lite_opencl_tuned.bin";
+      config.set_opencl_tune(paddle::lite_api::CL_TUNE_NORMAL, tuned_path, tuned_name);
+
+      // opencl precision option
+      // CL_PRECISION_AUTO: 0, first fp16 if valid, default
+      // CL_PRECISION_FP32: 1, force fp32
+      // CL_PRECISION_FP16: 2, force fp16
+      config.set_opencl_precision(paddle::lite_api::CL_PRECISION_FP32);
+      LOGI("device: running on gpu.");
+    }
+  } else {
+    LOGI("device: running on cpu.");
+    // you can give backup cpu nb model instead
+    // config.set_model_from_file(cpu_nb_model_dir);
+  }
   config.set_threads(_thread_num);
   config.set_power_mode(_mode);
   _predictor = paddle::lite_api::CreatePaddlePredictor(config);
