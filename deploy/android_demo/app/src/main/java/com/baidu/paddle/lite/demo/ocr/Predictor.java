@@ -46,7 +46,7 @@ public class Predictor {
     public Predictor() {
     }
 
-    public boolean init(Context appCtx, String modelPath, String labelPath) {
+    public boolean init(Context appCtx, String modelPath, String labelPath, int cpuThreadNum, String cpuPowerMode) {
         isLoaded = loadModel(appCtx, modelPath, cpuThreadNum, cpuPowerMode);
         if (!isLoaded) {
             return false;
@@ -86,7 +86,7 @@ public class Predictor {
             Log.e(TAG, "Only  BGR color format is supported.");
             return false;
         }
-        boolean isLoaded = init(appCtx, modelPath, labelPath);
+        boolean isLoaded = init(appCtx, modelPath, labelPath, cpuThreadNum, cpuPowerMode);
         if (!isLoaded) {
             return false;
         }
@@ -119,11 +119,11 @@ public class Predictor {
 
         OCRPredictorNative.Config config = new OCRPredictorNative.Config();
         config.cpuThreadNum = cpuThreadNum;
-        config.detModelFilename = realPath + File.separator + "ch_ppocr_mobile_v2.0_det_opt.nb";
-        config.recModelFilename = realPath + File.separator + "ch_ppocr_mobile_v2.0_rec_opt.nb";
-        config.clsModelFilename = realPath + File.separator + "ch_ppocr_mobile_v2.0_cls_opt.nb";
-        Log.e("Predictor", "model path" + config.detModelFilename + " ; " + config.recModelFilename + ";" + config.clsModelFilename);
         config.cpuPower = cpuPowerMode;
+        config.detModelFilename = realPath + File.separator + "det_db.nb";
+        config.recModelFilename = realPath + File.separator + "rec_crnn.nb";
+        config.clsModelFilename = realPath + File.separator + "cls.nb";
+        Log.e("Predictor", "model path" + config.detModelFilename + " ; " + config.recModelFilename + ";" + config.clsModelFilename);
         paddlePredictor = new OCRPredictorNative(config);
 
         this.cpuThreadNum = cpuThreadNum;
@@ -197,19 +197,19 @@ public class Predictor {
             }
 
             int[] channelStride = new int[]{width * height, width * height * 2};
-            int[] pixels=new int[width*height];
-            scaleImage.getPixels(pixels,0,scaleImage.getWidth(),0,0,scaleImage.getWidth(),scaleImage.getHeight());
+            int[] pixels = new int[width * height];
+            scaleImage.getPixels(pixels, 0, scaleImage.getWidth(), 0, 0, scaleImage.getWidth(), scaleImage.getHeight());
             for (int i = 0; i < pixels.length; i++) {
                 int color = pixels[i];
                 float[] rgb = new float[]{(float) red(color) / 255.0f, (float) green(color) / 255.0f,
                         (float) blue(color) / 255.0f};
                 inputData[i] = (rgb[channelIdx[0]] - inputMean[0]) / inputStd[0];
                 inputData[i + channelStride[0]] = (rgb[channelIdx[1]] - inputMean[1]) / inputStd[1];
-                inputData[i+ channelStride[1]] = (rgb[channelIdx[2]] - inputMean[2]) / inputStd[2];
+                inputData[i + channelStride[1]] = (rgb[channelIdx[2]] - inputMean[2]) / inputStd[2];
             }
         } else if (channels == 1) {
-            int[] pixels=new int[width*height];
-            scaleImage.getPixels(pixels,0,scaleImage.getWidth(),0,0,scaleImage.getWidth(),scaleImage.getHeight());
+            int[] pixels = new int[width * height];
+            scaleImage.getPixels(pixels, 0, scaleImage.getWidth(), 0, 0, scaleImage.getWidth(), scaleImage.getHeight());
             for (int i = 0; i < pixels.length; i++) {
                 int color = pixels[i];
                 float gray = (float) (red(color) + green(color) + blue(color)) / 3.0f / 255.0f;
