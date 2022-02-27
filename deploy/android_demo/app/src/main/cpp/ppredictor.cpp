@@ -42,17 +42,17 @@ template <typename ConfigT> int PPredictor::_init(ConfigT &config) {
       // CL_PRECISION_FP32: 1, force fp32
       // CL_PRECISION_FP16: 2, force fp16
       config.set_opencl_precision(paddle::lite_api::CL_PRECISION_FP32);
-      LOGI("device: running on gpu.");
+      LOGI("ocr cpp device: running on gpu.");
     }
   } else {
-    LOGI("device: running on cpu.");
+    LOGI("ocr cpp device: running on cpu.");
     // you can give backup cpu nb model instead
     // config.set_model_from_file(cpu_nb_model_dir);
   }
   config.set_threads(_thread_num);
   config.set_power_mode(_mode);
   _predictor = paddle::lite_api::CreatePaddlePredictor(config);
-  LOGI("paddle instance created");
+  LOGI("ocr cpp paddle instance created");
   return RETURN_OK;
 }
 
@@ -73,18 +73,18 @@ std::vector<PredictorInput> PPredictor::get_inputs(int num) {
 PredictorInput PPredictor::get_first_input() { return get_input(0); }
 
 std::vector<PredictorOutput> PPredictor::infer() {
-  LOGI("infer Run start %d", _net_flag);
+  LOGI("ocr cpp infer Run start %d", _net_flag);
   std::vector<PredictorOutput> results;
   if (!_is_input_get) {
     return results;
   }
   _predictor->Run();
-  LOGI("infer Run end");
+  LOGI("ocr cpp infer Run end");
 
   for (int i = 0; i < _predictor->GetOutputNames().size(); i++) {
     std::unique_ptr<const paddle::lite_api::Tensor> output_tensor =
         _predictor->GetOutput(i);
-    LOGI("output tensor[%d] size %ld", i, product(output_tensor->shape()));
+    LOGI("ocr cpp output tensor[%d] size %ld", i, product(output_tensor->shape()));
     PredictorOutput result{std::move(output_tensor), i, _net_flag};
     results.emplace_back(std::move(result));
   }
