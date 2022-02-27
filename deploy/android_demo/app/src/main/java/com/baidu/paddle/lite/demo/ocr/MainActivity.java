@@ -280,20 +280,13 @@ public class MainActivity extends AppCompatActivity {
         tvStatus.setText("STATUS: run model failed");
     }
 
-    public void onImageChanged(Bitmap image) {
-        // Rerun model if users pick test image from gallery or camera
-        if (image != null && predictor.isLoaded()) {
-            predictor.setInputImage(image);
-            runModel();
-        }
-    }
-
     public void set_img() {
         // Load test image from path and run model
         try {
             assetManager = getAssets();
             InputStream in = assetManager.open(imagePath);
             Bitmap bmp = BitmapFactory.decodeStream(in);
+            cur_predict_image = bmp;
             ivInputImage.setImageBitmap(bmp);
         } catch (IOException e) {
             Toast.makeText(MainActivity.this, "Load image failed!", Toast.LENGTH_SHORT).show();
@@ -420,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
                         Cursor cursor = managedQuery(uri, proj, null, null, null);
                         cursor.moveToFirst();
                         if (image != null) {
-//                            onImageChanged(image);
+                            cur_predict_image = image;
                             ivInputImage.setImageBitmap(image);
                         }
                     } catch (IOException e) {
@@ -441,7 +434,7 @@ public class MainActivity extends AppCompatActivity {
                         Bitmap image = BitmapFactory.decodeFile(currentPhotoPath);
                         image = Utils.rotateBitmap(image, orientation);
                         if (image != null) {
-//                            onImageChanged(image);
+                            cur_predict_image = image;
                             ivInputImage.setImageBitmap(image);
                         }
                     } else {
@@ -464,14 +457,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void btn_run_model_click(View view) {
-        cur_predict_image = ((BitmapDrawable) ivInputImage.getDrawable()).getBitmap();
-        if (cur_predict_image == null) {
+        Bitmap image = ((BitmapDrawable) ivInputImage.getDrawable()).getBitmap();
+        if (image == null) {
             tvStatus.setText("STATUS: image is not exists");
         } else if (!predictor.isLoaded()) {
             tvStatus.setText("STATUS: model is not loaded");
         } else {
             tvStatus.setText("STATUS: run model ...... ");
-            predictor.setInputImage(cur_predict_image);
+            predictor.setInputImage(image);
             runModel();
         }
     }

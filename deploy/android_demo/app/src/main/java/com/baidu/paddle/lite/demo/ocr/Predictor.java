@@ -230,7 +230,7 @@ public class Predictor {
             OcrResultModel result = results.get(i);
             StringBuilder sb = new StringBuilder("");
             if(result.getPoints().size()>0){
-                sb.append("; Det: ");
+                sb.append("Det: ");
                 for (Point p : result.getPoints()) {
                     sb.append("(").append(p.x).append(",").append(p.y).append(") ");
                 }
