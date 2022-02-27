@@ -36,7 +36,7 @@ def points2polygon(points):
     return Polygon(point_mat)
 
 
-def poly_intersection(poly_det, poly_gt):
+def poly_intersection(poly_det, poly_gt, buffer=0.0001):
     """Calculate the intersection area between two polygon.
 
     Args:
@@ -49,7 +49,10 @@ def poly_intersection(poly_det, poly_gt):
     assert isinstance(poly_det, Polygon)
     assert isinstance(poly_gt, Polygon)
 
-    poly_inter = poly_det.buffer(0.001) & poly_gt.buffer(0.001)
+    if buffer == 0:
+        poly_inter = poly_det & poly_gt
+    else:
+        poly_inter = poly_det.buffer(buffer) & poly_gt.buffer(buffer)
     return poly_inter.area, poly_inter
 
 

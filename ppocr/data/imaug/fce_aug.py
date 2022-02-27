@@ -133,7 +133,7 @@ class RandomCropFlip:
             fail_flag = False
             for polygon, ignore_tag in zip(polygons, ignore_tags):
                 ppi = Polygon(polygon.reshape(-1, 2))
-                ppiou, _ = poly_intersection(ppi, pp)
+                ppiou, _ = poly_intersection(ppi, pp, buffer=0)
                 if np.abs(ppiou - float(ppi.area)) > self.epsilon and \
                         np.abs(ppiou) > self.epsilon:
                     fail_flag = True
