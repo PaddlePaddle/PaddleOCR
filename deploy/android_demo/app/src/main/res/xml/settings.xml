@@ -47,26 +47,10 @@
                 android:entryValues="@array/cpu_power_mode_values"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="Input Settings">
-        <ListPreference
-                android:defaultValue="@string/INPUT_COLOR_FORMAT_DEFAULT"
-                android:key="@string/INPUT_COLOR_FORMAT_KEY"
-                android:negativeButtonText="@null"
-                android:positiveButtonText="@null"
-                android:title="Input Color Format: BGR or RGB"
-                android:entries="@array/input_color_format_entries"
-                android:entryValues="@array/input_color_format_values"/>
         <EditTextPreference
-                android:key="@string/INPUT_SHAPE_KEY"
-                android:defaultValue="@string/INPUT_SHAPE_DEFAULT"
-                android:title="Input Shape: (1,1,max_width_height) or (1,3,max_width_height)" />
-        <EditTextPreference
-                android:key="@string/INPUT_MEAN_KEY"
-                android:defaultValue="@string/INPUT_MEAN_DEFAULT"
-                android:title="Input Mean: (channel/255-mean)/std" />
-        <EditTextPreference
-                android:key="@string/INPUT_STD_KEY"
-                android:defaultValue="@string/INPUT_STD_DEFAULT"
-                android:title="Input Std: (channel/255-mean)/std" />
+                android:key="@string/DET_LONG_SIZE_KEY"
+                android:defaultValue="@string/DET_LONG_SIZE_DEFAULT"
+                android:title="det long size" />
     </PreferenceCategory>
     <PreferenceCategory android:title="Output Settings">
         <EditTextPreference
