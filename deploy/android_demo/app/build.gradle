@@ -51,7 +51,7 @@ def archives = [
                 'dest': 'OpenCV'
         ],
         [
-                'src' : 'https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ocr_v2_for_cpu.tar.gz',
+                'src' : 'https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_PP-OCRv2.tar.gz',
                 'dest' : 'src/main/assets/models'
         ],
         [
