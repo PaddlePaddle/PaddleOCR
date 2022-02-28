@@ -1,0 +1,92 @@
+Global:
+  use_gpu: True
+  epoch_num: 8
+  log_smooth_window: 20
+  print_batch_step: 5
+  save_model_dir: ./output/rec/pren_new
+  save_epoch_step: 3
+  # evaluation is run every 2000 iterations after the 4000th iteration
+  eval_batch_step: [4000, 2000]
+  cal_metric_during_train: True
+  pretrained_model: 
+  checkpoints:
+  save_inference_dir:
+  use_visualdl: False
+  infer_img: doc/imgs_words/ch/word_1.jpg
+  # for data or label process
+  character_dict_path:
+  max_text_length: &max_text_length 25
+  infer_mode: False
+  use_space_char: False
+  save_res_path: ./output/rec/predicts_pren.txt
+
+Optimizer:
+  name: Adadelta
+  lr:
+    name: Piecewise
+    decay_epochs: [2, 5, 7]
+    values: [0.5, 0.1, 0.01, 0.001]
+
+Architecture:
+  model_type: rec
+  algorithm: PREN
+  in_channels: 3
+  Backbone:
+    name: EfficientNetb3_PREN
+  Neck:
+    name: PRENFPN
+    n_r: 5
+    d_model: 384
+    max_len: *max_text_length
+    dropout: 0.1
+  Head:
+    name: PRENHead
+
+Loss:
+  name: PRENLoss
+
+PostProcess:
+  name: PRENLabelDecode
+
+Metric:
+  name: RecMetric
+  main_indicator: acc
+
+Train:
+  dataset:
+    name: LMDBDataSet
+    data_dir: ./train_data/data_lmdb_release/training/
+    transforms:
+      - DecodeImage:
+          img_mode: BGR
+          channel_first: False
+      - PRENLabelEncode:
+      - RecAug:
+      - PRENResizeImg: 
+          image_shape: [64, 256]  # h,w
+      - KeepKeys:
+          keep_keys: ['image', 'label']
+  loader:
+    shuffle: True
+    batch_size_per_card: 128
+    drop_last: True
+    num_workers: 8
+
+Eval:
+  dataset:
+    name: LMDBDataSet
+    data_dir: ./train_data/data_lmdb_release/validation/
+    transforms:
+      - DecodeImage:
+          img_mode: BGR
+          channel_first: False
+      - PRENLabelEncode:
+      - PRENResizeImg: 
+          image_shape: [64, 256]  # h,w
+      - KeepKeys:
+          keep_keys: ['image', 'label']
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 64
+    num_workers: 8

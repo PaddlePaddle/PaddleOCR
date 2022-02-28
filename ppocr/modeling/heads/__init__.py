@@ -30,6 +30,7 @@ def build_head(config):
     from .rec_nrtr_head import Transformer
     from .rec_sar_head import SARHead
     from .rec_aster_head import AsterHead
+    from .rec_pren_head import PRENHead
 
     # cls head
     from .cls_head import ClsHead
@@ -42,7 +43,7 @@ def build_head(config):
     support_dict = [
         'DBHead', 'PSEHead', 'EASTHead', 'SASTHead', 'CTCHead', 'ClsHead',
         'AttentionHead', 'SRNHead', 'PGHead', 'Transformer',
-        'TableAttentionHead', 'SARHead', 'AsterHead', 'SDMGRHead'
+        'TableAttentionHead', 'SARHead', 'AsterHead', 'SDMGRHead', 'PRENHead'
     ]
 
     #table head
