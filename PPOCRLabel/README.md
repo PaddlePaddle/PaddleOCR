@@ -9,7 +9,7 @@ PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field, w
 ### Recent Update
 
 - 2022.02：（by [PeterH0323](https://github.com/peterh0323) ）
-  - Added KIE mode, for [detection + identification + keyword extraction] labeling.
+  - Add KIE Mode by using `--kie`, for [detection + identification + keyword extraction] labeling.
 - 2022.01：（by [PeterH0323](https://github.com/peterh0323) ）
   - Improve user experience: prompt for the number of files and labels, optimize interaction, and fix bugs such as only use CPU when inference
 - 2021.11.17:
@@ -156,6 +156,7 @@ python PPOCRLabel.py --kie True # [KIE mode] for [detection + recognition + keyw
 | X                        | Rotate the box anti-clockwise                    |
 | C                        | Rotate the box clockwise                         |
 | Ctrl + E                 | Edit label of the selected box                   |
+| Ctrl + X                 | Change key class of the box when enable `--kie`  |
 | Ctrl + R                 | Re-recognize the selected box                    |
 | Ctrl + C                 | Copy and paste the selected box                  |
 | Ctrl + Left Mouse Button | Multi select the label box                       |

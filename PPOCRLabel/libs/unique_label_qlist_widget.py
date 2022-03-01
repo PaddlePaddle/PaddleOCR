@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QSize
 from PyQt5 import QtWidgets
 
 
@@ -40,6 +40,7 @@ class UniqueLabelQListWidget(EscapableQListWidget):
             qlabel.setText('<font color="#{:02x}{:02x}{:02x}">●</font> {} '.format(*color, label))
         qlabel.setAlignment(Qt.AlignBottom)
 
-        item.setSizeHint(qlabel.sizeHint())
+        # item.setSizeHint(qlabel.sizeHint())
+        item.setSizeHint(QSize(25, 25))
 
         self.setItemWidget(item, qlabel)

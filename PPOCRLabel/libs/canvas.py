@@ -546,7 +546,7 @@ class Canvas(QWidget):
         # Give up if both fail.
         for shape in shapes:
             point = shape[0]
-            offset = QPointF(2.0, 2.0)
+            offset = QPointF(5.0, 5.0)
             self.calculateOffsets(shape, point)
             self.prevPoint = point
             if not self.boundedMoveShape(shape, point - offset):
