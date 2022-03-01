@@ -1,30 +1,19 @@
+[English](train_layoutparser_model.md) | 简体中文
+- [训练版面分析](#训练版面分析)
+  - [1. 安装](#1-安装)
+    - [1.1 环境要求](#11-环境要求)
+    - [1.2 安装PaddleDetection](#12-安装paddledetection)
+  - [2. 准备数据](#2-准备数据)
+  - [3. 配置文件改动和说明](#3-配置文件改动和说明)
+  - [4. PaddleDetection训练](#4-paddledetection训练)
+  - [5. PaddleDetection预测](#5-paddledetection预测)
+  - [6. 预测部署](#6-预测部署)
+    - [6.1 模型导出](#61-模型导出)
+    - [6.2 layout_parser预测](#62-layout_parser预测)
+
 # 训练版面分析
 
-[1. 安装](#安装)
-
-​        [1.1 环境要求](#环境要求)
-
-​        [1.2 安装PaddleDetection](#安装PaddleDetection)
-
-[2. 准备数据](#准备数据)
-
-[3. 配置文件改动和说明](#配置文件改动和说明)
-
-[4. PaddleDetection训练](#训练)
-
-[5. PaddleDetection预测](#预测)
-
-[6. 预测部署](#预测部署)
-
-​        [6.1 模型导出](#模型导出)
-
-​        [6.2 layout parser预测](#layout_parser预测)
-
-<a name="安装"></a>
-
 ## 1. 安装
-
-<a name="环境要求"></a>
 
 ### 1.1 环境要求
 
@@ -34,8 +23,6 @@
 - pip/pip3(9.0.1+), 64 bit
 - CUDA >= 10.1
 - cuDNN >= 7.6
-
-<a name="安装PaddleDetection"></a>
 
 ### 1.2 安装PaddleDetection
 
@@ -50,8 +37,6 @@ pip install -r requirements.txt
 ```
 
 更多安装教程，请参考: [Install doc](https://github.com/PaddlePaddle/PaddleDetection/blob/release/2.1/docs/tutorials/INSTALL_cn.md)
-
-<a name="数据准备"></a>
 
 ## 2. 准备数据
 
@@ -79,8 +64,6 @@ tar -xvf publaynet.tar.gz
 | `README.txt`   | Text file with the file names and description    | 1       |
 
 如果使用其它数据集，请参考[准备训练数据](https://github.com/PaddlePaddle/PaddleDetection/blob/release/2.1/docs/tutorials/PrepareDataSet.md)
-
-<a name="配置文件改动和说明"></a>
 
 ## 3. 配置文件改动和说明
 
@@ -113,8 +96,6 @@ weights: output/ppyolov2_r50vd_dcn_365e_coco/model_final
 
 根据实际情况，修改上述文件，比如数据集路径、batch size等。
 
-<a name="训练"></a>
-
 ## 4. PaddleDetection训练
 
 PaddleDetection提供了单卡/多卡训练模式，满足用户多种训练需求
@@ -146,8 +127,6 @@ python -m paddle.distributed.launch --gpus 0,1,2,3 tools/train.py -c configs/ppy
 
 注意：如果遇到 "`Out of memory error`" 问题, 尝试在 `ppyolov2_reader.yml` 文件中调小`batch_size`
 
-<a name="预测"></a>
-
 ## 5. PaddleDetection预测
 
 设置参数，使用PaddleDetection预测：
@@ -159,13 +138,9 @@ python tools/infer.py -c configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml --infer
 
 `--draw_threshold` 是个可选参数. 根据 [NMS](https://ieeexplore.ieee.org/document/1699659) 的计算，不同阈值会产生不同的结果 `keep_top_k`表示设置输出目标的最大数量，默认值为100，用户可以根据自己的实际情况进行设定。
 
-<a name="预测部署"></a>
-
 ## 6. 预测部署
 
 在layout parser中使用自己训练好的模型。
-
-<a name="模型导出"></a>
 
 ### 6.1 模型导出
 
@@ -182,8 +157,6 @@ python tools/export_model.py -c configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml 
 预测模型会导出到`inference/ppyolov2_r50vd_dcn_365e_coco`目录下，分别为`infer_cfg.yml`(预测不需要), `inference.pdiparams`, `inference.pdiparams.info`,`inference.pdmodel` 。
 
 更多模型导出教程，请参考：[EXPORT_MODEL](https://github.com/PaddlePaddle/PaddleDetection/blob/release/2.1/deploy/EXPORT_MODEL.md)
-
-<a name="layout parser预测"></a>
 
 ### 6.2 layout_parser预测
 

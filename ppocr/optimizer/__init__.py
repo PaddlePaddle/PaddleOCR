@@ -25,11 +25,8 @@ __all__ = ['build_optimizer']
 def build_lr_scheduler(lr_config, epochs, step_each_epoch):
     from . import learning_rate
     lr_config.update({'epochs': epochs, 'step_each_epoch': step_each_epoch})
-    if 'name' in lr_config:
-        lr_name = lr_config.pop('name')
-        lr = getattr(learning_rate, lr_name)(**lr_config)()
-    else:
-        lr = lr_config['learning_rate']
+    lr_name = lr_config.pop('name', 'Const')
+    lr = getattr(learning_rate, lr_name)(**lr_config)()
     return lr
 
 

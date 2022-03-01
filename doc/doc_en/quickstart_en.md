@@ -1,8 +1,6 @@
 
 # PaddleOCR Quick Start
 
-[PaddleOCR Quick Start](#paddleocr-quick-start)
-
 + [1. Install PaddleOCR Whl Package](#1-install-paddleocr-whl-package)
 * [2. Easy-to-Use](#2-easy-to-use)
   + [2.1 Use by Command Line](#21-use-by-command-line)

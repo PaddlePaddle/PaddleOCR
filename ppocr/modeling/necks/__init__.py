@@ -24,9 +24,10 @@ def build_neck(config):
     from .table_fpn import TableFPN
     from .fpn import FPN
     from .fce_fpn import FCEFPN
+    from .pren_fpn import PRENFPN
     support_dict = [
         'FPN', 'FCEFPN', 'DBFPN', 'EASTFPN', 'SASTFPN', 'SequenceEncoder',
-        'PGFPN', 'TableFPN'
+        'PGFPN', 'TableFPN', 'PRENFPN'
     ]
 
     module_name = config.pop('name')

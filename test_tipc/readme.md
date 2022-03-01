@@ -28,32 +28,32 @@
 | DB     |ch_ppocr_mobile_v2.0_det_PACT | 检测  | 支持 | 多机多卡 <br> 混合精度 | PACT量化 | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
 | DB     |ch_ppocr_mobile_v2.0_det_KL | 检测  | 支持 | 多机多卡 <br> 混合精度 | 离线量化| Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
 | DB     |ch_ppocr_server_v2.0_det | 检测  | 支持 | 多机多卡 <br> 混合精度 | - | Paddle Inference: C++ <br> Paddle Serving: Python, C++ |
-| DB     |ch_PP-OCRv2_det          | 检测  |
+| DB     |ch_PP-OCRv2_det          | 检测  | 支持 | 多机多卡 <br> 混合精度 | - | Paddle Inference: C++ <br> Paddle Serving: Python, C++ |
 | CRNN   |ch_ppocr_mobile_v2.0_rec | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
 | CRNN   |ch_ppocr_server_v2.0_rec | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | Paddle Inference: C++ <br> Paddle Serving: Python, C++ |
-| CRNN   |ch_PP-OCRv2_rec          | 识别  |
+| CRNN   |ch_PP-OCRv2_rec          | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | Paddle Inference: C++ <br> Paddle Serving: Python, C++ |
 | PP-OCR |ch_ppocr_mobile_v2.0 | 检测+识别  | 支持 | 多机多卡 <br> 混合精度 | - | Paddle Inference: C++ <br> Paddle Serving: Python, C++ <br> Paddle-Lite: <br> (1) ARM CPU(C++) |
 | PP-OCR |ch_ppocr_server_v2.0 | 检测+识别  | 支持 | 多机多卡 <br> 混合精度 | - | Paddle Inference: C++ <br> Paddle Serving: Python, C++ |
-|PP-OCRv2|ch_PP-OCRv2 | 检测+识别  |
-| DB     |det_mv3_db_v2.0                | 检测  |
-| DB     |det_r50_vd_db_v2.0             | 检测  |
-| EAST   |det_mv3_east_v2.0              | 检测  |
-| EAST   |det_r50_vd_east_v2.0           | 检测  |
-| PSENet |det_mv3_pse_v2.0               | 检测  |
-| PSENet |det_r50_vd_pse_v2.0            | 检测  |
-| SAST   |det_r50_vd_sast_totaltext_v2.0 | 检测  |
-| Rosetta|rec_mv3_none_none_ctc_v2.0     | 识别  |
-| Rosetta|rec_r34_vd_none_none_ctc_v2.0  | 识别  |
-| CRNN   |rec_mv3_none_bilstm_ctc_v2.0   | 识别  |
-| CRNN   |rec_r34_vd_none_bilstm_ctc_v2.0| 识别  |
-| StarNet|rec_mv3_tps_bilstm_ctc_v2.0    | 识别  |
-| StarNet|rec_r34_vd_tps_bilstm_ctc_v2.0 | 识别  |
-| RARE   |rec_mv3_tps_bilstm_att_v2.0    | 识别  |
-| RARE   |rec_r34_vd_tps_bilstm_att_v2.0 | 识别  |
-| SRN    |rec_r50fpn_vd_none_srn         | 识别  |
-| NRTR   |rec_mtb_nrtr                   | 识别  |
-| SAR    |rec_r31_sar                    | 识别  |
-| PGNet  |rec_r34_vd_none_none_ctc_v2.0  | 端到端|
+|PP-OCRv2|ch_PP-OCRv2 | 检测+识别  | 支持 | 多机多卡 <br> 混合精度 | - | Paddle Inference: C++ <br> Paddle Serving: Python, C++ |
+| DB     |det_mv3_db_v2.0                | 检测  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| DB     |det_r50_vd_db_v2.0             | 检测  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| EAST   |det_mv3_east_v2.0              | 检测  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| EAST   |det_r50_vd_east_v2.0           | 检测  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| PSENet |det_mv3_pse_v2.0               | 检测  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| PSENet |det_r50_vd_pse_v2.0            | 检测  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| SAST   |det_r50_vd_sast_totaltext_v2.0 | 检测  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| Rosetta|rec_mv3_none_none_ctc_v2.0     | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| Rosetta|rec_r34_vd_none_none_ctc_v2.0  | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| CRNN   |rec_mv3_none_bilstm_ctc_v2.0   | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| CRNN   |rec_r34_vd_none_bilstm_ctc_v2.0| 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| StarNet|rec_mv3_tps_bilstm_ctc_v2.0    | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| StarNet|rec_r34_vd_tps_bilstm_ctc_v2.0 | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| RARE   |rec_mv3_tps_bilstm_att_v2.0    | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| RARE   |rec_r34_vd_tps_bilstm_att_v2.0 | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| SRN    |rec_r50fpn_vd_none_srn         | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| NRTR   |rec_mtb_nrtr                   | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| SAR    |rec_r31_sar                    | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| PGNet  |rec_r34_vd_none_none_ctc_v2.0  | 端到端| 支持 | 多机多卡 <br> 混合精度 | - | - |
 
 
 

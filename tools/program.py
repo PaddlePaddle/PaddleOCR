@@ -21,7 +21,7 @@ import sys
 import platform
 import yaml
 import time
-import shutil
+import datetime
 import paddle
 import paddle.distributed as dist
 from tqdm import tqdm
@@ -29,11 +29,10 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 from ppocr.utils.stats import TrainingStats
 from ppocr.utils.save_load import save_model
-from ppocr.utils.utility import print_dict
+from ppocr.utils.utility import print_dict, AverageMeter
 from ppocr.utils.logging import get_logger
 from ppocr.utils import profiler
 from ppocr.data import build_dataloader
-import numpy as np
 
 
 class ArgsParser(ArgumentParser):
@@ -48,7 +47,8 @@ class ArgsParser(ArgumentParser):
             '--profiler_options',
             type=str,
             default=None,
-            help='The option of profiler, which should be in format \"key1=value1;key2=value2;key3=value3\".'
+            help='The option of profiler, which should be in format ' \
+                 '\"key1=value1;key2=value2;key3=value3\".'
         )
 
     def parse_args(self, argv=None):
@@ -99,7 +99,8 @@ def merge_config(config, opts):
             sub_keys = key.split('.')
             assert (
                 sub_keys[0] in config
-            ), "the sub_keys can only be one of global_config: {}, but get: {}, please check your running command".format(
+            ), "the sub_keys can only be one of global_config: {}, but get: " \
+               "{}, please check your running command".format(
                 config.keys(), sub_keys[0])
             cur = config[sub_keys[0]]
             for idx, sub_key in enumerate(sub_keys[1:]):
@@ -129,6 +130,25 @@ def check_gpu(use_gpu):
         pass
 
 
+def check_xpu(use_xpu):
+    """
+    Log error and exit when set use_xpu=true in paddlepaddle
+    cpu/gpu version.
+    """
+    err = "Config use_xpu cannot be set as true while you are " \
+          "using paddlepaddle cpu/gpu version ! \nPlease try: \n" \
+          "\t1. Install paddlepaddle-xpu to run model on XPU \n" \
+          "\t2. Set use_xpu as false in config file to run " \
+          "model on CPU/GPU"
+
+    try:
+        if use_xpu and not paddle.is_compiled_with_xpu():
+            print(err)
+            sys.exit(1)
+    except Exception as e:
+        pass
+
+
 def train(config,
           train_dataloader,
           valid_dataloader,
@@ -145,6 +165,7 @@ def train(config,
           scaler=None):
     cal_metric_during_train = config['Global'].get('cal_metric_during_train',
                                                    False)
+    calc_epoch_interval = config['Global'].get('calc_epoch_interval', 1)
     log_smooth_window = config['Global']['log_smooth_window']
     epoch_num = config['Global']['epoch_num']
     print_batch_step = config['Global']['print_batch_step']
@@ -160,11 +181,13 @@ def train(config,
         eval_batch_step = eval_batch_step[1]
         if len(valid_dataloader) == 0:
             logger.info(
-                'No Images in eval dataset, evaluation during training will be disabled'
+                'No Images in eval dataset, evaluation during training ' \
+                'will be disabled'
             )
             start_eval_step = 1e111
         logger.info(
-            "During the training process, after the {}th iteration, an evaluation is run every {} iterations".
+            "During the training process, after the {}th iteration, " \
+            "an evaluation is run every {} iterations".
             format(start_eval_step, eval_batch_step))
     save_epoch_step = config['Global']['save_epoch_step']
     save_model_dir = config['Global']['save_model_dir']
@@ -189,10 +212,11 @@ def train(config,
     start_epoch = best_model_dict[
         'start_epoch'] if 'start_epoch' in best_model_dict else 1
 
-    train_reader_cost = 0.0
-    train_run_cost = 0.0
     total_samples = 0
+    train_reader_cost = 0.0
+    train_batch_cost = 0.0
     reader_start = time.time()
+    eta_meter = AverageMeter()
 
     max_iter = len(train_dataloader) - 1 if platform.system(
     ) == "Windows" else len(train_dataloader)
@@ -203,7 +227,6 @@ def train(config,
                 config, 'Train', device, logger, seed=epoch)
             max_iter = len(train_dataloader) - 1 if platform.system(
             ) == "Windows" else len(train_dataloader)
-
         for idx, batch in enumerate(train_dataloader):
             profiler.add_profiler_step(profiler_options)
             train_reader_cost += time.time() - reader_start
@@ -214,7 +237,6 @@ def train(config,
             if use_srn:
                 model_average = True
 
-            train_start = time.time()
             # use amp
             if scaler:
                 with paddle.amp.auto_cast():
@@ -242,7 +264,19 @@ def train(config,
                 optimizer.step()
             optimizer.clear_grad()
 
-            train_run_cost += time.time() - train_start
+            if cal_metric_during_train and epoch % calc_epoch_interval == 0:  # only rec and cls need
+                batch = [item.numpy() for item in batch]
+                if model_type in ['table', 'kie']:
+                    eval_class(preds, batch)
+                else:
+                    post_result = post_process_class(preds, batch[1])
+                    eval_class(post_result, batch)
+                metric = eval_class.get_metric()
+                train_stats.update(metric)
+
+            train_batch_time = time.time() - reader_start
+            train_batch_cost += train_batch_time
+            eta_meter.update(train_batch_time)
             global_step += 1
             total_samples += len(images)
 
@@ -254,16 +288,6 @@ def train(config,
             stats['lr'] = lr
             train_stats.update(stats)
 
-            if cal_metric_during_train:  # only rec and cls need
-                batch = [item.numpy() for item in batch]
-                if model_type in ['table', 'kie']:
-                    eval_class(preds, batch)
-                else:
-                    post_result = post_process_class(preds, batch[1])
-                    eval_class(post_result, batch)
-                metric = eval_class.get_metric()
-                train_stats.update(metric)
-
             if vdl_writer is not None and dist.get_rank() == 0:
                 for k, v in train_stats.get().items():
                     vdl_writer.add_scalar('TRAIN/{}'.format(k), v, global_step)
@@ -273,19 +297,27 @@ def train(config,
                 (global_step > 0 and global_step % print_batch_step == 0) or
                 (idx >= len(train_dataloader) - 1)):
                 logs = train_stats.log()
-                strs = 'epoch: [{}/{}], global_step: {}, {}, avg_reader_cost: {:.5f} s, avg_batch_cost: {:.5f} s, avg_samples: {}, ips: {:.5f}'.format(
-                    epoch, epoch_num, global_step, logs, train_reader_cost /
-                    print_batch_step, (train_reader_cost + train_run_cost) /
-                    print_batch_step, total_samples / print_batch_step,
-                    total_samples / (train_reader_cost + train_run_cost))
+
+                eta_sec = ((epoch_num + 1 - epoch) * \
+                    len(train_dataloader) - idx - 1) * eta_meter.avg
+                eta_sec_format = str(datetime.timedelta(seconds=int(eta_sec)))
+                strs = 'epoch: [{}/{}], global_step: {}, {}, avg_reader_cost: ' \
+                       '{:.5f} s, avg_batch_cost: {:.5f} s, avg_samples: {}, ' \
+                       'ips: {:.5f} samples/s, eta: {}'.format(
+                    epoch, epoch_num, global_step, logs,
+                    train_reader_cost / print_batch_step,
+                    train_batch_cost / print_batch_step,
+                    total_samples / print_batch_step,
+                    total_samples / train_batch_cost, eta_sec_format)
                 logger.info(strs)
 
-                train_reader_cost = 0.0
-                train_run_cost = 0.0
                 total_samples = 0
+                train_reader_cost = 0.0
+                train_batch_cost = 0.0
             # eval
             if global_step > start_eval_step and \
-                    (global_step - start_eval_step) % eval_batch_step == 0 and dist.get_rank() == 0:
+                    (global_step - start_eval_step) % eval_batch_step == 0 \
+                    and dist.get_rank() == 0:
                 if model_average:
                     Model_Average = paddle.incubate.optimizer.ModelAverage(
                         0.15,
@@ -499,14 +531,24 @@ def preprocess(is_train=False):
     use_gpu = config['Global']['use_gpu']
     check_gpu(use_gpu)
 
+    # check if set use_xpu=True in paddlepaddle cpu/gpu version
+    use_xpu = False
+    if 'use_xpu' in config['Global']:
+        use_xpu = config['Global']['use_xpu']
+    check_xpu(use_xpu)
+
     alg = config['Architecture']['algorithm']
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
-        'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'FCE'
+        'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'PREN', 'FCE'
     ]
 
-    device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'
+    device = 'cpu'
+    if use_gpu:
+        device = 'gpu:{}'.format(dist.ParallelEnv().dev_id)
+    if use_xpu:
+        device = 'xpu'
     device = paddle.set_device(device)
 
     config['Global']['distributed'] = dist.get_world_size() != 1

@@ -1,5 +1,5 @@
 ===========================train_params===========================
-model_name:det_mv3_db_v2.0
+model_name:det_mv3_db_v2_0
 python:python3.7
 gpu_list:0|0,1
 Global.use_gpu:True|True
@@ -49,3 +49,9 @@ inference:tools/infer/predict_det.py
 null:null
 --benchmark:True
 null:null
+===========================train_benchmark_params==========================
+batch_size:8|16
+fp_items:fp32|fp16
+epoch:2
+--profiler_options:batch_range=[10,20];state=GPU;tracer_option=Default;profile_path=model.profile
+flags:FLAGS_eager_delete_tensor_gb=0.0;FLAGS_fraction_of_gpu_memory_to_use=0.98;FLAGS_conv_workspace_size_limit=4096

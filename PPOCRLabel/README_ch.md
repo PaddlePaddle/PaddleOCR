@@ -8,6 +8,10 @@ PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，内置P
 
 #### 近期更新
 
+- 2022.02：（by [PeterH0323](https://github.com/peterh0323) ）
+  - 新增：KIE 功能，用于打【检测+识别+关键字提取】的标签
+- 2022.01：（by [PeterH0323](https://github.com/peterh0323) ）
+  - 提升用户体验：新增文件与标记数目提示、优化交互、修复gpu使用等问题
 - 2021.11.17：
   - 新增支持通过whl包安装和启动PPOCRLabel（by [d2623587501](https://github.com/d2623587501)）
   - 标注数据集切分：对标注数据进行训练、验证与测试集划分（参考下方3.5节，by [MrCuiHao](https://github.com/MrCuiHao)）
@@ -24,7 +28,7 @@ PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，内置P
   - 识别结果更改为单击修改。（如果无法修改，请切换为系统自带输入法，或再次切回原输入法）
 - 2020.12.18： 支持对单个标记框进行重新识别（by [ninetailskim](https://github.com/ninetailskim)），完善快捷键。
 
-如果您对以上内容感兴趣或对完善工具有不一样的想法，欢迎加入我们的SIG队伍与我们共同开发。可以在[此处](https://github.com/PaddlePaddle/PaddleOCR/issues/1728)完成问卷和前置任务，经过我们确认相关内容后即可正式加入，享受SIG福利，共同为OCR开源事业贡献（特别说明：针对PPOCRLabel的改进也属于PaddleOCR前置任务）
+如果您对完善工具有不一样的想法，欢迎通过[社区常规赛](https://github.com/PaddlePaddle/PaddleOCR/issues/4982)报名相关更改，获得积分兑换奖励。
 
 
 
@@ -68,7 +72,8 @@ PPOCRLabel --lang ch
 ```bash
 pip3 install PPOCRLabel
 pip3 install opencv-contrib-python-headless==4.2.0.32 # 如果下载过慢请添加"-i https://mirror.baidu.com/pypi/simple"
-PPOCRLabel --lang ch # 启动
+PPOCRLabel --lang ch  # 启动【普通模式】，用于打【检测+识别】场景的标签
+PPOCRLabel --lang ch --kie True  # 启动 【KIE 模式】，用于打【检测+识别+关键字提取】场景的标签
 ```
 
 > 如果上述安装出现问题，可以参考3.6节 错误提示
@@ -87,7 +92,8 @@ pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl -i https://mirror.baidu.
 
 ```bash
 cd ./PPOCRLabel  # 切换到PPOCRLabel目录
-python PPOCRLabel.py --lang ch
+python PPOCRLabel.py --lang ch  # 启动【普通模式】，用于打【检测+识别】场景的标签
+python PPOCRLabel.py --lang ch --kie True  # 启动 【KIE 模式】，用于打【检测+识别+关键字提取】场景的标签
 ```
 
 
@@ -102,7 +108,7 @@ python PPOCRLabel.py --lang ch
 4. 手动标注：点击 “矩形标注”（推荐直接在英文模式下点击键盘中的 “W”)，用户可对当前图片中模型未检出的部分进行手动绘制标记框。点击键盘Q，则使用四点标注模式（或点击“编辑” - “四点标注”），用户依次点击4个点后，双击左键表示标注完成。
 5. 标记框绘制完成后，用户点击 “确认”，检测框会先被预分配一个 “待识别” 标签。
 6. 重新识别：将图片中的所有检测画绘制/调整完成后，点击 “重新识别”，PPOCR模型会对当前图片中的**所有检测框**重新识别<sup>[3]</sup>。
-7. 内容更改：双击识别结果，对不准确的识别结果进行手动更改。
+7. 内容更改：单击识别结果，对不准确的识别结果进行手动更改。
 8. **确认标记：点击 “确认”，图片状态切换为 “√”，跳转至下一张。**
 9. 删除：点击 “删除图像”，图片将会被删除至回收站。
 10. 导出结果：用户可以通过菜单中“文件-导出标记结果”手动导出，同时也可以点击“文件 - 自动导出标记结果”开启自动导出。手动确认过的标记将会被存放在所打开图片文件夹下的*Label.txt*中。在菜单栏点击 “文件” - "导出识别结果"后，会将此类图片的识别训练数据保存在*crop_img*文件夹下，识别标签保存在*rec_gt.txt*中<sup>[4]</sup>。
@@ -131,23 +137,25 @@ python PPOCRLabel.py --lang ch
 
 ### 3.1 快捷键
 
-| 快捷键              | 说明                         |
-|------------------| ---------------------------- |
-| Ctrl + shift + R | 对当前图片的所有标记重新识别 |
-| W                | 新建矩形框                   |
-| Q                | 新建四点框                   |
-| Ctrl + E         | 编辑所选框标签               |
-| Ctrl + R         | 重新识别所选标记             |
+| 快捷键              | 说明             |
+|------------------|----------------|
+| Ctrl + shift + R | 对当前图片的所有标记重新识别  |
+| W                | 新建矩形框                  |
+| Q                | 新建四点框                  |
+| X                | 框逆时针旋转                |
+| C                | 框顺时针旋转                |
+| Ctrl + E         | 编辑所选框标签              |
+| Ctrl + R         | 重新识别所选标记            |
 | Ctrl + C         | 复制并粘贴选中的标记框       |
-| Ctrl + 鼠标左键   | 多选标记框                   |
-| Ctrl + X         | 删除所选框                   |
-| Ctrl + V         | 确认本张图片标记             |
-| Ctrl + Shift + d | 删除本张图片                 |
-| D                | 下一张图片                   |
-| A                | 上一张图片                   |
-| Ctrl++           | 缩小                         |
-| Ctrl--           | 放大                         |
-| ↑→↓←             | 移动标记框                   |
+| Ctrl + 鼠标左键    | 多选标记框                 |
+| Alt + X          | 删除所选框                 |
+| Ctrl + V         | 确认本张图片标记           |
+| Ctrl + Shift + d | 删除本张图片               |
+| D                | 下一张图片                |
+| A                | 上一张图片                |
+| Ctrl++           | 缩小                     |
+| Ctrl--           | 放大                     |
+| ↑→↓←             | 移动标记框                |
 
 ### 3.2 内置模型
 
@@ -181,19 +189,29 @@ PPOCRLabel支持三种导出方式：
 
 ```
 cd ./PPOCRLabel # 将目录切换到PPOCRLabel文件夹下
-python gen_ocr_train_val_test.py --trainValTestRatio 6:2:2 --labelRootPath ../train_data/label --detRootPath ../train_data/det --recRootPath ../train_data/rec
+python gen_ocr_train_val_test.py --trainValTestRatio 6:2:2 --datasetRootPath ../train_data 
 ```
 
 参数说明：
 
 - `trainValTestRatio` 是训练集、验证集、测试集的图像数量划分比例，根据实际情况设定，默认是`6:2:2`
 
-- `labelRootPath` 是PPOCRLabel标注的数据集存放路径，默认是`../train_data/label`
-
-- `detRootPath` 是根据PPOCRLabel标注的数据集划分后的文本检测数据集存放的路径，默认是`../train_data/det `
-
-- `recRootPath` 是根据PPOCRLabel标注的数据集划分后的字符识别数据集存放的路径，默认是`../train_data/rec`
-
+- `datasetRootPath` 是PPOCRLabel标注的完整数据集存放路径。默认路径是 `PaddleOCR/train_data` 分割数据集前应有如下结构：
+  ```
+  |-train_data
+    |-crop_img
+      |- word_001_crop_0.png
+      |- word_002_crop_0.jpg
+      |- word_003_crop_0.jpg
+      | ...
+    | Label.txt
+    | rec_gt.txt
+    |- word_001.png
+    |- word_002.jpg
+    |- word_003.jpg
+    | ...
+  ```
+  
 ### 3.6 错误提示
 
 - 如果同时使用whl包安装了paddleocr，其优先级大于通过paddleocr.py调用PaddleOCR类，whl包未更新时会导致程序异常。

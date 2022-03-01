@@ -284,7 +284,6 @@ else
                 set_amp_config=" "
             fi          
             for trainer in ${trainer_list[*]}; do 
-                eval ${env}
                 flag_quant=False
                 if [ ${trainer} = ${pact_key} ]; then
                     run_train=${pact_trainer}
@@ -344,6 +343,7 @@ else
 
                 # run eval 
                 if [ ${eval_py} != "null" ]; then
+                    eval ${env}
                     set_eval_params1=$(func_set_params "${eval_key1}" "${eval_value1}")
                     eval_cmd="${python} ${eval_py} ${set_eval_pretrain} ${set_use_gpu} ${set_eval_params1}" 
                     eval $eval_cmd

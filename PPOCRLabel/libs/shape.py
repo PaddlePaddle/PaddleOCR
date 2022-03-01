@@ -10,19 +10,14 @@
 # SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
 # CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-#!/usr/bin/python
+# !/usr/bin/python
 # -*- coding: utf-8 -*-
-
-
-try:
-    from PyQt5.QtGui import *
-    from PyQt5.QtCore import *
-except ImportError:
-    from PyQt4.QtGui import *
-    from PyQt4.QtCore import *
-
-from libs.utils import distance
+import math
 import sys
+
+from PyQt5.QtCore import QPointF
+from PyQt5.QtGui import QColor, QPen, QPainterPath, QFont
+from libs.utils import distance
 
 DEFAULT_LINE_COLOR = QColor(0, 255, 0, 128)
 DEFAULT_FILL_COLOR = QColor(255, 0, 0, 128)
@@ -51,14 +46,17 @@ class Shape(object):
     point_size = 8
     scale = 1.0
 
-    def __init__(self, label=None, line_color=None, difficult=False, paintLabel=False):
+    def __init__(self, label=None, line_color=None, difficult=False, key_cls="None", paintLabel=False):
         self.label = label
         self.points = []
         self.fill = False
         self.selected = False
         self.difficult = difficult
+        self.key_cls = key_cls
         self.paintLabel = paintLabel
         self.locked = False
+        self.direction = 0
+        self.center = None
         self._highlightIndex = None
         self._highlightMode = self.NEAR_VERTEX
         self._highlightSettings = {
@@ -74,7 +72,24 @@ class Shape(object):
             # is used for drawing the pending line a different color.
             self.line_color = line_color
 
+    def rotate(self, theta):
+        for i, p in enumerate(self.points):
+            self.points[i] = self.rotatePoint(p, theta)
+        self.direction -= theta
+        self.direction = self.direction % (2 * math.pi)
+
+    def rotatePoint(self, p, theta):
+        order = p - self.center
+        cosTheta = math.cos(theta)
+        sinTheta = math.sin(theta)
+        pResx = cosTheta * order.x() + sinTheta * order.y()
+        pResy = - sinTheta * order.x() + cosTheta * order.y()
+        pRes = QPointF(self.center.x() + pResx, self.center.y() + pResy)
+        return pRes
+
     def close(self):
+        self.center = QPointF((self.points[0].x() + self.points[2].x()) / 2,
+                              (self.points[0].y() + self.points[2].y()) / 2)
         self._closed = True
 
     def reachMaxPoints(self):
@@ -83,7 +98,9 @@ class Shape(object):
         return False
 
     def addPoint(self, point):
-        if not self.reachMaxPoints():  # 4个点时发出close信号
+        if self.reachMaxPoints():
+            self.close()
+        else:
             self.points.append(point)
 
     def popPoint(self):
@@ -112,7 +129,7 @@ class Shape(object):
             # Uncommenting the following line will draw 2 paths
             # for the 1st vertex, and make it non-filled, which
             # may be desirable.
-            #self.drawVertex(vrtx_path, 0)
+            # self.drawVertex(vrtx_path, 0)
 
             for i, p in enumerate(self.points):
                 line_path.lineTo(p)
@@ -136,9 +153,9 @@ class Shape(object):
                     font.setPointSize(8)
                     font.setBold(True)
                     painter.setFont(font)
-                    if(self.label == None):
+                    if self.label is None:
                         self.label = ""
-                    if(min_y < MIN_Y_LABEL):
+                    if min_y < MIN_Y_LABEL:
                         min_y += MIN_Y_LABEL
                     painter.drawText(min_x, min_y, self.label)
 
@@ -198,6 +215,8 @@ class Shape(object):
     def copy(self):
         shape = Shape("%s" % self.label)
         shape.points = [p for p in self.points]
+        shape.center = self.center
+        shape.direction = self.direction
         shape.fill = self.fill
         shape.selected = self.selected
         shape._closed = self._closed
@@ -206,6 +225,7 @@ class Shape(object):
         if self.fill_color != Shape.fill_color:
             shape.fill_color = self.fill_color
         shape.difficult = self.difficult
+        shape.key_cls = self.key_cls
         return shape
 
     def __len__(self):
