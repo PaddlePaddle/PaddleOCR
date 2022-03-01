@@ -21,6 +21,7 @@ def build_head(config):
     from .det_east_head import EASTHead
     from .det_sast_head import SASTHead
     from .det_pse_head import PSEHead
+    from .det_fce_head import FCEHead
     from .e2e_pg_head import PGHead
 
     # rec head
@@ -41,8 +42,8 @@ def build_head(config):
     from .table_att_head import TableAttentionHead
 
     support_dict = [
-        'DBHead', 'PSEHead', 'EASTHead', 'SASTHead', 'CTCHead', 'ClsHead',
-        'AttentionHead', 'SRNHead', 'PGHead', 'Transformer',
+        'DBHead', 'PSEHead', 'FCEHead', 'EASTHead', 'SASTHead', 'CTCHead',
+        'ClsHead', 'AttentionHead', 'SRNHead', 'PGHead', 'Transformer',
         'TableAttentionHead', 'SARHead', 'AsterHead', 'SDMGRHead', 'PRENHead'
     ]
 

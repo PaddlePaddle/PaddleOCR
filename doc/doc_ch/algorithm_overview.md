@@ -21,6 +21,7 @@ PaddleOCR开源的文本检测算法列表：
 - [x]  EAST([paper](https://arxiv.org/abs/1704.03155))[1]
 - [x]  SAST([paper](https://arxiv.org/abs/1908.05498))[4]
 - [x]  PSENet([paper](https://arxiv.org/abs/1903.12473v2)）
+- [x]  FCENet([paper](https://arxiv.org/abs/2104.10442))
 
 在ICDAR2015文本检测公开数据集上，算法效果如下：
 |模型|骨干网络|precision|recall|Hmean|下载链接|
@@ -38,6 +39,12 @@ PaddleOCR开源的文本检测算法列表：
 |模型|骨干网络|precision|recall|Hmean|下载链接|
 | --- | --- | --- | --- | --- | --- |
 |SAST|ResNet50_vd|89.63%|78.44%|83.66%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_totaltext_v2.0_train.tar)|
+
+在CTW1500文本检测公开数据集上，算法效果如下：
+
+|模型|骨干网络|precision|recall|Hmean|下载链接|
+| --- | --- | --- | --- | --- | --- |
+|FCE|ResNet50_dcn|88.13%|82.60%|85.28%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/det_r50_dcn_fce_ctw_v2.0_train.tar)|
 
 **说明：** SAST模型训练额外加入了icdar2013、icdar2017、COCO-Text、ArT等公开数据集进行调优。PaddleOCR用到的经过整理格式的英文公开数据集下载：
 * [百度云地址](https://pan.baidu.com/s/12cPnZcVuV1zn5DOd4mqjVw) (提取码: 2bpi)
