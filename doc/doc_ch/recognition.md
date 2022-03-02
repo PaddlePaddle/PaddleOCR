@@ -116,7 +116,7 @@ n
 
 word_dict.txt 每行有一个单字，将字符与数字索引映射在一起，“and” 将被映射成 [2 5 1]
 
-`ppocr/utils/ppocr_keys_v1.txt` 是一个包含6623个字符的中文字典，
+`ppocr/utils/ppocr_keys_v1.txt` 是一个包含6634个字符的中文字典，
 
 `ppocr/utils/ic15_dict.txt` 是一个包含36个字符的英文字典，
 
