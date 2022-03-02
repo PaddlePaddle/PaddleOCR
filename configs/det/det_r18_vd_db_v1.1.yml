@@ -15,6 +15,7 @@ Global:
   save_res_path: ./output/det_r18_vd_db/predicts_db.txt
   checkpoints:
   save_inference_dir:
+  infer_img:
 
 Architecture:
   function: ppocr.modeling.architectures.det_model,DetModel
@@ -51,7 +52,7 @@ Optimizer:
 PostProcess:
   function: ppocr.postprocess.db_postprocess,DBPostProcess
   thresh: 0.3
-  box_thresh: 0.6
+  box_thresh: 0.5
   max_candidates: 1000
-  unclip_ratio: 1.5
+  unclip_ratio: 1.6
   

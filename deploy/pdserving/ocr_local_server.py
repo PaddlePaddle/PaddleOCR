@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from paddle_serving_client import Client
-from paddle_serving_app.reader import OCRReader
 import cv2
 import sys
 import numpy as np
@@ -45,12 +44,12 @@ class TextSystemHelper(TextSystem):
         if self.use_angle_cls:
             self.clas_client = Debugger()
             self.clas_client.load_model_config(
-                global_args.cls_model_dir, gpu=True, profile=False)
+                global_args.cls_server_dir, gpu=True, profile=False)
             self.text_classifier = TextClassifierHelper(args)
         self.det_client = Debugger()
         self.det_client.load_model_config(
-            global_args.det_model_dir, gpu=True, profile=False)
-        self.fetch = ["ctc_greedy_decoder_0.tmp_0", "softmax_0.tmp_0"]
+            global_args.det_server_dir, gpu=True, profile=False)
+        self.fetch = ["save_infer_model/scale_0.tmp_0", "save_infer_model/scale_1.tmp_0"]
 
     def preprocess(self, img):
         feed, fetch, self.tmp_args = self.text_detector.preprocess(img)
@@ -61,6 +60,7 @@ class TextSystemHelper(TextSystem):
             return None, None
         img_crop_list = []
         dt_boxes = sorted_boxes(dt_boxes)
+        self.dt_boxes = dt_boxes
         for bno in range(len(dt_boxes)):
             tmp_box = copy.deepcopy(dt_boxes[bno])
             img_crop = self.get_rotate_crop_image(img, tmp_box)
@@ -101,16 +101,20 @@ class OCRService(WebService):
             if ".lod" in x:
                 self.tmp_args[x] = fetch_map[x]
         rec_res = self.text_system.postprocess(outputs, self.tmp_args)
-        res = {
-            "pred_text": [x[0] for x in rec_res],
-            "score": [str(x[1]) for x in rec_res]
-        }
+        res = []
+        for i in range(len(rec_res)):
+            tmp_res = {
+                "text_region": self.text_system.dt_boxes[i].tolist(),
+                "text": rec_res[i][0],
+                "confidence": float(rec_res[i][1])
+            }
+            res.append(tmp_res)
         return res
 
 
 if __name__ == "__main__":
     ocr_service = OCRService(name="ocr")
-    ocr_service.load_model_config(global_args.rec_model_dir)
+    ocr_service.load_model_config(global_args.rec_server_dir)
     ocr_service.init_rec()
     if global_args.use_gpu:
         ocr_service.prepare_server(

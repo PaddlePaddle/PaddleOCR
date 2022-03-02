@@ -90,13 +90,15 @@ class DetService(WebService):
 
     def postprocess(self, feed={}, fetch=[], fetch_map=None):
         outputs = [fetch_map[x] for x in fetch]
-        res = self.text_detector.postprocess(outputs, self.tmp_args)
-        return {"boxes": res.tolist()}
-
+        det_res = self.text_detector.postprocess(outputs, self.tmp_args)
+        res = []
+        for i in range(len(det_res)):
+            res.append({"text_region": det_res[i].tolist()})
+        return res
 
 if __name__ == "__main__":
     ocr_service = DetService(name="ocr")
-    ocr_service.load_model_config(global_args.det_model_dir)
+    ocr_service.load_model_config(global_args.det_server_dir)
     ocr_service.init_det()
     if global_args.use_gpu:
         ocr_service.prepare_server(

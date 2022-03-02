@@ -120,19 +120,19 @@ word_dict.txt 每行有一个单字，将字符与数字索引映射在一起，
 
 `ppocr/utils/ic15_dict.txt` 是一个包含36个字符的英文字典，
 
-`ppocr/utils/french_dict.txt` 是一个包含118个字符的法文字典
+`ppocr/utils/dict/french_dict.txt` 是一个包含118个字符的法文字典
 
-`ppocr/utils/japan_dict.txt` 是一个包含4399个字符的法文字典
+`ppocr/utils/dict/japan_dict.txt` 是一个包含4399个字符的日文字典
 
-`ppocr/utils/korean_dict.txt` 是一个包含3636个字符的法文字典
+`ppocr/utils/dict/korean_dict.txt` 是一个包含3636个字符的韩文字典
 
-`ppocr/utils/german_dict.txt` 是一个包含131个字符的法文字典
+`ppocr/utils/dict/german_dict.txt` 是一个包含131个字符的德文字典
 
 
 您可以按需使用。
 
 目前的多语言模型仍处在demo阶段，会持续优化模型并补充语种，**非常欢迎您为我们提供其他语言的字典和字体**，
-如您愿意可将字典文件提交至 [utils](../../ppocr/utils) ，我们会在Repo中感谢您。
+如您愿意可将字典文件提交至 [dict](../../ppocr/utils/dict) 将语料文件提交至[corpus](../../ppocr/utils/corpus)，我们会在Repo中感谢您。
 
 - 自定义字典
 
@@ -269,7 +269,7 @@ PaddleOCR也提供了多语言的， `configs/rec/multi_languages` 路径下的�
 Global:
   ...
   # 添加自定义字典，如修改字典请将路径指向新字典
-  character_dict_path: ./ppocr/utils/french_dict.txt
+  character_dict_path: ./ppocr/utils/dict/french_dict.txt
   # 训练时添加数据增强
   distort: true
   # 识别空格

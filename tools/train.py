@@ -39,6 +39,7 @@ set_paddle_flags(
 import tools.program as program
 from paddle import fluid
 from ppocr.utils.utility import initial_logger
+from ppocr.utils.utility import enable_static_mode
 logger = initial_logger()
 from ppocr.data.reader_main import reader_main
 from ppocr.utils.save_load import init_model
@@ -119,14 +120,18 @@ def test_reader():
             if count % 1 == 0:
                 batch_time = time.time() - starttime
                 starttime = time.time()
-                logger.info("reader:", count, len(data), batch_time)
+                logger.info("[reader]count: {}, data length: {}, time: {}".
+                            format(count, len(data), batch_time))
     except Exception as e:
         logger.info(e)
     logger.info("finish reader: {}, Success!".format(count))
 
 
 if __name__ == '__main__':
+    enable_static_mode()
     startup_program, train_program, place, config, train_alg_type = program.preprocess(
     )
+    # run the train process
     main()
-#     test_reader()
+    # if you want to check the reader, you can comment `main` and run test_reader
+    # test_reader()

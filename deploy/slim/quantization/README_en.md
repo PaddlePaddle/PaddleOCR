@@ -65,4 +65,4 @@ python deploy/slim/quantization/export_model.py -c configs/det/det_mv3_db.yml -o
 The numerical range of the quantized model parameters derived from the above steps is still FP32, but the numerical range of the parameters is int8.
 The derived model can be converted through the `opt tool` of PaddleLite.
 
-For quantitative model deployment, please refer to [Mobile terminal model deployment](../lite/readme_en.md)
+For quantitative model deployment, please refer to [Mobile terminal model deployment](../../lite/readme_en.md)

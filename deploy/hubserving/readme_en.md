@@ -1,8 +1,8 @@
 English | [简体中文](readme.md)
 
-PaddleOCR provides 2 service deployment methods: 
-- Based on **PaddleHub Serving**: Code path is "`./deploy/hubserving`". Please follow this tutorial. 
-- Based on **PaddleServing**: Code path is "`./deploy/pdserving`". Please refer to the [tutorial](../pdserving/readme_en.md) for usage.
+PaddleOCR provides 2 service deployment methods:
+- Based on **PaddleHub Serving**: Code path is "`./deploy/hubserving`". Please follow this tutorial.
+- Based on **PaddleServing**: Code path is "`./deploy/pdserving`". Please refer to the [tutorial](../../deploy/pdserving/readme.md) for usage.
 
 # Service deployment based on PaddleHub Serving  
 
@@ -30,12 +30,6 @@ The following steps take the 2-stage series service as an example. If only the d
 ```shell
 # Install paddlehub  
 pip3 install paddlehub --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
-
-# Set environment variables on Linux
-export PYTHONPATH=.
-
-# Set environment variables on Windows
-SET PYTHONPATH=.
 ```
 
 ### 2. Download inference model

@@ -11,6 +11,8 @@ Paddle Lite是飞桨轻量化推理引擎，为手机、IOT端提供高效推理
 - 电脑（编译Paddle Lite）
 - 安卓手机（armv7或armv8）
 
+***注意： PaddleOCR 移动端部署当前不支持动态图模型，只支持静态图保存的模型。当前PaddleOCR静态图的分支是`develop`。***
+
 ### 1.1 准备交叉编译环境
 交叉编译环境用于编译 Paddle Lite 和 PaddleOCR 的C++ demo。
 支持多种开发环境，不同开发环境的编译流程请参考对应文档。
@@ -22,27 +24,21 @@ Paddle Lite是飞桨轻量化推理引擎，为手机、IOT端提供高效推理
 ### 1.2 准备预测库
 
 预测库有两种获取方式：
-- 1. 直接下载，预测库下载链接如下：
-      |平台|预测库下载链接|
-      |-|-|
-      |Android|[arm7](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/Android/inference_lite_lib.android.armv7.gcc.c++_static.with_extra.CV_ON.tar.gz) / [arm8](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/Android/inference_lite_lib.android.armv8.gcc.c++_static.with_extra.CV_ON.tar.gz)|
-      |IOS|[arm7](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/iOS/inference_lite_lib.ios.armv7.with_extra.CV_ON.tar.gz) / [arm8](https://paddlelite-data.bj.bcebos.com/Release/2.6.1/iOS/inference_lite_lib.ios64.armv8.with_extra.CV_ON.tar.gz)|
-
-      注：1. 如果是从下Paddle-Lite[官网文档](https://paddle-lite.readthedocs.io/zh/latest/user_guides/release_lib.html#android-toolchain-gcc)下载的预测库，
-      注意选择`with_extra=ON，with_cv=ON`的下载链接。2. 如果使用量化的模型部署在端侧，建议使用Paddle-Lite develop分支编译预测库。
-
-- 2. [建议]编译Paddle-Lite得到预测库，Paddle-Lite的编译方式如下：
+- 1. [推荐]编译Paddle-Lite得到预测库，Paddle-Lite的编译方式如下：
 ```
 git clone https://github.com/PaddlePaddle/Paddle-Lite.git
 cd Paddle-Lite
-# 务必使用develop分支编译预测库
-git checkout develop
+# 切换到Paddle-Lite release/v2.7 稳定分支
+git checkout release/v2.7
 ./lite/tools/build_android.sh  --arch=armv8  --with_cv=ON --with_extra=ON
 ```
 
 注意：编译Paddle-Lite获得预测库时，需要打开`--with_cv=ON --with_extra=ON`两个选项，`--arch`表示`arm`版本，这里指定为armv8，
 更多编译命令
 介绍请参考[链接](https://paddle-lite.readthedocs.io/zh/latest/user_guides/Compile/Android.html#id2)。
+
+- 2. 直接下载预测库，下载[链接](https://github.com/PaddlePaddle/Paddle-Lite/releases/tag/v2.7.1)。
+
 
 直接下载预测库并解压后，可以得到`inference_lite_lib.android.armv8/`文件夹，通过编译Paddle-Lite得到的预测库位于
 `Paddle-Lite/build.lite.android.armv8.gcc/inference_lite_lib.android.armv8/`文件夹下。
@@ -85,13 +81,13 @@ Paddle-Lite 提供了多种策略来自动优化原始的模型，其中包括�
 
 |模型版本|模型简介|模型大小|检测模型|文本方向分类模型|识别模型|Paddle-Lite版本|
 |-|-|-|-|-|-|-|
-|V1.1|超轻量中文OCR 移动端模型|8.1M|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_opt.nb)|develop|
-|【slim】V1.1|超轻量中文OCR 移动端模型|3.5M|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_prune_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_quant_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_quant_opt.nb)|develop|
-|V1.0|轻量级中文OCR 移动端模型|8.6M|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.0_det_opt.nb)|---|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.0_rec_opt.nb)|develop|
+|V1.1|超轻量中文OCR 移动端模型|8.1M|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_opt.nb)|v2.7|
+|【slim】V1.1|超轻量中文OCR 移动端模型|3.5M|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_prune_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_quant_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_quant_opt.nb)|v2.7|
+
 
 注意：V1.1 3.0M 轻量模型是使用PaddleSlim优化后的，需要配合Paddle-Lite最新预测库使用。
 
-如果直接使用上述表格中的模型进行部署，可略过下述步骤，直接阅读 [2.2节](#2.2与手机联调)。
+如果直接使用上述表格中的模型进行部署没有问题，可略过下述步骤，直接阅读 [2.2节](#2.2与手机联调)。
 
 如果要部署的模型不在上述表格中，则需要按照如下步骤获得优化后的模型。
 
@@ -100,7 +96,7 @@ Paddle-Lite 提供了多种策略来自动优化原始的模型，其中包括�
 # 如果准备环境时已经clone了Paddle-Lite，则不用重新clone Paddle-Lite
 git clone https://github.com/PaddlePaddle/Paddle-Lite.git
 cd Paddle-Lite
-git checkout develop
+git checkout release/v2.7
 # 启动编译
 ./lite/tools/build.sh build_optimize_tool
 ```
@@ -183,7 +179,7 @@ wget  https://paddleocr.bj.bcebos.com/ch_models/ch_rec_mv3_crnn_infer.tar && tar
  ```
  git clone https://github.com/PaddlePaddle/PaddleOCR.git
  cd PaddleOCR/deploy/lite/
- # 运行prepare.sh，准备预测库文件、测试图像和使用的字典文件，并放置在预测库中的demo/cxx/ocr文件夹下
+ # 按照如下命令运行prepare.sh，将预测库文件、测试图像和使用的字典文件到预测库中的demo/cxx/ocr文件夹下
  sh prepare.sh /{lite prediction library path}/inference_lite_lib.android.armv8
 
  # 进入OCR demo的工作目录
@@ -221,11 +217,11 @@ demo/cxx/ocr/
 1. ppocr_keys_v1.txt是中文字典文件，如果使用的 nb 模型是英文数字或其他语言的模型，需要更换为对应语言的字典。
 PaddleOCR 在ppocr/utils/下存放了多种字典，包括：
 ```
-french_dict.txt     # 法语字典
-german_dict.txt     # 德语字典
+dict/french_dict.txt     # 法语字典
+dict/german_dict.txt     # 德语字典
 ic15_dict.txt       # 英文字典
-japan_dict.txt      # 日语字典
-korean_dict.txt     # 韩语字典
+dict/japan_dict.txt      # 日语字典
+dict/korean_dict.txt     # 韩语字典
 ppocr_keys_v1.txt   # 中文字典
 ```
 
@@ -235,7 +231,7 @@ max_side_len  960         # 输入图像长宽大于960时，等比例缩放图�
 det_db_thresh  0.3        # 用于过滤DB预测的二值化图像，设置为0.-0.3对结果影响不明显
 det_db_box_thresh  0.5    # DB后处理过滤box的阈值，如果检测存在漏框情况，可酌情减小
 det_db_unclip_ratio  1.6  # 表示文本框的紧致程度，越小则文本框更靠近文本
-use_direction_classify  1  # 是否使用方向分类器，0表示不使用，1表示使用
+use_direction_classify  0  # 是否使用方向分类器，0表示不使用，1表示使用
 ```
 
  5. 启动调试
@@ -253,7 +249,8 @@ use_direction_classify  1  # 是否使用方向分类器，0表示不使用，1�
  adb push debug /data/local/tmp/
  adb shell
  cd /data/local/tmp/debug
- export LD_LIBRARY_PATH=/data/local/tmp/debug:$LD_LIBRARY_PATH
+ export LD_LIBRARY_PATH=${PWD}:$LD_LIBRARY_PATH
+ # ./ocr_db_crnn  检测模型文件 方向分类器模型文件  识别模型文件  测试图像路径  字典文件路径
  ./ocr_db_crnn ch_ppocr_mobile_v1.1_det_prune_opt.nb  ch_ppocr_mobile_v1.1_rec_quant_opt.nb  ch_ppocr_mobile_cls_quant_opt.nb  ./11.jpg  ppocr_keys_v1.txt
  ```
 

@@ -49,6 +49,7 @@ import cv2
 
 from ppocr.utils.utility import initial_logger
 logger = initial_logger()
+from ppocr.utils.utility import enable_static_mode
 
 
 def draw_det_res(dt_boxes, config, img, img_name):
@@ -104,8 +105,8 @@ def main():
     save_res_path = config['Global']['save_res_path']
     if not os.path.exists(os.path.dirname(save_res_path)):
         os.makedirs(os.path.dirname(save_res_path))
-    with open(save_res_path, "wb") as fout:
 
+    with open(save_res_path, "wb") as fout:
         test_reader = reader_main(config=config, mode='test')
         tackling_num = 0
         for data in test_reader():
@@ -135,9 +136,15 @@ def main():
             elif config['Global']['algorithm'] == 'DB':
                 dic = {'maps': outs[0]}
             elif config['Global']['algorithm'] == 'SAST':
-                dic = {'f_score': outs[0], 'f_border': outs[1], 'f_tvo': outs[2], 'f_tco': outs[3]}
+                dic = {
+                    'f_score': outs[0],
+                    'f_border': outs[1],
+                    'f_tvo': outs[2],
+                    'f_tco': outs[3]
+                }
             else:
-                raise Exception("only support algorithm: ['EAST', 'DB', 'SAST']")
+                raise Exception(
+                    "only support algorithm: ['EAST', 'DB', 'SAST']")
             dt_boxes_list = postprocess(dic, ratio_list)
             for ino in range(img_num):
                 dt_boxes = dt_boxes_list[ino]
@@ -151,11 +158,12 @@ def main():
                 fout.write(otstr.encode())
                 src_img = cv2.imread(img_name)
                 draw_det_res(dt_boxes, config, src_img, img_name)
-                
+
     logger.info("success!")
 
 
 if __name__ == '__main__':
+    enable_static_mode()
     parser = program.ArgsParser()
     FLAGS = parser.parse_args()
     main()

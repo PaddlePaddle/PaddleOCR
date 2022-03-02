@@ -27,7 +27,7 @@ The provided annotation file format is as follow, seperated by "\t":
 " Image file name             Image annotation information encoded by json.dumps"
 ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]]}, {...}]
 ```
-The image annotation after **json.dumps()** encoding is a list containing multiple dictionaries. 
+The image annotation after **json.dumps()** encoding is a list containing multiple dictionaries.
 
 The `points` in the dictionary represent the coordinates (x, y) of the four points of the text box, arranged clockwise from the point at the upper left corner.
 
@@ -110,16 +110,16 @@ python3 tools/eval.py -c configs/det/det_mv3_db_v1.1.yml  -o Global.checkpoints=
 
 Test the detection result on a single image:
 ```shell
-python3 tools/infer_det.py -c configs/det/det_mv3_db_v1.1.yml -o TestReader.infer_img="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy"
+python3 tools/infer_det.py -c configs/det/det_mv3_db_v1.1.yml -o Global.infer_img="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy"
 ```
 
 When testing the DB model, adjust the post-processing threshold:
 ```shell
-python3 tools/infer_det.py -c configs/det/det_mv3_db_v1.1.yml -o TestReader.infer_img="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
+python3 tools/infer_det.py -c configs/det/det_mv3_db_v1.1.yml -o Global.infer_img="./doc/imgs_en/img_10.jpg" Global.checkpoints="./output/det_db/best_accuracy" PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=1.5
 ```
 
 
 Test the detection result on all images in the folder:
 ```shell
-python3 tools/infer_det.py -c configs/det/det_mv3_db_v1.1.yml -o TestReader.infer_img="./doc/imgs_en/" Global.checkpoints="./output/det_db/best_accuracy"
+python3 tools/infer_det.py -c configs/det/det_mv3_db_v1.1.yml -o Global.infer_img="./doc/imgs_en/" Global.checkpoints="./output/det_db/best_accuracy"
 ```

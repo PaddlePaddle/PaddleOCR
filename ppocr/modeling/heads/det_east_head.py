@@ -109,6 +109,12 @@ class EASTHead(object):
         return f_score, f_geo
 
     def __call__(self, inputs):
+        """
+        Fuse different levels of feature map from backbone and predict results
+        Args:
+            inputs(list): feature maps from backbone
+        Return: predicts
+        """
         f_common = self.unet_fusion(inputs)
         f_score, f_geo = self.detector_header(f_common)
         predicts = OrderedDict()

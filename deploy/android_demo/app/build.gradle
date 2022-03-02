@@ -57,7 +57,7 @@ def archives = [
         ],
         [
                 'src' : 'https://paddleocr.bj.bcebos.com/deploy/lite/ocr_v1_for_cpu.tar.gz',
-                'dest' : 'src/main/assets/models/ocr_v1_for_cpu'
+                'dest' : 'src/main/assets/models'
         ]
 ]
 

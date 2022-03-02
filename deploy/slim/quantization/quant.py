@@ -85,6 +85,12 @@ def get_optimizer():
 
 
 def main():
+    # Run code with static graph mode.
+    try:
+        paddle.enable_static()
+    except:
+        pass
+
     train_build_outputs = program.build(
         config, train_program, startup_program, mode='train')
     train_loader = train_build_outputs[0]
@@ -178,8 +184,11 @@ def main():
     if train_alg_type == 'det':
         program.train_eval_det_run(
             config, exe, train_info_dict, eval_info_dict, is_slim="quant")
-    else:
+    elif train_alg_type == 'rec':
         program.train_eval_rec_run(
+            config, exe, train_info_dict, eval_info_dict, is_slim="quant")
+    else:
+        program.train_eval_cls_run(
             config, exe, train_info_dict, eval_info_dict, is_slim="quant")
 
 

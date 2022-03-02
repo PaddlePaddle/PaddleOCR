@@ -1,0 +1,8 @@
+github.com/LKKlein/gocv v0.28.0 h1:1MMvs9uYf+QGPi86it2pUmN8RRoyMnPLUefKB/Jf1Q0=
+github.com/LKKlein/gocv v0.28.0/go.mod h1:MP408EL7eakRU3vzjsozzfELSX7HDDGdMpWANV1IOHY=
+github.com/PaddlePaddle/PaddleOCR v1.1.0 h1:zmPevInTs5P+ctSokI9sWQLTThmJBUCo/JCLbB5xbps=
+github.com/ctessum/go.clipper v0.0.0-20200522184404-9c744fa3e86c h1:VXCsVlam0R2Yl7VET2GxZBPdOa7gFRexyhfWb9v9QtM=
+github.com/ctessum/go.clipper v0.0.0-20200522184404-9c744fa3e86c/go.mod h1:KRMo3PCsooJP3LmCwKI76dkd7f3ki3zwYLHR7Iwbi5k=
+gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
+gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 h1:tQIYjPdBoyREyB9XMu+nnTclpTYkz2zFM+lzLJFO4gQ=
+gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=

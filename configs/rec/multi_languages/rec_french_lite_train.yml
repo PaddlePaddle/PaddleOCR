@@ -12,7 +12,7 @@ Global:
   image_shape: [3, 32, 320]
   max_text_length: 25
   character_type: french
-  character_dict_path: ./ppocr/utils/french_dict.txt
+  character_dict_path: ./ppocr/utils/dict/french_dict.txt
   loss_type: ctc
   distort: true
   use_space_char: false

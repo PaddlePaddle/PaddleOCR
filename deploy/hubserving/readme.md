@@ -1,8 +1,8 @@
 [English](readme_en.md) | 简体中文
 
 PaddleOCR提供2种服务部署方式：
-- 基于PaddleHub Serving的部署：代码路径为"`./deploy/hubserving`"，按照本教程使用；	
-- 基于PaddleServing的部署：代码路径为"`./deploy/pdserving`"，使用方法参考[文档](../pdserving/readme.md)。
+- 基于PaddleHub Serving的部署：代码路径为"`./deploy/hubserving`"，按照本教程使用；
+- 基于PaddleServing的部署：代码路径为"`./deploy/pdserving`"，使用方法参考[文档](../../deploy/pdserving/readme.md)。
 
 # 基于PaddleHub Serving的服务部署
 
@@ -29,12 +29,6 @@ deploy/hubserving/ocr_system/
 ```shell
 # 安装paddlehub  
 pip3 install paddlehub --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
-
-# 在Linux下设置环境变量
-export PYTHONPATH=.
-
-# 或者，在Windows下设置环境变量
-SET PYTHONPATH=.
 ```
 
 ### 2. 下载推理模型

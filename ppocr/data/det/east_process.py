@@ -19,6 +19,7 @@ import json
 import sys
 import os
 
+
 class EASTProcessTrain(object):
     def __init__(self, params):
         self.img_set_dir = params['img_set_dir']
@@ -495,13 +496,13 @@ class EASTProcessTest(object):
         elif resize_h // 32 <= 1:
             resize_h = 32
         else:
-            resize_h = (resize_h // 32 - 1) * 32
+            resize_h = (resize_h // 32) * 32
         if resize_w % 32 == 0:
             resize_w = resize_w
         elif resize_w // 32 <= 1:
             resize_w = 32
         else:
-            resize_w = (resize_w // 32 - 1) * 32
+            resize_w = (resize_w // 32) * 32
         try:
             if int(resize_w) <= 0 or int(resize_h) <= 0:
                 return None, (None, None)

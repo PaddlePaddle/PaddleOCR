@@ -12,6 +12,7 @@ Global:
   image_shape: [1, 64, 256]
   max_text_length: 25
   character_type: en
+  character_dict_path:
   loss_type: srn
   num_heads: 8
   average_window: 0.15

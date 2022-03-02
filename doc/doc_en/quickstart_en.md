@@ -9,7 +9,7 @@ Please refer to [quick installation](./installation_en.md) to configure the Padd
 
 ## 2.inference models
 
-The detection and recognition models on the mobile and server sides are as follows. For more models  (including multiple languages), please refer to [PP-OCR v1.1 series model list](./doc_ch/models_list.md)
+The detection and recognition models on the mobile and server sides are as follows. For more models  (including multiple languages), please refer to [PP-OCR v1.1 series model list](../doc_ch/models_list.md)
 
 
 | Model introduction    | Model name     |  Recommended scene      | Detection model | Direction Classifier | Recognition model |
@@ -98,5 +98,5 @@ For more text detection and recognition tandem reasoning, please refer to the do
 
 In addition, the tutorial also provides other deployment methods for the Chinese OCR model:
 - [Server-side C++ inference](../../deploy/cpp_infer/readme_en.md)
-- [Service deployment](../../deploy/pdserving/readme_en.md)
+- [Service deployment](../../deploy/hubserving/readme_en.md)
 - [End-to-end deployment](../../deploy/lite/readme_en.md)

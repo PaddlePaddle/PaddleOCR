@@ -18,7 +18,7 @@ cd /home/Projects
 # You need to create a docker container for the first run, and do not need to run the current command when you run it again
 # Create a docker container named ppocr and map the current directory to the /paddle directory of the container
 
-#If using CPU, use docker instead of nvidia-docker to create docker
+# If using CPU, use docker instead of nvidia-docker to create docker
 sudo docker run --name ppocr -v $PWD:/paddle --network=host -it hub.baidubce.com/paddlepaddle/paddle:latest-gpu-cuda9.0-cudnn7-dev /bin/bash
 ```
 If using CUDA9, please run the following command to create a container:
@@ -49,9 +49,9 @@ docker images
 hub.baidubce.com/paddlepaddle/paddle   latest-gpu-cuda9.0-cudnn7-dev    f56310dcc829
 ```
 
-**2. Install PaddlePaddle Fluid v2.0 **
+**2. Install PaddlePaddle v2.0**
 ```
-pip3 install --upgrade pip
+python3 -m pip install --upgrade pip
 
 # If you have cuda9 or cuda10 installed on your machine, please run the following command to install
 python3 -m pip install paddlepaddle-gpu==2.0.0b0 -i https://mirror.baidu.com/pypi/simple
@@ -77,7 +77,7 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 **4. Install third-party libraries**
 ```
 cd PaddleOCR
-pip3 install -r requirments.txt
+python3 -m pip install -r requirements.txt
 ```
 
 If you getting this error `OSError: [WinError 126] The specified module could not be found` when you install shapely on windows.

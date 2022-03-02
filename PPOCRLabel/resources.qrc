@@ -1,0 +1,39 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+
+<file alias="help">resources/icons/help.png</file>
+<file alias="app">resources/icons/app.png</file>
+<file alias="Auto">resources/icons/Auto.png</file>
+<file alias="reRec">resources/icons/reRec.png</file>
+<file alias="expert">resources/icons/expert2.png</file>
+<file alias="done">resources/icons/done.png</file>
+<file alias="file">resources/icons/file.png</file>
+<file alias="labels">resources/icons/labels.png</file>
+<file alias="new">resources/icons/objects.png</file>
+<file alias="close">resources/icons/close.png</file>
+<file alias="fit-width">resources/icons/fit-width.png</file>
+<file alias="fit-window">resources/icons/fit-window.png</file>
+<file alias="undo">resources/icons/undo.png</file>
+<file alias="hide">resources/icons/eye.png</file>
+<file alias="quit">resources/icons/quit.png</file>
+<file alias="copy">resources/icons/copy.png</file>
+<file alias="edit">resources/icons/edit.png</file>
+<file alias="open">resources/icons/open.png</file>
+<file alias="save">resources/icons/save.png</file>
+<file alias="format_voc">resources/icons/format_voc.png</file>
+<file alias="format_yolo">resources/icons/format_yolo.png</file>
+<file alias="save-as">resources/icons/save-as.png</file>
+<file alias="color">resources/icons/color.png</file>
+<file alias="color_line">resources/icons/color_line.png</file>
+<file alias="zoom">resources/icons/zoom.png</file>
+<file alias="zoom-in">resources/icons/zoom-in.png</file>
+<file alias="zoom-out">resources/icons/zoom-out.png</file>
+<file alias="delete">resources/icons/cancel.png</file>
+<file alias="next">resources/icons/next.png</file>
+<file alias="prev">resources/icons/prev.png</file>
+<file alias="resetall">resources/icons/resetall.png</file>
+<file alias="verify">resources/icons/verify.png</file>
+<file alias="strings">resources/strings/strings.properties</file>
+<file alias="strings-zh-CN">resources/strings/strings-zh-CN.properties</file>
+</qresource>
+</RCC>

@@ -81,14 +81,14 @@ void ResizeImgType0::Run(const cv::Mat &img, cv::Mat &resize_img,
   else if (resize_h / 32 < 1 + 1e-5)
     resize_h = 32;
   else
-    resize_h = (resize_h / 32 - 1) * 32;
+    resize_h = resize_h / 32 * 32;
 
   if (resize_w % 32 == 0)
     resize_w = resize_w;
-  else if (resize_w / 32 < 1)
+  else if (resize_w / 32 < 1 + 1e-5)
     resize_w = 32;
   else
-    resize_w = (resize_w / 32 - 1) * 32;
+    resize_w = resize_w / 32 * 32;
 
   cv::resize(img, resize_img, cv::Size(resize_w, resize_h));
 
@@ -96,12 +96,16 @@ void ResizeImgType0::Run(const cv::Mat &img, cv::Mat &resize_img,
   ratio_w = float(resize_w) / float(w);
 }
 
-void CrnnResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img, float wh_ratio,
+void CrnnResizeImg::Run(const cv::Mat &img, cv::Mat &pad_resize_img,
+                        float max_wh_ratio,
                         const std::vector<int> &rec_image_shape) {
   int imgC, imgH, imgW;
   imgC = rec_image_shape[0];
   imgH = rec_image_shape[1];
   imgW = rec_image_shape[2];
+
+  float wh_ratio = 1.0 * imgW / imgH;
+  wh_ratio = std::max(max_wh_ratio, wh_ratio);
 
   imgW = int(32 * wh_ratio);
 
@@ -112,8 +116,12 @@ void CrnnResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img, float wh_ratio,
   else
     resize_w = int(ceilf(imgH * ratio));
 
+  cv::Mat resize_img;
   cv::resize(img, resize_img, cv::Size(resize_w, imgH), 0.f, 0.f,
              cv::INTER_LINEAR);
+  cv::copyMakeBorder(resize_img, pad_resize_img, 0, 0, 0,
+                     int(imgW - resize_img.cols), cv::BORDER_CONSTANT,
+                     {127, 127, 127});
 }
 
 void ClsResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img,

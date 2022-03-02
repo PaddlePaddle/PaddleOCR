@@ -21,7 +21,7 @@ cv::Mat Classifier::Run(cv::Mat &img) {
   img.copyTo(src_img);
   cv::Mat resize_img;
 
-  std::vector<int> rec_image_shape = {3, 32, 100};
+  std::vector<int> rec_image_shape = {3, 48, 192};
   int index = 0;
   float wh_ratio = float(img.cols) / float(img.rows);
 

@@ -25,6 +25,7 @@ sys.path.append(os.path.join(__dir__, '..', '..', '..', 'tools'))
 
 import json
 import cv2
+import paddle
 from paddle import fluid
 import paddleslim as slim
 from copy import deepcopy
@@ -60,6 +61,12 @@ def eval_function(eval_args, mode='eval'):
 
 
 def main():
+    # Run code with static graph mode.
+    try:
+        paddle.enable_static()
+    except:
+        pass
+
     config = program.load_config(FLAGS.config)
     program.merge_config(FLAGS.opt)
     logger.info(config)

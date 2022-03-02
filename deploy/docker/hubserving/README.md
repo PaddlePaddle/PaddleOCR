@@ -20,7 +20,7 @@ git clone https://github.com/PaddlePaddle/PaddleOCR.git
 ```
 b. Goto Dockerfile directory（ps：Need to distinguish between cpu and gpu version, the following takes cpu as an example, gpu version needs to replace the keyword）
 ```
-cd deploy/docker/cpu
+cd deploy/docker/hubserving/cpu
 ```
 c. Build image
 ```

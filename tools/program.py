@@ -90,13 +90,13 @@ def load_config(file_path):
     merge_config(default_config)
     _, ext = os.path.splitext(file_path)
     assert ext in ['.yml', '.yaml'], "only support yaml files for now"
-    merge_config(yaml.load(open(file_path), Loader=yaml.Loader))
+    merge_config(yaml.load(open(file_path, 'rb'), Loader=yaml.Loader))
     assert "reader_yml" in global_config['Global'],\
         "absence reader_yml in global"
     reader_file_path = global_config['Global']['reader_yml']
     _, ext = os.path.splitext(reader_file_path)
     assert ext in ['.yml', '.yaml'], "only support yaml files for reader"
-    merge_config(yaml.load(open(reader_file_path), Loader=yaml.Loader))
+    merge_config(yaml.load(open(reader_file_path, 'rb'), Loader=yaml.Loader))
     return global_config
 
 
@@ -121,7 +121,10 @@ def merge_config(config):
                 global_config.keys(), sub_keys[0])
             cur = global_config[sub_keys[0]]
             for idx, sub_key in enumerate(sub_keys[1:]):
-                assert (sub_key in cur)
+                assert (
+                    sub_key in cur
+                ), "key {} not in sub_keys: {}, please check your running command.".format(
+                    sub_key, cur)
                 if idx == len(sub_keys) - 2:
                     cur[sub_key] = value
                 else:

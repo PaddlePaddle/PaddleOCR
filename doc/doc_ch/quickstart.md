@@ -9,7 +9,7 @@
 
 ## 2.inference模型下载
 
-* 移动端和服务器端的检测与识别模型如下，更多模型下载（包括多语言），可以参考[PP-OCR v1.1 系列模型下载](./doc_ch/models_list.md)
+* 移动端和服务器端的检测与识别模型如下，更多模型下载（包括多语言），可以参考[PP-OCR v1.1 系列模型下载](../doc_ch/models_list.md)
 
 | 模型简介     | 模型名称     |推荐场景          | 检测模型 | 方向分类器 | 识别模型 |
 | ------------ | --------------- | ----------------|---- | ---------- | -------- |
@@ -95,5 +95,5 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_mode
 
 此外，文档教程中也提供了中文OCR模型的其他预测部署方式：
 - [基于C++预测引擎推理](../../deploy/cpp_infer/readme.md)
-- [服务部署](../../deploy/pdserving/readme.md)
+- [服务部署](../../deploy/hubserving/readme.md)
 - [端侧部署](../../deploy/lite/readme.md)
