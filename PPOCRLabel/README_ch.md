@@ -57,6 +57,8 @@ PPOCRLabel可通过whl包与Python脚本两种方式启动，whl包形式启动�
 
 ```bash
 pip install PPOCRLabel  # 安装
+
+# 选择标签模式来启动
 PPOCRLabel --lang ch  # 启动【普通模式】，用于打【检测+识别】场景的标签
 PPOCRLabel --lang ch --kie True  # 启动 【KIE 模式】，用于打【检测+识别+关键字提取】场景的标签
 ```
@@ -66,6 +68,8 @@ PPOCRLabel --lang ch --kie True  # 启动 【KIE 模式】，用于打【检测+
 ```bash
 pip3 install PPOCRLabel
 pip3 install trash-cli
+
+# 选择标签模式来启动
 PPOCRLabel --lang ch  # 启动【普通模式】，用于打【检测+识别】场景的标签
 PPOCRLabel --lang ch --kie True  # 启动 【KIE 模式】，用于打【检测+识别+关键字提取】场景的标签
 ```
@@ -74,6 +78,8 @@ PPOCRLabel --lang ch --kie True  # 启动 【KIE 模式】，用于打【检测+
 ```bash
 pip3 install PPOCRLabel
 pip3 install opencv-contrib-python-headless==4.2.0.32 # 如果下载过慢请添加"-i https://mirror.baidu.com/pypi/simple"
+
+# 选择标签模式来启动
 PPOCRLabel --lang ch  # 启动【普通模式】，用于打【检测+识别】场景的标签
 PPOCRLabel --lang ch --kie True  # 启动 【KIE 模式】，用于打【检测+识别+关键字提取】场景的标签
 ```
@@ -94,6 +100,8 @@ pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl -i https://mirror.baidu.
 
 ```bash
 cd ./PPOCRLabel  # 切换到PPOCRLabel目录
+
+# 选择标签模式来启动
 python PPOCRLabel.py --lang ch  # 启动【普通模式】，用于打【检测+识别】场景的标签
 python PPOCRLabel.py --lang ch --kie True  # 启动 【KIE 模式】，用于打【检测+识别+关键字提取】场景的标签
 ```

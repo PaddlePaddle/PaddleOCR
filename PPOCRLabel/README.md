@@ -54,6 +54,8 @@ PPOCRLabel can be started in two ways: whl package and Python script. The whl pa
 
 ```bash
 pip install PPOCRLabel  # install
+
+# Select label mode and run 
 PPOCRLabel  # [Normal mode] for [detection + recognition] labeling
 PPOCRLabel --kie True # [KIE mode] for [detection + recognition + keyword extraction] labeling
 ```
@@ -68,6 +70,8 @@ PPOCRLabel --kie True # [KIE mode] for [detection + recognition + keyword extrac
 ```bash
 pip3 install PPOCRLabel
 pip3 install trash-cli
+
+# Select label mode and run 
 PPOCRLabel  # [Normal mode] for [detection + recognition] labeling
 PPOCRLabel --kie True # [KIE mode] for [detection + recognition + keyword extraction] labeling
 ```
@@ -76,6 +80,8 @@ PPOCRLabel --kie True # [KIE mode] for [detection + recognition + keyword extrac
 ```bash
 pip3 install PPOCRLabel
 pip3 install opencv-contrib-python-headless==4.2.0.32
+
+# Select label mode and run 
 PPOCRLabel  # [Normal mode] for [detection + recognition] labeling
 PPOCRLabel --kie True # [KIE mode] for [detection + recognition + keyword extraction] labeling
 ```
@@ -92,6 +98,8 @@ pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl
 
 ```bash
 cd ./PPOCRLabel  # Switch to the PPOCRLabel directory
+
+# Select label mode and run 
 python PPOCRLabel.py  # [Normal mode] for [detection + recognition] labeling
 python PPOCRLabel.py --kie True # [KIE mode] for [detection + recognition + keyword extraction] labeling
 ```
