@@ -1,11 +1,11 @@
 # 两阶段算法
 
-- [两阶段算法](#-----)
-  * [1. 算法介绍](#1)
-    + [1.1 文本检测算法](#11)
-    + [1.2 文本识别算法](#12)
-  * [2. 模型训练](#2)
-  * [3. 模型推理](#3)
+- [两阶段算法](#两阶段算法)
+  - [1. 算法介绍](#1-算法介绍)
+    - [1.1 文本检测算法](#11-文本检测算法)
+    - [1.2 文本识别算法](#12-文本识别算法)
+  - [2. 模型训练](#2-模型训练)
+  - [3. 模型推理](#3-模型推理)
 
 <a name="1"></a>
 
@@ -43,8 +43,8 @@ PaddleOCR开源的文本检测算法列表：
 在CTW1500文本检测公开数据集上，算法效果如下：
 
 |模型|骨干网络|precision|recall|Hmean|下载链接|
-| --- | --- | --- | --- | --- | --- |
-|FCE|ResNet50_dcn|88.13%|82.60%|85.28%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/det_r50_dcn_fce_ctw_v2.0_train.tar)|
+| --- | --- | --- | --- | --- | --- |         
+|FCE|ResNet50_dcn|88.39%|82.18%|85.27%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/det_r50_dcn_fce_ctw_v2.0_train.tar)|
 
 **说明：** SAST模型训练额外加入了icdar2013、icdar2017、COCO-Text、ArT等公开数据集进行调优。PaddleOCR用到的经过整理格式的英文公开数据集下载：
 * [百度云地址](https://pan.baidu.com/s/12cPnZcVuV1zn5DOd4mqjVw) (提取码: 2bpi)

@@ -135,7 +135,7 @@ class DetFCEMetric(object):
             #     metircs['{}_{}'.format(key, score_thr)] = value
             metirc_str = 'precision:{:.5f} recall:{:.5f} hmean:{:.5f}'.format(
                 metirc['precision'], metirc['recall'], metirc['hmean'])
-            metircs['\n thr {}'.format(score_thr)] = metirc_str
+            metircs['thr {}'.format(score_thr)] = metirc_str
             hmean = max(hmean, metirc['hmean'])
         metircs['hmean'] = hmean
 
