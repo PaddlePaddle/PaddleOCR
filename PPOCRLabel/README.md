@@ -54,7 +54,8 @@ PPOCRLabel can be started in two ways: whl package and Python script. The whl pa
 
 ```bash
 pip install PPOCRLabel  # install
-PPOCRLabel  # run
+PPOCRLabel  # [Normal mode] for [detection + recognition] labeling
+PPOCRLabel --kie True # [KIE mode] for [detection + recognition + keyword extraction] labeling
 ```
 
 > If you getting this error `OSError: [WinError 126] The specified module could not be found` when you install shapely on windows. Please try to download Shapely whl file using http://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely.
@@ -67,7 +68,8 @@ PPOCRLabel  # run
 ```bash
 pip3 install PPOCRLabel
 pip3 install trash-cli
-PPOCRLabel
+PPOCRLabel  # [Normal mode] for [detection + recognition] labeling
+PPOCRLabel --kie True # [KIE mode] for [detection + recognition + keyword extraction] labeling
 ```
 
 #### MacOS
