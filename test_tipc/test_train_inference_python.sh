@@ -125,7 +125,7 @@ if [ ${MODE} = "klquant_whole_infer" ]; then
     infer_value1=$(func_parser_value "${lines[19]}")
 fi
 
-LOG_PATH="./test_tipc/output"
+LOG_PATH="./test_tipc/output/${model_name}"
 mkdir -p ${LOG_PATH}
 status_log="${LOG_PATH}/results_python.log"
 
@@ -316,14 +316,14 @@ else
                 set_train_params1=$(func_set_params "${train_param_key1}" "${train_param_value1}")
                 set_use_gpu=$(func_set_params "${train_use_gpu_key}" "${train_use_gpu}")
                 if [ ${#ips} -le 26 ];then
-                    save_log="${LOG_PATH}/${model_name}/${trainer}_gpus_${gpu}_autocast_${autocast}"
+                    save_log="${LOG_PATH}/${trainer}_gpus_${gpu}_autocast_${autocast}"
                     nodes=1
                 else
                     IFS=","
                     ips_array=(${ips})
                     IFS="|"
                     nodes=${#ips_array[@]}
-                    save_log="${LOG_PATH}/${model_name}/${trainer}_gpus_${gpu}_autocast_${autocast}_nodes_${nodes}"
+                    save_log="${LOG_PATH}/${trainer}_gpus_${gpu}_autocast_${autocast}_nodes_${nodes}"
                 fi
 
 
