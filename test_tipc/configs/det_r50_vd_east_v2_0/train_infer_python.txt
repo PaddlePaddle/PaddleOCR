@@ -49,6 +49,8 @@ inference:tools/infer/predict_det.py
 --save_log_path:null
 --benchmark:True
 --det_algorithm:EAST
+===========================infer_benchmark_params==========================
+random_infer_input:[{float32,[3,640,640]}];[{float32,[3,960,960]}]
 ===========================train_benchmark_params==========================
 batch_size:8
 fp_items:fp32|fp16
