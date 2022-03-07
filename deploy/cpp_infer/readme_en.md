@@ -78,7 +78,7 @@ opencv3/
 
 #### 1.2.1 Direct download and installation
 
-[Paddle inference library official website](https://paddle-inference.readthedocs.io/en/latest/user_guides/download_lib.html). You can review and select the appropriate version of the inference library on the official website.
+[Paddle inference library official website](https://paddleinference.paddlepaddle.org.cn/user_guides/download_lib.html#linux). You can review and select the appropriate version of the inference library on the official website.
 
 
 * After downloading, use the following command to extract files.
