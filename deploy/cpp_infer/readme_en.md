@@ -231,7 +231,7 @@ More parameters are as follows,
 |gpu_id|int|0|GPU id when use_gpu is true|
 |gpu_mem|int|4000|GPU memory requested|
 |cpu_math_library_num_threads|int|10|Number of threads when using CPU inference. When machine cores is enough, the large the value, the faster the inference speed|
-|use_mkldnn|bool|true|Whether to use mkdlnn library|
+|enable_mkldnn|bool|true|Whether to use mkdlnn library|
 
 - Detection related parameters
 
