@@ -54,6 +54,7 @@ DEFINE_double(det_db_thresh, 0.3, "Threshold of det_db_thresh.");
 DEFINE_double(det_db_box_thresh, 0.6, "Threshold of det_db_box_thresh.");
 DEFINE_double(det_db_unclip_ratio, 1.5, "Threshold of det_db_unclip_ratio.");
 DEFINE_bool(use_polygon_score, false, "Whether use polygon score.");
+DEFINE_bool(use_dilation, false, "Whether use the dilation on output map.");
 DEFINE_bool(visualize, true, "Whether show the detection results.");
 // classification related
 DEFINE_bool(use_angle_cls, false, "Whether use use_angle_cls.");
@@ -85,8 +86,8 @@ int main_det(std::vector<cv::String> cv_all_img_names) {
                  FLAGS_gpu_mem, FLAGS_cpu_threads, FLAGS_enable_mkldnn,
                  FLAGS_max_side_len, FLAGS_det_db_thresh,
                  FLAGS_det_db_box_thresh, FLAGS_det_db_unclip_ratio,
-                 FLAGS_use_polygon_score, FLAGS_visualize, FLAGS_use_tensorrt,
-                 FLAGS_precision);
+                 FLAGS_use_polygon_score, FLAGS_use_dilation, FLAGS_visualize,
+                 FLAGS_use_tensorrt, FLAGS_precision);
 
   for (int i = 0; i < cv_all_img_names.size(); ++i) {
     //       LOG(INFO) << "The predict img: " << cv_all_img_names[i];
@@ -175,8 +176,8 @@ int main_system(std::vector<cv::String> cv_all_img_names) {
                  FLAGS_gpu_mem, FLAGS_cpu_threads, FLAGS_enable_mkldnn,
                  FLAGS_max_side_len, FLAGS_det_db_thresh,
                  FLAGS_det_db_box_thresh, FLAGS_det_db_unclip_ratio,
-                 FLAGS_use_polygon_score, FLAGS_visualize, FLAGS_use_tensorrt,
-                 FLAGS_precision);
+                 FLAGS_use_polygon_score, FLAGS_use_dilation, FLAGS_visualize,
+                 FLAGS_use_tensorrt, FLAGS_precision);
 
   Classifier *cls = nullptr;
   if (FLAGS_use_angle_cls) {
