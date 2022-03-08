@@ -115,7 +115,7 @@ def save_structure_res(res, save_folder, img_name):
     os.makedirs(excel_save_folder, exist_ok=True)
     # save res
     with open(
-            os.path.join(excel_save_folder, 'res.txt'), 'w',
+            os.path.join(excel_save_folder, 'res.txt'), 'w+',
             encoding='utf8') as f:
         for region in res:
             if region['type'] == 'Table':
