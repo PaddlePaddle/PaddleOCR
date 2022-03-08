@@ -10,6 +10,7 @@
     - [2.1 Data Augmentation](#Data_Augmentation)
     - [2.2 General Training](#Training)
     - [2.3 Multi-language Training](#Multi_language)
+    - [2.4 Training with Knowledge Distillation](#kd)
 
 - [3. Evaluation](#EVALUATION)
 
@@ -360,6 +361,12 @@ Eval:
     label_file_list: ["./train_data/french_val.txt"]
     ...
 ```
+
+<a name="kd"></a>
+
+### 2.4 Training with Knowledge Distillation
+
+Knowledge distillation is supported in PaddleOCR for text recognition training process. For more details, please refer to [doc](./knowledge_distillation_en.md).
 
 <a name="EVALUATION"></a>
 
