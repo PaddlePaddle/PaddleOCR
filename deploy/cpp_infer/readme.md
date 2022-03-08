@@ -4,16 +4,20 @@
 C++在性能计算上优于python，因此，在大多数CPU、GPU部署场景，多采用C++的部署方式，本节将介绍如何在Linux\Windows (CPU\GPU)环境下配置C++环境并完成
 PaddleOCR模型部署。
 
-* [1. 准备环境](#1)
-  + [1.0 运行准备](#10)
-  + [1.1 编译opencv库](#11)
-  + [1.2 下载或者编译Paddle预测库](#12)
-    - [1.2.1 直接下载安装](#121)
-    - [1.2.2 预测库源码编译](#122)
-* [2 开始运行](#2)
-  + [2.1 将模型导出为inference model](#21)
-  + [2.2 编译PaddleOCR C++预测demo](#22)
-  + [2.3运行demo](#23)
+- [服务器端C++预测](#服务器端c预测)
+  - [1. 准备环境](#1-准备环境)
+    - [1.0 运行准备](#10-运行准备)
+    - [1.1 编译opencv库](#11-编译opencv库)
+    - [1.2 下载或者编译Paddle预测库](#12-下载或者编译paddle预测库)
+      - [1.2.1 直接下载安装](#121-直接下载安装)
+      - [1.2.2 预测库源码编译](#122-预测库源码编译)
+  - [2 开始运行](#2-开始运行)
+    - [2.1 将模型导出为inference model](#21-将模型导出为inference-model)
+    - [2.2 编译PaddleOCR C++预测demo](#22-编译paddleocr-c预测demo)
+    - [2.3 运行demo](#23-运行demo)
+        - [1. 只调用检测：](#1-只调用检测)
+        - [2. 只调用识别：](#2-只调用识别)
+        - [3. 调用串联：](#3-调用串联)
 
 <a name="1"></a>
 
@@ -103,7 +107,7 @@ opencv3/
 
 #### 1.2.1 直接下载安装
 
-* [Paddle预测库官网](https://paddle-inference.readthedocs.io/en/latest/user_guides/download_lib.html) 上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本（*建议选择paddle版本>=2.0.1版本的预测库* ）。
+* [Paddle预测库官网](https://paddleinference.paddlepaddle.org.cn/user_guides/download_lib.html#linux) 上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本（*建议选择paddle版本>=2.0.1版本的预测库* ）。
 
 * 下载之后使用下面的方法解压。
 
@@ -249,7 +253,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 |gpu_id|int|0|GPU id，使用GPU时有效|
 |gpu_mem|int|4000|申请的GPU内存|
 |cpu_math_library_num_threads|int|10|CPU预测时的线程数，在机器核数充足的情况下，该值越大，预测速度越快|
-|use_mkldnn|bool|true|是否使用mkldnn库|
+|enable_mkldnn|bool|true|是否使用mkldnn库|
 
 - 检测模型相关
 
