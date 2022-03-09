@@ -63,9 +63,9 @@ train_data/rec/train/word_002.jpg   用科技让复杂的世界更简单
         | ...
 ```
 
-- 测试集
+- 验证集
 
-同训练集类似，测试集也需要提供一个包含所有图片的文件夹（test）和一个rec_gt_test.txt，测试集的结构如下所示：
+同训练集类似，验证集也需要提供一个包含所有图片的文件夹（test）和一个rec_gt_test.txt，测试集的结构如下所示：
 
 ```
 |-train_data
@@ -93,7 +93,7 @@ train_data/rec/train/word_002.jpg   用科技让复杂的世界更简单
 ```
 # 训练集标签
 wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_train.txt
-# 测试集标签
+# 验证集标签
 wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_test.txt
 ```
 
