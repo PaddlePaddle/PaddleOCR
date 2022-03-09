@@ -9,6 +9,7 @@ This section uses the icdar2015 dataset as an example to introduce the training,
   * [2.1 Start Training](#21-start-training)
   * [2.2 Load Trained Model and Continue Training](#22-load-trained-model-and-continue-training)
   * [2.3 Training with New Backbone](#23-training-with-new-backbone)
+  * [2.4 Training with knowledge distillation](#24)
 - [3. Evaluation and Test](#3-evaluation-and-test)
   * [3.1 Evaluation](#31-evaluation)
   * [3.2 Test](#32-test)
@@ -173,6 +174,11 @@ After adding the four-part modules of the network, you only need to configure th
 ```
 
 **NOTE**: More details about replace Backbone and other mudule can be found in [doc](add_new_algorithm_en.md).
+
+
+### 2.4 Training with knowledge distillation
+
+Knowledge distillation is supported in PaddleOCR for text detection training process. For more details, please refer to [doc](./knowledge_distillation_en.md).
 
 ## 3. Evaluation and Test
 

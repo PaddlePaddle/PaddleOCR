@@ -57,7 +57,10 @@ PPOCRLabel可通过whl包与Python脚本两种方式启动，whl包形式启动�
 
 ```bash
 pip install PPOCRLabel  # 安装
-PPOCRLabel --lang ch  # 运行
+
+# 选择标签模式来启动
+PPOCRLabel --lang ch  # 启动【普通模式】，用于打【检测+识别】场景的标签
+PPOCRLabel --lang ch --kie True  # 启动 【KIE 模式】，用于打【检测+识别+关键字提取】场景的标签
 ```
 > 注意：通过whl包安装PPOCRLabel会自动下载 `paddleocr` whl包，其中shapely依赖可能会出现 `[winRrror 126] 找不到指定模块的问题。` 的错误，建议从[这里](https://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely)下载并安装
 ##### Ubuntu Linux
@@ -65,13 +68,18 @@ PPOCRLabel --lang ch  # 运行
 ```bash
 pip3 install PPOCRLabel
 pip3 install trash-cli
-PPOCRLabel --lang ch
+
+# 选择标签模式来启动
+PPOCRLabel --lang ch  # 启动【普通模式】，用于打【检测+识别】场景的标签
+PPOCRLabel --lang ch --kie True  # 启动 【KIE 模式】，用于打【检测+识别+关键字提取】场景的标签
 ```
 
 ##### MacOS
 ```bash
 pip3 install PPOCRLabel
 pip3 install opencv-contrib-python-headless==4.2.0.32 # 如果下载过慢请添加"-i https://mirror.baidu.com/pypi/simple"
+
+# 选择标签模式来启动
 PPOCRLabel --lang ch  # 启动【普通模式】，用于打【检测+识别】场景的标签
 PPOCRLabel --lang ch --kie True  # 启动 【KIE 模式】，用于打【检测+识别+关键字提取】场景的标签
 ```
@@ -92,6 +100,8 @@ pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl -i https://mirror.baidu.
 
 ```bash
 cd ./PPOCRLabel  # 切换到PPOCRLabel目录
+
+# 选择标签模式来启动
 python PPOCRLabel.py --lang ch  # 启动【普通模式】，用于打【检测+识别】场景的标签
 python PPOCRLabel.py --lang ch --kie True  # 启动 【KIE 模式】，用于打【检测+识别+关键字提取】场景的标签
 ```

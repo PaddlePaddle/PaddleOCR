@@ -49,4 +49,5 @@ inference:tools/infer/predict_rec.py --rec_char_dict_path=./ppocr/utils/ic15_dic
 --save_log_path:./test/output/
 --benchmark:True
 null:null
-
+===========================infer_benchmark_params==========================
+random_infer_input:[{float32,[1,64,256]}]
