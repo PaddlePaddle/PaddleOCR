@@ -1,25 +1,17 @@
-from contextlib import contextmanager
+from contextlib import ExitStack, contextmanager
+from typing import ContextManager, Iterator, TypeVar
 
-from pip._vendor.contextlib2 import ExitStack
-
-from pip._internal.utils.typing import MYPY_CHECK_RUNNING
-
-if MYPY_CHECK_RUNNING:
-    from typing import Iterator, ContextManager, TypeVar
-
-    _T = TypeVar('_T', covariant=True)
+_T = TypeVar("_T", covariant=True)
 
 
-class CommandContextMixIn(object):
-    def __init__(self):
-        # type: () -> None
-        super(CommandContextMixIn, self).__init__()
+class CommandContextMixIn:
+    def __init__(self) -> None:
+        super().__init__()
         self._in_main_context = False
         self._main_context = ExitStack()
 
     @contextmanager
-    def main_context(self):
-        # type: () -> Iterator[None]
+    def main_context(self) -> Iterator[None]:
         assert not self._in_main_context
 
         self._in_main_context = True
@@ -29,8 +21,7 @@ class CommandContextMixIn(object):
         finally:
             self._in_main_context = False
 
-    def enter_context(self, context_provider):
-        # type: (ContextManager[_T]) -> _T
+    def enter_context(self, context_provider: ContextManager[_T]) -> _T:
         assert self._in_main_context
 
         return self._main_context.enter_context(context_provider)

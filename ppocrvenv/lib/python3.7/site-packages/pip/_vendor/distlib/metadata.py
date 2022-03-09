@@ -5,7 +5,7 @@
 #
 """Implementation of the Metadata for Python packages PEPs.
 
-Supports all metadata formats (1.0, 1.1, 1.2, and 2.0 experimental).
+Supports all metadata formats (1.0, 1.1, 1.2, 1.3/2.1 and withdrawn 2.0).
 """
 from __future__ import unicode_literals
 
@@ -94,8 +94,9 @@ _426_MARKERS = ('Private-Version', 'Provides-Extra', 'Obsoleted-By',
 # See issue #106: Sometimes 'Requires' and 'Provides' occur wrongly in
 # the metadata. Include them in the tuple literal below to allow them
 # (for now).
+# Ditto for Obsoletes - see issue #140.
 _566_FIELDS = _426_FIELDS + ('Description-Content-Type',
-                             'Requires', 'Provides')
+                             'Requires', 'Provides', 'Obsoletes')
 
 _566_MARKERS = ('Description-Content-Type',)
 
@@ -117,7 +118,8 @@ def _version2fieldlist(version):
     elif version == '1.2':
         return _345_FIELDS
     elif version in ('1.3', '2.1'):
-        return _345_FIELDS + _566_FIELDS
+        # avoid adding field names if already there
+        return _345_FIELDS + tuple(f for f in _566_FIELDS if f not in _345_FIELDS)
     elif version == '2.0':
         return _426_FIELDS
     raise MetadataUnrecognizedVersionError(version)
@@ -194,38 +196,12 @@ def _best_version(fields):
 
     return '2.0'
 
+# This follows the rules about transforming keys as described in
+# https://www.python.org/dev/peps/pep-0566/#id17
 _ATTR2FIELD = {
-    'metadata_version': 'Metadata-Version',
-    'name': 'Name',
-    'version': 'Version',
-    'platform': 'Platform',
-    'supported_platform': 'Supported-Platform',
-    'summary': 'Summary',
-    'description': 'Description',
-    'keywords': 'Keywords',
-    'home_page': 'Home-page',
-    'author': 'Author',
-    'author_email': 'Author-email',
-    'maintainer': 'Maintainer',
-    'maintainer_email': 'Maintainer-email',
-    'license': 'License',
-    'classifier': 'Classifier',
-    'download_url': 'Download-URL',
-    'obsoletes_dist': 'Obsoletes-Dist',
-    'provides_dist': 'Provides-Dist',
-    'requires_dist': 'Requires-Dist',
-    'setup_requires_dist': 'Setup-Requires-Dist',
-    'requires_python': 'Requires-Python',
-    'requires_external': 'Requires-External',
-    'requires': 'Requires',
-    'provides': 'Provides',
-    'obsoletes': 'Obsoletes',
-    'project_url': 'Project-URL',
-    'private_version': 'Private-Version',
-    'obsoleted_by': 'Obsoleted-By',
-    'extension': 'Extension',
-    'provides_extra': 'Provides-Extra',
+    name.lower().replace("-", "_"): name for name in _ALL_FIELDS
 }
+_FIELD2ATTR = {field: attr for attr, field in _ATTR2FIELD.items()}
 
 _PREDICATE_FIELDS = ('Requires-Dist', 'Obsoletes-Dist', 'Provides-Dist')
 _VERSIONS_FIELDS = ('Requires-Python',)
@@ -262,7 +238,7 @@ def _get_name_and_version(name, version, for_filename=False):
 class LegacyMetadata(object):
     """The legacy metadata of a release.
 
-    Supports versions 1.0, 1.1 and 1.2 (auto-detected). You can
+    Supports versions 1.0, 1.1, 1.2, 2.0 and 1.3/2.1 (auto-detected). You can
     instantiate the class with one of these arguments (or none):
     - *path*, the path to a metadata file
     - *fileobj* give a file-like object with metadata as content
@@ -381,6 +357,11 @@ class LegacyMetadata(object):
                 value = msg[field]
                 if value is not None and value != 'UNKNOWN':
                     self.set(field, value)
+
+        # PEP 566 specifies that the body be used for the description, if
+        # available
+        body = msg.get_payload()
+        self["Description"] = body if body else self["Description"]
         # logger.debug('Attempting to set metadata for %s', self)
         # self.set_metadata_version()
 
@@ -567,57 +548,21 @@ class LegacyMetadata(object):
 
         Field names will be converted to use the underscore-lowercase style
         instead of hyphen-mixed case (i.e. home_page instead of Home-page).
+        This is as per https://www.python.org/dev/peps/pep-0566/#id17.
         """
         self.set_metadata_version()
 
-        mapping_1_0 = (
-            ('metadata_version', 'Metadata-Version'),
-            ('name', 'Name'),
-            ('version', 'Version'),
-            ('summary', 'Summary'),
-            ('home_page', 'Home-page'),
-            ('author', 'Author'),
-            ('author_email', 'Author-email'),
-            ('license', 'License'),
-            ('description', 'Description'),
-            ('keywords', 'Keywords'),
-            ('platform', 'Platform'),
-            ('classifiers', 'Classifier'),
-            ('download_url', 'Download-URL'),
-        )
+        fields = _version2fieldlist(self['Metadata-Version'])
 
         data = {}
-        for key, field_name in mapping_1_0:
+
+        for field_name in fields:
             if not skip_missing or field_name in self._fields:
-                data[key] = self[field_name]
-
-        if self['Metadata-Version'] == '1.2':
-            mapping_1_2 = (
-                ('requires_dist', 'Requires-Dist'),
-                ('requires_python', 'Requires-Python'),
-                ('requires_external', 'Requires-External'),
-                ('provides_dist', 'Provides-Dist'),
-                ('obsoletes_dist', 'Obsoletes-Dist'),
-                ('project_url', 'Project-URL'),
-                ('maintainer', 'Maintainer'),
-                ('maintainer_email', 'Maintainer-email'),
-            )
-            for key, field_name in mapping_1_2:
-                if not skip_missing or field_name in self._fields:
-                    if key != 'project_url':
-                        data[key] = self[field_name]
-                    else:
-                        data[key] = [','.join(u) for u in self[field_name]]
-
-        elif self['Metadata-Version'] == '1.1':
-            mapping_1_1 = (
-                ('provides', 'Provides'),
-                ('requires', 'Requires'),
-                ('obsoletes', 'Obsoletes'),
-            )
-            for key, field_name in mapping_1_1:
-                if not skip_missing or field_name in self._fields:
+                key = _FIELD2ATTR[field_name]
+                if key != 'project_url':
                     data[key] = self[field_name]
+                else:
+                    data[key] = [','.join(u) for u in self[field_name]]
 
         return data
 
@@ -1003,10 +948,14 @@ class Metadata(object):
     LEGACY_MAPPING = {
         'name': 'Name',
         'version': 'Version',
-        'license': 'License',
+        ('extensions', 'python.details', 'license'): 'License',
         'summary': 'Summary',
         'description': 'Description',
-        'classifiers': 'Classifier',
+        ('extensions', 'python.project', 'project_urls', 'Home'): 'Home-page',
+        ('extensions', 'python.project', 'contacts', 0, 'name'): 'Author',
+        ('extensions', 'python.project', 'contacts', 0, 'email'): 'Author-email',
+        'source_url': 'Download-URL',
+        ('extensions', 'python.details', 'classifiers'): 'Classifier',
     }
 
     def _to_legacy(self):
@@ -1034,16 +983,29 @@ class Metadata(object):
         assert self._data and not self._legacy
         result = LegacyMetadata()
         nmd = self._data
+        # import pdb; pdb.set_trace()
         for nk, ok in self.LEGACY_MAPPING.items():
-            if nk in nmd:
-                result[ok] = nmd[nk]
+            if not isinstance(nk, tuple):
+                if nk in nmd:
+                    result[ok] = nmd[nk]
+            else:
+                d = nmd
+                found = True
+                for k in nk:
+                    try:
+                        d = d[k]
+                    except (KeyError, IndexError):
+                        found = False
+                        break
+                if found:
+                    result[ok] = d
         r1 = process_entries(self.run_requires + self.meta_requires)
         r2 = process_entries(self.build_requires + self.dev_requires)
         if self.extras:
             result['Provides-Extra'] = sorted(self.extras)
         result['Requires-Dist'] = sorted(r1)
         result['Setup-Requires-Dist'] = sorted(r2)
-        # TODO: other fields such as contacts
+        # TODO: any other fields wanted
         return result
 
     def write(self, path=None, fileobj=None, legacy=False, skip_unknown=True):

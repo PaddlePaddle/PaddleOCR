@@ -178,7 +178,9 @@ class Timestamp(object):
 
         :rtype: datetime.
         """
-        return datetime.datetime.fromtimestamp(self.to_unix(), _utc)
+        return datetime.datetime.fromtimestamp(0, _utc) + datetime.timedelta(
+            seconds=self.to_unix()
+        )
 
     @staticmethod
     def from_datetime(dt):

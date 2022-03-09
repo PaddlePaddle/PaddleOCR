@@ -1,7 +1,11 @@
 from __future__ import absolute_import
+
 import socket
-from .wait import NoWayToWaitForSocketError, wait_for_read
+
 from ..contrib import _appengine_environ
+from ..exceptions import LocationParseError
+from ..packages import six
+from .wait import NoWayToWaitForSocketError, wait_for_read
 
 
 def is_connection_dropped(conn):  # Platform-specific
@@ -9,7 +13,7 @@ def is_connection_dropped(conn):  # Platform-specific
     Returns True if the connection is dropped and should be closed.
 
     :param conn:
-        :class:`httplib.HTTPConnection` object.
+        :class:`http.client.HTTPConnection` object.
 
     Note: For platforms like AppEngine, this will always return ``False`` to
     let the platform handle connection recycling transparently for us.
@@ -42,7 +46,7 @@ def create_connection(
     port)``) and return the socket object.  Passing the optional
     *timeout* parameter will set the timeout on the socket instance
     before attempting to connect.  If no *timeout* is supplied, the
-    global default timeout setting returned by :func:`getdefaulttimeout`
+    global default timeout setting returned by :func:`socket.getdefaulttimeout`
     is used.  If *source_address* is set it must be a tuple of (host, port)
     for the socket to bind as a source address before making the connection.
     An host of '' or port 0 tells the OS to use the default.
@@ -57,6 +61,13 @@ def create_connection(
     # us select whether to work with IPv4 DNS records, IPv6 records, or both.
     # The original create_connection function always returns all records.
     family = allowed_gai_family()
+
+    try:
+        host.encode("idna")
+    except UnicodeError:
+        return six.raise_from(
+            LocationParseError(u"'%s', label empty or too long" % host), None
+        )
 
     for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
         af, socktype, proto, canonname, sa = res
@@ -106,7 +117,7 @@ def allowed_gai_family():
 
 
 def _has_ipv6(host):
-    """ Returns True if the system can bind an IPv6 address. """
+    """Returns True if the system can bind an IPv6 address."""
     sock = None
     has_ipv6 = False
 

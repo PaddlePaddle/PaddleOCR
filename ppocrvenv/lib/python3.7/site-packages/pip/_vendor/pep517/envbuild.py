@@ -1,23 +1,27 @@
 """Build wheels/sdists by installing build deps to a temporary environment.
 """
 
+import io
 import os
 import logging
-from pip._vendor import toml
 import shutil
 from subprocess import check_call
 import sys
 from sysconfig import get_paths
 from tempfile import mkdtemp
 
+from .compat import toml_load
 from .wrappers import Pep517HookCaller, LoggerWrapper
 
 log = logging.getLogger(__name__)
 
 
 def _load_pyproject(source_dir):
-    with open(os.path.join(source_dir, 'pyproject.toml')) as f:
-        pyproject_data = toml.load(f)
+    with io.open(
+            os.path.join(source_dir, 'pyproject.toml'),
+            'rb',
+            ) as f:
+        pyproject_data = toml_load(f)
     buildsys = pyproject_data['build-system']
     return (
         buildsys['requires'],

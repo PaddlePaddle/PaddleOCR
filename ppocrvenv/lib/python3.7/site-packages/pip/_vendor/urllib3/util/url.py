@@ -1,10 +1,10 @@
 from __future__ import absolute_import
+
 import re
 from collections import namedtuple
 
 from ..exceptions import LocationParseError
 from ..packages import six
-
 
 url_attrs = ["scheme", "auth", "host", "port", "path", "query", "fragment"]
 
@@ -18,7 +18,7 @@ PERCENT_RE = re.compile(r"%[a-fA-F0-9]{2}")
 SCHEME_RE = re.compile(r"^(?:[a-zA-Z][a-zA-Z0-9+-]*:|/)")
 URI_RE = re.compile(
     r"^(?:([a-zA-Z][a-zA-Z0-9+.-]*):)?"
-    r"(?://([^/?#]*))?"
+    r"(?://([^\\/?#]*))?"
     r"([^?#]*)"
     r"(?:\?([^#]*))?"
     r"(?:#(.*))?$",
@@ -63,12 +63,12 @@ IPV6_ADDRZ_RE = re.compile("^" + IPV6_ADDRZ_PAT + "$")
 BRACELESS_IPV6_ADDRZ_RE = re.compile("^" + IPV6_ADDRZ_PAT[2:-2] + "$")
 ZONE_ID_RE = re.compile("(" + ZONE_ID_PAT + r")\]$")
 
-SUBAUTHORITY_PAT = (u"^(?:(.*)@)?(%s|%s|%s)(?::([0-9]{0,5}))?$") % (
+_HOST_PORT_PAT = ("^(%s|%s|%s)(?::([0-9]{0,5}))?$") % (
     REG_NAME_PAT,
     IPV4_PAT,
     IPV6_ADDRZ_PAT,
 )
-SUBAUTHORITY_RE = re.compile(SUBAUTHORITY_PAT, re.UNICODE | re.DOTALL)
+_HOST_PORT_RE = re.compile(_HOST_PORT_PAT, re.UNICODE | re.DOTALL)
 
 UNRESERVED_CHARS = set(
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._-~"
@@ -365,7 +365,9 @@ def parse_url(url):
             scheme = scheme.lower()
 
         if authority:
-            auth, host, port = SUBAUTHORITY_RE.match(authority).groups()
+            auth, _, host_port = authority.rpartition("@")
+            auth = auth or None
+            host, port = _HOST_PORT_RE.match(host_port).groups()
             if auth and normalize_uri:
                 auth = _encode_invalid_chars(auth, USERINFO_CHARS)
             if port == "":

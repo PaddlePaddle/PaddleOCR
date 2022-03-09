@@ -25,10 +25,12 @@ import sys
 if sys.version_info < (3, 0):
     PY2 = True
     PY3 = False
-    base_str = (str, unicode)
+    string_types = (str, unicode)
     text_type = unicode
+    iteritems = dict.iteritems
 else:
     PY2 = False
     PY3 = True
-    base_str = (bytes, str)
+    string_types = (bytes, str)
     text_type = str
+    iteritems = dict.items

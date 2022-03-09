@@ -1,16 +1,20 @@
+# SPDX-FileCopyrightText: 2015 Eric Larson
+#
+# SPDX-License-Identifier: Apache-2.0
+
 import types
 import functools
 import zlib
 
 from pip._vendor.requests.adapters import HTTPAdapter
 
-from .controller import CacheController
+from .controller import CacheController, PERMANENT_REDIRECT_STATUSES
 from .cache import DictCache
 from .filewrapper import CallbackFileWrapper
 
 
 class CacheControlAdapter(HTTPAdapter):
-    invalidating_methods = {"PUT", "DELETE"}
+    invalidating_methods = {"PUT", "PATCH", "DELETE"}
 
     def __init__(
         self,
@@ -93,7 +97,7 @@ class CacheControlAdapter(HTTPAdapter):
                 response = cached_response
 
             # We always cache the 301 responses
-            elif response.status == 301:
+            elif int(response.status) in PERMANENT_REDIRECT_STATUSES:
                 self.controller.cache_response(request, response)
             else:
                 # Wrap the response file with a wrapper that will cache the

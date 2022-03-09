@@ -5,5 +5,5 @@ from within setup.py and from chardet subpackages.
 :author: Dan Blanchard (dan.blanchard@gmail.com)
 """
 
-__version__ = "3.0.4"
+__version__ = "4.0.0"
 VERSION = __version__.split('.')

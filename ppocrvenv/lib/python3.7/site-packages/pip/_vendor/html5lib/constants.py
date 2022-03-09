@@ -519,8 +519,8 @@ adjustForeignAttributes = {
     "xmlns:xlink": ("xmlns", "xlink", namespaces["xmlns"])
 }
 
-unadjustForeignAttributes = dict([((ns, local), qname) for qname, (prefix, local, ns) in
-                                  adjustForeignAttributes.items()])
+unadjustForeignAttributes = {(ns, local): qname for qname, (prefix, local, ns) in
+                             adjustForeignAttributes.items()}
 
 spaceCharacters = frozenset([
     "\t",
@@ -544,8 +544,7 @@ asciiLetters = frozenset(string.ascii_letters)
 digits = frozenset(string.digits)
 hexDigits = frozenset(string.hexdigits)
 
-asciiUpper2Lower = dict([(ord(c), ord(c.lower()))
-                         for c in string.ascii_uppercase])
+asciiUpper2Lower = {ord(c): ord(c.lower()) for c in string.ascii_uppercase}
 
 # Heading elements need to be ordered
 headingElements = (
@@ -2934,7 +2933,7 @@ tagTokenTypes = frozenset([tokenTypes["StartTag"], tokenTypes["EndTag"],
                            tokenTypes["EmptyTag"]])
 
 
-prefixes = dict([(v, k) for k, v in namespaces.items()])
+prefixes = {v: k for k, v in namespaces.items()}
 prefixes["http://www.w3.org/1998/Math/MathML"] = "math"
 
 

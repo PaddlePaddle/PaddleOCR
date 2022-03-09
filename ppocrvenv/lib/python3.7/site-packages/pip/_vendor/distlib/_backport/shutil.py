@@ -14,7 +14,10 @@ import sys
 import stat
 from os.path import abspath
 import fnmatch
-import collections
+try:
+    from collections.abc import Callable
+except ImportError:
+    from collections import Callable
 import errno
 from . import tarfile
 
@@ -528,7 +531,7 @@ def register_archive_format(name, function, extra_args=None, description=''):
     """
     if extra_args is None:
         extra_args = []
-    if not isinstance(function, collections.Callable):
+    if not isinstance(function, Callable):
         raise TypeError('The %s object is not callable' % function)
     if not isinstance(extra_args, (tuple, list)):
         raise TypeError('extra_args needs to be a sequence')
@@ -621,7 +624,7 @@ def _check_unpack_options(extensions, function, extra_args):
             raise RegistryError(msg % (extension,
                                        existing_extensions[extension]))
 
-    if not isinstance(function, collections.Callable):
+    if not isinstance(function, Callable):
         raise TypeError('The registered function must be a callable')
 
 

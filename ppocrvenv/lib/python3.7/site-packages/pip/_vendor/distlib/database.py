@@ -550,7 +550,7 @@ class InstalledDistribution(BaseInstalledDistribution):
                 r = finder.find(WHEEL_METADATA_FILENAME)
             # Temporary - for legacy support
             if r is None:
-                r = finder.find('METADATA')
+                r = finder.find(LEGACY_METADATA_FILENAME)
             if r is None:
                 raise ValueError('no %s found in %s' % (METADATA_FILENAME,
                                                         path))

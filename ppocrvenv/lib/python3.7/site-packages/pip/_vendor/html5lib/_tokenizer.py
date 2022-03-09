@@ -2,7 +2,8 @@ from __future__ import absolute_import, division, unicode_literals
 
 from pip._vendor.six import unichr as chr
 
-from collections import deque
+from collections import deque, OrderedDict
+from sys import version_info
 
 from .constants import spaceCharacters
 from .constants import entities
@@ -16,6 +17,11 @@ from ._inputstream import HTMLInputStream
 from ._trie import Trie
 
 entitiesTrie = Trie(entities)
+
+if version_info >= (3, 7):
+    attributeMap = dict
+else:
+    attributeMap = OrderedDict
 
 
 class HTMLTokenizer(object):
@@ -228,6 +234,14 @@ class HTMLTokenizer(object):
         # Add token to the queue to be yielded
         if (token["type"] in tagTokenTypes):
             token["name"] = token["name"].translate(asciiUpper2Lower)
+            if token["type"] == tokenTypes["StartTag"]:
+                raw = token["data"]
+                data = attributeMap(raw)
+                if len(raw) > len(data):
+                    # we had some duplicated attribute, fix so first wins
+                    data.update(raw[::-1])
+                token["data"] = data
+
             if token["type"] == tokenTypes["EndTag"]:
                 if token["data"]:
                     self.tokenQueue.append({"type": tokenTypes["ParseError"],

@@ -7,7 +7,6 @@ Backports the Python 3 ``socket.makefile`` method for use with anything that
 wants to create a "fake" socket object.
 """
 import io
-
 from socket import SocketIO
 
 

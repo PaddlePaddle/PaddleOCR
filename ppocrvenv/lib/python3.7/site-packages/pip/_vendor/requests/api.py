@@ -72,7 +72,6 @@ def get(url, params=None, **kwargs):
     :rtype: requests.Response
     """
 
-    kwargs.setdefault('allow_redirects', True)
     return request('get', url, params=params, **kwargs)
 
 
@@ -85,7 +84,6 @@ def options(url, **kwargs):
     :rtype: requests.Response
     """
 
-    kwargs.setdefault('allow_redirects', True)
     return request('options', url, **kwargs)
 
 

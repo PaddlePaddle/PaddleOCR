@@ -14,22 +14,26 @@ supports the following SOCKS features:
 - SOCKS5 with local DNS (``proxy_url='socks5://...``)
 - Usernames and passwords for the SOCKS proxy
 
- .. note::
-    It is recommended to use ``socks5h://`` or ``socks4a://`` schemes in
-    your ``proxy_url`` to ensure that DNS resolution is done from the remote
-    server instead of client-side when connecting to a domain name.
+.. note::
+   It is recommended to use ``socks5h://`` or ``socks4a://`` schemes in
+   your ``proxy_url`` to ensure that DNS resolution is done from the remote
+   server instead of client-side when connecting to a domain name.
 
 SOCKS4 supports IPv4 and domain names with the SOCKS4A extension. SOCKS5
 supports IPv4, IPv6, and domain names.
 
 When connecting to a SOCKS4 proxy the ``username`` portion of the ``proxy_url``
-will be sent as the ``userid`` section of the SOCKS request::
+will be sent as the ``userid`` section of the SOCKS request:
+
+.. code-block:: python
 
     proxy_url="socks4a://<userid>@proxy-host"
 
 When connecting to a SOCKS5 proxy the ``username`` and ``password`` portion
 of the ``proxy_url`` will be sent as the username/password to authenticate
-with the proxy::
+with the proxy:
+
+.. code-block:: python
 
     proxy_url="socks5h://<username>:<password>@proxy-host"
 
@@ -40,19 +44,21 @@ try:
     import socks
 except ImportError:
     import warnings
+
     from ..exceptions import DependencyWarning
 
     warnings.warn(
         (
             "SOCKS support in urllib3 requires the installation of optional "
             "dependencies: specifically, PySocks.  For more information, see "
-            "https://urllib3.readthedocs.io/en/latest/contrib.html#socks-proxies"
+            "https://urllib3.readthedocs.io/en/1.26.x/contrib.html#socks-proxies"
         ),
         DependencyWarning,
     )
     raise
 
-from socket import error as SocketError, timeout as SocketTimeout
+from socket import error as SocketError
+from socket import timeout as SocketTimeout
 
 from ..connection import HTTPConnection, HTTPSConnection
 from ..connectionpool import HTTPConnectionPool, HTTPSConnectionPool

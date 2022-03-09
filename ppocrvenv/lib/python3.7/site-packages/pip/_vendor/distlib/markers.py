@@ -13,19 +13,28 @@ Parser for the environment markers micro-language defined in PEP 508.
 # as ~= and === which aren't in Python, necessitating a different approach.
 
 import os
+import re
 import sys
 import platform
-import re
 
-from .compat import python_implementation, urlparse, string_types
+from .compat import string_types
 from .util import in_venv, parse_marker
+from .version import NormalizedVersion as NV
 
 __all__ = ['interpret']
+
+_VERSION_PATTERN = re.compile(r'((\d+(\.\d+)*\w*)|\'(\d+(\.\d+)*\w*)\'|\"(\d+(\.\d+)*\w*)\")')
 
 def _is_literal(o):
     if not isinstance(o, string_types) or not o:
         return False
     return o[0] in '\'"'
+
+def _get_versions(s):
+    result = []
+    for m in _VERSION_PATTERN.finditer(s):
+        result.append(NV(m.groups()[0]))
+    return set(result)
 
 class Evaluator(object):
     """
@@ -71,6 +80,13 @@ class Evaluator(object):
 
             lhs = self.evaluate(elhs, context)
             rhs = self.evaluate(erhs, context)
+            if ((elhs == 'python_version' or erhs == 'python_version') and
+                op in ('<', '<=', '>', '>=', '===', '==', '!=', '~=')):
+                lhs = NV(lhs)
+                rhs = NV(rhs)
+            elif elhs == 'python_version' and op in ('in', 'not in'):
+                lhs = NV(lhs)
+                rhs = _get_versions(rhs)
             result = self.operations[op](lhs, rhs)
         return result
 

@@ -274,7 +274,7 @@ class HTMLSerializer(object):
                 if token["systemId"]:
                     if token["systemId"].find('"') >= 0:
                         if token["systemId"].find("'") >= 0:
-                            self.serializeError("System identifer contains both single and double quote characters")
+                            self.serializeError("System identifier contains both single and double quote characters")
                         quote_char = "'"
                     else:
                         quote_char = '"'

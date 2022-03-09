@@ -1,19 +1,11 @@
 import abc
 
-from pip._vendor.six import add_metaclass
-
-from pip._internal.utils.typing import MYPY_CHECK_RUNNING
-
-if MYPY_CHECK_RUNNING:
-    from typing import Optional
-
-    from pip._vendor.pkg_resources import Distribution
-    from pip._internal.req import InstallRequirement
-    from pip._internal.index.package_finder import PackageFinder
+from pip._internal.index.package_finder import PackageFinder
+from pip._internal.metadata.base import BaseDistribution
+from pip._internal.req import InstallRequirement
 
 
-@add_metaclass(abc.ABCMeta)
-class AbstractDistribution(object):
+class AbstractDistribution(metaclass=abc.ABCMeta):
     """A base class for handling installable artifacts.
 
     The requirements for anything installable are as follows:
@@ -29,17 +21,16 @@ class AbstractDistribution(object):
        above metadata.
     """
 
-    def __init__(self, req):
-        # type: (InstallRequirement) -> None
-        super(AbstractDistribution, self).__init__()
+    def __init__(self, req: InstallRequirement) -> None:
+        super().__init__()
         self.req = req
 
     @abc.abstractmethod
-    def get_pkg_resources_distribution(self):
-        # type: () -> Optional[Distribution]
+    def get_metadata_distribution(self) -> BaseDistribution:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def prepare_distribution_metadata(self, finder, build_isolation):
-        # type: (PackageFinder, bool) -> None
+    def prepare_distribution_metadata(
+        self, finder: PackageFinder, build_isolation: bool
+    ) -> None:
         raise NotImplementedError()

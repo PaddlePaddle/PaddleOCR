@@ -32,4 +32,4 @@ __all__ = ["HTMLParser", "parse", "parseFragment", "getTreeBuilder",
 
 # this has to be at the top level, see how setup.py parses this
 #: Distribution version number.
-__version__ = "1.0.1"
+__version__ = "1.1"

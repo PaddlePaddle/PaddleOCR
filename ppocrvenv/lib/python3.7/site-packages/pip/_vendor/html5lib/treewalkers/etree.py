@@ -127,4 +127,5 @@ def getETreeBuilder(ElementTreeImplementation):
 
     return locals()
 
+
 getETreeModule = moduleFactoryFactory(getETreeBuilder)

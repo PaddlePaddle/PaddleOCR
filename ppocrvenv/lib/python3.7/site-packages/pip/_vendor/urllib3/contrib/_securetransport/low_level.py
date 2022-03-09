@@ -10,13 +10,13 @@ appropriate and useful assistance to the higher-level code.
 import base64
 import ctypes
 import itertools
-import re
 import os
+import re
 import ssl
+import struct
 import tempfile
 
-from .bindings import Security, CoreFoundation, CFConst
-
+from .bindings import CFConst, CoreFoundation, Security
 
 # This regular expression is used to grab PEM data out of a PEM bundle.
 _PEM_CERTS_RE = re.compile(
@@ -54,6 +54,51 @@ def _cf_dictionary_from_tuples(tuples):
         CoreFoundation.kCFTypeDictionaryKeyCallBacks,
         CoreFoundation.kCFTypeDictionaryValueCallBacks,
     )
+
+
+def _cfstr(py_bstr):
+    """
+    Given a Python binary data, create a CFString.
+    The string must be CFReleased by the caller.
+    """
+    c_str = ctypes.c_char_p(py_bstr)
+    cf_str = CoreFoundation.CFStringCreateWithCString(
+        CoreFoundation.kCFAllocatorDefault,
+        c_str,
+        CFConst.kCFStringEncodingUTF8,
+    )
+    return cf_str
+
+
+def _create_cfstring_array(lst):
+    """
+    Given a list of Python binary data, create an associated CFMutableArray.
+    The array must be CFReleased by the caller.
+
+    Raises an ssl.SSLError on failure.
+    """
+    cf_arr = None
+    try:
+        cf_arr = CoreFoundation.CFArrayCreateMutable(
+            CoreFoundation.kCFAllocatorDefault,
+            0,
+            ctypes.byref(CoreFoundation.kCFTypeArrayCallBacks),
+        )
+        if not cf_arr:
+            raise MemoryError("Unable to allocate memory!")
+        for item in lst:
+            cf_str = _cfstr(item)
+            if not cf_str:
+                raise MemoryError("Unable to allocate memory!")
+            try:
+                CoreFoundation.CFArrayAppendValue(cf_arr, cf_str)
+            finally:
+                CoreFoundation.CFRelease(cf_str)
+    except BaseException as e:
+        if cf_arr:
+            CoreFoundation.CFRelease(cf_arr)
+        raise ssl.SSLError("Unable to allocate array: %s" % (e,))
+    return cf_arr
 
 
 def _cf_string_to_unicode(value):
@@ -143,6 +188,7 @@ def _cert_array_from_pem(pem_bundle):
         # We only want to do that if an error occurs: otherwise, the caller
         # should free.
         CoreFoundation.CFRelease(cert_array)
+        raise
 
     return cert_array
 
@@ -326,3 +372,26 @@ def _load_client_cert_chain(keychain, *paths):
     finally:
         for obj in itertools.chain(identities, certificates):
             CoreFoundation.CFRelease(obj)
+
+
+TLS_PROTOCOL_VERSIONS = {
+    "SSLv2": (0, 2),
+    "SSLv3": (3, 0),
+    "TLSv1": (3, 1),
+    "TLSv1.1": (3, 2),
+    "TLSv1.2": (3, 3),
+}
+
+
+def _build_tls_unknown_ca_alert(version):
+    """
+    Builds a TLS alert record for an unknown CA.
+    """
+    ver_maj, ver_min = TLS_PROTOCOL_VERSIONS[version]
+    severity_fatal = 0x02
+    description_unknown_ca = 0x30
+    msg = struct.pack(">BB", severity_fatal, description_unknown_ca)
+    msg_len = len(msg)
+    record_type_alert = 0x15
+    record = struct.pack(">BBBH", record_type_alert, ver_maj, ver_min, msg_len) + msg
+    return record

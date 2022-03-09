@@ -1,21 +1,16 @@
 """Primary application entrypoint.
 """
-from __future__ import absolute_import
-
 import locale
 import logging
 import os
 import sys
+from typing import List, Optional
 
 from pip._internal.cli.autocompletion import autocomplete
 from pip._internal.cli.main_parser import parse_command
 from pip._internal.commands import create_command
 from pip._internal.exceptions import PipError
 from pip._internal.utils import deprecation
-from pip._internal.utils.typing import MYPY_CHECK_RUNNING
-
-if MYPY_CHECK_RUNNING:
-    from typing import List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -46,8 +41,8 @@ logger = logging.getLogger(__name__)
 # call to main. As it is not safe to do any processing after calling
 # main, this should not be an issue in practice.
 
-def main(args=None):
-    # type: (Optional[List[str]]) -> int
+
+def main(args: Optional[List[str]] = None) -> int:
     if args is None:
         args = sys.argv[1:]
 
@@ -59,14 +54,14 @@ def main(args=None):
     try:
         cmd_name, cmd_args = parse_command(args)
     except PipError as exc:
-        sys.stderr.write("ERROR: {}".format(exc))
+        sys.stderr.write(f"ERROR: {exc}")
         sys.stderr.write(os.linesep)
         sys.exit(1)
 
     # Needed for locale.getpreferredencoding(False) to work
     # in pip._internal.utils.encoding.auto_decode
     try:
-        locale.setlocale(locale.LC_ALL, '')
+        locale.setlocale(locale.LC_ALL, "")
     except locale.Error as e:
         # setlocale can apparently crash if locale are uninitialized
         logger.debug("Ignoring error %s when setting locale", e)

@@ -1,16 +1,21 @@
-from pip._internal.utils.typing import MYPY_CHECK_RUNNING
+from typing import Optional
 
-if MYPY_CHECK_RUNNING:
-    from typing import Optional
-    from pip._internal.models.format_control import FormatControl
+from pip._internal.models.format_control import FormatControl
 
 
-class SelectionPreferences(object):
-
+class SelectionPreferences:
     """
     Encapsulates the candidate selection preferences for downloading
     and installing files.
     """
+
+    __slots__ = [
+        "allow_yanked",
+        "allow_all_prereleases",
+        "format_control",
+        "prefer_binary",
+        "ignore_requires_python",
+    ]
 
     # Don't include an allow_yanked default value to make sure each call
     # site considers whether yanked releases are allowed. This also causes
@@ -18,13 +23,12 @@ class SelectionPreferences(object):
     # people when reading the code.
     def __init__(
         self,
-        allow_yanked,  # type: bool
-        allow_all_prereleases=False,  # type: bool
-        format_control=None,          # type: Optional[FormatControl]
-        prefer_binary=False,          # type: bool
-        ignore_requires_python=None,  # type: Optional[bool]
-    ):
-        # type: (...) -> None
+        allow_yanked: bool,
+        allow_all_prereleases: bool = False,
+        format_control: Optional[FormatControl] = None,
+        prefer_binary: bool = False,
+        ignore_requires_python: Optional[bool] = None,
+    ) -> None:
         """Create a SelectionPreferences object.
 
         :param allow_yanked: Whether files marked as yanked (in the sense

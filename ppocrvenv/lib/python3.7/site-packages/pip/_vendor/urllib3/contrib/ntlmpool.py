@@ -5,12 +5,21 @@ Issue #10, see: http://code.google.com/p/urllib3/issues/detail?id=10
 """
 from __future__ import absolute_import
 
+import warnings
 from logging import getLogger
+
 from ntlm import ntlm
 
 from .. import HTTPSConnectionPool
 from ..packages.six.moves.http_client import HTTPSConnection
 
+warnings.warn(
+    "The 'urllib3.contrib.ntlmpool' module is deprecated and will be removed "
+    "in urllib3 v2.0 release, urllib3 is not able to support it properly due "
+    "to reasons listed in issue: https://github.com/urllib3/urllib3/issues/2282. "
+    "If you are a user of this module please comment in the mentioned issue.",
+    DeprecationWarning,
+)
 
 log = getLogger(__name__)
 

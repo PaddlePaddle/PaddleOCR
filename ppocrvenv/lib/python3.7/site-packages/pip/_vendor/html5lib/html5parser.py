@@ -2,7 +2,6 @@ from __future__ import absolute_import, division, unicode_literals
 from pip._vendor.six import with_metaclass, viewkeys
 
 import types
-from collections import OrderedDict
 
 from . import _inputstream
 from . import _tokenizer
@@ -119,8 +118,8 @@ class HTMLParser(object):
         self.tree = tree(namespaceHTMLElements)
         self.errors = []
 
-        self.phases = dict([(name, cls(self, self.tree)) for name, cls in
-                            getPhases(debug).items()])
+        self.phases = {name: cls(self, self.tree) for name, cls in
+                       getPhases(debug).items()}
 
     def _parse(self, stream, innerHTML=False, container="div", scripting=False, **kwargs):
 
@@ -202,7 +201,7 @@ class HTMLParser(object):
         DoctypeToken = tokenTypes["Doctype"]
         ParseErrorToken = tokenTypes["ParseError"]
 
-        for token in self.normalizedTokens():
+        for token in self.tokenizer:
             prev_token = None
             new_token = token
             while new_token is not None:
@@ -259,10 +258,6 @@ class HTMLParser(object):
             reprocess = self.phase.processEOF()
             if reprocess:
                 assert self.phase not in phases
-
-    def normalizedTokens(self):
-        for token in self.tokenizer:
-            yield self.normalizeToken(token)
 
     def parse(self, stream, *args, **kwargs):
         """Parse a HTML document into a well-formed tree
@@ -324,17 +319,6 @@ class HTMLParser(object):
         self.errors.append((self.tokenizer.stream.position(), errorcode, datavars))
         if self.strict:
             raise ParseError(E[errorcode] % datavars)
-
-    def normalizeToken(self, token):
-        # HTML5 specific normalizations to the token stream
-        if token["type"] == tokenTypes["StartTag"]:
-            raw = token["data"]
-            token["data"] = OrderedDict(raw)
-            if len(raw) > len(token["data"]):
-                # we had some duplicated attribute, fix so first wins
-                token["data"].update(raw[::-1])
-
-        return token
 
     def adjustMathMLAttributes(self, token):
         adjust_attributes(token, adjustMathMLAttributes)
@@ -413,16 +397,12 @@ class HTMLParser(object):
 def getPhases(debug):
     def log(function):
         """Logger that records which phase processes each token"""
-        type_names = dict((value, key) for key, value in
-                          tokenTypes.items())
+        type_names = {value: key for key, value in tokenTypes.items()}
 
         def wrapped(self, *args, **kwargs):
             if function.__name__.startswith("process") and len(args) > 0:
                 token = args[0]
-                try:
-                    info = {"type": type_names[token['type']]}
-                except:
-                    raise
+                info = {"type": type_names[token['type']]}
                 if token['type'] in tagTokenTypes:
                     info["name"] = token['name']
 
@@ -446,10 +426,13 @@ def getPhases(debug):
     class Phase(with_metaclass(getMetaclass(debug, log))):
         """Base class for helper object that implements each phase of processing
         """
+        __slots__ = ("parser", "tree", "__startTagCache", "__endTagCache")
 
         def __init__(self, parser, tree):
             self.parser = parser
             self.tree = tree
+            self.__startTagCache = {}
+            self.__endTagCache = {}
 
         def processEOF(self):
             raise NotImplementedError
@@ -469,7 +452,21 @@ def getPhases(debug):
             self.tree.insertText(token["data"])
 
         def processStartTag(self, token):
-            return self.startTagHandler[token["name"]](token)
+            # Note the caching is done here rather than BoundMethodDispatcher as doing it there
+            # requires a circular reference to the Phase, and this ends up with a significant
+            # (CPython 2.7, 3.8) GC cost when parsing many short inputs
+            name = token["name"]
+            # In Py2, using `in` is quicker in general than try/except KeyError
+            # In Py3, `in` is quicker when there are few cache hits (typically short inputs)
+            if name in self.__startTagCache:
+                func = self.__startTagCache[name]
+            else:
+                func = self.__startTagCache[name] = self.startTagHandler[name]
+                # bound the cache size in case we get loads of unknown tags
+                while len(self.__startTagCache) > len(self.startTagHandler) * 1.1:
+                    # this makes the eviction policy random on Py < 3.7 and FIFO >= 3.7
+                    self.__startTagCache.pop(next(iter(self.__startTagCache)))
+            return func(token)
 
         def startTagHtml(self, token):
             if not self.parser.firstStartTag and token["name"] == "html":
@@ -482,9 +479,25 @@ def getPhases(debug):
             self.parser.firstStartTag = False
 
         def processEndTag(self, token):
-            return self.endTagHandler[token["name"]](token)
+            # Note the caching is done here rather than BoundMethodDispatcher as doing it there
+            # requires a circular reference to the Phase, and this ends up with a significant
+            # (CPython 2.7, 3.8) GC cost when parsing many short inputs
+            name = token["name"]
+            # In Py2, using `in` is quicker in general than try/except KeyError
+            # In Py3, `in` is quicker when there are few cache hits (typically short inputs)
+            if name in self.__endTagCache:
+                func = self.__endTagCache[name]
+            else:
+                func = self.__endTagCache[name] = self.endTagHandler[name]
+                # bound the cache size in case we get loads of unknown tags
+                while len(self.__endTagCache) > len(self.endTagHandler) * 1.1:
+                    # this makes the eviction policy random on Py < 3.7 and FIFO >= 3.7
+                    self.__endTagCache.pop(next(iter(self.__endTagCache)))
+            return func(token)
 
     class InitialPhase(Phase):
+        __slots__ = tuple()
+
         def processSpaceCharacters(self, token):
             pass
 
@@ -613,6 +626,8 @@ def getPhases(debug):
             return True
 
     class BeforeHtmlPhase(Phase):
+        __slots__ = tuple()
+
         # helper methods
         def insertHtmlElement(self):
             self.tree.insertRoot(impliedTagToken("html", "StartTag"))
@@ -648,19 +663,7 @@ def getPhases(debug):
                 return token
 
     class BeforeHeadPhase(Phase):
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
-
-            self.startTagHandler = _utils.MethodDispatcher([
-                ("html", self.startTagHtml),
-                ("head", self.startTagHead)
-            ])
-            self.startTagHandler.default = self.startTagOther
-
-            self.endTagHandler = _utils.MethodDispatcher([
-                (("head", "body", "html", "br"), self.endTagImplyHead)
-            ])
-            self.endTagHandler.default = self.endTagOther
+        __slots__ = tuple()
 
         def processEOF(self):
             self.startTagHead(impliedTagToken("head", "StartTag"))
@@ -693,28 +696,19 @@ def getPhases(debug):
             self.parser.parseError("end-tag-after-implied-root",
                                    {"name": token["name"]})
 
+        startTagHandler = _utils.MethodDispatcher([
+            ("html", startTagHtml),
+            ("head", startTagHead)
+        ])
+        startTagHandler.default = startTagOther
+
+        endTagHandler = _utils.MethodDispatcher([
+            (("head", "body", "html", "br"), endTagImplyHead)
+        ])
+        endTagHandler.default = endTagOther
+
     class InHeadPhase(Phase):
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
-
-            self.startTagHandler = _utils.MethodDispatcher([
-                ("html", self.startTagHtml),
-                ("title", self.startTagTitle),
-                (("noframes", "style"), self.startTagNoFramesStyle),
-                ("noscript", self.startTagNoscript),
-                ("script", self.startTagScript),
-                (("base", "basefont", "bgsound", "command", "link"),
-                 self.startTagBaseLinkCommand),
-                ("meta", self.startTagMeta),
-                ("head", self.startTagHead)
-            ])
-            self.startTagHandler.default = self.startTagOther
-
-            self.endTagHandler = _utils.MethodDispatcher([
-                ("head", self.endTagHead),
-                (("br", "html", "body"), self.endTagHtmlBodyBr)
-            ])
-            self.endTagHandler.default = self.endTagOther
+        __slots__ = tuple()
 
         # the real thing
         def processEOF(self):
@@ -796,22 +790,27 @@ def getPhases(debug):
         def anythingElse(self):
             self.endTagHead(impliedTagToken("head"))
 
+        startTagHandler = _utils.MethodDispatcher([
+            ("html", startTagHtml),
+            ("title", startTagTitle),
+            (("noframes", "style"), startTagNoFramesStyle),
+            ("noscript", startTagNoscript),
+            ("script", startTagScript),
+            (("base", "basefont", "bgsound", "command", "link"),
+             startTagBaseLinkCommand),
+            ("meta", startTagMeta),
+            ("head", startTagHead)
+        ])
+        startTagHandler.default = startTagOther
+
+        endTagHandler = _utils.MethodDispatcher([
+            ("head", endTagHead),
+            (("br", "html", "body"), endTagHtmlBodyBr)
+        ])
+        endTagHandler.default = endTagOther
+
     class InHeadNoscriptPhase(Phase):
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
-
-            self.startTagHandler = _utils.MethodDispatcher([
-                ("html", self.startTagHtml),
-                (("basefont", "bgsound", "link", "meta", "noframes", "style"), self.startTagBaseLinkCommand),
-                (("head", "noscript"), self.startTagHeadNoscript),
-            ])
-            self.startTagHandler.default = self.startTagOther
-
-            self.endTagHandler = _utils.MethodDispatcher([
-                ("noscript", self.endTagNoscript),
-                ("br", self.endTagBr),
-            ])
-            self.endTagHandler.default = self.endTagOther
+        __slots__ = tuple()
 
         def processEOF(self):
             self.parser.parseError("eof-in-head-noscript")
@@ -860,23 +859,21 @@ def getPhases(debug):
             # Caller must raise parse error first!
             self.endTagNoscript(impliedTagToken("noscript"))
 
-    class AfterHeadPhase(Phase):
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
+        startTagHandler = _utils.MethodDispatcher([
+            ("html", startTagHtml),
+            (("basefont", "bgsound", "link", "meta", "noframes", "style"), startTagBaseLinkCommand),
+            (("head", "noscript"), startTagHeadNoscript),
+        ])
+        startTagHandler.default = startTagOther
 
-            self.startTagHandler = _utils.MethodDispatcher([
-                ("html", self.startTagHtml),
-                ("body", self.startTagBody),
-                ("frameset", self.startTagFrameset),
-                (("base", "basefont", "bgsound", "link", "meta", "noframes", "script",
-                  "style", "title"),
-                 self.startTagFromHead),
-                ("head", self.startTagHead)
-            ])
-            self.startTagHandler.default = self.startTagOther
-            self.endTagHandler = _utils.MethodDispatcher([(("body", "html", "br"),
-                                                           self.endTagHtmlBodyBr)])
-            self.endTagHandler.default = self.endTagOther
+        endTagHandler = _utils.MethodDispatcher([
+            ("noscript", endTagNoscript),
+            ("br", endTagBr),
+        ])
+        endTagHandler.default = endTagOther
+
+    class AfterHeadPhase(Phase):
+        __slots__ = tuple()
 
         def processEOF(self):
             self.anythingElse()
@@ -927,79 +924,29 @@ def getPhases(debug):
             self.parser.phase = self.parser.phases["inBody"]
             self.parser.framesetOK = True
 
+        startTagHandler = _utils.MethodDispatcher([
+            ("html", startTagHtml),
+            ("body", startTagBody),
+            ("frameset", startTagFrameset),
+            (("base", "basefont", "bgsound", "link", "meta", "noframes", "script",
+              "style", "title"),
+             startTagFromHead),
+            ("head", startTagHead)
+        ])
+        startTagHandler.default = startTagOther
+        endTagHandler = _utils.MethodDispatcher([(("body", "html", "br"),
+                                                  endTagHtmlBodyBr)])
+        endTagHandler.default = endTagOther
+
     class InBodyPhase(Phase):
         # http://www.whatwg.org/specs/web-apps/current-work/#parsing-main-inbody
         # the really-really-really-very crazy mode
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
+        __slots__ = ("processSpaceCharacters",)
 
+        def __init__(self, *args, **kwargs):
+            super(InBodyPhase, self).__init__(*args, **kwargs)
             # Set this to the default handler
             self.processSpaceCharacters = self.processSpaceCharactersNonPre
-
-            self.startTagHandler = _utils.MethodDispatcher([
-                ("html", self.startTagHtml),
-                (("base", "basefont", "bgsound", "command", "link", "meta",
-                  "script", "style", "title"),
-                 self.startTagProcessInHead),
-                ("body", self.startTagBody),
-                ("frameset", self.startTagFrameset),
-                (("address", "article", "aside", "blockquote", "center", "details",
-                  "dir", "div", "dl", "fieldset", "figcaption", "figure",
-                  "footer", "header", "hgroup", "main", "menu", "nav", "ol", "p",
-                  "section", "summary", "ul"),
-                 self.startTagCloseP),
-                (headingElements, self.startTagHeading),
-                (("pre", "listing"), self.startTagPreListing),
-                ("form", self.startTagForm),
-                (("li", "dd", "dt"), self.startTagListItem),
-                ("plaintext", self.startTagPlaintext),
-                ("a", self.startTagA),
-                (("b", "big", "code", "em", "font", "i", "s", "small", "strike",
-                  "strong", "tt", "u"), self.startTagFormatting),
-                ("nobr", self.startTagNobr),
-                ("button", self.startTagButton),
-                (("applet", "marquee", "object"), self.startTagAppletMarqueeObject),
-                ("xmp", self.startTagXmp),
-                ("table", self.startTagTable),
-                (("area", "br", "embed", "img", "keygen", "wbr"),
-                 self.startTagVoidFormatting),
-                (("param", "source", "track"), self.startTagParamSource),
-                ("input", self.startTagInput),
-                ("hr", self.startTagHr),
-                ("image", self.startTagImage),
-                ("isindex", self.startTagIsIndex),
-                ("textarea", self.startTagTextarea),
-                ("iframe", self.startTagIFrame),
-                ("noscript", self.startTagNoscript),
-                (("noembed", "noframes"), self.startTagRawtext),
-                ("select", self.startTagSelect),
-                (("rp", "rt"), self.startTagRpRt),
-                (("option", "optgroup"), self.startTagOpt),
-                (("math"), self.startTagMath),
-                (("svg"), self.startTagSvg),
-                (("caption", "col", "colgroup", "frame", "head",
-                  "tbody", "td", "tfoot", "th", "thead",
-                  "tr"), self.startTagMisplaced)
-            ])
-            self.startTagHandler.default = self.startTagOther
-
-            self.endTagHandler = _utils.MethodDispatcher([
-                ("body", self.endTagBody),
-                ("html", self.endTagHtml),
-                (("address", "article", "aside", "blockquote", "button", "center",
-                  "details", "dialog", "dir", "div", "dl", "fieldset", "figcaption", "figure",
-                  "footer", "header", "hgroup", "listing", "main", "menu", "nav", "ol", "pre",
-                  "section", "summary", "ul"), self.endTagBlock),
-                ("form", self.endTagForm),
-                ("p", self.endTagP),
-                (("dd", "dt", "li"), self.endTagListItem),
-                (headingElements, self.endTagHeading),
-                (("a", "b", "big", "code", "em", "font", "i", "nobr", "s", "small",
-                  "strike", "strong", "tt", "u"), self.endTagFormatting),
-                (("applet", "marquee", "object"), self.endTagAppletMarqueeObject),
-                ("br", self.endTagBr),
-            ])
-            self.endTagHandler.default = self.endTagOther
 
         def isMatchingFormattingElement(self, node1, node2):
             return (node1.name == node2.name and
@@ -1650,14 +1597,73 @@ def getPhases(debug):
                         self.parser.parseError("unexpected-end-tag", {"name": token["name"]})
                         break
 
+        startTagHandler = _utils.MethodDispatcher([
+            ("html", Phase.startTagHtml),
+            (("base", "basefont", "bgsound", "command", "link", "meta",
+              "script", "style", "title"),
+             startTagProcessInHead),
+            ("body", startTagBody),
+            ("frameset", startTagFrameset),
+            (("address", "article", "aside", "blockquote", "center", "details",
+              "dir", "div", "dl", "fieldset", "figcaption", "figure",
+              "footer", "header", "hgroup", "main", "menu", "nav", "ol", "p",
+              "section", "summary", "ul"),
+             startTagCloseP),
+            (headingElements, startTagHeading),
+            (("pre", "listing"), startTagPreListing),
+            ("form", startTagForm),
+            (("li", "dd", "dt"), startTagListItem),
+            ("plaintext", startTagPlaintext),
+            ("a", startTagA),
+            (("b", "big", "code", "em", "font", "i", "s", "small", "strike",
+              "strong", "tt", "u"), startTagFormatting),
+            ("nobr", startTagNobr),
+            ("button", startTagButton),
+            (("applet", "marquee", "object"), startTagAppletMarqueeObject),
+            ("xmp", startTagXmp),
+            ("table", startTagTable),
+            (("area", "br", "embed", "img", "keygen", "wbr"),
+             startTagVoidFormatting),
+            (("param", "source", "track"), startTagParamSource),
+            ("input", startTagInput),
+            ("hr", startTagHr),
+            ("image", startTagImage),
+            ("isindex", startTagIsIndex),
+            ("textarea", startTagTextarea),
+            ("iframe", startTagIFrame),
+            ("noscript", startTagNoscript),
+            (("noembed", "noframes"), startTagRawtext),
+            ("select", startTagSelect),
+            (("rp", "rt"), startTagRpRt),
+            (("option", "optgroup"), startTagOpt),
+            (("math"), startTagMath),
+            (("svg"), startTagSvg),
+            (("caption", "col", "colgroup", "frame", "head",
+              "tbody", "td", "tfoot", "th", "thead",
+              "tr"), startTagMisplaced)
+        ])
+        startTagHandler.default = startTagOther
+
+        endTagHandler = _utils.MethodDispatcher([
+            ("body", endTagBody),
+            ("html", endTagHtml),
+            (("address", "article", "aside", "blockquote", "button", "center",
+              "details", "dialog", "dir", "div", "dl", "fieldset", "figcaption", "figure",
+              "footer", "header", "hgroup", "listing", "main", "menu", "nav", "ol", "pre",
+              "section", "summary", "ul"), endTagBlock),
+            ("form", endTagForm),
+            ("p", endTagP),
+            (("dd", "dt", "li"), endTagListItem),
+            (headingElements, endTagHeading),
+            (("a", "b", "big", "code", "em", "font", "i", "nobr", "s", "small",
+              "strike", "strong", "tt", "u"), endTagFormatting),
+            (("applet", "marquee", "object"), endTagAppletMarqueeObject),
+            ("br", endTagBr),
+        ])
+        endTagHandler.default = endTagOther
+
     class TextPhase(Phase):
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
-            self.startTagHandler = _utils.MethodDispatcher([])
-            self.startTagHandler.default = self.startTagOther
-            self.endTagHandler = _utils.MethodDispatcher([
-                ("script", self.endTagScript)])
-            self.endTagHandler.default = self.endTagOther
+        __slots__ = tuple()
 
         def processCharacters(self, token):
             self.tree.insertText(token["data"])
@@ -1683,30 +1689,15 @@ def getPhases(debug):
             self.tree.openElements.pop()
             self.parser.phase = self.parser.originalPhase
 
+        startTagHandler = _utils.MethodDispatcher([])
+        startTagHandler.default = startTagOther
+        endTagHandler = _utils.MethodDispatcher([
+            ("script", endTagScript)])
+        endTagHandler.default = endTagOther
+
     class InTablePhase(Phase):
         # http://www.whatwg.org/specs/web-apps/current-work/#in-table
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
-            self.startTagHandler = _utils.MethodDispatcher([
-                ("html", self.startTagHtml),
-                ("caption", self.startTagCaption),
-                ("colgroup", self.startTagColgroup),
-                ("col", self.startTagCol),
-                (("tbody", "tfoot", "thead"), self.startTagRowGroup),
-                (("td", "th", "tr"), self.startTagImplyTbody),
-                ("table", self.startTagTable),
-                (("style", "script"), self.startTagStyleScript),
-                ("input", self.startTagInput),
-                ("form", self.startTagForm)
-            ])
-            self.startTagHandler.default = self.startTagOther
-
-            self.endTagHandler = _utils.MethodDispatcher([
-                ("table", self.endTagTable),
-                (("body", "caption", "col", "colgroup", "html", "tbody", "td",
-                  "tfoot", "th", "thead", "tr"), self.endTagIgnore)
-            ])
-            self.endTagHandler.default = self.endTagOther
+        __slots__ = tuple()
 
         # helper methods
         def clearStackToTableContext(self):
@@ -1828,9 +1819,32 @@ def getPhases(debug):
             self.parser.phases["inBody"].processEndTag(token)
             self.tree.insertFromTable = False
 
+        startTagHandler = _utils.MethodDispatcher([
+            ("html", Phase.startTagHtml),
+            ("caption", startTagCaption),
+            ("colgroup", startTagColgroup),
+            ("col", startTagCol),
+            (("tbody", "tfoot", "thead"), startTagRowGroup),
+            (("td", "th", "tr"), startTagImplyTbody),
+            ("table", startTagTable),
+            (("style", "script"), startTagStyleScript),
+            ("input", startTagInput),
+            ("form", startTagForm)
+        ])
+        startTagHandler.default = startTagOther
+
+        endTagHandler = _utils.MethodDispatcher([
+            ("table", endTagTable),
+            (("body", "caption", "col", "colgroup", "html", "tbody", "td",
+              "tfoot", "th", "thead", "tr"), endTagIgnore)
+        ])
+        endTagHandler.default = endTagOther
+
     class InTableTextPhase(Phase):
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
+        __slots__ = ("originalPhase", "characterTokens")
+
+        def __init__(self, *args, **kwargs):
+            super(InTableTextPhase, self).__init__(*args, **kwargs)
             self.originalPhase = None
             self.characterTokens = []
 
@@ -1875,23 +1889,7 @@ def getPhases(debug):
 
     class InCaptionPhase(Phase):
         # http://www.whatwg.org/specs/web-apps/current-work/#in-caption
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
-
-            self.startTagHandler = _utils.MethodDispatcher([
-                ("html", self.startTagHtml),
-                (("caption", "col", "colgroup", "tbody", "td", "tfoot", "th",
-                  "thead", "tr"), self.startTagTableElement)
-            ])
-            self.startTagHandler.default = self.startTagOther
-
-            self.endTagHandler = _utils.MethodDispatcher([
-                ("caption", self.endTagCaption),
-                ("table", self.endTagTable),
-                (("body", "col", "colgroup", "html", "tbody", "td", "tfoot", "th",
-                  "thead", "tr"), self.endTagIgnore)
-            ])
-            self.endTagHandler.default = self.endTagOther
+        __slots__ = tuple()
 
         def ignoreEndTagCaption(self):
             return not self.tree.elementInScope("caption", variant="table")
@@ -1944,23 +1942,24 @@ def getPhases(debug):
         def endTagOther(self, token):
             return self.parser.phases["inBody"].processEndTag(token)
 
+        startTagHandler = _utils.MethodDispatcher([
+            ("html", Phase.startTagHtml),
+            (("caption", "col", "colgroup", "tbody", "td", "tfoot", "th",
+              "thead", "tr"), startTagTableElement)
+        ])
+        startTagHandler.default = startTagOther
+
+        endTagHandler = _utils.MethodDispatcher([
+            ("caption", endTagCaption),
+            ("table", endTagTable),
+            (("body", "col", "colgroup", "html", "tbody", "td", "tfoot", "th",
+              "thead", "tr"), endTagIgnore)
+        ])
+        endTagHandler.default = endTagOther
+
     class InColumnGroupPhase(Phase):
         # http://www.whatwg.org/specs/web-apps/current-work/#in-column
-
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
-
-            self.startTagHandler = _utils.MethodDispatcher([
-                ("html", self.startTagHtml),
-                ("col", self.startTagCol)
-            ])
-            self.startTagHandler.default = self.startTagOther
-
-            self.endTagHandler = _utils.MethodDispatcher([
-                ("colgroup", self.endTagColgroup),
-                ("col", self.endTagCol)
-            ])
-            self.endTagHandler.default = self.endTagOther
+        __slots__ = tuple()
 
         def ignoreEndTagColgroup(self):
             return self.tree.openElements[-1].name == "html"
@@ -2010,26 +2009,21 @@ def getPhases(debug):
             if not ignoreEndTag:
                 return token
 
+        startTagHandler = _utils.MethodDispatcher([
+            ("html", Phase.startTagHtml),
+            ("col", startTagCol)
+        ])
+        startTagHandler.default = startTagOther
+
+        endTagHandler = _utils.MethodDispatcher([
+            ("colgroup", endTagColgroup),
+            ("col", endTagCol)
+        ])
+        endTagHandler.default = endTagOther
+
     class InTableBodyPhase(Phase):
         # http://www.whatwg.org/specs/web-apps/current-work/#in-table0
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
-            self.startTagHandler = _utils.MethodDispatcher([
-                ("html", self.startTagHtml),
-                ("tr", self.startTagTr),
-                (("td", "th"), self.startTagTableCell),
-                (("caption", "col", "colgroup", "tbody", "tfoot", "thead"),
-                 self.startTagTableOther)
-            ])
-            self.startTagHandler.default = self.startTagOther
-
-            self.endTagHandler = _utils.MethodDispatcher([
-                (("tbody", "tfoot", "thead"), self.endTagTableRowGroup),
-                ("table", self.endTagTable),
-                (("body", "caption", "col", "colgroup", "html", "td", "th",
-                  "tr"), self.endTagIgnore)
-            ])
-            self.endTagHandler.default = self.endTagOther
+        __slots__ = tuple()
 
         # helper methods
         def clearStackToTableBodyContext(self):
@@ -2108,26 +2102,26 @@ def getPhases(debug):
         def endTagOther(self, token):
             return self.parser.phases["inTable"].processEndTag(token)
 
+        startTagHandler = _utils.MethodDispatcher([
+            ("html", Phase.startTagHtml),
+            ("tr", startTagTr),
+            (("td", "th"), startTagTableCell),
+            (("caption", "col", "colgroup", "tbody", "tfoot", "thead"),
+             startTagTableOther)
+        ])
+        startTagHandler.default = startTagOther
+
+        endTagHandler = _utils.MethodDispatcher([
+            (("tbody", "tfoot", "thead"), endTagTableRowGroup),
+            ("table", endTagTable),
+            (("body", "caption", "col", "colgroup", "html", "td", "th",
+              "tr"), endTagIgnore)
+        ])
+        endTagHandler.default = endTagOther
+
     class InRowPhase(Phase):
         # http://www.whatwg.org/specs/web-apps/current-work/#in-row
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
-            self.startTagHandler = _utils.MethodDispatcher([
-                ("html", self.startTagHtml),
-                (("td", "th"), self.startTagTableCell),
-                (("caption", "col", "colgroup", "tbody", "tfoot", "thead",
-                  "tr"), self.startTagTableOther)
-            ])
-            self.startTagHandler.default = self.startTagOther
-
-            self.endTagHandler = _utils.MethodDispatcher([
-                ("tr", self.endTagTr),
-                ("table", self.endTagTable),
-                (("tbody", "tfoot", "thead"), self.endTagTableRowGroup),
-                (("body", "caption", "col", "colgroup", "html", "td", "th"),
-                 self.endTagIgnore)
-            ])
-            self.endTagHandler.default = self.endTagOther
+        __slots__ = tuple()
 
         # helper methods (XXX unify this with other table helper methods)
         def clearStackToTableRowContext(self):
@@ -2197,23 +2191,26 @@ def getPhases(debug):
         def endTagOther(self, token):
             return self.parser.phases["inTable"].processEndTag(token)
 
+        startTagHandler = _utils.MethodDispatcher([
+            ("html", Phase.startTagHtml),
+            (("td", "th"), startTagTableCell),
+            (("caption", "col", "colgroup", "tbody", "tfoot", "thead",
+              "tr"), startTagTableOther)
+        ])
+        startTagHandler.default = startTagOther
+
+        endTagHandler = _utils.MethodDispatcher([
+            ("tr", endTagTr),
+            ("table", endTagTable),
+            (("tbody", "tfoot", "thead"), endTagTableRowGroup),
+            (("body", "caption", "col", "colgroup", "html", "td", "th"),
+             endTagIgnore)
+        ])
+        endTagHandler.default = endTagOther
+
     class InCellPhase(Phase):
         # http://www.whatwg.org/specs/web-apps/current-work/#in-cell
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
-            self.startTagHandler = _utils.MethodDispatcher([
-                ("html", self.startTagHtml),
-                (("caption", "col", "colgroup", "tbody", "td", "tfoot", "th",
-                  "thead", "tr"), self.startTagTableOther)
-            ])
-            self.startTagHandler.default = self.startTagOther
-
-            self.endTagHandler = _utils.MethodDispatcher([
-                (("td", "th"), self.endTagTableCell),
-                (("body", "caption", "col", "colgroup", "html"), self.endTagIgnore),
-                (("table", "tbody", "tfoot", "thead", "tr"), self.endTagImply)
-            ])
-            self.endTagHandler.default = self.endTagOther
+        __slots__ = tuple()
 
         # helper
         def closeCell(self):
@@ -2273,26 +2270,22 @@ def getPhases(debug):
         def endTagOther(self, token):
             return self.parser.phases["inBody"].processEndTag(token)
 
+        startTagHandler = _utils.MethodDispatcher([
+            ("html", Phase.startTagHtml),
+            (("caption", "col", "colgroup", "tbody", "td", "tfoot", "th",
+              "thead", "tr"), startTagTableOther)
+        ])
+        startTagHandler.default = startTagOther
+
+        endTagHandler = _utils.MethodDispatcher([
+            (("td", "th"), endTagTableCell),
+            (("body", "caption", "col", "colgroup", "html"), endTagIgnore),
+            (("table", "tbody", "tfoot", "thead", "tr"), endTagImply)
+        ])
+        endTagHandler.default = endTagOther
+
     class InSelectPhase(Phase):
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
-
-            self.startTagHandler = _utils.MethodDispatcher([
-                ("html", self.startTagHtml),
-                ("option", self.startTagOption),
-                ("optgroup", self.startTagOptgroup),
-                ("select", self.startTagSelect),
-                (("input", "keygen", "textarea"), self.startTagInput),
-                ("script", self.startTagScript)
-            ])
-            self.startTagHandler.default = self.startTagOther
-
-            self.endTagHandler = _utils.MethodDispatcher([
-                ("option", self.endTagOption),
-                ("optgroup", self.endTagOptgroup),
-                ("select", self.endTagSelect)
-            ])
-            self.endTagHandler.default = self.endTagOther
+        __slots__ = tuple()
 
         # http://www.whatwg.org/specs/web-apps/current-work/#in-select
         def processEOF(self):
@@ -2373,21 +2366,25 @@ def getPhases(debug):
             self.parser.parseError("unexpected-end-tag-in-select",
                                    {"name": token["name"]})
 
+        startTagHandler = _utils.MethodDispatcher([
+            ("html", Phase.startTagHtml),
+            ("option", startTagOption),
+            ("optgroup", startTagOptgroup),
+            ("select", startTagSelect),
+            (("input", "keygen", "textarea"), startTagInput),
+            ("script", startTagScript)
+        ])
+        startTagHandler.default = startTagOther
+
+        endTagHandler = _utils.MethodDispatcher([
+            ("option", endTagOption),
+            ("optgroup", endTagOptgroup),
+            ("select", endTagSelect)
+        ])
+        endTagHandler.default = endTagOther
+
     class InSelectInTablePhase(Phase):
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
-
-            self.startTagHandler = _utils.MethodDispatcher([
-                (("caption", "table", "tbody", "tfoot", "thead", "tr", "td", "th"),
-                 self.startTagTable)
-            ])
-            self.startTagHandler.default = self.startTagOther
-
-            self.endTagHandler = _utils.MethodDispatcher([
-                (("caption", "table", "tbody", "tfoot", "thead", "tr", "td", "th"),
-                 self.endTagTable)
-            ])
-            self.endTagHandler.default = self.endTagOther
+        __slots__ = tuple()
 
         def processEOF(self):
             self.parser.phases["inSelect"].processEOF()
@@ -2412,7 +2409,21 @@ def getPhases(debug):
         def endTagOther(self, token):
             return self.parser.phases["inSelect"].processEndTag(token)
 
+        startTagHandler = _utils.MethodDispatcher([
+            (("caption", "table", "tbody", "tfoot", "thead", "tr", "td", "th"),
+             startTagTable)
+        ])
+        startTagHandler.default = startTagOther
+
+        endTagHandler = _utils.MethodDispatcher([
+            (("caption", "table", "tbody", "tfoot", "thead", "tr", "td", "th"),
+             endTagTable)
+        ])
+        endTagHandler.default = endTagOther
+
     class InForeignContentPhase(Phase):
+        __slots__ = tuple()
+
         breakoutElements = frozenset(["b", "big", "blockquote", "body", "br",
                                       "center", "code", "dd", "div", "dl", "dt",
                                       "em", "embed", "h1", "h2", "h3",
@@ -2421,9 +2432,6 @@ def getPhases(debug):
                                       "ol", "p", "pre", "ruby", "s", "small",
                                       "span", "strong", "strike", "sub", "sup",
                                       "table", "tt", "u", "ul", "var"])
-
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
 
         def adjustSVGTagNames(self, token):
             replacements = {"altglyph": "altGlyph",
@@ -2478,7 +2486,7 @@ def getPhases(debug):
             currentNode = self.tree.openElements[-1]
             if (token["name"] in self.breakoutElements or
                 (token["name"] == "font" and
-                 set(token["data"].keys()) & set(["color", "face", "size"]))):
+                 set(token["data"].keys()) & {"color", "face", "size"})):
                 self.parser.parseError("unexpected-html-element-in-foreign-content",
                                        {"name": token["name"]})
                 while (self.tree.openElements[-1].namespace !=
@@ -2528,16 +2536,7 @@ def getPhases(debug):
             return new_token
 
     class AfterBodyPhase(Phase):
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
-
-            self.startTagHandler = _utils.MethodDispatcher([
-                ("html", self.startTagHtml)
-            ])
-            self.startTagHandler.default = self.startTagOther
-
-            self.endTagHandler = _utils.MethodDispatcher([("html", self.endTagHtml)])
-            self.endTagHandler.default = self.endTagOther
+        __slots__ = tuple()
 
         def processEOF(self):
             # Stop parsing
@@ -2574,23 +2573,17 @@ def getPhases(debug):
             self.parser.phase = self.parser.phases["inBody"]
             return token
 
+        startTagHandler = _utils.MethodDispatcher([
+            ("html", startTagHtml)
+        ])
+        startTagHandler.default = startTagOther
+
+        endTagHandler = _utils.MethodDispatcher([("html", endTagHtml)])
+        endTagHandler.default = endTagOther
+
     class InFramesetPhase(Phase):
         # http://www.whatwg.org/specs/web-apps/current-work/#in-frameset
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
-
-            self.startTagHandler = _utils.MethodDispatcher([
-                ("html", self.startTagHtml),
-                ("frameset", self.startTagFrameset),
-                ("frame", self.startTagFrame),
-                ("noframes", self.startTagNoframes)
-            ])
-            self.startTagHandler.default = self.startTagOther
-
-            self.endTagHandler = _utils.MethodDispatcher([
-                ("frameset", self.endTagFrameset)
-            ])
-            self.endTagHandler.default = self.endTagOther
+        __slots__ = tuple()
 
         def processEOF(self):
             if self.tree.openElements[-1].name != "html":
@@ -2631,21 +2624,22 @@ def getPhases(debug):
             self.parser.parseError("unexpected-end-tag-in-frameset",
                                    {"name": token["name"]})
 
+        startTagHandler = _utils.MethodDispatcher([
+            ("html", Phase.startTagHtml),
+            ("frameset", startTagFrameset),
+            ("frame", startTagFrame),
+            ("noframes", startTagNoframes)
+        ])
+        startTagHandler.default = startTagOther
+
+        endTagHandler = _utils.MethodDispatcher([
+            ("frameset", endTagFrameset)
+        ])
+        endTagHandler.default = endTagOther
+
     class AfterFramesetPhase(Phase):
         # http://www.whatwg.org/specs/web-apps/current-work/#after3
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
-
-            self.startTagHandler = _utils.MethodDispatcher([
-                ("html", self.startTagHtml),
-                ("noframes", self.startTagNoframes)
-            ])
-            self.startTagHandler.default = self.startTagOther
-
-            self.endTagHandler = _utils.MethodDispatcher([
-                ("html", self.endTagHtml)
-            ])
-            self.endTagHandler.default = self.endTagOther
+        __slots__ = tuple()
 
         def processEOF(self):
             # Stop parsing
@@ -2668,14 +2662,19 @@ def getPhases(debug):
             self.parser.parseError("unexpected-end-tag-after-frameset",
                                    {"name": token["name"]})
 
-    class AfterAfterBodyPhase(Phase):
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
+        startTagHandler = _utils.MethodDispatcher([
+            ("html", Phase.startTagHtml),
+            ("noframes", startTagNoframes)
+        ])
+        startTagHandler.default = startTagOther
 
-            self.startTagHandler = _utils.MethodDispatcher([
-                ("html", self.startTagHtml)
-            ])
-            self.startTagHandler.default = self.startTagOther
+        endTagHandler = _utils.MethodDispatcher([
+            ("html", endTagHtml)
+        ])
+        endTagHandler.default = endTagOther
+
+    class AfterAfterBodyPhase(Phase):
+        __slots__ = tuple()
 
         def processEOF(self):
             pass
@@ -2706,15 +2705,13 @@ def getPhases(debug):
             self.parser.phase = self.parser.phases["inBody"]
             return token
 
-    class AfterAfterFramesetPhase(Phase):
-        def __init__(self, parser, tree):
-            Phase.__init__(self, parser, tree)
+        startTagHandler = _utils.MethodDispatcher([
+            ("html", startTagHtml)
+        ])
+        startTagHandler.default = startTagOther
 
-            self.startTagHandler = _utils.MethodDispatcher([
-                ("html", self.startTagHtml),
-                ("noframes", self.startTagNoFrames)
-            ])
-            self.startTagHandler.default = self.startTagOther
+    class AfterAfterFramesetPhase(Phase):
+        __slots__ = tuple()
 
         def processEOF(self):
             pass
@@ -2741,6 +2738,13 @@ def getPhases(debug):
         def processEndTag(self, token):
             self.parser.parseError("expected-eof-but-got-end-tag",
                                    {"name": token["name"]})
+
+        startTagHandler = _utils.MethodDispatcher([
+            ("html", startTagHtml),
+            ("noframes", startTagNoFrames)
+        ])
+        startTagHandler.default = startTagOther
+
     # pylint:enable=unused-argument
 
     return {
@@ -2774,8 +2778,8 @@ def getPhases(debug):
 def adjust_attributes(token, replacements):
     needs_adjustment = viewkeys(token['data']) & viewkeys(replacements)
     if needs_adjustment:
-        token['data'] = OrderedDict((replacements.get(k, k), v)
-                                    for k, v in token['data'].items())
+        token['data'] = type(token['data'])((replacements.get(k, k), v)
+                                            for k, v in token['data'].items())
 
 
 def impliedTagToken(name, type="EndTag", attributes=None,

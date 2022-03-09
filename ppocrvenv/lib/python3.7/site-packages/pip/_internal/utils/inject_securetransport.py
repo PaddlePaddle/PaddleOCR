@@ -10,8 +10,7 @@ old to handle TLSv1.2.
 import sys
 
 
-def inject_securetransport():
-    # type: () -> None
+def inject_securetransport() -> None:
     # Only relevant on macOS
     if sys.platform != "darwin":
         return
@@ -22,7 +21,7 @@ def inject_securetransport():
         return
 
     # Checks for OpenSSL 1.0.1
-    if ssl.OPENSSL_VERSION_NUMBER >= 0x1000100f:
+    if ssl.OPENSSL_VERSION_NUMBER >= 0x1000100F:
         return
 
     try:

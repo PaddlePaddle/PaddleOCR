@@ -1,14 +1,10 @@
 import sys
+from typing import List, Optional
 
 from pip._internal.cli.main import main
-from pip._internal.utils.typing import MYPY_CHECK_RUNNING
-
-if MYPY_CHECK_RUNNING:
-    from typing import Optional, List
 
 
-def _wrapper(args=None):
-    # type: (Optional[List[str]]) -> int
+def _wrapper(args: Optional[List[str]] = None) -> int:
     """Central wrapper for all old entrypoints.
 
     Historically pip has had several entrypoints defined. Because of issues

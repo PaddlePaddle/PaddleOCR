@@ -1,4 +1,5 @@
 """Python 2/3 compatibility"""
+import io
 import json
 import sys
 
@@ -32,3 +33,19 @@ try:
     FileNotFoundError = FileNotFoundError
 except NameError:
     FileNotFoundError = IOError
+
+
+if sys.version_info < (3, 6):
+    from toml import load as _toml_load  # noqa: F401
+
+    def toml_load(f):
+        w = io.TextIOWrapper(f, encoding="utf8", newline="")
+        try:
+            return _toml_load(w)
+        finally:
+            w.detach()
+
+    from toml import TomlDecodeError as TOMLDecodeError  # noqa: F401
+else:
+    from pip._vendor.tomli import load as toml_load  # noqa: F401
+    from pip._vendor.tomli import TOMLDecodeError  # noqa: F401

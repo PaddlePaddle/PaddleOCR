@@ -20,14 +20,14 @@ import zlib
 
 from . import DistlibException
 from .compat import (urljoin, urlparse, urlunparse, url2pathname, pathname2url,
-                     queue, quote, unescape, string_types, build_opener,
+                     queue, quote, unescape, build_opener,
                      HTTPRedirectHandler as BaseRedirectHandler, text_type,
                      Request, HTTPError, URLError)
 from .database import Distribution, DistributionPath, make_dist
 from .metadata import Metadata, MetadataInvalidError
-from .util import (cached_property, parse_credentials, ensure_slash,
-                   split_filename, get_project_data, parse_requirement,
-                   parse_name_and_version, ServerProxy, normalize_name)
+from .util import (cached_property, ensure_slash, split_filename, get_project_data,
+                   parse_requirement, parse_name_and_version, ServerProxy,
+                   normalize_name)
 from .version import get_scheme, UnsupportedVersionError
 from .wheel import Wheel, is_compatible
 
@@ -378,13 +378,13 @@ class Locator(object):
                     continue
                 try:
                     if not matcher.match(k):
-                        logger.debug('%s did not match %r', matcher, k)
+                        pass  # logger.debug('%s did not match %r', matcher, k)
                     else:
                         if prereleases or not vcls(k).is_prerelease:
                             slist.append(k)
-                        else:
-                            logger.debug('skipping pre-release '
-                                         'version %s of %s', k, matcher.name)
+                        # else:
+                            # logger.debug('skipping pre-release '
+                                         # 'version %s of %s', k, matcher.name)
                 except Exception:  # pragma: no cover
                     logger.warning('error matching %s with %r', matcher, k)
                     pass # slist.append(k)
@@ -593,7 +593,7 @@ class SimpleScrapingLocator(Locator):
     # These are used to deal with various Content-Encoding schemes.
     decoders = {
         'deflate': zlib.decompress,
-        'gzip': lambda b: gzip.GzipFile(fileobj=BytesIO(d)).read(),
+        'gzip': lambda b: gzip.GzipFile(fileobj=BytesIO(b)).read(),
         'none': lambda b: b,
     }
 
@@ -1062,8 +1062,6 @@ default_locator = AggregatingLocator(
 
 locate = default_locator.locate
 
-NAME_VERSION_RE = re.compile(r'(?P<name>[\w-]+)\s*'
-                             r'\(\s*(==\s*)?(?P<ver>[^)]+)\)$')
 
 class DependencyFinder(object):
     """

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2015 Eric Larson
+#
+# SPDX-License-Identifier: Apache-2.0
+
 try:
     from urllib.parse import urljoin
 except ImportError:
@@ -8,7 +12,6 @@ try:
     import cPickle as pickle
 except ImportError:
     import pickle
-
 
 # Handle the case where the requests module has been patched to not have
 # urllib3 bundled as part of its source.

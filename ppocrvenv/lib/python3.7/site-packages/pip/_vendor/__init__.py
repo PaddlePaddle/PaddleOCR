@@ -58,11 +58,9 @@ if DEBUNDLED:
     sys.path[:] = glob.glob(os.path.join(WHEEL_DIR, "*.whl")) + sys.path
 
     # Actually alias all of our vendored dependencies.
-    vendored("appdirs")
     vendored("cachecontrol")
     vendored("certifi")
     vendored("colorama")
-    vendored("contextlib2")
     vendored("distlib")
     vendored("distro")
     vendored("html5lib")
@@ -75,8 +73,8 @@ if DEBUNDLED:
     vendored("packaging.specifiers")
     vendored("pep517")
     vendored("pkg_resources")
+    vendored("platformdirs")
     vendored("progress")
-    vendored("retrying")
     vendored("requests")
     vendored("requests.exceptions")
     vendored("requests.packages")
@@ -108,7 +106,6 @@ if DEBUNDLED:
     vendored("requests.packages.urllib3.util.timeout")
     vendored("requests.packages.urllib3.util.url")
     vendored("resolvelib")
-    vendored("toml")
-    vendored("toml.encoder")
-    vendored("toml.decoder")
+    vendored("tenacity")
+    vendored("tomli")
     vendored("urllib3")

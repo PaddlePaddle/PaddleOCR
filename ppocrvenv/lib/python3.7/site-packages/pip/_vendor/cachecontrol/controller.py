@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2015 Eric Larson
+#
+# SPDX-License-Identifier: Apache-2.0
+
 """
 The httplib2 algorithms ported for use with requests.
 """
@@ -16,6 +20,8 @@ from .serialize import Serializer
 logger = logging.getLogger(__name__)
 
 URI = re.compile(r"^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?")
+
+PERMANENT_REDIRECT_STATUSES = (301, 308)
 
 
 def parse_uri(uri):
@@ -37,7 +43,7 @@ class CacheController(object):
         self.cache = DictCache() if cache is None else cache
         self.cache_etags = cache_etags
         self.serializer = serializer or Serializer()
-        self.cacheable_status_codes = status_codes or (200, 203, 300, 301)
+        self.cacheable_status_codes = status_codes or (200, 203, 300, 301, 308)
 
     @classmethod
     def _urlnorm(cls, uri):
@@ -147,17 +153,18 @@ class CacheController(object):
             logger.warning("Cache entry deserialization failed, entry ignored")
             return False
 
-        # If we have a cached 301, return it immediately. We don't
-        # need to test our response for other headers b/c it is
+        # If we have a cached permanent redirect, return it immediately. We
+        # don't need to test our response for other headers b/c it is
         # intrinsically "cacheable" as it is Permanent.
+        #
         # See:
         #   https://tools.ietf.org/html/rfc7231#section-6.4.2
         #
         # Client can try to refresh the value by repeating the request
         # with cache busting headers as usual (ie no-cache).
-        if resp.status == 301:
+        if int(resp.status) in PERMANENT_REDIRECT_STATUSES:
             msg = (
-                'Returning cached "301 Moved Permanently" response '
+                "Returning cached permanent redirect response "
                 "(ignoring date and etag information)"
             )
             logger.debug(msg)
@@ -261,6 +268,11 @@ class CacheController(object):
 
         response_headers = CaseInsensitiveDict(response.headers)
 
+        if "date" in response_headers:
+            date = calendar.timegm(parsedate_tz(response_headers["date"]))
+        else:
+            date = 0
+
         # If we've been given a body, our response has a Content-Length, that
         # Content-Length is valid then we can check to see if the body we've
         # been given matches the expected size, and if it doesn't we'll just
@@ -304,35 +316,62 @@ class CacheController(object):
 
         # If we've been given an etag, then keep the response
         if self.cache_etags and "etag" in response_headers:
+            expires_time = 0
+            if response_headers.get("expires"):
+                expires = parsedate_tz(response_headers["expires"])
+                if expires is not None:
+                    expires_time = calendar.timegm(expires) - date
+
+            expires_time = max(expires_time, 14 * 86400)
+
+            logger.debug("etag object cached for {0} seconds".format(expires_time))
             logger.debug("Caching due to etag")
             self.cache.set(
-                cache_url, self.serializer.dumps(request, response, body=body)
+                cache_url,
+                self.serializer.dumps(request, response, body),
+                expires=expires_time,
             )
 
-        # Add to the cache any 301s. We do this before looking that
-        # the Date headers.
-        elif response.status == 301:
-            logger.debug("Caching permanant redirect")
-            self.cache.set(cache_url, self.serializer.dumps(request, response))
+        # Add to the cache any permanent redirects. We do this before looking
+        # that the Date headers.
+        elif int(response.status) in PERMANENT_REDIRECT_STATUSES:
+            logger.debug("Caching permanent redirect")
+            self.cache.set(cache_url, self.serializer.dumps(request, response, b""))
 
         # Add to the cache if the response headers demand it. If there
         # is no date header then we can't do anything about expiring
         # the cache.
         elif "date" in response_headers:
+            date = calendar.timegm(parsedate_tz(response_headers["date"]))
             # cache when there is a max-age > 0
             if "max-age" in cc and cc["max-age"] > 0:
                 logger.debug("Caching b/c date exists and max-age > 0")
+                expires_time = cc["max-age"]
                 self.cache.set(
-                    cache_url, self.serializer.dumps(request, response, body=body)
+                    cache_url,
+                    self.serializer.dumps(request, response, body),
+                    expires=expires_time,
                 )
 
             # If the request can expire, it means we should cache it
             # in the meantime.
             elif "expires" in response_headers:
                 if response_headers["expires"]:
-                    logger.debug("Caching b/c of expires header")
+                    expires = parsedate_tz(response_headers["expires"])
+                    if expires is not None:
+                        expires_time = calendar.timegm(expires) - date
+                    else:
+                        expires_time = None
+
+                    logger.debug(
+                        "Caching b/c of expires header. expires in {0} seconds".format(
+                            expires_time
+                        )
+                    )
                     self.cache.set(
-                        cache_url, self.serializer.dumps(request, response, body=body)
+                        cache_url,
+                        self.serializer.dumps(request, response, body=body),
+                        expires=expires_time,
                     )
 
     def update_cached_response(self, request, response):

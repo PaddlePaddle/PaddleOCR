@@ -8,9 +8,15 @@ import ssl
 
 from pip._vendor import idna
 from pip._vendor import urllib3
-from pip._vendor import chardet
 
 from . import __version__ as requests_version
+
+charset_normalizer = None
+
+try:
+    from pip._vendor import chardet
+except ImportError:
+    chardet = None
 
 try:
     from pip._vendor.urllib3.contrib import pyopenssl
@@ -71,7 +77,12 @@ def info():
 
     implementation_info = _implementation()
     urllib3_info = {'version': urllib3.__version__}
-    chardet_info = {'version': chardet.__version__}
+    charset_normalizer_info = {'version': None}
+    chardet_info = {'version': None}
+    if charset_normalizer:
+        charset_normalizer_info = {'version': charset_normalizer.__version__}
+    if chardet:
+        chardet_info = {'version': chardet.__version__}
 
     pyopenssl_info = {
         'version': None,
@@ -99,9 +110,11 @@ def info():
         'implementation': implementation_info,
         'system_ssl': system_ssl_info,
         'using_pyopenssl': pyopenssl is not None,
+        'using_charset_normalizer': chardet is None,
         'pyOpenSSL': pyopenssl_info,
         'urllib3': urllib3_info,
         'chardet': chardet_info,
+        'charset_normalizer': charset_normalizer_info,
         'cryptography': cryptography_info,
         'idna': idna_info,
         'requests': {

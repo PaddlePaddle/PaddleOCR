@@ -1,11 +1,6 @@
 from distutils.errors import DistutilsArgError
 from distutils.fancy_getopt import FancyGetopt
-
-from pip._internal.utils.typing import MYPY_CHECK_RUNNING
-
-if MYPY_CHECK_RUNNING:
-    from typing import Dict, List
-
+from typing import Dict, List
 
 _options = [
     ("exec-prefix=", None, ""),
@@ -27,8 +22,7 @@ _options = [
 _distutils_getopt = FancyGetopt(_options)  # type: ignore
 
 
-def parse_distutils_args(args):
-    # type: (List[str]) -> Dict[str, str]
+def parse_distutils_args(args: List[str]) -> Dict[str, str]:
     """Parse provided arguments, returning an object that has the
     matched arguments.
 

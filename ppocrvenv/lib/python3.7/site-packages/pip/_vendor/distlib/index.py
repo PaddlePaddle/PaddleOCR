@@ -18,7 +18,7 @@ except ImportError:
 from . import DistlibException
 from .compat import (HTTPBasicAuthHandler, Request, HTTPPasswordMgr,
                      urlparse, build_opener, string_types)
-from .util import cached_property, zip_dir, ServerProxy
+from .util import zip_dir, ServerProxy
 
 logger = logging.getLogger(__name__)
 
@@ -67,21 +67,17 @@ class PackageIndex(object):
         Get the distutils command for interacting with PyPI configurations.
         :return: the command.
         """
-        from distutils.core import Distribution
-        from distutils.config import PyPIRCCommand
-        d = Distribution()
-        return PyPIRCCommand(d)
+        from .util import _get_pypirc_command as cmd
+        return cmd()
 
     def read_configuration(self):
         """
-        Read the PyPI access configuration as supported by distutils, getting
-        PyPI to do the actual work. This populates ``username``, ``password``,
-        ``realm`` and ``url`` attributes from the configuration.
+        Read the PyPI access configuration as supported by distutils. This populates
+        ``username``, ``password``, ``realm`` and ``url`` attributes from the
+        configuration.
         """
-        # get distutils to do the work
-        c = self._get_pypirc_command()
-        c.repository = self.url
-        cfg = c._read_pypirc()
+        from .util import _load_pypirc
+        cfg = _load_pypirc(self)
         self.username = cfg.get('username')
         self.password = cfg.get('password')
         self.realm = cfg.get('realm', 'pypi')
@@ -91,13 +87,10 @@ class PackageIndex(object):
         """
         Save the PyPI access configuration. You must have set ``username`` and
         ``password`` attributes before calling this method.
-
-        Again, distutils is used to do the actual work.
         """
         self.check_credentials()
-        # get distutils to do the work
-        c = self._get_pypirc_command()
-        c._store_pypirc(self.username, self.password)
+        from .util import _store_pypirc
+        _store_pypirc(self)
 
     def check_credentials(self):
         """

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2015 Eric Larson
+#
+# SPDX-License-Identifier: Apache-2.0
+
 import base64
 import io
 import json
@@ -17,24 +21,18 @@ def _b64_decode_str(s):
     return _b64_decode_bytes(s).decode("utf8")
 
 
-class Serializer(object):
+_default_body_read = object()
 
+
+class Serializer(object):
     def dumps(self, request, response, body=None):
         response_headers = CaseInsensitiveDict(response.headers)
 
         if body is None:
+            # When a body isn't passed in, we'll read the response. We
+            # also update the response with a new file handler to be
+            # sure it acts as though it was never read.
             body = response.read(decode_content=False)
-
-            # NOTE: 99% sure this is dead code. I'm only leaving it
-            #       here b/c I don't have a test yet to prove
-            #       it. Basically, before using
-            #       `cachecontrol.filewrapper.CallbackFileWrapper`,
-            #       this made an effort to reset the file handle. The
-            #       `CallbackFileWrapper` short circuits this code by
-            #       setting the body as the content is consumed, the
-            #       result being a `body` argument is *always* passed
-            #       into cache_response, and in turn,
-            #       `Serializer.dump`.
             response._fp = io.BytesIO(body)
 
         # NOTE: This is all a bit weird, but it's really important that on

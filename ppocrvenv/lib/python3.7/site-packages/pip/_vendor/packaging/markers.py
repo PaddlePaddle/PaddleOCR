@@ -1,26 +1,26 @@
 # This file is dual licensed under the terms of the Apache License, Version
 # 2.0, and the BSD License. See the LICENSE file in the root of this repository
 # for complete details.
-from __future__ import absolute_import, division, print_function
 
 import operator
 import os
 import platform
 import sys
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
-from pip._vendor.pyparsing import ParseException, ParseResults, stringStart, stringEnd
-from pip._vendor.pyparsing import ZeroOrMore, Group, Forward, QuotedString
-from pip._vendor.pyparsing import Literal as L  # noqa
+from pip._vendor.pyparsing import (  # noqa: N817
+    Forward,
+    Group,
+    Literal as L,
+    ParseException,
+    ParseResults,
+    QuotedString,
+    ZeroOrMore,
+    stringEnd,
+    stringStart,
+)
 
-from ._compat import string_types
-from ._typing import MYPY_CHECK_RUNNING
-from .specifiers import Specifier, InvalidSpecifier
-
-if MYPY_CHECK_RUNNING:  # pragma: no cover
-    from typing import Any, Callable, Dict, List, Optional, Tuple, Union
-
-    Operator = Callable[[str, str], bool]
-
+from .specifiers import InvalidSpecifier, Specifier
 
 __all__ = [
     "InvalidMarker",
@@ -29,6 +29,8 @@ __all__ = [
     "Marker",
     "default_environment",
 ]
+
+Operator = Callable[[str, str], bool]
 
 
 class InvalidMarker(ValueError):
@@ -50,39 +52,32 @@ class UndefinedEnvironmentName(ValueError):
     """
 
 
-class Node(object):
-    def __init__(self, value):
-        # type: (Any) -> None
+class Node:
+    def __init__(self, value: Any) -> None:
         self.value = value
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return str(self.value)
 
-    def __repr__(self):
-        # type: () -> str
-        return "<{0}({1!r})>".format(self.__class__.__name__, str(self))
+    def __repr__(self) -> str:
+        return f"<{self.__class__.__name__}('{self}')>"
 
-    def serialize(self):
-        # type: () -> str
+    def serialize(self) -> str:
         raise NotImplementedError
 
 
 class Variable(Node):
-    def serialize(self):
-        # type: () -> str
+    def serialize(self) -> str:
         return str(self)
 
 
 class Value(Node):
-    def serialize(self):
-        # type: () -> str
-        return '"{0}"'.format(self)
+    def serialize(self) -> str:
+        return f'"{self}"'
 
 
 class Op(Node):
-    def serialize(self):
-        # type: () -> str
+    def serialize(self) -> str:
         return str(self)
 
 
@@ -143,18 +138,18 @@ MARKER_EXPR << MARKER_ATOM + ZeroOrMore(BOOLOP + MARKER_EXPR)
 MARKER = stringStart + MARKER_EXPR + stringEnd
 
 
-def _coerce_parse_result(results):
-    # type: (Union[ParseResults, List[Any]]) -> List[Any]
+def _coerce_parse_result(results: Union[ParseResults, List[Any]]) -> List[Any]:
     if isinstance(results, ParseResults):
         return [_coerce_parse_result(i) for i in results]
     else:
         return results
 
 
-def _format_marker(marker, first=True):
-    # type: (Union[List[str], Tuple[Node, ...], str], Optional[bool]) -> str
+def _format_marker(
+    marker: Union[List[str], Tuple[Node, ...], str], first: Optional[bool] = True
+) -> str:
 
-    assert isinstance(marker, (list, tuple, string_types))
+    assert isinstance(marker, (list, tuple, str))
 
     # Sometimes we have a structure like [[...]] which is a single item list
     # where the single item is itself it's own list. In that case we want skip
@@ -179,7 +174,7 @@ def _format_marker(marker, first=True):
         return marker
 
 
-_operators = {
+_operators: Dict[str, Operator] = {
     "in": lambda lhs, rhs: lhs in rhs,
     "not in": lambda lhs, rhs: lhs not in rhs,
     "<": operator.lt,
@@ -188,11 +183,10 @@ _operators = {
     "!=": operator.ne,
     ">=": operator.ge,
     ">": operator.gt,
-}  # type: Dict[str, Operator]
+}
 
 
-def _eval_op(lhs, op, rhs):
-    # type: (str, Op, str) -> bool
+def _eval_op(lhs: str, op: Op, rhs: str) -> bool:
     try:
         spec = Specifier("".join([op.serialize(), rhs]))
     except InvalidSpecifier:
@@ -200,40 +194,36 @@ def _eval_op(lhs, op, rhs):
     else:
         return spec.contains(lhs)
 
-    oper = _operators.get(op.serialize())  # type: Optional[Operator]
+    oper: Optional[Operator] = _operators.get(op.serialize())
     if oper is None:
-        raise UndefinedComparison(
-            "Undefined {0!r} on {1!r} and {2!r}.".format(op, lhs, rhs)
-        )
+        raise UndefinedComparison(f"Undefined {op!r} on {lhs!r} and {rhs!r}.")
 
     return oper(lhs, rhs)
 
 
-class Undefined(object):
+class Undefined:
     pass
 
 
 _undefined = Undefined()
 
 
-def _get_env(environment, name):
-    # type: (Dict[str, str], str) -> str
-    value = environment.get(name, _undefined)  # type: Union[str, Undefined]
+def _get_env(environment: Dict[str, str], name: str) -> str:
+    value: Union[str, Undefined] = environment.get(name, _undefined)
 
     if isinstance(value, Undefined):
         raise UndefinedEnvironmentName(
-            "{0!r} does not exist in evaluation environment.".format(name)
+            f"{name!r} does not exist in evaluation environment."
         )
 
     return value
 
 
-def _evaluate_markers(markers, environment):
-    # type: (List[Any], Dict[str, str]) -> bool
-    groups = [[]]  # type: List[List[bool]]
+def _evaluate_markers(markers: List[Any], environment: Dict[str, str]) -> bool:
+    groups: List[List[bool]] = [[]]
 
     for marker in markers:
-        assert isinstance(marker, (list, tuple, string_types))
+        assert isinstance(marker, (list, tuple, str))
 
         if isinstance(marker, list):
             groups[-1].append(_evaluate_markers(marker, environment))
@@ -256,8 +246,7 @@ def _evaluate_markers(markers, environment):
     return any(all(item) for item in groups)
 
 
-def format_full_version(info):
-    # type: (sys._version_info) -> str
+def format_full_version(info: "sys._version_info") -> str:
     version = "{0.major}.{0.minor}.{0.micro}".format(info)
     kind = info.releaselevel
     if kind != "final":
@@ -265,18 +254,9 @@ def format_full_version(info):
     return version
 
 
-def default_environment():
-    # type: () -> Dict[str, str]
-    if hasattr(sys, "implementation"):
-        # Ignoring the `sys.implementation` reference for type checking due to
-        # mypy not liking that the attribute doesn't exist in Python 2.7 when
-        # run with the `--py27` flag.
-        iver = format_full_version(sys.implementation.version)  # type: ignore
-        implementation_name = sys.implementation.name  # type: ignore
-    else:
-        iver = "0"
-        implementation_name = ""
-
+def default_environment() -> Dict[str, str]:
+    iver = format_full_version(sys.implementation.version)
+    implementation_name = sys.implementation.name
     return {
         "implementation_name": implementation_name,
         "implementation_version": iver,
@@ -292,27 +272,23 @@ def default_environment():
     }
 
 
-class Marker(object):
-    def __init__(self, marker):
-        # type: (str) -> None
+class Marker:
+    def __init__(self, marker: str) -> None:
         try:
             self._markers = _coerce_parse_result(MARKER.parseString(marker))
         except ParseException as e:
-            err_str = "Invalid marker: {0!r}, parse error at {1!r}".format(
-                marker, marker[e.loc : e.loc + 8]
+            raise InvalidMarker(
+                f"Invalid marker: {marker!r}, parse error at "
+                f"{marker[e.loc : e.loc + 8]!r}"
             )
-            raise InvalidMarker(err_str)
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return _format_marker(self._markers)
 
-    def __repr__(self):
-        # type: () -> str
-        return "<Marker({0!r})>".format(str(self))
+    def __repr__(self) -> str:
+        return f"<Marker('{self}')>"
 
-    def evaluate(self, environment=None):
-        # type: (Optional[Dict[str, str]]) -> bool
+    def evaluate(self, environment: Optional[Dict[str, str]] = None) -> bool:
         """Evaluate a marker.
 
         Return the boolean from evaluating the given marker against the

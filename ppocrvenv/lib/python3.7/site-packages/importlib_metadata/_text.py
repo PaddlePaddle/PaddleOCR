@@ -80,7 +80,7 @@ class FoldedCase(str):
         return hash(self.lower())
 
     def __contains__(self, other):
-        return super().lower().__contains__(other.lower())
+        return super(FoldedCase, self).lower().__contains__(other.lower())
 
     def in_(self, other):
         "Does self appear in other?"
@@ -89,7 +89,7 @@ class FoldedCase(str):
     # cache lower since it's likely to be called frequently.
     @method_cache
     def lower(self):
-        return super().lower()
+        return super(FoldedCase, self).lower()
 
     def index(self, sub):
         return self.lower().index(sub.lower())

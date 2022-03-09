@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Script which takes one or more file paths and reports on their detected
 encodings
@@ -45,10 +44,10 @@ def description_of(lines, name='stdin'):
     if PY2:
         name = name.decode(sys.getfilesystemencoding(), 'ignore')
     if result['encoding']:
-        return '{0}: {1} with confidence {2}'.format(name, result['encoding'],
+        return '{}: {} with confidence {}'.format(name, result['encoding'],
                                                      result['confidence'])
     else:
-        return '{0}: no result'.format(name)
+        return '{}: no result'.format(name)
 
 
 def main(argv=None):
@@ -69,7 +68,7 @@ def main(argv=None):
                         type=argparse.FileType('rb'), nargs='*',
                         default=[sys.stdin if PY2 else sys.stdin.buffer])
     parser.add_argument('--version', action='version',
-                        version='%(prog)s {0}'.format(__version__))
+                        version='%(prog)s {}'.format(__version__))
     args = parser.parse_args(argv)
 
     for f in args.input:

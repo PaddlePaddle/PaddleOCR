@@ -16,6 +16,11 @@ import warnings
 import re
 import sys
 
+try:
+    from collections.abc import MutableMapping
+except ImportError:
+    from collections import MutableMapping
+
 from . import base
 from ..constants import DataLossWarning
 from .. import constants
@@ -23,6 +28,7 @@ from . import etree as etree_builders
 from .. import _ihatexml
 
 import lxml.etree as etree
+from pip._vendor.six import PY3, binary_type
 
 
 fullTree = True
@@ -44,7 +50,11 @@ class Document(object):
         self._childNodes = []
 
     def appendChild(self, element):
-        self._elementTree.getroot().addnext(element._element)
+        last = self._elementTree.getroot()
+        for last in self._elementTree.getroot().itersiblings():
+            pass
+
+        last.addnext(element._element)
 
     def _getChildNodes(self):
         return self._childNodes
@@ -185,26 +195,37 @@ class TreeBuilder(base.TreeBuilder):
         infosetFilter = self.infosetFilter = _ihatexml.InfosetFilter(preventDoubleDashComments=True)
         self.namespaceHTMLElements = namespaceHTMLElements
 
-        class Attributes(dict):
-            def __init__(self, element, value=None):
-                if value is None:
-                    value = {}
+        class Attributes(MutableMapping):
+            def __init__(self, element):
                 self._element = element
-                dict.__init__(self, value)  # pylint:disable=non-parent-init-called
-                for key, value in self.items():
-                    if isinstance(key, tuple):
-                        name = "{%s}%s" % (key[2], infosetFilter.coerceAttribute(key[1]))
-                    else:
-                        name = infosetFilter.coerceAttribute(key)
-                    self._element._element.attrib[name] = value
 
-            def __setitem__(self, key, value):
-                dict.__setitem__(self, key, value)
+            def _coerceKey(self, key):
                 if isinstance(key, tuple):
                     name = "{%s}%s" % (key[2], infosetFilter.coerceAttribute(key[1]))
                 else:
                     name = infosetFilter.coerceAttribute(key)
-                self._element._element.attrib[name] = value
+                return name
+
+            def __getitem__(self, key):
+                value = self._element._element.attrib[self._coerceKey(key)]
+                if not PY3 and isinstance(value, binary_type):
+                    value = value.decode("ascii")
+                return value
+
+            def __setitem__(self, key, value):
+                self._element._element.attrib[self._coerceKey(key)] = value
+
+            def __delitem__(self, key):
+                del self._element._element.attrib[self._coerceKey(key)]
+
+            def __iter__(self):
+                return iter(self._element._element.attrib)
+
+            def __len__(self):
+                return len(self._element._element.attrib)
+
+            def clear(self):
+                return self._element._element.attrib.clear()
 
         class Element(builder.Element):
             def __init__(self, name, namespace):
@@ -225,8 +246,10 @@ class TreeBuilder(base.TreeBuilder):
             def _getAttributes(self):
                 return self._attributes
 
-            def _setAttributes(self, attributes):
-                self._attributes = Attributes(self, attributes)
+            def _setAttributes(self, value):
+                attributes = self.attributes
+                attributes.clear()
+                attributes.update(value)
 
             attributes = property(_getAttributes, _setAttributes)
 
@@ -234,8 +257,11 @@ class TreeBuilder(base.TreeBuilder):
                 data = infosetFilter.coerceCharacters(data)
                 builder.Element.insertText(self, data, insertBefore)
 
-            def appendChild(self, child):
-                builder.Element.appendChild(self, child)
+            def cloneNode(self):
+                element = type(self)(self.name, self.namespace)
+                if self._element.attrib:
+                    element._element.attrib.update(self._element.attrib)
+                return element
 
         class Comment(builder.Comment):
             def __init__(self, data):

@@ -1,92 +1,94 @@
-# The following comment should be removed at some point in the future.
-# mypy: strict-optional=False
-
-from __future__ import absolute_import
-
+import collections
 import logging
+from typing import Iterator, List, Optional, Sequence, Tuple
 
 from pip._internal.utils.logging import indent_log
-from pip._internal.utils.typing import MYPY_CHECK_RUNNING
 
 from .req_file import parse_requirements
 from .req_install import InstallRequirement
 from .req_set import RequirementSet
 
-if MYPY_CHECK_RUNNING:
-    from typing import Any, List, Sequence
-
 __all__ = [
-    "RequirementSet", "InstallRequirement",
-    "parse_requirements", "install_given_reqs",
+    "RequirementSet",
+    "InstallRequirement",
+    "parse_requirements",
+    "install_given_reqs",
 ]
 
 logger = logging.getLogger(__name__)
 
 
-class InstallationResult(object):
-    def __init__(self, name):
-        # type: (str) -> None
+class InstallationResult:
+    def __init__(self, name: str) -> None:
         self.name = name
 
-    def __repr__(self):
-        # type: () -> str
-        return "InstallationResult(name={!r})".format(self.name)
+    def __repr__(self) -> str:
+        return f"InstallationResult(name={self.name!r})"
+
+
+def _validate_requirements(
+    requirements: List[InstallRequirement],
+) -> Iterator[Tuple[str, InstallRequirement]]:
+    for req in requirements:
+        assert req.name, f"invalid to-be-installed requirement: {req}"
+        yield req.name, req
 
 
 def install_given_reqs(
-    to_install,  # type: List[InstallRequirement]
-    install_options,  # type: List[str]
-    global_options=(),  # type: Sequence[str]
-    *args,  # type: Any
-    **kwargs  # type: Any
-):
-    # type: (...) -> List[InstallationResult]
+    requirements: List[InstallRequirement],
+    install_options: List[str],
+    global_options: Sequence[str],
+    root: Optional[str],
+    home: Optional[str],
+    prefix: Optional[str],
+    warn_script_location: bool,
+    use_user_site: bool,
+    pycompile: bool,
+) -> List[InstallationResult]:
     """
     Install everything in the given list.
 
     (to be called after having downloaded and unpacked the packages)
     """
+    to_install = collections.OrderedDict(_validate_requirements(requirements))
 
     if to_install:
         logger.info(
-            'Installing collected packages: %s',
-            ', '.join([req.name for req in to_install]),
+            "Installing collected packages: %s",
+            ", ".join(to_install.keys()),
         )
 
     installed = []
 
     with indent_log():
-        for requirement in to_install:
+        for req_name, requirement in to_install.items():
             if requirement.should_reinstall:
-                logger.info('Attempting uninstall: %s', requirement.name)
+                logger.info("Attempting uninstall: %s", req_name)
                 with indent_log():
-                    uninstalled_pathset = requirement.uninstall(
-                        auto_confirm=True
-                    )
+                    uninstalled_pathset = requirement.uninstall(auto_confirm=True)
+            else:
+                uninstalled_pathset = None
+
             try:
                 requirement.install(
                     install_options,
                     global_options,
-                    *args,
-                    **kwargs
+                    root=root,
+                    home=home,
+                    prefix=prefix,
+                    warn_script_location=warn_script_location,
+                    use_user_site=use_user_site,
+                    pycompile=pycompile,
                 )
             except Exception:
-                should_rollback = (
-                    requirement.should_reinstall and
-                    not requirement.install_succeeded
-                )
                 # if install did not succeed, rollback previous uninstall
-                if should_rollback:
+                if uninstalled_pathset and not requirement.install_succeeded:
                     uninstalled_pathset.rollback()
                 raise
             else:
-                should_commit = (
-                    requirement.should_reinstall and
-                    requirement.install_succeeded
-                )
-                if should_commit:
+                if uninstalled_pathset and requirement.install_succeeded:
                     uninstalled_pathset.commit()
 
-            installed.append(InstallationResult(requirement.name))
+            installed.append(InstallationResult(req_name))
 
     return installed

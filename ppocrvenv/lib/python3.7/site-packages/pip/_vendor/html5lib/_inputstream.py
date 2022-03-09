@@ -1,23 +1,17 @@
 from __future__ import absolute_import, division, unicode_literals
 
-from pip._vendor.six import text_type, binary_type
+from pip._vendor.six import text_type
 from pip._vendor.six.moves import http_client, urllib
 
 import codecs
 import re
+from io import BytesIO, StringIO
 
 from pip._vendor import webencodings
 
 from .constants import EOF, spaceCharacters, asciiLetters, asciiUppercase
 from .constants import _ReparseException
 from . import _utils
-
-from io import StringIO
-
-try:
-    from io import BytesIO
-except ImportError:
-    BytesIO = StringIO
 
 # Non-unicode versions of constants for use in the pre-parser
 spaceCharactersBytes = frozenset([item.encode("ascii") for item in spaceCharacters])
@@ -40,13 +34,13 @@ if _utils.supports_lone_surrogates:
 else:
     invalid_unicode_re = re.compile(invalid_unicode_no_surrogate)
 
-non_bmp_invalid_codepoints = set([0x1FFFE, 0x1FFFF, 0x2FFFE, 0x2FFFF, 0x3FFFE,
-                                  0x3FFFF, 0x4FFFE, 0x4FFFF, 0x5FFFE, 0x5FFFF,
-                                  0x6FFFE, 0x6FFFF, 0x7FFFE, 0x7FFFF, 0x8FFFE,
-                                  0x8FFFF, 0x9FFFE, 0x9FFFF, 0xAFFFE, 0xAFFFF,
-                                  0xBFFFE, 0xBFFFF, 0xCFFFE, 0xCFFFF, 0xDFFFE,
-                                  0xDFFFF, 0xEFFFE, 0xEFFFF, 0xFFFFE, 0xFFFFF,
-                                  0x10FFFE, 0x10FFFF])
+non_bmp_invalid_codepoints = {0x1FFFE, 0x1FFFF, 0x2FFFE, 0x2FFFF, 0x3FFFE,
+                              0x3FFFF, 0x4FFFE, 0x4FFFF, 0x5FFFE, 0x5FFFF,
+                              0x6FFFE, 0x6FFFF, 0x7FFFE, 0x7FFFF, 0x8FFFE,
+                              0x8FFFF, 0x9FFFE, 0x9FFFF, 0xAFFFE, 0xAFFFF,
+                              0xBFFFE, 0xBFFFF, 0xCFFFE, 0xCFFFF, 0xDFFFE,
+                              0xDFFFF, 0xEFFFE, 0xEFFFF, 0xFFFFE, 0xFFFFF,
+                              0x10FFFE, 0x10FFFF}
 
 ascii_punctuation_re = re.compile("[\u0009-\u000D\u0020-\u002F\u003A-\u0040\u005C\u005B-\u0060\u007B-\u007E]")
 
@@ -367,7 +361,7 @@ class HTMLUnicodeInputStream(object):
     def unget(self, char):
         # Only one character is allowed to be ungotten at once - it must
         # be consumed again before any further call to unget
-        if char is not None:
+        if char is not EOF:
             if self.chunkOffset == 0:
                 # unget is called quite rarely, so it's a good idea to do
                 # more work here if it saves a bit of work in the frequently
@@ -449,7 +443,7 @@ class HTMLBinaryInputStream(HTMLUnicodeInputStream):
 
         try:
             stream.seek(stream.tell())
-        except:  # pylint:disable=bare-except
+        except Exception:
             stream = BufferedStream(stream)
 
         return stream
@@ -461,7 +455,7 @@ class HTMLBinaryInputStream(HTMLUnicodeInputStream):
         if charEncoding[0] is not None:
             return charEncoding
 
-        # If we've been overriden, we've been overriden
+        # If we've been overridden, we've been overridden
         charEncoding = lookupEncoding(self.override_encoding), "certain"
         if charEncoding[0] is not None:
             return charEncoding
@@ -664,9 +658,7 @@ class EncodingBytes(bytes):
         """Look for a sequence of bytes at the start of a string. If the bytes
         are found return True and advance the position to the byte after the
         match. Otherwise return False and leave the position alone"""
-        p = self.position
-        data = self[p:p + len(bytes)]
-        rv = data.startswith(bytes)
+        rv = self.startswith(bytes, self.position)
         if rv:
             self.position += len(bytes)
         return rv
@@ -674,15 +666,11 @@ class EncodingBytes(bytes):
     def jumpTo(self, bytes):
         """Look for the next sequence of bytes matching a given sequence. If
         a match is found advance the position to the last byte of the match"""
-        newPosition = self[self.position:].find(bytes)
-        if newPosition > -1:
-            # XXX: This is ugly, but I can't see a nicer way to fix this.
-            if self._position == -1:
-                self._position = 0
-            self._position += (newPosition + len(bytes) - 1)
-            return True
-        else:
+        try:
+            self._position = self.index(bytes, self.position) + len(bytes) - 1
+        except ValueError:
             raise StopIteration
+        return True
 
 
 class EncodingParser(object):
@@ -694,6 +682,9 @@ class EncodingParser(object):
         self.encoding = None
 
     def getEncoding(self):
+        if b"<meta" not in self.data:
+            return None
+
         methodDispatch = (
             (b"<!--", self.handleComment),
             (b"<meta", self.handleMeta),
@@ -703,6 +694,10 @@ class EncodingParser(object):
             (b"<", self.handlePossibleStartTag))
         for _ in self.data:
             keepParsing = True
+            try:
+                self.data.jumpTo(b"<")
+            except StopIteration:
+                break
             for key, method in methodDispatch:
                 if self.data.matchBytes(key):
                     try:
@@ -908,7 +903,7 @@ class ContentAttrParser(object):
 def lookupEncoding(encoding):
     """Return the python codec name corresponding to an encoding or None if the
     string doesn't correspond to a valid encoding."""
-    if isinstance(encoding, binary_type):
+    if isinstance(encoding, bytes):
         try:
             encoding = encoding.decode("ascii")
         except UnicodeDecodeError:

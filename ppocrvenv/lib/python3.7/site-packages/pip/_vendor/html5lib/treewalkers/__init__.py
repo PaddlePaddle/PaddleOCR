@@ -2,10 +2,10 @@
 tree, generating tokens identical to those produced by the tokenizer
 module.
 
-To create a tree walker for a new type of tree, you need to do
+To create a tree walker for a new type of tree, you need to
 implement a tree walker object (called TreeWalker by convention) that
-implements a 'serialize' method taking a tree as sole argument and
-returning an iterator generating tokens.
+implements a 'serialize' method which takes a tree as sole argument and
+returns an iterator which generates tokens.
 """
 
 from __future__ import absolute_import, division, unicode_literals

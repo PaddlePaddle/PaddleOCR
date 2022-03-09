@@ -1,5 +1,4 @@
 """Fallback pure Python implementation of msgpack"""
-
 from datetime import datetime as _DateTime
 import sys
 import struct
@@ -148,6 +147,38 @@ if sys.version_info < (2, 7, 6):
 else:
     _unpack_from = struct.unpack_from
 
+_NO_FORMAT_USED = ""
+_MSGPACK_HEADERS = {
+    0xC4: (1, _NO_FORMAT_USED, TYPE_BIN),
+    0xC5: (2, ">H", TYPE_BIN),
+    0xC6: (4, ">I", TYPE_BIN),
+    0xC7: (2, "Bb", TYPE_EXT),
+    0xC8: (3, ">Hb", TYPE_EXT),
+    0xC9: (5, ">Ib", TYPE_EXT),
+    0xCA: (4, ">f"),
+    0xCB: (8, ">d"),
+    0xCC: (1, _NO_FORMAT_USED),
+    0xCD: (2, ">H"),
+    0xCE: (4, ">I"),
+    0xCF: (8, ">Q"),
+    0xD0: (1, "b"),
+    0xD1: (2, ">h"),
+    0xD2: (4, ">i"),
+    0xD3: (8, ">q"),
+    0xD4: (1, "b1s", TYPE_EXT),
+    0xD5: (2, "b2s", TYPE_EXT),
+    0xD6: (4, "b4s", TYPE_EXT),
+    0xD7: (8, "b8s", TYPE_EXT),
+    0xD8: (16, "b16s", TYPE_EXT),
+    0xD9: (1, _NO_FORMAT_USED, TYPE_RAW),
+    0xDA: (2, ">H", TYPE_RAW),
+    0xDB: (4, ">I", TYPE_RAW),
+    0xDC: (2, ">H", TYPE_ARRAY),
+    0xDD: (4, ">I", TYPE_ARRAY),
+    0xDE: (2, ">H", TYPE_MAP),
+    0xDF: (4, ">I", TYPE_MAP),
+}
+
 
 class Unpacker(object):
     """Streaming unpacker.
@@ -229,7 +260,7 @@ class Unpacker(object):
 
     Example of streaming deserialize from socket::
 
-        unpacker = Unpacker(max_buffer_size)
+        unpacker = Unpacker()
         while True:
             buf = sock.recv(1024**2)
             if not buf:
@@ -354,7 +385,7 @@ class Unpacker(object):
         self._buffer.extend(view)
 
     def _consume(self):
-        """ Gets rid of the used parts of the buffer. """
+        """Gets rid of the used parts of the buffer."""
         self._stream_offset += self._buff_i - self._buf_checkpoint
         self._buf_checkpoint = self._buff_i
 
@@ -365,18 +396,19 @@ class Unpacker(object):
         return self._buffer[self._buff_i :]
 
     def read_bytes(self, n):
-        ret = self._read(n)
+        ret = self._read(n, raise_outofdata=False)
         self._consume()
         return ret
 
-    def _read(self, n):
+    def _read(self, n, raise_outofdata=True):
         # (int) -> bytearray
-        self._reserve(n)
+        self._reserve(n, raise_outofdata=raise_outofdata)
         i = self._buff_i
-        self._buff_i = i + n
-        return self._buffer[i : i + n]
+        ret = self._buffer[i : i + n]
+        self._buff_i = i + len(ret)
+        return ret
 
-    def _reserve(self, n):
+    def _reserve(self, n, raise_outofdata=True):
         remain_bytes = len(self._buffer) - self._buff_i - n
 
         # Fast path: buffer has n bytes already
@@ -404,11 +436,11 @@ class Unpacker(object):
             self._buffer += read_data
             remain_bytes -= len(read_data)
 
-        if len(self._buffer) < n + self._buff_i:
+        if len(self._buffer) < n + self._buff_i and raise_outofdata:
             self._buff_i = 0  # rollback
             raise OutOfData
 
-    def _read_header(self, execute=EX_CONSTRUCT):
+    def _read_header(self):
         typ = TYPE_IMMEDIATE
         n = 0
         obj = None
@@ -423,205 +455,95 @@ class Unpacker(object):
             n = b & 0b00011111
             typ = TYPE_RAW
             if n > self._max_str_len:
-                raise ValueError("%s exceeds max_str_len(%s)", n, self._max_str_len)
+                raise ValueError("%s exceeds max_str_len(%s)" % (n, self._max_str_len))
             obj = self._read(n)
         elif b & 0b11110000 == 0b10010000:
             n = b & 0b00001111
             typ = TYPE_ARRAY
             if n > self._max_array_len:
-                raise ValueError("%s exceeds max_array_len(%s)", n, self._max_array_len)
+                raise ValueError(
+                    "%s exceeds max_array_len(%s)" % (n, self._max_array_len)
+                )
         elif b & 0b11110000 == 0b10000000:
             n = b & 0b00001111
             typ = TYPE_MAP
             if n > self._max_map_len:
-                raise ValueError("%s exceeds max_map_len(%s)", n, self._max_map_len)
+                raise ValueError("%s exceeds max_map_len(%s)" % (n, self._max_map_len))
         elif b == 0xC0:
             obj = None
         elif b == 0xC2:
             obj = False
         elif b == 0xC3:
             obj = True
-        elif b == 0xC4:
-            typ = TYPE_BIN
-            self._reserve(1)
-            n = self._buffer[self._buff_i]
-            self._buff_i += 1
+        elif 0xC4 <= b <= 0xC6:
+            size, fmt, typ = _MSGPACK_HEADERS[b]
+            self._reserve(size)
+            if len(fmt) > 0:
+                n = _unpack_from(fmt, self._buffer, self._buff_i)[0]
+            else:
+                n = self._buffer[self._buff_i]
+            self._buff_i += size
             if n > self._max_bin_len:
                 raise ValueError("%s exceeds max_bin_len(%s)" % (n, self._max_bin_len))
             obj = self._read(n)
-        elif b == 0xC5:
-            typ = TYPE_BIN
-            self._reserve(2)
-            n = _unpack_from(">H", self._buffer, self._buff_i)[0]
-            self._buff_i += 2
-            if n > self._max_bin_len:
-                raise ValueError("%s exceeds max_bin_len(%s)" % (n, self._max_bin_len))
-            obj = self._read(n)
-        elif b == 0xC6:
-            typ = TYPE_BIN
-            self._reserve(4)
-            n = _unpack_from(">I", self._buffer, self._buff_i)[0]
-            self._buff_i += 4
-            if n > self._max_bin_len:
-                raise ValueError("%s exceeds max_bin_len(%s)" % (n, self._max_bin_len))
-            obj = self._read(n)
-        elif b == 0xC7:  # ext 8
-            typ = TYPE_EXT
-            self._reserve(2)
-            L, n = _unpack_from("Bb", self._buffer, self._buff_i)
-            self._buff_i += 2
+        elif 0xC7 <= b <= 0xC9:
+            size, fmt, typ = _MSGPACK_HEADERS[b]
+            self._reserve(size)
+            L, n = _unpack_from(fmt, self._buffer, self._buff_i)
+            self._buff_i += size
             if L > self._max_ext_len:
                 raise ValueError("%s exceeds max_ext_len(%s)" % (L, self._max_ext_len))
             obj = self._read(L)
-        elif b == 0xC8:  # ext 16
-            typ = TYPE_EXT
-            self._reserve(3)
-            L, n = _unpack_from(">Hb", self._buffer, self._buff_i)
-            self._buff_i += 3
-            if L > self._max_ext_len:
-                raise ValueError("%s exceeds max_ext_len(%s)" % (L, self._max_ext_len))
-            obj = self._read(L)
-        elif b == 0xC9:  # ext 32
-            typ = TYPE_EXT
-            self._reserve(5)
-            L, n = _unpack_from(">Ib", self._buffer, self._buff_i)
-            self._buff_i += 5
-            if L > self._max_ext_len:
-                raise ValueError("%s exceeds max_ext_len(%s)" % (L, self._max_ext_len))
-            obj = self._read(L)
-        elif b == 0xCA:
-            self._reserve(4)
-            obj = _unpack_from(">f", self._buffer, self._buff_i)[0]
-            self._buff_i += 4
-        elif b == 0xCB:
-            self._reserve(8)
-            obj = _unpack_from(">d", self._buffer, self._buff_i)[0]
-            self._buff_i += 8
-        elif b == 0xCC:
-            self._reserve(1)
-            obj = self._buffer[self._buff_i]
-            self._buff_i += 1
-        elif b == 0xCD:
-            self._reserve(2)
-            obj = _unpack_from(">H", self._buffer, self._buff_i)[0]
-            self._buff_i += 2
-        elif b == 0xCE:
-            self._reserve(4)
-            obj = _unpack_from(">I", self._buffer, self._buff_i)[0]
-            self._buff_i += 4
-        elif b == 0xCF:
-            self._reserve(8)
-            obj = _unpack_from(">Q", self._buffer, self._buff_i)[0]
-            self._buff_i += 8
-        elif b == 0xD0:
-            self._reserve(1)
-            obj = _unpack_from("b", self._buffer, self._buff_i)[0]
-            self._buff_i += 1
-        elif b == 0xD1:
-            self._reserve(2)
-            obj = _unpack_from(">h", self._buffer, self._buff_i)[0]
-            self._buff_i += 2
-        elif b == 0xD2:
-            self._reserve(4)
-            obj = _unpack_from(">i", self._buffer, self._buff_i)[0]
-            self._buff_i += 4
-        elif b == 0xD3:
-            self._reserve(8)
-            obj = _unpack_from(">q", self._buffer, self._buff_i)[0]
-            self._buff_i += 8
-        elif b == 0xD4:  # fixext 1
-            typ = TYPE_EXT
-            if self._max_ext_len < 1:
-                raise ValueError("%s exceeds max_ext_len(%s)" % (1, self._max_ext_len))
-            self._reserve(2)
-            n, obj = _unpack_from("b1s", self._buffer, self._buff_i)
-            self._buff_i += 2
-        elif b == 0xD5:  # fixext 2
-            typ = TYPE_EXT
-            if self._max_ext_len < 2:
-                raise ValueError("%s exceeds max_ext_len(%s)" % (2, self._max_ext_len))
-            self._reserve(3)
-            n, obj = _unpack_from("b2s", self._buffer, self._buff_i)
-            self._buff_i += 3
-        elif b == 0xD6:  # fixext 4
-            typ = TYPE_EXT
-            if self._max_ext_len < 4:
-                raise ValueError("%s exceeds max_ext_len(%s)" % (4, self._max_ext_len))
-            self._reserve(5)
-            n, obj = _unpack_from("b4s", self._buffer, self._buff_i)
-            self._buff_i += 5
-        elif b == 0xD7:  # fixext 8
-            typ = TYPE_EXT
-            if self._max_ext_len < 8:
-                raise ValueError("%s exceeds max_ext_len(%s)" % (8, self._max_ext_len))
-            self._reserve(9)
-            n, obj = _unpack_from("b8s", self._buffer, self._buff_i)
-            self._buff_i += 9
-        elif b == 0xD8:  # fixext 16
-            typ = TYPE_EXT
-            if self._max_ext_len < 16:
-                raise ValueError("%s exceeds max_ext_len(%s)" % (16, self._max_ext_len))
-            self._reserve(17)
-            n, obj = _unpack_from("b16s", self._buffer, self._buff_i)
-            self._buff_i += 17
-        elif b == 0xD9:
-            typ = TYPE_RAW
-            self._reserve(1)
-            n = self._buffer[self._buff_i]
-            self._buff_i += 1
+        elif 0xCA <= b <= 0xD3:
+            size, fmt = _MSGPACK_HEADERS[b]
+            self._reserve(size)
+            if len(fmt) > 0:
+                obj = _unpack_from(fmt, self._buffer, self._buff_i)[0]
+            else:
+                obj = self._buffer[self._buff_i]
+            self._buff_i += size
+        elif 0xD4 <= b <= 0xD8:
+            size, fmt, typ = _MSGPACK_HEADERS[b]
+            if self._max_ext_len < size:
+                raise ValueError(
+                    "%s exceeds max_ext_len(%s)" % (size, self._max_ext_len)
+                )
+            self._reserve(size + 1)
+            n, obj = _unpack_from(fmt, self._buffer, self._buff_i)
+            self._buff_i += size + 1
+        elif 0xD9 <= b <= 0xDB:
+            size, fmt, typ = _MSGPACK_HEADERS[b]
+            self._reserve(size)
+            if len(fmt) > 0:
+                (n,) = _unpack_from(fmt, self._buffer, self._buff_i)
+            else:
+                n = self._buffer[self._buff_i]
+            self._buff_i += size
             if n > self._max_str_len:
-                raise ValueError("%s exceeds max_str_len(%s)", n, self._max_str_len)
+                raise ValueError("%s exceeds max_str_len(%s)" % (n, self._max_str_len))
             obj = self._read(n)
-        elif b == 0xDA:
-            typ = TYPE_RAW
-            self._reserve(2)
-            (n,) = _unpack_from(">H", self._buffer, self._buff_i)
-            self._buff_i += 2
-            if n > self._max_str_len:
-                raise ValueError("%s exceeds max_str_len(%s)", n, self._max_str_len)
-            obj = self._read(n)
-        elif b == 0xDB:
-            typ = TYPE_RAW
-            self._reserve(4)
-            (n,) = _unpack_from(">I", self._buffer, self._buff_i)
-            self._buff_i += 4
-            if n > self._max_str_len:
-                raise ValueError("%s exceeds max_str_len(%s)", n, self._max_str_len)
-            obj = self._read(n)
-        elif b == 0xDC:
-            typ = TYPE_ARRAY
-            self._reserve(2)
-            (n,) = _unpack_from(">H", self._buffer, self._buff_i)
-            self._buff_i += 2
+        elif 0xDC <= b <= 0xDD:
+            size, fmt, typ = _MSGPACK_HEADERS[b]
+            self._reserve(size)
+            (n,) = _unpack_from(fmt, self._buffer, self._buff_i)
+            self._buff_i += size
             if n > self._max_array_len:
-                raise ValueError("%s exceeds max_array_len(%s)", n, self._max_array_len)
-        elif b == 0xDD:
-            typ = TYPE_ARRAY
-            self._reserve(4)
-            (n,) = _unpack_from(">I", self._buffer, self._buff_i)
-            self._buff_i += 4
-            if n > self._max_array_len:
-                raise ValueError("%s exceeds max_array_len(%s)", n, self._max_array_len)
-        elif b == 0xDE:
-            self._reserve(2)
-            (n,) = _unpack_from(">H", self._buffer, self._buff_i)
-            self._buff_i += 2
+                raise ValueError(
+                    "%s exceeds max_array_len(%s)" % (n, self._max_array_len)
+                )
+        elif 0xDE <= b <= 0xDF:
+            size, fmt, typ = _MSGPACK_HEADERS[b]
+            self._reserve(size)
+            (n,) = _unpack_from(fmt, self._buffer, self._buff_i)
+            self._buff_i += size
             if n > self._max_map_len:
-                raise ValueError("%s exceeds max_map_len(%s)", n, self._max_map_len)
-            typ = TYPE_MAP
-        elif b == 0xDF:
-            self._reserve(4)
-            (n,) = _unpack_from(">I", self._buffer, self._buff_i)
-            self._buff_i += 4
-            if n > self._max_map_len:
-                raise ValueError("%s exceeds max_map_len(%s)", n, self._max_map_len)
-            typ = TYPE_MAP
+                raise ValueError("%s exceeds max_map_len(%s)" % (n, self._max_map_len))
         else:
             raise FormatError("Unknown header: 0x%x" % b)
         return typ, n, obj
 
     def _unpack(self, execute=EX_CONSTRUCT):
-        typ, n, obj = self._read_header(execute)
+        typ, n, obj = self._read_header()
 
         if execute == EX_READ_ARRAY_HEADER:
             if typ != TYPE_ARRAY:
@@ -743,7 +665,7 @@ class Packer(object):
     """
     MessagePack Packer
 
-    Usage:
+    Usage::
 
         packer = Packer()
         astream.write(packer.pack(a))
@@ -783,6 +705,29 @@ class Packer(object):
     :param str unicode_errors:
         The error handler for encoding unicode. (default: 'strict')
         DO NOT USE THIS!!  This option is kept for very specific usage.
+
+    Example of streaming deserialize from file-like object::
+
+        unpacker = Unpacker(file_like)
+        for o in unpacker:
+            process(o)
+
+    Example of streaming deserialize from socket::
+
+        unpacker = Unpacker()
+        while True:
+            buf = sock.recv(1024**2)
+            if not buf:
+                break
+            unpacker.feed(buf)
+            for o in unpacker:
+                process(o)
+
+    Raises ``ExtraData`` when *packed* contains extra bytes.
+    Raises ``OutOfData`` when *packed* is incomplete.
+    Raises ``FormatError`` when *packed* is not valid msgpack.
+    Raises ``StackError`` when *packed* contains too nested.
+    Other exceptions can be raised during unpacking.
     """
 
     def __init__(
@@ -920,7 +865,7 @@ class Packer(object):
                     len(obj), dict_iteritems(obj), nest_limit - 1
                 )
 
-            if self._datetime and check(obj, _DateTime):
+            if self._datetime and check(obj, _DateTime) and obj.tzinfo is not None:
                 obj = Timestamp.from_datetime(obj)
                 default_used = 1
                 continue
@@ -929,6 +874,10 @@ class Packer(object):
                 obj = self._default(obj)
                 default_used = 1
                 continue
+
+            if self._datetime and check(obj, _DateTime):
+                raise ValueError("Cannot serialize %r where tzinfo=None" % (obj,))
+
             raise TypeError("Cannot serialize %r" % (obj,))
 
     def pack(self, obj):

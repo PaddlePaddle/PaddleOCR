@@ -1,8 +1,16 @@
 from __future__ import absolute_import
+
 from base64 import b64encode
 
-from ..packages.six import b, integer_types
 from ..exceptions import UnrewindableBodyError
+from ..packages.six import b, integer_types
+
+# Pass as a value within ``headers`` to skip
+# emitting some HTTP headers that are added automatically.
+# The only headers that are supported are ``Accept-Encoding``,
+# ``Host``, and ``User-Agent``.
+SKIP_HEADER = "@@@SKIP_HEADER@@@"
+SKIPPABLE_HEADERS = frozenset(["accept-encoding", "host", "user-agent"])
 
 ACCEPT_ENCODING = "gzip,deflate"
 try:

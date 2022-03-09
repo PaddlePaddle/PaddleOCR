@@ -26,8 +26,20 @@
 # 02110-1301  USA
 ######################### END LICENSE BLOCK #########################
 
+from collections import namedtuple
+
 from .charsetprober import CharSetProber
 from .enums import CharacterCategory, ProbingState, SequenceLikelihood
+
+
+SingleByteCharSetModel = namedtuple('SingleByteCharSetModel',
+                                    ['charset_name',
+                                     'language',
+                                     'char_to_order_map',
+                                     'language_model',
+                                     'typical_positive_ratio',
+                                     'keep_ascii_letters',
+                                     'alphabet'])
 
 
 class SingleByteCharSetProber(CharSetProber):
@@ -65,25 +77,25 @@ class SingleByteCharSetProber(CharSetProber):
         if self._name_prober:
             return self._name_prober.charset_name
         else:
-            return self._model['charset_name']
+            return self._model.charset_name
 
     @property
     def language(self):
         if self._name_prober:
             return self._name_prober.language
         else:
-            return self._model.get('language')
+            return self._model.language
 
     def feed(self, byte_str):
-        if not self._model['keep_english_letter']:
+        # TODO: Make filter_international_words keep things in self.alphabet
+        if not self._model.keep_ascii_letters:
             byte_str = self.filter_international_words(byte_str)
         if not byte_str:
             return self.state
-        char_to_order_map = self._model['char_to_order_map']
-        for i, c in enumerate(byte_str):
-            # XXX: Order is in range 1-64, so one would think we want 0-63 here,
-            #      but that leads to 27 more test failures than before.
-            order = char_to_order_map[c]
+        char_to_order_map = self._model.char_to_order_map
+        language_model = self._model.language_model
+        for char in byte_str:
+            order = char_to_order_map.get(char, CharacterCategory.UNDEFINED)
             # XXX: This was SYMBOL_CAT_ORDER before, with a value of 250, but
             #      CharacterCategory.SYMBOL is actually 253, so we use CONTROL
             #      to make it closer to the original intent. The only difference
@@ -91,20 +103,21 @@ class SingleByteCharSetProber(CharSetProber):
             #      _total_char purposes.
             if order < CharacterCategory.CONTROL:
                 self._total_char += 1
+            # TODO: Follow uchardet's lead and discount confidence for frequent
+            #       control characters.
+            #       See https://github.com/BYVoid/uchardet/commit/55b4f23971db61
             if order < self.SAMPLE_SIZE:
                 self._freq_char += 1
                 if self._last_order < self.SAMPLE_SIZE:
                     self._total_seqs += 1
                     if not self._reversed:
-                        i = (self._last_order * self.SAMPLE_SIZE) + order
-                        model = self._model['precedence_matrix'][i]
-                    else:  # reverse the order of the letters in the lookup
-                        i = (order * self.SAMPLE_SIZE) + self._last_order
-                        model = self._model['precedence_matrix'][i]
-                    self._seq_counters[model] += 1
+                        lm_cat = language_model[self._last_order][order]
+                    else:
+                        lm_cat = language_model[order][self._last_order]
+                    self._seq_counters[lm_cat] += 1
             self._last_order = order
 
-        charset_name = self._model['charset_name']
+        charset_name = self._model.charset_name
         if self.state == ProbingState.DETECTING:
             if self._total_seqs > self.SB_ENOUGH_REL_THRESHOLD:
                 confidence = self.get_confidence()
@@ -125,7 +138,7 @@ class SingleByteCharSetProber(CharSetProber):
         r = 0.01
         if self._total_seqs > 0:
             r = ((1.0 * self._seq_counters[SequenceLikelihood.POSITIVE]) /
-                 self._total_seqs / self._model['typical_positive_ratio'])
+                 self._total_seqs / self._model.typical_positive_ratio)
             r = r * self._freq_char / self._total_char
             if r >= 1.0:
                 r = 0.99
