@@ -21,6 +21,7 @@ import base64
 from ocr_reader import OCRReader, DetResizeForTest
 from paddle_serving_app.reader import Sequential, ResizeByFactor
 from paddle_serving_app.reader import Div, Normalize, Transpose
+from web_service_det import ArgsParser
 
 _LOGGER = logging.getLogger()
 
@@ -82,5 +83,6 @@ class OcrService(WebService):
 
 
 uci_service = OcrService(name="ocr")
-uci_service.prepare_pipeline_config("config.yml")
+FLAGS = ArgsParser().parse_args()
+uci_service.prepare_pipeline_config(yml_dict=FLAGS.conf_dict)
 uci_service.run_service()

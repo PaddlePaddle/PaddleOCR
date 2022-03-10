@@ -78,27 +78,27 @@ Then, you can use installed paddle_serving_client tool to convert inference mode
 python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_det_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
-                                         --serving_server ./ppocrv2_det_serving/ \
-                                         --serving_client ./ppocrv2_det_client/
+                                         --serving_server ./ppocr_det_mobile_2.0_serving/ \
+                                         --serving_client ./ppocr_det_mobile_2.0_client/
 
 #  Recognition model conversion
 python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_rec_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
-                                         --serving_server ./ppocrv2_rec_serving/  \
-                                         --serving_client ./ppocrv2_rec_client/
+                                         --serving_server ./ppocr_rec_mobile_2.0_serving/  \
+                                         --serving_client ./ppocr_rec_mobile_2.0_client/
 
 ```
 
 After the detection model is converted, there will be additional folders of `ppocr_det_mobile_2.0_serving` and `ppocr_det_mobile_2.0_client` in the current folder, with the following format:
 ```
-|- ppocrv2_det_serving/
+|- ppocr_det_mobile_2.0_serving/
   |- __model__  
   |- __params__
   |- serving_server_conf.prototxt  
   |- serving_server_conf.stream.prototxt
 
-|- ppocrv2_det_client
+|- ppocr_det_mobile_2.0_client
   |- serving_client_conf.prototxt  
   |- serving_client_conf.stream.prototxt
 

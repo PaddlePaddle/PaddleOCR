@@ -20,10 +20,10 @@ PaddleServing预测功能测试的主程序为`test_serving.sh`，可以测试�
 先运行`prepare.sh`准备数据和模型，然后运行`test_serving.sh`进行测试，最终在```test_tipc/output```目录下生成`serving_infer_*.log`后缀的日志文件。
 
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ppocr_det_mobile/model_linux_gpu_normal_normal_serving_python_linux_gpu_cpu.txt "serving_infer"
+bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_linux_gpu_normal_normal_serving_python_linux_gpu_cpu.txt "serving_infer"
 
 # 用法:
-bash test_tipc/test_serving.sh ./test_tipc/configs/ppocr_det_mobile/model_linux_gpu_normal_normal_serving_python_linux_gpu_cpu.txt
+bash test_tipc/test_serving.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_linux_gpu_normal_normal_serving_python_linux_gpu_cpu.txt
 ```  
 
 #### 运行结果
