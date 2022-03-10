@@ -48,6 +48,7 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 - 非常感谢 [tangmq](https://gitee.com/tangmq) 给PaddleOCR增加Docker化部署服务，支持快速发布可调用的Restful API服务([#507](https://github.com/PaddlePaddle/PaddleOCR/pull/507))。
 - 非常感谢 [lijinhan](https://github.com/lijinhan) 给PaddleOCR增加java SpringBoot 调用OCR Hubserving接口完成对OCR服务化部署的使用([#1027](https://github.com/PaddlePaddle/PaddleOCR/pull/1027))。
 - 非常感谢 [Evezerest](https://github.com/Evezerest)， [ninetailskim](https://github.com/ninetailskim)， [edencfc](https://github.com/edencfc)， [BeyondYourself](https://github.com/BeyondYourself)， [1084667371](https://github.com/1084667371) 贡献了[PPOCRLabel](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/PPOCRLabel/README_ch.md) 的完整代码。
+- 非常感谢 [bupt906](https://github.com/bupt906) 贡献MicroNet结构代码([#5251](https://github.com/PaddlePaddle/PaddleOCR/pull/5251))和贡献OneCycle学习率策略代码([#5252](https://github.com/PaddlePaddle/PaddleOCR/pull/5252))
 
 ### 1.3 代码修复
 
@@ -57,7 +58,7 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 
 ### 1.4 文档优化与翻译
 
-- 非常感谢 **[RangeKing](https://github.com/RangeKing)，[HustBestCat](https://github.com/HustBestCat)** 贡献翻译《动手学OCR》notebook[电子书英文版](https://github.com/PaddlePaddle/PaddleOCR/tree/dygraph/notebook/notebook_en)。
+- 非常感谢 **[RangeKing](https://github.com/RangeKing)，[HustBestCat](https://github.com/HustBestCat)，[v3fc](https://github.com/v3fc)，[1084667371](https://github.com/1084667371)** 贡献翻译《动手学OCR》notebook[电子书英文版](https://github.com/PaddlePaddle/PaddleOCR/tree/dygraph/notebook/notebook_en)。
 - 非常感谢 [thunderstudying](https://github.com/thunderstudying)，[RangeKing](https://github.com/RangeKing)，[livingbody](https://github.com/livingbody)， [WZMIAOMIAO](https://github.com/WZMIAOMIAO)，[haigang1975](https://github.com/haigang1975) 补充多个英文markdown文档。
 - 非常感谢 **[fanruinet](https://github.com/fanruinet)** 润色和修复35篇英文文档([#5205](https://github.com/PaddlePaddle/PaddleOCR/pull/5205))。
 - 非常感谢 [Khanh Tran](https://github.com/xxxpsyduck) 和 [Karl Horky](https://github.com/karlhorky) 贡献修改英文文档。
@@ -82,9 +83,9 @@ PaddleOCR非常欢迎社区贡献以PaddleOCR为核心的各种服务、部署�
 
 如果您在使用PaddleOCR时遇到了代码bug、功能不符合预期等问题，可以为PaddleOCR贡献您的修改，其中：
 
-- Python代码规范可参考[附录1：Python代码规范](./code_and_doc.md/#附录1)。
+- Python代码规范可参考[附录1：Python代码规范](./code_and_doc.md#附录1)。
 
--  提交代码前请再三确认不会引入新的bug，并在PR中描述优化点。如果该PR解决了某个issue，请在PR中连接到该issue。所有的PR都应该遵守附录3中的[3.2.10 提交代码的一些约定。](./code_and_doc.md/#提交代码的一些约定)
+-  提交代码前请再三确认不会引入新的bug，并在PR中描述优化点。如果该PR解决了某个issue，请在PR中连接到该issue。所有的PR都应该遵守附录3中的[3.2.10 提交代码的一些约定。](./code_and_doc.md#提交代码的一些约定)
 
 - 请在提交之前参考下方的[附录3：Pull Request说明](./code_and_doc.md#附录3)。如果您对git的提交流程不熟悉，同样可以参考附录3的3.2节。
 
@@ -92,7 +93,7 @@ PaddleOCR非常欢迎社区贡献以PaddleOCR为核心的各种服务、部署�
 
 ### 2.3 文档优化
 
-如果您在使用PaddleOCR时遇到了文档表述不清楚、描述缺失、链接失效等问题，可以为PaddleOCR贡献您的修改。文档书写规范请参考[附录2：文档规范](./code_and_doc.md/#附录2)。**最后请在PR的题目中加上标签`【third-party】` , 在说明中@Evezerest，拥有此标签的PR将会被高优处理。**
+如果您在使用PaddleOCR时遇到了文档表述不清楚、描述缺失、链接失效等问题，可以为PaddleOCR贡献您的修改。文档书写规范请参考[附录2：文档规范](./code_and_doc.md#附录2)。**最后请在PR的题目中加上标签`【third-party】` , 在说明中@Evezerest，拥有此标签的PR将会被高优处理。**
 
 ## 3. 更多贡献机会
 

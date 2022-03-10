@@ -22,6 +22,7 @@ PaddleOCR提供2种服务部署方式：
 - [环境准备](#环境准备)
 - [模型转换](#模型转换)
 - [Paddle Serving pipeline部署](#部署)
+- [Windows用户](#Windows用户)
 - [FAQ](#FAQ)
 
 <a name="环境准备"></a>
@@ -30,7 +31,7 @@ PaddleOCR提供2种服务部署方式：
 需要准备PaddleOCR的运行环境和Paddle Serving的运行环境。
 
 - 准备PaddleOCR的运行环境[链接](../../doc/doc_ch/installation.md)
-  根据环境下载对应的paddle whl包，推荐安装2.0.1版本
+  根据环境下载对应的paddlepaddle whl包，推荐安装2.2.2版本
 
 - 准备PaddleServing的运行环境，步骤如下
 
@@ -187,7 +188,8 @@ python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_rec_infer/ \
     2021-05-13 03:42:36,979         chl2(In: ['rec'], Out: ['@DAGExecutor']) size[0/0]
     ```
 
-## WINDOWS用户
+<a name="Windows用户"></a>
+## Windows用户
 
 Windows用户不能使用上述的启动方式，需要使用Web Service，详情参见[Windows平台使用Paddle Serving指导](https://github.com/PaddlePaddle/Serving/blob/develop/doc/Windows_Tutorial_CN.md)
 

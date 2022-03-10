@@ -139,7 +139,7 @@ tar xf ch_ppocr_mobile_v2.0_det_infer.tar
 python3 tools/infer/predict_det.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./inference/det_db/"
 ```
 
-The visual text detection results are saved to the ./inference_results folder by default, and the name of the result file is prefixed with'det_res'. Examples of results are as follows:
+The visual text detection results are saved to the ./inference_results folder by default, and the name of the result file is prefixed with 'det_res'. Examples of results are as follows:
 
 ![](../imgs_results/det_res_00018069.jpg)
 
@@ -244,7 +244,7 @@ The visualized text detection results are saved to the `./inference_results` fol
 <a name="RECOGNITION_MODEL_INFERENCE"></a>
 ## 3. Text Recognition Model Inference
 
-The following will introduce the lightweight Chinese recognition model inference, other CTC-based and Attention-based text recognition models inference. For Chinese text recognition, it is recommended to choose the recognition model based on CTC loss. In practice, it is also found that the result of the model based on Attention loss is not as good as the one based on CTC loss. In addition, if the characters dictionary is modified during training, make sure that you use the same characters set during inferencing. Please check below for details.
+The following will introduce the lightweight Chinese recognition model inference, other CTC-based and Attention-based text recognition models inference. For Chinese text recognition, it is recommended to choose the recognition model based on CTC loss. In practice, it is also found that the result of the model based on Attention loss is not as good as the one based on CTC loss. In addition, if the characters dictionary is modified during training, make sure that you use the same characters set during inference. Please check below for details.
 
 
 <a name="LIGHTWEIGHT_RECOGNITION"></a>

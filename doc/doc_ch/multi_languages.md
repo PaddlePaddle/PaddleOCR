@@ -225,7 +225,7 @@ ppocr 支持使用自己的数据进行自定义训练或finetune, 其中识别�
 |波兰文|Polish |pl| | 比尔哈文|Bihari |bh|
 | 罗马尼亚文|Romanian |ro| | 迈蒂利文|Maithili |mai|
 | 斯洛伐克文|Slovak |sk| | 昂加文|Angika |ang|
-| 斯洛文尼亚文|Slovenian |sl| | 孟加拉文|Bhojpuri |bho|
+| 斯洛文尼亚文|Slovenian |sl| | 博杰普爾文|Bhojpuri |bho|
 | 阿尔巴尼亚文|Albanian |sq| | 摩揭陀文 |Magahi |mah|
 | 瑞典文|Swedish |sv| | 那格浦尔文|Nagpur |sck|
 | 西瓦希里文|Swahili |sw| | 尼瓦尔文|Newari |new|

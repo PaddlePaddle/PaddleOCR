@@ -347,8 +347,9 @@ class PaddleOCR(predict_system.TextSystem):
         ocr with paddleocr
         args：
             img: img for ocr, support ndarray, img_path and list or ndarray
-            det: use text detection or not, if false, only rec will be exec. default is True
-            rec: use text recognition or not, if false, only det will be exec. default is True
+            det: use text detection or not. If false, only rec will be exec. Default is True
+            rec: use text recognition or not. If false, only det will be exec. Default is True
+            cls: use angle classifier or not. Default is True. If true, the text with rotation of 180 degrees can be recognized. If no text is rotated by 180 degrees, use cls=False to get better performance. Text with rotation of 90 or 270 degrees can be recognized even if cls=False.
         """
         assert isinstance(img, (np.ndarray, list, str))
         if isinstance(img, list) and det == True:
@@ -356,7 +357,7 @@ class PaddleOCR(predict_system.TextSystem):
             exit(0)
         if cls == True and self.use_angle_cls == False:
             logger.warning(
-                'Since the angle classifier is not initialized, the angle classifier will not be uesd during the forward process'
+                'Since the angle classifier is not initialized, the angle classifier will not be used during the forward process'
             )
 
         if isinstance(img, str):

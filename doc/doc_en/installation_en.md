@@ -1,17 +1,17 @@
 ## QUICK INSTALLATION
 
-After testing, paddleocr can run on glibc 2.23. You can also test other glibc versions or install glic 2.23 for the best compatibility.
+After testing, PaddleOCR can run on glibc 2.23. You can also test other glibc versions or install glibc 2.23 for the best compatibility.
 
 PaddleOCR working environment:
 - PaddlePaddle 2.0.0
-- python3.7
+- Python 3.7
 - glibc 2.23
 
-It is recommended to use the docker provided by us to run PaddleOCR, please refer to the use of docker [link](https://www.runoob.com/docker/docker-tutorial.html/).
+It is recommended to use the docker provided by us to run PaddleOCR. Please refer to the docker tutorial [link](https://www.runoob.com/docker/docker-tutorial.html/).
 
-*If you want to directly run the prediction code on mac or windows, you can start from step 2.*
+*If you want to directly run the prediction code on Mac or Windows, you can start from step 2.*
 
-**1. (Recommended) Prepare a docker environment. The first time you use this docker image, it will be downloaded automatically. Please be patient.**
+**1. (Recommended) Prepare a docker environment. For the first time you use this docker image, it will be downloaded automatically. Please be patient.**
 ```
 # Switch to the working directory
 cd /home/Projects
@@ -22,7 +22,7 @@ cd /home/Projects
 sudo docker run --name ppocr -v $PWD:/paddle --network=host -it  paddlepaddle/paddle:latest-dev-cuda10.1-cudnn7-gcc82  /bin/bash
 ```
 
-If using CUDA10, please run the following command to create a container.
+With CUDA10, please run the following command to create a container.
 It is recommended to set a shared memory greater than or equal to 32G through the --shm-size parameter:
 ```
 sudo nvidia-docker run --name ppocr -v $PWD:/paddle --shm-size=64G --network=host -it paddlepaddle/paddle:latest-dev-cuda10.1-cudnn7-gcc82 /bin/bash
@@ -51,11 +51,11 @@ For more software version requirements, please refer to the instructions in [Ins
 # Recommend
 git clone https://github.com/PaddlePaddle/PaddleOCR
 
-# If you cannot pull successfully due to network problems, you can also choose to use the code hosting on the cloud:
+# If you cannot pull successfully due to network problems, you can switch to the mirror hosted on Gitee:
 
 git clone https://gitee.com/paddlepaddle/PaddleOCR
 
-# Note: The cloud-hosting code may not be able to synchronize the update with this GitHub project in real time. There might be a delay of 3-5 days. Please give priority to the recommended method.
+# Note: The mirror on Gitee may not keep in synchronization with the latest update with the project on GitHub. There might be a delay of 3-5 days. Please try GitHub at first.
 ```
 
 **4. Install third-party libraries**
@@ -66,6 +66,6 @@ pip3 install -r requirements.txt
 
 If you getting this error `OSError: [WinError 126] The specified module could not be found` when you install shapely on windows.
 
-Please try to download Shapely whl file using [http://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely](http://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely).
+Please try to download Shapely whl file from [http://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely](http://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely).
 
 Reference: [Solve shapely installation on windows](https://stackoverflow.com/questions/44398265/install-shapely-oserror-winerror-126-the-specified-module-could-not-be-found)
