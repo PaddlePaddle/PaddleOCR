@@ -98,6 +98,18 @@ class TextDetector(object):
             postprocess_params["box_type"] = args.det_pse_box_type
             postprocess_params["scale"] = args.det_pse_scale
             self.det_pse_box_type = args.det_pse_box_type
+        elif self.det_algorithm == "FCE":
+            pre_process_list[0] = {
+                'DetResizeForTest': {
+                    'rescale_img': [1080, 736]
+                }
+            }
+            postprocess_params['name'] = 'FCEPostProcess'
+            postprocess_params["scales"] = args.scales
+            postprocess_params["alpha"] = args.alpha
+            postprocess_params["beta"] = args.beta
+            postprocess_params["fourier_degree"] = args.fourier_degree
+            postprocess_params["box_type"] = args.det_fce_box_type
         else:
             logger.info("unknown det_algorithm:{}".format(self.det_algorithm))
             sys.exit(0)
@@ -234,15 +246,18 @@ class TextDetector(object):
             preds['f_tvo'] = outputs[3]
         elif self.det_algorithm in ['DB', 'PSE']:
             preds['maps'] = outputs[0]
+        elif self.det_algorithm == 'FCE':
+            for i, output in enumerate(outputs):
+                preds['level_{}'.format(i)] = output
         else:
             raise NotImplementedError
 
         #self.predictor.try_shrink_memory()
         post_result = self.postprocess_op(preds, shape_list)
         dt_boxes = post_result[0]['points']
-        if (self.det_algorithm == "SAST" and
-                self.det_sast_polygon) or (self.det_algorithm == "PSE" and
-                                           self.det_pse_box_type == 'poly'):
+        if (self.det_algorithm == "SAST" and self.det_sast_polygon) or (
+                self.det_algorithm in ["PSE", "FCE"] and
+                self.postprocess_op.box_type == 'poly'):
             dt_boxes = self.filter_tag_det_res_only_clip(dt_boxes, ori_im.shape)
         else:
             dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
