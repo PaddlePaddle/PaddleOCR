@@ -98,9 +98,9 @@ PP-Structure Series Model List (Updating)
 
 ### 7.1 Layout analysis model
 
-|model name|description|download|
-| --- | --- | --- |
-| ppyolov2_r50vd_dcn_365e_publaynet | The layout analysis model trained on the PubLayNet dataset can divide image into 5 types of areas **text, title, table, picture, and list** | [PubLayNet](https://paddle-model-ecology.bj.bcebos.com/model/layout-parser/ppyolov2_r50vd_dcn_365e_publaynet.tar) |
+|model name|description|download|label_map|
+| --- | --- | --- |--- |
+| ppyolov2_r50vd_dcn_365e_publaynet | The layout analysis model trained on the PubLayNet dataset can divide image into 5 types of areas **text, title, table, picture, and list** | [PubLayNet](https://paddle-model-ecology.bj.bcebos.com/model/layout-parser/ppyolov2_r50vd_dcn_365e_publaynet.tar) | {0: "Text", 1: "Title", 2: "List", 3:"Table", 4:"Figure"}|
 
 ### 7.2 OCR and table recognition model
 
