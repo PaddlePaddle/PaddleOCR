@@ -52,7 +52,7 @@ The following figure shows the result, with different colored detection boxes re
 |   threshold    |              threshold of prediction score               |     0.5     |                              \                               |
 |  input_shape   |                 picture size of reshape                  | [3,640,640] |                              \                               |
 |   batch_size   |                    testing batch size                    |      1      |                              \                               |
-|   label_map    |                  category mapping table                  |    None     | Setting config_ path, it can be none, and the label is automatically obtained according to the dataset name_ map |
+|   label_map    |                  category mapping table                  |    None     | Setting config_ path, it can be none, and the label is automatically obtained according to the dataset name_ map, You need to specify it manually when setting model_path |
 |  enforce_cpu   |                    whether to use CPU                    |    False    |      False to use GPU, and True to force the use of CPU      |
 | enforce_mkldnn | whether mkldnn acceleration is enabled in CPU prediction |    True     |                              \                               |
 |   thread_num   |                the number of CPU threads                 |     10      |                              \                               |
