@@ -18,10 +18,9 @@ import numpy as np
 import cv2
 import base64
 # from paddle_serving_app.reader import OCRReader
-from ocr_reader import OCRReader, DetResizeForTest
+from ocr_reader import OCRReader, DetResizeForTest, ArgsParser
 from paddle_serving_app.reader import Sequential, ResizeByFactor
 from paddle_serving_app.reader import Div, Normalize, Transpose
-from web_service_det import ArgsParser
 
 _LOGGER = logging.getLogger()
 
@@ -79,6 +78,7 @@ class RecOp(Op):
 class OcrService(WebService):
     def get_pipeline_response(self, read_op):
         rec_op = RecOp(name="rec", input_ops=[read_op])
+        print("rec op:", rec_op)
         return rec_op
 
 
