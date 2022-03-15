@@ -78,7 +78,6 @@ class RecOp(Op):
 class OcrService(WebService):
     def get_pipeline_response(self, read_op):
         rec_op = RecOp(name="rec", input_ops=[read_op])
-        print("rec op:", rec_op)
         return rec_op
 
 

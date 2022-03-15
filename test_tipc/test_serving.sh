@@ -58,11 +58,9 @@ function func_serving(){
     trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
     eval $trans_model_cmd
     cd ${serving_dir_value}
-    echo $PWD
     unset https_proxy
     unset http_proxy
     for python in ${python_list[*]}; do
-        echo ${python}
         if [ ${python} = "cpp" ]; then
             for use_gpu in ${web_use_gpu_list[*]}; do
                 if [ ${use_gpu} = "null" ]; then
@@ -93,9 +91,7 @@ function func_serving(){
             done
         else
             # python serving
-            echo ${web_use_gpu_list[*]}
             for use_gpu in ${web_use_gpu_list[*]}; do
-                echo ${ues_gpu}
                 if [ ${use_gpu} = "null" ]; then
                     for use_mkldnn in ${web_use_mkldnn_list[*]}; do
                         for threads in ${web_cpu_threads_list[*]}; do
