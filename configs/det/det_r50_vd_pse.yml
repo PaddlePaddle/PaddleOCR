@@ -55,7 +55,7 @@ PostProcess:
   thresh: 0
   box_thresh: 0.85
   min_area: 16
-  box_type: box # 'box' or 'poly'
+  box_type: quad # 'quad' or 'poly'
   scale: 1
 
 Metric:

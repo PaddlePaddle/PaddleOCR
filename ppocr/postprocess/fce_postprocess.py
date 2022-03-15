@@ -74,7 +74,7 @@ class FCEPostProcess(object):
                  nms_thr=0.1,
                  alpha=1.0,
                  beta=1.0,
-                 text_repr_type='poly',
+                 box_type='poly',
                  **kwargs):
 
         self.scales = scales
@@ -85,7 +85,7 @@ class FCEPostProcess(object):
         self.nms_thr = nms_thr
         self.alpha = alpha
         self.beta = beta
-        self.text_repr_type = text_repr_type
+        self.box_type = box_type
 
     def __call__(self, preds, shape_list):
         score_maps = []
@@ -149,7 +149,7 @@ class FCEPostProcess(object):
             scale=scale,
             alpha=self.alpha,
             beta=self.beta,
-            text_repr_type=self.text_repr_type,
+            box_type=self.box_type,
             score_thr=self.score_thr,
             nms_thr=self.nms_thr)
 
@@ -160,7 +160,7 @@ class FCEPostProcess(object):
                       scale,
                       alpha=1.0,
                       beta=2.0,
-                      text_repr_type='poly',
+                      box_type='poly',
                       score_thr=0.3,
                       nms_thr=0.1):
         """Decoding predictions of FCENet to instances.
@@ -175,7 +175,7 @@ class FCEPostProcess(object):
                     = (Score_{text region} ^ alpha)
                     * (Score_{text center region}^ beta)
             beta (float) : The parameter to calculate final score.
-            text_repr_type (str):  Boundary encoding type 'poly' or 'quad'.
+            box_type (str):  Boundary encoding type 'poly' or 'quad'.
             score_thr (float) : The threshold used to filter out the final
                 candidates.
             nms_thr (float) :  The threshold of nms.
@@ -186,7 +186,7 @@ class FCEPostProcess(object):
         """
         assert isinstance(preds, list)
         assert len(preds) == 2
-        assert text_repr_type in ['poly', 'quad']
+        assert box_type in ['poly', 'quad']
 
         cls_pred = preds[0][0]
         tr_pred = cls_pred[0:2]
@@ -228,7 +228,7 @@ class FCEPostProcess(object):
 
         boundaries = poly_nms(boundaries, nms_thr)
 
-        if text_repr_type == 'quad':
+        if box_type == 'quad':
             new_boundaries = []
             for boundary in boundaries:
                 poly = np.array(boundary[:-1]).reshape(-1, 2).astype(np.float32)
@@ -236,5 +236,6 @@ class FCEPostProcess(object):
                 points = cv2.boxPoints(cv2.minAreaRect(poly))
                 points = np.int0(points)
                 new_boundaries.append(points.reshape(-1).tolist() + [score])
+                boundaries = new_boundaries
 
         return boundaries

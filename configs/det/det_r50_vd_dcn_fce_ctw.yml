@@ -27,14 +27,11 @@ Architecture:
     out_indices: [1,2,3]
   Neck:
     name: FCEFPN
-    in_channels: [512, 1024, 2048]
     out_channels: 256
     has_extra_convs: False
     extra_stage: 0
   Head:
     name: FCEHead
-    in_channels: 256
-    scales: [8, 16, 32]
     fourier_degree: 5
 Loss:
   name: FCELoss
@@ -57,6 +54,7 @@ PostProcess:
   alpha: 1.0
   beta: 1.0
   fourier_degree: 5
+  box_type: 'poly'
 
 Metric:
   name: DetFCEMetric
@@ -123,8 +121,8 @@ Eval:
           ignore_orientation: True
       - DetLabelEncode: # Class handling label
       - DetResizeForTest:
-          # resize_long: 1280
-          rescale_img: [1080, 736]
+          limit_type: 'min'
+          limit_side_len: 736
       - NormalizeImage:
           scale: 1./255.
           mean: [0.485, 0.456, 0.406]

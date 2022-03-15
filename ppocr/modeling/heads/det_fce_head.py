@@ -43,13 +43,12 @@ class FCEHead(nn.Layer):
         fourier_degree (int) : The maximum Fourier transform degree k.
     """
 
-    def __init__(self, in_channels, scales, fourier_degree=5):
+    def __init__(self, in_channels, fourier_degree=5):
         super().__init__()
         assert isinstance(in_channels, int)
 
         self.downsample_ratio = 1.0
         self.in_channels = in_channels
-        self.scales = scales
         self.fourier_degree = fourier_degree
         self.out_channels_cls = 4
         self.out_channels_reg = (2 * self.fourier_degree + 1) * 2
@@ -82,9 +81,7 @@ class FCEHead(nn.Layer):
     def forward(self, feats, targets=None):
         cls_res, reg_res = multi_apply(self.forward_single, feats)
         level_num = len(cls_res)
-        # import pdb;pdb.set_trace()
         outs = {}
-
         if not self.training:
             for i in range(level_num):
                 tr_pred = F.softmax(cls_res[i][:, 0:2, :, :], axis=1)
