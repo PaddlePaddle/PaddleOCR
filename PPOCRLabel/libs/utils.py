@@ -29,7 +29,9 @@ __iconpath__ = os.path.abspath(os.path.join(__dir__, '../resources/icons'))
 
 def newIcon(icon, iconSize=None):
     if iconSize is not None:
-        return QIcon(QIcon(__iconpath__ + "/" + icon + ".png").pixmap(iconSize, iconSize))
+        return QIcon(
+            QIcon(__iconpath__ + "/" + icon + ".png").pixmap(iconSize,
+                                                             iconSize))
     else:
         return QIcon(__iconpath__ + "/" + icon + ".png")
 
@@ -43,8 +45,15 @@ def newButton(text, icon=None, slot=None):
     return b
 
 
-def newAction(parent, text, slot=None, shortcut=None, icon=None,
-              tip=None, checkable=False, enabled=True, iconSize=None):
+def newAction(parent,
+              text,
+              slot=None,
+              shortcut=None,
+              icon=None,
+              tip=None,
+              checkable=False,
+              enabled=True,
+              iconSize=None):
     """Create a new action and assign callbacks, shortcuts, etc."""
     a = QAction(text, parent)
     if icon is not None:
@@ -83,7 +92,6 @@ def labelValidator():
 
 
 class struct(object):
-
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
 
@@ -130,7 +138,7 @@ def get_rotate_crop_image(img, points):
     d = 0.0
     for index in range(-1, 3):
         d += -0.5 * (points[index + 1][1] + points[index][1]) * (
-                points[index + 1][0] - points[index][0])
+            points[index + 1][0] - points[index][0])
     if d < 0:  # counterclockwise
         tmp = np.array(points)
         points[1], points[3] = tmp[3], tmp[1]
@@ -199,48 +207,55 @@ def keysInfo(lang='en'):
     if lang == 'ch':
         msg = "快捷键\t\t\t说明\n" \
               "———————————————————————\n" \
-              "Ctrl + shift + R\t\t对当前图片的所有标记重新识别\n" \
+              "Ctrl + Shift + R\t\t对当前图片的所有标记重新识别\n" \
               "W\t\t\t新建矩形框\n" \
               "Q\t\t\t新建四点框\n" \
-              "Ctrl + E\t\t编辑所选框标签\n" \
-              "Ctrl + R\t\t重新识别所选标记\n" \
-              "Ctrl + C\t\t复制并粘贴选中的标记框\n" \
+              "Ctrl + E\t\t\t编辑所选框标签\n" \
+              "Ctrl + R\t\t\t重新识别所选标记\n" \
+              "Ctrl + C\t\t\t复制并粘贴选中的标记框\n" \
               "Ctrl + 鼠标左键\t\t多选标记框\n" \
               "Backspace\t\t删除所选框\n" \
-              "Ctrl + V\t\t确认本张图片标记\n" \
-              "Ctrl + Shift + d\t删除本张图片\n" \
+              "Ctrl + V\t\t\t确认本张图片标记\n" \
+              "Ctrl + Shift + d\t\t删除本张图片\n" \
               "D\t\t\t下一张图片\n" \
               "A\t\t\t上一张图片\n" \
               "Ctrl++\t\t\t缩小\n" \
               "Ctrl--\t\t\t放大\n" \
               "↑→↓←\t\t\t移动标记框\n" \
+              "R\t\t\t将标记框转换成矩形\n" \
+              "Alt + ↑→↓←\t\t增加/减少标记框的高度/宽度\n" \
+              "C/X\t\t\t顺时针/逆时针旋转标记框\n" \
               "———————————————————————\n" \
               "注：Mac用户Command键替换上述Ctrl键"
 
     else:
         msg = "Shortcut Keys\t\tDescription\n" \
               "———————————————————————\n" \
-              "Ctrl + shift + R\t\tRe-recognize all the labels\n" \
+              "Ctrl + Shift + R\t\tRe-recognize all the labels\n" \
               "\t\t\tof the current image\n" \
               "\n" \
               "W\t\t\tCreate a rect box\n" \
               "Q\t\t\tCreate a four-points box\n" \
-              "Ctrl + E\t\tEdit label of the selected box\n" \
-              "Ctrl + R\t\tRe-recognize the selected box\n" \
-              "Ctrl + C\t\tCopy and paste the selected\n" \
-              "\t\t\tbox\n" \
+              "Ctrl + E\t\t\tEdit label of the selected box\n" \
+              "Ctrl + R\t\t\tRe-recognize the selected box\n" \
+              "Ctrl + C\t\t\tCopy and paste the selected box\n" \
               "\n" \
-              "Ctrl + Left Mouse\tMulti select the label\n" \
-              "Button\t\t\tbox\n" \
+              "Ctrl + Left Mouse\tMulti select the label box\n" \
+              "Button\n" \
               "\n" \
               "Backspace\t\tDelete the selected box\n" \
-              "Ctrl + V\t\tCheck image\n" \
-              "Ctrl + Shift + d\tDelete image\n" \
+              "Ctrl + V\t\t\tCheck image\n" \
+              "Ctrl + Shift + d\t\tDelete image\n" \
               "D\t\t\tNext image\n" \
               "A\t\t\tPrevious image\n" \
               "Ctrl++\t\t\tZoom in\n" \
               "Ctrl--\t\t\tZoom out\n" \
-              "↑→↓←\t\t\tMove selected box" \
+              "↑→↓←\t\t\tMove selected box\n" \
+              "R\t\t\tRectangularize the selected box\n" \
+              "Alt + ↑→↓←\t\tIncrease/Decrease the height/width of\n" \
+              "\t\t\tthe selected box\n" \
+              "C/X\t\t\tRotate selected box\n" \
+              "\t\t\tclockwise/conter-clockwise\n" \
               "———————————————————————\n" \
               "Notice:For Mac users, use the 'Command' key instead of the 'Ctrl' key"
 

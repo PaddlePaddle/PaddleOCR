@@ -15,7 +15,7 @@
 import math
 import sys
 
-from PyQt5.QtCore import QPointF
+from PyQt5.QtCore import QPointF, QSizeF, QRectF
 from PyQt5.QtGui import QColor, QPen, QPainterPath, QFont
 from libs.utils import distance
 
@@ -46,7 +46,12 @@ class Shape(object):
     point_size = 8
     scale = 1.0
 
-    def __init__(self, label=None, line_color=None, difficult=False, key_cls="None", paintLabel=False):
+    def __init__(self,
+                 label=None,
+                 line_color=None,
+                 difficult=False,
+                 key_cls="None",
+                 paintLabel=False):
         self.label = label
         self.points = []
         self.fill = False
@@ -83,7 +88,7 @@ class Shape(object):
         cosTheta = math.cos(theta)
         sinTheta = math.sin(theta)
         pResx = cosTheta * order.x() + sinTheta * order.y()
-        pResy = - sinTheta * order.x() + cosTheta * order.y()
+        pResy = -sinTheta * order.x() + cosTheta * order.y()
         pRes = QPointF(self.center.x() + pResx, self.center.y() + pResy)
         return pRes
 
@@ -211,6 +216,25 @@ class Shape(object):
 
     def highlightClear(self):
         self._highlightIndex = None
+
+    def rectangularize(self):
+        '''Turn the irregular shape to the enclosing rectangle'''
+        upper_left = QPointF(
+            min(p.x() for p in self.points), min(p.y() for p in self.points))
+        size = QSizeF(
+            max(p.x() - upper_left.x() for p in self.points),
+            max(p.y() - upper_left.y() for p in self.points))
+        rect = QRectF(upper_left, size)
+        self.points = [
+            rect.topLeft(), rect.topRight(), rect.bottomRight(),
+            rect.bottomLeft()
+        ]
+
+    def increaseSize(self, sizeDelta):
+        self.points[1].setX(self.points[1].x() + sizeDelta.x())
+        self.points[2].setX(self.points[2].x() + sizeDelta.x())
+        self.points[2].setY(self.points[2].y() + sizeDelta.y())
+        self.points[3].setY(self.points[3].y() + sizeDelta.y())
 
     def copy(self):
         shape = Shape("%s" % self.label)
