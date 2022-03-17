@@ -42,7 +42,7 @@ __all__ = [
 ]
 
 SUPPORT_DET_MODEL = ['DB']
-VERSION = '2.4'
+VERSION = '2.4.0.1'
 SUPPORT_REC_MODEL = ['CRNN']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
@@ -338,7 +338,7 @@ class PaddleOCR(predict_system.TextSystem):
             params.rec_char_dict_path = str(
                 Path(__file__).parent / rec_model_config['dict_path'])
 
-        print(params)
+        logger.debug(params)
         # init det_model and rec_model
         super().__init__(params)
 
@@ -438,7 +438,7 @@ class PPStructure(OCRSystem):
             params.table_char_dict_path = str(
                 Path(__file__).parent / table_model_config['dict_path'])
 
-        print(params)
+        logger.debug(params)
         super().__init__(params)
 
     def __call__(self, img):
