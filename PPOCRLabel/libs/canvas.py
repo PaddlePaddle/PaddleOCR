@@ -263,7 +263,7 @@ class Canvas(QWidget):
                         if self.current.isClosed():
                             # print('1111')
                             self.finalise()
-                    elif self.drawSquare: # 增加
+                    elif self.drawSquare:
                         assert len(self.current.points) == 1
                         self.current.points = self.line.points
                         self.finalise()

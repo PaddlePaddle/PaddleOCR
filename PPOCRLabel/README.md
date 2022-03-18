@@ -159,7 +159,7 @@ python PPOCRLabel.py --kie True # [KIE mode] for [detection + recognition + keyw
 | Ctrl + R                 | Re-recognize the selected box                    |
 | Ctrl + C                 | Copy and paste the selected box                  |
 | Ctrl + Left Mouse Button | Multi select the label box                       |
-| Alt + X                  | Delete the selected box                          |
+| Backspace                 | Delete the selected box                          |
 | Ctrl + V                 | Check image                                      |
 | Ctrl + Shift + d         | Delete image                                     |
 | D                        | Next image                                       |

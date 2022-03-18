@@ -57,6 +57,7 @@ class Shape(object):
         self.locked = False
         self.direction = 0
         self.center = None
+        self.epsilon = 5  # same as canvas
         self._highlightIndex = None
         self._highlightMode = self.NEAR_VERTEX
         self._highlightSettings = {
@@ -98,10 +99,13 @@ class Shape(object):
         return False
 
     def addPoint(self, point):
-        if self.reachMaxPoints():
+        if self.reachMaxPoints() and self.closeEnough(self.points[0], point):
             self.close()
         else:
             self.points.append(point)
+
+    def closeEnough(self, p1, p2):
+        return distance(p1 - p2) < self.epsilon
 
     def popPoint(self):
         if self.points:
