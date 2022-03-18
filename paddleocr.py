@@ -42,7 +42,7 @@ __all__ = [
 ]
 
 SUPPORT_DET_MODEL = ['DB']
-VERSION = '2.4'
+VERSION = '2.4.0.2'
 SUPPORT_REC_MODEL = ['CRNN']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
@@ -308,20 +308,18 @@ class PaddleOCR(predict_system.TextSystem):
                                             det_lang)
         params.det_model_dir, det_url = confirm_model_dir_url(
             params.det_model_dir,
-            os.path.join(BASE_DIR, VERSION, 'ocr', 'det', det_lang),
+            os.path.join(BASE_DIR, 'whl', 'det', det_lang),
             det_model_config['url'])
         rec_model_config = get_model_config('OCR', params.ocr_version, 'rec',
                                             lang)
         params.rec_model_dir, rec_url = confirm_model_dir_url(
             params.rec_model_dir,
-            os.path.join(BASE_DIR, VERSION, 'ocr', 'rec', lang),
-            rec_model_config['url'])
+            os.path.join(BASE_DIR, 'whl', 'rec', lang), rec_model_config['url'])
         cls_model_config = get_model_config('OCR', params.ocr_version, 'cls',
                                             'ch')
         params.cls_model_dir, cls_url = confirm_model_dir_url(
             params.cls_model_dir,
-            os.path.join(BASE_DIR, VERSION, 'ocr', 'cls'),
-            cls_model_config['url'])
+            os.path.join(BASE_DIR, 'whl', 'cls'), cls_model_config['url'])
         # download model
         maybe_download(params.det_model_dir, det_url)
         maybe_download(params.rec_model_dir, rec_url)
@@ -338,7 +336,7 @@ class PaddleOCR(predict_system.TextSystem):
             params.rec_char_dict_path = str(
                 Path(__file__).parent / rec_model_config['dict_path'])
 
-        print(params)
+        logger.debug(params)
         # init det_model and rec_model
         super().__init__(params)
 
@@ -412,20 +410,18 @@ class PPStructure(OCRSystem):
                                             det_lang)
         params.det_model_dir, det_url = confirm_model_dir_url(
             params.det_model_dir,
-            os.path.join(BASE_DIR, VERSION, 'ocr', 'det', det_lang),
+            os.path.join(BASE_DIR, 'whl', 'det', det_lang),
             det_model_config['url'])
         rec_model_config = get_model_config('OCR', params.ocr_version, 'rec',
                                             lang)
         params.rec_model_dir, rec_url = confirm_model_dir_url(
             params.rec_model_dir,
-            os.path.join(BASE_DIR, VERSION, 'ocr', 'rec', lang),
-            rec_model_config['url'])
+            os.path.join(BASE_DIR, 'whl', 'rec', lang), rec_model_config['url'])
         table_model_config = get_model_config(
             'STRUCTURE', params.structure_version, 'table', 'en')
         params.table_model_dir, table_url = confirm_model_dir_url(
             params.table_model_dir,
-            os.path.join(BASE_DIR, VERSION, 'ocr', 'table'),
-            table_model_config['url'])
+            os.path.join(BASE_DIR, 'whl', 'table'), table_model_config['url'])
         # download model
         maybe_download(params.det_model_dir, det_url)
         maybe_download(params.rec_model_dir, rec_url)
@@ -438,7 +434,7 @@ class PPStructure(OCRSystem):
             params.table_char_dict_path = str(
                 Path(__file__).parent / table_model_config['dict_path'])
 
-        print(params)
+        logger.debug(params)
         super().__init__(params)
 
     def __call__(self, img):
