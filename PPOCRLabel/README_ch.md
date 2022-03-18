@@ -9,7 +9,7 @@ PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，内置P
 #### 近期更新
 
 - 2022.02：（by [PeterH0323](https://github.com/peterh0323) ）
-  - 新增：KIE 功能，用于打【检测+识别+关键字提取】的标签
+  - 新增：使用 `--kie` 进入 KIE 功能，用于打【检测+识别+关键字提取】的标签
 - 2022.01：（by [PeterH0323](https://github.com/peterh0323) ）
   - 提升用户体验：新增文件与标记数目提示、优化交互、修复gpu使用等问题
 - 2021.11.17：
@@ -57,7 +57,10 @@ PPOCRLabel可通过whl包与Python脚本两种方式启动，whl包形式启动�
 
 ```bash
 pip install PPOCRLabel  # 安装
-PPOCRLabel --lang ch  # 运行
+
+# 选择标签模式来启动
+PPOCRLabel --lang ch  # 启动【普通模式】，用于打【检测+识别】场景的标签
+PPOCRLabel --lang ch --kie True  # 启动 【KIE 模式】，用于打【检测+识别+关键字提取】场景的标签
 ```
 > 注意：通过whl包安装PPOCRLabel会自动下载 `paddleocr` whl包，其中shapely依赖可能会出现 `[winRrror 126] 找不到指定模块的问题。` 的错误，建议从[这里](https://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely)下载并安装
 ##### Ubuntu Linux
@@ -65,13 +68,18 @@ PPOCRLabel --lang ch  # 运行
 ```bash
 pip3 install PPOCRLabel
 pip3 install trash-cli
-PPOCRLabel --lang ch
+
+# 选择标签模式来启动
+PPOCRLabel --lang ch  # 启动【普通模式】，用于打【检测+识别】场景的标签
+PPOCRLabel --lang ch --kie True  # 启动 【KIE 模式】，用于打【检测+识别+关键字提取】场景的标签
 ```
 
 ##### MacOS
 ```bash
 pip3 install PPOCRLabel
 pip3 install opencv-contrib-python-headless==4.2.0.32 # 如果下载过慢请添加"-i https://mirror.baidu.com/pypi/simple"
+
+# 选择标签模式来启动
 PPOCRLabel --lang ch  # 启动【普通模式】，用于打【检测+识别】场景的标签
 PPOCRLabel --lang ch --kie True  # 启动 【KIE 模式】，用于打【检测+识别+关键字提取】场景的标签
 ```
@@ -92,6 +100,8 @@ pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl -i https://mirror.baidu.
 
 ```bash
 cd ./PPOCRLabel  # 切换到PPOCRLabel目录
+
+# 选择标签模式来启动
 python PPOCRLabel.py --lang ch  # 启动【普通模式】，用于打【检测+识别】场景的标签
 python PPOCRLabel.py --lang ch --kie True  # 启动 【KIE 模式】，用于打【检测+识别+关键字提取】场景的标签
 ```
@@ -137,25 +147,27 @@ python PPOCRLabel.py --lang ch --kie True  # 启动 【KIE 模式】，用于打
 
 ### 3.1 快捷键
 
-| 快捷键              | 说明             |
-|------------------|----------------|
-| Ctrl + shift + R | 对当前图片的所有标记重新识别  |
-| W                | 新建矩形框                  |
-| Q                | 新建四点框                  |
-| X                | 框逆时针旋转                |
-| C                | 框顺时针旋转                |
-| Ctrl + E         | 编辑所选框标签              |
-| Ctrl + R         | 重新识别所选标记            |
-| Ctrl + C         | 复制并粘贴选中的标记框       |
-| Ctrl + 鼠标左键    | 多选标记框                 |
-| Backspace        | 删除所选框                 |
-| Ctrl + V         | 确认本张图片标记           |
-| Ctrl + Shift + d | 删除本张图片               |
-| D                | 下一张图片                |
-| A                | 上一张图片                |
-| Ctrl++           | 缩小                     |
-| Ctrl--           | 放大                     |
-| ↑→↓←             | 移动标记框                |
+| 快捷键              | 说明                              |
+|------------------|---------------------------------|
+| Ctrl + shift + R | 对当前图片的所有标记重新识别                  |
+| W                | 新建矩形框                           |
+| Q                | 新建四点框                           |
+| X                | 框逆时针旋转                          |
+| C                | 框顺时针旋转                          |
+| Ctrl + E         | 编辑所选框标签                         |
+| Ctrl + X         |  `--kie` 模式下，修改 Box 的关键字种类 |
+| Ctrl + R         | 重新识别所选标记                        |
+| Ctrl + C         | 复制并粘贴选中的标记框                     |
+| Ctrl + 鼠标左键    | 多选标记框                           |
+| Backspac         | 删除所选框                           |
+| Ctrl + V         | 确认本张图片标记                        |
+| Ctrl + Shift + d | 删除本张图片                          |
+| D                | 下一张图片                           |
+| A                | 上一张图片                           |
+| Ctrl++           | 缩小                              |
+| Ctrl--           | 放大                              |
+| ↑→↓←             | 移动标记框                           |
+
 
 ### 3.2 内置模型
 

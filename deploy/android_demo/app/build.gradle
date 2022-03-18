@@ -8,19 +8,14 @@ android {
         applicationId "com.baidu.paddle.lite.demo.ocr"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
                 cppFlags "-std=c++11 -frtti -fexceptions -Wno-format"
                 arguments '-DANDROID_PLATFORM=android-23', '-DANDROID_STL=c++_shared' ,"-DANDROID_ARM_NEON=TRUE"
             }
-        }
-        ndk {
-            // abiFilters "arm64-v8a", "armeabi-v7a"
-            abiFilters   "arm64-v8a", "armeabi-v7a"
-            ldLibs "jnigraphics"
         }
     }
     buildTypes {
@@ -48,7 +43,7 @@ dependencies {
 
 def archives = [
         [
-                'src' : 'https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/paddle_lite_libs_v2_9_0.tar.gz',
+                'src' : 'https://paddleocr.bj.bcebos.com/libs/paddle_lite_libs_v2_10.tar.gz',
                 'dest': 'PaddleLite'
         ],
         [
@@ -56,7 +51,7 @@ def archives = [
                 'dest': 'OpenCV'
         ],
         [
-                'src' : 'https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ocr_v2_for_cpu.tar.gz',
+                'src' : 'https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_PP-OCRv2.tar.gz',
                 'dest' : 'src/main/assets/models'
         ],
         [

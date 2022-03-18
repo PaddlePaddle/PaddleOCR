@@ -37,10 +37,10 @@ class PSEPostProcess(object):
                  thresh=0.5,
                  box_thresh=0.85,
                  min_area=16,
-                 box_type='box',
+                 box_type='quad',
                  scale=4,
                  **kwargs):
-        assert box_type in ['box', 'poly'], 'Only box and poly is supported'
+        assert box_type in ['quad', 'poly'], 'Only quad and poly is supported'
         self.thresh = thresh
         self.box_thresh = box_thresh
         self.min_area = min_area
@@ -95,7 +95,7 @@ class PSEPostProcess(object):
                 label[ind] = 0
                 continue
 
-            if self.box_type == 'box':
+            if self.box_type == 'quad':
                 rect = cv2.minAreaRect(points)
                 bbox = cv2.boxPoints(rect)
             elif self.box_type == 'poly':

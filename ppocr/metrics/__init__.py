@@ -21,7 +21,7 @@ import copy
 
 __all__ = ["build_metric"]
 
-from .det_metric import DetMetric
+from .det_metric import DetMetric, DetFCEMetric
 from .rec_metric import RecMetric
 from .cls_metric import ClsMetric
 from .e2e_metric import E2EMetric
@@ -34,7 +34,7 @@ from .vqa_token_re_metric import VQAReTokenMetric
 
 def build_metric(config):
     support_dict = [
-        "DetMetric", "RecMetric", "ClsMetric", "E2EMetric",
+        "DetMetric", "DetFCEMetric", "RecMetric", "ClsMetric", "E2EMetric",
         "DistillationMetric", "TableMetric", 'KIEMetric', 'VQASerTokenMetric',
         'VQAReTokenMetric'
     ]

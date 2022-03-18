@@ -15,7 +15,8 @@ namespace ppredictor {
  * Config
  */
 struct OCR_Config {
-  int thread_num = 4; // Thread num
+    int use_opencl = 0;
+    int thread_num = 4; // Thread num
   paddle::lite_api::PowerMode mode =
       paddle::lite_api::LITE_POWER_HIGH; // PaddleLite Mode
 };
@@ -27,8 +28,15 @@ struct OCRPredictResult {
   std::vector<int> word_index;
   std::vector<std::vector<int>> points;
   float score;
+  float cls_score;
+  int cls_label=-1;
 };
 
+struct ClsPredictResult {
+    float cls_score;
+    int cls_label=-1;
+    cv::Mat img;
+};
 /**
  * OCR there are 2 models
  * 1. First model（det），select polygones to show where are the texts
@@ -62,8 +70,7 @@ public:
    * @return
    */
   virtual std::vector<OCRPredictResult>
-  infer_ocr(const std::vector<int64_t> &dims, const float *input_data,
-            int input_len, int net_flag, cv::Mat &origin);
+  infer_ocr(cv::Mat &origin, int max_size_len, int run_det, int run_cls, int run_rec);
 
   virtual NET_TYPE get_net_flag() const;
 
@@ -80,25 +87,26 @@ private:
   calc_filtered_boxes(const float *pred, int pred_size, int output_height,
                       int output_width, const cv::Mat &origin);
 
+  void
+  infer_det(cv::Mat &origin, int max_side_len, std::vector<OCRPredictResult>& ocr_results);
   /**
-   * infer for second model
+   * infer for rec model
    *
    * @param boxes
    * @param origin
    * @return
    */
-  std::vector<OCRPredictResult>
-  infer_rec(const std::vector<std::vector<std::vector<int>>> &boxes,
-            const cv::Mat &origin);
+  void
+  infer_rec(const cv::Mat &origin, int run_cls, OCRPredictResult& ocr_result);
 
-  /**
+    /**
   * infer for cls model
   *
   * @param boxes
   * @param origin
   * @return
   */
-  cv::Mat infer_cls(const cv::Mat &origin, float thresh = 0.9);
+  ClsPredictResult infer_cls(const cv::Mat &origin, float thresh = 0.9);
 
   /**
    * Postprocess or sencod model to extract text

@@ -58,6 +58,7 @@ class OCRSystem(object):
             self.table_layout = lp.PaddleDetectionLayoutModel(
                 config_path=config_path,
                 model_path=model_path,
+                label_map=args.layout_label_map,
                 threshold=0.5,
                 enable_mkldnn=args.enable_mkldnn,
                 enforce_cpu=not args.use_gpu,

@@ -18,7 +18,7 @@ import numpy as np
 import cv2
 import base64
 # from paddle_serving_app.reader import OCRReader
-from ocr_reader import OCRReader, DetResizeForTest
+from ocr_reader import OCRReader, DetResizeForTest, ArgsParser
 from paddle_serving_app.reader import Sequential, ResizeByFactor
 from paddle_serving_app.reader import Div, Normalize, Transpose
 
@@ -82,5 +82,6 @@ class OcrService(WebService):
 
 
 uci_service = OcrService(name="ocr")
-uci_service.prepare_pipeline_config("config.yml")
+FLAGS = ArgsParser().parse_args()
+uci_service.prepare_pipeline_config(yml_dict=FLAGS.conf_dict)
 uci_service.run_service()

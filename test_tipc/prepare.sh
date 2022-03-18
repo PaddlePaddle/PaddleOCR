@@ -308,10 +308,9 @@ if [ ${MODE} = "serving_infer" ];then
     IFS='|'
     array=(${python_name_list})
     python_name=${array[0]}
-    wget -nc https://paddle-serving.bj.bcebos.com/chain/paddle_serving_server_gpu-0.0.0.post101-py3-none-any.whl
-    ${python_name} -m pip install install paddle_serving_server_gpu-0.0.0.post101-py3-none-any.whl
-    ${python_name} -m pip install paddle_serving_client==0.6.1
-    ${python_name} -m pip install paddle-serving-app==0.6.3
+    ${python_name} -m pip install paddle-serving-server-gpu==0.8.3.post101
+    ${python_name} -m pip install paddle_serving_client==0.8.3
+    ${python_name} -m pip install paddle-serving-app==0.8.3
     wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar
     wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar
     wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar

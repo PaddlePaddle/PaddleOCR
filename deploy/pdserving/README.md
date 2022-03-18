@@ -34,35 +34,26 @@ The introduction and tutorial of Paddle Serving service deployment framework ref
 PaddleOCR operating environment and Paddle Serving operating environment are needed.
 
 1. Please prepare PaddleOCR operating environment reference [link](../../doc/doc_ch/installation.md).
-   Download the corresponding paddle whl package according to the environment, it is recommended to install version 2.0.1.
+   Download the corresponding paddlepaddle whl package according to the environment, it is recommended to install version 2.2.2.
 
 
 2. The steps of PaddleServing operating environment prepare are as follows:
 
-    Install serving which used to start the service
-    ```
-    pip3 install paddle-serving-server==0.6.1 # for CPU
-    pip3 install paddle-serving-server-gpu==0.6.1 # for GPU
-    # Other GPU environments need to confirm the environment and then choose to execute the following commands
-    pip3 install paddle-serving-server-gpu==0.6.1.post101 # GPU with CUDA10.1 + TensorRT6
-    pip3 install paddle-serving-server-gpu==0.6.1.post11 # GPU with CUDA11 + TensorRT7
-    ```
-
-3. Install the client to send requests to the service
 
 ```bash
-# 安装serving，用于启动服务
+# Install serving which used to start the service
 wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_server_gpu-0.7.0.post102-py3-none-any.whl
 pip3 install paddle_serving_server_gpu-0.7.0.post102-py3-none-any.whl
-# 如果是cuda10.1环境，可以使用下面的命令安装paddle-serving-server
+
+# Install paddle-serving-server for cuda10.1
 # wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_server_gpu-0.7.0.post101-py3-none-any.whl
 # pip3 install paddle_serving_server_gpu-0.7.0.post101-py3-none-any.whl
 
-# 安装client，用于向服务发送请求
+# Install serving which used to start the service
 wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_client-0.7.0-cp37-none-any.whl
 pip3 install paddle_serving_client-0.7.0-cp37-none-any.whl
 
-# 安装serving-app
+# Install serving-app
 wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_app-0.7.0-py3-none-any.whl
 pip3 install paddle_serving_app-0.7.0-py3-none-any.whl
 ```
@@ -87,27 +78,27 @@ Then, you can use installed paddle_serving_client tool to convert inference mode
 python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_det_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
-                                         --serving_server ./ppocrv2_det_serving/ \
-                                         --serving_client ./ppocrv2_det_client/
+                                         --serving_server ./ppocr_det_mobile_2.0_serving/ \
+                                         --serving_client ./ppocr_det_mobile_2.0_client/
 
 #  Recognition model conversion
 python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_rec_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
-                                         --serving_server ./ppocrv2_rec_serving/  \
-                                         --serving_client ./ppocrv2_rec_client/
+                                         --serving_server ./ppocr_rec_mobile_2.0_serving/  \
+                                         --serving_client ./ppocr_rec_mobile_2.0_client/
 
 ```
 
 After the detection model is converted, there will be additional folders of `ppocr_det_mobile_2.0_serving` and `ppocr_det_mobile_2.0_client` in the current folder, with the following format:
 ```
-|- ppocrv2_det_serving/
+|- ppocr_det_mobile_2.0_serving/
   |- __model__  
   |- __params__
   |- serving_server_conf.prototxt  
   |- serving_server_conf.stream.prototxt
 
-|- ppocrv2_det_client
+|- ppocr_det_mobile_2.0_client
   |- serving_client_conf.prototxt  
   |- serving_client_conf.stream.prototxt
 

@@ -100,7 +100,9 @@ dict 里各个字段说明如下
 | output          | excel和识别结果保存的地址                | ./output/table                              |
 | table_max_len   | 表格结构模型预测时，图像的长边resize尺度 | 488                                         |
 | table_model_dir | 表格结构模型 inference 模型地址          | None                                        |
-| table_char_type | 表格结构模型所用字典地址                 | ../ppocr/utils/dict/table_structure_dict.txt |
+| table_char_dict_path | 表格结构模型所用字典地址                 | ../ppocr/utils/dict/table_structure_dict.txt |
+| layout_path_model | 版面分析模型模型地址，可以为在线地址或者本地地址，当为本地地址时，需要指定 layout_label_map, 命令行模式下可通过--layout_label_map='{0: "Text", 1: "Title", 2: "List", 3:"Table", 4:"Figure"}' 指定              | lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config |
+| layout_label_map | 版面分析模型模型label映射字典                 | None |
 | model_name_or_path | VQA SER模型地址                | None |
 | max_seq_length | VQA SER模型最大支持token长度              | 512 |
 | label_map_path | VQA SER 标签文件地址              | ./vqa/labels/labels_ser.txt |

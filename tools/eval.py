@@ -28,7 +28,6 @@ from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
 from ppocr.metrics import build_metric
 from ppocr.utils.save_load import load_model
-from ppocr.utils.utility import print_dict
 import tools.program as program
 
 
