@@ -1,6 +1,7 @@
 # Version: 2.0.0
 FROM registry.baidubce.com/paddlepaddle/paddle:2.1.0
 
+RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 # PaddleOCR base on Python3.7
 RUN pip3.7 install --upgrade pip -i https://mirror.baidu.com/pypi/simple
 
