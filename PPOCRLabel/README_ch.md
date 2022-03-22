@@ -159,7 +159,7 @@ python PPOCRLabel.py --lang ch --kie True  # 启动 【KIE 模式】，用于打
 | Ctrl + R         | 重新识别所选标记                        |
 | Ctrl + C         | 复制并粘贴选中的标记框                     |
 | Ctrl + 鼠标左键    | 多选标记框                           |
-| Alt + X          | 删除所选框                           |
+| Backspace         | 删除所选框                           |
 | Ctrl + V         | 确认本张图片标记                        |
 | Ctrl + Shift + d | 删除本张图片                          |
 | D                | 下一张图片                           |
@@ -167,6 +167,7 @@ python PPOCRLabel.py --lang ch --kie True  # 启动 【KIE 模式】，用于打
 | Ctrl++           | 缩小                              |
 | Ctrl--           | 放大                              |
 | ↑→↓←             | 移动标记框                           |
+
 
 ### 3.2 内置模型
 
