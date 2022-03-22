@@ -151,7 +151,7 @@ def preprocess():
     ser_config = load_config(FLAGS.config_ser)
     ser_config = merge_config(ser_config, FLAGS.opt_ser)
 
-    logger = get_logger(name='root')
+    logger = get_logger()
 
     # check if set use_gpu=True in paddlepaddle cpu version
     use_gpu = config['Global']['use_gpu']

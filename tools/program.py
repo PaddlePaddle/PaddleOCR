@@ -525,7 +525,7 @@ def preprocess(is_train=False):
         log_file = '{}/train.log'.format(save_model_dir)
     else:
         log_file = None
-    logger = get_logger(name='root', log_file=log_file)
+    logger = get_logger(log_file=log_file)
 
     # check if set use_gpu=True in paddlepaddle cpu version
     use_gpu = config['Global']['use_gpu']
