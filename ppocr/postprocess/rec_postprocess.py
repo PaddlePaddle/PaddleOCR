@@ -61,7 +61,6 @@ class BaseRecLabelDecode(object):
             for ignored_token in ignored_tokens:
                 selection &= text_index[batch_idx] != ignored_token
 
-            char_list = text_index[batch_idx][selection]
             char_list = [
                 self.character[text_id]
                 for text_id in text_index[batch_idx][selection]
