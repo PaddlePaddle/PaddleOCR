@@ -31,7 +31,7 @@ PaddleOCR提供2种服务部署方式：
 需要准备PaddleOCR的运行环境和Paddle Serving的运行环境。
 
 - 准备PaddleOCR的运行环境[链接](../../doc/doc_ch/installation.md)
-  根据环境下载对应的paddle whl包，推荐安装2.0.1版本
+  根据环境下载对应的paddlepaddle whl包，推荐安装2.2.2版本
 
 - 准备PaddleServing的运行环境，步骤如下
 
@@ -75,26 +75,26 @@ wget https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar 
 python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_det_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
-                                         --serving_server ./ppocrv2_det_serving/ \
-                                         --serving_client ./ppocrv2_det_client/
+                                         --serving_server ./ppocr_det_mobile_2.0_serving/ \
+                                         --serving_client ./ppocr_det_mobile_2.0_client/
 
 # 转换识别模型
 python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_rec_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
-                                         --serving_server ./ppocrv2_rec_serving/  \
-                                         --serving_client ./ppocrv2_rec_client/
+                                         --serving_server ./ppocr_rec_mobile_2.0_serving/  \
+                                         --serving_client ./ppocr_rec_mobile_2.0_client/
 ```
 
-检测模型转换完成后，会在当前文件夹多出`ppocrv2_det_serving` 和`ppocrv2_det_client`的文件夹，具备如下格式：
+检测模型转换完成后，会在当前文件夹多出`ppocr_det_mobile_2.0_serving` 和`ppocr_det_mobile_2.0_client`的文件夹，具备如下格式：
 ```
-|- ppocrv2_det_serving/
+|- ppocr_det_mobile_2.0_serving/
   |- __model__  
   |- __params__
   |- serving_server_conf.prototxt  
   |- serving_server_conf.stream.prototxt
 
-|- ppocrv2_det_client
+|- ppocr_det_mobile_2.0_client
   |- serving_client_conf.prototxt  
   |- serving_client_conf.stream.prototxt
 

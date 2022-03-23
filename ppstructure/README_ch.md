@@ -96,9 +96,9 @@ PP-Structure系列模型列表（更新中）
 
 ### 7.1 版面分析模型
 
-|模型名称|模型简介|下载地址|
-| --- | --- | --- |
-| ppyolov2_r50vd_dcn_365e_publaynet | PubLayNet 数据集训练的版面分析模型，可以划分**文字、标题、表格、图片以及列表**5类区域 | [PubLayNet](https://paddle-model-ecology.bj.bcebos.com/model/layout-parser/ppyolov2_r50vd_dcn_365e_publaynet.tar) |
+|模型名称|模型简介|下载地址| label_map|
+| --- | --- | --- | --- |
+| ppyolov2_r50vd_dcn_365e_publaynet | PubLayNet 数据集训练的版面分析模型，可以划分**文字、标题、表格、图片以及列表**5类区域 | [PubLayNet](https://paddle-model-ecology.bj.bcebos.com/model/layout-parser/ppyolov2_r50vd_dcn_365e_publaynet.tar) | {0: "Text", 1: "Title", 2: "List", 3:"Table", 4:"Figure"}|
 
 ### 7.2 OCR和表格识别模型
 

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import ast
 from PIL import Image
 import numpy as np
 from tools.infer.utility import draw_ocr_box_txt, init_args as infer_args
@@ -34,7 +35,11 @@ def init_args():
         "--layout_path_model",
         type=str,
         default="lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config")
-
+    parser.add_argument(
+        "--layout_label_map",
+        type=ast.literal_eval,
+        default=None,
+        help='label map according to ppstructure/layout/README_ch.md')
     # params for ser
     parser.add_argument("--model_name_or_path", type=str)
     parser.add_argument("--max_seq_length", type=int, default=512)

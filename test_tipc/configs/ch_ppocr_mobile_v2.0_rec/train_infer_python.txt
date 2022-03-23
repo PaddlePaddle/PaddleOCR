@@ -49,3 +49,5 @@ inference:tools/infer/predict_rec.py
 --save_log_path:./test/output/
 --benchmark:True
 null:null
+===========================infer_benchmark_params==========================
+random_infer_input:[{float32,[3,32,100]}]

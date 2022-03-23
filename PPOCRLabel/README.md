@@ -9,7 +9,7 @@ PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field, w
 ### Recent Update
 
 - 2022.02：（by [PeterH0323](https://github.com/peterh0323) ）
-  - Added KIE mode, for [detection + identification + keyword extraction] labeling.
+  - Add KIE Mode by using `--kie`, for [detection + identification + keyword extraction] labeling.
 - 2022.01：（by [PeterH0323](https://github.com/peterh0323) ）
   - Improve user experience: prompt for the number of files and labels, optimize interaction, and fix bugs such as only use CPU when inference
 - 2021.11.17:
@@ -54,7 +54,10 @@ PPOCRLabel can be started in two ways: whl package and Python script. The whl pa
 
 ```bash
 pip install PPOCRLabel  # install
-PPOCRLabel  # run
+
+# Select label mode and run 
+PPOCRLabel  # [Normal mode] for [detection + recognition] labeling
+PPOCRLabel --kie True # [KIE mode] for [detection + recognition + keyword extraction] labeling
 ```
 
 > If you getting this error `OSError: [WinError 126] The specified module could not be found` when you install shapely on windows. Please try to download Shapely whl file using http://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely.
@@ -67,13 +70,18 @@ PPOCRLabel  # run
 ```bash
 pip3 install PPOCRLabel
 pip3 install trash-cli
-PPOCRLabel
+
+# Select label mode and run 
+PPOCRLabel  # [Normal mode] for [detection + recognition] labeling
+PPOCRLabel --kie True # [KIE mode] for [detection + recognition + keyword extraction] labeling
 ```
 
 #### MacOS
 ```bash
 pip3 install PPOCRLabel
 pip3 install opencv-contrib-python-headless==4.2.0.32
+
+# Select label mode and run 
 PPOCRLabel  # [Normal mode] for [detection + recognition] labeling
 PPOCRLabel --kie True # [KIE mode] for [detection + recognition + keyword extraction] labeling
 ```
@@ -90,6 +98,8 @@ pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl
 
 ```bash
 cd ./PPOCRLabel  # Switch to the PPOCRLabel directory
+
+# Select label mode and run 
 python PPOCRLabel.py  # [Normal mode] for [detection + recognition] labeling
 python PPOCRLabel.py --kie True # [KIE mode] for [detection + recognition + keyword extraction] labeling
 ```
@@ -156,6 +166,7 @@ python PPOCRLabel.py --kie True # [KIE mode] for [detection + recognition + keyw
 | X                        | Rotate the box anti-clockwise                    |
 | C                        | Rotate the box clockwise                         |
 | Ctrl + E                 | Edit label of the selected box                   |
+| Ctrl + X                 | Change key class of the box when enable `--kie`  |
 | Ctrl + R                 | Re-recognize the selected box                    |
 | Ctrl + C                 | Copy and paste the selected box                  |
 | Ctrl + Left Mouse Button | Multi select the label box                       |

@@ -11,8 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 import numpy as np
-import string
 import paddle
 from paddle.nn import functional as F
 import re
@@ -652,3 +652,63 @@ class SARLabelDecode(BaseRecLabelDecode):
 
     def get_ignored_tokens(self):
         return [self.padding_idx]
+
+
+class PRENLabelDecode(BaseRecLabelDecode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(PRENLabelDecode, self).__init__(character_dict_path,
+                                              use_space_char)
+
+    def add_special_char(self, dict_character):
+        padding_str = '<PAD>'  # 0 
+        end_str = '<EOS>'  # 1
+        unknown_str = '<UNK>'  # 2
+
+        dict_character = [padding_str, end_str, unknown_str] + dict_character
+        self.padding_idx = 0
+        self.end_idx = 1
+        self.unknown_idx = 2
+
+        return dict_character
+
+    def decode(self, text_index, text_prob=None):
+        """ convert text-index into text-label. """
+        result_list = []
+        batch_size = len(text_index)
+
+        for batch_idx in range(batch_size):
+            char_list = []
+            conf_list = []
+            for idx in range(len(text_index[batch_idx])):
+                if text_index[batch_idx][idx] == self.end_idx:
+                    break
+                if text_index[batch_idx][idx] in \
+                    [self.padding_idx, self.unknown_idx]:
+                    continue
+                char_list.append(self.character[int(text_index[batch_idx][
+                    idx])])
+                if text_prob is not None:
+                    conf_list.append(text_prob[batch_idx][idx])
+                else:
+                    conf_list.append(1)
+
+            text = ''.join(char_list)
+            if len(text) > 0:
+                result_list.append((text, np.mean(conf_list)))
+            else:
+                # here confidence of empty recog result is 1
+                result_list.append(('', 1))
+        return result_list
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        preds = preds.numpy()
+        preds_idx = preds.argmax(axis=2)
+        preds_prob = preds.max(axis=2)
+        text = self.decode(preds_idx, preds_prob)
+        if label is None:
+            return text
+        label = self.decode(label)
+        return text, label

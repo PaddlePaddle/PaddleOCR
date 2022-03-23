@@ -49,6 +49,8 @@ inference:tools/infer/predict_det.py
 null:null
 --benchmark:True
 null:null
+===========================infer_benchmark_params==========================
+random_infer_input:[{float32,[3,640,640]}];[{float32,[3,960,960]}]
 ===========================train_benchmark_params==========================
 batch_size:8|16
 fp_items:fp32|fp16

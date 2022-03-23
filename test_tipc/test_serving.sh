@@ -58,29 +58,32 @@ function func_serving(){
     trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
     eval $trans_model_cmd
     cd ${serving_dir_value}
-    echo $PWD
     unset https_proxy
     unset http_proxy
     for python in ${python_list[*]}; do
         if [ ${python} = "cpp" ]; then
             for use_gpu in ${web_use_gpu_list[*]}; do
                 if [ ${use_gpu} = "null" ]; then
-                    web_service_cpp_cmd="${python} -m paddle_serving_server.serve --model ppocr_det_mobile_2.0_serving/ ppocr_rec_mobile_2.0_serving/ --port 9293"
-                    eval $web_service_cmd
+                    web_service_cpp_cmd="${python_list[0]} -m paddle_serving_server.serve --model ppocr_det_mobile_2.0_serving/ ppocr_rec_mobile_2.0_serving/ --port 9293"
+                    eval $web_service_cpp_cmd
+                    last_status=${PIPESTATUS[0]}
+                    status_check $last_status "${web_service_cpp_cmd}" "${status_log}"
                     sleep 2s
                     _save_log_path="${LOG_PATH}/server_infer_cpp_cpu_pipeline_usemkldnn_False_threads_4_batchsize_1.log"
-                    pipeline_cmd="${python} ocr_cpp_client.py ppocr_det_mobile_2.0_client/ ppocr_rec_mobile_2.0_client/"
+                    pipeline_cmd="${python_list[0]}  ocr_cpp_client.py ppocr_det_mobile_2.0_client/ ppocr_rec_mobile_2.0_client/"
                     eval $pipeline_cmd
+                    last_status=${PIPESTATUS[0]}
                     status_check $last_status "${pipeline_cmd}" "${status_log}"
                     sleep 2s
                     ps ux | grep -E 'web_service|pipeline' | awk '{print $2}' | xargs kill -s 9
                 else
-                    web_service_cpp_cmd="${python} -m paddle_serving_server.serve --model ppocr_det_mobile_2.0_serving/ ppocr_rec_mobile_2.0_serving/ --port 9293 --gpu_id=0"
-                    eval $web_service_cmd
+                    web_service_cpp_cmd="${python_list[0]}  -m paddle_serving_server.serve --model ppocr_det_mobile_2.0_serving/ ppocr_rec_mobile_2.0_serving/ --port 9293 --gpu_id=0"
+                    eval $web_service_cpp_cmd
                     sleep 2s
                     _save_log_path="${LOG_PATH}/server_infer_cpp_cpu_pipeline_usemkldnn_False_threads_4_batchsize_1.log"
-                    pipeline_cmd="${python} ocr_cpp_client.py ppocr_det_mobile_2.0_client/ ppocr_rec_mobile_2.0_client/"
+                    pipeline_cmd="${python_list[0]}  ocr_cpp_client.py ppocr_det_mobile_2.0_client/ ppocr_rec_mobile_2.0_client/"
                     eval $pipeline_cmd
+                    last_status=${PIPESTATUS[0]}
                     status_check $last_status "${pipeline_cmd}" "${status_log}"
                     sleep 2s
                     ps ux | grep -E 'web_service|pipeline' | awk '{print $2}' | xargs kill -s 9                
@@ -89,13 +92,14 @@ function func_serving(){
         else
             # python serving
             for use_gpu in ${web_use_gpu_list[*]}; do
-                echo ${ues_gpu}
                 if [ ${use_gpu} = "null" ]; then
                     for use_mkldnn in ${web_use_mkldnn_list[*]}; do
                         for threads in ${web_cpu_threads_list[*]}; do
                             set_cpu_threads=$(func_set_params "${web_cpu_threads_key}" "${threads}")
-                            web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}=${use_gpu} ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} &"
+                            web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}="" ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} &"
                             eval $web_service_cmd
+                            last_status=${PIPESTATUS[0]}
+                            status_check $last_status "${web_service_cmd}" "${status_log}"
                             sleep 2s
                             for pipeline in ${pipeline_py[*]}; do
                                 _save_log_path="${LOG_PATH}/server_infer_cpu_${pipeline%_client*}_usemkldnn_${use_mkldnn}_threads_${threads}_batchsize_1.log"
@@ -128,6 +132,8 @@ function func_serving(){
                             set_precision=$(func_set_params "${web_precision_key}" "${precision}")
                             web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}=${use_gpu} ${set_tensorrt} ${set_precision} & "
                             eval $web_service_cmd
+                            last_status=${PIPESTATUS[0]}
+                            status_check $last_status "${web_service_cmd}" "${status_log}"
                         
                             sleep 2s
                             for pipeline in ${pipeline_py[*]}; do
@@ -151,15 +157,15 @@ function func_serving(){
 }
 
 
-# set cuda device
+#set cuda device
 GPUID=$2
 if [ ${#GPUID} -le 0 ];then
-    env=" "
+    env="export CUDA_VISIBLE_DEVICES=0"
 else
     env="export CUDA_VISIBLE_DEVICES=${GPUID}"
 fi
-set CUDA_VISIBLE_DEVICES
 eval $env
+echo $env
 
 
 echo "################### run test ###################"

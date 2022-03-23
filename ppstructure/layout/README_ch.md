@@ -52,7 +52,7 @@ show_img.show()
 |   threshold    |       预测得分的阈值        |     0.5     |                              \                               |
 |  input_shape   |     reshape之后图片尺寸     | [3,640,640] |                              \                               |
 |   batch_size   |       测试batch size        |      1      |                              \                               |
-|   label_map    |         类别映射表          |    None     | 设置config_path时，可以为None，根据数据集名称自动获取label_map |
+|   label_map    |         类别映射表          |    None     | 设置config_path时，可以为None，根据数据集名称自动获取label_map,设置model_path时需要手动指定 |
 |  enforce_cpu   |     代码是否使用CPU运行     |    False    |         设置为False表示使用GPU，True表示强制使用CPU          |
 | enforce_mkldnn | CPU预测中是否开启MKLDNN加速 |    True     |                              \                               |
 |   thread_num   |        设置CPU线程数        |     10      |                              \                               |

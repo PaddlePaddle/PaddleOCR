@@ -14,7 +14,6 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <!-- to test MiniActivity, change this to com.baidu.paddle.lite.demo.ocr.MiniActivity -->
         <activity android:name="com.baidu.paddle.lite.demo.ocr.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

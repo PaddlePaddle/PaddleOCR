@@ -150,7 +150,7 @@ if [ ${use_opencv} = "True" ]; then
 
         make -j
         make install
-        cd ../
+        cd ../..
         echo "################### build opencv finished ###################"
     fi
 fi

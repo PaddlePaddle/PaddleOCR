@@ -31,23 +31,19 @@ public class Predictor {
     protected float inferenceTime = 0;
     // Only for object detection
     protected Vector<String> wordLabels = new Vector<String>();
-    protected String inputColorFormat = "BGR";
-    protected long[] inputShape = new long[]{1, 3, 960};
-    protected float[] inputMean = new float[]{0.485f, 0.456f, 0.406f};
-    protected float[] inputStd = new float[]{1.0f / 0.229f, 1.0f / 0.224f, 1.0f / 0.225f};
+    protected int detLongSize = 960;
     protected float scoreThreshold = 0.1f;
     protected Bitmap inputImage = null;
     protected Bitmap outputImage = null;
     protected volatile String outputResult = "";
-    protected float preprocessTime = 0;
     protected float postprocessTime = 0;
 
 
     public Predictor() {
     }
 
-    public boolean init(Context appCtx, String modelPath, String labelPath) {
-        isLoaded = loadModel(appCtx, modelPath, cpuThreadNum, cpuPowerMode);
+    public boolean init(Context appCtx, String modelPath, String labelPath, int useOpencl, int cpuThreadNum, String cpuPowerMode) {
+        isLoaded = loadModel(appCtx, modelPath, useOpencl, cpuThreadNum, cpuPowerMode);
         if (!isLoaded) {
             return false;
         }
@@ -56,49 +52,18 @@ public class Predictor {
     }
 
 
-    public boolean init(Context appCtx, String modelPath, String labelPath, int cpuThreadNum, String cpuPowerMode,
-                        String inputColorFormat,
-                        long[] inputShape, float[] inputMean,
-                        float[] inputStd, float scoreThreshold) {
-        if (inputShape.length != 3) {
-            Log.e(TAG, "Size of input shape should be: 3");
-            return false;
-        }
-        if (inputMean.length != inputShape[1]) {
-            Log.e(TAG, "Size of input mean should be: " + Long.toString(inputShape[1]));
-            return false;
-        }
-        if (inputStd.length != inputShape[1]) {
-            Log.e(TAG, "Size of input std should be: " + Long.toString(inputShape[1]));
-            return false;
-        }
-        if (inputShape[0] != 1) {
-            Log.e(TAG, "Only one batch is supported in the image classification demo, you can use any batch size in " +
-                    "your Apps!");
-            return false;
-        }
-        if (inputShape[1] != 1 && inputShape[1] != 3) {
-            Log.e(TAG, "Only one/three channels are supported in the image classification demo, you can use any " +
-                    "channel size in your Apps!");
-            return false;
-        }
-        if (!inputColorFormat.equalsIgnoreCase("BGR")) {
-            Log.e(TAG, "Only  BGR color format is supported.");
-            return false;
-        }
-        boolean isLoaded = init(appCtx, modelPath, labelPath);
+    public boolean init(Context appCtx, String modelPath, String labelPath, int useOpencl, int cpuThreadNum, String cpuPowerMode,
+                        int detLongSize, float scoreThreshold) {
+        boolean isLoaded = init(appCtx, modelPath, labelPath, useOpencl, cpuThreadNum, cpuPowerMode);
         if (!isLoaded) {
             return false;
         }
-        this.inputColorFormat = inputColorFormat;
-        this.inputShape = inputShape;
-        this.inputMean = inputMean;
-        this.inputStd = inputStd;
+        this.detLongSize = detLongSize;
         this.scoreThreshold = scoreThreshold;
         return true;
     }
 
-    protected boolean loadModel(Context appCtx, String modelPath, int cpuThreadNum, String cpuPowerMode) {
+    protected boolean loadModel(Context appCtx, String modelPath, int useOpencl, int cpuThreadNum, String cpuPowerMode) {
         // Release model if exists
         releaseModel();
 
@@ -118,12 +83,13 @@ public class Predictor {
         }
 
         OCRPredictorNative.Config config = new OCRPredictorNative.Config();
+        config.useOpencl = useOpencl;
         config.cpuThreadNum = cpuThreadNum;
-        config.detModelFilename = realPath + File.separator + "ch_ppocr_mobile_v2.0_det_opt.nb";
-        config.recModelFilename = realPath + File.separator + "ch_ppocr_mobile_v2.0_rec_opt.nb";
-        config.clsModelFilename = realPath + File.separator + "ch_ppocr_mobile_v2.0_cls_opt.nb";
-        Log.e("Predictor", "model path" + config.detModelFilename + " ; " + config.recModelFilename + ";" + config.clsModelFilename);
         config.cpuPower = cpuPowerMode;
+        config.detModelFilename = realPath + File.separator + "det_db.nb";
+        config.recModelFilename = realPath + File.separator + "rec_crnn.nb";
+        config.clsModelFilename = realPath + File.separator + "cls.nb";
+        Log.i("Predictor", "model path" + config.detModelFilename + " ; " + config.recModelFilename + ";" + config.clsModelFilename);
         paddlePredictor = new OCRPredictorNative(config);
 
         this.cpuThreadNum = cpuThreadNum;
@@ -170,81 +136,28 @@ public class Predictor {
     }
 
 
-    public boolean runModel() {
+    public boolean runModel(int run_det, int run_cls, int run_rec) {
         if (inputImage == null || !isLoaded()) {
             return false;
         }
 
-        // Pre-process image, and feed input tensor with pre-processed data
-
-        Bitmap scaleImage = Utils.resizeWithStep(inputImage, Long.valueOf(inputShape[2]).intValue(), 32);
-
-        Date start = new Date();
-        int channels = (int) inputShape[1];
-        int width = scaleImage.getWidth();
-        int height = scaleImage.getHeight();
-        float[] inputData = new float[channels * width * height];
-        if (channels == 3) {
-            int[] channelIdx = null;
-            if (inputColorFormat.equalsIgnoreCase("RGB")) {
-                channelIdx = new int[]{0, 1, 2};
-            } else if (inputColorFormat.equalsIgnoreCase("BGR")) {
-                channelIdx = new int[]{2, 1, 0};
-            } else {
-                Log.i(TAG, "Unknown color format " + inputColorFormat + ", only RGB and BGR color format is " +
-                        "supported!");
-                return false;
-            }
-
-            int[] channelStride = new int[]{width * height, width * height * 2};
-            int[] pixels=new int[width*height];
-            scaleImage.getPixels(pixels,0,scaleImage.getWidth(),0,0,scaleImage.getWidth(),scaleImage.getHeight());
-            for (int i = 0; i < pixels.length; i++) {
-                int color = pixels[i];
-                float[] rgb = new float[]{(float) red(color) / 255.0f, (float) green(color) / 255.0f,
-                        (float) blue(color) / 255.0f};
-                inputData[i] = (rgb[channelIdx[0]] - inputMean[0]) / inputStd[0];
-                inputData[i + channelStride[0]] = (rgb[channelIdx[1]] - inputMean[1]) / inputStd[1];
-                inputData[i+ channelStride[1]] = (rgb[channelIdx[2]] - inputMean[2]) / inputStd[2];
-            }
-        } else if (channels == 1) {
-            int[] pixels=new int[width*height];
-            scaleImage.getPixels(pixels,0,scaleImage.getWidth(),0,0,scaleImage.getWidth(),scaleImage.getHeight());
-            for (int i = 0; i < pixels.length; i++) {
-                int color = pixels[i];
-                float gray = (float) (red(color) + green(color) + blue(color)) / 3.0f / 255.0f;
-                inputData[i] = (gray - inputMean[0]) / inputStd[0];
-            }
-        } else {
-            Log.i(TAG, "Unsupported channel size " + Integer.toString(channels) + ",  only channel 1 and 3 is " +
-                    "supported!");
-            return false;
-        }
-        float[] pixels = inputData;
-        Log.i(TAG, "pixels " + pixels[0] + " " + pixels[1] + " " + pixels[2] + " " + pixels[3]
-                + " " + pixels[pixels.length / 2] + " " + pixels[pixels.length / 2 + 1] + " " + pixels[pixels.length - 2] + " " + pixels[pixels.length - 1]);
-        Date end = new Date();
-        preprocessTime = (float) (end.getTime() - start.getTime());
-
         // Warm up
         for (int i = 0; i < warmupIterNum; i++) {
-            paddlePredictor.runImage(inputData, width, height, channels, inputImage);
+            paddlePredictor.runImage(inputImage, detLongSize, run_det, run_cls, run_rec);
         }
         warmupIterNum = 0; // do not need warm
         // Run inference
-        start = new Date();
-        ArrayList<OcrResultModel> results = paddlePredictor.runImage(inputData, width, height, channels, inputImage);
-        end = new Date();
+        Date start = new Date();
+        ArrayList<OcrResultModel> results = paddlePredictor.runImage(inputImage, detLongSize, run_det, run_cls, run_rec);
+        Date end = new Date();
         inferenceTime = (end.getTime() - start.getTime()) / (float) inferIterNum;
 
         results = postprocess(results);
-        Log.i(TAG, "[stat] Preprocess Time: " + preprocessTime
-                + " ; Inference Time: " + inferenceTime + " ;Box Size " + results.size());
+        Log.i(TAG, "[stat] Inference Time: " + inferenceTime + " ;Box Size " + results.size());
         drawResults(results);
 
         return true;
     }
-
 
     public boolean isLoaded() {
         return paddlePredictor != null && isLoaded;
@@ -282,10 +195,6 @@ public class Predictor {
         return outputResult;
     }
 
-    public float preprocessTime() {
-        return preprocessTime;
-    }
-
     public float postprocessTime() {
         return postprocessTime;
     }
@@ -310,6 +219,7 @@ public class Predictor {
                 }
             }
             r.setLabel(word.toString());
+            r.setClsLabel(r.getClsIdx() == 1 ? "180" : "0");
         }
         return results;
     }
@@ -319,14 +229,22 @@ public class Predictor {
         for (int i = 0; i < results.size(); i++) {
             OcrResultModel result = results.get(i);
             StringBuilder sb = new StringBuilder("");
-            sb.append(result.getLabel());
-            sb.append(" ").append(result.getConfidence());
-            sb.append("; Points: ");
-            for (Point p : result.getPoints()) {
-                sb.append("(").append(p.x).append(",").append(p.y).append(") ");
+            if(result.getPoints().size()>0){
+                sb.append("Det: ");
+                for (Point p : result.getPoints()) {
+                    sb.append("(").append(p.x).append(",").append(p.y).append(") ");
+                }
+            }
+            if(result.getLabel().length() > 0){
+                sb.append("\n Rec: ").append(result.getLabel());
+                sb.append(",").append(result.getConfidence());
+            }
+            if(result.getClsIdx()!=-1){
+                sb.append(" Cls: ").append(result.getClsLabel());
+                sb.append(",").append(result.getClsConfidence());
             }
             Log.i(TAG, sb.toString()); // show LOG in Logcat panel
-            outputResultSb.append(i + 1).append(": ").append(result.getLabel()).append("\n");
+            outputResultSb.append(i + 1).append(": ").append(sb.toString()).append("\n");
         }
         outputResult = outputResultSb.toString();
         outputImage = inputImage;
@@ -344,6 +262,9 @@ public class Predictor {
         for (OcrResultModel result : results) {
             Path path = new Path();
             List<Point> points = result.getPoints();
+            if(points.size()==0){
+                continue;
+            }
             path.moveTo(points.get(0).x, points.get(0).y);
             for (int i = points.size() - 1; i >= 0; i--) {
                 Point p = points.get(i);
