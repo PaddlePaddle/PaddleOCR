@@ -101,8 +101,9 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [表格识别](./ppstructure/table/README_ch.md)
     - [DocVQA](./ppstructure/vqa/README_ch.md)
     - [关键信息提取](./ppstructure/docs/kie_ch.md)
-- OCR学术圈
-    - [两阶段模型介绍与下载](./doc/doc_ch/algorithm_overview.md)
+- OCR学术前沿模型介绍与下载
+    - [文本检测算法](./doc/doc_ch/algorithm_overview.md#11-%E6%96%87%E6%9C%AC%E6%A3%80%E6%B5%8B%E7%AE%97%E6%B3%95)
+    - [文本识别算法](./doc/doc_ch/algorithm_overview.md#12-%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
     - [端到端PGNet算法](./doc/doc_ch/pgnet.md)
     - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
     - [使用PaddleOCR架构添加新算法](./doc/doc_ch/add_new_algorithm.md)
