@@ -31,6 +31,7 @@ from ppocr.utils.stats import TrainingStats
 from ppocr.utils.save_load import save_model
 from ppocr.utils.utility import print_dict
 from ppocr.utils.logging import get_logger
+from ppocr.utils.loggers import VDLLogger, WandbLogger
 from ppocr.utils import profiler
 from ppocr.data import build_dataloader
 import numpy as np
@@ -159,7 +160,7 @@ def train(config,
           eval_class,
           pre_best_model_dict,
           logger,
-          vdl_writer=None,
+          log_writer=None,
           scaler=None):
     cal_metric_during_train = config['Global'].get('cal_metric_during_train',
                                                    False)
@@ -243,6 +244,7 @@ def train(config,
                     preds = model(batch)
                 else:
                     preds = model(images)
+            print(batch[0].shape, preds['maps'].shape)
             loss = loss_class(preds, batch)
             avg_loss = loss['loss']
 
@@ -276,10 +278,8 @@ def train(config,
                 metric = eval_class.get_metric()
                 train_stats.update(metric)
 
-            if vdl_writer is not None and dist.get_rank() == 0:
-                for k, v in train_stats.get().items():
-                    vdl_writer.add_scalar('TRAIN/{}'.format(k), v, global_step)
-                vdl_writer.add_scalar('TRAIN/lr', lr, global_step)
+            if log_writer is not None and dist.get_rank() == 0:
+                log_writer.log_metrics(metrics=train_stats.get(), prefix="TRAIN", step=global_step)
 
             if dist.get_rank() == 0 and (
                 (global_step > 0 and global_step % print_batch_step == 0) or
@@ -316,11 +316,9 @@ def train(config,
                 logger.info(cur_metric_str)
 
                 # logger metric
-                if vdl_writer is not None:
-                    for k, v in cur_metric.items():
-                        if isinstance(v, (float, int)):
-                            vdl_writer.add_scalar('EVAL/{}'.format(k),
-                                                  cur_metric[k], global_step)
+                if log_writer is not None:
+                    log_writer.log_metrics(metrics=cur_metric, prefix="EVAL", step=global_step)
+                    
                 if cur_metric[main_indicator] >= best_model_dict[
                         main_indicator]:
                     best_model_dict.update(cur_metric)
@@ -340,10 +338,14 @@ def train(config,
                 ]))
                 logger.info(best_str)
                 # logger best metric
-                if vdl_writer is not None:
-                    vdl_writer.add_scalar('EVAL/best_{}'.format(main_indicator),
-                                          best_model_dict[main_indicator],
-                                          global_step)
+                if log_writer is not None:
+                    log_writer.log_metrics(metrics={
+                        "best_{}".format(main_indicator): best_model_dict[main_indicator]
+                        }, prefix="EVAL", step=global_step)
+                    
+                    if isinstance(log_writer, WandbLogger):
+                        log_writer.log_model(is_best=True, prefix="best_accuracy")
+
             global_step += 1
             optimizer.clear_grad()
             reader_start = time.time()
@@ -358,6 +360,10 @@ def train(config,
                 best_model_dict=best_model_dict,
                 epoch=epoch,
                 global_step=global_step)
+
+            if isinstance(log_writer, WandbLogger):
+                log_writer.log_model(is_best=False, prefix="latest")
+
         if dist.get_rank() == 0 and epoch > 0 and epoch % save_epoch_step == 0:
             save_model(
                 model,
@@ -369,11 +375,15 @@ def train(config,
                 best_model_dict=best_model_dict,
                 epoch=epoch,
                 global_step=global_step)
+
+            if isinstance(log_writer, WandbLogger):
+                log_writer.log_model(is_best=False, prefix='iter_epoch_{}'.format(epoch))
+
     best_str = 'best metric, {}'.format(', '.join(
         ['{}: {}'.format(k, v) for k, v in best_model_dict.items()]))
     logger.info(best_str)
-    if dist.get_rank() == 0 and vdl_writer is not None:
-        vdl_writer.close()
+    if dist.get_rank() == 0 and log_writer is not None:
+        log_writer.close()
     return
 
 
@@ -517,14 +527,21 @@ def preprocess(is_train=False):
     config['Global']['distributed'] = dist.get_world_size() != 1
 
     if config['Global']['use_visualdl']:
-        from visualdl import LogWriter
         save_model_dir = config['Global']['save_model_dir']
         vdl_writer_path = '{}/vdl/'.format(save_model_dir)
-        os.makedirs(vdl_writer_path, exist_ok=True)
-        vdl_writer = LogWriter(logdir=vdl_writer_path)
+        log_writer = VDLLogger(save_model_dir)
+    elif config['Global']['use_wandb'] or 'wandb' in config:
+        save_dir = config['Global']['save_model_dir']
+        wandb_writer_path = '{}/wandb'.format(save_dir)
+        if 'wandb' in config:
+            wandb_params = config['wandb']
+        else:
+            wandb_params = dict()
+        wandb_params.update({'save_dir': save_model_dir})
+        log_writer = WandbLogger(**wandb_params, config=config)
     else:
-        vdl_writer = None
+        log_writer = None
     print_dict(config, logger)
     logger.info('train with paddle {} and device {}'.format(paddle.__version__,
                                                             device))
-    return config, device, logger, vdl_writer
+    return config, device, logger, log_writer
