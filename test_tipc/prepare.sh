@@ -60,6 +60,9 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     ln -s ./icdar2015_lite ./icdar2015
     cd ../
     cd ./inference && tar xf rec_inference.tar && cd ../
+    if [ ${model_name} == "" ]; then
+        wget -nc -P ./pretrain_models/  https://paddleocr.bj.bcebos.com/pretrained/ResNet18_vd_pretrained.pdparams  --no-check-certificate
+    fi
     if [ ${model_name} == "en_server_pgnetA" ]; then
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/total_text_lite.tar --no-check-certificate
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/en_server_pgnetA.tar --no-check-certificate
