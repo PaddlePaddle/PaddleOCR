@@ -14,6 +14,7 @@
 
 import os
 import sys
+import importlib
 
 __dir__ = os.path.dirname(__file__)
 
@@ -25,6 +26,10 @@ import cv2
 import logging
 import numpy as np
 from pathlib import Path
+
+tools = importlib.import_module('.', 'tools')
+ppocr = importlib.import_module('.', 'ppocr')
+ppstructure = importlib.import_module('.', 'ppstructure')
 
 from tools.infer import predict_system
 from ppocr.utils.logging import get_logger
@@ -42,7 +47,7 @@ __all__ = [
 ]
 
 SUPPORT_DET_MODEL = ['DB']
-VERSION = '2.4.0.2'
+VERSION = '2.4.0.3'
 SUPPORT_REC_MODEL = ['CRNN']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
