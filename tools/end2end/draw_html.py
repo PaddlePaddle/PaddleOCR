@@ -13,9 +13,29 @@
 # limitations under the License.
 
 import os
+import argparse
 
 
-def draw_debug_img(html_path):
+def str2bool(v):
+    return v.lower() in ("true", "t", "1")
+
+
+def init_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--image_dir", type=str, default="")
+    parser.add_argument("--save_html_path", type=str, default="./default.html")
+    parser.add_argument("--width", type=int, default=640)
+    return parser
+
+
+def parse_args():
+    parser = init_args()
+    return parser.parse_args()
+
+
+def draw_debug_img(args):
+
+    html_path = args.save_html_path
 
     err_cnt = 0
     with open(html_path, 'w') as html:
@@ -25,23 +45,14 @@ def draw_debug_img(html_path):
             "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />"
         )
         image_list = []
-        path = "./det_results/310_gt/"
+        path = args.image_dir
         for i, filename in enumerate(sorted(os.listdir(path))):
             if filename.endswith("txt"): continue
-            print(filename)
             # The image path
             base = "{}/{}".format(path, filename)
-            base_2 = "../PaddleOCR/det_results/ch_PPOCRV2_infer/{}".format(
-                filename)
-            base_3 = "../PaddleOCR/det_results/ch_ppocr_mobile_infer/{}".format(
-                filename)
-
             html.write("<tr>\n")
             html.write(f'<td> {filename}\n GT')
-            html.write('<td>GT\n<img src="%s" width=640></td>' % (base))
-            html.write('<td>PPOCRV2\n<img src="%s" width=640></td>' % (base_2))
-            html.write('<td>ppocr_mobile\n<img src="%s" width=640></td>' %
-                       (base_3))
+            html.write(f'<td>GT\n<img src="{base}" width={args.width}></td>')
 
             html.write("</tr>\n")
         html.write('<style>\n')
@@ -51,12 +62,12 @@ def draw_debug_img(html_path):
         html.write('</style>\n')
         html.write('</table>\n')
         html.write('</html>\n</body>\n')
-    print("ok")
+    print(f"The html file saved in {html_path}")
     return
 
 
 if __name__ == "__main__":
 
-    html_path = "sys_visual_iou_310.html"
+    args = parse_args()
 
-    draw_debug_img()
+    draw_debug_img(args)
