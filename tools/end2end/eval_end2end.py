@@ -1,17 +1,26 @@
-#!/usr/bin/env python
+# Copyright (c) 2022 PaddlePaddle Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import os
 import re
 import sys
-# import Polygon
 import shapely
 from shapely.geometry import Polygon
 import numpy as np
 from collections import defaultdict
 import operator
 import editdistance
-
-# reload(sys)
-# sys.setdefaultencoding('utf-8')
 
 
 def strQ2B(ustring):
@@ -59,7 +68,7 @@ def ed(str1, str2):
     return editdistance.eval(str1, str2)
 
 
-def e2e_eval(gt_dir, res_dir):
+def e2e_eval(gt_dir, res_dir, ignore_blank=False):
     print('start testing...')
     iou_thresh = 0.5
     val_names = os.listdir(gt_dir)
@@ -125,10 +134,12 @@ def e2e_eval(gt_dir, res_dir):
             if gt_match[index_gt] == False and dt_match[index_dt] == False:
                 gt_match[index_gt] = True
                 dt_match[index_dt] = True
-                # gt_str = strQ2B(gts[index_gt][8]).replace(" ", "")
-                # dt_str = strQ2B(dts[index_dt][8]).replace(" ", "")
-                gt_str = strQ2B(gts[index_gt][8])
-                dt_str = strQ2B(dts[index_dt][8])
+                if ignore_blank:
+                    gt_str = strQ2B(gts[index_gt][8]).replace(" ", "")
+                    dt_str = strQ2B(dts[index_dt][8]).replace(" ", "")
+                else:
+                    gt_str = strQ2B(gts[index_gt][8])
+                    dt_str = strQ2B(dts[index_dt][8])
                 if ignore_masks[index_gt] == '0':
                     ed_sum += ed(gt_str, dt_str)
                     num_gt_chars += len(gt_str)

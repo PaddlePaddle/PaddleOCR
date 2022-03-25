@@ -1,3 +1,17 @@
+# Copyright (c) 2022 PaddlePaddle Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import os
 
 
@@ -12,7 +26,6 @@ def draw_debug_img(html_path):
         )
         image_list = []
         path = "./det_results/310_gt/"
-        #path = "infer_results/"
         for i, filename in enumerate(sorted(os.listdir(path))):
             if filename.endswith("txt"): continue
             print(filename)
@@ -23,16 +36,14 @@ def draw_debug_img(html_path):
             base_3 = "../PaddleOCR/det_results/ch_ppocr_mobile_infer/{}".format(
                 filename)
 
-            if True:
-                html.write("<tr>\n")
-                html.write(f'<td> {filename}\n GT')
-                html.write('<td>GT\n<img src="%s" width=640></td>' % (base))
-                html.write('<td>PPOCRV2\n<img src="%s" width=640></td>' %
-                           (base_2))
-                html.write('<td>ppocr_mobile\n<img src="%s" width=640></td>' %
-                           (base_3))
+            html.write("<tr>\n")
+            html.write(f'<td> {filename}\n GT')
+            html.write('<td>GT\n<img src="%s" width=640></td>' % (base))
+            html.write('<td>PPOCRV2\n<img src="%s" width=640></td>' % (base_2))
+            html.write('<td>ppocr_mobile\n<img src="%s" width=640></td>' %
+                       (base_3))
 
-                html.write("</tr>\n")
+            html.write("</tr>\n")
         html.write('<style>\n')
         html.write('span {\n')
         html.write('    color: red;\n')
@@ -41,7 +52,6 @@ def draw_debug_img(html_path):
         html.write('</table>\n')
         html.write('</html>\n</body>\n')
     print("ok")
-    #print("all cnt: {}, err cnt: {}, acc: {}".format(len(imgs), err_cnt, 1.0 * (len(imgs) - err_cnt) / len(imgs)))
     return
 
 
