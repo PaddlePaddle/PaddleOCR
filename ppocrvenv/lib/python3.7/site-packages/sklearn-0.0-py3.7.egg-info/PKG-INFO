@@ -1,0 +1,42 @@
+Metadata-Version: 1.2
+Name: sklearn
+Version: 0.0
+Summary: A set of python modules for machine learning and data mining
+Home-page: https://pypi.python.org/pypi/scikit-learn/
+Author: UNKNOWN
+Author-email: UNKNOWN
+blas_opt_info:
+blas_mkl_info:
+  FOUND:
+    libraries = ['mkl_intel_lp64', 'mkl_intel_thread', 'mkl_core', 'iomp5', 'pthread']
+    library_dirs = ['/Users/filo/anaconda/lib']
+    define_macros = [('SCIPY_MKL_H', None)]
+    include_dirs = ['/Users/filo/anaconda/include']
+
+  FOUND:
+    libraries = ['mkl_intel_lp64', 'mkl_intel_thread', 'mkl_core', 'iomp5', 'pthread']
+    library_dirs = ['/Users/filo/anaconda/lib']
+    define_macros = [('SCIPY_MKL_H', None)]
+    include_dirs = ['/Users/filo/anaconda/include']
+
+UNKNOWN
+Maintainer: UNKNOWN
+Maintainer-email: UNKNOWN
+blas_opt_info:
+blas_mkl_info:
+  FOUND:
+    libraries = ['mkl_intel_lp64', 'mkl_intel_thread', 'mkl_core', 'iomp5', 'pthread']
+    library_dirs = ['/Users/filo/anaconda/lib']
+    define_macros = [('SCIPY_MKL_H', None)]
+    include_dirs = ['/Users/filo/anaconda/include']
+
+  FOUND:
+    libraries = ['mkl_intel_lp64', 'mkl_intel_thread', 'mkl_core', 'iomp5', 'pthread']
+    library_dirs = ['/Users/filo/anaconda/lib']
+    define_macros = [('SCIPY_MKL_H', None)]
+    include_dirs = ['/Users/filo/anaconda/include']
+
+UNKNOWN
+License: UNKNOWN
+Description: Use `scikit-learn <https://pypi.python.org/pypi/scikit-learn/>`_ instead.
+Platform: all

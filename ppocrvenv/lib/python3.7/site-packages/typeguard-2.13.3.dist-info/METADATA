@@ -1,0 +1,77 @@
+Metadata-Version: 2.1
+Name: typeguard
+Version: 2.13.3
+Summary: Run-time type checker for Python
+Home-page: UNKNOWN
+Author: Alex Grönholm
+Author-email: alex.gronholm@nextday.fi
+License: MIT
+Project-URL: Documentation, https://typeguard.readthedocs.io/en/latest/
+Project-URL: Change log, https://typeguard.readthedocs.io/en/latest/versionhistory.html
+Project-URL: Source code, https://github.com/agronholm/typeguard
+Project-URL: Issue tracker, https://github.com/agronholm/typeguard/issues
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.5.3
+License-File: LICENSE
+Provides-Extra: doc
+Requires-Dist: sphinx-rtd-theme ; extra == 'doc'
+Requires-Dist: sphinx-autodoc-typehints (>=1.2.0) ; extra == 'doc'
+Provides-Extra: test
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: typing-extensions ; extra == 'test'
+Requires-Dist: mypy ; (platform_python_implementation != "PyPy") and extra == 'test'
+
+.. image:: https://travis-ci.com/agronholm/typeguard.svg?branch=master
+  :target: https://travis-ci.com/agronholm/typeguard
+  :alt: Build Status
+.. image:: https://coveralls.io/repos/agronholm/typeguard/badge.svg?branch=master&service=github
+  :target: https://coveralls.io/github/agronholm/typeguard?branch=master
+  :alt: Code Coverage
+.. image:: https://readthedocs.org/projects/typeguard/badge/?version=latest
+  :target: https://typeguard.readthedocs.io/en/latest/?badge=latest
+
+This library provides run-time type checking for functions defined with
+`PEP 484 <https://www.python.org/dev/peps/pep-0484/>`_ argument (and return) type annotations.
+
+Four principal ways to do type checking are provided, each with its pros and cons:
+
+#. the ``check_argument_types()`` and ``check_return_type()`` functions:
+
+   * debugger friendly (except when running with the pydev debugger with the C extension installed)
+   * does not work reliably with dynamically defined type hints (e.g. in nested functions)
+#. the ``@typechecked`` decorator:
+
+   * automatically type checks yields and sends of returned generators (regular and async)
+   * adds an extra frame to the call stack for every call to a decorated function
+#. the stack profiler hook (``with TypeChecker('packagename'):``) (deprecated):
+
+   * emits warnings instead of raising ``TypeError``
+   * requires very few modifications to the code
+   * multiple TypeCheckers can be stacked/nested
+   * does not work reliably with dynamically defined type hints (e.g. in nested functions)
+   * may cause problems with badly behaving debuggers or profilers
+   * cannot distinguish between an exception being raised and a ``None`` being returned
+#. the import hook (``typeguard.importhook.install_import_hook()``):
+
+   * automatically annotates classes and functions with ``@typechecked`` on import
+   * no code changes required in target modules
+   * requires imports of modules you need to check to be deferred until after the import hook has
+     been installed
+   * may clash with other import hooks
+
+See the documentation_ for further instructions.
+
+.. _documentation: https://typeguard.readthedocs.io/en/latest/
+
+

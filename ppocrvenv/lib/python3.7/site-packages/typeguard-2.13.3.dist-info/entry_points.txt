@@ -1,0 +1,3 @@
+[pytest11]
+typeguard = typeguard.pytest_plugin
+

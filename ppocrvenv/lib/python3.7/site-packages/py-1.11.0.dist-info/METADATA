@@ -1,0 +1,69 @@
+Metadata-Version: 2.1
+Name: py
+Version: 1.11.0
+Summary: library with cross-python path, ini-parsing, io, code, log facilities
+Home-page: https://py.readthedocs.io/
+Author: holger krekel, Ronny Pfannschmidt, Benjamin Peterson and others
+Author-email: pytest-dev@python.org
+License: MIT license
+Platform: unix
+Platform: linux
+Platform: osx
+Platform: cygwin
+Platform: win32
+Classifier: Development Status :: 6 - Mature
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Topic :: Software Development :: Testing
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Utilities
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*
+
+.. image:: https://img.shields.io/pypi/v/py.svg
+    :target: https://pypi.org/project/py
+
+.. image:: https://img.shields.io/conda/vn/conda-forge/py.svg
+    :target: https://anaconda.org/conda-forge/py
+
+.. image:: https://img.shields.io/pypi/pyversions/py.svg
+  :target: https://pypi.org/project/py
+
+.. image:: https://github.com/pytest-dev/py/workflows/build/badge.svg
+  :target: https://github.com/pytest-dev/py/actions
+
+
+**NOTE**: this library is in **maintenance mode** and should not be used in new code.
+
+The py lib is a Python development support library featuring
+the following tools and modules:
+
+* ``py.path``:  uniform local and svn path objects  -> please use pathlib/pathlib2 instead
+* ``py.apipkg``:  explicit API control and lazy-importing -> please use the standalone package instead
+* ``py.iniconfig``:  easy parsing of .ini files -> please use the standalone package instead
+* ``py.code``: dynamic code generation and introspection (deprecated, moved to ``pytest`` as a implementation detail).
+
+**NOTE**: prior to the 1.4 release this distribution used to
+contain py.test which is now its own package, see https://docs.pytest.org
+
+For questions and more information please visit https://py.readthedocs.io
+
+Bugs and issues: https://github.com/pytest-dev/py
+
+Authors: Holger Krekel and others, 2004-2017
+
+

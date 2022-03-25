@@ -1,0 +1,3 @@
+[console_scripts]
+cpuinfo = cpuinfo:main
+

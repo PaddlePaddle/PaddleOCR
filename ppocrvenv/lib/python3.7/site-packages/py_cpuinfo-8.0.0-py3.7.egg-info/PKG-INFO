@@ -1,0 +1,25 @@
+Metadata-Version: 1.1
+Name: py-cpuinfo
+Version: 8.0.0
+Summary: Get CPU info with pure Python 2 & 3
+Home-page: https://github.com/workhorsy/py-cpuinfo
+Author: Matthew Brennan Jones
+Author-email: matthew.brennan.jones@gmail.com
+License: MIT
+Description: py-cpuinfo
+        ==========
+        
+        
+        Py-cpuinfo gets CPU info with pure Python. Py-cpuinfo should work
+        without any extra programs or libraries, beyond what your OS provides.
+        It does not require any compilation(C/C++, assembly, et cetera) to use.
+        It works with Python 2 and 3.
+        
+        Documentation can be viewed here: https://github.com/workhorsy/py-cpuinfo
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Topic :: Utilities
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3

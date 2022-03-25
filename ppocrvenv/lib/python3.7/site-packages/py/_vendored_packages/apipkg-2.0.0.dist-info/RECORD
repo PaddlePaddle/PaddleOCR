@@ -1,0 +1,11 @@
+apipkg-2.0.0.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
+apipkg-2.0.0.dist-info/LICENSE,sha256=6J7tEHTTqUMZi6E5uAhE9bRFuGC7p0qK6twGEFZhZOo,1054
+apipkg-2.0.0.dist-info/METADATA,sha256=GqNwkxraK5UTxObLVXTLc2UqktOPwZnKqdk2ThzHX0A,4292
+apipkg-2.0.0.dist-info/RECORD,,
+apipkg-2.0.0.dist-info/REQUESTED,sha256=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU,0
+apipkg-2.0.0.dist-info/WHEEL,sha256=WzZ8cwjh8l0jtULNjYq1Hpr-WCqCRgPr--TX4P5I1Wo,110
+apipkg-2.0.0.dist-info/top_level.txt,sha256=3TGS6nmN7kjxhUK4LpPCB3QkQI34QYGrT0ZQGWajoZ8,7
+apipkg/__init__.py,sha256=gpbD3O57S9f-LsO2e-XwI6IGISayicfnCq3B5y_8frg,6978
+apipkg/__pycache__/__init__.cpython-39.pyc,,
+apipkg/__pycache__/version.cpython-39.pyc,,
+apipkg/version.py,sha256=bgZFg-f3UKhgE-z2w8RoFrwqRBzJBZkM4_jKFiYB9eU,142

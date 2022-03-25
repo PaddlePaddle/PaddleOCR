@@ -1,0 +1,519 @@
+Metadata-Version: 2.1
+Name: pytest-benchmark
+Version: 3.4.1
+Summary: A ``pytest`` fixture for benchmarking code. It will group the tests into rounds that are calibrated to the chosen timer.
+Home-page: https://github.com/ionelmc/pytest-benchmark
+Author: Ionel Cristian Mărieș
+Author-email: contact@ionelmc.ro
+License: BSD-2-Clause
+Project-URL: Documentation, https://pytest-benchmark.readthedocs.io/
+Project-URL: Changelog, https://pytest-benchmark.readthedocs.io/en/latest/changelog.html
+Project-URL: Issue Tracker, https://github.com/ionelmc/pytest-benchmark/issues
+Keywords: pytest,benchmark
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Framework :: Pytest
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: Unix
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Software Development :: Testing
+Classifier: Topic :: System :: Benchmark
+Classifier: Topic :: Utilities
+Requires-Python: >=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*
+Requires-Dist: pytest (>=3.8)
+Requires-Dist: py-cpuinfo
+Requires-Dist: statistics ; python_version < "3.4"
+Requires-Dist: pathlib2 ; python_version < "3.4"
+Provides-Extra: aspect
+Requires-Dist: aspectlib ; extra == 'aspect'
+Provides-Extra: elasticsearch
+Requires-Dist: elasticsearch ; extra == 'elasticsearch'
+Provides-Extra: histogram
+Requires-Dist: pygal ; extra == 'histogram'
+Requires-Dist: pygaljs ; extra == 'histogram'
+
+========
+Overview
+========
+
+
+
+A ``pytest`` fixture for benchmarking code. It will group the tests into rounds that are calibrated to the chosen
+timer.
+
+See calibration_ and FAQ_.
+
+* Free software: BSD 2-Clause License
+
+Installation
+============
+
+::
+
+    pip install pytest-benchmark
+
+Documentation
+=============
+
+For latest release: `pytest-benchmark.readthedocs.org/en/stable <http://pytest-benchmark.readthedocs.org/en/stable/>`_.
+
+For master branch (may include documentation fixes): `pytest-benchmark.readthedocs.io/en/latest <http://pytest-benchmark.readthedocs.io/en/latest/>`_.
+
+Examples
+========
+
+But first, a prologue:
+
+    This plugin tightly integrates into pytest. To use this effectively you should know a thing or two about pytest first.
+    Take a look at the `introductory material <http://docs.pytest.org/en/latest/getting-started.html>`_
+    or watch `talks <http://docs.pytest.org/en/latest/talks.html>`_.
+
+    Few notes:
+
+    * This plugin benchmarks functions and only that. If you want to measure block of code
+      or whole programs you will need to write a wrapper function.
+    * In a test you can only benchmark one function. If you want to benchmark many functions write more tests or
+      use `parametrization <http://docs.pytest.org/en/latest/parametrize.html>`_.
+    * To run the benchmarks you simply use `pytest` to run your "tests". The plugin will automatically do the
+      benchmarking and generate a result table. Run ``pytest --help`` for more details.
+
+This plugin provides a `benchmark` fixture. This fixture is a callable object that will benchmark any function passed
+to it.
+
+Example:
+
+.. code-block:: python
+
+    def something(duration=0.000001):
+        """
+        Function that needs some serious benchmarking.
+        """
+        time.sleep(duration)
+        # You may return anything you want, like the result of a computation
+        return 123
+
+    def test_my_stuff(benchmark):
+        # benchmark something
+        result = benchmark(something)
+
+        # Extra code, to verify that the run completed correctly.
+        # Sometimes you may want to check the result, fast functions
+        # are no good if they return incorrect results :-)
+        assert result == 123
+
+You can also pass extra arguments:
+
+.. code-block:: python
+
+    def test_my_stuff(benchmark):
+        benchmark(time.sleep, 0.02)
+
+Or even keyword arguments:
+
+.. code-block:: python
+
+    def test_my_stuff(benchmark):
+        benchmark(time.sleep, duration=0.02)
+
+Another pattern seen in the wild, that is not recommended for micro-benchmarks (very fast code) but may be convenient:
+
+.. code-block:: python
+
+    def test_my_stuff(benchmark):
+        @benchmark
+        def something():  # unnecessary function call
+            time.sleep(0.000001)
+
+A better way is to just benchmark the final function:
+
+.. code-block:: python
+
+    def test_my_stuff(benchmark):
+        benchmark(time.sleep, 0.000001)  # way more accurate results!
+
+If you need to do fine control over how the benchmark is run (like a `setup` function, exact control of `iterations` and
+`rounds`) there's a special mode - pedantic_:
+
+.. code-block:: python
+
+    def my_special_setup():
+        ...
+
+    def test_with_setup(benchmark):
+        benchmark.pedantic(something, setup=my_special_setup, args=(1, 2, 3), kwargs={'foo': 'bar'}, iterations=10, rounds=100)
+
+Screenshots
+-----------
+
+Normal run:
+
+.. image:: https://github.com/ionelmc/pytest-benchmark/raw/master/docs/screenshot.png
+    :alt: Screenshot of pytest summary
+
+Compare mode (``--benchmark-compare``):
+
+.. image:: https://github.com/ionelmc/pytest-benchmark/raw/master/docs/screenshot-compare.png
+    :alt: Screenshot of pytest summary in compare mode
+
+Histogram (``--benchmark-histogram``):
+
+.. image:: https://cdn.rawgit.com/ionelmc/pytest-benchmark/94860cc8f47aed7ba4f9c7e1380c2195342613f6/docs/sample-tests_test_normal.py_test_xfast_parametrized%5B0%5D.svg
+    :alt: Histogram sample
+
+..
+
+    Also, it has `nice tooltips <https://cdn.rawgit.com/ionelmc/pytest-benchmark/master/docs/sample.svg>`_.
+
+Development
+===========
+
+To run the all tests run::
+
+    tox
+
+Credits
+=======
+
+* Timing code and ideas taken from: https://github.com/vstinner/misc/blob/34d3128468e450dad15b6581af96a790f8bd58ce/python/benchmark.py
+
+.. _FAQ: http://pytest-benchmark.readthedocs.org/en/latest/faq.html
+.. _calibration: http://pytest-benchmark.readthedocs.org/en/latest/calibration.html
+.. _pedantic: http://pytest-benchmark.readthedocs.org/en/latest/pedantic.html
+
+
+Changelog
+=========
+
+
+3.4.1 (2021-04-17)
+------------------
+
+* Republished with updated changelog.
+
+  I intended to publish a ``3.3.0`` release but I messed it up because bumpversion doesn't work well with pre-commit
+  apparently... thus ``3.4.0`` was set in by accident.
+
+
+3.4.0 (2021-04-17)
+------------------
+
+* Disable progress indication unless ``--benchmark-verbose`` is used.
+  Contributed by Dimitris Rozakis in `#149 <https://github.com/ionelmc/pytest-benchmark/pull/149>`_.
+* Added Python 3.9, dropped Python 3.5.
+  Contributed by Miroslav Šedivý in `#189 <https://github.com/ionelmc/pytest-benchmark/pull/189>`_.
+* Changed the "cpu" data in the json output to include everything that cpuinfo outputs, for better or worse as cpuinfo 6.0 changed some
+  fields. Users should now ensure they are an adequate cpuinfo package installed.
+  **MAY BE BACKWARDS INCOMPATIBLE**
+* Changed behavior of ``--benchmark-skip`` and ``--benchmark-only`` to apply early in the collection phase.
+  This means skipped tests won't make pytest run fixtures for said tests unnecessarily, but unfortunately this also means
+  the skipping behavior will be applied to any tests that requires a "benchmark" fixture, regardless if it would come from pytest-benchmark
+  or not.
+  **MAY BE BACKWARDS INCOMPATIBLE**
+* Added ``--benchmark-quiet`` - option to disable reporting and other information output.
+* Squelched unnecessary warning when ``--benchmark-disable`` and save options are used.
+  Fixes `#199 <https://github.com/ionelmc/pytest-benchmark/issues/199>`_.
+* ``PerformanceRegression`` exception no longer inherits ``pytest.UsageError`` (apparently a *final* class).
+
+3.2.3 (2020-01-10)
+------------------
+
+* Fixed "already-imported" pytest warning. Contributed by Jonathan Simon Prates in
+  `#151 <https://github.com/ionelmc/pytest-benchmark/pull/151>`_.
+* Fixed breakage that occurs when benchmark is disabled while using cprofile feature (by disabling cprofile too).
+* Dropped Python 3.4 from the test suite and updated test deps.
+* Fixed ``pytest_benchmark.utils.clonefunc`` to work on Python 3.8.
+
+3.2.2 (2017-01-12)
+------------------
+
+* Added support for pytest items without funcargs. Fixes interoperability with other pytest plugins like pytest-flake8.
+
+3.2.1 (2017-01-10)
+------------------
+
+* Updated changelog entries for 3.2.0. I made the release for pytest-cov on the same day and thought I updated the
+  changelogs for both plugins. Alas, I only updated pytest-cov.
+* Added missing version constraint change. Now pytest >= 3.8 is required (due to pytest 4.1 support).
+* Fixed couple CI/test issues.
+* Fixed broken ``pytest_benchmark.__version__``.
+
+3.2.0 (2017-01-07)
+------------------
+
+* Added support for simple ``trial`` x-axis histogram label. Contributed by Ken Crowell in
+  `#95 <https://github.com/ionelmc/pytest-benchmark/pull/95>`_).
+* Added support for Pytest 3.3+, Contributed by Julien Nicoulaud in
+  `#103 <https://github.com/ionelmc/pytest-benchmark/pull/103>`_.
+* Added support for Pytest 4.0. Contributed by Pablo Aguiar in
+  `#129 <https://github.com/ionelmc/pytest-benchmark/pull/129>`_ and
+  `#130 <https://github.com/ionelmc/pytest-benchmark/pull/130>`_.
+* Added support for Pytest 4.1.
+* Various formatting, spelling and documentation fixes. Contributed by
+  Ken Crowell, Ofek Lev, Matthew Feickert, Jose Eduardo, Anton Lodder, Alexander Duryagin and Grygorii Iermolenko in
+  `#97 <https://github.com/ionelmc/pytest-benchmark/pull/97>`_,
+  `#97 <https://github.com/ionelmc/pytest-benchmark/pull/97>`_,
+  `#105 <https://github.com/ionelmc/pytest-benchmark/pull/105>`_,
+  `#110 <https://github.com/ionelmc/pytest-benchmark/pull/110>`_,
+  `#111 <https://github.com/ionelmc/pytest-benchmark/pull/111>`_,
+  `#115 <https://github.com/ionelmc/pytest-benchmark/pull/115>`_,
+  `#123 <https://github.com/ionelmc/pytest-benchmark/pull/123>`_,
+  `#131 <https://github.com/ionelmc/pytest-benchmark/pull/131>`_ and
+  `#140 <https://github.com/ionelmc/pytest-benchmark/pull/140>`_.
+* Fixed broken ``pytest_benchmark_update_machine_info`` hook. Contributed by Alex Ford in
+  `#109 <https://github.com/ionelmc/pytest-benchmark/pull/109>`_.
+* Fixed bogus xdist warning when using ``--benchmark-disable``. Contributed by Francesco Ballarin in
+  `#113 <https://github.com/ionelmc/pytest-benchmark/pull/113>`_.
+* Added support for pathlib2. Contributed by Lincoln de Sousa in
+  `#114 <https://github.com/ionelmc/pytest-benchmark/pull/114>`_.
+* Changed handling so you can use ``--benchmark-skip`` and ``--benchmark-only``, with the later having priority.
+  Contributed by Ofek Lev in
+  `#116 <https://github.com/ionelmc/pytest-benchmark/pull/116>`_.
+* Fixed various CI/testing issues.
+  Contributed by Stanislav Levin in
+  `#134 <https://github.com/ionelmc/pytest-benchmark/pull/134>`_,
+  `#136 <https://github.com/ionelmc/pytest-benchmark/pull/136>`_ and
+  `#138 <https://github.com/ionelmc/pytest-benchmark/pull/138>`_.
+
+3.1.1 (2017-07-26)
+------------------
+
+* Fixed loading data from old json files (missing ``ops`` field, see
+  `#81 <https://github.com/ionelmc/pytest-benchmark/issues/81>`_).
+* Fixed regression on broken SCM (see
+  `#82 <https://github.com/ionelmc/pytest-benchmark/issues/82>`_).
+
+3.1.0 (2017-07-21)
+------------------
+
+* Added "operations per second" (``ops`` field in ``Stats``) metric --
+  shows the call rate of code being tested. Contributed by Alexey Popravka in
+  `#78 <https://github.com/ionelmc/pytest-benchmark/pull/78>`_.
+* Added a ``time`` field in ``commit_info``. Contributed by "varac" in
+  `#71 <https://github.com/ionelmc/pytest-benchmark/pull/71>`_.
+* Added a ``author_time`` field in ``commit_info``. Contributed by "varac" in
+  `#75   <https://github.com/ionelmc/pytest-benchmark/pull/75>`_.
+* Fixed the leaking of credentials by masking the URL printed when storing
+  data to elasticsearch.
+* Added a ``--benchmark-netrc`` option to use credentials from a netrc file when
+  storing data to elasticsearch. Both contributed by Andre Bianchi in
+  `#73 <https://github.com/ionelmc/pytest-benchmark/pull/73>`_.
+* Fixed docs on hooks. Contributed by Andre Bianchi in `#74 <https://github.com/ionelmc/pytest-benchmark/pull/74>`_.
+* Remove ``git`` and ``hg`` as system dependencies when guessing the project name.
+
+3.1.0a2 (2017-03-27)
+--------------------
+
+* ``machine_info`` now contains more detailed information about the CPU, in
+  particular the exact model. Contributed by Antonio Cuni in `#61 <https://github.com/ionelmc/pytest-benchmark/pull/61>`_.
+* Added ``benchmark.extra_info``, which you can use to save arbitrary stuff in
+  the JSON. Contributed by Antonio Cuni in the same PR as above.
+* Fix support for latest PyGal version (histograms). Contributed by Swen Kooij in
+  `#68 <https://github.com/ionelmc/pytest-benchmark/pull/68>`_.
+* Added support for getting ``commit_info`` when not running in the root of the repository. Contributed by Vara Canero in
+  `#69 <https://github.com/ionelmc/pytest-benchmark/pull/69>`_.
+* Added short form for ``--storage``/``--verbose`` options in CLI.
+* Added an alternate ``pytest-benchmark`` CLI bin (in addition to ``py.test-benchmark``) to match the madness in pytest.
+* Fix some issues with ``--help`` in CLI.
+* Improved git remote parsing (for ``commit_info`` in JSON outputs).
+* Fixed default value for ``--benchmark-columns``.
+* Fixed comparison mode (loading was done too late).
+* Remove the project name from the autosave name. This will get the old brief naming from 3.0 back.
+
+3.1.0a1 (2016-10-29)
+--------------------
+
+* Added ``--benchmark-colums`` command line option. It selects what columns are displayed in the result table. Contributed by
+  Antonio Cuni in `#34 <https://github.com/ionelmc/pytest-benchmark/pull/34>`_.
+* Added support for grouping by specific test parametrization (``--benchmark-group-by=param:NAME`` where ``NAME`` is your
+  param name). Contributed by Antonio Cuni in `#37 <https://github.com/ionelmc/pytest-benchmark/pull/37>`_.
+* Added support for ``name`` or ``fullname`` in ``--benchmark-sort``.
+  Contributed by Antonio Cuni in `#37 <https://github.com/ionelmc/pytest-benchmark/pull/37>`_.
+* Changed signature for ``pytest_benchmark_generate_json`` hook to take 2 new arguments: ``machine_info`` and ``commit_info``.
+* Changed ``--benchmark-histogram`` to plot groups instead of name-matching runs.
+* Changed ``--benchmark-histogram`` to plot exactly what you compared against. Now it's ``1:1`` with the compare feature.
+* Changed ``--benchmark-compare`` to allow globs. You can compare against all the previous runs now.
+* Changed ``--benchmark-group-by`` to allow multiple values separated by comma.
+  Example: ``--benchmark-group-by=param:foo,param:bar``
+* Added a command line tool to compare previous data: ``py.test-benchmark``. It has two commands:
+
+  * ``list`` - Lists all the available files.
+  * ``compare`` - Displays result tables. Takes optional arguments:
+
+    * ``--sort=COL``
+    * ``--group-by=LABEL``
+    * ``--columns=LABELS``
+    * ``--histogram=[FILENAME-PREFIX]``
+* Added ``--benchmark-cprofile`` that profiles last run of benchmarked function.  Contributed by Petr Šebek.
+* Changed ``--benchmark-storage`` so it now allows elasticsearch storage. It allows to store data to elasticsearch instead to
+  json files. Contributed by Petr Šebek in `#58 <https://github.com/ionelmc/pytest-benchmark/pull/58>`_.
+
+3.0.0 (2015-11-08)
+------------------
+
+* Improved ``--help`` text for ``--benchmark-histogram``, ``--benchmark-save`` and ``--benchmark-autosave``.
+* Benchmarks that raised exceptions during test now have special highlighting in result table (red background).
+* Benchmarks that raised exceptions are not included in the saved data anymore (you can still get the old behavior back
+  by implementing ``pytest_benchmark_generate_json`` in your ``conftest.py``).
+* The plugin will use pytest's warning system for warnings. There are 2 categories: ``WBENCHMARK-C`` (compare mode
+  issues) and ``WBENCHMARK-U`` (usage issues).
+* The red warnings are only shown if ``--benchmark-verbose`` is used. They still will be always be shown in the
+  pytest-warnings section.
+* Using the benchmark fixture more than one time is disallowed (will raise exception).
+* Not using the benchmark fixture (but requiring it) will issue a warning (``WBENCHMARK-U1``).
+
+3.0.0rc1 (2015-10-25)
+---------------------
+
+* Changed ``--benchmark-warmup`` to take optional value and automatically activate on PyPy (default value is ``auto``).
+  **MAY BE BACKWARDS INCOMPATIBLE**
+* Removed the version check in compare mode (previously there was a warning if current version is lower than what's in
+  the file).
+
+3.0.0b3 (2015-10-22)
+---------------------
+
+* Changed how comparison is displayed in the result table. Now previous runs are shown as normal runs and names get a
+  special suffix indicating the origin. Eg: "test_foobar (NOW)" or "test_foobar (0123)".
+* Fixed sorting in the result table. Now rows are sorted by the sort column, and then by name.
+* Show the plugin version in the header section.
+* Moved the display of default options in the header section.
+
+3.0.0b2 (2015-10-17)
+---------------------
+
+* Add a ``--benchmark-disable`` option. It's automatically activated when xdist is on
+* When xdist is on or ``statistics`` can't be imported then ``--benchmark-disable`` is automatically activated (instead
+  of ``--benchmark-skip``). **BACKWARDS INCOMPATIBLE**
+* Replace the deprecated ``__multicall__`` with the new hookwrapper system.
+* Improved description for ``--benchmark-max-time``.
+
+3.0.0b1 (2015-10-13)
+--------------------
+
+* Tests are sorted alphabetically in the results table.
+* Failing to import ``statistics`` doesn't create hard failures anymore. Benchmarks are automatically skipped if import
+  failure occurs. This would happen on Python 3.2 (or earlier Python 3).
+
+3.0.0a4 (2015-10-08)
+--------------------
+
+* Changed how failures to get commit info are handled: now they are soft failures. Previously it made the whole
+  test suite fail, just because you didn't have ``git/hg`` installed.
+
+3.0.0a3 (2015-10-02)
+--------------------
+
+* Added progress indication when computing stats.
+
+3.0.0a2 (2015-09-30)
+--------------------
+
+* Fixed accidental output capturing caused by capturemanager misuse.
+
+3.0.0a1 (2015-09-13)
+--------------------
+
+* Added JSON report saving (the ``--benchmark-json`` command line arguments). Based on initial work from Dave Collins in
+  `#8 <https://github.com/ionelmc/pytest-benchmark/pull/8>`_.
+* Added benchmark data storage(the ``--benchmark-save`` and ``--benchmark-autosave`` command line arguments).
+* Added comparison to previous runs (the ``--benchmark-compare`` command line argument).
+* Added performance regression checks (the ``--benchmark-compare-fail`` command line argument).
+* Added possibility to group by various parts of test name (the ``--benchmark-compare-group-by`` command line argument).
+* Added historical plotting (the ``--benchmark-histogram`` command line argument).
+* Added option to fine tune the calibration (the ``--benchmark-calibration-precision`` command line argument and
+  ``calibration_precision`` marker option).
+
+* Changed ``benchmark_weave`` to no longer be a context manager. Cleanup is performed automatically.
+  **BACKWARDS INCOMPATIBLE**
+* Added ``benchmark.weave`` method (alternative to ``benchmark_weave`` fixture).
+
+* Added new hooks to allow customization:
+
+  * ``pytest_benchmark_generate_machine_info(config)``
+  * ``pytest_benchmark_update_machine_info(config, info)``
+  * ``pytest_benchmark_generate_commit_info(config)``
+  * ``pytest_benchmark_update_commit_info(config, info)``
+  * ``pytest_benchmark_group_stats(config, benchmarks, group_by)``
+  * ``pytest_benchmark_generate_json(config, benchmarks, include_data)``
+  * ``pytest_benchmark_update_json(config, benchmarks, output_json)``
+  * ``pytest_benchmark_compare_machine_info(config, benchmarksession, machine_info, compared_benchmark)``
+
+* Changed the timing code to:
+
+  * Tracers are automatically disabled when running the test function (like coverage tracers).
+  * Fixed an issue with calibration code getting stuck.
+
+* Added ``pedantic mode`` via ``benchmark.pedantic()``. This mode disables calibration and allows a setup function.
+
+
+2.5.0 (2015-06-20)
+------------------
+
+* Improved test suite a bit (not using ``cram`` anymore).
+* Improved help text on the ``--benchmark-warmup`` option.
+* Made ``warmup_iterations`` available as a marker argument (eg: ``@pytest.mark.benchmark(warmup_iterations=1234)``).
+* Fixed ``--benchmark-verbose``'s printouts to work properly with output capturing.
+* Changed how warmup iterations are computed (now number of total iterations is used, instead of just the rounds).
+* Fixed a bug where calibration would run forever.
+* Disabled red/green coloring (it was kinda random) when there's a single test in the results table.
+
+2.4.1 (2015-03-16)
+------------------
+
+* Fix regression, plugin was raising ``ValueError: no option named 'dist'`` when xdist wasn't installed.
+
+2.4.0 (2015-03-12)
+------------------
+
+* Add a ``benchmark_weave`` experimental fixture.
+* Fix internal failures when ``xdist`` plugin is active.
+* Automatically disable benchmarks if ``xdist`` is active.
+
+2.3.0 (2014-12-27)
+------------------
+
+* Moved the warmup in the calibration phase. Solves issues with benchmarking on PyPy.
+
+  Added a ``--benchmark-warmup-iterations`` option to fine-tune that.
+
+2.2.0 (2014-12-26)
+------------------
+
+* Make the default rounds smaller (so that variance is more accurate).
+* Show the defaults in the ``--help`` section.
+
+2.1.0 (2014-12-20)
+------------------
+
+* Simplify the calibration code so that the round is smaller.
+* Add diagnostic output for calibration code (``--benchmark-verbose``).
+
+2.0.0 (2014-12-19)
+------------------
+
+* Replace the context-manager based API with a simple callback interface. **BACKWARDS INCOMPATIBLE**
+* Implement timer calibration for precise measurements.
+
+1.0.0 (2014-12-15)
+------------------
+
+* Use a precise default timer for PyPy.
+
+? (?)
+-----
+
+* README and styling fixes. Contributed by Marc Abramowitz in `#4 <https://github.com/ionelmc/pytest-benchmark/pull/4>`_.
+* Lots of wild changes.
+
+

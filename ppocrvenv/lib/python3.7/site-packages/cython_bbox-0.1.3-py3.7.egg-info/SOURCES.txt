@@ -1,0 +1,10 @@
+MANIFEST.in
+README.md
+setup.cfg
+setup.py
+cython_bbox.egg-info/PKG-INFO
+cython_bbox.egg-info/SOURCES.txt
+cython_bbox.egg-info/dependency_links.txt
+cython_bbox.egg-info/top_level.txt
+src/cython_bbox.c
+src/cython_bbox.pyx

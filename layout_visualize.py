@@ -5,7 +5,7 @@ from paddleocr import PPStructure,draw_structure_result,save_structure_res, Padd
 table_engine = PPStructure(show_log=True)
 
 save_folder = './output/table'
-img_path = '/Users/vx/Documents/GitHub/PaddleOCR/doc/imgs/bilibili/001.jpg'
+img_path = '/Users/vx/Documents/GitHub/BigoneMR/imgs/fin-reports-test-ver/bili_engagement/Bilibili4.jpeg'
 img = cv2.imread(img_path)
 result = table_engine(img)
 save_structure_res(result, save_folder,os.path.basename(img_path).split('.')[0])

@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: cython-bbox
+Version: 0.1.3
+Summary: Standalone cython_bbox
+Home-page: https://github.com/samson-wang/cython_bbox.git
+Author: Samson Wang
+Author-email: samson.c.wang@gmail.com
+License: UNKNOWN
+Description: # cython_bbox
+        
+        cython_bbox is widely used in object detection tasks. To my best knowledge, it was first implemented in [Faster-RCNN](https://github.com/rbgirshick/py-faster-rcnn). Since then, almost all object detection projects use the source code directly.
+        
+        In order to use it in standalone code snippets or small projects, I make it a pypi module. The `cython_bbox.pyx` is totally borrowed from [Faster-RCNN](https://github.com/rbgirshick/py-faster-rcnn). Thanks [RBG](http://www.rossgirshick.info/)!
+        
+        ## install
+        
+        ```
+        pip install cython_bbox
+        ```
+        
+        ## usage
+        
+        
+        ```
+        from cython_bbox import bbox_overlaps
+        overlaps = bbox_overlaps(
+                np.ascontiguousarray(dt, dtype=np.float32),
+                np.ascontiguousarray(gt, dtype=np.float32)
+            )
+        
+        ```
+        
+Keywords: cython_bbox
+Platform: UNKNOWN
+Description-Content-Type: text/markdown

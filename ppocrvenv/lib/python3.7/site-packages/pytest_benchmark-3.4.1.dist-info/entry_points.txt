@@ -1,0 +1,7 @@
+[console_scripts]
+py.test-benchmark = pytest_benchmark.cli:main
+pytest-benchmark = pytest_benchmark.cli:main
+
+[pytest11]
+benchmark = pytest_benchmark.plugin
+

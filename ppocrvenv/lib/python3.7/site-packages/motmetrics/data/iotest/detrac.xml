@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sequence name="MVI_39031">
+   <sequence_attribute camera_state="unstable" sence_weather="sunny"/>
+   <ignored_region>
+      <box left="335.75" top="52.75" width="256.5" height="117.5"/>
+      <box left="0.5" top="296.75" width="223.75" height="120.5"/>
+      <box left="690.75" top="116.75" width="269.75" height="94.5"/>
+   </ignored_region>
+   <frame density="1" num="1">
+      <target_list>
+         <target id="1">
+            <box left="745.6" top="357.33" width="148.2" height="115.14"/>
+            <attribute orientation="222.06" speed="11.782" trajectory_length="336" truncation_ratio="0" vehicle_type="car"/>
+         </target>
+      </target_list>
+   </frame>
+   <frame density="1" num="2">
+      <target_list>
+         <target id="1">
+            <box left="739.2" top="350.51" width="145.21" height="111.29"/>
+            <attribute orientation="222.06" speed="11.782" trajectory_length="336" truncation_ratio="0" vehicle_type="car"/>
+         </target>
+      </target_list>
+   </frame>
+   <frame density="1" num="3">
+      <target_list>
+         <target id="1">
+            <box left="732.8" top="343.68" width="142.23" height="107.45"/>
+            <attribute orientation="222.06" speed="11.782" trajectory_length="336" truncation_ratio="0" vehicle_type="car"/>
+         </target>
+      </target_list>
+   </frame>
+   <frame density="1" num="4">
+      <target_list>
+         <target id="1">
+            <box left="726.4" top="336.85" width="139.24" height="103.62"/>
+            <attribute orientation="222.06" speed="11.782" trajectory_length="336" truncation_ratio="0" vehicle_type="car"/>
+         </target>
+      </target_list>
+   </frame>
+</sequence>

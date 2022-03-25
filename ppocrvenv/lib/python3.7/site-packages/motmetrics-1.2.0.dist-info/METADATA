@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: motmetrics
+Version: 1.2.0
+Summary: Metrics for multiple object tracker benchmarking.
+Home-page: https://github.com/cheind/py-motmetrics
+Author: Christoph Heindl, Jack Valmadre
+Author-email: UNKNOWN
+License: MIT
+Keywords: tracker MOT evaluation metrics compare
+Platform: UNKNOWN
+Requires-Dist: numpy (>=1.12.1)
+Requires-Dist: pandas (>=0.23.1)
+Requires-Dist: scipy (>=0.19.0)
+Requires-Dist: xmltodict (>=0.12.0)
+Requires-Dist: flake8
+Requires-Dist: flake8-import-order
+Requires-Dist: pytest
+Requires-Dist: pytest-benchmark
+Requires-Dist: enum34; python_version < "3"
+
+UNKNOWN
+
+

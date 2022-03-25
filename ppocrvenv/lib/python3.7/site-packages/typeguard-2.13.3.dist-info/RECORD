@@ -1,0 +1,15 @@
+typeguard-2.13.3.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
+typeguard-2.13.3.dist-info/LICENSE,sha256=YWP3mH37ONa8MgzitwsvArhivEESZRbVUu8c1DJH51g,1130
+typeguard-2.13.3.dist-info/METADATA,sha256=rrszCBWMnpJt2j9D8QqPgS1kQUFdTu5exwvCVkB0cIY,3591
+typeguard-2.13.3.dist-info/RECORD,,
+typeguard-2.13.3.dist-info/REQUESTED,sha256=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU,0
+typeguard-2.13.3.dist-info/WHEEL,sha256=ewwEueio1C2XeHTvT17n8dZUJgOvyCWCt0WVNLClP9o,92
+typeguard-2.13.3.dist-info/entry_points.txt,sha256=uBVT0tmiav9LH4v6cq0GIl7TYz07TqFHniXP6zCfHbY,48
+typeguard-2.13.3.dist-info/top_level.txt,sha256=4z28AhuDodwRS_c1J_l8H51t5QuwfTseskYzlxp6grs,10
+typeguard/__init__.py,sha256=7LyyccpyAXgyd3WO2j1GXCWDdyasGjmA9v9DeydHR70,49186
+typeguard/__pycache__/__init__.cpython-37.pyc,,
+typeguard/__pycache__/importhook.cpython-37.pyc,,
+typeguard/__pycache__/pytest_plugin.cpython-37.pyc,,
+typeguard/importhook.py,sha256=nv3-M2SZ4cHxJBakslR_7w73YpT6Lit67txi7H7-xGM,5601
+typeguard/py.typed,sha256=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU,0
+typeguard/pytest_plugin.py,sha256=T1wfao9RMZ-fQ31bA_gmkoOtHEmXk3o1s0Nty5ZrFnw,917

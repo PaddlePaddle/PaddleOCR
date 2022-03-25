@@ -1,0 +1,99 @@
+Metadata-Version: 2.1
+Name: terminaltables
+Version: 3.1.10
+Summary: Generate simple tables in terminals from a nested list of strings.
+Home-page: https://github.com/matthewdeanmartin/terminaltables
+License: MIT
+Keywords: Shell,Bash,ANSI,ASCII,terminal,tables
+Author: Robpol86
+Author-email: robpol86@gmail.com
+Requires-Python: >=2.6
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Console
+Classifier: Environment :: MacOS X
+Classifier: Environment :: Win32 (MS Windows)
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.6
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Terminals
+Classifier: Topic :: Text Processing :: Markup
+Project-URL: Bug Tracker, https://github.com/matthewdeanmartin/terminaltables/issues
+Project-URL: Change Log, https://github.com/matthewdeanmartin/terminaltables/blob/master/CHANGELOG.md
+Project-URL: Documentation, https://github.com/matthewdeanmartin/terminaltables
+Project-URL: Repository, https://github.com/matthewdeanmartin/terminaltables
+Description-Content-Type: text/markdown
+
+## terminaltables
+
+# What is it
+
+Easily draw tables in terminal/console applications from a list of lists of strings. Supports multi-line rows.
+
+- Python 2.6, 2.7, PyPy, PyPy3, 3.3, 3.4, and 3.5+ supported on Linux and OS X.
+- Python 2.7, 3.3, 3.4, and 3.5+ supported on Windows (both 32 and 64 bit versions of Python).
+
+📖 Full documentation: https://robpol86.github.io/terminaltables
+
+Quickstart
+==========
+
+Install:
+
+```bash
+pip install terminaltables
+```
+
+Usage:
+
+```python
+from terminaltables import AsciiTable
+
+table_data = [
+    ['Heading1', 'Heading2'],
+    ['row1 column1', 'row1 column2'],
+    ['row2 column1', 'row2 column2'],
+    ['row3 column1', 'row3 column2']
+]
+table = AsciiTable(table_data)
+print
+table.table
+```
+
+```bash
++--------------+--------------+
+| Heading1     | Heading2     |
++--------------+--------------+
+| row1 column1 | row1 column2 |
+| row2 column1 | row2 column2 |
+| row3 column1 | row3 column2 |
++--------------+--------------+
+```
+
+Example Implementations
+=======================
+![Example Scripts Screenshot](https://github.com/matthewdeanmartin/terminaltables/blob/master/docs/examples.png?raw=true)
+
+Source code for examples:
+
+- [example1.py](https://github.com/matthewdeanmartin/terminaltables/blob/master/example1.py)
+- [example2.py](https://github.com/matthewdeanmartin/terminaltables/blob/master/example2.py)
+- [example3.py](https://github.com/matthewdeanmartin/terminaltables/blob/master/example3.py)
+
+[Change Log](https://github.com/matthewdeanmartin/terminaltables/blob/master/CHANGELOG.md)
