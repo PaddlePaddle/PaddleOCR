@@ -114,6 +114,7 @@ def init_args():
     #
     parser.add_argument(
         "--draw_img_save_dir", type=str, default="./inference_results")
+    parser.add_argument("--is_visualize", type=str2bool, default=True)
     parser.add_argument("--save_crop_res", type=str2bool, default=False)
     parser.add_argument("--crop_res_save_dir", type=str, default="./output")
 
