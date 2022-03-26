@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
   CRNNRecognizer rec(config.rec_model_dir, config.use_gpu, config.gpu_id,
                      config.gpu_mem, config.cpu_math_library_num_threads,
                      config.use_mkldnn, config.use_zero_copy_run,
-                     config.char_list_file);
+                     config.char_list_file, config.rec_batch_num);
 
 #ifdef USE_MKL
 #pragma omp parallel
@@ -91,11 +91,11 @@ int main(int argc, char **argv) {
   auto end = std::chrono::system_clock::now();
   auto duration =
       std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-  std::cout << "花费了"
+  std::cout << "cost"
             << double(duration.count()) *
                    std::chrono::microseconds::period::num /
                    std::chrono::microseconds::period::den
-            << "秒" << std::endl;
+            << "s" << std::endl;
 
   return 0;
 }

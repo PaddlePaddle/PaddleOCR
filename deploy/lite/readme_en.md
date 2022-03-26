@@ -22,15 +22,7 @@ deployment solutions for end-side deployment issues.
 
 ## 3. Prepare prebuild library for android and ios
 
-### 3.1 Download prebuild library
-|Platform|Prebuild library Download Link|
-|-|-|
-|Android|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.android.armv7.gcc.c++_shared.with_extra.with_cv.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.android.armv8.gcc.c++_shared.with_extra.with_cv.tar.gz)|
-|IOS|[arm7](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.ios.armv7.with_cv.with_extra.with_log.tiny_publish.tar.gz) / [arm8](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.6.3/inference_lite_lib.ios.armv8.with_cv.with_extra.with_log.tiny_publish.tar.gz)|
-
-note: The above pre-build inference library is compiled from the PaddleLite `release/v2.7` branch. For more information about PaddleLite 2.6.3, please refer to [link](https://github.com/PaddlePaddle/Paddle-Lite/releases/tag/v2.6.3).
-
-### 3.2 Compile prebuild library (Recommended)
+### 3.1 Compile prebuild library (Recommended)
 ```
 git clone https://github.com/PaddlePaddle/Paddle-Lite.git
 cd Paddle-Lite
@@ -66,6 +58,11 @@ inference_lite_lib.android.armv8/
 |   `-- java  
 ```
 
+### 3.2 Download prebuild library
+
+PaddleLite also provides a compiled [prediction library](https://github.com/PaddlePaddle/Paddle-Lite/releases/tag/v2.7.1), developers can try on their own.
+
+
 
 ## 4. Inference Model Optimization
 
@@ -80,7 +77,6 @@ You can directly download the optimized model.
 | - | - | - | - | - | - | - |
 | V1.1 | extra-lightweight chinese OCR optimized model | 8.1M | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_opt.nb) | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_opt.nb) | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_opt.nb) | develop |
 | [slim] V1.1 | extra-lightweight chinese OCR optimized model | 3.5M | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_det_prune_opt.nb) | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_cls_quant_opt.nb) | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.1_rec_quant_opt.nb) | develop |
-| V1.0 | lightweight Chinese OCR optimized model | 8.6M | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.0_det_opt.nb) | - | [Download](https://paddleocr.bj.bcebos.com/20-09-22/mobile/lite/ch_ppocr_mobile_v1.0_rec_opt.nb) | develop |
 
 If the model to be deployed is not in the above table, you need to follow the steps below to obtain the optimized model.
 
