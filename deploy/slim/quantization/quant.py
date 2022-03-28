@@ -119,7 +119,7 @@ def main(config, device, logger, vdl_writer):
     model = build_model(config['Architecture'])
 
     pre_best_model_dict = dict()
-    # load pretrain model
+    # load fp32 model to begin quantization
     if config["Global"]["pretrained_model"] is not None:
         pre_best_model_dict = load_model(config, model)
 
@@ -139,6 +139,7 @@ def main(config, device, logger, vdl_writer):
         step_each_epoch=len(train_dataloader),
         parameters=model.parameters())
 
+    # resume PACT training process
     if config["Global"]["checkpoints"] is not None:
         pre_best_model_dict = load_model(config, model, optimizer)
 
