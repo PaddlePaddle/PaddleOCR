@@ -7,7 +7,7 @@ import numpy as np
 
 
 ocr = PaddleOCR(use_gpu=False, lang="ch", type="structure", det_db_box_thresh=0.05, det_db_thresh=0.05, det_db_unclip_ratio=3.0, max_batch_size=10, use_mp=True)
-path = "/Users/vx/Documents/GitHub/BigoneMR/"
+path = "/Users/vx/Documents/GitHub/PaddleOCR/"
 
 
 for img_path in ns.natsorted(os.listdir(path), reverse=False):
@@ -47,12 +47,12 @@ for img_path in ns.natsorted(os.listdir(path), reverse=False):
             result = _boxes
 
         # prefix with image indices
-        output = open("/Users/vx/Documents/GitHub/PaddleOCR/ppstructure/output/table/kano/res.txt", "a+")
+        output = open("/Users/vx/Documents/GitHub/PaddleOCR/ppstructure/output/table/prices/res.txt", "a+")
         output.writelines(str(index) + ",")
 
         if result is not None:
             for line in result:
-                output = open("/Users/vx/Documents/GitHub/PaddleOCR/ppstructure/output/table/kano/res.txt", "a+")
+                output = open("/Users/vx/Documents/GitHub/PaddleOCR/ppstructure/output/table/prices/res.txt", "a+")
                 if line[1][0] is not None:
                     output.writelines(str(line[1][0]) + ", ")
                 else:
@@ -61,5 +61,5 @@ for img_path in ns.natsorted(os.listdir(path), reverse=False):
         else:
             texts = "Not recognized"
             output.writelines(texts)
-    output = open("/Users/vx/Documents/GitHub/PaddleOCR/ppstructure/output/table/kano/res.txt", "a+")
+    output = open("/Users/vx/Documents/GitHub/PaddleOCR/ppstructure/output/table/prices/res.txt", "a+")
     output.writelines("\n")

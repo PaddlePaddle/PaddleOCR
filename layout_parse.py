@@ -15,7 +15,7 @@ table_engine = PPStructure(show_log=True,
                            max_batch_size=20,
                            det_pse_box_thresh=0.05)
 save_folder = '/Users/vx/Documents/GitHub/PaddleOCR/ppstructure/output/table'
-img_path = '/Users/vx/Documents/GitHub/BigoneMR/imgs/fin-reports-test-ver/bili_engagement/Bilibili4.jpeg'
+img_path = '/Users/vx/Documents/GitHub/PaddleOCR/'
 img = cv2.imread(img_path)
 result = table_engine(img)
 save_structure_res(result, save_folder, os.path.basename(img_path).split('.')[0])
@@ -30,5 +30,5 @@ font_path = '/Users/vx/Documents/GitHub/PaddleOCR/doc/fonts/simfang.ttf' # Paddl
 image = Image.open(img_path).convert('RGB')
 im_show = draw_structure_result(image, result, font_path=font_path)
 im_show = Image.fromarray(im_show)
-im_show.save('/Users/vx/Documents/GitHub/PaddleOCR/ppstructure/output/table/result.jpg')
+# im_show.save('/Users/vx/Documents/GitHub/PaddleOCR/ppstructure/output/table/result.jpg')
 

@@ -5,7 +5,7 @@ import urllib
 import time
 import pandas as pd
 
-df = pd.read_excel('/Users/vx/Documents/GitHub/PaddleOCR/xlsx/prices.xlsx')
+df = pd.read_excel('/run/user/1000/gvfs/sftp:host=vickys-mac-mini.local/Users/vx/Documents/GitHub/PaddleOCR/xlsx/prices.xlsx')
 row_num, col_num = df.shape[0], df.shape[1]
 
 for id in range(row_num):
