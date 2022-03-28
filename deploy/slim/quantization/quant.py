@@ -118,6 +118,7 @@ def main(config, device, logger, vdl_writer):
             config['Architecture']["Head"]['out_channels'] = char_num
     model = build_model(config['Architecture'])
 
+    pre_best_model_dict = dict()
     # load pretrain model
     if config["Global"]["pretrained_model"] is not None:
         pre_best_model_dict = load_model(config, model)
