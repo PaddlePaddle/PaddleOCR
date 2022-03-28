@@ -121,9 +121,9 @@ class PSELoss(nn.Layer):
 
         if neg_num == 0:
             selected_mask = training_mask
-            selected_mask = selected_mask.view(
-                1, selected_mask.shape[0],
-                selected_mask.shape[1]).astype('float32')
+            selected_mask = selected_mask.reshape(
+                [1, selected_mask.shape[0], selected_mask.shape[1]]).astype(
+                    'float32')
             return selected_mask
 
         neg_score = paddle.masked_select(score, gt_text <= 0.5)
