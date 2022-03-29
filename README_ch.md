@@ -32,7 +32,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - PP-OCR系列高质量预训练模型，准确的识别效果
     - 超轻量PP-OCRv2系列：检测（3.1M）+ 方向分类器（1.4M）+ 识别（8.5M）= 13.0M
     - 超轻量PP-OCR mobile移动端系列：检测（3.0M）+方向分类器（1.4M）+ 识别（5.0M）= 9.4M
-    - 通用PPOCR server系列：检测（47.1M）+方向分类器（1.4M）+ 识别（94.9M）= 143.4M
+    - 通用PP-OCR server系列：检测（47.1M）+方向分类器（1.4M）+ 识别（94.9M）= 143.4M
     - 支持中英文数字组合识别、竖排文本识别、长文本识别
     - 支持多语言识别：韩语、日语、德语、法语等约80种语言
 - PP-Structure文档结构化系统
@@ -100,9 +100,10 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [版面分析](./ppstructure/layout/README_ch.md)
     - [表格识别](./ppstructure/table/README_ch.md)
     - [DocVQA](./ppstructure/vqa/README_ch.md)
-    - [关键信息提取](./ppstructure/docs/kie.md)
-- OCR学术圈
-    - [两阶段模型介绍与下载](./doc/doc_ch/algorithm_overview.md)
+    - [关键信息提取](./ppstructure/docs/kie_ch.md)
+- OCR学术前沿模型介绍与下载
+    - [文本检测算法](./doc/doc_ch/algorithm_overview.md#11-%E6%96%87%E6%9C%AC%E6%A3%80%E6%B5%8B%E7%AE%97%E6%B3%95)
+    - [文本识别算法](./doc/doc_ch/algorithm_overview.md#12-%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
     - [端到端PGNet算法](./doc/doc_ch/pgnet.md)
     - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
     - [使用PaddleOCR架构添加新算法](./doc/doc_ch/add_new_algorithm.md)
