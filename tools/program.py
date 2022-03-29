@@ -244,7 +244,6 @@ def train(config,
                     preds = model(batch)
                 else:
                     preds = model(images)
-            print(batch[0].shape, preds['maps'].shape)
             loss = loss_class(preds, batch)
             avg_loss = loss['loss']
 
@@ -344,7 +343,7 @@ def train(config,
                         }, prefix="EVAL", step=global_step)
                     
                     if isinstance(log_writer, WandbLogger):
-                        log_writer.log_model(is_best=True, prefix="best_accuracy")
+                        log_writer.log_model(is_best=True, prefix="best_accuracy", metadata=best_model_dict)
 
             global_step += 1
             optimizer.clear_grad()
