@@ -288,4 +288,4 @@ The detection results will be shown on the screen, which is as follows.
 
 ## 3. FAQ
 
- 1.  Encountered the error `unable to access 'https://github.com/LDOUBLEV/AutoLog.git/': gnutls_handshake() failed: The TLS connection was non-properly terminated.` First import `https://github. com/LDOUBLEV/AutoLog` project on gitee, and then change the github address in `deploy/cpp_infer/external-cmake/auto-log.cmake` to the gitee address.
+ 1.  Encountered the error `unable to access 'https://github.com/LDOUBLEV/AutoLog.git/': gnutls_handshake() failed: The TLS connection was non-properly terminated.`, change the github address in `deploy/cpp_infer/external-cmake/auto-log.cmake` to the https://gitee.com/Double_V/AutoLog address.

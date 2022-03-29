@@ -295,4 +295,4 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 
 ## 3. FAQ
 
- 1.  遇到报错 `unable to access 'https://github.com/LDOUBLEV/AutoLog.git/': gnutls_handshake() failed: The TLS connection was non-properly terminated.` 首先在gitee导入`https://github.com/LDOUBLEV/AutoLog` 项目，然后将 `deploy/cpp_infer/external-cmake/auto-log.cmake` 中的github地址改为gitee地址即可。
+ 1.  遇到报错 `unable to access 'https://github.com/LDOUBLEV/AutoLog.git/': gnutls_handshake() failed: The TLS connection was non-properly terminated.`， 将 `deploy/cpp_infer/external-cmake/auto-log.cmake` 中的github地址改为 https://gitee.com/Double_V/AutoLog 地址即可。
