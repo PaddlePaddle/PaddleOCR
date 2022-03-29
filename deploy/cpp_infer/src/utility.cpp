@@ -67,7 +67,7 @@ void Utility::GetAllFiles(const char *dir_name,
     return;
   }
   struct stat s;
-  lstat(dir_name, &s);
+  stat(dir_name, &s);
   if (!S_ISDIR(s.st_mode)) {
     std::cout << "dir_name is not a valid directory !" << std::endl;
     all_inputs.push_back(dir_name);
