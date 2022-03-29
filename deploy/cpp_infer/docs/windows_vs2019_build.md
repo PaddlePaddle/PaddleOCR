@@ -10,7 +10,7 @@
     - [Step2: 执行cmake配置](#step2-执行cmake配置)
     - [Step3: 生成Visual Studio 项目](#step3-生成visual-studio-项目)
     - [Step4: 预测](#step4-预测)
-  - [FQA](#fqa)
+  - [FAQ](#faq)
 
 # Visual Studio 2019 Community CMake 编译指南
 
@@ -60,7 +60,7 @@ git clone -b dygraph https://github.com/PaddlePaddle/PaddleOCR
 ## 2. 开始运行
 
 ### Step1: 构建Visual Studio项目
-打开cmake-gui，在第一个输入框处填写源代码路径，第二个输入框处填写编译输出路径
+cmake安装完后后系统里会有一个cmake-gui程序，打开cmake-gui，在第一个输入框处填写源代码路径，第二个输入框处填写编译输出路径
 
 ![step1](https://paddleocr.bj.bcebos.com/deploy/cpp_infer/cpp_files/cmake_step1.png)
 
@@ -80,7 +80,7 @@ git clone -b dygraph https://github.com/PaddlePaddle/PaddleOCR
 * GPU版本，在cpu版本的基础上，还需填写以下变量
 CUDA_LIB、CUDNN_LIB、TENSORRT_DIR、WITH_GPU、WITH_TENSORRT
 
-- CUDA_LIB: CUDA地址，如 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.2\lib\x64
+- CUDA_LIB: CUDA地址，如 `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.2\lib\x64`
 - CUDNN_LIB: 和CUDA_LIB一致
 - TENSORRT_DIR：TRT下载后解压缩的位置
 - WITH_GPU: 打钩
@@ -112,8 +112,8 @@ CUDA_LIB、CUDNN_LIB、TENSORRT_DIR、WITH_GPU、WITH_TENSORRT
 点击`生成->生成解决方案`，即可在`build/Release/`文件夹下看见`ppocr.exe`文件。
 
 运行之前，将下面文件拷贝到`build/Release/`文件夹下
-1. paddle_inference/paddle/lib/paddle_inference.dll
-2. opencv/build/x64/vc15/bin/opencv_world455.dll
+1. `paddle_inference/paddle/lib/paddle_inference.dll`
+2. `opencv/build/x64/vc15/bin/opencv_world455.dll`
 
 ### Step4: 预测
 
@@ -135,6 +135,6 @@ CHCP 65001
 ![result](https://paddleocr.bj.bcebos.com/deploy/cpp_infer/cpp_files/result.png)
 
 
-## FQA
+## FAQ
 
 * 运行时，弹窗报错提示`应用程序无法正常启动(0xc0000142)`，并且`cmd`窗口内提示`You are using Paddle compiled with TensorRT, but TensorRT dynamic library is not found.`，把tensort目录下的lib里面的所有dll文件复制到release目录下，再次运行即可。
