@@ -107,7 +107,7 @@ CUDA_LIB、CUDNN_LIB、TENSORRT_DIR、WITH_GPU、WITH_TENSORRT
 
 在开始生成解决方案之前，执行下面步骤：
 1. 将`Debug`改为`Release`
-2. 下载[autolog.h](https://github.com/LDOUBLEV/AutoLog/blob/main/auto_log/autolog.h)，并拷贝到 Visual Studio 的 include 文件夹下，如`C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\VS\include`。
+2. 下载[dirent.h](https://paddleocr.bj.bcebos.com/deploy/cpp_infer/cpp_files/dirent.h)，并拷贝到 Visual Studio 的 include 文件夹下，如`C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\VS\include`。
 
 点击`生成->生成解决方案`，即可在`build/Release/`文件夹下看见`ppocr.exe`文件。
 
