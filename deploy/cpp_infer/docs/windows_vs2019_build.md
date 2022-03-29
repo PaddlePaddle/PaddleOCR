@@ -1,8 +1,8 @@
 - [Visual Studio 2019 Community CMake 编译指南](#visual-studio-2019-community-cmake-编译指南)
   - [1. 环境准备](#1-环境准备)
     - [1.1 安装必须环境](#11-安装必须环境)
-    - [1.2 下载PaddlePaddle C++ 预测库和Opencv](#12-下载paddlepaddle-c-预测库和opencv)
-      - [1.2.1 下载PaddlePaddle C++ 预测库](#121-下载paddlepaddle-c-预测库)
+    - [1.2 下载 PaddlePaddle C++ 预测库和 Opencv](#12-下载-paddlepaddle-c-预测库和-opencv)
+      - [1.2.1 下载 PaddlePaddle C++ 预测库](#121-下载-paddlepaddle-c-预测库)
       - [1.2.2 安装配置OpenCV](#122-安装配置opencv)
       - [1.2.3 下载PaddleOCR代码](#123-下载paddleocr代码)
   - [2. 开始运行](#2-开始运行)
@@ -27,9 +27,9 @@ PaddleOCR在Windows 平台下基于`Visual Studio 2019 Community` 进行了测�
 
 请确保系统已经安装好上述基本软件，我们使用的是`VS2019`的社区版。
 
-### 1.2 下载PaddlePaddle C++ 预测库和Opencv
+### 1.2 下载 PaddlePaddle C++ 预测库和 Opencv
 
-#### 1.2.1 下载PaddlePaddle C++ 预测库
+#### 1.2.1 下载 PaddlePaddle C++ 预测库
 
 PaddlePaddle C++ 预测库针对不同的`CPU`和`CUDA`版本提供了不同的预编译版本，请根据实际情况下载:  [C++预测库下载列表](https://paddleinference.paddlepaddle.org.cn/user_guides/download_lib.html#windows)
 
