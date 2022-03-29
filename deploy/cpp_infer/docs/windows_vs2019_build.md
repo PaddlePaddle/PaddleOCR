@@ -47,10 +47,6 @@ paddle_inference
 
 1. 在OpenCV官网下载适用于Windows平台的Opencv， [下载地址](https://github.com/opencv/opencv/releases)  
 2. 运行下载的可执行文件，将OpenCV解压至指定目录，如`D:\projects\cpp\opencv`
-3. 配置环境变量，如下流程所示  
-    - 我的电脑->属性->高级系统设置->环境变量
-    - 在系统变量中找到Path（如没有，自行创建），并双击编辑
-    - 新建，将opencv路径填入并保存，如`D:\projects\cpp\opencv\build\x64\vc14\bin`
 
 #### 1.2.3 下载PaddleOCR代码
 ```bash
