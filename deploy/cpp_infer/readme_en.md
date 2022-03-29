@@ -1,3 +1,19 @@
+- [Server-side C++ Inference](#server-side-c-inference)
+  - [1. Prepare the Environment](#1-prepare-the-environment)
+    - [Environment](#environment)
+    - [1.1 Compile OpenCV](#11-compile-opencv)
+    - [1.2 Compile or Download or the Paddle Inference Library](#12-compile-or-download-or-the-paddle-inference-library)
+      - [1.2.1 Direct download and installation](#121-direct-download-and-installation)
+      - [1.2.2 Compile the inference source code](#122-compile-the-inference-source-code)
+  - [2. Compile and Run the Demo](#2-compile-and-run-the-demo)
+    - [2.1 Export the inference model](#21-export-the-inference-model)
+    - [2.2 Compile PaddleOCR C++ inference demo](#22-compile-paddleocr-c-inference-demo)
+    - [Run the demo](#run-the-demo)
+        - [1. run det demo:](#1-run-det-demo)
+        - [2. run rec demo:](#2-run-rec-demo)
+        - [3. run system demo:](#3-run-system-demo)
+  - [3. FAQ](#3-faq)
+
 # Server-side C++ Inference
 
 This chapter introduces the C++ deployment steps of the PaddleOCR model. The corresponding Python predictive deployment method refers to [document](../../doc/doc_ch/inference.md).
@@ -258,9 +274,9 @@ More parameters are as follows,
 |parameter|data type|default|meaning|
 | --- | --- | --- | --- |
 |rec_model_dir|string|-|Address of recognition inference model|
-|char_list_file|string|../../ppocr/utils/ppocr_keys_v1.txt|dictionary file|
+|rec_char_dict_path|string|../../ppocr/utils/ppocr_keys_v1.txt|dictionary file|
 
-* Multi-language inference is also supported in PaddleOCR, you can refer to [recognition tutorial](../../doc/doc_en/recognition_en.md) for more supported languages and models in PaddleOCR. Specifically, if you want to infer using multi-language models, you just need to modify values of `char_list_file` and `rec_model_dir`.
+* Multi-language inference is also supported in PaddleOCR, you can refer to [recognition tutorial](../../doc/doc_en/recognition_en.md) for more supported languages and models in PaddleOCR. Specifically, if you want to infer using multi-language models, you just need to modify values of `rec_char_dict_path` and `rec_model_dir`.
 
 
 The detection results will be shown on the screen, which is as follows.
@@ -270,6 +286,6 @@ The detection results will be shown on the screen, which is as follows.
 </div>
 
 
-### 2.3 Notes
+## 3. FAQ
 
-* Paddle 2.0.0 inference model library is recommended for this tutorial.
+ 1.  Encountered the error `unable to access 'https://github.com/LDOUBLEV/AutoLog.git/': gnutls_handshake() failed: The TLS connection was non-properly terminated.`, change the github address in `deploy/cpp_infer/external-cmake/auto-log.cmake` to the https://gitee.com/Double_V/AutoLog address.

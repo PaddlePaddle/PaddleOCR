@@ -63,7 +63,7 @@ DEFINE_double(cls_thresh, 0.9, "Threshold of cls_thresh.");
 // recognition related
 DEFINE_string(rec_model_dir, "", "Path of rec inference model.");
 DEFINE_int32(rec_batch_num, 6, "rec_batch_num.");
-DEFINE_string(char_list_file, "../../ppocr/utils/ppocr_keys_v1.txt",
+DEFINE_string(rec_char_dict_path, "../../ppocr/utils/ppocr_keys_v1.txt",
               "Path of dictionary.");
 
 using namespace std;
@@ -130,14 +130,14 @@ int main_det(std::vector<cv::String> cv_all_img_names) {
 int main_rec(std::vector<cv::String> cv_all_img_names) {
   std::vector<double> time_info = {0, 0, 0};
 
-  std::string char_list_file = FLAGS_char_list_file;
+  std::string rec_char_dict_path = FLAGS_rec_char_dict_path;
   if (FLAGS_benchmark)
-    char_list_file = FLAGS_char_list_file.substr(6);
-  cout << "label file: " << char_list_file << endl;
+    rec_char_dict_path = FLAGS_rec_char_dict_path.substr(6);
+  cout << "label file: " << rec_char_dict_path << endl;
 
   CRNNRecognizer rec(FLAGS_rec_model_dir, FLAGS_use_gpu, FLAGS_gpu_id,
                      FLAGS_gpu_mem, FLAGS_cpu_threads, FLAGS_enable_mkldnn,
-                     char_list_file, FLAGS_use_tensorrt, FLAGS_precision,
+                     rec_char_dict_path, FLAGS_use_tensorrt, FLAGS_precision,
                      FLAGS_rec_batch_num);
 
   std::vector<cv::Mat> img_list;
@@ -186,14 +186,14 @@ int main_system(std::vector<cv::String> cv_all_img_names) {
                          FLAGS_cls_thresh, FLAGS_use_tensorrt, FLAGS_precision);
   }
 
-  std::string char_list_file = FLAGS_char_list_file;
+  std::string rec_char_dict_path = FLAGS_rec_char_dict_path;
   if (FLAGS_benchmark)
-    char_list_file = FLAGS_char_list_file.substr(6);
-  cout << "label file: " << char_list_file << endl;
+    rec_char_dict_path = FLAGS_rec_char_dict_path.substr(6);
+  cout << "label file: " << rec_char_dict_path << endl;
 
   CRNNRecognizer rec(FLAGS_rec_model_dir, FLAGS_use_gpu, FLAGS_gpu_id,
                      FLAGS_gpu_mem, FLAGS_cpu_threads, FLAGS_enable_mkldnn,
-                     char_list_file, FLAGS_use_tensorrt, FLAGS_precision,
+                     rec_char_dict_path, FLAGS_use_tensorrt, FLAGS_precision,
                      FLAGS_rec_batch_num);
 
   for (int i = 0; i < cv_all_img_names.size(); ++i) {
