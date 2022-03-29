@@ -103,7 +103,7 @@ cd D:\projects\PaddleOCR\deploy\cpp_infer
 ### FQA
 * 在Windows下的终端中执行文件exe时，可能会发生乱码的现象，此时需要在终端中输入`CHCP 65001`，将终端的编码方式由GBK编码(默认)改为UTF-8编码，更加具体的解释可以参考这篇博客：[https://blog.csdn.net/qq_35038153/article/details/78430359](https://blog.csdn.net/qq_35038153/article/details/78430359)。
 
-* 编译时，如果报错`错误：C1083 无法打开包括文件:"dirent.h":No such file or directory`，可以参考该[文档](https://blog.csdn.net/Dora_blank/article/details/117740837#41_C1083_direnthNo_such_file_or_directory_54)，新建`dirent.h`文件，并添加到`utility.cpp`的头文件引用中。
+* 编译时，如果报错`错误：C1083 无法打开包括文件:"dirent.h":No such file or directory`，下载可[dirent.h](https://paddleocr.bj.bcebos.com/deploy/cpp_infer/cpp_files/dirent.h)文件，并添加到`utility.cpp`的头文件引用中。
 
 * 编译时，如果报错`Autolog未定义`，新建`autolog.h`文件，内容为：[autolog.h](https://github.com/LDOUBLEV/AutoLog/blob/main/auto_log/autolog.h)，并添加到`main.cpp`的头文件引用中，再次编译。
 
