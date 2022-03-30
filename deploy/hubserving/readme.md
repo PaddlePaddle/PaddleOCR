@@ -177,15 +177,17 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 |text|str|文本内容|
 |confidence|float| 文本识别置信度或文本角度分类置信度|
 |text_region|list|文本位置坐标|
+|html|str|表格的html字符串|
 
 不同模块返回的字段不同，如，文本识别服务模块返回结果不含`text_region`字段，具体信息如下：
 
-| 字段名/模块名 | ocr_det | ocr_cls | ocr_rec | ocr_system |
-|  ----  |  ----  |  ----  |  ----  |  ----  |
-|angle| | ✔ | | ✔ |
-|text| | |✔|✔|
-|confidence| |✔ |✔| |
-|text_region| ✔| | |✔ |
+| 字段名/模块名 | ocr_det | ocr_cls | ocr_rec | ocr_system | structure_table |
+|  ----  |  ----  |  ----  |  ----  |  ----  | ----  |
+|angle| | ✔ | | ✔ | |
+|text| | |✔|✔| |
+|confidence| |✔ |✔| | |
+|text_region| ✔| | |✔ | |
+|html| | | | |✔ |
 
 **说明：** 如果需要增加、删除、修改返回字段，可在相应模块的`module.py`文件中进行修改，完整流程参考下一节自定义修改服务模块。
 

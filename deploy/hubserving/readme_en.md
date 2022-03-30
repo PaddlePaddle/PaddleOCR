@@ -187,12 +187,13 @@ The returned result is a list. Each item in the list is a dict. The dict may con
 
 The fields returned by different modules are different. For example, the results returned by the text recognition service module do not contain `text_region`. The details are as follows:
 
-| field name/module name | ocr_det | ocr_cls | ocr_rec | ocr_system |
-|  ----  |  ----  |  ----  |  ----  |  ----  |
-|angle| | ✔ | | ✔ |
-|text| | |✔|✔|
-|confidence| |✔ |✔| |
-|text_region| ✔| | |✔ |
+| field name/module name| ocr_det | ocr_cls | ocr_rec | ocr_system | structure_table |
+|  ----  |  ----  |  ----  |  ----  |  ----  | ----  |
+|angle| | ✔ | | ✔ | |
+|text| | |✔|✔| |
+|confidence| |✔ |✔| | |
+|text_region| ✔| | |✔ | |
+|html| | | | |✔ |
 
 **Note：** If you need to add, delete or modify the returned fields, you can modify the file `module.py` of the corresponding module. For the complete process, refer to the user-defined modification service module in the next section.
 

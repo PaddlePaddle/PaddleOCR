@@ -109,7 +109,7 @@ class TableSystem(hub.Module):
             elapse = time.time() - starttime
             logger.info("Predict time: {}".format(elapse))
 
-            all_results.append(pred_html)
+            all_results.append({'html': pred_html})
         return all_results
 
     @serving
