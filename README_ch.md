@@ -79,22 +79,26 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## 文档教程
 
 - [运行环境准备](./doc/doc_ch/environment.md)
-- [快速开始（中英文/多语言/文档分析）](./doc/doc_ch/quickstart.md)
+- [快速开始（中英文/多语言/版面分析）](./doc/doc_ch/quickstart.md)
 - [PaddleOCR全景图与项目克隆](./doc/doc_ch/paddleOCR_overview.md)
 - PP-OCR产业落地：从训练到部署
     - [PP-OCR模型库](./doc/doc_ch/models.md)
         - [PP-OCR模型下载](./doc/doc_ch/models_list.md)
-        - [PP-OCR模型库快速推理](./doc/doc_ch/inference_ppocr.md)
+        - [Python引擎的PP-OCR模型库推理](./doc/doc_ch/inference_ppocr.md)
     - [PP-OCR模型训练](./doc/doc_ch/training.md)
         - [文本检测](./doc/doc_ch/detection.md)
         - [文本识别](./doc/doc_ch/recognition.md)
         - [文本方向分类器](./doc/doc_ch/angle_class.md)
-        - [知识蒸馏](./doc/doc_ch/knowledge_distillation.md)
         - [配置文件内容与生成](./doc/doc_ch/config.md)
+    - PP-OCR模型压缩
+        - [知识蒸馏](./doc/doc_ch/knowledge_distillation.md)
+        - [模型量化](./deploy/slim/quantization/README.md)
+        - [模型裁剪](./deploy/slim/prune/README.md)
     - PP-OCR模型推理部署
         - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
         - [服务化部署](./deploy/pdserving/README_CN.md)
         - [端侧部署](./deploy/lite/readme.md)
+        - [Paddle2ONNX模型转化与预测](./deploy/paddle2onnx/readme.md)
         - [Benchmark](./doc/doc_ch/benchmark.md)
 - [PP-Structure信息提取](./ppstructure/README_ch.md)
     - [版面分析](./ppstructure/layout/README_ch.md)
