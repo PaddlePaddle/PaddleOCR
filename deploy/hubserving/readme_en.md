@@ -1,5 +1,18 @@
 English | [简体中文](readme.md)
 
+- [Service deployment based on PaddleHub Serving](#service-deployment-based-on-paddlehub-serving)
+  - [Quick start service](#quick-start-service)
+    - [1. Prepare the environment](#1-prepare-the-environment)
+    - [2. Download inference model](#2-download-inference-model)
+    - [3. Install Service Module](#3-install-service-module)
+    - [4. Start service](#4-start-service)
+      - [Way 1. Start with command line parameters (CPU only)](#way-1-start-with-command-line-parameters-cpu-only)
+      - [Way 2. Start with configuration file（CPU、GPU）](#way-2-start-with-configuration-filecpugpu)
+  - [Send prediction requests](#send-prediction-requests)
+  - [Returned result format](#returned-result-format)
+  - [User defined service module modification](#user-defined-service-module-modification)
+
+
 PaddleOCR provides 2 service deployment methods:
 - Based on **PaddleHub Serving**: Code path is "`./deploy/hubserving`". Please follow this tutorial.
 - Based on **PaddleServing**: Code path is "`./deploy/pdserving`". Please refer to the [tutorial](../../deploy/pdserving/README.md) for usage.
@@ -154,11 +167,12 @@ For example, if the detection, recognition and 2-stage serial services are start
 `http://127.0.0.1:8866/predict/ocr_cls`  
 `http://127.0.0.1:8867/predict/ocr_rec`  
 `http://127.0.0.1:8868/predict/ocr_system`  
-- **image_path**：Test image path, can be a single image path or an image directory path
+- **image_dir**：Test image path, can be a single image path or an image directory path
+- **visualize**：Whether to visualize the results, the default value is False
 
 **Eg.**
 ```shell
-python tools/test_hubserving.py http://127.0.0.1:8868/predict/ocr_system ./doc/imgs/
+python tools/test_hubserving.py --server_url=http://127.0.0.1:8868/predict/ocr_system --image_dir./doc/imgs/ --visualize=false`
 ```
 
 ## Returned result format
@@ -177,7 +191,7 @@ The fields returned by different modules are different. For example, the results
 |  ----  |  ----  |  ----  |  ----  |  ----  |
 |angle| | ✔ | | ✔ |
 |text| | |✔|✔|
-|confidence| |✔ |✔|✔|
+|confidence| |✔ |✔| |
 |text_region| ✔| | |✔ |
 
 **Note：** If you need to add, delete or modify the returned fields, you can modify the file `module.py` of the corresponding module. For the complete process, refer to the user-defined modification service module in the next section.

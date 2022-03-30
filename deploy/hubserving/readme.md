@@ -1,5 +1,18 @@
 [English](readme_en.md) | 简体中文
 
+- [基于PaddleHub Serving的服务部署](#基于paddlehub-serving的服务部署)
+  - [快速启动服务](#快速启动服务)
+    - [1. 准备环境](#1-准备环境)
+    - [2. 下载推理模型](#2-下载推理模型)
+    - [3. 安装服务模块](#3-安装服务模块)
+    - [4. 启动服务](#4-启动服务)
+      - [方式1. 命令行命令启动（仅支持CPU）](#方式1-命令行命令启动仅支持cpu)
+      - [方式2. 配置文件启动（支持CPU、GPU）](#方式2-配置文件启动支持cpugpu)
+  - [发送预测请求](#发送预测请求)
+  - [返回结果格式说明](#返回结果格式说明)
+  - [自定义修改服务模块](#自定义修改服务模块)
+
+
 PaddleOCR提供2种服务部署方式：
 - 基于PaddleHub Serving的部署：代码路径为"`./deploy/hubserving`"，按照本教程使用；
 - 基于PaddleServing的部署：代码路径为"`./deploy/pdserving`"，使用方法参考[文档](../../deploy/pdserving/README_CN.md)。
@@ -149,10 +162,11 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 `http://127.0.0.1:8866/predict/ocr_cls`  
 `http://127.0.0.1:8867/predict/ocr_rec`  
 `http://127.0.0.1:8868/predict/ocr_system`  
-- **image_path**：测试图像路径，可以是单张图片路径，也可以是图像集合目录路径  
+- **image_dir**：测试图像路径，可以是单张图片路径，也可以是图像集合目录路径  
+- **visualize**：是否可视化结果，默认为False  
 
 访问示例：  
-```python tools/test_hubserving.py http://127.0.0.1:8868/predict/ocr_system ./doc/imgs/```
+```python tools/test_hubserving.py --server_url=http://127.0.0.1:8868/predict/ocr_system --image_dir./doc/imgs/ --visualize=false```
 
 ## 返回结果格式说明
 返回结果为列表（list），列表中的每一项为词典（dict），词典一共可能包含3种字段，信息如下：
@@ -170,7 +184,7 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 |  ----  |  ----  |  ----  |  ----  |  ----  |
 |angle| | ✔ | | ✔ |
 |text| | |✔|✔|
-|confidence| |✔ |✔|✔|
+|confidence| |✔ |✔| |
 |text_region| ✔| | |✔ |
 
 **说明：** 如果需要增加、删除、修改返回字段，可在相应模块的`module.py`文件中进行修改，完整流程参考下一节自定义修改服务模块。

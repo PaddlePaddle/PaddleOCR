@@ -25,7 +25,9 @@ import numpy as np
 import time
 from PIL import Image
 from ppocr.utils.utility import get_image_file_list
-from tools.infer.utility import draw_ocr, draw_boxes
+from tools.infer.utility import draw_ocr, draw_boxes, str2bool
+from ppstructure.utility import draw_structure_result
+from ppstructure.predict_system import save_structure_res, to_excel
 
 import requests
 import json
@@ -69,8 +71,8 @@ def draw_server_result(image_file, res):
         return draw_img
 
 
-def main(url, image_path):
-    image_file_list = get_image_file_list(image_path)
+def main(args):
+    image_file_list = get_image_file_list(args.image_dir)
     is_visualize = False
     headers = {"Content-type": "application/json"}
     cnt = 0
@@ -80,19 +82,26 @@ def main(url, image_path):
         if img is None:
             logger.info("error in loading image:{}".format(image_file))
             continue
-
+        img_name = os.path.basename(image_file)
         # 发送HTTP请求
         starttime = time.time()
         data = {'images': [cv2_to_base64(img)]}
-        r = requests.post(url=url, headers=headers, data=json.dumps(data))
+        r = requests.post(
+            url=args.server_url, headers=headers, data=json.dumps(data))
         elapse = time.time() - starttime
         total_time += elapse
         logger.info("Predict time of %s: %.3fs" % (image_file, elapse))
         res = r.json()["results"][0]
         logger.info(res)
 
-        if is_visualize:
-            draw_img = draw_server_result(image_file, res)
+        if args.visualize:
+            draw_img = None
+            if 'structure_table' in args.server_url:
+                to_excel(res, './{}.xlsx'.format(img_name))
+            elif 'structure_system' in args.server_url:
+                pass
+            else:
+                draw_img = draw_server_result(image_file, res)
             if draw_img is not None:
                 draw_img_save = "./server_results/"
                 if not os.path.exists(draw_img_save):
@@ -108,10 +117,16 @@ def main(url, image_path):
     logger.info("avg time cost: {}".format(float(total_time) / cnt))
 
 
+def parse_args():
+    import argparse
+    parser = argparse.ArgumentParser(description="args for hub serving")
+    parser.add_argument("--server_url", type=str, required=True)
+    parser.add_argument("--image_dir", type=str, required=True)
+    parser.add_argument("--visualize", type=str2bool, default=False)
+    args = parser.parse_args()
+    return args
+
+
 if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        logger.info("Usage: %s server_url image_path" % sys.argv[0])
-    else:
-        server_url = sys.argv[1]
-        image_path = sys.argv[2]
-        main(server_url, image_path)
+    args = parse_args()
+    main(args)
