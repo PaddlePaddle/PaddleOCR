@@ -105,7 +105,7 @@ For a new language request, please refer to [Guideline for new language_requests
 - [Quick Start](./doc/doc_en/quickstart_en.md)
 - [PaddleOCR Overview and Installation](./doc/doc_en/paddleOCR_overview_en.md)
 - PP-OCR Industry Landing: from Training to Deployment
-    - [PP-OCR Model and Configuration](./doc/doc_en/models_and_config_en.md)
+    - [PP-OCR Model Zoo](./doc/doc_en/models_en.md)
         - [PP-OCR Model Download](./doc/doc_en/models_list_en.md)
         - [Python Inference for PP-OCR Model Library](./doc/doc_en/inference_ppocr_en.md)
     - [PP-OCR Training](./doc/doc_en/training_en.md)
@@ -113,6 +113,10 @@ For a new language request, please refer to [Guideline for new language_requests
         - [Text Recognition](./doc/doc_en/recognition_en.md)
         - [Text Direction Classification](./doc/doc_en/angle_class_en.md)
         - [Yml Configuration](./doc/doc_en/config_en.md)
+    - PP-OCR Models Compression
+        - [Knowledge Distillation](./doc/doc_en/knowledge_distillation_en.md)
+        - [Model Quantization](./deploy/slim/quantization/README_en.md)
+        - [Model Pruning](./deploy/slim/prune/README_en.md)
     - Inference and Deployment
         - [C++ Inference](./deploy/cpp_infer/readme_en.md)
         - [Serving](./deploy/pdserving/README.md)
