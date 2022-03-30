@@ -1,16 +1,17 @@
 English | [简体中文](readme.md)
 
 - [Service deployment based on PaddleHub Serving](#service-deployment-based-on-paddlehub-serving)
-  - [Quick start service](#quick-start-service)
-    - [1. Prepare the environment](#1-prepare-the-environment)
-    - [2. Download inference model](#2-download-inference-model)
-    - [3. Install Service Module](#3-install-service-module)
-    - [4. Start service](#4-start-service)
-      - [Way 1. Start with command line parameters (CPU only)](#way-1-start-with-command-line-parameters-cpu-only)
-      - [Way 2. Start with configuration file（CPU、GPU）](#way-2-start-with-configuration-filecpugpu)
-  - [Send prediction requests](#send-prediction-requests)
-  - [Returned result format](#returned-result-format)
-  - [User defined service module modification](#user-defined-service-module-modification)
+  - [1. Update](#1-update)
+  - [2. Quick start service](#2-quick-start-service)
+    - [2.1 Prepare the environment](#21-prepare-the-environment)
+    - [2.2 Download inference model](#22-download-inference-model)
+    - [2.3 Install Service Module](#23-install-service-module)
+    - [2.4 Start service](#24-start-service)
+      - [2.4.1 Start with command line parameters (CPU only)](#241-start-with-command-line-parameters-cpu-only)
+      - [2.4.2 Start with configuration file（CPU、GPU）](#242-start-with-configuration-filecpugpu)
+  - [3. Send prediction requests](#3-send-prediction-requests)
+  - [4. Returned result format](#4-returned-result-format)
+  - [5. User defined service module modification](#5-user-defined-service-module-modification)
 
 
 PaddleOCR provides 2 service deployment methods:
@@ -19,7 +20,7 @@ PaddleOCR provides 2 service deployment methods:
 
 # Service deployment based on PaddleHub Serving  
 
-The hubserving service deployment directory includes three service packages: text detection, text recognition, two-stage series connection and table recognition. Please select the corresponding service package to install and start service according to your needs. The directory is as follows:  
+The hubserving service deployment directory includes five service packages: text detection, text recognition, two-stage series connection, table recognition and PP-Structure. Please select the corresponding service package to install and start service according to your needs. The directory is as follows:  
 ```
 deploy/hubserving/
   └─  ocr_det     text detection module service package
@@ -38,18 +39,22 @@ deploy/hubserving/ocr_system/
   └─  module.py      Main module file, required, contains the complete logic of the service
   └─  params.py      Parameter file, required, including parameters such as model path, pre- and post-processing parameters
 ```
+## 1. Update
 
-## Quick start service
+* 2022.03.30 add PP-Structure and table recognition services。
+
+
+## 2. Quick start service
 The following steps take the 2-stage series service as an example. If only the detection service or recognition service is needed, replace the corresponding file path.
 
-### 1. Prepare the environment
+### 2.1 Prepare the environment
 ```shell
 # Install paddlehub  
 # python>3.6.2 is required bt paddlehub
 pip3 install paddlehub==2.1.0 --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-### 2. Download inference model
+### 2.2 Download inference model
 Before installing the service module, you need to prepare the inference model and put it in the correct path. By default, the PP-OCRv2 models are used, and the default model path is:  
 ```
 text detection model: ./inference/ch_PP-OCRv2_det_infer/
@@ -60,7 +65,7 @@ tanle recognition: ./inference/en_ppocr_mobile_v2.0_table_structure_infer/
 
 **The model path can be found and modified in `params.py`.** More models provided by PaddleOCR can be obtained from the [model library](../../doc/doc_en/models_list_en.md). You can also use models trained by yourself.
 
-### 3. Install Service Module
+### 2.3 Install Service Module
 PaddleOCR provides 5 kinds of service modules, install the required modules according to your needs.
 
 * On Linux platform, the examples are as follows.
@@ -105,8 +110,8 @@ hub install deploy/hubserving/structure_table/
 hub install deploy\hubserving\structure_system\
 ```
 
-### 4. Start service
-#### Way 1. Start with command line parameters (CPU only)
+### 2.4 Start service
+#### 2.4.1 Start with command line parameters (CPU only)
 
 **start command：**  
 ```shell
@@ -131,7 +136,7 @@ hub serving start -m ocr_system
 
 This completes the deployment of a service API, using the default port number 8866.  
 
-#### Way 2. Start with configuration file（CPU、GPU）
+#### 2.4.2 Start with configuration file（CPU、GPU）
 **start command：**  
 ```shell
 hub serving start --config/-c config.json
@@ -168,7 +173,7 @@ export CUDA_VISIBLE_DEVICES=3
 hub serving start -c deploy/hubserving/ocr_system/config.json
 ```  
 
-## Send prediction requests
+## 3. Send prediction requests
 After the service starts, you can use the following command to send a prediction request to obtain the prediction result:  
 ```shell
 python tools/test_hubserving.py server_url image_path
@@ -194,7 +199,7 @@ For example, if using the configuration file to start the text angle classificat
 python tools/test_hubserving.py --server_url=http://127.0.0.1:8868/predict/ocr_system --image_dir./doc/imgs/ --visualize=false`
 ```
 
-## Returned result format
+## 4. Returned result format
 The returned result is a list. Each item in the list is a dict. The dict may contain three fields. The information is as follows:
 
 |field name|data type|description|
@@ -219,7 +224,7 @@ The fields returned by different modules are different. For example, the results
 
 **Note：** If you need to add, delete or modify the returned fields, you can modify the file `module.py` of the corresponding module. For the complete process, refer to the user-defined modification service module in the next section.
 
-## User defined service module modification
+## 5. User defined service module modification
 If you need to modify the service logic, the following steps are generally required (take the modification of `ocr_system` for example):
 
 - 1. Stop service

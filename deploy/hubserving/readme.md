@@ -1,16 +1,17 @@
 [English](readme_en.md) | 简体中文
 
 - [基于PaddleHub Serving的服务部署](#基于paddlehub-serving的服务部署)
-  - [快速启动服务](#快速启动服务)
-    - [1. 准备环境](#1-准备环境)
-    - [2. 下载推理模型](#2-下载推理模型)
-    - [3. 安装服务模块](#3-安装服务模块)
-    - [4. 启动服务](#4-启动服务)
-      - [方式1. 命令行命令启动（仅支持CPU）](#方式1-命令行命令启动仅支持cpu)
-      - [方式2. 配置文件启动（支持CPU、GPU）](#方式2-配置文件启动支持cpugpu)
-  - [发送预测请求](#发送预测请求)
-  - [返回结果格式说明](#返回结果格式说明)
-  - [自定义修改服务模块](#自定义修改服务模块)
+  - [1. 近期更新](#1-近期更新)
+  - [2. 快速启动服务](#2-快速启动服务)
+    - [2.1 准备环境](#21-准备环境)
+    - [2.2 下载推理模型](#22-下载推理模型)
+    - [2.3 安装服务模块](#23-安装服务模块)
+    - [2.4 启动服务](#24-启动服务)
+      - [2.4.1. 命令行命令启动（仅支持CPU）](#241-命令行命令启动仅支持cpu)
+      - [2.4.2 配置文件启动（支持CPU、GPU）](#242-配置文件启动支持cpugpu)
+  - [3. 发送预测请求](#3-发送预测请求)
+  - [4. 返回结果格式说明](#4-返回结果格式说明)
+  - [5. 自定义修改服务模块](#5-自定义修改服务模块)
 
 
 PaddleOCR提供2种服务部署方式：
@@ -19,7 +20,7 @@ PaddleOCR提供2种服务部署方式：
 
 # 基于PaddleHub Serving的服务部署
 
-hubserving服务部署目录下包括检测、识别、2阶段串联和表格识别四种服务包，请根据需求选择相应的服务包进行安装和启动。目录结构如下：
+hubserving服务部署目录下包括检测、识别、2阶段串联，表格识别和PP-Structure四种服务包，请根据需求选择相应的服务包进行安装和启动。目录结构如下：
 ```
 deploy/hubserving/
   └─  ocr_cls     分类模块服务包
@@ -38,17 +39,20 @@ deploy/hubserving/ocr_system/
   └─  module.py      主模块，必选，包含服务的完整逻辑
   └─  params.py      参数文件，必选，包含模型路径、前后处理参数等参数
 ```
+## 1. 近期更新
 
-## 快速启动服务
+* 2022.03.30 新增PP-Structure和表格识别两种服务。
+
+## 2. 快速启动服务
 以下步骤以检测+识别2阶段串联服务为例，如果只需要检测服务或识别服务，替换相应文件路径即可。
-### 1. 准备环境
+### 2.1 准备环境
 ```shell
 # 安装paddlehub  
 # paddlehub 需要 python>3.6.2
 pip3 install paddlehub==2.1.0 --upgrade -i https://mirror.baidu.com/pypi/simple
 ```
 
-### 2. 下载推理模型
+### 2.2 下载推理模型
 安装服务模块前，需要准备推理模型并放到正确路径。默认使用的是PP-OCRv2模型，默认模型路径为：
 ```
 检测模型：./inference/ch_PP-OCRv2_det_infer/
@@ -59,7 +63,7 @@ pip3 install paddlehub==2.1.0 --upgrade -i https://mirror.baidu.com/pypi/simple
 
 **模型路径可在`params.py`中查看和修改。** 更多模型可以从PaddleOCR提供的模型库[PP-OCR](../../doc/doc_ch/models_list.md)和[PP-Structure](../../ppstructure/docs/models_list.md)下载，也可以替换成自己训练转换好的模型。
 
-### 3. 安装服务模块
+### 2.3 安装服务模块
 PaddleOCR提供5种服务模块，根据需要安装所需模块。
 
 * 在Linux环境下，安装示例如下：
@@ -104,8 +108,8 @@ hub install deploy\hubserving\structure_table\
 hub install deploy\hubserving\structure_system\
 ```
 
-### 4. 启动服务
-#### 方式1. 命令行命令启动（仅支持CPU）
+### 2.4 启动服务
+#### 2.4.1. 命令行命令启动（仅支持CPU）
 **启动命令：**  
 ```shell
 $ hub serving start --modules [Module1==Version1, Module2==Version2, ...] \
@@ -127,7 +131,7 @@ $ hub serving start --modules [Module1==Version1, Module2==Version2, ...] \
 
 这样就完成了一个服务化API的部署，使用默认端口号8866。
 
-#### 方式2. 配置文件启动（支持CPU、GPU）
+#### 2.4.2 配置文件启动（支持CPU、GPU）
 **启动命令：**  
 ```hub serving start -c config.json```  
 
@@ -164,7 +168,7 @@ export CUDA_VISIBLE_DEVICES=3
 hub serving start -c deploy/hubserving/ocr_system/config.json
 ```  
 
-## 发送预测请求
+## 3. 发送预测请求
 配置好服务端，可使用以下命令发送预测请求，获取预测结果:  
 
 ```python tools/test_hubserving.py server_url image_path```  
@@ -186,7 +190,7 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 访问示例：  
 ```python tools/test_hubserving.py --server_url=http://127.0.0.1:8868/predict/ocr_system --image_dir./doc/imgs/ --visualize=false```
 
-## 返回结果格式说明
+## 4. 返回结果格式说明
 返回结果为列表（list），列表中的每一项为词典（dict），词典一共可能包含3种字段，信息如下：
 
 |字段名称|数据类型|意义|
@@ -211,7 +215,7 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 
 **说明：** 如果需要增加、删除、修改返回字段，可在相应模块的`module.py`文件中进行修改，完整流程参考下一节自定义修改服务模块。
 
-## 自定义修改服务模块
+## 5. 自定义修改服务模块
 如果需要修改服务逻辑，你一般需要操作以下步骤（以修改`ocr_system`为例）：  
 
 - 1、 停止服务  
