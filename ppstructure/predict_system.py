@@ -35,7 +35,7 @@ from ppstructure.utility import parse_args, draw_structure_result
 logger = get_logger()
 
 
-class OCRSystem(object):
+class StructureSystem(object):
     def __init__(self, args):
         self.mode = args.mode
         if self.mode == 'structure':
@@ -139,7 +139,7 @@ def main(args):
     image_file_list = image_file_list
     image_file_list = image_file_list[args.process_id::args.total_process_num]
 
-    structure_sys = OCRSystem(args)
+    structure_sys = StructureSystem(args)
     img_num = len(image_file_list)
     save_folder = os.path.join(args.output, structure_sys.mode)
     os.makedirs(save_folder, exist_ok=True)

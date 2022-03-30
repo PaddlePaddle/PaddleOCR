@@ -39,7 +39,7 @@ from ppocr.utils.utility import check_and_read_gif, get_image_file_list
 from ppocr.utils.network import maybe_download, download_with_progressbar, is_link, confirm_model_dir_url
 from tools.infer.utility import draw_ocr, str2bool, check_gpu
 from ppstructure.utility import init_args, draw_structure_result
-from ppstructure.predict_system import OCRSystem, save_structure_res
+from ppstructure.predict_system import StructureSystem, save_structure_res
 
 __all__ = [
     'PaddleOCR', 'PPStructure', 'draw_ocr', 'draw_structure_result',
@@ -398,7 +398,7 @@ class PaddleOCR(predict_system.TextSystem):
             return rec_res
 
 
-class PPStructure(OCRSystem):
+class PPStructure(StructureSystem):
     def __init__(self, **kwargs):
         params = parse_args(mMain=False)
         params.__dict__.update(**kwargs)
