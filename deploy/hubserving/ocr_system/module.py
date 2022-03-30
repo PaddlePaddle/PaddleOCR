@@ -9,7 +9,7 @@ sys.path.insert(0, ".")
 import copy
 
 import time
-
+import paddlehub
 from paddlehub.common.logger import logger
 from paddlehub.module.module import moduleinfo, runnable, serving
 import cv2
