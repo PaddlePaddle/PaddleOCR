@@ -1,18 +1,19 @@
 # Environment Preparation
 
-Windows and Mac users are recommended to use Anaconda to build a Python environment, and Linux users are recommended to use docker to build a Python environment. If you are familiar with the Python environment, you can skip to step 2 to install PaddlePaddle.
+Windows and Mac users are recommended to use Anaconda to build a Python environment, and Linux users are recommended to use docker to build a Python environment. 
 
 Recommended working environment:
-- PaddlePaddle >= 2.0.0 (2.1.2)
+- PaddlePaddle >= 2.1.2
 - Python 3.7
 - CUDA 10.1 / CUDA 10.2
 - cuDNN 7.6
+
+> If you already have a Python environment installed, you can skip to [PaddleOCR Quick Start](./quickstart_en.md).
 
 * [1. Python Environment Setup](#1)
   + [1.1 Windows](#1.1)
   + [1.2 Mac](#1.2)
   + [1.3 Linux](#1.3)
-* [2. Install PaddlePaddle 2.0](#2)
 
 
 <a name="1"></a>
@@ -330,21 +331,3 @@ You can also visit [DockerHub](https://hub.docker.com/r/paddlepaddle/paddle/tags
 # ctrl+P+Q to exit docker, to re-enter docker using the following command:
 sudo docker container exec -it ppocr /bin/bash
 ```
-
-<a name="2"></a>
-
-## 2. Install PaddlePaddle 2.0
-
-- If you have CUDA 9 or CUDA 10 installed on your machine, please run the following command to install
-
-```bash
-python3 -m pip install paddlepaddle-gpu -i https://mirror.baidu.com/pypi/simple
-```
-
-- If you have no available GPU on your machine, please run the following command to install the CPU version
-
-```bash
-python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
-```
-
-For more software version requirements, please refer to the instructions in [Installation Document](https://www.paddlepaddle.org.cn/install/quick) for operation.
