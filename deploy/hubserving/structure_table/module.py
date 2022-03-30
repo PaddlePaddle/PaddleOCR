@@ -29,7 +29,7 @@ from deploy.hubserving.structure_table.params import read_params
     summary="PP-Structure table service",
     author="paddle-dev",
     author_email="paddle-dev@baidu.com",
-    type="cv/table_recognition")
+    type="cv/structure_table")
 class TableSystem(hub.Module):
     def _initialize(self, use_gpu=False, enable_mkldnn=False):
         """
