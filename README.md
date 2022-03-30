@@ -48,6 +48,7 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
     - Data synthesis tool, i.e., Style-Text: easy to synthesize a large number of images which are similar to the target scene image
 - Support user-defined training, provides rich predictive inference deployment solutions
 - Support PIP installation, easy to use
+- Supports metric logging to [VisualDL](https://www.paddlepaddle.org.cn/documentation/docs/en/guides/03_VisualDL/visualdl_usage_en.html) and [Weights & Biases](docs.wandb.ai)
 - Support Linux, Windows, MacOS and other systems
 
 ## Visualization

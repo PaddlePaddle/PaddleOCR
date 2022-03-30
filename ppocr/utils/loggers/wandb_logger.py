@@ -15,7 +15,6 @@ class WandbLogger(BaseLogger):
             self.wandb = wandb
         except ModuleNotFoundError:
             raise ModuleNotFoundError(
-                "wandb is not installed."
                 "Please install wandb using `pip install wandb`"
                 )
             
