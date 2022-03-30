@@ -13,4 +13,3 @@ class BaseLogger(ABC):
     @abstractmethod
     def close(self):
         pass
-    

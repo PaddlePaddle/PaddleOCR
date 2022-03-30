@@ -16,6 +16,3 @@ class VDLLogger(BaseLogger):
     
     def close(self):
         self.vdl_writer.close()
-
-
-    
