@@ -27,6 +27,7 @@ deploy/hubserving/
   └─  ocr_rec     识别模块服务包
   └─  ocr_system  检测+识别串联服务包
   └─  structure_table  表格识别服务包
+  └─  structure_system  PP-Structure服务包
 ```
 
 每个服务包下包含3个文件。以2阶段串联服务包为例，目录如下：
@@ -77,6 +78,9 @@ hub install deploy/hubserving/ocr_system/
 
 # 或，安装表格识别服务模块：  
 hub install deploy/hubserving/structure_table/
+
+# 或，安装PP-Structure服务模块：  
+hub install deploy/hubserving/structure_system/
 ```
 
 * 在Windows环境下(文件夹的分隔符为`\`)，安装示例如下：
@@ -95,6 +99,9 @@ hub install deploy\hubserving\ocr_system\
 
 # 或，安装表格识别服务模块：
 hub install deploy\hubserving\structure_table\
+
+# 或，安装PP-Structure服务模块：  
+hub install deploy\hubserving\structure_system\
 ```
 
 ### 4. 启动服务
@@ -165,14 +172,16 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 需要给脚本传递2个参数：  
 - **server_url**：服务地址，格式为  
 `http://[ip_address]:[port]/predict/[module_name]`  
-例如，如果使用配置文件启动分类，检测、识别，检测+分类+识别3阶段，表格识别服务，那么发送请求的url将分别是：  
+例如，如果使用配置文件启动分类，检测、识别，检测+分类+识别3阶段，表格识别和PP-Structure服务，那么发送请求的url将分别是：  
 `http://127.0.0.1:8865/predict/ocr_det`  
 `http://127.0.0.1:8866/predict/ocr_cls`  
 `http://127.0.0.1:8867/predict/ocr_rec`  
 `http://127.0.0.1:8868/predict/ocr_system`  
 `http://127.0.0.1:8869/predict/structure_table`  
+`http://127.0.0.1:8870/predict/structure_system`  
 - **image_dir**：测试图像路径，可以是单张图片路径，也可以是图像集合目录路径  
 - **visualize**：是否可视化结果，默认为False  
+- **output**：可视化结果保存路径，默认为`./hubserving_result`
 
 访问示例：  
 ```python tools/test_hubserving.py --server_url=http://127.0.0.1:8868/predict/ocr_system --image_dir./doc/imgs/ --visualize=false```
@@ -187,16 +196,18 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 |confidence|float| 文本识别置信度或文本角度分类置信度|
 |text_region|list|文本位置坐标|
 |html|str|表格的html字符串|
+|regions|list|版面分析+表格识别+OCR的结果，每一项为一个list，包含表示区域坐标的`bbox`，区域类型的`type`和区域结果的`res`三个字段|
 
 不同模块返回的字段不同，如，文本识别服务模块返回结果不含`text_region`字段，具体信息如下：
 
-| 字段名/模块名 | ocr_det | ocr_cls | ocr_rec | ocr_system | structure_table |
-|  ---  |  ---  |  ---  |  ---  |  ---  | ---  |
-|angle| | ✔ | | ✔ | |
-|text| | |✔|✔| |
-|confidence| |✔ |✔| | |
-|text_region| ✔| | |✔ | |
-|html| | | | |✔ |
+| 字段名/模块名 | ocr_det | ocr_cls | ocr_rec | ocr_system | structure_table | structure_system |
+|  ---  |  ---  |  ---  |  ---  |  ---  | ---  |---  |
+|angle| | ✔ | | ✔ | ||
+|text| | |✔|✔| | ✔ |
+|confidence| |✔ |✔| | | ✔|
+|text_region| ✔| | |✔ | | ✔|
+|html| | | | |✔ |✔|
+|regions| | | | |✔ |✔ |
 
 **说明：** 如果需要增加、删除、修改返回字段，可在相应模块的`module.py`文件中进行修改，完整流程参考下一节自定义修改服务模块。
 

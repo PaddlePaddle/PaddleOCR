@@ -27,6 +27,7 @@ deploy/hubserving/
   └─  ocr_rec     text recognition module service package
   └─  ocr_system  two-stage series connection service package
   └─  structure_table  table recognition service package
+  └─  structure_system  PP-Structure service package
 ```
 
 Each service pack contains 3 files. Take the 2-stage series connection service package as an example, the directory is as follows:  
@@ -78,6 +79,9 @@ hub install deploy/hubserving/ocr_system/
 
 # Or install table recognition service module
 hub install deploy/hubserving/structure_table/
+
+# Or install PP-Structure service module
+hub install deploy/hubserving/structure_system/
 ```
 
 * On Windows platform, the examples are as follows.
@@ -96,6 +100,9 @@ hub install deploy\hubserving\ocr_system\
 
 # Or install table recognition service module
 hub install deploy/hubserving/structure_table/
+
+# Or install PP-Structure service module
+hub install deploy\hubserving\structure_system\
 ```
 
 ### 4. Start service
@@ -170,15 +177,17 @@ python tools/test_hubserving.py server_url image_path
 Two parameters need to be passed to the script:
 - **server_url**：service address，format of which is
 `http://[ip_address]:[port]/predict/[module_name]`  
-For example, if using the configuration file to start the text angle classification, text detection, text recognition, detection+classification+recognition 3 stages, table recognition service, then the `server_url` to send the request will be:
+For example, if using the configuration file to start the text angle classification, text detection, text recognition, detection+classification+recognition 3 stages, table recognition and PP-Structure service, then the `server_url` to send the request will be:
 
 `http://127.0.0.1:8865/predict/ocr_det`  
 `http://127.0.0.1:8866/predict/ocr_cls`  
 `http://127.0.0.1:8867/predict/ocr_rec`  
 `http://127.0.0.1:8868/predict/ocr_system`  
 `http://127.0.0.1:8869/predict/structure_table`
+`http://127.0.0.1:8870/predict/structure_system`  
 - **image_dir**：Test image path, can be a single image path or an image directory path
 - **visualize**：Whether to visualize the results, the default value is False
+- **output**：The floder to save Visualization result, default value is `./hubserving_result`
 
 **Eg.**
 ```shell
@@ -195,16 +204,18 @@ The returned result is a list. Each item in the list is a dict. The dict may con
 |confidence|float|text recognition confidence|
 |text_region|list|text location coordinates|
 |html|str|table html str|
+|regions|list|The result of layout analysis + table recognition + OCR, each item is a list, including `bbox` indicating area coordinates, `type` of area type and `res` of area results|
 
 The fields returned by different modules are different. For example, the results returned by the text recognition service module do not contain `text_region`. The details are as follows:
 
-| field name/module name| ocr_det | ocr_cls | ocr_rec | ocr_system | structure_table |
-|  ----  |  ----  |  ----  |  ----  |  ----  | ----  |
-|angle| | ✔ | | ✔ | |
-|text| | |✔|✔| |
-|confidence| |✔ |✔| | |
-|text_region| ✔| | |✔ | |
-|html| | | | |✔ |
+| field name/module name | ocr_det | ocr_cls | ocr_rec | ocr_system | structure_table | structure_system |
+|  ---  |  ---  |  ---  |  ---  |  ---  | ---  |---  |
+|angle| | ✔ | | ✔ | ||
+|text| | |✔|✔| | ✔ |
+|confidence| |✔ |✔| | | ✔|
+|text_region| ✔| | |✔ | | ✔|
+|html| | | | |✔ |✔|
+|regions| | | | |✔ |✔ |
 
 **Note：** If you need to add, delete or modify the returned fields, you can modify the file `module.py` of the corresponding module. For the complete process, refer to the user-defined modification service module in the next section.
 
