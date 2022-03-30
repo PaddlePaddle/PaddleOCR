@@ -128,6 +128,7 @@ class OCRRec(hub.Module):
 
 if __name__ == '__main__':
     ocr = OCRRec()
+    ocr._initialize()
     image_path = [
         './doc/imgs_words/ch/word_1.jpg',
         './doc/imgs_words/ch/word_2.jpg',

@@ -22,10 +22,10 @@ from deploy.hubserving.ocr_cls.params import read_params
 @moduleinfo(
     name="ocr_cls",
     version="1.0.0",
-    summary="ocr recognition service",
+    summary="ocr angle cls service",
     author="paddle-dev",
     author_email="paddle-dev@baidu.com",
-    type="cv/text_recognition")
+    type="cv/text_angle_cls")
 class OCRCls(hub.Module):
     def _initialize(self, use_gpu=False, enable_mkldnn=False):
         """
@@ -128,6 +128,7 @@ class OCRCls(hub.Module):
 
 if __name__ == '__main__':
     ocr = OCRCls()
+    ocr._initialize()
     image_path = [
         './doc/imgs_words/ch/word_1.jpg',
         './doc/imgs_words/ch/word_2.jpg',

@@ -28,7 +28,7 @@ from deploy.hubserving.ocr_system.params import read_params
     summary="ocr system service",
     author="paddle-dev",
     author_email="paddle-dev@baidu.com",
-    type="cv/text_recognition")
+    type="cv/PP-OCR_system")
 class OCRSystem(hub.Module):
     def _initialize(self, use_gpu=False, enable_mkldnn=False):
         """
@@ -134,6 +134,7 @@ class OCRSystem(hub.Module):
 
 if __name__ == '__main__':
     ocr = OCRSystem()
+    ocr._initialize()
     image_path = [
         './doc/imgs/11.jpg',
         './doc/imgs/12.jpg',

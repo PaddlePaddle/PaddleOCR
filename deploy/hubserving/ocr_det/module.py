@@ -27,7 +27,7 @@ from deploy.hubserving.ocr_system.params import read_params
     summary="ocr detection service",
     author="paddle-dev",
     author_email="paddle-dev@baidu.com",
-    type="cv/text_recognition")
+    type="cv/text_detection")
 class OCRDet(hub.Module):
     def _initialize(self, use_gpu=False, enable_mkldnn=False):
         """
@@ -126,6 +126,7 @@ class OCRDet(hub.Module):
 
 if __name__ == '__main__':
     ocr = OCRDet()
+    ocr._initialize()
     image_path = [
         './doc/imgs/11.jpg',
         './doc/imgs/12.jpg',
