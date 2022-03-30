@@ -19,13 +19,14 @@ PaddleOCR提供2种服务部署方式：
 
 # 基于PaddleHub Serving的服务部署
 
-hubserving服务部署目录下包括检测、识别、2阶段串联三种服务包，请根据需求选择相应的服务包进行安装和启动。目录结构如下：
+hubserving服务部署目录下包括检测、识别、2阶段串联和表格识别四种服务包，请根据需求选择相应的服务包进行安装和启动。目录结构如下：
 ```
 deploy/hubserving/
   └─  ocr_cls     分类模块服务包
   └─  ocr_det     检测模块服务包
   └─  ocr_rec     识别模块服务包
   └─  ocr_system  检测+识别串联服务包
+  └─  structure_table  表格识别服务包
 ```
 
 每个服务包下包含3个文件。以2阶段串联服务包为例，目录如下：
@@ -43,7 +44,7 @@ deploy/hubserving/ocr_system/
 ```shell
 # 安装paddlehub  
 # paddlehub 需要 python>3.6.2
-pip3 install paddlehub==2.1.0 --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip3 install paddlehub==2.1.0 --upgrade -i https://mirror.baidu.com/pypi/simple
 ```
 
 ### 2. 下载推理模型
@@ -52,12 +53,13 @@ pip3 install paddlehub==2.1.0 --upgrade -i https://pypi.tuna.tsinghua.edu.cn/sim
 检测模型：./inference/ch_PP-OCRv2_det_infer/
 识别模型：./inference/ch_PP-OCRv2_rec_infer/
 方向分类器：./inference/ch_ppocr_mobile_v2.0_cls_infer/
+表格结构识别模型：./inference/en_ppocr_mobile_v2.0_table_structure_infer/
 ```  
 
-**模型路径可在`params.py`中查看和修改。** 更多模型可以从PaddleOCR提供的[模型库](../../doc/doc_ch/models_list.md)下载，也可以替换成自己训练转换好的模型。
+**模型路径可在`params.py`中查看和修改。** 更多模型可以从PaddleOCR提供的模型库[PP-OCR](../../doc/doc_ch/models_list.md)和[PP-Structure](../../ppstructure/docs/models_list.md)下载，也可以替换成自己训练转换好的模型。
 
 ### 3. 安装服务模块
-PaddleOCR提供3种服务模块，根据需要安装所需模块。
+PaddleOCR提供5种服务模块，根据需要安装所需模块。
 
 * 在Linux环境下，安装示例如下：
 ```shell
@@ -72,6 +74,9 @@ hub install deploy/hubserving/ocr_rec/
 
 # 或，安装检测+识别串联服务模块：  
 hub install deploy/hubserving/ocr_system/
+
+# 或，安装表格识别服务模块：  
+hub install deploy/hubserving/structure_table/
 ```
 
 * 在Windows环境下(文件夹的分隔符为`\`)，安装示例如下：
@@ -87,6 +92,9 @@ hub install deploy\hubserving\ocr_rec\
 
 # 或，安装检测+识别串联服务模块：
 hub install deploy\hubserving\ocr_system\
+
+# 或，安装表格识别服务模块：
+hub install deploy\hubserving\structure_table\
 ```
 
 ### 4. 启动服务
@@ -102,7 +110,7 @@ $ hub serving start --modules [Module1==Version1, Module2==Version2, ...] \
 **参数：**  
 
 |参数|用途|  
-|-|-|  
+|---|---|  
 |--modules/-m|PaddleHub Serving预安装模型，以多个Module==Version键值对的形式列出<br>*`当不指定Version时，默认选择最新版本`*|  
 |--port/-p|服务端口，默认为8866|  
 |--use_multiprocess|是否启用并发方式，默认为单进程方式，推荐多核CPU机器使用此方式<br>*`Windows操作系统只支持单进程方式`*|
@@ -157,11 +165,12 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 需要给脚本传递2个参数：  
 - **server_url**：服务地址，格式为  
 `http://[ip_address]:[port]/predict/[module_name]`  
-例如，如果使用配置文件启动分类，检测、识别，检测+分类+识别3阶段服务，那么发送请求的url将分别是：  
+例如，如果使用配置文件启动分类，检测、识别，检测+分类+识别3阶段，表格识别服务，那么发送请求的url将分别是：  
 `http://127.0.0.1:8865/predict/ocr_det`  
 `http://127.0.0.1:8866/predict/ocr_cls`  
 `http://127.0.0.1:8867/predict/ocr_rec`  
 `http://127.0.0.1:8868/predict/ocr_system`  
+`http://127.0.0.1:8869/predict/structure_table`  
 - **image_dir**：测试图像路径，可以是单张图片路径，也可以是图像集合目录路径  
 - **visualize**：是否可视化结果，默认为False  
 
@@ -172,7 +181,7 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 返回结果为列表（list），列表中的每一项为词典（dict），词典一共可能包含3种字段，信息如下：
 
 |字段名称|数据类型|意义|
-|----|----|----|
+|---|---|---|
 |angle|str|文本角度|
 |text|str|文本内容|
 |confidence|float| 文本识别置信度或文本角度分类置信度|
@@ -182,7 +191,7 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 不同模块返回的字段不同，如，文本识别服务模块返回结果不含`text_region`字段，具体信息如下：
 
 | 字段名/模块名 | ocr_det | ocr_cls | ocr_rec | ocr_system | structure_table |
-|  ----  |  ----  |  ----  |  ----  |  ----  | ----  |
+|  ---  |  ---  |  ---  |  ---  |  ---  | ---  |
 |angle| | ✔ | | ✔ | |
 |text| | |✔|✔| |
 |confidence| |✔ |✔| | |
