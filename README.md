@@ -104,7 +104,7 @@ For a new language request, please refer to [Guideline for new language_requests
 - [Quick Start](./doc/doc_en/quickstart_en.md)
 - [PaddleOCR Overview and Installation](./doc/doc_en/paddleOCR_overview_en.md)
 - PP-OCR Industry Landing: from Training to Deployment
-    - [PP-OCR Models](./doc/doc_en/models_en.md)
+    - [PP-OCR Model Zoo](./doc/doc_en/models_en.md)
         - [PP-OCR Model Download](./doc/doc_en/models_list_en.md)
         - [Python Inference for PP-OCR Model Library](./doc/doc_en/inference_ppocr_en.md)
     - [PP-OCR Training](./doc/doc_en/training_en.md)
