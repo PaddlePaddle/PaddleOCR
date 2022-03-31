@@ -411,6 +411,7 @@ def draw_ocr_box_txt(image,
                      boxes,
                      txts,
                      scores=None,
+                     show_score=False,
                      drop_score=0.5,
                      font_path="./doc/simfang.ttf"):
     h, w = image.height, image.width
@@ -422,7 +423,7 @@ def draw_ocr_box_txt(image,
     random.seed(0)
     draw_left = ImageDraw.Draw(img_left)
     draw_right = ImageDraw.Draw(img_right)
-    for idx, (box, txt) in enumerate(zip(boxes, txts)):
+    for idx, (box, txt, score) in enumerate(zip(boxes, txts)):
         if scores is not None and scores[idx] < drop_score:
             continue
         color = (random.randint(0, 255), random.randint(0, 255),
@@ -438,6 +439,8 @@ def draw_ocr_box_txt(image,
             1])**2)
         box_width = math.sqrt((box[0][0] - box[1][0])**2 + (box[0][1] - box[1][
             1])**2)
+        if show_score:
+            txt = txt + ':' + str(score)
         if box_height > 2 * box_width:
             font_size = max(int(box_width * 0.9), 10)
             font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
