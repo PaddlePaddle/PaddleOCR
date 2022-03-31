@@ -30,19 +30,20 @@ import numpy as np
 import paddlehub as hub
 
 from tools.infer.utility import base64_to_cv2
-from tools.infer.predict_system import TextSystem
-from tools.infer.utility import parse_args
-from deploy.hubserving.ocr_system.params import read_params
+from ppstructure.predict_system import StructureSystem as PPStructureSystem
+from ppstructure.predict_system import save_structure_res
+from ppstructure.utility import parse_args
+from deploy.hubserving.structure_system.params import read_params
 
 
 @moduleinfo(
-    name="ocr_system",
+    name="structure_system",
     version="1.0.0",
-    summary="ocr system service",
+    summary="PP-Structure system service",
     author="paddle-dev",
     author_email="paddle-dev@baidu.com",
-    type="cv/PP-OCR_system")
-class OCRSystem(hub.Module):
+    type="cv/structure_system")
+class StructureSystem(hub.Module):
     def _initialize(self, use_gpu=False, enable_mkldnn=False):
         """
         initialize with the necessary elements
@@ -64,9 +65,9 @@ class OCRSystem(hub.Module):
         cfg.ir_optim = True
         cfg.enable_mkldnn = enable_mkldnn
 
-        self.text_sys = TextSystem(cfg)
+        self.table_sys = PPStructureSystem(cfg)
 
-    def merge_configs(self, ):
+    def merge_configs(self):
         # deafult cfg
         backup_argv = copy.deepcopy(sys.argv)
         sys.argv = sys.argv[:1]
@@ -118,21 +119,16 @@ class OCRSystem(hub.Module):
                 all_results.append([])
                 continue
             starttime = time.time()
-            dt_boxes, rec_res = self.text_sys(img)
+            res = self.table_sys(img)
             elapse = time.time() - starttime
             logger.info("Predict time: {}".format(elapse))
 
-            dt_num = len(dt_boxes)
-            rec_res_final = []
-
-            for dno in range(dt_num):
-                text, score = rec_res[dno]
-                rec_res_final.append({
-                    'text': text,
-                    'confidence': float(score),
-                    'text_region': dt_boxes[dno].astype(np.int).tolist()
-                })
-            all_results.append(rec_res_final)
+            # parse result
+            res_final = []
+            for region in res:
+                region.pop('img')
+                res_final.append(region)
+            all_results.append({'regions': res_final})
         return all_results
 
     @serving
@@ -146,11 +142,8 @@ class OCRSystem(hub.Module):
 
 
 if __name__ == '__main__':
-    ocr = OCRSystem()
-    ocr._initialize()
-    image_path = [
-        './doc/imgs/11.jpg',
-        './doc/imgs/12.jpg',
-    ]
-    res = ocr.predict(paths=image_path)
+    structure_system = StructureSystem()
+    structure_system._initialize()
+    image_path = ['./doc/table/1.png']
+    res = structure_system.predict(paths=image_path)
     print(res)

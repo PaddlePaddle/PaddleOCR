@@ -40,12 +40,6 @@ def init_args():
         type=ast.literal_eval,
         default=None,
         help='label map according to ppstructure/layout/README_ch.md')
-    # params for ser
-    parser.add_argument("--model_name_or_path", type=str)
-    parser.add_argument("--max_seq_length", type=int, default=512)
-    parser.add_argument(
-        "--label_map_path", type=str, default='./vqa/labels/labels_ser.txt')
-
     parser.add_argument(
         "--mode",
         type=str,
@@ -67,10 +61,10 @@ def draw_structure_result(image, result, font_path):
         if region['type'] == 'Table':
             pass
         else:
-            for box, rec_res in zip(region['res'][0], region['res'][1]):
-                boxes.append(np.array(box).reshape(-1, 2))
-                txts.append(rec_res[0])
-                scores.append(rec_res[1])
+            for text_result in region['res']:
+                boxes.append(np.array(text_result['text_region']))
+                txts.append(text_result['text'])
+                scores.append(text_result['confidence'])
     im_show = draw_ocr_box_txt(
         image, boxes, txts, scores, font_path=font_path, drop_score=0)
     return im_show

@@ -30,25 +30,25 @@ import numpy as np
 import paddlehub as hub
 
 from tools.infer.utility import base64_to_cv2
-from tools.infer.predict_system import TextSystem
-from tools.infer.utility import parse_args
-from deploy.hubserving.ocr_system.params import read_params
+from ppstructure.table.predict_table import TableSystem as _TableSystem
+from ppstructure.predict_system import save_structure_res
+from ppstructure.utility import parse_args
+from deploy.hubserving.structure_table.params import read_params
 
 
 @moduleinfo(
-    name="ocr_system",
+    name="structure_table",
     version="1.0.0",
-    summary="ocr system service",
+    summary="PP-Structure table service",
     author="paddle-dev",
     author_email="paddle-dev@baidu.com",
-    type="cv/PP-OCR_system")
-class OCRSystem(hub.Module):
+    type="cv/structure_table")
+class TableSystem(hub.Module):
     def _initialize(self, use_gpu=False, enable_mkldnn=False):
         """
         initialize with the necessary elements
         """
         cfg = self.merge_configs()
-
         cfg.use_gpu = use_gpu
         if use_gpu:
             try:
@@ -64,9 +64,9 @@ class OCRSystem(hub.Module):
         cfg.ir_optim = True
         cfg.enable_mkldnn = enable_mkldnn
 
-        self.text_sys = TextSystem(cfg)
+        self.table_sys = _TableSystem(cfg)
 
-    def merge_configs(self, ):
+    def merge_configs(self):
         # deafult cfg
         backup_argv = copy.deepcopy(sys.argv)
         sys.argv = sys.argv[:1]
@@ -118,21 +118,11 @@ class OCRSystem(hub.Module):
                 all_results.append([])
                 continue
             starttime = time.time()
-            dt_boxes, rec_res = self.text_sys(img)
+            pred_html = self.table_sys(img)
             elapse = time.time() - starttime
             logger.info("Predict time: {}".format(elapse))
 
-            dt_num = len(dt_boxes)
-            rec_res_final = []
-
-            for dno in range(dt_num):
-                text, score = rec_res[dno]
-                rec_res_final.append({
-                    'text': text,
-                    'confidence': float(score),
-                    'text_region': dt_boxes[dno].astype(np.int).tolist()
-                })
-            all_results.append(rec_res_final)
+            all_results.append({'html': pred_html})
         return all_results
 
     @serving
@@ -146,11 +136,8 @@ class OCRSystem(hub.Module):
 
 
 if __name__ == '__main__':
-    ocr = OCRSystem()
-    ocr._initialize()
-    image_path = [
-        './doc/imgs/11.jpg',
-        './doc/imgs/12.jpg',
-    ]
-    res = ocr.predict(paths=image_path)
+    table_system = TableSystem()
+    table_system._initialize()
+    image_path = ['./doc/table/table.jpg']
+    res = table_system.predict(paths=image_path)
     print(res)

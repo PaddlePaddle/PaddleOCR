@@ -16,27 +16,16 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-
-class Config(object):
-    pass
+from deploy.hubserving.structure_table.params import read_params as table_read_params
 
 
 def read_params():
-    cfg = Config()
+    cfg = table_read_params()
 
-    #params for text recognizer
-    cfg.rec_algorithm = "CRNN"
-    cfg.rec_model_dir = "./inference/ch_PP-OCRv2_rec_infer/"
+    # params for layout parser model
+    cfg.layout_path_model = 'lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config'
+    cfg.layout_label_map = None
 
-    cfg.rec_image_shape = "3, 32, 320"
-    cfg.rec_char_type = 'ch'
-    cfg.rec_batch_num = 30
-    cfg.max_text_length = 25
-
-    cfg.rec_char_dict_path = "./ppocr/utils/ppocr_keys_v1.txt"
-    cfg.use_space_char = True
-
-    cfg.use_pdserving = False
-    cfg.use_tensorrt = False
-
+    cfg.mode = 'structure'
+    cfg.output = './output'
     return cfg

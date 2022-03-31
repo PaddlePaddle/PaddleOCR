@@ -16,27 +16,16 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-
-class Config(object):
-    pass
+from deploy.hubserving.ocr_system.params import read_params as pp_ocr_read_params
 
 
 def read_params():
-    cfg = Config()
+    cfg = pp_ocr_read_params()
 
-    #params for text recognizer
-    cfg.rec_algorithm = "CRNN"
-    cfg.rec_model_dir = "./inference/ch_PP-OCRv2_rec_infer/"
-
-    cfg.rec_image_shape = "3, 32, 320"
-    cfg.rec_char_type = 'ch'
-    cfg.rec_batch_num = 30
-    cfg.max_text_length = 25
-
-    cfg.rec_char_dict_path = "./ppocr/utils/ppocr_keys_v1.txt"
-    cfg.use_space_char = True
-
-    cfg.use_pdserving = False
-    cfg.use_tensorrt = False
-
+    # params for table structure model
+    cfg.table_max_len = 488
+    cfg.table_model_dir = './inference/en_ppocr_mobile_v2.0_table_structure_infer/'
+    cfg.table_char_type = 'en'
+    cfg.table_char_dict_path = './ppocr/utils/dict/table_structure_dict.txt'
+    cfg.show_log = False
     return cfg
