@@ -193,6 +193,12 @@ python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_rec_infer/ \
 <a name="C++"></a>
 ## Paddle Serving C++ 部署]
 
+C++ 部署
+
+基于python的服务部署，显然具有二次开发便捷的优势，然而真正落地应用，往往需要追求更优的性能。PaddleServing 也提供了性能更优的C++部署版本。
+
+C++ 服务部署在环境搭建和数据准备阶段与 python 相同，区别在于启动服务和客户端发送请求时不同。
+
 1. 准备 Serving 环境
 
 为了提高预测性能，C++ 服务同样提供了多模型串联服务。与python pipeline服务不同，多模型串联的过程中需要将模型前后处理代码写在服务端，因此需要在本地重新编译生成serving。具体可参考官方文档：[如何编译Serving](https://github.com/PaddlePaddle/Serving/blob/v0.8.3/doc/Compile_CN.md)
@@ -217,6 +223,13 @@ python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_rec_infer/ \
 
     成功运行后，模型预测的结果会打印在cmd窗口中，结果示例为：
     ![](./imgs/results.png)
+
+    在浏览器中输入服务器 ip:端口号，可以看到当前服务的实时QPS。(端口号范围需要是8000-9000)
+
+    在200张真实图片上测试，把检测长边限制为960。T4 GPU 上 QPS 峰值可达到51左右,约为pipeline的 2.12 倍。
+
+    ![](./imgs/c++_qps.png)
+
 
 <a name="Windows用户"></a>
 ## Windows用户
