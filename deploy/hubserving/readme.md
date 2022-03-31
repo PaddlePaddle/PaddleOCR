@@ -20,13 +20,13 @@ PaddleOCR提供2种服务部署方式：
 
 # 基于PaddleHub Serving的服务部署
 
-hubserving服务部署目录下包括检测、识别、2阶段串联，表格识别和PP-Structure四种服务包，请根据需求选择相应的服务包进行安装和启动。目录结构如下：
+hubserving服务部署目录下包括文本检测、文本方向分类，文本识别、文本检测+文本方向分类+文本识别3阶段串联，表格识别和PP-Structure六种服务包，请根据需求选择相应的服务包进行安装和启动。目录结构如下：
 ```
 deploy/hubserving/
-  └─  ocr_cls     分类模块服务包
-  └─  ocr_det     检测模块服务包
-  └─  ocr_rec     识别模块服务包
-  └─  ocr_system  检测+识别串联服务包
+  └─  ocr_cls     文本方向分类模块服务包
+  └─  ocr_det     文本检测模块服务包
+  └─  ocr_rec     文本识别模块服务包
+  └─  ocr_system  文本检测+文本方向分类+文本识别串联服务包
   └─  structure_table  表格识别服务包
   └─  structure_system  PP-Structure服务包
 ```
