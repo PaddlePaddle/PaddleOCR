@@ -8,8 +8,7 @@ PaddleOCR提供2种服务部署方式：
 
 # 基于PaddleServing的服务部署
 
-本文档将介绍如何使用[PaddleServing](https://github.com/PaddlePaddle/Serving/blob/develop/README_CN.md)工具部署PPOCR
-动态图模型的pipeline在线服务。
+本文档将介绍如何使用[PaddleServing](https://github.com/PaddlePaddle/Serving/blob/develop/README_CN.md)工具部署PP-OCR动态图模型的pipeline在线服务。
 
 相比较于hubserving部署，PaddleServing具备以下优点：
 - 支持客户端和服务端之间高并发和高效通信
@@ -32,7 +31,8 @@ PaddleOCR提供2种服务部署方式：
 需要准备PaddleOCR的运行环境和Paddle Serving的运行环境。
 
 - 准备PaddleOCR的运行环境[链接](../../doc/doc_ch/installation.md)
-  根据环境下载对应的paddle whl包，推荐安装2.2.1版本
+
+  根据环境下载对应的paddlepaddle whl包，推荐安装2.2.2版本
 
 - 准备PaddleServing的运行环境，步骤如下
 
@@ -61,7 +61,7 @@ pip3 install paddle_serving_app-0.8.3-py3-none-any.whl
 
 使用PaddleServing做服务化部署时，需要将保存的inference模型转换为serving易于部署的模型。
 
-首先，下载PPOCR的[inference模型](https://github.com/PaddlePaddle/PaddleOCR#pp-ocr-series-model-listupdate-on-september-8th)
+首先，下载PP-OCR的[inference模型](https://github.com/PaddlePaddle/PaddleOCR#pp-ocr-series-model-listupdate-on-september-8th)
 
 ```bash
 # 下载并解压 OCR 文本检测模型
@@ -109,7 +109,7 @@ python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_rec_infer/ \
 1. 下载PaddleOCR代码，若已下载可跳过此步骤
     ```
     git clone https://github.com/PaddlePaddle/PaddleOCR
-
+    
     # 进入到工作目录
     cd PaddleOCR/deploy/pdserving/
     ```

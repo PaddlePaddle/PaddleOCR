@@ -30,7 +30,8 @@ The introduction and tutorial of Paddle Serving service deployment framework ref
 PaddleOCR operating environment and Paddle Serving operating environment are needed.
 
 1. Please prepare PaddleOCR operating environment reference [link](../../doc/doc_ch/installation.md).
-   Download the corresponding paddle whl package according to the environment, it is recommended to install version 2.2.1.
+
+   Download the corresponding paddle whl package according to the environment, it is recommended to install version 2.2.2
 
 2. The steps of PaddleServing operating environment prepare are as follows:
 
@@ -51,6 +52,7 @@ pip3 install paddle_serving_client-0.8.3-cp37-none-any.whl
 wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_app-0.8.3-py3-none-any.whl
 pip3 install paddle_serving_app-0.8.3-py3-none-any.whl
 ```
+
 
 **note:** If you want to install the latest version of PaddleServing, refer to [link](https://github.com/PaddlePaddle/Serving/blob/v0.7.0/doc/Latest_Packages_CN.md).
 

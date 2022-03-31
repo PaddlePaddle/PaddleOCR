@@ -92,7 +92,7 @@ rgb/img11.jpg    [{"transcription": "ASRAMA", "points": [[214.0, 325.0], [235.0,
 ```
 The image annotation after **json.dumps()** encoding is a list containing multiple dictionaries.
 
-The `points` in the dictionary represent the coordinates (x, y) of the four points of the text box, arranged clockwise from the point at the upper left corner.
+The `points` in the dictionary represent the multi-point coordinates (such as: 4 points, 8 points and 14 points, etc.) of the text box, arranged clockwise from the point at the upper left corner.
 
 `transcription` represents the text of the current text box. **When its content is "###" it means that the text box is invalid and will be skipped during training.**
 
