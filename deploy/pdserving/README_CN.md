@@ -109,7 +109,7 @@ python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_rec_infer/ \
 1. 下载PaddleOCR代码，若已下载可跳过此步骤
     ```
     git clone https://github.com/PaddlePaddle/PaddleOCR
-    
+
     # 进入到工作目录
     cd PaddleOCR/deploy/pdserving/
     ```
@@ -191,9 +191,7 @@ python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_rec_infer/ \
     ```
 
 <a name="C++"></a>
-## Paddle Serving C++ 部署]
-
-C++ 部署
+## Paddle Serving C++ 部署
 
 基于python的服务部署，显然具有二次开发便捷的优势，然而真正落地应用，往往需要追求更优的性能。PaddleServing 也提供了性能更优的C++部署版本。
 
