@@ -22,6 +22,7 @@ PaddleOCR提供2种服务部署方式：
 - [环境准备](#环境准备)
 - [模型转换](#模型转换)
 - [Paddle Serving pipeline部署](#部署)
+- [Paddle Serving C++ 部署](#C++)
 - [Windows用户](#Windows用户)
 - [FAQ](#FAQ)
 
@@ -31,28 +32,29 @@ PaddleOCR提供2种服务部署方式：
 需要准备PaddleOCR的运行环境和Paddle Serving的运行环境。
 
 - 准备PaddleOCR的运行环境[链接](../../doc/doc_ch/installation.md)
-  根据环境下载对应的paddle whl包，推荐安装2.0.1版本
+  根据环境下载对应的paddle whl包，推荐安装2.2.1版本
 
 - 准备PaddleServing的运行环境，步骤如下
 
 ```bash
 # 安装serving，用于启动服务
-wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_server_gpu-0.7.0.post102-py3-none-any.whl
-pip3 install paddle_serving_server_gpu-0.7.0.post102-py3-none-any.whl
+wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_server_gpu-0.8.3.post102-py3-none-any.whl
+pip3 install paddle_serving_server_gpu-0.8.3.post102-py3-none-any.whl
 # 如果是cuda10.1环境，可以使用下面的命令安装paddle-serving-server
-# wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_server_gpu-0.7.0.post101-py3-none-any.whl
-# pip3 install paddle_serving_server_gpu-0.7.0.post101-py3-none-any.whl
+wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_server_gpu-0.8.3.post101-py3-none-any.whl
+# pip3 install paddle_serving_server_gpu-0.8.3.post101-py3-none-any.whl
 
 # 安装client，用于向服务发送请求
-wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_client-0.7.0-cp37-none-any.whl
-pip3 install paddle_serving_client-0.7.0-cp37-none-any.whl
+wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_client-0.8.3-cp37-none-any.whl
+pip3 install paddle_serving_client-0.8.3-cp37-none-any.whl
+
 
 # 安装serving-app
-wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_app-0.7.0-py3-none-any.whl
-pip3 install paddle_serving_app-0.7.0-py3-none-any.whl
+wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_app-0.8.3-py3-none-any.whl
+pip3 install paddle_serving_app-0.8.3-py3-none-any.whl
 ```
 
-**Note:** 如果要安装最新版本的PaddleServing参考[链接](https://github.com/PaddlePaddle/Serving/blob/v0.7.0/doc/Latest_Packages_CN.md)。
+**Note:** 如果要安装最新版本的PaddleServing参考[链接](https://github.com/PaddlePaddle/Serving/blob/v0.8.3/doc/Latest_Packages_CN.md)。
 
 <a name="模型转换"></a>
 ## 模型转换
@@ -187,6 +189,34 @@ python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_rec_infer/ \
     2021-05-13 03:42:36,979         chl1(In: ['det'], Out: ['rec']) size[6/0]
     2021-05-13 03:42:36,979         chl2(In: ['rec'], Out: ['@DAGExecutor']) size[0/0]
     ```
+
+<a name="C++"></a>
+## Paddle Serving C++ 部署]
+
+1. 准备 Serving 环境
+
+为了提高预测性能，C++ 服务同样提供了多模型串联服务。与python pipeline服务不同，多模型串联的过程中需要将模型前后处理代码写在服务端，因此需要在本地重新编译生成serving。具体可参考官方文档：[如何编译Serving](https://github.com/PaddlePaddle/Serving/blob/v0.8.3/doc/Compile_CN.md)
+
+完成编译后，注意要安装编译出的三个whl包，并设置SERVING_BIN环境变量。
+
+2. 启动服务可运行如下命令：
+
+一个服务启动两个模型串联，只需要在--model后依次按顺序传入模型文件夹的相对路径，且需要在--op后依次传入自定义C++OP类名称：
+
+    ```
+    # 启动服务，运行日志保存在log.txt
+    python3 -m paddle_serving_server.serve --model ppocrv2_det_serving ppocrv2_rec_serving --op GeneralDetectionOp GeneralRecOp --port 9293 &>log.txt &
+    ```
+    成功启动服务后，log.txt中会打印类似如下日志
+    ![](./imgs/start_server.png)
+
+3. 发送服务请求：
+   ```
+    python3 ocr_cpp_client.py ppocrv2_det_client ppocrv2_rec_client
+   ```
+
+    成功运行后，模型预测的结果会打印在cmd窗口中，结果示例为：
+    ![](./imgs/results.png)
 
 <a name="Windows用户"></a>
 ## Windows用户
