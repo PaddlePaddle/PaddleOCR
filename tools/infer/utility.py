@@ -423,7 +423,7 @@ def draw_ocr_box_txt(image,
     random.seed(0)
     draw_left = ImageDraw.Draw(img_left)
     draw_right = ImageDraw.Draw(img_right)
-    for idx, (box, txt, score) in enumerate(zip(boxes, txts)):
+    for idx, (box, txt, score) in enumerate(zip(boxes, txts, scores)):
         if scores is not None and scores[idx] < drop_score:
             continue
         color = (random.randint(0, 255), random.randint(0, 255),
