@@ -73,23 +73,24 @@ PPOCRLabel --lang ch # 启动
 
 > 如果上述安装出现问题，可以参考3.6节 错误提示
 
-#### 1.2.2 本地构建whl包并安装
+#### 1.2.2 通过Python脚本运行PPOCRLabel
 
-```bash
-cd PaddleOCR/PPOCRLabel
-python3 setup.py bdist_wheel 
-pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl -i https://mirror.baidu.com/pypi/simple
-```
-
-#### 1.2.3 通过Python脚本运行PPOCRLabel
-
-如果您对PPOCRLabel文件有所更改，通过Python脚本运行会更加方面的看到更改的结果
+如果您对PPOCRLabel文件有所更改（例如指定新的内置模型），通过Python脚本运行会更加方面的看到更改的结果。如果仍然需要通过whl包启动，则需要参考下节重新编译whl包。
 
 ```bash
 cd ./PPOCRLabel  # 切换到PPOCRLabel目录
 python PPOCRLabel.py --lang ch
 ```
 
+#### 1.2.3 本地构建whl包并安装
+
+编译与安装新的whl包，其中1.0.2为版本号，可在 `setup.py` 中指定新版本。
+
+```bash
+cd PaddleOCR/PPOCRLabel
+python3 setup.py bdist_wheel 
+pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl -i https://mirror.baidu.com/pypi/simple
+```
 
 
 ## 2. 使用
