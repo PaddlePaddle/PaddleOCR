@@ -30,29 +30,31 @@ The introduction and tutorial of Paddle Serving service deployment framework ref
 PaddleOCR operating environment and Paddle Serving operating environment are needed.
 
 1. Please prepare PaddleOCR operating environment reference [link](../../doc/doc_ch/installation.md).
-   Download the corresponding paddlepaddle whl package according to the environment, it is recommended to install version 2.2.2.
 
+   Download the corresponding paddle whl package according to the environment, it is recommended to install version 2.2.2
 
 2. The steps of PaddleServing operating environment prepare are as follows:
 
-   ```bash
-   # Install serving which used to start the service
-   wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_server_gpu-0.7.0.post102-py3-none-any.whl
-   pip3 install paddle_serving_server_gpu-0.7.0.post102-py3-none-any.whl
-   # Install paddle-serving-server for cuda10.1
-   # wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_server_gpu-0.7.0.post101-py3-none-any.whl
-   # pip3 install paddle_serving_server_gpu-0.7.0.post101-py3-none-any.whl
 
-   # Install serving which used to start the service
-   wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_client-0.7.0-cp37-none-any.whl
-   pip3 install paddle_serving_client-0.7.0-cp37-none-any.whl
+```bash
+# Install serving which used to start the service
+wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_server_gpu-0.8.3.post102-py3-none-any.whl
+pip3 install paddle_serving_server_gpu-0.8.3.post102-py3-none-any.whl
+# Install paddle-serving-server for cuda10.1
+wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_server_gpu-0.8.3.post101-py3-none-any.whl
+# pip3 install paddle_serving_server_gpu-0.8.3.post101-py3-none-any.whl
 
-   # Install serving-app
-   wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_app-0.7.0-py3-none-any.whl
-   pip3 install paddle_serving_app-0.7.0-py3-none-any.whl
-   ```
+# Install serving which used to start the service
+wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_client-0.8.3-cp37-none-any.whl
+pip3 install paddle_serving_client-0.8.3-cp37-none-any.whl
 
-   **note:** If you want to install the latest version of PaddleServing, refer to [link](https://github.com/PaddlePaddle/Serving/blob/v0.7.0/doc/Latest_Packages_CN.md).
+# Install serving-app
+wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_app-0.8.3-py3-none-any.whl
+pip3 install paddle_serving_app-0.8.3-py3-none-any.whl
+```
+
+
+**note:** If you want to install the latest version of PaddleServing, refer to [link](https://github.com/PaddlePaddle/Serving/blob/v0.7.0/doc/Latest_Packages_CN.md).
 
 
 <a name="model-conversion"></a>
@@ -187,6 +189,26 @@ The recognition model is the same.
     2021-05-13 03:42:36,979         chl1(In: ['det'], Out: ['rec']) size[6/0]
     2021-05-13 03:42:36,979         chl2(In: ['rec'], Out: ['@DAGExecutor']) size[0/0]
     ```
+## C++ Serving
+
+1. Compile Serving
+
+   To improve predictive performance, C++ services also provide multiple model concatenation services. Unlike Python Pipeline services, multiple model concatenation requires the pre - and post-model processing code to be written on the server side, so local recompilation is required to generate serving. Specific may refer to the official document: [how to compile Serving](https://github.com/PaddlePaddle/Serving/blob/v0.8.3/doc/Compile_EN.md)
+
+2. Run the following command to start the service.
+    ```
+    # Start the service and save the running log in log.txt
+    python3 -m paddle_serving_server.serve --model ppocrv2_det_serving ppocrv2_rec_serving --op GeneralDetectionOp GeneralRecOp --port 9293 &>log.txt &
+    ```
+    After the service is successfully started, a log similar to the following will be printed in log.txt
+    ![](./imgs/start_server.png)
+
+3. Send service request
+    ```
+    python3 ocr_cpp_client.py ppocrv2_det_client ppocrv2_rec_client
+    ```
+    After successfully running, the predicted result of the model will be printed in the cmd window. An example of the result is:
+    ![](./imgs/results.png)  
 
 ## WINDOWS Users
 

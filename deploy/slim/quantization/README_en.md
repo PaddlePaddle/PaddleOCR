@@ -1,5 +1,5 @@
 
-## Introduction
+# PP-OCR Models Quantization
 
 Generally, a more complex model would achieve better performance in the task, but it also leads to some redundancy in the model.
 Quantization is a technique that reduces this redundancy by reducing the full precision data to a fixed number,

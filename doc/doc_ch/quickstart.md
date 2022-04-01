@@ -1,6 +1,9 @@
 # PaddleOCR快速开始
 
-- [1. 安装PaddleOCR whl包](#1)
+- [1. 安装](#1)
+  - [1.1 安装PaddlePaddle](#11)
+  - [1.2 安装PaddleOCR whl包](#12)
+
 - [2. 便捷使用](#2)
   - [2.1 命令行使用](#21)
       - [2.1.1 中英文模型](#211)
@@ -9,10 +12,35 @@
   - [2.2 Python脚本使用](#22)
       - [2.2.1 中英文与多语言使用](#221)
       - [2.2.2 版面分析](#222)
+- [3.小结](#3)
 
 <a name="1"></a>
 
-## 1. 安装PaddleOCR whl包
+## 1. 安装
+
+<a name="11"></a>
+
+### 1.1 安装PaddlePaddle
+
+> 如果您没有基础的Python运行环境，请参考[运行环境准备](./environment.md)。
+
+- 您的机器安装的是CUDA9或CUDA10，请运行以下命令安装
+
+  ```bash
+  python3 -m pip install paddlepaddle-gpu -i https://mirror.baidu.com/pypi/simple
+  ```
+
+- 您的机器是CPU，请运行以下命令安装
+
+  ```bash
+  python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
+  ```
+
+更多的版本需求，请参照[飞桨官网安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
+
+<a name="12"></a>
+
+### 1.2 安装PaddleOCR whl包
 
 ```bash
 pip install "paddleocr>=2.0.1" # 推荐使用2.0.1+版本
@@ -257,3 +285,11 @@ im_show = draw_structure_result(image, result,font_path=font_path)
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
+
+<a name="3"></a>
+
+## 3. 小结
+
+通过本节内容，相信您已经熟练掌握PaddleOCR whl包的使用方法并获得了初步效果。
+
+PaddleOCR是一套丰富领先实用的OCR工具库，打通数据、模型训练、压缩和推理部署全流程，因此在[下一节](./paddleOCR_overview.md)中我们将首先为您介绍PaddleOCR的全景图，然后克隆PaddleOCR项目，正式开启PaddleOCR的应用之旅。
