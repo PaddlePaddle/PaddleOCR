@@ -44,7 +44,8 @@ public:
                           const int &gpu_id, const int &gpu_mem,
                           const int &cpu_math_library_num_threads,
                           const bool &use_mkldnn, const string &label_path,
-                          const bool &use_tensorrt, const std::string &precision,
+                          const bool &use_tensorrt,
+                          const std::string &precision,
                           const int &rec_batch_num) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
@@ -66,7 +67,8 @@ public:
   // Load Paddle inference model
   void LoadModel(const std::string &model_dir);
 
-  void Run(std::vector<cv::Mat> img_list, std::vector<double> *times);
+  void Run(std::vector<cv::Mat> img_list, std::vector<std::string> &rec_texts,
+           std::vector<float> &rec_text_scores, std::vector<double> *times);
 
 private:
   std::shared_ptr<Predictor> predictor_;
@@ -85,7 +87,7 @@ private:
   bool use_tensorrt_ = false;
   std::string precision_ = "fp32";
   int rec_batch_num_ = 6;
-    
+
   // pre-process
   CrnnResizeImg resize_op_;
   Normalize normalize_op_;

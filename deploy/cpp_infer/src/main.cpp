@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "glog/logging.h"
 #include "omp.h"
 #include "opencv2/core.hpp"
 #include "opencv2/imgcodecs.hpp"
@@ -21,13 +20,13 @@
 #include <iomanip>
 #include <iostream>
 #include <ostream>
+#include <sys/stat.h>
 #include <vector>
 
 #include <cstring>
 #include <fstream>
 #include <numeric>
 
-#include <glog/logging.h>
 #include <include/ocr_cls.h>
 #include <include/ocr_det.h>
 #include <include/ocr_rec.h>
@@ -45,7 +44,7 @@ DEFINE_bool(enable_mkldnn, false, "Whether use mkldnn with CPU.");
 DEFINE_bool(use_tensorrt, false, "Whether use tensorrt.");
 DEFINE_string(precision, "fp32", "Precision be one of fp32/fp16/int8");
 DEFINE_bool(benchmark, false, "Whether use benchmark.");
-DEFINE_string(save_log_path, "./log_output/", "Save benchmark log path.");
+DEFINE_string(output, "./output/", "Save benchmark log path.");
 // detection related
 DEFINE_string(image_dir, "", "Dir of input image.");
 DEFINE_string(det_model_dir, "", "Path of det inference model.");
@@ -86,11 +85,17 @@ int main_det(std::vector<cv::String> cv_all_img_names) {
                  FLAGS_gpu_mem, FLAGS_cpu_threads, FLAGS_enable_mkldnn,
                  FLAGS_max_side_len, FLAGS_det_db_thresh,
                  FLAGS_det_db_box_thresh, FLAGS_det_db_unclip_ratio,
-                 FLAGS_use_polygon_score, FLAGS_use_dilation, FLAGS_visualize,
+                 FLAGS_use_polygon_score, FLAGS_use_dilation,
                  FLAGS_use_tensorrt, FLAGS_precision);
 
+  if (!PathExists(FLAGS_output)) {
+    mkdir(FLAGS_output.c_str(), 0777);
+  }
+
   for (int i = 0; i < cv_all_img_names.size(); ++i) {
-    //       LOG(INFO) << "The predict img: " << cv_all_img_names[i];
+    if (!FLAGS_benchmark) {
+      cout << "The predict img: " << cv_all_img_names[i] << endl;
+    }
 
     cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
     if (!srcimg.data) {
@@ -102,7 +107,11 @@ int main_det(std::vector<cv::String> cv_all_img_names) {
     std::vector<double> det_times;
 
     det.Run(srcimg, boxes, &det_times);
-
+    //// visualization
+    if (FLAGS_visualize) {
+      std::string file_name = Utility::basename(cv_all_img_names[i]);
+      Utility::VisualizeBboxes(srcimg, boxes, FLAGS_output + "/" + file_name);
+    }
     time_info[0] += det_times[0];
     time_info[1] += det_times[1];
     time_info[2] += det_times[2];
@@ -142,8 +151,6 @@ int main_rec(std::vector<cv::String> cv_all_img_names) {
 
   std::vector<cv::Mat> img_list;
   for (int i = 0; i < cv_all_img_names.size(); ++i) {
-    LOG(INFO) << "The predict img: " << cv_all_img_names[i];
-
     cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
     if (!srcimg.data) {
       std::cerr << "[ERROR] image read failed! image path: "
@@ -152,8 +159,15 @@ int main_rec(std::vector<cv::String> cv_all_img_names) {
     }
     img_list.push_back(srcimg);
   }
+  std::vector<std::string> rec_texts(img_list.size(), "");
+  std::vector<float> rec_text_scores(img_list.size(), 0);
   std::vector<double> rec_times;
-  rec.Run(img_list, &rec_times);
+  rec.Run(img_list, rec_texts, rec_text_scores, &rec_times);
+  // output rec results
+  for (int i = 0; i < rec_texts.size(); i++) {
+    cout << "The predict img: " << cv_all_img_names[i] << "\t" << rec_texts[i]
+         << "\t" << rec_text_scores[i] << endl;
+  }
   time_info[0] += rec_times[0];
   time_info[1] += rec_times[1];
   time_info[2] += rec_times[2];
@@ -172,11 +186,15 @@ int main_system(std::vector<cv::String> cv_all_img_names) {
   std::vector<double> time_info_det = {0, 0, 0};
   std::vector<double> time_info_rec = {0, 0, 0};
 
+  if (!PathExists(FLAGS_output)) {
+    mkdir(FLAGS_output.c_str(), 0777);
+  }
+
   DBDetector det(FLAGS_det_model_dir, FLAGS_use_gpu, FLAGS_gpu_id,
                  FLAGS_gpu_mem, FLAGS_cpu_threads, FLAGS_enable_mkldnn,
                  FLAGS_max_side_len, FLAGS_det_db_thresh,
                  FLAGS_det_db_box_thresh, FLAGS_det_db_unclip_ratio,
-                 FLAGS_use_polygon_score, FLAGS_use_dilation, FLAGS_visualize,
+                 FLAGS_use_polygon_score, FLAGS_use_dilation,
                  FLAGS_use_tensorrt, FLAGS_precision);
 
   Classifier *cls = nullptr;
@@ -197,7 +215,7 @@ int main_system(std::vector<cv::String> cv_all_img_names) {
                      FLAGS_rec_batch_num);
 
   for (int i = 0; i < cv_all_img_names.size(); ++i) {
-    LOG(INFO) << "The predict img: " << cv_all_img_names[i];
+    cout << "The predict img: " << cv_all_img_names[i] << endl;
 
     cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
     if (!srcimg.data) {
@@ -205,15 +223,21 @@ int main_system(std::vector<cv::String> cv_all_img_names) {
                 << cv_all_img_names[i] << endl;
       exit(1);
     }
+#det
     std::vector<std::vector<std::vector<int>>> boxes;
     std::vector<double> det_times;
     std::vector<double> rec_times;
 
     det.Run(srcimg, boxes, &det_times);
+    if (FLAGS_visualize) {
+      std::string file_name = Utility::basename(cv_all_img_names[i]);
+      Utility::VisualizeBboxes(srcimg, boxes, FLAGS_output + "/" + file_name);
+    }
     time_info_det[0] += det_times[0];
     time_info_det[1] += det_times[1];
     time_info_det[2] += det_times[2];
 
+#rec
     std::vector<cv::Mat> img_list;
     for (int j = 0; j < boxes.size(); j++) {
       cv::Mat crop_img;
@@ -223,8 +247,14 @@ int main_system(std::vector<cv::String> cv_all_img_names) {
       }
       img_list.push_back(crop_img);
     }
-
-    rec.Run(img_list, &rec_times);
+    std::vector<std::string> rec_texts(img_list.size(), "");
+    std::vector<float> rec_text_scores(img_list.size(), 0);
+    rec.Run(img_list, rec_texts, rec_text_scores, &rec_times);
+    // output rec results
+    for (int i = 0; i < rec_texts.size(); i++) {
+      std::cout << i << "\t" << rec_texts[i] << "\t" << rec_text_scores[i]
+                << std::endl;
+    }
     time_info_rec[0] += rec_times[0];
     time_info_rec[1] += rec_times[1];
     time_info_rec[2] += rec_times[2];

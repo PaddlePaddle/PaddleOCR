@@ -17,6 +17,8 @@
 namespace PaddleOCR {
 
 void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
+                         std::vector<std::string> &rec_texts,
+                         std::vector<float> &rec_text_scores,
                          std::vector<double> *times) {
   std::chrono::duration<float> preprocess_diff =
       std::chrono::steady_clock::now() - std::chrono::steady_clock::now();
@@ -86,7 +88,7 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
     // ctc decode
     auto postprocess_start = std::chrono::steady_clock::now();
     for (int m = 0; m < predict_shape[0]; m++) {
-      std::vector<std::string> str_res;
+      std::string str_res;
       int argmax_idx;
       int last_index = 0;
       float score = 0.f;
@@ -104,17 +106,16 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
         if (argmax_idx > 0 && (!(n > 0 && argmax_idx == last_index))) {
           score += max_value;
           count += 1;
-          str_res.push_back(label_list_[argmax_idx]);
+          str_res += label_list_[argmax_idx];
         }
         last_index = argmax_idx;
       }
       score /= count;
-      if (isnan(score))
+      if (isnan(score)) {
         continue;
-      for (int i = 0; i < str_res.size(); i++) {
-        std::cout << str_res[i];
       }
-      std::cout << "\tscore: " << score << std::endl;
+      rec_texts[indices[beg_img_no + m]] = str_res;
+      rec_text_scores[indices[beg_img_no + m]] = score;
     }
     auto postprocess_end = std::chrono::steady_clock::now();
     postprocess_diff += postprocess_end - postprocess_start;

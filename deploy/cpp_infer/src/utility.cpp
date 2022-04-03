@@ -40,7 +40,8 @@ std::vector<std::string> Utility::ReadDict(const std::string &path) {
 
 void Utility::VisualizeBboxes(
     const cv::Mat &srcimg,
-    const std::vector<std::vector<std::vector<int>>> &boxes) {
+    const std::vector<std::vector<std::vector<int>>> &boxes,
+    const std::string &save_path) {
   cv::Mat img_vis;
   srcimg.copyTo(img_vis);
   for (int n = 0; n < boxes.size(); n++) {
@@ -54,8 +55,8 @@ void Utility::VisualizeBboxes(
     cv::polylines(img_vis, ppt, npt, 1, 1, CV_RGB(0, 255, 0), 2, 8, 0);
   }
 
-  cv::imwrite("./ocr_vis.png", img_vis);
-  std::cout << "The detection visualized image saved in ./ocr_vis.png"
+  cv::imwrite(save_path, img_vis);
+  std::cout << "The detection visualized image saved in " + save_path
             << std::endl;
 }
 
@@ -93,7 +94,7 @@ void Utility::GetAllFiles(const char *dir_name,
 }
 
 cv::Mat Utility::GetRotateCropImage(const cv::Mat &srcimage,
-                            std::vector<std::vector<int>> box) {
+                                    std::vector<std::vector<int>> box) {
   cv::Mat image;
   srcimage.copyTo(image);
   std::vector<std::vector<int>> points = box;
@@ -147,17 +148,52 @@ cv::Mat Utility::GetRotateCropImage(const cv::Mat &srcimage,
   }
 }
 
-std::vector<int> Utility::argsort(const std::vector<float>& array)
-{
-    const int array_len(array.size());
-    std::vector<int> array_index(array_len, 0);
-    for (int i = 0; i < array_len; ++i)
-        array_index[i] = i;
+std::vector<int> Utility::argsort(const std::vector<float> &array) {
+  const int array_len(array.size());
+  std::vector<int> array_index(array_len, 0);
+  for (int i = 0; i < array_len; ++i)
+    array_index[i] = i;
 
-    std::sort(array_index.begin(), array_index.end(),
-        [&array](int pos1, int pos2) {return (array[pos1] < array[pos2]); });
+  std::sort(
+      array_index.begin(), array_index.end(),
+      [&array](int pos1, int pos2) { return (array[pos1] < array[pos2]); });
 
-    return array_index;
+  return array_index;
+}
+
+std::string Utility::basename(const std::string &filename) {
+  if (filename.empty()) {
+    return "";
+  }
+
+  auto len = filename.length();
+  auto index = filename.find_last_of("/\\");
+
+  if (index == std::string::npos) {
+    return filename;
+  }
+
+  if (index + 1 >= len) {
+
+    len--;
+    index = filename.substr(0, len).find_last_of("/\\");
+
+    if (len == 0) {
+      return filename;
+    }
+
+    if (index == 0) {
+      return filename.substr(1, len - 1);
+    }
+
+    if (index == std::string::npos) {
+      return filename.substr(0, len);
+    }
+
+    return filename.substr(index + 1, len - index - 1);
+  }
+
+  return filename.substr(index + 1, len - index);
 }
 
 } // namespace PaddleOCR
