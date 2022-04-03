@@ -46,8 +46,7 @@ public:
                       const double &det_db_box_thresh,
                       const double &det_db_unclip_ratio,
                       const bool &use_polygon_score, const bool &use_dilation,
-                      const bool &visualize, const bool &use_tensorrt,
-                      const std::string &precision) {
+                      const bool &use_tensorrt, const std::string &precision) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
@@ -62,7 +61,6 @@ public:
     this->use_polygon_score_ = use_polygon_score;
     this->use_dilation_ = use_dilation;
 
-    this->visualize_ = visualize;
     this->use_tensorrt_ = use_tensorrt;
     this->precision_ = precision;
 

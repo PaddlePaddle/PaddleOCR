@@ -38,7 +38,8 @@ public:
 
   static void
   VisualizeBboxes(const cv::Mat &srcimg,
-                  const std::vector<std::vector<std::vector<int>>> &boxes);
+                  const std::vector<std::vector<std::vector<int>>> &boxes,
+                  const std::string &save_path);
 
   template <class ForwardIterator>
   inline static size_t argmax(ForwardIterator first, ForwardIterator last) {
@@ -47,12 +48,13 @@ public:
 
   static void GetAllFiles(const char *dir_name,
                           std::vector<std::string> &all_inputs);
-    
-  static cv::Mat GetRotateCropImage(const cv::Mat &srcimage,
-                          std::vector<std::vector<int>> box);
-    
-  static std::vector<int> argsort(const std::vector<float>& array);
 
+  static cv::Mat GetRotateCropImage(const cv::Mat &srcimage,
+                                    std::vector<std::vector<int>> box);
+
+  static std::vector<int> argsort(const std::vector<float> &array);
+
+  static std::string basename(const std::string &filename);
 };
 
 } // namespace PaddleOCR

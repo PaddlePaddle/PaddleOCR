@@ -26,6 +26,7 @@ This section will introduce how to configure the C++ environment and deploy Padd
 ### Environment
 
 - Linux, docker is recommended.
+- Windows.
 
 
 ### 1.1 Compile OpenCV
@@ -248,6 +249,7 @@ More parameters are as follows,
 |gpu_mem|int|4000|GPU memory requested|
 |cpu_math_library_num_threads|int|10|Number of threads when using CPU inference. When machine cores is enough, the large the value, the faster the inference speed|
 |enable_mkldnn|bool|true|Whether to use mkdlnn library|
+|output|str|./output|Path where visualization results are saved|
 
 - Detection related parameters
 
@@ -259,7 +261,7 @@ More parameters are as follows,
 |det_db_box_thresh|float|0.5|DB post-processing filter box threshold, if there is a missing box detected, it can be reduced as appropriate|
 |det_db_unclip_ratio|float|1.6|Indicates the compactness of the text box, the smaller the value, the closer the text box to the text|
 |use_polygon_score|bool|false|Whether to use polygon box to calculate bbox score, false means to use rectangle box to calculate. Use rectangular box to calculate faster, and polygonal box more accurate for curved text area.|
-|visualize|bool|true|Whether to visualize the results，when it is set as true, The prediction result will be save in the image file `./ocr_vis.png`.|
+|visualize|bool|true|Whether to visualize the results，when it is set as true, the prediction results will be saved in the folder specified by the `output` field on an image with the same name as the input image.|
 
 - Classifier related parameters
 
