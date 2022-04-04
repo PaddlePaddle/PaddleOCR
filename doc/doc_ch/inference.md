@@ -36,6 +36,8 @@ inference 模型（`paddle.jit.save`保存的模型）
 
 - [六、参数解释](#参数解释)
 
+- [七、FAQ](#FAQ)
+
 
 <a name="训练模型转inference模型"></a>
 ## 一、训练模型转inference模型
@@ -520,3 +522,9 @@ PSE算法相关参数如下
 |  label_list | list | ['0', '180'] | class id对应的角度值 |
 |  cls_batch_num | int | 6 | 方向分类器预测的batch size |
 |  cls_thresh | float | 0.9 | 预测阈值，模型预测结果为180度，且得分大于该阈值时，认为最终预测结果为180度，需要翻转 |
+
+
+
+# 七、FAQ
+
+* 如果是使用paddle2.0之前版本的代码导出的`inference模型`，则其文件名为`model`与`params`，分别对应paddle2.0或者之后版本导出的`inference.pdmodel`与`inference.pdiparams`；不过目前PaddleOCR的release分支已经不支持paddle2.0之前版本导出的inference 模型，如果希望使用，需要使用develop分支（静态图分支）的代码与文档。
