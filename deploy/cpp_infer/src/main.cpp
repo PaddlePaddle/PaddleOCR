@@ -107,7 +107,7 @@ int main_det(std::vector<cv::String> cv_all_img_names) {
     std::vector<double> det_times;
 
     det.Run(srcimg, boxes, &det_times);
-    //// visualization
+    // visualization
     if (FLAGS_visualize) {
       std::string file_name = Utility::basename(cv_all_img_names[i]);
       Utility::VisualizeBboxes(srcimg, boxes, FLAGS_output + "/" + file_name);
@@ -223,7 +223,7 @@ int main_system(std::vector<cv::String> cv_all_img_names) {
                 << cv_all_img_names[i] << endl;
       exit(1);
     }
-#det
+    // det
     std::vector<std::vector<std::vector<int>>> boxes;
     std::vector<double> det_times;
     std::vector<double> rec_times;
@@ -237,7 +237,7 @@ int main_system(std::vector<cv::String> cv_all_img_names) {
     time_info_det[1] += det_times[1];
     time_info_det[2] += det_times[2];
 
-#rec
+    // rec
     std::vector<cv::Mat> img_list;
     for (int j = 0; j < boxes.size(); j++) {
       cv::Mat crop_img;
