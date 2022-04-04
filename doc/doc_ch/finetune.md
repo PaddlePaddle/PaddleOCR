@@ -94,7 +94,7 @@ PaddleOCR提供的配置文件事在8卡训练（相当于总的batch size是`8*
 ## 3. 文本识别模型微调
 
 
-### 2.1 数据选择
+### 3.1 数据选择
 
 * 数据量：不更换字典的情况下，建议至少准备5000张的文本识别数据集用于模型微调；如果更换了字典（不建议），需要的数量更多。
 
@@ -103,7 +103,7 @@ PaddleOCR提供的配置文件事在8卡训练（相当于总的batch size是`8*
 
 * 通用中英文数据：在训练的时候，可以在训练集中添加通用真实数据（如在不更换字典的微调场景中，建议添加LSVT、RCTW、MTWI等真实数据），进一步提升模型的泛化性能。
 
-### 2.2 模型选择
+### 3.2 模型选择
 
 建议选择PP-OCRv2模型（配置文件：[ch_PP-OCRv2_rec_distillation.yml](../../configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec_distillation.yml)，预训练模型：[ch_PP-OCRv2_rec_train.tar](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_train.tar)）进行微调，其精度与泛化性能是目前提供的最优预训练模型。
 
