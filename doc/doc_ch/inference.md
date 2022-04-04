@@ -527,4 +527,4 @@ PSE算法相关参数如下
 
 # 七、FAQ
 
-* 如果是使用paddle2.0之前版本的代码导出的`inference模型`，则其文件名为`model`与`params`，分别对应paddle2.0或者之后版本导出的`inference.pdmodel`与`inference.pdiparams`。
+* 如果是使用paddle2.0之前版本的代码导出的`inference模型`，则其文件名为`model`与`params`，分别对应paddle2.0或者之后版本导出的`inference.pdmodel`与`inference.pdiparams`；不过目前PaddleOCR的release分支已经不支持paddle2.0之前版本导出的inference 模型，如果希望使用，需要使用develop分支（静态图分支）的代码与文档。
