@@ -130,7 +130,7 @@ Download and unzip the dataset, and place the dataset in the current directory a
 
 ```shell
 wget https://paddleocr.bj.bcebos.com/dataset/XFUND.tar
-```\
+````
 
 * Convert the dataset
 
