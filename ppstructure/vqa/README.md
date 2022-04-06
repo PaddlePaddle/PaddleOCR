@@ -1,6 +1,6 @@
 English | [简体中文](README_ch.md)
 
-- [Document Visual Question Answering (Doc-VQA)](#Document-Visual-Question-Answering(doc-vqa))
+- [Document Visual Question Answering (Doc-VQA)](#Document-Visual-Question-Answering)
   - [1. Introduction](#1-Introduction)
   - [2. Performance](#2-performance)
   - [3. Effect demo](#3-Effect-demo)
@@ -15,7 +15,7 @@ English | [简体中文](README_ch.md)
     - [5.3 RE](#53-re)
   - [6. Reference](#6-Reference-Links)
 
-# Document Visual Question Answering (DOC-VQA)
+# Document Visual Question Answering
 
 ## 1 Introduction
 
