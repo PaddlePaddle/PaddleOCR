@@ -21,7 +21,6 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 - 2021.12.21《动手学OCR · 十讲》课程开讲，12月21日起每晚八点半线上授课！[免费报名地址](https://aistudio.baidu.com/aistudio/course/introduce/25207)。
 - 2021.12.21 发布PaddleOCR v2.4。OCR算法新增1种文本检测算法（PSENet），3种文本识别算法（NRTR、SEED、SAR）；文档结构化算法新增1种关键信息提取算法（SDMGR，[文档](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.4/ppstructure/docs/kie.md)），3种DocVQA算法（LayoutLM、LayoutLMv2，LayoutXLM，[文档](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.4/ppstructure/vqa)）。
-- PaddleOCR研发团队对最新发版内容技术深入解读，9月8日晚上20:15，[课程回放](https://aistudio.baidu.com/aistudio/education/group/info/6758)。
 - 2021.9.7 发布PaddleOCR v2.3与[PP-OCRv2](#PP-OCRv2)，CPU推理速度相比于PP-OCR server提升220%；效果相比于PP-OCR mobile 提升7%。
 - 2021.8.3 发布PaddleOCR v2.2，新增文档结构分析[PP-Structure](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/ppstructure/README_ch.md)工具包，支持版面分析与表格识别（含Excel导出）。
 
@@ -66,39 +65,42 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 ## 文档教程
 
-<details open>
-<summary>文档教程</summary>
-
 - [运行环境准备](./doc/doc_ch/environment.md)
-- [快速开始（中英文/多语言/版面分析）](./doc/doc_ch/quickstart.md)
-- PP-OCR文本检测识别
-    - [PP-OCR模型库](./doc/doc_ch/models.md)
-        - [PP-OCR模型下载](./doc/doc_ch/models_list.md)
-        - [Python引擎的PP-OCR模型库推理](./doc/doc_ch/inference_ppocr.md)
-    - [PP-OCR模型训练](./doc/doc_ch/training.md)
+- [快速开始（中英文/多语言/文档分析）](./doc/doc_ch/quickstart.md)
+- [PP-OCR文本检测识别](./doc/doc_ch/ppocr_introduction.md)
+    - [模型库](./doc/doc_ch/models_list.md)
+    - [模型训练](./doc/doc_ch/training.md)
         - [文本检测](./doc/doc_ch/detection.md)
         - [文本识别](./doc/doc_ch/recognition.md)
         - [文本方向分类器](./doc/doc_ch/angle_class.md)
-        - [配置文件内容与生成](./doc/doc_ch/config.md)
-    - PP-OCR模型压缩
-        - [知识蒸馏](./doc/doc_ch/knowledge_distillation.md)
+    - 模型压缩
         - [模型量化](./deploy/slim/quantization/README.md)
         - [模型裁剪](./deploy/slim/prune/README.md)
-    - PP-OCR模型推理部署
+        - [知识蒸馏](./doc/doc_ch/knowledge_distillation.md)
+    - [推理部署](./deploy/readme_ch.md)
+        - [Python引擎的PP-OCR模型库推理](./doc/doc_ch/inference_ppocr.md)
         - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
         - [服务化部署](./deploy/pdserving/README_CN.md)
         - [端侧部署](./deploy/lite/readme.md)
         - [Paddle2ONNX模型转化与预测](./deploy/paddle2onnx/readme.md)
         - [Benchmark](./doc/doc_ch/benchmark.md)
-- [PP-Structure信息提取](./ppstructure/README_ch.md)
-    - [版面分析](./ppstructure/layout/README_ch.md)
-    - [表格识别](./ppstructure/table/README_ch.md)
-    - [DocVQA](./ppstructure/vqa/README.md)
-    - [关键信息提取](./ppstructure/docs/kie.md)
-- OCR学术圈
-    - [两阶段模型介绍与下载](./doc/doc_ch/algorithm_overview.md)
-    - [端到端PGNet算法](./doc/doc_ch/pgnet.md)
-    - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
+- [PP-Structure文档分析](./ppstructure/README_ch.md)
+    - [模型库]()
+    - [模型训练](./doc/doc_ch/training.md)
+        - [版面分析](./ppstructure/layout/README_ch.md)
+        - [表格识别](./ppstructure/table/README_ch.md)
+        - [关键信息提取](./ppstructure/docs/kie.md)
+        - [DocVQA](./ppstructure/docs/kie.md)
+    - [推理部署](./deploy/readme_ch.md)
+        - [Python引擎的PP-OCR模型库推理]()
+        - [基于C++预测引擎推理]()
+        - [服务化部署](./deploy/pdserving/README_CN.md)
+        - [Paddle2ONNX模型转化与预测]()
+- 前沿算法与模型
+    - [OCR算法与模型](./doc/doc_ch/algorithm_overview.md)
+    - [文档分析算法与模型](./doc/doc_ch/algorithm_overview_structure.md)
+    - [基于Python预测引擎推理](./doc/doc_ch/algorithm_inference.md)
+    - [更多推理部署](./doc/doc_ch/algorithm_deploy.md) 
     - [使用PaddleOCR架构添加新算法](./doc/doc_ch/add_new_algorithm.md)
 - 数据标注与合成
     - [半自动标注工具PPOCRLabel](./PPOCRLabel/README_ch.md)
@@ -109,6 +111,9 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
     - [手写中文OCR数据集](./doc/doc_ch/handwritten_datasets.md)
     - [垂类多语言OCR数据集](./doc/doc_ch/vertical_and_multilingual_datasets.md)
+    - [版面分析数据集](./doc/doc_ch/layout_datasets.md)
+    - [表格识别数据集](./doc/doc_ch/table_datasets.md)
+    - [DocVQA数据集](./doc/doc_ch/docvqa_datasets.md)
 - [效果展示](#效果展示)
 - FAQ
     - [通用问题](./doc/doc_ch/FAQ.md)
@@ -117,7 +122,6 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - [许可证书](#许可证书)
 - [代码组织结构](./doc/doc_ch/tree.md)
 
-</details>
 
 
 
@@ -134,7 +138,9 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 <a name="效果展示"></a>
 
 ## 效果展示 [more](./doc/doc_ch/visualization.md)
-- 中文模型
+
+<details open>
+<summary>中文模型</summary>
 
 <div align="center">
       <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
@@ -144,17 +150,31 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00056221.jpg" width="800">
     <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/rotate_00052204.jpg" width="800">
 </div>
+    
+</details>
 
-- 英文模型
+
+<details open>
+<summary>英文模型</summary>
+    
 <div align="center">
     <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/img_12.jpg" width="800">
 </div>
 
-- 其他语言模型
+</details>
+
+
+<details open>
+<summary>其他语言模型</summary>
+    
 <div align="center">
     <img src="./doc/imgs_results/french_0.jpg" width="800">
     <img src="./doc/imgs_results/korean.jpg" width="800">
 </div>
+    
+</details>
+
+
 <a name="许可证书"></a>
 
 ## 许可证书

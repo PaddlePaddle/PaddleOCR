@@ -1,11 +1,11 @@
-# 两阶段算法
+# OCR算法
 
-- [两阶段算法](#两阶段算法)
-  - [1. 算法介绍](#1-算法介绍)
+- [1. 算法介绍](#1-算法介绍)
     - [1.1 文本检测算法](#11-文本检测算法)
     - [1.2 文本识别算法](#12-文本识别算法)
-  - [2. 模型训练](#2-模型训练)
-  - [3. 模型推理](#3-模型推理)
+    - [1.2 端到端算法](#13-端到端算法)
+- [2. 模型训练](#2-模型训练)
+- [3. 模型推理](#3-模型推理)
 
 <a name="1"></a>
 
@@ -54,7 +54,7 @@ PaddleOCR开源的文本检测算法列表：
 
 ### 1.2 文本识别算法
 
-PaddleOCR基于动态图开源的文本识别算法列表：
+PaddleOCR开源的文本识别算法列表：
 - [x]  CRNN([paper](https://arxiv.org/abs/1507.05717))[7]（ppocr推荐）
 - [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))[10]
 - [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))[11]
@@ -80,6 +80,13 @@ PaddleOCR基于动态图开源的文本识别算法列表：
 |NRTR|NRTR_MTB| 84.21% | rec_mtb_nrtr | [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mtb_nrtr_train.tar) |
 |SAR|Resnet31| 87.20% | rec_r31_sar | [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_r31_sar_train.tar) |
 |SEED|Aster_Resnet| 85.35% | rec_resnet_stn_bilstm_att | [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_resnet_stn_bilstm_att.tar) |
+
+<a name="13"></a>
+
+### 1.3 端到端算法
+
+PaddleOCR开源的端到端OCR算法列表：
+- [x]  PGNet([paper](https://www.aaai.org/AAAI21Papers/AAAI-2885.WangP.pdf))
 
 <a name="2"></a>
 
