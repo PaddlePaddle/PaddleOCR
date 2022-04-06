@@ -12,4 +12,3 @@ cython
 lxml
 premailer
 openpyxl
-fasttext==0.9.1

@@ -1,9 +1,3 @@
-# 服务器端C++预测
-
-本章节介绍PaddleOCR 模型的的C++部署方法，与之对应的python预测部署方式参考[文档](../../doc/doc_ch/inference.md)。
-C++在性能计算上优于python，因此，在大多数CPU、GPU部署场景，多采用C++的部署方式，本节将介绍如何在Linux\Windows (CPU\GPU)环境下配置C++环境并完成
-PaddleOCR模型部署。
-
 - [服务器端C++预测](#服务器端c预测)
   - [1. 准备环境](#1-准备环境)
     - [1.0 运行准备](#10-运行准备)
@@ -18,6 +12,14 @@ PaddleOCR模型部署。
         - [1. 只调用检测：](#1-只调用检测)
         - [2. 只调用识别：](#2-只调用识别)
         - [3. 调用串联：](#3-调用串联)
+  - [3. FAQ](#3-faq)
+
+# 服务器端C++预测
+
+本章节介绍PaddleOCR 模型的的C++部署方法，与之对应的python预测部署方式参考[文档](../../doc/doc_ch/inference.md)。
+C++在性能计算上优于python，因此，在大多数CPU、GPU部署场景，多采用C++的部署方式，本节将介绍如何在Linux\Windows (CPU\GPU)环境下配置C++环境并完成
+PaddleOCR模型部署。
+
 
 <a name="1"></a>
 
@@ -28,7 +30,7 @@ PaddleOCR模型部署。
 ### 1.0 运行准备
 
 - Linux环境，推荐使用docker。
-- Windows环境，目前支持基于`Visual Studio 2019 Community`进行编译。
+- Windows环境。
 
 * 该文档主要介绍基于Linux环境的PaddleOCR C++预测流程，如果需要在Windows下基于预测库进行C++预测，具体编译方法请参考[Windows下编译教程](./docs/windows_vs2019_build.md)
 
@@ -254,6 +256,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 |gpu_mem|int|4000|申请的GPU内存|
 |cpu_math_library_num_threads|int|10|CPU预测时的线程数，在机器核数充足的情况下，该值越大，预测速度越快|
 |enable_mkldnn|bool|true|是否使用mkldnn库|
+|output|str|./output|可视化结果保存的路径|
 
 - 检测模型相关
 
@@ -265,7 +268,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 |det_db_box_thresh|float|0.5|DB后处理过滤box的阈值，如果检测存在漏框情况，可酌情减小|
 |det_db_unclip_ratio|float|1.6|表示文本框的紧致程度，越小则文本框更靠近文本|
 |use_polygon_score|bool|false|是否使用多边形框计算bbox score，false表示使用矩形框计算。矩形框计算速度更快，多边形框对弯曲文本区域计算更准确。|
-|visualize|bool|true|是否对结果进行可视化，为1时，会在当前文件夹下保存文件名为`ocr_vis.png`的预测结果。|
+|visualize|bool|true|是否对结果进行可视化，为1时，预测结果会保存在`output`字段指定的文件夹下和输入图像同名的图像上。|
 
 - 方向分类器相关
 
@@ -280,10 +283,10 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 |参数名称|类型|默认参数|意义|
 | :---: | :---: | :---: | :---: |
 |rec_model_dir|string|-|识别模型inference model地址|
-|char_list_file|string|../../ppocr/utils/ppocr_keys_v1.txt|字典文件|
+|rec_char_dict_path|string|../../ppocr/utils/ppocr_keys_v1.txt|字典文件|
 
 
-* PaddleOCR也支持多语言的预测，更多支持的语言和模型可以参考[识别文档](../../doc/doc_ch/recognition.md)中的多语言字典与模型部分，如果希望进行多语言预测，只需将修改`char_list_file`（字典文件路径）以及`rec_model_dir`（inference模型路径）字段即可。
+* PaddleOCR也支持多语言的预测，更多支持的语言和模型可以参考[识别文档](../../doc/doc_ch/recognition.md)中的多语言字典与模型部分，如果希望进行多语言预测，只需将修改`rec_char_dict_path`（字典文件路径）以及`rec_model_dir`（inference模型路径）字段即可。
 
 最终屏幕上会输出检测结果如下。
 
@@ -291,5 +294,6 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
     <img src="./imgs/cpp_infer_pred_12.png" width="600">
 </div>
 
+## 3. FAQ
 
-**注意：在使用Paddle预测库时，推荐使用2.0.0版本的预测库。**
+ 1.  遇到报错 `unable to access 'https://github.com/LDOUBLEV/AutoLog.git/': gnutls_handshake() failed: The TLS connection was non-properly terminated.`， 将 `deploy/cpp_infer/external-cmake/auto-log.cmake` 中的github地址改为 https://gitee.com/Double_V/AutoLog 地址即可。

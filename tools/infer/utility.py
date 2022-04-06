@@ -622,7 +622,6 @@ def get_rotate_crop_image(img, points):
 
 def check_gpu(use_gpu):
     if use_gpu and not paddle.is_compiled_with_cuda():
-
         use_gpu = False
     return use_gpu
 

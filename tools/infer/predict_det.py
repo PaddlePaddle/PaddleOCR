@@ -150,29 +150,15 @@ class TextDetector(object):
                 logger=logger)
 
     def order_points_clockwise(self, pts):
-        """
-        reference from: https://github.com/jrosebr1/imutils/blob/master/imutils/perspective.py
-        # sort the points based on their x-coordinates
-        """
-        xSorted = pts[np.argsort(pts[:, 0]), :]
-
-        # grab the left-most and right-most points from the sorted
-        # x-roodinate points
-        leftMost = xSorted[:2, :]
-        rightMost = xSorted[2:, :]
-
-        # now, sort the left-most coordinates according to their
-        # y-coordinates so we can grab the top-left and bottom-left
-        # points, respectively
-        leftMost = leftMost[np.argsort(leftMost[:, 1]), :]
-        (tl, bl) = leftMost
-
-        rightMost = rightMost[np.argsort(rightMost[:, 1]), :]
-        (tr, br) = rightMost
-
-        rect = np.array([tl, tr, br, bl], dtype="float32")
+        rect = np.zeros((4, 2), dtype="float32")
+        s = pts.sum(axis=1)
+        rect[0] = pts[np.argmin(s)]
+        rect[2] = pts[np.argmax(s)]
+        diff = np.diff(pts, axis=1)
+        rect[1] = pts[np.argmin(diff)]
+        rect[3] = pts[np.argmax(diff)]
         return rect
-
+    
     def clip_det_res(self, points, img_height, img_width):
         for pno in range(points.shape[0]):
             points[pno, 0] = int(min(max(points[pno, 0], 0), img_width - 1))

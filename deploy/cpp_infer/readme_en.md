@@ -1,3 +1,19 @@
+- [Server-side C++ Inference](#server-side-c-inference)
+  - [1. Prepare the Environment](#1-prepare-the-environment)
+    - [Environment](#environment)
+    - [1.1 Compile OpenCV](#11-compile-opencv)
+    - [1.2 Compile or Download or the Paddle Inference Library](#12-compile-or-download-or-the-paddle-inference-library)
+      - [1.2.1 Direct download and installation](#121-direct-download-and-installation)
+      - [1.2.2 Compile the inference source code](#122-compile-the-inference-source-code)
+  - [2. Compile and Run the Demo](#2-compile-and-run-the-demo)
+    - [2.1 Export the inference model](#21-export-the-inference-model)
+    - [2.2 Compile PaddleOCR C++ inference demo](#22-compile-paddleocr-c-inference-demo)
+    - [Run the demo](#run-the-demo)
+        - [1. run det demo:](#1-run-det-demo)
+        - [2. run rec demo:](#2-run-rec-demo)
+        - [3. run system demo:](#3-run-system-demo)
+  - [3. FAQ](#3-faq)
+
 # Server-side C++ Inference
 
 This chapter introduces the C++ deployment steps of the PaddleOCR model. The corresponding Python predictive deployment method refers to [document](../../doc/doc_ch/inference.md).
@@ -10,6 +26,7 @@ This section will introduce how to configure the C++ environment and deploy Padd
 ### Environment
 
 - Linux, docker is recommended.
+- Windows.
 
 
 ### 1.1 Compile OpenCV
@@ -232,6 +249,7 @@ More parameters are as follows,
 |gpu_mem|int|4000|GPU memory requested|
 |cpu_math_library_num_threads|int|10|Number of threads when using CPU inference. When machine cores is enough, the large the value, the faster the inference speed|
 |enable_mkldnn|bool|true|Whether to use mkdlnn library|
+|output|str|./output|Path where visualization results are saved|
 
 - Detection related parameters
 
@@ -243,7 +261,7 @@ More parameters are as follows,
 |det_db_box_thresh|float|0.5|DB post-processing filter box threshold, if there is a missing box detected, it can be reduced as appropriate|
 |det_db_unclip_ratio|float|1.6|Indicates the compactness of the text box, the smaller the value, the closer the text box to the text|
 |use_polygon_score|bool|false|Whether to use polygon box to calculate bbox score, false means to use rectangle box to calculate. Use rectangular box to calculate faster, and polygonal box more accurate for curved text area.|
-|visualize|bool|true|Whether to visualize the results，when it is set as true, The prediction result will be save in the image file `./ocr_vis.png`.|
+|visualize|bool|true|Whether to visualize the results，when it is set as true, the prediction results will be saved in the folder specified by the `output` field on an image with the same name as the input image.|
 
 - Classifier related parameters
 
@@ -258,9 +276,9 @@ More parameters are as follows,
 |parameter|data type|default|meaning|
 | --- | --- | --- | --- |
 |rec_model_dir|string|-|Address of recognition inference model|
-|char_list_file|string|../../ppocr/utils/ppocr_keys_v1.txt|dictionary file|
+|rec_char_dict_path|string|../../ppocr/utils/ppocr_keys_v1.txt|dictionary file|
 
-* Multi-language inference is also supported in PaddleOCR, you can refer to [recognition tutorial](../../doc/doc_en/recognition_en.md) for more supported languages and models in PaddleOCR. Specifically, if you want to infer using multi-language models, you just need to modify values of `char_list_file` and `rec_model_dir`.
+* Multi-language inference is also supported in PaddleOCR, you can refer to [recognition tutorial](../../doc/doc_en/recognition_en.md) for more supported languages and models in PaddleOCR. Specifically, if you want to infer using multi-language models, you just need to modify values of `rec_char_dict_path` and `rec_model_dir`.
 
 
 The detection results will be shown on the screen, which is as follows.
@@ -270,6 +288,6 @@ The detection results will be shown on the screen, which is as follows.
 </div>
 
 
-### 2.3 Notes
+## 3. FAQ
 
-* Paddle 2.0.0 inference model library is recommended for this tutorial.
+ 1.  Encountered the error `unable to access 'https://github.com/LDOUBLEV/AutoLog.git/': gnutls_handshake() failed: The TLS connection was non-properly terminated.`, change the github address in `deploy/cpp_infer/external-cmake/auto-log.cmake` to the https://gitee.com/Double_V/AutoLog address.

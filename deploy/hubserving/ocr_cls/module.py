@@ -1,4 +1,17 @@
-# -*- coding:utf-8 -*-
+# Copyright (c) 2022 PaddlePaddle Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -7,7 +20,7 @@ import os
 import sys
 sys.path.insert(0, ".")
 import copy
-
+import paddlehub
 from paddlehub.common.logger import logger
 from paddlehub.module.module import moduleinfo, runnable, serving
 import cv2
@@ -22,10 +35,10 @@ from deploy.hubserving.ocr_cls.params import read_params
 @moduleinfo(
     name="ocr_cls",
     version="1.0.0",
-    summary="ocr recognition service",
+    summary="ocr angle cls service",
     author="paddle-dev",
     author_email="paddle-dev@baidu.com",
-    type="cv/text_recognition")
+    type="cv/text_angle_cls")
 class OCRCls(hub.Module):
     def _initialize(self, use_gpu=False, enable_mkldnn=False):
         """
@@ -128,6 +141,7 @@ class OCRCls(hub.Module):
 
 if __name__ == '__main__':
     ocr = OCRCls()
+    ocr._initialize()
     image_path = [
         './doc/imgs_words/ch/word_1.jpg',
         './doc/imgs_words/ch/word_2.jpg',
