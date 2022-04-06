@@ -130,7 +130,7 @@ Download and unzip the dataset, and place the dataset in the current directory a
 
 ```shell
 wget https://paddleocr.bj.bcebos.com/dataset/XFUND.tar
-````
+```\
 
 * Convert the dataset
 
@@ -138,6 +138,16 @@ If you need to train other XFUND datasets, you can use the following commands to
 
 ```bash
 python3 ppstructure/vqa/tools/trans_xfun_data.py --ori_gt_path=path/to/json_path --output_path=path/to/save_path
+````
+
+* Download the pretrained models
+```bash
+mkdir pretrain && cd pretrain
+#download the SER model
+wget https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar && tar -xvf ser_LayoutXLM_xfun_zh.tar
+#download the RE model
+wget https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh.tar && tar -xvf re_LayoutXLM_xfun_zh.tar
+cd ../
 ````
 
 ### 5.2 SER
@@ -176,13 +186,10 @@ Finally, `precision`, `recall`, `hmean` and other indicators will be printed
 
 * Use `OCR engine + SER` tandem prediction
 
-Use the following command to complete the series prediction of `OCR engine + SER`, taking the SER model mentioned above as an example:
+Use the following command to complete the series prediction of `OCR engine + SER`, taking the pretrained SER model as an example:
 
 ```shell
-#download SER model
-wget https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar && tar -xvf ser_LayoutXLM_xfun_zh.tar
-# tandem prediction
-CUDA_VISIBLE_DEVICES=0 python3 tools/infer_vqa_token_ser.py -c configs/vqa/ser/layoutxlm.yml -o Architecture.Backbone.checkpoints=ser_LayoutXLM_xfun_zh/Global.infer_img=doc/vqa/input/zh_val_42.jpg
+CUDA_VISIBLE_DEVICES=0 python3 tools/infer_vqa_token_ser.py -c configs/vqa/ser/layoutxlm.yml -o Architecture.Backbone.checkpoints=pretrain/ser_LayoutXLM_xfun_zh/Global.infer_img=doc/vqa/input/zh_val_42.jpg
 ````
 
 Finally, the prediction result visualization image and the prediction result text file will be saved in the directory configured by the `config.Global.save_res_path` field. The prediction result text file is named `infer_results.txt`.
@@ -233,15 +240,10 @@ Finally, `precision`, `recall`, `hmean` and other indicators will be printed
 
 * Use `OCR engine + SER + RE` tandem prediction
 
-Use the following command to complete the series prediction of `OCR engine + SER + RE`, taking the SER and RE models mentioned above as an example:
+Use the following command to complete the series prediction of `OCR engine + SER + RE`, taking the pretrained SER and RE models as an example:
 ```shell
 export CUDA_VISIBLE_DEVICES=0
-#Download the SER model, if it has been downloaded, you can skip it
-wget https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar && tar -xvf ser_LayoutXLM_xfun_zh.tar
-#download RE model
-wget https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh.tar && tar -xvf re_LayoutXLM_xfun_zh.tar
-#tandem prediction
-python3 tools/infer_vqa_token_ser_re.py -c configs/vqa/re/layoutxlm.yml -o Architecture.Backbone.checkpoints=re_LayoutXLM_xfun_zh/Global.infer_img=doc/vqa/input/zh_val_21.jpg -c_ser configs/vqa/ser/layoutxlm. yml -o_ser Architecture.Backbone.checkpoints=ser_LayoutXLM_xfun_zh/
+python3 tools/infer_vqa_token_ser_re.py -c configs/vqa/re/layoutxlm.yml -o Architecture.Backbone.checkpoints=pretrain/re_LayoutXLM_xfun_zh/Global.infer_img=doc/vqa/input/zh_val_21.jpg -c_ser configs/vqa/ser/layoutxlm. yml -o_ser Architecture.Backbone.checkpoints=pretrain/ser_LayoutXLM_xfun_zh/
 ````
 
 Finally, the prediction result visualization image and the prediction result text file will be saved in the directory configured by the `config.Global.save_res_path` field. The prediction result text file is named `infer_results.txt`.
