@@ -136,7 +136,7 @@ wget https://paddleocr.bj.bcebos.com/dataset/XFUND.tar
 若需进行其他XFUND数据集的训练，可使用下面的命令进行数据集的转换
 
 ```bash
-python3 ppstructure/vqa/helper/trans_xfun_data.py --ori_gt_path=path/to/json_path --output_path=path/to/save_path
+python3 ppstructure/vqa/tools/trans_xfun_data.py --ori_gt_path=path/to/json_path --output_path=path/to/save_path
 ```
 
 * 下载预训练模型
@@ -198,7 +198,7 @@ CUDA_VISIBLE_DEVICES=0 python3 tools/infer_vqa_token_ser.py -c configs/vqa/ser/l
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
-python3 helper/eval_with_label_end2end.py --gt_json_path XFUND/zh_val/xfun_normalize_val.json  --pred_json_path output_res/infer_results.txt
+python3 tools/eval_with_label_end2end.py --gt_json_path XFUND/zh_val/xfun_normalize_val.json  --pred_json_path output_res/infer_results.txt
 ```
 
 ### 5.3 RE
