@@ -6,11 +6,11 @@ English | [简体中文](README_ch.md)
   - [3. Effect demo](#3-Effect-demo)
     - [3.1 SER](#31-ser)
     - [3.2 RE](#32-re)
-  - [4. INSTALL](#4-INSTALL)
+  - [4. Install](#4-Install)
     - [4.1 Installation dependencies](#41-Install-dependencies)
-    - [4.2 Install PaddleOCR (including PP-OCR and VQA)](#42Install-PaddleOCR- (including-PP-OCR-and-VQA))
-  - [5. use](#5-use)
-    - [5.1 Data and Pre-trained Model Preparation](#51-DataandPre-trainedModelPreparation)
+    - [4.2 Install PaddleOCR](#42-Install-PaddleOCR)
+  - [5. Usage](#5-Usage)
+    - [5.1 Data and Model Preparation](#51-Data-and-Model-Preparation)
     - [5.2 SER](#52-ser)
     - [5.3 RE](#53-re)
   - [6. Reference](#6-Reference-Links)
@@ -90,7 +90,7 @@ python3 -m pip install "paddlepaddle>=2.2" -i https://mirror.baidu.com/pypi/simp
 ````
 For more requirements, please refer to the instructions in [Installation Documentation](https://www.paddlepaddle.org.cn/install/quick).
 
-### 4.2 Install PaddleOCR (including PP-OCR and VQA)
+### 4.2 Install PaddleOCR
 
 - **(1) pip install PaddleOCR whl package quickly (prediction only)**
 
@@ -115,9 +115,9 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 python3 -m pip install -r ppstructure/vqa/requirements.txt
 ````
 
-## 5. Use
+## 5. Usage
 
-### 5.1 Data and pretrained model preparation
+### 5.1 Data and Model Preparation
 
 If you want to experience the prediction process directly, you can download the pre-training model provided by us, skip the training process, and just predict directly.
 
