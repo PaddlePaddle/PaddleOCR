@@ -13,7 +13,7 @@ English | [简体中文](README_ch.md)
     - [5.1 Data and Pre-trained Model Preparation](#51-DataandPre-trainedModelPreparation)
     - [5.2 SER](#52-ser)
     - [5.3 RE](#53-re)
-  - [6. Reference link](#6-referencelink)
+  - [6. Reference](#6-Reference-Links)
 
 # Document Visual Question Answering (DOC-VQA)
 
