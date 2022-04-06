@@ -88,6 +88,8 @@ PaddleOCR开源的文本识别算法列表：
 PaddleOCR开源的端到端OCR算法列表：
 - [x]  PGNet([paper](https://www.aaai.org/AAAI21Papers/AAAI-2885.WangP.pdf))
 
+> [PGNet使用教程](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/pgnet.md)
+
 <a name="2"></a>
 
 ## 2. 模型训练
