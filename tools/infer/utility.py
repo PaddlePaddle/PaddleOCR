@@ -313,12 +313,6 @@ def create_predictor(args, mode, logger):
         for name in input_names:
             input_tensor = predictor.get_input_handle(name)
         output_tensors = get_output_tensors(args, mode, predictor)
-        #output_names = predictor.get_output_names()
-        #output_tensors = []
-        #print("output names", output_names)
-        #for output_name in output_names:
-        #    output_tensor = predictor.get_output_handle(output_name)
-        #    output_tensors.append(output_tensor)
         return predictor, input_tensor, output_tensors, config
 
 
