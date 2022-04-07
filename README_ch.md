@@ -43,9 +43,9 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 ## 社区、社区贡献与社区常规赛
 
-- **加入社区**：微信扫描下方二维码加入官方交流群，与各行各业开发者充分交流，期待您的加入。
-- **社区贡献**：[社区贡献](./doc/doc_ch/thirdparty.md)文档中包含了社区用户**使用PaddleOCR开发的各种工具、应用**以及**为PaddleOCR贡献的功能、优化的文档与代码**等，是官方为社区开发者打造的荣誉墙，也是帮助优质项目宣传的广播站。
-- **社区常规赛**：社区常规赛是面向OCR开发者的积分赛事，覆盖文档、代码、模型和应用四大类型，以季度为单位评选并发放奖励，赛题详情与报名方法可参考[链接](https://github.com/PaddlePaddle/PaddleOCR/issues/4982)。
+- **加入社区**👬：微信扫描下方二维码加入官方交流群，与各行各业开发者充分交流，期待您的加入。
+- **社区贡献**🏅️：[社区贡献](./doc/doc_ch/thirdparty.md)文档中包含了社区用户**使用PaddleOCR开发的各种工具、应用**以及**为PaddleOCR贡献的功能、优化的文档与代码**等，是官方为社区开发者打造的荣誉墙，也是帮助优质项目宣传的广播站。
+- **社区常规赛**🎁：社区常规赛是面向OCR开发者的积分赛事，覆盖文档、代码、模型和应用四大类型，以季度为单位评选并发放奖励，赛题详情与报名方法可参考[链接](https://github.com/PaddlePaddle/PaddleOCR/issues/4982)。
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "200" height = "200" />
@@ -67,7 +67,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 - [运行环境准备](./doc/doc_ch/environment.md)
 - [快速开始（中英文/多语言/文档分析）](./doc/doc_ch/quickstart.md)
-- [PP-OCR文本检测识别](./doc/doc_ch/ppocr_introduction.md)
+- [PP-OCR文本检测识别🔥](./doc/doc_ch/ppocr_introduction.md)
     - [模型库](./doc/doc_ch/models_list.md)
     - [模型训练](./doc/doc_ch/training.md)
         - [文本检测](./doc/doc_ch/detection.md)
@@ -84,7 +84,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
         - [端侧部署](./deploy/lite/readme.md)
         - [Paddle2ONNX模型转化与预测](./deploy/paddle2onnx/readme.md)
         - [Benchmark](./doc/doc_ch/benchmark.md)
-- [PP-Structure文档分析](./ppstructure/README_ch.md)
+- [PP-Structure文档分析🔥](./ppstructure/README_ch.md)
     - [模型库](./doc/doc_ch/models_list_structrure.md)
     - [模型训练](./doc/doc_ch/training.md)
         - [版面分析](./ppstructure/layout/README_ch.md)
@@ -94,7 +94,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [推理部署](./deploy/readme_ch.md)
         - [基于Python预测引擎推理](./doc/doc_ch/inference_ppstructure.md)
         - [服务化部署](./deploy/pdserving/README_CN.md)
-- [前沿算法与模型](./doc/doc_ch/algorithm.md)
+- [前沿算法与模型🚀](./doc/doc_ch/algorithm.md)
     - [OCR算法与模型](./doc/doc_ch/algorithm_overview.md)
     - [文档分析算法与模型](./doc/doc_ch/algorithm_overview_structure.md)
     - [基于Python预测引擎推理](./doc/doc_ch/algorithm_inference.md)
@@ -113,7 +113,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [表格识别数据集](./doc/doc_ch/table_datasets.md)
     - [DocVQA数据集](./doc/doc_ch/docvqa_datasets.md)
 - [效果展示](#效果展示)
-- [《动手学OCR》电子书](./doc/doc_ch/ocr_book.md)
+- [《动手学OCR》电子书📚](./doc/doc_ch/ocr_book.md)
 - FAQ
     - [通用问题](./doc/doc_ch/FAQ.md)
     - [PaddleOCR实战问题](./doc/doc_ch/FAQ.md)
