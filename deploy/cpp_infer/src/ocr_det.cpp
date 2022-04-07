@@ -175,11 +175,6 @@ void DBDetector::Run(cv::Mat &img,
   std::chrono::duration<float> postprocess_diff =
       postprocess_end - postprocess_start;
   times->push_back(double(postprocess_diff.count() * 1000));
-
-  //// visualization
-  if (this->visualize_) {
-    Utility::VisualizeBboxes(srcimg, boxes);
-  }
 }
 
 } // namespace PaddleOCR
