@@ -316,3 +316,7 @@ python3 infer_ser_re_e2e.py \
 - LayoutXLM: Multimodal Pre-training for Multilingual Visually-rich Document Understanding, https://arxiv.org/pdf/2104.08836.pdf
 - microsoft/unilm/layoutxlm, https://github.com/microsoft/unilm/tree/master/layoutxlm
 - XFUND dataset, https://github.com/doc-analysis/XFUND
+
+## License
+
+The content of this project itself is licensed under the [Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
