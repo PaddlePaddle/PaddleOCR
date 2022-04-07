@@ -80,9 +80,7 @@ class CTCHead(nn.Layer):
             result = (x, predicts)
         else:
             result = predicts
-        print("self.training: ", self.training)
         if not self.training:
-            print("self.training, ", self.training)
             predicts = F.softmax(predicts, axis=2)
             result = predicts
 

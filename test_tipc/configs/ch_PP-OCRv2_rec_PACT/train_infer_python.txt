@@ -1,7 +1,7 @@
 ===========================train_params===========================
 model_name:ch_PPOCRv2_rec_PACT
 python:python3.7
-gpu_list:6
+gpu_list:0|0,1
 Global.use_gpu:True|True
 Global.auto_cast:fp32
 Global.epoch_num:lite_train_lite_infer=6|whole_train_whole_infer=300
