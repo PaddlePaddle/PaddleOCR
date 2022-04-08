@@ -139,13 +139,13 @@ class RecOp(Op):
                 rec_batch_res = self.ocr_reader.postprocess(
                     fetch_data, with_score=True)
                 for res in rec_batch_res:
-                    rec_list.append(res[0])
+                    rec_list.append(res)
         elif isinstance(fetch_data, list):
             for one_batch in fetch_data:
                 one_batch_res = self.ocr_reader.postprocess(
                     one_batch, with_score=True)
                 for res in one_batch_res:
-                    rec_list.append(res[0])
+                    rec_list.append(res)
         result_list = []
         for i in range(dt_num):
             text = rec_list[i]
