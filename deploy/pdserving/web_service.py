@@ -30,10 +30,8 @@ _LOGGER = logging.getLogger()
 class DetOp(Op):
     def init_op(self):
         self.det_preprocess = Sequential([
-            DetResizeForTest(), 
-            Div(255),
-            Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-            Transpose(
+            DetResizeForTest(), Div(255),
+            Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]), Transpose(
                 (2, 0, 1))
         ])
         self.filter_func = FilterBoxes(10, 10)
@@ -141,18 +139,18 @@ class RecOp(Op):
                 rec_batch_res = self.ocr_reader.postprocess(
                     fetch_data, with_score=True)
                 for res in rec_batch_res:
-                    rec_list.append(res[0])
+                    rec_list.append(res)
         elif isinstance(fetch_data, list):
             for one_batch in fetch_data:
                 one_batch_res = self.ocr_reader.postprocess(
                     one_batch, with_score=True)
                 for res in one_batch_res:
-                    rec_list.append(res[0])
+                    rec_list.append(res)
         result_list = []
         for i in range(dt_num):
             text = rec_list[i]
             dt_box = self.dt_list[i]
-            result_list.append([text,dt_box.tolist()])
+            result_list.append([text, dt_box.tolist()])
         res = {"result": str(result_list)}
         return res, None, ""
 

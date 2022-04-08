@@ -34,16 +34,23 @@ test_img_dir = args.image_dir
 for idx, img_file in enumerate(os.listdir(test_img_dir)):
     with open(os.path.join(test_img_dir, img_file), 'rb') as file:
         image_data1 = file.read()
+    # print file name
     print('{}{}{}'.format('*' * 10, img_file, '*' * 10))
 
     image = cv2_to_base64(image_data1)
 
     data = {"key": ["image"], "value": [image]}
     r = requests.post(url=url, data=json.dumps(data))
-    all_result = r.json()["value"][0]
-    for item in eval(all_result):
-        print(item)
-    #print("len result:", len(result))
-    #print(eval(result[0]))
-
+    result = r.json()
+    print("erro_no:{}, err_msg:{}".format(result["err_no"], result["err_msg"]))
+    # check success
+    if result["err_no"] == 0:
+        ocr_result = result["value"][0]
+        for item in eval(ocr_result):
+            # return transcription and points
+            print("{}, {}".format(item[0], item[1]))
+    else:
+        print(
+            "For details about error message, see PipelineServingLogs/pipeline.log"
+        )
 print("==> total number of test imgs: ", len(os.listdir(test_img_dir)))
