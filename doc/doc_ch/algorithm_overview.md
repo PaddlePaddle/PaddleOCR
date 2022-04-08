@@ -1,16 +1,16 @@
 # OCR算法
 
-- [1. 算法介绍](#1-算法介绍)
+- [1. 两阶段算法](#1-两阶段算法)
     - [1.1 文本检测算法](#11-文本检测算法)
     - [1.2 文本识别算法](#12-文本识别算法)
-    - [1.3 端到端算法](#13-端到端算法)
-- [2. 模型训练](#2-模型训练)
-- [3. 模型推理](#3-模型推理)
+- [2. 端到端算法](#2-端到端算法)
+
+
+本文给出了PaddleOCR已支持的OCR算法列表，以及每个算法在**英文公开数据集**上的模型和指标，主要用于算法简介和算法性能对比，更多包括中文在内的其他数据集上的模型请参考[PP-OCR v2.0 系列模型下载](./models_list.md)。
 
 <a name="1"></a>
 
-## 1. 算法介绍
-本文给出了PaddleOCR已支持的文本检测算法和文本识别算法列表，以及每个算法在**英文公开数据集**上的模型和指标，主要用于算法简介和算法性能对比，更多包括中文在内的其他数据集上的模型请参考[PP-OCR v2.0 系列模型下载](./models_list.md)。
+## 1. 两阶段算法
 
 <a name="11"></a>
 
@@ -50,6 +50,13 @@ PaddleOCR开源的文本检测算法列表：
 * [百度云地址](https://pan.baidu.com/s/12cPnZcVuV1zn5DOd4mqjVw) (提取码: 2bpi)
 * [Google Drive下载地址](https://drive.google.com/drive/folders/1ll2-XEVyCQLpJjawLDiRlvo_i4BqHCJe?usp=sharing)
 
+
+**模型训练与推理**
+
+- 以上文本检测算法的训练请参考文档教程中[模型训练/评估中的文本检测部分](./detection.md)。
+- 上述模型中除PP-OCR系列模型以外，其余模型仅支持基于Python引擎的推理，具体内容可参考[基于Python预测引擎推理](./algorithm_inference.md)
+
+
 <a name="12"></a>
 
 ### 1.2 文本识别算法
@@ -81,23 +88,21 @@ PaddleOCR开源的文本识别算法列表：
 |SAR|Resnet31| 87.20% | rec_r31_sar | [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_r31_sar_train.tar) |
 |SEED|Aster_Resnet| 85.35% | rec_resnet_stn_bilstm_att | [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_resnet_stn_bilstm_att.tar) |
 
-<a name="13"></a>
 
-### 1.3 端到端算法
+**模型训练与推理**
+
+- 以上文本识别算法的训练请参考文档教程中[模型训练/评估中的文本识别部分](./recognition.md)。
+- 上述模型中除PP-OCR系列模型以外，其余模型仅支持基于Python引擎的推理，具体内容可参考[基于Python预测引擎推理](./algorithm_inference.md)
+
+
+<a name="2"></a>
+
+## 2. 端到端算法
 
 PaddleOCR开源的端到端OCR算法列表：
 - [x]  PGNet([paper](https://www.aaai.org/AAAI21Papers/AAAI-2885.WangP.pdf))
 
-> [PGNet使用教程](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/pgnet.md)
+> [PGNet更多信息与教程](./pgnet.md)
 
-<a name="2"></a>
 
-## 2. 模型训练
 
-PaddleOCR文本检测算法的训练和使用请参考文档教程中[模型训练/评估中的文本检测部分](./detection.md)。文本识别算法的训练和使用请参考文档教程中[模型训练/评估中的文本识别部分](./recognition.md)。
-
-<a name="3"></a>
-
-## 3. 模型推理
-
-上述模型中除PP-OCR系列模型以外，其余模型仅支持基于Python引擎的推理，具体内容可参考[基于Python预测引擎推理](./inference.md)
