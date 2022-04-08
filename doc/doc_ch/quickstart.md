@@ -1,14 +1,15 @@
 # PaddleOCR快速开始
 
-- [1. 安装PaddleOCR whl包](#1)
-- [2. 便捷使用](#2)
-  - [2.1 命令行使用](#21)
-      - [2.1.1 中英文模型](#211)
-      - [2.1.2 多语言模型](#212)
-      - [2.1.3 版面分析](#213)
-  - [2.2 Python脚本使用](#22)
-      - [2.2.1 中英文与多语言使用](#221)
-      - [2.2.2 版面分析](#222)
+- [PaddleOCR快速开始](#paddleocr快速开始)
+  - [1. 安装PaddleOCR whl包](#1-安装paddleocr-whl包)
+  - [2. 便捷使用](#2-便捷使用)
+    - [2.1 命令行使用](#21-命令行使用)
+      - [2.1.1 中英文模型](#211-中英文模型)
+      - [2.1.2 多语言模型](#212-多语言模型)
+      - [2.1.3 版面分析](#213-版面分析)
+    - [2.2 Python脚本使用](#22-python脚本使用)
+      - [2.2.1 中英文与多语言使用](#221-中英文与多语言使用)
+      - [2.2.2 版面分析](#222-版面分析)
 
 <a name="1"></a>
 
@@ -165,8 +166,8 @@ paddleocr --image_dir=./table/1.png --type=structure
   /output/table/1/
     └─ res.txt
     └─ [454, 360, 824, 658].xlsx  表格识别结果
-    └─ [16, 2, 828, 305].jpg			被裁剪出的图片区域
-    └─ [17, 361, 404, 711].xlsx		表格识别结果
+    └─ [16, 2, 828, 305].jpg            被裁剪出的图片区域
+    └─ [17, 361, 404, 711].xlsx        表格识别结果
   ```
 
 - **参数说明**
@@ -176,7 +177,7 @@ paddleocr --image_dir=./table/1.png --type=structure
   | output          | excel和识别结果保存的地址                | ./output/table                               |
   | table_max_len   | 表格结构模型预测时，图像的长边resize尺度 | 488                                          |
   | table_model_dir | 表格结构模型 inference 模型地址          | None                                         |
-  | table_char_type | 表格结构模型所用字典地址                 | ../ppocr/utils/dict/table_structure_dict.txt |
+  | table_char_dict_path | 表格结构模型所用字典地址                 | ../ppocr/utils/dict/table_structure_dict.txt |
 
   大部分参数和paddleocr whl包保持一致，见 [whl包文档](./whl.md)
 
