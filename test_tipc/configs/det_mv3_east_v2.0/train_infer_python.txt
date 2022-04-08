@@ -1,13 +1,13 @@
 ===========================train_params===========================
 model_name:det_mv3_east_v2.0
 python:python3.7
-gpu_list:0
+gpu_list:0|0,1
 Global.use_gpu:True|True
 Global.auto_cast:fp32
 Global.epoch_num:lite_train_lite_infer=1|whole_train_whole_infer=500
 Global.save_model_dir:./output/
 Train.loader.batch_size_per_card:lite_train_lite_infer=2|whole_train_whole_infer=4
-Global.pretrained_model:null
+Global.pretrained_model:./pretrain_models/det_mv3_east_v2.0_train/best_accuracy
 train_model_name:latest
 train_infer_img_dir:./train_data/icdar2015/text_localization/ch4_test_images/
 null:null
