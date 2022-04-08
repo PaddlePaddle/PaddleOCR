@@ -45,10 +45,8 @@ for img_file in os.listdir(test_img_dir):
         image_data = file.read()
     image = cv2_to_base64(image_data)
     res_list = []
-    #print(image)
     fetch_map = client.predict(
         feed={"x": image}, fetch=["save_infer_model/scale_0.tmp_1"], batch=True)
-    print("fetrch map:", fetch_map)
     one_batch_res = ocr_reader.postprocess(fetch_map, with_score=True)
     for res in one_batch_res:
         res_list.append(res[0])
