@@ -244,9 +244,10 @@ cp -rf general_detection_op.cpp Serving/core/general-server/op
     }
    ```
    启动客户端
-   ```
+   
+    ```
     python3 ocr_cpp_client.py ppocrv2_det_client ppocrv2_rec_client
-   ```
+    ```
 
     成功运行后，模型预测的结果会打印在cmd窗口中，结果示例为：
     ![](./imgs/results.png)
