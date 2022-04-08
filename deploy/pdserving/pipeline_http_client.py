@@ -46,9 +46,14 @@ for idx, img_file in enumerate(os.listdir(test_img_dir)):
     # check success
     if result["err_no"] == 0:
         ocr_result = result["value"][0]
-        for item in eval(ocr_result):
-            # return transcription and points
-            print("{}, {}".format(item[0], item[1]))
+        try:
+            for item in eval(ocr_result):
+                # return transcription and points
+                print("{}, {}".format(item[0], item[1]))
+        except Exception as e:
+            print("No results")
+            continue
+
     else:
         print(
             "For details about error message, see PipelineServingLogs/pipeline.log"
