@@ -89,7 +89,7 @@ class CTCLabelDecode(BaseRecLabelDecode):
                                              use_space_char)
 
     def __call__(self, preds, label=None, *args, **kwargs):
-        if isinstance(preds, tuple):
+        if isinstance(preds, tuple) or isinstance(preds, list):
             preds = preds[-1]
         if isinstance(preds, paddle.Tensor):
             preds = preds.numpy()

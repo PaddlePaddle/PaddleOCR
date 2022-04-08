@@ -1,8 +1,7 @@
-
-# PaddleOCR Quick Start
-
 - [PaddleOCR Quick Start](#paddleocr-quick-start)
-  - [1. Install PaddleOCR Whl Package](#1-install-paddleocr-whl-package)
+  - [1. Installation](#1-installation)
+    - [1.1 Install PaddlePaddle](#11-install-paddlepaddle)
+    - [1.2 Install PaddleOCR Whl Package](#12-install-paddleocr-whl-package)
   - [2. Easy-to-Use](#2-easy-to-use)
     - [2.1 Use by Command Line](#21-use-by-command-line)
       - [2.1.1 Chinese and English Model](#211-chinese-and-english-model)
@@ -11,12 +10,38 @@
     - [2.2 Use by Code](#22-use-by-code)
       - [2.2.1 Chinese & English Model and Multilingual Model](#221-chinese--english-model-and-multilingual-model)
       - [2.2.2 Layout Analysis](#222-layout-analysis)
+  - [3. Summary](#3-summary)
+
+# PaddleOCR Quick Start
 
 
+<a name="1nstallation"></a>
 
-<a name="1-install-paddleocr-whl-package"></a>
+## 1. Installation
 
-## 1. Install PaddleOCR Whl Package
+<a name="11-install-paddlepaddle"></a>
+
+### 1.1 Install PaddlePaddle
+
+> If you do not have a Python environment, please refer to [Environment Preparation](./environment_en.md).
+
+- If you have CUDA 9 or CUDA 10 installed on your machine, please run the following command to install
+
+  ```bash
+  python3 -m pip install paddlepaddle-gpu -i https://mirror.baidu.com/pypi/simple
+  ```
+
+- If you have no available GPU on your machine, please run the following command to install the CPU version
+
+  ```bash
+  python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
+  ```
+
+For more software version requirements, please refer to the instructions in [Installation Document](https://www.paddlepaddle.org.cn/install/quick) for operation.
+
+<a name="12-install-paddleocr-whl-package"></a>
+
+### 1.2 Install PaddleOCR Whl Package
 
 ```bash
 pip install "paddleocr>=2.0.1" # Recommend to use version 2.0.1+
@@ -249,3 +274,11 @@ im_show = draw_structure_result(image, result,font_path=font_path)
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
+
+<a name="3"></a>
+
+## 3. Summary
+
+In this section, you have mastered the use of PaddleOCR whl packages and obtained results.
+
+PaddleOCR is a rich and practical OCR tool library that opens up the whole process of data, model training, compression and inference deployment, so in the [next section](./paddleOCR_overview_en.md) we will first introduce you to the overview of PaddleOCR, and then clone the PaddleOCR project to start the application journey of PaddleOCR.
