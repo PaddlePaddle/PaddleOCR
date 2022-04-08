@@ -6,7 +6,6 @@ PaddleOCR提供2种服务部署方式：
 - 基于PaddleHub Serving的部署：代码路径为"`./deploy/hubserving`"，使用方法参考[文档](../../deploy/hubserving/readme.md)；
 - 基于PaddleServing的部署：代码路径为"`./deploy/pdserving`"，按照本教程使用。
 
-* AIStudio演示案例可参考 [基于PaddleServing的OCR服务化部署实战](https://aistudio.baidu.com/aistudio/projectdetail/3630726)
 
 # 基于PaddleServing的服务部署
 
@@ -18,6 +17,8 @@ PaddleOCR提供2种服务部署方式：
 - 支持 多种编程语言 开发客户端，例如C++, Python和Java
 
 更多有关PaddleServing服务化部署框架介绍和使用教程参考[文档](https://github.com/PaddlePaddle/Serving/blob/develop/README_CN.md)。
+
+AIStudio演示案例可参考 [基于PaddleServing的OCR服务化部署实战](https://aistudio.baidu.com/aistudio/projectdetail/3630726)。
 
 ## 目录
 - [环境准备](#环境准备)
@@ -133,7 +134,7 @@ python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_rec_infer/ \
     python3 pipeline_http_client.py
     ```
     成功运行后，模型预测的结果会打印在cmd窗口中，结果示例为：
-    ![](./imgs/results.png)
+    ![](./imgs/pipeline_result.png)
 
     调整 config.yml 中的并发个数获得最大的QPS, 一般检测和识别的并发数为2：1
     ```
