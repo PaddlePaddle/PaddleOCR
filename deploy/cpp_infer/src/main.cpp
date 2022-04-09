@@ -36,25 +36,26 @@
 #include "auto_log/autolog.h"
 #include <gflags/gflags.h>
 
+// common args
 DEFINE_bool(use_gpu, false, "Infering with GPU or CPU.");
+DEFINE_bool(use_tensorrt, false, "Whether use tensorrt.");
 DEFINE_int32(gpu_id, 0, "Device id of GPU to execute.");
 DEFINE_int32(gpu_mem, 4000, "GPU id when infering with GPU.");
 DEFINE_int32(cpu_threads, 10, "Num of threads with CPU.");
 DEFINE_bool(enable_mkldnn, false, "Whether use mkldnn with CPU.");
-DEFINE_bool(use_tensorrt, false, "Whether use tensorrt.");
 DEFINE_string(precision, "fp32", "Precision be one of fp32/fp16/int8");
 DEFINE_bool(benchmark, false, "Whether use benchmark.");
 DEFINE_string(output, "./output/", "Save benchmark log path.");
-// detection related
 DEFINE_string(image_dir, "", "Dir of input image.");
+DEFINE_bool(visualize, true, "Whether show the detection results.");
+// detection related
 DEFINE_string(det_model_dir, "", "Path of det inference model.");
 DEFINE_int32(max_side_len, 960, "max_side_len of input image.");
 DEFINE_double(det_db_thresh, 0.3, "Threshold of det_db_thresh.");
 DEFINE_double(det_db_box_thresh, 0.6, "Threshold of det_db_box_thresh.");
 DEFINE_double(det_db_unclip_ratio, 1.5, "Threshold of det_db_unclip_ratio.");
-DEFINE_bool(use_polygon_score, false, "Whether use polygon score.");
 DEFINE_bool(use_dilation, false, "Whether use the dilation on output map.");
-DEFINE_bool(visualize, true, "Whether show the detection results.");
+DEFINE_bool(det_db_score_mode, false, "Whether use polygon score.");
 // classification related
 DEFINE_bool(use_angle_cls, false, "Whether use use_angle_cls.");
 DEFINE_string(cls_model_dir, "", "Path of cls inference model.");
@@ -85,7 +86,7 @@ int main_det(std::vector<cv::String> cv_all_img_names) {
                  FLAGS_gpu_mem, FLAGS_cpu_threads, FLAGS_enable_mkldnn,
                  FLAGS_max_side_len, FLAGS_det_db_thresh,
                  FLAGS_det_db_box_thresh, FLAGS_det_db_unclip_ratio,
-                 FLAGS_use_polygon_score, FLAGS_use_dilation,
+                 FLAGS_det_db_score_mode, FLAGS_use_dilation,
                  FLAGS_use_tensorrt, FLAGS_precision);
 
   if (!PathExists(FLAGS_output)) {
@@ -117,13 +118,21 @@ int main_det(std::vector<cv::String> cv_all_img_names) {
     time_info[2] += det_times[2];
 
     if (FLAGS_benchmark) {
-      cout << cv_all_img_names[i] << '\t';
+      cout << cv_all_img_names[i] << "\t[";
       for (int n = 0; n < boxes.size(); n++) {
+        cout << '[';
         for (int m = 0; m < boxes[n].size(); m++) {
-          cout << boxes[n][m][0] << ' ' << boxes[n][m][1] << ' ';
+          cout << '[' << boxes[n][m][0] << ',' << boxes[n][m][1] << "]";
+          if (m != boxes[n].size() - 1) {
+            cout << ',';
+          }
+        }
+        cout << ']';
+        if (n != boxes.size() - 1) {
+          cout << ',';
         }
       }
-      cout << endl;
+      cout << ']' << endl;
     }
   }
 
@@ -140,8 +149,6 @@ int main_rec(std::vector<cv::String> cv_all_img_names) {
   std::vector<double> time_info = {0, 0, 0};
 
   std::string rec_char_dict_path = FLAGS_rec_char_dict_path;
-  if (FLAGS_benchmark)
-    rec_char_dict_path = FLAGS_rec_char_dict_path.substr(6);
   cout << "label file: " << rec_char_dict_path << endl;
 
   CRNNRecognizer rec(FLAGS_rec_model_dir, FLAGS_use_gpu, FLAGS_gpu_id,
@@ -194,7 +201,7 @@ int main_system(std::vector<cv::String> cv_all_img_names) {
                  FLAGS_gpu_mem, FLAGS_cpu_threads, FLAGS_enable_mkldnn,
                  FLAGS_max_side_len, FLAGS_det_db_thresh,
                  FLAGS_det_db_box_thresh, FLAGS_det_db_unclip_ratio,
-                 FLAGS_use_polygon_score, FLAGS_use_dilation,
+                 FLAGS_det_db_score_mode, FLAGS_use_dilation,
                  FLAGS_use_tensorrt, FLAGS_precision);
 
   Classifier *cls = nullptr;
@@ -205,8 +212,6 @@ int main_system(std::vector<cv::String> cv_all_img_names) {
   }
 
   std::string rec_char_dict_path = FLAGS_rec_char_dict_path;
-  if (FLAGS_benchmark)
-    rec_char_dict_path = FLAGS_rec_char_dict_path.substr(6);
   cout << "label file: " << rec_char_dict_path << endl;
 
   CRNNRecognizer rec(FLAGS_rec_model_dir, FLAGS_use_gpu, FLAGS_gpu_id,

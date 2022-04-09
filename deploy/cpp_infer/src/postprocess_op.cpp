@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <include/clipper.h>
 #include <include/postprocess_op.h>
-#include <include/clipper.cpp>
 
 namespace PaddleOCR {
 
@@ -187,23 +187,22 @@ float PostProcessor::PolygonScoreAcc(std::vector<cv::Point> contour,
   cv::Mat mask;
   mask = cv::Mat::zeros(ymax - ymin + 1, xmax - xmin + 1, CV_8UC1);
 
+  cv::Point *rook_point = new cv::Point[contour.size()];
 
-  cv::Point* rook_point = new cv::Point[contour.size()];
-   
   for (int i = 0; i < contour.size(); ++i) {
     rook_point[i] = cv::Point(int(box_x[i]) - xmin, int(box_y[i]) - ymin);
   }
   const cv::Point *ppt[1] = {rook_point};
   int npt[] = {int(contour.size())};
 
-
   cv::fillPoly(mask, ppt, npt, 1, cv::Scalar(1));
 
   cv::Mat croppedImg;
-  pred(cv::Rect(xmin, ymin, xmax - xmin + 1, ymax - ymin + 1)).copyTo(croppedImg);
+  pred(cv::Rect(xmin, ymin, xmax - xmin + 1, ymax - ymin + 1))
+      .copyTo(croppedImg);
   float score = cv::mean(croppedImg, mask)[0];
 
-  delete []rook_point;
+  delete[] rook_point;
   return score;
 }
 
@@ -247,7 +246,7 @@ float PostProcessor::BoxScoreFast(std::vector<std::vector<float>> box_array,
 
 std::vector<std::vector<std::vector<int>>> PostProcessor::BoxesFromBitmap(
     const cv::Mat pred, const cv::Mat bitmap, const float &box_thresh,
-    const float &det_db_unclip_ratio, const bool &use_polygon_score) {
+    const float &det_db_unclip_ratio, const std::string &det_db_score_mode) {
   const int min_size = 3;
   const int max_candidates = 1000;
 
@@ -281,7 +280,7 @@ std::vector<std::vector<std::vector<int>>> PostProcessor::BoxesFromBitmap(
     }
 
     float score;
-    if (use_polygon_score)
+    if (det_db_score_mode == "slow")
       /* compute using polygon*/
       score = PolygonScoreAcc(contours[_i], pred);
     else
