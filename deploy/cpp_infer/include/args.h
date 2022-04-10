@@ -27,7 +27,7 @@ DECLARE_string(precision);
 DECLARE_bool(benchmark);
 DECLARE_string(output);
 DECLARE_string(image_dir);
-DECLARE_bool(visualize);
+DECLARE_string(type);
 // detection related
 DECLARE_string(det_model_dir);
 DECLARE_int32(max_side_len);
@@ -36,11 +36,17 @@ DECLARE_double(det_db_box_thresh);
 DECLARE_double(det_db_unclip_ratio);
 DECLARE_bool(use_dilation);
 DECLARE_string(det_db_score_mode);
+DECLARE_bool(visualize);
 // classification related
 DECLARE_bool(use_angle_cls);
 DECLARE_string(cls_model_dir);
 DECLARE_double(cls_thresh);
+DECLARE_int32(cls_batch_num);
 // recognition related
 DECLARE_string(rec_model_dir);
 DECLARE_int32(rec_batch_num);
 DECLARE_string(rec_char_dict_path);
+// forward related
+DECLARE_bool(det);
+DECLARE_bool(rec);
+DECLARE_bool(cls);

@@ -68,7 +68,7 @@ public:
   void LoadModel(const std::string &model_dir);
 
   void Run(std::vector<cv::Mat> img_list, std::vector<std::string> &rec_texts,
-           std::vector<float> &rec_text_scores, std::vector<double> *times);
+           std::vector<float> &rec_text_scores, std::vector<double> &times);
 
 private:
   std::shared_ptr<Predictor> predictor_;

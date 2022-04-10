@@ -9,9 +9,12 @@
     - [2.1 将模型导出为inference model](#21-将模型导出为inference-model)
     - [2.2 编译PaddleOCR C++预测demo](#22-编译paddleocr-c预测demo)
     - [2.3 运行demo](#23-运行demo)
-        - [1. 只调用检测：](#1-只调用检测)
-        - [2. 只调用识别：](#2-只调用识别)
-        - [3. 调用串联：](#3-调用串联)
+        - [1. 检测+分类+识别：](#1-检测分类识别)
+        - [2. 检测+识别：](#2-检测识别)
+        - [3. 检测：](#3-检测)
+        - [4. 分类+识别：](#4-分类识别)
+        - [5. 识别：](#5-识别)
+        - [6. 分类：](#6-分类)
   - [3. FAQ](#3-faq)
 
 # 服务器端C++预测
@@ -181,6 +184,9 @@ inference/
 |-- rec_rcnn
 |   |--inference.pdiparams
 |   |--inference.pdmodel
+|-- cls
+|   |--inference.pdiparams
+|   |--inference.pdmodel
 ```
 
 <a name="22"></a>
@@ -213,36 +219,71 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 
 运行方式：  
 ```shell
-./build/ppocr <mode> [--param1] [--param2] [...]
+./build/ppocr [--param1] [--param2] [...]
 ```
-其中，`mode`为必选参数，表示选择的功能，取值范围['det', 'rec', 'system']，分别表示调用检测、识别、检测识别串联（包括方向分类器）。具体命令如下：
+具体命令如下：
 
-##### 1. 只调用检测：
+##### 1. 检测+分类+识别：
 ```shell
-./build/ppocr det \
-    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
-    --image_dir=../../doc/imgs/12.jpg
-```
-##### 2. 只调用识别：
-```shell
-./build/ppocr rec \
-    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
-    --image_dir=../../doc/imgs_words/ch/
-```
-##### 3. 调用串联：
-```shell
-# 不使用方向分类器
-./build/ppocr system \
-    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
-    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
-    --image_dir=../../doc/imgs/12.jpg
-# 使用方向分类器
-./build/ppocr system \
-    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
+./build/ppocr --det_model_dir=inference/det_db \
+    --rec_model_dir=inference/rec_rcnn \
+    --cls_model_dir=inference/cls \
+    --image_dir=../../doc/imgs/12.jpg \
     --use_angle_cls=true \
-    --cls_model_dir=inference/ch_ppocr_mobile_v2.0_cls_infer \
-    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
-    --image_dir=../../doc/imgs/12.jpg
+    --det=true \
+    --rec=true \
+    --cls=true \
+```
+
+##### 2. 检测+识别：
+```shell
+./build/ppocr --det_model_dir=inference/det_db \
+    --rec_model_dir=inference/rec_rcnn \
+    --image_dir=../../doc/imgs/12.jpg \
+    --use_angle_cls=false \
+    --det=true \
+    --rec=true \
+    --cls=false \
+```
+
+##### 3. 检测：
+```shell
+./build/ppocr --det_model_dir=inference/det_db \
+    --image_dir=../../doc/imgs/12.jpg \
+    --det=true \
+    --rec=false
+```
+
+##### 4. 分类+识别：
+```shell
+./build/ppocr --rec_model_dir=inference/rec_rcnn \
+    --cls_model_dir=inference/cls \
+    --image_dir=../../doc/imgs_words/ch/word_1.jpg \
+    --use_angle_cls=true \
+    --det=false \
+    --rec=true \
+    --cls=true \
+```
+
+##### 5. 识别：
+```shell
+./build/ppocr --rec_model_dir=inference/rec_rcnn \
+    --image_dir=../../doc/imgs_words/ch/word_1.jpg \
+    --use_angle_cls=false \
+    --det=false \
+    --rec=true \
+    --cls=false \
+```
+
+##### 6. 分类：
+```shell
+./build/ppocr --cls_model_dir=inference/cls \
+    --cls_model_dir=inference/cls \
+    --image_dir=../../doc/imgs_words/ch/word_1.jpg \
+    --use_angle_cls=true \
+    --det=false \
+    --rec=false \
+    --cls=true \
 ```
 
 更多支持的可调节参数解释如下：
@@ -257,6 +298,15 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 |cpu_math_library_num_threads|int|10|CPU预测时的线程数，在机器核数充足的情况下，该值越大，预测速度越快|
 |enable_mkldnn|bool|true|是否使用mkldnn库|
 |output|str|./output|可视化结果保存的路径|
+
+- 前向相关
+
+|参数名称|类型|默认参数|意义|
+| :---: | :---: | :---: | :---: |
+|det|bool|true|前向是否执行文字检测|
+|rec|bool|true|前向是否执行文字识别|
+|cls|bool|false|前向是否执行文字方向分类|
+
 
 - 检测模型相关
 
@@ -277,6 +327,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 |use_angle_cls|bool|false|是否使用方向分类器|
 |cls_model_dir|string|-|方向分类器inference model地址|
 |cls_thresh|float|0.9|方向分类器的得分阈值|
+|cls_batch_num|int|1|方向分类器batchsize|
 
 - 识别模型相关
 
@@ -284,15 +335,22 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 | :---: | :---: | :---: | :---: |
 |rec_model_dir|string|-|识别模型inference model地址|
 |rec_char_dict_path|string|../../ppocr/utils/ppocr_keys_v1.txt|字典文件|
+|rec_batch_num|int|6|识别模型batchsize|
 
 
 * PaddleOCR也支持多语言的预测，更多支持的语言和模型可以参考[识别文档](../../doc/doc_ch/recognition.md)中的多语言字典与模型部分，如果希望进行多语言预测，只需将修改`rec_char_dict_path`（字典文件路径）以及`rec_model_dir`（inference模型路径）字段即可。
 
 最终屏幕上会输出检测结果如下。
 
-<div align="center">
-    <img src="./imgs/cpp_infer_pred_12.png" width="600">
-</div>
+```bash
+predict img: ../../doc/imgs/12.jpg
+../../doc/imgs/12.jpg
+0       det boxes: [[79,553],[399,541],[400,573],[80,585]] rec text: 打浦路252935号 rec score: 0.933757
+1       det boxes: [[31,509],[510,488],[511,529],[33,549]] rec text: 绿洲仕格维花园公寓 rec score: 0.951745
+2       det boxes: [[181,456],[395,448],[396,480],[182,488]] rec text: 打浦路15号 rec score: 0.91956
+3       det boxes: [[43,413],[480,391],[481,428],[45,450]] rec text: 上海斯格威铂尔多大酒店 rec score: 0.915914
+The detection visualized image saved in ./output//12.jpg
+```
 
 ## 3. FAQ
 
