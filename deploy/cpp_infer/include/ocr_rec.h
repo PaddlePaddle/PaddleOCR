@@ -30,7 +30,6 @@
 #include <numeric>
 
 #include <include/ocr_cls.h>
-#include <include/postprocess_op.h>
 #include <include/preprocess_op.h>
 #include <include/utility.h>
 
@@ -92,9 +91,6 @@ private:
   CrnnResizeImg resize_op_;
   Normalize normalize_op_;
   PermuteBatch permute_op_;
-
-  // post-process
-  PostProcessor post_processor_;
 
 }; // class CrnnRecognizer
 
