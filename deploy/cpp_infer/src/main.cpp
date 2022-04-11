@@ -75,20 +75,31 @@ int main(int argc, char **argv) {
       ocr.ocr(cv_all_img_names, FLAGS_det, FLAGS_rec, FLAGS_cls);
 
   for (int i = 0; i < cv_all_img_names.size(); ++i) {
-    cout << cv_all_img_names[i] << "\n";
-    Utility::print_result(ocr_results[i]);
-    if (FLAGS_visualize && FLAGS_det) {
-      cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
-      if (!srcimg.data) {
-        std::cerr << "[ERROR] image read failed! image path: "
-                  << cv_all_img_names[i] << endl;
-        exit(1);
+    if (FLAGS_benchmark) {
+      cout << cv_all_img_names[i] << '\t';
+      for (int n = 0; n < ocr_results[i].size(); n++) {
+        for (int m = 0; m < ocr_results[i][n].box.size(); m++) {
+          cout << ocr_results[i][n].box[m][0] << ' '
+               << ocr_results[i][n].box[m][1] << ' ';
+        }
       }
-      std::string file_name = Utility::basename(cv_all_img_names[i]);
+      cout << endl;
+    } else {
+      cout << cv_all_img_names[i] << "\n";
+      Utility::print_result(ocr_results[i]);
+      if (FLAGS_visualize && FLAGS_det) {
+        cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
+        if (!srcimg.data) {
+          std::cerr << "[ERROR] image read failed! image path: "
+                    << cv_all_img_names[i] << endl;
+          exit(1);
+        }
+        std::string file_name = Utility::basename(cv_all_img_names[i]);
 
-      Utility::VisualizeBboxes(srcimg, ocr_results[i],
-                               FLAGS_output + "/" + file_name);
+        Utility::VisualizeBboxes(srcimg, ocr_results[i],
+                                 FLAGS_output + "/" + file_name);
+      }
+      cout << "***************************" << endl;
     }
-    cout << "***************************" << endl;
   }
 }

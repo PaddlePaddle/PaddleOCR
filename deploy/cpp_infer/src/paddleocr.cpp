@@ -144,7 +144,9 @@ PaddleOCR::ocr(std::vector<cv::String> cv_all_img_names, bool det, bool rec,
 
     for (int i = 0; i < cv_all_img_names.size(); ++i) {
       std::vector<OCRPredictResult> ocr_result;
-      cout << "predict img: " << cv_all_img_names[i] << endl;
+      if (!FLAGS_benchmark) {
+        cout << "predict img: " << cv_all_img_names[i] << endl;
+      }
 
       cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
       if (!srcimg.data) {
