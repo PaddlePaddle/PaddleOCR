@@ -57,7 +57,7 @@ public:
 
     LoadModel(model_dir);
   }
-  double cls_thresh = 0.5;
+  double cls_thresh = 0.9;
 
   // Load Paddle inference model
   void LoadModel(const std::string &model_dir);

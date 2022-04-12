@@ -4,7 +4,7 @@ use_opencv:True
 infer_model:./inference/ch_ppocr_mobile_v2.0_det_infer/
 infer_quant:False
 inference:./deploy/cpp_infer/build/ppocr
---use_gpu:False
+--use_gpu:True|False
 --enable_mkldnn:True|False
 --cpu_threads:1|6
 --rec_batch_num:1
