@@ -161,7 +161,7 @@ void DBDetector::Run(cv::Mat &img,
 
   boxes = post_processor_.BoxesFromBitmap(
       pred_map, bit_map, this->det_db_box_thresh_, this->det_db_unclip_ratio_,
-      this->use_polygon_score_);
+      this->det_db_score_mode_);
 
   boxes = post_processor_.FilterTagDetRes(boxes, ratio_h, ratio_w, srcimg);
   auto postprocess_end = std::chrono::steady_clock::now();

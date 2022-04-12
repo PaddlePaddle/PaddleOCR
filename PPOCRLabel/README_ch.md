@@ -88,7 +88,7 @@ PPOCRLabel --lang ch --kie True  # 启动 【KIE 模式】，用于打【检测+
 
 #### 1.2.2 通过Python脚本运行PPOCRLabel
 
-如果您对PPOCRLabel文件有所更改（例如指定新的内置模型），通过Python脚本运行会更加方面的看到更改的结果。如果仍然需要通过whl包启动，则需要参考下节重新编译whl包。
+如果您对PPOCRLabel文件有所更改（例如指定新的内置模型），通过Python脚本运行会更加方便的看到更改的结果。如果仍然需要通过whl包启动，则需要先卸载当前环境中的whl包，然后参考下节重新编译whl包。
 
 ```bash
 cd ./PPOCRLabel  # 切换到PPOCRLabel目录
@@ -100,11 +100,9 @@ python PPOCRLabel.py --lang ch
 编译与安装新的whl包，其中1.0.2为版本号，可在 `setup.py` 中指定新版本。
 
 ```bash
-cd ./PPOCRLabel  # 切换到PPOCRLabel目录
-
-# 选择标签模式来启动
-python PPOCRLabel.py --lang ch  # 启动【普通模式】，用于打【检测+识别】场景的标签
-python PPOCRLabel.py --lang ch --kie True  # 启动 【KIE 模式】，用于打【检测+识别+关键字提取】场景的标签
+cd PaddleOCR/PPOCRLabel
+python3 setup.py bdist_wheel 
+pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl -i https://mirror.baidu.com/pypi/simple
 ```
 
 

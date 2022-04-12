@@ -98,7 +98,6 @@ def read_params():
     cfg.rec_model_dir = "./ocr_rec_server/" # 识别算法模型路径
 
     cfg.rec_image_shape = "3, 32, 320"
-    cfg.rec_char_type = 'ch'
     cfg.rec_batch_num = 30
     cfg.max_text_length = 25
 

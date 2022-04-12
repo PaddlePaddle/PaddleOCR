@@ -1,18 +1,19 @@
+- [PaddleOCR Quick Start](#paddleocr-quick-start)
+  - [1. Installation](#1-installation)
+    - [1.1 Install PaddlePaddle](#11-install-paddlepaddle)
+    - [1.2 Install PaddleOCR Whl Package](#12-install-paddleocr-whl-package)
+  - [2. Easy-to-Use](#2-easy-to-use)
+    - [2.1 Use by Command Line](#21-use-by-command-line)
+      - [2.1.1 Chinese and English Model](#211-chinese-and-english-model)
+      - [2.1.2 Multi-language Model](#212-multi-language-model)
+      - [2.1.3 Layout Analysis](#213-layout-analysis)
+    - [2.2 Use by Code](#22-use-by-code)
+      - [2.2.1 Chinese & English Model and Multilingual Model](#221-chinese--english-model-and-multilingual-model)
+      - [2.2.2 Layout Analysis](#222-layout-analysis)
+  - [3. Summary](#3-summary)
 
 # PaddleOCR Quick Start
 
-+ [1. Installation](#1installation)
-  + [1.1 Install PaddlePaddle](#11-install-paddlepaddle)
-  + [1.2 Install PaddleOCR Whl Package](#12-install-paddleocr-whl-package)
-* [2. Easy-to-Use](#2-easy-to-use)
-  + [2.1 Use by Command Line](#21-use-by-command-line)
-    - [2.1.1 English and Chinese Model](#211-english-and-chinese-model)
-    - [2.1.2 Multi-language Model](#212-multi-language-model)
-    - [2.1.3 Layout Analysis](#213-layoutAnalysis)
-  + [2.2 Use by Code](#22-use-by-code)
-    - [2.2.1 Chinese & English Model and Multilingual Model](#221-chinese---english-model-and-multilingual-model)
-    - [2.2.2 Layout Analysis](#222-layoutAnalysis)
-* [3. Summary](#3)
 
 <a name="1nstallation"></a>
 
@@ -196,7 +197,7 @@ paddleocr --image_dir=../doc/table/1.png --type=structure
   | output          | The path where excel and recognition results are saved       | ./output/table                               |
   | table_max_len   | The long side of the image is resized in table structure model | 488                                          |
   | table_model_dir | inference model path of table structure model                | None                                         |
-  | table_char_type | dict path of table structure model                           | ../ppocr/utils/dict/table_structure_dict.txt |
+  | table_char_dict_path | dict path of table structure model                           | ../ppocr/utils/dict/table_structure_dict.txt |
 
 <a name="22-use-by-code"></a>
 

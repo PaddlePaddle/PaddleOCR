@@ -133,6 +133,7 @@ def main():
                                 sub_model_save_path, logger)
     else:
         save_path = os.path.join(save_path, "inference")
+        model.eval()
         export_single_model(quanter, model, infer_shape, save_path, logger)
 
 

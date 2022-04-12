@@ -267,7 +267,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 |det_db_thresh|float|0.3|用于过滤DB预测的二值化图像，设置为0.-0.3对结果影响不明显|
 |det_db_box_thresh|float|0.5|DB后处理过滤box的阈值，如果检测存在漏框情况，可酌情减小|
 |det_db_unclip_ratio|float|1.6|表示文本框的紧致程度，越小则文本框更靠近文本|
-|use_polygon_score|bool|false|是否使用多边形框计算bbox score，false表示使用矩形框计算。矩形框计算速度更快，多边形框对弯曲文本区域计算更准确。|
+|det_db_score_mode|string|slow|slow:使用多边形框计算bbox score，fast:使用矩形框计算。矩形框计算速度更快，多边形框对弯曲文本区域计算更准确。|
 |visualize|bool|true|是否对结果进行可视化，为1时，预测结果会保存在`output`字段指定的文件夹下和输入图像同名的图像上。|
 
 - 方向分类器相关
