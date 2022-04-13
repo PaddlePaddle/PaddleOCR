@@ -16,14 +16,15 @@
 
 ### 1.1 文本检测算法
 
-PaddleOCR开源的文本检测算法列表：
-- [x]  DB([paper]( https://arxiv.org/abs/1911.08947)) [2]（ppocr推荐）
-- [x]  EAST([paper](https://arxiv.org/abs/1704.03155))[1]
-- [x]  SAST([paper](https://arxiv.org/abs/1908.05498))[4]
-- [x]  PSENet([paper](https://arxiv.org/abs/1903.12473v2)）
-- [x]  FCENet([paper](https://arxiv.org/abs/2104.10442))
+已支持的文本检测算法列表（戳链接获取使用教程）：
+- [x]  [DB](./algorithm_det_db.md)
+- [x]  [EAST](./algorithm_det_east.md)
+- [x]  [SAST](./algorithm_det_sast.md)
+- [x]  [PSENet](./algorithm_det_psenet.md)
+- [x]  [FCENet](./algorithm_det_fcenet.md)
 
 在ICDAR2015文本检测公开数据集上，算法效果如下：
+
 |模型|骨干网络|precision|recall|Hmean|下载链接|
 | --- | --- | --- | --- | --- | --- |
 |EAST|ResNet50_vd|88.71%|81.36%|84.88%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar)|
@@ -51,25 +52,19 @@ PaddleOCR开源的文本检测算法列表：
 * [Google Drive下载地址](https://drive.google.com/drive/folders/1ll2-XEVyCQLpJjawLDiRlvo_i4BqHCJe?usp=sharing)
 
 
-**模型训练与推理**
-
-- 以上文本检测算法的训练请参考文档教程中[模型训练/评估中的文本检测部分](./detection.md)。
-- 上述模型中除PP-OCR系列模型以外，其余模型仅支持基于Python引擎的推理，具体内容可参考[基于Python预测引擎推理](./algorithm_inference.md)
-
-
 <a name="12"></a>
 
 ### 1.2 文本识别算法
 
-PaddleOCR开源的文本识别算法列表：
-- [x]  CRNN([paper](https://arxiv.org/abs/1507.05717))[7]（ppocr推荐）
-- [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))[10]
-- [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))[11]
-- [x]  RARE([paper](https://arxiv.org/abs/1603.03915v1))[12]
-- [x]  SRN([paper](https://arxiv.org/abs/2003.12294))[5]
-- [x]  NRTR([paper](https://arxiv.org/abs/1806.00926v2))[13]
-- [x]  SAR([paper](https://arxiv.org/abs/1811.00751v2))
-- [x] SEED([paper](https://arxiv.org/pdf/2005.10977.pdf))
+已支持的文本识别算法列表（戳链接获取使用教程）：
+- [x]  [CRNN](./algorithm_rec_crnn.md)
+- [x]  [Rosetta](./algorithm_rec_rosetta.md)
+- [x]  [STAR-Net](./algorithm_rec_starnet.md)
+- [x]  [RARE](./algorithm_rec_rare.md)
+- [x]  [SRN](./algorithm_rec_srn.md)
+- [x]  [NRTR](./algorithm_rec_nrtr.md)
+- [x]  [SAR](./algorithm_rec_sar.md)
+- [x]  [SEED](./algorithm_rec_seed.md)
 
 参考[DTRB](https://arxiv.org/abs/1904.01906)[3]文字识别训练和评估流程，使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估，算法效果如下：
 
@@ -89,20 +84,11 @@ PaddleOCR开源的文本识别算法列表：
 |SEED|Aster_Resnet| 85.35% | rec_resnet_stn_bilstm_att | [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_resnet_stn_bilstm_att.tar) |
 
 
-**模型训练与推理**
-
-- 以上文本识别算法的训练请参考文档教程中[模型训练/评估中的文本识别部分](./recognition.md)。
-- 上述模型中除PP-OCR系列模型以外，其余模型仅支持基于Python引擎的推理，具体内容可参考[基于Python预测引擎推理](./algorithm_inference.md)
-
-
 <a name="2"></a>
 
 ## 2. 端到端算法
 
-PaddleOCR开源的端到端OCR算法列表：
-- [x]  PGNet([paper](https://www.aaai.org/AAAI21Papers/AAAI-2885.WangP.pdf))
-
-> [PGNet更多信息与教程](./pgnet.md)
-
+已支持的端到端OCR算法列表（戳链接获取使用教程）：
+- [x]  [PGNet](./algorithm_e2e_pgnet.md)
 
 

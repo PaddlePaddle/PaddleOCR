@@ -41,6 +41,10 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - 移动端：[安装包DEMO下载地址](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)(基于EasyEdge和Paddle-Lite, 支持iOS和Android系统)
 
 
+## 《动手学OCR》电子书
+- [《动手学OCR》电子书📚](./doc/doc_ch/ocr_book.md)
+
+
 <a name="贡献代码"></a>
 
 ## 社区、社区贡献与社区常规赛
@@ -97,10 +101,9 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
         - [基于Python预测引擎推理](./doc/doc_ch/inference_ppstructure.md)
         - [服务化部署](./deploy/pdserving/README_CN.md)
 - [前沿算法与模型🚀](./doc/doc_ch/algorithm.md)
-    - [OCR算法与模型](./doc/doc_ch/algorithm_overview.md)
-    - [文档分析算法与模型](./doc/doc_ch/algorithm_overview_structure.md)
-    - [基于Python预测引擎推理](./doc/doc_ch/algorithm_inference.md)
-    - [更多推理部署](./doc/doc_ch/algorithm_deploy.md) 
+    - [文本检测算法](./doc/doc_ch/algorithm_overview.md#11-%E6%96%87%E6%9C%AC%E6%A3%80%E6%B5%8B%E7%AE%97%E6%B3%95)
+    - [文本识别算法](./doc/doc_ch/algorithm_overview.md#12-%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
+    - [端到端算法](./doc/doc_ch/algorithm_overview.md#2-%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
     - [使用PaddleOCR架构添加新算法](./doc/doc_ch/add_new_algorithm.md)
 - 数据标注与合成
     - [半自动标注工具PPOCRLabel](./PPOCRLabel/README_ch.md)
@@ -114,27 +117,14 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [版面分析数据集](./doc/doc_ch/layout_datasets.md)
     - [表格识别数据集](./doc/doc_ch/table_datasets.md)
     - [DocVQA数据集](./doc/doc_ch/docvqa_datasets.md)
+- [代码组织结构](./doc/doc_ch/tree.md)
 - [效果展示](#效果展示)
-- [《动手学OCR》电子书📚](./doc/doc_ch/ocr_book.md)
 - FAQ
     - [通用问题](./doc/doc_ch/FAQ.md)
     - [PaddleOCR实战问题](./doc/doc_ch/FAQ.md)
 - [参考文献](./doc/doc_ch/reference.md)
 - [许可证书](#许可证书)
-- [代码组织结构](./doc/doc_ch/tree.md)
 
-
-
-
-<a name="PP-OCRv2"></a>
-
-## PP-OCRv2 Pipeline
-<div align="center">
-    <img src="./doc/ppocrv2_framework.jpg" width="800">
-</div>
-[1] PP-OCR是一个实用的超轻量OCR系统。主要由DB文本检测、检测框矫正和CRNN文本识别三部分组成。该系统从骨干网络选择和调整、预测头部的设计、数据增强、学习率变换策略、正则化参数选择、预训练模型使用以及模型自动裁剪量化8个方面，采用19个有效策略，对各个模块的模型进行效果调优和瘦身(如绿框所示)，最终得到整体大小为3.5M的超轻量中英文OCR和2.8M的英文数字OCR。更多细节请参考PP-OCR技术方案 https://arxiv.org/abs/2009.09941
-
-[2] PP-OCRv2在PP-OCR的基础上，进一步在5个方面重点优化，检测模型采用CML协同互学习知识蒸馏策略和CopyPaste数据增广策略；识别模型采用LCNet轻量级骨干网络、UDML 改进知识蒸馏策略和[Enhanced CTC loss](./doc/doc_ch/enhanced_ctc_loss.md)损失函数改进（如上图红框所示），进一步在推理速度和预测效果上取得明显提升。更多细节请参考PP-OCRv2[技术报告](https://arxiv.org/abs/2109.03144)。
 
 <a name="效果展示"></a>
 

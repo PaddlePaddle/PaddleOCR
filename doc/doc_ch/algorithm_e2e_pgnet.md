@@ -43,7 +43,7 @@ PGNet算法细节详见[论文](https://www.aaai.org/AAAI21Papers/AAAI-2885.Wang
 
 <a name="环境配置"></a>
 ## 二、环境配置
-请先参考[《运行环境准备》](./environment.md)配置PaddleOCR运行环境，参考[《PaddleOCR全景图与项目克隆》](./paddleOCR_overview.md)克隆项目
+请先参考[《运行环境准备》](./environment.md)配置PaddleOCR运行环境，参考[《项目克隆》](./clone.md)克隆项目
 
 <a name="快速使用"></a>
 ## 三、快速使用
