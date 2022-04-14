@@ -128,20 +128,25 @@ def merge_config(config):
                     cur = cur[sub_key]
 
 
-def check_gpu(use_gpu):
+def check_device(use_gpu, use_xpu=False):
     """
     Log error and exit when set use_gpu=true in paddlepaddle
     cpu version.
     """
-    err = "Config use_gpu cannot be set as true while you are " \
-          "using paddlepaddle cpu version ! \nPlease try: \n" \
-          "\t1. Install paddlepaddle-gpu to run model on GPU \n" \
-          "\t2. Set use_gpu as false in config file to run " \
+    err = "Config {} cannot be set as true while your paddle " \
+          "is not compiled with {} ! \nPlease try: \n" \
+          "\t1. Install paddlepaddle to run model on {} \n" \
+          "\t2. Set {} as false in config file to run " \
           "model on CPU"
 
     try:
+        if use_gpu and use_xpu:
+            print("use_xpu and use_gpu can not both be ture.")
         if use_gpu and not paddle.is_compiled_with_cuda():
-            print(err)
+            print(err.format("use_gpu", "cuda", "gpu", "use_gpu"))
+            sys.exit(1)
+        if use_xpu and not paddle.device.is_compiled_with_xpu():
+            print(err.format("use_xpu", "xpu", "xpu", "use_xpu"))
             sys.exit(1)
     except Exception as e:
         pass
@@ -266,7 +271,7 @@ def train(config,
             stats['lr'] = lr
             train_stats.update(stats)
 
-            if cal_metric_during_train  and model_type is not "det":  # only rec and cls need
+            if cal_metric_during_train and model_type is not "det":  # only rec and cls need
                 batch = [item.numpy() for item in batch]
                 if model_type in ['table', 'kie']:
                     eval_class(preds, batch)
@@ -497,7 +502,7 @@ def preprocess(is_train=False):
 
     # check if set use_gpu=True in paddlepaddle cpu version
     use_gpu = config['Global']['use_gpu']
-    check_gpu(use_gpu)
+    use_xpu = config['Global'].get('use_xpu', False)
 
     alg = config['Architecture']['algorithm']
     assert alg in [
@@ -511,7 +516,13 @@ def preprocess(is_train=False):
             windows_not_support_list))
         sys.exit()
 
-    device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'
+    if use_xpu:
+        device = 'xpu:{0}'.format(os.getenv('FLAGS_selected_xpus', 0))
+    else:
+        device = 'gpu:{}'.format(dist.ParallelEnv()
+                                 .dev_id) if use_gpu else 'cpu'
+    check_device(use_gpu, use_xpu)
+
     device = paddle.set_device(device)
 
     config['Global']['distributed'] = dist.get_world_size() != 1
