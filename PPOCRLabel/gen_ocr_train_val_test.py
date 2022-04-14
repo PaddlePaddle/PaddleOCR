@@ -39,7 +39,7 @@ def splitTrainVal(root, absTrainRootPath, absValRootPath, absTestRootPath, train
         if flag == "det":
             imagePath = os.path.join(dataAbsPath, imageName)
         elif flag == "rec":
-            imagePath = os.path.join(dataAbsPath, "{}\\{}".format(args.recImageDirName, imageName))
+            imagePath = os.path.join(dataAbsPath, args.recImageDirName, imageName)
 
         # 按预设的比例划分训练集、验证集、测试集
         trainValTestRatio = args.trainValTestRatio.split(":")
