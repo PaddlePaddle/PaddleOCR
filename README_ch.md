@@ -35,19 +35,19 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 > 上述内容的使用方法建议从文档教程中的快速开始体验
 
 
-## 零代码体验
+## 快速开始
 
 - 在线网站体验：超轻量PP-OCR mobile模型体验地址：https://www.paddlepaddle.org.cn/hub/scene/ocr
-- 移动端：[安装包DEMO下载地址](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)(基于EasyEdge和Paddle-Lite, 支持iOS和Android系统)
+- 移动端demo体验：[安装包DEMO下载地址](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)(基于EasyEdge和Paddle-Lite, 支持iOS和Android系统)
+- [快速开始（中英文/多语言/文档分析）](./doc/doc_ch/quickstart.md)
 
-
+<a name="电子书"></a>
 ## 《动手学OCR》电子书
 - [《动手学OCR》电子书📚](./doc/doc_ch/ocr_book.md)
 
 
-<a name="贡献代码"></a>
-
-## 社区、社区贡献与社区常规赛
+<a name="开源社区"></a>
+## 开源社区
 
 - **加入社区**👬：微信扫描下方二维码加入官方交流群，与各行各业开发者充分交流，期待您的加入。
 - **社区贡献**🏅️：[社区贡献](./doc/doc_ch/thirdparty.md)文档中包含了社区用户**使用PaddleOCR开发的各种工具、应用**以及**为PaddleOCR贡献的功能、优化的文档与代码**等，是官方为社区开发者打造的荣誉墙，也是帮助优质项目宣传的广播站。
@@ -74,6 +74,12 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - [运行环境准备](./doc/doc_ch/environment.md)
 - [快速开始（中英文/多语言/文档分析）](./doc/doc_ch/quickstart.md)
 - [PP-OCR文本检测识别🔥](./doc/doc_ch/ppocr_introduction.md)
+
+|[模型库](./doc/doc_ch/models_list.md)|[模型训练](./doc/doc_ch/training.md)|模型压缩|[推理部署](./deploy/readme_ch.md)|
+| :-------: | :----------: | :---------: | :---------: |
+|[模型库](./doc/doc_ch/models_list.md)|[文本检测](./doc/doc_ch/detection.md) <br> [文本识别](./doc/doc_ch/recognition.md) <br> [文本方向分类器](./doc/doc_ch/angle_class.md)|[模型量化](./deploy/slim/quantization/README.md) <br> [模型裁剪](./deploy/slim/prune/README.md) <br> [知识蒸馏](./doc/doc_ch/knowledge_distillation.md)|[基于Python预测引擎推理](./doc/doc_ch/inference_ppocr.md) <br> [基于C++预测引擎推理](./deploy/cpp_infer/readme.md) <br> [服务化部署](./deploy/pdserving/README_CN.md) <br> [端侧部署](./deploy/lite/readme.md) <br> [Paddle2ONNX模型转化与预测](./deploy/paddle2onnx/readme.md) <br> [Benchmark](./doc/doc_ch/benchmark.md)|
+
+- 
     - [模型库](./doc/doc_ch/models_list.md)
     - [模型训练](./doc/doc_ch/training.md)
         - [文本检测](./doc/doc_ch/detection.md)
@@ -105,6 +111,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [文本识别算法](./doc/doc_ch/algorithm_overview.md#12-%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
     - [端到端算法](./doc/doc_ch/algorithm_overview.md#2-%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
     - [使用PaddleOCR架构添加新算法](./doc/doc_ch/add_new_algorithm.md)
+- [场景应用](./doc/doc_ch/application.md)
 - 数据标注与合成
     - [半自动标注工具PPOCRLabel](./PPOCRLabel/README_ch.md)
     - [数据合成工具Style-Text](./StyleText/README_ch.md)
@@ -119,6 +126,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [DocVQA数据集](./doc/doc_ch/docvqa_datasets.md)
 - [代码组织结构](./doc/doc_ch/tree.md)
 - [效果展示](#效果展示)
+- [《动手学OCR》电子书📚](#电子书)
+- [开源社区](#开源社区)
 - FAQ
     - [通用问题](./doc/doc_ch/FAQ.md)
     - [PaddleOCR实战问题](./doc/doc_ch/FAQ.md)
