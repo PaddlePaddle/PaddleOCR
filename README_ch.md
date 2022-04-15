@@ -127,7 +127,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [DocVQA数据集](./doc/doc_ch/docvqa_datasets.md)
 - [代码组织结构](./doc/doc_ch/tree.md)
 - [效果展示](#效果展示)
-- [《动手学OCR》电子书📚](#电子书)
+- [《动手学OCR》电子书📚](./doc/doc_ch/ocr_book.md)
 - [开源社区](#开源社区)
 - FAQ
     - [通用问题](./doc/doc_ch/FAQ.md)
