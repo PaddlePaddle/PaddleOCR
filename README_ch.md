@@ -69,17 +69,18 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 更多模型下载（包括多语言），可以参考[PP-OCR 系列模型下载](./doc/doc_ch/models_list.md)
 
+## PP-Structure系列模型列表（更新中）
+
+| 模型简介 | 模型名称 | 推荐场景  | 版面分析  | 表格识别  | DocVQA  |
+| ------- | ------- | ------- | -------- | --------- | -------- |
+| | |  |  |  |  |
+
+
 ## 文档教程
 
 - [运行环境准备](./doc/doc_ch/environment.md)
 - [快速开始（中英文/多语言/文档分析）](./doc/doc_ch/quickstart.md)
 - [PP-OCR文本检测识别🔥](./doc/doc_ch/ppocr_introduction.md)
-
-|[模型库](./doc/doc_ch/models_list.md)|[模型训练](./doc/doc_ch/training.md)|模型压缩|[推理部署](./deploy/readme_ch.md)|
-| :-------: | :----------: | :---------: | :---------: |
-|[模型库](./doc/doc_ch/models_list.md)|[文本检测](./doc/doc_ch/detection.md) <br> [文本识别](./doc/doc_ch/recognition.md) <br> [文本方向分类器](./doc/doc_ch/angle_class.md)|[模型量化](./deploy/slim/quantization/README.md) <br> [模型裁剪](./deploy/slim/prune/README.md) <br> [知识蒸馏](./doc/doc_ch/knowledge_distillation.md)|[基于Python预测引擎推理](./doc/doc_ch/inference_ppocr.md) <br> [基于C++预测引擎推理](./deploy/cpp_infer/readme.md) <br> [服务化部署](./deploy/pdserving/README_CN.md) <br> [端侧部署](./deploy/lite/readme.md) <br> [Paddle2ONNX模型转化与预测](./deploy/paddle2onnx/readme.md) <br> [Benchmark](./doc/doc_ch/benchmark.md)|
-
-- 
     - [模型库](./doc/doc_ch/models_list.md)
     - [模型训练](./doc/doc_ch/training.md)
         - [文本检测](./doc/doc_ch/detection.md)
