@@ -380,7 +380,8 @@ def train(config,
                 epoch=epoch,
                 global_step=global_step)
 
-            log_writer.log_model(is_best=False, prefix="latest")
+            if log_writer is not None:
+                log_writer.log_model(is_best=False, prefix="latest")
 
         if dist.get_rank() == 0 and epoch > 0 and epoch % save_epoch_step == 0:
             save_model(
@@ -394,8 +395,8 @@ def train(config,
                 best_model_dict=best_model_dict,
                 epoch=epoch,
                 global_step=global_step)
-
-            log_writer.log_model(is_best=False, prefix='iter_epoch_{}'.format(epoch))
+            if log_writer is not None:
+                log_writer.log_model(is_best=False, prefix='iter_epoch_{}'.format(epoch))
 
     best_str = 'best metric, {}'.format(', '.join(
         ['{}: {}'.format(k, v) for k, v in best_model_dict.items()]))
