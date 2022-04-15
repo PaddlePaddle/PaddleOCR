@@ -59,8 +59,8 @@ class WandbLogger(BaseLogger):
     def log_metrics(self, metrics, prefix=None, step=None):
         if not prefix:
             prefix = ""
-        updated_metrics = {prefix + "/" + k: v for k, v in metrics.items()}
-
+        updated_metrics = {prefix.lower() + "/" + k: v for k, v in metrics.items()}
+        
         self.run.log(updated_metrics, step=step)
 
     def log_model(self, is_best, prefix, metadata=None):

@@ -31,7 +31,7 @@ from ppocr.utils.stats import TrainingStats
 from ppocr.utils.save_load import save_model
 from ppocr.utils.utility import print_dict, AverageMeter
 from ppocr.utils.logging import get_logger
-from ppocr.utils.loggers import VDLLogger, WandbLogger
+from ppocr.utils.loggers import VDLLogger, WandbLogger, Loggers
 from ppocr.utils import profiler
 from ppocr.data import build_dataloader
 
@@ -362,10 +362,9 @@ def train(config,
                 if log_writer is not None:
                     log_writer.log_metrics(metrics={
                         "best_{}".format(main_indicator): best_model_dict[main_indicator]
-                    }, prefix="EVAL", step=global_step)
-
-                    if isinstance(log_writer, WandbLogger):
-                        log_writer.log_model(is_best=True, prefix="best_accuracy", metadata=best_model_dict)
+                        }, prefix="EVAL", step=global_step)
+                    
+                    log_writer.log_model(is_best=True, prefix="best_accuracy", metadata=best_model_dict)
 
             reader_start = time.time()
         if dist.get_rank() == 0:
@@ -381,8 +380,7 @@ def train(config,
                 epoch=epoch,
                 global_step=global_step)
 
-            if isinstance(log_writer, WandbLogger):
-                log_writer.log_model(is_best=False, prefix="latest")
+            log_writer.log_model(is_best=False, prefix="latest")
 
         if dist.get_rank() == 0 and epoch > 0 and epoch % save_epoch_step == 0:
             save_model(
@@ -396,9 +394,8 @@ def train(config,
                 best_model_dict=best_model_dict,
                 epoch=epoch,
                 global_step=global_step)
-            
-            if isinstance(log_writer, WandbLogger):
-                log_writer.log_model(is_best=False, prefix='iter_epoch_{}'.format(epoch))
+
+            log_writer.log_model(is_best=False, prefix='iter_epoch_{}'.format(epoch))
 
     best_str = 'best metric, {}'.format(', '.join(
         ['{}: {}'.format(k, v) for k, v in best_model_dict.items()]))
@@ -561,11 +558,14 @@ def preprocess(is_train=False):
 
     config['Global']['distributed'] = dist.get_world_size() != 1
 
-    if "use_visualdl" in config['Global'] and config['Global']['use_visualdl'] and dist.get_rank() == 0:
+    loggers = []
+
+    if config['Global']['use_visualdl']:
         save_model_dir = config['Global']['save_model_dir']
         vdl_writer_path = '{}/vdl/'.format(save_model_dir)
         log_writer = VDLLogger(save_model_dir)
-    elif ("use_wandb" in config['Global'] and config['Global']['use_wandb']) or "wandb" in config:
+        loggers.append(log_writer)
+    if config['Global']['use_wandb'] or 'wandb' in config:
         save_dir = config['Global']['save_model_dir']
         wandb_writer_path = "{}/wandb".format(save_dir)
         if "wandb" in config:
@@ -574,9 +574,16 @@ def preprocess(is_train=False):
             wandb_params = dict()
         wandb_params.update({'save_dir': save_model_dir})
         log_writer = WandbLogger(**wandb_params, config=config)
+        loggers.append(log_writer)
     else:
         log_writer = None
     print_dict(config, logger)
+
+    if loggers:
+        log_writer = Loggers(loggers)
+    else:
+        log_writer = None
+
     logger.info('train with paddle {} and device {}'.format(paddle.__version__,
                                                             device))
     return config, device, logger, log_writer
