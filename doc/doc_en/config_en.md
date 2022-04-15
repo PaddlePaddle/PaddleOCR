@@ -67,7 +67,7 @@ In PaddleOCR, the network is divided into four stages: Transform, Backbone, Neck
 | :---------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
 |      model_type        |         Network Type          |  rec  |  Currently support`rec`,`det`,`cls`  |
 |      algorithm           |    Model name  |       CRNN         |               See [algorithm_overview](./algorithm_overview_en.md) for the support list             |
-|      **Transform**           |    Set the transformation method  |       -       |               Currently only recognition algorithms are supported, see [ppocr/modeling/transform](../../ppocr/modeling/transform) for details            |
+|      **Transform**           |    Set the transformation method  |       -       |               Currently only recognition algorithms are supported, see [ppocr/modeling/transform](../../ppocr/modeling/transforms) for details            |
 |        name    |      Transformation class name   |         TPS       | Currently supports `TPS` |
 |        num_fiducial      |   Number of TPS control points        |       20      |  Ten on the top and bottom       |
 |        loc_lr      |    Localization network learning rate        |       0.1      |  \      |
