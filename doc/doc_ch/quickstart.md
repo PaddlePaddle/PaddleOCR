@@ -1,5 +1,7 @@
 # PaddleOCR 快速开始
 
+**说明：**本文主要介绍PaddleOCR wheel包对PP-OCR系列模型的快速使用，如要体验文档分析相关功能，请参考[PP-Structure快速使用教程](../ppstructure/quickstart.md)。
+
 - [1. 安装](#1)
   - [1.1 安装PaddlePaddle](#11)
   - [1.2 安装PaddleOCR whl包](#12)
@@ -7,18 +9,14 @@
   - [2.1 命令行使用](#21)
       - [2.1.1 中英文模型](#211)
       - [2.1.2 多语言模型](#212)
-      - [2.1.3 版面分析](#213)
   - [2.2 Python脚本使用](#22)
       - [2.2.1 中英文与多语言使用](#221)
-      - [2.2.2 版面分析](#222)
 - [3.小结](#3)
 
 <a name="1"></a>
-
 ## 1. 安装
 
 <a name="11"></a>
-
 ### 1.1 安装PaddlePaddle
 
 > 如果您没有基础的Python运行环境，请参考[运行环境准备](./environment.md)。
@@ -38,7 +36,6 @@
 更多的版本需求，请参照[飞桨官网安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
 
 <a name="12"></a>
-
 ### 1.2 安装PaddleOCR whl包
 
 ```bash
@@ -59,7 +56,8 @@ PaddleOCR提供了一系列测试图片，点击[这里](https://paddleocr.bj.bc
 cd /path/to/ppocr_img
 ```
 
-如果不使用提供的测试图片，可以将下方`--image_dir`参数替换为相应的测试图片路径
+如果不使用提供的测试图片，可以将下方`--image_dir`参数替换为相应的测试图片路径。
+
 <a name="211"></a>
 #### 2.1.1 中英文模型
 
@@ -194,34 +192,6 @@ im_show.save('result.jpg')
     <img src="../imgs_results/whl/11_det_rec.jpg" width="800">
 </div>
 
-<a name="222"></a>
-#### 2.2.2 版面分析
-
-```python
-import os
-import cv2
-from paddleocr import PPStructure,draw_structure_result,save_structure_res
-
-table_engine = PPStructure(show_log=True)
-
-save_folder = './output/table'
-img_path = './table/paper-image.jpg'
-img = cv2.imread(img_path)
-result = table_engine(img)
-save_structure_res(result, save_folder,os.path.basename(img_path).split('.')[0])
-
-for line in result:
-    line.pop('img')
-    print(line)
-
-from PIL import Image
-
-font_path = './fonts/simfang.ttf' # PaddleOCR下提供字体包
-image = Image.open(img_path).convert('RGB')
-im_show = draw_structure_result(image, result,font_path=font_path)
-im_show = Image.fromarray(im_show)
-im_show.save('result.jpg')
-```
 
 <a name="3"></a>
 
