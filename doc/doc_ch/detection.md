@@ -10,7 +10,10 @@
   * [2.1 启动训练](#21-----)
   * [2.2 断点训练](#22-----)
   * [2.3 更换Backbone 训练](#23---backbone---)
-  * [2.4 知识蒸馏训练](#24---distill---)
+  * [2.4 混合精度训练](#24---amp---)
+  * [2.5 分布式训练](#25---fleet---)
+  * [2.6 知识蒸馏训练](#26---distill---)
+  * [2.7 其他训练环境（Windows/macOS/Linux DCU）](#27---other---)
 - [3. 模型评估与预测](#3--------)
   * [3.1 指标评估](#31-----)
   * [3.2 测试检测效果](#32-------)
@@ -103,9 +106,6 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml \
 python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/det_mv3_db.yml \
      -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
 
-# 多机多卡训练，通过 --ips 参数设置使用的机器IP地址，通过 --gpus 参数设置使用的GPU ID
-python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1,2,3' tools/train.py -c configs/det/det_mv3_db.yml \
-     -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
 ```
 
 上述指令中，通过-c 选择训练使用configs/det/det_db_mv3.yml配置文件。
@@ -115,15 +115,6 @@ python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1
 ```shell
 python3 tools/train.py -c configs/det/det_mv3_db.yml -o Optimizer.base_lr=0.0001
 ```
-
-**注意:** 采用多机多卡训练时，需要替换上面命令中的ips值为您机器的地址，机器之间需要能够相互ping通。另外，训练时需要在多个机器上分别启动命令。查看机器ip地址的命令为`ifconfig`。
-
-如果您想进一步加快训练速度，可以使用[自动混合精度训练](https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/01_paddle2.0_introduction/basic_concept/amp_cn.html)， 以单机单卡为例，命令如下：
-```shell
-python3 tools/train.py -c configs/det/det_mv3_db.yml \
-     -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained \
-     Global.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True
- ```
 
 <a name="22-----"></a>
 ## 2.2 断点训练
@@ -183,15 +174,49 @@ args1: args1
 
 **注意**：如果要更换网络的其他模块，可以参考[文档](./add_new_algorithm.md)。
 
+<a name="24---amp---"></a>
+## 2.4 混合精度训练
 
-<a name="24---distill---"></a>
+如果您想进一步加快训练速度，可以使用[自动混合精度训练](https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/01_paddle2.0_introduction/basic_concept/amp_cn.html)， 以单机单卡为例，命令如下：
+    
+```shell
+python3 tools/train.py -c configs/det/det_mv3_db.yml \
+     -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained \
+     Global.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True
+ ```
 
-## 2.4 知识蒸馏训练
+<a name="26---fleet---"></a>
+## 2.5 分布式训练
+
+多机多卡训练时，通过 `--ips` 参数设置使用的机器IP地址，通过 `--gpus` 参数设置使用的GPU ID：
+
+```bash
+python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1,2,3' tools/train.py -c configs/det/det_mv3_db.yml \
+     -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
+```
+
+**注意:** 采用多机多卡训练时，需要替换上面命令中的ips值为您机器的地址，机器之间需要能够相互ping通。另外，训练时需要在多个机器上分别启动命令。查看机器ip地址的命令为`ifconfig`。
+
+    
+<a name="26---distill---"></a>
+
+## 2.6 知识蒸馏训练
 
 PaddleOCR支持了基于知识蒸馏的检测模型训练过程，更多内容可以参考[知识蒸馏说明文档](./knowledge_distillation.md)。
 
+**注意：** 知识蒸馏训练目前只支持PP-OCR使用的`DB`和`CRNN`算法。
 
+<a name="27---other---"></a>
 
+## 2.7 其他训练环境
+
+- Windows GPU/CPU
+    
+- macOS
+    
+- Linux DCU
+    
+    
 <a name="3--------"></a>
 # 3. 模型评估与预测
 
@@ -206,22 +231,22 @@ PaddleOCR计算三个OCR检测相关的指标，分别是：Precision、Recall�
 python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="{path/to/weights}/best_accuracy"
 ```
 
-* 注：`box_thresh`、`unclip_ratio`是DB后处理所需要的参数，在评估EAST模型时不需要设置
 
 <a name="32-------"></a>
 ## 3.2 测试检测效果
 
-测试单张图像的检测效果
+测试单张图像的检测效果：
 ```shell
 python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./doc/imgs_en/img_10.jpg" Global.pretrained_model="./output/det_db/best_accuracy"
 ```
 
-测试DB模型时，调整后处理阈值
+测试DB模型时，调整后处理阈值：
 ```shell
 python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./doc/imgs_en/img_10.jpg" Global.pretrained_model="./output/det_db/best_accuracy"  PostProcess.box_thresh=0.6 PostProcess.unclip_ratio=2.0
 ```
+* 注：`box_thresh`、`unclip_ratio`是DB后处理参数，其他检测模型不支持。
 
-测试文件夹下所有图像的检测效果
+测试文件夹下所有图像的检测效果：
 ```shell
 python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./doc/imgs_en/" Global.pretrained_model="./output/det_db/best_accuracy"
 ```

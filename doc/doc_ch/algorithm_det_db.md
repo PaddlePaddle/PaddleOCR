@@ -23,28 +23,22 @@
 
 在ICDAR2015文本检测公开数据集上，算法复现效果如下：
 
-|模型|骨干网络|precision|recall|Hmean|下载链接|
-| --- | --- | --- | --- | --- | --- |
-|DB|ResNet50_vd|86.41%|78.72%|82.38%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_db_v2.0_train.tar)|
-|DB|MobileNetV3|77.29%|73.08%|75.12%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar)|
+|模型|骨干网络|配置文件|precision|recall|Hmean|下载链接|
+| --- | --- | --- | --- | --- | --- | --- |
+|DB|ResNet50_vd|configs/det/det_r50_vd_db.yml|86.41%|78.72%|82.38%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_db_v2.0_train.tar)|
+|DB|MobileNetV3|configs/det/det_mv3_db.yml|77.29%|73.08%|75.12%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar)|
 
 
 <a name="2"></a>
 ## 2. 环境配置
-请先参考[《运行环境准备》](./environment.md)配置PaddleOCR运行环境，参考[《项目克隆》](./clone.md)克隆项目
+请先参考[《运行环境准备》](./environment.md)配置PaddleOCR运行环境，参考[《项目克隆》](./clone.md)克隆项目代码。
 
 
 <a name="3"></a>
 ## 3. 模型训练、评估、预测
 
-<a name="3-1"></a>
-### 3.1 训练
+请参考[文本检测训练教程](./detection.md)。PaddleOCR对代码进行了模块化，训练不同的检测模型只需要**更换配置文件**即可。
 
-<a name="3-2"></a>
-### 3.2 评估
-
-<a name="3-3"></a>
-### 3.3 预测
 
 <a name="4"></a>
 ## 4. 推理部署
