@@ -1,6 +1,6 @@
 # PaddleOCR 快速开始
 
-**说明：**本文主要介绍PaddleOCR wheel包对PP-OCR系列模型的快速使用，如要体验文档分析相关功能，请参考[PP-Structure快速使用教程](../ppstructure/quickstart.md)。
+**说明：** 本文主要介绍PaddleOCR wheel包对PP-OCR系列模型的快速使用，如要体验文档分析相关功能，请参考[PP-Structure快速使用教程](../ppstructure/quickstart.md)。
 
 - [1. 安装](#1)
   - [1.1 安装PaddlePaddle](#11)
