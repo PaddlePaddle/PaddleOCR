@@ -94,7 +94,7 @@ void DBDetector::LoadModel(const std::string &model_dir) {
 
 void DBDetector::Run(cv::Mat &img,
                      std::vector<std::vector<std::vector<int>>> &boxes,
-                     std::vector<double> *times) {
+                     std::vector<double> &times) {
   float ratio_h{};
   float ratio_w{};
 
@@ -161,20 +161,19 @@ void DBDetector::Run(cv::Mat &img,
 
   boxes = post_processor_.BoxesFromBitmap(
       pred_map, bit_map, this->det_db_box_thresh_, this->det_db_unclip_ratio_,
-      this->use_polygon_score_);
+      this->det_db_score_mode_);
 
   boxes = post_processor_.FilterTagDetRes(boxes, ratio_h, ratio_w, srcimg);
   auto postprocess_end = std::chrono::steady_clock::now();
-  std::cout << "Detected boxes num: " << boxes.size() << endl;
 
   std::chrono::duration<float> preprocess_diff =
       preprocess_end - preprocess_start;
-  times->push_back(double(preprocess_diff.count() * 1000));
+  times.push_back(double(preprocess_diff.count() * 1000));
   std::chrono::duration<float> inference_diff = inference_end - inference_start;
-  times->push_back(double(inference_diff.count() * 1000));
+  times.push_back(double(inference_diff.count() * 1000));
   std::chrono::duration<float> postprocess_diff =
       postprocess_end - postprocess_start;
-  times->push_back(double(postprocess_diff.count() * 1000));
+  times.push_back(double(postprocess_diff.count() * 1000));
 }
 
 } // namespace PaddleOCR

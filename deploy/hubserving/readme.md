@@ -188,7 +188,7 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 - **output**：可视化结果保存路径，默认为`./hubserving_result`
 
 访问示例：  
-```python tools/test_hubserving.py --server_url=http://127.0.0.1:8868/predict/ocr_system --image_dir./doc/imgs/ --visualize=false```
+```python tools/test_hubserving.py --server_url=http://127.0.0.1:8868/predict/ocr_system --image_dir=./doc/imgs/ --visualize=false```
 
 ## 4. 返回结果格式说明
 返回结果为列表（list），列表中的每一项为词典（dict），词典一共可能包含3种字段，信息如下：

@@ -30,7 +30,6 @@
 #include <numeric>
 
 #include <include/ocr_cls.h>
-#include <include/postprocess_op.h>
 #include <include/preprocess_op.h>
 #include <include/utility.h>
 
@@ -68,7 +67,7 @@ public:
   void LoadModel(const std::string &model_dir);
 
   void Run(std::vector<cv::Mat> img_list, std::vector<std::string> &rec_texts,
-           std::vector<float> &rec_text_scores, std::vector<double> *times);
+           std::vector<float> &rec_text_scores, std::vector<double> &times);
 
 private:
   std::shared_ptr<Predictor> predictor_;
@@ -92,9 +91,6 @@ private:
   CrnnResizeImg resize_op_;
   Normalize normalize_op_;
   PermuteBatch permute_op_;
-
-  // post-process
-  PostProcessor post_processor_;
 
 }; // class CrnnRecognizer
 

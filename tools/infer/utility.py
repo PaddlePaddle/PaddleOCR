@@ -312,12 +312,26 @@ def create_predictor(args, mode, logger):
         input_names = predictor.get_input_names()
         for name in input_names:
             input_tensor = predictor.get_input_handle(name)
-        output_names = predictor.get_output_names()
-        output_tensors = []
+        output_tensors = get_output_tensors(args, mode, predictor)
+        return predictor, input_tensor, output_tensors, config
+
+
+def get_output_tensors(args, mode, predictor):
+    output_names = predictor.get_output_names()
+    output_tensors = []
+    if mode == "rec" and args.rec_algorithm == "CRNN":
+        output_name = 'softmax_0.tmp_0'
+        if output_name in output_names:
+            return [predictor.get_output_handle(output_name)]
+        else:
+            for output_name in output_names:
+                output_tensor = predictor.get_output_handle(output_name)
+                output_tensors.append(output_tensor)
+    else:
         for output_name in output_names:
             output_tensor = predictor.get_output_handle(output_name)
             output_tensors.append(output_tensor)
-        return predictor, input_tensor, output_tensors, config
+    return output_tensors
 
 
 def get_infer_gpuid():

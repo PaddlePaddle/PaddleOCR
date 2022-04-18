@@ -3,12 +3,13 @@
 本文介绍针对PP-OCR模型库的Python推理引擎使用方法，内容依次为文本检测、文本识别、方向分类器以及三者串联在CPU、GPU上的预测方法。
 
 
-- [1. 文本检测模型推理](#文本检测模型推理)
-- [2. 文本识别模型推理](#文本识别模型推理)
-  - [2.1 超轻量中文识别模型推理](#超轻量中文识别模型推理)
-  - [2.2 多语言模型的推理](#多语言模型的推理)
-- [3. 方向分类模型推理](#方向分类模型推理)
-- [4. 文本检测、方向分类和文字识别串联推理](#文本检测、方向分类和文字识别串联推理)
+- [基于Python引擎的PP-OCR模型库推理](#基于python引擎的pp-ocr模型库推理)
+  - [1. 文本检测模型推理](#1-文本检测模型推理)
+  - [2. 文本识别模型推理](#2-文本识别模型推理)
+    - [2.1 超轻量中文识别模型推理](#21-超轻量中文识别模型推理)
+    - [2.2 多语言模型的推理](#22-多语言模型的推理)
+  - [3. 方向分类模型推理](#3-方向分类模型推理)
+  - [4. 文本检测、方向分类和文字识别串联推理](#4-文本检测方向分类和文字识别串联推理)
 
 <a name="文本检测模型推理"></a>
 
@@ -82,7 +83,7 @@ Predicts of ./doc/imgs_words/ch/word_4.jpg:('实力活力', 0.98458153)
 如果您需要预测的是其他语言模型，可以在[此链接](./models_list.md#%E5%A4%9A%E8%AF%AD%E8%A8%80%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9E%8B)中找到对应语言的inference模型，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径, 同时为了得到正确的可视化结果，需要通过 `--vis_font_path` 指定可视化的字体路径，`doc/fonts/` 路径下有默认提供的小语种字体，例如韩文识别：
 ```
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/korean_mobile_v2.0_rec_infer.tar
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" --rec_model_dir="./your inference model" --rec_char_type="korean" --rec_char_dict_path="ppocr/utils/dict/korean_dict.txt" --vis_font_path="doc/fonts/korean.ttf"
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" --rec_model_dir="./your inference model" --rec_char_dict_path="ppocr/utils/dict/korean_dict.txt" --vis_font_path="doc/fonts/korean.ttf"
 ```
 
 ![](../imgs_words/korean/1.jpg)
