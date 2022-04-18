@@ -145,10 +145,6 @@ paddleocr --image_dir ./imgs_en/254.jpg --lang=en
 | 繁体中文 | chinese_cht |      | 意大利文 | it     |      | 俄罗斯文 | ru     |
 
 全部语种及其对应的缩写列表可查看[多语言模型教程](./multi_languages.md)
-<a name="213"></a>
-
-
-
 
 
 <a name="22"></a>
@@ -197,8 +193,8 @@ im_show.save('result.jpg')
 <div align="center">
     <img src="../imgs_results/whl/11_det_rec.jpg" width="800">
 </div>
-<a name="222"></a>
 
+<a name="222"></a>
 #### 2.2.2 版面分析
 
 ```python
