@@ -75,12 +75,15 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 | ------- | ------- | ------- | -------- | --------- | -------- |
 | | |  |  |  |  |
 
+更多模型下载（包括多语言），可以参考[PP-Structure 系列模型下载](./doc/ppstructure/models_list.md)
+
 
 ## 文档教程
 
 - [运行环境准备](./doc/doc_ch/environment.md)
 - [快速开始（中英文/多语言/文档分析）](./doc/doc_ch/quickstart.md)
 - [PP-OCR文本检测识别🔥](./doc/doc_ch/ppocr_introduction.md)
+    - [快速开始](./doc/doc_ch/quickstart.md)
     - [模型库](./doc/doc_ch/models_list.md)
     - [模型训练](./doc/doc_ch/training.md)
         - [文本检测](./doc/doc_ch/detection.md)
@@ -98,14 +101,16 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
         - [Paddle2ONNX模型转化与预测](./deploy/paddle2onnx/readme.md)
         - [Benchmark](./doc/doc_ch/benchmark.md)
 - [PP-Structure文档分析🔥](./ppstructure/README_ch.md)
-    - [模型库](./doc/doc_ch/models_list_structrure.md)
+    - [快速开始](./doc/ppstructure/quickstart.md)
+    - [模型库](./doc/ppstructure/models_list.md)
     - [模型训练](./doc/doc_ch/training.md)
         - [版面分析](./ppstructure/layout/README_ch.md)
         - [表格识别](./ppstructure/table/README_ch.md)
-        - [关键信息提取](./ppstructure/docs/kie.md)
+        - [关键信息提取](./doc/ppstructure/kie.md)
         - [DocVQA](./ppstructure/docs/kie.md)
     - [推理部署](./deploy/readme_ch.md)
         - [基于Python预测引擎推理](./doc/doc_ch/inference_ppstructure.md)
+        - [基于C++预测引擎推理](./doc/doc_ch/inference_ppstructure.md)
         - [服务化部署](./deploy/pdserving/README_CN.md)
 - [前沿算法与模型🚀](./doc/doc_ch/algorithm.md)
     - [文本检测算法](./doc/doc_ch/algorithm_overview.md#11-%E6%96%87%E6%9C%AC%E6%A3%80%E6%B5%8B%E7%AE%97%E6%B3%95)
