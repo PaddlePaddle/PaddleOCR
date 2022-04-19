@@ -58,7 +58,6 @@ class TableStructurer(object):
         }]
         postprocess_params = {
             'name': 'TableLabelDecode',
-            "character_type": args.table_char_type,
             "character_dict_path": args.table_char_dict_path,
         }
 
@@ -104,7 +103,9 @@ class TableStructurer(object):
             res_loc_final.append([left, top, right, bottom])
 
         structure_str_list = structure_str_list[0][:-1]
-        structure_str_list = ['<html>', '<body>', '<table>'] + structure_str_list + ['</table>', '</body>', '</html>']
+        structure_str_list = [
+            '<html>', '<body>', '<table>'
+        ] + structure_str_list + ['</table>', '</body>', '</html>']
 
         elapse = time.time() - starttime
         return (structure_str_list, res_loc_final), elapse

@@ -38,16 +38,16 @@ std::vector<std::string> Utility::ReadDict(const std::string &path) {
   return m_vec;
 }
 
-void Utility::VisualizeBboxes(
-    const cv::Mat &srcimg,
-    const std::vector<std::vector<std::vector<int>>> &boxes,
-    const std::string &save_path) {
+void Utility::VisualizeBboxes(const cv::Mat &srcimg,
+                              const std::vector<OCRPredictResult> &ocr_result,
+                              const std::string &save_path) {
   cv::Mat img_vis;
   srcimg.copyTo(img_vis);
-  for (int n = 0; n < boxes.size(); n++) {
+  for (int n = 0; n < ocr_result.size(); n++) {
     cv::Point rook_points[4];
-    for (int m = 0; m < boxes[n].size(); m++) {
-      rook_points[m] = cv::Point(int(boxes[n][m][0]), int(boxes[n][m][1]));
+    for (int m = 0; m < ocr_result[n].box.size(); m++) {
+      rook_points[m] =
+          cv::Point(int(ocr_result[n].box[m][0]), int(ocr_result[n].box[m][1]));
     }
 
     const cv::Point *ppt[1] = {rook_points};
@@ -196,4 +196,43 @@ std::string Utility::basename(const std::string &filename) {
   return filename.substr(index + 1, len - index);
 }
 
+bool Utility::PathExists(const std::string &path) {
+#ifdef _WIN32
+  struct _stat buffer;
+  return (_stat(path.c_str(), &buffer) == 0);
+#else
+  struct stat buffer;
+  return (stat(path.c_str(), &buffer) == 0);
+#endif // !_WIN32
+}
+
+void Utility::print_result(const std::vector<OCRPredictResult> &ocr_result) {
+  for (int i = 0; i < ocr_result.size(); i++) {
+    std::cout << i << "\t";
+    // det
+    std::vector<std::vector<int>> boxes = ocr_result[i].box;
+    if (boxes.size() > 0) {
+      std::cout << "det boxes: [";
+      for (int n = 0; n < boxes.size(); n++) {
+        std::cout << '[' << boxes[n][0] << ',' << boxes[n][1] << "]";
+        if (n != boxes.size() - 1) {
+          std::cout << ',';
+        }
+      }
+      std::cout << "] ";
+    }
+    // rec
+    if (ocr_result[i].score != -1.0) {
+      std::cout << "rec text: " << ocr_result[i].text
+                << " rec score: " << ocr_result[i].score << " ";
+    }
+
+    // cls
+    if (ocr_result[i].cls_label != -1) {
+      std::cout << "cls label: " << ocr_result[i].cls_label
+                << " cls score: " << ocr_result[i].cls_score;
+    }
+    std::cout << std::endl;
+  }
+}
 } // namespace PaddleOCR

@@ -9,9 +9,12 @@
     - [2.1 Export the inference model](#21-export-the-inference-model)
     - [2.2 Compile PaddleOCR C++ inference demo](#22-compile-paddleocr-c-inference-demo)
     - [Run the demo](#run-the-demo)
-        - [1. run det demo:](#1-run-det-demo)
-        - [2. run rec demo:](#2-run-rec-demo)
-        - [3. run system demo:](#3-run-system-demo)
+        - [1. det+cls+rec：](#1-detclsrec)
+        - [2. det+rec：](#2-detrec)
+        - [3. det](#3-det)
+        - [4. cls+rec：](#4-clsrec)
+        - [5. rec](#5-rec)
+        - [6. cls](#6-cls)
   - [3. FAQ](#3-faq)
 
 # Server-side C++ Inference
@@ -166,6 +169,9 @@ inference/
 |-- rec_rcnn
 |   |--inference.pdiparams
 |   |--inference.pdmodel
+|-- cls
+|   |--inference.pdiparams
+|   |--inference.pdmodel
 ```
 
 
@@ -198,44 +204,72 @@ or the generated Paddle inference library path (`build/paddle_inference_install_
 ### Run the demo
 Execute the built executable file:
 ```shell
-./build/ppocr <mode> [--param1] [--param2] [...]
+./build/ppocr [--param1] [--param2] [...]
 ```
-`mode` is a required parameter，and the valid values are
-
-mode value | Model used
------|------
-det  | Detection only
-rec  | Recognition only
-system | End-to-end system
 
 Specifically,
 
-##### 1. run det demo:
+##### 1. det+cls+rec：
 ```shell
-./build/ppocr det \
-    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
-    --image_dir=../../doc/imgs/12.jpg
-```
-##### 2. run rec demo:
-```shell
-./build/ppocr rec \
-    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
-    --image_dir=../../doc/imgs_words/ch/
-```
-##### 3. run system demo:
-```shell
-# without text direction classifier
-./build/ppocr system \
-    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
-    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
-    --image_dir=../../doc/imgs/12.jpg
-# with text direction classifier
-./build/ppocr system \
-    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
+./build/ppocr --det_model_dir=inference/det_db \
+    --rec_model_dir=inference/rec_rcnn \
+    --cls_model_dir=inference/cls \
+    --image_dir=../../doc/imgs/12.jpg \
     --use_angle_cls=true \
-    --cls_model_dir=inference/ch_ppocr_mobile_v2.0_cls_infer \
-    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
-    --image_dir=../../doc/imgs/12.jpg
+    --det=true \
+    --rec=true \
+    --cls=true \
+```
+
+##### 2. det+rec：
+```shell
+./build/ppocr --det_model_dir=inference/det_db \
+    --rec_model_dir=inference/rec_rcnn \
+    --image_dir=../../doc/imgs/12.jpg \
+    --use_angle_cls=false \
+    --det=true \
+    --rec=true \
+    --cls=false \
+```
+
+##### 3. det
+```shell
+./build/ppocr --det_model_dir=inference/det_db \
+    --image_dir=../../doc/imgs/12.jpg \
+    --det=true \
+    --rec=false
+```
+
+##### 4. cls+rec：
+```shell
+./build/ppocr --rec_model_dir=inference/rec_rcnn \
+    --cls_model_dir=inference/cls \
+    --image_dir=../../doc/imgs_words/ch/word_1.jpg \
+    --use_angle_cls=true \
+    --det=false \
+    --rec=true \
+    --cls=true \
+```
+
+##### 5. rec
+```shell
+./build/ppocr --rec_model_dir=inference/rec_rcnn \
+    --image_dir=../../doc/imgs_words/ch/word_1.jpg \
+    --use_angle_cls=false \
+    --det=false \
+    --rec=true \
+    --cls=false \
+```
+
+##### 6. cls
+```shell
+./build/ppocr --cls_model_dir=inference/cls \
+    --cls_model_dir=inference/cls \
+    --image_dir=../../doc/imgs_words/ch/word_1.jpg \
+    --use_angle_cls=true \
+    --det=false \
+    --rec=false \
+    --cls=true \
 ```
 
 More parameters are as follows,
@@ -251,6 +285,16 @@ More parameters are as follows,
 |enable_mkldnn|bool|true|Whether to use mkdlnn library|
 |output|str|./output|Path where visualization results are saved|
 
+
+- forward
+
+|parameter|data type|default|meaning|
+| :---: | :---: | :---: | :---: |
+|det|bool|true|前向是否执行文字检测|
+|rec|bool|true|前向是否执行文字识别|
+|cls|bool|false|前向是否执行文字方向分类|
+
+
 - Detection related parameters
 
 |parameter|data type|default|meaning|
@@ -260,7 +304,7 @@ More parameters are as follows,
 |det_db_thresh|float|0.3|Used to filter the binarized image of DB prediction, setting 0.-0.3 has no obvious effect on the result|
 |det_db_box_thresh|float|0.5|DB post-processing filter box threshold, if there is a missing box detected, it can be reduced as appropriate|
 |det_db_unclip_ratio|float|1.6|Indicates the compactness of the text box, the smaller the value, the closer the text box to the text|
-|use_polygon_score|bool|false|Whether to use polygon box to calculate bbox score, false means to use rectangle box to calculate. Use rectangular box to calculate faster, and polygonal box more accurate for curved text area.|
+|det_db_score_mode|string|slow| slow: use polygon box to calculate bbox score, fast: use rectangle box to calculate. Use rectangular box to calculate faster, and polygonal box more accurate for curved text area.|
 |visualize|bool|true|Whether to visualize the results，when it is set as true, the prediction results will be saved in the folder specified by the `output` field on an image with the same name as the input image.|
 
 - Classifier related parameters
@@ -270,6 +314,7 @@ More parameters are as follows,
 |use_angle_cls|bool|false|Whether to use the direction classifier|
 |cls_model_dir|string|-|Address of direction classifier inference model|
 |cls_thresh|float|0.9|Score threshold of the  direction classifier|
+|cls_batch_num|int|1|batch size of classifier|
 
 - Recognition related parameters
 
@@ -277,15 +322,22 @@ More parameters are as follows,
 | --- | --- | --- | --- |
 |rec_model_dir|string|-|Address of recognition inference model|
 |rec_char_dict_path|string|../../ppocr/utils/ppocr_keys_v1.txt|dictionary file|
+|rec_batch_num|int|6|batch size of recognition|
 
 * Multi-language inference is also supported in PaddleOCR, you can refer to [recognition tutorial](../../doc/doc_en/recognition_en.md) for more supported languages and models in PaddleOCR. Specifically, if you want to infer using multi-language models, you just need to modify values of `rec_char_dict_path` and `rec_model_dir`.
 
 
 The detection results will be shown on the screen, which is as follows.
 
-<div align="center">
-    <img src="./imgs/cpp_infer_pred_12.png" width="600">
-</div>
+```bash
+predict img: ../../doc/imgs/12.jpg
+../../doc/imgs/12.jpg
+0       det boxes: [[79,553],[399,541],[400,573],[80,585]] rec text: 打浦路252935号 rec score: 0.933757
+1       det boxes: [[31,509],[510,488],[511,529],[33,549]] rec text: 绿洲仕格维花园公寓 rec score: 0.951745
+2       det boxes: [[181,456],[395,448],[396,480],[182,488]] rec text: 打浦路15号 rec score: 0.91956
+3       det boxes: [[43,413],[480,391],[481,428],[45,450]] rec text: 上海斯格威铂尔多大酒店 rec score: 0.915914
+The detection visualized image saved in ./output//12.jpg
+```
 
 
 ## 3. FAQ
