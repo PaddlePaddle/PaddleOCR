@@ -82,7 +82,7 @@ def polygon_iou(poly1, poly2):
         except shapely.geos.TopologicalError:
             # except Exception as e:
             #     print(e)
-            print('shapely.geos.TopologicalError occured, iou set to 0')
+            print('shapely.geos.TopologicalError occurred, iou set to 0')
             iou = 0
     return iou
 
