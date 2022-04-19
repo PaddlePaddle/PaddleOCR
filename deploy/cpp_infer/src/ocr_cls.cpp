@@ -16,57 +16,84 @@
 
 namespace PaddleOCR {
 
-cv::Mat Classifier::Run(cv::Mat &img) {
-  cv::Mat src_img;
-  img.copyTo(src_img);
-  cv::Mat resize_img;
+void Classifier::Run(std::vector<cv::Mat> img_list,
+                     std::vector<int> &cls_labels,
+                     std::vector<float> &cls_scores,
+                     std::vector<double> &times) {
+  std::chrono::duration<float> preprocess_diff =
+      std::chrono::steady_clock::now() - std::chrono::steady_clock::now();
+  std::chrono::duration<float> inference_diff =
+      std::chrono::steady_clock::now() - std::chrono::steady_clock::now();
+  std::chrono::duration<float> postprocess_diff =
+      std::chrono::steady_clock::now() - std::chrono::steady_clock::now();
 
+  int img_num = img_list.size();
   std::vector<int> cls_image_shape = {3, 48, 192};
-  int index = 0;
-  float wh_ratio = float(img.cols) / float(img.rows);
+  for (int beg_img_no = 0; beg_img_no < img_num;
+       beg_img_no += this->cls_batch_num_) {
+    auto preprocess_start = std::chrono::steady_clock::now();
+    int end_img_no = min(img_num, beg_img_no + this->cls_batch_num_);
+    int batch_num = end_img_no - beg_img_no;
+    // preprocess
+    std::vector<cv::Mat> norm_img_batch;
+    for (int ino = beg_img_no; ino < end_img_no; ino++) {
+      cv::Mat srcimg;
+      img_list[ino].copyTo(srcimg);
+      cv::Mat resize_img;
+      this->resize_op_.Run(srcimg, resize_img, this->use_tensorrt_,
+                           cls_image_shape);
 
-  this->resize_op_.Run(img, resize_img, this->use_tensorrt_, cls_image_shape);
-
-  this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
-                          this->is_scale_);
-
-  std::vector<float> input(1 * 3 * resize_img.rows * resize_img.cols, 0.0f);
-
-  this->permute_op_.Run(&resize_img, input.data());
-
-  // Inference.
-  auto input_names = this->predictor_->GetInputNames();
-  auto input_t = this->predictor_->GetInputHandle(input_names[0]);
-  input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
-  input_t->CopyFromCpu(input.data());
-  this->predictor_->Run();
-
-  std::vector<float> softmax_out;
-  std::vector<int64_t> label_out;
-  auto output_names = this->predictor_->GetOutputNames();
-  auto softmax_out_t = this->predictor_->GetOutputHandle(output_names[0]);
-  auto softmax_shape_out = softmax_out_t->shape();
-
-  int softmax_out_num =
-      std::accumulate(softmax_shape_out.begin(), softmax_shape_out.end(), 1,
-                      std::multiplies<int>());
-
-  softmax_out.resize(softmax_out_num);
-
-  softmax_out_t->CopyToCpu(softmax_out.data());
-
-  float score = 0;
-  int label = 0;
-  for (int i = 0; i < softmax_out_num; i++) {
-    if (softmax_out[i] > score) {
-      score = softmax_out[i];
-      label = i;
+      this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
+                              this->is_scale_);
+      norm_img_batch.push_back(resize_img);
     }
+    std::vector<float> input(batch_num * cls_image_shape[0] *
+                                 cls_image_shape[1] * cls_image_shape[2],
+                             0.0f);
+    this->permute_op_.Run(norm_img_batch, input.data());
+    auto preprocess_end = std::chrono::steady_clock::now();
+    preprocess_diff += preprocess_end - preprocess_start;
+
+    // inference.
+    auto input_names = this->predictor_->GetInputNames();
+    auto input_t = this->predictor_->GetInputHandle(input_names[0]);
+    input_t->Reshape({batch_num, cls_image_shape[0], cls_image_shape[1],
+                      cls_image_shape[2]});
+    auto inference_start = std::chrono::steady_clock::now();
+    input_t->CopyFromCpu(input.data());
+    this->predictor_->Run();
+
+    std::vector<float> predict_batch;
+    auto output_names = this->predictor_->GetOutputNames();
+    auto output_t = this->predictor_->GetOutputHandle(output_names[0]);
+    auto predict_shape = output_t->shape();
+
+    int out_num = std::accumulate(predict_shape.begin(), predict_shape.end(), 1,
+                                  std::multiplies<int>());
+    predict_batch.resize(out_num);
+
+    output_t->CopyToCpu(predict_batch.data());
+    auto inference_end = std::chrono::steady_clock::now();
+    inference_diff += inference_end - inference_start;
+
+    // postprocess
+    auto postprocess_start = std::chrono::steady_clock::now();
+    for (int batch_idx = 0; batch_idx < predict_shape[0]; batch_idx++) {
+      int label = int(
+          Utility::argmax(&predict_batch[batch_idx * predict_shape[1]],
+                          &predict_batch[(batch_idx + 1) * predict_shape[1]]));
+      float score = float(*std::max_element(
+          &predict_batch[batch_idx * predict_shape[1]],
+          &predict_batch[(batch_idx + 1) * predict_shape[1]]));
+      cls_labels[beg_img_no + batch_idx] = label;
+      cls_scores[beg_img_no + batch_idx] = score;
+    }
+    auto postprocess_end = std::chrono::steady_clock::now();
+    postprocess_diff += postprocess_end - postprocess_start;
   }
-  if (label % 2 == 1 && score > this->cls_thresh) {
-    cv::rotate(src_img, src_img, 1);
-  }
-  return src_img;
+  times.push_back(double(preprocess_diff.count() * 1000));
+  times.push_back(double(inference_diff.count() * 1000));
+  times.push_back(double(postprocess_diff.count() * 1000));
 }
 
 void Classifier::LoadModel(const std::string &model_dir) {
@@ -81,13 +108,10 @@ void Classifier::LoadModel(const std::string &model_dir) {
       if (this->precision_ == "fp16") {
         precision = paddle_infer::Config::Precision::kHalf;
       }
-     if (this->precision_ == "int8") {
+      if (this->precision_ == "int8") {
         precision = paddle_infer::Config::Precision::kInt8;
-      } 
-      config.EnableTensorRtEngine(
-          1 << 20, 10, 3,
-          precision,
-          false, false);
+      }
+      config.EnableTensorRtEngine(1 << 20, 10, 3, precision, false, false);
     }
   } else {
     config.DisableGpu();

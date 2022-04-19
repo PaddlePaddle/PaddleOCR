@@ -127,11 +127,13 @@ def main():
     arch_config = config["Architecture"]
     if arch_config["algorithm"] in ["Distillation", ]:  # distillation model
         for idx, name in enumerate(model.model_name_list):
+            model.model_list[idx].eval()
             sub_model_save_path = os.path.join(save_path, name, "inference")
             export_single_model(quanter, model.model_list[idx], infer_shape,
                                 sub_model_save_path, logger)
     else:
         save_path = os.path.join(save_path, "inference")
+        model.eval()
         export_single_model(quanter, model, infer_shape, save_path, logger)
 
 

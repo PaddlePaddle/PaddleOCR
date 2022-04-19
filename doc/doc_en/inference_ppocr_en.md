@@ -4,12 +4,13 @@
 This article introduces the use of the Python inference engine for the PP-OCR model library. The content is in order of text detection, text recognition, direction classifier and the prediction method of the three in series on the CPU and GPU.
 
 
-- [Text Detection Model Inference](#DETECTION_MODEL_INFERENCE)
-- [Text Recognition Model Inference](#RECOGNITION_MODEL_INFERENCE)
-    - [1. Lightweight Chinese Recognition Model Inference](#LIGHTWEIGHT_RECOGNITION)
-    - [2. Multilingual Model Inference](#MULTILINGUAL_MODEL_INFERENCE)
-- [Angle Classification Model Inference](#ANGLE_CLASS_MODEL_INFERENCE)
-- [Text Detection Angle Classification and Recognition Inference Concatenation](#CONCATENATION)
+- [Python Inference for PP-OCR Model Zoo](#python-inference-for-pp-ocr-model-zoo)
+  - [Text Detection Model Inference](#text-detection-model-inference)
+  - [Text Recognition Model Inference](#text-recognition-model-inference)
+    - [1. Lightweight Chinese Recognition Model Inference](#1-lightweight-chinese-recognition-model-inference)
+    - [2. Multilingual Model Inference](#2-multilingual-model-inference)
+  - [Angle Classification Model Inference](#angle-classification-model-inference)
+  - [Text Detection Angle Classification and Recognition Inference Concatenation](#text-detection-angle-classification-and-recognition-inference-concatenation)
 
 <a name="DETECTION_MODEL_INFERENCE"></a>
 
@@ -82,7 +83,7 @@ You need to specify the visual font path through `--vis_font_path`. There are sm
 ```
 wget wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/korean_mobile_v2.0_rec_infer.tar
 
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" --rec_model_dir="./your inference model" --rec_char_type="korean" --rec_char_dict_path="ppocr/utils/dict/korean_dict.txt" --vis_font_path="doc/fonts/korean.ttf"
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/korean/1.jpg" --rec_model_dir="./your inference model" --rec_char_dict_path="ppocr/utils/dict/korean_dict.txt" --vis_font_path="doc/fonts/korean.ttf"
 ```
 ![](../imgs_words/korean/1.jpg)
 

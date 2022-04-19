@@ -42,7 +42,8 @@ public:
                       const int &gpu_id, const int &gpu_mem,
                       const int &cpu_math_library_num_threads,
                       const bool &use_mkldnn, const double &cls_thresh,
-                      const bool &use_tensorrt, const std::string &precision) {
+                      const bool &use_tensorrt, const std::string &precision,
+                      const int &cls_batch_num) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
@@ -52,14 +53,17 @@ public:
     this->cls_thresh = cls_thresh;
     this->use_tensorrt_ = use_tensorrt;
     this->precision_ = precision;
+    this->cls_batch_num_ = cls_batch_num;
 
     LoadModel(model_dir);
   }
+  double cls_thresh = 0.9;
 
   // Load Paddle inference model
   void LoadModel(const std::string &model_dir);
 
-  cv::Mat Run(cv::Mat &img);
+  void Run(std::vector<cv::Mat> img_list, std::vector<int> &cls_labels,
+           std::vector<float> &cls_scores, std::vector<double> &times);
 
 private:
   std::shared_ptr<Predictor> predictor_;
@@ -69,17 +73,17 @@ private:
   int gpu_mem_ = 4000;
   int cpu_math_library_num_threads_ = 4;
   bool use_mkldnn_ = false;
-  double cls_thresh = 0.5;
 
   std::vector<float> mean_ = {0.5f, 0.5f, 0.5f};
   std::vector<float> scale_ = {1 / 0.5f, 1 / 0.5f, 1 / 0.5f};
   bool is_scale_ = true;
   bool use_tensorrt_ = false;
   std::string precision_ = "fp32";
+  int cls_batch_num_ = 1;
   // pre-process
   ClsResizeImg resize_op_;
   Normalize normalize_op_;
-  Permute permute_op_;
+  PermuteBatch permute_op_;
 
 }; // class Classifier
 

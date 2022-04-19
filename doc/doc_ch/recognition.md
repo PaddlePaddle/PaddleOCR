@@ -2,19 +2,20 @@
 
 本文提供了PaddleOCR文本识别任务的全流程指南，包括数据准备、模型训练、调优、评估、预测，各个阶段的详细说明：
 
-- [1 数据准备](#数据准备)
-    - [1.1 自定义数据集](#自定义数据集)
-    - [1.2 数据下载](#数据下载)
-    - [1.3 字典](#字典)  
-    - [1.4 支持空格](#支持空格)
-- [2 启动训练](#启动训练)
-    - [2.1 数据增强](#数据增强)
-    - [2.2 通用模型训练](#通用模型训练)
-    - [2.3 多语言模型训练](#多语言模型训练)
-    - [2.4 知识蒸馏训练](#知识蒸馏训练)
-- [3 评估](#评估)
-- [4 预测](#预测)
-- [5 转Inference模型测试](#Inference)
+- [文字识别](#文字识别)
+  - [1. 数据准备](#1-数据准备)
+    - [1.1 自定义数据集](#11-自定义数据集)
+    - [1.2 数据下载](#12-数据下载)
+    - [1.3 字典](#13-字典)
+    - [1.4 添加空格类别](#14-添加空格类别)
+  - [2. 启动训练](#2-启动训练)
+    - [2.1 数据增强](#21-数据增强)
+    - [2.2 通用模型训练](#22-通用模型训练)
+    - [2.3 多语言模型训练](#23-多语言模型训练)
+    - [2.4 知识蒸馏训练](#24-知识蒸馏训练)
+  - [3 评估](#3-评估)
+  - [4 预测](#4-预测)
+  - [5. 转Inference模型测试](#5-转inference模型测试)
 
 
 <a name="数据准备"></a>
@@ -477,8 +478,8 @@ python3 tools/export_model.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_trai
 
 - 自定义模型推理
 
-  如果训练时修改了文本的字典，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径，并且设置 `rec_char_type=ch`
+  如果训练时修改了文本的字典，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径
 
   ```
-  python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_type="ch" --rec_char_dict_path="your text dict path"
+  python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_dict_path="your text dict path"
   ```

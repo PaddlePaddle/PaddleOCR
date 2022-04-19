@@ -56,7 +56,7 @@ public:
   std::vector<std::vector<std::vector<int>>>
   BoxesFromBitmap(const cv::Mat pred, const cv::Mat bitmap,
                   const float &box_thresh, const float &det_db_unclip_ratio,
-                  const bool &use_polygon_score);
+                  const std::string &det_db_score_mode);
 
   std::vector<std::vector<std::vector<int>>>
   FilterTagDetRes(std::vector<std::vector<std::vector<int>>> boxes,
