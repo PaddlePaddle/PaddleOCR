@@ -69,14 +69,6 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 更多模型下载（包括多语言），可以参考[PP-OCR 系列模型下载](./doc/doc_ch/models_list.md)
 
-## PP-Structure系列模型列表（更新中）
-
-| 模型简介 | 模型名称 | 推荐场景  | 版面分析  | 表格识别  | DocVQA  |
-| ------- | ------- | ------- | -------- | --------- | -------- |
-| | |  |  |  |  |
-
-更多模型下载（包括多语言），可以参考[PP-Structure 系列模型下载](./doc/ppstructure/models_list.md)
-
 
 ## 文档教程
 
@@ -101,16 +93,16 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
         - [Paddle2ONNX模型转化与预测](./deploy/paddle2onnx/readme.md)
         - [Benchmark](./doc/doc_ch/benchmark.md)
 - [PP-Structure文档分析🔥](./ppstructure/README_ch.md)
-    - [快速开始](./doc/ppstructure/quickstart.md)
-    - [模型库](./doc/ppstructure/models_list.md)
+    - [快速开始](./ppstructure/docs/quickstart.md)
+    - [模型库](./ppstructure/docs/models_list.md)
     - [模型训练](./doc/doc_ch/training.md)
         - [版面分析](./ppstructure/layout/README_ch.md)
         - [表格识别](./ppstructure/table/README_ch.md)
-        - [关键信息提取](./doc/ppstructure/kie.md)
+        - [关键信息提取](./ppstructure/docs/kie.md)
         - [DocVQA](./ppstructure/vqa/README_ch.md)
     - [推理部署](./deploy/readme_ch.md)
-        - [基于Python预测引擎推理](./doc/ppstructure/inference.md)
-        - [基于C++预测引擎推理](./doc/ppstructure/inference_cpp.md)
+        - [基于Python预测引擎推理](./ppstructure/docs/inference.md)
+        - [基于C++预测引擎推理]()
         - [服务化部署](./deploy/pdserving/README_CN.md)
 - [前沿算法与模型🚀](./doc/doc_ch/algorithm.md)
     - [文本检测算法](./doc/doc_ch/algorithm_overview.md#11-%E6%96%87%E6%9C%AC%E6%A3%80%E6%B5%8B%E7%AE%97%E6%B3%95)
@@ -146,7 +138,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## 效果展示 [more](./doc/doc_ch/visualization.md)
 
 <details open>
-<summary>中文模型</summary>
+<summary>PP-OCRv2 中文模型</summary>
 
 <div align="center">
       <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
@@ -161,7 +153,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 
 <details open>
-<summary>英文模型</summary>
+<summary>PP-OCRv2 英文模型</summary>
     
 <div align="center">
     <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/img_12.jpg" width="800">
@@ -171,7 +163,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 
 <details open>
-<summary>其他语言模型</summary>
+<summary>PP-OCRv2 其他语言模型</summary>
     
 <div align="center">
     <img src="./doc/imgs_results/french_0.jpg" width="800">
@@ -180,6 +172,25 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     
 </details>
 
+<details open>
+<summary>PP-Structure 文档分析</summary>
+
+- 版面分析+表格识别  
+<div align="center">
+    <img src="./ppstructure/docs/table/ppstructure.GIF" width="800">
+</div>
+
+- SER（语义实体识别）  
+<div align="center">
+    <img src="./ppstructure/docs/vqa/result_ser/zh_val_0_ser.jpg" width="800">
+</div>
+    
+- RE（关系提取） 
+<div align="center">
+    <img src="./ppstructure/docs/vqa/result_re/zh_val_21_re.jpg" width="800">
+</div>
+
+</details>
 
 <a name="许可证书"></a>
 
