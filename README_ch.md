@@ -18,11 +18,11 @@
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力开发者训练出更好的模型，并应用落地。
 
 <div align="center">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="600">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
 </div>
 
 <div align="center">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00018069.jpg" width="600">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00018069.jpg" width="800">
 </div>
 
 ## 近期更新
@@ -36,7 +36,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 ## 特性
 
-支持多种OCR相关前沿算法，在此基础上打造产业级特色模型PP-OCR和PP-Structure，并打通数据生产、模型训练、压缩、预测部署全流程。
+支持多种OCR相关前沿算法，在此基础上打造产业级特色模型[PP-OCR](./doc/doc_ch/ppocr_introduction.md)和[PP-Structure](./ppstructure/README_ch.md)，并打通数据生产、模型训练、压缩、预测部署全流程。
 
 ![](./doc/features.png)
 
