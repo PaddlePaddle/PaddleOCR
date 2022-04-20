@@ -17,8 +17,13 @@
 
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力开发者训练出更好的模型，并应用落地。
 
-![](doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg) | ![](doc/imgs_results/ch_ppocr_mobile_v2.0/00018069.jpg)
----|---
+<div align="center">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="600">
+</div>
+
+<div align="center">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00018069.jpg" width="600">
+</div>
 
 ## 近期更新
 
