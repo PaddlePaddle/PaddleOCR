@@ -17,6 +17,16 @@
 
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力开发者训练出更好的模型，并应用落地。
 
+![](doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg) | ![](doc/imgs_results/ch_ppocr_mobile_v2.0/00018069.jpg)
+---|---
+
+![](./doc/imgs_results/ch_ppocr_mobile_v2.0/img_12.jpg) | ![](./doc/imgs_results/french_0.jpg)
+---|---
+
+![](./ppstructure/docs/table/ppstructure.GIF)
+
+- [更多可视化效果](./doc/doc_ch/visualization.md)
+
 ## 近期更新
 
 - 2021.12.21《动手学OCR · 十讲》课程开讲，12月21日起每晚八点半线上授课！[免费报名地址](https://aistudio.baidu.com/aistudio/course/introduce/25207)。
@@ -39,7 +49,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 - 在线网站体验：超轻量PP-OCR mobile模型体验地址：https://www.paddlepaddle.org.cn/hub/scene/ocr
 - 移动端demo体验：[安装包DEMO下载地址](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)(基于EasyEdge和Paddle-Lite, 支持iOS和Android系统)
-- [快速开始（中英文/多语言/文档分析）](./doc/doc_ch/quickstart.md)
+- 一行命令快速使用：[快速开始（中英文/多语言/文档分析）](./doc/doc_ch/quickstart.md)
 
 <a name="电子书"></a>
 ## 《动手学OCR》电子书
@@ -110,6 +120,10 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [端到端算法](./doc/doc_ch/algorithm_overview.md#2-%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
     - [使用PaddleOCR架构添加新算法](./doc/doc_ch/add_new_algorithm.md)
 - [场景应用](./doc/doc_ch/application.md)
+    - [金融场景（表单/票据等）]()
+    - [工业场景（电表度数/车牌等）]()
+    - [教育场景（手写体/公式等）]()
+    - [医疗场景（化验单等）]()
 - 数据标注与合成
     - [半自动标注工具PPOCRLabel](./PPOCRLabel/README_ch.md)
     - [数据合成工具Style-Text](./StyleText/README_ch.md)
