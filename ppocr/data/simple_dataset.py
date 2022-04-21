@@ -108,8 +108,11 @@ class SimpleDataSet(Dataset):
                 data['image'] = img
             data = transform(data, load_data_ops)
 
-            if data is None or data['polys'].shape[1] != 4:
+            if data is None:
                 continue
+            if 'polys' in data.keys():
+                if data['polys'].shape[1] != 4:
+                    continue
             ext_data.append(data)
         return ext_data
 

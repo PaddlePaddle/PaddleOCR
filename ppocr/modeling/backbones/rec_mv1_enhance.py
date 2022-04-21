@@ -103,7 +103,7 @@ class DepthwiseSeparable(nn.Layer):
 
 
 class MobileNetV1Enhance(nn.Layer):
-    def __init__(self, in_channels=3, scale=0.5, **kwargs):
+    def __init__(self, in_channels=3, scale=0.5, mode='v2', **kwargs):
         super().__init__()
         self.scale = scale
         self.block_list = []
@@ -194,13 +194,16 @@ class MobileNetV1Enhance(nn.Layer):
             scale=scale,
             use_se=True)
         self.block_list.append(conv5_6)
-
+        if mode == 'v3':
+            conv6_stride = (1, 2)
+        else:
+            conv6_stride = 1
         conv6 = DepthwiseSeparable(
             num_channels=int(1024 * scale),
             num_filters1=1024,
             num_filters2=1024,
             num_groups=1024,
-            stride=1,
+            stride=conv6_stride,
             dw_size=5,
             padding=2,
             use_se=True,
@@ -208,8 +211,10 @@ class MobileNetV1Enhance(nn.Layer):
         self.block_list.append(conv6)
 
         self.block_list = nn.Sequential(*self.block_list)
-
-        self.pool = nn.MaxPool2D(kernel_size=2, stride=2, padding=0)
+        if mode == 'v3':
+            self.pool = nn.AvgPool2D(kernel_size=2, stride=2, padding=0)
+        else:
+            self.pool = nn.MaxPool2D(kernel_size=2, stride=2, padding=0)
         self.out_channels = int(1024 * scale)
 
     def forward(self, inputs):

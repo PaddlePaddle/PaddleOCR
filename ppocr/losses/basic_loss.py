@@ -106,8 +106,8 @@ class DMLLoss(nn.Layer):
 
     def forward(self, out1, out2):
         if self.act is not None:
-            out1 = self.act(out1)
-            out2 = self.act(out2)
+            out1 = self.act(out1) + 1e-10
+            out2 = self.act(out2) + 1e-10
         if self.use_log:
             # for recognition distillation, log is needed for feature map
             log_out1 = paddle.log(out1)

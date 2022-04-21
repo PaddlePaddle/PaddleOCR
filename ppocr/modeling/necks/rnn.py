@@ -19,6 +19,7 @@ from __future__ import print_function
 from paddle import nn
 
 from ppocr.modeling.heads.rec_ctc_head import get_para_bias_attr
+from ppocr.modeling.necks.mobilevit import MobileViTBlock, ConvNormAct
 
 
 class Im2Seq(nn.Layer):
@@ -64,6 +65,28 @@ class EncoderWithFC(nn.Layer):
         return x
 
 
+class EncoderWithTransformer(nn.Layer):
+    def __init__(
+            self,
+            in_channels,
+            dims=64,  # XS
+            depth=2,
+            hidden_dims=[96, 120, 144]):
+        super(EncoderWithTransformer, self).__init__()
+        self.depth = depth
+        self.mvit_block_1 = MobileViTBlock(in_channels, hidden_dims[1], depth=2)
+        self.conv1x1 = ConvNormAct(in_channels // 8, dims, kernel_size=1)
+        self.out_channels = dims
+
+    def forward(self, x):
+        # for ppocrv3
+        x.stop_gradient = True
+        out_1 = self.mvit_block_1(x)
+
+        out_2 = self.conv1x1(out_1)
+        return out_2
+
+
 class SequenceEncoder(nn.Layer):
     def __init__(self, in_channels, encoder_type, hidden_size=48, **kwargs):
         super(SequenceEncoder, self).__init__()
@@ -75,18 +98,28 @@ class SequenceEncoder(nn.Layer):
             support_encoder_dict = {
                 'reshape': Im2Seq,
                 'fc': EncoderWithFC,
-                'rnn': EncoderWithRNN
+                'rnn': EncoderWithRNN,
+                'transformer': EncoderWithTransformer
             }
             assert encoder_type in support_encoder_dict, '{} must in {}'.format(
                 encoder_type, support_encoder_dict.keys())
-
-            self.encoder = support_encoder_dict[encoder_type](
-                self.encoder_reshape.out_channels, hidden_size)
+            if encoder_type == "transformer":
+                self.encoder = support_encoder_dict[encoder_type](
+                    self.encoder_reshape.out_channels)
+            else:
+                self.encoder = support_encoder_dict[encoder_type](
+                    self.encoder_reshape.out_channels, hidden_size)
             self.out_channels = self.encoder.out_channels
             self.only_reshape = False
 
     def forward(self, x):
-        x = self.encoder_reshape(x)
-        if not self.only_reshape:
+        if self.encoder_type != 'transformer':
+            x = self.encoder_reshape(x)
+            if not self.only_reshape:
+                x = self.encoder(x)
+            return x
+        else:
             x = self.encoder(x)
-        return x
+            x = x.squeeze(axis=2)
+            x = paddle.transpose(x, perm=[0, 2, 1])
+            return x

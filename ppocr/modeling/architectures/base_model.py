@@ -83,7 +83,11 @@ class BaseModel(nn.Layer):
         y["neck_out"] = x
         if self.use_head:
             x = self.head(x, targets=data)
-        if isinstance(x, dict):
+        # for multi head, save ctc neck out for udml
+        if isinstance(x, dict) and 'ctc_neck' in x.keys():
+            y["neck_out"] = x["ctc_neck"]
+            y["head_out"] = x
+        elif isinstance(x, dict):
             y.update(x)
         else:
             y["head_out"] = x

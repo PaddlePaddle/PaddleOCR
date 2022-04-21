@@ -17,9 +17,14 @@ import string
 
 
 class RecMetric(object):
-    def __init__(self, main_indicator='acc', is_filter=False, **kwargs):
+    def __init__(self,
+                 main_indicator='acc',
+                 is_filter=False,
+                 keep_space=False,
+                 **kwargs):
         self.main_indicator = main_indicator
         self.is_filter = is_filter
+        self.keep_space = keep_space
         self.eps = 1e-5
         self.reset()
 
@@ -34,8 +39,9 @@ class RecMetric(object):
         all_num = 0
         norm_edit_dis = 0.0
         for (pred, pred_conf), (target, _) in zip(preds, labels):
-            pred = pred.replace(" ", "")
-            target = target.replace(" ", "")
+            if not self.keep_space:
+                pred = pred.replace(" ", "")
+                target = target.replace(" ", "")
             if self.is_filter:
                 pred = self._normalize_text(pred)
                 target = self._normalize_text(target)
