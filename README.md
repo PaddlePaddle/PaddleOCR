@@ -3,10 +3,6 @@ English | [简体中文](README_ch.md)
 <p align="center">
  <img src="./doc/PaddleOCR_log.png" align="middle" width = "600"/>
 <p align="center">
-
-
-------------------------------------------------------------------------------------------
-
 <p align="left">
     <a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-dfd.svg"></a>
     <a href="https://github.com/PaddlePaddle/PaddleOCR/releases"><img src="https://img.shields.io/github/v/release/PaddlePaddle/PaddleOCR?color=ffa"></a>
@@ -32,60 +28,42 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
 
 - [more](./doc/doc_en/update_en.md)
 
+
 ## Features
-- PP-OCR - A series of high-quality pre-trained models, comparable to commercial products
-    - Ultra lightweight PP-OCRv2 series models: detection (3.1M) + direction classifier (1.4M) + recognition 8.5M) = 13.0M
-    - Ultra lightweight PP-OCR mobile series models: detection (3.0M) + direction classifier (1.4M) + recognition (5.0M) = 9.4M
-    - General PP-OCR server series models: detection (47.1M) + direction classifier (1.4M) + recognition (94.9M) = 143.4M
-    - Support Chinese, English, and digit recognition, vertical text recognition, and long text recognition
-    - Support multi-lingual recognition: about 80 languages like Korean, Japanese, German, French, etc
-- PP-Structure: a document structurize system
-    - Support layout analysis and table recognition (support export to Excel)
-    - Support key information extraction
-    - Support DocVQA
-- Rich OCR toolkit
-    - Semi-automatic data annotation tool, i.e., PPOCRLabel: support fast and efficient data annotation
-    - Data synthesis tool, i.e., Style-Text: easy to synthesize a large number of images which are similar to the target scene image
-- Support user-defined training, provides rich predictive inference deployment solutions
-- Support PIP installation, easy to use
-- Support Linux, Windows, MacOS and other systems
 
-## Visualization
+PaddleOCR support a variety of cutting-edge algorithms related to OCR, and developed industrial featured models/solution [PP-OCR](./doc/doc_en/ppocr_introduction_en.md) and [PP-Structure](./ppstructure/README.md) on this basis, and get through the whole process of data production, model training, compression, inference and deployment.
 
-<div align="center">
-    <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
-    <img src="doc/imgs_results/multi_lang/img_01.jpg" width="800">
-    <img src="doc/imgs_results/multi_lang/img_02.jpg" width="800">
-</div>
+![](./doc/features_en.png)
 
-The above pictures are the visualizations of the general ppocr_server model. For more effect pictures, please see [More visualizations](./doc/doc_en/visualization_en.md).
+> It is recommended to start with the “quick experience” in the document tutorial
+
+
+## Quick Experience
+
+- Web online experience for the ultra-lightweight OCR: [Online Experience](https://www.paddlepaddle.org.cn/hub/scene/ocr)
+- Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Android systems): [Sign in to the website to obtain the QR code for  installing the App](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)
+- One line of code quick use: [Quick Start](./doc/doc_en/quickstart_en.md)
+
+
+<a name="book"></a>
+## E-book: *Dive Into OCR*
+- [Dive Into OCR 📚](./doc/doc_en/ocr_book_en.md)
+
 
 <a name="Community"></a>
 ## Community
-- Scan the QR code below with your Wechat, you can join the official technical discussion group. Looking forward to your participation.
+
+- **Join us**👬: Scan the QR code below with your Wechat, you can join the official technical discussion group. Looking forward to your participation.
+- **Contribution**🏅️: [Contribution page](./doc/doc_en/thirdparty.md) contains various tools and applications developed by community developers using PaddleOCR, as well as the functions, optimized documents and codes contributed to PaddleOCR. It is an official honor wall for community developers and a broadcasting station to help publicize high-quality projects.
+- **Regular Season**🎁: The community regular season is a point competition for OCR developers, covering four types: documents, codes, models and applications. Awards are selected and awarded on a quarterly basis. Please refer to the [link](https://github.com/PaddlePaddle/PaddleOCR/issues/4982) for more details.
+
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "200" height = "200" />
 </div>
 
 
-## Quick Experience
-
-You can also quickly experience the ultra-lightweight OCR : [Online Experience](https://www.paddlepaddle.org.cn/hub/scene/ocr)
-
-Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Android systems): [Sign in to the website to obtain the QR code for  installing the App](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)
-
- Also, you can scan the QR code below to install the App (**Android support only**)
-
-<div align="center">
-<img src="./doc/ocr-android-easyedge.png"  width = "200" height = "200" />
-</div>
-
-- [**OCR Quick Start**](./doc/doc_en/quickstart_en.md)
-
 <a name="Supported-Chinese-model-list"></a>
-
-
 ## PP-OCR Series Model List（Update on September 8th）
 
 | Model introduction                                           | Model name                   | Recommended scene | Detection model                                              | Direction classifier                                         | Recognition model                                            |
@@ -95,41 +73,48 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
 | Chinese and English general PP-OCR model (143.4M)               | ch_ppocr_server_v2.0_xx      | Server            |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_train.tar)  |
 
 
-For more model downloads (including multiple languages), please refer to [PP-OCR series model downloads](./doc/doc_en/models_list_en.md).
-
-For a new language request, please refer to [Guideline for new language_requests](#language_requests).
+- For more model downloads (including multiple languages), please refer to [PP-OCR series model downloads](./doc/doc_en/models_list_en.md).
+- For a new language request, please refer to [Guideline for new language_requests](#language_requests).
+- For structural document analysis models, please refer to [PP-Structure models](./ppstructure/docs/models_list_en.md).
 
 ## Tutorials
 - [Environment Preparation](./doc/doc_en/environment_en.md)
 - [Quick Start](./doc/doc_en/quickstart_en.md)
-- [PaddleOCR Overview and Project Clone](./doc/doc_en/paddleOCR_overview_en.md)
-- PP-OCR Industry Landing: from Training to Deployment
-    - [PP-OCR Model Zoo](./doc/doc_en/models_en.md)
-        - [PP-OCR Model Download](./doc/doc_en/models_list_en.md)
-        - [Python Inference for PP-OCR Model Zoo](./doc/doc_en/inference_ppocr_en.md)
-    - [PP-OCR Training](./doc/doc_en/training_en.md)
+- [PP-OCR 🔥](./doc/doc_en/ppocr_introduction_en.md)
+    - [Quick Start](./doc/doc_en/quickstart_en.md)
+    - [Model Zoo](./doc/doc_en/models_en.md)
+    - [Model training](./doc/doc_en/training_en.md)
         - [Text Detection](./doc/doc_en/detection_en.md)
         - [Text Recognition](./doc/doc_en/recognition_en.md)
         - [Text Direction Classification](./doc/doc_en/angle_class_en.md)
-        - [Yml Configuration](./doc/doc_en/config_en.md)
-    - PP-OCR Models Compression
-        - [Knowledge Distillation](./doc/doc_en/knowledge_distillation_en.md)
+    - Model Compression
         - [Model Quantization](./deploy/slim/quantization/README_en.md)
         - [Model Pruning](./deploy/slim/prune/README_en.md)
-    - Inference and Deployment
-        - [C++ Inference](./deploy/cpp_infer/readme_en.md)
+        - [Knowledge Distillation](./doc/doc_en/knowledge_distillation_en.md)
+    - [Inference and Deployment](./deploy/README.md)
+        - [Python Inference](./doc/doc_en/inference_ppocr_en.md)
+        - [C++ Inference](./deploy/cpp_infer/readme.md)
         - [Serving](./deploy/pdserving/README.md)
-        - [Mobile](./deploy/lite/readme_en.md)
+        - [Mobile](./deploy/lite/readme.md)
+        - [Paddle2ONNX](./deploy/paddle2onnx/readme.md)
         - [Benchmark](./doc/doc_en/benchmark_en.md)  
-- [PP-Structure: Information Extraction](./ppstructure/README.md)
-    - [Layout Parser](./ppstructure/layout/README.md)
-    - [Table Recognition](./ppstructure/table/README.md)
-    - [DocVQA](./ppstructure/vqa/README.md)
-    - [Key Information Extraction](./ppstructure/docs/kie.md)
-- Academic Circles
-    - [Two-stage Algorithm](./doc/doc_en/algorithm_overview_en.md)
-    - [PGNet Algorithm](./doc/doc_en/pgnet_en.md)
-    - [Python Inference](./doc/doc_en/inference_en.md)
+- [PP-Structure 🔥](./ppstructure/README.md)
+    - [Quick Start](./ppstructure/docs/quickstart_en.md)
+    - [Model Zoo](./ppstructure/docs/models_list_en.md)
+    - [Model training](./doc/doc_en/training_en.md)    
+        - [Layout Parser](./ppstructure/layout/README.md)
+        - [Table Recognition](./ppstructure/table/README.md)
+        - [DocVQA](./ppstructure/vqa/README.md)
+        - [Key Information Extraction](./ppstructure/docs/kie_en.md)
+    - [Inference and Deployment](./deploy/README.md)
+        - [Python Inference](./ppstructure/docs/inference_en.md)
+        - [C++ Inference]()
+        - [Serving](./deploy/pdserving/README.md)
+- [Academic algorithms](./doc/doc_en/algorithms_en.md)
+    - [Text detection](./doc/doc_en/algorithm_overview_en.md)
+    - [Text recognition](./doc/doc_en/algorithm_overview_en.md)
+    - [End-to-end](./doc/doc_en/algorithm_overview_en.md)
+    - [Add New Algorithms to PaddleOCR](./doc/doc_en/add_new_algorithm_en.md)
 - Data Annotation and Synthesis
     - [Semi-automatic Annotation Tool: PPOCRLabel](./PPOCRLabel/README.md)
     - [Data Synthesis Tool: Style-Text](./StyleText/README.md)
@@ -139,28 +124,16 @@ For a new language request, please refer to [Guideline for new language_requests
     - [General OCR Datasets(Chinese/English)](./doc/doc_en/datasets_en.md)
     - [HandWritten_OCR_Datasets(Chinese)](./doc/doc_en/handwritten_datasets_en.md)
     - [Various OCR Datasets(multilingual)](./doc/doc_en/vertical_and_multilingual_datasets_en.md)
+- [Code Structure](./doc/doc_en/tree_en.md)
 - [Visualization](#Visualization)
+- [Community](#Community)
 - [New language requests](#language_requests)
 - [FAQ](./doc/doc_en/FAQ_en.md)
-- [Community](#Community)
 - [References](./doc/doc_en/reference_en.md)
 - [License](#LICENSE)
-- [Contribution](#CONTRIBUTION)
-
-<a name="PP-OCRv2"></a>
-
-## PP-OCRv2 Pipeline
-<div align="center">
-    <img src="./doc/ppocrv2_framework.jpg" width="800">
-</div>
-
-[1] PP-OCR is a practical ultra-lightweight OCR system. It is mainly composed of three parts: DB text detection, detection frame correction and CRNN text recognition. The system adopts 19 effective strategies from 8 aspects including backbone network selection and adjustment, prediction head design, data augmentation, learning rate transformation strategy, regularization parameter selection, pre-training model use, and automatic model tailoring and quantization to optimize and slim down the models of each module (as shown in the green box above). The final results are an ultra-lightweight Chinese and English OCR model with an overall size of 3.5M and a 2.8M English digital OCR model. For more details, please refer to the PP-OCR technical article (https://arxiv.org/abs/2009.09941).
-
-[2] On the basis of PP-OCR, PP-OCRv2 is further optimized in five aspects. The detection model adopts CML(Collaborative Mutual Learning) knowledge distillation strategy and CopyPaste data expansion strategy. The recognition model adopts LCNet lightweight backbone network, U-DML knowledge distillation strategy and enhanced CTC loss function improvement (as shown in the red box above), which further improves the inference speed and prediction effect. For more details, please refer to the technical report of PP-OCRv2 (https://arxiv.org/abs/2109.03144).
 
 
-
-
+<a name="Visualization"></a>
 ## Visualization [more](./doc/doc_en/visualization_en.md)
 - Chinese OCR model
 <div align="center">
@@ -198,19 +171,3 @@ More details, please refer to [Multilingual OCR Development Plan](https://github
 <a name="LICENSE"></a>
 ## License
 This project is released under <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/master/LICENSE">Apache 2.0 license</a>
-
-<a name="CONTRIBUTION"></a>
-## Contribution
-We welcome all the contributions to PaddleOCR and appreciate for your feedback very much.
-
-- Many thanks to [Khanh Tran](https://github.com/xxxpsyduck) and [Karl Horky](https://github.com/karlhorky) for contributing and revising the English documentation.
-- Many thanks to [zhangxin](https://github.com/ZhangXinNan) for contributing the new visualize function、add .gitignore and discard set PYTHONPATH manually.
-- Many thanks to [lyl120117](https://github.com/lyl120117) for contributing the code for printing the network structure.
-- Thanks [xiangyubo](https://github.com/xiangyubo) for contributing the handwritten Chinese OCR datasets.
-- Thanks [authorfu](https://github.com/authorfu) for contributing Android demo  and [xiadeye](https://github.com/xiadeye) contributing iOS demo, respectively.
-- Thanks [BeyondYourself](https://github.com/BeyondYourself) for contributing many great suggestions and simplifying part of the code style.
-- Thanks [tangmq](https://gitee.com/tangmq) for contributing Dockerized deployment services to PaddleOCR and supporting the rapid release of callable Restful API services.
-- Thanks [lijinhan](https://github.com/lijinhan) for contributing a new way, i.e., java SpringBoot, to achieve the request for the Hubserving deployment.
-- Thanks [Mejans](https://github.com/Mejans) for contributing the Occitan corpus and character set.
-- Thanks [LKKlein](https://github.com/LKKlein) for contributing a new deploying package with the Golang program language.
-- Thanks [Evezerest](https://github.com/Evezerest), [ninetailskim](https://github.com/ninetailskim), [edencfc](https://github.com/edencfc), [BeyondYourself](https://github.com/BeyondYourself) and [1084667371](https://github.com/1084667371) for contributing a new data annotation tool, i.e., PPOCRLabel。

@@ -51,9 +51,10 @@ We evaluate the algorithm on the Chinese dataset of [XFUND](https://github.com/d
 
 **Note:** The test images are from the XFUND dataset.
 
+<a name="31"></a>
 ### 3.1 SER
 
-![](../../doc/vqa/result_ser/zh_val_0_ser.jpg) | ![](../../doc/vqa/result_ser/zh_val_42_ser.jpg)
+![](../docs/vqa/result_ser/zh_val_0_ser.jpg) | ![](../docs/vqa/result_ser/zh_val_42_ser.jpg)
 ---|---
 
 Boxes with different colors in the figure represent different categories. For the XFUND dataset, there are 3 categories: `QUESTION`, `ANSWER`, `HEADER`
@@ -64,9 +65,10 @@ Boxes with different colors in the figure represent different categories. For th
 
 The corresponding categories and OCR recognition results are also marked on the upper left of the OCR detection frame.
 
+<a name="32"></a>
 ### 3.2 RE
 
-![](../../doc/vqa/result_re/zh_val_21_re.jpg) | ![](../../doc/vqa/result_re/zh_val_40_re.jpg)
+![](../docs/vqa/result_re/zh_val_21_re.jpg) | ![](../docs/vqa/result_re/zh_val_40_re.jpg)
 ---|---
 
 
@@ -150,6 +152,7 @@ wget https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh.tar && tar -x
 cd ../
 ````
 
+<a name="52"></a>
 ### 5.2 SER
 
 Before starting training, you need to modify the following four fields
@@ -203,6 +206,7 @@ export CUDA_VISIBLE_DEVICES=0
 python3 tools/eval_with_label_end2end.py --gt_json_path XFUND/zh_val/xfun_normalize_val.json --pred_json_path output_res/infer_results.txt
 ````
 
+<a name="53"></a>
 ### 5.3 RE
 
 * start training

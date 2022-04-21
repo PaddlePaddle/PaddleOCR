@@ -1,30 +1,27 @@
-# Two-stage Algorithm
+# OCR Algorithms
 
-- [1. Algorithm Introduction](#1-algorithm-introduction)
-  * [1.1 Text Detection Algorithm](#11-text-detection-algorithm)
-  * [1.2 Text Recognition Algorithm](#12-text-recognition-algorithm)
-- [2. Training](#2-training)
-- [3. Inference](#3-inference)
-
-<a name="Algorithm_introduction"></a>
-
-## 1. Algorithm Introduction
-
-This tutorial lists the text detection algorithms and text recognition algorithms supported by PaddleOCR, as well as the models and metrics of each algorithm on **English public datasets**. It is mainly used for algorithm introduction and algorithm performance comparison. For more models on other datasets including Chinese, please refer to [PP-OCR v2.0 models list](./models_list_en.md).
+- [1. Two-stage Algorithms](#1)
+  * [1.1 Text Detection Algorithms](#11)
+  * [1.2 Text Recognition Algorithms](#12)
+- [2. End-to-end Algorithms](#2)
 
 
-- [1. Text Detection Algorithm](#TEXTDETECTIONALGORITHM)
-- [2. Text Recognition Algorithm](#TEXTRECOGNITIONALGORITHM)
+This tutorial lists the OCR algorithms supported by PaddleOCR, as well as the models and metrics of each algorithm on **English public datasets**. It is mainly used for algorithm introduction and algorithm performance comparison. For more models on other datasets including Chinese, please refer to [PP-OCR v2.0 models list](./models_list_en.md).
 
-<a name="TEXTDETECTIONALGORITHM"></a>
+<a name="1"></a>
 
-### 1.1 Text Detection Algorithm
+## 1. Two-stage Algorithms
 
-PaddleOCR open source text detection algorithms list:
-- [x]  EAST([paper](https://arxiv.org/abs/1704.03155))[2]
-- [x]  DB([paper](https://arxiv.org/abs/1911.08947))[1]
-- [x]  SAST([paper](https://arxiv.org/abs/1908.05498))[4]
-- [x]  PSENet([paper](https://arxiv.org/abs/1903.12473v2)）
+<a name="11"></a>
+
+### 1.1 Text Detection Algorithms
+
+Supported text detection algorithms (Click the link to get the tutorial):
+- [x]  [DB](./algorithm_det_db_en.md)
+- [x]  [EAST](./algorithm_det_east_en.md)
+- [x]  [SAST](./algorithm_det_sast_en.md)
+- [x]  [PSENet](./algorithm_det_psenet_en.md)
+- [x]  [FCENet](./algorithm_det_fcenet_en.md)
 
 On the ICDAR2015 dataset, the text detection result is as follows:
 
@@ -48,20 +45,19 @@ On Total-Text dataset, the text detection result is as follows:
 * [Baidu Drive](https://pan.baidu.com/s/12cPnZcVuV1zn5DOd4mqjVw) (download code: 2bpi).
 * [Google Drive](https://drive.google.com/drive/folders/1ll2-XEVyCQLpJjawLDiRlvo_i4BqHCJe?usp=sharing)
 
-For the training guide and use of PaddleOCR text detection algorithms, please refer to the document [Text detection model training/evaluation/prediction](./detection_en.md)
 
-<a name="TEXTRECOGNITIONALGORITHM"></a>
-### 1.2 Text Recognition Algorithm
+<a name="12"></a>
+### 1.2 Text Recognition Algorithms
 
-PaddleOCR open-source text recognition algorithms list:
-- [x]  CRNN([paper](https://arxiv.org/abs/1507.05717))[7]
-- [x]  Rosetta([paper](https://arxiv.org/abs/1910.05085))[10]
-- [x]  STAR-Net([paper](http://www.bmva.org/bmvc/2016/papers/paper043/index.html))[11]
-- [x]  RARE([paper](https://arxiv.org/abs/1603.03915v1))[12]
-- [x]  SRN([paper](https://arxiv.org/abs/2003.12294))[5]
-- [x]  NRTR([paper](https://arxiv.org/abs/1806.00926v2))[13]
-- [x]  SAR([paper](https://arxiv.org/abs/1811.00751v2))
-- [x] SEED([paper](https://arxiv.org/pdf/2005.10977.pdf))
+Supported text recognition algorithms (Click the link to get the tutorial):
+- [x]  [CRNN](./algorithm_rec_crnn_en.md)
+- [x]  [Rosetta](./algorithm_rec_rosetta_en.md)
+- [x]  [STAR-Net](./algorithm_rec_starnet_en.md)
+- [x]  [RARE](./algorithm_rec_rare_en.md)
+- [x]  [SRN](./algorithm_rec_srn_en.md)
+- [x]  [NRTR](./algorithm_rec_nrtr_en.md)
+- [x]  [SAR](./algorithm_rec_sar_en.md)
+- [x]  [SEED](./algorithm_rec_seed_en.md)
 
 Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation result of these above text recognition (using MJSynth and SynthText for training, evaluate on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE) is as follow:
 
@@ -80,12 +76,10 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 |SAR|Resnet31| 87.20% | rec_r31_sar | [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_r31_sar_train.tar) |
 |SEED|Aster_Resnet| 85.35% | rec_resnet_stn_bilstm_att | [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_resnet_stn_bilstm_att.tar) |
 
-Please refer to the document for training guide and use of PaddleOCR
 
-## 2. Training
+<a name="2"></a>
 
-For the training guide and use of PaddleOCR text detection algorithms, please refer to the document [Text detection model training/evaluation/prediction](./detection_en.md). For text recognition algorithms, please refer to [Text recognition model training/evaluation/prediction](./recognition_en.md)
+## 2. End-to-end Algorithms
 
-## 3. Inference
-
-Except for the PP-OCR series models of the above models, the other models only support inference based on the Python engine. For details, please refer to [Inference based on Python prediction engine](./inference_en.md)
+Supported end-to-end algorithms (Click the link to get the tutorial):
+- [x]  [PGNet](./algorithm_e2e_pgnet_en.md)
