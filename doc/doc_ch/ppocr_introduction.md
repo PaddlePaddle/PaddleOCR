@@ -4,11 +4,12 @@
 
 - [1. 简介](#1)
 - [2. 特性](#2)
-- [3. 效果展示](#3)
-- [4. 使用教程](#4)
-    - [4.1 快速体验](#41)
-    - [4.2 模型训练、压缩、推理部署](#42)
-- [5. 模型库](#5)
+- [3. benchmark](#3)
+- [4. 效果展示](#4)
+- [5. 使用教程](#5)
+    - [5.1 快速体验](#51)
+    - [5.2 模型训练、压缩、推理部署](#52)
+- [6. 模型库](#6)
 
 
 <a name="1"></a>
@@ -42,7 +43,13 @@ PP-OCR系统在持续迭代优化，目前已发布PP-OCR和PP-OCRv2两个版本
 - 支持多语言识别：韩语、日语、德语、法语等约80种语言
 
 <a name="3"></a>
-## 3. 效果展示 [more](./visualization.md)
+## 3. benchmark
+
+关于PP-OCR系列模型之间的性能对比，请查看[benchmark](./benchmark.md)文档。
+
+
+<a name="4"></a>
+## 4. 效果展示 [more](./visualization.md)
 
 <details open>
 <summary>PP-OCRv2 中文模型</summary>
@@ -80,23 +87,23 @@ PP-OCR系统在持续迭代优化，目前已发布PP-OCR和PP-OCRv2两个版本
 </details>
 
  
-<a name="4"></a>
-## 4. 使用教程
+<a name="5"></a>
+## 5. 使用教程
 
-<a name="41"></a>
-### 4.1 快速体验
+<a name="51"></a>
+### 5.1 快速体验
 
 - 在线网站体验：超轻量PP-OCR mobile模型体验地址：https://www.paddlepaddle.org.cn/hub/scene/ocr
 - 移动端demo体验：[安装包DEMO下载地址](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)(基于EasyEdge和Paddle-Lite, 支持iOS和Android系统)
 - 一行命令快速使用：[快速开始（中英文/多语言）](./doc/doc_ch/quickstart.md)
 
-<a name="42"></a>
-### 4.2 模型训练、压缩、推理部署
+<a name="52"></a>
+### 5.2 模型训练、压缩、推理部署
 
 更多教程，包括模型训练、模型压缩、推理部署等，请参考[文档教程](../../README_ch.md#文档教程)。
 
-<a name="5"></a>
-## 5. 模型库
+<a name="6"></a>
+## 6. 模型库
 
 PP-OCR中英文模型列表如下：
 

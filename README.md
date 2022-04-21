@@ -116,7 +116,7 @@ For a new language request, please refer to [Guideline for new language_requests
         - [Knowledge Distillation](./doc/doc_en/knowledge_distillation_en.md)
         - [Model Quantization](./deploy/slim/quantization/README_en.md)
         - [Model Pruning](./deploy/slim/prune/README_en.md)
-    - Inference and Deployment
+    - [Inference and Deployment](./deploy/README.md)
         - [C++ Inference](./deploy/cpp_infer/readme_en.md)
         - [Serving](./deploy/pdserving/README.md)
         - [Mobile](./deploy/lite/readme_en.md)
