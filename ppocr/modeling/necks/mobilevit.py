@@ -1,3 +1,17 @@
+# copyright (c) 2022 PaddlePaddle Authors. All Rights Reserve.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import paddle
 import paddle.nn as nn
 
@@ -15,7 +29,6 @@ def _init_weights_layernorm():
     return weight_attr, bias_attr
 
 
-# DONE
 class ConvNormAct(nn.Layer):
     def __init__(self,
                  in_channels,
@@ -46,7 +59,6 @@ class ConvNormAct(nn.Layer):
         return out
 
 
-# DONE
 class Identity(nn.Layer):
     """ Identity layer"""
 
@@ -57,7 +69,6 @@ class Identity(nn.Layer):
         return inputs
 
 
-#DONE
 class Mlp(nn.Layer):
     def __init__(self, embed_dim, mlp_ratio, dropout=0.):
         super().__init__()
@@ -103,7 +114,7 @@ class Attention(nn.Layer):
         w_attr_1, b_attr_1 = _init_weights_linear()
         self.qkv = nn.Linear(
             embed_dim,
-            self.all_head_dim * 3,  # weights for q, k, v
+            self.all_head_dim * 3,
             weight_attr=w_attr_1,
             bias_attr=b_attr_1 if qkv_bias else False)
 
@@ -118,15 +129,12 @@ class Attention(nn.Layer):
         self.softmax = nn.Softmax(axis=-1)
 
     def transpose_multihead(self, x):
-        # in_shape: [batch_size, P, N, hd]
         B, P, N, d = x.shape
         x = x.reshape([0, P, N, self.num_heads, d // self.num_heads])
         x = x.transpose([0, 1, 3, 2, 4])
-        # out_shape: [batch_size, P, num_heads, N, d]
         return x
 
     def forward(self, x):
-        # [B, 2x2, 256, 96]: [B, P, N, d]
         qkv = self.qkv(x).chunk(3, axis=-1)
         q, k, v = map(self.transpose_multihead, qkv)
 
@@ -134,10 +142,8 @@ class Attention(nn.Layer):
         attn = attn * self.scales
         attn = self.softmax(attn)
         attn = self.attn_dropout(attn)
-        # [batch_size, P, num_heads, N, N]
 
         z = paddle.matmul(attn, v)
-        # [batch_size, P, num_heads, N, d]
         z = z.transpose([0, 1, 3, 2, 4])
         B, P, N, H, D = z.shape
         z = z.reshape([0, P, N, H * D])
@@ -146,7 +152,6 @@ class Attention(nn.Layer):
         return z
 
 
-# DONE
 class EncoderLayer(nn.Layer):
     def __init__(self,
                  embed_dim,
@@ -184,7 +189,6 @@ class EncoderLayer(nn.Layer):
         return x
 
 
-# DONE
 class Transformer(nn.Layer):
     def __init__(self,
                  embed_dim,
@@ -216,7 +220,6 @@ class Transformer(nn.Layer):
         return out
 
 
-# DONE
 class MobileViTBlock(nn.Layer):
     def __init__(self,
                  dim,
@@ -256,21 +259,11 @@ class MobileViTBlock(nn.Layer):
         h = x
         x = self.conv1(x)
         x = self.conv2(x)
-
-        # [B, 96, 32, 32]
-
         B, C, H, W = x.shape
-        # print(x.shape)
-        # x.reshape([B, C, H//self.patch_h, self.patch_w, W//self.patch_w, self.patch_w])
-        # [B, C, H, 1, W, 1]
         x = paddle.unsqueeze(x, axis=[3, 5])
-        # [4, 96, 16, 2, 16, 2]
         x = paddle.transpose(x, perm=[0, 1, 3, 5, 2, 4])
-        # [4, 96, 2, 2, 16, 16]
-        x = x.reshape([0, C, (self.patch_h * self.patch_w),
-                       H * W])  #[B, C, ws ** 2, n_windows ** 2]
-        x = x.transpose([0, 2, 3, 1])  #[B, ws ** 2, n_windows ** 2, C]
-        # [4, 4, 256, 96]
+        x = x.reshape([0, C, (self.patch_h * self.patch_w), H * W])
+        x = x.transpose([0, 2, 3, 1])
         x = self.transformer(x)
         x = x.reshape([
             0, self.patch_h, self.patch_w, H // self.patch_h, W // self.patch_w,

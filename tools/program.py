@@ -278,7 +278,6 @@ def train(config,
                                                   ]:  # for multi head loss
                         post_result = post_process_class(
                             preds['ctc'], batch[1])  # for CTC head out
-                        # post_result = post_process_class(preds['sar'], batch[2]) # for SAR head out
                     else:
                         post_result = post_process_class(preds, batch[1])
                     eval_class(post_result, batch)

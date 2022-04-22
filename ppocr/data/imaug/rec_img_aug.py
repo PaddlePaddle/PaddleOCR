@@ -143,8 +143,10 @@ class RecResizeImg(object):
         if self.infer_mode and self.character_dict_path is not None:
             norm_img = resize_norm_img_chinese(img, self.image_shape)
         else:
-            norm_img = resize_norm_img(img, self.image_shape, self.padding)
+            norm_img, valid_ratio = resize_norm_img(img, self.image_shape,
+                                                    self.padding)
         data['image'] = norm_img
+        data['valid_ratio'] = valid_ratio
         return data
 
 
@@ -169,23 +171,14 @@ class SRNRecResizeImg(object):
 
 
 class SARRecResizeImg(object):
-    def __init__(self,
-                 image_shape,
-                 width_downsample_ratio=0.25,
-                 mode='v2',
-                 **kwargs):
+    def __init__(self, image_shape, width_downsample_ratio=0.25, **kwargs):
         self.image_shape = image_shape
         self.width_downsample_ratio = width_downsample_ratio
-        self.mode = mode
 
     def __call__(self, data):
         img = data['image']
-        if self.mode == 'v3':
-            norm_img, resize_shape, pad_shape, valid_ratio = resize_norm_img_sar_v2(
-                img, self.image_shape, self.width_downsample_ratio)
-        else:
-            norm_img, resize_shape, pad_shape, valid_ratio = resize_norm_img_sar(
-                img, self.image_shape, self.width_downsample_ratio)
+        norm_img, resize_shape, pad_shape, valid_ratio = resize_norm_img_sar(
+            img, self.image_shape, self.width_downsample_ratio)
         data['image'] = norm_img
         data['resized_shape'] = resize_shape
         data['pad_shape'] = pad_shape
@@ -247,36 +240,6 @@ def resize_norm_img_sar(img, image_shape, width_downsample_ratio=0.25):
     return padding_im, resize_shape, pad_shape, valid_ratio
 
 
-def resize_norm_img_sar_v2(img, image_shape, width_downsample_ratio=0.25):
-    imgC, imgH, imgW_min, imgW_max = image_shape
-    h = img.shape[0]
-    w = img.shape[1]
-
-    ratio = w / float(h)
-    if math.ceil(imgH * ratio) > imgW_max:
-        resized_w = imgW_max
-    else:
-        resized_w = int(math.ceil(imgH * ratio))
-        # resized_w = max(resized_w, imgW_min)
-    resized_image = cv2.resize(img, (resized_w, imgH))
-    valid_ratio = min(1.0, float(resized_w / imgW_max))
-    resized_image = resized_image.astype('float32')
-    # norm 
-    if image_shape[0] == 1:
-        resized_image = resized_image / 255
-        resized_image = resized_image[np.newaxis, :]
-    else:
-        resized_image = resized_image.transpose((2, 0, 1)) / 255
-    resized_image -= 0.5
-    resized_image /= 0.5
-    resize_shape = resized_image.shape
-    padding_im = np.zeros((imgC, imgH, imgW_max), dtype=np.float32)
-    padding_im[:, :, 0:resized_w] = resized_image
-    pad_shape = padding_im.shape
-
-    return padding_im, resize_shape, pad_shape, valid_ratio
-
-
 def resize_norm_img(img, image_shape, padding=True):
     imgC, imgH, imgW = image_shape
     h = img.shape[0]
@@ -302,7 +265,8 @@ def resize_norm_img(img, image_shape, padding=True):
     resized_image /= 0.5
     padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
     padding_im[:, :, 0:resized_w] = resized_image
-    return padding_im
+    valid_ratio = min(1.0, float(resized_w / imgW))
+    return padding_im, valid_ratio
 
 
 def resize_norm_img_chinese(img, image_shape):

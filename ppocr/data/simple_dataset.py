@@ -49,7 +49,8 @@ class SimpleDataSet(Dataset):
         if self.mode == "train" and self.do_shuffle:
             self.shuffle_data_random()
         self.ops = create_operators(dataset_config['transforms'], global_config)
-
+        self.ext_op_transform_idx = dataset_config.get("ext_op_transform_idx",
+                                                       2)
         self.need_reset = True in [x < 1 for x in ratio_list]
 
     def get_image_info_list(self, file_list, ratio_list):
@@ -87,7 +88,7 @@ class SimpleDataSet(Dataset):
             if hasattr(op, 'ext_data_num'):
                 ext_data_num = getattr(op, 'ext_data_num')
                 break
-        load_data_ops = self.ops[:2]
+        load_data_ops = self.ops[:self.ext_op_transform_idx]
         ext_data = []
 
         while len(ext_data) < ext_data_num:

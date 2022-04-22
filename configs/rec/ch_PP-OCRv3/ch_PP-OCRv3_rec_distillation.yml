@@ -50,12 +50,17 @@ Architecture:
       Backbone:
         name: MobileNetV1Enhance
         scale: 0.5
-        mode: v3
+        last_conv_stride: [1, 2]
+        last_pool_type: avg
       Head:
         name: MultiHead
         head_list:
           - CTCHead:
               encoder_type: mobilevit
+              dims: 64
+              depth: 2
+              hidden_dims: 120
+              use_guide: True
               fc_decay: 0.00001
           - SARHead:
               enc_dim: 512
@@ -70,12 +75,17 @@ Architecture:
       Backbone:
         name: MobileNetV1Enhance
         scale: 0.5
-        mode: v3
+        last_conv_stride: [1, 2]
+        last_pool_type: avg
       Head:
         name: MultiHead
         head_list:
           - CTCHead:
               encoder_type: mobilevit
+              dims: 64
+              depth: 2
+              hidden_dims: 120
+              use_guide: True
               fc_decay: 0.00001
           - SARHead:
               enc_dim: 512
@@ -131,12 +141,13 @@ Metric:
   base_metric_name: RecMetric
   main_indicator: acc
   key: "Student"
-  keep_space: False
+  ignore_space: True
 
 Train:
   dataset:
     name: SimpleDataSet
     data_dir: ./train_data/
+    ext_op_transform_idx: 1
     label_file_list:
     - ./train_data/train_list.txt
     transforms:
@@ -149,10 +160,8 @@ Train:
         image_shape: [48, 320, 3]
     - RecAug:
     - MultiLabelEncode:
-    - SARRecResizeImg:
-        image_shape: [3, 48, 48, 320]
-        width_downsample_ratio: 0.25
-        mode: v3
+    - RecResizeImg:
+        image_shape: [3, 48, 320]
     - KeepKeys:
         keep_keys:
         - image
@@ -176,10 +185,8 @@ Eval:
         img_mode: BGR
         channel_first: false
     - MultiLabelEncode:
-    - SARRecResizeImg:
-        image_shape: [3, 48, 48, 320]
-        width_downsample_ratio: 0.25
-        mode: v3
+    - RecResizeImg:
+        image_shape: [3, 48, 320]
     - KeepKeys:
         keep_keys:
         - image

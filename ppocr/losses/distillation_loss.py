@@ -103,10 +103,8 @@ class DistillationDMLLoss(DMLLoss):
 
             if self.maps_name is None:
                 if self.multi_head:
-                    if self.dis_head == 'ctc':
-                        loss = super().forward(out1['ctc'], out2['ctc'])
-                    elif self.dis_head == 'sar':
-                        loss = super().forward(out1['sar'], out2['sar'])
+                    loss = super().forward(out1[self.dis_head],
+                                           out2[self.dis_head])
                 else:
                     loss = super().forward(out1, out2)
                 if isinstance(loss, dict):
@@ -152,6 +150,7 @@ class DistillationCTCLoss(CTCLoss):
             if self.key is not None:
                 out = out[self.key]
             if self.multi_head:
+                assert 'ctc' in out, 'multi head has multi out'
                 loss = super().forward(out['ctc'], batch[:2] + batch[3:])
             else:
                 loss = super().forward(out, batch)
@@ -185,6 +184,7 @@ class DistillationSARLoss(SARLoss):
             if self.key is not None:
                 out = out[self.key]
             if self.multi_head:
+                assert 'sar' in out, 'multi head has multi out'
                 loss = super().forward(out['sar'], batch[:1] + batch[2:])
             else:
                 loss = super().forward(out, batch)

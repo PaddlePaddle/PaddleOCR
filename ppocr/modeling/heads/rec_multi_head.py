@@ -1,3 +1,17 @@
+# copyright (c) 2022 PaddlePaddle Authors. All Rights Reserve.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -36,11 +50,19 @@ class MultiHead(nn.Layer):
                                                              'rnn')
                 self.encoder = encoder_type
                 if encoder_type == 'mobilevit':
-                    print('using mobilevit encoder')
+                    out_dims = self.head_list[idx][name].get('dims', 64)
+                    depth = self.head_list[idx][name].get('depth', 2)
+                    hidden_dims = self.head_list[idx][name].get('hidden_dims',
+                                                                120)
+                    use_guide = self.head_list[idx][name].get('use_guide',
+                                                              False)
                     self.ctc_encoder = EncoderWithTransformer(
-                        in_channels=in_channels)
+                        in_channels=in_channels,
+                        dims=out_dims,
+                        depth=depth,
+                        hidden_dims=hidden_dims,
+                        use_guide=use_guide)
                 else:
-                    print('using LSTM encoder')
                     hidden_size = self.head_list[idx][name].get('hidden_size',
                                                                 48)
                     self.ctc_encoder = SequenceEncoder(in_channels=in_channels, \
@@ -49,7 +71,6 @@ class MultiHead(nn.Layer):
                 fc_decay = self.head_list[idx][name].get('fc_decay', 0.0004)
                 mid_channels = self.head_list[idx][name].get('mid_channels',
                                                              None)
-
                 self.ctc_head = eval(name)(in_channels=self.ctc_encoder.out_channels, \
                     out_channels=out_channels_list['CTCLabelDecode'], fc_decay=fc_decay, \
                     mid_channels=mid_channels)
@@ -61,7 +82,6 @@ class MultiHead(nn.Layer):
         ctc_encoder = self.ctc_encoder(x)
         if self.encoder in ['mobilevit']:
             ctc_encoder = self.encoder_reshape(ctc_encoder)
-
         ctc_out = self.ctc_head(ctc_encoder, targets)
         head_out = dict()
         head_out['ctc'] = ctc_out
@@ -69,12 +89,10 @@ class MultiHead(nn.Layer):
         # for test
         if not self.training:
             return ctc_out
-
         x.stop_gradient = False
         if self.gtc_head == 'sar':
             sar_out = self.sar_head(x, targets[1:])
             head_out['sar'] = sar_out
             return head_out
-
         else:
             return head_out
