@@ -39,7 +39,9 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
     auto preprocess_start = std::chrono::steady_clock::now();
     int end_img_no = min(img_num, beg_img_no + this->rec_batch_num_);
     int batch_num = end_img_no - beg_img_no;
-    float max_wh_ratio = 0;
+    int imgH = this->rec_image_shape_[1];
+    int imgW = this->rec_image_shape_[2];
+    float max_wh_ratio = imgW * 1.0 / imgH;
     for (int ino = beg_img_no; ino < end_img_no; ino++) {
       int h = img_list[indices[ino]].rows;
       int w = img_list[indices[ino]].cols;
@@ -47,28 +49,28 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
       max_wh_ratio = max(max_wh_ratio, wh_ratio);
     }
 
-    int batch_width = 0;
+    int batch_width = imgW;
     std::vector<cv::Mat> norm_img_batch;
     for (int ino = beg_img_no; ino < end_img_no; ino++) {
       cv::Mat srcimg;
       img_list[indices[ino]].copyTo(srcimg);
       cv::Mat resize_img;
       this->resize_op_.Run(srcimg, resize_img, max_wh_ratio,
-                           this->use_tensorrt_);
+                           this->use_tensorrt_, this->rec_image_shape_);
       this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
                               this->is_scale_);
       norm_img_batch.push_back(resize_img);
       batch_width = max(resize_img.cols, batch_width);
     }
 
-    std::vector<float> input(batch_num * 3 * 32 * batch_width, 0.0f);
+    std::vector<float> input(batch_num * 3 * imgH * batch_width, 0.0f);
     this->permute_op_.Run(norm_img_batch, input.data());
     auto preprocess_end = std::chrono::steady_clock::now();
     preprocess_diff += preprocess_end - preprocess_start;
     // Inference.
     auto input_names = this->predictor_->GetInputNames();
     auto input_t = this->predictor_->GetInputHandle(input_names[0]);
-    input_t->Reshape({batch_num, 3, 32, batch_width});
+    input_t->Reshape({batch_num, 3, imgH, batch_width});
     auto inference_start = std::chrono::steady_clock::now();
     input_t->CopyFromCpu(input.data());
     this->predictor_->Run();
@@ -142,13 +144,14 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
         precision = paddle_infer::Config::Precision::kInt8;
       }
       config.EnableTensorRtEngine(1 << 20, 10, 3, precision, false, false);
-
+      int imgH = this->rec_image_shape_[1];
+      int imgW = this->rec_image_shape_[2];
       std::map<std::string, std::vector<int>> min_input_shape = {
-          {"x", {1, 3, 32, 10}}, {"lstm_0.tmp_0", {10, 1, 96}}};
+          {"x", {1, 3, imgH, 10}}, {"lstm_0.tmp_0", {10, 1, 96}}};
       std::map<std::string, std::vector<int>> max_input_shape = {
-          {"x", {1, 3, 32, 2000}}, {"lstm_0.tmp_0", {1000, 1, 96}}};
+          {"x", {1, 3, imgH, 2000}}, {"lstm_0.tmp_0", {1000, 1, 96}}};
       std::map<std::string, std::vector<int>> opt_input_shape = {
-          {"x", {1, 3, 32, 320}}, {"lstm_0.tmp_0", {25, 1, 96}}};
+          {"x", {1, 3, imgH, imgW}}, {"lstm_0.tmp_0", {25, 1, 96}}};
 
       config.SetTRTDynamicShapeInfo(min_input_shape, max_input_shape,
                                     opt_input_shape);
