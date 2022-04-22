@@ -73,7 +73,7 @@ class BaseRecLabelDecode(object):
                 conf_list = [0]
 
             text = ''.join(char_list)
-            result_list.append((text, np.mean(conf_list)))
+            result_list.append((text, np.mean(conf_list).tolist()))
         return result_list
 
     def get_ignored_tokens(self):
@@ -196,7 +196,7 @@ class NRTRLabelDecode(BaseRecLabelDecode):
                 else:
                     conf_list.append(1)
             text = ''.join(char_list)
-            result_list.append((text.lower(), np.mean(conf_list)))
+            result_list.append((text.lower(), np.mean(conf_list).tolist()))
         return result_list
 
 
@@ -241,7 +241,7 @@ class AttnLabelDecode(BaseRecLabelDecode):
                 else:
                     conf_list.append(1)
             text = ''.join(char_list)
-            result_list.append((text, np.mean(conf_list)))
+            result_list.append((text, np.mean(conf_list).tolist()))
         return result_list
 
     def __call__(self, preds, label=None, *args, **kwargs):
@@ -333,7 +333,7 @@ class SEEDLabelDecode(BaseRecLabelDecode):
                 else:
                     conf_list.append(1)
             text = ''.join(char_list)
-            result_list.append((text, np.mean(conf_list)))
+            result_list.append((text, np.mean(conf_list).tolist()))
         return result_list
 
     def __call__(self, preds, label=None, *args, **kwargs):
@@ -417,7 +417,7 @@ class SRNLabelDecode(BaseRecLabelDecode):
                     conf_list.append(1)
 
             text = ''.join(char_list)
-            result_list.append((text, np.mean(conf_list)))
+            result_list.append((text, np.mean(conf_list).tolist()))
         return result_list
 
     def add_special_char(self, dict_character):
@@ -636,7 +636,7 @@ class SARLabelDecode(BaseRecLabelDecode):
                 comp = re.compile('[^A-Z^a-z^0-9^\u4e00-\u9fa5]')
                 text = text.lower()
                 text = comp.sub('', text)
-            result_list.append((text, np.mean(conf_list)))
+            result_list.append((text, np.mean(conf_list).tolist()))
         return result_list
 
     def __call__(self, preds, label=None, *args, **kwargs):
@@ -699,7 +699,7 @@ class PRENLabelDecode(BaseRecLabelDecode):
 
             text = ''.join(char_list)
             if len(text) > 0:
-                result_list.append((text, np.mean(conf_list)))
+                result_list.append((text, np.mean(conf_list).tolist()))
             else:
                 # here confidence of empty recog result is 1
                 result_list.append(('', 1))

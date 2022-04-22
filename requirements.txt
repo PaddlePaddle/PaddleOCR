@@ -12,3 +12,4 @@ cython
 lxml
 premailer
 openpyxl
+attrdict
