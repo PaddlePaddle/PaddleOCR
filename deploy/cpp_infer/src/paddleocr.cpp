@@ -17,8 +17,6 @@
 
 #include "auto_log/autolog.h"
 #include <numeric>
-#include <sys/stat.h>
-
 namespace PaddleOCR {
 
 PPOCR::PPOCR() {
@@ -139,7 +137,7 @@ PPOCR::ocr(std::vector<cv::String> cv_all_img_names, bool det, bool rec,
     }
   } else {
     if (!Utility::PathExists(FLAGS_output) && FLAGS_det) {
-      mkdir(FLAGS_output.c_str(), 0777);
+      Utility::CreateDir(FLAGS_output);
     }
 
     for (int i = 0; i < cv_all_img_names.size(); ++i) {
