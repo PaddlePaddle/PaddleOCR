@@ -141,7 +141,8 @@ class RecResizeImg(object):
     def __call__(self, data):
         img = data['image']
         if self.infer_mode and self.character_dict_path is not None:
-            norm_img = resize_norm_img_chinese(img, self.image_shape)
+            norm_img, valid_ratio = resize_norm_img_chinese(img,
+                                                            self.image_shape)
         else:
             norm_img, valid_ratio = resize_norm_img(img, self.image_shape,
                                                     self.padding)
@@ -276,7 +277,7 @@ def resize_norm_img_chinese(img, image_shape):
     h, w = img.shape[0], img.shape[1]
     ratio = w * 1.0 / h
     max_wh_ratio = max(max_wh_ratio, ratio)
-    imgW = int(32 * max_wh_ratio)
+    imgW = int(imgH * max_wh_ratio)
     if math.ceil(imgH * ratio) > imgW:
         resized_w = imgW
     else:
@@ -292,7 +293,8 @@ def resize_norm_img_chinese(img, image_shape):
     resized_image /= 0.5
     padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
     padding_im[:, :, 0:resized_w] = resized_image
-    return padding_im
+    valid_ratio = min(1.0, float(resized_w / imgW))
+    return padding_im, valid_ratio
 
 
 def resize_norm_img_srn(img, image_shape):
