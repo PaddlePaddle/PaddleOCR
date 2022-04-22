@@ -22,8 +22,8 @@
 ## 1. 安装依赖包
 
 ```bash
-# 安装 paddleocr，推荐使用2.3.0.2+版本
-pip3 install "paddleocr>=2.3.0.2"
+# 安装 paddleocr，推荐使用2.5+版本
+pip3 install "paddleocr>=2.5"
 # 安装 版面分析依赖包layoutparser（如不需要版面分析功能，可跳过）
 pip3 install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
 # 安装 DocVQA依赖包paddlenlp（如不需要DocVQA功能，可跳过）
