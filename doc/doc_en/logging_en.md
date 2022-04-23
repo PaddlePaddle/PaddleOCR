@@ -53,6 +53,8 @@ All the logging mentioned above is integrated into the `program.train` function 
 
 ![W&B Models](../imgs_en/wandb_models.png)
 
+For more advanced usage to log images, audios, videos or any other form of data, you can use `WandbLogger().run.log`. More examples on how to log different kinds of data are available [here](https://docs.wandb.ai/examples).
+
 To view the dashboard, the link to the dashboard is printed to the console at the beginning and end of every training job and you can also access it by logging into your W&B account on your browser.
 
 ### Using Multiple Loggers
