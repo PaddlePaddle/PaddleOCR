@@ -32,14 +32,21 @@
 
 namespace PaddleOCR {
 
+struct OCRPredictResult {
+  std::vector<std::vector<int>> box;
+  std::string text;
+  float score = -1.0;
+  float cls_score;
+  int cls_label = -1;
+};
+
 class Utility {
 public:
   static std::vector<std::string> ReadDict(const std::string &path);
 
-  static void
-  VisualizeBboxes(const cv::Mat &srcimg,
-                  const std::vector<std::vector<std::vector<int>>> &boxes,
-                  const std::string &save_path);
+  static void VisualizeBboxes(const cv::Mat &srcimg,
+                              const std::vector<OCRPredictResult> &ocr_result,
+                              const std::string &save_path);
 
   template <class ForwardIterator>
   inline static size_t argmax(ForwardIterator first, ForwardIterator last) {
@@ -55,6 +62,12 @@ public:
   static std::vector<int> argsort(const std::vector<float> &array);
 
   static std::string basename(const std::string &filename);
+
+  static bool PathExists(const std::string &path);
+
+  static void CreateDir(const std::string &path);
+
+  static void print_result(const std::vector<OCRPredictResult> &ocr_result);
 };
 
 } // namespace PaddleOCR

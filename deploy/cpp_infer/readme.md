@@ -1,44 +1,40 @@
-- [服务器端C++预测](#服务器端c预测)
-  - [1. 准备环境](#1-准备环境)
-    - [1.0 运行准备](#10-运行准备)
-    - [1.1 编译opencv库](#11-编译opencv库)
-    - [1.2 下载或者编译Paddle预测库](#12-下载或者编译paddle预测库)
-      - [1.2.1 直接下载安装](#121-直接下载安装)
-      - [1.2.2 预测库源码编译](#122-预测库源码编译)
-  - [2 开始运行](#2-开始运行)
-    - [2.1 将模型导出为inference model](#21-将模型导出为inference-model)
-    - [2.2 编译PaddleOCR C++预测demo](#22-编译paddleocr-c预测demo)
-    - [2.3 运行demo](#23-运行demo)
-        - [1. 只调用检测：](#1-只调用检测)
-        - [2. 只调用识别：](#2-只调用识别)
-        - [3. 调用串联：](#3-调用串联)
+- [Server-side C++ Inference](#server-side-c-inference)
+  - [1. Prepare the Environment](#1-prepare-the-environment)
+    - [Environment](#environment)
+    - [1.1 Compile OpenCV](#11-compile-opencv)
+    - [1.2 Compile or Download or the Paddle Inference Library](#12-compile-or-download-or-the-paddle-inference-library)
+      - [1.2.1 Direct download and installation](#121-direct-download-and-installation)
+      - [1.2.2 Compile the inference source code](#122-compile-the-inference-source-code)
+  - [2. Compile and Run the Demo](#2-compile-and-run-the-demo)
+    - [2.1 Export the inference model](#21-export-the-inference-model)
+    - [2.2 Compile PaddleOCR C++ inference demo](#22-compile-paddleocr-c-inference-demo)
+    - [Run the demo](#run-the-demo)
+        - [1. det+cls+rec：](#1-detclsrec)
+        - [2. det+rec：](#2-detrec)
+        - [3. det](#3-det)
+        - [4. cls+rec：](#4-clsrec)
+        - [5. rec](#5-rec)
+        - [6. cls](#6-cls)
   - [3. FAQ](#3-faq)
 
-# 服务器端C++预测
+# Server-side C++ Inference
 
-本章节介绍PaddleOCR 模型的的C++部署方法，与之对应的python预测部署方式参考[文档](../../doc/doc_ch/inference.md)。
-C++在性能计算上优于python，因此，在大多数CPU、GPU部署场景，多采用C++的部署方式，本节将介绍如何在Linux\Windows (CPU\GPU)环境下配置C++环境并完成
-PaddleOCR模型部署。
+This chapter introduces the C++ deployment steps of the PaddleOCR model. The corresponding Python predictive deployment method refers to [document](../../doc/doc_ch/inference.md).
+C++ is better than python in terms of performance. Therefore, in CPU and GPU deployment scenarios, C++ deployment is mostly used.
+This section will introduce how to configure the C++ environment and deploy PaddleOCR in Linux (CPU\GPU) environment. For Windows deployment please refer to [Windows](./docs/windows_vs2019_build.md) compilation guidelines.
 
 
-<a name="1"></a>
+## 1. Prepare the Environment
 
-## 1. 准备环境
+### Environment
 
-<a name="10"></a>
+- Linux, docker is recommended.
+- Windows.
 
-### 1.0 运行准备
 
-- Linux环境，推荐使用docker。
-- Windows环境。
+### 1.1 Compile OpenCV
 
-* 该文档主要介绍基于Linux环境的PaddleOCR C++预测流程，如果需要在Windows下基于预测库进行C++预测，具体编译方法请参考[Windows下编译教程](./docs/windows_vs2019_build.md)
-
-<a name="11"></a>
-
-### 1.1 编译opencv库
-
-* 首先需要从opencv官网上下载在Linux环境下源码编译的包，以opencv3.4.7为例，下载命令如下。
+* First of all, you need to download the source code compiled package in the Linux environment from the OpenCV official website. Taking OpenCV 3.4.7 as an example, the download command is as follows.
 
 ```bash
 cd deploy/cpp_infer
@@ -46,18 +42,18 @@ wget https://paddleocr.bj.bcebos.com/libs/opencv/opencv-3.4.7.tar.gz
 tar -xf opencv-3.4.7.tar.gz
 ```
 
-最终可以在当前目录下看到`opencv-3.4.7/`的文件夹。
+Finally, you will see the folder of `opencv-3.4.7/` in the current directory.
 
-* 编译opencv，设置opencv源码路径(`root_path`)以及安装路径(`install_path`)。进入opencv源码路径下，按照下面的方式进行编译。
+* Compile OpenCV, the OpenCV source path (`root_path`) and installation path (`install_path`) should be set by yourself. Enter the OpenCV source code path and compile it in the following way.
+
 
 ```shell
-root_path="your_opencv_root_path"
+root_path=your_opencv_root_path
 install_path=${root_path}/opencv3
-build_dir=${root_path}/build
 
-rm -rf ${build_dir}
-mkdir ${build_dir}
-cd ${build_dir}
+rm -rf build
+mkdir build
+cd build
 
 cmake .. \
     -DCMAKE_INSTALL_PREFIX=${install_path} \
@@ -81,15 +77,11 @@ make -j
 make install
 ```
 
-也可以直接修改`tools/build_opencv.sh`的内容，然后直接运行下面的命令进行编译。
+In the above commands, `root_path` is the downloaded OpenCV source code path, and `install_path` is the installation path of OpenCV. After `make install` is completed, the OpenCV header file and library file will be generated in this folder for later OCR source code compilation.
 
-```shell
-sh tools/build_opencv.sh
-```
 
-其中`root_path`为下载的opencv源码路径，`install_path`为opencv的安装路径，`make install`完成之后，会在该文件夹下生成opencv头文件和库文件，用于后面的OCR代码编译。
 
-最终在安装路径下的文件结构如下所示。
+The final file structure under the OpenCV installation path is as follows.
 
 ```
 opencv3/
@@ -100,35 +92,34 @@ opencv3/
 |-- share
 ```
 
-<a name="12"></a>
+### 1.2 Compile or Download or the Paddle Inference Library
 
-### 1.2 下载或者编译Paddle预测库
+* There are 2 ways to obtain the Paddle inference library, described in detail below.
 
-* 有2种方式获取Paddle预测库，下面进行详细介绍。
+#### 1.2.1 Direct download and installation
+
+[Paddle inference library official website](https://paddleinference.paddlepaddle.org.cn/user_guides/download_lib.html#linux). You can review and select the appropriate version of the inference library on the official website.
 
 
-#### 1.2.1 直接下载安装
-
-* [Paddle预测库官网](https://paddleinference.paddlepaddle.org.cn/user_guides/download_lib.html#linux) 上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本（*建议选择paddle版本>=2.0.1版本的预测库* ）。
-
-* 下载之后使用下面的方法解压。
+* After downloading, use the following command to extract files.
 
 ```
 tar -xf paddle_inference.tgz
 ```
 
-最终会在当前的文件夹中生成`paddle_inference/`的子文件夹。
+Finally you will see the the folder of `paddle_inference/` in the current path.
 
-#### 1.2.2 预测库源码编译
-* 如果希望获取最新预测库特性，可以从Paddle github上克隆最新代码，源码编译预测库。
-* 可以参考[Paddle预测库安装编译说明](https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0/guides/05_inference_deployment/inference/build_and_install_lib_cn.html#congyuanmabianyi) 的说明，从github上获取Paddle代码，然后进行编译，生成最新的预测库。使用git获取代码方法如下。
+#### 1.2.2 Compile the inference source code
+* If you want to get the latest Paddle inference library features, you can download the latest code from Paddle GitHub repository and compile the inference library from the source code. It is recommended to download the inference library with paddle version greater than or equal to 2.0.1.
+* You can refer to [Paddle inference library] (https://www.paddlepaddle.org.cn/documentation/docs/en/advanced_guide/inference_deployment/inference/build_and_install_lib_en.html) to get the Paddle source code from GitHub, and then compile To generate the latest inference library. The method of using git to access the code is as follows.
+
 
 ```shell
 git clone https://github.com/PaddlePaddle/Paddle.git
 git checkout develop
 ```
 
-* 进入Paddle目录后，编译方法如下。
+* Enter the Paddle directory and run the following commands to compile the paddle inference library.
 
 ```shell
 rm -rf build
@@ -148,10 +139,10 @@ make -j
 make inference_lib_dist
 ```
 
-更多编译参数选项介绍可以参考[文档说明](https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0/guides/05_inference_deployment/inference/build_and_install_lib_cn.html#congyuanmabianyi)。
+For more compilation parameter options, please refer to the [document](https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0/guides/05_inference_deployment/inference/build_and_install_lib_cn.html#congyuanmabianyi).
 
 
-* 编译完成之后，可以在`build/paddle_inference_install_dir/`文件下看到生成了以下文件及文件夹。
+* After the compilation process, you can see the following files in the folder of `build/paddle_inference_install_dir/`.
 
 ```
 build/paddle_inference_install_dir/
@@ -161,17 +152,14 @@ build/paddle_inference_install_dir/
 |-- version.txt
 ```
 
-其中`paddle`就是C++预测所需的Paddle库，`version.txt`中包含当前预测库的版本信息。
+`paddle` is the Paddle library required for C++ prediction later, and `version.txt` contains the version information of the current inference library.
 
-<a name="2"></a>
 
-## 2 开始运行
+## 2. Compile and Run the Demo
 
-<a name="21"></a>
+### 2.1 Export the inference model
 
-### 2.1 将模型导出为inference model
-
-* 可以参考[模型预测章节](../../doc/doc_ch/inference.md)，导出inference model，用于模型预测。模型导出之后，假设放在`inference`目录下，则目录结构如下。
+* You can refer to [Model inference](../../doc/doc_ch/inference.md) and export the inference model. After the model is exported, assuming it is placed in the `inference` directory, the directory structure is as follows.
 
 ```
 inference/
@@ -181,119 +169,177 @@ inference/
 |-- rec_rcnn
 |   |--inference.pdiparams
 |   |--inference.pdmodel
+|-- cls
+|   |--inference.pdiparams
+|   |--inference.pdmodel
 ```
 
-<a name="22"></a>
 
-### 2.2 编译PaddleOCR C++预测demo
+### 2.2 Compile PaddleOCR C++ inference demo
 
-* 编译命令如下，其中Paddle C++预测库、opencv等其他依赖库的地址需要换成自己机器上的实际地址。
+
+* The compilation commands are as follows. The addresses of Paddle C++ inference library, opencv and other Dependencies need to be replaced with the actual addresses on your own machines.
 
 ```shell
 sh tools/build.sh
 ```
 
-* 具体的，需要修改`tools/build.sh`中环境路径，相关内容如下：
+Specifically, you should modify the paths in `tools/build.sh`. The related content is as follows.
 
 ```shell
 OPENCV_DIR=your_opencv_dir
 LIB_DIR=your_paddle_inference_dir
 CUDA_LIB_DIR=your_cuda_lib_dir
-CUDNN_LIB_DIR=/your_cudnn_lib_dir
+CUDNN_LIB_DIR=your_cudnn_lib_dir
 ```
 
-其中，`OPENCV_DIR`为opencv编译安装的地址；`LIB_DIR`为下载(`paddle_inference`文件夹)或者编译生成的Paddle预测库地址(`build/paddle_inference_install_dir`文件夹)；`CUDA_LIB_DIR`为cuda库文件地址，在docker中为`/usr/local/cuda/lib64`；`CUDNN_LIB_DIR`为cudnn库文件地址，在docker中为`/usr/lib/x86_64-linux-gnu/`。**注意：以上路径都写绝对路径，不要写相对路径。**
+`OPENCV_DIR` is the OpenCV installation path; `LIB_DIR` is the download (`paddle_inference` folder)
+or the generated Paddle inference library path (`build/paddle_inference_install_dir` folder);
+`CUDA_LIB_DIR` is the CUDA library file path, in docker; it is `/usr/local/cuda/lib64`; `CUDNN_LIB_DIR` is the cuDNN library file path, in docker it is `/usr/lib/x86_64-linux-gnu/`.
 
 
-* 编译完成之后，会在`build`文件夹下生成一个名为`ppocr`的可执行文件。
+* After the compilation is completed, an executable file named `ppocr` will be generated in the `build` folder.
 
-<a name="23"></a>
 
-### 2.3 运行demo
-
-运行方式：  
+### Run the demo
+Execute the built executable file:
 ```shell
-./build/ppocr <mode> [--param1] [--param2] [...]
+./build/ppocr [--param1] [--param2] [...]
 ```
-其中，`mode`为必选参数，表示选择的功能，取值范围['det', 'rec', 'system']，分别表示调用检测、识别、检测识别串联（包括方向分类器）。具体命令如下：
 
-##### 1. 只调用检测：
+Specifically,
+
+##### 1. det+cls+rec：
 ```shell
-./build/ppocr det \
-    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
-    --image_dir=../../doc/imgs/12.jpg
-```
-##### 2. 只调用识别：
-```shell
-./build/ppocr rec \
-    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
-    --image_dir=../../doc/imgs_words/ch/
-```
-##### 3. 调用串联：
-```shell
-# 不使用方向分类器
-./build/ppocr system \
-    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
-    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
-    --image_dir=../../doc/imgs/12.jpg
-# 使用方向分类器
-./build/ppocr system \
-    --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
+./build/ppocr --det_model_dir=inference/det_db \
+    --rec_model_dir=inference/rec_rcnn \
+    --cls_model_dir=inference/cls \
+    --image_dir=../../doc/imgs/12.jpg \
     --use_angle_cls=true \
-    --cls_model_dir=inference/ch_ppocr_mobile_v2.0_cls_infer \
-    --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
-    --image_dir=../../doc/imgs/12.jpg
+    --det=true \
+    --rec=true \
+    --cls=true \
 ```
 
-更多支持的可调节参数解释如下：
+##### 2. det+rec：
+```shell
+./build/ppocr --det_model_dir=inference/det_db \
+    --rec_model_dir=inference/rec_rcnn \
+    --image_dir=../../doc/imgs/12.jpg \
+    --use_angle_cls=false \
+    --det=true \
+    --rec=true \
+    --cls=false \
+```
 
-- 通用参数
+##### 3. det
+```shell
+./build/ppocr --det_model_dir=inference/det_db \
+    --image_dir=../../doc/imgs/12.jpg \
+    --det=true \
+    --rec=false
+```
 
-|参数名称|类型|默认参数|意义|
+##### 4. cls+rec：
+```shell
+./build/ppocr --rec_model_dir=inference/rec_rcnn \
+    --cls_model_dir=inference/cls \
+    --image_dir=../../doc/imgs_words/ch/word_1.jpg \
+    --use_angle_cls=true \
+    --det=false \
+    --rec=true \
+    --cls=true \
+```
+
+##### 5. rec
+```shell
+./build/ppocr --rec_model_dir=inference/rec_rcnn \
+    --image_dir=../../doc/imgs_words/ch/word_1.jpg \
+    --use_angle_cls=false \
+    --det=false \
+    --rec=true \
+    --cls=false \
+```
+
+##### 6. cls
+```shell
+./build/ppocr --cls_model_dir=inference/cls \
+    --cls_model_dir=inference/cls \
+    --image_dir=../../doc/imgs_words/ch/word_1.jpg \
+    --use_angle_cls=true \
+    --det=false \
+    --rec=false \
+    --cls=true \
+```
+
+More parameters are as follows,
+
+- Common parameters
+
+|parameter|data type|default|meaning|
+| --- | --- | --- | --- |
+|use_gpu|bool|false|Whether to use GPU|
+|gpu_id|int|0|GPU id when use_gpu is true|
+|gpu_mem|int|4000|GPU memory requested|
+|cpu_math_library_num_threads|int|10|Number of threads when using CPU inference. When machine cores is enough, the large the value, the faster the inference speed|
+|enable_mkldnn|bool|true|Whether to use mkdlnn library|
+|output|str|./output|Path where visualization results are saved|
+
+
+- forward
+
+|parameter|data type|default|meaning|
 | :---: | :---: | :---: | :---: |
-|use_gpu|bool|false|是否使用GPU|
-|gpu_id|int|0|GPU id，使用GPU时有效|
-|gpu_mem|int|4000|申请的GPU内存|
-|cpu_math_library_num_threads|int|10|CPU预测时的线程数，在机器核数充足的情况下，该值越大，预测速度越快|
-|enable_mkldnn|bool|true|是否使用mkldnn库|
-|output|str|./output|可视化结果保存的路径|
-
-- 检测模型相关
-
-|参数名称|类型|默认参数|意义|
-| :---: | :---: | :---: | :---: |
-|det_model_dir|string|-|检测模型inference model地址|
-|max_side_len|int|960|输入图像长宽大于960时，等比例缩放图像，使得图像最长边为960|
-|det_db_thresh|float|0.3|用于过滤DB预测的二值化图像，设置为0.-0.3对结果影响不明显|
-|det_db_box_thresh|float|0.5|DB后处理过滤box的阈值，如果检测存在漏框情况，可酌情减小|
-|det_db_unclip_ratio|float|1.6|表示文本框的紧致程度，越小则文本框更靠近文本|
-|det_db_score_mode|string|slow|slow:使用多边形框计算bbox score，fast:使用矩形框计算。矩形框计算速度更快，多边形框对弯曲文本区域计算更准确。|
-|visualize|bool|true|是否对结果进行可视化，为1时，预测结果会保存在`output`字段指定的文件夹下和输入图像同名的图像上。|
-
-- 方向分类器相关
-
-|参数名称|类型|默认参数|意义|
-| :---: | :---: | :---: | :---: |
-|use_angle_cls|bool|false|是否使用方向分类器|
-|cls_model_dir|string|-|方向分类器inference model地址|
-|cls_thresh|float|0.9|方向分类器的得分阈值|
-
-- 识别模型相关
-
-|参数名称|类型|默认参数|意义|
-| :---: | :---: | :---: | :---: |
-|rec_model_dir|string|-|识别模型inference model地址|
-|rec_char_dict_path|string|../../ppocr/utils/ppocr_keys_v1.txt|字典文件|
+|det|bool|true|前向是否执行文字检测|
+|rec|bool|true|前向是否执行文字识别|
+|cls|bool|false|前向是否执行文字方向分类|
 
 
-* PaddleOCR也支持多语言的预测，更多支持的语言和模型可以参考[识别文档](../../doc/doc_ch/recognition.md)中的多语言字典与模型部分，如果希望进行多语言预测，只需将修改`rec_char_dict_path`（字典文件路径）以及`rec_model_dir`（inference模型路径）字段即可。
+- Detection related parameters
 
-最终屏幕上会输出检测结果如下。
+|parameter|data type|default|meaning|
+| --- | --- | --- | --- |
+|det_model_dir|string|-|Address of detection inference model|
+|max_side_len|int|960|Limit the maximum image height and width to 960|
+|det_db_thresh|float|0.3|Used to filter the binarized image of DB prediction, setting 0.-0.3 has no obvious effect on the result|
+|det_db_box_thresh|float|0.5|DB post-processing filter box threshold, if there is a missing box detected, it can be reduced as appropriate|
+|det_db_unclip_ratio|float|1.6|Indicates the compactness of the text box, the smaller the value, the closer the text box to the text|
+|det_db_score_mode|string|slow| slow: use polygon box to calculate bbox score, fast: use rectangle box to calculate. Use rectangular box to calculate faster, and polygonal box more accurate for curved text area.|
+|visualize|bool|true|Whether to visualize the results，when it is set as true, the prediction results will be saved in the folder specified by the `output` field on an image with the same name as the input image.|
 
-<div align="center">
-    <img src="./imgs/cpp_infer_pred_12.png" width="600">
-</div>
+- Classifier related parameters
+
+|parameter|data type|default|meaning|
+| --- | --- | --- | --- |
+|use_angle_cls|bool|false|Whether to use the direction classifier|
+|cls_model_dir|string|-|Address of direction classifier inference model|
+|cls_thresh|float|0.9|Score threshold of the  direction classifier|
+|cls_batch_num|int|1|batch size of classifier|
+
+- Recognition related parameters
+
+|parameter|data type|default|meaning|
+| --- | --- | --- | --- |
+|rec_model_dir|string|-|Address of recognition inference model|
+|rec_char_dict_path|string|../../ppocr/utils/ppocr_keys_v1.txt|dictionary file|
+|rec_batch_num|int|6|batch size of recognition|
+
+* Multi-language inference is also supported in PaddleOCR, you can refer to [recognition tutorial](../../doc/doc_en/recognition_en.md) for more supported languages and models in PaddleOCR. Specifically, if you want to infer using multi-language models, you just need to modify values of `rec_char_dict_path` and `rec_model_dir`.
+
+
+The detection results will be shown on the screen, which is as follows.
+
+```bash
+predict img: ../../doc/imgs/12.jpg
+../../doc/imgs/12.jpg
+0       det boxes: [[79,553],[399,541],[400,573],[80,585]] rec text: 打浦路252935号 rec score: 0.933757
+1       det boxes: [[31,509],[510,488],[511,529],[33,549]] rec text: 绿洲仕格维花园公寓 rec score: 0.951745
+2       det boxes: [[181,456],[395,448],[396,480],[182,488]] rec text: 打浦路15号 rec score: 0.91956
+3       det boxes: [[43,413],[480,391],[481,428],[45,450]] rec text: 上海斯格威铂尔多大酒店 rec score: 0.915914
+The detection visualized image saved in ./output//12.jpg
+```
+
 
 ## 3. FAQ
 
- 1.  遇到报错 `unable to access 'https://github.com/LDOUBLEV/AutoLog.git/': gnutls_handshake() failed: The TLS connection was non-properly terminated.`， 将 `deploy/cpp_infer/external-cmake/auto-log.cmake` 中的github地址改为 https://gitee.com/Double_V/AutoLog 地址即可。
+ 1.  Encountered the error `unable to access 'https://github.com/LDOUBLEV/AutoLog.git/': gnutls_handshake() failed: The TLS connection was non-properly terminated.`, change the github address in `deploy/cpp_infer/external-cmake/auto-log.cmake` to the https://gitee.com/Double_V/AutoLog address.

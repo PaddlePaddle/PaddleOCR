@@ -1,18 +1,21 @@
 [English](README.md) | 简体中文
-- [版面分析使用说明](#版面分析使用说明)
-  - [1.  安装whl包](#1--安装whl包)
-  - [2. 使用](#2-使用)
-  - [3. 后处理](#3-后处理)
-  - [4. 指标](#4-指标)
-  - [5. 训练版面分析模型](#5-训练版面分析模型)
 
 # 版面分析使用说明
 
+- [1. 安装whl包](#1)
+- [2. 使用](#2)
+- [3. 后处理](#3)
+- [4. 指标](#4)
+- [5. 训练版面分析模型](#5)
+
+
+<a name="1"></a>
 ## 1.  安装whl包
 ```bash
 pip install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
 ```
 
+<a name="2"></a>
 ## 2. 使用
 
 使用layoutparser识别给定文档的布局：
@@ -20,7 +23,7 @@ pip install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-a
 ```python
 import cv2
 import layoutparser as lp
-image = cv2.imread("doc/table/layout.jpg")
+image = cv2.imread("ppstructure/docs/table/layout.jpg")
 image = image[..., ::-1]
 
 # 加载模型
@@ -40,7 +43,7 @@ show_img.show()
 下图展示了结果，不同颜色的检测框表示不同的类别，并通过`show_element_type`在框的左上角显示具体类别：
 
 <div align="center">
-<img src="../../doc/table/result_all.jpg"  width = "600" />
+<img src="../docs/table/result_all.jpg"  width = "600" />
 </div>
 
 `PaddleDetectionLayoutModel`函数参数说明如下:
@@ -68,6 +71,7 @@ show_img.show()
 * TableBank word和TableBank latex分别在word文档、latex文档数据集训练；
 * 下载的TableBank数据集里同时包含word和latex。
 
+<a name="3"></a>
 ## 3. 后处理
 
 版面分析检测包含多个类别，如果只想获取指定类别(如"Text"类别)的检测框、可以使用下述代码：
@@ -106,9 +110,10 @@ show_img.show()
 显示只有"Text"类别的结果：
 
 <div align="center">
-<img src="../../doc/table/result_text.jpg"  width = "600" />
+<img src="../docs/table/result_text.jpg"  width = "600" />
 </div>
 
+<a name="4"></a>
 ## 4. 指标
 
 | Dataset   | mAP  | CPU time cost | GPU time cost |
@@ -122,6 +127,7 @@ show_img.show()
 
 ​    **GPU：**  a single NVIDIA Tesla P40
 
+<a name="5"></a>
 ## 5. 训练版面分析模型
 
 上述模型基于[PaddleDetection](https://github.com/PaddlePaddle/PaddleDetection) 训练，如果您想训练自己的版面分析模型，请参考：[train_layoutparser_model](train_layoutparser_model_ch.md)

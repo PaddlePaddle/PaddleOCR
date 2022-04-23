@@ -119,6 +119,10 @@ class TextRecognizer(object):
             resized_w = imgW
         else:
             resized_w = int(math.ceil(imgH * ratio))
+        if self.rec_algorithm == 'RARE':
+            if resized_w > self.rec_image_shape[2]:
+                resized_w = self.rec_image_shape[2]
+            imgW = self.rec_image_shape[2]
         resized_image = cv2.resize(img, (resized_w, imgH))
         resized_image = resized_image.astype('float32')
         resized_image = resized_image.transpose((2, 0, 1)) / 255

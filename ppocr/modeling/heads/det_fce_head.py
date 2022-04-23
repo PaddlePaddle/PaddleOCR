@@ -63,7 +63,7 @@ class FCEHead(nn.Layer):
             weight_attr=ParamAttr(
                 name='cls_weights',
                 initializer=Normal(
-                    mean=paddle.to_tensor(0.), std=paddle.to_tensor(0.01))),
+                    mean=0., std=0.01)),
             bias_attr=True)
         self.out_conv_reg = nn.Conv2D(
             in_channels=self.in_channels,
@@ -75,7 +75,7 @@ class FCEHead(nn.Layer):
             weight_attr=ParamAttr(
                 name='reg_weights',
                 initializer=Normal(
-                    mean=paddle.to_tensor(0.), std=paddle.to_tensor(0.01))),
+                    mean=0., std=0.01)),
             bias_attr=True)
 
     def forward(self, feats, targets=None):
