@@ -70,7 +70,7 @@ cmake安装完后后系统里会有一个cmake-gui程序，打开cmake-gui，在
 * cpu版本，仅需考虑OPENCV_DIR、OpenCV_DIR、PADDLE_LIB三个参数
 
   - OPENCV_DIR：填写opencv lib文件夹所在位置
-  - OpenCV_DIR：同填写opencv lib文件夹所在位
+  - OpenCV_DIR：同填写opencv lib文件夹所在位置
   - PADDLE_LIB：paddle_inference文件夹所在位置
 
 * GPU版本，在cpu版本的基础上，还需填写以下变量
@@ -113,7 +113,7 @@ CUDA_LIB、CUDNN_LIB、TENSORRT_DIR、WITH_GPU、WITH_TENSORRT
 
 ### Step4: 预测
 
-上述`Visual Studio 2019`编译产出的可执行文件在`out\build\x64-Release\Release`目录下，打开`cmd`，并切换到`D:\projects\cpp\PaddleOCR\deploy\cpp_infer\`：
+上述`Visual Studio 2019`编译产出的可执行文件在`build/Release/`目录下，打开`cmd`，并切换到`D:\projects\cpp\PaddleOCR\deploy\cpp_infer\`：
 
 ```
 cd /d D:\projects\cpp\PaddleOCR\deploy\cpp_infer
