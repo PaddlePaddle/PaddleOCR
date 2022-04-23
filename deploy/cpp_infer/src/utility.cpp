@@ -16,9 +16,14 @@
 #include <include/utility.h>
 #include <iostream>
 #include <ostream>
-#include <sys/stat.h>
-#include <sys/types.h>
+
 #include <vector>
+
+#ifdef _WIN32
+#include <direct.h>
+#else
+#include <sys/stat.h>
+#endif
 
 namespace PaddleOCR {
 
@@ -203,6 +208,14 @@ bool Utility::PathExists(const std::string &path) {
 #else
   struct stat buffer;
   return (stat(path.c_str(), &buffer) == 0);
+#endif // !_WIN32
+}
+
+void Utility::CreateDir(const std::string &path) {
+#ifdef _WIN32
+  _mkdir(path.c_str());
+#else
+  mkdir(path.c_str(), 0777);
 #endif // !_WIN32
 }
 
