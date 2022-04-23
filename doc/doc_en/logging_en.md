@@ -43,7 +43,12 @@ wandb:
     entity: my_team
 ```
 
-This will automatically log all the training and evaluation metrics to the W&B dashboard along with models at every model saving step and evaluation step are with the appropriate tags and metadata.
+These config variables from the yaml file are used to instantiate the `WandbLogger` object with the project name, entity name (the logged in user by default), directory to store metadata (`./wandb` by default) and more. During the training process, the `log_metrics` function is called to log training and evaluation metrics at the training and evaluation steps respectively from the rank 0 process only.
+
+At every model saving step, the WandbLogger, logs the model using the `log_model` function along with relavant metadata and tags showing the epoch in which the model is saved, the model is best or not and so on.
+
+All the logging mentioned above is integrated into the `program.train` function and will generate dashboards like this -
+
 ![W&B Dashboard](../imgs_en/wandb_metrics.png)
 
 ![W&B Models](../imgs_en/wandb_models.png)
