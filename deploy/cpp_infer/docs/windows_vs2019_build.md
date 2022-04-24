@@ -110,6 +110,7 @@ CUDA_LIB、CUDNN_LIB、TENSORRT_DIR、WITH_GPU、WITH_TENSORRT
 运行之前，将下面文件拷贝到`build/Release/`文件夹下
 1. `paddle_inference/paddle/lib/paddle_inference.dll`
 2. `opencv/build/x64/vc15/bin/opencv_world455.dll`
+3. 如果使用openblas版本的预测库还需要拷贝 `paddle_inference/third_party/install/openblas/lib/openblas.dll`
 
 ### Step4: 预测
 
