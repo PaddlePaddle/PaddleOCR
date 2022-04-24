@@ -18,8 +18,7 @@ Global:
   infer_img: doc/imgs_en/img_10.jpg
   save_res_path: ./checkpoints/det_db/predicts_db.txt
   distributed: true
-  student_pretrained_model: ./pretrain_model/MobileNetV3_large_x0_5_pretrained
-  teacher_pretrained_model: ./inference/ch_ppocr_resnet50/student
+
 Architecture:
   model_type: det
   algorithm: DB
@@ -67,23 +66,10 @@ Metric:
 Train:
   dataset:
     name: SimpleDataSet
-    data_dir: ../chinese/
+    data_dir: ./train_data/icdar2015/text_localization/
     label_file_list:
-    - ../chinese/zhongce_training_fix_1.6k.txt
-    - ../chinese/label_train_all_f4_part2.txt
-    - ../chinese/label_train_all_f4_part4.txt
-    - ../chinese/label_train_all_f4_part5_no_born-digit_ifly5000.txt
-    - ../chinese/synch_en_ch_largeword_ppocr_2W.txt
-    - ../chinese/pubtabnet_ppocr_5W_new.txt
-    - ../chinese/label_synth_sheet_1W.txt
-    ratio_list:
-    - 1
-    - 0.1
-    - 0.1
-    - 0.4
-    - 0.05
-    - 0.04
-    - 0.05
+      - ./train_data/icdar2015/text_localization/train_icdar2015_label.txt
+    ratio_list: [1.0]
     transforms:
     - DecodeImage:
         img_mode: BGR
@@ -144,9 +130,9 @@ Train:
 Eval:
   dataset:
     name: SimpleDataSet
-    data_dir: ../chinese/test_set/
+    data_dir: ./train_data/icdar2015/text_localization/
     label_file_list:
-    - ../chinese/test_set/Label_refine_v8.txt
+      - ./train_data/icdar2015/text_localization/test_icdar2015_label.txt
     transforms:
     - DecodeImage:
         img_mode: BGR
