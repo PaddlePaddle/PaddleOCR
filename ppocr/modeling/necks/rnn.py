@@ -161,13 +161,13 @@ class SequenceEncoder(nn.Layer):
                 'reshape': Im2Seq,
                 'fc': EncoderWithFC,
                 'rnn': EncoderWithRNN,
-                'transformer': EncoderWithSVTR
+                'svtr': EncoderWithSVTR
             }
             assert encoder_type in support_encoder_dict, '{} must in {}'.format(
                 encoder_type, support_encoder_dict.keys())
-            if encoder_type == "transformer":
+            if encoder_type == "svtr":
                 self.encoder = support_encoder_dict[encoder_type](
-                    self.encoder_reshape.out_channels)
+                    self.encoder_reshape.out_channels, **kwargs)
             else:
                 self.encoder = support_encoder_dict[encoder_type](
                     self.encoder_reshape.out_channels, hidden_size)
@@ -175,7 +175,7 @@ class SequenceEncoder(nn.Layer):
             self.only_reshape = False
 
     def forward(self, x):
-        if self.encoder_type != 'transformer':
+        if self.encoder_type != 'svtr':
             x = self.encoder_reshape(x)
             if not self.only_reshape:
                 x = self.encoder(x)

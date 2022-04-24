@@ -46,13 +46,15 @@ Architecture:
   Head:
     name: MultiHead
     head_list:
-      - CTCHead: 
-          encoder_type: svtr
-          dims: 64
-          depth: 2
-          hidden_dims: 120
-          use_guide: True
-          fc_decay: 0.00001
+      - CTCHead:
+          Neck:
+            name: svtr
+            dims: 64
+            depth: 2
+            hidden_dims: 120
+            use_guide: True
+          Head:
+            fc_decay: 0.00001
       - SARHead:
           enc_dim: 512
           max_text_length: *max_text_length

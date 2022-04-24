@@ -37,56 +37,32 @@ class MultiHead(nn.Layer):
             name = list(head_name)[0]
             if name == 'SARHead':
                 # sar head
-                enc_dim = self.head_list[idx][name]['enc_dim']
-                max_text_length = self.head_list[idx][name]['max_text_length']
+                sar_args = self.head_list[idx][name]
                 self.sar_head = eval(name)(in_channels=in_channels, \
-                    out_channels=out_channels_list['SARLabelDecode'],
-                    enc_dim=enc_dim,
-                    max_text_length=max_text_length)
+                    out_channels=out_channels_list['SARLabelDecode'], **sar_args)
             elif name == 'CTCHead':
-                # ctc encoder
+                # ctc neck
                 self.encoder_reshape = Im2Seq(in_channels)
-                encoder_type = self.head_list[idx][name].get('encoder_type',
-                                                             'rnn')
+                neck_args = self.head_list[idx][name]['Neck']
+                encoder_type = neck_args.pop('name')
                 self.encoder = encoder_type
-                if encoder_type == 'svtr':
-                    out_dims = self.head_list[idx][name].get('dims', 64)
-                    depth = self.head_list[idx][name].get('depth', 2)
-                    hidden_dims = self.head_list[idx][name].get('hidden_dims',
-                                                                120)
-                    use_guide = self.head_list[idx][name].get('use_guide',
-                                                              False)
-                    self.ctc_encoder = EncoderWithSVTR(
-                        in_channels=in_channels,
-                        dims=out_dims,
-                        depth=depth,
-                        hidden_dims=hidden_dims,
-                        use_guide=use_guide)
-                else:
-                    hidden_size = self.head_list[idx][name].get('hidden_size',
-                                                                48)
-                    self.ctc_encoder = SequenceEncoder(in_channels=in_channels, \
-                        encoder_type=encoder_type, hidden_size=hidden_size)
+                self.ctc_encoder = SequenceEncoder(in_channels=in_channels, \
+                    encoder_type=encoder_type, **neck_args)
                 # ctc head
-                fc_decay = self.head_list[idx][name].get('fc_decay', 0.0004)
-                mid_channels = self.head_list[idx][name].get('mid_channels',
-                                                             None)
+                head_args = self.head_list[idx][name]['Head']
                 self.ctc_head = eval(name)(in_channels=self.ctc_encoder.out_channels, \
-                    out_channels=out_channels_list['CTCLabelDecode'], fc_decay=fc_decay, \
-                    mid_channels=mid_channels)
+                    out_channels=out_channels_list['CTCLabelDecode'], **head_args)
             else:
                 raise NotImplementedError(
                     '{} is not supported in MultiHead yet'.format(name))
 
     def forward(self, x, targets=None):
         ctc_encoder = self.ctc_encoder(x)
-        if self.encoder in ['svtr']:
-            ctc_encoder = self.encoder_reshape(ctc_encoder)
         ctc_out = self.ctc_head(ctc_encoder, targets)
         head_out = dict()
         head_out['ctc'] = ctc_out
         head_out['ctc_neck'] = ctc_encoder
-        # for test
+        # eval mode
         if not self.training:
             return ctc_out
         x.stop_gradient = False
