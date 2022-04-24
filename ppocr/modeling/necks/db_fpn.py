@@ -20,6 +20,11 @@ import paddle
 from paddle import nn
 import paddle.nn.functional as F
 from paddle import ParamAttr
+
+__dir__ = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(__dir__)
+sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '../../..')))
+
 from ppocr.backbones.det_mobilenet_v3 import SEModule, ConvBNLayer
 
 
