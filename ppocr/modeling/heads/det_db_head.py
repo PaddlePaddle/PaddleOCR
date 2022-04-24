@@ -66,7 +66,7 @@ class Head(nn.Layer):
         self.conv3 = nn.Conv2DTranspose(
             in_channels=in_channels // 4,
             out_channels=1,
-            kernel_size=kernel_size[1],
+            kernel_size=kernel_size[2],
             stride=2,
             weight_attr=ParamAttr(
                 initializer=paddle.nn.initializer.KaimingUniform()),

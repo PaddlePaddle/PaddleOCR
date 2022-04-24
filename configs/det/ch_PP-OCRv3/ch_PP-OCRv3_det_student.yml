@@ -4,12 +4,11 @@ Global:
   epoch_num: 500
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/ch_PP-OCR_V3/
+  save_model_dir: ./output/ch_PP-OCR_V3_det/
   save_epoch_step: 100
   eval_batch_step:
   - 0
   - 400
-  load_static_weights: false
   cal_metric_during_train: false
   pretrained_model: null
   checkpoints: null
