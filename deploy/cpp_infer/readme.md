@@ -323,6 +323,8 @@ More parameters are as follows,
 |rec_model_dir|string|-|Address of recognition inference model|
 |rec_char_dict_path|string|../../ppocr/utils/ppocr_keys_v1.txt|dictionary file|
 |rec_batch_num|int|6|batch size of recognition|
+|rec_img_h|int|32|image height of recognition|
+|rec_img_w|int|320|image width of recognition|
 
 * Multi-language inference is also supported in PaddleOCR, you can refer to [recognition tutorial](../../doc/doc_en/recognition_en.md) for more supported languages and models in PaddleOCR. Specifically, if you want to infer using multi-language models, you just need to modify values of `rec_char_dict_path` and `rec_model_dir`.
 

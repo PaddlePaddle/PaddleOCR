@@ -46,6 +46,8 @@ DECLARE_int32(cls_batch_num);
 DECLARE_string(rec_model_dir);
 DECLARE_int32(rec_batch_num);
 DECLARE_string(rec_char_dict_path);
+DECLARE_int32(rec_img_h);
+DECLARE_int32(rec_img_w);
 // forward related
 DECLARE_bool(det);
 DECLARE_bool(rec);

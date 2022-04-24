@@ -39,7 +39,8 @@ PPOCR::PPOCR() {
     this->recognizer_ = new CRNNRecognizer(
         FLAGS_rec_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
         FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_rec_char_dict_path,
-        FLAGS_use_tensorrt, FLAGS_precision, FLAGS_rec_batch_num);
+        FLAGS_use_tensorrt, FLAGS_precision, FLAGS_rec_batch_num,
+        FLAGS_rec_img_h, FLAGS_rec_img_w);
   }
 };
 
