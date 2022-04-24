@@ -47,7 +47,7 @@ Architecture:
     name: MultiHead
     head_list:
       - CTCHead: 
-          encoder_type: mobilevit
+          encoder_type: svtr
           dims: 64
           depth: 2
           hidden_dims: 120

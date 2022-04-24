@@ -1029,7 +1029,7 @@ class MultiLabelEncode(BaseRecLabelEncode):
         data_ctc = copy.deepcopy(data)
         data_sar = copy.deepcopy(data)
         data_out = dict()
-        data_out['img_path'] = data['img_path']
+        data_out['img_path'] = data.get('img_path', None)
         data_out['image'] = data['image']
         ctc = self.ctc_encode.__call__(data_ctc)
         sar = self.sar_encode.__call__(data_sar)

@@ -22,7 +22,7 @@ from paddle import ParamAttr
 import paddle.nn as nn
 import paddle.nn.functional as F
 
-from ppocr.modeling.necks.rnn import Im2Seq, EncoderWithRNN, EncoderWithFC, SequenceEncoder, EncoderWithTransformer
+from ppocr.modeling.necks.rnn import Im2Seq, EncoderWithRNN, EncoderWithFC, SequenceEncoder, EncoderWithSVTR
 from .rec_ctc_head import CTCHead
 from .rec_sar_head import SARHead
 
@@ -49,14 +49,14 @@ class MultiHead(nn.Layer):
                 encoder_type = self.head_list[idx][name].get('encoder_type',
                                                              'rnn')
                 self.encoder = encoder_type
-                if encoder_type == 'mobilevit':
+                if encoder_type == 'svtr':
                     out_dims = self.head_list[idx][name].get('dims', 64)
                     depth = self.head_list[idx][name].get('depth', 2)
                     hidden_dims = self.head_list[idx][name].get('hidden_dims',
                                                                 120)
                     use_guide = self.head_list[idx][name].get('use_guide',
                                                               False)
-                    self.ctc_encoder = EncoderWithTransformer(
+                    self.ctc_encoder = EncoderWithSVTR(
                         in_channels=in_channels,
                         dims=out_dims,
                         depth=depth,
@@ -80,7 +80,7 @@ class MultiHead(nn.Layer):
 
     def forward(self, x, targets=None):
         ctc_encoder = self.ctc_encoder(x)
-        if self.encoder in ['mobilevit']:
+        if self.encoder in ['svtr']:
             ctc_encoder = self.encoder_reshape(ctc_encoder)
         ctc_out = self.ctc_head(ctc_encoder, targets)
         head_out = dict()
