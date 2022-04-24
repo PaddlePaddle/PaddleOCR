@@ -78,7 +78,7 @@ CUDA_LIB、CUDNN_LIB、TENSORRT_DIR、WITH_GPU、WITH_TENSORRT
 
 - CUDA_LIB: CUDA地址，如 `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.2\lib\x64`
 - CUDNN_LIB: 和CUDA_LIB一致
-- TENSORRT_DIR：TRT下载后解压缩的位置
+- TENSORRT_DIR：TRT下载后解压缩的位置，如 `D:\TensorRT-8.0.1.6`
 - WITH_GPU: 打钩
 - WITH_TENSORRT：打勾
 
@@ -128,7 +128,7 @@ CHCP 65001
 ```
 
 识别结果如下
-![result](imgs/result.png)
+![result](imgs/result.jpg)
 
 
 ## FAQ
