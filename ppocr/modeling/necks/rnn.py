@@ -153,6 +153,7 @@ class SequenceEncoder(nn.Layer):
         super(SequenceEncoder, self).__init__()
         self.encoder_reshape = Im2Seq(in_channels)
         self.out_channels = self.encoder_reshape.out_channels
+        self.encoder_type = encoder_type
         if encoder_type == 'reshape':
             self.only_reshape = True
         else:
