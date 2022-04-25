@@ -1,56 +1,56 @@
-# PP-Structure 快速开始
+# PP-Structure Quick Start
 
-- [1. 安装依赖包](#1)
-- [2. 便捷使用](#2)
-    - [2.1 命令行使用](#21)
-        - [2.1.1 版面分析+表格识别](#211)
-        - [2.1.2 版面分析](#212)
-        - [2.1.3 表格识别](#213)
+- [1. Install package](#1)
+- [2. Use](#2)
+    - [2.1 Use by command line](#21)
+        - [2.1.1 layout analysis + table recognition](#211)
+        - [2.1.2 layout analysis](#212)
+        - [2.1.3 table recognition](#213)
         - [2.1.4 DocVQA](#214)
-    - [2.2 代码使用](#22)
-        - [2.2.1 版面分析+表格识别](#221)
-        - [2.2.2 版面分析](#222)
-        - [2.2.3 表格识别](#223)
+    - [2.2 Use by code](#22)
+        - [2.2.1 layout analysis + table recognition](#221)
+        - [2.2.2 layout analysis](#222)
+        - [2.2.3 table recognition](#223)
         - [2.2.4 DocVQA](#224)
-    - [2.3 返回结果说明](#23)
-        - [2.3.1 版面分析+表格识别](#231)
+    - [2.3 Result description](#23)
+        - [2.3.1 layout analysis + table recognition](#231)
         - [2.3.2 DocVQA](#232)
-    - [2.4 参数说明](#24)
+    - [2.4 Parameter Description](#24)
 
 
 <a name="1"></a>
-## 1. 安装依赖包
+## 1. Install package
 
 ```bash
-# 安装 paddleocr，推荐使用2.5+版本
+# Install paddleocr, version 2.5+ is recommended
 pip3 install "paddleocr>=2.5"
-# 安装 版面分析依赖包layoutparser（如不需要版面分析功能，可跳过）
+# Install layoutparser (if you do not use the layout analysis, you can skip it)
 pip3 install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
-# 安装 DocVQA依赖包paddlenlp（如不需要DocVQA功能，可跳过）
+# Install the DocVQA dependency package paddlenlp (if you do not use the DocVQA, you can skip it)
 pip install paddlenlp
 
 ```
 
 <a name="2"></a>
-## 2. 便捷使用
+## 2. Use
 
 <a name="21"></a>
-### 2.1 命令行使用  
+### 2.1 Use by command line
 
 <a name="211"></a>
-#### 2.1.1 版面分析+表格识别
+#### 2.1.1 layout analysis + table recognition
 ```bash
 paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/1.png --type=structure
 ```
 
 <a name="212"></a>
-#### 2.1.2 版面分析
+#### 2.1.2 layout analysis
 ```bash
 paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/1.png --type=structure --table=false --ocr=false
 ```
 
 <a name="213"></a>
-#### 2.1.3 表格识别
+#### 2.1.3 table recognition
 ```bash
 paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/table.jpg --type=structure --layout=false
 ```
@@ -58,13 +58,13 @@ paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/table.jpg --type=structur
 <a name="214"></a>
 #### 2.1.4 DocVQA
 
-请参考：[文档视觉问答](../vqa/README.md)。
+Please refer to: [Documentation Visual Q&A](../vqa/README.md) .
 
 <a name="22"></a>
-### 2.2 代码使用
+### 2.2 Use by code
 
 <a name="221"></a>
-#### 2.2.1 版面分析+表格识别
+#### 2.2.1 layout analysis + table recognition
 
 ```python
 import os
@@ -93,7 +93,7 @@ im_show.save('result.jpg')
 ```
 
 <a name="222"></a>
-#### 2.2.2 版面分析
+#### 2.2.2 layout analysis
 
 ```python
 import os
@@ -114,7 +114,7 @@ for line in result:
 ```
 
 <a name="223"></a>
-#### 2.2.3 表格识别
+#### 2.2.3 table recognition
 
 ```python
 import os
@@ -137,14 +137,15 @@ for line in result:
 <a name="224"></a>
 #### 2.2.4 DocVQA
 
-请参考：[文档视觉问答](../vqa/README.md)。
+Please refer to: [Documentation Visual Q&A](../vqa/README.md) .
 
 <a name="23"></a>
-### 2.3 返回结果说明
-PP-Structure的返回结果为一个dict组成的list，示例如下
+### 2.3 Result description
+
+The return of PP-Structure is a list of dicts, the example is as follows:
 
 <a name="231"></a>
-#### 2.3.1 版面分析+表格识别
+#### 2.3.1 layout analysis + table recognition
 ```shell
 [
   {   'type': 'Text',
@@ -154,46 +155,44 @@ PP-Structure的返回结果为一个dict组成的list，示例如下
   }
 ]
 ```
-dict 里各个字段说明如下
+Each field in dict is described as follows:
 
-| 字段            | 说明                                                                                                                                                                                                                                                                                                                                                                                            |
-| --------------- |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|type| 图片区域的类型                                                                                                                                                                                                                                                                                                                                                                                       |
-|bbox| 图片区域的在原图的坐标，分别[左上角x，左上角y，右下角x，右下角y]                                                                                                                                                                                                                                                                                                                                                           |
-|res| 图片区域的OCR或表格识别结果。<br> 表格: 一个dict，字段说明如下<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; `html`: 表格的HTML字符串<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 在代码使用模式下，前向传入return_ocr_result_in_table=True可以拿到表格中每个文本的检测识别结果，对应为如下字段: <br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; `boxes`: 文本检测坐标<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; `rec_res`: 文本识别结果。<br> OCR: 一个包含各个单行文字的检测坐标和识别结果的元组 |
+| field            | description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| --------------- |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|type| Type of image area.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+|bbox| The coordinates of the image area in the original image, respectively [upper left corner x, upper left corner y, lower right corner x, lower right corner y].                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|res| OCR or table recognition result of the image area. <br> table: a dict with field descriptions as follows: <br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; `html`: html str of table.<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; In the code usage mode, set return_ocr_result_in_table=True whrn call can get the detection and recognition results of each text in the table area, corresponding to the following fields: <br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; `boxes`: text detection boxes.<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; `rec_res`: text recognition results.<br> OCR: A tuple containing the detection boxes and recognition results of each single text. |
 
-运行完成后，每张图片会在`output`字段指定的目录下有一个同名目录，图片里的每个表格会存储为一个excel，图片区域会被裁剪之后保存下来，excel文件和图片名为表格在图片里的坐标。
-
+After the recognition is completed, each image will have a directory with the same name under the directory specified by the `output` field. Each table in the image will be stored as an excel, and the picture area will be cropped and saved. The filename of  excel and picture is their coordinates in the image.
   ```
   /output/table/1/
     └─ res.txt
-    └─ [454, 360, 824, 658].xlsx  表格识别结果
-    └─ [16, 2, 828, 305].jpg            被裁剪出的图片区域
-    └─ [17, 361, 404, 711].xlsx        表格识别结果
+    └─ [454, 360, 824, 658].xlsx        table recognition result
+    └─ [16, 2, 828, 305].jpg            picture in Image
+    └─ [17, 361, 404, 711].xlsx        table recognition result
   ```
 
 <a name="232"></a>
 #### 2.3.2 DocVQA
 
-请参考：[文档视觉问答](../vqa/README.md)。
+Please refer to: [Documentation Visual Q&A](../vqa/README.md) .
 
 <a name="24"></a>
-### 2.4 参数说明
+### 2.4 Parameter Description
 
-| 字段                   | 说明                                                                                                                                                 | 默认值                                                     |
-|----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|
-| output               | excel和识别结果保存的地址                                                                                                                                    | ./output/table                                          |
-| table_max_len        | 表格结构模型预测时，图像的长边resize尺度                                                                                                                            | 488                                                     |
-| table_model_dir      | 表格结构模型 inference 模型地址                                                                                                                              | None                                                    |
-| table_char_dict_path | 表格结构模型所用字典地址                                                                                                                                       | ../ppocr/utils/dict/table_structure_dict.txt            |
-| layout_path_model    | 版面分析模型模型地址，可以为在线地址或者本地地址，当为本地地址时，需要指定 layout_label_map, 命令行模式下可通过--layout_label_map='{0: "Text", 1: "Title", 2: "List", 3:"Table", 4:"Figure"}' 指定 | lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config |
-| layout_label_map     | 版面分析模型模型label映射字典                                                                                                                                  | None                                                    |
-| model_name_or_path   | VQA SER模型地址                                                                                                                                        | None                                                    |
-| max_seq_length       | VQA SER模型最大支持token长度                                                                                                                               | 512                                                     |
-| label_map_path       | VQA SER 标签文件地址                                                                                                                                     | ./vqa/labels/labels_ser.txt                             |
-| mode                 | pipeline预测模式，structure: 版面分析+表格识别; VQA: SER文档信息抽取                                                                                                  | structure                                               |
-| layout               | 前向中是否执行版面分析                                                                                                                                        | True                                                    |
-| table                | 前向中是否执行表格识别                                                                                                                                        | True                                                    |
-| ocr                  | 对于版面分析中的非表格区域，是否执行ocr。当layout为False时会被自动设置为False                                                                                                  | True                                                    |
+| field                | description                                                                                                                                                                                                                                                      | default                                                 |
+|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|
+| output               | The save path of result                                                                                                                                                                                                                                          | ./output/table                                          |
+| table_max_len        | When the table structure model predicts, the long side of the image                                                                                                                                                                                              | 488                                                     |
+| table_model_dir      | the path of table structure model                                                                                                                                                                                                                                | None                                                    |
+| table_char_dict_path | the dict path of table structure model                                                                                                                                                                                                                           | ../ppocr/utils/dict/table_structure_dict.txt            |
+| layout_path_model    | The model path of the layout analysis model, which can be an online address or a local path. When it is a local path, layout_label_map needs to be set. In command line mode, use --layout_label_map='{0: "Text", 1: "Title", 2: "List", 3:"Table", 4:"Figure"}' | lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config |
+| layout_label_map     | Layout analysis model model label mapping dictionary path                                                                                                                                                                                                        | None                                                    |
+| model_name_or_path   | the model path of VQA SER model                                                                                                                                                                                                                                  | None                                                    |
+| max_seq_length       | the max token length of VQA SER model                                                                                                                                                                                                                            | 512                                                     |
+| label_map_path       | the label path of VQA SER model                                                                                                                                                                                                                                  | ./vqa/labels/labels_ser.txt                             |
+| layout               | Whether to perform layout analysis in forward                                                                                                                                                                                                                    | True                                                    |
+| table                | Whether to perform table recognition in forward                                                                                                                                                                                                                  | True                                                    |
+| ocr                  | Whether to perform ocr for non-table areas in layout analysis. When layout is False, it will be automatically set to False                                                                                                                                                                                                                 | True                                                    |
 
-大部分参数和PaddleOCR whl包保持一致，见 [whl包文档](../../doc/doc_ch/whl.md)
+Most of the parameters are consistent with the PaddleOCR whl package, see [whl package documentation](../../doc/doc_en/whl.md)
