@@ -73,7 +73,7 @@ def main():
             config['Architecture']["Head"]['out_channels'] = char_num
 
     model = build_model(config['Architecture'])
-    extra_input_models = ["SRN", "NRTR", "SAR", "SEED"]
+    extra_input_models = ["SRN", "NRTR", "SAR", "SEED", "SVTR"]
     if config['Architecture']['algorithm'] == 'Distillation':
         extra_input = config['Architecture']['Models']['Teacher'][
             'algorithm'] in extra_input_models

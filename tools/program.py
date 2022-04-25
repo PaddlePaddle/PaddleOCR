@@ -201,7 +201,7 @@ def train(config,
     model.train()
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
-    extra_input_models = ["SRN", "NRTR", "SAR", "SEED"]
+    extra_input_models = ["SRN", "NRTR", "SAR", "SEED", "SVTR"]
     if config['Architecture']['algorithm'] == 'Distillation':
         extra_input = config['Architecture']['Models']['Teacher'][
             'algorithm'] in extra_input_models
@@ -551,7 +551,7 @@ def preprocess(is_train=False):
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
-        'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'PREN', 'FCE'
+        'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'PREN', 'FCE', 'SVTR'
     ]
 
     device = 'cpu'

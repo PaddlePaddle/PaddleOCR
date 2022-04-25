@@ -36,7 +36,7 @@ Optimizer:
 
 Architecture:
   model_type: rec
-  algorithm: SAR
+  algorithm: SVTR
   Transform:
   Backbone:
     name: MobileNetV1Enhance
