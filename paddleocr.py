@@ -47,7 +47,7 @@ __all__ = [
 ]
 
 SUPPORT_DET_MODEL = ['DB']
-VERSION = '2.4.0.4'
+VERSION = '2.5'
 SUPPORT_REC_MODEL = ['CRNN']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
@@ -442,7 +442,7 @@ class PPStructure(StructureSystem):
         logger.debug(params)
         super().__init__(params)
 
-    def __call__(self, img):
+    def __call__(self, img, return_ocr_result_in_table=False):
         if isinstance(img, str):
             # download net image
             if img.startswith('http'):
@@ -460,7 +460,7 @@ class PPStructure(StructureSystem):
         if isinstance(img, np.ndarray) and len(img.shape) == 2:
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
 
-        res = super().__call__(img)
+        res = super().__call__(img, return_ocr_result_in_table)
         return res
 
 
