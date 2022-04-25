@@ -45,8 +45,8 @@
 - **数据简介**：TableBank数据集包含Latex（训练集187199张，验证集7265张，测试集5719张）与Word（训练集73383张，验证集2735张，测试集2281张）两种类别的文档。仅包含`Table` 1个类别。部分图像以及标注框可视化如下所示。
 
 <div align="center">
-    <img src="../datasets/tablebank_demo/004.png" width="500">
-    <img src="../datasets/tablebank_demo/005.png" width="500">
+    <img src="../datasets/tablebank_demo/004.png" height="700">
+    <img src="../datasets/tablebank_demo/005.png" height="700">
 </div>
 
 - **下载地址**：https://doc-analysis.github.io/tablebank-page/index.html
