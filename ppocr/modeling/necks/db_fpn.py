@@ -120,6 +120,7 @@ class CALayer(nn.Layer):
     def __init__(self, in_channels, out_channels, kernel_size, shortcut=True):
         super(CALayer, self).__init__()
         weight_attr = paddle.nn.initializer.KaimingUniform()
+        self.out_channels = out_channels
         self.in_conv = nn.Conv2D(
             in_channels=in_channels,
             out_channels=self.out_channels,
