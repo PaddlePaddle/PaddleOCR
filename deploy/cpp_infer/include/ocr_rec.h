@@ -45,7 +45,8 @@ public:
                           const bool &use_mkldnn, const string &label_path,
                           const bool &use_tensorrt,
                           const std::string &precision,
-                          const int &rec_batch_num) {
+                          const int &rec_batch_num, const int &rec_img_h,
+                          const int &rec_img_w) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
@@ -54,6 +55,10 @@ public:
     this->use_tensorrt_ = use_tensorrt;
     this->precision_ = precision;
     this->rec_batch_num_ = rec_batch_num;
+    this->rec_img_h_ = rec_img_h;
+    this->rec_img_w_ = rec_img_w;
+    std::vector<int> rec_image_shape = {3, rec_img_h, rec_img_w};
+    this->rec_image_shape_ = rec_image_shape;
 
     this->label_list_ = Utility::ReadDict(label_path);
     this->label_list_.insert(this->label_list_.begin(),
@@ -86,7 +91,9 @@ private:
   bool use_tensorrt_ = false;
   std::string precision_ = "fp32";
   int rec_batch_num_ = 6;
-
+  int rec_img_h_ = 32;
+  int rec_img_w_ = 320;
+  std::vector<int> rec_image_shape_ = {3, rec_img_h_, rec_img_w_};
   // pre-process
   CrnnResizeImg resize_op_;
   Normalize normalize_op_;

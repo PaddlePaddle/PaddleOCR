@@ -17,11 +17,9 @@
 
 #include "auto_log/autolog.h"
 #include <numeric>
-#include <sys/stat.h>
-
 namespace PaddleOCR {
 
-PaddleOCR::PaddleOCR() {
+PPOCR::PPOCR() {
   if (FLAGS_det) {
     this->detector_ = new DBDetector(
         FLAGS_det_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
@@ -41,12 +39,13 @@ PaddleOCR::PaddleOCR() {
     this->recognizer_ = new CRNNRecognizer(
         FLAGS_rec_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
         FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_rec_char_dict_path,
-        FLAGS_use_tensorrt, FLAGS_precision, FLAGS_rec_batch_num);
+        FLAGS_use_tensorrt, FLAGS_precision, FLAGS_rec_batch_num,
+        FLAGS_rec_img_h, FLAGS_rec_img_w);
   }
 };
 
-void PaddleOCR::det(cv::Mat img, std::vector<OCRPredictResult> &ocr_results,
-                    std::vector<double> &times) {
+void PPOCR::det(cv::Mat img, std::vector<OCRPredictResult> &ocr_results,
+                std::vector<double> &times) {
   std::vector<std::vector<std::vector<int>>> boxes;
   std::vector<double> det_times;
 
@@ -63,9 +62,9 @@ void PaddleOCR::det(cv::Mat img, std::vector<OCRPredictResult> &ocr_results,
   times[2] += det_times[2];
 }
 
-void PaddleOCR::rec(std::vector<cv::Mat> img_list,
-                    std::vector<OCRPredictResult> &ocr_results,
-                    std::vector<double> &times) {
+void PPOCR::rec(std::vector<cv::Mat> img_list,
+                std::vector<OCRPredictResult> &ocr_results,
+                std::vector<double> &times) {
   std::vector<std::string> rec_texts(img_list.size(), "");
   std::vector<float> rec_text_scores(img_list.size(), 0);
   std::vector<double> rec_times;
@@ -80,9 +79,9 @@ void PaddleOCR::rec(std::vector<cv::Mat> img_list,
   times[2] += rec_times[2];
 }
 
-void PaddleOCR::cls(std::vector<cv::Mat> img_list,
-                    std::vector<OCRPredictResult> &ocr_results,
-                    std::vector<double> &times) {
+void PPOCR::cls(std::vector<cv::Mat> img_list,
+                std::vector<OCRPredictResult> &ocr_results,
+                std::vector<double> &times) {
   std::vector<int> cls_labels(img_list.size(), 0);
   std::vector<float> cls_scores(img_list.size(), 0);
   std::vector<double> cls_times;
@@ -98,8 +97,8 @@ void PaddleOCR::cls(std::vector<cv::Mat> img_list,
 }
 
 std::vector<std::vector<OCRPredictResult>>
-PaddleOCR::ocr(std::vector<cv::String> cv_all_img_names, bool det, bool rec,
-               bool cls) {
+PPOCR::ocr(std::vector<cv::String> cv_all_img_names, bool det, bool rec,
+           bool cls) {
   std::vector<double> time_info_det = {0, 0, 0};
   std::vector<double> time_info_rec = {0, 0, 0};
   std::vector<double> time_info_cls = {0, 0, 0};
@@ -139,7 +138,7 @@ PaddleOCR::ocr(std::vector<cv::String> cv_all_img_names, bool det, bool rec,
     }
   } else {
     if (!Utility::PathExists(FLAGS_output) && FLAGS_det) {
-      mkdir(FLAGS_output.c_str(), 0777);
+      Utility::CreateDir(FLAGS_output);
     }
 
     for (int i = 0; i < cv_all_img_names.size(); ++i) {
@@ -188,9 +187,8 @@ PaddleOCR::ocr(std::vector<cv::String> cv_all_img_names, bool det, bool rec,
   return ocr_results;
 } // namespace PaddleOCR
 
-void PaddleOCR::log(std::vector<double> &det_times,
-                    std::vector<double> &rec_times,
-                    std::vector<double> &cls_times, int img_num) {
+void PPOCR::log(std::vector<double> &det_times, std::vector<double> &rec_times,
+                std::vector<double> &cls_times, int img_num) {
   if (det_times[0] + det_times[1] + det_times[2] > 0) {
     AutoLogger autolog_det("ocr_det", FLAGS_use_gpu, FLAGS_use_tensorrt,
                            FLAGS_enable_mkldnn, FLAGS_cpu_threads, 1, "dynamic",
@@ -212,7 +210,7 @@ void PaddleOCR::log(std::vector<double> &det_times,
     autolog_cls.report();
   }
 }
-PaddleOCR::~PaddleOCR() {
+PPOCR::~PPOCR() {
   if (this->detector_ != nullptr) {
     delete this->detector_;
   }

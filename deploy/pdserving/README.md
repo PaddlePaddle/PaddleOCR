@@ -36,7 +36,6 @@ PaddleOCR operating environment and Paddle Serving operating environment are nee
 1. Please prepare PaddleOCR operating environment reference [link](../../doc/doc_ch/installation.md).
    Download the corresponding paddlepaddle whl package according to the environment, it is recommended to install version 2.2.2.
 
-
 2. The steps of PaddleServing operating environment prepare are as follows:
 
 
@@ -193,6 +192,52 @@ The recognition model is the same.
     2021-05-13 03:42:36,979         chl1(In: ['det'], Out: ['rec']) size[6/0]
     2021-05-13 03:42:36,979         chl2(In: ['rec'], Out: ['@DAGExecutor']) size[0/0]
     ```
+
+## C++ Serving
+
+Service deployment based on python obviously has the advantage of convenient secondary development. However, the real application often needs to pursue better performance. PaddleServing also provides a more performant C++ deployment version.
+
+The C++ service deployment is the same as python in the environment setup and data preparation stages, the difference is when the service is started and the client sends requests.
+
+| Language | Speed ​​| Secondary development | Do you need to compile |
+|-----|-----|---------|------------|
+| C++ | fast | Slightly difficult | Single model prediction does not need to be compiled, multi-model concatenation needs to be compiled |
+| python | general | easy | single-model/multi-model no compilation required |
+
+1. Compile Serving
+
+   To improve predictive performance, C++ services also provide multiple model concatenation services. Unlike Python Pipeline services, multiple model concatenation requires the pre - and post-model processing code to be written on the server side, so local recompilation is required to generate serving. Specific may refer to the official document: [how to compile Serving](https://github.com/PaddlePaddle/Serving/blob/v0.8.3/doc/Compile_EN.md)
+
+2. Run the following command to start the service.
+    ```
+    # Start the service and save the running log in log.txt
+    python3 -m paddle_serving_server.serve --model ppocrv2_det_serving ppocrv2_rec_serving --op GeneralDetectionOp GeneralInferOp --port 9293 &>log.txt &
+    ```
+    After the service is successfully started, a log similar to the following will be printed in log.txt
+    ![](./imgs/start_server.png)
+
+3. Send service request
+
+   Due to the need for pre and post-processing in the C++Server part, in order to speed up the input to the C++Server is only the base64 encoded string of the picture, it needs to be manually modified
+   Change the feed_type field and shape field in ppocrv2_det_client/serving_client_conf.prototxt to the following:
+
+   ```
+    feed_var {
+    name: "x"
+    alias_name: "x"
+    is_lod_tensor: false
+    feed_type: 20
+    shape: 1
+    }
+   ```
+
+   start the client:
+
+    ```
+    python3 ocr_cpp_client.py ppocrv2_det_client ppocrv2_rec_client
+    ```
+    After successfully running, the predicted result of the model will be printed in the cmd window. An example of the result is:
+    ![](./imgs/results.png)  
 
 ## WINDOWS Users
 

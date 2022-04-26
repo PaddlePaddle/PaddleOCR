@@ -336,6 +336,8 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 |rec_model_dir|string|-|识别模型inference model地址|
 |rec_char_dict_path|string|../../ppocr/utils/ppocr_keys_v1.txt|字典文件|
 |rec_batch_num|int|6|识别模型batchsize|
+|rec_img_h|int|32|识别模型输入图像高度|
+|rec_img_w|int|320|识别模型输入图像宽度|
 
 
 * PaddleOCR也支持多语言的预测，更多支持的语言和模型可以参考[识别文档](../../doc/doc_ch/recognition.md)中的多语言字典与模型部分，如果希望进行多语言预测，只需将修改`rec_char_dict_path`（字典文件路径）以及`rec_model_dir`（inference模型路径）字段即可。
