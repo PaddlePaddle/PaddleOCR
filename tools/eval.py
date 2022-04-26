@@ -47,14 +47,38 @@ def main():
         if config['Architecture']["algorithm"] in ["Distillation",
                                                    ]:  # distillation model
             for key in config['Architecture']["Models"]:
-                config['Architecture']["Models"][key]["Head"][
-                    'out_channels'] = char_num
+                if config['Architecture']['Models'][key]['Head'][
+                        'name'] == 'MultiHead':  # for multi head
+                    out_channels_list = {}
+                    if config['PostProcess'][
+                            'name'] == 'DistillationSARLabelDecode':
+                        char_num = char_num - 2
+                    out_channels_list['CTCLabelDecode'] = char_num
+                    out_channels_list['SARLabelDecode'] = char_num + 2
+                    config['Architecture']['Models'][key]['Head'][
+                        'out_channels_list'] = out_channels_list
+                else:
+                    config['Architecture']["Models"][key]["Head"][
+                        'out_channels'] = char_num
+        elif config['Architecture']['Head'][
+                'name'] == 'MultiHead':  # for multi head
+            out_channels_list = {}
+            if config['PostProcess']['name'] == 'SARLabelDecode':
+                char_num = char_num - 2
+            out_channels_list['CTCLabelDecode'] = char_num
+            out_channels_list['SARLabelDecode'] = char_num + 2
+            config['Architecture']['Head'][
+                'out_channels_list'] = out_channels_list
         else:  # base rec model
             config['Architecture']["Head"]['out_channels'] = char_num
 
     model = build_model(config['Architecture'])
-    extra_input = config['Architecture'][
-        'algorithm'] in ["SRN", "NRTR", "SAR", "SEED"]
+    extra_input_models = ["SRN", "NRTR", "SAR", "SEED", "SVTR"]
+    if config['Architecture']['algorithm'] == 'Distillation':
+        extra_input = config['Architecture']['Models']['Teacher'][
+            'algorithm'] in extra_input_models
+    else:
+        extra_input = config['Architecture']['algorithm'] in extra_input_models
     if "model_type" in config['Architecture'].keys():
         model_type = config['Architecture']['model_type']
     else:

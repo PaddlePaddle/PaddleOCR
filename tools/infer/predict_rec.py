@@ -107,7 +107,7 @@ class TextRecognizer(object):
             return norm_img.astype(np.float32) / 128. - 1.
 
         assert imgC == img.shape[2]
-        imgW = int((32 * max_wh_ratio))
+        imgW = int((imgH * max_wh_ratio))
         if self.use_onnx:
             w = self.input_tensor.shape[3:][0]
             if w is not None and w > 0:
@@ -255,7 +255,9 @@ class TextRecognizer(object):
         for beg_img_no in range(0, img_num, batch_num):
             end_img_no = min(img_num, beg_img_no + batch_num)
             norm_img_batch = []
-            max_wh_ratio = 0
+            imgC, imgH, imgW = self.rec_image_shape
+            max_wh_ratio = imgW / imgH
+            # max_wh_ratio = 0
             for ino in range(beg_img_no, end_img_no):
                 h, w = img_list[indices[ino]].shape[0:2]
                 wh_ratio = w * 1.0 / h

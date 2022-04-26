@@ -41,7 +41,8 @@ def build_post_process(config, global_config=None):
         'PGPostProcess', 'DistillationCTCLabelDecode', 'TableLabelDecode',
         'DistillationDBPostProcess', 'NRTRLabelDecode', 'SARLabelDecode',
         'SEEDLabelDecode', 'VQASerTokenLayoutLMPostProcess',
-        'VQAReTokenLayoutLMPostProcess', 'PRENLabelDecode'
+        'VQAReTokenLayoutLMPostProcess', 'PRENLabelDecode',
+        'DistillationSARLabelDecode'
     ]
 
     if config['name'] == 'PSEPostProcess':

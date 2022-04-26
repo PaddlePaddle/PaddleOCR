@@ -22,6 +22,7 @@ import numpy as np
 import string
 from shapely.geometry import LineString, Point, Polygon
 import json
+import copy
 
 from ppocr.utils.logging import get_logger
 
@@ -1007,3 +1008,34 @@ class VQATokenLabelEncode(object):
             gt_label.extend([self.label2id_map[("i-" + label).upper()]] *
                             (len(encode_res["input_ids"]) - 1))
         return gt_label
+
+
+class MultiLabelEncode(BaseRecLabelEncode):
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 use_space_char=False,
+                 **kwargs):
+        super(MultiLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
+
+        self.ctc_encode = CTCLabelEncode(max_text_length, character_dict_path,
+                                         use_space_char, **kwargs)
+        self.sar_encode = SARLabelEncode(max_text_length, character_dict_path,
+                                         use_space_char, **kwargs)
+
+    def __call__(self, data):
+
+        data_ctc = copy.deepcopy(data)
+        data_sar = copy.deepcopy(data)
+        data_out = dict()
+        data_out['img_path'] = data.get('img_path', None)
+        data_out['image'] = data['image']
+        ctc = self.ctc_encode.__call__(data_ctc)
+        sar = self.sar_encode.__call__(data_sar)
+        if ctc is None or sar is None:
+            return None
+        data_out['label_ctc'] = ctc['label']
+        data_out['label_sar'] = sar['label']
+        data_out['length'] = ctc['length']
+        return data_out

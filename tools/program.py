@@ -201,12 +201,17 @@ def train(config,
     model.train()
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
-    extra_input = config['Architecture'][
-        'algorithm'] in ["SRN", "NRTR", "SAR", "SEED"]
+    extra_input_models = ["SRN", "NRTR", "SAR", "SEED", "SVTR"]
+    if config['Architecture']['algorithm'] == 'Distillation':
+        extra_input = config['Architecture']['Models']['Teacher'][
+            'algorithm'] in extra_input_models
+    else:
+        extra_input = config['Architecture']['algorithm'] in extra_input_models
     try:
         model_type = config['Architecture']['model_type']
     except:
         model_type = None
+
     algorithm = config['Architecture']['algorithm']
 
     start_epoch = best_model_dict[
@@ -269,7 +274,12 @@ def train(config,
                 if model_type in ['table', 'kie']:
                     eval_class(preds, batch)
                 else:
-                    post_result = post_process_class(preds, batch[1])
+                    if config['Loss']['name'] in ['MultiLoss', 'MultiLoss_v2'
+                                                  ]:  # for multi head loss
+                        post_result = post_process_class(
+                            preds['ctc'], batch[1])  # for CTC head out
+                    else:
+                        post_result = post_process_class(preds, batch[1])
                     eval_class(post_result, batch)
                 metric = eval_class.get_metric()
                 train_stats.update(metric)
@@ -541,7 +551,7 @@ def preprocess(is_train=False):
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
-        'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'PREN', 'FCE'
+        'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'PREN', 'FCE', 'SVTR'
     ]
 
     device = 'cpu'

@@ -117,6 +117,7 @@ class DistillationCTCLabelDecode(CTCLabelDecode):
                  use_space_char=False,
                  model_name=["student"],
                  key=None,
+                 multi_head=False,
                  **kwargs):
         super(DistillationCTCLabelDecode, self).__init__(character_dict_path,
                                                          use_space_char)
@@ -125,6 +126,7 @@ class DistillationCTCLabelDecode(CTCLabelDecode):
         self.model_name = model_name
 
         self.key = key
+        self.multi_head = multi_head
 
     def __call__(self, preds, label=None, *args, **kwargs):
         output = dict()
@@ -132,6 +134,8 @@ class DistillationCTCLabelDecode(CTCLabelDecode):
             pred = preds[name]
             if self.key is not None:
                 pred = pred[self.key]
+            if self.multi_head and isinstance(pred, dict):
+                pred = pred['ctc']
             output[name] = super().__call__(pred, label=label, *args, **kwargs)
         return output
 
@@ -654,6 +658,40 @@ class SARLabelDecode(BaseRecLabelDecode):
 
     def get_ignored_tokens(self):
         return [self.padding_idx]
+
+
+class DistillationSARLabelDecode(SARLabelDecode):
+    """
+    Convert 
+    Convert between text-label and text-index
+    """
+
+    def __init__(self,
+                 character_dict_path=None,
+                 use_space_char=False,
+                 model_name=["student"],
+                 key=None,
+                 multi_head=False,
+                 **kwargs):
+        super(DistillationSARLabelDecode, self).__init__(character_dict_path,
+                                                         use_space_char)
+        if not isinstance(model_name, list):
+            model_name = [model_name]
+        self.model_name = model_name
+
+        self.key = key
+        self.multi_head = multi_head
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        output = dict()
+        for name in self.model_name:
+            pred = preds[name]
+            if self.key is not None:
+                pred = pred[self.key]
+            if self.multi_head and isinstance(pred, dict):
+                pred = pred['sar']
+            output[name] = super().__call__(pred, label=label, *args, **kwargs)
+        return output
 
 
 class PRENLabelDecode(BaseRecLabelDecode):
