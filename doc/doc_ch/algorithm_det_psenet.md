@@ -52,17 +52,27 @@
 python3 tools/export_model.py -c configs/det/det_r50_vd_pse.yml -o Global.pretrained_model=./det_r50_vd_pse_v2.0_train/best_accuracy  Global.save_inference_dir=./inference/det_pse
 ```
 
-PSE文本检测模型推理，可以执行如下命令：
+PSE文本检测模型推理，执行非弯曲文本检测，可以执行如下命令：
 
 ```shell
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_pse/" --det_algorithm="PSE"
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_pse/" --det_algorithm="PSE" --det_pse_box_type=quad
 ```
 
 可视化文本检测结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
 
 ![](../imgs_results/det_res_img_10_pse.jpg)
 
-**注意**：由于ICDAR2015数据集只有1000张训练图像，且主要针对英文场景，所以上述模型对中文文本图像检测效果会比较差。
+如果想执行弯曲文本检测，可以执行如下命令：
+
+```shell
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_pse/" --det_algorithm="PSE" --det_pse_box_type=poly
+```
+
+可视化文本检测结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
+
+![](../imgs_results/det_res_img_10_pse_poly.jpg)
+
+**注意**：由于ICDAR2015数据集只有1000张训练图像，且主要针对英文场景，所以上述模型对中文或弯曲文本图像检测效果会比较差。
 
 <a name="4-2"></a>
 ### 4.2 C++推理
