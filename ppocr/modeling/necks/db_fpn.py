@@ -144,8 +144,8 @@ class CAFPN(nn.Layer):
     def __init__(self, in_channels, out_channels, shortcut=True, **kwargs):
         super(CAFPN, self).__init__()
         self.out_channels = out_channels
-        self.ins_conv = []
-        self.inp_conv = []
+        self.ins_conv = nn.LayerList()
+        self.inp_conv = nn.LayerList()
 
         for i in range(len(in_channels)):
             self.ins_conv.append(
