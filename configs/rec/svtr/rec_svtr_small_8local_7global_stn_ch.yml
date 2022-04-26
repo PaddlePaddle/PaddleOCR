@@ -1,0 +1,114 @@
+Global:
+  use_gpu: True
+  epoch_num: 100
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: ./output/rec/rec_svtr_small_ch/
+  save_epoch_step: 10
+  # evaluation is run every 2000 iterations after the 0th iteration
+  eval_batch_step: [0, 2000]
+  cal_metric_during_train: True
+  pretrained_model:
+  checkpoints:
+  save_inference_dir:
+  use_visualdl: False
+  infer_img: doc/imgs_words/ch/word_1.jpg
+  # for data or label process
+  character_dict_path: ppocr/utils/ppocr_keys_v1.txt
+  max_text_length: 40
+  infer_mode: False
+  use_space_char: True
+  save_res_path: ./output/rec/predicts_svtr_small_ch.txt
+
+
+Optimizer:
+  name: AdamW
+  beta1: 0.9
+  beta2: 0.99
+  epsilon: 0.00000008
+  weight_decay: 0.05
+  no_weight_decay_name: norm pos_embed
+  one_dim_param_no_weight_decay: true
+  lr:
+    name: Cosine
+    learning_rate: 0.0003
+    warmup_epoch: 5
+
+Architecture:
+  model_type: rec
+  algorithm: SVTR
+  Transform:
+    name: STN_ON
+    tps_inputsize: [32, 64]
+    tps_outputsize: [32, 320]
+    num_control_points: 20
+    tps_margins: [0.05,0.05]
+    stn_activation: none
+  Backbone:
+    name: SVTRNet
+    img_size: [32, 320]  # input size 可以尝试[64,200]
+    out_char_num: 40     # output char patch
+    out_channels: 192    # char patch dim
+    patch_merging: 'Conv'        # 是否使用patch-merging 可选Conv Pool None
+    embed_dim: [96, 192, 256] # 三个阶段的sub-patch dim
+    depth: [3, 6, 6]           # 当使用patch-merging时，控制patch-merging所在的层数，分成三阶段，每个阶段的层数
+    num_heads: [3, 6, 8]       # 三个阶段中的sub-patch heads
+    mixer: ['Local','Local','Local','Local','Local','Local','Local','Local','Global','Global','Global','Global','Global','Global','Global'] # Local atten, Global atten, Conv
+    local_mixer: [[7, 11], [7, 11], [7, 11]] # local mixer的范围，7表示高度的范围，11表示宽度的范围
+    last_stage: True
+    prenorm: False
+  Neck:
+    name: SequenceEncoder
+    encoder_type: reshape
+  Head:
+    name: CTCHead
+
+Loss:
+  name: CTCLoss
+
+PostProcess:
+  name: CTCLabelDecode
+
+Metric:
+  name: RecMetric
+  main_indicator: acc
+
+Train:
+  dataset:
+    name: LMDBDataSet
+    data_dir: ./train_data/scene_ch/ch_scene
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - CTCLabelEncode: # Class handling label
+      - RecResizeImg:
+          image_shape: [3, 64, 256]
+          padding: False
+      - KeepKeys:
+          keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
+  loader:
+    shuffle: True
+    batch_size_per_card: 128
+    drop_last: True
+    num_workers: 2
+
+Eval:
+  dataset:
+    name: LMDBDataSet
+    data_dir: ./train_data/scene_ch/scene_test
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - CTCLabelEncode: # Class handling label
+      - RecResizeImg:
+          image_shape: [3, 64, 256]
+          padding: False
+      - KeepKeys:
+          keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 256
+    num_workers: 2

@@ -455,7 +455,7 @@ class SVTRNet(nn.Layer):
                 qkv_bias=qkv_bias,
                 qk_scale=qk_scale,
                 drop=drop_rate,
-                act_layer=nn.Swish,
+                act_layer=eval(act),
                 attn_drop=attn_drop_rate,
                 drop_path=dpr[0:depth[0]][i],
                 norm_layer=norm_layer,
