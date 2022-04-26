@@ -1,38 +1,34 @@
-- [Server-side C++ Inference](#server-side-c-inference)
-  - [1. Prepare the Environment](#1-prepare-the-environment)
-    - [Environment](#environment)
-    - [1.1 Compile OpenCV](#11-compile-opencv)
-    - [1.2 Compile or Download or the Paddle Inference Library](#12-compile-or-download-or-the-paddle-inference-library)
-      - [1.2.1 Direct download and installation](#121-direct-download-and-installation)
-      - [1.2.2 Compile the inference source code](#122-compile-the-inference-source-code)
-  - [2. Compile and Run the Demo](#2-compile-and-run-the-demo)
-    - [2.1 Export the inference model](#21-export-the-inference-model)
-    - [2.2 Compile PaddleOCR C++ inference demo](#22-compile-paddleocr-c-inference-demo)
-    - [Run the demo](#run-the-demo)
-        - [1. det+cls+rec：](#1-detclsrec)
-        - [2. det+rec：](#2-detrec)
-        - [3. det](#3-det)
-        - [4. cls+rec：](#4-clsrec)
-        - [5. rec](#5-rec)
-        - [6. cls](#6-cls)
-  - [3. FAQ](#3-faq)
+English | [简体中文](readme_ch.md)
 
 # Server-side C++ Inference
 
-This chapter introduces the C++ deployment steps of the PaddleOCR model. The corresponding Python predictive deployment method refers to [document](../../doc/doc_ch/inference.md).
-C++ is better than python in terms of performance. Therefore, in CPU and GPU deployment scenarios, C++ deployment is mostly used.
+- [1. Prepare the Environment](#1)
+    - [1.1 Environment](#11)
+    - [1.2 Compile OpenCV](#12)
+    - [1.3 Compile or Download or the Paddle Inference Library](#13)
+- [2. Compile and Run the Demo](#2)
+    - [2.1 Export the inference model](#21)
+    - [2.2 Compile PaddleOCR C++ inference demo](#22)
+    - [2.3 Run the demo](#23)
+- [3. FAQ](#3)
+
+
+This chapter introduces the C++ deployment steps of the PaddleOCR model. C++ is better than Python in terms of performance. Therefore, in CPU and GPU deployment scenarios, C++ deployment is mostly used.
 This section will introduce how to configure the C++ environment and deploy PaddleOCR in Linux (CPU\GPU) environment. For Windows deployment please refer to [Windows](./docs/windows_vs2019_build.md) compilation guidelines.
 
 
+<a name="1"></a>
 ## 1. Prepare the Environment
 
-### Environment
+<a name="11"></a>
+### 1.1 Environment
 
 - Linux, docker is recommended.
 - Windows.
 
 
-### 1.1 Compile OpenCV
+<a name="12"></a>
+### 1.2 Compile OpenCV
 
 * First of all, you need to download the source code compiled package in the Linux environment from the OpenCV official website. Taking OpenCV 3.4.7 as an example, the download command is as follows.
 
@@ -92,11 +88,12 @@ opencv3/
 |-- share
 ```
 
-### 1.2 Compile or Download or the Paddle Inference Library
+<a name="13"></a>
+### 1.3 Compile or Download or the Paddle Inference Library
 
 * There are 2 ways to obtain the Paddle inference library, described in detail below.
 
-#### 1.2.1 Direct download and installation
+#### 1.3.1 Direct download and installation
 
 [Paddle inference library official website](https://paddleinference.paddlepaddle.org.cn/user_guides/download_lib.html#linux). You can review and select the appropriate version of the inference library on the official website.
 
@@ -109,7 +106,7 @@ tar -xf paddle_inference.tgz
 
 Finally you will see the the folder of `paddle_inference/` in the current path.
 
-#### 1.2.2 Compile the inference source code
+#### 1.3.2 Compile the inference source code
 * If you want to get the latest Paddle inference library features, you can download the latest code from Paddle GitHub repository and compile the inference library from the source code. It is recommended to download the inference library with paddle version greater than or equal to 2.0.1.
 * You can refer to [Paddle inference library] (https://www.paddlepaddle.org.cn/documentation/docs/en/advanced_guide/inference_deployment/inference/build_and_install_lib_en.html) to get the Paddle source code from GitHub, and then compile To generate the latest inference library. The method of using git to access the code is as follows.
 
@@ -155,8 +152,10 @@ build/paddle_inference_install_dir/
 `paddle` is the Paddle library required for C++ prediction later, and `version.txt` contains the version information of the current inference library.
 
 
+<a name="2"></a>
 ## 2. Compile and Run the Demo
 
+<a name="21"></a>
 ### 2.1 Export the inference model
 
 * You can refer to [Model inference](../../doc/doc_ch/inference.md) and export the inference model. After the model is exported, assuming it is placed in the `inference` directory, the directory structure is as follows.
@@ -175,8 +174,8 @@ inference/
 ```
 
 
+<a name="22"></a>
 ### 2.2 Compile PaddleOCR C++ inference demo
-
 
 * The compilation commands are as follows. The addresses of Paddle C++ inference library, opencv and other Dependencies need to be replaced with the actual addresses on your own machines.
 
@@ -201,7 +200,9 @@ or the generated Paddle inference library path (`build/paddle_inference_install_
 * After the compilation is completed, an executable file named `ppocr` will be generated in the `build` folder.
 
 
-### Run the demo
+<a name="23"></a>
+### 2.3 Run the demo
+
 Execute the built executable file:
 ```shell
 ./build/ppocr [--param1] [--param2] [...]
@@ -342,6 +343,7 @@ The detection visualized image saved in ./output//12.jpg
 ```
 
 
+<a name="3"></a>
 ## 3. FAQ
 
  1.  Encountered the error `unable to access 'https://github.com/LDOUBLEV/AutoLog.git/': gnutls_handshake() failed: The TLS connection was non-properly terminated.`, change the github address in `deploy/cpp_infer/external-cmake/auto-log.cmake` to the https://gitee.com/Double_V/AutoLog address.

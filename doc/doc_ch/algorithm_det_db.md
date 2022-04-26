@@ -47,13 +47,13 @@
 ### 4.1 Python推理
 首先将DB文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例（ [模型下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_db_v2.0_train.tar) )，可以使用如下命令进行转换：
 
-```
+```shell
 python3 tools/export_model.py -c configs/det/det_r50_vd_db.yml -o Global.pretrained_model=./det_r50_vd_db_v2.0_train/best_accuracy  Global.save_inference_dir=./inference/det_db
 ```
 
 DB文本检测模型推理，可以执行如下命令：
 
-```
+```shell
 python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_db/"
 ```
 
@@ -65,15 +65,20 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_
 
 <a name="4-2"></a>
 ### 4.2 C++推理
-敬请期待
+
+准备好推理模型后，参考[cpp infer](../../deploy/cpp_infer/)教程进行操作即可。
 
 <a name="4-3"></a>
 ### 4.3 Serving服务化部署
-敬请期待
+
+准备好推理模型后，参考[pdserving](../../deploy/pdserving/)教程进行Serving服务化部署，包括Python Serving和C++ Serving两种模式。
 
 <a name="4-4"></a>
 ### 4.4 更多推理部署
-敬请期待
+
+DB模型还支持以下推理部署方式：
+
+- Paddle2ONNX推理：准备好推理模型后，参考[paddle2onnx](../../deploy/paddle2onnx/)教程操作。
 
 <a name="5"></a>
 ## 5. FAQ
