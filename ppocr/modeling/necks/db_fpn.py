@@ -27,7 +27,7 @@ __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '../../..')))
 
-from ppocr.backbones.det_mobilenet_v3 import SEModule, ConvBNLayer
+from ppocr.modeling.backbones.det_mobilenet_v3 import SEModule, ConvBNLayer
 
 
 class DBFPN(nn.Layer):
