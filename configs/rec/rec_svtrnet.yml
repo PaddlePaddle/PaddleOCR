@@ -3,7 +3,7 @@ Global:
   epoch_num: 20
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/rec/rec_svtr_base_stn_en/
+  save_model_dir: ./output/rec/svtr_tiny/
   save_epoch_step: 1
   # evaluation is run every 2000 iterations after the 0th iteration
   eval_batch_step: [0, 2000]
@@ -19,7 +19,7 @@ Global:
   max_text_length: 25
   infer_mode: False
   use_space_char: False
-  save_res_path: ./output/rec/predicts_svtr_base.txt
+  save_res_path: ./output/rec/predicts_svtr_tiny.txt
 
 
 Optimizer:
@@ -32,7 +32,7 @@ Optimizer:
   one_dim_param_no_weight_decay: true
   lr:
     name: Cosine
-    learning_rate: 0.00025
+    learning_rate: 0.0005
     warmup_epoch: 2
 
 Architecture:
@@ -41,23 +41,23 @@ Architecture:
   Transform:
     name: STN_ON
     tps_inputsize: [32, 64]
-    tps_outputsize: [48, 160]
+    tps_outputsize: [32, 100]
     num_control_points: 20
     tps_margins: [0.05,0.05]
     stn_activation: none
   Backbone:
     name: SVTRNet
-    img_size: [48, 160]  # input size 可以尝试[64,200]
-    out_char_num: 40     # output char patch
-    out_channels: 256    # char patch dim
-    patch_merging: 'Conv'        # 是否使用patch-merging 可选Conv Pool None
-    embed_dim: [128, 256, 384] # 三个阶段的sub-patch dim
-    depth: [3, 6, 9]           # 当使用patch-merging时，控制patch-merging所在的层数，分成三阶段，每个阶段的层数
-    num_heads: [4, 8, 12]       # 三个阶段中的sub-patch heads
-    mixer: ['Local','Local','Local','Local','Local','Local','Local','Local','Global','Global','Global','Global','Global','Global','Global','Global','Global','Global'] # Local atten, Global atten, Conv
-    local_mixer: [[7, 11], [7, 11], [7, 11]] # local mixer的范围，7表示高度的范围，11表示宽度的范围
+    img_size: [32, 100]
+    out_char_num: 25
+    out_channels: 192
+    patch_merging: 'Conv'
+    embed_dim: [64, 128, 256]
+    depth: [3, 6, 3]
+    num_heads: [2, 4, 8]
+    mixer: ['Local','Local','Local','Local','Local','Local','Global','Global','Global','Global','Global','Global']
+    local_mixer: [[7, 11], [7, 11], [7, 11]]
     last_stage: True
-    prenorm: False
+    prenorm: false
   Neck:
     name: SequenceEncoder
     encoder_type: reshape
@@ -68,7 +68,7 @@ Loss:
   name: CTCLoss
 
 PostProcess:
-  name: SVTRLabelDecode # SVTRLabelDecode is used for eval, please change to CTCLabelDecode when training
+  name: CTCLabelDecode
 
 Metric:
   name: RecMetric
@@ -77,13 +77,13 @@ Metric:
 Train:
   dataset:
     name: LMDBDataSet
-    data_dir: ./train_data/data_lmdb_release/training
+    data_dir: ./train_data/data_lmdb_release/training/
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
       - CTCLabelEncode: # Class handling label
-      - SVTRRecResizeImg: # SVTRRecResizeImg is used for eval, please change to RecResizeImg when training
+      - RecResizeImg:
           character_dict_path:
           image_shape: [3, 64, 256]
           padding: False
@@ -91,20 +91,20 @@ Train:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
   loader:
     shuffle: True
-    batch_size_per_card: 256
+    batch_size_per_card: 512
     drop_last: True
     num_workers: 4
 
 Eval:
   dataset:
     name: LMDBDataSet
-    data_dir: ./train_data/data_lmdb_release/evaluation/
+    data_dir: ./train_data/data_lmdb_release/validation/
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
       - CTCLabelEncode: # Class handling label
-      - SVTRRecResizeImg: # SVTRRecResizeImg is used for eval, please change to RecResizeImg when training
+      - RecResizeImg:
           character_dict_path:
           image_shape: [3, 64, 256]
           padding: False
@@ -113,5 +113,5 @@ Eval:
   loader:
     shuffle: False
     drop_last: False
-    batch_size_per_card: 128
+    batch_size_per_card: 256
     num_workers: 2

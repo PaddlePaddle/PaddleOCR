@@ -296,47 +296,49 @@ class PatchEmbed(nn.Layer):
         if sub_num == 2:
             self.proj = nn.Sequential(
                 ConvBNLayer(
-                    in_channels,
-                    embed_dim // 2,
-                    3,
-                    2,
-                    1,
+                    in_channels=in_channels,
+                    out_channels=embed_dim // 2,
+                    kernel_size=3,
+                    stride=2,
+                    padding=1,
                     act=nn.GELU,
                     bias_attr=None),
                 ConvBNLayer(
-                    embed_dim // 2,
-                    embed_dim,
-                    3,
-                    2,
-                    1,
+                    in_channels=embed_dim // 2,
+                    out_channels=embed_dim,
+                    kernel_size=3,
+                    stride=2,
+                    padding=1,
                     act=nn.GELU,
                     bias_attr=None))
         if sub_num == 3:
             self.proj = nn.Sequential(
                 ConvBNLayer(
-                    in_channels,
-                    embed_dim // 4,
-                    3,
-                    2,
-                    1,
+                    in_channels=in_channels,
+                    out_channels=embed_dim // 4,
+                    kernel_size=3,
+                    stride=2,
+                    padding=1,
                     act=nn.GELU,
                     bias_attr=None),
                 ConvBNLayer(
-                    embed_dim // 4,
-                    embed_dim // 2,
-                    3,
-                    2,
-                    1,
+                    in_channels=embed_dim // 4,
+                    out_channels=embed_dim // 2,
+                    kernel_size=3,
+                    stride=2,
+                    padding=1,
                     act=nn.GELU,
                     bias_attr=None),
                 ConvBNLayer(
                     embed_dim // 2,
                     embed_dim,
-                    3,
-                    2,
-                    1,
+                    in_channels=embed_dim // 2,
+                    out_channels=embed_dim,
+                    kernel_size=3,
+                    stride=2,
+                    padding=1,
                     act=nn.GELU,
-                    bias_attr=None), )
+                    bias_attr=None))
 
     def forward(self, x):
         B, C, H, W = x.shape

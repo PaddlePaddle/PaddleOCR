@@ -137,7 +137,7 @@ def main(config, device, logger, vdl_writer):
         config['Optimizer'],
         epochs=config['Global']['epoch_num'],
         step_each_epoch=len(train_dataloader),
-        parameters=model.parameters())
+        model=model)
 
     # resume PACT training process
     if config["Global"]["checkpoints"] is not None:

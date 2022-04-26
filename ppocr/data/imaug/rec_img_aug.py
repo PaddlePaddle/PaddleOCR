@@ -209,23 +209,21 @@ class PRENResizeImg(object):
 
 class SVTRRecResizeImg(object):
     def __init__(self,
-                        image_shape,
-                        infer_mode=False,
-                        character_dict_path='./ppocr/utils/ppocr_keys_v1.txt',
-                        padding=True,
-                        **kwargs):
+                 image_shape,
+                 infer_mode=False,
+                 character_dict_path='./ppocr/utils/ppocr_keys_v1.txt',
+                 padding=True,
+                 **kwargs):
         self.image_shape = image_shape
         self.infer_mode = infer_mode
         self.character_dict_path = character_dict_path
         self.padding = padding
-
 
     def __call__(self, data):
         img = data['image']
         norm_img = resize_norm_img_svtr(img, self.image_shape, self.padding)
         data['image'] = norm_img
         return data
-
 
 
 def resize_norm_img_sar(img, image_shape, width_downsample_ratio=0.25):
@@ -346,23 +344,21 @@ def resize_norm_img_srn(img, image_shape):
     return np.reshape(img_black, (c, row, col)).astype(np.float32)
 
 
-
-def resize_norm_img_svtr(img, image_shape, padding=True):
+def resize_norm_img_svtr(img, image_shape, padding=False):
     imgC, imgH, imgW = image_shape
     h = img.shape[0]
     w = img.shape[1]
     if not padding:
-        
         if h > 2.0 * w:
-                image = Image.fromarray(img) 
-                image1 = image.rotate(90, expand=True)
-                image2 = image.rotate(-90, expand=True)
-                img1 = np.array(image1)
-                img2 = np.array(image2)
+            image = Image.fromarray(img)
+            image1 = image.rotate(90, expand=True)
+            image2 = image.rotate(-90, expand=True)
+            img1 = np.array(image1)
+            img2 = np.array(image2)
         else:
-                img1 = copy.deepcopy(img)
-                img2 = copy.deepcopy(img)
-        
+            img1 = copy.deepcopy(img)
+            img2 = copy.deepcopy(img)
+
         resized_image = cv2.resize(
             img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
         resized_image1 = cv2.resize(
