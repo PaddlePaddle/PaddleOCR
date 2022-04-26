@@ -37,8 +37,8 @@ class Head(nn.Layer):
         self.conv1 = nn.Conv2D(
             in_channels=in_channels,
             out_channels=in_channels // 4,
-            kernel_size=kernel_size[0],
-            padding=int(kernel_size[0] // 2),
+            kernel_size=kernel_list[0],
+            padding=int(kernel_list[0] // 2),
             weight_attr=ParamAttr(),
             bias_attr=False)
         self.conv_bn1 = nn.BatchNorm(
@@ -51,7 +51,7 @@ class Head(nn.Layer):
         self.conv2 = nn.Conv2DTranspose(
             in_channels=in_channels // 4,
             out_channels=in_channels // 4,
-            kernel_size=kernel_size[1],
+            kernel_size=kernel_list[1],
             stride=2,
             weight_attr=ParamAttr(
                 initializer=paddle.nn.initializer.KaimingUniform()),
@@ -66,7 +66,7 @@ class Head(nn.Layer):
         self.conv3 = nn.Conv2DTranspose(
             in_channels=in_channels // 4,
             out_channels=1,
-            kernel_size=kernel_size[2],
+            kernel_size=kernel_list[2],
             stride=2,
             weight_attr=ParamAttr(
                 initializer=paddle.nn.initializer.KaimingUniform()),

@@ -32,7 +32,7 @@ NetWorks:
       model_name: large
       disable_se: true
     Neck:
-      name: CAPAN
+      name: CAFPN
       out_channels: 96
       shortcut: True
     Head:
@@ -48,7 +48,7 @@ NetWorks:
       model_name: large
       disable_se: true
     Neck:
-      name: CAPAN
+      name: CAFPN
       out_channels: 96
       shortcut: True
     Head:
