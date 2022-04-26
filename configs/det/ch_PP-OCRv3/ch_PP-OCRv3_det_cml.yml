@@ -32,12 +32,12 @@ NetWorks:
       model_name: large
       disable_se: true
     Neck:
-      name: FEPAN
+      name: CAPAN
       out_channels: 96
+      shortcut: True
     Head:
       name: DBHead
       k: 50
-      kernel_size: [7, 2, 2]
   Student2:
     model_type: det
     algorithm: DB
@@ -48,12 +48,12 @@ NetWorks:
       model_name: large
       disable_se: true
     Neck:
-      name: FEPAN
+      name: CAPAN
       out_channels: 96
+      shortcut: True
     Head:
       name: DBHead
       k: 50
-      kernel_size: [7, 2, 2]
   Teacher:
     pretrained: ./inference/ch_ppocr_resnet50/student
     model_type: det
@@ -63,12 +63,11 @@ NetWorks:
       in_channels: 3
       layers: 50
     Neck:
-      name: DBFPN
+      name: FEPAN
       out_channels: 256
-      big_kernel: true
     Head:
       name: DBHead
-      big_kernel: true
+      kernel_list: [7,2,2]
       k: 50
     
 Loss:

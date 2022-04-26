@@ -28,12 +28,12 @@ Architecture:
     model_name: large
     disable_se: True
   Neck:
-    name: FEPAN
+    name: CAPAN
     out_channels: 96
+    shortcut: True
   Head:
     name: DBHead
     k: 50
-    kernel_size: [7, 2, 2]
 
 Loss:
   name: DBLoss

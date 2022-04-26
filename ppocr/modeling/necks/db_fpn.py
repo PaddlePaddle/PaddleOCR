@@ -21,6 +21,8 @@ from paddle import nn
 import paddle.nn.functional as F
 from paddle import ParamAttr
 import os
+import sys
+
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '../../..')))
@@ -138,11 +140,11 @@ class CALayer(nn.Layer):
 
 
 class CAFPN(nn.Layer):
-    def __init__(self, in_channels, out_channels, shortcut, **kwargs):
+    def __init__(self, in_channels, out_channels, shortcut=True, **kwargs):
         super(CAFPN, self).__init__()
-
-        self.ins_convs = []
-        self.inp_convs = []
+        self.out_channels = out_channels
+        self.ins_conv = []
+        self.inp_conv = []
 
         for i in range(len(in_channels)):
             self.ins_conv.append(
@@ -192,8 +194,8 @@ class FEPAN(nn.Layer):
         self.out_channels = out_channels
         weight_attr = paddle.nn.initializer.KaimingUniform()
 
-        self.ins_convs = []
-        self.inp_convs = []
+        self.ins_conv = []
+        self.inp_conv = []
         # pan head
         self.pan_head_conv = []
         self.pan_lat_conv = []
