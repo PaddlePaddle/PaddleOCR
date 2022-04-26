@@ -17,6 +17,6 @@
 <a name="2"></a>
 #### 2. 文本识别
 
-| 数据集名称 | 图片下载地址 | PPOCR标注下载地址  |
-|---|---|---|
-| en benchmark(MJ, SJ, IIIT, SVT, IC03, IC13, IC15, SVTP, and CUTE.) | [DTRB](https://github.com/clovaai/deep-text-recognition-benchmark#download-lmdb-dataset-for-traininig-and-evaluation-from-here) | LMDB格式，可直接加载 |
+| 数据集名称 | 图片下载地址 | PPOCR标注下载地址                                                         |
+|---|---|---------------------------------------------------------------------|
+| en benchmark(MJ, SJ, IIIT, SVT, IC03, IC13, IC15, SVTP, and CUTE.) | [DTRB](https://github.com/clovaai/deep-text-recognition-benchmark#download-lmdb-dataset-for-traininig-and-evaluation-from-here) | LMDB格式，可直接用[lmdb_dataset.py](../../../ppocr/data/lmdb_dataset.py)加载 |
