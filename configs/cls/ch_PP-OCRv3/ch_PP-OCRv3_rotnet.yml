@@ -67,7 +67,7 @@ Train:
     - SSLRotateResize:
         image_shape: [3, 48, 320]
     - KeepKeys:
-        keep_keys: ["image_rot", "label_rot"]
+        keep_keys: ["image", "label"]
   loader:
     collate_fn: "SSLRotateCollate"
     shuffle: true
@@ -87,7 +87,7 @@ Eval:
     - SSLRotateResize:
         image_shape: [3, 48, 320]
     - KeepKeys:
-        keep_keys: ["image_rot", "label_rot"]
+        keep_keys: ["image", "label"]
   loader:
     collate_fn: "SSLRotateCollate"
     shuffle: false

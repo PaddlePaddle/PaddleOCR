@@ -22,10 +22,16 @@ from .rec_img_aug import resize_norm_img
 
 
 class SSLRotateResize(object):
-    def __init__(self, image_shape, padding=False, select_all=True, **kwargs):
+    def __init__(self,
+                 image_shape,
+                 padding=False,
+                 select_all=True,
+                 mode="train",
+                 **kwargs):
         self.image_shape = image_shape
         self.padding = padding
         self.select_all = select_all
+        self.mode = mode
 
     def __call__(self, data):
         img = data["image"]
@@ -43,12 +49,14 @@ class SSLRotateResize(object):
                     data.pop(key),
                     image_shape=self.image_shape,
                     padding=self.padding)[0])
-        data["image_rot"] = np.stack(images, axis=0)
-        data["label_rot"] = np.array(list(range(4)))
+        data["image"] = np.stack(images, axis=0)
+        data["label"] = np.array(list(range(4)))
         if not self.select_all:
-            data["image_rot"] = data["image_rot"][0::2]  # just choose 0 and 180
-            data["label_rot"] = data["label_rot"][
-                0:2]  # label needs to be continuous
+            data["image"] = data["image"][0::2]  # just choose 0 and 180
+            data["label"] = data["label"][0:2]  # label needs to be continuous
+        if self.mode == "test":
+            data["image"] = data["image"][0]
+            data["label"] = data["label"][0]
         return data
 
 
