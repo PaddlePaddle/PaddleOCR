@@ -128,24 +128,29 @@ class EncoderWithSVTR(nn.Layer):
             ones_(m.weight)
 
     def forward(self, x):
+        # for use guide
         if self.use_guide:
-            x.stop_gradient = True
-        h = x
+            z = x.clone()
+            z.stop_gradient = True
+        else:
+            z = x
+        # for short cut
+        h = z
         # reduce dim
-        x = self.conv1(x)
-        x = self.conv2(x)
+        z = self.conv1(z)
+        z = self.conv2(z)
         # SVTR global block
-        B, C, H, W = x.shape
-        x = x.flatten(2).transpose([0, 2, 1])
+        B, C, H, W = z.shape
+        z = z.flatten(2).transpose([0, 2, 1])
         for blk in self.svtr_block:
-            x = blk(x)
-        x = self.norm(x)
+            z = blk(z)
+        z = self.norm(z)
         # last stage
-        x = x.reshape([0, H, W, C]).transpose([0, 3, 1, 2])
-        x = self.conv3(x)
-        x = paddle.concat((h, x), axis=1)
-        x = self.conv1x1(self.conv4(x))
-        return x
+        z = z.reshape([0, H, W, C]).transpose([0, 3, 1, 2])
+        z = self.conv3(z)
+        z = paddle.concat((h, z), axis=1)
+        z = self.conv1x1(self.conv4(z))
+        return z
 
 
 class SequenceEncoder(nn.Layer):

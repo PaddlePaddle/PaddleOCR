@@ -65,7 +65,6 @@ class MultiHead(nn.Layer):
         # eval mode
         if not self.training:
             return ctc_out
-        x.stop_gradient = False
         if self.gtc_head == 'sar':
             sar_out = self.sar_head(x, targets[1:])
             head_out['sar'] = sar_out
