@@ -16,7 +16,6 @@ import paddle
 import numbers
 import numpy as np
 from collections import defaultdict
-from paddle.io import Dataset, DataLoader, BatchSampler, DistributedBatchSampler
 
 
 class DictCollator(object):
