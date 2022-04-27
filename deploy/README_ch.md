@@ -22,9 +22,11 @@ PP-OCR模型已打通多种场景部署方案，点击链接获取具体的使�
 
 - [Python 推理](../doc/doc_ch/inference_ppocr.md)
 - [C++ 推理](./cpp_infer/readme_ch.md)
-- [Serving 服务化部署](./pdserving/README_CN.md)
-- [Paddle-Lite 端侧部署](./lite/readme_ch.md)
-- [Paddle.js 服务化部署](./paddlejs/README_ch.md)
+- [Serving 服务化部署（Python/C++）](./pdserving/README_CN.md)
+- [Paddle-Lite 端侧部署（ARM CPU/OpenCL ARM GPU/Metal ARM GPU）](./lite/readme_ch.md)
+- [Paddle.js 部署](./paddlejs/README_ch.md)
+- [Jetson 推理]()
+- [XPU 推理]()
 - [Paddle2ONNX 推理](./paddle2onnx/readme_ch.md)
 
 需要PP-OCR以外的学术算法模型的推理部署，请直接进入相应算法主页面，[入口](../doc/doc_ch/algorithm_overview.md)。
