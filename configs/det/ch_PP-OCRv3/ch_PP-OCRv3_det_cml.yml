@@ -56,7 +56,6 @@ Architecture:
         name: DBHead
         k: 50
     Teacher:
-      pretrained: ./inference/ch_ppocr_resnet50/student
       freeze_params: true
       return_all_feats: false
       model_type: det
