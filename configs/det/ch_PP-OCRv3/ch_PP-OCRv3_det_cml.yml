@@ -19,57 +19,60 @@ Global:
   distributed: true
 
 Architecture:
+  name: DistillationModel
+  algorithm: Distillation
   model_type: det
-  algorithm: DB
-NetWorks:
-  Student:
-    model_type: det
-    algorithm: DB
-    Transform: null
-    Backbone:
-      name: MobileNetV3
-      scale: 0.5
-      model_name: large
-      disable_se: true
-    Neck:
-      name: CAFPN
-      out_channels: 96
-      shortcut: True
-    Head:
-      name: DBHead
-      k: 50
-  Student2:
-    model_type: det
-    algorithm: DB
-    Transform: null
-    Backbone:
-      name: MobileNetV3
-      scale: 0.5
-      model_name: large
-      disable_se: true
-    Neck:
-      name: CAFPN
-      out_channels: 96
-      shortcut: True
-    Head:
-      name: DBHead
-      k: 50
-  Teacher:
-    pretrained: ./inference/ch_ppocr_resnet50/student
-    model_type: det
-    algorithm: DB
-    Backbone:
-      name: ResNet
-      in_channels: 3
-      layers: 50
-    Neck:
-      name: FEPAN
-      out_channels: 256
-    Head:
-      name: DBHead
-      kernel_list: [7,2,2]
-      k: 50
-    
+  Models:
+    Student:
+      model_type: det
+      algorithm: DB
+      Transform: null
+      Backbone:
+        name: MobileNetV3
+        scale: 0.5
+        model_name: large
+        disable_se: true
+      Neck:
+        name: CAFPN
+        out_channels: 96
+        shortcut: True
+      Head:
+        name: DBHead
+        k: 50
+    Student2:
+      model_type: det
+      algorithm: DB
+      Transform: null
+      Backbone:
+        name: MobileNetV3
+        scale: 0.5
+        model_name: large
+        disable_se: true
+      Neck:
+        name: CAFPN
+        out_channels: 96
+        shortcut: True
+      Head:
+        name: DBHead
+        k: 50
+    Teacher:
+      pretrained: ./inference/ch_ppocr_resnet50/student
+      freeze_params: true
+      return_all_feats: false
+      model_type: det
+      algorithm: DB
+      Backbone:
+        name: ResNet
+        in_channels: 3
+        layers: 50
+      Neck:
+        name: FEPAN
+        out_channels: 256
+      Head:
+        name: DBHead
+        kernel_list: [7,2,2]
+        k: 50
+
 Loss:
   name: CombinedLoss
   loss_config_list:
