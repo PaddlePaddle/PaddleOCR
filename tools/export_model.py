@@ -31,7 +31,7 @@ from ppocr.utils.logging import get_logger
 from tools.program import load_config, merge_config, ArgsParser
 
 
-def export_single_model(model, arch_config, save_path, logger):
+def export_single_model(model, arch_config, save_path, logger, quanter=None):
     if arch_config["algorithm"] == "SRN":
         max_text_length = arch_config["Head"]["max_text_length"]
         other_shape = [
@@ -60,6 +60,11 @@ def export_single_model(model, arch_config, save_path, logger):
             other_shape = [
                 paddle.static.InputSpec(
                     shape=[None, 3, 48, -1], dtype="float32"),
+            ]
+        else:
+            other_shape = [
+                paddle.static.InputSpec(
+                    shape=[None, 3, 64, 256], dtype="float32"),
             ]
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] == "PREN":
@@ -90,7 +95,10 @@ def export_single_model(model, arch_config, save_path, logger):
                     shape=[None] + infer_shape, dtype="float32")
             ])
 
-    paddle.jit.save(model, save_path)
+    if quanter is None:
+        paddle.jit.save(model, save_path)
+    else:
+        quanter.save_quantized_model(model, save_path)
     logger.info("inference model is saved to {}".format(save_path))
     return
 
@@ -120,7 +128,6 @@ def main():
                         char_num = char_num - 2
                     out_channels_list['CTCLabelDecode'] = char_num
                     out_channels_list['SARLabelDecode'] = char_num + 2
-                    loss_list = config['Loss']['loss_config_list']
                     config['Architecture']['Models'][key]['Head'][
                         'out_channels_list'] = out_channels_list
                 else:

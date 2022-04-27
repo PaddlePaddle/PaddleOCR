@@ -113,14 +113,14 @@ class BaseRecLabelEncode(object):
             dict_character = list(self.character_str)
             self.lower = True
         else:
-            self.character_str = ""
+            self.character_str = []
             with open(character_dict_path, "rb") as fin:
                 lines = fin.readlines()
                 for line in lines:
                     line = line.decode('utf-8').strip("\n").strip("\r\n")
-                    self.character_str += line
+                    self.character_str.append(line)
             if use_space_char:
-                self.character_str += " "
+                self.character_str.append(" ")
             dict_character = list(self.character_str)
         dict_character = self.add_special_char(dict_character)
         self.dict = {}

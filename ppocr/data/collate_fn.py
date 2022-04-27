@@ -56,3 +56,17 @@ class ListCollator(object):
         for idx in to_tensor_idxs:
             data_dict[idx] = paddle.to_tensor(data_dict[idx])
         return list(data_dict.values())
+
+
+class SSLRotateCollate(object):
+    """
+    bach: [
+        [(4*3xH*W), (4,)]
+        [(4*3xH*W), (4,)]
+        ...
+    ]
+    """
+
+    def __call__(self, batch):
+        output = [np.concatenate(d, axis=0) for d in zip(*batch)]
+        return output
