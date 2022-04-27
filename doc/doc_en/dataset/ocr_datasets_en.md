@@ -1,15 +1,14 @@
 # OCR datasets
 
-- [OCR datasets](#ocr-datasets)
-  - [1. Text detection](#1-text-detection)
-    - [1.1 PaddleOCR text detection format annotation](#11-paddleocr-text-detection-format-annotation)
-    - [1.2 Public dataset](#12-public-dataset)
-      - [1.2.1 ICDAR 2015](#121-icdar-2015)
-  - [2. Text recognition](#2-text-recognition)
-    - [2.1 PaddleOCR text recognition format annotation](#21-paddleocr-text-recognition-format-annotation)
-    - [2.2 Public dataset](#22-public-dataset)
-      - [2.1 ICDAR2015](#21-icdar2015)
-  - [3. 数据存放路径](#3-数据存放路径)
+- [1. Text detection](#1-text-detection)
+  - [1.1 PaddleOCR text detection format annotation](#11-paddleocr-text-detection-format-annotation)
+  - [1.2 Public dataset](#12-public-dataset)
+    - [1.2.1 ICDAR 2015](#121-icdar-2015)
+- [2. Text recognition](#2-text-recognition)
+  - [2.1 PaddleOCR text recognition format annotation](#21-paddleocr-text-recognition-format-annotation)
+  - [2.2 Public dataset](#22-public-dataset)
+    - [2.1 ICDAR 2015](#21-icdar-2015)
+- [3. Data storage path](#3-data-storage-path)
 
 Here is a list of public datasets commonly used in OCR, which are being continuously updated. Welcome to contribute datasets~
 
@@ -129,9 +128,9 @@ Similar to the training set, the test set also needs to be provided a folder con
 |ICDAR 2015| http://rrc.cvc.uab.es/?ch=4&com=downloads | [train](https://paddleocr.bj.bcebos.com/dataset/rec_gt_train.txt)/ [test](https://paddleocr.bj.bcebos.com/dataset/rec_gt_test.txt) |
 | Multilingual datasets |[Baidu network disk](https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA) Extraction code: frgi <br> [google drive](https://drive.google.com/file/d/18cSWX7wXSy4G0tbKJ0d9PuIaiwRLHpjA/view) | Included in the downloaded image zip |
 
-#### 2.1 ICDAR2015
+#### 2.1 ICDAR 2015
 
-The ICDAR2015 dataset can be downloaded from the link in the table above for quick validation. The lmdb format dataset required by en benchmark can also be downloaded from the table above.
+The ICDAR 2015 dataset can be downloaded from the link in the table above for quick validation. The lmdb format dataset required by en benchmark can also be downloaded from the table above.
 
 Then download the PaddleOCR format annotation file from the table above.
 
@@ -146,7 +145,7 @@ The data format is as follows, (a) is the original picture, (b) is the Ground Tr
 
 ![](../../datasets/icdar_rec.png)
 
-## 3. 数据存放路径
+## 3. Data storage path
 
 The default storage path for PaddleOCR training data is `PaddleOCR/train_data`, if you already have a dataset on your disk, just create a soft link to the dataset directory:
 

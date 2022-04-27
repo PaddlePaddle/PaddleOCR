@@ -1,18 +1,17 @@
 # Text Recognition
 
-- [Text Recognition](#text-recognition)
-  - [1. Data Preparation](#1-data-preparation)
-    - [1.1 DataSet Preparation](#11-dataset-preparation)
-    - [1.2 Dictionary](#12-dictionary)
-    - [1.4 Add Space Category](#14-add-space-category)
-  - [2.Training](#2training)
-    - [2.1 Data Augmentation](#21-data-augmentation)
-    - [2.2 General Training](#22-general-training)
-    - [2.3 Multi-language Training](#23-multi-language-training)
-    - [2.4 Training with Knowledge Distillation](#24-training-with-knowledge-distillation)
-  - [3. Evalution](#3-evalution)
-  - [4. Prediction](#4-prediction)
-  - [5. Convert to Inference Model](#5-convert-to-inference-model)
+- [1. Data Preparation](#1-data-preparation)
+  - [1.1 DataSet Preparation](#11-dataset-preparation)
+  - [1.2 Dictionary](#12-dictionary)
+  - [1.4 Add Space Category](#14-add-space-category)
+- [2.Training](#2training)
+  - [2.1 Data Augmentation](#21-data-augmentation)
+  - [2.2 General Training](#22-general-training)
+  - [2.3 Multi-language Training](#23-multi-language-training)
+  - [2.4 Training with Knowledge Distillation](#24-training-with-knowledge-distillation)
+- [3. Evalution](#3-evalution)
+- [4. Prediction](#4-prediction)
+- [5. Convert to Inference Model](#5-convert-to-inference-model)
 
 <a name="DATA_PREPARATION"></a>
 ## 1. Data Preparation

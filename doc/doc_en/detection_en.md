@@ -2,20 +2,19 @@
 
 This section uses the icdar2015 dataset as an example to introduce the training, evaluation, and testing of the detection model in PaddleOCR.
 
-- [Text Detection](#text-detection)
-  - [1. Data and Weights Preparation](#1-data-and-weights-preparation)
-    - [1.1 Data Preparation](#11-data-preparation)
-    - [1.2 Download Pre-trained Model](#12-download-pre-trained-model)
-  - [2. Training](#2-training)
-    - [2.1 Start Training](#21-start-training)
-    - [2.2 Load Trained Model and Continue Training](#22-load-trained-model-and-continue-training)
-    - [2.3 Training with New Backbone](#23-training-with-new-backbone)
-    - [2.4 Training with knowledge distillation](#24-training-with-knowledge-distillation)
-  - [3. Evaluation and Test](#3-evaluation-and-test)
-    - [3.1 Evaluation](#31-evaluation)
-    - [3.2 Test](#32-test)
-  - [4. Inference](#4-inference)
-  - [5. FAQ](#5-faq)
+- [1. Data and Weights Preparation](#1-data-and-weights-preparation)
+  - [1.1 Data Preparation](#11-data-preparation)
+  - [1.2 Download Pre-trained Model](#12-download-pre-trained-model)
+- [2. Training](#2-training)
+  - [2.1 Start Training](#21-start-training)
+  - [2.2 Load Trained Model and Continue Training](#22-load-trained-model-and-continue-training)
+  - [2.3 Training with New Backbone](#23-training-with-new-backbone)
+  - [2.4 Training with knowledge distillation](#24-training-with-knowledge-distillation)
+- [3. Evaluation and Test](#3-evaluation-and-test)
+  - [3.1 Evaluation](#31-evaluation)
+  - [3.2 Test](#32-test)
+- [4. Inference](#4-inference)
+- [5. FAQ](#5-faq)
 
 ## 1. Data and Weights Preparation
 
