@@ -223,13 +223,13 @@ class RSEFPN(nn.Layer):
 
         for i in range(len(in_channels)):
             self.ins_conv.append(
-                CALayer(
+                RSELayer(
                     in_channels[i],
                     out_channels,
                     kernel_size=1,
                     shortcut=shortcut))
             self.inp_conv.append(
-                CALayer(
+                RSELayer(
                     out_channels,
                     out_channels // 4,
                     kernel_size=3,
