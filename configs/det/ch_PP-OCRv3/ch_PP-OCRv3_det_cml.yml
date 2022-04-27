@@ -116,15 +116,22 @@ Optimizer:
   regularizer:
     name: L2
     factor: 5.0e-05
+
 PostProcess:
-  name: DBPostProcess
+  name: DistillationDBPostProcess
+  model_name: ["Student"]
+  key: head_out
   thresh: 0.3
   box_thresh: 0.6
   max_candidates: 1000
   unclip_ratio: 1.5
+
 Metric:
-  name: DetMetric
+  name: DistillationMetric
+  base_metric_name: DetMetric
   main_indicator: hmean
+  key: "Student"
+
 Train:
   dataset:
     name: SimpleDataSet
