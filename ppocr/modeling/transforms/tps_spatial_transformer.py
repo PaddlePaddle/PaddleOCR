@@ -138,9 +138,9 @@ class TPSSpatialTransformer(nn.Layer):
         assert source_control_points.shape[2] == 2
         batch_size = paddle.shape(source_control_points)[0]
 
-        self.padding_matrix = paddle.expand(
+        padding_matrix = paddle.expand(
             self.padding_matrix, shape=[batch_size, 3, 2])
-        Y = paddle.concat([source_control_points, self.padding_matrix], 1)
+        Y = paddle.concat([source_control_points, padding_matrix], 1)
         mapping_matrix = paddle.matmul(self.inverse_kernel, Y)
         source_coordinate = paddle.matmul(self.target_coordinate_repr,
                                           mapping_matrix)

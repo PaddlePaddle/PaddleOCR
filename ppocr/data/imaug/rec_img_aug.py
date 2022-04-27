@@ -16,6 +16,7 @@ import math
 import cv2
 import numpy as np
 import random
+import copy
 from PIL import Image
 from .text_image_aug import tia_perspective, tia_stretch, tia_distort
 
@@ -32,13 +33,56 @@ class RecAug(object):
         return data
 
 
+class RecConAug(object):
+    def __init__(self,
+                 prob=0.5,
+                 image_shape=(32, 320, 3),
+                 max_text_length=25,
+                 ext_data_num=1,
+                 **kwargs):
+        self.ext_data_num = ext_data_num
+        self.prob = prob
+        self.max_text_length = max_text_length
+        self.image_shape = image_shape
+        self.max_wh_ratio = self.image_shape[1] / self.image_shape[0]
+
+    def merge_ext_data(self, data, ext_data):
+        ori_w = round(data['image'].shape[1] / data['image'].shape[0] *
+                      self.image_shape[0])
+        ext_w = round(ext_data['image'].shape[1] / ext_data['image'].shape[0] *
+                      self.image_shape[0])
+        data['image'] = cv2.resize(data['image'], (ori_w, self.image_shape[0]))
+        ext_data['image'] = cv2.resize(ext_data['image'],
+                                       (ext_w, self.image_shape[0]))
+        data['image'] = np.concatenate(
+            [data['image'], ext_data['image']], axis=1)
+        data["label"] += ext_data["label"]
+        return data
+
+    def __call__(self, data):
+        rnd_num = random.random()
+        if rnd_num > self.prob:
+            return data
+        for idx, ext_data in enumerate(data["ext_data"]):
+            if len(data["label"]) + len(ext_data[
+                    "label"]) > self.max_text_length:
+                break
+            concat_ratio = data['image'].shape[1] / data['image'].shape[
+                0] + ext_data['image'].shape[1] / ext_data['image'].shape[0]
+            if concat_ratio > self.max_wh_ratio:
+                break
+            data = self.merge_ext_data(data, ext_data)
+        data.pop("ext_data")
+        return data
+
+
 class ClsResizeImg(object):
     def __init__(self, image_shape, **kwargs):
         self.image_shape = image_shape
 
     def __call__(self, data):
         img = data['image']
-        norm_img = resize_norm_img(img, self.image_shape)
+        norm_img, _ = resize_norm_img(img, self.image_shape)
         data['image'] = norm_img
         return data
 
@@ -98,10 +142,13 @@ class RecResizeImg(object):
     def __call__(self, data):
         img = data['image']
         if self.infer_mode and self.character_dict_path is not None:
-            norm_img = resize_norm_img_chinese(img, self.image_shape)
+            norm_img, valid_ratio = resize_norm_img_chinese(img,
+                                                            self.image_shape)
         else:
-            norm_img = resize_norm_img(img, self.image_shape, self.padding)
+            norm_img, valid_ratio = resize_norm_img(img, self.image_shape,
+                                                    self.padding)
         data['image'] = norm_img
+        data['valid_ratio'] = valid_ratio
         return data
 
 
@@ -157,6 +204,25 @@ class PRENResizeImg(object):
         resized_img -= 0.5
         resized_img /= 0.5
         data['image'] = resized_img.astype(np.float32)
+        return data
+
+
+class SVTRRecResizeImg(object):
+    def __init__(self,
+                 image_shape,
+                 infer_mode=False,
+                 character_dict_path='./ppocr/utils/ppocr_keys_v1.txt',
+                 padding=True,
+                 **kwargs):
+        self.image_shape = image_shape
+        self.infer_mode = infer_mode
+        self.character_dict_path = character_dict_path
+        self.padding = padding
+
+    def __call__(self, data):
+        img = data['image']
+        norm_img = resize_norm_img_svtr(img, self.image_shape, self.padding)
+        data['image'] = norm_img
         return data
 
 
@@ -220,7 +286,8 @@ def resize_norm_img(img, image_shape, padding=True):
     resized_image /= 0.5
     padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
     padding_im[:, :, 0:resized_w] = resized_image
-    return padding_im
+    valid_ratio = min(1.0, float(resized_w / imgW))
+    return padding_im, valid_ratio
 
 
 def resize_norm_img_chinese(img, image_shape):
@@ -230,7 +297,7 @@ def resize_norm_img_chinese(img, image_shape):
     h, w = img.shape[0], img.shape[1]
     ratio = w * 1.0 / h
     max_wh_ratio = max(max_wh_ratio, ratio)
-    imgW = int(32 * max_wh_ratio)
+    imgW = int(imgH * max_wh_ratio)
     if math.ceil(imgH * ratio) > imgW:
         resized_w = imgW
     else:
@@ -246,7 +313,8 @@ def resize_norm_img_chinese(img, image_shape):
     resized_image /= 0.5
     padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
     padding_im[:, :, 0:resized_w] = resized_image
-    return padding_im
+    valid_ratio = min(1.0, float(resized_w / imgW))
+    return padding_im, valid_ratio
 
 
 def resize_norm_img_srn(img, image_shape):
@@ -274,6 +342,58 @@ def resize_norm_img_srn(img, image_shape):
     c = 1
 
     return np.reshape(img_black, (c, row, col)).astype(np.float32)
+
+
+def resize_norm_img_svtr(img, image_shape, padding=False):
+    imgC, imgH, imgW = image_shape
+    h = img.shape[0]
+    w = img.shape[1]
+    if not padding:
+        if h > 2.0 * w:
+            image = Image.fromarray(img)
+            image1 = image.rotate(90, expand=True)
+            image2 = image.rotate(-90, expand=True)
+            img1 = np.array(image1)
+            img2 = np.array(image2)
+        else:
+            img1 = copy.deepcopy(img)
+            img2 = copy.deepcopy(img)
+
+        resized_image = cv2.resize(
+            img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+        resized_image1 = cv2.resize(
+            img1, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+        resized_image2 = cv2.resize(
+            img2, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+        resized_w = imgW
+    else:
+        ratio = w / float(h)
+        if math.ceil(imgH * ratio) > imgW:
+            resized_w = imgW
+        else:
+            resized_w = int(math.ceil(imgH * ratio))
+        resized_image = cv2.resize(img, (resized_w, imgH))
+    resized_image = resized_image.astype('float32')
+    resized_image1 = resized_image1.astype('float32')
+    resized_image2 = resized_image2.astype('float32')
+    if image_shape[0] == 1:
+        resized_image = resized_image / 255
+        resized_image = resized_image[np.newaxis, :]
+    else:
+        resized_image = resized_image.transpose((2, 0, 1)) / 255
+        resized_image1 = resized_image1.transpose((2, 0, 1)) / 255
+        resized_image2 = resized_image2.transpose((2, 0, 1)) / 255
+    resized_image -= 0.5
+    resized_image /= 0.5
+    resized_image1 -= 0.5
+    resized_image1 /= 0.5
+    resized_image2 -= 0.5
+    resized_image2 /= 0.5
+    padding_im = np.zeros((3, imgC, imgH, imgW), dtype=np.float32)
+    padding_im[0, :, :, 0:resized_w] = resized_image
+    padding_im[1, :, :, 0:resized_w] = resized_image1
+    padding_im[2, :, :, 0:resized_w] = resized_image2
+    return padding_im
 
 
 def srn_other_inputs(image_shape, num_heads, max_text_length):

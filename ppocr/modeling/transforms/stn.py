@@ -128,6 +128,8 @@ class STN_ON(nn.Layer):
         self.out_channels = in_channels
 
     def forward(self, image):
+        if len(image.shape)==5:
+            image = image.reshape([0, image.shape[-3], image.shape[-2], image.shape[-1]])
         stn_input = paddle.nn.functional.interpolate(
             image, self.tps_inputsize, mode="bilinear", align_corners=True)
         stn_img_feat, ctrl_points = self.stn_head(stn_input)

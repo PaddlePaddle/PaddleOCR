@@ -30,7 +30,7 @@ def build_lr_scheduler(lr_config, epochs, step_each_epoch):
     return lr
 
 
-def build_optimizer(config, epochs, step_each_epoch, parameters):
+def build_optimizer(config, epochs, step_each_epoch, model):
     from . import regularizer, optimizer
     config = copy.deepcopy(config)
     # step1 build lr
@@ -43,6 +43,8 @@ def build_optimizer(config, epochs, step_each_epoch, parameters):
         if not hasattr(regularizer, reg_name):
             reg_name += 'Decay'
         reg = getattr(regularizer, reg_name)(**reg_config)()
+    elif 'weight_decay' in config:
+        reg = config.pop('weight_decay')
     else:
         reg = None
 
@@ -57,4 +59,4 @@ def build_optimizer(config, epochs, step_each_epoch, parameters):
                                            weight_decay=reg,
                                            grad_clip=grad_clip,
                                            **config)
-    return optim(parameters), lr
+    return optim(model), lr

@@ -107,7 +107,7 @@ class TextRecognizer(object):
             return norm_img.astype(np.float32) / 128. - 1.
 
         assert imgC == img.shape[2]
-        imgW = int((32 * max_wh_ratio))
+        imgW = int((imgH * max_wh_ratio))
         if self.use_onnx:
             w = self.input_tensor.shape[3:][0]
             if w is not None and w > 0:
@@ -131,6 +131,17 @@ class TextRecognizer(object):
         padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
         padding_im[:, :, 0:resized_w] = resized_image
         return padding_im
+    
+    def resize_norm_img_svtr(self, img, image_shape):
+
+        imgC, imgH, imgW = image_shape
+        resized_image = cv2.resize(
+            img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+        resized_image = resized_image.astype('float32')
+        resized_image = resized_image.transpose((2, 0, 1)) / 255
+        resized_image -= 0.5
+        resized_image /= 0.5
+        return resized_image
 
     def resize_norm_img_srn(self, img, image_shape):
         imgC, imgH, imgW = image_shape
@@ -255,18 +266,16 @@ class TextRecognizer(object):
         for beg_img_no in range(0, img_num, batch_num):
             end_img_no = min(img_num, beg_img_no + batch_num)
             norm_img_batch = []
-            max_wh_ratio = 0
+            imgC, imgH, imgW = self.rec_image_shape
+            max_wh_ratio = imgW / imgH
+            # max_wh_ratio = 0
             for ino in range(beg_img_no, end_img_no):
                 h, w = img_list[indices[ino]].shape[0:2]
                 wh_ratio = w * 1.0 / h
                 max_wh_ratio = max(max_wh_ratio, wh_ratio)
             for ino in range(beg_img_no, end_img_no):
-                if self.rec_algorithm != "SRN" and self.rec_algorithm != "SAR":
-                    norm_img = self.resize_norm_img(img_list[indices[ino]],
-                                                    max_wh_ratio)
-                    norm_img = norm_img[np.newaxis, :]
-                    norm_img_batch.append(norm_img)
-                elif self.rec_algorithm == "SAR":
+               
+                if self.rec_algorithm == "SAR":
                     norm_img, _, _, valid_ratio = self.resize_norm_img_sar(
                         img_list[indices[ino]], self.rec_image_shape)
                     norm_img = norm_img[np.newaxis, :]
@@ -274,7 +283,7 @@ class TextRecognizer(object):
                     valid_ratios = []
                     valid_ratios.append(valid_ratio)
                     norm_img_batch.append(norm_img)
-                else:
+                elif self.rec_algorithm == "SRN":
                     norm_img = self.process_image_srn(
                         img_list[indices[ino]], self.rec_image_shape, 8, 25)
                     encoder_word_pos_list = []
@@ -286,6 +295,16 @@ class TextRecognizer(object):
                     gsrm_slf_attn_bias1_list.append(norm_img[3])
                     gsrm_slf_attn_bias2_list.append(norm_img[4])
                     norm_img_batch.append(norm_img[0])
+                elif self.rec_algorithm == "SVTR":
+                    norm_img = self.resize_norm_img_svtr(
+                        img_list[indices[ino]], self.rec_image_shape)
+                    norm_img = norm_img[np.newaxis, :]
+                    norm_img_batch.append(norm_img)
+                else:
+                    norm_img = self.resize_norm_img(img_list[indices[ino]],
+                                                    max_wh_ratio)
+                    norm_img = norm_img[np.newaxis, :]
+                    norm_img_batch.append(norm_img)
             norm_img_batch = np.concatenate(norm_img_batch)
             norm_img_batch = norm_img_batch.copy()
             if self.benchmark:

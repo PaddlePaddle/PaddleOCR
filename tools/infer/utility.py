@@ -271,9 +271,10 @@ def create_predictor(args, mode, logger):
             elif mode == "rec":
                 if args.rec_algorithm != "CRNN":
                     use_dynamic_shape = False
-                min_input_shape = {"x": [1, 3, 32, 10]}
-                max_input_shape = {"x": [args.rec_batch_num, 3, 32, 1536]}
-                opt_input_shape = {"x": [args.rec_batch_num, 3, 32, 320]}
+                imgH = int(args.rec_image_shape.split(',')[-2])
+                min_input_shape = {"x": [1, 3, imgH, 10]}
+                max_input_shape = {"x": [args.rec_batch_num, 3, imgH, 1536]}
+                opt_input_shape = {"x": [args.rec_batch_num, 3, imgH, 320]}
             elif mode == "cls":
                 min_input_shape = {"x": [1, 3, 48, 10]}
                 max_input_shape = {"x": [args.rec_batch_num, 3, 48, 1024]}
@@ -300,7 +301,8 @@ def create_predictor(args, mode, logger):
         # enable memory optim
         config.enable_memory_optim()
         config.disable_glog_info()
-
+        config.delete_pass("reshape_transpose_matmul_v2_mkldnn_fuse_pass")
+        config.delete_pass("reshape_transpose_matmul_mkldnn_fuse_pass")
         config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
         if mode == 'table':
             config.delete_pass("fc_fuse_pass")  # not supported for table

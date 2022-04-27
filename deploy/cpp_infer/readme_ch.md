@@ -1,45 +1,36 @@
-- [服务器端C++预测](#服务器端c预测)
-  - [1. 准备环境](#1-准备环境)
-    - [1.0 运行准备](#10-运行准备)
-    - [1.1 编译opencv库](#11-编译opencv库)
-    - [1.2 下载或者编译Paddle预测库](#12-下载或者编译paddle预测库)
-      - [1.2.1 直接下载安装](#121-直接下载安装)
-      - [1.2.2 预测库源码编译](#122-预测库源码编译)
-  - [2 开始运行](#2-开始运行)
-    - [2.1 将模型导出为inference model](#21-将模型导出为inference-model)
-    - [2.2 编译PaddleOCR C++预测demo](#22-编译paddleocr-c预测demo)
-    - [2.3 运行demo](#23-运行demo)
-        - [1. 检测+分类+识别：](#1-检测分类识别)
-        - [2. 检测+识别：](#2-检测识别)
-        - [3. 检测：](#3-检测)
-        - [4. 分类+识别：](#4-分类识别)
-        - [5. 识别：](#5-识别)
-        - [6. 分类：](#6-分类)
-  - [3. FAQ](#3-faq)
+[English](readme.md) | 简体中文
 
 # 服务器端C++预测
 
-本章节介绍PaddleOCR 模型的的C++部署方法，与之对应的python预测部署方式参考[文档](../../doc/doc_ch/inference.md)。
-C++在性能计算上优于python，因此，在大多数CPU、GPU部署场景，多采用C++的部署方式，本节将介绍如何在Linux\Windows (CPU\GPU)环境下配置C++环境并完成
-PaddleOCR模型部署。
+- [1. 准备环境](#1)
+    - [1.1 运行准备](#11)
+    - [1.2 编译opencv库](#12)
+    - [1.3 下载或者编译Paddle预测库](#13)
+- [2 开始运行](#2)
+    - [2.1 准备模型](#21)
+    - [2.2 编译PaddleOCR C++预测demo](#22)
+    - [2.3 运行demo](#23)
+- [3. FAQ](#3)
+
+本章节介绍PaddleOCR 模型的的C++部署方法。C++在性能计算上优于Python，因此，在大多数CPU、GPU部署场景，多采用C++的部署方式，本节将介绍如何在Linux\Windows (CPU\GPU)环境下配置C++环境并完成PaddleOCR模型部署。
 
 
 <a name="1"></a>
 
 ## 1. 准备环境
 
-<a name="10"></a>
+<a name="11"></a>
 
-### 1.0 运行准备
+### 1.1 运行准备
 
 - Linux环境，推荐使用docker。
 - Windows环境。
 
 * 该文档主要介绍基于Linux环境的PaddleOCR C++预测流程，如果需要在Windows下基于预测库进行C++预测，具体编译方法请参考[Windows下编译教程](./docs/windows_vs2019_build.md)
 
-<a name="11"></a>
+<a name="12"></a>
 
-### 1.1 编译opencv库
+### 1.2 编译opencv库
 
 * 首先需要从opencv官网上下载在Linux环境下源码编译的包，以opencv3.4.7为例，下载命令如下。
 
@@ -103,35 +94,38 @@ opencv3/
 |-- share
 ```
 
-<a name="12"></a>
+<a name="13"></a>
 
-### 1.2 下载或者编译Paddle预测库
+### 1.3 下载或者编译Paddle预测库
 
-* 有2种方式获取Paddle预测库，下面进行详细介绍。
+可以选择直接下载安装或者从源码编译，下文分别进行具体说明。
 
+<a name="131"></a>
+#### 1.3.1 直接下载安装
 
-#### 1.2.1 直接下载安装
+[Paddle预测库官网](https://paddleinference.paddlepaddle.org.cn/user_guides/download_lib.html#linux) 上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本（*建议选择paddle版本>=2.0.1版本的预测库* ）。
 
-* [Paddle预测库官网](https://paddleinference.paddlepaddle.org.cn/user_guides/download_lib.html#linux) 上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本（*建议选择paddle版本>=2.0.1版本的预测库* ）。
+下载之后解压:
 
-* 下载之后使用下面的方法解压。
-
-```
+```shell
 tar -xf paddle_inference.tgz
 ```
 
 最终会在当前的文件夹中生成`paddle_inference/`的子文件夹。
 
-#### 1.2.2 预测库源码编译
-* 如果希望获取最新预测库特性，可以从Paddle github上克隆最新代码，源码编译预测库。
-* 可以参考[Paddle预测库安装编译说明](https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0/guides/05_inference_deployment/inference/build_and_install_lib_cn.html#congyuanmabianyi) 的说明，从github上获取Paddle代码，然后进行编译，生成最新的预测库。使用git获取代码方法如下。
+<a name="132"></a>
+#### 1.3.2 预测库源码编译
+
+如果希望获取最新预测库特性，可以从github上克隆最新Paddle代码进行编译，生成最新的预测库。
+
+* 使用git获取代码:
 
 ```shell
 git clone https://github.com/PaddlePaddle/Paddle.git
 git checkout develop
 ```
 
-* 进入Paddle目录后，编译方法如下。
+* 进入Paddle目录，进行编译:
 
 ```shell
 rm -rf build
@@ -151,7 +145,7 @@ make -j
 make inference_lib_dist
 ```
 
-更多编译参数选项介绍可以参考[文档说明](https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0/guides/05_inference_deployment/inference/build_and_install_lib_cn.html#congyuanmabianyi)。
+更多编译参数选项介绍可以参考[Paddle预测库编译文档](https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0/guides/05_inference_deployment/inference/build_and_install_lib_cn.html#congyuanmabianyi)。
 
 
 * 编译完成之后，可以在`build/paddle_inference_install_dir/`文件下看到生成了以下文件及文件夹。
@@ -168,13 +162,13 @@ build/paddle_inference_install_dir/
 
 <a name="2"></a>
 
-## 2 开始运行
+## 2. 开始运行
 
 <a name="21"></a>
 
-### 2.1 将模型导出为inference model
+### 2.1 准备模型
 
-* 可以参考[模型预测章节](../../doc/doc_ch/inference.md)，导出inference model，用于模型预测。模型导出之后，假设放在`inference`目录下，则目录结构如下。
+直接下载PaddleOCR提供的推理模型，或者参考[模型预测章节](../../doc/doc_ch/inference_ppocr.md)，将训练好的模型导出为推理模型。模型导出之后，假设放在`inference`目录下，则目录结构如下。
 
 ```
 inference/
@@ -193,13 +187,13 @@ inference/
 
 ### 2.2 编译PaddleOCR C++预测demo
 
-* 编译命令如下，其中Paddle C++预测库、opencv等其他依赖库的地址需要换成自己机器上的实际地址。
+编译命令如下，其中Paddle C++预测库、opencv等其他依赖库的地址需要换成自己机器上的实际地址。
 
 ```shell
 sh tools/build.sh
 ```
 
-* 具体的，需要修改`tools/build.sh`中环境路径，相关内容如下：
+具体的，需要修改`tools/build.sh`中环境路径，相关内容如下：
 
 ```shell
 OPENCV_DIR=your_opencv_dir
@@ -211,11 +205,13 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 其中，`OPENCV_DIR`为opencv编译安装的地址；`LIB_DIR`为下载(`paddle_inference`文件夹)或者编译生成的Paddle预测库地址(`build/paddle_inference_install_dir`文件夹)；`CUDA_LIB_DIR`为cuda库文件地址，在docker中为`/usr/local/cuda/lib64`；`CUDNN_LIB_DIR`为cudnn库文件地址，在docker中为`/usr/lib/x86_64-linux-gnu/`。**注意：以上路径都写绝对路径，不要写相对路径。**
 
 
-* 编译完成之后，会在`build`文件夹下生成一个名为`ppocr`的可执行文件。
+编译完成之后，会在`build`文件夹下生成一个名为`ppocr`的可执行文件。
 
 <a name="23"></a>
 
 ### 2.3 运行demo
+
+本demo支持系统串联调用，也支持单个功能的调用，如，只使用检测或识别功能。
 
 运行方式：  
 ```shell
@@ -354,6 +350,7 @@ predict img: ../../doc/imgs/12.jpg
 The detection visualized image saved in ./output//12.jpg
 ```
 
+<a name="3"></a>
 ## 3. FAQ
 
  1.  遇到报错 `unable to access 'https://github.com/LDOUBLEV/AutoLog.git/': gnutls_handshake() failed: The TLS connection was non-properly terminated.`， 将 `deploy/cpp_infer/external-cmake/auto-log.cmake` 中的github地址改为 https://gitee.com/Double_V/AutoLog 地址即可。

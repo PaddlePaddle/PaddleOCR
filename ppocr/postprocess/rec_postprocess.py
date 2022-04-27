@@ -117,6 +117,7 @@ class DistillationCTCLabelDecode(CTCLabelDecode):
                  use_space_char=False,
                  model_name=["student"],
                  key=None,
+                 multi_head=False,
                  **kwargs):
         super(DistillationCTCLabelDecode, self).__init__(character_dict_path,
                                                          use_space_char)
@@ -125,6 +126,7 @@ class DistillationCTCLabelDecode(CTCLabelDecode):
         self.model_name = model_name
 
         self.key = key
+        self.multi_head = multi_head
 
     def __call__(self, preds, label=None, *args, **kwargs):
         output = dict()
@@ -132,6 +134,8 @@ class DistillationCTCLabelDecode(CTCLabelDecode):
             pred = preds[name]
             if self.key is not None:
                 pred = pred[self.key]
+            if self.multi_head and isinstance(pred, dict):
+                pred = pred['ctc']
             output[name] = super().__call__(pred, label=label, *args, **kwargs)
         return output
 
@@ -656,6 +660,40 @@ class SARLabelDecode(BaseRecLabelDecode):
         return [self.padding_idx]
 
 
+class DistillationSARLabelDecode(SARLabelDecode):
+    """
+    Convert 
+    Convert between text-label and text-index
+    """
+
+    def __init__(self,
+                 character_dict_path=None,
+                 use_space_char=False,
+                 model_name=["student"],
+                 key=None,
+                 multi_head=False,
+                 **kwargs):
+        super(DistillationSARLabelDecode, self).__init__(character_dict_path,
+                                                         use_space_char)
+        if not isinstance(model_name, list):
+            model_name = [model_name]
+        self.model_name = model_name
+
+        self.key = key
+        self.multi_head = multi_head
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        output = dict()
+        for name in self.model_name:
+            pred = preds[name]
+            if self.key is not None:
+                pred = pred[self.key]
+            if self.multi_head and isinstance(pred, dict):
+                pred = pred['sar']
+            output[name] = super().__call__(pred, label=label, *args, **kwargs)
+        return output
+
+
 class PRENLabelDecode(BaseRecLabelDecode):
     """ Convert between text-label and text-index """
 
@@ -714,3 +752,40 @@ class PRENLabelDecode(BaseRecLabelDecode):
             return text
         label = self.decode(label)
         return text, label
+
+
+class SVTRLabelDecode(BaseRecLabelDecode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(SVTRLabelDecode, self).__init__(character_dict_path,
+                                             use_space_char)
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        if isinstance(preds, tuple):
+            preds = preds[-1]
+        if isinstance(preds, paddle.Tensor):
+            preds = preds.numpy()
+        preds_idx = preds.argmax(axis=-1)
+        preds_prob = preds.max(axis=-1)
+
+        text = self.decode(preds_idx, preds_prob, is_remove_duplicate=True)
+        return_text = []
+        for i in range(0, len(text), 3):
+            text0 = text[i]
+            text1 = text[i + 1]
+            text2 = text[i + 2]
+
+            text_pred = [text0[0], text1[0], text2[0]]
+            text_prob = [text0[1], text1[1], text2[1]]
+            id_max = text_prob.index(max(text_prob))
+            return_text.append((text_pred[id_max], text_prob[id_max]))
+        if label is None:
+            return return_text
+        label = self.decode(label)
+        return return_text, label
+
+    def add_special_char(self, dict_character):
+        dict_character = ['blank'] + dict_character
+        return dict_character

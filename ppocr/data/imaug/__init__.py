@@ -22,8 +22,8 @@ from .make_shrink_map import MakeShrinkMap
 from .random_crop_data import EastRandomCropData, RandomCropImgMask
 from .make_pse_gt import MakePseGt
 
-from .rec_img_aug import RecAug, RecResizeImg, ClsResizeImg, \
-    SRNRecResizeImg, NRTRRecResizeImg, SARRecResizeImg, PRENResizeImg
+from .rec_img_aug import RecAug, RecConAug, RecResizeImg, ClsResizeImg, \
+    SRNRecResizeImg, NRTRRecResizeImg, SARRecResizeImg, PRENResizeImg, SVTRRecResizeImg
 from .randaugment import RandAugment
 from .copy_paste import CopyPaste
 from .ColorJitter import ColorJitter

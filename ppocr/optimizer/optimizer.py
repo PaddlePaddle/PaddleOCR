@@ -42,13 +42,13 @@ class Momentum(object):
         self.weight_decay = weight_decay
         self.grad_clip = grad_clip
 
-    def __call__(self, parameters):
+    def __call__(self, model):
         opt = optim.Momentum(
             learning_rate=self.learning_rate,
             momentum=self.momentum,
             weight_decay=self.weight_decay,
             grad_clip=self.grad_clip,
-            parameters=parameters)
+            parameters=model.parameters())
         return opt
 
 
@@ -75,7 +75,7 @@ class Adam(object):
         self.name = name
         self.lazy_mode = lazy_mode
 
-    def __call__(self, parameters):
+    def __call__(self, model):
         opt = optim.Adam(
             learning_rate=self.learning_rate,
             beta1=self.beta1,
@@ -85,7 +85,7 @@ class Adam(object):
             grad_clip=self.grad_clip,
             name=self.name,
             lazy_mode=self.lazy_mode,
-            parameters=parameters)
+            parameters=model.parameters())
         return opt
 
 
@@ -117,7 +117,7 @@ class RMSProp(object):
         self.weight_decay = weight_decay
         self.grad_clip = grad_clip
 
-    def __call__(self, parameters):
+    def __call__(self, model):
         opt = optim.RMSProp(
             learning_rate=self.learning_rate,
             momentum=self.momentum,
@@ -125,7 +125,7 @@ class RMSProp(object):
             epsilon=self.epsilon,
             weight_decay=self.weight_decay,
             grad_clip=self.grad_clip,
-            parameters=parameters)
+            parameters=model.parameters())
         return opt
 
 
@@ -148,7 +148,7 @@ class Adadelta(object):
         self.grad_clip = grad_clip
         self.name = name
 
-    def __call__(self, parameters):
+    def __call__(self, model):
         opt = optim.Adadelta(
             learning_rate=self.learning_rate,
             epsilon=self.epsilon,
@@ -156,7 +156,7 @@ class Adadelta(object):
             weight_decay=self.weight_decay,
             grad_clip=self.grad_clip,
             name=self.name,
-            parameters=parameters)
+            parameters=model.parameters())
         return opt
 
 
@@ -165,31 +165,55 @@ class AdamW(object):
                  learning_rate=0.001,
                  beta1=0.9,
                  beta2=0.999,
-                 epsilon=1e-08,
+                 epsilon=1e-8,
                  weight_decay=0.01,
+                 multi_precision=False,
                  grad_clip=None,
+                 no_weight_decay_name=None,
+                 one_dim_param_no_weight_decay=False,
                  name=None,
                  lazy_mode=False,
-                 **kwargs):
+                 **args):
+        super().__init__()
         self.learning_rate = learning_rate
         self.beta1 = beta1
         self.beta2 = beta2
         self.epsilon = epsilon
-        self.learning_rate = learning_rate
+        self.grad_clip = grad_clip
         self.weight_decay = 0.01 if weight_decay is None else weight_decay
         self.grad_clip = grad_clip
         self.name = name
         self.lazy_mode = lazy_mode
+        self.multi_precision = multi_precision
+        self.no_weight_decay_name_list = no_weight_decay_name.split(
+        ) if no_weight_decay_name else []
+        self.one_dim_param_no_weight_decay = one_dim_param_no_weight_decay
 
-    def __call__(self, parameters):
+    def __call__(self, model):
+        parameters = model.parameters()
+
+        self.no_weight_decay_param_name_list = [
+            p.name for n, p in model.named_parameters() if any(nd in n for nd in self.no_weight_decay_name_list)
+        ]
+
+        if self.one_dim_param_no_weight_decay:
+            self.no_weight_decay_param_name_list += [
+                p.name  for n, p in model.named_parameters() if len(p.shape) == 1
+            ]
+        
         opt = optim.AdamW(
             learning_rate=self.learning_rate,
             beta1=self.beta1,
             beta2=self.beta2,
             epsilon=self.epsilon,
+            parameters=parameters,
             weight_decay=self.weight_decay,
+            multi_precision=self.multi_precision,
             grad_clip=self.grad_clip,
             name=self.name,
             lazy_mode=self.lazy_mode,
-            parameters=parameters)
+            apply_decay_param_fun=self._apply_decay_param_fun)
         return opt
+
+    def _apply_decay_param_fun(self, name):
+        return name not in self.no_weight_decay_param_name_list
