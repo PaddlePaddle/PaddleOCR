@@ -2,44 +2,26 @@
 
 This section uses the icdar2015 dataset as an example to introduce the training, evaluation, and testing of the detection model in PaddleOCR.
 
-- [1. Data and Weights Preparation](#1-data-and-weights-preparatio)
-  * [1.1 Data Preparation](#11-data-preparation)
-    * [1.1.1 Public dataset](#111-public-dataset)
-    * [1.1.2 Custom dataset](#112-custom-dataset)
-  * [1.2 Download Pre-trained Model](#12-download-pretrained-model)
-- [2. Training](#2-training)
-  * [2.1 Start Training](#21-start-training)
-  * [2.2 Load Trained Model and Continue Training](#22-load-trained-model-and-continue-training)
-  * [2.3 Training with New Backbone](#23-training-with-new-backbone)
-  * [2.4 Training with knowledge distillation](#24)
-- [3. Evaluation and Test](#3-evaluation-and-test)
-  * [3.1 Evaluation](#31-evaluation)
-  * [3.2 Test](#32-test)
-- [4. Inference](#4-inference)
-- [5. FAQ](#2-faq)
+- [Text Detection](#text-detection)
+  - [1. Data and Weights Preparation](#1-data-and-weights-preparation)
+    - [1.1 Data Preparation](#11-data-preparation)
+    - [1.2 Download Pre-trained Model](#12-download-pre-trained-model)
+  - [2. Training](#2-training)
+    - [2.1 Start Training](#21-start-training)
+    - [2.2 Load Trained Model and Continue Training](#22-load-trained-model-and-continue-training)
+    - [2.3 Training with New Backbone](#23-training-with-new-backbone)
+    - [2.4 Training with knowledge distillation](#24-training-with-knowledge-distillation)
+  - [3. Evaluation and Test](#3-evaluation-and-test)
+    - [3.1 Evaluation](#31-evaluation)
+    - [3.2 Test](#32-test)
+  - [4. Inference](#4-inference)
+  - [5. FAQ](#5-faq)
 
 ## 1. Data and Weights Preparation
 
 ### 1.1 Data Preparation
 
-### 1.1.1 Public dataset
-Public datasets can be downloaded and prepared by referring to [ocr_datasets](./dataset/ocr_datasets_en.md).
-
-### 1.1.2 Custom dataset
-
-The annotation file formats supported by the PaddleOCR text detection algorithm are as follows, separated by "\t":
-```
-" Image file name             Image annotation information encoded by json.dumps"
-ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]]}, {...}]
-```
-The image annotation after **json.dumps()** encoding is a list containing multiple dictionaries.
-
-The `points` in the dictionary represent the coordinates (x, y) of the four points of the text box, arranged clockwise from the point at the upper left corner.
-
-`transcription` represents the text of the current text box. **When its content is "###" it means that the text box is invalid and will be skipped during training.**
-
-If you want to train PaddleOCR on other datasets, please build the annotation file according to the above format.
-
+To prepare datasets, refer to [ocr_datasets](./dataset/ocr_datasets_en.md) .
 
 ### 1.2 Download Pre-trained Model
 

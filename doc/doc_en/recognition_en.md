@@ -1,130 +1,30 @@
 # Text Recognition
 
-- [1. Data Preparation](#DATA_PREPARATION)
-    - [1.1 Costom Dataset](#Costom_Dataset)
-    - [1.2 Dataset Download](#Dataset_download)
-    - [1.3 Dictionary](#Dictionary)  
-    - [1.4 Add Space Category](#Add_space_category)
-
-- [2. Training](#TRAINING)
-    - [2.1 Data Augmentation](#Data_Augmentation)
-    - [2.2 General Training](#Training)
-    - [2.3 Multi-language Training](#Multi_language)
-    - [2.4 Training with Knowledge Distillation](#kd)
-
-- [3. Evaluation](#EVALUATION)
-
-- [4. Prediction](#PREDICTION)
-- [5. Convert to Inference Model](#Inference)
+- [Text Recognition](#text-recognition)
+  - [1. Data Preparation](#1-data-preparation)
+    - [1.1 DataSet Preparation](#11-dataset-preparation)
+    - [1.2 Dictionary](#12-dictionary)
+    - [1.4 Add Space Category](#14-add-space-category)
+  - [2.Training](#2training)
+    - [2.1 Data Augmentation](#21-data-augmentation)
+    - [2.2 General Training](#22-general-training)
+    - [2.3 Multi-language Training](#23-multi-language-training)
+    - [2.4 Training with Knowledge Distillation](#24-training-with-knowledge-distillation)
+  - [3. Evalution](#3-evalution)
+  - [4. Prediction](#4-prediction)
+  - [5. Convert to Inference Model](#5-convert-to-inference-model)
 
 <a name="DATA_PREPARATION"></a>
 ## 1. Data Preparation
 
+### 1.1 DataSet Preparation
 
-PaddleOCR supports two data formats:
-- `LMDB` is used to train data sets stored in lmdb format（LMDBDataSet）;
-- `general data` is used to train data sets stored in text files（SimpleDataSet）:
-
-Please organize the dataset as follows:
-
-The default storage path for training data is `PaddleOCR/train_data`, if you already have a dataset on your disk, just create a soft link to the dataset directory:
-
-```
-# linux and mac os
-ln -sf <path/to/dataset> <path/to/paddle_ocr>/train_data/dataset
-# windows
-mklink /d <path/to/paddle_ocr>/train_data/dataset <path/to/dataset>
-```
-
-<a name="Costom_Dataset"></a>
-### 1.1 Costom Dataset
-
-If you want to use your own data for training, please refer to the following to organize your data.
-
-- Training set
-
-It is recommended to put the training images in the same folder, and use a txt file (rec_gt_train.txt) to store the image path and label. The contents of the txt file are as follows:
-
-* Note: by default, the image path and image label are split with \t, if you use other methods to split, it will cause training error
-
-```
-" Image file name           Image annotation "
-
-train_data/rec/train/word_001.jpg   简单可依赖
-train_data/rec/train/word_002.jpg   用科技让复杂的世界更简单
-...
-```
-
-The final training set should have the following file structure:
-
-```
-|-train_data
-  |-rec
-    |- rec_gt_train.txt
-    |- train
-        |- word_001.png
-        |- word_002.jpg
-        |- word_003.jpg
-        | ...
-```
-
-- Test set
-
-Similar to the training set, the test set also needs to be provided a folder containing all images (test) and a rec_gt_test.txt. The structure of the test set is as follows:
-
-```
-|-train_data
-  |-rec
-    |-ic15_data
-        |- rec_gt_test.txt
-        |- test
-            |- word_001.jpg
-            |- word_002.jpg
-            |- word_003.jpg
-            | ...
-```
-
-<a name="Dataset_download"></a>
-### 1.2 Dataset Download
-
-- ICDAR2015
-
-If you do not have a dataset locally, you can download it on the official website [icdar2015](http://rrc.cvc.uab.es/?ch=4&com=downloads).
-Also refer to [DTRB](https://github.com/clovaai/deep-text-recognition-benchmark#download-lmdb-dataset-for-traininig-and-evaluation-from-here) ，download the lmdb format dataset required for benchmark
+To prepare datasets, refer to [ocr_datasets](./dataset/ocr_datasets.md) .
 
 If you want to reproduce the paper SAR, you need to download extra dataset [SynthAdd](https://pan.baidu.com/share/init?surl=uV0LtoNmcxbO-0YA7Ch4dg), extraction code: 627x. Besides, icdar2013, icdar2015, cocotext, IIIT5k datasets are also used to train. For specific details, please refer to the paper SAR.
 
-PaddleOCR provides label files for training the icdar2015 dataset, which can be downloaded in the following ways:
-
-```
-# Training set label
-wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_train.txt
-# Test Set Label
-wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_test.txt
-```
-
-PaddleOCR also provides a data format conversion script, which can convert ICDAR official website label to a data format
-supported by PaddleOCR. The data conversion tool is in `ppocr/utils/gen_label.py`, here is the training set as an example:
-
-```
-# convert the official gt to rec_gt_label.txt
-python gen_label.py --mode="rec" --input_path="{path/of/origin/label}" --output_label="rec_gt_label.txt"
-```
-
-The data format is as follows, (a) is the original picture, (b) is the Ground Truth text file corresponding to each picture:
-
-![](../datasets/icdar_rec.png)
-
-
-- Multilingual dataset
-
-The multi-language model training method is the same as the Chinese model. The training data set is 100w synthetic data. A small amount of fonts and test data can be downloaded using the following two methods.
-* [Baidu Netdisk](https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA) ,Extraction code:frgi.
-* [Google drive](https://drive.google.com/file/d/18cSWX7wXSy4G0tbKJ0d9PuIaiwRLHpjA/view)
-
-
 <a name="Dictionary"></a>
-### 1.3 Dictionary
+### 1.2 Dictionary
 
 Finally, a dictionary ({word_dict_name}.txt) needs to be provided so that when the model is trained, all the characters that appear can be mapped to the dictionary index.
 

@@ -5,7 +5,7 @@
   - [1. PubTabNet](#1-pubtabnet)
   - [2. TAL Table Recognition Competition Dataset](#2-tal-table-recognition-competition-dataset)
 
-Here are the commonly used layout analysis datasets, which are being updated continuously. Welcome to contribute datasets~
+Here are the commonly used table recognition datasets, which are being updated continuously. Welcome to contribute datasets~
 
 ## Dataset Summary
 
