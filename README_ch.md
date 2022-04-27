@@ -132,7 +132,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [手写中文OCR数据集](./doc/doc_ch/handwritten_datasets.md)
     - [垂类多语言OCR数据集](./doc/doc_ch/vertical_and_multilingual_datasets.md)
     - [版面分析数据集](./doc/doc_ch/layout_datasets.md)
-    - [表格识别数据集](./doc/doc_ch/table_datasets.md)
+    - [表格识别数据集](doc/doc_ch/dataset/table_datasets.md)
     - [DocVQA数据集](./doc/doc_ch/docvqa_datasets.md)
 - [代码组织结构](./doc/doc_ch/tree.md)
 - [效果展示](#效果展示)
@@ -160,13 +160,13 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00056221.jpg" width="800">
     <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/rotate_00052204.jpg" width="800">
 </div>
-    
+
 </details>
 
 
 <details open>
 <summary>PP-OCRv2 英文模型</summary>
-    
+
 <div align="center">
     <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/img_12.jpg" width="800">
 </div>
@@ -176,12 +176,12 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 <details open>
 <summary>PP-OCRv2 其他语言模型</summary>
-    
+
 <div align="center">
     <img src="./doc/imgs_results/french_0.jpg" width="800">
     <img src="./doc/imgs_results/korean.jpg" width="800">
 </div>
-    
+
 </details>
 
 <details open>
@@ -196,8 +196,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 <div align="center">
     <img src="./ppstructure/docs/vqa/result_ser/zh_val_0_ser.jpg" width="800">
 </div>
-    
-- RE（关系提取） 
+
+- RE（关系提取）
 <div align="center">
     <img src="./ppstructure/docs/vqa/result_re/zh_val_21_re.jpg" width="800">
 </div>
