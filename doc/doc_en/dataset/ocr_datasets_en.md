@@ -73,7 +73,7 @@ After decompressing the data set and downloading the annotation file, PaddleOCR/
 
 The text recognition algorithm in PaddleOCR supports two data formats:
  - `lmdb` is used to train data sets stored in lmdb format, use [lmdb_dataset.py](../../../ppocr/data/lmdb_dataset.py) to load;
- - `通用数据` is used to train data sets stored in text files, use [simple_dataset.py](../../../ppocr/data/simple_dataset.py) to load.
+ - `common dataset` is used to train data sets stored in text files, use [simple_dataset.py](../../../ppocr/data/simple_dataset.py) to load.
 
 
 If you want to use your own data for training, please refer to the following to organize your data.
