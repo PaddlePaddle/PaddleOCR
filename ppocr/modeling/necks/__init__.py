@@ -16,7 +16,7 @@ __all__ = ['build_neck']
 
 
 def build_neck(config):
-    from .db_fpn import DBFPN, CAFPN, FEPAN, FEPANLite
+    from .db_fpn import DBFPN, CAFPN, FEPAN
     from .east_fpn import EASTFPN
     from .sast_fpn import SASTFPN
     from .rnn import SequenceEncoder
@@ -26,8 +26,8 @@ def build_neck(config):
     from .fce_fpn import FCEFPN
     from .pren_fpn import PRENFPN
     support_dict = [
-        'FPN', 'FCEFPN', 'FEPAN', 'FEPANLite', 'DBFPN', 'CAFPN', 'EASTFPN',
-        'SASTFPN', 'SequenceEncoder', 'PGFPN', 'TableFPN', 'PRENFPN'
+        'FPN', 'FCEFPN', 'FEPAN', 'DBFPN', 'CAFPN', 'EASTFPN', 'SASTFPN',
+        'SequenceEncoder', 'PGFPN', 'TableFPN', 'PRENFPN'
     ]
 
     module_name = config.pop('name')
