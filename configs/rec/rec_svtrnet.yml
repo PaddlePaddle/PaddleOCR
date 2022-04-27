@@ -3,7 +3,7 @@ Global:
   epoch_num: 20
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/rec/svtr_tiny/
+  save_model_dir: ./output/rec/svtr/
   save_epoch_step: 1
   # evaluation is run every 2000 iterations after the 0th iteration
   eval_batch_step: [0, 2000]
