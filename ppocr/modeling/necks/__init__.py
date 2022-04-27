@@ -26,7 +26,7 @@ def build_neck(config):
     from .fce_fpn import FCEFPN
     from .pren_fpn import PRENFPN
     support_dict = [
-        'FPN', 'FCEFPN', 'FEPAN', 'DBFPN', 'CAFPN', 'EASTFPN', 'SASTFPN',
+        'FPN', 'FCEFPN', 'LKPAN', 'DBFPN', 'RSEFPN', 'EASTFPN', 'SASTFPN',
         'SequenceEncoder', 'PGFPN', 'TableFPN', 'PRENFPN'
     ]
 

@@ -28,7 +28,7 @@ Architecture:
     model_name: large
     disable_se: True
   Neck:
-    name: CAFPN
+    name: RSEFPN
     out_channels: 96
     shortcut: True
   Head:

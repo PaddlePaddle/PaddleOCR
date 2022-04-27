@@ -190,9 +190,9 @@ class DBFPN(nn.Layer):
         return fuse
 
 
-class CALayer(nn.Layer):
+class RSELayer(nn.Layer):
     def __init__(self, in_channels, out_channels, kernel_size, shortcut=True):
-        super(CALayer, self).__init__()
+        super(RSELayer, self).__init__()
         weight_attr = paddle.nn.initializer.KaimingUniform()
         self.out_channels = out_channels
         self.in_conv = nn.Conv2D(
@@ -214,9 +214,9 @@ class CALayer(nn.Layer):
         return out
 
 
-class CAFPN(nn.Layer):
+class RSEFPN(nn.Layer):
     def __init__(self, in_channels, out_channels, shortcut=True, **kwargs):
-        super(CAFPN, self).__init__()
+        super(RSEFPN, self).__init__()
         self.out_channels = out_channels
         self.ins_conv = nn.LayerList()
         self.inp_conv = nn.LayerList()
@@ -263,9 +263,9 @@ class CAFPN(nn.Layer):
         return fuse
 
 
-class FEPAN(nn.Layer):
+class LKPAN(nn.Layer):
     def __init__(self, in_channels, out_channels, mode='large', **kwargs):
-        super(FEPAN, self).__init__()
+        super(LKPAN, self).__init__()
         self.out_channels = out_channels
         weight_attr = paddle.nn.initializer.KaimingUniform()
 

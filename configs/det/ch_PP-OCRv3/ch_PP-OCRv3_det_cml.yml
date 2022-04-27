@@ -33,7 +33,7 @@ Architecture:
         model_name: large
         disable_se: true
       Neck:
-        name: CAFPN
+        name: RSEFPN
         out_channels: 96
         shortcut: True
       Head:
@@ -49,7 +49,7 @@ Architecture:
         model_name: large
         disable_se: true
       Neck:
-        name: CAFPN
+        name: RSEFPN
         out_channels: 96
         shortcut: True
       Head:
@@ -65,7 +65,7 @@ Architecture:
         in_channels: 3
         layers: 50
       Neck:
-        name: FEPAN
+        name: LKPAN
         out_channels: 256
       Head:
         name: DBHead
