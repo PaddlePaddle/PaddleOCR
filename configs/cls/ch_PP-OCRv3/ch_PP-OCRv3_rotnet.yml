@@ -35,6 +35,8 @@ Architecture:
   Backbone:
     name: MobileNetV1Enhance
     scale: 0.5
+    last_conv_stride: [1, 2]
+    last_pool_type: avg
   Neck:
   Head:
     name: ClsHead
