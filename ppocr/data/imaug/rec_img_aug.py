@@ -16,6 +16,7 @@ import math
 import cv2
 import numpy as np
 import random
+import copy
 from PIL import Image
 from .text_image_aug import tia_perspective, tia_stretch, tia_distort
 
@@ -206,6 +207,25 @@ class PRENResizeImg(object):
         return data
 
 
+class SVTRRecResizeImg(object):
+    def __init__(self,
+                 image_shape,
+                 infer_mode=False,
+                 character_dict_path='./ppocr/utils/ppocr_keys_v1.txt',
+                 padding=True,
+                 **kwargs):
+        self.image_shape = image_shape
+        self.infer_mode = infer_mode
+        self.character_dict_path = character_dict_path
+        self.padding = padding
+
+    def __call__(self, data):
+        img = data['image']
+        norm_img = resize_norm_img_svtr(img, self.image_shape, self.padding)
+        data['image'] = norm_img
+        return data
+
+
 def resize_norm_img_sar(img, image_shape, width_downsample_ratio=0.25):
     imgC, imgH, imgW_min, imgW_max = image_shape
     h = img.shape[0]
@@ -322,6 +342,58 @@ def resize_norm_img_srn(img, image_shape):
     c = 1
 
     return np.reshape(img_black, (c, row, col)).astype(np.float32)
+
+
+def resize_norm_img_svtr(img, image_shape, padding=False):
+    imgC, imgH, imgW = image_shape
+    h = img.shape[0]
+    w = img.shape[1]
+    if not padding:
+        if h > 2.0 * w:
+            image = Image.fromarray(img)
+            image1 = image.rotate(90, expand=True)
+            image2 = image.rotate(-90, expand=True)
+            img1 = np.array(image1)
+            img2 = np.array(image2)
+        else:
+            img1 = copy.deepcopy(img)
+            img2 = copy.deepcopy(img)
+
+        resized_image = cv2.resize(
+            img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+        resized_image1 = cv2.resize(
+            img1, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+        resized_image2 = cv2.resize(
+            img2, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+        resized_w = imgW
+    else:
+        ratio = w / float(h)
+        if math.ceil(imgH * ratio) > imgW:
+            resized_w = imgW
+        else:
+            resized_w = int(math.ceil(imgH * ratio))
+        resized_image = cv2.resize(img, (resized_w, imgH))
+    resized_image = resized_image.astype('float32')
+    resized_image1 = resized_image1.astype('float32')
+    resized_image2 = resized_image2.astype('float32')
+    if image_shape[0] == 1:
+        resized_image = resized_image / 255
+        resized_image = resized_image[np.newaxis, :]
+    else:
+        resized_image = resized_image.transpose((2, 0, 1)) / 255
+        resized_image1 = resized_image1.transpose((2, 0, 1)) / 255
+        resized_image2 = resized_image2.transpose((2, 0, 1)) / 255
+    resized_image -= 0.5
+    resized_image /= 0.5
+    resized_image1 -= 0.5
+    resized_image1 /= 0.5
+    resized_image2 -= 0.5
+    resized_image2 /= 0.5
+    padding_im = np.zeros((3, imgC, imgH, imgW), dtype=np.float32)
+    padding_im[0, :, :, 0:resized_w] = resized_image
+    padding_im[1, :, :, 0:resized_w] = resized_image1
+    padding_im[2, :, :, 0:resized_w] = resized_image2
+    return padding_im
 
 
 def srn_other_inputs(image_shape, num_heads, max_text_length):

@@ -752,3 +752,40 @@ class PRENLabelDecode(BaseRecLabelDecode):
             return text
         label = self.decode(label)
         return text, label
+
+
+class SVTRLabelDecode(BaseRecLabelDecode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(SVTRLabelDecode, self).__init__(character_dict_path,
+                                             use_space_char)
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        if isinstance(preds, tuple):
+            preds = preds[-1]
+        if isinstance(preds, paddle.Tensor):
+            preds = preds.numpy()
+        preds_idx = preds.argmax(axis=-1)
+        preds_prob = preds.max(axis=-1)
+
+        text = self.decode(preds_idx, preds_prob, is_remove_duplicate=True)
+        return_text = []
+        for i in range(0, len(text), 3):
+            text0 = text[i]
+            text1 = text[i + 1]
+            text2 = text[i + 2]
+
+            text_pred = [text0[0], text1[0], text2[0]]
+            text_prob = [text0[1], text1[1], text2[1]]
+            id_max = text_prob.index(max(text_prob))
+            return_text.append((text_pred[id_max], text_prob[id_max]))
+        if label is None:
+            return return_text
+        label = self.decode(label)
+        return return_text, label
+
+    def add_special_char(self, dict_character):
+        dict_character = ['blank'] + dict_character
+        return dict_character
