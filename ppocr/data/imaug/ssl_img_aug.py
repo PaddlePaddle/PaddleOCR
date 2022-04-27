@@ -58,11 +58,3 @@ class SSLRotateResize(object):
             data["image"] = data["image"][0]
             data["label"] = data["label"][0]
         return data
-
-
-# data = {
-#     "image": cv2.imread("../../../train_data/lsvt/lsvt_train_images/lsvt_train_images_2.jpg")
-# }
-# out = SSLRotateResizeCrop(image_shape=(3, 32, 100))(data)
-# for k in out:
-#     print(out[k].shape)
