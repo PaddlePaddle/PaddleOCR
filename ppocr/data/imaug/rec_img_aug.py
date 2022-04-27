@@ -81,7 +81,7 @@ class ClsResizeImg(object):
 
     def __call__(self, data):
         img = data['image']
-        norm_img = resize_norm_img(img, self.image_shape)
+        norm_img, _ = resize_norm_img(img, self.image_shape)
         data['image'] = norm_img
         return data
 
