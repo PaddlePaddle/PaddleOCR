@@ -57,6 +57,8 @@ def main():
             continue
         elif op_name == 'KeepKeys':
             op[op_name]['keep_keys'] = ['image']
+        elif op_name == "SSLRotateResize":
+            op[op_name]["mode"] = "test"
         transforms.append(op)
     global_config['infer_mode'] = True
     ops = create_operators(transforms, global_config)
