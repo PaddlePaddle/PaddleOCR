@@ -22,9 +22,7 @@
 ### 1. 安装PaddleSlim
 
 ```bash
-git clone https://github.com/PaddlePaddle/PaddleSlim.git
-cd PaddleSlim
-python setup.py install
+pip3 install paddleslim==2.2.2
 ```
 
 ### 2. 准备训练好的模型
@@ -43,7 +41,15 @@ python deploy/slim/quantization/quant.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar
 tar -xf ch_ppocr_mobile_v2.0_det_train.tar
 python deploy/slim/quantization/quant.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrained_model=./ch_ppocr_mobile_v2.0_det_train/best_accuracy   Global.save_model_dir=./output/quant_model
+```
 
+模型蒸馏和模型量化可以同时使用，以PPOCRv3检测模型为例：
+```
+# 下载检测预训练模型：
+wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar
+tar xf https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar
+
+python deploy/slim/quantization/quant.py -c configs/det/ch_PP-OCRv3_det/ch_PP-OCRv3_det_cml.yml -o Global.pretrained_model='./ch_PP-OCRv3_det_distill_train/best_accuracy'   Global.save_model_dir=./output/quant_model_distill/
 ```
 如果要训练识别模型的量化，修改配置文件和加载的模型参数即可。
 
