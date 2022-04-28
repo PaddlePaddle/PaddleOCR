@@ -36,7 +36,7 @@ pip3 install -r requirements.txt
 
 ## 2. Perform prediction
 
-Obtain the PPOCR model from the [document](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/ppocr_introduction.md#6-%E6%A8%A1%E5%9E%8B%E5%BA%93) model library. The following takes the PP-OCRv3 model as an example to introduce the use of the PPOCR model on Jetson:
+Obtain the PPOCR model from the [document](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_en/ppocr_introduction_en.md#6-model-zoo) model library. The following takes the PP-OCRv3 model as an example to introduce the use of the PPOCR model on Jetson:
 
 Download and unzip the PP-OCRv3 models.
 ```
