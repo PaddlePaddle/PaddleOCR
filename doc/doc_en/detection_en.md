@@ -165,7 +165,7 @@ python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1
 
 Knowledge distillation is supported in PaddleOCR for text detection training process. For more details, please refer to [doc](./knowledge_distillation_en.md).
 
-### 2.7 Training on other platform(Windows/macOS/Linux DCU
+### 2.7 Training on other platform(Windows/macOS/Linux DCU)
 
 - Windows GPU/CPU
 The Windows platform is slightly different from the Linux platform:

@@ -361,7 +361,7 @@ Eval:
 ```
 
 <a name="28"></a>
-### 2.8 Training on other platform(Windows/macOS/Linux DCU
+### 2.8 Training on other platform(Windows/macOS/Linux DCU)
 
 - Windows GPU/CPU
 The Windows platform is slightly different from the Linux platform:
