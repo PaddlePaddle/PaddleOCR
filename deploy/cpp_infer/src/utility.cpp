@@ -19,6 +19,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <vector>
+#include<opencv2/highgui.hpp>
+using namespace cv;
 
 namespace PaddleOCR {
 
@@ -40,7 +42,7 @@ std::vector<std::string> Utility::ReadDict(const std::string &path) {
 
 void Utility::VisualizeBboxes(
     const cv::Mat &srcimg,
-    const std::vector<std::vector<std::vector<int>>> &boxes) {
+    const std::vector<std::vector<std::vector<int>>> &boxes,int imgw,int imgh) {
   cv::Mat img_vis;
   srcimg.copyTo(img_vis);
   for (int n = 0; n < boxes.size(); n++) {
@@ -55,6 +57,14 @@ void Utility::VisualizeBboxes(
   }
 
   cv::imwrite("./ocr_vis.png", img_vis);
+ 
+  cv::String windowtitle = "ocr_vis";
+  cv::namedWindow(windowtitle, WINDOW_KEEPRATIO);
+  cv::resizeWindow(windowtitle, imgw, imgh);
+  cv::moveWindow(windowtitle, 30, 30);
+  cv::imshow(windowtitle, img_vis);
+  waitKey(0);
+  
   std::cout << "The detection visualized image saved in ./ocr_vis.png"
             << std::endl;
 }
