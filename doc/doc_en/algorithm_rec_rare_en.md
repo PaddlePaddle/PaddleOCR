@@ -31,7 +31,7 @@ Using MJSynth and SynthText two text recognition datasets for training, and eval
 
 <a name="2"></a>
 ## 2. Environment configuration
-Please refer to ["Operating Environment Preparation"](./environment_en.md) to configure the PaddleOCR operating environment, and refer to ["Project Clone"](./clone_en.md) to clone the project code.
+Please refer to [Operating Environment Preparation](./environment_en.md) to configure the PaddleOCR operating environment, and refer to [Project Clone](./clone_en.md) to clone the project code.
 
 <a name="3"></a>
 ## 3. Model training, evaluation, prediction
@@ -48,7 +48,7 @@ python3 tools/train.py -c configs/rec/rec_r34_vd_tps_bilstm_att.yml
 python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/rec/rec_r34_vd_tps_bilstm_att.yml
 ````
 
-<a name="3.2"></a>
+<a name="3-2"></a>
 ### 3.2 Evaluation
 
 ````
@@ -56,7 +56,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/
 python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_r34_vd_tps_bilstm_att.yml -o Global.pretrained_model={path/to/weights}/best_accuracy
 ````
 
-<a name="3.3"></a>
+<a name="3-3"></a>
 ### 3.3 Prediction
 
 ````

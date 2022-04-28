@@ -1,4 +1,4 @@
-#rosetta
+# Rosetta
 
 - [1. Introduction to Algorithms](#1)
 - [2. Environment Configuration](#2)
@@ -31,7 +31,7 @@ Using MJSynth and SynthText two text recognition datasets for training, and eval
 
 <a name="2"></a>
 ## 2. Environment configuration
-Please refer to ["Operating Environment Preparation"](./environment_en.md) to configure the PaddleOCR operating environment, and refer to ["Project Clone"](./clone_en.md) to clone the project code.
+Please refer to [Operating Environment Preparation](./environment_en.md) to configure the PaddleOCR operating environment, and refer to [Project Clone](./clone_en.md) to clone the project code.
 
 
 <a name="3"></a>
