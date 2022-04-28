@@ -38,7 +38,7 @@ public:
 
   static void
   VisualizeBboxes(const cv::Mat &srcimg,
-                  const std::vector<std::vector<std::vector<int>>> &boxes);
+                  const std::vector<std::vector<std::vector<int>>> &boxes,int imgw,int imgh);
 
   template <class ForwardIterator>
   inline static size_t argmax(ForwardIterator first, ForwardIterator last) {
