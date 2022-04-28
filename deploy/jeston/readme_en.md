@@ -80,4 +80,4 @@ To enable TRT prediction, you only need to set `--use_tensorrt=True` on the basi
 python3 tools/infer/predict_system.py --det_model_dir=./inference/ch_PP-OCRv2_det_infer/ --rec_model_dir=./inference/ch_PP-OCRv2_rec_infer/ --image_dir=./doc/imgs/  --rec_image_shape="3,48,320" --use_gpu=True --use_tensorrt=True
 ```
 
-For more ppocr model predictions, please refer to[document](../../doc/doc_en/inference_ppocr_en.md)
+For more ppocr model predictions, please refer to[document](../../doc/doc_en/models_list_en.md)

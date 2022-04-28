@@ -82,4 +82,4 @@ python3 tools/infer/predict_system.py --det_model_dir=./inference/ch_PP-OCRv2_de
 python3 tools/infer/predict_system.py --det_model_dir=./inference/ch_PP-OCRv2_det_infer/ --rec_model_dir=./inference/ch_PP-OCRv2_rec_infer/ --image_dir=./doc/imgs/00057937.jpg --use_gpu=True --use_tensorrt=True --rec_image_shape="3,48,320"
 ```
 
-更多ppocr模型预测请参考[文档](../../doc/doc_ch/inference_ppocr.md)
+更多ppocr模型预测请参考[文档](../../doc/doc_ch/models_list.md)
