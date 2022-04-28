@@ -8,8 +8,6 @@
     - [3.3 Prediction](#3-3)
 - [4. Inference and Deployment](#4)
     - [4.1 Python Inference](#4-1)
-    - [4.2 C++ Inference](#4-2)
-    - [4.3 Serving](#4-3)
 - [5. FAQ](#5)
 
 <a name="1"></a>
