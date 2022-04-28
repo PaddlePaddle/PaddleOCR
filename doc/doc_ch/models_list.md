@@ -1,8 +1,8 @@
-# PP-OCR系列模型列表（V2.1，2021年9月6日更新）
+# PP-OCR系列模型列表（V3，2022年4月28日更新）
 
 > **说明**
 > 1. V3版模型相比V2版模型，在模型精度上有进一步提升
-> 2. 2.0版模型和[1.1版模型](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/models_list.md) 的主要区别在于动态图训练vs.静态图训练，模型性能上无明显差距。
+> 2. 2.0+版模型和[1.1版模型](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/models_list.md) 的主要区别在于动态图训练vs.静态图训练，模型性能上无明显差距。
 > 3. 本文档提供的是PPOCR自研模型列表，更多基于公开数据集的算法介绍与预训练模型可以参考：[算法概览文档](./algorithm_overview.md)。
 
 
@@ -49,7 +49,18 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 |模型名称|模型简介|配置文件|推理模型大小|下载地址|
 | --- | --- | --- | --- | --- |
 |en_PP-OCRv3_det_slim |【最新】slim量化版超轻量模型，支持英文、数字检测 | [ch_PP-OCRv2_det_cml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml) | 1.1M |[推理模型(coming soon)](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_slim_quant_infer.tar) / [nb模型(coming soon)](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_slim_quant_infer.nb) |
-|ch_PP-OCRv3_det |【最新】原始超轻量模型，支持英文、数字检测|[ch_PP-OCRv2_det_cml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml)| 3.8M | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_train.tar) |
+|ch_PP-OCRv3_det |【最新】原始超轻量模型，支持英文、数字检测|[ch_PP-OCRv2_det_cml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml)| 3.8M | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_distill_train.tar) |
+
+* 注：英文检测模型与中文检测模型结构完全相同，只有训练数据不同，在此仅提供相同的配置文件。
+
+### 1.3 多语言检测模型
+
+|模型名称|模型简介|配置文件|推理模型大小|下载地址|
+| --- | --- | --- | --- | --- |
+| ml_PP-OCRv3_det_slim |【最新】slim量化版超轻量模型，支持多语言检测 | [ch_PP-OCRv2_det_cml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml) | 1.1M |[推理模型(coming soon)](https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/Multilingual_PP-OCRv3_det_slim_quant_infer.tar) / [nb模型(coming soon)](https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/Multilingual_PP-OCRv3_det_slim_quant_infer.nb) |
+| ml_PP-OCRv3_det |【最新】原始超轻量模型，支持多语言检测 | [ch_PP-OCRv2_det_cml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml)| 3.8M | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/Multilingual_PP-OCRv3_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/Multilingual_PP-OCRv3_det_distill_train.tar) |
+
+* 注：多语言检测模型与中文检测模型结构完全相同，只有训练数据不同，在此仅提供相同的配置文件。
 
 
 <a name="文本识别模型"></a>
