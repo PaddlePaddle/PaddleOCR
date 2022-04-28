@@ -32,6 +32,7 @@ AIStudio演示案例可参考 [基于PaddleServing的OCR服务化部署实战](h
 - [环境准备](#环境准备)
 - [模型转换](#模型转换)
 - [Paddle Serving pipeline部署](#部署)
+- [Paddle Serving C++部署](#C++)
 - [Windows用户](#Windows用户)
 - [FAQ](#FAQ)
 
