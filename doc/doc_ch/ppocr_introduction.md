@@ -38,7 +38,10 @@ PP-OCRv2在PP-OCR的基础上，进一步在5个方面重点优化，检测模�
 
 #### PP-OCRv3
 
-PP-OCRv3在PP-OCRv2的基础上进一步升级。文本检测采用改进fpn网络结构提升检测精度。
+PP-OCRv3在PP-OCRv2的基础上进一步升级。
+PP-OCRv3文本检测从网络结构、蒸馏训练策略两个方向做了进一步优化:
+- 网络结构改进：提出两种改进后的FPN网络结构，RSEFPN，LKPAN，分别从channel attention、更大感受野的角度优化FPN中的特征，优化FPN提取的特征。
+- 蒸馏训练策略：首先，以resnet50作为backbone，改进后的LKPAN网络结构作为FPN，使用DML自蒸馏策略得到精度更高的teacher模型；然后，student模型FPN部分采用RSEFPN，采用PPOCRV2提出的CML蒸馏方法蒸馏，在训练过程中，动态调整CML蒸馏teacher loss的占比。
 
 
 <a name="2"></a>
