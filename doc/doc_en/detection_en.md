@@ -9,12 +9,15 @@ This section uses the icdar2015 dataset as an example to introduce the training,
   * [2.1 Start Training](#21-start-training)
   * [2.2 Load Trained Model and Continue Training](#22-load-trained-model-and-continue-training)
   * [2.3 Training with New Backbone](#23-training-with-new-backbone)
-  * [2.4 Training with knowledge distillation](#24)
+  * [2.4 Mixed Precision Training](#24-amp-training)
+  * [2.5 Distributed Training](#25-distributed-training)
+  * [2.6 Training with knowledge distillation](#26)
+  * [2.7 Training on other platform(Windows/macOS/Linux DCU)](#27)
 - [3. Evaluation and Test](#3-evaluation-and-test)
   * [3.1 Evaluation](#31-evaluation)
   * [3.2 Test](#32-test)
 - [4. Inference](#4-inference)
-- [5. FAQ](#2-faq)
+- [5. FAQ](#5-faq)
 
 ## 1. Data and Weights Preparation
 
@@ -175,10 +178,43 @@ After adding the four-part modules of the network, you only need to configure th
 
 **NOTE**: More details about replace Backbone and other mudule can be found in [doc](add_new_algorithm_en.md).
 
+### 2.4 Mixed Precision Training
 
-### 2.4 Training with knowledge distillation
+If you want to speed up your training further, you can use [Auto Mixed Precision Training](https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/01_paddle2.0_introduction/basic_concept/amp_cn.html), taking a single machine and a single gpu as an example, the commands are as follows:
+
+```shell
+python3 tools/train.py -c configs/det/det_mv3_db.yml \
+     -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained \
+     Global.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True
+ ```
+
+### 2.5 Distributed Training
+
+During multi-machine multi-gpu training, use the `--ips` parameter to set the used machine IP address, and the `--gpus` parameter to set the used GPU ID:
+
+```bash
+python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1,2,3' tools/train.py -c configs/det/det_mv3_db.yml \
+     -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
+```
+
+**Note:** When using multi-machine and multi-gpu training, you need to replace the ips value in the above command with the address of your machine, and the machines need to be able to ping each other. In addition, training needs to be launched separately on multiple machines. The command to view the ip address of the machine is `ifconfig`.
+
+### 2.6 Training with knowledge distillation
 
 Knowledge distillation is supported in PaddleOCR for text detection training process. For more details, please refer to [doc](./knowledge_distillation_en.md).
+
+### 2.7 Training on other platform(Windows/macOS/Linux DCU
+
+- Windows GPU/CPU
+The Windows platform is slightly different from the Linux platform:
+Windows platform only supports `single gpu` training and inference, specify GPU for training `set CUDA_VISIBLE_DEVICES=0`
+On the Windows platform, DataLoader only supports single-process mode, so you need to set `num_workers` to 0;
+
+- macOS
+GPU mode is not supported, you need to set `use_gpu` to False in the configuration file, and the rest of the training evaluation prediction commands are exactly the same as Linux GPU.
+
+- Linux DCU
+Running on a DCU device requires setting the environment variable `export HIP_VISIBLE_DEVICES=0,1,2,3`, and the rest of the training and evaluation prediction commands are exactly the same as the Linux GPU.
 
 ## 3. Evaluation and Test
 
