@@ -1,14 +1,14 @@
 
-# Jeston
+# Jeston Deployment for PaddleOCR
 
 This section introduces the deployment of PaddleOCR on Jeston NX, TX2, nano, AGX and other series of hardware.
 
 
-## 1. 环境准备
+## 1. Prepare Environment
 
 You need to prepare a Jeston development hardware. If you need TensorRT, you need to prepare the TensorRT environment. It is recommended to use TensorRT version 7.1.3;
 
-1. jeston install paddlepaddle
+1. Install PaddlePaddle in Jeston
 
 paddlepaddle download [link](https://www.paddlepaddle.org.cn/inference/user_guides/download_lib.html#python)
 Please select the appropriate installation package for your Jetpack version, cuda version, and trt version.
@@ -49,23 +49,35 @@ tar xf ch_PP-OCRv3_rec_infer.tar
 The text detection inference:
 ```
 cd PaddleOCR
-python3 tools/infer/predict_det.py --det_model_dir=./inference/ch_PP-OCRv2_det_infer/  --image_dir=./doc/imgs/  --use_gpu=True
+python3 tools/infer/predict_det.py --det_model_dir=./inference/ch_PP-OCRv2_det_infer/  --image_dir=./doc/imgs/french_0.jpg  --use_gpu=True
 ```
+
+After executing the command, the predicted information will be printed out in the terminal, and the visualization results will be saved in the `./inference_results/` directory.
+![](./images/det_res_french_0.jpg)
+
 
 The text recognition inference:
 ```
-python3 tools/infer/predict_det.py --rec_model_dir=./inference/ch_PP-OCRv2_rec_infer/  --image_dir=./doc/imgs_words/ch/  --use_gpu=True
+python3 tools/infer/predict_det.py --rec_model_dir=./inference/ch_PP-OCRv2_rec_infer/  --image_dir=./doc/imgs_words/en/word_2.png  --use_gpu=True --rec_image_shape="3,48,320"
+```
+
+After executing the command, the predicted information will be printed on the terminal, and the output is as follows:
+```
+[2022/04/28 15:41:45] root INFO: Predicts of ./doc/imgs_words/en/word_2.png:('yourself', 0.98084533)
 ```
 
 The text  detection and text recognition inference:
 
 ```
-python3 tools/infer/predict_system.py --det_model_dir=./inference/ch_PP-OCRv2_det_infer/ --rec_model_dir=./inference/ch_PP-OCRv2_rec_infer/ --image_dir=./doc/imgs/ --use_gpu=True
+python3 tools/infer/predict_system.py --det_model_dir=./inference/ch_PP-OCRv2_det_infer/ --rec_model_dir=./inference/ch_PP-OCRv2_rec_infer/ --image_dir=./doc/imgs/00057937.jpg --use_gpu=True --rec_image_shape="3,48,320"
 ```
+
+After executing the command, the predicted information will be printed out in the terminal, and the visualization results will be saved in the `./inference_results/` directory.
+![](./images/00057937.jpg)
 
 To enable TRT prediction, you only need to set `--use_tensorrt=True` on the basis of the above command:
 ```
-python3 tools/infer/predict_system.py --det_model_dir=./inference/ch_PP-OCRv2_det_infer/ --rec_model_dir=./inference/ch_PP-OCRv2_rec_infer/ --image_dir=./doc/imgs/ --use_gpu=True --use_tensorrt=True
+python3 tools/infer/predict_system.py --det_model_dir=./inference/ch_PP-OCRv2_det_infer/ --rec_model_dir=./inference/ch_PP-OCRv2_rec_infer/ --image_dir=./doc/imgs/  --rec_image_shape="3,48,320" --use_gpu=True --use_tensorrt=True
 ```
 
 For more ppocr model predictions, please refer to[document](../../doc/doc_en/inference_ppocr_en.md)
