@@ -10,12 +10,12 @@ You need to prepare a Jeston development hardware. If you need TensorRT, you nee
 
 1. Install PaddlePaddle in Jeston
 
-paddlepaddle download [link](https://www.paddlepaddle.org.cn/inference/user_guides/download_lib.html#python)
-Please select the appropriate installation package for your Jetpack version, cuda version, and trt version.
+The PaddlePaddle download [link](https://www.paddlepaddle.org.cn/inference/user_guides/download_lib.html#python)
+Please select the appropriate installation package for your Jetpack version, cuda version, and trt version. Here, we download paddlepaddle_gpu-2.3.0rc0-cp36-cp36m-linux_aarch64.whl.
 
-Install paddlepaddle：
+Install PaddlePaddle：
 ```shell
-pip3 install -U paddlepaddle_gpu-*-cp36-cp36m-linux_aarch64.whl
+pip3 install -U paddlepaddle_gpu-2.3.0rc0-cp36-cp36m-linux_aarch64.whl
 ```
 
 
@@ -36,7 +36,7 @@ pip3 install -r requirements.txt
 
 ## 2. Perform prediction
 
-Obtain the PPOCR model from the [document](../../doc/doc_en/ppocr_introduction_en.md) model library. The following takes the PP-OCRv3 model as an example to introduce the use of the PPOCR model on jeston:
+Obtain the PPOCR model from the [document](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/ppocr_introduction.md#6-%E6%A8%A1%E5%9E%8B%E5%BA%93) model library. The following takes the PP-OCRv3 model as an example to introduce the use of the PPOCR model on jeston:
 
 Download and unzip the PP-OCRv3 models.
 ```

@@ -50,19 +50,6 @@ After the data download is complete, please refer to [Text Detection Training Tu
 <a name="4-1"></a>
 ### 4.1 Python Inference
 
-#### 4.1.2 Inference for Trained Model
-After training, inference can be performed directly. Take [the model trained on the ICDAR2015 English dataset](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar) based on the Resnet50_vd backbone network as an example.
-
-
-```shell
-# download trained model
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar
-tar xf det_r50_vd_east_v2.0_train.tar
-# run inference
-python3 tools/infer_det.py -c configs/det/det_r50_vd_east.yml -o Global.pretrained_model=./det_r50_vd_east_v2.0_train/best_accuracy  Global.infer_img=./doc/imgs_en/img_10.jpg
-```
-
-#### 4.1.2 Inference for Inference Model
 First, convert the model saved in the EAST text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the ICDAR2015 English dataset as example ([model download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar)), you can use the following command to convert:
 
 ```shell

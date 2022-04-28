@@ -49,20 +49,6 @@
 <a name="4-1"></a>
 ### 4.1 Python推理
 
-#### 4.1.1 基于训练模型的推理
-
-训练完模型后可直接进行推理，以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例（ 训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar))，使用方式如下：
-
-```shell
-# 下载模型并解压
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar
-tar xf det_r50_vd_east_v2.0_train.tar
-# 执行预测
-python3 tools/infer_det.py -c configs/det/det_r50_vd_east.yml -o Global.pretrained_model=./det_r50_vd_east_v2.0_train/best_accuracy  Global.infer_img=./doc/imgs_en/img_10.jpg
-```
-
-#### 4.1.2 基于paddle预测引擎的推理
-
 首先将EAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例（ 训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar))，可以使用如下命令进行转换：
 
 ```shell
