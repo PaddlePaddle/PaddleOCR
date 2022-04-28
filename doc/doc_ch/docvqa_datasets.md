@@ -11,8 +11,8 @@
     <img src="../datasets/funsd_demo/gt_train_00040534.jpg" width="500">
     <img src="../datasets/funsd_demo/gt_train_00070353.jpg" width="500">
 </div>
-图中，橙色区域代表`标题`，淡蓝色区域代表`问题`, 绿色区域表`答案`，粉红色代区域表`其他`。
-
+    图中，橙色区域代表`header`，淡蓝色区域代表`question`, 绿色区域表`answer`，粉红色代区域表`other`。
+    
 - **下载地址**：https://guillaumejaume.github.io/FUNSD/download/
 
 <a name="xfund"></a>
@@ -23,6 +23,5 @@
     <img src="../datasets/xfund_demo/gt_zh_train_0.jpg" width="500">
     <img src="../datasets/xfund_demo/gt_zh_train_1.jpg" width="500">
 </div>
-图中，橙色区域代表`标题`，淡蓝色区域代表`问题`, 绿色区域表`答案`，粉红色代区域表`其他`。
 
 - **下载地址**：https://github.com/doc-analysis/XFUND/releases/tag/v1.0
