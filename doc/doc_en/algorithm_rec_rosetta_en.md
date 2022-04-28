@@ -1,4 +1,4 @@
-#rosetta
+# Rosetta
 
 - [1. Introduction to Algorithms](#1)
 - [2. Environment Configuration](#2)
@@ -25,8 +25,8 @@ Using MJSynth and SynthText two text recognition datasets for training, and eval
 
 |Models|Backbone Networks|Configuration Files|Avg Accuracy|Download Links|
 | --- | --- | --- | --- | --- |
-|Rosetta|Resnet34_vd|[configs/rec/rec_r34_vd_none_none_ctc.yml](../../configs/rec/rec_r34_vd_none_none_ctc.yml)|79.11%|[training model](https://paddleocr.bj.bcebos.com/ dygraph_v2.0/en/rec_r34_vd_none_none_ctc_v2.0_train.tar)|
-|Rosetta|MobileNetV3|[configs/rec/rec_mv3_none_none_ctc.yml](../../configs/rec/rec_mv3_none_none_ctc.yml)|75.80%|[training model](https://paddleocr.bj.bcebos.com/ dygraph_v2.0/en/rec_mv3_none_none_ctc_v2.0_train.tar)|
+|Rosetta|Resnet34_vd|[configs/rec/rec_r34_vd_none_none_ctc.yml](../../configs/rec/rec_r34_vd_none_none_ctc.yml)|79.11%|[training model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_none_none_ctc_v2.0_train.tar)|
+|Rosetta|MobileNetV3|[configs/rec/rec_mv3_none_none_ctc.yml](../../configs/rec/rec_mv3_none_none_ctc.yml)|75.80%|[training model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_none_none_ctc_v2.0_train.tar)|
 
 
 <a name="2"></a>
@@ -77,13 +77,14 @@ python3 tools/export_model.py -c configs/rec/rec_r34_vd_none_none_ctc.yml -o Glo
 Rosetta text recognition model inference, you can execute the following commands:
 
 ```shell
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/img_10.png" --rec_model_dir="./inference/rec_rosetta/"
+python3 tools/infer/predict_rec.py --image_dir="doc/imgs_words/en/word_1.png" --rec_model_dir="./inference/rec_rosetta/"
 ````
 
-Visual text recognition results are saved to the `./inference_results` folder by default, and the name of the result file is prefixed with 'rec_res'. An example of the result is as follows:
+Visual text recognition results are saved to the `./output/rec` folder by default, and the name of the result file is 'predicts_r34_vd_none_none_ctc.txt'. An example of the result is as follows:
 
-![](../imgs_results/rec_res_img_10_rosetta.png)
-
+```
+doc/imgs_words/en/word_1.png    joint    0.9999774694442749
+```
 
 <a name="4-2"></a>
 ### 4.2 C++ Reasoning

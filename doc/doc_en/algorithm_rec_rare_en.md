@@ -25,8 +25,8 @@ Using MJSynth and SynthText two text recognition datasets for training, and eval
 
 |Models|Backbone Networks|Configuration Files|Avg Accuracy|Download Links|
 | --- | --- | --- | --- | --- |
-|RARE|Resnet34_vd|[configs/rec/rec_r34_vd_tps_bilstm_att.yml](../../configs/rec/rec_r34_vd_tps_bilstm_att.yml)|83.6%|[training model](https://paddleocr.bj.bcebos.com/ dygraph_v2.0/en/rec_r34_vd_tps_bilstm_att_v2.0_train.tar)|
-|RARE|MobileNetV3|[configs/rec/rec_mv3_tps_bilstm_att.yml](../../configs/rec/rec_mv3_tps_bilstm_att.yml)|82.5%|[trained model](https://paddleocr.bj.bcebos.com/ dygraph_v2.0/en/rec_mv3_tps_bilstm_att_v2.0_train.tar)|
+|RARE|Resnet34_vd|[configs/rec/rec_r34_vd_tps_bilstm_att.yml](../../configs/rec/rec_r34_vd_tps_bilstm_att.yml)|83.6%|[training model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_tps_bilstm_att_v2.0_train.tar)|
+|RARE|MobileNetV3|[configs/rec/rec_mv3_tps_bilstm_att.yml](../../configs/rec/rec_mv3_tps_bilstm_att.yml)|82.5%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_tps_bilstm_att_v2.0_train.tar)|
 
 
 <a name="2"></a>
@@ -66,7 +66,7 @@ python3 tools/infer_rec.py -c configs/rec/rec_r34_vd_tps_bilstm_att.yml -o Globa
 
 <a name="4-1"></a>
 ### 4.1 Python Reasoning
-First, convert the model saved during the RARE text recognition training process into an inference model. Take the model trained on the MJSynth and SynthText text recognition datasets based on the Resnet34_vd backbone network as an example ([Model download address](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_tps_bilstm_att_v2.0_train .tar) ), which can be converted using the following command:
+First, convert the model saved during the RARE text recognition training process into an inference model. Take the model trained on the MJSynth and SynthText text recognition datasets based on the Resnet34_vd backbone network as an example ([Model download address](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_tps_bilstm_att_v2.0_train.tar) ), which can be converted using the following command:
 
 ```shell
 python3 tools/export_model.py -c configs/rec/rec_r34_vd_tps_bilstm_att.yml -o Global.pretrained_model=./rec_r34_vd_tps_bilstm_att_v2.0_train/best_accuracy Global.save_inference_dir=./inference/rec_rare
@@ -75,13 +75,14 @@ python3 tools/export_model.py -c configs/rec/rec_r34_vd_tps_bilstm_att.yml -o Gl
 RARE text recognition model inference, you can execute the following commands:
 
 ```shell
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/img_10.png" --rec_model_dir="./inference/rec_rare/"
+python3 tools/infer/predict_rec.py --image_dir="doc/imgs_words/en/word_1.png" --rec_model_dir="./inference/rec_rare/"
 ````
 
-Visual text recognition results are saved to the `./inference_results` folder by default, and the name of the result file is prefixed with 'rec_res'. An example of the result is as follows:
+Visual text recognition results are saved to the `output/rec` folder by default, and the name of the result file is prefixed with 'predicts_r34_vd_tps_bilstm_att.txt'. An example of the result is as follows:
 
-![](../imgs_results/rec_res_img_10_rare.png)
-
+```
+doc/imgs_words/en/word_1.png    joint    0.9999986886978149
+```
 
 <a name="4-2"></a>
 ### 4.2 C++ Reasoning

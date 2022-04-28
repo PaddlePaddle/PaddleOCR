@@ -77,13 +77,14 @@ python3 tools/export_model.py -c configs/rec/rec_r34_vd_none_none_ctc.yml -o Glo
 Rosetta文本识别模型推理，可以执行如下命令：
 
 ```shell
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/img_10.png" --rec_model_dir="./inference/rec_rosetta/"
+python3 tools/infer/predict_rec.py --image_dir="doc/imgs_words/en/word_1.png" --rec_model_dir="./inference/rec_rosetta/"
 ```
 
-可视化文本识别结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'rec_res'。结果示例如下：
+可视化文本识别结果默认保存到`output/rec`文件夹里面，结果文件名为`predicts_r34_vd_none_none_ctc.txt`。结果示例如下：
 
-![](../imgs_results/rec_res_img_10_rosetta.png)
-
+```
+doc/imgs_words/en/word_1.png    joint    0.9999774694442749
+```
 
 <a name="4-2"></a>
 ### 4.2 C++推理
