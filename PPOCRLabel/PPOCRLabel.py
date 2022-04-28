@@ -1733,7 +1733,7 @@ class MainWindow(QMainWindow):
             width, height = self.image.width(), self.image.height()
             for shape in self.canvas.lockedShapes:
                 box = [[int(p[0] * width), int(p[1] * height)] for p in shape['ratio']]
-                assert len(box) == 4
+                # assert len(box) == 4
                 result = [(shape['transcription'], 1)]
                 result.insert(0, box)
                 self.result_dic_locked.append(result)
