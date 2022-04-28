@@ -1,14 +1,14 @@
 
-# Jeston部署PaddleOCR模型
+# Jetson部署PaddleOCR模型
 
-本节介绍PaddleOCR在Jeston NX、TX2、nano、AGX等系列硬件的部署。
+本节介绍PaddleOCR在Jetson NX、TX2、nano、AGX等系列硬件的部署。
 
 
 ## 1. 环境准备
 
-需要准备一台Jeston开发板，如果需要TensorRT预测，需准备好TensorRT环境，建议使用7.1.3版本的TensorRT；
+需要准备一台Jetson开发板，如果需要TensorRT预测，需准备好TensorRT环境，建议使用7.1.3版本的TensorRT；
 
-1. jeston安装PaddlePaddle
+1. Jetson安装PaddlePaddle
 
 PaddlePaddle下载[链接](https://www.paddlepaddle.org.cn/inference/user_guides/download_lib.html#python)
 请选择适合的您Jetpack版本、cuda版本、trt版本的安装包。
@@ -33,12 +33,12 @@ cd PaddleOCR
 pip3 install -r requirements.txt
 ```
 
-*注：jeston硬件CPU较差，依赖安装较慢，请耐心等待*
+*注：jetson硬件CPU较差，依赖安装较慢，请耐心等待*
 
 
 ## 2. 执行预测
 
-从[文档](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/ppocr_introduction.md#6-%E6%A8%A1%E5%9E%8B%E5%BA%93) 模型库中获取PPOCR模型，下面以PP-OCRv3模型为例，介绍在PPOCR模型在jeston上的使用方式：
+从[文档](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/ppocr_introduction.md#6-%E6%A8%A1%E5%9E%8B%E5%BA%93) 模型库中获取PPOCR模型，下面以PP-OCRv3模型为例，介绍在PPOCR模型在jetson上的使用方式：
 
 下载并解压PP-OCRv3模型
 ```
