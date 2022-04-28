@@ -446,7 +446,7 @@ python3 tools/export_model.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Glo
 转换成功后，在目录下有三个文件：
 
 ```
-/inference/en_PP-OCRv3_rec/
+inference/en_PP-OCRv3_rec/
     ├── inference.pdiparams         # 识别inference模型的参数文件
     ├── inference.pdiparams.info    # 识别inference模型的参数信息，可忽略
     └── inference.pdmodel           # 识别inference模型的program文件
