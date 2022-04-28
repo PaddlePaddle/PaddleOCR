@@ -71,7 +71,6 @@ SVTR在场景文本识别公开数据集上的精度(%)和模型文件如下：
 ```shell
 # 注意将pretrained_model的路径设置为本地路径。
 python3 tools/eval.py -c ./rec_svtr_tiny_en_train/rec_svtr_tiny_6local_6global_stn_en.yml -o Global.pretrained_model=./rec_svtr_tiny_none_ctc_en_train/best_accuracy
-# 测试中文数据集时，需将`scene_val`数据集修改为`scene_test`，才能得到论文中的结果。
 ```
 
 <a name="3-3"></a>
