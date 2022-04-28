@@ -51,8 +51,8 @@ Relationship of the above models is as follows.
 
 |model name|description|config|model size|download|
 | --- | --- | --- | --- | --- |
-|en_PP-OCRv3_det_slim | [New] Slim qunatization with distillation lightweight detection model, supporting English | [ch_PP-OCRv2_det_cml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml) | 1.1M |[inference model(coming soon)](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_slim_quant_infer.tar) / [lite model(coming soon)](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_slim_quant_infer.nb) |
-|ch_PP-OCRv3_det | [New] Original lightweight detection model, supporting English |[ch_PP-OCRv2_det_cml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml)| 3.8M | [inference model](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_distill_train.tar) |
+|en_PP-OCRv3_det_slim | [New] Slim qunatization with distillation lightweight detection model, supporting English | [ch_PP-OCRv3_det_cml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml) | 1.1M |[inference model(coming soon)](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_slim_quant_infer.tar) / [lite model(coming soon)](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_slim_quant_infer.nb) |
+|ch_PP-OCRv3_det | [New] Original lightweight detection model, supporting English |[ch_PP-OCRv3_det_cml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml)| 3.8M | [inference model](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_distill_train.tar) |
 
 * Note: English configuration file is same as Chinese except training data, here we only provide one configuration file.
 
@@ -62,8 +62,8 @@ Relationship of the above models is as follows.
 
 |model name|description|config|model size|download|
 | --- | --- | --- | --- | --- |
-| ml_PP-OCRv3_det_slim | [New] Slim qunatization with distillation lightweight detection model, supporting English | [ch_PP-OCRv2_det_cml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml) | 1.1M |[inference model(coming soon)](https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/Multilingual_PP-OCRv3_det_slim_quant_infer.tar) / [lite model(coming soon)](https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/Multilingual_PP-OCRv3_det_slim_quant_infer.nb) |
-| ml_PP-OCRv3_det |[New] Original lightweight detection model, supporting English | [ch_PP-OCRv2_det_cml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml)| 3.8M | [inference model](https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/Multilingual_PP-OCRv3_det_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/Multilingual_PP-OCRv3_det_distill_train.tar) |
+| ml_PP-OCRv3_det_slim | [New] Slim qunatization with distillation lightweight detection model, supporting English | [ch_PP-OCRv3_det_cml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml) | 1.1M |[inference model(coming soon)](https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/Multilingual_PP-OCRv3_det_slim_quant_infer.tar) / [lite model(coming soon)](https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/Multilingual_PP-OCRv3_det_slim_quant_infer.nb) |
+| ml_PP-OCRv3_det |[New] Original lightweight detection model, supporting English | [ch_PP-OCRv3_det_cml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml)| 3.8M | [inference model](https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/Multilingual_PP-OCRv3_det_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/Multilingual_PP-OCRv3_det_distill_train.tar) |
 
 * Note: English configuration file is same as Chinese except training data, here we only provide one configuration file.
 
