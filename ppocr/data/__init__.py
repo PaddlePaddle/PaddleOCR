@@ -72,6 +72,7 @@ def build_dataloader(config, mode, device, logger, seed=None):
         use_shared_memory = loader_config['use_shared_memory']
     else:
         use_shared_memory = True
+
     if mode == "Train":
         # Distribute data to multiple cards
         batch_sampler = DistributedBatchSampler(

@@ -22,9 +22,11 @@ PP-OCR has supported muti deployment schemes. Click the link to get the specific
 
 - [Python Inference](../doc/doc_en/inference_ppocr_en.md)
 - [C++ Inference](./cpp_infer/readme.md)
-- [Serving](./pdserving/README.md)
-- [Paddle-Lite](./lite/readme.md)
+- [Serving (Python/C++)](./pdserving/README.md)
+- [Paddle-Lite (ARM CPU/OpenCL ARM GPU/Metal ARM GPU)](./lite/readme.md)
 - [Paddle.js](./paddlejs/README.md)
+- [Jetson Inference]()
+- [XPU Inference]()
 - [Paddle2ONNX](./paddle2onnx/readme.md)
 
 If you need the deployment tutorial of academic algorithm models other than PP-OCR, please directly enter the main page of corresponding algorithms, [entrance](../doc/doc_en/algorithm_overview_en.md)。

@@ -1,75 +1,31 @@
-
 # 文字检测
 
 本节以icdar2015数据集为例，介绍PaddleOCR中检测模型训练、评估、测试的使用方式。
 
-- [1. 准备数据和模型](#1--------)
-  * [1.1 数据准备](#11-----)
-  * [1.2 下载预训练模型](#12--------)
-- [2. 开始训练](#2-----)
-  * [2.1 启动训练](#21-----)
-  * [2.2 断点训练](#22-----)
-  * [2.3 更换Backbone 训练](#23---backbone---)
-  * [2.4 混合精度训练](#24---amp---)
-  * [2.5 分布式训练](#25---fleet---)
-  * [2.6 知识蒸馏训练](#26---distill---)
-  * [2.7 其他训练环境（Windows/macOS/Linux DCU）](#27---other---)
-- [3. 模型评估与预测](#3--------)
-  * [3.1 指标评估](#31-----)
-  * [3.2 测试检测效果](#32-------)
-- [4. 模型导出与预测](#4--------)
+- [1. 准备数据和模型](#1-准备数据和模型)
+  - [1.1 准备数据集](#11-准备数据集)
+  - [1.2 下载预训练模型](#12-下载预训练模型)
+- [2. 开始训练](#2-开始训练)
+  - [2.1 启动训练](#21-启动训练)
+  - [2.2 断点训练](#22-断点训练)
+  - [2.3 更换Backbone 训练](#23-更换backbone-训练)
+  - [2.4 混合精度训练](#24-混合精度训练)
+  - [2.5 分布式训练](#25-分布式训练)
+  - [2.6 知识蒸馏训练](#26-知识蒸馏训练)
+  - [2.7 其他训练环境](#27-其他训练环境)
+- [3. 模型评估与预测](#3-模型评估与预测)
+  - [3.1 指标评估](#31-指标评估)
+  - [3.2 测试检测效果](#32-测试检测效果)
+- [4. 模型导出与预测](#4-模型导出与预测)
 - [5. FAQ](#5-faq)
 
 <a name="1--------"></a>
 # 1. 准备数据和模型
 
-<a name="11-----"></a>
-## 1.1 数据准备
+## 1.1 准备数据集
 
-icdar2015 TextLocalization数据集是文本检测的数据集，包含1000张训练图像和500张测试图像。
-icdar2015数据集可以从[官网](https://rrc.cvc.uab.es/?ch=4&com=downloads)下载到，首次下载需注册。
-注册完成登陆后，下载下图中红色框标出的部分，其中， `Training Set Images`下载的内容保存为`icdar_c4_train_imgs`文件夹下，`Test Set Images` 下载的内容保存为`ch4_test_images`文件夹下
+准备数据集可参考 [ocr_datasets](./dataset/ocr_datasets.md) 。
 
-<p align="center">
- <img src="../datasets/ic15_location_download.png" align="middle" width = "700"/>
-<p align="center">
-
-将下载到的数据集解压到工作目录下，假设解压在 PaddleOCR/train_data/下。另外，PaddleOCR将零散的标注文件整理成单独的标注文件
-，您可以通过wget的方式进行下载。
-```shell
-# 在PaddleOCR路径下
-cd PaddleOCR/
-wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dataset/train_icdar2015_label.txt
-wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dataset/test_icdar2015_label.txt
-```
-
-PaddleOCR 也提供了数据格式转换脚本，可以将官网 label 转换支持的数据格式。 数据转换工具在 `ppocr/utils/gen_label.py`, 这里以训练集为例：
-
-```
-# 将官网下载的标签文件转换为 train_icdar2015_label.txt
-python gen_label.py --mode="det" --root_path="/path/to/icdar_c4_train_imgs/"  \
-                    --input_path="/path/to/ch4_training_localization_transcription_gt" \
-                    --output_label="/path/to/train_icdar2015_label.txt"
-```
-
-解压数据集和下载标注文件后，PaddleOCR/train_data/ 有两个文件夹和两个文件，按照如下方式组织icdar2015数据集：
-```
-/PaddleOCR/train_data/icdar2015/text_localization/
-  └─ icdar_c4_train_imgs/         icdar数据集的训练数据
-  └─ ch4_test_images/             icdar数据集的测试数据
-  └─ train_icdar2015_label.txt    icdar数据集的训练标注
-  └─ test_icdar2015_label.txt     icdar数据集的测试标注
-```
-
-提供的标注文件格式如下，中间用"\t"分隔：
-```
-" 图像文件名                    json.dumps编码的图像标注信息"
-ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]]}, {...}]
-```
-json.dumps编码前的图像标注信息是包含多个字典的list，字典中的 `points` 表示文本框的四个点的坐标(x, y)，从左上角的点开始顺时针排列。
-`transcription` 表示当前文本框的文字，**当其内容为“###”时，表示该文本框无效，在训练时会跳过。**
-
-如果您想在其他数据集上训练，可以按照上述形式构建标注文件。
 
 <a name="12--------"></a>
 ## 1.2 下载预训练模型
@@ -178,7 +134,7 @@ args1: args1
 ## 2.4 混合精度训练
 
 如果您想进一步加快训练速度，可以使用[自动混合精度训练](https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/01_paddle2.0_introduction/basic_concept/amp_cn.html)， 以单机单卡为例，命令如下：
-    
+
 ```shell
 python3 tools/train.py -c configs/det/det_mv3_db.yml \
      -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained \
@@ -197,7 +153,7 @@ python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1
 
 **注意:** 采用多机多卡训练时，需要替换上面命令中的ips值为您机器的地址，机器之间需要能够相互ping通。另外，训练时需要在多个机器上分别启动命令。查看机器ip地址的命令为`ifconfig`。
 
-    
+
 <a name="26---distill---"></a>
 
 ## 2.6 知识蒸馏训练
@@ -211,12 +167,12 @@ PaddleOCR支持了基于知识蒸馏的检测模型训练过程，更多内容�
 ## 2.7 其他训练环境
 
 - Windows GPU/CPU
-    
+
 - macOS
-    
+
 - Linux DCU
-    
-    
+
+
 <a name="3--------"></a>
 # 3. 模型评估与预测
 

@@ -2,133 +2,31 @@
 
 本文提供了PaddleOCR文本识别任务的全流程指南，包括数据准备、模型训练、调优、评估、预测，各个阶段的详细说明：
 
-- [文字识别](#文字识别)
-  - [1. 数据准备](#1-数据准备)
-    - [1.1 自定义数据集](#11-自定义数据集)
-    - [1.2 数据下载](#12-数据下载)
-    - [1.3 字典](#13-字典)
-    - [1.4 添加空格类别](#14-添加空格类别)
-  - [2. 启动训练](#2-启动训练)
-    - [2.1 数据增强](#21-数据增强)
-    - [2.2 通用模型训练](#22-通用模型训练)
-    - [2.3 多语言模型训练](#23-多语言模型训练)
-    - [2.4 知识蒸馏训练](#24-知识蒸馏训练)
-  - [3 评估](#3-评估)
-  - [4 预测](#4-预测)
-  - [5. 转Inference模型测试](#5-转inference模型测试)
+- [1. 数据准备](#1-数据准备)
+  - [1.1 准备数据集](#11-准备数据集)
+  - [1.2 字典](#12-字典)
+  - [1.3 添加空格类别](#13-添加空格类别)
+- [2. 启动训练](#2-启动训练)
+  - [2.1 数据增强](#21-数据增强)
+  - [2.2 通用模型训练](#22-通用模型训练)
+  - [2.3 多语言模型训练](#23-多语言模型训练)
+  - [2.4 知识蒸馏训练](#24-知识蒸馏训练)
+- [3 评估](#3-评估)
+- [4 预测](#4-预测)
+- [5. 转Inference模型测试](#5-转inference模型测试)
 
 
 <a name="数据准备"></a>
 ## 1. 数据准备
 
+### 1.1 准备数据集
 
-PaddleOCR 支持两种数据格式:
- - `lmdb` 用于训练以lmdb格式存储的数据集(LMDBDataSet);
- - `通用数据` 用于训练以文本文件存储的数据集(SimpleDataSet);
-
-训练数据的默认存储路径是 `PaddleOCR/train_data`,如果您的磁盘上已有数据集，只需创建软链接至数据集目录：
-
-```
-# linux and mac os
-ln -sf <path/to/dataset> <path/to/paddle_ocr>/train_data/dataset
-# windows
-mklink /d <path/to/paddle_ocr>/train_data/dataset <path/to/dataset>
-```
-
-<a name="准备数据集"></a>
-### 1.1 自定义数据集
-下面以通用数据集为例， 介绍如何准备数据集：
-
-* 训练集
-
-建议将训练图片放入同一个文件夹，并用一个txt文件（rec_gt_train.txt）记录图片路径和标签，txt文件里的内容如下:
-
-**注意：** txt文件中默认请将图片路径和图片标签用 \t 分割，如用其他方式分割将造成训练报错。
-
-```
-" 图像文件名                 图像标注信息 "
-
-train_data/rec/train/word_001.jpg   简单可依赖
-train_data/rec/train/word_002.jpg   用科技让复杂的世界更简单
-...
-```
-
-最终训练集应有如下文件结构：
-```
-|-train_data
-  |-rec
-    |- rec_gt_train.txt
-    |- train
-        |- word_001.png
-        |- word_002.jpg
-        |- word_003.jpg
-        | ...
-```
-
-除上述单张图像为一行格式之外，PaddleOCR也支持对离线增广后的数据进行训练，为了防止相同样本在同一个batch中被多次采样，我们可以将相同标签对应的图片路径写在一行中，以列表的形式给出，在训练中，PaddleOCR会随机选择列表中的一张图片进行训练。对应地，标注文件的格式如下。
-
-```
-["11.jpg", "12.jpg"]   简单可依赖
-["21.jpg", "22.jpg", "23.jpg"]   用科技让复杂的世界更简单
-3.jpg   ocr
-```
-
-上述示例标注文件中，"11.jpg"和"12.jpg"的标签相同，都是`简单可依赖`，在训练的时候，对于该行标注，会随机选择其中的一张图片进行训练。
-
-
-- 验证集
-
-同训练集类似，验证集也需要提供一个包含所有图片的文件夹（test）和一个rec_gt_test.txt，验证集的结构如下所示：
-
-```
-|-train_data
-  |-rec
-    |- rec_gt_test.txt
-    |- test
-        |- word_001.jpg
-        |- word_002.jpg
-        |- word_003.jpg
-        | ...
-```
-
-<a name="数据下载"></a>
-
-### 1.2 数据下载
-
-- ICDAR2015
-
-若您本地没有数据集，可以在官网下载 [ICDAR2015](http://rrc.cvc.uab.es/?ch=4&com=downloads) 数据，用于快速验证。也可以参考[DTRB](https://github.com/clovaai/deep-text-recognition-benchmark#download-lmdb-dataset-for-traininig-and-evaluation-from-here) ，下载 benchmark 所需的lmdb格式数据集。
+准备数据集可参考 [ocr_datasets](./dataset/ocr_datasets.md) 。
 
 如果希望复现SAR的论文指标，需要下载[SynthAdd](https://pan.baidu.com/share/init?surl=uV0LtoNmcxbO-0YA7Ch4dg), 提取码：627x。此外，真实数据集icdar2013, icdar2015, cocotext, IIIT5也作为训练数据的一部分。具体数据细节可以参考论文SAR。
 
-如果你使用的是icdar2015的公开数据集，PaddleOCR 提供了一份用于训练 ICDAR2015 数据集的标签文件，通过以下方式下载：
-
-```
-# 训练集标签
-wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_train.txt
-# 测试集标签
-wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_test.txt
-```
-
-PaddleOCR 也提供了数据格式转换脚本，可以将ICDAR官网 label 转换为PaddleOCR支持的数据格式。 数据转换工具在 `ppocr/utils/gen_label.py`, 这里以训练集为例：
-
-```
-# 将官网下载的标签文件转换为 rec_gt_label.txt
-python gen_label.py --mode="rec" --input_path="{path/of/origin/label}" --output_label="rec_gt_label.txt"
-```
-
-数据样式格式如下，(a)为原始图片,(b)为每张图片对应的 Ground Truth 文本文件：
-![](../datasets/icdar_rec.png)
-
-- 多语言数据集
-
-多语言模型的训练数据集均为100w的合成数据，使用了开源合成工具 [text_renderer](https://github.com/Sanster/text_renderer) ，少量的字体可以通过下面两种方式下载。
-* [百度网盘](https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA) 提取码：frgi
-* [google drive](https://drive.google.com/file/d/18cSWX7wXSy4G0tbKJ0d9PuIaiwRLHpjA/view)
-
-
 <a name="字典"></a>
-### 1.3 字典
+### 1.2 字典
 
 最后需要提供一个字典（{word_dict_name}.txt），使模型在训练时，可以将所有出现的字符映射为字典的索引。
 
@@ -174,7 +72,7 @@ PaddleOCR内置了一部分字典，可以按需使用。
 如需自定义dic文件，请在 `configs/rec/rec_icdar15_train.yml` 中添加 `character_dict_path` 字段, 指向您的字典路径。
 
 <a name="支持空格"></a>
-### 1.4 添加空格类别
+### 1.3 添加空格类别
 
 如果希望支持识别"空格"类别, 请将yml文件中的 `use_space_char` 字段设置为 `True`。
 

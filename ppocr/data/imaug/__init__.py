@@ -24,6 +24,7 @@ from .make_pse_gt import MakePseGt
 
 from .rec_img_aug import RecAug, RecConAug, RecResizeImg, ClsResizeImg, \
     SRNRecResizeImg, NRTRRecResizeImg, SARRecResizeImg, PRENResizeImg, SVTRRecResizeImg
+from .ssl_img_aug import SSLRotateResize
 from .randaugment import RandAugment
 from .copy_paste import CopyPaste
 from .ColorJitter import ColorJitter

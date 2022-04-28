@@ -22,7 +22,7 @@
     * CCPD-Challenge: 至今在车牌检测识别任务中最有挑战性的一些图片
     * CCPD-NP: 没有安装车牌的新车图片。
 
-    ![](../datasets/ccpd_demo.png)
+    ![](../../datasets/ccpd_demo.png)
 
 
 - **下载地址**
@@ -46,7 +46,7 @@
         * 有效期结束：07/41
         * 卡用户拼音：MICHAEL
 
-    ![](../datasets/cmb_demo.jpg)
+    ![](../../datasets/cmb_demo.jpg)
 
 - **下载地址**: [https://cdn.kesci.com/cmb2017-2.zip](https://cdn.kesci.com/cmb2017-2.zip)
 
@@ -59,7 +59,7 @@
 
 - **数据简介**: 这是一个数据合成的工具包，可以根据输入的文本，输出验证码图片，使用该工具包生成几张demo图片如下。
 
-    ![](../datasets/captcha_demo.png)
+    ![](../../datasets/captcha_demo.png)
 
 - **下载地址**: 该数据集是生成得到，无下载地址。
 
