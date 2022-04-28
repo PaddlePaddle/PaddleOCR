@@ -177,7 +177,7 @@ void DBDetector::Run(cv::Mat &img,
     
   //// visualization
   if (this->visualize_) {
-    Utility::VisualizeBboxes(srcimg, boxes);
+    Utility::VisualizeBboxes(srcimg, boxes,resize_img.cols, resize_img.rows);
   }
 }
 
