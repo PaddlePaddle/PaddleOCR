@@ -32,7 +32,10 @@ PP-OCR system is in continuous optimization. At present, PP-OCR and PP-OCRv2 hav
 
 [2] On the basis of PP-OCR, PP-OCRv2 is further optimized in five aspects. The detection model adopts CML(Collaborative Mutual Learning) knowledge distillation strategy and CopyPaste data expansion strategy. The recognition model adopts LCNet lightweight backbone network, U-DML knowledge distillation strategy and enhanced CTC loss function improvement (as shown in the red box above), which further improves the inference speed and prediction effect. For more details, please refer to the technical report of PP-OCRv2 (https://arxiv.org/abs/2109.03144).
 
-[3] PP-OCRv3 is further upgraded on the basis of PP-OCRv2. The detection model adopts the improved fpn network structure to improve the detection accuracy.
+[3] PP-OCRv3 is further upgraded on the basis of PP-OCRv2.
+PP-OCRv3 text detection has been further optimized from the two directions of network structure and distillation training strategy:
+- Network structure improvement: Two improved FPN network structures, RSEFPN and LKPAN, are proposed to optimize the features in the FPN from the perspective of channel attention and a larger receptive field, and optimize the features extracted by the FPN.
+- Distillation training strategy: First, use resnet50 as the backbone, the improved LKPAN network structure as the FPN, and use the DML self-distillation strategy to obtain a teacher model with higher accuracy; then, the FPN part of the student model adopts RSEFPN, and adopts the CML distillation method proposed by PPOCRV2, during the training process, dynamically adjust the proportion of CML distillation teacher loss.
 
 
 <a name="2"></a>
