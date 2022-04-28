@@ -158,7 +158,7 @@ class TextDetector(object):
         rect[1] = pts[np.argmin(diff)]
         rect[3] = pts[np.argmax(diff)]
         return rect
-    
+
     def clip_det_res(self, points, img_height, img_width):
         for pno in range(points.shape[0]):
             points[pno, 0] = int(min(max(points[pno, 0], 0), img_width - 1))
@@ -284,7 +284,7 @@ if __name__ == "__main__":
             total_time += elapse
         count += 1
         save_pred = os.path.basename(image_file) + "\t" + str(
-            json.dumps(np.array(dt_boxes).astype(np.int32).tolist())) + "\n"
+            json.dumps([x.tolist() for x in dt_boxes])) + "\n"
         save_results.append(save_pred)
         logger.info(save_pred)
         logger.info("The predict time of {}: {}".format(image_file, elapse))

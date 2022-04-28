@@ -27,6 +27,7 @@
 <a name="1-数据准备"></a>
 # 1. 数据准备
 
+### 1.1 准备数据集
 
 PaddleOCR 支持两种数据格式:
  - `lmdb` 用于训练以lmdb格式存储的数据集(LMDBDataSet);

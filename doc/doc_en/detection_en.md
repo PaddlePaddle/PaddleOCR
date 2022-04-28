@@ -2,9 +2,9 @@
 
 This section uses the icdar2015 dataset as an example to introduce the training, evaluation, and testing of the detection model in PaddleOCR.
 
-- [1. Data and Weights Preparation](#1-data-and-weights-preparatio)
-  * [1.1 Data Preparation](#11-data-preparation)
-  * [1.2 Download Pre-trained Model](#12-download-pretrained-model)
+- [1. Data and Weights Preparation](#1-data-and-weights-preparation)
+  - [1.1 Data Preparation](#11-data-preparation)
+  - [1.2 Download Pre-trained Model](#12-download-pre-trained-model)
 - [2. Training](#2-training)
   * [2.1 Start Training](#21-start-training)
   * [2.2 Load Trained Model and Continue Training](#22-load-trained-model-and-continue-training)
@@ -14,8 +14,8 @@ This section uses the icdar2015 dataset as an example to introduce the training,
   * [2.6 Training with knowledge distillation](#26)
   * [2.7 Training on other platform(Windows/macOS/Linux DCU)](#27)
 - [3. Evaluation and Test](#3-evaluation-and-test)
-  * [3.1 Evaluation](#31-evaluation)
-  * [3.2 Test](#32-test)
+  - [3.1 Evaluation](#31-evaluation)
+  - [3.2 Test](#32-test)
 - [4. Inference](#4-inference)
 - [5. FAQ](#5-faq)
 
@@ -23,45 +23,7 @@ This section uses the icdar2015 dataset as an example to introduce the training,
 
 ### 1.1 Data Preparation
 
-The icdar2015 dataset contains train set which has 1000 images obtained with wearable cameras and test set which has 500 images obtained with wearable cameras. The icdar2015 can be obtained from [official website](https://rrc.cvc.uab.es/?ch=4&com=downloads). Registration is required for downloading.
-
-
-After registering and logging in, download the part marked in the red box in the figure below. And, the content downloaded by `Training Set Images` should be saved as the folder `icdar_c4_train_imgs`, and the content downloaded by `Test Set Images` is saved as the folder `ch4_test_images`
-
-<p align="center">
- <img src="../datasets/ic15_location_download.png" align="middle" width = "700"/>
-<p align="center">
-
-Decompress the downloaded dataset to the working directory, assuming it is decompressed under PaddleOCR/train_data/. In addition, PaddleOCR organizes many scattered annotation files into two separate annotation files for train and test respectively, which can be downloaded by wget:
-```shell
-# Under the PaddleOCR path
-cd PaddleOCR/
-wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dataset/train_icdar2015_label.txt
-wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dataset/test_icdar2015_label.txt
-```
-
-After decompressing the data set and downloading the annotation file, PaddleOCR/train_data/ has two folders and two files, which are:
-```
-/PaddleOCR/train_data/icdar2015/text_localization/
-  └─ icdar_c4_train_imgs/         Training data of icdar dataset
-  └─ ch4_test_images/             Testing data of icdar dataset
-  └─ train_icdar2015_label.txt    Training annotation of icdar dataset
-  └─ test_icdar2015_label.txt     Test annotation of icdar dataset
-```
-
-The provided annotation file format is as follow, separated by "\t":
-```
-" Image file name             Image annotation information encoded by json.dumps"
-ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]]}, {...}]
-```
-The image annotation after **json.dumps()** encoding is a list containing multiple dictionaries.
-
-The `points` in the dictionary represent the coordinates (x, y) of the four points of the text box, arranged clockwise from the point at the upper left corner.
-
-`transcription` represents the text of the current text box. **When its content is "###" it means that the text box is invalid and will be skipped during training.**
-
-If you want to train PaddleOCR on other datasets, please build the annotation file according to the above format.
-
+To prepare datasets, refer to [ocr_datasets](./dataset/ocr_datasets_en.md) .
 
 ### 1.2 Download Pre-trained Model
 

@@ -22,7 +22,7 @@ Here we have sorted out the commonly used vertical multi-language OCR dataset da
     * CCPD-Challenge: So far, some of the most challenging images in license plate detection and recognition tasks
     * CCPD-NP: Pictures of new cars without license plates.
 
-    ![](../datasets/ccpd_demo.png)
+    ![](../../datasets/ccpd_demo.png)
 
 
 - **Download address**
@@ -46,7 +46,7 @@ Here we have sorted out the commonly used vertical multi-language OCR dataset da
         * End of validity: 07/41
         * Chinese phonetic alphabet of card users: MICHAEL
 
-    ![](../datasets/cmb_demo.jpg)
+    ![](../../datasets/cmb_demo.jpg)
 
 - **Download address**: [https://cdn.kesci.com/cmb2017-2.zip](https://cdn.kesci.com/cmb2017-2.zip)
 
@@ -59,7 +59,7 @@ Here we have sorted out the commonly used vertical multi-language OCR dataset da
 
 - **Data introduction**: This is a toolkit for data synthesis. You can output captcha images according to the input text. Use the toolkit to generate several demo images as follows.
 
-    ![](../datasets/captcha_demo.png)
+    ![](../../datasets/captcha_demo.png)
 
 - **Download address**: The dataset is generated and has no download address.
 
