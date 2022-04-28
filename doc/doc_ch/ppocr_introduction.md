@@ -39,6 +39,27 @@ PP-OCRv2在PP-OCR的基础上，进一步在5个方面重点优化，检测模�
 #### PP-OCRv3
 
 
+PP-OCRv3识别从网络结构、训练策略、数据增强三个方向做了进一步优化:
+- 网络结构上：使用[SVTR](todo:add_link)中的 Transformer block 替换LSTM，提升模型精度和预测速度；
+- 训练策略上：参考 [GTC](https://arxiv.org/pdf/2002.01276.pdf) 策略，使用注意力机制模块指导CTC训练，定位和识别字符，提升不规则文本的识别精度；设计方向分类前序任务，获取更优预训练模型，加速模型收敛过程，提升精度。
+- 数据增强上：使用[RecConAug](todo:add_link)数据增广方法，随机结合图片，提升训练数据的上下文信息丰富度，增强模型鲁棒性。
+
+基于上述策略，PP-OCRv3识别模型相比上一版本，速度加速30%，精度进一步提升4.5%。 具体消融实验：
+
+| id | 策略 |  模型大小 | 精度 | CPU+mkldnn 预测耗时 |
+|-----|-----|--------|----|------------|
+| 01 | PP-OCRv2 | 8M | 69.3% | 26ms |
+| 02 | SVTR_tiny | 19M | 80.1% | - |
+| 03 | LCNet_SVTR_G6 | 8.2M | 76% | - |
+| 04 | LCNet_SVTR_G1 | - | - | - |
+| 05 | PP-OCRv3 | 12M | 71.9% | 19ms |
+| 06 | + GTC | 12M | 75.8% | 19ms |
+| 07 | + RecConAug | 12M | 76.3% | 19ms |
+| 08 | + SSL pretrain | 12M | 76.9% | 19ms |
+| 09 | + UDML | 12M | 78.4% | 19ms |
+| 10 | + unlabeled data | 12M | 79.4% | 19ms |
+
+
 <a name="2"></a>
 ## 2. 特性
 
@@ -68,13 +89,13 @@ PP-OCRv2在PP-OCR的基础上，进一步在5个方面重点优化，检测模�
     <img src="../imgs_results/ch_ppocr_mobile_v2.0/00056221.jpg" width="800">
     <img src="../imgs_results/ch_ppocr_mobile_v2.0/rotate_00052204.jpg" width="800">
 </div>
-    
+
 </details>
 
 
 <details open>
 <summary>PP-OCRv2 英文模型</summary>
-    
+
 <div align="center">
     <img src="../imgs_results/ch_ppocr_mobile_v2.0/img_12.jpg" width="800">
 </div>
@@ -84,15 +105,15 @@ PP-OCRv2在PP-OCR的基础上，进一步在5个方面重点优化，检测模�
 
 <details open>
 <summary>PP-OCRv2 其他语言模型</summary>
-    
+
 <div align="center">
     <img src="../imgs_results/french_0.jpg" width="800">
     <img src="../imgs_results/korean.jpg" width="800">
 </div>
-    
+
 </details>
 
- 
+
 <a name="5"></a>
 ## 5. 使用教程
 

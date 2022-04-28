@@ -9,12 +9,20 @@ PaddleOCR提供2种服务部署方式：
 
 # 基于PaddleServing的服务部署
 
-本文档将介绍如何使用[PaddleServing](https://github.com/PaddlePaddle/Serving/blob/develop/README_CN.md)工具部署PP-OCR动态图模型的pipeline在线服务。
+本文档将介绍如何使用[PaddleServing](https://github.com/PaddlePaddle/Serving/blob/develop/README_CN.md) 工具部署PP-OCR动态图模型的pipeline在线服务。
 
 相比较于hubserving部署，PaddleServing具备以下优点：
 - 支持客户端和服务端之间高并发和高效通信
 - 支持 工业级的服务能力 例如模型管理，在线加载，在线A/B测试等
 - 支持 多种编程语言 开发客户端，例如C++, Python和Java
+
+PaddleServing 支持多种语言部署，本例中提供了python pipeline 和 C++ 两种部署方式，两者的对比如下：
+
+| 语言 | 速度 | 二次开发 | 是否需要编译 |
+|-----|-----|---------|------------|
+| C++ | 很快 | 略有难度 | 单模型预测无需编译，多模型串联需要编译 |
+| python | 一般 | 容易 | 单模型/多模型 均无需编译|
+
 
 更多有关PaddleServing服务化部署框架介绍和使用教程参考[文档](https://github.com/PaddlePaddle/Serving/blob/develop/README_CN.md)。
 
@@ -33,6 +41,13 @@ AIStudio演示案例可参考 [基于PaddleServing的OCR服务化部署实战](h
 需要准备PaddleOCR的运行环境和Paddle Serving的运行环境。
 
 - 准备PaddleOCR的运行环境[链接](../../doc/doc_ch/installation.md)
+
+    ```
+    git clone https://github.com/PaddlePaddle/PaddleOCR
+
+    # 进入到工作目录
+    cd PaddleOCR/deploy/pdserving/
+    ```
 
 - 准备PaddleServing的运行环境，步骤如下
 
@@ -105,13 +120,8 @@ python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_rec_infer/ \
 <a name="部署"></a>
 ## Paddle Serving pipeline部署
 
-1. 下载PaddleOCR代码，若已下载可跳过此步骤
-    ```
-    git clone https://github.com/PaddlePaddle/PaddleOCR
+1. 确认工作目录下文件结构：
 
-    # 进入到工作目录
-    cd PaddleOCR/deploy/pdserving/
-    ```
     pdserver目录包含启动pipeline服务和发送预测请求的代码，包括：
     ```
     __init__.py
@@ -196,16 +206,12 @@ python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_rec_infer/ \
 
 C++ 服务部署在环境搭建和数据准备阶段与 python 相同，区别在于启动服务和客户端发送请求时不同。
 
-| 语言 | 速度 | 二次开发 | 是否需要编译 |
-|-----|-----|---------|------------|
-| C++ | 很快 | 略有难度 | 单模型预测无需编译，多模型串联需要编译 |
-| python | 一般 ｜ 容易 | 单模型/多模型 均无需编译|
-
 1. 准备 Serving 环境
 
 为了提高预测性能，C++ 服务同样提供了多模型串联服务。与python pipeline服务不同，多模型串联的过程中需要将模型前后处理代码写在服务端，因此需要在本地重新编译生成serving。
 
 首先需要下载Serving代码库, 把OCR文本检测预处理相关代码替换到Serving库中
+
 ```
 git clone https://github.com/PaddlePaddle/Serving
 
