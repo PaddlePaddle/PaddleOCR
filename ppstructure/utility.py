@@ -15,7 +15,7 @@
 import ast
 from PIL import Image
 import numpy as np
-from tools.infer.utility import draw_ocr_box_txt, init_args as infer_args
+from tools.infer.utility import draw_ocr_box_txt, str2bool, init_args as infer_args
 
 
 def init_args():
@@ -26,11 +26,11 @@ def init_args():
     # params for table structure
     parser.add_argument("--table_max_len", type=int, default=488)
     parser.add_argument("--table_model_dir", type=str)
-    parser.add_argument("--table_char_type", type=str, default='en')
     parser.add_argument(
         "--table_char_dict_path",
         type=str,
         default="../ppocr/utils/dict/table_structure_dict.txt")
+    # params for layout
     parser.add_argument(
         "--layout_path_model",
         type=str,
@@ -40,11 +40,27 @@ def init_args():
         type=ast.literal_eval,
         default=None,
         help='label map according to ppstructure/layout/README_ch.md')
+    # params for inference
     parser.add_argument(
         "--mode",
         type=str,
         default='structure',
         help='structure and vqa is supported')
+    parser.add_argument(
+        "--layout",
+        type=str2bool,
+        default=True,
+        help='Whether to enable layout analysis')
+    parser.add_argument(
+        "--table",
+        type=str2bool,
+        default=True,
+        help='In the forward, whether the table area uses table recognition')
+    parser.add_argument(
+        "--ocr",
+        type=str2bool,
+        default=True,
+        help='In the forward, whether the non-table area is recognition by ocr')
     return parser
 
 

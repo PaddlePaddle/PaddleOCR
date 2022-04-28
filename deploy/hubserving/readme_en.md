@@ -196,7 +196,7 @@ For example, if using the configuration file to start the text angle classificat
 
 **Eg.**
 ```shell
-python tools/test_hubserving.py --server_url=http://127.0.0.1:8868/predict/ocr_system --image_dir./doc/imgs/ --visualize=false`
+python tools/test_hubserving.py --server_url=http://127.0.0.1:8868/predict/ocr_system --image_dir=./doc/imgs/ --visualize=false`
 ```
 
 ## 4. Returned result format

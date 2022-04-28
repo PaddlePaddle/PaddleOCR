@@ -271,9 +271,10 @@ def create_predictor(args, mode, logger):
             elif mode == "rec":
                 if args.rec_algorithm != "CRNN":
                     use_dynamic_shape = False
-                min_input_shape = {"x": [1, 3, 32, 10]}
-                max_input_shape = {"x": [args.rec_batch_num, 3, 32, 1536]}
-                opt_input_shape = {"x": [args.rec_batch_num, 3, 32, 320]}
+                imgH = int(args.rec_image_shape.split(',')[-2])
+                min_input_shape = {"x": [1, 3, imgH, 10]}
+                max_input_shape = {"x": [args.rec_batch_num, 3, imgH, 1536]}
+                opt_input_shape = {"x": [args.rec_batch_num, 3, imgH, 320]}
             elif mode == "cls":
                 min_input_shape = {"x": [1, 3, 48, 10]}
                 max_input_shape = {"x": [args.rec_batch_num, 3, 48, 1024]}
@@ -300,8 +301,8 @@ def create_predictor(args, mode, logger):
         # enable memory optim
         config.enable_memory_optim()
         config.disable_glog_info()
-
         config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
+        config.delete_pass("matmul_transpose_reshape_fuse_pass")
         if mode == 'table':
             config.delete_pass("fc_fuse_pass")  # not supported for table
         config.switch_use_feed_fetch_ops(False)
@@ -312,12 +313,26 @@ def create_predictor(args, mode, logger):
         input_names = predictor.get_input_names()
         for name in input_names:
             input_tensor = predictor.get_input_handle(name)
-        output_names = predictor.get_output_names()
-        output_tensors = []
+        output_tensors = get_output_tensors(args, mode, predictor)
+        return predictor, input_tensor, output_tensors, config
+
+
+def get_output_tensors(args, mode, predictor):
+    output_names = predictor.get_output_names()
+    output_tensors = []
+    if mode == "rec" and args.rec_algorithm == "CRNN":
+        output_name = 'softmax_0.tmp_0'
+        if output_name in output_names:
+            return [predictor.get_output_handle(output_name)]
+        else:
+            for output_name in output_names:
+                output_tensor = predictor.get_output_handle(output_name)
+                output_tensors.append(output_tensor)
+    else:
         for output_name in output_names:
             output_tensor = predictor.get_output_handle(output_name)
             output_tensors.append(output_tensor)
-        return predictor, input_tensor, output_tensors, config
+    return output_tensors
 
 
 def get_infer_gpuid():

@@ -54,16 +54,20 @@ def expand(pix, det_box, shape):
 
 class TableSystem(object):
     def __init__(self, args, text_detector=None, text_recognizer=None):
-        self.text_detector = predict_det.TextDetector(args) if text_detector is None else text_detector
-        self.text_recognizer = predict_rec.TextRecognizer(args) if text_recognizer is None else text_recognizer
+        self.text_detector = predict_det.TextDetector(
+            args) if text_detector is None else text_detector
+        self.text_recognizer = predict_rec.TextRecognizer(
+            args) if text_recognizer is None else text_recognizer
         self.table_structurer = predict_strture.TableStructurer(args)
 
-    def __call__(self, img):
+    def __call__(self, img, return_ocr_result_in_table=False):
+        result = dict()
         ori_im = img.copy()
         structure_res, elapse = self.table_structurer(copy.deepcopy(img))
         dt_boxes, elapse = self.text_detector(copy.deepcopy(img))
         dt_boxes = sorted_boxes(dt_boxes)
-
+        if return_ocr_result_in_table:
+            result['boxes'] = [x.tolist() for x in dt_boxes]
         r_boxes = []
         for box in dt_boxes:
             x_min = box[:, 0].min() - 1
@@ -88,14 +92,17 @@ class TableSystem(object):
         rec_res, elapse = self.text_recognizer(img_crop_list)
         logger.debug("rec_res num  : {}, elapse : {}".format(
             len(rec_res), elapse))
-
+        if return_ocr_result_in_table:
+            result['rec_res'] = rec_res
         pred_html, pred = self.rebuild_table(structure_res, dt_boxes, rec_res)
-        return pred_html
+        result['html'] = pred_html
+        return result
 
     def rebuild_table(self, structure_res, dt_boxes, rec_res):
         pred_structures, pred_bboxes = structure_res
         matched_index = self.match_result(dt_boxes, pred_bboxes)
-        pred_html, pred = self.get_pred_html(pred_structures, matched_index, rec_res)
+        pred_html, pred = self.get_pred_html(pred_structures, matched_index,
+                                             rec_res)
         return pred_html, pred
 
     def match_result(self, dt_boxes, pred_bboxes):
@@ -104,11 +111,13 @@ class TableSystem(object):
             # gt_box = [np.min(gt_box[:, 0]), np.min(gt_box[:, 1]), np.max(gt_box[:, 0]), np.max(gt_box[:, 1])]
             distances = []
             for j, pred_box in enumerate(pred_bboxes):
-                distances.append(
-                    (distance(gt_box, pred_box), 1. - compute_iou(gt_box, pred_box)))  # 获取两两cell之间的L1距离和 1- IOU
+                distances.append((distance(gt_box, pred_box),
+                                  1. - compute_iou(gt_box, pred_box)
+                                  ))  # 获取两两cell之间的L1距离和 1- IOU
             sorted_distances = distances.copy()
             # 根据距离和IOU挑选最"近"的cell
-            sorted_distances = sorted(sorted_distances, key=lambda item: (item[1], item[0]))
+            sorted_distances = sorted(
+                sorted_distances, key=lambda item: (item[1], item[0]))
             if distances.index(sorted_distances[0]) not in matched.keys():
                 matched[distances.index(sorted_distances[0])] = [i]
             else:
@@ -122,7 +131,8 @@ class TableSystem(object):
             if '</td>' in tag:
                 if td_index in matched_index.keys():
                     b_with = False
-                    if '<b>' in ocr_contents[matched_index[td_index][0]] and len(matched_index[td_index]) > 1:
+                    if '<b>' in ocr_contents[matched_index[td_index][
+                            0]] and len(matched_index[td_index]) > 1:
                         b_with = True
                         end_html.extend('<b>')
                     for i, td_index_index in enumerate(matched_index[td_index]):
@@ -138,7 +148,8 @@ class TableSystem(object):
                                 content = content[:-4]
                             if len(content) == 0:
                                 continue
-                            if i != len(matched_index[td_index]) - 1 and ' ' != content[-1]:
+                            if i != len(matched_index[
+                                    td_index]) - 1 and ' ' != content[-1]:
                                 content += ' '
                         end_html.extend(content)
                     if b_with:
@@ -187,18 +198,19 @@ def main(args):
     for i, image_file in enumerate(image_file_list):
         logger.info("[{}/{}] {}".format(i, img_num, image_file))
         img, flag = check_and_read_gif(image_file)
-        excel_path = os.path.join(args.output, os.path.basename(image_file).split('.')[0] + '.xlsx')
+        excel_path = os.path.join(
+            args.output, os.path.basename(image_file).split('.')[0] + '.xlsx')
         if not flag:
             img = cv2.imread(image_file)
         if img is None:
             logger.error("error in loading image:{}".format(image_file))
             continue
         starttime = time.time()
-        pred_html = text_sys(img)
-
+        pred_res = text_sys(img)
+        pred_html = pred_res['html']
+        logger.info(pred_html)
         to_excel(pred_html, excel_path)
         logger.info('excel saved to {}'.format(excel_path))
-        logger.info(pred_html)
         elapse = time.time() - starttime
         logger.info("Predict time : {:.3f}s".format(elapse))
 

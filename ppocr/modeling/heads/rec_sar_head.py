@@ -349,7 +349,10 @@ class ParallelSARDecoder(BaseDecoder):
 
 class SARHead(nn.Layer):
     def __init__(self,
+                 in_channels,
                  out_channels,
+                 enc_dim=512,
+                 max_text_length=30,
                  enc_bi_rnn=False,
                  enc_drop_rnn=0.1,
                  enc_gru=False,
@@ -358,14 +361,17 @@ class SARHead(nn.Layer):
                  dec_gru=False,
                  d_k=512,
                  pred_dropout=0.1,
-                 max_text_length=30,
                  pred_concat=True,
                  **kwargs):
         super(SARHead, self).__init__()
 
         # encoder module
         self.encoder = SAREncoder(
-            enc_bi_rnn=enc_bi_rnn, enc_drop_rnn=enc_drop_rnn, enc_gru=enc_gru)
+            enc_bi_rnn=enc_bi_rnn,
+            enc_drop_rnn=enc_drop_rnn,
+            enc_gru=enc_gru,
+            d_model=in_channels,
+            d_enc=enc_dim)
 
         # decoder module
         self.decoder = ParallelSARDecoder(
@@ -374,6 +380,8 @@ class SARHead(nn.Layer):
             dec_bi_rnn=dec_bi_rnn,
             dec_drop_rnn=dec_drop_rnn,
             dec_gru=dec_gru,
+            d_model=in_channels,
+            d_enc=enc_dim,
             d_k=d_k,
             pred_dropout=pred_dropout,
             max_text_length=max_text_length,
@@ -390,7 +398,7 @@ class SARHead(nn.Layer):
             label = paddle.to_tensor(label, dtype='int64')
             final_out = self.decoder(
                 feat, holistic_feat, label, img_metas=targets)
-        if not self.training:
+        else:
             final_out = self.decoder(
                 feat,
                 holistic_feat,

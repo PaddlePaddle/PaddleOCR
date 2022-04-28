@@ -70,7 +70,7 @@ cmake安装完后后系统里会有一个cmake-gui程序，打开cmake-gui，在
 * cpu版本，仅需考虑OPENCV_DIR、OpenCV_DIR、PADDLE_LIB三个参数
 
   - OPENCV_DIR：填写opencv lib文件夹所在位置
-  - OpenCV_DIR：同填写opencv lib文件夹所在位
+  - OpenCV_DIR：同填写opencv lib文件夹所在位置
   - PADDLE_LIB：paddle_inference文件夹所在位置
 
 * GPU版本，在cpu版本的基础上，还需填写以下变量
@@ -78,7 +78,7 @@ CUDA_LIB、CUDNN_LIB、TENSORRT_DIR、WITH_GPU、WITH_TENSORRT
 
 - CUDA_LIB: CUDA地址，如 `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.2\lib\x64`
 - CUDNN_LIB: 和CUDA_LIB一致
-- TENSORRT_DIR：TRT下载后解压缩的位置
+- TENSORRT_DIR：TRT下载后解压缩的位置，如 `D:\TensorRT-8.0.1.6`
 - WITH_GPU: 打钩
 - WITH_TENSORRT：打勾
 
@@ -110,10 +110,11 @@ CUDA_LIB、CUDNN_LIB、TENSORRT_DIR、WITH_GPU、WITH_TENSORRT
 运行之前，将下面文件拷贝到`build/Release/`文件夹下
 1. `paddle_inference/paddle/lib/paddle_inference.dll`
 2. `opencv/build/x64/vc15/bin/opencv_world455.dll`
+3. 如果使用openblas版本的预测库还需要拷贝 `paddle_inference/third_party/install/openblas/lib/openblas.dll`
 
 ### Step4: 预测
 
-上述`Visual Studio 2019`编译产出的可执行文件在`out\build\x64-Release\Release`目录下，打开`cmd`，并切换到`D:\projects\cpp\PaddleOCR\deploy\cpp_infer\`：
+上述`Visual Studio 2019`编译产出的可执行文件在`build/Release/`目录下，打开`cmd`，并切换到`D:\projects\cpp\PaddleOCR\deploy\cpp_infer\`：
 
 ```
 cd /d D:\projects\cpp\PaddleOCR\deploy\cpp_infer
@@ -128,7 +129,7 @@ CHCP 65001
 ```
 
 识别结果如下
-![result](imgs/result.png)
+![result](imgs/result.jpg)
 
 
 ## FAQ

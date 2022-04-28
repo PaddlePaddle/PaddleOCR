@@ -31,7 +31,7 @@ from ppocr.utils.logging import get_logger
 from tools.program import load_config, merge_config, ArgsParser
 
 
-def export_single_model(model, arch_config, save_path, logger):
+def export_single_model(model, arch_config, save_path, logger, quanter=None):
     if arch_config["algorithm"] == "SRN":
         max_text_length = arch_config["Head"]["max_text_length"]
         other_shape = [
@@ -54,6 +54,18 @@ def export_single_model(model, arch_config, save_path, logger):
             paddle.static.InputSpec(
                 shape=[None, 3, 48, 160], dtype="float32"),
         ]
+        model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] == "SVTR":
+        if arch_config["Head"]["name"] == 'MultiHead':
+            other_shape = [
+                paddle.static.InputSpec(
+                    shape=[None, 3, 48, -1], dtype="float32"),
+            ]
+        else:
+            other_shape = [
+                paddle.static.InputSpec(
+                    shape=[None, 3, 64, 256], dtype="float32"),
+            ]
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] == "PREN":
         other_shape = [
@@ -83,7 +95,10 @@ def export_single_model(model, arch_config, save_path, logger):
                     shape=[None] + infer_shape, dtype="float32")
             ])
 
-    paddle.jit.save(model, save_path)
+    if quanter is None:
+        paddle.jit.save(model, save_path)
+    else:
+        quanter.save_quantized_model(model, save_path)
     logger.info("inference model is saved to {}".format(save_path))
     return
 
@@ -105,13 +120,35 @@ def main():
         if config["Architecture"]["algorithm"] in ["Distillation",
                                                    ]:  # distillation model
             for key in config["Architecture"]["Models"]:
-                config["Architecture"]["Models"][key]["Head"][
-                    "out_channels"] = char_num
+                if config["Architecture"]["Models"][key]["Head"][
+                        "name"] == 'MultiHead':  # multi head
+                    out_channels_list = {}
+                    if config['PostProcess'][
+                            'name'] == 'DistillationSARLabelDecode':
+                        char_num = char_num - 2
+                    out_channels_list['CTCLabelDecode'] = char_num
+                    out_channels_list['SARLabelDecode'] = char_num + 2
+                    config['Architecture']['Models'][key]['Head'][
+                        'out_channels_list'] = out_channels_list
+                else:
+                    config["Architecture"]["Models"][key]["Head"][
+                        "out_channels"] = char_num
                 # just one final tensor needs to to exported for inference
                 config["Architecture"]["Models"][key][
                     "return_all_feats"] = False
+        elif config['Architecture']['Head'][
+                'name'] == 'MultiHead':  # multi head
+            out_channels_list = {}
+            char_num = len(getattr(post_process_class, 'character'))
+            if config['PostProcess']['name'] == 'SARLabelDecode':
+                char_num = char_num - 2
+            out_channels_list['CTCLabelDecode'] = char_num
+            out_channels_list['SARLabelDecode'] = char_num + 2
+            config['Architecture']['Head'][
+                'out_channels_list'] = out_channels_list
         else:  # base rec model
             config["Architecture"]["Head"]["out_channels"] = char_num
+
     model = build_model(config["Architecture"])
     load_model(config, model)
     model.eval()
