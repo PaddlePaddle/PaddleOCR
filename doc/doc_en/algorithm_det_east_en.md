@@ -56,7 +56,7 @@ First, convert the model saved in the EAST text detection training process into 
 python3 tools/export_model.py -c configs/det/det_r50_vd_east.yml -o Global.pretrained_model=./det_r50_vd_east_v2.0_train/best_accuracy  Global.save_inference_dir=./inference/det_r50_east/
 ```
 
-The Inference：
+For EAST text detection model inference, you need to set the parameter --det_algorithm="EAST", run the following command:
 ```shell
 python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_model_dir="./inference/det_r50_east/" --det_algorithm="EAST"
 ```
