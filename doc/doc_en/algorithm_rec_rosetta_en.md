@@ -5,10 +5,10 @@
 - [3. Model training, evaluation, prediction](#3)
     - [3.1 Training](#3-1)
     - [3.2 Evaluation](#3-2)
-    - [3.3 Forecast](#3-3)
+    - [3.3 Prediction](#3-3)
 - [4. Inference Deployment](#4)
     - [4.1 Python Reasoning](#4-1)
-    - [4.2 C++ Reasoning] (#4-2)
+    - [4.2 C++ Reasoning](#4-2)
     - [4.3 Serving service deployment](#4-3)
     - [4.4 More inference deployments](#4-4)
 - [5. FAQ](#5)
@@ -31,13 +31,13 @@ Using MJSynth and SynthText two text recognition datasets for training, and eval
 
 <a name="2"></a>
 ## 2. Environment configuration
-Please refer to ["Operating Environment Preparation"](./environment.md) to configure the PaddleOCR operating environment, and refer to ["Project Clone"](./clone.md) to clone the project code.
+Please refer to ["Operating Environment Preparation"](./environment_en.md) to configure the PaddleOCR operating environment, and refer to ["Project Clone"](./clone_en.md) to clone the project code.
 
 
 <a name="3"></a>
 ## 3. Model training, evaluation, prediction
 
-Please refer to [Text Recognition Training Tutorial](./recognition.md). PaddleOCR modularizes the code, and training different recognition models only requires **changing the configuration file**. Take the backbone network based on Resnet34_vd as an example:
+Please refer to [Text Recognition Training Tutorial](./recognition_en.md). PaddleOCR modularizes the code, and training different recognition models only requires **changing the configuration file**. Take the backbone network based on Resnet34_vd as an example:
 
 <a name="3-1"></a>
 ### 3.1 Training
