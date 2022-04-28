@@ -54,22 +54,22 @@ AIStudio演示案例可参考 [基于PaddleServing的OCR服务化部署实战](h
 
 ```bash
 # 安装serving，用于启动服务
-wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_server_gpu-0.7.0.post102-py3-none-any.whl
-pip3 install paddle_serving_server_gpu-0.7.0.post102-py3-none-any.whl
+wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_server_gpu-0.8.3.post102-py3-none-any.whl
+pip3 install paddle_serving_server_gpu-0.8.3.post102-py3-none-any.whl
 # 如果是cuda10.1环境，可以使用下面的命令安装paddle-serving-server
-# wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_server_gpu-0.7.0.post101-py3-none-any.whl
-# pip3 install paddle_serving_server_gpu-0.7.0.post101-py3-none-any.whl
+# wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_server_gpu-0.8.3.post101-py3-none-any.whl
+# pip3 install paddle_serving_server_gpu-0.8.3.post101-py3-none-any.whl
 
 # 安装client，用于向服务发送请求
-wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_client-0.7.0-cp37-none-any.whl
-pip3 install paddle_serving_client-0.7.0-cp37-none-any.whl
+wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_client-0.8.3-cp37-none-any.whl
+pip3 install paddle_serving_client-0.8.3-cp37-none-any.whl
 
 # 安装serving-app
-wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_app-0.7.0-py3-none-any.whl
-pip3 install paddle_serving_app-0.7.0-py3-none-any.whl
+wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_app-0.8.3-py3-none-any.whl
+pip3 install paddle_serving_app-0.8.3-py3-none-any.whl
 ```
 
-**Note:** 如果要安装最新版本的PaddleServing参考[链接](https://github.com/PaddlePaddle/Serving/blob/v0.7.0/doc/Latest_Packages_CN.md)。
+**Note:** 如果要安装最新版本的PaddleServing参考[链接](https://github.com/PaddlePaddle/Serving/blob/v0.8.3/doc/Latest_Packages_CN.md)。
 
 <a name="模型转换"></a>
 ## 模型转换
@@ -80,38 +80,38 @@ pip3 install paddle_serving_app-0.7.0-py3-none-any.whl
 
 ```bash
 # 下载并解压 OCR 文本检测模型
-wget https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar -O ch_PP-OCRv2_det_infer.tar && tar -xf ch_PP-OCRv2_det_infer.tar
+wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar -O ch_PP-OCRv3_det_infer.tar && tar -xf ch_PP-OCRv3_det_infer.tar
 # 下载并解压 OCR 文本识别模型
-wget https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar -O ch_PP-OCRv2_rec_infer.tar &&  tar -xf ch_PP-OCRv2_rec_infer.tar
+wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar -O ch_PP-OCRv3_rec_infer.tar &&  tar -xf ch_PP-OCRv3_rec_infer.tar
 ```
 
 接下来，用安装的paddle_serving_client把下载的inference模型转换成易于server部署的模型格式。
 
 ```bash
 # 转换检测模型
-python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_det_infer/ \
+python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv3_det_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
-                                         --serving_server ./ppocr_det_mobile_2.0_serving/ \
-                                         --serving_client ./ppocr_det_mobile_2.0_client/
+                                         --serving_server ./ppocr_det_v3_serving/ \
+                                         --serving_client ./ppocr_det_v3_client/
 
 # 转换识别模型
-python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv2_rec_infer/ \
+python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv3_rec_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
-                                         --serving_server ./ppocr_rec_mobile_2.0_serving/  \
-                                         --serving_client ./ppocr_rec_mobile_2.0_client/
+                                         --serving_server ./ppocr_rec_v3_serving/  \
+                                         --serving_client ./ppocr_rec_v3_client/
 ```
 
-检测模型转换完成后，会在当前文件夹多出`ppocr_det_mobile_2.0_serving` 和`ppocr_det_mobile_2.0_client`的文件夹，具备如下格式：
+检测模型转换完成后，会在当前文件夹多出`ppocr_det_v3_serving` 和`ppocr_det_v3_client`的文件夹，具备如下格式：
 ```
-|- ppocr_det_mobile_2.0_serving/
+|- ppocr_det_v3_serving/
   |- __model__  
   |- __params__
   |- serving_server_conf.prototxt  
   |- serving_server_conf.stream.prototxt
 
-|- ppocr_det_mobile_2.0_client
+|- ppocr_det_v3_client
   |- serving_client_conf.prototxt  
   |- serving_client_conf.stream.prototxt
 
@@ -230,7 +230,7 @@ cp -rf general_detection_op.cpp Serving/core/general-server/op
 
     ```
     # 启动服务，运行日志保存在log.txt
-    python3 -m paddle_serving_server.serve --model ppocrv2_det_serving ppocrv2_rec_serving --op GeneralDetectionOp GeneralInferOp --port 9293 &>log.txt &
+    python3 -m paddle_serving_server.serve --model ppocr_det_v3_serving ppocr_rec_v3_serving --op GeneralDetectionOp GeneralInferOp --port 9293 &>log.txt &
     ```
     成功启动服务后，log.txt中会打印类似如下日志
     ![](./imgs/start_server.png)
@@ -238,7 +238,7 @@ cp -rf general_detection_op.cpp Serving/core/general-server/op
 3. 发送服务请求：
 
    由于需要在C++Server部分进行前后处理，为了加速传入C++Server的仅仅是图片的base64编码的字符串，故需要手动修改
-   ppocrv2_det_client/serving_client_conf.prototxt 中 feed_type 字段 和 shape 字段，修改成如下内容：
+   ppocr_det_v3_client/serving_client_conf.prototxt 中 feed_type 字段 和 shape 字段，修改成如下内容：
    ```
     feed_var {
     name: "x"
@@ -250,7 +250,7 @@ cp -rf general_detection_op.cpp Serving/core/general-server/op
    ```
    启动客户端
    ```
-    python3 ocr_cpp_client.py ppocrv2_det_client ppocrv2_rec_client
+    python3 ocr_cpp_client.py ppocr_det_v3_client ppocr_rec_v3_client
    ```
 
     成功运行后，模型预测的结果会打印在cmd窗口中，结果示例为：
