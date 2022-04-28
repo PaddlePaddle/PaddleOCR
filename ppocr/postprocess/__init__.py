@@ -27,7 +27,7 @@ from .sast_postprocess import SASTPostProcess
 from .fce_postprocess import FCEPostProcess
 from .rec_postprocess import CTCLabelDecode, AttnLabelDecode, SRNLabelDecode, \
     DistillationCTCLabelDecode, TableLabelDecode, NRTRLabelDecode, SARLabelDecode, \
-    SEEDLabelDecode, PRENLabelDecode
+    SEEDLabelDecode, PRENLabelDecode, SVTRLabelDecode
 from .cls_postprocess import ClsPostProcess
 from .pg_postprocess import PGPostProcess
 from .vqa_token_ser_layoutlm_postprocess import VQASerTokenLayoutLMPostProcess
@@ -41,7 +41,8 @@ def build_post_process(config, global_config=None):
         'PGPostProcess', 'DistillationCTCLabelDecode', 'TableLabelDecode',
         'DistillationDBPostProcess', 'NRTRLabelDecode', 'SARLabelDecode',
         'SEEDLabelDecode', 'VQASerTokenLayoutLMPostProcess',
-        'VQAReTokenLayoutLMPostProcess', 'PRENLabelDecode'
+        'VQAReTokenLayoutLMPostProcess', 'PRENLabelDecode',
+        'DistillationSARLabelDecode', 'SVTRLabelDecode'
     ]
 
     if config['name'] == 'PSEPostProcess':

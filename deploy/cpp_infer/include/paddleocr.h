@@ -39,10 +39,10 @@ using namespace paddle_infer;
 
 namespace PaddleOCR {
 
-class PaddleOCR {
+class PPOCR {
 public:
-  explicit PaddleOCR();
-  ~PaddleOCR();
+  explicit PPOCR();
+  ~PPOCR();
   std::vector<std::vector<OCRPredictResult>>
   ocr(std::vector<cv::String> cv_all_img_names, bool det = true,
       bool rec = true, bool cls = true);

@@ -65,6 +65,8 @@ public:
 
   static bool PathExists(const std::string &path);
 
+  static void CreateDir(const std::string &path);
+
   static void print_result(const std::vector<OCRPredictResult> &ocr_result);
 };
 

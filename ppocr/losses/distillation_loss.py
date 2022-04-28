@@ -18,6 +18,7 @@ import numpy as np
 import cv2
 
 from .rec_ctc_loss import CTCLoss
+from .rec_sar_loss import SARLoss
 from .basic_loss import DMLLoss
 from .basic_loss import DistanceLoss
 from .det_db_loss import DBLoss
@@ -46,11 +47,15 @@ class DistillationDMLLoss(DMLLoss):
                  act=None,
                  use_log=False,
                  key=None,
+                 multi_head=False,
+                 dis_head='ctc',
                  maps_name=None,
                  name="dml"):
         super().__init__(act=act, use_log=use_log)
         assert isinstance(model_name_pairs, list)
         self.key = key
+        self.multi_head = multi_head
+        self.dis_head = dis_head
         self.model_name_pairs = self._check_model_name_pairs(model_name_pairs)
         self.name = name
         self.maps_name = self._check_maps_name(maps_name)
@@ -97,7 +102,11 @@ class DistillationDMLLoss(DMLLoss):
                 out2 = out2[self.key]
 
             if self.maps_name is None:
-                loss = super().forward(out1, out2)
+                if self.multi_head:
+                    loss = super().forward(out1[self.dis_head],
+                                           out2[self.dis_head])
+                else:
+                    loss = super().forward(out1, out2)
                 if isinstance(loss, dict):
                     for key in loss:
                         loss_dict["{}_{}_{}_{}".format(key, pair[0], pair[1],
@@ -123,11 +132,16 @@ class DistillationDMLLoss(DMLLoss):
 
 
 class DistillationCTCLoss(CTCLoss):
-    def __init__(self, model_name_list=[], key=None, name="loss_ctc"):
+    def __init__(self,
+                 model_name_list=[],
+                 key=None,
+                 multi_head=False,
+                 name="loss_ctc"):
         super().__init__()
         self.model_name_list = model_name_list
         self.key = key
         self.name = name
+        self.multi_head = multi_head
 
     def forward(self, predicts, batch):
         loss_dict = dict()
@@ -135,7 +149,45 @@ class DistillationCTCLoss(CTCLoss):
             out = predicts[model_name]
             if self.key is not None:
                 out = out[self.key]
-            loss = super().forward(out, batch)
+            if self.multi_head:
+                assert 'ctc' in out, 'multi head has multi out'
+                loss = super().forward(out['ctc'], batch[:2] + batch[3:])
+            else:
+                loss = super().forward(out, batch)
+            if isinstance(loss, dict):
+                for key in loss:
+                    loss_dict["{}_{}_{}".format(self.name, model_name,
+                                                idx)] = loss[key]
+            else:
+                loss_dict["{}_{}".format(self.name, model_name)] = loss
+        return loss_dict
+
+
+class DistillationSARLoss(SARLoss):
+    def __init__(self,
+                 model_name_list=[],
+                 key=None,
+                 multi_head=False,
+                 name="loss_sar",
+                 **kwargs):
+        ignore_index = kwargs.get('ignore_index', 92)
+        super().__init__(ignore_index=ignore_index)
+        self.model_name_list = model_name_list
+        self.key = key
+        self.name = name
+        self.multi_head = multi_head
+
+    def forward(self, predicts, batch):
+        loss_dict = dict()
+        for idx, model_name in enumerate(self.model_name_list):
+            out = predicts[model_name]
+            if self.key is not None:
+                out = out[self.key]
+            if self.multi_head:
+                assert 'sar' in out, 'multi head has multi out'
+                loss = super().forward(out['sar'], batch[:1] + batch[2:])
+            else:
+                loss = super().forward(out, batch)
             if isinstance(loss, dict):
                 for key in loss:
                     loss_dict["{}_{}_{}".format(self.name, model_name,

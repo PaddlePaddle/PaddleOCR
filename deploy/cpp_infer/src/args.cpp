@@ -47,6 +47,8 @@ DEFINE_string(rec_model_dir, "", "Path of rec inference model.");
 DEFINE_int32(rec_batch_num, 6, "rec_batch_num.");
 DEFINE_string(rec_char_dict_path, "../../ppocr/utils/ppocr_keys_v1.txt",
               "Path of dictionary.");
+DEFINE_int32(rec_img_h, 32, "rec image height");
+DEFINE_int32(rec_img_w, 320, "rec image width");
 
 // ocr forward related
 DEFINE_bool(det, true, "Whether use det in forward.");

@@ -56,7 +56,7 @@ Take rec_chinese_lite_train_v2.0.yml as an example
 |        learning_rate      |    Set the base learning rate        |       0.001      |  \        |
 |      **regularizer**      |  Set network regularization method        |       -      | \        |
 |        name      |    Regularizer class name      |       L2     |  Currently support`L1`,`L2`, see[ppocr/optimizer/regularizer.py](../../ppocr/optimizer/regularizer.py)        |
-|        factor      |    Learning rate decay coefficient       |       0.00004     |  \        |
+|        factor      |    Regularizer coefficient       |       0.00001     |  \        |
 
 
 ### Architecture ([ppocr/modeling](../../ppocr/modeling))

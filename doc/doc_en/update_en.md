@@ -19,7 +19,7 @@
 - 2020.7.15, Add several related datasets, data annotation and synthesis tools.
 - 2020.7.9 Add a new model to support recognize the  character "space".
 - 2020.7.9 Add the data augument and learning rate decay strategies during training.
-- 2020.6.8 Add [datasets](./datasets_en.md) and keep updating
+- 2020.6.8 Add [datasets](dataset/datasets_en.md) and keep updating
 - 2020.6.5 Support exporting `attention` model to `inference_model`
 - 2020.6.5 Support separate prediction and recognition, output result score
 - 2020.5.30 Provide Lightweight Chinese OCR online experience

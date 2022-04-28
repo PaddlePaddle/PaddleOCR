@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
   cv::glob(FLAGS_image_dir, cv_all_img_names);
   std::cout << "total images num: " << cv_all_img_names.size() << endl;
 
-  PaddleOCR::PaddleOCR ocr = PaddleOCR::PaddleOCR();
+  PPOCR ocr = PPOCR();
 
   std::vector<std::vector<OCRPredictResult>> ocr_results =
       ocr.ocr(cv_all_img_names, FLAGS_det, FLAGS_rec, FLAGS_cls);

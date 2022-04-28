@@ -1,25 +1,23 @@
-- [PaddleOCR快速开始](#paddleocr快速开始)
-  - [1. 安装](#1-安装)
-    - [1.1 安装PaddlePaddle](#11-安装paddlepaddle)
-    - [1.2 安装PaddleOCR whl包](#12-安装paddleocr-whl包)
-  - [2. 便捷使用](#2-便捷使用)
-    - [2.1 命令行使用](#21-命令行使用)
-      - [2.1.1 中英文模型](#211-中英文模型)
-      - [2.1.2 多语言模型](#212-多语言模型)
-      - [2.1.3 版面分析](#213-版面分析)
-    - [2.2 Python脚本使用](#22-python脚本使用)
-      - [2.2.1 中英文与多语言使用](#221-中英文与多语言使用)
-      - [2.2.2 版面分析](#222-版面分析)
-  - [3. 小结](#3-小结)
+# PaddleOCR 快速开始
 
-# PaddleOCR快速开始
+**说明：** 本文主要介绍PaddleOCR wheel包对PP-OCR系列模型的快速使用，如要体验文档分析相关功能，请参考[PP-Structure快速使用教程](../../ppstructure/docs/quickstart.md)。
+
+- [1. 安装](#1)
+  - [1.1 安装PaddlePaddle](#11)
+  - [1.2 安装PaddleOCR whl包](#12)
+- [2. 便捷使用](#2)
+  - [2.1 命令行使用](#21)
+      - [2.1.1 中英文模型](#211)
+      - [2.1.2 多语言模型](#212)
+  - [2.2 Python脚本使用](#22)
+      - [2.2.1 中英文与多语言使用](#221)
+- [3.小结](#3)
+
 
 <a name="1"></a>
-
 ## 1. 安装
 
 <a name="11"></a>
-
 ### 1.1 安装PaddlePaddle
 
 > 如果您没有基础的Python运行环境，请参考[运行环境准备](./environment.md)。
@@ -39,22 +37,13 @@
 更多的版本需求，请参照[飞桨官网安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
 
 <a name="12"></a>
-
 ### 1.2 安装PaddleOCR whl包
 
 ```bash
 pip install "paddleocr>=2.0.1" # 推荐使用2.0.1+版本
 ```
 
-- 对于Windows环境用户：
-
-  直接通过pip安装的shapely库可能出现`[winRrror 126] 找不到指定模块的问题`。建议从[这里](https://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely)下载shapely安装包完成安装，
-
-- 使用**版面分析**功能时，运行以下命令**安装 Layout-Parser**
-
-  ```bash
-  pip3 install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
-  ```
+- 对于Windows环境用户：直接通过pip安装的shapely库可能出现`[winRrror 126] 找不到指定模块的问题`。建议从[这里](https://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely)下载shapely安装包完成安装。
 
 
 <a name="2"></a>
@@ -68,7 +57,8 @@ PaddleOCR提供了一系列测试图片，点击[这里](https://paddleocr.bj.bc
 cd /path/to/ppocr_img
 ```
 
-如果不使用提供的测试图片，可以将下方`--image_dir`参数替换为相应的测试图片路径
+如果不使用提供的测试图片，可以将下方`--image_dir`参数替换为相应的测试图片路径。
+
 <a name="211"></a>
 #### 2.1.1 中英文模型
 
@@ -154,60 +144,6 @@ paddleocr --image_dir ./imgs_en/254.jpg --lang=en
 | 繁体中文 | chinese_cht |      | 意大利文 | it     |      | 俄罗斯文 | ru     |
 
 全部语种及其对应的缩写列表可查看[多语言模型教程](./multi_languages.md)
-<a name="213"></a>
-
-#### 2.1.3 版面分析
-
-版面分析是指对文档图片中的文字、标题、列表、图片和表格5类区域进行划分。对于前三类区域，直接使用OCR模型完成对应区域文字检测与识别，并将结果保存在txt中。对于表格类区域，经过表格结构化处理后，表格图片转换为相同表格样式的Excel文件。图片区域会被单独裁剪成图像。
-
-使用PaddleOCR的版面分析功能，需要指定`--type=structure`
-
-```bash
-paddleocr --image_dir=./table/1.png --type=structure
-```
-
-- **返回结果说明**
-
-  PP-Structure的返回结果为一个dict组成的list，示例如下
-
-  ```shell
-  [{   'type': 'Text',
-        'bbox': [34, 432, 345, 462],
-        'res': ([[36.0, 437.0, 341.0, 437.0, 341.0, 446.0, 36.0, 447.0], [41.0, 454.0, 125.0, 453.0, 125.0, 459.0, 41.0, 460.0]],
-                  [('Tigure-6. The performance of CNN and IPT models using difforen', 0.90060663), ('Tent  ', 0.465441)])
-    }
-  ]
-  ```
-
-  其中各个字段说明如下
-
-  | 字段 | 说明                                                         |
-  | ---- | ------------------------------------------------------------ |
-  | type | 图片区域的类型                                               |
-  | bbox | 图片区域的在原图的坐标，分别[左上角x，左上角y，右下角x，右下角y] |
-  | res  | 图片区域的OCR或表格识别结果。<br>表格: 表格的HTML字符串; <br>OCR: 一个包含各个单行文字的检测坐标和识别结果的元组 |
-
-  运行完成后，每张图片会在`output`字段指定的目录下有一个同名目录，图片里的每个表格会存储为一个excel，图片区域会被裁剪之后保存下来，excel文件和图片名为表格在图片里的坐标。
-
-  ```
-  /output/table/1/
-    └─ res.txt
-    └─ [454, 360, 824, 658].xlsx  表格识别结果
-    └─ [16, 2, 828, 305].jpg            被裁剪出的图片区域
-    └─ [17, 361, 404, 711].xlsx        表格识别结果
-  ```
-
-- **参数说明**
-
-  | 字段            | 说明                                     | 默认值                                       |
-  | --------------- | ---------------------------------------- | -------------------------------------------- |
-  | output          | excel和识别结果保存的地址                | ./output/table                               |
-  | table_max_len   | 表格结构模型预测时，图像的长边resize尺度 | 488                                          |
-  | table_model_dir | 表格结构模型 inference 模型地址          | None                                         |
-  | table_char_dict_path | 表格结构模型所用字典地址                 | ../ppocr/utils/dict/table_structure_dict.txt |
-
-  大部分参数和paddleocr whl包保持一致，见 [whl包文档](./whl.md)
-
 
 
 <a name="22"></a>
@@ -256,35 +192,7 @@ im_show.save('result.jpg')
 <div align="center">
     <img src="../imgs_results/whl/11_det_rec.jpg" width="800">
 </div>
-<a name="222"></a>
 
-#### 2.2.2 版面分析
-
-```python
-import os
-import cv2
-from paddleocr import PPStructure,draw_structure_result,save_structure_res
-
-table_engine = PPStructure(show_log=True)
-
-save_folder = './output/table'
-img_path = './table/paper-image.jpg'
-img = cv2.imread(img_path)
-result = table_engine(img)
-save_structure_res(result, save_folder,os.path.basename(img_path).split('.')[0])
-
-for line in result:
-    line.pop('img')
-    print(line)
-
-from PIL import Image
-
-font_path = './fonts/simfang.ttf' # PaddleOCR下提供字体包
-image = Image.open(img_path).convert('RGB')
-im_show = draw_structure_result(image, result,font_path=font_path)
-im_show = Image.fromarray(im_show)
-im_show.save('result.jpg')
-```
 
 <a name="3"></a>
 
@@ -292,4 +200,4 @@ im_show.save('result.jpg')
 
 通过本节内容，相信您已经熟练掌握PaddleOCR whl包的使用方法并获得了初步效果。
 
-PaddleOCR是一套丰富领先实用的OCR工具库，打通数据、模型训练、压缩和推理部署全流程，因此在[下一节](./paddleOCR_overview.md)中我们将首先为您介绍PaddleOCR的全景图，然后克隆PaddleOCR项目，正式开启PaddleOCR的应用之旅。
+PaddleOCR是一套丰富领先实用的OCR工具库，打通数据、模型训练、压缩和推理部署全流程，您可以参考[文档教程](../../README_ch.md#文档教程)，正式开启PaddleOCR的应用之旅。
