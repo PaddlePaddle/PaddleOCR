@@ -48,8 +48,8 @@ PP-OCRv3文本检测从网络结构、蒸馏训练策略两个方向做了进一
 |0|ppocr_mobile|3M|81.3|117ms|
 |1|PPOCRV2|3M|83.3|117ms|
 |2|teacher DML|124M|86.0|-|
-|3|1 + 2 + RESFPN|3.6M|85.4|121ms|
-|4|1 + 2 + LKPAN|4.6M|86.0|146ms|
+|3|1 + 2 + RESFPN|3.6M|85.4|124ms|
+|4|1 + 2 + LKPAN|4.6M|86.0|156ms|
 
 
 <a name="2"></a>

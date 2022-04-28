@@ -37,6 +37,15 @@ PP-OCRv3 text detection has been further optimized from the two directions of ne
 - Network structure improvement: Two improved FPN network structures, RSEFPN and LKPAN, are proposed to optimize the features in the FPN from the perspective of channel attention and a larger receptive field, and optimize the features extracted by the FPN.
 - Distillation training strategy: First, use resnet50 as the backbone, the improved LKPAN network structure as the FPN, and use the DML self-distillation strategy to obtain a teacher model with higher accuracy; then, the FPN part of the student model adopts RSEFPN, and adopts the CML distillation method proposed by PPOCRV2, during the training process, dynamically adjust the proportion of CML distillation teacher loss.
 
+|Index|Method|Model SIze|Hmean|CPU inference time|
+|-|-|-|-|-|
+|0|ppocr_mobile|3M|81.3|117ms|
+|1|PPOCRV2|3M|83.3|117ms|
+|2|teacher DML|124M|86.0|-|
+|3|1 + 2 + RESFPN|3.6M|85.4|124ms|
+|4|1 + 2 + LKPAN|4.6M|86.0|156ms|
+
+*note: CPU inference time refers to the average inference time on an Intel Gold 6148CPU with mkldnn enabled.*
 
 <a name="2"></a>
 ## 2. Features
