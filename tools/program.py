@@ -202,9 +202,11 @@ def train(config,
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
     extra_input_models = ["SRN", "NRTR", "SAR", "SEED", "SVTR"]
+    extra_input = False
     if config['Architecture']['algorithm'] == 'Distillation':
-        extra_input = config['Architecture']['Models']['Teacher'][
-            'algorithm'] in extra_input_models
+        for key in config['Architecture']["Models"]:
+            extra_input = extra_input or config['Architecture']['Models'][key][
+                'algorithm'] in extra_input_models
     else:
         extra_input = config['Architecture']['algorithm'] in extra_input_models
     try:
