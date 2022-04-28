@@ -2,24 +2,30 @@
 
 本文提供了PaddleOCR文本识别任务的全流程指南，包括数据准备、模型训练、调优、评估、预测，各个阶段的详细说明：
 
-- [文字识别](#文字识别)
-  - [1. 数据准备](#1-数据准备)
-    - [1.1 自定义数据集](#11-自定义数据集)
-    - [1.2 数据下载](#12-数据下载)
-    - [1.3 字典](#13-字典)
-    - [1.4 添加空格类别](#14-添加空格类别)
-  - [2. 启动训练](#2-启动训练)
-    - [2.1 数据增强](#21-数据增强)
-    - [2.2 通用模型训练](#22-通用模型训练)
-    - [2.3 多语言模型训练](#23-多语言模型训练)
-    - [2.4 知识蒸馏训练](#24-知识蒸馏训练)
-  - [3 评估](#3-评估)
-  - [4 预测](#4-预测)
-  - [5. 转Inference模型测试](#5-转inference模型测试)
+- [1. 数据准备](#1-数据准备)
+  * [1.1 自定义数据集](#11-自定义数据集)
+  * [1.2 数据下载](#12-数据下载)
+  * [1.3 字典](#13-字典)
+  * [1.4 添加空格类别](#14-添加空格类别)
+  * [1.5 数据增强](#15-数据增强)
+- [2. 开始训练](#2-开始训练)
+  * [2.1 启动训练](#21-----)
+  * [2.2 断点训练](#22-----)
+  * [2.3 更换Backbone 训练](#23---backbone---)
+  * [2.4 混合精度训练](#24---amp---)
+  * [2.5 分布式训练](#25---fleet---)
+  * [2.6 知识蒸馏训练](#26---distill---)
+  * [2.7 多语言模型训练](#27-多语言模型训练)
+  * [2.8 其他训练环境（Windows/macOS/Linux DCU）](#28---other---)
+- [3. 模型评估与预测](#3--------)
+  * [3.1 指标评估](#31-----)
+  * [3.2 测试识别效果](#32-------)
+- [4. 模型导出与预测](#4--------)
+- [5. FAQ](#5-faq)
 
 
-<a name="数据准备"></a>
-## 1. 数据准备
+<a name="1-数据准备"></a>
+# 1. 数据准备
 
 
 PaddleOCR 支持两种数据格式:
@@ -35,8 +41,8 @@ ln -sf <path/to/dataset> <path/to/paddle_ocr>/train_data/dataset
 mklink /d <path/to/paddle_ocr>/train_data/dataset <path/to/dataset>
 ```
 
-<a name="准备数据集"></a>
-### 1.1 自定义数据集
+<a name="11-自定义数据集"></a>
+## 1.1 自定义数据集
 下面以通用数据集为例， 介绍如何准备数据集：
 
 * 训练集
@@ -91,9 +97,8 @@ train_data/rec/train/word_002.jpg   用科技让复杂的世界更简单
         | ...
 ```
 
-<a name="数据下载"></a>
-
-### 1.2 数据下载
+<a name="12-数据下载"></a>
+## 1.2 数据下载
 
 - ICDAR2015
 
@@ -127,8 +132,8 @@ python gen_label.py --mode="rec" --input_path="{path/of/origin/label}" --output_
 * [google drive](https://drive.google.com/file/d/18cSWX7wXSy4G0tbKJ0d9PuIaiwRLHpjA/view)
 
 
-<a name="字典"></a>
-### 1.3 字典
+<a name="13-字典"></a>
+## 1.3 字典
 
 最后需要提供一个字典（{word_dict_name}.txt），使模型在训练时，可以将所有出现的字符映射为字典的索引。
 
@@ -163,9 +168,6 @@ PaddleOCR内置了一部分字典，可以按需使用。
 
 `ppocr/utils/en_dict.txt` 是一个包含96个字符的英文字典
 
-
-
-
 目前的多语言模型仍处在demo阶段，会持续优化模型并补充语种，**非常欢迎您为我们提供其他语言的字典和字体**，
 如您愿意可将字典文件提交至 [dict](../../ppocr/utils/dict)，我们会在Repo中感谢您。
 
@@ -174,16 +176,12 @@ PaddleOCR内置了一部分字典，可以按需使用。
 如需自定义dic文件，请在 `configs/rec/rec_icdar15_train.yml` 中添加 `character_dict_path` 字段, 指向您的字典路径。
 
 <a name="支持空格"></a>
-### 1.4 添加空格类别
+## 1.4 添加空格类别
 
 如果希望支持识别"空格"类别, 请将yml文件中的 `use_space_char` 字段设置为 `True`。
 
-
-<a name="启动训练"></a>
-## 2. 启动训练
-
 <a name="数据增强"></a>
-### 2.1 数据增强
+## 1.5 数据增强
 
 PaddleOCR提供了多种数据增强方式，默认配置文件中已经添加了数据增广。
 
@@ -193,10 +191,13 @@ PaddleOCR提供了多种数据增强方式，默认配置文件中已经添加�
 
 *由于OpenCV的兼容性问题，扰动操作暂时只支持Linux*
 
-<a name="通用模型训练"></a>
-### 2.2 通用模型训练
+<a name="开始训练"></a>
+# 2. 开始训练
 
 PaddleOCR提供了训练脚本、评估脚本和预测脚本，本节将以 CRNN 识别模型为例：
+
+<a name="启动训练"></a>
+## 2.1 启动训练
 
 首先下载pretrain model，您可以下载训练好的模型在 icdar2015 数据上进行finetune
 
@@ -317,8 +318,96 @@ Eval:
 ```
 **注意，预测/评估时的配置文件请务必与训练一致。**
 
-<a name="多语言模型训练"></a>
-### 2.3 多语言模型训练
+
+<a name="断点训练"></a>
+## 2.2 断点训练
+
+如果训练程序中断，如果希望加载训练中断的模型从而恢复训练，可以通过指定Global.checkpoints指定要加载的模型路径：
+```shell
+python3 tools/train.py -c configs/rec/rec_icdar15_train.yml -o Global.checkpoints=./your/trained/model
+```
+
+**注意**：`Global.checkpoints`的优先级高于`Global.pretrained_model`的优先级，即同时指定两个参数时，优先加载`Global.checkpoints`指定的模型，如果`Global.checkpoints`指定的模型路径有误，会加载`Global.pretrained_model`指定的模型。
+
+<a name="23---backbone---"></a>
+## 2.3 更换Backbone 训练
+
+PaddleOCR将网络划分为四部分，分别在[ppocr/modeling](../../ppocr/modeling)下。 进入网络的数据将按照顺序(transforms->backbones->necks->heads)依次通过这四个部分。
+
+```bash
+├── architectures # 网络的组网代码
+├── transforms    # 网络的图像变换模块
+├── backbones     # 网络的特征提取模块
+├── necks         # 网络的特征增强模块
+└── heads         # 网络的输出模块
+```
+如果要更换的Backbone 在PaddleOCR中有对应实现，直接修改配置yml文件中`Backbone`部分的参数即可。
+
+如果要使用新的Backbone，更换backbones的例子如下:
+
+1. 在 [ppocr/modeling/backbones](../../ppocr/modeling/backbones) 文件夹下新建文件，如my_backbone.py。
+2. 在 my_backbone.py 文件内添加相关代码，示例代码如下:
+
+```python
+import paddle
+import paddle.nn as nn
+import paddle.nn.functional as F
+
+
+class MyBackbone(nn.Layer):
+    def __init__(self, *args, **kwargs):
+        super(MyBackbone, self).__init__()
+        # your init code
+        self.conv = nn.xxxx
+
+    def forward(self, inputs):
+        # your network forward
+        y = self.conv(inputs)
+        return y
+```
+
+3. 在 [ppocr/modeling/backbones/\__init\__.py](../../ppocr/modeling/backbones/__init__.py)文件内导入添加的`MyBackbone`模块，然后修改配置文件中Backbone进行配置即可使用，格式如下:
+
+```yaml
+Backbone:
+name: MyBackbone
+args1: args1
+```
+
+**注意**：如果要更换网络的其他模块，可以参考[文档](./add_new_algorithm.md)。
+
+<a name="24---amp---"></a>
+## 2.4 混合精度训练
+
+如果您想进一步加快训练速度，可以使用[自动混合精度训练](https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/01_paddle2.0_introduction/basic_concept/amp_cn.html)， 以单机单卡为例，命令如下：
+
+```shell
+python3 tools/train.py -c configs/rec/rec_icdar15_train.yml \
+     -o Global.pretrained_model=./pretrain_models/rec_mv3_none_bilstm_ctc_v2.0_train \
+     Global.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True
+ ```
+
+<a name="26---fleet---"></a>
+## 2.5 分布式训练
+
+多机多卡训练时，通过 `--ips` 参数设置使用的机器IP地址，通过 `--gpus` 参数设置使用的GPU ID：
+
+```bash
+python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1,2,3' tools/train.py -c configs/rec/rec_icdar15_train.yml \
+     -o Global.pretrained_model=./pretrain_models/rec_mv3_none_bilstm_ctc_v2.0_train
+```
+
+**注意:** 采用多机多卡训练时，需要替换上面命令中的ips值为您机器的地址，机器之间需要能够相互ping通。另外，训练时需要在多个机器上分别启动命令。查看机器ip地址的命令为`ifconfig`。
+
+
+<a name="26---distill---"></a>
+## 2.6 知识蒸馏训练
+
+PaddleOCR支持了基于知识蒸馏的文本识别模型训练过程，更多内容可以参考[知识蒸馏说明文档](./knowledge_distillation.md)。
+
+
+<a name="27-多语言模型训练"></a>
+## 2.7 多语言模型训练
 
 PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi_languages` 路径下提供了一个多语言的配置文件模版: [rec_multi_language_lite_train.yml](../../configs/rec/multi_language/rec_multi_language_lite_train.yml)。
 
@@ -374,24 +463,36 @@ Eval:
     ...
 ```
 
-<a name="知识蒸馏训练"></a>
+<a name="28---other---"></a>
+## 2.8 其他训练环境
 
-### 2.4 知识蒸馏训练
+- Windows GPU/CPU
+在Windows平台上与Linux平台略有不同:
+Windows平台只支持`单卡`的训练与预测，指定GPU进行训练`set CUDA_VISIBLE_DEVICES=0`
+在Windows平台，DataLoader只支持单进程模式，因此需要设置 `num_workers` 为0;
 
-PaddleOCR支持了基于知识蒸馏的文本识别模型训练过程，更多内容可以参考[知识蒸馏说明文档](./knowledge_distillation.md)。
+- macOS
+不支持GPU模式，需要在配置文件中设置`use_gpu`为False，其余训练评估预测命令与Linux GPU完全相同。
 
-<a name="评估"></a>
-## 3 评估
+- Linux DCU
+DCU设备上运行需要设置环境变量 `export HIP_VISIBLE_DEVICES=0,1,2,3`，其余训练评估预测命令与Linux GPU完全相同。
 
-评估数据集可以通过 `configs/rec/rec_icdar15_train.yml`  修改Eval中的 `label_file_path` 设置。
+
+<a name="3--------"></a>
+# 3. 模型评估与预测
+
+<a name="31-----"></a>
+## 3.1 指标评估
+
+训练中模型参数默认保存在`Global.save_model_dir`目录下。在评估指标时，需要设置`Global.checkpoints`指向保存的参数文件。评估数据集可以通过 `configs/rec/rec_icdar15_train.yml`  修改Eval中的 `label_file_path` 设置。
 
 ```
 # GPU 评估， Global.checkpoints 为待测权重
 python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_icdar15_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
-<a name="预测"></a>
-## 4 预测
+<a name="32-------"></a>
+## 3.2 测试识别效果
 
 使用 PaddleOCR 训练好的模型，可以通过以下脚本进行快速预测。
 
@@ -450,9 +551,14 @@ infer_img: doc/imgs_words/ch/word_1.jpg
         result: ('韩国小馆', 0.997218)
 ```
 
-<a name="Inference"></a>
 
-## 5. 转Inference模型测试
+<a name="4--------"></a>
+# 4. 模型导出与预测
+
+inference 模型（`paddle.jit.save`保存的模型）
+一般是模型训练，把模型结构和模型参数保存在文件中的固化模型，多用于预测部署场景。
+训练过程中保存的模型是checkpoints模型，保存的只有模型的参数，多用于恢复训练等。
+与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合于实际系统集成。
 
 识别模型转inference模型与检测的方式相同，如下：
 
@@ -483,3 +589,11 @@ python3 tools/export_model.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_trai
   ```
   python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_dict_path="your text dict path"
   ```
+
+
+<a name="5-faq"></a>
+# 5. FAQ
+
+Q1: 训练模型转inference 模型之后预测效果不一致？
+
+**A**：此类问题出现较多，问题多是trained model预测时候的预处理、后处理参数和inference model预测的时候的预处理、后处理参数不一致导致的。可以对比训练使用的配置文件中的预处理、后处理和预测时是否存在差异。

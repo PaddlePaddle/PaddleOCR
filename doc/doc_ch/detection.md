@@ -1,4 +1,3 @@
-
 # 文字检测
 
 本节以icdar2015数据集为例，介绍PaddleOCR中检测模型训练、评估、测试的使用方式。
@@ -178,7 +177,7 @@ args1: args1
 ## 2.4 混合精度训练
 
 如果您想进一步加快训练速度，可以使用[自动混合精度训练](https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/01_paddle2.0_introduction/basic_concept/amp_cn.html)， 以单机单卡为例，命令如下：
-    
+
 ```shell
 python3 tools/train.py -c configs/det/det_mv3_db.yml \
      -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained \
@@ -197,7 +196,7 @@ python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1
 
 **注意:** 采用多机多卡训练时，需要替换上面命令中的ips值为您机器的地址，机器之间需要能够相互ping通。另外，训练时需要在多个机器上分别启动命令。查看机器ip地址的命令为`ifconfig`。
 
-    
+
 <a name="26---distill---"></a>
 
 ## 2.6 知识蒸馏训练
@@ -211,12 +210,17 @@ PaddleOCR支持了基于知识蒸馏的检测模型训练过程，更多内容�
 ## 2.7 其他训练环境
 
 - Windows GPU/CPU
-    
+在Windows平台上与Linux平台略有不同:
+Windows平台只支持`单卡`的训练与预测，指定GPU进行训练`set CUDA_VISIBLE_DEVICES=0`
+在Windows平台，DataLoader只支持单进程模式，因此需要设置 `num_workers` 为0;
+
 - macOS
-    
+不支持GPU模式，需要在配置文件中设置`use_gpu`为False，其余训练评估预测命令与Linux GPU完全相同。
+
 - Linux DCU
-    
-    
+DCU设备上运行需要设置环境变量 `export HIP_VISIBLE_DEVICES=0,1,2,3`，其余训练评估预测命令与Linux GPU完全相同。
+
+
 <a name="3--------"></a>
 # 3. 模型评估与预测
 
