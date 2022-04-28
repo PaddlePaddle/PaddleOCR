@@ -92,6 +92,9 @@ class BaseModel(nn.Layer):
         else:
             y["head_out"] = x
         if self.return_all_feats:
-            return y
+            if self.training:
+                return y
+            else:
+                return {"head_out": y["head_out"]}
         else:
             return x
