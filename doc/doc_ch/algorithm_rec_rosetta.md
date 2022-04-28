@@ -21,10 +21,10 @@
 > Borisyuk F ,  Gordo A ,  V  Sivakumar
 > KDD, 2018
 
-在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上, 算法复现效果如下：
+使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估， 算法复现效果如下：
 
 |模型|骨干网络|配置文件|Avg Accuracy|下载链接|
-| --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- |
 |Rosetta|Resnet34_vd|[configs/rec/rec_r34_vd_none_none_ctc.yml](../../configs/rec/rec_r34_vd_none_none_ctc.yml)|79.11%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_none_none_ctc_v2.0_train.tar)|
 |Rosetta|MobileNetV3|[configs/rec/rec_mv3_none_none_ctc.yml](../../configs/rec/rec_mv3_none_none_ctc.yml)|75.80%%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_none_none_ctc_v2.0_train.tar)|
 
@@ -37,7 +37,28 @@
 <a name="3"></a>
 ## 3. 模型训练、评估、预测
 
-请参考[文本识别训练教程](./recognition.md)。PaddleOCR对代码进行了模块化，训练不同的识别模型只需要**更换配置文件**即可。
+请参考[文本识别训练教程](./recognition.md)。PaddleOCR对代码进行了模块化，训练不同的识别模型只需要**更换配置文件**即可。 以基于Resnet34_vd骨干网络为例:
+
+```
+#单卡训练（训练周期长，不建议）
+python3 tools/train.py -c configs/rec/rec_r34_vd_none_none_ctc.yml
+#多卡训练，通过--gpus参数指定卡号
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_r34_vd_none_none_ctc.yml
+```
+
+评估
+
+```
+# GPU 评估， Global.pretrained_model 为待评估模型
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c -c configs/rec/rec_r34_vd_none_none_ctc.yml -o Global.pretrained_model={path/to/weights}/best_accuracy
+```
+
+预测：
+
+```
+# 预测使用的配置文件必须与训练一致
+python3 tools/infer_rec.py -c -c configs/rec/rec_r34_vd_none_none_ctc.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.infer_img=doc/imgs_words/en/word_1.png
+```
 
 
 <a name="4"></a>
@@ -57,9 +78,9 @@ Rosetta文本识别模型推理，可以执行如下命令：
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/img_10.png" --rec_model_dir="./inference/rec_rosetta/"
 ```
 
-可视化文本识别结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
+可视化文本识别结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'rec_res'。结果示例如下：
 
-![](../imgs_results/rec_res_img_10_rare.png)
+![](../imgs_results/rec_res_img_10_rosetta.png)
 
 
 <a name="4-2"></a>
