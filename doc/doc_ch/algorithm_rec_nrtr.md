@@ -98,7 +98,7 @@ python3 tools/infer/predict_rec.py --image_dir='./doc/imgs_words_en/word_10.png'
 <a name="4-2"></a>
 ### 4.2 C++推理部署
 
-由于C++预处理后处理还未支持SVTR，所以暂未支持
+由于C++预处理后处理还未支持NRTR，所以暂未支持
 
 <a name="4-3"></a>
 ### 4.3 Serving服务化部署
