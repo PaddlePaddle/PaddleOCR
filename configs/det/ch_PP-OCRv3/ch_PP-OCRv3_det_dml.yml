@@ -35,7 +35,7 @@ Architecture:
         name: DBHead
         kernel_list: [7,2,2]
         k: 50
-    Teacher:
+    Student2:
       return_all_feats: false
       model_type: det
       algorithm: DB

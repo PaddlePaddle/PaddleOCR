@@ -464,7 +464,7 @@ The key contains `backbone_out`, `neck_out`, `head_out`, and `value` is the tens
 
 <a name="222"></a>
 #### 2.2.2 Loss Function
-The distillation loss function configuration(`ch_PP-OCRv3_det_cml.yml`) is shown below. Compared with the loss function configuration of ch_PP-OCRv3_det_distill.yml, there are three changes:
+The distillation loss function configuration(`ch_PP-OCRv3_det_cml.yml`) is shown below.
 ```yaml
 Loss:
   name: CombinedLoss

@@ -448,7 +448,7 @@ Architecture:
 <a name="222"></a>
 #### 2.2.2 损失函数
 
-检测ch_PP-OCRv3_det_cml.yml蒸馏损失函数配置如下所示。相比较于ch_PP-OCRv3_det_distill.yml的损失函数配置，cml蒸馏的损失函数配置做了3个改动：
+检测ch_PP-OCRv3_det_cml.yml蒸馏损失函数配置如下所示。
 ```yaml
 Loss:
   name: CombinedLoss
