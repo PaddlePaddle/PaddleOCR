@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from collections import Callable
 from paddle import ParamAttr
 from paddle.nn.initializer import KaimingNormal
 import numpy as np
@@ -228,11 +227,8 @@ class Block(nn.Layer):
         super().__init__()
         if isinstance(norm_layer, str):
             self.norm1 = eval(norm_layer)(dim, epsilon=epsilon)
-        elif isinstance(norm_layer, Callable):
-            self.norm1 = norm_layer(dim)
         else:
-            raise TypeError(
-                "The norm_layer must be str or paddle.nn.layer.Layer class")
+            self.norm1 = norm_layer(dim)
         if mixer == 'Global' or mixer == 'Local':
             self.mixer = Attention(
                 dim,
@@ -250,15 +246,11 @@ class Block(nn.Layer):
         else:
             raise TypeError("The mixer must be one of [Global, Local, Conv]")
 
-        # NOTE: drop path for stochastic depth, we shall see if this is better than dropout here
         self.drop_path = DropPath(drop_path) if drop_path > 0. else Identity()
         if isinstance(norm_layer, str):
             self.norm2 = eval(norm_layer)(dim, epsilon=epsilon)
-        elif isinstance(norm_layer, Callable):
-            self.norm2 = norm_layer(dim)
         else:
-            raise TypeError(
-                "The norm_layer must be str or paddle.nn.layer.Layer class")
+            self.norm2 = norm_layer(dim)
         mlp_hidden_dim = int(dim * mlp_ratio)
         self.mlp_ratio = mlp_ratio
         self.mlp = Mlp(in_features=dim,
@@ -330,8 +322,6 @@ class PatchEmbed(nn.Layer):
                     act=nn.GELU,
                     bias_attr=None),
                 ConvBNLayer(
-                    embed_dim // 2,
-                    embed_dim,
                     in_channels=embed_dim // 2,
                     out_channels=embed_dim,
                     kernel_size=3,
