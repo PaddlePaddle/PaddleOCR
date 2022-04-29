@@ -62,6 +62,8 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_
 
 可视化文本检测结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'det_res'。
 
+![](../imgs_results/det_res_img_10_east.jpg)
+
 <a name="4-2"></a>
 ### 4.2 C++推理
 

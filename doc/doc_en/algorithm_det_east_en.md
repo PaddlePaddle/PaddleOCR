@@ -64,6 +64,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_
 
 The visualized text detection results are saved to the `./inference_results` folder by default, and the name of the result file is prefixed with 'det_res'.
 
+![](../imgs_results/det_res_img_10_east.jpg)
 
 
 <a name="4-2"></a>
