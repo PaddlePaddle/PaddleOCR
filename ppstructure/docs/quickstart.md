@@ -194,5 +194,6 @@ dict 里各个字段说明如下
 | layout               | 前向中是否执行版面分析                                                                                                                                        | True                                                    |
 | table                | 前向中是否执行表格识别                                                                                                                                        | True                                                    |
 | ocr                  | 对于版面分析中的非表格区域，是否执行ocr。当layout为False时会被自动设置为False                                                                                                  | True                                                    |
+| structure_version                  |      表格结构化模型版本，可选 PP-STRUCTURE。PP-STRUCTURE支持表格结构化模型                                              | PP-STRUCTURE                                                    |
 
 大部分参数和PaddleOCR whl包保持一致，见 [whl包文档](../../doc/doc_ch/whl.md)
