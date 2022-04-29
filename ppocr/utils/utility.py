@@ -60,7 +60,7 @@ def get_image_file_list(img_file):
         raise Exception("not found any img file in {}".format(img_file))
 
     img_end = {'jpg', 'bmp', 'png', 'jpeg', 'rgb', 'tif', 'tiff', 'gif'}
-    if os.path.isfile(img_file) and _check_image_file(file_path):
+    if os.path.isfile(img_file) and _check_image_file(img_file):
         imgs_lists.append(img_file)
     elif os.path.isdir(img_file):
         for single_file in os.listdir(img_file):
