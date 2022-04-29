@@ -392,38 +392,8 @@ class OCRReader(object):
 
         return norm_img_batch[0]
 
-    def postprocess_old(self, outputs, with_score=False):
-        rec_res = []
-        rec_idx_lod = outputs["ctc_greedy_decoder_0.tmp_0.lod"]
-        rec_idx_batch = outputs["ctc_greedy_decoder_0.tmp_0"]
-        if with_score:
-            predict_lod = outputs["softmax_0.tmp_0.lod"]
-        for rno in range(len(rec_idx_lod) - 1):
-            beg = rec_idx_lod[rno]
-            end = rec_idx_lod[rno + 1]
-            if isinstance(rec_idx_batch, list):
-                rec_idx_tmp = [x[0] for x in rec_idx_batch[beg:end]]
-            else:  #nd array
-                rec_idx_tmp = rec_idx_batch[beg:end, 0]
-            preds_text = self.char_ops.decode(rec_idx_tmp)
-            if with_score:
-                beg = predict_lod[rno]
-                end = predict_lod[rno + 1]
-                if isinstance(outputs["softmax_0.tmp_0"], list):
-                    outputs["softmax_0.tmp_0"] = np.array(outputs[
-                        "softmax_0.tmp_0"]).astype(np.float32)
-                probs = outputs["softmax_0.tmp_0"][beg:end, :]
-                ind = np.argmax(probs, axis=1)
-                blank = probs.shape[1]
-                valid_ind = np.where(ind != (blank - 1))[0]
-                score = np.mean(probs[valid_ind, ind[valid_ind]])
-                rec_res.append([preds_text, score])
-            else:
-                rec_res.append([preds_text])
-        return rec_res
-
     def postprocess(self, outputs, with_score=False):
-        preds = outputs["save_infer_model/scale_0.tmp_1"]
+        preds = outputs["softmax_5.tmp_0"]
         try:
             preds = preds.numpy()
         except:

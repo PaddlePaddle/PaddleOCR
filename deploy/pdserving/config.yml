@@ -34,7 +34,7 @@ op:
             client_type: local_predictor
 
             #det模型路径
-            model_config: ./ppocr_det_mobile_2.0_serving
+            model_config: ./ppocr_det_v3_serving
 
             #Fetch结果列表，以client_config中fetch_var的alias_name为准
             fetch_list: ["save_infer_model/scale_0.tmp_1"]
@@ -60,10 +60,10 @@ op:
             client_type: local_predictor
 
             #rec模型路径
-            model_config: ./ppocr_rec_mobile_2.0_serving
+            model_config: ./ppocr_rec_v3_serving
 
             #Fetch结果列表，以client_config中fetch_var的alias_name为准
-            fetch_list: ["save_infer_model/scale_0.tmp_1"]  
+            fetch_list: ["softmax_5.tmp_0"]
 
             #计算硬件ID，当devices为""或不写时为CPU预测；当devices为"0", "0,1,2"时为GPU预测，表示使用的GPU卡
             devices: "0"
