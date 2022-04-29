@@ -6,7 +6,6 @@
   - [2 Run](#2-run)
     - [2.1 Inference Model Optimization](#21-inference-model-optimization)
     - [2.2 Run optimized model on Phone](#22-run-optimized-model-on-phone)
-      - [注意：](#注意)
   - [FAQ](#faq)
 
 # Tutorial of PaddleOCR Mobile deployment
@@ -223,7 +222,7 @@ demo/cxx/ocr/
 |-- ocr_db_crnn.cc              C++ main code
 ```
 
-#### 注意：
+**Note**:
 1. `ppocr_keys_v1.txt` is a Chinese dictionary file. If the nb model is used for English recognition or other language recognition, dictionary file should be replaced with a dictionary of the corresponding language. PaddleOCR provides a variety of dictionaries under ppocr/utils/, including:
 ```
 dict/french_dict.txt     # french
