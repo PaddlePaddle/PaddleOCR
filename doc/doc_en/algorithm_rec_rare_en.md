@@ -107,7 +107,6 @@ The RARE model also supports the following inference deployment methods:
 <a name="5"></a>
 ## 5. FAQ
 
-
 ## Quote
 
 ````bibtex
