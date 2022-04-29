@@ -48,7 +48,7 @@ python3 tools/train.py -c configs/rec/rec_r34_vd_tps_bilstm_att.yml
 python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_r34_vd_tps_bilstm_att.yml
 ```
 
-<a name="3.2"></a>
+<a name="3-2"></a>
 ### 3.2 评估
 
 ```
@@ -56,7 +56,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_r34_vd_tps_bilstm_att.yml -o Global.pretrained_model={path/to/weights}/best_accuracy
 ```
 
-<a name="3.3"></a>
+<a name="3-3"></a>
 ### 3.3 预测
 
 ```
