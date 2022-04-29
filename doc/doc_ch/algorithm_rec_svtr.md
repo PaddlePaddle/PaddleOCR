@@ -8,6 +8,9 @@
     - [3.3 预测](#3-3)
 - [4. 推理部署](#4)
     - [4.1 Python推理](#4-1)
+    - [4.2 C++推理](#4-2)
+    - [4.3 Serving服务化部署](#4-3)
+    - [4.4 更多推理部署](#4-4)
 - [5. FAQ](#5)
 
 <a name="1"></a>
@@ -62,6 +65,15 @@ SVTR在场景文本识别公开数据集上的精度(%)和模型文件如下：
 
 请参考[文本识别训练教程](./recognition.md)。PaddleOCR对代码进行了模块化，训练`SVTR`识别模型时需要**更换配置文件**为`SVTR`的[配置文件](../../configs/rec/rec_svtrnet.yml)。
 
+具体地，在完成数据准备后，便可以启动训练，训练命令如下：
+```shell
+#单卡训练（训练周期长，不建议）
+python3 tools/train.py -c configs/rec/rec_svtrnet.yml
+
+#多卡训练，通过--gpus参数指定卡号
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_svtrnet.yml
+```
+
 <a name="3-2"></a>
 ### 3.2 评估
 
@@ -105,6 +117,21 @@ python3 tools/infer/predict_rec.py --image_dir='./doc/imgs_words_en/word_10.png'
 ```shell
 [2022/04/26 10:11:01] ppocr INFO: Predicts of ./doc/imgs_words_en/word_10.png:('pain', 0.9999998807907104)
 ```
+
+<a name="4-2"></a>
+### 4.2 C++推理部署
+
+由于C++预处理后处理还未支持SVTR，所以暂未支持
+
+<a name="4-3"></a>
+### 4.3 Serving服务化部署
+
+暂不支持
+
+<a name="4-4"></a>
+### 4.4 更多推理部署
+
+暂不支持
 
 <a name="5"></a>
 ## 5. FAQ
