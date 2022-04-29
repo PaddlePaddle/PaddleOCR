@@ -145,7 +145,7 @@ Metric:
   base_metric_name: RecMetric
   main_indicator: acc
   key: "Student"
-  ignore_space: True
+  ignore_space: False
 
 Train:
   dataset:
