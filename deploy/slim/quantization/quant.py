@@ -161,12 +161,6 @@ def main(config, device, logger, vdl_writer):
     if config["Global"]["pretrained_model"] is not None:
         pre_best_model_dict = load_model(config, model)
 
-    quanter = QAT(config=quant_config, act_preprocess=PACT)
-    quanter.quantize(model)
-
-    if config['Global']['distributed']:
-        model = paddle.DataParallel(model)
-
     # build loss
     loss_class = build_loss(config['Loss'])
 
@@ -180,6 +174,12 @@ def main(config, device, logger, vdl_writer):
     # resume PACT training process
     if config["Global"]["checkpoints"] is not None:
         pre_best_model_dict = load_model(config, model, optimizer)
+
+    quanter = QAT(config=quant_config, act_preprocess=PACT)
+    quanter.quantize(model)
+
+    if config['Global']['distributed']:
+        model = paddle.DataParallel(model)
 
     # build metric
     eval_class = build_metric(config['Metric'])
