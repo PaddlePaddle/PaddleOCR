@@ -25,9 +25,7 @@ After training, if you want to further compress the model size and accelerate th
 ### 1. Install PaddleSlim
 
 ```bash
-git clone https://github.com/PaddlePaddle/PaddleSlim.git
-cd PaddlSlim
-python setup.py install
+pip3 install paddleslim==2.2.2
 ```
 
 
@@ -51,6 +49,17 @@ tar -xf ch_ppocr_mobile_v2.0_det_train.tar
 python deploy/slim/quantization/quant.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrained_model=./ch_ppocr_mobile_v2.0_det_train/best_accuracy   Global.save_model_dir=./output/quant_model
 ```
 
+
+Model distillation and model quantization can be used at the same time, taking the PPOCRv3 detection model as an example:
+```
+# download provided model
+wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar
+tar xf https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar
+
+python deploy/slim/quantization/quant.py -c configs/det/ch_PP-OCRv3_det/ch_PP-OCRv3_det_cml.yml -o Global.pretrained_model='./ch_PP-OCRv3_det_distill_train/best_accuracy'   Global.save_model_dir=./output/quant_model_distill/
+```
+
+If you want to quantify the text recognition model, you can modify the configuration file and loaded model parameters.
 
 ### 4. Export inference model
 

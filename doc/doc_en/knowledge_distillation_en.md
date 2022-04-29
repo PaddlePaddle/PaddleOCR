@@ -319,11 +319,10 @@ After the extraction is complete, use [ch_PP-OCRv2_rec.yml](../../configs/rec/ch
 <a name="22"></a>
 ### 2.2 Detection Model Configuration File Analysis
 
-The configuration file of the detection model distillation is in the ```PaddleOCR/configs/det/ch_PP-OCRv2/``` directory, which contains three distillation configuration files:
+The configuration file of the detection model distillation is in the ```PaddleOCR/configs/det/ch_PP-OCRv3/``` directory, which contains three distillation configuration files:
 
-- ```ch_PP-OCRv2_det_cml.yml```, Use one large model to distill two small models, and the two small models learn from each other
-- ```ch_PP-OCRv2_det_dml.yml```, Method of mutual distillation of two student models
-- ```ch_PP-OCRv2_det_distill.yml```, The method of using large teacher model to distill small student model
+- ```ch_PP-OCRv3_det_cml.yml```, Use one large model to distill two small models, and the two small models learn from each other
+- ```ch_PP-OCRv3_det_dml.yml```, Method of mutual distillation of two student models
 
 <a name="221"></a>
 #### 2.2.1 Model Structure
@@ -341,39 +340,40 @@ Architecture:
       model_type: det
       algorithm: DB
       Backbone:
-        name: MobileNetV3
-        scale: 0.5
-        model_name: large
-        disable_se: True
+        name: ResNet
+        in_channels: 3
+        layers: 50
       Neck:
-        name: DBFPN
-        out_channels: 96
+        name: LKPAN
+        out_channels: 256
       Head:
         name: DBHead
+        kernel_list: [7,2,2]
         k: 50
     Teacher:                      # Another sub-network, here is a distillation example of a large model distill a small model
       pretrained: ./pretrain_models/ch_ppocr_server_v2.0_det_train/best_accuracy
-      freeze_params: true         # The Teacher model is well-trained and does not need to participate in training
       return_all_feats: false
       model_type: det
       algorithm: DB
       Transform:
       Backbone:
         name: ResNet
-        layers: 18
+        in_channels: 3
+        layers: 50
       Neck:
-        name: DBFPN
+        name: LKPAN
         out_channels: 256
       Head:
         name: DBHead
+        kernel_list: [7,2,2]
         k: 50
 
 ```
 If DML is used, that is, the method of two small models learning from each other, the Teacher network structure in the above configuration file needs to be set to the same configuration as the Student model.
-Refer to the configuration file for details. [ch_PP-OCRv2_det_dml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.4/configs/det/ch_PP-OCRv2/ch_PP-OCRv2_det_dml.yml)
+Refer to the configuration file for details. [ch_PP-OCRv3_det_dml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.4/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml)
 
 
-The following describes the configuration file parameters [ch_PP-OCRv2_det_cml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.4/configs/det/ch_PP-OCRv2/ch_PP-OCRv2_det_cml.yml):
+The following describes the configuration file parameters [ch_PP-OCRv3_det_cml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.4/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml):
 
 ```
 Architecture:
@@ -390,12 +390,14 @@ Architecture:
       Transform:
       Backbone:
         name: ResNet
-        layers: 18
+        in_channels: 3
+        layers: 50
       Neck:
-        name: DBFPN
+        name: LKPAN
         out_channels: 256
       Head:
         name: DBHead
+        kernel_list: [7,2,2]
         k: 50
     Student:                         # Student model configuration for CML distillation
       pretrained: ./pretrain_models/MobileNetV3_large_x0_5_pretrained  
@@ -407,10 +409,11 @@ Architecture:
         name: MobileNetV3
         scale: 0.5
         model_name: large
-        disable_se: True
+        disable_se: true
       Neck:
-        name: DBFPN
+        name: RSEFPN
         out_channels: 96
+        shortcut: True
       Head:
         name: DBHead
         k: 50
@@ -425,10 +428,11 @@ Architecture:
         name: MobileNetV3
         scale: 0.5
         model_name: large
-        disable_se: True
+        disable_se: true
       Neck:
-        name: DBFPN
+        name: RSEFPN
         out_channels: 96
+        shortcut: True
       Head:
         name: DBHead
         k: 50
@@ -460,34 +464,7 @@ The key contains `backbone_out`, `neck_out`, `head_out`, and `value` is the tens
 
 <a name="222"></a>
 #### 2.2.2 Loss Function
-
-In the task of detection knowledge distillation ```ch_PP-OCRv2_det_distill.yml````, the distillation loss function configuration is as follows.
-```yaml
-Loss:
-  name: CombinedLoss                 # Loss function name
-  loss_config_list:                  # List of loss function configuration files, mandatory functions for CombinedLoss
-  - DistillationDilaDBLoss:          # DB loss function based on distillation, inherited from standard DBloss
-      weight: 1.0                    # The weight of the loss function. In loss_config_list, each loss function must include this field
-      model_name_pairs:              # Extract the output of these two sub-networks and calculate the loss between them
-      - ["Student", "Teacher"]
-      key: maps                      # In the sub-network output dict, take the corresponding tensor
-      balance_loss: true             # The following parameters are the configuration parameters of standard DBloss
-      main_loss_type: DiceLoss
-      alpha: 5
-      beta: 10
-      ohem_ratio: 3
-  - DistillationDBLoss:              # Used to calculate the loss between Student and GT
-      weight: 1.0
-      model_name_list: ["Student"]   # The model name only has Student, which means that the loss between Student and GT is calculated
-      name: DBLoss
-      balance_loss: true
-      main_loss_type: DiceLoss
-      alpha: 5
-      beta: 10
-      ohem_ratio: 3
-```
-
-Similarly, distillation loss function configuration(`ch_PP-OCRv2_det_cml.yml`) is shown below. Compared with the loss function configuration of ch_PP-OCRv2_det_distill.yml, there are three changes:
+The distillation loss function configuration(`ch_PP-OCRv3_det_cml.yml`) is shown below.
 ```yaml
 Loss:
   name: CombinedLoss
@@ -530,7 +507,7 @@ In the task of detecting knowledge distillation, the post-processing configurati
 
 ```yaml
 PostProcess:
-  name: DistillationDBPostProcess                  # The CTC decoding post-processing of the DB detection distillation task, inherited from the standard DBPostProcess class
+  name: DistillationDBPostProcess                  # The post-processing of the DB detection distillation task, inherited from the standard DBPostProcess class
   model_name: ["Student", "Student2", "Teacher"]   # Extract the output of multiple sub-networks and decode them. The network that does not require post-processing is not set in model_name
   thresh: 0.3
   box_thresh: 0.6
@@ -561,9 +538,9 @@ Model Structure
 #### 2.2.5 Fine-tuning Distillation Model
 
 There are three ways to fine-tune the detection distillation task:
-- `ch_PP-OCRv2_det_distill.yml`, The teacher model is set to the model provided by PaddleOCR or the large model you have trained.
-- `ch_PP-OCRv2_det_cml.yml`, Use cml distillation. Similarly, the Teacher model is set to the model provided by PaddleOCR or the large model you have trained.
-- `ch_PP-OCRv2_det_dml.yml`, Distillation using DML. The method of mutual distillation of the two Student models has an accuracy improvement of about 1.7% on the data set used by PaddleOCR.
+- `ch_PP-OCRv3_det_distill.yml`, The teacher model is set to the model provided by PaddleOCR or the large model you have trained.
+- `ch_PP-OCRv3_det_cml.yml`, Use cml distillation. Similarly, the Teacher model is set to the model provided by PaddleOCR or the large model you have trained.
+- `ch_PP-OCRv3_det_dml.yml`, Distillation using DML. The method of mutual distillation of the two Student models has an accuracy improvement of about 1.7% on the data set used by PaddleOCR.
 
 In fine-tune, you need to set the pre-trained model to be loaded in the `pretrained` parameter of the network structure.
 
@@ -572,13 +549,13 @@ In terms of accuracy improvement, `cml` > `dml` > `distill`. When the amount of 
 In addition, since the distillation pre-training model provided by PaddleOCR contains multiple model parameters, if you want to extract the parameters of the student model, you can refer to the following code:
 ```sh
 # Download the parameters of the distillation training model
-wget https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_distill_train.tar
+wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar
 ```
 
 ```python
 import paddle
 # Load the pre-trained model
-all_params = paddle.load("ch_PP-OCRv2_det_distill_train/best_accuracy.pdparams")
+all_params = paddle.load("ch_PP-OCRv3_det_distill_train/best_accuracy.pdparams")
 # View the keys of the weight parameter
 print(all_params.keys())
 # Extract the weights of the student model
@@ -586,7 +563,7 @@ s_params = {key[len("Student."):]: all_params[key] for key in all_params if "Stu
 # View the keys of the weight parameters of the student model
 print(s_params.keys())
 # Save
-paddle.save(s_params, "ch_PP-OCRv2_det_distill_train/student.pdparams")
+paddle.save(s_params, "ch_PP-OCRv3_det_distill_train/student.pdparams")
 ```
 
-Finally, the parameters of the student model will be saved in `ch_PP-OCRv2_det_distill_train/student.pdparams` for the fine-tune of the model.
+Finally, the parameters of the student model will be saved in `ch_PP-OCRv3_det_distill_train/student.pdparams` for the fine-tune of the model.
