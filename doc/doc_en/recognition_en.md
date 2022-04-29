@@ -1,17 +1,25 @@
 # Text Recognition
 
-- [1. Data Preparation](#1-data-preparation)
-  - [1.1 DataSet Preparation](#11-dataset-preparation)
-  - [1.2 Dictionary](#12-dictionary)
-  - [1.4 Add Space Category](#14-add-space-category)
-- [2.Training](#2training)
-  - [2.1 Data Augmentation](#21-data-augmentation)
-  - [2.2 General Training](#22-general-training)
-  - [2.3 Multi-language Training](#23-multi-language-training)
-  - [2.4 Training with Knowledge Distillation](#24-training-with-knowledge-distillation)
-- [3. Evalution](#3-evalution)
-- [4. Prediction](#4-prediction)
-- [5. Convert to Inference Model](#5-convert-to-inference-model)
+- [1. Data Preparation](#DATA_PREPARATION)
+  * [1.1 Costom Dataset](#Costom_Dataset)
+  * [1.2 Dataset Download](#Dataset_download)
+  * [1.3 Dictionary](#Dictionary)  
+  * [1.4 Add Space Category](#Add_space_category)
+  * [1.5 Data Augmentation](#Data_Augmentation)
+- [2. Training](#TRAINING)
+  * [2.1 Start Training](#21-start-training)
+  * [2.2 Load Trained Model and Continue Training](#22-load-trained-model-and-continue-training)
+  * [2.3 Training with New Backbone](#23-training-with-new-backbone)
+  * [2.4 Mixed Precision Training](#24-amp-training)
+  * [2.5 Distributed Training](#25-distributed-training)
+  * [2.6 Training with knowledge distillation](#kd)
+  * [2.7 Multi-language Training](#Multi_language)
+  * [2.8 Training on other platform(Windows/macOS/Linux DCU)](#28)
+- [3. Evaluation and Test](#3-evaluation-and-test)
+  * [3.1 Evaluation](#31-evaluation)
+  * [3.2 Test](#32-test)
+- [4. Inference](#4-inference)
+- [5. FAQ](#5-faq)
 
 <a name="DATA_PREPARATION"></a>
 ## 1. Data Preparation
@@ -72,11 +80,8 @@ If you need to customize dic file, please add character_dict_path field in confi
 
 If you want to support the recognition of the `space` category, please set the `use_space_char` field in the yml file to `True`.
 
-<a name="TRAINING"></a>
-## 2.Training
-
 <a name="Data_Augmentation"></a>
-### 2.1 Data Augmentation
+### 1.5 Data Augmentation
 
 PaddleOCR provides a variety of data augmentation methods. All the augmentation methods are enabled by default.
 
@@ -84,10 +89,13 @@ The default perturbation methods are: cvtColor, blur, jitter, Gasuss noise, rand
 
 Each disturbance method is selected with a 40% probability during the training process. For specific code implementation, please refer to: [rec_img_aug.py](../../ppocr/data/imaug/rec_img_aug.py)
 
-<a name="Training"></a>
-### 2.2 General Training
+<a name="TRAINING"></a>
+## 2.Training
 
 PaddleOCR provides training scripts, evaluation scripts, and prediction scripts. In this section, the CRNN recognition model will be used as an example:
+
+<a name="21-start-training"></a>
+### 2.1 Start Training
 
 First download the pretrain model, you can download the trained model to finetune on the icdar2015 data:
 
@@ -204,8 +212,99 @@ Eval:
 ```
 **Note that the configuration file for prediction/evaluation must be consistent with the training.**
 
+<a name="22-load-trained-model-and-continue-training"></a>
+### 2.2 Load Trained Model and Continue Training
+
+If you expect to load trained model and continue the training again, you can specify the parameter `Global.checkpoints` as the model path to be loaded.
+
+For example:
+```shell
+python3 tools/train.py -c configs/rec/rec_icdar15_train.yml -o Global.checkpoints=./your/trained/model
+```
+
+**Note**: The priority of `Global.checkpoints` is higher than that of `Global.pretrained_model`, that is, when two parameters are specified at the same time, the model specified by `Global.checkpoints` will be loaded first. If the model path specified by `Global.checkpoints` is wrong, the one specified by `Global.pretrained_model` will be loaded.
+
+<a name="23-training-with-new-backbone"></a>
+### 2.3 Training with New Backbone
+
+The network part completes the construction of the network, and PaddleOCR divides the network into four parts, which are under [ppocr/modeling](../../ppocr/modeling). The data entering the network will pass through these four parts in sequence(transforms->backbones->
+necks->heads).
+
+```bash
+├── architectures # Code for building network
+├── transforms    # Image Transformation Module
+├── backbones     # Feature extraction module
+├── necks         # Feature enhancement module
+└── heads         # Output module
+```
+
+If the Backbone to be replaced has a corresponding implementation in PaddleOCR, you can directly modify the parameters in the `Backbone` part of the configuration yml file.
+
+However, if you want to use a new Backbone, an example of replacing the backbones is as follows:
+
+1. Create a new file under the [ppocr/modeling/backbones](../../ppocr/modeling/backbones) folder, such as my_backbone.py.
+2. Add code in the my_backbone.py file, the sample code is as follows:
+
+```python
+import paddle
+import paddle.nn as nn
+import paddle.nn.functional as F
+
+
+class MyBackbone(nn.Layer):
+    def __init__(self, *args, **kwargs):
+        super(MyBackbone, self).__init__()
+        # your init code
+        self.conv = nn.xxxx
+
+    def forward(self, inputs):
+        # your network forward
+        y = self.conv(inputs)
+        return y
+```
+
+3. Import the added module in the [ppocr/modeling/backbones/\__init\__.py](../../ppocr/modeling/backbones/__init__.py) file.
+
+After adding the four-part modules of the network, you only need to configure them in the configuration file to use, such as:
+
+```yaml
+  Backbone:
+    name: MyBackbone
+    args1: args1
+```
+
+**NOTE**: More details about replace Backbone and other mudule can be found in [doc](add_new_algorithm_en.md).
+
+<a name="24-amp-training"></a>
+### 2.4 Mixed Precision Training
+
+If you want to speed up your training further, you can use [Auto Mixed Precision Training](https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/01_paddle2.0_introduction/basic_concept/amp_cn.html), taking a single machine and a single gpu as an example, the commands are as follows:
+
+```shell
+python3 tools/train.py -c configs/rec/rec_icdar15_train.yml \
+     -o Global.pretrained_model=./pretrain_models/rec_mv3_none_bilstm_ctc_v2.0_train \
+     Global.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True
+ ```
+
+<a name="25-distributed-training"></a>
+### 2.5 Distributed Training
+
+During multi-machine multi-gpu training, use the `--ips` parameter to set the used machine IP address, and the `--gpus` parameter to set the used GPU ID:
+
+```bash
+python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1,2,3' tools/train.py -c configs/rec/rec_icdar15_train.yml \
+     -o Global.pretrained_model=./pretrain_models/rec_mv3_none_bilstm_ctc_v2.0_train
+```
+
+**Note:** When using multi-machine and multi-gpu training, you need to replace the ips value in the above command with the address of your machine, and the machines need to be able to ping each other. In addition, training needs to be launched separately on multiple machines. The command to view the ip address of the machine is `ifconfig`.
+
+<a name="kd"></a>
+### 2.6 Training with Knowledge Distillation
+
+Knowledge distillation is supported in PaddleOCR for text recognition training process. For more details, please refer to [doc](./knowledge_distillation_en.md).
+
 <a name="Multi_language"></a>
-### 2.3 Multi-language Training
+### 2.7 Multi-language Training
 
 Currently, the multi-language algorithms supported by PaddleOCR are:
 
@@ -261,25 +360,35 @@ Eval:
     ...
 ```
 
-<a name="kd"></a>
+<a name="28"></a>
+### 2.8 Training on other platform(Windows/macOS/Linux DCU)
 
-### 2.4 Training with Knowledge Distillation
+- Windows GPU/CPU
+The Windows platform is slightly different from the Linux platform:
+Windows platform only supports `single gpu` training and inference, specify GPU for training `set CUDA_VISIBLE_DEVICES=0`
+On the Windows platform, DataLoader only supports single-process mode, so you need to set `num_workers` to 0;
 
-Knowledge distillation is supported in PaddleOCR for text recognition training process. For more details, please refer to [doc](./knowledge_distillation_en.md).
+- macOS
+GPU mode is not supported, you need to set `use_gpu` to False in the configuration file, and the rest of the training evaluation prediction commands are exactly the same as Linux GPU.
 
-<a name="EVALUATION"></a>
+- Linux DCU
+Running on a DCU device requires setting the environment variable `export HIP_VISIBLE_DEVICES=0,1,2,3`, and the rest of the training and evaluation prediction commands are exactly the same as the Linux GPU.
 
-## 3. Evalution
+<a name="3-evaluation-and-test"></a>
+## 3. Evaluation and Test
 
-The evaluation dataset can be set by modifying the `Eval.dataset.label_file_list` field in the `configs/rec/rec_icdar15_train.yml` file.
+<a name="31-evaluation"></a>
+### 3.1 Evaluation
+
+The model parameters during training are saved in the `Global.save_model_dir` directory by default. When evaluating indicators, you need to set `Global.checkpoints` to point to the saved parameter file. The evaluation dataset can be set by modifying the `Eval.dataset.label_file_list` field in the `configs/rec/rec_icdar15_train.yml` file.
 
 ```
 # GPU evaluation, Global.checkpoints is the weight to be tested
 python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_icdar15_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
-<a name="PREDICTION"></a>
-## 4. Prediction
+<a name="32-test"></a>
+### 3.2 Test
 
 
 Using the model trained by paddleocr, you can quickly get prediction through the following script.
@@ -341,9 +450,14 @@ infer_img: doc/imgs_words/ch/word_1.jpg
         result: ('韩国小馆', 0.997218)
 ```
 
-<a name="Inference"></a>
+<a name="4-inference"></a>
+## 4. Inference
 
-## 5. Convert to Inference Model
+The inference model (the model saved by `paddle.jit.save`) is generally a solidified model saved after the model training is completed, and is mostly used to give prediction in deployment.
+
+The model saved during the training process is the checkpoints model, which saves the parameters of the model and is mostly used to resume training.
+
+Compared with the checkpoints model, the inference model will additionally save the structural information of the model. Therefore, it is easier to deploy because the model structure and model parameters are already solidified in the inference model file, and is suitable for integration with actual systems.
 
 The recognition model is converted to the inference model in the same way as the detection, as follows:
 
@@ -361,7 +475,7 @@ If you have a model trained on your own dataset with a different dictionary file
 After the conversion is successful, there are three files in the model save directory:
 
 ```
-inference/det_db/
+inference/rec_crnn/
     ├── inference.pdiparams         # The parameter file of recognition inference model
     ├── inference.pdiparams.info    # The parameter information of recognition inference model, which can be ignored
     └── inference.pdmodel           # The program file of recognition model
@@ -374,3 +488,10 @@ inference/det_db/
   ```
   python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_dict_path="your text dict path"
   ```
+
+<a name="5-faq"></a>
+## 5. FAQ
+
+Q1: After the training model is transferred to the inference model, the prediction effect is inconsistent?
+
+**A**: There are many such problems, and the problems are mostly caused by inconsistent preprocessing and postprocessing parameters when the trained model predicts and the preprocessing and postprocessing parameters when the inference model predicts. You can compare whether there are differences in preprocessing, postprocessing, and prediction in the configuration files used for training.
