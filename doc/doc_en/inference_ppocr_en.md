@@ -20,10 +20,10 @@ The default configuration is based on the inference setting of the DB text detec
 
 ```
 # download DB text detection inference model
-wget  https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar
-tar xf ch_PP-OCRv2_det_infer.tar
+wget  https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar
+tar xf ch_PP-OCRv3_det_infer.tar
 # run inference
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_PP-OCRv2_det_infer.tar/"
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/"
 ```
 
 The visual text detection results are saved to the ./inference_results folder by default, and the name of the result file is prefixed with 'det_res'. Examples of results are as follows:
@@ -40,12 +40,12 @@ Set as `limit_type='min', det_limit_side_len=960`, it means that the shortest si
 
 If the resolution of the input picture is relatively large and you want to use a larger resolution prediction, you can set det_limit_side_len to the desired value, such as 1216:
 ```
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./inference/ch_PP-OCRv2_det_infer/" --det_limit_type=max --det_limit_side_len=1216
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --det_limit_type=max --det_limit_side_len=1216
 ```
 
 If you want to use the CPU for prediction, execute the command as follows
 ```
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./inference/ch_PP-OCRv2_det_infer/"  --use_gpu=False
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/"  --use_gpu=False
 ```
 
 <a name="RECOGNITION_MODEL_INFERENCE"></a>
@@ -56,14 +56,17 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_di
 <a name="LIGHTWEIGHT_RECOGNITION"></a>
 ### 1. Lightweight Chinese Recognition Model Inference
 
+**Note**: The input shape used by the recognition model of `PP-OCRv3` is `3,48,320`, and the parameter `--rec_image_shape=3,48,320` needs to be added. If the recognition model of `PP-OCRv3` is not used, this parameter does not need to be set.
+
+
 For lightweight Chinese recognition model inference, you can execute the following commands:
 
 ```
 # download CRNN text recognition inference model
-wget  https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar
-tar xf ch_PP-OCRv2_rec_infer.tar
+wget  https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar
+tar xf ch_PP-OCRv3_rec_infer.tar
 # run inference
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --rec_model_dir="./ch_PP-OCRv2_rec_infer/"
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_10.png" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --rec_image_shape=3,48,320
 ```
 
 ![](../imgs_words_en/word_10.png)
@@ -71,7 +74,7 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" 
 After executing the command, the prediction results (recognized text and score) of the above image will be printed on the screen.
 
 ```bash
-Predicts of ./doc/imgs_words_en/word_10.png:('PAIN', 0.9897658)
+Predicts of ./doc/imgs_words_en/word_10.png:('PAIN', 0.988671)
 ```
 
 <a name="MULTILINGUAL_MODEL_INFERENCE"></a>
@@ -117,20 +120,22 @@ After executing the command, the prediction results (classification angle and sc
 <a name="CONCATENATION"></a>
 ## Text Detection Angle Classification and Recognition Inference Concatenation
 
+**Note**: The input shape used by the recognition model of `PP-OCRv3` is `3,48,320`, and the parameter `--rec_image_shape=3,48,320` needs to be added. If the recognition model of `PP-OCRv3` is not used, this parameter does not need to be set.
+
 When performing prediction, you need to specify the path of a single image or a folder of images through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to detect the inference model, the parameter `cls_model_dir` specifies the path to angle classification inference model and the parameter `rec_model_dir` specifies the path to identify the inference model. The parameter `use_angle_cls` is used to control whether to enable the angle classification model. The parameter `use_mp` specifies whether to use multi-process to infer `total_process_num` specifies process number when using multi-process. The parameter . The visualized recognition results are saved to the `./inference_results` folder by default.
 
 ```shell
 # use direction classifier
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./inference/ch_PP-OCRv2_det_infer/" --cls_model_dir="./inference/cls/" --rec_model_dir="./inference/ch_PP-OCRv2_rec_infer/" --use_angle_cls=true
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --cls_model_dir="./cls/" --rec_model_dir="./ch_PP-OCRv2_rec_infer/" --use_angle_cls=true --rec_image_shape=3,48,320
 
 # not use use direction classifier
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./inference/ch_PP-OCRv2_det_infer/" --rec_model_dir="./inference/ch_PP-OCRv2_rec_infer/" --use_angle_cls=false
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_PP-OCRv2_det_infer/" --rec_model_dir="./ch_PP-OCRv2_rec_infer/" --use_angle_cls=false --rec_image_shape=3,48,320
 
 # use multi-process
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./inference/ch_PP-OCRv2_det_infer/" --rec_model_dir="./inference/ch_PP-OCRv2_rec_infer/" --use_angle_cls=false --use_mp=True --total_process_num=6
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_PP-OCRv2_det_infer/" --rec_model_dir="./ch_PP-OCRv2_rec_infer/" --use_angle_cls=false --use_mp=True --total_process_num=6 --rec_image_shape=3,48,320
 ```
 
 
 After executing the command, the recognition result image is as follows:
 
-![](../imgs_results/system_res_00018069.jpg)
+![](../imgs_results/system_res_00018069_v3.jpg)
