@@ -129,7 +129,7 @@ Loss:
       key: head_out
       multi_head: True
   - DistillationSARLoss:
-      weight: 1.0
+      weight: 0.5
       model_name_list: ["Student", "Teacher"]
       key: head_out
       multi_head: True

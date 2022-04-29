@@ -259,18 +259,18 @@ Loss:
       model_name_pairs:                        # 用于计算DML loss的子网络名称对，如果希望计算其他子网络的DML loss，可以在列表下面继续填充
       - ["Student", "Teacher"]
       key: head_out                            # 取子网络输出dict中，该key对应的tensor
-      multi_head: True                         # 是否为多头结构，我们
-      dis_head: ctc                            # 蒸馏
+      multi_head: True                         # 是否为多头结构
+      dis_head: ctc                            # 指定用于计算损失函数的head
       name: dml_ctc                            # 蒸馏loss的前缀名称，避免不同loss之间的命名冲突
   - DistillationDMLLoss:                       # 蒸馏的DML损失函数，继承自标准的DMLLoss
-      weight: 1.0                              # 权重
+      weight: 0.5                              # 权重
       act: "softmax"                           # 激活函数，对输入使用激活函数处理，可以为softmax, sigmoid或者为None，默认为None
       use_log: true                            # 对输入计算log，如果函数已经
       model_name_pairs:                        # 用于计算DML loss的子网络名称对，如果希望计算其他子网络的DML loss，可以在列表下面继续填充
       - ["Student", "Teacher"]
       key: head_out                            # 取子网络输出dict中，该key对应的tensor
-      multi_head: True                         # 是否为多头结构，我们
-      dis_head: sar                            # 蒸馏
+      multi_head: True                         # 是否为多头结构
+      dis_head: sar                            # 指定用于计算损失函数的head
       name: dml_sar                            # 蒸馏loss的前缀名称，避免不同loss之间的命名冲突
   - DistillationDistanceLoss:                  # 蒸馏的距离损失函数
       weight: 1.0                              # 权重
@@ -286,17 +286,17 @@ Loss:
       weight: 1.0                              # 损失函数的权重，loss_config_list中，每个损失函数的配置都必须包含该字段
       model_name_list: ["Student", "Teacher"]  # 对于蒸馏模型的预测结果，提取这两个子网络的输出，与gt计算CTC loss
       key: head_out                            # 取子网络输出dict中，该key对应的tensor
-      multi_head: True                         # 是否为多头结构，为true时，取出其中的
+      multi_head: True                         # 是否为多头结构，为true时，取出其中的SAR分支计算损失函数
 ```
 
 上述损失函数中，所有的蒸馏损失函数均继承自标准的损失函数类，主要功能为: 对蒸馏模型的输出进行解析，找到用于计算损失的中间节点(tensor)，再使用标准的损失函数类去计算。
 
-以上述配置为例，最终蒸馏训练的损失函数包含下面3个部分。
+以上述配置为例，最终蒸馏训练的损失函数包含下面5个部分。
 
 - `Student`和`Teacher`最终输出(`head_out`)的CTC分支与gt的CTC loss，权重为1。在这里因为2个子网络都需要更新参数，因此2者都需要计算与g的loss。
-- `Student`和`Teacher`最终输出(`head_out`)的SAR分支与gt的CTC loss，权重为1。在这里因为2个子网络都需要更新参数，因此2者都需要计算与g的loss。
+- `Student`和`Teacher`最终输出(`head_out`)的SAR分支与gt的SAR loss，权重为1.0。在这里因为2个子网络都需要更新参数，因此2者都需要计算与g的loss。
 - `Student`和`Teacher`最终输出(`head_out`)的CTC分支之间的DML loss，权重为1。
-- `Student`和`Teacher`最终输出(`head_out`)SARC分支之间的DML loss，权重为1。
+- `Student`和`Teacher`最终输出(`head_out`)的SAR分支之间的DML loss，权重为0.5。
 - `Student`和`Teacher`的骨干网络输出(`backbone_out`)之间的l2 loss，权重为1。
 
 
