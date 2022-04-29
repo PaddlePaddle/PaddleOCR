@@ -77,8 +77,16 @@ python3 tools/export_model.py -c configs/rec/rec_r34_vd_tps_bilstm_att.yml -o Gl
 RARE文本识别模型推理，可以执行如下命令：
 
 ```shell
-python3 tools/infer/predict_rec.py --image_dir="doc/imgs_words/en/word_1.png" --rec_model_dir="./inference/rec_rare/"
+python3 tools/infer/predict_rec.py --image_dir="doc/imgs_words/en/word_1.png" --rec_model_dir="./inference/rec_rare/" --rec_image_shape="3, 32, 100" --rec_char_dict_path="./ppocr/utils/ic15_dict.txt"
 ```
+推理结果如下所示：
+
+![](../../doc/imgs_words/en/word_1.png)
+
+```
+Predicts of doc/imgs_words/en/word_1.png:('joint ', 0.9999969601631165)
+```
+
 
 <a name="4-2"></a>
 ### 4.2 C++推理
