@@ -25,10 +25,9 @@
 <a name="model"></a>
 `NRTR`使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估，算法复现效果如下：
 
-|        | Avg accruacy | 下载链接                                                                           | 配置文件 |
-|--------|------------|--------------------------------------------------------------------------------| --- |
-| NRTR   | 84.21%     | [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mtb_nrtr_train.tar) |   [config](../../configs/rec/rec_mtb_nrtr.yml)    |
-
+|模型|骨干网络|配置文件|Acc|下载链接|
+| --- | --- | --- | --- | --- |
+|NRTR|MTB|[rec_mtb_nrtr.yml](../../configs/rec/rec_mtb_nrtr.yml)|84.21%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mtb_nrtr_train.tar)|
 
 <a name="2"></a>
 ## 2. 环境配置
@@ -87,6 +86,17 @@ python3 tools/infer_rec.py -c configs/rec/rec_mtb_nrtr.yml -o Global.infer_img='
 # 注意将pretrained_model的路径设置为本地路径。
 python3 tools/export_model.py -c configs/rec/rec_mtb_nrtr.yml -o Global.pretrained_model=./rec_mtb_nrtr_train/best_accuracy Global.save_inference_dir=./inference/rec_mtb_nrtr/
 ```
+**注意：**
+- 如果您是在自己的数据集上训练的模型，并且调整了字典文件，请注意修改配置文件中的`character_dict_path`是否是所需要的字典文件。
+- 如果您修改了训练时的输入大小，请修改`tools/export_model.py`文件中的对应NRTR的`infer_shape`。
+
+转换成功后，在目录下有三个文件：
+```
+/inference/rec_mtb_nrtr/
+    ├── inference.pdiparams         # 识别inference模型的参数文件
+    ├── inference.pdiparams.info    # 识别inference模型的参数信息，可忽略
+    └── inference.pdmodel           # 识别inference模型的program文件
+```
 
 执行如下命令进行模型推理：
 
@@ -94,6 +104,21 @@ python3 tools/export_model.py -c configs/rec/rec_mtb_nrtr.yml -o Global.pretrain
 python3 tools/infer/predict_rec.py --image_dir='./doc/imgs_words_en/word_10.png' --rec_model_dir='./inference/rec_mtb_nrtr/' --rec_algorithm='NRTR' --rec_image_shape='1,32,100' --rec_char_dict_path='./ppocr/utils/EN_symbol_dict.txt'
 # 预测文件夹下所有图像时，可修改image_dir为文件夹，如 --image_dir='./doc/imgs_words_en/'。
 ```
+
+![](../imgs_words_en/word_10.png)
+
+执行命令后，上面图像的预测结果（识别的文本和得分）会打印到屏幕上，示例如下：
+结果如下：
+```shell
+Predicts of ./doc/imgs_words_en/word_10.png:('pain', 0.9265879392623901)
+```
+
+**注意**：
+
+- 训练上述模型采用的图像分辨率是[1，32，100]，需要通过参数`rec_image_shape`设置为您训练时的识别图像形状。
+- 在推理时需要设置参数`rec_char_dict_path`指定字典，如果您修改了字典，请修改该参数为您的字典文件。
+- 如果您修改了预处理方法，需修改`tools/infer/predict_rec.py`中NRTR的预处理为您的预处理方法。
+
 
 <a name="4-2"></a>
 ### 4.2 C++推理部署

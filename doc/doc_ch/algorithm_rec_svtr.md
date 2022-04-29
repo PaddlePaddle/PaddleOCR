@@ -36,7 +36,7 @@ SVTR在场景文本识别公开数据集上的精度(%)和模型文件如下：
 
 * 中文数据集来自于[Chinese Benckmark](https://arxiv.org/abs/2112.15093) ，SVTR的中文训练评估策略遵循该论文。
 
-|            |IC13<br/>857 |  SVT  |IIIT5k<br/>3000 |IC15<br/>1811| SVTP  |CUTE80 | Avg_6 |IC15<br/>2077 |IC13<br/>1015 |IC03<br/>867|IC03<br/>860|Avg_10 | Chinese<br/>scene_test|      下载链接       |
+|    模型      |IC13<br/>857 |  SVT  |IIIT5k<br/>3000 |IC15<br/>1811| SVTP  |CUTE80 | Avg_6 |IC15<br/>2077 |IC13<br/>1015 |IC03<br/>867|IC03<br/>860|Avg_10 | Chinese<br/>scene_test|      下载链接       |
 |:----------:|:------:|:-----:|:---------:|:------:|:-----:|:-----:|:-----:|:-------:|:-------:|:-----:|:-----:|:---------------------------------------------:|:-----:|:-----:|
 | SVTR Tiny  | 96.85  | 91.34 |   94.53   | 83.99  | 85.43 | 89.24 | 90.87 |  80.55  |  95.37  | 95.27 | 95.70 | 90.13 | 67.90 | [英文](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/rec_svtr_tiny_none_ctc_en_train.tar)  / [中文](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/rec_svtr_tiny_none_ctc_ch_train.tar)  |
 | SVTR Small | 95.92  | 93.04 |   95.03   | 84.70  | 87.91 | 92.01 | 91.63 |  82.72  |  94.88  | 96.08 | 96.28 | 91.02 | 69.00 | [英文](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/rec_svtr_small_none_ctc_en_train.tar) / [中文](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/rec_svtr_small_none_ctc_ch_train.tar) |
@@ -77,7 +77,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 <a name="3-2"></a>
 ### 3.2 评估
 
-可下载`SVTR`提供模型文件和配置文件：[下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/rec_svtr_tiny_none_ctc_en_train.tar) ，以`SVTR-T`为例，使用如下命令进行评估：
+可下载`SVTR`提供的模型文件和配置文件：[下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/rec_svtr_tiny_none_ctc_en_train.tar) ，以`SVTR-T`为例，使用如下命令进行评估：
 
 ```shell
 # 注意将pretrained_model的路径设置为本地路径。
@@ -107,16 +107,38 @@ python3 tools/infer_rec.py -c ./rec_svtr_tiny_en_train/rec_svtr_tiny_6local_6glo
 python3 tools/export_model.py -c ./rec_svtr_tiny_en_train/rec_svtr_tiny_6local_6global_stn_en.yml -o Global.pretrained_model=./rec_svtr_tiny_none_ctc_en_train/best_accuracy Global.save_inference_dir=./inference/rec_svtr_tiny_stn_en
 ```
 
+**注意：**
+- 如果您是在自己的数据集上训练的模型，并且调整了字典文件，请注意修改配置文件中的`character_dict_path`是否为所正确的字典文件。
+- 如果您修改了训练时的输入大小，请修改`tools/export_model.py`文件中的对应SVTR的`infer_shape`。
+
+转换成功后，在目录下有三个文件：
+```
+/inference/rec_svtr_tiny_stn_en/
+    ├── inference.pdiparams         # 识别inference模型的参数文件
+    ├── inference.pdiparams.info    # 识别inference模型的参数信息，可忽略
+    └── inference.pdmodel           # 识别inference模型的program文件
+```
+
+
 执行如下命令进行模型推理：
 
 ```shell
 python3 tools/infer/predict_rec.py --image_dir='./doc/imgs_words_en/word_10.png' --rec_model_dir='./inference/rec_svtr_tiny_stn_en/' --rec_algorithm='SVTR' --rec_image_shape='3,64,256' --rec_char_dict_path='./ppocr/utils/ic15_dict.txt'
 # 预测文件夹下所有图像时，可修改image_dir为文件夹，如 --image_dir='./doc/imgs_words_en/'。
 ```
+![](../imgs_words_en/word_10.png)
+
+执行命令后，上面图像的预测结果（识别的文本和得分）会打印到屏幕上，示例如下：
 结果如下：
 ```shell
-[2022/04/26 10:11:01] ppocr INFO: Predicts of ./doc/imgs_words_en/word_10.png:('pain', 0.9999998807907104)
+Predicts of ./doc/imgs_words_en/word_10.png:('pain', 0.9999998807907104)
 ```
+
+**注意**：
+
+- 如果您调整了训练时的输入分辨率，需要通过参数`rec_image_shape`设置为您需要的识别图像形状。
+- 在推理时需要设置参数`rec_char_dict_path`指定字典，如果您修改了字典，请修改该参数为您的字典文件。
+- 如果您修改了预处理方法，需修改`tools/infer/predict_rec.py`中SVTR的预处理为您的预处理方法。
 
 <a name="4-2"></a>
 ### 4.2 C++推理部署
