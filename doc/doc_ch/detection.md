@@ -167,11 +167,15 @@ PaddleOCR支持了基于知识蒸馏的检测模型训练过程，更多内容�
 ## 2.7 其他训练环境
 
 - Windows GPU/CPU
+在Windows平台上与Linux平台略有不同:
+Windows平台只支持`单卡`的训练与预测，指定GPU进行训练`set CUDA_VISIBLE_DEVICES=0`
+在Windows平台，DataLoader只支持单进程模式，因此需要设置 `num_workers` 为0;
 
 - macOS
+不支持GPU模式，需要在配置文件中设置`use_gpu`为False，其余训练评估预测命令与Linux GPU完全相同。
 
 - Linux DCU
-
+DCU设备上运行需要设置环境变量 `export HIP_VISIBLE_DEVICES=0,1,2,3`，其余训练评估预测命令与Linux GPU完全相同。
 
 <a name="3--------"></a>
 # 3. 模型评估与预测

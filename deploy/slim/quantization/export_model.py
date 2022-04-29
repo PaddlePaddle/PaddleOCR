@@ -17,9 +17,9 @@ import sys
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.append(os.path.abspath(os.path.join(__dir__, '..', '..', '..')))
-sys.path.append(
-    os.path.abspath(os.path.join(__dir__, '..', '..', '..', 'tools')))
+sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '..', '..', '..')))
+sys.path.insert(
+    0, os.path.abspath(os.path.join(__dir__, '..', '..', '..', 'tools')))
 
 import argparse
 
@@ -129,7 +129,6 @@ def main():
     quanter.quantize(model)
 
     load_model(config, model)
-    model.eval()
 
     # build metric
     eval_class = build_metric(config['Metric'])
@@ -142,6 +141,7 @@ def main():
     # start eval
     metric = program.eval(model, valid_dataloader, post_process_class,
                           eval_class, model_type, use_srn)
+    model.eval()
 
     logger.info('metric eval ***************')
     for k, v in metric.items():
@@ -156,7 +156,6 @@ def main():
     if arch_config["algorithm"] in ["Distillation", ]:  # distillation model
         archs = list(arch_config["Models"].values())
         for idx, name in enumerate(model.model_name_list):
-            model.model_list[idx].eval()
             sub_model_save_path = os.path.join(save_path, name, "inference")
             export_single_model(model.model_list[idx], archs[idx],
                                 sub_model_save_path, logger, quanter)

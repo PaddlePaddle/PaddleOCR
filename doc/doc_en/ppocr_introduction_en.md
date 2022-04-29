@@ -32,6 +32,21 @@ PP-OCR system is in continuous optimization. At present, PP-OCR and PP-OCRv2 hav
 
 [2] On the basis of PP-OCR, PP-OCRv2 is further optimized in five aspects. The detection model adopts CML(Collaborative Mutual Learning) knowledge distillation strategy and CopyPaste data expansion strategy. The recognition model adopts LCNet lightweight backbone network, U-DML knowledge distillation strategy and enhanced CTC loss function improvement (as shown in the red box above), which further improves the inference speed and prediction effect. For more details, please refer to the technical report of PP-OCRv2 (https://arxiv.org/abs/2109.03144).
 
+[3] PP-OCRv3 is further upgraded on the basis of PP-OCRv2.
+PP-OCRv3 text detection has been further optimized from the two directions of network structure and distillation training strategy:
+- Network structure improvement: Two improved FPN network structures, RSEFPN and LKPAN, are proposed to optimize the features in the FPN from the perspective of channel attention and a larger receptive field, and optimize the features extracted by the FPN.
+- Distillation training strategy: First, use resnet50 as the backbone, the improved LKPAN network structure as the FPN, and use the DML self-distillation strategy to obtain a teacher model with higher accuracy; then, the FPN part of the student model adopts RSEFPN, and adopts the CML distillation method proposed by PPOCRV2, during the training process, dynamically adjust the proportion of CML distillation teacher loss.
+
+|Index|Method|Model SIze|Hmean|CPU inference time|
+|-|-|-|-|-|
+|0|ppocr_mobile|3M|81.3|117ms|
+|1|PPOCRV2|3M|83.3|117ms|
+|2|teacher DML|124M|86.0|-|
+|3|1 + 2 + RESFPN|3.6M|85.4|124ms|
+|4|1 + 2 + LKPAN|4.6M|86.0|156ms|
+
+*note: CPU inference time refers to the average inference time on an Intel Gold 6148CPU with mkldnn enabled.*
+
 <a name="2"></a>
 ## 2. Features
 
@@ -51,7 +66,7 @@ For the performance comparison between PP-OCR series models, please check the [b
 
 <details open>
 <summary>PP-OCRv2 English model</summary>
-    
+
 <div align="center">
     <img src="../imgs_results/ch_ppocr_mobile_v2.0/img_12.jpg" width="800">
 </div>
@@ -69,20 +84,20 @@ For the performance comparison between PP-OCR series models, please check the [b
     <img src="../imgs_results/ch_ppocr_mobile_v2.0/00056221.jpg" width="800">
     <img src="../imgs_results/ch_ppocr_mobile_v2.0/rotate_00052204.jpg" width="800">
 </div>
-    
+
 </details>
 
 <details open>
 <summary>PP-OCRv2 Multilingual model</summary>
-    
+
 <div align="center">
     <img src="../imgs_results/french_0.jpg" width="800">
     <img src="../imgs_results/korean.jpg" width="800">
 </div>
-    
+
 </details>
 
- 
+
 <a name="5"></a>
 ## 5. Tutorial
 
@@ -101,10 +116,12 @@ For more tutorials, including model training, model compression, deployment, etc
 <a name="6"></a>
 ## 6. Model zoo
 
-## PP-OCR Series Model List（Update on September 8th）
+## PP-OCR Series Model List（Update on 2022.04.28）
 
 | Model introduction                                           | Model name                   | Recommended scene | Detection model                                              | Direction classifier                                         | Recognition model                                            |
 | ------------------------------------------------------------ | ---------------------------- | ----------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Chinese and English ultra-lightweight PP-OCRv3 model（16.2M）     | ch_PP-OCRv3_xx          | Mobile & Server | [inference model](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar) | [inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [inference model](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar) |
+| English ultra-lightweight PP-OCRv3 model（13.4M）     | en_PP-OCRv3_xx          | Mobile & Server | [inference model](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_distill_train.tar) | [inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/ch_ppocr_mobile_v2.0_cls_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/ch_ppocr_mobile_v2.0_cls_train.tar) | [inference model](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_train.tar) |
 | Chinese and English ultra-lightweight PP-OCRv2 model（11.6M） |  ch_PP-OCRv2_xx |Mobile & Server|[inference model](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_distill_train.tar)| [inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |[inference model](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_train.tar)|
 | Chinese and English ultra-lightweight PP-OCR model (9.4M)       | ch_ppocr_mobile_v2.0_xx      | Mobile & server   |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar)|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_train.tar)      |
 | Chinese and English general PP-OCR model (143.4M)               | ch_ppocr_server_v2.0_xx      | Server            |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_train.tar)  |

@@ -47,16 +47,46 @@ __all__ = [
 ]
 
 SUPPORT_DET_MODEL = ['DB']
-VERSION = '2.5'
+VERSION = '2.5.0.1'
 SUPPORT_REC_MODEL = ['CRNN']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
-DEFAULT_OCR_MODEL_VERSION = 'PP-OCR'
-SUPPORT_OCR_MODEL_VERSION = ['PP-OCR', 'PP-OCRv2']
-DEFAULT_STRUCTURE_MODEL_VERSION = 'STRUCTURE'
-SUPPORT_STRUCTURE_MODEL_VERSION = ['STRUCTURE']
+DEFAULT_OCR_MODEL_VERSION = 'PP-OCRv3'
+SUPPORT_OCR_MODEL_VERSION = ['PP-OCR', 'PP-OCRv2', 'PP-OCRv3']
+DEFAULT_STRUCTURE_MODEL_VERSION = 'PP-STRUCTURE'
+SUPPORT_STRUCTURE_MODEL_VERSION = ['PP-STRUCTURE']
 MODEL_URLS = {
     'OCR': {
+        'PP-OCRv3': {
+            'det': {
+                'ch': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar',
+                },
+                'en': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar',
+                },
+            },
+            'rec': {
+                'ch': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar',
+                    'dict_path': './ppocr/utils/ppocr_keys_v1.txt'
+                },
+                'en': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar',
+                    'dict_path': './ppocr/utils/en_dict.txt'
+                },
+            },
+            'cls': {
+                'ch': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar',
+                }
+            },
+        },
         'PP-OCRv2': {
             'det': {
                 'ch': {
@@ -72,7 +102,7 @@ MODEL_URLS = {
                 }
             }
         },
-        DEFAULT_OCR_MODEL_VERSION: {
+        'PP-OCR': {
             'det': {
                 'ch': {
                     'url':
@@ -173,7 +203,7 @@ MODEL_URLS = {
         }
     },
     'STRUCTURE': {
-        DEFAULT_STRUCTURE_MODEL_VERSION: {
+        'PP-STRUCTURE': {
             'table': {
                 'en': {
                     'url':
@@ -198,16 +228,17 @@ def parse_args(mMain=True):
         "--ocr_version",
         type=str,
         choices=SUPPORT_OCR_MODEL_VERSION,
-        default='PP-OCRv2',
+        default='PP-OCRv3',
         help='OCR Model version, the current model support list is as follows: '
-        '1. PP-OCRv2 Support Chinese detection and recognition model. '
-        '2. PP-OCR support Chinese detection, recognition and direction classifier and multilingual recognition model.'
+        '1. PP-OCRv3 Support Chinese and English detection and recognition model, and direction classifier model'
+        '2. PP-OCRv2 Support Chinese detection and recognition model. '
+        '3. PP-OCR support Chinese detection, recognition and direction classifier and multilingual recognition model.'
     )
     parser.add_argument(
         "--structure_version",
         type=str,
         choices=SUPPORT_STRUCTURE_MODEL_VERSION,
-        default='STRUCTURE',
+        default='PP-STRUCTURE',
         help='Model version, the current model support list is as follows:'
         ' 1. STRUCTURE Support en table structure model.')
 
