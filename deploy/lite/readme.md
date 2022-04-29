@@ -1,18 +1,18 @@
-- [Tutorial of PaddleOCR Mobile deployment](#tutorial-of-paddleocr-mobile-deployment)
-  - [1. Preparation](#1-preparation)
+# Mobile deployment based on Paddle-Lite
+
+- [1. Preparation](#1-preparation)
     - [Preparation environment](#preparation-environment)
     - [1.1 Prepare the cross-compilation environment](#11-prepare-the-cross-compilation-environment)
     - [1.2 Prepare Paddle-Lite library](#12-prepare-paddle-lite-library)
-  - [2 Run](#2-run)
+- [2. Run](#2-run)
     - [2.1 Inference Model Optimization](#21-inference-model-optimization)
     - [2.2 Run optimized model on Phone](#22-run-optimized-model-on-phone)
-  - [FAQ](#faq)
+- [FAQ](#faq)
 
-# Tutorial of PaddleOCR Mobile deployment
 
-This tutorial will introduce how to use [Paddle Lite](https://github.com/PaddlePaddle/Paddle-Lite) to deploy PaddleOCR ultra-lightweight Chinese and English detection models on mobile phones.
+This tutorial will introduce how to use [Paddle-Lite](https://github.com/PaddlePaddle/Paddle-Lite) to deploy PaddleOCR ultra-lightweight Chinese and English detection models on mobile phones.
 
-paddle-lite is a lightweight inference engine for PaddlePaddle. It provides efficient inference capabilities for mobile phones and IoT, and extensively integrates cross-platform hardware to provide lightweight deployment solutions for end-side deployment issues.
+Paddle-Lite is a lightweight inference engine for PaddlePaddle. It provides efficient inference capabilities for mobile phones and IoT, and extensively integrates cross-platform hardware to provide lightweight deployment solutions for end-side deployment issues.
 
 ## 1. Preparation
 
