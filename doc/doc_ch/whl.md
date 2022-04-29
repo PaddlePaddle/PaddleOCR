@@ -199,6 +199,8 @@ for line in result:
 paddleocr -h
 ```
 
+**注意** whl包默认使用`PP-OCRv3`模型，识别模型使用的输入shape为`3,48,320`, 因此如果使用识别功能，需要添加参数`--rec_image_shape 3,48,320`，如果不使用默认的`PP-OCRv3`模型，则无需设置该参数。
+
 * 检测+方向分类器+识别全流程
 
 ```bash

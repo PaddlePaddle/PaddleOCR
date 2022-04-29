@@ -172,6 +172,8 @@ show help information
 paddleocr -h
 ```
 
+**Note**: The whl package uses the `PP-OCRv3` model by default, and the input shape used by the recognition model is `3,48,320`, so if you use the recognition function, you need to add the parameter `--rec_image_shape 3,48,320`, if you do not use the default `PP- OCRv3` model, you do not need to set this parameter.
+
 * detection classification and recognition
 ```bash
 paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --use_angle_cls true --lang en --rec_image_shape 3,48,320

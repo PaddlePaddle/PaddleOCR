@@ -208,6 +208,8 @@ Execute the built executable file:
 ./build/ppocr [--param1] [--param2] [...]
 ```
 
+**Note**:ppocr uses the `PP-OCRv3` model by default, and the input shape used by the recognition model is `3, 48, 320`, so if you use the recognition function, you need to add the parameter `--rec_img_h=48`, if you do not use the default `PP-OCRv3` model, you do not need to set this parameter.
+
 Specifically,
 
 ##### 1. det+cls+rec：

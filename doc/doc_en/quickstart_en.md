@@ -73,6 +73,8 @@ cd /path/to/ppocr_img
 
 If you do not use the provided test image, you can replace the following `--image_dir` parameter with the corresponding test image path
 
+**Note**: The whl package uses the `PP-OCRv3` model by default, and the input shape used by the recognition model is `3,48,320`, so if you use the recognition function, you need to add the parameter `--rec_image_shape 3,48,320`, if you do not use the default `PP- OCRv3` model, you do not need to set this parameter.
+
 <a name="211-english-and-chinese-model"></a>
 
 #### 2.1.1 Chinese and English Model
