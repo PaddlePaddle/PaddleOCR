@@ -1,20 +1,20 @@
 # Rosetta
 
-- [1. Introduction to Algorithms](#1)
-- [2. Environment Configuration](#2)
-- [3. Model training, evaluation, prediction](#3)
+- [1. Introduction](#1)
+- [2. Environment](#2)
+- [3. Model Training / Evaluation / Prediction](#3)
     - [3.1 Training](#3-1)
     - [3.2 Evaluation](#3-2)
     - [3.3 Prediction](#3-3)
-- [4. Inference Deployment](#4)
-    - [4.1 Python Reasoning](#4-1)
-    - [4.2 C++ Reasoning](#4-2)
-    - [4.3 Serving service deployment](#4-3)
-    - [4.4 More inference deployments](#4-4)
+- [4. Inference and Deployment](#4)
+    - [4.1 Python Inference](#4-1)
+    - [4.2 C++ Inference](#4-2)
+    - [4.3 Serving](#4-3)
+    - [4.4 More](#4-4)
 - [5. FAQ](#5)
 
 <a name="1"></a>
-## 1. Introduction to the algorithm
+## 1. Introduction
 
 Paper information:
 > [Rosetta: Large Scale System for Text Detection and Recognition in Images](https://arxiv.org/abs/1910.05085)
@@ -30,12 +30,12 @@ Using MJSynth and SynthText two text recognition datasets for training, and eval
 
 
 <a name="2"></a>
-## 2. Environment configuration
+## 2. Environment
 Please refer to [Operating Environment Preparation](./environment_en.md) to configure the PaddleOCR operating environment, and refer to [Project Clone](./clone_en.md) to clone the project code.
 
 
 <a name="3"></a>
-## 3. Model training, evaluation, prediction
+## 3. Model Training / Evaluation / Prediction
 
 Please refer to [Text Recognition Training Tutorial](./recognition_en.md). PaddleOCR modularizes the code, and training different recognition models only requires **changing the configuration file**. Take the backbone network based on Resnet34_vd as an example:
 
@@ -65,10 +65,10 @@ python3 tools/infer_rec.py -c configs/rec/rec_r34_vd_none_none_ctc.yml -o Global
 ````
 
 <a name="4"></a>
-## 4. Inference Deployment
+## 4. Inference and Deployment
 
 <a name="4-1"></a>
-### 4.1 Python Reasoning
+### 4.1 Python Inference
 First, convert the model saved during the Rosetta text recognition training process into an inference model. Take the model trained on the MJSynth and SynthText text recognition datasets based on the Resnet34_vd backbone network as an example ( [Model download address](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_none_none_ctc_v2.0_train.tar) ), which can be converted using the following command:
 
 ```shell
@@ -78,21 +78,29 @@ python3 tools/export_model.py -c configs/rec/rec_r34_vd_none_none_ctc.yml -o Glo
 Rosetta text recognition model inference, you can execute the following commands:
 
 ```shell
-python3 tools/infer/predict_rec.py --image_dir="doc/imgs_words/en/word_1.png" --rec_model_dir="./inference/rec_rosetta/"
+python3 tools/infer/predict_rec.py --image_dir="doc/imgs_words/en/word_1.png" --rec_model_dir="./inference/rec_rosetta/" --rec_image_shape="3, 32, 100" --rec_char_dict_path= "./ppocr/utils/ic15_dict.txt"
+````
+
+The inference results are as follows:
+
+![](../../doc/imgs_words/en/word_1.png)
+
+````
+Predicts of doc/imgs_words/en/word_1.png:('joint', 0.9999982714653015)
 ````
 
 <a name="4-2"></a>
-### 4.2 C++ Reasoning
+### 4.2 C++ Inference
 
 Not currently supported
 
 <a name="4-3"></a>
-### 4.3 Serving service deployment
+### 4.3 Serving
 
 Not currently supported
 
 <a name="4-4"></a>
-### 4.4 More inference deployment
+### 4.4 More
 
 The Rosetta model also supports the following inference deployment methods:
 
