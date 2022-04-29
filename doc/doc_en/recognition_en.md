@@ -157,9 +157,9 @@ If the evaluation set is large, the test will be time-consuming. It is recommend
 
 
 For training Chinese data, it is recommended to use
-[ch_PP-OCRv3_rec.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec.yml). If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:
+[ch_PP-OCRv3_rec_distillation.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml). If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:
 
-Take `ch_PP-OCRv3_rec.yml` as an example:
+Take `ch_PP-OCRv3_rec_distillation.yml` as an example:
 ```
 Global:
   ...
@@ -447,7 +447,7 @@ The configuration file used for prediction must be consistent with the training.
 
 ```
 # Predict Chinese results
-python3 tools/infer_rec.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.load_static_weights=false Global.infer_img=doc/imgs_words/ch/word_1.jpg
+python3 tools/infer_rec.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.infer_img=doc/imgs_words/ch/word_1.jpg
 ```
 
 Input image:
