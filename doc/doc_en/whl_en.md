@@ -174,38 +174,38 @@ paddleocr -h
 
 * detection classification and recognition
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --use_angle_cls true --lang en
+paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --use_angle_cls true --lang en --rec_image_shape 3,48,320
 ```
 
 Output will be a list, each item contains bounding box, text and recognition confidence
 ```bash
-[[[442.0, 173.0], [1169.0, 173.0], [1169.0, 225.0], [442.0, 225.0]], ['ACKNOWLEDGEMENTS', 0.99283075]]
-[[[393.0, 340.0], [1207.0, 342.0], [1207.0, 389.0], [393.0, 387.0]], ['We would like to thank all the designers and', 0.9357758]]
-[[[399.0, 398.0], [1204.0, 398.0], [1204.0, 433.0], [399.0, 433.0]], ['contributors whohave been involved in the', 0.9592447]]
+[[[441.0, 174.0], [1166.0, 176.0], [1165.0, 222.0], [441.0, 221.0]], ('ACKNOWLEDGEMENTS', 0.9971134662628174)]
+[[[403.0, 346.0], [1204.0, 348.0], [1204.0, 384.0], [402.0, 383.0]], ('We would like to thank all the designers and', 0.9761400818824768)]
+[[[403.0, 396.0], [1204.0, 398.0], [1204.0, 434.0], [402.0, 433.0]], ('contributors who have been involved in the', 0.9791957139968872)]
 ......
 ```
 
 * detection and recognition
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --lang en
+paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --lang en --rec_image_shape 3,48,320
 ```
 
 Output will be a list, each item contains bounding box, text and recognition confidence
 ```bash
-[[[442.0, 173.0], [1169.0, 173.0], [1169.0, 225.0], [442.0, 225.0]], ['ACKNOWLEDGEMENTS', 0.99283075]]
-[[[393.0, 340.0], [1207.0, 342.0], [1207.0, 389.0], [393.0, 387.0]], ['We would like to thank all the designers and', 0.9357758]]
-[[[399.0, 398.0], [1204.0, 398.0], [1204.0, 433.0], [399.0, 433.0]], ['contributors whohave been involved in the', 0.9592447]]
+[[[441.0, 174.0], [1166.0, 176.0], [1165.0, 222.0], [441.0, 221.0]], ('ACKNOWLEDGEMENTS', 0.9971134662628174)]
+[[[403.0, 346.0], [1204.0, 348.0], [1204.0, 384.0], [402.0, 383.0]], ('We would like to thank all the designers and', 0.9761400818824768)]
+[[[403.0, 396.0], [1204.0, 398.0], [1204.0, 434.0], [402.0, 433.0]], ('contributors who have been involved in the', 0.9791957139968872)]
 ......
 ```
 
 * classification and recognition
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --use_angle_cls true --det false --lang en
+paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --use_angle_cls true --det false --lang en --rec_image_shape 3,48,320
 ```
 
 Output will be a list, each item contains text and recognition confidence
 ```bash
-['PAIN', 0.990372]
+['PAIN', 0.9934559464454651]
 ```
 
 * only detection
@@ -215,20 +215,20 @@ paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --rec false
 
 Output will be a list, each item only contains bounding box
 ```bash
-[[756.0, 812.0], [805.0, 812.0], [805.0, 830.0], [756.0, 830.0]]
-[[820.0, 803.0], [1085.0, 801.0], [1085.0, 836.0], [820.0, 838.0]]
-[[393.0, 801.0], [715.0, 805.0], [715.0, 839.0], [393.0, 836.0]]
+[[397.0, 802.0], [1092.0, 802.0], [1092.0, 841.0], [397.0, 841.0]]
+[[397.0, 750.0], [1211.0, 750.0], [1211.0, 789.0], [397.0, 789.0]]
+[[397.0, 702.0], [1209.0, 698.0], [1209.0, 734.0], [397.0, 738.0]]
 ......
 ```
 
 * only recognition
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --det false --lang en
+paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --det false --lang en --rec_image_shape 3,48,320
 ```
 
 Output will be a list, each item contains text and recognition confidence
 ```bash
-['PAIN', 0.990372]
+['PAIN', 0.9934559464454651]
 ```
 
 * only classification
@@ -366,5 +366,5 @@ im_show.save('result.jpg')
 | cls                     | Enable classification when `ppocr.ocr` func exec((Use use_angle_cls in command line mode to control whether to start classification in the forward direction)                                                                                                                                                                                                   | FALSE                    |
 | show_log                     | Whether to print log| FALSE                    |
 | type                     | Perform ocr or table structuring, the value is selected in ['ocr','structure']                                                                                                                                                                                             | ocr                    |
-| ocr_version                     | OCR Model version number, the current model support list is as follows: PP-OCRv2 support Chinese detection and recognition model, PP-OCR support Chinese detection, recognition and direction classifier, multilingual recognition model | PP-OCRv2                 |
-| structure_version                     | table structure Model version number, the current model support list is as follows: STRUCTURE support english table structure model | STRUCTURE                 |
+| ocr_version                     | OCR Model version number, the current model support list is as follows: PP-OCRv3 support Chinese and English detection and recognition model and direction classifier model, PP-OCRv2 support Chinese detection and recognition model, PP-OCR support Chinese detection, recognition and direction classifier, multilingual recognition model | PP-OCRv3                 |
+| structure_version                     | table structure Model version number, the current model support list is as follows: PP-STRUCTURE support english table structure model | PP-STRUCTURE                 |

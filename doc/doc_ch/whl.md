@@ -202,43 +202,39 @@ paddleocr -h
 * 检测+方向分类器+识别全流程
 
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --use_angle_cls true
+paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --use_angle_cls true --rec_image_shape 3,48,320
 ```
 
 结果是一个list，每个item包含了文本框，文字和识别置信度
 
 ```bash
-[[[24.0, 36.0], [304.0, 34.0], [304.0, 72.0], [24.0, 74.0]], ['纯臻营养护发素', 0.964739]]
-[[[24.0, 80.0], [172.0, 80.0], [172.0, 104.0], [24.0, 104.0]], ['产品信息/参数', 0.98069626]]
-[[[24.0, 109.0], [333.0, 109.0], [333.0, 136.0], [24.0, 136.0]], ['（45元/每公斤，100公斤起订）', 0.9676722]]µ
+[[[28.0, 37.0], [302.0, 39.0], [302.0, 72.0], [27.0, 70.0]], ('纯臻营养护发素', 0.9658738374710083)]
 ......
 ```
 
 * 检测+识别
 
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg
+paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --rec_image_shape 3,48,320
 ```
 
 结果是一个list，每个item包含了文本框，文字和识别置信度
 
 ```bash
-[[[24.0, 36.0], [304.0, 34.0], [304.0, 72.0], [24.0, 74.0]], ['纯臻营养护发素', 0.964739]]
-[[[24.0, 80.0], [172.0, 80.0], [172.0, 104.0], [24.0, 104.0]], ['产品信息/参数', 0.98069626]]
-[[[24.0, 109.0], [333.0, 109.0], [333.0, 136.0], [24.0, 136.0]], ['（45元/每公斤，100公斤起订）', 0.9676722]]
+[[[28.0, 37.0], [302.0, 39.0], [302.0, 72.0], [27.0, 70.0]], ('纯臻营养护发素', 0.9658738374710083)]
 ......
 ```
 
 * 方向分类器+识别
 
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --use_angle_cls true --det false
+paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --use_angle_cls true --det false --rec_image_shape 3,48,320
 ```
 
 结果是一个list，每个item只包含识别结果和识别置信度
 
 ```bash
-['韩国小馆', 0.9907421]
+['韩国小馆', 0.994467]
 ```
 
 * 单独执行检测
@@ -250,22 +246,21 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --rec false
 结果是一个list，每个item只包含文本框
 
 ```bash
-[[26.0, 457.0], [137.0, 457.0], [137.0, 477.0], [26.0, 477.0]]
-[[25.0, 425.0], [372.0, 425.0], [372.0, 448.0], [25.0, 448.0]]
-[[128.0, 397.0], [273.0, 397.0], [273.0, 414.0], [128.0, 414.0]]
+[[27.0, 459.0], [136.0, 459.0], [136.0, 479.0], [27.0, 479.0]]
+[[28.0, 429.0], [372.0, 429.0], [372.0, 445.0], [28.0, 445.0]]
 ......
 ```
 
 * 单独执行识别
 
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --det false
+paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --det false --rec_image_shape 3,48,320
 ```
 
 结果是一个list，每个item只包含识别结果和识别置信度
 
 ```bash
-['韩国小馆', 0.9907421]
+['韩国小馆', 0.994467]
 ```
 
 * 单独执行方向分类器
@@ -419,5 +414,5 @@ im_show.save('result.jpg')
 | cls                     | 前向时是否启动分类 (命令行模式下使用use_angle_cls控制前向是否启动分类)                                                                                                                                                                                                | FALSE                    |
 | show_log                     | 是否打印logger信息                                                                                                                                               | FALSE                    |
 | type                     | 执行ocr或者表格结构化, 值可选['ocr','structure']                                                                                                                                                                                             | ocr                    |
-| ocr_version                     | OCR模型版本，可选PP-OCRv2, PP-OCR。PP-OCRv2 目前仅支持中文的检测和识别模型，PP-OCR支持中文的检测，识别，多语种识别，方向分类器等模型                                                                                                                                        | PP-OCRv2                   |
-| structure_version                     | 表格结构化模型版本，可选 STRUCTURE。STRUCTURE支持表格结构化模型                                                                                                                                                                                        | STRUCTURE                    |
+| ocr_version                     | OCR模型版本，可选PP-OCRv3, PP-OCRv2, PP-OCR。PP-OCRv3 目前仅支持中、英文的检测和识别模型，方向分类器模型；PP-OCRv2 目前仅支持中文的检测和识别模型；PP-OCR支持中文的检测，识别，多语种识别，方向分类器等模型                                                                                                                                        | PP-OCRv3                   |
+| structure_version                     | 表格结构化模型版本，可选 PP-STRUCTURE。PP-STRUCTURE支持表格结构化模型                                                                                                                                                                                        | PP-STRUCTURE                    |

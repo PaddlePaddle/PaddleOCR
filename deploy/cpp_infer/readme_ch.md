@@ -229,6 +229,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
     --det=true \
     --rec=true \
     --cls=true \
+    --rec_img_h=48\
 ```
 
 ##### 2. 检测+识别：
@@ -240,6 +241,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
     --det=true \
     --rec=true \
     --cls=false \
+    --rec_img_h=48\
 ```
 
 ##### 3. 检测：
@@ -259,6 +261,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
     --det=false \
     --rec=true \
     --cls=true \
+    --rec_img_h=48\
 ```
 
 ##### 5. 识别：
@@ -269,6 +272,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
     --det=false \
     --rec=true \
     --cls=false \
+    --rec_img_h=48\
 ```
 
 ##### 6. 分类：
@@ -343,10 +347,10 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 ```bash
 predict img: ../../doc/imgs/12.jpg
 ../../doc/imgs/12.jpg
-0       det boxes: [[79,553],[399,541],[400,573],[80,585]] rec text: 打浦路252935号 rec score: 0.933757
-1       det boxes: [[31,509],[510,488],[511,529],[33,549]] rec text: 绿洲仕格维花园公寓 rec score: 0.951745
-2       det boxes: [[181,456],[395,448],[396,480],[182,488]] rec text: 打浦路15号 rec score: 0.91956
-3       det boxes: [[43,413],[480,391],[481,428],[45,450]] rec text: 上海斯格威铂尔多大酒店 rec score: 0.915914
+0       det boxes: [[74,553],[427,542],[428,571],[75,582]] rec text: 打浦路252935号 rec score: 0.947724
+1       det boxes: [[23,507],[513,488],[515,529],[24,548]] rec text: 绿洲仕格维花园公寓 rec score: 0.993728
+2       det boxes: [[187,456],[399,448],[400,480],[188,488]] rec text: 打浦路15号 rec score: 0.964994
+3       det boxes: [[42,413],[483,391],[484,428],[43,450]] rec text: 上海斯格威铂尔大酒店 rec score: 0.980086
 The detection visualized image saved in ./output//12.jpg
 ```
 
