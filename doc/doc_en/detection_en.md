@@ -2,63 +2,28 @@
 
 This section uses the icdar2015 dataset as an example to introduce the training, evaluation, and testing of the detection model in PaddleOCR.
 
-- [1. Data and Weights Preparation](#1-data-and-weights-preparatio)
-  * [1.1 Data Preparation](#11-data-preparation)
-  * [1.2 Download Pre-trained Model](#12-download-pretrained-model)
+- [1. Data and Weights Preparation](#1-data-and-weights-preparation)
+  - [1.1 Data Preparation](#11-data-preparation)
+  - [1.2 Download Pre-trained Model](#12-download-pre-trained-model)
 - [2. Training](#2-training)
   * [2.1 Start Training](#21-start-training)
   * [2.2 Load Trained Model and Continue Training](#22-load-trained-model-and-continue-training)
   * [2.3 Training with New Backbone](#23-training-with-new-backbone)
-  * [2.4 Training with knowledge distillation](#24)
+  * [2.4 Mixed Precision Training](#24-amp-training)
+  * [2.5 Distributed Training](#25-distributed-training)
+  * [2.6 Training with knowledge distillation](#26)
+  * [2.7 Training on other platform(Windows/macOS/Linux DCU)](#27)
 - [3. Evaluation and Test](#3-evaluation-and-test)
-  * [3.1 Evaluation](#31-evaluation)
-  * [3.2 Test](#32-test)
+  - [3.1 Evaluation](#31-evaluation)
+  - [3.2 Test](#32-test)
 - [4. Inference](#4-inference)
-- [5. FAQ](#2-faq)
+- [5. FAQ](#5-faq)
 
 ## 1. Data and Weights Preparation
 
 ### 1.1 Data Preparation
 
-The icdar2015 dataset contains train set which has 1000 images obtained with wearable cameras and test set which has 500 images obtained with wearable cameras. The icdar2015 can be obtained from [official website](https://rrc.cvc.uab.es/?ch=4&com=downloads). Registration is required for downloading.
-
-
-After registering and logging in, download the part marked in the red box in the figure below. And, the content downloaded by `Training Set Images` should be saved as the folder `icdar_c4_train_imgs`, and the content downloaded by `Test Set Images` is saved as the folder `ch4_test_images`
-
-<p align="center">
- <img src="../datasets/ic15_location_download.png" align="middle" width = "700"/>
-<p align="center">
-
-Decompress the downloaded dataset to the working directory, assuming it is decompressed under PaddleOCR/train_data/. In addition, PaddleOCR organizes many scattered annotation files into two separate annotation files for train and test respectively, which can be downloaded by wget:
-```shell
-# Under the PaddleOCR path
-cd PaddleOCR/
-wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dataset/train_icdar2015_label.txt
-wget -P ./train_data/  https://paddleocr.bj.bcebos.com/dataset/test_icdar2015_label.txt
-```
-
-After decompressing the data set and downloading the annotation file, PaddleOCR/train_data/ has two folders and two files, which are:
-```
-/PaddleOCR/train_data/icdar2015/text_localization/
-  └─ icdar_c4_train_imgs/         Training data of icdar dataset
-  └─ ch4_test_images/             Testing data of icdar dataset
-  └─ train_icdar2015_label.txt    Training annotation of icdar dataset
-  └─ test_icdar2015_label.txt     Test annotation of icdar dataset
-```
-
-The provided annotation file format is as follow, separated by "\t":
-```
-" Image file name             Image annotation information encoded by json.dumps"
-ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]]}, {...}]
-```
-The image annotation after **json.dumps()** encoding is a list containing multiple dictionaries.
-
-The `points` in the dictionary represent the coordinates (x, y) of the four points of the text box, arranged clockwise from the point at the upper left corner.
-
-`transcription` represents the text of the current text box. **When its content is "###" it means that the text box is invalid and will be skipped during training.**
-
-If you want to train PaddleOCR on other datasets, please build the annotation file according to the above format.
-
+To prepare datasets, refer to [ocr_datasets](./dataset/ocr_datasets_en.md) .
 
 ### 1.2 Download Pre-trained Model
 
@@ -175,10 +140,43 @@ After adding the four-part modules of the network, you only need to configure th
 
 **NOTE**: More details about replace Backbone and other mudule can be found in [doc](add_new_algorithm_en.md).
 
+### 2.4 Mixed Precision Training
 
-### 2.4 Training with knowledge distillation
+If you want to speed up your training further, you can use [Auto Mixed Precision Training](https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/01_paddle2.0_introduction/basic_concept/amp_cn.html), taking a single machine and a single gpu as an example, the commands are as follows:
+
+```shell
+python3 tools/train.py -c configs/det/det_mv3_db.yml \
+     -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained \
+     Global.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True
+ ```
+
+### 2.5 Distributed Training
+
+During multi-machine multi-gpu training, use the `--ips` parameter to set the used machine IP address, and the `--gpus` parameter to set the used GPU ID:
+
+```bash
+python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1,2,3' tools/train.py -c configs/det/det_mv3_db.yml \
+     -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
+```
+
+**Note:** When using multi-machine and multi-gpu training, you need to replace the ips value in the above command with the address of your machine, and the machines need to be able to ping each other. In addition, training needs to be launched separately on multiple machines. The command to view the ip address of the machine is `ifconfig`.
+
+### 2.6 Training with knowledge distillation
 
 Knowledge distillation is supported in PaddleOCR for text detection training process. For more details, please refer to [doc](./knowledge_distillation_en.md).
+
+### 2.7 Training on other platform(Windows/macOS/Linux DCU)
+
+- Windows GPU/CPU
+The Windows platform is slightly different from the Linux platform:
+Windows platform only supports `single gpu` training and inference, specify GPU for training `set CUDA_VISIBLE_DEVICES=0`
+On the Windows platform, DataLoader only supports single-process mode, so you need to set `num_workers` to 0;
+
+- macOS
+GPU mode is not supported, you need to set `use_gpu` to False in the configuration file, and the rest of the training evaluation prediction commands are exactly the same as Linux GPU.
+
+- Linux DCU
+Running on a DCU device requires setting the environment variable `export HIP_VISIBLE_DEVICES=0,1,2,3`, and the rest of the training and evaluation prediction commands are exactly the same as the Linux GPU.
 
 ## 3. Evaluation and Test
 

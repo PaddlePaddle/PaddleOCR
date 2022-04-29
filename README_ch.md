@@ -71,6 +71,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 | 模型简介                              | 模型名称                | 推荐场景        | 检测模型                                                     | 方向分类器                                                   | 识别模型                                                     |
 | ------------------------------------- | ----------------------- | --------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 中英文超轻量PP-OCRv3模型（16.2M）     | ch_PP-OCRv3_xx          | 移动端&服务器端 | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar) |
+| 英文超轻量PP-OCRv3模型（13.4M）     | en_PP-OCRv3_xx          | 移动端&服务器端 | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_distill_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_train.tar) |
 | 中英文超轻量PP-OCRv2模型（13.0M）     | ch_PP-OCRv2_xx          | 移动端&服务器端 | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_distill_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_train.tar) |
 | 中英文超轻量PP-OCR mobile模型（9.4M） | ch_ppocr_mobile_v2.0_xx | 移动端&服务器端 | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_pre.tar) |
 | 中英文通用PP-OCR server模型（143.4M） | ch_ppocr_server_v2.0_xx | 服务器端        | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_pre.tar) |
@@ -128,12 +130,12 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [其它数据标注工具](./doc/doc_ch/data_annotation.md)
     - [其它数据合成工具](./doc/doc_ch/data_synthesis.md)
 - 数据集
-    - [通用中英文OCR数据集](./doc/doc_ch/datasets.md)
-    - [手写中文OCR数据集](./doc/doc_ch/handwritten_datasets.md)
-    - [垂类多语言OCR数据集](./doc/doc_ch/vertical_and_multilingual_datasets.md)
-    - [版面分析数据集](./doc/doc_ch/layout_datasets.md)
-    - [表格识别数据集](./doc/doc_ch/table_datasets.md)
-    - [DocVQA数据集](./doc/doc_ch/docvqa_datasets.md)
+    - [通用中英文OCR数据集](doc/doc_ch/dataset/datasets.md)
+    - [手写中文OCR数据集](doc/doc_ch/dataset/handwritten_datasets.md)
+    - [垂类多语言OCR数据集](doc/doc_ch/dataset/vertical_and_multilingual_datasets.md)
+    - [版面分析数据集](doc/doc_ch/dataset/layout_datasets.md)
+    - [表格识别数据集](doc/doc_ch/dataset/table_datasets.md)
+    - [DocVQA数据集](doc/doc_ch/dataset/docvqa_datasets.md)
 - [代码组织结构](./doc/doc_ch/tree.md)
 - [效果展示](#效果展示)
 - [《动手学OCR》电子书📚](./doc/doc_ch/ocr_book.md)
@@ -160,13 +162,13 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00056221.jpg" width="800">
     <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/rotate_00052204.jpg" width="800">
 </div>
-    
+
 </details>
 
 
 <details open>
 <summary>PP-OCRv2 英文模型</summary>
-    
+
 <div align="center">
     <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/img_12.jpg" width="800">
 </div>
@@ -176,12 +178,12 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 <details open>
 <summary>PP-OCRv2 其他语言模型</summary>
-    
+
 <div align="center">
     <img src="./doc/imgs_results/french_0.jpg" width="800">
     <img src="./doc/imgs_results/korean.jpg" width="800">
 </div>
-    
+
 </details>
 
 <details open>
@@ -196,8 +198,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 <div align="center">
     <img src="./ppstructure/docs/vqa/result_ser/zh_val_0_ser.jpg" width="800">
 </div>
-    
-- RE（关系提取） 
+
+- RE（关系提取）
 <div align="center">
     <img src="./ppstructure/docs/vqa/result_re/zh_val_21_re.jpg" width="800">
 </div>
