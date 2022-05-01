@@ -54,30 +54,32 @@ PP-OCRv3文本检测从网络结构、蒸馏训练策略两个方向做了进一
 
 - PP-OCRv3 文本识别
 
-[SVTR](todo:add link) 证明了强大的单视觉模型即可高效准确完成文本识别任务，在中英文数据上均有优秀的表现。基于SVTR的工作，PP-OCRv3首先验证了SVTR_tiny结构在中文数据上的效果。
+[SVTR](todo:add_link) 证明了强大的单视觉模型即可高效准确完成文本识别任务，在中英文数据上均有优秀的表现。基于SVTR的工作，PP-OCRv3首先验证了SVTR_tiny结构在中文数据上的效果。
 实验发现SVTR_tiny在中文测试集上acc可以提升10.7%。
 
-![](../ppocr_v3/svtr_tiny.jpg)
+<img src="../ppocr_v3/svtr_tiny.jpg" width=800>
 
 非常遗憾，由于 MKLDNN 加速库支持的模型结构有限，SVTR 在CPU+MKLDNN上相比PP-OCRv2慢了10倍。
 
 PP-OCRv3 期望提升模型精度的同时不带来额外的推理耗时，以加速预测为目的，分析得到主要耗时部分在Transformer Block，并对 SVTR_tiny 的结构进行了一系列优化:
 
 1. 将SVTR网络前半部分替换为LCNet的前三个stage，保留4个 SVTR 的 Global attenntion，精度为76%，速度基本不变。
-![](../ppocr_v3/svtr_g4.png)
+<img src="../ppocr_v3/svtr_g4.png" width=800>
 2. 将4个Global attention 减小到2个，精度为72.9%，速度提升3倍。
-![](../ppocr_v3/svtr_g2.png)
+<img src="../ppocr_v3/svtr_g2.png" width=800>
 3. attention 的预测速度与输入其feature的shape有关，因此移动Global attention至avg_pool后，精度下降为71.9%，速度超越 CNN-base 的PP-OCRv2 27%。
-![](../ppocr_v3/ppocr_v3.png)
+<img src="../ppocr_v3/ppocr_v3.png" width=800>
 
 为了提升模型精度同时不引入额外推理成本，PP-OCRv3参考GTC策略，使用Attention监督CTC训练，预测时完全去除Attention模块，在推理阶段不增加任何耗时, 精度提升3.8%。
-![](../ppocr_v3/GTC.png)
+<img src="../ppocr_v3/GTC.png" width=800>
 
-训练策略方面参考 [SSL](https://github.com/ku21fan/STR-Fewer-Labels) 设计了文本方向任务，训练了适用于文本识别的预训练模型，加速模型收敛过程，精度提升了0.6%。使用UDML蒸馏策略，进一步提升精度1.5%。
-![](../ppocr_v3/SSL.png) ![](../ppocr_v3/UDML.png)
+训练策略方面参考 [SSL](https://github.com/ku21fan/STR-Fewer-Labels) 设计了文本方向任务，训练了适用于文本识别的预训练模型，加速模型收敛过程，精度提升了0.6%; 使用UDML蒸馏策略，进一步提升精度1.5%。
+
+<img src="../ppocr_v3/SSL.png" width="300"> <img src="../ppocr_v3/UDML.png" width="500">
+
 
 数据增强方面基于 [ConCLR](https://www.cse.cuhk.edu.hk/~byu/papers/C139-AAAI2022-ConCLR.pdf) 中的ConAug方法，设计了 RecConAug 数据增强方法，增强数据多样性，精度提升0.5%，
-![](../ppocr_v3/recconaug.png)
+<img src="../ppocr_v3/recconaug.png" width=800>
 
 
 总体来讲PP-OCRv3识别从网络结构、训练策略、数据增强三个方向做了进一步优化:
