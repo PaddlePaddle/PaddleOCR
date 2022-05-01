@@ -1,19 +1,22 @@
 # 服务器端C++预测
 
-本章节介绍PaddleOCR 模型的的C++部署方法，与之对应的python预测部署方式参考[文档](../../doc/doc_ch/inference.md)。
+本章节介绍PaddleOCR 模型的C++部署方法，与之对应的python预测部署方式参考[文档](../../doc/doc_ch/inference.md)。
 C++在性能计算上优于python，因此，在大多数CPU、GPU部署场景，多采用C++的部署方式，本节将介绍如何在Linux\Windows (CPU\GPU)环境下配置C++环境并完成
 PaddleOCR模型部署。
 
-* [1. 准备环境](#1)
-  + [1.0 运行准备](#10)
-  + [1.1 编译opencv库](#11)
-  + [1.2 下载或者编译Paddle预测库](#12)
-    - [1.2.1 直接下载安装](#121)
-    - [1.2.2 预测库源码编译](#122)
-* [2 开始运行](#2)
-  + [2.1 将模型导出为inference model](#21)
-  + [2.2 编译PaddleOCR C++预测demo](#22)
-  + [2.3运行demo](#23)
+- [1. 准备环境](#1-准备环境)
+  - [1.0 运行准备](#10-运行准备)
+  - [1.1 编译opencv库](#11-编译opencv库)
+  - [1.2 下载或者编译Paddle预测库](#12-下载或者编译paddle预测库)
+    - [1.2.1 直接下载安装](#121-直接下载安装)
+    - [1.2.2 预测库源码编译](#122-预测库源码编译)
+- [2 开始运行](#2-开始运行)
+  - [2.1 将模型导出为inference model](#21-将模型导出为inference-model)
+  - [2.2 编译PaddleOCR C++预测demo](#22-编译paddleocr-c预测demo)
+  - [2.3 运行demo](#23-运行demo)
+    - [1. 只调用检测：](#1-只调用检测)
+    - [2. 只调用识别：](#2-只调用识别)
+    - [3. 调用串联：](#3-调用串联)
 
 <a name="1"></a>
 
@@ -211,19 +214,19 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 ```
 其中，`mode`为必选参数，表示选择的功能，取值范围['det', 'rec', 'system']，分别表示调用检测、识别、检测识别串联（包括方向分类器）。具体命令如下：
 
-##### 1. 只调用检测：
+#### 1. 只调用检测：
 ```shell
 ./build/ppocr det \
     --det_model_dir=inference/ch_ppocr_mobile_v2.0_det_infer \
     --image_dir=../../doc/imgs/12.jpg
 ```
-##### 2. 只调用识别：
+#### 2. 只调用识别：
 ```shell
 ./build/ppocr rec \
     --rec_model_dir=inference/ch_ppocr_mobile_v2.0_rec_infer \
     --image_dir=../../doc/imgs_words/ch/
 ```
-##### 3. 调用串联：
+#### 3. 调用串联：
 ```shell
 # 不使用方向分类器
 ./build/ppocr system \
