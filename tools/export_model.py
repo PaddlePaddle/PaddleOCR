@@ -133,7 +133,7 @@ def main():
                 else:
                     config["Architecture"]["Models"][key]["Head"][
                         "out_channels"] = char_num
-                # just one final tensor needs to to exported for inference
+                # just one final tensor needs to exported for inference
                 config["Architecture"]["Models"][key][
                     "return_all_feats"] = False
         elif config['Architecture']['Head'][

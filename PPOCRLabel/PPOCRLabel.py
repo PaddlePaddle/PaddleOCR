@@ -1492,7 +1492,7 @@ class MainWindow(QMainWindow):
             event.ignore()
         else:
             settings = self.settings
-            # If it loads images from dir, don't load it at the begining
+            # If it loads images from dir, don't load it at the beginning
             if self.dirname is None:
                 settings[SETTING_FILENAME] = self.filePath if self.filePath else ''
             else:
