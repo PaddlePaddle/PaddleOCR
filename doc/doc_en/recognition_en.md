@@ -28,7 +28,34 @@
 
 To prepare datasets, refer to [ocr_datasets](./dataset/ocr_datasets.md) .
 
-If you want to reproduce the paper SAR, you need to download extra dataset [SynthAdd](https://pan.baidu.com/share/init?surl=uV0LtoNmcxbO-0YA7Ch4dg), extraction code: 627x. Besides, icdar2013, icdar2015, cocotext, IIIT5k datasets are also used to train. For specific details, please refer to the paper SAR.
+PaddleOCR provides label files for training the icdar2015 dataset, which can be downloaded in the following ways:
+
+```
+# Training set label
+wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_train.txt
+# Test Set Label
+wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_test.txt
+```
+
+PaddleOCR also provides a data format conversion script, which can convert ICDAR official website label to a data format
+supported by PaddleOCR. The data conversion tool is in `ppocr/utils/gen_label.py`, here is the training set as an example:
+
+```
+# convert the official gt to rec_gt_label.txt
+python gen_label.py --mode="rec" --input_path="{path/of/origin/label}" --output_label="rec_gt_label.txt"
+```
+
+The data format is as follows, (a) is the original picture, (b) is the Ground Truth text file corresponding to each picture:
+
+![](../datasets/icdar_rec.png)
+
+
+- Multilingual dataset
+
+The multi-language model training method is the same as the Chinese model. The training data set is 100w synthetic data. A small amount of fonts and test data can be downloaded using the following two methods.
+* [Baidu Netdisk](https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA) ,Extraction code:frgi.
+* [Google drive](https://drive.google.com/file/d/18cSWX7wXSy4G0tbKJ0d9PuIaiwRLHpjA/view)
+
 
 <a name="Dictionary"></a>
 ### 1.2 Dictionary
@@ -101,11 +128,11 @@ First download the pretrain model, you can download the trained model to finetun
 
 ```
 cd PaddleOCR/
-# Download the pre-trained model of MobileNetV3
-wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_none_bilstm_ctc_v2.0_train.tar
+# Download the pre-trained model of en_PP-OCRv3
+wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_train.tar
 # Decompress model parameters
 cd pretrain_models
-tar -xf rec_mv3_none_bilstm_ctc_v2.0_train.tar && rm -rf rec_mv3_none_bilstm_ctc_v2.0_train.tar
+tar -xf en_PP-OCRv3_rec_train.tar && rm -rf en_PP-OCRv3_rec_train.tar
 ```
 
 Start training:
@@ -115,9 +142,10 @@ Start training:
 # Training icdar15 English data and The training log will be automatically saved as train.log under "{save_model_dir}"
 
 #specify the single card training(Long training time, not recommended)
-python3 tools/train.py -c configs/rec/rec_icdar15_train.yml
+python3 tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model=en_PP-OCRv3_rec_train/best_accuracy
+
 #specify the card number through --gpus
-python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_icdar15_train.yml
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model=en_PP-OCRv3_rec_train/best_accuracy
 ```
 
 
@@ -125,31 +153,13 @@ PaddleOCR supports alternating training and evaluation. You can modify `eval_bat
 
 If the evaluation set is large, the test will be time-consuming. It is recommended to reduce the number of evaluations, or evaluate after training.
 
-* Tip: You can use the `-c` parameter to select multiple model configurations under the `configs/rec/` path for training. The recognition algorithms supported by PaddleOCR are:
-
-
-| Configuration file |  Algorithm |   backbone |   trans   |   seq      |     pred     |
-| :--------: |  :-------:   | :-------:  |   :-------:   |   :-----:   |  :-----:   |
-| [rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml) |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  |
-| [rec_chinese_common_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_common_train_v2.0.yml) |  CRNN | ResNet34_vd |  None   |  BiLSTM |  ctc  |
-| rec_chinese_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  |
-| rec_chinese_common_train.yml |  CRNN |   ResNet34_vd |  None   |  BiLSTM |  ctc  |
-| rec_icdar15_train.yml |  CRNN |   Mobilenet_v3 large 0.5 |  None   |  BiLSTM |  ctc  |
-| rec_mv3_none_bilstm_ctc.yml |  CRNN |   Mobilenet_v3 large 0.5 |  None   |  BiLSTM |  ctc  |
-| rec_mv3_none_none_ctc.yml |  Rosetta |   Mobilenet_v3 large 0.5 |  None   |  None |  ctc  |
-| rec_r34_vd_none_bilstm_ctc.yml |  CRNN |   Resnet34_vd |  None   |  BiLSTM |  ctc  |
-| rec_r34_vd_none_none_ctc.yml |  Rosetta |   Resnet34_vd |  None   |  None |  ctc  |
-| rec_mv3_tps_bilstm_att.yml |  CRNN |   Mobilenet_v3 |  TPS   |  BiLSTM |  att  |
-| rec_r34_vd_tps_bilstm_att.yml |  CRNN |   Resnet34_vd |  TPS   |  BiLSTM |  att  |
-| rec_r50fpn_vd_none_srn.yml    | SRN | Resnet50_fpn_vd    | None    | rnn | srn |
-| rec_mtb_nrtr.yml    | NRTR | nrtr_mtb    | None    | transformer encoder | transformer decoder |
-| rec_r31_sar.yml               | SAR | ResNet31 | None | LSTM encoder | LSTM decoder |
+* Tip: You can use the `-c` parameter to select multiple model configurations under the `configs/rec/` path for training. The recognition algorithms supported at [rec_algorithm](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_en/algorithm_overview.md):
 
 
 For training Chinese data, it is recommended to use
-[rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml). If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:
-co
-Take `rec_chinese_lite_train_v2.0.yml` as an example:
+[ch_PP-OCRv3_rec_distillation.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml). If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:
+
+Take `ch_PP-OCRv3_rec_distillation.yml` as an example:
 ```
 Global:
   ...
@@ -183,7 +193,7 @@ Train:
       ...
       - RecResizeImg:
           # Modify image_shape to fit long text
-          image_shape: [3, 32, 320]
+          image_shape: [3, 48, 320]
       ...
   loader:
     ...
@@ -203,7 +213,7 @@ Eval:
       ...
       - RecResizeImg:
           # Modify image_shape to fit long text
-          image_shape: [3, 32, 320]
+          image_shape: [3, 48, 320]
       ...
   loader:
     # Eval batch_size for Single card
@@ -380,11 +390,12 @@ Running on a DCU device requires setting the environment variable `export HIP_VI
 <a name="31-evaluation"></a>
 ### 3.1 Evaluation
 
-The model parameters during training are saved in the `Global.save_model_dir` directory by default. When evaluating indicators, you need to set `Global.checkpoints` to point to the saved parameter file. The evaluation dataset can be set by modifying the `Eval.dataset.label_file_list` field in the `configs/rec/rec_icdar15_train.yml` file.
+The model parameters during training are saved in the `Global.save_model_dir` directory by default. When evaluating indicators, you need to set `Global.checkpoints` to point to the saved parameter file. The evaluation dataset can be set by modifying the `Eval.dataset.label_file_list` field in the `configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml` file.
+
 
 ```
 # GPU evaluation, Global.checkpoints is the weight to be tested
-python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_icdar15_train.yml -o Global.checkpoints={path/to/weights}/best_accuracy
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
 <a name="32-test"></a>
@@ -417,7 +428,7 @@ Among them, best_accuracy.* is the best model on the evaluation set; iter_epoch_
 
 ```
 # Predict English results
-python3 tools/infer_rec.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.load_static_weights=false Global.infer_img=doc/imgs_words/en/word_1.jpg
+python3 tools/infer_rec.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model={path/to/weights}/best_accuracy  Global.infer_img=doc/imgs_words/en/word_1.png
 ```
 
 
@@ -436,7 +447,7 @@ The configuration file used for prediction must be consistent with the training.
 
 ```
 # Predict Chinese results
-python3 tools/infer_rec.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.load_static_weights=false Global.infer_img=doc/imgs_words/ch/word_1.jpg
+python3 tools/infer_rec.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.infer_img=doc/imgs_words/ch/word_1.jpg
 ```
 
 Input image:
@@ -467,7 +478,7 @@ The recognition model is converted to the inference model in the same way as the
 # Global.pretrained_model parameter Set the training model address to be converted without adding the file suffix .pdmodel, .pdopt or .pdparams.
 # Global.save_inference_dir Set the address where the converted model will be saved.
 
-python3 tools/export_model.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml -o Global.pretrained_model=./ch_lite/ch_ppocr_mobile_v2.0_rec_train/best_accuracy  Global.save_inference_dir=./inference/rec_crnn/
+python3 tools/export_model.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model=en_PP-OCRv3_rec_train/best_accuracy  Global.save_inference_dir=./inference/en_PP-OCRv3_rec/
 ```
 
 If you have a model trained on your own dataset with a different dictionary file, please make sure that you modify the `character_dict_path` in the configuration file to your dictionary file path.
@@ -475,7 +486,8 @@ If you have a model trained on your own dataset with a different dictionary file
 After the conversion is successful, there are three files in the model save directory:
 
 ```
-inference/rec_crnn/
+
+inference/en_PP-OCRv3_rec/
     ├── inference.pdiparams         # The parameter file of recognition inference model
     ├── inference.pdiparams.info    # The parameter information of recognition inference model, which can be ignored
     └── inference.pdmodel           # The program file of recognition model

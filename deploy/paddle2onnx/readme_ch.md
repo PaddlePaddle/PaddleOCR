@@ -39,14 +39,14 @@ python3.7 -m pip install onnxruntime==1.9.0
 有两种方式获取Paddle静态图模型：在 [model_list](../../doc/doc_ch/models_list.md) 中下载PaddleOCR提供的预测模型；
 参考[模型导出说明](../../doc/doc_ch/inference.md#训练模型转inference模型)把训练好的权重转为 inference_model。
 
-以 ppocr 中文检测、识别、分类模型为例：
+以 PP-OCRv3 中文检测、识别、分类模型为例：
 
 ```
-wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar
-cd ./inference && tar xf ch_PP-OCRv2_det_infer.tar && cd ..
+wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar
+cd ./inference && tar xf ch_PP-OCRv3_det_infer.tar && cd ..
 
-wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar
-cd ./inference && tar xf ch_PP-OCRv2_rec_infer.tar && cd ..
+wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar
+cd ./inference && tar xf ch_PP-OCRv3_rec_infer.tar && cd ..
 
 wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
 cd ./inference && tar xf ch_ppocr_mobile_v2.0_cls_infer.tar && cd ..
@@ -57,7 +57,7 @@ cd ./inference && tar xf ch_ppocr_mobile_v2.0_cls_infer.tar && cd ..
 使用 Paddle2ONNX 将Paddle静态图模型转换为ONNX模型格式：
 
 ```
-paddle2onnx --model_dir ./inference/ch_PP-OCRv2_det_infer \
+paddle2onnx --model_dir ./inference/ch_PP-OCRv3_det_infer \
 --model_filename inference.pdmodel \
 --params_filename inference.pdiparams \
 --save_file ./inference/det_onnx/model.onnx \
@@ -65,7 +65,7 @@ paddle2onnx --model_dir ./inference/ch_PP-OCRv2_det_infer \
 --input_shape_dict="{'x':[-1,3,-1,-1]}" \
 --enable_onnx_checker True
 
-paddle2onnx --model_dir ./inference/ch_PP-OCRv2_rec_infer \
+paddle2onnx --model_dir ./inference/ch_PP-OCRv3_rec_infer \
 --model_filename inference.pdmodel \
 --params_filename inference.pdiparams \
 --save_file ./inference/rec_onnx/model.onnx \
@@ -105,8 +105,8 @@ python3.7 tools/infer/predict_system.py --use_gpu=False --use_onnx=True \
 ```
 python3.7 tools/infer/predict_system.py --use_gpu=False \
 --cls_model_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer \
---rec_model_dir=./inference/ch_PP-OCRv2_rec_infer \
---det_model_dir=./inference/ch_PP-OCRv2_det_infer \
+--rec_model_dir=./inference/ch_PP-OCRv3_rec_infer \
+--det_model_dir=./inference/ch_PP-OCRv3_det_infer \
 --image_dir=./deploy/lite/imgs/lite_demo.png
 ```
 

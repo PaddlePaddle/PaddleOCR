@@ -195,7 +195,7 @@ def main(args):
         text_sys.text_detector.autolog.report()
         text_sys.text_recognizer.autolog.report()
 
-    with open(os.path.join(draw_img_save_dir, "system_results.txt"), 'w') as f:
+    with open(os.path.join(draw_img_save_dir, "system_results.txt"), 'w', encoding='utf-8') as f:
         f.writelines(save_results)
 
 
