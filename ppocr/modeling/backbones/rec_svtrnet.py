@@ -169,17 +169,14 @@ class Attention(nn.Layer):
             self.N = H * W
             self.C = dim
         if mixer == 'Local' and HW is not None:
-
             hk = local_k[0]
             wk = local_k[1]
-            mask = np.ones([H * W, H * W])
-            for h in range(H):
-                for w in range(W):
-                    for kh in range(-(hk // 2), (hk // 2) + 1):
-                        for kw in range(-(wk // 2), (wk // 2) + 1):
-                            if H > (h + kh) >= 0 and W > (w + kw) >= 0:
-                                mask[h * W + w][(h + kh) * W + (w + kw)] = 0
-            mask_paddle = paddle.to_tensor(mask, dtype='float32')
+            mask = paddle.ones([H * W, H + hk - 1, W + wk - 1], dtype='float32')
+            for h in range(0, H):
+                for w in range(0, W):
+                    mask[h * W + w, h:h + hk, w:w + wk] = 0.
+            mask_paddle = mask[:, hk // 2:H + hk // 2, wk // 2:W + wk //
+                               2].flatten(1)
             mask_inf = paddle.full([H * W, H * W], '-inf', dtype='float32')
             mask = paddle.where(mask_paddle < 1, mask_paddle, mask_inf)
             self.mask = mask.unsqueeze([0, 1])
