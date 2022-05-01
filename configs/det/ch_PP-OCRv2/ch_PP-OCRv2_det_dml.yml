@@ -37,7 +37,7 @@ Architecture:
       Head:
         name: DBHead
         k: 50
-    Student2:
+    Teacher:
       pretrained: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
       freeze_params: false
       return_all_feats: false
@@ -62,15 +62,15 @@ Loss:
   loss_config_list:
   - DistillationDMLLoss:
       model_name_pairs:
-      - ["Student", "Student2"]
+      - ["Student", "Teacher"]
       maps_name: "thrink_maps"
       weight: 1.0
       act: "softmax"
-      model_name_pairs: ["Student", "Student2"]
+      model_name_pairs: ["Student", "Teacher"]
       key: maps
   - DistillationDBLoss:
       weight: 1.0
-      model_name_list: ["Student", "Student2"]
+      model_name_list: ["Student", "Teacher"]
       # key: maps
       name: DBLoss
       balance_loss: true
@@ -94,7 +94,7 @@ Optimizer:
 
 PostProcess:
   name: DistillationDBPostProcess
-  model_name: ["Student", "Student2"]
+  model_name: ["Student", "Teacher"]
   key: head_out
   thresh: 0.3
   box_thresh: 0.6
