@@ -36,7 +36,7 @@ PP-OCR从骨干网络选择和调整、预测头部的设计、数据增强、�
 
 PP-OCRv3采用PP-OCRv2的[CML](https://arxiv.org/pdf/2109.03144.pdf)蒸馏策略，在蒸馏的student模型、teacher模型精度提升，CML蒸馏策略上分别做了优化。下面简要介绍PPOCRv3的文本检测优化策略。
 
-- 首先，在蒸馏student模型精度提升方面，针对模型召回能力低的问题，提出了RSEFPN的FPN结构用于提升student模型精度；
+- 首先，在蒸馏student模型精度提升方面，针对模型召回能力低的问题，提出了RSEFPN的FPN结构用于提升student模型精度和召回；
 
 RSEFPN的网络结构如下图所示，RSEFPN在PPOCRv2的FPN基础上，将FPN中的卷积层更换为了channel attention结构的RSEConv层。
 
