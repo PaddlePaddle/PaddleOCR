@@ -193,7 +193,7 @@ def create_predictor(args, mode, logger):
             gpu_id = get_infer_gpuid()
             if gpu_id is None:
                 logger.warning(
-                    "GPU is not found in current device by nvidia-smi. Please check your device or ignore it if run on jeston."
+                    "GPU is not found in current device by nvidia-smi. Please check your device or ignore it if run on jetson."
                 )
             config.enable_use_gpu(args.gpu_mem, 0)
             if args.use_tensorrt:
