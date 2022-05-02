@@ -39,13 +39,17 @@ PP-OCRv3在PP-OCRv2的基础上进一步升级。
 PP-OCRv3文本检测从网络结构、蒸馏训练策略两个方向做了进一步优化:
 1. 网络结构改进：提出两种改进后的FPN网络结构，RSEFPN，LKPAN，分别从channel attention、更大感受野的角度优化FPN结构。
 
+*RSEFPN简要介绍：*
+
 ![](../ppocr_v3/RSEFPN.png)
 
 PPOCRv2检测模型的FPN结构由纯卷积和上采样层构成，不包含BN层，激活函数等模块。PPOCRv3对PPOCRv2检测模型中的FPN结构进行改进，借鉴channel attention的思想，将FPN中的卷积层换为带残差结构的RSEBlock，其网络结构如上图所示；SEBlock起到channel attention的作用；另外，考虑到PPOCR文本检测模型FPN网络的通道数较小（channel=96），channel atttion可能抑制掉某些包含重要特征的channel；因此，PPOCRv3引入了残差结构。实验表明引入残差结构相比只引入SEBlock有2.7%的精度提升。RSEFPN将base检测模型的精度hmean从81.3%提升到84.5%。
 
+*LKPAN简要介绍：*
+
 ![](../ppocr_v3/LKPAN.png)
 
-LKPAN是一个具有更大感受野的轻量级PAN结构。其网络结构如图3所示。 LKPAN对输入的特征首先使用`1*1`conv统一特征的通道， 在LKPAN的path augmentation中，使用kernel size为`9*9`的深度可分离卷积。更大的kernelsize意味着更大的感受野，更容易检测大字体的文字以及极端长宽比的文字。使用深度可分离卷积可以显著降低模型的参数量。LKPAN将base检测模型的精度hmean从81.3%提升到84.9%。
+LKPAN是一个具有更大感受野的轻量级PAN结构。其网络结构如上图所示。 LKPAN对输入的特征首先使用`1*1`conv统一特征的通道， 在LKPAN的path augmentation中，使用kernel size为`9*9`的深度可分离卷积。更大的kernelsize意味着更大的感受野，更容易检测大字体的文字以及极端长宽比的文字。使用深度可分离卷积可以显著降低模型的参数量。LKPAN将base检测模型的精度hmean从81.3%提升到84.9%。
 
 2. CML蒸馏训练策略调整：PPOCRv3文本检测模型训练中，仍采用[CML](https://arxiv.org/pdf/2109.03144.pdf)的蒸馏策略。首先，在蒸馏teacher模型选择上，使用ResNet50作为teacher的Backbone，使用LKPAN作为FPN部分，最终使用[DML](https://arxiv.org/abs/1706.00384)蒸馏策略训练得到更高精度的teacher模型。然后，在CML蒸馏训练时，随训练epoch数增加，线性降低teacher模型和student模型之间损失函数的比例，loss比例计算公式如下：
 ```
