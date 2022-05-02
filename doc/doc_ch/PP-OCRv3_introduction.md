@@ -34,9 +34,9 @@ PP-OCR从骨干网络选择和调整、预测头部的设计、数据增强、�
 
 ### PP-OCRv3文本检测模型优化策略
 
-PP-OCRv3采用PP-OCRv2的[CML](https://arxiv.org/pdf/2109.03144.pdf)蒸馏策略，在蒸馏的student模型、teacher模型精度提升，CML蒸馏策略上分别做了优化。下面简要介绍PP-OCRv3的文本检测优化策略。
+PP-OCRv3采用PP-OCRv2的[CML](https://arxiv.org/pdf/2109.03144.pdf)蒸馏策略，在蒸馏的student模型、teacher模型精度提升，CML蒸馏策略上分别做了优化。
 
-- 在蒸馏student模型精度提升方面，针对模型召回能力低的问题，提出了RSEFPN的FPN结构用于提升student模型精度和召回；
+- 在蒸馏student模型精度提升方面，提出了PP-OCRv2的FPN结构改进版RSEFPN（Residual Squeeze-and-Excitation FPN），用于提升student模型精度和召回；
 
 RSEFPN的网络结构如下图所示，RSEFPN在PP-OCRv2的FPN基础上，将FPN中的卷积层更换为了通道注意力结构的RSEConv层。
 
@@ -47,7 +47,9 @@ RSEFPN的网络结构如下图所示，RSEFPN在PP-OCRv2的FPN基础上，将FPN
 
 RSEFPN将PP-OCR检测模型的精度hmean从81.3%提升到84.5%。模型大小从3M变为3.6M。
 
-- 在蒸馏的teacher模型精度提升方面，提出了LKPAN结构替换PP-OCRv2的FPN结构，并且使用ResNet50作为Backbone，更大的模型带来更多的精度提升。另外，对teacher模型使用[DML](https://arxiv.org/abs/1706.00384)蒸馏策略进一步提升teacher模型的精度。最终teacher的模型指标hmean达到了86.0%。
+- 在蒸馏的teacher模型精度提升方面，提出了LKPAN结构替换PP-OCRv2的FPN结构，并且使用ResNet50作为Backbone，更大的模型带来更多的精度提升。另外，对teacher模型使用[DML](https://arxiv.org/abs/1706.00384)蒸馏策略进一步提升teacher模型的精度。最终teacher的模型指标hmean从83.2%提升到了86.0%。
+
+*注：![PP-OCRv2的FPN结构](https://github.com/PaddlePaddle/PaddleOCR/blob/77acb3bfe51c8a46c684527f73cd218cefedb4a3/ppocr/modeling/necks/db_fpn.py#L107)对DB算法FPN结构做了轻量级设计*
 
 LKPAN的网络结构如下图所示：
 
@@ -55,7 +57,7 @@ LKPAN的网络结构如下图所示：
     <img src="../ppocr_v3/LKPAN.png" width="800">
 </div>
 
-LKPAN是一个具有更大感受野的轻量级PAN结构。在LKPAN的path augmentation中，使用kernel size为`9*9`的卷积；更大的kernel size意味着更大的感受野，更容易检测大字体的文字以及极端长宽比的文字。LKPAN将base检测模型的精度hmean从81.3%提升到84.9%。
+LKPAN(Large Kernel PAN)是一个具有更大感受野的轻量级![PAN](https://arxiv.org/pdf/1803.01534.pdf)结构。在LKPAN的path augmentation中，使用kernel size为`9*9`的卷积；更大的kernel size意味着更大的感受野，更容易检测大字体的文字以及极端长宽比的文字。LKPAN将base检测模型的精度hmean从81.3%提升到84.9%。
 
 *注：LKPAN相比RSEFPN有更多的精度提升，但是考虑到模型大小和预测速度等因素，在student模型中使用RSEFPN。*
 
@@ -69,8 +71,9 @@ LKPAN是一个具有更大感受野的轻量级PAN结构。在LKPAN的path augme
 |1|PP-OCRV2|3M|83.3%|117ms|
 |2|0 + RESFPN|3.6M|84.5%|124ms|
 |3|0 + LKPAN|4.6M|84.9%|156ms|
-|4|teacher DML + LKPAN|124M|86.0%|-|
-|5|0 + 2 + 4 + CML|3.6M|85.4%|124ms|
+|4|teacher |124M|83.2%|-|
+|5|teacher + DML + LKPAN|124M|86.0%|-|
+|6|0 + 2 + 5 + CML|3.6M|85.4%|124ms|
 
 
 
