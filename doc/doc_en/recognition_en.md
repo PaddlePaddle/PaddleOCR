@@ -1,7 +1,7 @@
 # Text Recognition
 
 - [1. Data Preparation](#DATA_PREPARATION)
-  * [1.1 Costom Dataset](#Costom_Dataset)
+  * [1.1 Custom Dataset](#Custom_Dataset)
   * [1.2 Dataset Download](#Dataset_download)
   * [1.3 Dictionary](#Dictionary)  
   * [1.4 Add Space Category](#Add_space_category)

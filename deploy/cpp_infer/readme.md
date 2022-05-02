@@ -104,7 +104,7 @@ opencv3/
 tar -xf paddle_inference.tgz
 ```
 
-Finally you will see the the folder of `paddle_inference/` in the current path.
+Finally you will see the folder of `paddle_inference/` in the current path.
 
 #### 1.3.2 Compile the inference source code
 * If you want to get the latest Paddle inference library features, you can download the latest code from Paddle GitHub repository and compile the inference library from the source code. It is recommended to download the inference library with paddle version greater than or equal to 2.0.1.
