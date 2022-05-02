@@ -78,23 +78,23 @@ python3 tools/infer_rec.py -c configs/rec/rec_resnet_stn_bilstm_att.yml -o Globa
 <a name="4-1"></a>
 ### 4.1 Python推理
 
-comming soon
+coming soon
 
 
 <a name="4-2"></a>
 ### 4.2 C++推理
 
-comming soon
+coming soon
 
 <a name="4-3"></a>
 ### 4.3 Serving服务化部署
 
-comming soon
+coming soon
 
 <a name="4-4"></a>
 ### 4.4 更多推理部署
 
-comming soon
+coming soon
 
 <a name="5"></a>
 ## 5. FAQ

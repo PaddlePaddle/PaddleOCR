@@ -1,7 +1,7 @@
 
 # PP-OCR Models Pruning
 
-Generally, a more complex model would achive better performance in the task, but it also leads to some redundancy in the model. Model Pruning is a technique that reduces this redundancy by removing the sub-models in the neural network model, so as to reduce model calculation complexity and improve model inference performance.
+Generally, a more complex model would achieve better performance in the task, but it also leads to some redundancy in the model. Model Pruning is a technique that reduces this redundancy by removing the sub-models in the neural network model, so as to reduce model calculation complexity and improve model inference performance.
 
 This example uses PaddleSlim provided[APIs of Pruning](https://github.com/PaddlePaddle/PaddleSlim/tree/develop/docs/zh_cn/api_cn/dygraph/pruners) to compress the OCR model.
 [PaddleSlim](https://github.com/PaddlePaddle/PaddleSlim), an open source library which integrates model pruning, quantization (including quantization training and offline quantization), distillation, neural network architecture search, and many other commonly used and leading model compression technique in the industry.
