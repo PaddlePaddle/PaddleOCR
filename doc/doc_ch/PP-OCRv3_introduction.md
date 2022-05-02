@@ -24,7 +24,7 @@ PP-OCRv2系统pipeline如下：
 </div>
 
 
-PP-OCR系统在持续迭代优化，目前已发布PP-OCR、PP-OCRv2、PPOCRv3三个版本：
+PP-OCR系统在持续迭代优化，目前已发布PP-OCR、PP-OCRv2、PP-OCRv3三个版本：
 
 PP-OCR从骨干网络选择和调整、预测头部的设计、数据增强、学习率变换策略、正则化参数选择、预训练模型使用以及模型自动裁剪量化8个方面，采用19个有效策略，对各个模块的模型进行效果调优和瘦身(如绿框所示)，最终得到整体大小为3.5M的超轻量中英文OCR和2.8M的英文数字OCR。更多细节请参考PP-OCR技术方案 https://arxiv.org/abs/2009.09941
 
@@ -34,20 +34,20 @@ PP-OCR从骨干网络选择和调整、预测头部的设计、数据增强、�
 
 ### PP-OCRv3文本检测模型优化策略
 
-PP-OCRv3采用PP-OCRv2的[CML](https://arxiv.org/pdf/2109.03144.pdf)蒸馏策略，在蒸馏的student模型、teacher模型精度提升，CML蒸馏策略上分别做了优化。下面简要介绍PPOCRv3的文本检测优化策略。
+PP-OCRv3采用PP-OCRv2的[CML](https://arxiv.org/pdf/2109.03144.pdf)蒸馏策略，在蒸馏的student模型、teacher模型精度提升，CML蒸馏策略上分别做了优化。下面简要介绍PP-OCRv3的文本检测优化策略。
 
-- 首先，在蒸馏student模型精度提升方面，针对模型召回能力低的问题，提出了RSEFPN的FPN结构用于提升student模型精度和召回；
+- 在蒸馏student模型精度提升方面，针对模型召回能力低的问题，提出了RSEFPN的FPN结构用于提升student模型精度和召回；
 
-RSEFPN的网络结构如下图所示，RSEFPN在PPOCRv2的FPN基础上，将FPN中的卷积层更换为了channel attention结构的RSEConv层。
+RSEFPN的网络结构如下图所示，RSEFPN在PP-OCRv2的FPN基础上，将FPN中的卷积层更换为了通道注意力结构的RSEConv层。
 
 <div align="center">
     <img src=".././ppocr_v3/RSEFPN.png" width="800">
 </div>
 
 
-RSEFPN将PPOCR检测模型的精度hmean从81.3%提升到84.5%。模型大小从3M变为3.6M。
+RSEFPN将PP-OCR检测模型的精度hmean从81.3%提升到84.5%。模型大小从3M变为3.6M。
 
-- 然后，在蒸馏的teacher模型精度提升方面，提出了LKPAN结构替换PPOCRv2的FPN结构，并且使用ResNet50作为Backbone，更大的模型带来更多的精度提升。最终teacher的模型指标hmean达到了86.0%。
+- 在蒸馏的teacher模型精度提升方面，提出了LKPAN结构替换PP-OCRv2的FPN结构，并且使用ResNet50作为Backbone，更大的模型带来更多的精度提升。另外，对teacher模型使用[DML](https://arxiv.org/abs/1706.00384)蒸馏策略进一步提升teacher模型的精度。最终teacher的模型指标hmean达到了86.0%。
 
 LKPAN的网络结构如下图所示：
 
@@ -55,24 +55,22 @@ LKPAN的网络结构如下图所示：
     <img src="../ppocr_v3/LKPAN.png" width="800">
 </div>
 
-LKPAN是一个具有更大感受野的轻量级PAN结构。在在LKPAN的path augmentation中，使用kernel size为`9*9`的卷积；更大的kernel size意味着更大的感受野，更容易检测大字体的文字以及极端长宽比的文字。LKPAN将base检测模型的精度hmean从81.3%提升到84.9%。
+LKPAN是一个具有更大感受野的轻量级PAN结构。在LKPAN的path augmentation中，使用kernel size为`9*9`的卷积；更大的kernel size意味着更大的感受野，更容易检测大字体的文字以及极端长宽比的文字。LKPAN将base检测模型的精度hmean从81.3%提升到84.9%。
 
 *注：LKPAN相比RSEFPN有更多的精度提升，但是考虑到模型大小和预测速度等因素，在student模型中使用RSEFPN。*
 
-- 最后，调整CML蒸馏训练策略调整：为了进一步提升蒸馏模型的精度，对teacher模型使用[DML](https://arxiv.org/abs/1706.00384)蒸馏策略进一步提升teacher模型的精度，更好的指导student模型的训练。
-
-采用上述策略，PPOCRv3相比PPOCRv2，hmean指标从83.3%提升到85.4%；预测速度从平均117ms/image变为124ms/image。
+采用上述策略，PP-OCRv3相比PP-OCRv2，hmean指标从83.3%提升到85.4%；预测速度从平均117ms/image变为124ms/image。
 
 3. PP-OCRv3检测模型消融实验
 
 |序号|策略|模型大小|hmean|Intel Gold 6148CPU+mkldnn预测耗时|
 |-|-|-|-|-|
-|0|ppocr_mobile|3M|81.3|117ms|
-|1|PPOCRV2|3M|83.3|117ms|
-|2|0 + RESFPN|3.6M|84.5|124ms|
-|3|0 + LKPAN|4.6M|84.9|156ms|
-|4|teacher DML + LKPAN|124M|86.0|-|
-|5|0 + 2 + 4 + CML|3.6M|85.4|124ms|
+|0|PP-OCR|3M|81.3%|117ms|
+|1|PP-OCRV2|3M|83.3%|117ms|
+|2|0 + RESFPN|3.6M|84.5%|124ms|
+|3|0 + LKPAN|4.6M|84.9%|156ms|
+|4|teacher DML + LKPAN|124M|86.0%|-|
+|5|0 + 2 + 4 + CML|3.6M|85.4%|124ms|
 
 
 
