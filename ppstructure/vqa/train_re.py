@@ -145,7 +145,7 @@ def train(args):
     global_step = 0
     model.clear_gradients()
     train_dataloader_len = len(train_dataloader)
-    best_metirc = {'f1': 0}
+    best_metric = {'f1': 0}
     model.train()
 
     train_reader_cost = 0.0
@@ -192,8 +192,8 @@ def train(args):
                 # Log metrics
                 # Only evaluate when single GPU otherwise metrics may not average well
                 results = evaluate(model, eval_dataloader, logger)
-                if results['f1'] >= best_metirc['f1']:
-                    best_metirc = results
+                if results['f1'] >= best_metric['f1']:
+                    best_metric = results
                     output_dir = os.path.join(args.output_dir, "best_model")
                     os.makedirs(output_dir, exist_ok=True)
                     if distributed:
@@ -206,7 +206,7 @@ def train(args):
                     logger.info("Saving model checkpoint to {}".format(
                         output_dir))
                 logger.info("eval results: {}".format(results))
-                logger.info("best_metirc: {}".format(best_metirc))
+                logger.info("best_metric: {}".format(best_metric))
             reader_start = time.time()
 
         if rank == 0:
@@ -220,7 +220,7 @@ def train(args):
             tokenizer.save_pretrained(output_dir)
             paddle.save(args, os.path.join(output_dir, "training_args.bin"))
             logger.info("Saving model checkpoint to {}".format(output_dir))
-    logger.info("best_metirc: {}".format(best_metirc))
+    logger.info("best_metric: {}".format(best_metric))
 
 
 if __name__ == "__main__":

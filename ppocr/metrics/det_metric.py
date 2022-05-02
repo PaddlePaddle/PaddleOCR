@@ -65,9 +65,9 @@ class DetMetric(object):
             }
         """
 
-        metircs = self.evaluator.combine_results(self.results)
+        metrics = self.evaluator.combine_results(self.results)
         self.reset()
-        return metircs
+        return metrics
 
     def reset(self):
         self.results = []  # clear results
