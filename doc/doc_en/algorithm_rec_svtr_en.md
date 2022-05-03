@@ -23,7 +23,7 @@ Paper:
 
 <a name="model"></a>
 The accuracy (%) and model files of SVTR on the public dataset of scene text recognition are as follows:
-* Chinese dataset from [Chinese Benckmark](https://arxiv.org/abs/2112.15093) , The Chinese training evaluation strategy of SVTR follows the paper.
+* Chinese dataset from [Chinese Benckmark](https://arxiv.org/abs/2112.15093) , and the Chinese training evaluation strategy of SVTR follows the paper.
 
 |   Model    |IC13<br/>857 |  SVT  |IIIT5k<br/>3000 |IC15<br/>1811| SVTP  |CUTE80 | Avg_6 |IC15<br/>2077 |IC13<br/>1015 |IC03<br/>867|IC03<br/>860|Avg_10 | Chinese<br/>scene_test|                                                                                            Download link                                                                                            |
 |:----------:|:------:|:-----:|:---------:|:------:|:-----:|:-----:|:-----:|:-------:|:-------:|:-----:|:-----:|:---------------------------------------------:|:-----:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
@@ -60,17 +60,16 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 
 Evaluation:
 
-You can download the model files and configuration files provided by `SVTR`: [download link](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/rec_svtr_tiny_none_ctc_en_train.tar), take `SVTR-T` as an example, Use the following command to evaluate:
+You can download the model files and configuration files provided by `SVTR`: [download link](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/rec_svtr_tiny_none_ctc_en_train.tar), take `SVTR-T` as an example, using the following command to evaluate:
 
 ```
 # GPU evaluation
-python3 tools/eval.py -c ./rec_svtr_tiny_none_ctc_en_train/rec_svtr_tiny_6local_6global_stn_en.yml -o Global.pretrained_model=./rec_svtr_tiny_none_ctc_en_train/best_accuracy
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c ./rec_svtr_tiny_none_ctc_en_train/rec_svtr_tiny_6local_6global_stn_en.yml -o Global.pretrained_model=./rec_svtr_tiny_none_ctc_en_train/best_accuracy
 ```
 
 Prediction:
 
 ```
-# The configuration file used for prediction must match the training
 python3 tools/infer_rec.py -c ./rec_svtr_tiny_none_ctc_en_train/rec_svtr_tiny_6local_6global_stn_en.yml -o Global.infer_img='./doc/imgs_words_en/word_10.png' Global.pretrained_model=./rec_svtr_tiny_none_ctc_en_train/best_accuracy
 ```
 
@@ -79,7 +78,7 @@ python3 tools/infer_rec.py -c ./rec_svtr_tiny_none_ctc_en_train/rec_svtr_tiny_6l
 
 <a name="4-1"></a>
 ### 4.1 Python Inference
-First, the model saved during the SVTR text recognition training process is converted into an inference model. ( [Model download link](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/rec_svtr_tiny_none_ctc_en_train.tar)) ), you can use the following command to convert:
+First, the model saved during the SVTR text recognition training process is converted into an inference model. ( [Model download link](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/rec_svtr_tiny_none_ctc_en_train.tar) ), you can use the following command to convert:
 
 ```
 python3 tools/export_model.py -c configs/rec/rec_svtrnet.yml -o Global.pretrained_model=./rec_svtr_tiny_none_ctc_en_train/best_accuracy  Global.save_inference_dir=./inference/rec_svtr_tiny_stn_en
