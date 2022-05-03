@@ -125,9 +125,9 @@ Not supported
 
 ```bibtex
 @article{Sheng2019NRTR,
-  author    = {Fenfen Sheng and Zhineng Chen andBo Xu},
   title     = {NRTR: A No-Recurrence Sequence-to-Sequence Model For Scene Text Recognition},
-  journal   = {ICDAR},
+  author    = {Fenfen Sheng and Zhineng Chen andBo Xu},
+  booktitle = {ICDAR},
   year      = {2019},
   url       = {http://arxiv.org/abs/1806.00926},
   pages     = {781-786}

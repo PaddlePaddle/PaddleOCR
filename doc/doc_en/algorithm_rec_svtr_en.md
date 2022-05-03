@@ -130,16 +130,16 @@ Not supported
 <a name="5"></a>
 ## 5. FAQ
 
-1. Since most of the op operators used by `SVTR` are matrix multiplication, in the GPU environment, the speed has an advantage, but in the environment where mkldnn is enabled on the CPU, `SVTR` has no advantage over the optimized convolutional network.
+1. Since most of the operators used by `SVTR` are matrix multiplication, in the GPU environment, the speed has an advantage, but in the environment where mkldnn is enabled on the CPU, `SVTR` has no advantage over the optimized convolutional network.
 
 ## Citation
 
 ```bibtex
 @article{Du2022SVTR,
-  author = {Du, Yongkun and Chen, Zhineng and Jia, Caiyan and Yin, Xiaoting and Zheng, Tianlun and Li, Chenxia and Du, Yuning and Jiang, Yu-Gang},
-  title = {SVTR: Scene Text Recognition with a Single Visual Model},
-  publisher = {IJCAI},
-  year = {2022},
-  url = {https://arxiv.org/abs/2205.00159}
+  title     = {SVTR: Scene Text Recognition with a Single Visual Model},
+  author    = {Du, Yongkun and Chen, Zhineng and Jia, Caiyan and Yin, Xiaoting and Zheng, Tianlun and Li, Chenxia and Du, Yuning and Jiang, Yu-Gang},
+  booktitle = {IJCAI},
+  year      = {2022},
+  url       = {https://arxiv.org/abs/2205.00159}
 }
 ```

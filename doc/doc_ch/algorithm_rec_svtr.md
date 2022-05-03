@@ -165,10 +165,10 @@ Predicts of ./doc/imgs_words_en/word_10.png:('pain', 0.9999998807907104)
 
 ```bibtex
 @article{Du2022SVTR,
-  author = {Du, Yongkun and Chen, Zhineng and Jia, Caiyan and Yin, Xiaoting and Zheng, Tianlun and Li, Chenxia and Du, Yuning and Jiang, Yu-Gang},
-  title = {SVTR: Scene Text Recognition with a Single Visual Model},
-  publisher = {IJCAI},
-  year = {2022},
-  url = {https://arxiv.org/abs/2205.00159}
+  title     = {SVTR: Scene Text Recognition with a Single Visual Model},
+  author    = {Du, Yongkun and Chen, Zhineng and Jia, Caiyan and Yin, Xiaoting and Zheng, Tianlun and Li, Chenxia and Du, Yuning and Jiang, Yu-Gang},
+  booktitle = {IJCAI},
+  year      = {2022},
+  url       = {https://arxiv.org/abs/2205.00159}
 }
 ```
