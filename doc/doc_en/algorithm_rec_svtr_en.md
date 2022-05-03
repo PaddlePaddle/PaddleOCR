@@ -17,7 +17,7 @@
 ## 1. Introduction
 
 Paper:
-> [SVTR: Scene Text Recognition with a Single Visual Model]()
+> [SVTR: Scene Text Recognition with a Single Visual Model](https://arxiv.org/abs/2205.00159)
 > Yongkun Du and Zhineng Chen and Caiyan Jia Xiaoting Yin and Tianlun Zheng and Chenxia Li and Yuning Du and Yu-Gang Jiang
 > IJCAI, 2022
 
@@ -131,3 +131,15 @@ Not supported
 ## 5. FAQ
 
 1. Since most of the op operators used by `SVTR` are matrix multiplication, in the GPU environment, the speed has an advantage, but in the environment where mkldnn is enabled on the CPU, `SVTR` has no advantage over the optimized convolutional network.
+
+## Citation
+
+```bibtex
+@article{Du2022SVTR,
+  author = {Du, Yongkun and Chen, Zhineng and Jia, Caiyan and Yin, Xiaoting and Zheng, Tianlun and Li, Chenxia and Du, Yuning and Jiang, Yu-Gang},
+  title = {SVTR: Scene Text Recognition with a Single Visual Model},
+  publisher = {IJCAI},
+  year = {2022},
+  url = {https://arxiv.org/abs/2205.00159}
+}
+```

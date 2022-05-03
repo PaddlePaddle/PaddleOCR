@@ -17,7 +17,7 @@
 ## 1. 算法简介
 
 论文信息：
-> [SVTR: Scene Text Recognition with a Single Visual Model]()
+> [SVTR: Scene Text Recognition with a Single Visual Model](https://arxiv.org/abs/2205.00159)
 > Yongkun Du and Zhineng Chen and Caiyan Jia Xiaoting Yin and Tianlun Zheng and Chenxia Li and Yuning Du and Yu-Gang Jiang
 > IJCAI, 2022
 
@@ -159,3 +159,16 @@ Predicts of ./doc/imgs_words_en/word_10.png:('pain', 0.9999998807907104)
 ## 5. FAQ
 
 1. 由于`SVTR`使用的算子大多为矩阵相乘，在GPU环境下，速度具有优势，但在CPU开启mkldnn加速环境下，`SVTR`相比于被优化的卷积网络没有优势。
+
+
+## 引用
+
+```bibtex
+@article{Du2022SVTR,
+  author = {Du, Yongkun and Chen, Zhineng and Jia, Caiyan and Yin, Xiaoting and Zheng, Tianlun and Li, Chenxia and Du, Yuning and Jiang, Yu-Gang},
+  title = {SVTR: Scene Text Recognition with a Single Visual Model},
+  publisher = {IJCAI},
+  year = {2022},
+  url = {https://arxiv.org/abs/2205.00159}
+}
+```
