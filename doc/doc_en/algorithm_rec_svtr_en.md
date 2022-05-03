@@ -63,6 +63,8 @@ Evaluation:
 You can download the model files and configuration files provided by `SVTR`: [download link](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/rec_svtr_tiny_none_ctc_en_train.tar), take `SVTR-T` as an example, using the following command to evaluate:
 
 ```
+# Download the tar archive containing the model files and configuration files of SVTR-T and extract it
+wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/rec_svtr_tiny_none_ctc_en_train.tar && tar xf rec_svtr_tiny_none_ctc_en_train.tar
 # GPU evaluation
 python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c ./rec_svtr_tiny_none_ctc_en_train/rec_svtr_tiny_6local_6global_stn_en.yml -o Global.pretrained_model=./rec_svtr_tiny_none_ctc_en_train/best_accuracy
 ```
