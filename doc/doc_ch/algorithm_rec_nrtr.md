@@ -61,7 +61,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 
 ```shell
 # 注意将pretrained_model的路径设置为本地路径。
-python3 tools/eval.py -c configs/rec/rec_mtb_nrtr.yml -o Global.pretrained_model=./rec_mtb_nrtr_train/best_accuracy
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_mtb_nrtr.yml -o Global.pretrained_model=./rec_mtb_nrtr_train/best_accuracy
 ```
 
 <a name="3-3"></a>
@@ -144,9 +144,9 @@ Predicts of ./doc/imgs_words_en/word_10.png:('pain', 0.9265879392623901)
 
 ```bibtex
 @article{Sheng2019NRTR,
-  author    = {Fenfen Sheng and Zhineng Chen andBo Xu},
   title     = {NRTR: A No-Recurrence Sequence-to-Sequence Model For Scene Text Recognition},
-  journal   = {ICDAR},
+  author    = {Fenfen Sheng and Zhineng Chen andBo Xu},
+  booktitle = {ICDAR},
   year      = {2019},
   url       = {http://arxiv.org/abs/1806.00926},
   pages     = {781-786}
