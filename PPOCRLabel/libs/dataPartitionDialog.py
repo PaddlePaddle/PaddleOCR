@@ -18,8 +18,9 @@ import numpy as np
 BB = QDialogButtonBox
 
 class DataPartitionDialog(QDialog):
-    def __init__(self):
+    def __init__(self, parent=None):
         super().__init__()
+        self.parnet = parent
         self.title = 'DATA PARTITION'
 
         self.train_ratio = 70
@@ -33,6 +34,16 @@ class DataPartitionDialog(QDialog):
         self.setWindowModality(Qt.ApplicationModal)
 
         self.flag_accept = True
+
+        if self.parnet.lang == 'ch':
+            msg = "导出JSON前请保存所有图像的标注且关闭EXCEL!"
+        else:
+            msg = "Please save all the annotations and close the EXCEL before exporting JSON!"
+
+        info_msg = QLabel(msg, self)
+        info_msg.setWordWrap(True)
+        info_msg.setStyleSheet("color: red")
+        info_msg.setFont(QFont('Arial', 12))
 
         train_lbl = QLabel('Train split: ', self)
         train_lbl.setFont(QFont('Arial', 15))
@@ -58,19 +69,20 @@ class DataPartitionDialog(QDialog):
         self.test_input.setValidator(validator)
 
         gridlayout = QGridLayout()
-        gridlayout.addWidget(train_lbl, 0, 0)
-        gridlayout.addWidget(val_lbl, 1, 0)
-        gridlayout.addWidget(test_lbl, 2, 0)
-        gridlayout.addWidget(self.train_input, 0, 1)
-        gridlayout.addWidget(self.val_input, 1, 1)
-        gridlayout.addWidget(self.test_input, 2, 1)
+        gridlayout.addWidget(info_msg, 0, 0, 1, 2)
+        gridlayout.addWidget(train_lbl, 1, 0)
+        gridlayout.addWidget(val_lbl, 2, 0)
+        gridlayout.addWidget(test_lbl, 3, 0)
+        gridlayout.addWidget(self.train_input, 1, 1)
+        gridlayout.addWidget(self.val_input, 2, 1)
+        gridlayout.addWidget(self.test_input, 3, 1)
 
         bb = BB(BB.Ok | BB.Cancel, Qt.Horizontal, self)
         bb.button(BB.Ok).setIcon(newIcon('done'))
         bb.button(BB.Cancel).setIcon(newIcon('undo'))
         bb.accepted.connect(self.validate)
         bb.rejected.connect(self.cancel)
-        gridlayout.addWidget(bb, 3, 0, 1, 2)
+        gridlayout.addWidget(bb, 4, 0, 1, 2)
 
         self.setLayout(gridlayout)
         

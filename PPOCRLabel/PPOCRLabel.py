@@ -2285,13 +2285,15 @@ class MainWindow(QMainWindow):
         import pandas as pd
         from libs.dataPartitionDialog import DataPartitionDialog
 
-        if self.lang == 'ch':
-            QMessageBox.information(self, "Information", "导出JSON前请保存所有图像的标注且关闭EXCEL!!!!!!!!!!!!")
-        else:
-            QMessageBox.information(self, "Information", "Please save all the annotations and close the EXCEL before exporting JSON!!!!!!!!!!!!")
+        # data partition user input
+        partitionDialog = DataPartitionDialog(parent=self)
+        partitionDialog.exec()
+        if partitionDialog.getStatus() == False:
+            return
 
         # automatically save annotations
-        self.saveLabelFile()
+        self.saveFilestate()
+        self.savePPlabel(mode='auto')
 
         # load box annotations
         labeldict = {}
@@ -2318,12 +2320,7 @@ class MainWindow(QMainWindow):
         #           'Please check the label.txt and tableRec_excel_output\n'
         #     QMessageBox.information(self, "Information", msg)
         #     return
-        
-        # data partition user input
-        partitionDialog = DataPartitionDialog()
-        partitionDialog.exec()
-        if partitionDialog.getStatus() == False:
-            return
+
 
         train_split, val_split, test_split = partitionDialog.getDataPartition()
         # check validate
@@ -2379,7 +2376,7 @@ class MainWindow(QMainWindow):
 
         # save json
         with open("{}/annotation.json".format(self.lastOpenDir), "w", encoding='utf-8') as fid:
-            fid.write(json.dumps(json_results))
+            fid.write(json.dumps(json_results, ensure_ascii=False))
         
         msg = 'JSON sucessfully saved in {}/annotation.json'.format(self.lastOpenDir)
         QMessageBox.information(self, "Information", msg)
