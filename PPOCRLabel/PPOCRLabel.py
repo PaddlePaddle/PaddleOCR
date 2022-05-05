@@ -1439,7 +1439,7 @@ class MainWindow(QMainWindow):
                                DEFAULT_LOCK_COLOR, key_cls, box['difficult']))
         if imgidx in self.PPlabel.keys():
             for box in self.PPlabel[imgidx]:
-                key_cls = None if not self.kie_mode else box['key_cls']
+                key_cls = None if not self.kie_mode else box.get('key_cls', 'None')
                 shapes.append((box['transcription'], box['points'], None, key_cls, box.get('difficult', False)))
 
         self.loadLabels(shapes)
@@ -1584,7 +1584,7 @@ class MainWindow(QMainWindow):
         for image, info in label_dict.items():
             for box in info:
                 if "key_cls" not in box:
-                    continue
+                    box.update({"key_cls": "None"})
                 self.existed_key_cls_set.add(box["key_cls"])
         if len(self.existed_key_cls_set) > 0:
             for key_text in self.existed_key_cls_set:
