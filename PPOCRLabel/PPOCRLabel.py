@@ -2131,7 +2131,7 @@ class MainWindow(QMainWindow):
 
         TableRec_excel_dir = self.lastOpenDir + '/tableRec_excel_output/'
         os.makedirs(TableRec_excel_dir, exist_ok=True)
-        filename = os.path.basename(self.filePath)
+        filename, _ = os.path.splitext(os.path.basename(self.filePath))
         excel_path = TableRec_excel_dir + '{}.xlsx'.format(filename)
         
         if res is None:
@@ -2203,19 +2203,26 @@ class MainWindow(QMainWindow):
             return
 
         # automatically open excel annotation file
-        try:
-            import win32com.client
-        except:
-            print("CANNOT OPEN .xlsx. It could be one of the following reasons: " \
-                "Only support Windows | No python win32com")
+        if platform.system() == 'Windows':
+            try:
+                import win32com.client
+            except:
+                print("CANNOT OPEN .xlsx. It could be one of the following reasons: " \
+                    "Only support Windows | No python win32com")
 
-        try:
-            xl = win32com.client.Dispatch("Excel.Application")
-            xl.Visible = True
-            xl.Workbooks.Open(excel_path)
-        except:
-            print("CANNOT OPEN .xlsx. It could be the following reasons: " \
-                ".xlsx is not existed")
+            try:
+                xl = win32com.client.Dispatch("Excel.Application")
+                xl.Visible = True
+                xl.Workbooks.Open(excel_path)
+                # excelEx = "You need to show the excel executable at this point"
+                # subprocess.Popen([excelEx, excel_path])
+
+                # os.startfile(excel_path)
+            except:
+                print("CANNOT OPEN .xlsx. It could be the following reasons: " \
+                    ".xlsx is not existed")
+        else:
+            os.system('open ' + os.path.normpath(excel_path))
                 
         print('time cost: ', time.time() - start)
 
@@ -2337,7 +2344,7 @@ class MainWindow(QMainWindow):
         imgid = 0
         for image_path in labeldict.keys():
             # load csv annotations
-            filename = os.path.basename(image_path)
+            filename, _ = os.path.splitext(os.path.basename(image_path))
             csv_path = os.path.join(TableRec_excel_dir, filename + '.xlsx')
             if not os.path.exists(csv_path):
                 msg = 'ERROR, Can not find ' + csv_path
@@ -2347,7 +2354,7 @@ class MainWindow(QMainWindow):
             # read xlsx file, convert to HTML
             xd = pd.ExcelFile(csv_path)
             df = xd.parse()
-            structure = df.to_html()
+            structure = df.to_html(index = False)
 
             # load box annotations
             cells = []
@@ -2371,7 +2378,7 @@ class MainWindow(QMainWindow):
             imgid += 1
 
         # save json
-        with open("{}/annotation.json".format(self.lastOpenDir), "w") as fid:
+        with open("{}/annotation.json".format(self.lastOpenDir), "w", encoding='utf-8') as fid:
             fid.write(json.dumps(json_results))
         
         msg = 'JSON sucessfully saved in {}/annotation.json'.format(self.lastOpenDir)
