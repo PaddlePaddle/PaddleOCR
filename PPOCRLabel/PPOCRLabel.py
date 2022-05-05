@@ -1440,7 +1440,7 @@ class MainWindow(QMainWindow):
         if imgidx in self.PPlabel.keys():
             for box in self.PPlabel[imgidx]:
                 key_cls = None if not self.kie_mode else box['key_cls']
-                shapes.append((box['transcription'], box['points'], None, key_cls, box['difficult']))
+                shapes.append((box['transcription'], box['points'], None, key_cls, box.get('difficult', False)))
 
         self.loadLabels(shapes)
         self.canvas.verified = False
