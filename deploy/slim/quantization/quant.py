@@ -166,7 +166,7 @@ def main(config, device, logger, vdl_writer):
         for key in config['Architecture']["Models"]:
             freeze_params = freeze_params or config['Architecture']['Models'][
                 key].get('freeze_params', False)
-    act = None if freeze_params else 'PACT'
+    act = None if freeze_params else PACT
     quanter = QAT(config=quant_config, act_preprocess=act)
     quanter.quantize(model)
 
