@@ -33,10 +33,11 @@ RSEFPN的网络结构如下图所示，RSEFPN在PP-OCRv2的FPN基础上，将FPN
     <img src=".././ppocr_v3/RSEFPN.png" width="800">
 </div>
 
-
 RSEFPN将PP-OCR检测模型的精度hmean从81.3%提升到84.5%。模型大小从3M变为3.6M。
 
-- 在蒸馏的teacher模型精度提升方面，提出了LKPAN结构替换PP-OCRv2的FPN结构，并且使用ResNet50作为Backbone，更大的模型带来更多的精度提升。另外，对teacher模型使用[DML](https://arxiv.org/abs/1706.00384)蒸馏策略进一步提升teacher模型的精度。最终teacher的模型指标hmean从83.2%提升到了86.0%。
+*注：PP-OCRv2的FPN通道数仅为96和24，如果直接用SE模块代替FPN的卷积会导致精度下降，RSEConv引入残差结构可以防止训练中包含重要特征的通道被抑制。*
+
+- 在蒸馏的teacher模型精度提升方面，提出了LKPAN结构替换PP-OCRv2的FPN结构，并且使用ResNet50作为Backbone，更大的模型带来更多的精度提升。另外，对teacher模型使用[DML](https://arxiv.org/abs/1706.00384)蒸馏策略进一步提升teacher模型的精度。最终teacher的模型指标相比ppocr_server_v2.0从83.2%提升到了86.0%。
 
 *注：[PP-OCRv2的FPN结构](https://github.com/PaddlePaddle/PaddleOCR/blob/77acb3bfe51c8a46c684527f73cd218cefedb4a3/ppocr/modeling/necks/db_fpn.py#L107)对DB算法FPN结构做了轻量级设计*
 
@@ -46,7 +47,7 @@ LKPAN的网络结构如下图所示：
     <img src="../ppocr_v3/LKPAN.png" width="800">
 </div>
 
-LKPAN(Large Kernel PAN)是一个具有更大感受野的轻量级[PAN](https://arxiv.org/pdf/1803.01534.pdf)结构。在LKPAN的path augmentation中，使用kernel size为`9*9`的卷积；更大的kernel size意味着更大的感受野，更容易检测大字体的文字以及极端长宽比的文字。LKPAN将base检测模型的精度hmean从81.3%提升到84.9%。
+LKPAN(Large Kernel PAN)是一个具有更大感受野的轻量级[PAN](https://arxiv.org/pdf/1803.01534.pdf)结构。在LKPAN的path augmentation中，使用kernel size为`9*9`的卷积；更大的kernel size意味着更大的感受野，更容易检测大字体的文字以及极端长宽比的文字。LKPAN将PP-OCR检测模型的精度hmean从81.3%提升到84.9%。
 
 *注：LKPAN相比RSEFPN有更多的精度提升，但是考虑到模型大小和预测速度等因素，在student模型中使用RSEFPN。*
 
@@ -60,8 +61,8 @@ LKPAN(Large Kernel PAN)是一个具有更大感受野的轻量级[PAN](https://a
 |1|PP-OCRV2|3M|83.3%|117ms|
 |2|0 + RESFPN|3.6M|84.5%|124ms|
 |3|0 + LKPAN|4.6M|84.9%|156ms|
-|4|teacher |124M|83.2%|-|
-|5|teacher + DML + LKPAN|124M|86.0%|-|
+|4|ppocr_server_v2.0 |124M|83.2%||171ms|
+|5|teacher + DML + LKPAN|124M|86.0%|396ms|
 |6|0 + 2 + 5 + CML|3.6M|85.4%|124ms|
 
 
