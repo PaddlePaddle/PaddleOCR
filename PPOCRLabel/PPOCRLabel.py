@@ -1606,8 +1606,6 @@ class MainWindow(QMainWindow):
                 fit_to_content={'column': True, 'row': False},
                 flags=None
             )
-        else:
-            self.keyDialog.labelList.addItems(self.existed_key_cls_set)
 
     def importDirImages(self, dirpath, isDelete=False):
         if not self.mayContinue() or not dirpath:
