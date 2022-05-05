@@ -21,6 +21,7 @@ import os.path
 import platform
 import subprocess
 import sys
+import xlrd
 from functools import partial
 
 from PyQt5.QtCore import QSize, Qt, QPoint, QByteArray, QTimer, QFileInfo, QPointF, QProcess
@@ -2349,9 +2350,19 @@ class MainWindow(QMainWindow):
                 return
 
             # read xlsx file, convert to HTML
-            xd = pd.ExcelFile(csv_path)
-            df = xd.parse()
-            structure = df.to_html(index = False)
+            # xd = pd.ExcelFile(csv_path)
+            # df = xd.parse()
+            # structure = df.to_html(index = False)
+            excel = xlrd.open_workbook(csv_path)
+            sheet0 = excel.sheet_by_index(0)  # only sheet 0
+            merged_cells = sheet0.merged_cells # (0,1,1,3) start row, end row, start col, end col
+
+            html_list = [['td'] * sheet0.ncols for i in range(sheet0.nrows)]
+
+            for merged in merged_cells:
+                html_list = expand_list(merged, html_list)
+
+            token_list = convert_token(html_list)
 
             # load box annotations
             cells = []
@@ -2370,7 +2381,7 @@ class MainWindow(QMainWindow):
                 split = 'test'
 
             #  save dict
-            html = {'structure': {'tokens': structure}, 'cell': cells}
+            html = {'structure': {'tokens': token_list}, 'cell': cells}
             json_results.append({'filename': filename, 'split': split, 'imgid': imgid, 'html': html})
             imgid += 1
 

@@ -188,6 +188,50 @@ def OBB2HBB(obb) -> np.array:
     return hbb
 
 
+def expand_list(merged, html_list):
+    '''
+    Fill blanks according to merged cells
+    '''
+    sr, er, sc, ec = merged
+    for i in range(sr, er):
+        for j in range(sc, ec):
+            html_list[i][j] = None
+    html_list[sr][sc] = ''
+    if ec - sc > 1:
+        html_list[sr][sc] += " colspan={}".format(ec - sc)
+    if er - sr > 1:
+        html_list[sr][sc] += " rowspan={}".format(er - sr)
+    return html_list
+
+
+def convert_token(html_list):
+    '''
+    Convert raw html to label format
+    '''
+    token_list = ["<tbody>"]
+    # final html list:
+    for row in html_list:
+        token_list.append("<tr>")
+        for col in row:
+            if col == None:
+                continue
+            elif col == 'td':
+                token_list.extend(["<td>", "</td>"])
+            else:
+                token_list.append("<td")
+                if 'colspan' in col:
+                    _, n = col.split('colspan=')
+                    token_list.append(" colspan=\"{}\"".format(n))
+                if 'rowspan' in col:
+                    _, n = col.split('rowspan=')
+                    token_list.append(" rowspan=\"{}\"".format(n))
+                token_list.append(">")
+        token_list.append("</tr>")
+    token_list.append("</tbody>")
+
+    return token_list
+
+
 def stepsInfo(lang='en'):
     if lang == 'ch':
         msg = "1. 安装与运行：使用上述命令安装与运行程序。\n" \
