@@ -202,11 +202,8 @@ class MainWindow(QMainWindow):
         self.reRecogButton.setIcon(newIcon('reRec', 30))
         self.reRecogButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
 
-        self.cellreRecButton = QToolButton()
-        self.cellreRecButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)       
         self.tableRecButton = QToolButton()
         self.tableRecButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        
 
         self.newButton = QToolButton()
         self.newButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
@@ -221,9 +218,9 @@ class MainWindow(QMainWindow):
         leftTopToolBox = QGridLayout()
         leftTopToolBox.addWidget(self.newButton, 0, 0, 1, 1)
         leftTopToolBox.addWidget(self.createpolyButton, 0, 1, 1, 1)
-        leftTopToolBox.addWidget(self.reRecogButton, 0, 2, 1, 1)
-        leftTopToolBox.addWidget(self.tableRecButton, 1, 0, 1, 1)
-        leftTopToolBox.addWidget(self.cellreRecButton, 1, 1, 1, 1)
+        leftTopToolBox.addWidget(self.reRecogButton, 1, 0, 1, 1)
+        leftTopToolBox.addWidget(self.tableRecButton, 1, 1, 1, 1)
+
         leftTopToolBoxContainer = QWidget()
         leftTopToolBoxContainer.setLayout(leftTopToolBox)
         listLayout.addWidget(leftTopToolBoxContainer)
@@ -507,7 +504,6 @@ class MainWindow(QMainWindow):
         self.AutoRecognition.setDefaultAction(AutoRec)
         self.reRecogButton.setDefaultAction(reRec)
         self.tableRecButton.setDefaultAction(tableRec)
-        self.cellreRecButton.setDefaultAction(cellreRec)
         # self.preButton.setDefaultAction(openPrevImg)
         # self.nextButton.setDefaultAction(openNextImg)
 
@@ -564,11 +560,11 @@ class MainWindow(QMainWindow):
                               rotateLeft=rotateLeft, rotateRight=rotateRight, lock=lock, exportJSON=exportJSON,
                               fileMenuActions=(opendir, open_dataset_dir, saveLabel, exportJSON, resetAll, quit),
                               beginner=(), advanced=(),
-                              editMenu=(createpoly, edit, copy, delete, singleRere, None, undo, undoLastPoint,
+                              editMenu=(createpoly, edit, copy, delete, singleRere, cellreRec, None, undo, undoLastPoint,
                                         None, rotateLeft, rotateRight, None, color1, self.drawSquaresOption, lock,
                                         None, change_cls),
                               beginnerContext=(
-                                  create, createpoly, edit, copy, delete, singleRere, rotateLeft, rotateRight, lock, change_cls),
+                                  create, createpoly, edit, copy, delete, singleRere, cellreRec, rotateLeft, rotateRight, lock, change_cls),
                               advancedContext=(createMode, editMode, edit, copy,
                                                delete, shapeLineColor, shapeFillColor),
                               onLoadActive=(create, createpoly, createMode, editMode),
@@ -1025,6 +1021,7 @@ class MainWindow(QMainWindow):
         self._noSelectionSlot = False
         n_selected = len(selected_shapes)
         self.actions.singleRere.setEnabled(n_selected)
+        self.actions.cellreRec.setEnabled(n_selected)
         self.actions.delete.setEnabled(n_selected)
         self.actions.copy.setEnabled(n_selected)
         self.actions.edit.setEnabled(n_selected == 1)
@@ -1690,12 +1687,10 @@ class MainWindow(QMainWindow):
         self.haveAutoReced = False
         self.AutoRecognition.setEnabled(True)
         self.reRecogButton.setEnabled(True)
-        self.cellreRecButton.setEnabled(True)
         self.tableRecButton.setEnabled(True)
         self.actions.AutoRec.setEnabled(True)
         self.actions.reRec.setEnabled(True)
         self.actions.tableRec.setEnabled(True)
-        self.actions.cellreRec.setEnabled(True)
         self.actions.open_dataset_dir.setEnabled(True)
         self.actions.rotateLeft.setEnabled(True)
         self.actions.rotateRight.setEnabled(True)
@@ -2229,87 +2224,59 @@ class MainWindow(QMainWindow):
             re-recognise text in a cell
         '''
         img = cv2.imread(self.filePath)
+        for shape in self.canvas.selectedShapes:
+            box = [[int(p.x()), int(p.y())] for p in shape.points]
 
-        if self.canvas.shapes:
-            self.result_dic = []
-            self.result_dic_locked = []  # result_dic_locked stores the ocr result of self.canvas.lockedShapes
-            rec_flag = 0
-            for shape in self.canvas.shapes:
-                box = [[int(p.x()), int(p.y())] for p in shape.points]
+            if len(box) > 4:
+                box = self.gen_quad_from_poly(np.array(box))
+            assert len(box) == 4
 
-                if len(box) > 4:
-                    box = self.gen_quad_from_poly(np.array(box))
-                assert len(box) == 4
+            # pad around bbox for better text recognition accuracy
+            _box = boxPad(box, img.shape, 6)
+            img_crop = get_rotate_crop_image(img, np.array(_box, np.float32))
+            if img_crop is None:
+                msg = 'Can not recognise the detection box in ' + self.filePath + '. Please change manually'
+                QMessageBox.information(self, "Information", msg)
+                return
 
-                # pad around bbox for better text recognition accuracy
-                print(box)
-                _box = boxPad(box, img.shape, 6)
-                print(_box)
-                img_crop = get_rotate_crop_image(img, np.array(_box, np.float32))
-                if img_crop is None:
-                    msg = 'Can not recognise the detection box in ' + self.filePath + '. Please change manually'
-                    QMessageBox.information(self, "Information", msg)
-                    return
-                # merge the text result in the cell
-                texts = ''
-                probs = 0. # the probability of the cell is avgerage prob of every text box in the cell
-                bboxes = self.ocr.ocr(img_crop, det=True, rec=False, cls=False)
-                if len(bboxes) > 0:
-                    bboxes.reverse() # top row text at first
-                    for _bbox in bboxes:
-                        patch = get_rotate_crop_image(img_crop, np.array(_bbox, np.float32))
-                        rec_res = self.ocr.ocr(patch, det=False, rec=True, cls=False)
-                        text = rec_res[0][0]
-                        if text != '':
-                            texts += text + (' ' if text[0].isalpha() else '') # add space between english word
-                            probs += rec_res[0][1]
-                    probs = probs / len(bboxes)
-                result = [(texts.strip(), probs)]
+            # merge the text result in the cell
+            texts = ''
+            probs = 0. # the probability of the cell is avgerage prob of every text box in the cell
+            bboxes = self.ocr.ocr(img_crop, det=True, rec=False, cls=False)
+            if len(bboxes) > 0:
+                bboxes.reverse() # top row text at first
+                for _bbox in bboxes:
+                    patch = get_rotate_crop_image(img_crop, np.array(_bbox, np.float32))
+                    rec_res = self.ocr.ocr(patch, det=False, rec=True, cls=False)
+                    text = rec_res[0][0]
+                    if text != '':
+                        texts += text + (' ' if text[0].isalpha() else '') # add space between english word
+                        probs += rec_res[0][1]
+                probs = probs / len(bboxes)
+            result = [(texts.strip(), probs)]
 
-                if result[0][0] != '':
-                    if shape.line_color == DEFAULT_LOCK_COLOR:
-                        shape.label = result[0][0]
-                        result.insert(0, box)
-                        self.result_dic_locked.append(result)
-                    else:
-                        result.insert(0, box)
-                        self.result_dic.append(result)
+            if result[0][0] != '':
+                result.insert(0, box)
+                print('result in reRec is ', result)
+                if result[1][0] == shape.label:
+                    print('label no change')
                 else:
-                    print('Can not recognise the box')
-                    if shape.line_color == DEFAULT_LOCK_COLOR:
-                        shape.label = result[0][0]
-                        self.result_dic_locked.append([box, (self.noLabelText, 0)])
-                    else:
-                        self.result_dic.append([box, (self.noLabelText, 0)])
-                try:
-                    if self.noLabelText == shape.label or result[1][0] == shape.label:
-                        print('label no change')
-                    else:
-                        rec_flag += 1
-                except IndexError as e:
-                    print('Can not recognise the box')
-            if (len(self.result_dic) > 0 and rec_flag > 0) or self.canvas.lockedShapes:
-                self.canvas.isInTheSameImage = True
-                self.saveFile(mode='Auto')
-                self.loadFile(self.filePath)
-                self.canvas.isInTheSameImage = False
-                self.setDirty()
-            elif len(self.result_dic) == len(self.canvas.shapes) and rec_flag == 0:
-                if self.lang == 'ch':
-                    QMessageBox.information(self, "Information", "识别结果保持一致！")
-                else:
-                    QMessageBox.information(self, "Information", "The recognition result remains unchanged!")
+                    shape.label = result[1][0]
             else:
-                print('Can not recgonise in ', self.filePath)
-        else:
-            QMessageBox.information(self, "Information", "Draw a box!")
+                print('Can not recognise the box')
+                if self.noLabelText == shape.label:
+                    print('label no change')
+                else:
+                    shape.label = self.noLabelText
+            self.singleLabel(shape)
+            self.setDirty()
 
     def exportJSON(self):
         '''
             export PPLabel and CSV to JSON (PubTabNet)
         '''
         import pandas as pd
-        from PyQt5.QtWidgets import QInputDialog
+        from libs.dataPartitionDialog import DataPartitionDialog
 
         if self.lang == 'ch':
             QMessageBox.information(self, "Information", "导出JSON前请保存所有图像的标注且关闭EXCEL!!!!!!!!!!!!")
@@ -2346,18 +2313,18 @@ class MainWindow(QMainWindow):
         #     return
         
         # data partition user input
-        train_split, ok = QInputDialog.getInt(self, "DataPatition", "How many data for Training (%):", 70, 0, 100, 1)
-        if not ok:
+        partitionDialog = DataPartitionDialog()
+        partitionDialog.exec()
+        if partitionDialog.getStatus() == False:
             return
-        val_split, ok = QInputDialog.getInt(self, "DataPatition", "How many data for Validatiion (%):", 15, 0, 100, 1)
-        if not ok:
-            return
-        test_split, ok = QInputDialog.getInt(self, "DataPatition", "How many data for Testing (%):", 15, 0, 100, 1)
 
+        train_split, val_split, test_split = partitionDialog.getDataPartition()
+        # check validate
         if train_split + val_split + test_split > 100:
-            QMessageBox.information(self, "Information", "The sum of training, validation and testing data should be less than 100%")
+            msg = "The sum of training, validation and testing data should be less than 100%"
+            QMessageBox.information(self, "Information", msg)
             return
-        
+        print(train_split, val_split, test_split)
         train_split, val_split, test_split = float(train_split) / 100., float(val_split) / 100., float(test_split) / 100.
         train_id = int(len(labeldict) * train_split)
         val_id = int(len(labeldict) * (train_split + val_split))
@@ -2407,7 +2374,7 @@ class MainWindow(QMainWindow):
         with open("{}/annotation.json".format(self.lastOpenDir), "w") as fid:
             fid.write(json.dumps(json_results))
         
-        msg = 'JSON sucessfully saved in ', "{}/annotation.json".format(self.lastOpenDir)
+        msg = 'JSON sucessfully saved in {}/annotation.json'.format(self.lastOpenDir)
         QMessageBox.information(self, "Information", msg)
 
     def autolcm(self):
