@@ -41,6 +41,7 @@ deploy/hubserving/ocr_system/
 ```
 ## 1. 近期更新
 
+* 2022.05.05 新增PP-OCRv3检测和识别模型。
 * 2022.03.30 新增PP-Structure和表格识别两种服务。
 
 ## 2. 快速启动服务
@@ -53,10 +54,10 @@ pip3 install paddlehub==2.1.0 --upgrade -i https://mirror.baidu.com/pypi/simple
 ```
 
 ### 2.2 下载推理模型
-安装服务模块前，需要准备推理模型并放到正确路径。默认使用的是PP-OCRv2模型，默认模型路径为：
+安装服务模块前，需要准备推理模型并放到正确路径。默认使用的是PP-OCRv3模型，默认模型路径为：
 ```
-检测模型：./inference/ch_PP-OCRv2_det_infer/
-识别模型：./inference/ch_PP-OCRv2_rec_infer/
+检测模型：./inference/ch_PP-OCRv3_det_infer/
+识别模型：./inference/ch_PP-OCRv3_rec_infer/
 方向分类器：./inference/ch_ppocr_mobile_v2.0_cls_infer/
 表格结构识别模型：./inference/en_ppocr_mobile_v2.0_table_structure_infer/
 ```  
@@ -223,6 +224,7 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 
 - 2、 到相应的`module.py`和`params.py`等文件中根据实际需求修改代码。  
 例如，如果需要替换部署服务所用模型，则需要到`params.py`中修改模型路径参数`det_model_dir`和`rec_model_dir`，如果需要关闭文本方向分类器，则将参数`use_angle_cls`置为`False`，当然，同时可能还需要修改其他相关参数，请根据实际情况修改调试。 **强烈建议修改后先直接运行`module.py`调试，能正确运行预测后再启动服务测试。**
+**注意** PPOCR-v3识别模型使用的图片输入shape为`3,48,320`,因此需要修改`params.py`中的`cfg.rec_image_shape = "3, 48, 320"`，如果不使用PPOCR-v3识别模型，则无需修改该参数。
 
 - 3、 卸载旧服务包  
 ```hub uninstall ocr_system```  
