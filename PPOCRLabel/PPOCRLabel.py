@@ -2133,6 +2133,7 @@ class MainWindow(QMainWindow):
         TableRec_excel_dir = self.lastOpenDir + '/tableRec_excel_output/'
         os.makedirs(TableRec_excel_dir, exist_ok=True)
         filename, _ = os.path.splitext(os.path.basename(self.filePath))
+
         excel_path = TableRec_excel_dir + '{}.xlsx'.format(filename)
         
         if res is None:
@@ -2321,8 +2322,6 @@ class MainWindow(QMainWindow):
         #           'Please check the label.txt and tableRec_excel_output\n'
         #     QMessageBox.information(self, "Information", msg)
         #     return
-
-
         train_split, val_split, test_split = partitionDialog.getDataPartition()
         # check validate
         if train_split + val_split + test_split > 100:
@@ -2363,6 +2362,7 @@ class MainWindow(QMainWindow):
                 html_list = expand_list(merged, html_list)
 
             token_list = convert_token(html_list)
+
 
             # load box annotations
             cells = []
