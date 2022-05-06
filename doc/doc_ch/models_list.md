@@ -119,6 +119,7 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 | devanagari_PP-OCRv3_rec | ppocr/utils/dict/devanagari_dict.txt |梵文字母 | [devanagari_PP-OCRv3_rec.yml](../../configs/rec/PP-OCRv3/multi_language/devanagari_PP-OCRv3_rec.yml) |9.6M|[推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/devanagari_PP-OCRv3_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/devanagari_PP-OCRv3_rec_train.tar) |
 
 
+
 更多支持语种请参考: [多语言模型](./multi_languages.md)
 
 
