@@ -23,48 +23,46 @@ PP-OCRv3系统pipeline如下：
 <a name="2"></a>
 ## 2. 检测优化
 
-PP-OCRv3采用PP-OCRv2的[CML](https://arxiv.org/pdf/2109.03144.pdf)蒸馏策略，在蒸馏的student模型、teacher模型精度提升，CML蒸馏策略上分别做了优化。
-
-- 在蒸馏student模型精度提升方面，提出了基于残差结构的通道注意力模块RSEFPN（Residual Squeeze-and-Excitation FPN），用于提升student模型精度和召回。
-
-RSEFPN的网络结构如下图所示，RSEFPN在PP-OCRv2的FPN基础上，将FPN中的卷积层更换为了通道注意力结构的RSEConv层。
+PP-OCRv3采用PP-OCRv2的[CML](https://arxiv.org/pdf/2109.03144.pdf)蒸馏策略，CML蒸馏包含一个蒸馏教师模型和两个蒸馏学生模型，在训练过程中，教师模型不参与训练，学生模型受到来自标签和教师模型的监督，同时两个学生模型互相学习。相比较PP-OCRv2，PP-OCRv3在蒸馏教师模型、蒸馏学生模型的精度提升两个方面进一步优化。
+PP-OCRv3 CML蒸馏训练框架图如下：
 
 <div align="center">
-    <img src=".././ppocr_v3/RSEFPN.png" width="800">
+    <img src=".././ppocr_v3/ppocrv3_det_cml.png" width="800">
 </div>
 
-RSEFPN将PP-OCR检测模型的精度hmean从81.3%提升到84.5%。模型大小从3M变为3.6M。
+- 在蒸馏的教师模型精度提升方面，提出了LK-PAN结构替换PP-OCRv2的FPN结构提升模型的召回，并且使用ResNet50作为Backbone。另外，对教师模型使用[DML](https://arxiv.org/abs/1706.00384)蒸馏策略进一步提升教师模型的精度。最终教师模型指标相比ppocr_server从83.2%提升到了86.0%。
 
-*注：PP-OCRv2的FPN通道数仅为96和24，如果直接用SE模块代替FPN的卷积会导致精度下降，RSEConv引入残差结构可以防止训练中包含重要特征的通道被抑制。*
-
-- 在蒸馏的teacher模型精度提升方面，提出了LKPAN结构替换PP-OCRv2的FPN结构，并且使用ResNet50作为Backbone，更大的模型带来更多的精度提升。另外，对teacher模型使用[DML](https://arxiv.org/abs/1706.00384)蒸馏策略进一步提升teacher模型的精度。最终teacher的模型指标相比ppocr_server_v2.0从83.2%提升到了86.0%。
-
-*注：[PP-OCRv2的FPN结构](https://github.com/PaddlePaddle/PaddleOCR/blob/77acb3bfe51c8a46c684527f73cd218cefedb4a3/ppocr/modeling/necks/db_fpn.py#L107)对DB算法FPN结构做了轻量级设计*
-
-LKPAN的网络结构如下图所示：
+教师模型自蒸馏训练的pipeline如下：
 
 <div align="center">
-    <img src="../ppocr_v3/LKPAN.png" width="800">
+    <img src="../ppocr_v3/teacher_dml.png" width="800">
 </div>
 
-LKPAN(Large Kernel PAN)是一个具有更大感受野的轻量级[PAN](https://arxiv.org/pdf/1803.01534.pdf)结构。在LKPAN的path augmentation中，使用kernel size为`9*9`的卷积；更大的kernel size意味着更大的感受野，更容易检测大字体的文字以及极端长宽比的文字。LKPAN将PP-OCR检测模型的精度hmean从81.3%提升到84.9%。
+LK-PAN(Large Kernel PAN)是一个具有更大感受野的轻量级[PAN](https://arxiv.org/pdf/1803.01534.pdf)结构。在LK-PAN的path augmentation中，使用卷积核为`9*9`的卷积；更大的卷积核意味着更大的感受野，更容易检测大字体的文字以及极端长宽比的文字。LKPAN将ppocr_server检测模型的精度hmean从83.2%提升到85.0%，加上DML自蒸馏后，hmean进一步提升到86。0%。
 
-*注：LKPAN相比RSEFPN有更多的精度提升，但是考虑到模型大小和预测速度等因素，在student模型中使用RSEFPN。*
-
-采用上述策略，PP-OCRv3相比PP-OCRv2，hmean指标从83.3%提升到85.4%；预测速度从平均117ms/image变为124ms/image。
-
-3. PP-OCRv3检测模型消融实验
-
+蒸馏教师模型的消融试验如下：
 |序号|策略|模型大小|hmean|Intel Gold 6148CPU+mkldnn预测耗时|
 |-|-|-|-|-|
-|0|PP-OCR|3M|81.3%|117ms|
-|1|PP-OCRV2|3M|83.3%|117ms|
-|2|0 + RESFPN|3.6M|84.5%|124ms|
-|3|0 + LKPAN|4.6M|84.9%|156ms|
-|4|ppocr_server_v2.0 |124M|83.2%||171ms|
-|5|teacher + DML + LKPAN|124M|86.0%|396ms|
-|6|0 + 2 + 5 + CML|3.6M|85.4%|124ms|
+|0|ppocr_server|49M|83.2%|171ms|
+|1|+ LK-PAN|124M|85.0%|396ms|
+|2|+ DML|124M|86.0%|396ms|
 
+- 在蒸馏学生模型精度提升方面，使用hmean 86%的模型作为CML中的教师模型，精度更高的蒸馏教师模型可以给学生模型更好的监督信息。另外，提出了基于残差结构的通道注意力模块RSE-FPN（Residual Squeeze-and-Excitation FPN），用于提升学生模型精度和召回。
+
+RSE-FPN的网络结构如下图所示，RSE-FPN在PP-OCRv2的FPN基础上，将FPN中的卷积层更换为了通道注意力结构的RSEConv层。
+
+<div align="center">
+    <img src=".././ppocr_v3/RSEFPN.png" width="1000">
+</div>
+
+PP-OCRv2的FPN通道数仅为96和24，如果直接用SEblock代替FPN中卷积会导致某些通道的特征被抑制，进而导致精度下降，RSEConv引入残差结构可以防止训练中包含重要特征的通道被抑制。RSE-FPN将PP-OCR检测模型的精度hmean从81.3%提升到84.5%。模型大小从3M变为3.6M。CPU预测速度从平均117ms/image变为124ms/image。
+
+蒸馏学生模型的消融试验如下：
+|序号|策略|模型大小|hmean|Intel Gold 6148CPU+mkldnn预测耗时|
+|-|-|-|-|-|
+|0|PP-OCRv2|3M|81.3%|117ms|
+|1|+ teacher(dml)|3M|83.8%|117ms|
+|2|+ RSE-FPN|3.6M|84.5%|124ms|
 
 
 <a name="3"></a>
