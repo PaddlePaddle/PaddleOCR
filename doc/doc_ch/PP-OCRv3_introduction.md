@@ -75,7 +75,7 @@ LK-PAN(Large Kernel PAN)是一个具有更大感受野的轻量级[PAN](https://
 
 **（2）DML（Deep Mutual Learning）蒸馏进一步提升teacher模型精度。**
 
-[DML](https://arxiv.org/abs/1706.00384) 互学习蒸馏方法，通过两个结构相同的模型互相学习，相比于传统的教师模型监督学生模型的蒸馏方法，DML 摆脱了对大的 Teacher 模型的依赖，蒸馏训练的流程更加简单。在PP-OCRv3的检测模型训练中，使用DML蒸馏策略进一步提升教师模型的精度，并使用ResNet50作为Backbone。DML策略将teacher模型的hmean从85%进一步提升至86%。
+[DML](https://arxiv.org/abs/1706.00384) 互学习蒸馏方法，通过两个结构相同的模型互相学习，相比于传统的教师模型监督学生模型的蒸馏方法，DML 摆脱了对大的教师模型的依赖，蒸馏训练的流程更加简单。在PP-OCRv3的检测模型训练中，使用DML蒸馏策略进一步提升教师模型的精度，并使用ResNet50作为Backbone。DML策略将教师模型的Hmean从85%进一步提升至86%。
 
 教师模型DML训练流程图如下：
 
@@ -173,7 +173,7 @@ PP-OCRv3将base模型从CRNN替换成了[SVTR](https://arxiv.org/abs/2205.00159)
 </div>
 
 
-**（4）TextRotNet无监督训练优化预训练模型。**
+**（4）TextRotNet自监督训练优化预训练模型。**
 
 为了充分利用自然场景中的大量无标注文本数据，PP-OCRv3参考论文[STR-Fewer-Labels](https://github.com/ku21fan/STR-Fewer-Labels)，设计TextRotNet自监督任务，对识别图像进行旋转并预测其旋转角度，同时结合中文场景文字识别任务的特点，在训练时适当调整图像的尺寸，添加文本识别数据增广，最终产出针对文本识别任务的PP-LCNet预训练模型，帮助识别模型精度进一步提升0.6%。TextRotNet训练流程如下图所示：
 
@@ -182,7 +182,7 @@ PP-OCRv3将base模型从CRNN替换成了[SVTR](https://arxiv.org/abs/2205.00159)
 </div>
 
 
-**（5）UIM（Unlabeled Images Mining）无标签数据挖掘。**
+**（5）UIM（Unlabeled Images Mining）无标注数据挖掘策略。**
 
 为更直接利用自然场景中包含大量无标注数据，使用PP-OCRv2检测模型以及SVTR_tiny识别模型对百度开源的40W [LSVT弱标注数据集](https://ai.baidu.com/broad/introduction?dataset=lsvt)进行检测与识别，并筛选出识别得分大于0.95的文本，共81W文本行数据，将其补充到训练数据中，最终进一步提升模型精度1.0%。
 
@@ -202,6 +202,9 @@ PP-OCRv3将base模型从CRNN替换成了[SVTR](https://arxiv.org/abs/2205.00159)
 | PP-OCR server | 57.0% | 155.1 | 1056 | 200 |
 | PP-OCRv2 | 57.6% | 11.6 | 330 | 111 |
 | PP-OCRv3 | 62.9% | 15.6 | 331 | 86.64 |
+
+测试环境：CPU型号为Intel Gold 6148，CPU预测时开启MKLDNN加速。
+
 
 除了更新中文模型，本次升级也同步优化了英文数字模型，端到端效果提升11%，如下表所示：
 
