@@ -1,38 +1,27 @@
 [English](../doc_en/PP-OCRv3_introduction_en.md) | 简体中文
 
-# PP-OCR
+# PP-OCRv3
 
 - [1. 简介](#1)
-- [2. 特性](#2)
-- [3. benchmark](#3)
+- [2. 检测优化](#2)
+- [3. 识别优化](#3)
+- [4. 端到端评估](#4)
 
 
 
 <a name="1"></a>
 ## 1. 简介
 
-PP-OCR是PaddleOCR自研的实用的超轻量OCR系统。在实现[前沿算法](algorithm.md)的基础上，考虑精度与速度的平衡，进行**模型瘦身**和**深度优化**，使其尽可能满足产业落地需求。
+PP-OCRv3在PP-OCRv2的基础上进一步升级。检测模型仍然基于DB算法，优化策略采用了带残差注意力机制的FPN结构RSEFPN、增大感受野的PAN结构LKPAN、基于DML训练的更优的教师模型；识别模型将base模型从CRNN替换成了IJCAI 2022论文[SVTR]()，并采用SVTR轻量化、带指导训练CTC、数据增广策略RecConAug、自监督训练的更好的预训练模型、无标签数据的使用进行模型加速和效果提升。更多细节请参考PP-OCRv3[技术报告](./PP-OCRv3_introduction.md)。
 
-#### PP-OCR
-
-PP-OCR是一个两阶段的OCR系统，其中文本检测算法选用[DB](algorithm_det_db.md)，文本识别算法选用[CRNN](algorithm_rec_crnn.md)，并在检测和识别模块之间添加[文本方向分类器](angle_class.md)，以应对不同方向的文本识别。
-
-PP-OCRv2系统pipeline如下：
+PP-OCRv3系统pipeline如下：
 
 <div align="center">
-    <img src="../ppocrv2_framework.jpg" width="800">
+    <img src="../ppocrv3_framework.png" width="800">
 </div>
 
-
-PP-OCR系统在持续迭代优化，目前已发布PP-OCR、PP-OCRv2、PP-OCRv3三个版本：
-
-PP-OCR从骨干网络选择和调整、预测头部的设计、数据增强、学习率变换策略、正则化参数选择、预训练模型使用以及模型自动裁剪量化8个方面，采用19个有效策略，对各个模块的模型进行效果调优和瘦身(如绿框所示)，最终得到整体大小为3.5M的超轻量中英文OCR和2.8M的英文数字OCR。更多细节请参考PP-OCR技术方案 https://arxiv.org/abs/2009.09941
-
-
-## PP-OCRv3策略简介
-
-
-### PP-OCRv3文本检测模型优化策略
+<a name="2"></a>
+## 2. 检测优化
 
 PP-OCRv3采用PP-OCRv2的[CML](https://arxiv.org/pdf/2109.03144.pdf)蒸馏策略，在蒸馏的student模型、teacher模型精度提升，CML蒸馏策略上分别做了优化。
 
@@ -44,10 +33,11 @@ RSEFPN的网络结构如下图所示，RSEFPN在PP-OCRv2的FPN基础上，将FPN
     <img src=".././ppocr_v3/RSEFPN.png" width="800">
 </div>
 
-
 RSEFPN将PP-OCR检测模型的精度hmean从81.3%提升到84.5%。模型大小从3M变为3.6M。
 
-- 在蒸馏的teacher模型精度提升方面，提出了LKPAN结构替换PP-OCRv2的FPN结构，并且使用ResNet50作为Backbone，更大的模型带来更多的精度提升。另外，对teacher模型使用[DML](https://arxiv.org/abs/1706.00384)蒸馏策略进一步提升teacher模型的精度。最终teacher的模型指标hmean从83.2%提升到了86.0%。
+*注：PP-OCRv2的FPN通道数仅为96和24，如果直接用SE模块代替FPN的卷积会导致精度下降，RSEConv引入残差结构可以防止训练中包含重要特征的通道被抑制。*
+
+- 在蒸馏的teacher模型精度提升方面，提出了LKPAN结构替换PP-OCRv2的FPN结构，并且使用ResNet50作为Backbone，更大的模型带来更多的精度提升。另外，对teacher模型使用[DML](https://arxiv.org/abs/1706.00384)蒸馏策略进一步提升teacher模型的精度。最终teacher的模型指标相比ppocr_server_v2.0从83.2%提升到了86.0%。
 
 *注：[PP-OCRv2的FPN结构](https://github.com/PaddlePaddle/PaddleOCR/blob/77acb3bfe51c8a46c684527f73cd218cefedb4a3/ppocr/modeling/necks/db_fpn.py#L107)对DB算法FPN结构做了轻量级设计*
 
@@ -57,7 +47,7 @@ LKPAN的网络结构如下图所示：
     <img src="../ppocr_v3/LKPAN.png" width="800">
 </div>
 
-LKPAN(Large Kernel PAN)是一个具有更大感受野的轻量级[PAN](https://arxiv.org/pdf/1803.01534.pdf)结构。在LKPAN的path augmentation中，使用kernel size为`9*9`的卷积；更大的kernel size意味着更大的感受野，更容易检测大字体的文字以及极端长宽比的文字。LKPAN将base检测模型的精度hmean从81.3%提升到84.9%。
+LKPAN(Large Kernel PAN)是一个具有更大感受野的轻量级[PAN](https://arxiv.org/pdf/1803.01534.pdf)结构。在LKPAN的path augmentation中，使用kernel size为`9*9`的卷积；更大的kernel size意味着更大的感受野，更容易检测大字体的文字以及极端长宽比的文字。LKPAN将PP-OCR检测模型的精度hmean从81.3%提升到84.9%。
 
 *注：LKPAN相比RSEFPN有更多的精度提升，但是考虑到模型大小和预测速度等因素，在student模型中使用RSEFPN。*
 
@@ -71,23 +61,70 @@ LKPAN(Large Kernel PAN)是一个具有更大感受野的轻量级[PAN](https://a
 |1|PP-OCRV2|3M|83.3%|117ms|
 |2|0 + RESFPN|3.6M|84.5%|124ms|
 |3|0 + LKPAN|4.6M|84.9%|156ms|
-|4|teacher |124M|83.2%|-|
-|5|teacher + DML + LKPAN|124M|86.0%|-|
+|4|ppocr_server_v2.0 |124M|83.2%||171ms|
+|5|teacher + DML + LKPAN|124M|86.0%|396ms|
 |6|0 + 2 + 5 + CML|3.6M|85.4%|124ms|
 
 
 
-<a name="2"></a>
-## 2. 特性
-
-- 超轻量PP-OCRv2系列：检测（3.1M）+ 方向分类器（1.4M）+ 识别（8.5M）= 13.0M
-- 超轻量PP-OCR mobile移动端系列：检测（3.0M）+方向分类器（1.4M）+ 识别（5.0M）= 9.4M
-- 通用PP-OCR server系列：检测（47.1M）+方向分类器（1.4M）+ 识别（94.9M）= 143.4M
-- 支持中英文数字组合识别、竖排文本识别、长文本识别
-- 支持多语言识别：韩语、日语、德语、法语等约80种语言
-
-
 <a name="3"></a>
-## 3. benchmark
+## 3. 识别优化
 
-关于PP-OCR系列模型之间的性能对比，请查看[benchmark](./benchmark.md)文档。
+[SVTR](https://arxiv.org/abs/2205.00159) 证明了强大的单视觉模型（无需序列模型）即可高效准确完成文本识别任务，在中英文数据上均有优秀的表现。经过实验验证，SVTR_Tiny在自建的 [中文数据集上](https://arxiv.org/abs/2109.03144) ，识别精度可以提升10.7%，网络结构如下所示：
+
+<img src="../ppocr_v3/svtr_tiny.jpg" width=800>
+
+由于 MKLDNN 加速库支持的模型结构有限，SVTR 在CPU+MKLDNN上相比PP-OCRv2慢了10倍。
+
+PP-OCRv3 期望在提升模型精度的同时，不带来额外的推理耗时。通过分析发现，SVTR_Tiny结构的主要耗时模块为Mixing Block，因此我们对 SVTR_Tiny 的结构进行了一系列优化（详细速度数据请参考下方消融实验表格）:
+
+1. 将SVTR网络前半部分替换为PP-LCNet的前三个stage，保留4个 Global Mixing Block ，精度为76%，加速69%，网络结构如下所示：
+<img src="../ppocr_v3/svtr_g4.png" width=800>
+2. 将4个 Global Attenntion Block 减小到2个，精度为72.9%，加速69%，网络结构如下所示：
+<img src="../ppocr_v3/svtr_g2.png" width=800>
+3. 实验发现 Global Attention 的预测速度与输入其特征的shape有关，因此后移Global Mixing Block的位置到池化层之后，精度下降为71.9%，速度超越 CNN-base 的PP-OCRv2 22%，网络结构如下所示：
+<img src="../ppocr_v3/ppocr_v3.png" width=800>
+
+为了提升模型精度同时不引入额外推理成本，PP-OCRv3参考GTC策略，使用Attention监督CTC训练，预测时完全去除Attention模块，在推理阶段不增加任何耗时, 精度提升3.8%，训练流程如下所示：
+<img src="../ppocr_v3/GTC.png" width=800>
+
+在训练策略方面，PP-OCRv3参考 [SSL](https://github.com/ku21fan/STR-Fewer-Labels) 设计了文本方向任务，训练了适用于文本识别的预训练模型，加速模型收敛过程，精度提升了0.6%; 使用UDML蒸馏策略，进一步提升精度1.5%，训练流程所示：
+
+<img src="../ppocr_v3/SSL.png" width="300"> <img src="../ppocr_v3/UDML.png" width="500">
+
+
+数据增强方面：
+
+1. 基于 [ConCLR](https://www.cse.cuhk.edu.hk/~byu/papers/C139-AAAI2022-ConCLR.pdf) 中的ConAug方法，设计了 RecConAug 数据增强方法，增强数据多样性，精度提升0.5%，增强可视化效果如下所示：
+<img src="../ppocr_v3/recconaug.png" width=800>
+
+2. 使用训练好的 SVTR_large 预测 120W 的 lsvt 无标注数据，取出其中得分大于0.95的数据，共得到81W识别数据加入到PP-OCRv3的训练数据中，精度提升1%。
+
+总体来讲PP-OCRv3识别从网络结构、训练策略、数据增强三个方向做了进一步优化:
+
+- 网络结构上：考虑[SVTR](https://arxiv.org/abs/2205.00159) 在中英文效果上的优越性，采用SVTR_Tiny作为base，选取Global Mixing Block和卷积组合提取特征，并将Global Mixing Block位置后移进行加速; 参考 [GTC](https://arxiv.org/pdf/2002.01276.pdf) 策略，使用注意力机制模块指导CTC训练，定位和识别字符，提升不规则文本的识别精度。
+- 训练策略上：参考 [SSL](https://github.com/ku21fan/STR-Fewer-Labels) 设计了方向分类前序任务，获取更优预训练模型，加速模型收敛过程，提升精度; 使用UDML蒸馏策略、监督attention、ctc两个分支得到更优模型。
+- 数据增强上：基于 [ConCLR](https://www.cse.cuhk.edu.hk/~byu/papers/C139-AAAI2022-ConCLR.pdf) 中的ConAug方法，改进得到 RecConAug 数据增广方法，支持随机结合任意多张图片，提升训练数据的上下文信息丰富度，增强模型鲁棒性；使用 SVTR_large 预测无标签数据，向训练集中补充81w高质量真实数据。
+
+基于上述策略，PP-OCRv3识别模型相比PP-OCRv2，在速度可比的情况下，精度进一步提升4.5%。 具体消融实验如下所示：
+
+实验细节：
+
+| id | 策略 |  模型大小 | 精度 | 速度（cpu + mkldnn)|
+|-----|-----|--------|----| --- |
+| 01 | PP-OCRv2 | 8M | 69.3% | 8.54ms |
+| 02 | SVTR_Tiny | 21M | 80.1% | 97ms |
+| 03 | LCNet_SVTR_G4 | 9.2M | 76% | 30ms |
+| 04 | LCNet_SVTR_G2 | 13M | 72.98% | 9.37ms |
+| 05 | PP-OCRv3 | 12M | 71.9% | 6.6ms |
+| 06 | + large input_shape | 12M | 73.98% | 7.6ms |
+| 06 | + GTC | 12M | 75.8% | 7.6ms |
+| 07 | + RecConAug | 12M | 76.3% | 7.6ms |
+| 08 | + SSL pretrain | 12M | 76.9% | 7.6ms |
+| 09 | + UDML | 12M | 78.4% | 7.6ms |
+| 10 | + unlabeled data | 12M | 79.4% | 7.6ms |
+
+注： 测试速度时，实验01-05输入图片尺寸均为(3,32,320)，06-10输入图片尺寸均为(3,48,320)
+
+<a name="4"></a>
+## 4. 端到端评估

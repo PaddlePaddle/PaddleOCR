@@ -11,7 +11,8 @@ PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，内置P
 - 2022.02：（by [PeterH0323](https://github.com/peterh0323) ）
   - 新增：使用 `--kie` 进入 KIE 功能，用于打【检测+识别+关键字提取】的标签
 - 2022.01：（by [PeterH0323](https://github.com/peterh0323) ）
-  - 提升用户体验：新增文件与标记数目提示、优化交互、修复gpu使用等问题
+  - 提升用户体验：新增文件与标记数目提示、优化交互、修复gpu使用等问题。
+  - 新增功能：使用 `C` 和 `X` 对标记框进行旋转。
 - 2021.11.17：
   - 新增支持通过whl包安装和启动PPOCRLabel（by [d2623587501](https://github.com/d2623587501)）
   - 标注数据集切分：对标注数据进行训练、验证与测试集划分（参考下方3.5节，by [MrCuiHao](https://github.com/MrCuiHao)）

@@ -34,48 +34,23 @@ PP-OCR从骨干网络选择和调整、预测头部的设计、数据增强、�
 
 #### PP-OCRv2
 
-PP-OCRv2在PP-OCR的基础上，进一步在5个方面重点优化，检测模型采用CML协同互学习知识蒸馏策略和CopyPaste数据增广策略；识别模型采用LCNet轻量级骨干网络、UDML 改进知识蒸馏策略和[Enhanced CTC loss](./doc/doc_ch/enhanced_ctc_loss.md)损失函数改进（如上图红框所示），进一步在推理速度和预测效果上取得明显提升。更多细节请参考PP-OCRv2[技术报告](https://arxiv.org/abs/2109.03144)。
+PP-OCRv2在PP-OCR的基础上，进一步在5个方面重点优化，检测模型采用CML协同互学习知识蒸馏策略和CopyPaste数据增广策略；识别模型采用LCNet轻量级骨干网络、UDML 改进知识蒸馏策略和[Enhanced CTC loss](./enhanced_ctc_loss.md)损失函数改进（如上图红框所示），进一步在推理速度和预测效果上取得明显提升。更多细节请参考PP-OCRv2[技术报告](https://arxiv.org/abs/2109.03144)。
 
 #### PP-OCRv3
 
-PP-OCRv3在PP-OCRv2的基础上进一步升级。
-PP-OCRv3文本检测从网络结构、蒸馏训练策略两个方向做了进一步优化:
-- 网络结构改进：提出两种改进后的FPN网络结构，RSEFPN，LKPAN，分别从channel attention、更大感受野的角度优化FPN中的特征，优化FPN提取的特征。
-- 蒸馏训练策略：首先，以resnet50作为backbone，改进后的LKPAN网络结构作为FPN，使用DML自蒸馏策略得到精度更高的teacher模型；然后，student模型FPN部分采用RSEFPN，采用PPOCRV2提出的CML蒸馏方法蒸馏，在训练过程中，动态调整CML蒸馏teacher loss的占比。
-
-|序号|策略|模型大小|hmean|Intel Gold 6148CPU+mkldnn预测耗时|
-|-|-|-|-|-|
-|0|ppocr_mobile|3M|81.3|117ms|
-|1|PPOCRV2|3M|83.3|117ms|
-|2|teacher DML|124M|86.0|-|
-|3|1 + 2 + RESFPN|3.6M|85.4|124ms|
-|4|1 + 2 + LKPAN|4.6M|86.0|156ms|
+PP-OCRv3在PP-OCRv2的基础上进一步升级。检测模型仍然基于DB算法，优化策略采用了带残差注意力机制的FPN结构RSEFPN、增大感受野的PAN结构LKPAN、基于DML训练的更优的教师模型；识别模型将base模型从CRNN替换成了IJCAI 2022论文[SVTR](https://arxiv.org/abs/2205.00159)，并采用SVTR轻量化、带指导训练CTC、数据增广策略RecConAug、自监督训练的更好的预训练模型、无标签数据的使用进行模型加速和效果提升。更多细节请参考PP-OCRv3[技术报告](./PP-OCRv3_introduction.md)。
 
 
-PP-OCRv3识别从网络结构、训练策略、数据增强三个方向做了进一步优化:
-- 网络结构上：使用[SVTR](todo:add_link)中的 Transformer block 替换LSTM，提升模型精度和预测速度；
-- 训练策略上：参考 [GTC](https://arxiv.org/pdf/2002.01276.pdf) 策略，使用注意力机制模块指导CTC训练，定位和识别字符，提升不规则文本的识别精度；设计方向分类前序任务，获取更优预训练模型，加速模型收敛过程，提升精度。
-- 数据增强上：使用[RecConAug](todo:add_link)数据增广方法，随机结合图片，提升训练数据的上下文信息丰富度，增强模型鲁棒性。
+PP-OCRv3系统pipeline如下：
 
-基于上述策略，PP-OCRv3识别模型相比上一版本，速度加速30%，精度进一步提升4.5%。 具体消融实验：
-
-| id | 策略 |  模型大小 | 精度 | CPU+mkldnn 预测耗时 |
-|-----|-----|--------|----|------------|
-| 01 | PP-OCRv2 | 8M | 69.3% | 26ms |
-| 02 | SVTR_tiny | 19M | 80.1% | - |
-| 03 | LCNet_SVTR_G6 | 8.2M | 76% | - |
-| 04 | LCNet_SVTR_G1 | - | - | - |
-| 05 | PP-OCRv3 | 12M | 71.9% | 19ms |
-| 06 | + GTC | 12M | 75.8% | 19ms |
-| 07 | + RecConAug | 12M | 76.3% | 19ms |
-| 08 | + SSL pretrain | 12M | 76.9% | 19ms |
-| 09 | + UDML | 12M | 78.4% | 19ms |
-| 10 | + unlabeled data | 12M | 79.4% | 19ms |
-
+<div align="center">
+    <img src="../ppocrv3_framework.png" width="800">
+</div>
 
 <a name="2"></a>
 ## 2. 特性
 
+- 超轻量PP-OCRv3系列：检测（3.6M）+ 方向分类器（1.4M）+ 识别（12M）= 17.0M
 - 超轻量PP-OCRv2系列：检测（3.1M）+ 方向分类器（1.4M）+ 识别（8.5M）= 13.0M
 - 超轻量PP-OCR mobile移动端系列：检测（3.0M）+方向分类器（1.4M）+ 识别（5.0M）= 9.4M
 - 通用PP-OCR server系列：检测（47.1M）+方向分类器（1.4M）+ 识别（94.9M）= 143.4M
