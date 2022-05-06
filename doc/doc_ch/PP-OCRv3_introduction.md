@@ -81,11 +81,11 @@ PP-OCRv3 识别模型在 PP-OCRv2 的基础上从8个策略上进一步优化，
 - 数据增强上：基于 [ConCLR](https://www.cse.cuhk.edu.hk/~byu/papers/C139-AAAI2022-ConCLR.pdf) 中的ConAug方法，改进得到 TextConAug 数据增广方法，支持随机结合任意多张图片，提升训练数据的上下文信息丰富度，增强模型鲁棒性
 - 无标注数据： 使用 SVTR_large 预测无标签数据，向训练集中补充81w高质量真实数据。
 
-基于上述策略，PP-OCRv3识别模型相比PP-OCRv2，在速度可比的情况下，精度进一步提升4.5%。 具体消融实验如下所示：
+基于上述策略，PP-OCRv3识别模型相比PP-OCRv2，在速度可比的情况下，精度进一步提升4.6%。 具体消融实验如下所示：
 
 | id | 策略 |  模型大小 | 精度 | 速度（cpu + mkldnn)|
 |-----|-----|--------|----| --- |
-| 01 | PP-OCRv2 | 8M | 69.3% | 8.54ms |
+| 01 | PP-OCRv2 | 8M | 74.8% | 8.54ms |
 | 02 | SVTR_Tiny | 21M | 80.1% | 97ms |
 | 03 | PP-LCNet_SVTR | 12M | 71.9% | 6.6ms |
 | 04 | + GTC | 12M | 75.8% | 7.6ms |
@@ -99,11 +99,11 @@ PP-OCRv3 识别模型在 PP-OCRv2 的基础上从8个策略上进一步优化，
 
 下面具体介绍各策略的设计思路：
 
-网络结构上，PP-OCRv3将base模型从CRNN替换成了[SVTR](https://arxiv.org/abs/2205.00159)，SVTR证明了强大的单视觉模型（无需序列模型）即可高效准确完成文本识别任务，在中英文数据上均有优秀的表现。经过实验验证，SVTR_Tiny 在自建的 [中文数据集上](https://arxiv.org/abs/2109.03144) ，识别精度可以提升10.7%，SVTR_Tiny 网络结构如下所示：
+网络结构上，PP-OCRv3将base模型从CRNN替换成了[SVTR](https://arxiv.org/abs/2205.00159)，SVTR证明了强大的单视觉模型（无需序列模型）即可高效准确完成文本识别任务，在中英文数据上均有优秀的表现。经过实验验证，SVTR_Tiny 在自建的 [中文数据集上](https://arxiv.org/abs/2109.03144) ，识别精度可以提升至80.1%，SVTR_Tiny 网络结构如下所示：
 
 <img src="../ppocr_v3/svtr_tiny.png" width=800>
 
-由于 MKLDNN 加速库支持的模型结构有限，SVTR 在CPU+MKLDNN上相比PP-OCRv2慢了10倍。
+由于 MKLDNN 加速库支持的模型结构有限，SVTR 在CPU+MKLDNN上相比PP-OCRv2-baseline慢了10倍。
 
 PP-OCRv3 期望在提升模型精度的同时，不带来额外的推理耗时。通过分析发现，SVTR_Tiny结构的主要耗时模块为Mixing Block，因此我们对 SVTR_Tiny 的结构进行了一系列优化（详细速度数据请参考下方消融实验表格）:
 
@@ -111,18 +111,20 @@ PP-OCRv3 期望在提升模型精度的同时，不带来额外的推理耗时�
 <img src="../ppocr_v3/svtr_g4.png" width=800>
 2. 将4个 Global Attenntion Block 减小到2个，精度为72.9%，加速69%，网络结构如下所示：
 <img src="../ppocr_v3/svtr_g2.png" width=800>
-3. 实验发现 Global Attention 的预测速度与输入其特征的shape有关，因此后移Global Mixing Block的位置到池化层之后，精度下降为71.9%，速度超越 CNN-base 的PP-OCRv2 22%，网络结构如下所示：
+3. 实验发现 Global Attention 的预测速度与输入其特征的shape有关，因此后移Global Mixing Block的位置到池化层之后，精度下降为71.9%，速度超越 CNN-base 的PP-OCRv2-baseline 22%，网络结构如下所示：
 <img src="../ppocr_v3/LCNet_SVTR.png" width=800>
+
+具体消融实验如下所示：
 
 | id | 策略 |  模型大小 | 精度 | 速度（cpu + mkldnn)|
 |-----|-----|--------|----| --- |
-| 01 | PP-OCRv2 | 8M | 69.3% | 8.54ms |
+| 01 | PP-OCRv2-baseline | 8M | 69.3%  | 8.54ms |
 | 02 | SVTR_Tiny | 21M | 80.1% | 97ms |
 | 03 | PP-LCNet_SVTR(G4) | 9.2M | 76% | 30ms |
 | 04 | PP-LCNet_SVTR(G2) | 13M | 72.98% | 9.37ms |
 | 05 | PP-LCNet_SVTR | 12M | 71.9% | 6.6ms |
 
-注： 测试速度时，输入图片尺寸均为(3,32,320)
+注： 测试速度时，输入图片尺寸均为(3,32,320)； PP-OCRv2-baseline 代表无蒸馏模型
 
 为了提升模型精度同时不引入额外推理成本，PP-OCRv3参考GTC策略，使用Attention监督CTC训练，预测时完全去除Attention模块，在推理阶段不增加任何耗时, 精度提升3.8%，训练流程如下所示：
 <img src="../ppocr_v3/GTC.png" width=800>
