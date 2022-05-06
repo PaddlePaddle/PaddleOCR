@@ -166,9 +166,9 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
     config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
   }
 
-  // 得到 pass_builder 对象
+  // get pass_builder object
   auto pass_builder = config.pass_builder();
-  // 在 IR 优化阶段，去除 fc_fuse_pass
+  // delete "matmul_transpose_reshape_fuse_pass"
   pass_builder->DeletePass("matmul_transpose_reshape_fuse_pass");
   config.SwitchUseFeedFetchOps(false);
   // true for multiple input
