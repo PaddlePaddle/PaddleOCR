@@ -70,7 +70,7 @@ LKPAN(Large Kernel PAN)是一个具有更大感受野的轻量级[PAN](https://a
 <a name="3"></a>
 ## 3. 识别优化
 
-PP-OCRv3 识别模型在 PP-OCRv2 的基础上从8个策略上进一步优化，整体 pipelinne 如下图所示：
+PP-OCRv3 识别模型在 PP-OCRv2 的基础上从8个策略上进一步优化，整体 pipeline 如下图所示：
 
 <img src="../ppocr_v3/v3_rec_pipeline.png" width=800>
 
@@ -87,7 +87,7 @@ PP-OCRv3 识别模型在 PP-OCRv2 的基础上从8个策略上进一步优化，
 |-----|-----|--------|----| --- |
 | 01 | PP-OCRv2 | 8M | 74.8% | 8.54ms |
 | 02 | SVTR_Tiny | 21M | 80.1% | 97ms |
-| 03 | PP-LCNet_SVTR | 12M | 71.9% | 6.6ms |
+| 03 | SVTR_LCNet | 12M | 71.9% | 6.6ms |
 | 04 | + GTC | 12M | 75.8% | 7.6ms |
 | 05 | + TextConAug | 12M | 76.3% | 7.6ms |
 | 06 | + TextRotNet | 12M | 76.9% | 7.6ms |
@@ -109,9 +109,9 @@ PP-OCRv3 期望在提升模型精度的同时，不带来额外的推理耗时�
 
 1. 将SVTR网络前半部分替换为PP-LCNet的前三个stage，保留4个 Global Mixing Block ，精度为76%，加速69%，网络结构如下所示：
 <img src="../ppocr_v3/svtr_g4.png" width=800>
-2. 将4个 Global Attenntion Block 减小到2个，精度为72.9%，加速69%，网络结构如下所示：
+2. 将4个 Global Mixing Block 减小到2个，精度为72.9%，加速69%，网络结构如下所示：
 <img src="../ppocr_v3/svtr_g2.png" width=800>
-3. 实验发现 Global Attention 的预测速度与输入其特征的shape有关，因此后移Global Mixing Block的位置到池化层之后，精度下降为71.9%，速度超越 CNN-base 的PP-OCRv2-baseline 22%，网络结构如下所示：
+3. 实验发现 Global Mixing Block 的预测速度与输入其特征的shape有关，因此后移 Global Mixing Block 的位置到池化层之后，精度下降为71.9%，速度超越 CNN-base 的PP-OCRv2-baseline 22%，网络结构如下所示：
 <img src="../ppocr_v3/LCNet_SVTR.png" width=800>
 
 具体消融实验如下所示：
@@ -120,9 +120,9 @@ PP-OCRv3 期望在提升模型精度的同时，不带来额外的推理耗时�
 |-----|-----|--------|----| --- |
 | 01 | PP-OCRv2-baseline | 8M | 69.3%  | 8.54ms |
 | 02 | SVTR_Tiny | 21M | 80.1% | 97ms |
-| 03 | PP-LCNet_SVTR(G4) | 9.2M | 76% | 30ms |
-| 04 | PP-LCNet_SVTR(G2) | 13M | 72.98% | 9.37ms |
-| 05 | PP-LCNet_SVTR | 12M | 71.9% | 6.6ms |
+| 03 | SVTR_LCNet(G4) | 9.2M | 76% | 30ms |
+| 04 | SVTR_LCNet(G2) | 13M | 72.98% | 9.37ms |
+| 05 | SVTR_LCNet | 12M | 71.9% | 6.6ms |
 
 注： 测试速度时，输入图片尺寸均为(3,32,320)； PP-OCRv2-baseline 代表无蒸馏模型
 
