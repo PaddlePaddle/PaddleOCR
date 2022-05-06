@@ -92,7 +92,7 @@ PP-OCRv3 识别模型在 PP-OCRv2 的基础上从8个策略上进一步优化，
 | 05 | + TextConAug | 12M | 76.3% | 7.6ms |
 | 06 | + TextRotNet | 12M | 76.9% | 7.6ms |
 | 07 | + UDML | 12M | 78.4% | 7.6ms |
-| 08 | + HLD | 12M | 79.4% | 7.6ms |
+| 08 | + UIM | 12M | 79.4% | 7.6ms |
 
 注： 测试速度时，实验01-03输入图片尺寸均为(3,32,320)，04-08输入图片尺寸均为(3,48,320)
 
@@ -112,7 +112,7 @@ PP-OCRv3 期望在提升模型精度的同时，不带来额外的推理耗时�
 2. 将4个 Global Attenntion Block 减小到2个，精度为72.9%，加速69%，网络结构如下所示：
 <img src="../ppocr_v3/svtr_g2.png" width=800>
 3. 实验发现 Global Attention 的预测速度与输入其特征的shape有关，因此后移Global Mixing Block的位置到池化层之后，精度下降为71.9%，速度超越 CNN-base 的PP-OCRv2 22%，网络结构如下所示：
-<img src="../ppocr_v3/LCNet-SVTR.png" width=800>
+<img src="../ppocr_v3/LCNet_SVTR.png" width=800>
 
 | id | 策略 |  模型大小 | 精度 | 速度（cpu + mkldnn)|
 |-----|-----|--------|----| --- |
