@@ -225,7 +225,7 @@ def convert_token(html_list):
                 if 'rowspan' in col:
                     _, n = col.split('rowspan=')
                     token_list.append(" rowspan=\"{}\"".format(n))
-                token_list.append(">")
+                token_list.extend([">", "</td>"])
         token_list.append("</tr>")
     token_list.append("</tbody>")
 
