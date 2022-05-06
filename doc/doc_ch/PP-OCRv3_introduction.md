@@ -71,9 +71,9 @@ LKPAN(Large Kernel PAN)是一个具有更大感受野的轻量级[PAN](https://a
 ## 3. 识别优化
 
 PP-OCRv3 识别模型在 PP-OCRv2 的基础上从8个策略上进一步优化，PP-OCRv3系统流程图如下：
-
-<img src="../ppocr_v3/v3_rec_pipeline.png" width=800>
-
+<div align="center">
+    <img src="../ppocr_v3/v3_rec_pipeline.png" width=800>
+</div>
 总体来讲PP-OCRv3识别主要从网络结构、蒸馏策略、数据增强三个方向做了进一步优化:
 
 - 网络结构上：考虑[SVTR](https://arxiv.org/abs/2205.00159) 在中英文效果上的优越性，采用SVTR_Tiny作为base，选取Global Mixing Block和卷积组合提取特征，并将Global Mixing Block位置后移进行加速; 参考 [GTC](https://arxiv.org/pdf/2002.01276.pdf) 策略，使用注意力机制模块指导CTC训练，定位和识别字符，提升不规则文本的识别精度。
@@ -117,7 +117,7 @@ PP-OCRv3 期望在提升模型精度的同时，不带来额外的推理耗时�
     <img src="../ppocr_v3/svtr_g2.png" width=800>
 </div>
 3. 实验发现 Global Mixing Block 的预测速度与输入其特征的shape有关，因此后移 Global Mixing Block 的位置到池化层之后，精度下降为71.9%，速度超越基于CNN结构的PP-OCRv2-baseline 22%，网络结构如下所示：
-<div align="center">
+<div align="center">g'i
     <img src="../ppocr_v3/LCNet_SVTR.png" width=800>
 </div>
 
