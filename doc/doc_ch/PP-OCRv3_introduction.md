@@ -46,7 +46,7 @@ LK-PAN(Large Kernel PAN)是一个具有更大感受野的轻量级[PAN](https://
     <img src="../ppocr_v3/teacher_dml.png" width="800">
 </div>
 
-- 在学生模型精度提升方面，使用Hmean指标为86%的模型作为CML的教师模型，精度更高的教师模型可以给学生模型更好的监督信息。另外，提出了基于残差结构的通道注意力模块RSE-FPN（Residual Squeeze-and-Excitation FPN），用于提升学生模型精度和召回。
+- 在学生模型精度提升方面，使用Hmean指标为86%的模型作为CML的教师模型，精度更高的教师模型可以给学生模型更好的监督信息。相比较PP-OCRv2，使用Hmean指标为86%的模型作为教师模型，Hmean指标从83.2提升到84.3%。另外，提出了基于残差结构的通道注意力模块RSE-FPN（Residual Squeeze-and-Excitation FPN），用于提升学生模型精度和召回。
 
 RSE-FPN的网络结构如下图所示，RSE-FPN在PP-OCRv2的FPN基础上，将FPN中的卷积层更换为了通道注意力结构的RSEConv层。
 
@@ -63,8 +63,9 @@ PP-OCRv2的FPN通道数仅为96和24，如果直接用SEblock代替FPN中卷积�
 |1|PP-OCR server|49M|83.2%|171ms|
 |2|teacher1：DB-R50-LK-PAN|124M|85.0%|396ms|
 |3|teacher2：DB-R50-LK-PAN-DML|124M|86.0%|396ms|
-|4|DB-MV3-CML（teacher2）|3M|84.3%|117ms|
-|5|DB-MV3-RSE-FPN-CML（teacher2）|3.6M|85.4%|124ms|
+|4|DB-MV3-RSE-FPN|3.6M|84.5%|124ms|
+|5|DB-MV3-CML（teacher2）|3M|84.3%|117ms|
+|6|DB-MV3-RSE-FPN-CML（teacher2）|3.6M|85.4%|124ms|
 
 注： CPU速度测试硬件是Intel Gold 6148，paddlepaddle版本是2.2.2，速度耗时为305张图的平均预测时间，预测时开启MKLDNN加速。
 
