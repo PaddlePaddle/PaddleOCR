@@ -117,7 +117,7 @@ PP-OCRv3 期望在提升模型精度的同时，不带来额外的推理耗时�
     <img src="../ppocr_v3/svtr_g2.png" width=800>
 </div>
 3. 实验发现 Global Mixing Block 的预测速度与输入其特征的shape有关，因此后移 Global Mixing Block 的位置到池化层之后，精度下降为71.9%，速度超越基于CNN结构的PP-OCRv2-baseline 22%，网络结构如下所示：
-<div align="center">g'i
+<div align="center">
     <img src="../ppocr_v3/LCNet_SVTR.png" width=800>
 </div>
 
