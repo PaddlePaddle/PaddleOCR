@@ -64,9 +64,9 @@ class DetMetric(object):
             }
         """
 
-        metircs = self.evaluator.combine_results(self.results)
+        metrics = self.evaluator.combine_results(self.results)
         self.reset()
-        return metircs
+        return metrics
 
     def reset(self):
         self.results = []  # clear results
@@ -127,20 +127,20 @@ class DetFCEMetric(object):
             'thr 0.9':'precision: 0 recall: 0 hmean: 0',
             }
         """
-        metircs = {}
+        metrics = {}
         hmean = 0
         for score_thr in self.results.keys():
-            metirc = self.evaluator.combine_results(self.results[score_thr])
-            # for key, value in metirc.items():
-            #     metircs['{}_{}'.format(key, score_thr)] = value
-            metirc_str = 'precision:{:.5f} recall:{:.5f} hmean:{:.5f}'.format(
-                metirc['precision'], metirc['recall'], metirc['hmean'])
-            metircs['thr {}'.format(score_thr)] = metirc_str
-            hmean = max(hmean, metirc['hmean'])
-        metircs['hmean'] = hmean
+            metric = self.evaluator.combine_results(self.results[score_thr])
+            # for key, value in metric.items():
+            #     metrics['{}_{}'.format(key, score_thr)] = value
+            metric_str = 'precision:{:.5f} recall:{:.5f} hmean:{:.5f}'.format(
+                metric['precision'], metric['recall'], metric['hmean'])
+            metrics['thr {}'.format(score_thr)] = metric_str
+            hmean = max(hmean, metric['hmean'])
+        metrics['hmean'] = hmean
 
         self.reset()
-        return metircs
+        return metrics
 
     def reset(self):
         self.results = {

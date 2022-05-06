@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from collections import Callable
 from paddle import ParamAttr
 from paddle.nn.initializer import KaimingNormal
 import numpy as np
@@ -170,17 +169,14 @@ class Attention(nn.Layer):
             self.N = H * W
             self.C = dim
         if mixer == 'Local' and HW is not None:
-
             hk = local_k[0]
             wk = local_k[1]
-            mask = np.ones([H * W, H * W])
-            for h in range(H):
-                for w in range(W):
-                    for kh in range(-(hk // 2), (hk // 2) + 1):
-                        for kw in range(-(wk // 2), (wk // 2) + 1):
-                            if H > (h + kh) >= 0 and W > (w + kw) >= 0:
-                                mask[h * W + w][(h + kh) * W + (w + kw)] = 0
-            mask_paddle = paddle.to_tensor(mask, dtype='float32')
+            mask = paddle.ones([H * W, H + hk - 1, W + wk - 1], dtype='float32')
+            for h in range(0, H):
+                for w in range(0, W):
+                    mask[h * W + w, h:h + hk, w:w + wk] = 0.
+            mask_paddle = mask[:, hk // 2:H + hk // 2, wk // 2:W + wk //
+                               2].flatten(1)
             mask_inf = paddle.full([H * W, H * W], '-inf', dtype='float32')
             mask = paddle.where(mask_paddle < 1, mask_paddle, mask_inf)
             self.mask = mask.unsqueeze([0, 1])
@@ -228,11 +224,8 @@ class Block(nn.Layer):
         super().__init__()
         if isinstance(norm_layer, str):
             self.norm1 = eval(norm_layer)(dim, epsilon=epsilon)
-        elif isinstance(norm_layer, Callable):
-            self.norm1 = norm_layer(dim)
         else:
-            raise TypeError(
-                "The norm_layer must be str or paddle.nn.layer.Layer class")
+            self.norm1 = norm_layer(dim)
         if mixer == 'Global' or mixer == 'Local':
             self.mixer = Attention(
                 dim,
@@ -250,15 +243,11 @@ class Block(nn.Layer):
         else:
             raise TypeError("The mixer must be one of [Global, Local, Conv]")
 
-        # NOTE: drop path for stochastic depth, we shall see if this is better than dropout here
         self.drop_path = DropPath(drop_path) if drop_path > 0. else Identity()
         if isinstance(norm_layer, str):
             self.norm2 = eval(norm_layer)(dim, epsilon=epsilon)
-        elif isinstance(norm_layer, Callable):
-            self.norm2 = norm_layer(dim)
         else:
-            raise TypeError(
-                "The norm_layer must be str or paddle.nn.layer.Layer class")
+            self.norm2 = norm_layer(dim)
         mlp_hidden_dim = int(dim * mlp_ratio)
         self.mlp_ratio = mlp_ratio
         self.mlp = Mlp(in_features=dim,
@@ -330,8 +319,6 @@ class PatchEmbed(nn.Layer):
                     act=nn.GELU,
                     bias_attr=None),
                 ConvBNLayer(
-                    embed_dim // 2,
-                    embed_dim,
                     in_channels=embed_dim // 2,
                     out_channels=embed_dim,
                     kernel_size=3,

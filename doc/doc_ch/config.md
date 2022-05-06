@@ -94,7 +94,7 @@
 |      name        |         网络loss类名          |  CTCLoss  |  目前支持`CTCLoss`,`DBLoss`,`ClsLoss`  |
 |      balance_loss        |        DBLossloss中是否对正负样本数量进行均衡(使用OHEM)         |  True  |  \  |
 |      ohem_ratio        |        DBLossloss中的OHEM的负正样本比例         |  3  |  \  |
-|      main_loss_type        |        DBLossloss中shrink_map所采用的的loss        |  DiceLoss  |  支持`DiceLoss`,`BCELoss`  |
+|      main_loss_type        |        DBLossloss中shrink_map所采用的loss        |  DiceLoss  |  支持`DiceLoss`,`BCELoss`  |
 |      alpha        |        DBLossloss中shrink_map_loss的系数       |  5  |  \  |
 |      beta        |        DBLossloss中threshold_map_loss的系数       |  10  |  \  |
 

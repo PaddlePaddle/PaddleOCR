@@ -24,7 +24,7 @@ Paper:
 Using MJSynth and SynthText two text recognition datasets for training, and evaluating on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE datasets, the algorithm reproduction effect is as follows:
 
 |Model|Backbone|config|Acc|Download link|
-| --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- |
 |SRN|Resnet50_vd_fpn|[rec_r50_fpn_srn.yml](../../configs/rec/rec_r50_fpn_srn.yml)|86.31%|[train model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r50_vd_srn_train.tar)|
 
 

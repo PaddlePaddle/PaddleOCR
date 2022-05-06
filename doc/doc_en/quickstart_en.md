@@ -73,6 +73,8 @@ cd /path/to/ppocr_img
 
 If you do not use the provided test image, you can replace the following `--image_dir` parameter with the corresponding test image path
 
+**Note**: The whl package uses the `PP-OCRv3` model by default, and the input shape used by the recognition model is `3,48,320`, so if you use the recognition function, you need to add the parameter `--rec_image_shape 3,48,320`, if you do not use the default `PP- OCRv3` model, you do not need to set this parameter.
+
 <a name="211-english-and-chinese-model"></a>
 
 #### 2.1.1 Chinese and English Model
@@ -80,15 +82,15 @@ If you do not use the provided test image, you can replace the following `--imag
 * Detection, direction classification and recognition: set the parameter`--use_gpu false` to disable the gpu device
 
   ```bash
-  paddleocr --image_dir ./imgs_en/img_12.jpg --use_angle_cls true --lang en --use_gpu false
+  paddleocr --image_dir ./imgs_en/img_12.jpg --use_angle_cls true --lang en --use_gpu false --rec_image_shape 3,48,320
   ```
 
   Output will be a list, each item contains bounding box, text and recognition confidence
 
   ```bash
-  [[[442.0, 173.0], [1169.0, 173.0], [1169.0, 225.0], [442.0, 225.0]], ['ACKNOWLEDGEMENTS', 0.99283075]]
-  [[[393.0, 340.0], [1207.0, 342.0], [1207.0, 389.0], [393.0, 387.0]], ['We would like to thank all the designers and', 0.9357758]]
-  [[[399.0, 398.0], [1204.0, 398.0], [1204.0, 433.0], [399.0, 433.0]], ['contributors whohave been involved in the', 0.9592447]]
+  [[[441.0, 174.0], [1166.0, 176.0], [1165.0, 222.0], [441.0, 221.0]], ('ACKNOWLEDGEMENTS', 0.9971134662628174)]
+  [[[403.0, 346.0], [1204.0, 348.0], [1204.0, 384.0], [402.0, 383.0]], ('We would like to thank all the designers and', 0.9761400818824768)]
+  [[[403.0, 396.0], [1204.0, 398.0], [1204.0, 434.0], [402.0, 433.0]], ('contributors who have been involved in the', 0.9791957139968872)]
   ......
   ```
 
@@ -101,33 +103,33 @@ If you do not use the provided test image, you can replace the following `--imag
   Output will be a list, each item only contains bounding box
 
   ```bash
-  [[756.0, 812.0], [805.0, 812.0], [805.0, 830.0], [756.0, 830.0]]
-  [[820.0, 803.0], [1085.0, 801.0], [1085.0, 836.0], [820.0, 838.0]]
-  [[393.0, 801.0], [715.0, 805.0], [715.0, 839.0], [393.0, 836.0]]
+  [[397.0, 802.0], [1092.0, 802.0], [1092.0, 841.0], [397.0, 841.0]]
+  [[397.0, 750.0], [1211.0, 750.0], [1211.0, 789.0], [397.0, 789.0]]
+  [[397.0, 702.0], [1209.0, 698.0], [1209.0, 734.0], [397.0, 738.0]]
   ......
   ```
 
 * Only recognition: set `--det` to `false`
 
   ```bash
-  paddleocr --image_dir ./imgs_words_en/word_10.png --det false --lang en
+  paddleocr --image_dir ./imgs_words_en/word_10.png --det false --lang en --rec_image_shape 3,48,320
   ```
 
   Output will be a list, each item contains text and recognition confidence
 
   ```bash
-  ['PAIN', 0.990372]
+  ['PAIN', 0.9934559464454651]
   ```
 
-If you need to use the 2.0 model, please specify the parameter `--version PP-OCR`, paddleocr uses the 2.1 model by default(`--versioin PP-OCRv2`). More whl package usage can be found in [whl package](./whl_en.md)
+If you need to use the 2.0 model, please specify the parameter `--version PP-OCR`, paddleocr uses the PP-OCRv3 model by default(`--versioin PP-OCRv3`). More whl package usage can be found in [whl package](./whl_en.md)
 <a name="212-multi-language-model"></a>
 
 #### 2.1.2 Multi-language Model
 
-Paddleocr currently supports 80 languages, which can be switched by modifying the `--lang` parameter.
+Paddleocr currently supports 80 languages, which can be switched by modifying the `--lang` parameter. PP-OCRv3 currently only supports Chinese and English models, and other multilingual models will be updated one after another.
 
 ``` bash
-paddleocr --image_dir ./doc/imgs_en/254.jpg --lang=en
+paddleocr --image_dir ./doc/imgs_en/254.jpg --lang=en --rec_image_shape 3,48,320
 ```
 
 <div align="center">
@@ -137,13 +139,9 @@ paddleocr --image_dir ./doc/imgs_en/254.jpg --lang=en
 The result is a list, each item contains a text box, text and recognition confidence
 
 ```text
-[('PHO CAPITAL', 0.95723116), [[66.0, 50.0], [327.0, 44.0], [327.0, 76.0], [67.0, 82.0]]]
-[('107 State Street', 0.96311164), [[72.0, 90.0], [451.0, 84.0], [452.0, 116.0], [73.0, 121.0]]]
-[('Montpelier Vermont', 0.97389287), [[69.0, 132.0], [501.0, 126.0], [501.0, 158.0], [70.0, 164.0]]]
-[('8022256183', 0.99810505), [[71.0, 175.0], [363.0, 170.0], [364.0, 202.0], [72.0, 207.0]]]
-[('REG 07-24-201706:59 PM', 0.93537045), [[73.0, 299.0], [653.0, 281.0], [654.0, 318.0], [74.0, 336.0]]]
-[('045555', 0.99346405), [[509.0, 331.0], [651.0, 325.0], [652.0, 356.0], [511.0, 362.0]]]
-[('CT1', 0.9988654), [[535.0, 367.0], [654.0, 367.0], [654.0, 406.0], [535.0, 406.0]]]
+[[[67.0, 51.0], [327.0, 46.0], [327.0, 74.0], [68.0, 80.0]], ('PHOCAPITAL', 0.9944712519645691)]
+[[[72.0, 92.0], [453.0, 84.0], [454.0, 114.0], [73.0, 122.0]], ('107 State Street', 0.9744491577148438)]
+[[[69.0, 135.0], [501.0, 125.0], [501.0, 156.0], [70.0, 165.0]], ('Montpelier Vermont', 0.9357033967971802)]
 ......
 ```
 
@@ -234,10 +232,10 @@ im_show.save('result.jpg')
 Output will be a list, each item contains bounding box, text and recognition confidence
 
 ```bash
-[[[442.0, 173.0], [1169.0, 173.0], [1169.0, 225.0], [442.0, 225.0]], ['ACKNOWLEDGEMENTS', 0.99283075]]
-[[[393.0, 340.0], [1207.0, 342.0], [1207.0, 389.0], [393.0, 387.0]], ['We would like to thank all the designers and', 0.9357758]]
-[[[399.0, 398.0], [1204.0, 398.0], [1204.0, 433.0], [399.0, 433.0]], ['contributors whohave been involved in the', 0.9592447]]
-......
+[[[441.0, 174.0], [1166.0, 176.0], [1165.0, 222.0], [441.0, 221.0]], ('ACKNOWLEDGEMENTS', 0.9971134662628174)]
+  [[[403.0, 346.0], [1204.0, 348.0], [1204.0, 384.0], [402.0, 383.0]], ('We would like to thank all the designers and', 0.9761400818824768)]
+  [[[403.0, 396.0], [1204.0, 398.0], [1204.0, 434.0], [402.0, 433.0]], ('contributors who have been involved in the', 0.9791957139968872)]
+  ......
 ```
 
 Visualization of results

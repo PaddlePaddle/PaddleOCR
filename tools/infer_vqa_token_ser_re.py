@@ -193,7 +193,7 @@ if __name__ == '__main__':
             result = result[0]
             fout.write(img_path + "\t" + json.dumps(
                 {
-                    "ser_resule": result,
+                    "ser_result": result,
                 }, ensure_ascii=False) + "\n")
             img_res = draw_re_results(img_path, result)
             cv2.imwrite(save_img_path, img_res)

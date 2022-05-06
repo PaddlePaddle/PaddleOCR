@@ -41,6 +41,7 @@ deploy/hubserving/ocr_system/
 ```
 ## 1. Update
 
+* 2022.05.05 add PP-OCRv3 text detection and recognition models.
 * 2022.03.30 add PP-Structure and table recognition services。
 
 
@@ -55,10 +56,10 @@ pip3 install paddlehub==2.1.0 --upgrade -i https://pypi.tuna.tsinghua.edu.cn/sim
 ```
 
 ### 2.2 Download inference model
-Before installing the service module, you need to prepare the inference model and put it in the correct path. By default, the PP-OCRv2 models are used, and the default model path is:  
+Before installing the service module, you need to prepare the inference model and put it in the correct path. By default, the PP-OCRv3 models are used, and the default model path is:  
 ```
-text detection model: ./inference/ch_PP-OCRv2_det_infer/
-text recognition model: ./inference/ch_PP-OCRv2_rec_infer/
+text detection model: ./inference/ch_PP-OCRv3_det_infer/
+text recognition model: ./inference/ch_PP-OCRv3_rec_infer/
 text angle classifier: ./inference/ch_ppocr_mobile_v2.0_cls_infer/
 tanle recognition: ./inference/en_ppocr_mobile_v2.0_table_structure_infer/
 ```  
@@ -233,6 +234,7 @@ hub serving stop --port/-p XXXX
 ```
 - 2. Modify the code in the corresponding files, like `module.py` and `params.py`, according to the actual needs.  
 For example, if you need to replace the model used by the deployed service, you need to modify model path parameters `det_model_dir` and `rec_model_dir` in `params.py`. If you want to turn off the text direction classifier, set the parameter `use_angle_cls` to `False`. Of course, other related parameters may need to be modified at the same time. Please modify and debug according to the actual situation. It is suggested to run `module.py` directly for debugging after modification before starting the service test.  
+**Note** The image input shape used by the PPOCR-v3 recognition model is `3, 48, 320`, so you need to modify `cfg.rec_image_shape = "3, 48, 320"` in `params.py`, if you do not use the PPOCR-v3 recognition model, then there is no need to modify this parameter.
 - 3. Uninstall old service module
 ```shell
 hub uninstall ocr_system

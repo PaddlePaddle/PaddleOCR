@@ -1439,8 +1439,8 @@ class MainWindow(QMainWindow):
                                DEFAULT_LOCK_COLOR, key_cls, box['difficult']))
         if imgidx in self.PPlabel.keys():
             for box in self.PPlabel[imgidx]:
-                key_cls = None if not self.kie_mode else box['key_cls']
-                shapes.append((box['transcription'], box['points'], None, key_cls, box['difficult']))
+                key_cls = None if not self.kie_mode else box.get('key_cls', 'None')
+                shapes.append((box['transcription'], box['points'], None, key_cls, box.get('difficult', False)))
 
         self.loadLabels(shapes)
         self.canvas.verified = False
@@ -1492,7 +1492,7 @@ class MainWindow(QMainWindow):
             event.ignore()
         else:
             settings = self.settings
-            # If it loads images from dir, don't load it at the begining
+            # If it loads images from dir, don't load it at the beginning
             if self.dirname is None:
                 settings[SETTING_FILENAME] = self.filePath if self.filePath else ''
             else:
@@ -1584,7 +1584,7 @@ class MainWindow(QMainWindow):
         for image, info in label_dict.items():
             for box in info:
                 if "key_cls" not in box:
-                    continue
+                    box.update({"key_cls": "None"})
                 self.existed_key_cls_set.add(box["key_cls"])
         if len(self.existed_key_cls_set) > 0:
             for key_text in self.existed_key_cls_set:
@@ -1606,8 +1606,6 @@ class MainWindow(QMainWindow):
                 fit_to_content={'column': True, 'row': False},
                 flags=None
             )
-        else:
-            self.keyDialog.labelList.addItems(self.existed_key_cls_set)
 
     def importDirImages(self, dirpath, isDelete=False):
         if not self.mayContinue() or not dirpath:

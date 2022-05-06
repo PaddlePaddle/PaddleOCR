@@ -104,7 +104,7 @@ def main():
             preds = model(images)
             post_result = post_process_class(preds, shape_list)
             points, strs = post_result['points'], post_result['texts']
-            # write resule
+            # write result
             dt_boxes_json = []
             for poly, str in zip(points, strs):
                 tmp_json = {"transcription": str}

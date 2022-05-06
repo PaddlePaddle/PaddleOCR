@@ -24,7 +24,7 @@
 使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估，算法复现效果如下：
 
 |模型|骨干网络|配置文件|Acc|下载链接|
-| --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- |
 |SRN|Resnet50_vd_fpn|[rec_r50_fpn_srn.yml](../../configs/rec/rec_r50_fpn_srn.yml)|86.31%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r50_vd_srn_train.tar)|
 
 

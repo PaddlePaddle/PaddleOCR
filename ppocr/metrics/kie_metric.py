@@ -61,9 +61,9 @@ class KIEMetric(object):
 
     def get_metric(self):
 
-        metircs = self.combine_results(self.results)
+        metrics = self.combine_results(self.results)
         self.reset()
-        return metircs
+        return metrics
 
     def reset(self):
         self.results = []  # clear results

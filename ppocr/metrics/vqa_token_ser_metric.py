@@ -34,13 +34,13 @@ class VQASerTokenMetric(object):
 
     def get_metric(self):
         from seqeval.metrics import f1_score, precision_score, recall_score
-        metircs = {
+        metrics = {
             "precision": precision_score(self.gt_list, self.pred_list),
             "recall": recall_score(self.gt_list, self.pred_list),
             "hmean": f1_score(self.gt_list, self.pred_list),
         }
         self.reset()
-        return metircs
+        return metrics
 
     def reset(self):
         self.pred_list = []

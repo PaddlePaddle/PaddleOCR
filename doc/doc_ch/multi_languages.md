@@ -176,8 +176,62 @@ ppocr 还支持方向分类， 更多使用方式请参考：[whl包使用说明
 ppocr 支持使用自己的数据进行自定义训练或finetune, 其中识别模型可以参考 [法语配置文件](../../configs/rec/multi_language/rec_french_lite_train.yml)
 修改训练数据路径、字典等参数。
 
-具体数据准备、训练过程可参考：[文本检测](../doc_ch/detection.md)、[文本识别](../doc_ch/recognition.md)，更多功能如预测部署、
-数据标注等功能可以阅读完整的[文档教程](../../README_ch.md)。
+详细数据准备、训练过程可参考：[文本识别](../doc_ch/recognition.md)、[文本检测](../doc_ch/detection.md)。
+
+假设已经准备好了训练数据，可根据以下步骤快速启动训练：
+
+- 修改配置文件
+
+以 `rec_french_lite_train.yml` 为例：
+
+```
+Global:
+  ...
+  # 添加自定义字典，如修改字典请将路径指向新字典
+  character_dict_path: ./ppocr/utils/dict/french_dict.txt
+  ...
+  # 识别空格
+  use_space_char: True
+
+...
+
+Train:
+  dataset:
+    # 数据集格式，支持LMDBDataSet以及SimpleDataSet
+    name: SimpleDataSet
+    # 数据集路径
+    data_dir: ./train_data/
+    # 训练集标签文件
+    label_file_list: ["./train_data/french_train.txt"]
+    ...
+
+Eval:
+  dataset:
+    # 数据集格式，支持LMDBDataSet以及SimpleDataSet
+    name: SimpleDataSet
+    # 数据集路径
+    data_dir: ./train_data
+    # 验证集标签文件
+    label_file_list: ["./train_data/french_val.txt"]
+    ...
+```
+
+- 启动训练：
+
+```
+# 下载预训练模型
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/french_mobile_v2.0_rec_train.tar
+tar -xf french_mobile_v2.0_rec_train.tar
+
+#加载预训练模型 单卡训练
+python3 tools/train.py -c configs/rec/rec_french_lite_train.yml -o Global.pretrained_model=french_mobile_v2.0_rec_train/best_accuracy
+
+#加载预训练模型  多卡训练，通过--gpus参数指定卡号
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_french_lite_train.yml -o Global.pretrained_model=french_mobile_v2.0_rec_train/best_accuracy
+```
+
+
+更多功能如预测部署、数据标注等功能可以阅读完整的[文档教程](../../README_ch.md)。
 
 <a name="预测部署"></a>
 ## 4 预测部署

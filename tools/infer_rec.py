@@ -150,7 +150,7 @@ def main():
                             "label": post_result[key][0][0],
                             "score": float(post_result[key][0][1]),
                         }
-                info = json.dumps(rec_info)
+                info = json.dumps(rec_info, ensure_ascii=False)
             else:
                 if len(post_result[0]) >= 2:
                     info = post_result[0][0] + "\t" + str(post_result[0][1])

@@ -1,6 +1,6 @@
-# Jeston端基础训练预测功能测试
+# Jetson端基础训练预测功能测试
 
-Jeston端基础训练预测功能测试的主程序为`test_inference_inference.sh`，由于Jeston端CPU较差，Jeston只需要测试TIPC关于GPU和TensorRT预测推理的部分即可。
+Jetson端基础训练预测功能测试的主程序为`test_inference_inference.sh`，由于Jetson端CPU较差，Jetson只需要测试TIPC关于GPU和TensorRT预测推理的部分即可。
 
 ## 1. 测试结论汇总
 
@@ -42,7 +42,7 @@ Jeston端基础训练预测功能测试的主程序为`test_inference_inference.
 
 先运行`prepare.sh`准备数据和模型，然后运行`test_inference_inference.sh`进行测试，最终在```test_tipc/output```目录下生成`python_infer_*.log`格式的日志文件。
 
-`test_inference_inference.sh`仅有一个模式`whole_infer`，在Jeston端，仅需要测试预测推理的模式即可：
+`test_inference_inference.sh`仅有一个模式`whole_infer`，在Jetson端，仅需要测试预测推理的模式即可：
 
 ```
 - 模式3：whole_infer，不训练，全量数据预测，走通开源模型评估、动转静，检查inference model预测时间和精度;
@@ -51,7 +51,7 @@ bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_lin
 # 用法1:
 bash test_tipc/test_inference_inference.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_linux_gpu_normal_normal_infer_python_jetson.txt 'whole_infer'
 # 用法2: 指定GPU卡预测，第三个传入参数为GPU卡号
-bash test_tipc/test_inference_jeston.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_linux_gpu_normal_normal_infer_python_jetson.txt 'whole_infer' '1'
+bash test_tipc/test_inference_jetson.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_linux_gpu_normal_normal_infer_python_jetson.txt 'whole_infer' '1'
 ```
 
 运行相应指令后，在`test_tipc/output`文件夹下自动会保存运行日志。如`whole_infer`模式下，会运行训练+inference的链条，因此，在`test_tipc/output`文件夹有以下文件：
