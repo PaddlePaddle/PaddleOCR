@@ -37,7 +37,7 @@ op:
             model_config: ./ppocr_det_v3_serving
 
             #Fetch结果列表，以client_config中fetch_var的alias_name为准
-            fetch_list: ["save_infer_model/scale_0.tmp_1"]
+            fetch_list: ["sigmoid_0.tmp_0"]
 
             #计算硬件ID，当devices为""或不写时为CPU预测；当devices为"0", "0,1,2"时为GPU预测，表示使用的GPU卡
             devices: "0"

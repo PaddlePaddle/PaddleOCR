@@ -32,24 +32,18 @@ PP-OCR system is in continuous optimization. At present, PP-OCR and PP-OCRv2 hav
 
 [2] On the basis of PP-OCR, PP-OCRv2 is further optimized in five aspects. The detection model adopts CML(Collaborative Mutual Learning) knowledge distillation strategy and CopyPaste data expansion strategy. The recognition model adopts LCNet lightweight backbone network, U-DML knowledge distillation strategy and enhanced CTC loss function improvement (as shown in the red box above), which further improves the inference speed and prediction effect. For more details, please refer to the technical report of PP-OCRv2 (https://arxiv.org/abs/2109.03144).
 
-[3] PP-OCRv3 is further upgraded on the basis of PP-OCRv2.
-PP-OCRv3 text detection has been further optimized from the two directions of network structure and distillation training strategy:
-- Network structure improvement: Two improved FPN network structures, RSEFPN and LKPAN, are proposed to optimize the features in the FPN from the perspective of channel attention and a larger receptive field, and optimize the features extracted by the FPN.
-- Distillation training strategy: First, use resnet50 as the backbone, the improved LKPAN network structure as the FPN, and use the DML self-distillation strategy to obtain a teacher model with higher accuracy; then, the FPN part of the student model adopts RSEFPN, and adopts the CML distillation method proposed by PPOCRV2, during the training process, dynamically adjust the proportion of CML distillation teacher loss.
+[3] PP-OCRv3 is further upgraded on the basis of PP-OCRv2. The detection model is still based on DB algorithm, and the optimization strategies include a newly proposed FPN structure with residual attention mechanism named with RSEFPN, a PAN structure with enlarged receptive field named with LKPAN, and better teacher model based on DML training; The recognition model replaces the base model from CRNN with IJCAI 2022 paper [SVTR](https://arxiv.org/abs/2205.00159), and adopts lightweight SVTR, guided training of CTC, data augmentation strategy RecConAug, better pre-trained model by self-supervised training, and the use of unlabeled data to accelerate the model and improve the effect. For more details, please refer to PP-OCRv3 [technical report](./PP-OCRv3_introduction_en.md).
 
-|Index|Method|Model SIze|Hmean|CPU inference time|
-|-|-|-|-|-|
-|0|ppocr_mobile|3M|81.3|117ms|
-|1|PPOCRV2|3M|83.3|117ms|
-|2|teacher DML|124M|86.0|-|
-|3|1 + 2 + RESFPN|3.6M|85.4|124ms|
-|4|1 + 2 + LKPAN|4.6M|86.0|156ms|
+PP-OCRv3 pipeline is as follows:
 
-*note: CPU inference time refers to the average inference time on an Intel Gold 6148CPU with mkldnn enabled.*
+<div align="center">
+    <img src="../ppocrv3_framework.png" width="800">
+</div>
 
 <a name="2"></a>
 ## 2. Features
 
+- Ultra lightweight PP-OCRv3 series models: detection (3.6M) + direction classifier (1.4M) + recognition 12M) = 17.0M
 - Ultra lightweight PP-OCRv2 series models: detection (3.1M) + direction classifier (1.4M) + recognition 8.5M) = 13.0M
 - Ultra lightweight PP-OCR mobile series models: detection (3.0M) + direction classifier (1.4M) + recognition (5.0M) = 9.4M
 - General PP-OCR server series models: detection (47.1M) + direction classifier (1.4M) + recognition (94.9M) = 143.4M
