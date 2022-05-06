@@ -70,7 +70,7 @@ LKPAN(Large Kernel PAN)是一个具有更大感受野的轻量级[PAN](https://a
 <a name="3"></a>
 ## 3. 识别优化
 
-[SVTR](https://arxiv.org/abs/2205.00159) 证明了强大的单视觉模型（无需序列模型）即可高效准确完成文本识别任务，在中英文数据上均有优秀的表现。经过实验验证，SVTR_Tiny在自建的 [中文数据集上](https://arxiv.org/abs/2109.03144) ，识别精度可以提升10.7%，网络结构如下所示：
+[SVTR](https://arxiv.org/abs/2205.00159) 证明了强大的单视觉模型（无需序列模型）即可高效准确完成文本识别任务，在中英文数据上均有优秀的表现。经过实验验证，SVTR_Tiny 在自建的 [中文数据集上](https://arxiv.org/abs/2109.03144) ，识别精度可以提升10.7%，SVTR_Tiny 网络结构如下所示：
 
 <img src="../ppocr_v3/svtr_tiny.jpg" width=800>
 
@@ -83,10 +83,21 @@ PP-OCRv3 期望在提升模型精度的同时，不带来额外的推理耗时�
 2. 将4个 Global Attenntion Block 减小到2个，精度为72.9%，加速69%，网络结构如下所示：
 <img src="../ppocr_v3/svtr_g2.png" width=800>
 3. 实验发现 Global Attention 的预测速度与输入其特征的shape有关，因此后移Global Mixing Block的位置到池化层之后，精度下降为71.9%，速度超越 CNN-base 的PP-OCRv2 22%，网络结构如下所示：
-<img src="../ppocr_v3/ppocr_v3.png" width=800>
+<img src="../ppocr_v3/LCNet-SVTR.png" width=800>
+
+| id | 策略 |  模型大小 | 精度 | 速度（cpu + mkldnn)|
+|-----|-----|--------|----| --- |
+| 01 | PP-OCRv2 | 8M | 69.3% | 8.54ms |
+| 02 | SVTR_Tiny | 21M | 80.1% | 97ms |
+| 03 | PP-LCNet_SVTR(G4) | 9.2M | 76% | 30ms |
+| 04 | PP-LCNet_SVTR(G2) | 13M | 72.98% | 9.37ms |
+| 05 | PP-LCNet_SVTR | 12M | 71.9% | 6.6ms |
+
+注： 测试速度时，输入图片尺寸均为(3,32,320)
 
 为了提升模型精度同时不引入额外推理成本，PP-OCRv3参考GTC策略，使用Attention监督CTC训练，预测时完全去除Attention模块，在推理阶段不增加任何耗时, 精度提升3.8%，训练流程如下所示：
 <img src="../ppocr_v3/GTC.png" width=800>
+
 
 在训练策略方面，PP-OCRv3参考 [SSL](https://github.com/ku21fan/STR-Fewer-Labels) 设计了文本方向任务，训练了适用于文本识别的预训练模型，加速模型收敛过程，精度提升了0.6%; 使用UDML蒸馏策略，进一步提升精度1.5%，训练流程所示：
 
@@ -114,17 +125,14 @@ PP-OCRv3 期望在提升模型精度的同时，不带来额外的推理耗时�
 |-----|-----|--------|----| --- |
 | 01 | PP-OCRv2 | 8M | 69.3% | 8.54ms |
 | 02 | SVTR_Tiny | 21M | 80.1% | 97ms |
-| 03 | LCNet_SVTR_G4 | 9.2M | 76% | 30ms |
-| 04 | LCNet_SVTR_G2 | 13M | 72.98% | 9.37ms |
-| 05 | PP-OCRv3 | 12M | 71.9% | 6.6ms |
-| 06 | + large input_shape | 12M | 73.98% | 7.6ms |
-| 06 | + GTC | 12M | 75.8% | 7.6ms |
-| 07 | + RecConAug | 12M | 76.3% | 7.6ms |
-| 08 | + SSL pretrain | 12M | 76.9% | 7.6ms |
-| 09 | + UDML | 12M | 78.4% | 7.6ms |
-| 10 | + unlabeled data | 12M | 79.4% | 7.6ms |
+| 03 | PP-LCNet_SVTR | 12M | 71.9% | 6.6ms |
+| 04 | + GTC | 12M | 75.8% | 7.6ms |
+| 05 | + TextConAug | 12M | 76.3% | 7.6ms |
+| 06 | + TextRotNet | 12M | 76.9% | 7.6ms |
+| 07 | + UDML | 12M | 78.4% | 7.6ms |
+| 08 | + HLD | 12M | 79.4% | 7.6ms |
 
-注： 测试速度时，实验01-05输入图片尺寸均为(3,32,320)，06-10输入图片尺寸均为(3,48,320)
+注： 测试速度时，实验01-03输入图片尺寸均为(3,32,320)，04-08输入图片尺寸均为(3,48,320)
 
 <a name="4"></a>
 ## 4. 端到端评估
