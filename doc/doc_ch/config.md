@@ -36,6 +36,7 @@
 |      pretrained_model    |    设置加载预训练模型路径      |  ./pretrain_models/CRNN/best_accuracy  |  \          |
 |      checkpoints         |    加载模型参数路径            |       None        |    用于中断后加载参数继续训练 |
 |      use_visualdl  |    设置是否启用visualdl进行可视化log展示 |          False        |    [教程地址](https://www.paddlepaddle.org.cn/paddle/visualdl) |
+|      use_wandb     |    设置是否启用W&B进行可视化log展示 | False | [教程地址](https://docs.wandb.ai/v/zh-hans/) |
 |      infer_img            |    设置预测图像路径或文件夹路径     |       ./infer_img | \||
 |      character_dict_path |    设置字典路径            |  ./ppocr/utils/ppocr_keys_v1.txt  | 如果为空，则默认使用小写字母+数字作为字典 |
 |      max_text_length     |    设置文本最大长度        |       25          |                \                 |
@@ -129,6 +130,16 @@
 |      batch_size_per_card        |        训练时单卡batch size         |  256 | \  |
 |      drop_last        |        是否丢弃因数据集样本数不能被 batch_size 整除而产生的最后一个不完整的mini-batch        |  True | \  |
 |      num_workers        |        用于加载数据的子进程个数，若为0即为不开启子进程，在主进程中进行数据加载        |  8 | \  |
+
+### Weights & Biases ([W&B](../../ppocr/utils/loggers/wandb_logger.py))
+|         字段             |            用途            |      默认值        |            备注             |
+| :---------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
+|          project              |     项目（project）是一组需要记录的实验集合，这一组实验可以放在一起比较 | uncategorized | \
+|          name                 |     本次实验的名称/别名 | 由wandb随机生成 | \ 
+|          id                   |     本次实验的ID    | 由wandb随机生成     | \
+|          entity               |     运行本次实验的用户或团队        | 运行本次实验的用户名 | \
+|          save_dir             | 模型和其他数据所保存的本地目录 | wandb | \
+|          config               | 实验配置 | None | \
 
 <a name="3"></a>
 
