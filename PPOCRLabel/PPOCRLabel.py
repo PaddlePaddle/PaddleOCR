@@ -987,6 +987,15 @@ class MainWindow(QMainWindow):
             if len(self.canvas.selectedShapes) == 1 and self.keyList.count() > 0:
                 selected_key_item_row = self.keyList.findItemsByLabel(self.canvas.selectedShapes[0].key_cls,
                                                                       get_row=True)
+                if isinstance(selected_key_item_row, list) and len(selected_key_item_row) == 0:
+                    key_text = self.canvas.selectedShapes[0].key_cls
+                    item = self.keyList.createItemFromLabel(key_text)
+                    self.keyList.addItem(item)
+                    rgb = self._get_rgb_by_label(key_text, self.kie_mode)
+                    self.keyList.setItemLabel(item, key_text, rgb)
+                    selected_key_item_row = self.keyList.findItemsByLabel(self.canvas.selectedShapes[0].key_cls,
+                                                                          get_row=True)
+
                 self.keyList.setCurrentRow(selected_key_item_row)
 
         self._noSelectionSlot = False
