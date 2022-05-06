@@ -12,7 +12,7 @@
 <a name="1"></a>
 ## 1. 简介
 
-PP-OCRv3在PP-OCRv2的基础上进一步升级。检测模型仍然基于DB算法，优化策略采用了带残差注意力机制的FPN结构RSEFPN、增大感受野的PAN结构LKPAN、基于DML训练的更优的教师模型；识别模型将base模型从CRNN替换成了IJCAI 2022论文[SVTR]()，并采用SVTR轻量化、带指导训练CTC、数据增广策略RecConAug、自监督训练的更好的预训练模型、无标签数据的使用进行模型加速和效果提升。更多细节请参考PP-OCRv3[技术报告](./PP-OCRv3_introduction.md)。
+PP-OCRv3在PP-OCRv2的基础上进一步升级。检测模型仍然基于DB算法，优化策略采用了带残差注意力机制的FPN结构RSEFPN、增大感受野的PAN结构LKPAN、基于DML训练的更优的教师模型；识别模型将base模型从CRNN替换成了IJCAI 2022论文[SVTR](https://arxiv.org/abs/2205.00159)，并采用SVTR轻量化、带指导训练CTC、数据增广策略RecConAug、自监督训练的更好的预训练模型、无标签数据的使用进行模型加速和效果提升。更多细节请参考PP-OCRv3[技术报告](./PP-OCRv3_introduction.md)。
 
 PP-OCRv3系统pipeline如下：
 
@@ -70,7 +70,7 @@ LKPAN(Large Kernel PAN)是一个具有更大感受野的轻量级[PAN](https://a
 <a name="3"></a>
 ## 3. 识别优化
 
-PP-OCRv3 识别模型在 PP-OCRv2 的基础上从8个策略上进一步优化，整体 pipeline 如下图所示：
+PP-OCRv3 识别模型在 PP-OCRv2 的基础上从8个策略上进一步优化，PP-OCRv3系统流程图如下：
 
 <img src="../ppocr_v3/v3_rec_pipeline.png" width=800>
 
@@ -116,7 +116,7 @@ PP-OCRv3 期望在提升模型精度的同时，不带来额外的推理耗时�
 <div align="center">
     <img src="../ppocr_v3/svtr_g2.png" width=800>
 </div>
-3. 实验发现 Global Mixing Block 的预测速度与输入其特征的shape有关，因此后移 Global Mixing Block 的位置到池化层之后，精度下降为71.9%，速度超越 CNN-base 的PP-OCRv2-baseline 22%，网络结构如下所示：
+3. 实验发现 Global Mixing Block 的预测速度与输入其特征的shape有关，因此后移 Global Mixing Block 的位置到池化层之后，精度下降为71.9%，速度超越基于CNN结构的PP-OCRv2-baseline 22%，网络结构如下所示：
 <div align="center">
     <img src="../ppocr_v3/LCNet_SVTR.png" width=800>
 </div>
