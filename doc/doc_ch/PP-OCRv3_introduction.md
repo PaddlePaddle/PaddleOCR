@@ -61,8 +61,8 @@ PP-OCRv2的FPN通道数仅为96和24，如果直接用SEblock代替FPN中卷积�
 |序号|策略|模型大小|hmean|Intel Gold 6148CPU+mkldnn预测耗时|
 |-|-|-|-|-|
 |0|PP-OCRv2|3M|81.3%|117ms|
-|1|+ teacher(dml)|3M|83.8%|117ms|
-|2|+ RSE-FPN|3.6M|84.5%|124ms|
+|1|+ teacher(dml)|3M|84.3%|117ms|
+|2|+ RSE-FPN|3.6M|85.4%|124ms|
 
 
 <a name="3"></a>
