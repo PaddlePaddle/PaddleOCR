@@ -2382,7 +2382,7 @@ class MainWindow(QMainWindow):
 
             #  save dict
             html = {'structure': {'tokens': token_list}, 'cell': cells}
-            json_results.append({'filename': filename, 'split': split, 'imgid': imgid, 'html': html})
+            json_results.append({'filename': os.path.basename(image_path), 'split': split, 'imgid': imgid, 'html': html})
             imgid += 1
 
         # save json
