@@ -70,9 +70,38 @@ LKPAN(Large Kernel PAN)是一个具有更大感受野的轻量级[PAN](https://a
 <a name="3"></a>
 ## 3. 识别优化
 
-[SVTR](https://arxiv.org/abs/2205.00159) 证明了强大的单视觉模型（无需序列模型）即可高效准确完成文本识别任务，在中英文数据上均有优秀的表现。经过实验验证，SVTR_Tiny 在自建的 [中文数据集上](https://arxiv.org/abs/2109.03144) ，识别精度可以提升10.7%，SVTR_Tiny 网络结构如下所示：
+PP-OCRv3 识别模型在 PP-OCRv2 的基础上从8个策略上进一步优化，整体 pipelinne 如下图所示：
 
-<img src="../ppocr_v3/svtr_tiny.jpg" width=800>
+<img src="../ppocr_v3/v3_rec_pipeline.png" width=800>
+
+总体来讲PP-OCRv3识别主要从网络结构、蒸馏策略、数据增强三个方向做了进一步优化:
+
+- 网络结构上：考虑[SVTR](https://arxiv.org/abs/2205.00159) 在中英文效果上的优越性，采用SVTR_Tiny作为base，选取Global Mixing Block和卷积组合提取特征，并将Global Mixing Block位置后移进行加速; 参考 [GTC](https://arxiv.org/pdf/2002.01276.pdf) 策略，使用注意力机制模块指导CTC训练，定位和识别字符，提升不规则文本的识别精度。
+- 蒸馏策略上：参考 [SSL](https://github.com/ku21fan/STR-Fewer-Labels) 设计了方向分类前序任务，获取更优预训练模型，加速模型收敛过程，提升精度; 使用UDML蒸馏策略、监督attention、ctc两个分支得到更优模型。
+- 数据增强上：基于 [ConCLR](https://www.cse.cuhk.edu.hk/~byu/papers/C139-AAAI2022-ConCLR.pdf) 中的ConAug方法，改进得到 TextConAug 数据增广方法，支持随机结合任意多张图片，提升训练数据的上下文信息丰富度，增强模型鲁棒性
+- 无标注数据： 使用 SVTR_large 预测无标签数据，向训练集中补充81w高质量真实数据。
+
+基于上述策略，PP-OCRv3识别模型相比PP-OCRv2，在速度可比的情况下，精度进一步提升4.5%。 具体消融实验如下所示：
+
+| id | 策略 |  模型大小 | 精度 | 速度（cpu + mkldnn)|
+|-----|-----|--------|----| --- |
+| 01 | PP-OCRv2 | 8M | 69.3% | 8.54ms |
+| 02 | SVTR_Tiny | 21M | 80.1% | 97ms |
+| 03 | PP-LCNet_SVTR | 12M | 71.9% | 6.6ms |
+| 04 | + GTC | 12M | 75.8% | 7.6ms |
+| 05 | + TextConAug | 12M | 76.3% | 7.6ms |
+| 06 | + TextRotNet | 12M | 76.9% | 7.6ms |
+| 07 | + UDML | 12M | 78.4% | 7.6ms |
+| 08 | + HLD | 12M | 79.4% | 7.6ms |
+
+注： 测试速度时，实验01-03输入图片尺寸均为(3,32,320)，04-08输入图片尺寸均为(3,48,320)
+
+
+下面具体介绍各策略的设计思路：
+
+网络结构上，PP-OCRv3将base模型从CRNN替换成了[SVTR](https://arxiv.org/abs/2205.00159)，SVTR证明了强大的单视觉模型（无需序列模型）即可高效准确完成文本识别任务，在中英文数据上均有优秀的表现。经过实验验证，SVTR_Tiny 在自建的 [中文数据集上](https://arxiv.org/abs/2109.03144) ，识别精度可以提升10.7%，SVTR_Tiny 网络结构如下所示：
+
+<img src="../ppocr_v3/svtr_tiny.png" width=800>
 
 由于 MKLDNN 加速库支持的模型结构有限，SVTR 在CPU+MKLDNN上相比PP-OCRv2慢了10倍。
 
@@ -99,7 +128,7 @@ PP-OCRv3 期望在提升模型精度的同时，不带来额外的推理耗时�
 <img src="../ppocr_v3/GTC.png" width=800>
 
 
-在训练策略方面，PP-OCRv3参考 [SSL](https://github.com/ku21fan/STR-Fewer-Labels) 设计了文本方向任务，训练了适用于文本识别的预训练模型，加速模型收敛过程，精度提升了0.6%; 使用UDML蒸馏策略，进一步提升精度1.5%，训练流程所示：
+在蒸馏策略方面，PP-OCRv3参考 [SSL](https://github.com/ku21fan/STR-Fewer-Labels) 设计了文本方向任务，训练了适用于文本识别的预训练模型，加速模型收敛过程，精度提升了0.6%; 使用UDML蒸馏策略，进一步提升精度1.5%，训练流程所示：
 
 <img src="../ppocr_v3/SSL.png" width="300"> <img src="../ppocr_v3/UDML.png" width="500">
 
@@ -111,28 +140,6 @@ PP-OCRv3 期望在提升模型精度的同时，不带来额外的推理耗时�
 
 2. 使用训练好的 SVTR_large 预测 120W 的 lsvt 无标注数据，取出其中得分大于0.95的数据，共得到81W识别数据加入到PP-OCRv3的训练数据中，精度提升1%。
 
-总体来讲PP-OCRv3识别从网络结构、训练策略、数据增强三个方向做了进一步优化:
-
-- 网络结构上：考虑[SVTR](https://arxiv.org/abs/2205.00159) 在中英文效果上的优越性，采用SVTR_Tiny作为base，选取Global Mixing Block和卷积组合提取特征，并将Global Mixing Block位置后移进行加速; 参考 [GTC](https://arxiv.org/pdf/2002.01276.pdf) 策略，使用注意力机制模块指导CTC训练，定位和识别字符，提升不规则文本的识别精度。
-- 训练策略上：参考 [SSL](https://github.com/ku21fan/STR-Fewer-Labels) 设计了方向分类前序任务，获取更优预训练模型，加速模型收敛过程，提升精度; 使用UDML蒸馏策略、监督attention、ctc两个分支得到更优模型。
-- 数据增强上：基于 [ConCLR](https://www.cse.cuhk.edu.hk/~byu/papers/C139-AAAI2022-ConCLR.pdf) 中的ConAug方法，改进得到 RecConAug 数据增广方法，支持随机结合任意多张图片，提升训练数据的上下文信息丰富度，增强模型鲁棒性；使用 SVTR_large 预测无标签数据，向训练集中补充81w高质量真实数据。
-
-基于上述策略，PP-OCRv3识别模型相比PP-OCRv2，在速度可比的情况下，精度进一步提升4.5%。 具体消融实验如下所示：
-
-实验细节：
-
-| id | 策略 |  模型大小 | 精度 | 速度（cpu + mkldnn)|
-|-----|-----|--------|----| --- |
-| 01 | PP-OCRv2 | 8M | 69.3% | 8.54ms |
-| 02 | SVTR_Tiny | 21M | 80.1% | 97ms |
-| 03 | PP-LCNet_SVTR | 12M | 71.9% | 6.6ms |
-| 04 | + GTC | 12M | 75.8% | 7.6ms |
-| 05 | + TextConAug | 12M | 76.3% | 7.6ms |
-| 06 | + TextRotNet | 12M | 76.9% | 7.6ms |
-| 07 | + UDML | 12M | 78.4% | 7.6ms |
-| 08 | + HLD | 12M | 79.4% | 7.6ms |
-
-注： 测试速度时，实验01-03输入图片尺寸均为(3,32,320)，04-08输入图片尺寸均为(3,48,320)
 
 <a name="4"></a>
 ## 4. 端到端评估
