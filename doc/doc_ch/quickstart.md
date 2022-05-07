@@ -110,7 +110,7 @@ cd /path/to/ppocr_img
 
 #### 2.1.2 多语言模型
 
-Paddleocr目前支持80个语种，可以通过修改`--lang`参数进行切换，对于英文模型，指定`--lang=en`, PP-OCRv3目前只支持中文和英文模型，其他多语言模型会陆续更新。
+PaddleOCR目前支持80个语种，可以通过修改`--lang`参数进行切换，对于英文模型，指定`--lang=en`, PP-OCRv3目前只支持中文和英文模型，其他多语言模型会陆续更新。
 
 ``` bash
 paddleocr --image_dir ./imgs_en/254.jpg --lang=en --rec_image_shape 3,48,320
