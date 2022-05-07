@@ -199,12 +199,10 @@ for line in result:
 paddleocr -h
 ```
 
-**注意** whl包默认使用`PP-OCRv3`模型，识别模型使用的输入shape为`3,48,320`, 因此如果使用识别功能，需要添加参数`--rec_image_shape 3,48,320`，如果不使用默认的`PP-OCRv3`模型，则无需设置该参数。
-
 * 检测+方向分类器+识别全流程
 
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --use_angle_cls true --rec_image_shape 3,48,320
+paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --use_angle_cls true
 ```
 
 结果是一个list，每个item包含了文本框，文字和识别置信度
@@ -217,7 +215,7 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --use_angle_cls true --rec_image
 * 检测+识别
 
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --rec_image_shape 3,48,320
+paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg
 ```
 
 结果是一个list，每个item包含了文本框，文字和识别置信度
@@ -230,7 +228,7 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --rec_image_shape 3,48,320
 * 方向分类器+识别
 
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --use_angle_cls true --det false --rec_image_shape 3,48,320
+paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --use_angle_cls true --det false
 ```
 
 结果是一个list，每个item只包含识别结果和识别置信度
@@ -256,7 +254,7 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --rec false
 * 单独执行识别
 
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --det false --rec_image_shape 3,48,320
+paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --det false
 ```
 
 结果是一个list，每个item只包含识别结果和识别置信度
