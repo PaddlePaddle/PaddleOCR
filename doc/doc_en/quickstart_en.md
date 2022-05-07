@@ -124,7 +124,7 @@ If you need to use the 2.0 model, please specify the parameter `--ocr_version PP
 
 #### 2.1.2 Multi-language Model
 
-PaddleOCR currently supports 80 languages, which can be switched by modifying the `--lang` parameter. PP-OCRv3 currently only supports Chinese and English models, and other multilingual models will be updated one after another.
+PaddleOCR currently supports 80 languages, which can be switched by modifying the `--lang` parameter.
 
 ``` bash
 paddleocr --image_dir ./doc/imgs_en/254.jpg --lang=en
