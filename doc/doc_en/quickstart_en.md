@@ -73,8 +73,6 @@ cd /path/to/ppocr_img
 
 If you do not use the provided test image, you can replace the following `--image_dir` parameter with the corresponding test image path
 
-**Note**: The whl package uses the `PP-OCRv3` model by default, and the input shape used by the recognition model is `3,48,320`, so if you use the recognition function, you need to add the parameter `--rec_image_shape 3,48,320`, if you do not use the default `PP- OCRv3` model, you do not need to set this parameter.
-
 <a name="211-english-and-chinese-model"></a>
 
 #### 2.1.1 Chinese and English Model
@@ -82,7 +80,7 @@ If you do not use the provided test image, you can replace the following `--imag
 * Detection, direction classification and recognition: set the parameter`--use_gpu false` to disable the gpu device
 
   ```bash
-  paddleocr --image_dir ./imgs_en/img_12.jpg --use_angle_cls true --lang en --use_gpu false --rec_image_shape 3,48,320
+  paddleocr --image_dir ./imgs_en/img_12.jpg --use_angle_cls true --lang en --use_gpu false
   ```
 
   Output will be a list, each item contains bounding box, text and recognition confidence
@@ -112,7 +110,7 @@ If you do not use the provided test image, you can replace the following `--imag
 * Only recognition: set `--det` to `false`
 
   ```bash
-  paddleocr --image_dir ./imgs_words_en/word_10.png --det false --lang en --rec_image_shape 3,48,320
+  paddleocr --image_dir ./imgs_words_en/word_10.png --det false --lang en
   ```
 
   Output will be a list, each item contains text and recognition confidence
@@ -121,15 +119,15 @@ If you do not use the provided test image, you can replace the following `--imag
   ['PAIN', 0.9934559464454651]
   ```
 
-If you need to use the 2.0 model, please specify the parameter `--version PP-OCR`, paddleocr uses the PP-OCRv3 model by default(`--versioin PP-OCRv3`). More whl package usage can be found in [whl package](./whl_en.md)
+If you need to use the 2.0 model, please specify the parameter `--ocr_version PP-OCR`, paddleocr uses the PP-OCRv3 model by default(`--ocr_version PP-OCRv3`). More whl package usage can be found in [whl package](./whl_en.md)
 <a name="212-multi-language-model"></a>
 
 #### 2.1.2 Multi-language Model
 
-PaddleOCR currently supports 80 languages, which can be switched by modifying the `--lang` parameter. PP-OCRv3 currently only supports Chinese and English models, and other multilingual models will be updated one after another.
+PaddleOCR currently supports 80 languages, which can be switched by modifying the `--lang` parameter.
 
 ``` bash
-paddleocr --image_dir ./doc/imgs_en/254.jpg --lang=en --rec_image_shape 3,48,320
+paddleocr --image_dir ./doc/imgs_en/254.jpg --lang=en
 ```
 
 <div align="center">
