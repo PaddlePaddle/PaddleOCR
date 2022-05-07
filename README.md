@@ -19,12 +19,9 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
 
 
 **Recent updates**
-- 2021.12.21 OCR open source online course starts. The lesson starts at 8:30 every night and lasts for ten days. Free registration: https://aistudio.baidu.com/aistudio/course/introduce/25207
-- 2021.12.21 release PaddleOCR v2.4, release 1 text detection algorithm (PSENet), 3 text recognition algorithms (NRTR、SEED、SAR), 1 key information extraction algorithm (SDMGR, [tutorial](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.4/ppstructure/docs/kie.md)) and 3 DocVQA algorithms (LayoutLM, LayoutLMv2, LayoutXLM, [tutorial](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.4/ppstructure/vqa)).
-- PaddleOCR R&D team would like to share the key points of PP-OCRv2, at 20:15 pm on September 8th, [Course Address](https://aistudio.baidu.com/aistudio/education/group/info/6758).
-- 2021.9.7 release PaddleOCR v2.3, [PP-OCRv2](#PP-OCRv2) is proposed. The inference speed of PP-OCRv2 is 220% higher than that of PP-OCR server in CPU device. The F-score of PP-OCRv2 is 7% higher than that of PP-OCR mobile.
-- 2021.8.3 released PaddleOCR v2.2, add a new structured documents analysis toolkit, i.e., [PP-Structure](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/ppstructure/README.md), support layout analysis and table recognition (One-key to export chart images to Excel files).
-- 2021.4.8 release end-to-end text recognition algorithm [PGNet](https://www.aaai.org/AAAI21Papers/AAAI-2885.WangP.pdf) which is published in AAAI 2021. Find tutorial [here](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_en/pgnet_en.md)；release multi language recognition [models](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_en/multi_languages_en.md), support more than 80 languages recognition; especically, the performance of [English recognition model](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_en/models_list_en.md#English) is Optimized.
+- 2021.12.21 release PaddleOCR v2.4, release 1 text detection algorithm (PSENet), 3 text recognition algorithms (NRTR、SEED、SAR), 1 key information extraction algorithm (SDMGR, [tutorial](./ppstructure/docs/kie_en.md)) and 3 DocVQA algorithms (LayoutLM, LayoutLMv2, LayoutXLM, [tutorial](./ppstructure/vqa)).
+- 2021.9.7 release PaddleOCR v2.3, [PP-OCRv2](./doc/doc_en/ppocr_introduction_en.md#pp-ocrv2) is proposed. The inference speed of PP-OCRv2 is 220% higher than that of PP-OCR server in CPU device. The F-score of PP-OCRv2 is 7% higher than that of PP-OCR mobile.
+- 2021.8.3 released PaddleOCR v2.2, add a new structured documents analysis toolkit, i.e., [PP-Structure](./ppstructure/README.md), support layout analysis and table recognition (One-key to export chart images to Excel files).
 
 - [more](./doc/doc_en/update_en.md)
 
@@ -32,8 +29,6 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
 ## Features
 
 PaddleOCR support a variety of cutting-edge algorithms related to OCR, and developed industrial featured models/solution [PP-OCR](./doc/doc_en/ppocr_introduction_en.md) and [PP-Structure](./ppstructure/README.md) on this basis, and get through the whole process of data production, model training, compression, inference and deployment.
-
-PaddleOCR also supports metric and model logging during training to [VisualDL](https://www.paddlepaddle.org.cn/documentation/docs/en/guides/03_VisualDL/visualdl_usage_en.html) and [Weights & Biases](https://docs.wandb.ai/).
 
 ![](./doc/features_en.png)
 
@@ -83,7 +78,6 @@ PaddleOCR also supports metric and model logging during training to [VisualDL](h
 
 ## Tutorials
 - [Environment Preparation](./doc/doc_en/environment_en.md)
-- [Quick Start](./doc/doc_en/quickstart_en.md)
 - [PP-OCR 🔥](./doc/doc_en/ppocr_introduction_en.md)
     - [Quick Start](./doc/doc_en/quickstart_en.md)
     - [Model Zoo](./doc/doc_en/models_en.md)

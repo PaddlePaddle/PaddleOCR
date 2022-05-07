@@ -1,6 +1,6 @@
 # PaddleOCR Quick Start
 
-**Note:** this tutorial mainly introduces the usage of PP-OCR series models, please refer to [PP-Structure Quick Start](../../ppstructure/docs/quickstart_en.md) for the quick use of document analysis related functions.
+**Note:** This tutorial mainly introduces the usage of PP-OCR series models, please refer to [PP-Structure Quick Start](../../ppstructure/docs/quickstart_en.md) for the quick use of document analysis related functions.
 
 - [1. Installation](#1-installation)
     - [1.1 Install PaddlePaddle](#11-install-paddlepaddle)
@@ -9,10 +9,8 @@
     - [2.1 Use by Command Line](#21-use-by-command-line)
       - [2.1.1 Chinese and English Model](#211-chinese-and-english-model)
       - [2.1.2 Multi-language Model](#212-multi-language-model)
-      - [2.1.3 Layout Analysis](#213-layout-analysis)
     - [2.2 Use by Code](#22-use-by-code)
       - [2.2.1 Chinese & English Model and Multilingual Model](#221-chinese--english-model-and-multilingual-model)
-      - [2.2.2 Layout Analysis](#222-layout-analysis)
 - [3. Summary](#3-summary)
 
 
@@ -126,7 +124,7 @@ If you need to use the 2.0 model, please specify the parameter `--ocr_version PP
 
 #### 2.1.2 Multi-language Model
 
-Paddleocr currently supports 80 languages, which can be switched by modifying the `--lang` parameter. PP-OCRv3 currently only supports Chinese and English models, and other multilingual models will be updated one after another.
+PaddleOCR currently supports 80 languages, which can be switched by modifying the `--lang` parameter. PP-OCRv3 currently only supports Chinese and English models, and other multilingual models will be updated one after another.
 
 ``` bash
 paddleocr --image_dir ./doc/imgs_en/254.jpg --lang=en
@@ -154,48 +152,7 @@ Commonly used multilingual abbreviations include
 | Chinese Traditional | chinese_cht  |      | Italian  | it           |      | Russian  | ru           |
 
 A list of all languages and their corresponding abbreviations can be found in [Multi-Language Model Tutorial](./multi_languages_en.md)
-<a name="213-layoutAnalysis"></a>
 
-#### 2.1.3 Layout Analysis
-
-Layout analysis refers to the division of 5 types of areas of the document, including text, title, list, picture and table. For the first three types of regions, directly use the OCR model to complete the text detection and recognition of the corresponding regions, and save the results in txt. For the table area, after the table structuring process, the table picture is converted into an Excel file of the same table style. The picture area will be individually cropped into an image.
-
-To use the layout analysis function of PaddleOCR, you need to specify `--type=structure`
-
-```bash
-paddleocr --image_dir=../doc/table/1.png --type=structure
-```
-
-- **Results Format**
-
-  The returned results of PP-Structure is a list composed of a dict, an example is as follows
-
-  ```shell
-  [
-    {   'type': 'Text',
-        'bbox': [34, 432, 345, 462],
-        'res': ([[36.0, 437.0, 341.0, 437.0, 341.0, 446.0, 36.0, 447.0], [41.0, 454.0, 125.0, 453.0, 125.0, 459.0, 41.0, 460.0]],
-                  [('Tigure-6. The performance of CNN and IPT models using difforen', 0.90060663), ('Tent  ', 0.465441)])
-    }
-  ]
-  ```
-
-  The description of each field in dict is as follows
-
-  | Parameter | Description                                                  |
-  | --------- | ------------------------------------------------------------ |
-  | type      | Type of image area                                           |
-  | bbox      | The coordinates of the image area in the original image, respectively [left upper x, left upper y, right bottom x, right bottom y] |
-  | res       | OCR or table recognition result of image area。<br> Table: HTML string of the table; <br> OCR: A tuple containing the detection coordinates and recognition results of each single line of text |
-
-- **Parameter Description：**
-
-  | Parameter       | Description                                                  | Default value                                |
-  | --------------- | ------------------------------------------------------------ | -------------------------------------------- |
-  | output          | The path where excel and recognition results are saved       | ./output/table                               |
-  | table_max_len   | The long side of the image is resized in table structure model | 488                                          |
-  | table_model_dir | inference model path of table structure model                | None                                         |
-  | table_char_dict_path | dict path of table structure model                           | ../ppocr/utils/dict/table_structure_dict.txt |
 
 <a name="22-use-by-code"></a>
 
@@ -243,40 +200,12 @@ Visualization of results
 <div align="center">
     <img src="../imgs_results/whl/12_det_rec.jpg" width="800">
 </div>
-<a name="222-layoutAnalysis"></a>
 
-#### 2.2.2 Layout Analysis
-
-```python
-import os
-import cv2
-from paddleocr import PPStructure,draw_structure_result,save_structure_res
-
-table_engine = PPStructure(show_log=True)
-
-save_folder = './output/table'
-img_path = './table/1.png'
-img = cv2.imread(img_path)
-result = table_engine(img)
-save_structure_res(result, save_folder,os.path.basename(img_path).split('.')[0])
-
-for line in result:
-    line.pop('img')
-    print(line)
-
-from PIL import Image
-
-font_path = './fonts/simfang.ttf'
-image = Image.open(img_path).convert('RGB')
-im_show = draw_structure_result(image, result,font_path=font_path)
-im_show = Image.fromarray(im_show)
-im_show.save('result.jpg')
-```
 
 <a name="3"></a>
 
 ## 3. Summary
 
-In this section, you have mastered the use of PaddleOCR whl packages and obtained results.
+In this section, you have mastered the use of PaddleOCR whl package.
 
-PaddleOCR is a rich and practical OCR tool library that opens up the whole process of data, model training, compression and inference deployment, so in the [next section](./paddleOCR_overview_en.md) we will first introduce you to the overview of PaddleOCR, and then clone the PaddleOCR project to start the application journey of PaddleOCR.
+PaddleOCR is a rich and practical OCR tool library that get through the whole process of data production, model training, compression, inference and deployment, please refer to the [tutorials](../../README.md#tutorials) to start the journey of PaddleOCR.
