@@ -67,6 +67,10 @@ MODEL_URLS = {
                     'url':
                     'https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar',
                 },
+                'ml': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/Multilingual_PP-OCRv3_det_infer.tar'
+                }
             },
             'rec': {
                 'ch': {
@@ -78,6 +82,56 @@ MODEL_URLS = {
                     'url':
                     'https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar',
                     'dict_path': './ppocr/utils/en_dict.txt'
+                },
+                'korean': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/korean_PP-OCRv3_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/korean_dict.txt'
+                },
+                'japan': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/japan_PP-OCRv3_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/japan_dict.txt'
+                },
+                'chinese_cht': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/chinese_cht_PP-OCRv3_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/chinese_cht_dict.txt'
+                },
+                'ta': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/ta_PP-OCRv3_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/ta_dict.txt'
+                },
+                'te': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/te_PP-OCRv3_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/te_dict.txt'
+                },
+                'ka': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/ka_PP-OCRv3_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/ka_dict.txt'
+                },
+                'latin': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/latin_PP-OCRv3_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/latin_dict.txt'
+                },
+                'arabic': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/arabic_PP-OCRv3_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/arabic_dict.txt'
+                },
+                'cyrillic': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/cyrillic_PP-OCRv3_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/cyrillic_dict.txt'
+                },
+                'devanagari': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/devanagari_PP-OCRv3_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/devanagari_dict.txt'
                 },
             },
             'cls': {
@@ -259,7 +313,7 @@ def parse_lang(lang):
         'af', 'az', 'bs', 'cs', 'cy', 'da', 'de', 'es', 'et', 'fr', 'ga', 'hr',
         'hu', 'id', 'is', 'it', 'ku', 'la', 'lt', 'lv', 'mi', 'ms', 'mt', 'nl',
         'no', 'oc', 'pi', 'pl', 'pt', 'ro', 'rs_latin', 'sk', 'sl', 'sq', 'sv',
-        'sw', 'tl', 'tr', 'uz', 'vi'
+        'sw', 'tl', 'tr', 'uz', 'vi', 'french', 'german'
     ]
     arabic_lang = ['ar', 'fa', 'ug', 'ur']
     cyrillic_lang = [
@@ -285,8 +339,10 @@ def parse_lang(lang):
         det_lang = "ch"
     elif lang == 'structure':
         det_lang = 'structure'
-    else:
+    elif lang in ["en", "latin"]:
         det_lang = "en"
+    else:
+        det_lang = "ml"
     return lang, det_lang
 
 
