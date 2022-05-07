@@ -110,14 +110,15 @@ PP-OCRv3识别模型从网络结构、训练策略、数据增广等多个方面
 |-----|-----|--------|----| --- |
 | 01 | PP-OCRv2 | 8M | 74.8% | 8.54ms |
 | 02 | SVTR_Tiny | 21M | 80.1% | 97ms |
-| 03 | SVTR_LCNet | 12M | 71.9% | 6.6ms |
-| 04 | + GTC | 12M | 75.8% | 7.6ms |
-| 05 | + TextConAug | 12M | 76.3% | 7.6ms |
-| 06 | + TextRotNet | 12M | 76.9% | 7.6ms |
-| 07 | + UDML | 12M | 78.4% | 7.6ms |
-| 08 | + UIM | 12M | 79.4% | 7.6ms |
+| 03 | SVTR_LCNet(h32) | 12M | 71.9% | 6.6ms |
+| 04 | SVTR_LCNet(h48) | 12M | 73.98% | 7.6ms |
+| 05 | + GTC | 12M | 75.8% | 7.6ms |
+| 06 | + TextConAug | 12M | 76.3% | 7.6ms |
+| 07 | + TextRotNet | 12M | 76.9% | 7.6ms |
+| 08 | + UDML | 12M | 78.4% | 7.6ms |
+| 09 | + UIM | 12M | 79.4% | 7.6ms |
 
-注： 测试速度时，实验01-03输入图片尺寸均为(3,32,320)，04-08输入图片尺寸均为(3,48,320)。在实际预测时，图像为变长输入，速度会有所变化。
+注： 测试速度时，实验01-03输入图片尺寸均为(3,32,320)，04-09输入图片尺寸均为(3,48,320)。在实际预测时，图像为变长输入，速度会有所变化。
 
 
 **（1）轻量级文本识别网络SVTR_LCNet。**
@@ -153,9 +154,10 @@ PP-OCRv3将base模型从CRNN替换成了[SVTR](https://arxiv.org/abs/2205.00159)
 | 02 | SVTR_Tiny | 21M | 80.1% | 97ms |
 | 03 | SVTR_LCNet(G4) | 9.2M | 76% | 30ms |
 | 04 | SVTR_LCNet(G2) | 13M | 72.98% | 9.37ms |
-| 05 | SVTR_LCNet | 12M | 71.9% | 6.6ms |
+| 05 | SVTR_LCNet(h32) | 12M | 71.9% | 6.6ms |
+| 06 | SVTR_LCNet(h48)  | 12M | 73.98% | 7.6ms |
 
-注： 测试速度时，输入图片尺寸均为(3,32,320)； PP-OCRv2-baseline 代表没有借助蒸馏方法训练得到的模型
+注： 测试速度时，01-05输入图片尺寸均为(3,32,320)； PP-OCRv2-baseline 代表没有借助蒸馏方法训练得到的模型
 
 **（2）采用Attention指导CTC训练。**
 
@@ -178,7 +180,7 @@ PP-OCRv3将base模型从CRNN替换成了[SVTR](https://arxiv.org/abs/2205.00159)
 为了充分利用自然场景中的大量无标注文本数据，PP-OCRv3参考论文[STR-Fewer-Labels](https://github.com/ku21fan/STR-Fewer-Labels)，设计TextRotNet自监督任务，对识别图像进行旋转并预测其旋转角度，同时结合中文场景文字识别任务的特点，在训练时适当调整图像的尺寸，添加文本识别数据增广，最终产出针对文本识别任务的PP-LCNet预训练模型，帮助识别模型精度进一步提升0.6%。TextRotNet训练流程如下图所示：
 
 <div align="center">
-    <img src="../ppocr_v3/SSL.png" width="500"> 
+    <img src="../ppocr_v3/SSL.png" width="500">
 </div>
 
 
@@ -187,7 +189,7 @@ PP-OCRv3将base模型从CRNN替换成了[SVTR](https://arxiv.org/abs/2205.00159)
 为更直接利用自然场景中包含大量无标注数据，使用PP-OCRv2检测模型以及SVTR_tiny识别模型对百度开源的40W [LSVT弱标注数据集](https://ai.baidu.com/broad/introduction?dataset=lsvt)进行检测与识别，并筛选出识别得分大于0.95的文本，共81W文本行数据，将其补充到训练数据中，最终进一步提升模型精度1.0%。
 
 <div align="center">
-    <img src="../ppocr_v3/UIM.png" width="500"> 
+    <img src="../ppocr_v3/UIM.png" width="500">
 </div>
 
 
