@@ -36,8 +36,8 @@ op:
             #det模型路径
             model_config: ./ppocr_det_v3_serving
 
-            #Fetch结果列表，以client_config中fetch_var的alias_name为准
-            fetch_list: ["sigmoid_0.tmp_0"]
+            #Fetch结果列表，以client_config中fetch_var的alias_name为准，不设置默认取全部输出变量
+            #fetch_list: ["sigmoid_0.tmp_0"]
 
             #计算硬件ID，当devices为""或不写时为CPU预测；当devices为"0", "0,1,2"时为GPU预测，表示使用的GPU卡
             devices: "0"
@@ -62,8 +62,8 @@ op:
             #rec模型路径
             model_config: ./ppocr_rec_v3_serving
 
-            #Fetch结果列表，以client_config中fetch_var的alias_name为准
-            fetch_list: ["softmax_5.tmp_0"]
+            #Fetch结果列表，以client_config中fetch_var的alias_name为准, 不设置默认取全部输出变量
+            #fetch_list: 
 
             #计算硬件ID，当devices为""或不写时为CPU预测；当devices为"0", "0,1,2"时为GPU预测，表示使用的GPU卡
             devices: "0"

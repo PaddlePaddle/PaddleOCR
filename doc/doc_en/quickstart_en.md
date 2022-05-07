@@ -1,8 +1,11 @@
-- [PaddleOCR Quick Start](#paddleocr-quick-start)
-  - [1. Installation](#1-installation)
+# PaddleOCR Quick Start
+
+**Note:** this tutorial mainly introduces the usage of PP-OCR series models, please refer to [PP-Structure Quick Start](../../ppstructure/docs/quickstart_en.md) for the quick use of document analysis related functions.
+
+- [1. Installation](#1-installation)
     - [1.1 Install PaddlePaddle](#11-install-paddlepaddle)
     - [1.2 Install PaddleOCR Whl Package](#12-install-paddleocr-whl-package)
-  - [2. Easy-to-Use](#2-easy-to-use)
+- [2. Easy-to-Use](#2-easy-to-use)
     - [2.1 Use by Command Line](#21-use-by-command-line)
       - [2.1.1 Chinese and English Model](#211-chinese-and-english-model)
       - [2.1.2 Multi-language Model](#212-multi-language-model)
@@ -10,9 +13,8 @@
     - [2.2 Use by Code](#22-use-by-code)
       - [2.2.1 Chinese & English Model and Multilingual Model](#221-chinese--english-model-and-multilingual-model)
       - [2.2.2 Layout Analysis](#222-layout-analysis)
-  - [3. Summary](#3-summary)
+- [3. Summary](#3-summary)
 
-# PaddleOCR Quick Start
 
 
 <a name="1nstallation"></a>
