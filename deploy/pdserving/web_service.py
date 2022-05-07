@@ -56,7 +56,7 @@ class DetOp(Op):
         return {"x": det_img[np.newaxis, :].copy()}, False, None, ""
 
     def postprocess(self, input_dicts, fetch_dict, data_id, log_id):
-        det_out = fetch_dict["sigmoid_0.tmp_0"]
+        det_out = list(fetch_dict.values())[0]
         ratio_list = [
             float(self.new_h) / self.ori_h, float(self.new_w) / self.ori_w
         ]
