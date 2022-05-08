@@ -173,6 +173,26 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 </div>
 </details>
 
+<details open>
+<summary>PP-Structure</summary>
+
+- layout analysis + table recognition  
+<div align="center">
+    <img src="./ppstructure/docs/table/ppstructure.GIF" width="800">
+</div>
+
+- SER (Semantic entity recognition)
+<div align="center">
+    <img src="./ppstructure/docs/vqa/result_ser/zh_val_0_ser.jpg" width="800">
+</div>
+
+- RE (Relation Extraction)
+<div align="center">
+    <img src="./ppstructure/docs/vqa/result_re/zh_val_21_re.jpg" width="800">
+</div>
+
+</details>
+
 <a name="language_requests"></a>
 ## Guideline for New Language Requests
 
