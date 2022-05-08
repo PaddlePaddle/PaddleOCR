@@ -1,4 +1,5 @@
 # 更新
+- 2022.5.7 添加对[Weights & Biases](https://docs.wandb.ai/)训练日志记录工具的支持。
 - 2021.12.21 《OCR十讲》课程开讲，12月21日起每晚八点半线上授课！ 【免费】报名地址：https://aistudio.baidu.com/aistudio/course/introduce/25207
 - 2021.12.21 发布PaddleOCR v2.4。OCR算法新增1种文本检测算法（PSENet），3种文本识别算法（NRTR、SEED、SAR）；文档结构化算法新增1种关键信息提取算法（SDMGR），3种DocVQA算法（LayoutLM、LayoutLMv2，LayoutXLM）。
 - 2021.9.7 发布PaddleOCR v2.3，发布[PP-OCRv2](#PP-OCRv2)，CPU推理速度相比于PP-OCR server提升220%；效果相比于PP-OCR mobile 提升7%。

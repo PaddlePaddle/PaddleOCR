@@ -99,8 +99,8 @@ class SAREncoder(nn.Layer):
         if valid_ratios is not None:
             valid_hf = []
             T = holistic_feat.shape[1]
-            for i, valid_ratio in enumerate(valid_ratios):
-                valid_step = min(T, math.ceil(T * valid_ratio)) - 1
+            for i in range(len(valid_ratios)):
+                valid_step = min(T, math.ceil(T * valid_ratios[i])) - 1
                 valid_hf.append(holistic_feat[i, valid_step, :])
             valid_hf = paddle.stack(valid_hf, axis=0)
         else:
@@ -252,8 +252,8 @@ class ParallelSARDecoder(BaseDecoder):
 
         if valid_ratios is not None:
             # cal mask of attention weight
-            for i, valid_ratio in enumerate(valid_ratios):
-                valid_width = min(w, math.ceil(w * valid_ratio))
+            for i in range(len(valid_ratios)):
+                valid_width = min(w, math.ceil(w * valid_ratios[i]))
                 if valid_width < w:
                     attn_weight[i, :, :, valid_width:, :] = float('-inf')
 

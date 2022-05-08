@@ -38,14 +38,18 @@ PP-OCRv2在PP-OCR的基础上，进一步在5个方面重点优化，检测模�
 
 #### PP-OCRv3
 
-PP-OCRv3在PP-OCRv2的基础上进一步升级。检测模型仍然基于DB算法，优化策略采用了带残差注意力机制的FPN结构RSEFPN、增大感受野的PAN结构LKPAN、基于DML训练的更优的教师模型；识别模型将base模型从CRNN替换成了IJCAI 2022论文[SVTR](https://arxiv.org/abs/2205.00159)，并采用SVTR轻量化、带指导训练CTC、数据增广策略RecConAug、自监督训练的更好的预训练模型、无标签数据的使用进行模型加速和效果提升。更多细节请参考PP-OCRv3[技术报告](./PP-OCRv3_introduction.md)。
-
+PP-OCRv3在PP-OCRv2的基础上，针对检测模型和识别模型，进行了共计9个方面的升级：
+- PP-OCRv3检测模型对PP-OCRv2中的CML协同互学习文本检测蒸馏策略进行了升级，分别针对教师模型和学生模型进行进一步效果优化。其中，在对教师模型优化时，提出了大感受野的PAN结构LK-PAN和引入了DML蒸馏策略；在对学生模型优化时，提出了残差注意力机制的FPN结构RSE-FPN。
+- PP-OCRv3的识别模块是基于文本识别算法[SVTR](https://arxiv.org/abs/2205.00159)优化。SVTR不再采用RNN结构，通过引入Transformers结构更加有效地挖掘文本行图像的上下文信息，从而提升文本识别能力。PP-OCRv3通过轻量级文本识别网络SVTR_LCNet、Attention损失指导CTC损失训练策略、挖掘文字上下文信息的数据增广策略TextConAug、TextRotNet自监督预训练模型、UDML联合互学习策略、UIM无标注数据挖掘方案，6个方面进行模型加速和效果提升。
 
 PP-OCRv3系统pipeline如下：
 
 <div align="center">
     <img src="../ppocrv3_framework.png" width="800">
 </div>
+
+更多细节请参考PP-OCRv3[技术报告](./PP-OCRv3_introduction.md)。
+
 
 <a name="2"></a>
 ## 2. 特性

@@ -59,15 +59,13 @@ cd /path/to/ppocr_img
 
 如果不使用提供的测试图片，可以将下方`--image_dir`参数替换为相应的测试图片路径。
 
-**注意** whl包默认使用`PP-OCRv3`模型，识别模型使用的输入shape为`3,48,320`, 因此如果使用识别功能，需要添加参数`--rec_image_shape 3,48,320`，如果不使用默认的`PP-OCRv3`模型，则无需设置该参数。
-
 <a name="211"></a>
 #### 2.1.1 中英文模型
 
 * 检测+方向分类器+识别全流程：`--use_angle_cls true`设置使用方向分类器识别180度旋转文字，`--use_gpu false`设置不使用GPU
 
   ```bash
-  paddleocr --image_dir ./imgs/11.jpg --use_angle_cls true --use_gpu false --rec_image_shape 3,48,320
+  paddleocr --image_dir ./imgs/11.jpg --use_angle_cls true --use_gpu false
   ```
 
   结果是一个list，每个item包含了文本框，文字和识别置信度
@@ -94,7 +92,7 @@ cd /path/to/ppocr_img
 - 单独使用识别：设置`--det`为`false`
 
   ```bash
-  paddleocr --image_dir ./imgs_words/ch/word_1.jpg --det false --rec_image_shape 3,48,320
+  paddleocr --image_dir ./imgs_words/ch/word_1.jpg --det false
   ```
 
   结果是一个list，每个item只包含识别结果和识别置信度
@@ -104,16 +102,16 @@ cd /path/to/ppocr_img
   ```
 
 
-如需使用2.0模型，请指定参数`--version PP-OCR`，paddleocr默认使用PP-OCRv3模型(`--versioin PP-OCRv3`)。更多whl包使用可参考[whl包文档](./whl.md)
+如需使用2.0模型，请指定参数`--ocr_version PP-OCR`，paddleocr默认使用PP-OCRv3模型(`--ocr_version PP-OCRv3`)。更多whl包使用可参考[whl包文档](./whl.md)
 
 <a name="212"></a>
 
 #### 2.1.2 多语言模型
 
-Paddleocr目前支持80个语种，可以通过修改`--lang`参数进行切换，对于英文模型，指定`--lang=en`, PP-OCRv3目前只支持中文和英文模型，其他多语言模型会陆续更新。
+PaddleOCR目前支持80个语种，可以通过修改`--lang`参数进行切换，对于英文模型，指定`--lang=en`。
 
 ``` bash
-paddleocr --image_dir ./imgs_en/254.jpg --lang=en --rec_image_shape 3,48,320
+paddleocr --image_dir ./imgs_en/254.jpg --lang=en
 ```
 
 <div align="center">

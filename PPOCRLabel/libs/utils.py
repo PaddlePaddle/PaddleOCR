@@ -161,6 +161,77 @@ def get_rotate_crop_image(img, points):
         print(e)
 
 
+def boxPad(box, imgShape, pad : int) -> np.array:
+    """
+    Pad a box with [pad] pixels on each side.
+    """
+    box = np.array(box, dtype=np.int32)
+    box[0][0], box[0][1] = box[0][0] - pad, box[0][1] - pad
+    box[1][0], box[1][1] = box[1][0] + pad, box[1][1] - pad
+    box[2][0], box[2][1] = box[2][0] + pad, box[2][1] + pad
+    box[3][0], box[3][1] = box[3][0] - pad, box[3][1] + pad
+    h, w, _ = imgShape
+    box[:,0] = np.clip(box[:,0], 0, w)
+    box[:,1] = np.clip(box[:,1], 0, h)
+    return box
+
+
+def OBB2HBB(obb) -> np.array:
+    """
+    Convert Oriented Bounding Box to Horizontal Bounding Box.
+    """
+    hbb = np.zeros(4, dtype=np.int32)
+    hbb[0] = min(obb[:, 0])
+    hbb[1] = min(obb[:, 1])
+    hbb[2] = max(obb[:, 0])
+    hbb[3] = max(obb[:, 1])
+    return hbb
+
+
+def expand_list(merged, html_list):
+    '''
+    Fill blanks according to merged cells
+    '''
+    sr, er, sc, ec = merged
+    for i in range(sr, er):
+        for j in range(sc, ec):
+            html_list[i][j] = None
+    html_list[sr][sc] = ''
+    if ec - sc > 1:
+        html_list[sr][sc] += " colspan={}".format(ec - sc)
+    if er - sr > 1:
+        html_list[sr][sc] += " rowspan={}".format(er - sr)
+    return html_list
+
+
+def convert_token(html_list):
+    '''
+    Convert raw html to label format
+    '''
+    token_list = ["<tbody>"]
+    # final html list:
+    for row in html_list:
+        token_list.append("<tr>")
+        for col in row:
+            if col == None:
+                continue
+            elif col == 'td':
+                token_list.extend(["<td>", "</td>"])
+            else:
+                token_list.append("<td")
+                if 'colspan' in col:
+                    _, n = col.split('colspan=')
+                    token_list.append(" colspan=\"{}\"".format(n))
+                if 'rowspan' in col:
+                    _, n = col.split('rowspan=')
+                    token_list.append(" rowspan=\"{}\"".format(n))
+                token_list.extend([">", "</td>"])
+        token_list.append("</tr>")
+    token_list.append("</tbody>")
+
+    return token_list
+
+
 def stepsInfo(lang='en'):
     if lang == 'ch':
         msg = "1. 安装与运行：使用上述命令安装与运行程序。\n" \

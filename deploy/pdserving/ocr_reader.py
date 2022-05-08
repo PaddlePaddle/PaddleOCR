@@ -393,7 +393,7 @@ class OCRReader(object):
         return norm_img_batch[0]
 
     def postprocess(self, outputs, with_score=False):
-        preds = outputs["softmax_5.tmp_0"]
+        preds = list(outputs.values())[0]
         try:
             preds = preds.numpy()
         except:
@@ -404,8 +404,11 @@ class OCRReader(object):
             preds_idx, preds_prob, is_remove_duplicate=True)
         return text
 
-from argparse import ArgumentParser,RawDescriptionHelpFormatter
+
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import yaml
+
+
 class ArgsParser(ArgumentParser):
     def __init__(self):
         super(ArgsParser, self).__init__(
@@ -441,16 +444,16 @@ class ArgsParser(ArgumentParser):
             s = s.strip()
             k, v = s.split('=')
             v = self._parse_helper(v)
-            print(k,v, type(v))
+            print(k, v, type(v))
             cur = config
             parent = cur
             for kk in k.split("."):
                 if kk not in cur:
-                     cur[kk] = {}
-                     parent = cur
-                     cur = cur[kk]
+                    cur[kk] = {}
+                    parent = cur
+                    cur = cur[kk]
                 else:
-                     parent = cur
-                     cur = cur[kk]
+                    parent = cur
+                    cur = cur[kk]
             parent[k.split(".")[-1]] = v
         return config
