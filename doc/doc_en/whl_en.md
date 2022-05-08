@@ -172,11 +172,9 @@ show help information
 paddleocr -h
 ```
 
-**Note**: The whl package uses the `PP-OCRv3` model by default, and the input shape used by the recognition model is `3,48,320`, so if you use the recognition function, you need to add the parameter `--rec_image_shape 3,48,320`, if you do not use the default `PP- OCRv3` model, you do not need to set this parameter.
-
 * detection classification and recognition
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --use_angle_cls true --lang en --rec_image_shape 3,48,320
+paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --use_angle_cls true --lang en
 ```
 
 Output will be a list, each item contains bounding box, text and recognition confidence
@@ -189,7 +187,7 @@ Output will be a list, each item contains bounding box, text and recognition con
 
 * detection and recognition
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --lang en --rec_image_shape 3,48,320
+paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --lang en
 ```
 
 Output will be a list, each item contains bounding box, text and recognition confidence
@@ -202,7 +200,7 @@ Output will be a list, each item contains bounding box, text and recognition con
 
 * classification and recognition
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --use_angle_cls true --det false --lang en --rec_image_shape 3,48,320
+paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --use_angle_cls true --det false --lang en
 ```
 
 Output will be a list, each item contains text and recognition confidence
@@ -225,7 +223,7 @@ Output will be a list, each item only contains bounding box
 
 * only recognition
 ```bash
-paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --det false --lang en --rec_image_shape 3,48,320
+paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --det false --lang en
 ```
 
 Output will be a list, each item contains text and recognition confidence
@@ -368,4 +366,4 @@ im_show.save('result.jpg')
 | cls                     | Enable classification when `ppocr.ocr` func exec((Use use_angle_cls in command line mode to control whether to start classification in the forward direction)                                                                                                                                                                                                   | FALSE                    |
 | show_log                     | Whether to print log| FALSE                    |
 | type                     | Perform ocr or table structuring, the value is selected in ['ocr','structure']                                                                                                                                                                                             | ocr                    |
-| ocr_version                     | OCR Model version number, the current model support list is as follows: PP-OCRv3 support Chinese and English detection and recognition model and direction classifier model, PP-OCRv2 support Chinese detection and recognition model, PP-OCR support Chinese detection, recognition and direction classifier, multilingual recognition model | PP-OCRv3                 |
+| ocr_version                     | OCR Model version number, the current model support list is as follows: PP-OCRv3 supports Chinese and English detection, recognition, multilingual recognition, direction classifier models, PP-OCRv2 support Chinese detection and recognition model, PP-OCR support Chinese detection, recognition and direction classifier, multilingual recognition model | PP-OCRv3                 |

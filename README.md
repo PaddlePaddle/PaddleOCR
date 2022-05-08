@@ -30,8 +30,6 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
 
 PaddleOCR support a variety of cutting-edge algorithms related to OCR, and developed industrial featured models/solution [PP-OCR](./doc/doc_en/ppocr_introduction_en.md) and [PP-Structure](./ppstructure/README.md) on this basis, and get through the whole process of data production, model training, compression, inference and deployment.
 
-PaddleOCR also supports metric and model logging during training to [VisualDL](https://www.paddlepaddle.org.cn/documentation/docs/en/guides/03_VisualDL/visualdl_usage_en.html) and [Weights & Biases](https://docs.wandb.ai/).
-
 ![](./doc/features_en.png)
 
 > It is recommended to start with the “quick experience” in the document tutorial
