@@ -28,7 +28,7 @@ PP-OCRv3在PP-OCRv2的基础上进一步升级。整体的框架图保持了与P
 
 - 识别模块：
     - SVTR_LCNet：轻量级文本识别网络；
-    - GTC：Attention损失指导CTC损失训练策略；
+    - GTC：Attention指导CTC训练策略；
     - TextConAug：挖掘文字上下文信息的数据增广策略；
     - TextRotNet：自监督的预训练模型；
     - UDML：联合互学习策略；
@@ -97,11 +97,6 @@ PP-OCRv3的识别模块是基于文本识别算法[SVTR](https://arxiv.org/abs/2
     <img src="../ppocr_v3/v3_rec_pipeline.png" width=800>
 </div>
 
-消融实验如下表所示：
-
-上图中，蓝色方块中列举了PP-OCRv3识别模型的6个主要模块。首先在模块①，将base模型从CRNN替换为精度更高的单一视觉模型[SVTR](https://arxiv.org/abs/2205.00159)，并进行一系列的结构优化进行加速，得到全新的轻量级文本识别网络SVTR_LCNet（如图中红色虚线框所示）；在模块②，借鉴[GTC](https://arxiv.org/pdf/2002.01276.pdf)策略，引入Attention指导CTC训练，进一步提升模型精度；在模块③，使用基于上下文信息的数据增广策略TextConAug，丰富训练数据上下文信息，提升训练数据多样性；在模块④，使用TextRotNet训练自监督的预训练模型，充分利用无标注识别数据的信息；模块⑤基于PP-OCRv2中提出的UDML蒸馏策略进行蒸馏学习，除计算2个模型的CTC分支的DMLLoss外，也计算2个模型的Attention分支之间的DMLLoss，从而得到更优模型；在模块⑥中，基于UIM无标注数据挖掘方法，使用效果好但速度相对较慢的SVTR_tiny模型进行无标签数据挖掘，为模型训练增加更多真实数据。
-
-
 基于上述策略，PP-OCRv3识别模型相比PP-OCRv2，在速度可比的情况下，精度进一步提升4.6%。 具体消融实验如下所示：
 
 | ID | 策略 |  模型大小 | 精度 | 预测耗时（CPU + MKLDNN)|
@@ -158,7 +153,7 @@ SVTR_Tiny 网络结构如下所示：
 
 注： 测试速度时，01-05输入图片尺寸均为(3,32,320)； PP-OCRv2-baseline 代表没有借助蒸馏方法训练得到的模型
 
-**（2）GTC：Attention损失指导CTC损失训练策略**
+**（2）GTC：Attention指导CTC训练策略**
 
 [GTC](https://arxiv.org/pdf/2002.01276.pdf)（Guided Training of CTC），利用Attention模块以及损失，指导CTC损失训练，融合多种文本特征的表达，是一种有效的提升文本识别的策略。使用该策略，预测时完全去除 Attention 模块，在推理阶段不增加任何耗时，识别模型的准确率进一步提升到75.8%（+1.82%）。训练流程如下所示：
 <div align="center">
