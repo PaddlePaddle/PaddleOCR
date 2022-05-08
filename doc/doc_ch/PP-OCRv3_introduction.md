@@ -155,7 +155,7 @@ SVTR_Tiny 网络结构如下所示：
 
 **（2）GTC：Attention指导CTC训练策略**
 
-[GTC](https://arxiv.org/pdf/2002.01276.pdf)（Guided Training of CTC），利用Attention模块以及损失，指导CTC损失训练，融合多种文本特征的表达，是一种有效的提升文本识别的策略。使用该策略，预测时完全去除 Attention 模块，在推理阶段不增加任何耗时，识别模型的准确率进一步提升到75.8%（+1.82%）。训练流程如下所示：
+[GTC](https://arxiv.org/pdf/2002.01276.pdf)（Guided Training of CTC），利用Attention模块CTC训练，融合多种文本特征的表达，是一种有效的提升文本识别的策略。使用该策略，预测时完全去除 Attention 模块，在推理阶段不增加任何耗时，识别模型的准确率进一步提升到75.8%（+1.82%）。训练流程如下所示：
 <div align="center">
     <img src="../ppocr_v3/GTC.png" width=800>
 </div>
