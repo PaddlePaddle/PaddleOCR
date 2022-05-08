@@ -1,2 +1,3 @@
 pyqt5
 paddleocr
+xlrd==1.2.0

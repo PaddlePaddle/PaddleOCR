@@ -8,9 +8,9 @@ PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field, w
 
 ### Recent Update
 
-- 2022.02：（by [PeterH0323](https://github.com/peterh0323) ）
+- 2022.05: Add table annotations, follow `2.2 Table Annotations` for more information （by [whjdark](https://github.com/peterh0323); [Evezerest](https://github.com/Evezerest))
+- 2022.02:（by [PeterH0323](https://github.com/peterh0323) ）
   - Add KIE Mode by using `--kie`, for [detection + identification + keyword extraction] labeling.
-- 2022.01：（by [PeterH0323](https://github.com/peterh0323) ）
   - Improve user experience: prompt for the number of files and labels, optimize interaction, and fix bugs such as only use CPU when inference
   - New functions: Support using `C` or `X` to rotate box.
 - 2021.11.17:
@@ -115,7 +115,7 @@ pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl
 
 2. Click 'Open Dir' in Menu/File to select the folder of the picture.<sup>[1]</sup>
 
-3. Click 'Auto recognition', use PPOCR model to automatically annotate images which marked with 'X' <sup>[2]</sup>before the file name.
+3. Click 'Auto recognition', use PP-OCR model to automatically annotate images which marked with 'X' <sup>[2]</sup>before the file name.
 
 4. Create Box:
 
@@ -131,11 +131,27 @@ pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl
 
 8. **Click "Check", the image status will switch to "√",then the program automatically jump to the next.**
 
-9. Click "Delete Image" and the image will be deleted to the recycle bin.
+9. Click "Delete Image", and the image will be deleted to the recycle bin.
 
 10. Labeling result: the user can export the label result manually through the menu "File - Export Label", while the program will also export automatically if "File - Auto export Label Mode" is selected. The manually checked label will be stored in *Label.txt* under the opened picture folder. Click "File"-"Export Recognition Results" in the menu bar, the recognition training data of such pictures will be saved in the *crop_img* folder, and the recognition label will be saved in *rec_gt.txt*<sup>[4]</sup>.
 
-### 2.2 Note
+### 2.2 Table Annotation
+The table annotation is aimed at extracting the structure of the table in a picture and converting it to Excel format, 
+so the annotation needs to be done simultaneously with external software to edit Excel.
+In PPOCRLabel, complete the text information labeling (text and position), complete the table structure information 
+labeling in the Excel file, the recommended steps are:
+
+1. Table annotation: After opening the table picture, click on the `Table Recognition` button in the upper right corner of PPOCRLabel, which will call the table recognition model in PP-Structure to automatically label 
+the table and pop up Excel at the same time.
+   
+2. Change the recognition result: **label each cell** (i.e. the text in a cell is marked as a box). Right click on the box and click on `Cell Re-recognition`. 
+   You can use the model to automatically recognise the text within a cell.
+   
+3. Mark the table structure: for each cell contains the text, **mark as any identifier (such as `1`) in Excel**, to ensure that the merged cell structure is same as the original picture.
+
+4. Export JSON format annotation: close all Excel files corresponding to table images, click `File`-`Export table JSON annotation` to obtain JSON annotation results.
+
+### 2.3 Note
 
 [1] PPOCRLabel uses the opened folder as the project. After opening the image folder, the picture will not be displayed in the dialog. Instead, the pictures under the folder will be directly imported into the program after clicking "Open Dir".
 
@@ -147,10 +163,10 @@ pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl
 
 |   File name   |                         Description                          |
 | :-----------: | :----------------------------------------------------------: |
-|   Label.txt   | The detection label file can be directly used for PPOCR detection model training. After the user saves 5 label results, the file will be automatically exported. It will also be written when the user closes the application or changes the file folder. |
+|   Label.txt   | The detection label file can be directly used for PP-OCR detection model training. After the user saves 5 label results, the file will be automatically exported. It will also be written when the user closes the application or changes the file folder. |
 | fileState.txt | The picture status file save the image in the current folder that has been manually confirmed by the user. |
 |  Cache.cach   |    Cache files to save the results of model recognition.     |
-|  rec_gt.txt   | The recognition label file, which can be directly used for PPOCR identification model training, is generated after the user clicks on the menu bar "File"-"Export recognition result". |
+|  rec_gt.txt   | The recognition label file, which can be directly used for PP-OCR identification model training, is generated after the user clicks on the menu bar "File"-"Export recognition result". |
 |   crop_img    | The recognition data, generated at the same time with *rec_gt.txt* |
 
 
@@ -163,7 +179,7 @@ pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl
 |--------------------------|--------------------------------------------------|
 | Ctrl + Shift + R         | Re-recognize all the labels of the current image |
 | W                        | Create a rect box                                |
-| Q                        | Create a four-points box                         |
+| Q                        | Create a multi-points box                         |
 | X                        | Rotate the box anti-clockwise                    |
 | C                        | Rotate the box clockwise                         |
 | Ctrl + E                 | Edit label of the selected box                   |
