@@ -126,6 +126,9 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
     - [General OCR Datasets(Chinese/English)](doc/doc_en/dataset/datasets_en.md)
     - [HandWritten_OCR_Datasets(Chinese)](doc/doc_en/dataset/handwritten_datasets_en.md)
     - [Various OCR Datasets(multilingual)](doc/doc_en/dataset/vertical_and_multilingual_datasets_en.md)
+    - [layout analysis](doc/doc_en/dataset/layout_datasets_en.md)
+    - [table recognition](doc/doc_en/dataset/table_datasets_en.md)
+    - [DocVQA](doc/doc_en/dataset/docvqa_datasets_en.md)
 - [Code Structure](./doc/doc_en/tree_en.md)
 - [Visualization](#Visualization)
 - [Community](#Community)
@@ -137,25 +140,31 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 
 <a name="Visualization"></a>
 ## Visualization [more](./doc/doc_en/visualization_en.md)
-- Chinese OCR model
+
+<details open>
+<summary>PP-OCRv2 Chinese model</summary>
 <div align="center">
     <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
     <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00015504.jpg" width="800">
     <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00056221.jpg" width="800">
     <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/rotate_00052204.jpg" width="800">
 </div>
+</details>
 
-- English OCR model
+<details open>
+<summary>PP-OCRv2 English model</summary>
 <div align="center">
     <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/img_12.jpg" width="800">
 </div>
+</details>
 
-- Multilingual OCR model
+<details open>
+<summary>PP-OCRv2 Multilingual model</summary>
 <div align="center">
     <img src="./doc/imgs_results/french_0.jpg" width="800">
     <img src="./doc/imgs_results/korean.jpg" width="800">
 </div>
-
+</details>
 
 <a name="language_requests"></a>
 ## Guideline for New Language Requests
