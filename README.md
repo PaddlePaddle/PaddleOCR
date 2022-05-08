@@ -17,6 +17,13 @@ English | [简体中文](README_ch.md)
 
 PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools that help users train better models and apply them into practice.
 
+<div align="center">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
+</div>
+
+<div align="center">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00018069.jpg" width="800">
+</div>
 
 ## Recent updates
 - 2022.5.9 release PaddleOCR v2.5, including:
