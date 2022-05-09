@@ -407,7 +407,7 @@ def main(args):
 
     logger.info(
         "In PP-OCRv3, rec_image_shape parameter defaults to '3, 48, 320', "
-        "if you are using an older PP-OCR, please set --rec_image_shape='3,32,320'"
+        "if you are using recognition model with PP-OCRv2 or an older version, please set --rec_image_shape='3,32,320"
     )
     # warmup 2 times
     if args.warmup:
