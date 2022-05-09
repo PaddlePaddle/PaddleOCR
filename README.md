@@ -31,8 +31,8 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
     - Release [PPOCRLabelv2](./PPOCRLabel): Add the annotation function for table recognition task, key information extraction task and irregular text image.
     - Release interactive e-book [*"Dive into OCR"*](./doc/doc_en/ocr_book_en.md), covers the cutting-edge theory and code practice of OCR full stack technology.
 - 2021.12.21 Release PaddleOCR [release/2.4](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.4)
-    - Release 1 text detection algorithm (PSENet), 3 text recognition algorithms (NRTR、SEED、SAR).
-    - Release 1 key information extraction algorithm (SDMGR, [tutorial](./ppstructure/docs/kie_en.md)) and 3 [DocVQA](./ppstructure/vqa) algorithms (LayoutLM, LayoutLMv2, LayoutXLM).
+    - Release 1 text detection algorithm ([PSENet](./doc/doc_en/algorithm_det_psenet_en.md)), 3 text recognition algorithms ([NRTR](./doc/doc_en/algorithm_rec_nrtr_en.md)、[SEED](./doc/doc_en/algorithm_rec_seed_en.md)、[SAR](./doc/doc_en/algorithm_rec_nrtr_en.md)).
+    - Release 1 key information extraction algorithm [SDMGR](./ppstructure/docs/kie_en.md) and 3 [DocVQA](./ppstructure/vqa) algorithms (LayoutLM, LayoutLMv2, LayoutXLM).
 - 2021.9.7 Release PaddleOCR [release/2.3](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.3)
     - Release [PP-OCRv2](./doc/doc_en/ppocr_introduction_en.md#pp-ocrv2). The inference speed of PP-OCRv2 is 220% higher than that of PP-OCR server in CPU device. The F-score of PP-OCRv2 is 7% higher than that of PP-OCR mobile.
 - 2021.8.3 Release PaddleOCR [release/2.2](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.2)
