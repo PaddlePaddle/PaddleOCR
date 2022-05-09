@@ -99,7 +99,7 @@ Considering that the features of some channels will be suppressed if the convolu
 <a name="3"></a>
 ## 3. Optimization for Text Recognition Model
 
-The recognition module of PP-OCRv3 is optimized based on the text recognition algorithm [SVTR](https://arxiv.org/abs/2205.00159). RNN is abandoned in SVTR, and the context information of the text line image is more effectively mined by introducing the Transformers structure, thereby improving the text recognition ability. 
+The recognition module of PP-OCRv3 is optimized based on the text recognition algorithm [SVTR](https://arxiv.org/abs/2205.00159). RNN is abandoned in SVTR, and the context information of the text line image is more effectively mined by introducing the Transformers structure, thereby improving the text recognition ability.
 
 The recognition accuracy of SVTR_inty outperforms PP-OCRv2 recognition model by 5.3%, while the prediction speed nearly 11 times slower. It takes nearly 100ms to predict a text line on CPU. Therefore, as shown in the figure below, PP-OCRv3 adopts the following six optimization strategies to accelerate the recognition model.
 
@@ -151,7 +151,7 @@ Due to the limited model structure supported by the MKLDNN acceleration library,
 3. The experiment found that the prediction speed of the Global Mixing Block is related to the shape of the input features. Therefore, after moving the position of the Global Mixing Block to the back of pooling layer, the accuracy dropped to 71.9%, and the speed surpassed the PP-OCRv2-baseline based on the CNN structure by 22%. The network structure is as follows:
 
 <div align="center">
-    <img src="../ppocr_v3/LCNet_SVTR.png" width=800>
+    <img src="../ppocr_v3/LCNet_SVTR_en.png" width=800>
 </div>
 
 The ablation experiments are as follows:
@@ -172,7 +172,7 @@ Note: When testing the speed, the input image shape of 01-05 are all (3, 32, 320
 [GTC](https://arxiv.org/pdf/2002.01276.pdf) (Guided Training of CTC), using the Attention module to guide the training of CTC to fuse multiple features is an effective strategy to improve text recognition accuracy. No more time-consuming is added in the inference process as the Attention module is completely removed during prediction. The accuracy of the recognition model is further improved to 75.8% (+1.82%). The training process is as follows:
 
 <div align="center">
-    <img src="../ppocr_v3/GTC.png" width=800>
+    <img src="../ppocr_v3/GTC_en.png" width=800>
 </div>
 
 **（3）TextConAug：Data Augmentation Strategy for Mining Text Context Information**
