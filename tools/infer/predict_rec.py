@@ -131,7 +131,7 @@ class TextRecognizer(object):
         padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
         padding_im[:, :, 0:resized_w] = resized_image
         return padding_im
-    
+
     def resize_norm_img_svtr(self, img, image_shape):
 
         imgC, imgH, imgW = image_shape
@@ -274,7 +274,7 @@ class TextRecognizer(object):
                 wh_ratio = w * 1.0 / h
                 max_wh_ratio = max(max_wh_ratio, wh_ratio)
             for ino in range(beg_img_no, end_img_no):
-               
+
                 if self.rec_algorithm == "SAR":
                     norm_img, _, _, valid_ratio = self.resize_norm_img_sar(
                         img_list[indices[ino]], self.rec_image_shape)
@@ -296,8 +296,8 @@ class TextRecognizer(object):
                     gsrm_slf_attn_bias2_list.append(norm_img[4])
                     norm_img_batch.append(norm_img[0])
                 elif self.rec_algorithm == "SVTR":
-                    norm_img = self.resize_norm_img_svtr(
-                        img_list[indices[ino]], self.rec_image_shape)
+                    norm_img = self.resize_norm_img_svtr(img_list[indices[ino]],
+                                                         self.rec_image_shape)
                     norm_img = norm_img[np.newaxis, :]
                     norm_img_batch.append(norm_img)
                 else:
@@ -405,9 +405,13 @@ def main(args):
     valid_image_file_list = []
     img_list = []
 
+    logger.info(
+        "In PP-OCRv3, rec_image_shape parameter defaults to '3, 48, 320', "
+        "if you are using an older PP-OCR, please set --rec_image_shape='3,32,320'"
+    )
     # warmup 2 times
     if args.warmup:
-        img = np.random.uniform(0, 255, [32, 320, 3]).astype(np.uint8)
+        img = np.random.uniform(0, 255, [48, 320, 3]).astype(np.uint8)
         for i in range(2):
             res = text_recognizer([img] * int(args.rec_batch_num))
 
