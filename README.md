@@ -18,7 +18,7 @@ English | [简体中文](README_ch.md)
 PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools that help users train better models and apply them into practice.
 
 <div align="center">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
+    <img src="./doc/imgs_results/PP-OCRv3/en/en_4.png" width="800">
 </div>
 
 <div align="center">
