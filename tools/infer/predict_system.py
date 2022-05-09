@@ -59,7 +59,7 @@ class TextSystem(object):
         for bno in range(bbox_num):
             cv2.imwrite(
                 os.path.join(output_dir,
-                             f"mg_crop_{bno+self.crop_image_res_index}.jpg"),
+                             f"mg_crop_{bno+self.crop_image_res_index}.jpg "),
                 img_crop_list[bno])
             logger.debug(f"{bno}, {rec_res[bno]}")
         self.crop_image_res_index += bbox_num
@@ -133,6 +133,9 @@ def main(args):
     os.makedirs(draw_img_save_dir, exist_ok=True)
     save_results = []
 
+    logger.info("In PP-OCRv3, rec_image_shape parameter defaults to '3, 48, 320', "
+                "if you are using an older PP-OCR, please set --rec_image_shape='3,32,320'")
+                
     # warm up 10 times
     if args.warmup:
         img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
