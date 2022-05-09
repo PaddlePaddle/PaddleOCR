@@ -20,6 +20,10 @@
 
 
 ## 资料地址
-- 中文版电子书下载请扫描首页二维码入群后领取
 - [notebook教程](../../notebook/notebook_ch/)
 - [教学视频](https://aistudio.baidu.com/aistudio/education/group/info/25207)
+- 中文版电子书下载请扫描以下二维码入群后领取
+<div align="center">
+<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "200" height = "200" />
+</div>
+
