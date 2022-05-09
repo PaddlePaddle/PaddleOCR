@@ -2,7 +2,7 @@
 
 **Recent Update**
 
-- 2022.5.8 update `PP-OCRv3` detection and recognition
+- 2022.5.8 update the `PP-OCRv3` version of the multi-language detection and recognition model, and the average recognition accuracy has increased by more than 5%.
 - 2021.4.9 supports the detection and recognition of 80 languages
 - 2021.4.9 supports **lightweight high-precision** English model detection and recognition
 
