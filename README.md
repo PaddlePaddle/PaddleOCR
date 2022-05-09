@@ -18,11 +18,11 @@ English | [简体中文](README_ch.md)
 PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools that help users train better models and apply them into practice.
 
 <div align="center">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
+    <img src="./doc/imgs_results/PP-OCRv3/en/en_4.png" width="800">
 </div>
 
 <div align="center">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00018069.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00006737.jpg" width="800">
 </div>
 
 ## Recent updates
@@ -149,27 +149,27 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 ## Visualization [more](./doc/doc_en/visualization_en.md)
 
 <details open>
-<summary>PP-OCRv2 Chinese model</summary>
+<summary>PP-OCRv3 Chinese model</summary>
 <div align="center">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00015504.jpg" width="800">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00056221.jpg" width="800">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/rotate_00052204.jpg" width="800">
+    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic001.jpg" width="800">
+    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic002.jpg" width="800">
+    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic003.jpg" width="800">
 </div>
 </details>
 
 <details open>
-<summary>PP-OCRv2 English model</summary>
+<summary>PP-OCRv3 English model</summary>
 <div align="center">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/img_12.jpg" width="800">
+    <img src="doc/imgs_results/PP-OCRv3/en/en_1.png" width="800">
+    <img src="doc/imgs_results/PP-OCRv3/en/en_2.png" width="800">
 </div>
 </details>
 
 <details open>
-<summary>PP-OCRv2 Multilingual model</summary>
+<summary>PP-OCRv3 Multilingual model</summary>
 <div align="center">
-    <img src="./doc/imgs_results/french_0.jpg" width="800">
-    <img src="./doc/imgs_results/korean.jpg" width="800">
+    <img src="doc/imgs_results/PP-OCRv3/multi_lang/japan_2.jpg" width="800">
+    <img src="doc/imgs_results/PP-OCRv3/multi_lang/korean_1.jpg" width="800">
 </div>
 </details>
 
