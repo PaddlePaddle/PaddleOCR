@@ -62,15 +62,11 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 ## Community
 
 - **Join us**👬: Scan the QR code below with your Wechat, you can join the official technical discussion group. Looking forward to your participation.
-- **Contribution**🏅️: [Contribution page](./doc/doc_en/thirdparty.md) contains various tools and applications developed by community developers using PaddleOCR, as well as the functions, optimized documents and codes contributed to PaddleOCR. It is an official honor wall for community developers and a broadcasting station to help publicize high-quality projects.
-- **Regular Season**🎁: The community regular season is a point competition for OCR developers, covering four types: documents, codes, models and applications. Awards are selected and awarded on a quarterly basis. Please refer to the [link](https://github.com/PaddlePaddle/PaddleOCR/issues/4982) for more details.
 
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "200" height = "200" />
 </div>
-
-
 <a name="Supported-Chinese-model-list"></a>
 ## PP-OCR Series Model List（Update on September 8th）
 
