@@ -5,7 +5,7 @@ English | [简体中文](README_ch.md)
 PPOCRLabelv2 is a semi-automatic graphic annotation tool suitable for OCR field, with built-in PP-OCR model to automatically detect and re-recognize data. It is written in Python3 and PyQT5, supporting rectangular box, table, irregular text and key information annotation modes. Annotations can be directly used for the training of PP-OCR detection and recognition models.
 
 | regular text annotation                              | table annotation                                       |
-| --------------------------------------------------- | ---------------------------------------------- |
+| :-------------------------------------------------: | :--------------------------------------------: |
 | <img src="./data/gif/steps_en.gif" width="80%"/>    | <img src="./data/gif/table.gif" width="100%"/> |
 | **irregular text annotation**                        | **key information annotation**                               |
 | <img src="./data/gif/multi-point.gif" width="80%"/> | <img src="./data/gif/kie.gif" width="300%"/>   |
