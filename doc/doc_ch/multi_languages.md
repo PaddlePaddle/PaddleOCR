@@ -2,6 +2,7 @@
 
 **近期更新**
 
+- 2022.5.8 更新`PP-OCRv3`的检测和识别
 - 2021.4.9 支持**80种**语言的检测和识别
 - 2021.4.9 支持**轻量高精度**英文模型检测识别
 
@@ -254,7 +255,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 |英文|english|en| |乌克兰文|Ukranian|uk|
 |法文|french|fr| |白俄罗斯文|Belarusian|be|
 |德文|german|german| |泰卢固文|Telugu |te|
-|日文|japan|japan| | 阿巴扎文 | Abaza        | abq  |
+|日文|japan|japan| | 阿巴扎文 |Abaza | abq |
 |韩文|korean|korean| |泰米尔文|Tamil |ta|
 |中文繁体|chinese traditional |chinese_cht| |南非荷兰文 |Afrikaans |af|
 |意大利文| Italian |it| |阿塞拜疆文 |Azerbaijani    |az|
