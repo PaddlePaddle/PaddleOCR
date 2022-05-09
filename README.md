@@ -22,7 +22,7 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
 </div>
 
 <div align="center">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00018069.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00006737.jpg" width="800">
 </div>
 
 ## Recent updates
