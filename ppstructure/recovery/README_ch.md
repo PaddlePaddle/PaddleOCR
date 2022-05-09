@@ -3,7 +3,11 @@
 # 版面恢复使用说明
 
 - [1. 简介](#1)
-- [2. 使用](#2)
+- [2. 安装](#2)
+  - [2.1 安装依赖](#2.1)
+  - [2.2 安装PaddleOCR](#2.2)
+
+- [3. 使用](#3)
 
 
 <a name="1"></a>
@@ -17,10 +21,53 @@
 <div align="center">
 <img src="../docs/table/recovery.jpg"  width = "700" />
 </div>
-
 <a name="2"></a>
 
-## 2. 使用
+## 2. 安装
+
+<a name="2.1"></a>
+
+### 2.1 安装依赖
+
+- **（1) 安装PaddlePaddle**
+
+```bash
+python3 -m pip install --upgrade pip
+
+# GPU安装
+python3 -m pip install "paddlepaddle-gpu>=2.2" -i https://mirror.baidu.com/pypi/simple
+
+# CPU安装
+python3 -m pip install "paddlepaddle>=2.2" -i https://mirror.baidu.com/pypi/simple
+
+```
+
+更多需求，请参照[安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
+
+<a name="2.2"></a>
+
+### 2.2 安装PaddleOCR
+
+- **（1）下载版面恢复源码**
+
+```bash
+【推荐】git clone https://github.com/PaddlePaddle/PaddleOCR
+
+# 如果因为网络问题无法pull成功，也可选择使用码云上的托管：
+git clone https://gitee.com/paddlepaddle/PaddleOCR
+
+# 注：码云托管代码可能无法实时同步本github项目更新，存在3~5天延时，请优先使用推荐方式。
+```
+
+- **（2）安装recovery的`requirements`**
+
+```bash
+python3 -m pip install -r ppstructure/recovery/requirements.txt
+```
+
+<a name="3"></a>
+
+## 3. 使用
 
 恢复给定文档的版面：
 

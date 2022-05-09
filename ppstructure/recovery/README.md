@@ -2,7 +2,10 @@ English | [简体中文](README_ch.md)
 
 - [Getting Started](#getting-started)
   - [1.  Introduction](#1)
-  - [2. Quick Start](#2)
+  - [2. Install](#2)
+    - [2.1 Installation dependencies](#2.1)
+    - [2.2 Install PaddleOCR](#2.2)
+  - [3. Quick Start](#3)
 
 <a name="1"></a>
 
@@ -16,10 +19,53 @@ The following figure shows the result：
 <div align="center">
 <img src="../docs/table/recovery.jpg"  width = "700" />
 </div>
-
 <a name="2"></a>
 
-## 2. Quick Start
+## 2. Install
+
+<a name="2.1"></a>
+
+### 2.1 Install dependencies
+
+- **(1) Install PaddlePaddle**
+
+```bash
+python3 -m pip install --upgrade pip
+
+# GPU installation
+python3 -m pip install "paddlepaddle-gpu>=2.2" -i https://mirror.baidu.com/pypi/simple
+
+# CPU installation
+python3 -m pip install "paddlepaddle>=2.2" -i https://mirror.baidu.com/pypi/simple
+
+````
+
+For more requirements, please refer to the instructions in [Installation Documentation](https://www.paddlepaddle.org.cn/install/quick).
+
+<a name="2.2"></a>
+
+### 2.2 Install PaddleOCR
+
+- **(1) Download source code**
+
+```bash
+[Recommended] git clone https://github.com/PaddlePaddle/PaddleOCR
+
+# If the pull cannot be successful due to network problems, you can also choose to use the hosting on the code cloud:
+git clone https://gitee.com/paddlepaddle/PaddleOCR
+
+# Note: Code cloud hosting code may not be able to synchronize the update of this github project in real time, there is a delay of 3 to 5 days, please use the recommended method first.
+````
+
+- **(2) Install recovery's `requirements`**
+
+```bash
+python3 -m pip install -r ppstructure/recovery/requirements.txt
+````
+
+<a name="3"></a>
+
+## 3. Quick Start
 
 ```python
 cd PaddleOCR/ppstructure
