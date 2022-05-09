@@ -17,5 +17,5 @@
 
 ## Address
 - [E-book: *Dive Into OCR* (link generating)]()
-- [Jupyter notebook](../../notebook/notebook_ch/)
+- [Jupyter notebook](../../notebook/notebook_en/)
 - [videos (Chinese only)](https://aistudio.baidu.com/aistudio/education/group/info/25207)
