@@ -43,8 +43,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - 发布OCR产业落地工具集：打通22种训练部署软硬件环境与方式，覆盖企业90%的训练部署环境需求；
     - 发布交互式OCR开源电子书[《动手学OCR》](./doc/doc_ch/ocr_book.md)，覆盖OCR全栈技术的前沿理论与代码实践，并配套教学视频。
 - 2021.12.21 发布PaddleOCR [release/2.4](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.4)
-    - OCR算法新增1种文本检测算法（PSENet），3种文本识别算法（NRTR、SEED、SAR）；
-    - 文档结构化算法新增1种关键信息提取算法（SDMGR，[文档](./ppstructure/docs/kie.md)），3种DocVQA算法（LayoutLM、LayoutLMv2，LayoutXLM，[文档](./ppstructure/vqa)）。
+    - OCR算法新增1种文本检测算法（[PSENet](./doc/doc_ch/algorithm_det_psenet.md)），3种文本识别算法（[NRTR](./doc/doc_ch/algorithm_rec_nrtr.md)、[SEED](./doc/doc_ch/algorithm_rec_seed.md)、[SAR](./doc/doc_ch/algorithm_rec_sar.md)）；
+    - 文档结构化算法新增1种关键信息提取算法（[SDMGR](./ppstructure/docs/kie.md)），3种[DocVQA](./ppstructure/vqa)算法（LayoutLM、LayoutLMv2，LayoutXLM）。
 - 2021.9.7 发布PaddleOCR [release/2.3](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.3)
     - 发布[PP-OCRv2](./doc/doc_ch/ppocr_introduction.md#pp-ocrv2)，CPU推理速度相比于PP-OCR server提升220%；效果相比于PP-OCR mobile 提升7%。
 - 2021.8.3 发布PaddleOCR [release/2.2](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.2)
