@@ -71,38 +71,28 @@ PP-OCRv3系统pipeline如下：
 ## 4. 效果展示 [more](./visualization.md)
 
 <details open>
-<summary>PP-OCRv2 中文模型</summary>
-
+<summary>PP-OCRv3 中文模型</summary>
 <div align="center">
-      <img src="../imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
-      <img src="../imgs_results/ch_ppocr_mobile_v2.0/00018069.jpg" width="800">
+    <img src="../imgs_results/PP-OCRv3/ch/PP-OCRv3-pic001.jpg" width="800">
+    <img src="../imgs_results/PP-OCRv3/ch/PP-OCRv3-pic002.jpg" width="800">
+    <img src="../imgs_results/PP-OCRv3/ch/PP-OCRv3-pic003.jpg" width="800">
 </div>
-<div align="center">
-    <img src="../imgs_results/ch_ppocr_mobile_v2.0/00056221.jpg" width="800">
-    <img src="../imgs_results/ch_ppocr_mobile_v2.0/rotate_00052204.jpg" width="800">
-</div>
-
 </details>
 
-
 <details open>
-<summary>PP-OCRv2 英文模型</summary>
-
+<summary>PP-OCRv3 英文模型</summary>
 <div align="center">
-    <img src="../imgs_results/ch_ppocr_mobile_v2.0/img_12.jpg" width="800">
+    <img src="../imgs_results/PP-OCRv3/en/en_1.png" width="800">
+    <img src="../imgs_results/PP-OCRv3/en/en_2.png" width="800">
 </div>
-
 </details>
 
-
 <details open>
-<summary>PP-OCRv2 其他语言模型</summary>
-
+<summary>PP-OCRv3 多语言模型</summary>
 <div align="center">
-    <img src="../imgs_results/french_0.jpg" width="800">
-    <img src="../imgs_results/korean.jpg" width="800">
+    <img src="../imgs_results/PP-OCRv3/multi_lang/japan_2.jpg" width="800">
+    <img src="../imgs_results/PP-OCRv3/multi_lang/korean_1.jpg" width="800">
 </div>
-
 </details>
 
 

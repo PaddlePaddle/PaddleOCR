@@ -87,6 +87,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 更多模型下载（包括多语言），可以参考[PP-OCR 系列模型下载](./doc/doc_ch/models_list.md)，文档分析相关模型参考[PP-Structure 系列模型下载](./ppstructure/docs/models_list.md)
 
 
+<a name="文档教程"></a>
 ## 文档教程
 
 - [运行环境准备](./doc/doc_ch/environment.md)
