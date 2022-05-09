@@ -61,7 +61,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 <a name="开源社区"></a>
 ## 开源社区
 
-- **加入社区👬：**微信扫描二维码并填写问卷之后，加入交流群领取福利
+- **加入社区👬：** 微信扫描二维码并填写问卷之后，加入交流群领取福利
   - **获取5月11-13日每晚20:30《OCR超强技术详解与产业应用实战》的直播课链接**
   - **10G重磅OCR学习大礼包：**《动手学OCR》电子书，配套讲解视频和notebook项目；66篇OCR相关顶会前沿论文打包放送，包括CVPR、AAAI、IJCAI、ICCV等；PaddleOCR历次发版直播课视频；OCR社区优秀开发者项目分享视频。
 
@@ -87,6 +87,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 更多模型下载（包括多语言），可以参考[PP-OCR 系列模型下载](./doc/doc_ch/models_list.md)，文档分析相关模型参考[PP-Structure 系列模型下载](./ppstructure/docs/models_list.md)
 
 
+<a name="文档教程"></a>
 ## 文档教程
 
 - [运行环境准备](./doc/doc_ch/environment.md)
