@@ -1471,7 +1471,7 @@ class MainWindow(QMainWindow):
         # box['ratio'] of the shapes saved in lockedShapes contains the ratio of the
         # four corner coordinates of the shapes to the height and width of the image
         for box in self.canvas.lockedShapes:
-            key_cls = None if not self.kie_mode else box['key_cls']
+            key_cls = 'None' if not self.kie_mode else box['key_cls']
             if self.canvas.isInTheSameImage:
                 shapes.append((box['transcription'], [[s[0] * width, s[1] * height] for s in box['ratio']],
                                DEFAULT_LOCK_COLOR, key_cls, box['difficult']))
@@ -1480,7 +1480,7 @@ class MainWindow(QMainWindow):
                                DEFAULT_LOCK_COLOR, key_cls, box['difficult']))
         if imgidx in self.PPlabel.keys():
             for box in self.PPlabel[imgidx]:
-                key_cls = None if not self.kie_mode else box.get('key_cls', 'None')
+                key_cls = 'None' if not self.kie_mode else box.get('key_cls', 'None')
                 shapes.append((box['transcription'], box['points'], None, key_cls, box.get('difficult', False)))
 
         self.loadLabels(shapes)
@@ -2266,7 +2266,7 @@ class MainWindow(QMainWindow):
                     rec_res = self.ocr.ocr(patch, det=False, rec=True, cls=False)
                     text = rec_res[0][0]
                     if text != '':
-                        texts += text + (' ' if text[0].isalpha() else '') # add space between english word
+                        texts += text + ('' if text[0].isalpha() else ' ') # add space between english word
                         probs += rec_res[0][1]
                 probs = probs / len(bboxes)
             result = [(texts.strip(), probs)]
