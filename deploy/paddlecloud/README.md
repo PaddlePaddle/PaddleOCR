@@ -7,7 +7,7 @@
 ## 云上飞桨部署工具的优势
 
 <div align="center">
-  <img src="./images/paddlecloud.png" title="architecture" width="60%" height="60%" alt="">
+  <img src="./images/paddlecloud.png" title="architecture" width="80%" height="80%" alt="">
 </div>
 
 - **模型套件Docker镜像大礼包。**
