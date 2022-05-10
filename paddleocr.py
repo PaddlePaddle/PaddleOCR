@@ -48,7 +48,7 @@ __all__ = [
 
 SUPPORT_DET_MODEL = ['DB']
 VERSION = '2.5.0.1'
-SUPPORT_REC_MODEL = ['CRNN']
+SUPPORT_REC_MODEL = ['CRNN', 'SVTR_LCNet']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
 DEFAULT_OCR_MODEL_VERSION = 'PP-OCRv3'
