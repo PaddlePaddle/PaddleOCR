@@ -22,6 +22,7 @@ from paddle import nn
 from paddlenlp.transformers import LayoutXLMModel, LayoutXLMForTokenClassification, LayoutXLMForRelationExtraction
 from paddlenlp.transformers import LayoutLMModel, LayoutLMForTokenClassification
 from paddlenlp.transformers import LayoutLMv2Model, LayoutLMv2ForTokenClassification, LayoutLMv2ForRelationExtraction
+from paddlenlp.transformers import LayoutXLMForSequenceClassification
 
 __all__ = ["LayoutXLMForSer", 'LayoutLMForSer']
 
@@ -112,6 +113,30 @@ class LayoutXLMForSer(NLPBaseModel):
         super(LayoutXLMForSer, self).__init__(
             LayoutXLMModel,
             LayoutXLMForTokenClassification,
+            'ser',
+            pretrained,
+            checkpoints,
+            num_classes=num_classes)
+
+    def forward(self, x):
+        x = self.model(
+            input_ids=x[0],
+            bbox=x[2],
+            image=x[3],
+            attention_mask=x[4],
+            token_type_ids=x[5],
+            position_ids=None,
+            head_mask=None,
+            labels=None)
+        return x[0]
+
+
+class LayoutXLMForSeqSer(NLPBaseModel):
+    def __init__(self, num_classes, pretrained=True, checkpoints=None,
+                 **kwargs):
+        super(LayoutXLMForSeqSer, self).__init__(
+            LayoutXLMModel,
+            LayoutXLMForSequenceClassification,
             'ser',
             pretrained,
             checkpoints,

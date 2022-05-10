@@ -13,7 +13,7 @@
 # limitations under the License.
 import numpy as np
 import paddle
-from ppocr.utils.utility import load_vqa_bio_label_maps
+from ppocr.utils.utility import load_vqa_bio_label_maps, load_vqa_seq_label_maps
 
 
 class VQASerTokenLayoutLMPostProcess(object):
@@ -89,5 +89,57 @@ class VQASerTokenLayoutLMPostProcess(object):
                     pred_id = np.argmax(counts)
                 ocr_info[idx]["pred_id"] = int(pred_id)
                 ocr_info[idx]["pred"] = self.id2label_map_for_show[int(pred_id)]
+            results.append(ocr_info)
+        return results
+
+
+class VQASeqSerTokenLayoutLMPostProcess(object):
+    """ Convert between text-label and text-index """
+
+    def __init__(self, class_path, **kwargs):
+        super(VQASeqSerTokenLayoutLMPostProcess, self).__init__()
+        self.label2id_map, self.id2label_map = load_vqa_seq_label_maps(
+            class_path)
+
+    def __call__(self, preds, batch=None, *args, **kwargs):
+        if isinstance(preds, paddle.Tensor):
+            preds = preds.numpy()
+
+        if batch is not None:
+            return self._metric(preds, batch[1])
+        else:
+            return self._infer(preds, **kwargs)
+
+    def _metric(self, preds, label):
+        pred_idxs = preds.argmax(axis=2)
+        decode_out_list = []
+        label_decode_out_list = []
+
+        for i in range(pred_idxs.shape[0]):
+            for j in range(pred_idxs.shape[1]):
+                if label[i, j] != -100:
+                    label_decode_out_list.append(label[i, j])
+                    decode_out_list.append(pred_idxs[i, j])
+        return decode_out_list, label_decode_out_list
+
+    def _infer(self, preds, attention_masks, segment_offset_ids, ocr_infos):
+        results = []
+        for pred, attention_mask, segment_offset_id, ocr_info in zip(
+                preds, attention_masks, segment_offset_ids, ocr_infos):
+            pred = np.argmax(pred, axis=1)
+
+            for idx in range(len(segment_offset_id)):
+                if idx == 0:
+                    start_id = 0
+                else:
+                    start_id = segment_offset_id[idx - 1]
+
+                if start_id > len(pred) - 1:
+                    pred_id = 0
+                else:
+                    pred_id = pred[start_id]
+
+                ocr_info[idx]["pred_id"] = int(pred_id)
+                ocr_info[idx]["pred"] = self.id2label_map[int(pred_id)]
             results.append(ocr_info)
         return results
