@@ -58,7 +58,7 @@ Supported text recognition algorithms (Click the link to get the tutorial):
 - [x]  [NRTR](./algorithm_rec_nrtr_en.md)
 - [x]  [SAR](./algorithm_rec_sar_en.md)
 - [x]  [SEED](./algorithm_rec_seed_en.md)
-- [x]  [SVTR](./algorithm_rec_svtr.md)
+- [x]  [SVTR](./algorithm_rec_svtr_en.md)
 
 Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation result of these above text recognition (using MJSynth and SynthText for training, evaluate on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE) is as follow:
 
