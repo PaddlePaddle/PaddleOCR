@@ -1,6 +1,6 @@
 # E-book: *Dive Into OCR*
 
-"Dive Into OCR" is a textbook that combines OCR theory and practice, written by the PaddleOCR team, Chen Zhineng, a Junior Research Fellow at Fudan University, Huang Wenhui, a senior expert in the field of vision at China Mobile Research Institute, and other industry-university-research colleagues, as well as OCR developers. The main features are as follows:
+"Dive Into OCR" is a textbook that combines OCR theory and practice, written by the PaddleOCR team, Chen Zhineng, a Pre-tenure Professor at Fudan University, Huang Wenhui, a senior expert in the field of vision at China Mobile Research Institute, and other industry-university-research colleagues, as well as OCR developers. The main features are as follows:
 
 - OCR full-stack technology covering text detection, recognition and document analysis
 - Closely integrate theory and practice, cross the code implementation gap, and supporting instructional videos
