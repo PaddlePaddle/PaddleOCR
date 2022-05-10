@@ -40,7 +40,7 @@ The main features of PP-Structure are as follows:
 
 ### 4.1 Layout analysis and table recognition
 
-<img src="../doc/table/ppstructure.GIF" width="100%"/>
+<img src="docs/table/ppstructure.GIF" width="100%"/>
 
 The figure shows the pipeline of layout analysis + table recognition. The image is first divided into four areas of image, text, title and table by layout analysis, and then OCR detection and recognition is performed on the three areas of image, text and title, and the table is performed table recognition, where the image will also be stored for use.
 
@@ -48,7 +48,7 @@ The figure shows the pipeline of layout analysis + table recognition. The image 
 
 * SER
 *
-![](../doc/vqa/result_ser/zh_val_0_ser.jpg) | ![](../doc/vqa/result_ser/zh_val_42_ser.jpg)
+![](docs/vqa/result_ser/zh_val_0_ser.jpg) | ![](docs/vqa/result_ser/zh_val_42_ser.jpg)
 ---|---
 
 Different colored boxes in the figure represent different categories. For xfun dataset, there are three categories: query, answer and header:
@@ -62,7 +62,7 @@ The corresponding category and OCR recognition results are also marked at the to
 
 * RE
 
-![](../doc/vqa/result_re/zh_val_21_re.jpg) | ![](../doc/vqa/result_re/zh_val_40_re.jpg)
+![](docs/vqa/result_re/zh_val_21_re.jpg) | ![](docs/vqa/result_re/zh_val_40_re.jpg)
 ---|---
 
 
@@ -76,7 +76,7 @@ Start from [Quick Installation](./docs/quickstart.md)
 
 ### 6.1 Layout analysis and table recognition
 
-![pipeline](../doc/table/pipeline.jpg)
+![pipeline](docs/table/pipeline.jpg)
 
 In PP-Structure, the image will be divided into 5 types of areas **text, title, image list and table**. For the first 4 types of areas, directly use PP-OCR system to complete the text detection and recognition. For the table area, after the table structuring process, the table in image is converted into an Excel file with the same table style.
 

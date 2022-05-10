@@ -22,7 +22,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 </div>
 
 <div align="center">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00018069.jpg" width="800">
+    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00006737.jpg" width="800">
 </div>
 
 ## 近期更新
@@ -61,7 +61,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 <a name="开源社区"></a>
 ## 开源社区
 
-- **加入社区👬：**微信扫描二维码并填写问卷之后，加入交流群领取福利
+- **加入社区👬：** 微信扫描二维码并填写问卷之后，加入交流群领取福利
   - **获取5月11-13日每晚20:30《OCR超强技术详解与产业应用实战》的直播课链接**
   - **10G重磅OCR学习大礼包：**《动手学OCR》电子书，配套讲解视频和notebook项目；66篇OCR相关顶会前沿论文打包放送，包括CVPR、AAAI、IJCAI、ICCV等；PaddleOCR历次发版直播课视频；OCR社区优秀开发者项目分享视频。
 
@@ -87,6 +87,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 更多模型下载（包括多语言），可以参考[PP-OCR 系列模型下载](./doc/doc_ch/models_list.md)，文档分析相关模型参考[PP-Structure 系列模型下载](./ppstructure/docs/models_list.md)
 
 
+<a name="文档教程"></a>
 ## 文档教程
 
 - [运行环境准备](./doc/doc_ch/environment.md)
@@ -125,11 +126,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [文本识别算法](./doc/doc_ch/algorithm_overview.md#12-%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
     - [端到端算法](./doc/doc_ch/algorithm_overview.md#2-%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
     - [使用PaddleOCR架构添加新算法](./doc/doc_ch/add_new_algorithm.md)
-- [场景应用](./doc/doc_ch/application.md)
-    - [金融场景（表单/票据等）]()
-    - [工业场景（电表度数/车牌等）]()
-    - [教育场景（手写体/公式等）]()
-    - [医疗场景（化验单等）]()
+- [场景应用](./applications)
 - 数据标注与合成
     - [半自动标注工具PPOCRLabel](./PPOCRLabel/README_ch.md)
     - [数据合成工具Style-Text](./StyleText/README_ch.md)
@@ -158,36 +155,34 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## 效果展示 [more](./doc/doc_ch/visualization.md)
 
 <details open>
-<summary>PP-OCRv2 中文模型</summary>
+<summary>PP-OCRv3 中文模型</summary>
 
 <div align="center">
-      <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
-      <img src="doc/imgs_results/ch_ppocr_mobile_v2.0/00018069.jpg" width="800">
-</div>
-<div align="center">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00056221.jpg" width="800">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/rotate_00052204.jpg" width="800">
+    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic001.jpg" width="800">
+    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic002.jpg" width="800">
+    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic003.jpg" width="800">
 </div>
 
 </details>
 
 
 <details open>
-<summary>PP-OCRv2 英文模型</summary>
+<summary>PP-OCRv3 英文模型</summary>
 
 <div align="center">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/img_12.jpg" width="800">
+    <img src="doc/imgs_results/PP-OCRv3/en/en_1.png" width="800">
+    <img src="doc/imgs_results/PP-OCRv3/en/en_2.png" width="800">
 </div>
 
 </details>
 
 
 <details open>
-<summary>PP-OCRv2 其他语言模型</summary>
+<summary>PP-OCRv3 多语言模型</summary>
 
 <div align="center">
-    <img src="./doc/imgs_results/french_0.jpg" width="800">
-    <img src="./doc/imgs_results/korean.jpg" width="800">
+    <img src="doc/imgs_results/PP-OCRv3/multi_lang/japan_2.jpg" width="800">
+    <img src="doc/imgs_results/PP-OCRv3/multi_lang/korean_1.jpg" width="800">
 </div>
 
 </details>

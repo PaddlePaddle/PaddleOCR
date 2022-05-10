@@ -30,7 +30,7 @@ client.load_client_config(sys.argv[1:])
 client.connect(["127.0.0.1:9293"])
 
 import paddle
-test_img_dir = "test_img/"
+test_img_dir = "../../doc/imgs/"
 
 ocr_reader = OCRReader(char_dict_path="../../ppocr/utils/ppocr_keys_v1.txt")
 
@@ -45,8 +45,7 @@ for img_file in os.listdir(test_img_dir):
         image_data = file.read()
     image = cv2_to_base64(image_data)
     res_list = []
-    fetch_map = client.predict(
-        feed={"x": image}, fetch=["save_infer_model/scale_0.tmp_1"], batch=True)
+    fetch_map = client.predict(feed={"x": image}, fetch=[], batch=True)
     one_batch_res = ocr_reader.postprocess(fetch_map, with_score=True)
     for res in one_batch_res:
         res_list.append(res[0])

@@ -61,6 +61,11 @@ def init_args():
         type=str2bool,
         default=True,
         help='In the forward, whether the non-table area is recognition by ocr')
+    parser.add_argument(
+        "--recovery",
+        type=bool,
+        default=False,
+        help='Whether to enable layout of recovery')        
     return parser
 
 
