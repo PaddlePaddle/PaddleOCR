@@ -126,11 +126,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [文本识别算法](./doc/doc_ch/algorithm_overview.md#12-%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
     - [端到端算法](./doc/doc_ch/algorithm_overview.md#2-%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
     - [使用PaddleOCR架构添加新算法](./doc/doc_ch/add_new_algorithm.md)
-- [场景应用](./doc/doc_ch/application.md)
-    - [金融场景（表单/票据等）]()
-    - [工业场景（电表度数/车牌等）]()
-    - [教育场景（手写体/公式等）]()
-    - [医疗场景（化验单等）]()
+- [场景应用](./applications)
 - 数据标注与合成
     - [半自动标注工具PPOCRLabel](./PPOCRLabel/README_ch.md)
     - [数据合成工具Style-Text](./StyleText/README_ch.md)
