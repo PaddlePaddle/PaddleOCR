@@ -6,6 +6,10 @@
 
 ## 云上飞桨部署工具的优势
 
+<div align="center">
+  <img src="./images/paddlecloud.png" title="architecture" width="60%" height="60%" alt="">
+</div>
+
 - **模型套件Docker镜像大礼包。**
 
   PaddleCloud为用户提供了飞桨模型套件Docker镜像大礼包，这些镜像中包含运行模型套件案例的所有依赖并能持续更新，支持异构硬件环境和常见CUDA版本、开箱即用。
