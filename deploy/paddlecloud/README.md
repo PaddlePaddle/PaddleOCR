@@ -61,9 +61,10 @@ docker run --name ppocr --runtime=nvidia -v $PWD:/mnt -p 8888:8888 -it --shm-siz
 
 ### 1.3 准备训练数据
 
-本教程以HierText数据集为例，HierText是第一个具有自然场景和文档中文本分层注释的数据集。
-该数据集包含从 Open Images 数据集中选择的 11639 张图像，提供高质量的单词 (~1.2M)、行和段落级别的注释。
-我们已经将数据集上传到百度云对象存储（BOS），您可以通过运行如下指令，完成数据集的下载和解压操作：
+本教程以 [HierText](https://github.com/google-research-datasets/hiertext) 数据集为例，HierText是第一个具有自然场景和文档中文本分层注释的数据集。
+该数据集包含从 Open Images 数据集中选择的 11639 张图像，提供高质量的单词 (~1.2M)、行和段落级别的注释。值得注意的是该数据集的标注格式与ppocrlabel格式不一样，
+我们需要对其数据标签格式进行相应的转换，您可以从AI Studio中直接下载 [标签格式转换后的HierText数据集](https://aistudio.baidu.com/aistudio/datasetdetail/143700)。
+同时，我们也将数据集上传到了百度云对象存储（BOS），您可以通过运行如下指令，完成数据集的下载和解压操作：
 
 ```bash
 # 下载数据集
