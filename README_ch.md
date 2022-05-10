@@ -108,6 +108,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
         - [服务化部署](./deploy/pdserving/README_CN.md)
         - [端侧部署](./deploy/lite/readme.md)
         - [Paddle2ONNX模型转化与预测](./deploy/paddle2onnx/readme.md)
+        - [云上飞桨部署工具](./deploy/paddlecloud/README.md)
         - [Benchmark](./doc/doc_ch/benchmark.md)
 - [PP-Structure文档分析🔥](./ppstructure/README_ch.md)
     - [快速开始](./ppstructure/docs/quickstart.md)

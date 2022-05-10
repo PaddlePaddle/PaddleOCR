@@ -106,6 +106,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
         - [Serving](./deploy/pdserving/README.md)
         - [Mobile](./deploy/lite/readme.md)
         - [Paddle2ONNX](./deploy/paddle2onnx/readme.md)
+        - [PaddleCloud](./deploy/paddlecloud/README.md)
         - [Benchmark](./doc/doc_en/benchmark_en.md)  
 - [PP-Structure 🔥](./ppstructure/README.md)
     - [Quick Start](./ppstructure/docs/quickstart_en.md)
