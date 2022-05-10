@@ -38,16 +38,16 @@ PaddleCloud基于 [Tekton](https://github.com/tektoncd/pipeline) 为OCR模型套
 ### 1.1 安装Docker
 
 如果您所使用的机器上还没有安装 Docker，您可以参考 [Docker 官方文档](https://docs.docker.com/get-docker/) 来进行安装。
-如果您需要使用支持 GPU 版本的镜像，则还需安装好 NVIDIA 相关驱动和 nvidia-docker，
-详情请参考 [官方文档](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker) 。
+如果您需要使用支持 GPU 版本的镜像，则还需安装好NVIDIA相关驱动和 [nvidia-docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker) 。
 
-**注意**：如果您使用的是Windows系统，需要开启 WSL2（Linux子系统功能）功能，详情请参考 [Windows下安装Docker](https://docs.microsoft.com/en-us/windows/wsl/install)
+**注意**：如果您使用的是Windows系统，需要开启 [WSL2（Linux子系统功能）功能](https://docs.microsoft.com/en-us/windows/wsl/install)。
 
 ### 1.2 启动容器
 
 **使用CPU版本的Docker镜像**
 
 ```bash
+# 这是加上参数 --shm-size=32g 是为了防止容器里内存不足
 docker run --name ppocr -v $PWD:/mnt -p 8888:8888 -it --shm-size=32g paddlecloud/paddleocr:2.5-cpu-efbb0a /bin/bash
 ```
 
@@ -210,27 +210,13 @@ $ helm install pdc paddlecloud/paddlecloud --set tags.all-dep=true --namespace p
 # 检查所有云上飞桨组件是否成功启动，命名空间下的所有Pod都为Runing状态则安装成功。
 $ kubectl get pods -n paddlecloud
 NAME                                                 READY   STATUS    RESTARTS   AGE
-pdc-pipelines-cache-deployer-76b66bd87c-bnn82        1/1     Running   0          10h
-pdc-pipelines-metadata-envoy-78584b4b4b-7g74l        1/1     Running   0          10h
-pdc-pipelines-visualizationserver-56479cfd7-z66g2    1/1     Running   0          10h
-pdc-pipelines-crd-controller-6b547b8756-7gg4b        1/1     Running   0          10h
-pdc-pipelines-metadata-writer-dcffd9b9f-czl8l        1/1     Running   0          10h
 pdc-hostpath-5b6bd6787d-bxvxg                        1/1     Running   0          10h
-pdc-pipelines-scheduledworkflow-7f64688dbb-8tl7n     1/1     Running   0          10h
-pdc-pipelines-ui-58c946cdf8-dqmn9                    1/1     Running   0          10h
 juicefs-csi-node-pkldt                               3/3     Running   0          10h
-pdc-pipelines-viewer-crd-687dd4d85d-54fg2            1/1     Running   0          10h
-pdc-pipelines-workflow-controller-86bf97975c-jk662   1/1     Running   0          10h
-pdc-pipelines-cache-server-64c6b69c48-wmwf2          1/1     Running   0          10h
 juicefs-csi-controller-0                             3/3     Running   0          10h
 pdc-paddlecloud-sampleset-767bdf6947-pb6zm           1/1     Running   0          10h
 pdc-paddlecloud-paddlejob-7cc8b7bfc6-7gqnh           1/1     Running   0          10h
 pdc-minio-7cc967669d-824q5                           1/1     Running   0          10h
 pdc-redis-master-0                                   1/1     Running   0          10h
-pdc-mysql-0                                          1/1     Running   0          10h
-pdc-pipelines-persistenceagent-855f599ccf-57j9r      1/1     Running   1          10h
-pdc-pipelines-metadata-grpc-64cb468957-cpwgq         1/1     Running   3          10h
-pdc-pipelines-api-server-645784ff4d-vh527            1/1     Running   3          10h
 ```
 
 更多安装参数请参考[PaddleCloud安装指南](https://github.com/PaddlePaddle/PaddleCloud/blob/main/docs/zh_CN/installation.md)
@@ -266,6 +252,8 @@ spec:
   secretRef:
     name: data-center
 ```
+
+然后在命令行中，使用kubectl执行如下命令。
 
 ```bash
 # 创建hiertext数据集
@@ -348,5 +336,4 @@ $ kubectl logs -f ppocrv3-worker-0 -n paddlecloud
 ## 更多资源
 
 欢迎关注[云上飞桨项目PaddleCloud](https://github.com/PaddlePaddle/PaddleCloud)，我们为您提供了飞桨模型套件标准镜像以及全栈的云原生模型套件部署组件，如您有任何关于飞桨模型套件的部署问题，请联系我们。
-
-- 如果你发现任何PaddleCloud存在的问题或者是建议, 欢迎通过[GitHub Issues](https://github.com/PaddlePaddle/PaddleCloud/issues)给我们提issues。
+如果你发现任何PaddleCloud存在的问题或者是建议, 欢迎通过[GitHub Issues](https://github.com/PaddlePaddle/PaddleCloud/issues)给我们提issues。
