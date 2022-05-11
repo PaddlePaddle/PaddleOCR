@@ -54,6 +54,7 @@ PP-OCRv3检测模型是对PP-OCRv2中的[CML](https://arxiv.org/pdf/2109.03144.p
 |序号|策略|模型大小|hmean|速度（cpu + mkldnn)|
 |-|-|-|-|-|
 |baseline teacher|PP-OCR server|49M|83.2%|171ms|
+|baseline teacher|DB-R50|99M|83.5%|260ms|
 |teacher1|DB-R50-LK-PAN|124M|85.0%|396ms|
 |teacher2|DB-R50-LK-PAN-DML|124M|86.0%|396ms|
 |baseline student|PP-OCRv2|3M|83.2%|117ms|
