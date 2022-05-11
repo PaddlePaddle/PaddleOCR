@@ -15,8 +15,7 @@ PPOCRLabelv2 is a semi-automatic graphic annotation tool suitable for OCR field,
 - 2022.05: Add table annotations, follow `2.2 Table Annotations` for more information （by [whjdark](https://github.com/peterh0323); [Evezerest](https://github.com/Evezerest))
 - 2022.02:（by [PeterH0323](https://github.com/peterh0323) ）
   - Add KIE Mode by using `--kie`, for [detection + identification + keyword extraction] labeling.
-  - Improve user experience: prompt for the number of files and labels, optimize interaction, and fix bugs such as only use CPU when inference
-  - New functions: Support using `C` or `X` to rotate box.
+  - Improve user experience: support using `C` or `X` to rotate box, prompt for the number of files and labels, optimize interaction.
 - 2021.11.17:
   - Support install and start PPOCRLabel through the whl package (by [d2623587501](https://github.com/d2623587501))
   - Dataset segmentation: Divide the annotation file into training, verification and testing parts (refer to section 3.5 below, by [MrCuiHao](https://github.com/MrCuiHao))
