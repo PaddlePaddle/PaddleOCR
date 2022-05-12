@@ -438,10 +438,10 @@ class KieLabelEncode(object):
             texts.append(ann['transcription'])
             text_ind = [self.dict[c] for c in text if c in self.dict]
             text_inds.append(text_ind)
-            if 'label' in anno.keys():
+            if 'label' in ann.keys():
                 labels.append(ann['label'])
-            elif 'key_cls' in anno.keys():
-                labels.append(anno['key_cls'])
+            elif 'key_cls' in ann.keys():
+                labels.append(ann['key_cls'])
             else:
                 raise ValueError("Cannot found 'key_cls' in ann.keys(), please check your training annotation.")
             edges.append(ann.get('edge', 0))
