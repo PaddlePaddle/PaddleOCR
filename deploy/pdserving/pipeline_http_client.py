@@ -19,8 +19,16 @@ import base64
 import os
 
 import argparse
+
+
+def str2bool(v):
+    return v.lower() in ("true", "t", "1")
+
+
 parser = argparse.ArgumentParser(description="args for paddleserving")
 parser.add_argument("--image_dir", type=str, default="../../doc/imgs/")
+parser.add_argument("--det", type=str2bool, default=True)
+parser.add_argument("--rec", type=str2bool, default=True)
 args = parser.parse_args()
 
 
@@ -46,13 +54,17 @@ for idx, img_file in enumerate(os.listdir(test_img_dir)):
     # check success
     if result["err_no"] == 0:
         ocr_result = result["value"][0]
-        try:
-            for item in eval(ocr_result):
-                # return transcription and points
-                print("{}, {}".format(item[0], item[1]))
-        except Exception as e:
-            print("No results")
-            continue
+        if not args.det:
+            print(ocr_result)
+        else:
+            try:
+                for item in eval(ocr_result):
+                    # return transcription and points
+                    print("{}, {}".format(item[0], item[1]))
+            except Exception as e:
+                print(ocr_result)
+                print("No results")
+                continue
 
     else:
         print(
