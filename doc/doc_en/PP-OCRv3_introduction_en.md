@@ -55,11 +55,10 @@ The ablation experiments are as follows:
 
 |ID|Strategy|Model Size|Hmean|The Inference Time（cpu + mkldnn)|
 |-|-|-|-|-|
-|baseline teacher|PP-OCR server|49M|83.2%|171ms|
+|baseline teacher|DB-R50|99M|83.5%|260ms|
 |teacher1|DB-R50-LK-PAN|124M|85.0%|396ms|
 |teacher2|DB-R50-LK-PAN-DML|124M|86.0%|396ms|
 |baseline student|PP-OCRv2|3M|83.2%|117ms|
-|student0|DB-MV3-RSE-FPN|3.6M|84.5%|124ms|
 |student1|DB-MV3-CML（teacher2）|3M|84.3%|117ms|
 |student2|DB-MV3-RSE-FPN-CML（teacher2）|3.6M|85.4%|124ms|
 
