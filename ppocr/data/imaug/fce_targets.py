@@ -22,6 +22,9 @@ from numpy.fft import fft
 from numpy.linalg import norm
 import sys
 
+def vector_slope(vec):
+    assert len(vec) == 2
+    return abs(vec[1] / (vec[0] + 1e-8))
 
 class FCENetTargets:
     """Generate the ground truth targets of FCENet: Fourier Contour Embedding
@@ -233,9 +236,9 @@ class FCENetTargets:
             head_inds = [head_start, head_end]
             tail_inds = [tail_start, tail_end]
         else:
-            if self.vector_slope(points[1] - points[0]) + self.vector_slope(
-                    points[3] - points[2]) < self.vector_slope(points[
-                        2] - points[1]) + self.vector_slope(points[0] - points[
+            if vector_slope(points[1] - points[0]) + vector_slope(
+                    points[3] - points[2]) < vector_slope(points[
+                        2] - points[1]) + vector_slope(points[0] - points[
                             3]):
                 horizontal_edge_inds = [[0, 1], [2, 3]]
                 vertical_edge_inds = [[3, 0], [1, 2]]
