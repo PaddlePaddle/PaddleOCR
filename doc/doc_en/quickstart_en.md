@@ -28,13 +28,13 @@
 - If you have CUDA 9 or CUDA 10 installed on your machine, please run the following command to install
 
   ```bash
-  python3 -m pip install paddlepaddle-gpu -i https://mirror.baidu.com/pypi/simple
+  python3 -m pip install paddlepaddle-gpu
   ```
 
 - If you have no available GPU on your machine, please run the following command to install the CPU version
 
   ```bash
-  python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
+  python3 -m pip install paddlepaddle
   ```
 
 For more software version requirements, please refer to the instructions in [Installation Document](https://www.paddlepaddle.org.cn/install/quick) for operation.

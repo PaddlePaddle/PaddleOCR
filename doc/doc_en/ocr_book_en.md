@@ -17,5 +17,4 @@
 
 ## Address
 - [E-book: *Dive Into OCR* (link generating)]()
-- [Jupyter notebook](https://github.com/PaddlePaddle/PaddleOCR/tree/dygraph/notebook/notebook_en)
-- [videos (Chinese only)](https://aistudio.baidu.com/aistudio/education/group/info/25207)
+- [Videos and Jupyter notebook (Chinese only)](https://aistudio.baidu.com/aistudio/education/group/info/25207)

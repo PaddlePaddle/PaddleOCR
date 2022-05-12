@@ -54,9 +54,9 @@ Model distillation and model quantization can be used at the same time, taking t
 ```
 # download provided model
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar
-tar xf https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar
+tar xf ch_PP-OCRv3_det_distill_train.tar
 
-python deploy/slim/quantization/quant.py -c configs/det/ch_PP-OCRv3_det/ch_PP-OCRv3_det_cml.yml -o Global.pretrained_model='./ch_PP-OCRv3_det_distill_train/best_accuracy'   Global.save_model_dir=./output/quant_model_distill/
+python deploy/slim/quantization/quant.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml -o Global.pretrained_model='./ch_PP-OCRv3_det_distill_train/best_accuracy'   Global.save_model_dir=./output/quant_model_distill/
 ```
 
 If you want to quantify the text recognition model, you can modify the configuration file and loaded model parameters.
