@@ -2322,13 +2322,6 @@ class MainWindow(QMainWindow):
                     else:
                         labeldict[file] = []
 
-        # if len(labeldict) != len(csv_paths):
-        #     msg = 'ERROR, box label and excel label are not in the same number\n' + \
-        #           'box label: ' + str(len(labeldict)) + '\n' + \
-        #           'excel label: ' + str(len(csv_paths)) + '\n' + \
-        #           'Please check the label.txt and tableRec_excel_output\n'
-        #     QMessageBox.information(self, "Information", msg)
-        #     return
         train_split, val_split, test_split = partitionDialog.getDataPartition()
         # check validate
         if train_split + val_split + test_split > 100:
@@ -2351,14 +2344,8 @@ class MainWindow(QMainWindow):
             filename, _ = os.path.splitext(os.path.basename(image_path))
             csv_path = os.path.join(TableRec_excel_dir, filename + '.xlsx')
             if not os.path.exists(csv_path):
-                msg = 'ERROR, Can not find ' + csv_path
-                QMessageBox.information(self, "Information", msg)
-                return
+                continue
 
-            # read xlsx file, convert to HTML
-            # xd = pd.ExcelFile(csv_path)
-            # df = xd.parse()
-            # structure = df.to_html(index = False)
             excel = xlrd.open_workbook(csv_path)
             sheet0 = excel.sheet_by_index(0)  # only sheet 0
             merged_cells = sheet0.merged_cells # (0,1,1,3) start row, end row, start col, end col
@@ -2369,7 +2356,6 @@ class MainWindow(QMainWindow):
                 html_list = expand_list(merged, html_list)
 
             token_list = convert_token(html_list)
-
 
             # load box annotations
             cells = []
