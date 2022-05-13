@@ -1,5 +1,5 @@
 ===========================cpp_infer_params===========================
-model_name:ocr_rec_v3.0
+model_name:ocr_rec_v3
 use_opencv:True
 infer_model:./inference/ch_PP-OCRv3_rec_infer/
 infer_quant:False

@@ -364,11 +364,11 @@ if [ ${MODE} = "cpp_infer" ];then
         wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar  --no-check-certificate
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar  --no-check-certificate
         cd ./inference && tar xf ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_det_data_50.tar && cd ../
-    elif [ ${model_name} = "ocr_det_v3.0" ]; then
+    elif [ ${model_name} = "ocr_det_v3" ]; then
         wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar  --no-check-certificate
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar  --no-check-certificate
         cd ./inference && tar xf ch_PP-OCRv3_det_infer.tar && tar xf ch_det_data_50.tar && cd ../
-    elif [ ${model_name} = "ocr_rec_v3.0" ]; then
+    elif [ ${model_name} = "ocr_rec_v3" ]; then
         wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/rec_inference.tar  --no-check-certificate
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar  --no-check-certificate
         cd ./inference && tar xf ch_PP-OCRv3_rec_infer.tar && tar xf rec_inference.tar && cd ../
@@ -381,7 +381,7 @@ if [ ${MODE} = "cpp_infer" ];then
         wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar  --no-check-certificate
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar  --no-check-certificate
         cd ./inference && tar xf ch_ppocr_mobile_v2.0_det_infer.tar && tar xf ch_ppocr_mobile_v2.0_rec_infer.tar && tar xf ch_det_data_50.tar && cd ../
-    elif  [ ${model_name} = "ocr_system_v3.0" ]; then
+    elif  [ ${model_name} = "ocr_system_v3" ]; then
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar  --no-check-certificate
         wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar  --no-check-certificate
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar  --no-check-certificate
