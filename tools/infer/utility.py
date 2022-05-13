@@ -272,10 +272,10 @@ def create_predictor(args, mode, logger):
                 if args.rec_algorithm not in ["CRNN", "SVTR_LCNet"]:
                     use_dynamic_shape = False
                 imgH = int(args.rec_image_shape.split(',')[-2])
-                min_input_shape = {"x": [1, 3, imgH, 10], }
-                max_input_shape = {"x": [args.rec_batch_num, 3, imgH, 2304], }
-                opt_input_shape = {"x": [args.rec_batch_num, 3, imgH, 320], }
-                config.exp_disable_tensorrt_ops(["elementwise_add"])
+                min_input_shape = {"x": [1, 3, imgH, 10]}
+                max_input_shape = {"x": [args.rec_batch_num, 3, imgH, 2304]}
+                opt_input_shape = {"x": [args.rec_batch_num, 3, imgH, 320]}
+                config.exp_disable_tensorrt_ops(["transpose2"])
             elif mode == "cls":
                 min_input_shape = {"x": [1, 3, 48, 10]}
                 max_input_shape = {"x": [args.rec_batch_num, 3, 48, 1024]}
@@ -283,6 +283,9 @@ def create_predictor(args, mode, logger):
             else:
                 use_dynamic_shape = False
             if use_dynamic_shape:
+                print("min_input_shape: ", min_input_shape)
+                print("max_input_shape: ", max_input_shape)
+                print("opt_input_shape: ", opt_input_shape)
                 config.set_trt_dynamic_shape_info(
                     min_input_shape, max_input_shape, opt_input_shape)
 
@@ -301,7 +304,7 @@ def create_predictor(args, mode, logger):
                     config.enable_mkldnn_bfloat16()
         # enable memory optim
         config.enable_memory_optim()
-        config.disable_glog_info()
+        # config.disable_glog_info()
         config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
         config.delete_pass("matmul_transpose_reshape_fuse_pass")
         if mode == 'table':
