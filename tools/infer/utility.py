@@ -283,9 +283,6 @@ def create_predictor(args, mode, logger):
             else:
                 use_dynamic_shape = False
             if use_dynamic_shape:
-                print("min_input_shape: ", min_input_shape)
-                print("max_input_shape: ", max_input_shape)
-                print("opt_input_shape: ", opt_input_shape)
                 config.set_trt_dynamic_shape_info(
                     min_input_shape, max_input_shape, opt_input_shape)
 
