@@ -301,7 +301,7 @@ def create_predictor(args, mode, logger):
                     config.enable_mkldnn_bfloat16()
         # enable memory optim
         config.enable_memory_optim()
-        # config.disable_glog_info()
+        config.disable_glog_info()
         config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
         config.delete_pass("matmul_transpose_reshape_fuse_pass")
         if mode == 'table':
