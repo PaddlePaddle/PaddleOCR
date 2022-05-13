@@ -272,9 +272,10 @@ def create_predictor(args, mode, logger):
                 if args.rec_algorithm not in ["CRNN", "SVTR_LCNet"]:
                     use_dynamic_shape = False
                 imgH = int(args.rec_image_shape.split(',')[-2])
-                min_input_shape = {"x": [1, 3, imgH, 10]}
-                max_input_shape = {"x": [args.rec_batch_num, 3, imgH, 2304]}
-                opt_input_shape = {"x": [args.rec_batch_num, 3, imgH, 320]}
+                min_input_shape = {"x": [1, 3, imgH, 10], }
+                max_input_shape = {"x": [args.rec_batch_num, 3, imgH, 2304], }
+                opt_input_shape = {"x": [args.rec_batch_num, 3, imgH, 320], }
+                config.exp_disable_tensorrt_ops(["elementwise_add"])
             elif mode == "cls":
                 min_input_shape = {"x": [1, 3, 48, 10]}
                 max_input_shape = {"x": [args.rec_batch_num, 3, 48, 1024]}
