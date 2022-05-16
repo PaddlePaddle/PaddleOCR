@@ -15,10 +15,13 @@
 import copy
 import importlib
 
+from paddle.jit import to_static
+from paddle.static import InputSpec
+
 from .base_model import BaseModel
 from .distillation_model import DistillationModel
 
-__all__ = ['build_model']
+__all__ = ["build_model", "apply_to_static"]
 
 
 def build_model(config):
@@ -30,3 +33,18 @@ def build_model(config):
         mod = importlib.import_module(__name__)
         arch = getattr(mod, name)(config)
     return arch
+
+
+def apply_to_static(model, config, logger):
+    if config["Global"].get("to_static", False) is not True:
+        return model
+    assert "image_shape" in config[
+        "Global"], "image_shape must be assigned for static training mode..."
+    supported_list = ["DB"]
+    assert config["Architecture"][
+        "algorithm"] in supported_list, f"algorithms that supports static training must in in {supported_list} but got {config['Architecture']['algorithm']}"
+
+    specs = [InputSpec([None] + config["Global"]["image_shape"])]
+    model = to_static(model, input_spec=specs)
+    logger.info("Successfully to apply @to_static with specs: {}".format(specs))
+    return model
