@@ -293,8 +293,8 @@ Loss:
 
 以上述配置为例，最终蒸馏训练的损失函数包含下面5个部分。
 
-- `Student`和`Teacher`最终输出(`head_out`)的CTC分支与gt的CTC loss，权重为1。在这里因为2个子网络都需要更新参数，因此2者都需要计算与g的loss。
-- `Student`和`Teacher`最终输出(`head_out`)的SAR分支与gt的SAR loss，权重为1.0。在这里因为2个子网络都需要更新参数，因此2者都需要计算与g的loss。
+- `Student`和`Teacher`最终输出(`head_out`)的CTC分支与gt的CTC loss，权重为1。在这里因为2个子网络都需要更新参数，因此2者都需要计算与gt的loss。
+- `Student`和`Teacher`最终输出(`head_out`)的SAR分支与gt的SAR loss，权重为1.0。在这里因为2个子网络都需要更新参数，因此2者都需要计算与gt的loss。
 - `Student`和`Teacher`最终输出(`head_out`)的CTC分支之间的DML loss，权重为1。
 - `Student`和`Teacher`最终输出(`head_out`)的SAR分支之间的DML loss，权重为0.5。
 - `Student`和`Teacher`的骨干网络输出(`backbone_out`)之间的l2 loss，权重为1。
@@ -374,7 +374,7 @@ paddle.save(s_params, "ch_PP-OCRv3_rec_train/student.pdparams")
 <a name="22"></a>
 ### 2.2 检测配置文件解析
 
-检测模型蒸馏的配置文件在PaddleOCR/configs/det/ch_PP-OCRv3/目录下，包含两个个蒸馏配置文件：
+检测模型蒸馏的配置文件在PaddleOCR/configs/det/ch_PP-OCRv3/目录下，包含两个蒸馏配置文件：
 - ch_PP-OCRv3_det_cml.yml，采用cml蒸馏，采用一个大模型蒸馏两个小模型，且两个小模型互相学习的方法
 - ch_PP-OCRv3_det_dml.yml，采用DML的蒸馏，两个Student模型互蒸馏的方法
 
@@ -383,7 +383,7 @@ paddle.save(s_params, "ch_PP-OCRv3_rec_train/student.pdparams")
 
 知识蒸馏任务中，模型结构配置如下所示：
 
-```
+```yaml
 Architecture:
   name: DistillationModel          # 结构名称，蒸馏任务中，为DistillationModel，用于构建对应的结构
   algorithm: Distillation          # 算法名称
@@ -428,7 +428,7 @@ Architecture:
 
 下面介绍[ch_PP-OCRv3_det_cml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.4/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml)的配置文件参数：
 
-```
+```yaml
 Architecture:
   name: DistillationModel  
   algorithm: Distillation
