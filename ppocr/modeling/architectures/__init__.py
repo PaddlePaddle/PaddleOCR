@@ -40,6 +40,9 @@ def apply_to_static(model, config, logger):
         return model
     assert "image_shape" in config[
         "Global"], "image_shape must be assigned for static training mode..."
+    supported_list = ["DB"]
+    assert config["Architecture"][
+        "algorithm"] in supported_list, f"algorithms that supports static training must in in {supported_list} but got {config['Architecture']['algorithm']}"
 
     specs = [InputSpec([None] + config["Global"]["image_shape"])]
     model = to_static(model, input_spec=specs)
