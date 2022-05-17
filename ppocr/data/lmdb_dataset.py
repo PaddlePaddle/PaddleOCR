@@ -37,6 +37,8 @@ class LMDBDataSet(Dataset):
         if self.do_shuffle:
             np.random.shuffle(self.data_idx_order_list)
         self.ops = create_operators(dataset_config['transforms'], global_config)
+        self.ext_op_transform_idx = dataset_config.get("ext_op_transform_idx",
+                                                       2)
 
         ratio_list = dataset_config.get("ratio_list", [1.0])
         self.need_reset = True in [x < 1 for x in ratio_list]
