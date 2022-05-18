@@ -35,6 +35,7 @@ from ppocr.postprocess import build_post_process
 from ppocr.metrics import build_metric
 from ppocr.utils.save_load import load_model
 from ppocr.utils.utility import set_seed
+from ppocr.modeling.architectures import apply_to_static
 import tools.program as program
 
 dist.get_world_size()
@@ -120,6 +121,8 @@ def main(config, device, logger, vdl_writer):
     model = build_model(config['Architecture'])
     if config['Global']['distributed']:
         model = paddle.DataParallel(model)
+
+    model = apply_to_static(model, config, logger)
 
     # build loss
     loss_class = build_loss(config['Loss'])
