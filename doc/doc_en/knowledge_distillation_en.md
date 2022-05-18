@@ -438,10 +438,10 @@ Architecture:
 
 ```
 If DML is used, that is, the method of two small models learning from each other, the Teacher network structure in the above configuration file needs to be set to the same configuration as the Student model.
-Refer to the configuration file for details. [ch_PP-OCRv3_det_dml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.4/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml)
+Refer to the configuration file for details. [ch_PP-OCRv3_det_dml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml)
 
 
-The following describes the configuration file parameters [ch_PP-OCRv3_det_cml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.4/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml):
+The following describes the configuration file parameters [ch_PP-OCRv3_det_cml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml):
 
 ```
 Architecture:

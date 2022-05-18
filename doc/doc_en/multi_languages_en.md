@@ -187,10 +187,10 @@ In addition to installing the whl package for quick forecasting,
 PPOCR also provides a variety of forecasting deployment methods.
 If necessary, you can read related documents:
 
-- [Python Inference](./inference_en.md)
-- [C++ Inference](../../deploy/cpp_infer/readme_en.md)
+- [Python Inference](./inference_ppocr_en.md)
+- [C++ Inference](../../deploy/cpp_infer/readme.md)
 - [Serving](../../deploy/hubserving/readme_en.md)
-- [Mobile](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme_en.md)
+- [Mobile](../../deploy/lite/readme.md)
 - [Benchmark](./benchmark_en.md)
 
 
