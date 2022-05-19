@@ -17,11 +17,11 @@
 ## 1. Introduction
 
 Paper information:
-> [STAR-Net: a spatial attention residue network for scene text recognition.]( http://www.bmva.org/bmvc/2016/papers/paper043/paper043.pdf)
+> [STAR-Net: a spatial attention residue network for scene text recognition.](http://www.bmva.org/bmvc/2016/papers/paper043/paper043.pdf)
 > Wei Liu, Chaofeng Chen, Kwan-Yee K. Wong, Zhizhong Su and Junyu Han.
 > BMVC, pages 43.1-43.13, 2016
 
-Refer to[DTRB] text Recognition Training and Evaluation Process (https://arxiv.org/abs/1904.01906). Using MJSynth and SynthText two text recognition datasets for training, and evaluating on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE datasets, the algorithm reproduction effect is as follows:
+Refer to [DTRB](https://arxiv.org/abs/1904.01906) text Recognition Training and Evaluation Process . Using MJSynth and SynthText two text recognition datasets for training, and evaluating on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE datasets, the algorithm reproduction effect is as follows:
 
 |Models|Backbone Networks|Avg Accuracy|Configuration Files|Download Links|
 | --- | --- | --- | --- | --- |
@@ -69,7 +69,7 @@ python3 tools/infer_rec.py -c configs/rec/rec_r34_vd_tps_bilstm_ctc.yml -o Globa
 
 <a name="4-1"></a>
 ### 4.1 Python Inference
-First, convert the model saved during the STAR-Net text recognition training process into an inference model. Take the model trained on the MJSynth and SynthText text recognition datasets based on the Resnet34_vd backbone network as an example ([Model download address]( https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_none_bilstm_ctc_v2.0_train.tar ), which can be converted using the following command:
+First, convert the model saved during the STAR-Net text recognition training process into an inference model. Take the model trained on the MJSynth and SynthText text recognition datasets based on the Resnet34_vd backbone network as an example [Model download address]( https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_none_bilstm_ctc_v2.0_train.tar) , which can be converted using the following command:
 
 ```shell
 python3 tools/export_model.py -c configs/rec/rec_r34_vd_tps_bilstm_ctc.yml -o Global.pretrained_model=./rec_r34_vd_tps_bilstm_ctc_v2.0_train/best_accuracy  Global.save_inference_dir=./inference/rec_starnet
