@@ -36,7 +36,7 @@ The results of detection and recognition are as follows:
 
 <a name="Environment_Configuration"></a>
 ## 2. Environment Configuration
-Please refer to [Operation Environment Preparation](./environment_en.md) to configure PaddleOCR operating environment first, refer to [PaddleOCR Overview and Project Clone](./paddleOCR_overview_en.md) to clone the project
+Please refer to [Operation Environment Preparation](./environment_en.md) to configure PaddleOCR operating environment first, refer to [Project Clone](./clone_en.md) to clone the project
 
 <a name="Quick_Use"></a>
 ## 3. Quick Use

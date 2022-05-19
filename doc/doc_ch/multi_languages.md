@@ -238,10 +238,10 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 ## 4 预测部署
 
 除了安装whl包进行快速预测，ppocr 也提供了多种预测部署方式，如有需求可阅读相关文档：
-- [基于Python脚本预测引擎推理](./inference.md)
-- [基于C++预测引擎推理](../../deploy/cpp_infer/readme.md)
+- [基于Python脚本预测引擎推理](./inference_ppocr.md)
+- [基于C++预测引擎推理](../../deploy/cpp_infer/readme_ch.md)
 - [服务化部署](../../deploy/hubserving/readme.md)
-- [端侧部署](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/deploy/lite/readme.md)
+- [端侧部署](../../deploy/lite/readme_ch.md)
 - [Benchmark](./benchmark.md)
 
 

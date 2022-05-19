@@ -34,7 +34,7 @@ The accuracy (%) and model files of SVTR on the public dataset of scene text rec
 
 <a name="2"></a>
 ## 2. Environment
-Please refer to ["Environment Preparation"](./environment.md) to configure the PaddleOCR environment, and refer to ["Project Clone"](./clone.md) to clone the project code.
+Please refer to ["Environment Preparation"](./environment_en.md) to configure the PaddleOCR environment, and refer to ["Project Clone"](./clone_en.md) to clone the project code.
 
 #### Dataset Preparation
 
@@ -44,7 +44,7 @@ Please refer to ["Environment Preparation"](./environment.md) to configure the P
 <a name="3"></a>
 ## 3. Model Training / Evaluation / Prediction
 
-Please refer to [Text Recognition Tutorial](./recognition.md). PaddleOCR modularizes the code, and training different recognition models only requires **changing the configuration file**.
+Please refer to [Text Recognition Tutorial](./recognition_en.md). PaddleOCR modularizes the code, and training different recognition models only requires **changing the configuration file**.
 
 Training:
 
