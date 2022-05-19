@@ -52,7 +52,7 @@ PP-Structure 里的 DOC-VQA算法基于PaddleNLP自然语言处理算法库进�
 
 ### 3.1 SER
 
-![](../../doc/vqa/result_ser/zh_val_0_ser.jpg) | ![](../../doc/vqa/result_ser/zh_val_42_ser.jpg)
+![](../docs/vqa/result_ser/zh_val_0_ser.jpg) | ![](../docs/vqa/result_ser/zh_val_42_ser.jpg)
 ---|---
 
 图中不同颜色的框表示不同的类别，对于XFUND数据集，有`QUESTION`, `ANSWER`, `HEADER` 3种类别
@@ -65,7 +65,7 @@ PP-Structure 里的 DOC-VQA算法基于PaddleNLP自然语言处理算法库进�
 
 ### 3.2 RE
 
-![](../../doc/vqa/result_re/zh_val_21_re.jpg) | ![](../../doc/vqa/result_re/zh_val_40_re.jpg)
+![](../docs/vqa/result_re/zh_val_21_re.jpg) | ![](../docs/vqa/result_re/zh_val_40_re.jpg)
 ---|---
 
 

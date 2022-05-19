@@ -27,14 +27,28 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 ## 近期更新
 
-- 2022.5.9 发布PaddleOCR v2.5。发布内容包括：
-    - [PP-OCRv3](./doc/doc_ch/ppocr_introduction.md#pp-ocrv3)，速度可比情况下，中文场景效果相比于PP-OCRv2再提升5%，英文场景提升11%，80语种多语言模型平均识别准确率提升5%以上；
-    - 半自动标注工具[PPOCRLabelv2](./PPOCRLabel)：新增表格文字图像、图像关键信息抽取任务和不规则文字图像的标注功能；
-    - OCR产业落地工具集：打通22种训练部署软硬件环境与方式，覆盖企业90%的训练部署环境需求
-    - 交互式OCR开源电子书[《动手学OCR》](./doc/doc_ch/ocr_book.md)，覆盖OCR全栈技术的前沿理论与代码实践，并配套教学视频。
-- 2021.12.21 发布PaddleOCR v2.4。OCR算法新增1种文本检测算法（PSENet），3种文本识别算法（NRTR、SEED、SAR）；文档结构化算法新增1种关键信息提取算法（SDMGR，[文档](./ppstructure/docs/kie.md)），3种DocVQA算法（LayoutLM、LayoutLMv2，LayoutXLM，[文档](./ppstructure/vqa)）。
-- 2021.9.7 发布PaddleOCR v2.3与[PP-OCRv2](./doc/doc_ch/ppocr_introduction.md#pp-ocrv2)，CPU推理速度相比于PP-OCR server提升220%；效果相比于PP-OCR mobile 提升7%。
-- 2021.8.3 发布PaddleOCR v2.2，新增文档结构分析[PP-Structure](./ppstructure/README_ch.md)工具包，支持版面分析与表格识别（含Excel导出）。
+- **🔥2022.5.11~13 每晚8：30【超强OCR技术详解与产业应用实战】三日直播课**
+  - 11日：开源最强OCR系统PP-OCRv3揭秘
+  - 12日：云边端全覆盖的PP-OCRv3训练部署实战
+  - 13日：OCR产业应用全流程拆解与实战
+  
+   赶紧扫码报名吧！
+<div align="center">
+<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "150" height = "150" />
+</div>
+
+- **🔥2022.5.9 发布PaddleOCR [release/2.5](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.5)**
+    - 发布[PP-OCRv3](./doc/doc_ch/ppocr_introduction.md#pp-ocrv3)，速度可比情况下，中文场景效果相比于PP-OCRv2再提升5%，英文场景提升11%，80语种多语言模型平均识别准确率提升5%以上；
+    - 发布半自动标注工具[PPOCRLabelv2](./PPOCRLabel)：新增表格文字图像、图像关键信息抽取任务和不规则文字图像的标注功能；
+    - 发布OCR产业落地工具集：打通22种训练部署软硬件环境与方式，覆盖企业90%的训练部署环境需求；
+    - 发布交互式OCR开源电子书[《动手学OCR》](./doc/doc_ch/ocr_book.md)，覆盖OCR全栈技术的前沿理论与代码实践，并配套教学视频。
+- 2021.12.21 发布PaddleOCR [release/2.4](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.4)
+    - OCR算法新增1种文本检测算法（[PSENet](./doc/doc_ch/algorithm_det_psenet.md)），3种文本识别算法（[NRTR](./doc/doc_ch/algorithm_rec_nrtr.md)、[SEED](./doc/doc_ch/algorithm_rec_seed.md)、[SAR](./doc/doc_ch/algorithm_rec_sar.md)）；
+    - 文档结构化算法新增1种关键信息提取算法（[SDMGR](./ppstructure/docs/kie.md)），3种[DocVQA](./ppstructure/vqa)算法（LayoutLM、LayoutLMv2，LayoutXLM）。
+- 2021.9.7 发布PaddleOCR [release/2.3](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.3)
+    - 发布[PP-OCRv2](./doc/doc_ch/ppocr_introduction.md#pp-ocrv2)，CPU推理速度相比于PP-OCR server提升220%；效果相比于PP-OCR mobile 提升7%。
+- 2021.8.3 发布PaddleOCR [release/2.2](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.2)
+    - 发布文档结构分析[PP-Structure](./ppstructure/README_ch.md)工具包，支持版面分析与表格识别（含Excel导出）。
 
 > [更多](./doc/doc_ch/update.md)
 
@@ -108,6 +122,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
         - [服务化部署](./deploy/pdserving/README_CN.md)
         - [端侧部署](./deploy/lite/readme.md)
         - [Paddle2ONNX模型转化与预测](./deploy/paddle2onnx/readme.md)
+        - [云上飞桨部署工具](./deploy/paddlecloud/README.md)
         - [Benchmark](./doc/doc_ch/benchmark.md)
 - [PP-Structure文档分析🔥](./ppstructure/README_ch.md)
     - [快速开始](./ppstructure/docs/quickstart.md)
@@ -126,11 +141,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [文本识别算法](./doc/doc_ch/algorithm_overview.md#12-%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
     - [端到端算法](./doc/doc_ch/algorithm_overview.md#2-%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
     - [使用PaddleOCR架构添加新算法](./doc/doc_ch/add_new_algorithm.md)
-- [场景应用](./doc/doc_ch/application.md)
-    - [金融场景（表单/票据等）]()
-    - [工业场景（电表度数/车牌等）]()
-    - [教育场景（手写体/公式等）]()
-    - [医疗场景（化验单等）]()
+- [场景应用](./applications)
 - 数据标注与合成
     - [半自动标注工具PPOCRLabel](./PPOCRLabel/README_ch.md)
     - [数据合成工具Style-Text](./StyleText/README_ch.md)

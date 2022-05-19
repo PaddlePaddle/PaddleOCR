@@ -77,13 +77,19 @@ int main(int argc, char **argv) {
   for (int i = 0; i < cv_all_img_names.size(); ++i) {
     if (FLAGS_benchmark) {
       cout << cv_all_img_names[i] << '\t';
-      for (int n = 0; n < ocr_results[i].size(); n++) {
-        for (int m = 0; m < ocr_results[i][n].box.size(); m++) {
-          cout << ocr_results[i][n].box[m][0] << ' '
-               << ocr_results[i][n].box[m][1] << ' ';
+      if (FLAGS_rec && FLAGS_det) {
+        Utility::print_result(ocr_results[i]);
+      } else if (FLAGS_det) {
+        for (int n = 0; n < ocr_results[i].size(); n++) {
+          for (int m = 0; m < ocr_results[i][n].box.size(); m++) {
+            cout << ocr_results[i][n].box[m][0] << ' '
+                 << ocr_results[i][n].box[m][1] << ' ';
+          }
         }
+        cout << endl;
+      } else {
+        Utility::print_result(ocr_results[i]);
       }
-      cout << endl;
     } else {
       cout << cv_all_img_names[i] << "\n";
       Utility::print_result(ocr_results[i]);

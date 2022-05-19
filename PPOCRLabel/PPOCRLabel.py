@@ -1149,7 +1149,10 @@ class MainWindow(QMainWindow):
         for box in self.result_dic:
             trans_dic = {"label": box[1][0], "points": box[0], "difficult": False}
             if self.kie_mode:
-                trans_dic.update({"key_cls": "None"})
+                if len(box) == 3:
+                    trans_dic.update({"key_cls": box[2]})
+                else:
+                    trans_dic.update({"key_cls": "None"})
             if trans_dic["label"] == "" and mode == 'Auto':
                 continue
             shapes.append(trans_dic)
@@ -2047,6 +2050,7 @@ class MainWindow(QMainWindow):
             rec_flag = 0
             for shape in self.canvas.shapes:
                 box = [[int(p.x()), int(p.y())] for p in shape.points]
+                kie_cls = shape.key_cls
 
                 if len(box) > 4:
                     box = self.gen_quad_from_poly(np.array(box))
@@ -2062,17 +2066,27 @@ class MainWindow(QMainWindow):
                     if shape.line_color == DEFAULT_LOCK_COLOR:
                         shape.label = result[0][0]
                         result.insert(0, box)
+                        if self.kie_mode:
+                            result.append(kie_cls)
                         self.result_dic_locked.append(result)
                     else:
                         result.insert(0, box)
+                        if self.kie_mode:
+                            result.append(kie_cls)
                         self.result_dic.append(result)
                 else:
                     print('Can not recognise the box')
                     if shape.line_color == DEFAULT_LOCK_COLOR:
                         shape.label = result[0][0]
-                        self.result_dic_locked.append([box, (self.noLabelText, 0)])
+                        if self.kie_mode:
+                            self.result_dic_locked.append([box, (self.noLabelText, 0), kie_cls])
+                        else:
+                            self.result_dic_locked.append([box, (self.noLabelText, 0)])
                     else:
-                        self.result_dic.append([box, (self.noLabelText, 0)])
+                        if self.kie_mode:
+                            self.result_dic.append([box, (self.noLabelText, 0), kie_cls])
+                        else:
+                            self.result_dic.append([box, (self.noLabelText, 0)])
                 try:
                     if self.noLabelText == shape.label or result[1][0] == shape.label:
                         print('label no change')
@@ -2322,13 +2336,6 @@ class MainWindow(QMainWindow):
                     else:
                         labeldict[file] = []
 
-        # if len(labeldict) != len(csv_paths):
-        #     msg = 'ERROR, box label and excel label are not in the same number\n' + \
-        #           'box label: ' + str(len(labeldict)) + '\n' + \
-        #           'excel label: ' + str(len(csv_paths)) + '\n' + \
-        #           'Please check the label.txt and tableRec_excel_output\n'
-        #     QMessageBox.information(self, "Information", msg)
-        #     return
         train_split, val_split, test_split = partitionDialog.getDataPartition()
         # check validate
         if train_split + val_split + test_split > 100:
@@ -2351,14 +2358,8 @@ class MainWindow(QMainWindow):
             filename, _ = os.path.splitext(os.path.basename(image_path))
             csv_path = os.path.join(TableRec_excel_dir, filename + '.xlsx')
             if not os.path.exists(csv_path):
-                msg = 'ERROR, Can not find ' + csv_path
-                QMessageBox.information(self, "Information", msg)
-                return
+                continue
 
-            # read xlsx file, convert to HTML
-            # xd = pd.ExcelFile(csv_path)
-            # df = xd.parse()
-            # structure = df.to_html(index = False)
             excel = xlrd.open_workbook(csv_path)
             sheet0 = excel.sheet_by_index(0)  # only sheet 0
             merged_cells = sheet0.merged_cells # (0,1,1,3) start row, end row, start col, end col
@@ -2369,7 +2370,6 @@ class MainWindow(QMainWindow):
                 html_list = expand_list(merged, html_list)
 
             token_list = convert_token(html_list)
-
 
             # load box annotations
             cells = []

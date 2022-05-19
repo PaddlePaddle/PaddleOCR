@@ -38,8 +38,8 @@ pipeline_py=$(func_parser_value "${lines[16]}")
 image_dir_key=$(func_parser_key "${lines[17]}")
 image_dir_value=$(func_parser_value "${lines[17]}")
 
-LOG_PATH="../../test_tipc/output"
-mkdir -p ./test_tipc/output
+LOG_PATH="$(pwd)/test_tipc/output/pdserving/${model_name}"
+mkdir -p ${LOG_PATH}
 status_log="${LOG_PATH}/results_serving.log"
 
 function func_serving(){
@@ -64,24 +64,40 @@ function func_serving(){
         if [ ${python} = "cpp" ]; then
             for use_gpu in ${web_use_gpu_list[*]}; do
                 if [ ${use_gpu} = "null" ]; then
-                    web_service_cpp_cmd="${python_list[0]} -m paddle_serving_server.serve --model ppocr_det_mobile_2.0_serving/ ppocr_rec_mobile_2.0_serving/ --port 9293"
+                    if [ ${model_name} = "ocr_det_mobile" ]; then
+                        web_service_cpp_cmd="${python_list[0]} -m paddle_serving_server.serve --model ppocr_det_mobile_2.0_serving/ ppocr_rec_mobile_2.0_serving/ --op GeneralDetectionOp GeneralInferOp --port 9293"
+                    elif [ ${model_name} = "ocr_det_v3" ] || [ ${model_name} = "ocr_rec_v3" ]; then
+                        web_service_cpp_cmd="${python_list[0]} -m paddle_serving_server.serve --model ppocr_det_v3_serving/ ppocr_rec_v3_serving/ --op GeneralDetectionOp GeneralInferOp --port 9293"
+                    fi
                     eval $web_service_cpp_cmd
                     last_status=${PIPESTATUS[0]}
                     status_check $last_status "${web_service_cpp_cmd}" "${status_log}"
                     sleep 2s
                     _save_log_path="${LOG_PATH}/server_infer_cpp_cpu_pipeline_usemkldnn_False_threads_4_batchsize_1.log"
-                    pipeline_cmd="${python_list[0]}  ocr_cpp_client.py ppocr_det_mobile_2.0_client/ ppocr_rec_mobile_2.0_client/"
+                    if [ ${model_name} = "ocr_det_mobile" ]; then
+                        pipeline_cmd="${python_list[0]}  ocr_cpp_client.py ppocr_det_mobile_2.0_client/ ppocr_rec_mobile_2.0_client/"
+                    elif [ ${model_name} = "ocr_det_v3" ] || [ ${model_name} = "ocr_rec_v3" ]; then
+                        pipeline_cmd="${python_list[0]}  ocr_cpp_client.py ppocr_det_v3_client/ ppocr_rec_v3_client/"
+                    fi
                     eval $pipeline_cmd
                     last_status=${PIPESTATUS[0]}
                     status_check $last_status "${pipeline_cmd}" "${status_log}"
                     sleep 2s
                     ps ux | grep -E 'web_service|pipeline' | awk '{print $2}' | xargs kill -s 9
                 else
-                    web_service_cpp_cmd="${python_list[0]}  -m paddle_serving_server.serve --model ppocr_det_mobile_2.0_serving/ ppocr_rec_mobile_2.0_serving/ --port 9293 --gpu_id=0"
+                    if [ ${model_name} = "ocr_det_mobile" ]; then
+                        web_service_cpp_cmd="${python_list[0]}  -m paddle_serving_server.serve --model ppocr_det_mobile_2.0_serving/ ppocr_rec_mobile_2.0_serving/ --op GeneralDetectionOp GeneralInferOp --port 9293 --gpu_id=0"
+                    elif [ ${model_name} = "ocr_det_v3" ] || [ ${model_name} = "ocr_rec_v3" ]; then
+                        web_service_cpp_cmd="${python_list[0]}  -m paddle_serving_server.serve --model ppocr_det_v3_serving/ ppocr_rec_v3_serving/ --op GeneralDetectionOp GeneralInferOp --port 9293 --gpu_id=0"
+                    fi
                     eval $web_service_cpp_cmd
                     sleep 2s
                     _save_log_path="${LOG_PATH}/server_infer_cpp_cpu_pipeline_usemkldnn_False_threads_4_batchsize_1.log"
-                    pipeline_cmd="${python_list[0]}  ocr_cpp_client.py ppocr_det_mobile_2.0_client/ ppocr_rec_mobile_2.0_client/"
+                    if [ ${model_name} = "ocr_det_mobile" ]; then
+                        pipeline_cmd="${python_list[0]}  ocr_cpp_client.py ppocr_det_mobile_2.0_client/ ppocr_rec_mobile_2.0_client/"
+                    elif [ ${model_name} = "ocr_det_v3" ] || [ ${model_name} = "ocr_rec_v3" ]; then
+                        pipeline_cmd="${python_list[0]}  ocr_cpp_client.py ppocr_det_v3_client/ ppocr_rec_v3_client/"
+                    fi
                     eval $pipeline_cmd
                     last_status=${PIPESTATUS[0]}
                     status_check $last_status "${pipeline_cmd}" "${status_log}"
@@ -113,7 +129,7 @@ function func_serving(){
                             ps ux | grep -E 'web_service|pipeline' | awk '{print $2}' | xargs kill -s 9
                         done
                     done
-                elif [ ${use_gpu} = "0" ]; then
+                elif [ ${use_gpu} = "gpu" ]; then
                     for use_trt in ${web_use_trt_list[*]}; do
                         for precision in ${web_precision_list[*]}; do
                             if [[ ${_flag_quant} = "False" ]] && [[ ${precision} =~ "int8" ]]; then
@@ -130,7 +146,7 @@ function func_serving(){
                                 device_type=2
                             fi
                             set_precision=$(func_set_params "${web_precision_key}" "${precision}")
-                            web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}=${use_gpu} ${set_tensorrt} ${set_precision} & "
+                            web_service_cmd="${python} ${web_service_py} ${set_tensorrt} ${set_precision} & "
                             eval $web_service_cmd
                             last_status=${PIPESTATUS[0]}
                             status_check $last_status "${web_service_cmd}" "${status_log}"
