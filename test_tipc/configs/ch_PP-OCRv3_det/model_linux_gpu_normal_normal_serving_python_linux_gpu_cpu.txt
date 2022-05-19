@@ -1,12 +1,12 @@
 ===========================serving_params===========================
-model_name:ocr_det_mobile
-python:python3.7|cpp
+model_name:ocr_det_v3
+python:python3.7
 trans_model:-m paddle_serving_client.convert
---dirname:./inference/ch_ppocr_mobile_v2.0_det_infer/
+--dirname:./inference/ch_PP-OCRv3_det_infer/
 --model_filename:inference.pdmodel
 --params_filename:inference.pdiparams
---serving_server:./deploy/pdserving/ppocr_det_mobile_2.0_serving/
---serving_client:./deploy/pdserving/ppocr_det_mobile_2.0_client/
+--serving_server:./deploy/pdserving/ppocr_det_v3_serving/
+--serving_client:./deploy/pdserving/ppocr_det_v3_client/
 serving_dir:./deploy/pdserving
 web_service:web_service_det.py --config=config.yml --opt op.det.concurrency="1"
 op.det.local_service_conf.devices:gpu|null

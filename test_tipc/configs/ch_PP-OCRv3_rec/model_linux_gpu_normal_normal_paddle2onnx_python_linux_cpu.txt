@@ -1,0 +1,14 @@
+===========================paddle2onnx_params===========================
+model_name:ocr_rec_v3
+python:python3.7
+2onnx: paddle2onnx
+--model_dir:./inference/ch_PP-OCRv3_rec_infer/
+--model_filename:inference.pdmodel
+--params_filename:inference.pdiparams
+--save_file:./inference/rec_v3_onnx/model.onnx
+--opset_version:10
+--enable_onnx_checker:True
+inference:tools/infer/predict_rec.py --rec_image_shape="3,48,320"
+--use_gpu:True|False
+--rec_model_dir:
+--image_dir:./inference/rec_inference
