@@ -85,10 +85,16 @@ def convert_label(label_dir, mode="gt", save_dir="./save_results/"):
     print("The convert label saved in {}".format(save_dir))
 
 
+def parse_args():
+    import argparse
+    parser = argparse.ArgumentParser(description="args")
+    parser.add_argument("--label_path", type=str, required=True)
+    parser.add_argument("--save_folder", type=str, required=True)
+    parser.add_argument("--mode", type=str, default=False)
+    args = parser.parse_args()
+    return args
+
+
 if __name__ == "__main__":
-
-    ppocr_label_gt = "/paddle/Datasets/chinese/test_set/Label_refine_310_V2.txt"
-    convert_label(ppocr_label_gt, "gt", "./save_gt_310_V2/")
-
-    ppocr_label_gt = "./infer_results/ch_PPOCRV2_infer.txt"
-    convert_label(ppocr_label_gt_en, "pred", "./save_PPOCRV2_infer/")
+    args = parse_args()
+    convert_label(args.label_path, args.mode, args.save_folder)
