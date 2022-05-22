@@ -143,15 +143,17 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
       if (this->precision_ == "int8") {
         precision = paddle_infer::Config::Precision::kInt8;
       }
-      config.EnableTensorRtEngine(1 << 20, 10, 3, precision, false, false);
+      config.EnableTensorRtEngine(1 << 20, 10, 15, precision, false, false);
       int imgH = this->rec_image_shape_[1];
       int imgW = this->rec_image_shape_[2];
       std::map<std::string, std::vector<int>> min_input_shape = {
           {"x", {1, 3, imgH, 10}}, {"lstm_0.tmp_0", {10, 1, 96}}};
       std::map<std::string, std::vector<int>> max_input_shape = {
-          {"x", {1, 3, imgH, 2000}}, {"lstm_0.tmp_0", {1000, 1, 96}}};
+          {"x", {this->rec_batch_num_, 3, imgH, 2500}},
+          {"lstm_0.tmp_0", {1000, 1, 96}}};
       std::map<std::string, std::vector<int>> opt_input_shape = {
-          {"x", {1, 3, imgH, imgW}}, {"lstm_0.tmp_0", {25, 1, 96}}};
+          {"x", {this->rec_batch_num_, 3, imgH, imgW}},
+          {"lstm_0.tmp_0", {25, 1, 96}}};
 
       config.SetTRTDynamicShapeInfo(min_input_shape, max_input_shape,
                                     opt_input_shape);

@@ -133,6 +133,9 @@ def main(args):
     os.makedirs(draw_img_save_dir, exist_ok=True)
     save_results = []
 
+    logger.info("In PP-OCRv3, rec_image_shape parameter defaults to '3, 48, 320', "
+                "if you are using recognition model with PP-OCRv2 or an older version, please set --rec_image_shape='3,32,320")
+                
     # warm up 10 times
     if args.warmup:
         img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)

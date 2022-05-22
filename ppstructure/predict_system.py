@@ -23,6 +23,7 @@ sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
 os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
 import cv2
 import json
+import numpy as np
 import time
 import logging
 from copy import deepcopy
@@ -33,6 +34,7 @@ from ppocr.utils.logging import get_logger
 from tools.infer.predict_system import TextSystem
 from ppstructure.table.predict_table import TableSystem, to_excel
 from ppstructure.utility import parse_args, draw_structure_result
+from ppstructure.recovery.docx import convert_info_docx
 
 logger = get_logger()
 
@@ -104,7 +106,12 @@ class StructureSystem(object):
                                                 return_ocr_result_in_table)
                 else:
                     if self.text_system is not None:
-                        filter_boxes, filter_rec_res = self.text_system(roi_img)
+                        if args.recovery:
+                            wht_im = np.ones(ori_im.shape, dtype=ori_im.dtype)
+                            wht_im[y1:y2, x1:x2, :] = roi_img
+                            filter_boxes, filter_rec_res = self.text_system(wht_im)
+                        else:
+                            filter_boxes, filter_rec_res = self.text_system(roi_img)
                         # remove style char
                         style_token = [
                             '<strike>', '<strike>', '<sup>', '</sub>', '<b>',
@@ -118,7 +125,8 @@ class StructureSystem(object):
                             for token in style_token:
                                 if token in rec_str:
                                     rec_str = rec_str.replace(token, '')
-                            box += [x1, y1]
+                            if not args.recovery:
+                                box += [x1, y1]
                             res.append({
                                 'text': rec_str,
                                 'confidence': float(rec_conf),
@@ -192,6 +200,8 @@ def main(args):
             # img_save_path = os.path.join(save_folder, img_name + '.jpg')
         cv2.imwrite(img_save_path, draw_img)
         logger.info('result save to {}'.format(img_save_path))
+        if args.recovery:
+            convert_info_docx(img, res, save_folder, img_name) 
         elapse = time.time() - starttime
         logger.info("Predict time : {:.3f}s".format(elapse))
 

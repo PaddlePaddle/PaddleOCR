@@ -43,7 +43,7 @@ cpp_cls_value=$(func_parser_value "${lines[18]}")
 cpp_use_angle_cls_key=$(func_parser_key "${lines[19]}")
 cpp_use_angle_cls_value=$(func_parser_value "${lines[19]}")
 
-LOG_PATH="./test_tipc/output"
+LOG_PATH="./test_tipc/output/cpp_infer/${model_name}"
 mkdir -p ${LOG_PATH}
 status_log="${LOG_PATH}/results_cpp.log"
 
@@ -178,7 +178,7 @@ if [ ${use_opencv} = "True" ]; then
 else
     OPENCV_DIR=''
 fi
-LIB_DIR=$(pwd)/Paddle/build/paddle_inference_install_dir/
+LIB_DIR=$(pwd)/paddle_inference/
 CUDA_LIB_DIR=$(dirname `find /usr -name libcudart.so`)
 CUDNN_LIB_DIR=$(dirname `find /usr -name libcudnn.so`)
 
