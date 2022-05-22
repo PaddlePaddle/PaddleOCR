@@ -71,8 +71,9 @@ def load_model(config, model, optimizer=None, model_type='det'):
             if optimizer is not None:
                 if checkpoints[-1] in ['/', '\\']:
                     checkpoints = checkpoints[:-1]
-                if os.path.exists(checkpoints + '.pdopt'):
-                    optim_dict = paddle.load(checkpoints + '.pdopt')
+                optim_path = os.path.join(checkpoints, 'model_state.pdopt')
+                if os.path.exists(optim_path):
+                    optim_dict = paddle.load(optim_path)
                     optimizer.set_state_dict(optim_dict)
                 else:
                     logger.warning(
@@ -166,15 +167,17 @@ def save_model(model,
     """
     _mkdir_if_not_exist(model_path, logger)
     model_prefix = os.path.join(model_path, prefix)
-    paddle.save(optimizer.state_dict(), model_prefix + '.pdopt')
     if config['Architecture']["model_type"] != 'vqa':
         paddle.save(model.state_dict(), model_prefix + '.pdparams')
         metric_prefix = model_prefix
+        paddle.save(optimizer.state_dict(), model_prefix + '.pdopt')
     else:
         if config['Global']['distributed']:
             model._layers.backbone.model.save_pretrained(model_prefix)
         else:
             model.backbone.model.save_pretrained(model_prefix)
+        paddle.save(optimizer.state_dict(),
+                    os.path.join(model_prefix, 'model_state.pdopt'))
         metric_prefix = os.path.join(model_prefix, 'metric')
     # save metric and config
     if is_best:
