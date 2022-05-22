@@ -66,6 +66,7 @@
 - [x]  [SAR](./algorithm_rec_sar.md)
 - [x]  [SEED](./algorithm_rec_seed.md)
 - [x]  [SVTR](./algorithm_rec_svtr.md)
+- [x]  [RobustScanner](./algorithm_rec_robustscanner.md)
 
 参考[DTRB](https://arxiv.org/abs/1904.01906)[3]文字识别训练和评估流程，使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估，算法效果如下：
 
@@ -84,6 +85,7 @@
 |SAR|Resnet31| 87.20% | rec_r31_sar | [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_r31_sar_train.tar) |
 |SEED|Aster_Resnet| 85.35% | rec_resnet_stn_bilstm_att | [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_resnet_stn_bilstm_att.tar) |
 |SVTR|SVTR-Tiny| 89.25% | rec_svtr_tiny_none_ctc_en | [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/rec_svtr_tiny_none_ctc_en_train.tar) |
+|RobustScanner|ResNet31V2| 87.77% | rec_r31_robustscanner | [训练模型]() |
 
 
 <a name="2"></a>

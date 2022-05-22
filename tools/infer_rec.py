@@ -96,6 +96,8 @@ def main():
                 ]
             elif config['Architecture']['algorithm'] == "SAR":
                 op[op_name]['keep_keys'] = ['image', 'valid_ratio']
+            elif config['Architecture']['algorithm'] == "RobustScanner":
+                op[op_name]['keep_keys'] = ['image', 'valid_ratio', 'word_positons']
             else:
                 op[op_name]['keep_keys'] = ['image']
         transforms.append(op)
@@ -131,12 +133,20 @@ def main():
             if config['Architecture']['algorithm'] == "SAR":
                 valid_ratio = np.expand_dims(batch[-1], axis=0)
                 img_metas = [paddle.to_tensor(valid_ratio)]
+            if config['Architecture']['algorithm'] == "RobustScanner":
+                valid_ratio = np.expand_dims(batch[1], axis=0)
+                word_positons = np.expand_dims(batch[2], axis=0)
+                img_metas = [paddle.to_tensor(valid_ratio),
+                            paddle.to_tensor(word_positons),
+                            ]
 
             images = np.expand_dims(batch[0], axis=0)
             images = paddle.to_tensor(images)
             if config['Architecture']['algorithm'] == "SRN":
                 preds = model(images, others)
             elif config['Architecture']['algorithm'] == "SAR":
+                preds = model(images, img_metas)
+            elif config['Architecture']['algorithm'] == "RobustScanner":
                 preds = model(images, img_metas)
             else:
                 preds = model(images)
