@@ -153,4 +153,4 @@ python3.7 test_tipc/compare_results.py --gt_file=./test_tipc/results/python_*.tx
 ## 3. 更多教程
 本文档为功能测试用，更丰富的训练预测使用教程请参考：  
 [模型训练](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/training.md)  
-[基于Python预测引擎推理](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/inference.md)
+[基于Python预测引擎推理](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/inference_ppocr.md)
