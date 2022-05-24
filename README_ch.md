@@ -27,15 +27,16 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 ## 近期更新
 
-- **🔥2022.5.11~13 每晚8：30【超强OCR技术详解与产业应用实战】三日直播课**
-  - 11日：开源最强OCR系统PP-OCRv3揭秘
-  - 12日：云边端全覆盖的PP-OCRv3训练部署实战
-  - 13日：OCR产业应用全流程拆解与实战
+- **🔥2022.5.25~26 OCR产业应用两日直播课**
   
-   赶紧扫码报名吧！
+  - 25日：车牌识别产业应用实战
+  - 26日：一招搞定工业常见数码管、PCB字符识别
+  
+   扫描下方二维码填写问卷后进入群聊，获取直播链接！
 <div align="center">
-<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "150" height = "150" />
+<img src="https://user-images.githubusercontent.com/50011306/170023861-38814d84-b35a-4102-94d9-28482f9a39f8.png"  width = "150" height = "150" />
 </div>
+
 
 - **🔥2022.5.9 发布PaddleOCR [release/2.5](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.5)**
     - 发布[PP-OCRv3](./doc/doc_ch/ppocr_introduction.md#pp-ocrv3)，速度可比情况下，中文场景效果相比于PP-OCRv2再提升5%，英文场景提升11%，80语种多语言模型平均识别准确率提升5%以上；
@@ -76,7 +77,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## 开源社区
 
 - **加入社区👬：** 微信扫描二维码并填写问卷之后，加入交流群领取福利
-  - **获取5月11-13日每晚20:30《OCR超强技术详解与产业应用实战》的直播课链接**
+  - **获取PaddleOCR最新发版解说《OCR超强技术详解与产业应用实战》系列直播课回放链接**
   - **10G重磅OCR学习大礼包：**《动手学OCR》电子书，配套讲解视频和notebook项目；66篇OCR相关顶会前沿论文打包放送，包括CVPR、AAAI、IJCAI、ICCV等；PaddleOCR历次发版直播课视频；OCR社区优秀开发者项目分享视频。
 
 - **社区贡献**🏅️：[社区贡献](./doc/doc_ch/thirdparty.md)文档中包含了社区用户**使用PaddleOCR开发的各种工具、应用**以及**为PaddleOCR贡献的功能、优化的文档与代码**等，是官方为社区开发者打造的荣誉墙，也是帮助优质项目宣传的广播站。
