@@ -1,22 +1,40 @@
+# 基于PP-OCRv3的PCB字符识别
+
+- [1 项目说明](#1 项目说明)
+- [2 安装说明](#2 安装说明)
+- [3 数据准备](#3 数据准备)
+- [4 文本检测](#4 文本检测)
+  - [4.1 方案1：预训练模型直接评估](#4.1 方案1：预训练模型直接评估)
+  - [4.2 方案2：预训练模型 + 验证集padding直接评估](#4.2 方案2：预训练模型 + 验证集padding直接评估)
+  - [4.3 方案3：预训练模型 + fine-tune](#4.3 方案3：预训练模型 + fine-tune)
+- [5 文本识别](#5 文本识别)
+  - [5.1 方案1：预训练模型直接评估](#5.1 方案1：预训练模型直接评估)
+  - [5.2 方案2、3、4](#5.2 方案2、3、4)
+- [6 模型导出](#6 模型导出)
+- [7 端对端评测](#7 端对端评测)
+- [8 Jetson nano部署](#8 Jetson nano部署)
+- [9 总结](#9 总结)
+- [更多资源](#更多资源)
+
 # 1 项目说明
 
-印刷电路板(PCB)是电子产品中的核心器件，对于板件质量的测试与监控是生产中必不可少的环节。在一些场景中，通过PCB中信号灯颜色和文字组合可以定位PCB局部模块质量问题，pcb文字识别中存在一些如下难点：
+印刷电路板(PCB)是电子产品中的核心器件，对于板件质量的测试与监控是生产中必不可少的环节。在一些场景中，通过PCB中信号灯颜色和文字组合可以定位PCB局部模块质量问题，PCB文字识别中存在如下难点：
 
 - 裁剪出的PCB图片宽高比例较小
 - 文字区域整体面积也较小
 - 包含垂直、水平多种方向文本
 
-针对本场景，PaddleOCR基于全新的PP-OCRv3通过合成数据、微调以及其他场景适配方法完成小字符文本识别任务，满足企业上线要求。pcb检测、识别效果如 **图1** 所示：
+针对本场景，PaddleOCR基于全新的PP-OCRv3通过合成数据、微调以及其他场景适配方法完成小字符文本识别任务，满足企业上线要求。PCB检测、识别效果如 **图1** 所示：
 
-<center><img src='https://ai-studio-static-online.cdn.bcebos.com/95d8e95bf1ab476987f2519c0f8f0c60a0cdc2c444804ed6ab08f2f7ab054880', width='500'></center>
-<center>图1 pcb检测识别效果</center>
+<div align=center><img src='https://ai-studio-static-online.cdn.bcebos.com/95d8e95bf1ab476987f2519c0f8f0c60a0cdc2c444804ed6ab08f2f7ab054880', width='500'></div>
+<div align=center>图1 PCB检测识别效果</div>
 
-注：欢迎再AIStudio领取免费算力体验线上实训，项目链接: [基于PaddleOCR全新PP-OCRv3模型实现PCB字符识别](https://aistudio.baidu.com/aistudio/projectdetail/4008973)(配备Tesla V100、A100等高级算力资源)
+注：欢迎在AIStudio领取免费算力体验线上实训，项目链接: [基于PP-OCRv3实现PCB字符识别](https://aistudio.baidu.com/aistudio/projectdetail/4008973)
 
 # 2 安装说明
 
 
-下载PaddleOCR源码，安装依赖环境~
+下载PaddleOCR源码，安装依赖环境。
 
 
 ```python
@@ -33,15 +51,15 @@
 
 # 3 数据准备
 
-我们通过图片合成工具生成 **图2** 所示的pcb图片，整图只有高25、宽150左右、文字区域高9、宽45左右，包含垂直和水平2种方向的文本：
+我们通过图片合成工具生成 **图2** 所示的PCB图片，整图只有高25、宽150左右、文字区域高9、宽45左右，包含垂直和水平2种方向的文本：
 
-<center><img src="https://ai-studio-static-online.cdn.bcebos.com/bb7a345687814a3d83a29790f2a2b7d081495b3a920b43988c93da6039cad653" width="1000" ></center>
-<center>图2 数据集示例</center>
+<div align=center><img src="https://ai-studio-static-online.cdn.bcebos.com/bb7a345687814a3d83a29790f2a2b7d081495b3a920b43988c93da6039cad653" width="1000" ></div>
+<div align=center>图2 数据集示例</div>
 
-暂时不开源生成的pcb数据集，但是通过更换背景，生成 **100张** 相同尺寸和文本的图片，如  **图3** 所示，方便大家跑通实验。通过如下代码解压数据集：
+暂时不开源生成的PCB数据集，但是通过更换背景，生成 **100张** 相同尺寸和文本的图片，如  **图3** 所示，方便大家跑通实验。通过如下代码解压数据集：
 
-<center><img src="https://ai-studio-static-online.cdn.bcebos.com/3277b750159f4b68b2b58506bfec9005d49aeb5fb1d9411e83f96f9ff7eb66a5" width="1000" ></center>
-<center>图3 案例提供数据集示例</center>
+<div align=center><img src="https://ai-studio-static-online.cdn.bcebos.com/3277b750159f4b68b2b58506bfec9005d49aeb5fb1d9411e83f96f9ff7eb66a5" width="1000" ></div>
+<div align=center>图3 案例提供数据集示例</div>
 
 
 ```python
@@ -51,7 +69,7 @@
 在生成数据集的时需要生成检测和识别训练需求的格式：
 
 
-- **文本检测** 
+- **文本检测**
 
 标注文件格式如下，中间用'\t'分隔：
 
@@ -62,7 +80,7 @@ ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], 
 
 json.dumps编码前的图像标注信息是包含多个字典的list，字典中的 `points` 表示文本框的四个点的坐标(x, y)，从左上角的点开始顺时针排列。 `transcription` 表示当前文本框的文字，***当其内容为“###”时，表示该文本框无效，在训练时会跳过。***
 
-- **文本识别** 
+- **文本识别**
 
 标注文件的格式如下， txt文件中默认请将图片路径和图片标签用'\t'分割，如用其他方式分割将造成训练报错。
 
@@ -87,11 +105,15 @@ train_data/rec/train/word_002.jpg   用科技让复杂的世界更简单
 
 
 我们使用 **3种方案** 进行检测模型的训练、评估：
--  **PP-OCRv3英文超轻量检测预训练模型**
--  PP-OCRv3英文超轻量检测预训练模型 + **验证集padding**
--  PP-OCRv3英文超轻量检测预训练模型 + **finetune**
+-  **PP-OCRv3英文超轻量检测预训练模型直接评估**
+-  PP-OCRv3英文超轻量检测预训练模型 + **验证集padding**直接评估
+-  PP-OCRv3英文超轻量检测预训练模型 + **fine-tune**
 
-## **4.1 方案1：预训练模型**
+## **4.1 方案1：预训练模型直接评估**
+
+我们首先通过PaddleOCR提供的预训练模型在验证集上进行评估，如果评估指标能满足效果，可以直接使用预训练模型，不再需要训练。
+
+使用预训练模型直接评估步骤如下：
 
 **1）下载预训练模型**
 
@@ -124,7 +146,7 @@ PaddleOCR已经提供了PP-OCR系列模型，部分模型展示如下表所示�
 %cd ..
 ```
 
-**模型评估** 
+**模型评估**
 
 
 首先修改配置文件`configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml`中的以下字段：
@@ -147,16 +169,14 @@ Eval.dataset.transforms.DetResizeForTest:  尺寸
     -o Global.checkpoints="./pretrain_models/en_PP-OCRv3_det_distill_train/best_accuracy"
 ```
 
-## **4.2 方案2：预训练模型 + 验证集padding**
+## **4.2 方案2：预训练模型 + 验证集padding直接评估**
 
-考虑到pcb图片比较小，宽度只有25左右、高度只有140-170左右，我们在原图的基础上进行padding，再进行检测评估，padding前后效果对比如 **图4** 所示：
+考虑到PCB图片比较小，宽度只有25左右、高度只有140-170左右，我们在原图的基础上进行padding，再进行检测评估，padding前后效果对比如 **图4** 所示：
 
-<center><img src='https://ai-studio-static-online.cdn.bcebos.com/e61e6ba685534eda992cea30a63a9c461646040ffd0c4d208a5eebb85897dcf7' width='600'></center>
-<center>图4 padding前后对比图</center>
+<div align=center><img src='https://ai-studio-static-online.cdn.bcebos.com/e61e6ba685534eda992cea30a63a9c461646040ffd0c4d208a5eebb85897dcf7' width='600'></div>
+<div align=center>图4 padding前后对比图</div>
 
 将图片都padding到300*300大小，因为坐标信息发生了变化，我们同时要修改标注文件，在`/home/aistudio/dataset`目录里也提供了padding之后的图片，大家也可以尝试训练和评估：
-
-
 
 同上，我们需要修改配置文件`configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml`中的以下字段：
 ```
@@ -177,10 +197,10 @@ Eval.dataset.transforms.DetResizeForTest:  尺寸
     -o Global.checkpoints="./pretrain_models/en_PP-OCRv3_det_distill_train/best_accuracy"
 ```
 
-## **4.3 方案3：预训练模型 + finetune**
+## **4.3 方案3：预训练模型 + fine-tune**
 
 
-在生成的1500图片上进行训练和评估，其中train数据1200张，val数据300张，修改配置文件`configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_student.yml`中的以下字段：
+基于预训练模型，在生成的1500图片上进行fine-tune训练和评估，其中train数据1200张，val数据300张，修改配置文件`configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_student.yml`中的以下字段：
 ```
 Global.epoch_num: 这里设置为1，方便快速跑通，实际中根据数据量调整该值
 Global.save_model_dir：模型保存路径
@@ -204,7 +224,7 @@ Eval.dataset.transforms.DetResizeForTest：评估尺寸，添加如下参数
         -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_student.yml
 ```
 
-**模型评估** 
+**模型评估**
 
 
 使用训练好的模型进行评估，更新模型路径`Global.checkpoints`:
@@ -221,10 +241,10 @@ Eval.dataset.transforms.DetResizeForTest：评估尺寸，添加如下参数
 
 
 | 序号 | 方案 | heman  |  效果提升  |   实验分析  |
-| -------- | -------- | -------- | -------- | -------- | 
-|   1 |  PP-OCRv3英文超轻量检测预训练模型   | 64.64%     |     -     |    提供的预训练模型具有一定的泛化能力       | 
-|   2 | PP-OCRv3英文超轻量检测预训练模型 + 验证集padding    |  72.13%  |提升7.5% | padding可以提升尺寸较小图片的检测效果| 
-|   3 | PP-OCRv3英文超轻量检测预训练模型  + finetune    | 100% |  提升27.9%      | finetune会提升垂类场景效果 | 
+| -------- | -------- | -------- | -------- | -------- |
+|   1 |  PP-OCRv3英文超轻量检测预训练模型   | 64.64%     |     -     |    提供的预训练模型具有一定的泛化能力       |
+|   2 | PP-OCRv3英文超轻量检测预训练模型 + 验证集padding    |  72.13%  |提升7.5% | padding可以提升尺寸较小图片的检测效果|
+|   3 | PP-OCRv3英文超轻量检测预训练模型  + fine-tune   | 100% |  提升27.9%      | fine-tune会提升垂类场景效果 |
 
 
 ```
@@ -235,13 +255,17 @@ Eval.dataset.transforms.DetResizeForTest：评估尺寸，添加如下参数
 
 我们分别使用如下4种方案进行训练、评估：
 
-- **方案1**：**PP-OCRv3中英文超轻量识别预训练模型**
-- **方案2**：PP-OCRv3中英文超轻量检测预训练模型 + **finetune**
-- **方案3**：PP-OCRv3中英文超轻量检测预训练模型 + finetune + **公开通用识别数据集**
-- **方案4**：PP-OCRv3中英文超轻量检测预训练模型 + finetune + **增加pcb图像数量**
+- **方案1**：**PP-OCRv3中英文超轻量识别预训练模型直接评估**
+- **方案2**：PP-OCRv3中英文超轻量检测预训练模型 + **fine-tune**
+- **方案3**：PP-OCRv3中英文超轻量检测预训练模型 + fine-tune + **公开通用识别数据集**
+- **方案4**：PP-OCRv3中英文超轻量检测预训练模型 + fine-tune + **增加PCB图像数量**
 
 
-## **5.1 方案1：预训练模型**
+## **5.1 方案1：预训练模型直接评估**
+
+同检测模型，我们首先使用PaddleOCR提供的识别预训练模型在PCB验证集上进行评估。
+
+使用预训练模型直接评估步骤如下：
 
 **1）下载预训练模型**
 
@@ -285,18 +309,18 @@ Eval.dataset.label_file_list：指向验证集标注文件,'/home/aistudio/datas
 
 **方案介绍：**
 
-1） **方案2**：预训练模型 + **finetune**
+1） **方案2**：预训练模型 + **fine-tune**
 
-- 在预训练模型的基础上进行finetune，使用1500张pcb进行训练和评估，其中训练集1200张，验证集300张
-  
+- 在预训练模型的基础上进行fine-tune，使用1500张PCB进行训练和评估，其中训练集1200张，验证集300张。
 
-2） **方案3**：预训练模型 + finetune + **公开通用识别数据集**
 
-- 在方案2的基础上，添加公开通用识别数据集，如lsvt、rctw等。
+2） **方案3**：预训练模型 + fine-tune + **公开通用识别数据集**
 
-3）**方案4**：预训练模型 + finetune + **增加pcb图像数量**
+- 当识别数据比较少的情况，可以考虑添加公开通用识别数据集。在方案2的基础上，添加公开通用识别数据集，如lsvt、rctw等。
 
-- 在方案2的基础上，增加pcb的数量到2W张左右
+3）**方案4**：预训练模型 + fine-tune + **增加PCB图像数量**
+
+- 如果能够获取足够多真实场景，我们可以通过增加数据量提升模型效果。在方案2的基础上，增加PCB的数量到2W张左右。
 
 
 **参数修改：**
@@ -327,11 +351,11 @@ Eval.dataset.label_file_list：添加公开通用识别数据标注文件
 Eval.dataset.ratio_list：数据和公开通用识别数据每次采样比例，按实际修改即可
 ```
 如 **图5** 所示：
-<center><img src='https://ai-studio-static-online.cdn.bcebos.com/0fa18b25819042d9bbf3397c3af0e21433b23d52f7a84b0a8681b8e6a308d433' wdith=''></center>
-<center>图5 添加公开通用识别数据配置文件示例</center>
+<div align=center><img src='https://ai-studio-static-online.cdn.bcebos.com/0fa18b25819042d9bbf3397c3af0e21433b23d52f7a84b0a8681b8e6a308d433' wdith=''></div>
+<div align=center>图5 添加公开通用识别数据配置文件示例</div>
 
 
-我们提取Student模型的参数，在pcb数据集上进行finetune，可以参考如下代码：
+我们提取Student模型的参数，在PCB数据集上进行fine-tune，可以参考如下代码：
 
 
 ```python
@@ -370,12 +394,12 @@ paddle.save(s_params, "./pretrain_models/ch_PP-OCRv3_rec_train/student.pdparams"
 
 所有方案评估指标如下：
 
-| 序号 | 方案 | heman  |  效果提升  |   实验分析  |
-| -------- | -------- | -------- | -------- | -------- | 
-|   1 |  PP-OCRv3中英文超轻量识别预训练模型   | 46.67%     |     -     |    提供的预训练模型具有一定的泛化能力       | 
-|   2 | PP-OCRv3中英文超轻量识别预训练模型 + finetune    |  42.02%  |下降4.6% | 在数据量不足的情况，反而比预训练模型效果低(也可以通过调整超参数再试试)| 
-|   3 | PP-OCRv3中英文超轻量识别预训练模型 + finetune + 公开通用识别数据集    | 77% |  提升30%      | 在数据量不足的情况下，可以考虑补充公开数据训练 | 
-|   4 | PP-OCRv3中英文超轻量识别预训练模型 + finetune + 增加pcb图像数量    | 99.99% |  提升23%      | 如果能获取更多数据量的情况，可以通过增加数据量提升效果 | 
+| 序号 | 方案 | acc    |  效果提升  |   实验分析  |
+| -------- | -------- | -------- | -------- | -------- |
+|   1 | PP-OCRv3中英文超轻量识别预训练模型直接评估 | 46.67%     |     -     |    提供的预训练模型具有一定的泛化能力       |
+|   2 | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune   |  42.02%  |下降4.6% | 在数据量不足的情况，反而比预训练模型效果低(也可以通过调整超参数再试试)|
+|   3 | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune + 公开通用识别数据集   | 77% |  提升30%      | 在数据量不足的情况下，可以考虑补充公开数据训练 |
+|   4 | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune + 增加PCB图像数量   | 99.99% |  提升23%      | 如果能获取更多数据量的情况，可以通过增加数据量提升效果 |
 
 ```
 注：上述实验结果均是在1500张图片（1200张训练集，300张测试集）、2W张图片、添加公开通用识别数据集上训练、评估的得到，AIstudio只提供了100张数据，所以指标有所差异属于正常，只要策略有效、规律相同即可。
@@ -399,8 +423,8 @@ inference 模型（paddle.jit.save保存的模型） 一般是模型训练，把
 
 ```python
 %cd /home/aistudio/best_models/
-! wget https://paddleocr.bj.bcebos.com/fanliku/pcb/det_ppocr_v3_en_infer_pcb.tar
-! tar xf /home/aistudio/best_models/det_ppocr_v3_en_infer_pcb.tar -C /home/aistudio/PaddleOCR/pretrain_models/
+! wget https://paddleocr.bj.bcebos.com/fanliku/PCB/det_ppocr_v3_en_infer_PCB.tar
+! tar xf /home/aistudio/best_models/det_ppocr_v3_en_infer_PCB.tar -C /home/aistudio/PaddleOCR/pretrain_models/
 ```
 
 
@@ -410,7 +434,7 @@ inference 模型（paddle.jit.save保存的模型） 一般是模型训练，把
 ! python3 tools/infer/predict_det.py \
     --image_dir="/home/aistudio/dataset/imgs/0000.jpg" \
     --det_algorithm="DB" \
-    --det_model_dir="./pretrain_models/det_ppocr_v3_en_infer_pcb/" \
+    --det_model_dir="./pretrain_models/det_ppocr_v3_en_infer_PCB/" \
     --det_limit_side_len=48 \
     --det_limit_type='min' \
     --det_db_unclip_ratio=2.5 \
@@ -418,13 +442,11 @@ inference 模型（paddle.jit.save保存的模型） 一般是模型训练，把
 ```
 
 结果存储在`inference_results`目录下，检测如下图所示：
-<center><img src='https://ai-studio-static-online.cdn.bcebos.com/5939ae15a1f0445aaeec15c68107dbd897740a1ddd284bf8b583bb6242099157' width=''></center>
-<center>图6 检测结果</center>
+<div align=center><img src='https://ai-studio-static-online.cdn.bcebos.com/5939ae15a1f0445aaeec15c68107dbd897740a1ddd284bf8b583bb6242099157' width=''></div>
+<div align=center>图6 检测结果</div>
 
 
 同理，导出识别模型并进行推理。
-
-
 
 ```python
 # 导出识别模型
@@ -440,8 +462,8 @@ inference 模型（paddle.jit.save保存的模型） 一般是模型训练，把
 
 ```python
 %cd /home/aistudio/best_models/
-! wget https://paddleocr.bj.bcebos.com/fanliku/pcb/rec_ppocr_v3_ch_infer_pcb.tar
-! tar xf /home/aistudio/best_models/rec_ppocr_v3_ch_infer_pcb.tar -C /home/aistudio/PaddleOCR/pretrain_models/
+! wget https://paddleocr.bj.bcebos.com/fanliku/PCB/rec_ppocr_v3_ch_infer_PCB.tar
+! tar xf /home/aistudio/best_models/rec_ppocr_v3_ch_infer_PCB.tar -C /home/aistudio/PaddleOCR/pretrain_models/
 ```
 
 
@@ -450,7 +472,7 @@ inference 模型（paddle.jit.save保存的模型） 一般是模型训练，把
 %cd /home/aistudio/PaddleOCR/
 ! python3 tools/infer/predict_rec.py \
     --image_dir="../test_imgs/0000_rec.jpg" \
-    --rec_model_dir="./pretrain_models/rec_ppocr_v3_ch_infer_pcb" \
+    --rec_model_dir="./pretrain_models/rec_ppocr_v3_ch_infer_PCB" \
     --rec_image_shape="3, 48, 320" \
     --use_space_char=False \
     --use_gpu=True
@@ -461,22 +483,22 @@ inference 模型（paddle.jit.save保存的模型） 一般是模型训练，把
 %cd /home/aistudio/PaddleOCR/
 ! python3 tools/infer/predict_system.py  \
     --image_dir="../test_imgs/0000.jpg" \
-    --det_model_dir="./pretrain_models/det_ppocr_v3_en_infer_pcb" \
+    --det_model_dir="./pretrain_models/det_ppocr_v3_en_infer_PCB" \
     --det_limit_side_len=48 \
     --det_limit_type='min' \
     --det_db_unclip_ratio=2.5 \
-    --rec_model_dir="./pretrain_models/rec_ppocr_v3_ch_infer_pcb"  \
+    --rec_model_dir="./pretrain_models/rec_ppocr_v3_ch_infer_PCB"  \
     --rec_image_shape="3, 48, 320" \
     --draw_img_save_dir=./det_rec_infer/ \
     --use_space_char=False \
     --use_angle_cls=False \
     --use_gpu=True
-    
+
 ```
 
 端到端预测结果存储在`det_res_infer`文件夹内，结果如下图所示：
-<center><img src='https://ai-studio-static-online.cdn.bcebos.com/c570f343c29846c792da56ebaca16c50708477514dd048cea8bef37ffa85d03f'></center>
-<center>图7 检测+识别结果</center>
+<div align=center><img src='https://ai-studio-static-online.cdn.bcebos.com/c570f343c29846c792da56ebaca16c50708477514dd048cea8bef37ffa85d03f'></div>
+<div align=center>图7 检测+识别结果</div>
 
 # 7 端对端评测
 
@@ -489,11 +511,11 @@ inference 模型（paddle.jit.save保存的模型） 一般是模型训练，把
 # 检测+识别模型inference模型预测
 ! python3 tools/infer/predict_system.py  \
     --image_dir="../dataset/imgs/" \
-    --det_model_dir="./pretrain_models/det_ppocr_v3_en_infer_pcb" \
+    --det_model_dir="./pretrain_models/det_ppocr_v3_en_infer_PCB" \
     --det_limit_side_len=48 \
     --det_limit_type='min' \
     --det_db_unclip_ratio=2.5 \
-    --rec_model_dir="./pretrain_models/rec_ppocr_v3_ch_infer_pcb"  \
+    --rec_model_dir="./pretrain_models/rec_ppocr_v3_ch_infer_PCB"  \
     --rec_image_shape="3, 48, 320" \
     --draw_img_save_dir=./det_rec_infer/ \
     --use_space_char=False \
@@ -508,7 +530,7 @@ inference 模型（paddle.jit.save保存的模型） 一般是模型训练，把
 ppocr_label_gt =  "/home/aistudio/dataset/det_gt_val.txt"
 convert_label(ppocr_label_gt, "gt", "./save_gt_label/")
 
-ppocr_label_gt =  "/home/aistudio/PaddleOCR/pcb_result/det_rec_infer/system_results.txt"
+ppocr_label_gt =  "/home/aistudio/PaddleOCR/PCB_result/det_rec_infer/system_results.txt"
 convert_label(ppocr_label_gt, "pred", "./save_PPOCRV2_infer/")
 ```
 
@@ -533,23 +555,51 @@ convert_label(ppocr_label_gt, "pred", "./save_PPOCRV2_infer/")
 ! python3 tools/end2end/eval_end2end.py ./save_gt_label/ ./save_PPOCRV2_infer/
 ```
 
-使用`预训练模型+finetune'检测模型`、`预训练模型 + 2W张pcb图片funetune`识别模型，在300张pcb图片上评估得到如下结果，fmeasure为主要关注的指标:
-<center><img src='https://ai-studio-static-online.cdn.bcebos.com/37206ea48a244212ae7a821d50d1fd51faf3d7fe97ac47a29f04dfcbb377b019', width='700'></center>
-<center>图8 端到端评估指标</center>
+使用`预训练模型+fine-tune'检测模型`、`预训练模型 + 2W张PCB图片funetune`识别模型，在300张PCB图片上评估得到如下结果，fmeasure为主要关注的指标:
+<div align=center><img src='https://ai-studio-static-online.cdn.bcebos.com/37206ea48a244212ae7a821d50d1fd51faf3d7fe97ac47a29f04dfcbb377b019', width='700'></div>
+<div align=center>图8 端到端评估指标</div>
 
 ```
 注: 使用上述命令不能跑出该结果，因为数据集不相同，可以更换为自己训练好的模型，按上述流程运行
-
 ```
 
 # 8 Jetson nano部署
 
 我们可以在Jetson部署模型，具体[参考流程](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.5/deploy/Jetson/readme_ch.md)，简单易操作。
 
-```
-注：本方案更主要是：提供检测、识别优化方案，以及需要修改的配置参数，评估流程、部署方案等
-```
+# 9 总结
 
+检测实验分别使用PP-OCRv3预训练模型在PCB数据集上进行了直接评估、验证集padding、 fine-tune 3种方案，识别实验分别使用PP-OCRv3预训练模型在PCB数据集上进行了直接评估、 fine-tune、添加公开通用识别数据集、增加PCB图片数量4种方案，指标对比如下：
+
+* 检测
+
+
+| 序号 | 方案                                                     | heman  | 效果提升  | 实验分析                              |
+| ---- | -------------------------------------------------------- | ------ | --------- | ------------------------------------- |
+| 1    | PP-OCRv3英文超轻量检测预训练模型直接评估                 | 64.64% | -         | 提供的预训练模型具有一定的泛化能力    |
+| 2    | PP-OCRv3英文超轻量检测预训练模型 + 验证集padding直接评估 | 72.13% | 提升7.5%  | padding可以提升尺寸较小图片的检测效果 |
+| 3    | PP-OCRv3英文超轻量检测预训练模型  + fine-tune            | 100%   | 提升27.9% | fine-tune会提升垂类场景效果           |
+
+* 识别
+
+| 序号 | 方案                                                         | acc    | 效果提升 | 实验分析                                                     |
+| ---- | ------------------------------------------------------------ | ------ | -------- | ------------------------------------------------------------ |
+| 1    | PP-OCRv3中英文超轻量识别预训练模型直接评估                   | 46.67% | -        | 提供的预训练模型具有一定的泛化能力                           |
+| 2    | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune               | 42.02% | 下降4.6% | 在数据量不足的情况，反而比预训练模型效果低(也可以通过调整超参数再试试) |
+| 3    | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune + 公开通用识别数据集 | 77%    | 提升30%  | 在数据量不足的情况下，可以考虑补充公开数据训练               |
+| 4    | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune + 增加PCB图像数量 | 99.99% | 提升23%  | 如果能获取更多数据量的情况，可以通过增加数据量提升效果       |
+
+* 端到端
+
+| det                                           | rec                                                          | fmeasure |
+| --------------------------------------------- | ------------------------------------------------------------ | -------- |
+| PP-OCRv3英文超轻量检测预训练模型  + fine-tune | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune + 增加PCB图像数量 | 93.3%    |
+
+*结论*
+
+PP-OCRv3的检测模型在未经过fine-tune的情况下，在PCB数据集上也有一定的精度，说明具有一定的泛化能力。验证集padding之后，精度提升7.5%，在图片尺寸较小的情况，我们可以通过padding的方式提升检测效果。经过 fine-tune 后能够极大的提升检测效果，精度达到100%。
+
+PP-OCRv3的识别模型方案1和方案2对比可以发现，当数据量不足的情况，预训练模型精度可能比fine-tune效果还要高，所以我们可以先尝试预训练模型直接评估。如果在数据量不足的情况下想进一步提升模型效果，可以通过添加公开通用识别数据集，识别效果提升30%，非常有效。最后如果我们能够采集足够多的真实场景数据集，可以通过增加数据量提升模型效果，精度达到99.99%。
 
 # 更多资源
 
