@@ -565,7 +565,21 @@ convert_label(ppocr_label_gt, "pred", "./save_PPOCRV2_infer/")
 
 # 8 Jetson nano部署
 
-我们可以在Jetson部署模型，具体[参考流程](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.5/deploy/Jetson/readme_ch.md)，简单易操作。
+我们只需要以下步骤就可以完成Jetson部署模型，简单易操作：
+
+1、在Jetson nano开发版上环境准备：
+
+   1）安装PaddlePaddle
+
+   2）下载PaddleOCR并安装依赖
+
+2、执行预测
+
+   1）将推理模型下载到jetson
+
+   2）执行检测、识别、串联预测即可
+
+详细[参考流程](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.5/deploy/Jetson/readme_ch.md)。
 
 # 9 总结
 
