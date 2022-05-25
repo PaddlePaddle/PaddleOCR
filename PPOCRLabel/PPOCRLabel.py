@@ -1657,6 +1657,11 @@ class MainWindow(QMainWindow):
         if self.defaultSaveDir and self.defaultSaveDir != dirpath:
             self.saveLabelFile()
 
+        self.filePath = None
+        self.fileListWidget.clear()
+        self.mImgList = self.scanAllImages(dirpath)
+        self.mImgList5 = self.mImgList[:5]
+
         if not isDelete:
             self.loadFilestate(dirpath)
             self.PPlabelpath = dirpath + '/Label.txt'
@@ -1667,6 +1672,9 @@ class MainWindow(QMainWindow):
                 self.PPlabel = dict(self.Cachelabel, **self.PPlabel)
 
             self.init_key_list(self.PPlabel)
+            self.openNextImg()
+            # set list index to first
+            self.fileListWidget.setCurrentRow(0)
 
         self.lastOpenDir = dirpath
         self.dirname = dirpath
@@ -1676,11 +1684,6 @@ class MainWindow(QMainWindow):
                                      (__appname__, self.defaultSaveDir))
         self.statusBar().show()
 
-        self.filePath = None
-        self.fileListWidget.clear()
-        self.mImgList = self.scanAllImages(dirpath)
-        self.mImgList5 = self.mImgList[:5]
-        self.openNextImg()
         doneicon = newIcon('done')
         closeicon = newIcon('close')
         for imgPath in self.mImgList:
@@ -1705,9 +1708,11 @@ class MainWindow(QMainWindow):
         self.actions.open_dataset_dir.setEnabled(True)
         self.actions.rotateLeft.setEnabled(True)
         self.actions.rotateRight.setEnabled(True)
-
-        self.fileListWidget.setCurrentRow(0)  # set list index to first
-        self.fileDock.setWindowTitle(self.fileListName + f" (1/{self.fileListWidget.count()})")  # show image count
+        # set list index to current
+        self.fileListWidget.setCurrentRow(self.currIndex)
+        self.fileDock.setWindowTitle(
+            self.fileListName + f" ({self.currIndex + 1}/{self.fileListWidget.count()})"
+        )  # show image count
 
     def openPrevImg(self, _value=False):
         if len(self.mImgList) <= 0:
@@ -1736,12 +1741,12 @@ class MainWindow(QMainWindow):
             filename = self.mImgList[0]
             self.mImgList5 = self.mImgList[:5]
         else:
-            currIndex = self.mImgList.index(self.filePath)
-            if currIndex + 1 < len(self.mImgList):
-                filename = self.mImgList[currIndex + 1]
-                self.mImgList5 = self.indexTo5Files(currIndex + 1)
+            self.currIndex = self.mImgList.index(self.filePath)
+            if self.currIndex + 1 < len(self.mImgList):
+                filename = self.mImgList[self.currIndex + 1]
+                self.mImgList5 = self.indexTo5Files(self.currIndex + 1)
             else:
-                self.mImgList5 = self.indexTo5Files(currIndex)
+                self.mImgList5 = self.indexTo5Files(self.currIndex)
         if filename:
             print('file name in openNext is ', filename)
             self.loadFile(filename)
@@ -1824,10 +1829,13 @@ class MainWindow(QMainWindow):
             deleteInfo = self.deleteImgDialog()
             if deleteInfo == QMessageBox.Yes:
                 if platform.system() == 'Windows':
-                    from win32com.shell import shell, shellcon
-                    shell.SHFileOperation((0, shellcon.FO_DELETE, deletePath, None,
-                                           shellcon.FOF_SILENT | shellcon.FOF_ALLOWUNDO | shellcon.FOF_NOCONFIRMATION,
-                                           None, None))
+                    try:
+                        from win32com.shell import shell, shellcon
+                        shell.SHFileOperation((0, shellcon.FO_DELETE, deletePath, None,
+                                               shellcon.FOF_SILENT | shellcon.FOF_ALLOWUNDO | shellcon.FOF_NOCONFIRMATION,
+                                               None, None))
+                    except ImportError:
+                        os.remove(deletePath)
                     # linux
                 elif platform.system() == 'Linux':
                     cmd = 'trash ' + deletePath
