@@ -4,12 +4,12 @@
 - [2. 安装说明](#2-安装说明)
 - [3. 数据准备](#3-数据准备)
 - [4. 文本检测](#4-文本检测)
-  - [4.1 方案1：预训练模型直接评估](#41-方案1：预训练模型直接评估)
-  - [4.2 方案2：预训练模型+验证集padding直接评估](#42-方案2：预训练模型+验证集padding直接评估)
-  - [4.3 方案3：预训练模型+fine-tune](#43-方案3：预训练模型+fine-tune)
+  - [4.1 预训练模型直接评估](#41-预训练模型直接评估)
+  - [4.2 预训练模型+验证集padding直接评估](#42-预训练模型+验证集padding直接评估)
+  - [4.3 预训练模型+fine-tune](#43-预训练模型+fine-tune)
 - [5. 文本识别](#5-文本识别)
-  - [5.1 方案1：预训练模型直接评估](#51 方案1：预训练模型直接评估)
-  - [5.2 方案2、3、4](#52-方案2、3、4)
+  - [5.1 预训练模型直接评估](#51-预训练模型直接评估)
+  - [5.2 方案2-3-4](#52-方案2-3-4)
 - [6. 模型导出](#6-模型导出)
 - [7. 端对端评测](#7-端对端评测)
 - [8. Jetson部署](#8-Jetson部署)
@@ -109,7 +109,7 @@ train_data/rec/train/word_002.jpg   用科技让复杂的世界更简单
 -  PP-OCRv3英文超轻量检测预训练模型 + **验证集padding**直接评估
 -  PP-OCRv3英文超轻量检测预训练模型 + **fine-tune**
 
-## **4.1 方案1：预训练模型直接评估**
+## **4.1 预训练模型直接评估**
 
 我们首先通过PaddleOCR提供的预训练模型在验证集上进行评估，如果评估指标能满足效果，可以直接使用预训练模型，不再需要训练。
 
@@ -169,7 +169,7 @@ Eval.dataset.transforms.DetResizeForTest:  尺寸
     -o Global.checkpoints="./pretrain_models/en_PP-OCRv3_det_distill_train/best_accuracy"
 ```
 
-## **4.2 方案2：预训练模型+验证集padding直接评估**
+## **4.2 预训练模型+验证集padding直接评估**
 
 考虑到PCB图片比较小，宽度只有25左右、高度只有140-170左右，我们在原图的基础上进行padding，再进行检测评估，padding前后效果对比如 **图4** 所示：
 
@@ -197,7 +197,7 @@ Eval.dataset.transforms.DetResizeForTest:  尺寸
     -o Global.checkpoints="./pretrain_models/en_PP-OCRv3_det_distill_train/best_accuracy"
 ```
 
-## **4.3 方案3：预训练模型+fine-tune**
+## **4.3 预训练模型+fine-tune**
 
 
 基于预训练模型，在生成的1500图片上进行fine-tune训练和评估，其中train数据1200张，val数据300张，修改配置文件`configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_student.yml`中的以下字段：
@@ -261,7 +261,7 @@ Eval.dataset.transforms.DetResizeForTest：评估尺寸，添加如下参数
 - **方案4**：PP-OCRv3中英文超轻量检测预训练模型 + fine-tune + **增加PCB图像数量**
 
 
-## **5.1 方案1：预训练模型直接评估**
+## **5.1 预训练模型直接评估**
 
 同检测模型，我们首先使用PaddleOCR提供的识别预训练模型在PCB验证集上进行评估。
 
@@ -303,7 +303,7 @@ Eval.dataset.label_file_list：指向验证集标注文件,'/home/aistudio/datas
 
 ```
 
-## **5.2 方案2、3、4**
+## **5.2 方案2-3-4**
 
 方案2、3、4训练和评估方式是相同的，因此在我们了解每个技术方案之后，再具体看修改哪些参数是相同，哪些是不同的。
 
