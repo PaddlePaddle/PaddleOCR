@@ -1657,7 +1657,6 @@ class MainWindow(QMainWindow):
         if self.defaultSaveDir and self.defaultSaveDir != dirpath:
             self.saveLabelFile()
 
-        self.filePath = None
         self.fileListWidget.clear()
         self.mImgList = self.scanAllImages(dirpath)
         self.mImgList5 = self.mImgList[:5]
@@ -1672,6 +1671,7 @@ class MainWindow(QMainWindow):
                 self.PPlabel = dict(self.Cachelabel, **self.PPlabel)
 
             self.init_key_list(self.PPlabel)
+            self.filePath = None
             self.openNextImg()
             # set list index to first
             self.fileListWidget.setCurrentRow(0)
