@@ -43,7 +43,7 @@ cpp_cls_value=$(func_parser_value "${lines[18]}")
 cpp_use_angle_cls_key=$(func_parser_key "${lines[19]}")
 cpp_use_angle_cls_value=$(func_parser_value "${lines[19]}")
 
-LOG_PATH="./test_tipc/output/cpp_infer/${model_name}"
+LOG_PATH="./test_tipc/output/${model_name}/cpp_infer"
 mkdir -p ${LOG_PATH}
 status_log="${LOG_PATH}/results_cpp.log"
 
@@ -177,6 +177,19 @@ if [ ${use_opencv} = "True" ]; then
     OPENCV_DIR=$(pwd)/opencv-3.4.7/opencv3/
 else
     OPENCV_DIR=''
+fi
+if [ -d "paddle_inference/" ] ;then
+    echo "################### download paddle inference skipped ###################"
+else
+    echo "################### download paddle inference ###################"
+    PADDLEInfer=$3
+    if [ "" = "$PADDLEInfer" ];then
+        wget -nc https://paddle-inference-lib.bj.bcebos.com/2.3.0/cxx_c/Linux/GPU/x86-64_gcc8.2_avx_mkl_cuda10.1_cudnn7.6.5_trt6.0.1.5/paddle_inference.tgz --no-check-certificate
+    else
+        wget -nc $PADDLEInfer --no-check-certificate
+    fi
+    tar zxf paddle_inference.tgz
+    echo "################### download paddle inference finished ###################"
 fi
 LIB_DIR=$(pwd)/paddle_inference/
 CUDA_LIB_DIR=$(dirname `find /usr -name libcudart.so`)
