@@ -142,9 +142,9 @@ function func_inference(){
     for use_gpu in ${use_gpu_list[*]}; do
         if [ ${use_gpu} = "False" ] || [ ${use_gpu} = "cpu" ]; then
             for use_mkldnn in ${use_mkldnn_list[*]}; do
-                if [ ${use_mkldnn} = "False" ] && [ ${_flag_quant} = "True" ]; then
-                    continue
-                fi
+                # if [ ${use_mkldnn} = "False" ] && [ ${_flag_quant} = "True" ]; then
+                #     continue
+                # fi
                 for threads in ${cpu_threads_list[*]}; do
                     for batch_size in ${batch_size_list[*]}; do
                         for precision in ${precision_list[*]}; do
