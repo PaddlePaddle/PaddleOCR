@@ -1,22 +1,22 @@
 # 基于PP-OCRv3的PCB字符识别
 
-- [1.项目说明](#1-项目说明)
-- [2.安装说明](#2.安装说明)
-- [3.数据准备](#3.数据准备)
-- [4.文本检测](#4.文本检测)
-  - [4.1方案1：预训练模型直接评估](#4.1方案1：预训练模型直接评估)
-  - [4.2方案2：预训练模型.+.验证集padding直接评估](#4.2方案2：预训练模型.+.验证集padding直接评估)
-  - [4.3方案3：预训练模型.+.fine-tune](#4.3方案3：预训练模型.+.fine-tune)
-- [5.文本识别](#5.文本识别)
-  - [5.1方案1：预训练模型直接评估](#5.1方案1：预训练模型直接评估)
-  - [5.2方案2、3、4](#5.2方案2、3、4)
-- [6.模型导出](#6.模型导出)
-- [7.端对端评测](#7.端对端评测)
-- [8.Jetson.nano部署](#8.Jetson.nano部署)
-- [9.总结](#9.总结)
+- [1. 项目介绍](#1-项目介绍)
+- [2. 安装说明](#2-安装说明)
+- [3. 数据准备](#3-数据准备)
+- [4. 文本检测](#4-文本检测)
+  - [4.1 方案1：预训练模型直接评估](#41-方案1：预训练模型直接评估)
+  - [4.2 方案2：预训练模型+验证集padding直接评估](#42-方案2：预训练模型+验证集padding直接评估)
+  - [4.3 方案3：预训练模型+fine-tune](#43-方案3：预训练模型+fine-tune)
+- [5. 文本识别](#5-文本识别)
+  - [5.1 方案1：预训练模型直接评估](#51 方案1：预训练模型直接评估)
+  - [5.2 方案2、3、4](#52-方案2、3、4)
+- [6. 模型导出](#6-模型导出)
+- [7. 端对端评测](#7-端对端评测)
+- [8. Jetson部署](#8-Jetson部署)
+- [9. 总结](#9-总结)
 - [更多资源](#更多资源)
 
-# 1.项目说明
+# 1. 项目介绍
 
 印刷电路板(PCB)是电子产品中的核心器件，对于板件质量的测试与监控是生产中必不可少的环节。在一些场景中，通过PCB中信号灯颜色和文字组合可以定位PCB局部模块质量问题，PCB文字识别中存在如下难点：
 
@@ -31,7 +31,7 @@
 
 注：欢迎在AIStudio领取免费算力体验线上实训，项目链接: [基于PP-OCRv3实现PCB字符识别](https://aistudio.baidu.com/aistudio/projectdetail/4008973)
 
-# 2.安装说明
+# 2. 安装说明
 
 
 下载PaddleOCR源码，安装依赖环境。
@@ -49,7 +49,7 @@
 ! pip install -r /home/aistudio/PaddleOCR/requirements.txt
 ```
 
-# 3.数据准备
+# 3. 数据准备
 
 我们通过图片合成工具生成 **图2** 所示的PCB图片，整图只有高25、宽150左右、文字区域高9、宽45左右，包含垂直和水平2种方向的文本：
 
@@ -93,7 +93,7 @@ train_data/rec/train/word_002.jpg   用科技让复杂的世界更简单
 ```
 
 
-# 4.文本检测
+# 4. 文本检测
 
 选用飞桨OCR开发套件[PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR)中的PP-OCRv3模型进行文本检测和识别。针对检测模型和识别模型，进行了共计9个方面的升级：
 
@@ -109,7 +109,7 @@ train_data/rec/train/word_002.jpg   用科技让复杂的世界更简单
 -  PP-OCRv3英文超轻量检测预训练模型 + **验证集padding**直接评估
 -  PP-OCRv3英文超轻量检测预训练模型 + **fine-tune**
 
-## **4.1方案1：预训练模型直接评估**
+## **4.1 方案1：预训练模型直接评估**
 
 我们首先通过PaddleOCR提供的预训练模型在验证集上进行评估，如果评估指标能满足效果，可以直接使用预训练模型，不再需要训练。
 
@@ -169,7 +169,7 @@ Eval.dataset.transforms.DetResizeForTest:  尺寸
     -o Global.checkpoints="./pretrain_models/en_PP-OCRv3_det_distill_train/best_accuracy"
 ```
 
-## **4.2方案2：预训练模型 + 验证集padding直接评估**
+## **4.2 方案2：预训练模型+验证集padding直接评估**
 
 考虑到PCB图片比较小，宽度只有25左右、高度只有140-170左右，我们在原图的基础上进行padding，再进行检测评估，padding前后效果对比如 **图4** 所示：
 
@@ -197,7 +197,7 @@ Eval.dataset.transforms.DetResizeForTest:  尺寸
     -o Global.checkpoints="./pretrain_models/en_PP-OCRv3_det_distill_train/best_accuracy"
 ```
 
-## **4.3方案3：预训练模型 + fine-tune**
+## **4.3 方案3：预训练模型+fine-tune**
 
 
 基于预训练模型，在生成的1500图片上进行fine-tune训练和评估，其中train数据1200张，val数据300张，修改配置文件`configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_student.yml`中的以下字段：
@@ -251,7 +251,7 @@ Eval.dataset.transforms.DetResizeForTest：评估尺寸，添加如下参数
 注：上述实验结果均是在1500张图片（1200张训练集，300张测试集）上训练、评估的得到，AIstudio只提供了100张数据，所以指标有所差异属于正常，只要策略有效、规律相同即可。
 ```
 
-# 5.文本识别
+# 5. 文本识别
 
 我们分别使用如下4种方案进行训练、评估：
 
@@ -261,7 +261,7 @@ Eval.dataset.transforms.DetResizeForTest：评估尺寸，添加如下参数
 - **方案4**：PP-OCRv3中英文超轻量检测预训练模型 + fine-tune + **增加PCB图像数量**
 
 
-## **5.1方案1：预训练模型直接评估**
+## **5.1 方案1：预训练模型直接评估**
 
 同检测模型，我们首先使用PaddleOCR提供的识别预训练模型在PCB验证集上进行评估。
 
@@ -303,7 +303,7 @@ Eval.dataset.label_file_list：指向验证集标注文件,'/home/aistudio/datas
 
 ```
 
-## **5.2方案2、3、4**
+## **5.2 方案2、3、4**
 
 方案2、3、4训练和评估方式是相同的，因此在我们了解每个技术方案之后，再具体看修改哪些参数是相同，哪些是不同的。
 
@@ -405,7 +405,7 @@ paddle.save(s_params, "./pretrain_models/ch_PP-OCRv3_rec_train/student.pdparams"
 注：上述实验结果均是在1500张图片（1200张训练集，300张测试集）、2W张图片、添加公开通用识别数据集上训练、评估的得到，AIstudio只提供了100张数据，所以指标有所差异属于正常，只要策略有效、规律相同即可。
 ```
 
-# 6.模型导出
+# 6. 模型导出
 
 inference 模型（paddle.jit.save保存的模型） 一般是模型训练，把模型结构和模型参数保存在文件中的固化模型，多用于预测部署场景。 训练过程中保存的模型是checkpoints模型，保存的只有模型的参数，多用于恢复训练等。 与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合于实际系统集成。
 
@@ -500,7 +500,7 @@ inference 模型（paddle.jit.save保存的模型） 一般是模型训练，把
 <div align=center><img src='https://ai-studio-static-online.cdn.bcebos.com/c570f343c29846c792da56ebaca16c50708477514dd048cea8bef37ffa85d03f'></div>
 <div align=center>图7 检测+识别结果</div>
 
-# 7端对端评测
+# 7. 端对端评测
 
 接下来介绍文本检测+文本识别的端对端指标评估方式。主要分为三步：
 
@@ -563,9 +563,9 @@ convert_label(ppocr_label_gt, "pred", "./save_PPOCRV2_infer/")
 注: 使用上述命令不能跑出该结果，因为数据集不相同，可以更换为自己训练好的模型，按上述流程运行
 ```
 
-# 8Jetson nano部署
+# 8. Jetson部署
 
-我们只需要以下步骤就可以完成Jetson部署模型，简单易操作：
+我们只需要以下步骤就可以完成Jetson nano部署模型，简单易操作：
 
 1、在Jetson nano开发版上环境准备：
 
@@ -581,7 +581,7 @@ convert_label(ppocr_label_gt, "pred", "./save_PPOCRV2_infer/")
 
 详细[参考流程](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.5/deploy/Jetson/readme_ch.md)。
 
-# 9总结
+# 9. 总结
 
 检测实验分别使用PP-OCRv3预训练模型在PCB数据集上进行了直接评估、验证集padding、 fine-tune 3种方案，识别实验分别使用PP-OCRv3预训练模型在PCB数据集上进行了直接评估、 fine-tune、添加公开通用识别数据集、增加PCB图片数量4种方案，指标对比如下：
 
