@@ -43,7 +43,7 @@ inference:tools/infer/predict_rec.py --rec_char_dict_path=./ppocr/utils/ppocr_ke
 --cpu_threads:6
 --rec_batch_num:1|6
 --use_tensorrt:False
---precision:fp32|int8
+--precision:fp32
 --rec_model_dir:
 --image_dir:./inference/rec_inference
 --save_log_path:./test/output/

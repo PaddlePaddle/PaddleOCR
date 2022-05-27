@@ -65,7 +65,7 @@ function func_paddle2onnx(){
         trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker}"
         eval $trans_model_cmd
         last_status=${PIPESTATUS[0]}
-        status_check $last_status "${trans_model_cmd}" "${status_log}"
+        status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}"
         # trans rec
         set_dirname=$(func_set_params "--model_dir" "${rec_infer_model_dir_value}")
         set_model_filename=$(func_set_params "${model_filename_key}" "${model_filename_value}")
@@ -76,7 +76,7 @@ function func_paddle2onnx(){
         trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker}"
         eval $trans_model_cmd
         last_status=${PIPESTATUS[0]}
-        status_check $last_status "${trans_model_cmd}" "${status_log}" 
+        status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}"
     elif [ ${model_name} = "ch_PP-OCRv2_det" ] || [ ${model_name} = "ch_PP-OCRv3_det" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_det" ] || [ ${model_name} = "ch_ppocr_server_v2.0_det" ]; then
         # trans det
         set_dirname=$(func_set_params "--model_dir" "${det_infer_model_dir_value}")
@@ -88,7 +88,7 @@ function func_paddle2onnx(){
         trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker}"
         eval $trans_model_cmd
         last_status=${PIPESTATUS[0]}
-        status_check $last_status "${trans_model_cmd}" "${status_log}"     
+        status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}"     
     elif [ ${model_name} = "ch_PP-OCRv2_rec" ] || [ ${model_name} = "ch_PP-OCRv3_rec" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_rec" ] || [ ${model_name} = "ch_ppocr_server_v2.0_rec" ]; then
         # trans rec
         set_dirname=$(func_set_params "--model_dir" "${rec_infer_model_dir_value}")
@@ -100,7 +100,7 @@ function func_paddle2onnx(){
         trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker}"
         eval $trans_model_cmd
         last_status=${PIPESTATUS[0]}
-        status_check $last_status "${trans_model_cmd}" "${status_log}"
+        status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}"
     fi
 
     # python inference
@@ -123,7 +123,7 @@ function func_paddle2onnx(){
             eval $infer_model_cmd
             last_status=${PIPESTATUS[0]}
             eval "cat ${_save_log_path}"
-            status_check $last_status "${infer_model_cmd}" "${status_log}"
+            status_check $last_status "${infer_model_cmd}" "${status_log}" "${model_name}"
         elif [ ${use_gpu} = "True" ] || [ ${use_gpu} = "gpu" ]; then
             _save_log_path="${LOG_PATH}/paddle2onnx_infer_gpu.log"
             set_gpu=$(func_set_params "${use_gpu_key}" "${use_gpu}")
@@ -142,7 +142,7 @@ function func_paddle2onnx(){
             eval $infer_model_cmd
             last_status=${PIPESTATUS[0]}
             eval "cat ${_save_log_path}"
-            status_check $last_status "${infer_model_cmd}" "${status_log}"
+            status_check $last_status "${infer_model_cmd}" "${status_log}" "${model_name}"
         else
             echo "Does not support hardware other than CPU and GPU Currently!"
         fi
