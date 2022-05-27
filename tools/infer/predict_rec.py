@@ -69,6 +69,12 @@ class TextRecognizer(object):
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }
+        elif self.rec_algorithm == 'ViTSTR':
+            postprocess_params = {
+                'name': 'ViTSTRLabelDecode',
+                "character_dict_path": args.rec_char_dict_path,
+                "use_space_char": args.use_space_char
+            }
         self.postprocess_op = build_post_process(postprocess_params)
         self.predictor, self.input_tensor, self.output_tensors, self.config = \
             utility.create_predictor(args, 'rec', logger)
@@ -96,15 +102,22 @@ class TextRecognizer(object):
 
     def resize_norm_img(self, img, max_wh_ratio):
         imgC, imgH, imgW = self.rec_image_shape
-        if self.rec_algorithm == 'NRTR':
+        if self.rec_algorithm == 'NRTR' or self.rec_algorithm == 'ViTSTR':
             img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             # return padding_im
             image_pil = Image.fromarray(np.uint8(img))
-            img = image_pil.resize([100, 32], Image.ANTIALIAS)
+            if self.rec_algorithm == 'ViTSTR':
+                img = image_pil.resize([imgW, imgH], Image.BICUBIC)
+            else:
+                img = image_pil.resize([imgW, imgH], Image.ANTIALIAS)
             img = np.array(img)
             norm_img = np.expand_dims(img, -1)
             norm_img = norm_img.transpose((2, 0, 1))
-            return norm_img.astype(np.float32) / 128. - 1.
+            if self.rec_algorithm == 'ViTSTR':
+                norm_img = norm_img.astype(np.float32) / 255.
+            else:
+                norm_img = norm_img.astype(np.float32) / 128. - 1.
+            return norm_img
 
         assert imgC == img.shape[2]
         imgW = int((imgH * max_wh_ratio))

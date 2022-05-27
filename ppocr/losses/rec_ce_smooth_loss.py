@@ -3,16 +3,20 @@ from paddle import nn
 import paddle.nn.functional as F
 
 
-class NRTRLoss(nn.Layer):
-    def __init__(self, smoothing=True, **kwargs):
-        super(NRTRLoss, self).__init__()
+class CESmoothingLoss(nn.Layer):
+    def __init__(self, smoothing=True, with_all=False, **kwargs):
+        super(CESmoothingLoss, self).__init__()
         self.loss_func = nn.CrossEntropyLoss(reduction='mean', ignore_index=0)
         self.smoothing = smoothing
+        self.with_all = with_all
 
     def forward(self, pred, batch):
         pred = pred.reshape([-1, pred.shape[2]])
-        max_len = batch[2].max()
-        tgt = batch[1][:, 1:2 + max_len]
+        if self.with_all:
+            tgt = batch[1]
+        else:
+            max_len = batch[2].max()
+            tgt = batch[1][:, 1:2 + max_len]
         tgt = tgt.reshape([-1])
         if self.smoothing:
             eps = 0.1

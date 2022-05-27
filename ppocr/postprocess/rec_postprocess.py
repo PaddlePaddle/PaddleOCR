@@ -188,13 +188,13 @@ class NRTRLabelDecode(BaseRecLabelDecode):
             char_list = []
             conf_list = []
             for idx in range(len(text_index[batch_idx])):
-                if text_index[batch_idx][idx] == 3:  # end
-                    break
                 try:
-                    char_list.append(self.character[int(text_index[batch_idx][
-                        idx])])
+                    char_idx = self.character[int(text_index[batch_idx][idx])]
                 except:
                     continue
+                if char_idx == '</s>':  # end
+                    break
+                char_list.append(char_idx)
                 if text_prob is not None:
                     conf_list.append(text_prob[batch_idx][idx])
                 else:
@@ -202,6 +202,32 @@ class NRTRLabelDecode(BaseRecLabelDecode):
             text = ''.join(char_list)
             result_list.append((text.lower(), np.mean(conf_list).tolist()))
         return result_list
+
+
+class ViTSTRLabelDecode(NRTRLabelDecode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(ViTSTRLabelDecode, self).__init__(character_dict_path,
+                                                use_space_char)
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        if isinstance(preds, paddle.Tensor):
+            preds = preds[:, 1:].numpy()
+        else:
+            preds = preds[:, 1:]
+        preds_idx = preds.argmax(axis=2)
+        preds_prob = preds.max(axis=2)
+        text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
+        if label is None:
+            return text
+        label = self.decode(label[:, 1:])
+        return text, label
+
+    def add_special_char(self, dict_character):
+        dict_character = ['<s>', '</s>'] + dict_character
+        return dict_character
 
 
 class AttnLabelDecode(BaseRecLabelDecode):

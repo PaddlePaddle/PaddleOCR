@@ -1,15 +1,15 @@
 Global:
   use_gpu: True
-  epoch_num: 21
+  epoch_num: 20
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/rec/nrtr/
+  save_model_dir: ./output/rec/vitstr/
   save_epoch_step: 1
-  # evaluation is run every 2000 iterations
+  # evaluation is run every 2000 iterations after the 0th iteration#
   eval_batch_step: [0, 2000]
   cal_metric_during_train: True
   pretrained_model:
-  checkpoints: 
+  checkpoints:
   save_inference_dir:
   use_visualdl: False
   infer_img: doc/imgs_words_en/word_10.png
@@ -18,42 +18,37 @@ Global:
   max_text_length: 25
   infer_mode: False
   use_space_char: False
-  save_res_path: ./output/rec/predicts_nrtr.txt
+  save_res_path: ./output/rec/predicts_vitstr.txt
+
 
 Optimizer:
-  name: Adam
-  beta1: 0.9
-  beta2: 0.99
+  name: Adadelta
+  epsilon: 0.00000001
+  rho: 0.95
   clip_norm: 5.0
   lr:
-    name: Cosine
-    learning_rate: 0.0005
-    warmup_epoch: 2
-  regularizer:
-    name: 'L2'
-    factor: 0.
+    learning_rate: 1.0
 
 Architecture:
   model_type: rec
-  algorithm: NRTR
+  algorithm: ViTSTR
   in_channels: 1
   Transform:
   Backbone:
-    name: MTB
-    cnn_num: 2
+    name: ViTSTR
+  Neck:
+    name: SequenceEncoder
+    encoder_type: reshape
   Head:
-    name: Transformer
-    d_model: 512
-    num_encoder_layers: 6
-    beam_size: -1 # When Beam size is greater than 0, it means to use beam search when evaluation.
-    
+    name: CTCHead
 
 Loss:
   name: CESmoothingLoss
-  smoothing: True
+  smoothing: False
+  with_all: True
 
 PostProcess:
-  name: NRTRLabelDecode
+  name: ViTSTRLabelDecode
 
 Metric:
   name: RecMetric
@@ -68,17 +63,19 @@ Train:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
-      - NRTRLabelEncode: # Class handling label
+      - ViTSTRLabelEncode: # Class handling label
       - GrayRecResizeImg:
-          image_shape: [100, 32]
+          image_shape: [224, 224] # W H
           resize_type: PIL # PIL or OpenCV
+          inter_type: 'Image.BICUBIC'
+          scale: false
       - KeepKeys:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
   loader:
     shuffle: True
-    batch_size_per_card: 512
+    batch_size_per_card: 48
     drop_last: True
-    num_workers: 8
+    num_workers: 2
 
 Eval:
   dataset:
@@ -89,15 +86,16 @@ Eval:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
-      - NRTRLabelEncode: # Class handling label
+      - ViTSTRLabelEncode: # Class handling label
       - GrayRecResizeImg:
-          image_shape: [100, 32]
+          image_shape: [224, 224] # W H
           resize_type: PIL # PIL or OpenCV
+          inter_type: 'Image.BICUBIC'
+          scale: false
       - KeepKeys:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
   loader:
     shuffle: False
     drop_last: False
     batch_size_per_card: 256
-    num_workers: 1
-    use_shared_memory: False
+    num_workers: 2

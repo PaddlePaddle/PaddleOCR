@@ -49,7 +49,7 @@ Architecture:
     
 
 Loss:
-  name: NRTRLoss
+  name: CESmoothingLoss
   smoothing: True
 
 PostProcess:
@@ -68,8 +68,8 @@ Train:
           img_mode: BGR
           channel_first: False
       - NRTRLabelEncode: # Class handling label
-      - NRTRRecResizeImg:
-          image_shape: [100, 32]
+      - GrayRecResizeImg:
+          image_shape: [100, 32] # W H
           resize_type: PIL # PIL or OpenCV
       - KeepKeys:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
@@ -88,8 +88,8 @@ Eval:
           img_mode: BGR
           channel_first: False
       - NRTRLabelEncode: # Class handling label
-      - NRTRRecResizeImg:
-          image_shape: [100, 32]
+      - GrayRecResizeImg:
+          image_shape: [100, 32] # W H
           resize_type: PIL # PIL or OpenCV
       - KeepKeys:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order

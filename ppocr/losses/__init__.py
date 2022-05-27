@@ -30,7 +30,7 @@ from .det_fce_loss import FCELoss
 from .rec_ctc_loss import CTCLoss
 from .rec_att_loss import AttentionLoss
 from .rec_srn_loss import SRNLoss
-from .rec_nrtr_loss import NRTRLoss
+from .rec_ce_smooth_loss import CESmoothingLoss
 from .rec_sar_loss import SARLoss
 from .rec_aster_loss import AsterLoss
 from .rec_pren_loss import PRENLoss
@@ -60,8 +60,9 @@ def build_loss(config):
     support_dict = [
         'DBLoss', 'PSELoss', 'EASTLoss', 'SASTLoss', 'FCELoss', 'CTCLoss',
         'ClsLoss', 'AttentionLoss', 'SRNLoss', 'PGLoss', 'CombinedLoss',
-        'NRTRLoss', 'TableAttentionLoss', 'SARLoss', 'AsterLoss', 'SDMGRLoss',
-        'VQASerTokenLayoutLMLoss', 'LossFromOutput', 'PRENLoss', 'MultiLoss'
+        'CESmoothingLoss', 'TableAttentionLoss', 'SARLoss', 'AsterLoss',
+        'SDMGRLoss', 'VQASerTokenLayoutLMLoss', 'LossFromOutput', 'PRENLoss',
+        'MultiLoss'
     ]
     config = copy.deepcopy(config)
     module_name = config.pop('name')

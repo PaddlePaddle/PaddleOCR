@@ -443,7 +443,9 @@ class KieLabelEncode(object):
             elif 'key_cls' in anno.keys():
                 labels.append(anno['key_cls'])
             else:
-                raise ValueError("Cannot found 'key_cls' in ann.keys(), please check your training annotation.")
+                raise ValueError(
+                    "Cannot found 'key_cls' in ann.keys(), please check your training annotation."
+                )
             edges.append(ann.get('edge', 0))
         ann_infos = dict(
             image=data['image'],
@@ -836,6 +838,37 @@ class PRENLabelEncode(BaseRecLabelEncode):
             return None
         data['label'] = np.array(encoded_text)
         return data
+
+
+class ViTSTRLabelEncode(BaseRecLabelEncode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 use_space_char=False,
+                 **kwargs):
+
+        super(ViTSTRLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
+
+    def __call__(self, data):
+        text = data['label']
+        text = self.encode(text)
+        if text is None:
+            return None
+        if len(text) >= self.max_text_len:
+            return None
+        data['length'] = np.array(len(text))
+        text.insert(0, 0)
+        text.append(1)
+        text = text + [0] * (self.max_text_len + 2 - len(text))
+        data['label'] = np.array(text)
+        return data
+
+    def add_special_char(self, dict_character):
+        dict_character = ['<s>', '</s>'] + dict_character
+        return dict_character
 
 
 class VQATokenLabelEncode(object):

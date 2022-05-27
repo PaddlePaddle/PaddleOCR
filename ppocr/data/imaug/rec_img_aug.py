@@ -87,11 +87,19 @@ class ClsResizeImg(object):
         return data
 
 
-class NRTRRecResizeImg(object):
-    def __init__(self, image_shape, resize_type, padding=False, **kwargs):
+class GrayRecResizeImg(object):
+    def __init__(self,
+                 image_shape,
+                 resize_type,
+                 inter_type='Image.ANTIALIAS',
+                 scale=True,
+                 padding=False,
+                 **kwargs):
         self.image_shape = image_shape
         self.resize_type = resize_type
         self.padding = padding
+        self.inter_type = eval(inter_type)
+        self.scale = scale
 
     def __call__(self, data):
         img = data['image']
@@ -117,13 +125,16 @@ class NRTRRecResizeImg(object):
             return data
         if self.resize_type == 'PIL':
             image_pil = Image.fromarray(np.uint8(img))
-            img = image_pil.resize(self.image_shape, Image.ANTIALIAS)
+            img = image_pil.resize(self.image_shape, self.inter_type)
             img = np.array(img)
         if self.resize_type == 'OpenCV':
             img = cv2.resize(img, self.image_shape)
         norm_img = np.expand_dims(img, -1)
         norm_img = norm_img.transpose((2, 0, 1))
-        data['image'] = norm_img.astype(np.float32) / 128. - 1.
+        if self.scale:
+            data['image'] = norm_img.astype(np.float32) / 128. - 1.
+        else:
+            data['image'] = norm_img.astype(np.float32) / 255.
         return data
 
 
