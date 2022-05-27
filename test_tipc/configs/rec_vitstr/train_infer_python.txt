@@ -40,10 +40,10 @@ infer_quant:False
 inference:tools/infer/predict_rec.py --rec_char_dict_path=./ppocr/utils/EN_symbol_dict.txt --rec_image_shape="1,224,224" --rec_algorithm="ViTSTR"
 --use_gpu:True|False
 --enable_mkldnn:False
---cpu_threads:1|6
+--cpu_threads:6
 --rec_batch_num:1|6
 --use_tensorrt:False
---precision:fp32|int8
+--precision:fp32
 --rec_model_dir:
 --image_dir:./inference/rec_inference
 --save_log_path:./test/output/
