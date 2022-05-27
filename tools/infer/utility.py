@@ -34,6 +34,7 @@ def init_args():
     parser = argparse.ArgumentParser()
     # params for prediction engine
     parser.add_argument("--use_gpu", type=str2bool, default=True)
+    parser.add_argument("--use_xpu", type=str2bool, default=False)
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     parser.add_argument("--min_subgraph_size", type=int, default=15)
@@ -201,7 +202,8 @@ def create_predictor(args, mode, logger):
                     workspace_size=1 << 30,
                     precision_mode=precision,
                     max_batch_size=args.max_batch_size,
-                    min_subgraph_size=args.min_subgraph_size)
+                    min_subgraph_size=args.min_subgraph_size,
+                    use_calib_mode=False)
                 # skip the minmum trt subgraph
             use_dynamic_shape = True
             if mode == "det":
@@ -286,6 +288,8 @@ def create_predictor(args, mode, logger):
                 config.set_trt_dynamic_shape_info(
                     min_input_shape, max_input_shape, opt_input_shape)
 
+        elif args.use_xpu:
+            config.enable_xpu(10 * 1024 * 1024)
         else:
             config.disable_gpu()
             if hasattr(args, "cpu_threads"):

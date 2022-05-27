@@ -34,7 +34,7 @@ distill_export:null
 export1:null
 export2:null
 inference_dir:Student
-infer_model:./inference/ch_PP-OCRv3_rec_slim_quant_infer
+infer_model:./inference/ch_PP-OCRv3_rec_slim_infer
 infer_export:null
 infer_quant:True
 inference:tools/infer/predict_rec.py --rec_image_shape="3,48,320"
