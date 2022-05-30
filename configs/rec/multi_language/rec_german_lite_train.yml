@@ -68,7 +68,7 @@ Train:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
-      - RecAug: 
+      - BaseDataAugmentation: 
       - CTCLabelEncode: # Class handling label
       - RecResizeImg:
           image_shape: [3, 32, 320]

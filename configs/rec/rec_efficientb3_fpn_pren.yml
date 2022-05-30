@@ -61,7 +61,7 @@ Train:
           img_mode: BGR
           channel_first: False
       - PRENLabelEncode:
-      - RecAug:
+      - BaseDataAugmentation:
       - PRENResizeImg: 
           image_shape: [64, 256]  # h,w
       - KeepKeys:

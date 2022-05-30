@@ -65,7 +65,7 @@ Train:
     - DecodeImage:
         img_mode: BGR
         channel_first: false
-    - RecAug: null
+    - BaseDataAugmentation:
     - CTCLabelEncode: null
     - RecResizeImg:
         image_shape:

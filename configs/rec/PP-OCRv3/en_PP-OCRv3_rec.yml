@@ -88,7 +88,7 @@ Train:
         prob: 0.5
         ext_data_num: 2
         image_shape: [48, 320, 3]
-    - RecAug:
+    - BaseDataAugmentation:
     - MultiLabelEncode:
     - RecResizeImg:
         image_shape: [3, 48, 320]

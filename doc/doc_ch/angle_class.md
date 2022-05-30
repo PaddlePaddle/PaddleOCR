@@ -1,11 +1,11 @@
 # 文本方向分类器
 
-- [1.方法介绍](#方法介绍)
-- [2.数据准备](#数据准备)
-- [3.启动训练](#启动训练)
-- [4.训练](#训练)
-- [5.评估](#评估)
-- [6.预测](#预测)
+  - [1. 方法介绍](#1-方法介绍)
+  - [2. 数据准备](#2-数据准备)
+  - [3. 启动训练](#3-启动训练)
+  - [4. 训练](#4-训练)
+  - [5. 评估](#5-评估)
+  - [6. 预测](#6-预测)
 
 <a name="方法介绍"></a>
 ## 1. 方法介绍
@@ -88,11 +88,9 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3,4,5,6,7'  tools/train.py -c
 
 - 数据增强
 
-PaddleOCR提供了多种数据增强方式，如果您希望在训练时加入扰动，请在配置文件中取消`Train.dataset.transforms`下的`RecAug`和`RandAugment`字段的注释。
+PaddleOCR提供了多种数据增强方式，默认的数据增强方式有：颜色空间转换(hsv_aug)、模糊(blur)、抖动(jitter)、噪声(Gasuss noise)、随机切割(random crop)、透视(perspective)、颜色反转(reverse),随机数据增强(RandAugment)。
 
-默认的扰动方式有：颜色空间转换(cvtColor)、模糊(blur)、抖动(jitter)、噪声(Gasuss noise)、随机切割(random crop)、透视(perspective)、颜色反转(reverse),随机数据增强(RandAugment)。
-
-训练过程中除随机数据增强外每种扰动方式以50%的概率被选择，具体代码实现请参考：
+训练过程中除随机数据增强外每种扰动方式以40%的概率被选择，具体代码实现请参考：
 [rec_img_aug.py](../../ppocr/data/imaug/rec_img_aug.py)
 [randaugment.py](../../ppocr/data/imaug/randaugment.py)
 
