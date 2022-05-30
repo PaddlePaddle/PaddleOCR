@@ -39,11 +39,11 @@ infer_export:tools/export_model.py -c test_tipc/configs/det_mv3_pse_v2.0/det_mv3
 infer_quant:False
 inference:tools/infer/predict_det.py
 --use_gpu:True|False
---enable_mkldnn:True|False
---cpu_threads:1|6
+--enable_mkldnn:False
+--cpu_threads:6
 --rec_batch_num:1
 --use_tensorrt:False
---precision:fp32|fp16
+--precision:fp32
 --det_model_dir:
 --image_dir:./inference/ch_det_data_50/all-sum-510/
 --save_log_path:null
