@@ -208,7 +208,7 @@ Execute the built executable file:
 ./build/ppocr [--param1] [--param2] [...]
 ```
 
-**Note**:ppocr uses the `PP-OCRv3` model by default, and the input shape used by the recognition model is `3, 48, 320`, if you do not use the default `PP-OCRv3` model, you should add the parameter `--rec_img_h=32`.
+**Note**:ppocr uses the `PP-OCRv3` model by default, and the input shape used by the recognition model is `3, 48, 320`, if you want to use the old version model, you should add the parameter `--rec_img_h=32`.
 
 Specifically,
 
