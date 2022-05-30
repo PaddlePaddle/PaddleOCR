@@ -101,8 +101,17 @@ cd /path/to/ppocr_img
   ['韩国小馆', 0.994467]
   ```
 
+**版本说明**
+paddleocr默认使用PP-OCRv3模型(`--ocr_version PP-OCRv3`)，如需使用其他版本可通过设置参数`--ocr_version`，具体版本说明如下：
+|  版本名称  |  版本说明 |
+|    ---    |   ---   |
+| PP-OCRv3 | 支持中、英文检测和识别，方向分类器，支持多语种识别 |
+| PP-OCRv2 | 仅支持中英文的检测和识别 |
+| PP-OCR   | 支持中、英文检测和识别，方向分类器，支持多语种识别 |
 
-如需使用2.0模型，请指定参数`--ocr_version PP-OCR`，paddleocr默认使用PP-OCRv3模型(`--ocr_version PP-OCRv3`)。更多whl包使用可参考[whl包文档](./whl.md)
+如需新增自己训练的模型，可以在[paddleocr](../../paddleocr.py)中增加模型链接和字段，重新编译即可。
+
+更多whl包使用可参考[whl包文档](./whl.md)
 
 <a name="212"></a>
 

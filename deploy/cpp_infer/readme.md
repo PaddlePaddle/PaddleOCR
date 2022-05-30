@@ -208,7 +208,7 @@ Execute the built executable file:
 ./build/ppocr [--param1] [--param2] [...]
 ```
 
-**Note**:ppocr uses the `PP-OCRv3` model by default, and the input shape used by the recognition model is `3, 48, 320`, so if you use the recognition function, you need to add the parameter `--rec_img_h=48`, if you do not use the default `PP-OCRv3` model, you do not need to set this parameter.
+**Note**:ppocr uses the `PP-OCRv3` model by default, and the input shape used by the recognition model is `3, 48, 320`, if you do not use the default `PP-OCRv3` model, you should add the parameter `--rec_img_h=32`.
 
 Specifically,
 
@@ -222,7 +222,6 @@ Specifically,
     --det=true \
     --rec=true \
     --cls=true \
-    --rec_img_h=48\
 ```
 
 ##### 2. det+rec：
@@ -234,7 +233,6 @@ Specifically,
     --det=true \
     --rec=true \
     --cls=false \
-    --rec_img_h=48\
 ```
 
 ##### 3. det
@@ -254,7 +252,6 @@ Specifically,
     --det=false \
     --rec=true \
     --cls=true \
-    --rec_img_h=48\
 ```
 
 ##### 5. rec
@@ -265,7 +262,6 @@ Specifically,
     --det=false \
     --rec=true \
     --cls=false \
-    --rec_img_h=48\
 ```
 
 ##### 6. cls
@@ -330,7 +326,7 @@ More parameters are as follows,
 |rec_model_dir|string|-|Address of recognition inference model|
 |rec_char_dict_path|string|../../ppocr/utils/ppocr_keys_v1.txt|dictionary file|
 |rec_batch_num|int|6|batch size of recognition|
-|rec_img_h|int|32|image height of recognition|
+|rec_img_h|int|48|image height of recognition|
 |rec_img_w|int|320|image width of recognition|
 
 * Multi-language inference is also supported in PaddleOCR, you can refer to [recognition tutorial](../../doc/doc_en/recognition_en.md) for more supported languages and models in PaddleOCR. Specifically, if you want to infer using multi-language models, you just need to modify values of `rec_char_dict_path` and `rec_model_dir`.
