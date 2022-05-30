@@ -4,7 +4,7 @@ python:python3.7
 gpu_list:0|0,1
 Global.use_gpu:True|True
 Global.auto_cast:fp32
-Global.epoch_num:lite_train_lite_infer=6|whole_train_whole_infer=50
+Global.epoch_num:lite_train_lite_infer=1|whole_train_whole_infer=50
 Global.save_model_dir:./output/
 Train.loader.batch_size_per_card:lite_train_lite_infer=16|whole_train_whole_infer=128
 Global.pretrained_model:pretrain_models/ch_PP-OCRv3_rec_train/best_accuracy
