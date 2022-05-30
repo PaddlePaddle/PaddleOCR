@@ -76,7 +76,7 @@ LK-PAN (Large Kernel PAN) is a lightweight [PAN](https://arxiv.org/pdf/1803.0153
 
 **(2) DML: Deep Mutual Learning Strategy for Teacher Model**
 
-[DML](https://arxiv.org/abs/1706.00384)(Collaborative Mutual Learning), as shown in the figure below, can effectively improve the accuracy of the text detection model by learning from each other with two models with the same structure. The DML strategy is adopted in the teacher model training, and the hmean is increased from 85% to 86%. By updating the teacher model of CML in PP-OCRv2 to the above-mentioned higher-precision one, the hmean of the student model can be further improved from 83.2% to 84.3%.
+[DML](https://arxiv.org/abs/1706.00384)(Deep Mutual Learning), as shown in the figure below, can effectively improve the accuracy of the text detection model by learning from each other with two models with the same structure. The DML strategy is adopted in the teacher model training, and the hmean is increased from 85% to 86%. By updating the teacher model of CML in PP-OCRv2 to the above-mentioned higher-precision one, the hmean of the student model can be further improved from 83.2% to 84.3%.
 
 
 <div align="center">
