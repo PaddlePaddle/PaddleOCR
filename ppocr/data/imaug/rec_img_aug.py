@@ -22,13 +22,74 @@ from .text_image_aug import tia_perspective, tia_stretch, tia_distort
 
 
 class RecAug(object):
-    def __init__(self, use_tia=True, aug_prob=0.4, **kwargs):
-        self.use_tia = use_tia
-        self.aug_prob = aug_prob
+    def __init__(self,
+                 tia_prob=True,
+                 crop_prob=0.4,
+                 reverse_prob=0.4,
+                 noise_prob=0.4,
+                 jitter_prob=0.4,
+                 blur_prob=0.4,
+                 hsv_aug_prob=0.4,
+                 **kwargs):
+        self.tia_prob = tia_prob
+        self.bda = BaseDataAugmentation(crop_prob, reverse_prob, noise_prob,
+                                        jitter_prob, blur_prob, hsv_aug_prob)
 
     def __call__(self, data):
         img = data['image']
-        img = warp(img, 10, self.use_tia, self.aug_prob)
+        h, w, _ = img.shape
+
+        # tia
+        if random.random() <= self.tia_prob:
+            if h >= 20 and w >= 20:
+                img = tia_distort(img, random.randint(3, 6))
+                img = tia_stretch(img, random.randint(3, 6))
+            img = tia_perspective(img)
+
+        # bda
+        data['image'] = img
+        data = self.bda(data)
+        return data
+
+
+class BaseDataAugmentation(object):
+    def __init__(self,
+                 crop_prob=0.4,
+                 reverse_prob=0.4,
+                 noise_prob=0.4,
+                 jitter_prob=0.4,
+                 blur_prob=0.4,
+                 hsv_aug_prob=0.4,
+                 **kwargs):
+        self.crop_prob = crop_prob
+        self.reverse_prob = reverse_prob
+        self.noise_prob = noise_prob
+        self.jitter_prob = jitter_prob
+        self.blur_prob = blur_prob
+        self.hsv_aug_prob = hsv_aug_prob
+
+    def __call__(self, data):
+        img = data['image']
+        h, w, _ = img.shape
+
+        if random.random() <= self.crop_prob and h >= 20 and w >= 20:
+            img = get_crop(img)
+
+        if random.random() <= self.blur_prob:
+            img = blur(img)
+
+        if random.random() <= self.hsv_aug_prob:
+            img = hsv_aug(img)
+
+        if random.random() <= self.jitter_prob:
+            img = jitter(img)
+
+        if random.random() <= self.noise_prob:
+            img = add_gasuss_noise(img)
+
+        if random.random() <= self.reverse_prob:
+            img = 255 - img
+
         data['image'] = img
         return data
 
@@ -359,7 +420,7 @@ def flag():
     return 1 if random.random() > 0.5000001 else -1
 
 
-def cvtColor(img):
+def hsv_aug(img):
     """
     cvtColor
     """
@@ -425,50 +486,6 @@ def get_crop(image):
     else:
         crop_img = crop_img[0:h - top_crop, :, :]
     return crop_img
-
-
-class Config:
-    """
-    Config
-    """
-
-    def __init__(self, use_tia):
-        self.anglex = random.random() * 30
-        self.angley = random.random() * 15
-        self.anglez = random.random() * 10
-        self.fov = 42
-        self.r = 0
-        self.shearx = random.random() * 0.3
-        self.sheary = random.random() * 0.05
-        self.borderMode = cv2.BORDER_REPLICATE
-        self.use_tia = use_tia
-
-    def make(self, w, h, ang):
-        """
-        make
-        """
-        self.anglex = random.random() * 5 * flag()
-        self.angley = random.random() * 5 * flag()
-        self.anglez = -1 * random.random() * int(ang) * flag()
-        self.fov = 42
-        self.r = 0
-        self.shearx = 0
-        self.sheary = 0
-        self.borderMode = cv2.BORDER_REPLICATE
-        self.w = w
-        self.h = h
-
-        self.perspective = self.use_tia
-        self.stretch = self.use_tia
-        self.distort = self.use_tia
-
-        self.crop = True
-        self.affine = False
-        self.reverse = True
-        self.noise = True
-        self.jitter = True
-        self.blur = True
-        self.color = True
 
 
 def rad(x):
@@ -554,48 +571,3 @@ def get_warpAffine(config):
     rz = np.array([[np.cos(rad(anglez)), np.sin(rad(anglez)), 0],
                    [-np.sin(rad(anglez)), np.cos(rad(anglez)), 0]], np.float32)
     return rz
-
-
-def warp(img, ang, use_tia=True, prob=0.4):
-    """
-    warp
-    """
-    h, w, _ = img.shape
-    config = Config(use_tia=use_tia)
-    config.make(w, h, ang)
-    new_img = img
-
-    if config.distort:
-        img_height, img_width = img.shape[0:2]
-        if random.random() <= prob and img_height >= 20 and img_width >= 20:
-            new_img = tia_distort(new_img, random.randint(3, 6))
-
-    if config.stretch:
-        img_height, img_width = img.shape[0:2]
-        if random.random() <= prob and img_height >= 20 and img_width >= 20:
-            new_img = tia_stretch(new_img, random.randint(3, 6))
-
-    if config.perspective:
-        if random.random() <= prob:
-            new_img = tia_perspective(new_img)
-
-    if config.crop:
-        img_height, img_width = img.shape[0:2]
-        if random.random() <= prob and img_height >= 20 and img_width >= 20:
-            new_img = get_crop(new_img)
-
-    if config.blur:
-        if random.random() <= prob:
-            new_img = blur(new_img)
-    if config.color:
-        if random.random() <= prob:
-            new_img = cvtColor(new_img)
-    if config.jitter:
-        new_img = jitter(new_img)
-    if config.noise:
-        if random.random() <= prob:
-            new_img = add_gasuss_noise(new_img)
-    if config.reverse:
-        if random.random() <= prob:
-            new_img = 255 - new_img
-    return new_img
