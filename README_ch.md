@@ -56,6 +56,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 支持多种OCR相关前沿算法，在此基础上打造产业级特色模型[PP-OCR](./doc/doc_ch/ppocr_introduction.md)和[PP-Structure](./ppstructure/README_ch.md)，并打通数据生产、模型训练、压缩、预测部署全流程。
 
+支持使用[VisualDL](https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/03_VisualDL/visualdl_usage_cn.html)和[Weights & Biases](https://docs.wandb.ai/v/zh-hans/)记录实验过程中的超参数和输出指标。
+
 ![](./doc/features.png)
 
 > 上述内容的使用方法建议从文档教程中的快速开始体验
