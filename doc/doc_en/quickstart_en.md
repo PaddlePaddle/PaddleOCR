@@ -124,7 +124,7 @@ paddleocr uses the PP-OCRv3 model by default(`--ocr_version PP-OCRv3`). If you w
 |  version name |  description |
 |    ---    |   ---   |
 | PP-OCRv3 | support Chinese and English detection and recognition, direction classifier, support multilingual recognition |
-| PP-OCRv2 | only supports Chinese and English detection and recognition |
+| PP-OCRv2 | only supports Chinese and English detection and recognition, direction classifier, multilingual model is not updated |
 | PP-OCR   | support Chinese and English detection and recognition, direction classifier, support multilingual recognition |
 
 If you want to add your own trained model, you can add model links and keys in [paddleocr](../../paddleocr.py) and recompile.
