@@ -244,13 +244,11 @@ def main(args):
         logger.info("Predict time : {:.3f}s".format(elapse))
     if args.benchmark:
         text_sys.autolog.report()
-    print('ok')
 
 
 if __name__ == "__main__":
     args = parse_args()
     if args.use_mp:
-        print('mp')
         p_list = []
         total_process_num = args.total_process_num
         for process_id in range(total_process_num):
