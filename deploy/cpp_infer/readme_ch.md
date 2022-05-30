@@ -213,7 +213,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 
 本demo支持系统串联调用，也支持单个功能的调用，如，只使用检测或识别功能。
 
-**注意** ppocr默认使用`PP-OCRv3`模型，识别模型使用的输入shape为`3,48,320`, 因此如果使用识别功能，需要添加参数`--rec_img_h=48`，如果不使用默认的`PP-OCRv3`模型，则无需设置该参数。
+**注意** ppocr默认使用`PP-OCRv3`模型，识别模型使用的输入shape为`3,48,320`, 如果不使用默认的`PP-OCRv3`模型，则需要设置参数`--rec_img_h=32`。
 
 
 运行方式：  
@@ -232,7 +232,6 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
     --det=true \
     --rec=true \
     --cls=true \
-    --rec_img_h=48\
 ```
 
 ##### 2. 检测+识别：
@@ -244,7 +243,6 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
     --det=true \
     --rec=true \
     --cls=false \
-    --rec_img_h=48\
 ```
 
 ##### 3. 检测：
@@ -264,7 +262,6 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
     --det=false \
     --rec=true \
     --cls=true \
-    --rec_img_h=48\
 ```
 
 ##### 5. 识别：
@@ -275,7 +272,6 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
     --det=false \
     --rec=true \
     --cls=false \
-    --rec_img_h=48\
 ```
 
 ##### 6. 分类：
@@ -339,7 +335,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 |rec_model_dir|string|-|识别模型inference model地址|
 |rec_char_dict_path|string|../../ppocr/utils/ppocr_keys_v1.txt|字典文件|
 |rec_batch_num|int|6|识别模型batchsize|
-|rec_img_h|int|32|识别模型输入图像高度|
+|rec_img_h|int|48|识别模型输入图像高度|
 |rec_img_w|int|320|识别模型输入图像宽度|
 
 
