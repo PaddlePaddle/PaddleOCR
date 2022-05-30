@@ -25,7 +25,7 @@ Using MJSynth and SynthText two text recognition datasets for training, and eval
 
 |Model|Backbone|config|Acc|Download link|
 | --- | --- | --- | --- | --- |
-|ViTSTR|ViTSTR|[rec_vitstr.yml](../../configs/rec/rec_vitstr.yml)|79.82%|[训练模型](https://paddleocr.bj.bcebos.com/rec_vitstr_none_none_train.tar)|
+|ViTSTR|ViTSTR|[rec_vitstr_none_ce.yml](../../configs/rec/rec_vitstr_none_ce.yml)|79.82%|[训练模型](https://paddleocr.bj.bcebos.com/rec_vitstr_none_none_train.tar)|
 
 <a name="2"></a>
 ## 2. Environment
@@ -43,24 +43,24 @@ Specifically, after the data preparation is completed, the training can be start
 
 ```
 #Single GPU training (long training period, not recommended)
-python3 tools/train.py -c configs/rec/rec_vitstr.yml
+python3 tools/train.py -c configs/rec/rec_vitstr_none_ce.yml
 
 #Multi GPU training, specify the gpu number through the --gpus parameter
-python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_vitstr.yml
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_vitstr_none_ce.yml
 ```
 
 Evaluation:
 
 ```
 # GPU evaluation
-python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_vitstr.yml -o Global.pretrained_model={path/to/weights}/best_accuracy
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_vitstr_none_ce.yml -o Global.pretrained_model={path/to/weights}/best_accuracy
 ```
 
 Prediction:
 
 ```
 # The configuration file used for prediction must match the training
-python3 tools/infer_rec.py -c configs/rec/rec_vitstr.yml -o Global.infer_img='./doc/imgs_words_en/word_10.png' Global.pretrained_model=./rec_vitstr_train/best_accuracy
+python3 tools/infer_rec.py -c configs/rec/rec_vitstr_none_ce.yml -o Global.infer_img='./doc/imgs_words_en/word_10.png' Global.pretrained_model=./rec_vitstr_none_ce_train/best_accuracy
 ```
 
 <a name="4"></a>
@@ -71,7 +71,7 @@ python3 tools/infer_rec.py -c configs/rec/rec_vitstr.yml -o Global.infer_img='./
 First, the model saved during the ViTSTR text recognition training process is converted into an inference model. ( [Model download link](https://paddleocr.bj.bcebos.com/rec_vitstr_none_none_train.tar)) ), you can use the following command to convert:
 
 ```
-python3 tools/export_model.py -c configs/rec/rec_vitstr.yml -o Global.pretrained_model=./rec_vitstr_train/best_accuracy  Global.save_inference_dir=./inference/rec_vitstr
+python3 tools/export_model.py -c configs/rec/rec_vitstr_none_ce.yml -o Global.pretrained_model=./rec_vitstr_none_ce_train/best_accuracy  Global.save_inference_dir=./inference/rec_vitstr
 ```
 
 **Note:**
@@ -98,7 +98,7 @@ python3 tools/infer/predict_rec.py --image_dir='./doc/imgs_words_en/word_10.png'
 After executing the command, the prediction result (recognized text and score) of the image above is printed to the screen, an example is as follows:
 The result is as follows:
 ```shell
-Predicts of ./doc/imgs_words_en/word_10.png:('pain', 0.9265879392623901)
+Predicts of ./doc/imgs_words_en/word_10.png:('pain', 0.9998350143432617)
 ```
 
 <a name="4-2"></a>

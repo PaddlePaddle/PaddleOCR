@@ -49,7 +49,7 @@ Architecture:
     
 
 Loss:
-  name: CESmoothingLoss
+  name: CELoss
   smoothing: True
 
 PostProcess:

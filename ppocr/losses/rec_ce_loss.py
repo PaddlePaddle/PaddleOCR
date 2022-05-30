@@ -3,9 +3,9 @@ from paddle import nn
 import paddle.nn.functional as F
 
 
-class CESmoothingLoss(nn.Layer):
+class CELoss(nn.Layer):
     def __init__(self, smoothing=True, with_all=False, **kwargs):
-        super(CESmoothingLoss, self).__init__()
+        super(CELoss, self).__init__()
         self.loss_func = nn.CrossEntropyLoss(reduction='mean', ignore_index=0)
         self.smoothing = smoothing
         self.with_all = with_all
