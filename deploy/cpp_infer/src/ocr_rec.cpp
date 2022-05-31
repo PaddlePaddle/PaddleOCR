@@ -83,7 +83,7 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
     int out_num = std::accumulate(predict_shape.begin(), predict_shape.end(), 1,
                                   std::multiplies<int>());
     predict_batch.resize(out_num);
-
+    // predict_batch is the result of Last FC with softmax
     output_t->CopyToCpu(predict_batch.data());
     auto inference_end = std::chrono::steady_clock::now();
     inference_diff += inference_end - inference_start;
@@ -98,9 +98,11 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
       float max_value = 0.0f;
 
       for (int n = 0; n < predict_shape[1]; n++) {
+        // get idx
         argmax_idx = int(Utility::argmax(
             &predict_batch[(m * predict_shape[1] + n) * predict_shape[2]],
             &predict_batch[(m * predict_shape[1] + n + 1) * predict_shape[2]]));
+        // get score
         max_value = float(*std::max_element(
             &predict_batch[(m * predict_shape[1] + n) * predict_shape[2]],
             &predict_batch[(m * predict_shape[1] + n + 1) * predict_shape[2]]));
