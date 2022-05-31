@@ -720,6 +720,13 @@ C++TensorRT预测需要使用支持TRT的预测库并在编译时打开[-DWITH_T
 
 注：建议使用TensorRT大于等于6.1.0.5以上的版本。
 
+#### Q: 为什么识别模型做预测的时候，预测图片的数量数量还会影响预测的精度
+**A**： 推理时识别模型默认的batch_size=6, 如预测图片长度变化大，可能影响预测效果。如果出现上述问题可在推理的时候设置识别bs=1，命令如下：
+
+```
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --rec_batch_num=1
+```
+
 <a name="213"></a>
 
 ### 2.13 推理部署
