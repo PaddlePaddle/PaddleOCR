@@ -33,7 +33,7 @@ class SimpleDataSet(Dataset):
         self.delimiter = dataset_config.get('delimiter', '\t')
         label_file_list = dataset_config.pop('label_file_list')
         data_source_num = len(label_file_list)
-        ratio_list = dataset_config.get("ratio_list", [1.0])
+        ratio_list = dataset_config.get("ratio_list", 1.0)
         if isinstance(ratio_list, (float, int)):
             ratio_list = [float(ratio_list)] * int(data_source_num)
 

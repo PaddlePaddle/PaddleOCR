@@ -119,7 +119,18 @@ If you do not use the provided test image, you can replace the following `--imag
   ['PAIN', 0.9934559464454651]
   ```
 
-If you need to use the 2.0 model, please specify the parameter `--ocr_version PP-OCR`, paddleocr uses the PP-OCRv3 model by default(`--ocr_version PP-OCRv3`). More whl package usage can be found in [whl package](./whl_en.md)
+**Version**
+paddleocr uses the PP-OCRv3 model by default(`--ocr_version PP-OCRv3`). If you want to use other versions, you can set the parameter `--ocr_version`, the specific version description is as follows:
+|  version name |  description |
+|    ---    |   ---   |
+| PP-OCRv3 | support Chinese and English detection and recognition, direction classifier, support multilingual recognition |
+| PP-OCRv2 | only supports Chinese and English detection and recognition, direction classifier, multilingual model is not updated |
+| PP-OCR   | support Chinese and English detection and recognition, direction classifier, support multilingual recognition |
+
+If you want to add your own trained model, you can add model links and keys in [paddleocr](../../paddleocr.py) and recompile.
+
+More whl package usage can be found in [whl package](./whl_en.md)
+
 <a name="212-multi-language-model"></a>
 
 #### 2.1.2 Multi-language Model

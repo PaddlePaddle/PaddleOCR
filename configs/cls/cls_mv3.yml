@@ -60,8 +60,7 @@ Train:
           img_mode: BGR
           channel_first: False
       - ClsLabelEncode: # Class handling label
-      - RecAug:
-          use_tia: False
+      - BaseDataAugmentation:
       - RandAugment:
       - ClsResizeImg:
           image_shape: [3, 48, 192]
