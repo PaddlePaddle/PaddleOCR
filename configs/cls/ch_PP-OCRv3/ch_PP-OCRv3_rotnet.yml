@@ -63,8 +63,7 @@ Train:
     - DecodeImage:
         img_mode: BGR
         channel_first: false
-    - RecAug:
-        use_tia: False
+    - BaseDataAugmentation:
     - RandAugment:
     - SSLRotateResize:
         image_shape: [3, 48, 320]
