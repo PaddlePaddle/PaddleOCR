@@ -1,17 +1,17 @@
 ===========================serving_params===========================
-model_name:ch_ppocr_server_v2.0_det
+model_name:ch_PP-OCRv3
 python:python3.7
 trans_model:-m paddle_serving_client.convert
---det_dirname:./inference/ch_ppocr_server_v2.0_det_infer/
+--det_dirname:./inference/ch_PP-OCRv3_det_infer/
 --model_filename:inference.pdmodel
 --params_filename:inference.pdiparams
---det_serving_server:./deploy/pdserving/ppocr_det_server_serving/
---det_serving_client:./deploy/pdserving/ppocr_det_server_client/
---rec_dirname:null
---rec_serving_server:null
---rec_serving_client:null
+--det_serving_server:./deploy/pdserving/ppocr_det_v3_serving/
+--det_serving_client:./deploy/pdserving/ppocr_det_v3_client/
+--rec_dirname:./inference/ch_PP-OCRv3_rec_infer/
+--rec_serving_server:./deploy/pdserving/ppocr_rec_v3_serving/
+--rec_serving_client:./deploy/pdserving/ppocr_rec_v3_client/
 serving_dir:./deploy/pdserving
-web_service:web_service_det.py --config=config.yml --opt op.det.concurrency="1"
+web_service:web_service.py --config=config.yml --opt op.det.concurrency="1" op.rec.concurrency="1"
 op.det.local_service_conf.devices:gpu|null
 op.det.local_service_conf.use_mkldnn:False
 op.det.local_service_conf.thread_num:6

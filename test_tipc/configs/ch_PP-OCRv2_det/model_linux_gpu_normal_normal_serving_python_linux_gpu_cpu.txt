@@ -1,12 +1,12 @@
 ===========================serving_params===========================
-model_name:ch_ppocr_server_v2.0_det
+model_name:ch_PP-OCRv2_det
 python:python3.7
 trans_model:-m paddle_serving_client.convert
---det_dirname:./inference/ch_ppocr_server_v2.0_det_infer/
+--det_dirname:./inference/ch_PP-OCRv2_det_infer/
 --model_filename:inference.pdmodel
 --params_filename:inference.pdiparams
---det_serving_server:./deploy/pdserving/ppocr_det_server_serving/
---det_serving_client:./deploy/pdserving/ppocr_det_server_client/
+--det_serving_server:./deploy/pdserving/ppocr_det_v2_serving/
+--det_serving_client:./deploy/pdserving/ppocr_det_v2_client/
 --rec_dirname:null
 --rec_serving_server:null
 --rec_serving_client:null
