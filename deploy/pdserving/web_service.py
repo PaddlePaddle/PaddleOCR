@@ -85,7 +85,7 @@ class RecOp(Op):
         dt_boxes = copy.deepcopy(self.dt_list)
         feed_list = []
         img_list = []
-        max_wh_ratio = 320/48
+        max_wh_ratio = 320/48.
         ## Many mini-batchs, the type of feed_data is list.
         max_batch_size = 6  # len(dt_boxes)
 
