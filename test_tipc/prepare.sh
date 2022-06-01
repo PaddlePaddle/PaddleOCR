@@ -415,9 +415,9 @@ if [ ${MODE} = "serving_infer" ];then
     IFS='|'
     array=(${python_name_list})
     python_name=${array[0]}
-    ${python_name} -m pip install paddle-serving-server-gpu==0.8.3.post101
-    ${python_name} -m pip install paddle_serving_client==0.8.3
-    ${python_name} -m pip install paddle-serving-app==0.8.3
+    ${python_name} -m pip install paddle-serving-server-gpu
+    ${python_name} -m pip install paddle_serving_client
+    ${python_name} -m pip install paddle-serving-app
     # wget model
     if [[ ${model_name} =~ "ch_ppocr_mobile_v2.0" ]]; then
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar --no-check-certificate
