@@ -328,7 +328,6 @@ if [ ${MODE} = "klquant_whole_infer" ]; then
         cd ./inference && tar xf rec_inference.tar && tar xf ch_PP-OCRv2_rec_infer.tar && cd ../
     fi
     if [ ${model_name} = "ch_PP-OCRv3_rec_KL" ]; then
-        # TODO check model link
         wget -nc -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar  --no-check-certificate
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/rec_inference.tar  --no-check-certificate
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ic15_data.tar --no-check-certificate
@@ -341,7 +340,6 @@ if [ ${MODE} = "klquant_whole_infer" ]; then
         cd ./inference && tar xf ch_PP-OCRv2_det_infer.tar && tar xf ch_det_data_50.tar && cd ../
     fi 
     if [ ${model_name} = "ch_PP-OCRv3_det_KL" ]; then
-        # TODO check model link
         wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar  --no-check-certificate
         wget -nc -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar  --no-check-certificate
         cd ./inference && tar xf ch_PP-OCRv3_det_infer.tar && tar xf ch_det_data_50.tar && cd ../
@@ -417,9 +415,9 @@ if [ ${MODE} = "serving_infer" ];then
     IFS='|'
     array=(${python_name_list})
     python_name=${array[0]}
-    # ${python_name} -m pip install paddle-serving-server-gpu==0.8.3.post101
-    # ${python_name} -m pip install paddle_serving_client==0.8.3
-    # ${python_name} -m pip install paddle-serving-app==0.8.3
+    ${python_name} -m pip install paddle-serving-server-gpu==0.8.3.post101
+    ${python_name} -m pip install paddle_serving_client==0.8.3
+    ${python_name} -m pip install paddle-serving-app==0.8.3
     # wget model
     if [[ ${model_name} =~ "ch_ppocr_mobile_v2.0" ]]; then
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar --no-check-certificate
@@ -447,7 +445,7 @@ if [ ${MODE} = "paddle2onnx_infer" ];then
     # prepare serving env
     python_name=$(func_parser_value "${lines[2]}")
     ${python_name} -m pip install paddle2onnx
-    ${python_name} -m pip install onnxruntime==1.4.0
+    ${python_name} -m pip install onnxruntime
     # wget model
     if [[ ${model_name} =~ "ch_ppocr_mobile_v2.0" ]]; then
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar --no-check-certificate
