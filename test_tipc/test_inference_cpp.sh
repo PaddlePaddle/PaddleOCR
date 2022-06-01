@@ -189,6 +189,9 @@ else
         wget -nc $PADDLEInfer --no-check-certificate
     fi
     tar zxf paddle_inference.tgz
+    if [ ! -d "paddle_inference" ]; then
+        ln -s paddle_inference_install_dir paddle_inference
+    fi
     echo "################### download paddle inference finished ###################"
 fi
 LIB_DIR=$(pwd)/paddle_inference/
@@ -218,11 +221,10 @@ echo "################### build PaddleOCR demo finished ###################"
 # set cuda device
 GPUID=$2
 if [ ${#GPUID} -le 0 ];then
-    env=" "
+    env="export CUDA_VISIBLE_DEVICES=0"
 else
     env="export CUDA_VISIBLE_DEVICES=${GPUID}"
 fi
-set CUDA_VISIBLE_DEVICES
 eval $env
 
 
