@@ -377,7 +377,7 @@ class OCRReader(object):
     def preprocess(self, img_list):
         img_num = len(img_list)
         norm_img_batch = []
-        max_wh_ratio = int(320/48)
+        max_wh_ratio = 320/48.
         for ino in range(img_num):
             h, w = img_list[ino].shape[0:2]
             wh_ratio = w * 1.0 / h
