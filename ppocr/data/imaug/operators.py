@@ -263,7 +263,7 @@ class DetResizeForTest(object):
         else:
             # img, shape = self.resize_image_type1(img)
             img, [ratio_h, ratio_w] = self.resize_image_type1(img)
-        data['image'] = img
+        data['image'] = img.astype(np.float32)
         data['shape'] = np.array([src_h, src_w, ratio_h, ratio_w])
         return data
 

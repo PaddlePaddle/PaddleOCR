@@ -45,19 +45,22 @@ class TextDetector(object):
                 'limit_type': args.det_limit_type,
             }
         }, {
-            'NormalizeImage': {
-                'std': [0.229, 0.224, 0.225],
-                'mean': [0.485, 0.456, 0.406],
-                'scale': '1./255.',
-                'order': 'hwc'
-            }
-        }, {
             'ToCHWImage': None
         }, {
             'KeepKeys': {
                 'keep_keys': ['image', 'shape']
             }
         }]
+        if not args.det_normalize_on_net:
+            pre_process_list.insert(1, {
+                'NormalizeImage': {
+                    'std': [0.229, 0.224, 0.225],
+                    'mean': [0.485, 0.456, 0.406],
+                    'scale': '1./255.',
+                    'order': 'hwc'
+                }
+            })
+
         postprocess_params = {}
         if self.det_algorithm == "DB":
             postprocess_params['name'] = 'DBPostProcess'

@@ -14,6 +14,7 @@
 
 import os
 import sys
+import numpy as np
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
@@ -22,6 +23,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(__dir__, "..")))
 import argparse
 
 import paddle
+import paddle.nn as nn
 from paddle.jit import to_static
 
 from ppocr.modeling.architectures import build_model
@@ -103,6 +105,24 @@ def export_single_model(model, arch_config, save_path, logger, quanter=None):
     return
 
 
+class DetNormalizeOnNet(nn.Layer):
+    def __init__(self, ):
+        super().__init__()
+        mean = np.array(
+            [0.485, 0.456, 0.406], dtype=np.float32).reshape([1, 3, 1, 1])
+        std = np.array(
+            [0.229, 0.224, 0.225], dtype=np.float32).reshape([1, 3, 1, 1])
+        self.scale = np.array([1.0 / 255], dtype=np.float32)
+        self.mean = self.create_parameter(
+            shape=(1, 3, 1, 1), default_initializer=nn.initializer.Assign(mean))
+        self.std = self.create_parameter(
+            shape=(1, 3, 1, 1), default_initializer=nn.initializer.Assign(std))
+
+    def forward(self, x):
+        x = (x * self.scale - self.mean) / self.std
+        return x
+
+
 def main():
     FLAGS = ArgsParser().parse_args()
     config = load_config(FLAGS.config)
@@ -150,8 +170,15 @@ def main():
             config["Architecture"]["Head"]["out_channels"] = char_num
 
     model = build_model(config["Architecture"])
+
     load_model(config, model)
     model.eval()
+
+    if config["Global"].get("det_normalize_on_net", False) is True:
+        model = nn.Sequential(* [
+            DetNormalizeOnNet(),
+            model,
+        ])
 
     save_path = config["Global"]["save_inference_dir"]
 
