@@ -175,7 +175,7 @@ class Kie_backbone(nn.Layer):
             img, relations, texts, gt_bboxes, tag, img_size)
         x = self.img_feat(img)
         boxes, rois_num = self.bbox2roi(gt_bboxes)
-        feats = paddle.fluid.layers.roi_align(
+        feats = paddle.vision.ops.roi_align(
             x,
             boxes,
             spatial_scale=1.0,
