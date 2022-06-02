@@ -37,7 +37,7 @@ Linux GPU/CPU 多机多卡训练推理测试的主程序为`test_train_inference
 bash test_tipc/prepare.sh test_tipc/configs/ch_PP-OCRv3_rec/train_fleet_infer_python.txt lite_train_lite_infer
 ```
 
-**注意：**由于是多机训练，这里需要在所有的节点上均运行启动上述命令，准备数据。
+**注意：** 由于是多机训练，这里需要在所有的节点上均运行启动上述命令，准备数据。
 
 #### 2.1.3 修改起始端口并开始测试
 
@@ -53,7 +53,7 @@ export FLAGS_START_PORT=17000
 bash test_tipc/test_train_inference_python.sh  test_tipc/configs/ch_PP-OCRv3_rec/train_fleet_infer_python.txt lite_train_lite_infe
 ```
 
-**注意：**由于是多机训练，这里需要在所有的节点上均运行启动上述命令进行测试。
+**注意：** 由于是多机训练，这里需要在所有的节点上均运行启动上述命令进行测试。
 
 
 #### 2.1.4 输出结果
@@ -104,4 +104,4 @@ bash test_tipc/test_train_inference_python.sh  test_tipc/configs/ch_PP-OCRv3_rec
 
 如果运行失败，也会在终端中输出运行失败的日志信息以及对应的运行命令。可以基于该命令，分析运行失败的原因。
 
-**注意：**由于分布式训练时，仅在`trainer_id=0`所在的节点中保存模型，因此其他的节点中在运行模型导出与推理时会报错，为正常现象。
+**注意：** 由于分布式训练时，仅在`trainer_id=0`所在的节点中保存模型，因此其他的节点中在运行模型导出与推理时会报错，为正常现象。
