@@ -41,11 +41,16 @@ python3 -m paddle.distributed.launch \
 
 ## 性能效果测试
 
-* 基于单机8卡P40，和2机8卡P40，在26W公开识别数据集(LSVT, RCTW, MTWI)上进行训练，最终耗时如下。
+* 在2机8卡P40的机器上，基于26W公开识别数据集(LSVT, RCTW, MTWI)上进行训练，最终耗时如下。
 
-|         模型             |     配置文件 |  机器数量    | 每台机器的GPU数量  |   训练时间    | 识别Acc    | 加速比 |
-| :----------------------: | :------------: | :------------: | :---------------: | :----------: | :-----------: | :-----------: |
-|          CRNN        |   configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml  | 1     |  8  |  60h  |  66.7% | - |
-|          CRNN        |   configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml   | 2   |  8  |  40h  |  67.0% | 150% |
+| 模型   | 配置  | 精度     | 单机8卡耗时 | 2机8卡耗时 | 加速比 |
+|------|-----|--------|--------|--------|-----|
+| CRNN | [rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml) | 67.0% | 2.50d   | 1.67d  | **1.5** |
 
-可以看出，精度没有下降的情况下，训练时间由60h缩短为了40h，加速比可以达到60h/40h=150%，效率为60h/(40h*2)=75%。
+
+* 在4机8卡V100的机器上，基于全量数据训练，最终耗时如下
+
+
+| 模型   | 配置  | 精度     | 单机8卡耗时 | 4机8卡耗时 | 加速比 |
+|------|-----|--------|--------|--------|-----|
+| SVTR | [ch_PP-OCRv3_rec_distillation.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml) | 74.0% | 10d   | 2.84d  | **3.5** |
