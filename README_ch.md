@@ -32,12 +32,6 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
   - 25日：车牌识别产业应用实战（[AI Studio项目链接](https://aistudio.baidu.com/aistudio/projectdetail/3919091?contributionType=1)）
   - 26日：一招搞定工业常见数码管、PCB字符识别（AI Studio项目链接：[数码管识别](https://aistudio.baidu.com/aistudio/projectdetail/4049044?contributionType=1)，[PCB字符识别](https://aistudio.baidu.com/aistudio/projectdetail/4008973)）
   
-   扫描下方二维码填写问卷后进入群聊，获取直播链接！
-<div align="center">
-<img src="https://user-images.githubusercontent.com/50011306/170023861-38814d84-b35a-4102-94d9-28482f9a39f8.png"  width = "150" height = "150" />
-</div>
-
-
 - **🔥2022.5.9 发布PaddleOCR [release/2.5](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.5)**
     - 发布[PP-OCRv3](./doc/doc_ch/ppocr_introduction.md#pp-ocrv3)，速度可比情况下，中文场景效果相比于PP-OCRv2再提升5%，英文场景提升11%，80语种多语言模型平均识别准确率提升5%以上；
     - 发布半自动标注工具[PPOCRLabelv2](./PPOCRLabel)：新增表格文字图像、图像关键信息抽取任务和不规则文字图像的标注功能；
