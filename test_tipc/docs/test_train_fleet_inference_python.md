@@ -50,7 +50,7 @@ export FLAGS_START_PORT=17000
 以配置文件`test_tipc/configs/ch_PP-OCRv3_rec/train_fleet_infer_python.txt`为例，测试方法如下所示。
 
 ```shell
-bash test_tipc/test_train_inference_python.sh  test_tipc/configs/ch_PP-OCRv3_rec/train_fleet_infer_python.txt lite_train_lite_infe
+bash test_tipc/test_train_inference_python.sh  test_tipc/configs/ch_PP-OCRv3_rec/train_fleet_infer_python.txt lite_train_lite_infer
 ```
 
 **注意：** 由于是多机训练，这里需要在所有的节点上均运行启动上述命令进行测试。
