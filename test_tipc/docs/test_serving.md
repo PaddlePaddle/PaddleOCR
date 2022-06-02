@@ -1,6 +1,6 @@
 # PaddleServing预测功能测试
 
-PaddleServing预测功能测试的主程序为`test_serving.sh`，可以测试基于PaddleServing的部署功能。
+PaddleServing预测功能测试的主程序为`test_serving_infer_python.sh`和`test_serving_infer_cpp.sh`，可以测试基于PaddleServing的部署功能。
 
 ## 1. 测试结论汇总
 
@@ -17,13 +17,23 @@ PaddleServing预测功能测试的主程序为`test_serving.sh`，可以测试�
 运行环境配置请参考[文档](./install.md)的内容配置TIPC的运行环境。
 
 ### 2.1 功能测试
-先运行`prepare.sh`准备数据和模型，然后运行`test_serving.sh`进行测试，最终在```test_tipc/output```目录下生成`serving_infer_*.log`后缀的日志文件。
+**python serving**
+先运行`prepare.sh`准备数据和模型，然后运行`test_serving_infer_python.sh`进行测试，最终在```test_tipc/output```目录下生成`serving_infer_python*.log`后缀的日志文件。
 
 ```shell
 bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_linux_gpu_normal_normal_serving_python_linux_gpu_cpu.txt "serving_infer"
 
 # 用法:
-bash test_tipc/test_serving.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_linux_gpu_normal_normal_serving_python_linux_gpu_cpu.txt
+bash test_tipc/test_serving_infer_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_linux_gpu_normal_normal_serving_python_linux_gpu_cpu.txt
+```  
+**cpp serving**
+先运行`prepare.sh`准备数据和模型，然后运行`test_serving_infer_cpp.sh`进行测试，最终在```test_tipc/output```目录下生成`serving_infer_cpp*.log`后缀的日志文件。
+
+```shell
+bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0/model_linux_gpu_normal_normal_serving_python_linux_gpu_cpu.txt "serving_infer"
+
+# 用法:
+bash test_tipc/test_serving_infer_cpp.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0/model_linux_gpu_normal_normal_serving_cpp_linux_gpu_cpu.txt
 ```  
 
 #### 运行结果
