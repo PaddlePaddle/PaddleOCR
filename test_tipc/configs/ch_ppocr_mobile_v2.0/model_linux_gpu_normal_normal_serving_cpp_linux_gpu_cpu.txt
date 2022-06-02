@@ -1,0 +1,19 @@
+===========================serving_params===========================
+model_name:ch_ppocr_mobile_v2.0
+python:python3.7
+trans_model:-m paddle_serving_client.convert
+--det_dirname:./inference/ch_ppocr_mobile_v2.0_det_infer/
+--model_filename:inference.pdmodel
+--params_filename:inference.pdiparams
+--det_serving_server:./deploy/pdserving/ppocr_det_mobile_serving/
+--det_serving_client:./deploy/pdserving/ppocr_det_mobile_client/
+--rec_dirname:./inference/ch_ppocr_mobile_v2.0_rec_infer/
+--rec_serving_server:./deploy/pdserving/ppocr_rec_mobile_serving/
+--rec_serving_client:./deploy/pdserving/ppocr_rec_mobile_client/
+serving_dir:./deploy/pdserving
+web_service:-m paddle_serving_server.serve
+--op:GeneralDetectionOp GeneralInferOp
+--port:9293
+device:gpu
+cpp_client:ocr_cpp_client.py
+--image_dir:../../doc/imgs

@@ -30,7 +30,7 @@ client.load_client_config(sys.argv[1:])
 client.connect(["127.0.0.1:9293"])
 
 import paddle
-test_img_dir = "../../doc/imgs/"
+test_img_dir = "../../doc/imgs/1.jpg"
 
 ocr_reader = OCRReader(char_dict_path="../../ppocr/utils/ppocr_keys_v1.txt")
 
@@ -40,12 +40,29 @@ def cv2_to_base64(image):
         'utf8')  #data.tostring()).decode('utf8')
 
 
-for img_file in os.listdir(test_img_dir):
-    with open(os.path.join(test_img_dir, img_file), 'rb') as file:
+def _check_image_file(path):
+    img_end = {'jpg', 'bmp', 'png', 'jpeg', 'rgb', 'tif', 'tiff', 'gif'}
+    return any([path.lower().endswith(e) for e in img_end])
+
+
+test_img_list = []
+if os.path.isfile(test_img_dir) and _check_image_file(test_img_dir):
+    test_img_list.append(test_img_dir)
+elif os.path.isdir(test_img_dir):
+    for single_file in os.listdir(test_img_dir):
+        file_path = os.path.join(test_img_dir, single_file)
+        if os.path.isfile(file_path) and _check_image_file(file_path):
+            test_img_list.append(file_path)
+if len(test_img_list) == 0:
+    raise Exception("not found any img file in {}".format(test_img_dir))
+
+for img_file in test_img_list:
+    with open(img_file, 'rb') as file:
         image_data = file.read()
     image = cv2_to_base64(image_data)
     res_list = []
     fetch_map = client.predict(feed={"x": image}, fetch=[], batch=True)
+    print(fetch_map)
     one_batch_res = ocr_reader.postprocess(fetch_map, with_score=True)
     for res in one_batch_res:
         res_list.append(res[0])
