@@ -16,4 +16,4 @@ web_service:-m paddle_serving_server.serve
 --port:9293
 device:gpu
 cpp_client:ocr_cpp_client.py
---image_dir:../../doc/imgs
+--image_dir:../../doc/imgs/1.jpg
