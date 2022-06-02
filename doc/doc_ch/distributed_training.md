@@ -45,7 +45,7 @@ python3 -m paddle.distributed.launch \
 
 | 模型   | 配置  | 精度     | 单机8卡耗时 | 2机8卡耗时 | 加速比 |
 |------|-----|--------|--------|--------|-----|
-| CRNN | [rec_chinese_lite_train_v2.0.yml](configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml) | 67.0% | 2.50d   | 1.67d  | **1.5** |
+| CRNN | [rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml) | 67.0% | 2.50d   | 1.67d  | **1.5** |
 
 
 * 在4机8卡V100的机器上，基于全量数据训练，最终耗时如下
@@ -53,4 +53,4 @@ python3 -m paddle.distributed.launch \
 
 | 模型   | 配置  | 精度     | 单机8卡耗时 | 4机8卡耗时 | 加速比 |
 |------|-----|--------|--------|--------|-----|
-| SVTR | [ch_PP-OCRv3_rec_distillation.yml](configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml) | 74.0% | 10d   | 2.84d  | **3.5** |
+| SVTR | [ch_PP-OCRv3_rec_distillation.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml) | 74.0% | 10d   | 2.84d  | **3.5** |
