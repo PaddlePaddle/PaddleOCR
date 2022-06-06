@@ -13,7 +13,7 @@ trans_model:-m paddle_serving_client.convert
 serving_dir:./deploy/pdserving
 web_service:-m paddle_serving_server.serve
 --op:GeneralDetectionOp GeneralInferOp
---port:9293
-device:gpu
+--port:8181
+--gpu_id:"0"|null
 cpp_client:ocr_cpp_client.py
 --image_dir:../../doc/imgs/1.jpg

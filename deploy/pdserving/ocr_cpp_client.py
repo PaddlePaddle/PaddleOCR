@@ -22,15 +22,16 @@ import cv2
 from paddle_serving_app.reader import Sequential, URL2Image, ResizeByFactor
 from paddle_serving_app.reader import Div, Normalize, Transpose
 from ocr_reader import OCRReader
+import codecs
 
 client = Client()
 # TODO:load_client need to load more than one client model.
 # this need to figure out some details.
 client.load_client_config(sys.argv[1:])
-client.connect(["127.0.0.1:9293"])
+client.connect(["127.0.0.1:8181"])  # 9293
 
 import paddle
-test_img_dir = "../../doc/imgs/1.jpg"
+test_img_dir = "../../doc/imgs/"
 
 ocr_reader = OCRReader(char_dict_path="../../ppocr/utils/ppocr_keys_v1.txt")
 
@@ -62,9 +63,21 @@ for img_file in test_img_list:
     image = cv2_to_base64(image_data)
     res_list = []
     fetch_map = client.predict(feed={"x": image}, fetch=[], batch=True)
-    print(fetch_map)
-    one_batch_res = ocr_reader.postprocess(fetch_map, with_score=True)
-    for res in one_batch_res:
-        res_list.append(res[0])
-    res = {"res": str(res_list)}
-    print(res)
+    if fetch_map is None:
+        print('no results')
+    else:
+        if "text" in fetch_map:
+            for x in fetch_map["text"]:
+                x = codecs.encode(x)
+                words = base64.b64decode(x).decode('utf-8')
+                res_list.append(words)
+        else:
+            try:
+                one_batch_res = ocr_reader.postprocess(
+                    fetch_map, with_score=True)
+                for res in one_batch_res:
+                    res_list.append(res[0])
+            except:
+                print('no results')
+        res = {"res": str(res_list)}
+        print(res)

@@ -47,7 +47,8 @@ op_key=$(func_parser_key "${lines[14]}")
 op_value=$(func_parser_value "${lines[14]}")
 port_key=$(func_parser_key "${lines[15]}")
 port_value=$(func_parser_value "${lines[15]}")
-device_value=$(func_parser_value "${lines[16]}")
+gpu_key=$(func_parser_key "${lines[16]}")
+gpu_value=$(func_parser_value "${lines[16]}")
 cpp_client_py=$(func_parser_value "${lines[17]}")
 image_dir_key=$(func_parser_key "${lines[18]}")
 image_dir_value=$(func_parser_value "${lines[18]}")
@@ -108,8 +109,8 @@ function func_serving(){
     # cpp serving
     unset https_proxy
     unset http_proxy
-    for device in ${device_value[*]}; do
-        if [ ${device} = "cpu" ]; then
+    for gpu_id in ${gpu_value[*]}; do
+        if [ ${gpu_id} = "null" ]; then
             if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0" ] || [ ${model_name} = "ch_ppocr_server_v2.0" ]; then
                 web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${det_server_value} ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} > serving_log_cpu.log &"
             elif [ ${model_name} = "ch_PP-OCRv2_det" ] || [ ${model_name} = "ch_PP-OCRv3_det" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_det" ] || [ ${model_name} = "ch_ppocr_server_v2.0_det" ]; then
@@ -132,16 +133,16 @@ function func_serving(){
             eval $cpp_client_cmd
             last_status=${PIPESTATUS[0]}
             status_check $last_status "${cpp_client_cmd}" "${status_log}" "${model_name}"
-            sleep 5s
+            # sleep 5s
             ps ux | grep -i ${port_value} | awk '{print $2}' | xargs kill -s 9
-            ps ux | grep -i ${web_service_py} | awk '{print $2}' | xargs kill -s 9
-        elif [ ${device} = "gpu" ]; then
+            # ps ux | grep -i ${web_service_py} | awk '{print $2}' | xargs kill -s 9
+        else
             if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0" ] || [ ${model_name} = "ch_ppocr_server_v2.0" ]; then
-                web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${det_server_value} ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} --gpu_id=0 > serving_log_gpu.log &"
+                web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${det_server_value} ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} ${gpu_key} ${gpu_id} > serving_log_gpu.log &"
             elif [ ${model_name} = "ch_PP-OCRv2_det" ] || [ ${model_name} = "ch_PP-OCRv3_det" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_det" ] || [ ${model_name} = "ch_ppocr_server_v2.0_det" ]; then
-                web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${det_server_value} ${op_key} ${op_value} ${port_key} ${port_value} --gpu_id=0 > serving_log_gpu.log &"
+                web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${det_server_value} ${op_key} ${op_value} ${port_key} ${port_value} ${gpu_key} ${gpu_id} > serving_log_gpu.log &"
             elif [ ${model_name} = "ch_PP-OCRv2_rec" ] || [ ${model_name} = "ch_PP-OCRv3_rec" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_rec" ] || [ ${model_name} = "ch_ppocr_server_v2.0_rec" ]; then
-                web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} --gpu_id=0 > serving_log_gpu.log &"
+                web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} ${gpu_key} ${gpu_id} > serving_log_gpu.log &"
             fi
             eval $web_service_cpp_cmd
             sleep 5s
@@ -157,11 +158,9 @@ function func_serving(){
             last_status=${PIPESTATUS[0]}
             eval "cat ${_save_log_path}" 
             status_check $last_status "${cpp_client_cmd}" "${status_log}" "${model_name}"
-            sleep 5s
+            # sleep 5s
             ps ux | grep -i ${port_value} | awk '{print $2}' | xargs kill -s 9
-            ps ux | grep -i ${web_service_py} | awk '{print $2}' | xargs kill -s 9                
-        else
-            echo "Does not support hardware other than CPU and GPU Currently!"
+            # ps ux | grep -i ${web_service_py} | awk '{print $2}' | xargs kill -s 9                
         fi
     done
 }
