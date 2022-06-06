@@ -28,10 +28,10 @@ client = Client()
 # TODO:load_client need to load more than one client model.
 # this need to figure out some details.
 client.load_client_config(sys.argv[1:])
-client.connect(["127.0.0.1:8181"])  # 9293
+client.connect(["127.0.0.1:8181"])
 
 import paddle
-test_img_dir = "../../doc/imgs/"
+test_img_dir = "../../doc/imgs/1.jpg"
 
 ocr_reader = OCRReader(char_dict_path="../../ppocr/utils/ppocr_keys_v1.txt")
 
