@@ -105,7 +105,6 @@ function func_serving(){
     python_list=(${python_list})
     
     cd ${serving_dir_value}
-    export SERVING_BIN=/paddle/kaitao/tipc/PaddleOCR-cppinfer/deploy/pdserving/Serving/build_server/core/general-server/serving
     # cpp serving
     unset https_proxy
     unset http_proxy
