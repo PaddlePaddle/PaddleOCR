@@ -11,6 +11,7 @@ function func_parser_model_config(){
 
 FILENAME=$1
 dataline=$(awk 'NR==1, NR==23{print}'  $FILENAME)
+MODE=$2
 
 # parser params
 IFS=$'\n'
@@ -58,7 +59,7 @@ pipeline_py=$(func_parser_value "${lines[21]}")
 image_dir_key=$(func_parser_key "${lines[22]}")
 image_dir_value=$(func_parser_value "${lines[22]}")
 
-LOG_PATH="$(pwd)/test_tipc/output/${model_name}/python_serving"
+LOG_PATH="$(pwd)/test_tipc/output/${model_name}/${MODE}/python"
 mkdir -p ${LOG_PATH}
 status_log="${LOG_PATH}/results_python_serving.log"
 
@@ -207,7 +208,7 @@ function func_serving(){
 
 
 #set cuda device
-GPUID=$2
+GPUID=$3
 if [ ${#GPUID} -le 0 ];then
     env="export CUDA_VISIBLE_DEVICES=0"
 else

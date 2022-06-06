@@ -230,7 +230,7 @@ cp -rf general_detection_op.cpp Serving/core/general-server/op
 
     ```
     # 启动服务，运行日志保存在log.txt
-    python3 -m paddle_serving_server.serve --model ppocr_det_v3_serving ppocr_rec_v3_serving --op GeneralDetectionOp GeneralInferOp --port 9293 &>log.txt &
+    python3 -m paddle_serving_server.serve --model ppocr_det_v3_serving ppocr_rec_v3_serving --op GeneralDetectionOp GeneralInferOp --port 8181 &>log.txt &
     ```
     成功启动服务后，log.txt中会打印类似如下日志
     ![](./imgs/start_server.png)
