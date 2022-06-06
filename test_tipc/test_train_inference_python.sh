@@ -315,6 +315,8 @@ else
                 set_batchsize=$(func_set_params "${train_batch_key}" "${train_batch_value}")
                 set_train_params1=$(func_set_params "${train_param_key1}" "${train_param_value1}")
                 set_use_gpu=$(func_set_params "${train_use_gpu_key}" "${train_use_gpu}")
+                # if length of ips >= 15, then it is seen as multi-machine
+                # 15 is the min length of ips info for multi-machine: 0.0.0.0,0.0.0.0
                 if [ ${#ips} -le 15 ];then
                     save_log="${LOG_PATH}/${trainer}_gpus_${gpu}_autocast_${autocast}"
                     nodes=1
