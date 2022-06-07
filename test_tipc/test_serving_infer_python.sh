@@ -86,7 +86,7 @@ function func_serving(){
         python_list=(${python_list})
         trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
         eval $trans_model_cmd
-    elif [ ${model_name} = "ch_PP-OCRv2_det" ] || [ ${model_name} = "ch_PP-OCRv3_det" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_det" ] || [ ${model_name} = "ch_ppocr_server_v2.0_det" ]; then
+    elif [[ ${model_name} =~ "det" ]]; then
         # trans det
         set_dirname=$(func_set_params "--dirname" "${det_infer_model_dir_value}")
         set_serving_server=$(func_set_params "--serving_server" "${det_serving_server_value}")
@@ -94,7 +94,7 @@ function func_serving(){
         python_list=(${python_list})
         trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
         eval $trans_model_cmd
-    elif [ ${model_name} = "ch_PP-OCRv2_rec" ] || [ ${model_name} = "ch_PP-OCRv3_rec" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_rec" ] || [ ${model_name} = "ch_ppocr_server_v2.0_rec" ]; then
+    elif [[ ${model_name} =~ "rec" ]]; then
         # trans rec
         set_dirname=$(func_set_params "--dirname" "${rec_infer_model_dir_value}")
         set_serving_server=$(func_set_params "--serving_server" "${rec_serving_server_value}")
@@ -124,13 +124,13 @@ function func_serving(){
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
                         status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
-                    elif [ ${model_name} = "ch_PP-OCRv2_det" ] || [ ${model_name} = "ch_PP-OCRv3_det" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_det" ] || [ ${model_name} = "ch_ppocr_server_v2.0_det" ]; then
+                    elif [[ ${model_name} =~ "det" ]]; then
                         set_det_model_config=$(func_set_params "${det_server_key}" "${det_server_value}")
                         web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}="" ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_det_model_config} &"
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
                         status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
-                    elif [ ${model_name} = "ch_PP-OCRv2_rec" ] || [ ${model_name} = "ch_PP-OCRv3_rec" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_rec" ] || [ ${model_name} = "ch_ppocr_server_v2.0_rec" ]; then
+                    elif [[ ${model_name} =~ "rec" ]]; then
                         set_rec_model_config=$(func_set_params "${rec_server_key}" "${rec_server_value}")
                         web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}="" ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_rec_model_config} &"
                         eval $web_service_cmd
@@ -174,13 +174,13 @@ function func_serving(){
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
                         status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
-                    elif [ ${model_name} = "ch_PP-OCRv2_det" ] || [ ${model_name} = "ch_PP-OCRv3_det" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_det" ] || [ ${model_name} = "ch_ppocr_server_v2.0_det" ]; then
+                    elif [[ ${model_name} =~ "det" ]]; then
                         set_det_model_config=$(func_set_params "${det_server_key}" "${det_server_value}")
                         web_service_cmd="${python} ${web_service_py} ${set_tensorrt} ${set_precision} ${set_det_model_config} &"
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
                         status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
-                    elif [ ${model_name} = "ch_PP-OCRv2_rec" ] || [ ${model_name} = "ch_PP-OCRv3_rec" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_rec" ] || [ ${model_name} = "ch_ppocr_server_v2.0_rec" ]; then
+                    elif [[ ${model_name} =~ "rec" ]]; then
                         set_rec_model_config=$(func_set_params "${rec_server_key}" "${rec_server_value}")
                         web_service_cmd="${python} ${web_service_py} ${set_tensorrt} ${set_precision} ${set_rec_model_config} &"
                         eval $web_service_cmd
