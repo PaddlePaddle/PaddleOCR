@@ -65,101 +65,53 @@ function func_serving(){
     # pdserving
     set_model_filename=$(func_set_params "${model_filename_key}" "${model_filename_value}")
     set_params_filename=$(func_set_params "${params_filename_key}" "${params_filename_value}")
-    if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0" ] || [ ${model_name} = "ch_ppocr_server_v2.0" ]; then
-        # trans det
-        set_dirname=$(func_set_params "--dirname" "${det_infer_model_dir_value}")
-        set_serving_server=$(func_set_params "--serving_server" "${det_serving_server_value}")
-        set_serving_client=$(func_set_params "--serving_client" "${det_serving_client_value}")
-        python_list=(${python_list})
-        trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
-        eval $trans_model_cmd
-        cp "deploy/pdserving/serving_client_conf.prototxt" ${det_serving_client_value}
-        # trans rec
-        set_dirname=$(func_set_params "--dirname" "${rec_infer_model_dir_value}")
-        set_serving_server=$(func_set_params "--serving_server" "${rec_serving_server_value}")
-        set_serving_client=$(func_set_params "--serving_client" "${rec_serving_client_value}")
-        python_list=(${python_list})
-        trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
-        eval $trans_model_cmd
-    elif [ ${model_name} = "ch_PP-OCRv2_det" ] || [ ${model_name} = "ch_PP-OCRv3_det" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_det" ] || [ ${model_name} = "ch_ppocr_server_v2.0_det" ]; then
-        # trans det
-        set_dirname=$(func_set_params "--dirname" "${det_infer_model_dir_value}")
-        set_serving_server=$(func_set_params "--serving_server" "${det_serving_server_value}")
-        set_serving_client=$(func_set_params "--serving_client" "${det_serving_client_value}")
-        python_list=(${python_list})
-        trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
-        eval $trans_model_cmd
-        cp "deploy/pdserving/serving_client_conf.prototxt" ${det_serving_client_value}
-    elif [ ${model_name} = "ch_PP-OCRv2_rec" ] || [ ${model_name} = "ch_PP-OCRv3_rec" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_rec" ] || [ ${model_name} = "ch_ppocr_server_v2.0_rec" ]; then
-        # trans rec
-        set_dirname=$(func_set_params "--dirname" "${rec_infer_model_dir_value}")
-        set_serving_server=$(func_set_params "--serving_server" "${rec_serving_server_value}")
-        set_serving_client=$(func_set_params "--serving_client" "${rec_serving_client_value}")
-        python_list=(${python_list})
-        trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
-        eval $trans_model_cmd
-    fi
+    # trans det
+    set_dirname=$(func_set_params "--dirname" "${det_infer_model_dir_value}")
+    set_serving_server=$(func_set_params "--serving_server" "${det_serving_server_value}")
+    set_serving_client=$(func_set_params "--serving_client" "${det_serving_client_value}")
+    python_list=(${python_list})
+    trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
+    eval $trans_model_cmd
+    cp "deploy/pdserving/serving_client_conf.prototxt" ${det_serving_client_value}
+    # trans rec
+    set_dirname=$(func_set_params "--dirname" "${rec_infer_model_dir_value}")
+    set_serving_server=$(func_set_params "--serving_server" "${rec_serving_server_value}")
+    set_serving_client=$(func_set_params "--serving_client" "${rec_serving_client_value}")
+    python_list=(${python_list})
+    trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
+    eval $trans_model_cmd
     last_status=${PIPESTATUS[0]}
     status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}"
     set_image_dir=$(func_set_params "${image_dir_key}" "${image_dir_value}")
     python_list=(${python_list})
-    
     cd ${serving_dir_value}
     # cpp serving
     unset https_proxy
     unset http_proxy
     for gpu_id in ${gpu_value[*]}; do
         if [ ${gpu_id} = "null" ]; then
-            if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0" ] || [ ${model_name} = "ch_ppocr_server_v2.0" ]; then
-                web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${det_server_value} ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} > serving_log_cpu.log &"
-            elif [ ${model_name} = "ch_PP-OCRv2_det" ] || [ ${model_name} = "ch_PP-OCRv3_det" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_det" ] || [ ${model_name} = "ch_ppocr_server_v2.0_det" ]; then
-                web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${det_server_value} ${op_key} ${op_value} ${port_key} ${port_value} > serving_log_cpu.log &"
-            elif [ ${model_name} = "ch_PP-OCRv2_rec" ] || [ ${model_name} = "ch_PP-OCRv3_rec" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_rec" ] || [ ${model_name} = "ch_ppocr_server_v2.0_rec" ]; then
-                web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} > serving_log_cpu.log &"
-            fi
+            web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${det_server_value} ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} > serving_log_cpu.log &"
             eval $web_service_cpp_cmd
             last_status=${PIPESTATUS[0]}
             status_check $last_status "${web_service_cpp_cmd}" "${status_log}" "${model_name}"
             sleep 5s
             _save_log_path="${LOG_PATH}/server_infer_cpp_cpu.log"
-            if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0" ] || [ ${model_name} = "ch_ppocr_server_v2.0" ]; then
-                cpp_client_cmd="${python_list[0]} ${cpp_client_py} ${det_client_value} ${rec_client_value} > ${_save_log_path} 2>&1"
-            elif [ ${model_name} = "ch_PP-OCRv2_det" ] || [ ${model_name} = "ch_PP-OCRv3_det" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_det" ] || [ ${model_name} = "ch_ppocr_server_v2.0_det" ]; then
-                cpp_client_cmd="${python_list[0]} ${cpp_client_py} ${det_client_value} > ${_save_log_path} 2>&1"
-            elif [ ${model_name} = "ch_PP-OCRv2_rec" ] || [ ${model_name} = "ch_PP-OCRv3_rec" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_rec" ] || [ ${model_name} = "ch_ppocr_server_v2.0_rec" ]; then
-                cpp_client_cmd="${python_list[0]} ${cpp_client_py} ${rec_client_value} > ${_save_log_path} 2>&1"
-            fi
+            cpp_client_cmd="${python_list[0]} ${cpp_client_py} ${det_client_value} ${rec_client_value} > ${_save_log_path} 2>&1"
             eval $cpp_client_cmd
             last_status=${PIPESTATUS[0]}
             status_check $last_status "${cpp_client_cmd}" "${status_log}" "${model_name}"
-            # sleep 5s
             ps ux | grep -i ${port_value} | awk '{print $2}' | xargs kill -s 9
-            # ps ux | grep -i ${web_service_py} | awk '{print $2}' | xargs kill -s 9
         else
-            if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0" ] || [ ${model_name} = "ch_ppocr_server_v2.0" ]; then
-                web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${det_server_value} ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} ${gpu_key} ${gpu_id} > serving_log_gpu.log &"
-            elif [ ${model_name} = "ch_PP-OCRv2_det" ] || [ ${model_name} = "ch_PP-OCRv3_det" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_det" ] || [ ${model_name} = "ch_ppocr_server_v2.0_det" ]; then
-                web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${det_server_value} ${op_key} ${op_value} ${port_key} ${port_value} ${gpu_key} ${gpu_id} > serving_log_gpu.log &"
-            elif [ ${model_name} = "ch_PP-OCRv2_rec" ] || [ ${model_name} = "ch_PP-OCRv3_rec" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_rec" ] || [ ${model_name} = "ch_ppocr_server_v2.0_rec" ]; then
-                web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} ${gpu_key} ${gpu_id} > serving_log_gpu.log &"
-            fi
+            web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${det_server_value} ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} ${gpu_key} ${gpu_id} > serving_log_gpu.log &"
             eval $web_service_cpp_cmd
             sleep 5s
             _save_log_path="${LOG_PATH}/server_infer_cpp_gpu.log"
-            if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0" ] || [ ${model_name} = "ch_ppocr_server_v2.0" ]; then
-                cpp_client_cmd="${python_list[0]} ${cpp_client_py} ${det_client_value} ${rec_client_value} > ${_save_log_path} 2>&1"
-            elif [ ${model_name} = "ch_PP-OCRv2_det" ] || [ ${model_name} = "ch_PP-OCRv3_det" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_det" ] || [ ${model_name} = "ch_ppocr_server_v2.0_det" ]; then
-                cpp_client_cmd="${python_list[0]} ${cpp_client_py} ${det_client_value} > ${_save_log_path} 2>&1"
-            elif [ ${model_name} = "ch_PP-OCRv2_rec" ] || [ ${model_name} = "ch_PP-OCRv3_rec" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0_rec" ] || [ ${model_name} = "ch_ppocr_server_v2.0_rec" ]; then
-                cpp_client_cmd="${python_list[0]} ${cpp_client_py} ${rec_client_value} > ${_save_log_path} 2>&1"
-            fi
+            cpp_client_cmd="${python_list[0]} ${cpp_client_py} ${det_client_value} ${rec_client_value} > ${_save_log_path} 2>&1"
             eval $cpp_client_cmd
             last_status=${PIPESTATUS[0]}
             eval "cat ${_save_log_path}" 
             status_check $last_status "${cpp_client_cmd}" "${status_log}" "${model_name}"
-            # sleep 5s
             ps ux | grep -i ${port_value} | awk '{print $2}' | xargs kill -s 9
-            # ps ux | grep -i ${web_service_py} | awk '{print $2}' | xargs kill -s 9                
         fi
     done
 }
