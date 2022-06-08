@@ -135,7 +135,7 @@ python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv3_rec_infer/ \
 2. 启动服务可运行如下命令：
     ```
     # 启动服务，运行日志保存在log.txt
-    python3 web_service.py &>log.txt &
+    python3 web_service.py --config=config.yml &>log.txt &
     ```
     成功启动服务后，log.txt中会打印类似如下日志
     ![](./imgs/start_server.png)

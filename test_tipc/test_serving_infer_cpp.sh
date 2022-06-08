@@ -86,8 +86,6 @@ function func_serving(){
     python_list=(${python_list})
     cd ${serving_dir_value}
     # cpp serving
-    unset https_proxy
-    unset http_proxy
     for gpu_id in ${gpu_value[*]}; do
         if [ ${gpu_id} = "null" ]; then
             web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${det_server_value} ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} > serving_log_cpu.log &"
