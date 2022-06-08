@@ -136,7 +136,7 @@ The recognition model is the same.
 2. Run the following command to start the service.
     ```
     # Start the service and save the running log in log.txt
-    python3 web_service.py &>log.txt &
+    python3 web_service.py --config=config.yml &>log.txt &
     ```
     After the service is successfully started, a log similar to the following will be printed in log.txt
     ![](./imgs/start_server.png)

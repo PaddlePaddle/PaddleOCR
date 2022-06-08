@@ -106,8 +106,6 @@ function func_serving(){
     
     cd ${serving_dir_value}
     # cpp serving
-    unset https_proxy
-    unset http_proxy
     for gpu_id in ${gpu_value[*]}; do
         if [ ${gpu_id} = "null" ]; then
             if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0" ] || [ ${model_name} = "ch_ppocr_server_v2.0" ]; then

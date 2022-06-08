@@ -107,8 +107,6 @@ function func_serving(){
     python_list=(${python_list})
     
     cd ${serving_dir_value}
-    unset https_proxy
-    unset http_proxy
     python=${python_list[0]}
         
     # python serving
@@ -147,7 +145,7 @@ function func_serving(){
                         status_check $last_status "${pipeline_cmd}" "${status_log}" "${model_name}"
                         sleep 2s
                     done
-                    ps ux | grep -E 'web_service|pipeline' | awk '{print $2}' | xargs kill -s 9
+                    ps ux | grep -E 'web_service' | awk '{print $2}' | xargs kill -s 9
                 done
             done
         elif [ ${use_gpu} = "gpu" ]; then
@@ -197,7 +195,7 @@ function func_serving(){
                         status_check $last_status "${pipeline_cmd}" "${status_log}" "${model_name}"
                         sleep 2s
                     done
-                    ps ux | grep -E 'web_service|pipeline' | awk '{print $2}' | xargs kill -s 9
+                    ps ux | grep -E 'web_service' | awk '{print $2}' | xargs kill -s 9
                 done
             done
         else
