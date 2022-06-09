@@ -76,7 +76,7 @@ def export_single_model(model, arch_config, save_path, logger, quanter=None):
     else:
         infer_shape = [3, -1, -1]
         if arch_config["model_type"] == "rec":
-            infer_shape = [3, 32, -1]  # for rec model, H must be 32
+            infer_shape = [3, 48, -1]  # for rec model, H must be 32
             if "Transform" in arch_config and arch_config[
                     "Transform"] is not None and arch_config["Transform"][
                         "name"] == "TPS":
