@@ -88,7 +88,7 @@ function func_inference(){
                             eval $command
                             last_status=${PIPESTATUS[0]}
                             eval "cat ${_save_log_path}"
-                            status_check $last_status "${command}" "${status_log}"
+                            status_check $last_status "${command}" "${status_log}" "${model_name}"
                         done
                     done
                 done
@@ -119,7 +119,7 @@ function func_inference(){
                         eval $command
                         last_status=${PIPESTATUS[0]}
                         eval "cat ${_save_log_path}"
-                        status_check $last_status "${command}" "${status_log}"
+                        status_check $last_status "${command}" "${status_log}" "${model_name}"
                         
                     done
                 done
@@ -153,7 +153,7 @@ if [ ${MODE} = "whole_infer" ]; then
             echo ${infer_run_exports[Count]} 
             eval $export_cmd
             status_export=$?
-            status_check $status_export "${export_cmd}" "${status_log}"
+            status_check $status_export "${export_cmd}" "${status_log}" "${model_name}"
         else
             save_infer_dir=${infer_model}
         fi
