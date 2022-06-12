@@ -267,6 +267,51 @@ class PRENResizeImg(object):
         data['image'] = resized_img.astype(np.float32)
         return data
 
+class SPINRecResizeImg(object):
+    def __init__(self,
+                 image_shape,
+                 interpolation=2,
+                 mean=(127.5, 127.5, 127.5),
+                 std=(127.5, 127.5, 127.5),
+                 **kwargs):
+        self.image_shape = image_shape
+        
+        self.mean = np.array(mean, dtype=np.float32)
+        self.std = np.array(std, dtype=np.float32)
+        self.interpolation = interpolation
+
+    def __call__(self, data):
+        img = data['image']
+        # different interpolation type corresponding the OpenCV
+        if self.interpolation == 0:
+            interpolation = cv2.INTER_NEAREST
+        elif self.interpolation == 1:
+            interpolation = cv2.INTER_LINEAR
+        elif self.interpolation == 2:
+            interpolation = cv2.INTER_CUBIC
+        elif self.interpolation == 3:
+            interpolation = cv2.INTER_AREA
+        else:
+            raise Exception("Unsupported interpolation type !!!")
+        # Deal with the image error during image loading
+        if img is None:
+            return None
+
+        img = cv2.resize(img, tuple(self.image_shape), interpolation)
+        img = np.array(img, np.float32)
+        img = np.expand_dims(img, -1)
+        img = img.transpose((2, 0, 1))
+        # normalize the image
+        to_rgb = False
+        img = img.copy().astype(np.float32)
+        mean = np.float64(self.mean.reshape(1, -1))
+        stdinv = 1 / np.float64(self.std.reshape(1, -1))
+        if to_rgb:
+            cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
+        img -= mean
+        img *= stdinv
+        data['image'] = img
+        return data
 
 def resize_norm_img_sar(img, image_shape, width_downsample_ratio=0.25):
     imgC, imgH, imgW_min, imgW_max = image_shape

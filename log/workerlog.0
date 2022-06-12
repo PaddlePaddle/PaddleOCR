@@ -1,0 +1,131 @@
+D:\Projects\3rdparty\anaconda\envs\pd2\lib\site-packages\socks.py:58: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working
+  from collections import Callable
+D:\Projects\3rdparty\anaconda\envs\pd2\lib\site-packages\win32\lib\pywintypes.py:2: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses
+  import imp, sys, os
+D:\Projects\3rdparty\anaconda\envs\pd2\lib\site-packages\pkg_resources\_vendor\pyparsing.py:943: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working
+  collections.MutableMapping.register(ParseResults)
+D:\Projects\3rdparty\anaconda\envs\pd2\lib\site-packages\pkg_resources\_vendor\pyparsing.py:3245: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working
+  elif isinstance( exprs, collections.Iterable ):
+[2022/06/12 13:42:08] ppocr INFO: Architecture : 
+[2022/06/12 13:42:08] ppocr INFO:     Backbone : 
+[2022/06/12 13:42:08] ppocr INFO:         name : ResNet32
+[2022/06/12 13:42:08] ppocr INFO:         out_channels : 512
+[2022/06/12 13:42:08] ppocr INFO:     Head : 
+[2022/06/12 13:42:08] ppocr INFO:         hidden_size : 256
+[2022/06/12 13:42:08] ppocr INFO:         name : SPINAttentionHead
+[2022/06/12 13:42:08] ppocr INFO:     Neck : 
+[2022/06/12 13:42:08] ppocr INFO:         encoder_type : cascadernn
+[2022/06/12 13:42:08] ppocr INFO:         hidden_size : 256
+[2022/06/12 13:42:08] ppocr INFO:         name : SequenceEncoder
+[2022/06/12 13:42:08] ppocr INFO:         out_channels : [256, 512]
+[2022/06/12 13:42:08] ppocr INFO:         with_linear : True
+[2022/06/12 13:42:08] ppocr INFO:     Transform : 
+[2022/06/12 13:42:08] ppocr INFO:         default_type : 6
+[2022/06/12 13:42:08] ppocr INFO:         loc_lr : 0.1
+[2022/06/12 13:42:08] ppocr INFO:         name : GA_SPIN
+[2022/06/12 13:42:08] ppocr INFO:         offsets : True
+[2022/06/12 13:42:08] ppocr INFO:         stn : True
+[2022/06/12 13:42:08] ppocr INFO:     algorithm : SPIN
+[2022/06/12 13:42:08] ppocr INFO:     in_channels : 1
+[2022/06/12 13:42:08] ppocr INFO:     model_type : rec
+[2022/06/12 13:42:08] ppocr INFO: Eval : 
+[2022/06/12 13:42:08] ppocr INFO:     dataset : 
+[2022/06/12 13:42:08] ppocr INFO:         data_dir : ./train_data/ic15_data
+[2022/06/12 13:42:08] ppocr INFO:         label_file_list : ['./train_data/ic15_data/rec_gt_test.txt']
+[2022/06/12 13:42:08] ppocr INFO:         name : SimpleDataSet
+[2022/06/12 13:42:08] ppocr INFO:         transforms : 
+[2022/06/12 13:42:08] ppocr INFO:             NRTRDecodeImage : 
+[2022/06/12 13:42:08] ppocr INFO:                 channel_first : False
+[2022/06/12 13:42:08] ppocr INFO:                 img_mode : BGR
+[2022/06/12 13:42:08] ppocr INFO:             SPINAttnLabelEncode : None
+[2022/06/12 13:42:08] ppocr INFO:             SPINRecResizeImg : 
+[2022/06/12 13:42:08] ppocr INFO:                 image_shape : [100, 32]
+[2022/06/12 13:42:08] ppocr INFO:                 interpolation : 2
+[2022/06/12 13:42:08] ppocr INFO:                 mean : [127.5]
+[2022/06/12 13:42:08] ppocr INFO:                 std : [127.5]
+[2022/06/12 13:42:08] ppocr INFO:             KeepKeys : 
+[2022/06/12 13:42:08] ppocr INFO:                 keep_keys : ['image', 'label', 'length']
+[2022/06/12 13:42:08] ppocr INFO:     loader : 
+[2022/06/12 13:42:08] ppocr INFO:         batch_size_per_card : 8
+[2022/06/12 13:42:08] ppocr INFO:         drop_last : False
+[2022/06/12 13:42:08] ppocr INFO:         num_workers : 2
+[2022/06/12 13:42:08] ppocr INFO:         shuffle : False
+[2022/06/12 13:42:08] ppocr INFO: Global : 
+[2022/06/12 13:42:08] ppocr INFO:     cal_metric_during_train : True
+[2022/06/12 13:42:08] ppocr INFO:     character_dict_path : ./ppocr/utils/dict/spin_dict.txt
+[2022/06/12 13:42:08] ppocr INFO:     checkpoints : ./inference/rec_r32_gaspin_bilstm_att/best_accuracy
+[2022/06/12 13:42:08] ppocr INFO:     distributed : False
+[2022/06/12 13:42:08] ppocr INFO:     epoch_num : 6
+[2022/06/12 13:42:08] ppocr INFO:     eval_batch_step : [0, 2000]
+[2022/06/12 13:42:08] ppocr INFO:     infer_img : doc/imgs_words/ch/word_1.jpg
+[2022/06/12 13:42:08] ppocr INFO:     infer_mode : False
+[2022/06/12 13:42:08] ppocr INFO:     log_smooth_window : 50
+[2022/06/12 13:42:08] ppocr INFO:     max_text_length : 25
+[2022/06/12 13:42:08] ppocr INFO:     pretrained_model : None
+[2022/06/12 13:42:08] ppocr INFO:     print_batch_step : 50
+[2022/06/12 13:42:08] ppocr INFO:     save_epoch_step : 3
+[2022/06/12 13:42:08] ppocr INFO:     save_inference_dir : None
+[2022/06/12 13:42:08] ppocr INFO:     save_model_dir : ./output/rec/rec_r32_gaspin_bilstm_att/
+[2022/06/12 13:42:08] ppocr INFO:     save_res_path : ./output/rec/predicts_r32_gaspin_bilstm_att.txt
+[2022/06/12 13:42:08] ppocr INFO:     use_gpu : True
+[2022/06/12 13:42:08] ppocr INFO:     use_space_char : False
+[2022/06/12 13:42:08] ppocr INFO:     use_visualdl : False
+[2022/06/12 13:42:08] ppocr INFO: Loss : 
+[2022/06/12 13:42:08] ppocr INFO:     ignore_index : 0
+[2022/06/12 13:42:08] ppocr INFO:     name : SPINAttentionLoss
+[2022/06/12 13:42:08] ppocr INFO: Metric : 
+[2022/06/12 13:42:08] ppocr INFO:     is_filter : True
+[2022/06/12 13:42:08] ppocr INFO:     main_indicator : acc
+[2022/06/12 13:42:08] ppocr INFO:     name : RecMetric
+[2022/06/12 13:42:08] ppocr INFO: Optimizer : 
+[2022/06/12 13:42:08] ppocr INFO:     beta1 : 0.9
+[2022/06/12 13:42:08] ppocr INFO:     beta2 : 0.999
+[2022/06/12 13:42:08] ppocr INFO:     clip_norm : 5
+[2022/06/12 13:42:08] ppocr INFO:     lr : 
+[2022/06/12 13:42:08] ppocr INFO:         decay_epochs : [3, 4, 5]
+[2022/06/12 13:42:08] ppocr INFO:         name : Piecewise
+[2022/06/12 13:42:08] ppocr INFO:         values : [0.001, 0.0003, 9e-05, 2.7e-05]
+[2022/06/12 13:42:08] ppocr INFO:     name : AdamW
+[2022/06/12 13:42:08] ppocr INFO: PostProcess : 
+[2022/06/12 13:42:08] ppocr INFO:     character_dict_path : ./ppocr/utils/dict/spin_dict.txt
+[2022/06/12 13:42:08] ppocr INFO:     name : SPINAttnLabelDecode
+[2022/06/12 13:42:08] ppocr INFO:     use_space_char : False
+[2022/06/12 13:42:08] ppocr INFO: Train : 
+[2022/06/12 13:42:08] ppocr INFO:     dataset : 
+[2022/06/12 13:42:08] ppocr INFO:         data_dir : ./train_data/ic15_data/
+[2022/06/12 13:42:08] ppocr INFO:         label_file_list : ['./train_data/ic15_data/rec_gt_train.txt']
+[2022/06/12 13:42:08] ppocr INFO:         name : SimpleDataSet
+[2022/06/12 13:42:08] ppocr INFO:         transforms : 
+[2022/06/12 13:42:08] ppocr INFO:             NRTRDecodeImage : 
+[2022/06/12 13:42:08] ppocr INFO:                 channel_first : False
+[2022/06/12 13:42:08] ppocr INFO:                 img_mode : BGR
+[2022/06/12 13:42:08] ppocr INFO:             SPINAttnLabelEncode : None
+[2022/06/12 13:42:08] ppocr INFO:             SPINRecResizeImg : 
+[2022/06/12 13:42:08] ppocr INFO:                 image_shape : [100, 32]
+[2022/06/12 13:42:08] ppocr INFO:                 interpolation : 2
+[2022/06/12 13:42:08] ppocr INFO:                 mean : [127.5]
+[2022/06/12 13:42:08] ppocr INFO:                 std : [127.5]
+[2022/06/12 13:42:08] ppocr INFO:             KeepKeys : 
+[2022/06/12 13:42:08] ppocr INFO:                 keep_keys : ['image', 'label', 'length']
+[2022/06/12 13:42:08] ppocr INFO:     loader : 
+[2022/06/12 13:42:08] ppocr INFO:         batch_size_per_card : 8
+[2022/06/12 13:42:08] ppocr INFO:         drop_last : True
+[2022/06/12 13:42:08] ppocr INFO:         num_workers : 4
+[2022/06/12 13:42:08] ppocr INFO:         shuffle : True
+[2022/06/12 13:42:08] ppocr INFO: profiler_options : None
+[2022/06/12 13:42:08] ppocr INFO: train with paddle 2.2.2 and device CUDAPlace(0)
+[2022/06/12 13:42:08] ppocr INFO: Initialize indexs of datasets:['./train_data/ic15_data/rec_gt_test.txt']
+W0612 13:42:08.814790 17600 device_context.cc:447] Please NOTE: device: 0, GPU Compute Capability: 7.5, Driver API Version: 11.1, Runtime API Version: 10.2
+W0612 13:42:08.832805 17600 device_context.cc:465] device: 0, cuDNN Version: 7.6.
+[2022/06/12 13:42:12] ppocr INFO: resume from ./inference/rec_r32_gaspin_bilstm_att/best_accuracy
+[2022/06/12 13:42:12] ppocr INFO: metric in ckpt ***************
+[2022/06/12 13:42:12] ppocr INFO: acc:0.90589541082154
+[2022/06/12 13:42:12] ppocr INFO: norm_edit_dis:0.9627389225663741
+[2022/06/12 13:42:12] ppocr INFO: fps:1802.1068940938283
+[2022/06/12 13:42:12] ppocr INFO: best_epoch:6
+[2022/06/12 13:42:12] ppocr INFO: start_epoch:7
+eval model::   0%|          | 0/2 [00:00<?, ?it/s]eval model::  50%|¨€¨€¨€¨€¨€     | 1/2 [00:00<00:00,  4.67it/s]
+[2022/06/12 13:42:12] ppocr INFO: metric eval ***************
+[2022/06/12 13:42:12] ppocr INFO: acc:0.9999987500015626
+[2022/06/12 13:42:12] ppocr INFO: norm_edit_dis:1.0
+[2022/06/12 13:42:12] ppocr INFO: fps:57.50210270524082

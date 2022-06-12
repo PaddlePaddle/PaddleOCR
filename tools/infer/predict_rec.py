@@ -69,6 +69,12 @@ class TextRecognizer(object):
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }
+        elif self.rec_algorithm == "SPIN":
+            postprocess_params = {
+                'name': 'SPINAttnLabelDecode',
+                "character_dict_path": args.rec_char_dict_path,
+                "use_space_char": args.use_space_char
+            }
         self.postprocess_op = build_post_process(postprocess_params)
         self.predictor, self.input_tensor, self.output_tensors, self.config = \
             utility.create_predictor(args, 'rec', logger)
@@ -250,6 +256,22 @@ class TextRecognizer(object):
 
         return padding_im, resize_shape, pad_shape, valid_ratio
 
+    def resize_norm_img_spin(self, img):
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        # return padding_im
+        img = cv2.resize(img, tuple([100, 32]), cv2.INTER_CUBIC)
+        img = np.array(img, np.float32)
+        img = np.expand_dims(img, -1)
+        img = img.transpose((2, 0, 1))
+        mean = [127.5]
+        std = [127.5]
+        mean = np.array(mean, dtype=np.float32)
+        std = np.array(std, dtype=np.float32)
+        mean = np.float32(mean.reshape(1, -1))
+        stdinv = 1 / np.float32(std.reshape(1, -1))
+        img -= mean
+        img *= stdinv
+        return img
     def __call__(self, img_list):
         img_num = len(img_list)
         # Calculate the aspect ratio of all text bars
@@ -298,6 +320,10 @@ class TextRecognizer(object):
                 elif self.rec_algorithm == "SVTR":
                     norm_img = self.resize_norm_img_svtr(img_list[indices[ino]],
                                                          self.rec_image_shape)
+                    norm_img = norm_img[np.newaxis, :]
+                    norm_img_batch.append(norm_img)
+                elif self.rec_algorithm == 'SPIN':
+                    norm_img = self.resize_norm_img_spin(img_list[indices[ino]])
                     norm_img = norm_img[np.newaxis, :]
                     norm_img_batch.append(norm_img)
                 else:

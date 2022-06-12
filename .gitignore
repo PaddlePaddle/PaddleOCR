@@ -10,7 +10,7 @@ __pycache__/
 inference/
 inference_results/
 output/
-
+train_data/
 *.DS_Store
 *.vs
 *.user
