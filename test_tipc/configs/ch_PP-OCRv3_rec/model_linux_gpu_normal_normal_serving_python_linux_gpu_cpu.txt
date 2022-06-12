@@ -1,18 +1,23 @@
 ===========================serving_params===========================
-model_name:ocr_rec_v3
+model_name:ch_PP-OCRv3_rec
 python:python3.7
 trans_model:-m paddle_serving_client.convert
---dirname:./inference/ch_PP-OCRv3_rec_infer/
+--det_dirname:null
 --model_filename:inference.pdmodel
 --params_filename:inference.pdiparams
---serving_server:./deploy/pdserving/ppocr_rec_v3_serving/
---serving_client:./deploy/pdserving/ppocr_rec_v3_client/
+--det_serving_server:null
+--det_serving_client:null
+--rec_dirname:./inference/ch_PP-OCRv3_rec_infer/
+--rec_serving_server:./deploy/pdserving/ppocr_rec_v3_serving/
+--rec_serving_client:./deploy/pdserving/ppocr_rec_v3_client/
 serving_dir:./deploy/pdserving
 web_service:web_service_rec.py --config=config.yml --opt op.rec.concurrency="1"
-op.rec.local_service_conf.devices:gpu|null
-op.rec.local_service_conf.use_mkldnn:False
-op.rec.local_service_conf.thread_num:1|6
-op.rec.local_service_conf.use_trt:False|True
-op.rec.local_service_conf.precision:fp32|fp16|int8
-pipline:pipeline_rpc_client.py|pipeline_http_client.py
+op.det.local_service_conf.devices:gpu|null
+op.det.local_service_conf.use_mkldnn:False
+op.det.local_service_conf.thread_num:6
+op.det.local_service_conf.use_trt:False
+op.det.local_service_conf.precision:fp32
+op.det.local_service_conf.model_config:
+op.rec.local_service_conf.model_config:
+pipline:pipeline_http_client.py --det=False
 --image_dir:../../inference/rec_inference

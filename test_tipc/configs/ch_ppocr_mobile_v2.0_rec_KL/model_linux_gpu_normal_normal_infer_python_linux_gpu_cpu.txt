@@ -6,12 +6,12 @@ Global.save_inference_dir:null
 infer_model:./inference/ch_ppocr_mobile_v2.0_rec_infer/
 infer_export:deploy/slim/quantization/quant_kl.py -c test_tipc/configs/ch_ppocr_mobile_v2.0_rec_KL/rec_chinese_lite_train_v2.0.yml -o
 infer_quant:True
-inference:tools/infer/predict_rec.py
+inference:tools/infer/predict_rec.py --rec_image_shape="3,32,320"
 --use_gpu:False|True
---enable_mkldnn:True
---cpu_threads:1|6
+--enable_mkldnn:False
+--cpu_threads:6
 --rec_batch_num:1
---use_tensorrt:False|True
+--use_tensorrt:False
 --precision:int8
 --rec_model_dir:
 --image_dir:./inference/rec_inference

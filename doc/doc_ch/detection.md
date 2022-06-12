@@ -13,6 +13,7 @@
   - [2.5 分布式训练](#25-分布式训练)
   - [2.6 知识蒸馏训练](#26-知识蒸馏训练)
   - [2.7 其他训练环境](#27-其他训练环境)
+  - [2.8 模型微调](#28-模型微调)
 - [3. 模型评估与预测](#3-模型评估与预测)
   - [3.1 指标评估](#31-指标评估)
   - [3.2 测试检测效果](#32-测试检测效果)
@@ -141,7 +142,8 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml \
      Global.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True
  ```
 
-<a name="26---fleet---"></a>
+<a name="25---fleet---"></a>
+
 ## 2.5 分布式训练
 
 多机多卡训练时，通过 `--ips` 参数设置使用的机器IP地址，通过 `--gpus` 参数设置使用的GPU ID：
@@ -151,7 +153,7 @@ python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1
      -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
 ```
 
-**注意:** 采用多机多卡训练时，需要替换上面命令中的ips值为您机器的地址，机器之间需要能够相互ping通。另外，训练时需要在多个机器上分别启动命令。查看机器ip地址的命令为`ifconfig`。
+**注意:** （1）采用多机多卡训练时，需要替换上面命令中的ips值为您机器的地址，机器之间需要能够相互ping通；（2）训练时需要在多个机器上分别启动命令。查看机器ip地址的命令为`ifconfig`；（3）更多关于分布式训练的性能优势等信息，请参考：[分布式训练教程](./distributed_training.md)。
 
 
 <a name="26---distill---"></a>
@@ -177,6 +179,13 @@ Windows平台只支持`单卡`的训练与预测，指定GPU进行训练`set CUD
 - Linux DCU
 DCU设备上运行需要设置环境变量 `export HIP_VISIBLE_DEVICES=0,1,2,3`，其余训练评估预测命令与Linux GPU完全相同。
 
+<a name="28-模型微调"></a>
+
+## 2.8 模型微调
+
+实际使用过程中，建议加载官方提供的预训练模型，在自己的数据集中进行微调，关于检测模型的微调方法，请参考：[模型微调教程](./finetune.md)。
+
+
 <a name="3--------"></a>
 # 3. 模型评估与预测
 
@@ -196,6 +205,7 @@ python3 tools/eval.py -c configs/det/det_mv3_db.yml  -o Global.checkpoints="{pat
 ## 3.2 测试检测效果
 
 测试单张图像的检测效果：
+
 ```shell
 python3 tools/infer_det.py -c configs/det/det_mv3_db.yml -o Global.infer_img="./doc/imgs_en/img_10.jpg" Global.pretrained_model="./output/det_db/best_accuracy"
 ```
@@ -226,13 +236,18 @@ python3 tools/export_model.py -c configs/det/det_mv3_db.yml -o Global.pretrained
 ```
 
 DB检测模型inference 模型预测：
+
 ```shell
 python3 tools/infer/predict_det.py --det_algorithm="DB" --det_model_dir="./output/det_db_inference/" --image_dir="./doc/imgs/" --use_gpu=True
 ```
 如果是其他检测，比如EAST模型，det_algorithm参数需要修改为EAST，默认为DB算法：
+
 ```shell
 python3 tools/infer/predict_det.py --det_algorithm="EAST" --det_model_dir="./output/det_db_inference/" --image_dir="./doc/imgs/" --use_gpu=True
 ```
+
+更多关于推理超参数的配置与解释，请参考：[模型推理超参数解释教程](./inference_args.md)。
+
 
 <a name="5-faq"></a>
 # 5. FAQ

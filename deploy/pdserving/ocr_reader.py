@@ -339,7 +339,7 @@ class CharacterOps(object):
 class OCRReader(object):
     def __init__(self,
                  algorithm="CRNN",
-                 image_shape=[3, 32, 320],
+                 image_shape=[3, 48, 320],
                  char_type="ch",
                  batch_num=1,
                  char_dict_path="./ppocr_keys_v1.txt"):
@@ -356,7 +356,7 @@ class OCRReader(object):
     def resize_norm_img(self, img, max_wh_ratio):
         imgC, imgH, imgW = self.rec_image_shape
         if self.character_type == "ch":
-            imgW = int(32 * max_wh_ratio)
+            imgW = int(imgH * max_wh_ratio)
         h = img.shape[0]
         w = img.shape[1]
         ratio = w / float(h)
@@ -377,7 +377,7 @@ class OCRReader(object):
     def preprocess(self, img_list):
         img_num = len(img_list)
         norm_img_batch = []
-        max_wh_ratio = 0
+        max_wh_ratio = 320/48.
         for ino in range(img_num):
             h, w = img_list[ino].shape[0:2]
             wh_ratio = w * 1.0 / h
