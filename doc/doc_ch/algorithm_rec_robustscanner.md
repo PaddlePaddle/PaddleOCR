@@ -26,7 +26,7 @@ Zhang
 
 |模型|骨干网络|配置文件|Acc|下载链接|
 | --- | --- | --- | --- | --- |
-|RobustScanner|ResNet31V2|[rec_r31_robustscanner.yml](../../configs/rec/rec_r31_robustscanner.yml)|87.77%|[训练模型]()|
+|RobustScanner|ResNet31|[rec_r31_robustscanner.yml](../../configs/rec/rec_r31_robustscanner.yml)|87.77%|coming soon|
 
 注：除了使用MJSynth和SynthText两个文字识别数据集外，还加入了[SynthAdd](https://pan.baidu.com/share/init?surl=uV0LtoNmcxbO-0YA7Ch4dg)数据（提取码：627x），和部分真实数据，具体数据细节可以参考论文。
 
@@ -71,7 +71,7 @@ python3 tools/infer_rec.py -c configs/rec/rec_r31_robustscanner.yml -o Global.pr
 
 <a name="4-1"></a>
 ### 4.1 Python推理
-首先将RobustScanner文本识别训练过程中保存的模型，转换成inference model。（ [模型下载地址]() )，可以使用如下命令进行转换：
+首先将RobustScanner文本识别训练过程中保存的模型，转换成inference model。可以使用如下命令进行转换：
 
 ```
 python3 tools/export_model.py -c configs/rec/rec_r31_robustscanner.yml -o Global.pretrained_model={path/to/weights}/best_accuracy  Global.save_inference_dir=./inference/rec_r31_robustscanner
@@ -85,7 +85,7 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/en/word_1.png" 
 <a name="4-2"></a>
 ### 4.2 C++推理
 
-由于C++预处理后处理还未支持SAR，所以暂未支持
+由于C++预处理后处理还未支持RobustScanner，所以暂未支持
 
 <a name="4-3"></a>
 ### 4.3 Serving服务化部署
@@ -104,11 +104,10 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/en/word_1.png" 
 ## 引用
 
 ```bibtex
-@article{Li2019ShowAA,
-  title={Show, Attend and Read: A Simple and Strong Baseline for Irregular Text Recognition},
-  author={Hui Li and Peng Wang and Chunhua Shen and Guyu Zhang},
-  journal={ArXiv},
-  year={2019},
-  volume={abs/1811.00751}
+@article{2020RobustScanner,
+  title={RobustScanner: Dynamically Enhancing Positional Clues for Robust Text Recognition},
+  author={Xiaoyu Yue and Zhanghui Kuang and Chenhao Lin and Hongbin Sun and Wayne Zhang},
+  journal={ECCV2020},
+  year={2020},
 }
 ```

@@ -217,18 +217,7 @@ class SequenceAttentionDecoder(BaseDecoder):
         else:
             value = paddle.reshape(feat, [n, c_feat, h * w])
 
-        # mask = None
-        # if valid_ratios is not None:
-        #     mask = paddle.zeros(shape=[n, len_q, h, w], dtype='bool')
-        #     for i, valid_ratio in enumerate(valid_ratios):
-        #         valid_width = min(w, math.ceil(w * valid_ratio))
-        #         if valid_width < w:
-        #             mask[i, :, :, valid_width:] = True
-        #     # mask = mask.view(n, h * w)
-        #     mask = paddle.reshape(mask, (n, len_q, h * w))
-
         attn_out = self.attention_layer(query, key, value, h, w, valid_ratios)
-        # attn_out = attn_out.permute(0, 2, 1).contiguous()
         attn_out = paddle.transpose(attn_out, (0, 2, 1))
 
         if self.return_feature:
@@ -253,8 +242,6 @@ class SequenceAttentionDecoder(BaseDecoder):
         seq_len = self.max_seq_len
         batch_size = feat.shape[0]
 
-        # decode_sequence = (feat.new_ones(
-        #     (batch_size, seq_len)) * self.start_idx).long()
         decode_sequence = (paddle.ones((batch_size, seq_len), dtype='int64') * self.start_idx)
 
         outputs = []
@@ -303,20 +290,8 @@ class SequenceAttentionDecoder(BaseDecoder):
             value = key
         else:
             value = paddle.reshape(feat, [n, c_feat, h * w])
-        # len_q = query.shape[2]
-        # mask = None
-        # if valid_ratios is not None:
-        #     mask = paddle.zeros(shape=[n, len_q, h, w], dtype='bool')
-        #     for i, valid_ratio in enumerate(valid_ratios):
-        #         valid_width = min(w, math.ceil(w * valid_ratio))
-        #         if valid_width < w:
-        #             mask[i, :, :, valid_width:] = True
-        #     # mask = mask.view(n, h * w)
-        #     mask = paddle.reshape(mask, (n, len_q, h * w))
 
         # [n, c, l]
-        # attn_out = self.attention_layer(query, key, value, mask)
-
         attn_out = self.attention_layer(query, key, value, h, w, valid_ratios)
         out = attn_out[:, :, current_step]
 
@@ -445,7 +420,6 @@ class PositionAttentionDecoder(BaseDecoder):
             before the prediction projection layer, whose shape is
             :math:`(N, T, D_m)`.
         """
-        #
         n, c_enc, h, w = out_enc.shape
         assert c_enc == self.dim_model
         _, c_feat, _, _ = feat.shape
@@ -453,8 +427,6 @@ class PositionAttentionDecoder(BaseDecoder):
         _, len_q = targets.shape
         assert len_q <= self.max_seq_len
         
-        # position_index = self._get_position_index(len_q, n)
-
         position_out_enc = self.position_aware_module(out_enc)
 
         query = self.embedding(position_index)
@@ -464,16 +436,6 @@ class PositionAttentionDecoder(BaseDecoder):
             value = paddle.reshape(out_enc,(n, c_enc, h * w))
         else:
             value = paddle.reshape(feat,(n, c_feat, h * w))
-
-        # mask = None
-        # if valid_ratios is not None:
-        #     mask = paddle.zeros(shape=[n, len_q, h, w], dtype='bool')
-        #     for i, valid_ratio in enumerate(valid_ratios):
-        #         valid_width = min(w, math.ceil(w * valid_ratio))
-        #         if valid_width < w:
-        #             mask[i, :, :, valid_width:] = True
-        #     # mask = mask.view(n, h * w)
-        #     mask = paddle.reshape(mask, (n, len_q, h * w))
 
         attn_out = self.attention_layer(query, key, value, h, w, valid_ratios)
         attn_out = paddle.transpose(attn_out, (0, 2, 1))  # [n, len_q, dim_v]
@@ -498,7 +460,6 @@ class PositionAttentionDecoder(BaseDecoder):
             before the prediction projection layer, whose shape is
             :math:`(N, T, D_m)`.
         """
-        # seq_len = self.max_seq_len
         n, c_enc, h, w = out_enc.shape
         assert c_enc == self.dim_model
         _, c_feat, _, _ = feat.shape
@@ -516,16 +477,6 @@ class PositionAttentionDecoder(BaseDecoder):
             value = paddle.reshape(out_enc,(n, c_enc, h * w))
         else:
             value = paddle.reshape(feat,(n, c_feat, h * w))
-        # len_q = query.shape[2]
-        # mask = None
-        # if valid_ratios is not None:
-        #     mask = paddle.zeros(shape=[n, len_q, h, w], dtype='bool')
-        #     for i, valid_ratio in enumerate(valid_ratios):
-        #         valid_width = min(w, math.ceil(w * valid_ratio))
-        #         if valid_width < w:
-        #             mask[i, :, :, valid_width:] = True
-        #     # mask = mask.view(n, h * w)
-        #     mask = paddle.reshape(mask, (n, len_q, h * w))
 
         attn_out = self.attention_layer(query, key, value, h, w, valid_ratios)
         attn_out = paddle.transpose(attn_out, (0, 2, 1))  # [n, len_q, dim_v]
@@ -676,9 +627,6 @@ class RobustScannerDecoder(BaseDecoder):
         seq_len = self.max_seq_len
         batch_size = feat.shape[0]
 
-        # decode_sequence = (feat.new_ones(
-        #     (batch_size, seq_len)) * self.start_idx).long()
-
         decode_sequence = (paddle.ones((batch_size, seq_len), dtype='int64') * self.start_idx)
 
         position_glimpse = self.position_decoder.forward_test(
@@ -712,7 +660,7 @@ class RobustScannerHead(nn.Layer):
                  hybrid_dec_dropout=0,
                  position_dec_rnn_layers=2,
                  start_idx=0,
-                 max_seq_len=40,
+                 max_text_length=40,
                  mask=True,
                  padding_idx=None,
                  encode_value=False,
@@ -731,7 +679,7 @@ class RobustScannerHead(nn.Layer):
             hybrid_decoder_rnn_layers=hybrid_dec_rnn_layers,
             hybrid_decoder_dropout=hybrid_dec_dropout,
             position_decoder_rnn_layers=position_dec_rnn_layers,
-            max_seq_len=max_seq_len,
+            max_seq_len=max_text_length,
             start_idx=start_idx,
             mask=mask,
             padding_idx=padding_idx,

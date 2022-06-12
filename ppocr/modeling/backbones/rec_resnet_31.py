@@ -27,8 +27,11 @@ import paddle.nn as nn
 import paddle.nn.functional as F
 import numpy as np
 
-__all__ = ["ResNet31"]
+__all__ = ["ResNet31V2"]
 
+
+conv_weight_attr = nn.initializer.KaimingNormal()
+bn_weight_attr = ParamAttr(initializer=nn.initializer.Uniform(), learning_rate=1)
 
 def conv3x3(in_channel, out_channel, stride=1):
     return nn.Conv2D(
@@ -37,6 +40,7 @@ def conv3x3(in_channel, out_channel, stride=1):
         kernel_size=3,
         stride=stride,
         padding=1,
+        weight_attr=conv_weight_attr,
         bias_attr=False)
 
 
@@ -46,10 +50,10 @@ class BasicBlock(nn.Layer):
     def __init__(self, in_channels, channels, stride=1, downsample=False):
         super().__init__()
         self.conv1 = conv3x3(in_channels, channels, stride)
-        self.bn1 = nn.BatchNorm2D(channels)
+        self.bn1 = nn.BatchNorm2D(channels, weight_attr=bn_weight_attr)
         self.relu = nn.ReLU()
         self.conv2 = conv3x3(channels, channels)
-        self.bn2 = nn.BatchNorm2D(channels)
+        self.bn2 = nn.BatchNorm2D(channels, weight_attr=bn_weight_attr)
         self.downsample = downsample
         if downsample:
             self.downsample = nn.Sequential(
@@ -58,8 +62,9 @@ class BasicBlock(nn.Layer):
                     channels * self.expansion,
                     1,
                     stride,
+                    weight_attr=conv_weight_attr,
                     bias_attr=False),
-                nn.BatchNorm2D(channels * self.expansion), )
+                nn.BatchNorm2D(channels * self.expansion, weight_attr=bn_weight_attr))
         else:
             self.downsample = nn.Sequential()
         self.stride = stride
@@ -108,13 +113,13 @@ class ResNet31(nn.Layer):
 
         # conv 1 (Conv Conv)
         self.conv1_1 = nn.Conv2D(
-            in_channels, channels[0], kernel_size=3, stride=1, padding=1)
-        self.bn1_1 = nn.BatchNorm2D(channels[0])
+            in_channels, channels[0], kernel_size=3, stride=1, padding=1, weight_attr=conv_weight_attr)
+        self.bn1_1 = nn.BatchNorm2D(channels[0], weight_attr=bn_weight_attr)
         self.relu1_1 = nn.ReLU()
 
         self.conv1_2 = nn.Conv2D(
-            channels[0], channels[1], kernel_size=3, stride=1, padding=1)
-        self.bn1_2 = nn.BatchNorm2D(channels[1])
+            channels[0], channels[1], kernel_size=3, stride=1, padding=1, weight_attr=conv_weight_attr)
+        self.bn1_2 = nn.BatchNorm2D(channels[1], weight_attr=bn_weight_attr)
         self.relu1_2 = nn.ReLU()
 
         # conv 2 (Max-pooling, Residual block, Conv)
@@ -122,8 +127,8 @@ class ResNet31(nn.Layer):
             kernel_size=2, stride=2, padding=0, ceil_mode=True)
         self.block2 = self._make_layer(channels[1], channels[2], layers[0])
         self.conv2 = nn.Conv2D(
-            channels[2], channels[2], kernel_size=3, stride=1, padding=1)
-        self.bn2 = nn.BatchNorm2D(channels[2])
+            channels[2], channels[2], kernel_size=3, stride=1, padding=1, weight_attr=conv_weight_attr)
+        self.bn2 = nn.BatchNorm2D(channels[2], weight_attr=bn_weight_attr)
         self.relu2 = nn.ReLU()
 
         # conv 3 (Max-pooling, Residual block, Conv)
@@ -131,8 +136,8 @@ class ResNet31(nn.Layer):
             kernel_size=2, stride=2, padding=0, ceil_mode=True)
         self.block3 = self._make_layer(channels[2], channels[3], layers[1])
         self.conv3 = nn.Conv2D(
-            channels[3], channels[3], kernel_size=3, stride=1, padding=1)
-        self.bn3 = nn.BatchNorm2D(channels[3])
+            channels[3], channels[3], kernel_size=3, stride=1, padding=1, weight_attr=conv_weight_attr)
+        self.bn3 = nn.BatchNorm2D(channels[3], weight_attr=bn_weight_attr)
         self.relu3 = nn.ReLU()
 
         # conv 4 (Max-pooling, Residual block, Conv)
@@ -140,8 +145,8 @@ class ResNet31(nn.Layer):
             kernel_size=(2, 1), stride=(2, 1), padding=0, ceil_mode=True)
         self.block4 = self._make_layer(channels[3], channels[4], layers[2])
         self.conv4 = nn.Conv2D(
-            channels[4], channels[4], kernel_size=3, stride=1, padding=1)
-        self.bn4 = nn.BatchNorm2D(channels[4])
+            channels[4], channels[4], kernel_size=3, stride=1, padding=1, weight_attr=conv_weight_attr)
+        self.bn4 = nn.BatchNorm2D(channels[4], weight_attr=bn_weight_attr)
         self.relu4 = nn.ReLU()
 
         # conv 5 ((Max-pooling), Residual block, Conv)
@@ -151,8 +156,8 @@ class ResNet31(nn.Layer):
                 kernel_size=2, stride=2, padding=0, ceil_mode=True)
         self.block5 = self._make_layer(channels[4], channels[5], layers[3])
         self.conv5 = nn.Conv2D(
-            channels[5], channels[5], kernel_size=3, stride=1, padding=1)
-        self.bn5 = nn.BatchNorm2D(channels[5])
+            channels[5], channels[5], kernel_size=3, stride=1, padding=1, weight_attr=conv_weight_attr)
+        self.bn5 = nn.BatchNorm2D(channels[5], weight_attr=bn_weight_attr)
         self.relu5 = nn.ReLU()
 
         self.out_channels = channels[-1]
@@ -168,8 +173,9 @@ class ResNet31(nn.Layer):
                         output_channels,
                         kernel_size=1,
                         stride=1,
+                        weight_attr=conv_weight_attr,
                         bias_attr=False),
-                    nn.BatchNorm2D(output_channels), )
+                    nn.BatchNorm2D(output_channels, weight_attr=bn_weight_attr))
 
             layers.append(
                 BasicBlock(

@@ -15,7 +15,7 @@ Global:
   infer_img: 
   # for data or label process
   character_dict_path: ppocr/utils/dict90.txt
-  max_text_length: 40
+  max_text_length: &max_text_length 40
   infer_mode: False
   use_space_char: False
   rm_symbol: True
@@ -38,7 +38,7 @@ Architecture:
   algorithm: RobustScanner
   Transform:
   Backbone:
-    name: ResNet31V2
+    name: ResNet31
   Head:
     name: RobustScannerHead
     enc_outchannles: 128
@@ -75,7 +75,7 @@ Train:
       - RobustScannerRecResizeImg:
           image_shape: [3, 48, 48, 160] # h:48 w:[48,160]
           width_downsample_ratio: 0.25
-          max_seq_len: 40
+          max_seq_len: *max_text_length
       - KeepKeys:
           keep_keys: ['image', 'label', 'valid_ratio', 'word_positons'] # dataloader will return list in this order
   loader:
@@ -97,7 +97,7 @@ Eval:
       - SARLabelEncode: # Class handling label
       - RobustScannerRecResizeImg:
           image_shape: [3, 48, 48, 160]
-          max_seq_len: 40
+          max_seq_len: *max_text_length
           width_downsample_ratio: 0.25
       - KeepKeys:
           keep_keys: ['image', 'label', 'valid_ratio', 'word_positons'] # dataloader will return list in this order

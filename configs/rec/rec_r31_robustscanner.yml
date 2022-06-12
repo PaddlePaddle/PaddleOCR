@@ -15,7 +15,7 @@ Global:
   infer_img: ./inference/rec_inference
   # for data or label process
   character_dict_path: ppocr/utils/dict90.txt
-  max_text_length: 40
+  max_text_length: &max_text_length 40
   infer_mode: False
   use_space_char: False
   rm_symbol: True
@@ -38,7 +38,7 @@ Architecture:
   algorithm: RobustScanner
   Transform:
   Backbone:
-    name: ResNet31V2
+    name: ResNet31
   Head:
     name: RobustScannerHead
     enc_outchannles: 128
@@ -49,7 +49,7 @@ Architecture:
     mask: True
     padding_idx: 92
     encode_value: False
-    max_seq_len: 40
+    max_text_length: *max_text_length
 
 Loss:
   name: SARLoss
@@ -64,8 +64,9 @@ Metric:
 
 Train:
   dataset:
-    name: LMDBDataSet
-    data_dir: I:/dataset/OCR/deep_text_recognition/data_lmdb/evaluation/CUTE80
+    name: SimpleDataSet
+    label_file_list: ['./train_data/train_list.txt']
+    data_dir: ./train_data/
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
@@ -74,20 +75,20 @@ Train:
       - RobustScannerRecResizeImg:
           image_shape: [3, 48, 48, 160] # h:48 w:[48,160]
           width_downsample_ratio: 0.25
-          max_seq_len: 40
+          max_text_length: *max_text_length
       - KeepKeys:
           keep_keys: ['image', 'label', 'valid_ratio', 'word_positons'] # dataloader will return list in this order
   loader:
     shuffle: True
-    batch_size_per_card: 4
+    batch_size_per_card: 64
     drop_last: True
-    num_workers: 0
+    num_workers: 8
     use_shared_memory: False
 
 Eval:
   dataset:
     name: LMDBDataSet
-    data_dir: I:/dataset/OCR/deep_text_recognition/data_lmdb/evaluation/CUTE80
+    data_dir: ./train_data/data_lmdb_release/evaluation/
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
@@ -95,14 +96,14 @@ Eval:
       - SARLabelEncode: # Class handling label
       - RobustScannerRecResizeImg:
           image_shape: [3, 48, 48, 160]
-          max_seq_len: 40
+          max_seq_len: *max_text_length
           width_downsample_ratio: 0.25
       - KeepKeys:
           keep_keys: ['image', 'label', 'valid_ratio', 'word_positons'] # dataloader will return list in this order
   loader:
     shuffle: False
     drop_last: False
-    batch_size_per_card: 1
-    num_workers: 0
+    batch_size_per_card: 64
+    num_workers: 4
     use_shared_memory: False
   

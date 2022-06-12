@@ -1,4 +1,4 @@
-# SAR
+# RobustScanner
 
 - [1. Introduction](#1)
 - [2. Environment](#2)
@@ -26,7 +26,7 @@ Using MJSynth and SynthText two text recognition datasets for training, and eval
 
 |Model|Backbone|config|Acc|Download link|
 | --- | --- | --- | --- | --- |
-|RobustScanner|ResNet31V2|[rec_r31_robustscanner.yml](../../configs/rec/rec_r31_robustscanner.yml)|87.77%|[train model]()|
+|RobustScanner|ResNet31V2|[rec_r31_robustscanner.yml](../../configs/rec/rec_r31_robustscanner.yml)|87.77%|coming soon|
 
 Note:In addition to using the two text recognition datasets MJSynth and SynthText, [SynthAdd](https://pan.baidu.com/share/init?surl=uV0LtoNmcxbO-0YA7Ch4dg) data (extraction code: 627x), and some real data are used in training, the specific data details can refer to the paper.
 
@@ -71,7 +71,7 @@ python3 tools/infer_rec.py -c configs/rec/rec_r31_robustscanner.yml -o Global.pr
 
 <a name="4-1"></a>
 ### 4.1 Python Inference
-First, the model saved during the RobustScanner text recognition training process is converted into an inference model. ( [Model download link]() ), you can use the following command to convert:
+First, the model saved during the RobustScanner text recognition training process is converted into an inference model. you can use the following command to convert:
 
 ```
 python3 tools/export_model.py -c configs/rec/rec_r31_robustscanner.yml -o Global.pretrained_model={path/to/weights}/best_accuracy  Global.save_inference_dir=./inference/rec_r31_robustscanner
@@ -105,11 +105,10 @@ Not supported
 ## Citation
 
 ```bibtex
-@article{Li2019ShowAA,
-  title={Show, Attend and Read: A Simple and Strong Baseline for Irregular Text Recognition},
-  author={Hui Li and Peng Wang and Chunhua Shen and Guyu Zhang},
-  journal={ArXiv},
-  year={2019},
-  volume={abs/1811.00751}
+@article{2020RobustScanner,
+  title={RobustScanner: Dynamically Enhancing Positional Clues for Robust Text Recognition},
+  author={Xiaoyu Yue and Zhanghui Kuang and Chenhao Lin and Hongbin Sun and Wayne Zhang},
+  journal={ECCV2020},
+  year={2020},
 }
 ```

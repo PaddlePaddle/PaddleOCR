@@ -268,16 +268,16 @@ class PRENResizeImg(object):
         return data
 
 class RobustScannerRecResizeImg(object):
-    def __init__(self, image_shape, max_seq_len, width_downsample_ratio=0.25, **kwargs):
+    def __init__(self, image_shape, max_text_length, width_downsample_ratio=0.25, **kwargs):
         self.image_shape = image_shape
         self.width_downsample_ratio = width_downsample_ratio
-        self.max_seq_len = max_seq_len
+        self.max_text_length = max_text_length
 
     def __call__(self, data):
         img = data['image']
         norm_img, resize_shape, pad_shape, valid_ratio = resize_norm_img_sar(
             img, self.image_shape, self.width_downsample_ratio)
-        word_positons = robustscanner_other_inputs(self.max_seq_len)
+        word_positons = np.array(range(0, self.max_text_length)).astype('int64')
         data['image'] = norm_img
         data['resized_shape'] = resize_shape
         data['pad_shape'] = pad_shape
@@ -429,9 +429,6 @@ def srn_other_inputs(image_shape, num_heads, max_text_length):
         gsrm_slf_attn_bias2
     ]
 
-def robustscanner_other_inputs(max_text_length):
-    word_pos = np.array(range(0, max_text_length)).astype('int64')
-    return word_pos
 
 def flag():
     """
