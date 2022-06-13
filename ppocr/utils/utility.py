@@ -19,6 +19,7 @@ import cv2
 import random
 import numpy as np
 import paddle
+import imghdr
 
 
 def print_dict(d, logger, delimiter=0):
@@ -74,7 +75,7 @@ def get_image_file_list(img_file):
 
 
 def check_and_read_gif(img_path):
-    if os.path.basename(img_path)[-3:] in ['gif', 'GIF']:
+    if imghdr.what(img_path) is 'gif':
         gif = cv2.VideoCapture(img_path)
         ret, frame = gif.read()
         if not ret:
