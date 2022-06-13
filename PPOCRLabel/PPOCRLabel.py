@@ -38,6 +38,7 @@ sys.path.append(os.path.abspath(os.path.join(__dir__, '../PaddleOCR')))
 sys.path.append("..")
 
 from paddleocr import PaddleOCR, PPStructure
+from ppocr.utils.utility import check_and_read_gif
 from libs.constants import *
 from libs.utils import *
 from libs.labelColor import label_colormap
@@ -1416,10 +1417,16 @@ class MainWindow(QMainWindow):
 
         if unicodeFilePath and os.path.exists(unicodeFilePath):
             self.canvas.verified = False
-            cvimg = cv2.imdecode(np.fromfile(unicodeFilePath, dtype=np.uint8), 1)
+            cvimg, is_gif = check_and_read_gif(unicodeFilePath)
+            if not is_gif:
+                cvimg = cv2.imdecode(np.fromfile(unicodeFilePath, dtype=np.uint8), 1)
+                cvimg = cv2.cvtColor(cvimg, cv2.COLOR_BGR2RGB)
+            if cvimg is None:
+                print(f'Please check the image  [{unicodeFilePath}] is empty or corrupted ')
+                return False
+
             height, width, depth = cvimg.shape
-            cvimg = cv2.cvtColor(cvimg, cv2.COLOR_BGR2RGB)
-            image = QImage(cvimg.data, width, height, width * depth, QImage.Format_RGB888)
+            image = QImage(cvimg.tobytes(), width, height, width * depth, QImage.Format_RGB888)
 
             if image.isNull():
                 self.errorMessage(u'Error opening file',
