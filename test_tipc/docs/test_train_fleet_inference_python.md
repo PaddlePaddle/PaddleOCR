@@ -15,7 +15,7 @@ Linux GPU/CPU 多机多卡训练推理测试的主程序为`test_train_inference
 
 | 算法名称 | 模型名称 | device_CPU | device_GPU | batchsize |
 |  :----:   |  :----: |   :----:   |  :----:  |   :----:   |
-|  PP-OCRv3   |  ch_PP-OCRv3_rec |  支持 | 支持 | 1 |
+|  PP-OCRv3   |  ch_PP-OCRv3_rec |  支持 | - | 1/6 |
 
 
 ## 2. 测试流程
