@@ -15,7 +15,7 @@ Linux GPU/CPU 多机多卡训练推理测试的主程序为`test_train_inference
 
 | 算法名称 | 模型名称 | device_CPU | device_GPU | batchsize |
 |  :----:   |  :----: |   :----:   |  :----:  |   :----:   |
-|  PP-OCRv3   |  ch_PP-OCRv3_rec |  支持 | 支持 | 1 |
+|  PP-OCRv3   |  ch_PP-OCRv3_rec |  支持 | - | 1/6 |
 
 
 ## 2. 测试流程
@@ -31,10 +31,10 @@ Linux GPU/CPU 多机多卡训练推理测试的主程序为`test_train_inference
 
 #### 2.1.2 准备数据
 
-运行`prepare.sh`准备数据和模型，以配置文件`test_tipc/configs/ch_PP-OCRv3_rec/train_fleet_infer_python.txt`为例，数据准备命令如下所示。
+运行`prepare.sh`准备数据和模型，以配置文件`test_tipc/configs/ch_PP-OCRv3_rec/train_linux_gpu_fleet_normal_infer_python_linux_gpu_cpu.txt`为例，数据准备命令如下所示。
 
 ```shell
-bash test_tipc/prepare.sh test_tipc/configs/ch_PP-OCRv3_rec/train_fleet_infer_python.txt lite_train_lite_infer
+bash test_tipc/prepare.sh test_tipc/configs/ch_PP-OCRv3_rec/train_linux_gpu_fleet_normal_infer_python_linux_gpu_cpu.txt lite_train_lite_infer
 ```
 
 **注意：** 由于是多机训练，这里需要在所有的节点上均运行启动上述命令，准备数据。
@@ -47,10 +47,10 @@ bash test_tipc/prepare.sh test_tipc/configs/ch_PP-OCRv3_rec/train_fleet_infer_py
 export FLAGS_START_PORT=17000
 ```
 
-以配置文件`test_tipc/configs/ch_PP-OCRv3_rec/train_fleet_infer_python.txt`为例，测试方法如下所示。
+以配置文件`test_tipc/configs/ch_PP-OCRv3_rec/train_linux_gpu_fleet_normal_infer_python_linux_gpu_cpu.txt`为例，测试方法如下所示。
 
 ```shell
-bash test_tipc/test_train_inference_python.sh  test_tipc/configs/ch_PP-OCRv3_rec/train_fleet_infer_python.txt lite_train_lite_infer
+bash test_tipc/test_train_inference_python.sh  test_tipc/configs/ch_PP-OCRv3_rec/train_linux_gpu_fleet_normal_infer_python_linux_gpu_cpu.txt lite_train_lite_infer
 ```
 
 **注意：** 由于是多机训练，这里需要在所有的节点上均运行启动上述命令进行测试。
