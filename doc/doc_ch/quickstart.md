@@ -52,7 +52,7 @@ pip install "paddleocr>=2.0.1" # 推荐使用2.0.1+版本
 
 > 如果您没有Docker运行环境，请参考[Docker官网](https://www.docker.com/)进行安装.
 
-PaddleOC提供了带有最新代码的docker镜像供您使用，您只需要**拉取docker镜像**，然后**运行docker镜像**，无需其他任何额外操作，即可开始使用PaddleOCR的所有功能。
+PaddleOCR提供了带有最新代码的docker镜像供您使用，您只需要**拉取docker镜像**，然后**运行docker镜像**，无需其他任何额外操作，即可开始使用PaddleOCR的所有功能。
 
 在[Docker Hub](https://hub.docker.com/repository/docker/paddlecloud/paddleocr)中获取这些镜像及相应的使用指南，包括CPU、GPU、ROCm版本。
 
