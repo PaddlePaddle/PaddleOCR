@@ -115,7 +115,7 @@ def sorted_boxes(dt_boxes):
 
     for i in range(num_boxes - 1):
         for j in range(i, 0, -1):
-            if abs(_boxes[j + 1][0][1] - _boxes[j][0][1]) < 20 and \
+            if abs(_boxes[j + 1][0][1] - _boxes[j][0][1]) < 10 and \
                     (_boxes[j + 1][0][0] < _boxes[j][0][0]):
                 tmp = _boxes[j]
                 _boxes[j] = _boxes[j + 1]
