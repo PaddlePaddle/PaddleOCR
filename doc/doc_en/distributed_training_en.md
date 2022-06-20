@@ -40,11 +40,17 @@ python3 -m paddle.distributed.launch \
 
 ## Performance comparison
 
-* Based on 26W public recognition dataset (LSVT, rctw, mtwi), training on single 8-card P40 and dual 8-card P40, the final time consumption is as follows.
+* On two 8-card P40 graphics cards, the final time consumption and speedup ratio for public recognition dataset (LSVT, RCTW, MTWI) containing 260k images are as follows.
 
-|   Model   |   Config file  |  Number of machines |   Number of GPUs per machine   |   Training time      | Recognition acc  | Speedup ratio |
-| :-------: | :------------: |  :----------------: | :----------------------------: | :------------------: | :--------------: | :-----------: |
-|   CRNN    |   configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml   |   1          |  8  |  60h  |  66.7% | - |
-|   CRNN    |   configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml   |   2          |  8  |  40h  |  67.0% | 150% |
 
-It can be seen that the training time is shortened from 60h to 40h, the speedup ratio can reach 150% (60h / 40h), and the efficiency is 75% (60h / (40h * 2)).
+| Model   | Config file  | Recognition acc     | single 8-card training time | two 8-card training time | Speedup ratio |
+|------|-----|--------|--------|--------|-----|
+| CRNN | [rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml) | 67.0% | 2.50d   | 1.67d  | **1.5** |
+
+
+* On four 8-card V100 graphics cards, the final time consumption and speedup ratio for full data are as follows.
+
+
+| Model   | Config file  | Recognition acc     | single 8-card training time | four 8-card training time | Speedup ratio |
+|------|-----|--------|--------|--------|-----|
+| SVTR | [ch_PP-OCRv3_rec_distillation.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml) | 74.0% | 10d   | 2.84d  | **3.5** |

@@ -36,11 +36,27 @@ def cv2_to_base64(image):
     return base64.b64encode(image).decode('utf8')
 
 
+def _check_image_file(path):
+    img_end = {'jpg', 'bmp', 'png', 'jpeg', 'rgb', 'tif', 'tiff', 'gif'}
+    return any([path.lower().endswith(e) for e in img_end])
+
+
 url = "http://127.0.0.1:9998/ocr/prediction"
 test_img_dir = args.image_dir
 
-for idx, img_file in enumerate(os.listdir(test_img_dir)):
-    with open(os.path.join(test_img_dir, img_file), 'rb') as file:
+test_img_list = []
+if os.path.isfile(test_img_dir) and _check_image_file(test_img_dir):
+    test_img_list.append(test_img_dir)
+elif os.path.isdir(test_img_dir):
+    for single_file in os.listdir(test_img_dir):
+        file_path = os.path.join(test_img_dir, single_file)
+        if os.path.isfile(file_path) and _check_image_file(file_path):
+            test_img_list.append(file_path)
+if len(test_img_list) == 0:
+    raise Exception("not found any img file in {}".format(test_img_dir))
+
+for idx, img_file in enumerate(test_img_list):
+    with open(img_file, 'rb') as file:
         image_data1 = file.read()
     # print file name
     print('{}{}{}'.format('*' * 10, img_file, '*' * 10))
@@ -70,4 +86,4 @@ for idx, img_file in enumerate(os.listdir(test_img_dir)):
         print(
             "For details about error message, see PipelineServingLogs/pipeline.log"
         )
-print("==> total number of test imgs: ", len(os.listdir(test_img_dir)))
+print("==> total number of test imgs: ", len(test_img_list))

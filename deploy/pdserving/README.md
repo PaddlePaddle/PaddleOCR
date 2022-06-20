@@ -136,7 +136,7 @@ The recognition model is the same.
 2. Run the following command to start the service.
     ```
     # Start the service and save the running log in log.txt
-    python3 web_service.py &>log.txt &
+    python3 web_service.py --config=config.yml &>log.txt &
     ```
     After the service is successfully started, a log similar to the following will be printed in log.txt
     ![](./imgs/start_server.png)
@@ -217,7 +217,7 @@ The C++ service deployment is the same as python in the environment setup and da
 2. Run the following command to start the service.
     ```
     # Start the service and save the running log in log.txt
-    python3 -m paddle_serving_server.serve --model ppocr_det_v3_serving ppocr_rec_v3_serving --op GeneralDetectionOp GeneralInferOp --port 9293 &>log.txt &
+    python3 -m paddle_serving_server.serve --model ppocr_det_v3_serving ppocr_rec_v3_serving --op GeneralDetectionOp GeneralInferOp --port 8181 &>log.txt &
     ```
     After the service is successfully started, a log similar to the following will be printed in log.txt
     ![](./imgs/start_server.png)
