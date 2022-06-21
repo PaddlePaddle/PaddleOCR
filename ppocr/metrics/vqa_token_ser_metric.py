@@ -19,7 +19,7 @@ from __future__ import print_function
 import numpy as np
 import paddle
 
-__all__ = ['KIEMetric']
+__all__ = ['VQASerTokenMetric', 'VQASeqSerTokenMetric']
 
 
 class VQASerTokenMetric(object):
@@ -38,6 +38,35 @@ class VQASerTokenMetric(object):
             "precision": precision_score(self.gt_list, self.pred_list),
             "recall": recall_score(self.gt_list, self.pred_list),
             "hmean": f1_score(self.gt_list, self.pred_list),
+        }
+        self.reset()
+        return metrics
+
+    def reset(self):
+        self.pred_list = []
+        self.gt_list = []
+
+
+class VQASeqSerTokenMetric(object):
+    def __init__(self, main_indicator='hmean', **kwargs):
+        self.main_indicator = main_indicator
+        self.reset()
+
+    def __call__(self, preds, batch, **kwargs):
+        preds, labels = preds
+        self.pred_list.extend(preds)
+        self.gt_list.extend(labels)
+
+    def get_metric(self):
+        from sklearn.metrics import classification_report
+        result = classification_report(
+            self.gt_list, self.pred_list, labels=[1, 2, 3],
+            output_dict=True)['micro avg']
+
+        metrics = {
+            "precision": result["precision"],
+            "recall": result["recall"],
+            "hmean": result["f1-score"],
         }
         self.reset()
         return metrics
