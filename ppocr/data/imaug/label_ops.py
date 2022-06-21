@@ -23,7 +23,7 @@ import string
 from shapely.geometry import LineString, Point, Polygon
 import json
 import copy
-
+from scipy.spatial import distance as dist
 from ppocr.utils.logging import get_logger
 
 
@@ -70,14 +70,22 @@ class DetLabelEncode(object):
         return data
 
     def order_points_clockwise(self, pts):
-        rect = np.zeros((4, 2), dtype="float32")
-        s = pts.sum(axis=1)
-        rect[0] = pts[np.argmin(s)]
-        rect[2] = pts[np.argmax(s)]
-        diff = np.diff(pts, axis=1)
-        rect[1] = pts[np.argmin(diff)]
-        rect[3] = pts[np.argmax(diff)]
-        return rect
+        """
+        refer to :https://github.com/PyImageSearch/imutils/blob/9f740a53bcc2ed7eba2558afed8b4c17fd8a1d4c/imutils/perspective.py#L9
+        """
+        # sort the points based on their x-coordinates
+        xSorted = pts[np.argsort(pts[:, 0]), :]
+
+        leftMost = xSorted[:2, :]
+        rightMost = xSorted[2:, :]
+
+        leftMost = leftMost[np.argsort(leftMost[:, 1]), :]
+        (tl, bl) = leftMost
+
+        D = dist.cdist(tl[np.newaxis], rightMost, "euclidean")[0]
+        (br, tr) = rightMost[np.argsort(D)[::-1], :]
+
+        return np.array([tl, tr, br, bl], dtype="float32")
 
     def expand_points_num(self, boxes):
         max_points_num = 0
@@ -443,7 +451,9 @@ class KieLabelEncode(object):
             elif 'key_cls' in ann.keys():
                 labels.append(ann['key_cls'])
             else:
-                raise ValueError("Cannot found 'key_cls' in ann.keys(), please check your training annotation.")
+                raise ValueError(
+                    "Cannot found 'key_cls' in ann.keys(), please check your training annotation."
+                )
             edges.append(ann.get('edge', 0))
         ann_infos = dict(
             image=data['image'],
