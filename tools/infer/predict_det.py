@@ -24,6 +24,7 @@ import cv2
 import numpy as np
 import time
 import sys
+from scipy.spatial import distance as dist
 
 import tools.infer.utility as utility
 from ppocr.utils.logging import get_logger
