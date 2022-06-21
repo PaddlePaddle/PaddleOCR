@@ -112,20 +112,25 @@ def merge_config(config, opts):
     return config
 
 
-def check_gpu(use_gpu):
+def check_device(use_gpu, use_xpu=False):
     """
     Log error and exit when set use_gpu=true in paddlepaddle
     cpu version.
     """
-    err = "Config use_gpu cannot be set as true while you are " \
-          "using paddlepaddle cpu version ! \nPlease try: \n" \
-          "\t1. Install paddlepaddle-gpu to run model on GPU \n" \
-          "\t2. Set use_gpu as false in config file to run " \
+    err = "Config {} cannot be set as true while your paddle " \
+          "is not compiled with {} ! \nPlease try: \n" \
+          "\t1. Install paddlepaddle to run model on {} \n" \
+          "\t2. Set {} as false in config file to run " \
           "model on CPU"
 
     try:
+        if use_gpu and use_xpu:
+            print("use_xpu and use_gpu can not both be ture.")
         if use_gpu and not paddle.is_compiled_with_cuda():
-            print(err)
+            print(err.format("use_gpu", "cuda", "gpu", "use_gpu"))
+            sys.exit(1)
+        if use_xpu and not paddle.device.is_compiled_with_xpu():
+            print(err.format("use_xpu", "xpu", "xpu", "use_xpu"))
             sys.exit(1)
     except Exception as e:
         pass
@@ -547,7 +552,7 @@ def preprocess(is_train=False):
 
     # check if set use_gpu=True in paddlepaddle cpu version
     use_gpu = config['Global']['use_gpu']
-    check_gpu(use_gpu)
+    use_xpu = config['Global'].get('use_xpu', False)
 
     # check if set use_xpu=True in paddlepaddle cpu/gpu version
     use_xpu = False
@@ -562,11 +567,13 @@ def preprocess(is_train=False):
         'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'PREN', 'FCE', 'SVTR'
     ]
 
-    device = 'cpu'
-    if use_gpu:
-        device = 'gpu:{}'.format(dist.ParallelEnv().dev_id)
     if use_xpu:
-        device = 'xpu'
+        device = 'xpu:{0}'.format(os.getenv('FLAGS_selected_xpus', 0))
+    else:
+        device = 'gpu:{}'.format(dist.ParallelEnv()
+                                 .dev_id) if use_gpu else 'cpu'
+    check_device(use_gpu, use_xpu)
+
     device = paddle.set_device(device)
 
     config['Global']['distributed'] = dist.get_world_size() != 1

@@ -154,7 +154,13 @@ MODEL_URLS = {
                     'https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar',
                     'dict_path': './ppocr/utils/ppocr_keys_v1.txt'
                 }
-            }
+            },
+            'cls': {
+                'ch': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar',
+                }
+            },
         },
         'PP-OCR': {
             'det': {

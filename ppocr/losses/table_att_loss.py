@@ -19,7 +19,6 @@ from __future__ import print_function
 import paddle
 from paddle import nn
 from paddle.nn import functional as F
-from paddle import fluid
 
 class TableAttentionLoss(nn.Layer):
     def __init__(self, structure_weight, loc_weight, use_giou=False, giou_weight=1.0, **kwargs):
@@ -36,13 +35,13 @@ class TableAttentionLoss(nn.Layer):
         :param bbox:[[x1,y1,x2,y2], [x1,y1,x2,y2],,,]
         :return: loss
         '''
-        ix1 = fluid.layers.elementwise_max(preds[:, 0], bbox[:, 0])
-        iy1 = fluid.layers.elementwise_max(preds[:, 1], bbox[:, 1])
-        ix2 = fluid.layers.elementwise_min(preds[:, 2], bbox[:, 2])
-        iy2 = fluid.layers.elementwise_min(preds[:, 3], bbox[:, 3])
+        ix1 = paddle.maximum(preds[:, 0], bbox[:, 0])
+        iy1 = paddle.maximum(preds[:, 1], bbox[:, 1])
+        ix2 = paddle.minimum(preds[:, 2], bbox[:, 2])
+        iy2 = paddle.minimum(preds[:, 3], bbox[:, 3])
 
-        iw = fluid.layers.clip(ix2 - ix1 + 1e-3, 0., 1e10)
-        ih = fluid.layers.clip(iy2 - iy1 + 1e-3, 0., 1e10)
+        iw = paddle.clip(ix2 - ix1 + 1e-3, 0., 1e10)
+        ih = paddle.clip(iy2 - iy1 + 1e-3, 0., 1e10)
 
         # overlap
         inters = iw * ih
@@ -55,12 +54,12 @@ class TableAttentionLoss(nn.Layer):
         # ious
         ious = inters / uni
 
-        ex1 = fluid.layers.elementwise_min(preds[:, 0], bbox[:, 0])
-        ey1 = fluid.layers.elementwise_min(preds[:, 1], bbox[:, 1])
-        ex2 = fluid.layers.elementwise_max(preds[:, 2], bbox[:, 2])
-        ey2 = fluid.layers.elementwise_max(preds[:, 3], bbox[:, 3])
-        ew = fluid.layers.clip(ex2 - ex1 + 1e-3, 0., 1e10)
-        eh = fluid.layers.clip(ey2 - ey1 + 1e-3, 0., 1e10)
+        ex1 = paddle.minimum(preds[:, 0], bbox[:, 0])
+        ey1 = paddle.minimum(preds[:, 1], bbox[:, 1])
+        ex2 = paddle.maximum(preds[:, 2], bbox[:, 2])
+        ey2 = paddle.maximum(preds[:, 3], bbox[:, 3])
+        ew = paddle.clip(ex2 - ex1 + 1e-3, 0., 1e10)
+        eh = paddle.clip(ey2 - ey1 + 1e-3, 0., 1e10)
 
         # enclose erea
         enclose = ew * eh + eps

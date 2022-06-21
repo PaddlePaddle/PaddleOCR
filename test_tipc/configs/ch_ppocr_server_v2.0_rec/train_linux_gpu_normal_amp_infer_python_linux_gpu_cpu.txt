@@ -39,11 +39,11 @@ infer_export:tools/export_model.py -c test_tipc/configs/ch_ppocr_server_v2.0_rec
 infer_quant:False
 inference:tools/infer/predict_rec.py
 --use_gpu:True|False
---enable_mkldnn:True|False
---cpu_threads:1|6
+--enable_mkldnn:False
+--cpu_threads:6
 --rec_batch_num:1|6
---use_tensorrt:True|False
---precision:fp32|int8
+--use_tensorrt:False
+--precision:fp32
 --rec_model_dir:
 --image_dir:./inference/rec_inference
 --save_log_path:./test/output/
