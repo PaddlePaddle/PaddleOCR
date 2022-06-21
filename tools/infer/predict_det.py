@@ -24,6 +24,7 @@ import cv2
 import numpy as np
 import time
 import sys
+from scipy.spatial import distance as dist
 
 import tools.infer.utility as utility
 from ppocr.utils.logging import get_logger
@@ -150,14 +151,22 @@ class TextDetector(object):
                 logger=logger)
 
     def order_points_clockwise(self, pts):
-        rect = np.zeros((4, 2), dtype="float32")
-        s = pts.sum(axis=1)
-        rect[0] = pts[np.argmin(s)]
-        rect[2] = pts[np.argmax(s)]
-        diff = np.diff(pts, axis=1)
-        rect[1] = pts[np.argmin(diff)]
-        rect[3] = pts[np.argmax(diff)]
-        return rect
+        """
+        refer to :https://github.com/PyImageSearch/imutils/blob/9f740a53bcc2ed7eba2558afed8b4c17fd8a1d4c/imutils/perspective.py#L9
+        """
+        # sort the points based on their x-coordinates
+        xSorted = pts[np.argsort(pts[:, 0]), :]
+
+        leftMost = xSorted[:2, :]
+        rightMost = xSorted[2:, :]
+
+        leftMost = leftMost[np.argsort(leftMost[:, 1]), :]
+        (tl, bl) = leftMost
+
+        D = dist.cdist(tl[np.newaxis], rightMost, "euclidean")[0]
+        (br, tr) = rightMost[np.argsort(D)[::-1], :]
+
+        return np.array([tl, tr, br, bl], dtype="float32")
 
     def clip_det_res(self, points, img_height, img_width):
         for pno in range(points.shape[0]):
