@@ -23,7 +23,7 @@ import string
 from shapely.geometry import LineString, Point, Polygon
 import json
 import copy
-
+from scipy.spatial import distance as dist
 from ppocr.utils.logging import get_logger
 
 
