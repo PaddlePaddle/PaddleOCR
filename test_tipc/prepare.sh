@@ -100,7 +100,8 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         wget -nc -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/ResNet50_vd_ssld_pretrained.pdparams --no-check-certificate
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_icdar15_v2.0_train.tar --no-check-certificate
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/total_text_lite.tar --no-check-certificate
-        cd ./train_data && tar xf total_text_lite.tar && ln -s total_text_lite total_text  && tar xf det_r50_vd_sast_icdar15_v2.0_train.tar && cd ../
+        cd ./train_data && tar xf total_text_lite.tar && ln -s total_text_lite total_text  && cd ../
+        cd ./pretrain_models && tar xf det_r50_vd_sast_icdar15_v2.0_train.tar && cd ../
     fi
     if [ ${model_name} == "det_mv3_db_v2_0" ]; then
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar  --no-check-certificate
@@ -353,7 +354,7 @@ elif [ ${MODE} = "whole_infer" ];then
     fi
 fi
 
-if [ ${MODE} = "klquant_whole_infer" ]; then
+if [[ ${model_name} =~ "KL" ]]; then
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015_lite.tar --no-check-certificate
     cd ./train_data/ && tar xf icdar2015_lite.tar && rm -rf ./icdar2015 && ln -s ./icdar2015_lite ./icdar2015 && cd ../
     if [ ${model_name} = "ch_ppocr_mobile_v2.0_det_KL" ]; then
