@@ -116,6 +116,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
         - [Table Recognition](./ppstructure/table/README.md)
         - [DocVQA](./ppstructure/vqa/README.md)
         - [Key Information Extraction](./ppstructure/docs/kie_en.md)
+        - [Logging](./doc/doc_en/logging_en.md)
     - [Inference and Deployment](./deploy/README.md)
         - [Python Inference](./ppstructure/docs/inference_en.md)
         - [C++ Inference]()
