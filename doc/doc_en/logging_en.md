@@ -41,11 +41,12 @@ To add more arguments to the `WandbLogger` listed [here](./config_en.md) add the
 wandb:
     project: my_project
     entity: my_team
+    log_checkpoint: false
 ```
 
 These config variables from the yaml file are used to instantiate the `WandbLogger` object with the project name, entity name (the logged in user by default), directory to store metadata (`./wandb` by default) and more. During the training process, the `log_metrics` function is called to log training and evaluation metrics at the training and evaluation steps respectively from the rank 0 process only.
 
-At every model saving step, the WandbLogger, logs the model using the `log_model` function along with relavant metadata and tags showing the epoch in which the model is saved, the model is best or not and so on.
+At every model saving step, the WandbLogger, logs the model using the `log_model` function along with relavant metadata and tags showing the epoch in which the model is saved, the model is best or not and so on only if the `log_checkpoint` argument is set as `true`.
 
 All the logging mentioned above is integrated into the `program.train` function and will generate dashboards like this -
 

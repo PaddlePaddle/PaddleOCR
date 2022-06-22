@@ -1,5 +1,8 @@
+import logging
 import os
+
 from .base_logger import BaseLogger
+
 
 class WandbLogger(BaseLogger):
     def __init__(self, 
@@ -9,6 +12,7 @@ class WandbLogger(BaseLogger):
         entity=None, 
         save_dir=None, 
         config=None,
+        log_checkpoint=False,
         **kwargs):
         try:
             import wandb
@@ -40,12 +44,14 @@ class WandbLogger(BaseLogger):
 
         if self.config:
             self.run.config.update(self.config)
+        
+        self.log_checkpoint = log_checkpoint
 
     @property
     def run(self):
         if self._run is None:
             if self.wandb.run is not None:
-                logger.info(
+                logging.info(
                     "There is a wandb run already in progress "
                     "and newly created instances of `WandbLogger` will reuse"
                     " this run. If this is not desired, call `wandb.finish()`"
@@ -64,15 +70,16 @@ class WandbLogger(BaseLogger):
         self.run.log(updated_metrics, step=step)
 
     def log_model(self, is_best, prefix, metadata=None):
-        model_path = os.path.join(self.save_dir, prefix + '.pdparams')
-        artifact = self.wandb.Artifact('model-{}'.format(self.run.id), type='model', metadata=metadata)
-        artifact.add_file(model_path, name="model_ckpt.pdparams")
+        if self.log_checkpoint:
+            model_path = os.path.join(self.save_dir, prefix + '.pdparams')
+            artifact = self.wandb.Artifact('model-{}'.format(self.run.id), type='model', metadata=metadata)
+            artifact.add_file(model_path, name="model_ckpt.pdparams")
 
-        aliases = [prefix]
-        if is_best:
-            aliases.append("best")
+            aliases = [prefix]
+            if is_best:
+                aliases.append("best")
 
-        self.run.log_artifact(artifact, aliases=aliases)
+            self.run.log_artifact(artifact, aliases=aliases)
 
     def close(self):
         self.run.finish()

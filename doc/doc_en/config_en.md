@@ -140,6 +140,7 @@ In PaddleOCR, the network is divided into four stages: Transform, Backbone, Neck
 |          entity               | User or team to which the run is being logged         | The logged in user | \
 |          save_dir             | local directory in which all the models and other data is saved | wandb | \
 |          config               | model configuration | None | \
+|          log_checkpoint               | Log Model checkpoints to wandb or not | False | \
 
 
 <a name="3-multilingual-config-file-generation"></a>
