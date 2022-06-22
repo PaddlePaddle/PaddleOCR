@@ -28,6 +28,8 @@ wandb login
 
 If you do not have a wandb account, you can make one [here](https://wandb.ai/site).
 
+In case you want to dive directly into the code and get started on using W&B with PaddleOCR, a colab is available [here](https://github.com/wandb/examples/blob/master/colabs/paddlepaddle/paddleocr/Train_and_Debug_Your_OCR_Models_with_PaddleOCR_and_W%26B.ipynb). This blog ([English](https://wandb.ai/manan-goel/text_detection/reports/Train-and-Debug-Your-OCR-Models-with-PaddleOCR-and-W-B--VmlldzoyMDUwMDIw) and [Chinese](https://wandb.ai/wandb_fc/chinese/reports/W-B-OCR---VmlldzoyMDk1NzE4)) also showcases runnable code along with cool visualizations that you an create in W&B.
+
 To visualize and track your model training add the following flag to your config yaml file under the `Global` section -
 
 ```
