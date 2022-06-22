@@ -27,7 +27,7 @@
 
 在非docker环境中，需要手动安装如下依赖项: 
 
-- 软件可通过[安装脚本](https://github.com/apache/tvm/docker/install/ubuntu_install_ethosu_driver_stack.sh)一键安装
+- 软件可通过[安装脚本](https://github.com/apache/tvm/blob/main/docker/install/ubuntu_install_ethosu_driver_stack.sh)一键安装
   - [Fixed Virtual Platform (FVP) based on Arm(R) Corstone(TM)-300 software](https://developer.arm.com/tools-and-software/open-source-software/arm-platforms-software/arm-ecosystem-fvps)
   - [cmake 3.19.5](https://github.com/Kitware/CMake/releases/)
   - [GCC toolchain from Arm(R)](https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2)
