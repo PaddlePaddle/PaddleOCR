@@ -70,22 +70,15 @@ class DetLabelEncode(object):
         return data
 
     def order_points_clockwise(self, pts):
-        """
-        refer to :https://github.com/PyImageSearch/imutils/blob/9f740a53bcc2ed7eba2558afed8b4c17fd8a1d4c/imutils/perspective.py#L9
-        """
-        # sort the points based on their x-coordinates
-        xSorted = pts[np.argsort(pts[:, 0]), :]
-
-        leftMost = xSorted[:2, :]
-        rightMost = xSorted[2:, :]
-
-        leftMost = leftMost[np.argsort(leftMost[:, 1]), :]
-        (tl, bl) = leftMost
-
-        D = dist.cdist(tl[np.newaxis], rightMost, "euclidean")[0]
-        (br, tr) = rightMost[np.argsort(D)[::-1], :]
-
-        return np.array([tl, tr, br, bl], dtype="float32")
+        rect = np.zeros((4, 2), dtype="float32")
+        s = pts.sum(axis=1)
+        rect[0] = pts[np.argmin(s)]
+        rect[2] = pts[np.argmax(s)]
+        tmp = np.delete(pts, (np.argmin(s), np.argmax(s)), axis=0)
+        diff = np.diff(np.array(tmp), axis=1)
+        rect[1] = tmp[np.argmin(diff)]
+        rect[3] = tmp[np.argmax(diff)]
+        return rect
 
     def expand_points_num(self, boxes):
         max_points_num = 0
