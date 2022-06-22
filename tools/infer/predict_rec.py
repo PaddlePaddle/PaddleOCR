@@ -75,6 +75,12 @@ class TextRecognizer(object):
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }
+        elif self.rec_algorithm == 'ABINet':
+            postprocess_params = {
+                'name': 'ABINetLabelDecode',
+                "character_dict_path": args.rec_char_dict_path,
+                "use_space_char": args.use_space_char
+            }
         self.postprocess_op = build_post_process(postprocess_params)
         self.predictor, self.input_tensor, self.output_tensors, self.config = \
             utility.create_predictor(args, 'rec', logger)
@@ -144,17 +150,6 @@ class TextRecognizer(object):
         padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
         padding_im[:, :, 0:resized_w] = resized_image
         return padding_im
-
-    def resize_norm_img_svtr(self, img, image_shape):
-
-        imgC, imgH, imgW = image_shape
-        resized_image = cv2.resize(
-            img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
-        resized_image = resized_image.astype('float32')
-        resized_image = resized_image.transpose((2, 0, 1)) / 255
-        resized_image -= 0.5
-        resized_image /= 0.5
-        return resized_image
 
     def resize_norm_img_srn(self, img, image_shape):
         imgC, imgH, imgW = image_shape
@@ -263,6 +258,35 @@ class TextRecognizer(object):
 
         return padding_im, resize_shape, pad_shape, valid_ratio
 
+    def resize_norm_img_svtr(self, img, image_shape):
+
+        imgC, imgH, imgW = image_shape
+        resized_image = cv2.resize(
+            img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+        resized_image = resized_image.astype('float32')
+        resized_image = resized_image.transpose((2, 0, 1)) / 255
+        resized_image -= 0.5
+        resized_image /= 0.5
+        return resized_image
+
+    def resize_norm_img_abinet(self, img, image_shape):
+
+        imgC, imgH, imgW = image_shape
+
+        resized_image = cv2.resize(
+            img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+        resized_image = resized_image.astype('float32')
+        resized_image = resized_image / 255.
+
+        mean = np.array([0.485, 0.456, 0.406])
+        std = np.array([0.229, 0.224, 0.225])
+        resized_image = (
+            resized_image - mean[None, None, ...]) / std[None, None, ...]
+        resized_image = resized_image.transpose((2, 0, 1))
+        resized_image = resized_image.astype('float32')
+
+        return resized_image
+
     def __call__(self, img_list):
         img_num = len(img_list)
         # Calculate the aspect ratio of all text bars
@@ -311,6 +335,11 @@ class TextRecognizer(object):
                 elif self.rec_algorithm == "SVTR":
                     norm_img = self.resize_norm_img_svtr(img_list[indices[ino]],
                                                          self.rec_image_shape)
+                    norm_img = norm_img[np.newaxis, :]
+                    norm_img_batch.append(norm_img)
+                elif self.rec_algorithm == "ABINet":
+                    norm_img = self.resize_norm_img_abinet(
+                        img_list[indices[ino]], self.rec_image_shape)
                     norm_img = norm_img[np.newaxis, :]
                     norm_img_batch.append(norm_img)
                 else:

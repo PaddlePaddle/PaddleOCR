@@ -79,6 +79,19 @@ def export_single_model(model, arch_config, save_path, logger, quanter=None):
                 shape=[None, 1, 224, 224], dtype="float32"),
         ]
         model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] == "ABINet":
+        other_shape = [
+            paddle.static.InputSpec(
+                shape=[None, 3, 32, 128], dtype="float32"),
+        ]
+        # print([None, 3, 32, 128])
+        model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] == "NRTR":
+        other_shape = [
+            paddle.static.InputSpec(
+                shape=[None, 1, 32, 100], dtype="float32"),
+        ]
+        model = to_static(model, input_spec=other_shape)
     else:
         infer_shape = [3, -1, -1]
         if arch_config["model_type"] == "rec":
@@ -90,8 +103,6 @@ def export_single_model(model, arch_config, save_path, logger, quanter=None):
                     "When there is tps in the network, variable length input is not supported, and the input size needs to be the same as during training"
                 )
                 infer_shape[-1] = 100
-            if arch_config["algorithm"] == "NRTR":
-                infer_shape = [1, 32, 100]
         elif arch_config["model_type"] == "table":
             infer_shape = [3, 488, 488]
         model = to_static(

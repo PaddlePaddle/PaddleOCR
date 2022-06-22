@@ -575,7 +575,7 @@ def preprocess(is_train=False):
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
         'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'PREN', 'FCE', 'SVTR',
-        'ViTSTR'
+        'ViTSTR', 'ABINet'
     ]
 
     if use_xpu:

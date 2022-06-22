@@ -1,5 +1,5 @@
 ===========================train_params===========================
-model_name:rec_svtrnet
+model_name:rec_abinet
 python:python3.7
 gpu_list:0|0,1
 Global.use_gpu:True|True
@@ -13,7 +13,7 @@ train_infer_img_dir:./inference/rec_inference
 null:null
 ##
 trainer:norm_train
-norm_train:tools/train.py -c test_tipc/configs/rec_svtrnet/rec_svtrnet.yml -o
+norm_train:tools/train.py -c test_tipc/configs/rec_r45_abinet/rec_r45_abinet.yml -o
 pact_train:null
 fpgm_train:null
 distill_train:null
@@ -21,23 +21,23 @@ null:null
 null:null
 ##
 ===========================eval_params===========================
-eval:tools/eval.py -c test_tipc/configs/rec_svtrnet/rec_svtrnet.yml -o
+eval:tools/eval.py -c test_tipc/configs/rec_r45_abinet/rec_r45_abinet.yml -o
 null:null
 ##
 ===========================infer_params===========================
 Global.save_inference_dir:./output/
 Global.checkpoints:
-norm_export:tools/export_model.py -c test_tipc/configs/rec_svtrnet/rec_svtrnet.yml -o
+norm_export:tools/export_model.py -c test_tipc/configs/rec_r45_abinet/rec_r45_abinet.yml -o
 quant_export:null
 fpgm_export:null
 distill_export:null
 export1:null
 export2:null
 ##
-train_model:./inference/rec_svtrnet_train/best_accuracy
-infer_export:tools/export_model.py -c test_tipc/configs/rec_svtrnet/rec_svtrnet.yml -o
+train_model:./inference/rec_r45_abinet_train/best_accuracy
+infer_export:tools/export_model.py -c test_tipc/configs/rec_r45_abinet/rec_r45_abinet.yml -o
 infer_quant:False
-inference:tools/infer/predict_rec.py --rec_char_dict_path=./ppocr/utils/ic15_dict.txt --rec_image_shape="3,64,256" --rec_algorithm="SVTR"
+inference:tools/infer/predict_rec.py --rec_char_dict_path=./ppocr/utils/ic15_dict.txt --rec_image_shape="3,32,128" --rec_algorithm="ABINet"
 --use_gpu:True|False
 --enable_mkldnn:False
 --cpu_threads:6
@@ -50,4 +50,4 @@ inference:tools/infer/predict_rec.py --rec_char_dict_path=./ppocr/utils/ic15_dic
 --benchmark:True
 null:null
 ===========================infer_benchmark_params==========================
-random_infer_input:[{float32,[3,64,256]}]
+random_infer_input:[{float32,[3,32,128]}]

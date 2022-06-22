@@ -6,7 +6,7 @@ Global:
   save_model_dir: ./output/rec/vitstr_none_ce/
   save_epoch_step: 1
   # evaluation is run every 2000 iterations after the 0th iteration#
-  eval_batch_step: [0, 50]
+  eval_batch_step: [0, 2000]
   cal_metric_during_train: True
   pretrained_model:
   checkpoints:
@@ -23,7 +23,7 @@ Global:
 
 Optimizer:
   name: Adadelta
-  epsilon: 0.00000001
+  epsilon: 1.e-8
   rho: 0.95
   clip_norm: 5.0
   lr:
@@ -45,8 +45,8 @@ Architecture:
 
 Loss:
   name: CELoss
-  smoothing: False
   with_all: True
+  ignore_index: &ignore_index 0 # Must be zero or greater than the number of character classes
 
 PostProcess:
   name: ViTSTRLabelDecode
@@ -58,12 +58,13 @@ Metric:
 Train:
   dataset:
     name: LMDBDataSet
-    data_dir: ./train_data/data_lmdb_release/training
+    data_dir: ./train_data/data_lmdb_release/training/
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
       - ViTSTRLabelEncode: # Class handling label
+          ignore_index: *ignore_index
       - GrayRecResizeImg:
           image_shape: [224, 224] # W H
           resize_type: PIL # PIL or OpenCV
@@ -80,12 +81,13 @@ Train:
 Eval:
   dataset:
     name: LMDBDataSet
-    data_dir: ./train_data/data_lmdb_release/validation
+    data_dir: ./train_data/data_lmdb_release/validation/
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
       - ViTSTRLabelEncode: # Class handling label
+          ignore_index: *ignore_index
       - GrayRecResizeImg:
           image_shape: [224, 224] # W H
           resize_type: PIL # PIL or OpenCV

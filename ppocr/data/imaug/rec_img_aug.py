@@ -279,6 +279,24 @@ class PRENResizeImg(object):
         return data
 
 
+class ABINetRecResizeImg(object):
+    def __init__(self,
+                 image_shape,
+                 infer_mode=False,
+                 character_dict_path=None,
+                 **kwargs):
+        self.image_shape = image_shape
+        self.infer_mode = infer_mode
+        self.character_dict_path = character_dict_path
+
+    def __call__(self, data):
+        img = data['image']
+        norm_img, valid_ratio = resize_norm_img_abinet(img, self.image_shape)
+        data['image'] = norm_img
+        data['valid_ratio'] = valid_ratio
+        return data
+
+
 def resize_norm_img_sar(img, image_shape, width_downsample_ratio=0.25):
     imgC, imgH, imgW_min, imgW_max = image_shape
     h = img.shape[0]
@@ -395,6 +413,26 @@ def resize_norm_img_srn(img, image_shape):
     c = 1
 
     return np.reshape(img_black, (c, row, col)).astype(np.float32)
+
+
+def resize_norm_img_abinet(img, image_shape):
+    imgC, imgH, imgW = image_shape
+
+    resized_image = cv2.resize(
+        img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+    resized_w = imgW
+    resized_image = resized_image.astype('float32')
+    resized_image = resized_image / 255.
+
+    mean = np.array([0.485, 0.456, 0.406])
+    std = np.array([0.229, 0.224, 0.225])
+    resized_image = (
+        resized_image - mean[None, None, ...]) / std[None, None, ...]
+    resized_image = resized_image.transpose((2, 0, 1))
+    resized_image = resized_image.astype('float32')
+
+    valid_ratio = min(1.0, float(resized_w / imgW))
+    return resized_image, valid_ratio
 
 
 def srn_other_inputs(image_shape, num_heads, max_text_length):

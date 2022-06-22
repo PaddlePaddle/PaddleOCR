@@ -140,96 +140,6 @@ class DistillationCTCLabelDecode(CTCLabelDecode):
         return output
 
 
-class NRTRLabelDecode(BaseRecLabelDecode):
-    """ Convert between text-label and text-index """
-
-    def __init__(self, character_dict_path=None, use_space_char=True, **kwargs):
-        super(NRTRLabelDecode, self).__init__(character_dict_path,
-                                              use_space_char)
-
-    def __call__(self, preds, label=None, *args, **kwargs):
-
-        if len(preds) == 2:
-            preds_id = preds[0]
-            preds_prob = preds[1]
-            if isinstance(preds_id, paddle.Tensor):
-                preds_id = preds_id.numpy()
-            if isinstance(preds_prob, paddle.Tensor):
-                preds_prob = preds_prob.numpy()
-            if preds_id[0][0] == 2:
-                preds_idx = preds_id[:, 1:]
-                preds_prob = preds_prob[:, 1:]
-            else:
-                preds_idx = preds_id
-            text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
-            if label is None:
-                return text
-            label = self.decode(label[:, 1:])
-        else:
-            if isinstance(preds, paddle.Tensor):
-                preds = preds.numpy()
-            preds_idx = preds.argmax(axis=2)
-            preds_prob = preds.max(axis=2)
-            text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
-            if label is None:
-                return text
-            label = self.decode(label[:, 1:])
-        return text, label
-
-    def add_special_char(self, dict_character):
-        dict_character = ['blank', '<unk>', '<s>', '</s>'] + dict_character
-        return dict_character
-
-    def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
-        """ convert text-index into text-label. """
-        result_list = []
-        batch_size = len(text_index)
-        for batch_idx in range(batch_size):
-            char_list = []
-            conf_list = []
-            for idx in range(len(text_index[batch_idx])):
-                try:
-                    char_idx = self.character[int(text_index[batch_idx][idx])]
-                except:
-                    continue
-                if char_idx == '</s>':  # end
-                    break
-                char_list.append(char_idx)
-                if text_prob is not None:
-                    conf_list.append(text_prob[batch_idx][idx])
-                else:
-                    conf_list.append(1)
-            text = ''.join(char_list)
-            result_list.append((text.lower(), np.mean(conf_list).tolist()))
-        return result_list
-
-
-class ViTSTRLabelDecode(NRTRLabelDecode):
-    """ Convert between text-label and text-index """
-
-    def __init__(self, character_dict_path=None, use_space_char=False,
-                 **kwargs):
-        super(ViTSTRLabelDecode, self).__init__(character_dict_path,
-                                                use_space_char)
-
-    def __call__(self, preds, label=None, *args, **kwargs):
-        if isinstance(preds, paddle.Tensor):
-            preds = preds[:, 1:].numpy()
-        else:
-            preds = preds[:, 1:]
-        preds_idx = preds.argmax(axis=2)
-        preds_prob = preds.max(axis=2)
-        text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
-        if label is None:
-            return text
-        label = self.decode(label[:, 1:])
-        return text, label
-
-    def add_special_char(self, dict_character):
-        dict_character = ['<s>', '</s>'] + dict_character
-        return dict_character
-
-
 class AttnLabelDecode(BaseRecLabelDecode):
     """ Convert between text-label and text-index """
 
@@ -778,3 +688,122 @@ class PRENLabelDecode(BaseRecLabelDecode):
             return text
         label = self.decode(label)
         return text, label
+
+
+class NRTRLabelDecode(BaseRecLabelDecode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self, character_dict_path=None, use_space_char=True, **kwargs):
+        super(NRTRLabelDecode, self).__init__(character_dict_path,
+                                              use_space_char)
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+
+        if len(preds) == 2:
+            preds_id = preds[0]
+            preds_prob = preds[1]
+            if isinstance(preds_id, paddle.Tensor):
+                preds_id = preds_id.numpy()
+            if isinstance(preds_prob, paddle.Tensor):
+                preds_prob = preds_prob.numpy()
+            if preds_id[0][0] == 2:
+                preds_idx = preds_id[:, 1:]
+                preds_prob = preds_prob[:, 1:]
+            else:
+                preds_idx = preds_id
+            text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
+            if label is None:
+                return text
+            label = self.decode(label[:, 1:])
+        else:
+            if isinstance(preds, paddle.Tensor):
+                preds = preds.numpy()
+            preds_idx = preds.argmax(axis=2)
+            preds_prob = preds.max(axis=2)
+            text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
+            if label is None:
+                return text
+            label = self.decode(label[:, 1:])
+        return text, label
+
+    def add_special_char(self, dict_character):
+        dict_character = ['blank', '<unk>', '<s>', '</s>'] + dict_character
+        return dict_character
+
+    def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
+        """ convert text-index into text-label. """
+        result_list = []
+        batch_size = len(text_index)
+        for batch_idx in range(batch_size):
+            char_list = []
+            conf_list = []
+            for idx in range(len(text_index[batch_idx])):
+                try:
+                    char_idx = self.character[int(text_index[batch_idx][idx])]
+                except:
+                    continue
+                if char_idx == '</s>':  # end
+                    break
+                char_list.append(char_idx)
+                if text_prob is not None:
+                    conf_list.append(text_prob[batch_idx][idx])
+                else:
+                    conf_list.append(1)
+            text = ''.join(char_list)
+            result_list.append((text.lower(), np.mean(conf_list).tolist()))
+        return result_list
+
+
+class ViTSTRLabelDecode(NRTRLabelDecode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(ViTSTRLabelDecode, self).__init__(character_dict_path,
+                                                use_space_char)
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        if isinstance(preds, paddle.Tensor):
+            preds = preds[:, 1:].numpy()
+        else:
+            preds = preds[:, 1:]
+        preds_idx = preds.argmax(axis=2)
+        preds_prob = preds.max(axis=2)
+        text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
+        if label is None:
+            return text
+        label = self.decode(label[:, 1:])
+        return text, label
+
+    def add_special_char(self, dict_character):
+        dict_character = ['<s>', '</s>'] + dict_character
+        return dict_character
+
+
+class ABINetLabelDecode(NRTRLabelDecode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(ABINetLabelDecode, self).__init__(character_dict_path,
+                                                use_space_char)
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        if isinstance(preds, dict):
+            preds = preds['align'][-1].numpy()
+        elif isinstance(preds, paddle.Tensor):
+            preds = preds.numpy()
+        else:
+            preds = preds
+
+        preds_idx = preds.argmax(axis=2)
+        preds_prob = preds.max(axis=2)
+        text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
+        if label is None:
+            return text
+        label = self.decode(label)
+        return text, label
+
+    def add_special_char(self, dict_character):
+        dict_character = ['</s>'] + dict_character
+        return dict_character
