@@ -70,7 +70,8 @@ function func_serving(){
     set_serving_server=$(func_set_params "--serving_server" "${det_serving_server_value}")
     set_serving_client=$(func_set_params "--serving_client" "${det_serving_client_value}")
     python_list=(${python_list})
-    trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
+    trans_det_log="${LOG_PATH}/cpp_trans_model_det.log"
+    trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client} > ${trans_det_log} 2>&1 "
     eval $trans_model_cmd
     cp "deploy/pdserving/serving_client_conf.prototxt" ${det_serving_client_value}
     # trans rec
@@ -78,7 +79,8 @@ function func_serving(){
     set_serving_server=$(func_set_params "--serving_server" "${rec_serving_server_value}")
     set_serving_client=$(func_set_params "--serving_client" "${rec_serving_client_value}")
     python_list=(${python_list})
-    trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
+    trans_rec_log="${LOG_PATH}/cpp_trans_model_rec.log"
+    trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client} > ${trans_rec_log} 2>&1 "
     eval $trans_model_cmd
     last_status=${PIPESTATUS[0]}
     status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}"
@@ -88,22 +90,25 @@ function func_serving(){
     # cpp serving
     for gpu_id in ${gpu_value[*]}; do
         if [ ${gpu_id} = "null" ]; then
-            web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${det_server_value} ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} > serving_log_cpu.log &"
+            server_log_path="${LOG_PATH}/cpp_server_cpu.log"
+            web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${det_server_value} ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} > ${server_log_path} 2>&1 "
             eval $web_service_cpp_cmd
             last_status=${PIPESTATUS[0]}
             status_check $last_status "${web_service_cpp_cmd}" "${status_log}" "${model_name}"
             sleep 5s
-            _save_log_path="${LOG_PATH}/server_infer_cpp_cpu.log"
+            _save_log_path="${LOG_PATH}/cpp_client_cpu.log"
             cpp_client_cmd="${python_list[0]} ${cpp_client_py} ${det_client_value} ${rec_client_value} > ${_save_log_path} 2>&1"
             eval $cpp_client_cmd
             last_status=${PIPESTATUS[0]}
+            eval "cat ${_save_log_path}"
             status_check $last_status "${cpp_client_cmd}" "${status_log}" "${model_name}"
             ps ux | grep -i ${port_value} | awk '{print $2}' | xargs kill -s 9
         else
-            web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${det_server_value} ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} ${gpu_key} ${gpu_id} > serving_log_gpu.log &"
+            server_log_path="${LOG_PATH}/cpp_server_gpu.log"
+            web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${det_server_value} ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} ${gpu_key} ${gpu_id} > ${server_log_path} 2>&1 "
             eval $web_service_cpp_cmd
             sleep 5s
-            _save_log_path="${LOG_PATH}/server_infer_cpp_gpu.log"
+            _save_log_path="${LOG_PATH}/cpp_client_gpu.log"
             cpp_client_cmd="${python_list[0]} ${cpp_client_py} ${det_client_value} ${rec_client_value} > ${_save_log_path} 2>&1"
             eval $cpp_client_cmd
             last_status=${PIPESTATUS[0]}
