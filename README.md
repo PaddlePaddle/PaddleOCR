@@ -117,6 +117,8 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
         - [DocVQA](./ppstructure/vqa/README.md)
         - [Key Information Extraction](./ppstructure/docs/kie_en.md)
         - [Logging](./doc/doc_en/logging_en.md)
+            - [VisualDL](https://readthedocs.org/projects/visualdl/)
+            - [W&B](https://docs.wandb.ai/) Example [Colab](https://github.com/wandb/examples/blob/master/colabs/paddlepaddle/paddleocr/Train_and_Debug_Your_OCR_Models_with_PaddleOCR_and_W%26B.ipynb) and [Blog](https://wandb.ai/manan-goel/text_detection/reports/Train-and-Debug-Your-OCR-Models-with-PaddleOCR-and-W-B--VmlldzoyMDUwMDIw)
     - [Inference and Deployment](./deploy/README.md)
         - [Python Inference](./ppstructure/docs/inference_en.md)
         - [C++ Inference]()
