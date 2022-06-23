@@ -83,7 +83,7 @@ Train:
           img_mode: BGR
           channel_first: False
       - CTCLabelEncode: # Class handling label
-      - RecResizeImg:
+      - SVTRRecResizeImg:
           character_dict_path:
           image_shape: [3, 64, 256]
           padding: False
@@ -104,7 +104,7 @@ Eval:
           img_mode: BGR
           channel_first: False
       - CTCLabelEncode: # Class handling label
-      - RecResizeImg:
+      - SVTRRecResizeImg:
           character_dict_path:
           image_shape: [3, 64, 256]
           padding: False

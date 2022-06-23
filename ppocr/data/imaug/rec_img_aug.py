@@ -148,57 +148,6 @@ class ClsResizeImg(object):
         return data
 
 
-class GrayRecResizeImg(object):
-    def __init__(self,
-                 image_shape,
-                 resize_type,
-                 inter_type='Image.ANTIALIAS',
-                 scale=True,
-                 padding=False,
-                 **kwargs):
-        self.image_shape = image_shape
-        self.resize_type = resize_type
-        self.padding = padding
-        self.inter_type = eval(inter_type)
-        self.scale = scale
-
-    def __call__(self, data):
-        img = data['image']
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        image_shape = self.image_shape
-        if self.padding:
-            imgC, imgH, imgW = image_shape
-            # todo: change to 0 and modified image shape
-            h = img.shape[0]
-            w = img.shape[1]
-            ratio = w / float(h)
-            if math.ceil(imgH * ratio) > imgW:
-                resized_w = imgW
-            else:
-                resized_w = int(math.ceil(imgH * ratio))
-            resized_image = cv2.resize(img, (resized_w, imgH))
-            norm_img = np.expand_dims(resized_image, -1)
-            norm_img = norm_img.transpose((2, 0, 1))
-            resized_image = norm_img.astype(np.float32) / 128. - 1.
-            padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
-            padding_im[:, :, 0:resized_w] = resized_image
-            data['image'] = padding_im
-            return data
-        if self.resize_type == 'PIL':
-            image_pil = Image.fromarray(np.uint8(img))
-            img = image_pil.resize(self.image_shape, self.inter_type)
-            img = np.array(img)
-        if self.resize_type == 'OpenCV':
-            img = cv2.resize(img, self.image_shape)
-        norm_img = np.expand_dims(img, -1)
-        norm_img = norm_img.transpose((2, 0, 1))
-        if self.scale:
-            data['image'] = norm_img.astype(np.float32) / 128. - 1.
-        else:
-            data['image'] = norm_img.astype(np.float32) / 255.
-        return data
-
-
 class RecResizeImg(object):
     def __init__(self,
                  image_shape,
@@ -279,6 +228,57 @@ class PRENResizeImg(object):
         return data
 
 
+class GrayRecResizeImg(object):
+    def __init__(self,
+                 image_shape,
+                 resize_type,
+                 inter_type='Image.ANTIALIAS',
+                 scale=True,
+                 padding=False,
+                 **kwargs):
+        self.image_shape = image_shape
+        self.resize_type = resize_type
+        self.padding = padding
+        self.inter_type = eval(inter_type)
+        self.scale = scale
+
+    def __call__(self, data):
+        img = data['image']
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        image_shape = self.image_shape
+        if self.padding:
+            imgC, imgH, imgW = image_shape
+            # todo: change to 0 and modified image shape
+            h = img.shape[0]
+            w = img.shape[1]
+            ratio = w / float(h)
+            if math.ceil(imgH * ratio) > imgW:
+                resized_w = imgW
+            else:
+                resized_w = int(math.ceil(imgH * ratio))
+            resized_image = cv2.resize(img, (resized_w, imgH))
+            norm_img = np.expand_dims(resized_image, -1)
+            norm_img = norm_img.transpose((2, 0, 1))
+            resized_image = norm_img.astype(np.float32) / 128. - 1.
+            padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
+            padding_im[:, :, 0:resized_w] = resized_image
+            data['image'] = padding_im
+            return data
+        if self.resize_type == 'PIL':
+            image_pil = Image.fromarray(np.uint8(img))
+            img = image_pil.resize(self.image_shape, self.inter_type)
+            img = np.array(img)
+        if self.resize_type == 'OpenCV':
+            img = cv2.resize(img, self.image_shape)
+        norm_img = np.expand_dims(img, -1)
+        norm_img = norm_img.transpose((2, 0, 1))
+        if self.scale:
+            data['image'] = norm_img.astype(np.float32) / 128. - 1.
+        else:
+            data['image'] = norm_img.astype(np.float32) / 255.
+        return data
+
+
 class ABINetRecResizeImg(object):
     def __init__(self,
                  image_shape,
@@ -292,6 +292,28 @@ class ABINetRecResizeImg(object):
     def __call__(self, data):
         img = data['image']
         norm_img, valid_ratio = resize_norm_img_abinet(img, self.image_shape)
+        data['image'] = norm_img
+        data['valid_ratio'] = valid_ratio
+        return data
+
+
+class SVTRRecResizeImg(object):
+    def __init__(self,
+                 image_shape,
+                 infer_mode=False,
+                 character_dict_path='./ppocr/utils/ppocr_keys_v1.txt',
+                 padding=True,
+                 **kwargs):
+        self.image_shape = image_shape
+        self.infer_mode = infer_mode
+        self.character_dict_path = character_dict_path
+        self.padding = padding
+
+    def __call__(self, data):
+        img = data['image']
+
+        norm_img, valid_ratio = resize_norm_img(img, self.image_shape,
+                                                self.padding)
         data['image'] = norm_img
         data['valid_ratio'] = valid_ratio
         return data
