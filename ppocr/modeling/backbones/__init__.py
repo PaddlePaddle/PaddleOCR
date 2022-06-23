@@ -27,7 +27,8 @@ def build_backbone(config, model_type):
         from .rec_resnet_fpn import ResNetFPN
         from .rec_mv1_enhance import MobileNetV1Enhance
         from .rec_nrtr_mtb import MTB
-        from .rec_resnet import ResNet31, ResNet45
+        from .rec_resnet_31 import ResNet31
+        from .rec_resnet_45 import ResNet45
         from .rec_resnet_aster import ResNet_ASTER
         from .rec_micronet import MicroNet
         from .rec_efficientb3_pren import EfficientNetb3_PREN
