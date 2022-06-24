@@ -664,11 +664,3 @@ class FCENetTargets:
     def __call__(self, results):
         results = self.generate_targets(results)
         return results
-
-if __name__ == '__main__':
-    op = FCENetTargets()
-
-    lv_text_polys = np.load('/Users/zhoujun20/Desktop/工作相关/PaddleOCR/1.npy')
-
-    center_region = op.generate_center_region_mask((120, 89), lv_text_polys)[None]
-    print(center_region)
