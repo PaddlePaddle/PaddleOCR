@@ -68,6 +68,7 @@ Train:
       - DecodeImage: # load image
           img_mode: RGB
           channel_first: False
+      - ABINetRecAug:
       - ABINetLabelEncode: # Class handling label
           ignore_index: *ignore_index
       - ABINetRecResizeImg:

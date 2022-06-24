@@ -8,7 +8,7 @@ Global:
   # evaluation is run every 2000 iterations
   eval_batch_step: [0, 2000]
   cal_metric_during_train: True
-  pretrained_model:
+  pretrained_model: ./rec_r45_abinet_train/abinet_vl_pretrained
   checkpoints:
   save_inference_dir:
   use_visualdl: False
@@ -67,6 +67,7 @@ Train:
       - DecodeImage: # load image
           img_mode: RGB
           channel_first: False
+      - ABINetRecAug:
       - ABINetLabelEncode: # Class handling label
           ignore_index: *ignore_index
       - ABINetRecResizeImg:

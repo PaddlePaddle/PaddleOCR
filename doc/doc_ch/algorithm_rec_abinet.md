@@ -27,7 +27,7 @@
 
 |模型|骨干网络|配置文件|Acc|下载链接|
 | --- | --- | --- | --- | --- |
-|ABINet|ResNet45|[rec_r45_abinet.yml](../../configs/rec/rec_r45_abinet.yml)|90.75%|[训练模型]()/[预训练模型]|
+|ABINet|ResNet45|[rec_r45_abinet.yml](../../configs/rec/rec_r45_abinet.yml)|90.75%|[预训练、训练模型](https://paddleocr.bj.bcebos.com/rec_r45_abinet_train.tar)|
 
 <a name="2"></a>
 ## 2. 环境配置
@@ -80,7 +80,7 @@ python3 tools/infer_rec.py -c configs/rec/rec_r45_abinet.yml -o Global.infer_img
 
 <a name="4-1"></a>
 ### 4.1 Python推理
-首先将训练得到best模型，转换成inference model。这里以训练完成的模型为例（[模型下载地址]() )，可以使用如下命令进行转换：
+首先将训练得到best模型，转换成inference model。这里以训练完成的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/rec_r45_abinet_train.tar) )，可以使用如下命令进行转换：
 
 ```shell
 # 注意将pretrained_model的路径设置为本地路径。

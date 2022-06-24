@@ -19,6 +19,8 @@ import random
 import copy
 from PIL import Image
 from .text_image_aug import tia_perspective, tia_stretch, tia_distort
+from .abinet_aug import CVGeometry, CVDeterioration, CVColorJitter
+from paddle.vision.transforms import Compose
 
 
 class RecAug(object):
@@ -90,6 +92,31 @@ class BaseDataAugmentation(object):
         if random.random() <= self.reverse_prob:
             img = 255 - img
 
+        data['image'] = img
+        return data
+
+
+class ABINetRecAug(object):
+    def __init__(self, **kwargs):
+        self.transforms = Compose([
+            CVGeometry(
+                degrees=45,
+                translate=(0.0, 0.0),
+                scale=(0.5, 2.),
+                shear=(45, 15),
+                distortion=0.5,
+                p=0.5), CVDeterioration(
+                    var=20, degrees=6, factor=4, p=0.25), CVColorJitter(
+                        brightness=0.5,
+                        contrast=0.5,
+                        saturation=0.5,
+                        hue=0.1,
+                        p=0.25)
+        ])
+
+    def __call__(self, data):
+        img = data['image']
+        img = self.transforms(img)
         data['image'] = img
         return data
 
