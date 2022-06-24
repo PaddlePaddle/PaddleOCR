@@ -97,7 +97,11 @@ class BaseDataAugmentation(object):
 
 
 class ABINetRecAug(object):
-    def __init__(self, **kwargs):
+    def __init__(self,
+                 geometry_p=0.5,
+                 deterioration_p=0.25,
+                 colorjitter_p=0.25,
+                 **kwargs):
         self.transforms = Compose([
             CVGeometry(
                 degrees=45,
@@ -105,13 +109,14 @@ class ABINetRecAug(object):
                 scale=(0.5, 2.),
                 shear=(45, 15),
                 distortion=0.5,
-                p=0.5), CVDeterioration(
-                    var=20, degrees=6, factor=4, p=0.25), CVColorJitter(
-                        brightness=0.5,
-                        contrast=0.5,
-                        saturation=0.5,
-                        hue=0.1,
-                        p=0.25)
+                p=geometry_p), CVDeterioration(
+                    var=20, degrees=6, factor=4, p=deterioration_p),
+            CVColorJitter(
+                brightness=0.5,
+                contrast=0.5,
+                saturation=0.5,
+                hue=0.1,
+                p=colorjitter_p)
         ])
 
     def __call__(self, data):

@@ -92,9 +92,9 @@ Metric:
 Train:
   dataset:
     name: SimpleDataSet
+    data_dir: ./train_data
     label_file_list:
-    - /paddle/data/ocr_all/train_all_list.txt
-    data_dir: /paddle/data/ocr_all
+    - ./train_data/train_list.txt
     ext_op_transform_idx: 1
     transforms:
     - DecodeImage:
@@ -130,9 +130,9 @@ Train:
 Eval:
   dataset:
     name: SimpleDataSet
-    data_dir: /paddle/data/ocr_all
+    data_dir: ./train_data
     label_file_list:
-    - /paddle/data/ocr_all/val_list.txt
+    - ./train_data/val_list.txt
     transforms:
     - DecodeImage:
         img_mode: BGR
