@@ -40,7 +40,7 @@ def draw_ser_results(image,
         if ocr_info["pred_id"] not in color_map:
             continue
         color = color_map[ocr_info["pred_id"]]
-        text = "{}: {}".format(ocr_info["pred"], ocr_info["text"])
+        text = "{}: {}".format(ocr_info["pred"], ocr_info["transcription"])
 
         draw_box_txt(ocr_info["bbox"], text, draw, font, font_size, color)
 
@@ -80,10 +80,10 @@ def draw_re_results(image,
     color_line = (0, 255, 0)
 
     for ocr_info_head, ocr_info_tail in result:
-        draw_box_txt(ocr_info_head["bbox"], ocr_info_head["text"], draw, font,
-                     font_size, color_head)
-        draw_box_txt(ocr_info_tail["bbox"], ocr_info_tail["text"], draw, font,
-                     font_size, color_tail)
+        draw_box_txt(ocr_info_head["bbox"], ocr_info_head["transcription"],
+                     draw, font, font_size, color_head)
+        draw_box_txt(ocr_info_tail["bbox"], ocr_info_tail["transcription"],
+                     draw, font, font_size, color_tail)
 
         center_head = (
             (ocr_info_head['bbox'][0] + ocr_info_head['bbox'][2]) // 2,

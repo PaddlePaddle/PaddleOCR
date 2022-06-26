@@ -91,7 +91,15 @@ def check_and_read_gif(img_path):
 def load_vqa_bio_label_maps(label_map_path):
     with open(label_map_path, "r", encoding='utf-8') as fin:
         lines = fin.readlines()
-    lines = [line.strip() for line in lines]
+    old_lines = [line.strip() for line in lines]
+    lines = []
+    for line in old_lines:
+        if line.upper() == "IGNORE":
+            continue
+        if line.upper() in ["OTHER", "OTHERS"]:
+            lines.append("O")
+        else:
+            lines.append(line)
     if "O" not in lines:
         lines.insert(0, "O")
     labels = []
@@ -101,8 +109,8 @@ def load_vqa_bio_label_maps(label_map_path):
         else:
             labels.append("B-" + line)
             labels.append("I-" + line)
-    label2id_map = {label: idx for idx, label in enumerate(labels)}
-    id2label_map = {idx: label for idx, label in enumerate(labels)}
+    label2id_map = {label.upper(): idx for idx, label in enumerate(labels)}
+    id2label_map = {idx: label.upper() for idx, label in enumerate(labels)}
     return label2id_map, id2label_map
 
 
