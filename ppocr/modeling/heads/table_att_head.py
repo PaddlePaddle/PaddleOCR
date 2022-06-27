@@ -31,16 +31,18 @@ class TableAttentionHead(nn.Layer):
                  loc_type,
                  in_max_len=488,
                  max_text_length=800,
+                 out_channels=30,
+                 point_num=2,
                  **kwargs):
         super(TableAttentionHead, self).__init__()
         self.input_size = in_channels[-1]
         self.hidden_size = hidden_size
-        self.elem_num = 30
+        self.out_channels = out_channels
         self.max_text_length = max_text_length
 
         self.structure_attention_cell = AttentionGRUCell(
-            self.input_size, hidden_size, self.elem_num, use_gru=False)
-        self.structure_generator = nn.Linear(hidden_size, self.elem_num)
+            self.input_size, hidden_size, self.out_channels, use_gru=False)
+        self.structure_generator = nn.Linear(hidden_size, self.out_channels)
         self.loc_type = loc_type
         self.in_max_len = in_max_len
 
@@ -53,7 +55,8 @@ class TableAttentionHead(nn.Layer):
                 self.loc_fea_trans = nn.Linear(625, self.max_text_length + 1)
             else:
                 self.loc_fea_trans = nn.Linear(256, self.max_text_length + 1)
-            self.loc_generator = nn.Linear(self.input_size + hidden_size, 4)
+            self.loc_generator = nn.Linear(self.input_size + hidden_size,
+                                           point_num * 2)
 
     def _char_to_onehot(self, input_char, onehot_dim):
         input_ont_hot = F.one_hot(input_char, onehot_dim)
@@ -77,7 +80,7 @@ class TableAttentionHead(nn.Layer):
             structure = targets[0]
             for i in range(self.max_text_length + 1):
                 elem_onehots = self._char_to_onehot(
-                    structure[:, i], onehot_dim=self.elem_num)
+                    structure[:, i], onehot_dim=self.out_channels)
                 (outputs, hidden), alpha = self.structure_attention_cell(
                     hidden, fea, elem_onehots)
                 output_hiddens.append(paddle.unsqueeze(outputs, axis=1))
@@ -104,7 +107,7 @@ class TableAttentionHead(nn.Layer):
             i = 0
             while i < max_text_length + 1:
                 elem_onehots = self._char_to_onehot(
-                    temp_elem, onehot_dim=self.elem_num)
+                    temp_elem, onehot_dim=self.out_channels)
                 (outputs, hidden), alpha = self.structure_attention_cell(
                     hidden, fea, elem_onehots)
                 output_hiddens.append(paddle.unsqueeze(outputs, axis=1))

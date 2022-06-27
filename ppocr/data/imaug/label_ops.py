@@ -591,7 +591,7 @@ class TableLabelEncode(AttnLabelEncode):
                  replace_empty_cell_token=False,
                  merge_no_span_structure=False,
                  learn_empty_box=False,
-                 point_num=4,
+                 point_num=2,
                  **kwargs):
         self.max_text_len = max_text_length
         self.lower = False
@@ -669,13 +669,15 @@ class TableLabelEncode(AttnLabelEncode):
 
         # encode box
         bboxes = np.zeros(
-            (self._max_text_len, self.point_num), dtype=np.float32)
+            (self._max_text_len, self.point_num * 2), dtype=np.float32)
         bbox_masks = np.zeros((self._max_text_len, 1), dtype=np.float32)
 
         bbox_idx = 0
+
         for i, token in enumerate(structure):
             if self.idx2char[token] in self.td_token:
-                if 'bbox' in cells[bbox_idx]:
+                if 'bbox' in cells[bbox_idx] and len(cells[bbox_idx][
+                        'tokens']) > 0:
                     bbox = cells[bbox_idx]['bbox'].copy()
                     bbox = np.array(bbox, dtype=np.float32).reshape(-1)
                     bboxes[i] = bbox
@@ -723,11 +725,13 @@ class TableMasterLabelEncode(TableLabelEncode):
                  replace_empty_cell_token=False,
                  merge_no_span_structure=False,
                  learn_empty_box=False,
-                 point_num=4,
+                 point_num=2,
                  **kwargs):
         super(TableMasterLabelEncode, self).__init__(
             max_text_length, character_dict_path, replace_empty_cell_token,
             merge_no_span_structure, learn_empty_box, point_num, **kwargs)
+        self.pad_idx = self.dict[self.pad_str]
+        self.unknown_idx = self.dict[self.unknown_str]
 
     @property
     def _max_text_len(self):

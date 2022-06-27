@@ -31,6 +31,8 @@ class TableStructureMetric(object):
                                              gt_structure_batch_list):
             pred_str = ''.join(pred)
             target_str = ''.join(target)
+            # pred_str = pred_str.replace('<thead>','').replace('</thead>','').replace('<tbody>','').replace('</tbody>','')
+            # target_str = target_str.replace('<thead>','').replace('</thead>','').replace('<tbody>','').replace('</tbody>','')
             if pred_str == target_str:
                 correct_num += 1
             all_num += 1
@@ -131,10 +133,10 @@ class TableMetric(object):
             self.bbox_metric.reset()
 
     def format_box(self, box):
-        if self.point_num == 4:
+        if self.point_num == 2:
             x1, y1, x2, y2 = box
             box = [[x1, y1], [x2, y1], [x2, y2], [x1, y2]]
-        elif self.point_num == 8:
+        elif self.point_num == 4:
             x1, y1, x2, y2, x3, y3, x4, y4 = box
             box = [[x1, y1], [x2, y2], [x3, y3], [x4, y4]]
         return box
