@@ -259,9 +259,15 @@ After the above steps are completed, you can use adb to push the file to the pho
  cd /data/local/tmp/debug
  export LD_LIBRARY_PATH=${PWD}:$LD_LIBRARY_PATH
  # The use of ocr_db_crnn is:
- # ./ocr_db_crnn Detection model file Orientation classifier model file Recognition model file  Hardware  Precision  Threads Batchsize  Test image path Dictionary file path
- ./ocr_db_crnn ch_PP-OCRv2_det_slim_opt.nb  ch_PP-OCRv2_rec_slim_opt.nb  ch_ppocr_mobile_v2.0_cls_slim_opt.nb  arm8 INT8 10 1  ./11.jpg  config.txt  ppocr_keys_v1.txt  True
+ # ./ocr_db_crnn Mode Detection model file Orientation classifier model file Recognition model file  Hardware  Precision  Threads Batchsize  Test image path Dictionary file path
+ ./ocr_db_crnn system ch_PP-OCRv2_det_slim_opt.nb  ch_PP-OCRv2_rec_slim_opt.nb  ch_ppocr_mobile_v2.0_cls_slim_opt.nb  arm8 INT8 10 1  ./11.jpg  config.txt  ppocr_keys_v1.txt  True
 # precision can be INT8 for quantitative model or FP32 for normal model.
+
+# Only using detection model
+./ocr_db_crnn  det ch_PP-OCRv2_det_slim_opt.nb arm8 INT8 10 1 ./11.jpg  config.txt
+
+# Only using recognition model
+./ocr_db_crnn  rec ch_PP-OCRv2_rec_slim_opt.nb arm8 INT8 10 1 word_1.jpg ppocr_keys_v1.txt config.txt
  ```
 
 If you modify the code, you need to recompile and push to the phone.

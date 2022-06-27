@@ -258,8 +258,14 @@ rec_image_height  32      # 识别模型输入图像的高度，PP-OCRv3模型�
  cd /data/local/tmp/debug
  export LD_LIBRARY_PATH=${PWD}:$LD_LIBRARY_PATH
  # 开始使用，ocr_db_crnn可执行文件的使用方式为:
- # ./ocr_db_crnn  检测模型文件 方向分类器模型文件  识别模型文件 运行硬件 运行精度 线程数  batchsize  测试图像路径  参数配置路径  字典文件路径 是否使用benchmark参数
- ./ocr_db_crnn ch_PP-OCRv2_det_slim_opt.nb  ch_PP-OCRv2_rec_slim_opt.nb  ch_ppocr_mobile_v2.0_cls_slim_opt.nb  arm8 INT8 10 1  ./11.jpg  config.txt  ppocr_keys_v1.txt  True
+ # ./ocr_db_crnn 预测模式  检测模型文件 方向分类器模型文件  识别模型文件 运行硬件 运行精度 线程数  batchsize  测试图像路径  参数配置路径  字典文件路径 是否使用benchmark参数
+ ./ocr_db_crnn system  ch_PP-OCRv2_det_slim_opt.nb  ch_PP-OCRv2_rec_slim_opt.nb  ch_ppocr_mobile_v2.0_cls_slim_opt.nb  arm8 INT8 10 1  ./11.jpg  config.txt  ppocr_keys_v1.txt  True
+
+# 仅使用文本检测模型，使用方式如下：
+./ocr_db_crnn  det ch_PP-OCRv2_det_slim_opt.nb arm8 INT8 10 1 ./11.jpg  config.txt
+
+# 仅使用文本识别模型，使用方式如下：
+./ocr_db_crnn  rec ch_PP-OCRv2_rec_slim_opt.nb arm8 INT8 10 1 word_1.jpg ppocr_keys_v1.txt config.txt
  ```
 
  如果对代码做了修改，则需要重新编译并push到手机上。
