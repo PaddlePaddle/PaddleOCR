@@ -72,7 +72,6 @@ Train:
           ignore_index: *ignore_index
       - ABINetRecResizeImg:
           image_shape: [3, 32, 128]
-          padding: False
       - KeepKeys:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
   loader:
@@ -93,7 +92,6 @@ Eval:
           ignore_index: *ignore_index
       - ABINetRecResizeImg:
           image_shape: [3, 32, 128]
-          padding: False
       - KeepKeys:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
   loader:

@@ -312,14 +312,8 @@ class GrayRecResizeImg(object):
 
 
 class ABINetRecResizeImg(object):
-    def __init__(self,
-                 image_shape,
-                 infer_mode=False,
-                 character_dict_path=None,
-                 **kwargs):
+    def __init__(self, image_shape, **kwargs):
         self.image_shape = image_shape
-        self.infer_mode = infer_mode
-        self.character_dict_path = character_dict_path
 
     def __call__(self, data):
         img = data['image']
@@ -330,15 +324,8 @@ class ABINetRecResizeImg(object):
 
 
 class SVTRRecResizeImg(object):
-    def __init__(self,
-                 image_shape,
-                 infer_mode=False,
-                 character_dict_path='./ppocr/utils/ppocr_keys_v1.txt',
-                 padding=True,
-                 **kwargs):
+    def __init__(self, image_shape, padding=True, **kwargs):
         self.image_shape = image_shape
-        self.infer_mode = infer_mode
-        self.character_dict_path = character_dict_path
         self.padding = padding
 
     def __call__(self, data):

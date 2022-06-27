@@ -110,8 +110,6 @@ Train:
     - RecAug: null
     - CTCLabelEncode: null
     - SVTRRecResizeImg:
-        character_dict_path: null
-        infer_mode: False
         image_shape:
         - 3
         - 32
@@ -139,8 +137,6 @@ Eval:
         channel_first: false
     - CTCLabelEncode: null
     - SVTRRecResizeImg:
-        character_dict_path: null
-        infer_mode: False
         image_shape:
         - 3
         - 32
