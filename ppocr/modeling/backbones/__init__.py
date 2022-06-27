@@ -18,9 +18,10 @@ __all__ = ["build_backbone"]
 def build_backbone(config, model_type):
     if model_type == "det" or model_type == "table":
         from .det_mobilenet_v3 import MobileNetV3
-        from .det_resnet_vd import ResNet
+        from .det_resnet import ResNet
+        from .det_resnet_vd import ResNet_vd
         from .det_resnet_vd_sast import ResNet_SAST
-        support_dict = ["MobileNetV3", "ResNet", "ResNet_SAST"]
+        support_dict = ["MobileNetV3", "ResNet", "ResNet_vd", "ResNet_SAST"]
     elif model_type == "rec" or model_type == "cls":
         from .rec_mobilenet_v3 import MobileNetV3
         from .rec_resnet_vd import ResNet
