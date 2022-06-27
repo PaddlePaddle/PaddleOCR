@@ -208,7 +208,7 @@ class DistillationDBLoss(DBLoss):
                  eps=1e-6,
                  name="db",
                  **kwargs):
-        super().__init__()
+        super().__init__(balance_loss=balance_loss, main_loss_type=main_loss_type, alpha=alpha, beta=beta, ohem_ratio=ohem_ratio, eps=eps)
         self.model_name_list = model_name_list
         self.name = name
         self.key = None
@@ -245,7 +245,7 @@ class DistillationDilaDBLoss(DBLoss):
                  ohem_ratio=3,
                  eps=1e-6,
                  name="dila_dbloss"):
-        super().__init__()
+        super().__init__(balance_loss=balance_loss, main_loss_type=main_loss_type, alpha=alpha, beta=beta, ohem_ratio=ohem_ratio, eps=eps)
         self.model_name_pairs = model_name_pairs
         self.name = name
         self.key = key
