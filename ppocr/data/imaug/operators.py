@@ -242,8 +242,8 @@ class DetResizeForTest(object):
         if 'image_shape' in kwargs:
             self.image_shape = kwargs['image_shape']
             self.resize_type = 1
-            if 'keep_ratio' in kwargs:  ######
-                self.keep_ratio = kwargs['keep_ratio']  #######
+            if 'keep_ratio' in kwargs:
+                self.keep_ratio = kwargs['keep_ratio']
         elif 'limit_side_len' in kwargs:
             self.limit_side_len = kwargs['limit_side_len']
             self.limit_type = kwargs.get('limit_type', 'min')
@@ -273,7 +273,7 @@ class DetResizeForTest(object):
     def resize_image_type1(self, img):
         resize_h, resize_w = self.image_shape
         ori_h, ori_w = img.shape[:2]  # (h, w, c)
-        if self.keep_ratio:  ########
+        if self.keep_ratio:
             resize_w = ori_w * resize_h / ori_h
             N = math.ceil(resize_w / 32)
             resize_w = N * 32

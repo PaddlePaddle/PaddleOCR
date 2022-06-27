@@ -105,7 +105,7 @@ class DSConv(nn.Layer):
 
 
 class DBFPN(nn.Layer):
-    def __init__(self, in_channels, out_channels, use_asf=None, **kwargs):
+    def __init__(self, in_channels, out_channels, use_asf=False, **kwargs):
         super(DBFPN, self).__init__()
         self.out_channels = out_channels
         self.use_asf = use_asf
@@ -164,7 +164,7 @@ class DBFPN(nn.Layer):
             weight_attr=ParamAttr(initializer=weight_attr),
             bias_attr=False)
 
-        if self.use_asf:
+        if self.use_asf is True:
             self.asf = ASFBlock(self.out_channels, self.out_channels // 4)
 
     def forward(self, x):
@@ -192,7 +192,7 @@ class DBFPN(nn.Layer):
 
         fuse = paddle.concat([p5, p4, p3, p2], axis=1)
 
-        if self.use_asf:
+        if self.use_asf is True:
             fuse = self.asf(fuse, [p5, p4, p3, p2])
 
         return fuse
@@ -367,7 +367,19 @@ class LKPAN(nn.Layer):
 
 
 class ASFBlock(nn.Layer):
+    """
+    This code is refered from:
+        https://github.com/MhLiao/DB/blob/master/decoders/feature_attention.py
+    """
+
     def __init__(self, in_channels, inter_channels, out_features_num=4):
+        """
+        Adaptive Scale Fusion (ASF) block of DBNet++
+        Args:
+            in_channels: the number of channels in the input data
+            inter_channels: the number of middle channels
+            out_features_num: the number of fused stages
+        """
         super(ASFBlock, self).__init__()
         weight_attr = paddle.nn.initializer.KaimingUniform()
         self.in_channels = in_channels
@@ -375,39 +387,38 @@ class ASFBlock(nn.Layer):
         self.out_features_num = out_features_num
         self.conv = nn.Conv2D(in_channels, inter_channels, 3, padding=1)
 
-        self.attention_block_1 = nn.Sequential(
+        self.spatial_scale = nn.Sequential(
             #Nx1xHxW
             nn.Conv2D(
-                1,
-                1,
-                3,
+                in_channels=1,
+                out_channels=1,
+                kernel_size=3,
                 bias_attr=False,
                 padding=1,
                 weight_attr=ParamAttr(initializer=weight_attr)),
             nn.ReLU(),
             nn.Conv2D(
-                1,
-                1,
-                1,
+                in_channels=1,
+                out_channels=1,
+                kernel_size=1,
                 bias_attr=False,
                 weight_attr=ParamAttr(initializer=weight_attr)),
             nn.Sigmoid())
 
-        self.attention_block_2 = nn.Sequential(
+        self.channel_scale = nn.Sequential(
             nn.Conv2D(
-                inter_channels,
-                out_features_num,
-                1,
+                in_channels=inter_channels,
+                out_channels=out_features_num,
+                kernel_size=1,
                 bias_attr=False,
                 weight_attr=ParamAttr(initializer=weight_attr)),
             nn.Sigmoid())
 
     def forward(self, fuse_features, features_list):
         fuse_features = self.conv(fuse_features)
-        attention_scores = self.attention_block_1(
-            paddle.mean(
-                fuse_features, axis=1, keepdim=True)) + fuse_features
-        attention_scores = self.attention_block_2(attention_scores)
+        spatial_x = paddle.mean(fuse_features, axis=1, keepdim=True)
+        attention_scores = self.spatial_scale(spatial_x) + fuse_features
+        attention_scores = self.channel_scale(attention_scores)
         assert len(features_list) == self.out_features_num
 
         out_list = []
