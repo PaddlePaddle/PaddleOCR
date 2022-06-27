@@ -17,7 +17,7 @@ Global:
   # for data or label process
   character_dict_path: ppocr/utils/dict/table_structure_dict.txt
   character_type: en
-  max_text_length: 500
+  max_text_length: 800
   infer_mode: False
   process_total_num: 0
   process_cut_num: 0
@@ -44,7 +44,7 @@ Architecture:
     name: TableAttentionHead
     hidden_size: 256
     loc_type: 2
-    max_text_length: 500
+    max_text_length: 800
 
 Loss:
   name: TableAttentionLoss
@@ -57,13 +57,13 @@ PostProcess:
 Metric:
   name: TableMetric
   main_indicator: acc
-  compute_bbox_metric: False # cost many time, set False for training
+  compute_bbox_metric: false # cost many time, set False for training
 
 Train:
   dataset:
     name: PubTabDataSet
     data_dir: train_data/table/pubtabnet/train/
-    label_file_path: train_data/table/pubtabnet/PubTabNet_2.0.0_train.jsonl
+    label_file_list: [train_data/table/pubtabnet/PubTabNet_2.0.0_train.jsonl]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
