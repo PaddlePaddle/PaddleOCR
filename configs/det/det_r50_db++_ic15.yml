@@ -10,7 +10,7 @@ Global:
   - 0
   - 2000
   cal_metric_during_train: false
-  pretrained_model: ./pretrain_models/synthtext_pretrained_res50_dcn_asf_spatial
+  pretrained_model: ./pretrain_models/ResNet50_dcn_asf_synthtext_pretrained
   checkpoints: null
   save_inference_dir: null
   use_visualdl: false
