@@ -323,7 +323,6 @@ class ResNet_vd(nn.Layer):
             for block in range(len(depth)):
                 block_list = []
                 shortcut = False
-                # is_dcn = self.dcn_stage[block]
                 for i in range(depth[block]):
                     basic_block = self.add_sublayer(
                         'bb_%d_%d' % (block, i),

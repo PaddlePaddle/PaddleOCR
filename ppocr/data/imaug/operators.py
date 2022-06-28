@@ -273,7 +273,7 @@ class DetResizeForTest(object):
     def resize_image_type1(self, img):
         resize_h, resize_w = self.image_shape
         ori_h, ori_w = img.shape[:2]  # (h, w, c)
-        if self.keep_ratio:
+        if self.keep_ratio is True:
             resize_w = ori_w * resize_h / ori_h
             N = math.ceil(resize_w / 32)
             resize_w = N * 32
