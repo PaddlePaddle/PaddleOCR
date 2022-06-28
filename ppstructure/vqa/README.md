@@ -125,13 +125,13 @@ If you want to experience the prediction process directly, you can download the 
 
 * Download the processed dataset
 
-The download address of the processed XFUND Chinese dataset: [https://paddleocr.bj.bcebos.com/dataset/XFUND.tar](https://paddleocr.bj.bcebos.com/dataset/XFUND.tar).
+The download address of the processed XFUND Chinese dataset: [link](https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar).
 
 
 Download and unzip the dataset, and place the dataset in the current directory after unzipping.
 
 ```shell
-wget https://paddleocr.bj.bcebos.com/dataset/XFUND.tar
+wget https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar
 ````
 
 * Convert the dataset

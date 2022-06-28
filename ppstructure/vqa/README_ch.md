@@ -122,13 +122,13 @@ python3 -m pip install -r ppstructure/vqa/requirements.txt
 
 * 下载处理好的数据集
 
-处理好的XFUND中文数据集下载地址：[https://paddleocr.bj.bcebos.com/dataset/XFUND.tar](https://paddleocr.bj.bcebos.com/dataset/XFUND.tar)。
+处理好的XFUND中文数据集下载地址：[链接](https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar)。
 
 
 下载并解压该数据集，解压后将数据集放置在当前目录下。
 
 ```shell
-wget https://paddleocr.bj.bcebos.com/dataset/XFUND.tar
+wget https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar
 ```
 
 * 转换数据集
