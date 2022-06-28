@@ -138,7 +138,7 @@ def main(args):
 
     logger.info("In PP-OCRv3, rec_image_shape parameter defaults to '3, 48, 320', "
                 "if you are using recognition model with PP-OCRv2 or an older version, please set --rec_image_shape='3,32,320")
-                
+
     # warm up 10 times
     if args.warmup:
         img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
@@ -201,7 +201,12 @@ def main(args):
         text_sys.text_detector.autolog.report()
         text_sys.text_recognizer.autolog.report()
 
-    with open(os.path.join(draw_img_save_dir, "system_results.txt"), 'w', encoding='utf-8') as f:
+    if args.total_process_num > 1:
+        save_results_path = os.path.join(draw_img_save_dir, f"system_results_{args.process_id}.txt")
+    else:
+        save_results_path = os.path.join(draw_img_save_dir, "system_results.txt")
+
+    with open(save_results_path, 'w', encoding='utf-8') as f:
         f.writelines(save_results)
 
 
