@@ -8,7 +8,7 @@ Global:
   # evaluation is run every 2000 iterations
   eval_batch_step: [0, 2000]
   cal_metric_during_train: True
-  pretrained_model: ./rec_r45_abinet_train/abinet_vl_pretrained
+  pretrained_model:
   checkpoints:
   save_inference_dir:
   use_visualdl: False
@@ -41,7 +41,6 @@ Architecture:
   Transform:
   Backbone:
     name: ResNet45
-
   Head:
     name: ABINetHead
     use_lang: True
