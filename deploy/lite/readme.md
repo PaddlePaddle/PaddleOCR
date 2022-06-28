@@ -34,7 +34,7 @@ For the compilation process of different development environments, please refer 
 ### 1.2 Prepare Paddle-Lite library
 
 There are two ways to obtain the Paddle-Lite library：
-- 1. Download directly, the download link of the Paddle-Lite library is as follows：
+- 1. [Recommended] Download directly, the download link of the Paddle-Lite library is as follows：
 
       | Platform | Paddle-Lite library download link |
       |---|---|
@@ -43,7 +43,9 @@ There are two ways to obtain the Paddle-Lite library：
 
       Note: 1. The above Paddle-Lite library is compiled from the Paddle-Lite 2.10 branch. For more information about Paddle-Lite 2.10, please refer to [link](https://github.com/PaddlePaddle/Paddle-Lite/releases/tag/v2.10).
 
-- 2. [Recommended] Compile Paddle-Lite to get the prediction library. The compilation method of Paddle-Lite is as follows：
+    **Note: It is recommended to use paddlelite>=2.10 version of the prediction library, other prediction library versions [download link](https://github.com/PaddlePaddle/Paddle-Lite/tags)**
+
+- 2. Compile Paddle-Lite to get the prediction library. The compilation method of Paddle-Lite is as follows：
 ```
 git clone https://github.com/PaddlePaddle/Paddle-Lite.git
 cd Paddle-Lite
@@ -104,20 +106,16 @@ If you directly use the model in the above table for deployment, you can skip th
 
 If the model to be deployed is not in the above table, you need to follow the steps below to obtain the optimized model.
 
-The `opt` tool can be obtained by compiling Paddle Lite.
+- Step 1: Refer to [document](https://www.paddlepaddle.org.cn/lite/v2.10/user_guides/opt/opt_python.html) to install paddlelite, which is used to convert paddle inference model to paddlelite required for running nb model
 ```
-git clone https://github.com/PaddlePaddle/Paddle-Lite.git
-cd Paddle-Lite
-git checkout release/v2.10
-./lite/tools/build.sh build_optimize_tool
+pip install paddlelite==2.10 # The paddlelite version should be the same as the prediction library version
+```
+After installation, the following commands can view the help information
+```
+paddle_lite_opt
 ```
 
-After the compilation is complete, the opt file is located under build.opt/lite/api/, You can view the operating options and usage of opt in the following ways:
-
-```
-cd build.opt/lite/api/
-./opt
-```
+Introduction to paddle_lite_opt parameters:
 
 |Options|Description|
 |---|---|
@@ -130,6 +128,8 @@ cd build.opt/lite/api/
 |--record_tailoring_info|When using the function of cutting library files according to the model, set this option to true to record the kernel and OP information contained in the optimized model. The default is false|
 
 `--model_dir` is suitable for the non-combined mode of the model to be optimized, and the inference model of PaddleOCR is the combined mode, that is, the model structure and model parameters are stored in a single file.
+
+- Step 2: Use paddle_lite_opt to convert the inference model to the mobile model format.
 
 The following takes the ultra-lightweight Chinese model of PaddleOCR as an example to introduce the use of the compiled opt file to complete the conversion of the inference model to the Paddle-Lite optimized model
 
@@ -240,6 +240,7 @@ det_db_thresh  0.3        # Used to filter the binarized image of DB prediction,
 det_db_box_thresh  0.5    # DDB post-processing filter box threshold, if there is a missing box detected, it can be reduced as appropriate
 det_db_unclip_ratio  1.6  # Indicates the compactness of the text box, the smaller the value, the closer the text box to the text
 use_direction_classify  0  # Whether to use the direction classifier, 0 means not to use, 1 means to use
+rec_image_height  32      # The height of the input image of the recognition model, the PP-OCRv3 model needs to be set to 48, and the PP-OCRv2 model needs to be set to 32
 ```
 
  5. Run Model on phone
@@ -258,8 +259,15 @@ After the above steps are completed, you can use adb to push the file to the pho
  cd /data/local/tmp/debug
  export LD_LIBRARY_PATH=${PWD}:$LD_LIBRARY_PATH
  # The use of ocr_db_crnn is:
- # ./ocr_db_crnn Detection model file Orientation classifier model file Recognition model file Test image path Dictionary file path
- ./ocr_db_crnn ch_PP-OCRv2_det_slim_opt.nb  ch_PP-OCRv2_rec_slim_opt.nb  ch_ppocr_mobile_v2.0_cls_opt.nb  ./11.jpg  ppocr_keys_v1.txt
+ # ./ocr_db_crnn Mode Detection model file Orientation classifier model file Recognition model file  Hardware  Precision  Threads Batchsize  Test image path Dictionary file path
+ ./ocr_db_crnn system ch_PP-OCRv2_det_slim_opt.nb  ch_PP-OCRv2_rec_slim_opt.nb  ch_ppocr_mobile_v2.0_cls_slim_opt.nb  arm8 INT8 10 1  ./11.jpg  config.txt  ppocr_keys_v1.txt  True
+# precision can be INT8 for quantitative model or FP32 for normal model.
+
+# Only using detection model
+./ocr_db_crnn  det ch_PP-OCRv2_det_slim_opt.nb arm8 INT8 10 1 ./11.jpg  config.txt
+
+# Only using recognition model
+./ocr_db_crnn  rec ch_PP-OCRv2_rec_slim_opt.nb arm8 INT8 10 1 word_1.jpg ppocr_keys_v1.txt config.txt
  ```
 
 If you modify the code, you need to recompile and push to the phone.
@@ -283,3 +291,7 @@ A2: Replace the .jpg test image under ./debug with the image you want to test, a
 Q3: How to package it into the mobile APP?
 
 A3: This demo aims to provide the core algorithm part that can run OCR on mobile phones. Further, PaddleOCR/deploy/android_demo is an example of encapsulating this demo into a mobile app for reference.
+
+Q4: When running the demo, an error is reported `Error: This model is not supported, because kernel for 'io_copy' is not supported by Paddle-Lite.`
+
+A4: The problem is that the installed paddlelite version does not match the downloaded prediction library version. Make sure that the paddleliteopt tool matches your prediction library version, and try to switch to the nb model again.
