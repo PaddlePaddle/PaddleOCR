@@ -18,7 +18,7 @@ Global:
   save_res_path: ./checkpoints/det_db/predicts_db.txt
 Architecture:
   model_type: det
-  algorithm: DB
+  algorithm: DB++
   Transform: null
   Backbone:
     name: ResNet
