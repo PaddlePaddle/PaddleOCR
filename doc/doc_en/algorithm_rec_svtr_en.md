@@ -88,7 +88,6 @@ python3 tools/export_model.py -c configs/rec/rec_svtrnet.yml -o Global.pretraine
 
 **Note:**
 - If you are training the model on your own dataset and have modified the dictionary file, please pay attention to modify the `character_dict_path` in the configuration file to the modified dictionary file.
-- If you modified the input size during training, please modify the `infer_shape` corresponding to SVTR in the `tools/export_model.py` file.
 
 After the conversion is successful, there are three files in the directory:
 ```
