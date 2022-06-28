@@ -916,8 +916,6 @@ class VQATokenLabelEncode(object):
         data['ocr_info'] = copy.deepcopy(ocr_info)
 
         for info in ocr_info:
-            if "label" in info and info['label'].lower() in ["ignore"]:
-                continue
             if train_re:
                 # for re
                 if len(info["transcription"]) == 0:
@@ -1022,7 +1020,7 @@ class VQATokenLabelEncode(object):
 
     def _parse_label(self, label, encode_res):
         gt_label = []
-        if label.lower() in ["other", "others"]:
+        if label.lower() in ["other", "others", "ignore"]:
             gt_label.extend([0] * len(encode_res["input_ids"]))
         else:
             gt_label.append(self.label2id_map[("b-" + label).upper()])
