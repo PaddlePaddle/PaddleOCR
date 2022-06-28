@@ -255,6 +255,8 @@ def train(config,
                 with paddle.amp.auto_cast():
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
+                    elif model_type in ["kie", 'vqa']:
+                        preds = model(batch)
                     else:
                         preds = model(images)
             else:
@@ -575,7 +577,7 @@ def preprocess(is_train=False):
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
         'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'LayoutLMv2', 'PREN', 'FCE',
-        'SVTR'
+        'SVTR', 'ViTSTR', 'ABINet'
     ]
 
     if use_xpu:

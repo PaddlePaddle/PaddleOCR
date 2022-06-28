@@ -31,7 +31,12 @@ from ppocr.utils.logging import get_logger
 from tools.program import load_config, merge_config, ArgsParser
 
 
-def export_single_model(model, arch_config, save_path, logger, quanter=None):
+def export_single_model(model,
+                        arch_config,
+                        save_path,
+                        logger,
+                        input_shape=None,
+                        quanter=None):
     if arch_config["algorithm"] == "SRN":
         max_text_length = arch_config["Head"]["max_text_length"]
         other_shape = [
@@ -64,13 +69,32 @@ def export_single_model(model, arch_config, save_path, logger, quanter=None):
         else:
             other_shape = [
                 paddle.static.InputSpec(
-                    shape=[None, 3, 64, 256], dtype="float32"),
+                    shape=[None] + input_shape, dtype="float32"),
             ]
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] == "PREN":
         other_shape = [
             paddle.static.InputSpec(
                 shape=[None, 3, 64, 512], dtype="float32"),
+        ]
+        model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] == "ViTSTR":
+        other_shape = [
+            paddle.static.InputSpec(
+                shape=[None, 1, 224, 224], dtype="float32"),
+        ]
+        model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] == "ABINet":
+        other_shape = [
+            paddle.static.InputSpec(
+                shape=[None, 3, 32, 128], dtype="float32"),
+        ]
+        # print([None, 3, 32, 128])
+        model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] == "NRTR":
+        other_shape = [
+            paddle.static.InputSpec(
+                shape=[None, 1, 32, 100], dtype="float32"),
         ]
         model = to_static(model, input_spec=other_shape)
     else:
@@ -84,8 +108,6 @@ def export_single_model(model, arch_config, save_path, logger, quanter=None):
                     "When there is tps in the network, variable length input is not supported, and the input size needs to be the same as during training"
                 )
                 infer_shape[-1] = 100
-            if arch_config["algorithm"] == "NRTR":
-                infer_shape = [1, 32, 100]
         elif arch_config["model_type"] == "table":
             infer_shape = [3, 488, 488]
         model = to_static(
@@ -157,6 +179,13 @@ def main():
 
     arch_config = config["Architecture"]
 
+    if arch_config["algorithm"] == "SVTR" and arch_config["Head"][
+            "name"] != 'MultiHead':
+        input_shape = config["Eval"]["dataset"]["transforms"][-2][
+            'SVTRRecResizeImg']['image_shape']
+    else:
+        input_shape = None
+
     if arch_config["algorithm"] in ["Distillation", ]:  # distillation model
         archs = list(arch_config["Models"].values())
         for idx, name in enumerate(model.model_name_list):
@@ -165,7 +194,8 @@ def main():
                                 sub_model_save_path, logger)
     else:
         save_path = os.path.join(save_path, "inference")
-        export_single_model(model, arch_config, save_path, logger)
+        export_single_model(
+            model, arch_config, save_path, logger, input_shape=input_shape)
 
 
 if __name__ == "__main__":
