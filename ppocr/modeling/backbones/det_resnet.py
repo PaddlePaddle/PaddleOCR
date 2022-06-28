@@ -209,7 +209,6 @@ class ResNet(nn.Layer):
             for block in range(len(depth)):
                 shortcut = False
                 block_list = []
-                # is_dcn = self.dcn_stage[block]
                 for i in range(depth[block]):
                     conv_name = "res" + str(block + 2) + chr(97 + i)
                     basic_block = self.add_sublayer(
