@@ -23,7 +23,6 @@ import string
 from shapely.geometry import LineString, Point, Polygon
 import json
 import copy
-
 from ppocr.utils.logging import get_logger
 
 
@@ -74,9 +73,10 @@ class DetLabelEncode(object):
         s = pts.sum(axis=1)
         rect[0] = pts[np.argmin(s)]
         rect[2] = pts[np.argmax(s)]
-        diff = np.diff(pts, axis=1)
-        rect[1] = pts[np.argmin(diff)]
-        rect[3] = pts[np.argmax(diff)]
+        tmp = np.delete(pts, (np.argmin(s), np.argmax(s)), axis=0)
+        diff = np.diff(np.array(tmp), axis=1)
+        rect[1] = tmp[np.argmin(diff)]
+        rect[3] = tmp[np.argmax(diff)]
         return rect
 
     def expand_points_num(self, boxes):
@@ -155,37 +155,6 @@ class BaseRecLabelEncode(object):
         if len(text_list) == 0:
             return None
         return text_list
-
-
-class NRTRLabelEncode(BaseRecLabelEncode):
-    """ Convert between text-label and text-index """
-
-    def __init__(self,
-                 max_text_length,
-                 character_dict_path=None,
-                 use_space_char=False,
-                 **kwargs):
-
-        super(NRTRLabelEncode, self).__init__(
-            max_text_length, character_dict_path, use_space_char)
-
-    def __call__(self, data):
-        text = data['label']
-        text = self.encode(text)
-        if text is None:
-            return None
-        if len(text) >= self.max_text_len - 1:
-            return None
-        data['length'] = np.array(len(text))
-        text.insert(0, 2)
-        text.append(3)
-        text = text + [0] * (self.max_text_len - len(text))
-        data['label'] = np.array(text)
-        return data
-
-    def add_special_char(self, dict_character):
-        dict_character = ['blank', '<unk>', '<s>', '</s>'] + dict_character
-        return dict_character
 
 
 class CTCLabelEncode(BaseRecLabelEncode):
@@ -438,12 +407,14 @@ class KieLabelEncode(object):
             texts.append(ann['transcription'])
             text_ind = [self.dict[c] for c in text if c in self.dict]
             text_inds.append(text_ind)
-            if 'label' in anno.keys():
+            if 'label' in ann.keys():
                 labels.append(ann['label'])
-            elif 'key_cls' in anno.keys():
-                labels.append(anno['key_cls'])
+            elif 'key_cls' in ann.keys():
+                labels.append(ann['key_cls'])
             else:
-                raise ValueError("Cannot found 'key_cls' in ann.keys(), please check your training annotation.")
+                raise ValueError(
+                    "Cannot found 'key_cls' in ann.keys(), please check your training annotation."
+                )
             edges.append(ann.get('edge', 0))
         ann_infos = dict(
             image=data['image'],
@@ -1044,3 +1015,99 @@ class MultiLabelEncode(BaseRecLabelEncode):
         data_out['label_sar'] = sar['label']
         data_out['length'] = ctc['length']
         return data_out
+
+
+class NRTRLabelEncode(BaseRecLabelEncode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 use_space_char=False,
+                 **kwargs):
+
+        super(NRTRLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
+
+    def __call__(self, data):
+        text = data['label']
+        text = self.encode(text)
+        if text is None:
+            return None
+        if len(text) >= self.max_text_len - 1:
+            return None
+        data['length'] = np.array(len(text))
+        text.insert(0, 2)
+        text.append(3)
+        text = text + [0] * (self.max_text_len - len(text))
+        data['label'] = np.array(text)
+        return data
+
+    def add_special_char(self, dict_character):
+        dict_character = ['blank', '<unk>', '<s>', '</s>'] + dict_character
+        return dict_character
+
+
+class ViTSTRLabelEncode(BaseRecLabelEncode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 use_space_char=False,
+                 ignore_index=0,
+                 **kwargs):
+
+        super(ViTSTRLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
+        self.ignore_index = ignore_index
+
+    def __call__(self, data):
+        text = data['label']
+        text = self.encode(text)
+        if text is None:
+            return None
+        if len(text) >= self.max_text_len:
+            return None
+        data['length'] = np.array(len(text))
+        text.insert(0, self.ignore_index)
+        text.append(1)
+        text = text + [self.ignore_index] * (self.max_text_len + 2 - len(text))
+        data['label'] = np.array(text)
+        return data
+
+    def add_special_char(self, dict_character):
+        dict_character = ['<s>', '</s>'] + dict_character
+        return dict_character
+
+
+class ABINetLabelEncode(BaseRecLabelEncode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 use_space_char=False,
+                 ignore_index=100,
+                 **kwargs):
+
+        super(ABINetLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
+        self.ignore_index = ignore_index
+
+    def __call__(self, data):
+        text = data['label']
+        text = self.encode(text)
+        if text is None:
+            return None
+        if len(text) >= self.max_text_len:
+            return None
+        data['length'] = np.array(len(text))
+        text.append(0)
+        text = text + [self.ignore_index] * (self.max_text_len + 1 - len(text))
+        data['label'] = np.array(text)
+        return data
+
+    def add_special_char(self, dict_character):
+        dict_character = ['</s>'] + dict_character
+        return dict_character

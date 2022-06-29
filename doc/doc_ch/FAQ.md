@@ -682,7 +682,7 @@ lr:
 
 #### Q: 关于dygraph分支中，文本识别模型训练，要使用数据增强应该如何设置？
 
-**A**：可以参考[配置文件](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)在Train['dataset']['transforms']添加RecAug字段，使数据增强生效。可以通过添加对aug_prob设置，表示每种数据增强采用的概率。aug_prob默认是0.4.由于tia数据增强特殊性，默认不采用，可以通过添加use_tia设置，使tia数据增强生效。详细设置可以参考[ISSUE 1744](https://github.com/PaddlePaddle/PaddleOCR/issues/1744)。
+**A**：可以参考[配置文件](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)在Train['dataset']['transforms']添加RecAug字段，使数据增强生效。可以通过添加对aug_prob设置，表示每种数据增强采用的概率。aug_prob默认是0.4。详细设置可以参考[ISSUE 1744](https://github.com/PaddlePaddle/PaddleOCR/issues/1744)。
 
 #### Q: 训练过程中，训练程序意外退出/挂起，应该如何解决？
 
@@ -719,6 +719,13 @@ C++TensorRT预测需要使用支持TRT的预测库并在编译时打开[-DWITH_T
 如果想修改其他分支代码支持TensorRT预测，可以参考[PR](https://github.com/PaddlePaddle/PaddleOCR/pull/2921)。
 
 注：建议使用TensorRT大于等于6.1.0.5以上的版本。
+
+#### Q: 为什么识别模型做预测的时候，预测图片的数量数量还会影响预测的精度
+**A**： 推理时识别模型默认的batch_size=6, 如预测图片长度变化大，可能影响预测效果。如果出现上述问题可在推理的时候设置识别bs=1，命令如下：
+
+```
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --rec_batch_num=1
+```
 
 <a name="213"></a>
 

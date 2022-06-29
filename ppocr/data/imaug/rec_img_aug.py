@@ -19,16 +19,109 @@ import random
 import copy
 from PIL import Image
 from .text_image_aug import tia_perspective, tia_stretch, tia_distort
+from .abinet_aug import CVGeometry, CVDeterioration, CVColorJitter
+from paddle.vision.transforms import Compose
 
 
 class RecAug(object):
-    def __init__(self, use_tia=True, aug_prob=0.4, **kwargs):
-        self.use_tia = use_tia
-        self.aug_prob = aug_prob
+    def __init__(self,
+                 tia_prob=0.4,
+                 crop_prob=0.4,
+                 reverse_prob=0.4,
+                 noise_prob=0.4,
+                 jitter_prob=0.4,
+                 blur_prob=0.4,
+                 hsv_aug_prob=0.4,
+                 **kwargs):
+        self.tia_prob = tia_prob
+        self.bda = BaseDataAugmentation(crop_prob, reverse_prob, noise_prob,
+                                        jitter_prob, blur_prob, hsv_aug_prob)
 
     def __call__(self, data):
         img = data['image']
-        img = warp(img, 10, self.use_tia, self.aug_prob)
+        h, w, _ = img.shape
+
+        # tia
+        if random.random() <= self.tia_prob:
+            if h >= 20 and w >= 20:
+                img = tia_distort(img, random.randint(3, 6))
+                img = tia_stretch(img, random.randint(3, 6))
+            img = tia_perspective(img)
+
+        # bda
+        data['image'] = img
+        data = self.bda(data)
+        return data
+
+
+class BaseDataAugmentation(object):
+    def __init__(self,
+                 crop_prob=0.4,
+                 reverse_prob=0.4,
+                 noise_prob=0.4,
+                 jitter_prob=0.4,
+                 blur_prob=0.4,
+                 hsv_aug_prob=0.4,
+                 **kwargs):
+        self.crop_prob = crop_prob
+        self.reverse_prob = reverse_prob
+        self.noise_prob = noise_prob
+        self.jitter_prob = jitter_prob
+        self.blur_prob = blur_prob
+        self.hsv_aug_prob = hsv_aug_prob
+
+    def __call__(self, data):
+        img = data['image']
+        h, w, _ = img.shape
+
+        if random.random() <= self.crop_prob and h >= 20 and w >= 20:
+            img = get_crop(img)
+
+        if random.random() <= self.blur_prob:
+            img = blur(img)
+
+        if random.random() <= self.hsv_aug_prob:
+            img = hsv_aug(img)
+
+        if random.random() <= self.jitter_prob:
+            img = jitter(img)
+
+        if random.random() <= self.noise_prob:
+            img = add_gasuss_noise(img)
+
+        if random.random() <= self.reverse_prob:
+            img = 255 - img
+
+        data['image'] = img
+        return data
+
+
+class ABINetRecAug(object):
+    def __init__(self,
+                 geometry_p=0.5,
+                 deterioration_p=0.25,
+                 colorjitter_p=0.25,
+                 **kwargs):
+        self.transforms = Compose([
+            CVGeometry(
+                degrees=45,
+                translate=(0.0, 0.0),
+                scale=(0.5, 2.),
+                shear=(45, 15),
+                distortion=0.5,
+                p=geometry_p), CVDeterioration(
+                    var=20, degrees=6, factor=4, p=deterioration_p),
+            CVColorJitter(
+                brightness=0.5,
+                contrast=0.5,
+                saturation=0.5,
+                hue=0.1,
+                p=colorjitter_p)
+        ])
+
+    def __call__(self, data):
+        img = data['image']
+        img = self.transforms(img)
         data['image'] = img
         return data
 
@@ -84,46 +177,6 @@ class ClsResizeImg(object):
         img = data['image']
         norm_img, _ = resize_norm_img(img, self.image_shape)
         data['image'] = norm_img
-        return data
-
-
-class NRTRRecResizeImg(object):
-    def __init__(self, image_shape, resize_type, padding=False, **kwargs):
-        self.image_shape = image_shape
-        self.resize_type = resize_type
-        self.padding = padding
-
-    def __call__(self, data):
-        img = data['image']
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        image_shape = self.image_shape
-        if self.padding:
-            imgC, imgH, imgW = image_shape
-            # todo: change to 0 and modified image shape
-            h = img.shape[0]
-            w = img.shape[1]
-            ratio = w / float(h)
-            if math.ceil(imgH * ratio) > imgW:
-                resized_w = imgW
-            else:
-                resized_w = int(math.ceil(imgH * ratio))
-            resized_image = cv2.resize(img, (resized_w, imgH))
-            norm_img = np.expand_dims(resized_image, -1)
-            norm_img = norm_img.transpose((2, 0, 1))
-            resized_image = norm_img.astype(np.float32) / 128. - 1.
-            padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
-            padding_im[:, :, 0:resized_w] = resized_image
-            data['image'] = padding_im
-            return data
-        if self.resize_type == 'PIL':
-            image_pil = Image.fromarray(np.uint8(img))
-            img = image_pil.resize(self.image_shape, Image.ANTIALIAS)
-            img = np.array(img)
-        if self.resize_type == 'OpenCV':
-            img = cv2.resize(img, self.image_shape)
-        norm_img = np.expand_dims(img, -1)
-        norm_img = norm_img.transpose((2, 0, 1))
-        data['image'] = norm_img.astype(np.float32) / 128. - 1.
         return data
 
 
@@ -204,6 +257,84 @@ class PRENResizeImg(object):
         resized_img -= 0.5
         resized_img /= 0.5
         data['image'] = resized_img.astype(np.float32)
+        return data
+
+
+class GrayRecResizeImg(object):
+    def __init__(self,
+                 image_shape,
+                 resize_type,
+                 inter_type='Image.ANTIALIAS',
+                 scale=True,
+                 padding=False,
+                 **kwargs):
+        self.image_shape = image_shape
+        self.resize_type = resize_type
+        self.padding = padding
+        self.inter_type = eval(inter_type)
+        self.scale = scale
+
+    def __call__(self, data):
+        img = data['image']
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        image_shape = self.image_shape
+        if self.padding:
+            imgC, imgH, imgW = image_shape
+            # todo: change to 0 and modified image shape
+            h = img.shape[0]
+            w = img.shape[1]
+            ratio = w / float(h)
+            if math.ceil(imgH * ratio) > imgW:
+                resized_w = imgW
+            else:
+                resized_w = int(math.ceil(imgH * ratio))
+            resized_image = cv2.resize(img, (resized_w, imgH))
+            norm_img = np.expand_dims(resized_image, -1)
+            norm_img = norm_img.transpose((2, 0, 1))
+            resized_image = norm_img.astype(np.float32) / 128. - 1.
+            padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
+            padding_im[:, :, 0:resized_w] = resized_image
+            data['image'] = padding_im
+            return data
+        if self.resize_type == 'PIL':
+            image_pil = Image.fromarray(np.uint8(img))
+            img = image_pil.resize(self.image_shape, self.inter_type)
+            img = np.array(img)
+        if self.resize_type == 'OpenCV':
+            img = cv2.resize(img, self.image_shape)
+        norm_img = np.expand_dims(img, -1)
+        norm_img = norm_img.transpose((2, 0, 1))
+        if self.scale:
+            data['image'] = norm_img.astype(np.float32) / 128. - 1.
+        else:
+            data['image'] = norm_img.astype(np.float32) / 255.
+        return data
+
+
+class ABINetRecResizeImg(object):
+    def __init__(self, image_shape, **kwargs):
+        self.image_shape = image_shape
+
+    def __call__(self, data):
+        img = data['image']
+        norm_img, valid_ratio = resize_norm_img_abinet(img, self.image_shape)
+        data['image'] = norm_img
+        data['valid_ratio'] = valid_ratio
+        return data
+
+
+class SVTRRecResizeImg(object):
+    def __init__(self, image_shape, padding=True, **kwargs):
+        self.image_shape = image_shape
+        self.padding = padding
+
+    def __call__(self, data):
+        img = data['image']
+
+        norm_img, valid_ratio = resize_norm_img(img, self.image_shape,
+                                                self.padding)
+        data['image'] = norm_img
+        data['valid_ratio'] = valid_ratio
         return data
 
 
@@ -325,6 +456,26 @@ def resize_norm_img_srn(img, image_shape):
     return np.reshape(img_black, (c, row, col)).astype(np.float32)
 
 
+def resize_norm_img_abinet(img, image_shape):
+    imgC, imgH, imgW = image_shape
+
+    resized_image = cv2.resize(
+        img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+    resized_w = imgW
+    resized_image = resized_image.astype('float32')
+    resized_image = resized_image / 255.
+
+    mean = np.array([0.485, 0.456, 0.406])
+    std = np.array([0.229, 0.224, 0.225])
+    resized_image = (
+        resized_image - mean[None, None, ...]) / std[None, None, ...]
+    resized_image = resized_image.transpose((2, 0, 1))
+    resized_image = resized_image.astype('float32')
+
+    valid_ratio = min(1.0, float(resized_w / imgW))
+    return resized_image, valid_ratio
+
+
 def srn_other_inputs(image_shape, num_heads, max_text_length):
 
     imgC, imgH, imgW = image_shape
@@ -359,7 +510,7 @@ def flag():
     return 1 if random.random() > 0.5000001 else -1
 
 
-def cvtColor(img):
+def hsv_aug(img):
     """
     cvtColor
     """
@@ -425,50 +576,6 @@ def get_crop(image):
     else:
         crop_img = crop_img[0:h - top_crop, :, :]
     return crop_img
-
-
-class Config:
-    """
-    Config
-    """
-
-    def __init__(self, use_tia):
-        self.anglex = random.random() * 30
-        self.angley = random.random() * 15
-        self.anglez = random.random() * 10
-        self.fov = 42
-        self.r = 0
-        self.shearx = random.random() * 0.3
-        self.sheary = random.random() * 0.05
-        self.borderMode = cv2.BORDER_REPLICATE
-        self.use_tia = use_tia
-
-    def make(self, w, h, ang):
-        """
-        make
-        """
-        self.anglex = random.random() * 5 * flag()
-        self.angley = random.random() * 5 * flag()
-        self.anglez = -1 * random.random() * int(ang) * flag()
-        self.fov = 42
-        self.r = 0
-        self.shearx = 0
-        self.sheary = 0
-        self.borderMode = cv2.BORDER_REPLICATE
-        self.w = w
-        self.h = h
-
-        self.perspective = self.use_tia
-        self.stretch = self.use_tia
-        self.distort = self.use_tia
-
-        self.crop = True
-        self.affine = False
-        self.reverse = True
-        self.noise = True
-        self.jitter = True
-        self.blur = True
-        self.color = True
 
 
 def rad(x):
@@ -554,48 +661,3 @@ def get_warpAffine(config):
     rz = np.array([[np.cos(rad(anglez)), np.sin(rad(anglez)), 0],
                    [-np.sin(rad(anglez)), np.cos(rad(anglez)), 0]], np.float32)
     return rz
-
-
-def warp(img, ang, use_tia=True, prob=0.4):
-    """
-    warp
-    """
-    h, w, _ = img.shape
-    config = Config(use_tia=use_tia)
-    config.make(w, h, ang)
-    new_img = img
-
-    if config.distort:
-        img_height, img_width = img.shape[0:2]
-        if random.random() <= prob and img_height >= 20 and img_width >= 20:
-            new_img = tia_distort(new_img, random.randint(3, 6))
-
-    if config.stretch:
-        img_height, img_width = img.shape[0:2]
-        if random.random() <= prob and img_height >= 20 and img_width >= 20:
-            new_img = tia_stretch(new_img, random.randint(3, 6))
-
-    if config.perspective:
-        if random.random() <= prob:
-            new_img = tia_perspective(new_img)
-
-    if config.crop:
-        img_height, img_width = img.shape[0:2]
-        if random.random() <= prob and img_height >= 20 and img_width >= 20:
-            new_img = get_crop(new_img)
-
-    if config.blur:
-        if random.random() <= prob:
-            new_img = blur(new_img)
-    if config.color:
-        if random.random() <= prob:
-            new_img = cvtColor(new_img)
-    if config.jitter:
-        new_img = jitter(new_img)
-    if config.noise:
-        if random.random() <= prob:
-            new_img = add_gasuss_noise(new_img)
-    if config.reverse:
-        if random.random() <= prob:
-            new_img = 255 - new_img
-    return new_img

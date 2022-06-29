@@ -51,6 +51,8 @@ for model in ${lite_model_list[*]}; do
         inference_model_url=https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/${model}.tar
     elif [[ $model =~ "v2.0" ]]; then
         inference_model_url=https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/${model}.tar
+    elif [[ $model =~ "PP-OCRv3" ]]; then
+        inference_model_url=https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/${model}.tar
     else 
         echo "Model is wrong, please check."
         exit 3

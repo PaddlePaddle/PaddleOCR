@@ -23,19 +23,13 @@ all-sum-510/00224225.jpg        [{"transcription": "超赞", "points": [[8.0, 48
 **步骤二：**
 
 将步骤一保存的数据转换为端对端评测需要的数据格式：
-修改 `tools/convert_ppocr_label.py`中的代码，convert_label函数中设置输入标签路径，Mode，保存标签路径等，对预测数据的GTlabel和预测结果的label格式进行转换。
+
+修改 `tools/end2end/convert_ppocr_label.py`中的代码，convert_label函数中设置输入标签路径，Mode，保存标签路径等，对预测数据的GTlabel和预测结果的label格式进行转换。
 
 ```
-ppocr_label_gt =  "gt_label.txt"
-convert_label(ppocr_label_gt, "gt", "./save_gt_label/")
+python3 tools/end2end/convert_ppocr_label.py --mode=gt --label_path=path/to/label_txt --save_folder=save_gt_label
 
-ppocr_label_gt =  "./ch_PP-OCRv2_results/system_results.txt"
-convert_label(ppocr_label_gt_en, "pred", "./save_PPOCRV2_infer/")
-```
-
-运行`convert_ppocr_label.py`:
-```
-python3 tools/convert_ppocr_label.py
+python3 tools/end2end/convert_ppocr_label.py --mode=pred --label_path=path/to/pred_txt --save_folder=save_PPOCRV2_infer
 ```
 
 得到如下结果：

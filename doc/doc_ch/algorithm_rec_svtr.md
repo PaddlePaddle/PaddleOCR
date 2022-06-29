@@ -111,7 +111,6 @@ python3 tools/export_model.py -c ./rec_svtr_tiny_none_ctc_en_train/rec_svtr_tiny
 
 **注意：**
 - 如果您是在自己的数据集上训练的模型，并且调整了字典文件，请注意修改配置文件中的`character_dict_path`是否为所正确的字典文件。
-- 如果您修改了训练时的输入大小，请修改`tools/export_model.py`文件中的对应SVTR的`infer_shape`。
 
 转换成功后，在目录下有三个文件：
 ```

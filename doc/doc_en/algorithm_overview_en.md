@@ -41,6 +41,12 @@ On Total-Text dataset, the text detection result is as follows:
 | --- | --- | --- | --- | --- | --- |
 |SAST|ResNet50_vd|89.63%|78.44%|83.66%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_totaltext_v2.0_train.tar)|
 
+On CTW1500 dataset, the text detection result is as follows:
+
+|Model|Backbone|Precision|Recall|Hmean| Download link|
+| --- | --- | --- | --- | --- |---|  
+|FCE|ResNet50_dcn|88.39%|82.18%|85.27%| [trained model](https://paddleocr.bj.bcebos.com/contribution/det_r50_dcn_fce_ctw_v2.0_train.tar) |
+
 **Note：** Additional data, like icdar2013, icdar2017, COCO-Text, ArT, was added to the model training of SAST. Download English public dataset in organized format used by PaddleOCR from:
 * [Baidu Drive](https://pan.baidu.com/s/12cPnZcVuV1zn5DOd4mqjVw) (download code: 2bpi).
 * [Google Drive](https://drive.google.com/drive/folders/1ll2-XEVyCQLpJjawLDiRlvo_i4BqHCJe?usp=sharing)
@@ -59,6 +65,8 @@ Supported text recognition algorithms (Click the link to get the tutorial):
 - [x]  [SAR](./algorithm_rec_sar_en.md)
 - [x]  [SEED](./algorithm_rec_seed_en.md)
 - [x]  [SVTR](./algorithm_rec_svtr_en.md)
+- [x]  [ViTSTR](./algorithm_rec_vitstr_en.md)
+- [x]  [ABINet](./algorithm_rec_abinet_en.md)
 
 Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation result of these above text recognition (using MJSynth and SynthText for training, evaluate on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE) is as follow:
 
@@ -77,7 +85,8 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 |SAR|Resnet31| 87.20% | rec_r31_sar | [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_r31_sar_train.tar) |
 |SEED|Aster_Resnet| 85.35% | rec_resnet_stn_bilstm_att | [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_resnet_stn_bilstm_att.tar) |
 |SVTR|SVTR-Tiny| 89.25% | rec_svtr_tiny_none_ctc_en | [trained model](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/rec_svtr_tiny_none_ctc_en_train.tar) |
-
+|ViTSTR|ViTSTR| 79.82% | rec_vitstr_none_ce_en | [trained model](https://paddleocr.bj.bcebos.com/rec_vitstr_none_none_train.tar) |
+|ABINet|Resnet45| 90.75% | rec_r45_abinet_en | [trained model](https://paddleocr.bj.bcebos.com/rec_r45_abinet_train.tar) |
 
 <a name="2"></a>
 

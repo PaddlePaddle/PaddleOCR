@@ -162,7 +162,8 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
                  std::vector<std::string> charactor_dict,
                  std::shared_ptr<PaddlePredictor> predictor_cls,
                  int use_direction_classify,
-                 std::vector<double> *times) {
+                 std::vector<double> *times,
+                 int rec_image_height) {
   std::vector<float> mean = {0.5f, 0.5f, 0.5f};
   std::vector<float> scale = {1 / 0.5f, 1 / 0.5f, 1 / 0.5f};
 
@@ -183,7 +184,7 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
     float wh_ratio =
         static_cast<float>(crop_img.cols) / static_cast<float>(crop_img.rows);
 
-    resize_img = CrnnResizeImg(crop_img, wh_ratio);
+    resize_img = CrnnResizeImg(crop_img, wh_ratio, rec_image_height);
     resize_img.convertTo(resize_img, CV_32FC3, 1 / 255.f);
 
     const float *dimg = reinterpret_cast<const float *>(resize_img.data);
@@ -444,7 +445,7 @@ void system(char **argv){
   //// load config from txt file
   auto Config = LoadConfigTxt(det_config_path);
   int use_direction_classify = int(Config["use_direction_classify"]);
-
+  int rec_image_height = int(Config["rec_image_height"]);
   auto charactor_dict = ReadDict(dict_path);
   charactor_dict.insert(charactor_dict.begin(), "#"); // blank char for ctc
   charactor_dict.push_back(" ");
@@ -590,11 +591,15 @@ void rec(int argc, char **argv) {
   std::string batchsize = argv[6];
   std::string img_dir = argv[7];
   std::string dict_path = argv[8];
+  std::string config_path = argv[9];
 
   if (strcmp(argv[4], "FP32") != 0 && strcmp(argv[4], "INT8") != 0) {
       std::cerr << "Only support FP32 or INT8." << std::endl;
       exit(1);
   }
+
+  auto Config = LoadConfigTxt(config_path);
+  int rec_image_height = int(Config["rec_image_height"]);
 
   std::vector<cv::String> cv_all_img_names;
   cv::glob(img_dir, cv_all_img_names);
@@ -630,7 +635,7 @@ void rec(int argc, char **argv) {
     std::vector<float> rec_text_score;
     std::vector<double> times;
     RunRecModel(boxes, srcimg, rec_predictor, rec_text, rec_text_score,
-                charactor_dict, cls_predictor, 0, &times);
+                charactor_dict, cls_predictor, 0, &times, rec_image_height);
   
     //// print recognized text
     for (int i = 0; i < rec_text.size(); i++) {

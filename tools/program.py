@@ -112,20 +112,25 @@ def merge_config(config, opts):
     return config
 
 
-def check_gpu(use_gpu):
+def check_device(use_gpu, use_xpu=False):
     """
     Log error and exit when set use_gpu=true in paddlepaddle
     cpu version.
     """
-    err = "Config use_gpu cannot be set as true while you are " \
-          "using paddlepaddle cpu version ! \nPlease try: \n" \
-          "\t1. Install paddlepaddle-gpu to run model on GPU \n" \
-          "\t2. Set use_gpu as false in config file to run " \
+    err = "Config {} cannot be set as true while your paddle " \
+          "is not compiled with {} ! \nPlease try: \n" \
+          "\t1. Install paddlepaddle to run model on {} \n" \
+          "\t2. Set {} as false in config file to run " \
           "model on CPU"
 
     try:
+        if use_gpu and use_xpu:
+            print("use_xpu and use_gpu can not both be ture.")
         if use_gpu and not paddle.is_compiled_with_cuda():
-            print(err)
+            print(err.format("use_gpu", "cuda", "gpu", "use_gpu"))
+            sys.exit(1)
+        if use_xpu and not paddle.device.is_compiled_with_xpu():
+            print(err.format("use_xpu", "xpu", "xpu", "use_xpu"))
             sys.exit(1)
     except Exception as e:
         pass
@@ -250,6 +255,8 @@ def train(config,
                 with paddle.amp.auto_cast():
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
+                    elif model_type in ["kie", 'vqa']:
+                        preds = model(batch)
                     else:
                         preds = model(images)
             else:
@@ -302,7 +309,8 @@ def train(config,
             train_stats.update(stats)
 
             if log_writer is not None and dist.get_rank() == 0:
-                log_writer.log_metrics(metrics=train_stats.get(), prefix="TRAIN", step=global_step)
+                log_writer.log_metrics(
+                    metrics=train_stats.get(), prefix="TRAIN", step=global_step)
 
             if dist.get_rank() == 0 and (
                 (global_step > 0 and global_step % print_batch_step == 0) or
@@ -349,7 +357,8 @@ def train(config,
 
                 # logger metric
                 if log_writer is not None:
-                    log_writer.log_metrics(metrics=cur_metric, prefix="EVAL", step=global_step)
+                    log_writer.log_metrics(
+                        metrics=cur_metric, prefix="EVAL", step=global_step)
 
                 if cur_metric[main_indicator] >= best_model_dict[
                         main_indicator]:
@@ -372,11 +381,18 @@ def train(config,
                 logger.info(best_str)
                 # logger best metric
                 if log_writer is not None:
-                    log_writer.log_metrics(metrics={
-                        "best_{}".format(main_indicator): best_model_dict[main_indicator]
-                        }, prefix="EVAL", step=global_step)
-                    
-                    log_writer.log_model(is_best=True, prefix="best_accuracy", metadata=best_model_dict)
+                    log_writer.log_metrics(
+                        metrics={
+                            "best_{}".format(main_indicator):
+                            best_model_dict[main_indicator]
+                        },
+                        prefix="EVAL",
+                        step=global_step)
+
+                    log_writer.log_model(
+                        is_best=True,
+                        prefix="best_accuracy",
+                        metadata=best_model_dict)
 
             reader_start = time.time()
         if dist.get_rank() == 0:
@@ -408,7 +424,8 @@ def train(config,
                 epoch=epoch,
                 global_step=global_step)
             if log_writer is not None:
-                log_writer.log_model(is_best=False, prefix='iter_epoch_{}'.format(epoch))
+                log_writer.log_model(
+                    is_best=False, prefix='iter_epoch_{}'.format(epoch))
 
     best_str = 'best metric, {}'.format(', '.join(
         ['{}: {}'.format(k, v) for k, v in best_model_dict.items()]))
@@ -547,7 +564,7 @@ def preprocess(is_train=False):
 
     # check if set use_gpu=True in paddlepaddle cpu version
     use_gpu = config['Global']['use_gpu']
-    check_gpu(use_gpu)
+    use_xpu = config['Global'].get('use_xpu', False)
 
     # check if set use_xpu=True in paddlepaddle cpu/gpu version
     use_xpu = False
@@ -559,14 +576,17 @@ def preprocess(is_train=False):
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
-        'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'PREN', 'FCE', 'SVTR'
+        'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'PREN', 'FCE', 'SVTR',
+        'ViTSTR', 'ABINet'
     ]
 
-    device = 'cpu'
-    if use_gpu:
-        device = 'gpu:{}'.format(dist.ParallelEnv().dev_id)
     if use_xpu:
-        device = 'xpu'
+        device = 'xpu:{0}'.format(os.getenv('FLAGS_selected_xpus', 0))
+    else:
+        device = 'gpu:{}'.format(dist.ParallelEnv()
+                                 .dev_id) if use_gpu else 'cpu'
+    check_device(use_gpu, use_xpu)
+
     device = paddle.set_device(device)
 
     config['Global']['distributed'] = dist.get_world_size() != 1
@@ -578,7 +598,8 @@ def preprocess(is_train=False):
         vdl_writer_path = '{}/vdl/'.format(save_model_dir)
         log_writer = VDLLogger(save_model_dir)
         loggers.append(log_writer)
-    if ('use_wandb' in config['Global'] and config['Global']['use_wandb']) or 'wandb' in config:
+    if ('use_wandb' in config['Global'] and
+            config['Global']['use_wandb']) or 'wandb' in config:
         save_dir = config['Global']['save_model_dir']
         wandb_writer_path = "{}/wandb".format(save_dir)
         if "wandb" in config:

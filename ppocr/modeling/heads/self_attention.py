@@ -22,7 +22,6 @@ import paddle
 from paddle import ParamAttr, nn
 from paddle import nn, ParamAttr
 from paddle.nn import functional as F
-import paddle.fluid as fluid
 import numpy as np
 gradient_clip = 10
 
@@ -288,10 +287,10 @@ class PrePostProcessLayer(nn.Layer):
                         "layer_norm_%d" % len(self.sublayers()),
                         paddle.nn.LayerNorm(
                             normalized_shape=d_model,
-                            weight_attr=fluid.ParamAttr(
-                                initializer=fluid.initializer.Constant(1.)),
-                            bias_attr=fluid.ParamAttr(
-                                initializer=fluid.initializer.Constant(0.)))))
+                            weight_attr=paddle.ParamAttr(
+                                initializer=paddle.nn.initializer.Constant(1.)),
+                            bias_attr=paddle.ParamAttr(
+                                initializer=paddle.nn.initializer.Constant(0.)))))
             elif cmd == "d":  # add dropout
                 self.functors.append(lambda x: F.dropout(
                     x, p=dropout_rate, mode="downscale_in_infer")
@@ -324,7 +323,7 @@ class PrepareEncoder(nn.Layer):
 
     def forward(self, src_word, src_pos):
         src_word_emb = src_word
-        src_word_emb = fluid.layers.cast(src_word_emb, 'float32')
+        src_word_emb = paddle.cast(src_word_emb, 'float32')
         src_word_emb = paddle.scale(x=src_word_emb, scale=self.src_emb_dim**0.5)
         src_pos = paddle.squeeze(src_pos, axis=-1)
         src_pos_enc = self.emb(src_pos)
@@ -367,7 +366,7 @@ class PrepareDecoder(nn.Layer):
         self.dropout_rate = dropout_rate
 
     def forward(self, src_word, src_pos):
-        src_word = fluid.layers.cast(src_word, 'int64')
+        src_word = paddle.cast(src_word, 'int64')
         src_word = paddle.squeeze(src_word, axis=-1)
         src_word_emb = self.emb0(src_word)
         src_word_emb = paddle.scale(x=src_word_emb, scale=self.src_emb_dim**0.5)

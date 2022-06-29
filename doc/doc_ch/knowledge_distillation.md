@@ -424,9 +424,9 @@ Architecture:
 
 ```
 
-如果是采用DML，即两个小模型互相学习的方法，上述配置文件里的Teacher网络结构需要设置为Student模型一样的配置，具体参考配置文件[ch_PP-OCRv3_det_dml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.4/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml)。
-
-下面介绍[ch_PP-OCRv3_det_cml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.4/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml)的配置文件参数：
+如果是采用DML，即两个小模型互相学习的方法，上述配置文件里的Teacher网络结构需要设置为Student模型一样的配置，具体参考配置文件[ch_PP-OCRv3_det_dml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml)。
+
+下面介绍[ch_PP-OCRv3_det_cml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml)的配置文件参数：
 
 ```
 Architecture:
