@@ -255,6 +255,8 @@ def train(config,
                 with paddle.amp.auto_cast():
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
+                    elif model_type in ["kie", 'vqa']:
+                        preds = model(batch)
                     else:
                         preds = model(images)
             else:

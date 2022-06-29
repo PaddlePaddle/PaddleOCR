@@ -19,25 +19,27 @@
 
 const std::vector<int> rec_image_shape{3, 32, 320};
 
-cv::Mat CrnnResizeImg(cv::Mat img, float wh_ratio) {
+cv::Mat CrnnResizeImg(cv::Mat img, float wh_ratio, int rec_image_height) {
   int imgC, imgH, imgW;
   imgC = rec_image_shape[0];
+  imgH = rec_image_height;
   imgW = rec_image_shape[2];
-  imgH = rec_image_shape[1];
 
-  imgW = int(32 * wh_ratio);
+  imgW = int(imgH * wh_ratio);
 
-  float ratio = static_cast<float>(img.cols) / static_cast<float>(img.rows);
+  float ratio = float(img.cols) / float(img.rows);
   int resize_w, resize_h;
+
   if (ceilf(imgH * ratio) > imgW)
     resize_w = imgW;
   else
-    resize_w = static_cast<int>(ceilf(imgH * ratio));
-  cv::Mat resize_img;
+    resize_w = int(ceilf(imgH * ratio));
+
   cv::resize(img, resize_img, cv::Size(resize_w, imgH), 0.f, 0.f,
              cv::INTER_LINEAR);
-
-  return resize_img;
+  cv::copyMakeBorder(resize_img, resize_img, 0, 0, 0,
+                     int(imgW - resize_img.cols), cv::BORDER_CONSTANT,
+                     {127, 127, 127});
 }
 
 std::vector<std::string> ReadDict(std::string path) {
