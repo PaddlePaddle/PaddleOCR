@@ -1,9 +1,9 @@
 Global:
   use_gpu: True
-  epoch_num: 21
+  epoch_num: 10
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/rec/nrtr/
+  save_model_dir: ./output/rec/r45_abinet/
   save_epoch_step: 1
   # evaluation is run every 2000 iterations
   eval_batch_step: [0, 2000]
@@ -14,46 +14,46 @@ Global:
   use_visualdl: False
   infer_img: doc/imgs_words_en/word_10.png
   # for data or label process
-  character_dict_path: ppocr/utils/EN_symbol_dict.txt
+  character_dict_path:
+  character_type: en
   max_text_length: 25
   infer_mode: False
   use_space_char: False
-  save_res_path: ./output/rec/predicts_nrtr.txt
+  save_res_path: ./output/rec/predicts_abinet.txt
 
 Optimizer:
   name: Adam
   beta1: 0.9
   beta2: 0.99
-  clip_norm: 5.0
+  clip_norm: 20.0
   lr:
-    name: Cosine
-    learning_rate: 0.0005
-    warmup_epoch: 2
+    name: Piecewise
+    decay_epochs: [6]
+    values: [0.0001, 0.00001] 
   regularizer:
     name: 'L2'
     factor: 0.
 
 Architecture:
   model_type: rec
-  algorithm: NRTR
-  in_channels: 1
+  algorithm: ABINet
+  in_channels: 3
   Transform:
   Backbone:
-    name: MTB
-    cnn_num: 2
+    name: ResNet45
+
   Head:
-    name: Transformer
-    d_model: 512
-    num_encoder_layers: 6
-    beam_size: -1 # When Beam size is greater than 0, it means to use beam search when evaluation.
+    name: ABINetHead
+    use_lang: True
+    iter_size: 3
     
 
 Loss:
   name: CELoss
-  smoothing: True
+  ignore_index: &ignore_index 100 # Must be greater than the number of character classes
 
 PostProcess:
-  name: NRTRLabelDecode
+  name: ABINetLabelDecode
 
 Metric:
   name: RecMetric
@@ -61,36 +61,41 @@ Metric:
 
 Train:
   dataset:
-    name: LMDBDataSet
-    data_dir: ./train_data/data_lmdb_release/training/
+    name: SimpleDataSet
+    data_dir: ./train_data/ic15_data/
+    label_file_list: ["./train_data/ic15_data/rec_gt_train.txt"]
     transforms:
       - DecodeImage: # load image
-          img_mode: BGR
+          img_mode: RGB
           channel_first: False
-      - NRTRLabelEncode: # Class handling label
-      - GrayRecResizeImg:
-          image_shape: [100, 32] # W H
-          resize_type: PIL # PIL or OpenCV
+      - ABINetRecAug:
+      - ABINetLabelEncode: # Class handling label
+          ignore_index: *ignore_index
+      - ABINetRecResizeImg:
+          image_shape: [3, 32, 128]
+          padding: False
       - KeepKeys:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
   loader:
     shuffle: True
-    batch_size_per_card: 512
+    batch_size_per_card: 96
     drop_last: True
-    num_workers: 8
+    num_workers: 4
 
 Eval:
   dataset:
-    name: LMDBDataSet
-    data_dir: ./train_data/data_lmdb_release/validation/
+    name: SimpleDataSet
+    data_dir: ./train_data/ic15_data
+    label_file_list: ["./train_data/ic15_data/rec_gt_test.txt"]
     transforms:
       - DecodeImage: # load image
-          img_mode: BGR
+          img_mode: RGB
           channel_first: False
-      - NRTRLabelEncode: # Class handling label
-      - GrayRecResizeImg:
-          image_shape: [100, 32] # W H
-          resize_type: PIL # PIL or OpenCV
+      - ABINetLabelEncode: # Class handling label
+          ignore_index: *ignore_index
+      - ABINetRecResizeImg:
+          image_shape: [3, 32, 128]
+          padding: False
       - KeepKeys:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
   loader:

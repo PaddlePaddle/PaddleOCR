@@ -157,37 +157,6 @@ class BaseRecLabelEncode(object):
         return text_list
 
 
-class NRTRLabelEncode(BaseRecLabelEncode):
-    """ Convert between text-label and text-index """
-
-    def __init__(self,
-                 max_text_length,
-                 character_dict_path=None,
-                 use_space_char=False,
-                 **kwargs):
-
-        super(NRTRLabelEncode, self).__init__(
-            max_text_length, character_dict_path, use_space_char)
-
-    def __call__(self, data):
-        text = data['label']
-        text = self.encode(text)
-        if text is None:
-            return None
-        if len(text) >= self.max_text_len - 1:
-            return None
-        data['length'] = np.array(len(text))
-        text.insert(0, 2)
-        text.append(3)
-        text = text + [0] * (self.max_text_len - len(text))
-        data['label'] = np.array(text)
-        return data
-
-    def add_special_char(self, dict_character):
-        dict_character = ['blank', '<unk>', '<s>', '</s>'] + dict_character
-        return dict_character
-
-
 class CTCLabelEncode(BaseRecLabelEncode):
     """ Convert between text-label and text-index """
 
@@ -1046,3 +1015,99 @@ class MultiLabelEncode(BaseRecLabelEncode):
         data_out['label_sar'] = sar['label']
         data_out['length'] = ctc['length']
         return data_out
+
+
+class NRTRLabelEncode(BaseRecLabelEncode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 use_space_char=False,
+                 **kwargs):
+
+        super(NRTRLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
+
+    def __call__(self, data):
+        text = data['label']
+        text = self.encode(text)
+        if text is None:
+            return None
+        if len(text) >= self.max_text_len - 1:
+            return None
+        data['length'] = np.array(len(text))
+        text.insert(0, 2)
+        text.append(3)
+        text = text + [0] * (self.max_text_len - len(text))
+        data['label'] = np.array(text)
+        return data
+
+    def add_special_char(self, dict_character):
+        dict_character = ['blank', '<unk>', '<s>', '</s>'] + dict_character
+        return dict_character
+
+
+class ViTSTRLabelEncode(BaseRecLabelEncode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 use_space_char=False,
+                 ignore_index=0,
+                 **kwargs):
+
+        super(ViTSTRLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
+        self.ignore_index = ignore_index
+
+    def __call__(self, data):
+        text = data['label']
+        text = self.encode(text)
+        if text is None:
+            return None
+        if len(text) >= self.max_text_len:
+            return None
+        data['length'] = np.array(len(text))
+        text.insert(0, self.ignore_index)
+        text.append(1)
+        text = text + [self.ignore_index] * (self.max_text_len + 2 - len(text))
+        data['label'] = np.array(text)
+        return data
+
+    def add_special_char(self, dict_character):
+        dict_character = ['<s>', '</s>'] + dict_character
+        return dict_character
+
+
+class ABINetLabelEncode(BaseRecLabelEncode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 use_space_char=False,
+                 ignore_index=100,
+                 **kwargs):
+
+        super(ABINetLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
+        self.ignore_index = ignore_index
+
+    def __call__(self, data):
+        text = data['label']
+        text = self.encode(text)
+        if text is None:
+            return None
+        if len(text) >= self.max_text_len:
+            return None
+        data['length'] = np.array(len(text))
+        text.append(0)
+        text = text + [self.ignore_index] * (self.max_text_len + 1 - len(text))
+        data['label'] = np.array(text)
+        return data
+
+    def add_special_char(self, dict_character):
+        dict_character = ['</s>'] + dict_character
+        return dict_character
