@@ -44,7 +44,7 @@ Optimizer:
     
 PostProcess:
   name: VQASerTokenLayoutLMPostProcess
-  class_path: &class_path ppstructure/vqa/labels/labels_ser.txt
+  class_path: &class_path train_data/XFUND/class_list_xfun.txt
 
 Metric:
   name: VQASerTokenMetric
@@ -55,7 +55,7 @@ Train:
     name: SimpleDataSet
     data_dir: train_data/XFUND/zh_train/image
     label_file_list: 
-      - train_data/XFUND/zh_train/xfun_normalize_train.json
+      - train_data/XFUND/zh_train/train.json
     transforms:
       - DecodeImage: # load image
           img_mode: RGB
@@ -90,7 +90,7 @@ Eval:
     name: SimpleDataSet
     data_dir: train_data/XFUND/zh_val/image
     label_file_list:
-      - train_data/XFUND/zh_val/xfun_normalize_val.json
+      - train_data/XFUND/zh_val/val.json
     transforms:
       - DecodeImage: # load image
           img_mode: RGB
