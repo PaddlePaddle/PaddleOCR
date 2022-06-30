@@ -87,8 +87,7 @@ function func_serving(){
     set_image_dir=$(func_set_params "${image_dir_key}" "${image_dir_value}")
     python_list=(${python_list})
     cd ${serving_dir_value}
-    unset https_proxy
-    unset http_proxy
+    
     # cpp serving
     for gpu_id in ${gpu_value[*]}; do
         if [ ${gpu_id} = "null" ]; then
