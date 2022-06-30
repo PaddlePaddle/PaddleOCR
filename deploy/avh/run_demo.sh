@@ -1,4 +1,5 @@
 #!/bin/bash
+# Copyright (c) 2022 Arm Limited and Contributors. All rights reserved.
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -24,17 +25,27 @@ function show_usage() {
     cat <<EOF
 Usage: run_demo.sh
 -h, --help
-    Display this help message.
+	Display this help message.
 --cmsis_path CMSIS_PATH
-    Set path to CMSIS.
+	Set path to CMSIS.
 --ethosu_platform_path ETHOSU_PLATFORM_PATH
-    Set path to Arm(R) Ethos(TM)-U core platform.
+	Set path to Arm(R) Ethos(TM)-U core platform.
 --fvp_path FVP_PATH
-   Set path to FVP.
+	Set path to FVP.
 --cmake_path
-   Set path to cmake.
+	Set path to cmake.
+--enable_FVP
+	Set 1 to run application on local Fixed Virtual Platforms (FVPs) executables.
 EOF
 }
+
+# Configure environment variables
+FVP_enable=0
+export PATH=/opt/arm/gcc-arm-none-eabi/bin:$PATH
+
+# Install python libraries
+echo -e "\e[36mInstall python libraries\e[0m"
+sudo pip install -r ./requirements.txt
 
 # Parse arguments
 while (( $# )); do
@@ -91,6 +102,18 @@ while (( $# )); do
                 exit 1
             fi
             ;;
+            
+        --enable_FVP)
+            if [ $# -gt 1 ] && [ "$2" == "1" -o "$2" == "0" ];
+            then
+                FVP_enable="$2"
+                shift 2
+            else
+                echo 'ERROR: --enable_FVP requires a right argument 1 or 0' >&2
+                show_usage >&2
+                exit 1
+            fi
+            ;;
 
         -*|--*)
             echo "Error: Unknown flag: $1" >&2
@@ -100,17 +123,27 @@ while (( $# )); do
     esac
 done
 
+# Choose running environment: cloud(default) or local environment
+Platform="VHT_Corstone_SSE-300_Ethos-U55"
+if [ $FVP_enable == "1" ]; then
+	Platform="FVP_Corstone_SSE-300_Ethos-U55"
+	echo -e "\e[36mRun application on local Fixed Virtual Platforms (FVPs)\e[0m"
+else
+	if [ ! -d "/opt/arm/" ]; then
+		sudo ./configure_avh.sh
+	fi
+fi
 
 # Directories
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-
 # Make build directory
-rm -rf build
 make cleanall
 mkdir -p build
 cd build
 
+# Get PaddlePaddle inference model
+echo -e "\e[36mDownload PaddlePaddle inference model\e[0m"
 wget https://paddleocr.bj.bcebos.com/tvm/ocr_en.tar
 tar -xf ocr_en.tar
 
@@ -144,9 +177,9 @@ cd ${script_dir}
 echo ${script_dir}
 make
 
-# Run demo executable on the FVP
-FVP_Corstone_SSE-300_Ethos-U55 -C cpu0.CFGDTCMSZ=15 \
+# Run demo executable on the AVH
+$Platform -C cpu0.CFGDTCMSZ=15 \
 -C cpu0.CFGITCMSZ=15 -C mps3_board.uart0.out_file=\"-\" -C mps3_board.uart0.shutdown_tag=\"EXITTHESIM\" \
 -C mps3_board.visualisation.disable-visualisation=1 -C mps3_board.telnetterminal0.start_telnet=0 \
 -C mps3_board.telnetterminal1.start_telnet=0 -C mps3_board.telnetterminal2.start_telnet=0 -C mps3_board.telnetterminal5.start_telnet=0 \
-./build/demo
+./build/demo --stat
