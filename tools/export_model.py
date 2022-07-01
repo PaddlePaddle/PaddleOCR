@@ -97,8 +97,9 @@ def export_single_model(model,
                 shape=[None, 1, 32, 100], dtype="float32"),
         ]
         model = to_static(model, input_spec=other_shape)
+
     elif arch_config["algorithm"] in ["LayoutLM", "LayoutLMv2", "LayoutXLM"]:
-        input_spec=[
+        input_spec = [
             paddle.static.InputSpec(
                 shape=[None, 512], dtype="int64"),  # input_ids
             paddle.static.InputSpec(

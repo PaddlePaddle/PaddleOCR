@@ -68,7 +68,8 @@ class VQASerTokenLayoutLMPostProcess(object):
     def _infer(self, preds, segment_offset_ids, ocr_infos):
         results = []
 
-        for pred, segment_offset_id, ocr_info in zip(preds, segment_offset_ids, ocr_infos):
+        for pred, segment_offset_id, ocr_info in zip(preds, segment_offset_ids,
+                                                     ocr_infos):
             pred = np.argmax(pred, axis=1)
             pred = [self.id2label_map[idx] for idx in pred]
 

@@ -121,14 +121,14 @@ class LayoutXLMForSer(NLPBaseModel):
 
     def forward(self, x):
         x = self.model(
-                        input_ids=x[0],
-                        bbox=x[1],
-                        attention_mask=x[2],
-                        token_type_ids=x[3],
-                        image=x[4],
-                        position_ids=None,
-                        head_mask=None,
-                        labels=None)
+            input_ids=x[0],
+            bbox=x[1],
+            attention_mask=x[2],
+            token_type_ids=x[3],
+            image=x[4],
+            position_ids=None,
+            head_mask=None,
+            labels=None)
         if not self.training:
             return x
         return x[0]

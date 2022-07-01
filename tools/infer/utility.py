@@ -318,7 +318,7 @@ def create_predictor(args, mode, logger):
         # create predictor
         predictor = inference.create_predictor(config)
         input_names = predictor.get_input_names()
-        if mode in ['ser','re']:
+        if mode in ['ser', 're']:
             input_tensor = []
             for name in input_names:
                 input_tensor.append(predictor.get_input_handle(name))

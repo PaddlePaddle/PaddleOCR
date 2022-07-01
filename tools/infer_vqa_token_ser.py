@@ -44,7 +44,7 @@ def to_tensor(data):
     from collections import defaultdict
     data_dict = defaultdict(list)
     to_tensor_idxs = []
-    
+
     for idx, v in enumerate(data):
         if isinstance(v, (np.ndarray, paddle.Tensor, numbers.Number)):
             if idx not in to_tensor_idxs:
@@ -72,7 +72,10 @@ class SerPredictor(object):
 
         from paddleocr import PaddleOCR
 
-        self.ocr_engine = PaddleOCR(use_angle_cls=False, show_log=False, use_gpu=global_config['use_gpu'])
+        self.ocr_engine = PaddleOCR(
+            use_angle_cls=False,
+            show_log=False,
+            use_gpu=global_config['use_gpu'])
 
         # create data ops
         transforms = []
@@ -82,8 +85,8 @@ class SerPredictor(object):
                 op[op_name]['ocr_engine'] = self.ocr_engine
             elif op_name == 'KeepKeys':
                 op[op_name]['keep_keys'] = [
-                    'input_ids', 'bbox', 'attention_mask', 'token_type_ids', 'image', 'labels',
-                    'segment_offset_id', 'ocr_info',
+                    'input_ids', 'bbox', 'attention_mask', 'token_type_ids',
+                    'image', 'labels', 'segment_offset_id', 'ocr_info',
                     'entities'
                 ]
 
@@ -103,11 +106,9 @@ class SerPredictor(object):
         preds = self.model(batch)
         if self.algorithm in ['LayoutLMv2', 'LayoutXLM']:
             preds = preds[0]
-        
+
         post_result = self.post_process_class(
-            preds,
-            segment_offset_ids=batch[6],
-            ocr_infos=batch[7])
+            preds, segment_offset_ids=batch[6], ocr_infos=batch[7])
         return post_result, batch
 
 
@@ -154,4 +155,3 @@ if __name__ == '__main__':
 
             logger.info("process: [{}/{}], save result to {}".format(
                 idx, len(infer_imgs), save_img_path))
-

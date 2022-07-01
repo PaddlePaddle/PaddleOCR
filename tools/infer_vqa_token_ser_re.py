@@ -192,6 +192,6 @@ if __name__ == '__main__':
                 }, ensure_ascii=False) + "\n")
             img_res = draw_re_results(img_path, result)
             cv2.imwrite(save_img_path, img_res)
-            
+
             logger.info("process: [{}/{}], save result to {}".format(
                 idx, len(infer_imgs), save_img_path))
