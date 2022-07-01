@@ -1,12 +1,11 @@
 # PP-Structure Model list
 
-- [PP-Structure Model list](#pp-structure-model-list)
-  - [1. Layout Analysis](#1-layout-analysis)
-  - [2. OCR and Table Recognition](#2-ocr-and-table-recognition)
-    - [2.1 OCR](#21-ocr)
-    - [2.2 Table Recognition](#22-table-recognition)
-  - [3. VQA](#3-vqa)
-  - [4. KIE](#4-kie)
+- [1. Layout Analysis](#1-layout-analysis)
+- [2. OCR and Table Recognition](#2-ocr-and-table-recognition)
+  - [2.1 OCR](#21-ocr)
+  - [2.2 Table Recognition](#22-table-recognition)
+- [3. VQA](#3-vqa)
+- [4. KIE](#4-kie)
 
 
 <a name="1"></a>

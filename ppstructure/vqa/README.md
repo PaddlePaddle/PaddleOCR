@@ -1,16 +1,15 @@
 English | [简体中文](README_ch.md)
 
-- [Document Visual Question Answering](#document-visual-question-answering)
-  - [1 Introduction](#1-introduction)
-  - [2. Performance](#2-performance)
-  - [3. Effect demo](#3-effect-demo)
-    - [3.1 SER](#31-ser)
-    - [3.2 RE](#32-re)
-  - [4. Install](#4-install)
-    - [4.1 Install dependencies](#41-install-dependencies)
-    - [5.3 RE](#53-re)
-  - [6. Reference Links](#6-reference-links)
-  - [License](#license)
+- [1 Introduction](#1-introduction)
+- [2. Performance](#2-performance)
+- [3. Effect demo](#3-effect-demo)
+  - [3.1 SER](#31-ser)
+  - [3.2 RE](#32-re)
+- [4. Install](#4-install)
+  - [4.1 Install dependencies](#41-install-dependencies)
+  - [5.3 RE](#53-re)
+- [6. Reference Links](#6-reference-links)
+- [License](#license)
 
 # Document Visual Question Answering
 
@@ -212,7 +211,7 @@ python3.7 tools/export_model.py -c configs/vqa/ser/layoutxlm.yml -o Architecture
 The converted model will be stored in the directory specified by the `Global.save_inference_dir` field.
 
 * `OCR + SER` tandem prediction based on prediction engine
-  
+
 Use the following command to complete the tandem prediction of `OCR + SER` based on the prediction engine, taking the SER model based on LayoutXLM as an example:
 
 ```shell
@@ -268,7 +267,7 @@ python3 tools/infer_vqa_token_ser_re.py -c configs/vqa/re/layoutxlm.yml -o Archi
 Finally, the prediction result visualization image and the prediction result text file will be saved in the directory configured by the `config.Global.save_res_path` field. The prediction result text file is named `infer_results.txt`.
 
 * export model
-  
+
 cooming soon
 
 * `OCR + SER + RE` tandem prediction based on prediction engine

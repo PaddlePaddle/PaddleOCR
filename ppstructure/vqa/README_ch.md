@@ -1,20 +1,19 @@
 [English](README.md) | 简体中文
 
-- [文档视觉问答（DOC-VQA）](#文档视觉问答doc-vqa)
-  - [1. 简介](#1-简介)
-  - [2. 性能](#2-性能)
-  - [3. 效果演示](#3-效果演示)
-    - [3.1 SER](#31-ser)
-    - [3.2 RE](#32-re)
-  - [4. 安装](#4-安装)
-    - [4.1 安装依赖](#41-安装依赖)
-    - [4.2 安装PaddleOCR（包含 PP-OCR 和 VQA）](#42-安装paddleocr包含-pp-ocr-和-vqa)
-  - [5. 使用](#5-使用)
-    - [5.1 数据和预训练模型准备](#51-数据和预训练模型准备)
-    - [5.2 SER](#52-ser)
-    - [5.3 RE](#53-re)
-  - [6. 参考链接](#6-参考链接)
-  - [License](#license)
+- [1. 简介](#1-简介)
+- [2. 性能](#2-性能)
+- [3. 效果演示](#3-效果演示)
+  - [3.1 SER](#31-ser)
+  - [3.2 RE](#32-re)
+- [4. 安装](#4-安装)
+  - [4.1 安装依赖](#41-安装依赖)
+  - [4.2 安装PaddleOCR（包含 PP-OCR 和 VQA）](#42-安装paddleocr包含-pp-ocr-和-vqa)
+- [5. 使用](#5-使用)
+  - [5.1 数据和预训练模型准备](#51-数据和预训练模型准备)
+  - [5.2 SER](#52-ser)
+  - [5.3 RE](#53-re)
+- [6. 参考链接](#6-参考链接)
+- [License](#license)
 
 # 文档视觉问答（DOC-VQA）
 
@@ -211,7 +210,7 @@ python3.7 tools/export_model.py -c configs/vqa/ser/layoutxlm.yml -o Architecture
 转换后的模型会存放在`Global.save_inference_dir`字段指定的目录下。
 
 * 基于预测引擎的`OCR + SER`串联预测
-  
+
 使用如下命令即可完成基于预测引擎的`OCR + SER`的串联预测, 以基于LayoutXLM的SER模型为例:
 
 ```shell
@@ -266,7 +265,7 @@ python3 tools/infer_vqa_token_ser_re.py -c configs/vqa/re/layoutxlm.yml -o Archi
 最终会在`config.Global.save_res_path`字段所配置的目录下保存预测结果可视化图像以及预测结果文本文件，预测结果文本文件名为`infer_results.txt`。
 
 * 模型导出
-  
+
 cooming soon
 
 * 基于预测引擎的`OCR + SER + RE`串联预测
