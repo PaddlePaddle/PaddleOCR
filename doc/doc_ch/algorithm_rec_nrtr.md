@@ -12,6 +12,7 @@
     - [4.3 Serving服务化部署](#4-3)
     - [4.4 更多推理部署](#4-4)
 - [5. FAQ](#5)
+- [6. 发行公告](#6)
 
 <a name="1"></a>
 ## 1. 算法简介
@@ -110,7 +111,7 @@ python3 tools/infer/predict_rec.py --image_dir='./doc/imgs_words_en/word_10.png'
 执行命令后，上面图像的预测结果（识别的文本和得分）会打印到屏幕上，示例如下：
 结果如下：
 ```shell
-Predicts of ./doc/imgs_words_en/word_10.png:('pain', 0.9265879392623901)
+Predicts of ./doc/imgs_words_en/word_10.png:('pain', 0.9465042352676392)
 ```
 
 **注意**：
@@ -140,12 +141,147 @@ Predicts of ./doc/imgs_words_en/word_10.png:('pain', 0.9265879392623901)
 
 1. `NRTR`论文中使用Beam搜索进行解码字符，但是速度较慢，这里默认未使用Beam搜索，以贪婪搜索进行解码字符。
 
+<a name="6"></a>
+## 6. 发行公告
+
+1. release/2.6更新NRTR代码结构，新版NRTR可加载旧版(release/2.5及之前)模型参数，使用下面示例代码将旧版模型参数转换为新版模型参数：
+
+```python
+
+    params = paddle.load('path/' + '.pdparams') # 旧版本参数
+    state_dict = model.state_dict() # 新版模型参数
+    new_state_dict = {}
+
+    for k1, v1 in state_dict.items():
+
+        k = k1
+        if 'encoder' in k and 'self_attn' in k and 'qkv' in k and 'weight' in k:
+
+            k_para = k[:13] + 'layers.' + k[13:]
+            q = params[k_para.replace('qkv', 'conv1')].transpose((1, 0, 2, 3))
+            k = params[k_para.replace('qkv', 'conv2')].transpose((1, 0, 2, 3))
+            v = params[k_para.replace('qkv', 'conv3')].transpose((1, 0, 2, 3))
+
+            new_state_dict[k1] = np.concatenate([q[:, :, 0, 0], k[:, :, 0, 0], v[:, :, 0, 0]], -1)
+
+        elif 'encoder' in k and 'self_attn' in k and 'qkv' in k and 'bias' in k:
+
+            k_para = k[:13] + 'layers.' + k[13:]
+            q = params[k_para.replace('qkv', 'conv1')]
+            k = params[k_para.replace('qkv', 'conv2')]
+            v = params[k_para.replace('qkv', 'conv3')]
+
+            new_state_dict[k1] = np.concatenate([q, k, v], -1)
+
+        elif 'encoder' in k and 'self_attn' in k and 'out_proj' in k:
+
+            k_para = k[:13] + 'layers.' + k[13:]
+            new_state_dict[k1] = params[k_para]
+
+        elif 'encoder' in k and 'norm3' in k:
+            k_para = k[:13] + 'layers.' + k[13:]
+            new_state_dict[k1] = params[k_para.replace('norm3', 'norm2')]
+
+        elif 'encoder' in k and 'norm1' in k:
+            k_para = k[:13] + 'layers.' + k[13:]
+            new_state_dict[k1] = params[k_para]
+
+
+        elif 'decoder' in k and 'self_attn' in k and 'qkv' in k and 'weight' in k:
+            k_para = k[:13] + 'layers.' + k[13:]
+            q = params[k_para.replace('qkv', 'conv1')].transpose((1, 0, 2, 3))
+            k = params[k_para.replace('qkv', 'conv2')].transpose((1, 0, 2, 3))
+            v = params[k_para.replace('qkv', 'conv3')].transpose((1, 0, 2, 3))
+            new_state_dict[k1] = np.concatenate([q[:, :, 0, 0], k[:, :, 0, 0], v[:, :, 0, 0]], -1)
+
+        elif 'decoder' in k and 'self_attn' in k and 'qkv' in k and 'bias' in k:
+            k_para = k[:13] + 'layers.' + k[13:]
+            q = params[k_para.replace('qkv', 'conv1')]
+            k = params[k_para.replace('qkv', 'conv2')]
+            v = params[k_para.replace('qkv', 'conv3')]
+            new_state_dict[k1] = np.concatenate([q, k, v], -1)
+
+        elif 'decoder' in k and 'self_attn' in k and 'out_proj' in k:
+
+            k_para = k[:13] + 'layers.' + k[13:]
+            new_state_dict[k1] = params[k_para]
+
+        elif 'decoder' in k and 'cross_attn' in k and 'q' in k and 'weight' in k:
+            k_para = k[:13] + 'layers.' + k[13:]
+            k_para = k_para.replace('cross_attn', 'multihead_attn')
+            q = params[k_para.replace('q', 'conv1')].transpose((1, 0, 2, 3))
+            new_state_dict[k1] = q[:, :, 0, 0]
+
+        elif 'decoder' in k and 'cross_attn' in k and 'q' in k and 'bias' in k:
+            k_para = k[:13] + 'layers.' + k[13:]
+            k_para = k_para.replace('cross_attn', 'multihead_attn')
+            q = params[k_para.replace('q', 'conv1')]
+            new_state_dict[k1] = q
+
+        elif 'decoder' in k and 'cross_attn' in k and 'kv' in k and 'weight' in k:
+            k_para = k[:13] + 'layers.' + k[13:]
+            k_para = k_para.replace('cross_attn', 'multihead_attn')
+            k = params[k_para.replace('kv', 'conv2')].transpose((1, 0, 2, 3))
+            v = params[k_para.replace('kv', 'conv3')].transpose((1, 0, 2, 3))
+            new_state_dict[k1] = np.concatenate([k[:, :, 0, 0], v[:, :, 0, 0]], -1)
+
+        elif 'decoder' in k and 'cross_attn' in k and 'kv' in k and 'bias' in k:
+            k_para = k[:13] + 'layers.' + k[13:]
+            k_para = k_para.replace('cross_attn', 'multihead_attn')
+            k = params[k_para.replace('kv', 'conv2')]
+            v = params[k_para.replace('kv', 'conv3')]
+            new_state_dict[k1] = np.concatenate([k, v], -1)
+
+        elif 'decoder' in k and 'cross_attn' in k and 'out_proj' in k:
+
+            k_para = k[:13] + 'layers.' + k[13:]
+            k_para = k_para.replace('cross_attn', 'multihead_attn')
+            new_state_dict[k1] = params[k_para]
+        elif 'decoder' in k and 'norm' in k:
+            k_para = k[:13] + 'layers.' + k[13:]
+            new_state_dict[k1] = params[k_para]
+        elif 'mlp' in k and 'weight' in k:
+            k_para = k[:13] + 'layers.' + k[13:]
+            k_para = k_para.replace('fc', 'conv')
+            k_para = k_para.replace('mlp.', '')
+            w = params[k_para].transpose((1, 0, 2, 3))
+            new_state_dict[k1] = w[:, :, 0, 0]
+        elif 'mlp' in k and 'bias' in k:
+            k_para = k[:13] + 'layers.' + k[13:]
+            k_para = k_para.replace('fc', 'conv')
+            k_para = k_para.replace('mlp.', '')
+            w = params[k_para]
+            new_state_dict[k1] = w
+
+        else:
+            new_state_dict[k1] = params[k1]
+
+        if list(new_state_dict[k1].shape) != list(v1.shape):
+            print(k1)
+
+
+    for k, v1 in state_dict.items():
+        if k not in new_state_dict.keys():
+            print(1, k)
+        elif list(new_state_dict[k].shape) != list(v1.shape):
+            print(2, k)
+
+
+
+    model.set_state_dict(new_state_dict)
+    paddle.save(model.state_dict(), 'nrtrnew_from_old_params.pdparams')
+
+```
+
+2. 新版相比与旧版，代码结构简洁，推理速度有所提高。
+
+
 ## 引用
 
 ```bibtex
 @article{Sheng2019NRTR,
   title     = {NRTR: A No-Recurrence Sequence-to-Sequence Model For Scene Text Recognition},
-  author    = {Fenfen Sheng and Zhineng Chen andBo Xu},
+  author    = {Fenfen Sheng and Zhineng Chen and Bo Xu},
   booktitle = {ICDAR},
   year      = {2019},
   url       = {http://arxiv.org/abs/1806.00926},

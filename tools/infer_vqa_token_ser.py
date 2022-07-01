@@ -86,15 +86,16 @@ class SerPredictor(object):
                 ]
 
             transforms.append(op)
-        global_config['infer_mode'] = True
+        if config["Global"].get("infer_mode", None) is None:
+            global_config['infer_mode'] = True
         self.ops = create_operators(config['Eval']['dataset']['transforms'],
                                     global_config)
         self.model.eval()
 
-    def __call__(self, img_path):
-        with open(img_path, 'rb') as f:
+    def __call__(self, data):
+        with open(data["img_path"], 'rb') as f:
             img = f.read()
-            data = {'image': img}
+        data["image"] = img
         batch = transform(data, self.ops)
         batch = to_tensor(batch)
         preds = self.model(batch)
@@ -112,20 +113,35 @@ if __name__ == '__main__':
 
     ser_engine = SerPredictor(config)
 
-    infer_imgs = get_image_file_list(config['Global']['infer_img'])
+    if config["Global"].get("infer_mode", None) is False:
+        data_dir = config['Eval']['dataset']['data_dir']
+        with open(config['Global']['infer_img'], "rb") as f:
+            infer_imgs = f.readlines()
+    else:
+        infer_imgs = get_image_file_list(config['Global']['infer_img'])
+
     with open(
             os.path.join(config['Global']['save_res_path'],
                          "infer_results.txt"),
             "w",
             encoding='utf-8') as fout:
-        for idx, img_path in enumerate(infer_imgs):
+        for idx, info in enumerate(infer_imgs):
+            if config["Global"].get("infer_mode", None) is False:
+                data_line = info.decode('utf-8')
+                substr = data_line.strip("\n").split("\t")
+                img_path = os.path.join(data_dir, substr[0])
+                data = {'img_path': img_path, 'label': substr[1]}
+            else:
+                img_path = info
+                data = {'img_path': img_path}
+
             save_img_path = os.path.join(
                 config['Global']['save_res_path'],
                 os.path.splitext(os.path.basename(img_path))[0] + "_ser.jpg")
             logger.info("process: [{}/{}], save result to {}".format(
                 idx, len(infer_imgs), save_img_path))
 
-            result, _ = ser_engine(img_path)
+            result, _ = ser_engine(data)
             result = result[0]
             fout.write(img_path + "\t" + json.dumps(
                 {
