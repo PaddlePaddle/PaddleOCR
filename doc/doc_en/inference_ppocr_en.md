@@ -89,6 +89,9 @@ tar xf en_PP-OCRv3_det_infer.tar
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/en/word_1.png" --rec_model_dir="./en_PP-OCRv3_det_infer/" --rec_char_dict_path="ppocr/utils/en_dict.txt"
 ```
 
+![](../imgs_words/en/word_1.png)
+
+
 After executing the command, the prediction result of the above figure is:
 
 ```
