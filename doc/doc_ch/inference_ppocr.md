@@ -7,7 +7,8 @@
   - [1. 文本检测模型推理](#1-文本检测模型推理)
   - [2. 文本识别模型推理](#2-文本识别模型推理)
     - [2.1 超轻量中文识别模型推理](#21-超轻量中文识别模型推理)
-    - [2.2 多语言模型的推理](#22-多语言模型的推理)
+    - [2.2 英文识别模型推理](#22-英文识别模型推理)
+    - [2.3 多语言模型的推理](#23-多语言模型的推理)
   - [3. 方向分类模型推理](#3-方向分类模型推理)
   - [4. 文本检测、方向分类和文字识别串联推理](#4-文本检测方向分类和文字识别串联推理)
 
@@ -78,9 +79,9 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" 
 Predicts of ./doc/imgs_words/ch/word_4.jpg:('实力活力', 0.9956803321838379)
 ```
 
-<a name="英文模型的推理"></a>
+<a name="英文识别模型推理"></a>
 
-### 2.2 英文模型的推理
+### 2.2 英文识别模型推理
 
 英文识别模型推理，可以执行如下命令， 注意修改字典路径：
 
@@ -90,6 +91,8 @@ wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar
 tar xf en_PP-OCRv3_det_infer.tar
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/en/word_1.png" --rec_model_dir="./en_PP-OCRv3_det_infer/" --rec_char_dict_path="ppocr/utils/en_dict.txt"
 ```
+
+![](../imgs_words/en/word_1.png)
 
 执行命令后，上图的预测结果为：
 
