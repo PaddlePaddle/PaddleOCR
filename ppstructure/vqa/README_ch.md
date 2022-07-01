@@ -14,6 +14,7 @@
     - [5.2 SER](#52-ser)
     - [5.3 RE](#53-re)
   - [6. 参考链接](#6-参考链接)
+  - [License](#license)
 
 # 文档视觉问答（DOC-VQA）
 
@@ -183,16 +184,16 @@ CUDA_VISIBLE_DEVICES=0 python3 tools/eval.py -c configs/vqa/ser/layoutxlm.yml -o
 ```
 最终会打印出`precision`, `recall`, `hmean`等指标
 
-* 使用`OCR引擎 + SER`串联预测
+* 基于训练引擎的`OCR + SER`串联预测
 
-使用如下命令即可完成`OCR引擎 + SER`的串联预测, 以SER预训练模型为例:
+使用如下命令即可完成基于训练引擎的`OCR + SER`的串联预测, 以基于LayoutXLM的SER模型为例:
 ```shell
 CUDA_VISIBLE_DEVICES=0 python3 tools/infer_vqa_token_ser.py -c configs/vqa/ser/layoutxlm.yml  -o Architecture.Backbone.checkpoints=pretrain/ser_LayoutXLM_xfun_zh/ Global.infer_img=doc/vqa/input/zh_val_42.jpg
 ```
 
 最终会在`config.Global.save_res_path`字段所配置的目录下保存预测结果可视化图像以及预测结果文本文件，预测结果文本文件名为`infer_results.txt`。
 
-* 对`OCR引擎 + SER`预测系统进行端到端评估
+* 对`OCR + SER`预测系统进行端到端评估
 
 首先使用 `tools/infer_vqa_token_ser.py` 脚本完成数据集的预测，然后使用下面的命令进行评估。
 
@@ -200,6 +201,24 @@ CUDA_VISIBLE_DEVICES=0 python3 tools/infer_vqa_token_ser.py -c configs/vqa/ser/l
 export CUDA_VISIBLE_DEVICES=0
 python3 tools/eval_with_label_end2end.py --gt_json_path XFUND/zh_val/xfun_normalize_val.json  --pred_json_path output_res/infer_results.txt
 ```
+* 模型导出
+
+使用如下命令即可完成SER模型的模型导出, 以基于LayoutXLM的SER模型为例:
+
+```shell
+python3.7 tools/export_model.py -c configs/vqa/ser/layoutxlm.yml -o Architecture.Backbone.checkpoints=pretrain/ser_LayoutXLM_xfun_zh/ Global.save_inference_dir=output/ser/infer
+```
+转换后的模型会存放在`Global.save_inference_dir`字段指定的目录下。
+
+* 基于预测引擎的`OCR + SER`串联预测
+  
+使用如下命令即可完成基于预测引擎的`OCR + SER`的串联预测, 以基于LayoutXLM的SER模型为例:
+
+```shell
+cd ppstructure
+CUDA_VISIBLE_DEVICES=0 python3.7 vqa/predict_vqa_token_ser.py --vqa_algorithm=LayoutXLM --ser_model_dir=../output/ser/infer --ser_dict_path=../train_data/XFUND/class_list_xfun.txt --image_dir=docs/vqa/input/zh_val_42.jpg --output=output
+```
+预测成功后，可视化图片和结果会保存在`output`字段指定的目录下
 
 ### 5.3 RE
 
@@ -236,15 +255,23 @@ CUDA_VISIBLE_DEVICES=0 python3 tools/eval.py -c configs/vqa/re/layoutxlm.yml -o 
 ```
 最终会打印出`precision`, `recall`, `hmean`等指标
 
-* 使用`OCR引擎 + SER + RE`串联预测
+* 基于训练引擎的`OCR + SER + RE`串联预测
 
-使用如下命令即可完成`OCR引擎 + SER + RE`的串联预测, 以预训练SER和RE模型为例：
+使用如下命令即可完成基于训练引擎的`OCR + SER + RE`串联预测, 以基于LayoutXLMSER和RE模型为例：
 ```shell
 export CUDA_VISIBLE_DEVICES=0
-python3 tools/infer_vqa_token_ser_re.py -c configs/vqa/re/layoutxlm.yml -o Architecture.Backbone.checkpoints=pretrain/re_LayoutXLM_xfun_zh/ Global.infer_img=doc/vqa/input/zh_val_21.jpg -c_ser configs/vqa/ser/layoutxlm.yml -o_ser Architecture.Backbone.checkpoints=pretrain/ser_LayoutXLM_xfun_zh/
+python3 tools/infer_vqa_token_ser_re.py -c configs/vqa/re/layoutxlm.yml -o Architecture.Backbone.checkpoints=pretrain/re_LayoutXLM_xfun_zh/ Global.infer_img=ppstructure/docs/vqa/input/zh_val_21.jpg -c_ser configs/vqa/ser/layoutxlm.yml -o_ser Architecture.Backbone.checkpoints=pretrain/ser_LayoutXLM_xfun_zh/
 ```
 
 最终会在`config.Global.save_res_path`字段所配置的目录下保存预测结果可视化图像以及预测结果文本文件，预测结果文本文件名为`infer_results.txt`。
+
+* 模型导出
+  
+cooming soon
+
+* 基于预测引擎的`OCR + SER + RE`串联预测
+
+cooming soon
 
 ## 6. 参考链接
 

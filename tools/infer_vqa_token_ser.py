@@ -44,6 +44,7 @@ def to_tensor(data):
     from collections import defaultdict
     data_dict = defaultdict(list)
     to_tensor_idxs = []
+    
     for idx, v in enumerate(data):
         if isinstance(v, (np.ndarray, paddle.Tensor, numbers.Number)):
             if idx not in to_tensor_idxs:
@@ -57,6 +58,7 @@ def to_tensor(data):
 class SerPredictor(object):
     def __init__(self, config):
         global_config = config['Global']
+        self.algorithm = config['Architecture']["algorithm"]
 
         # build post process
         self.post_process_class = build_post_process(config['PostProcess'],
@@ -70,7 +72,7 @@ class SerPredictor(object):
 
         from paddleocr import PaddleOCR
 
-        self.ocr_engine = PaddleOCR(use_angle_cls=False, show_log=False)
+        self.ocr_engine = PaddleOCR(use_angle_cls=False, show_log=False, use_gpu=global_config['use_gpu'])
 
         # create data ops
         transforms = []
@@ -80,8 +82,8 @@ class SerPredictor(object):
                 op[op_name]['ocr_engine'] = self.ocr_engine
             elif op_name == 'KeepKeys':
                 op[op_name]['keep_keys'] = [
-                    'input_ids', 'labels', 'bbox', 'image', 'attention_mask',
-                    'token_type_ids', 'segment_offset_id', 'ocr_info',
+                    'input_ids', 'bbox', 'attention_mask', 'token_type_ids', 'image', 'labels',
+                    'segment_offset_id', 'ocr_info',
                     'entities'
                 ]
 
@@ -99,9 +101,11 @@ class SerPredictor(object):
         batch = transform(data, self.ops)
         batch = to_tensor(batch)
         preds = self.model(batch)
+        if self.algorithm in ['LayoutLMv2', 'LayoutXLM']:
+            preds = preds[0]
+        
         post_result = self.post_process_class(
             preds,
-            attention_masks=batch[4],
             segment_offset_ids=batch[6],
             ocr_infos=batch[7])
         return post_result, batch
@@ -138,8 +142,6 @@ if __name__ == '__main__':
             save_img_path = os.path.join(
                 config['Global']['save_res_path'],
                 os.path.splitext(os.path.basename(img_path))[0] + "_ser.jpg")
-            logger.info("process: [{}/{}], save result to {}".format(
-                idx, len(infer_imgs), save_img_path))
 
             result, _ = ser_engine(data)
             result = result[0]
@@ -149,3 +151,7 @@ if __name__ == '__main__':
                 }, ensure_ascii=False) + "\n")
             img_res = draw_ser_results(img_path, result)
             cv2.imwrite(save_img_path, img_res)
+
+            logger.info("process: [{}/{}], save result to {}".format(
+                idx, len(infer_imgs), save_img_path))
+

@@ -41,11 +41,13 @@ class VQASerTokenLayoutLMPostProcess(object):
                 self.id2label_map_for_show[val] = key
 
     def __call__(self, preds, batch=None, *args, **kwargs):
+        if isinstance(preds, tuple):
+            preds = preds[0]
         if isinstance(preds, paddle.Tensor):
             preds = preds.numpy()
 
         if batch is not None:
-            return self._metric(preds, batch[1])
+            return self._metric(preds, batch[5])
         else:
             return self._infer(preds, **kwargs)
 
@@ -63,11 +65,10 @@ class VQASerTokenLayoutLMPostProcess(object):
                                                                           j]])
         return decode_out_list, label_decode_out_list
 
-    def _infer(self, preds, attention_masks, segment_offset_ids, ocr_infos):
+    def _infer(self, preds, segment_offset_ids, ocr_infos):
         results = []
 
-        for pred, attention_mask, segment_offset_id, ocr_info in zip(
-                preds, attention_masks, segment_offset_ids, ocr_infos):
+        for pred, segment_offset_id, ocr_info in zip(preds, segment_offset_ids, ocr_infos):
             pred = np.argmax(pred, axis=1)
             pred = [self.id2label_map[idx] for idx in pred]
 

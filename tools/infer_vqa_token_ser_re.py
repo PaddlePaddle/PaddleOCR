@@ -38,7 +38,7 @@ from ppocr.utils.save_load import load_model
 from ppocr.utils.visual import draw_re_results
 from ppocr.utils.logging import get_logger
 from ppocr.utils.utility import get_image_file_list, load_vqa_bio_label_maps, print_dict
-from tools.program import ArgsParser, load_config, merge_config, check_gpu
+from tools.program import ArgsParser, load_config, merge_config
 from tools.infer_vqa_token_ser import SerPredictor
 
 
@@ -107,7 +107,7 @@ def make_input(ser_inputs, ser_results):
     # remove ocr_info segment_offset_id and label in ser input
     ser_inputs.pop(7)
     ser_inputs.pop(6)
-    ser_inputs.pop(1)
+    ser_inputs.pop(5)
     return ser_inputs, entity_idx_dict_batch
 
 
@@ -131,9 +131,7 @@ class SerRePredictor(object):
         self.model.eval()
 
     def __call__(self, img_path):
-        ser_results, ser_inputs = self.ser_engine(img_path)
-        paddle.save(ser_inputs, 'ser_inputs.npy')
-        paddle.save(ser_results, 'ser_results.npy')
+        ser_results, ser_inputs = self.ser_engine({'img_path': img_path})
         re_input, entity_idx_dict_batch = make_input(ser_inputs, ser_results)
         preds = self.model(re_input)
         post_result = self.post_process_class(
@@ -155,7 +153,6 @@ def preprocess():
 
     # check if set use_gpu=True in paddlepaddle cpu version
     use_gpu = config['Global']['use_gpu']
-    check_gpu(use_gpu)
 
     device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'
     device = paddle.set_device(device)
@@ -185,9 +182,7 @@ if __name__ == '__main__':
         for idx, img_path in enumerate(infer_imgs):
             save_img_path = os.path.join(
                 config['Global']['save_res_path'],
-                os.path.splitext(os.path.basename(img_path))[0] + "_ser.jpg")
-            logger.info("process: [{}/{}], save result to {}".format(
-                idx, len(infer_imgs), save_img_path))
+                os.path.splitext(os.path.basename(img_path))[0] + "_ser_re.jpg")
 
             result = ser_re_engine(img_path)
             result = result[0]
@@ -197,3 +192,6 @@ if __name__ == '__main__':
                 }, ensure_ascii=False) + "\n")
             img_res = draw_re_results(img_path, result)
             cv2.imwrite(save_img_path, img_res)
+            
+            logger.info("process: [{}/{}], save result to {}".format(
+                idx, len(infer_imgs), save_img_path))

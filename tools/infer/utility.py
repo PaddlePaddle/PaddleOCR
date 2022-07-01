@@ -153,6 +153,8 @@ def create_predictor(args, mode, logger):
         model_dir = args.rec_model_dir
     elif mode == 'table':
         model_dir = args.table_model_dir
+    elif mode == 'ser':
+        model_dir = args.ser_model_dir
     else:
         model_dir = args.e2e_model_dir
 
@@ -316,8 +318,13 @@ def create_predictor(args, mode, logger):
         # create predictor
         predictor = inference.create_predictor(config)
         input_names = predictor.get_input_names()
-        for name in input_names:
-            input_tensor = predictor.get_input_handle(name)
+        if mode in ['ser','re']:
+            input_tensor = []
+            for name in input_names:
+                input_tensor.append(predictor.get_input_handle(name))
+        else:
+            for name in input_names:
+                input_tensor = predictor.get_input_handle(name)
         output_tensors = get_output_tensors(args, mode, predictor)
         return predictor, input_tensor, output_tensors, config
 
