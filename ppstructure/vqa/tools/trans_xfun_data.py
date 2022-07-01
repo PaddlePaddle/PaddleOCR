@@ -21,26 +21,22 @@ def transfer_xfun_data(json_path=None, output_file=None):
 
     json_info = json.loads(lines[0])
     documents = json_info["documents"]
-    label_info = {}
     with open(output_file, "w", encoding='utf-8') as fout:
         for idx, document in enumerate(documents):
+            label_info = []
             img_info = document["img"]
             document = document["document"]
             image_path = img_info["fname"]
 
-            label_info["height"] = img_info["height"]
-            label_info["width"] = img_info["width"]
-
-            label_info["ocr_info"] = []
-
             for doc in document:
-                label_info["ocr_info"].append({
-                    "text": doc["text"],
+                x1, y1, x2, y2 = doc["box"]
+                points = [[x1, y1], [x2, y1], [x2, y2], [x1, y2]]
+                label_info.append({
+                    "transcription": doc["text"],
                     "label": doc["label"],
-                    "bbox": doc["box"],
+                    "points": points,
                     "id": doc["id"],
-                    "linking": doc["linking"],
-                    "words": doc["words"]
+                    "linking": doc["linking"]
                 })
 
             fout.write(image_path + "\t" + json.dumps(

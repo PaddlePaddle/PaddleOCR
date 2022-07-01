@@ -11,7 +11,7 @@ Global:
   save_inference_dir:
   use_visualdl: False
   seed: 2022
-  infer_img: doc/vqa/input/zh_val_42.jpg
+  infer_img: ppstructure/docs/vqa/input/zh_val_42.jpg
   save_res_path: ./output/ser
 
 Architecture:
@@ -54,7 +54,7 @@ Train:
     name: SimpleDataSet
     data_dir: train_data/XFUND/zh_train/image
     label_file_list: 
-      - train_data/XFUND/zh_train/xfun_normalize_train.json
+      - train_data/XFUND/zh_train/train.json
     ratio_list: [ 1.0 ]
     transforms:
       - DecodeImage: # load image
@@ -90,7 +90,7 @@ Eval:
     name: SimpleDataSet
     data_dir: train_data/XFUND/zh_val/image
     label_file_list:
-      - train_data/XFUND/zh_val/xfun_normalize_val.json
+      - train_data/XFUND/zh_val/val.json
     transforms:
       - DecodeImage: # load image
           img_mode: RGB

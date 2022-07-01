@@ -87,11 +87,12 @@ function func_serving(){
     set_image_dir=$(func_set_params "${image_dir_key}" "${image_dir_value}")
     python_list=(${python_list})
     cd ${serving_dir_value}
+    
     # cpp serving
     for gpu_id in ${gpu_value[*]}; do
         if [ ${gpu_id} = "null" ]; then
             server_log_path="${LOG_PATH}/cpp_server_cpu.log"
-            web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${det_server_value} ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} > ${server_log_path} 2>&1 "
+            web_service_cpp_cmd="nohup ${python_list[0]} ${web_service_py} --model ${det_server_value} ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} > ${server_log_path} 2>&1 &"
             eval $web_service_cpp_cmd
             last_status=${PIPESTATUS[0]}
             status_check $last_status "${web_service_cpp_cmd}" "${status_log}" "${model_name}"
@@ -105,7 +106,7 @@ function func_serving(){
             ps ux | grep -i ${port_value} | awk '{print $2}' | xargs kill -s 9
         else
             server_log_path="${LOG_PATH}/cpp_server_gpu.log"
-            web_service_cpp_cmd="${python_list[0]} ${web_service_py} --model ${det_server_value} ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} ${gpu_key} ${gpu_id} > ${server_log_path} 2>&1 "
+            web_service_cpp_cmd="nohup ${python_list[0]} ${web_service_py} --model ${det_server_value} ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} ${gpu_key} ${gpu_id} > ${server_log_path} 2>&1 &"
             eval $web_service_cpp_cmd
             sleep 5s
             _save_log_path="${LOG_PATH}/cpp_client_gpu.log"

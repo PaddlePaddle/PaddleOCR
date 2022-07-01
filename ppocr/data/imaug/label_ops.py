@@ -157,37 +157,6 @@ class BaseRecLabelEncode(object):
         return text_list
 
 
-class NRTRLabelEncode(BaseRecLabelEncode):
-    """ Convert between text-label and text-index """
-
-    def __init__(self,
-                 max_text_length,
-                 character_dict_path=None,
-                 use_space_char=False,
-                 **kwargs):
-
-        super(NRTRLabelEncode, self).__init__(
-            max_text_length, character_dict_path, use_space_char)
-
-    def __call__(self, data):
-        text = data['label']
-        text = self.encode(text)
-        if text is None:
-            return None
-        if len(text) >= self.max_text_len - 1:
-            return None
-        data['length'] = np.array(len(text))
-        text.insert(0, 2)
-        text.append(3)
-        text = text + [0] * (self.max_text_len - len(text))
-        data['label'] = np.array(text)
-        return data
-
-    def add_special_char(self, dict_character):
-        dict_character = ['blank', '<unk>', '<s>', '</s>'] + dict_character
-        return dict_character
-
-
 class CTCLabelEncode(BaseRecLabelEncode):
     """ Convert between text-label and text-index """
 
@@ -290,15 +259,26 @@ class E2ELabelEncodeTrain(object):
 
 
 class KieLabelEncode(object):
-    def __init__(self, character_dict_path, norm=10, directed=False, **kwargs):
+    def __init__(self,
+                 character_dict_path,
+                 class_path,
+                 norm=10,
+                 directed=False,
+                 **kwargs):
         super(KieLabelEncode, self).__init__()
         self.dict = dict({'': 0})
+        self.label2classid_map = dict()
         with open(character_dict_path, 'r', encoding='utf-8') as fr:
             idx = 1
             for line in fr:
                 char = line.strip()
                 self.dict[char] = idx
                 idx += 1
+        with open(class_path, "r") as fin:
+            lines = fin.readlines()
+            for idx, line in enumerate(lines):
+                line = line.strip("\n")
+                self.label2classid_map[line] = idx
         self.norm = norm
         self.directed = directed
 
@@ -439,7 +419,7 @@ class KieLabelEncode(object):
             text_ind = [self.dict[c] for c in text if c in self.dict]
             text_inds.append(text_ind)
             if 'label' in ann.keys():
-                labels.append(ann['label'])
+                labels.append(self.label2classid_map[ann['label']])
             elif 'key_cls' in ann.keys():
                 labels.append(ann['key_cls'])
             else:
@@ -907,15 +887,16 @@ class VQATokenLabelEncode(object):
         for info in ocr_info:
             if train_re:
                 # for re
-                if len(info["text"]) == 0:
+                if len(info["transcription"]) == 0:
                     empty_entity.add(info["id"])
                     continue
                 id2label[info["id"]] = info["label"]
                 relations.extend([tuple(sorted(l)) for l in info["linking"]])
             # smooth_box
+            info["bbox"] = self.trans_poly_to_bbox(info["points"])
             bbox = self._smooth_box(info["bbox"], height, width)
 
-            text = info["text"]
+            text = info["transcription"]
             encode_res = self.tokenizer.encode(
                 text, pad_to_max_seq_len=False, return_attention_mask=True)
 
@@ -931,7 +912,7 @@ class VQATokenLabelEncode(object):
                 label = info['label']
                 gt_label = self._parse_label(label, encode_res)
 
-            # construct entities for re
+# construct entities for re
             if train_re:
                 if gt_label[0] != self.label2id_map["O"]:
                     entity_id_to_index_map[info["id"]] = len(entities)
@@ -975,29 +956,29 @@ class VQATokenLabelEncode(object):
             data['entity_id_to_index_map'] = entity_id_to_index_map
         return data
 
-    def _load_ocr_info(self, data):
-        def trans_poly_to_bbox(poly):
-            x1 = np.min([p[0] for p in poly])
-            x2 = np.max([p[0] for p in poly])
-            y1 = np.min([p[1] for p in poly])
-            y2 = np.max([p[1] for p in poly])
-            return [x1, y1, x2, y2]
+    def trans_poly_to_bbox(self, poly):
+        x1 = np.min([p[0] for p in poly])
+        x2 = np.max([p[0] for p in poly])
+        y1 = np.min([p[1] for p in poly])
+        y2 = np.max([p[1] for p in poly])
+        return [x1, y1, x2, y2]
 
+    def _load_ocr_info(self, data):
         if self.infer_mode:
             ocr_result = self.ocr_engine.ocr(data['image'], cls=False)
             ocr_info = []
             for res in ocr_result:
                 ocr_info.append({
-                    "text": res[1][0],
-                    "bbox": trans_poly_to_bbox(res[0]),
-                    "poly": res[0],
+                    "transcription": res[1][0],
+                    "bbox": self.trans_poly_to_bbox(res[0]),
+                    "points": res[0],
                 })
             return ocr_info
         else:
             info = data['label']
             # read text info
             info_dict = json.loads(info)
-            return info_dict["ocr_info"]
+            return info_dict
 
     def _smooth_box(self, bbox, height, width):
         bbox[0] = int(bbox[0] * 1000.0 / width)
@@ -1008,7 +989,7 @@ class VQATokenLabelEncode(object):
 
     def _parse_label(self, label, encode_res):
         gt_label = []
-        if label.lower() == "other":
+        if label.lower() in ["other", "others", "ignore"]:
             gt_label.extend([0] * len(encode_res["input_ids"]))
         else:
             gt_label.append(self.label2id_map[("b-" + label).upper()])
@@ -1046,3 +1027,99 @@ class MultiLabelEncode(BaseRecLabelEncode):
         data_out['label_sar'] = sar['label']
         data_out['length'] = ctc['length']
         return data_out
+
+
+class NRTRLabelEncode(BaseRecLabelEncode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 use_space_char=False,
+                 **kwargs):
+
+        super(NRTRLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
+
+    def __call__(self, data):
+        text = data['label']
+        text = self.encode(text)
+        if text is None:
+            return None
+        if len(text) >= self.max_text_len - 1:
+            return None
+        data['length'] = np.array(len(text))
+        text.insert(0, 2)
+        text.append(3)
+        text = text + [0] * (self.max_text_len - len(text))
+        data['label'] = np.array(text)
+        return data
+
+    def add_special_char(self, dict_character):
+        dict_character = ['blank', '<unk>', '<s>', '</s>'] + dict_character
+        return dict_character
+
+
+class ViTSTRLabelEncode(BaseRecLabelEncode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 use_space_char=False,
+                 ignore_index=0,
+                 **kwargs):
+
+        super(ViTSTRLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
+        self.ignore_index = ignore_index
+
+    def __call__(self, data):
+        text = data['label']
+        text = self.encode(text)
+        if text is None:
+            return None
+        if len(text) >= self.max_text_len:
+            return None
+        data['length'] = np.array(len(text))
+        text.insert(0, self.ignore_index)
+        text.append(1)
+        text = text + [self.ignore_index] * (self.max_text_len + 2 - len(text))
+        data['label'] = np.array(text)
+        return data
+
+    def add_special_char(self, dict_character):
+        dict_character = ['<s>', '</s>'] + dict_character
+        return dict_character
+
+
+class ABINetLabelEncode(BaseRecLabelEncode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 use_space_char=False,
+                 ignore_index=100,
+                 **kwargs):
+
+        super(ABINetLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
+        self.ignore_index = ignore_index
+
+    def __call__(self, data):
+        text = data['label']
+        text = self.encode(text)
+        if text is None:
+            return None
+        if len(text) >= self.max_text_len:
+            return None
+        data['length'] = np.array(len(text))
+        text.append(0)
+        text = text + [self.ignore_index] * (self.max_text_len + 1 - len(text))
+        data['label'] = np.array(text)
+        return data
+
+    def add_special_char(self, dict_character):
+        dict_character = ['</s>'] + dict_character
+        return dict_character

@@ -112,7 +112,7 @@ function func_serving(){
     
     cd ${serving_dir_value}
     python=${python_list[0]}
-        
+    
     # python serving
     for use_gpu in ${web_use_gpu_list[*]}; do
         if [ ${use_gpu} = "null" ]; then
@@ -123,19 +123,19 @@ function func_serving(){
                     if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0" ] || [ ${model_name} = "ch_ppocr_server_v2.0" ]; then
                         set_det_model_config=$(func_set_params "${det_server_key}" "${det_server_value}")
                         set_rec_model_config=$(func_set_params "${rec_server_key}" "${rec_server_value}")
-                        web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}="" ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_det_model_config} ${set_rec_model_config} > ${server_log_path} 2>&1 "
+                        web_service_cmd="nohup ${python} ${web_service_py} ${web_use_gpu_key}="" ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_det_model_config} ${set_rec_model_config} > ${server_log_path} 2>&1 &"
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
                         status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
                     elif [[ ${model_name} =~ "det" ]]; then
                         set_det_model_config=$(func_set_params "${det_server_key}" "${det_server_value}")
-                        web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}="" ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_det_model_config} > ${server_log_path} 2>&1 "
+                        web_service_cmd="nohup ${python} ${web_service_py} ${web_use_gpu_key}="" ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_det_model_config} > ${server_log_path} 2>&1 &"
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
                         status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
                     elif [[ ${model_name} =~ "rec" ]]; then
                         set_rec_model_config=$(func_set_params "${rec_server_key}" "${rec_server_value}")
-                        web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}="" ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_rec_model_config} > ${server_log_path} 2>&1 "
+                        web_service_cmd="nohup ${python} ${web_service_py} ${web_use_gpu_key}="" ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_rec_model_config} > ${server_log_path} 2>&1 &"
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
                         status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
@@ -174,19 +174,19 @@ function func_serving(){
                     if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0" ] || [ ${model_name} = "ch_ppocr_server_v2.0" ]; then
                         set_det_model_config=$(func_set_params "${det_server_key}" "${det_server_value}")
                         set_rec_model_config=$(func_set_params "${rec_server_key}" "${rec_server_value}")
-                        web_service_cmd="${python} ${web_service_py} ${set_tensorrt} ${set_precision} ${set_det_model_config} ${set_rec_model_config} > ${server_log_path} 2>&1 "
+                        web_service_cmd="nohup ${python} ${web_service_py} ${set_tensorrt} ${set_precision} ${set_det_model_config} ${set_rec_model_config} > ${server_log_path} 2>&1 &"
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
                         status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
                     elif [[ ${model_name} =~ "det" ]]; then
                         set_det_model_config=$(func_set_params "${det_server_key}" "${det_server_value}")
-                        web_service_cmd="${python} ${web_service_py} ${set_tensorrt} ${set_precision} ${set_det_model_config} > ${server_log_path} 2>&1 "
+                        web_service_cmd="nohup ${python} ${web_service_py} ${set_tensorrt} ${set_precision} ${set_det_model_config} > ${server_log_path} 2>&1 &"
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
                         status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
                     elif [[ ${model_name} =~ "rec" ]]; then
                         set_rec_model_config=$(func_set_params "${rec_server_key}" "${rec_server_value}")
-                        web_service_cmd="${python} ${web_service_py} ${set_tensorrt} ${set_precision} ${set_rec_model_config} > ${server_log_path} 2>&1 "
+                        web_service_cmd="nohup ${python} ${web_service_py} ${set_tensorrt} ${set_precision} ${set_rec_model_config} > ${server_log_path} 2>&1 &"
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
                         status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
