@@ -1,11 +1,11 @@
 # PP-Structure Model list
 
-- [1. Layout Analysis](#1)
-- [2. OCR and Table Recognition](#2)
-    - [2.1 OCR](#21)
-    - [2.2 Table Recognition](#22)
-- [3. VQA](#3)
-- [4. KIE](#4)
+- [1. Layout Analysis](#1-layout-analysis)
+- [2. OCR and Table Recognition](#2-ocr-and-table-recognition)
+  - [2.1 OCR](#21-ocr)
+  - [2.2 Table Recognition](#22-table-recognition)
+- [3. VQA](#3-vqa)
+- [4. KIE](#4-kie)
 
 
 <a name="1"></a>
@@ -42,11 +42,11 @@ If you need to use other OCR models, you can download the model in [PP-OCR model
 
 |model| description                                                    |inference model size|download|
 | --- |----------------------------------------------------------------| --- | --- |
-|ser_LayoutXLM_xfun_zh| SER model trained on xfun Chinese dataset based on LayoutXLM   |1.4G|[inference model coming soon]() / [trained model](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh.tar) |
-|re_LayoutXLM_xfun_zh| Re model trained on xfun Chinese dataset based on LayoutXLM    |1.4G|[inference model coming soon]() / [trained model](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar) |
-|ser_LayoutLMv2_xfun_zh| SER model trained on xfun Chinese dataset based on LayoutXLMv2 |778M|[inference model coming soon]() / [trained model](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutLMv2_xfun_zh.tar) |
+|ser_LayoutXLM_xfun_zh| SER model trained on xfun Chinese dataset based on LayoutXLM   |1.4G|[inference model](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar) |
+|re_LayoutXLM_xfun_zh| Re model trained on xfun Chinese dataset based on LayoutXLM    |1.4G|[inference model coming soon]() / [trained model](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh.tar) |
+|ser_LayoutLMv2_xfun_zh| SER model trained on xfun Chinese dataset based on LayoutXLMv2 |778M|[inference model](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutLMv2_xfun_zh_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutLMv2_xfun_zh.tar) |
 |re_LayoutLMv2_xfun_zh| Re model trained on xfun Chinese dataset based on LayoutXLMv2  |765M|[inference model coming soon]() / [trained model](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutLMv2_xfun_zh.tar) |
-|ser_LayoutLM_xfun_zh| SER model trained on xfun Chinese dataset based on LayoutLM    |430M|[inference model coming soon]() / [trained model](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutLM_xfun_zh.tar) |
+|ser_LayoutLM_xfun_zh| SER model trained on xfun Chinese dataset based on LayoutLM    |430M|[inference model](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutLM_xfun_zh_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutLM_xfun_zh.tar) |
 
 <a name="4"></a>
 ## 4. KIE
