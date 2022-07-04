@@ -16,7 +16,7 @@ SDMGR是一个关键信息提取算法，将每个检测到的文本区域分类
 训练和测试的数据采用wildreceipt数据集，通过如下指令下载数据集：
 
 ```
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.1/kie/wildreceipt.tar && tar xf wildreceipt.tar
+wget https://paddleocr.bj.bcebos.com/ppstructure/dataset/wildreceipt.tar && tar xf wildreceipt.tar
 ```
 
 执行预测：

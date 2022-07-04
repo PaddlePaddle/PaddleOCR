@@ -39,13 +39,12 @@ import time
 
 
 def read_class_list(filepath):
-    dict = {}
+    ret = {}
     with open(filepath, "r") as f:
         lines = f.readlines()
-        for line in lines:
-            key, value = line.split(" ")
-            dict[key] = value.rstrip()
-    return dict
+        for idx, line in enumerate(lines):
+            ret[idx] = line.strip("\n")
+    return ret
 
 
 def draw_kie_result(batch, node, idx_to_cls, count):
@@ -71,7 +70,7 @@ def draw_kie_result(batch, node, idx_to_cls, count):
         x_min = int(min([point[0] for point in new_box]))
         y_min = int(min([point[1] for point in new_box]))
 
-        pred_label = str(node_pred_label[i])
+        pred_label = node_pred_label[i]
         if pred_label in idx_to_cls:
             pred_label = idx_to_cls[pred_label]
         pred_score = '{:.2f}'.format(node_pred_score[i])
@@ -109,8 +108,7 @@ def main():
     save_res_path = config['Global']['save_res_path']
     class_path = config['Global']['class_path']
     idx_to_cls = read_class_list(class_path)
-    if not os.path.exists(os.path.dirname(save_res_path)):
-        os.makedirs(os.path.dirname(save_res_path))
+    os.makedirs(os.path.dirname(save_res_path), exist_ok=True)
 
     model.eval()
 

@@ -112,8 +112,7 @@ function func_serving(){
     
     cd ${serving_dir_value}
     python=${python_list[0]}
-    unset https_proxy
-    unset http_proxy
+    
     # python serving
     for use_gpu in ${web_use_gpu_list[*]}; do
         if [ ${use_gpu} = "null" ]; then

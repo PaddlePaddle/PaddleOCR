@@ -308,3 +308,38 @@ class Const(object):
                 end_lr=self.learning_rate,
                 last_epoch=self.last_epoch)
         return learning_rate
+
+
+class DecayLearningRate(object):
+    """
+    DecayLearningRate learning rate decay
+    new_lr = (lr - end_lr) * (1 - epoch/decay_steps)**power + end_lr
+    Args:
+        learning_rate(float): initial learning rate
+        step_each_epoch(int): steps each epoch
+        epochs(int): total training epochs
+        factor(float): Power of polynomial, should greater than 0.0 to get learning rate decay. Default: 0.9
+        end_lr(float): The minimum final learning rate. Default: 0.0.
+    """
+
+    def __init__(self,
+                 learning_rate,
+                 step_each_epoch,
+                 epochs,
+                 factor=0.9,
+                 end_lr=0,
+                 **kwargs):
+        super(DecayLearningRate, self).__init__()
+        self.learning_rate = learning_rate
+        self.epochs = epochs + 1
+        self.factor = factor
+        self.end_lr = 0
+        self.decay_steps = step_each_epoch * epochs
+
+    def __call__(self):
+        learning_rate = lr.PolynomialDecay(
+            learning_rate=self.learning_rate,
+            decay_steps=self.decay_steps,
+            power=self.factor,
+            end_lr=self.end_lr)
+        return learning_rate
