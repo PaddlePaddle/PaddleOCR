@@ -66,6 +66,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## 《动手学OCR》电子书
 - [《动手学OCR》电子书📚](./doc/doc_ch/ocr_book.md)
 
+## 场景应用
+- PaddleOCR场景应用覆盖通用，制造、金融、交通行业的主要OCR垂类应用，在PP-OCR、PP-Structure的通用能力基础之上，以notebook的形式展示利用场景数据微调、模型优化方法、数据增广等内容，为开发者快速落地OCR应用提供示范与启发。详情可查看[README](./applications)
 
 <a name="开源社区"></a>
 ## 开源社区
@@ -73,7 +75,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - **加入社区👬：** 微信扫描二维码并填写问卷之后，加入交流群领取福利
   - **获取PaddleOCR最新发版解说《OCR超强技术详解与产业应用实战》系列直播课回放链接**
   - **10G重磅OCR学习大礼包：**《动手学OCR》电子书，配套讲解视频和notebook项目；66篇OCR相关顶会前沿论文打包放送，包括CVPR、AAAI、IJCAI、ICCV等；PaddleOCR历次发版直播课视频；OCR社区优秀开发者项目分享视频。
-- **社区贡献**🏅️：[社区贡献](./doc/doc_ch/thirdparty.md)文档中包含了社区用户**使用PaddleOCR开发的各种工具、应用**以及**为PaddleOCR贡献的功能、优化的文档与代码**等，是官方为社区开发者打造的荣誉墙，也是帮助优质项目宣传的广播站。
+- **社区项目**🏅️：[社区项目](./doc/doc_ch/thirdparty.md)文档中包含了社区用户**使用PaddleOCR开发的各种工具、应用**以及**为PaddleOCR贡献的功能、优化的文档与代码**等，是官方为社区开发者打造的荣誉墙，也是帮助优质项目宣传的广播站。
 - **社区常规赛**🎁：社区常规赛是面向OCR开发者的积分赛事，覆盖文档、代码、模型和应用四大类型，以季度为单位评选并发放奖励，赛题详情与报名方法可参考[链接](https://github.com/PaddlePaddle/PaddleOCR/issues/4982)。
 
 <div align="center">
