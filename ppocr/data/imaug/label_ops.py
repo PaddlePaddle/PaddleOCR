@@ -912,7 +912,7 @@ class VQATokenLabelEncode(object):
                 label = info['label']
                 gt_label = self._parse_label(label, encode_res)
 
-# construct entities for re
+            # construct entities for re
             if train_re:
                 if gt_label[0] != self.label2id_map["O"]:
                     entity_id_to_index_map[info["id"]] = len(entities)

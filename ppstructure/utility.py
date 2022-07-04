@@ -40,6 +40,13 @@ def init_args():
         type=ast.literal_eval,
         default=None,
         help='label map according to ppstructure/layout/README_ch.md')
+    # params for vqa
+    parser.add_argument("--vqa_algorithm", type=str, default='LayoutXLM')
+    parser.add_argument("--ser_model_dir", type=str)
+    parser.add_argument(
+        "--ser_dict_path",
+        type=str,
+        default="../train_data/XFUND/class_list_xfun.txt")
     # params for inference
     parser.add_argument(
         "--mode",
@@ -65,7 +72,7 @@ def init_args():
         "--recovery",
         type=bool,
         default=False,
-        help='Whether to enable layout of recovery')        
+        help='Whether to enable layout of recovery')
     return parser
 
 
