@@ -26,7 +26,7 @@ from .east_postprocess import EASTPostProcess
 from .sast_postprocess import SASTPostProcess
 from .fce_postprocess import FCEPostProcess
 from .rec_postprocess import CTCLabelDecode, AttnLabelDecode, SRNLabelDecode, \
-    DistillationCTCLabelDecode, TableLabelDecode, NRTRLabelDecode, SARLabelDecode, \
+    DistillationCTCLabelDecode, NRTRLabelDecode, SARLabelDecode, \
     SEEDLabelDecode, PRENLabelDecode, ViTSTRLabelDecode, ABINetLabelDecode
 from .cls_postprocess import ClsPostProcess
 from .pg_postprocess import PGPostProcess

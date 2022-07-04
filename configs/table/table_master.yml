@@ -2,21 +2,19 @@ Global:
   use_gpu: true
   epoch_num: 17
   log_smooth_window: 20
-  print_batch_step: 5
+  print_batch_step: 100
   save_model_dir: ./output/table_master/
   save_epoch_step: 17
-  # evaluation is run every 400 iterations after the 0th iteration
-  eval_batch_step: [0, 400]
-  cal_metric_during_train: True
-  pretrained_model:
-  checkpoints:
-  save_inference_dir:
-  use_visualdl: False
+  eval_batch_step: [0,  6259]
+  cal_metric_during_train: true
+  pretrained_model: null
+  checkpoints: 
+  save_inference_dir: output/table_master/infer
+  use_visualdl: false
   infer_img: ppstructure/docs/table/table.jpg
-  save_res_path: output/table_master
-  # for data or label process
+  save_res_path: ./output/table_master
   character_dict_path: ppocr/utils/dict/table_master_structure_dict.txt
-  infer_mode: False
+  infer_mode: false
   max_text_length: 500
   process_total_num: 0
   process_cut_num: 0
@@ -33,8 +31,8 @@ Optimizer:
     gamma: 0.1
     warmup_epoch: 0.02
   regularizer:
-    name: 'L2'
-    factor: 0.00000
+    name: L2
+    factor: 0.0
 
 Architecture:
   model_type: table
@@ -67,15 +65,15 @@ PostProcess:
 Metric:
   name: TableMetric
   main_indicator: acc
-  compute_bbox_metric: true # cost many time, set False for training
+  compute_bbox_metric: False
 
 Train:
   dataset:
     name: PubTabDataSet
-    data_dir: /home/zhoujun20/table/PubTabNe/pubtabnet/train/
-    label_file_list: [/home/zhoujun20/table/PubTabNe/pubtabnet/PubTabNet_2.0.0_train.jsonl]
+    data_dir: train_data/table/pubtabnet/train/
+    label_file_list: [train_data/table/pubtabnet/PubTabNet_2.0.0_train.jsonl]
     transforms:
-      - DecodeImage: # load image
+      - DecodeImage:
           img_mode: BGR
           channel_first: False
       - TableMasterLabelEncode:
@@ -88,20 +86,20 @@ Train:
       - PaddingTableImage:
           size: [480, 480]
       - TableBoxEncode:
-          use_xywh: true
+          use_xywh: True
       - NormalizeImage:
           scale: 1./255.
           mean: [0.5, 0.5, 0.5]
           std: [0.5, 0.5, 0.5]
-          order: 'hwc'
-      - ToCHWImage:
+          order: hwc
+      - ToCHWImage: null
       - KeepKeys:
-          keep_keys: ['image', 'structure', 'bboxes', 'bbox_masks','shape']
+          keep_keys: [image, structure, bboxes, bbox_masks, shape]
   loader:
     shuffle: True
-    batch_size_per_card: 8
+    batch_size_per_card: 10
     drop_last: True
-    num_workers: 1
+    num_workers: 8
 
 Eval:
   dataset:
@@ -109,7 +107,7 @@ Eval:
     data_dir: /home/zhoujun20/table/PubTabNe/pubtabnet/val/
     label_file_list: [/home/zhoujun20/table/PubTabNe/pubtabnet/val_500.jsonl]
     transforms:
-      - DecodeImage: # load image
+      - DecodeImage:
           img_mode: BGR
           channel_first: False
       - TableMasterLabelEncode:
@@ -120,19 +118,19 @@ Eval:
           max_len: 480
           resize_bboxes: True
       - PaddingTableImage:
-          size: [ 480, 480 ]
+          size: [480, 480]
       - TableBoxEncode:
-          use_xywh: true
+          use_xywh: True
       - NormalizeImage:
           scale: 1./255.
-          mean: [ 0.5, 0.5, 0.5 ]
-          std: [ 0.5, 0.5, 0.5 ]
-          order: 'hwc'
-      - ToCHWImage:
+          mean: [0.5, 0.5, 0.5]
+          std: [0.5, 0.5, 0.5]
+          order: hwc
+      - ToCHWImage: null
       - KeepKeys:
-          keep_keys: [ 'image', 'structure', 'bboxes', 'bbox_masks','shape' ]
+          keep_keys: [image, structure, bboxes, bbox_masks, shape]
   loader:
     shuffle: False
     drop_last: False
-    batch_size_per_card: 2
+    batch_size_per_card: 10
     num_workers: 8

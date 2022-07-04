@@ -670,6 +670,10 @@ class TableLabelEncode(AttnLabelEncode):
         return data
 
     def _merge_no_span_structure(self, structure):
+        """
+        This fun code is refer from:
+        https://github.com/JiaquanYe/TableMASTER-mmocr/blob/master/table_recognition/data_preprocess.py
+        """
         new_structure = []
         i = 0
         while i < len(structure):
@@ -682,6 +686,11 @@ class TableLabelEncode(AttnLabelEncode):
         return new_structure
 
     def _replace_empty_cell_token(self, token_list, cells):
+        """
+        This fun code is refer from:
+        https://github.com/JiaquanYe/TableMASTER-mmocr/blob/master/table_recognition/data_preprocess.py
+        """
+
         bbox_idx = 0
         add_empty_bbox_token_list = []
         for token in token_list:
