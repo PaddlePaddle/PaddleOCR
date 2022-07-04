@@ -18,7 +18,7 @@ The table recognition mainly contains three models
 
 The table recognition flow chart is as follows
 
-![tableocr_pipeline](../../doc/table/tableocr_pipeline_en.jpg)
+![tableocr_pipeline](../docs/table/tableocr_pipeline_en.jpg)
 
 1. The coordinates of single-line text is detected by DB model, and then sends it to the recognition model to get the recognition result.
 2. The table structure and cell coordinates is predicted by RARE model.

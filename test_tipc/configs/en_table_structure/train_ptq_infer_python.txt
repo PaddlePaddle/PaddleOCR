@@ -1,0 +1,21 @@
+===========================train_params===========================
+model_name:en_table_structure_KL
+python:python3.7
+Global.pretrained_model:
+Global.save_inference_dir:null
+infer_model:./inference/en_ppocr_mobile_v2.0_table_structure_infer/
+infer_export:deploy/slim/quantization/quant_kl.py -c test_tipc/configs/en_table_structure/table_mv3.yml -o
+infer_quant:True
+inference:ppstructure/table/predict_table.py --det_model_dir=./inference/en_ppocr_mobile_v2.0_table_det_infer --rec_model_dir=./inference/en_ppocr_mobile_v2.0_table_rec_infer  --rec_char_dict_path=./ppocr/utils/dict/table_dict.txt --table_char_dict_path=./ppocr/utils/dict/table_structure_dict.txt --image_dir=./ppstructure/docs/table/table.jpg --det_limit_side_len=736 --det_limit_type=min --output ./output/table
+--use_gpu:True|False
+--enable_mkldnn:False
+--cpu_threads:6
+--rec_batch_num:1
+--use_tensorrt:False
+--precision:int8
+--table_model_dir:
+--image_dir:./ppstructure/docs/table/table.jpg
+null:null
+--benchmark:False
+null:null
+null:null

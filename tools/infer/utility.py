@@ -34,6 +34,7 @@ def init_args():
     parser = argparse.ArgumentParser()
     # params for prediction engine
     parser.add_argument("--use_gpu", type=str2bool, default=True)
+    parser.add_argument("--use_xpu", type=str2bool, default=False)
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     parser.add_argument("--min_subgraph_size", type=int, default=15)
@@ -152,6 +153,8 @@ def create_predictor(args, mode, logger):
         model_dir = args.rec_model_dir
     elif mode == 'table':
         model_dir = args.table_model_dir
+    elif mode == 'ser':
+        model_dir = args.ser_model_dir
     else:
         model_dir = args.e2e_model_dir
 
@@ -201,7 +204,8 @@ def create_predictor(args, mode, logger):
                     workspace_size=1 << 30,
                     precision_mode=precision,
                     max_batch_size=args.max_batch_size,
-                    min_subgraph_size=args.min_subgraph_size)
+                    min_subgraph_size=args.min_subgraph_size,
+                    use_calib_mode=False)
                 # skip the minmum trt subgraph
             use_dynamic_shape = True
             if mode == "det":
@@ -286,6 +290,8 @@ def create_predictor(args, mode, logger):
                 config.set_trt_dynamic_shape_info(
                     min_input_shape, max_input_shape, opt_input_shape)
 
+        elif args.use_xpu:
+            config.enable_xpu(10 * 1024 * 1024)
         else:
             config.disable_gpu()
             if hasattr(args, "cpu_threads"):
@@ -312,8 +318,13 @@ def create_predictor(args, mode, logger):
         # create predictor
         predictor = inference.create_predictor(config)
         input_names = predictor.get_input_names()
-        for name in input_names:
-            input_tensor = predictor.get_input_handle(name)
+        if mode in ['ser', 're']:
+            input_tensor = []
+            for name in input_names:
+                input_tensor.append(predictor.get_input_handle(name))
+        else:
+            for name in input_names:
+                input_tensor = predictor.get_input_handle(name)
         output_tensors = get_output_tensors(args, mode, predictor)
         return predictor, input_tensor, output_tensors, config
 

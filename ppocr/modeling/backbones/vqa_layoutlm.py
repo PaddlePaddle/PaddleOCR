@@ -74,9 +74,9 @@ class LayoutLMForSer(NLPBaseModel):
     def forward(self, x):
         x = self.model(
             input_ids=x[0],
-            bbox=x[2],
-            attention_mask=x[4],
-            token_type_ids=x[5],
+            bbox=x[1],
+            attention_mask=x[2],
+            token_type_ids=x[3],
             position_ids=None,
             output_hidden_states=False)
         return x
@@ -96,13 +96,15 @@ class LayoutLMv2ForSer(NLPBaseModel):
     def forward(self, x):
         x = self.model(
             input_ids=x[0],
-            bbox=x[2],
-            image=x[3],
-            attention_mask=x[4],
-            token_type_ids=x[5],
+            bbox=x[1],
+            attention_mask=x[2],
+            token_type_ids=x[3],
+            image=x[4],
             position_ids=None,
             head_mask=None,
             labels=None)
+        if not self.training:
+            return x
         return x[0]
 
 
@@ -120,13 +122,15 @@ class LayoutXLMForSer(NLPBaseModel):
     def forward(self, x):
         x = self.model(
             input_ids=x[0],
-            bbox=x[2],
-            image=x[3],
-            attention_mask=x[4],
-            token_type_ids=x[5],
+            bbox=x[1],
+            attention_mask=x[2],
+            token_type_ids=x[3],
+            image=x[4],
             position_ids=None,
             head_mask=None,
             labels=None)
+        if not self.training:
+            return x
         return x[0]
 
 
@@ -140,12 +144,12 @@ class LayoutLMv2ForRe(NLPBaseModel):
         x = self.model(
             input_ids=x[0],
             bbox=x[1],
-            labels=None,
-            image=x[2],
-            attention_mask=x[3],
-            token_type_ids=x[4],
+            attention_mask=x[2],
+            token_type_ids=x[3],
+            image=x[4],
             position_ids=None,
             head_mask=None,
+            labels=None,
             entities=x[5],
             relations=x[6])
         return x
@@ -161,12 +165,12 @@ class LayoutXLMForRe(NLPBaseModel):
         x = self.model(
             input_ids=x[0],
             bbox=x[1],
-            labels=None,
-            image=x[2],
-            attention_mask=x[3],
-            token_type_ids=x[4],
+            attention_mask=x[2],
+            token_type_ids=x[3],
+            image=x[4],
             position_ids=None,
             head_mask=None,
+            labels=None,
             entities=x[5],
             relations=x[6])
         return x

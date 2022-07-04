@@ -18,6 +18,7 @@
   - [2.6. 知识蒸馏训练](#26-知识蒸馏训练)
   - [2.7. 多语言模型训练](#27-多语言模型训练)
   - [2.8. 其他训练环境](#28-其他训练环境)
+  - [2.9. 模型微调](#29-模型微调)
 - [3. 模型评估与预测](#3-模型评估与预测)
   - [3.1. 指标评估](#31-指标评估)
   - [3.2. 测试识别效果](#32-测试识别效果)
@@ -217,6 +218,30 @@ python3 tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pre
 python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy
 ```
 
+正常启动训练后，会看到以下log输出：
+
+```
+[2022/02/22 07:58:05] root INFO: epoch: [1/800], iter: 10, lr: 0.000000, loss: 0.754281, acc: 0.000000, norm_edit_dis: 0.000008, reader_cost: 0.55541 s, batch_cost: 0.91654 s, samples: 1408, ips: 153.62133
+[2022/02/22 07:58:13] root INFO: epoch: [1/800], iter: 20, lr: 0.000001, loss: 0.924677, acc: 0.000000, norm_edit_dis: 0.000008, reader_cost: 0.00236 s, batch_cost: 0.28528 s, samples: 1280, ips: 448.68599
+[2022/02/22 07:58:23] root INFO: epoch: [1/800], iter: 30, lr: 0.000002, loss: 0.967231, acc: 0.000000, norm_edit_dis: 0.000008, reader_cost: 0.14527 s, batch_cost: 0.42714 s, samples: 1280, ips: 299.66507
+[2022/02/22 07:58:31] root INFO: epoch: [1/800], iter: 40, lr: 0.000003, loss: 0.895318, acc: 0.000000, norm_edit_dis: 0.000008, reader_cost: 0.00173 s, batch_cost: 0.27719 s, samples: 1280, ips: 461.77252
+```
+
+log 中自动打印如下信息：
+
+|  字段   |   含义   |    
+| :----: | :------: | 
+|  epoch | 当前迭代轮次 |
+|  iter  | 当前迭代次数 |
+|  lr    | 当前学习率 |
+|  loss  | 当前损失函数 |
+|  acc   | 当前batch的准确率 |
+|  norm_edit_dis | 当前 batch 的编辑距离 |
+|  reader_cost | 当前 batch 数据处理耗时 |
+|  batch_cost | 当前 batch 总耗时 |
+|  samples  | 当前 batch 内的样本数 |
+|  ips  | 每秒处理图片的数量 |
+
 
 PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml` 中修改 `eval_batch_step` 设置评估频率，默认每500个iter评估一次。评估过程中默认将最佳acc模型，保存为 `output/en_PP-OCRv3_rec/best_accuracy` 。
 
@@ -363,7 +388,7 @@ python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1
      -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy
 ```
 
-**注意:** 采用多机多卡训练时，需要替换上面命令中的ips值为您机器的地址，机器之间需要能够相互ping通。另外，训练时需要在多个机器上分别启动命令。查看机器ip地址的命令为`ifconfig`。
+**注意:** （1）采用多机多卡训练时，需要替换上面命令中的ips值为您机器的地址，机器之间需要能够相互ping通；（2）训练时需要在多个机器上分别启动命令。查看机器ip地址的命令为`ifconfig`；（3）更多关于分布式训练的性能优势等信息，请参考：[分布式训练教程](./distributed_training.md)。
 
 ## 2.6. 知识蒸馏训练
 
@@ -437,6 +462,11 @@ Windows平台只支持`单卡`的训练与预测，指定GPU进行训练`set CUD
 
 - Linux DCU
 DCU设备上运行需要设置环境变量 `export HIP_VISIBLE_DEVICES=0,1,2,3`，其余训练评估预测命令与Linux GPU完全相同。
+
+## 2.9 模型微调
+
+实际使用过程中，建议加载官方提供的预训练模型，在自己的数据集中进行微调，关于识别模型的微调方法，请参考：[模型微调教程](./finetune.md)。
+
 
 # 3. 模型评估与预测
 
@@ -540,11 +570,12 @@ inference/en_PP-OCRv3_rec/
 
 - 自定义模型推理
 
-  如果训练时修改了文本的字典，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径
+  如果训练时修改了文本的字典，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径，更多关于推理超参数的配置与解释，请参考：[模型推理超参数解释教程](./inference_args.md)。
 
   ```
   python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 48, 320" --rec_char_dict_path="your text dict path"
   ```
+
 
 # 5. FAQ
 

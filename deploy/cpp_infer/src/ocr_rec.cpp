@@ -83,7 +83,7 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
     int out_num = std::accumulate(predict_shape.begin(), predict_shape.end(), 1,
                                   std::multiplies<int>());
     predict_batch.resize(out_num);
-
+    // predict_batch is the result of Last FC with softmax
     output_t->CopyToCpu(predict_batch.data());
     auto inference_end = std::chrono::steady_clock::now();
     inference_diff += inference_end - inference_start;
@@ -98,9 +98,11 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
       float max_value = 0.0f;
 
       for (int n = 0; n < predict_shape[1]; n++) {
+        // get idx
         argmax_idx = int(Utility::argmax(
             &predict_batch[(m * predict_shape[1] + n) * predict_shape[2]],
             &predict_batch[(m * predict_shape[1] + n + 1) * predict_shape[2]]));
+        // get score
         max_value = float(*std::max_element(
             &predict_batch[(m * predict_shape[1] + n) * predict_shape[2]],
             &predict_batch[(m * predict_shape[1] + n + 1) * predict_shape[2]]));
@@ -132,7 +134,9 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
   paddle_infer::Config config;
   config.SetModel(model_dir + "/inference.pdmodel",
                   model_dir + "/inference.pdiparams");
-
+  std::cout << "In PP-OCRv3, default rec_img_h is 48,"
+            << "if you use other model, you should set the param rec_img_h=32"
+            << std::endl;
   if (this->use_gpu_) {
     config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
     if (this->use_tensorrt_) {
@@ -143,15 +147,17 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
       if (this->precision_ == "int8") {
         precision = paddle_infer::Config::Precision::kInt8;
       }
-      config.EnableTensorRtEngine(1 << 20, 10, 3, precision, false, false);
+      config.EnableTensorRtEngine(1 << 20, 10, 15, precision, false, false);
       int imgH = this->rec_image_shape_[1];
       int imgW = this->rec_image_shape_[2];
       std::map<std::string, std::vector<int>> min_input_shape = {
           {"x", {1, 3, imgH, 10}}, {"lstm_0.tmp_0", {10, 1, 96}}};
       std::map<std::string, std::vector<int>> max_input_shape = {
-          {"x", {1, 3, imgH, 2000}}, {"lstm_0.tmp_0", {1000, 1, 96}}};
+          {"x", {this->rec_batch_num_, 3, imgH, 2500}},
+          {"lstm_0.tmp_0", {1000, 1, 96}}};
       std::map<std::string, std::vector<int>> opt_input_shape = {
-          {"x", {1, 3, imgH, imgW}}, {"lstm_0.tmp_0", {25, 1, 96}}};
+          {"x", {this->rec_batch_num_, 3, imgH, imgW}},
+          {"lstm_0.tmp_0", {25, 1, 96}}};
 
       config.SetTRTDynamicShapeInfo(min_input_shape, max_input_shape,
                                     opt_input_shape);

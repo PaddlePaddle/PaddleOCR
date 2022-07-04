@@ -14,19 +14,14 @@
 
 import math
 import paddle
-import copy
 from paddle import nn
 import paddle.nn.functional as F
 from paddle.nn import LayerList
-from paddle.nn.initializer import XavierNormal as xavier_uniform_
-from paddle.nn import Dropout, Linear, LayerNorm, Conv2D
+# from paddle.nn.initializer import XavierNormal as xavier_uniform_
+from paddle.nn import Dropout, Linear, LayerNorm
 import numpy as np
-from ppocr.modeling.heads.multiheadAttention import MultiheadAttention
-from paddle.nn.initializer import Constant as constant_
+from ppocr.modeling.backbones.rec_svtrnet import Mlp, zeros_, ones_
 from paddle.nn.initializer import XavierNormal as xavier_normal_
-
-zeros_ = constant_(value=0.)
-ones_ = constant_(value=1.)
 
 
 class Transformer(nn.Layer):
@@ -45,7 +40,6 @@ class Transformer(nn.Layer):
         dropout: the dropout value (default=0.1).
         custom_encoder: custom encoder (default=None).
         custom_decoder: custom decoder (default=None).
-
     """
 
     def __init__(self,
@@ -54,45 +48,49 @@ class Transformer(nn.Layer):
                  num_encoder_layers=6,
                  beam_size=0,
                  num_decoder_layers=6,
+                 max_len=25,
                  dim_feedforward=1024,
                  attention_dropout_rate=0.0,
                  residual_dropout_rate=0.1,
-                 custom_encoder=None,
-                 custom_decoder=None,
                  in_channels=0,
                  out_channels=0,
                  scale_embedding=True):
         super(Transformer, self).__init__()
         self.out_channels = out_channels + 1
+        self.max_len = max_len
         self.embedding = Embeddings(
             d_model=d_model,
             vocab=self.out_channels,
             padding_idx=0,
             scale_embedding=scale_embedding)
         self.positional_encoding = PositionalEncoding(
-            dropout=residual_dropout_rate,
-            dim=d_model, )
-        if custom_encoder is not None:
-            self.encoder = custom_encoder
-        else:
-            if num_encoder_layers > 0:
-                encoder_layer = TransformerEncoderLayer(
-                    d_model, nhead, dim_feedforward, attention_dropout_rate,
-                    residual_dropout_rate)
-                self.encoder = TransformerEncoder(encoder_layer,
-                                                  num_encoder_layers)
-            else:
-                self.encoder = None
+            dropout=residual_dropout_rate, dim=d_model)
 
-        if custom_decoder is not None:
-            self.decoder = custom_decoder
+        if num_encoder_layers > 0:
+            self.encoder = nn.LayerList([
+                TransformerBlock(
+                    d_model,
+                    nhead,
+                    dim_feedforward,
+                    attention_dropout_rate,
+                    residual_dropout_rate,
+                    with_self_attn=True,
+                    with_cross_attn=False) for i in range(num_encoder_layers)
+            ])
         else:
-            decoder_layer = TransformerDecoderLayer(
-                d_model, nhead, dim_feedforward, attention_dropout_rate,
-                residual_dropout_rate)
-            self.decoder = TransformerDecoder(decoder_layer, num_decoder_layers)
+            self.encoder = None
 
-        self._reset_parameters()
+        self.decoder = nn.LayerList([
+            TransformerBlock(
+                d_model,
+                nhead,
+                dim_feedforward,
+                attention_dropout_rate,
+                residual_dropout_rate,
+                with_self_attn=True,
+                with_cross_attn=True) for i in range(num_decoder_layers)
+        ])
+
         self.beam_size = beam_size
         self.d_model = d_model
         self.nhead = nhead
@@ -105,7 +103,7 @@ class Transformer(nn.Layer):
 
     def _init_weights(self, m):
 
-        if isinstance(m, nn.Conv2D):
+        if isinstance(m, nn.Linear):
             xavier_normal_(m.weight)
             if m.bias is not None:
                 zeros_(m.bias)
@@ -113,24 +111,20 @@ class Transformer(nn.Layer):
     def forward_train(self, src, tgt):
         tgt = tgt[:, :-1]
 
-        tgt_key_padding_mask = self.generate_padding_mask(tgt)
-        tgt = self.embedding(tgt).transpose([1, 0, 2])
+        tgt = self.embedding(tgt)
         tgt = self.positional_encoding(tgt)
-        tgt_mask = self.generate_square_subsequent_mask(tgt.shape[0])
+        tgt_mask = self.generate_square_subsequent_mask(tgt.shape[1])
 
         if self.encoder is not None:
-            src = self.positional_encoding(src.transpose([1, 0, 2]))
-            memory = self.encoder(src)
+            src = self.positional_encoding(src)
+            for encoder_layer in self.encoder:
+                src = encoder_layer(src)
+            memory = src  # B N C
         else:
-            memory = src.squeeze(2).transpose([2, 0, 1])
-        output = self.decoder(
-            tgt,
-            memory,
-            tgt_mask=tgt_mask,
-            memory_mask=None,
-            tgt_key_padding_mask=tgt_key_padding_mask,
-            memory_key_padding_mask=None)
-        output = output.transpose([1, 0, 2])
+            memory = src  # B N C
+        for decoder_layer in self.decoder:
+            tgt = decoder_layer(tgt, memory, self_mask=tgt_mask)
+        output = tgt
         logit = self.tgt_word_prj(output)
         return logit
 
@@ -140,8 +134,8 @@ class Transformer(nn.Layer):
             src: the sequence to the encoder (required).
             tgt: the sequence to the decoder (required).
         Shape:
-            - src: :math:`(S, N, E)`.
-            - tgt: :math:`(T, N, E)`.
+            - src: :math:`(B, sN, C)`.
+            - tgt: :math:`(B, tN, C)`.
         Examples:
             >>> output = transformer_model(src, tgt)
         """
@@ -157,36 +151,35 @@ class Transformer(nn.Layer):
                 return self.forward_test(src)
 
     def forward_test(self, src):
+
         bs = paddle.shape(src)[0]
         if self.encoder is not None:
-            src = self.positional_encoding(paddle.transpose(src, [1, 0, 2]))
-            memory = self.encoder(src)
+            src = self.positional_encoding(src)
+            for encoder_layer in self.encoder:
+                src = encoder_layer(src)
+            memory = src  # B N C
         else:
-            memory = paddle.transpose(paddle.squeeze(src, 2), [2, 0, 1])
+            memory = src
         dec_seq = paddle.full((bs, 1), 2, dtype=paddle.int64)
         dec_prob = paddle.full((bs, 1), 1., dtype=paddle.float32)
-        for len_dec_seq in range(1, 25):
-            dec_seq_embed = paddle.transpose(self.embedding(dec_seq), [1, 0, 2])
+        for len_dec_seq in range(1, self.max_len):
+            dec_seq_embed = self.embedding(dec_seq)
             dec_seq_embed = self.positional_encoding(dec_seq_embed)
             tgt_mask = self.generate_square_subsequent_mask(
-                paddle.shape(dec_seq_embed)[0])
-            output = self.decoder(
-                dec_seq_embed,
-                memory,
-                tgt_mask=tgt_mask,
-                memory_mask=None,
-                tgt_key_padding_mask=None,
-                memory_key_padding_mask=None)
-            dec_output = paddle.transpose(output, [1, 0, 2])
+                paddle.shape(dec_seq_embed)[1])
+            tgt = dec_seq_embed
+            for decoder_layer in self.decoder:
+                tgt = decoder_layer(tgt, memory, self_mask=tgt_mask)
+            dec_output = tgt
             dec_output = dec_output[:, -1, :]
-            word_prob = F.softmax(self.tgt_word_prj(dec_output), axis=1)
-            preds_idx = paddle.argmax(word_prob, axis=1)
+            word_prob = F.softmax(self.tgt_word_prj(dec_output), axis=-1)
+            preds_idx = paddle.argmax(word_prob, axis=-1)
             if paddle.equal_all(
                     preds_idx,
                     paddle.full(
                         paddle.shape(preds_idx), 3, dtype='int64')):
                 break
-            preds_prob = paddle.max(word_prob, axis=1)
+            preds_prob = paddle.max(word_prob, axis=-1)
             dec_seq = paddle.concat(
                 [dec_seq, paddle.reshape(preds_idx, [-1, 1])], axis=1)
             dec_prob = paddle.concat(
@@ -194,10 +187,10 @@ class Transformer(nn.Layer):
         return [dec_seq, dec_prob]
 
     def forward_beam(self, images):
-        ''' Translation work in one batch '''
+        """ Translation work in one batch """
 
         def get_inst_idx_to_tensor_position_map(inst_idx_list):
-            ''' Indicate the position of an instance in a tensor. '''
+            """ Indicate the position of an instance in a tensor. """
             return {
                 inst_idx: tensor_position
                 for tensor_position, inst_idx in enumerate(inst_idx_list)
@@ -205,7 +198,7 @@ class Transformer(nn.Layer):
 
         def collect_active_part(beamed_tensor, curr_active_inst_idx,
                                 n_prev_active_inst, n_bm):
-            ''' Collect tensor parts associated to active instances. '''
+            """ Collect tensor parts associated to active instances. """
 
             beamed_tensor_shape = paddle.shape(beamed_tensor)
             n_curr_active_inst = len(curr_active_inst_idx)
@@ -237,9 +230,8 @@ class Transformer(nn.Layer):
             return active_src_enc, active_inst_idx_to_position_map
 
         def beam_decode_step(inst_dec_beams, len_dec_seq, enc_output,
-                             inst_idx_to_position_map, n_bm,
-                             memory_key_padding_mask):
-            ''' Decode and update beam status, and then return active beam idx '''
+                             inst_idx_to_position_map, n_bm):
+            """ Decode and update beam status, and then return active beam idx """
 
             def prepare_beam_dec_seq(inst_dec_beams, len_dec_seq):
                 dec_partial_seq = [
@@ -249,19 +241,15 @@ class Transformer(nn.Layer):
                 dec_partial_seq = dec_partial_seq.reshape([-1, len_dec_seq])
                 return dec_partial_seq
 
-            def predict_word(dec_seq, enc_output, n_active_inst, n_bm,
-                             memory_key_padding_mask):
-                dec_seq = paddle.transpose(self.embedding(dec_seq), [1, 0, 2])
+            def predict_word(dec_seq, enc_output, n_active_inst, n_bm):
+                dec_seq = self.embedding(dec_seq)
                 dec_seq = self.positional_encoding(dec_seq)
                 tgt_mask = self.generate_square_subsequent_mask(
-                    paddle.shape(dec_seq)[0])
-                dec_output = self.decoder(
-                    dec_seq,
-                    enc_output,
-                    tgt_mask=tgt_mask,
-                    tgt_key_padding_mask=None,
-                    memory_key_padding_mask=memory_key_padding_mask, )
-                dec_output = paddle.transpose(dec_output, [1, 0, 2])
+                    paddle.shape(dec_seq)[1])
+                tgt = dec_seq
+                for decoder_layer in self.decoder:
+                    tgt = decoder_layer(tgt, enc_output, self_mask=tgt_mask)
+                dec_output = tgt
                 dec_output = dec_output[:,
                                         -1, :]  # Pick the last step: (bh * bm) * d_h
                 word_prob = F.softmax(self.tgt_word_prj(dec_output), axis=1)
@@ -281,8 +269,7 @@ class Transformer(nn.Layer):
 
             n_active_inst = len(inst_idx_to_position_map)
             dec_seq = prepare_beam_dec_seq(inst_dec_beams, len_dec_seq)
-            word_prob = predict_word(dec_seq, enc_output, n_active_inst, n_bm,
-                                     None)
+            word_prob = predict_word(dec_seq, enc_output, n_active_inst, n_bm)
             # Update the beam with predicted word prob information and collect incomplete instances
             active_inst_idx_list = collect_active_inst_idx_list(
                 inst_dec_beams, word_prob, inst_idx_to_position_map)
@@ -303,10 +290,10 @@ class Transformer(nn.Layer):
         with paddle.no_grad():
             #-- Encode
             if self.encoder is not None:
-                src = self.positional_encoding(images.transpose([1, 0, 2]))
+                src = self.positional_encoding(images)
                 src_enc = self.encoder(src)
             else:
-                src_enc = images.squeeze(2).transpose([0, 2, 1])
+                src_enc = images
 
             n_bm = self.beam_size
             src_shape = paddle.shape(src_enc)
@@ -317,11 +304,11 @@ class Transformer(nn.Layer):
             inst_idx_to_position_map = get_inst_idx_to_tensor_position_map(
                 active_inst_idx_list)
             # Decode
-            for len_dec_seq in range(1, 25):
+            for len_dec_seq in range(1, self.max_len):
                 src_enc_copy = src_enc.clone()
                 active_inst_idx_list = beam_decode_step(
                     inst_dec_beams, len_dec_seq, src_enc_copy,
-                    inst_idx_to_position_map, n_bm, None)
+                    inst_idx_to_position_map, n_bm)
                 if not active_inst_idx_list:
                     break  # all instances have finished their path to <EOS>
                 src_enc, inst_idx_to_position_map = collate_active_info(
@@ -354,259 +341,122 @@ class Transformer(nn.Layer):
                 shape=[sz, sz], dtype='float32', fill_value='-inf'),
             diagonal=1)
         mask = mask + mask_inf
-        return mask
-
-    def generate_padding_mask(self, x):
-        padding_mask = paddle.equal(x, paddle.to_tensor(0, dtype=x.dtype))
-        return padding_mask
-
-    def _reset_parameters(self):
-        """Initiate parameters in the transformer model."""
-
-        for p in self.parameters():
-            if p.dim() > 1:
-                xavier_uniform_(p)
+        return mask.unsqueeze([0, 1])
 
 
-class TransformerEncoder(nn.Layer):
-    """TransformerEncoder is a stack of N encoder layers
-    Args:
-        encoder_layer: an instance of the TransformerEncoderLayer() class (required).
-        num_layers: the number of sub-encoder-layers in the encoder (required).
-        norm: the layer normalization component (optional).
-    """
+class MultiheadAttention(nn.Layer):
+    """Allows the model to jointly attend to information
+    from different representation subspaces.
+    See reference: Attention Is All You Need
 
-    def __init__(self, encoder_layer, num_layers):
-        super(TransformerEncoder, self).__init__()
-        self.layers = _get_clones(encoder_layer, num_layers)
-        self.num_layers = num_layers
-
-    def forward(self, src):
-        """Pass the input through the endocder layers in turn.
-        Args:
-            src: the sequnce to the encoder (required).
-            mask: the mask for the src sequence (optional).
-            src_key_padding_mask: the mask for the src keys per batch (optional).
-        """
-        output = src
-
-        for i in range(self.num_layers):
-            output = self.layers[i](output,
-                                    src_mask=None,
-                                    src_key_padding_mask=None)
-
-        return output
-
-
-class TransformerDecoder(nn.Layer):
-    """TransformerDecoder is a stack of N decoder layers
+    .. math::
+        \text{MultiHead}(Q, K, V) = \text{Concat}(head_1,\dots,head_h)W^O
+        \text{where} head_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)
 
     Args:
-        decoder_layer: an instance of the TransformerDecoderLayer() class (required).
-        num_layers: the number of sub-decoder-layers in the decoder (required).
-        norm: the layer normalization component (optional).
+        embed_dim: total dimension of the model
+        num_heads: parallel attention layers, or heads
 
     """
 
-    def __init__(self, decoder_layer, num_layers):
-        super(TransformerDecoder, self).__init__()
-        self.layers = _get_clones(decoder_layer, num_layers)
-        self.num_layers = num_layers
+    def __init__(self, embed_dim, num_heads, dropout=0., self_attn=False):
+        super(MultiheadAttention, self).__init__()
+        self.embed_dim = embed_dim
+        self.num_heads = num_heads
+        # self.dropout = dropout
+        self.head_dim = embed_dim // num_heads
+        assert self.head_dim * num_heads == self.embed_dim, "embed_dim must be divisible by num_heads"
+        self.scale = self.head_dim**-0.5
+        self.self_attn = self_attn
+        if self_attn:
+            self.qkv = nn.Linear(embed_dim, embed_dim * 3)
+        else:
+            self.q = nn.Linear(embed_dim, embed_dim)
+            self.kv = nn.Linear(embed_dim, embed_dim * 2)
+        self.attn_drop = nn.Dropout(dropout)
+        self.out_proj = nn.Linear(embed_dim, embed_dim)
 
-    def forward(self,
-                tgt,
-                memory,
-                tgt_mask=None,
-                memory_mask=None,
-                tgt_key_padding_mask=None,
-                memory_key_padding_mask=None):
-        """Pass the inputs (and mask) through the decoder layer in turn.
+    def forward(self, query, key=None, attn_mask=None):
 
-        Args:
-            tgt: the sequence to the decoder (required).
-            memory: the sequnce from the last layer of the encoder (required).
-            tgt_mask: the mask for the tgt sequence (optional).
-            memory_mask: the mask for the memory sequence (optional).
-            tgt_key_padding_mask: the mask for the tgt keys per batch (optional).
-            memory_key_padding_mask: the mask for the memory keys per batch (optional).
-        """
-        output = tgt
-        for i in range(self.num_layers):
-            output = self.layers[i](
-                output,
-                memory,
-                tgt_mask=tgt_mask,
-                memory_mask=memory_mask,
-                tgt_key_padding_mask=tgt_key_padding_mask,
-                memory_key_padding_mask=memory_key_padding_mask)
+        qN = query.shape[1]
 
-        return output
+        if self.self_attn:
+            qkv = self.qkv(query).reshape(
+                (0, qN, 3, self.num_heads, self.head_dim)).transpose(
+                    (2, 0, 3, 1, 4))
+            q, k, v = qkv[0], qkv[1], qkv[2]
+        else:
+            kN = key.shape[1]
+            q = self.q(query).reshape(
+                [0, qN, self.num_heads, self.head_dim]).transpose([0, 2, 1, 3])
+            kv = self.kv(key).reshape(
+                (0, kN, 2, self.num_heads, self.head_dim)).transpose(
+                    (2, 0, 3, 1, 4))
+            k, v = kv[0], kv[1]
+
+        attn = (q.matmul(k.transpose((0, 1, 3, 2)))) * self.scale
+
+        if attn_mask is not None:
+            attn += attn_mask
+
+        attn = F.softmax(attn, axis=-1)
+        attn = self.attn_drop(attn)
+
+        x = (attn.matmul(v)).transpose((0, 2, 1, 3)).reshape(
+            (0, qN, self.embed_dim))
+        x = self.out_proj(x)
+
+        return x
 
 
-class TransformerEncoderLayer(nn.Layer):
-    """TransformerEncoderLayer is made up of self-attn and feedforward network.
-    This standard encoder layer is based on the paper "Attention Is All You Need".
-    Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez,
-    Lukasz Kaiser, and Illia Polosukhin. 2017. Attention is all you need. In Advances in
-    Neural Information Processing Systems, pages 6000-6010. Users may modify or implement
-    in a different way during application.
-
-    Args:
-        d_model: the number of expected features in the input (required).
-        nhead: the number of heads in the multiheadattention models (required).
-        dim_feedforward: the dimension of the feedforward network model (default=2048).
-        dropout: the dropout value (default=0.1).
-
-    """
-
+class TransformerBlock(nn.Layer):
     def __init__(self,
                  d_model,
                  nhead,
                  dim_feedforward=2048,
                  attention_dropout_rate=0.0,
-                 residual_dropout_rate=0.1):
-        super(TransformerEncoderLayer, self).__init__()
-        self.self_attn = MultiheadAttention(
-            d_model, nhead, dropout=attention_dropout_rate)
+                 residual_dropout_rate=0.1,
+                 with_self_attn=True,
+                 with_cross_attn=False,
+                 epsilon=1e-5):
+        super(TransformerBlock, self).__init__()
+        self.with_self_attn = with_self_attn
+        if with_self_attn:
+            self.self_attn = MultiheadAttention(
+                d_model,
+                nhead,
+                dropout=attention_dropout_rate,
+                self_attn=with_self_attn)
+            self.norm1 = LayerNorm(d_model, epsilon=epsilon)
+            self.dropout1 = Dropout(residual_dropout_rate)
+        self.with_cross_attn = with_cross_attn
+        if with_cross_attn:
+            self.cross_attn = MultiheadAttention(  #for self_attn of encoder or cross_attn of decoder
+                d_model,
+                nhead,
+                dropout=attention_dropout_rate)
+            self.norm2 = LayerNorm(d_model, epsilon=epsilon)
+            self.dropout2 = Dropout(residual_dropout_rate)
 
-        self.conv1 = Conv2D(
-            in_channels=d_model,
-            out_channels=dim_feedforward,
-            kernel_size=(1, 1))
-        self.conv2 = Conv2D(
-            in_channels=dim_feedforward,
-            out_channels=d_model,
-            kernel_size=(1, 1))
+        self.mlp = Mlp(in_features=d_model,
+                       hidden_features=dim_feedforward,
+                       act_layer=nn.ReLU,
+                       drop=residual_dropout_rate)
 
-        self.norm1 = LayerNorm(d_model)
-        self.norm2 = LayerNorm(d_model)
-        self.dropout1 = Dropout(residual_dropout_rate)
-        self.dropout2 = Dropout(residual_dropout_rate)
+        self.norm3 = LayerNorm(d_model, epsilon=epsilon)
 
-    def forward(self, src, src_mask=None, src_key_padding_mask=None):
-        """Pass the input through the endocder layer.
-        Args:
-            src: the sequnce to the encoder layer (required).
-            src_mask: the mask for the src sequence (optional).
-            src_key_padding_mask: the mask for the src keys per batch (optional).
-        """
-        src2 = self.self_attn(
-            src,
-            src,
-            src,
-            attn_mask=src_mask,
-            key_padding_mask=src_key_padding_mask)
-        src = src + self.dropout1(src2)
-        src = self.norm1(src)
-
-        src = paddle.transpose(src, [1, 2, 0])
-        src = paddle.unsqueeze(src, 2)
-        src2 = self.conv2(F.relu(self.conv1(src)))
-        src2 = paddle.squeeze(src2, 2)
-        src2 = paddle.transpose(src2, [2, 0, 1])
-        src = paddle.squeeze(src, 2)
-        src = paddle.transpose(src, [2, 0, 1])
-
-        src = src + self.dropout2(src2)
-        src = self.norm2(src)
-        return src
-
-
-class TransformerDecoderLayer(nn.Layer):
-    """TransformerDecoderLayer is made up of self-attn, multi-head-attn and feedforward network.
-    This standard decoder layer is based on the paper "Attention Is All You Need".
-    Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez,
-    Lukasz Kaiser, and Illia Polosukhin. 2017. Attention is all you need. In Advances in
-    Neural Information Processing Systems, pages 6000-6010. Users may modify or implement
-    in a different way during application.
-
-    Args:
-        d_model: the number of expected features in the input (required).
-        nhead: the number of heads in the multiheadattention models (required).
-        dim_feedforward: the dimension of the feedforward network model (default=2048).
-        dropout: the dropout value (default=0.1).
-
-    """
-
-    def __init__(self,
-                 d_model,
-                 nhead,
-                 dim_feedforward=2048,
-                 attention_dropout_rate=0.0,
-                 residual_dropout_rate=0.1):
-        super(TransformerDecoderLayer, self).__init__()
-        self.self_attn = MultiheadAttention(
-            d_model, nhead, dropout=attention_dropout_rate)
-        self.multihead_attn = MultiheadAttention(
-            d_model, nhead, dropout=attention_dropout_rate)
-
-        self.conv1 = Conv2D(
-            in_channels=d_model,
-            out_channels=dim_feedforward,
-            kernel_size=(1, 1))
-        self.conv2 = Conv2D(
-            in_channels=dim_feedforward,
-            out_channels=d_model,
-            kernel_size=(1, 1))
-
-        self.norm1 = LayerNorm(d_model)
-        self.norm2 = LayerNorm(d_model)
-        self.norm3 = LayerNorm(d_model)
-        self.dropout1 = Dropout(residual_dropout_rate)
-        self.dropout2 = Dropout(residual_dropout_rate)
         self.dropout3 = Dropout(residual_dropout_rate)
 
-    def forward(self,
-                tgt,
-                memory,
-                tgt_mask=None,
-                memory_mask=None,
-                tgt_key_padding_mask=None,
-                memory_key_padding_mask=None):
-        """Pass the inputs (and mask) through the decoder layer.
+    def forward(self, tgt, memory=None, self_mask=None, cross_mask=None):
+        if self.with_self_attn:
+            tgt1 = self.self_attn(tgt, attn_mask=self_mask)
+            tgt = self.norm1(tgt + self.dropout1(tgt1))
 
-        Args:
-            tgt: the sequence to the decoder layer (required).
-            memory: the sequnce from the last layer of the encoder (required).
-            tgt_mask: the mask for the tgt sequence (optional).
-            memory_mask: the mask for the memory sequence (optional).
-            tgt_key_padding_mask: the mask for the tgt keys per batch (optional).
-            memory_key_padding_mask: the mask for the memory keys per batch (optional).
-
-        """
-        tgt2 = self.self_attn(
-            tgt,
-            tgt,
-            tgt,
-            attn_mask=tgt_mask,
-            key_padding_mask=tgt_key_padding_mask)
-        tgt = tgt + self.dropout1(tgt2)
-        tgt = self.norm1(tgt)
-        tgt2 = self.multihead_attn(
-            tgt,
-            memory,
-            memory,
-            attn_mask=memory_mask,
-            key_padding_mask=memory_key_padding_mask)
-        tgt = tgt + self.dropout2(tgt2)
-        tgt = self.norm2(tgt)
-
-        # default
-        tgt = paddle.transpose(tgt, [1, 2, 0])
-        tgt = paddle.unsqueeze(tgt, 2)
-        tgt2 = self.conv2(F.relu(self.conv1(tgt)))
-        tgt2 = paddle.squeeze(tgt2, 2)
-        tgt2 = paddle.transpose(tgt2, [2, 0, 1])
-        tgt = paddle.squeeze(tgt, 2)
-        tgt = paddle.transpose(tgt, [2, 0, 1])
-
-        tgt = tgt + self.dropout3(tgt2)
-        tgt = self.norm3(tgt)
+        if self.with_cross_attn:
+            tgt2 = self.cross_attn(tgt, key=memory, attn_mask=cross_mask)
+            tgt = self.norm2(tgt + self.dropout2(tgt2))
+        tgt = self.norm3(tgt + self.dropout3(self.mlp(tgt)))
         return tgt
-
-
-def _get_clones(module, N):
-    return LayerList([copy.deepcopy(module) for i in range(N)])
 
 
 class PositionalEncoding(nn.Layer):
@@ -651,8 +501,9 @@ class PositionalEncoding(nn.Layer):
         Examples:
             >>> output = pos_encoder(x)
         """
+        x = x.transpose([1, 0, 2])
         x = x + self.pe[:paddle.shape(x)[0], :]
-        return self.dropout(x)
+        return self.dropout(x).transpose([1, 0, 2])
 
 
 class PositionalEncoding_2d(nn.Layer):
@@ -725,7 +576,7 @@ class PositionalEncoding_2d(nn.Layer):
 
 
 class Embeddings(nn.Layer):
-    def __init__(self, d_model, vocab, padding_idx, scale_embedding):
+    def __init__(self, d_model, vocab, padding_idx=None, scale_embedding=True):
         super(Embeddings, self).__init__()
         self.embedding = nn.Embedding(vocab, d_model, padding_idx=padding_idx)
         w0 = np.random.normal(0.0, d_model**-0.5,
@@ -742,7 +593,7 @@ class Embeddings(nn.Layer):
 
 
 class Beam():
-    ''' Beam search '''
+    """ Beam search """
 
     def __init__(self, size, device=False):
 

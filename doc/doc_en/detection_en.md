@@ -159,7 +159,7 @@ python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1
      -o Global.pretrained_model=./pretrain_models/MobileNetV3_large_x0_5_pretrained
 ```
 
-**Note:** When using multi-machine and multi-gpu training, you need to replace the ips value in the above command with the address of your machine, and the machines need to be able to ping each other. In addition, training needs to be launched separately on multiple machines. The command to view the ip address of the machine is `ifconfig`.
+**Note:** (1) When using multi-machine and multi-gpu training, you need to replace the ips value in the above command with the address of your machine, and the machines need to be able to ping each other. (2) Training needs to be launched separately on multiple machines. The command to view the ip address of the machine is `ifconfig`. (3) For more details about the distributed training speedup ratio, please refer to [Distributed Training Tutorial](./distributed_training_en.md).
 
 ### 2.6 Training with knowledge distillation
 

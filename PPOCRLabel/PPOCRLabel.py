@@ -1149,7 +1149,10 @@ class MainWindow(QMainWindow):
         for box in self.result_dic:
             trans_dic = {"label": box[1][0], "points": box[0], "difficult": False}
             if self.kie_mode:
-                trans_dic.update({"key_cls": "None"})
+                if len(box) == 3:
+                    trans_dic.update({"key_cls": box[2]})
+                else:
+                    trans_dic.update({"key_cls": "None"})
             if trans_dic["label"] == "" and mode == 'Auto':
                 continue
             shapes.append(trans_dic)
@@ -2047,6 +2050,7 @@ class MainWindow(QMainWindow):
             rec_flag = 0
             for shape in self.canvas.shapes:
                 box = [[int(p.x()), int(p.y())] for p in shape.points]
+                kie_cls = shape.key_cls
 
                 if len(box) > 4:
                     box = self.gen_quad_from_poly(np.array(box))
@@ -2062,17 +2066,27 @@ class MainWindow(QMainWindow):
                     if shape.line_color == DEFAULT_LOCK_COLOR:
                         shape.label = result[0][0]
                         result.insert(0, box)
+                        if self.kie_mode:
+                            result.append(kie_cls)
                         self.result_dic_locked.append(result)
                     else:
                         result.insert(0, box)
+                        if self.kie_mode:
+                            result.append(kie_cls)
                         self.result_dic.append(result)
                 else:
                     print('Can not recognise the box')
                     if shape.line_color == DEFAULT_LOCK_COLOR:
                         shape.label = result[0][0]
-                        self.result_dic_locked.append([box, (self.noLabelText, 0)])
+                        if self.kie_mode:
+                            self.result_dic_locked.append([box, (self.noLabelText, 0), kie_cls])
+                        else:
+                            self.result_dic_locked.append([box, (self.noLabelText, 0)])
                     else:
-                        self.result_dic.append([box, (self.noLabelText, 0)])
+                        if self.kie_mode:
+                            self.result_dic.append([box, (self.noLabelText, 0), kie_cls])
+                        else:
+                            self.result_dic.append([box, (self.noLabelText, 0)])
                 try:
                     if self.noLabelText == shape.label or result[1][0] == shape.label:
                         print('label no change')

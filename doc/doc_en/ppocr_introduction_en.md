@@ -29,16 +29,16 @@ PP-OCR pipeline is as follows:
 
 PP-OCR system is in continuous optimization. At present, PP-OCR and PP-OCRv2 have been released:
 
-PP-OCR adopts 19 effective strategies from 8 aspects including backbone network selection and adjustment, prediction head design, data augmentation, learning rate transformation strategy, regularization parameter selection, pre-training model use, and automatic model tailoring and quantization to optimize and slim down the models of each module (as shown in the green box above). The final results are an ultra-lightweight Chinese and English OCR model with an overall size of 3.5M and a 2.8M English digital OCR model. For more details, please refer to the PP-OCR technical article (https://arxiv.org/abs/2009.09941).
+PP-OCR adopts 19 effective strategies from 8 aspects including backbone network selection and adjustment, prediction head design, data augmentation, learning rate transformation strategy, regularization parameter selection, pre-training model use, and automatic model tailoring and quantization to optimize and slim down the models of each module (as shown in the green box above). The final results are an ultra-lightweight Chinese and English OCR model with an overall size of 3.5M and a 2.8M English digital OCR model. For more details, please refer to [PP-OCR technical report](https://arxiv.org/abs/2009.09941).
 
 #### PP-OCRv2
-On the basis of PP-OCR, PP-OCRv2 is further optimized in five aspects. The detection model adopts CML(Collaborative Mutual Learning) knowledge distillation strategy and CopyPaste data expansion strategy. The recognition model adopts LCNet lightweight backbone network, U-DML knowledge distillation strategy and enhanced CTC loss function improvement (as shown in the red box above), which further improves the inference speed and prediction effect. For more details, please refer to the technical report of PP-OCRv2 (https://arxiv.org/abs/2109.03144).
+On the basis of PP-OCR, PP-OCRv2 is further optimized in five aspects. The detection model adopts CML(Collaborative Mutual Learning) knowledge distillation strategy and CopyPaste data expansion strategy. The recognition model adopts LCNet lightweight backbone network, U-DML knowledge distillation strategy and enhanced CTC loss function improvement (as shown in the red box above), which further improves the inference speed and prediction effect. For more details, please refer to [PP-OCRv2 technical report](https://arxiv.org/abs/2109.03144).
 
 #### PP-OCRv3
 
 PP-OCRv3 upgraded the detection model and recognition model in 9 aspects based on PP-OCRv2:
 - PP-OCRv3 detector upgrades the CML(Collaborative Mutual Learning) text detection strategy proposed in PP-OCRv2, and further optimizes the effect of teacher model and student model respectively. In the optimization of teacher model, a pan module with large receptive field named LK-PAN is proposed and the DML distillation strategy is adopted; In the optimization of student model, a FPN module with residual attention mechanism named RSE-FPN is proposed.
-- PP-OCRv3 recognizer is optimized based on text recognition algorithm [SVTR](https://arxiv.org/abs/2205.00159). SVTR no longer adopts RNN by introducing transformers structure, which can mine the context information of text line image more effectively, so as to improve the ability of text recognition. PP-OCRv3 adopts lightweight text recognition network SVTR_LCNet, guided training of CTC loss by attention loss, data augmentation strategy TextConAug, better pre-trained model by self-supervised TextRotNet, UDML(Unified Deep Mutual Learning), and UIM (Unlabeled Images Mining) to accelerate the model and improve the effect.
+- PP-OCRv3 recognizer is optimized based on text recognition algorithm [SVTR](https://arxiv.org/abs/2205.00159). SVTR no longer adopts RNN by introducing transformers structure, which can mine the context information of text line image more effectively, so as to improve the ability of text recognition. PP-OCRv3 adopts lightweight text recognition network SVTR_LCNet, guided training of CTC by attention, data augmentation strategy TextConAug, better pre-trained model by self-supervised TextRotNet, UDML(Unified Deep Mutual Learning), and UIM (Unlabeled Images Mining) to accelerate the model and improve the effect.
 
 PP-OCRv3 pipeline is as follows:
 
@@ -46,7 +46,7 @@ PP-OCRv3 pipeline is as follows:
     <img src="../ppocrv3_framework.png" width="800">
 </div>
 
-For more details, please refer to [PP-OCRv3 technical report](./PP-OCRv3_introduction_en.md).
+For more details, please refer to [PP-OCRv3 technical report](https://arxiv.org/abs/2206.03001v2).
 
 <a name="2"></a>
 ## 2. Features

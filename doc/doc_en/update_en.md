@@ -1,8 +1,8 @@
 # RECENT UPDATES
 - 2022.5.9 release PaddleOCR v2.5, including:
-    - [PP-OCRv3](./doc/doc_en/ppocr_introduction_en.md#pp-ocrv3): With comparable speed, the effect of Chinese scene is further improved by 5% compared with PP-OCRv2, the effect of English scene is improved by 11%, and the average recognition accuracy of 80 language multilingual models is improved by more than 5%.
-    - [PPOCRLabelv2](./PPOCRLabel): Add the annotation function for table recognition task, key information extraction task and irregular text image.
-    - Interactive e-book [*"Dive into OCR"*](./doc/doc_en/ocr_book_en.md), covers the cutting-edge theory and code practice of OCR full stack technology.
+    - [PP-OCRv3](./ppocr_introduction_en.md#pp-ocrv3): With comparable speed, the effect of Chinese scene is further improved by 5% compared with PP-OCRv2, the effect of English scene is improved by 11%, and the average recognition accuracy of 80 language multilingual models is improved by more than 5%.
+    - [PPOCRLabelv2](../../PPOCRLabel): Add the annotation function for table recognition task, key information extraction task and irregular text image.
+    - Interactive e-book [*"Dive into OCR"*](./ocr_book_en.md), covers the cutting-edge theory and code practice of OCR full stack technology.
 - 2022.5.7 Add support for metric and model logging during training to [Weights & Biases](https://docs.wandb.ai/).
 - 2021.12.21 OCR open source online course starts. The lesson starts at 8:30 every night and lasts for ten days. Free registration: https://aistudio.baidu.com/aistudio/course/introduce/25207
 - 2021.12.21 release PaddleOCR v2.4, release 1 text detection algorithm (PSENet), 3 text recognition algorithms (NRTR、SEED、SAR), 1 key information extraction algorithm (SDMGR) and 3 DocVQA algorithms (LayoutLM、LayoutLMv2，LayoutXLM).

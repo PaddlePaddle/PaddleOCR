@@ -63,7 +63,7 @@ class TableMetric(object):
     def __init__(self,
                  main_indicator='acc',
                  compute_bbox_metric=False,
-                 point_num=4,
+                 point_num=2,
                  **kwargs):
         """
 
