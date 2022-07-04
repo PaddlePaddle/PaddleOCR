@@ -55,6 +55,7 @@ def init_args():
     parser.add_argument("--max_batch_size", type=int, default=10)
     parser.add_argument("--use_dilation", type=str2bool, default=False)
     parser.add_argument("--det_db_score_mode", type=str, default="fast")
+    parser.add_argument("--vis_seg_map", type=str2bool, default=False)
     # EAST parmas
     parser.add_argument("--det_east_score_thresh", type=float, default=0.8)
     parser.add_argument("--det_east_cover_thresh", type=float, default=0.1)
@@ -276,6 +277,7 @@ def create_predictor(args, mode, logger):
                 min_input_shape = {"x": [1, 3, imgH, 10]}
                 max_input_shape = {"x": [args.rec_batch_num, 3, imgH, 2304]}
                 opt_input_shape = {"x": [args.rec_batch_num, 3, imgH, 320]}
+                config.exp_disable_tensorrt_ops(["transpose2"])
             elif mode == "cls":
                 min_input_shape = {"x": [1, 3, 48, 10]}
                 max_input_shape = {"x": [args.rec_batch_num, 3, 48, 1024]}
@@ -587,7 +589,7 @@ def text_visual(texts,
 def base64_to_cv2(b64str):
     import base64
     data = base64.b64decode(b64str.encode('utf8'))
-    data = np.fromstring(data, np.uint8)
+    data = np.frombuffer(data, np.uint8)
     data = cv2.imdecode(data, cv2.IMREAD_COLOR)
     return data
 

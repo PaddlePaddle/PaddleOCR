@@ -63,7 +63,6 @@ class DetOp(Op):
         dt_boxes_list = self.post_func(det_out, [ratio_list])
         dt_boxes = self.filter_func(dt_boxes_list[0], [self.ori_h, self.ori_w])
         out_dict = {"dt_boxes": dt_boxes, "image": self.raw_im}
-
         return out_dict, None, ""
 
 
@@ -86,7 +85,7 @@ class RecOp(Op):
         dt_boxes = copy.deepcopy(self.dt_list)
         feed_list = []
         img_list = []
-        max_wh_ratio = 0
+        max_wh_ratio = 320/48.
         ## Many mini-batchs, the type of feed_data is list.
         max_batch_size = 6  # len(dt_boxes)
 
@@ -150,7 +149,8 @@ class RecOp(Op):
         for i in range(dt_num):
             text = rec_list[i]
             dt_box = self.dt_list[i]
-            result_list.append([text, dt_box.tolist()])
+            if text[1] >= 0.5:
+                result_list.append([text, dt_box.tolist()])
         res = {"result": str(result_list)}
         return res, None, ""
 

@@ -47,7 +47,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 
 ![](./doc/features_en.png)
 
-> It is recommended to start with the “quick experience” in the document tutorial
+> It is recommended to start with the “quick start” in the document tutorial
 
 
 ## Quick Experience
@@ -63,10 +63,11 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 
 
 <a name="Community"></a>
-## Community
+## Community👬
 
-- **Join us**👬: Scan the QR code below with your Wechat, you can join the official technical discussion group. Looking forward to your participation.
+- For international developers, we regard [PaddleOCR Discussions](https://github.com/PaddlePaddle/PaddleOCR/discussions) as our international community platform. All ideas and questions can be discussed here in English.
 
+- For Chinese develops, Scan the QR code below with your Wechat, you can join the official technical discussion group. For richer community content, please refer to [中文README](README_ch.md), looking forward to your participation.
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "200" height = "200" />

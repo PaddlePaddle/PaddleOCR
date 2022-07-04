@@ -4,8 +4,7 @@
     - 半自动标注工具[PPOCRLabelv2](../../PPOCRLabel)：新增表格文字图像、图像关键信息抽取任务和不规则文字图像的标注功能；
     - OCR产业落地工具集：打通22种训练部署软硬件环境与方式，覆盖企业90%的训练部署环境需求
     - 交互式OCR开源电子书[《动手学OCR》](./ocr_book.md)，覆盖OCR全栈技术的前沿理论与代码实践，并配套教学视频。
-- 2022.5.7 添加对[Weights & Biases](https://docs.wandb.ai/)训练日志记录工具的支持。
-- 2021.12.21 《OCR十讲》课程开讲，12月21日起每晚八点半线上授课！ 【免费】报名地址：https://aistudio.baidu.com/aistudio/course/introduce/25207
+- 2021.12.21 《动手学OCR·十讲》课程开讲，12月21日起每晚八点半线上授课！ 【免费】[报名地址](https://aistudio.baidu.com/aistudio/course/introduce/25207)。
 - 2021.12.21 发布PaddleOCR v2.4。OCR算法新增1种文本检测算法（PSENet），3种文本识别算法（NRTR、SEED、SAR）；文档结构化算法新增1种关键信息提取算法（SDMGR），3种DocVQA算法（LayoutLM、LayoutLMv2，LayoutXLM）。
 - 2021.9.7 发布PaddleOCR v2.3，发布[PP-OCRv2](#PP-OCRv2)，CPU推理速度相比于PP-OCR server提升220%；效果相比于PP-OCR mobile 提升7%。
 - 2021.8.3 发布PaddleOCR v2.2，新增文档结构分析[PP-Structure](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/ppstructure/README_ch.md)工具包，支持版面分析与表格识别（含Excel导出）。
@@ -29,7 +28,7 @@
 - 2020.7.9 添加支持空格的识别模型，识别效果，预测及训练方式请参考快速开始和文本识别训练相关文档
 - 2020.7.9 添加数据增强、学习率衰减策略,具体参考[配置文件](./config.md)
 - 2020.6.8 添加[数据集](dataset/datasets.md)，并保持持续更新
-- 2020.6.5 支持 `attetnion` 模型导出 `inference_model`
+- 2020.6.5 支持 `attention` 模型导出 `inference_model`
 - 2020.6.5 支持单独预测识别时，输出结果得分
 - 2020.5.30 提供超轻量级中文OCR在线体验
 - 2020.5.30 模型预测、训练支持Windows系统

@@ -591,8 +591,9 @@ Metric:
 #### 2.2.5 检测蒸馏模型finetune
 
 PP-OCRv3检测蒸馏有两种方式：
-- 采用ch_PP-OCRv3_det_cml.yml，采用cml蒸馏，同样Teacher模型设置为PaddleOCR提供的模型或者您训练好的大模型
+- 采用ch_PP-OCRv3_det_cml.yml，采用CML蒸馏，同样Teacher模型设置为PaddleOCR提供的模型或者您训练好的大模型。
 - 采用ch_PP-OCRv3_det_dml.yml，采用DML的蒸馏，两个Student模型互蒸馏的方法，在PaddleOCR采用的数据集上相比单独训练Student模型有1%-2%的提升。
+> 如果您在自己的场景中没有训练过高精度大模型，或原始PP-OCR模型在您的场景中表现不好，则无法使用CML训练以达到更高精度，更应该采用DML训练
 
 在具体fine-tune时，需要在网络结构的`pretrained`参数中设置要加载的预训练模型。
 
