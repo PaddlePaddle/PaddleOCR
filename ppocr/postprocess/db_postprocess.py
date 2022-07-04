@@ -38,6 +38,7 @@ class DBPostProcess(object):
                  unclip_ratio=2.0,
                  use_dilation=False,
                  score_mode="fast",
+                 use_polygon=False,
                  **kwargs):
         self.thresh = thresh
         self.box_thresh = box_thresh
@@ -45,12 +46,63 @@ class DBPostProcess(object):
         self.unclip_ratio = unclip_ratio
         self.min_size = 3
         self.score_mode = score_mode
+        self.use_polygon = use_polygon
         assert score_mode in [
             "slow", "fast"
         ], "Score mode must be in [slow, fast] but got: {}".format(score_mode)
 
         self.dilation_kernel = None if not use_dilation else np.array(
             [[1, 1], [1, 1]])
+
+    def polygons_from_bitmap(self, pred, _bitmap, dest_width, dest_height):
+        '''
+        _bitmap: single map with shape (1, H, W),
+            whose values are binarized as {0, 1}
+        '''
+
+        bitmap = _bitmap
+        height, width = bitmap.shape
+
+        boxes = []
+        scores = []
+
+        contours, _ = cv2.findContours((bitmap * 255).astype(np.uint8),
+                                       cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+
+        for contour in contours[:self.max_candidates]:
+            epsilon = 0.002 * cv2.arcLength(contour, True)
+            approx = cv2.approxPolyDP(contour, epsilon, True)
+            points = approx.reshape((-1, 2))
+            # print(points)
+            if points.shape[0] < 4:
+                continue
+
+            score = self.box_score_fast(pred, points.reshape(-1, 2))
+            if self.box_thresh > score:
+                continue
+
+            if points.shape[0] > 2:
+                box = self.unclip(points, self.unclip_ratio)
+                if len(box) > 1:
+                    continue
+            else:
+                continue
+            box = box.reshape(-1, 2)
+            # print(box)
+
+            _, sside = self.get_mini_boxes(box.reshape((-1, 1, 2)))
+            if sside < self.min_size + 2:
+                continue
+
+            box = np.array(box)
+            box[:, 0] = np.clip(
+                np.round(box[:, 0] / width * dest_width), 0, dest_width)
+            box[:, 1] = np.clip(
+                np.round(box[:, 1] / height * dest_height), 0, dest_height)
+            boxes.append(box.tolist())
+            scores.append(score)
+        # print(boxes)
+        return boxes, scores
 
     def boxes_from_bitmap(self, pred, _bitmap, dest_width, dest_height):
         '''
@@ -85,7 +137,7 @@ class DBPostProcess(object):
             if self.box_thresh > score:
                 continue
 
-            box = self.unclip(points).reshape(-1, 1, 2)
+            box = self.unclip(points, self.unclip_ratio).reshape(-1, 1, 2)
             box, sside = self.get_mini_boxes(box)
             if sside < self.min_size + 2:
                 continue
@@ -99,8 +151,7 @@ class DBPostProcess(object):
             scores.append(score)
         return np.array(boxes, dtype=np.int16), scores
 
-    def unclip(self, box):
-        unclip_ratio = self.unclip_ratio
+    def unclip(self, box, unclip_ratio):
         poly = Polygon(box)
         distance = poly.area * unclip_ratio / poly.length
         offset = pyclipper.PyclipperOffset()
@@ -185,8 +236,12 @@ class DBPostProcess(object):
                     self.dilation_kernel)
             else:
                 mask = segmentation[batch_index]
-            boxes, scores = self.boxes_from_bitmap(pred[batch_index], mask,
-                                                   src_w, src_h)
+            if self.use_polygon:
+                boxes, scores = self.polygons_from_bitmap(pred[batch_index],
+                                                          mask, src_w, src_h)
+            else:
+                boxes, scores = self.boxes_from_bitmap(pred[batch_index], mask,
+                                                       src_w, src_h)
 
             boxes_batch.append({'points': boxes})
         return boxes_batch
@@ -202,6 +257,7 @@ class DistillationDBPostProcess(object):
                  unclip_ratio=1.5,
                  use_dilation=False,
                  score_mode="fast",
+                 use_polygon=False,
                  **kwargs):
         self.model_name = model_name
         self.key = key
@@ -211,7 +267,8 @@ class DistillationDBPostProcess(object):
             max_candidates=max_candidates,
             unclip_ratio=unclip_ratio,
             use_dilation=use_dilation,
-            score_mode=score_mode)
+            score_mode=score_mode,
+            use_polygon=use_polygon)
 
     def __call__(self, predicts, shape_list):
         results = {}
