@@ -123,6 +123,10 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_east_v2.0_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf det_mv3_east_v2.0_train.tar && cd ../
     fi
+    if [ ${model_name} == "det_r50_vd_east_v2_0" ]; then
+        wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar --no-check-certificate
+        cd ./pretrain_models/ && tar xf det_r50_vd_east_v2.0_train.tar && cd ../
+    fi
 
 elif [ ${MODE} = "whole_train_whole_infer" ];then
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams --no-check-certificate
