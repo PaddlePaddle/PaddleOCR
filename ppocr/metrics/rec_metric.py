@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import Levenshtein
+from rapidfuzz.distance import Levenshtein
 import string
 
 
@@ -45,8 +45,7 @@ class RecMetric(object):
             if self.is_filter:
                 pred = self._normalize_text(pred)
                 target = self._normalize_text(target)
-            norm_edit_dis += Levenshtein.distance(pred, target) / max(
-                len(pred), len(target), 1)
+            norm_edit_dis += Levenshtein.normalized_distance(pred, target)
             if pred == target:
                 correct_num += 1
             all_num += 1
