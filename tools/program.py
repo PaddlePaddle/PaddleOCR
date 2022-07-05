@@ -234,12 +234,15 @@ def train(config,
     max_iter = len(train_dataloader) - 1 if platform.system(
     ) == "Windows" else len(train_dataloader)
 
+    # file_result = open("SR_out_file.txt","w")
+
     for epoch in range(start_epoch, epoch_num + 1):
         if train_dataloader.dataset.need_reset:
             train_dataloader = build_dataloader(
                 config, 'Train', device, logger, seed=epoch)
             max_iter = len(train_dataloader) - 1 if platform.system(
             ) == "Windows" else len(train_dataloader)
+        
         for idx, batch in enumerate(train_dataloader):
             profiler.add_profiler_step(profiler_options)
             train_reader_cost += time.time() - reader_start
@@ -247,6 +250,7 @@ def train(config,
                 break
             lr = optimizer.get_lr()
             images = batch[0]
+            # print("label:", batch[2])
             if use_srn:
                 model_average = True
 
@@ -260,8 +264,16 @@ def train(config,
             else:
                 if model_type == 'table' or extra_input:
                     preds = model(images, data=batch[1:])
-                elif model_type in ["kie", 'vqa']:
+                elif model_type in ["kie", 'vqa', 'sr']:
                     preds = model(batch)
+                    # import cv2
+                    # import numpy as np
+                    # for i in (range(preds["sr_img"].shape[0])):
+                    #     fm = (preds["sr_img"][i].numpy() * 255).transpose(1,2,0).astype(np.uint8)
+                    #     fm = cv2.resize(fm, (128,48))
+                    #     print("fm shape:", fm.shape)
+                    #     cv2.imwrite("visual_data/{}".format(str(batch[-1][i])[19:]), fm)
+                    #     file_result.write(str(batch[-1][i])+"\t"+str(batch[-2][i])+"\n")
                 else:
                     preds = model(images)
 
@@ -275,15 +287,23 @@ def train(config,
             else:
                 avg_loss.backward()
                 optimizer.step()
+            # import numpy as np
+            # for name,params in model.named_parameters():
+            #         params.requires_grad=True
+            #         print("name:{}, param:{}, grad:{}".format(name, np.sum(params.numpy()),np.sum(params.gradient())))
+
             optimizer.clear_grad()
+
+            # if idx == 50:
+            #     exit()
 
             if cal_metric_during_train and epoch % calc_epoch_interval == 0:  # only rec and cls need
                 batch = [item.numpy() for item in batch]
-                if model_type in ['table', 'kie']:
+                if model_type in ['table', 'kie', 'sr']:
                     eval_class(preds, batch)
                 else:
                     if config['Loss']['name'] in ['MultiLoss', 'MultiLoss_v2'
-                                                  ]:  # for multi head loss
+                                                ]:  # for multi head loss
                         post_result = post_process_class(
                             preds['ctc'], batch[1])  # for CTC head out
                     else:
@@ -302,7 +322,7 @@ def train(config,
                 lr_scheduler.step()
 
             # logger and visualdl
-            stats = {k: v.numpy().mean() for k, v in loss.items()}
+            stats = {k: v.numpy() for k, v in loss.items()}
             stats['lr'] = lr
             train_stats.update(stats)
 
@@ -318,8 +338,8 @@ def train(config,
                     len(train_dataloader) - idx - 1) * eta_meter.avg
                 eta_sec_format = str(datetime.timedelta(seconds=int(eta_sec)))
                 strs = 'epoch: [{}/{}], global_step: {}, {}, avg_reader_cost: ' \
-                       '{:.5f} s, avg_batch_cost: {:.5f} s, avg_samples: {}, ' \
-                       'ips: {:.5f} samples/s, eta: {}'.format(
+                    '{:.5f} s, avg_batch_cost: {:.5f} s, avg_samples: {}, ' \
+                    'ips: {:.5f} samples/s, eta: {}'.format(
                     epoch, epoch_num, global_step, logs,
                     train_reader_cost / print_batch_step,
                     train_batch_cost / print_batch_step,
@@ -447,7 +467,7 @@ def eval(model,
             start = time.time()
             if model_type == 'table' or extra_input:
                 preds = model(images, data=batch[1:])
-            elif model_type in ["kie", 'vqa']:
+            elif model_type in ["kie", 'vqa','sr']:
                 preds = model(batch)
             else:
                 preds = model(images)
@@ -464,6 +484,9 @@ def eval(model,
             if model_type in ['table', 'kie']:
                 eval_class(preds, batch_numpy)
             elif model_type in ['vqa']:
+                post_result = post_process_class(preds, batch_numpy)
+                eval_class(post_result, batch_numpy)
+            elif model_type in "sr":
                 post_result = post_process_class(preds, batch_numpy)
                 eval_class(post_result, batch_numpy)
             else:

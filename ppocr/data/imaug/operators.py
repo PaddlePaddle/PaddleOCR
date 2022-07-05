@@ -24,6 +24,7 @@ import six
 import cv2
 import numpy as np
 import math
+from PIL import Image
 
 
 class DecodeImage(object):
@@ -466,3 +467,71 @@ class KieResize(object):
         points[:, 0::2] = np.clip(points[:, 0::2], 0, img_shape[1])
         points[:, 1::2] = np.clip(points[:, 1::2], 0, img_shape[0])
         return points
+
+
+class SRResize(object):
+    def __init__(self, imgH=32, imgW=128, down_sample_scale=4, keep_ratio=False, min_ratio=1, mask=False, **kwargs):
+        self.imgH = imgH
+        self.imgW = imgW
+        self.keep_ratio = keep_ratio
+        self.min_ratio = min_ratio
+        self.down_sample_scale = down_sample_scale
+        self.mask = mask
+
+    def __call__(self, data):
+        images_HR = data["image_hr"]
+        images_lr = data["image_lr"]
+        label_strs = data["label"]
+        imgH = self.imgH
+        imgW = self.imgW
+        transform = resizeNormalize((imgW, imgH))
+        transform2 = resizeNormalize((imgW // self.down_sample_scale, imgH // self.down_sample_scale))
+        images_HR = transform(images_HR) 
+        images_lr = transform2(images_lr)
+        data["img_hr"] = images_HR
+        data["imge_lr"] = images_lr
+        return data
+
+
+class resizeNormalize(object):
+    def __init__(self, size, interpolation=Image.BICUBIC):
+        self.size = size
+        self.interpolation = interpolation
+    def __call__(self, img):
+        img = img.resize(self.size, self.interpolation)
+        img_numpy = np.array(img).astype("float32")
+        img_numpy = img_numpy.transpose((2, 0, 1)) / 255
+        return img_numpy
+
+
+class SRDecodeImage(object):
+    """ decode image """
+
+    def __init__(self, img_mode='RGB', channel_first=False, **kwargs):
+        self.img_mode = img_mode
+        self.channel_first = channel_first
+
+    def __call__(self, data):
+        img = data['image']
+        if six.PY2:
+            assert type(img) is str and len(
+                img) > 0, "invalid input 'img' in DecodeImage"
+        else:
+            assert type(img) is bytes and len(
+                img) > 0, "invalid input 'img' in DecodeImage"
+        img = np.frombuffer(img, dtype='uint8')
+
+        img = cv2.imdecode(img, 1)
+
+        if img is None:
+            return None
+        if self.img_mode == 'GRAY':
+            img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+        elif self.img_mode == 'RGB':
+            assert img.shape[2] == 3, 'invalid shape of image[%s]' % (img.shape)
+            img = img[:, :, ::-1]
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        if self.channel_first:
+            img = img.transpose((2, 0, 1))
+        data['image'] = img
+        return data

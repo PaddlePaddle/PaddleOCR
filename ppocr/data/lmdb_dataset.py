@@ -44,6 +44,9 @@ class LMDBDataSet(Dataset):
     def load_hierarchical_lmdb_dataset(self, data_dir):
         lmdb_sets = {}
         dataset_idx = 0
+        lmdb_list = []
+        # if isinstance(data_dir_list, list):
+        #     for data_dir in data_dir_list:
         for dirpath, dirnames, filenames in os.walk(data_dir + '/'):
             if not dirnames:
                 env = lmdb.open(
@@ -54,11 +57,15 @@ class LMDBDataSet(Dataset):
                     readahead=False,
                     meminit=False)
                 txn = env.begin(write=False)
+                # print("txn:", txn)
                 num_samples = int(txn.get('num-samples'.encode()))
                 lmdb_sets[dataset_idx] = {"dirpath":dirpath, "env":env, \
                     "txn":txn, "num_samples":num_samples}
                 dataset_idx += 1
         return lmdb_sets
+        # lmdb_list.append(lmdb_sets)
+        # lmdb_sets = {}
+        # return lmdb_list
 
     def dataset_traversal(self):
         lmdb_num = len(self.lmdb_sets)
@@ -116,3 +123,61 @@ class LMDBDataSet(Dataset):
 
     def __len__(self):
         return self.data_idx_order_list.shape[0]
+
+import six
+from PIL import Image
+
+def buf2PIL(txn, key, type='RGB'):
+    imgbuf = txn.get(key)
+    buf = six.BytesIO()
+    buf.write(imgbuf)
+    buf.seek(0)
+    im = Image.open(buf).convert(type)
+    return im
+import string
+
+def str_filt(str_, voc_type):
+    alpha_dict = {
+        'digit': string.digits,
+        'lower': string.digits + string.ascii_lowercase,
+        'upper': string.digits + string.ascii_letters,
+        'all':   string.digits + string.ascii_letters + string.punctuation
+    }
+    if voc_type == 'lower':
+        str_ = str_.lower()
+    for char in str_:
+        if char not in alpha_dict[voc_type]:
+            str_ = str_.replace(char, '')
+    return str_
+
+class LMDBDataSet_SR(LMDBDataSet):
+    def get_lmdb_sample_info(self, txn, index):
+        self.voc_type = 'upper'
+        self.max_len = 100
+        self.test = False
+        label_key = b'label-%09d' % index
+        word = str(txn.get(label_key).decode())
+        img_HR_key = b'image_hr-%09d' % index  # 128*32
+        img_lr_key = b'image_lr-%09d' % index  # 64*16
+        try:
+            img_HR = buf2PIL(txn, img_HR_key, 'RGB')
+            img_lr = buf2PIL(txn, img_lr_key, 'RGB')
+        except IOError or len(word) > self.max_len:
+            return self[index + 1]
+        label_str = str_filt(word, self.voc_type)
+        return img_HR, img_lr, label_str
+
+    def __getitem__(self, idx):
+        lmdb_idx, file_idx = self.data_idx_order_list[idx]
+        lmdb_idx = int(lmdb_idx)
+        file_idx = int(file_idx)
+        sample_info = self.get_lmdb_sample_info(self.lmdb_sets[lmdb_idx]['txn'],
+                                                file_idx)
+        if sample_info is None:
+            return self.__getitem__(np.random.randint(self.__len__()))
+        img_HR, img_lr, label_str = sample_info
+        data = {'image_hr': img_HR, 'image_lr': img_lr, 'label':label_str}
+        outs = transform(data, self.ops)
+        if outs is None:
+            return self.__getitem__(np.random.randint(self.__len__()))
+        return outs
