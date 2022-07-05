@@ -830,7 +830,7 @@ class VQATokenLabelEncode(object):
                  contains_re=False,
                  add_special_ids=False,
                  algorithm='LayoutXLM',
-                 use_textline_bbox_info=False,
+                 use_textline_bbox_info=True,
                  infer_mode=False,
                  ocr_engine=None,
                  **kwargs):
