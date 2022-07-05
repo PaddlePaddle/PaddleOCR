@@ -126,6 +126,8 @@ def export_single_model(model,
                 infer_shape[-1] = 100
         elif arch_config["model_type"] == "table":
             infer_shape = [3, 488, 488]
+            if arch_config["algorithm"] == "TableMaster":
+                infer_shape = [3, 480, 480]
         model = to_static(
             model,
             input_spec=[

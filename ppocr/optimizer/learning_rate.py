@@ -343,3 +343,46 @@ class DecayLearningRate(object):
             power=self.factor,
             end_lr=self.end_lr)
         return learning_rate
+
+
+class MultiStepDecay(object):
+    """
+    Piecewise learning rate decay
+    Args:
+        step_each_epoch(int): steps each epoch
+        learning_rate (float): The initial learning rate. It is a python float number.
+        step_size (int): the interval to update.
+        gamma (float, optional): The Ratio that the learning rate will be reduced. ``new_lr = origin_lr * gamma`` .
+            It should be less than 1.0. Default: 0.1.
+        last_epoch (int, optional):  The index of last epoch. Can be set to restart training. Default: -1, means initial learning rate.
+    """
+
+    def __init__(self,
+                 learning_rate,
+                 milestones,
+                 step_each_epoch,
+                 gamma,
+                 warmup_epoch=0,
+                 last_epoch=-1,
+                 **kwargs):
+        super(MultiStepDecay, self).__init__()
+        self.milestones = [step_each_epoch * e for e in milestones]
+        self.learning_rate = learning_rate
+        self.gamma = gamma
+        self.last_epoch = last_epoch
+        self.warmup_epoch = round(warmup_epoch * step_each_epoch)
+
+    def __call__(self):
+        learning_rate = lr.MultiStepDecay(
+            learning_rate=self.learning_rate,
+            milestones=self.milestones,
+            gamma=self.gamma,
+            last_epoch=self.last_epoch)
+        if self.warmup_epoch > 0:
+            learning_rate = lr.LinearWarmup(
+                learning_rate=learning_rate,
+                warmup_steps=self.warmup_epoch,
+                start_lr=0.0,
+                end_lr=self.learning_rate,
+                last_epoch=self.last_epoch)
+        return learning_rate

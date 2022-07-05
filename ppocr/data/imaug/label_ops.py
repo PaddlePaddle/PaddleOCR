@@ -562,171 +562,210 @@ class SRNLabelEncode(BaseRecLabelEncode):
         return idx
 
 
-class TableLabelEncode(object):
+class TableLabelEncode(AttnLabelEncode):
     """ Convert between text-label and text-index """
 
     def __init__(self,
                  max_text_length,
-                 max_elem_length,
-                 max_cell_num,
                  character_dict_path,
-                 span_weight=1.0,
+                 replace_empty_cell_token=False,
+                 merge_no_span_structure=False,
+                 learn_empty_box=False,
+                 point_num=2,
                  **kwargs):
-        self.max_text_length = max_text_length
-        self.max_elem_length = max_elem_length
-        self.max_cell_num = max_cell_num
-        list_character, list_elem = self.load_char_elem_dict(
-            character_dict_path)
-        list_character = self.add_special_char(list_character)
-        list_elem = self.add_special_char(list_elem)
-        self.dict_character = {}
-        for i, char in enumerate(list_character):
-            self.dict_character[char] = i
-        self.dict_elem = {}
-        for i, elem in enumerate(list_elem):
-            self.dict_elem[elem] = i
-        self.span_weight = span_weight
+        self.max_text_len = max_text_length
+        self.lower = False
+        self.learn_empty_box = learn_empty_box
+        self.merge_no_span_structure = merge_no_span_structure
+        self.replace_empty_cell_token = replace_empty_cell_token
 
-    def load_char_elem_dict(self, character_dict_path):
-        list_character = []
-        list_elem = []
+        dict_character = []
         with open(character_dict_path, "rb") as fin:
             lines = fin.readlines()
-            substr = lines[0].decode('utf-8').strip("\r\n").split("\t")
-            character_num = int(substr[0])
-            elem_num = int(substr[1])
-            for cno in range(1, 1 + character_num):
-                character = lines[cno].decode('utf-8').strip("\r\n")
-                list_character.append(character)
-            for eno in range(1 + character_num, 1 + character_num + elem_num):
-                elem = lines[eno].decode('utf-8').strip("\r\n")
-                list_elem.append(elem)
-        return list_character, list_elem
+            for line in lines:
+                line = line.decode('utf-8').strip("\n").strip("\r\n")
+                dict_character.append(line)
 
-    def add_special_char(self, list_character):
-        self.beg_str = "sos"
-        self.end_str = "eos"
-        list_character = [self.beg_str] + list_character + [self.end_str]
-        return list_character
+        dict_character = self.add_special_char(dict_character)
+        self.dict = {}
+        for i, char in enumerate(dict_character):
+            self.dict[char] = i
+        self.idx2char = {v: k for k, v in self.dict.items()}
 
-    def get_span_idx_list(self):
-        span_idx_list = []
-        for elem in self.dict_elem:
-            if 'span' in elem:
-                span_idx_list.append(self.dict_elem[elem])
-        return span_idx_list
+        self.character = dict_character
+        self.point_num = point_num
+        self.pad_idx = self.dict[self.beg_str]
+        self.start_idx = self.dict[self.beg_str]
+        self.end_idx = self.dict[self.end_str]
+
+        self.td_token = ['<td>', '<td', '<eb></eb>', '<td></td>']
+        self.empty_bbox_token_dict = {
+            "[]": '<eb></eb>',
+            "[' ']": '<eb1></eb1>',
+            "['<b>', ' ', '</b>']": '<eb2></eb2>',
+            "['\\u2028', '\\u2028']": '<eb3></eb3>',
+            "['<sup>', ' ', '</sup>']": '<eb4></eb4>',
+            "['<b>', '</b>']": '<eb5></eb5>',
+            "['<i>', ' ', '</i>']": '<eb6></eb6>',
+            "['<b>', '<i>', '</i>', '</b>']": '<eb7></eb7>',
+            "['<b>', '<i>', ' ', '</i>', '</b>']": '<eb8></eb8>',
+            "['<i>', '</i>']": '<eb9></eb9>',
+            "['<b>', ' ', '\\u2028', ' ', '\\u2028', ' ', '</b>']":
+            '<eb10></eb10>',
+        }
+
+    @property
+    def _max_text_len(self):
+        return self.max_text_len + 2
 
     def __call__(self, data):
         cells = data['cells']
-        structure = data['structure']['tokens']
-        structure = self.encode(structure, 'elem')
+        structure = data['structure']
+        if self.merge_no_span_structure:
+            structure = self._merge_no_span_structure(structure)
+        if self.replace_empty_cell_token:
+            structure = self._replace_empty_cell_token(structure, cells)
+        # remove empty token and add " " to span token
+        new_structure = []
+        for token in structure:
+            if token != '':
+                if 'span' in token and token[0] != ' ':
+                    token = ' ' + token
+                new_structure.append(token)
+        # encode structure
+        structure = self.encode(new_structure)
         if structure is None:
             return None
-        elem_num = len(structure)
-        structure = [0] + structure + [len(self.dict_elem) - 1]
-        structure = structure + [0] * (self.max_elem_length + 2 - len(structure)
-                                       )
+
+        structure = [self.start_idx] + structure + [self.end_idx
+                                                    ]  # add sos abd eos
+        structure = structure + [self.pad_idx] * (self._max_text_len -
+                                                  len(structure))  # pad
         structure = np.array(structure)
         data['structure'] = structure
-        elem_char_idx1 = self.dict_elem['<td>']
-        elem_char_idx2 = self.dict_elem['<td']
-        span_idx_list = self.get_span_idx_list()
-        td_idx_list = np.logical_or(structure == elem_char_idx1,
-                                    structure == elem_char_idx2)
-        td_idx_list = np.where(td_idx_list)[0]
 
-        structure_mask = np.ones(
-            (self.max_elem_length + 2, 1), dtype=np.float32)
-        bbox_list = np.zeros((self.max_elem_length + 2, 4), dtype=np.float32)
-        bbox_list_mask = np.zeros(
-            (self.max_elem_length + 2, 1), dtype=np.float32)
-        img_height, img_width, img_ch = data['image'].shape
-        if len(span_idx_list) > 0:
-            span_weight = len(td_idx_list) * 1.0 / len(span_idx_list)
-            span_weight = min(max(span_weight, 1.0), self.span_weight)
-        for cno in range(len(cells)):
-            if 'bbox' in cells[cno]:
-                bbox = cells[cno]['bbox'].copy()
-                bbox[0] = bbox[0] * 1.0 / img_width
-                bbox[1] = bbox[1] * 1.0 / img_height
-                bbox[2] = bbox[2] * 1.0 / img_width
-                bbox[3] = bbox[3] * 1.0 / img_height
-                td_idx = td_idx_list[cno]
-                bbox_list[td_idx] = bbox
-                bbox_list_mask[td_idx] = 1.0
-                cand_span_idx = td_idx + 1
-                if cand_span_idx < (self.max_elem_length + 2):
-                    if structure[cand_span_idx] in span_idx_list:
-                        structure_mask[cand_span_idx] = span_weight
+        if len(structure) > self._max_text_len:
+            return None
 
-        data['bbox_list'] = bbox_list
-        data['bbox_list_mask'] = bbox_list_mask
-        data['structure_mask'] = structure_mask
-        char_beg_idx = self.get_beg_end_flag_idx('beg', 'char')
-        char_end_idx = self.get_beg_end_flag_idx('end', 'char')
-        elem_beg_idx = self.get_beg_end_flag_idx('beg', 'elem')
-        elem_end_idx = self.get_beg_end_flag_idx('end', 'elem')
-        data['sp_tokens'] = np.array([
-            char_beg_idx, char_end_idx, elem_beg_idx, elem_end_idx,
-            elem_char_idx1, elem_char_idx2, self.max_text_length,
-            self.max_elem_length, self.max_cell_num, elem_num
-        ])
+        # encode box
+        bboxes = np.zeros(
+            (self._max_text_len, self.point_num * 2), dtype=np.float32)
+        bbox_masks = np.zeros((self._max_text_len, 1), dtype=np.float32)
+
+        bbox_idx = 0
+
+        for i, token in enumerate(structure):
+            if self.idx2char[token] in self.td_token:
+                if 'bbox' in cells[bbox_idx] and len(cells[bbox_idx][
+                        'tokens']) > 0:
+                    bbox = cells[bbox_idx]['bbox'].copy()
+                    bbox = np.array(bbox, dtype=np.float32).reshape(-1)
+                    bboxes[i] = bbox
+                    bbox_masks[i] = 1.0
+                if self.learn_empty_box:
+                    bbox_masks[i] = 1.0
+                bbox_idx += 1
+        data['bboxes'] = bboxes
+        data['bbox_masks'] = bbox_masks
         return data
 
-    def encode(self, text, char_or_elem):
-        """convert text-label into text-index.
+    def _merge_no_span_structure(self, structure):
         """
-        if char_or_elem == "char":
-            max_len = self.max_text_length
-            current_dict = self.dict_character
-        else:
-            max_len = self.max_elem_length
-            current_dict = self.dict_elem
-        if len(text) > max_len:
-            return None
-        if len(text) == 0:
-            if char_or_elem == "char":
-                return [self.dict_character['space']]
-            else:
-                return None
-        text_list = []
-        for char in text:
-            if char not in current_dict:
-                return None
-            text_list.append(current_dict[char])
-        if len(text_list) == 0:
-            if char_or_elem == "char":
-                return [self.dict_character['space']]
-            else:
-                return None
-        return text_list
+        This code is refer from:
+        https://github.com/JiaquanYe/TableMASTER-mmocr/blob/master/table_recognition/data_preprocess.py
+        """
+        new_structure = []
+        i = 0
+        while i < len(structure):
+            token = structure[i]
+            if token == '<td>':
+                token = '<td></td>'
+                i += 1
+            new_structure.append(token)
+            i += 1
+        return new_structure
 
-    def get_ignored_tokens(self, char_or_elem):
-        beg_idx = self.get_beg_end_flag_idx("beg", char_or_elem)
-        end_idx = self.get_beg_end_flag_idx("end", char_or_elem)
-        return [beg_idx, end_idx]
+    def _replace_empty_cell_token(self, token_list, cells):
+        """
+        This fun code is refer from:
+        https://github.com/JiaquanYe/TableMASTER-mmocr/blob/master/table_recognition/data_preprocess.py
+        """
 
-    def get_beg_end_flag_idx(self, beg_or_end, char_or_elem):
-        if char_or_elem == "char":
-            if beg_or_end == "beg":
-                idx = np.array(self.dict_character[self.beg_str])
-            elif beg_or_end == "end":
-                idx = np.array(self.dict_character[self.end_str])
+        bbox_idx = 0
+        add_empty_bbox_token_list = []
+        for token in token_list:
+            if token in ['<td></td>', '<td', '<td>']:
+                if 'bbox' not in cells[bbox_idx].keys():
+                    content = str(cells[bbox_idx]['tokens'])
+                    token = self.empty_bbox_token_dict[content]
+                add_empty_bbox_token_list.append(token)
+                bbox_idx += 1
             else:
-                assert False, "Unsupport type %s in get_beg_end_flag_idx of char" \
-                              % beg_or_end
-        elif char_or_elem == "elem":
-            if beg_or_end == "beg":
-                idx = np.array(self.dict_elem[self.beg_str])
-            elif beg_or_end == "end":
-                idx = np.array(self.dict_elem[self.end_str])
-            else:
-                assert False, "Unsupport type %s in get_beg_end_flag_idx of elem" \
-                              % beg_or_end
-        else:
-            assert False, "Unsupport type %s in char_or_elem" \
-                % char_or_elem
-        return idx
+                add_empty_bbox_token_list.append(token)
+        return add_empty_bbox_token_list
+
+
+class TableMasterLabelEncode(TableLabelEncode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path,
+                 replace_empty_cell_token=False,
+                 merge_no_span_structure=False,
+                 learn_empty_box=False,
+                 point_num=2,
+                 **kwargs):
+        super(TableMasterLabelEncode, self).__init__(
+            max_text_length, character_dict_path, replace_empty_cell_token,
+            merge_no_span_structure, learn_empty_box, point_num, **kwargs)
+        self.pad_idx = self.dict[self.pad_str]
+        self.unknown_idx = self.dict[self.unknown_str]
+
+    @property
+    def _max_text_len(self):
+        return self.max_text_len
+
+    def add_special_char(self, dict_character):
+        self.beg_str = '<SOS>'
+        self.end_str = '<EOS>'
+        self.unknown_str = '<UKN>'
+        self.pad_str = '<PAD>'
+        dict_character = dict_character
+        dict_character = dict_character + [
+            self.unknown_str, self.beg_str, self.end_str, self.pad_str
+        ]
+        return dict_character
+
+
+class TableBoxEncode(object):
+    def __init__(self, use_xywh=False, **kwargs):
+        self.use_xywh = use_xywh
+
+    def __call__(self, data):
+        img_height, img_width = data['image'].shape[:2]
+        bboxes = data['bboxes']
+        if self.use_xywh and bboxes.shape[1] == 4:
+            bboxes = self.xyxy2xywh(bboxes)
+        bboxes[:, 0::2] /= img_width
+        bboxes[:, 1::2] /= img_height
+        data['bboxes'] = bboxes
+        return data
+
+    def xyxy2xywh(self, bboxes):
+        """
+        Convert coord (x1,y1,x2,y2) to (x,y,w,h).
+        where (x1,y1) is top-left, (x2,y2) is bottom-right.
+        (x,y) is bbox center and (w,h) is width and height.
+        :param bboxes: (x1, y1, x2, y2)
+        :return:
+        """
+        new_bboxes = np.empty_like(bboxes)
+        new_bboxes[:, 0] = (bboxes[:, 0] + bboxes[:, 2]) / 2  # x center
+        new_bboxes[:, 1] = (bboxes[:, 1] + bboxes[:, 3]) / 2  # y center
+        new_bboxes[:, 2] = bboxes[:, 2] - bboxes[:, 0]  # width
+        new_bboxes[:, 3] = bboxes[:, 3] - bboxes[:, 1]  # height
+        return new_bboxes
 
 
 class SARLabelEncode(BaseRecLabelEncode):
@@ -1013,7 +1052,6 @@ class MultiLabelEncode(BaseRecLabelEncode):
                                          use_space_char, **kwargs)
 
     def __call__(self, data):
-
         data_ctc = copy.deepcopy(data)
         data_sar = copy.deepcopy(data)
         data_out = dict()

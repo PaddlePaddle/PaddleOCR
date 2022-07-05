@@ -1,9 +1,10 @@
 # OCR算法
 
 - [1. 两阶段算法](#1-两阶段算法)
-    - [1.1 文本检测算法](#11-文本检测算法)
-    - [1.2 文本识别算法](#12-文本识别算法)
+  - [1.1 文本检测算法](#11-文本检测算法)
+  - [1.2 文本识别算法](#12-文本识别算法)
 - [2. 端到端算法](#2-端到端算法)
+- [3. 表格识别算法](#3-表格识别算法)
 
 
 本文给出了PaddleOCR已支持的OCR算法列表，以及每个算法在**英文公开数据集**上的模型和指标，主要用于算法简介和算法性能对比，更多包括中文在内的其他数据集上的模型请参考[PP-OCR v2.0 系列模型下载](./models_list.md)。
@@ -96,3 +97,14 @@
 
 已支持的端到端OCR算法列表（戳链接获取使用教程）：
 - [x]  [PGNet](./algorithm_e2e_pgnet.md)
+
+## 3. 表格识别算法
+
+已支持的表格识别算法列表（戳链接获取使用教程）：
+- [x]  [TableMaster](./algorithm_table_master.md)
+
+在PubTabNet表格识别公开数据集上，算法效果如下：
+
+|模型|骨干网络|配置文件|acc|下载链接|
+|---|---|---|---|---|
+|TableMaster|TableResNetExtra|[configs/table/table_master.yml](../../configs/table/table_master.yml)|77.47%|[训练模型](https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_infer.tar)|
