@@ -1,10 +1,10 @@
 Global:
   use_gpu: true
-  epoch_num: 400
+  epoch_num: 10
   log_smooth_window: 20
   print_batch_step: 5
   save_model_dir: ./output/table_mv3/
-  save_epoch_step: 400
+  save_epoch_step: 3
   # evaluation is run every 400 iterations after the 0th iteration
   eval_batch_step: [0, 400]
   cal_metric_during_train: True
