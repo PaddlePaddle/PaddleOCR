@@ -64,7 +64,6 @@ Train:
           contains_re: False
           algorithm: *algorithm
           class_path: *class_path
-          # use_textline_bbox_info: False
       - VQATokenPad:
           max_seq_len: &max_seq_len 512
           return_attention_mask: True

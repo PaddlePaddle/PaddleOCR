@@ -6,7 +6,7 @@ Global:
   save_model_dir: ./output/ser_layoutxlm_wildreceipt
   save_epoch_step: 2000
   # evaluation is run every 10 iterations after the 0th iteration
-  eval_batch_step: [ 0, 100 ]
+  eval_batch_step: [ 0, 200 ]
   cal_metric_during_train: False
   save_inference_dir:
   use_visualdl: False

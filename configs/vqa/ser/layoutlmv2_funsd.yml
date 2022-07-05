@@ -55,7 +55,7 @@ Train:
     name: SimpleDataSet
     data_dir: ./train_data/FUNSD/training_data/images/
     label_file_list: 
-      - ./train_data/FUNSD/train_v2.json
+      - ./train_data/FUNSD/train.json
     transforms:
       - DecodeImage: # load image
           img_mode: RGB
@@ -91,7 +91,7 @@ Eval:
     name: SimpleDataSet
     data_dir: ./train_data/FUNSD/testing_data/images/
     label_file_list: 
-      - ./train_data/FUNSD/test_v2.json
+      - ./train_data/FUNSD/test.json
     transforms:
       - DecodeImage: # load image
           img_mode: RGB
