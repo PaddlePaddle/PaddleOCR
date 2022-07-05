@@ -73,7 +73,6 @@ class DBPostProcess(object):
             epsilon = 0.002 * cv2.arcLength(contour, True)
             approx = cv2.approxPolyDP(contour, epsilon, True)
             points = approx.reshape((-1, 2))
-            # print(points)
             if points.shape[0] < 4:
                 continue
 
@@ -88,7 +87,6 @@ class DBPostProcess(object):
             else:
                 continue
             box = box.reshape(-1, 2)
-            # print(box)
 
             _, sside = self.get_mini_boxes(box.reshape((-1, 1, 2)))
             if sside < self.min_size + 2:
@@ -101,7 +99,6 @@ class DBPostProcess(object):
                 np.round(box[:, 1] / height * dest_height), 0, dest_height)
             boxes.append(box.tolist())
             scores.append(score)
-        # print(boxes)
         return boxes, scores
 
     def boxes_from_bitmap(self, pred, _bitmap, dest_width, dest_height):
