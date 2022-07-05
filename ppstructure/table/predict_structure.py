@@ -30,6 +30,7 @@ from ppocr.data import create_operators, transform
 from ppocr.postprocess import build_post_process
 from ppocr.utils.logging import get_logger
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
+from ppocr.utils.visual import draw_rectangle
 from ppstructure.utility import parse_args
 
 logger = get_logger()
@@ -118,19 +119,6 @@ class TableStructurer(object):
         ] + structure_str_list + ['</table>', '</body>', '</html>']
         elapse = time.time() - starttime
         return structure_str_list, bbox_list, elapse
-
-
-def draw_rectangle(img_path, boxes, use_xywh=False):
-    img = cv2.imread(img_path)
-    img_show = img.copy()
-    for box in boxes.astype(int):
-        if use_xywh:
-            x, y, w, h = box
-            x1, y1, x2, y2 = x - w // 2, y - h // 2, x + w // 2, y + h // 2
-        else:
-            x1, y1, x2, y2 = box
-        cv2.rectangle(img_show, (x1, y1), (x2, y2), (255, 0, 0), 2)
-    return img_show
 
 
 def main(args):

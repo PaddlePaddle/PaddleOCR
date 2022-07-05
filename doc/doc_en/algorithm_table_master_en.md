@@ -1,4 +1,4 @@
-# Torm Recognition Algorithm-TableMASTER
+# Table Recognition Algorithm-TableMASTER
 
 - [1. Introduction](#1-introduction)
 - [2. Environment](#2-environment)
@@ -24,7 +24,7 @@ On the PubTabNet table recognition public data set, the algorithm reproduction a
 
 |Model|Backbone|Cnnfig|Acc|Download link|
 | --- | --- | --- | --- | --- |
-|TableMaster|TableResNetExtra|[configs/table/table_master.yml](../../configs/table/table_master.yml)|77.47%|[train model](https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_train.tar)/[inference model](https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_infer.tar)|
+|TableMaster|TableResNetExtra|[configs/table/table_master.yml](../../configs/table/table_master.yml)|77.47%|[trained model](https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_train.tar)/[inference model](https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_infer.tar)|
 
 
 <a name="2"></a>

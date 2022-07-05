@@ -36,6 +36,7 @@ from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
 from ppocr.utils.save_load import load_model
 from ppocr.utils.utility import get_image_file_list
+from ppocr.utils.visual import draw_rectangle
 import tools.program as program
 import cv2
 
@@ -109,19 +110,6 @@ def main(config, device, logger, vdl_writer):
             cv2.imwrite(
                 os.path.join(save_res_path, os.path.basename(file)), img)
         logger.info("success!")
-
-
-def draw_rectangle(img_path, boxes, use_xywh=False):
-    img = cv2.imread(img_path)
-    img_show = img.copy()
-    for box in boxes.astype(int):
-        if use_xywh:
-            x, y, w, h = box
-            x1, y1, x2, y2 = x - w // 2, y - h // 2, x + w // 2, y + h // 2
-        else:
-            x1, y1, x2, y2 = box
-        cv2.rectangle(img_show, (x1, y1), (x2, y2), (255, 0, 0), 2)
-    return img_show
 
 
 if __name__ == '__main__':

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-This fun code is refer from:
+This code is refer from:
 https://github.com/JiaquanYe/TableMASTER-mmocr/blob/master/mmocr/models/textrecog/backbones/table_resnet_extra.py
 """
 
@@ -193,47 +193,43 @@ class TableResNetExtra(nn.Layer):
 
     def forward(self, x):
         f = []
-        x = self.conv1(x)  # 1,64,480,480
+        x = self.conv1(x)
 
         x = self.bn1(x)
         x = self.relu1(x)
 
-        x = self.conv2(x)  # 1,128,480,480
+        x = self.conv2(x)
         x = self.bn2(x)
         x = self.relu2(x)
-        # (48, 160)
 
-        x = self.maxpool1(x)  # 1,64,240,240
+        x = self.maxpool1(x)
         x = self.layer1(x)
 
-        x = self.conv3(x)  # 1,256,240,240
+        x = self.conv3(x)
         x = self.bn3(x)
         x = self.relu3(x)
         f.append(x)
-        # (24, 80)
 
-        x = self.maxpool2(x)  # 1,256,120,120
+        x = self.maxpool2(x)
         x = self.layer2(x)
 
-        x = self.conv4(x)  # 1,256,120,120
+        x = self.conv4(x)
         x = self.bn4(x)
         x = self.relu4(x)
         f.append(x)
-        # (12, 40)
 
-        x = self.maxpool3(x)  # 1,256,60,60
+        x = self.maxpool3(x)
 
-        x = self.layer3(x)  # 1,512,60,60
-        x = self.conv5(x)  # 1,512,60,60
+        x = self.layer3(x)
+        x = self.conv5(x)
         x = self.bn5(x)
         x = self.relu5(x)
 
-        x = self.layer4(x)  # 1,512,60,60
-        x = self.conv6(x)  # 1,512,60,60
+        x = self.layer4(x)
+        x = self.conv6(x)
         x = self.bn6(x)
         x = self.relu6(x)
         f.append(x)
-        # (6, 40)
         return f
 
 

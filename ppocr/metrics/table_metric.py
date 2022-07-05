@@ -31,8 +31,6 @@ class TableStructureMetric(object):
                                              gt_structure_batch_list):
             pred_str = ''.join(pred)
             target_str = ''.join(target)
-            # pred_str = pred_str.replace('<thead>','').replace('</thead>','').replace('<tbody>','').replace('</tbody>','')
-            # target_str = target_str.replace('<thead>','').replace('</thead>','').replace('<tbody>','').replace('</tbody>','')
             if pred_str == target_str:
                 correct_num += 1
             all_num += 1
@@ -55,8 +53,6 @@ class TableStructureMetric(object):
         self.len_acc_num = 0
         self.token_nums = 0
         self.anys_dict = dict()
-        from collections import defaultdict
-        self.error_num_dict = defaultdict(int)
 
 
 class TableMetric(object):

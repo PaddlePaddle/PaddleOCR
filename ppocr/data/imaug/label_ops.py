@@ -671,7 +671,7 @@ class TableLabelEncode(AttnLabelEncode):
 
     def _merge_no_span_structure(self, structure):
         """
-        This fun code is refer from:
+        This code is refer from:
         https://github.com/JiaquanYe/TableMASTER-mmocr/blob/master/table_recognition/data_preprocess.py
         """
         new_structure = []

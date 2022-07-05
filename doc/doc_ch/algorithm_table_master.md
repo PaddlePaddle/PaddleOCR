@@ -55,7 +55,7 @@ python3 tools/export_model.py -c configs/table/table_master.yml -o Global.pretra
 
 转换成功后，在目录下有三个文件：
 ```
-/inference/table_master/
+./inference/table_master/
     ├── inference.pdiparams         # 识别inference模型的参数文件
     ├── inference.pdiparams.info    # 识别inference模型的参数信息，可忽略
     └── inference.pdmodel           # 识别inference模型的program文件

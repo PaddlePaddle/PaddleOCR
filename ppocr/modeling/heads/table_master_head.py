@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-This fun code is refer from:
+This code is refer from:
 https://github.com/JiaquanYe/TableMASTER-mmocr/blob/master/mmocr/models/textrecog/decoders/master_decoder.py
 """
 
@@ -135,7 +135,7 @@ class TableMasterHead(nn.Layer):
         batch_size = out_enc.shape[0]
         SOS = paddle.zeros([batch_size, 1], dtype='int64') + self.SOS
         output, bbox_output = self.greedy_forward(SOS, out_enc)
-        # output = F.softmax(output)
+        output = F.softmax(output)
         return {'structure_probs': output, 'loc_preds': bbox_output}
 
     def forward(self, feat, targets=None):
