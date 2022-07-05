@@ -101,7 +101,7 @@ def main():
             for key in config["Architecture"]["Models"]:
                 config["Architecture"]["Models"][key]["Head"][
                     "out_channels"] = char_num
-                # just one final tensor needs to to exported for inference
+                # just one final tensor needs to be exported for inference
                 config["Architecture"]["Models"][key][
                     "return_all_feats"] = False
         else:  # base rec model

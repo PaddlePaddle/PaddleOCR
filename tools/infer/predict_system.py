@@ -27,6 +27,7 @@ import numpy as np
 import time
 import logging
 from PIL import Image
+import json
 import tools.infer.utility as utility
 import tools.infer.predict_rec as predict_rec
 import tools.infer.predict_det as predict_det
@@ -92,11 +93,11 @@ class TextSystem(object):
             self.draw_crop_rec_res(self.args.crop_res_save_dir, img_crop_list,
                                    rec_res)
         filter_boxes, filter_rec_res = [], []
-        for box, rec_reuslt in zip(dt_boxes, rec_res):
-            text, score = rec_reuslt
+        for box, rec_result in zip(dt_boxes, rec_res):
+            text, score = rec_result
             if score >= self.drop_score:
                 filter_boxes.append(box)
-                filter_rec_res.append(rec_reuslt)
+                filter_rec_res.append(rec_result)
         return filter_boxes, filter_rec_res
 
 
@@ -121,11 +122,31 @@ def sorted_boxes(dt_boxes):
     return _boxes
 
 
+def save_results_to_txt(results, path):
+    if os.path.isdir(path):
+        if not os.path.exists(path):
+            os.makedirs(path)
+        with open(os.path.join(path, "results.txt"), 'w') as f:
+            f.writelines(results)
+            f.close()
+        logger.info("The results will be saved in {}".format(
+            os.path.join(path, "results.txt")))
+    else:
+        draw_img_save = os.path.dirname(path)
+        if not os.path.exists(draw_img_save):
+            os.makedirs(draw_img_save)
+
+        with open(path, 'w') as f:
+            f.writelines(results)
+            f.close()
+        logger.info("The results will be saved in {}".format(path))
+
+
 def main(args):
     image_file_list = get_image_file_list(args.image_dir)
     image_file_list = image_file_list[args.process_id::args.total_process_num]
     text_sys = TextSystem(args)
-    is_visualize = True
+    is_visualize = args.is_visualize
     font_path = args.vis_font_path
     drop_score = args.drop_score
 
@@ -139,6 +160,7 @@ def main(args):
     cpu_mem, gpu_mem, gpu_util = 0, 0, 0
     _st = time.time()
     count = 0
+    save_res = []
     for idx, image_file in enumerate(image_file_list):
 
         img, flag = check_and_read_gif(image_file)
@@ -152,6 +174,21 @@ def main(args):
         elapse = time.time() - starttime
         total_time += elapse
 
+        # save results 
+        preds = []
+        dt_num = len(dt_boxes)
+        for dno in range(dt_num):
+            text, score = rec_res[dno]
+            if score >= drop_score:
+                preds.append({
+                    "transcription": text,
+                    "points": np.array(dt_boxes[dno]).tolist()
+                })
+                text_str = "%s, %.3f" % (text, score)
+        save_res.append(image_file + '\t' + json.dumps(
+            preds, ensure_ascii=False) + '\n')
+
+        # print predicted results
         logger.debug(
             str(idx) + "  Predict time of %s: %.3fs" % (image_file, elapse))
         for text, score in rec_res:
@@ -179,6 +216,9 @@ def main(args):
                 draw_img[:, :, ::-1])
             logger.debug("The visualized image saved in {}".format(
                 os.path.join(draw_img_save_dir, os.path.basename(image_file))))
+
+    # The predicted results will be saved in os.path.join(os.draw_img_save_dir, "results.txt")
+    save_results_to_txt(save_res, args.draw_img_save_dir)
 
     logger.info("The predict total time is {}".format(time.time() - _st))
     if args.benchmark:

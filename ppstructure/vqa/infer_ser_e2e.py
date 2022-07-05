@@ -149,7 +149,7 @@ if __name__ == "__main__":
             result, _ = ser_engine(img)
             fout.write(img_path + "\t" + json.dumps(
                 {
-                    "ser_resule": result,
+                    "ser_result": result,
                 }, ensure_ascii=False) + "\n")
 
             img_res = draw_ser_results(img, result)

@@ -18,9 +18,8 @@
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力开发者训练出更好的模型，并应用落地。
 
 ## 近期更新
-
-- 2021.12.21《动手学OCR · 十讲》课程开讲，12月21日起每晚八点半线上授课！[免费报名地址](https://aistudio.baidu.com/aistudio/course/introduce/25207)。
-- 2021.12.21 发布PaddleOCR v2.4。OCR算法新增1种文本检测算法（PSENet），3种文本识别算法（NRTR、SEED、SAR）；文档结构化算法新增1种关键信息提取算法（SDMGR，[文档](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.4/ppstructure/docs/kie.md)），3种DocVQA算法（LayoutLM、LayoutLMv2，LayoutXLM，[文档](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.4/ppstructure/vqa)）。
+- 2022.3 OCR算法新增1种文本检测算法（PSENet），3种文本识别算法（NRTR、SEED、SAR）；文档结构化算法新增1种关键信息提取算法（SDMGR，[文档](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.4/ppstructure/docs/kie.md)），3种DocVQA算法（LayoutLM、LayoutLMv2，LayoutXLM，[文档](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.4/ppstructure/vqa)）。
+- 2021.12.21 发布PaddleOCR v2.4，《动手学OCR · 十讲》课程开讲，12月21日起每晚八点半线上授课！[免费报名地址](https://aistudio.baidu.com/aistudio/course/introduce/25207)。
 - PaddleOCR研发团队对最新发版内容技术深入解读，9月8日晚上20:15，[课程回放](https://aistudio.baidu.com/aistudio/education/group/info/6758)。
 - 2021.9.7 发布PaddleOCR v2.3与[PP-OCRv2](#PP-OCRv2)，CPU推理速度相比于PP-OCR server提升220%；效果相比于PP-OCR mobile 提升7%。
 - 2021.8.3 发布PaddleOCR v2.2，新增文档结构分析[PP-Structure](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/ppstructure/README_ch.md)工具包，支持版面分析与表格识别（含Excel导出）。
@@ -32,7 +31,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - PP-OCR系列高质量预训练模型，准确的识别效果
     - 超轻量PP-OCRv2系列：检测（3.1M）+ 方向分类器（1.4M）+ 识别（8.5M）= 13.0M
     - 超轻量PP-OCR mobile移动端系列：检测（3.0M）+方向分类器（1.4M）+ 识别（5.0M）= 9.4M
-    - 通用PPOCR server系列：检测（47.1M）+方向分类器（1.4M）+ 识别（94.9M）= 143.4M
+    - 通用PP-OCR server系列：检测（47.1M）+方向分类器（1.4M）+ 识别（94.9M）= 143.4M
     - 支持中英文数字组合识别、竖排文本识别、长文本识别
     - 支持多语言识别：韩语、日语、德语、法语等约80种语言
 - PP-Structure文档结构化系统
@@ -53,8 +52,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## 社区、社区贡献与社区常规赛
 
 - 加入社区：微信扫描下方二维码加入官方交流群，与各行各业开发者充分交流，期待您的加入。
-- 社区贡献：[社区贡献](./doc/doc_ch/thirdparty.md)文档中包含了社区用户**使用PaddleOCR开发的各种工具、应用**以及**为PaddleOCR贡献的功能、优化的文档与代码**等，是官方为社区开发者打造的荣誉墙、也是帮助优质项目宣传的广播站。如果您的OCR项目未被收集在文档中，可根据文档说明与我们联系。最新社区贡献可查看[此处](#社区贡献)。
-- 社区常规赛：作为社区贡献的具体承载形式，社区常规赛是面向OCR开发者的积分赛事。首届社区常规赛与[《动手学OCR · 十讲》课程](https://aistudio.baidu.com/aistudio/course/introduce/25207)联合推广。社区常规赛的赛题详情与报名方法可参考[链接](https://github.com/PaddlePaddle/PaddleOCR/issues/4982)。
+- 社区贡献：[社区贡献](./doc/doc_ch/thirdparty.md)文档中包含了社区用户**使用PaddleOCR开发的各种工具、应用**以及**为PaddleOCR贡献的功能、优化的文档与代码**等，是官方为社区开发者打造的荣誉墙、也是帮助优质项目宣传的广播站。如果您的OCR项目未被收集在文档中，可根据文档说明与我们联系。
+- 社区常规赛：社区常规赛是面向OCR开发者的积分赛事，覆盖文档、代码、模型和应用四大类型，以季度为单位评选并发放奖励，赛题详情与报名方法可参考[链接](https://github.com/PaddlePaddle/PaddleOCR/issues/4982)。
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "200" height = "200" />
@@ -79,30 +78,35 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## 文档教程
 
 - [运行环境准备](./doc/doc_ch/environment.md)
-- [快速开始（中英文/多语言/文档分析）](./doc/doc_ch/quickstart.md)
+- [快速开始（中英文/多语言/版面分析）](./doc/doc_ch/quickstart.md)
 - [PaddleOCR全景图与项目克隆](./doc/doc_ch/paddleOCR_overview.md)
 - PP-OCR产业落地：从训练到部署
-    - [PP-OCR模型与配置文件](./doc/doc_ch/models_and_config.md)
+    - [PP-OCR模型库](./doc/doc_ch/models.md)
         - [PP-OCR模型下载](./doc/doc_ch/models_list.md)
-        - [PP-OCR模型库快速推理](./doc/doc_ch/inference_ppocr.md)
+        - [Python引擎的PP-OCR模型库推理](./doc/doc_ch/inference_ppocr.md)
     - [PP-OCR模型训练](./doc/doc_ch/training.md)
         - [文本检测](./doc/doc_ch/detection.md)
         - [文本识别](./doc/doc_ch/recognition.md)
         - [文本方向分类器](./doc/doc_ch/angle_class.md)
-        - [知识蒸馏](./doc/doc_ch/knowledge_distillation.md)
         - [配置文件内容与生成](./doc/doc_ch/config.md)
+    - PP-OCR模型压缩
+        - [知识蒸馏](./doc/doc_ch/knowledge_distillation.md)
+        - [模型量化](./deploy/slim/quantization/README.md)
+        - [模型裁剪](./deploy/slim/prune/README.md)
     - PP-OCR模型推理部署
         - [基于C++预测引擎推理](./deploy/cpp_infer/readme.md)
         - [服务化部署](./deploy/pdserving/README_CN.md)
         - [端侧部署](./deploy/lite/readme.md)
+        - [Paddle2ONNX模型转化与预测](./deploy/paddle2onnx/readme.md)
         - [Benchmark](./doc/doc_ch/benchmark.md)
 - [PP-Structure信息提取](./ppstructure/README_ch.md)
     - [版面分析](./ppstructure/layout/README_ch.md)
     - [表格识别](./ppstructure/table/README_ch.md)
     - [DocVQA](./ppstructure/vqa/README_ch.md)
-    - [关键信息提取](./ppstructure/docs/kie.md)
-- OCR学术圈
-    - [两阶段模型介绍与下载](./doc/doc_ch/algorithm_overview.md)
+    - [关键信息提取](./ppstructure/docs/kie_ch.md)
+- OCR学术前沿模型介绍与下载
+    - [文本检测算法](./doc/doc_ch/algorithm_overview.md#11-%E6%96%87%E6%9C%AC%E6%A3%80%E6%B5%8B%E7%AE%97%E6%B3%95)
+    - [文本识别算法](./doc/doc_ch/algorithm_overview.md#12-%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)
     - [端到端PGNet算法](./doc/doc_ch/pgnet.md)
     - [基于Python脚本预测引擎推理](./doc/doc_ch/inference.md)
     - [使用PaddleOCR架构添加新算法](./doc/doc_ch/add_new_algorithm.md)
@@ -157,17 +161,6 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     <img src="./doc/imgs_results/french_0.jpg" width="800">
     <img src="./doc/imgs_results/korean.jpg" width="800">
 </div>
-<a name="社区贡献"></a>
-
-## 最新社区贡献
-
-- 基于PaddleOCR的社区项目： [FastOCRLabel](https://gitee.com/BaoJianQiang/FastOCRLabel)：完整的C#版本标注工具 (@ [包建强](https://gitee.com/BaoJianQiang) )
-- 为PaddleOCR新增功能：非常感谢 [Evezerest](https://github.com/Evezerest)， [ninetailskim](https://github.com/ninetailskim)， [edencfc](https://github.com/edencfc)， [BeyondYourself](https://github.com/BeyondYourself)， [1084667371](https://github.com/1084667371) 贡献了[PPOCRLabel](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/PPOCRLabel/README_ch.md) 的完整代码。
-- 代码与文档优化：非常感谢 [BeyondYourself](https://github.com/BeyondYourself) 给PaddleOCR提了很多非常棒的建议，并简化了PaddleOCR的部分代码风格。
-- 多语言语料：非常感谢 [Mejans](https://github.com/Mejans) 给PaddleOCR增加新语言奥克西坦语Occitan的字典和语料([#954](https://github.com/PaddlePaddle/PaddleOCR/pull/954))。
-
-完整社区贡献列表可查看[社区贡献文档](./doc/doc_ch/thirdparty.md)
-
 <a name="许可证书"></a>
 
 ## 许可证书

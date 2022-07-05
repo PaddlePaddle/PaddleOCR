@@ -1,48 +1,51 @@
-# 文档视觉问答（DOC-VQA）
+# Document Visual Q&A（DOC-VQA）
 
-VQA指视觉问答，主要针对图像内容进行提问和回答,DOC-VQA是VQA任务中的一种，DOC-VQA主要针对文本图像的文字内容提出问题。
+Document Visual Q&A, mainly for the image content of the question and answer, DOC-VQA is a type of VQA task, DOC-VQA mainly asks questions about the textual content of text images.
 
-PP-Structure 里的 DOC-VQA算法基于PaddleNLP自然语言处理算法库进行开发。
+The DOC-VQA algorithm in PP-Structure is developed based on PaddleNLP natural language processing algorithm library.
 
-主要特性如下：
+The main features are as follows:
 
-- 集成[LayoutXLM](https://arxiv.org/pdf/2104.08836.pdf)模型以及PP-OCR预测引擎。
-- 支持基于多模态方法的语义实体识别 (Semantic Entity Recognition, SER) 以及关系抽取 (Relation Extraction, RE) 任务。基于 SER 任务，可以完成对图像中的文本识别与分类；基于 RE 任务，可以完成对图象中的文本内容的关系提取，如判断问题对(pair)。
-- 支持SER任务和RE任务的自定义训练。
-- 支持OCR+SER的端到端系统预测与评估。
-- 支持OCR+SER+RE的端到端系统预测。
+- Integrated LayoutXLM model and PP-OCR prediction engine.
+- Support Semantic Entity Recognition (SER) and Relation Extraction (RE) tasks based on multi-modal methods. Based on SER task, text recognition and classification in images can be completed. Based on THE RE task, we can extract the relation of the text content in the image, such as judge the problem pair.
 
-**Note**：本项目基于 [LayoutXLM](https://arxiv.org/pdf/2104.08836.pdf) 在Paddle 2.2上的开源实现，同时经过飞桨团队与**中国工商银行**在不动产证场景深入打磨，联合开源。
+- Support custom training for SER and RE tasks.
+
+- Support OCR+SER end-to-end system prediction and evaluation.
+
+- Support OCR+SER+RE end-to-end system prediction.
+
+**Note**: This project is based on the open source implementation of  [LayoutXLM](https://arxiv.org/pdf/2104.08836.pdf) on Paddle 2.2, and at the same time, after in-depth polishing by the flying Paddle team and the Industrial and **Commercial Bank of China** in the scene of real estate certificate, jointly open source.
 
 
-## 1.性能
+## 1.Performance
 
-我们在 [XFUN](https://github.com/doc-analysis/XFUND) 的中文数据集上对算法进行了评估，性能如下
+We evaluated the algorithm on  [XFUN](https://github.com/doc-analysis/XFUND) 's Chinese data set, and the performance is as follows
 
-| 模型 | 任务 | f1 | 模型下载地址 |
+| Model | Task | F1 | Model Download Link |
 |:---:|:---:|:---:| :---:|
-| LayoutXLM | RE | 0.7113 | [链接](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_re_pretrained.tar) |
-| LayoutXLM | SER | 0.9056 | [链接](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_ser_pretrained.tar) |
-| LayoutLM | SER | 0.78 | [链接](https://paddleocr.bj.bcebos.com/pplayout/LayoutLM_ser_pretrained.tar) |
+| LayoutXLM | RE | 0.7113 | [Link](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_re_pretrained.tar) |
+| LayoutXLM | SER | 0.9056 | [Link](https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_ser_pretrained.tar) |
+| LayoutLM | SER | 0.78 | [Link](https://paddleocr.bj.bcebos.com/pplayout/LayoutLM_ser_pretrained.tar) |
 
 
 
-## 2.效果演示
+## 2.Demonstration
 
-**注意：** 测试图片来源于XFUN数据集。
+**Note**: the test images are from the xfun dataset.
 
 ### 2.1 SER
 
 ![](./images/result_ser/zh_val_0_ser.jpg) | ![](./images/result_ser/zh_val_42_ser.jpg)
 ---|---
 
-图中不同颜色的框表示不同的类别，对于XFUN数据集，有`QUESTION`, `ANSWER`, `HEADER` 3种类别
+Different colored boxes in the figure represent different categories. For xfun dataset, there are three categories: query, answer and header:
 
-* 深紫色：HEADER
-* 浅紫色：QUESTION
-* 军绿色：ANSWER
+* Dark purple: header
+* Light purple: query
+* Army green: answer
 
-在OCR检测框的左上方也标出了对应的类别和OCR识别结果。
+The corresponding category and OCR recognition results are also marked at the top left of the OCR detection box.
 
 
 ### 2.2 RE
@@ -51,79 +54,89 @@ PP-Structure 里的 DOC-VQA算法基于PaddleNLP自然语言处理算法库进�
 ---|---
 
 
-图中红色框表示问题，蓝色框表示答案，问题和答案之间使用绿色线连接。在OCR检测框的左上方也标出了对应的类别和OCR识别结果。
+In the figure, the red box represents the question, the blue box represents the answer, and the question and answer are connected by green lines. The corresponding category and OCR recognition results are also marked at the top left of the OCR detection box.
 
 
-## 3.安装
+## 3. Setup
 
-### 3.1 安装依赖
+### 3.1 Installation dependency
 
-- **（1) 安装PaddlePaddle**
+- **（1) Install PaddlePaddle**
 
 ```bash
-python3 -m pip install --upgrade pip
+pip3 install --upgrade pip
 
-# GPU安装
+# GPU PaddlePaddle Install
 python3 -m pip install paddlepaddle-gpu==2.2 -i https://mirror.baidu.com/pypi/simple
 
-# CPU安装
+# CPU PaddlePaddle Install
 python3 -m pip install paddlepaddle==2.2 -i https://mirror.baidu.com/pypi/simple
 
 ```
-更多需求，请参照[安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
+For more requirements, please refer to the [instructions](https://www.paddlepaddle.org.cn/install/quick) in the installation document.
 
 
-### 3.2 安装PaddleOCR（包含 PP-OCR 和 VQA ）
+### 3.2 Install PaddleOCR (including pp-ocr and VQA)
 
-- **（1）pip快速安装PaddleOCR whl包（仅预测）**
+- **(1) PIP quick install paddleocr WHL package (forecast only)**
 
 ```bash
-python3 -m pip install paddleocr
+pip install paddleocr
 ```
 
-- **（2）下载VQA源码（预测+训练）**
+- **(2) Download VQA source code (prediction + training)**
 
 ```bash
-【推荐】git clone https://github.com/PaddlePaddle/PaddleOCR
+[recommended] git clone https://github.com/PaddlePaddle/PaddleOCR
 
-# 如果因为网络问题无法pull成功，也可选择使用码云上的托管：
+# If you cannot pull successfully because of network problems, you can also choose to use the hosting on the code cloud:
 git clone https://gitee.com/paddlepaddle/PaddleOCR
 
-# 注：码云托管代码可能无法实时同步本github项目更新，存在3~5天延时，请优先使用推荐方式。
+# Note: the code cloud hosting code may not be able to synchronize the update of this GitHub project in real time, with a delay of 3 ~ 5 days. Please give priority to the recommended method.
 ```
 
-- **（3）安装VQA的`requirements`**
+- **(3) Install PaddleNLP**
+
+```bash
+# You need to use the latest code version of paddlenlp for installation
+git clone https://github.com/PaddlePaddle/PaddleNLP -b develop
+cd PaddleNLP
+pip3 install -e .
+```
+
+
+- **(4) Install requirements for VQA**
 
 ```bash
 cd ppstructure/vqa
-python3 -m pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
-## 4. 使用
+## 4.Usage
 
 
-### 4.1 数据和预训练模型准备
+### 4.1 Data and pre training model preparation
 
-处理好的XFUN中文数据集下载地址：[https://paddleocr.bj.bcebos.com/dataset/XFUND.tar](https://paddleocr.bj.bcebos.com/dataset/XFUND.tar)。
+Download address of processed xfun Chinese dataset: [https://paddleocr.bj.bcebos.com/dataset/XFUND.tar](https://paddleocr.bj.bcebos.com/dataset/XFUND.tar)。
 
 
-下载并解压该数据集，解压后将数据集放置在当前目录下。
+Download and unzip the dataset, and then place the dataset in the current directory.
 
 ```shell
 wget https://paddleocr.bj.bcebos.com/dataset/XFUND.tar
 ```
 
-如果希望转换XFUN中其他语言的数据集，可以参考[XFUN数据转换脚本](helper/trans_xfun_data.py)。
+If you want to convert data sets in other languages in xfun, you can refer to [xfun data conversion script.](helper/trans_xfun_data.py))
 
-如果希望直接体验预测过程，可以下载我们提供的预训练模型，跳过训练过程，直接预测即可。
+If you want to experience the prediction process directly, you can download the pre training model provided by us, skip the training process and predict directly.
 
 
-### 4.2 SER任务
+### 4.2 SER Task
 
-* 启动训练
+* Start training
 
 ```shell
-python3 train_ser.py \
+python3.7 train_ser.py \
     --model_name_or_path "layoutxlm-base-uncased" \
     --ser_model_type "LayoutXLM" \
     --train_data_dir "XFUND/zh_train/image" \
@@ -139,12 +152,12 @@ python3 train_ser.py \
     --seed 2048
 ```
 
-最终会打印出`precision`, `recall`, `f1`等指标，模型和训练日志会保存在`./output/ser/`文件夹中。
+Finally, Precision, Recall, F1 and other indicators will be printed, and the model and training log will be saved in/ In the output/Ser/ folder.
 
-* 恢复训练
+* Recovery training
 
 ```shell
-python3 train_ser.py \
+python3.7 train_ser.py \
     --model_name_or_path "model_path" \
     --ser_model_type "LayoutXLM" \
     --train_data_dir "XFUND/zh_train/image" \
@@ -162,7 +175,7 @@ python3 train_ser.py \
     --resume
 ```
 
-* 评估
+* Evaluation
 ```shell
 export CUDA_VISIBLE_DEVICES=0
 python3 eval_ser.py \
@@ -175,13 +188,13 @@ python3 eval_ser.py \
     --output_dir "output/ser/"  \
     --seed 2048
 ```
-最终会打印出`precision`, `recall`, `f1`等指标
+Finally, Precision, Recall, F1 and other indicators will be printed
 
-* 使用评估集合中提供的OCR识别结果进行预测
+* The OCR recognition results provided in the evaluation set are used for prediction
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
-python3 infer_ser.py \
+python3.7 infer_ser.py \
     --model_name_or_path "PP-Layout_v1.0_ser_pretrained/" \
     --ser_model_type "LayoutXLM" \
     --output_dir "output/ser/" \
@@ -189,13 +202,13 @@ python3 infer_ser.py \
     --ocr_json_path "XFUND/zh_val/xfun_normalize_val.json"
 ```
 
-最终会在`output_res`目录下保存预测结果可视化图像以及预测结果文本文件，文件名为`infer_results.txt`。
+It will end up in output_res The visual image of the prediction result and the text file of the prediction result are saved in the res directory. The file name is infer_ results.txt.
 
-* 使用`OCR引擎 + SER`串联结果
+* Using OCR engine + SER concatenation results
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
-python3 infer_ser_e2e.py \
+python3.7 infer_ser_e2e.py \
     --model_name_or_path "PP-Layout_v1.0_ser_pretrained/" \
     --ser_model_type "LayoutXLM" \
     --max_seq_length 512 \
@@ -203,17 +216,17 @@ python3 infer_ser_e2e.py \
     --infer_imgs "images/input/zh_val_0.jpg"
 ```
 
-* 对`OCR引擎 + SER`预测系统进行端到端评估
+* End-to-end evaluation of OCR engine + SER prediction system
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
-python3 helper/eval_with_label_end2end.py --gt_json_path XFUND/zh_val/xfun_normalize_val.json  --pred_json_path output_res/infer_results.txt
+python3.7 helper/eval_with_label_end2end.py --gt_json_path XFUND/zh_val/xfun_normalize_val.json  --pred_json_path output_res/infer_results.txt
 ```
 
 
-### 4.3 RE任务
+### 4.3 RE Task
 
-* 启动训练
+* Start training
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
@@ -237,7 +250,7 @@ python3 train_re.py \
 
 ```
 
-* 恢复训练
+* Resume training
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
@@ -262,9 +275,9 @@ python3 train_re.py \
 
 ```
 
-最终会打印出`precision`, `recall`, `f1`等指标，模型和训练日志会保存在`./output/re/`文件夹中。
+Finally, Precision, Recall, F1 and other indicators will be printed, and the model and training log will be saved in the output/RE file folder.
 
-* 评估
+* Evaluation
 ```shell
 export CUDA_VISIBLE_DEVICES=0
 python3 eval_re.py \
@@ -278,10 +291,10 @@ python3 eval_re.py \
     --num_workers 8 \
     --seed 2048
 ```
-最终会打印出`precision`, `recall`, `f1`等指标
+Finally, Precision, Recall, F1 and other indicators will be printed
 
 
-* 使用评估集合中提供的OCR识别结果进行预测
+* The OCR recognition results provided in the evaluation set are used for prediction
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
@@ -296,13 +309,13 @@ python3 infer_re.py \
     --seed 2048
 ```
 
-最终会在`output_res`目录下保存预测结果可视化图像以及预测结果文本文件，文件名为`infer_results.txt`。
+The visual image of the prediction result and the text file of the prediction result are saved in the output_res file folder, the file name is`infer_results.txt`。
 
-* 使用`OCR引擎 + SER + RE`串联结果
+* Concatenation results using OCR engine + SER+ RE
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
-python3 infer_ser_re_e2e.py \
+python3.7 infer_ser_re_e2e.py \
     --model_name_or_path "PP-Layout_v1.0_ser_pretrained/" \
     --re_model_name_or_path "PP-Layout_v1.0_re_pretrained/" \
     --ser_model_type "LayoutXLM" \
@@ -311,8 +324,12 @@ python3 infer_ser_re_e2e.py \
     --infer_imgs "images/input/zh_val_21.jpg"
 ```
 
-## 参考链接
+## Reference
 
 - LayoutXLM: Multimodal Pre-training for Multilingual Visually-rich Document Understanding, https://arxiv.org/pdf/2104.08836.pdf
 - microsoft/unilm/layoutxlm, https://github.com/microsoft/unilm/tree/master/layoutxlm
 - XFUND dataset, https://github.com/doc-analysis/XFUND
+
+## License
+
+The content of this project itself is licensed under the [Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/)

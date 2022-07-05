@@ -1,7 +1,7 @@
 # Text Recognition
 
 - [1. Data Preparation](#DATA_PREPARATION)
-    - [1.1 Costom Dataset](#Costom_Dataset)
+    - [1.1 Custom Dataset](#Custom_Dataset)
     - [1.2 Dataset Download](#Dataset_download)
     - [1.3 Dictionary](#Dictionary)  
     - [1.4 Add Space Category](#Add_space_category)
@@ -35,8 +35,8 @@ ln -sf <path/to/dataset> <path/to/paddle_ocr>/train_data/dataset
 mklink /d <path/to/paddle_ocr>/train_data/dataset <path/to/dataset>
 ```
 
-<a name="Costom_Dataset"></a>
-### 1.1 Costom Dataset
+<a name="Custom_Dataset"></a>
+### 1.1 Custom Dataset
 
 If you want to use your own data for training, please refer to the following to organize your data.
 

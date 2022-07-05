@@ -45,18 +45,18 @@
 
 ### Optimizer ([ppocr/optimizer](../../ppocr/optimizer))
 
-|         字段             |            用途            |      默认值        |            备注             |
-| :---------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
-|      name        |         优化器类名          |  Adam  |  目前支持`Momentum`,`Adam`,`RMSProp`, 见[ppocr/optimizer/optimizer.py](../../ppocr/optimizer/optimizer.py)  |
-|      beta1           |    设置一阶矩估计的指数衰减率  |       0.9         |               \             |
-|      beta2           |    设置二阶矩估计的指数衰减率  |     0.999         |               \             |
-|      clip_norm           |    所允许的二范数最大值  |              |               \             |
-|      **lr**                |         设置学习率decay方式       |   -    |       \  |
-|        name    |      学习率decay类名   |         Cosine       | 目前支持`Linear`,`Cosine`,`Step`,`Piecewise`, 见[ppocr/optimizer/learning_rate.py](../../ppocr/optimizer/learning_rate.py) |
-|        learning_rate      |    基础学习率        |       0.001      |  \        |
-|      **regularizer**      |  设置网络正则化方式        |       -      | \        |
-|        name      |    正则化类名      |       L2     | 目前支持`L1`,`L2`, 见[ppocr/optimizer/regularizer.py](../../ppocr/optimizer/regularizer.py)        |
-|        factor      |    学习率衰减系数       |       0.00004     |  \        |
+|         字段             |      用途       |      默认值      |            备注             |
+| :---------------------: |:-------------:|:-------------:|   :--------------------:   |
+|      name        |     优化器类名     |     Adam      |  目前支持`Momentum`,`Adam`,`RMSProp`, 见[ppocr/optimizer/optimizer.py](../../ppocr/optimizer/optimizer.py)  |
+|      beta1           | 设置一阶矩估计的指数衰减率 |      0.9      |               \             |
+|      beta2           | 设置二阶矩估计的指数衰减率 |     0.999     |               \             |
+|      clip_norm           |  所允许的二范数最大值   |               |               \             |
+|      **lr**                | 设置学习率decay方式  |       -       |       \  |
+|        name    |  学习率decay类名   |    Cosine     | 目前支持`Linear`,`Cosine`,`Step`,`Piecewise`, 见[ppocr/optimizer/learning_rate.py](../../ppocr/optimizer/learning_rate.py) |
+|        learning_rate      |     基础学习率     |     0.001     |  \        |
+|      **regularizer**      |   设置网络正则化方式   |       -       | \        |
+|        name      |     正则化类名     |      L2       | 目前支持`L1`,`L2`, 见[ppocr/optimizer/regularizer.py](../../ppocr/optimizer/regularizer.py)        |
+|        factor      |     正则化系数     |       0.00001        |  \        |
 
 
 ### Architecture ([ppocr/modeling](../../ppocr/modeling))
@@ -94,7 +94,7 @@
 |      name        |         网络loss类名          |  CTCLoss  |  目前支持`CTCLoss`,`DBLoss`,`ClsLoss`  |
 |      balance_loss        |        DBLossloss中是否对正负样本数量进行均衡(使用OHEM)         |  True  |  \  |
 |      ohem_ratio        |        DBLossloss中的OHEM的负正样本比例         |  3  |  \  |
-|      main_loss_type        |        DBLossloss中shrink_map所采用的的loss        |  DiceLoss  |  支持`DiceLoss`,`BCELoss`  |
+|      main_loss_type        |        DBLossloss中shrink_map所采用的loss        |  DiceLoss  |  支持`DiceLoss`,`BCELoss`  |
 |      alpha        |        DBLossloss中shrink_map_loss的系数       |  5  |  \  |
 |      beta        |        DBLossloss中threshold_map_loss的系数       |  10  |  \  |
 

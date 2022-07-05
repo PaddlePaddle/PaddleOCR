@@ -216,7 +216,7 @@ class ParallelSARDecoder(BaseDecoder):
         self.pred_dropout = nn.Dropout(pred_dropout)
         pred_num_classes = self.num_classes - 1
         if pred_concat:
-            fc_in_channel = decoder_rnn_out_size + d_model + d_enc
+            fc_in_channel = decoder_rnn_out_size + d_model + encoder_rnn_out_size
         else:
             fc_in_channel = d_model
         self.prediction = nn.Linear(fc_in_channel, pred_num_classes)

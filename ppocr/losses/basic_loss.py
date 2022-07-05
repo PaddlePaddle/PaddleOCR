@@ -95,8 +95,14 @@ class DMLLoss(nn.Layer):
             self.act = None
 
         self.use_log = use_log
-
         self.jskl_loss = KLJSLoss(mode="js")
+
+    def _kldiv(self, x, target):
+        eps = 1.0e-10
+        loss = target * (paddle.log(target + eps) - x)
+        # batch mean loss
+        loss = paddle.sum(loss) / loss.shape[0]
+        return loss
 
     def forward(self, out1, out2):
         if self.act is not None:
@@ -106,9 +112,8 @@ class DMLLoss(nn.Layer):
             # for recognition distillation, log is needed for feature map
             log_out1 = paddle.log(out1)
             log_out2 = paddle.log(out2)
-            loss = (F.kl_div(
-                log_out1, out2, reduction='batchmean') + F.kl_div(
-                    log_out2, out1, reduction='batchmean')) / 2.0
+            loss = (
+                self._kldiv(log_out1, out2) + self._kldiv(log_out2, out1)) / 2.0
         else:
             # for detection distillation log is not needed
             loss = self.jskl_loss(out1, out2)

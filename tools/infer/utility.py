@@ -33,6 +33,7 @@ def init_args():
     parser = argparse.ArgumentParser()
     # params for prediction engine
     parser.add_argument("--use_gpu", type=str2bool, default=True)
+    parser.add_argument("--use_xpu", type=str2bool, default=False)
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     parser.add_argument("--min_subgraph_size", type=int, default=15)
@@ -114,6 +115,7 @@ def init_args():
     #
     parser.add_argument(
         "--draw_img_save_dir", type=str, default="./inference_results")
+    parser.add_argument("--is_visualize", type=str2bool, default=True)
     parser.add_argument("--save_crop_res", type=str2bool, default=False)
     parser.add_argument("--crop_res_save_dir", type=str, default="./output")
 
@@ -185,7 +187,7 @@ def create_predictor(args, mode, logger):
             gpu_id = get_infer_gpuid()
             if gpu_id is None:
                 logger.warning(
-                    "GPU is not found in current device by nvidia-smi. Please check your device or ignore it if run on jeston."
+                    "GPU is not found in current device by nvidia-smi. Please check your device or ignore it if run on jetson."
                 )
             config.enable_use_gpu(args.gpu_mem, 0)
             if args.use_tensorrt:
@@ -276,6 +278,8 @@ def create_predictor(args, mode, logger):
                 config.set_trt_dynamic_shape_info(
                     min_input_shape, max_input_shape, opt_input_shape)
 
+        elif args.use_xpu:
+            config.enable_xpu(10 * 1024 * 1024)
         else:
             config.disable_gpu()
             if hasattr(args, "cpu_threads"):
@@ -304,12 +308,26 @@ def create_predictor(args, mode, logger):
         input_names = predictor.get_input_names()
         for name in input_names:
             input_tensor = predictor.get_input_handle(name)
-        output_names = predictor.get_output_names()
-        output_tensors = []
+        output_tensors = get_output_tensors(args, mode, predictor)
+        return predictor, input_tensor, output_tensors, config
+
+
+def get_output_tensors(args, mode, predictor):
+    output_names = predictor.get_output_names()
+    output_tensors = []
+    if mode == "rec" and args.rec_algorithm == "CRNN":
+        output_name = 'softmax_0.tmp_0'
+        if output_name in output_names:
+            return [predictor.get_output_handle(output_name)]
+        else:
+            for output_name in output_names:
+                output_tensor = predictor.get_output_handle(output_name)
+                output_tensors.append(output_tensor)
+    else:
         for output_name in output_names:
             output_tensor = predictor.get_output_handle(output_name)
             output_tensors.append(output_tensor)
-        return predictor, input_tensor, output_tensors, config
+    return output_tensors
 
 
 def get_infer_gpuid():
@@ -411,6 +429,7 @@ def draw_ocr_box_txt(image,
                      boxes,
                      txts,
                      scores=None,
+                     show_score=False,
                      drop_score=0.5,
                      font_path="./doc/simfang.ttf"):
     h, w = image.height, image.width
@@ -422,7 +441,7 @@ def draw_ocr_box_txt(image,
     random.seed(0)
     draw_left = ImageDraw.Draw(img_left)
     draw_right = ImageDraw.Draw(img_right)
-    for idx, (box, txt) in enumerate(zip(boxes, txts)):
+    for idx, (box, txt, score) in enumerate(zip(boxes, txts, scores)):
         if scores is not None and scores[idx] < drop_score:
             continue
         color = (random.randint(0, 255), random.randint(0, 255),
@@ -438,6 +457,8 @@ def draw_ocr_box_txt(image,
             1])**2)
         box_width = math.sqrt((box[0][0] - box[1][0])**2 + (box[0][1] - box[1][
             1])**2)
+        if show_score:
+            txt = txt + ':' + str(score)
         if box_height > 2 * box_width:
             font_size = max(int(box_width * 0.9), 10)
             font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
@@ -615,7 +636,6 @@ def get_rotate_crop_image(img, points):
 
 def check_gpu(use_gpu):
     if use_gpu and not paddle.is_compiled_with_cuda():
-
         use_gpu = False
     return use_gpu
 

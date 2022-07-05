@@ -2,19 +2,18 @@
 
 本文提供了PaddleOCR文本识别任务的全流程指南，包括数据准备、模型训练、调优、评估、预测，各个阶段的详细说明：
 
-- [1 数据准备](#数据准备)
-    - [1.1 自定义数据集](#自定义数据集)
-    - [1.2 数据下载](#数据下载)
-    - [1.3 字典](#字典)  
-    - [1.4 支持空格](#支持空格)
-- [2 启动训练](#启动训练)
-    - [2.1 数据增强](#数据增强)
-    - [2.2 通用模型训练](#通用模型训练)
-    - [2.3 多语言模型训练](#多语言模型训练)
-- [3 评估](#评估)
-- [4 预测](#预测)
-- [5 转Inference模型测试](#Inference)
-
+- [1. 数据准备](#1-数据准备)
+  - [1.1 自定义数据集](#11-自定义数据集)
+  - [1.2 数据下载](#12-数据下载)
+  - [1.3 字典](#13-字典)
+  - [1.4 添加空格类别](#14-添加空格类别)
+- [2. 启动训练](#2-启动训练)
+  - [2.1 数据增强](#21-数据增强)
+  - [2.2 通用模型训练](#22-通用模型训练)
+  - [2.3 多语言模型训练](#23-多语言模型训练)
+- [3 评估](#3-评估)
+- [4 预测](#4-预测)
+- [5. 转Inference模型测试](#5-转inference模型测试)
 
 <a name="数据准备"></a>
 ## 1. 数据准备
@@ -63,9 +62,9 @@ train_data/rec/train/word_002.jpg   用科技让复杂的世界更简单
         | ...
 ```
 
-- 测试集
+- 验证集
 
-同训练集类似，测试集也需要提供一个包含所有图片的文件夹（test）和一个rec_gt_test.txt，测试集的结构如下所示：
+同训练集类似，验证集也需要提供一个包含所有图片的文件夹（test）和一个rec_gt_test.txt，测试集的结构如下所示：
 
 ```
 |-train_data
@@ -93,7 +92,7 @@ train_data/rec/train/word_002.jpg   用科技让复杂的世界更简单
 ```
 # 训练集标签
 wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_train.txt
-# 测试集标签
+# 验证集标签
 wget -P ./train_data/ic15_data  https://paddleocr.bj.bcebos.com/dataset/rec_gt_test.txt
 ```
 
@@ -377,7 +376,7 @@ python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec
 
 默认预测图片存储在 `infer_img` 里，通过 `-o Global.checkpoints` 加载训练好的参数文件：
 
-根据配置文件中设置的的 `save_model_dir` 和 `save_epoch_step` 字段，会有以下几种参数被保存下来：
+根据配置文件中设置的 `save_model_dir` 和 `save_epoch_step` 字段，会有以下几种参数被保存下来：
 
 ```
 output/rec/

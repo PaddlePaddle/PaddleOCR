@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# The code is refer from: https://github.com/open-mmlab/mmocr/blob/main/mmocr/core/evaluation/kie_metric.py
 
 from __future__ import absolute_import
 from __future__ import division
@@ -35,8 +36,6 @@ class KIEMetric(object):
         gts = gts[:tag[0], :1].reshape([-1])
         self.node.append(nodes.numpy())
         self.gt.append(gts)
-        # result = self.compute_f1_score(nodes, gts)
-        # self.results.append(result)
 
     def compute_f1_score(self, preds, gts):
         ignores = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 25]
@@ -60,9 +59,9 @@ class KIEMetric(object):
 
     def get_metric(self):
 
-        metircs = self.combine_results(self.results)
+        metrics = self.combine_results(self.results)
         self.reset()
-        return metircs
+        return metrics
 
     def reset(self):
         self.results = []  # clear results
