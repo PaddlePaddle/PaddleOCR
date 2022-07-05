@@ -1,10 +1,10 @@
 # OCR Algorithms
 
-- [1. Two-stage Algorithms](#1-two-stage-algorithms)
-  - [1.1 Text Detection Algorithms](#11-text-detection-algorithms)
-  - [1.2 Text Recognition Algorithms](#12-text-recognition-algorithms)
-- [2. End-to-end Algorithms](#2-end-to-end-algorithms)
-- [3. Table Recognition Algorithms](#3-table-recognition-algorithms)
+- [1. Two-stage Algorithms](#1)
+  - [1.1 Text Detection Algorithms](#11)
+  - [1.2 Text Recognition Algorithms](#12)
+- [2. End-to-end Algorithms](#2)
+- [3. Table Recognition Algorithms](#3)
 
 
 This tutorial lists the OCR algorithms supported by PaddleOCR, as well as the models and metrics of each algorithm on **English public datasets**. It is mainly used for algorithm introduction and algorithm performance comparison. For more models on other datasets including Chinese, please refer to [PP-OCR v2.0 models list](./models_list_en.md).

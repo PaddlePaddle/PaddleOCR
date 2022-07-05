@@ -62,6 +62,10 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     if [[ ${model_name} =~ "det_r50_db++" ]];then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/ResNet50_dcn_asf_synthtext_pretrained.pdparams --no-check-certificate
     fi
+    if [ ${model_name} == "table_master" ];then
+        wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_train.tar --no-check-certificate
+        cd ./pretrain_models/ && tar xf table_structure_tablemaster_train.tar  && cd ../
+    fi
     cd ./pretrain_models/ && tar xf det_mv3_db_v2.0_train.tar && cd ../
     rm -rf ./train_data/icdar2015
     rm -rf ./train_data/ic15_data
