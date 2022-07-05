@@ -193,7 +193,7 @@ if [ ${MODE} = "whole_infer" ]; then
             save_infer_dir="${infer_model}"
             set_export_weight=$(func_set_params "${export_weight}" "${infer_model}")
             set_save_infer_key=$(func_set_params "${save_infer_key}" "${save_infer_dir}")
-            export_log_path="${LOG_PATH}/_export_${Count}.log"
+            export_log_path="${LOG_PATH}_export_${Count}.log"
             export_cmd="${python} ${infer_run_exports[Count]} ${set_export_weight} ${set_save_infer_key} > ${export_log_path} 2>&1 "
             echo ${infer_run_exports[Count]} 
             echo $export_cmd
@@ -295,6 +295,7 @@ else
                 fi
                 # run train
                 eval $cmd
+                eval "cat ${save_log}/train.log >> ${save_log}.log"
                 status_check $? "${cmd}" "${status_log}" "${model_name}"
 
                 set_eval_pretrain=$(func_set_params "${pretrain_model_key}" "${save_log}/${train_model_name}")

@@ -59,6 +59,9 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar --no-check-certificate
         cd ./inference/ && tar xf en_ppocr_mobile_v2.0_table_det_infer.tar && tar xf en_ppocr_mobile_v2.0_table_rec_infer.tar && cd ../
     fi
+    if [[ ${model_name} =~ "det_r50_db++" ]];then
+        wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/ResNet50_dcn_asf_synthtext_pretrained.pdparams --no-check-certificate
+    fi
     cd ./pretrain_models/ && tar xf det_mv3_db_v2.0_train.tar && cd ../
     rm -rf ./train_data/icdar2015
     rm -rf ./train_data/ic15_data
@@ -119,6 +122,10 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     if [ ${model_name} == "det_mv3_east_v2.0" ]; then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_east_v2.0_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf det_mv3_east_v2.0_train.tar && cd ../
+    fi
+    if [ ${model_name} == "det_r50_vd_east_v2_0" ]; then
+        wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar --no-check-certificate
+        cd ./pretrain_models/ && tar xf det_r50_vd_east_v2.0_train.tar && cd ../
     fi
 
 elif [ ${MODE} = "whole_train_whole_infer" ];then

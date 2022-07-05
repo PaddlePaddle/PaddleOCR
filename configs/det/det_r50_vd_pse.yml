@@ -20,7 +20,7 @@ Architecture:
   algorithm: PSE
   Transform:
   Backbone:
-    name: ResNet
+    name: ResNet_vd
     layers: 50
   Neck:
     name: FPN

@@ -11,7 +11,7 @@ Global:
   save_inference_dir:
   use_visualdl: False
   seed: 2048
-  infer_img: doc/vqa/input/zh_val_21.jpg
+  infer_img: ppstructure/docs/vqa/input/zh_val_21.jpg
   save_res_path: ./output/re/
 
 Architecture:
@@ -21,7 +21,7 @@ Architecture:
   Backbone:
     name: LayoutLMv2ForRe
     pretrained: True
-    checkpoints: 
+    checkpoints:
 
 Loss:
   name: LossFromOutput
@@ -52,7 +52,7 @@ Train:
     name: SimpleDataSet
     data_dir: train_data/XFUND/zh_train/image
     label_file_list: 
-      - train_data/XFUND/zh_train/xfun_normalize_train.json
+      - train_data/XFUND/zh_train/train.json
     ratio_list: [ 1.0 ]
     transforms:
       - DecodeImage: # load image
@@ -61,7 +61,7 @@ Train:
       - VQATokenLabelEncode: # Class handling label
           contains_re: True
           algorithm: *algorithm
-          class_path: &class_path ppstructure/vqa/labels/labels_ser.txt
+          class_path: &class_path train_data/XFUND/class_list_xfun.txt
       - VQATokenPad:
           max_seq_len: &max_seq_len 512
           return_attention_mask: True
@@ -77,7 +77,7 @@ Train:
           order: 'hwc'
       - ToCHWImage:
       - KeepKeys:
-          keep_keys: [ 'input_ids', 'bbox', 'image', 'attention_mask', 'token_type_ids','entities', 'relations'] # dataloader will return list in this order
+          keep_keys: [ 'input_ids', 'bbox', 'attention_mask', 'token_type_ids','image', 'entities', 'relations'] # dataloader will return list in this order
   loader:
     shuffle: True
     drop_last: False
@@ -90,7 +90,7 @@ Eval:
     name: SimpleDataSet
     data_dir: train_data/XFUND/zh_val/image
     label_file_list:
-      - train_data/XFUND/zh_val/xfun_normalize_val.json
+      - train_data/XFUND/zh_val/val.json
     transforms:
       - DecodeImage: # load image
           img_mode: RGB
@@ -114,7 +114,7 @@ Eval:
           order: 'hwc'
       - ToCHWImage:
       - KeepKeys:
-          keep_keys: [ 'input_ids', 'bbox', 'image', 'attention_mask', 'token_type_ids','entities', 'relations'] # dataloader will return list in this order
+          keep_keys: [ 'input_ids', 'bbox', 'attention_mask', 'token_type_ids', 'image','entities', 'relations'] # dataloader will return list in this order
   loader:
     shuffle: False
     drop_last: False

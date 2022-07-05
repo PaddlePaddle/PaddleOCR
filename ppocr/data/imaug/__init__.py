@@ -37,7 +37,7 @@ from .label_ops import *
 from .east_process import *
 from .sast_process import *
 from .pg_process import *
-from .gen_table_mask import *
+from .table_ops import *
 
 from .vqa import *
 

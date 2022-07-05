@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import cv2
 import os
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
@@ -110,3 +111,16 @@ def draw_re_results(image,
 
     img_new = Image.blend(image, img_new, 0.5)
     return np.array(img_new)
+
+
+def draw_rectangle(img_path, boxes, use_xywh=False):
+    img = cv2.imread(img_path)
+    img_show = img.copy()
+    for box in boxes.astype(int):
+        if use_xywh:
+            x, y, w, h = box
+            x1, y1, x2, y2 = x - w // 2, y - h // 2, x + w // 2, y + h // 2
+        else:
+            x1, y1, x2, y2 = box
+        cv2.rectangle(img_show, (x1, y1), (x2, y2), (255, 0, 0), 2)
+    return img_show
