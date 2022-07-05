@@ -118,7 +118,7 @@ class TableStructurer(object):
             '<html>', '<body>', '<table>'
         ] + structure_str_list + ['</table>', '</body>', '</html>']
         elapse = time.time() - starttime
-        return structure_str_list, bbox_list, elapse
+        return (structure_str_list, bbox_list), elapse
 
 
 def main(args):
@@ -138,8 +138,8 @@ def main(args):
             if img is None:
                 logger.info("error in loading image:{}".format(image_file))
                 continue
-            structure_str_list, bbox_list, elapse = table_structurer(img)
-
+            structure_res, elapse = table_structurer(img)
+            structure_str_list, bbox_list = structure_res
             bbox_list_str = json.dumps(bbox_list.tolist())
             logger.info("result: {}, {}".format(structure_str_list,
                                                 bbox_list_str))
