@@ -273,7 +273,7 @@ def _get_length(logit):
     out = out.cast('int32')
     out = out.argmax(-1)
     out = out + 1
-    out = paddle.where(abn, out, paddle.to_tensor(logit.shape[1]))
+    out = paddle.where(abn, out, paddle.full_like(out, logit.shape[1]))
     return out
 
 
