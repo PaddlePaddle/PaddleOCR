@@ -869,6 +869,7 @@ class VQATokenLabelEncode(object):
                  contains_re=False,
                  add_special_ids=False,
                  algorithm='LayoutXLM',
+                 use_textline_bbox_info=True,
                  infer_mode=False,
                  ocr_engine=None,
                  **kwargs):
@@ -897,10 +898,50 @@ class VQATokenLabelEncode(object):
         self.add_special_ids = add_special_ids
         self.infer_mode = infer_mode
         self.ocr_engine = ocr_engine
+        self.use_textline_bbox_info = use_textline_bbox_info
+
+    def split_bbox(self, bbox, text, tokenizer):
+        words = text.split()
+        token_bboxes = []
+        curr_word_idx = 0
+        x1, y1, x2, y2 = bbox
+        unit_w = (x2 - x1) / len(text)
+        for idx, word in enumerate(words):
+            curr_w = len(word) * unit_w
+            word_bbox = [x1, y1, x1 + curr_w, y2]
+            token_bboxes.extend([word_bbox] * len(tokenizer.tokenize(word)))
+            x1 += (len(word) + 1) * unit_w
+        return token_bboxes
+
+    def filter_empty_contents(self, ocr_info):
+        """
+        find out the empty texts and remove the links
+        """
+        new_ocr_info = []
+        empty_index = []
+        for idx, info in enumerate(ocr_info):
+            if len(info["transcription"]) > 0:
+                new_ocr_info.append(copy.deepcopy(info))
+            else:
+                empty_index.append(info["id"])
+
+        for idx, info in enumerate(new_ocr_info):
+            new_link = []
+            for link in info["linking"]:
+                if link[0] in empty_index or link[1] in empty_index:
+                    continue
+                new_link.append(link)
+            new_ocr_info[idx]["linking"] = new_link
+        return new_ocr_info
 
     def __call__(self, data):
         # load bbox and label info
         ocr_info = self._load_ocr_info(data)
+
+        # for re
+        train_re = self.contains_re and not self.infer_mode
+        if train_re:
+            ocr_info = self.filter_empty_contents(ocr_info)
 
         height, width, _ = data['image'].shape
 
@@ -913,8 +954,6 @@ class VQATokenLabelEncode(object):
 
         entities = []
 
-        # for re
-        train_re = self.contains_re and not self.infer_mode
         if train_re:
             relations = []
             id2label = {}
@@ -924,18 +963,19 @@ class VQATokenLabelEncode(object):
         data['ocr_info'] = copy.deepcopy(ocr_info)
 
         for info in ocr_info:
+            text = info["transcription"]
+            if len(text) <= 0:
+                continue
             if train_re:
                 # for re
-                if len(info["transcription"]) == 0:
+                if len(text) == 0:
                     empty_entity.add(info["id"])
                     continue
                 id2label[info["id"]] = info["label"]
                 relations.extend([tuple(sorted(l)) for l in info["linking"]])
             # smooth_box
             info["bbox"] = self.trans_poly_to_bbox(info["points"])
-            bbox = self._smooth_box(info["bbox"], height, width)
 
-            text = info["transcription"]
             encode_res = self.tokenizer.encode(
                 text, pad_to_max_seq_len=False, return_attention_mask=True)
 
@@ -946,6 +986,19 @@ class VQATokenLabelEncode(object):
                                                                             -1]
                 encode_res["attention_mask"] = encode_res["attention_mask"][1:
                                                                             -1]
+
+            if self.use_textline_bbox_info:
+                bbox = [info["bbox"]] * len(encode_res["input_ids"])
+            else:
+                bbox = self.split_bbox(info["bbox"], info["transcription"],
+                                       self.tokenizer)
+            if len(bbox) <= 0:
+                continue
+            bbox = self._smooth_box(bbox, height, width)
+            if self.add_special_ids:
+                bbox.insert(0, [0, 0, 0, 0])
+                bbox.append([0, 0, 0, 0])
+
             # parse label
             if not self.infer_mode:
                 label = info['label']
@@ -970,7 +1023,7 @@ class VQATokenLabelEncode(object):
                 })
             input_ids_list.extend(encode_res["input_ids"])
             token_type_ids_list.extend(encode_res["token_type_ids"])
-            bbox_list.extend([bbox] * len(encode_res["input_ids"]))
+            bbox_list.extend(bbox)
             words_list.append(text)
             segment_offset_id.append(len(input_ids_list))
             if not self.infer_mode:
@@ -1019,12 +1072,14 @@ class VQATokenLabelEncode(object):
             info_dict = json.loads(info)
             return info_dict
 
-    def _smooth_box(self, bbox, height, width):
-        bbox[0] = int(bbox[0] * 1000.0 / width)
-        bbox[2] = int(bbox[2] * 1000.0 / width)
-        bbox[1] = int(bbox[1] * 1000.0 / height)
-        bbox[3] = int(bbox[3] * 1000.0 / height)
-        return bbox
+    def _smooth_box(self, bboxes, height, width):
+        bboxes = np.array(bboxes)
+        bboxes[:, 0] = bboxes[:, 0] * 1000 / width
+        bboxes[:, 2] = bboxes[:, 2] * 1000 / width
+        bboxes[:, 1] = bboxes[:, 1] * 1000 / height
+        bboxes[:, 3] = bboxes[:, 3] * 1000 / height
+        bboxes = bboxes.astype("int64").tolist()
+        return bboxes
 
     def _parse_label(self, label, encode_res):
         gt_label = []
