@@ -59,7 +59,7 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar --no-check-certificate
         cd ./inference/ && tar xf en_ppocr_mobile_v2.0_table_det_infer.tar && tar xf en_ppocr_mobile_v2.0_table_rec_infer.tar && cd ../
     fi
-    if [[ ${model_name} =~ "det_r50_db++" ]];then
+    if [[ ${model_name} =~ "det_r50_db_plusplus" ]];then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/ResNet50_dcn_asf_synthtext_pretrained.pdparams --no-check-certificate
     fi
     if [ ${model_name} == "table_master" ];then
