@@ -92,6 +92,7 @@ class BaseModel(nn.Layer):
             sr_img = x
             pred["sr_img"] = sr_img
             pred["hr_img"] = hr_img
+            pred["lr_img"] = lr_img
 
         if self.training:
             # print("hr img cuda:{}, numpy:{}".format(paddle.sum(hr_img), np.sum(hr_img.numpy())))

@@ -106,8 +106,12 @@ class Adam(object):
         self.lazy_mode = lazy_mode
 
     def __call__(self, model):
+        # print(model._layers)
+        # train_params = [
+        #     param for param in model.transform.parameters() if param.trainable is True
+        # ]
         train_params = [
-            param for param in model.transform.parameters() if param.trainable is True
+            param for param in model.parameters() if param.trainable is True
         ]
         opt = optim.Adam(
             learning_rate=self.learning_rate,

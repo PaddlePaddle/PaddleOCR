@@ -147,8 +147,8 @@ def load_pretrained_params(model, path):
     new_state_dict = {}
 
     for k1 in params.keys():
-        if "transform" in k1:
-            continue
+        # if "transform" in k1:
+        #     continue
         if k1 not in state_dict.keys():
             logger.warning("The pretrained params {} not in model".format(k1))
         else:

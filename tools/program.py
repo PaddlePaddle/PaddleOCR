@@ -25,6 +25,8 @@ import datetime
 import paddle
 import paddle.distributed as dist
 from tqdm import tqdm
+import cv2
+import numpy as np
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 from ppocr.utils.stats import TrainingStats
@@ -34,6 +36,8 @@ from ppocr.utils.logging import get_logger
 from ppocr.utils.loggers import VDLLogger, WandbLogger, Loggers
 from ppocr.utils import profiler
 from ppocr.data import build_dataloader
+
+from paddleocr import PaddleOCR
 
 
 class ArgsParser(ArgumentParser):
@@ -450,6 +454,7 @@ def eval(model,
          model_type=None,
          extra_input=False):
     model.eval()
+    ocr = PaddleOCR(use_angle_cls=False, lang="en", ocr_version='PP-OCR')
     with paddle.no_grad():
         total_frame = 0.0
         total_time = 0.0
@@ -460,6 +465,8 @@ def eval(model,
             leave=True)
         max_iter = len(valid_dataloader) - 1 if platform.system(
         ) == "Windows" else len(valid_dataloader)
+        sum_images = 0
+        label_file = open('output/images/label.txt', 'w+')
         for idx, batch in enumerate(valid_dataloader):
             if idx >= max_iter:
                 break
@@ -469,6 +476,19 @@ def eval(model,
                 preds = model(images, data=batch[1:])
             elif model_type in ["kie", 'vqa','sr']:
                 preds = model(batch)
+                sr_img = preds["sr_img"]
+                lr_img = preds["lr_img"]
+
+                for i in (range(sr_img.shape[0])):
+                    fm_sr = (sr_img[i].numpy() * 255).transpose(1,2,0).astype(np.uint8)
+                    fm_lr = (lr_img[i].numpy() * 255).transpose(1,2,0).astype(np.uint8)
+                    #print("fm shape:", fm.shape)
+                    cv2.imwrite("output/images/{}_{}_sr.jpg".format(sum_images, i), fm_sr)
+                    cv2.imwrite("output/images/{}_{}_lr.jpg".format(sum_images, i), fm_lr)
+                    label_file.write("output/images/{}_{}_sr.jpg\t{}\n".format(sum_images, i, batch[-1][i]))
+                    result = ocr.ocr("output/images/{}_{}_sr.jpg".format(sum_images, i), cls=False, det=False)
+                    preds['crnn'] = result[0][0]
+                    preds['lable_sr'] = batch[-1][i]
             else:
                 preds = model(images)
 
@@ -495,6 +515,7 @@ def eval(model,
 
             pbar.update(1)
             total_frame += len(images)
+            sum_images += 1
         # Get final metric，eg. acc or hmean
         metric = eval_class.get_metric()
 

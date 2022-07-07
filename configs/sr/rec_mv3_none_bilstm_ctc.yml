@@ -1,0 +1,96 @@
+Global:
+  use_gpu: true
+  epoch_num: 72
+  log_smooth_window: 1
+  print_batch_step: 1
+  save_model_dir: ./output/rec/mv3_none_bilstm_ctc/
+  save_epoch_step: 3
+  # evaluation is run every 2000 iterations
+  eval_batch_step: [0, 20]
+  cal_metric_during_train: False
+  pretrained_model:
+  checkpoints:
+  save_inference_dir:
+  use_visualdl: False
+  infer_img: doc/imgs_words_en/word_10.png
+  # for data or label process
+  character_dict_path:
+  max_text_length: 100
+  infer_mode: False
+  use_space_char: False
+  save_res_path: ./output/rec/predicts_mv3_none_bilstm_ctc.txt
+
+Optimizer:
+  name: Adam
+  beta1: 0.5
+  beta2: 0.999
+  clip_norm: 0.25
+  lr:
+    learning_rate: 0.0001
+  # regularizer:
+  #   name: 'L2'
+  #   factor: 0
+
+Architecture:
+  model_type: sr
+  algorithm: CRNN
+  Transform:
+    name: TSRN
+    STN: True
+  Backbone:
+    name: Transformer
+  Neck:
+    name: SequenceEncoder
+    encoder_type: rnn
+    hidden_size: 96
+  Head:
+    name: CTCHead
+    fc_decay: 1e-3
+
+Loss:
+  name: StrokeFocusLoss
+
+PostProcess:
+  name: SRLabelDecode
+
+Metric:
+  name: SRMetric
+  main_indicator: all
+
+Train:
+  dataset:
+    name: LMDBDataSet_SR
+    data_dir: ./train_data/mydata/train2
+    transforms:
+      - SRResize:
+          imgH: 32
+          imgW: 128
+          down_sample_scale: 2
+      - SRLabelEncode: # Class handling label
+      - KeepKeys:
+          keep_keys: ['img_hr', 'imge_lr', 'length', 'input_tensor', 'label'] # dataloader will return list in this order
+  loader:
+    shuffle: False
+    batch_size_per_card: 16
+    drop_last: True
+    num_workers: 0
+
+Eval:
+  dataset:
+    name: LMDBDataSet_SR
+    data_dir: './train_data/mydata/test'
+    #data_dir: ['./train_data/mydata/test/easy','./train_data/mydata/test/hard', ./train_data/mydata/test/medium']
+    transforms:
+      - SRResize:
+          imgH: 32
+          imgW: 128
+          down_sample_scale: 2
+      - SRLabelEncode: # Class handling label
+      - KeepKeys:
+          keep_keys: ['img_hr', 'imge_lr', 'length', 'input_tensor', 'label'] # dataloader will return list in this order
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 16
+    num_workers: 0
+

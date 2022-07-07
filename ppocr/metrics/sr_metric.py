@@ -3,6 +3,7 @@ from math import exp
 import paddle
 import paddle.nn.functional as F
 import paddle.nn as nn
+import string
 
 class SSIM(nn.Layer):
     def __init__(self, window_size=11, size_average=True):
@@ -95,10 +96,24 @@ class SRMetric(object):
             return float('inf')
         return 20 * paddle.log10(255.0 / paddle.sqrt(mse))
 
+    def _normalize_text(self, text):
+        text = ''.join(
+            filter(lambda x: x in (string.digits + string.ascii_letters), text))
+        return text.lower()
+
     def __call__(self, pred_label, *args, **kwargs):
         metric = {}
         images_sr = pred_label["sr_img"]
         images_hr = pred_label["hr_img"]
+        crnn_result = pred_label['crnn']
+        labels = pred_label["lable_sr"]
+        crnn_result = self._normalize_text(crnn_result)
+        labels = self._normalize_text(labels)
+        if crnn_result == labels:
+            self.correct_num +=1
+        else:
+            print("pred:{}, label:{}".format(crnn_result, labels))
+        self.all_num += 1
         psnr = self.calculate_psnr(images_sr, images_hr)
         ssim = self.calculate_ssim(images_sr, images_hr)
         self.psnr_result.append(psnr)
@@ -116,11 +131,12 @@ class SRMetric(object):
         self.psnr_avg = round(self.psnr_avg.item(), 6)
         self.ssim_avg = sum(self.ssim_result)/len(self.ssim_result)
         self.ssim_avg = round(self.ssim_avg.item(), 6)
+        self.crnn_avg = self.correct_num / self.all_num
 
-        self.all_avg = self.psnr_avg+self.ssim_avg
+        self.all_avg = self.psnr_avg+self.ssim_avg+self.crnn_avg
 
         self.reset()
-        return {'psnr_avg': self.psnr_avg, "ssim_avg":self.ssim_avg, "all":self.all_avg}
+        return {'psnr_avg': self.psnr_avg, "ssim_avg":self.ssim_avg, "crnn_avg":self.crnn_avg,  "all":self.all_avg}
 
 
 
