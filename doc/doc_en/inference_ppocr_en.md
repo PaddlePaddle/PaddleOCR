@@ -8,7 +8,8 @@ This article introduces the use of the Python inference engine for the PP-OCR mo
   - [Text Detection Model Inference](#text-detection-model-inference)
   - [Text Recognition Model Inference](#text-recognition-model-inference)
     - [1. Lightweight Chinese Recognition Model Inference](#1-lightweight-chinese-recognition-model-inference)
-    - [2. Multilingual Model Inference](#2-multilingual-model-inference)
+    - [2. English Recognition Model Inference](#2-english-recognition-model-inference)
+    - [3. Multilingual Model Inference](#3-multilingual-model-inference)
   - [Angle Classification Model Inference](#angle-classification-model-inference)
   - [Text Detection Angle Classification and Recognition Inference Concatenation](#text-detection-angle-classification-and-recognition-inference-concatenation)
 
@@ -76,10 +77,31 @@ After executing the command, the prediction results (recognized text and score) 
 ```bash
 Predicts of ./doc/imgs_words_en/word_10.png:('PAIN', 0.988671)
 ```
+<a name="2-english-recognition-model-inference"></a>
+### 2. English Recognition Model Inference
 
-<a name="MULTILINGUAL_MODEL_INFERENCE"></a>
+For English recognition model inference, you can execute the following commands,you need to specify the dictionary path used by `--rec_char_dict_path`:
 
-### 2. Multilingual Model Inference
+```
+# download en model：
+wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar
+tar xf en_PP-OCRv3_det_infer.tar
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/en/word_1.png" --rec_model_dir="./en_PP-OCRv3_det_infer/" --rec_char_dict_path="ppocr/utils/en_dict.txt"
+```
+
+![](../imgs_words/en/word_1.png)
+
+
+After executing the command, the prediction result of the above figure is:
+
+```
+Predicts of ./doc/imgs_words/en/word_1.png: ('JOINT', 0.998160719871521)
+```
+
+
+<a name="3-multilingual-model-inference"></a>
+
+### 3. Multilingual Model Inference
 If you need to predict [other language models](./models_list_en.md#Multilingual), when using inference model prediction, you need to specify the dictionary path used by `--rec_char_dict_path`. At the same time, in order to get the correct visualization results,
 You need to specify the visual font path through `--vis_font_path`. There are small language fonts provided by default under the `doc/fonts` path, such as Korean recognition:
 
