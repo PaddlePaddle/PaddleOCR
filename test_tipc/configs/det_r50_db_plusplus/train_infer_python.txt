@@ -1,5 +1,5 @@
 ===========================train_params===========================
-model_name:det_r50_db++
+model_name:det_r50_db_plusplus
 python:python3.7
 gpu_list:0|0,1
 Global.use_gpu:True|True

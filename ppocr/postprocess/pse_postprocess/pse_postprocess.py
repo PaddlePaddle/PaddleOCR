@@ -58,6 +58,8 @@ class PSEPostProcess(object):
 
         kernels = (pred > self.thresh).astype('float32')
         text_mask = kernels[:, 0, :, :]
+        text_mask = paddle.unsqueeze(text_mask, axis=1)
+
         kernels[:, 0:, :, :] = kernels[:, 0:, :, :] * text_mask
 
         score = score.numpy()
