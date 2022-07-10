@@ -61,7 +61,6 @@ Loss:
 
 PostProcess:
   name: SPINAttnLabelDecode
-  character_dict_path: ./ppocr/utils/dict/spin_dict.txt
   use_space_char: False
 
 

@@ -70,17 +70,6 @@ class BidirectionalLSTM(nn.Layer):
             self.linear = nn.Linear(hidden_size * 2, output_size)
 
     def forward(self, input_feature):
-        """
-
-        Args:
-            input_feature (Torch.Tensor): visual feature [batch_size x T x input_size]
-
-        Returns:
-            Torch.Tensor: LSTM output contextual feature [batch_size x T x output_size]
-
-        """
-
-        # self.rnn.flatten_parameters() # error in export_model
         recurrent, _ = self.rnn(input_feature)  # batch_size x T x input_size -> batch_size x T x (2*hidden_size)
         if self.with_linear:
             output = self.linear(recurrent)     # batch_size x T x output_size

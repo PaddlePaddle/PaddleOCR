@@ -1,4 +1,4 @@
-# copyright (c) 2020 PaddlePaddle Authors. All Rights Reserve.
+# copyright (c) 2022 PaddlePaddle Authors. All Rights Reserve.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -71,14 +71,14 @@ class SP_TransformerNetwork(nn.Layer):
         """
 
         Args:
-            batch_I (torch.Tensor): batch of input images [batch_size x nc x I_height x I_width]
+            batch_I (Tensor): batch of input images [batch_size x nc x I_height x I_width]
             weights:
             offsets: the predicted offset by AIN, a scalar
             lambda_color: the learnable update gate \alpha in Equa. (5) as
                           g(x) = (1 - \alpha) \odot x + \alpha \odot x_{offsets}
 
         Returns:
-            torch.Tensor: transformed images by SPN as Equa. (4) in Ref. [1]
+            Tensor: transformed images by SPN as Equa. (4) in Ref. [1]
                         [batch_size x I_channel_num x I_r_height x I_r_width]
 
         """
@@ -114,8 +114,6 @@ class GA_SPIN_Transformer(nn.Layer):
             in_channels (int): channel of input features,
                                 set it to 1 if the grayscale images and 3 if RGB input
             I_r_size (tuple): size of rectified images (used in STN transformations)
-            inputDataType (str): the type of input data,
-                                only support 'torch.cuda.FloatTensor' this version
             offsets (bool): set it to False if use SPN w.o. AIN,
                             and set it to True if use SPIN (both with SPN and AIN)
             norm_type (str): the normalization type of the module,
@@ -123,6 +121,7 @@ class GA_SPIN_Transformer(nn.Layer):
             default_type (int): the K chromatic space,
                                 set it to 3/5/6 depend on the complexity of transformation intensities
             loc_lr (float): learning rate of location network
+            stn (bool): whther to use stn.
 
         """
         super(GA_SPIN_Transformer, self).__init__()
@@ -233,12 +232,12 @@ class GA_SPIN_Transformer(nn.Layer):
     def forward(self, x, return_weight=False):
         """
         Args:
-            x (torch.cuda.FloatTensor): input image batch
+            x (Tensor): input image batch
             return_weight (bool): set to False by default,
                                   if set to True return the predicted offsets of AIN, denoted as x_{offsets}
 
         Returns:
-            torch.Tensor: rectified image [batch_size x I_channel_num x I_height x I_width], the same as the input size
+            Tensor: rectified image [batch_size x I_channel_num x I_height x I_width], the same as the input size
         """
 
         if self.spt:
