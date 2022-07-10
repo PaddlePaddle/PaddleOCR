@@ -27,8 +27,8 @@ class VQASerTokenLayoutLMLoss(nn.Layer):
         self.ignore_index = self.loss_class.ignore_index
 
     def forward(self, predicts, batch):
-        labels = batch[1]
-        attention_mask = batch[4]
+        labels = batch[5]
+        attention_mask = batch[2]
         if attention_mask is not None:
             active_loss = attention_mask.reshape([-1, ]) == 1
             active_outputs = predicts.reshape(

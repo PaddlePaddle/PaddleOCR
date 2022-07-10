@@ -77,14 +77,16 @@ function func_serving(){
         set_serving_server=$(func_set_params "--serving_server" "${det_serving_server_value}")
         set_serving_client=$(func_set_params "--serving_client" "${det_serving_client_value}")
         python_list=(${python_list})
-        trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
+        trans_det_log="${LOG_PATH}/python_trans_model_det.log"
+        trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client} > ${trans_det_log} 2>&1 "
         eval $trans_model_cmd
         # trans rec
         set_dirname=$(func_set_params "--dirname" "${rec_infer_model_dir_value}")
         set_serving_server=$(func_set_params "--serving_server" "${rec_serving_server_value}")
         set_serving_client=$(func_set_params "--serving_client" "${rec_serving_client_value}")
         python_list=(${python_list})
-        trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
+        trans_rec_log="${LOG_PATH}/python_trans_model_rec.log"
+        trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client} > ${trans_rec_log} 2>&1 "
         eval $trans_model_cmd
     elif [[ ${model_name} =~ "det" ]]; then
         # trans det
@@ -92,7 +94,8 @@ function func_serving(){
         set_serving_server=$(func_set_params "--serving_server" "${det_serving_server_value}")
         set_serving_client=$(func_set_params "--serving_client" "${det_serving_client_value}")
         python_list=(${python_list})
-        trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
+        trans_det_log="${LOG_PATH}/python_trans_model_det.log"
+        trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client} > ${trans_det_log} 2>&1 "
         eval $trans_model_cmd
     elif [[ ${model_name} =~ "rec" ]]; then
         # trans rec
@@ -100,7 +103,8 @@ function func_serving(){
         set_serving_server=$(func_set_params "--serving_server" "${rec_serving_server_value}")
         set_serving_client=$(func_set_params "--serving_client" "${rec_serving_client_value}")
         python_list=(${python_list})
-        trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client}"
+        trans_rec_log="${LOG_PATH}/python_trans_model_rec.log"
+        trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client} > ${trans_rec_log} 2>&1 "
         eval $trans_model_cmd
     fi
     set_image_dir=$(func_set_params "${image_dir_key}" "${image_dir_value}")
@@ -108,36 +112,37 @@ function func_serving(){
     
     cd ${serving_dir_value}
     python=${python_list[0]}
-        
+    
     # python serving
     for use_gpu in ${web_use_gpu_list[*]}; do
         if [ ${use_gpu} = "null" ]; then
             for use_mkldnn in ${web_use_mkldnn_list[*]}; do
                 for threads in ${web_cpu_threads_list[*]}; do
                     set_cpu_threads=$(func_set_params "${web_cpu_threads_key}" "${threads}")
+                    server_log_path="${LOG_PATH}/python_server_cpu_usemkldnn_${use_mkldnn}_threads_${threads}.log"
                     if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0" ] || [ ${model_name} = "ch_ppocr_server_v2.0" ]; then
                         set_det_model_config=$(func_set_params "${det_server_key}" "${det_server_value}")
                         set_rec_model_config=$(func_set_params "${rec_server_key}" "${rec_server_value}")
-                        web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}="" ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_det_model_config} ${set_rec_model_config} &"
+                        web_service_cmd="nohup ${python} ${web_service_py} ${web_use_gpu_key}="" ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_det_model_config} ${set_rec_model_config} > ${server_log_path} 2>&1 &"
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
                         status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
                     elif [[ ${model_name} =~ "det" ]]; then
                         set_det_model_config=$(func_set_params "${det_server_key}" "${det_server_value}")
-                        web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}="" ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_det_model_config} &"
+                        web_service_cmd="nohup ${python} ${web_service_py} ${web_use_gpu_key}="" ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_det_model_config} > ${server_log_path} 2>&1 &"
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
                         status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
                     elif [[ ${model_name} =~ "rec" ]]; then
                         set_rec_model_config=$(func_set_params "${rec_server_key}" "${rec_server_value}")
-                        web_service_cmd="${python} ${web_service_py} ${web_use_gpu_key}="" ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_rec_model_config} &"
+                        web_service_cmd="nohup ${python} ${web_service_py} ${web_use_gpu_key}="" ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_rec_model_config} > ${server_log_path} 2>&1 &"
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
                         status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
                     fi
                     sleep 2s
                     for pipeline in ${pipeline_py[*]}; do
-                        _save_log_path="${LOG_PATH}/server_infer_cpu_${pipeline%_client*}_usemkldnn_${use_mkldnn}_threads_${threads}_batchsize_1.log"
+                        _save_log_path="${LOG_PATH}/python_client_cpu_${pipeline%_client*}_usemkldnn_${use_mkldnn}_threads_${threads}_batchsize_1.log"
                         pipeline_cmd="${python} ${pipeline} ${set_image_dir} > ${_save_log_path} 2>&1 "
                         eval $pipeline_cmd
                         last_status=${PIPESTATUS[0]}
@@ -151,6 +156,7 @@ function func_serving(){
         elif [ ${use_gpu} = "gpu" ]; then
             for use_trt in ${web_use_trt_list[*]}; do
                 for precision in ${web_precision_list[*]}; do
+                    server_log_path="${LOG_PATH}/python_server_gpu_usetrt_${use_trt}_precision_${precision}.log"
                     if [[ ${_flag_quant} = "False" ]] && [[ ${precision} =~ "int8" ]]; then
                         continue
                     fi
@@ -168,26 +174,26 @@ function func_serving(){
                     if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0" ] || [ ${model_name} = "ch_ppocr_server_v2.0" ]; then
                         set_det_model_config=$(func_set_params "${det_server_key}" "${det_server_value}")
                         set_rec_model_config=$(func_set_params "${rec_server_key}" "${rec_server_value}")
-                        web_service_cmd="${python} ${web_service_py} ${set_tensorrt} ${set_precision} ${set_det_model_config} ${set_rec_model_config} &"
+                        web_service_cmd="nohup ${python} ${web_service_py} ${set_tensorrt} ${set_precision} ${set_det_model_config} ${set_rec_model_config} > ${server_log_path} 2>&1 &"
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
                         status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
                     elif [[ ${model_name} =~ "det" ]]; then
                         set_det_model_config=$(func_set_params "${det_server_key}" "${det_server_value}")
-                        web_service_cmd="${python} ${web_service_py} ${set_tensorrt} ${set_precision} ${set_det_model_config} &"
+                        web_service_cmd="nohup ${python} ${web_service_py} ${set_tensorrt} ${set_precision} ${set_det_model_config} > ${server_log_path} 2>&1 &"
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
                         status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
                     elif [[ ${model_name} =~ "rec" ]]; then
                         set_rec_model_config=$(func_set_params "${rec_server_key}" "${rec_server_value}")
-                        web_service_cmd="${python} ${web_service_py} ${set_tensorrt} ${set_precision} ${set_rec_model_config} &"
+                        web_service_cmd="nohup ${python} ${web_service_py} ${set_tensorrt} ${set_precision} ${set_rec_model_config} > ${server_log_path} 2>&1 &"
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
                         status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
                     fi
                     sleep 2s
                     for pipeline in ${pipeline_py[*]}; do
-                        _save_log_path="${LOG_PATH}/server_infer_gpu_${pipeline%_client*}_usetrt_${use_trt}_precision_${precision}_batchsize_1.log"
+                        _save_log_path="${LOG_PATH}/python_client_gpu_${pipeline%_client*}_usetrt_${use_trt}_precision_${precision}_batchsize_1.log"
                         pipeline_cmd="${python} ${pipeline} ${set_image_dir}> ${_save_log_path} 2>&1"
                         eval $pipeline_cmd
                         last_status=${PIPESTATUS[0]}

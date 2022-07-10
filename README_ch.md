@@ -71,6 +71,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## 《动手学OCR》电子书
 - [《动手学OCR》电子书📚](./doc/doc_ch/ocr_book.md)
 
+## 场景应用
+- PaddleOCR场景应用覆盖通用，制造、金融、交通行业的主要OCR垂类应用，在PP-OCR、PP-Structure的通用能力基础之上，以notebook的形式展示利用场景数据微调、模型优化方法、数据增广等内容，为开发者快速落地OCR应用提供示范与启发。详情可查看[README](./applications)。
 
 <a name="开源社区"></a>
 ## 开源社区
