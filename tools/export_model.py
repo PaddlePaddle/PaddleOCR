@@ -79,7 +79,7 @@ def export_single_model(model,
         ]
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] == "RobustScanner":
-        max_seq_len = arch_config["Head"]["max_seq_len"]
+        max_text_length = arch_config["Head"]["max_text_length"]
         other_shape = [
             paddle.static.InputSpec(
                 shape=[None, 3, 48, 160], dtype="float32"),
@@ -89,7 +89,7 @@ def export_single_model(model,
                     shape=[None, ], 
                     dtype="float32"),
             paddle.static.InputSpec(
-                    shape=[None, max_seq_len], 
+                    shape=[None, max_text_length], 
                     dtype="int64")
             ]
         ]

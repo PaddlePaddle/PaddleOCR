@@ -33,8 +33,8 @@ def build_head(config):
     from .rec_aster_head import AsterHead
     from .rec_pren_head import PRENHead
     from .rec_multi_head import MultiHead
-    from .rec_robustscanner_head import RobustScannerHead
     from .rec_abinet_head import ABINetHead
+    from .rec_robustscanner_head import RobustScannerHead
 
     # cls head
     from .cls_head import ClsHead
