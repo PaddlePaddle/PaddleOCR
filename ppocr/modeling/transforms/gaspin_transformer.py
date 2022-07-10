@@ -21,7 +21,6 @@ import paddle
 from paddle import nn, ParamAttr
 from paddle.nn import functional as F
 import numpy as np
-import itertools
 import functools
 from .tps import GridGenerator
 

@@ -1,4 +1,4 @@
-# copyright (c) 2021 PaddlePaddle Authors. All Rights Reserve.
+# copyright (c) 2022 PaddlePaddle Authors. All Rights Reserve.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,11 +20,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import paddle
-from paddle import ParamAttr
 import paddle.nn as nn
-import paddle.nn.functional as F
-import numpy as np
 
 __all__ = ["ResNet32"]
 
@@ -51,10 +47,10 @@ class ResNet32(nn.Layer):
     def forward(self, inputs):
         """
         Args:
-            inputs (torch.Tensor): input feature
+            inputs: input feature
 
         Returns:
-             torch.Tensor: output feature
+            output feature
 
         """
         return self.ConvNet(inputs)
@@ -92,7 +88,7 @@ class BasicBlock(nn.Layer):
             out_planes (int): channels of the middle feature
             stride (int): stride of the convolution
         Returns:
-            nn.Module: Conv2D with kernel = 3
+            nn.Layer: Conv2D with kernel = 3
 
         """
 
@@ -102,14 +98,6 @@ class BasicBlock(nn.Layer):
                          bias_attr=False)
 
     def forward(self, x):
-        """
-        Args:
-            x (torch.Tensor): input feature
-
-        Returns:
-            torch.Tensor: output feature of the BasicBlock
-
-        """
         residual = x
 
         out = self.conv1(x)
@@ -246,14 +234,6 @@ class ResNet(nn.Layer):
         return nn.Sequential(*layers)
 
     def forward(self, x):
-        """
-        Args:
-            x (torch.Tensor): input feature
-
-        Returns:
-            torch.Tensor: output feature of the Resnet
-
-        """
         x = self.conv0_1(x)
         x = self.bn0_1(x)
         x = self.relu(x)
