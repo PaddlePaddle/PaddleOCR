@@ -38,7 +38,7 @@ infer_model:./inference/ch_PP-OCRv3_rec_infer
 infer_export:null
 infer_quant:False
 inference:tools/infer/predict_rec.py --rec_image_shape="3,48,320"
---use_gpu:True|False
+--use_gpu:False
 --enable_mkldnn:False
 --cpu_threads:6
 --rec_batch_num:1|6

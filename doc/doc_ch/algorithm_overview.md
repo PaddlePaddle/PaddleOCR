@@ -1,9 +1,10 @@
 # OCR算法
 
-- [1. 两阶段算法](#1-两阶段算法)
-    - [1.1 文本检测算法](#11-文本检测算法)
-    - [1.2 文本识别算法](#12-文本识别算法)
-- [2. 端到端算法](#2-端到端算法)
+- [1. 两阶段算法](#1)
+  - [1.1 文本检测算法](#11)
+  - [1.2 文本识别算法](#12)
+- [2. 端到端算法](#2)
+- [3. 表格识别算法](#3)
 
 
 本文给出了PaddleOCR已支持的OCR算法列表，以及每个算法在**英文公开数据集**上的模型和指标，主要用于算法简介和算法性能对比，更多包括中文在内的其他数据集上的模型请参考[PP-OCR v2.0 系列模型下载](./models_list.md)。
@@ -66,6 +67,8 @@
 - [x]  [SAR](./algorithm_rec_sar.md)
 - [x]  [SEED](./algorithm_rec_seed.md)
 - [x]  [SVTR](./algorithm_rec_svtr.md)
+- [x]  [ViTSTR](./algorithm_rec_vitstr.md)
+- [x]  [ABINet](./algorithm_rec_abinet.md)
 - [x]  [RobustScanner](./algorithm_rec_robustscanner.md)
 
 参考[DTRB](https://arxiv.org/abs/1904.01906)[3]文字识别训练和评估流程，使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估，算法效果如下：
@@ -85,8 +88,9 @@
 |SAR|Resnet31| 87.20% | rec_r31_sar | [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_r31_sar_train.tar) |
 |SEED|Aster_Resnet| 85.35% | rec_resnet_stn_bilstm_att | [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_resnet_stn_bilstm_att.tar) |
 |SVTR|SVTR-Tiny| 89.25% | rec_svtr_tiny_none_ctc_en | [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/rec_svtr_tiny_none_ctc_en_train.tar) |
+|ViTSTR|ViTSTR| 79.82% | rec_vitstr_none_ce | [训练模型](https://paddleocr.bj.bcebos.com/rec_vitstr_none_ce_train.tar) |
+|ABINet|Resnet45| 90.75% | rec_r45_abinet | [训练模型](https://paddleocr.bj.bcebos.com/rec_r45_abinet_train.tar) |
 |RobustScanner|ResNet31V2| 87.77% | rec_r31_robustscanner | coming soon |
-
 
 <a name="2"></a>
 
@@ -94,3 +98,16 @@
 
 已支持的端到端OCR算法列表（戳链接获取使用教程）：
 - [x]  [PGNet](./algorithm_e2e_pgnet.md)
+
+<a name="3"></a>
+
+## 3. 表格识别算法
+
+已支持的表格识别算法列表（戳链接获取使用教程）：
+- [x]  [TableMaster](./algorithm_table_master.md)
+
+在PubTabNet表格识别公开数据集上，算法效果如下：
+
+|模型|骨干网络|配置文件|acc|下载链接|
+|---|---|---|---|---|
+|TableMaster|TableResNetExtra|[configs/table/table_master.yml](../../configs/table/table_master.yml)|77.47%|[训练模型](https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_infer.tar)|

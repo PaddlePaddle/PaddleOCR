@@ -67,6 +67,23 @@ class TextDetector(object):
             postprocess_params["unclip_ratio"] = args.det_db_unclip_ratio
             postprocess_params["use_dilation"] = args.use_dilation
             postprocess_params["score_mode"] = args.det_db_score_mode
+        elif self.det_algorithm == "DB++":
+            postprocess_params['name'] = 'DBPostProcess'
+            postprocess_params["thresh"] = args.det_db_thresh
+            postprocess_params["box_thresh"] = args.det_db_box_thresh
+            postprocess_params["max_candidates"] = 1000
+            postprocess_params["unclip_ratio"] = args.det_db_unclip_ratio
+            postprocess_params["use_dilation"] = args.use_dilation
+            postprocess_params["score_mode"] = args.det_db_score_mode
+            pre_process_list[1] = {
+                'NormalizeImage': {
+                    'std': [1.0, 1.0, 1.0],
+                    'mean':
+                    [0.48109378172549, 0.45752457890196, 0.40787054090196],
+                    'scale': '1./255.',
+                    'order': 'hwc'
+                }
+            }
         elif self.det_algorithm == "EAST":
             postprocess_params['name'] = 'EASTPostProcess'
             postprocess_params["score_thresh"] = args.det_east_score_thresh
@@ -154,9 +171,10 @@ class TextDetector(object):
         s = pts.sum(axis=1)
         rect[0] = pts[np.argmin(s)]
         rect[2] = pts[np.argmax(s)]
-        diff = np.diff(pts, axis=1)
-        rect[1] = pts[np.argmin(diff)]
-        rect[3] = pts[np.argmax(diff)]
+        tmp = np.delete(pts, (np.argmin(s), np.argmax(s)), axis=0)
+        diff = np.diff(np.array(tmp), axis=1)
+        rect[1] = tmp[np.argmin(diff)]
+        rect[3] = tmp[np.argmax(diff)]
         return rect
 
     def clip_det_res(self, points, img_height, img_width):
@@ -230,7 +248,7 @@ class TextDetector(object):
             preds['f_score'] = outputs[1]
             preds['f_tco'] = outputs[2]
             preds['f_tvo'] = outputs[3]
-        elif self.det_algorithm in ['DB', 'PSE']:
+        elif self.det_algorithm in ['DB', 'PSE', 'DB++']:
             preds['maps'] = outputs[0]
         elif self.det_algorithm == 'FCE':
             for i, output in enumerate(outputs):

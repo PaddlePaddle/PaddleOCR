@@ -37,23 +37,26 @@ class VQAReTokenMetric(object):
         gt_relations = []
         for b in range(len(self.relations_list)):
             rel_sent = []
-            for head, tail in zip(self.relations_list[b]["head"],
-                                  self.relations_list[b]["tail"]):
-                rel = {}
-                rel["head_id"] = head
-                rel["head"] = (self.entities_list[b]["start"][rel["head_id"]],
-                               self.entities_list[b]["end"][rel["head_id"]])
-                rel["head_type"] = self.entities_list[b]["label"][rel[
-                    "head_id"]]
+            if "head" in self.relations_list[b]:
+                for head, tail in zip(self.relations_list[b]["head"],
+                                      self.relations_list[b]["tail"]):
+                    rel = {}
+                    rel["head_id"] = head
+                    rel["head"] = (
+                        self.entities_list[b]["start"][rel["head_id"]],
+                        self.entities_list[b]["end"][rel["head_id"]])
+                    rel["head_type"] = self.entities_list[b]["label"][rel[
+                        "head_id"]]
 
-                rel["tail_id"] = tail
-                rel["tail"] = (self.entities_list[b]["start"][rel["tail_id"]],
-                               self.entities_list[b]["end"][rel["tail_id"]])
-                rel["tail_type"] = self.entities_list[b]["label"][rel[
-                    "tail_id"]]
+                    rel["tail_id"] = tail
+                    rel["tail"] = (
+                        self.entities_list[b]["start"][rel["tail_id"]],
+                        self.entities_list[b]["end"][rel["tail_id"]])
+                    rel["tail_type"] = self.entities_list[b]["label"][rel[
+                        "tail_id"]]
 
-                rel["type"] = 1
-                rel_sent.append(rel)
+                    rel["type"] = 1
+                    rel_sent.append(rel)
             gt_relations.append(rel_sent)
         re_metrics = self.re_score(
             self.pred_relations_list, gt_relations, mode="boundaries")

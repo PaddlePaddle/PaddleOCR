@@ -34,6 +34,7 @@ def build_head(config):
     from .rec_pren_head import PRENHead
     from .rec_multi_head import MultiHead
     from .rec_robustscanner_head import RobustScannerHead
+    from .rec_abinet_head import ABINetHead
 
     # cls head
     from .cls_head import ClsHead
@@ -42,12 +43,13 @@ def build_head(config):
     from .kie_sdmgr_head import SDMGRHead
 
     from .table_att_head import TableAttentionHead
+    from .table_master_head import TableMasterHead
 
     support_dict = [
         'DBHead', 'PSEHead', 'FCEHead', 'EASTHead', 'SASTHead', 'CTCHead',
         'ClsHead', 'AttentionHead', 'SRNHead', 'PGHead', 'Transformer',
         'TableAttentionHead', 'SARHead', 'AsterHead', 'SDMGRHead', 'PRENHead',
-        'MultiHead', 'RobustScannerHead'
+        'MultiHead', 'ABINetHead', 'TableMasterHead', 'RobustScannerHead'
     ]
 
     #table head

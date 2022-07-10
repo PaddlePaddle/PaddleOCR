@@ -67,39 +67,6 @@ class DecodeImage(object):
         return data
 
 
-class NRTRDecodeImage(object):
-    """ decode image """
-
-    def __init__(self, img_mode='RGB', channel_first=False, **kwargs):
-        self.img_mode = img_mode
-        self.channel_first = channel_first
-
-    def __call__(self, data):
-        img = data['image']
-        if six.PY2:
-            assert type(img) is str and len(
-                img) > 0, "invalid input 'img' in DecodeImage"
-        else:
-            assert type(img) is bytes and len(
-                img) > 0, "invalid input 'img' in DecodeImage"
-        img = np.frombuffer(img, dtype='uint8')
-
-        img = cv2.imdecode(img, 1)
-
-        if img is None:
-            return None
-        if self.img_mode == 'GRAY':
-            img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-        elif self.img_mode == 'RGB':
-            assert img.shape[2] == 3, 'invalid shape of image[%s]' % (img.shape)
-            img = img[:, :, ::-1]
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        if self.channel_first:
-            img = img.transpose((2, 0, 1))
-        data['image'] = img
-        return data
-
-
 class NormalizeImage(object):
     """ normalize image such as substract mean, divide std
     """
@@ -238,9 +205,12 @@ class DetResizeForTest(object):
     def __init__(self, **kwargs):
         super(DetResizeForTest, self).__init__()
         self.resize_type = 0
+        self.keep_ratio = False
         if 'image_shape' in kwargs:
             self.image_shape = kwargs['image_shape']
             self.resize_type = 1
+            if 'keep_ratio' in kwargs:
+                self.keep_ratio = kwargs['keep_ratio']
         elif 'limit_side_len' in kwargs:
             self.limit_side_len = kwargs['limit_side_len']
             self.limit_type = kwargs.get('limit_type', 'min')
@@ -270,6 +240,10 @@ class DetResizeForTest(object):
     def resize_image_type1(self, img):
         resize_h, resize_w = self.image_shape
         ori_h, ori_w = img.shape[:2]  # (h, w, c)
+        if self.keep_ratio is True:
+            resize_w = ori_w * resize_h / ori_h
+            N = math.ceil(resize_w / 32)
+            resize_w = N * 32
         ratio_h = float(resize_h) / ori_h
         ratio_w = float(resize_w) / ori_w
         img = cv2.resize(img, (int(resize_w), int(resize_h)))

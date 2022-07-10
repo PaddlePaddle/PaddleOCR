@@ -27,7 +27,7 @@ import paddle.nn as nn
 import paddle.nn.functional as F
 import numpy as np
 
-__all__ = ["ResNet31V2"]
+__all__ = ["ResNet31"]
 
 
 conv_weight_attr = nn.initializer.KaimingNormal()

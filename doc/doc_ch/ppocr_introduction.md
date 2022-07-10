@@ -30,11 +30,11 @@ PP-OCR系统pipeline如下：
 
 PP-OCR系统在持续迭代优化，目前已发布PP-OCR和PP-OCRv2两个版本：
 
-PP-OCR从骨干网络选择和调整、预测头部的设计、数据增强、学习率变换策略、正则化参数选择、预训练模型使用以及模型自动裁剪量化8个方面，采用19个有效策略，对各个模块的模型进行效果调优和瘦身(如绿框所示)，最终得到整体大小为3.5M的超轻量中英文OCR和2.8M的英文数字OCR。更多细节请参考PP-OCR技术方案 https://arxiv.org/abs/2009.09941
+PP-OCR从骨干网络选择和调整、预测头部的设计、数据增强、学习率变换策略、正则化参数选择、预训练模型使用以及模型自动裁剪量化8个方面，采用19个有效策略，对各个模块的模型进行效果调优和瘦身(如绿框所示)，最终得到整体大小为3.5M的超轻量中英文OCR和2.8M的英文数字OCR。更多细节请参考[PP-OCR技术报告](https://arxiv.org/abs/2009.09941)。
 
 #### PP-OCRv2
 
-PP-OCRv2在PP-OCR的基础上，进一步在5个方面重点优化，检测模型采用CML协同互学习知识蒸馏策略和CopyPaste数据增广策略；识别模型采用LCNet轻量级骨干网络、UDML 改进知识蒸馏策略和[Enhanced CTC loss](./enhanced_ctc_loss.md)损失函数改进（如上图红框所示），进一步在推理速度和预测效果上取得明显提升。更多细节请参考PP-OCRv2[技术报告](https://arxiv.org/abs/2109.03144)。
+PP-OCRv2在PP-OCR的基础上，进一步在5个方面重点优化，检测模型采用CML协同互学习知识蒸馏策略和CopyPaste数据增广策略；识别模型采用LCNet轻量级骨干网络、UDML 改进知识蒸馏策略和[Enhanced CTC loss](./enhanced_ctc_loss.md)损失函数改进（如上图红框所示），进一步在推理速度和预测效果上取得明显提升。更多细节请参考[PP-OCRv2技术报告](https://arxiv.org/abs/2109.03144)。
 
 #### PP-OCRv3
 
@@ -48,7 +48,7 @@ PP-OCRv3系统pipeline如下：
     <img src="../ppocrv3_framework.png" width="800">
 </div>
 
-更多细节请参考PP-OCRv3[技术报告](./PP-OCRv3_introduction.md)。
+更多细节请参考[PP-OCRv3技术报告](https://arxiv.org/abs/2206.03001v2) 👉[中文简洁版](./PP-OCRv3_introduction.md)
 
 
 <a name="2"></a>
