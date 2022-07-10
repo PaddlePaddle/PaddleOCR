@@ -274,6 +274,7 @@ class SPINRecResizeImg(object):
 
     def __call__(self, data):
         img = data['image']
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         # different interpolation type corresponding the OpenCV
         if self.interpolation == 0:
             interpolation = cv2.INTER_NEAREST
@@ -294,12 +295,9 @@ class SPINRecResizeImg(object):
         img = np.expand_dims(img, -1)
         img = img.transpose((2, 0, 1))
         # normalize the image
-        to_rgb = False
         img = img.copy().astype(np.float32)
         mean = np.float64(self.mean.reshape(1, -1))
         stdinv = 1 / np.float64(self.std.reshape(1, -1))
-        if to_rgb:
-            cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
         img -= mean
         img *= stdinv
         data['image'] = img

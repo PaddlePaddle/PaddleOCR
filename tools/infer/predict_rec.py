@@ -81,7 +81,6 @@ class TextRecognizer(object):
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }
-
         elif self.rec_algorithm == "SPIN":
             postprocess_params = {
                 'name': 'SPINAttnLabelDecode',
@@ -362,6 +361,8 @@ class TextRecognizer(object):
                     norm_img_batch.append(norm_img)
                 elif self.rec_algorithm == 'SPIN':
                     norm_img = self.resize_norm_img_spin(img_list[indices[ino]])
+                    norm_img = norm_img[np.newaxis, :]
+                    norm_img_batch.append(norm_img)
                 elif self.rec_algorithm == "ABINet":
                     norm_img = self.resize_norm_img_abinet(
                         img_list[indices[ino]], self.rec_image_shape)
