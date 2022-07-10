@@ -66,12 +66,9 @@ Supported text recognition algorithms (Click the link to get the tutorial):
 - [x]  [SAR](./algorithm_rec_sar_en.md)
 - [x]  [SEED](./algorithm_rec_seed_en.md)
 - [x]  [SVTR](./algorithm_rec_svtr_en.md)
-<<<<<<< HEAD
-- [x]  [SPIN](./algorithm_rec_spin_en.md)
-=======
 - [x]  [ViTSTR](./algorithm_rec_vitstr_en.md)
 - [x]  [ABINet](./algorithm_rec_abinet_en.md)
->>>>>>> b6982b7fc720a1c9346838978b9228025f26c42b
+- [x]  [SPIN](./algorithm_rec_spin_en.md)
 
 Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation result of these above text recognition (using MJSynth and SynthText for training, evaluate on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE) is as follow:
 
