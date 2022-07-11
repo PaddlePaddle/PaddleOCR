@@ -93,7 +93,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 | 中英文通用PP-OCR server模型（143.4M） | ch_ppocr_server_v2.0_xx | 服务器端        | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_pre.tar) |
 
 - 超轻量OCR系列更多模型下载（包括多语言），可以参考[PP-OCR系列模型下载](./doc/doc_ch/models_list.md)，文档分析相关模型参考[PP-Structure系列模型下载](./ppstructure/docs/models_list.md)
-- 制造、金融、交通行业的主要OCR垂类应用（如电表、数码管、液晶屏、不动产证、车牌、SVTR大模型），可参考[PaddleOCR场景应用模型下载](./applications)
+- 制造、金融、交通行业的主要OCR垂类应用（如电表、数码管、液晶屏、不动产证、车牌、SVTR大模型），可参考[场景应用模型下载](./applications)
 
 <a name="文档教程"></a>
 ## 文档教程
