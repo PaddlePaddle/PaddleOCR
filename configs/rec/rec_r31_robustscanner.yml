@@ -96,7 +96,7 @@ Eval:
       - SARLabelEncode: # Class handling label
       - RobustScannerRecResizeImg:
           image_shape: [3, 48, 48, 160]
-          max_seq_len: *max_text_length
+          max_text_length: *max_text_length
           width_downsample_ratio: 0.25
       - KeepKeys:
           keep_keys: ['image', 'label', 'valid_ratio', 'word_positons'] # dataloader will return list in this order
