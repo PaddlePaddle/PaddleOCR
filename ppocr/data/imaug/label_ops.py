@@ -1217,7 +1217,7 @@ class ABINetLabelEncode(BaseRecLabelEncode):
         dict_character = ['</s>'] + dict_character
         return dict_character
 
-class SPINAttnLabelEncode(BaseRecLabelEncode):
+class SPINAttnLabelEncode(AttnLabelEncode):
     """ Convert between text-label and text-index """
 
     def __init__(self,
