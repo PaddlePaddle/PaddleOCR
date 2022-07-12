@@ -32,7 +32,8 @@ from ppocr.utils.save_load import save_model
 from ppocr.utils.utility import print_dict, AverageMeter
 from ppocr.utils.logging import get_logger
 from ppocr.utils.loggers import VDLLogger, WandbLogger, Loggers
-from ppocr.utils import profiler
+# from ppocr.utils import profiler
+import paddle.profiler as profiler
 from ppocr.data import build_dataloader
 
 
@@ -240,8 +241,10 @@ def train(config,
                 config, 'Train', device, logger, seed=epoch)
             max_iter = len(train_dataloader) - 1 if platform.system(
             ) == "Windows" else len(train_dataloader)
+        prof = profiler.Profiler(timer_only=True)
+        prof.start()
         for idx, batch in enumerate(train_dataloader):
-            profiler.add_profiler_step(profiler_options)
+            # profiler.add_profiler_step(profiler_options)
             train_reader_cost += time.time() - reader_start
             if idx >= max_iter:
                 break
@@ -292,6 +295,7 @@ def train(config,
                 metric = eval_class.get_metric()
                 train_stats.update(metric)
 
+            prof.step(num_samples=len(images))
             train_batch_time = time.time() - reader_start
             train_batch_cost += train_batch_time
             eta_meter.update(train_batch_time)
@@ -306,13 +310,13 @@ def train(config,
             stats['lr'] = lr
             train_stats.update(stats)
 
-
             if log_writer is not None and dist.get_rank() == 0:
                 log_writer.log_metrics(metrics=train_stats.get(), prefix="TRAIN", step=global_step)
 
             if dist.get_rank() == 0 and (
                 (global_step > 0 and global_step % print_batch_step == 0) or
                 (idx >= len(train_dataloader) - 1)):
+                # print("Iter {}: {}".format(global_step, prof.step_info()))
                 logs = train_stats.log()
 
                 eta_sec = ((epoch_num + 1 - epoch) * \
@@ -384,7 +388,9 @@ def train(config,
                     
                     log_writer.log_model(is_best=True, prefix="best_accuracy", metadata=best_model_dict)
 
+            # prof.step(num_samples=len(images))
             reader_start = time.time()
+        prof.stop()
         if dist.get_rank() == 0:
             save_model(
                 model,
