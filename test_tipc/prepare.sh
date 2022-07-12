@@ -52,7 +52,7 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf ch_PP-OCRv3_det_distill_train.tar && cd ../
     fi
-    if [ ${model_name} == "en_table_structure" ];then
+    if [ ${model_name} == "en_table_structure" ] || [ ${model_name} == "en_table_structure_PACT" ];then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.1/table/en_ppocr_mobile_v2.0_table_structure_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf en_ppocr_mobile_v2.0_table_structure_train.tar  && cd ../
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_det_infer.tar --no-check-certificate
