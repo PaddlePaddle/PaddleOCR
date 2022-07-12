@@ -72,6 +72,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 <img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "200" height = "200" />
 </div>
 <a name="Supported-Chinese-model-list"></a>
+
 ## PP-OCR Series Model List（Update on September 8th）
 
 | Model introduction                                           | Model name                   | Recommended scene | Detection model                                              | Direction classifier                                         | Recognition model                                            |

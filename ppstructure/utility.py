@@ -25,6 +25,7 @@ def init_args():
     parser.add_argument("--output", type=str, default='./output')
     # params for table structure
     parser.add_argument("--table_max_len", type=int, default=488)
+    parser.add_argument("--table_algorithm", type=str, default='TableAttn')
     parser.add_argument("--table_model_dir", type=str)
     parser.add_argument(
         "--table_char_dict_path",

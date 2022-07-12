@@ -474,7 +474,7 @@ void system(char **argv){
   
     std::vector<double> rec_times;
     RunRecModel(boxes, srcimg, rec_predictor, rec_text, rec_text_score,
-                charactor_dict, cls_predictor, use_direction_classify, &rec_times);
+                charactor_dict, cls_predictor, use_direction_classify, &rec_times, rec_image_height);
   
     //// visualization
     auto img_vis = Visualization(srcimg, boxes);

@@ -54,6 +54,7 @@
 | NRTR   |rec_mtb_nrtr                   | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
 | SAR    |rec_r31_sar                    | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
 | PGNet  |rec_r34_vd_none_none_ctc_v2.0  | 端到端| 支持 | 多机多卡 <br> 混合精度 | - | - |
+| TableMaster  |table_structure_tablemaster_train  | 表格识别| 支持 | 多机多卡 <br> 混合精度 | - | - |
 
 
 
