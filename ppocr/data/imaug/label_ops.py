@@ -1248,19 +1248,4 @@ class SPINAttnLabelEncode(AttnLabelEncode):
 
         padded_text[:len(target)] = target
         data['label'] = np.array(padded_text)
-        return data
-
-    def get_ignored_tokens(self):
-        beg_idx = self.get_beg_end_flag_idx("beg")
-        end_idx = self.get_beg_end_flag_idx("end")
-        return [beg_idx, end_idx]
-
-    def get_beg_end_flag_idx(self, beg_or_end):
-        if beg_or_end == "beg":
-            idx = np.array(self.dict[self.beg_str])
-        elif beg_or_end == "end":
-            idx = np.array(self.dict[self.end_str])
-        else:
-            assert False, "Unsupport type %s in get_beg_end_flag_idx" \
-                          % beg_or_end
-        return 
+        return data 
