@@ -139,8 +139,8 @@ else
     device_num=${params_list[4]}
     IFS=";"
 
-    if [ ${precision} = "null" ];then
-        precision="fp32"
+    if [ ${precision} = "fp16" ];then
+        precision="amp"
     fi
 
     fp_items_list=($precision)
