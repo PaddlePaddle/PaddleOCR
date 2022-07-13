@@ -6,7 +6,7 @@ Global.use_gpu:True|True
 Global.auto_cast:fp32
 Global.epoch_num:lite_train_lite_infer=1|whole_train_whole_infer=50
 Global.save_model_dir:./output/
-Train.loader.batch_size_per_card:lite_train_lite_infer=16|whole_train_whole_infer=128
+Train.loader.batch_size_per_card:lite_train_lite_infer=2|whole_train_whole_infer=2
 Global.pretrained_model:./pretrain_models/en_ppocr_mobile_v2.0_table_structure_train/best_accuracy
 train_model_name:latest
 train_infer_img_dir:./ppstructure/docs/table/table.jpg
