@@ -241,18 +241,18 @@ Linux用户可选择Anaconda或Docker两种方式运行。如果你熟悉Docker�
     ```
 
      ```shell
-      # 修改后的~/.bash_profile文件应如下（其中xxx为用户名）：
-      export PATH="~/opt/anaconda3/bin:$PATH"
+      # 修改后的~/.bashrc文件应如下（其中xxx为用户名）：
+      export PATH="~/anaconda3/bin:$PATH"
       # >>> conda initialize >>>
       # !! Contents within this block are managed by 'conda init' !!
-      __conda_setup="$('/Users/xxx/opt/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+      __conda_setup="$('/home/xxx/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
       if [ $? -eq 0 ]; then
           eval "$__conda_setup"
       else
-          if [ -f "/Users/xxx/opt/anaconda3/etc/profile.d/conda.sh" ]; then
-              . "/Users/xxx/opt/anaconda3/etc/profile.d/conda.sh"
+          if [ -f "/home/xxx/anaconda3/etc/profile.d/conda.sh" ]; then
+              . "/home/xxx/anaconda3/etc/profile.d/conda.sh"
           else
-              export PATH="/Users/xxx/opt/anaconda3/bin:$PATH"
+              export PATH="/home/xxx/anaconda3/bin:$PATH"
           fi
       fi
       unset __conda_setup
@@ -263,7 +263,7 @@ Linux用户可选择Anaconda或Docker两种方式运行。如果你熟悉Docker�
 
   - 验证是否能识别conda命令：
 
-    - 在终端中输入`source ~/.bash_profile`以更新环境变量
+    - 在终端中输入`source ~/.bashrc`以更新环境变量
     - 再在终端输入`conda info --envs`，若能显示当前有base环境，则conda已加入环境变量
 
 - 创建新的conda环境
