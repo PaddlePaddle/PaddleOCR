@@ -12,7 +12,6 @@
 # THE SOFTWARE.
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
-from email.policy import default
 import math
 import sys
 
