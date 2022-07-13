@@ -465,9 +465,6 @@ class PositionAttentionDecoder(BaseDecoder):
         _, c_feat, _, _ = feat.shape
         assert c_feat == self.dim_input
 
-        # the _get_position_index is not ok for export_model
-        # position_index = self._get_position_index(self.max_seq_len, n)
-
         position_out_enc = self.position_aware_module(out_enc)
         
         query = self.embedding(position_index)
