@@ -44,6 +44,12 @@ python3 -m pip install "paddlepaddle>=2.2" -i https://mirror.baidu.com/pypi/simp
 
 更多需求，请参照[安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
 
+* **(2)安装依赖**
+
+```bash
+python3 -m pip install -r ppstructure/recovery/requirements.txt
+```
+
 <a name="2.2"></a>
 
 ### 2.2 安装PaddleOCR
