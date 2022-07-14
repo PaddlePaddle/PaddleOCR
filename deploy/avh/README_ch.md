@@ -14,6 +14,7 @@
 <!--- KIND, either express or implied.  See the License for the -->
 <!--- specific language governing permissions and limitations -->
 <!--- under the License. -->
+[English](README.md) | 简体中文
 
 通过TVM在 Arm(R) Cortex(R)-M55 CPU 上运行 PaddleOCR文 本能识别模型
 ===============================================================
@@ -85,9 +86,9 @@ export PATH=/opt/arm/FVP_Corstone_SSE-300/models/Linux64_GCC-6.4:/opt/arm/cmake/
 模型描述
 -----------------
 
-在这个demo中，我们使用的模型是基于[PP-OCRv3](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/PP-OCRv3_introduction.md)的英文识别模型。 PP-OCRv3是[PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR)发布的PP-OCR系列模型的第三个版本。 该系列模型具有以下特点：
+在这个demo中，我们使用的模型是基于[PP-OCRv3](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/PP-OCRv3_introduction.md)的英文识别模型。由于Arm(R) Cortex(R)-M55 CPU不支持rnn算子，我们在PP-OCRv3原始文本识别模型的基础上进行适配，最终模型大小为2.7M。
+
+PP-OCRv3是[PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR)发布的PP-OCR系列模型的第三个版本，该系列模型具有以下特点：
    - 超轻量级OCR系统：检测（3.6M）+方向分类器（1.4M）+识别（12M）=17.0M。
    - 支持80多种多语言识别模型，包括英文、中文、法文、德文、阿拉伯文、韩文、日文等。 
    - 支持竖排文本识别，长文本识别。
-
-PP-OCRv3 中的文本识别模型支持 80 多种语言。 在模型开发过程中，由于Arm(R) Cortex(R)-M55 CPU不支持rnn算子，我们在PP-OCRv3文本识别模型的基础上删除了不支持的算子，得到当前模型。

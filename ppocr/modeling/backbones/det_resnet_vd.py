@@ -25,7 +25,7 @@ from paddle.vision.ops import DeformConv2D
 from paddle.regularizer import L2Decay
 from paddle.nn.initializer import Normal, Constant, XavierUniform
 
-__all__ = ["ResNet"]
+__all__ = ["ResNet_vd", "ConvBNLayer", "DeformableConvV2"]
 
 
 class DeformableConvV2(nn.Layer):
@@ -104,6 +104,7 @@ class ConvBNLayer(nn.Layer):
                  kernel_size,
                  stride=1,
                  groups=1,
+                 dcn_groups=1,
                  is_vd_mode=False,
                  act=None,
                  is_dcn=False):
@@ -128,7 +129,7 @@ class ConvBNLayer(nn.Layer):
                 kernel_size=kernel_size,
                 stride=stride,
                 padding=(kernel_size - 1) // 2,
-                groups=2,  #groups,
+                groups=dcn_groups,  #groups,
                 bias_attr=False)
         self._batch_norm = nn.BatchNorm(out_channels, act=act)
 
@@ -162,7 +163,8 @@ class BottleneckBlock(nn.Layer):
             kernel_size=3,
             stride=stride,
             act='relu',
-            is_dcn=is_dcn)
+            is_dcn=is_dcn,
+            dcn_groups=2)
         self.conv2 = ConvBNLayer(
             in_channels=out_channels,
             out_channels=out_channels * 4,
@@ -238,14 +240,14 @@ class BasicBlock(nn.Layer):
         return y
 
 
-class ResNet(nn.Layer):
+class ResNet_vd(nn.Layer):
     def __init__(self,
                  in_channels=3,
                  layers=50,
                  dcn_stage=None,
                  out_indices=None,
                  **kwargs):
-        super(ResNet, self).__init__()
+        super(ResNet_vd, self).__init__()
 
         self.layers = layers
         supported_layers = [18, 34, 50, 101, 152, 200]
@@ -321,7 +323,6 @@ class ResNet(nn.Layer):
             for block in range(len(depth)):
                 block_list = []
                 shortcut = False
-                # is_dcn = self.dcn_stage[block]
                 for i in range(depth[block]):
                     basic_block = self.add_sublayer(
                         'bb_%d_%d' % (block, i),

@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import cv2
 import os
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
@@ -19,7 +20,7 @@ from PIL import Image, ImageDraw, ImageFont
 def draw_ser_results(image,
                      ocr_results,
                      font_path="doc/fonts/simfang.ttf",
-                     font_size=18):
+                     font_size=14):
     np.random.seed(2021)
     color = (np.random.permutation(range(255)),
              np.random.permutation(range(255)),
@@ -40,9 +41,15 @@ def draw_ser_results(image,
         if ocr_info["pred_id"] not in color_map:
             continue
         color = color_map[ocr_info["pred_id"]]
-        text = "{}: {}".format(ocr_info["pred"], ocr_info["text"])
+        text = "{}: {}".format(ocr_info["pred"], ocr_info["transcription"])
 
-        draw_box_txt(ocr_info["bbox"], text, draw, font, font_size, color)
+        if "bbox" in ocr_info:
+            # draw with ocr engine
+            bbox = ocr_info["bbox"]
+        else:
+            # draw with ocr groundtruth
+            bbox = trans_poly_to_bbox(ocr_info["points"])
+        draw_box_txt(bbox, text, draw, font, font_size, color)
 
     img_new = Image.blend(image, img_new, 0.5)
     return np.array(img_new)
@@ -60,6 +67,14 @@ def draw_box_txt(bbox, text, draw, font, font_size, color):
         [(bbox[0][0] + 1, start_y), (bbox[0][0] + tw + 1, start_y + font_size)],
         fill=(0, 0, 255))
     draw.text((bbox[0][0] + 1, start_y), text, fill=(255, 255, 255), font=font)
+
+
+def trans_poly_to_bbox(poly):
+    x1 = np.min([p[0] for p in poly])
+    x2 = np.max([p[0] for p in poly])
+    y1 = np.min([p[1] for p in poly])
+    y2 = np.max([p[1] for p in poly])
+    return [x1, y1, x2, y2]
 
 
 def draw_re_results(image,
@@ -80,10 +95,10 @@ def draw_re_results(image,
     color_line = (0, 255, 0)
 
     for ocr_info_head, ocr_info_tail in result:
-        draw_box_txt(ocr_info_head["bbox"], ocr_info_head["text"], draw, font,
-                     font_size, color_head)
-        draw_box_txt(ocr_info_tail["bbox"], ocr_info_tail["text"], draw, font,
-                     font_size, color_tail)
+        draw_box_txt(ocr_info_head["bbox"], ocr_info_head["transcription"],
+                     draw, font, font_size, color_head)
+        draw_box_txt(ocr_info_tail["bbox"], ocr_info_tail["transcription"],
+                     draw, font, font_size, color_tail)
 
         center_head = (
             (ocr_info_head['bbox'][0] + ocr_info_head['bbox'][2]) // 2,
@@ -96,3 +111,16 @@ def draw_re_results(image,
 
     img_new = Image.blend(image, img_new, 0.5)
     return np.array(img_new)
+
+
+def draw_rectangle(img_path, boxes, use_xywh=False):
+    img = cv2.imread(img_path)
+    img_show = img.copy()
+    for box in boxes.astype(int):
+        if use_xywh:
+            x, y, w, h = box
+            x1, y1, x2, y2 = x - w // 2, y - h // 2, x + w // 2, y + h // 2
+        else:
+            x1, y1, x2, y2 = box
+        cv2.rectangle(img_show, (x1, y1), (x2, y2), (255, 0, 0), 2)
+    return img_show

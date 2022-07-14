@@ -32,7 +32,7 @@ class GenTableMask(object):
         self.shrink_h_max = 5
         self.shrink_w_max = 5
         self.mask_type = mask_type
-        
+
     def projection(self, erosion, h, w, spilt_threshold=0):
         # 水平投影
         projection_map = np.ones_like(erosion)
@@ -48,10 +48,12 @@ class GenTableMask(object):
         in_text = False  # 是否遍历到了字符区内
         box_list = []
         for i in range(len(project_val_array)):
-            if in_text == False and project_val_array[i] > spilt_threshold:  # 进入字符区了
+            if in_text == False and project_val_array[
+                    i] > spilt_threshold:  # 进入字符区了
                 in_text = True
                 start_idx = i
-            elif project_val_array[i] <= spilt_threshold and in_text == True:  # 进入空白区了
+            elif project_val_array[
+                    i] <= spilt_threshold and in_text == True:  # 进入空白区了
                 end_idx = i
                 in_text = False
                 if end_idx - start_idx <= 2:
@@ -70,7 +72,8 @@ class GenTableMask(object):
         box_gray_img = cv2.cvtColor(box_img, cv2.COLOR_BGR2GRAY)
         h, w = box_gray_img.shape
         # 灰度图片进行二值化处理
-        ret, thresh1 = cv2.threshold(box_gray_img, 200, 255, cv2.THRESH_BINARY_INV)
+        ret, thresh1 = cv2.threshold(box_gray_img, 200, 255,
+                                     cv2.THRESH_BINARY_INV)
         # 纵向腐蚀
         if h < w:
             kernel = np.ones((2, 1), np.uint8)
@@ -95,10 +98,12 @@ class GenTableMask(object):
         box_list = []
         spilt_threshold = 0
         for i in range(len(project_val_array)):
-            if in_text == False and project_val_array[i] > spilt_threshold:  # 进入字符区了
+            if in_text == False and project_val_array[
+                    i] > spilt_threshold:  # 进入字符区了
                 in_text = True
                 start_idx = i
-            elif project_val_array[i] <= spilt_threshold and in_text == True:  # 进入空白区了
+            elif project_val_array[
+                    i] <= spilt_threshold and in_text == True:  # 进入空白区了
                 end_idx = i
                 in_text = False
                 if end_idx - start_idx <= 2:
@@ -120,7 +125,8 @@ class GenTableMask(object):
                     h_end = h
                 word_img = erosion[h_start:h_end + 1, :]
                 word_h, word_w = word_img.shape
-                w_split_list, w_projection_map = self.projection(word_img.T, word_w, word_h)
+                w_split_list, w_projection_map = self.projection(word_img.T,
+                                                                 word_w, word_h)
                 w_start, w_end = w_split_list[0][0], w_split_list[-1][1]
                 if h_start > 0:
                     h_start -= 1
@@ -170,75 +176,54 @@ class GenTableMask(object):
 
                 for sno in range(len(split_bbox_list)):
                     left, top, right, bottom = split_bbox_list[sno]
-                    left, top, right, bottom = self.shrink_bbox([left, top, right, bottom])
+                    left, top, right, bottom = self.shrink_bbox(
+                        [left, top, right, bottom])
                     if self.mask_type == 1:
                         mask_img[top:bottom, left:right] = 1.0
                         data['mask_img'] = mask_img
                     else:
-                        mask_img[top:bottom, left:right, :] = (255, 255, 255)        
+                        mask_img[top:bottom, left:right, :] = (255, 255, 255)
                         data['image'] = mask_img
         return data
 
+
 class ResizeTableImage(object):
-    def __init__(self, max_len, **kwargs):
+    def __init__(self, max_len, resize_bboxes=False, infer_mode=False,
+                 **kwargs):
         super(ResizeTableImage, self).__init__()
         self.max_len = max_len
+        self.resize_bboxes = resize_bboxes
+        self.infer_mode = infer_mode
 
-    def get_img_bbox(self, cells):
-        bbox_list = []
-        if len(cells) == 0:
-            return bbox_list
-        cell_num = len(cells)
-        for cno in range(cell_num):
-            if "bbox" in cells[cno]:
-                bbox = cells[cno]['bbox']
-                bbox_list.append(bbox)
-        return bbox_list
-
-    def resize_img_table(self, img, bbox_list, max_len):
-        height, width = img.shape[0:2]
-        ratio = max_len / (max(height, width) * 1.0)
-        resize_h = int(height * ratio)
-        resize_w = int(width * ratio)
-        img_new = cv2.resize(img, (resize_w, resize_h))
-        bbox_list_new = []
-        for bno in range(len(bbox_list)):
-            left, top, right, bottom = bbox_list[bno].copy()
-            left = int(left * ratio)
-            top = int(top * ratio)
-            right = int(right * ratio)
-            bottom = int(bottom * ratio)
-            bbox_list_new.append([left, top, right, bottom])
-        return img_new, bbox_list_new
-    
     def __call__(self, data):
         img = data['image']
-        if 'cells' not in data:
-            cells = []
-        else:
-            cells = data['cells']
-        bbox_list = self.get_img_bbox(cells)
-        img_new, bbox_list_new = self.resize_img_table(img, bbox_list, self.max_len)
-        data['image'] = img_new
-        cell_num = len(cells)
-        bno = 0
-        for cno in range(cell_num):
-            if "bbox" in data['cells'][cno]:
-                data['cells'][cno]['bbox'] = bbox_list_new[bno]
-                bno += 1
+        height, width = img.shape[0:2]
+        ratio = self.max_len / (max(height, width) * 1.0)
+        resize_h = int(height * ratio)
+        resize_w = int(width * ratio)
+        resize_img = cv2.resize(img, (resize_w, resize_h))
+        if self.resize_bboxes and not self.infer_mode:
+            data['bboxes'] = data['bboxes'] * ratio
+        data['image'] = resize_img
+        data['src_img'] = img
+        data['shape'] = np.array([resize_h, resize_w, ratio, ratio])
         data['max_len'] = self.max_len
         return data
 
+
 class PaddingTableImage(object):
-    def __init__(self, **kwargs):
+    def __init__(self, size, **kwargs):
         super(PaddingTableImage, self).__init__()
-    
+        self.size = size
+
     def __call__(self, data):
         img = data['image']
-        max_len = data['max_len']
-        padding_img = np.zeros((max_len, max_len, 3), dtype=np.float32)
+        pad_h, pad_w = self.size
+        padding_img = np.zeros((pad_h, pad_w, 3), dtype=np.float32)
         height, width = img.shape[0:2]
         padding_img[0:height, 0:width, :] = img.copy()
         data['image'] = padding_img
+        shape = data['shape'].tolist()
+        shape.extend([pad_h, pad_w])
+        data['shape'] = np.array(shape)
         return data
-            
