@@ -668,12 +668,12 @@ class ABINetLabelDecode(NRTRLabelDecode):
         dict_character = ['</s>'] + dict_character
         return dict_character
 
-class SPINAttnLabelDecode(AttnLabelDecode):
+class SPINLabelDecode(AttnLabelDecode):
     """ Convert between text-label and text-index """
 
     def __init__(self, character_dict_path=None, use_space_char=False,
                  **kwargs):
-        super(SPINAttnLabelDecode, self).__init__(character_dict_path,
+        super(SPINLabelDecode, self).__init__(character_dict_path,
                                               use_space_char)
 
     def add_special_char(self, dict_character):

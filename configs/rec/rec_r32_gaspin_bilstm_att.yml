@@ -60,7 +60,7 @@ Loss:
   ignore_index: 0
 
 PostProcess:
-  name: SPINAttnLabelDecode
+  name: SPINLabelDecode
   use_space_char: False
 
 
@@ -78,7 +78,7 @@ Train:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
-      - SPINAttnLabelEncode: # Class handling label
+      - SPINLabelEncode: # Class handling label
       - SPINRecResizeImg:
           image_shape: [100, 32]
           interpolation : 2
@@ -101,7 +101,7 @@ Eval:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
-      - SPINAttnLabelEncode: # Class handling label
+      - SPINLabelEncode: # Class handling label
       - SPINRecResizeImg:
           image_shape: [100, 32]
           interpolation : 2

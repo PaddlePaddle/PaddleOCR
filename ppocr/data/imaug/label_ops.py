@@ -1217,7 +1217,7 @@ class ABINetLabelEncode(BaseRecLabelEncode):
         dict_character = ['</s>'] + dict_character
         return dict_character
 
-class SPINAttnLabelEncode(AttnLabelEncode):
+class SPINLabelEncode(AttnLabelEncode):
     """ Convert between text-label and text-index """
 
     def __init__(self,
@@ -1226,7 +1226,7 @@ class SPINAttnLabelEncode(AttnLabelEncode):
                  use_space_char=False,
                  lower=True,
                  **kwargs):
-        super(SPINAttnLabelEncode, self).__init__(
+        super(SPINLabelEncode, self).__init__(
             max_text_length, character_dict_path, use_space_char)
         self.lower = lower
     def add_special_char(self, dict_character):
