@@ -27,10 +27,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 ## 近期更新
 
-- **🔥2022.5.25~26 OCR产业应用两日直播课**
-  
-  - 25日：车牌识别产业应用实战（[AI Studio项目链接](https://aistudio.baidu.com/aistudio/projectdetail/3919091?contributionType=1)）
-  - 26日：一招搞定工业常见数码管、PCB字符识别（AI Studio项目链接：[数码管识别](https://aistudio.baidu.com/aistudio/projectdetail/4049044?contributionType=1)，[PCB字符识别](https://aistudio.baidu.com/aistudio/projectdetail/4008973)）
+- **🔥2022.7 发布[OCR场景应用集合](./applications)**
+  - 覆盖通用，制造、金融、交通行业的主要OCR垂类应用，在PP-OCR、PP-Structure的通用能力基础之上，以notebook的形式展示利用场景数据微调、模型优化方法、数据增广等内容，为开发者快速落地OCR应用提供示范与启发。
   
 - **🔥2022.5.9 发布PaddleOCR [release/2.5](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.5)**
     - 发布[PP-OCRv3](./doc/doc_ch/ppocr_introduction.md#pp-ocrv3)，速度可比情况下，中文场景效果相比于PP-OCRv2再提升5%，英文场景提升11%，80语种多语言模型平均识别准确率提升5%以上；
@@ -77,8 +75,9 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - **社区常规赛**🎁：社区常规赛是面向OCR开发者的积分赛事，覆盖文档、代码、模型和应用四大类型，以季度为单位评选并发放奖励，赛题详情与报名方法可参考[链接](https://github.com/PaddlePaddle/PaddleOCR/issues/4982)。
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "200" height = "200" />
+<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "150" height = "150" />
 </div>
+
 
 
 <a name="模型下载"></a>
@@ -90,9 +89,19 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 | 英文超轻量PP-OCRv3模型（13.4M）     | en_PP-OCRv3_xx          | 移动端&服务器端 | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_distill_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_train.tar) |
 
 - 超轻量OCR系列更多模型下载（包括多语言），可以参考[PP-OCR系列模型下载](./doc/doc_ch/models_list.md)，文档分析相关模型参考[PP-Structure系列模型下载](./ppstructure/docs/models_list.md)
-- 制造、金融、交通行业的主要OCR垂类应用（如电表、数码管、液晶屏、不动产证、车牌、SVTR大模型），可参考[场景应用模型下载](./applications)
+
+### PaddleOCR场景应用模型
+
+| 行业 | 类别         | 亮点                               | 文档说明                                                     | 模型下载                                      |
+| ---- | ------------ | ---------------------------------- | ------------------------------------------------------------ | --------------------------------------------- |
+| 制造 | 数码管识别   | 数码管数据合成、漏识别调优         | [光功率计数码管字符识别](./applications/光功率计数码管字符识别/光功率计数码管字符识别.md) | [下载链接](./applications/README.md#模型下载) |
+| 金融 | 通用表单识别 | 多模态通用表单结构化提取           | [多模态表单识别](./applications/多模态表单识别.md)           | [下载链接](./applications/README.md#模型下载) |
+| 交通 | 车牌识别     | 多角度图像处理、轻量模型、端侧部署 | [轻量级车牌识别](./applications/轻量级车牌识别.md)           | [下载链接](./applications/README.md#模型下载) |
+
+- 更多制造、金融、交通行业的主要OCR垂类应用模型（如电表、液晶屏、车牌、高精度SVTR模型等），可参考[场景应用模型下载](./applications)
 
 <a name="文档教程"></a>
+
 ## 文档教程
 
 - [运行环境准备](./doc/doc_ch/environment.md)
