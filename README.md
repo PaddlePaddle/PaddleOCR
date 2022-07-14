@@ -70,8 +70,9 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 - For Chinese develops, Scan the QR code below with your Wechat, you can join the official technical discussion group. For richer community content, please refer to [中文README](README_ch.md), looking forward to your participation.
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "200" height = "200" />
+<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "150" height = "150" />
 </div>
+
 <a name="Supported-Chinese-model-list"></a>
 
 ## PP-OCR Series Model List（Update on September 8th）
