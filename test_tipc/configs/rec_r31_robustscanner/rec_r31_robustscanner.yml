@@ -39,6 +39,7 @@ Architecture:
   Transform:
   Backbone:
     name: ResNet31
+    init_type: KaimingNormal
   Head:
     name: RobustScannerHead
     enc_outchannles: 128
