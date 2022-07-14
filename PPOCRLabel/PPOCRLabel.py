@@ -21,7 +21,6 @@ import os.path
 import platform
 import subprocess
 import sys
-from tkinter.tix import Tree
 import xlrd
 from functools import partial
 
