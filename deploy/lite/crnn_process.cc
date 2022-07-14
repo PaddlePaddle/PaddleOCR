@@ -35,11 +35,13 @@ cv::Mat CrnnResizeImg(cv::Mat img, float wh_ratio, int rec_image_height) {
   else
     resize_w = int(ceilf(imgH * ratio));
 
+  cv::Mat resize_img;
   cv::resize(img, resize_img, cv::Size(resize_w, imgH), 0.f, 0.f,
              cv::INTER_LINEAR);
   cv::copyMakeBorder(resize_img, resize_img, 0, 0, 0,
                      int(imgW - resize_img.cols), cv::BORDER_CONSTANT,
                      {127, 127, 127});
+  return resize_img;
 }
 
 std::vector<std::string> ReadDict(std::string path) {

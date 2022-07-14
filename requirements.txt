@@ -6,7 +6,7 @@ lmdb
 tqdm
 numpy
 visualdl
-python-Levenshtein
+rapidfuzz
 opencv-contrib-python==4.4.0.46
 cython
 lxml

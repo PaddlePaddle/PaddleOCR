@@ -50,7 +50,7 @@ PaddleOCR场景应用覆盖通用，制造、金融、交通行业的主要OCR�
 
 ## 模型下载
 
-如需下载全部垂类模型，可以扫描下方二维码，关注公众号填写问卷后，加入PaddleOCR官方交流群获取20G OCR学习大礼包（内含《动手学OCR》电子书、课程回放视频、前沿论文等重磅资料）
+如需下载上述场景中已经训练好的垂类模型，可以扫描下方二维码，关注公众号填写问卷后，加入PaddleOCR官方交流群获取20G OCR学习大礼包（内含《动手学OCR》电子书、课程回放视频、前沿论文等重磅资料）
 
 <div align="center">
 <img src="https://ai-studio-static-online.cdn.bcebos.com/dd721099bd50478f9d5fb13d8dd00fad69c22d6848244fd3a1d3980d7fefc63e"  width = "150" height = "150" />
