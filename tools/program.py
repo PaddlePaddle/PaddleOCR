@@ -238,7 +238,6 @@ def train(config,
     max_iter = len(train_dataloader) - 1 if platform.system(
     ) == "Windows" else len(train_dataloader)
 
-    # file_result = open("SR_out_file.txt","w")
 
     for epoch in range(start_epoch, epoch_num + 1):
         if train_dataloader.dataset.need_reset:
@@ -254,7 +253,6 @@ def train(config,
                 break
             lr = optimizer.get_lr()
             images = batch[0]
-            # print("label:", batch[2])
             if use_srn:
                 model_average = True
 
@@ -270,14 +268,6 @@ def train(config,
                     preds = model(images, data=batch[1:])
                 elif model_type in ["kie", 'vqa', 'sr']:
                     preds = model(batch)
-                    # import cv2
-                    # import numpy as np
-                    # for i in (range(preds["sr_img"].shape[0])):
-                    #     fm = (preds["sr_img"][i].numpy() * 255).transpose(1,2,0).astype(np.uint8)
-                    #     fm = cv2.resize(fm, (128,48))
-                    #     print("fm shape:", fm.shape)
-                    #     cv2.imwrite("visual_data/{}".format(str(batch[-1][i])[19:]), fm)
-                    #     file_result.write(str(batch[-1][i])+"\t"+str(batch[-2][i])+"\n")
                 else:
                     preds = model(images)
 
@@ -291,15 +281,9 @@ def train(config,
             else:
                 avg_loss.backward()
                 optimizer.step()
-            # import numpy as np
-            # for name,params in model.named_parameters():
-            #         params.requires_grad=True
-            #         print("name:{}, param:{}, grad:{}".format(name, np.sum(params.numpy()),np.sum(params.gradient())))
 
             optimizer.clear_grad()
 
-            # if idx == 50:
-            #     exit()
 
             if cal_metric_during_train and epoch % calc_epoch_interval == 0:  # only rec and cls need
                 batch = [item.numpy() for item in batch]
@@ -466,7 +450,6 @@ def eval(model,
         max_iter = len(valid_dataloader) - 1 if platform.system(
         ) == "Windows" else len(valid_dataloader)
         sum_images = 0
-        label_file = open('output/images/label.txt', 'w+')
         for idx, batch in enumerate(valid_dataloader):
             if idx >= max_iter:
                 break
@@ -474,6 +457,8 @@ def eval(model,
             start = time.time()
             if model_type == 'table' or extra_input:
                 preds = model(images, data=batch[1:])
+            elif model_type in ["kie", 'vqa']:
+                preds = model(batch)
             elif model_type in ["kie", 'vqa','sr']:
                 preds = model(batch)
                 sr_img = preds["sr_img"]
@@ -485,8 +470,8 @@ def eval(model,
                     #print("fm shape:", fm.shape)
                     cv2.imwrite("output/images/{}_{}_sr.jpg".format(sum_images, i), fm_sr)
                     cv2.imwrite("output/images/{}_{}_lr.jpg".format(sum_images, i), fm_lr)
-                    label_file.write("output/images/{}_{}_sr.jpg\t{}\n".format(sum_images, i, batch[-1][i]))
                     result = ocr.ocr("output/images/{}_{}_sr.jpg".format(sum_images, i), cls=False, det=False)
+                    label_file.write("output/images/{}_{}_sr.jpg\t{}\n".format(sum_images, i, result[0][0]))
                     preds['crnn'] = result[0][0]
                     preds['lable_sr'] = batch[-1][i]
             else:

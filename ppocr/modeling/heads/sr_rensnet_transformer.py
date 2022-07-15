@@ -5,11 +5,20 @@ import math, copy
 import numpy as np
 
 
+
+#from ppocr.modeling.heads.multiheadAttention import MultiheadAttention
+
 # stroke-level alphabet
 alphabet = '0123456789'
 
 def get_alphabet_len():
     return len(alphabet)
+
+
+# def subsequent_mask(size):
+#     attn_shape = (1, size, size)
+#     subsequent_mask = np.triu(np.ones(attn_shape), k=1).astype('uint8')
+#     return paddle.from_numpy(subsequent_mask) == 0
 
 
 def subsequent_mask(size):
@@ -66,10 +75,13 @@ class MultiHeadedAttention(nn.Layer):
         if mask is not None:
             mask = mask.unsqueeze(1)
         nbatches = query.shape[0]
+        # print("query:{}, key:{}, value:{}".format(np.sum(query.numpy()), np.sum(key.numpy()), np.sum(value.numpy())))
+        # print("============ befor ==========")
 
         query, key, value = \
             [paddle.transpose(l(x).reshape([nbatches, -1, self.h, self.d_k]), [0,2,1,3])
              for l, x in zip(self.linears, (query, key, value))]
+        # print("query:{}, key:{}, value:{}".format(np.sum(query.numpy()), np.sum(key.numpy()), np.sum(value.numpy())))
 
         x, attention_map = attention(query, key, value, mask=mask,
                                      dropout=self.dropout, attention_map=attention_map)
@@ -135,6 +147,14 @@ class ResNet(nn.Layer):
     def forward(self, x):
         # print("input x:", np.sum(x.numpy()))
         x = self.conv1(x)
+        # print("=====")
+        print("conv1 weight:", np.sum(self.conv1.weight.numpy()))
+        # print("=====")
+        # print("x shape:", x.shape)
+        # print("bn weights:", np.sum(self.bn1.weight.numpy()))
+        # print("bn bias:", np.sum(self.bn1.bias.numpy()))
+        # print("bn mean:", np.sum(self.bn1._mean.numpy()))
+        # print("bn var:", np.sum(self.bn1._variance.numpy()))
         x = self.bn1(x)
         x = self.relu1(x)
         x = self.pool(x)

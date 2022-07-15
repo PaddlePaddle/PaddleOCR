@@ -48,12 +48,14 @@ class BaseModel(nn.Layer):
             in_channels = self.transform.out_channels
 
         # build backbone, backbone is need for del, rec and cls
-        config["Backbone"]['in_channels'] = in_channels
-        self.backbone = build_backbone(config["Backbone"], model_type)
-        self.backbone.training = False
-        # in_channels = self.backbone.out_channels
+        if 'Backbone' not in config or config['Backbone'] is None:
+            self.use_backbone = False
+        else:
+            self.use_backbone = True
+            config["Backbone"]['in_channels'] = in_channels
+            self.backbone = build_backbone(config["Backbone"], model_type)
+            in_channels = self.backbone.out_channels
 
-        """
         # build neck
         # for rec, neck can be cnn,rnn or reshape(None)
         # for det, neck can be FPN, BIFPN and so on.
@@ -75,44 +77,31 @@ class BaseModel(nn.Layer):
             self.head = build_head(config["Head"])
 
         self.return_all_feats = config.get("return_all_feats", False)
-        """
+
     def forward(self, x, data=None):
-        import numpy as np
-        hr_img = x[0]
-        lr_img = x[1]
-        length = x[2]
-        input_tensor = x[3]
-        label = x[4]
-        # print("length:", length)
-        # print("lr image:", lr_img.shape)
-        # print("hr image:", hr_img.shape)
-        pred = {}
+        y = dict()
         if self.use_transform:
-            x = self.transform(lr_img)
-            sr_img = x
-            pred["sr_img"] = sr_img
-            pred["hr_img"] = hr_img
-            pred["lr_img"] = lr_img
-
-        if self.training:
-            # print("hr img cuda:{}, numpy:{}".format(paddle.sum(hr_img), np.sum(hr_img.numpy())))
-            # print("sr img cuda:{}, numpy:{}".format(paddle.sum(sr_img), np.sum(sr_img.numpy())))
-
-            sr_pred, word_attention_map_pred, sr_correct_list = self.backbone(sr_img, length,
-                                                                            input_tensor, test=False)
-            
-            
-            hr_pred, word_attention_map_gt, hr_correct_list = self.backbone(hr_img, length,
-                                                                input_tensor, test=False)
-
-            pred["input_tensor"] = input_tensor
-            pred["hr_pred"] = hr_pred
-            pred["word_attention_map_gt"] = word_attention_map_gt
-            pred["hr_correct_list"] = hr_correct_list
-            pred["sr_pred"] = sr_pred
-            pred["word_attention_map_pred"] = word_attention_map_pred
-            pred["sr_correct_list"] = sr_correct_list
-        return pred
-
-
-
+            x = self.transform(x)
+        if self.use_backbone:
+            x = self.backbone(x)
+        y["backbone_out"] = x
+        if self.use_neck:
+            x = self.neck(x)
+        y["neck_out"] = x
+        if self.use_head:
+            x = self.head(x, targets=data)
+        # for multi head, save ctc neck out for udml
+        if isinstance(x, dict) and 'ctc_neck' in x.keys():
+            y["neck_out"] = x["ctc_neck"]
+            y["head_out"] = x
+        elif isinstance(x, dict):
+            y.update(x)
+        else:
+            y["head_out"] = x
+        if self.return_all_feats:
+            if self.training:
+                return y
+            else:
+                return {"head_out": y["head_out"]}
+        else:
+            return x

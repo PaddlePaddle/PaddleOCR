@@ -127,11 +127,10 @@ class TPSSpatialTransformer(nn.Layer):
             axis=1)
 
         # register precomputed matrices
-        self.register_buffer('inverse_kernel', inverse_kernel)
-        self.register_buffer('padding_matrix', paddle.zeros(shape=[3, 2]))
-        self.register_buffer('target_coordinate_repr', target_coordinate_repr)
-        self.register_buffer('target_control_points', target_control_points)
-
+        self.inverse_kernel = inverse_kernel
+        self.padding_matrix = paddle.zeros(shape=[3, 2])
+        self.target_coordinate_repr = target_coordinate_repr
+        self.target_control_points = target_control_points
 
     def forward(self, input, source_control_points):
         assert source_control_points.ndimension() == 3

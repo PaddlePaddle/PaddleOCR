@@ -37,15 +37,6 @@ Architecture:
   Transform:
     name: TSRN
     STN: True
-  Backbone:
-    name: Transformer
-  Neck:
-    name: SequenceEncoder
-    encoder_type: rnn
-    hidden_size: 96
-  Head:
-    name: CTCHead
-    fc_decay: 1e-3
 
 Loss:
   name: StrokeFocusLoss

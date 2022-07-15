@@ -14,9 +14,9 @@ warnings.filterwarnings("ignore")
 
 from .tps_spatial_transformer import TPSSpatialTransformer
 from .stn import STN as STN_model
+from ppocr.modeling.heads.sr_rensnet_transformer import Transformer
 
-def print_hook_fn(grad):
-    tmp = grad
+
 
 class TSRN(nn.Layer):
     def __init__(self, in_channels, scale_factor=2, width=128, height=32, STN=False, srb_nums=5, mask=False, hidden_units=32, **kwargs):
@@ -40,7 +40,6 @@ class TSRN(nn.Layer):
                     nn.BatchNorm2D(2*hidden_units)
                 ))
         
-        # self.non_local = NonLocalBlock2D(64, 64)
         block_ = [UpsampleBLock(2*hidden_units, 2) for _ in range(upsample_block_num)]
         block_.append(nn.Conv2D(2*hidden_units, in_planes, kernel_size=9, padding=4))
         setattr(self, 'block%d' % (srb_nums + 3), nn.Sequential(*block_))
@@ -61,36 +60,48 @@ class TSRN(nn.Layer):
                 activation='none')
         self.out_channels=in_channels
 
+        self.r34_transformer = Transformer()
+        for param in self.r34_transformer.parameters(): 
+                param.trainable = False
+
     def forward(self, x):
-        #x = x[1]
-        # [256, 32, 128, 3]
-        # embed()
+        output={}
+        y = x[1]
         if self.stn and self.training:
-            # print("x shape:", x.shape)
-            _, ctrl_points_x = self.stn_head(x)
-            # print("ctrl_poinsts_x:", np.sum(ctrl_points_x.numpy()))
-            # print("ctrl_poinst_x:", ctrl_points_x.shape)
-            # print("x:", x.shape)
-            x, _ = self.tps(x, ctrl_points_x)
-        block = {'1': self.block1(x)}
-        # print("block1:", np.sum(self.block1(x).numpy()))
+            _, ctrl_points_x = self.stn_head(y)
+            y, _ = self.tps(y, ctrl_points_x)
+        block = {'1': self.block1(y)}
         for i in range(self.srb_nums + 1):
             block[str(i + 2)] = getattr(self, 'block%d' % (i + 2))(block[str(i + 1)])
-            # print("block{}:{}".format(str(i + 2), np.sum(block[str(i + 2)].numpy())))
 
         block[str(self.srb_nums + 3)] = getattr(self, 'block%d' % (self.srb_nums + 3)) \
             ((block['1'] + block[str(self.srb_nums + 2)]))
-        # print("block{}:{}".format(str(self.srb_nums + 3), np.sum(block[str(self.srb_nums + 3)].numpy())))
 
-        output = paddle.tanh(block[str(self.srb_nums + 3)])
-        # print("batch pics:", np.sum(output.numpy()))
-        # batch pics: 196598.17
-        ### visual data
-        # for i in (range(output.shape[0])):
-        #     fm = (output[i].numpy() * 255).transpose(1,2,0).astype(np.uint8)
-        #     # fm = cv2.resize(fm, (128,32))
-        #     print("fm shape:", fm.shape)
-        #     cv2.imwrite("visual_data/SR_out_{}.jpg".format(i), fm)
+        sr_img = paddle.tanh(block[str(self.srb_nums + 3)])
+
+        output["sr_img"] = sr_img
+
+        if self.training:
+            hr_img = x[0]
+            length = x[2]
+            input_tensor = x[3]
+            # sr_intrans = sr_img.clone()
+            # sr_intrans.stop_gradient = True
+            # hr_img.stop_gradient = True
+
+            # add transformer 
+            sr_pred, word_attention_map_pred, sr_correct_list = self.r34_transformer(sr_img, length,
+                                                                            input_tensor, test=False)
+            
+            hr_pred, word_attention_map_gt, hr_correct_list = self.r34_transformer(hr_img, length,
+                                                                input_tensor, test=False)
+
+            output["hr_img"] = hr_img
+            output["hr_pred"] = hr_pred
+            output["word_attention_map_gt"] = word_attention_map_gt
+            output["sr_pred"] = sr_pred
+            output["word_attention_map_pred"] = word_attention_map_pred
+
         return output
 
 
@@ -109,14 +120,10 @@ class RecurrentResidualBlock(nn.Layer):
     def forward(self, x):
         residual = self.conv1(x)
         residual = self.bn1(residual)
-        #print("tsrn batch norm:", residual)
         residual = self.prelu(residual)
         residual = self.conv2(residual)
         residual = self.bn2(residual)
-        #print("before contiguous:", np.sum(residual.numpy()))
-        # todo residual
         residual = self.gru1(residual.transpose([0,1,3,2])).transpose([0,1,3,2])
-        #print("after gru:", np.sum(residual.numpy()))
 
         return self.gru2(x + residual)
 
@@ -170,38 +177,4 @@ class GruBlock(nn.Layer):
 
 
 
-if __name__ == '__main__':
-
-    np.random.seed(50)
-    data = np.random.randn(7, 3, 16, 64).astype("float32")
-    data = paddle.to_tensor(data)
-    print("inputdata:", np.sum(data.numpy()))
-    tsrn_model = TSRN(3, STN=True)
-    params = paddle.load('tsrn_paddle.pdparams')
-    state_dict = tsrn_model.state_dict()
-    # for k,v in state_dict.items():
-    #     print(k)
-    # for k,v in params.items():
-    #     print(k)
-    new_state_dict = {}
-    for k1 in state_dict.keys():
-        if k1 == "block1.1._weight":
-            k2 = "block1.1.weight"
-        else:
-            k2 = k1
-        if k2 not in params.keys():
-            pass
-            #print("The pretrained params {} not in model".format(k2))
-        else:
-            if list(state_dict[k1].shape) == list(params[k2].shape):
-                new_state_dict[k1] = params[k2]
-            else:
-                print(
-                    "The shape of model params {} {} not matched with loaded params {} {} !".
-                    format(k1, state_dict[k1].shape, k1, params[k1].shape))
-    tsrn_model.set_state_dict(new_state_dict)
-    output = tsrn_model(data)
-    print("output shape:", output.shape)
-
-    print("output:", np.sum(output.numpy()))
 
