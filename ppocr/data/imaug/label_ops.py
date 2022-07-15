@@ -1056,15 +1056,8 @@ class SRLabelEncode(BaseRecLabelEncode):
             max_text_length, character_dict_path, use_space_char)
 
     def encode(self, label):
-        # stroke_decompose_lines = open('./train_data/mydata/english_decomposition.txt',
-        #              'r').readlines()
-        # self.dic = {}
-        # for line in stroke_decompose_lines:
-        #     line = line.strip()
-        #     character, sequence = line.split()
-        #     self.dic[character] = sequence
         self.dic = {}
-        with open('./train_data/mydata/english_decomposition.txt', 'r') as fin:
+        with open(character_dict_path, 'r') as fin:
             for line in fin.readlines():
                 line = line.strip()
                 character, sequence = line.split()
@@ -1088,10 +1081,6 @@ class SRLabelEncode(BaseRecLabelEncode):
 
         input_tensor = np.zeros(self.max_text_len).astype("int64")
         for j in range(length - 1):
-            # print("j+1:{}, input_tensor.shape:{}".format(j+1, input_tensor.shape))
-            # print("input_tensor[j+1]:", input_tensor[j + 1])
-            # print("label[j]:", label[j])
-            # print("stroke dict:", self.english_stroke_dict[label[j]])
             input_tensor[j + 1] = self.english_stroke_dict[label[j]]
 
         return length, input_tensor

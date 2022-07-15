@@ -20,33 +20,6 @@ from __future__ import unicode_literals
 from paddle import optimizer as optim
 import paddle
 
-class SGD(object):
-    def __init__(self,
-                 learning_rate,
-                 weight_decay=None,
-                 grad_clip=None,
-                 **args):
-        super(SGD, self).__init__()
-        self.learning_rate = learning_rate
-        self.weight_decay = weight_decay
-        self.grad_clip = grad_clip
-
-    def __call__(self, model):
-        train_params = [
-            param for param in model.transform.parameters() if param.trainable is True
-        ]
-        # train_params = [
-        #     param for param in model.parameters() if param.trainable is True
-        # ]
-        clip = paddle.nn.ClipGradByNorm(clip_norm=0.25)
-        opt = optim.SGD(
-            learning_rate=self.learning_rate,
-            weight_decay=self.weight_decay,
-            grad_clip=clip,
-            parameters=train_params)
-        return opt
-
-
 class Momentum(object):
     """
     Simple Momentum optimizer with velocity state.
@@ -106,10 +79,6 @@ class Adam(object):
         self.lazy_mode = lazy_mode
 
     def __call__(self, model):
-        # print(model._layers)
-        # train_params = [
-        #     param for param in model.transform.parameters() if param.trainable is True
-        # ]
         train_params = [
             param for param in model.parameters() if param.trainable is True
         ]

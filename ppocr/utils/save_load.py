@@ -139,16 +139,10 @@ def load_pretrained_params(model, path):
 
     state_dict = model.state_dict()
 
-    # for k in state_dict.keys():
-    #     print(k)
-    
-    # exit()
-
     new_state_dict = {}
 
     for k1 in params.keys():
-        # if "transform" in k1:
-        #     continue
+
         if k1 not in state_dict.keys():
             logger.warning("The pretrained params {} not in model".format(k1))
         else:
@@ -158,11 +152,6 @@ def load_pretrained_params(model, path):
                 logger.warning(
                     "The shape of model params {} {} not matched with loaded params {} {} !".
                     format(k1, state_dict[k1].shape, k1, params[k1].shape))
-
-
-    # for k in state_dict.keys():
-    #     if (state_dict[k].numpy() == new_state_dict[k].numpy()).all:
-    #         print("params {} not load".format(k))
 
     model.set_state_dict(new_state_dict)
     logger.info("load pretrain successful from {}".format(path))

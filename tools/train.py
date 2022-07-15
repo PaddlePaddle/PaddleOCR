@@ -119,9 +119,6 @@ def main(config, device, logger, vdl_writer):
             config['Loss']['ignore_index'] = char_num - 1
 
     model = build_model(config['Architecture'])
-    if 'Backbone' in config:
-        for param in model.backbone.parameters(): # 教师是不参与训练的
-                param.trainable = False
     if config['Global']['distributed']:
         model = paddle.DataParallel(model)
 

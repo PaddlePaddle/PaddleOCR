@@ -1,12 +1,12 @@
 Global:
   use_gpu: true
-  epoch_num: 72
+  epoch_num: 500
   log_smooth_window: 1
   print_batch_step: 1
-  save_model_dir: ./output/rec/mv3_none_bilstm_ctc/
+  save_model_dir: ./output/sr/sr_tsrn_transformer_strock/
   save_epoch_step: 3
   # evaluation is run every 2000 iterations
-  eval_batch_step: [0, 20]
+  eval_batch_step: [0, 1000]
   cal_metric_during_train: False
   pretrained_model:
   checkpoints:
@@ -14,11 +14,11 @@ Global:
   use_visualdl: False
   infer_img: doc/imgs_words_en/word_10.png
   # for data or label process
-  character_dict_path:
+  character_dict_path: ./train_data/mydata/english_decomposition.txt
   max_text_length: 100
   infer_mode: False
   use_space_char: False
-  save_res_path: ./output/rec/predicts_mv3_none_bilstm_ctc.txt
+  save_res_path: 
 
 Optimizer:
   name: Adam
@@ -27,9 +27,6 @@ Optimizer:
   clip_norm: 0.25
   lr:
     learning_rate: 0.0001
-  # regularizer:
-  #   name: 'L2'
-  #   factor: 0
 
 Architecture:
   model_type: sr
@@ -70,7 +67,6 @@ Eval:
   dataset:
     name: LMDBDataSet_SR
     data_dir: './train_data/mydata/test'
-    #data_dir: ['./train_data/mydata/test/easy','./train_data/mydata/test/hard', ./train_data/mydata/test/medium']
     transforms:
       - SRResize:
           imgH: 32

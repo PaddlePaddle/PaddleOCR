@@ -34,12 +34,6 @@ import tools.program as program
 def main():
     global_config = config['Global']
     # build dataloader
-    # eval_list = ["hard", "easy", 'medium']
-    # dataloader_list = []
-    # for eval_data in eval_list:
-    #     config['Eval']['dataset']['data_dir']='./train_data/mydata/test/{}'.format(eval_data)
-    #     valid_dataloader = build_dataloader(config, 'Eval', device, logger)
-    #     dataloader_list.append(valid_dataloader)
     valid_dataloader = build_dataloader(config, 'Eval', device, logger)
 
     # build post process
@@ -108,13 +102,6 @@ def main():
     for k, v in metric.items():
         logger.info('{}:{}'.format(k, v))
         
-    # all dataset
-    # for valid_dataloader in dataloader_list:
-    #     metric = program.eval(model, valid_dataloader, post_process_class,
-    #                         eval_class, model_type, extra_input)
-    #     logger.info('metric eval ***************')
-    #     for k, v in metric.items():
-    #         logger.info('{}:{}'.format(k, v))
 
 
 if __name__ == '__main__':

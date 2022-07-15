@@ -82,7 +82,7 @@ def build_dataloader(config, mode, device, logger, seed=None):
             drop_last=drop_last)
     else:
         # Distribute data to single card
-        #dataset = eval(module_name)(config, mode, logger, seed)
+        dataset = eval(module_name)(config, mode, logger, seed)
         batch_sampler = BatchSampler(
             dataset=dataset,
             batch_size=batch_size,

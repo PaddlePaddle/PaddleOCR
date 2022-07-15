@@ -16,6 +16,9 @@ import os
 from paddle.io import Dataset
 import lmdb
 import cv2
+import string
+import six
+from PIL import Image
 
 from .imaug import transform, create_operators
 
@@ -44,9 +47,6 @@ class LMDBDataSet(Dataset):
     def load_hierarchical_lmdb_dataset(self, data_dir):
         lmdb_sets = {}
         dataset_idx = 0
-        lmdb_list = []
-        # if isinstance(data_dir_list, list):
-        #     for data_dir in data_dir_list:
         for dirpath, dirnames, filenames in os.walk(data_dir + '/'):
             if not dirnames:
                 env = lmdb.open(
@@ -63,9 +63,6 @@ class LMDBDataSet(Dataset):
                     "txn":txn, "num_samples":num_samples}
                 dataset_idx += 1
         return lmdb_sets
-        # lmdb_list.append(lmdb_sets)
-        # lmdb_sets = {}
-        # return lmdb_list
 
     def dataset_traversal(self):
         lmdb_num = len(self.lmdb_sets)
@@ -124,33 +121,30 @@ class LMDBDataSet(Dataset):
     def __len__(self):
         return self.data_idx_order_list.shape[0]
 
-import six
-from PIL import Image
-
-def buf2PIL(txn, key, type='RGB'):
-    imgbuf = txn.get(key)
-    buf = six.BytesIO()
-    buf.write(imgbuf)
-    buf.seek(0)
-    im = Image.open(buf).convert(type)
-    return im
-import string
-
-def str_filt(str_, voc_type):
-    alpha_dict = {
-        'digit': string.digits,
-        'lower': string.digits + string.ascii_lowercase,
-        'upper': string.digits + string.ascii_letters,
-        'all':   string.digits + string.ascii_letters + string.punctuation
-    }
-    if voc_type == 'lower':
-        str_ = str_.lower()
-    for char in str_:
-        if char not in alpha_dict[voc_type]:
-            str_ = str_.replace(char, '')
-    return str_
 
 class LMDBDataSet_SR(LMDBDataSet):
+    def buf2PIL(self, txn, key, type='RGB'):
+        imgbuf = txn.get(key)
+        buf = six.BytesIO()
+        buf.write(imgbuf)
+        buf.seek(0)
+        im = Image.open(buf).convert(type)
+        return im
+
+    def str_filt(self, str_, voc_type):
+        alpha_dict = {
+            'digit': string.digits,
+            'lower': string.digits + string.ascii_lowercase,
+            'upper': string.digits + string.ascii_letters,
+            'all':   string.digits + string.ascii_letters + string.punctuation
+        }
+        if voc_type == 'lower':
+            str_ = str_.lower()
+        for char in str_:
+            if char not in alpha_dict[voc_type]:
+                str_ = str_.replace(char, '')
+        return str_
+
     def get_lmdb_sample_info(self, txn, index):
         self.voc_type = 'upper'
         self.max_len = 100
@@ -160,12 +154,13 @@ class LMDBDataSet_SR(LMDBDataSet):
         img_HR_key = b'image_hr-%09d' % index  # 128*32
         img_lr_key = b'image_lr-%09d' % index  # 64*16
         try:
-            img_HR = buf2PIL(txn, img_HR_key, 'RGB')
-            img_lr = buf2PIL(txn, img_lr_key, 'RGB')
+            img_HR = self.buf2PIL(txn, img_HR_key, 'RGB')
+            img_lr = self.buf2PIL(txn, img_lr_key, 'RGB')
         except IOError or len(word) > self.max_len:
             return self[index + 1]
-        label_str = str_filt(word, self.voc_type)
+        label_str = self.str_filt(word, self.voc_type)
         return img_HR, img_lr, label_str
+
 
     def __getitem__(self, idx):
         lmdb_idx, file_idx = self.data_idx_order_list[idx]
