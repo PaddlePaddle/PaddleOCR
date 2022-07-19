@@ -54,6 +54,7 @@
 | NRTR   |rec_mtb_nrtr                   | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
 | SAR    |rec_r31_sar                    | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
 | PGNet  |rec_r34_vd_none_none_ctc_v2.0  | 端到端| 支持 | 多机多卡 <br> 混合精度 | - | - |
+| TableMaster  |table_structure_tablemaster_train  | 表格识别| 支持 | 多机多卡 <br> 混合精度 | - | - |
 
 
 
@@ -138,6 +139,7 @@ bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobil
 ## 4. 开始测试
 各功能测试中涉及混合精度、裁剪、量化等训练相关，及mkldnn、Tensorrt等多种预测相关参数配置，请点击下方相应链接了解更多细节和使用教程：
 - [test_train_inference_python 使用](docs/test_train_inference_python.md) ：测试基于Python的模型训练、评估、推理等基本功能，包括裁剪、量化、蒸馏。
+- [test_train_fleet_inference_python 使用](./docs/test_train_fleet_inference_python.md)：测试基于Python的多机多卡训练与推理等基本功能。
 - [test_inference_cpp 使用](docs/test_inference_cpp.md)：测试基于C++的模型推理。
 - [test_serving 使用](docs/test_serving.md)：测试基于Paddle Serving的服务化部署功能。
 - [test_lite_arm_cpp 使用](docs/test_lite_arm_cpp.md)：测试基于Paddle-Lite的ARM CPU端c++预测部署功能。

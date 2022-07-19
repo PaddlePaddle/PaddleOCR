@@ -18,6 +18,7 @@
   - [2.6. 知识蒸馏训练](#26-知识蒸馏训练)
   - [2.7. 多语言模型训练](#27-多语言模型训练)
   - [2.8. 其他训练环境](#28-其他训练环境)
+  - [2.9. 模型微调](#29-模型微调)
 - [3. 模型评估与预测](#3-模型评估与预测)
   - [3.1. 指标评估](#31-指标评估)
   - [3.2. 测试识别效果](#32-测试识别效果)
@@ -387,7 +388,7 @@ python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1
      -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy
 ```
 
-**注意:** 采用多机多卡训练时，需要替换上面命令中的ips值为您机器的地址，机器之间需要能够相互ping通。另外，训练时需要在多个机器上分别启动命令。查看机器ip地址的命令为`ifconfig`。
+**注意:** （1）采用多机多卡训练时，需要替换上面命令中的ips值为您机器的地址，机器之间需要能够相互ping通；（2）训练时需要在多个机器上分别启动命令。查看机器ip地址的命令为`ifconfig`；（3）更多关于分布式训练的性能优势等信息，请参考：[分布式训练教程](./distributed_training.md)。
 
 ## 2.6. 知识蒸馏训练
 
@@ -461,6 +462,11 @@ Windows平台只支持`单卡`的训练与预测，指定GPU进行训练`set CUD
 
 - Linux DCU
 DCU设备上运行需要设置环境变量 `export HIP_VISIBLE_DEVICES=0,1,2,3`，其余训练评估预测命令与Linux GPU完全相同。
+
+## 2.9 模型微调
+
+实际使用过程中，建议加载官方提供的预训练模型，在自己的数据集中进行微调，关于识别模型的微调方法，请参考：[模型微调教程](./finetune.md)。
+
 
 # 3. 模型评估与预测
 
@@ -564,11 +570,12 @@ inference/en_PP-OCRv3_rec/
 
 - 自定义模型推理
 
-  如果训练时修改了文本的字典，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径
+  如果训练时修改了文本的字典，在使用inference模型预测时，需要通过`--rec_char_dict_path`指定使用的字典路径，更多关于推理超参数的配置与解释，请参考：[模型推理超参数解释教程](./inference_args.md)。
 
   ```
   python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 48, 320" --rec_char_dict_path="your text dict path"
   ```
+
 
 # 5. FAQ
 

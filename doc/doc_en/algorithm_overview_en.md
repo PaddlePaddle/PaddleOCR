@@ -1,9 +1,10 @@
 # OCR Algorithms
 
 - [1. Two-stage Algorithms](#1)
-  * [1.1 Text Detection Algorithms](#11)
-  * [1.2 Text Recognition Algorithms](#12)
+  - [1.1 Text Detection Algorithms](#11)
+  - [1.2 Text Recognition Algorithms](#12)
 - [2. End-to-end Algorithms](#2)
+- [3. Table Recognition Algorithms](#3)
 
 
 This tutorial lists the OCR algorithms supported by PaddleOCR, as well as the models and metrics of each algorithm on **English public datasets**. It is mainly used for algorithm introduction and algorithm performance comparison. For more models on other datasets including Chinese, please refer to [PP-OCR v2.0 models list](./models_list_en.md).
@@ -65,6 +66,8 @@ Supported text recognition algorithms (Click the link to get the tutorial):
 - [x]  [SAR](./algorithm_rec_sar_en.md)
 - [x]  [SEED](./algorithm_rec_seed_en.md)
 - [x]  [SVTR](./algorithm_rec_svtr_en.md)
+- [x]  [ViTSTR](./algorithm_rec_vitstr_en.md)
+- [x]  [ABINet](./algorithm_rec_abinet_en.md)
 
 Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation result of these above text recognition (using MJSynth and SynthText for training, evaluate on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE) is as follow:
 
@@ -83,6 +86,8 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 |SAR|Resnet31| 87.20% | rec_r31_sar | [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_r31_sar_train.tar) |
 |SEED|Aster_Resnet| 85.35% | rec_resnet_stn_bilstm_att | [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_resnet_stn_bilstm_att.tar) |
 |SVTR|SVTR-Tiny| 89.25% | rec_svtr_tiny_none_ctc_en | [trained model](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/rec_svtr_tiny_none_ctc_en_train.tar) |
+|ViTSTR|ViTSTR| 79.82% | rec_vitstr_none_ce | [trained model](https://paddleocr.bj.bcebos.com/rec_vitstr_none_none_train.tar) |
+|ABINet|Resnet45| 90.75% | rec_r45_abinet | [trained model](https://paddleocr.bj.bcebos.com/rec_r45_abinet_train.tar) |
 
 
 <a name="2"></a>
@@ -91,3 +96,15 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 
 Supported end-to-end algorithms (Click the link to get the tutorial):
 - [x]  [PGNet](./algorithm_e2e_pgnet_en.md)
+
+<a name="3"></a>
+## 3. Table Recognition Algorithms
+
+Supported table recognition algorithms (Click the link to get the tutorial):
+- [x]  [TableMaster](./algorithm_table_master_en.md)
+
+On the PubTabNet dataset, the algorithm result is as follows:
+
+|Model|Backbone|Config|Acc|Download link|
+|---|---|---|---|---|
+|TableMaster|TableResNetExtra|[configs/table/table_master.yml](../../configs/table/table_master.yml)|77.47%|[trained](https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_train.tar) / [inference model](https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_infer.tar)|

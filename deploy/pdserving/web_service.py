@@ -19,7 +19,7 @@ import copy
 import cv2
 import base64
 # from paddle_serving_app.reader import OCRReader
-from ocr_reader import OCRReader, DetResizeForTest
+from ocr_reader import OCRReader, DetResizeForTest, ArgsParser
 from paddle_serving_app.reader import Sequential, ResizeByFactor
 from paddle_serving_app.reader import Div, Normalize, Transpose
 from paddle_serving_app.reader import DBPostProcess, FilterBoxes, GetRotateCropImage, SortedBoxes
@@ -85,7 +85,7 @@ class RecOp(Op):
         dt_boxes = copy.deepcopy(self.dt_list)
         feed_list = []
         img_list = []
-        max_wh_ratio = 320/48.
+        max_wh_ratio = 320 / 48.
         ## Many mini-batchs, the type of feed_data is list.
         max_batch_size = 6  # len(dt_boxes)
 
@@ -163,5 +163,6 @@ class OcrService(WebService):
 
 
 uci_service = OcrService(name="ocr")
-uci_service.prepare_pipeline_config("config.yml")
+FLAGS = ArgsParser().parse_args()
+uci_service.prepare_pipeline_config(yml_dict=FLAGS.conf_dict)
 uci_service.run_service()

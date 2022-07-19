@@ -254,6 +254,8 @@ def train(config,
                 with paddle.amp.auto_cast():
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
+                    elif model_type in ["kie", 'vqa']:
+                        preds = model(batch)
                     else:
                         preds = model(images)
             else:
@@ -277,8 +279,11 @@ def train(config,
 
             if cal_metric_during_train and epoch % calc_epoch_interval == 0:  # only rec and cls need
                 batch = [item.numpy() for item in batch]
-                if model_type in ['table', 'kie']:
+                if model_type in ['kie']:
                     eval_class(preds, batch)
+                elif model_type in ['table']:
+                    post_result = post_process_class(preds, batch)
+                    eval_class(post_result, batch)
                 else:
                     if config['Loss']['name'] in ['MultiLoss', 'MultiLoss_v2'
                                                   ]:  # for multi head loss
@@ -471,9 +476,9 @@ def eval(model,
             # Obtain usable results from post-processing methods
             total_time += time.time() - start
             # Evaluate the results of the current batch
-            if model_type in ['table', 'kie']:
+            if model_type in ['kie']:
                 eval_class(preds, batch_numpy)
-            elif model_type in ['vqa']:
+            elif model_type in ['table', 'vqa']:
                 post_result = post_process_class(preds, batch_numpy)
                 eval_class(post_result, batch_numpy)
             else:
@@ -574,8 +579,8 @@ def preprocess(is_train=False):
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
-        'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'PREN', 'FCE', 'SVTR',
-        'VisionLAN'
+        'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'LayoutLMv2', 'PREN', 'FCE',
+        'SVTR', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'VisionLAN'
     ]
 
     if use_xpu:

@@ -9,7 +9,7 @@
 
 ```shell
 # 运行格式：bash test_tipc/prepare.sh  train_benchmark.txt  mode
-bash test_tipc/prepare.sh test_tipc/configs/det_mv3_db_v2_0/train_benchmark.txt benchmark_train
+bash test_tipc/prepare.sh test_tipc/configs/det_mv3_db_v2_0/train_infer_python.txt benchmark_train
 ```
 
 ## 1.2 功能测试
@@ -33,7 +33,7 @@ dynamic_bs8_fp32_DP_N1C1为test_tipc/benchmark_train.sh传入的参数，格式�
 
 ## 2. 日志输出
 
-运行后将保存模型的训练日志和解析日志，使用 `test_tipc/configs/det_mv3_db_v2_0/train_benchmark.txt` 参数文件的训练日志解析结果是：
+运行后将保存模型的训练日志和解析日志，使用 `test_tipc/configs/det_mv3_db_v2_0/train_infer_python.txt` 参数文件的训练日志解析结果是：
 
 ```
 {"model_branch": "dygaph", "model_commit": "7c39a1996b19087737c05d883fd346d2f39dbcc0", "model_name": "det_mv3_db_v2_0_bs8_fp32_SingleP_DP", "batch_size": 8, "fp_item": "fp32", "run_process_type": "SingleP", "run_mode": "DP", "convergence_value": "5.413110", "convergence_key": "loss:", "ips": 19.333, "speed_unit": "samples/s", "device_num": "N1C1", "model_run_time": "0", "frame_commit": "8cc09552473b842c651ead3b9848d41827a3dbab", "frame_version": "0.0.0"}

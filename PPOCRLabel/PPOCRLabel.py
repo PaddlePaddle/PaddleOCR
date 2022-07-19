@@ -28,7 +28,7 @@ from PyQt5.QtCore import QSize, Qt, QPoint, QByteArray, QTimer, QFileInfo, QPoin
 from PyQt5.QtGui import QImage, QCursor, QPixmap, QImageReader
 from PyQt5.QtWidgets import QMainWindow, QListWidget, QVBoxLayout, QToolButton, QHBoxLayout, QDockWidget, QWidget, \
     QSlider, QGraphicsOpacityEffect, QMessageBox, QListView, QScrollArea, QWidgetAction, QApplication, QLabel, QGridLayout, \
-    QFileDialog, QListWidgetItem, QComboBox, QDialog
+    QFileDialog, QListWidgetItem, QComboBox, QDialog, QAbstractItemView
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 
@@ -241,6 +241,20 @@ class MainWindow(QMainWindow):
         self.labelListDock.setWidget(self.labelList)
         self.labelListDock.setFeatures(QDockWidget.NoDockWidgetFeatures)
         listLayout.addWidget(self.labelListDock)
+
+        # enable labelList drag_drop to adjust bbox order
+        # 设置选择模式为单选  
+        self.labelList.setSelectionMode(QAbstractItemView.SingleSelection)
+        # 启用拖拽
+        self.labelList.setDragEnabled(True)
+        # 设置接受拖放
+        self.labelList.viewport().setAcceptDrops(True)
+        # 设置显示将要被放置的位置
+        self.labelList.setDropIndicatorShown(True)
+        # 设置拖放模式为移动项目，如果不设置，默认为复制项目
+        self.labelList.setDragDropMode(QAbstractItemView.InternalMove) 
+        # 触发放置
+        self.labelList.model().rowsMoved.connect(self.drag_drop_happened)
 
         #  ================== Detection Box  ==================
         self.BoxList = QListWidget()
@@ -589,15 +603,23 @@ class MainWindow(QMainWindow):
         self.displayLabelOption.setChecked(settings.get(SETTING_PAINT_LABEL, False))
         self.displayLabelOption.triggered.connect(self.togglePaintLabelsOption)
 
+        # Add option to enable/disable box index being displayed at the top of bounding boxes
+        self.displayIndexOption = QAction(getStr('displayIndex'), self)
+        self.displayIndexOption.setCheckable(True)
+        self.displayIndexOption.setChecked(settings.get(SETTING_PAINT_INDEX, False))
+        self.displayIndexOption.triggered.connect(self.togglePaintIndexOption)
+
         self.labelDialogOption = QAction(getStr('labelDialogOption'), self)
         self.labelDialogOption.setShortcut("Ctrl+Shift+L")
         self.labelDialogOption.setCheckable(True)
         self.labelDialogOption.setChecked(settings.get(SETTING_PAINT_LABEL, False))
+        self.displayIndexOption.setChecked(settings.get(SETTING_PAINT_INDEX, False))
         self.labelDialogOption.triggered.connect(self.speedChoose)
 
         self.autoSaveOption = QAction(getStr('autoSaveMode'), self)
         self.autoSaveOption.setCheckable(True)
         self.autoSaveOption.setChecked(settings.get(SETTING_PAINT_LABEL, False))
+        self.displayIndexOption.setChecked(settings.get(SETTING_PAINT_INDEX, False))
         self.autoSaveOption.triggered.connect(self.autoSaveFunc)
 
         addActions(self.menus.file,
@@ -606,7 +628,7 @@ class MainWindow(QMainWindow):
 
         addActions(self.menus.help, (showKeys, showSteps, showInfo))
         addActions(self.menus.view, (
-            self.displayLabelOption, self.labelDialogOption,
+            self.displayLabelOption, self.displayIndexOption, self.labelDialogOption,
             None,
             hideAll, showAll, None,
             zoomIn, zoomOut, zoomOrg, None,
@@ -964,9 +986,10 @@ class MainWindow(QMainWindow):
         else:
             self.canvas.selectedShapes_hShape = self.canvas.selectedShapes
         for shape in self.canvas.selectedShapes_hShape:
-            item = self.shapesToItemsbox[shape]  # listitem
-            text = [(int(p.x()), int(p.y())) for p in shape.points]
-            item.setText(str(text))
+            if shape in self.shapesToItemsbox.keys():
+                item = self.shapesToItemsbox[shape]  # listitem
+                text = [(int(p.x()), int(p.y())) for p in shape.points]
+                item.setText(str(text))
         self.actions.undo.setEnabled(True)
         self.setDirty()
 
@@ -1040,6 +1063,8 @@ class MainWindow(QMainWindow):
 
     def addLabel(self, shape):
         shape.paintLabel = self.displayLabelOption.isChecked()
+        shape.paintIdx = self.displayIndexOption.isChecked()
+
         item = HashableQListWidgetItem(shape.label)
         item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
         item.setCheckState(Qt.Unchecked) if shape.difficult else item.setCheckState(Qt.Checked)
@@ -1083,6 +1108,7 @@ class MainWindow(QMainWindow):
 
     def loadLabels(self, shapes):
         s = []
+        shape_index = 0
         for label, points, line_color, key_cls, difficult in shapes:
             shape = Shape(label=label, line_color=line_color, key_cls=key_cls)
             for x, y in points:
@@ -1094,6 +1120,8 @@ class MainWindow(QMainWindow):
 
                 shape.addPoint(QPointF(x, y))
             shape.difficult = difficult
+            shape.idx = shape_index
+            shape_index += 1
             # shape.locked = False
             shape.close()
             s.append(shape)
@@ -1209,18 +1237,54 @@ class MainWindow(QMainWindow):
                 self.canvas.deSelectShape()
 
     def labelItemChanged(self, item):
-        shape = self.itemsToShapes[item]
-        label = item.text()
-        if label != shape.label:
-            shape.label = item.text()
-            # shape.line_color = generateColorByText(shape.label)
-            self.setDirty()
-        elif not ((item.checkState() == Qt.Unchecked) ^ (not shape.difficult)):
-            shape.difficult = True if item.checkState() == Qt.Unchecked else False
-            self.setDirty()
-        else:  # User probably changed item visibility
-            self.canvas.setShapeVisible(shape, True)  # item.checkState() == Qt.Checked
-            # self.actions.save.setEnabled(True)
+        # avoid accidentally triggering the itemChanged siganl with unhashable item
+        # Unknown trigger condition
+        if type(item) == HashableQListWidgetItem:
+            shape = self.itemsToShapes[item]
+            label = item.text()
+            if label != shape.label:
+                shape.label = item.text()
+                # shape.line_color = generateColorByText(shape.label)
+                self.setDirty()
+            elif not ((item.checkState() == Qt.Unchecked) ^ (not shape.difficult)):
+                shape.difficult = True if item.checkState() == Qt.Unchecked else False
+                self.setDirty()
+            else:  # User probably changed item visibility
+                self.canvas.setShapeVisible(shape, True)  # item.checkState() == Qt.Checked
+                # self.actions.save.setEnabled(True)
+        else:
+            print('enter labelItemChanged slot with unhashable item: ', item, item.text())
+    
+    def drag_drop_happened(self):
+        '''
+        label list drag drop signal slot
+        '''
+        # print('___________________drag_drop_happened_______________')
+        # should only select single item
+        for item in self.labelList.selectedItems():
+            newIndex = self.labelList.indexFromItem(item).row()
+
+        # only support drag_drop one item
+        assert len(self.canvas.selectedShapes) > 0
+        for shape in self.canvas.selectedShapes:
+            selectedShapeIndex = shape.idx
+        
+        if newIndex == selectedShapeIndex:
+            return
+
+        # move corresponding item in shape list
+        shape = self.canvas.shapes.pop(selectedShapeIndex)
+        self.canvas.shapes.insert(newIndex, shape)
+            
+        # update bbox index
+        self.canvas.updateShapeIndex()
+
+        # boxList update simultaneously
+        item = self.BoxList.takeItem(selectedShapeIndex)
+        self.BoxList.insertItem(newIndex, item)
+
+        # changes happen
+        self.setDirty()
 
     # Callback functions:
     def newShape(self, value=True):
@@ -1560,6 +1624,7 @@ class MainWindow(QMainWindow):
                 settings[SETTING_LAST_OPEN_DIR] = ''
 
             settings[SETTING_PAINT_LABEL] = self.displayLabelOption.isChecked()
+            settings[SETTING_PAINT_INDEX] = self.displayIndexOption.isChecked()
             settings[SETTING_DRAW_SQUARE] = self.drawSquaresOption.isChecked()
             settings.save()
             try:
@@ -1946,8 +2011,16 @@ class MainWindow(QMainWindow):
                         self.labelHist.append(line)
 
     def togglePaintLabelsOption(self):
+        self.displayIndexOption.setChecked(False)
         for shape in self.canvas.shapes:
             shape.paintLabel = self.displayLabelOption.isChecked()
+            shape.paintIdx = self.displayIndexOption.isChecked()
+
+    def togglePaintIndexOption(self):
+        self.displayLabelOption.setChecked(False)
+        for shape in self.canvas.shapes:
+            shape.paintLabel = self.displayLabelOption.isChecked()
+            shape.paintIdx = self.displayIndexOption.isChecked()
 
     def toogleDrawSquare(self):
         self.canvas.setDrawingShapeToSquare(self.drawSquaresOption.isChecked())
@@ -2187,6 +2260,7 @@ class MainWindow(QMainWindow):
 
                 shapes = []
                 result_len = len(region['res']['boxes'])
+                order_index = 0
                 for i in range(result_len):
                     bbox = np.array(region['res']['boxes'][i])
                     rec_text = region['res']['rec_res'][i][0]
@@ -2205,6 +2279,8 @@ class MainWindow(QMainWindow):
                         x, y, snapped = self.canvas.snapPointToCanvas(x, y)
                         shape.addPoint(QPointF(x, y))
                     shape.difficult = False
+                    shape.idx = order_index
+                    order_index += 1
                     # shape.locked = False
                     shape.close()
                     self.addLabel(shape)
