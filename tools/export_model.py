@@ -55,7 +55,7 @@ def export_single_model(model, arch_config, save_path, logger, quanter=None):
                 shape=[None, 3, 48, 160], dtype="float32"),
         ]
         model = to_static(model, input_spec=other_shape)
-    elif arch_config["algorithm"] == "SVTR":
+    elif arch_config["algorithm"] in ["SVTR", "VisionLAN"]:
         if arch_config["Head"]["name"] == 'MultiHead':
             other_shape = [
                 paddle.static.InputSpec(

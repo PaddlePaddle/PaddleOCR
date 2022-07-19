@@ -35,6 +35,7 @@ from .rec_sar_loss import SARLoss
 from .rec_aster_loss import AsterLoss
 from .rec_pren_loss import PRENLoss
 from .rec_multi_loss import MultiLoss
+from .rec_vl_loss import VLLoss
 
 # cls loss
 from .cls_loss import ClsLoss
@@ -61,7 +62,8 @@ def build_loss(config):
         'DBLoss', 'PSELoss', 'EASTLoss', 'SASTLoss', 'FCELoss', 'CTCLoss',
         'ClsLoss', 'AttentionLoss', 'SRNLoss', 'PGLoss', 'CombinedLoss',
         'NRTRLoss', 'TableAttentionLoss', 'SARLoss', 'AsterLoss', 'SDMGRLoss',
-        'VQASerTokenLayoutLMLoss', 'LossFromOutput', 'PRENLoss', 'MultiLoss'
+        'VQASerTokenLayoutLMLoss', 'LossFromOutput', 'PRENLoss', 'MultiLoss',
+        'VLLoss'
     ]
     config = copy.deepcopy(config)
     module_name = config.pop('name')

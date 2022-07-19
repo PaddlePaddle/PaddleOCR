@@ -207,7 +207,7 @@ def train(config,
     model.train()
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
-    extra_input_models = ["SRN", "NRTR", "SAR", "SEED", "SVTR"]
+    extra_input_models = ["SRN", "NRTR", "SAR", "SEED", "SVTR", "VisionLAN"]
     extra_input = False
     if config['Architecture']['algorithm'] == 'Distillation':
         for key in config['Architecture']["Models"]:
@@ -249,7 +249,6 @@ def train(config,
             images = batch[0]
             if use_srn:
                 model_average = True
-
             # use amp
             if scaler:
                 with paddle.amp.auto_cast():
@@ -264,7 +263,6 @@ def train(config,
                     preds = model(batch)
                 else:
                     preds = model(images)
-
             loss = loss_class(preds, batch)
             avg_loss = loss['loss']
 
@@ -286,6 +284,9 @@ def train(config,
                                                   ]:  # for multi head loss
                         post_result = post_process_class(
                             preds['ctc'], batch[1])  # for CTC head out
+                    elif config['Loss']['name'] in ['VLLoss']:
+                        post_result = post_process_class(preds, batch[1],
+                                                         batch[-1])
                     else:
                         post_result = post_process_class(preds, batch[1])
                     eval_class(post_result, batch)
@@ -307,7 +308,8 @@ def train(config,
             train_stats.update(stats)
 
             if log_writer is not None and dist.get_rank() == 0:
-                log_writer.log_metrics(metrics=train_stats.get(), prefix="TRAIN", step=global_step)
+                log_writer.log_metrics(
+                    metrics=train_stats.get(), prefix="TRAIN", step=global_step)
 
             if dist.get_rank() == 0 and (
                 (global_step > 0 and global_step % print_batch_step == 0) or
@@ -354,7 +356,8 @@ def train(config,
 
                 # logger metric
                 if log_writer is not None:
-                    log_writer.log_metrics(metrics=cur_metric, prefix="EVAL", step=global_step)
+                    log_writer.log_metrics(
+                        metrics=cur_metric, prefix="EVAL", step=global_step)
 
                 if cur_metric[main_indicator] >= best_model_dict[
                         main_indicator]:
@@ -377,11 +380,18 @@ def train(config,
                 logger.info(best_str)
                 # logger best metric
                 if log_writer is not None:
-                    log_writer.log_metrics(metrics={
-                        "best_{}".format(main_indicator): best_model_dict[main_indicator]
-                        }, prefix="EVAL", step=global_step)
-                    
-                    log_writer.log_model(is_best=True, prefix="best_accuracy", metadata=best_model_dict)
+                    log_writer.log_metrics(
+                        metrics={
+                            "best_{}".format(main_indicator):
+                            best_model_dict[main_indicator]
+                        },
+                        prefix="EVAL",
+                        step=global_step)
+
+                    log_writer.log_model(
+                        is_best=True,
+                        prefix="best_accuracy",
+                        metadata=best_model_dict)
 
             reader_start = time.time()
         if dist.get_rank() == 0:
@@ -413,7 +423,8 @@ def train(config,
                 epoch=epoch,
                 global_step=global_step)
             if log_writer is not None:
-                log_writer.log_model(is_best=False, prefix='iter_epoch_{}'.format(epoch))
+                log_writer.log_model(
+                    is_best=False, prefix='iter_epoch_{}'.format(epoch))
 
     best_str = 'best metric, {}'.format(', '.join(
         ['{}: {}'.format(k, v) for k, v in best_model_dict.items()]))
@@ -451,7 +462,6 @@ def eval(model,
                 preds = model(batch)
             else:
                 preds = model(images)
-
             batch_numpy = []
             for item in batch:
                 if isinstance(item, paddle.Tensor):
@@ -564,7 +574,8 @@ def preprocess(is_train=False):
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
-        'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'PREN', 'FCE', 'SVTR'
+        'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'PREN', 'FCE', 'SVTR',
+        'VisionLAN'
     ]
 
     if use_xpu:
@@ -583,9 +594,10 @@ def preprocess(is_train=False):
     if 'use_visualdl' in config['Global'] and config['Global']['use_visualdl']:
         save_model_dir = config['Global']['save_model_dir']
         vdl_writer_path = '{}/vdl/'.format(save_model_dir)
-        log_writer = VDLLogger(save_model_dir)
+        log_writer = VDLLogger(vdl_writer_path)
         loggers.append(log_writer)
-    if ('use_wandb' in config['Global'] and config['Global']['use_wandb']) or 'wandb' in config:
+    if ('use_wandb' in config['Global'] and
+            config['Global']['use_wandb']) or 'wandb' in config:
         save_dir = config['Global']['save_model_dir']
         wandb_writer_path = "{}/wandb".format(save_dir)
         if "wandb" in config:
