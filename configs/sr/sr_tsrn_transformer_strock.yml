@@ -62,7 +62,7 @@ Train:
     shuffle: False
     batch_size_per_card: 16
     drop_last: True
-    num_workers: 0
+    num_workers: 4
 
 Eval:
   dataset:
@@ -80,5 +80,5 @@ Eval:
     shuffle: False
     drop_last: False
     batch_size_per_card: 16
-    num_workers: 0
+    num_workers: 4
 

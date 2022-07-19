@@ -1,9 +1,27 @@
+# copyright (c) 2022 PaddlePaddle Authors. All Rights Reserve.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+"""
+https://github.com/FudanVI/FudanOCR/blob/main/text-gestalt/utils/ssim_psnr.py
+"""
+
 from math import exp
 
 import paddle
 import paddle.nn.functional as F
 import paddle.nn as nn
 import string
+
 
 class SSIM(nn.Layer):
     def __init__(self, window_size=11, size_average=True):
@@ -14,9 +32,11 @@ class SSIM(nn.Layer):
         self.window = self.create_window(window_size, self.channel)
 
     def gaussian(self, window_size, sigma):
-        gauss = paddle.to_tensor([exp(-(x - window_size // 2) ** 2 / float(2 * sigma ** 2)) for x in range(window_size)])
+        gauss = paddle.to_tensor([
+            exp(-(x - window_size // 2)**2 / float(2 * sigma**2))
+            for x in range(window_size)
+        ])
         return gauss / gauss.sum()
-
 
     def create_window(self, window_size, channel):
         _1D_window = self.gaussian(window_size, 1.5).unsqueeze(1)
@@ -24,7 +44,8 @@ class SSIM(nn.Layer):
         window = _2D_window.expand([channel, 1, window_size, window_size])
         return window
 
-    def _ssim(self, img1, img2, window, window_size, channel, size_average=True):
+    def _ssim(self, img1, img2, window, window_size, channel,
+              size_average=True):
         mu1 = F.conv2d(img1, window, padding=window_size // 2, groups=channel)
         mu2 = F.conv2d(img2, window, padding=window_size // 2, groups=channel)
 
@@ -32,31 +53,37 @@ class SSIM(nn.Layer):
         mu2_sq = mu2.pow(2)
         mu1_mu2 = mu1 * mu2
 
-        sigma1_sq = F.conv2d(img1 * img1, window, padding=window_size // 2, groups=channel) - mu1_sq
-        sigma2_sq = F.conv2d(img2 * img2, window, padding=window_size // 2, groups=channel) - mu2_sq
-        sigma12 = F.conv2d(img1 * img2, window, padding=window_size // 2, groups=channel) - mu1_mu2
+        sigma1_sq = F.conv2d(
+            img1 * img1, window, padding=window_size // 2,
+            groups=channel) - mu1_sq
+        sigma2_sq = F.conv2d(
+            img2 * img2, window, padding=window_size // 2,
+            groups=channel) - mu2_sq
+        sigma12 = F.conv2d(
+            img1 * img2, window, padding=window_size // 2,
+            groups=channel) - mu1_mu2
 
-        C1 = 0.01 ** 2
-        C2 = 0.03 ** 2
+        C1 = 0.01**2
+        C2 = 0.03**2
 
-        ssim_map = ((2 * mu1_mu2 + C1) * (2 * sigma12 + C2)) / ((mu1_sq + mu2_sq + C1) * (sigma1_sq + sigma2_sq + C2))
+        ssim_map = ((2 * mu1_mu2 + C1) * (2 * sigma12 + C2)) / (
+            (mu1_sq + mu2_sq + C1) * (sigma1_sq + sigma2_sq + C2))
 
         if size_average:
             return ssim_map.mean()
         else:
             return ssim_map.mean(1).mean(1).mean(1)
 
-
     def ssim(self, img1, img2, window_size=11, size_average=True):
         (_, channel, _, _) = img1.shape
         window = self.create_window(window_size, channel)
 
-        return self._ssim(img1, img2, window, window_size, channel, size_average)
-
+        return self._ssim(img1, img2, window, window_size, channel,
+                          size_average)
 
     def forward(self, img1, img2):
-        img1 = img1[:,:3,:,:]
-        img2 = img2[:,:3,:,:]
+        img1 = img1[:, :3, :, :]
+        img2 = img2[:, :3, :, :]
         (_, channel, _, _) = img1.shape
 
         if channel == self.channel and self.window.dtype == img1.dtype:
@@ -64,17 +91,15 @@ class SSIM(nn.Layer):
         else:
             window = self.create_window(self.window_size, channel)
 
-
             self.window = window
             self.channel = channel
 
-        return self._ssim(img1, img2, window, self.window_size, channel, self.size_average)
+        return self._ssim(img1, img2, window, self.window_size, channel,
+                          self.size_average)
 
 
 class SRMetric(object):
-    def __init__(self,
-                 main_indicator='all',
-                 **kwargs):
+    def __init__(self, main_indicator='all', **kwargs):
         self.main_indicator = main_indicator
         self.eps = 1e-5
         self.psnr_result = []
@@ -88,10 +113,10 @@ class SRMetric(object):
         self.norm_edit_dis = 0
         self.psnr_result = []
         self.ssim_result = []
-    
+
     def calculate_psnr(self, img1, img2):
         # img1 and img2 have range [0, 1]
-        mse = ((img1[:,:3,:,:]*255 - img2[:,:3,:,:]*255)**2).mean()
+        mse = ((img1[:, :3, :, :] * 255 - img2[:, :3, :, :] * 255)**2).mean()
         if mse == 0:
             return float('inf')
         return 20 * paddle.log10(255.0 / paddle.sqrt(mse))
@@ -110,7 +135,7 @@ class SRMetric(object):
         crnn_result = self._normalize_text(crnn_result)
         labels = self._normalize_text(labels)
         if crnn_result == labels:
-            self.correct_num +=1
+            self.correct_num += 1
         else:
             print("pred:{}, label:{}".format(crnn_result, labels))
         self.all_num += 1
@@ -119,7 +144,6 @@ class SRMetric(object):
         self.psnr_result.append(psnr)
         self.ssim_result.append(ssim)
 
-
     def get_metric(self):
         """
         return metrics {
@@ -127,17 +151,18 @@ class SRMetric(object):
                  'norm_edit_dis': 0,
             }
         """
-        self.psnr_avg = sum(self.psnr_result)/len(self.psnr_result)
+        self.psnr_avg = sum(self.psnr_result) / len(self.psnr_result)
         self.psnr_avg = round(self.psnr_avg.item(), 6)
-        self.ssim_avg = sum(self.ssim_result)/len(self.ssim_result)
+        self.ssim_avg = sum(self.ssim_result) / len(self.ssim_result)
         self.ssim_avg = round(self.ssim_avg.item(), 6)
         self.crnn_avg = self.correct_num / self.all_num
 
-        self.all_avg = self.psnr_avg+self.ssim_avg+self.crnn_avg
+        self.all_avg = self.psnr_avg + self.ssim_avg + self.crnn_avg
 
         self.reset()
-        return {'psnr_avg': self.psnr_avg, "ssim_avg":self.ssim_avg, "crnn_avg":self.crnn_avg,  "all":self.all_avg}
-
-
-
-
+        return {
+            'psnr_avg': self.psnr_avg,
+            "ssim_avg": self.ssim_avg,
+            "crnn_avg": self.crnn_avg,
+            "all": self.all_avg
+        }

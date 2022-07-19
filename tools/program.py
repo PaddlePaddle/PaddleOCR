@@ -308,7 +308,7 @@ def train(config,
                 lr_scheduler.step()
 
             # logger and visualdl
-            stats = {k: v.numpy() for k, v in loss.items()}
+            stats = {k: v.numpy().mean() for k, v in loss.items()}
             stats['lr'] = lr
             train_stats.update(stats)
 
