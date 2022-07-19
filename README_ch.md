@@ -28,7 +28,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## 近期更新
 
 - **🔥2022.7 发布[OCR场景应用集合](./applications)**
-  - 覆盖通用，制造、金融、交通行业的主要OCR垂类应用，在PP-OCR、PP-Structure的通用能力基础之上，以notebook的形式展示利用场景数据微调、模型优化方法、数据增广等内容，为开发者快速落地OCR应用提供示范与启发。
+  - 发布OCR场景应用集合，包含数码管、液晶屏、车牌、高精度SVTR模型等**7个垂类模型**，覆盖通用，制造、金融、交通行业的主要OCR垂类应用。
   
 - **🔥2022.5.9 发布PaddleOCR [release/2.5](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.5)**
     - 发布[PP-OCRv3](./doc/doc_ch/ppocr_introduction.md#pp-ocrv3)，速度可比情况下，中文场景效果相比于PP-OCRv2再提升5%，英文场景提升11%，80语种多语言模型平均识别准确率提升5%以上；
@@ -98,7 +98,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 | 金融 | 通用表单识别 | 多模态通用表单结构化提取           | [多模态表单识别](./applications/多模态表单识别.md)           | [下载链接](./applications/README.md#模型下载) |
 | 交通 | 车牌识别     | 多角度图像处理、轻量模型、端侧部署 | [轻量级车牌识别](./applications/轻量级车牌识别.md)           | [下载链接](./applications/README.md#模型下载) |
 
-- 更多制造、金融、交通行业的主要OCR垂类应用模型（如电表、液晶屏、车牌、高精度SVTR模型等），可参考[场景应用模型下载](./applications)
+- 更多制造、金融、交通行业的主要OCR垂类应用模型（如电表、液晶屏、高精度SVTR模型等），可参考[场景应用模型下载](./applications)
 
 <a name="文档教程"></a>
 
