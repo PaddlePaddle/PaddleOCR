@@ -54,7 +54,8 @@ def build_dataloader(config, mode, device, logger, seed=None):
     config = copy.deepcopy(config)
 
     support_dict = [
-        'SimpleDataSet', 'LMDBDataSet', 'PGDataSet', 'PubTabDataSet', 'LMDBDataSet_SR'
+        'SimpleDataSet', 'LMDBDataSet', 'PGDataSet', 'PubTabDataSet',
+        'LMDBDataSet_SR'
     ]
     module_name = config[mode]['dataset']['name']
     assert module_name in support_dict, Exception(
@@ -82,7 +83,6 @@ def build_dataloader(config, mode, device, logger, seed=None):
             drop_last=drop_last)
     else:
         # Distribute data to single card
-        dataset = eval(module_name)(config, mode, logger, seed)
         batch_sampler = BatchSampler(
             dataset=dataset,
             batch_size=batch_size,

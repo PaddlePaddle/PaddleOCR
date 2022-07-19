@@ -18,7 +18,6 @@ import random
 import traceback
 from paddle.io import Dataset
 from .imaug import transform, create_operators
-from PIL import Image
 
 
 class SimpleDataSet(Dataset):
@@ -53,14 +52,6 @@ class SimpleDataSet(Dataset):
         self.ext_op_transform_idx = dataset_config.get("ext_op_transform_idx",
                                                        2)
         self.need_reset = True in [x < 1 for x in ratio_list]
-
-    def buf2PIL(txn, key, type='RGB'):
-        imgbuf = txn.get(key)
-        buf = six.BytesIO()
-        buf.write(imgbuf)
-        buf.seek(0)
-        im = Image.open(buf).convert(type)
-        return im
 
     def get_image_info_list(self, file_list, ratio_list):
         if isinstance(file_list, str):
@@ -113,12 +104,9 @@ class SimpleDataSet(Dataset):
             data = {'img_path': img_path, 'label': label}
             if not os.path.exists(img_path):
                 continue
-            # with open(data['img_path'], 'rb') as f:
-            #     img = f.read()
-            #     img = Image.open(img).convert('RGB')
-            #     data['image'] = img
-            img = Image.open(data['img_path']).convert('RGB')
-            data['image'] = img
+            with open(data['img_path'], 'rb') as f:
+                img = f.read()
+                data['image'] = img
             data = transform(data, load_data_ops)
 
             if data is None:
@@ -145,9 +133,7 @@ class SimpleDataSet(Dataset):
             with open(data['img_path'], 'rb') as f:
                 img = f.read()
                 data['image'] = img
-            # img = Image.open(data['img_path']).convert('RGB')
-            data['image'] = img
-            # data['ext_data'] = self.get_ext_data()
+            data['ext_data'] = self.get_ext_data()
             outs = transform(data, self.ops)
         except:
             self.logger.error(

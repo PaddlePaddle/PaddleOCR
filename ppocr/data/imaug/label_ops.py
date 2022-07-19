@@ -443,7 +443,9 @@ class KieLabelEncode(object):
             elif 'key_cls' in anno.keys():
                 labels.append(anno['key_cls'])
             else:
-                raise ValueError("Cannot found 'key_cls' in ann.keys(), please check your training annotation.")
+                raise ValueError(
+                    "Cannot found 'key_cls' in ann.keys(), please check your training annotation."
+                )
             edges.append(ann.get('edge', 0))
         ann_infos = dict(
             image=data['image'],
@@ -1052,22 +1054,20 @@ class SRLabelEncode(BaseRecLabelEncode):
                  character_dict_path=None,
                  use_space_char=False,
                  **kwargs):
-        super(SRLabelEncode, self).__init__(
-            max_text_length, character_dict_path, use_space_char)
-
-    def encode(self, label):
+        super(SRLabelEncode, self).__init__(max_text_length,
+                                            character_dict_path, use_space_char)
         self.dic = {}
         with open(character_dict_path, 'r') as fin:
             for line in fin.readlines():
                 line = line.strip()
                 character, sequence = line.split()
                 self.dic[character] = sequence
-
         english_stroke_alphabet = '0123456789'
         self.english_stroke_dict = {}
         for index in range(len(english_stroke_alphabet)):
             self.english_stroke_dict[english_stroke_alphabet[index]] = index
 
+    def encode(self, label):
         stroke_sequence = ''
         for character in label:
             if character not in self.dic:

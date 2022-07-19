@@ -1,8 +1,8 @@
 Global:
   use_gpu: true
   epoch_num: 500
-  log_smooth_window: 1
-  print_batch_step: 1
+  log_smooth_window: 20
+  print_batch_step: 10
   save_model_dir: ./output/sr/sr_tsrn_transformer_strock/
   save_epoch_step: 3
   # evaluation is run every 2000 iterations
@@ -14,11 +14,11 @@ Global:
   use_visualdl: False
   infer_img: doc/imgs_words_en/word_10.png
   # for data or label process
-  character_dict_path: ./train_data/mydata/english_decomposition.txt
+  character_dict_path: ./train_data/srdata/english_decomposition.txt
   max_text_length: 100
   infer_mode: False
   use_space_char: False
-  save_res_path: 
+  save_res_path: ./output/sr/predicts_gestalt.txt
 
 Optimizer:
   name: Adam
@@ -30,13 +30,14 @@ Optimizer:
 
 Architecture:
   model_type: sr
-  algorithm: CRNN
+  algorithm: Gestalt
   Transform:
     name: TSRN
     STN: True
 
 Loss:
   name: StrokeFocusLoss
+  character_dict_path: ./train_data/srdata/english_decomposition.txt
 
 PostProcess:
   name: SRLabelDecode
@@ -48,7 +49,7 @@ Metric:
 Train:
   dataset:
     name: LMDBDataSet_SR
-    data_dir: ./train_data/mydata/train2
+    data_dir: ./train_data/srdata/train
     transforms:
       - SRResize:
           imgH: 32
@@ -66,7 +67,7 @@ Train:
 Eval:
   dataset:
     name: LMDBDataSet_SR
-    data_dir: './train_data/mydata/test'
+    data_dir: ./train_data/srdata/test
     transforms:
       - SRResize:
           imgH: 32

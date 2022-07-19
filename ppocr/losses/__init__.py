@@ -58,6 +58,7 @@ from .vqa_token_layoutlm_loss import VQASerTokenLayoutLMLoss
 # sr loss
 from .stroke_focus_loss import StrokeFocusLoss
 
+
 def build_loss(config):
     support_dict = [
         'DBLoss', 'PSELoss', 'EASTLoss', 'SASTLoss', 'FCELoss', 'CTCLoss',
@@ -67,6 +68,7 @@ def build_loss(config):
         'StrokeFocusLoss'
     ]
     config = copy.deepcopy(config)
+    print("config:", config)
     module_name = config.pop('name')
     assert module_name in support_dict, Exception('loss only support {}'.format(
         support_dict))

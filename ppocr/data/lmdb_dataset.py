@@ -57,7 +57,6 @@ class LMDBDataSet(Dataset):
                     readahead=False,
                     meminit=False)
                 txn = env.begin(write=False)
-                # print("txn:", txn)
                 num_samples = int(txn.get('num-samples'.encode()))
                 lmdb_sets[dataset_idx] = {"dirpath":dirpath, "env":env, \
                     "txn":txn, "num_samples":num_samples}
@@ -136,7 +135,7 @@ class LMDBDataSet_SR(LMDBDataSet):
             'digit': string.digits,
             'lower': string.digits + string.ascii_lowercase,
             'upper': string.digits + string.ascii_letters,
-            'all':   string.digits + string.ascii_letters + string.punctuation
+            'all': string.digits + string.ascii_letters + string.punctuation
         }
         if voc_type == 'lower':
             str_ = str_.lower()
@@ -161,7 +160,6 @@ class LMDBDataSet_SR(LMDBDataSet):
         label_str = self.str_filt(word, self.voc_type)
         return img_HR, img_lr, label_str
 
-
     def __getitem__(self, idx):
         lmdb_idx, file_idx = self.data_idx_order_list[idx]
         lmdb_idx = int(lmdb_idx)
@@ -171,7 +169,7 @@ class LMDBDataSet_SR(LMDBDataSet):
         if sample_info is None:
             return self.__getitem__(np.random.randint(self.__len__()))
         img_HR, img_lr, label_str = sample_info
-        data = {'image_hr': img_HR, 'image_lr': img_lr, 'label':label_str}
+        data = {'image_hr': img_HR, 'image_lr': img_lr, 'label': label_str}
         outs = transform(data, self.ops)
         if outs is None:
             return self.__getitem__(np.random.randint(self.__len__()))

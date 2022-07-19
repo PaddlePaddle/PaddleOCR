@@ -238,14 +238,13 @@ def train(config,
     max_iter = len(train_dataloader) - 1 if platform.system(
     ) == "Windows" else len(train_dataloader)
 
-
     for epoch in range(start_epoch, epoch_num + 1):
         if train_dataloader.dataset.need_reset:
             train_dataloader = build_dataloader(
                 config, 'Train', device, logger, seed=epoch)
             max_iter = len(train_dataloader) - 1 if platform.system(
             ) == "Windows" else len(train_dataloader)
-        
+
         for idx, batch in enumerate(train_dataloader):
             profiler.add_profiler_step(profiler_options)
             train_reader_cost += time.time() - reader_start
@@ -284,14 +283,13 @@ def train(config,
 
             optimizer.clear_grad()
 
-
             if cal_metric_during_train and epoch % calc_epoch_interval == 0:  # only rec and cls need
                 batch = [item.numpy() for item in batch]
                 if model_type in ['table', 'kie', 'sr']:
                     eval_class(preds, batch)
                 else:
                     if config['Loss']['name'] in ['MultiLoss', 'MultiLoss_v2'
-                                                ]:  # for multi head loss
+                                                  ]:  # for multi head loss
                         post_result = post_process_class(
                             preds['ctc'], batch[1])  # for CTC head out
                     else:
@@ -315,7 +313,8 @@ def train(config,
             train_stats.update(stats)
 
             if log_writer is not None and dist.get_rank() == 0:
-                log_writer.log_metrics(metrics=train_stats.get(), prefix="TRAIN", step=global_step)
+                log_writer.log_metrics(
+                    metrics=train_stats.get(), prefix="TRAIN", step=global_step)
 
             if dist.get_rank() == 0 and (
                 (global_step > 0 and global_step % print_batch_step == 0) or
@@ -362,7 +361,8 @@ def train(config,
 
                 # logger metric
                 if log_writer is not None:
-                    log_writer.log_metrics(metrics=cur_metric, prefix="EVAL", step=global_step)
+                    log_writer.log_metrics(
+                        metrics=cur_metric, prefix="EVAL", step=global_step)
 
                 if cur_metric[main_indicator] >= best_model_dict[
                         main_indicator]:
@@ -385,11 +385,18 @@ def train(config,
                 logger.info(best_str)
                 # logger best metric
                 if log_writer is not None:
-                    log_writer.log_metrics(metrics={
-                        "best_{}".format(main_indicator): best_model_dict[main_indicator]
-                        }, prefix="EVAL", step=global_step)
-                    
-                    log_writer.log_model(is_best=True, prefix="best_accuracy", metadata=best_model_dict)
+                    log_writer.log_metrics(
+                        metrics={
+                            "best_{}".format(main_indicator):
+                            best_model_dict[main_indicator]
+                        },
+                        prefix="EVAL",
+                        step=global_step)
+
+                    log_writer.log_model(
+                        is_best=True,
+                        prefix="best_accuracy",
+                        metadata=best_model_dict)
 
             reader_start = time.time()
         if dist.get_rank() == 0:
@@ -421,7 +428,8 @@ def train(config,
                 epoch=epoch,
                 global_step=global_step)
             if log_writer is not None:
-                log_writer.log_model(is_best=False, prefix='iter_epoch_{}'.format(epoch))
+                log_writer.log_model(
+                    is_best=False, prefix='iter_epoch_{}'.format(epoch))
 
     best_str = 'best metric, {}'.format(', '.join(
         ['{}: {}'.format(k, v) for k, v in best_model_dict.items()]))
@@ -438,7 +446,8 @@ def eval(model,
          model_type=None,
          extra_input=False):
     model.eval()
-    ocr = PaddleOCR(use_angle_cls=False, lang="en", ocr_version='PP-OCR')
+    if model_type == "sr":
+        ocr = PaddleOCR(use_angle_cls=False, lang="en", ocr_version='PP-OCR')
     with paddle.no_grad():
         total_frame = 0.0
         total_time = 0.0
@@ -459,19 +468,24 @@ def eval(model,
                 preds = model(images, data=batch[1:])
             elif model_type in ["kie", 'vqa']:
                 preds = model(batch)
-            elif model_type in ["kie", 'vqa','sr']:
+            elif model_type in ["kie", 'vqa', 'sr']:
                 preds = model(batch)
                 sr_img = preds["sr_img"]
                 lr_img = preds["lr_img"]
 
                 for i in (range(sr_img.shape[0])):
-                    fm_sr = (sr_img[i].numpy() * 255).transpose(1,2,0).astype(np.uint8)
-                    fm_lr = (lr_img[i].numpy() * 255).transpose(1,2,0).astype(np.uint8)
-                    #print("fm shape:", fm.shape)
-                    cv2.imwrite("output/images/{}_{}_sr.jpg".format(sum_images, i), fm_sr)
-                    cv2.imwrite("output/images/{}_{}_lr.jpg".format(sum_images, i), fm_lr)
-                    result = ocr.ocr("output/images/{}_{}_sr.jpg".format(sum_images, i), cls=False, det=False)
-                    label_file.write("output/images/{}_{}_sr.jpg\t{}\n".format(sum_images, i, result[0][0]))
+                    fm_sr = (sr_img[i].numpy() * 255).transpose(
+                        1, 2, 0).astype(np.uint8)
+                    fm_lr = (lr_img[i].numpy() * 255).transpose(
+                        1, 2, 0).astype(np.uint8)
+                    cv2.imwrite("output/images/{}_{}_sr.jpg".format(sum_images,
+                                                                    i), fm_sr)
+                    cv2.imwrite("output/images/{}_{}_lr.jpg".format(sum_images,
+                                                                    i), fm_lr)
+                    result = ocr.ocr("output/images/{}_{}_sr.jpg".format(
+                        sum_images, i),
+                                     cls=False,
+                                     det=False)
                     preds['crnn'] = result[0][0]
                     preds['lable_sr'] = batch[-1][i]
             else:
@@ -593,7 +607,8 @@ def preprocess(is_train=False):
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
-        'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'PREN', 'FCE', 'SVTR'
+        'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'PREN', 'FCE', 'SVTR',
+        'Gestalt'
     ]
 
     if use_xpu:
@@ -614,7 +629,8 @@ def preprocess(is_train=False):
         vdl_writer_path = '{}/vdl/'.format(save_model_dir)
         log_writer = VDLLogger(save_model_dir)
         loggers.append(log_writer)
-    if ('use_wandb' in config['Global'] and config['Global']['use_wandb']) or 'wandb' in config:
+    if ('use_wandb' in config['Global'] and
+            config['Global']['use_wandb']) or 'wandb' in config:
         save_dir = config['Global']['save_model_dir']
         wandb_writer_path = "{}/wandb".format(save_dir)
         if "wandb" in config:

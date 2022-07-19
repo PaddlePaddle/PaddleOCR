@@ -1,3 +1,21 @@
+# copyright (c) 2020 PaddlePaddle Authors. All Rights Reserve.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+"""
+This code is refer from:
+https://github.com/FudanVI/FudanOCR/blob/main/text-gestalt/model/tsrn.py
+"""
+
 import math
 import paddle
 import paddle.nn.functional as F
@@ -17,9 +35,17 @@ from .stn import STN as STN_model
 from ppocr.modeling.heads.sr_rensnet_transformer import Transformer
 
 
-
 class TSRN(nn.Layer):
-    def __init__(self, in_channels, scale_factor=2, width=128, height=32, STN=False, srb_nums=5, mask=False, hidden_units=32, **kwargs):
+    def __init__(self,
+                 in_channels,
+                 scale_factor=2,
+                 width=128,
+                 height=32,
+                 STN=False,
+                 srb_nums=5,
+                 mask=False,
+                 hidden_units=32,
+                 **kwargs):
         super(TSRN, self).__init__()
         in_planes = 3
         if mask:
@@ -27,24 +53,35 @@ class TSRN(nn.Layer):
         assert math.log(scale_factor, 2) % 1 == 0
         upsample_block_num = int(math.log(scale_factor, 2))
         self.block1 = nn.Sequential(
-            nn.Conv2D(in_planes, 2*hidden_units, kernel_size=9, padding=4),
-            nn.PReLU()
-        )
+            nn.Conv2D(
+                in_planes, 2 * hidden_units, kernel_size=9, padding=4),
+            nn.PReLU())
         self.srb_nums = srb_nums
         for i in range(srb_nums):
-            setattr(self, 'block%d' % (i + 2), RecurrentResidualBlock(2*hidden_units))
+            setattr(self, 'block%d' % (i + 2),
+                    RecurrentResidualBlock(2 * hidden_units))
 
-        setattr(self, 'block%d' % (srb_nums + 2),
-                nn.Sequential(
-                    nn.Conv2D(2*hidden_units, 2*hidden_units, kernel_size=3, padding=1),
-                    nn.BatchNorm2D(2*hidden_units)
-                ))
-        
-        block_ = [UpsampleBLock(2*hidden_units, 2) for _ in range(upsample_block_num)]
-        block_.append(nn.Conv2D(2*hidden_units, in_planes, kernel_size=9, padding=4))
+        setattr(
+            self,
+            'block%d' % (srb_nums + 2),
+            nn.Sequential(
+                nn.Conv2D(
+                    2 * hidden_units,
+                    2 * hidden_units,
+                    kernel_size=3,
+                    padding=1),
+                nn.BatchNorm2D(2 * hidden_units)))
+
+        block_ = [
+            UpsampleBLock(2 * hidden_units, 2)
+            for _ in range(upsample_block_num)
+        ]
+        block_.append(
+            nn.Conv2D(
+                2 * hidden_units, in_planes, kernel_size=9, padding=4))
         setattr(self, 'block%d' % (srb_nums + 3), nn.Sequential(*block_))
-        self.tps_inputsize = [height//scale_factor, width//scale_factor]
-        tps_outputsize = [height//scale_factor, width//scale_factor]
+        self.tps_inputsize = [height // scale_factor, width // scale_factor]
+        tps_outputsize = [height // scale_factor, width // scale_factor]
         num_control_points = 20
         tps_margins = [0.05, 0.05]
         self.stn = STN
@@ -58,21 +95,22 @@ class TSRN(nn.Layer):
                 in_channels=in_planes,
                 num_ctrlpoints=num_control_points,
                 activation='none')
-        self.out_channels=in_channels
+        self.out_channels = in_channels
 
         self.r34_transformer = Transformer()
-        for param in self.r34_transformer.parameters(): 
-                param.trainable = False
+        for param in self.r34_transformer.parameters():
+            param.trainable = False
 
     def forward(self, x):
-        output={}
+        output = {}
         y = x[1]
         if self.stn and self.training:
             _, ctrl_points_x = self.stn_head(y)
             y, _ = self.tps(y, ctrl_points_x)
         block = {'1': self.block1(y)}
         for i in range(self.srb_nums + 1):
-            block[str(i + 2)] = getattr(self, 'block%d' % (i + 2))(block[str(i + 1)])
+            block[str(i + 2)] = getattr(self,
+                                        'block%d' % (i + 2))(block[str(i + 1)])
 
         block[str(self.srb_nums + 3)] = getattr(self, 'block%d' % (self.srb_nums + 3)) \
             ((block['1'] + block[str(self.srb_nums + 2)]))
@@ -85,16 +123,13 @@ class TSRN(nn.Layer):
             hr_img = x[0]
             length = x[2]
             input_tensor = x[3]
-            # sr_intrans = sr_img.clone()
-            # sr_intrans.stop_gradient = True
-            # hr_img.stop_gradient = True
 
             # add transformer 
-            sr_pred, word_attention_map_pred, sr_correct_list = self.r34_transformer(sr_img, length,
-                                                                            input_tensor, test=False)
-            
-            hr_pred, word_attention_map_gt, hr_correct_list = self.r34_transformer(hr_img, length,
-                                                                input_tensor, test=False)
+            sr_pred, word_attention_map_pred, sr_correct_list = self.r34_transformer(
+                sr_img, length, input_tensor, test=False)
+
+            hr_pred, word_attention_map_gt, hr_correct_list = self.r34_transformer(
+                hr_img, length, input_tensor, test=False)
 
             output["hr_img"] = hr_img
             output["hr_pred"] = hr_pred
@@ -111,7 +146,6 @@ class RecurrentResidualBlock(nn.Layer):
         self.conv1 = nn.Conv2D(channels, channels, kernel_size=3, padding=1)
         self.bn1 = nn.BatchNorm2D(channels)
         self.gru1 = GruBlock(channels, channels)
-        # self.prelu = nn.ReLU()
         self.prelu = mish()
         self.conv2 = nn.Conv2D(channels, channels, kernel_size=3, padding=1)
         self.bn2 = nn.BatchNorm2D(channels)
@@ -123,7 +157,8 @@ class RecurrentResidualBlock(nn.Layer):
         residual = self.prelu(residual)
         residual = self.conv2(residual)
         residual = self.bn2(residual)
-        residual = self.gru1(residual.transpose([0,1,3,2])).transpose([0,1,3,2])
+        residual = self.gru1(residual.transpose([0, 1, 3, 2])).transpose(
+            [0, 1, 3, 2])
 
         return self.gru2(x + residual)
 
@@ -131,10 +166,10 @@ class RecurrentResidualBlock(nn.Layer):
 class UpsampleBLock(nn.Layer):
     def __init__(self, in_channels, up_scale):
         super(UpsampleBLock, self).__init__()
-        self.conv = nn.Conv2D(in_channels, in_channels * up_scale ** 2, kernel_size=3, padding=1)
+        self.conv = nn.Conv2D(
+            in_channels, in_channels * up_scale**2, kernel_size=3, padding=1)
 
         self.pixel_shuffle = nn.PixelShuffle(up_scale)
-        # self.prelu = nn.ReLU()
         self.prelu = mish()
 
     def forward(self, x):
@@ -159,22 +194,19 @@ class GruBlock(nn.Layer):
     def __init__(self, in_channels, out_channels):
         super(GruBlock, self).__init__()
         assert out_channels % 2 == 0
-        self.conv1 = nn.Conv2D(in_channels, out_channels, kernel_size=1, padding=0)
-        self.gru = nn.GRU(out_channels, out_channels // 2, direction='bidirectional')
+        self.conv1 = nn.Conv2D(
+            in_channels, out_channels, kernel_size=1, padding=0)
+        self.gru = nn.GRU(out_channels,
+                          out_channels // 2,
+                          direction='bidirectional')
 
     def forward(self, x):
         # x: b, c, w, h
         x = self.conv1(x)
-        x = x.transpose([0, 2, 3, 1])# b, w, h, c
+        x = x.transpose([0, 2, 3, 1])  # b, w, h, c
         b = x.shape
-        x = x.reshape([b[0] * b[1], b[2], b[3]]) # b*w, h, c
+        x = x.reshape([b[0] * b[1], b[2], b[3]])  # b*w, h, c
         x, _ = self.gru(x)
-        # x = self.gru(x)[0]
         x = x.reshape([b[0], b[1], b[2], b[3]])
         x = x.transpose([0, 3, 1, 2])
         return x
-
-
-
-
-
