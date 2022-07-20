@@ -157,17 +157,6 @@ class TextRecognizer(object):
         padding_im[:, :, 0:resized_w] = resized_image
         return padding_im
 
-    def resize_norm_img_svtr(self, img, image_shape):
-
-        imgC, imgH, imgW = image_shape
-        resized_image = cv2.resize(
-            img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
-        resized_image = resized_image.astype('float32')
-        resized_image = resized_image.transpose((2, 0, 1)) / 255
-        resized_image -= 0.5
-        resized_image /= 0.5
-        return resized_image
-
     def resize_norm_img_vl(self, img, image_shape):
 
         imgC, imgH, imgW = image_shape

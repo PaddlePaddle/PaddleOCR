@@ -3,12 +3,12 @@ Global:
   epoch_num: 8
   log_smooth_window: 200
   print_batch_step: 200
-  save_model_dir: /paddle/backup/visionlan/LA_v2
+  save_model_dir: ./output/rec/r45_visionlan
   save_epoch_step: 1
   # evaluation is run every 2000 iterations
   eval_batch_step: [0, 2000]
   cal_metric_during_train: True
-  pretrained_model: ./pretrained_model/LF_2_ocr
+  pretrained_model:
   checkpoints: 
   save_inference_dir:
   use_visualdl: True
