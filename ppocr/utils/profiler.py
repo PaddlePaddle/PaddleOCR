@@ -13,50 +13,43 @@
 # limitations under the License.
 
 import sys
-import paddle
+import paddle.profiler as profiler
 
 # A global variable to record the number of calling times for profiler
 # functions. It is used to specify the tracing range of training steps.
 _profiler_step_id = 0
-
-# A global variable to avoid parsing from string every time.
-_profiler_options = None
-
 
 class ProfilerOptions(object):
     '''
     Use a string to initialize a ProfilerOptions.
     The string should be in the format: "key1=value1;key2=value;key3=value3".
     For example:
-      "profile_path=model.profile"
-      "batch_range=[50, 60]; profile_path=model.profile"
-      "batch_range=[50, 60]; tracer_option=OpDetail; profile_path=model.profile"
+      "batch_range=[50, 60]"
+      "batch_range=[50, 60]; targets=GPU"
+      "batch_range=[50, 60]; targets=All; sorted_key='GPUTotal'"
     ProfilerOptions supports following key-value pair:
-      batch_range      - a integer list, e.g. [100, 110].
-      state            - a string, the optional values are 'CPU', 'GPU' or 'All'. 
-      sorted_key       - a string, the optional values are 'calls', 'total',
-                         'max', 'min' or 'ave.
-      tracer_option    - a string, the optional values are 'Default', 'OpDetail',
-                         'AllOpDetail'.
-      profile_path     - a string, the path to save the serialized profile data,
-                         which can be used to generate a timeline.
+      batch_range      - an integer list, e.g. [100, 110].
+      targets          - a string, the optional values are 'CPU', 'GPU' or 'All'. 
+      sorted_key       - a string, the default values are 'CPUTotal'.
+      profile_path     - a string, the path to save the serialized profile data.
       exit_on_finished - a boolean.
     '''
 
     def __init__(self, options_str):
-        assert isinstance(options_str, str)
-
         self._options = {
             'batch_range': [10, 20],
-            'state': 'All',
-            'sorted_key': 'total',
-            'tracer_option': 'Default',
-            'profile_path': '/tmp/profile',
-            'exit_on_finished': True
+            'targets': [profiler.ProfilerTarget.CPU, profiler.ProfilerTarget.GPU],
+            'sorted_key': profiler.SortedKeys['CPUTotal'],
+            'profile_path': "",
+            'exit_on_finished': True,
+            'timer_only': True
         }
-        self._parse_from_string(options_str)
+        if options_str != None:
+            self._parse_from_string(options_str)
 
     def _parse_from_string(self, options_str):
+        assert isinstance(options_str, str)
+        self._options['timer_only'] = False
         for kv in options_str.replace(' ', '').split(';'):
             key, value = kv.split('=')
             if key == 'batch_range':
@@ -65,46 +58,51 @@ class ProfilerOptions(object):
                 if len(value_list) >= 2 and value_list[0] >= 0 and value_list[
                         1] > value_list[0]:
                     self._options[key] = value_list
+            elif key == 'targets':
+                if value == 'All' or value == 'ALL':
+                    continue
+                elif value == 'CPU':
+                    del self._options[key][1]
+                elif value == 'GPU':
+                    del self._options[key][0]
+                else:
+                    raise ValueError(
+                        "Profiler does not have a target named %s." % value)
             elif key == 'exit_on_finished':
                 self._options[key] = value.lower() in ("yes", "true", "t", "1")
-            elif key in [
-                    'state', 'sorted_key', 'tracer_option', 'profile_path'
-            ]:
+            elif key == 'sorted_key':
+                self._options[key] = profiler.SortedKeys[value]
+            elif key in ['profile_path']:
                 self._options[key] = value
+            else:
+                raise ValueError(
+                    "ProfilerOptions does not have an option named %s." % key)
 
-    def __getitem__(self, name):
-        if self._options.get(name, None) is None:
-            raise ValueError(
-                "ProfilerOptions does not have an option named %s." % name)
-        return self._options[name]
+class ModelProfiler(object):
+    def __init__(self, options_str):
+        
+        self._profiler_options = ProfilerOptions(options_str)
+        self._profiler = profiler.Profiler(targets=self._profiler_options._options['targets'],
+                                           scheduler=self._profiler_options._options['batch_range'],
+                                           timer_only=self._profiler_options._options['timer_only'])
+        self._profiler.start()
 
+    def step(self, batch_size=1):
+        global _profiler_step_id
 
-def add_profiler_step(options_str=None):
-    '''
-    Enable the operator-level timing using PaddlePaddle's profiler.
-    The profiler uses a independent variable to count the profiler steps.
-    One call of this function is treated as a profiler step.
-    
-    Args:
-      profiler_options - a string to initialize the ProfilerOptions.
-                         Default is None, and the profiler is disabled.
-    '''
-    if options_str is None:
-        return
+        self._profiler.step(num_samples=batch_size)
+        _profiler_step_id += 1
+        if not self._profiler_options._options['timer_only']:
+            if _profiler_step_id == self._profiler_options._options['batch_range'][1]:
+                self.stop()
+                if self._profiler_options._options['exit_on_finished']:
+                    sys.exit(0)
 
-    global _profiler_step_id
-    global _profiler_options
+    def stop(self):
+        self._profiler.stop()
+        if not self._profiler_options._options['timer_only']:
+            self._profiler.summary(sorted_by=self._profiler_options._options['sorted_key'])
+            path = self._profiler_options._options['profile_path']
+            if path != "":
+                self._profiler.export(path=path)
 
-    if _profiler_options is None:
-        _profiler_options = ProfilerOptions(options_str)
-
-    if _profiler_step_id == _profiler_options['batch_range'][0]:
-        paddle.utils.profiler.start_profiler(
-            _profiler_options['state'], _profiler_options['tracer_option'])
-    elif _profiler_step_id == _profiler_options['batch_range'][1]:
-        paddle.utils.profiler.stop_profiler(_profiler_options['sorted_key'],
-                                            _profiler_options['profile_path'])
-        if _profiler_options['exit_on_finished']:
-            sys.exit(0)
-
-    _profiler_step_id += 1

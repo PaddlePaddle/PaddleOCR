@@ -32,7 +32,7 @@ from ppocr.utils.save_load import save_model
 from ppocr.utils.utility import print_dict, AverageMeter
 from ppocr.utils.logging import get_logger
 from ppocr.utils.loggers import VDLLogger, WandbLogger, Loggers
-from ppocr.utils import profiler
+from ppocr.utils.profiler import ModelProfiler
 from ppocr.data import build_dataloader
 
 
@@ -240,8 +240,8 @@ def train(config,
                 config, 'Train', device, logger, seed=epoch)
             max_iter = len(train_dataloader) - 1 if platform.system(
             ) == "Windows" else len(train_dataloader)
+        prof = ModelProfiler(profiler_options)
         for idx, batch in enumerate(train_dataloader):
-            profiler.add_profiler_step(profiler_options)
             train_reader_cost += time.time() - reader_start
             if idx >= max_iter:
                 break
@@ -302,6 +302,7 @@ def train(config,
             eta_meter.update(train_batch_time)
             global_step += 1
             total_samples += len(images)
+            prof.step(len(images))
 
             if not isinstance(lr_scheduler, float):
                 lr_scheduler.step()
@@ -398,6 +399,7 @@ def train(config,
                         metadata=best_model_dict)
 
             reader_start = time.time()
+        prof.stop()
         if dist.get_rank() == 0:
             save_model(
                 model,
