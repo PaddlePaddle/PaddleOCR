@@ -60,7 +60,7 @@ def export_single_model(model,
                 shape=[None, 3, 48, 160], dtype="float32"),
         ]
         model = to_static(model, input_spec=other_shape)
-    elif arch_config["algorithm"] in ["SVTR", "VisionLAN"]:
+    elif arch_config["algorithm"] == "SVTR":
         if arch_config["Head"]["name"] == 'MultiHead':
             other_shape = [
                 paddle.static.InputSpec(
@@ -95,6 +95,12 @@ def export_single_model(model,
         other_shape = [
             paddle.static.InputSpec(
                 shape=[None, 1, 32, 100], dtype="float32"),
+        ]
+        model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] == "VisionLAN":
+        other_shape = [
+            paddle.static.InputSpec(
+                shape=[None, 3, 64, 256], dtype="float32"),
         ]
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] in ["LayoutLM", "LayoutLMv2", "LayoutXLM"]:

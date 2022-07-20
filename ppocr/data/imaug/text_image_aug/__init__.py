@@ -13,6 +13,5 @@
 # limitations under the License.
 
 from .augment import tia_perspective, tia_distort, tia_stretch
-from .vl_aug import VLAug
 
-__all__ = ['tia_distort', 'tia_stretch', 'tia_perspective', 'VLAug']
+__all__ = ['tia_distort', 'tia_stretch', 'tia_perspective']

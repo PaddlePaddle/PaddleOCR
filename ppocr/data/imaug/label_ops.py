@@ -99,12 +99,13 @@ class BaseRecLabelEncode(object):
     def __init__(self,
                  max_text_length,
                  character_dict_path=None,
-                 use_space_char=False):
+                 use_space_char=False,
+                 lower=False):
 
         self.max_text_len = max_text_length
         self.beg_str = "sos"
         self.end_str = "eos"
-        self.lower = False
+        self.lower = lower
 
         if character_dict_path is None:
             logger = get_logger()
@@ -1227,9 +1228,10 @@ class VLLabelEncode(BaseRecLabelEncode):
                  max_text_length,
                  character_dict_path=None,
                  use_space_char=False,
+                 lower=True,
                  **kwargs):
-        super(VLLabelEncode, self).__init__(max_text_length,
-                                            character_dict_path, use_space_char)
+        super(VLLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char, lower)
 
     def __call__(self, data):
         text = data['label']  # original string

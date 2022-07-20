@@ -22,7 +22,7 @@ import paddle.nn as nn
 import paddle.nn.functional as F
 from paddle.nn.initializer import Normal, XavierNormal
 import numpy as np
-from ppocr.modeling.backbones.rec_resnet_aster import ResNet45
+from ppocr.modeling.backbones.rec_resnet_45 import ResNet45
 
 
 class PositionalEncoding(nn.Layer):
@@ -442,14 +442,6 @@ class MLM_VRM(nn.Layer):
                         if out_length[j] == 0 and tmp_result[j] == 0:
                             out_length[j] = now_step + 1
                     now_step += 1
-            # while 0 in out_length and now_step < nsteps:
-            #     tmp_result = text_pre[now_step, :, :]
-            #     out_res[now_step] = tmp_result
-            #     tmp_result = tmp_result.topk(1)[1].squeeze(axis=1)
-            #     for j in range(b):
-            #         if out_length[j] == 0 and tmp_result[j] == 0:
-            #             out_length[j] = now_step + 1
-            #     now_step += 1
             for j in range(0, b):
                 if int(out_length[j]) == 0:
                     out_length[j] = nsteps

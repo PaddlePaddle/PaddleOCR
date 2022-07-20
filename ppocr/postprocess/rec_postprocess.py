@@ -27,8 +27,7 @@ class BaseRecLabelDecode(object):
 
         self.character_str = []
         if character_dict_path is None:
-            # self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
-            self.character_str = "abcdefghijklmnopqrstuvwxyz1234567890"
+            self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
         else:
             with open(character_dict_path, "rb") as fin:

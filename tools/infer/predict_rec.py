@@ -366,6 +366,8 @@ class TextRecognizer(object):
                 elif self.rec_algorithm == "VisionLAN":
                     norm_img = self.resize_norm_img_vl(img_list[indices[ino]],
                                                        self.rec_image_shape)
+                    norm_img = norm_img[np.newaxis, :]
+                    norm_img_batch.append(norm_img)
                 elif self.rec_algorithm == "ABINet":
                     norm_img = self.resize_norm_img_abinet(
                         img_list[indices[ino]], self.rec_image_shape)
