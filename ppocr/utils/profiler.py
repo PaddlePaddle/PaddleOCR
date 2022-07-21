@@ -37,7 +37,7 @@ class ProfilerOptions(object):
 
     def __init__(self, options_str):
         self._options = {
-            'batch_range': [10, 20],
+            'batch_range': [50, 60],
             'targets': [profiler.ProfilerTarget.CPU, profiler.ProfilerTarget.GPU],
             'sorted_key': profiler.SortedKeys['CPUTotal'],
             'profile_path': "",
@@ -45,10 +45,12 @@ class ProfilerOptions(object):
             'timer_only': True
         }
         if options_str != None:
-            self._parse_from_string(options_str)
+            assert isinstance(options_str, str)
+            self._options['timer_only'] = False
+            if '=' in options_str:
+                self._parse_from_string(options_str)
 
     def _parse_from_string(self, options_str):
-        assert isinstance(options_str, str)
         self._options['timer_only'] = False
         for kv in options_str.replace(' ', '').split(';'):
             key, value = kv.split('=')
@@ -59,11 +61,11 @@ class ProfilerOptions(object):
                         1] > value_list[0]:
                     self._options[key] = value_list
             elif key == 'targets':
-                if value == 'All' or value == 'ALL':
+                if value.lower() == 'all':
                     continue
-                elif value == 'CPU':
+                elif value.lower() == 'cpu':
                     del self._options[key][1]
-                elif value == 'GPU':
+                elif value.lower == 'gpu':
                     del self._options[key][0]
                 else:
                     raise ValueError(
