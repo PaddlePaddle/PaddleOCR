@@ -66,6 +66,7 @@ class Shape(object):
             self.NEAR_VERTEX: (4, self.P_ROUND),
             self.MOVE_VERTEX: (1.5, self.P_SQUARE),
         }
+        self.fontsize = 8
 
         self._closed = False
 
@@ -157,7 +158,7 @@ class Shape(object):
                     min_y = min(min_y, point.y())
                 if min_x != sys.maxsize and min_y != sys.maxsize:
                     font = QFont()
-                    font.setPointSize(8)
+                    font.setPointSize(self.fontsize)
                     font.setBold(True)
                     painter.setFont(font)
                     if self.label is None:
@@ -175,7 +176,7 @@ class Shape(object):
                     min_y = min(min_y, point.y())
                 if min_x != sys.maxsize and min_y != sys.maxsize:
                     font = QFont()
-                    font.setPointSize(8)
+                    font.setPointSize(self.fontsize)
                     font.setBold(True)
                     painter.setFont(font)
                     text = ''
