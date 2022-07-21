@@ -51,7 +51,6 @@ class ProfilerOptions(object):
                 self._parse_from_string(options_str)
 
     def _parse_from_string(self, options_str):
-        self._options['timer_only'] = False
         for kv in options_str.replace(' ', '').split(';'):
             key, value = kv.split('=')
             if key == 'batch_range':
@@ -65,7 +64,7 @@ class ProfilerOptions(object):
                     continue
                 elif value.lower() == 'cpu':
                     del self._options[key][1]
-                elif value.lower == 'gpu':
+                elif value.lower() == 'gpu':
                     del self._options[key][0]
                 else:
                     raise ValueError(
