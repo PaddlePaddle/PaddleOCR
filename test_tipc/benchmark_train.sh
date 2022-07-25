@@ -156,6 +156,7 @@ else
     if [ ${precision} = "fp16" ];then
         precision="amp"
     fi
+
     epoch=$(set_dynamic_epoch $device_num $epoch)
     fp_items_list=($precision)
     batch_size_list=($batch_size)
