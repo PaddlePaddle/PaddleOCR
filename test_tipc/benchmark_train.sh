@@ -29,8 +29,6 @@ function set_dynamic_epoch(){
     arr=(${_str})
     M=${arr[0]}
     P=${arr[1]}
-    gn=`expr $P - 1`
-    gpu_num=`expr $gn / $M`
     ep=`expr $num \* $M \* $P`
     echo $ep
 }
