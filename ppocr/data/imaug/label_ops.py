@@ -1216,3 +1216,36 @@ class ABINetLabelEncode(BaseRecLabelEncode):
     def add_special_char(self, dict_character):
         dict_character = ['</s>'] + dict_character
         return dict_character
+
+class SPINLabelEncode(AttnLabelEncode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 use_space_char=False,
+                 lower=True,
+                 **kwargs):
+        super(SPINLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
+        self.lower = lower
+    def add_special_char(self, dict_character):
+        self.beg_str = "sos"
+        self.end_str = "eos"
+        dict_character = [self.beg_str] + [self.end_str] + dict_character
+        return dict_character
+
+    def __call__(self, data):
+        text = data['label']
+        text = self.encode(text)
+        if text is None:
+            return None
+        if len(text) > self.max_text_len:
+            return None
+        data['length'] = np.array(len(text))
+        target = [0] + text + [1]
+        padded_text = [0 for _ in range(self.max_text_len + 2)]
+
+        padded_text[:len(target)] = target
+        data['label'] = np.array(padded_text)
+        return data 
