@@ -2115,7 +2115,7 @@ class MainWindow(QMainWindow):
         self.init_key_list(self.Cachelabel)
 
     def reRecognition(self):
-        img = cv2.imread(self.filePath)
+        img = cv2.imdecode(np.fromfile(self.filePath,dtype=np.uint8),1)
         # org_box = [dic['points'] for dic in self.PPlabel[self.getImglabelidx(self.filePath)]]
         if self.canvas.shapes:
             self.result_dic = []
@@ -2184,7 +2184,7 @@ class MainWindow(QMainWindow):
             QMessageBox.information(self, "Information", "Draw a box!")
 
     def singleRerecognition(self):
-        img = cv2.imread(self.filePath)
+        img = cv2.imdecode(np.fromfile(self.filePath,dtype=np.uint8),1)
         for shape in self.canvas.selectedShapes:
             box = [[int(p.x()), int(p.y())] for p in shape.points]
             if len(box) > 4:
