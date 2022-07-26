@@ -38,7 +38,8 @@ from ppocr.utils.save_load import load_model
 from ppocr.utils.visual import draw_re_results
 from ppocr.utils.logging import get_logger
 from ppocr.utils.utility import get_image_file_list, load_vqa_bio_label_maps, print_dict
-from tools.program import ArgsParser, load_config, merge_config, check_gpu
+from tools.program import ArgsParser, load_config, merge_config
+from tools.infer.utility import check_gpu
 from tools.infer_vqa_token_ser import SerPredictor
 
 
@@ -155,7 +156,7 @@ def preprocess():
 
     # check if set use_gpu=True in paddlepaddle cpu version
     use_gpu = config['Global']['use_gpu']
-    check_gpu(use_gpu)
+    use_gpu = check_gpu(use_gpu)
 
     device = 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'
     device = paddle.set_device(device)
