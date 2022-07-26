@@ -624,6 +624,13 @@ class Canvas(QWidget):
             pal.setColor(self.backgroundRole(), QColor(232, 232, 232, 255))
             self.setPalette(pal)
 
+        # adaptive BBOX label & index font size
+        if self.pixmap:
+            h, w = self.pixmap.size().height(), self.pixmap.size().width()
+            fontszie = int(max(h, w) / 48)
+            for s in self.shapes:
+                s.fontsize = fontszie
+        
         p.end()
 
     def fillDrawing(self):
