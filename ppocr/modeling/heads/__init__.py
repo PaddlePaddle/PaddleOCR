@@ -33,6 +33,7 @@ def build_head(config):
     from .rec_aster_head import AsterHead
     from .rec_pren_head import PRENHead
     from .rec_multi_head import MultiHead
+    from .rec_spin_att_head import SPINAttentionHead
     from .rec_abinet_head import ABINetHead
     from .rec_robustscanner_head import RobustScannerHead
 
@@ -49,7 +50,7 @@ def build_head(config):
         'DBHead', 'PSEHead', 'FCEHead', 'EASTHead', 'SASTHead', 'CTCHead',
         'ClsHead', 'AttentionHead', 'SRNHead', 'PGHead', 'Transformer',
         'TableAttentionHead', 'SARHead', 'AsterHead', 'SDMGRHead', 'PRENHead',
-        'MultiHead', 'ABINetHead', 'TableMasterHead', 'RobustScannerHead'
+        'MultiHead', 'ABINetHead', 'TableMasterHead', 'SPINAttentionHead', 'RobustScannerHead'
     ]
 
     #table head

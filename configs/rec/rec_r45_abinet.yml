@@ -8,7 +8,7 @@ Global:
   # evaluation is run every 2000 iterations
   eval_batch_step: [0, 2000]
   cal_metric_during_train: True
-  pretrained_model:
+  pretrained_model: ./pretrain_models/abinet_vl_pretrained
   checkpoints:
   save_inference_dir:
   use_visualdl: False
@@ -82,7 +82,7 @@ Train:
 Eval:
   dataset:
     name: LMDBDataSet
-    data_dir: ./train_data/data_lmdb_release/validation/
+    data_dir: ./train_data/data_lmdb_release/evaluation/
     transforms:
       - DecodeImage: # load image
           img_mode: RGB

@@ -13,7 +13,7 @@ train_infer_img_dir:./train_data/icdar2015/text_localization/ch4_test_images/
 null:null
 ##
 trainer:norm_train
-norm_train:tools/train.py -c configs/det/det_r50_db++_ic15.yml -o Global.pretrained_model=./pretrain_models/ResNet50_dcn_asf_synthtext_pretrained
+norm_train:tools/train.py -c configs/det/det_r50_db++_icdar15.yml -o Global.pretrained_model=./pretrain_models/ResNet50_dcn_asf_synthtext_pretrained
 pact_train:null
 fpgm_train:null
 distill_train:null
@@ -27,7 +27,7 @@ null:null
 ===========================infer_params===========================
 Global.save_inference_dir:./output/
 Global.checkpoints:
-norm_export:tools/export_model.py -c configs/det/det_r50_db++_ic15.yml -o 
+norm_export:tools/export_model.py -c configs/det/det_r50_db++_icdar15.yml -o 
 quant_export:null
 fpgm_export:null
 distill_export:null
@@ -35,7 +35,7 @@ export1:null
 export2:null
 inference_dir:null
 train_model:./inference/det_r50_db++_train/best_accuracy
-infer_export:tools/export_model.py -c configs/det/det_r50_db++_ic15.yml -o
+infer_export:tools/export_model.py -c configs/det/det_r50_db++_icdar15.yml -o
 infer_quant:False
 inference:tools/infer/predict_det.py --det_algorithm="DB++"
 --use_gpu:True|False
@@ -51,9 +51,3 @@ null:null
 null:null
 ===========================infer_benchmark_params==========================
 random_infer_input:[{float32,[3,640,640]}];[{float32,[3,960,960]}]
-===========================train_benchmark_params==========================
-batch_size:8|16
-fp_items:fp32|fp16
-epoch:2
---profiler_options:batch_range=[10,20];state=GPU;tracer_option=Default;profile_path=model.profile
-flags:FLAGS_eager_delete_tensor_gb=0.0;FLAGS_fraction_of_gpu_memory_to_use=0.98;FLAGS_conv_workspace_size_limit=4096
