@@ -1,4 +1,4 @@
-English | [简体中文](README.md)
+[English](README_en.md) | 简体中文
 
 # 场景应用
 
