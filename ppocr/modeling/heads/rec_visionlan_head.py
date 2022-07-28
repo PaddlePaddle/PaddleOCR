@@ -26,7 +26,6 @@ import paddle.nn as nn
 import paddle.nn.functional as F
 from paddle.nn.initializer import Normal, XavierNormal
 import numpy as np
-from ppocr.modeling.backbones.rec_resnet_45 import ResNet45
 
 
 class PositionalEncoding(nn.Layer):
@@ -237,7 +236,7 @@ class PP_layer(nn.Layer):
         # enc_output: b,256,512
         reading_order = paddle.arange(self.character_len, dtype='int64')
         reading_order = reading_order.unsqueeze(0).expand(
-            [enc_output.shape[0], -1])  # (S,) -> (B, S)
+            [enc_output.shape[0], self.character_len])  # (S,) -> (B, S)
         reading_order = self.f0_embedding(reading_order)  # b,25,512
 
         # calculate attention
@@ -431,32 +430,7 @@ class MLM_VRM(nn.Layer):
                 use_mlm=False)
             text_pre = paddle.transpose(
                 text_pre, perm=[1, 0, 2])  # (26, b, 37))
-            lenText = nT
-            nsteps = nT
-            out_res = paddle.zeros(
-                shape=[lenText, b, self.nclass], dtype=x.dtype)  # (25, b, 37)
-            out_length = paddle.zeros(shape=[b], dtype=x.dtype)
-            now_step = 0
-            for _ in range(nsteps):
-                if 0 in out_length and now_step < nsteps:
-                    tmp_result = text_pre[now_step, :, :]
-                    out_res[now_step] = tmp_result
-                    tmp_result = tmp_result.topk(1)[1].squeeze(axis=1)
-                    for j in range(b):
-                        if out_length[j] == 0 and tmp_result[j] == 0:
-                            out_length[j] = now_step + 1
-                    now_step += 1
-            for j in range(0, b):
-                if int(out_length[j]) == 0:
-                    out_length[j] = nsteps
-            start = 0
-            output = paddle.zeros(
-                shape=[int(out_length.sum()), self.nclass], dtype=x.dtype)
-            for i in range(0, b):
-                cur_length = int(out_length[i])
-                output[start:start + cur_length] = out_res[0:cur_length, i, :]
-                start += cur_length
-            return output, out_length
+            return text_pre, x
 
 
 class VLHead(nn.Layer):
@@ -489,6 +463,6 @@ class VLHead(nn.Layer):
                 feat, label_pos, self.training_step, train_mode=True)
             return text_pre, test_rem, text_mas, mask_map
         else:
-            output, out_length = self.MLM_VRM(
+            text_pre, x = self.MLM_VRM(
                 feat, targets, self.training_step, train_mode=False)
-            return output, out_length
+            return text_pre, x

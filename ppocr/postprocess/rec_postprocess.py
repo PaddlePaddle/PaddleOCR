@@ -675,6 +675,8 @@ class VLLabelDecode(BaseRecLabelDecode):
     def __init__(self, character_dict_path=None, use_space_char=False,
                  **kwargs):
         super(VLLabelDecode, self).__init__(character_dict_path, use_space_char)
+        self.max_text_length = kwargs.get('max_text_length', 25)
+        self.nclass = len(self.character) + 1
 
     def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
         """ convert text-index into text-label. """
@@ -706,7 +708,40 @@ class VLLabelDecode(BaseRecLabelDecode):
 
     def __call__(self, preds, label=None, length=None, *args, **kwargs):
         if len(preds) == 2:  # eval mode
-            net_out, length = preds
+            text_pre, x = preds
+            b = text_pre.shape[1]
+            lenText = self.max_text_length
+            nsteps = self.max_text_length
+
+            if not isinstance(text_pre, paddle.Tensor):
+                text_pre = paddle.to_tensor(text_pre, dtype='float32')
+
+            out_res = paddle.zeros(
+                shape=[lenText, b, self.nclass], dtype=x.dtype)
+            out_length = paddle.zeros(shape=[b], dtype=x.dtype)
+            now_step = 0
+            for _ in range(nsteps):
+                if 0 in out_length and now_step < nsteps:
+                    tmp_result = text_pre[now_step, :, :]
+                    out_res[now_step] = tmp_result
+                    tmp_result = tmp_result.topk(1)[1].squeeze(axis=1)
+                    for j in range(b):
+                        if out_length[j] == 0 and tmp_result[j] == 0:
+                            out_length[j] = now_step + 1
+                    now_step += 1
+            for j in range(0, b):
+                if int(out_length[j]) == 0:
+                    out_length[j] = nsteps
+            start = 0
+            output = paddle.zeros(
+                shape=[int(out_length.sum()), self.nclass], dtype=x.dtype)
+            for i in range(0, b):
+                cur_length = int(out_length[i])
+                output[start:start + cur_length] = out_res[0:cur_length, i, :]
+                start += cur_length
+            net_out = output
+            length = out_length
+
         else:  # train mode
             net_out = preds[0]
             length = length
@@ -714,8 +749,6 @@ class VLLabelDecode(BaseRecLabelDecode):
         text = []
         if not isinstance(net_out, paddle.Tensor):
             net_out = paddle.to_tensor(net_out, dtype='float32')
-        # import pdb 
-        # pdb.set_trace()
         net_out = F.softmax(net_out, axis=1)
         for i in range(0, length.shape[0]):
             preds_idx = net_out[int(length[:i].sum()):int(length[:i].sum(
