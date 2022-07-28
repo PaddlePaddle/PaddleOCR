@@ -31,10 +31,10 @@ PaddleOCR场景应用覆盖通用，制造、金融、交通行业的主要OCR�
 
 | 类别           | 亮点                           | 模型下载       | 教程                                                         | 示例图                                                       |
 | -------------- | ------------------------------ | -------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 数码管识别     | 数码管数据合成、漏识别调优     | [模型下载](#2) | [中文](./光功率计数码管字符识别/光功率计数码管字符识别.md)/English | <img src="https://ai-studio-static-online.cdn.bcebos.com/7d5774a273f84efba5b9ce7fd3f86e9ef24b6473e046444db69fa3ca20ac0986"  width = "300" height = "100" /> |
-| 液晶屏读数识别 | 检测模型蒸馏、Serving部署      | [模型下载](#2) | [中文](./液晶屏读数识别.md)/English                          | <img src="https://ai-studio-static-online.cdn.bcebos.com/901ab741cb46441ebec510b37e63b9d8d1b7c95f63cc4e5e8757f35179ae6373"  width = "300" height = "150" /> |
-| 包装生产日期   | 点阵字符合成、过曝过暗文字识别 | [模型下载](#2) | [中文](./包装生产日期识别.md)/English                        | <img src="https://ai-studio-static-online.cdn.bcebos.com/d9e0533cc1df47ffa3bbe99de9e42639a3ebfa5bce834bafb1ca4574bf9db684"  width = "300" height = "150" /> |
-| PCB文字识别    | 小尺寸文本检测与识别           | [模型下载](#2) | [中文](./PCB字符识别/PCB字符识别.md)/English                 | <img src="https://ai-studio-static-online.cdn.bcebos.com/95d8e95bf1ab476987f2519c0f8f0c60a0cdc2c444804ed6ab08f2f7ab054880"  width = "300" height = "150" /> |
+| 数码管识别     | 数码管数据合成、漏识别调优     | [模型下载](#2) | [中文](./光功率计数码管字符识别/光功率计数码管字符识别.md)/English | <img src="https://ai-studio-static-online.cdn.bcebos.com/7d5774a273f84efba5b9ce7fd3f86e9ef24b6473e046444db69fa3ca20ac0986"  width = "200" height = "100" /> |
+| 液晶屏读数识别 | 检测模型蒸馏、Serving部署      | [模型下载](#2) | [中文](./液晶屏读数识别.md)/English                          | <img src="https://ai-studio-static-online.cdn.bcebos.com/901ab741cb46441ebec510b37e63b9d8d1b7c95f63cc4e5e8757f35179ae6373"  width = "200" height = "100" /> |
+| 包装生产日期   | 点阵字符合成、过曝过暗文字识别 | [模型下载](#2) | [中文](./包装生产日期识别.md)/English                        | <img src="https://ai-studio-static-online.cdn.bcebos.com/d9e0533cc1df47ffa3bbe99de9e42639a3ebfa5bce834bafb1ca4574bf9db684"  width = "200" height = "100" /> |
+| PCB文字识别    | 小尺寸文本检测与识别           | [模型下载](#2) | [中文](./PCB字符识别/PCB字符识别.md)/English                 | <img src="https://ai-studio-static-online.cdn.bcebos.com/95d8e95bf1ab476987f2519c0f8f0c60a0cdc2c444804ed6ab08f2f7ab054880"  width = "200" height = "100" /> |
 | 电表识别       | 大分辨率图像检测调优           | [模型下载](#2) |                                                              |                                                              |
 | 液晶屏缺陷检测 | 非文字字符识别                 |                |                                                              |                                                              |
 
@@ -44,7 +44,7 @@ PaddleOCR场景应用覆盖通用，制造、金融、交通行业的主要OCR�
 
 | 类别           | 亮点                     | 模型下载       | 教程                                | 示例图                                                       |
 | -------------- | ------------------------ | -------------- | ----------------------------------- | ------------------------------------------------------------ |
-| 表单VQA        | 多模态通用表单结构化提取 | [模型下载](#2) | [中文](./多模态表单识别.md)/English | <img src="https://ai-studio-static-online.cdn.bcebos.com/a3b25766f3074d2facdf88d4a60fc76612f51992fd124cf5bd846b213130665b"  width = "300" height = "300" /> |
+| 表单VQA        | 多模态通用表单结构化提取 | [模型下载](#2) | [中文](./多模态表单识别.md)/English | <img src="https://ai-studio-static-online.cdn.bcebos.com/a3b25766f3074d2facdf88d4a60fc76612f51992fd124cf5bd846b213130665b"  width = "200" height = "200" /> |
 | 增值税发票     | 尽请期待                 |                |                                     |                                                              |
 | 印章检测与识别 | 端到端弯曲文本识别       |                |                                     |                                                              |
 | 通用卡证识别   | 通用结构化提取           |                |                                     |                                                              |
@@ -57,7 +57,7 @@ PaddleOCR场景应用覆盖通用，制造、金融、交通行业的主要OCR�
 
 | 类别              | 亮点                           | 模型下载       | 教程                                | 示例图                                                       |
 | ----------------- | ------------------------------ | -------------- | ----------------------------------- | ------------------------------------------------------------ |
-| 车牌识别          | 多角度图像、轻量模型、端侧部署 | [模型下载](#2) | [中文](./轻量级车牌识别.md)/English | <img src="https://ai-studio-static-online.cdn.bcebos.com/76b6a0939c2c4cf49039b6563c4b28e241e11285d7464e799e81c58c0f7707a7"  width = "300" height = "200" /> |
+| 车牌识别          | 多角度图像、轻量模型、端侧部署 | [模型下载](#2) | [中文](./轻量级车牌识别.md)/English | <img src="https://ai-studio-static-online.cdn.bcebos.com/76b6a0939c2c4cf49039b6563c4b28e241e11285d7464e799e81c58c0f7707a7"  width = "200" height = "100" /> |
 | 驾驶证/行驶证识别 | 尽请期待                       |                |                                     |                                                              |
 | 快递单识别        | 尽请期待                       |                |                                     |                                                              |
 
