@@ -87,9 +87,9 @@ Predicts of ./doc/imgs_words/ch/word_4.jpg:('实力活力', 0.9956803321838379)
 
 ```
 # 下载英文数字识别模型：
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar
-tar xf en_PP-OCRv3_det_infer.tar
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/en/word_1.png" --rec_model_dir="./en_PP-OCRv3_det_infer/" --rec_char_dict_path="ppocr/utils/en_dict.txt"
+wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar
+tar xf en_PP-OCRv3_rec_infer.tar
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/en/word_1.png" --rec_model_dir="./en_PP-OCRv3_rec_infer/" --rec_char_dict_path="ppocr/utils/en_dict.txt"
 ```
 
 ![](../imgs_words/en/word_1.png)

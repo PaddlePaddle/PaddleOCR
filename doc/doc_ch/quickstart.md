@@ -201,3 +201,7 @@ im_show.save('result.jpg')
 通过本节内容，相信您已经熟练掌握PaddleOCR whl包的使用方法并获得了初步效果。
 
 PaddleOCR是一套丰富领先实用的OCR工具库，打通数据、模型训练、压缩和推理部署全流程，您可以参考[文档教程](../../README_ch.md#文档教程)，正式开启PaddleOCR的应用之旅。
+
+<a href="https://trackgit.com">
+<img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/l63dyu35d5dpcg6y3ibl" alt="trackgit-views" />
+</a>

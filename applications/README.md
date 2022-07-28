@@ -57,3 +57,7 @@ PaddleOCR场景应用覆盖通用，制造、金融、交通行业的主要OCR�
 </div>
 
 如果您是企业开发者且未在上述场景中找到合适的方案，可以填写[OCR应用合作调研问卷](https://paddle.wjx.cn/vj/QwF7GKw.aspx)，免费与官方团队展开不同层次的合作，包括但不限于问题抽象、确定技术方案、项目答疑、共同研发等。如果您已经使用PaddleOCR落地项目，也可以填写此问卷，与飞桨平台共同宣传推广，提升企业技术品宣。期待您的提交！
+
+<a href="https://trackgit.com">
+<img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/l63cvzo0w09yxypc7ygl" alt="traffic" />
+</a>
