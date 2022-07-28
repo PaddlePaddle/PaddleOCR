@@ -21,6 +21,18 @@ function func_parser_params(){
     echo ${tmp}
 }
 
+function set_dynamic_epoch(){
+    string=$1
+    num=$2
+    _str=${string:1:6}
+    IFS="C"
+    arr=(${_str})
+    M=${arr[0]}
+    P=${arr[1]}
+    ep=`expr $num \* $M \* $P`
+    echo $ep
+}
+
 function func_sed_params(){
     filename=$1
     line=$2
@@ -143,6 +155,7 @@ else
         precision="amp"
     fi
 
+    epoch=$(set_dynamic_epoch $device_num $epoch)
     fp_items_list=($precision)
     batch_size_list=($batch_size)
     device_num_list=($device_num)

@@ -32,6 +32,7 @@ def build_backbone(config, model_type):
         from .rec_mv1_enhance import MobileNetV1Enhance
         from .rec_nrtr_mtb import MTB
         from .rec_resnet_31 import ResNet31
+        from .rec_resnet_32 import ResNet32
         from .rec_resnet_45 import ResNet45
         from .rec_resnet_aster import ResNet_ASTER
         from .rec_micronet import MicroNet
@@ -41,7 +42,7 @@ def build_backbone(config, model_type):
         support_dict = [
             'MobileNetV1Enhance', 'MobileNetV3', 'ResNet', 'ResNetFPN', 'MTB',
             'ResNet31', 'ResNet45', 'ResNet_ASTER', 'MicroNet',
-            'EfficientNetb3_PREN', 'SVTRNet', 'ViTSTR'
+            'EfficientNetb3_PREN', 'SVTRNet', 'ViTSTR', 'ResNet32'
         ]
     elif model_type == 'e2e':
         from .e2e_resnet_vd_pg import ResNet

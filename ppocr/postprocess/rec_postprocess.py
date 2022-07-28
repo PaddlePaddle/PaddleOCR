@@ -669,6 +669,22 @@ class ABINetLabelDecode(NRTRLabelDecode):
         return dict_character
 
 
+class SPINLabelDecode(AttnLabelDecode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(SPINLabelDecode, self).__init__(character_dict_path,
+                                              use_space_char)
+
+    def add_special_char(self, dict_character):
+        self.beg_str = "sos"
+        self.end_str = "eos"
+        dict_character = dict_character
+        dict_character = [self.beg_str] + [self.end_str] + dict_character
+        return dict_character
+
+
 class VLLabelDecode(BaseRecLabelDecode):
     """ Convert between text-label and text-index """
 
