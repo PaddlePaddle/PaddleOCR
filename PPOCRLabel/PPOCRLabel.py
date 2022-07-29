@@ -1099,8 +1099,10 @@ class MainWindow(QMainWindow):
         shape.paintIdx = self.displayIndexOption.isChecked()
 
         item = HashableQListWidgetItem(shape.label)
-        item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
-        item.setCheckState(Qt.Unchecked) if shape.difficult else item.setCheckState(Qt.Checked)
+        # current difficult checkbox is disenble
+        # item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
+        # item.setCheckState(Qt.Unchecked) if shape.difficult else item.setCheckState(Qt.Checked)
+
         # Checked means difficult is False
         # item.setBackground(generateColorByText(shape.label))
         self.itemsToShapes[item] = shape
