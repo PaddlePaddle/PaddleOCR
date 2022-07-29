@@ -21,7 +21,6 @@ import os.path
 import platform
 import subprocess
 import sys
-from cv2 import INTER_MAX
 import xlrd
 from functools import partial
 
