@@ -2,13 +2,13 @@ Global:
   use_gpu: false
   epoch_num: 5
   log_smooth_window: 20
-  print_batch_step: 1
+  print_batch_step: 2
   save_model_dir: ./output/db_mv3/
   save_epoch_step: 1200
   # evaluation is run every 2000 iterations
-  eval_batch_step: [0, 400]
+  eval_batch_step: [0, 30000]
   cal_metric_during_train: False
-  pretrained_model: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
+  pretrained_model:
   checkpoints:
   save_inference_dir:
   use_visualdl: False
