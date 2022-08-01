@@ -157,6 +157,7 @@ def main(config, device, logger, vdl_writer):
         scaler = paddle.amp.GradScaler(
             init_loss_scaling=scale_loss,
             use_dynamic_loss_scaling=use_dynamic_loss_scaling)
+        model, optimizer = paddle.amp.decorate(models=model, optimizers=optimizer, level='O2', master_weight=True)
     else:
         scaler = None
 

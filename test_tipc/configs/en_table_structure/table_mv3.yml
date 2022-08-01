@@ -6,7 +6,7 @@ Global:
   save_model_dir: ./output/table_mv3/
   save_epoch_step: 3
   # evaluation is run every 400 iterations after the 0th iteration
-  eval_batch_step: [0, 400]
+  eval_batch_step: [0, 40000]
   cal_metric_during_train: True
   pretrained_model:
   checkpoints:
