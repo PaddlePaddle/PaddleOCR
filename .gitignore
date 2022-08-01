@@ -10,14 +10,8 @@ __pycache__/
 inference/
 inference_results/
 output/
-<<<<<<< HEAD
-train_data
-log
-
-=======
 train_data/
 log/
->>>>>>> 1696b36bdb4152138ed5cb08a357df8fe03dc067
 *.DS_Store
 *.vs
 *.user
