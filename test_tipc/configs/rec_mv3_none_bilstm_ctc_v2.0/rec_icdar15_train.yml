@@ -6,7 +6,7 @@ Global:
   save_model_dir: ./output/rec/mv3_none_bilstm_ctc/
   save_epoch_step: 3
   # evaluation is run every 2000 iterations
-  eval_batch_step: [0, 2000]
+  eval_batch_step: [0, 20000]
   cal_metric_during_train: True
   pretrained_model:
   checkpoints:

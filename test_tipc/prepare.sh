@@ -22,27 +22,79 @@ trainer_list=$(func_parser_value "${lines[14]}")
 
 if [ ${MODE} = "benchmark_train" ];then
     pip install -r requirements.txt
-    if [[ ${model_name} =~ "det_mv3_db_v2_0" || ${model_name} =~ "det_r50_vd_pse_v2_0" || ${model_name} =~ "det_r18_db_v2_0" ]];then
-        rm -rf ./train_data/icdar2015
+    if [[ ${model_name} =~ "ch_ppocr_mobile_v2.0_det" || ${model_name} =~ "det_mv3_db_v2_0" ]];then
         wget -nc -P  ./pretrain_models/ https://paddleocr.bj.bcebos.com/pretrained/MobileNetV3_large_x0_5_pretrained.pdparams  --no-check-certificate
-        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015.tar --no-check-certificate
-        cd ./train_data/ && tar xf icdar2015.tar && cd ../
+        rm -rf ./train_data/icdar2015
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/icdar2015_benckmark.tar --no-check-certificate
+        cd ./train_data/ && tar xf icdar2015_benckmark.tar
+        ln -s ./icdar2015_benckmark ./icdar2015
+        cd ../
+    fi
+    if [[ ${model_name} =~ "ch_ppocr_server_v2.0_det" || ${model_name} =~ "ch_PP-OCRv3_det" ]];then
+        rm -rf ./train_data/icdar2015
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/icdar2015_benckmark.tar --no-check-certificate
+        cd ./train_data/ && tar xf icdar2015_benckmark.tar
+        ln -s ./icdar2015_benckmark ./icdar2015
+        cd ../
+    fi
+    if [[ ${model_name} =~ "ch_PP-OCRv2_det" ]];then
+        wget  -nc -P  ./pretrain_models/  https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar --no-check-certificate
+        cd ./pretrain_models/ && tar xf ch_ppocr_server_v2.0_det_train.tar  && cd ../
+        rm -rf ./train_data/icdar2015
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/icdar2015_benckmark.tar --no-check-certificate
+        cd ./train_data/ && tar xf icdar2015_benckmark.tar
+        ln -s ./icdar2015_benckmark ./icdar2015
+        cd ../
     fi
     if [[ ${model_name} =~ "det_r50_vd_east_v2_0" ]]; then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf det_r50_vd_east_v2.0_train.tar && cd ../
-        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015.tar --no-check-certificate
-        cd ./train_data/ && tar xf icdar2015.tar && cd ../
+        rm -rf ./train_data/icdar2015
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/icdar2015_benckmark.tar --no-check-certificate
+        cd ./train_data/ && tar xf icdar2015_benckmark.tar
+        ln -s ./icdar2015_benckmark ./icdar2015
+        cd ../
     fi
-    if [[ ${model_name} =~ "det_r50_vd_pse_v2_0" ]];then
+    if [[ ${model_name} =~ "det_r50_db_v2.0" || ${model_name} =~ "det_r50_vd_pse_v2_0" ]];then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/pretrained/ResNet50_vd_ssld_pretrained.pdparams --no-check-certificate
-        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015.tar --no-check-certificate
-        cd ./train_data/ && tar xf icdar2015.tar && cd ../
+        rm -rf ./train_data/icdar2015
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/icdar2015_benckmark.tar --no-check-certificate
+        cd ./train_data/ && tar xf icdar2015_benckmark.tar
+        ln -s ./icdar2015_benckmark ./icdar2015
+        cd ../
     fi
     if [[ ${model_name} =~ "det_r18_db_v2_0" ]];then
         wget -nc -P ./pretrain_models/  https://paddleocr.bj.bcebos.com/pretrained/ResNet18_vd_pretrained.pdparams  --no-check-certificate
-        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/icdar2015.tar --no-check-certificate
-        cd ./train_data/ && tar xf icdar2015.tar && cd ../
+        rm -rf ./train_data/icdar2015
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/icdar2015_benckmark.tar --no-check-certificate
+        cd ./train_data/ && tar xf icdar2015_benckmark.tar
+        ln -s ./icdar2015_benckmark ./icdar2015
+        cd ../
+    fi
+    if [[ ${model_name} =~ "ch_ppocr_mobile_v2.0_rec" || ${model_name} =~ "ch_ppocr_server_v2.0_rec" || ${model_name} =~ "ch_PP-OCRv2_rec" || ${model_name} =~ "rec_mv3_none_bilstm_ctc_v2.0" || ${model_name} =~ "ch_PP-OCRv3_rec" ]];then
+        rm -rf ./train_data/ic15_data_benckmark
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/ic15_data_benckmark.tar --no-check-certificate
+        cd ./train_data/ && tar xf ic15_data_benckmark.tar
+        ln -s ./ic15_data_benckmark ./ic15_data
+        cd ../
+    fi
+    if [[ ${model_name} == "en_table_structure" ]];then
+        wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.1/table/en_ppocr_mobile_v2.0_table_structure_train.tar --no-check-certificate
+        cd ./pretrain_models/ && tar xf en_ppocr_mobile_v2.0_table_structure_train.tar  && cd ../
+        rm -rf ./train_data/pubtabnet
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/pubtabnet_benckmark.tar --no-check-certificate
+        cd ./train_data/ && tar xf pubtabnet_benckmark.tar
+        ln -s ./pubtabnet_benckmark ./pubtabnet
+        cd ../
+    fi
+    if [[ ${model_name} == "det_r50_dcn_fce_ctw_v2.0" ]]; then
+        wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/contribution/det_r50_dcn_fce_ctw_v2.0_train.tar --no-check-certificate
+        cd ./pretrain_models/ && tar xf det_r50_dcn_fce_ctw_v2.0_train.tar && cd ../
+        rm -rf ./train_data/icdar2015
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/icdar2015_benckmark.tar --no-check-certificate
+        cd ./train_data/ && tar xf icdar2015_benckmark.tar
+        ln -s ./icdar2015_benckmark ./icdar2015
+        cd ../
     fi
 fi
 
@@ -136,6 +188,10 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     if [ ${model_name} == "det_r50_vd_east_v2_0" ]; then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf det_r50_vd_east_v2.0_train.tar && cd ../
+    fi
+    if [ ${model_name} == "det_r50_dcn_fce_ctw_v2.0" ]; then
+        wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/contribution/det_r50_dcn_fce_ctw_v2.0_train.tar --no-check-certificate
+        cd ./pretrain_models/ && tar xf det_r50_dcn_fce_ctw_v2.0_train.tar & cd ../
     fi
 
 elif [ ${MODE} = "whole_train_whole_infer" ];then
@@ -362,6 +418,10 @@ elif [ ${MODE} = "whole_infer" ];then
     if [ ${model_name} == "det_r50_vd_east_v2_0" ]; then
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar --no-check-certificate
         cd ./inference/ && tar xf det_r50_vd_east_v2.0_train.tar & cd ../
+    fi
+    if [ ${model_name} == "det_r50_dcn_fce_ctw_v2.0" ]; then
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/contribution/det_r50_dcn_fce_ctw_v2.0_train.tar --no-check-certificate
+        cd ./inference/ && tar xf det_r50_dcn_fce_ctw_v2.0_train.tar & cd ../
     fi
     if [[ ${model_name} =~ "en_table_structure" ]];then
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar --no-check-certificate

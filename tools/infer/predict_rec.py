@@ -68,15 +68,7 @@ class TextRecognizer(object):
                 'name': 'SARLabelDecode',
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
-            }
-        elif self.rec_algorithm == "RobustScanner":
-            postprocess_params = {
-                'name': 'SARLabelDecode',
-                "character_dict_path": args.rec_char_dict_path,
-                "use_space_char": args.use_space_char,
-                "rm_symbol": True
-            }
-                
+            }   
         elif self.rec_algorithm == 'ViTSTR':
             postprocess_params = {
                 'name': 'ViTSTRLabelDecode',
@@ -94,6 +86,13 @@ class TextRecognizer(object):
                 'name': 'SPINLabelDecode',
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
+            }
+        elif self.rec_algorithm == "RobustScanner":
+            postprocess_params = {
+                'name': 'SARLabelDecode',
+                "character_dict_path": args.rec_char_dict_path,
+                "use_space_char": args.use_space_char,
+                "rm_symbol": True
             }
         self.postprocess_op = build_post_process(postprocess_params)
         self.predictor, self.input_tensor, self.output_tensors, self.config = \
