@@ -2,7 +2,7 @@ English | [简体中文](README_ch.md)
 
 # PPOCRLabel
 
-PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field, with built-in PPOCR model to automatically detect and re-recognize data. It is written in python3 and pyqt5, supporting rectangular box, table and multi-point annotation modes. Annotations can be directly used for the training of PPOCR detection and recognition models.
+PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field, with built-in PP-OCR model to automatically detect and re-recognize data. It is written in python3 and pyqt5, supporting rectangular box, table and multi-point annotation modes. Annotations can be directly used for the training of PP-OCR detection and recognition models.
 
 <img src="./data/gif/steps_en.gif" width="100%"/>
 
@@ -142,14 +142,18 @@ In PPOCRLabel, complete the text information labeling (text and position), compl
 labeling in the Excel file, the recommended steps are:
 
 1. Table annotation: After opening the table picture, click on the `Table Recognition` button in the upper right corner of PPOCRLabel, which will call the table recognition model in PP-Structure to automatically label 
-the table and pop up Excel at the same time.
-   
+    the table and pop up Excel at the same time.
+
 2. Change the recognition result: **label each cell** (i.e. the text in a cell is marked as a box). Right click on the box and click on `Cell Re-recognition`. 
    You can use the model to automatically recognise the text within a cell.
-   
+
 3. Mark the table structure: for each cell contains the text, **mark as any identifier (such as `1`) in Excel**, to ensure that the merged cell structure is same as the original picture.
 
-4. Export JSON format annotation: close all Excel files corresponding to table images, click `File`-`Export table JSON annotation` to obtain JSON annotation results.
+	> Note: If there are blank cells in the table, you also need to mark them with a bounding box so that the total number of cells is the same as in the image.
+
+4. ***Adjust cell order:*** Click on the menu  `View` - `Show Box Number` to show the box ordinal numbers, and drag all the results under the 'Recognition Results' column on the right side of the software interface to make the box numbers are arranged from left to right, top to bottom
+
+5. Export JSON format annotation: close all Excel files corresponding to table images, click `File`-`Export table JSON annotation` to obtain JSON annotation results.
 
 ### 2.3 Note
 
