@@ -17,7 +17,7 @@ Global:
   checkpoints:
   save_inference_dir:
   use_visualdl: False
-  class_path: ./train_data/wildreceipt/class_list.txt
+  class_path: &class_path ./train_data/wildreceipt/class_list.txt
   infer_img: ./train_data/wildreceipt/1.txt
   save_res_path: ./output/sdmgr_kie/predicts_kie.txt
   img_scale: [ 1024, 512 ]
@@ -72,6 +72,7 @@ Train:
           order: 'hwc'
       - KieLabelEncode: # Class handling label
           character_dict_path: ./train_data/wildreceipt/dict.txt
+          class_path: *class_path
       - KieResize:
       - ToCHWImage:
       - KeepKeys:
@@ -88,7 +89,6 @@ Eval:
     data_dir: ./train_data/wildreceipt
     label_file_list:
       - ./train_data/wildreceipt/wildreceipt_test.txt
-      # - /paddle/data/PaddleOCR/train_data/wildreceipt/1.txt
     transforms:
       - DecodeImage: # load image
           img_mode: RGB

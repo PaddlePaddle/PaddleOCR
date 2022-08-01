@@ -20,15 +20,21 @@ import paddle
 from paddle import nn
 from paddle.nn import functional as F
 
+
 class TableAttentionLoss(nn.Layer):
-    def __init__(self, structure_weight, loc_weight, use_giou=False, giou_weight=1.0, **kwargs):
+    def __init__(self,
+                 structure_weight,
+                 loc_weight,
+                 use_giou=False,
+                 giou_weight=1.0,
+                 **kwargs):
         super(TableAttentionLoss, self).__init__()
         self.loss_func = nn.CrossEntropyLoss(weight=None, reduction='none')
         self.structure_weight = structure_weight
         self.loc_weight = loc_weight
         self.use_giou = use_giou
         self.giou_weight = giou_weight
-        
+
     def giou_loss(self, preds, bbox, eps=1e-7, reduction='mean'):
         '''
         :param preds:[[x1,y1,x2,y2], [x1,y1,x2,y2],,,]
@@ -47,9 +53,10 @@ class TableAttentionLoss(nn.Layer):
         inters = iw * ih
 
         # union
-        uni = (preds[:, 2] - preds[:, 0] + 1e-3) * (preds[:, 3] - preds[:, 1] + 1e-3
-            ) + (bbox[:, 2] - bbox[:, 0] + 1e-3) * (
-            bbox[:, 3] - bbox[:, 1] + 1e-3) - inters + eps
+        uni = (preds[:, 2] - preds[:, 0] + 1e-3) * (
+            preds[:, 3] - preds[:, 1] + 1e-3) + (bbox[:, 2] - bbox[:, 0] + 1e-3
+                                                 ) * (bbox[:, 3] - bbox[:, 1] +
+                                                      1e-3) - inters + eps
 
         # ious
         ious = inters / uni
@@ -79,30 +86,34 @@ class TableAttentionLoss(nn.Layer):
         structure_probs = predicts['structure_probs']
         structure_targets = batch[1].astype("int64")
         structure_targets = structure_targets[:, 1:]
-        if len(batch) == 6:
-            structure_mask = batch[5].astype("int64")
-            structure_mask = structure_mask[:, 1:]
-            structure_mask = paddle.reshape(structure_mask, [-1])
-        structure_probs = paddle.reshape(structure_probs, [-1, structure_probs.shape[-1]])
+        structure_probs = paddle.reshape(structure_probs,
+                                         [-1, structure_probs.shape[-1]])
         structure_targets = paddle.reshape(structure_targets, [-1])
         structure_loss = self.loss_func(structure_probs, structure_targets)
-        
-        if len(batch) == 6:
-             structure_loss = structure_loss * structure_mask
-            
-#         structure_loss = paddle.sum(structure_loss) * self.structure_weight
+
         structure_loss = paddle.mean(structure_loss) * self.structure_weight
-        
+
         loc_preds = predicts['loc_preds']
         loc_targets = batch[2].astype("float32")
-        loc_targets_mask = batch[4].astype("float32")
+        loc_targets_mask = batch[3].astype("float32")
         loc_targets = loc_targets[:, 1:, :]
         loc_targets_mask = loc_targets_mask[:, 1:, :]
-        loc_loss = F.mse_loss(loc_preds * loc_targets_mask, loc_targets) * self.loc_weight
+        loc_loss = F.mse_loss(loc_preds * loc_targets_mask,
+                              loc_targets) * self.loc_weight
         if self.use_giou:
-            loc_loss_giou = self.giou_loss(loc_preds * loc_targets_mask, loc_targets) * self.giou_weight
+            loc_loss_giou = self.giou_loss(loc_preds * loc_targets_mask,
+                                           loc_targets) * self.giou_weight
             total_loss = structure_loss + loc_loss + loc_loss_giou
-            return {'loss':total_loss, "structure_loss":structure_loss, "loc_loss":loc_loss, "loc_loss_giou":loc_loss_giou}
+            return {
+                'loss': total_loss,
+                "structure_loss": structure_loss,
+                "loc_loss": loc_loss,
+                "loc_loss_giou": loc_loss_giou
+            }
         else:
-            total_loss = structure_loss + loc_loss            
-            return {'loss':total_loss, "structure_loss":structure_loss, "loc_loss":loc_loss}
+            total_loss = structure_loss + loc_loss
+            return {
+                'loss': total_loss,
+                "structure_loss": structure_loss,
+                "loc_loss": loc_loss
+            }

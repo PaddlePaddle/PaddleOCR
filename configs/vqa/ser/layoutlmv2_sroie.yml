@@ -3,26 +3,26 @@ Global:
   epoch_num: &epoch_num 200
   log_smooth_window: 10
   print_batch_step: 10
-  save_model_dir: ./output/ser_layoutxlm/
+  save_model_dir: ./output/ser_layoutlmv2_sroie
   save_epoch_step: 2000
   # evaluation is run every 10 iterations after the 0th iteration
-  eval_batch_step: [ 0, 19 ]
+  eval_batch_step: [ 0, 200 ]
   cal_metric_during_train: False
   save_inference_dir:
   use_visualdl: False
   seed: 2022
-  infer_img: doc/vqa/input/zh_val_42.jpg
-  save_res_path: ./output/ser
+  infer_img: train_data/SROIE/test/X00016469670.jpg
+  save_res_path: ./output/ser_layoutlmv2_sroie/res/
 
 Architecture:
   model_type: vqa
-  algorithm: &algorithm "LayoutXLM"
+  algorithm: &algorithm "LayoutLMv2"
   Transform:
   Backbone:
-    name: LayoutXLMForSer
+    name: LayoutLMv2ForSer
     pretrained: True
     checkpoints:
-    num_classes: &num_classes 7
+    num_classes: &num_classes 9
 
 Loss:
   name: VQASerTokenLayoutLMLoss
@@ -38,12 +38,13 @@ Optimizer:
     epochs: *epoch_num
     warmup_epoch: 2
   regularizer:
+  
     name: L2
     factor: 0.00000
     
 PostProcess:
   name: VQASerTokenLayoutLMPostProcess
-  class_path: &class_path ppstructure/vqa/labels/labels_ser.txt
+  class_path: &class_path ./train_data/SROIE/class_list.txt
 
 Metric:
   name: VQASerTokenMetric
@@ -52,10 +53,9 @@ Metric:
 Train:
   dataset:
     name: SimpleDataSet
-    data_dir: train_data/XFUND/zh_train/image
+    data_dir: ./train_data/SROIE/train
     label_file_list: 
-      - train_data/XFUND/zh_train/xfun_normalize_train.json
-    ratio_list: [ 1.0 ]
+      - ./train_data/SROIE/train.txt
     transforms:
       - DecodeImage: # load image
           img_mode: RGB
@@ -78,7 +78,8 @@ Train:
           order: 'hwc'
       - ToCHWImage:
       - KeepKeys:
-          keep_keys: [ 'input_ids','labels', 'bbox', 'image', 'attention_mask', 'token_type_ids'] # dataloader will return list in this order
+          # dataloader will return list in this order
+          keep_keys: [ 'input_ids', 'bbox', 'attention_mask', 'token_type_ids', 'image', 'labels']
   loader:
     shuffle: True
     drop_last: False
@@ -88,9 +89,9 @@ Train:
 Eval:
   dataset:
     name: SimpleDataSet
-    data_dir: train_data/XFUND/zh_val/image
-    label_file_list:
-      - train_data/XFUND/zh_val/xfun_normalize_val.json
+    data_dir: ./train_data/SROIE/test
+    label_file_list: 
+      - ./train_data/SROIE/test.txt
     transforms:
       - DecodeImage: # load image
           img_mode: RGB
@@ -113,7 +114,8 @@ Eval:
           order: 'hwc'
       - ToCHWImage:
       - KeepKeys:
-          keep_keys: [ 'input_ids', 'labels', 'bbox', 'image', 'attention_mask', 'token_type_ids'] # dataloader will return list in this order
+          # dataloader will return list in this order
+          keep_keys: [ 'input_ids', 'bbox', 'attention_mask', 'token_type_ids', 'image', 'labels']
   loader:
     shuffle: False
     drop_last: False

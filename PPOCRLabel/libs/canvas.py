@@ -314,21 +314,23 @@ class Canvas(QWidget):
                 QApplication.restoreOverrideCursor() # ?
 
         if self.movingShape and self.hShape:
-             index = self.shapes.index(self.hShape)
-             if (
-                 self.shapesBackups[-1][index].points
-                 != self.shapes[index].points
-             ):
-                 self.storeShapes()
-                 self.shapeMoved.emit() # connect to updateBoxlist in PPOCRLabel.py
+            if self.hShape in self.shapes:
+                index = self.shapes.index(self.hShape)
+                if (
+                    self.shapesBackups[-1][index].points
+                    != self.shapes[index].points
+                ):
+                    self.storeShapes()
+                    self.shapeMoved.emit() # connect to updateBoxlist in PPOCRLabel.py
 
-             self.movingShape = False
+                self.movingShape = False
 
     def endMove(self, copy=False):
         assert self.selectedShapes and self.selectedShapesCopy
         assert len(self.selectedShapesCopy) == len(self.selectedShapes)
         if copy:
             for i, shape in enumerate(self.selectedShapesCopy):
+                shape.idx = len(self.shapes) # add current box index
                 self.shapes.append(shape)
                 self.selectedShapes[i].selected = False
                 self.selectedShapes[i] = shape
@@ -524,6 +526,9 @@ class Canvas(QWidget):
             self.storeShapes()
             self.selectedShapes = []
             self.update()
+
+        self.updateShapeIndex()
+
         return deleted_shapes
 
     def storeShapes(self):
@@ -619,6 +624,13 @@ class Canvas(QWidget):
             pal.setColor(self.backgroundRole(), QColor(232, 232, 232, 255))
             self.setPalette(pal)
 
+        # adaptive BBOX label & index font size
+        if self.pixmap:
+            h, w = self.pixmap.size().height(), self.pixmap.size().width()
+            fontszie = int(max(h, w) / 48)
+            for s in self.shapes:
+                s.fontsize = fontszie
+        
         p.end()
 
     def fillDrawing(self):
@@ -651,7 +663,8 @@ class Canvas(QWidget):
             return
 
         self.current.close()
-        self.shapes.append(self.current)
+        self.current.idx = len(self.shapes) # add current box index
+        self.shapes.append(self.current) 
         self.current = None
         self.setHiding(False)
         self.newShape.emit()
@@ -842,6 +855,7 @@ class Canvas(QWidget):
         self.hVertex = None
         # self.hEdge = None
         self.storeShapes()
+        self.updateShapeIndex()
         self.repaint()
 
     def setShapeVisible(self, shape, value):
@@ -883,10 +897,16 @@ class Canvas(QWidget):
         self.selectedShapes = []
         for shape in self.shapes:
             shape.selected = False
+        self.updateShapeIndex()
         self.repaint()
-
+    
     @property
     def isShapeRestorable(self):
         if len(self.shapesBackups) < 2:
             return False
         return True
+
+    def updateShapeIndex(self):
+        for i in range(len(self.shapes)):
+            self.shapes[i].idx = i
+        self.update()

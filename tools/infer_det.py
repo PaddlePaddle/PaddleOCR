@@ -44,7 +44,7 @@ def draw_det_res(dt_boxes, config, img, img_name, save_path):
         import cv2
         src_im = img
         for box in dt_boxes:
-            box = box.astype(np.int32).reshape((-1, 1, 2))
+            box = np.array(box).astype(np.int32).reshape((-1, 1, 2))
             cv2.polylines(src_im, [box], True, color=(255, 255, 0), thickness=2)
         if not os.path.exists(save_path):
             os.makedirs(save_path)
@@ -106,7 +106,7 @@ def main():
                     dt_boxes_list = []
                     for box in boxes:
                         tmp_json = {"transcription": ""}
-                        tmp_json['points'] = box.tolist()
+                        tmp_json['points'] = np.array(box).tolist()
                         dt_boxes_list.append(tmp_json)
                     det_box_json[k] = dt_boxes_list
                     save_det_path = os.path.dirname(config['Global'][
@@ -118,7 +118,7 @@ def main():
                 # write result
                 for box in boxes:
                     tmp_json = {"transcription": ""}
-                    tmp_json['points'] = box.tolist()
+                    tmp_json['points'] = np.array(box).tolist()
                     dt_boxes_json.append(tmp_json)
                 save_det_path = os.path.dirname(config['Global'][
                     'save_res_path']) + "/det_results/"

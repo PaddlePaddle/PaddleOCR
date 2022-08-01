@@ -16,6 +16,7 @@ import os
 import random
 from paddle.io import Dataset
 import json
+from copy import deepcopy
 
 from .imaug import transform, create_operators
 
@@ -29,32 +30,62 @@ class PubTabDataSet(Dataset):
         dataset_config = config[mode]['dataset']
         loader_config = config[mode]['loader']
 
-        label_file_path = dataset_config.pop('label_file_path')
+        label_file_list = dataset_config.pop('label_file_list')
+        data_source_num = len(label_file_list)
+        ratio_list = dataset_config.get("ratio_list", [1.0])
+        if isinstance(ratio_list, (float, int)):
+            ratio_list = [float(ratio_list)] * int(data_source_num)
+
+        assert len(
+            ratio_list
+        ) == data_source_num, "The length of ratio_list should be the same as the file_list."
 
         self.data_dir = dataset_config['data_dir']
         self.do_shuffle = loader_config['shuffle']
-        self.do_hard_select = False
-        if 'hard_select' in loader_config:
-            self.do_hard_select = loader_config['hard_select']
-            self.hard_prob = loader_config['hard_prob']
-        if self.do_hard_select:
-            self.img_select_prob = self.load_hard_select_prob()
-        self.table_select_type = None
-        if 'table_select_type' in loader_config:
-            self.table_select_type = loader_config['table_select_type']
-            self.table_select_prob = loader_config['table_select_prob']
 
         self.seed = seed
-        logger.info("Initialize indexs of datasets:%s" % label_file_path)
-        with open(label_file_path, "rb") as f:
-            self.data_lines = f.readlines()
-        self.data_idx_order_list = list(range(len(self.data_lines)))
-        if mode.lower() == "train":
+        self.mode = mode.lower()
+        logger.info("Initialize indexs of datasets:%s" % label_file_list)
+        self.data_lines = self.get_image_info_list(label_file_list, ratio_list)
+        # self.check(config['Global']['max_text_length'])
+
+        if mode.lower() == "train" and self.do_shuffle:
             self.shuffle_data_random()
         self.ops = create_operators(dataset_config['transforms'], global_config)
-
-        ratio_list = dataset_config.get("ratio_list", [1.0])
         self.need_reset = True in [x < 1 for x in ratio_list]
+
+    def get_image_info_list(self, file_list, ratio_list):
+        if isinstance(file_list, str):
+            file_list = [file_list]
+        data_lines = []
+        for idx, file in enumerate(file_list):
+            with open(file, "rb") as f:
+                lines = f.readlines()
+                if self.mode == "train" or ratio_list[idx] < 1.0:
+                    random.seed(self.seed)
+                    lines = random.sample(lines,
+                                          round(len(lines) * ratio_list[idx]))
+                data_lines.extend(lines)
+        return data_lines
+
+    def check(self, max_text_length):
+        data_lines = []
+        for line in self.data_lines:
+            data_line = line.decode('utf-8').strip("\n")
+            info = json.loads(data_line)
+            file_name = info['filename']
+            cells = info['html']['cells'].copy()
+            structure = info['html']['structure']['tokens'].copy()
+
+            img_path = os.path.join(self.data_dir, file_name)
+            if not os.path.exists(img_path):
+                self.logger.warning("{} does not exist!".format(img_path))
+                continue
+            if len(structure) == 0 or len(structure) > max_text_length:
+                continue
+            # data = {'img_path': img_path, 'cells': cells, 'structure':structure,'file_name':file_name}
+            data_lines.append(line)
+        self.data_lines = data_lines
 
     def shuffle_data_random(self):
         if self.do_shuffle:
@@ -68,47 +99,35 @@ class PubTabDataSet(Dataset):
             data_line = data_line.decode('utf-8').strip("\n")
             info = json.loads(data_line)
             file_name = info['filename']
-            select_flag = True
-            if self.do_hard_select:
-                prob = self.img_select_prob[file_name]
-                if prob < random.uniform(0, 1):
-                    select_flag = False
+            cells = info['html']['cells'].copy()
+            structure = info['html']['structure']['tokens'].copy()
 
-            if self.table_select_type:
-                structure = info['html']['structure']['tokens'].copy()
-                structure_str = ''.join(structure)
-                table_type = "simple"
-                if 'colspan' in structure_str or 'rowspan' in structure_str:
-                    table_type = "complex"
-                if table_type == "complex":
-                    if self.table_select_prob < random.uniform(0, 1):
-                        select_flag = False
+            img_path = os.path.join(self.data_dir, file_name)
+            if not os.path.exists(img_path):
+                raise Exception("{} does not exist!".format(img_path))
+            data = {
+                'img_path': img_path,
+                'cells': cells,
+                'structure': structure,
+                'file_name': file_name
+            }
 
-            if select_flag:
-                cells = info['html']['cells'].copy()
-                structure = info['html']['structure'].copy()
-                img_path = os.path.join(self.data_dir, file_name)
-                data = {
-                    'img_path': img_path,
-                    'cells': cells,
-                    'structure': structure
-                }
-                if not os.path.exists(img_path):
-                    raise Exception("{} does not exist!".format(img_path))
-                with open(data['img_path'], 'rb') as f:
-                    img = f.read()
-                    data['image'] = img
-                outs = transform(data, self.ops)
-            else:
-                outs = None
-        except Exception as e:
+            with open(data['img_path'], 'rb') as f:
+                img = f.read()
+                data['image'] = img
+            outs = transform(data, self.ops)
+        except:
+            import traceback
+            err = traceback.format_exc()
             self.logger.error(
                 "When parsing line {}, error happened with msg: {}".format(
-                    data_line, e))
+                    data_line, err))
             outs = None
         if outs is None:
-            return self.__getitem__(np.random.randint(self.__len__()))
+            rnd_idx = np.random.randint(self.__len__(
+            )) if self.mode == "train" else (idx + 1) % self.__len__()
+            return self.__getitem__(rnd_idx)
         return outs
 
     def __len__(self):
-        return len(self.data_idx_order_list)
+        return len(self.data_lines)
