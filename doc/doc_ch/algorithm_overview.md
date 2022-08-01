@@ -92,7 +92,7 @@
 |ViTSTR|ViTSTR| 79.82% | rec_vitstr_none_ce | [训练模型](https://paddleocr.bj.bcebos.com/rec_vitstr_none_ce_train.tar) |
 |ABINet|Resnet45| 90.75% | rec_r45_abinet | [训练模型](https://paddleocr.bj.bcebos.com/rec_r45_abinet_train.tar) |
 |SPIN|ResNet32| 90.00% | rec_r32_gaspin_bilstm_att | coming soon |
-|RobustScanner|ResNet31V2| 87.77% | rec_r31_robustscanner | coming soon |
+|RobustScanner|ResNet31| 87.77% | rec_r31_robustscanner | coming soon |
 
 
 <a name="2"></a>
