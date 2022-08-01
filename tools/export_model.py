@@ -91,7 +91,7 @@ def export_single_model(model,
         ]
         # print([None, 3, 32, 128])
         model = to_static(model, input_spec=other_shape)
-    elif arch_config["algorithm"] == "NRTR":
+    elif arch_config["algorithm"] in ["NRTR", "SPIN"]:
         other_shape = [
             paddle.static.InputSpec(
                 shape=[None, 1, 32, 100], dtype="float32"),

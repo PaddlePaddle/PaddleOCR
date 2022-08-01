@@ -153,7 +153,7 @@ Train:
     data_dir: ./train_data/ic15_data/
     ext_op_transform_idx: 1
     label_file_list:
-    - ./train_data/ic15_data/rec_gt_train_lite.txt
+    - ./train_data/ic15_data/rec_gt_train4w.txt
     transforms:
     - DecodeImage:
         img_mode: BGR
@@ -183,7 +183,7 @@ Eval:
     name: SimpleDataSet
     data_dir: ./train_data/ic15_data
     label_file_list:
-    - ./train_data/ic15_data/rec_gt_test_lite.txt
+    - ./train_data/ic15_data/rec_gt_test.txt
     transforms:
     - DecodeImage:
         img_mode: BGR

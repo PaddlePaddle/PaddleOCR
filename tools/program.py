@@ -154,6 +154,24 @@ def check_xpu(use_xpu):
     except Exception as e:
         pass
 
+def to_float32(preds):
+    if isinstance(preds, dict):
+        for k in preds:
+            if isinstance(preds[k], dict) or isinstance(preds[k], list):
+                preds[k] = to_float32(preds[k])
+            else:
+                preds[k] = preds[k].astype(paddle.float32)
+    elif isinstance(preds, list):
+        for k in range(len(preds)):
+            if isinstance(preds[k], dict):
+                preds[k] = to_float32(preds[k])
+            elif isinstance(preds[k], list):
+                preds[k] = to_float32(preds[k])
+            else:
+                preds[k] = preds[k].astype(paddle.float32)
+    else:
+        preds = preds.astype(paddle.float32)
+    return preds
 
 def train(config,
           train_dataloader,
@@ -207,7 +225,7 @@ def train(config,
     model.train()
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
-    extra_input_models = ["SRN", "NRTR", "SAR", "SEED", "SVTR"]
+    extra_input_models = ["SRN", "NRTR", "SAR", "SEED", "SVTR", "SPIN"]
     extra_input = False
     if config['Architecture']['algorithm'] == 'Distillation':
         for key in config['Architecture']["Models"]:
@@ -252,13 +270,19 @@ def train(config,
 
             # use amp
             if scaler:
-                with paddle.amp.auto_cast():
+                with paddle.amp.auto_cast(level='O2'):
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
                     elif model_type in ["kie", 'vqa']:
                         preds = model(batch)
                     else:
                         preds = model(images)
+                preds = to_float32(preds)
+                loss = loss_class(preds, batch)
+                avg_loss = loss['loss']
+                scaled_avg_loss = scaler.scale(avg_loss)
+                scaled_avg_loss.backward()
+                scaler.minimize(optimizer, scaled_avg_loss)
             else:
                 if model_type == 'table' or extra_input:
                     preds = model(images, data=batch[1:])
@@ -266,15 +290,8 @@ def train(config,
                     preds = model(batch)
                 else:
                     preds = model(images)
-
-            loss = loss_class(preds, batch)
-            avg_loss = loss['loss']
-
-            if scaler:
-                scaled_avg_loss = scaler.scale(avg_loss)
-                scaled_avg_loss.backward()
-                scaler.minimize(optimizer, scaled_avg_loss)
-            else:
+                loss = loss_class(preds, batch)
+                avg_loss = loss['loss']
                 avg_loss.backward()
                 optimizer.step()
             optimizer.clear_grad()
@@ -579,7 +596,7 @@ def preprocess(is_train=False):
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
         'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'LayoutLMv2', 'PREN', 'FCE',
-        'SVTR', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster'
+        'SVTR', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN'
     ]
 
     if use_xpu:
