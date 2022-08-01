@@ -223,14 +223,7 @@ PPOCRLabel supports three ways to export Label.txt
 
 - Close application export
 
-
-### 3.4 Export Partial Recognition Results
-
-For some data that are difficult to recognize, the recognition results will not be exported by **unchecking** the corresponding tags in the recognition results checkbox. The unchecked recognition result is saved as `True` in the `difficult` variable in the label file `label.txt`.
-
-> *Note: The status of the checkboxes in the recognition results still needs to be saved manually by clicking Save Button.*
-
-### 3.5 Dataset division
+### 3.4 Dataset division
 
 - Enter the following command in the terminal to execute the dataset division script:
 
@@ -259,7 +252,7 @@ For some data that are difficult to recognize, the recognition results will not 
     | ...
   ```
   
-### 3.6 Error message
+### 3.5 Error message
 
 - If paddleocr is installed with whl, it has a higher priority than calling PaddleOCR class with paddleocr.py, which may cause an exception if whl package is not updated.
 
