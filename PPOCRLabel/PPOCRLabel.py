@@ -231,7 +231,7 @@ class MainWindow(QMainWindow):
 
         # Create and add a widget for showing current label item index
         self.indexList = QListWidget()
-        self.indexList.setMaximumSize(40, 16777215) # limit max width
+        self.indexList.setMaximumSize(30, 16777215) # limit max width
         self.indexList.setEditTriggers(QAbstractItemView.NoEditTriggers) # no editable
         self.indexList.itemSelectionChanged.connect(self.indexSelectionChanged)
         self.indexList.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff) # no scroll Bar
