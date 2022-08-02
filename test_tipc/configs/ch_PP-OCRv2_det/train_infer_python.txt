@@ -13,7 +13,7 @@ train_infer_img_dir:./train_data/icdar2015/text_localization/ch4_test_images/
 null:null
 ##
 trainer:norm_train
-norm_train:tools/train.py -c configs/det/ch_PP-OCRv2/ch_PP-OCRv2_det_cml.yml -o 
+norm_train:tools/train.py -c configs/det/ch_PP-OCRv2/ch_PP-OCRv2_det_cml.yml -o Global.print_batch_step=1 Train.loader.shuffle=false
 pact_train:null
 fpgm_train:null
 distill_train:null
@@ -51,3 +51,9 @@ null:null
 null:null
 ===========================infer_benchmark_params==========================
 random_infer_input:[{float32,[3,640,640]}];[{float32,[3,960,960]}]
+===========================train_benchmark_params==========================
+batch_size:8
+fp_items:fp32|fp16
+epoch:2
+--profiler_options:batch_range=[10,20];state=GPU;tracer_option=Default;profile_path=model.profile
+flags:FLAGS_eager_delete_tensor_gb=0.0;FLAGS_fraction_of_gpu_memory_to_use=0.98;FLAGS_conv_workspace_size_limit=4096
