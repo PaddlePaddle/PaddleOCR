@@ -166,6 +166,7 @@ class TextRecognizer(object):
     def resize_norm_img_vl(self, img, image_shape):
 
         imgC, imgH, imgW = image_shape
+        img = img[:, :, ::-1]  # bgr2rgb
         resized_image = cv2.resize(
             img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
         resized_image = resized_image.astype('float32')

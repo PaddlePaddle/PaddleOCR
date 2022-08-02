@@ -219,21 +219,18 @@ class VLRecResizeImg(object):
 
     def __call__(self, data):
         img = data['image']
-        if self.infer_mode and self.character_dict_path is not None:
-            norm_img, valid_ratio = resize_norm_img_chinese(img,
-                                                            self.image_shape)
+
+        imgC, imgH, imgW = self.image_shape
+        resized_image = cv2.resize(
+            img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+        resized_w = imgW
+        resized_image = resized_image.astype('float32')
+        if self.image_shape[0] == 1:
+            resized_image = resized_image / 255
+            norm_img = resized_image[np.newaxis, :]
         else:
-            imgC, imgH, imgW = self.image_shape
-            resized_image = cv2.resize(
-                img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
-            resized_w = imgW
-            resized_image = resized_image.astype('float32')
-            if self.image_shape[0] == 1:
-                resized_image = resized_image / 255
-                norm_img = resized_image[np.newaxis, :]
-            else:
-                norm_img = resized_image.transpose((2, 0, 1)) / 255
-            valid_ratio = min(1.0, float(resized_w / imgW))
+            norm_img = resized_image.transpose((2, 0, 1)) / 255
+        valid_ratio = min(1.0, float(resized_w / imgW))
 
         data['image'] = norm_img
         data['valid_ratio'] = valid_ratio
