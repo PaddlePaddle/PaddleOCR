@@ -977,7 +977,10 @@ class VQATokenLabelEncode(object):
             info["bbox"] = self.trans_poly_to_bbox(info["points"])
 
             encode_res = self.tokenizer.encode(
-                text, pad_to_max_seq_len=False, return_attention_mask=True)
+                text,
+                pad_to_max_seq_len=False,
+                return_attention_mask=True,
+                return_token_type_ids=True)
 
             if not self.add_special_ids:
                 # TODO: use tok.all_special_ids to remove
@@ -1217,6 +1220,7 @@ class ABINetLabelEncode(BaseRecLabelEncode):
         dict_character = ['</s>'] + dict_character
         return dict_character
 
+
 class SPINLabelEncode(AttnLabelEncode):
     """ Convert between text-label and text-index """
 
@@ -1229,6 +1233,7 @@ class SPINLabelEncode(AttnLabelEncode):
         super(SPINLabelEncode, self).__init__(
             max_text_length, character_dict_path, use_space_char)
         self.lower = lower
+
     def add_special_char(self, dict_character):
         self.beg_str = "sos"
         self.end_str = "eos"
@@ -1248,4 +1253,4 @@ class SPINLabelEncode(AttnLabelEncode):
 
         padded_text[:len(target)] = target
         data['label'] = np.array(padded_text)
-        return data 
+        return data

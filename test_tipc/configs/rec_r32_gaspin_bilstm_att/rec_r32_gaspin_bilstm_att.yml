@@ -8,7 +8,7 @@ Global:
   # evaluation is run every 5000 iterations after the 4000th iteration
   eval_batch_step: [0, 2000]
   cal_metric_during_train: True
-  pretrained_model:
+  pretrained_model: pretrain_models/rec_r32_gaspin_bilstm_att_train/best_accuracy
   checkpoints:
   save_inference_dir:
   use_visualdl: False
