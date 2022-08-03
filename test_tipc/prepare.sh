@@ -106,6 +106,19 @@ if [ ${MODE} = "benchmark_train" ];then
         ln -s ./icdar2015_benckmark ./icdar2015
         cd ../
     fi
+    if [ ${model_name} == "layoutxlm_ser" ]; then
+        pip install -r ppstructure/vqa/requirements.txt
+        pip install paddlenlp>=2.3.5
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar --no-check-certificate
+        cd ./train_data/ && tar xf XFUND.tar
+        # expand gt.txt 10 times
+        cd XFUND/zh_train
+        for i in `seq 10`;do cp train.json dup$i.txt;done
+        cat dup* > train.json && rm -rf dup*
+        cd ../../
+        
+        cd ../
+    fi
 fi
 
 if [ ${MODE} = "lite_train_lite_infer" ];then
@@ -206,6 +219,13 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     if [ ${model_name} == "rec_r32_gaspin_bilstm_att" ]; then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/rec_r32_gaspin_bilstm_att_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf rec_r32_gaspin_bilstm_att_train.tar && cd ../
+    fi
+    if [ ${model_name} == "layoutxlm_ser" ]; then
+        pip install -r ppstructure/vqa/requirements.txt
+        pip install paddlenlp>=2.3.5
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar --no-check-certificate
+        cd ./train_data/ && tar xf XFUND.tar
+        cd ../
     fi
 
 elif [ ${MODE} = "whole_train_whole_infer" ];then
