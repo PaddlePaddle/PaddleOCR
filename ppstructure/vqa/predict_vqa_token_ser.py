@@ -153,7 +153,7 @@ def main(args):
             img_res = draw_ser_results(
                 image_file,
                 ser_res,
-                font_path="../doc/fonts/simfang.ttf", )
+                font_path=args.vis_font_path, )
 
             img_save_path = os.path.join(args.output,
                                          os.path.basename(image_file))
