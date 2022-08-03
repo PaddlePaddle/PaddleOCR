@@ -69,7 +69,7 @@ train_log/
 | det_r50_vd_east_v2.0	 |[config](../configs/det_r50_vd_east_v2.0/train_infer_python.txt) | 42.485 | 42.624 /	42.663 /	42.561 |0.00239083 | 67.61 |67.825/ 	68.299/ 	68.51| 0.00999854 | 10,000| 2,000|
 | det_r50_vd_pse_v2.0	 |[config](../configs/det_r50_vd_pse_v2.0/train_infer_python.txt) | 16.455 | 16.517 / 16.555 /	16.353 |0.012201752 | 27.02 |27.288 /	27.152 /	27.408| 0.009340339 | 10,000| 2,000|
 | rec_mv3_none_bilstm_ctc_v2.0	 |[config](../configs/rec_mv3_none_bilstm_ctc_v2.0/train_infer_python.txt) | 2288.358 | 2291.906 /	2293.725 /	2290.05 |0.001602197 | 2336.17 |2327.042 /	2328.093 /	2344.915| 0.007622025 | 600,000| 160,000|
-| layoutxlm	 |[config](../configs/layoutxlm/train_infer_python.txt) | 18.001 | 18.114 /	18.107 /	18.307 |0.010924783 | 21.982 | 21.507 /	21.116 /	21.406| 0.018180127 | 1490 | 1490|
+| layoutxlm_ser	 |[config](../configs/layoutxlm/train_infer_python.txt) | 18.001 | 18.114 /	18.107 /	18.307 |0.010924783 | 21.982 | 21.507 /	21.116 /	21.406| 0.018180127 | 1490 | 1490|
 | PP-Structure-table	 |[config](../configs/en_table_structure/train_infer_python.txt) | 14.151 | 14.077 /	14.23 /	14.25 |0.012140351 | 16.285 | 16.595 /	16.878 /	16.531 | 0.020559308 | 20,000| 5,000|
 | det_r50_dcn_fce_ctw_v2.0	 |[config](../configs/det_r50_dcn_fce_ctw_v2.0/train_infer_python.txt) | 14.057 | 14.029 /	14.02 /	14.014 |0.001069214 | 18.298 |18.411 /	18.376 /	18.331| 0.004345228 | 10,000| 2,000|
 | ch_PP-OCRv3_det	 |[config](../configs/ch_PP-OCRv3_det/train_infer_python.txt) | 8.622 | 8.431 /	8.423 /	8.479|0.006604552 | 14.203 |14.346	14.468	14.23| 0.016450097 | 10,000| 2,000|

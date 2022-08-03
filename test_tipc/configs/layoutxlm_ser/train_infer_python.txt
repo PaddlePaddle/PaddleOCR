@@ -1,5 +1,5 @@
 ===========================train_params===========================
-model_name:layoutxlm
+model_name:layoutxlm_ser
 python:python3.7
 gpu_list:0|0,1
 Global.use_gpu:True|True
