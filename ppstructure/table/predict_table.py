@@ -129,10 +129,24 @@ class TableSystem(object):
 
     def rebuild_table(self, structure_res, dt_boxes, rec_res):
         pred_structures, pred_bboxes = structure_res
+        dt_boxes, rec_res = self.filter_ocr_result(pred_bboxes,dt_boxes, rec_res)
         matched_index = self.match_result(dt_boxes, pred_bboxes)
         pred_html, pred = self.get_pred_html(pred_structures, matched_index,
                                              rec_res)
         return pred_html, pred
+
+    def filter_ocr_result(self, pred_bboxes,dt_boxes, rec_res):
+        y1 = pred_bboxes[:,1::2].min()
+        new_dt_boxes = []
+        new_rec_res = []
+
+        for box,rec in zip(dt_boxes, rec_res):
+            if np.max(box[1::2]) < y1:
+                continue
+            new_dt_boxes.append(box)
+            new_rec_res.append(rec)
+        return new_dt_boxes, new_rec_res
+
 
     def match_result(self, dt_boxes, pred_bboxes):
         matched = {}

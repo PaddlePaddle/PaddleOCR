@@ -28,7 +28,7 @@ Architecture:
       algorithm: DB
       Transform:
       Backbone:
-        name: ResNet
+        name: ResNet_vd
         layers: 18
       Neck:
         name: DBFPN

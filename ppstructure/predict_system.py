@@ -34,7 +34,7 @@ from ppocr.utils.logging import get_logger
 from tools.infer.predict_system import TextSystem
 from ppstructure.table.predict_table import TableSystem, to_excel
 from ppstructure.utility import parse_args, draw_structure_result
-from ppstructure.recovery.docx import convert_info_docx
+from ppstructure.recovery.recovery_to_doc import convert_info_docx
 
 logger = get_logger()
 

@@ -91,12 +91,28 @@ def export_single_model(model,
         ]
         # print([None, 3, 32, 128])
         model = to_static(model, input_spec=other_shape)
-    elif arch_config["algorithm"] == "NRTR":
+    elif arch_config["algorithm"] in ["NRTR", "SPIN"]:
         other_shape = [
             paddle.static.InputSpec(
                 shape=[None, 1, 32, 100], dtype="float32"),
         ]
         model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] in ["LayoutLM", "LayoutLMv2", "LayoutXLM"]:
+        input_spec = [
+            paddle.static.InputSpec(
+                shape=[None, 512], dtype="int64"),  # input_ids
+            paddle.static.InputSpec(
+                shape=[None, 512, 4], dtype="int64"),  # bbox
+            paddle.static.InputSpec(
+                shape=[None, 512], dtype="int64"),  # attention_mask
+            paddle.static.InputSpec(
+                shape=[None, 512], dtype="int64"),  # token_type_ids
+            paddle.static.InputSpec(
+                shape=[None, 3, 224, 224], dtype="int64"),  # image
+        ]
+        if arch_config["algorithm"] == "LayoutLM":
+            input_spec.pop(4)
+        model = to_static(model, input_spec=[input_spec])
     else:
         infer_shape = [3, -1, -1]
         if arch_config["model_type"] == "rec":
@@ -110,6 +126,8 @@ def export_single_model(model,
                 infer_shape[-1] = 100
         elif arch_config["model_type"] == "table":
             infer_shape = [3, 488, 488]
+            if arch_config["algorithm"] == "TableMaster":
+                infer_shape = [3, 480, 480]
         model = to_static(
             model,
             input_spec=[
@@ -172,7 +190,7 @@ def main():
             config["Architecture"]["Head"]["out_channels"] = char_num
 
     model = build_model(config["Architecture"])
-    load_model(config, model)
+    load_model(config, model, model_type=config['Architecture']["model_type"])
     model.eval()
 
     save_path = config["Global"]["save_inference_dir"]

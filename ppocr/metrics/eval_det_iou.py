@@ -83,14 +83,10 @@ class DetectionIoUEvaluator(object):
 
         evaluationLog = ""
 
-        # print(len(gt))
         for n in range(len(gt)):
             points = gt[n]['points']
-            # transcription = gt[n]['text']
             dontCare = gt[n]['ignore']
-            #             points = Polygon(points)
-            #             points = points.buffer(0)
-            if not Polygon(points).is_valid or not Polygon(points).is_simple:
+            if not Polygon(points).is_valid:
                 continue
 
             gtPol = points
@@ -105,9 +101,7 @@ class DetectionIoUEvaluator(object):
 
         for n in range(len(pred)):
             points = pred[n]['points']
-            #             points = Polygon(points)
-            #             points = points.buffer(0)
-            if not Polygon(points).is_valid or not Polygon(points).is_simple:
+            if not Polygon(points).is_valid:
                 continue
 
             detPol = points
@@ -191,8 +185,6 @@ class DetectionIoUEvaluator(object):
         methodHmean = 0 if methodRecall + methodPrecision == 0 else 2 * \
                                                                     methodRecall * methodPrecision / (
                                                                             methodRecall + methodPrecision)
-        # print(methodRecall, methodPrecision, methodHmean)
-        # sys.exit(-1)
         methodMetrics = {
             'precision': methodPrecision,
             'recall': methodRecall,

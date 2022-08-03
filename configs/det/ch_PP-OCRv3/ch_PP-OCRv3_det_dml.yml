@@ -25,7 +25,7 @@ Architecture:
       model_type: det
       algorithm: DB
       Backbone:
-        name: ResNet
+        name: ResNet_vd
         in_channels: 3
         layers: 50
       Neck:
@@ -40,7 +40,7 @@ Architecture:
       model_type: det
       algorithm: DB
       Backbone:
-        name: ResNet
+        name: ResNet_vd
         in_channels: 3
         layers: 50
       Neck:
@@ -60,7 +60,7 @@ Loss:
       - ["Student", "Student2"]
       maps_name: "thrink_maps"
       weight: 1.0
-      act: "softmax"
+      # act: None
       model_name_pairs: ["Student", "Student2"]
       key: maps
   - DistillationDBLoss:
