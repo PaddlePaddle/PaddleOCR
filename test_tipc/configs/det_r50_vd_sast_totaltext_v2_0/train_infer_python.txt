@@ -13,7 +13,7 @@ train_infer_img_dir:./train_data/icdar2015/text_localization/ch4_test_images/
 null:null
 ##
 trainer:norm_train
-norm_train:tools/train.py -c test_tipc/configs/det_r50_vd_sast_totaltext_v2.0/det_r50_vd_sast_totaltext.yml -o Global.pretrained_model=./pretrain_models/ResNet50_vd_ssld_pretrained
+norm_train:tools/train.py -c test_tipc/configs/det_r50_vd_sast_totaltext_v2_0/det_r50_vd_sast_totaltext.yml -o Global.pretrained_model=./pretrain_models/ResNet50_vd_ssld_pretrained
 pact_train:null
 fpgm_train:null
 distill_train:null
