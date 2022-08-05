@@ -581,12 +581,12 @@ def preprocess(is_train=False):
 
     loggers = []
 
-    if ('use_visualdl' in config['Global'] and config['Global']['use_visualdl']) and is_train:
+    if 'use_visualdl' in config['Global'] and config['Global']['use_visualdl']:
         save_model_dir = config['Global']['save_model_dir']
         vdl_writer_path = '{}/vdl/'.format(save_model_dir)
         log_writer = VDLLogger(vdl_writer_path)
         loggers.append(log_writer)
-    if (('use_wandb' in config['Global'] and config['Global']['use_wandb']) or 'wandb' in config) and is_train:
+    if ('use_wandb' in config['Global'] and config['Global']['use_wandb']) or 'wandb' in config:
         save_model_dir = config['Global']['save_model_dir']
         if "wandb" in config:
             wandb_params = config['wandb']
