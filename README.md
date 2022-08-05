@@ -52,9 +52,10 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 
 ## Quick Experience
 
+- One line of code quick use: [Quick Start](./doc/doc_en/quickstart_en.md)
 - Web online experience for the ultra-lightweight OCR: [Online Experience](https://www.paddlepaddle.org.cn/hub/scene/ocr)
 - Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Android systems): [Sign in to the website to obtain the QR code for  installing the App](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)
-- One line of code quick use: [Quick Start](./doc/doc_en/quickstart_en.md)
+
 
 
 <a name="book"></a>
