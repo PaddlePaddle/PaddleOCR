@@ -24,7 +24,7 @@ from shapely.geometry import LineString, Point, Polygon
 import json
 import copy
 from ppocr.utils.logging import get_logger
-from ppocr.data.imaug.vqa.augment import order_by_ppocr
+from ppocr.data.imaug.vqa.augment import order_by_tbyx
 
 
 class ClsLabelEncode(object):
@@ -902,7 +902,7 @@ class VQATokenLabelEncode(object):
         self.ocr_engine = ocr_engine
         self.use_textline_bbox_info = use_textline_bbox_info
         self.order_method = order_method
-        assert self.order_method in [None, "ppocr-order"]
+        assert self.order_method in [None, "tb-yx"]
 
     def split_bbox(self, bbox, text, tokenizer):
         words = text.split()
@@ -947,8 +947,8 @@ class VQATokenLabelEncode(object):
                 ocr_info[idx]["bbox"] = self.trans_poly_to_bbox(ocr_info[idx][
                     "points"])
 
-        if self.order_method == "ppocr-order":
-            ocr_info = order_by_ppocr(ocr_info)
+        if self.order_method == "tx-yx":
+            ocr_info = order_by_tbyx(ocr_info)
 
         # for re
         train_re = self.contains_re and not self.infer_mode

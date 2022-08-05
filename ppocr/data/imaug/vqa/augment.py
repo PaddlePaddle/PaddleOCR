@@ -19,7 +19,7 @@ import random
 from copy import deepcopy
 
 
-def order_by_ppocr(ocr_info):
+def order_by_tbyx(ocr_info):
     res = sorted(ocr_info, key=lambda r: (r["bbox"][1], r["bbox"][0]))
     for i in range(len(res) - 1):
         for j in range(i, 0, -1):
