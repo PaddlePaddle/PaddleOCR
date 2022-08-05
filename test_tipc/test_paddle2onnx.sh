@@ -54,7 +54,7 @@ function func_paddle2onnx(){
     _script=$1
 
     # paddle2onnx
-    if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0" ] || [ ${model_name} = "ch_ppocr_server_v2.0" ]; then
+    if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2_0" ] || [ ${model_name} = "ch_ppocr_server_v2_0" ]; then
         # trans det
         set_dirname=$(func_set_params "--model_dir" "${det_infer_model_dir_value}")
         set_model_filename=$(func_set_params "${model_filename_key}" "${model_filename_value}")
@@ -62,7 +62,8 @@ function func_paddle2onnx(){
         set_save_model=$(func_set_params "--save_file" "${det_save_file_value}")
         set_opset_version=$(func_set_params "${opset_version_key}" "${opset_version_value}")
         set_enable_onnx_checker=$(func_set_params "${enable_onnx_checker_key}" "${enable_onnx_checker_value}")
-        trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker}"
+        trans_det_log="${LOG_PATH}/trans_model_det.log"
+        trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker} > ${trans_det_log} 2>&1 "
         eval $trans_model_cmd
         last_status=${PIPESTATUS[0]}
         status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}"
@@ -73,7 +74,8 @@ function func_paddle2onnx(){
         set_save_model=$(func_set_params "--save_file" "${rec_save_file_value}")
         set_opset_version=$(func_set_params "${opset_version_key}" "${opset_version_value}")
         set_enable_onnx_checker=$(func_set_params "${enable_onnx_checker_key}" "${enable_onnx_checker_value}")
-        trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker}"
+        trans_rec_log="${LOG_PATH}/trans_model_rec.log"
+        trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker} > ${trans_rec_log} 2>&1 "
         eval $trans_model_cmd
         last_status=${PIPESTATUS[0]}
         status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}"
@@ -85,7 +87,8 @@ function func_paddle2onnx(){
         set_save_model=$(func_set_params "--save_file" "${det_save_file_value}")
         set_opset_version=$(func_set_params "${opset_version_key}" "${opset_version_value}")
         set_enable_onnx_checker=$(func_set_params "${enable_onnx_checker_key}" "${enable_onnx_checker_value}")
-        trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker}"
+        trans_det_log="${LOG_PATH}/trans_model_det.log"
+        trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker} > ${trans_det_log} 2>&1 "
         eval $trans_model_cmd
         last_status=${PIPESTATUS[0]}
         status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}"     
@@ -97,7 +100,8 @@ function func_paddle2onnx(){
         set_save_model=$(func_set_params "--save_file" "${rec_save_file_value}")
         set_opset_version=$(func_set_params "${opset_version_key}" "${opset_version_value}")
         set_enable_onnx_checker=$(func_set_params "${enable_onnx_checker_key}" "${enable_onnx_checker_value}")
-        trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker}"
+        trans_rec_log="${LOG_PATH}/trans_model_rec.log"
+        trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker} > ${trans_rec_log} 2>&1 "
         eval $trans_model_cmd
         last_status=${PIPESTATUS[0]}
         status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}"
@@ -109,7 +113,7 @@ function func_paddle2onnx(){
             _save_log_path="${LOG_PATH}/paddle2onnx_infer_cpu.log"
             set_gpu=$(func_set_params "${use_gpu_key}" "${use_gpu}")
             set_img_dir=$(func_set_params "${image_dir_key}" "${image_dir_value}")
-            if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0" ] || [ ${model_name} = "ch_ppocr_server_v2.0" ]; then
+            if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2_0" ] || [ ${model_name} = "ch_ppocr_server_v2_0" ]; then
                 set_det_model_dir=$(func_set_params "${det_model_key}" "${det_save_file_value}")
                 set_rec_model_dir=$(func_set_params "${rec_model_key}" "${rec_save_file_value}")
                 infer_model_cmd="${python} ${inference_py} ${set_gpu} ${set_img_dir} ${set_det_model_dir} ${set_rec_model_dir} --use_onnx=True > ${_save_log_path} 2>&1 "
@@ -128,7 +132,7 @@ function func_paddle2onnx(){
             _save_log_path="${LOG_PATH}/paddle2onnx_infer_gpu.log"
             set_gpu=$(func_set_params "${use_gpu_key}" "${use_gpu}")
             set_img_dir=$(func_set_params "${image_dir_key}" "${image_dir_value}")
-            if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0" ] || [ ${model_name} = "ch_ppocr_server_v2.0" ]; then
+            if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2_0" ] || [ ${model_name} = "ch_ppocr_server_v2_0" ]; then
                 set_det_model_dir=$(func_set_params "${det_model_key}" "${det_save_file_value}")
                 set_rec_model_dir=$(func_set_params "${rec_model_key}" "${rec_save_file_value}")
                 infer_model_cmd="${python} ${inference_py} ${set_gpu} ${set_img_dir} ${set_det_model_dir} ${set_rec_model_dir} --use_onnx=True > ${_save_log_path} 2>&1 "

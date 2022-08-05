@@ -154,6 +154,24 @@ def check_xpu(use_xpu):
     except Exception as e:
         pass
 
+def to_float32(preds):
+    if isinstance(preds, dict):
+        for k in preds:
+            if isinstance(preds[k], dict) or isinstance(preds[k], list):
+                preds[k] = to_float32(preds[k])
+            else:
+                preds[k] = preds[k].astype(paddle.float32)
+    elif isinstance(preds, list):
+        for k in range(len(preds)):
+            if isinstance(preds[k], dict):
+                preds[k] = to_float32(preds[k])
+            elif isinstance(preds[k], list):
+                preds[k] = to_float32(preds[k])
+            else:
+                preds[k] = preds[k].astype(paddle.float32)
+    else:
+        preds = preds.astype(paddle.float32)
+    return preds
 
 def train(config,
           train_dataloader,
@@ -207,7 +225,7 @@ def train(config,
     model.train()
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
-    extra_input_models = ["SRN", "NRTR", "SAR", "SEED", "SVTR"]
+    extra_input_models = ["SRN", "NRTR", "SAR", "SEED", "SVTR", "SPIN"]
     extra_input = False
     if config['Architecture']['algorithm'] == 'Distillation':
         for key in config['Architecture']["Models"]:
@@ -252,11 +270,19 @@ def train(config,
 
             # use amp
             if scaler:
-                with paddle.amp.auto_cast():
+                with paddle.amp.auto_cast(level='O2'):
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
+                    elif model_type in ["kie", 'vqa']:
+                        preds = model(batch)
                     else:
                         preds = model(images)
+                preds = to_float32(preds)
+                loss = loss_class(preds, batch)
+                avg_loss = loss['loss']
+                scaled_avg_loss = scaler.scale(avg_loss)
+                scaled_avg_loss.backward()
+                scaler.minimize(optimizer, scaled_avg_loss)
             else:
                 if model_type == 'table' or extra_input:
                     preds = model(images, data=batch[1:])
@@ -264,23 +290,19 @@ def train(config,
                     preds = model(batch)
                 else:
                     preds = model(images)
-
-            loss = loss_class(preds, batch)
-            avg_loss = loss['loss']
-
-            if scaler:
-                scaled_avg_loss = scaler.scale(avg_loss)
-                scaled_avg_loss.backward()
-                scaler.minimize(optimizer, scaled_avg_loss)
-            else:
+                loss = loss_class(preds, batch)
+                avg_loss = loss['loss']
                 avg_loss.backward()
                 optimizer.step()
             optimizer.clear_grad()
 
             if cal_metric_during_train and epoch % calc_epoch_interval == 0:  # only rec and cls need
                 batch = [item.numpy() for item in batch]
-                if model_type in ['table', 'kie']:
+                if model_type in ['kie']:
                     eval_class(preds, batch)
+                elif model_type in ['table']:
+                    post_result = post_process_class(preds, batch)
+                    eval_class(post_result, batch)
                 else:
                     if config['Loss']['name'] in ['MultiLoss', 'MultiLoss_v2'
                                                   ]:  # for multi head loss
@@ -307,7 +329,8 @@ def train(config,
             train_stats.update(stats)
 
             if log_writer is not None and dist.get_rank() == 0:
-                log_writer.log_metrics(metrics=train_stats.get(), prefix="TRAIN", step=global_step)
+                log_writer.log_metrics(
+                    metrics=train_stats.get(), prefix="TRAIN", step=global_step)
 
             if dist.get_rank() == 0 and (
                 (global_step > 0 and global_step % print_batch_step == 0) or
@@ -354,7 +377,8 @@ def train(config,
 
                 # logger metric
                 if log_writer is not None:
-                    log_writer.log_metrics(metrics=cur_metric, prefix="EVAL", step=global_step)
+                    log_writer.log_metrics(
+                        metrics=cur_metric, prefix="EVAL", step=global_step)
 
                 if cur_metric[main_indicator] >= best_model_dict[
                         main_indicator]:
@@ -377,11 +401,18 @@ def train(config,
                 logger.info(best_str)
                 # logger best metric
                 if log_writer is not None:
-                    log_writer.log_metrics(metrics={
-                        "best_{}".format(main_indicator): best_model_dict[main_indicator]
-                        }, prefix="EVAL", step=global_step)
-                    
-                    log_writer.log_model(is_best=True, prefix="best_accuracy", metadata=best_model_dict)
+                    log_writer.log_metrics(
+                        metrics={
+                            "best_{}".format(main_indicator):
+                            best_model_dict[main_indicator]
+                        },
+                        prefix="EVAL",
+                        step=global_step)
+
+                    log_writer.log_model(
+                        is_best=True,
+                        prefix="best_accuracy",
+                        metadata=best_model_dict)
 
             reader_start = time.time()
         if dist.get_rank() == 0:
@@ -413,7 +444,8 @@ def train(config,
                 epoch=epoch,
                 global_step=global_step)
             if log_writer is not None:
-                log_writer.log_model(is_best=False, prefix='iter_epoch_{}'.format(epoch))
+                log_writer.log_model(
+                    is_best=False, prefix='iter_epoch_{}'.format(epoch))
 
     best_str = 'best metric, {}'.format(', '.join(
         ['{}: {}'.format(k, v) for k, v in best_model_dict.items()]))
@@ -451,7 +483,6 @@ def eval(model,
                 preds = model(batch)
             else:
                 preds = model(images)
-
             batch_numpy = []
             for item in batch:
                 if isinstance(item, paddle.Tensor):
@@ -461,9 +492,9 @@ def eval(model,
             # Obtain usable results from post-processing methods
             total_time += time.time() - start
             # Evaluate the results of the current batch
-            if model_type in ['table', 'kie']:
+            if model_type in ['kie']:
                 eval_class(preds, batch_numpy)
-            elif model_type in ['vqa']:
+            elif model_type in ['table', 'vqa']:
                 post_result = post_process_class(preds, batch_numpy)
                 eval_class(post_result, batch_numpy)
             else:
@@ -564,7 +595,8 @@ def preprocess(is_train=False):
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
-        'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'PREN', 'FCE', 'SVTR'
+        'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'LayoutLMv2', 'PREN', 'FCE',
+        'SVTR', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN'
     ]
 
     if use_xpu:
@@ -585,7 +617,8 @@ def preprocess(is_train=False):
         vdl_writer_path = '{}/vdl/'.format(save_model_dir)
         log_writer = VDLLogger(save_model_dir)
         loggers.append(log_writer)
-    if ('use_wandb' in config['Global'] and config['Global']['use_wandb']) or 'wandb' in config:
+    if ('use_wandb' in config['Global'] and
+            config['Global']['use_wandb']) or 'wandb' in config:
         save_dir = config['Global']['save_model_dir']
         wandb_writer_path = "{}/wandb".format(save_dir)
         if "wandb" in config:

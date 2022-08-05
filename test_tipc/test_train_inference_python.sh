@@ -2,7 +2,7 @@
 source test_tipc/common_func.sh
 
 FILENAME=$1
-# MODE be one of ['lite_train_lite_infer' 'lite_train_whole_infer' 'whole_train_whole_infer', 'whole_infer', 'klquant_whole_infer']
+# MODE be one of ['lite_train_lite_infer' 'lite_train_whole_infer' 'whole_train_whole_infer', 'whole_infer']
 MODE=$2
 
 dataline=$(awk 'NR==1, NR==51{print}'  $FILENAME)
@@ -88,43 +88,6 @@ benchmark_value=$(func_parser_value "${lines[49]}")
 infer_key1=$(func_parser_key "${lines[50]}")
 infer_value1=$(func_parser_value "${lines[50]}")
 
-# parser klquant_infer
-if [ ${MODE} = "klquant_whole_infer" ]; then
-    dataline=$(awk 'NR==1, NR==17{print}'  $FILENAME)
-    lines=(${dataline})
-    model_name=$(func_parser_value "${lines[1]}")
-    python=$(func_parser_value "${lines[2]}")
-    export_weight=$(func_parser_key "${lines[3]}")
-    save_infer_key=$(func_parser_key "${lines[4]}")
-    # parser inference model 
-    infer_model_dir_list=$(func_parser_value "${lines[5]}")
-    infer_export_list=$(func_parser_value "${lines[6]}")
-    infer_is_quant=$(func_parser_value "${lines[7]}")
-    # parser inference 
-    inference_py=$(func_parser_value "${lines[8]}")
-    use_gpu_key=$(func_parser_key "${lines[9]}")
-    use_gpu_list=$(func_parser_value "${lines[9]}")
-    use_mkldnn_key=$(func_parser_key "${lines[10]}")
-    use_mkldnn_list=$(func_parser_value "${lines[10]}")
-    cpu_threads_key=$(func_parser_key "${lines[11]}")
-    cpu_threads_list=$(func_parser_value "${lines[11]}")
-    batch_size_key=$(func_parser_key "${lines[12]}")
-    batch_size_list=$(func_parser_value "${lines[12]}")
-    use_trt_key=$(func_parser_key "${lines[13]}")
-    use_trt_list=$(func_parser_value "${lines[13]}")
-    precision_key=$(func_parser_key "${lines[14]}")
-    precision_list=$(func_parser_value "${lines[14]}")
-    infer_model_key=$(func_parser_key "${lines[15]}")
-    image_dir_key=$(func_parser_key "${lines[16]}")
-    infer_img_dir=$(func_parser_value "${lines[16]}")
-    save_log_key=$(func_parser_key "${lines[17]}")
-    save_log_value=$(func_parser_value "${lines[17]}")
-    benchmark_key=$(func_parser_key "${lines[18]}")
-    benchmark_value=$(func_parser_value "${lines[18]}")
-    infer_key1=$(func_parser_key "${lines[19]}")
-    infer_value1=$(func_parser_value "${lines[19]}")
-fi
-
 LOG_PATH="./test_tipc/output/${model_name}/${MODE}"
 mkdir -p ${LOG_PATH}
 status_log="${LOG_PATH}/results_python.log"
@@ -138,6 +101,7 @@ function func_inference(){
     _log_path=$4
     _img_dir=$5
     _flag_quant=$6
+    _gpu=$7
     # inference 
     for use_gpu in ${use_gpu_list[*]}; do
         if [ ${use_gpu} = "False" ] || [ ${use_gpu} = "cpu" ]; then
@@ -156,7 +120,7 @@ function func_inference(){
                             fi # skip when quant model inference but precision is not int8
                             set_precision=$(func_set_params "${precision_key}" "${precision}")
                             
-                            _save_log_path="${_log_path}/python_infer_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_precision_${precision}_batchsize_${batch_size}.log"
+                            _save_log_path="${_log_path}/python_infer_cpu_gpus_${_gpu}_usemkldnn_${use_mkldnn}_threads_${threads}_precision_${precision}_batchsize_${batch_size}.log"
                             set_infer_data=$(func_set_params "${image_dir_key}" "${_img_dir}")
                             set_benchmark=$(func_set_params "${benchmark_key}" "${benchmark_value}")
                             set_batchsize=$(func_set_params "${batch_size_key}" "${batch_size}")
@@ -187,7 +151,7 @@ function func_inference(){
                         continue
                     fi
                     for batch_size in ${batch_size_list[*]}; do
-                        _save_log_path="${_log_path}/python_infer_gpu_usetrt_${use_trt}_precision_${precision}_batchsize_${batch_size}.log"
+                        _save_log_path="${_log_path}/python_infer_gpu_gpus_${_gpu}_usetrt_${use_trt}_precision_${precision}_batchsize_${batch_size}.log"
                         set_infer_data=$(func_set_params "${image_dir_key}" "${_img_dir}")
                         set_benchmark=$(func_set_params "${benchmark_key}" "${benchmark_value}")
                         set_batchsize=$(func_set_params "${batch_size_key}" "${batch_size}")
@@ -211,7 +175,7 @@ function func_inference(){
     done
 }
 
-if [ ${MODE} = "whole_infer" ] || [ ${MODE} = "klquant_whole_infer" ]; then
+if [ ${MODE} = "whole_infer" ]; then
     GPUID=$3
     if [ ${#GPUID} -le 0 ];then
         env=" "
@@ -221,21 +185,18 @@ if [ ${MODE} = "whole_infer" ] || [ ${MODE} = "klquant_whole_infer" ]; then
     # set CUDA_VISIBLE_DEVICES
     eval $env
     export Count=0
+    gpu=0
     IFS="|"
     infer_run_exports=(${infer_export_list})
     infer_quant_flag=(${infer_is_quant})
     for infer_model in ${infer_model_dir_list[*]}; do
         # run export
-        if [ ${infer_run_exports[Count]} != "null" ];then
-            if [ ${MODE} = "klquant_whole_infer" ]; then
-                save_infer_dir="${infer_model}_klquant"
-            fi
-            if [ ${MODE} = "whole_infer" ]; then
-                save_infer_dir="${infer_model}"
-            fi
+        if [ ${infer_run_exports[Count]} != "null" ];then 
+            save_infer_dir="${infer_model}"
             set_export_weight=$(func_set_params "${export_weight}" "${infer_model}")
             set_save_infer_key=$(func_set_params "${save_infer_key}" "${save_infer_dir}")
-            export_cmd="${python} ${infer_run_exports[Count]} ${set_export_weight} ${set_save_infer_key}"
+            export_log_path="${LOG_PATH}_export_${Count}.log"
+            export_cmd="${python} ${infer_run_exports[Count]} ${set_export_weight} ${set_save_infer_key} > ${export_log_path} 2>&1 "
             echo ${infer_run_exports[Count]} 
             echo $export_cmd
             eval $export_cmd
@@ -246,10 +207,7 @@ if [ ${MODE} = "whole_infer" ] || [ ${MODE} = "klquant_whole_infer" ]; then
         fi
         #run inference
         is_quant=${infer_quant_flag[Count]}
-        if [ ${MODE} = "klquant_whole_infer" ]; then
-            is_quant="True"
-        fi
-        func_inference "${python}" "${inference_py}" "${save_infer_dir}" "${LOG_PATH}" "${infer_img_dir}" ${is_quant}
+        func_inference "${python}" "${inference_py}" "${save_infer_dir}" "${LOG_PATH}" "${infer_img_dir}" ${is_quant} "${gpu}"
         Count=$(($Count + 1))
     done
 else
@@ -309,7 +267,7 @@ else
                 if [ ${run_train} = "null" ]; then
                     continue
                 fi
-                set_autocast=$(func_set_params "${autocast_key}" "${autocast}")
+
                 set_epoch=$(func_set_params "${epoch_key}" "${epoch_num}")
                 set_pretrain=$(func_set_params "${pretrain_model_key}" "${pretrain_model_value}")
                 set_batchsize=$(func_set_params "${train_batch_key}" "${train_batch_value}")
@@ -331,14 +289,15 @@ else
 
                 set_save_model=$(func_set_params "${save_model_key}" "${save_log}")
                 if [ ${#gpu} -le 2 ];then  # train with cpu or single gpu
-                    cmd="${python} ${run_train} ${set_use_gpu}  ${set_save_model} ${set_epoch} ${set_pretrain} ${set_autocast} ${set_batchsize} ${set_train_params1} ${set_amp_config} "
+                    cmd="${python} ${run_train} ${set_use_gpu}  ${set_save_model} ${set_epoch} ${set_pretrain}  ${set_batchsize} ${set_train_params1} ${set_amp_config} "
                 elif [ ${#ips} -le 15 ];then  # train with multi-gpu
-                    cmd="${python} -m paddle.distributed.launch --gpus=${gpu} ${run_train} ${set_use_gpu} ${set_save_model} ${set_epoch} ${set_pretrain} ${set_autocast} ${set_batchsize} ${set_train_params1} ${set_amp_config}"
+                    cmd="${python} -m paddle.distributed.launch --gpus=${gpu} ${run_train} ${set_use_gpu} ${set_save_model} ${set_epoch} ${set_pretrain}  ${set_batchsize} ${set_train_params1} ${set_amp_config}"
                 else     # train with multi-machine
-                    cmd="${python} -m paddle.distributed.launch --ips=${ips} --gpus=${gpu} ${run_train} ${set_use_gpu} ${set_save_model} ${set_pretrain} ${set_epoch} ${set_autocast} ${set_batchsize} ${set_train_params1} ${set_amp_config}"
+                    cmd="${python} -m paddle.distributed.launch --ips=${ips} --gpus=${gpu} ${run_train} ${set_use_gpu} ${set_save_model} ${set_pretrain} ${set_epoch}  ${set_batchsize} ${set_train_params1} ${set_amp_config}"
                 fi
                 # run train
                 eval $cmd
+                eval "cat ${save_log}/train.log >> ${save_log}.log"
                 status_check $? "${cmd}" "${status_log}" "${model_name}"
 
                 set_eval_pretrain=$(func_set_params "${pretrain_model_key}" "${save_log}/${train_model_name}")
@@ -347,7 +306,8 @@ else
                 if [ ${eval_py} != "null" ]; then
                     eval ${env}
                     set_eval_params1=$(func_set_params "${eval_key1}" "${eval_value1}")
-                    eval_cmd="${python} ${eval_py} ${set_eval_pretrain} ${set_use_gpu} ${set_eval_params1}" 
+                    eval_log_path="${LOG_PATH}/${trainer}_gpus_${gpu}_autocast_${autocast}_nodes_${nodes}_eval.log"
+                    eval_cmd="${python} ${eval_py} ${set_eval_pretrain} ${set_use_gpu} ${set_eval_params1} > ${eval_log_path} 2>&1 " 
                     eval $eval_cmd
                     status_check $? "${eval_cmd}" "${status_log}" "${model_name}"
                 fi
@@ -355,9 +315,10 @@ else
                 if [ ${run_export} != "null" ]; then 
                     # run export model
                     save_infer_path="${save_log}"
+                    export_log_path="${LOG_PATH}/${trainer}_gpus_${gpu}_autocast_${autocast}_nodes_${nodes}_export.log"
                     set_export_weight=$(func_set_params "${export_weight}" "${save_log}/${train_model_name}")
                     set_save_infer_key=$(func_set_params "${save_infer_key}" "${save_infer_path}")
-                    export_cmd="${python} ${run_export} ${set_export_weight} ${set_save_infer_key}"
+                    export_cmd="${python} ${run_export} ${set_export_weight} ${set_save_infer_key} > ${export_log_path} 2>&1 "
                     eval $export_cmd
                     status_check $? "${export_cmd}" "${status_log}" "${model_name}"
 
@@ -369,7 +330,7 @@ else
                     else
                         infer_model_dir=${save_infer_path}
                     fi
-                    func_inference "${python}" "${inference_py}" "${infer_model_dir}" "${LOG_PATH}" "${train_infer_img_dir}" "${flag_quant}"
+                    func_inference "${python}" "${inference_py}" "${infer_model_dir}" "${LOG_PATH}" "${train_infer_img_dir}" "${flag_quant}" "${gpu}"
                     
                     eval "unset CUDA_VISIBLE_DEVICES"
                 fi

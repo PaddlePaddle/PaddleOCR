@@ -107,17 +107,20 @@ class FCENetTargets:
         for i in range(1, n):
             current_line_len = i * delta_length
 
-            while current_line_len >= length_cumsum[current_edge_ind + 1]:
+            while current_edge_ind + 1 < len(length_cumsum) and current_line_len >= length_cumsum[current_edge_ind + 1]:
                 current_edge_ind += 1
+
             current_edge_end_shift = current_line_len - length_cumsum[
                 current_edge_ind]
+
+            if current_edge_ind >= len(length_list):
+                break
             end_shift_ratio = current_edge_end_shift / length_list[
                 current_edge_ind]
             current_point = line[current_edge_ind] + (line[current_edge_ind + 1]
                                                       - line[current_edge_ind]
                                                       ) * end_shift_ratio
             resampled_line.append(current_point)
-
         resampled_line.append(line[-1])
         resampled_line = np.array(resampled_line)
 
@@ -328,6 +331,8 @@ class FCENetTargets:
             resampled_top_line, resampled_bot_line = self.resample_sidelines(
                 top_line, bot_line, self.resample_step)
             resampled_bot_line = resampled_bot_line[::-1]
+            if len(resampled_top_line) != len(resampled_bot_line):
+                continue
             center_line = (resampled_top_line + resampled_bot_line) / 2
 
             line_head_shrink_len = norm(resampled_top_line[0] -
