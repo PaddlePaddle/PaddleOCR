@@ -53,10 +53,11 @@ PP-OCRv3检测模型是对PP-OCRv2中的[CML](https://arxiv.org/pdf/2109.03144.p
 
 |序号|策略|模型大小|hmean|速度（cpu + mkldnn)|
 |-|-|-|-|-|
-|baseline teacher|DB-R50|99M|83.5%|260ms|
+|baseline teacher|PP-OCR server|49M|83.2%|171ms|
 |teacher1|DB-R50-LK-PAN|124M|85.0%|396ms|
 |teacher2|DB-R50-LK-PAN-DML|124M|86.0%|396ms|
 |baseline student|PP-OCRv2|3M|83.2%|117ms|
+|student0|DB-MV3-RSE-FPN|3.6M|84.5%|124ms|
 |student1|DB-MV3-CML（teacher2）|3M|84.3%|117ms|
 |student2|DB-MV3-RSE-FPN-CML（teacher2）|3.6M|85.4%|124ms|
 
@@ -184,7 +185,7 @@ UDML（Unified-Deep Mutual Learning）联合互学习是PP-OCRv2中就采用的�
 
 **（6）UIM：无标注数据挖掘方案**
 
-UIM（Unlabeled Images Mining）是一种非常简单的无标注数据挖掘方案。核心思想是利用高精度的文本识别大模型对无标注数据进行预测，获取伪标签，并且选择预测置信度高的样本作为训练数据，用于训练小模型。使用该策略，识别模型的准确率进一步提升到79.4%（+1%）。
+UIM（Unlabeled Images Mining）是一种非常简单的无标注数据挖掘方案。核心思想是利用高精度的文本识别大模型对无标注数据进行预测，获取伪标签，并且选择预测置信度高的样本作为训练数据，用于训练小模型。使用该策略，识别模型的准确率进一步提升到79.4%（+1%）。实际操作中，我们使用全量数据集训练高精度SVTR-Tiny模型（acc=82.5%）进行数据挖掘，点击获取[模型下载地址和使用教程](../../applications/高精度中文识别模型.md)。
 
 <div align="center">
     <img src="../ppocr_v3/UIM.png" width="500">
