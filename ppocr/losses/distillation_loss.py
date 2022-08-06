@@ -352,19 +352,20 @@ class DistillationLossFromOutput(LossFromOutput):
     def __init__(self,
                  reduction="none",
                  model_name_list=[],
+                 dist_key=None,
                  key="loss",
                  name="loss_re"):
-        super().__init__(key=None, reduction=reduction)
+        super().__init__(key=key, reduction=reduction)
         self.model_name_list = model_name_list
         self.name = name
-        self.key = key
+        self.dist_key = dist_key
 
     def forward(self, predicts, batch):
         loss_dict = dict()
         for idx, model_name in enumerate(self.model_name_list):
             out = predicts[model_name]
-            if self.key is not None:
-                out = out[self.key]
+            if self.dist_key is not None:
+                out = out[self.dist_key]
             loss = super().forward(out, batch)
             loss_dict["{}_{}".format(self.name, model_name)] = loss["loss"]
         return loss_dict

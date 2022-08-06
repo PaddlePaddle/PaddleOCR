@@ -947,7 +947,7 @@ class VQATokenLabelEncode(object):
                 ocr_info[idx]["bbox"] = self.trans_poly_to_bbox(ocr_info[idx][
                     "points"])
 
-        if self.order_method == "tx-yx":
+        if self.order_method == "tb-yx":
             ocr_info = order_by_tbyx(ocr_info)
 
         # for re

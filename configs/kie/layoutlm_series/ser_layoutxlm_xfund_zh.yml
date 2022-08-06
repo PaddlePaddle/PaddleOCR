@@ -3,23 +3,23 @@ Global:
   epoch_num: &epoch_num 200
   log_smooth_window: 10
   print_batch_step: 10
-  save_model_dir: ./output/ser_layoutlm_funsd
+  save_model_dir: ./output/ser_layoutxlm_xfund_zh
   save_epoch_step: 2000
   # evaluation is run every 10 iterations after the 0th iteration
-  eval_batch_step: [ 0, 57 ]
+  eval_batch_step: [ 0, 19 ]
   cal_metric_during_train: False
   save_inference_dir:
   use_visualdl: False
   seed: 2022
-  infer_img: train_data/FUNSD/testing_data/images/83624198.png
-  save_res_path: ./output/ser_layoutlm_funsd/res/
+  infer_img: ppstructure/docs/vqa/input/zh_val_42.jpg
+  save_res_path: ./output/ser_layoutxlm_xfund_zh/res
 
 Architecture:
   model_type: vqa
-  algorithm: &algorithm "LayoutLM"
+  algorithm: &algorithm "LayoutXLM"
   Transform:
   Backbone:
-    name: LayoutLMForSer
+    name: LayoutXLMForSer
     pretrained: True
     checkpoints:
     num_classes: &num_classes 7
@@ -27,6 +27,7 @@ Architecture:
 Loss:
   name: VQASerTokenLayoutLMLoss
   num_classes: *num_classes
+  key: "backbone_out"
 
 Optimizer:
   name: AdamW
@@ -43,7 +44,7 @@ Optimizer:
     
 PostProcess:
   name: VQASerTokenLayoutLMPostProcess
-  class_path: &class_path ./train_data/FUNSD/class_list.txt
+  class_path: &class_path train_data/XFUND/class_list_xfun.txt
 
 Metric:
   name: VQASerTokenMetric
@@ -52,9 +53,10 @@ Metric:
 Train:
   dataset:
     name: SimpleDataSet
-    data_dir: ./train_data/FUNSD/training_data/images/
+    data_dir: train_data/XFUND/zh_train/image
     label_file_list: 
-      - ./train_data/FUNSD/train.json
+      - train_data/XFUND/zh_train/train.json
+    ratio_list: [ 1.0 ]
     transforms:
       - DecodeImage: # load image
           img_mode: RGB
@@ -63,7 +65,6 @@ Train:
           contains_re: False
           algorithm: *algorithm
           class_path: *class_path
-          use_textline_bbox_info: &use_textline_bbox_info True
       - VQATokenPad:
           max_seq_len: &max_seq_len 512
           return_attention_mask: True
@@ -78,8 +79,7 @@ Train:
           order: 'hwc'
       - ToCHWImage:
       - KeepKeys:
-          # dataloader will return list in this order
-          keep_keys: [ 'input_ids', 'bbox', 'attention_mask', 'token_type_ids', 'image', 'labels']
+          keep_keys: [ 'input_ids', 'bbox', 'attention_mask', 'token_type_ids', 'image', 'labels'] # dataloader will return list in this order
   loader:
     shuffle: True
     drop_last: False
@@ -89,9 +89,9 @@ Train:
 Eval:
   dataset:
     name: SimpleDataSet
-    data_dir: train_data/FUNSD/testing_data/images/
+    data_dir: train_data/XFUND/zh_val/image
     label_file_list:
-      - ./train_data/FUNSD/test.json
+      - train_data/XFUND/zh_val/val.json
     transforms:
       - DecodeImage: # load image
           img_mode: RGB
@@ -100,7 +100,6 @@ Eval:
           contains_re: False
           algorithm: *algorithm
           class_path: *class_path
-          use_textline_bbox_info: *use_textline_bbox_info
       - VQATokenPad:
           max_seq_len: *max_seq_len
           return_attention_mask: True
@@ -115,8 +114,7 @@ Eval:
           order: 'hwc'
       - ToCHWImage:
       - KeepKeys:
-          # dataloader will return list in this order
-          keep_keys: [ 'input_ids', 'bbox', 'attention_mask', 'token_type_ids', 'image', 'labels']
+          keep_keys: [ 'input_ids', 'bbox', 'attention_mask', 'token_type_ids', 'image', 'labels'] # dataloader will return list in this order
   loader:
     shuffle: False
     drop_last: False

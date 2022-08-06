@@ -182,9 +182,9 @@ class LayoutXLMForSer(NLPBaseModel):
 class LayoutLMv2ForRe(NLPBaseModel):
     def __init__(self, pretrained=True, checkpoints=None, mode="base",
                  **kwargs):
-        super(LayoutLMv2ForRe, self).__init__(LayoutLMv2Model,
-                                              LayoutLMv2ForRelationExtraction,
-                                              "re", pretrained, checkpoints)
+        super(LayoutLMv2ForRe, self).__init__(
+            LayoutLMv2Model, LayoutLMv2ForRelationExtraction, mode, "re",
+            pretrained, checkpoints)
 
     def forward(self, x):
         x = self.model(
