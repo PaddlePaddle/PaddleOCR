@@ -75,7 +75,6 @@ Train:
           use_textline_bbox_info: &use_textline_bbox_info True
           # one of [None, "tb-yx"]
           order_method: &order_method "tb-yx"
-          # augment_bbox: True
       - VQATokenPad:
           max_seq_len: &max_seq_len 512
           return_attention_mask: True

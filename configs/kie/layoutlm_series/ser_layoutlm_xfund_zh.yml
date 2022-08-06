@@ -12,10 +12,6 @@ Global:
   use_visualdl: False
   seed: 2022
   infer_img: ppstructure/docs/vqa/input/zh_val_42.jpg
-
-  # infer_img: train_data/XFUND/zh_val/val.json
-  # infer_mode: False
-
   save_res_path: ./output/re_layoutlm_xfund_zh/res
 
 Architecture:

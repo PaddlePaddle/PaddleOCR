@@ -10,7 +10,7 @@ Global:
   cal_metric_during_train: False
   save_inference_dir:
   use_visualdl: False
-  seed: 2048
+  seed: 2022
   infer_img: ppstructure/docs/vqa/input/zh_val_21.jpg
   save_res_path: ./output/re_layoutlmv2_xfund_zh/res/
 
