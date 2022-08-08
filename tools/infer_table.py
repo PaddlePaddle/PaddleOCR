@@ -56,7 +56,6 @@ def main(config, device, logger, vdl_writer):
 
     model = build_model(config['Architecture'])
     algorithm = config['Architecture']['algorithm']
-    use_xywh = algorithm in ['TableMaster']
 
     load_model(config, model)
 
@@ -106,7 +105,7 @@ def main(config, device, logger, vdl_writer):
             f_w.write("result: {}, {}\n".format(structure_str_list,
                                                 bbox_list_str))
 
-            img = draw_rectangle(file, bbox_list, use_xywh)
+            img = draw_rectangle(file, bbox_list)
             cv2.imwrite(
                 os.path.join(save_res_path, os.path.basename(file)), img)
         logger.info("success!")

@@ -16,7 +16,7 @@ import sys
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '../..')))
 
 os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
 
@@ -87,6 +87,7 @@ class TableStructurer(object):
             utility.create_predictor(args, 'table', logger)
 
     def __call__(self, img):
+        starttime = time.time()
         ori_im = img.copy()
         data = {'image': img}
         data = transform(data, self.preprocess_op)
@@ -95,7 +96,6 @@ class TableStructurer(object):
             return None, 0
         img = np.expand_dims(img, axis=0)
         img = img.copy()
-        starttime = time.time()
 
         self.input_tensor.copy_from_cpu(img)
         self.predictor.run()
@@ -126,7 +126,6 @@ def main(args):
     table_structurer = TableStructurer(args)
     count = 0
     total_time = 0
-    use_xywh = args.table_algorithm in ['TableMaster']
     os.makedirs(args.output, exist_ok=True)
     with open(
             os.path.join(args.output, 'infer.txt'), mode='w',
@@ -146,7 +145,7 @@ def main(args):
             f_w.write("result: {}, {}\n".format(structure_str_list,
                                                 bbox_list_str))
 
-            img = draw_rectangle(image_file, bbox_list, use_xywh)
+            img = draw_rectangle(image_file, bbox_list)
             img_save_path = os.path.join(args.output,
                                          os.path.basename(image_file))
             cv2.imwrite(img_save_path, img)

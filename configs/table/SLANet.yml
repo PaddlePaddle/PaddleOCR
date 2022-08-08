@@ -1,24 +1,26 @@
 Global:
   use_gpu: true
-  epoch_num: 10
+  epoch_num: 400
   log_smooth_window: 20
-  print_batch_step: 5
-  save_model_dir: ./output/table_mv3/
-  save_epoch_step: 3
-  # evaluation is run every 400 iterations after the 0th iteration
-  eval_batch_step: [0, 40000]
+  print_batch_step: 20
+  save_model_dir: ./output/SLANet
+  save_epoch_step: 400
+  # evaluation is run every 1000 iterations after the 0th iteration
+  eval_batch_step: [0, 1000]
   cal_metric_during_train: True
   pretrained_model:
-  checkpoints:
-  save_inference_dir:
+  checkpoints: /ssd1/zhoujun20/table/ch/PaddleOCR/output/en/table_lcnet_1_0_csp_pan_headsv3_smooth_l1_pretrain_ssld_weight81_sync_bn/best_accuracy.pdparams
+  save_inference_dir: ./output/SLANet/infer
   use_visualdl: False
-  infer_img: ppstructure/docs/table/table.jpg
-  save_res_path: output/table_mv3
+  infer_img: doc/table/table.jpg
   # for data or label process
   character_dict_path: ppocr/utils/dict/table_structure_dict.txt
   character_type: en
-  max_text_length: 800
+  max_text_length: &max_text_length 500
+  box_format: &box_format 'xyxy' # 'xywh', 'xyxy', 'xyxyxyxy'
   infer_mode: False
+  use_sync_bn: True
+  save_res_path: 'output/infer'
 
 Optimizer:
   name: Adam
@@ -26,28 +28,37 @@ Optimizer:
   beta2: 0.999
   clip_norm: 5.0
   lr:
+    # name: Piecewise
     learning_rate: 0.001
+    # decay_epochs : [10, 20]
+    # values : [0.002, 0.0002, 0.0001]
+    # warmup_epoch: 0
   regularizer:
     name: 'L2'
     factor: 0.00000
 
 Architecture:
   model_type: table
-  algorithm: TableAttn
+  algorithm: SLANet
   Backbone:
-    name: MobileNetV3
+    name: PPLCNet
     scale: 1.0
-    model_name: large
+    pretrained: true
+    use_ssld: true
+  Neck:
+    name: CSPPAN
+    out_channels: 96
   Head:
-    name: TableAttentionHead
+    name: SLAHead
     hidden_size: 256
-    loc_type: 2
-    max_text_length: 800
+    max_text_length: *max_text_length
+    loc_reg_num: &loc_reg_num 4
 
 Loss:
-  name: TableAttentionLoss
-  structure_weight: 100.0
-  loc_weight: 10000.0
+  name: SLANetLoss
+  structure_weight: 1.0
+  loc_weight: 2.0
+  loc_loss: smooth_l1
 
 PostProcess:
   name: TableLabelDecode
@@ -55,13 +66,15 @@ PostProcess:
 Metric:
   name: TableMetric
   main_indicator: acc
-  compute_bbox_metric: false # cost many time, set False for training
+  compute_bbox_metric: False
+  loc_reg_num: *loc_reg_num
+  box_format: *box_format
 
 Train:
   dataset:
     name: PubTabDataSet
-    data_dir: ./train_data/pubtabnet/train
-    label_file_list: [./train_data/pubtabnet/train.jsonl]
+    data_dir: /home/zhoujun20/table/PubTabNe/pubtabnet/train/
+    label_file_list: [/home/zhoujun20/table/PubTabNe/pubtabnet/PubTabNet_2.0.0_train.jsonl]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
@@ -70,7 +83,10 @@ Train:
           learn_empty_box: False
           merge_no_span_structure: False
           replace_empty_cell_token: False
+          loc_reg_num: *loc_reg_num
+          max_text_length: *max_text_length
       - TableBoxEncode:
+          box_format: *box_format
       - ResizeTableImage:
           max_len: 488
       - NormalizeImage:
@@ -85,15 +101,15 @@ Train:
           keep_keys: [ 'image', 'structure', 'bboxes', 'bbox_masks', 'shape' ]
   loader:
     shuffle: True
-    batch_size_per_card: 32
+    batch_size_per_card: 48
     drop_last: True
     num_workers: 1
 
 Eval:
   dataset:
     name: PubTabDataSet
-    data_dir: ./train_data/pubtabnet/test/
-    label_file_list: [./train_data/pubtabnet/test.jsonl]
+    data_dir: /home/zhoujun20/table/PubTabNe/pubtabnet/val/
+    label_file_list: [/home/zhoujun20/table/PubTabNe/pubtabnet/PubTabNet_2.0.0_val.jsonl]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
@@ -102,7 +118,10 @@ Eval:
           learn_empty_box: False
           merge_no_span_structure: False
           replace_empty_cell_token: False
+          loc_reg_num: *loc_reg_num
+          max_text_length: *max_text_length
       - TableBoxEncode:
+          box_format: *box_format
       - ResizeTableImage:
           max_len: 488
       - NormalizeImage:
@@ -118,5 +137,5 @@ Eval:
   loader:
     shuffle: False
     drop_last: False
-    batch_size_per_card: 16
+    batch_size_per_card: 48
     num_workers: 1

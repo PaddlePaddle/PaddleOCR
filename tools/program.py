@@ -154,6 +154,7 @@ def check_xpu(use_xpu):
     except Exception as e:
         pass
 
+
 def to_float32(preds):
     if isinstance(preds, dict):
         for k in preds:
@@ -172,6 +173,7 @@ def to_float32(preds):
     else:
         preds = preds.astype(paddle.float32)
     return preds
+
 
 def train(config,
           train_dataloader,
@@ -596,7 +598,7 @@ def preprocess(is_train=False):
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
         'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'LayoutLMv2', 'PREN', 'FCE',
-        'SVTR', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN'
+        'SVTR', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN', 'SLANet'
     ]
 
     if use_xpu:

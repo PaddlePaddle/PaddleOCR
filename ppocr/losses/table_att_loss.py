@@ -22,65 +22,11 @@ from paddle.nn import functional as F
 
 
 class TableAttentionLoss(nn.Layer):
-    def __init__(self,
-                 structure_weight,
-                 loc_weight,
-                 use_giou=False,
-                 giou_weight=1.0,
-                 **kwargs):
+    def __init__(self, structure_weight, loc_weight, **kwargs):
         super(TableAttentionLoss, self).__init__()
         self.loss_func = nn.CrossEntropyLoss(weight=None, reduction='none')
         self.structure_weight = structure_weight
         self.loc_weight = loc_weight
-        self.use_giou = use_giou
-        self.giou_weight = giou_weight
-
-    def giou_loss(self, preds, bbox, eps=1e-7, reduction='mean'):
-        '''
-        :param preds:[[x1,y1,x2,y2], [x1,y1,x2,y2],,,]
-        :param bbox:[[x1,y1,x2,y2], [x1,y1,x2,y2],,,]
-        :return: loss
-        '''
-        ix1 = paddle.maximum(preds[:, 0], bbox[:, 0])
-        iy1 = paddle.maximum(preds[:, 1], bbox[:, 1])
-        ix2 = paddle.minimum(preds[:, 2], bbox[:, 2])
-        iy2 = paddle.minimum(preds[:, 3], bbox[:, 3])
-
-        iw = paddle.clip(ix2 - ix1 + 1e-3, 0., 1e10)
-        ih = paddle.clip(iy2 - iy1 + 1e-3, 0., 1e10)
-
-        # overlap
-        inters = iw * ih
-
-        # union
-        uni = (preds[:, 2] - preds[:, 0] + 1e-3) * (
-            preds[:, 3] - preds[:, 1] + 1e-3) + (bbox[:, 2] - bbox[:, 0] + 1e-3
-                                                 ) * (bbox[:, 3] - bbox[:, 1] +
-                                                      1e-3) - inters + eps
-
-        # ious
-        ious = inters / uni
-
-        ex1 = paddle.minimum(preds[:, 0], bbox[:, 0])
-        ey1 = paddle.minimum(preds[:, 1], bbox[:, 1])
-        ex2 = paddle.maximum(preds[:, 2], bbox[:, 2])
-        ey2 = paddle.maximum(preds[:, 3], bbox[:, 3])
-        ew = paddle.clip(ex2 - ex1 + 1e-3, 0., 1e10)
-        eh = paddle.clip(ey2 - ey1 + 1e-3, 0., 1e10)
-
-        # enclose erea
-        enclose = ew * eh + eps
-        giou = ious - (enclose - uni) / enclose
-
-        loss = 1 - giou
-
-        if reduction == 'mean':
-            loss = paddle.mean(loss)
-        elif reduction == 'sum':
-            loss = paddle.sum(loss)
-        else:
-            raise NotImplementedError
-        return loss
 
     def forward(self, predicts, batch):
         structure_probs = predicts['structure_probs']
@@ -100,20 +46,48 @@ class TableAttentionLoss(nn.Layer):
         loc_targets_mask = loc_targets_mask[:, 1:, :]
         loc_loss = F.mse_loss(loc_preds * loc_targets_mask,
                               loc_targets) * self.loc_weight
-        if self.use_giou:
-            loc_loss_giou = self.giou_loss(loc_preds * loc_targets_mask,
-                                           loc_targets) * self.giou_weight
-            total_loss = structure_loss + loc_loss + loc_loss_giou
-            return {
-                'loss': total_loss,
-                "structure_loss": structure_loss,
-                "loc_loss": loc_loss,
-                "loc_loss_giou": loc_loss_giou
-            }
-        else:
-            total_loss = structure_loss + loc_loss
-            return {
-                'loss': total_loss,
-                "structure_loss": structure_loss,
-                "loc_loss": loc_loss
-            }
+
+        total_loss = structure_loss + loc_loss
+        return {
+            'loss': total_loss,
+            "structure_loss": structure_loss,
+            "loc_loss": loc_loss
+        }
+
+
+class SLANetLoss(nn.Layer):
+    def __init__(self, structure_weight, loc_weight, loc_loss='mse', **kwargs):
+        super(SLANetLoss, self).__init__()
+        self.loss_func = nn.CrossEntropyLoss(weight=None, reduction='mean')
+        self.structure_weight = structure_weight
+        self.loc_weight = loc_weight
+        self.loc_loss = loc_loss
+        self.eps = 1e-12
+
+    def forward(self, predicts, batch):
+        structure_probs = predicts['structure_probs']
+        structure_targets = batch[1].astype("int64")
+        structure_targets = structure_targets[:, 1:]
+
+        structure_loss = self.loss_func(structure_probs, structure_targets)
+
+        structure_loss = paddle.mean(structure_loss) * self.structure_weight
+
+        loc_preds = predicts['loc_preds']
+        loc_targets = batch[2].astype("float32")
+        loc_targets_mask = batch[3].astype("float32")
+        loc_targets = loc_targets[:, 1:, :]
+        loc_targets_mask = loc_targets_mask[:, 1:, :]
+
+        loc_loss = F.smooth_l1_loss(
+            loc_preds * loc_targets_mask,
+            loc_targets * loc_targets_mask,
+            reduction='sum') * self.loc_weight
+
+        loc_loss = loc_loss / (loc_targets_mask.sum() + self.eps)
+        total_loss = structure_loss + loc_loss
+        return {
+            'loss': total_loss,
+            "structure_loss": structure_loss,
+            "loc_loss": loc_loss
+        }

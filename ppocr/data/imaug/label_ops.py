@@ -571,7 +571,7 @@ class TableLabelEncode(AttnLabelEncode):
                  replace_empty_cell_token=False,
                  merge_no_span_structure=False,
                  learn_empty_box=False,
-                 point_num=2,
+                 loc_reg_num=4,
                  **kwargs):
         self.max_text_len = max_text_length
         self.lower = False
@@ -593,7 +593,7 @@ class TableLabelEncode(AttnLabelEncode):
         self.idx2char = {v: k for k, v in self.dict.items()}
 
         self.character = dict_character
-        self.point_num = point_num
+        self.loc_reg_num = loc_reg_num
         self.pad_idx = self.dict[self.beg_str]
         self.start_idx = self.dict[self.beg_str]
         self.end_idx = self.dict[self.end_str]
@@ -649,7 +649,7 @@ class TableLabelEncode(AttnLabelEncode):
 
         # encode box
         bboxes = np.zeros(
-            (self._max_text_len, self.point_num * 2), dtype=np.float32)
+            (self._max_text_len, self.loc_reg_num), dtype=np.float32)
         bbox_masks = np.zeros((self._max_text_len, 1), dtype=np.float32)
 
         bbox_idx = 0
@@ -714,11 +714,11 @@ class TableMasterLabelEncode(TableLabelEncode):
                  replace_empty_cell_token=False,
                  merge_no_span_structure=False,
                  learn_empty_box=False,
-                 point_num=2,
+                 loc_reg_num=4,
                  **kwargs):
         super(TableMasterLabelEncode, self).__init__(
             max_text_length, character_dict_path, replace_empty_cell_token,
-            merge_no_span_structure, learn_empty_box, point_num, **kwargs)
+            merge_no_span_structure, learn_empty_box, loc_reg_num, **kwargs)
         self.pad_idx = self.dict[self.pad_str]
         self.unknown_idx = self.dict[self.unknown_str]
 
@@ -739,13 +739,14 @@ class TableMasterLabelEncode(TableLabelEncode):
 
 
 class TableBoxEncode(object):
-    def __init__(self, use_xywh=False, **kwargs):
-        self.use_xywh = use_xywh
+    def __init__(self, box_format='xyxy', **kwargs):
+        assert box_format in ['xywh', 'xyxy', 'xyxyxyxy']
+        self.box_format = box_format
 
     def __call__(self, data):
         img_height, img_width = data['image'].shape[:2]
         bboxes = data['bboxes']
-        if self.use_xywh and bboxes.shape[1] == 4:
+        if self.box_format == 'xywh' and bboxes.shape[1] == 4:
             bboxes = self.xyxy2xywh(bboxes)
         bboxes[:, 0::2] /= img_width
         bboxes[:, 1::2] /= img_height
@@ -1217,6 +1218,7 @@ class ABINetLabelEncode(BaseRecLabelEncode):
         dict_character = ['</s>'] + dict_character
         return dict_character
 
+
 class SPINLabelEncode(AttnLabelEncode):
     """ Convert between text-label and text-index """
 
@@ -1229,6 +1231,7 @@ class SPINLabelEncode(AttnLabelEncode):
         super(SPINLabelEncode, self).__init__(
             max_text_length, character_dict_path, use_space_char)
         self.lower = lower
+
     def add_special_char(self, dict_character):
         self.beg_str = "sos"
         self.end_str = "eos"
@@ -1248,4 +1251,4 @@ class SPINLabelEncode(AttnLabelEncode):
 
         padded_text[:len(target)] = target
         data['label'] = np.array(padded_text)
-        return data 
+        return data

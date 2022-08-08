@@ -18,20 +18,23 @@ import subprocess
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
-sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '..')))
+sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '../..')))
 
 os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
 import cv2
 import copy
+import logging
 import numpy as np
 import time
 import tools.infer.predict_rec as predict_rec
 import tools.infer.predict_det as predict_det
 import tools.infer.utility as utility
+from tools.infer.predict_system import sorted_boxes
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.utils.logging import get_logger
-from ppstructure.table.matcher import distance, compute_iou
+from ppstructure.table.matcher import TableMatch
+from ppstructure.table.table_master_match import TableMasterMatcher
 from ppstructure.utility import parse_args
 import ppstructure.table.predict_structure as predict_strture
 
@@ -55,11 +58,20 @@ def expand(pix, det_box, shape):
 
 class TableSystem(object):
     def __init__(self, args, text_detector=None, text_recognizer=None):
+        if not args.show_log:
+            logger.setLevel(logging.INFO)
+
         self.text_detector = predict_det.TextDetector(
             args) if text_detector is None else text_detector
         self.text_recognizer = predict_rec.TextRecognizer(
             args) if text_recognizer is None else text_recognizer
+
         self.table_structurer = predict_strture.TableStructurer(args)
+        if args.table_algorithm in ['TableMaster']:
+            self.match = TableMasterMatcher()
+        else:
+            self.match = TableMatch()
+
         self.benchmark = args.benchmark
         self.predictor, self.input_tensor, self.output_tensors, self.config = utility.create_predictor(
             args, 'table', logger)
@@ -85,16 +97,47 @@ class TableSystem(object):
 
     def __call__(self, img, return_ocr_result_in_table=False):
         result = dict()
-        ori_im = img.copy()
+        time_dict = {'det': 0, 'rec': 0, 'table': 0, 'all': 0, 'match': 0}
+        start = time.time()
+
+        structure_res, elapse = self._structure(copy.deepcopy(img))
+        time_dict['table'] = elapse
+
+        dt_boxes, rec_res, det_elapse, rec_elapse = self._ocr(
+            copy.deepcopy(img))
+        time_dict['det'] = det_elapse
+        time_dict['rec'] = rec_elapse
+
+        if return_ocr_result_in_table:
+            result['boxes'] = dt_boxes  #[x.tolist() for x in dt_boxes]
+            result['rec_res'] = rec_res
+
+        tic = time.time()
+        pred_html = self.match(structure_res, dt_boxes, rec_res)
+        toc = time.time()
+        time_dict['match'] = toc - tic
+        # pred_html = self.match(1, 1, 1,img_name)
+        result['html'] = pred_html
+        if self.benchmark:
+            self.autolog.times.end(stamp=True)
+        end = time.time()
+        time_dict['all'] = end - start
+        if self.benchmark:
+            self.autolog.times.stamp()
+        return result, time_dict
+
+    def _structure(self, img):
         if self.benchmark:
             self.autolog.times.start()
         structure_res, elapse = self.table_structurer(copy.deepcopy(img))
+        return structure_res, elapse
+
+    def _ocr(self, img):
         if self.benchmark:
             self.autolog.times.stamp()
-        dt_boxes, elapse = self.text_detector(copy.deepcopy(img))
+        dt_boxes, det_elapse = self.text_detector(copy.deepcopy(img))
         dt_boxes = sorted_boxes(dt_boxes)
-        if return_ocr_result_in_table:
-            result['boxes'] = [x.tolist() for x in dt_boxes]
+
         r_boxes = []
         for box in dt_boxes:
             x_min = box[:, 0].min() - 1
@@ -105,125 +148,20 @@ class TableSystem(object):
             r_boxes.append(box)
         dt_boxes = np.array(r_boxes)
         logger.debug("dt_boxes num : {}, elapse : {}".format(
-            len(dt_boxes), elapse))
+            len(dt_boxes), det_elapse))
         if dt_boxes is None:
             return None, None
+
         img_crop_list = []
         for i in range(len(dt_boxes)):
             det_box = dt_boxes[i]
-            x0, y0, x1, y1 = expand(2, det_box, ori_im.shape)
-            text_rect = ori_im[int(y0):int(y1), int(x0):int(x1), :]
+            x0, y0, x1, y1 = expand(2, det_box, img.shape)
+            text_rect = img[int(y0):int(y1), int(x0):int(x1), :]
             img_crop_list.append(text_rect)
-        rec_res, elapse = self.text_recognizer(img_crop_list)
+        rec_res, rec_elapse = self.text_recognizer(img_crop_list)
         logger.debug("rec_res num  : {}, elapse : {}".format(
-            len(rec_res), elapse))
-        if self.benchmark:
-            self.autolog.times.stamp()
-        if return_ocr_result_in_table:
-            result['rec_res'] = rec_res
-        pred_html, pred = self.rebuild_table(structure_res, dt_boxes, rec_res)
-        result['html'] = pred_html
-        if self.benchmark:
-            self.autolog.times.end(stamp=True)
-        return result
-
-    def rebuild_table(self, structure_res, dt_boxes, rec_res):
-        pred_structures, pred_bboxes = structure_res
-        dt_boxes, rec_res = self.filter_ocr_result(pred_bboxes,dt_boxes, rec_res)
-        matched_index = self.match_result(dt_boxes, pred_bboxes)
-        pred_html, pred = self.get_pred_html(pred_structures, matched_index,
-                                             rec_res)
-        return pred_html, pred
-
-    def filter_ocr_result(self, pred_bboxes,dt_boxes, rec_res):
-        y1 = pred_bboxes[:,1::2].min()
-        new_dt_boxes = []
-        new_rec_res = []
-
-        for box,rec in zip(dt_boxes, rec_res):
-            if np.max(box[1::2]) < y1:
-                continue
-            new_dt_boxes.append(box)
-            new_rec_res.append(rec)
-        return new_dt_boxes, new_rec_res
-
-
-    def match_result(self, dt_boxes, pred_bboxes):
-        matched = {}
-        for i, gt_box in enumerate(dt_boxes):
-            # gt_box = [np.min(gt_box[:, 0]), np.min(gt_box[:, 1]), np.max(gt_box[:, 0]), np.max(gt_box[:, 1])]
-            distances = []
-            for j, pred_box in enumerate(pred_bboxes):
-                distances.append((distance(gt_box, pred_box),
-                                  1. - compute_iou(gt_box, pred_box)
-                                  ))  # 获取两两cell之间的L1距离和 1- IOU
-            sorted_distances = distances.copy()
-            # 根据距离和IOU挑选最"近"的cell
-            sorted_distances = sorted(
-                sorted_distances, key=lambda item: (item[1], item[0]))
-            if distances.index(sorted_distances[0]) not in matched.keys():
-                matched[distances.index(sorted_distances[0])] = [i]
-            else:
-                matched[distances.index(sorted_distances[0])].append(i)
-        return matched
-
-    def get_pred_html(self, pred_structures, matched_index, ocr_contents):
-        end_html = []
-        td_index = 0
-        for tag in pred_structures:
-            if '</td>' in tag:
-                if td_index in matched_index.keys():
-                    b_with = False
-                    if '<b>' in ocr_contents[matched_index[td_index][
-                            0]] and len(matched_index[td_index]) > 1:
-                        b_with = True
-                        end_html.extend('<b>')
-                    for i, td_index_index in enumerate(matched_index[td_index]):
-                        content = ocr_contents[td_index_index][0]
-                        if len(matched_index[td_index]) > 1:
-                            if len(content) == 0:
-                                continue
-                            if content[0] == ' ':
-                                content = content[1:]
-                            if '<b>' in content:
-                                content = content[3:]
-                            if '</b>' in content:
-                                content = content[:-4]
-                            if len(content) == 0:
-                                continue
-                            if i != len(matched_index[
-                                    td_index]) - 1 and ' ' != content[-1]:
-                                content += ' '
-                        end_html.extend(content)
-                    if b_with:
-                        end_html.extend('</b>')
-
-                end_html.append(tag)
-                td_index += 1
-            else:
-                end_html.append(tag)
-        return ''.join(end_html), end_html
-
-
-def sorted_boxes(dt_boxes):
-    """
-    Sort text boxes in order from top to bottom, left to right
-    args:
-        dt_boxes(array):detected text boxes with shape [4, 2]
-    return:
-        sorted boxes(array) with shape [4, 2]
-    """
-    num_boxes = dt_boxes.shape[0]
-    sorted_boxes = sorted(dt_boxes, key=lambda x: (x[0][1], x[0][0]))
-    _boxes = list(sorted_boxes)
-
-    for i in range(num_boxes - 1):
-        if abs(_boxes[i + 1][0][1] - _boxes[i][0][1]) < 10 and \
-                (_boxes[i + 1][0][0] < _boxes[i][0][0]):
-            tmp = _boxes[i]
-            _boxes[i] = _boxes[i + 1]
-            _boxes[i + 1] = tmp
-    return _boxes
+            len(rec_res), rec_elapse))
+        return dt_boxes, rec_res, det_elapse, rec_elapse
 
 
 def to_excel(html_table, excel_path):
@@ -249,7 +187,7 @@ def main(args):
             logger.error("error in loading image:{}".format(image_file))
             continue
         starttime = time.time()
-        pred_res = text_sys(img)
+        pred_res, _ = text_sys(img)
         pred_html = pred_res['html']
         logger.info(pred_html)
         to_excel(pred_html, excel_path)

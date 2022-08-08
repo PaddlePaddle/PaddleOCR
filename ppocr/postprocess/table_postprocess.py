@@ -23,7 +23,7 @@ class TableLabelDecode(AttnLabelDecode):
 
     def __init__(self, character_dict_path, **kwargs):
         super(TableLabelDecode, self).__init__(character_dict_path)
-        self.td_token = ['<td>', '<td', '<eb></eb>', '<td></td>']
+        self.td_token = ['<td>', '<td', '<td></td>']
 
     def __call__(self, preds, batch=None):
         structure_probs = preds['structure_probs']
@@ -114,10 +114,8 @@ class TableLabelDecode(AttnLabelDecode):
 
     def _bbox_decode(self, bbox, shape):
         h, w, ratio_h, ratio_w, pad_h, pad_w = shape
-        src_h = h / ratio_h
-        src_w = w / ratio_w
-        bbox[0::2] *= src_w
-        bbox[1::2] *= src_h
+        bbox[0::2] *= w
+        bbox[1::2] *= h
         return bbox
 
 
@@ -157,4 +155,7 @@ class TableMasterLabelDecode(TableLabelDecode):
         bbox[1::2] *= h
         bbox[0::2] /= ratio_w
         bbox[1::2] /= ratio_h
+        x, y, w, h = bbox
+        x1, y1, x2, y2 = x - w // 2, y - h // 2, x + w // 2, y + h // 2
+        bbox = np.array([x1, y1, x2, y2])
         return bbox

@@ -16,8 +16,6 @@ Global:
   character_dict_path: ppocr/utils/dict/table_master_structure_dict.txt
   infer_mode: false
   max_text_length: 500
-  process_total_num: 0
-  process_cut_num: 0
 
 
 Optimizer:
@@ -86,7 +84,7 @@ Train:
       - PaddingTableImage:
           size: [480, 480]
       - TableBoxEncode:
-          use_xywh: True
+          box_format: 'xywh'
       - NormalizeImage:
           scale: 1./255.
           mean: [0.5, 0.5, 0.5]
@@ -120,7 +118,7 @@ Eval:
       - PaddingTableImage:
           size: [480, 480]
       - TableBoxEncode:
-          use_xywh: True
+          box_format: 'xywh'
       - NormalizeImage:
           scale: 1./255.
           mean: [0.5, 0.5, 0.5]
