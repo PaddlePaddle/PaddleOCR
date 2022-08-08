@@ -207,6 +207,21 @@ class PRENResizeImg(object):
         return data
 
 
+class SVTRRecResizeImg(object):
+    def __init__(self, image_shape, padding=True, **kwargs):
+        self.image_shape = image_shape
+        self.padding = padding
+
+    def __call__(self, data):
+        img = data['image']
+
+        norm_img, valid_ratio = resize_norm_img(img, self.image_shape,
+                                                self.padding)
+        data['image'] = norm_img
+        data['valid_ratio'] = valid_ratio
+        return data
+
+
 def resize_norm_img_sar(img, image_shape, width_downsample_ratio=0.25):
     imgC, imgH, imgW_min, imgW_max = image_shape
     h = img.shape[0]
