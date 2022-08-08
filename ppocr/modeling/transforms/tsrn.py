@@ -212,12 +212,9 @@ class GruBlock(nn.Layer):
         # x: b, c, w, h
         x = self.conv1(x)
         x = x.transpose([0, 2, 3, 1])  # b, w, h, c
-        print("begin shape:", x.shape)
         batch_size, w, h, c = x.shape
         x = x.reshape([-1, h, c])  # b*w, h, c  
-        print("x.shape:", x.shape)
         x, _ = self.gru(x)
-        print("gru.shape:", x.shape)
         x = x.reshape([-1, w, h, c])
         x = x.transpose([0, 3, 1, 2])
         return x

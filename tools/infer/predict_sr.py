@@ -41,7 +41,7 @@ class TextSR(object):
         self.sr_batch_num = args.sr_batch_num
 
         self.predictor, self.input_tensor, self.output_tensors, self.config = \
-            utility.create_predictor(args, 'rec', logger)
+            utility.create_predictor(args, 'sr', logger)
         self.benchmark = args.benchmark
         if args.benchmark:
             import auto_log

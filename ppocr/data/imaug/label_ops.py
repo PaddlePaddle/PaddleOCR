@@ -1137,7 +1137,6 @@ class MultiLabelEncode(BaseRecLabelEncode):
         return data_out
 
 
-
 class NRTRLabelEncode(BaseRecLabelEncode):
     """ Convert between text-label and text-index """
 
@@ -1204,6 +1203,7 @@ class ViTSTRLabelEncode(BaseRecLabelEncode):
 
 class ABINetLabelEncode(BaseRecLabelEncode):
     """ Convert between text-label and text-index """
+
     def __init__(self,
                  max_text_length,
                  character_dict_path=None,
@@ -1231,12 +1231,13 @@ class ABINetLabelEncode(BaseRecLabelEncode):
     def add_special_char(self, dict_character):
         dict_character = ['</s>'] + dict_character
         return dict_character
-                 
+
+
 class SRLabelEncode(BaseRecLabelEncode):
     def __init__(self,
-                max_text_length,
-                character_dict_path=None,
-                use_space_char=False,
+                 max_text_length,
+                 character_dict_path=None,
+                 use_space_char=False,
                  **kwargs):
         super(SRLabelEncode, self).__init__(max_text_length,
                                             character_dict_path, use_space_char)

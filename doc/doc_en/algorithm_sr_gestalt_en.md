@@ -93,7 +93,7 @@ python3 tools/export_model.py -c configs/sr/sr_tsrn_transformer_strock.yml -o Gl
 For Text-Gestalt super-resolution model inference, the following commands can be executed:
 
 ```
-python3 tools/infer/predict_sr.py --rec_model=./inference/sr_out --image_dir=doc/imgs_words_en/word_52.png --sr_image_shape=3,32,128
+python3 tools/infer/predict_sr.py --sr_model_dir=./inference/sr_out --image_dir=doc/imgs_words_en/word_52.png --sr_image_shape=3,32,128
 
 ```
 
