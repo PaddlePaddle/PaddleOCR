@@ -486,7 +486,7 @@ def eval(model,
                 preds = model(images, data=batch[1:])
             elif model_type in ["kie", 'vqa']:
                 preds = model(batch)
-            elif model_type in ["kie", 'vqa', 'sr']:
+            elif model_type in ['sr']:
                 preds = model(batch)
                 sr_img = preds["sr_img"]
                 lr_img = preds["lr_img"]
@@ -513,10 +513,7 @@ def eval(model,
             # Evaluate the results of the current batch
             if model_type in ['kie']:
                 eval_class(preds, batch_numpy)
-            elif model_type in ['table', 'vqa']:
-                post_result = post_process_class(preds, batch_numpy)
-                eval_class(post_result, batch_numpy)
-            elif model_type in "sr":
+            elif model_type in ['table', 'vqa', 'sr']:
                 post_result = post_process_class(preds, batch_numpy)
                 eval_class(post_result, batch_numpy)
             else:

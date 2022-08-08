@@ -47,37 +47,6 @@ def main():
     post_process_class = build_post_process(config['PostProcess'],
                                             global_config)
 
-    # build model
-    if hasattr(post_process_class, 'character'):
-        char_num = len(getattr(post_process_class, 'character'))
-        if config['Architecture']["algorithm"] in ["Distillation",
-                                                   ]:  # distillation model
-            for key in config['Architecture']["Models"]:
-                if config['Architecture']['Models'][key]['Head'][
-                        'name'] == 'MultiHead':  # for multi head
-                    out_channels_list = {}
-                    if config['PostProcess'][
-                            'name'] == 'DistillationSARLabelDecode':
-                        char_num = char_num - 2
-                    out_channels_list['CTCLabelDecode'] = char_num
-                    out_channels_list['SARLabelDecode'] = char_num + 2
-                    config['Architecture']['Models'][key]['Head'][
-                        'out_channels_list'] = out_channels_list
-                else:
-                    config['Architecture']["Models"][key]["Head"][
-                        'out_channels'] = char_num
-        elif config['Architecture']['Head'][
-                'name'] == 'MultiHead':  # for multi head loss
-            out_channels_list = {}
-            if config['PostProcess']['name'] == 'SARLabelDecode':
-                char_num = char_num - 2
-            out_channels_list['CTCLabelDecode'] = char_num
-            out_channels_list['SARLabelDecode'] = char_num + 2
-            config['Architecture']['Head'][
-                'out_channels_list'] = out_channels_list
-        else:  # base rec model
-            config['Architecture']["Head"]['out_channels'] = char_num
-
     # sr transform
     config['Architecture']["Transform"]['infer_mode'] = True
 
