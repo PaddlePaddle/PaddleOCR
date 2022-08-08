@@ -470,26 +470,39 @@ class KieResize(object):
 
 
 class SRResize(object):
-    def __init__(self, imgH=32, imgW=128, down_sample_scale=4, keep_ratio=False, min_ratio=1, mask=False, **kwargs):
+    def __init__(self,
+                 imgH=32,
+                 imgW=128,
+                 down_sample_scale=4,
+                 keep_ratio=False,
+                 min_ratio=1,
+                 mask=False,
+                 infer_mode=False,
+                 **kwargs):
         self.imgH = imgH
         self.imgW = imgW
         self.keep_ratio = keep_ratio
         self.min_ratio = min_ratio
         self.down_sample_scale = down_sample_scale
         self.mask = mask
+        self.infer_mode = infer_mode
 
     def __call__(self, data):
-        images_HR = data["image_hr"]
-        images_lr = data["image_lr"]
-        label_strs = data["label"]
         imgH = self.imgH
         imgW = self.imgW
-        transform = resizeNormalize((imgW, imgH))
-        transform2 = resizeNormalize((imgW // self.down_sample_scale, imgH // self.down_sample_scale))
-        images_HR = transform(images_HR) 
+        images_lr = data["image_lr"]
+        transform2 = resizeNormalize(
+            (imgW // self.down_sample_scale, imgH // self.down_sample_scale))
         images_lr = transform2(images_lr)
-        data["img_hr"] = images_HR
         data["imge_lr"] = images_lr
+        if self.infer_mode:
+            return data
+
+        images_HR = data["image_hr"]
+        label_strs = data["label"]
+        transform = resizeNormalize((imgW, imgH))
+        images_HR = transform(images_HR)
+        data["img_hr"] = images_HR
         return data
 
 
@@ -497,6 +510,7 @@ class resizeNormalize(object):
     def __init__(self, size, interpolation=Image.BICUBIC):
         self.size = size
         self.interpolation = interpolation
+
     def __call__(self, img):
         img = img.resize(self.size, self.interpolation)
         img_numpy = np.array(img).astype("float32")

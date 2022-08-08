@@ -37,8 +37,6 @@ from ppocr.utils.loggers import VDLLogger, WandbLogger, Loggers
 from ppocr.utils import profiler
 from ppocr.data import build_dataloader
 
-from paddleocr import PaddleOCR
-
 
 class ArgsParser(ArgumentParser):
     def __init__(self):
@@ -446,8 +444,6 @@ def eval(model,
          model_type=None,
          extra_input=False):
     model.eval()
-    if model_type == "sr":
-        ocr = PaddleOCR(use_angle_cls=False, lang="en", ocr_version='PP-OCR')
     with paddle.no_grad():
         total_frame = 0.0
         total_time = 0.0
@@ -482,12 +478,6 @@ def eval(model,
                                                                     i), fm_sr)
                     cv2.imwrite("output/images/{}_{}_lr.jpg".format(sum_images,
                                                                     i), fm_lr)
-                    result = ocr.ocr("output/images/{}_{}_sr.jpg".format(
-                        sum_images, i),
-                                     cls=False,
-                                     det=False)
-                    preds['crnn'] = result[0][0]
-                    preds['lable_sr'] = batch[-1][i]
             else:
                 preds = model(images)
 

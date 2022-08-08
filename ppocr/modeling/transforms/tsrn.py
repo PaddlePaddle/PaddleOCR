@@ -45,6 +45,7 @@ class TSRN(nn.Layer):
                  srb_nums=5,
                  mask=False,
                  hidden_units=32,
+                 infer_mode=False,
                  **kwargs):
         super(TSRN, self).__init__()
         in_planes = 3
@@ -100,10 +101,17 @@ class TSRN(nn.Layer):
         self.r34_transformer = Transformer()
         for param in self.r34_transformer.parameters():
             param.trainable = False
+        self.infer_mode = infer_mode
 
     def forward(self, x):
         output = {}
-        y = x[1]
+        if self.infer_mode:
+            output["lr_img"] = x
+            y = x
+        else:
+            output["lr_img"] = x[0]
+            output["hr_img"] = x[1]
+            y = x[0]
         if self.stn and self.training:
             _, ctrl_points_x = self.stn_head(y)
             y, _ = self.tps(y, ctrl_points_x)
@@ -204,9 +212,12 @@ class GruBlock(nn.Layer):
         # x: b, c, w, h
         x = self.conv1(x)
         x = x.transpose([0, 2, 3, 1])  # b, w, h, c
-        b = x.shape
-        x = x.reshape([b[0] * b[1], b[2], b[3]])  # b*w, h, c
+        print("begin shape:", x.shape)
+        batch_size, w, h, c = x.shape
+        x = x.reshape([-1, h, c])  # b*w, h, c  
+        print("x.shape:", x.shape)
         x, _ = self.gru(x)
-        x = x.reshape([b[0], b[1], b[2], b[3]])
+        print("gru.shape:", x.shape)
+        x = x.reshape([-1, w, h, c])
         x = x.transpose([0, 3, 1, 2])
         return x

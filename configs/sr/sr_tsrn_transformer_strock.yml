@@ -10,11 +10,11 @@ Global:
   cal_metric_during_train: False
   pretrained_model:
   checkpoints:
-  save_inference_dir:
+  save_inference_dir: sr_output
   use_visualdl: False
-  infer_img: doc/imgs_words_en/word_10.png
+  infer_img: doc/imgs_words_en/word_52.png
   # for data or label process
-  character_dict_path: ./train_data/srdata/english_decomposition.txt
+  character_dict_path: ./train_data/mydata/english_decomposition.txt
   max_text_length: 100
   infer_mode: False
   use_space_char: False
@@ -34,10 +34,11 @@ Architecture:
   Transform:
     name: TSRN
     STN: True
+    infer_mode: False
 
 Loss:
   name: StrokeFocusLoss
-  character_dict_path: ./train_data/srdata/english_decomposition.txt
+  character_dict_path: ./train_data/mydata/english_decomposition.txt
 
 PostProcess:
   name: SRLabelDecode
@@ -49,7 +50,7 @@ Metric:
 Train:
   dataset:
     name: LMDBDataSet_SR
-    data_dir: ./train_data/srdata/train
+    data_dir: ./train_data/mydata/train
     transforms:
       - SRResize:
           imgH: 32
@@ -57,7 +58,7 @@ Train:
           down_sample_scale: 2
       - SRLabelEncode: # Class handling label
       - KeepKeys:
-          keep_keys: ['img_hr', 'imge_lr', 'length', 'input_tensor', 'label'] # dataloader will return list in this order
+          keep_keys: ['imge_lr', 'img_hr', 'length', 'input_tensor', 'label'] # dataloader will return list in this order
   loader:
     shuffle: False
     batch_size_per_card: 16
@@ -67,7 +68,7 @@ Train:
 Eval:
   dataset:
     name: LMDBDataSet_SR
-    data_dir: ./train_data/srdata/test
+    data_dir: ./train_data/mydata/test
     transforms:
       - SRResize:
           imgH: 32
@@ -75,7 +76,7 @@ Eval:
           down_sample_scale: 2
       - SRLabelEncode: # Class handling label
       - KeepKeys:
-          keep_keys: ['img_hr', 'imge_lr', 'length', 'input_tensor', 'label'] # dataloader will return list in this order
+          keep_keys: ['imge_lr', 'img_hr','length', 'input_tensor', 'label'] # dataloader will return list in this order
   loader:
     shuffle: False
     drop_last: False

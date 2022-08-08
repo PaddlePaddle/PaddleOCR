@@ -73,6 +73,12 @@ def export_single_model(model, arch_config, save_path, logger, quanter=None):
                 shape=[None, 3, 64, 512], dtype="float32"),
         ]
         model = to_static(model, input_spec=other_shape)
+    elif arch_config["model_type"] == "sr":
+        other_shape = [
+            paddle.static.InputSpec(
+                shape=[None, 3, 16, 64], dtype="float32")
+        ]
+        model = to_static(model, input_spec=other_shape)
     else:
         infer_shape = [3, -1, -1]
         if arch_config["model_type"] == "rec":
@@ -149,6 +155,8 @@ def main():
         else:  # base rec model
             config["Architecture"]["Head"]["out_channels"] = char_num
 
+    # for sr algorithm
+    config['Architecture']["Transform"]['infer_mode'] = True
     model = build_model(config["Architecture"])
     load_model(config, model)
     model.eval()
