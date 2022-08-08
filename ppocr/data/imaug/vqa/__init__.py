@@ -15,5 +15,8 @@
 from .token import VQATokenPad, VQASerTokenChunk, VQAReTokenChunk, VQAReTokenRelation
 
 __all__ = [
-    'VQATokenPad', 'VQASerTokenChunk', 'VQAReTokenChunk', 'VQAReTokenRelation'
+    'VQATokenPad',
+    'VQASerTokenChunk',
+    'VQAReTokenChunk',
+    'VQAReTokenRelation',
 ]

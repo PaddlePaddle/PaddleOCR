@@ -49,7 +49,7 @@ Architecture:
     
 
 Loss:
-  name: NRTRLoss
+  name: CELoss
   smoothing: True
 
 PostProcess:
@@ -69,7 +69,7 @@ Train:
           img_mode: BGR
           channel_first: False
       - NRTRLabelEncode: # Class handling label
-      - NRTRRecResizeImg:
+      - GrayRecResizeImg:
           image_shape: [100, 32]
           resize_type: PIL # PIL or OpenCV
       - KeepKeys:
@@ -90,7 +90,7 @@ Eval:
           img_mode: BGR
           channel_first: False
       - NRTRLabelEncode: # Class handling label
-      - NRTRRecResizeImg:
+      - GrayRecResizeImg:
           image_shape: [100, 32]
           resize_type: PIL # PIL or OpenCV
       - KeepKeys:
@@ -99,5 +99,5 @@ Eval:
     shuffle: False
     drop_last: False
     batch_size_per_card: 256
-    num_workers: 1
+    num_workers: 4
     use_shared_memory: False

@@ -47,6 +47,56 @@ class EncoderWithRNN(nn.Layer):
         x, _ = self.lstm(x)
         return x
 
+class BidirectionalLSTM(nn.Layer):
+    def __init__(self, input_size,
+                 hidden_size,
+                 output_size=None,
+                 num_layers=1,
+                 dropout=0,
+                 direction=False,
+                 time_major=False,
+                 with_linear=False):
+        super(BidirectionalLSTM, self).__init__()
+        self.with_linear = with_linear
+        self.rnn = nn.LSTM(input_size,
+                           hidden_size,
+                           num_layers=num_layers,
+                           dropout=dropout,
+                           direction=direction,
+                           time_major=time_major)
+
+        # text recognition the specified structure LSTM with linear
+        if self.with_linear:
+            self.linear = nn.Linear(hidden_size * 2, output_size)
+
+    def forward(self, input_feature):
+        recurrent, _ = self.rnn(input_feature)  # batch_size x T x input_size -> batch_size x T x (2*hidden_size)
+        if self.with_linear:
+            output = self.linear(recurrent)     # batch_size x T x output_size
+            return output
+        return recurrent
+
+class EncoderWithCascadeRNN(nn.Layer):
+    def __init__(self, in_channels, hidden_size, out_channels, num_layers=2, with_linear=False):
+        super(EncoderWithCascadeRNN, self).__init__()
+        self.out_channels = out_channels[-1]
+        self.encoder = nn.LayerList(
+            [BidirectionalLSTM(
+                in_channels if i == 0 else out_channels[i - 1], 
+                hidden_size, 
+                output_size=out_channels[i], 
+                num_layers=1, 
+                direction='bidirectional', 
+                with_linear=with_linear) 
+            for i in range(num_layers)]
+        )
+        
+
+    def forward(self, x):
+        for i, l in enumerate(self.encoder):
+            x = l(x)
+        return x
+
 
 class EncoderWithFC(nn.Layer):
     def __init__(self, in_channels, hidden_size):
@@ -166,13 +216,17 @@ class SequenceEncoder(nn.Layer):
                 'reshape': Im2Seq,
                 'fc': EncoderWithFC,
                 'rnn': EncoderWithRNN,
-                'svtr': EncoderWithSVTR
+                'svtr': EncoderWithSVTR,
+                'cascadernn': EncoderWithCascadeRNN
             }
             assert encoder_type in support_encoder_dict, '{} must in {}'.format(
                 encoder_type, support_encoder_dict.keys())
             if encoder_type == "svtr":
                 self.encoder = support_encoder_dict[encoder_type](
                     self.encoder_reshape.out_channels, **kwargs)
+            elif encoder_type == 'cascadernn':
+                self.encoder = support_encoder_dict[encoder_type](
+                    self.encoder_reshape.out_channels, hidden_size, **kwargs)
             else:
                 self.encoder = support_encoder_dict[encoder_type](
                     self.encoder_reshape.out_channels, hidden_size)

@@ -176,11 +176,6 @@ class Kie_backbone(nn.Layer):
         x = self.img_feat(img)
         boxes, rois_num = self.bbox2roi(gt_bboxes)
         feats = paddle.vision.ops.roi_align(
-            x,
-            boxes,
-            spatial_scale=1.0,
-            pooled_height=7,
-            pooled_width=7,
-            rois_num=rois_num)
+            x, boxes, spatial_scale=1.0, output_size=7, boxes_num=rois_num)
         feats = self.maxpool(feats).squeeze(-1).squeeze(-1)
         return [relations, texts, feats]

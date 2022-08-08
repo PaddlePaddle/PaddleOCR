@@ -26,23 +26,44 @@ from .east_postprocess import EASTPostProcess
 from .sast_postprocess import SASTPostProcess
 from .fce_postprocess import FCEPostProcess
 from .rec_postprocess import CTCLabelDecode, AttnLabelDecode, SRNLabelDecode, \
-    DistillationCTCLabelDecode, TableLabelDecode, NRTRLabelDecode, SARLabelDecode, \
-    SEEDLabelDecode, PRENLabelDecode, SRLabelDecode
+    DistillationCTCLabelDecode, NRTRLabelDecode, SARLabelDecode, \
+    SEEDLabelDecode, PRENLabelDecode, ViTSTRLabelDecode, ABINetLabelDecode, \
+    SPINLabelDecode,SRLabelDecode
 from .cls_postprocess import ClsPostProcess
 from .pg_postprocess import PGPostProcess
-from .vqa_token_ser_layoutlm_postprocess import VQASerTokenLayoutLMPostProcess
-from .vqa_token_re_layoutlm_postprocess import VQAReTokenLayoutLMPostProcess
+from .vqa_token_ser_layoutlm_postprocess import VQASerTokenLayoutLMPostProcess, DistillationSerPostProcess
+from .vqa_token_re_layoutlm_postprocess import VQAReTokenLayoutLMPostProcess, DistillationRePostProcess
+from .table_postprocess import TableMasterLabelDecode, TableLabelDecode
 
 
 def build_post_process(config, global_config=None):
     support_dict = [
-        'DBPostProcess', 'EASTPostProcess', 'SASTPostProcess', 'FCEPostProcess',
-        'CTCLabelDecode', 'AttnLabelDecode', 'ClsPostProcess', 'SRNLabelDecode',
-        'PGPostProcess', 'DistillationCTCLabelDecode', 'TableLabelDecode',
-        'DistillationDBPostProcess', 'NRTRLabelDecode', 'SARLabelDecode',
-        'SEEDLabelDecode', 'VQASerTokenLayoutLMPostProcess',
-        'VQAReTokenLayoutLMPostProcess', 'PRENLabelDecode',
-        'DistillationSARLabelDecode', 'SRLabelDecode'
+        'DBPostProcess',
+        'EASTPostProcess',
+        'SASTPostProcess',
+        'FCEPostProcess',
+        'CTCLabelDecode',
+        'AttnLabelDecode',
+        'ClsPostProcess',
+        'SRNLabelDecode',
+        'PGPostProcess',
+        'DistillationCTCLabelDecode',
+        'TableLabelDecode',
+        'DistillationDBPostProcess',
+        'NRTRLabelDecode',
+        'SARLabelDecode',
+        'SEEDLabelDecode',
+        'VQASerTokenLayoutLMPostProcess',
+        'VQAReTokenLayoutLMPostProcess',
+        'PRENLabelDecode',
+        'DistillationSARLabelDecode',
+        'ViTSTRLabelDecode',
+        'ABINetLabelDecode',
+        'TableMasterLabelDecode',
+        'SPINLabelDecode',
+        'DistillationSerPostProcess',
+        'DistillationRePostProcess',
+        'SRLabelDecode'
     ]
 
     if config['name'] == 'PSEPostProcess':

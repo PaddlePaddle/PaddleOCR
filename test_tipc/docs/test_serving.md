@@ -24,7 +24,7 @@ PaddleServing预测功能测试的主程序为`test_serving_infer_python.sh`和`
 bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_linux_gpu_normal_normal_serving_python_linux_gpu_cpu.txt "serving_infer"
 
 # 用法:
-bash test_tipc/test_serving_infer_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_linux_gpu_normal_normal_serving_python_linux_gpu_cpu.txt
+bash test_tipc/test_serving_infer_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_linux_gpu_normal_normal_serving_python_linux_gpu_cpu.txt "serving_infer"
 ```  
 **cpp serving**
 先运行`prepare.sh`准备数据和模型，然后运行`test_serving_infer_cpp.sh`进行测试，最终在```test_tipc/output```目录下生成`serving_infer_cpp*.log`后缀的日志文件。
@@ -33,7 +33,7 @@ bash test_tipc/test_serving_infer_python.sh ./test_tipc/configs/ch_ppocr_mobile_
 bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0/model_linux_gpu_normal_normal_serving_python_linux_gpu_cpu.txt "serving_infer"
 
 # 用法:
-bash test_tipc/test_serving_infer_cpp.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0/model_linux_gpu_normal_normal_serving_cpp_linux_gpu_cpu.txt
+bash test_tipc/test_serving_infer_cpp.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0/model_linux_gpu_normal_normal_serving_cpp_linux_gpu_cpu.txt "serving_infer"
 ```  
 
 #### 运行结果

@@ -41,11 +41,13 @@ class VQASerTokenLayoutLMPostProcess(object):
                 self.id2label_map_for_show[val] = key
 
     def __call__(self, preds, batch=None, *args, **kwargs):
+        if isinstance(preds, tuple):
+            preds = preds[0]
         if isinstance(preds, paddle.Tensor):
             preds = preds.numpy()
 
         if batch is not None:
-            return self._metric(preds, batch[1])
+            return self._metric(preds, batch[5])
         else:
             return self._infer(preds, **kwargs)
 
@@ -63,11 +65,11 @@ class VQASerTokenLayoutLMPostProcess(object):
                                                                           j]])
         return decode_out_list, label_decode_out_list
 
-    def _infer(self, preds, attention_masks, segment_offset_ids, ocr_infos):
+    def _infer(self, preds, segment_offset_ids, ocr_infos):
         results = []
 
-        for pred, attention_mask, segment_offset_id, ocr_info in zip(
-                preds, attention_masks, segment_offset_ids, ocr_infos):
+        for pred, segment_offset_id, ocr_info in zip(preds, segment_offset_ids,
+                                                     ocr_infos):
             pred = np.argmax(pred, axis=1)
             pred = [self.id2label_map[idx] for idx in pred]
 
@@ -91,3 +93,25 @@ class VQASerTokenLayoutLMPostProcess(object):
                 ocr_info[idx]["pred"] = self.id2label_map_for_show[int(pred_id)]
             results.append(ocr_info)
         return results
+
+
+class DistillationSerPostProcess(VQASerTokenLayoutLMPostProcess):
+    """
+    DistillationSerPostProcess
+    """
+
+    def __init__(self, class_path, model_name=["Student"], key=None, **kwargs):
+        super().__init__(class_path, **kwargs)
+        if not isinstance(model_name, list):
+            model_name = [model_name]
+        self.model_name = model_name
+        self.key = key
+
+    def __call__(self, preds, batch=None, *args, **kwargs):
+        output = dict()
+        for name in self.model_name:
+            pred = preds[name]
+            if self.key is not None:
+                pred = pred[self.key]
+            output[name] = super().__call__(pred, batch=batch, *args, **kwargs)
+        return output

@@ -38,6 +38,7 @@ def init_args():
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     parser.add_argument("--min_subgraph_size", type=int, default=15)
+    parser.add_argument("--shape_info_filename", type=str, default=None)
     parser.add_argument("--precision", type=str, default="fp32")
     parser.add_argument("--gpu_mem", type=int, default=500)
 
@@ -158,6 +159,8 @@ def create_predictor(args, mode, logger):
         model_dir = args.rec_model_dir
     elif mode == 'table':
         model_dir = args.table_model_dir
+    elif mode == 'ser':
+        model_dir = args.ser_model_dir
     else:
         model_dir = args.e2e_model_dir
 
@@ -207,9 +210,18 @@ def create_predictor(args, mode, logger):
                     workspace_size=1 << 30,
                     precision_mode=precision,
                     max_batch_size=args.max_batch_size,
-                    min_subgraph_size=args.min_subgraph_size,
+                    min_subgraph_size=args.min_subgraph_size, # skip the minmum trt subgraph
                     use_calib_mode=False)
-                # skip the minmum trt subgraph
+            
+            # collect shape
+            if args.shape_info_filename is not None:
+                if not os.path.exists(args.shape_info_filename):
+                    config.collect_shape_range_info(args.shape_info_filename)
+                    logger.info(f"collect dynamic shape info into : {args.shape_info_filename}")
+                else:
+                    logger.info(f"dynamic shape info file( {args.shape_info_filename} ) already exists, not need to generate again.")
+                config.enable_tuned_tensorrt_dynamic_shape(args.shape_info_filename, True)
+            
             use_dynamic_shape = True
             if mode == "det":
                 min_input_shape = {
@@ -321,8 +333,13 @@ def create_predictor(args, mode, logger):
         # create predictor
         predictor = inference.create_predictor(config)
         input_names = predictor.get_input_names()
-        for name in input_names:
-            input_tensor = predictor.get_input_handle(name)
+        if mode in ['ser', 're']:
+            input_tensor = []
+            for name in input_names:
+                input_tensor.append(predictor.get_input_handle(name))
+        else:
+            for name in input_names:
+                input_tensor = predictor.get_input_handle(name)
         output_tensors = get_output_tensors(args, mode, predictor)
         return predictor, input_tensor, output_tensors, config
 

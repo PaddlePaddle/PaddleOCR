@@ -28,7 +28,7 @@ from PyQt5.QtCore import QSize, Qt, QPoint, QByteArray, QTimer, QFileInfo, QPoin
 from PyQt5.QtGui import QImage, QCursor, QPixmap, QImageReader
 from PyQt5.QtWidgets import QMainWindow, QListWidget, QVBoxLayout, QToolButton, QHBoxLayout, QDockWidget, QWidget, \
     QSlider, QGraphicsOpacityEffect, QMessageBox, QListView, QScrollArea, QWidgetAction, QApplication, QLabel, QGridLayout, \
-    QFileDialog, QListWidgetItem, QComboBox, QDialog
+    QFileDialog, QListWidgetItem, QComboBox, QDialog, QAbstractItemView, QSizePolicy
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 
@@ -227,6 +227,21 @@ class MainWindow(QMainWindow):
         listLayout.addWidget(leftTopToolBoxContainer)
 
         #  ================== Label List  ==================
+        labelIndexListlBox = QHBoxLayout()
+
+        # Create and add a widget for showing current label item index
+        self.indexList = QListWidget()
+        self.indexList.setMaximumSize(30, 16777215) # limit max width
+        self.indexList.setEditTriggers(QAbstractItemView.NoEditTriggers) # no editable
+        self.indexList.itemSelectionChanged.connect(self.indexSelectionChanged)
+        self.indexList.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff) # no scroll Bar
+        self.indexListDock = QDockWidget('No.', self)
+        self.indexListDock.setWidget(self.indexList)
+        self.indexListDock.setFeatures(QDockWidget.NoDockWidgetFeatures)
+        labelIndexListlBox.addWidget(self.indexListDock, 1)
+        # no margin between two boxes
+        labelIndexListlBox.setSpacing(0)
+        
         # Create and add a widget for showing current label items
         self.labelList = EditInList()
         labelListContainer = QWidget()
@@ -240,7 +255,32 @@ class MainWindow(QMainWindow):
         self.labelListDock = QDockWidget(self.labelListDockName, self)
         self.labelListDock.setWidget(self.labelList)
         self.labelListDock.setFeatures(QDockWidget.NoDockWidgetFeatures)
-        listLayout.addWidget(self.labelListDock)
+        labelIndexListlBox.addWidget(self.labelListDock, 10) # label list is wider than index list
+        
+        # enable labelList drag_drop to adjust bbox order
+        # 设置选择模式为单选  
+        self.labelList.setSelectionMode(QAbstractItemView.SingleSelection)
+        # 启用拖拽
+        self.labelList.setDragEnabled(True)
+        # 设置接受拖放
+        self.labelList.viewport().setAcceptDrops(True)
+        # 设置显示将要被放置的位置
+        self.labelList.setDropIndicatorShown(True)
+        # 设置拖放模式为移动项目，如果不设置，默认为复制项目
+        self.labelList.setDragDropMode(QAbstractItemView.InternalMove) 
+        # 触发放置
+        self.labelList.model().rowsMoved.connect(self.drag_drop_happened)
+
+        labelIndexListContainer = QWidget()
+        labelIndexListContainer.setLayout(labelIndexListlBox)
+        listLayout.addWidget(labelIndexListContainer)
+
+        # labelList indexList同步滚动
+        self.labelListBar = self.labelList.verticalScrollBar()
+        self.indexListBar = self.indexList.verticalScrollBar()
+
+        self.labelListBar.valueChanged.connect(self.move_scrollbar)
+        self.indexListBar.valueChanged.connect(self.move_scrollbar)
 
         #  ================== Detection Box  ==================
         self.BoxList = QListWidget()
@@ -589,15 +629,23 @@ class MainWindow(QMainWindow):
         self.displayLabelOption.setChecked(settings.get(SETTING_PAINT_LABEL, False))
         self.displayLabelOption.triggered.connect(self.togglePaintLabelsOption)
 
+        # Add option to enable/disable box index being displayed at the top of bounding boxes
+        self.displayIndexOption = QAction(getStr('displayIndex'), self)
+        self.displayIndexOption.setCheckable(True)
+        self.displayIndexOption.setChecked(settings.get(SETTING_PAINT_INDEX, False))
+        self.displayIndexOption.triggered.connect(self.togglePaintIndexOption)
+
         self.labelDialogOption = QAction(getStr('labelDialogOption'), self)
         self.labelDialogOption.setShortcut("Ctrl+Shift+L")
         self.labelDialogOption.setCheckable(True)
         self.labelDialogOption.setChecked(settings.get(SETTING_PAINT_LABEL, False))
+        self.displayIndexOption.setChecked(settings.get(SETTING_PAINT_INDEX, False))
         self.labelDialogOption.triggered.connect(self.speedChoose)
 
         self.autoSaveOption = QAction(getStr('autoSaveMode'), self)
         self.autoSaveOption.setCheckable(True)
         self.autoSaveOption.setChecked(settings.get(SETTING_PAINT_LABEL, False))
+        self.displayIndexOption.setChecked(settings.get(SETTING_PAINT_INDEX, False))
         self.autoSaveOption.triggered.connect(self.autoSaveFunc)
 
         addActions(self.menus.file,
@@ -606,7 +654,7 @@ class MainWindow(QMainWindow):
 
         addActions(self.menus.help, (showKeys, showSteps, showInfo))
         addActions(self.menus.view, (
-            self.displayLabelOption, self.labelDialogOption,
+            self.displayLabelOption, self.displayIndexOption, self.labelDialogOption,
             None,
             hideAll, showAll, None,
             zoomIn, zoomOut, zoomOrg, None,
@@ -744,6 +792,7 @@ class MainWindow(QMainWindow):
         self.shapesToItemsbox.clear()
         self.labelList.clear()
         self.BoxList.clear()
+        self.indexList.clear()
         self.filePath = None
         self.imageData = None
         self.labelFile = None
@@ -964,9 +1013,10 @@ class MainWindow(QMainWindow):
         else:
             self.canvas.selectedShapes_hShape = self.canvas.selectedShapes
         for shape in self.canvas.selectedShapes_hShape:
-            item = self.shapesToItemsbox[shape]  # listitem
-            text = [(int(p.x()), int(p.y())) for p in shape.points]
-            item.setText(str(text))
+            if shape in self.shapesToItemsbox.keys():
+                item = self.shapesToItemsbox[shape]  # listitem
+                text = [(int(p.x()), int(p.y())) for p in shape.points]
+                item.setText(str(text))
         self.actions.undo.setEnabled(True)
         self.setDirty()
 
@@ -1004,13 +1054,19 @@ class MainWindow(QMainWindow):
         for shape in self.canvas.selectedShapes:
             shape.selected = False
         self.labelList.clearSelection()
+        self.indexList.clearSelection()
         self.canvas.selectedShapes = selected_shapes
         for shape in self.canvas.selectedShapes:
             shape.selected = True
             self.shapesToItems[shape].setSelected(True)
             self.shapesToItemsbox[shape].setSelected(True)
+            index = self.labelList.indexFromItem(self.shapesToItems[shape]).row()
+            self.indexList.item(index).setSelected(True)
 
         self.labelList.scrollToItem(self.currentItem())  # QAbstractItemView.EnsureVisible
+        # map current label item to index item and select it
+        index = self.labelList.indexFromItem(self.currentItem()).row()
+        self.indexList.scrollToItem(self.indexList.item(index)) 
         self.BoxList.scrollToItem(self.currentBox())
 
         if self.kie_mode:
@@ -1040,13 +1096,21 @@ class MainWindow(QMainWindow):
 
     def addLabel(self, shape):
         shape.paintLabel = self.displayLabelOption.isChecked()
+        shape.paintIdx = self.displayIndexOption.isChecked()
+
         item = HashableQListWidgetItem(shape.label)
-        item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
-        item.setCheckState(Qt.Unchecked) if shape.difficult else item.setCheckState(Qt.Checked)
+        # current difficult checkbox is disenble
+        # item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
+        # item.setCheckState(Qt.Unchecked) if shape.difficult else item.setCheckState(Qt.Checked)
+
         # Checked means difficult is False
         # item.setBackground(generateColorByText(shape.label))
         self.itemsToShapes[item] = shape
         self.shapesToItems[shape] = item
+        # add current label item index before label string
+        current_index = QListWidgetItem(str(self.labelList.count()))
+        current_index.setTextAlignment(Qt.AlignHCenter)
+        self.indexList.addItem(current_index)
         self.labelList.addItem(item)
         # print('item in add label is ',[(p.x(), p.y()) for p in shape.points], shape.label)
 
@@ -1080,9 +1144,11 @@ class MainWindow(QMainWindow):
             del self.shapesToItemsbox[shape]
             del self.itemsToShapesbox[item]
             self.updateComboBox()
+        self.updateIndexList()
 
     def loadLabels(self, shapes):
         s = []
+        shape_index = 0
         for label, points, line_color, key_cls, difficult in shapes:
             shape = Shape(label=label, line_color=line_color, key_cls=key_cls)
             for x, y in points:
@@ -1094,6 +1160,8 @@ class MainWindow(QMainWindow):
 
                 shape.addPoint(QPointF(x, y))
             shape.difficult = difficult
+            shape.idx = shape_index
+            shape_index += 1
             # shape.locked = False
             shape.close()
             s.append(shape)
@@ -1127,6 +1195,13 @@ class MainWindow(QMainWindow):
         uniqueTextList.sort()
 
         # self.comboBox.update_items(uniqueTextList)
+
+    def updateIndexList(self):
+        self.indexList.clear()
+        for i in range(self.labelList.count()):
+            string = QListWidgetItem(str(i))
+            string.setTextAlignment(Qt.AlignHCenter)
+            self.indexList.addItem(string)
 
     def saveLabels(self, annotationFilePath, mode='Auto'):
         # Mode is Auto means that labels will be loaded from self.result_dic totally, which is the output of ocr model
@@ -1183,12 +1258,31 @@ class MainWindow(QMainWindow):
         # fix copy and delete
         # self.shapeSelectionChanged(True)
 
+    def move_scrollbar(self, value):
+        self.labelListBar.setValue(value)
+        self.indexListBar.setValue(value)
+
     def labelSelectionChanged(self):
         if self._noSelectionSlot:
             return
         if self.canvas.editing():
             selected_shapes = []
             for item in self.labelList.selectedItems():
+                selected_shapes.append(self.itemsToShapes[item])
+            if selected_shapes:
+                self.canvas.selectShapes(selected_shapes)
+            else:
+                self.canvas.deSelectShape()
+
+    def indexSelectionChanged(self):
+        if self._noSelectionSlot:
+            return
+        if self.canvas.editing():
+            selected_shapes = []
+            for item in self.indexList.selectedItems():
+                # map index item to label item
+                index = self.indexList.indexFromItem(item).row()
+                item = self.labelList.item(index)
                 selected_shapes.append(self.itemsToShapes[item])
             if selected_shapes:
                 self.canvas.selectShapes(selected_shapes)
@@ -1209,18 +1303,54 @@ class MainWindow(QMainWindow):
                 self.canvas.deSelectShape()
 
     def labelItemChanged(self, item):
-        shape = self.itemsToShapes[item]
-        label = item.text()
-        if label != shape.label:
-            shape.label = item.text()
-            # shape.line_color = generateColorByText(shape.label)
-            self.setDirty()
-        elif not ((item.checkState() == Qt.Unchecked) ^ (not shape.difficult)):
-            shape.difficult = True if item.checkState() == Qt.Unchecked else False
-            self.setDirty()
-        else:  # User probably changed item visibility
-            self.canvas.setShapeVisible(shape, True)  # item.checkState() == Qt.Checked
-            # self.actions.save.setEnabled(True)
+        # avoid accidentally triggering the itemChanged siganl with unhashable item
+        # Unknown trigger condition
+        if type(item) == HashableQListWidgetItem:
+            shape = self.itemsToShapes[item]
+            label = item.text()
+            if label != shape.label:
+                shape.label = item.text()
+                # shape.line_color = generateColorByText(shape.label)
+                self.setDirty()
+            elif not ((item.checkState() == Qt.Unchecked) ^ (not shape.difficult)):
+                shape.difficult = True if item.checkState() == Qt.Unchecked else False
+                self.setDirty()
+            else:  # User probably changed item visibility
+                self.canvas.setShapeVisible(shape, True)  # item.checkState() == Qt.Checked
+                # self.actions.save.setEnabled(True)
+        else:
+            print('enter labelItemChanged slot with unhashable item: ', item, item.text())
+    
+    def drag_drop_happened(self):
+        '''
+        label list drag drop signal slot
+        '''
+        # print('___________________drag_drop_happened_______________')
+        # should only select single item
+        for item in self.labelList.selectedItems():
+            newIndex = self.labelList.indexFromItem(item).row()
+
+        # only support drag_drop one item
+        assert len(self.canvas.selectedShapes) > 0
+        for shape in self.canvas.selectedShapes:
+            selectedShapeIndex = shape.idx
+        
+        if newIndex == selectedShapeIndex:
+            return
+
+        # move corresponding item in shape list
+        shape = self.canvas.shapes.pop(selectedShapeIndex)
+        self.canvas.shapes.insert(newIndex, shape)
+            
+        # update bbox index
+        self.canvas.updateShapeIndex()
+
+        # boxList update simultaneously
+        item = self.BoxList.takeItem(selectedShapeIndex)
+        self.BoxList.insertItem(newIndex, item)
+
+        # changes happen
+        self.setDirty()
 
     # Callback functions:
     def newShape(self, value=True):
@@ -1453,6 +1583,7 @@ class MainWindow(QMainWindow):
             if self.labelList.count():
                 self.labelList.setCurrentItem(self.labelList.item(self.labelList.count() - 1))
                 self.labelList.item(self.labelList.count() - 1).setSelected(True)
+                self.indexList.item(self.labelList.count() - 1).setSelected(True)
 
             # show file list image count
             select_indexes = self.fileListWidget.selectedIndexes()
@@ -1560,6 +1691,7 @@ class MainWindow(QMainWindow):
                 settings[SETTING_LAST_OPEN_DIR] = ''
 
             settings[SETTING_PAINT_LABEL] = self.displayLabelOption.isChecked()
+            settings[SETTING_PAINT_INDEX] = self.displayIndexOption.isChecked()
             settings[SETTING_DRAW_SQUARE] = self.drawSquaresOption.isChecked()
             settings.save()
             try:
@@ -1946,8 +2078,18 @@ class MainWindow(QMainWindow):
                         self.labelHist.append(line)
 
     def togglePaintLabelsOption(self):
+        self.displayIndexOption.setChecked(False)
         for shape in self.canvas.shapes:
             shape.paintLabel = self.displayLabelOption.isChecked()
+            shape.paintIdx = self.displayIndexOption.isChecked()
+        self.canvas.repaint()
+
+    def togglePaintIndexOption(self):
+        self.displayLabelOption.setChecked(False)
+        for shape in self.canvas.shapes:
+            shape.paintLabel = self.displayLabelOption.isChecked()
+            shape.paintIdx = self.displayIndexOption.isChecked()
+        self.canvas.repaint()
 
     def toogleDrawSquare(self):
         self.canvas.setDrawingShapeToSquare(self.drawSquaresOption.isChecked())
@@ -2042,7 +2184,7 @@ class MainWindow(QMainWindow):
         self.init_key_list(self.Cachelabel)
 
     def reRecognition(self):
-        img = cv2.imread(self.filePath)
+        img = cv2.imdecode(np.fromfile(self.filePath,dtype=np.uint8),1)
         # org_box = [dic['points'] for dic in self.PPlabel[self.getImglabelidx(self.filePath)]]
         if self.canvas.shapes:
             self.result_dic = []
@@ -2111,7 +2253,7 @@ class MainWindow(QMainWindow):
             QMessageBox.information(self, "Information", "Draw a box!")
 
     def singleRerecognition(self):
-        img = cv2.imread(self.filePath)
+        img = cv2.imdecode(np.fromfile(self.filePath,dtype=np.uint8),1)
         for shape in self.canvas.selectedShapes:
             box = [[int(p.x()), int(p.y())] for p in shape.points]
             if len(box) > 4:
@@ -2181,12 +2323,14 @@ class MainWindow(QMainWindow):
                 self.itemsToShapesbox.clear()  # ADD
                 self.shapesToItemsbox.clear()
                 self.labelList.clear()
+                self.indexList.clear()
                 self.BoxList.clear()
                 self.result_dic = []
                 self.result_dic_locked = []
 
                 shapes = []
                 result_len = len(region['res']['boxes'])
+                order_index = 0
                 for i in range(result_len):
                     bbox = np.array(region['res']['boxes'][i])
                     rec_text = region['res']['rec_res'][i][0]
@@ -2205,6 +2349,8 @@ class MainWindow(QMainWindow):
                         x, y, snapped = self.canvas.snapPointToCanvas(x, y)
                         shape.addPoint(QPointF(x, y))
                     shape.difficult = False
+                    shape.idx = order_index
+                    order_index += 1
                     # shape.locked = False
                     shape.close()
                     self.addLabel(shape)
@@ -2589,6 +2735,7 @@ class MainWindow(QMainWindow):
     def undoShapeEdit(self):
         self.canvas.restoreShape()
         self.labelList.clear()
+        self.indexList.clear()
         self.BoxList.clear()
         self.loadShapes(self.canvas.shapes)
         self.actions.undo.setEnabled(self.canvas.isShapeRestorable)
@@ -2598,6 +2745,7 @@ class MainWindow(QMainWindow):
         for shape in shapes:
             self.addLabel(shape)
         self.labelList.clearSelection()
+        self.indexList.clearSelection()
         self._noSelectionSlot = False
         self.canvas.loadShapes(shapes, replace=replace)
         print("loadShapes")  # 1

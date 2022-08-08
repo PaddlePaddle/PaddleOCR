@@ -36,10 +36,12 @@ from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
 from ppocr.utils.save_load import load_model
 from ppocr.utils.utility import get_image_file_list
+from ppocr.utils.visual import draw_rectangle
 import tools.program as program
 import cv2
 
 
+@paddle.no_grad()
 def main(config, device, logger, vdl_writer):
     global_config = config['Global']
 
@@ -53,53 +55,61 @@ def main(config, device, logger, vdl_writer):
             getattr(post_process_class, 'character'))
 
     model = build_model(config['Architecture'])
+    algorithm = config['Architecture']['algorithm']
+    use_xywh = algorithm in ['TableMaster']
 
     load_model(config, model)
 
     # create data ops
     transforms = []
-    use_padding = False
     for op in config['Eval']['dataset']['transforms']:
         op_name = list(op)[0]
-        if 'Label' in op_name:
+        if 'Encode' in op_name:
             continue
         if op_name == 'KeepKeys':
-            op[op_name]['keep_keys'] = ['image']
-        if op_name == "ResizeTableImage":
-            use_padding = True
-            padding_max_len = op['ResizeTableImage']['max_len']
+            op[op_name]['keep_keys'] = ['image', 'shape']
         transforms.append(op)
 
     global_config['infer_mode'] = True
     ops = create_operators(transforms, global_config)
 
+    save_res_path = config['Global']['save_res_path']
+    os.makedirs(save_res_path, exist_ok=True)
+
     model.eval()
-    for file in get_image_file_list(config['Global']['infer_img']):
-        logger.info("infer_img: {}".format(file))
-        with open(file, 'rb') as f:
-            img = f.read()
-            data = {'image': img}
-        batch = transform(data, ops)
-        images = np.expand_dims(batch[0], axis=0)
-        images = paddle.to_tensor(images)
-        preds = model(images)
-        post_result = post_process_class(preds)
-        res_html_code = post_result['res_html_code']
-        res_loc = post_result['res_loc']
-        img = cv2.imread(file)
-        imgh, imgw = img.shape[0:2]
-        res_loc_final = []
-        for rno in range(len(res_loc[0])):
-            x0, y0, x1, y1 = res_loc[0][rno]
-            left = max(int(imgw * x0), 0)
-            top = max(int(imgh * y0), 0)
-            right = min(int(imgw * x1), imgw - 1)
-            bottom = min(int(imgh * y1), imgh - 1)
-            cv2.rectangle(img, (left, top), (right, bottom), (0, 0, 255), 2)
-            res_loc_final.append([left, top, right, bottom])
-        res_loc_str = json.dumps(res_loc_final)
-        logger.info("result: {}, {}".format(res_html_code, res_loc_final))
-    logger.info("success!")
+    with open(
+            os.path.join(save_res_path, 'infer.txt'), mode='w',
+            encoding='utf-8') as f_w:
+        for file in get_image_file_list(config['Global']['infer_img']):
+            logger.info("infer_img: {}".format(file))
+            with open(file, 'rb') as f:
+                img = f.read()
+                data = {'image': img}
+            batch = transform(data, ops)
+            images = np.expand_dims(batch[0], axis=0)
+            shape_list = np.expand_dims(batch[1], axis=0)
+
+            images = paddle.to_tensor(images)
+            preds = model(images)
+            post_result = post_process_class(preds, [shape_list])
+
+            structure_str_list = post_result['structure_batch_list'][0]
+            bbox_list = post_result['bbox_batch_list'][0]
+            structure_str_list = structure_str_list[0]
+            structure_str_list = [
+                '<html>', '<body>', '<table>'
+            ] + structure_str_list + ['</table>', '</body>', '</html>']
+            bbox_list_str = json.dumps(bbox_list.tolist())
+
+            logger.info("result: {}, {}".format(structure_str_list,
+                                                bbox_list_str))
+            f_w.write("result: {}, {}\n".format(structure_str_list,
+                                                bbox_list_str))
+
+            img = draw_rectangle(file, bbox_list, use_xywh)
+            cv2.imwrite(
+                os.path.join(save_res_path, os.path.basename(file)), img)
+        logger.info("success!")
 
 
 if __name__ == '__main__':
