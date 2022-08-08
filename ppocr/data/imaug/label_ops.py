@@ -24,6 +24,7 @@ from shapely.geometry import LineString, Point, Polygon
 import json
 import copy
 from ppocr.utils.logging import get_logger
+from ppocr.data.imaug.vqa.augment import order_by_tbyx
 
 
 class ClsLabelEncode(object):
@@ -871,6 +872,7 @@ class VQATokenLabelEncode(object):
                  add_special_ids=False,
                  algorithm='LayoutXLM',
                  use_textline_bbox_info=True,
+                 order_method=None,
                  infer_mode=False,
                  ocr_engine=None,
                  **kwargs):
@@ -900,6 +902,8 @@ class VQATokenLabelEncode(object):
         self.infer_mode = infer_mode
         self.ocr_engine = ocr_engine
         self.use_textline_bbox_info = use_textline_bbox_info
+        self.order_method = order_method
+        assert self.order_method in [None, "tb-yx"]
 
     def split_bbox(self, bbox, text, tokenizer):
         words = text.split()
@@ -938,6 +942,14 @@ class VQATokenLabelEncode(object):
     def __call__(self, data):
         # load bbox and label info
         ocr_info = self._load_ocr_info(data)
+
+        for idx in range(len(ocr_info)):
+            if "bbox" not in ocr_info[idx]:
+                ocr_info[idx]["bbox"] = self.trans_poly_to_bbox(ocr_info[idx][
+                    "points"])
+
+        if self.order_method == "tb-yx":
+            ocr_info = order_by_tbyx(ocr_info)
 
         # for re
         train_re = self.contains_re and not self.infer_mode
@@ -978,7 +990,10 @@ class VQATokenLabelEncode(object):
             info["bbox"] = self.trans_poly_to_bbox(info["points"])
 
             encode_res = self.tokenizer.encode(
-                text, pad_to_max_seq_len=False, return_attention_mask=True)
+                text,
+                pad_to_max_seq_len=False,
+                return_attention_mask=True,
+                return_token_type_ids=True)
 
             if not self.add_special_ids:
                 # TODO: use tok.all_special_ids to remove
@@ -1050,10 +1065,10 @@ class VQATokenLabelEncode(object):
         return data
 
     def trans_poly_to_bbox(self, poly):
-        x1 = np.min([p[0] for p in poly])
-        x2 = np.max([p[0] for p in poly])
-        y1 = np.min([p[1] for p in poly])
-        y2 = np.max([p[1] for p in poly])
+        x1 = int(np.min([p[0] for p in poly]))
+        x2 = int(np.max([p[0] for p in poly]))
+        y1 = int(np.min([p[1] for p in poly]))
+        y2 = int(np.max([p[1] for p in poly]))
         return [x1, y1, x2, y2]
 
     def _load_ocr_info(self, data):

@@ -73,28 +73,40 @@ class BaseModel(nn.Layer):
         self.return_all_feats = config.get("return_all_feats", False)
 
     def forward(self, x, data=None):
+
         y = dict()
         if self.use_transform:
             x = self.transform(x)
         x = self.backbone(x)
-        y["backbone_out"] = x
-        if self.use_neck:
-            x = self.neck(x)
-        y["neck_out"] = x
-        if self.use_head:
-            x = self.head(x, targets=data)
-        # for multi head, save ctc neck out for udml
-        if isinstance(x, dict) and 'ctc_neck' in x.keys():
-            y["neck_out"] = x["ctc_neck"]
-            y["head_out"] = x
-        elif isinstance(x, dict):
+        if isinstance(x, dict):
             y.update(x)
         else:
-            y["head_out"] = x
+            y["backbone_out"] = x
+        final_name = "backbone_out"
+        if self.use_neck:
+            x = self.neck(x)
+            if isinstance(x, dict):
+                y.update(x)
+            else:
+                y["neck_out"] = x
+            final_name = "neck_out"
+        if self.use_head:
+            x = self.head(x, targets=data)
+            # for multi head, save ctc neck out for udml
+            if isinstance(x, dict) and 'ctc_neck' in x.keys():
+                y["neck_out"] = x["ctc_neck"]
+                y["head_out"] = x
+            elif isinstance(x, dict):
+                y.update(x)
+            else:
+                y["head_out"] = x
+            final_name = "head_out"
         if self.return_all_feats:
             if self.training:
                 return y
+            elif isinstance(x, dict):
+                return x
             else:
-                return {"head_out": y["head_out"]}
+                return {final_name: x}
         else:
             return x

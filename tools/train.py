@@ -166,6 +166,8 @@ def main(config, device, logger, vdl_writer):
     else:
         scaler = None
 
+    if config['Global']['distributed']:
+        model = paddle.DataParallel(model)
     # start train
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,

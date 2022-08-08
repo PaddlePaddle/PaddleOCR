@@ -55,6 +55,9 @@ def load_model(config, model, optimizer=None, model_type='det'):
     best_model_dict = {}
 
     if model_type == 'vqa':
+        # NOTE: for vqa model, resume training is not supported now
+        if config["Architecture"]["algorithm"] in ["Distillation"]:
+            return best_model_dict
         checkpoints = config['Architecture']['Backbone']['checkpoints']
         # load vqa method metric
         if checkpoints:
@@ -78,6 +81,7 @@ def load_model(config, model, optimizer=None, model_type='det'):
                     logger.warning(
                         "{}.pdopt is not exists, params of optimizer is not loaded".
                         format(checkpoints))
+
         return best_model_dict
 
     if checkpoints:
@@ -166,15 +170,19 @@ def save_model(model,
     """
     _mkdir_if_not_exist(model_path, logger)
     model_prefix = os.path.join(model_path, prefix)
-    paddle.save(optimizer.state_dict(), model_prefix + '.pdopt')
+    if config['Architecture']["model_type"] != 'vqa':
+        paddle.save(optimizer.state_dict(), model_prefix + '.pdopt')
     if config['Architecture']["model_type"] != 'vqa':
         paddle.save(model.state_dict(), model_prefix + '.pdparams')
         metric_prefix = model_prefix
-    else:
+    else:  # for vqa system, we follow the save/load rules in NLP
         if config['Global']['distributed']:
-            model._layers.backbone.model.save_pretrained(model_prefix)
+            arch = model._layers
         else:
-            model.backbone.model.save_pretrained(model_prefix)
+            arch = model
+        if config["Architecture"]["algorithm"] in ["Distillation"]:
+            arch = arch.Student
+        arch.backbone.model.save_pretrained(model_prefix)
         metric_prefix = os.path.join(model_prefix, 'metric')
     # save metric and config
     with open(metric_prefix + '.states', 'wb') as f:

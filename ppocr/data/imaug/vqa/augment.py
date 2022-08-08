@@ -16,22 +16,18 @@ import os
 import sys
 import numpy as np
 import random
+from copy import deepcopy
 
 
-class DistortBBox:
-    def __init__(self, prob=0.5, max_scale=1, **kwargs):
-        """Random distort bbox
-        """
-        self.prob = prob
-        self.max_scale = max_scale
-
-    def __call__(self, data):
-        if random.random() > self.prob:
-            return data
-        bbox = np.array(data['bbox'])
-        rnd_scale = (np.random.rand(*bbox.shape) - 0.5) * 2 * self.max_scale
-        bbox = np.round(bbox + rnd_scale).astype(bbox.dtype)
-        data['bbox'] = np.clip(data['bbox'], 0, 1000)
-        data['bbox'] = bbox.tolist()
-        sys.stdout.flush()
-        return data
+def order_by_tbyx(ocr_info):
+    res = sorted(ocr_info, key=lambda r: (r["bbox"][1], r["bbox"][0]))
+    for i in range(len(res) - 1):
+        for j in range(i, 0, -1):
+            if abs(res[j + 1]["bbox"][1] - res[j]["bbox"][1]) < 20 and \
+                    (res[j + 1]["bbox"][0] < res[j]["bbox"][0]):
+                tmp = deepcopy(res[j])
+                res[j] = deepcopy(res[j + 1])
+                res[j + 1] = deepcopy(tmp)
+            else:
+                break
+    return res

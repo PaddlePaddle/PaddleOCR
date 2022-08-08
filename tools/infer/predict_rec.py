@@ -83,7 +83,7 @@ class TextRecognizer(object):
             }
         elif self.rec_algorithm == "SPIN":
             postprocess_params = {
-                'name': 'SPINAttnLabelDecode',
+                'name': 'SPINLabelDecode',
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }
