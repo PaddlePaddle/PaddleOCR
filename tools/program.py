@@ -154,12 +154,13 @@ def check_xpu(use_xpu):
     except Exception as e:
         pass
 
+
 def to_float32(preds):
     if isinstance(preds, dict):
         for k in preds:
             if isinstance(preds[k], dict) or isinstance(preds[k], list):
                 preds[k] = to_float32(preds[k])
-            else:
+            elif isinstance(preds[k], paddle.Tensor):
                 preds[k] = preds[k].astype(paddle.float32)
     elif isinstance(preds, list):
         for k in range(len(preds)):
@@ -167,11 +168,12 @@ def to_float32(preds):
                 preds[k] = to_float32(preds[k])
             elif isinstance(preds[k], list):
                 preds[k] = to_float32(preds[k])
-            else:
+            elif isinstance(preds[k], paddle.Tensor):
                 preds[k] = preds[k].astype(paddle.float32)
-    else:
+    elif isinstance(preds[k], paddle.Tensor):
         preds = preds.astype(paddle.float32)
     return preds
+
 
 def train(config,
           train_dataloader,
@@ -370,7 +372,8 @@ def train(config,
                     post_process_class,
                     eval_class,
                     model_type,
-                    extra_input=extra_input)
+                    extra_input=extra_input,
+                    scaler=scaler)
                 cur_metric_str = 'cur metric, {}'.format(', '.join(
                     ['{}: {}'.format(k, v) for k, v in cur_metric.items()]))
                 logger.info(cur_metric_str)
@@ -460,7 +463,8 @@ def eval(model,
          post_process_class,
          eval_class,
          model_type=None,
-         extra_input=False):
+         extra_input=False,
+         scaler=None):
     model.eval()
     with paddle.no_grad():
         total_frame = 0.0
@@ -477,12 +481,24 @@ def eval(model,
                 break
             images = batch[0]
             start = time.time()
-            if model_type == 'table' or extra_input:
-                preds = model(images, data=batch[1:])
-            elif model_type in ["kie", 'vqa']:
-                preds = model(batch)
+
+            # use amp
+            if scaler:
+                with paddle.amp.auto_cast(level='O2'):
+                    if model_type == 'table' or extra_input:
+                        preds = model(images, data=batch[1:])
+                    elif model_type in ["kie", 'vqa']:
+                        preds = model(batch)
+                    else:
+                        preds = model(images)
             else:
-                preds = model(images)
+                if model_type == 'table' or extra_input:
+                    preds = model(images, data=batch[1:])
+                elif model_type in ["kie", 'vqa']:
+                    preds = model(batch)
+                else:
+                    preds = model(images)
+
             batch_numpy = []
             for item in batch:
                 if isinstance(item, paddle.Tensor):
