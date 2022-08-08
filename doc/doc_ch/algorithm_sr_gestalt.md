@@ -79,7 +79,7 @@ python3 tools/infer_sr.py -c configs/sr/sr_tsrn_transformer_strock.yml -o Global
 <a name="4-1"></a>
 ### 4.1 Python推理
 
-首先将文本超分训练过程中保存的模型，转换成inference model。以 Text-Gestalt 训练的[模型](https://paddleocr.bj.bcebos.com/sr_tsrn_transformer_strock_train.targit) 为例，可以使用如下命令进行转换：
+首先将文本超分训练过程中保存的模型，转换成inference model。以 Text-Gestalt 训练的[模型](https://paddleocr.bj.bcebos.com/sr_tsrn_transformer_strock_train.tar) 为例，可以使用如下命令进行转换：
 ```shell
 python3 tools/export_model.py -c configs/sr/sr_tsrn_transformer_strock.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.save_inference_dir=./inference/sr_out
 ```
