@@ -49,7 +49,7 @@ model_path=./inference_models
 for model in ${lite_model_list[*]}; do
     if [[ $model =~ "PP-OCRv2" ]]; then
         inference_model_url=https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/${model}.tar
-    elif [[ $model =~ "v2.0" ]]; then
+    elif [[ $model =~ "v2_0" ]]; then
         inference_model_url=https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/${model}.tar
     elif [[ $model =~ "PP-OCRv3" ]]; then
         inference_model_url=https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/${model}.tar

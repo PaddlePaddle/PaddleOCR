@@ -22,13 +22,22 @@ from paddle import nn
 from paddlenlp.transformers import LayoutXLMModel, LayoutXLMForTokenClassification, LayoutXLMForRelationExtraction
 from paddlenlp.transformers import LayoutLMModel, LayoutLMForTokenClassification
 from paddlenlp.transformers import LayoutLMv2Model, LayoutLMv2ForTokenClassification, LayoutLMv2ForRelationExtraction
+from paddlenlp.transformers import AutoModel
 
-__all__ = ["LayoutXLMForSer", 'LayoutLMForSer']
+__all__ = ["LayoutXLMForSer", "LayoutLMForSer"]
 
 pretrained_model_dict = {
-    LayoutXLMModel: 'layoutxlm-base-uncased',
-    LayoutLMModel: 'layoutlm-base-uncased',
-    LayoutLMv2Model: 'layoutlmv2-base-uncased'
+    LayoutXLMModel: {
+        "base": "layoutxlm-base-uncased",
+        "vi": "layoutxlm-wo-backbone-base-uncased",
+    },
+    LayoutLMModel: {
+        "base": "layoutlm-base-uncased",
+    },
+    LayoutLMv2Model: {
+        "base": "layoutlmv2-base-uncased",
+        "vi": "layoutlmv2-wo-backbone-base-uncased",
+    },
 }
 
 
@@ -36,42 +45,47 @@ class NLPBaseModel(nn.Layer):
     def __init__(self,
                  base_model_class,
                  model_class,
-                 type='ser',
+                 mode="base",
+                 type="ser",
                  pretrained=True,
                  checkpoints=None,
                  **kwargs):
         super(NLPBaseModel, self).__init__()
-        if checkpoints is not None:
+        if checkpoints is not None:  # load the trained model
             self.model = model_class.from_pretrained(checkpoints)
-        elif isinstance(pretrained, (str, )) and os.path.exists(pretrained):
-            self.model = model_class.from_pretrained(pretrained)
-        else:
-            pretrained_model_name = pretrained_model_dict[base_model_class]
+        else:  # load the pretrained-model
+            pretrained_model_name = pretrained_model_dict[base_model_class][
+                mode]
             if pretrained is True:
                 base_model = base_model_class.from_pretrained(
                     pretrained_model_name)
             else:
-                base_model = base_model_class(
-                    **base_model_class.pretrained_init_configuration[
-                        pretrained_model_name])
-            if type == 'ser':
+                base_model = base_model_class.from_pretrained(pretrained)
+            if type == "ser":
                 self.model = model_class(
-                    base_model, num_classes=kwargs['num_classes'], dropout=None)
+                    base_model, num_classes=kwargs["num_classes"], dropout=None)
             else:
                 self.model = model_class(base_model, dropout=None)
         self.out_channels = 1
+        self.use_visual_backbone = True
 
 
 class LayoutLMForSer(NLPBaseModel):
-    def __init__(self, num_classes, pretrained=True, checkpoints=None,
+    def __init__(self,
+                 num_classes,
+                 pretrained=True,
+                 checkpoints=None,
+                 mode="base",
                  **kwargs):
         super(LayoutLMForSer, self).__init__(
             LayoutLMModel,
             LayoutLMForTokenClassification,
-            'ser',
+            mode,
+            "ser",
             pretrained,
             checkpoints,
-            num_classes=num_classes)
+            num_classes=num_classes, )
+        self.use_visual_backbone = False
 
     def forward(self, x):
         x = self.model(
@@ -85,62 +99,92 @@ class LayoutLMForSer(NLPBaseModel):
 
 
 class LayoutLMv2ForSer(NLPBaseModel):
-    def __init__(self, num_classes, pretrained=True, checkpoints=None,
+    def __init__(self,
+                 num_classes,
+                 pretrained=True,
+                 checkpoints=None,
+                 mode="base",
                  **kwargs):
         super(LayoutLMv2ForSer, self).__init__(
             LayoutLMv2Model,
             LayoutLMv2ForTokenClassification,
-            'ser',
+            mode,
+            "ser",
             pretrained,
             checkpoints,
             num_classes=num_classes)
+        self.use_visual_backbone = True
+        if hasattr(self.model.layoutlmv2, "use_visual_backbone"
+                   ) and self.model.layoutlmv2.use_visual_backbone is False:
+            self.use_visual_backbone = False
 
     def forward(self, x):
+        if self.use_visual_backbone is True:
+            image = x[4]
+        else:
+            image = None
         x = self.model(
             input_ids=x[0],
             bbox=x[1],
             attention_mask=x[2],
             token_type_ids=x[3],
-            image=x[4],
+            image=image,
             position_ids=None,
             head_mask=None,
             labels=None)
-        if not self.training:
+        if self.training:
+            res = {"backbone_out": x[0]}
+            res.update(x[1])
+            return res
+        else:
             return x
-        return x[0]
 
 
 class LayoutXLMForSer(NLPBaseModel):
-    def __init__(self, num_classes, pretrained=True, checkpoints=None,
+    def __init__(self,
+                 num_classes,
+                 pretrained=True,
+                 checkpoints=None,
+                 mode="base",
                  **kwargs):
         super(LayoutXLMForSer, self).__init__(
             LayoutXLMModel,
             LayoutXLMForTokenClassification,
-            'ser',
+            mode,
+            "ser",
             pretrained,
             checkpoints,
             num_classes=num_classes)
+        self.use_visual_backbone = True
 
     def forward(self, x):
+        if self.use_visual_backbone is True:
+            image = x[4]
+        else:
+            image = None
         x = self.model(
             input_ids=x[0],
             bbox=x[1],
             attention_mask=x[2],
             token_type_ids=x[3],
-            image=x[4],
+            image=image,
             position_ids=None,
             head_mask=None,
             labels=None)
-        if not self.training:
+        if self.training:
+            res = {"backbone_out": x[0]}
+            res.update(x[1])
+            return res
+        else:
             return x
-        return x[0]
 
 
 class LayoutLMv2ForRe(NLPBaseModel):
-    def __init__(self, pretrained=True, checkpoints=None, **kwargs):
-        super(LayoutLMv2ForRe, self).__init__(LayoutLMv2Model,
-                                              LayoutLMv2ForRelationExtraction,
-                                              're', pretrained, checkpoints)
+    def __init__(self, pretrained=True, checkpoints=None, mode="base",
+                 **kwargs):
+        super(LayoutLMv2ForRe, self).__init__(
+            LayoutLMv2Model, LayoutLMv2ForRelationExtraction, mode, "re",
+            pretrained, checkpoints)
 
     def forward(self, x):
         x = self.model(
@@ -158,18 +202,27 @@ class LayoutLMv2ForRe(NLPBaseModel):
 
 
 class LayoutXLMForRe(NLPBaseModel):
-    def __init__(self, pretrained=True, checkpoints=None, **kwargs):
-        super(LayoutXLMForRe, self).__init__(LayoutXLMModel,
-                                             LayoutXLMForRelationExtraction,
-                                             're', pretrained, checkpoints)
+    def __init__(self, pretrained=True, checkpoints=None, mode="base",
+                 **kwargs):
+        super(LayoutXLMForRe, self).__init__(
+            LayoutXLMModel, LayoutXLMForRelationExtraction, mode, "re",
+            pretrained, checkpoints)
+        self.use_visual_backbone = True
+        if hasattr(self.model.layoutxlm, "use_visual_backbone"
+                   ) and self.model.layoutxlm.use_visual_backbone is False:
+            self.use_visual_backbone = False
 
     def forward(self, x):
+        if self.use_visual_backbone is True:
+            image = x[4]
+        else:
+            image = None
         x = self.model(
             input_ids=x[0],
             bbox=x[1],
             attention_mask=x[2],
             token_type_ids=x[3],
-            image=x[4],
+            image=image,
             position_ids=None,
             head_mask=None,
             labels=None,

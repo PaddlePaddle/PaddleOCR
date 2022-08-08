@@ -19,6 +19,8 @@ from .rec_metric import RecMetric
 from .det_metric import DetMetric
 from .e2e_metric import E2EMetric
 from .cls_metric import ClsMetric
+from .vqa_token_ser_metric import VQASerTokenMetric
+from .vqa_token_re_metric import VQAReTokenMetric
 
 
 class DistillationMetric(object):
