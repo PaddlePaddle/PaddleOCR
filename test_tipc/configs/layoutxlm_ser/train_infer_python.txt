@@ -6,7 +6,7 @@ Global.use_gpu:True|True
 Global.auto_cast:fp32
 Global.epoch_num:lite_train_lite_infer=1|whole_train_whole_infer=17
 Global.save_model_dir:./output/
-Train.loader.batch_size_per_card:lite_train_lite_infer=8|whole_train_whole_infer=8
+Train.loader.batch_size_per_card:lite_train_lite_infer=4|whole_train_whole_infer=8
 Architecture.Backbone.checkpoints:null
 train_model_name:latest
 train_infer_img_dir:ppstructure/docs/vqa/input/zh_val_42.jpg
