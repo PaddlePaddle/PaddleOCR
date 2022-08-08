@@ -171,7 +171,7 @@ def to_float32(preds):
             else:
                 preds[k] = paddle.to_tensor(preds[k], dtype='float32')
     else:
-        preds[k] = paddle.to_tensor(preds[k], dtype='float32')
+        preds = paddle.to_tensor(preds, dtype='float32')
     return preds
 
 
