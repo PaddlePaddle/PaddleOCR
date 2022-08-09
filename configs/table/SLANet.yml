@@ -9,7 +9,7 @@ Global:
   eval_batch_step: [0, 1000]
   cal_metric_during_train: True
   pretrained_model:
-  checkpoints: /ssd1/zhoujun20/table/ch/PaddleOCR/output/en/table_lcnet_1_0_csp_pan_headsv3_smooth_l1_pretrain_ssld_weight81_sync_bn/best_accuracy.pdparams
+  checkpoints:
   save_inference_dir: ./output/SLANet/infer
   use_visualdl: False
   infer_img: doc/table/table.jpg
@@ -28,11 +28,7 @@ Optimizer:
   beta2: 0.999
   clip_norm: 5.0
   lr:
-    # name: Piecewise
     learning_rate: 0.001
-    # decay_epochs : [10, 20]
-    # values : [0.002, 0.0002, 0.0001]
-    # warmup_epoch: 0
   regularizer:
     name: 'L2'
     factor: 0.00000
@@ -73,8 +69,8 @@ Metric:
 Train:
   dataset:
     name: PubTabDataSet
-    data_dir: /home/zhoujun20/table/PubTabNe/pubtabnet/train/
-    label_file_list: [/home/zhoujun20/table/PubTabNe/pubtabnet/PubTabNet_2.0.0_train.jsonl]
+    data_dir: train_data/table/pubtabnet/train/
+    label_file_list: [train_data/table/pubtabnet/PubTabNet_2.0.0_train.jsonl]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
@@ -109,7 +105,7 @@ Eval:
   dataset:
     name: PubTabDataSet
     data_dir: /home/zhoujun20/table/PubTabNe/pubtabnet/val/
-    label_file_list: [/home/zhoujun20/table/PubTabNe/pubtabnet/PubTabNet_2.0.0_val.jsonl]
+    label_file_list: [/home/zhoujun20/table/PubTabNe/pubtabnet/val_500.jsonl]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
