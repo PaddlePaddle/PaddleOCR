@@ -131,7 +131,6 @@ def main():
             if config['Architecture']['algorithm'] == "SAR":
                 valid_ratio = np.expand_dims(batch[-1], axis=0)
                 img_metas = [paddle.to_tensor(valid_ratio)]
-
             images = np.expand_dims(batch[0], axis=0)
             images = paddle.to_tensor(images)
             if config['Architecture']['algorithm'] == "SRN":
