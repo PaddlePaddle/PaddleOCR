@@ -161,7 +161,7 @@ def to_float32(preds):
             if isinstance(preds[k], dict) or isinstance(preds[k], list):
                 preds[k] = to_float32(preds[k])
             else:
-                preds[k] = preds[k].astype(paddle.float32)
+                preds[k] = paddle.to_tensor(preds[k], dtype='float32')
     elif isinstance(preds, list):
         for k in range(len(preds)):
             if isinstance(preds[k], dict):
@@ -169,9 +169,9 @@ def to_float32(preds):
             elif isinstance(preds[k], list):
                 preds[k] = to_float32(preds[k])
             else:
-                preds[k] = preds[k].astype(paddle.float32)
+                preds[k] = paddle.to_tensor(preds[k], dtype='float32')
     else:
-        preds = preds.astype(paddle.float32)
+        preds = paddle.to_tensor(preds, dtype='float32')
     return preds
 
 
@@ -227,7 +227,9 @@ def train(config,
     model.train()
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
-    extra_input_models = ["SRN", "NRTR", "SAR", "SEED", "SVTR", "SPIN"]
+    extra_input_models = [
+        "SRN", "NRTR", "SAR", "SEED", "SVTR", "SPIN", "VisionLAN"
+    ]
     extra_input = False
     if config['Architecture']['algorithm'] == 'Distillation':
         for key in config['Architecture']["Models"]:
@@ -269,7 +271,6 @@ def train(config,
             images = batch[0]
             if use_srn:
                 model_average = True
-
             # use amp
             if scaler:
                 with paddle.amp.auto_cast(level='O2'):
@@ -310,6 +311,9 @@ def train(config,
                                                   ]:  # for multi head loss
                         post_result = post_process_class(
                             preds['ctc'], batch[1])  # for CTC head out
+                    elif config['Loss']['name'] in ['VLLoss']:
+                        post_result = post_process_class(preds, batch[1],
+                                                         batch[-1])
                     else:
                         post_result = post_process_class(preds, batch[1])
                     eval_class(post_result, batch)
@@ -372,7 +376,8 @@ def train(config,
                     post_process_class,
                     eval_class,
                     model_type,
-                    extra_input=extra_input)
+                    extra_input=extra_input,
+                    scaler=scaler)
                 cur_metric_str = 'cur metric, {}'.format(', '.join(
                     ['{}: {}'.format(k, v) for k, v in cur_metric.items()]))
                 logger.info(cur_metric_str)
@@ -462,7 +467,8 @@ def eval(model,
          post_process_class,
          eval_class,
          model_type=None,
-         extra_input=False):
+         extra_input=False,
+         scaler=None):
     model.eval()
     with paddle.no_grad():
         total_frame = 0.0
@@ -479,12 +485,24 @@ def eval(model,
                 break
             images = batch[0]
             start = time.time()
-            if model_type == 'table' or extra_input:
-                preds = model(images, data=batch[1:])
-            elif model_type in ["kie", 'vqa']:
-                preds = model(batch)
+
+            # use amp
+            if scaler:
+                with paddle.amp.auto_cast(level='O2'):
+                    if model_type == 'table' or extra_input:
+                        preds = model(images, data=batch[1:])
+                    elif model_type in ["kie", 'vqa']:
+                        preds = model(batch)
+                    else:
+                        preds = model(images)
             else:
-                preds = model(images)
+                if model_type == 'table' or extra_input:
+                    preds = model(images, data=batch[1:])
+                elif model_type in ["kie", 'vqa']:
+                    preds = model(batch)
+                else:
+                    preds = model(images)
+
             batch_numpy = []
             for item in batch:
                 if isinstance(item, paddle.Tensor):
@@ -598,7 +616,8 @@ def preprocess(is_train=False):
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
         'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'LayoutLMv2', 'PREN', 'FCE',
-        'SVTR', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN', 'SLANet'
+        'SVTR', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN', 'VisionLAN',
+        'SLANet'
     ]
 
     if use_xpu:
@@ -617,7 +636,7 @@ def preprocess(is_train=False):
     if 'use_visualdl' in config['Global'] and config['Global']['use_visualdl']:
         save_model_dir = config['Global']['save_model_dir']
         vdl_writer_path = '{}/vdl/'.format(save_model_dir)
-        log_writer = VDLLogger(save_model_dir)
+        log_writer = VDLLogger(vdl_writer_path)
         loggers.append(log_writer)
     if ('use_wandb' in config['Global'] and
             config['Global']['use_wandb']) or 'wandb' in config:
