@@ -113,7 +113,6 @@ class LayoutLMv2ForSer(NLPBaseModel):
             pretrained,
             checkpoints,
             num_classes=num_classes)
-        self.use_visual_backbone = True
         if hasattr(self.model.layoutlmv2, "use_visual_backbone"
                    ) and self.model.layoutlmv2.use_visual_backbone is False:
             self.use_visual_backbone = False
@@ -155,7 +154,9 @@ class LayoutXLMForSer(NLPBaseModel):
             pretrained,
             checkpoints,
             num_classes=num_classes)
-        self.use_visual_backbone = True
+        if hasattr(self.model.layoutxlm, "use_visual_backbone"
+                   ) and self.model.layoutxlm.use_visual_backbone is False:
+            self.use_visual_backbone = False
 
     def forward(self, x):
         if self.use_visual_backbone is True:
@@ -185,6 +186,9 @@ class LayoutLMv2ForRe(NLPBaseModel):
         super(LayoutLMv2ForRe, self).__init__(
             LayoutLMv2Model, LayoutLMv2ForRelationExtraction, mode, "re",
             pretrained, checkpoints)
+        if hasattr(self.model.layoutlmv2, "use_visual_backbone"
+                   ) and self.model.layoutlmv2.use_visual_backbone is False:
+            self.use_visual_backbone = False
 
     def forward(self, x):
         x = self.model(
@@ -207,7 +211,6 @@ class LayoutXLMForRe(NLPBaseModel):
         super(LayoutXLMForRe, self).__init__(
             LayoutXLMModel, LayoutXLMForRelationExtraction, mode, "re",
             pretrained, checkpoints)
-        self.use_visual_backbone = True
         if hasattr(self.model.layoutxlm, "use_visual_backbone"
                    ) and self.model.layoutxlm.use_visual_backbone is False:
             self.use_visual_backbone = False
