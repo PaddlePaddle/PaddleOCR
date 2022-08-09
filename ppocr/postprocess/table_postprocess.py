@@ -21,8 +21,28 @@ from .rec_postprocess import AttnLabelDecode
 class TableLabelDecode(AttnLabelDecode):
     """  """
 
-    def __init__(self, character_dict_path, **kwargs):
-        super(TableLabelDecode, self).__init__(character_dict_path)
+    def __init__(self,
+                 character_dict_path,
+                 merge_no_span_structure=False,
+                 **kwargs):
+        dict_character = []
+        with open(character_dict_path, "rb") as fin:
+            lines = fin.readlines()
+            for line in lines:
+                line = line.decode('utf-8').strip("\n").strip("\r\n")
+                dict_character.append(line)
+
+        if merge_no_span_structure:
+            if "<td></td>" not in dict_character:
+                dict_character.append("<td></td>")
+            if "<td>" in dict_character:
+                dict_character.remove("<td>")
+
+        dict_character = self.add_special_char(dict_character)
+        self.dict = {}
+        for i, char in enumerate(dict_character):
+            self.dict[char] = i
+        self.character = dict_character
         self.td_token = ['<td>', '<td', '<td></td>']
 
     def __call__(self, preds, batch=None):
@@ -122,8 +142,13 @@ class TableLabelDecode(AttnLabelDecode):
 class TableMasterLabelDecode(TableLabelDecode):
     """  """
 
-    def __init__(self, character_dict_path, box_shape='ori', **kwargs):
-        super(TableMasterLabelDecode, self).__init__(character_dict_path)
+    def __init__(self,
+                 character_dict_path,
+                 box_shape='ori',
+                 merge_no_span_structure=True,
+                 **kwargs):
+        super(TableMasterLabelDecode, self).__init__(character_dict_path,
+                                                     merge_no_span_structure)
         self.box_shape = box_shape
         assert box_shape in [
             'ori', 'pad'

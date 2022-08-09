@@ -587,6 +587,12 @@ class TableLabelEncode(AttnLabelEncode):
                 line = line.decode('utf-8').strip("\n").strip("\r\n")
                 dict_character.append(line)
 
+        if self.merge_no_span_structure:
+            if "<td></td>" not in dict_character:
+                dict_character.append("<td></td>")
+            if "<td>" in dict_character:
+                dict_character.remove("<td>")
+
         dict_character = self.add_special_char(dict_character)
         self.dict = {}
         for i, char in enumerate(dict_character):

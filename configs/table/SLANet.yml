@@ -58,6 +58,7 @@ Loss:
 
 PostProcess:
   name: TableLabelDecode
+  merge_no_span_structure: &merge_no_span_structure False
 
 Metric:
   name: TableMetric
@@ -77,7 +78,7 @@ Train:
           channel_first: False
       - TableLabelEncode:
           learn_empty_box: False
-          merge_no_span_structure: False
+          merge_no_span_structure: *merge_no_span_structure
           replace_empty_cell_token: False
           loc_reg_num: *loc_reg_num
           max_text_length: *max_text_length
@@ -112,7 +113,7 @@ Eval:
           channel_first: False
       - TableLabelEncode:
           learn_empty_box: False
-          merge_no_span_structure: False
+          merge_no_span_structure: *merge_no_span_structure
           replace_empty_cell_token: False
           loc_reg_num: *loc_reg_num
           max_text_length: *max_text_length

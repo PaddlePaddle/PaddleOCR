@@ -8,7 +8,7 @@ Global:
   eval_batch_step: [0,  6259]
   cal_metric_during_train: true
   pretrained_model: null
-  checkpoints: 
+  checkpoints:
   save_inference_dir: output/table_master/infer
   use_visualdl: false
   infer_img: ppstructure/docs/table/table.jpg
@@ -61,6 +61,7 @@ Loss:
 PostProcess:
   name: TableMasterLabelDecode
   box_shape: pad
+  merge_no_span_structure: &merge_no_span_structure True
 
 Metric:
   name: TableMetric
@@ -79,7 +80,7 @@ Train:
           channel_first: False
       - TableMasterLabelEncode:
           learn_empty_box: False
-          merge_no_span_structure: True
+          merge_no_span_structure: *merge_no_span_structure
           replace_empty_cell_token: True
           loc_reg_num: *loc_reg_num
           max_text_length: *max_text_length
@@ -115,7 +116,7 @@ Eval:
           channel_first: False
       - TableMasterLabelEncode:
           learn_empty_box: False
-          merge_no_span_structure: True
+          merge_no_span_structure: *merge_no_span_structure
           replace_empty_cell_token: True
           loc_reg_num: *loc_reg_num
           max_text_length: *max_text_length
