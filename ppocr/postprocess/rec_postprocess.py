@@ -693,6 +693,8 @@ class VLLabelDecode(BaseRecLabelDecode):
         super(VLLabelDecode, self).__init__(character_dict_path, use_space_char)
         self.max_text_length = kwargs.get('max_text_length', 25)
         self.nclass = len(self.character) + 1
+        self.character = self.character[10:] + self.character[
+            1:10] + [self.character[0]]
 
     def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
         """ convert text-index into text-label. """

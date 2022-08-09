@@ -1267,6 +1267,11 @@ class VLLabelEncode(BaseRecLabelEncode):
                  **kwargs):
         super(VLLabelEncode, self).__init__(
             max_text_length, character_dict_path, use_space_char, lower)
+        self.character = self.character[10:] + self.character[
+            1:10] + [self.character[0]]
+        self.dict = {}
+        for i, char in enumerate(self.character):
+            self.dict[char] = i
 
     def __call__(self, data):
         text = data['label']  # original string
