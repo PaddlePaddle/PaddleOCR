@@ -161,7 +161,7 @@ def to_float32(preds):
             if isinstance(preds[k], dict) or isinstance(preds[k], list):
                 preds[k] = to_float32(preds[k])
             else:
-                preds[k] = preds[k].astype(paddle.float32)
+                preds[k] = paddle.to_tensor(preds[k], dtype='float32')
     elif isinstance(preds, list):
         for k in range(len(preds)):
             if isinstance(preds[k], dict):
@@ -169,9 +169,9 @@ def to_float32(preds):
             elif isinstance(preds[k], list):
                 preds[k] = to_float32(preds[k])
             else:
-                preds[k] = preds[k].astype(paddle.float32)
+                preds[k] = paddle.to_tensor(preds[k], dtype='float32')
     else:
-        preds = preds.astype(paddle.float32)
+        preds = paddle.to_tensor(preds, dtype='float32')
     return preds
 
 

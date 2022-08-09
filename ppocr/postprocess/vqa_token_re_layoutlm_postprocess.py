@@ -49,3 +49,25 @@ class VQAReTokenLayoutLMPostProcess(object):
                 result.append((ocr_info_head, ocr_info_tail))
             results.append(result)
         return results
+
+
+class DistillationRePostProcess(VQAReTokenLayoutLMPostProcess):
+    """
+    DistillationRePostProcess
+    """
+
+    def __init__(self, model_name=["Student"], key=None, **kwargs):
+        super().__init__(**kwargs)
+        if not isinstance(model_name, list):
+            model_name = [model_name]
+        self.model_name = model_name
+        self.key = key
+
+    def __call__(self, preds, *args, **kwargs):
+        output = dict()
+        for name in self.model_name:
+            pred = preds[name]
+            if self.key is not None:
+                pred = pred[self.key]
+            output[name] = super().__call__(pred, *args, **kwargs)
+        return output

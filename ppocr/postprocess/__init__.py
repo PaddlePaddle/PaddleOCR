@@ -31,8 +31,8 @@ from .rec_postprocess import CTCLabelDecode, AttnLabelDecode, SRNLabelDecode, \
     SPINLabelDecode, VLLabelDecode
 from .cls_postprocess import ClsPostProcess
 from .pg_postprocess import PGPostProcess
-from .vqa_token_ser_layoutlm_postprocess import VQASerTokenLayoutLMPostProcess
-from .vqa_token_re_layoutlm_postprocess import VQAReTokenLayoutLMPostProcess
+from .vqa_token_ser_layoutlm_postprocess import VQASerTokenLayoutLMPostProcess, DistillationSerPostProcess
+from .vqa_token_re_layoutlm_postprocess import VQAReTokenLayoutLMPostProcess, DistillationRePostProcess
 from .table_postprocess import TableMasterLabelDecode, TableLabelDecode
 
 
@@ -45,7 +45,9 @@ def build_post_process(config, global_config=None):
         'SEEDLabelDecode', 'VQASerTokenLayoutLMPostProcess',
         'VQAReTokenLayoutLMPostProcess', 'PRENLabelDecode',
         'DistillationSARLabelDecode', 'ViTSTRLabelDecode', 'ABINetLabelDecode',
-        'TableMasterLabelDecode', 'SPINLabelDecode', 'VLLabelDecode'
+        'TableMasterLabelDecode', 'SPINLabelDecode',
+        'DistillationSerPostProcess', 'DistillationRePostProcess',
+        'VLLabelDecode'
     ]
 
     if config['name'] == 'PSEPostProcess':

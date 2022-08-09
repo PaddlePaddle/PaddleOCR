@@ -113,10 +113,13 @@ def make_input(ser_inputs, ser_results):
 
 class SerRePredictor(object):
     def __init__(self, config, ser_config):
+        global_config = config['Global']
+        if "infer_mode" in global_config:
+            ser_config["Global"]["infer_mode"] = global_config["infer_mode"]
+
         self.ser_engine = SerPredictor(ser_config)
 
         #  init re model 
-        global_config = config['Global']
 
         # build post process
         self.post_process_class = build_post_process(config['PostProcess'],
@@ -130,8 +133,8 @@ class SerRePredictor(object):
 
         self.model.eval()
 
-    def __call__(self, img_path):
-        ser_results, ser_inputs = self.ser_engine({'img_path': img_path})
+    def __call__(self, data):
+        ser_results, ser_inputs = self.ser_engine(data)
         re_input, entity_idx_dict_batch = make_input(ser_inputs, ser_results)
         preds = self.model(re_input)
         post_result = self.post_process_class(
@@ -173,18 +176,33 @@ if __name__ == '__main__':
 
     ser_re_engine = SerRePredictor(config, ser_config)
 
-    infer_imgs = get_image_file_list(config['Global']['infer_img'])
+    if config["Global"].get("infer_mode", None) is False:
+        data_dir = config['Eval']['dataset']['data_dir']
+        with open(config['Global']['infer_img'], "rb") as f:
+            infer_imgs = f.readlines()
+    else:
+        infer_imgs = get_image_file_list(config['Global']['infer_img'])
+
     with open(
             os.path.join(config['Global']['save_res_path'],
                          "infer_results.txt"),
             "w",
             encoding='utf-8') as fout:
-        for idx, img_path in enumerate(infer_imgs):
+        for idx, info in enumerate(infer_imgs):
+            if config["Global"].get("infer_mode", None) is False:
+                data_line = info.decode('utf-8')
+                substr = data_line.strip("\n").split("\t")
+                img_path = os.path.join(data_dir, substr[0])
+                data = {'img_path': img_path, 'label': substr[1]}
+            else:
+                img_path = info
+                data = {'img_path': img_path}
+
             save_img_path = os.path.join(
                 config['Global']['save_res_path'],
                 os.path.splitext(os.path.basename(img_path))[0] + "_ser_re.jpg")
 
-            result = ser_re_engine(img_path)
+            result = ser_re_engine(data)
             result = result[0]
             fout.write(img_path + "\t" + json.dumps(
                 {
