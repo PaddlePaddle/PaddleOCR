@@ -1,6 +1,6 @@
 Global:
   use_gpu: true
-  epoch_num: 400
+  epoch_num: 100
   log_smooth_window: 20
   print_batch_step: 20
   save_model_dir: ./output/SLANet
@@ -28,7 +28,10 @@ Optimizer:
   beta2: 0.999
   clip_norm: 5.0
   lr:
+    name: Piecewise
     learning_rate: 0.001
+    decay_epochs : [40, 50]
+    values : [0.001, 0.0001, 0.00005]
   regularizer:
     name: 'L2'
     factor: 0.00000
@@ -105,8 +108,8 @@ Train:
 Eval:
   dataset:
     name: PubTabDataSet
-    data_dir: /home/zhoujun20/table/PubTabNe/pubtabnet/val/
-    label_file_list: [/home/zhoujun20/table/PubTabNe/pubtabnet/val_500.jsonl]
+    data_dir: train_data/table/pubtabnet/val/
+    label_file_list: [train_data/table/pubtabnet/PubTabNet_2.0.0_val.jsonl]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
