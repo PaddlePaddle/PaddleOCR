@@ -32,6 +32,19 @@ def init_args():
         type=str,
         default="../ppocr/utils/dict/table_structure_dict.txt")
     # params for layout
+    parser.add_argument("--layout_model_dir", type=str)
+    parser.add_argument(
+        "--layout_dict_path",
+        type=str,
+        default="../../ppocr/utils/dict/layout_pubalynet_dict.txt")
+    parser.add_argument(
+        "--score_threshold",
+        type=float,
+        default=0.5,
+        help="Threshold of score.")
+    parser.add_argument(
+        "--nms_threshold", type=float, default=0.5, help="Threshold of nms.")
+
     parser.add_argument(
         "--layout_path_model",
         type=str,
@@ -87,7 +100,7 @@ def draw_structure_result(image, result, font_path):
         image = Image.fromarray(image)
     boxes, txts, scores = [], [], []
     for region in result:
-        if region['type'] == 'Table':
+        if region['type'] == 'table':
             pass
         else:
             for text_result in region['res']:
