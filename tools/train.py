@@ -123,8 +123,6 @@ def main(config, device, logger, vdl_writer):
     if use_sync_bn:
         model = paddle.nn.SyncBatchNorm.convert_sync_batchnorm(model)
         logger.info('convert_sync_batchnorm')
-    if config['Global']['distributed']:
-        model = paddle.DataParallel(model)
 
     model = apply_to_static(model, config, logger)
 
