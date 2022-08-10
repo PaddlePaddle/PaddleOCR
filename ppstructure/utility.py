@@ -34,6 +34,18 @@ def init_args():
     # params for layout
     parser.add_argument("--layout_model_dir", type=str)
     parser.add_argument(
+        "--layout_dict_path",
+        type=str,
+        default="../../ppocr/utils/dict/layout_pubalynet_dict.txt")
+    parser.add_argument(
+        "--score_threshold",
+        type=float,
+        default=0.5,
+        help="Threshold of score.")
+    parser.add_argument(
+        "--nms_threshold", type=float, default=0.5, help="Threshold of nms.")
+
+    parser.add_argument(
         "--layout_path_model",
         type=str,
         default="lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config")

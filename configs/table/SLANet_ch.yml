@@ -1,0 +1,146 @@
+Global:
+  use_gpu: true
+  epoch_num: 400
+  log_smooth_window: 20
+  print_batch_step: 20
+  save_model_dir: ./output/SLANet_en
+  save_epoch_step: 400
+  # evaluation is run every 1000 iterations after the 0th iteration
+  eval_batch_step: [0, 311]
+  cal_metric_during_train: True
+  pretrained_model: /ssd1/zhoujun20/table/ch/PaddleOCR/output/en/table_lcnet_1_0_csp_pan_headsv3_smooth_l1_pretrain_ssld_weight81_sync_bn/best_accuracy.pdparams
+  checkpoints: ./output/SLANet_en/best_accuracy
+  save_inference_dir: ./output/SLANet/infer
+  use_visualdl: False
+  infer_img: doc/table/table.jpg
+  # for data or label process
+  character_dict_path: ppocr/utils/dict/table_structure_dict.txt
+  character_type: en
+  max_text_length: &max_text_length 500
+  box_format: &box_format 'xyxyxyxy' # 'xywh', 'xyxy', 'xyxyxyxy'
+  infer_mode: False
+  use_sync_bn: True
+  save_res_path: 'output/infer'
+
+Optimizer:
+  name: Adam
+  beta1: 0.9
+  beta2: 0.999
+  clip_norm: 5.0
+  lr:
+    # name: Piecewise
+    learning_rate: 0.001
+    # decay_epochs : [10, 20]
+    # values : [0.002, 0.0002, 0.0001]
+    # warmup_epoch: 0
+  regularizer:
+    name: 'L2'
+    factor: 0.00000
+
+Architecture:
+  model_type: table
+  algorithm: SLANet
+  Backbone:
+    name: PPLCNet
+    scale: 1.0
+    pretrained: true
+    use_ssld: true
+  Neck:
+    name: CSPPAN
+    out_channels: 96
+  Head:
+    name: SLAHead
+    hidden_size: 256
+    max_text_length: *max_text_length
+    loc_reg_num: &loc_reg_num 8
+
+Loss:
+  name: SLANetLoss
+  structure_weight: 1.0
+  loc_weight: 2.0
+  loc_loss: smooth_l1
+
+PostProcess:
+  name: TableLabelDecode
+
+Metric:
+  name: TableMetric
+  main_indicator: acc
+  compute_bbox_metric: False
+  loc_reg_num: *loc_reg_num
+  box_format: *box_format
+
+Train:
+  dataset:
+    name: PubTabDataSet
+    data_dir: /ssd1/zhoujun20/table/gen/gen_ch/
+    label_file_list:
+      - /ssd1/zhoujun20/table/gen/gen_ch/pubtabnet_ch/train.txt
+      - /ssd1/zhoujun20/table/gen/gen_ch/hwl/all.txt
+      - /ssd1/zhoujun20/table/gen/gen_ch/WTW/all.txt
+    ratio_list: [0.015,1,1]
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - TableLabelEncode:
+          learn_empty_box: False
+          merge_no_span_structure: False
+          replace_empty_cell_token: False
+          loc_reg_num: *loc_reg_num
+          max_text_length: *max_text_length
+      - TableBoxEncode:
+          box_format: *box_format
+      - ResizeTableImage:
+          max_len: 488
+      - NormalizeImage:
+          scale: 1./255.
+          mean: [0.485, 0.456, 0.406]
+          std: [0.229, 0.224, 0.225]
+          order: 'hwc'
+      - PaddingTableImage:
+          size: [488, 488]
+      - ToCHWImage:
+      - KeepKeys:
+          keep_keys: [ 'image', 'structure', 'bboxes', 'bbox_masks', 'shape' ]
+  loader:
+    shuffle: True
+    batch_size_per_card: 48
+    drop_last: True
+    num_workers: 1
+
+Eval:
+  dataset:
+    name: PubTabDataSet
+    data_dir: /ssd1/zhoujun20/table/gen/gen_ch/val/imgs/
+    label_file_list:
+      - /ssd1/zhoujun20/table/gen/gen_ch/val/val_clean.txt
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - TableLabelEncode:
+          learn_empty_box: False
+          merge_no_span_structure: False
+          replace_empty_cell_token: False
+          loc_reg_num: *loc_reg_num
+          max_text_length: *max_text_length
+      - TableBoxEncode:
+          box_format: *box_format
+      - ResizeTableImage:
+          max_len: 488
+      - NormalizeImage:
+          scale: 1./255.
+          mean: [0.485, 0.456, 0.406]
+          std: [0.229, 0.224, 0.225]
+          order: 'hwc'
+      - PaddingTableImage:
+          size: [488, 488]
+      - ToCHWImage:
+      - KeepKeys:
+          keep_keys: [ 'image', 'structure', 'bboxes', 'bbox_masks', 'shape' ]
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 48
+    num_workers: 1

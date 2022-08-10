@@ -34,6 +34,7 @@ from .pg_postprocess import PGPostProcess
 from .vqa_token_ser_layoutlm_postprocess import VQASerTokenLayoutLMPostProcess, DistillationSerPostProcess
 from .vqa_token_re_layoutlm_postprocess import VQAReTokenLayoutLMPostProcess, DistillationRePostProcess
 from .table_postprocess import TableMasterLabelDecode, TableLabelDecode
+from .picodet_postprocess import PicoDetPostProcess
 
 
 def build_post_process(config, global_config=None):
@@ -47,7 +48,7 @@ def build_post_process(config, global_config=None):
         'DistillationSARLabelDecode', 'ViTSTRLabelDecode', 'ABINetLabelDecode',
         'TableMasterLabelDecode', 'SPINLabelDecode',
         'DistillationSerPostProcess', 'DistillationRePostProcess',
-        'VLLabelDecode'
+        'VLLabelDecode', 'PicoDetPostProcess'
     ]
 
     if config['name'] == 'PSEPostProcess':
