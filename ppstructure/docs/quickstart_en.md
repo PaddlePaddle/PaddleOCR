@@ -1,21 +1,21 @@
 # PP-Structure Quick Start
 
-- [1. Install package](#1)
-- [2. Use](#2)
-    - [2.1 Use by command line](#21)
-        - [2.1.1 layout analysis + table recognition](#211)
-        - [2.1.2 layout analysis](#212)
-        - [2.1.3 table recognition](#213)
-        - [2.1.4 DocVQA](#214)
-    - [2.2 Use by code](#22)
-        - [2.2.1 layout analysis + table recognition](#221)
-        - [2.2.2 layout analysis](#222)
-        - [2.2.3 table recognition](#223)
-        - [2.2.4 DocVQA](#224)
-    - [2.3 Result description](#23)
-        - [2.3.1 layout analysis + table recognition](#231)
-        - [2.3.2 DocVQA](#232)
-    - [2.4 Parameter Description](#24)
+- [1. Install package](#1-install-package)
+- [2. Use](#2-use)
+  - [2.1 Use by command line](#21-use-by-command-line)
+    - [2.1.1 layout analysis + table recognition](#211-layout-analysis--table-recognition)
+    - [2.1.2 layout analysis](#212-layout-analysis)
+    - [2.1.3 table recognition](#213-table-recognition)
+    - [2.1.4 DocVQA](#214-docvqa)
+  - [2.2 Use by code](#22-use-by-code)
+    - [2.2.1 layout analysis + table recognition](#221-layout-analysis--table-recognition)
+    - [2.2.2 layout analysis](#222-layout-analysis)
+    - [2.2.3 table recognition](#223-table-recognition)
+    - [2.2.4 DocVQA](#224-docvqa)
+  - [2.3 Result description](#23-result-description)
+    - [2.3.1 layout analysis + table recognition](#231-layout-analysis--table-recognition)
+    - [2.3.2 DocVQA](#232-docvqa)
+  - [2.4 Parameter Description](#24-parameter-description)
 
 
 <a name="1"></a>
@@ -24,8 +24,6 @@
 ```bash
 # Install paddleocr, version 2.5+ is recommended
 pip3 install "paddleocr>=2.5"
-# Install layoutparser (if you do not use the layout analysis, you can skip it)
-pip3 install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
 # Install the DocVQA dependency package paddlenlp (if you do not use the DocVQA, you can skip it)
 pip install paddlenlp
 

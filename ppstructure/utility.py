@@ -38,14 +38,17 @@ def init_args():
     parser.add_argument(
         "--layout_dict_path",
         type=str,
-        default="../ppocr/utils/dict/layout_pubalynet_dict.txt")
+        default="../ppocr/utils/dict/layout_publaynet_dict.txt")
     parser.add_argument(
         "--layout_score_threshold",
         type=float,
         default=0.5,
         help="Threshold of score.")
     parser.add_argument(
-        "--layout_nms_threshold", type=float, default=0.5, help="Threshold of nms.")
+        "--layout_nms_threshold",
+        type=float,
+        default=0.5,
+        help="Threshold of nms.")
     # params for vqa
     parser.add_argument("--vqa_algorithm", type=str, default='LayoutXLM')
     parser.add_argument("--ser_model_dir", type=str)

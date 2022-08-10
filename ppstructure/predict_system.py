@@ -43,6 +43,7 @@ logger = get_logger()
 class StructureSystem(object):
     def __init__(self, args):
         self.mode = args.mode
+        self.recovery = args.recovery
         if self.mode == 'structure':
             if not args.show_log:
                 logger.setLevel(logging.INFO)
@@ -110,7 +111,7 @@ class StructureSystem(object):
                         time_dict['rec'] += table_time_dict['rec']
                 else:
                     if self.text_system is not None:
-                        if args.recovery:
+                        if self.recovery:
                             wht_im = np.ones(ori_im.shape, dtype=ori_im.dtype)
                             wht_im[y1:y2, x1:x2, :] = roi_img
                             filter_boxes, filter_rec_res, ocr_time_dict = self.text_system(
@@ -133,7 +134,7 @@ class StructureSystem(object):
                             for token in style_token:
                                 if token in rec_str:
                                     rec_str = rec_str.replace(token, '')
-                            if not args.recovery:
+                            if not self.recovery:
                                 box += [x1, y1]
                             res.append({
                                 'text': rec_str,

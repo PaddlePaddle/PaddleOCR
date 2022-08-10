@@ -59,6 +59,7 @@ pip3 install paddlehub==2.1.0 --upgrade -i https://mirror.baidu.com/pypi/simple
 检测模型：./inference/ch_PP-OCRv3_det_infer/
 识别模型：./inference/ch_PP-OCRv3_rec_infer/
 方向分类器：./inference/ch_ppocr_mobile_v2.0_cls_infer/
+版面分析模型：
 表格结构识别模型：./inference/en_ppocr_mobile_v2.0_table_structure_infer/
 ```  
 
@@ -172,7 +173,7 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 ## 3. 发送预测请求
 配置好服务端，可使用以下命令发送预测请求，获取预测结果:  
 
-```python tools/test_hubserving.py server_url image_path```  
+```python tools/test_hubserving.py --server_url=server_url --image_dir=image_path```  
 
 需要给脚本传递2个参数：  
 - **server_url**：服务地址，格式为  

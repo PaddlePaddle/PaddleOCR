@@ -3,14 +3,14 @@
 **Note:** This tutorial mainly introduces the usage of PP-OCR series models, please refer to [PP-Structure Quick Start](../../ppstructure/docs/quickstart_en.md) for the quick use of document analysis related functions.
 
 - [1. Installation](#1-installation)
-    - [1.1 Install PaddlePaddle](#11-install-paddlepaddle)
-    - [1.2 Install PaddleOCR Whl Package](#12-install-paddleocr-whl-package)
+  - [1.1 Install PaddlePaddle](#11-install-paddlepaddle)
+  - [1.2 Install PaddleOCR Whl Package](#12-install-paddleocr-whl-package)
 - [2. Easy-to-Use](#2-easy-to-use)
-    - [2.1 Use by Command Line](#21-use-by-command-line)
-      - [2.1.1 Chinese and English Model](#211-chinese-and-english-model)
-      - [2.1.2 Multi-language Model](#212-multi-language-model)
-    - [2.2 Use by Code](#22-use-by-code)
-      - [2.2.1 Chinese & English Model and Multilingual Model](#221-chinese--english-model-and-multilingual-model)
+  - [2.1 Use by Command Line](#21-use-by-command-line)
+    - [2.1.1 Chinese and English Model](#211-chinese-and-english-model)
+    - [2.1.2 Multi-language Model](#212-multi-language-model)
+  - [2.2 Use by Code](#22-use-by-code)
+    - [2.2.1 Chinese & English Model and Multilingual Model](#221-chinese--english-model-and-multilingual-model)
 - [3. Summary](#3-summary)
 
 
@@ -50,12 +50,6 @@ pip install "paddleocr>=2.0.1" # Recommend to use version 2.0.1+
 - **For windows users:** If you getting this error `OSError: [WinError 126] The specified module could not be found` when you install shapely on windows. Please try to download Shapely whl file [here](http://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely).
 
   Reference: [Solve shapely installation on windows](https://stackoverflow.com/questions/44398265/install-shapely-oserror-winerror-126-the-specified-module-could-not-be-found)
-
-- **For layout analysis users**, run the following command to install **Layout-Parser**
-
-  ```bash
-  pip3 install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
-  ```
 
 <a name="2-easy-to-use"></a>
 

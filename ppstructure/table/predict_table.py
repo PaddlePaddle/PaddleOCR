@@ -101,7 +101,7 @@ class TableSystem(object):
         start = time.time()
 
         structure_res, elapse = self._structure(copy.deepcopy(img))
-        result['cell_bbox'] = structure_res[1]
+        result['cell_bbox'] = structure_res[1].tolist()
         time_dict['table'] = elapse
 
         dt_boxes, rec_res, det_elapse, rec_elapse = self._ocr(
