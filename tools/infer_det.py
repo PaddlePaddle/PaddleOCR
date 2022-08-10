@@ -106,7 +106,7 @@ def main():
                     dt_boxes_list = []
                     for box in boxes:
                         tmp_json = {"transcription": ""}
-                        tmp_json['points'] = list(box)
+                        tmp_json['points'] = np.array(box).tolist()
                         dt_boxes_list.append(tmp_json)
                     det_box_json[k] = dt_boxes_list
                     save_det_path = os.path.dirname(config['Global'][
@@ -118,7 +118,7 @@ def main():
                 # write result
                 for box in boxes:
                     tmp_json = {"transcription": ""}
-                    tmp_json['points'] = list(box)
+                    tmp_json['points'] = np.array(box).tolist()
                     dt_boxes_json.append(tmp_json)
                 save_det_path = os.path.dirname(config['Global'][
                     'save_res_path']) + "/det_results/"

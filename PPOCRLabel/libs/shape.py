@@ -46,15 +46,16 @@ class Shape(object):
     point_size = 8
     scale = 1.0
 
-    def __init__(self, label=None, line_color=None, difficult=False, key_cls="None", paintLabel=False):
+    def __init__(self, label=None, line_color=None, difficult=False, key_cls="None", paintLabel=False, paintIdx=False):
         self.label = label
-        self.idx = 0
+        self.idx = None # bbox order, only for table annotation
         self.points = []
         self.fill = False
         self.selected = False
         self.difficult = difficult
         self.key_cls = key_cls
         self.paintLabel = paintLabel
+        self.paintIdx = paintIdx
         self.locked = False
         self.direction = 0
         self.center = None
@@ -65,6 +66,7 @@ class Shape(object):
             self.NEAR_VERTEX: (4, self.P_ROUND),
             self.MOVE_VERTEX: (1.5, self.P_SQUARE),
         }
+        self.fontsize = 8
 
         self._closed = False
 
@@ -124,7 +126,7 @@ class Shape(object):
             color = self.select_line_color if self.selected else self.line_color
             pen = QPen(color)
             # Try using integer sizes for smoother drawing(?)
-            pen.setWidth(max(1, int(round(2.0 / self.scale))))
+            # pen.setWidth(max(1, int(round(2.0 / self.scale))))
             painter.setPen(pen)
 
             line_path = QPainterPath()
@@ -155,7 +157,7 @@ class Shape(object):
                     min_y = min(min_y, point.y())
                 if min_x != sys.maxsize and min_y != sys.maxsize:
                     font = QFont()
-                    font.setPointSize(8)
+                    font.setPointSize(self.fontsize)
                     font.setBold(True)
                     painter.setFont(font)
                     if self.label is None:
@@ -163,6 +165,25 @@ class Shape(object):
                     if min_y < MIN_Y_LABEL:
                         min_y += MIN_Y_LABEL
                     painter.drawText(min_x, min_y, self.label)
+
+            # Draw number at the top-right
+            if self.paintIdx:
+                min_x = sys.maxsize
+                min_y = sys.maxsize
+                for point in self.points:
+                    min_x = min(min_x, point.x())
+                    min_y = min(min_y, point.y())
+                if min_x != sys.maxsize and min_y != sys.maxsize:
+                    font = QFont()
+                    font.setPointSize(self.fontsize)
+                    font.setBold(True)
+                    painter.setFont(font)
+                    text = ''
+                    if self.idx != None:
+                        text = str(self.idx)
+                    if min_y < MIN_Y_LABEL:
+                        min_y += MIN_Y_LABEL
+                    painter.drawText(min_x, min_y, text)
 
             if self.fill:
                 color = self.select_fill_color if self.selected else self.fill_color

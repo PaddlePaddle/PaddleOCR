@@ -21,8 +21,10 @@ from .rec_ctc_loss import CTCLoss
 from .rec_sar_loss import SARLoss
 from .basic_loss import DMLLoss
 from .basic_loss import DistanceLoss
+from .basic_loss import LossFromOutput
 from .det_db_loss import DBLoss
 from .det_basic_loss import BalanceLoss, MaskL1Loss, DiceLoss
+from .vqa_token_layoutlm_loss import VQASerTokenLayoutLMLoss
 
 
 def _sum_loss(loss_dict):
@@ -318,6 +320,136 @@ class DistillationDistanceLoss(DistanceLoss):
                 for key in loss:
                     loss_dict["{}_{}_{}".format(self.name, key, idx)] = loss[
                         key]
+            else:
+                loss_dict["{}_{}_{}_{}".format(self.name, pair[0], pair[1],
+                                               idx)] = loss
+        return loss_dict
+
+
+class DistillationVQASerTokenLayoutLMLoss(VQASerTokenLayoutLMLoss):
+    def __init__(self,
+                 num_classes,
+                 model_name_list=[],
+                 key=None,
+                 name="loss_ser"):
+        super().__init__(num_classes=num_classes)
+        self.model_name_list = model_name_list
+        self.key = key
+        self.name = name
+
+    def forward(self, predicts, batch):
+        loss_dict = dict()
+        for idx, model_name in enumerate(self.model_name_list):
+            out = predicts[model_name]
+            if self.key is not None:
+                out = out[self.key]
+            loss = super().forward(out, batch)
+            loss_dict["{}_{}".format(self.name, model_name)] = loss["loss"]
+        return loss_dict
+
+
+class DistillationLossFromOutput(LossFromOutput):
+    def __init__(self,
+                 reduction="none",
+                 model_name_list=[],
+                 dist_key=None,
+                 key="loss",
+                 name="loss_re"):
+        super().__init__(key=key, reduction=reduction)
+        self.model_name_list = model_name_list
+        self.name = name
+        self.dist_key = dist_key
+
+    def forward(self, predicts, batch):
+        loss_dict = dict()
+        for idx, model_name in enumerate(self.model_name_list):
+            out = predicts[model_name]
+            if self.dist_key is not None:
+                out = out[self.dist_key]
+            loss = super().forward(out, batch)
+            loss_dict["{}_{}".format(self.name, model_name)] = loss["loss"]
+        return loss_dict
+
+
+class DistillationSERDMLLoss(DMLLoss):
+    """
+    """
+
+    def __init__(self,
+                 act="softmax",
+                 use_log=True,
+                 num_classes=7,
+                 model_name_pairs=[],
+                 key=None,
+                 name="loss_dml_ser"):
+        super().__init__(act=act, use_log=use_log)
+        assert isinstance(model_name_pairs, list)
+        self.key = key
+        self.name = name
+        self.num_classes = num_classes
+        self.model_name_pairs = model_name_pairs
+
+    def forward(self, predicts, batch):
+        loss_dict = dict()
+        for idx, pair in enumerate(self.model_name_pairs):
+            out1 = predicts[pair[0]]
+            out2 = predicts[pair[1]]
+            if self.key is not None:
+                out1 = out1[self.key]
+                out2 = out2[self.key]
+            out1 = out1.reshape([-1, out1.shape[-1]])
+            out2 = out2.reshape([-1, out2.shape[-1]])
+
+            attention_mask = batch[2]
+            if attention_mask is not None:
+                active_output = attention_mask.reshape([-1, ]) == 1
+                out1 = out1[active_output]
+                out2 = out2[active_output]
+
+            loss_dict["{}_{}".format(self.name, idx)] = super().forward(out1,
+                                                                        out2)
+
+        return loss_dict
+
+
+class DistillationVQADistanceLoss(DistanceLoss):
+    def __init__(self,
+                 mode="l2",
+                 model_name_pairs=[],
+                 key=None,
+                 name="loss_distance",
+                 **kargs):
+        super().__init__(mode=mode, **kargs)
+        assert isinstance(model_name_pairs, list)
+        self.key = key
+        self.model_name_pairs = model_name_pairs
+        self.name = name + "_l2"
+
+    def forward(self, predicts, batch):
+        loss_dict = dict()
+        for idx, pair in enumerate(self.model_name_pairs):
+            out1 = predicts[pair[0]]
+            out2 = predicts[pair[1]]
+            attention_mask = batch[2]
+            if self.key is not None:
+                out1 = out1[self.key]
+                out2 = out2[self.key]
+                if attention_mask is not None:
+                    max_len = attention_mask.shape[-1]
+                    out1 = out1[:, :max_len]
+                    out2 = out2[:, :max_len]
+                out1 = out1.reshape([-1, out1.shape[-1]])
+                out2 = out2.reshape([-1, out2.shape[-1]])
+            if attention_mask is not None:
+                active_output = attention_mask.reshape([-1, ]) == 1
+                out1 = out1[active_output]
+                out2 = out2[active_output]
+
+            loss = super().forward(out1, out2)
+            if isinstance(loss, dict):
+                for key in loss:
+                    loss_dict["{}_{}nohu_{}".format(self.name, key,
+                                                    idx)] = loss[key]
             else:
                 loss_dict["{}_{}_{}_{}".format(self.name, pair[0], pair[1],
                                                idx)] = loss
