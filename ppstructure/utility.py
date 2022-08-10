@@ -32,7 +32,6 @@ def init_args():
         type=str,
         default="../ppocr/utils/dict/table_structure_dict.txt")
     # params for layout
-    parser.add_argument("--layout_model_dir", type=str)
     parser.add_argument(
         "--layout_path_model",
         type=str,
