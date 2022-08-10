@@ -119,7 +119,7 @@ void structure(std::vector<cv::String> &cv_all_img_names) {
   std::vector<std::vector<StructurePredictResult>> structure_results =
       engine.structure(cv_all_img_names, false, FLAGS_table);
   for (int i = 0; i < cv_all_img_names.size(); i++) {
-    cout << cv_all_img_names[i] << "\n";
+    cout << "predict img: " << cv_all_img_names[i] << endl;
     for (int j = 0; j < structure_results[i].size(); j++) {
       std::cout << j << "\ttype: " << structure_results[i][j].type
                 << ", region: [";
@@ -127,7 +127,7 @@ void structure(std::vector<cv::String> &cv_all_img_names) {
                 << structure_results[i][j].box[1] << ","
                 << structure_results[i][j].box[2] << ","
                 << structure_results[i][j].box[3] << "], res: ";
-      if (structure_results[i][j].type == "Table") {
+      if (structure_results[i][j].type == "table") {
         std::cout << structure_results[i][j].html << std::endl;
       } else {
         Utility::print_result(structure_results[i][j].text_res);

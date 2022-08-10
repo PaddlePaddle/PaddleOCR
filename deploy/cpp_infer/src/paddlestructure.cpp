@@ -55,7 +55,7 @@ PaddleStructure::structure(std::vector<cv::String> cv_all_img_names,
     if (layout) {
     } else {
       StructurePredictResult res;
-      res.type = "Table";
+      res.type = "table";
       res.box = std::vector<int>(4, 0);
       res.box[2] = srcimg.cols;
       res.box[3] = srcimg.rows;
@@ -65,7 +65,7 @@ PaddleStructure::structure(std::vector<cv::String> cv_all_img_names,
     for (int i = 0; i < structure_result.size(); i++) {
       // crop image
       roi_img = Utility::crop_image(srcimg, structure_result[i].box);
-      if (structure_result[i].type == "Table") {
+      if (structure_result[i].type == "table") {
         this->table(roi_img, structure_result[i], time_info_table,
                     time_info_det, time_info_rec, time_info_cls);
       }
