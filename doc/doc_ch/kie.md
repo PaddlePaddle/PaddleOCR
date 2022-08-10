@@ -9,11 +9,10 @@
 - [2. 开始训练](#2-开始训练)
   - [2.1. 启动训练](#21-启动训练)
   - [2.2. 断点训练](#22-断点训练)
-  - [2.3. 更换Backbone 训练](#23-更换backbone-训练)
-  - [2.4. 混合精度训练](#24-混合精度训练)
-  - [2.5. 分布式训练](#25-分布式训练)
-  - [2.6. 知识蒸馏训练](#26-知识蒸馏训练)
-  - [2.7. 其他训练环境](#27-其他训练环境)
+  - [2.3. 混合精度训练](#24-混合精度训练)
+  - [2.4. 分布式训练](#25-分布式训练)
+  - [2.5. 知识蒸馏训练](#26-知识蒸馏训练)
+  - [2.6. 其他训练环境](#27-其他训练环境)
 - [3. 模型评估与预测](#3-模型评估与预测)
   - [3.1. 指标评估](#31-指标评估)
   - [3.2. 测试信息抽取效果](#32-测试识别效果)
@@ -40,7 +39,7 @@ mklink /d <path/to/paddle_ocr>/train_data/dataset <path/to/dataset>
 
 训练过程中一般包含训练集与验证集，二者数据格式相同，下面介绍如何自定义数据集。
 
-* 训练集
+**（1）训练集**
 
 建议将训练图片放入同一个文件夹，并用一个文本文件记录图片路径和标签，文本文件里的内容如下:
 
@@ -53,7 +52,7 @@ zh_train_1.jpg   [{"transcription": "中国人体器官捐献", "label": "other"
 
 **注意：** 文本文件中默认请将图片路径和图片标签用 `\t` 分割，如用其他方式分割将造成训练报错。
 
-其中图像标注信息字符串经过json解析之后可以得到一个列表信息，列表中每个元素是一个字典，存储了每个文本行的需要信息，其中
+其中图像标注信息字符串经过json解析之后可以得到一个列表信息，列表中每个元素是一个字典，存储了每个文本行的需要信息，各个字段的含义如下。
 
 - transcription: 存储了文本行的文字内容
 - label: 该文本行内容所属的类别
@@ -61,9 +60,9 @@ zh_train_1.jpg   [{"transcription": "中国人体器官捐献", "label": "other"
 - id: 存储文本行的id信息，用于RE任务的训练
 - linking: 存储文本行的之间的连接信息，用于RE任务的训练
 
-* 验证集
+**（2）验证集**
 
-验证集构建方式与训练集相同
+验证集构建方式与训练集相同。
 
 * 字典文件
 
@@ -77,6 +76,8 @@ QUESTION
 ANSWER
 HEADER
 ```
+
+在标注文件中，每个标注的文本行内容的`label`字段标注信息需要属于字典内容。
 
 最终数据集应有如下文件结构：
 
@@ -256,62 +257,11 @@ python3 tools/train.py -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml
 - LayoutXLM系列模型均是调用了PaddleNLP中的预训练模型，模型加载与保存的逻辑与PaddleNLP基本一致，因此在这里不需要指定`Global.pretrained_model`或者`Global.checkpoints`参数；此外，LayoutXLM系列模型的蒸馏训练目前不支持断点训练。
 
 
-## 2.3. 更换Backbone 训练
-
-PaddleOCR将网络划分为四部分，分别在[ppocr/modeling](../../ppocr/modeling)下。 进入网络的数据将按照顺序(transforms->backbones->necks->heads)依次通过这四个部分。
-
-```bash
-├── architectures # 网络的组网代码
-├── transforms    # 网络的图像变换模块
-├── backbones     # 网络的特征提取模块
-├── necks         # 网络的特征增强模块
-└── heads         # 网络的输出模块
-```
-
-对于LayoutXLM系列关键信息抽取模型，PaddleOCR直接调用PaddleNLP中的能力，组网部分仅包含backbone部分，具体实现代码在[vqa_layoutlm.py](../../ppocr/modeling/backbones/vqa_layoutlm.py)文件中。
-
-目前对于
-
-如果要更换的Backbone 在PaddleOCR中有对应实现，直接修改配置yml文件中`Backbone`部分的参数即可。
-
-如果要使用新的Backbone，更换backbones的例子如下:
-
-1. 在 [ppocr/modeling/backbones](../../ppocr/modeling/backbones) 文件夹下新建文件，如my_backbone.py。
-2. 在 my_backbone.py 文件内添加相关代码，示例代码如下:
-
-```python
-import paddle
-import paddle.nn as nn
-import paddle.nn.functional as F
-
-
-class MyBackbone(nn.Layer):
-    def __init__(self, *args, **kwargs):
-        super(MyBackbone, self).__init__()
-        # your init code
-        self.conv = nn.xxxx
-
-    def forward(self, inputs):
-        # your network forward
-        y = self.conv(inputs)
-        return y
-```
-
-3. 在 [ppocr/modeling/backbones/\__init\__.py](../../ppocr/modeling/backbones/__init__.py)文件内导入添加的`MyBackbone`模块，然后修改配置文件中Backbone进行配置即可使用，格式如下:
-
-```yaml
-Backbone:
-name: MyBackbone
-  args1: args1
-```
-
-**注意**：如果使用的是NLP相关的预训练模型，在使用时建议
-
-## 2.4. 混合精度训练
+## 2.3. 混合精度训练
 
 coming soon!
 
-## 2.5. 分布式训练
+## 2.4. 分布式训练
 
 多机多卡训练时，通过 `--ips` 参数设置使用的机器IP地址，通过 `--gpus` 参数设置使用的GPU ID：
 
@@ -321,14 +271,14 @@ python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1
 
 **注意:** （1）采用多机多卡训练时，需要替换上面命令中的ips值为您机器的地址，机器之间需要能够相互ping通；（2）训练时需要在多个机器上分别启动命令。查看机器ip地址的命令为`ifconfig`；（3）更多关于分布式训练的性能优势等信息，请参考：[分布式训练教程](./distributed_training.md)。
 
-## 2.6. 知识蒸馏训练
+## 2.5. 知识蒸馏训练
 
 PaddleOCR支持了基于U-DML知识蒸馏的关键信息抽取模型训练过程，配置文件请参考：[ser_vi_layoutxlm_xfund_zh_udml.yml](../../configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh_udml.yml)，更多关于知识蒸馏的说明文档请参考：[知识蒸馏说明文档](./knowledge_distillation.md)。
 
 **注意**： PaddleOCR中LayoutXLM系列关键信息抽取模型的保存与加载逻辑与PaddleNLP保持一致，因此在蒸馏的过程中仅保存了学生模型的参数，如果希望使用保存的模型进行评估，需要使用学生模型的配置（上面的蒸馏文件对应的学生模型为[ser_vi_layoutxlm_xfund_zh.yml](../../configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml)）
 
 
-## 2.7. 其他训练环境
+## 2.6. 其他训练环境
 
 - Windows GPU/CPU
 在Windows平台上与Linux平台略有不同:
@@ -454,6 +404,9 @@ python3 ./tools/infer_vqa_token_ser_re.py -c configs/kie/vi_layoutxlm/re_vi_layo
 
 # 4. 模型导出与预测
 
+
+## 4.1 模型导出
+
 inference 模型（`paddle.jit.save`保存的模型）
 一般是模型训练，把模型结构和模型参数保存在文件中的固化模型，多用于预测部署场景。
 训练过程中保存的模型是checkpoints模型，保存的只有模型的参数，多用于恢复训练等。
@@ -481,9 +434,30 @@ inference/ser_vi_layoutxlm/
 
 RE任务的动转静过程适配中，敬请期待。
 
+## 4.2 模型推理
+
+VI-LayoutXLM模型基于SER任务进行推理，可以执行如下命令：
+
+```bash
+cd ppstructure
+python3 vqa/predict_vqa_token_ser.py \
+  --vqa_algorithm=LayoutXLM \
+  --ser_model_dir=../inference/ser_vi_layoutxlm \
+  --image_dir=./docs/vqa/input/zh_val_42.jpg \
+  --ser_dict_path=../train_data/XFUND/class_list_xfun.txt \
+  --vis_font_path=../doc/fonts/simfang.ttf \
+  --ocr_order_method="tb-yx"
+```
+
+可视化文本检测结果默认保存到`./output`文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
+
+<div align="center">
+    <img src="../.././docs/vqa/result_ser/zh_val_42_ser.jpg" width="800">
+</div>
+
 
 # 5. FAQ
 
 Q1: 训练模型转inference 模型之后预测效果不一致？
 
-**A**：此类问题出现较多，问题多是trained model预测时候的预处理、后处理参数和inference model预测的时候的预处理、后处理参数不一致导致的。可以对比训练使用的配置文件中的预处理、后处理和预测时是否存在差异。
+**A**：该问题多是trained model预测时候的预处理、后处理参数和inference model预测的时候的预处理、后处理参数不一致导致的。可以对比训练使用的配置文件中的预处理、后处理和预测时是否存在差异。
