@@ -73,12 +73,14 @@ class TableStructurer(object):
             postprocess_params = {
                 'name': 'TableLabelDecode',
                 "character_dict_path": args.table_char_dict_path,
+                'merge_no_span_structure': args.merge_no_span_structure
             }
         else:
             postprocess_params = {
                 'name': 'TableMasterLabelDecode',
                 "character_dict_path": args.table_char_dict_path,
-                'box_shape': 'pad'
+                'box_shape': 'pad',
+                'merge_no_span_structure': args.merge_no_span_structure
             }
 
         self.preprocess_op = create_operators(pre_process_list)

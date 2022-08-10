@@ -28,6 +28,8 @@ def init_args():
     parser.add_argument("--table_algorithm", type=str, default='TableAttn')
     parser.add_argument("--table_model_dir", type=str)
     parser.add_argument(
+        "--merge_no_span_structure", type=str2bool, default=False)
+    parser.add_argument(
         "--table_char_dict_path",
         type=str,
         default="../ppocr/utils/dict/table_structure_dict.txt")
