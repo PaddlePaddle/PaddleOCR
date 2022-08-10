@@ -70,7 +70,7 @@ class TableSystem(object):
         if args.table_algorithm in ['TableMaster']:
             self.match = TableMasterMatcher()
         else:
-            self.match = TableMatch()
+            self.match = TableMatch(filter_ocr_result=True)
 
         self.benchmark = args.benchmark
         self.predictor, self.input_tensor, self.output_tensors, self.config = utility.create_predictor(

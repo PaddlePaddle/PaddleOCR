@@ -62,8 +62,8 @@ class TableMatch:
     def __call__(self, structure_res, dt_boxes, rec_res):
         pred_structures, pred_bboxes = structure_res
         if self.filter_ocr_result:
-            dt_boxes, rec_res = self.filter_ocr_result(pred_bboxes, dt_boxes,
-                                                       rec_res)
+            dt_boxes, rec_res = self._filter_ocr_result(pred_bboxes, dt_boxes,
+                                                        rec_res)
         matched_index = self.match_result(dt_boxes, pred_bboxes)
         if self.use_master:
             pred_html, pred = self.get_pred_html_master(pred_structures,
@@ -179,7 +179,7 @@ class TableMatch:
         html = deal_bb(html)
         return html, end_html
 
-    def filter_ocr_result(self, pred_bboxes, dt_boxes, rec_res):
+    def _filter_ocr_result(self, pred_bboxes, dt_boxes, rec_res):
         y1 = pred_bboxes[:, 1::2].min()
         new_dt_boxes = []
         new_rec_res = []

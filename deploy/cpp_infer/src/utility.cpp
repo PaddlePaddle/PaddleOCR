@@ -248,4 +248,33 @@ void Utility::print_result(const std::vector<OCRPredictResult> &ocr_result) {
     std::cout << std::endl;
   }
 }
+
+cv::Mat Utility::crop_image(cv::Mat &img, std::vector<int> &area) {
+  cv::Mat crop_im;
+  int crop_x1 = std::max(0, area[0]);
+  int crop_y1 = std::max(0, area[1]);
+  int crop_x2 = std::min(img.cols - 1, area[2] - 1);
+  int crop_y2 = std::min(img.rows - 1, area[3] - 1);
+
+  crop_im = cv::Mat::zeros(area[3] - area[1], area[2] - area[0], 16);
+  cv::Mat crop_im_window =
+      crop_im(cv::Range(crop_y1 - area[1], crop_y2 + 1 - area[1]),
+              cv::Range(crop_x1 - area[0], crop_x2 + 1 - area[0]));
+  cv::Mat roi_img =
+      img(cv::Range(crop_y1, crop_y2 + 1), cv::Range(crop_x1, crop_x2 + 1));
+  crop_im_window += roi_img;
+  return crop_im;
+}
+
+void Utility::sorted_boxes(std::vector<OCRPredictResult> &ocr_result) {
+  std::sort(ocr_result.begin(), ocr_result.end(), Utility::comparison_box);
+
+  for (int i = 0; i < ocr_result.size() - 1; i++) {
+    if (abs(ocr_result[i + 1].box[0][1] - ocr_result[i].box[0][1]) < 10 &&
+        (ocr_result[i + 1].box[0][0] < ocr_result[i].box[0][0])) {
+      std::swap(ocr_result[i], ocr_result[i + 1]);
+    }
+  }
+}
+
 } // namespace PaddleOCR
