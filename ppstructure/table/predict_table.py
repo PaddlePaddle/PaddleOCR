@@ -133,6 +133,7 @@ class TableSystem(object):
         return structure_res, elapse
 
     def _ocr(self, img):
+        h, w = img.shape[:2]
         if self.benchmark:
             self.autolog.times.stamp()
         dt_boxes, det_elapse = self.text_detector(copy.deepcopy(img))
@@ -140,10 +141,10 @@ class TableSystem(object):
 
         r_boxes = []
         for box in dt_boxes:
-            x_min = box[:, 0].min() - 1
-            x_max = box[:, 0].max() + 1
-            y_min = box[:, 1].min() - 1
-            y_max = box[:, 1].max() + 1
+            x_min = max(0, box[:, 0].min() - 1)
+            x_max = min(w, box[:, 0].max() + 1)
+            y_min = max(0, box[:, 1].min() - 1)
+            y_max = min(h, box[:, 1].max() + 1)
             box = [x_min, y_min, x_max, y_max]
             r_boxes.append(box)
         dt_boxes = np.array(r_boxes)
