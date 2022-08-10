@@ -54,7 +54,7 @@ Architecture:
     loc_reg_num: &loc_reg_num 4
 
 Loss:
-  name: SLANetLoss
+  name: SLALoss
   structure_weight: 1.0
   loc_weight: 2.0
   loc_loss: smooth_l1

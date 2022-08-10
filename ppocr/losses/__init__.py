@@ -52,7 +52,7 @@ from .basic_loss import DistanceLoss
 from .combined_loss import CombinedLoss
 
 # table loss
-from .table_att_loss import TableAttentionLoss, SLANetLoss
+from .table_att_loss import TableAttentionLoss, SLALoss
 from .table_master_loss import TableMasterLoss
 # vqa token loss
 from .vqa_token_layoutlm_loss import VQASerTokenLayoutLMLoss
@@ -64,7 +64,7 @@ def build_loss(config):
         'ClsLoss', 'AttentionLoss', 'SRNLoss', 'PGLoss', 'CombinedLoss',
         'CELoss', 'TableAttentionLoss', 'SARLoss', 'AsterLoss', 'SDMGRLoss',
         'VQASerTokenLayoutLMLoss', 'LossFromOutput', 'PRENLoss', 'MultiLoss',
-        'TableMasterLoss', 'SPINAttentionLoss', 'VLLoss', 'SLANetLoss'
+        'TableMasterLoss', 'SPINAttentionLoss', 'VLLoss', 'SLALoss'
     ]
     config = copy.deepcopy(config)
     module_name = config.pop('name')

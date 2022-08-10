@@ -55,9 +55,9 @@ class TableAttentionLoss(nn.Layer):
         }
 
 
-class SLANetLoss(nn.Layer):
+class SLALoss(nn.Layer):
     def __init__(self, structure_weight, loc_weight, loc_loss='mse', **kwargs):
-        super(SLANetLoss, self).__init__()
+        super(SLALoss, self).__init__()
         self.loss_func = nn.CrossEntropyLoss(weight=None, reduction='mean')
         self.structure_weight = structure_weight
         self.loc_weight = loc_weight
