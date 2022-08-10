@@ -47,14 +47,14 @@ __all__ = [
 ]
 
 SUPPORT_DET_MODEL = ['DB']
-VERSION = '2.5.0.3'
+VERSION = '2.6'
 SUPPORT_REC_MODEL = ['CRNN', 'SVTR_LCNet']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
 DEFAULT_OCR_MODEL_VERSION = 'PP-OCRv3'
 SUPPORT_OCR_MODEL_VERSION = ['PP-OCR', 'PP-OCRv2', 'PP-OCRv3']
-DEFAULT_STRUCTURE_MODEL_VERSION = 'PP-STRUCTURE'
-SUPPORT_STRUCTURE_MODEL_VERSION = ['PP-STRUCTURE']
+DEFAULT_STRUCTURE_MODEL_VERSION = 'PP-Structurev2'
+SUPPORT_STRUCTURE_MODEL_VERSION = ['PP-Structure', 'PP-Structurev2']
 MODEL_URLS = {
     'OCR': {
         'PP-OCRv3': {
@@ -263,12 +263,30 @@ MODEL_URLS = {
         }
     },
     'STRUCTURE': {
-        'PP-STRUCTURE': {
+        'PP-Structure': {
             'table': {
                 'en': {
                     'url':
                     'https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar',
                     'dict_path': 'ppocr/utils/dict/table_structure_dict.txt'
+                }
+            }
+        },
+        'PP-Structurev2': {
+            'table': {
+                'en': {
+                    'url': '',
+                    'dict_path': 'ppocr/utils/dict/table_structure_dict.txt'
+                },
+                'ch': {
+                    'url': '',
+                    'dict_path': 'ppocr/utils/dict/table_structure_dict.txt'
+                }
+            },
+            'layout': {
+                'ch': {
+                    'url': '',
+                    'dict_path': 'ppocr/utils/dict/layout_publaynet_dict.txt'
                 }
             }
         }
@@ -298,12 +316,15 @@ def parse_args(mMain=True):
         "--structure_version",
         type=str,
         choices=SUPPORT_STRUCTURE_MODEL_VERSION,
-        default='PP-STRUCTURE',
+        default='PP-Structure',
         help='Model version, the current model support list is as follows:'
-        ' 1. STRUCTURE Support en table structure model.')
+        ' 1. PP-Structure Support en table structure model.'
+        ' 2. PP-Structure Support ch and en table structure model.')
 
     for action in parser._actions:
-        if action.dest in ['rec_char_dict_path', 'table_char_dict_path']:
+        if action.dest in [
+                'rec_char_dict_path', 'table_char_dict_path', 'layout_dict_path'
+        ]:
             action.default = None
     if mMain:
         return parser.parse_args()
@@ -477,7 +498,7 @@ class PaddleOCR(predict_system.TextSystem):
         if isinstance(img, np.ndarray) and len(img.shape) == 2:
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
         if det and rec:
-            dt_boxes, rec_res = self.__call__(img, cls)
+            dt_boxes, rec_res, _ = self.__call__(img, cls)
             return [[box.tolist(), res] for box, res in zip(dt_boxes, rec_res)]
         elif det and not rec:
             dt_boxes, elapse = self.text_detector(img)
@@ -520,14 +541,20 @@ class PPStructure(StructureSystem):
             params.rec_model_dir,
             os.path.join(BASE_DIR, 'whl', 'rec', lang), rec_model_config['url'])
         table_model_config = get_model_config(
-            'STRUCTURE', params.structure_version, 'table', 'en')
+            'STRUCTURE', params.structure_version, 'table', 'ch')
         params.table_model_dir, table_url = confirm_model_dir_url(
             params.table_model_dir,
             os.path.join(BASE_DIR, 'whl', 'table'), table_model_config['url'])
+        layout_model_config = get_model_config(
+            'STRUCTURE', params.structure_version, 'layout', 'ch')
+        params.layout_model_dir, layout_url = confirm_model_dir_url(
+            params.layout_model_dir,
+            os.path.join(BASE_DIR, 'whl', 'layout'), layout_model_config['url'])
         # download model
         maybe_download(params.det_model_dir, det_url)
         maybe_download(params.rec_model_dir, rec_url)
         maybe_download(params.table_model_dir, table_url)
+        maybe_download(params.layout_model_dir, layout_url)
 
         if params.rec_char_dict_path is None:
             params.rec_char_dict_path = str(
@@ -535,6 +562,9 @@ class PPStructure(StructureSystem):
         if params.table_char_dict_path is None:
             params.table_char_dict_path = str(
                 Path(__file__).parent / table_model_config['dict_path'])
+        if params.layout_dict_path is None:
+            params.layout_dict_path = str(
+                Path(__file__).parent / layout_model_config['dict_path'])
 
         logger.debug(params)
         super().__init__(params)
@@ -557,7 +587,7 @@ class PPStructure(StructureSystem):
         if isinstance(img, np.ndarray) and len(img.shape) == 2:
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
 
-        res = super().__call__(img, return_ocr_result_in_table)
+        res, _ = super().__call__(img, return_ocr_result_in_table)
         return res
 
 
