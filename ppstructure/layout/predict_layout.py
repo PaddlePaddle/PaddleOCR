@@ -16,7 +16,7 @@ import sys
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '../..')))
 
 os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
 
@@ -57,8 +57,8 @@ class LayoutPredictor(object):
         postprocess_params = {
             'name': 'PicoDetPostProcess',
             "layout_dict_path": args.layout_dict_path,
-            "score_threshold": args.score_threshold,
-            "nms_threshold": args.nms_threshold,
+            "score_threshold": args.layout_score_threshold,
+            "nms_threshold": args.layout_nms_threshold,
         }
 
         self.preprocess_op = create_operators(pre_process_list)

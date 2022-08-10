@@ -36,24 +36,14 @@ def init_args():
     parser.add_argument(
         "--layout_dict_path",
         type=str,
-        default="../../ppocr/utils/dict/layout_pubalynet_dict.txt")
+        default="../ppocr/utils/dict/layout_pubalynet_dict.txt")
     parser.add_argument(
-        "--score_threshold",
+        "--layout_score_threshold",
         type=float,
         default=0.5,
         help="Threshold of score.")
     parser.add_argument(
-        "--nms_threshold", type=float, default=0.5, help="Threshold of nms.")
-
-    parser.add_argument(
-        "--layout_path_model",
-        type=str,
-        default="lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config")
-    parser.add_argument(
-        "--layout_label_map",
-        type=ast.literal_eval,
-        default=None,
-        help='label map according to ppstructure/layout/README_ch.md')
+        "--layout_nms_threshold", type=float, default=0.5, help="Threshold of nms.")
     # params for vqa
     parser.add_argument("--vqa_algorithm", type=str, default='LayoutXLM')
     parser.add_argument("--ser_model_dir", type=str)
