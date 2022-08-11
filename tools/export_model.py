@@ -202,7 +202,7 @@ def main():
             config["Architecture"]["Head"]["out_channels"] = char_num
 
     # for sr algorithm
-    if "infer_mode" in config['Architecture']["Transform"]:
+    if config["Architecture"]["model_type"] == "sr":
         config['Architecture']["Transform"]['infer_mode'] = True
     model = build_model(config["Architecture"])
     load_model(config, model, model_type=config['Architecture']["model_type"])
