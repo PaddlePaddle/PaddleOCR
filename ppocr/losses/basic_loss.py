@@ -63,18 +63,21 @@ class KLJSLoss(object):
     def __call__(self, p1, p2, reduction="mean"):
 
         if self.mode.lower() == 'kl':
-            loss = paddle.multiply(p2, paddle.log((p2 + 1e-5) / (p1 + 1e-5) + 1e-5))
+            loss = paddle.multiply(p2,
+                                   paddle.log((p2 + 1e-5) / (p1 + 1e-5) + 1e-5))
             loss += paddle.multiply(
-                    p1, paddle.log((p1 + 1e-5) / (p2 + 1e-5) + 1e-5))
+                p1, paddle.log((p1 + 1e-5) / (p2 + 1e-5) + 1e-5))
             loss *= 0.5
         elif self.mode.lower() == "js":
-            loss = paddle.multiply(p2, paddle.log((2*p2 + 1e-5) / (p1 + p2 + 1e-5) + 1e-5))
+            loss = paddle.multiply(
+                p2, paddle.log((2 * p2 + 1e-5) / (p1 + p2 + 1e-5) + 1e-5))
             loss += paddle.multiply(
-                    p1, paddle.log((2*p1 + 1e-5) / (p1 + p2 + 1e-5) + 1e-5))
+                p1, paddle.log((2 * p1 + 1e-5) / (p1 + p2 + 1e-5) + 1e-5))
             loss *= 0.5
         else:
-            raise ValueError("The mode.lower() if KLJSLoss should be one of ['kl', 'js']")
-            
+            raise ValueError(
+                "The mode.lower() if KLJSLoss should be one of ['kl', 'js']")
+
         if reduction == "mean":
             loss = paddle.mean(loss, axis=[1, 2])
         elif reduction == "none" or reduction is None:
@@ -154,7 +157,9 @@ class LossFromOutput(nn.Layer):
         self.reduction = reduction
 
     def forward(self, predicts, batch):
-        loss = predicts[self.key]
+        loss = predicts
+        if self.key is not None and isinstance(predicts, dict):
+            loss = loss[self.key]
         if self.reduction == 'mean':
             loss = paddle.mean(loss)
         elif self.reduction == 'sum':

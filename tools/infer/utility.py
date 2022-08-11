@@ -38,6 +38,7 @@ def init_args():
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     parser.add_argument("--min_subgraph_size", type=int, default=15)
+    parser.add_argument("--shape_info_filename", type=str, default=None)
     parser.add_argument("--precision", type=str, default="fp32")
     parser.add_argument("--gpu_mem", type=int, default=500)
 
@@ -204,9 +205,18 @@ def create_predictor(args, mode, logger):
                     workspace_size=1 << 30,
                     precision_mode=precision,
                     max_batch_size=args.max_batch_size,
-                    min_subgraph_size=args.min_subgraph_size,
+                    min_subgraph_size=args.min_subgraph_size, # skip the minmum trt subgraph
                     use_calib_mode=False)
-                # skip the minmum trt subgraph
+            
+            # collect shape
+            if args.shape_info_filename is not None:
+                if not os.path.exists(args.shape_info_filename):
+                    config.collect_shape_range_info(args.shape_info_filename)
+                    logger.info(f"collect dynamic shape info into : {args.shape_info_filename}")
+                else:
+                    logger.info(f"dynamic shape info file( {args.shape_info_filename} ) already exists, not need to generate again.")
+                config.enable_tuned_tensorrt_dynamic_shape(args.shape_info_filename, True)
+            
             use_dynamic_shape = True
             if mode == "det":
                 min_input_shape = {

@@ -13,12 +13,10 @@
 # limitations under the License.
 
 from .token import VQATokenPad, VQASerTokenChunk, VQAReTokenChunk, VQAReTokenRelation
-from .augment import DistortBBox
 
 __all__ = [
     'VQATokenPad',
     'VQASerTokenChunk',
     'VQAReTokenChunk',
     'VQAReTokenRelation',
-    'DistortBBox',
 ]

@@ -139,7 +139,6 @@ def main():
                 img_metas = [paddle.to_tensor(valid_ratio),
                             paddle.to_tensor(word_positons),
                             ]
-
             images = np.expand_dims(batch[0], axis=0)
             images = paddle.to_tensor(images)
             if config['Architecture']['algorithm'] == "SRN":

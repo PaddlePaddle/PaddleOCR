@@ -23,7 +23,10 @@ import string
 from shapely.geometry import LineString, Point, Polygon
 import json
 import copy
+from random import sample
+
 from ppocr.utils.logging import get_logger
+from ppocr.data.imaug.vqa.augment import order_by_tbyx
 
 
 class ClsLabelEncode(object):
@@ -97,12 +100,13 @@ class BaseRecLabelEncode(object):
     def __init__(self,
                  max_text_length,
                  character_dict_path=None,
-                 use_space_char=False):
+                 use_space_char=False,
+                 lower=False):
 
         self.max_text_len = max_text_length
         self.beg_str = "sos"
         self.end_str = "eos"
-        self.lower = False
+        self.lower = lower
 
         if character_dict_path is None:
             logger = get_logger()
@@ -870,6 +874,7 @@ class VQATokenLabelEncode(object):
                  add_special_ids=False,
                  algorithm='LayoutXLM',
                  use_textline_bbox_info=True,
+                 order_method=None,
                  infer_mode=False,
                  ocr_engine=None,
                  **kwargs):
@@ -899,6 +904,8 @@ class VQATokenLabelEncode(object):
         self.infer_mode = infer_mode
         self.ocr_engine = ocr_engine
         self.use_textline_bbox_info = use_textline_bbox_info
+        self.order_method = order_method
+        assert self.order_method in [None, "tb-yx"]
 
     def split_bbox(self, bbox, text, tokenizer):
         words = text.split()
@@ -937,6 +944,14 @@ class VQATokenLabelEncode(object):
     def __call__(self, data):
         # load bbox and label info
         ocr_info = self._load_ocr_info(data)
+
+        for idx in range(len(ocr_info)):
+            if "bbox" not in ocr_info[idx]:
+                ocr_info[idx]["bbox"] = self.trans_poly_to_bbox(ocr_info[idx][
+                    "points"])
+
+        if self.order_method == "tb-yx":
+            ocr_info = order_by_tbyx(ocr_info)
 
         # for re
         train_re = self.contains_re and not self.infer_mode
@@ -977,7 +992,10 @@ class VQATokenLabelEncode(object):
             info["bbox"] = self.trans_poly_to_bbox(info["points"])
 
             encode_res = self.tokenizer.encode(
-                text, pad_to_max_seq_len=False, return_attention_mask=True)
+                text,
+                pad_to_max_seq_len=False,
+                return_attention_mask=True,
+                return_token_type_ids=True)
 
             if not self.add_special_ids:
                 # TODO: use tok.all_special_ids to remove
@@ -1049,10 +1067,10 @@ class VQATokenLabelEncode(object):
         return data
 
     def trans_poly_to_bbox(self, poly):
-        x1 = np.min([p[0] for p in poly])
-        x2 = np.max([p[0] for p in poly])
-        y1 = np.min([p[1] for p in poly])
-        y2 = np.max([p[1] for p in poly])
+        x1 = int(np.min([p[0] for p in poly]))
+        x2 = int(np.max([p[0] for p in poly]))
+        y1 = int(np.min([p[1] for p in poly]))
+        y2 = int(np.max([p[1] for p in poly]))
         return [x1, y1, x2, y2]
 
     def _load_ocr_info(self, data):
@@ -1217,6 +1235,7 @@ class ABINetLabelEncode(BaseRecLabelEncode):
         dict_character = ['</s>'] + dict_character
         return dict_character
 
+
 class SPINLabelEncode(AttnLabelEncode):
     """ Convert between text-label and text-index """
 
@@ -1229,6 +1248,7 @@ class SPINLabelEncode(AttnLabelEncode):
         super(SPINLabelEncode, self).__init__(
             max_text_length, character_dict_path, use_space_char)
         self.lower = lower
+
     def add_special_char(self, dict_character):
         self.beg_str = "sos"
         self.end_str = "eos"
@@ -1248,4 +1268,68 @@ class SPINLabelEncode(AttnLabelEncode):
 
         padded_text[:len(target)] = target
         data['label'] = np.array(padded_text)
-        return data 
+        return data
+
+
+class VLLabelEncode(BaseRecLabelEncode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 use_space_char=False,
+                 lower=True,
+                 **kwargs):
+        super(VLLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char, lower)
+        self.character = self.character[10:] + self.character[
+            1:10] + [self.character[0]]
+        self.dict = {}
+        for i, char in enumerate(self.character):
+            self.dict[char] = i
+
+    def __call__(self, data):
+        text = data['label']  # original string
+        # generate occluded text
+        len_str = len(text)
+        if len_str <= 0:
+            return None
+        change_num = 1
+        order = list(range(len_str))
+        change_id = sample(order, change_num)[0]
+        label_sub = text[change_id]
+        if change_id == (len_str - 1):
+            label_res = text[:change_id]
+        elif change_id == 0:
+            label_res = text[1:]
+        else:
+            label_res = text[:change_id] + text[change_id + 1:]
+
+        data['label_res'] = label_res  # remaining string
+        data['label_sub'] = label_sub  # occluded character
+        data['label_id'] = change_id  # character index
+        # encode label
+        text = self.encode(text)
+        if text is None:
+            return None
+        text = [i + 1 for i in text]
+        data['length'] = np.array(len(text))
+        text = text + [0] * (self.max_text_len - len(text))
+        data['label'] = np.array(text)
+        label_res = self.encode(label_res)
+        label_sub = self.encode(label_sub)
+        if label_res is None:
+            label_res = []
+        else:
+            label_res = [i + 1 for i in label_res]
+        if label_sub is None:
+            label_sub = []
+        else:
+            label_sub = [i + 1 for i in label_sub]
+        data['length_res'] = np.array(len(label_res))
+        data['length_sub'] = np.array(len(label_sub))
+        label_res = label_res + [0] * (self.max_text_len - len(label_res))
+        label_sub = label_sub + [0] * (self.max_text_len - len(label_sub))
+        data['label_res'] = np.array(label_res)
+        data['label_sub'] = np.array(label_sub)
+        return data

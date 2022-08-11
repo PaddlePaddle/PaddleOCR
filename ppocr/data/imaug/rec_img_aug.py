@@ -205,6 +205,38 @@ class RecResizeImg(object):
         return data
 
 
+class VLRecResizeImg(object):
+    def __init__(self,
+                 image_shape,
+                 infer_mode=False,
+                 character_dict_path='./ppocr/utils/ppocr_keys_v1.txt',
+                 padding=True,
+                 **kwargs):
+        self.image_shape = image_shape
+        self.infer_mode = infer_mode
+        self.character_dict_path = character_dict_path
+        self.padding = padding
+
+    def __call__(self, data):
+        img = data['image']
+
+        imgC, imgH, imgW = self.image_shape
+        resized_image = cv2.resize(
+            img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+        resized_w = imgW
+        resized_image = resized_image.astype('float32')
+        if self.image_shape[0] == 1:
+            resized_image = resized_image / 255
+            norm_img = resized_image[np.newaxis, :]
+        else:
+            norm_img = resized_image.transpose((2, 0, 1)) / 255
+        valid_ratio = min(1.0, float(resized_w / imgW))
+
+        data['image'] = norm_img
+        data['valid_ratio'] = valid_ratio
+        return data
+
+
 class SRNRecResizeImg(object):
     def __init__(self, image_shape, num_heads, max_text_length, **kwargs):
         self.image_shape = image_shape
@@ -259,6 +291,7 @@ class PRENResizeImg(object):
         data['image'] = resized_img.astype(np.float32)
         return data
 
+
 class SPINRecResizeImg(object):
     def __init__(self,
                  image_shape,
@@ -267,7 +300,7 @@ class SPINRecResizeImg(object):
                  std=(127.5, 127.5, 127.5),
                  **kwargs):
         self.image_shape = image_shape
-        
+
         self.mean = np.array(mean, dtype=np.float32)
         self.std = np.array(std, dtype=np.float32)
         self.interpolation = interpolation
@@ -302,6 +335,7 @@ class SPINRecResizeImg(object):
         img *= stdinv
         data['image'] = img
         return data
+
 
 class GrayRecResizeImg(object):
     def __init__(self,

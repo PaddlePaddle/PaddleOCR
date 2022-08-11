@@ -84,11 +84,15 @@ class BasicBlock(nn.Layer):
 
 
 class ResNet45(nn.Layer):
-    def __init__(self, block=BasicBlock, layers=[3, 4, 6, 6, 3], in_channels=3):
+    def __init__(self,
+                 in_channels=3,
+                 block=BasicBlock,
+                 layers=[3, 4, 6, 6, 3],
+                 strides=[2, 1, 2, 1, 1]):
         self.inplanes = 32
         super(ResNet45, self).__init__()
         self.conv1 = nn.Conv2D(
-            3,
+            in_channels,
             32,
             kernel_size=3,
             stride=1,
@@ -98,17 +102,12 @@ class ResNet45(nn.Layer):
         self.bn1 = nn.BatchNorm2D(32)
         self.relu = nn.ReLU()
 
-        self.layer1 = self._make_layer(block, 32, layers[0], stride=2)
-        self.layer2 = self._make_layer(block, 64, layers[1], stride=1)
-        self.layer3 = self._make_layer(block, 128, layers[2], stride=2)
-        self.layer4 = self._make_layer(block, 256, layers[3], stride=1)
-        self.layer5 = self._make_layer(block, 512, layers[4], stride=1)
+        self.layer1 = self._make_layer(block, 32, layers[0], stride=strides[0])
+        self.layer2 = self._make_layer(block, 64, layers[1], stride=strides[1])
+        self.layer3 = self._make_layer(block, 128, layers[2], stride=strides[2])
+        self.layer4 = self._make_layer(block, 256, layers[3], stride=strides[3])
+        self.layer5 = self._make_layer(block, 512, layers[4], stride=strides[4])
         self.out_channels = 512
-
-        # for m in self.modules():
-        #     if isinstance(m, nn.Conv2D):
-        #         n = m._kernel_size[0] * m._kernel_size[1] * m._out_channels
-        #         m.weight.data.normal_(0, math.sqrt(2. / n))
 
     def _make_layer(self, block, planes, blocks, stride=1):
         downsample = None
@@ -137,11 +136,9 @@ class ResNet45(nn.Layer):
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
-        # print(x)
         x = self.layer1(x)
         x = self.layer2(x)
         x = self.layer3(x)
-        # print(x)
         x = self.layer4(x)
         x = self.layer5(x)
         return x

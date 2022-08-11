@@ -71,7 +71,7 @@ function func_serving(){
     # pdserving
     set_model_filename=$(func_set_params "${model_filename_key}" "${model_filename_value}")
     set_params_filename=$(func_set_params "${params_filename_key}" "${params_filename_value}")
-    if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0" ] || [ ${model_name} = "ch_ppocr_server_v2.0" ]; then
+    if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2_0" ] || [ ${model_name} = "ch_ppocr_server_v2_0" ]; then
         # trans det
         set_dirname=$(func_set_params "--dirname" "${det_infer_model_dir_value}")
         set_serving_server=$(func_set_params "--serving_server" "${det_serving_server_value}")
@@ -120,7 +120,7 @@ function func_serving(){
                 for threads in ${web_cpu_threads_list[*]}; do
                     set_cpu_threads=$(func_set_params "${web_cpu_threads_key}" "${threads}")
                     server_log_path="${LOG_PATH}/python_server_cpu_usemkldnn_${use_mkldnn}_threads_${threads}.log"
-                    if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0" ] || [ ${model_name} = "ch_ppocr_server_v2.0" ]; then
+                    if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2_0" ] || [ ${model_name} = "ch_ppocr_server_v2_0" ]; then
                         set_det_model_config=$(func_set_params "${det_server_key}" "${det_server_value}")
                         set_rec_model_config=$(func_set_params "${rec_server_key}" "${rec_server_value}")
                         web_service_cmd="nohup ${python} ${web_service_py} ${web_use_gpu_key}="" ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_det_model_config} ${set_rec_model_config} > ${server_log_path} 2>&1 &"
@@ -171,7 +171,7 @@ function func_serving(){
                         device_type=2
                     fi
                     set_precision=$(func_set_params "${web_precision_key}" "${precision}")
-                    if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2.0" ] || [ ${model_name} = "ch_ppocr_server_v2.0" ]; then
+                    if [ ${model_name} = "ch_PP-OCRv2" ] || [ ${model_name} = "ch_PP-OCRv3" ] || [ ${model_name} = "ch_ppocr_mobile_v2_0" ] || [ ${model_name} = "ch_ppocr_server_v2_0" ]; then
                         set_det_model_config=$(func_set_params "${det_server_key}" "${det_server_value}")
                         set_rec_model_config=$(func_set_params "${rec_server_key}" "${rec_server_value}")
                         web_service_cmd="nohup ${python} ${web_service_py} ${set_tensorrt} ${set_precision} ${set_det_model_config} ${set_rec_model_config} > ${server_log_path} 2>&1 &"

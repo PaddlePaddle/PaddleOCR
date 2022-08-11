@@ -53,8 +53,12 @@ def load_model(config, model, optimizer=None, model_type='det'):
     checkpoints = global_config.get('checkpoints')
     pretrained_model = global_config.get('pretrained_model')
     best_model_dict = {}
+    is_float16 = False
 
     if model_type == 'vqa':
+        # NOTE: for vqa model, resume training is not supported now
+        if config["Architecture"]["algorithm"] in ["Distillation"]:
+            return best_model_dict
         checkpoints = config['Architecture']['Backbone']['checkpoints']
         # load vqa method metric
         if checkpoints:
@@ -78,6 +82,7 @@ def load_model(config, model, optimizer=None, model_type='det'):
                     logger.warning(
                         "{}.pdopt is not exists, params of optimizer is not loaded".
                         format(checkpoints))
+
         return best_model_dict
 
     if checkpoints:
@@ -96,6 +101,9 @@ def load_model(config, model, optimizer=None, model_type='det'):
                     key, params.keys()))
                 continue
             pre_value = params[key]
+            if pre_value.dtype == paddle.float16:
+                pre_value = pre_value.astype(paddle.float32)
+                is_float16 = True
             if list(value.shape) == list(pre_value.shape):
                 new_state_dict[key] = pre_value
             else:
@@ -103,7 +111,10 @@ def load_model(config, model, optimizer=None, model_type='det'):
                     "The shape of model params {} {} not matched with loaded params shape {} !".
                     format(key, value.shape, pre_value.shape))
         model.set_state_dict(new_state_dict)
-
+        if is_float16:
+            logger.info(
+                "The parameter type is float16, which is converted to float32 when loading"
+            )
         if optimizer is not None:
             if os.path.exists(checkpoints + '.pdopt'):
                 optim_dict = paddle.load(checkpoints + '.pdopt')
@@ -122,9 +133,10 @@ def load_model(config, model, optimizer=None, model_type='det'):
                 best_model_dict['start_epoch'] = states_dict['epoch'] + 1
         logger.info("resume from {}".format(checkpoints))
     elif pretrained_model:
-        load_pretrained_params(model, pretrained_model)
+        is_float16 = load_pretrained_params(model, pretrained_model)
     else:
         logger.info('train from scratch')
+    best_model_dict['is_float16'] = is_float16
     return best_model_dict
 
 
@@ -138,19 +150,28 @@ def load_pretrained_params(model, path):
     params = paddle.load(path + '.pdparams')
     state_dict = model.state_dict()
     new_state_dict = {}
+    is_float16 = False
     for k1 in params.keys():
         if k1 not in state_dict.keys():
             logger.warning("The pretrained params {} not in model".format(k1))
         else:
+            if params[k1].dtype == paddle.float16:
+                params[k1] = params[k1].astype(paddle.float32)
+                is_float16 = True
             if list(state_dict[k1].shape) == list(params[k1].shape):
                 new_state_dict[k1] = params[k1]
             else:
                 logger.warning(
                     "The shape of model params {} {} not matched with loaded params {} {} !".
                     format(k1, state_dict[k1].shape, k1, params[k1].shape))
+
     model.set_state_dict(new_state_dict)
+    if is_float16:
+        logger.info(
+            "The parameter type is float16, which is converted to float32 when loading"
+        )
     logger.info("load pretrain successful from {}".format(path))
-    return model
+    return is_float16
 
 
 def save_model(model,
@@ -166,15 +187,19 @@ def save_model(model,
     """
     _mkdir_if_not_exist(model_path, logger)
     model_prefix = os.path.join(model_path, prefix)
-    paddle.save(optimizer.state_dict(), model_prefix + '.pdopt')
+    if config['Architecture']["model_type"] != 'vqa':
+        paddle.save(optimizer.state_dict(), model_prefix + '.pdopt')
     if config['Architecture']["model_type"] != 'vqa':
         paddle.save(model.state_dict(), model_prefix + '.pdparams')
         metric_prefix = model_prefix
-    else:
+    else:  # for vqa system, we follow the save/load rules in NLP
         if config['Global']['distributed']:
-            model._layers.backbone.model.save_pretrained(model_prefix)
+            arch = model._layers
         else:
-            model.backbone.model.save_pretrained(model_prefix)
+            arch = model
+        if config["Architecture"]["algorithm"] in ["Distillation"]:
+            arch = arch.Student
+        arch.backbone.model.save_pretrained(model_prefix)
         metric_prefix = os.path.join(model_prefix, 'metric')
     # save metric and config
     with open(metric_prefix + '.states', 'wb') as f:
