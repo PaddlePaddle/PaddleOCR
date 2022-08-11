@@ -84,12 +84,12 @@ HEADER
 ```
 |-train_data
   |-data_name
-    |- train.txt
+    |- train.json
     |- train
         |- zh_train_0.png
         |- zh_train_1.jpg
         | ...
-    |- val.txt
+    |- val.json
     |- val
         |- zh_val_0.png
         |- zh_val_1.jpg
@@ -347,7 +347,7 @@ output/ser_vi_layoutxlm_xfund_zh/
 
 
 ```bash
-python3 tools/infer_vqa_token_ser.py -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./output/ser_vi_layoutxlm_xfund_zh/best_accuracy  Global.infer_img=./ppstructure/docs/vqa/input/zh_val_42.jpg
+python3 tools/infer_vqa_token_ser.py -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./output/ser_vi_layoutxlm_xfund_zh/best_accuracy Global.infer_img=./ppstructure/docs/vqa/input/zh_val_42.jpg
 ```
 
 预测图片如下所示，图片会存储在`Global.save_res_path`路径中。
@@ -412,7 +412,7 @@ inference 模型（`paddle.jit.save`保存的模型）
 训练过程中保存的模型是checkpoints模型，保存的只有模型的参数，多用于恢复训练等。
 与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合于实际系统集成。
 
-信息抽取模型转inference模型与检测的方式相同，SER任务的模型动转静步骤如下：
+信息抽取模型中的SER任务转inference模型步骤如下：
 
 ```bash
 # -c 后面设置训练算法的yml配置文件
@@ -420,7 +420,7 @@ inference 模型（`paddle.jit.save`保存的模型）
 # Global.pretrained_model 参数设置待转换的训练模型地址。
 # Global.save_inference_dir参数设置转换的模型将保存的地址。
 
-python3 tools/export_model.py -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./output/ser_vi_layoutxlm_xfund_zh/best_accuracy -o Global.save_inference_dir=./inference/ser_vi_layoutxlm
+python3 tools/export_model.py -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./output/ser_vi_layoutxlm_xfund_zh/best_accuracy Global.save_inference_dir=./inference/ser_vi_layoutxlm
 ```
 
 转换成功后，在目录下有三个文件：
@@ -449,10 +449,10 @@ python3 vqa/predict_vqa_token_ser.py \
   --ocr_order_method="tb-yx"
 ```
 
-可视化文本检测结果默认保存到`./output`文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
+可视化SER结果结果默认保存到`./output`文件夹里面。结果示例如下：
 
 <div align="center">
-    <img src="../.././docs/vqa/result_ser/zh_val_42_ser.jpg" width="800">
+    <img src="../../ppstructure/docs/vqa/result_ser/zh_val_42_ser.jpg" width="800">
 </div>
 
 

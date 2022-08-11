@@ -1,4 +1,5 @@
 # 信息抽取数据集
+
 这里整理了常见的DocVQA数据集，持续更新中，欢迎各位小伙伴贡献数据集～
 - [FUNSD数据集](#funsd)
 - [XFUND数据集](#xfund)
@@ -34,10 +35,10 @@
 
 <a name="wildreceipt"></a>
 
-## 2. wildreceipt数据集
+## 3. wildreceipt数据集
 
 - **数据来源**：https://arxiv.org/abs/2103.14470
-- **数据简介**：wildreceipt数据集是英文发票数据集，包含26个类别（此处类别体系包含`Ingore`类别），共标注了50000个文本框。其中训练集包含1267张图片，测试集包含472张图片。部分图像以及标注框可视化如下所示:
+- **数据简介**：wildreceipt数据集是英文发票数据集，包含26个类别（此处类别体系包含`Ignore`类别），共标注了50000个文本框。其中训练集包含1267张图片，测试集包含472张图片。部分图像以及标注框可视化如下所示:
 
 <div align="center">
     <img src="../../datasets/wildreceipt_demo/2769.jpeg" width="500">

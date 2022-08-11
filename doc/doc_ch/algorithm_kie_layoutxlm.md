@@ -1,11 +1,11 @@
-# 关键信息抽取算法-VI-LayoutXLM
+# 关键信息抽取算法-LayoutXLM
 
 - [1. 算法简介](#1-算法简介)
 - [2. 环境配置](#2-环境配置)
 - [3. 模型训练、评估、预测](#3-模型训练评估预测)
 - [4. 推理部署](#4-推理部署)
   - [4.1 Python推理](#41-python推理)
-  - [4.2 C++推理部署](#42-c推理部署)
+  - [4.2 C++推理部署](#42-推理部署)
   - [4.3 Serving服务化部署](#43-serving服务化部署)
   - [4.4 更多推理部署](#44-更多推理部署)
 - [5. FAQ](#5-faq)
@@ -16,13 +16,21 @@
 
 ## 1. 算法简介
 
-VI-LayoutXLM基于LayoutXLM进行改进，在下游任务训练过程中，去除视觉骨干网络模块，最终精度基本无损的情况下，模型推理速度进一步提升。
+
+论文信息：
+
+> [LayoutXLM: Multimodal Pre-training for Multilingual Visually-rich Document Understanding](https://arxiv.org/abs/2104.08836)
+>
+> Yiheng Xu, Tengchao Lv, Lei Cui, Guoxin Wang, Yijuan Lu, Dinei Florencio, Cha Zhang, Furu Wei
+>
+> 2021
 
 在XFUND_zh数据集上，算法复现效果如下：
 
-|模型|骨干网络|配置文件|hmean|下载链接|
-| --- | --- | --- | --- | --- |
-|VI-LayoutXLM |VI-LayoutXLM-base |[ser_vi_layoutxlm_xfund_zh_udml.yml](../../configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh_udml.yml)|93.19%|[训练模型](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_pretrained.tar)/[推理模型](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_infer.tar)|
+|模型|骨干网络|任务|配置文件|hmean|下载链接|
+| --- | --- |--|--- | --- | --- |
+|LayoutXLM|LayoutXLM-base|SER |[ser_layoutxlm_xfund_zh.yml](../../configs/kie/layoutlm_series/ser_layoutxlm_xfund_zh.yml)|90.38%|[训练模型](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar)/[推理模型](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh_infer.tar)|
+|LayoutXLM|LayoutXLM-base|RE | [re_layoutxlm_xfund_zh.yml](../../configs/kie/layoutlm_series/re_layoutxlm_xfund_zh.yml)|74.83%|[训练模型](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh.tar)/[推理模型(coming soon)]()|
 
 <a name="2"></a>
 
@@ -44,29 +52,26 @@ VI-LayoutXLM基于LayoutXLM进行改进，在下游任务训练过程中，去�
 
 ### 4.1 Python推理
 
-**注：** 目前RE任务推理过程仍在适配中，下面以
+**注：** 目前RE任务推理过程仍在适配中，下面以SER任务为例，介绍基于LayoutXLM模型的关键信息抽取过程。
 
-首先将训练得到的模型
-
-首先将DB文本检测训练过程中保存的模型，转换成inference model。LayoutXLM模型在XFUND_zh数据集上训练的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_pretrained.tar)），可以使用下面的命令进行转换。
+首先将训练得到的模型转换成inference model。LayoutXLM模型在XFUND_zh数据集上训练的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar)），可以使用下面的命令进行转换。
 
 ``` bash
-wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_pretrained.tar
-tar -xf ser_vi_layoutxlm_xfund_pretrained.tar
-python3 tools/export_model.py -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./ser_vi_layoutxlm_xfund_pretrained/best_accuracy Global.save_inference_dir=./inference/ser_vi_layoutxlm_infer
+wget https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar
+tar -xf ser_LayoutXLM_xfun_zh.tar
+python3 tools/export_model.py -c configs/kie/layoutlm_series/ser_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./ser_LayoutXLM_xfun_zh/best_accuracy Global.save_inference_dir=./inference/ser_layoutxlm
 ```
 
-VI-LayoutXLM模型基于SER任务进行推理，可以执行如下命令：
+LayoutXLM模型基于SER任务进行推理，可以执行如下命令：
 
 ```bash
 cd ppstructure
 python3 vqa/predict_vqa_token_ser.py \
   --vqa_algorithm=LayoutXLM \
-  --ser_model_dir=../inference/ser_vi_layoutxlm_infer \
+  --ser_model_dir=../inference/ser_layoutxlm_infer \
   --image_dir=./docs/vqa/input/zh_val_42.jpg \
   --ser_dict_path=../train_data/XFUND/class_list_xfun.txt \
-  --vis_font_path=../doc/fonts/simfang.ttf \
-  --ocr_order_method="tb-yx"
+  --vis_font_path=../doc/fonts/simfang.ttf
 ```
 
 SER可视化结果默认保存到`./output`文件夹里面，结果示例如下：
