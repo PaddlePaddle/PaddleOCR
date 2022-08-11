@@ -25,8 +25,9 @@ from .make_pse_gt import MakePseGt
 
 
 from .rec_img_aug import BaseDataAugmentation, RecAug, RecConAug, RecResizeImg, ClsResizeImg, \
-                         SRNRecResizeImg, GrayRecResizeImg, SARRecResizeImg, PRENResizeImg, \
-                         ABINetRecResizeImg, SVTRRecResizeImg, ABINetRecAug, SPINRecResizeImg
+    SRNRecResizeImg, GrayRecResizeImg, SARRecResizeImg, PRENResizeImg, \
+    ABINetRecResizeImg, SVTRRecResizeImg, ABINetRecAug, VLRecResizeImg, SPINRecResizeImg
+
 from .ssl_img_aug import SSLRotateResize
 from .randaugment import RandAugment
 from .copy_paste import CopyPaste

@@ -35,6 +35,7 @@ def build_head(config):
     from .rec_multi_head import MultiHead
     from .rec_spin_att_head import SPINAttentionHead
     from .rec_abinet_head import ABINetHead
+    from .rec_visionlan_head import VLHead
 
     # cls head
     from .cls_head import ClsHead
@@ -49,7 +50,8 @@ def build_head(config):
         'DBHead', 'PSEHead', 'FCEHead', 'EASTHead', 'SASTHead', 'CTCHead',
         'ClsHead', 'AttentionHead', 'SRNHead', 'PGHead', 'Transformer',
         'TableAttentionHead', 'SARHead', 'AsterHead', 'SDMGRHead', 'PRENHead',
-        'MultiHead', 'ABINetHead', 'TableMasterHead', 'SPINAttentionHead'
+        'MultiHead', 'ABINetHead', 'TableMasterHead', 'SPINAttentionHead',
+        'VLHead'
     ]
 
     #table head
