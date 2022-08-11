@@ -68,7 +68,7 @@ class TextRecognizer(object):
                 'name': 'SARLabelDecode',
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
-            }
+            }   
         elif self.rec_algorithm == "VisionLAN":
             postprocess_params = {
                 'name': 'VLLabelDecode',
