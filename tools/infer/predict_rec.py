@@ -69,6 +69,12 @@ class TextRecognizer(object):
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }   
+        elif self.rec_algorithm == "VisionLAN":
+            postprocess_params = {
+                'name': 'VLLabelDecode',
+                "character_dict_path": args.rec_char_dict_path,
+                "use_space_char": args.use_space_char
+            }
         elif self.rec_algorithm == 'ViTSTR':
             postprocess_params = {
                 'name': 'ViTSTRLabelDecode',
@@ -163,6 +169,16 @@ class TextRecognizer(object):
         padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
         padding_im[:, :, 0:resized_w] = resized_image
         return padding_im
+
+    def resize_norm_img_vl(self, img, image_shape):
+
+        imgC, imgH, imgW = image_shape
+        img = img[:, :, ::-1]  # bgr2rgb
+        resized_image = cv2.resize(
+            img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+        resized_image = resized_image.astype('float32')
+        resized_image = resized_image.transpose((2, 0, 1)) / 255
+        return resized_image
 
     def resize_norm_img_srn(self, img, image_shape):
         imgC, imgH, imgW = image_shape
@@ -287,6 +303,7 @@ class TextRecognizer(object):
         img -= mean
         img *= stdinv
         return img
+
     def resize_norm_img_svtr(self, img, image_shape):
 
         imgC, imgH, imgW = image_shape
@@ -365,6 +382,11 @@ class TextRecognizer(object):
                 elif self.rec_algorithm == "SVTR":
                     norm_img = self.resize_norm_img_svtr(img_list[indices[ino]],
                                                          self.rec_image_shape)
+                    norm_img = norm_img[np.newaxis, :]
+                    norm_img_batch.append(norm_img)
+                elif self.rec_algorithm == "VisionLAN":
+                    norm_img = self.resize_norm_img_vl(img_list[indices[ino]],
+                                                       self.rec_image_shape)
                     norm_img = norm_img[np.newaxis, :]
                     norm_img_batch.append(norm_img)
                 elif self.rec_algorithm == 'SPIN':

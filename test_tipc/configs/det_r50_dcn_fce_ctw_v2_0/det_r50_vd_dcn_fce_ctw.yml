@@ -8,7 +8,7 @@ Global:
   # evaluation is run every 835 iterations
   eval_batch_step: [0, 4000]
   cal_metric_during_train: False
-  pretrained_model: ./pretrain_models/ResNet50_vd_ssld_pretrained 
+  pretrained_model: pretrain_models/det_r50_dcn_fce_ctw_v2.0_train/best_accuracy.pdparams
   checkpoints: 
   save_inference_dir: 
   use_visualdl: False
