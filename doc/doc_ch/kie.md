@@ -114,7 +114,7 @@ PaddleOCR也支持了关键信息抽取模型的标注，具体使用方法请�
 
 PaddleOCR提供了训练脚本、评估脚本和预测脚本，本节将以 VI_LayoutXLM 多模态预训练模型为例进行讲解。
 
-> 如果希望使用基于SDMGR的关键信息抽取算法，请参考：[SDMGR使用](./algorithm_sdmgr.md)。
+> 如果希望使用基于SDMGR的关键信息抽取算法，请参考：[SDMGR使用](./algorithm_kie_sdmgr.md)。
 
 ## 2.1. 启动训练
 

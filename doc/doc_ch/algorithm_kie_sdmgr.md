@@ -113,7 +113,7 @@ python3 tools/infer_kie.py -c configs/kie/kie_unet_sdmgr.yml -o Global.checkpoin
 <a name="4-2"></a>
 ### 4.2 C++推理部署
 
-由于C++预处理后处理还未支持TableMaster，所以暂未支持
+暂不支持
 
 <a name="4-3"></a>
 ### 4.3 Serving服务化部署
