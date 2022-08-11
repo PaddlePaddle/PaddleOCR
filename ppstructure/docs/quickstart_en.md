@@ -3,15 +3,17 @@
 - [1. Install package](#1-install-package)
 - [2. Use](#2-use)
   - [2.1 Use by command line](#21-use-by-command-line)
-    - [2.1.1 layout analysis + table recognition](#211-layout-analysis--table-recognition)
-    - [2.1.2 layout analysis](#212-layout-analysis)
-    - [2.1.3 table recognition](#213-table-recognition)
-    - [2.1.4 DocVQA](#214-docvqa)
+    - [2.1.1 image orientation + layout analysis + table recognition](#211-image-orientation--layout-analysis--table-recognition)
+    - [2.1.2 layout analysis + table recognition](#212-layout-analysis--table-recognition)
+    - [2.1.3 layout analysis](#213-layout-analysis)
+    - [2.1.4 table recognition](#214-table-recognition)
+    - [2.1.5 DocVQA](#215-docvqa)
   - [2.2 Use by code](#22-use-by-code)
-    - [2.2.1 layout analysis + table recognition](#221-layout-analysis--table-recognition)
-    - [2.2.2 layout analysis](#222-layout-analysis)
-    - [2.2.3 table recognition](#223-table-recognition)
-    - [2.2.4 DocVQA](#224-docvqa)
+    - [2.2.1 image orientation + layout analysis + table recognition](#221-image-orientation--layout-analysis--table-recognition)
+    - [2.2.2 layout analysis + table recognition](#222-layout-analysis--table-recognition)
+    - [2.2.3 layout analysis](#223-layout-analysis)
+    - [2.2.4 table recognition](#224-table-recognition)
+    - [2.2.5 DocVQA](#225-docvqa)
   - [2.3 Result description](#23-result-description)
     - [2.3.1 layout analysis + table recognition](#231-layout-analysis--table-recognition)
     - [2.3.2 DocVQA](#232-docvqa)
@@ -36,25 +38,31 @@ pip install paddlenlp
 ### 2.1 Use by command line
 
 <a name="211"></a>
-#### 2.1.1 layout analysis + table recognition
+#### 2.1.1 image orientation + layout analysis + table recognition
+```bash
+paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/1.png --type=structure --image_orientation=true
+```
+
+<a name="212"></a>
+#### 2.1.2 layout analysis + table recognition
 ```bash
 paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/1.png --type=structure
 ```
 
-<a name="212"></a>
-#### 2.1.2 layout analysis
+<a name="213"></a>
+#### 2.1.3 layout analysis
 ```bash
 paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/1.png --type=structure --table=false --ocr=false
 ```
 
-<a name="213"></a>
-#### 2.1.3 table recognition
+<a name="214"></a>
+#### 2.1.4 table recognition
 ```bash
 paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/table.jpg --type=structure --layout=false
 ```
 
-<a name="214"></a>
-#### 2.1.4 DocVQA
+<a name="215"></a>
+#### 2.1.5 DocVQA
 
 Please refer to: [Documentation Visual Q&A](../vqa/README.md) .
 
@@ -62,7 +70,36 @@ Please refer to: [Documentation Visual Q&A](../vqa/README.md) .
 ### 2.2 Use by code
 
 <a name="221"></a>
-#### 2.2.1 layout analysis + table recognition
+#### 2.2.1 image orientation + layout analysis + table recognition
+
+```python
+import os
+import cv2
+from paddleocr import PPStructure,draw_structure_result,save_structure_res
+
+table_engine = PPStructure(show_log=True, image_orientation=True)
+
+save_folder = './output'
+img_path = 'PaddleOCR/ppstructure/docs/table/1.png'
+img = cv2.imread(img_path)
+result = table_engine(img)
+save_structure_res(result, save_folder,os.path.basename(img_path).split('.')[0])
+
+for line in result:
+    line.pop('img')
+    print(line)
+
+from PIL import Image
+
+font_path = 'PaddleOCR/doc/fonts/simfang.ttf' # PaddleOCR下提供字体包
+image = Image.open(img_path).convert('RGB')
+im_show = draw_structure_result(image, result,font_path=font_path)
+im_show = Image.fromarray(im_show)
+im_show.save('result.jpg')
+```
+
+<a name="222"></a>
+#### 2.2.2 layout analysis + table recognition
 
 ```python
 import os
@@ -90,8 +127,8 @@ im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
 
-<a name="222"></a>
-#### 2.2.2 layout analysis
+<a name="223"></a>
+#### 2.2.3 layout analysis
 
 ```python
 import os
@@ -111,8 +148,8 @@ for line in result:
     print(line)
 ```
 
-<a name="223"></a>
-#### 2.2.3 table recognition
+<a name="224"></a>
+#### 2.2.4 table recognition
 
 ```python
 import os
@@ -132,8 +169,8 @@ for line in result:
     print(line)
 ```
 
-<a name="224"></a>
-#### 2.2.4 DocVQA
+<a name="225"></a>
+#### 2.2.5 DocVQA
 
 Please refer to: [Documentation Visual Q&A](../vqa/README.md) .
 
@@ -155,8 +192,8 @@ The return of PP-Structure is a list of dicts, the example is as follows:
 ```
 Each field in dict is described as follows:
 
-| field            | description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| --------------- |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| field | description  |
+| --- |---|
 |type| Type of image area.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 |bbox| The coordinates of the image area in the original image, respectively [upper left corner x, upper left corner y, lower right corner x, lower right corner y].                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 |res| OCR or table recognition result of the image area. <br> table: a dict with field descriptions as follows: <br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; `html`: html str of table.<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; In the code usage mode, set return_ocr_result_in_table=True whrn call can get the detection and recognition results of each text in the table area, corresponding to the following fields: <br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; `boxes`: text detection boxes.<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; `rec_res`: text recognition results.<br> OCR: A tuple containing the detection boxes and recognition results of each single text. |
@@ -178,19 +215,26 @@ Please refer to: [Documentation Visual Q&A](../vqa/README.md) .
 <a name="24"></a>
 ### 2.4 Parameter Description
 
-| field                | description                                                                                                                                                                                                                                                      | default                                                 |
-|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|
-| output               | The save path of result                                                                                                                                                                                                                                          | ./output/table                                          |
-| table_max_len        | When the table structure model predicts, the long side of the image                                                                                                                                                                                              | 488                                                     |
-| table_model_dir      | the path of table structure model                                                                                                                                                                                                                                | None                                                    |
-| table_char_dict_path | the dict path of table structure model                                                                                                                                                                                                                           | ../ppocr/utils/dict/table_structure_dict.txt            |
-| layout_path_model    | The model path of the layout analysis model, which can be an online address or a local path. When it is a local path, layout_label_map needs to be set. In command line mode, use --layout_label_map='{0: "Text", 1: "Title", 2: "List", 3:"Table", 4:"Figure"}' | lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config |
-| layout_label_map     | Layout analysis model model label mapping dictionary path                                                                                                                                                                                                        | None                                                    |
-| model_name_or_path   | the model path of VQA SER model                                                                                                                                                                                                                                  | None                                                    |
-| max_seq_length       | the max token length of VQA SER model                                                                                                                                                                                                                            | 512                                                     |
-| label_map_path       | the label path of VQA SER model                                                                                                                                                                                                                                  | ./vqa/labels/labels_ser.txt                             |
-| layout               | Whether to perform layout analysis in forward                                                                                                                                                                                                                    | True                                                    |
-| table                | Whether to perform table recognition in forward                                                                                                                                                                                                                  | True                                                    |
-| ocr                  | Whether to perform ocr for non-table areas in layout analysis. When layout is False, it will be automatically set to False                                                                                                                                                                                                                 | True                                                    |
-| structure_version                     | table structure Model version number, the current model support list is as follows: PP-STRUCTURE support english table structure model | PP-STRUCTURE                 |
+| field | description | default |
+|---|---|---|
+| output | result save path | ./output/table |
+| table_max_len | long side of the image resize in table structure model | 488 |
+| table_model_dir | Table structure model inference model path| None |
+| table_char_dict_path | The dictionary path of table structure model | ../ppocr/utils/dict/table_structure_dict.txt  |
+| merge_no_span_structure | In the table recognition model, whether to merge '\<td>' and '\</td>' | False |
+| layout_model_dir  | Layout analysis model inference model path| None |
+| layout_dict_path  | The dictionary path of layout analysis model| ../ppocr/utils/dict/layout_publaynet_dict.txt |
+| layout_score_threshold  | The box threshold path of layout analysis model| 0.5|
+| layout_nms_threshold  | The nms threshold path of layout analysis model| 0.5|
+| vqa_algorithm  | vqa model algorithm| LayoutXLM|
+| ser_model_dir  | Ser model inference model path| None|
+| ser_dict_path  | The dictionary path of Ser model| ../train_data/XFUND/class_list_xfun.txt|
+| mode | structure or vqa  | structure   |
+| image_orientation | Whether to perform image orientation classification in forward  | False   |
+| layout | Whether to perform layout analysis in forward  | True   |
+| table  | Whether to perform table recognition in forward  | True   |
+| ocr    | Whether to perform ocr for non-table areas in layout analysis. When layout is False, it will be automatically set to False| True |
+| recovery    | Whether to perform layout recovery in forward| False |
+| structure_version |  Structure version, optional PP-structure and PP-structurev2  | PP-structure |
+
 Most of the parameters are consistent with the PaddleOCR whl package, see [whl package documentation](../../doc/doc_en/whl.md)

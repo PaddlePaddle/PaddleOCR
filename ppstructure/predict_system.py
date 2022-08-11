@@ -27,7 +27,6 @@ import numpy as np
 import time
 import logging
 from copy import deepcopy
-from attrdict import AttrDict
 
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.utils.logging import get_logger
@@ -44,6 +43,13 @@ class StructureSystem(object):
     def __init__(self, args):
         self.mode = args.mode
         self.recovery = args.recovery
+
+        self.image_orientation_predictor = None
+        if args.image_orientation:
+            import paddleclas
+            self.image_orientation_predictor = paddleclas.PaddleClas(
+                model_name="text_image_orientation")
+
         if self.mode == 'structure':
             if not args.show_log:
                 logger.setLevel(logging.INFO)
@@ -74,6 +80,7 @@ class StructureSystem(object):
 
     def __call__(self, img, return_ocr_result_in_table=False):
         time_dict = {
+            'image_orientation': 0,
             'layout': 0,
             'table': 0,
             'table_match': 0,
@@ -83,6 +90,20 @@ class StructureSystem(object):
             'all': 0
         }
         start = time.time()
+        if self.image_orientation_predictor is not None:
+            tic = time.time()
+            cls_result = self.image_orientation_predictor.predict(
+                input_data=img)
+            cls_res = next(cls_result)
+            angle = cls_res[0]['label_names'][0]
+            cv_rotate_code = {
+                '90': cv2.ROTATE_90_COUNTERCLOCKWISE,
+                '180': cv2.ROTATE_180,
+                '270': cv2.ROTATE_90_CLOCKWISE
+            }
+            img = cv2.rotate(img, cv_rotate_code[angle])
+            toc = time.time()
+            time_dict['image_orientation'] = toc - tic
         if self.mode == 'structure':
             ori_im = img.copy()
             if self.layout_predictor is not None:
@@ -121,7 +142,10 @@ class StructureSystem(object):
                                 roi_img)
                         time_dict['det'] += ocr_time_dict['det']
                         time_dict['rec'] += ocr_time_dict['rec']
-                        # remove style char
+
+                        # remove style char, 
+                        # when using the recognition model trained on the PubtabNet dataset, 
+                        # it will recognize the text format in the table, such as <b>
                         style_token = [
                             '<strike>', '<strike>', '<sup>', '</sub>', '<b>',
                             '</b>', '<sub>', '</sup>', '<overline>',
@@ -198,7 +222,6 @@ def main(args):
         if img is None:
             logger.error("error in loading image:{}".format(image_file))
             continue
-        starttime = time.time()
         res, time_dict = structure_sys(img)
 
         if structure_sys.mode == 'structure':
@@ -213,8 +236,7 @@ def main(args):
         logger.info('result save to {}'.format(img_save_path))
         if args.recovery:
             convert_info_docx(img, res, save_folder, img_name)
-        elapse = time.time() - starttime
-        logger.info("Predict time : {:.3f}s".format(elapse))
+        logger.info("Predict time : {:.3f}s".format(time_dict['all']))
 
 
 if __name__ == "__main__":

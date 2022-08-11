@@ -63,6 +63,11 @@ def init_args():
         default='structure',
         help='structure and vqa is supported')
     parser.add_argument(
+        "--image_orientation",
+        type=bool,
+        default=False,
+        help='Whether to enable image orientation recognition')
+    parser.add_argument(
         "--layout",
         type=str2bool,
         default=True,
