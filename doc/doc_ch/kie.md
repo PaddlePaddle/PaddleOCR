@@ -1,6 +1,6 @@
 # 关键信息抽取
 
-本文提供了PaddleOCR信息抽取的全流程指南，包括语义实体识别 (Semantic Entity Recognition) 以及关系抽取 (Relation Extraction, RE) 任务的数据准备、模型训练、调优、评估、预测，各个阶段的详细说明。
+本文提供了PaddleOCR关键信息抽取的全流程指南，包括语义实体识别 (Semantic Entity Recognition) 以及关系抽取 (Relation Extraction, RE) 任务的数据准备、模型训练、调优、评估、预测，各个阶段的详细说明。
 
 - [1. 数据准备](#1-数据准备)
   - [1.1. 准备数据集](#11-准备数据集)
@@ -105,7 +105,7 @@ HEADER
 
 如果你没有本地数据集，可以从[XFUND](https://github.com/doc-analysis/XFUND)或者[FUNSD](https://guillaumejaume.github.io/FUNSD/)官网下载数据，然后使用XFUND与FUNSD的处理脚本([XFUND](../../ppstructure/vqa/tools/trans_xfun_data.py), [FUNSD](../../ppstructure/vqa/tools/trans_funsd_label.py))，生成用于PaddleOCR训练的数据格式，并使用公开数据集快速体验关键信息抽取的流程。
 
-更多关于公开数据集的介绍，请参考[信息抽取数据集说明文档](./dataset/docvqa_datasets.md)。
+更多关于公开数据集的介绍，请参考[关键信息抽取数据集说明文档](./dataset/kie_datasets.md)。
 
 PaddleOCR也支持了关键信息抽取模型的标注，具体使用方法请参考：[PPOCRLabel使用文档](../../PPOCRLabel/README_ch.md)。
 
@@ -144,7 +144,7 @@ wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layou
 开始训练:
 
 - 如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false
-- PaddlePCR在训练时，会默认下载VI_LayoutXLM预训练模型，这里无需预先下载。
+- PaddleOCR在训练时，会默认下载VI_LayoutXLM预训练模型，这里无需预先下载。
 
 ```bash
 # GPU训练 支持单卡，多卡训练
