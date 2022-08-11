@@ -465,22 +465,22 @@ class SRResize(object):
         imgH = self.imgH
         imgW = self.imgW
         images_lr = data["image_lr"]
-        transform2 = resizeNormalize(
+        transform2 = ResizeNormalize(
             (imgW // self.down_sample_scale, imgH // self.down_sample_scale))
         images_lr = transform2(images_lr)
-        data["imge_lr"] = images_lr
+        data["img_lr"] = images_lr
         if self.infer_mode:
             return data
 
         images_HR = data["image_hr"]
         label_strs = data["label"]
-        transform = resizeNormalize((imgW, imgH))
+        transform = ResizeNormalize((imgW, imgH))
         images_HR = transform(images_HR)
         data["img_hr"] = images_HR
         return data
 
 
-class resizeNormalize(object):
+class ResizeNormalize(object):
     def __init__(self, size, interpolation=Image.BICUBIC):
         self.size = size
         self.interpolation = interpolation
@@ -490,36 +490,3 @@ class resizeNormalize(object):
         img_numpy = np.array(img).astype("float32")
         img_numpy = img_numpy.transpose((2, 0, 1)) / 255
         return img_numpy
-
-
-class SRDecodeImage(object):
-    """ decode image """
-
-    def __init__(self, img_mode='RGB', channel_first=False, **kwargs):
-        self.img_mode = img_mode
-        self.channel_first = channel_first
-
-    def __call__(self, data):
-        img = data['image']
-        if six.PY2:
-            assert type(img) is str and len(
-                img) > 0, "invalid input 'img' in DecodeImage"
-        else:
-            assert type(img) is bytes and len(
-                img) > 0, "invalid input 'img' in DecodeImage"
-        img = np.frombuffer(img, dtype='uint8')
-
-        img = cv2.imdecode(img, 1)
-
-        if img is None:
-            return None
-        if self.img_mode == 'GRAY':
-            img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-        elif self.img_mode == 'RGB':
-            assert img.shape[2] == 3, 'invalid shape of image[%s]' % (img.shape)
-            img = img[:, :, ::-1]
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        if self.channel_first:
-            img = img.transpose((2, 0, 1))
-        data['image'] = img
-        return data

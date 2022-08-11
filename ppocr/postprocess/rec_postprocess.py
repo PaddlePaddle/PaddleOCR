@@ -79,13 +79,6 @@ class BaseRecLabelDecode(object):
     def get_ignored_tokens(self):
         return [0]  # for ctc blank
 
-class SRLabelDecode(object):
-    def __init__(self, character_dict_path=None, **kwargs):
-        if character_dict_path is None:
-            self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
-    def __call__(self, preds, label=None, *args, **kwargs):
-
-        return preds
 
 class CTCLabelDecode(BaseRecLabelDecode):
     """ Convert between text-label and text-index """
@@ -111,7 +104,6 @@ class CTCLabelDecode(BaseRecLabelDecode):
     def add_special_char(self, dict_character):
         dict_character = ['blank'] + dict_character
         return dict_character
-
 
 
 class DistillationCTCLabelDecode(CTCLabelDecode):
@@ -675,6 +667,7 @@ class ABINetLabelDecode(NRTRLabelDecode):
     def add_special_char(self, dict_character):
         dict_character = ['</s>'] + dict_character
         return dict_character
+
 
 class SPINLabelDecode(AttnLabelDecode):
     """ Convert between text-label and text-index """

@@ -60,9 +60,6 @@ def build_backbone(config, model_type):
             'LayoutLMForSer', 'LayoutLMv2ForSer', 'LayoutLMv2ForRe',
             'LayoutXLMForSer', 'LayoutXLMForRe'
         ]
-    elif model_type == "sr":
-        from .sr_rensnet_transformer import Transformer
-        support_dict = ["Transformer"]
     else:
         raise NotImplementedError
 

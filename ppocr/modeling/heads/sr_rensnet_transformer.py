@@ -89,7 +89,6 @@ class MultiHeadedAttention(nn.Layer):
         query, key, value = \
             [paddle.transpose(l(x).reshape([nbatches, -1, self.h, self.d_k]), [0,2,1,3])
              for l, x in zip(self.linears, (query, key, value))]
-        # print("query:{}, key:{}, value:{}".format(np.sum(query.numpy()), np.sum(key.numpy()), np.sum(value.numpy())))
 
         x, attention_map = attention(
             query,
@@ -212,7 +211,6 @@ class Bottleneck(nn.Layer):
 
         out = self.conv2(out)
         out = self.bn2(out)
-        # out = self.se(out)
 
         out += residual
         out = self.relu(out)
@@ -264,7 +262,6 @@ class Generator(nn.Layer):
         self.relu = nn.ReLU()
 
     def forward(self, x):
-        # return F.softmax(self.proj(x))
         out = self.proj(x)
         return out
 
@@ -391,12 +388,7 @@ class Transformer(nn.Layer):
             if p.dim() > 1:
                 nn.initializer.XavierNormal(p)
 
-    def forward(self,
-                image,
-                text_length,
-                text_input,
-                test=False,
-                attention_map=None):
+    def forward(self, image, text_length, text_input, attention_map=None):
         if image.shape[1] == 3:
             R = image[:, 0:1, :, :]
             G = image[:, 1:2, :, :]
@@ -421,7 +413,7 @@ class Transformer(nn.Layer):
         word_decoder_result = self.generator_word_with_upperword(
             text_input_with_pe)
 
-        if not test:
+        if self.training:
             total_length = paddle.sum(text_length)
             probs_res = paddle.zeros([total_length, get_alphabet_len()])
             start = 0

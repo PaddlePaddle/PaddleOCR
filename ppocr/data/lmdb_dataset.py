@@ -121,7 +121,7 @@ class LMDBDataSet(Dataset):
         return self.data_idx_order_list.shape[0]
 
 
-class LMDBDataSet_SR(LMDBDataSet):
+class LMDBDataSetSR(LMDBDataSet):
     def buf2PIL(self, txn, key, type='RGB'):
         imgbuf = txn.get(key)
         buf = six.BytesIO()

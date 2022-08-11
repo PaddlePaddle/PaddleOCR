@@ -97,11 +97,10 @@ def main():
     eval_class = build_metric(config['Metric'])
     # start eval
     metric = program.eval(model, valid_dataloader, post_process_class,
-                        eval_class, model_type, extra_input)
+                          eval_class, model_type, extra_input)
     logger.info('metric eval ***************')
     for k, v in metric.items():
         logger.info('{}:{}'.format(k, v))
-        
 
 
 if __name__ == '__main__':

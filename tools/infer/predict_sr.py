@@ -15,7 +15,7 @@ import os
 import sys
 from PIL import Image
 __dir__ = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(__dir__)
+sys.path.insert(0, __dir__)
 sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '../..')))
 
 os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
@@ -115,7 +115,7 @@ def main(args):
 
     # warmup 2 times
     if args.warmup:
-        img = np.random.uniform(0, 255, [48, 320, 3]).astype(np.uint8)
+        img = np.random.uniform(0, 255, [16, 64, 3]).astype(np.uint8)
         for i in range(2):
             res = text_recognizer([img] * int(args.sr_batch_num))
 

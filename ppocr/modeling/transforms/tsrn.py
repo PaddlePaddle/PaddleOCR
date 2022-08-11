@@ -23,7 +23,6 @@ from paddle import nn
 from collections import OrderedDict
 import sys
 import numpy as np
-from IPython import embed
 import warnings
 import math, copy
 import cv2
@@ -128,16 +127,16 @@ class TSRN(nn.Layer):
         output["sr_img"] = sr_img
 
         if self.training:
-            hr_img = x[0]
+            hr_img = x[1]
             length = x[2]
             input_tensor = x[3]
 
             # add transformer 
-            sr_pred, word_attention_map_pred, sr_correct_list = self.r34_transformer(
-                sr_img, length, input_tensor, test=False)
+            sr_pred, word_attention_map_pred, _ = self.r34_transformer(
+                sr_img, length, input_tensor)
 
-            hr_pred, word_attention_map_gt, hr_correct_list = self.r34_transformer(
-                hr_img, length, input_tensor, test=False)
+            hr_pred, word_attention_map_gt, _ = self.r34_transformer(
+                hr_img, length, input_tensor)
 
             output["hr_img"] = hr_img
             output["hr_pred"] = hr_pred
