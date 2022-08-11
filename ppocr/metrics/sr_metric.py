@@ -82,8 +82,6 @@ class SSIM(nn.Layer):
                           size_average)
 
     def forward(self, img1, img2):
-        img1 = img1[:, :3, :, :]
-        img2 = img2[:, :3, :, :]
         (_, channel, _, _) = img1.shape
 
         if channel == self.channel and self.window.dtype == img1.dtype:
@@ -116,7 +114,7 @@ class SRMetric(object):
 
     def calculate_psnr(self, img1, img2):
         # img1 and img2 have range [0, 1]
-        mse = ((img1[:, :3, :, :] * 255 - img2[:, :3, :, :] * 255)**2).mean()
+        mse = ((img1 * 255 - img2 * 255)**2).mean()
         if mse == 0:
             return float('inf')
         return 20 * paddle.log10(255.0 / paddle.sqrt(mse))
@@ -130,7 +128,6 @@ class SRMetric(object):
         metric = {}
         images_sr = pred_label["sr_img"]
         images_hr = pred_label["hr_img"]
-        labels = pred_label["lable_sr"]
         psnr = self.calculate_psnr(images_sr, images_hr)
         ssim = self.calculate_ssim(images_sr, images_hr)
         self.psnr_result.append(psnr)

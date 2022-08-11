@@ -156,6 +156,7 @@ def check_xpu(use_xpu):
     except Exception as e:
         pass
 
+
 def to_float32(preds):
     if isinstance(preds, dict):
         for k in preds:
@@ -174,6 +175,7 @@ def to_float32(preds):
     else:
         preds = preds.astype(paddle.float32)
     return preds
+
 
 def train(config,
           train_dataloader,
@@ -513,9 +515,11 @@ def eval(model,
             # Evaluate the results of the current batch
             if model_type in ['kie']:
                 eval_class(preds, batch_numpy)
-            elif model_type in ['table', 'vqa', 'sr']:
+            elif model_type in ['table', 'vqa']:
                 post_result = post_process_class(preds, batch_numpy)
                 eval_class(post_result, batch_numpy)
+            elif model_type in ['sr']:
+                eval_class(preds, batch_numpy)
             else:
                 post_result = post_process_class(preds, batch_numpy[1])
                 eval_class(post_result, batch_numpy)
