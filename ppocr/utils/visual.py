@@ -114,6 +114,7 @@ def draw_re_results(image,
 
 
 def draw_rectangle(img_path, boxes):
+    boxes = np.array(boxes)
     img = cv2.imread(img_path)
     img_show = img.copy()
     for box in boxes.astype(int):

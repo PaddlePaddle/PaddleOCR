@@ -125,6 +125,7 @@ def main(config, device, logger, vdl_writer):
         logger.info('convert_sync_batchnorm')
 
     model = apply_to_static(model, config, logger)
+    logger.info(model)
 
     # build loss
     loss_class = build_loss(config['Loss'])

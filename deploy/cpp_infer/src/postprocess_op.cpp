@@ -400,7 +400,7 @@ void TablePostProcessor::Run(
       score += char_score;
       rec_html_tags.push_back(html_tag);
       // box
-      if (html_tag == "<td>" || html_tag == "<td") {
+      if (html_tag == "<td>" || html_tag == "<td" || html_tag == "<td></td>") {
         for (int point_idx = 0; point_idx < loc_preds_shape[2];
              point_idx += 2) {
           std::vector<int> point(2, 0);
@@ -416,7 +416,7 @@ void TablePostProcessor::Run(
       }
     }
     score /= count;
-    if (isnan(score) || rec_boxes.size() == 0 || rec_html_tags.size() == 0) {
+    if (isnan(score) || rec_boxes.size() == 0) {
       score = -1;
     }
     rec_scores.push_back(score);

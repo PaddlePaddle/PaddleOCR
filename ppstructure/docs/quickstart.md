@@ -4,7 +4,7 @@
 - [2. 便捷使用](#2-便捷使用)
   - [2.1 命令行使用](#21-命令行使用)
     - [2.1.1 图像方向分类+版面分析+表格识别](#211-图像方向分类版面分析表格识别)
-    - [2.1.1 版面分析+表格识别](#211-版面分析表格识别)
+    - [2.1.2 版面分析+表格识别](#212-版面分析表格识别)
     - [2.1.3 版面分析](#213-版面分析)
     - [2.1.4 表格识别](#214-表格识别)
     - [2.1.5 DocVQA](#215-docvqa)
@@ -44,7 +44,7 @@ paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/1.png --type=structure --
 ```
 
 <a name="212"></a>
-#### 2.1.1 版面分析+表格识别
+#### 2.1.2 版面分析+表格识别
 ```bash
 paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/1.png --type=structure
 ```

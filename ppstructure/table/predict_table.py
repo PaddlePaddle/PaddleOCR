@@ -117,7 +117,6 @@ class TableSystem(object):
         pred_html = self.match(structure_res, dt_boxes, rec_res)
         toc = time.time()
         time_dict['match'] = toc - tic
-        # pred_html = self.match(1, 1, 1,img_name)
         result['html'] = pred_html
         if self.benchmark:
             self.autolog.times.end(stamp=True)
@@ -212,8 +211,12 @@ def main(args):
         elapse = time.time() - starttime
         logger.info("Predict time : {:.3f}s".format(elapse))
 
-        # img = predict_strture.draw_rectangle(image_file, pred_res['cell_bbox'], use_xywh)
-        img = utility.draw_boxes(cv2.imread(image_file), pred_res['cell_bbox'])
+        if len(pred_res['cell_bbox']) > 0 and len(pred_res['cell_bbox'][
+                0]) == 4:
+            img = predict_strture.draw_rectangle(image_file,
+                                                 pred_res['cell_bbox'])
+        else:
+            img = utility.draw_boxes(img, pred_res['cell_bbox'])
         img_save_path = os.path.join(args.output, os.path.basename(image_file))
         cv2.imwrite(img_save_path, img)
 

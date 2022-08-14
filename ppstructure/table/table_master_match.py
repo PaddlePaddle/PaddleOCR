@@ -273,10 +273,6 @@ def sort_bbox(end2end_xywh_bboxes, no_match_end2end_indexes):
     end2end_sorted_idx_list, end2end_sorted_bbox_list \
         = flatten(sorted_groups, sorted_bbox_groups)
 
-    # check sorted
-    #img = cv2.imread('/data_0/yejiaquan/data/TableRecognization/singleVal/PMC3286376_004_00.png')
-    #img = drawBboxAfterSorted(img, sorted_groups, sorted_bbox_groups)
-
     return end2end_sorted_idx_list, end2end_sorted_bbox_list, sorted_groups, sorted_bbox_groups
 
 
@@ -302,9 +298,6 @@ def get_bboxes_list(end2end_result, structure_master_result):
     # structure master
     src_bboxes = structure_master_result['bbox']
     src_bboxes = remove_empty_bboxes(src_bboxes)
-    # structure_master_xywh_bboxes = src_bboxes
-    # xyxy_bboxes = xywh2xyxy(src_bboxes)
-    # structure_master_xyxy_bboxes = xyxy_bboxes
     structure_master_xyxy_bboxes = src_bboxes
     xywh_bbox = xyxy2xywh(src_bboxes)
     structure_master_xywh_bboxes = xywh_bbox
@@ -410,64 +403,6 @@ def extra_match(no_match_end2end_indexes, master_bbox_nums):
     return extra_match_list
 
 
-def match_visual(file_name,
-                 match_list,
-                 end2end_xyxy,
-                 master_xyxy,
-                 prex='ordinary_match'):
-    """
-    Show the match result by xyxy coord style.
-    :param file_name:
-    :param match_list:
-    :param end2end_xyxy:
-    :param master_xyxy:
-    :param prex:
-    :return:
-    """
-    folder = ''
-    save_folder = '/data_0/cache'
-    file_path = os.path.join(folder, file_name)
-    img_end2end = cv2.imread(file_path)
-    img_master = copy.deepcopy(img_end2end)
-    text_color = (0, 0, 255)
-    bbox_color = (255, 0, 0)
-    master_nums = len(master_xyxy)
-
-    for idx, match_group in enumerate(match_list):
-        end2end_idx, master_index = match_group[0], match_group[1]
-
-        # master_index larger than master_nums, did not draw master bbox.
-        if master_index < master_nums:
-            # draw master
-            master_bbox = master_xyxy[master_index]
-            img_master = cv2.rectangle(
-                img_master, (int(master_bbox[0]), int(master_bbox[1])),
-                (int(master_bbox[2]), int(master_bbox[3])),
-                bbox_color,
-                thickness=1)
-            master_text_coord = (int(master_bbox[0]) - 4, int(master_bbox[1]))
-            img_master = cv2.putText(img_master,
-                                     str(master_index), master_text_coord, 1, 1,
-                                     text_color, 2)
-
-        # draw end2end
-        end2end_bbox = end2end_xyxy[end2end_idx]
-        img_end2end = cv2.rectangle(
-            img_end2end, (int(end2end_bbox[0]), int(end2end_bbox[1])),
-            (int(end2end_bbox[2]), int(end2end_bbox[3])),
-            bbox_color,
-            thickness=1)
-        end2end_text_coord = (int(end2end_bbox[0]) - 4, int(end2end_bbox[1]))
-        # write end2end bbox matching master bbox's index
-        img_end2end = cv2.putText(img_end2end,
-                                  str(master_index), end2end_text_coord, 1, 1,
-                                  text_color, 2)
-
-        img = np.hstack([img_end2end, img_master])
-        save_path = os.path.join(save_folder, '{}_matchShow.png'.format(prex))
-        cv2.imwrite(save_path, img)
-
-
 def get_match_dict(match_list):
     """
     Convert match_list to a dict, where key is master bbox's index, value is end2end bbox index.
@@ -555,8 +490,6 @@ def merge_span_token(master_token_list):
                     pattern <td colspan="3">
                     '<td' + 'colspan=" "' + '>' + '</td>'
                     """
-                    # tmp = master_token_list[pointer] + master_token_list[pointer+1] + master_token_list[pointer+2] + \
-                    #       master_token_list[pointer+3]
                     tmp = ''.join(master_token_list[pointer:pointer + 3 + 1])
                     pointer += 4
                     new_master_token_list.append(tmp)
@@ -569,8 +502,6 @@ def merge_span_token(master_token_list):
                     pattern <td rowspan="2" colspan="3">
                     '<td' + 'rowspan=" "' + 'colspan=" "' + '>' + '</td>'
                     """
-                    # tmp = master_token_list[pointer] + master_token_list[pointer+1] + \
-                    #       master_token_list[pointer+2] + master_token_list[pointer+3] + master_token_list[pointer+4]
                     tmp = ''.join(master_token_list[pointer:pointer + 4 + 1])
                     pointer += 5
                     new_master_token_list.append(tmp)
@@ -908,11 +839,6 @@ class Matcher:
                 'sorted_groups': sorted_groups,
                 'sorted_bboxes_groups': sorted_bboxes_groups
             }
-
-            # ordinary match show
-            # match_visual(file_name, match_list, end2end_xyxy_bboxes, structure_master_xyxy_bboxes, prex='ordinary_match')
-            # extra match show
-            # match_visual(file_name, match_list_add_extra_match, end2end_xyxy_bboxes, structure_master_xyxy_bboxes, prex='extra_match')
 
             # format output
             match_result_dict = self._format(match_result_dict, file_name)
