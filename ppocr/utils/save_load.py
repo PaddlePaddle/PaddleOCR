@@ -148,10 +148,14 @@ def load_pretrained_params(model, path):
         "The {}.pdparams does not exists!".format(path)
 
     params = paddle.load(path + '.pdparams')
+
     state_dict = model.state_dict()
+
     new_state_dict = {}
     is_float16 = False
+    
     for k1 in params.keys():
+
         if k1 not in state_dict.keys():
             logger.warning("The pretrained params {} not in model".format(k1))
         else:

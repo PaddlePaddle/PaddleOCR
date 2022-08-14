@@ -1243,6 +1243,54 @@ class ABINetLabelEncode(BaseRecLabelEncode):
         return dict_character
 
 
+class SRLabelEncode(BaseRecLabelEncode):
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 use_space_char=False,
+                 **kwargs):
+        super(SRLabelEncode, self).__init__(max_text_length,
+                                            character_dict_path, use_space_char)
+        self.dic = {}
+        with open(character_dict_path, 'r') as fin:
+            for line in fin.readlines():
+                line = line.strip()
+                character, sequence = line.split()
+                self.dic[character] = sequence
+        english_stroke_alphabet = '0123456789'
+        self.english_stroke_dict = {}
+        for index in range(len(english_stroke_alphabet)):
+            self.english_stroke_dict[english_stroke_alphabet[index]] = index
+
+    def encode(self, label):
+        stroke_sequence = ''
+        for character in label:
+            if character not in self.dic:
+                continue
+            else:
+                stroke_sequence += self.dic[character]
+        stroke_sequence += '0'
+        label = stroke_sequence
+
+        length = len(label)
+
+        input_tensor = np.zeros(self.max_text_len).astype("int64")
+        for j in range(length - 1):
+            input_tensor[j + 1] = self.english_stroke_dict[label[j]]
+
+        return length, input_tensor
+
+    def __call__(self, data):
+        text = data['label']
+        length, input_tensor = self.encode(text)
+
+        data["length"] = length
+        data["input_tensor"] = input_tensor
+        if text is None:
+            return None
+        return data
+
+
 class SPINLabelEncode(AttnLabelEncode):
     """ Convert between text-label and text-index """
 

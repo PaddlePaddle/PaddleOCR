@@ -121,6 +121,11 @@ def init_args():
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
     parser.add_argument("--warmup", type=str2bool, default=False)
 
+    # SR parmas
+    parser.add_argument("--sr_model_dir", type=str)
+    parser.add_argument("--sr_image_shape", type=str, default="3, 32, 128")
+    parser.add_argument("--sr_batch_num", type=int, default=1)
+
     #
     parser.add_argument(
         "--draw_img_save_dir", type=str, default="./inference_results")
@@ -156,6 +161,8 @@ def create_predictor(args, mode, logger):
         model_dir = args.table_model_dir
     elif mode == 'ser':
         model_dir = args.ser_model_dir
+    elif mode == "sr":
+        model_dir = args.sr_model_dir
     elif mode == 'layout':
         model_dir = args.layout_model_dir
     else:

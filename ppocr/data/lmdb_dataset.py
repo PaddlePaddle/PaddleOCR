@@ -16,6 +16,9 @@ import os
 from paddle.io import Dataset
 import lmdb
 import cv2
+import string
+import six
+from PIL import Image
 
 from .imaug import transform, create_operators
 
@@ -116,3 +119,58 @@ class LMDBDataSet(Dataset):
 
     def __len__(self):
         return self.data_idx_order_list.shape[0]
+
+
+class LMDBDataSetSR(LMDBDataSet):
+    def buf2PIL(self, txn, key, type='RGB'):
+        imgbuf = txn.get(key)
+        buf = six.BytesIO()
+        buf.write(imgbuf)
+        buf.seek(0)
+        im = Image.open(buf).convert(type)
+        return im
+
+    def str_filt(self, str_, voc_type):
+        alpha_dict = {
+            'digit': string.digits,
+            'lower': string.digits + string.ascii_lowercase,
+            'upper': string.digits + string.ascii_letters,
+            'all': string.digits + string.ascii_letters + string.punctuation
+        }
+        if voc_type == 'lower':
+            str_ = str_.lower()
+        for char in str_:
+            if char not in alpha_dict[voc_type]:
+                str_ = str_.replace(char, '')
+        return str_
+
+    def get_lmdb_sample_info(self, txn, index):
+        self.voc_type = 'upper'
+        self.max_len = 100
+        self.test = False
+        label_key = b'label-%09d' % index
+        word = str(txn.get(label_key).decode())
+        img_HR_key = b'image_hr-%09d' % index  # 128*32
+        img_lr_key = b'image_lr-%09d' % index  # 64*16
+        try:
+            img_HR = self.buf2PIL(txn, img_HR_key, 'RGB')
+            img_lr = self.buf2PIL(txn, img_lr_key, 'RGB')
+        except IOError or len(word) > self.max_len:
+            return self[index + 1]
+        label_str = self.str_filt(word, self.voc_type)
+        return img_HR, img_lr, label_str
+
+    def __getitem__(self, idx):
+        lmdb_idx, file_idx = self.data_idx_order_list[idx]
+        lmdb_idx = int(lmdb_idx)
+        file_idx = int(file_idx)
+        sample_info = self.get_lmdb_sample_info(self.lmdb_sets[lmdb_idx]['txn'],
+                                                file_idx)
+        if sample_info is None:
+            return self.__getitem__(np.random.randint(self.__len__()))
+        img_HR, img_lr, label_str = sample_info
+        data = {'image_hr': img_HR, 'image_lr': img_lr, 'label': label_str}
+        outs = transform(data, self.ops)
+        if outs is None:
+            return self.__getitem__(np.random.randint(self.__len__()))
+        return outs

@@ -14,6 +14,7 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+
 from paddle import nn
 from ppocr.modeling.transforms import build_transform
 from ppocr.modeling.backbones import build_backbone
@@ -46,9 +47,13 @@ class BaseModel(nn.Layer):
             in_channels = self.transform.out_channels
 
         # build backbone, backbone is need for del, rec and cls
-        config["Backbone"]['in_channels'] = in_channels
-        self.backbone = build_backbone(config["Backbone"], model_type)
-        in_channels = self.backbone.out_channels
+        if 'Backbone' not in config or config['Backbone'] is None:
+            self.use_backbone = False
+        else:
+            self.use_backbone = True
+            config["Backbone"]['in_channels'] = in_channels
+            self.backbone = build_backbone(config["Backbone"], model_type)
+            in_channels = self.backbone.out_channels
 
         # build neck
         # for rec, neck can be cnn,rnn or reshape(None)
@@ -77,7 +82,8 @@ class BaseModel(nn.Layer):
         y = dict()
         if self.use_transform:
             x = self.transform(x)
-        x = self.backbone(x)
+        if self.use_backbone:
+            x = self.backbone(x)
         if isinstance(x, dict):
             y.update(x)
         else:

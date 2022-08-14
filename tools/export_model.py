@@ -78,6 +78,12 @@ def export_single_model(model,
                 shape=[None, 3, 64, 512], dtype="float32"),
         ]
         model = to_static(model, input_spec=other_shape)
+    elif arch_config["model_type"] == "sr":
+        other_shape = [
+            paddle.static.InputSpec(
+                shape=[None, 3, 16, 64], dtype="float32")
+        ]
+        model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] == "ViTSTR":
         other_shape = [
             paddle.static.InputSpec(
@@ -195,6 +201,9 @@ def main():
         else:  # base rec model
             config["Architecture"]["Head"]["out_channels"] = char_num
 
+    # for sr algorithm
+    if config["Architecture"]["model_type"] == "sr":
+        config['Architecture']["Transform"]['infer_mode'] = True
     model = build_model(config["Architecture"])
     load_model(config, model, model_type=config['Architecture']["model_type"])
     model.eval()
