@@ -148,7 +148,7 @@ Train:
 模型方面，推荐使用PP-Structurev2中提出的VI-LayoutXLM模型，它基于LayoutXLM模型进行改进，去除其中的视觉特征提取模块，在精度基本无损的情况下，进一步提升了模型推理速度。更多教程请参考：[VI-LayoutXLM算法介绍](../../doc/doc_ch/algorithm_kie_vi_layoutxlm.md)与[KIE关键信息抽取使用教程](../../doc/doc_ch/kie.md)。
 
 
-## 参考文献
+## 3. 参考文献
 
 
 [1] Katti A R, Reisswig C, Guder C, et al. Chargrid: Towards understanding 2d documents[J]. arXiv preprint arXiv:1809.08799, 2018.
