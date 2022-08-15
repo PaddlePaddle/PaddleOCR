@@ -112,7 +112,7 @@ PaddleOCR也支持了关键信息抽取模型的标注，具体使用方法请�
 
 # 2. 开始训练
 
-PaddleOCR提供了训练脚本、评估脚本和预测脚本，本节将以 VI_LayoutXLM 多模态预训练模型为例进行讲解。
+PaddleOCR提供了训练脚本、评估脚本和预测脚本，本节将以 VI-LayoutXLM 多模态预训练模型为例进行讲解。
 
 > 如果希望使用基于SDMGR的关键信息抽取算法，请参考：[SDMGR使用](./algorithm_kie_sdmgr.md)。
 
@@ -144,7 +144,7 @@ wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layou
 开始训练:
 
 - 如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false
-- PaddleOCR在训练时，会默认下载VI_LayoutXLM预训练模型，这里无需预先下载。
+- PaddleOCR在训练时，会默认下载VI-LayoutXLM预训练模型，这里无需预先下载。
 
 ```bash
 # GPU训练 支持单卡，多卡训练

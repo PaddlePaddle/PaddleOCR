@@ -7,15 +7,16 @@
 - [2. 关键信息抽取任务流程](#2-关键信息抽取任务流程)
   - [2.1 训练OCR模型](#21-训练OCR模型)
   - [2.2 训练KIE模型](#22-训练KIE模型)
+- [3. 参考文献](#3-参考文献)
 
 
 ## 1. 简介
 
 ### 1.1 背景
 
-关键信息抽取 (Key Information Extraction, KIE)指的是是从文本或者图像中，抽取出关键的信息。针对文档图像的关键信息抽取任务作为OCR的下游任务，存在非常多的实际应用场景，如表单识别、车票信息抽取、身份证信息抽取等。然而，使用人力来从这些文档中提取或者收集关键信息耗时费力。文档图像包含视觉、布局、文字等特征，怎样使用计算机将上述特征有效融合并完成关键信息抽取是一个很有挑战的问题。
+关键信息抽取 (Key Information Extraction, KIE)指的是是从文本或者图像中，抽取出关键的信息。针对文档图像的关键信息抽取任务作为OCR的下游任务，存在非常多的实际应用场景，如表单识别、车票信息抽取、身份证信息抽取等。然而，使用人力从这些文档图像中提取或者收集关键信息耗时费力，怎样自动化融合图像中的视觉、布局、文字等特征并完成关键信息抽取是一个价值与挑战并存的问题。
 
-对于特定场景的文档图像，其中的关键信息位置、版式等较为固定，因此在研究早期有很多基于模板匹配的方法进行关键信息的抽取，考虑到其流程较为简单，该方法仍然被广泛应用在目前的很多场景中。
+对于特定场景的文档图像，其中的关键信息位置、版式等较为固定，因此在研究早期有很多基于模板匹配的方法进行关键信息的抽取，考虑到其流程较为简单，该方法仍然被广泛应用在目前的很多场景中。但是这种基于模板匹配的方法在应用到不同的场景中时，需要耗费大量精力去调整与适配模板，迁移成本较高。
 
 文档图像中的KIE一般包含2个子任务，示意图如下图所示。
 
@@ -28,19 +29,20 @@
 </div>
 
 
-### 1.2 主流方法
+### 1.2 基于深度学习的主流方法
 
 一般的KIE方法基于命名实体识别(Named Entity Recognition,NER)来展开研究，但是此类方法仅使用了文本信息而忽略了位置与视觉特征信息，因此精度受限。近几年大多学者开始融合多个模态的输入信息，进行特征融合，并对多模态信息进行处理，从而提升KIE的精度。主要方法有以下几种
 
-* （1）基于Grid的方法：此类方法主要关注图像层面多模态信息的融合，文本大多大多为字符粒度，对文本与结构结构信息的嵌入方式较为简单。
-* （2）基于Token的方法：此类方法参考NLP中的BERT等方法，将位置、视觉等特征信息共同编码到多模态模型中，并且在大规模数据集上进行预训练，从而在下游任务中，仅需要少量的标注数据便可以获得很好的效果。
-* （3）基于GCN的方法：此类方法尝试学习图像、文字之间的结构信息，从而可以解决开集信息抽取的问题（训练集中没有见过的模板）
-* （4）基于End-to-end的方法：此类方法将现有的OCR文字识别以及KIE信息抽取2个任务放在一个统一的网络中进行共同学习，并在学习过程中相互加强。
+* （1）基于Grid的方法：此类方法主要关注图像层面多模态信息的融合，文本大多大多为字符粒度，对文本与结构结构信息的嵌入方式较为简单，如Chargrid[1]等算法。
+* （2）基于Token的方法：此类方法参考NLP中的BERT等方法，将位置、视觉等特征信息共同编码到多模态模型中，并且在大规模数据集上进行预训练，从而在下游任务中，仅需要少量的标注数据便可以获得很好的效果。如LayoutLM[2], LayoutLMv2[3], LayoutXLM[4], StrucText[5]等算法。
+* （3）基于GCN的方法：此类方法尝试学习图像、文字之间的结构信息，从而可以解决开集信息抽取的问题（训练集中没有见过的模板），如GCN[6]、SDMGR[7]等算法。
+* （4）基于End-to-end的方法：此类方法将现有的OCR文字识别以及KIE信息抽取2个任务放在一个统一的网络中进行共同学习，并在学习过程中相互加强。如Trie[8]等算法。
 
+更多关于该系列算法的详细介绍，请参考“动手学OCR·十讲”课程的课节六部分：[文档分析理论与实践](https://aistudio.baidu.com/aistudio/education/group/info/25207)。
 
 ## 2. 关键信息抽取任务流程
 
-PaddleOCR中实现了LayoutXLM等算法（基于Token），同时，在PP-Structurev2中，对LayoutXLM多模态预训练模型进行优化，设计了视觉无关的VI-LayoutXLM模型，在精度基本无损的情况下进一步提升模型的推理速度。
+PaddleOCR中实现了LayoutXLM等算法（基于Token），同时，在PP-Structurev2中，对LayoutXLM多模态预训练模型的网络结构进行简化，去除了其中的Visual backbone部分，设计了视觉无关的VI-LayoutXLM模型，同时引入符合人类阅读顺序的排序逻辑以及UDML知识蒸馏策略，最终同时提升了关键信息抽取模型的精度与推理速度。
 
 下面介绍怎样基于PaddleOCR完成关键信息抽取任务。
 
@@ -56,7 +58,7 @@ PaddleOCR中提供的模型大多数为通用模型，在进行文本检测的�
 
 在数据标注时，关键信息的标注需要隔开，比上图中的 “民族汉” 3个字相隔较近，此时需要将”民族“与”汉“标注为2个文本检测框，否则会增加后续KIE任务的难度。
 
-对于下游任务，一般来说，`200~300`张的文本训练数据即可保证基本的训练效果，如果没有太多的先验知识，可以先标注**`200~300`**张图片，进行后续文本检测模型的训练。
+对于下游任务，一般来说，`200~300`张的文本训练数据即可保证基本的训练效果，如果没有太多的先验知识，可以先标注 **`200~300`** 张图片，进行后续文本检测模型的训练。
 
 
 **（2）模型**
@@ -71,7 +73,20 @@ PaddleOCR中提供的模型大多数为通用模型，在进行文本检测的�
 
 然而，在部分文档场景中也会存在一些挑战，如身份证场景中存在着罕见字，在发票等场景中的字体比较特殊，这些问题都会增加文本识别的难度，此时如果希望保证或者进一步提升模型的精度，建议基于特定文档场景的文本识别数据集，加载PP-OCRv3模型进行微调。
 
-在模型微调的过程中，建议准备至少`5000`张垂类场景的文本识别图像，可以保证基本的模型微调效果。如果希望提升模型的精度与泛化能力，可以合成更多与该场景类似的文本识别数据，从公开数据集中收集通用真实文本识别数据，一并添加到该场景的文本识别训练任务过程中。在训练过程中，建议每个epoch的真实垂类数据、合成数据、通用数据比例在`1:1:1`左右，这可以通过设置不同数据源的采样比例进行控制。
+在模型微调的过程中，建议准备至少`5000`张垂类场景的文本识别图像，可以保证基本的模型微调效果。如果希望提升模型的精度与泛化能力，可以合成更多与该场景类似的文本识别数据，从公开数据集中收集通用真实文本识别数据，一并添加到该场景的文本识别训练任务过程中。在训练过程中，建议每个epoch的真实垂类数据、合成数据、通用数据比例在`1:1:1`左右，这可以通过设置不同数据源的采样比例进行控制。如有3个训练文本文件，分别包含1W、2W、5W条数据，那么可以在配置文件中设置数据如下：
+
+```yml
+Train:
+  dataset:
+    name: SimpleDataSet
+    data_dir: ./train_data/
+    label_file_list:
+    - ./train_data/train_list_1W.txt
+    - ./train_data/train_list_2W.txt
+    - ./train_data/train_list_5W.txt
+    ratio_list: [1.0, 0.5, 0.2]
+    ...
+```
 
 **（2）模型**
 
@@ -83,7 +98,7 @@ PaddleOCR中提供的模型大多数为通用模型，在进行文本检测的�
 
 （1）直接使用SER，获取关键信息的类别：如身份证场景中，将“姓名“与”张三“分别标记为`name_key`与`name_value`。最终识别得到的类别为`name_value`对应的**文本字段**即为我们所需要的关键信息。
 
-（2）联合SER与RE进行使用：这种方法中，首先使用SER，获取图像文字内容中所有的key与value，然后使用RE方法，对所有的key与value进行配对，找到映射关系，从而完成关键信息的抽取。如身份证场景中，首先
+（2）联合SER与RE进行使用：这种方法中，首先使用SER，获取图像文字内容中所有的key与value，然后使用RE方法，对所有的key与value进行配对，找到映射关系，从而完成关键信息的抽取。
 
 #### 2.2.1 SER
 
@@ -131,3 +146,23 @@ PaddleOCR中提供的模型大多数为通用模型，在进行文本检测的�
 数据量方面，一般来说，对于比较固定的场景，**50张**左右的训练图片即可达到可以接受的效果，可以使用PPOCRLabel完成KIE的标注过程。
 
 模型方面，推荐使用PP-Structurev2中提出的VI-LayoutXLM模型，它基于LayoutXLM模型进行改进，去除其中的视觉特征提取模块，在精度基本无损的情况下，进一步提升了模型推理速度。更多教程请参考：[VI-LayoutXLM算法介绍](../../doc/doc_ch/algorithm_kie_vi_layoutxlm.md)与[KIE关键信息抽取使用教程](../../doc/doc_ch/kie.md)。
+
+
+## 参考文献
+
+
+[1] Katti A R, Reisswig C, Guder C, et al. Chargrid: Towards understanding 2d documents[J]. arXiv preprint arXiv:1809.08799, 2018.
+
+[2] Xu Y, Li M, Cui L, et al. Layoutlm: Pre-training of text and layout for document image understanding[C]//Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining. 2020: 1192-1200.
+
+[3] Xu Y, Xu Y, Lv T, et al. LayoutLMv2: Multi-modal pre-training for visually-rich document understanding[J]. arXiv preprint arXiv:2012.14740, 2020.
+
+[4]: Xu Y, Lv T, Cui L, et al. Layoutxlm: Multimodal pre-training for multilingual visually-rich document understanding[J]. arXiv preprint arXiv:2104.08836, 2021.
+
+[5] Li Y, Qian Y, Yu Y, et al. StrucTexT: Structured Text Understanding with Multi-Modal Transformers[C]//Proceedings of the 29th ACM International Conference on Multimedia. 2021: 1912-1920.
+
+[6] Liu X, Gao F, Zhang Q, et al. Graph convolution for multimodal information extraction from visually rich documents[J]. arXiv preprint arXiv:1903.11279, 2019.
+
+[7] Sun H, Kuang Z, Yue X, et al. Spatial Dual-Modality Graph Reasoning for Key Information Extraction[J]. arXiv preprint arXiv:2103.14470, 2021.
+
+[8] Zhang P, Xu Y, Cheng Z, et al. Trie: End-to-end text reading and information extraction for document understanding[C]//Proceedings of the 28th ACM International Conference on Multimedia. 2020: 1413-1422.
