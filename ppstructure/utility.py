@@ -32,15 +32,18 @@ def init_args():
         type=str,
         default="../ppocr/utils/dict/table_structure_dict.txt")
     # params for layout
+    parser.add_argument("--layout_model_dir", type=str)
     parser.add_argument(
-        "--layout_path_model",
+        "--layout_dict_path",
         type=str,
-        default="lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config")
+        default="../ppocr/utils/dict/layout_pubalynet_dict.txt")
     parser.add_argument(
-        "--layout_label_map",
-        type=ast.literal_eval,
-        default=None,
-        help='label map according to ppstructure/layout/README_ch.md')
+        "--layout_score_threshold",
+        type=float,
+        default=0.5,
+        help="Threshold of score.")
+    parser.add_argument(
+        "--layout_nms_threshold", type=float, default=0.5, help="Threshold of nms.")
     # params for vqa
     parser.add_argument("--vqa_algorithm", type=str, default='LayoutXLM')
     parser.add_argument("--ser_model_dir", type=str)
@@ -48,6 +51,8 @@ def init_args():
         "--ser_dict_path",
         type=str,
         default="../train_data/XFUND/class_list_xfun.txt")
+    # need to be None or tb-yx
+    parser.add_argument("--ocr_order_method", type=str, default=None)
     # params for inference
     parser.add_argument(
         "--mode",
@@ -87,7 +92,7 @@ def draw_structure_result(image, result, font_path):
         image = Image.fromarray(image)
     boxes, txts, scores = [], [], []
     for region in result:
-        if region['type'] == 'Table':
+        if region['type'] == 'table':
             pass
         else:
             for text_result in region['res']:

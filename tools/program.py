@@ -25,6 +25,8 @@ import datetime
 import paddle
 import paddle.distributed as dist
 from tqdm import tqdm
+import cv2
+import numpy as np
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 from ppocr.utils.stats import TrainingStats
@@ -262,6 +264,7 @@ def train(config,
                 config, 'Train', device, logger, seed=epoch)
             max_iter = len(train_dataloader) - 1 if platform.system(
             ) == "Windows" else len(train_dataloader)
+
         for idx, batch in enumerate(train_dataloader):
             profiler.add_profiler_step(profiler_options)
             train_reader_cost += time.time() - reader_start
@@ -289,7 +292,7 @@ def train(config,
             else:
                 if model_type == 'table' or extra_input:
                     preds = model(images, data=batch[1:])
-                elif model_type in ["kie", 'vqa']:
+                elif model_type in ["kie", 'vqa', 'sr']:
                     preds = model(batch)
                 else:
                     preds = model(images)
@@ -297,11 +300,12 @@ def train(config,
                 avg_loss = loss['loss']
                 avg_loss.backward()
                 optimizer.step()
+
             optimizer.clear_grad()
 
             if cal_metric_during_train and epoch % calc_epoch_interval == 0:  # only rec and cls need
                 batch = [item.numpy() for item in batch]
-                if model_type in ['kie']:
+                if model_type in ['kie', 'sr']:
                     eval_class(preds, batch)
                 elif model_type in ['table']:
                     post_result = post_process_class(preds, batch)
@@ -347,8 +351,8 @@ def train(config,
                     len(train_dataloader) - idx - 1) * eta_meter.avg
                 eta_sec_format = str(datetime.timedelta(seconds=int(eta_sec)))
                 strs = 'epoch: [{}/{}], global_step: {}, {}, avg_reader_cost: ' \
-                       '{:.5f} s, avg_batch_cost: {:.5f} s, avg_samples: {}, ' \
-                       'ips: {:.5f} samples/s, eta: {}'.format(
+                    '{:.5f} s, avg_batch_cost: {:.5f} s, avg_samples: {}, ' \
+                    'ips: {:.5f} samples/s, eta: {}'.format(
                     epoch, epoch_num, global_step, logs,
                     train_reader_cost / print_batch_step,
                     train_batch_cost / print_batch_step,
@@ -376,7 +380,8 @@ def train(config,
                     post_process_class,
                     eval_class,
                     model_type,
-                    extra_input=extra_input)
+                    extra_input=extra_input,
+                    scaler=scaler)
                 cur_metric_str = 'cur metric, {}'.format(', '.join(
                     ['{}: {}'.format(k, v) for k, v in cur_metric.items()]))
                 logger.info(cur_metric_str)
@@ -466,7 +471,8 @@ def eval(model,
          post_process_class,
          eval_class,
          model_type=None,
-         extra_input=False):
+         extra_input=False,
+         scaler=None):
     model.eval()
     with paddle.no_grad():
         total_frame = 0.0
@@ -478,17 +484,58 @@ def eval(model,
             leave=True)
         max_iter = len(valid_dataloader) - 1 if platform.system(
         ) == "Windows" else len(valid_dataloader)
+        sum_images = 0
         for idx, batch in enumerate(valid_dataloader):
             if idx >= max_iter:
                 break
             images = batch[0]
             start = time.time()
-            if model_type == 'table' or extra_input:
-                preds = model(images, data=batch[1:])
-            elif model_type in ["kie", 'vqa']:
-                preds = model(batch)
+
+            # use amp
+            if scaler:
+                with paddle.amp.auto_cast(level='O2'):
+                    if model_type == 'table' or extra_input:
+                        preds = model(images, data=batch[1:])
+                    elif model_type in ["kie", 'vqa']:
+                        preds = model(batch)
+                    elif model_type in ['sr']:
+                        preds = model(batch)
+                        sr_img = preds["sr_img"]
+                        lr_img = preds["lr_img"]
+
+                        for i in (range(sr_img.shape[0])):
+                            fm_sr = (sr_img[i].numpy() * 255).transpose(
+                                1, 2, 0).astype(np.uint8)
+                            fm_lr = (lr_img[i].numpy() * 255).transpose(
+                                1, 2, 0).astype(np.uint8)
+                            cv2.imwrite("output/images/{}_{}_sr.jpg".format(
+                                sum_images, i), fm_sr)
+                            cv2.imwrite("output/images/{}_{}_lr.jpg".format(
+                                sum_images, i), fm_lr)
+                    else:
+                        preds = model(images)
             else:
-                preds = model(images)
+                if model_type == 'table' or extra_input:
+                    preds = model(images, data=batch[1:])
+                elif model_type in ["kie", 'vqa']:
+                    preds = model(batch)
+                elif model_type in ['sr']:
+                    preds = model(batch)
+                    sr_img = preds["sr_img"]
+                    lr_img = preds["lr_img"]
+
+                    for i in (range(sr_img.shape[0])):
+                        fm_sr = (sr_img[i].numpy() * 255).transpose(
+                            1, 2, 0).astype(np.uint8)
+                        fm_lr = (lr_img[i].numpy() * 255).transpose(
+                            1, 2, 0).astype(np.uint8)
+                        cv2.imwrite("output/images/{}_{}_sr.jpg".format(
+                            sum_images, i), fm_sr)
+                        cv2.imwrite("output/images/{}_{}_lr.jpg".format(
+                            sum_images, i), fm_lr)
+                else:
+                    preds = model(images)
+
             batch_numpy = []
             for item in batch:
                 if isinstance(item, paddle.Tensor):
@@ -503,12 +550,15 @@ def eval(model,
             elif model_type in ['table', 'vqa']:
                 post_result = post_process_class(preds, batch_numpy)
                 eval_class(post_result, batch_numpy)
+            elif model_type in ['sr']:
+                eval_class(preds, batch_numpy)
             else:
                 post_result = post_process_class(preds, batch_numpy[1])
                 eval_class(post_result, batch_numpy)
 
             pbar.update(1)
             total_frame += len(images)
+            sum_images += 1
         # Get final metric，eg. acc or hmean
         metric = eval_class.get_metric()
 
@@ -602,7 +652,8 @@ def preprocess(is_train=False):
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
         'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'LayoutLMv2', 'PREN', 'FCE',
-        'SVTR', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN', 'VisionLAN'
+        'SVTR', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN', 'VisionLAN',
+        'Gestalt'
     ]
 
     if use_xpu:

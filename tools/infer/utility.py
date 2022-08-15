@@ -121,6 +121,11 @@ def init_args():
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
     parser.add_argument("--warmup", type=str2bool, default=False)
 
+    # SR parmas
+    parser.add_argument("--sr_model_dir", type=str)
+    parser.add_argument("--sr_image_shape", type=str, default="3, 32, 128")
+    parser.add_argument("--sr_batch_num", type=int, default=1)
+
     #
     parser.add_argument(
         "--draw_img_save_dir", type=str, default="./inference_results")
@@ -156,6 +161,8 @@ def create_predictor(args, mode, logger):
         model_dir = args.table_model_dir
     elif mode == 'ser':
         model_dir = args.ser_model_dir
+    elif mode == "sr":
+        model_dir = args.sr_model_dir
     else:
         model_dir = args.e2e_model_dir
 
@@ -205,18 +212,24 @@ def create_predictor(args, mode, logger):
                     workspace_size=1 << 30,
                     precision_mode=precision,
                     max_batch_size=args.max_batch_size,
-                    min_subgraph_size=args.min_subgraph_size, # skip the minmum trt subgraph
+                    min_subgraph_size=args.
+                    min_subgraph_size,  # skip the minmum trt subgraph
                     use_calib_mode=False)
-            
+
             # collect shape
             if args.shape_info_filename is not None:
                 if not os.path.exists(args.shape_info_filename):
                     config.collect_shape_range_info(args.shape_info_filename)
-                    logger.info(f"collect dynamic shape info into : {args.shape_info_filename}")
+                    logger.info(
+                        f"collect dynamic shape info into : {args.shape_info_filename}"
+                    )
                 else:
-                    logger.info(f"dynamic shape info file( {args.shape_info_filename} ) already exists, not need to generate again.")
-                config.enable_tuned_tensorrt_dynamic_shape(args.shape_info_filename, True)
-            
+                    logger.info(
+                        f"dynamic shape info file( {args.shape_info_filename} ) already exists, not need to generate again."
+                    )
+                config.enable_tuned_tensorrt_dynamic_shape(
+                    args.shape_info_filename, True)
+
             use_dynamic_shape = True
             if mode == "det":
                 min_input_shape = {

@@ -119,6 +119,7 @@ def main(config, device, logger, vdl_writer):
             config['Loss']['ignore_index'] = char_num - 1
 
     model = build_model(config['Architecture'])
+
     model = apply_to_static(model, config, logger)
 
     # build loss
