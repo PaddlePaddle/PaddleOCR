@@ -280,6 +280,7 @@ class TextRecognizer(object):
         img -= mean
         img *= stdinv
         return img
+
     def resize_norm_img_svtr(self, img, image_shape):
 
         imgC, imgH, imgW = image_shape
@@ -325,7 +326,7 @@ class TextRecognizer(object):
         for beg_img_no in range(0, img_num, batch_num):
             end_img_no = min(img_num, beg_img_no + batch_num)
             norm_img_batch = []
-            imgC, imgH, imgW = self.rec_image_shape
+            imgC, imgH, imgW = self.rec_image_shape[:3]
             max_wh_ratio = imgW / imgH
             # max_wh_ratio = 0
             for ino in range(beg_img_no, end_img_no):
