@@ -304,9 +304,8 @@ class CSPPAN(nn.Layer):
         for idx in range(len(self.in_channels) - 1, 0, -1):
             feat_heigh = inner_outs[0]
             feat_low = inputs[idx - 1]
-
             upsample_feat = F.upsample(
-                feat_heigh, size=feat_low.shape[2:4], mode="nearest")
+                feat_heigh, size=paddle.shape(feat_low)[2:4], mode="nearest")
 
             inner_out = self.top_down_blocks[len(self.in_channels) - 1 - idx](
                 paddle.concat([upsample_feat, feat_low], 1))
