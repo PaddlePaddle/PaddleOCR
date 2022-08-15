@@ -37,6 +37,7 @@ from ppocr.postprocess import build_post_process
 from ppocr.utils.save_load import load_model
 from ppocr.utils.utility import get_image_file_list
 from ppocr.utils.visual import draw_rectangle
+from tools.infer.utility import draw_boxes
 import tools.program as program
 import cv2
 
@@ -105,9 +106,13 @@ def main(config, device, logger, vdl_writer):
             f_w.write("result: {}, {}\n".format(structure_str_list,
                                                 bbox_list_str))
 
-            img = draw_rectangle(file, bbox_list)
+            if len(bbox_list) > 0 and len(bbox_list[0]) == 4:
+                img = draw_rectangle(file, bbox_list)
+            else:
+                img = draw_boxes(cv2.imread(file), bbox_list)
             cv2.imwrite(
                 os.path.join(save_res_path, os.path.basename(file)), img)
+            logger.info('save result to {}'.format(save_res_path))
         logger.info("success!")
 
 
