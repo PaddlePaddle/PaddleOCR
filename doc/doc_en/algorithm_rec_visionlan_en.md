@@ -90,7 +90,7 @@ After the conversion is successful, there are three files in the directory:
 For VisionLAN text recognition model inference, the following commands can be executed:
 
 ```
-python3 tools/infer/predict_rec.py --image_dir='./doc/imgs_words/en/word_2.png' --rec_model_dir='./inference/rec_r45_visionlan/' --rec_algorithm='VisionLAN' --rec_image_shape='3,64,256' --rec_char_dict_path='./ppocr/utils/dict36.txt'
+python3 tools/infer/predict_rec.py --image_dir='./doc/imgs_words/en/word_2.png' --rec_model_dir='./inference/rec_r45_visionlan/' --rec_algorithm='VisionLAN' --rec_image_shape='3,64,256' --rec_char_dict_path='./ppocr/utils/ic15_dict.txt' --use_space_char=False
 ```
 
 ![](../imgs_words/en/word_2.png)
@@ -98,7 +98,7 @@ python3 tools/infer/predict_rec.py --image_dir='./doc/imgs_words/en/word_2.png' 
 After executing the command, the prediction result (recognized text and score) of the image above is printed to the screen, an example is as follows:
 The result is as follows:
 ```shell
-Predicts of ./doc/imgs_words/en/word_2.png:('yourself', 0.97076982)
+Predicts of ./doc/imgs_words/en/word_2.png:('yourself', 0.9999493)
 ```
 
 <a name="4-2"></a>
