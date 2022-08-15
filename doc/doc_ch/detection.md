@@ -64,7 +64,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/
 
 ```
 
-上述指令中，通过-c 选择训练使用configs/det/det_db_mv3.yml配置文件。
+上述指令中，通过-c 选择训练使用configs/det/det_mv3_db.yml配置文件。
 有关配置文件的详细解释，请参考[链接](./config.md)。
 
 您也可以通过-o参数在不需要修改yml文件的情况下，改变训练的参数，比如，调整训练的学习率为0.0001

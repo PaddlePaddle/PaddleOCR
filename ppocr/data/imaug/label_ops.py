@@ -23,7 +23,7 @@ import string
 from shapely.geometry import LineString, Point, Polygon
 import json
 import copy
-
+from scipy.spatial import distance as dist
 from ppocr.utils.logging import get_logger
 
 
@@ -74,9 +74,10 @@ class DetLabelEncode(object):
         s = pts.sum(axis=1)
         rect[0] = pts[np.argmin(s)]
         rect[2] = pts[np.argmax(s)]
-        diff = np.diff(pts, axis=1)
-        rect[1] = pts[np.argmin(diff)]
-        rect[3] = pts[np.argmax(diff)]
+        tmp = np.delete(pts, (np.argmin(s), np.argmax(s)), axis=0)
+        diff = np.diff(np.array(tmp), axis=1)
+        rect[1] = tmp[np.argmin(diff)]
+        rect[3] = tmp[np.argmax(diff)]
         return rect
 
     def expand_points_num(self, boxes):
@@ -443,7 +444,9 @@ class KieLabelEncode(object):
             elif 'key_cls' in ann.keys():
                 labels.append(ann['key_cls'])
             else:
-                raise ValueError("Cannot found 'key_cls' in ann.keys(), please check your training annotation.")
+                raise ValueError(
+                    "Cannot found 'key_cls' in ann.keys(), please check your training annotation."
+                )
             edges.append(ann.get('edge', 0))
         ann_infos = dict(
             image=data['image'],
