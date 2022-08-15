@@ -40,14 +40,16 @@ logger = get_logger()
 
 class SerPredictor(object):
     def __init__(self, args):
-        self.ocr_engine = PaddleOCR(use_angle_cls=False, show_log=False)
+        self.ocr_engine = PaddleOCR(
+            use_angle_cls=False, show_log=False, use_gpu=args.use_gpu)
 
         pre_process_list = [{
             'VQATokenLabelEncode': {
                 'algorithm': args.vqa_algorithm,
                 'class_path': args.ser_dict_path,
                 'contains_re': False,
-                'ocr_engine': self.ocr_engine
+                'ocr_engine': self.ocr_engine,
+                'order_method': args.ocr_order_method,
             }
         }, {
             'VQATokenPad': {

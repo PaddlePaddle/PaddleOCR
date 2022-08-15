@@ -104,8 +104,6 @@ class SerPredictor(object):
         batch = transform(data, self.ops)
         batch = to_tensor(batch)
         preds = self.model(batch)
-        if self.algorithm in ['LayoutLMv2', 'LayoutXLM']:
-            preds = preds[0]
 
         post_result = self.post_process_class(
             preds, segment_offset_ids=batch[6], ocr_infos=batch[7])
