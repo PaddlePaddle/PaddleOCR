@@ -949,5 +949,5 @@ class TableMasterMatcher(Matcher):
         match_results = self.match()
         merged_results = self.get_merge_result(match_results)
         pred_html = merged_results[img_name]
-        # pred_html = '<html><body><table>' + pred_html + '</table></body></html>'
+        pred_html = '<html><body><table>' + pred_html + '</table></body></html>'
         return pred_html
