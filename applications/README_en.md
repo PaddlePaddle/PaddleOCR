@@ -75,5 +75,5 @@ PaddleOCR scene application covers general, manufacturing, finance, transportati
   If you are an enterprise developer and have not found a suitable solution in the above scenarios, you can fill in the [OCR Application Cooperation Survey Questionnaire](https://paddle.wjx.cn/vj/QwF7GKw.aspx) to carry out different levels of cooperation with the official team **for free**, including but not limited to problem abstraction, technical solution determination, project Q&A, joint research and development, etc. If you have already used paddleOCR in your project, you can also fill out this questionnaire to jointly  promote with the PaddlePaddle and enhance the technical publicity of enterprises. Looking forward to your submission!
 
 <a href="https://trackgit.com">
-<img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/l63cvzo0w09yxypc7ygl" alt="traffic" />
+<img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/l6u6aszdfexs2jnrlil6" alt="trackgit-views" />
 </a>
