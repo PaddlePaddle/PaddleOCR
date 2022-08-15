@@ -67,7 +67,7 @@ def build_loss(config):
         'ClsLoss', 'AttentionLoss', 'SRNLoss', 'PGLoss', 'CombinedLoss',
         'CELoss', 'TableAttentionLoss', 'SARLoss', 'AsterLoss', 'SDMGRLoss',
         'VQASerTokenLayoutLMLoss', 'LossFromOutput', 'PRENLoss', 'MultiLoss',
-        'TableMasterLoss', 'SPINAttentionLoss', 'VLLoss','StrokeFocusLoss'
+        'TableMasterLoss', 'SPINAttentionLoss', 'VLLoss', 'StrokeFocusLoss'
     ]
     config = copy.deepcopy(config)
     module_name = config.pop('name')

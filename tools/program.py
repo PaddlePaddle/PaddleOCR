@@ -490,7 +490,7 @@ def eval(model,
                 break
             images = batch[0]
             start = time.time()
-            
+
             # use amp
             if scaler:
                 with paddle.amp.auto_cast(level='O2'):
@@ -508,10 +508,10 @@ def eval(model,
                                 1, 2, 0).astype(np.uint8)
                             fm_lr = (lr_img[i].numpy() * 255).transpose(
                                 1, 2, 0).astype(np.uint8)
-                            cv2.imwrite("output/images/{}_{}_sr.jpg".format(sum_images,
-                                                                            i), fm_sr)
-                            cv2.imwrite("output/images/{}_{}_lr.jpg".format(sum_images,
-                                                                            i), fm_lr) 
+                            cv2.imwrite("output/images/{}_{}_sr.jpg".format(
+                                sum_images, i), fm_sr)
+                            cv2.imwrite("output/images/{}_{}_lr.jpg".format(
+                                sum_images, i), fm_lr)
                     else:
                         preds = model(images)
             else:
@@ -529,10 +529,10 @@ def eval(model,
                             1, 2, 0).astype(np.uint8)
                         fm_lr = (lr_img[i].numpy() * 255).transpose(
                             1, 2, 0).astype(np.uint8)
-                        cv2.imwrite("output/images/{}_{}_sr.jpg".format(sum_images,
-                                                                        i), fm_sr)
-                        cv2.imwrite("output/images/{}_{}_lr.jpg".format(sum_images,
-                                                                        i), fm_lr)                    
+                        cv2.imwrite("output/images/{}_{}_sr.jpg".format(
+                            sum_images, i), fm_sr)
+                        cv2.imwrite("output/images/{}_{}_lr.jpg".format(
+                            sum_images, i), fm_lr)
                 else:
                     preds = model(images)
 
@@ -652,7 +652,7 @@ def preprocess(is_train=False):
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
         'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'LayoutLMv2', 'PREN', 'FCE',
-        'SVTR', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN', 'VisionLAN', 
+        'SVTR', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN', 'VisionLAN',
         'Gestalt'
     ]
 
