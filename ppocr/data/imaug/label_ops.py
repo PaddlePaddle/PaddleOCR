@@ -749,28 +749,35 @@ class TableMasterLabelEncode(TableLabelEncode):
 
 
 class TableBoxEncode(object):
-    def __init__(self, box_format='xyxy', **kwargs):
+    def __init__(self, in_box_format='xyxy', out_box_format='xyxy', **kwargs):
         assert box_format in ['xywh', 'xyxy', 'xyxyxyxy']
-        self.box_format = box_format
+        self.in_box_format = in_box_format
+        self.out_box_format = out_box_format
 
     def __call__(self, data):
         img_height, img_width = data['image'].shape[:2]
         bboxes = data['bboxes']
-        if self.box_format == 'xywh' and bboxes.shape[1] == 4:
-            bboxes = self.xyxy2xywh(bboxes)
+        if self.in_box_format != self.out_box_format:
+            if self.out_box_format == 'xywh':
+                if self.in_box_format == 'xyxyxyxy':
+                    bboxes = self.xyxyxyxy2xywh(bboxes)
+                elif self.in_box_format == 'xyxy':
+                    bboxes = self.xyxy2xywh(bboxes)
+
         bboxes[:, 0::2] /= img_width
         bboxes[:, 1::2] /= img_height
         data['bboxes'] = bboxes
         return data
 
+    def xyxyxyxy2xywh(self, boxes):
+        new_bboxes = np.zeros([len(bboxes), 4])
+        new_bboxes[:, 0] = bboxes[:, 0::2].min()  # x1
+        new_bboxes[:, 1] = bboxes[:, 1::2].min()  # y1
+        new_bboxes[:, 2] = bboxes[:, 0::2].max() - new_bboxes[:, 0]  # w
+        new_bboxes[:, 3] = bboxes[:, 1::2].max() - new_bboxes[:, 1]  # h
+        return new_bboxes
+
     def xyxy2xywh(self, bboxes):
-        """
-        Convert coord (x1,y1,x2,y2) to (x,y,w,h).
-        where (x1,y1) is top-left, (x2,y2) is bottom-right.
-        (x,y) is bbox center and (w,h) is width and height.
-        :param bboxes: (x1, y1, x2, y2)
-        :return:
-        """
         new_bboxes = np.empty_like(bboxes)
         new_bboxes[:, 0] = (bboxes[:, 0] + bboxes[:, 2]) / 2  # x center
         new_bboxes[:, 1] = (bboxes[:, 1] + bboxes[:, 3]) / 2  # y center

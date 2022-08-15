@@ -90,7 +90,8 @@ Train:
       - PaddingTableImage:
           size: [480, 480]
       - TableBoxEncode:
-          box_format: *box_format
+          in_box_format: *box_format
+          out_box_format: *box_format
       - NormalizeImage:
           scale: 1./255.
           mean: [0.5, 0.5, 0.5]
@@ -126,7 +127,8 @@ Eval:
       - PaddingTableImage:
           size: [480, 480]
       - TableBoxEncode:
-          box_format: *box_format
+          in_box_format: *box_format
+          out_box_format: *box_format
       - NormalizeImage:
           scale: 1./255.
           mean: [0.5, 0.5, 0.5]

@@ -86,7 +86,8 @@ Train:
           loc_reg_num: *loc_reg_num
           max_text_length: *max_text_length
       - TableBoxEncode:
-          box_format: *box_format
+          in_box_format: *box_format
+          out_box_format: *box_format
       - ResizeTableImage:
           max_len: 488
       - NormalizeImage:
@@ -121,7 +122,8 @@ Eval:
           loc_reg_num: *loc_reg_num
           max_text_length: *max_text_length
       - TableBoxEncode:
-          box_format: *box_format
+          in_box_format: *box_format
+          out_box_format: *box_format
       - ResizeTableImage:
           max_len: 488
       - NormalizeImage:
