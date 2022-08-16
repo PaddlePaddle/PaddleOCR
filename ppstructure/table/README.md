@@ -32,7 +32,8 @@ We evaluated the algorithm on the PubTabNet<sup>[1]</sup> eval dataset, and the 
 |Method|[TEDS(Tree-Edit-Distance-based Similarity)](https://github.com/ibm-aur-nlp/PubTabNet/tree/master/src)|
 | --- | --- |
 | EDD<sup>[2]</sup> | 88.3 |
-| Ours | 93.32 |
+| TableRec-RARE(ours) | 93.32 |
+| SLANet(ours) | 94.98 |
 
 ## 3. How to use
 
@@ -55,7 +56,7 @@ python3 table/predict_table.py --det_model_dir=inference/en_ppocr_mobile_v2.0_ta
 ```
 Note: The above model is trained on the PubLayNet dataset and only supports English scanning scenarios. If you need to identify other scenarios, you need to train the model yourself and replace the three fields `det_model_dir`, `rec_model_dir`, `table_model_dir`.
 
-After running, the excel sheet of each picture will be saved in the directory specified by the output field
+After the operation is completed, the excel table of each image will be saved to the directory specified by the output field, and an html file will be produced in the directory to visually view the cell coordinates and the recognized table.
 
 ### 3.2 Train
 
@@ -90,27 +91,25 @@ python3 tools/train.py -c configs/table/table_mv3.yml -o Global.checkpoints=./yo
 ### 3.3 Eval
 
 The table uses [TEDS(Tree-Edit-Distance-based Similarity)](https://github.com/ibm-aur-nlp/PubTabNet/tree/master/src) as the evaluation metric of the model. Before the model evaluation, the three models in the pipeline need to be exported as inference models (we have provided them), and the gt for evaluation needs to be prepared. Examples of gt are as follows:
-```json
-{"PMC4289340_004_00.png": [
-  ["<html>", "<body>", "<table>", "<thead>", "<tr>", "<td>", "</td>", "<td>", "</td>", "<td>", "</td>", "</tr>", "</thead>", "<tbody>", "<tr>", "<td>", "</td>", "<td>", "</td>", "<td>", "</td>", "</tr>",  "</tbody>", "</table>", "</body>", "</html>"],
-  [[1, 4, 29, 13], [137, 4, 161, 13], [215, 4, 236, 13], [1, 17, 30, 27], [137, 17, 147, 27], [215, 17, 225, 27]],
-  [["<b>", "F", "e", "a", "t", "u", "r", "e", "</b>"], ["<b>", "G", "b", "3", " ", "+", "</b>"], ["<b>", "G", "b", "3", " ", "-", "</b>"], ["<b>", "P", "a", "t", "i", "e", "n", "t", "s", "</b>"], ["6", "2"], ["4", "5"]]
-]}
+```txt
+PMC5755158_010_01.png    <html><body><table><thead><tr><td></td><td><b>Weaning</b></td><td><b>Week 15</b></td><td><b>Off-test</b></td></tr></thead><tbody><tr><td>Weaning</td><td>–</td><td>–</td><td>–</td></tr><tr><td>Week 15</td><td>–</td><td>0.17 ± 0.08</td><td>0.16 ± 0.03</td></tr><tr><td>Off-test</td><td>–</td><td>0.80 ± 0.24</td><td>0.19 ± 0.09</td></tr></tbody></table></body></html>
 ```
-In gt json, the key is the image name, the value is the corresponding gt, and gt is a list composed of four items, and each item is
-1. HTML string list of table structure
-2. The coordinates of each cell (not including the empty text in the cell)
-3. The text information in each cell (not including the empty text in the cell)
+Each line in gt consists of the file name and the html string of the table. The file name and the html string of the table are separated by `\t`.
+
+You can also use the following command to generate an evaluation gt file from the annotation file:
+```python
+python3 ppstructure/table/convert_label2html.py --ori_gt_path /path/to/your_label_file --save_path /path/to/save_file
+```
 
 Use the following command to evaluate. After the evaluation is completed, the teds indicator will be output.
 ```python
 cd PaddleOCR/ppstructure
-python3 table/eval_table.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --det_limit_side_len=736 --det_limit_type=min --gt_path=path/to/gt.json
+python3 table/eval_table.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --det_limit_side_len=736 --det_limit_type=min --gt_path=path/to/gt.txt
 ```
 
 If the PubLatNet eval dataset is used, it will be output
 ```bash
-teds: 93.32
+teds: 94.98
 ```
 
 ### 3.4 Inference
