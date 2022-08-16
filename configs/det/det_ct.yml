@@ -1,0 +1,84 @@
+Global:
+  use_gpu: true
+  epoch_num: 600
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: ./output/det_ct/
+  save_epoch_step: 10
+  # evaluation is run every 2000 iterations
+  eval_batch_step: [0,2000]
+  cal_metric_during_train: False
+  pretrained_model: ./pretrain_models/ResNet18_pretrained.pdparams #./pretrain_models/ResNet50_vd_ssld_pretrained
+  checkpoints:
+  save_inference_dir:
+  use_visualdl: False
+  infer_img: doc/imgs_en/img_10.jpg
+  save_res_path: ./output/det_db/predicts_db.txt
+
+Architecture:
+  model_type: det
+  algorithm: CT
+  Transform:
+  Backbone:
+    name: ResNet
+    layers: 18
+  Neck:
+    name: CTNECK
+  Head:
+    name: CT_Head
+    in_channels: 512
+    hidden_dim: 128
+    num_classes: 3
+
+Loss:
+  name: CTLoss
+
+Optimizer:
+  name: Adam
+  lr:
+    name: Linear #PolynomialDecay
+    learning_rate: 0.001 #1e-3
+    end_lr: 0.
+    epochs: 600
+    step_each_epoch: 1254
+    #decay_steps: 752400 #max_iter_num
+    power: 0.9
+
+PostProcess:
+  name: CTPostProcess
+
+Metric:
+  name: CTMetric
+  main_indicator: hmean
+
+Train:
+  dataset:
+    name: CentripetalDataSet
+    data_dir: /workspace/huangjun12/PaddleProject/OCR/CentripetalText/0.WellTrained/data/total_text/Images/Train/
+    gt_dir: /workspace/huangjun12/PaddleProject/OCR/CentripetalText/0.WellTrained/data/total_text/Groundtruth/Polygon/Train/
+    is_transform: True
+    img_size: 640
+    short_size: 640
+    kernel_scale: 0.7
+    read_type: 'cv2'
+  loader:
+    shuffle: True
+    drop_last: True
+    batch_size_per_card: 4
+    num_workers: 8 #4
+
+Eval:
+  dataset:
+    name: CentripetalDataSet
+    data_dir: /workspace/huangjun12/PaddleProject/OCR/CentripetalText/0.WellTrained/data/total_text/Images/Test/
+    gt_dir: /workspace/huangjun12/PaddleProject/OCR/CentripetalText/0.WellTrained/data/total_text/Groundtruth/Polygon/Test/
+    is_transform: False
+    img_size: None
+    short_size: 640
+    kernel_scale: 0.7
+    read_type: 'cv2'
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 1
+    num_workers: 2

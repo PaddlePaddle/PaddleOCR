@@ -119,6 +119,9 @@ def main(config, device, logger, vdl_writer):
             config['Loss']['ignore_index'] = char_num - 1
 
     model = build_model(config['Architecture'])
+    # for name, param in model.named_parameters():
+    #     print(name)
+    # exit()
     if config['Global']['distributed']:
         model = paddle.DataParallel(model)
 

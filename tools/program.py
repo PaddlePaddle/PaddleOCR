@@ -481,7 +481,7 @@ def eval(model,
                 post_result = post_process_class(preds, batch_numpy)
                 eval_class(post_result, batch_numpy)
             else:
-                post_result = post_process_class(preds, batch_numpy[1])
+                post_result = post_process_class(preds, batch_numpy)  #TODO
                 eval_class(post_result, batch_numpy)
 
             pbar.update(1)
@@ -579,7 +579,7 @@ def preprocess(is_train=False):
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
         'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'LayoutLMv2', 'PREN', 'FCE',
-        'SVTR', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN'
+        'SVTR', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN', 'CT'
     ]
 
     if use_xpu:

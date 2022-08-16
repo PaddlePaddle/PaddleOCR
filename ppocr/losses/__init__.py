@@ -25,6 +25,7 @@ from .det_east_loss import EASTLoss
 from .det_sast_loss import SASTLoss
 from .det_pse_loss import PSELoss
 from .det_fce_loss import FCELoss
+from .det_ct_loss import CTLoss
 
 # rec loss
 from .rec_ctc_loss import CTCLoss
@@ -63,7 +64,7 @@ def build_loss(config):
         'ClsLoss', 'AttentionLoss', 'SRNLoss', 'PGLoss', 'CombinedLoss',
         'CELoss', 'TableAttentionLoss', 'SARLoss', 'AsterLoss', 'SDMGRLoss',
         'VQASerTokenLayoutLMLoss', 'LossFromOutput', 'PRENLoss', 'MultiLoss',
-        'TableMasterLoss', 'SPINAttentionLoss'
+        'TableMasterLoss', 'SPINAttentionLoss', 'CTLoss'
     ]
     config = copy.deepcopy(config)
     module_name = config.pop('name')
