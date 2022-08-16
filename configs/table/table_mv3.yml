@@ -96,8 +96,8 @@ Train:
 Eval:
   dataset:
     name: PubTabDataSet
-    data_dir: /home/zhoujun20/table/PubTabNe/pubtabnet/val/
-    label_file_list: [/home/zhoujun20/table/PubTabNe/pubtabnet/val_500.jsonl]
+    data_dir: train_data/table/pubtabnet/val/
+    label_file_list: [train_data/table/pubtabnet/PubTabNet_2.0.0_val.jsonl]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR

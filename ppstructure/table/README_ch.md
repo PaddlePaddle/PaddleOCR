@@ -54,19 +54,24 @@ cd PaddleOCR/ppstructure
 
 # 下载模型
 mkdir inference && cd inference
-# 下载超轻量级表格英文OCR模型的检测模型并解压
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_det_infer.tar && tar xf en_ppocr_mobile_v2.0_table_det_infer.tar
-# 下载超轻量级表格英文OCR模型的识别模型并解压
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar && tar xf en_ppocr_mobile_v2.0_table_rec_infer.tar
-# 下载超轻量级英文表格英寸模型并解压
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar
+# 下载PP-OCRv3文本检测模型并解压
+wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_slim_infer.tar && tar xf ch_PP-OCRv3_det_slim_infer.tar
+# 下载PP-OCRv3文本识别模型并解压
+wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_slim_infer.tar && tar xf ch_PP-OCRv3_rec_slim_infer.tar
+# 下载PP-Structurev2表格识别模型并解压
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf ch_ppstructure_mobile_v2.0_SLANet_infer.tar
 cd ..
 # 执行预测
-python3 table/predict_table.py --det_model_dir=inference/en_ppocr_mobile_v2.0_table_det_infer --rec_model_dir=inference/en_ppocr_mobile_v2.0_table_rec_infer --table_model_dir=inference/en_ppocr_mobile_v2.0_table_structure_infer --image_dir=./docs/table/table.jpg --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --det_limit_side_len=736 --det_limit_type=min --output ./output/table
+python3.7 table/predict_table.py \
+    --det_model_dir=inference/ch_PP-OCRv3_det_slim_infer \
+    --rec_model_dir=inference/ch_PP-OCRv3_rec_slim_infer  \
+    --table_model_dir=inference/ch_ppstructure_mobile_v2.0_SLANet_infer \
+    --rec_char_dict_path=../ppocr/utils/ppocr_keys_v1.txt \
+    --table_char_dict_path=../ppocr/utils/dict/table_structure_dict_ch.txt \
+    --image_dir=docs/table/table.jpg \
+    --output=../output/table
 ```
 运行完成后，每张图片的excel表格会保存到output字段指定的目录下，同时在该目录下回生产一个html文件，用于可视化查看单元格坐标和识别的表格。
-
-note: 上述模型是在 PubLayNet 数据集上训练的表格识别模型，仅支持英文扫描场景，如需识别其他场景需要自己训练模型后替换 `det_model_dir`,`rec_model_dir`,`table_model_dir`三个字段即可。
 
 <a name="32"></a>
 ### 3.2 训练

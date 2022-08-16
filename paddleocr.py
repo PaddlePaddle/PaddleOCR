@@ -275,12 +275,14 @@ MODEL_URLS = {
         'PP-Structurev2': {
             'table': {
                 'en': {
-                    'url': '',
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/en_ppstructure_mobile_v2.0_SLANet_infer.tar',
                     'dict_path': 'ppocr/utils/dict/table_structure_dict.txt'
                 },
                 'ch': {
-                    'url': '',
-                    'dict_path': 'ppocr/utils/dict/table_structure_dict.txt'
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_infer.tar',
+                    'dict_path': 'ppocr/utils/dict/table_structure_dict_ch.txt'
                 }
             },
             'layout': {
@@ -565,7 +567,6 @@ class PPStructure(StructureSystem):
         if params.layout_dict_path is None:
             params.layout_dict_path = str(
                 Path(__file__).parent / layout_model_config['dict_path'])
-
         logger.debug(params)
         super().__init__(params)
 
@@ -628,3 +629,18 @@ def main():
             for item in result:
                 item.pop('img')
                 logger.info(item)
+
+
+if __name__ == "__main__":
+    table_engine = PPStructure(layout=False, show_log=True)
+
+    save_folder = './output'
+    img_path = 'ppstructure/docs/table/table.jpg'
+    img = cv2.imread(img_path)
+    result = table_engine(img)
+    save_structure_res(result, save_folder,
+                       os.path.basename(img_path).split('.')[0])
+
+    for line in result:
+        line.pop('img')
+        print(line)

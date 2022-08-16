@@ -61,7 +61,7 @@ Loss:
 
 PostProcess:
   name: TableLabelDecode
-  merge_no_span_structure: &merge_no_span_structure False
+  merge_no_span_structure: &merge_no_span_structure True
 
 Metric:
   name: TableMetric
