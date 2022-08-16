@@ -292,13 +292,8 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 ```shell
 ./build/ppocr --det_model_dir=inference/det_db \
     --rec_model_dir=inference/rec_rcnn \
-    --cls_model_dir=inference/cls \
     --table_model_dir=inference/table \
     --image_dir=../../ppstructure/docs/table/table.jpg \
-    --use_angle_cls=true \
-    --det=true \
-    --rec=true \
-    --cls=true \
     --type=structure \
     --table=true
 ```
