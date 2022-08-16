@@ -750,7 +750,7 @@ class TableMasterLabelEncode(TableLabelEncode):
 
 class TableBoxEncode(object):
     def __init__(self, in_box_format='xyxy', out_box_format='xyxy', **kwargs):
-        assert box_format in ['xywh', 'xyxy', 'xyxyxyxy']
+        assert out_box_format in ['xywh', 'xyxy', 'xyxyxyxy']
         self.in_box_format = in_box_format
         self.out_box_format = out_box_format
 
