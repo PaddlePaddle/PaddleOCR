@@ -63,7 +63,16 @@ After the operation is completed, the excel table of each image will be saved to
 In this chapter, we only introduce the training of the table structure model, For model training of [text detection](../../doc/doc_en/detection_en.md) and [text recognition](../../doc/doc_en/recognition_en.md), please refer to the corresponding documents
 
 * data preparation  
-The training data uses public data set [PubTabNet](https://arxiv.org/abs/1911.10683 ), Can be downloaded from the official [website](https://github.com/ibm-aur-nlp/PubTabNet) 。The PubTabNet data set contains about 500,000 images, as well as annotations in html format。
+
+For the Chinese model and the English model, the data sources are different, as follows:
+
+English dataset: The training data uses public data set [PubTabNet](https://arxiv.org/abs/1911.10683 ), Can be downloaded from the official [website](https://github.com/ibm-aur-nlp/PubTabNet) 。The PubTabNet data set contains about 500,000 images, as well as annotations in html format。
+
+Chinese dataset: The Chinese dataset consists of the following two parts, which are trained with a 1:1 sampling ratio.
+>   1. Generate dataset: Use [Table Generation Tool](https://github.com/WenmuZhou/TableGeneration) to generate 40,000 images.
+>   2. Crop 10,000 images from [WTW](https://github.com/wangwen-whu/WTW-Dataset).
+
+For a detailed introduction to public datasets, please refer to [table_datasets](../../doc/doc_en/dataset/table_datasets_en.md). The following training and evaluation procedures are based on the English dataset as an example.
 
 * Start training  
 *If you are installing the cpu version of paddle, please modify the `use_gpu` field in the configuration file to false*

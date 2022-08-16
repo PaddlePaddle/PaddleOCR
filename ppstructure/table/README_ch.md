@@ -75,7 +75,15 @@ note: 上述模型是在 PubLayNet 数据集上训练的表格识别模型，仅
 
 * 数据准备  
 
-训练数据使用公开数据集PubTabNet ([论文](https://arxiv.org/abs/1911.10683)，[下载地址](https://github.com/ibm-aur-nlp/PubTabNet))。PubTabNet数据集包含约50万张表格数据的图像，以及图像对应的html格式的注释。
+对于中文模型和英文模型，数据来源不同，分别介绍如下
+
+英文数据集: 训练数据使用公开数据集PubTabNet ([论文](https://arxiv.org/abs/1911.10683)，[下载地址](https://github.com/ibm-aur-nlp/PubTabNet))。PubTabNet数据集包含约50万张表格数据的图像，以及图像对应的html格式的注释。
+
+中文数据集: 中文数据集下面两部分构成，这两部分安装1:1的采样比例进行训练。
+>    1. 生成数据集: 使用[表格生成工具](https://github.com/WenmuZhou/TableGeneration)生成4w张。
+>    2. 从[WTW](https://github.com/wangwen-whu/WTW-Dataset)中获取1w张。
+
+关于公开数据集的详细介绍可以参考 [table_datasets](../../doc/doc_ch/dataset/table_datasets.md)，下述训练和评估流程均以英文数据集为例。
 
 * 启动训练
 
