@@ -1,27 +1,28 @@
-- [Table Recognition](#table-recognition)
-  - [1. pipeline](#1-pipeline)
-  - [2. Performance](#2-performance)
-  - [3. How to use](#3-how-to-use)
-    - [3.1 quick start](#31-quick-start)
-    - [3.2 Train](#32-train)
-    - [3.3 Eval](#33-eval)
-    - [3.4 Inference](#34-inference)
-
+English | [简体中文](README_ch.md)
 
 # Table Recognition
+
+- [1. pipeline](#1-pipeline)
+- [2. Performance](#2-performance)
+- [3. How to use](#3-how-to-use)
+  - [3.1 quick start](#31-quick-start)
+  - [3.2 Train](#32-train)
+  - [3.3 Calculate TEDS](#33-calculate-teds)
+- [4. Reference](#4-reference)
+
 
 ## 1. pipeline
 The table recognition mainly contains three models
 1. Single line text detection-DB
 2. Single line text recognition-CRNN
-3. Table structure and cell coordinate prediction-RARE
+3. Table structure and cell coordinate prediction-SLANet
 
 The table recognition flow chart is as follows
 
 ![tableocr_pipeline](../docs/table/tableocr_pipeline_en.jpg)
 
 1. The coordinates of single-line text is detected by DB model, and then sends it to the recognition model to get the recognition result.
-2. The table structure and cell coordinates is predicted by RARE model.
+2. The table structure and cell coordinates is predicted by SLANet model.
 3. The recognition result of the cell is combined by the coordinates, recognition result of the single line and the coordinates of the cell.
 4. The cell recognition result and the table structure together construct the html string of the table.
 
@@ -29,17 +30,17 @@ The table recognition flow chart is as follows
 We evaluated the algorithm on the PubTabNet<sup>[1]</sup> eval dataset, and the performance is as follows:
 
 
-|Method|[TEDS(Tree-Edit-Distance-based Similarity)](https://github.com/ibm-aur-nlp/PubTabNet/tree/master/src)|
-| --- | --- |
-| EDD<sup>[2]</sup> | 88.3 |
-| TableRec-RARE(ours) | 93.32 |
-| SLANet(ours) | 94.98 |
+|Method|acc|[TEDS(Tree-Edit-Distance-based Similarity)](https://github.com/ibm-aur-nlp/PubTabNet/tree/master/src)|
+| --- | --- | --- |
+| EDD<sup>[2]</sup> |x| 88.3 |
+| TableRec-RARE(ours) |73.8%| 93.32 |
+| SLANet(ours) | 76.2%| 94.98 |SLANet |
 
 ## 3. How to use
 
 ### 3.1 quick start
 
-- table recognition
+Use the following commands to quickly complete the identification of a table.
 
 ```python
 cd PaddleOCR/ppstructure
@@ -67,64 +68,15 @@ python3.7 table/predict_table.py \
 
 After the operation is completed, the excel table of each image will be saved to the directory specified by the output field, and an html file will be produced in the directory to visually view the cell coordinates and the recognized table.
 
-- table structure recognition
-```python
-cd PaddleOCR/ppstructure
-
-# download model
-mkdir inference && cd inference
-# Download the PP-Structurev2 form recognition model and unzip it
-wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf ch_ppstructure_mobile_v2.0_SLANet_infer.tar
-cd ..
-# run
-python3.7 table/predict_structure.py \
-    --table_model_dir=inference/ch_ppstructure_mobile_v2.0_SLANet_infer \
-    --table_char_dict_path=../ppocr/utils/dict/table_structure_dict_ch.txt \
-    --image_dir=docs/table/table.jpg \
-    --output=../output/table
-```
-After the run is complete, the visualization of the detection frame of the cell will be saved to the directory specified by the output field.
-
 ### 3.2 Train
 
-In this chapter, we only introduce the training of the table structure model, For model training of [text detection](../../doc/doc_en/detection_en.md) and [text recognition](../../doc/doc_en/recognition_en.md), please refer to the corresponding documents
+The training, evaluation and inference process of the text detection model can be referred to [detection](../../doc/doc_en/detection_en.md)
 
-* data preparation  
+The training, evaluation and inference process of the text recognition model can be referred to [recognition](../../doc/doc_en/recognition_en.md)
 
-For the Chinese model and the English model, the data sources are different, as follows:
+The training, evaluation and inference process of the table recognition model can be referred to [table_recognition](../../doc/doc_en/table_recognition_en.md)
 
-English dataset: The training data uses public data set [PubTabNet](https://arxiv.org/abs/1911.10683 ), Can be downloaded from the official [website](https://github.com/ibm-aur-nlp/PubTabNet) 。The PubTabNet data set contains about 500,000 images, as well as annotations in html format。
-
-Chinese dataset: The Chinese dataset consists of the following two parts, which are trained with a 1:1 sampling ratio.
->   1. Generate dataset: Use [Table Generation Tool](https://github.com/WenmuZhou/TableGeneration) to generate 40,000 images.
->   2. Crop 10,000 images from [WTW](https://github.com/wangwen-whu/WTW-Dataset).
-
-For a detailed introduction to public datasets, please refer to [table_datasets](../../doc/doc_en/dataset/table_datasets_en.md). The following training and evaluation procedures are based on the English dataset as an example.
-
-* Start training  
-*If you are installing the cpu version of paddle, please modify the `use_gpu` field in the configuration file to false*
-```shell
-# single GPU training
-python3 tools/train.py -c configs/table/table_mv3.yml
-# multi-GPU training
-# Set the GPU ID used by the '--gpus' parameter.
-python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/table/table_mv3.yml
-```
-
-In the above instruction, use `-c` to select the training to use the `configs/table/table_mv3.yml` configuration file.
-For a detailed explanation of the configuration file, please refer to [config](../../doc/doc_en/config_en.md).
-
-* load trained model and continue training
-
-If you expect to load trained model and continue the training again, you can specify the parameter `Global.checkpoints` as the model path to be loaded.
-
-```shell
-python3 tools/train.py -c configs/table/table_mv3.yml -o Global.checkpoints=./your/trained/model
-```
-
-**Note**: The priority of `Global.checkpoints` is higher than that of `Global.pretrain_weights`, that is, when two parameters are specified at the same time, the model specified by `Global.checkpoints` will be loaded first. If the model path specified by `Global.checkpoints` is wrong, the one specified by `Global.pretrain_weights` will be loaded.
-
-### 3.3 Eval
+### 3.3 Calculate TEDS
 
 The table uses [TEDS(Tree-Edit-Distance-based Similarity)](https://github.com/ibm-aur-nlp/PubTabNet/tree/master/src) as the evaluation metric of the model. Before the model evaluation, the three models in the pipeline need to be exported as inference models (we have provided them), and the gt for evaluation needs to be prepared. Examples of gt are as follows:
 ```txt
@@ -139,8 +91,16 @@ python3 ppstructure/table/convert_label2html.py --ori_gt_path /path/to/your_labe
 
 Use the following command to evaluate. After the evaluation is completed, the teds indicator will be output.
 ```python
-cd PaddleOCR/ppstructure
-python3 table/eval_table.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --det_limit_side_len=736 --det_limit_type=min --gt_path=path/to/gt.txt
+python3 table/eval_table.py \
+    --det_model_dir=path/to/det_model_dir \
+    --rec_model_dir=path/to/rec_model_dir \
+    --table_model_dir=path/to/table_model_dir \
+    --image_dir=../doc/table/1.png \
+    --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt \
+    --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt \
+    --det_limit_side_len=736 \
+    --det_limit_type=min \
+    --gt_path=path/to/gt.txt
 ```
 
 If the PubLatNet eval dataset is used, it will be output
@@ -148,14 +108,6 @@ If the PubLatNet eval dataset is used, it will be output
 teds: 94.98
 ```
 
-### 3.4 Inference
-
-```python
-cd PaddleOCR/ppstructure
-python3 table/predict_table.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --det_limit_side_len=736 --det_limit_type=min --output ../output/table
-```
-After running, the excel sheet of each picture will be saved in the directory specified by the output field
-
-Reference
+## 4. Reference
 1. https://github.com/ibm-aur-nlp/PubTabNet
 2. https://arxiv.org/pdf/1911.10683
