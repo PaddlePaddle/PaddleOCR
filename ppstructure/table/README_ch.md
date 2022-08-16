@@ -4,11 +4,12 @@
 
 - [1. 表格识别 pipeline](#1-表格识别-pipeline)
 - [2. 性能](#2-性能)
-- [3. 使用](#3-使用)
-  - [3.1 快速开始](#31-快速开始)
-  - [3.2 训练](#32-训练)
-  - [3.3 计算TEDS](#33-计算teds)
-- [4. Reference](#4-reference)
+- [3. 效果演示](#3-效果演示)
+- [4. 使用](#4-使用)
+  - [4.1 快速开始](#41-快速开始)
+  - [4.2 训练](#42-训练)
+  - [4.3 计算TEDS](#43-计算teds)
+- [5. Reference](#5-reference)
 
 
 ## 1. 表格识别 pipeline
@@ -41,9 +42,17 @@
 | TableRec-RARE(ours) |73.8%| 93.32 |
 | SLANet(ours) | 76.2%| 94.98 |
 
-## 3. 使用
+## 3. 效果演示
 
-### 3.1 快速开始
+![图片](http://agroup.baidu-int.com/file/stream/bj/bj-e50a465becdbde9bffb84a84d41d196ac1acf1b6)
+![图片](http://agroup.baidu-int.com/file/stream/bj/bj-17ea53b181408a35d977c6c26b1ea308b4c27a79)
+![图片](http://agroup.baidu-int.com/file/stream/bj/bj-b905f57beca7115d54b907deac70c10056274858)
+![图片](http://agroup.baidu-int.com/file/stream/bj/bj-894694c9558fe7deb8cc896f9411fdfd252bca72)
+![图片](http://agroup.baidu-int.com/file/stream/bj/bj-03a0a67378b41a353257bd2fe8a1e9a864c89cb5)
+
+## 4. 使用
+
+### 4.1 快速开始
 
 使用如下命令即可快速完成一张表格的识别。
 ```python
@@ -70,7 +79,7 @@ python table/predict_table.py \
 ```
 运行完成后，每张图片的excel表格会保存到output字段指定的目录下，同时在该目录下回生产一个html文件，用于可视化查看单元格坐标和识别的表格。
 
-### 3.2 训练
+### 4.2 训练
 
 文本检测模型的训练、评估和推理流程可参考 [detection](../../doc/doc_ch/detection.md)
 
@@ -78,7 +87,7 @@ python table/predict_table.py \
 
 表格识别模型的训练、评估和推理流程可参考 [table_recognition](../../doc/doc_ch/table_recognition.md)
 
-### 3.3 计算TEDS
+### 4.3 计算TEDS
 
 表格使用 [TEDS(Tree-Edit-Distance-based Similarity)](https://github.com/ibm-aur-nlp/PubTabNet/tree/master/src) 作为模型的评估指标。在进行模型评估之前，需要将pipeline中的三个模型分别导出为inference模型(我们已经提供好)，还需要准备评估的gt， gt示例如下:
 ```txt
@@ -110,6 +119,6 @@ python3 table/eval_table.py \
 teds: 94.98
 ```
 
-## 4. Reference
+## 5. Reference
 1. https://github.com/ibm-aur-nlp/PubTabNet
 2. https://arxiv.org/pdf/1911.10683

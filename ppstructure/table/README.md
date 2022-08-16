@@ -4,11 +4,12 @@ English | [简体中文](README_ch.md)
 
 - [1. pipeline](#1-pipeline)
 - [2. Performance](#2-performance)
-- [3. How to use](#3-how-to-use)
-  - [3.1 quick start](#31-quick-start)
-  - [3.2 Train](#32-train)
-  - [3.3 Calculate TEDS](#33-calculate-teds)
-- [4. Reference](#4-reference)
+- [3. Result](#3-result)
+- [4. How to use](#4-how-to-use)
+  - [4.1 Quick start](#41-quick-start)
+  - [4.2 Train](#42-train)
+  - [4.3 Calculate TEDS](#43-calculate-teds)
+- [5. Reference](#5-reference)
 
 
 ## 1. pipeline
@@ -35,10 +36,17 @@ We evaluated the algorithm on the PubTabNet<sup>[1]</sup> eval dataset, and the 
 | EDD<sup>[2]</sup> |x| 88.3 |
 | TableRec-RARE(ours) |73.8%| 93.32 |
 | SLANet(ours) | 76.2%| 94.98 |SLANet |
+## 3. Result
 
-## 3. How to use
+![图片](http://agroup.baidu-int.com/file/stream/bj/bj-e50a465becdbde9bffb84a84d41d196ac1acf1b6)
+![图片](http://agroup.baidu-int.com/file/stream/bj/bj-17ea53b181408a35d977c6c26b1ea308b4c27a79)
+![图片](http://agroup.baidu-int.com/file/stream/bj/bj-b905f57beca7115d54b907deac70c10056274858)
+![图片](http://agroup.baidu-int.com/file/stream/bj/bj-894694c9558fe7deb8cc896f9411fdfd252bca72)
+![图片](http://agroup.baidu-int.com/file/stream/bj/bj-03a0a67378b41a353257bd2fe8a1e9a864c89cb5)
 
-### 3.1 quick start
+## 4. How to use
+
+### 4.1 Quick start
 
 Use the following commands to quickly complete the identification of a table.
 
@@ -68,7 +76,7 @@ python3.7 table/predict_table.py \
 
 After the operation is completed, the excel table of each image will be saved to the directory specified by the output field, and an html file will be produced in the directory to visually view the cell coordinates and the recognized table.
 
-### 3.2 Train
+### 4.2 Train
 
 The training, evaluation and inference process of the text detection model can be referred to [detection](../../doc/doc_en/detection_en.md)
 
@@ -76,7 +84,7 @@ The training, evaluation and inference process of the text recognition model can
 
 The training, evaluation and inference process of the table recognition model can be referred to [table_recognition](../../doc/doc_en/table_recognition_en.md)
 
-### 3.3 Calculate TEDS
+### 4.3 Calculate TEDS
 
 The table uses [TEDS(Tree-Edit-Distance-based Similarity)](https://github.com/ibm-aur-nlp/PubTabNet/tree/master/src) as the evaluation metric of the model. Before the model evaluation, the three models in the pipeline need to be exported as inference models (we have provided them), and the gt for evaluation needs to be prepared. Examples of gt are as follows:
 ```txt
@@ -108,6 +116,6 @@ If the PubLatNet eval dataset is used, it will be output
 teds: 94.98
 ```
 
-## 4. Reference
+## 5. Reference
 1. https://github.com/ibm-aur-nlp/PubTabNet
 2. https://arxiv.org/pdf/1911.10683
