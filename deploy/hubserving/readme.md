@@ -59,8 +59,8 @@ pip3 install paddlehub==2.1.0 --upgrade -i https://mirror.baidu.com/pypi/simple
 检测模型：./inference/ch_PP-OCRv3_det_infer/
 识别模型：./inference/ch_PP-OCRv3_rec_infer/
 方向分类器：./inference/ch_ppocr_mobile_v2.0_cls_infer/
-版面分析模型：
-表格结构识别模型：./inference/en_ppocr_mobile_v2.0_table_structure_infer/
+版面分析模型：./inference/layout_infer/
+表格结构识别模型：./inference/ch_ppstructure_mobile_v2.0_SLANet_infer/
 ```  
 
 **模型路径可在`params.py`中查看和修改。** 更多模型可以从PaddleOCR提供的模型库[PP-OCR](../../doc/doc_ch/models_list.md)和[PP-Structure](../../ppstructure/docs/models_list.md)下载，也可以替换成自己训练转换好的模型。
