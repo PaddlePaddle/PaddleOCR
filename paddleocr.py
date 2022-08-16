@@ -318,10 +318,10 @@ def parse_args(mMain=True):
         "--structure_version",
         type=str,
         choices=SUPPORT_STRUCTURE_MODEL_VERSION,
-        default='PP-Structure',
+        default='PP-Structurev2',
         help='Model version, the current model support list is as follows:'
         ' 1. PP-Structure Support en table structure model.'
-        ' 2. PP-Structure Support ch and en table structure model.')
+        ' 2. PP-Structurev2 Support ch and en table structure model.')
 
     for action in parser._actions:
         if action.dest in [
@@ -529,6 +529,12 @@ class PPStructure(StructureSystem):
         if not params.show_log:
             logger.setLevel(logging.INFO)
         lang, det_lang = parse_lang(params.lang)
+        if lang == 'ch':
+            table_lang = 'ch'
+        else:
+            table_lang = 'en'
+        if params.structure_version == 'PP-Structure':
+            params.merge_no_span_structure = False
 
         # init model dir
         det_model_config = get_model_config('OCR', params.ocr_version, 'det',
@@ -543,7 +549,7 @@ class PPStructure(StructureSystem):
             params.rec_model_dir,
             os.path.join(BASE_DIR, 'whl', 'rec', lang), rec_model_config['url'])
         table_model_config = get_model_config(
-            'STRUCTURE', params.structure_version, 'table', 'ch')
+            'STRUCTURE', params.structure_version, 'table', table_lang)
         params.table_model_dir, table_url = confirm_model_dir_url(
             params.table_model_dir,
             os.path.join(BASE_DIR, 'whl', 'table'), table_model_config['url'])
@@ -629,18 +635,3 @@ def main():
             for item in result:
                 item.pop('img')
                 logger.info(item)
-
-
-if __name__ == "__main__":
-    table_engine = PPStructure(layout=False, show_log=True)
-
-    save_folder = './output'
-    img_path = 'ppstructure/docs/table/table.jpg'
-    img = cv2.imread(img_path)
-    result = table_engine(img)
-    save_structure_res(result, save_folder,
-                       os.path.basename(img_path).split('.')[0])
-
-    for line in result:
-        line.pop('img')
-        print(line)
