@@ -122,7 +122,7 @@ def export_single_model(model,
             paddle.static.InputSpec(
                 shape=[None, 3, 224, 224], dtype="int64"),  # image
         ]
-        if arch_config["algorithm"] == "LayoutLM":
+        if model.backbone.use_visual_backbone is False:
             input_spec.pop(4)
         model = to_static(model, input_spec=[input_spec])
     else:

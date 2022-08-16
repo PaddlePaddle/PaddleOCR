@@ -56,7 +56,7 @@ def load_model(config, model, optimizer=None, model_type='det'):
     is_float16 = False
 
     if model_type == 'vqa':
-        # NOTE: for vqa model, resume training is not supported now
+        # NOTE: for vqa model dsitillation, resume training is not supported now
         if config["Architecture"]["algorithm"] in ["Distillation"]:
             return best_model_dict
         checkpoints = config['Architecture']['Backbone']['checkpoints']
@@ -191,8 +191,7 @@ def save_model(model,
     """
     _mkdir_if_not_exist(model_path, logger)
     model_prefix = os.path.join(model_path, prefix)
-    if config['Architecture']["model_type"] != 'vqa':
-        paddle.save(optimizer.state_dict(), model_prefix + '.pdopt')
+    paddle.save(optimizer.state_dict(), model_prefix + '.pdopt')
     if config['Architecture']["model_type"] != 'vqa':
         paddle.save(model.state_dict(), model_prefix + '.pdparams')
         metric_prefix = model_prefix

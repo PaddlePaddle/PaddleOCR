@@ -56,6 +56,8 @@ def init_args():
         "--ser_dict_path",
         type=str,
         default="../train_data/XFUND/class_list_xfun.txt")
+    # need to be None or tb-yx
+    parser.add_argument("--ocr_order_method", type=str, default=None)
     # params for inference
     parser.add_argument(
         "--mode",
