@@ -39,6 +39,8 @@ We evaluated the algorithm on the PubTabNet<sup>[1]</sup> eval dataset, and the 
 
 ### 3.1 quick start
 
+- table recognition
+
 ```python
 cd PaddleOCR/ppstructure
 
@@ -64,6 +66,24 @@ python3.7 table/predict_table.py \
 ```
 
 After the operation is completed, the excel table of each image will be saved to the directory specified by the output field, and an html file will be produced in the directory to visually view the cell coordinates and the recognized table.
+
+- table structure recognition
+```python
+cd PaddleOCR/ppstructure
+
+# download model
+mkdir inference && cd inference
+# Download the PP-Structurev2 form recognition model and unzip it
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf ch_ppstructure_mobile_v2.0_SLANet_infer.tar
+cd ..
+# run
+python3.7 table/predict_structure.py \
+    --table_model_dir=inference/ch_ppstructure_mobile_v2.0_SLANet_infer \
+    --table_char_dict_path=../ppocr/utils/dict/table_structure_dict_ch.txt \
+    --image_dir=docs/table/table.jpg \
+    --output=../output/table
+```
+After the run is complete, the visualization of the detection frame of the cell will be saved to the directory specified by the output field.
 
 ### 3.2 Train
 

@@ -147,7 +147,10 @@ def main(args):
             f_w.write("result: {}, {}\n".format(structure_str_list,
                                                 bbox_list_str))
 
-            img = draw_rectangle(image_file, bbox_list)
+            if len(bbox_list) > 0 and len(bbox_list[0]) == 4:
+                img = draw_rectangle(image_file, pred_res['cell_bbox'])
+            else:
+                img = utility.draw_boxes(img, bbox_list)
             img_save_path = os.path.join(args.output,
                                          os.path.basename(image_file))
             cv2.imwrite(img_save_path, img)
