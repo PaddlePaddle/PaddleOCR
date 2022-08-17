@@ -36,7 +36,7 @@ def init_args():
     parser.add_argument(
         "--layout_dict_path",
         type=str,
-        default="../ppocr/utils/dict/layout_pubalynet_dict.txt")
+        default="../ppocr/utils/dict/layout_dict/layout_pubalynet_dict.txt")
     parser.add_argument(
         "--layout_score_threshold",
         type=float,
