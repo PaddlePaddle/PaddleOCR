@@ -5,7 +5,7 @@ This article provides a full-process guide for the PaddleOCR table recognition m
 - [1. Data Preparation](#1-data-preparation)
   - [1.1. DataSet Preparation](#11-dataset-preparation)
   - [1.2. Data Download](#12-data-download)
-  - [1.3. Dataset Generation](#13-dataset-generation)
+  - [1.3. Dataset Generation](#13-dataset-format)
 - [2. Training](#2-training)
   - [2.1. Start Training](#21-start-training)
   - [2.2. Resume Training](#22-resume-training)
@@ -23,7 +23,7 @@ This article provides a full-process guide for the PaddleOCR table recognition m
 
 # 1. Data Preparation
 
-## 1.1. DataSet Preparation
+## 1.1. DataSet Format
 
 The format of the PaddleOCR table recognition model dataset is as follows:
 ```txt
@@ -35,15 +35,15 @@ img_label
 The json format of each line is:
 ```json
 {
-   'filename': PMC5755158_010_01.png,     # image name
-   'split': ’train‘,                                     # whether the image belongs to the training set or the validation set
-   'imgid': 0,                                         # index of image
+   'filename': PMC5755158_010_01.png,# image name
+   'split': ’train‘, # whether the image belongs to the training set or the validation set
+   'imgid': 0,# index of image
    'html': {
-     'structure': {'tokens': ['<thead>', '<tr>', '<td>', ...]},             # HTML string of the table
+     'structure': {'tokens': ['<thead>', '<tr>', '<td>', ...]}, # HTML string of the table
      'cell': [
        {
-         'tokens': ['P', 'a', 'd', 'd', 'l', 'e', 'P', 'a', 'd', 'd', 'l', 'e'],     # text in cell
-         'bbox': [x0, y0, x1, y1]                              # bbox of cell
+         'tokens': ['P', 'a', 'd', 'd', 'l', 'e', 'P', 'a', 'd', 'd', 'l', 'e'], # text in cell
+         'bbox': [x0, y0, x1, y1] # bbox of cell
        }
      ]
    }
@@ -73,8 +73,8 @@ Some samples are as follows:
 
 |Type|Sample|
 |---|---|
-|Simple Table|![](https://github.com/WenmuZhou/TableGeneration/blob/main/imgs/simple.jpg)|
-|Simple Color Table|![](https://github.com/WenmuZhou/TableGeneration/blob/main/imgs/color.jpg)|
+|Simple Table|![](https://raw.githubusercontent.com/WenmuZhou/TableGeneration/main/imgs/simple.jpg)|
+|Simple Color Table|![](https://raw.githubusercontent.com/WenmuZhou/TableGeneration/main/imgs/color.jpg)|
 
 # 2. Training
 
