@@ -30,7 +30,8 @@ DECLARE_string(image_dir);
 DECLARE_string(type);
 // detection related
 DECLARE_string(det_model_dir);
-DECLARE_int32(max_side_len);
+DECLARE_string(limit_type);
+DECLARE_int32(limit_side_len);
 DECLARE_double(det_db_thresh);
 DECLARE_double(det_db_box_thresh);
 DECLARE_double(det_db_unclip_ratio);
@@ -48,7 +49,13 @@ DECLARE_int32(rec_batch_num);
 DECLARE_string(rec_char_dict_path);
 DECLARE_int32(rec_img_h);
 DECLARE_int32(rec_img_w);
+// structure model related
+DECLARE_string(table_model_dir);
+DECLARE_int32(table_max_len);
+DECLARE_int32(table_batch_num);
+DECLARE_string(table_char_dict_path);
 // forward related
 DECLARE_bool(det);
 DECLARE_bool(rec);
 DECLARE_bool(cls);
+DECLARE_bool(table);

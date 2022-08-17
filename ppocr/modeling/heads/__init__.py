@@ -44,7 +44,7 @@ def build_head(config):
     #kie head
     from .kie_sdmgr_head import SDMGRHead
 
-    from .table_att_head import TableAttentionHead
+    from .table_att_head import TableAttentionHead, SLAHead
     from .table_master_head import TableMasterHead
 
     support_dict = [
@@ -52,7 +52,7 @@ def build_head(config):
         'ClsHead', 'AttentionHead', 'SRNHead', 'PGHead', 'Transformer',
         'TableAttentionHead', 'SARHead', 'AsterHead', 'SDMGRHead', 'PRENHead',
         'MultiHead', 'ABINetHead', 'TableMasterHead', 'SPINAttentionHead',
-        'VLHead', 'RobustScannerHead'
+        'VLHead', 'SLAHead', 'RobustScannerHead'
     ]
 
     #table head

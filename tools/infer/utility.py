@@ -163,6 +163,8 @@ def create_predictor(args, mode, logger):
         model_dir = args.ser_model_dir
     elif mode == "sr":
         model_dir = args.sr_model_dir
+    elif mode == 'layout':
+        model_dir = args.layout_model_dir
     else:
         model_dir = args.e2e_model_dir
 

@@ -126,19 +126,19 @@ function func_serving(){
                         web_service_cmd="nohup ${python} ${web_service_py} ${web_use_gpu_key}="" ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_det_model_config} ${set_rec_model_config} > ${server_log_path} 2>&1 &"
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
-                        status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
+                        status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}" "${server_log_path}"
                     elif [[ ${model_name} =~ "det" ]]; then
                         set_det_model_config=$(func_set_params "${det_server_key}" "${det_server_value}")
                         web_service_cmd="nohup ${python} ${web_service_py} ${web_use_gpu_key}="" ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_det_model_config} > ${server_log_path} 2>&1 &"
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
-                        status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
+                        status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}" "${server_log_path}"
                     elif [[ ${model_name} =~ "rec" ]]; then
                         set_rec_model_config=$(func_set_params "${rec_server_key}" "${rec_server_value}")
                         web_service_cmd="nohup ${python} ${web_service_py} ${web_use_gpu_key}="" ${web_use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_rec_model_config} > ${server_log_path} 2>&1 &"
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
-                        status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
+                        status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}" "${server_log_path}"
                     fi
                     sleep 2s
                     for pipeline in ${pipeline_py[*]}; do
@@ -147,7 +147,7 @@ function func_serving(){
                         eval $pipeline_cmd
                         last_status=${PIPESTATUS[0]}
                         eval "cat ${_save_log_path}"
-                        status_check $last_status "${pipeline_cmd}" "${status_log}" "${model_name}"
+                        status_check $last_status "${pipeline_cmd}" "${status_log}" "${model_name}" "${_save_log_path}"
                         sleep 2s
                     done
                     ps ux | grep -E 'web_service' | awk '{print $2}' | xargs kill -s 9
@@ -177,19 +177,19 @@ function func_serving(){
                         web_service_cmd="nohup ${python} ${web_service_py} ${set_tensorrt} ${set_precision} ${set_det_model_config} ${set_rec_model_config} > ${server_log_path} 2>&1 &"
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
-                        status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
+                        status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}" "${server_log_path}"
                     elif [[ ${model_name} =~ "det" ]]; then
                         set_det_model_config=$(func_set_params "${det_server_key}" "${det_server_value}")
                         web_service_cmd="nohup ${python} ${web_service_py} ${set_tensorrt} ${set_precision} ${set_det_model_config} > ${server_log_path} 2>&1 &"
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
-                        status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
+                        status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}" "${server_log_path}"
                     elif [[ ${model_name} =~ "rec" ]]; then
                         set_rec_model_config=$(func_set_params "${rec_server_key}" "${rec_server_value}")
                         web_service_cmd="nohup ${python} ${web_service_py} ${set_tensorrt} ${set_precision} ${set_rec_model_config} > ${server_log_path} 2>&1 &"
                         eval $web_service_cmd
                         last_status=${PIPESTATUS[0]}
-                        status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}"
+                        status_check $last_status "${web_service_cmd}" "${status_log}" "${model_name}" "${server_log_path}"
                     fi
                     sleep 2s
                     for pipeline in ${pipeline_py[*]}; do
@@ -198,7 +198,7 @@ function func_serving(){
                         eval $pipeline_cmd
                         last_status=${PIPESTATUS[0]}
                         eval "cat ${_save_log_path}"
-                        status_check $last_status "${pipeline_cmd}" "${status_log}" "${model_name}"
+                        status_check $last_status "${pipeline_cmd}" "${status_log}" "${model_name}" "${_save_log_path}"
                         sleep 2s
                     done
                     ps ux | grep -E 'web_service' | awk '{print $2}' | xargs kill -s 9

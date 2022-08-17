@@ -3,6 +3,7 @@
 - [数据集汇总](#数据集汇总)
 - [1. PubTabNet数据集](#1-pubtabnet数据集)
 - [2. 好未来表格识别竞赛数据集](#2-好未来表格识别竞赛数据集)
+- [3. 好未来表格识别竞赛数据集](#2-WTW中文场景表格数据集)
 
 这里整理了常用表格识别数据集，持续更新中，欢迎各位小伙伴贡献数据集～
 
@@ -12,6 +13,7 @@
 |---|---|---|
 | PubTabNet |https://github.com/ibm-aur-nlp/PubTabNet| jsonl格式，可直接用[pubtab_dataset.py](../../../ppocr/data/pubtab_dataset.py)加载 |
 | 好未来表格识别竞赛数据集 |https://ai.100tal.com/dataset| jsonl格式，可直接用[pubtab_dataset.py](../../../ppocr/data/pubtab_dataset.py)加载 |
+| WTW中文场景表格数据集 |https://github.com/wangwen-whu/WTW-Dataset| 需要进行转换后才能用[pubtab_dataset.py](../../../ppocr/data/pubtab_dataset.py)加载 |
 
 ## 1. PubTabNet数据集
 - **数据简介**：PubTabNet数据集的训练集合中包含50万张图像，验证集合中包含0.9万张图像。部分图像可视化如下所示。
@@ -30,4 +32,13 @@
 <div align="center">
     <img src="../../datasets/table_tal_demo/1.jpg" width="500">
     <img src="../../datasets/table_tal_demo/2.jpg" width="500">
+</div>
+
+## 3. WTW中文场景表格数据集
+- **数据简介**：WTW中文场景表格数据集包含表格检测和表格数据两部分数据，数据集中同时包含扫描和拍照两张场景的图像。
+
+https://github.com/wangwen-whu/WTW-Dataset/blob/main/demo/20210816_210413.gif
+
+<div align="center">
+    <img src="https://github.com/wangwen-whu/WTW-Dataset/blob/main/demo/20210816_210413.gif" width="500">
 </div>

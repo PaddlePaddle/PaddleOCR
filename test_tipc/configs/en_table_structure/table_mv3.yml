@@ -19,8 +19,6 @@ Global:
   character_type: en
   max_text_length: 800
   infer_mode: False
-  process_total_num: 0
-  process_cut_num: 0
 
 Optimizer:
   name: Adam

@@ -61,7 +61,8 @@ Before installing the service module, you need to prepare the inference model an
 text detection model: ./inference/ch_PP-OCRv3_det_infer/
 text recognition model: ./inference/ch_PP-OCRv3_rec_infer/
 text angle classifier: ./inference/ch_ppocr_mobile_v2.0_cls_infer/
-tanle recognition: ./inference/en_ppocr_mobile_v2.0_table_structure_infer/
+layout parse model: ./inference/layout_infer/
+tanle recognition: ./inference/ch_ppstructure_mobile_v2.0_SLANet_infer/
 ```  
 
 **The model path can be found and modified in `params.py`.** More models provided by PaddleOCR can be obtained from the [model library](../../doc/doc_en/models_list_en.md). You can also use models trained by yourself.
@@ -177,7 +178,7 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 ## 3. Send prediction requests
 After the service starts, you can use the following command to send a prediction request to obtain the prediction result:  
 ```shell
-python tools/test_hubserving.py server_url image_path
+python tools/test_hubserving.py --server_url=server_url --image_dir=image_path
 ```  
 
 Two parameters need to be passed to the script:

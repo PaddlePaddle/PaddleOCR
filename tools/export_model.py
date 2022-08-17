@@ -58,6 +58,8 @@ def export_single_model(model,
         other_shape = [
             paddle.static.InputSpec(
                 shape=[None, 3, 48, 160], dtype="float32"),
+            [paddle.static.InputSpec(
+                shape=[None], dtype="float32")]
         ]
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] == "SVTR":
@@ -144,7 +146,7 @@ def export_single_model(model,
     else:
         infer_shape = [3, -1, -1]
         if arch_config["model_type"] == "rec":
-            infer_shape = [3, 48, -1]  # for rec model, H must be 32
+            infer_shape = [3, 32, -1]  # for rec model, H must be 32
             if "Transform" in arch_config and arch_config[
                     "Transform"] is not None and arch_config["Transform"][
                         "name"] == "TPS":
@@ -156,6 +158,8 @@ def export_single_model(model,
             infer_shape = [3, 488, 488]
             if arch_config["algorithm"] == "TableMaster":
                 infer_shape = [3, 480, 480]
+            if arch_config["algorithm"] == "SLANet":
+                infer_shape = [3, -1, -1]
         model = to_static(
             model,
             input_spec=[

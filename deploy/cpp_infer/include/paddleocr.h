@@ -47,11 +47,7 @@ public:
   ocr(std::vector<cv::String> cv_all_img_names, bool det = true,
       bool rec = true, bool cls = true);
 
-private:
-  DBDetector *detector_ = nullptr;
-  Classifier *classifier_ = nullptr;
-  CRNNRecognizer *recognizer_ = nullptr;
-
+protected:
   void det(cv::Mat img, std::vector<OCRPredictResult> &ocr_results,
            std::vector<double> &times);
   void rec(std::vector<cv::Mat> img_list,
@@ -62,6 +58,11 @@ private:
            std::vector<double> &times);
   void log(std::vector<double> &det_times, std::vector<double> &rec_times,
            std::vector<double> &cls_times, int img_num);
+
+private:
+  DBDetector *detector_ = nullptr;
+  Classifier *classifier_ = nullptr;
+  CRNNRecognizer *recognizer_ = nullptr;
 };
 
 } // namespace PaddleOCR

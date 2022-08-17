@@ -23,8 +23,10 @@ def read_params():
     cfg = table_read_params()
 
     # params for layout parser model
-    cfg.layout_path_model = 'lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config'
-    cfg.layout_label_map = None
+    cfg.layout_model_dir = ''
+    cfg.layout_dict_path = './ppocr/utils/dict/layout_publaynet_dict.txt'
+    cfg.layout_score_threshold = 0.5
+    cfg.layout_nms_threshold = 0.5
 
     cfg.mode = 'structure'
     cfg.output = './output'

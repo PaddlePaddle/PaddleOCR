@@ -458,7 +458,8 @@ class TextRecognizer(object):
                 valid_ratios = np.concatenate(valid_ratios)
                 inputs = [
                     norm_img_batch,
-                    valid_ratios,
+                    np.array(
+                        [valid_ratios], dtype=np.float32),
                 ]
                 if self.use_onnx:
                     input_dict = {}
