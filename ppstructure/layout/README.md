@@ -194,7 +194,7 @@ num_classes: 5
 
 TrainDataset:
   !COCODataSet
-	  # 修改为你自己的训练数据目录
+    # 修改为你自己的训练数据目录
     image_dir: train
     # 修改为你自己的训练数据标签文件
     anno_path: train.json
