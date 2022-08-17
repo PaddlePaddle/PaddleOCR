@@ -213,7 +213,7 @@ EvalDataset:
 
 TestDataset:
   !ImageFolder
-  	# 修改为你自己的测试数据标签文件
+    # 修改为你自己的测试数据标签文件
     anno_path: /root/publaynet/val.json
 ```
 
@@ -400,5 +400,4 @@ python3 deploy/python/infer.py \
 - --device：指定GPU、CPU
 
 可视化SER结果结果默认保存到`./infer_output`文件夹里面。
-
 
