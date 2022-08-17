@@ -119,6 +119,10 @@ def main(config, device, logger, vdl_writer):
             config['Loss']['ignore_index'] = char_num - 1
 
     model = build_model(config['Architecture'])
+    use_sync_bn = config["Global"].get("use_sync_bn", False)
+    if use_sync_bn:
+        model = paddle.nn.SyncBatchNorm.convert_sync_batchnorm(model)
+        logger.info('convert_sync_batchnorm')
 
     model = apply_to_static(model, config, logger)
 

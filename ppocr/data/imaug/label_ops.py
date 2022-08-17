@@ -575,7 +575,7 @@ class TableLabelEncode(AttnLabelEncode):
                  replace_empty_cell_token=False,
                  merge_no_span_structure=False,
                  learn_empty_box=False,
-                 point_num=2,
+                 loc_reg_num=4,
                  **kwargs):
         self.max_text_len = max_text_length
         self.lower = False
@@ -590,6 +590,12 @@ class TableLabelEncode(AttnLabelEncode):
                 line = line.decode('utf-8').strip("\n").strip("\r\n")
                 dict_character.append(line)
 
+        if self.merge_no_span_structure:
+            if "<td></td>" not in dict_character:
+                dict_character.append("<td></td>")
+            if "<td>" in dict_character:
+                dict_character.remove("<td>")
+
         dict_character = self.add_special_char(dict_character)
         self.dict = {}
         for i, char in enumerate(dict_character):
@@ -597,7 +603,7 @@ class TableLabelEncode(AttnLabelEncode):
         self.idx2char = {v: k for k, v in self.dict.items()}
 
         self.character = dict_character
-        self.point_num = point_num
+        self.loc_reg_num = loc_reg_num
         self.pad_idx = self.dict[self.beg_str]
         self.start_idx = self.dict[self.beg_str]
         self.end_idx = self.dict[self.end_str]
@@ -653,7 +659,7 @@ class TableLabelEncode(AttnLabelEncode):
 
         # encode box
         bboxes = np.zeros(
-            (self._max_text_len, self.point_num * 2), dtype=np.float32)
+            (self._max_text_len, self.loc_reg_num), dtype=np.float32)
         bbox_masks = np.zeros((self._max_text_len, 1), dtype=np.float32)
 
         bbox_idx = 0
@@ -718,11 +724,11 @@ class TableMasterLabelEncode(TableLabelEncode):
                  replace_empty_cell_token=False,
                  merge_no_span_structure=False,
                  learn_empty_box=False,
-                 point_num=2,
+                 loc_reg_num=4,
                  **kwargs):
         super(TableMasterLabelEncode, self).__init__(
             max_text_length, character_dict_path, replace_empty_cell_token,
-            merge_no_span_structure, learn_empty_box, point_num, **kwargs)
+            merge_no_span_structure, learn_empty_box, loc_reg_num, **kwargs)
         self.pad_idx = self.dict[self.pad_str]
         self.unknown_idx = self.dict[self.unknown_str]
 
@@ -743,27 +749,35 @@ class TableMasterLabelEncode(TableLabelEncode):
 
 
 class TableBoxEncode(object):
-    def __init__(self, use_xywh=False, **kwargs):
-        self.use_xywh = use_xywh
+    def __init__(self, in_box_format='xyxy', out_box_format='xyxy', **kwargs):
+        assert out_box_format in ['xywh', 'xyxy', 'xyxyxyxy']
+        self.in_box_format = in_box_format
+        self.out_box_format = out_box_format
 
     def __call__(self, data):
         img_height, img_width = data['image'].shape[:2]
         bboxes = data['bboxes']
-        if self.use_xywh and bboxes.shape[1] == 4:
-            bboxes = self.xyxy2xywh(bboxes)
+        if self.in_box_format != self.out_box_format:
+            if self.out_box_format == 'xywh':
+                if self.in_box_format == 'xyxyxyxy':
+                    bboxes = self.xyxyxyxy2xywh(bboxes)
+                elif self.in_box_format == 'xyxy':
+                    bboxes = self.xyxy2xywh(bboxes)
+
         bboxes[:, 0::2] /= img_width
         bboxes[:, 1::2] /= img_height
         data['bboxes'] = bboxes
         return data
 
+    def xyxyxyxy2xywh(self, boxes):
+        new_bboxes = np.zeros([len(bboxes), 4])
+        new_bboxes[:, 0] = bboxes[:, 0::2].min()  # x1
+        new_bboxes[:, 1] = bboxes[:, 1::2].min()  # y1
+        new_bboxes[:, 2] = bboxes[:, 0::2].max() - new_bboxes[:, 0]  # w
+        new_bboxes[:, 3] = bboxes[:, 1::2].max() - new_bboxes[:, 1]  # h
+        return new_bboxes
+
     def xyxy2xywh(self, bboxes):
-        """
-        Convert coord (x1,y1,x2,y2) to (x,y,w,h).
-        where (x1,y1) is top-left, (x2,y2) is bottom-right.
-        (x,y) is bbox center and (w,h) is width and height.
-        :param bboxes: (x1, y1, x2, y2)
-        :return:
-        """
         new_bboxes = np.empty_like(bboxes)
         new_bboxes[:, 0] = (bboxes[:, 0] + bboxes[:, 2]) / 2  # x center
         new_bboxes[:, 1] = (bboxes[:, 1] + bboxes[:, 3]) / 2  # y center

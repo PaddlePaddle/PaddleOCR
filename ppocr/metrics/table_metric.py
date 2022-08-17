@@ -16,9 +16,14 @@ from ppocr.metrics.det_metric import DetMetric
 
 
 class TableStructureMetric(object):
-    def __init__(self, main_indicator='acc', eps=1e-6, **kwargs):
+    def __init__(self,
+                 main_indicator='acc',
+                 eps=1e-6,
+                 del_thead_tbody=False,
+                 **kwargs):
         self.main_indicator = main_indicator
         self.eps = eps
+        self.del_thead_tbody = del_thead_tbody
         self.reset()
 
     def __call__(self, pred_label, batch=None, *args, **kwargs):
@@ -31,6 +36,13 @@ class TableStructureMetric(object):
                                              gt_structure_batch_list):
             pred_str = ''.join(pred)
             target_str = ''.join(target)
+            if self.del_thead_tbody:
+                pred_str = pred_str.replace('<thead>', '').replace(
+                    '</thead>', '').replace('<tbody>', '').replace('</tbody>',
+                                                                   '')
+                target_str = target_str.replace('<thead>', '').replace(
+                    '</thead>', '').replace('<tbody>', '').replace('</tbody>',
+                                                                   '')
             if pred_str == target_str:
                 correct_num += 1
             all_num += 1
@@ -59,7 +71,8 @@ class TableMetric(object):
     def __init__(self,
                  main_indicator='acc',
                  compute_bbox_metric=False,
-                 point_num=2,
+                 box_format='xyxy',
+                 del_thead_tbody=False,
                  **kwargs):
         """
 
@@ -67,10 +80,11 @@ class TableMetric(object):
         @param main_matric: main_matric for save best_model
         @param kwargs:
         """
-        self.structure_metric = TableStructureMetric()
+        self.structure_metric = TableStructureMetric(
+            del_thead_tbody=del_thead_tbody)
         self.bbox_metric = DetMetric() if compute_bbox_metric else None
         self.main_indicator = main_indicator
-        self.point_num = point_num
+        self.box_format = box_format
         self.reset()
 
     def __call__(self, pred_label, batch=None, *args, **kwargs):
@@ -129,10 +143,14 @@ class TableMetric(object):
             self.bbox_metric.reset()
 
     def format_box(self, box):
-        if self.point_num == 2:
+        if self.box_format == 'xyxy':
             x1, y1, x2, y2 = box
             box = [[x1, y1], [x2, y1], [x2, y2], [x1, y2]]
-        elif self.point_num == 4:
+        elif self.box_format == 'xywh':
+            x, y, w, h = box
+            x1, y1, x2, y2 = x - w // 2, y - h // 2, x + w // 2, y + h // 2
+            box = [[x1, y1], [x2, y1], [x2, y2], [x1, y2]]
+        elif self.box_format == 'xyxyxyxy':
             x1, y1, x2, y2, x3, y3, x4, y4 = box
             box = [[x1, y1], [x2, y2], [x3, y3], [x4, y4]]
         return box

@@ -65,9 +65,11 @@ class TextSystem(object):
         self.crop_image_res_index += bbox_num
 
     def __call__(self, img, cls=True):
+        time_dict = {'det': 0, 'rec': 0, 'csl': 0, 'all': 0}
+        start = time.time()
         ori_im = img.copy()
         dt_boxes, elapse = self.text_detector(img)
-
+        time_dict['det'] = elapse
         logger.debug("dt_boxes num : {}, elapse : {}".format(
             len(dt_boxes), elapse))
         if dt_boxes is None:
@@ -83,10 +85,12 @@ class TextSystem(object):
         if self.use_angle_cls and cls:
             img_crop_list, angle_list, elapse = self.text_classifier(
                 img_crop_list)
+            time_dict['cls'] = elapse
             logger.debug("cls num  : {}, elapse : {}".format(
                 len(img_crop_list), elapse))
 
         rec_res, elapse = self.text_recognizer(img_crop_list)
+        time_dict['rec'] = elapse
         logger.debug("rec_res num  : {}, elapse : {}".format(
             len(rec_res), elapse))
         if self.args.save_crop_res:
@@ -98,7 +102,9 @@ class TextSystem(object):
             if score >= self.drop_score:
                 filter_boxes.append(box)
                 filter_rec_res.append(rec_result)
-        return filter_boxes, filter_rec_res
+        end = time.time()
+        time_dict['all'] = end - start
+        return filter_boxes, filter_rec_res, time_dict
 
 
 def sorted_boxes(dt_boxes):
@@ -133,9 +139,11 @@ def main(args):
     os.makedirs(draw_img_save_dir, exist_ok=True)
     save_results = []
 
-    logger.info("In PP-OCRv3, rec_image_shape parameter defaults to '3, 48, 320', "
-                "if you are using recognition model with PP-OCRv2 or an older version, please set --rec_image_shape='3,32,320")
-                
+    logger.info(
+        "In PP-OCRv3, rec_image_shape parameter defaults to '3, 48, 320', "
+        "if you are using recognition model with PP-OCRv2 or an older version, please set --rec_image_shape='3,32,320"
+    )
+
     # warm up 10 times
     if args.warmup:
         img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
@@ -155,7 +163,7 @@ def main(args):
             logger.debug("error in loading image:{}".format(image_file))
             continue
         starttime = time.time()
-        dt_boxes, rec_res = text_sys(img)
+        dt_boxes, rec_res, time_dict = text_sys(img)
         elapse = time.time() - starttime
         total_time += elapse
 
@@ -198,7 +206,10 @@ def main(args):
         text_sys.text_detector.autolog.report()
         text_sys.text_recognizer.autolog.report()
 
-    with open(os.path.join(draw_img_save_dir, "system_results.txt"), 'w', encoding='utf-8') as f:
+    with open(
+            os.path.join(draw_img_save_dir, "system_results.txt"),
+            'w',
+            encoding='utf-8') as f:
         f.writelines(save_results)
 
 

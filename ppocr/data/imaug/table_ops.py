@@ -206,7 +206,7 @@ class ResizeTableImage(object):
             data['bboxes'] = data['bboxes'] * ratio
         data['image'] = resize_img
         data['src_img'] = img
-        data['shape'] = np.array([resize_h, resize_w, ratio, ratio])
+        data['shape'] = np.array([height, width, ratio, ratio])
         data['max_len'] = self.max_len
         return data
 

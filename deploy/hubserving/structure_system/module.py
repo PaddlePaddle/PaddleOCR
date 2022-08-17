@@ -119,7 +119,7 @@ class StructureSystem(hub.Module):
                 all_results.append([])
                 continue
             starttime = time.time()
-            res = self.table_sys(img)
+            res, _ = self.table_sys(img)
             elapse = time.time() - starttime
             logger.info("Predict time: {}".format(elapse))
 
@@ -144,6 +144,6 @@ class StructureSystem(hub.Module):
 if __name__ == '__main__':
     structure_system = StructureSystem()
     structure_system._initialize()
-    image_path = ['./doc/table/1.png']
+    image_path = ['./ppstructure/docs/table/1.png']
     res = structure_system.predict(paths=image_path)
     print(res)

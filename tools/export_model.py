@@ -142,6 +142,8 @@ def export_single_model(model,
             infer_shape = [3, 488, 488]
             if arch_config["algorithm"] == "TableMaster":
                 infer_shape = [3, 480, 480]
+            if arch_config["algorithm"] == "SLANet":
+                infer_shape = [3, -1, -1]
         model = to_static(
             model,
             input_spec=[

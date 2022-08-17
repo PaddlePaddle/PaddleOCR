@@ -8,16 +8,15 @@ Global:
   eval_batch_step: [0,  6259]
   cal_metric_during_train: true
   pretrained_model: null
-  checkpoints: 
+  checkpoints:
   save_inference_dir: output/table_master/infer
   use_visualdl: false
   infer_img: ppstructure/docs/table/table.jpg
   save_res_path: ./output/table_master
   character_dict_path: ppocr/utils/dict/table_master_structure_dict.txt
   infer_mode: false
-  max_text_length: 500
-  process_total_num: 0
-  process_cut_num: 0
+  max_text_length: &max_text_length 500
+  box_format: &box_format 'xywh' # 'xywh', 'xyxy', 'xyxyxyxy'
 
 
 Optimizer:
@@ -52,7 +51,8 @@ Architecture:
     headers: 8
     dropout: 0
     d_ff: 2024
-    max_text_length: 500
+    max_text_length: *max_text_length
+    loc_reg_num: &loc_reg_num 4
 
 Loss:
   name: TableMasterLoss
@@ -61,11 +61,13 @@ Loss:
 PostProcess:
   name: TableMasterLabelDecode
   box_shape: pad
+  merge_no_span_structure: &merge_no_span_structure True
 
 Metric:
   name: TableMetric
   main_indicator: acc
   compute_bbox_metric: False
+  box_format: *box_format
 
 Train:
   dataset:
@@ -78,15 +80,18 @@ Train:
           channel_first: False
       - TableMasterLabelEncode:
           learn_empty_box: False
-          merge_no_span_structure: True
+          merge_no_span_structure: *merge_no_span_structure
           replace_empty_cell_token: True
+          loc_reg_num: *loc_reg_num
+          max_text_length: *max_text_length
       - ResizeTableImage:
           max_len: 480
           resize_bboxes: True
       - PaddingTableImage:
           size: [480, 480]
       - TableBoxEncode:
-          use_xywh: True
+          in_box_format: *box_format
+          out_box_format: *box_format
       - NormalizeImage:
           scale: 1./255.
           mean: [0.5, 0.5, 0.5]
@@ -112,15 +117,18 @@ Eval:
           channel_first: False
       - TableMasterLabelEncode:
           learn_empty_box: False
-          merge_no_span_structure: True
+          merge_no_span_structure: *merge_no_span_structure
           replace_empty_cell_token: True
+          loc_reg_num: *loc_reg_num
+          max_text_length: *max_text_length
       - ResizeTableImage:
           max_len: 480
           resize_bboxes: True
       - PaddingTableImage:
           size: [480, 480]
       - TableBoxEncode:
-          use_xywh: True
+          in_box_format: *box_format
+          out_box_format: *box_format
       - NormalizeImage:
           scale: 1./255.
           mean: [0.5, 0.5, 0.5]

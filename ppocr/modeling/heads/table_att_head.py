@@ -18,10 +18,24 @@ from __future__ import print_function
 
 import paddle
 import paddle.nn as nn
+from paddle import ParamAttr
 import paddle.nn.functional as F
 import numpy as np
 
 from .rec_att_head import AttentionGRUCell
+
+
+def get_para_bias_attr(l2_decay, k):
+    if l2_decay > 0:
+        regularizer = paddle.regularizer.L2Decay(l2_decay)
+        stdv = 1.0 / math.sqrt(k * 1.0)
+        initializer = nn.initializer.Uniform(-stdv, stdv)
+    else:
+        regularizer = None
+        initializer = None
+    weight_attr = ParamAttr(regularizer=regularizer, initializer=initializer)
+    bias_attr = ParamAttr(regularizer=regularizer, initializer=initializer)
+    return [weight_attr, bias_attr]
 
 
 class TableAttentionHead(nn.Layer):
@@ -32,7 +46,7 @@ class TableAttentionHead(nn.Layer):
                  in_max_len=488,
                  max_text_length=800,
                  out_channels=30,
-                 point_num=2,
+                 loc_reg_num=4,
                  **kwargs):
         super(TableAttentionHead, self).__init__()
         self.input_size = in_channels[-1]
@@ -56,7 +70,7 @@ class TableAttentionHead(nn.Layer):
             else:
                 self.loc_fea_trans = nn.Linear(256, self.max_text_length + 1)
             self.loc_generator = nn.Linear(self.input_size + hidden_size,
-                                           point_num * 2)
+                                           loc_reg_num)
 
     def _char_to_onehot(self, input_char, onehot_dim):
         input_ont_hot = F.one_hot(input_char, onehot_dim)
@@ -129,3 +143,121 @@ class TableAttentionHead(nn.Layer):
                 loc_preds = self.loc_generator(loc_concat)
                 loc_preds = F.sigmoid(loc_preds)
         return {'structure_probs': structure_probs, 'loc_preds': loc_preds}
+
+
+class SLAHead(nn.Layer):
+    def __init__(self,
+                 in_channels,
+                 hidden_size,
+                 out_channels=30,
+                 max_text_length=500,
+                 loc_reg_num=4,
+                 fc_decay=0.0,
+                 **kwargs):
+        """
+        @param in_channels: input shape
+        @param hidden_size: hidden_size for RNN and Embedding
+        @param out_channels: num_classes to rec
+        @param max_text_length: max text pred
+        """
+        super().__init__()
+        in_channels = in_channels[-1]
+        self.hidden_size = hidden_size
+        self.max_text_length = max_text_length
+        self.emb = self._char_to_onehot
+        self.num_embeddings = out_channels
+
+        # structure
+        self.structure_attention_cell = AttentionGRUCell(
+            in_channels, hidden_size, self.num_embeddings)
+        weight_attr, bias_attr = get_para_bias_attr(
+            l2_decay=fc_decay, k=hidden_size)
+        weight_attr1_1, bias_attr1_1 = get_para_bias_attr(
+            l2_decay=fc_decay, k=hidden_size)
+        weight_attr1_2, bias_attr1_2 = get_para_bias_attr(
+            l2_decay=fc_decay, k=hidden_size)
+        self.structure_generator = nn.Sequential(
+            nn.Linear(
+                self.hidden_size,
+                self.hidden_size,
+                weight_attr=weight_attr1_2,
+                bias_attr=bias_attr1_2),
+            nn.Linear(
+                hidden_size,
+                out_channels,
+                weight_attr=weight_attr,
+                bias_attr=bias_attr))
+        # loc
+        weight_attr1, bias_attr1 = get_para_bias_attr(
+            l2_decay=fc_decay, k=self.hidden_size)
+        weight_attr2, bias_attr2 = get_para_bias_attr(
+            l2_decay=fc_decay, k=self.hidden_size)
+        self.loc_generator = nn.Sequential(
+            nn.Linear(
+                self.hidden_size,
+                self.hidden_size,
+                weight_attr=weight_attr1,
+                bias_attr=bias_attr1),
+            nn.Linear(
+                self.hidden_size,
+                loc_reg_num,
+                weight_attr=weight_attr2,
+                bias_attr=bias_attr2),
+            nn.Sigmoid())
+
+    def forward(self, inputs, targets=None):
+        fea = inputs[-1]
+        batch_size = fea.shape[0]
+        # reshape
+        fea = paddle.reshape(fea, [fea.shape[0], fea.shape[1], -1])
+        fea = fea.transpose([0, 2, 1])  # (NTC)(batch, width, channels)
+
+        hidden = paddle.zeros((batch_size, self.hidden_size))
+        structure_preds = []
+        loc_preds = []
+        if self.training and targets is not None:
+            structure = targets[0]
+            for i in range(self.max_text_length + 1):
+                hidden, structure_step, loc_step = self._decode(structure[:, i],
+                                                                fea, hidden)
+                structure_preds.append(structure_step)
+                loc_preds.append(loc_step)
+        else:
+            pre_chars = paddle.zeros(shape=[batch_size], dtype="int32")
+            max_text_length = paddle.to_tensor(self.max_text_length)
+            # for export
+            loc_step, structure_step = None, None
+            for i in range(max_text_length + 1):
+                hidden, structure_step, loc_step = self._decode(pre_chars, fea,
+                                                                hidden)
+                pre_chars = structure_step.argmax(axis=1, dtype="int32")
+                structure_preds.append(structure_step)
+                loc_preds.append(loc_step)
+        structure_preds = paddle.stack(structure_preds, axis=1)
+        loc_preds = paddle.stack(loc_preds, axis=1)
+        if not self.training:
+            structure_preds = F.softmax(structure_preds)
+        return {'structure_probs': structure_preds, 'loc_preds': loc_preds}
+
+    def _decode(self, pre_chars, features, hidden):
+        """
+        Predict table label and coordinates for each step
+        @param pre_chars: Table label in previous step
+        @param features:
+        @param hidden: hidden status in previous step
+        @return:
+        """
+        emb_feature = self.emb(pre_chars)
+        # output shape is b * self.hidden_size
+        (output, hidden), alpha = self.structure_attention_cell(
+            hidden, features, emb_feature)
+
+        # structure
+        structure_step = self.structure_generator(output)
+        # loc
+        loc_step = self.loc_generator(output)
+        return hidden, structure_step, loc_step
+
+    def _char_to_onehot(self, input_char):
+        input_ont_hot = F.one_hot(input_char, self.num_embeddings)
+        return input_ont_hot
