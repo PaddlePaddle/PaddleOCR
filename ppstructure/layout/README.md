@@ -30,9 +30,7 @@
 
 ## 1. 简介
 
-版面分析指的是对图片形式的文档进行区域划分，定位其中的关键区域，如文字、标题、表格、图片等，DOC-VQA主要针对文本图像的文字内容提出问题。
-
-PP-Structurev2 里的版面分析算法基于[PaddleDetection](https://github.com/PaddlePaddle/PaddleDetection)的轻量模型PP-PicoDet进行开发。
+版面分析指的是对图片形式的文档进行区域划分，定位其中的关键区域，如文字、标题、表格、图片等。版面分析算法基于[PaddleDetection](https://github.com/PaddlePaddle/PaddleDetection)的轻量模型PP-PicoDet进行开发。
 
 <div align="center">
     <img src="../docs/imgs/layout.png" width="800">
@@ -61,7 +59,7 @@ python3 -m pip install "paddlepaddle>=2.2" -i https://mirror.baidu.com/pypi/simp
 - **（1）下载PaddleDetection源码**
 
 ```bash
-【推荐】git clone https://github.com/PaddlePaddle/PaddleDetection.git
+git clone https://github.com/PaddlePaddle/PaddleDetection.git
 ```
 
 - **（2）安装其他依赖 **
@@ -73,7 +71,7 @@ python3 -m pip install -r requirements.txt
 
 ## 3. 数据准备
 
-如果希望直接体验预测过程，可以下载我们提供的预训练模型，跳过训练过程，直接预测即可。
+如果希望直接体验预测过程，可以跳过数据准备，下载我们提供的预训练模型。
 
 ### 3.1. 英文数据集
 
@@ -167,7 +165,7 @@ json文件包含所有图像的标注，数据以字典嵌套的方式存放，�
 
 提供了训练脚本、评估脚本和预测脚本，本节将以PubLayNet预训练模型为例进行讲解。
 
-如果不希望训练，直接体验后面的模型评估、预测、动转静、推理的流程，可以下载PaddleOCR中提供的预训练模型，并跳过本部分。
+如果不希望训练，直接体验后面的模型评估、预测、动转静、推理的流程，可以下载提供的预训练模型，并跳过本部分。
 
 ```
 mkdir pretrained_model
@@ -321,7 +319,7 @@ python3 tools/eval.py \
 python3 tools/infer.py \
     -c configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml \
     -o weights='output/picodet_lcnet_x1_0_layout/best_model.pdparams' \
-    --infer_img='1.png' \
+    --infer_img='docs/images/layout.jpg' \
     --output_dir=output_dir/ \
     --draw_threshold=0.4
 ```
@@ -339,7 +337,7 @@ python3 tools/infer.py \
 	-c configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml \
 	--slim_config configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x2_5_layout.yml \
 	-o weights='output/picodet_lcnet_x2_5_layout/best_model.pdparams' \
-	--infer_img='1.png' \
+	--infer_img='docs/images/layout.jpg' \
 	--output_dir=output_dir/ \
 	--draw_threshold=0.4
 ```
@@ -353,7 +351,7 @@ python3 tools/infer.py \
 
 inference 模型（`paddle.jit.save`保存的模型） 一般是模型训练，把模型结构和模型参数保存在文件中的固化模型，多用于预测部署场景。 训练过程中保存的模型是checkpoints模型，保存的只有模型的参数，多用于恢复训练等。 与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合于实际系统集成。
 
-版面分析转inference模型步骤如下：
+版面分析模型转inference模型步骤如下：
 
 ```bash
 python3 tools/export_model.py \
@@ -368,7 +366,7 @@ python3 tools/export_model.py \
 转换成功后，在目录下有三个文件：
 
 ```
-inference/ser_vi_layoutxlm/
+output_inference/picodet_lcnet_x1_0_layout/
     ├── inference.pdiparams         # inference模型的参数文件
     ├── inference.pdiparams.info    # inference模型的参数信息，可忽略
     └── inference.pdmodel           # inference模型的模型结构文件
@@ -392,12 +390,40 @@ python3 tools/export_model.py \
 
 ```bash
 python3 deploy/python/infer.py \
-	--model_dir=./output_inference/picodet_lcnet_x1_0_layout/ \
-	--image_file=1.png \
-	--device=GPU
+	--model_dir=output_inference/picodet_lcnet_x1_0_layout/ \
+	--image_file=docs/images/layout.jpg \
+	--device=CPU
 ```
 
-- --device：指定GPU、CPU
+- --device：指定GPU、CPU设备
 
-可视化SER结果结果默认保存到`./infer_output`文件夹里面。
+可视化版面分析结果结果默认保存到`./infer_output`文件夹里面。
+
+
+
+## Citations
+
+```
+@inproceedings{zhong2019publaynet,
+  title={PubLayNet: largest dataset ever for document layout analysis},
+  author={Zhong, Xu and Tang, Jianbin and Yepes, Antonio Jimeno},
+  booktitle={2019 International Conference on Document Analysis and Recognition (ICDAR)},
+  year={2019},
+  volume={},
+  number={},
+  pages={1015-1022},
+  doi={10.1109/ICDAR.2019.00166},
+  ISSN={1520-5363},
+  month={Sep.},
+  organization={IEEE}
+}
+
+@inproceedings{yang2022focal,
+  title={Focal and global knowledge distillation for detectors},
+  author={Yang, Zhendong and Li, Zhe and Jiang, Xiaohu and Gong, Yuan and Yuan, Zehuan and Zhao, Danpei and Yuan, Chun},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={4643--4652},
+  year={2022}
+}
+```
 
