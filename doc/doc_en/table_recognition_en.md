@@ -33,7 +33,7 @@ img_label
 ```
 
 The json format of each line is:
-```json
+```txt
 {
    'filename': PMC5755158_010_01.png,# image name
    'split': ’train‘, # whether the image belongs to the training set or the validation set
