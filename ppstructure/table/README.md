@@ -30,12 +30,16 @@ The table recognition flow chart is as follows
 ## 2. Performance
 We evaluated the algorithm on the PubTabNet<sup>[1]</sup> eval dataset, and the performance is as follows:
 
+|Method|Acc|[TEDS(Tree-Edit-Distance-based Similarity)](https://github.com/ibm-aur-nlp/PubTabNet/tree/master/src)|Speed|
+| --- | --- | --- | ---|
+| EDD<sup>[2]</sup> |x| 88.3 |x|
+| TableRec-RARE(ours) |73.8%| 93.32 |1180ms|
+| SLANet(ours) | 76.2%| 94.98 |590ms|
 
-|Method|acc|[TEDS(Tree-Edit-Distance-based Similarity)](https://github.com/ibm-aur-nlp/PubTabNet/tree/master/src)|
-| --- | --- | --- |
-| EDD<sup>[2]</sup> |x| 88.3 |
-| TableRec-RARE(ours) |73.8%| 93.32 |
-| SLANet(ours) | 76.2%| 94.98 |SLANet |
+The performance indicators are explained as follows:
+- Acc: The accuracy of the table structure in each image, a wrong token is considered an error.
+- TEDS: The accuracy of the model's restoration of table information. This indicator evaluates not only the table structure, but also the text content in the table.
+- Speed: The inference speed of a single image when the model runs on the CPU machine and MKL is enabled.
 
 ## 3. Result
 

@@ -36,11 +36,16 @@
 我们在 PubTabNet<sup>[1]</sup> 评估数据集上对算法进行了评估，性能如下
 
 
-|算法|acc|[TEDS(Tree-Edit-Distance-based Similarity)](https://github.com/ibm-aur-nlp/PubTabNet/tree/master/src)|
-| --- | --- | --- |
-| EDD<sup>[2]</sup> |x| 88.3 |
-| TableRec-RARE(ours) |73.8%| 93.32 |
-| SLANet(ours) | 76.2%| 94.98 |
+|算法|Acc|[TEDS(Tree-Edit-Distance-based Similarity)](https://github.com/ibm-aur-nlp/PubTabNet/tree/master/src)|Speed|
+| --- | --- | --- | ---|
+| EDD<sup>[2]</sup> |x| 88.3 |x|
+| TableRec-RARE(ours) |73.8%| 93.32 |1180ms|
+| SLANet(ours) | 76.2%| 94.98 |590ms|
+
+性能指标解释如下：
+- Acc: 模型对每张图像里表格结构的识别准确率，错一个token就算错误。
+- TEDS: 模型对表格信息还原的准确度，此指标评价内容不仅包含表格结构，还包含表格内的文字内容。
+- Speed: 模型在CPU机器上，开启MKL的情况下，单张图片的推理速度。
 
 ## 3. 效果演示
 
