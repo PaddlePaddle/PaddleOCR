@@ -12,9 +12,8 @@ This article provides a full-process guide for the PaddleOCR table recognition m
   - [2.3. Training with New Backbone](#23-training-with-new-backbone)
   - [2.4. Mixed Precision Training](#24-mixed-precision-training)
   - [2.5. Distributed Training](#25-distributed-training)
-  - [2.6. Training with Knowledge Distillation](#26-training-with-knowledge-distillation)
-  - [2.7. Training on other platform(Windows/macOS/Linux DCU)](#27-training-on-other-platformwindowsmacoslinux-dcu)
-  - [2.8 Fine-tuning](#28-fine-tuning)
+  - [2.6. Training on other platform(Windows/macOS/Linux DCU)](#26-training-on-other-platformwindowsmacoslinux-dcu)
+  - [2.7. Fine-tuning](#27-fine-tuning)
 - [3. Evaluation and Test](#3-evaluation-and-test)
   - [3.1. Evaluation](#31-evaluation)
   - [3.2. Test table structure recognition effect](#32-test-table-structure-recognition-effect)
@@ -211,11 +210,7 @@ python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1
 
 **Note:** (1) When using multi-machine and multi-gpu training, you need to replace the ips value in the above command with the address of your machine, and the machines need to be able to ping each other. (2) Training needs to be launched separately on multiple machines. The command to view the ip address of the machine is `ifconfig`. (3) For more details about the distributed training speedup ratio, please refer to [Distributed Training Tutorial](./distributed_training_en.md).
 
-## 2.6. Training with Knowledge Distillation
-
-coming soon!
-
-## 2.7. Training on other platform(Windows/macOS/Linux DCU)
+## 2.6. Training on other platform(Windows/macOS/Linux DCU)
 
 - Windows GPU/CPU
 The Windows platform is slightly different from the Linux platform:
@@ -229,7 +224,7 @@ GPU mode is not supported, you need to set `use_gpu` to False in the configurati
 Running on a DCU device requires setting the environment variable `export HIP_VISIBLE_DEVICES=0,1,2,3`, and the rest of the training and evaluation prediction commands are exactly the same as the Linux GPU.
 
 
-## 2.8 Fine-tuning
+## 2.7. Fine-tuning
 
 In the actual use process, it is recommended to load the officially provided pre-training model and fine-tune it in your own data set. For the fine-tuning method of the table recognition model, please refer to: [Model fine-tuning tutorial](./finetune.md).
 
