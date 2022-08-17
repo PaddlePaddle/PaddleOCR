@@ -36,13 +36,12 @@ We evaluated the algorithm on the PubTabNet<sup>[1]</sup> eval dataset, and the 
 | EDD<sup>[2]</sup> |x| 88.3 |
 | TableRec-RARE(ours) |73.8%| 93.32 |
 | SLANet(ours) | 76.2%| 94.98 |SLANet |
+
 ## 3. Result
 
-![图片](http://agroup.baidu-int.com/file/stream/bj/bj-e50a465becdbde9bffb84a84d41d196ac1acf1b6)
-![图片](http://agroup.baidu-int.com/file/stream/bj/bj-17ea53b181408a35d977c6c26b1ea308b4c27a79)
-![图片](http://agroup.baidu-int.com/file/stream/bj/bj-b905f57beca7115d54b907deac70c10056274858)
-![图片](http://agroup.baidu-int.com/file/stream/bj/bj-894694c9558fe7deb8cc896f9411fdfd252bca72)
-![图片](http://agroup.baidu-int.com/file/stream/bj/bj-03a0a67378b41a353257bd2fe8a1e9a864c89cb5)
+![](../docs/imgs/table_ch_result1.jpg)
+![](../docs/imgs/table_ch_result2.jpg)
+![](../docs/imgs/table_ch_result3.jpg)
 
 ## 4. How to use
 

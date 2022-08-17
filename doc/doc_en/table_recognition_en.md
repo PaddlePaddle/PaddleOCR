@@ -3,9 +3,9 @@
 This article provides a full-process guide for the PaddleOCR table recognition model, including data preparation, model training, tuning, evaluation, prediction, and detailed descriptions of each stage:
 
 - [1. Data Preparation](#1-data-preparation)
-  - [1.1. DataSet Preparation](#11-dataset-preparation)
+  - [1.1. DataSet Format](#11-dataset-format)
   - [1.2. Data Download](#12-data-download)
-  - [1.3. Dataset Generation](#13-dataset-format)
+  - [1.3. Dataset Generation](#13-dataset-generation)
 - [2. Training](#2-training)
   - [2.1. Start Training](#21-start-training)
   - [2.2. Resume Training](#22-resume-training)
@@ -19,7 +19,9 @@ This article provides a full-process guide for the PaddleOCR table recognition m
   - [3.1. Evaluation](#31-evaluation)
   - [3.2. Test table structure recognition effect](#32-test-table-structure-recognition-effect)
 - [4. Model export and prediction](#4-model-export-and-prediction)
-  - [5. FAQ](#5-faq)
+  - [4.1 Model export](#41-model-export)
+  - [4.2 Prediction](#42-prediction)
+- [5. FAQ](#5-faq)
 
 # 1. Data Preparation
 
@@ -243,6 +245,13 @@ The model parameters during training are saved in the `Global.save_model_dir` di
 python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/table/SLANet.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
+After the operation is completed, the acc indicator of the model will be output. If you evaluate the English table recognition model, you will see the following output.
+
+```bash
+[2022/08/16 07:59:55] ppocr INFO: acc:0.7622245132160782
+[2022/08/16 07:59:55] ppocr INFO: fps:30.991640622573044
+```
+
 ## 3.2. Test table structure recognition effect
 
 Using the model trained by PaddleOCR, you can quickly get prediction through the following script.
@@ -287,6 +296,8 @@ The cell coordinates are visualized as
 
 # 4. Model export and prediction
 
+## 4.1 Model export
+
 inference model (model saved by `paddle.jit.save`)
 Generally, it is model training, a solidified model that saves the model structure and model parameters in a file, and is mostly used to predict deployment scenarios.
 The model saved during the training process is the checkpoints model, and only the parameters of the model are saved, which are mostly used to resume training.
@@ -313,7 +324,35 @@ inference/SLANet/
     └── inference.pdmodel           # The program file of model
 ```
 
-## 5. FAQ
+## 4.2 Prediction
+
+After the model is exported, use the following command to complete the prediction of the inference model
+
+```python
+python3.7 table/predict_structure.py \
+    --table_model_dir={path/to/inference model} \
+    --table_char_dict_path=../ppocr/utils/dict/table_structure_dict_ch.txt \
+    --image_dir=docs/table/table.jpg \
+    --output=../output/table
+```
+
+Input image:
+
+![](../../ppstructure/docs/table/table.jpg)
+
+Get the prediction result of the input image:
+
+```
+['<html>', '<body>', '<table>', '<thead>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '</thead>', '<tbody>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '</tbody>', '</table>', '</body>', '</html>'],[[320.0562438964844, 197.83375549316406, 350.0928955078125, 214.4309539794922], ... , [318.959228515625, 271.0166931152344, 353.7394104003906, 286.4538269042969]]
+```
+
+The cell coordinates are visualized as
+
+![](../../ppstructure/docs/imgs/slanet_result.jpg)
+
+
+
+# 5. FAQ
 
 Q1: After the training model is transferred to the inference model, the prediction effect is inconsistent?
 

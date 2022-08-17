@@ -3,7 +3,7 @@
 本文提供了PaddleOCR表格识别模型的全流程指南，包括数据准备、模型训练、调优、评估、预测，各个阶段的详细说明：
 
 - [1. 数据准备](#1-数据准备)
-  - [1.1. 准备数据集](#11-数据集格式)
+  - [1.1. 数据集格式](#11-数据集格式)
   - [1.2. 数据下载](#12-数据下载)
   - [1.3. 数据集生成](#13-数据集生成)
 - [2. 开始训练](#2-开始训练)
@@ -19,6 +19,8 @@
   - [3.1. 指标评估](#31-指标评估)
   - [3.2. 测试表格结构识别效果](#32-测试表格结构识别效果)
 - [4. 模型导出与预测](#4-模型导出与预测)
+  - [4.1 模型导出](#41-模型导出)
+  - [4.2 模型预测](#42-模型预测)
 - [5. FAQ](#5-faq)
 
 # 1. 数据准备
@@ -33,7 +35,7 @@ img_label
 ```
 
 每一行的json格式为:
-```json
+```txt
 {
    'filename': PMC5755158_010_01.png,							# 图像名
    'split': ’train‘, 									# 图像属于训练集还是验证集
@@ -236,6 +238,12 @@ DCU设备上运行需要设置环境变量 `export HIP_VISIBLE_DEVICES=0,1,2,3`�
 python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/table/SLANet.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
+运行完成后，会输出模型的acc指标，如对英文表格识别模型进行评估，会见到如下输出。
+```bash
+[2022/08/16 07:59:55] ppocr INFO: acc:0.7622245132160782
+[2022/08/16 07:59:55] ppocr INFO: fps:30.991640622573044
+```
+
 ## 3.2. 测试表格结构识别效果
 
 使用 PaddleOCR 训练好的模型，可以通过以下脚本进行快速预测。
@@ -278,6 +286,8 @@ python3 tools/infer_table.py -c configs/table/SLANet.yml -o Global.pretrained_mo
 
 # 4. 模型导出与预测
 
+## 4.1 模型导出
+
 inference 模型（`paddle.jit.save`保存的模型）
 一般是模型训练，把模型结构和模型参数保存在文件中的固化模型，多用于预测部署场景。
 训练过程中保存的模型是checkpoints模型，保存的只有模型的参数，多用于恢复训练等。
@@ -302,6 +312,33 @@ inference/SLANet/
     ├── inference.pdiparams.info    # inference模型的参数信息，可忽略
     └── inference.pdmodel           # inference模型的program文件
 ```
+
+## 4.2 模型预测
+
+模型导出后，使用如下命令即可完成inference模型的预测
+
+```python
+python3.7 table/predict_structure.py \
+    --table_model_dir={path/to/inference model} \
+    --table_char_dict_path=../ppocr/utils/dict/table_structure_dict_ch.txt \
+    --image_dir=docs/table/table.jpg \
+    --output=../output/table
+```
+
+预测图片：
+
+![](../../ppstructure/docs/table/table.jpg)
+
+得到输入图像的预测结果：
+
+```
+['<html>', '<body>', '<table>', '<thead>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '</thead>', '<tbody>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '<tr>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '<td></td>', '</tr>', '</tbody>', '</table>', '</body>', '</html>'],[[320.0562438964844, 197.83375549316406, 350.0928955078125, 214.4309539794922], ... , [318.959228515625, 271.0166931152344, 353.7394104003906, 286.4538269042969]]
+```
+
+单元格坐标可视化结果为
+
+![](../../ppstructure/docs/imgs/slanet_result.jpg)
+
 
 # 5. FAQ
 
