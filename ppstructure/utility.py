@@ -89,6 +89,11 @@ def init_args():
         type=bool,
         default=False,
         help='Whether to enable layout of recovery')
+    parser.add_argument(
+        "--save_pdf",
+        type=bool,
+        default=False,
+        help='Whether to save pdf file')
     return parser
 
 
