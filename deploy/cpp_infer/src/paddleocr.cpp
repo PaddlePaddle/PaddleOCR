@@ -23,10 +23,10 @@ PPOCR::PPOCR() {
   if (FLAGS_det) {
     this->detector_ = new DBDetector(
         FLAGS_det_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
-        FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_max_side_len,
-        FLAGS_det_db_thresh, FLAGS_det_db_box_thresh, FLAGS_det_db_unclip_ratio,
-        FLAGS_det_db_score_mode, FLAGS_use_dilation, FLAGS_use_tensorrt,
-        FLAGS_precision);
+        FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_limit_type,
+        FLAGS_limit_side_len, FLAGS_det_db_thresh, FLAGS_det_db_box_thresh,
+        FLAGS_det_db_unclip_ratio, FLAGS_det_db_score_mode, FLAGS_use_dilation,
+        FLAGS_use_tensorrt, FLAGS_precision);
   }
 
   if (FLAGS_cls && FLAGS_use_angle_cls) {
@@ -56,7 +56,8 @@ void PPOCR::det(cv::Mat img, std::vector<OCRPredictResult> &ocr_results,
     res.box = boxes[i];
     ocr_results.push_back(res);
   }
-
+  // sort boex from top to bottom, from left to right
+  Utility::sorted_boxes(ocr_results);
   times[0] += det_times[0];
   times[1] += det_times[1];
   times[2] += det_times[2];

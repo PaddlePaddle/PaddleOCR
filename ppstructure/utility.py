@@ -28,6 +28,8 @@ def init_args():
     parser.add_argument("--table_algorithm", type=str, default='TableAttn')
     parser.add_argument("--table_model_dir", type=str)
     parser.add_argument(
+        "--merge_no_span_structure", type=str2bool, default=True)
+    parser.add_argument(
         "--table_char_dict_path",
         type=str,
         default="../ppocr/utils/dict/table_structure_dict.txt")
@@ -43,7 +45,10 @@ def init_args():
         default=0.5,
         help="Threshold of score.")
     parser.add_argument(
-        "--layout_nms_threshold", type=float, default=0.5, help="Threshold of nms.")
+        "--layout_nms_threshold",
+        type=float,
+        default=0.5,
+        help="Threshold of nms.")
     # params for vqa
     parser.add_argument("--vqa_algorithm", type=str, default='LayoutXLM')
     parser.add_argument("--ser_model_dir", type=str)
@@ -51,12 +56,19 @@ def init_args():
         "--ser_dict_path",
         type=str,
         default="../train_data/XFUND/class_list_xfun.txt")
+    # need to be None or tb-yx
+    parser.add_argument("--ocr_order_method", type=str, default=None)
     # params for inference
     parser.add_argument(
         "--mode",
         type=str,
         default='structure',
         help='structure and vqa is supported')
+    parser.add_argument(
+        "--image_orientation",
+        type=bool,
+        default=False,
+        help='Whether to enable image orientation recognition')
     parser.add_argument(
         "--layout",
         type=str2bool,

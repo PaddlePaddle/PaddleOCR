@@ -21,9 +21,29 @@ from .rec_postprocess import AttnLabelDecode
 class TableLabelDecode(AttnLabelDecode):
     """  """
 
-    def __init__(self, character_dict_path, **kwargs):
-        super(TableLabelDecode, self).__init__(character_dict_path)
-        self.td_token = ['<td>', '<td', '<eb></eb>', '<td></td>']
+    def __init__(self,
+                 character_dict_path,
+                 merge_no_span_structure=False,
+                 **kwargs):
+        dict_character = []
+        with open(character_dict_path, "rb") as fin:
+            lines = fin.readlines()
+            for line in lines:
+                line = line.decode('utf-8').strip("\n").strip("\r\n")
+                dict_character.append(line)
+
+        if merge_no_span_structure:
+            if "<td></td>" not in dict_character:
+                dict_character.append("<td></td>")
+            if "<td>" in dict_character:
+                dict_character.remove("<td>")
+
+        dict_character = self.add_special_char(dict_character)
+        self.dict = {}
+        for i, char in enumerate(dict_character):
+            self.dict[char] = i
+        self.character = dict_character
+        self.td_token = ['<td>', '<td', '<td></td>']
 
     def __call__(self, preds, batch=None):
         structure_probs = preds['structure_probs']
@@ -114,18 +134,21 @@ class TableLabelDecode(AttnLabelDecode):
 
     def _bbox_decode(self, bbox, shape):
         h, w, ratio_h, ratio_w, pad_h, pad_w = shape
-        src_h = h / ratio_h
-        src_w = w / ratio_w
-        bbox[0::2] *= src_w
-        bbox[1::2] *= src_h
+        bbox[0::2] *= w
+        bbox[1::2] *= h
         return bbox
 
 
 class TableMasterLabelDecode(TableLabelDecode):
     """  """
 
-    def __init__(self, character_dict_path, box_shape='ori', **kwargs):
-        super(TableMasterLabelDecode, self).__init__(character_dict_path)
+    def __init__(self,
+                 character_dict_path,
+                 box_shape='ori',
+                 merge_no_span_structure=True,
+                 **kwargs):
+        super(TableMasterLabelDecode, self).__init__(character_dict_path,
+                                                     merge_no_span_structure)
         self.box_shape = box_shape
         assert box_shape in [
             'ori', 'pad'
@@ -157,4 +180,7 @@ class TableMasterLabelDecode(TableLabelDecode):
         bbox[1::2] *= h
         bbox[0::2] /= ratio_w
         bbox[1::2] /= ratio_h
+        x, y, w, h = bbox
+        x1, y1, x2, y2 = x - w // 2, y - h // 2, x + w // 2, y + h // 2
+        bbox = np.array([x1, y1, x2, y2])
         return bbox

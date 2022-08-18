@@ -34,7 +34,7 @@ import paddle.distributed as dist
 
 from ppocr.data.imaug import transform, create_operators
 from ppocr.data.simple_dataset import SimpleDataSet
-from ppocr.data.lmdb_dataset import LMDBDataSet
+from ppocr.data.lmdb_dataset import LMDBDataSet, LMDBDataSetSR
 from ppocr.data.pgnet_dataset import PGDataSet
 from ppocr.data.pubtab_dataset import PubTabDataSet
 
@@ -54,7 +54,8 @@ def build_dataloader(config, mode, device, logger, seed=None):
     config = copy.deepcopy(config)
 
     support_dict = [
-        'SimpleDataSet', 'LMDBDataSet', 'PGDataSet', 'PubTabDataSet'
+        'SimpleDataSet', 'LMDBDataSet', 'PGDataSet', 'PubTabDataSet',
+        'LMDBDataSetSR'
     ]
     module_name = config[mode]['dataset']['name']
     assert module_name in support_dict, Exception(

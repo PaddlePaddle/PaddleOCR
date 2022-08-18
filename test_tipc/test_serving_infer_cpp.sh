@@ -83,7 +83,7 @@ function func_serving(){
     trans_model_cmd="${python_list[0]} ${trans_model_py} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_serving_server} ${set_serving_client} > ${trans_rec_log} 2>&1 "
     eval $trans_model_cmd
     last_status=${PIPESTATUS[0]}
-    status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}"
+    status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}" "${trans_rec_log}"
     set_image_dir=$(func_set_params "${image_dir_key}" "${image_dir_value}")
     python_list=(${python_list})
     cd ${serving_dir_value}
@@ -95,14 +95,14 @@ function func_serving(){
             web_service_cpp_cmd="nohup ${python_list[0]} ${web_service_py} --model ${det_server_value} ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} > ${server_log_path} 2>&1 &"
             eval $web_service_cpp_cmd
             last_status=${PIPESTATUS[0]}
-            status_check $last_status "${web_service_cpp_cmd}" "${status_log}" "${model_name}"
+            status_check $last_status "${web_service_cpp_cmd}" "${status_log}" "${model_name}" "${server_log_path}"
             sleep 5s
             _save_log_path="${LOG_PATH}/cpp_client_cpu.log"
             cpp_client_cmd="${python_list[0]} ${cpp_client_py} ${det_client_value} ${rec_client_value} > ${_save_log_path} 2>&1"
             eval $cpp_client_cmd
             last_status=${PIPESTATUS[0]}
             eval "cat ${_save_log_path}"
-            status_check $last_status "${cpp_client_cmd}" "${status_log}" "${model_name}"
+            status_check $last_status "${cpp_client_cmd}" "${status_log}" "${model_name}" "${_save_log_path}"
             ps ux | grep -i ${port_value} | awk '{print $2}' | xargs kill -s 9
         else
             server_log_path="${LOG_PATH}/cpp_server_gpu.log"
@@ -114,7 +114,7 @@ function func_serving(){
             eval $cpp_client_cmd
             last_status=${PIPESTATUS[0]}
             eval "cat ${_save_log_path}" 
-            status_check $last_status "${cpp_client_cmd}" "${status_log}" "${model_name}"
+            status_check $last_status "${cpp_client_cmd}" "${status_log}" "${model_name}" "${_save_log_path}"
             ps ux | grep -i ${port_value} | awk '{print $2}' | xargs kill -s 9
         fi
     done

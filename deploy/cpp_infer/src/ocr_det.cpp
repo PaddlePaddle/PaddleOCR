@@ -47,7 +47,7 @@ void DBDetector::LoadModel(const std::string &model_dir) {
           {"elementwise_add_7", {1, 56, 2, 2}},
           {"nearest_interp_v2_0.tmp_0", {1, 256, 2, 2}}};
       std::map<std::string, std::vector<int>> max_input_shape = {
-          {"x", {1, 3, this->max_side_len_, this->max_side_len_}},
+          {"x", {1, 3, 1536, 1536}},
           {"conv2d_92.tmp_0", {1, 120, 400, 400}},
           {"conv2d_91.tmp_0", {1, 24, 200, 200}},
           {"conv2d_59.tmp_0", {1, 96, 400, 400}},
@@ -109,7 +109,8 @@ void DBDetector::Run(cv::Mat &img,
   img.copyTo(srcimg);
 
   auto preprocess_start = std::chrono::steady_clock::now();
-  this->resize_op_.Run(img, resize_img, this->max_side_len_, ratio_h, ratio_w,
+  this->resize_op_.Run(img, resize_img, this->limit_type_,
+                       this->limit_side_len_, ratio_h, ratio_w,
                        this->use_tensorrt_);
 
   this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,

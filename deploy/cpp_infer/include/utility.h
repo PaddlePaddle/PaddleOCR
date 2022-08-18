@@ -40,6 +40,14 @@ struct OCRPredictResult {
   int cls_label = -1;
 };
 
+struct StructurePredictResult {
+  std::vector<int> box;
+  std::string type;
+  std::vector<OCRPredictResult> text_res;
+  std::string html;
+  float html_score = -1;
+};
+
 class Utility {
 public:
   static std::vector<std::string> ReadDict(const std::string &path);
@@ -68,6 +76,22 @@ public:
   static void CreateDir(const std::string &path);
 
   static void print_result(const std::vector<OCRPredictResult> &ocr_result);
+
+  static cv::Mat crop_image(cv::Mat &img, std::vector<int> &area);
+
+  static void sorted_boxes(std::vector<OCRPredictResult> &ocr_result);
+
+private:
+  static bool comparison_box(const OCRPredictResult &result1,
+                             const OCRPredictResult &result2) {
+    if (result1.box[0][1] < result2.box[0][1]) {
+      return true;
+    } else if (result1.box[0][1] == result2.box[0][1]) {
+      return result1.box[0][0] < result2.box[0][0];
+    } else {
+      return false;
+    }
+  }
 };
 
 } // namespace PaddleOCR

@@ -41,9 +41,7 @@ def download_with_progressbar(url, save_path):
 
 def maybe_download(model_storage_directory, url):
     # using custom model
-    tar_file_name_list = [
-        'inference.pdiparams', 'inference.pdiparams.info', 'inference.pdmodel'
-    ]
+    tar_file_name_list = ['.pdiparams', '.pdiparams.info', '.pdmodel']
     if not os.path.exists(
             os.path.join(model_storage_directory, 'inference.pdiparams')
     ) or not os.path.exists(
@@ -57,8 +55,8 @@ def maybe_download(model_storage_directory, url):
             for member in tarObj.getmembers():
                 filename = None
                 for tar_file_name in tar_file_name_list:
-                    if tar_file_name in member.name:
-                        filename = tar_file_name
+                    if member.name.endswith(tar_file_name):
+                        filename = 'inference' + tar_file_name
                 if filename is None:
                     continue
                 file = tarObj.extractfile(member)
