@@ -28,7 +28,7 @@ import time
 import logging
 from copy import deepcopy
 
-from ppocr.utils.utility import get_image_file_list, check_and_read_gif, check_and_read_pdf
+from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppocr.utils.logging import get_logger
 from tools.infer.predict_system import TextSystem
 from ppstructure.layout.predict_layout import LayoutPredictor
@@ -142,8 +142,8 @@ class StructureSystem(object):
                         time_dict['det'] += ocr_time_dict['det']
                         time_dict['rec'] += ocr_time_dict['rec']
 
-                        # remove style char, 
-                        # when using the recognition model trained on the PubtabNet dataset, 
+                        # remove style char,
+                        # when using the recognition model trained on the PubtabNet dataset,
                         # it will recognize the text format in the table, such as <b>
                         style_token = [
                             '<strike>', '<strike>', '<sup>', '</sub>', '<b>',
@@ -217,11 +217,10 @@ def main(args):
 
     for i, image_file in enumerate(image_file_list):
         logger.info("[{}/{}] {}".format(i, img_num, image_file))
-        img, flag = check_and_read_gif(image_file)
-        imgs, flag_pdf = check_and_read_pdf(image_file)
+        img, flag_gif, flag_pdf = check_and_read(image_file)
         img_name = os.path.basename(image_file).split('.')[0]
 
-        if not flag and not flag_pdf:
+        if not flag_gif and not flag_pdf:
             img = cv2.imread(image_file)
 
         if not flag_pdf:
@@ -253,8 +252,9 @@ def main(args):
                             image_file, ex))
                     continue
         else:
+            pdf_imgs = img
             all_res = []
-            for index, img in enumerate(imgs):
+            for index, img in enumerate(pdf_imgs):
 
                 res, time_dict = structure_sys(img, index)
                 if structure_sys.mode == 'structure' and res != []:
