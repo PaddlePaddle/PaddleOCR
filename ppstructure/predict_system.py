@@ -28,13 +28,12 @@ import time
 import logging
 from copy import deepcopy
 
-from ppocr.utils.utility import get_image_file_list, check_and_read_gif
+from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppocr.utils.logging import get_logger
 from tools.infer.predict_system import TextSystem
 from ppstructure.layout.predict_layout import LayoutPredictor
 from ppstructure.table.predict_table import TableSystem, to_excel
 from ppstructure.utility import parse_args, draw_structure_result
-from ppstructure.recovery.recovery_to_doc import convert_info_docx
 
 logger = get_logger()
 
@@ -78,7 +77,7 @@ class StructureSystem(object):
         elif self.mode == 'vqa':
             raise NotImplementedError
 
-    def __call__(self, img, return_ocr_result_in_table=False):
+    def __call__(self, img, img_idx=0, return_ocr_result_in_table=False):
         time_dict = {
             'image_orientation': 0,
             'layout': 0,
@@ -143,8 +142,8 @@ class StructureSystem(object):
                         time_dict['det'] += ocr_time_dict['det']
                         time_dict['rec'] += ocr_time_dict['rec']
 
-                        # remove style char, 
-                        # when using the recognition model trained on the PubtabNet dataset, 
+                        # remove style char,
+                        # when using the recognition model trained on the PubtabNet dataset,
                         # it will recognize the text format in the table, such as <b>
                         style_token = [
                             '<strike>', '<strike>', '<sup>', '</sub>', '<b>',
@@ -169,7 +168,8 @@ class StructureSystem(object):
                     'type': region['label'].lower(),
                     'bbox': [x1, y1, x2, y2],
                     'img': roi_img,
-                    'res': res
+                    'res': res,
+                    'img_idx': img_idx
                 })
             end = time.time()
             time_dict['all'] = end - start
@@ -179,26 +179,29 @@ class StructureSystem(object):
         return None, None
 
 
-def save_structure_res(res, save_folder, img_name):
+def save_structure_res(res, save_folder, img_name, img_idx=0):
     excel_save_folder = os.path.join(save_folder, img_name)
     os.makedirs(excel_save_folder, exist_ok=True)
     res_cp = deepcopy(res)
     # save res
     with open(
-            os.path.join(excel_save_folder, 'res.txt'), 'w',
+            os.path.join(excel_save_folder, 'res_{}.txt'.format(img_idx)),
+            'w',
             encoding='utf8') as f:
         for region in res_cp:
             roi_img = region.pop('img')
             f.write('{}\n'.format(json.dumps(region)))
 
-            if region['type'] == 'table' and len(region[
+            if region['type'].lower() == 'table' and len(region[
                     'res']) > 0 and 'html' in region['res']:
-                excel_path = os.path.join(excel_save_folder,
-                                          '{}.xlsx'.format(region['bbox']))
+                excel_path = os.path.join(
+                    excel_save_folder,
+                    '{}_{}.xlsx'.format(region['bbox'], img_idx))
                 to_excel(region['res']['html'], excel_path)
-            elif region['type'] == 'figure':
-                img_path = os.path.join(excel_save_folder,
-                                        '{}.jpg'.format(region['bbox']))
+            elif region['type'].lower() == 'figure':
+                img_path = os.path.join(
+                    excel_save_folder,
+                    '{}_{}.jpg'.format(region['bbox'], img_idx))
                 cv2.imwrite(img_path, roi_img)
 
 
@@ -214,28 +217,75 @@ def main(args):
 
     for i, image_file in enumerate(image_file_list):
         logger.info("[{}/{}] {}".format(i, img_num, image_file))
-        img, flag = check_and_read_gif(image_file)
+        img, flag_gif, flag_pdf = check_and_read(image_file)
         img_name = os.path.basename(image_file).split('.')[0]
 
-        if not flag:
+        if not flag_gif and not flag_pdf:
             img = cv2.imread(image_file)
-        if img is None:
-            logger.error("error in loading image:{}".format(image_file))
-            continue
-        res, time_dict = structure_sys(img)
 
-        if structure_sys.mode == 'structure':
-            save_structure_res(res, save_folder, img_name)
-            draw_img = draw_structure_result(img, res, args.vis_font_path)
-            img_save_path = os.path.join(save_folder, img_name, 'show.jpg')
-        elif structure_sys.mode == 'vqa':
-            raise NotImplementedError
-            # draw_img = draw_ser_results(img, res, args.vis_font_path)
-            # img_save_path = os.path.join(save_folder, img_name + '.jpg')
-        cv2.imwrite(img_save_path, draw_img)
-        logger.info('result save to {}'.format(img_save_path))
-        if args.recovery:
-            convert_info_docx(img, res, save_folder, img_name)
+        if not flag_pdf:
+            if img is None:
+                logger.error("error in loading image:{}".format(image_file))
+                continue
+            res, time_dict = structure_sys(img)
+
+            if structure_sys.mode == 'structure':
+                save_structure_res(res, save_folder, img_name)
+                draw_img = draw_structure_result(img, res, args.vis_font_path)
+                img_save_path = os.path.join(save_folder, img_name, 'show.jpg')
+            elif structure_sys.mode == 'vqa':
+                raise NotImplementedError
+                # draw_img = draw_ser_results(img, res, args.vis_font_path)
+                # img_save_path = os.path.join(save_folder, img_name + '.jpg')
+            cv2.imwrite(img_save_path, draw_img)
+            logger.info('result save to {}'.format(img_save_path))
+            if args.recovery:
+                try:
+                    from ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
+                    h, w, _ = img.shape
+                    res = sorted_layout_boxes(res, w)
+                    convert_info_docx(img, res, save_folder, img_name,
+                                      args.save_pdf)
+                except Exception as ex:
+                    logger.error(
+                        "error in layout recovery image:{}, err msg: {}".format(
+                            image_file, ex))
+                    continue
+        else:
+            pdf_imgs = img
+            all_res = []
+            for index, img in enumerate(pdf_imgs):
+
+                res, time_dict = structure_sys(img, index)
+                if structure_sys.mode == 'structure' and res != []:
+                    save_structure_res(res, save_folder, img_name, index)
+                    draw_img = draw_structure_result(img, res,
+                                                     args.vis_font_path)
+                    img_save_path = os.path.join(save_folder, img_name,
+                                                 'show_{}.jpg'.format(index))
+                elif structure_sys.mode == 'vqa':
+                    raise NotImplementedError
+                    # draw_img = draw_ser_results(img, res, args.vis_font_path)
+                    # img_save_path = os.path.join(save_folder, img_name + '.jpg')
+                if res != []:
+                    cv2.imwrite(img_save_path, draw_img)
+                    logger.info('result save to {}'.format(img_save_path))
+                if args.recovery and res != []:
+                    from ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
+                    h, w, _ = img.shape
+                    res = sorted_layout_boxes(res, w)
+                    all_res += res
+
+            if args.recovery and all_res != []:
+                try:
+                    convert_info_docx(img, all_res, save_folder, img_name,
+                                      args.save_pdf)
+                except Exception as ex:
+                    logger.error(
+                        "error in layout recovery image:{}, err msg: {}".format(
+                            image_file, ex))
+                    continue
+
         logger.info("Predict time : {:.3f}s".format(time_dict['all']))
 
 
