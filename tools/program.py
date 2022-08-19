@@ -278,7 +278,8 @@ def train(config,
                 model_average = True
             # use amp
             if scaler:
-                with paddle.amp.auto_cast(level=amp_level):
+                custom_black_list = config['Global'].get('amp_custom_black_list',[])
+                with paddle.amp.auto_cast(level=amp_level, custom_black_list=custom_black_list):
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
                     elif model_type in ["kie", 'vqa']:
