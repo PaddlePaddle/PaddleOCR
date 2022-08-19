@@ -77,7 +77,7 @@ class StructureSystem(object):
         elif self.mode == 'vqa':
             raise NotImplementedError
 
-    def __call__(self, img, img_idx='0', return_ocr_result_in_table=False):
+    def __call__(self, img, img_idx=0, return_ocr_result_in_table=False):
         time_dict = {
             'image_orientation': 0,
             'layout': 0,
@@ -179,7 +179,7 @@ class StructureSystem(object):
         return None, None
 
 
-def save_structure_res(res, save_folder, img_name, img_idx='0'):
+def save_structure_res(res, save_folder, img_name, img_idx=0):
     excel_save_folder = os.path.join(save_folder, img_name)
     os.makedirs(excel_save_folder, exist_ok=True)
     res_cp = deepcopy(res)
@@ -191,14 +191,14 @@ def save_structure_res(res, save_folder, img_name, img_idx='0'):
             roi_img = region.pop('img')
             f.write('{}\n'.format(json.dumps(region)))
 
-            if region['type'] == 'table' and len(region[
+            if region['type'].lower() == 'table' and len(region[
                     'res']) > 0 and 'html' in region['res']:
                 excel_path = os.path.join(excel_save_folder,
                                           '{}_{}.xlsx'.format(region['bbox'], img_idx))
                 to_excel(region['res']['html'], excel_path)
-            elif region['type'] == 'figure':
+            elif region['type'].lower() == 'figure':
                 img_path = os.path.join(excel_save_folder,
-                                        '{}.jpg'.format(region['bbox'], img_idx))
+                                        '{}_{}.jpg'.format(region['bbox'], img_idx))
                 cv2.imwrite(img_path, roi_img)
 
 
@@ -241,17 +241,17 @@ def main(args):
                 try:
                     from ppstructure.recovery.recovery_to_doc import convert_info_docx
                     convert_info_docx(img, res, save_folder, img_name, args.save_pdf) 
-                except:
+                except Exception as e:
                     logger.error("error in layout recovery image:{}".format(image_file))
                     continue
         else:
             all_res = []
             for index, img in enumerate(imgs):
-                res, time_dict = structure_sys(img, str(index))
+                res, time_dict = structure_sys(img, index)
                 if structure_sys.mode == 'structure' and res != []:
-                    save_structure_res(res, save_folder, img_name, str(index))
+                    save_structure_res(res, save_folder, img_name, index)
                     draw_img = draw_structure_result(img, res, args.vis_font_path)
-                    img_save_path = os.path.join(save_folder, img_name, 'show_{}.jpg'.format(str(index)))
+                    img_save_path = os.path.join(save_folder, img_name, 'show_{}.jpg'.format(index))
                 elif structure_sys.mode == 'vqa':
                     raise NotImplementedError
                     # draw_img = draw_ser_results(img, res, args.vis_font_path)
@@ -268,7 +268,7 @@ def main(args):
             if args.recovery and  all_res != []:
                 try:
                     convert_info_docx(img, all_res, save_folder, img_name, args.save_pdf) 
-                except:
+                except Exception as e::
                     logger.error("error in layout recovery image:{}".format(image_file))
                     continue
 

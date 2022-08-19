@@ -92,19 +92,19 @@ def check_and_read_pdf(img_path):
         import fitz
         from PIL import Image
         imgs = []
-        pdf = fitz.open(img_path)
-        for pg in range(0, pdf.pageCount):
-            page = pdf[pg]
-            mat = fitz.Matrix(2, 2)
-            pm = page.getPixmap(matrix=mat, alpha=False)
+        with fitz.open(img_path) as pdf:
+            for pg in range(0, pdf.pageCount):
+                page = pdf[pg]
+                mat = fitz.Matrix(2, 2)
+                pm = page.getPixmap(matrix=mat, alpha=False)
 
-            if pm.width>2000 or pm.height>2000:
-                pm = page.getPixmap(matrix=fitz.Matrix(1, 1), alpha=False)
-            
-            img = Image.frombytes("RGB", [pm.width, pm.height], pm.samples)
-            img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-            imgs.append(img)
-        pdf.close()
+                # if width or height > 2000 pixels, don't enlarge the image
+                if pm.width>2000 or pm.height>2000:
+                    pm = page.getPixmap(matrix=fitz.Matrix(1, 1), alpha=False)
+                
+                img = Image.frombytes("RGB", [pm.width, pm.height], pm.samples)
+                img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+                imgs.append(img)
         return imgs, True
     return None, False
 

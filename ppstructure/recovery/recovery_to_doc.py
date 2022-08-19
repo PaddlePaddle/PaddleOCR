@@ -38,6 +38,7 @@ def convert_info_docx(img, res, save_folder, img_name, save_pdf):
 
     flag = 1
     for i, region in enumerate(res):
+        img_idx = region['img_idx']
         if flag == 2 and region['layout'] == 'single':
             section = doc.add_section(WD_SECTION.CONTINUOUS)
             section._sectPr.xpath('./w:cols')[0].set(qn('w:num'), '1')
@@ -47,10 +48,10 @@ def convert_info_docx(img, res, save_folder, img_name, save_pdf):
             section._sectPr.xpath('./w:cols')[0].set(qn('w:num'), '2')
             flag = 2
 
-        if region['type'] == 'figure':
+        if region['type'].lower() == 'figure':
             excel_save_folder = os.path.join(save_folder, img_name)
             img_path = os.path.join(excel_save_folder,
-                                    '{}.jpg'.format(region['bbox']))
+                                    '{}_{}.jpg'.format(region['bbox'], img_idx))
             paragraph_pic = doc.add_paragraph()
             paragraph_pic.alignment = WD_ALIGN_PARAGRAPH.CENTER
             run = paragraph_pic.add_run("")
@@ -58,9 +59,9 @@ def convert_info_docx(img, res, save_folder, img_name, save_pdf):
                 run.add_picture(img_path, width=shared.Inches(5))
             elif flag == 2:
                 run.add_picture(img_path, width=shared.Inches(2))
-        elif region['type'] == 'title':
+        elif region['type'].lower() == 'title':
             doc.add_heading(region['res'][0]['text'])
-        elif region['type'] == 'table':
+        elif region['type'].lower() == 'table':
             paragraph = doc.add_paragraph()
             new_parser = HtmlToDocx()
             new_parser.table_style = 'TableGrid'
