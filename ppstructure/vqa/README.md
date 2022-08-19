@@ -1,285 +1,260 @@
 English | [简体中文](README_ch.md)
 
-- [1 Introduction](#1-introduction)
-- [2. Performance](#2-performance)
-- [3. Effect demo](#3-effect-demo)
+- [1. Introduction](#1-introduction)
+
+- [2. Accuracy and performance](#2-Accuracy-and-performance)
+- [3. Visualization](#3-Visualization)
   - [3.1 SER](#31-ser)
   - [3.2 RE](#32-re)
-- [4. Install](#4-install)
-  - [4.1 Install dependencies](#41-install-dependencies)
-  - [5.3 RE](#53-re)
-- [6. Reference Links](#6-reference-links)
-- [License](#license)
+- [4. Usage](#4-usage)
+  - [4.1 Prepare for the environment](#41-Prepare-for-the-environment)
+  - [4.2 Quick start](#42-Quick-start)
+  - [4.3 More](#43-More)
+- [5. Reference](#5-Reference)
+- [6. License](#6-License)
 
-# Document Visual Question Answering
 
-## 1 Introduction
+## 1. Introduction
 
-VQA refers to visual question answering, which mainly asks and answers image content. DOC-VQA is one of the VQA tasks. DOC-VQA mainly asks questions about the text content of text images.
+Key information extraction (KIE) refers to extracting key information from text or images. As downstream task of OCR, the key information extraction task of document image has many practical application scenarios, such as form recognition, ticket information extraction, ID card information extraction, etc.
 
-The DOC-VQA algorithm in PP-Structure is developed based on the PaddleNLP natural language processing algorithm library.
+PP-Structure conducts research based on the LayoutXLM multi-modal, and proposes the VI-LayoutXLM, which gets rid of visual features when finetuning the downstream tasks. An textline sorting method is also utilized to fit in reading order. What's more, UDML knowledge distillation is used for higher accuracy. Finally, the accuracy and inference speed of VI-LayoutXLM surpass those of LayoutXLM.
 
-The main features are as follows:
+The main features of the key information extraction module in PP-Structure are as follows.
 
-- Integrate [LayoutXLM](https://arxiv.org/pdf/2104.08836.pdf) model and PP-OCR prediction engine.
+
+- Integrate multi-modal methods such as [LayoutXLM](https://arxiv.org/pdf/2104.08836.pdf), VI-LayoutXLM, and PP-OCR inference engine.
 - Supports Semantic Entity Recognition (SER) and Relation Extraction (RE) tasks based on multimodal methods. Based on the SER task, the text recognition and classification in the image can be completed; based on the RE task, the relationship extraction of the text content in the image can be completed, such as judging the problem pair (pair).
 - Supports custom training for SER tasks and RE tasks.
 - Supports end-to-end system prediction and evaluation of OCR+SER.
 - Supports end-to-end system prediction of OCR+SER+RE.
+- Support SER model export and inference using PaddleInference.
 
 
-This project is an open source implementation of [LayoutXLM: Multimodal Pre-training for Multilingual Visually-rich Document Understanding](https://arxiv.org/pdf/2104.08836.pdf) on Paddle 2.2,
-Included fine-tuning code on [XFUND dataset](https://github.com/doc-analysis/XFUND).
+## 2. Accuracy and performance
 
-## 2. Performance
+We evaluate the methods on the Chinese dataset of [XFUND](https://github.com/doc-analysis/XFUND), and the performance is as follows
 
-We evaluate the algorithm on the Chinese dataset of [XFUND](https://github.com/doc-analysis/XFUND), and the performance is as follows
+|Model | Backbone | Task | Config file | Hmean | Inference time (ms) | Download link|
+| --- | --- |  --- | --- | --- | --- | --- |
+|VI-LayoutXLM| VI-LayoutXLM-base | SER | [ser_vi_layoutxlm_xfund_zh_udml.yml](../../configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh_udml.yml)|**93.19%**| 15.49|[trained model](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_pretrained.tar)|
+|LayoutXLM| LayoutXLM-base | SER | [ser_layoutxlm_xfund_zh.yml](../../configs/kie/layoutlm_series/ser_layoutxlm_xfund_zh.yml)|90.38%| 19.49 | [trained model](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar)|
+|VI-LayoutXLM| VI-LayoutXLM-base | RE | [re_vi_layoutxlm_xfund_zh_udml.yml](../../configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh_udml.yml)|**83.92%**| 15.49|[trained model](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layoutxlm_xfund_pretrained.tar)|
+|LayoutXLM| LayoutXLM-base | RE | [re_layoutxlm_xfund_zh.yml](../../configs/kie/layoutlm_series/re_layoutxlm_xfund_zh.yml)|74.83%| 19.49|[trained model](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh.tar)|
 
-| Model | Task | hmean | Model download address |
-|:---:|:---:|:---:| :---:|
-| LayoutXLM | SER | 0.9038 | [link](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar) |
-| LayoutXLM | RE | 0.7483 | [link](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh.tar) |
-| LayoutLMv2 | SER | 0.8544 | [link](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutLMv2_xfun_zh.tar)
-| LayoutLMv2 | RE | 0.6777 | [link](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutLMv2_xfun_zh.tar) |
-| LayoutLM | SER | 0.7731 | [link](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutLM_xfun_zh.tar) |
 
-## 3. Effect demo
+* Note：Inference environment：V100 GPU + cuda10.2 + cudnn8.1.1 + TensorRT 7.2.3.4，tested using fp16.
 
-**Note:** The test images are from the XFUND dataset.
+For more KIE models in PaddleOCR, please refer to [KIE model zoo](../../doc/doc_en/algorithm_overview_en.md).
 
-<a name="31"></a>
+
+## 3. Visualization
+
+There are two main solutions to the key information extraction task based on VI-LayoutXLM series model.
+
+(1) Text detection + text recognition + semantic entity recognition (SER)
+
+(2) Text detection + text recognition + semantic entity recognition (SER) + relationship extraction (RE)
+
+
+The following images are demo results of the SER and RE models. For more detailed introduction to the above solutions, please refer to [KIE Guide](./how_to_do_kie.md).
+
 ### 3.1 SER
 
-![](../docs/vqa/result_ser/zh_val_0_ser.jpg) | ![](../docs/vqa/result_ser/zh_val_42_ser.jpg)
----|---
+Demo results for SER task are as follows.
 
-Boxes with different colors in the figure represent different categories. For the XFUND dataset, there are 3 categories: `QUESTION`, `ANSWER`, `HEADER`
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185539141-68e71c75-5cf7-4529-b2ca-219d29fa5f68.jpg" width="600">
+</div>
 
-* Dark purple: HEADER
-* Light purple: QUESTION
-* Army Green: ANSWER
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185310636-6ce02f7c-790d-479f-b163-ea97a5a04808.jpg" width="600">
+</div>
 
-The corresponding categories and OCR recognition results are also marked on the upper left of the OCR detection frame.
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185539517-ccf2372a-f026-4a7c-ad28-c741c770f60a.png" width="600">
+</div>
 
-<a name="32"></a>
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185539735-37b5c2ef-629d-43fe-9abb-44bb717ef7ee.jpg" width="600">
+</div>
+
+
+
+**Note:** test pictures are from [xfund dataset](https://github.com/doc-analysis/XFUND), [invoice dataset](https://aistudio.baidu.com/aistudio/datasetdetail/165561) and a composite ID card dataset.
+
+
+Boxes of different colors in the image represent different categories.
+
+The invoice and application form images have three categories: `request`, `answer` and `header`. The `question` and 'answer' can be used to extract the relationship.
+
+For the ID card image, the mdoel can be directly identify the key information such as `name`, `gender`, `nationality`, so that the subsequent relationship extraction process is not required, and the key information extraction task can be completed using only on model.
+
 ### 3.2 RE
 
-![](../docs/vqa/result_re/zh_val_21_re.jpg) | ![](../docs/vqa/result_re/zh_val_40_re.jpg)
----|---
+Demo results for RE task are as follows.
 
 
-The red box in the figure represents the question, the blue box represents the answer, and the question and the answer are connected by a green line. The corresponding categories and OCR recognition results are also marked on the upper left of the OCR detection frame.
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185393805-c67ff571-cf7e-4217-a4b0-8b396c4f22bb.jpg" width="600">
+</div>
 
-## 4. Install
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185540080-0431e006-9235-4b6d-b63d-0b3c6e1de48f.jpg" width="600">
+</div>
 
-### 4.1 Install dependencies
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185540291-f64e5daf-6d42-4e7c-bbbb-471e3fac4fcc.png" width="600">
+</div>
 
-- **(1) Install PaddlePaddle**
+Red boxes are questions, blue boxes are answers. The green lines means the two conected objects are a pair.
+
+
+## 4. Usage
+
+### 4.1 Prepare for the environment
+
+
+Use the following command to install KIE dependencies.
+
 
 ```bash
-python3 -m pip install --upgrade pip
-
-# GPU installation
-python3 -m pip install "paddlepaddle-gpu>=2.2" -i https://mirror.baidu.com/pypi/simple
-
-# CPU installation
-python3 -m pip install "paddlepaddle>=2.2" -i https://mirror.baidu.com/pypi/simple
-
-````
-For more requirements, please refer to the instructions in [Installation Documentation](https://www.paddlepaddle.org.cn/install/quick).
-
-### 4.2 Install PaddleOCR
-
-- **(1) pip install PaddleOCR whl package quickly (prediction only)**
-
-```bash
-python3 -m pip install paddleocr
-````
-
-- **(2) Download VQA source code (prediction + training)**
-
-```bash
-[Recommended] git clone https://github.com/PaddlePaddle/PaddleOCR
-
-# If the pull cannot be successful due to network problems, you can also choose to use the hosting on the code cloud:
-git clone https://gitee.com/paddlepaddle/PaddleOCR
-
-# Note: Code cloud hosting code may not be able to synchronize the update of this github project in real time, there is a delay of 3 to 5 days, please use the recommended method first.
-````
-
-- **(3) Install VQA's `requirements`**
-
-```bash
-python3 -m pip install -r ppstructure/vqa/requirements.txt
-````
-
-## 5. Usage
-
-### 5.1 Data and Model Preparation
-
-If you want to experience the prediction process directly, you can download the pre-training model provided by us, skip the training process, and just predict directly.
-
-* Download the processed dataset
-
-The download address of the processed XFUND Chinese dataset: [link](https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar).
-
-
-Download and unzip the dataset, and place the dataset in the current directory after unzipping.
-
-```shell
-wget https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar
-````
-
-* Convert the dataset
-
-If you need to train other XFUND datasets, you can use the following commands to convert the datasets
-
-```bash
-python3 ppstructure/vqa/tools/trans_xfun_data.py --ori_gt_path=path/to/json_path --output_path=path/to/save_path
-````
-
-* Download the pretrained models
-```bash
-mkdir pretrain && cd pretrain
-#download the SER model
-wget https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar && tar -xvf ser_LayoutXLM_xfun_zh.tar
-#download the RE model
-wget https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh.tar && tar -xvf re_LayoutXLM_xfun_zh.tar
-cd ../
-````
-
-<a name="52"></a>
-### 5.2 SER
-
-Before starting training, you need to modify the following four fields
-
-1. `Train.dataset.data_dir`: point to the directory where the training set images are stored
-2. `Train.dataset.label_file_list`: point to the training set label file
-3. `Eval.dataset.data_dir`: refers to the directory where the validation set images are stored
-4. `Eval.dataset.label_file_list`: point to the validation set label file
-
-* start training
-```shell
-CUDA_VISIBLE_DEVICES=0 python3 tools/train.py -c configs/vqa/ser/layoutxlm.yml
-````
-
-Finally, `precision`, `recall`, `hmean` and other indicators will be printed.
-In the `./output/ser_layoutxlm/` folder will save the training log, the optimal model and the model for the latest epoch.
-
-* resume training
-
-To resume training, assign the folder path of the previously trained model to the `Architecture.Backbone.checkpoints` field.
-
-```shell
-CUDA_VISIBLE_DEVICES=0 python3 tools/train.py -c configs/vqa/ser/layoutxlm.yml -o Architecture.Backbone.checkpoints=path/to/model_dir
-````
-
-* evaluate
-
-Evaluation requires assigning the folder path of the model to be evaluated to the `Architecture.Backbone.checkpoints` field.
-
-```shell
-CUDA_VISIBLE_DEVICES=0 python3 tools/eval.py -c configs/vqa/ser/layoutxlm.yml -o Architecture.Backbone.checkpoints=path/to/model_dir
-````
-Finally, `precision`, `recall`, `hmean` and other indicators will be printed
-
-* `OCR + SER` tandem prediction based on training engine
-
-Use the following command to complete the series prediction of `OCR engine + SER`, taking the SER model based on LayoutXLM as an example::
-
-```shell
-python3.7 tools/export_model.py -c configs/vqa/ser/layoutxlm.yml -o Architecture.Backbone.checkpoints=pretrain/ser_LayoutXLM_xfun_zh/ Global.save_inference_dir=output/ser/infer
-````
-
-Finally, the prediction result visualization image and the prediction result text file will be saved in the directory configured by the `config.Global.save_res_path` field. The prediction result text file is named `infer_results.txt`.
-
-* End-to-end evaluation of `OCR + SER` prediction system
-
-First use the `tools/infer_vqa_token_ser.py` script to complete the prediction of the dataset, then use the following command to evaluate.
-
-```shell
-export CUDA_VISIBLE_DEVICES=0
-python3 tools/eval_with_label_end2end.py --gt_json_path XFUND/zh_val/xfun_normalize_val.json --pred_json_path output_res/infer_results.txt
-````
-* export model
-
-Use the following command to complete the model export of the SER model, taking the SER model based on LayoutXLM as an example:
-
-```shell
-python3.7 tools/export_model.py -c configs/vqa/ser/layoutxlm.yml -o Architecture.Backbone.checkpoints=pretrain/ser_LayoutXLM_xfun_zh/ Global.save_inference_dir=output/ser/infer
+git clone https://github.com/PaddlePaddle/PaddleOCR.git
+cd PaddleOCR
+pip install -r requirements.txt
+pip install -r ppstructure/vqa/requirements.txt
+# 安装PaddleOCR引擎用于预测
+pip install paddleocr -U
 ```
-The converted model will be stored in the directory specified by the `Global.save_inference_dir` field.
 
-* `OCR + SER` tandem prediction based on prediction engine
+The visualized results of SER are saved in the `./output` folder by default. Examples of results are as follows.
 
-Use the following command to complete the tandem prediction of `OCR + SER` based on the prediction engine, taking the SER model based on LayoutXLM as an example:
 
-```shell
+<div align="center">
+    <img src="../../ppstructure/docs/vqa/result_ser/zh_val_42_ser.jpg" width="800">
+</div>
+
+
+### 4.2 Quick start
+
+Here we use XFUND dataset to quickly experience the SER model and RE model.
+
+
+#### 4.2.1 Prepare for the dataset
+
+```bash
+mkdir train_data
+cd train_data
+# download and uncompress the dataset
+wget https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar && tar -xf XFUND.tar
+cd ..
+```
+
+#### 4.2.2 Predict images using the trained model
+
+Use the following command to download the models.
+
+```bash
+mkdir pretrained_model
+cd pretrained_model
+# download and uncompress the SER trained model
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_pretrained.tar && tar -xf ser_vi_layoutxlm_xfund_pretrained.tar
+
+# download and uncompress the RE trained model
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layoutxlm_xfund_pretrained.tar && tar -xf re_vi_layoutxlm_xfund_pretrained.tar
+```
+
+
+If you want to use OCR engine to obtain end-to-end prediction results, you can use the following command to predict.
+
+```bash
+# just predict using SER trained model
+python3 tools/infer_vqa_token_ser.py \
+  -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
+  -o Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy \
+  Global.infer_img=./ppstructure/docs/vqa/input/zh_val_42.jpg
+
+# predict using SER and RE trained model at the same time
+python3 ./tools/infer_vqa_token_ser_re.py \
+  -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml \
+  -o Architecture.Backbone.checkpoints=./pretrain_models/re_vi_layoutxlm_xfund_pretrained/best_accuracy \
+  Global.infer_img=./train_data/XFUND/zh_val/image/zh_val_42.jpg \
+  -c_ser configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
+  -o_ser Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
+```
+
+The visual result images and the predicted text file will be saved in the `Global.save_res_path` directory.
+
+
+If you want to load the text detection and recognition results collected before, you can use the following command to predict.
+
+```bash
+# just predict using SER trained model
+python3 tools/infer_vqa_token_ser.py \
+  -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
+  -o Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy \
+  Global.infer_img=./train_data/XFUND/zh_val/val.json \
+  Global.infer_mode=False
+
+# predict using SER and RE trained model at the same time
+python3 ./tools/infer_vqa_token_ser_re.py \
+  -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml \
+  -o Architecture.Backbone.checkpoints=./pretrain_models/re_vi_layoutxlm_xfund_pretrained/best_accuracy \
+  Global.infer_img=./train_data/XFUND/zh_val/val.json \
+  Global.infer_mode=False \
+  -c_ser configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
+  -o_ser Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
+```
+
+#### 4.2.3 Inference using PaddleInference
+
+At present, only SER model supports inference using PaddleInference.
+
+Firstly, download the inference SER inference model.
+
+
+```bash
+mkdir inference
+cd inference
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_infer.tar && tar -xf ser_vi_layoutxlm_xfund_infer.tar
+```
+
+Use the following command for inference.
+
+
+```bash
 cd ppstructure
-CUDA_VISIBLE_DEVICES=0 python3.7 vqa/predict_vqa_token_ser.py --vqa_algorithm=LayoutXLM --ser_model_dir=../output/ser/infer --ser_dict_path=../train_data/XFUND/class_list_xfun.txt --vis_font_path=../doc/fonts/simfang.ttf --image_dir=docs/vqa/input/zh_val_42.jpg --output=output
+python3 vqa/predict_vqa_token_ser.py \
+  --vqa_algorithm=LayoutXLM \
+  --ser_model_dir=../inference/ser_vi_layoutxlm_xfund_infer \
+  --image_dir=./docs/vqa/input/zh_val_42.jpg \
+  --ser_dict_path=../train_data/XFUND/class_list_xfun.txt \
+  --vis_font_path=../doc/fonts/simfang.ttf \
+  --ocr_order_method="tb-yx"
 ```
-After the prediction is successful, the visualization images and results will be saved in the directory specified by the `output` field
 
-<a name="53"></a>
-### 5.3 RE
+The visual results and text file will be saved in directory `output`.
 
-* start training
 
-Before starting training, you need to modify the following four fields
+### 4.3 More
 
-1. `Train.dataset.data_dir`: point to the directory where the training set images are stored
-2. `Train.dataset.label_file_list`: point to the training set label file
-3. `Eval.dataset.data_dir`: refers to the directory where the validation set images are stored
-4. `Eval.dataset.label_file_list`: point to the validation set label file
+For training, evaluation and inference tutorial for KIE models, please refer to [KIE doc](../../doc/doc_en/kie_en.md).
 
-```shell
-CUDA_VISIBLE_DEVICES=0 python3 tools/train.py -c configs/vqa/re/layoutxlm.yml
-````
+For training, evaluation and inference tutorial for text detection models, please refer to [text detection doc](../../doc/doc_en/detection_en.md).
 
-Finally, `precision`, `recall`, `hmean` and other indicators will be printed.
-In the `./output/re_layoutxlm/` folder will save the training log, the optimal model and the model for the latest epoch.
+For training, evaluation and inference tutorial for text recognition models, please refer to [text recognition doc](../../doc/doc_en/recognition.md).
 
-* resume training
+If you want to finish the KIE tasks in your scene, and don't know what to prepare,  please refer to [End cdoc](../../doc/doc_en/recognition.md).
 
-To resume training, assign the folder path of the previously trained model to the `Architecture.Backbone.checkpoints` field.
+关于怎样在自己的场景中完成关键信息抽取任务，请参考：[Guide to End-to-end KIE](./how_to_do_kie_en.md)。
 
-```shell
-CUDA_VISIBLE_DEVICES=0 python3 tools/train.py -c configs/vqa/re/layoutxlm.yml -o Architecture.Backbone.checkpoints=path/to/model_dir
-````
 
-* evaluate
-
-Evaluation requires assigning the folder path of the model to be evaluated to the `Architecture.Backbone.checkpoints` field.
-
-```shell
-CUDA_VISIBLE_DEVICES=0 python3 tools/eval.py -c configs/vqa/re/layoutxlm.yml -o Architecture.Backbone.checkpoints=path/to/model_dir
-````
-Finally, `precision`, `recall`, `hmean` and other indicators will be printed
-
-* Use `OCR engine + SER + RE` tandem prediction
-
-Use the following command to complete the series prediction of `OCR engine + SER + RE`, taking the pretrained SER and RE models as an example:
-```shell
-export CUDA_VISIBLE_DEVICES=0
-python3 tools/infer_vqa_token_ser_re.py -c configs/vqa/re/layoutxlm.yml -o Architecture.Backbone.checkpoints=pretrain/re_LayoutXLM_xfun_zh/Global.infer_img=ppstructure/docs/vqa/input/zh_val_21.jpg -c_ser configs/vqa/ser/layoutxlm. yml -o_ser Architecture.Backbone.checkpoints=pretrain/ser_LayoutXLM_xfun_zh/
-````
-
-Finally, the prediction result visualization image and the prediction result text file will be saved in the directory configured by the `config.Global.save_res_path` field. The prediction result text file is named `infer_results.txt`.
-
-* export model
-
-cooming soon
-
-* `OCR + SER + RE` tandem prediction based on prediction engine
-
-cooming soon
-
-## 6. Reference Links
+## 5. Reference
 
 - LayoutXLM: Multimodal Pre-training for Multilingual Visually-rich Document Understanding, https://arxiv.org/pdf/2104.08836.pdf
 - microsoft/unilm/layoutxlm, https://github.com/microsoft/unilm/tree/master/layoutxlm
 - XFUND dataset, https://github.com/doc-analysis/XFUND
 
-## License
+## 6. License
 
 The content of this project itself is licensed under the [Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/)

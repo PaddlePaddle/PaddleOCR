@@ -1,5 +1,7 @@
 [English](README.md) | 简体中文
 
+# 关键信息抽取
+
 - [1. 简介](#1-简介)
 - [2. 精度与性能](#2-精度与性能)
 - [3. 效果演示](#3-效果演示)
@@ -12,7 +14,6 @@
 - [5. 参考链接](#5-参考链接)
 - [6. License](#6-License)
 
-# 关键信息抽取
 
 ## 1. 简介
 
@@ -77,6 +78,8 @@ PP-Structure中关键信息抽取模块的主要特性如下：
     <img src="https://user-images.githubusercontent.com/14270174/185539735-37b5c2ef-629d-43fe-9abb-44bb717ef7ee.jpg" width="600">
 </div>
 
+**注意：** 测试图片来源于[XFUND数据集](https://github.com/doc-analysis/XFUND)、[发票数据集](https://aistudio.baidu.com/aistudio/datasetdetail/165561)以及合成的身份证数据集。
+
 
 图中不同颜色的框表示不同的类别。
 
@@ -101,9 +104,8 @@ PP-Structure中关键信息抽取模块的主要特性如下：
     <img src="https://user-images.githubusercontent.com/14270174/185540291-f64e5daf-6d42-4e7c-bbbb-471e3fac4fcc.png" width="600">
 </div>
 
-**注意：** 测试图片来源于[XFUND数据集](https://github.com/doc-analysis/XFUND)、[发票数据集](https://aistudio.baidu.com/aistudio/datasetdetail/165561)以及合成的身份证数据集。
 
-
+红色框是问题，蓝色框是答案。绿色线条表示连接的两端为一个key-value的pair。
 
 ## 4. 使用
 
@@ -138,9 +140,10 @@ cd ..
 
 首先下载模型。
 
-```
+```bash
 mkdir pretrained_model
 cd pretrained_model
+# 下载并解压SER预训练模型
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_pretrained.tar && tar -xf ser_vi_layoutxlm_xfund_pretrained.tar
 
 # 下载并解压RE预训练模型
@@ -190,7 +193,7 @@ python3 ./tools/infer_vqa_token_ser_re.py \
 
 #### 4.2.3 基于PaddleInference的预测
 
-目前仅SER模型支持动态图推理。
+目前仅SER模型支持PaddleInference推理。
 
 首先下载SER的推理模型。
 
