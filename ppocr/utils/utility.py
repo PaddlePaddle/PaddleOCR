@@ -87,6 +87,7 @@ def check_and_read_gif(img_path):
         return imgvalue, True
     return None, False
 
+
 def check_and_read_pdf(img_path):
     if os.path.basename(img_path)[-3:] in ['pdf']:
         import fitz
@@ -99,14 +100,15 @@ def check_and_read_pdf(img_path):
                 pm = page.getPixmap(matrix=mat, alpha=False)
 
                 # if width or height > 2000 pixels, don't enlarge the image
-                if pm.width>2000 or pm.height>2000:
+                if pm.width > 2000 or pm.height > 2000:
                     pm = page.getPixmap(matrix=fitz.Matrix(1, 1), alpha=False)
-                
+
                 img = Image.frombytes("RGB", [pm.width, pm.height], pm.samples)
                 img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
                 imgs.append(img)
-        return imgs, True
+            return imgs, True
     return None, False
+
 
 def load_vqa_bio_label_maps(label_map_path):
     with open(label_map_path, "r", encoding='utf-8') as fin:

@@ -239,10 +239,12 @@ def main(args):
             logger.info('result save to {}'.format(img_save_path))
             if args.recovery:
                 try:
-                    from ppstructure.recovery.recovery_to_doc import convert_info_docx
+                    from ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
+                    h, w, _ = img.shape
+                    res = sorted_layout_boxes(res, w)
                     convert_info_docx(img, res, save_folder, img_name, args.save_pdf) 
-                except Exception as e:
-                    logger.error("error in layout recovery image:{}".format(image_file))
+                except Exception as ex:
+                    logger.error("error in layout recovery image:{}, err msg: {}".format(image_file, ex))
                     continue
         else:
             all_res = []
@@ -268,8 +270,8 @@ def main(args):
             if args.recovery and  all_res != []:
                 try:
                     convert_info_docx(img, all_res, save_folder, img_name, args.save_pdf) 
-                except Exception as e::
-                    logger.error("error in layout recovery image:{}".format(image_file))
+                except Exception as ex:
+                    logger.error("error in layout recovery image:{}, err msg: {}".format(image_file, ex))
                     continue
 
         logger.info("Predict time : {:.3f}s".format(time_dict['all']))
