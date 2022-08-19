@@ -72,6 +72,7 @@
 - [x]  [ABINet](./algorithm_rec_abinet.md)
 - [x]  [VisionLAN](./algorithm_rec_visionlan.md)
 - [x]  [SPIN](./algorithm_rec_spin.md)
+- [x]  [RobustScanner](./algorithm_rec_robustscanner.md)
 
 参考[DTRB](https://arxiv.org/abs/1904.01906)[3]文字识别训练和评估流程，使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估，算法效果如下：
 
@@ -94,6 +95,7 @@
 |ABINet|Resnet45| 90.75% | rec_r45_abinet | [训练模型](https://paddleocr.bj.bcebos.com/rec_r45_abinet_train.tar) |
 |VisionLAN|Resnet45| 90.30% | rec_r45_visionlan | [训练模型](https://paddleocr.bj.bcebos.com/rec_r45_visionlan_train.tar) |
 |SPIN|ResNet32| 90.00% | rec_r32_gaspin_bilstm_att | coming soon |
+|RobustScanner|ResNet31| 87.77% | rec_r31_robustscanner | coming soon |
 
 
 <a name="2"></a>
