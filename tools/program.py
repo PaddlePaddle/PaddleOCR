@@ -231,7 +231,8 @@ def train(config,
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
     extra_input_models = [
-        "SRN", "NRTR", "SAR", "SEED", "SVTR", "SPIN", "VisionLAN", "RobustScanner"
+        "SRN", "NRTR", "SAR", "SEED", "SVTR", "SPIN", "VisionLAN",
+        "RobustScanner"
     ]
     extra_input = False
     if config['Architecture']['algorithm'] == 'Distillation':
@@ -503,16 +504,6 @@ def eval(model,
                         preds = model(batch)
                         sr_img = preds["sr_img"]
                         lr_img = preds["lr_img"]
-
-                        for i in (range(sr_img.shape[0])):
-                            fm_sr = (sr_img[i].numpy() * 255).transpose(
-                                1, 2, 0).astype(np.uint8)
-                            fm_lr = (lr_img[i].numpy() * 255).transpose(
-                                1, 2, 0).astype(np.uint8)
-                            cv2.imwrite("output/images/{}_{}_sr.jpg".format(
-                                sum_images, i), fm_sr)
-                            cv2.imwrite("output/images/{}_{}_lr.jpg".format(
-                                sum_images, i), fm_lr)
                     else:
                         preds = model(images)
                 preds = to_float32(preds)
@@ -525,16 +516,6 @@ def eval(model,
                     preds = model(batch)
                     sr_img = preds["sr_img"]
                     lr_img = preds["lr_img"]
-
-                    for i in (range(sr_img.shape[0])):
-                        fm_sr = (sr_img[i].numpy() * 255).transpose(
-                            1, 2, 0).astype(np.uint8)
-                        fm_lr = (lr_img[i].numpy() * 255).transpose(
-                            1, 2, 0).astype(np.uint8)
-                        cv2.imwrite("output/images/{}_{}_sr.jpg".format(
-                            sum_images, i), fm_sr)
-                        cv2.imwrite("output/images/{}_{}_lr.jpg".format(
-                            sum_images, i), fm_lr)
                 else:
                     preds = model(images)
 
