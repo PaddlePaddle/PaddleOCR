@@ -68,7 +68,7 @@ def main():
     global_config['infer_mode'] = True
     ops = create_operators(transforms, global_config)
 
-    save_visual_path = "infer_result/"
+    save_visual_path = config['Global'].get('save_visual', "infer_result/")
     if not os.path.exists(os.path.dirname(save_visual_path)):
         os.makedirs(os.path.dirname(save_visual_path))
 
