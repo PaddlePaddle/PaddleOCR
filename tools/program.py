@@ -162,18 +162,18 @@ def to_float32(preds):
         for k in preds:
             if isinstance(preds[k], dict) or isinstance(preds[k], list):
                 preds[k] = to_float32(preds[k])
-            else:
-                preds[k] = paddle.to_tensor(preds[k], dtype='float32')
+            elif isinstance(preds[k], paddle.Tensor):
+                preds[k] = preds[k].astype(paddle.float32)
     elif isinstance(preds, list):
         for k in range(len(preds)):
             if isinstance(preds[k], dict):
                 preds[k] = to_float32(preds[k])
             elif isinstance(preds[k], list):
                 preds[k] = to_float32(preds[k])
-            else:
-                preds[k] = paddle.to_tensor(preds[k], dtype='float32')
-    else:
-        preds = paddle.to_tensor(preds, dtype='float32')
+            elif isinstance(preds[k], paddle.Tensor):
+                preds[k] = preds[k].astype(paddle.float32)
+    elif isinstance(preds, paddle.Tensor):
+            preds = preds.astype(paddle.float32)
     return preds
 
 
@@ -190,7 +190,8 @@ def train(config,
           pre_best_model_dict,
           logger,
           log_writer=None,
-          scaler=None):
+          scaler=None,
+          amp_level='O2'):
     cal_metric_during_train = config['Global'].get('cal_metric_during_train',
                                                    False)
     calc_epoch_interval = config['Global'].get('calc_epoch_interval', 1)
@@ -276,7 +277,7 @@ def train(config,
                 model_average = True
             # use amp
             if scaler:
-                with paddle.amp.auto_cast(level='O2'):
+                with paddle.amp.auto_cast(level=amp_level):
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
                     elif model_type in ["kie", 'vqa']:
@@ -514,6 +515,7 @@ def eval(model,
                                 sum_images, i), fm_lr)
                     else:
                         preds = model(images)
+                preds = to_float32(preds)
             else:
                 if model_type == 'table' or extra_input:
                     preds = model(images, data=batch[1:])
