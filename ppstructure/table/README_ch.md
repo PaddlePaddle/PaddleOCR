@@ -39,7 +39,7 @@
 |算法|Acc|[TEDS(Tree-Edit-Distance-based Similarity)](https://github.com/ibm-aur-nlp/PubTabNet/tree/master/src)|Speed|
 | --- | --- | --- | ---|
 | EDD<sup>[2]</sup> |x| 88.3% |x|
-| TableRec-RARE(ours) |73.8%| 95.3% |1550ms|
+| TableRec-RARE(ours) | 71.73%| 93.88% |779ms|
 | SLANet(ours) | 76.2%|	95.85% |766ms|
 
 性能指标解释如下：
