@@ -231,89 +231,10 @@ def create_predictor(args, mode, logger):
                     )
                 config.enable_tuned_tensorrt_dynamic_shape(
                     args.shape_info_filename, True)
-
-            use_dynamic_shape = True
-            if mode == "det":
-                min_input_shape = {
-                    "x": [1, 3, 50, 50],
-                    "conv2d_92.tmp_0": [1, 120, 20, 20],
-                    "conv2d_91.tmp_0": [1, 24, 10, 10],
-                    "conv2d_59.tmp_0": [1, 96, 20, 20],
-                    "nearest_interp_v2_1.tmp_0": [1, 256, 10, 10],
-                    "nearest_interp_v2_2.tmp_0": [1, 256, 20, 20],
-                    "conv2d_124.tmp_0": [1, 256, 20, 20],
-                    "nearest_interp_v2_3.tmp_0": [1, 64, 20, 20],
-                    "nearest_interp_v2_4.tmp_0": [1, 64, 20, 20],
-                    "nearest_interp_v2_5.tmp_0": [1, 64, 20, 20],
-                    "elementwise_add_7": [1, 56, 2, 2],
-                    "nearest_interp_v2_0.tmp_0": [1, 256, 2, 2]
-                }
-                max_input_shape = {
-                    "x": [1, 3, 1536, 1536],
-                    "conv2d_92.tmp_0": [1, 120, 400, 400],
-                    "conv2d_91.tmp_0": [1, 24, 200, 200],
-                    "conv2d_59.tmp_0": [1, 96, 400, 400],
-                    "nearest_interp_v2_1.tmp_0": [1, 256, 200, 200],
-                    "conv2d_124.tmp_0": [1, 256, 400, 400],
-                    "nearest_interp_v2_2.tmp_0": [1, 256, 400, 400],
-                    "nearest_interp_v2_3.tmp_0": [1, 64, 400, 400],
-                    "nearest_interp_v2_4.tmp_0": [1, 64, 400, 400],
-                    "nearest_interp_v2_5.tmp_0": [1, 64, 400, 400],
-                    "elementwise_add_7": [1, 56, 400, 400],
-                    "nearest_interp_v2_0.tmp_0": [1, 256, 400, 400]
-                }
-                opt_input_shape = {
-                    "x": [1, 3, 640, 640],
-                    "conv2d_92.tmp_0": [1, 120, 160, 160],
-                    "conv2d_91.tmp_0": [1, 24, 80, 80],
-                    "conv2d_59.tmp_0": [1, 96, 160, 160],
-                    "nearest_interp_v2_1.tmp_0": [1, 256, 80, 80],
-                    "nearest_interp_v2_2.tmp_0": [1, 256, 160, 160],
-                    "conv2d_124.tmp_0": [1, 256, 160, 160],
-                    "nearest_interp_v2_3.tmp_0": [1, 64, 160, 160],
-                    "nearest_interp_v2_4.tmp_0": [1, 64, 160, 160],
-                    "nearest_interp_v2_5.tmp_0": [1, 64, 160, 160],
-                    "elementwise_add_7": [1, 56, 40, 40],
-                    "nearest_interp_v2_0.tmp_0": [1, 256, 40, 40]
-                }
-                min_pact_shape = {
-                    "nearest_interp_v2_26.tmp_0": [1, 256, 20, 20],
-                    "nearest_interp_v2_27.tmp_0": [1, 64, 20, 20],
-                    "nearest_interp_v2_28.tmp_0": [1, 64, 20, 20],
-                    "nearest_interp_v2_29.tmp_0": [1, 64, 20, 20]
-                }
-                max_pact_shape = {
-                    "nearest_interp_v2_26.tmp_0": [1, 256, 400, 400],
-                    "nearest_interp_v2_27.tmp_0": [1, 64, 400, 400],
-                    "nearest_interp_v2_28.tmp_0": [1, 64, 400, 400],
-                    "nearest_interp_v2_29.tmp_0": [1, 64, 400, 400]
-                }
-                opt_pact_shape = {
-                    "nearest_interp_v2_26.tmp_0": [1, 256, 160, 160],
-                    "nearest_interp_v2_27.tmp_0": [1, 64, 160, 160],
-                    "nearest_interp_v2_28.tmp_0": [1, 64, 160, 160],
-                    "nearest_interp_v2_29.tmp_0": [1, 64, 160, 160]
-                }
-                min_input_shape.update(min_pact_shape)
-                max_input_shape.update(max_pact_shape)
-                opt_input_shape.update(opt_pact_shape)
-            elif mode == "rec":
-                if args.rec_algorithm not in ["CRNN", "SVTR_LCNet"]:
-                    use_dynamic_shape = False
-                imgH = int(args.rec_image_shape.split(',')[-2])
-                min_input_shape = {"x": [1, 3, imgH, 10]}
-                max_input_shape = {"x": [args.rec_batch_num, 3, imgH, 2304]}
-                opt_input_shape = {"x": [args.rec_batch_num, 3, imgH, 320]}
-                config.exp_disable_tensorrt_ops(["transpose2"])
-            elif mode == "cls":
-                min_input_shape = {"x": [1, 3, 48, 10]}
-                max_input_shape = {"x": [args.rec_batch_num, 3, 48, 1024]}
-                opt_input_shape = {"x": [args.rec_batch_num, 3, 48, 320]}
             else:
-                use_dynamic_shape = False
-            if use_dynamic_shape:
-                config.set_trt_dynamic_shape_info(
-                    min_input_shape, max_input_shape, opt_input_shape)
+                logger.info(
+                    f"when using tensorrt, dynamic shape is a suggested option, you can use '--shape_info_filename=shape.txt' for offline dygnamic shape tuning"
+                )
 
         elif args.use_xpu:
             config.enable_xpu(10 * 1024 * 1024)

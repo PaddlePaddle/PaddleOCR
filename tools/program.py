@@ -162,18 +162,18 @@ def to_float32(preds):
         for k in preds:
             if isinstance(preds[k], dict) or isinstance(preds[k], list):
                 preds[k] = to_float32(preds[k])
-            else:
-                preds[k] = paddle.to_tensor(preds[k], dtype='float32')
+            elif isinstance(preds[k], paddle.Tensor):
+                preds[k] = preds[k].astype(paddle.float32)
     elif isinstance(preds, list):
         for k in range(len(preds)):
             if isinstance(preds[k], dict):
                 preds[k] = to_float32(preds[k])
             elif isinstance(preds[k], list):
                 preds[k] = to_float32(preds[k])
-            else:
-                preds[k] = paddle.to_tensor(preds[k], dtype='float32')
-    else:
-        preds = paddle.to_tensor(preds, dtype='float32')
+            elif isinstance(preds[k], paddle.Tensor):
+                preds[k] = preds[k].astype(paddle.float32)
+    elif isinstance(preds, paddle.Tensor):
+            preds = preds.astype(paddle.float32)
     return preds
 
 
@@ -190,7 +190,8 @@ def train(config,
           pre_best_model_dict,
           logger,
           log_writer=None,
-          scaler=None):
+          scaler=None,
+          amp_level='O2'):
     cal_metric_during_train = config['Global'].get('cal_metric_during_train',
                                                    False)
     calc_epoch_interval = config['Global'].get('calc_epoch_interval', 1)
@@ -230,7 +231,8 @@ def train(config,
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
     extra_input_models = [
-        "SRN", "NRTR", "SAR", "SEED", "SVTR", "SPIN", "VisionLAN"
+        "SRN", "NRTR", "SAR", "SEED", "SVTR", "SPIN", "VisionLAN",
+        "RobustScanner"
     ]
     extra_input = False
     if config['Architecture']['algorithm'] == 'Distillation':
@@ -276,7 +278,8 @@ def train(config,
                 model_average = True
             # use amp
             if scaler:
-                with paddle.amp.auto_cast(level='O2'):
+                custom_black_list = config['Global'].get('amp_custom_black_list',[])
+                with paddle.amp.auto_cast(level=amp_level, custom_black_list=custom_black_list):
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
                     elif model_type in ["kie", 'vqa']:
@@ -502,18 +505,9 @@ def eval(model,
                         preds = model(batch)
                         sr_img = preds["sr_img"]
                         lr_img = preds["lr_img"]
-
-                        for i in (range(sr_img.shape[0])):
-                            fm_sr = (sr_img[i].numpy() * 255).transpose(
-                                1, 2, 0).astype(np.uint8)
-                            fm_lr = (lr_img[i].numpy() * 255).transpose(
-                                1, 2, 0).astype(np.uint8)
-                            cv2.imwrite("output/images/{}_{}_sr.jpg".format(
-                                sum_images, i), fm_sr)
-                            cv2.imwrite("output/images/{}_{}_lr.jpg".format(
-                                sum_images, i), fm_lr)
                     else:
                         preds = model(images)
+                preds = to_float32(preds)
             else:
                 if model_type == 'table' or extra_input:
                     preds = model(images, data=batch[1:])
@@ -523,16 +517,6 @@ def eval(model,
                     preds = model(batch)
                     sr_img = preds["sr_img"]
                     lr_img = preds["lr_img"]
-
-                    for i in (range(sr_img.shape[0])):
-                        fm_sr = (sr_img[i].numpy() * 255).transpose(
-                            1, 2, 0).astype(np.uint8)
-                        fm_lr = (lr_img[i].numpy() * 255).transpose(
-                            1, 2, 0).astype(np.uint8)
-                        cv2.imwrite("output/images/{}_{}_sr.jpg".format(
-                            sum_images, i), fm_sr)
-                        cv2.imwrite("output/images/{}_{}_lr.jpg".format(
-                            sum_images, i), fm_lr)
                 else:
                     preds = model(images)
 
@@ -653,7 +637,7 @@ def preprocess(is_train=False):
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
         'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'LayoutLMv2', 'PREN', 'FCE',
         'SVTR', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN', 'VisionLAN',
-        'Gestalt', 'SLANet'
+        'Gestalt', 'SLANet', 'RobustScanner'
     ]
 
     if use_xpu:

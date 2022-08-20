@@ -147,6 +147,7 @@ def main(config, device, logger, vdl_writer):
             len(valid_dataloader)))
 
     use_amp = config["Global"].get("use_amp", False)
+    amp_level = config["Global"].get("amp_level", 'O2')
     if use_amp:
         AMP_RELATED_FLAGS_SETTING = {
             'FLAGS_cudnn_batchnorm_spatial_persistent': 1,
@@ -159,8 +160,9 @@ def main(config, device, logger, vdl_writer):
         scaler = paddle.amp.GradScaler(
             init_loss_scaling=scale_loss,
             use_dynamic_loss_scaling=use_dynamic_loss_scaling)
-        model, optimizer = paddle.amp.decorate(
-            models=model, optimizers=optimizer, level='O2', master_weight=True)
+        if amp_level == "O2":
+            model, optimizer = paddle.amp.decorate(
+                models=model, optimizers=optimizer, level=amp_level, master_weight=True)
     else:
         scaler = None
 
@@ -169,7 +171,7 @@ def main(config, device, logger, vdl_writer):
     # start train
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,
-                  eval_class, pre_best_model_dict, logger, vdl_writer, scaler)
+                  eval_class, pre_best_model_dict, logger, vdl_writer, scaler,amp_level)
 
 
 def test_reader(config, device, logger):

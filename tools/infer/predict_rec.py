@@ -68,7 +68,7 @@ class TextRecognizer(object):
                 'name': 'SARLabelDecode',
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
-            }
+            }   
         elif self.rec_algorithm == "VisionLAN":
             postprocess_params = {
                 'name': 'VLLabelDecode',
@@ -92,6 +92,13 @@ class TextRecognizer(object):
                 'name': 'SPINLabelDecode',
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
+            }
+        elif self.rec_algorithm == "RobustScanner":
+            postprocess_params = {
+                'name': 'SARLabelDecode',
+                "character_dict_path": args.rec_char_dict_path,
+                "use_space_char": args.use_space_char,
+                "rm_symbol": True
             }
         self.postprocess_op = build_post_process(postprocess_params)
         self.predictor, self.input_tensor, self.output_tensors, self.config = \
@@ -390,6 +397,18 @@ class TextRecognizer(object):
                         img_list[indices[ino]], self.rec_image_shape)
                     norm_img = norm_img[np.newaxis, :]
                     norm_img_batch.append(norm_img)
+                elif self.rec_algorithm == "RobustScanner":
+                    norm_img, _, _, valid_ratio = self.resize_norm_img_sar(
+                        img_list[indices[ino]], self.rec_image_shape, width_downsample_ratio=0.25)
+                    norm_img = norm_img[np.newaxis, :]
+                    valid_ratio = np.expand_dims(valid_ratio, axis=0)
+                    valid_ratios = []
+                    valid_ratios.append(valid_ratio)
+                    norm_img_batch.append(norm_img)
+                    word_positions_list = []
+                    word_positions = np.array(range(0, 40)).astype('int64')
+                    word_positions = np.expand_dims(word_positions, axis=0)
+                    word_positions_list.append(word_positions)
                 else:
                     norm_img = self.resize_norm_img(img_list[indices[ino]],
                                                     max_wh_ratio)
@@ -439,8 +458,38 @@ class TextRecognizer(object):
                 valid_ratios = np.concatenate(valid_ratios)
                 inputs = [
                     norm_img_batch,
-                    valid_ratios,
+                    np.array(
+                        [valid_ratios], dtype=np.float32),
                 ]
+                if self.use_onnx:
+                    input_dict = {}
+                    input_dict[self.input_tensor.name] = norm_img_batch
+                    outputs = self.predictor.run(self.output_tensors,
+                                                 input_dict)
+                    preds = outputs[0]
+                else:
+                    input_names = self.predictor.get_input_names()
+                    for i in range(len(input_names)):
+                        input_tensor = self.predictor.get_input_handle(
+                            input_names[i])
+                        input_tensor.copy_from_cpu(inputs[i])
+                    self.predictor.run()
+                    outputs = []
+                    for output_tensor in self.output_tensors:
+                        output = output_tensor.copy_to_cpu()
+                        outputs.append(output)
+                    if self.benchmark:
+                        self.autolog.times.stamp()
+                    preds = outputs[0]
+            elif self.rec_algorithm == "RobustScanner":
+                valid_ratios = np.concatenate(valid_ratios)
+                word_positions_list = np.concatenate(word_positions_list)
+                inputs = [
+                    norm_img_batch,
+                    valid_ratios,
+                    word_positions_list
+                ]
+                
                 if self.use_onnx:
                     input_dict = {}
                     input_dict[self.input_tensor.name] = norm_img_batch

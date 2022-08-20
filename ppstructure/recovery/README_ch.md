@@ -35,20 +35,14 @@
 python3 -m pip install --upgrade pip
 
 # GPU安装
-python3 -m pip install "paddlepaddle-gpu>=2.2" -i https://mirror.baidu.com/pypi/simple
+python3 -m pip install "paddlepaddle-gpu>=2.3" -i https://mirror.baidu.com/pypi/simple
 
 # CPU安装
-python3 -m pip install "paddlepaddle>=2.2" -i https://mirror.baidu.com/pypi/simple
+python3 -m pip install "paddlepaddle>=2.3" -i https://mirror.baidu.com/pypi/simple
 
 ```
 
 更多需求，请参照[安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
-
-* **(2)安装依赖**
-
-```bash
-python3 -m pip install -r ppstructure/recovery/requirements.txt
-```
 
 <a name="2.2"></a>
 
@@ -87,11 +81,28 @@ wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar 
 # 下载英文轻量级PP-OCRv3模型的识别模型并解压
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar && tar xf  ch_PP-OCRv3_rec_infer.tar
 # 下载超轻量级英文表格英寸模型并解压
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf ch_ppstructure_mobile_v2.0_SLANet_infer.tar
+# 下载英文版面分析模型
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_layout_infer.tar && tar picodet_lcnet_x1_0_layout_infer.tar
 cd ..
+
 # 执行预测
-python3 predict_system.py --det_model_dir=inference/en_PP-OCRv3_det_infer --rec_model_dir=inference/en_PP-OCRv3_rec_infer --table_model_dir=inference/en_ppocr_mobile_v2.0_table_structure_infer --rec_char_dict_path=../ppocr/utils/en_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --output ./output/table --rec_image_shape=3,48,320 --vis_font_path=../doc/fonts/simfang.ttf --recovery=True --image_dir=./docs/table/1.png
+python3 predict_system.py \
+    --image_dir=./docs/table/1.png \
+    --det_model_dir=inference/en_PP-OCRv3_det_infer \
+    --rec_model_dir=inference/en_PP-OCRv3_rec_infe \
+    --rec_char_dict_path=../ppocr/utils/en_dict.txt \
+    --output=../output/ \
+    --table_model_dir=inference/ch_ppstructure_mobile_v2.0_SLANet_infer \
+    --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt \
+    --table_max_len=488 \
+    --layout_model_dir=inference/picodet_lcnet_x1_0_layout_infer \
+    --layout_dict_path=../ppocr/utils/dict/layout_dict/layout_publaynet_dict.txt \
+    --vis_font_path=../doc/fonts/simfang.ttf \
+    --recovery=True \
+		--save_pdf=False
 ```
 
-运行完成后，每张图片的docx文档会保存到output字段指定的目录下
+运行完成后，每张图片的docx文档会保存到`output`字段指定的目录下
 
+表格恢复到Word代码[table_process.py]来自：https://github.com/pqzx/html2docx.git
