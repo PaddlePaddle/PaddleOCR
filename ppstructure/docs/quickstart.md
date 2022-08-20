@@ -7,16 +7,16 @@
     - [2.1.2 版面分析+表格识别](#212-版面分析表格识别)
     - [2.1.3 版面分析](#213-版面分析)
     - [2.1.4 表格识别](#214-表格识别)
-    - [2.1.5 DocVQA](#215-docvqa)
+    - [2.1.5 DocVQA](#215-dockie)
   - [2.2 代码使用](#22-代码使用)
     - [2.2.1 图像方向分类版面分析表格识别](#221-图像方向分类版面分析表格识别)
     - [2.2.2 版面分析+表格识别](#222-版面分析表格识别)
     - [2.2.3 版面分析](#223-版面分析)
     - [2.2.4 表格识别](#224-表格识别)
-    - [2.2.5 DocVQA](#225-docvqa)
+    - [2.2.5 DocVQA](#225-dockie)
   - [2.3 返回结果说明](#23-返回结果说明)
     - [2.3.1 版面分析+表格识别](#231-版面分析表格识别)
-    - [2.3.2 DocVQA](#232-docvqa)
+    - [2.3.2 DocVQA](#232-dockie)
   - [2.4 参数说明](#24-参数说明)
 
 
@@ -64,7 +64,7 @@ paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/table.jpg --type=structur
 <a name="215"></a>
 #### 2.1.5 DocVQA
 
-请参考：[文档视觉问答](../vqa/README.md)。
+请参考：[文档视觉问答](../kie/README.md)。
 
 <a name="22"></a>
 ### 2.2 代码使用
@@ -172,7 +172,7 @@ for line in result:
 <a name="225"></a>
 #### 2.2.5 DocVQA
 
-请参考：[文档视觉问答](../vqa/README.md)。
+请参考：[文档视觉问答](../kie/README.md)。
 
 <a name="23"></a>
 ### 2.3 返回结果说明
@@ -210,7 +210,7 @@ dict 里各个字段说明如下
 <a name="232"></a>
 #### 2.3.2 DocVQA
 
-请参考：[文档视觉问答](../vqa/README.md)。
+请参考：[文档视觉问答](../kie/README.md)。
 
 <a name="24"></a>
 ### 2.4 参数说明
@@ -226,10 +226,10 @@ dict 里各个字段说明如下
 | layout_dict_path  | 版面分析模型字典| ../ppocr/utils/dict/layout_publaynet_dict.txt |
 | layout_score_threshold  | 版面分析模型检测框阈值| 0.5|
 | layout_nms_threshold  | 版面分析模型nms阈值| 0.5|
-| vqa_algorithm  | vqa模型算法| LayoutXLM|
+| kie_algorithm  | kie模型算法| LayoutXLM|
 | ser_model_dir  | ser模型  inference 模型地址| None|
 | ser_dict_path  | ser模型字典| ../train_data/XFUND/class_list_xfun.txt|
-| mode | structure or vqa  | structure   |
+| mode | structure or kie  | structure   |
 | image_orientation | 前向中是否执行图像方向分类  | False   |
 | layout | 前向中是否执行版面分析  | True   |
 | table  | 前向中是否执行表格识别  | True   |

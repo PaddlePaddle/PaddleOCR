@@ -4,7 +4,7 @@
 - [2. OCR and Table Recognition](#2-ocr-and-table-recognition)
   - [2.1 OCR](#21-ocr)
   - [2.2 Table Recognition](#22-table-recognition)
-- [3. VQA](#3-vqa)
+- [3. VQA](#3-kie)
 - [4. KIE](#4-kie)
 
 

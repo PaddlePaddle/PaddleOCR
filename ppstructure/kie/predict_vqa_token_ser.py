@@ -49,7 +49,7 @@ class SerPredictor(object):
 
         pre_process_list = [{
             'VQATokenLabelEncode': {
-                'algorithm': args.vqa_algorithm,
+                'algorithm': args.kie_algorithm,
                 'class_path': args.ser_dict_path,
                 'contains_re': False,
                 'ocr_engine': self.ocr_engine,

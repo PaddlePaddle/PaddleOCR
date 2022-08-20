@@ -122,7 +122,7 @@ Use the following command to install KIE dependencies.
 git clone https://github.com/PaddlePaddle/PaddleOCR.git
 cd PaddleOCR
 pip install -r requirements.txt
-pip install -r ppstructure/vqa/requirements.txt
+pip install -r ppstructure/kie/requirements.txt
 # 安装PaddleOCR引擎用于预测
 pip install paddleocr -U
 ```
@@ -131,7 +131,7 @@ The visualized results of SER are saved in the `./output` folder by default. Exa
 
 
 <div align="center">
-    <img src="../../ppstructure/docs/vqa/result_ser/zh_val_42_ser.jpg" width="800">
+    <img src="../../ppstructure/docs/kie/result_ser/zh_val_42_ser.jpg" width="800">
 </div>
 
 
@@ -169,13 +169,13 @@ If you want to use OCR engine to obtain end-to-end prediction results, you can u
 
 ```bash
 # just predict using SER trained model
-python3 tools/infer_vqa_token_ser.py \
+python3 tools/infer_kie_token_ser.py \
   -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
   -o Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy \
-  Global.infer_img=./ppstructure/docs/vqa/input/zh_val_42.jpg
+  Global.infer_img=./ppstructure/docs/kie/input/zh_val_42.jpg
 
 # predict using SER and RE trained model at the same time
-python3 ./tools/infer_vqa_token_ser_re.py \
+python3 ./tools/infer_kie_token_ser_re.py \
   -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml \
   -o Architecture.Backbone.checkpoints=./pretrain_models/re_vi_layoutxlm_xfund_pretrained/best_accuracy \
   Global.infer_img=./train_data/XFUND/zh_val/image/zh_val_42.jpg \
@@ -190,14 +190,14 @@ If you want to load the text detection and recognition results collected before,
 
 ```bash
 # just predict using SER trained model
-python3 tools/infer_vqa_token_ser.py \
+python3 tools/infer_kie_token_ser.py \
   -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
   -o Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy \
   Global.infer_img=./train_data/XFUND/zh_val/val.json \
   Global.infer_mode=False
 
 # predict using SER and RE trained model at the same time
-python3 ./tools/infer_vqa_token_ser_re.py \
+python3 ./tools/infer_kie_token_ser_re.py \
   -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml \
   -o Architecture.Backbone.checkpoints=./pretrain_models/re_vi_layoutxlm_xfund_pretrained/best_accuracy \
   Global.infer_img=./train_data/XFUND/zh_val/val.json \
@@ -224,10 +224,10 @@ Use the following command for inference.
 
 ```bash
 cd ppstructure
-python3 vqa/predict_vqa_token_ser.py \
-  --vqa_algorithm=LayoutXLM \
+python3 kie/predict_kie_token_ser.py \
+  --kie_algorithm=LayoutXLM \
   --ser_model_dir=../inference/ser_vi_layoutxlm_xfund_infer \
-  --image_dir=./docs/vqa/input/zh_val_42.jpg \
+  --image_dir=./docs/kie/input/zh_val_42.jpg \
   --ser_dict_path=../train_data/XFUND/class_list_xfun.txt \
   --vis_font_path=../doc/fonts/simfang.ttf \
   --ocr_order_method="tb-yx"

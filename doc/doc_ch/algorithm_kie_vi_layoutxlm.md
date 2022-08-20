@@ -59,10 +59,10 @@ VI-LayoutXLM模型基于SER任务进行推理，可以执行如下命令：
 
 ```bash
 cd ppstructure
-python3 vqa/predict_vqa_token_ser.py \
-  --vqa_algorithm=LayoutXLM \
+python3 kie/predict_kie_token_ser.py \
+  --kie_algorithm=LayoutXLM \
   --ser_model_dir=../inference/ser_vi_layoutxlm_infer \
-  --image_dir=./docs/vqa/input/zh_val_42.jpg \
+  --image_dir=./docs/kie/input/zh_val_42.jpg \
   --ser_dict_path=../train_data/XFUND/class_list_xfun.txt \
   --vis_font_path=../doc/fonts/simfang.ttf \
   --ocr_order_method="tb-yx"
@@ -71,7 +71,7 @@ python3 vqa/predict_vqa_token_ser.py \
 SER可视化结果默认保存到`./output`文件夹里面，结果示例如下：
 
 <div align="center">
-    <img src="../../ppstructure/docs/vqa/result_ser/zh_val_42_ser.jpg" width="800">
+    <img src="../../ppstructure/docs/kie/result_ser/zh_val_42_ser.jpg" width="800">
 </div>
 
 

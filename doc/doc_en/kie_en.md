@@ -69,7 +69,7 @@ The annotation can be parsed by `json` into a list of sub-annotations. Each elem
 
 The evaluation set is constructed in the same way as the training set.
 
-**(2) Dictionary file**
+**(3) Dictionary file**
 
 The textlines in the training set and the evaluation set contain label information. The list of all labels is stored in the dictionary file (such as `class_list.txt`). Each line in the dictionary file is represented as a label name.
 
