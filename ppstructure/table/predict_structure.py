@@ -29,7 +29,7 @@ import tools.infer.utility as utility
 from ppocr.data import create_operators, transform
 from ppocr.postprocess import build_post_process
 from ppocr.utils.logging import get_logger
-from ppocr.utils.utility import get_image_file_list, check_and_read_gif
+from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppocr.utils.visual import draw_rectangle
 from ppstructure.utility import parse_args
 
@@ -133,7 +133,7 @@ def main(args):
             os.path.join(args.output, 'infer.txt'), mode='w',
             encoding='utf-8') as f_w:
         for image_file in image_file_list:
-            img, flag = check_and_read_gif(image_file)
+            img, flag, _ = check_and_read(image_file)
             if not flag:
                 img = cv2.imread(image_file)
             if img is None:

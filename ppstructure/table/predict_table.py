@@ -31,7 +31,7 @@ import tools.infer.predict_rec as predict_rec
 import tools.infer.predict_det as predict_det
 import tools.infer.utility as utility
 from tools.infer.predict_system import sorted_boxes
-from ppocr.utils.utility import get_image_file_list, check_and_read_gif
+from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppocr.utils.logging import get_logger
 from ppstructure.table.matcher import TableMatch
 from ppstructure.table.table_master_match import TableMasterMatcher
@@ -194,7 +194,7 @@ def main(args):
 
     for i, image_file in enumerate(image_file_list):
         logger.info("[{}/{}] {}".format(i, img_num, image_file))
-        img, flag = check_and_read_gif(image_file)
+        img, flag, _ = check_and_read(image_file)
         excel_path = os.path.join(
             args.output, os.path.basename(image_file).split('.')[0] + '.xlsx')
         if not flag:

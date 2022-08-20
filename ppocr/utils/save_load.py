@@ -54,13 +54,15 @@ def load_model(config, model, optimizer=None, model_type='det'):
     pretrained_model = global_config.get('pretrained_model')
     best_model_dict = {}
     is_float16 = False
+    is_nlp_model = model_type == 'kie' and config["Architecture"][
+        "algorithm"] not in ["SDMGR"]
 
-    if model_type == 'vqa':
-        # NOTE: for vqa model dsitillation, resume training is not supported now
+    if is_nlp_model is True:
+        # NOTE: for kie model dsitillation, resume training is not supported now
         if config["Architecture"]["algorithm"] in ["Distillation"]:
             return best_model_dict
         checkpoints = config['Architecture']['Backbone']['checkpoints']
-        # load vqa method metric
+        # load kie method metric
         if checkpoints:
             if os.path.exists(os.path.join(checkpoints, 'metric.states')):
                 with open(os.path.join(checkpoints, 'metric.states'),
@@ -153,7 +155,7 @@ def load_pretrained_params(model, path):
 
     new_state_dict = {}
     is_float16 = False
-    
+
     for k1 in params.keys():
 
         if k1 not in state_dict.keys():
@@ -192,10 +194,10 @@ def save_model(model,
     _mkdir_if_not_exist(model_path, logger)
     model_prefix = os.path.join(model_path, prefix)
     paddle.save(optimizer.state_dict(), model_prefix + '.pdopt')
-    if config['Architecture']["model_type"] != 'vqa':
+    if is_nlp_model is not True:
         paddle.save(model.state_dict(), model_prefix + '.pdparams')
         metric_prefix = model_prefix
-    else:  # for vqa system, we follow the save/load rules in NLP
+    else:  # for kie system, we follow the save/load rules in NLP
         if config['Global']['distributed']:
             arch = model._layers
         else:
