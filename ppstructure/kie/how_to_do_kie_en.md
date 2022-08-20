@@ -149,7 +149,7 @@ In the RE stage, the ID and connection information of each field need to be mark
 For each textline, you need to add 'ID' and 'linking' field information. The 'ID' records the unique identifier of the textline. Different text contents in the same images cannot be repeated. The 'linking' is a list that records the connection information between different texts. If the ID of the field "name" is 0 and the ID of the field "Geoff Sample" is 1, then they all have [[0, 1]] 'linking' marks, indicating that the fields with `id=0` and `id=1` form a key value relationship (the fields such as DOB and Expires are similar, and will not be repeated here).
 
 
-**Note: **
+**Note:**
 
 -During annotation, if value is multiple textines, a key value pair can be added in linking, such as `[[0, 1], [0, 2]]`.
 
