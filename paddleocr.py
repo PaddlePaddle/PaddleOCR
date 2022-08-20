@@ -289,7 +289,8 @@ MODEL_URLS = {
                 'ch': {
                     'url':
                     'https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_layout_infer.tar',
-                    'dict_path': 'ppocr/utils/dict/layout_publaynet_dict.txt'
+                    'dict_path':
+                    'ppocr/utils/dict/layout_dict/layout_publaynet_dict.txt'
                 }
             }
         }
