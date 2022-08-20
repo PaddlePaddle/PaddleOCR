@@ -34,7 +34,7 @@ We evaluated the algorithm on the PubTabNet<sup>[1]</sup> eval dataset, and the 
 | --- | --- | --- | ---|
 | EDD<sup>[2]</sup> |x| 88.3 |x|
 | TableRec-RARE(ours) | 71.73%| 93.88% |779ms|
-| SLANet(ours) | 76.2%|    95.85% |766ms|
+| SLANet(ours) | 76.31%|    95.89%|766ms|
 
 The performance indicators are explained as follows:
 - Acc: The accuracy of the table structure in each image, a wrong token is considered an error.
