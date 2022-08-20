@@ -1,127 +1,469 @@
-English | [简体中文](README_ch.md)
-- [Getting Started](#getting-started)
-  - [1.  Install whl package](#1--install-whl-package)
-  - [2. Quick Start](#2-quick-start)
-  - [3. PostProcess](#3-postprocess)
-  - [4. Results](#4-results)
-  - [5. Training](#5-training)
+- [1. 简介](#1-简介)
 
-# Getting Started
+- [2. 安装](#2-安装)
 
-## 1.  Install whl package
+  - [2.1 安装PaddlePaddle](#21-安装paddlepaddle)
+  - [2.2 安装PaddleDetection](#22-安装paddledetection)
+
+- [3. 数据准备](#3-数据准备)
+
+  - [3.1 英文数据集](#31-英文数据集)
+  - [3.2 更多数据集](#32-更多数据集)
+
+- [4. 开始训练](#4-开始训练)
+
+  - [4.1 启动训练](#41-启动训练)
+  - [4.2 FGD蒸馏训练](#42-FGD蒸馏训练)
+
+- [5. 模型评估与预测](#5-模型评估与预测)
+
+  - [5.1 指标评估](#51-指标评估)
+  - [5.2 测试版面分析结果](#52-测试版面分析结果)
+
+- [6 模型导出与预测](#6-模型导出与预测)
+
+  - [6.1 模型导出](#61-模型导出)
+
+  - [6.2 模型推理](#62-模型推理)
+
+# 版面分析
+
+## 1. 简介
+
+版面分析指的是对图片形式的文档进行区域划分，定位其中的关键区域，如文字、标题、表格、图片等。版面分析算法基于[PaddleDetection](https://github.com/PaddlePaddle/PaddleDetection)的轻量模型PP-PicoDet进行开发。
+
+<div align="center">
+    <img src="../docs/layout/layout.png" width="800">
+</div>
+
+
+
+## 2. 安装依赖
+
+### 2.1. 安装PaddlePaddle
+
+- **（1) 安装PaddlePaddle**
+
 ```bash
-wget https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
-pip install -U layoutparser-0.0.0-py3-none-any.whl
+python3 -m pip install --upgrade pip
+
+# GPU安装
+python3 -m pip install "paddlepaddle-gpu>=2.2" -i https://mirror.baidu.com/pypi/simple
+
+# CPU安装
+python3 -m pip install "paddlepaddle>=2.2" -i https://mirror.baidu.com/pypi/simple
+```
+更多需求，请参照[安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
+
+### 2.2. 安装PaddleDetection
+
+- **（1）下载PaddleDetection源码**
+
+```bash
+git clone https://github.com/PaddlePaddle/PaddleDetection.git
 ```
 
-## 2. Quick Start
+- **（2）安装其他依赖 **
 
-Use LayoutParser to identify the layout of a document:
-
-```python
-import cv2
-import layoutparser as lp
-image = cv2.imread("doc/table/layout.jpg")
-image = image[..., ::-1]
-
-# load model
-model = lp.PaddleDetectionLayoutModel(config_path="lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config",
-                                threshold=0.5,
-                                label_map={0: "Text", 1: "Title", 2: "List", 3:"Table", 4:"Figure"},
-                                enforce_cpu=False,
-                                enable_mkldnn=True)
-# detect
-layout = model.detect(image)
-
-# show result
-show_img = lp.draw_box(image, layout, box_width=3, show_element_type=True)
-show_img.show()
+```bash
+cd PaddleDetection
+python3 -m pip install -r requirements.txt
 ```
 
-The following figure shows the result, with different colored detection boxes representing different categories and displaying specific categories in the upper left corner of the box with `show_element_type`
+## 3. 数据准备
+
+如果希望直接体验预测过程，可以跳过数据准备，下载我们提供的预训练模型。
+
+### 3.1. 英文数据集
+
+下载文档分析数据集[PubLayNet](https://developer.ibm.com/exchanges/data/all/publaynet/)（数据集96G），包含5个类：`{0: "Text", 1: "Title", 2: "List", 3:"Table", 4:"Figure"}`
+
+```
+# 下载数据
+wget https://dax-cdn.cdn.appdomain.cloud/dax-publaynet/1.0.0/publaynet.tar.gz
+# 解压数据
+tar -xvf publaynet.tar.gz
+```
+
+解压之后的**目录结构：**
+
+```
+|-publaynet
+  |- test
+     |- PMC1277013_00004.jpg
+     |- PMC1291385_00002.jpg
+     | ...
+  |- train.json
+  |- train
+     |- PMC1291385_00002.jpg
+     |- PMC1277013_00004.jpg
+     | ...
+  |- val.json
+  |- val
+     |- PMC538274_00004.jpg
+     |- PMC539300_00004.jpg
+     | ...
+```
+
+**数据分布：**
+
+| File or Folder | Description    | num     |
+| :------------- | :------------- | ------- |
+| `train/`       | 训练集图片     | 335,703 |
+| `val/`         | 验证集图片     | 11,245  |
+| `test/`        | 测试集图片     | 11,405  |
+| `train.json`   | 训练集标注文件 | -       |
+| `val.json`     | 验证集标注文件 | -       |
+
+**标注格式：**
+
+json文件包含所有图像的标注，数据以字典嵌套的方式存放，包含以下key：
+
+- info，表示标注文件info。
+
+- licenses，表示标注文件licenses。
+
+- images，表示标注文件中图像信息列表，每个元素是一张图像的信息。如下为其中一张图像的信息：
+
+  ```
+  {
+      'file_name': 'PMC4055390_00006.jpg',    # file_name
+      'height': 601,                      # image height
+      'width': 792,                       # image width
+      'id': 341427                        # image id
+  }
+  ```
+
+- annotations，表示标注文件中目标物体的标注信息列表，每个元素是一个目标物体的标注信息。如下为其中一个目标物体的标注信息：
+
+  ```
+  {
+  
+      'segmentation':             # 物体的分割标注
+      'area': 60518.099043117836, # 物体的区域面积
+      'iscrowd': 0,               # iscrowd
+      'image_id': 341427,         # image id
+      'bbox': [50.58, 490.86, 240.15, 252.16], # bbox [x1,y1,w,h]
+      'category_id': 1,           # category_id
+      'id': 3322348               # image id
+  }
+  ```
+
+### 3.2. 更多数据集
+
+我们提供了CDLA(中文版面分析)、TableBank(表格版面分析)等数据集的下连接，处理为上述标注文件json格式，即可以按相同方式进行训练。
+
+| dataset                                                      | 简介                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [cTDaR2019_cTDaR](https://cndplab-founder.github.io/cTDaR2019/) | 用于表格检测(TRACKA)和表格识别(TRACKB)。图片类型包含历史数据集(以cTDaR_t0开头，如cTDaR_t00872.jpg)和现代数据集(以cTDaR_t1开头，cTDaR_t10482.jpg)。 |
+| [IIIT-AR-13K](http://cvit.iiit.ac.in/usodi/iiitar13k.php)    | 手动注释公开的年度报告中的图形或页面而构建的数据集，包含5类：table, figure, natural image, logo, and signature |
+| [CDLA](https://github.com/buptlihang/CDLA)                   | 中文文档版面分析数据集，面向中文文献类（论文）场景，包含10类：Table、Figure、Figure caption、Table、Table caption、Header、Footer、Reference、Equation |
+| [TableBank](https://github.com/doc-analysis/TableBank)       | 用于表格检测和识别大型数据集，包含Word和Latex2种文档格式     |
+| [DocBank](https://github.com/doc-analysis/DocBank)           | 使用弱监督方法构建的大规模数据集(500K文档页面)，用于文档布局分析，包含12类：Author、Caption、Date、Equation、Figure、Footer、List、Paragraph、Reference、Section、Table、Title |
+
+
+## 4. 开始训练
+
+提供了训练脚本、评估脚本和预测脚本，本节将以PubLayNet预训练模型为例进行讲解。
+
+如果不希望训练，直接体验后面的模型评估、预测、动转静、推理的流程，可以下载提供的预训练模型，并跳过本部分。
+
+```
+mkdir pretrained_model
+cd pretrained_model
+# 下载并解压PubLayNet预训练模型
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_layout.pdparams
+```
+
+### 4.1. 启动训练
+
+开始训练:
+
+* 修改配置文件
+
+如果你希望训练自己的数据集，需要修改配置文件中的数据配置、类别数。
+
+
+以`configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml` 为例，修改的内容如下所示。
+
+```yaml
+metric: COCO
+# 类别数
+num_classes: 5
+
+TrainDataset:
+  !COCODataSet
+    # 修改为你自己的训练数据目录
+    image_dir: train
+    # 修改为你自己的训练数据标签文件
+    anno_path: train.json
+    # 修改为你自己的训练数据根目录
+    dataset_dir: /root/publaynet/
+    data_fields: ['image', 'gt_bbox', 'gt_class', 'is_crowd']
+
+EvalDataset:
+  !COCODataSet
+    # 修改为你自己的验证数据目录
+    image_dir: val
+    # 修改为你自己的验证数据标签文件
+    anno_path: val.json
+    # 修改为你自己的验证数据根目录
+    dataset_dir: /root/publaynet/
+
+TestDataset:
+  !ImageFolder
+    # 修改为你自己的测试数据标签文件
+    anno_path: /root/publaynet/val.json
+```
+
+* 开始训练，在训练时，会默认下载PP-PicoDet预训练模型，这里无需预先下载。
+
+```bash
+# GPU训练 支持单卡，多卡训练
+# 训练日志会自动保存到 log 目录中
+
+# 单卡训练
+python3 tools/train.py \
+	-c configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml \
+	--eval
+
+# 多卡训练，通过--gpus参数指定卡号
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py \
+	-c configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml \
+	--eval
+```
+
+正常启动训练后，会看到以下log输出：
+
+```
+[08/15 04:02:30] ppdet.utils.checkpoint INFO: Finish loading model weights: /root/.cache/paddle/weights/LCNet_x1_0_pretrained.pdparams
+[08/15 04:02:46] ppdet.engine INFO: Epoch: [0] [   0/1929] learning_rate: 0.040000 loss_vfl: 1.216707 loss_bbox: 1.142163 loss_dfl: 0.544196 loss: 2.903065 eta: 17 days, 13:50:26 batch_cost: 15.7452 data_cost: 2.9112 ips: 1.5243 images/s
+[08/15 04:03:19] ppdet.engine INFO: Epoch: [0] [  20/1929] learning_rate: 0.064000 loss_vfl: 1.180627 loss_bbox: 0.939552 loss_dfl: 0.442436 loss: 2.628206 eta: 2 days, 12:18:53 batch_cost: 1.5770 data_cost: 0.0008 ips: 15.2184 images/s
+[08/15 04:03:47] ppdet.engine INFO: Epoch: [0] [  40/1929] learning_rate: 0.088000 loss_vfl: 0.543321 loss_bbox: 1.071401 loss_dfl: 0.457817 loss: 2.057003 eta: 2 days, 0:07:03 batch_cost: 1.3190 data_cost: 0.0007 ips: 18.1954 images/s
+[08/15 04:04:12] ppdet.engine INFO: Epoch: [0] [  60/1929] learning_rate: 0.112000 loss_vfl: 0.630989 loss_bbox: 0.859183 loss_dfl: 0.384702 loss: 1.883143 eta: 1 day, 19:01:29 batch_cost: 1.2177 data_cost: 0.0006 ips: 19.7087 images/s
+```
+
+- `--eval`表示训练的同时，进行评估， 评估过程中默认将最佳模型，保存为 `output/picodet_lcnet_x1_0_layout/best_accuracy` 。
+
+**注意，预测/评估时的配置文件请务必与训练一致。**
+
+### 4.2. FGD蒸馏训练
+
+PaddleDetection支持了基于FGD([Focal and Global Knowledge Distillation for Detectors](https://arxiv.org/abs/2111.11837v1))蒸馏的目标检测模型训练过程，FGD蒸馏分为两个部分`Focal`和`Global`。`Focal`蒸馏分离图像的前景和背景，让学生模型分别关注教师模型的前景和背景部分特征的关键像素；`Global`蒸馏部分重建不同像素之间的关系并将其从教师转移到学生，以补偿`Focal`蒸馏中丢失的全局信息。
+
+更换数据集，修改【TODO】配置中的数据配置、类别数，具体可以参考4.1。启动训练：
+
+```bash
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py \
+	-c configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml \
+	--slim_config configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x2_5_layout.yml \
+	--eval
+```
+
+- `-c`: 指定模型配置文件。
+- `--slim_config`: 指定压缩策略配置文件。
+
+## 5. 模型评估与预测
+
+### 5.1. 指标评估
+
+训练中模型参数默认保存在`output/picodet_lcnet_x1_0_layout`目录下。在评估指标时，需要设置`weights`指向保存的参数文件。评估数据集可以通过 `configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml`  修改`EvalDataset`中的 `image_dir`、`anno_path`和`dataset_dir` 设置。
+
+```bash
+# GPU 评估， weights 为待测权重
+python3 tools/eval.py \
+	-c configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml \
+	-o weigths=./output/picodet_lcnet_x1_0_layout/best_model
+```
+
+会输出以下信息，打印出mAP、AP0.5等信息。
+
+```py
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.935
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.979
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.956
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.404
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.782
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.969
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.539
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.938
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.949
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.495
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.818
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.978
+[08/15 07:07:09] ppdet.engine INFO: Total sample number: 11245, averge FPS: 24.405059207157436
+[08/15 07:07:09] ppdet.engine INFO: Best test bbox ap is 0.935.
+```
+
+使用FGD蒸馏模型进行评估：
+
+```
+python3 tools/eval.py \
+	-c configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml \
+	--slim_config configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x2_5_layout.yml \
+	-o weights=output/picodet_lcnet_x2_5_layout/best_model
+```
+
+- `-c`: 指定模型配置文件。
+- `--slim_config`: 指定蒸馏策略配置文件。
+- `-o weights`: 指定蒸馏算法训好的模型路径。
+
+### 5.2. 测试版面分析结果
+
+
+预测使用的配置文件必须与训练一致，如您通过 `python3 tools/train.py -c configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml` 完成了模型的训练过程。
+
+使用 PaddleDetection 训练好的模型，您可以使用如下命令进行中文模型预测。
+
+
+```bash
+python3 tools/infer.py \
+    -c configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml \
+    -o weights='output/picodet_lcnet_x1_0_layout/best_model.pdparams' \
+    --infer_img='docs/images/layout.jpg' \
+    --output_dir=output_dir/ \
+    --draw_threshold=0.4
+```
+
+- `--infer_img`: 推理单张图片，也可以通过`--infer_dir`推理文件中的所有图片。
+- `--output_dir`: 指定可视化结果保存路径。
+- `--draw_threshold`:指定绘制结果框的NMS阈值。
+
+预测图片如下所示，图片会存储在`output_dir`路径中。
+
+使用FGD蒸馏模型进行测试：
+
+```
+python3 tools/infer.py \
+	-c configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml \
+	--slim_config configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x2_5_layout.yml \
+	-o weights='output/picodet_lcnet_x2_5_layout/best_model.pdparams' \
+	--infer_img='docs/images/layout.jpg' \
+	--output_dir=output_dir/ \
+	--draw_threshold=0.4
+```
+
+
+
+## 6. 模型导出与预测
+
+
+### 6.1 模型导出
+
+inference 模型（`paddle.jit.save`保存的模型） 一般是模型训练，把模型结构和模型参数保存在文件中的固化模型，多用于预测部署场景。 训练过程中保存的模型是checkpoints模型，保存的只有模型的参数，多用于恢复训练等。 与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合于实际系统集成。
+
+版面分析模型转inference模型步骤如下：
+
+```bash
+python3 tools/export_model.py \
+	-c configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml \
+	-o weights=output/picodet_lcnet_x1_0_layout/best_model \
+	--output_dir=output_inference/
+```
+
+* 如无需导出后处理，请指定：`-o export.benchmark=True`（如果-o已出现过，此处删掉-o）
+* 如无需导出NMS，请指定：`-o export.nms=False`
+
+转换成功后，在目录下有三个文件：
+
+```
+output_inference/picodet_lcnet_x1_0_layout/
+    ├── model.pdiparams         # inference模型的参数文件
+    ├── model.pdiparams.info    # inference模型的参数信息，可忽略
+    └── model.pdmodel           # inference模型的模型结构文件
+```
+
+FGD蒸馏模型转inference模型步骤如下：
+
+```bash
+python3 tools/export_model.py \
+	-c configs/picodet/legacy_model/application/publayernet_lcnet_x1_5/picodet_student.yml \
+	--slim_config configs/picodet/legacy_model/application/publayernet_lcnet_x1_5/picodet_teacher.yml \
+	-o weights=./output/picodet_lcnet_x2_5_layout/best_model \
+	--output_dir=output_inference/
+```
+
+
+
+### 6.2 模型推理
+
+版面恢复任务进行推理，可以执行如下命令：
+
+```bash
+python3 deploy/python/infer.py \
+	--model_dir=output_inference/picodet_lcnet_x1_0_layout/ \
+	--image_file=docs/images/layout.jpg \
+	--device=CPU
+```
+
+- --device：指定GPU、CPU设备
+
+模型推理完成，会看到以下log输出
+
+```
+------------------------------------------
+-----------  Model Configuration -----------
+Model Arch: PicoDet
+Transform Order: 
+--transform op: Resize
+--transform op: NormalizeImage
+--transform op: Permute
+--transform op: PadStride
+--------------------------------------------
+class_id:0, confidence:0.9921, left_top:[20.18,35.66],right_bottom:[341.58,600.99]
+class_id:0, confidence:0.9914, left_top:[19.77,611.42],right_bottom:[341.48,901.82]
+class_id:0, confidence:0.9904, left_top:[369.36,375.10],right_bottom:[691.29,600.59]
+class_id:0, confidence:0.9835, left_top:[369.60,608.60],right_bottom:[691.38,736.72]
+class_id:0, confidence:0.9830, left_top:[369.58,805.38],right_bottom:[690.97,901.80]
+class_id:0, confidence:0.9716, left_top:[383.68,271.44],right_bottom:[688.93,335.39]
+class_id:0, confidence:0.9452, left_top:[370.82,34.48],right_bottom:[688.10,63.54]
+class_id:1, confidence:0.8712, left_top:[370.84,771.03],right_bottom:[519.30,789.13]
+class_id:3, confidence:0.9856, left_top:[371.28,67.85],right_bottom:[685.73,267.72]
+save result to: output/layout.jpg
+Test iter 0
+------------------ Inference Time Info ----------------------
+total_time(ms): 2196.0, img_num: 1
+average latency time(ms): 2196.00, QPS: 0.455373
+preprocess_time(ms): 2172.50, inference_time(ms): 11.90, postprocess_time(ms): 11.60
+```
+
+- Model：模型结构
+- Transform Order：预处理操作
+- class_id、confidence、left_top、right_bottom：分别表示类别id、置信度、左上角坐标、右下角坐标
+- save result to：可视化版面分析结果保存路径，默认保存到`./output`文件夹
+- Inference Time Info：推理时间，其中preprocess_time表示预处理耗时，inference_time表示模型预测耗时，postprocess_time表示后处理耗时
+
+可视化版面结果如下图所示
 
 <div align="center">
-<img src="../../doc/table/result_all.jpg"  width = "600" />
+    <img src="../docs/layout/layout_res.jpg" width="800">
 </div>
-`PaddleDetectionLayoutModel`parameters are described as follows:
 
-|   parameter    |                       description                        |   default   |                            remark                            |
-| :------------: | :------------------------------------------------------: | :---------: | :----------------------------------------------------------: |
-|  config_path   |                    model config path                     |    None     | Specify config_ path will automatically download the model (only for the first time,the model will exist and will not be downloaded again) |
-|   model_path   |                        model path                        |    None     | local model path, config_ path and model_ path must be set to one, cannot be none at the same time |
-|   threshold    |              threshold of prediction score               |     0.5     |                              \                               |
-|  input_shape   |                 picture size of reshape                  | [3,640,640] |                              \                               |
-|   batch_size   |                    testing batch size                    |      1      |                              \                               |
-|   label_map    |                  category mapping table                  |    None     | Setting config_ path, it can be none, and the label is automatically obtained according to the dataset name_ map, You need to specify it manually when setting model_path |
-|  enforce_cpu   |                    whether to use CPU                    |    False    |      False to use GPU, and True to force the use of CPU      |
-| enforce_mkldnn | whether mkldnn acceleration is enabled in CPU prediction |    True     |                              \                               |
-|   thread_num   |                the number of CPU threads                 |     10      |                              \                               |
 
-The following model configurations and label maps are currently supported, which you can use by modifying '--config_path' and '--label_map' to detect different types of content:
 
-| dataset                                                      | config_path                                                  | label_map                                                 |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | --------------------------------------------------------- |
-| [TableBank](https://doc-analysis.github.io/tablebank-page/index.html) word | lp://TableBank/ppyolov2_r50vd_dcn_365e_tableBank_word/config | {0:"Table"}                                               |
-| TableBank latex                                              | lp://TableBank/ppyolov2_r50vd_dcn_365e_tableBank_latex/config | {0:"Table"}                                               |
-| [PubLayNet](https://github.com/ibm-aur-nlp/PubLayNet)        | lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config      | {0: "Text", 1: "Title", 2: "List", 3:"Table", 4:"Figure"} |
+## Citations
 
-* TableBank word and TableBank latex are trained on datasets of word documents and latex documents respectively;
-* Download TableBank dataset contains both word and latex。
+```
+@inproceedings{zhong2019publaynet,
+  title={PubLayNet: largest dataset ever for document layout analysis},
+  author={Zhong, Xu and Tang, Jianbin and Yepes, Antonio Jimeno},
+  booktitle={2019 International Conference on Document Analysis and Recognition (ICDAR)},
+  year={2019},
+  volume={},
+  number={},
+  pages={1015-1022},
+  doi={10.1109/ICDAR.2019.00166},
+  ISSN={1520-5363},
+  month={Sep.},
+  organization={IEEE}
+}
 
-## 3. PostProcess
-
-Layout parser contains multiple categories, if you only want to get the detection box for a specific category (such as the "Text" category), you can use the following code:
-
-```python
-# follow the above code
-# filter areas for a specific text type
-text_blocks = lp.Layout([b for b in layout if b.type=='Text'])
-figure_blocks = lp.Layout([b for b in layout if b.type=='Figure'])
-
-# text areas may be detected within the image area, delete these areas
-text_blocks = lp.Layout([b for b in text_blocks \
-                   if not any(b.is_in(b_fig) for b_fig in figure_blocks)])
-
-# sort text areas and assign ID
-h, w = image.shape[:2]
-
-left_interval = lp.Interval(0, w/2*1.05, axis='x').put_on_canvas(image)
-
-left_blocks = text_blocks.filter_by(left_interval, center=True)
-left_blocks.sort(key = lambda b:b.coordinates[1])
-
-right_blocks = [b for b in text_blocks if b not in left_blocks]
-right_blocks.sort(key = lambda b:b.coordinates[1])
-
-# the two lists are merged and the indexes are added in order
-text_blocks = lp.Layout([b.set(id = idx) for idx, b in enumerate(left_blocks + right_blocks)])
-
-# display result
-show_img = lp.draw_box(image, text_blocks,
-            box_width=3,
-            show_element_id=True)
-show_img.show()
+@inproceedings{yang2022focal,
+  title={Focal and global knowledge distillation for detectors},
+  author={Yang, Zhendong and Li, Zhe and Jiang, Xiaohu and Gong, Yuan and Yuan, Zehuan and Zhao, Danpei and Yuan, Chun},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={4643--4652},
+  year={2022}
+}
 ```
 
-Displays results with only the "Text" category：
-
-<div align="center">
-<img src="../../doc/table/result_text.jpg"  width = "600" />
-</div>
-
-## 4. Results
-
-| Dataset   | mAP  | CPU time cost | GPU time cost |
-| --------- | ---- | ------------- | ------------- |
-| PubLayNet | 93.6 | 1713.7ms      | 66.6ms        |
-| TableBank | 96.2 | 1968.4ms      | 65.1ms        |
-
-**Envrionment：**
-
-​    **CPU：**  Intel(R) Xeon(R) CPU E5-2650 v4 @ 2.20GHz，24core
-
-​    **GPU：**  a single NVIDIA Tesla P40
-
-## 5. Training
-
-The above model is based on [PaddleDetection](https://github.com/PaddlePaddle/PaddleDetection). If you want to train your own layout parser model，please refer to：[train_layoutparser_model](train_layoutparser_model.md)

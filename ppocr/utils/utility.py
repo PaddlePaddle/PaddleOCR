@@ -50,7 +50,7 @@ def get_check_global_params(mode):
 
 
 def _check_image_file(path):
-    img_end = {'jpg', 'bmp', 'png', 'jpeg', 'rgb', 'tif', 'tiff', 'gif'}
+    img_end = {'jpg', 'bmp', 'png', 'jpeg', 'rgb', 'tif', 'tiff', 'gif', 'pdf'}
     return any([path.lower().endswith(e) for e in img_end])
 
 
@@ -59,7 +59,7 @@ def get_image_file_list(img_file):
     if img_file is None or not os.path.exists(img_file):
         raise Exception("not found any img file in {}".format(img_file))
 
-    img_end = {'jpg', 'bmp', 'png', 'jpeg', 'rgb', 'tif', 'tiff', 'gif'}
+    img_end = {'jpg', 'bmp', 'png', 'jpeg', 'rgb', 'tif', 'tiff', 'gif', 'pdf'}
     if os.path.isfile(img_file) and _check_image_file(img_file):
         imgs_lists.append(img_file)
     elif os.path.isdir(img_file):
@@ -73,7 +73,7 @@ def get_image_file_list(img_file):
     return imgs_lists
 
 
-def check_and_read_gif(img_path):
+def check_and_read(img_path):
     if os.path.basename(img_path)[-3:] in ['gif', 'GIF']:
         gif = cv2.VideoCapture(img_path)
         ret, frame = gif.read()
@@ -84,8 +84,26 @@ def check_and_read_gif(img_path):
         if len(frame.shape) == 2 or frame.shape[-1] == 1:
             frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2RGB)
         imgvalue = frame[:, :, ::-1]
-        return imgvalue, True
-    return None, False
+        return imgvalue, True, False
+    elif os.path.basename(img_path)[-3:] in ['pdf']:
+        import fitz
+        from PIL import Image
+        imgs = []
+        with fitz.open(img_path) as pdf:
+            for pg in range(0, pdf.pageCount):
+                page = pdf[pg]
+                mat = fitz.Matrix(2, 2)
+                pm = page.getPixmap(matrix=mat, alpha=False)
+
+                # if width or height > 2000 pixels, don't enlarge the image
+                if pm.width > 2000 or pm.height > 2000:
+                    pm = page.getPixmap(matrix=fitz.Matrix(1, 1), alpha=False)
+
+                img = Image.frombytes("RGB", [pm.width, pm.height], pm.samples)
+                img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+                imgs.append(img)
+            return imgs, False, True
+    return None, False, False
 
 
 def load_vqa_bio_label_maps(label_map_path):

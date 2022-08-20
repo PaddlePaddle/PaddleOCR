@@ -17,7 +17,7 @@ Global:
   # for data or label process
   character_dict_path: ppocr/utils/dict/table_structure_dict.txt
   character_type: en
-  max_text_length: &max_text_length 800
+  max_text_length: &max_text_length 500
   box_format: &box_format 'xyxy' # 'xywh', 'xyxy', 'xyxyxyxy'
   infer_mode: False
 
@@ -38,7 +38,8 @@ Architecture:
   Backbone:
     name: MobileNetV3
     scale: 1.0
-    model_name: large
+    model_name: small
+    disable_se: true
   Head:
     name: TableAttentionHead
     hidden_size: 256
@@ -89,7 +90,7 @@ Train:
           keep_keys: [ 'image', 'structure', 'bboxes', 'bbox_masks', 'shape' ]
   loader:
     shuffle: True
-    batch_size_per_card: 32
+    batch_size_per_card: 48
     drop_last: True
     num_workers: 1
 
@@ -124,5 +125,5 @@ Eval:
   loader:
     shuffle: False
     drop_last: False
-    batch_size_per_card: 16
+    batch_size_per_card: 48
     num_workers: 1
