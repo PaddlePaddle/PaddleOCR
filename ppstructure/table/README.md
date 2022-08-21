@@ -33,8 +33,8 @@ We evaluated the algorithm on the PubTabNet<sup>[1]</sup> eval dataset, and the 
 |Method|Acc|[TEDS(Tree-Edit-Distance-based Similarity)](https://github.com/ibm-aur-nlp/PubTabNet/tree/master/src)|Speed|
 | --- | --- | --- | ---|
 | EDD<sup>[2]</sup> |x| 88.3 |x|
-| TableRec-RARE(ours) |73.8%| 95.3% |1550ms|
-| SLANet(ours) | 76.2%|    95.85% |766ms|
+| TableRec-RARE(ours) | 71.73%| 93.88% |779ms|
+| SLANet(ours) | 76.31%|    95.89%|766ms|
 
 The performance indicators are explained as follows:
 - Acc: The accuracy of the table structure in each image, a wrong token is considered an error.
