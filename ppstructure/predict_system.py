@@ -26,7 +26,6 @@ import json
 import time
 import logging
 from copy import deepcopy
-from attrdict import AttrDict
 
 from ppocr.utils.utility import get_image_file_list, check_and_read_gif
 from ppocr.utils.logging import get_logger
@@ -91,14 +90,14 @@ class StructureSystem(object):
                 layout_res = self.table_layout.detect(img[..., ::-1])
             else:
                 h, w = ori_im.shape[:2]
-                layout_res = [AttrDict(coordinates=[0, 0, w, h], type='Table')]
+                layout_res = [{'coordinates': [0, 0, w, h], 'type': 'Table'}]
             res_list = []
             for region in layout_res:
                 res = ''
-                x1, y1, x2, y2 = region.coordinates
+                x1, y1, x2, y2 = region['coordinates']
                 x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
                 roi_img = ori_im[y1:y2, x1:x2, :]
-                if region.type == 'Table':
+                if region['type'] == 'Table':
                     if self.table_system is not None:
                         res = self.table_system(roi_img,
                                                 return_ocr_result_in_table)
@@ -125,7 +124,7 @@ class StructureSystem(object):
                                 'text_region': box.tolist()
                             })
                 res_list.append({
-                    'type': region.type,
+                    'type': region['type'],
                     'bbox': [x1, y1, x2, y2],
                     'img': roi_img,
                     'res': res
