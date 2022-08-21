@@ -28,11 +28,12 @@ import tools.infer.utility as utility
 from ppocr.data import create_operators, transform
 from ppocr.postprocess import build_post_process
 from ppocr.utils.logging import get_logger
-from ppocr.utils.utility import get_image_file_list, check_and_read_gif
+from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppstructure.utility import parse_args
 from picodet_postprocess import PicoDetPostProcess
 
 logger = get_logger()
+
 
 class LayoutPredictor(object):
     def __init__(self, args):
@@ -109,7 +110,7 @@ def main(args):
 
     repeats = 50
     for image_file in image_file_list:
-        img, flag = check_and_read_gif(image_file)
+        img, flag, _ = check_and_read(image_file)
         if not flag:
             img = cv2.imread(image_file)
         if img is None:

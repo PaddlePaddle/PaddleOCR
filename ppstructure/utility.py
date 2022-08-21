@@ -49,8 +49,8 @@ def init_args():
         type=float,
         default=0.5,
         help="Threshold of nms.")
-    # params for vqa
-    parser.add_argument("--vqa_algorithm", type=str, default='LayoutXLM')
+    # params for kie
+    parser.add_argument("--kie_algorithm", type=str, default='LayoutXLM')
     parser.add_argument("--ser_model_dir", type=str)
     parser.add_argument(
         "--ser_dict_path",
@@ -63,7 +63,7 @@ def init_args():
         "--mode",
         type=str,
         default='structure',
-        help='structure and vqa is supported')
+        help='structure and kie is supported')
     parser.add_argument(
         "--image_orientation",
         type=bool,
@@ -90,10 +90,7 @@ def init_args():
         default=False,
         help='Whether to enable layout of recovery')
     parser.add_argument(
-        "--save_pdf",
-        type=bool,
-        default=False,
-        help='Whether to save pdf file')
+        "--save_pdf", type=bool, default=False, help='Whether to save pdf file')
     return parser
 
 

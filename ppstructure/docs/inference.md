@@ -72,9 +72,9 @@ mkdir inference && cd inference
 wget https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_ser_pretrained.tar && tar xf PP-Layout_v1.0_ser_pretrained.tar
 cd ..
 
-python3 predict_system.py --model_name_or_path=vqa/PP-Layout_v1.0_ser_pretrained/ \
-                          --mode=vqa \
-                          --image_dir=vqa/images/input/zh_val_0.jpg  \
+python3 predict_system.py --model_name_or_path=kie/PP-Layout_v1.0_ser_pretrained/ \
+                          --mode=kie \
+                          --image_dir=kie/images/input/zh_val_0.jpg  \
                           --vis_font_path=../doc/fonts/simfang.ttf
 ```
-运行完成后，每张图片会在`output`字段指定的目录下的`vqa`目录下存放可视化之后的图片，图片名和输入图片名一致。
+运行完成后，每张图片会在`output`字段指定的目录下的`kie`目录下存放可视化之后的图片，图片名和输入图片名一致。

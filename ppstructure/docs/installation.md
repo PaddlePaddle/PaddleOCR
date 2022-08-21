@@ -1,7 +1,7 @@
 - [快速安装](#快速安装)
   - [1. PaddlePaddle 和 PaddleOCR](#1-paddlepaddle-和-paddleocr)
   - [2. 安装其他依赖](#2-安装其他依赖)
-    - [2.1  VQA所需依赖](#21--vqa所需依赖)
+    - [2.1  VQA所需依赖](#21--kie所需依赖)
 
 # 快速安装
 
